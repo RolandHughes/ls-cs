@@ -36,56 +36,58 @@
 
 using namespace QPatternist;
 
-ConstructorFunctionsFactory::ConstructorFunctionsFactory(const NamePool::Ptr &np,
-      const SchemaTypeFactory::Ptr &f) : m_typeFactory(f)
+ConstructorFunctionsFactory::ConstructorFunctionsFactory( const NamePool::Ptr &np,
+        const SchemaTypeFactory::Ptr &f ) : m_typeFactory( f )
 {
-   Q_ASSERT(m_typeFactory);
-   Q_ASSERT(np);
+    Q_ASSERT( m_typeFactory );
+    Q_ASSERT( np );
 
-   auto factoryTypes = m_typeFactory->types();
+    auto factoryTypes = m_typeFactory->types();
 
-   SchemaType::Hash::const_iterator it(factoryTypes.constBegin());
-   const SchemaType::Hash::const_iterator end(factoryTypes.constEnd());
+    SchemaType::Hash::const_iterator it( factoryTypes.constBegin() );
+    const SchemaType::Hash::const_iterator end( factoryTypes.constEnd() );
 
-   FunctionArgument::List args;
-   const QXmlName argName(StandardNamespaces::empty, StandardLocalNames::sourceValue);
+    FunctionArgument::List args;
+    const QXmlName argName( StandardNamespaces::empty, StandardLocalNames::sourceValue );
 
-   args.append(FunctionArgument::Ptr(new FunctionArgument(argName, CommonSequenceTypes::ZeroOrOneAtomicType)));
+    args.append( FunctionArgument::Ptr( new FunctionArgument( argName, CommonSequenceTypes::ZeroOrOneAtomicType ) ) );
 
-   while (it != end) {
-      if (! BuiltinTypes::xsAnyAtomicType->wxsTypeMatches(*it) ||
-            *BuiltinTypes::xsAnyAtomicType == *static_cast<const AtomicType *>((*it).data()) ||
-            *BuiltinTypes::xsNOTATION == *static_cast<const AtomicType *>((*it).data())) {
-         /* It's not a valid type for a constructor function -- skip it. */
-         ++it;
-         continue;
-      }
+    while ( it != end )
+    {
+        if ( ! BuiltinTypes::xsAnyAtomicType->wxsTypeMatches( *it ) ||
+                *BuiltinTypes::xsAnyAtomicType == *static_cast<const AtomicType *>( ( *it ).data() ) ||
+                *BuiltinTypes::xsNOTATION == *static_cast<const AtomicType *>( ( *it ).data() ) )
+        {
+            /* It's not a valid type for a constructor function -- skip it. */
+            ++it;
+            continue;
+        }
 
-      const QXmlName name((*it)->name(np));
-      FunctionSignature::Ptr s(new FunctionSignature(name, 1, 1, makeGenericSequenceType(AtomicType::Ptr(*it),
-                  Cardinality::zeroOrOne())));
+        const QXmlName name( ( *it )->name( np ) );
+        FunctionSignature::Ptr s( new FunctionSignature( name, 1, 1, makeGenericSequenceType( AtomicType::Ptr( *it ),
+                                  Cardinality::zeroOrOne() ) ) );
 
-      s->setArguments(args);
-      m_signatures.insert(name, s);
-      ++it;
-   }
+        s->setArguments( args );
+        m_signatures.insert( name, s );
+        ++it;
+    }
 }
 
-Expression::Ptr ConstructorFunctionsFactory::retrieveExpression(const QXmlName name,
-                  const Expression::List &args, const FunctionSignature::Ptr &sign) const
+Expression::Ptr ConstructorFunctionsFactory::retrieveExpression( const QXmlName name,
+        const Expression::List &args, const FunctionSignature::Ptr &sign ) const
 {
-   (void) sign;
+    ( void ) sign;
 
-   /* This function is only called if the callsite is valid, so createSchemaType() will always
-    * return an AtomicType. */
-   const AtomicType::Ptr at(static_cast<AtomicType *>(m_typeFactory->createSchemaType(name).data()));
+    /* This function is only called if the callsite is valid, so createSchemaType() will always
+     * return an AtomicType. */
+    const AtomicType::Ptr at( static_cast<AtomicType *>( m_typeFactory->createSchemaType( name ).data() ) );
 
-   return Expression::Ptr(new CastAs(args.first(), makeGenericSequenceType(at, Cardinality::zeroOrOne())));
+    return Expression::Ptr( new CastAs( args.first(), makeGenericSequenceType( at, Cardinality::zeroOrOne() ) ) );
 }
 
-FunctionSignature::Ptr ConstructorFunctionsFactory::retrieveFunctionSignature(const NamePool::Ptr &np,
-                  const QXmlName name)
+FunctionSignature::Ptr ConstructorFunctionsFactory::retrieveFunctionSignature( const NamePool::Ptr &np,
+        const QXmlName name )
 {
-   (void) np;
-   return functionSignatures().value(name);
+    ( void ) np;
+    return functionSignatures().value( name );
 }

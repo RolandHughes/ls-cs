@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
 
@@ -31,25 +31,36 @@
 #include <wtf/RefCounted.h>
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class MessagePort;
-    class ScriptExecutionContext;
+class MessagePort;
+class ScriptExecutionContext;
 
-    class MessageChannel : public RefCounted<MessageChannel> {
-    public:
-        static PassRefPtr<MessageChannel> create(ScriptExecutionContext* context) { return adoptRef(new MessageChannel(context)); }
-        ~MessageChannel();
+class MessageChannel : public RefCounted<MessageChannel>
+{
+public:
+    static PassRefPtr<MessageChannel> create( ScriptExecutionContext *context )
+    {
+        return adoptRef( new MessageChannel( context ) );
+    }
+    ~MessageChannel();
 
-        MessagePort* port1() const { return m_port1.get(); }
-        MessagePort* port2() const { return m_port2.get(); }
+    MessagePort *port1() const
+    {
+        return m_port1.get();
+    }
+    MessagePort *port2() const
+    {
+        return m_port2.get();
+    }
 
-    private:
-        MessageChannel(ScriptExecutionContext*);
+private:
+    MessageChannel( ScriptExecutionContext * );
 
-        RefPtr<MessagePort> m_port1;
-        RefPtr<MessagePort> m_port2;
-    };
+    RefPtr<MessagePort> m_port1;
+    RefPtr<MessagePort> m_port2;
+};
 
 } // namespace WebCore
 

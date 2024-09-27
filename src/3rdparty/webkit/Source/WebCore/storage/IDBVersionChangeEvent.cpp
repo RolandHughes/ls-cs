@@ -31,16 +31,17 @@
 #include "EventNames.h"
 #include "IDBAny.h"
 
-namespace WebCore {
-
-PassRefPtr<IDBVersionChangeEvent> IDBVersionChangeEvent::create(const String& version, const AtomicString& eventType)
+namespace WebCore
 {
-    return adoptRef(new IDBVersionChangeEvent(version, eventType));
+
+PassRefPtr<IDBVersionChangeEvent> IDBVersionChangeEvent::create( const String &version, const AtomicString &eventType )
+{
+    return adoptRef( new IDBVersionChangeEvent( version, eventType ) );
 }
 
-IDBVersionChangeEvent::IDBVersionChangeEvent(const String& version, const AtomicString& eventType)
-    : Event(eventType, false /*canBubble*/, false /*cancelable*/)
-    , m_version(version)
+IDBVersionChangeEvent::IDBVersionChangeEvent( const String &version, const AtomicString &eventType )
+    : Event( eventType, false /*canBubble*/, false /*cancelable*/ )
+    , m_version( version )
 {
 }
 

@@ -25,14 +25,16 @@
 
 #include "HTMLElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class HTMLBaseFontElement : public HTMLElement {
+class HTMLBaseFontElement : public HTMLElement
+{
 public:
-    static PassRefPtr<HTMLBaseFontElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<HTMLBaseFontElement> create( const QualifiedName &, Document * );
 
 private:
-    HTMLBaseFontElement(const QualifiedName&, Document*);
+    HTMLBaseFontElement( const QualifiedName &, Document * );
 };
 
 } // namespace

@@ -21,16 +21,16 @@
 
 #include <cs_catch2.h>
 
-TEST_CASE("QNetworkReply traits", "[qnetwork_reply]")
+TEST_CASE( "QNetworkReply traits", "[qnetwork_reply]" )
 {
-   REQUIRE(std::is_copy_constructible_v<QNetworkReply> == false);
-   REQUIRE(std::is_move_constructible_v<QNetworkReply> == false);
+    REQUIRE( std::is_copy_constructible_v<QNetworkReply> == false );
+    REQUIRE( std::is_move_constructible_v<QNetworkReply> == false );
 
-   REQUIRE(std::is_copy_assignable_v<QNetworkReply> == false);
-   REQUIRE(std::is_move_assignable_v<QNetworkReply> == false);
+    REQUIRE( std::is_copy_assignable_v<QNetworkReply> == false );
+    REQUIRE( std::is_move_assignable_v<QNetworkReply> == false );
 
-   REQUIRE(std::is_nothrow_move_constructible_v<QNetworkReply> == false);
-   REQUIRE(std::is_nothrow_move_assignable_v<QNetworkReply> == false);
+    REQUIRE( std::is_nothrow_move_constructible_v<QNetworkReply> == false );
+    REQUIRE( std::is_nothrow_move_assignable_v<QNetworkReply> == false );
 
-   REQUIRE(std::has_virtual_destructor_v<QNetworkReply> == true);
+    REQUIRE( std::has_virtual_destructor_v<QNetworkReply> == true );
 }

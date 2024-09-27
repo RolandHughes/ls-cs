@@ -25,11 +25,11 @@
 
 const QString &settingsPrefix()
 {
-   static QString prefix = QString("%1.%2/").formatArg((LSCS_VERSION >> 16) & 0xff).formatArg((LSCS_VERSION >> 8) & 0xff);
-   return prefix;
+    static QString prefix = QString( "%1.%2/" ).formatArg( ( LSCS_VERSION >> 16 ) & 0xff ).formatArg( ( LSCS_VERSION >> 8 ) & 0xff );
+    return prefix;
 }
 
-QString settingPath(const QString &path)
+QString settingPath( const QString &path )
 {
-   return settingsPrefix() + path;
+    return settingsPrefix() + path;
 }

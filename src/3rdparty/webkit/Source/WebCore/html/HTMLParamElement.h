@@ -25,25 +25,33 @@
 
 #include "HTMLElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class HTMLParamElement : public HTMLElement {
+class HTMLParamElement : public HTMLElement
+{
 public:
-    static PassRefPtr<HTMLParamElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<HTMLParamElement> create( const QualifiedName &, Document * );
 
-    String name() const { return m_name; }
-    String value() const { return m_value; }
+    String name() const
+    {
+        return m_name;
+    }
+    String value() const
+    {
+        return m_value;
+    }
 
-    static bool isURLParameter(const String&);
+    static bool isURLParameter( const String & );
 
 private:
-    HTMLParamElement(const QualifiedName&, Document*);
+    HTMLParamElement( const QualifiedName &, Document * );
 
-    virtual void parseMappedAttribute(Attribute*);
+    virtual void parseMappedAttribute( Attribute * );
 
-    virtual bool isURLAttribute(Attribute*) const;
+    virtual bool isURLAttribute( Attribute * ) const;
 
-    virtual void addSubresourceAttributeURLs(ListHashSet<KURL>&) const;
+    virtual void addSubresourceAttributeURLs( ListHashSet<KURL> & ) const;
 
     // FIXME: These don't need to be stored as members and instead
     // name() value() could use getAttribute(nameAttr/valueAttr).

@@ -24,184 +24,197 @@
 #include <qhttp_networkrequest_p.h>
 #include <qnoncontiguousbytedevice_p.h>
 
-QHttpNetworkRequestPrivate::QHttpNetworkRequestPrivate(QHttpNetworkRequest::Operation op,
-                  QHttpNetworkRequest::Priority pri, const QUrl &newUrl)
-   : QHttpNetworkHeaderPrivate(newUrl), operation(op), priority(pri), uploadByteDevice(nullptr),
-     autoDecompress(false), pipeliningAllowed(false), spdyAllowed(false),
-     withCredentials(true), preConnect(false), followRedirect(false), redirectCount(0)
+QHttpNetworkRequestPrivate::QHttpNetworkRequestPrivate( QHttpNetworkRequest::Operation op,
+        QHttpNetworkRequest::Priority pri, const QUrl &newUrl )
+    : QHttpNetworkHeaderPrivate( newUrl ), operation( op ), priority( pri ), uploadByteDevice( nullptr ),
+      autoDecompress( false ), pipeliningAllowed( false ), spdyAllowed( false ),
+      withCredentials( true ), preConnect( false ), followRedirect( false ), redirectCount( 0 )
 {
 }
 
-QHttpNetworkRequestPrivate::QHttpNetworkRequestPrivate(const QHttpNetworkRequestPrivate &other)
-   : QHttpNetworkHeaderPrivate(other)
+QHttpNetworkRequestPrivate::QHttpNetworkRequestPrivate( const QHttpNetworkRequestPrivate &other )
+    : QHttpNetworkHeaderPrivate( other )
 {
-   operation         = other.operation;
-   priority          = other.priority;
-   uploadByteDevice  = other.uploadByteDevice;
-   autoDecompress    = other.autoDecompress;
-   pipeliningAllowed = other.pipeliningAllowed;
-   spdyAllowed       = other.spdyAllowed;
-   customVerb        = other.customVerb;
-   withCredentials   = other.withCredentials;
-   ssl               = other.ssl;
-   preConnect        = other.preConnect;
-   followRedirect    = other.followRedirect;
-   redirectCount     = other.redirectCount;
+    operation         = other.operation;
+    priority          = other.priority;
+    uploadByteDevice  = other.uploadByteDevice;
+    autoDecompress    = other.autoDecompress;
+    pipeliningAllowed = other.pipeliningAllowed;
+    spdyAllowed       = other.spdyAllowed;
+    customVerb        = other.customVerb;
+    withCredentials   = other.withCredentials;
+    ssl               = other.ssl;
+    preConnect        = other.preConnect;
+    followRedirect    = other.followRedirect;
+    redirectCount     = other.redirectCount;
 }
 
 QHttpNetworkRequestPrivate::~QHttpNetworkRequestPrivate()
 {
 }
 
-bool QHttpNetworkRequestPrivate::operator==(const QHttpNetworkRequestPrivate &other) const
+bool QHttpNetworkRequestPrivate::operator==( const QHttpNetworkRequestPrivate &other ) const
 {
-   return QHttpNetworkHeaderPrivate::operator==(other)
-          && (operation == other.operation)
-          && (priority == other.priority)
-          && (uploadByteDevice == other.uploadByteDevice)
-          && (autoDecompress == other.autoDecompress)
-          && (pipeliningAllowed == other.pipeliningAllowed)
-          && (spdyAllowed == other.spdyAllowed)
-          && (operation != QHttpNetworkRequest::Custom || (customVerb == other.customVerb))
-          && (withCredentials == other.withCredentials)
-          && (ssl == other.ssl)
-          && (preConnect == other.preConnect);
+    return QHttpNetworkHeaderPrivate::operator==( other )
+           && ( operation == other.operation )
+           && ( priority == other.priority )
+           && ( uploadByteDevice == other.uploadByteDevice )
+           && ( autoDecompress == other.autoDecompress )
+           && ( pipeliningAllowed == other.pipeliningAllowed )
+           && ( spdyAllowed == other.spdyAllowed )
+           && ( operation != QHttpNetworkRequest::Custom || ( customVerb == other.customVerb ) )
+           && ( withCredentials == other.withCredentials )
+           && ( ssl == other.ssl )
+           && ( preConnect == other.preConnect );
 }
 
 QByteArray QHttpNetworkRequest::methodName() const
 {
-   switch (d->operation) {
-      case QHttpNetworkRequest::Get:
-         return "GET";
-         break;
+    switch ( d->operation )
+    {
+        case QHttpNetworkRequest::Get:
+            return "GET";
+            break;
 
-     case QHttpNetworkRequest::Head:
-         return "HEAD";
-         break;
+        case QHttpNetworkRequest::Head:
+            return "HEAD";
+            break;
 
-      case QHttpNetworkRequest::Post:
-         return "POST";
-         break;
+        case QHttpNetworkRequest::Post:
+            return "POST";
+            break;
 
-      case QHttpNetworkRequest::Options:
-         return "OPTIONS";
-         break;
+        case QHttpNetworkRequest::Options:
+            return "OPTIONS";
+            break;
 
-      case QHttpNetworkRequest::Put:
-         return "PUT";
-         break;
+        case QHttpNetworkRequest::Put:
+            return "PUT";
+            break;
 
-      case QHttpNetworkRequest::Delete:
-         return "DELETE";
-         break;
+        case QHttpNetworkRequest::Delete:
+            return "DELETE";
+            break;
 
-      case QHttpNetworkRequest::Trace:
-         return "TRACE";
-         break;
+        case QHttpNetworkRequest::Trace:
+            return "TRACE";
+            break;
 
-      case QHttpNetworkRequest::Connect:
-         return "CONNECT";
-         break;
+        case QHttpNetworkRequest::Connect:
+            return "CONNECT";
+            break;
 
-      case QHttpNetworkRequest::Custom:
-         return d->customVerb;
-         break;
+        case QHttpNetworkRequest::Custom:
+            return d->customVerb;
+            break;
 
-      default:
-         break;
-   }
-   return QByteArray();
+        default:
+            break;
+    }
+
+    return QByteArray();
 }
 
-QByteArray QHttpNetworkRequest::uri(bool throughProxy) const
+QByteArray QHttpNetworkRequest::uri( bool throughProxy ) const
 {
-   QUrl::FormattingOptions format(QUrl::RemoveFragment | QUrl::RemoveUserInfo | QUrl::FullyEncoded);
+    QUrl::FormattingOptions format( QUrl::RemoveFragment | QUrl::RemoveUserInfo | QUrl::FullyEncoded );
 
-   // for POST, query data is send as content
-   if (d->operation == QHttpNetworkRequest::Post && ! d->uploadByteDevice) {
-      format |= QUrl::RemoveQuery;
-   }
+    // for POST, query data is send as content
+    if ( d->operation == QHttpNetworkRequest::Post && ! d->uploadByteDevice )
+    {
+        format |= QUrl::RemoveQuery;
+    }
 
-   if (! throughProxy) {
-      format |= QUrl::RemoveScheme | QUrl::RemoveAuthority;
-   }
+    if ( ! throughProxy )
+    {
+        format |= QUrl::RemoveScheme | QUrl::RemoveAuthority;
+    }
 
-   QUrl copy = d->url;
+    QUrl copy = d->url;
 
-   if (copy.path().isEmpty()) {
-      copy.setPath("/");
-   }
+    if ( copy.path().isEmpty() )
+    {
+        copy.setPath( "/" );
+    }
 
-   QByteArray uri = copy.toEncoded(format);
-   return uri;
+    QByteArray uri = copy.toEncoded( format );
+    return uri;
 }
 
-QByteArray QHttpNetworkRequestPrivate::header(const QHttpNetworkRequest &request, bool throughProxy)
+QByteArray QHttpNetworkRequestPrivate::header( const QHttpNetworkRequest &request, bool throughProxy )
 {
-   QList<QPair<QByteArray, QByteArray> > fields = request.header();
+    QList<QPair<QByteArray, QByteArray> > fields = request.header();
 
-   QByteArray ba;
-   ba.reserve(40 + fields.length() * 25);       // very rough lower bound estimation
+    QByteArray ba;
+    ba.reserve( 40 + fields.length() * 25 );     // very rough lower bound estimation
 
-   ba += request.methodName();
-   ba += ' ';
-   ba += request.uri(throughProxy);
+    ba += request.methodName();
+    ba += ' ';
+    ba += request.uri( throughProxy );
 
-   ba += " HTTP/";
-   ba += QByteArray::number(request.majorVersion());
-   ba += '.';
-   ba += QByteArray::number(request.minorVersion());
-   ba += "\r\n";
+    ba += " HTTP/";
+    ba += QByteArray::number( request.majorVersion() );
+    ba += '.';
+    ba += QByteArray::number( request.minorVersion() );
+    ba += "\r\n";
 
-   QList<QPair<QByteArray, QByteArray> >::const_iterator it    = fields.constBegin();
-   QList<QPair<QByteArray, QByteArray> >::const_iterator endIt = fields.constEnd();
+    QList<QPair<QByteArray, QByteArray> >::const_iterator it    = fields.constBegin();
+    QList<QPair<QByteArray, QByteArray> >::const_iterator endIt = fields.constEnd();
 
-   for (; it != endIt; ++it) {
-      ba += it->first;
-      ba += ": ";
-      ba += it->second;
-      ba += "\r\n";
-   }
+    for ( ; it != endIt; ++it )
+    {
+        ba += it->first;
+        ba += ": ";
+        ba += it->second;
+        ba += "\r\n";
+    }
 
-   if (request.d->operation == QHttpNetworkRequest::Post) {
-      // add content type, if not set in the request
+    if ( request.d->operation == QHttpNetworkRequest::Post )
+    {
+        // add content type, if not set in the request
 
-      if (request.headerField("content-type").isEmpty() &&
-                  ((request.d->uploadByteDevice && request.d->uploadByteDevice->size() > 0) || request.d->url.hasQuery())) {
+        if ( request.headerField( "content-type" ).isEmpty() &&
+                ( ( request.d->uploadByteDevice && request.d->uploadByteDevice->size() > 0 ) || request.d->url.hasQuery() ) )
+        {
 
-         // warning indicates a bug in application code not setting a required header
-         // if using QHttpMultipart, the content-type is set in QNetworkAccessManagerPrivate::prepareMultipart already
+            // warning indicates a bug in application code not setting a required header
+            // if using QHttpMultipart, the content-type is set in QNetworkAccessManagerPrivate::prepareMultipart already
 
-         qWarning("QHttpNetworkRequest::header() Content-Type is missing in HTTP POST, defaulting to application/x-www-form-urlencoded");
+            qWarning( "QHttpNetworkRequest::header() Content-Type is missing in HTTP POST, defaulting to application/x-www-form-urlencoded" );
 
-         ba += "Content-Type: application/x-www-form-urlencoded\r\n";
-      }
+            ba += "Content-Type: application/x-www-form-urlencoded\r\n";
+        }
 
-      if (! request.d->uploadByteDevice && request.d->url.hasQuery()) {
-         QByteArray query = request.d->url.query(QUrl::FullyEncoded).toLatin1();
-         ba += "Content-Length: ";
-         ba += QByteArray::number(query.size());
-         ba += "\r\n\r\n";
-         ba += query;
+        if ( ! request.d->uploadByteDevice && request.d->url.hasQuery() )
+        {
+            QByteArray query = request.d->url.query( QUrl::FullyEncoded ).toLatin1();
+            ba += "Content-Length: ";
+            ba += QByteArray::number( query.size() );
+            ba += "\r\n\r\n";
+            ba += query;
 
-      } else {
-         ba += "\r\n";
-      }
+        }
+        else
+        {
+            ba += "\r\n";
+        }
 
-   } else {
-      ba += "\r\n";
-   }
+    }
+    else
+    {
+        ba += "\r\n";
+    }
 
-   return ba;
+    return ba;
 }
 
-QHttpNetworkRequest::QHttpNetworkRequest(const QUrl &url, Operation operation, Priority priority)
-   : d(new QHttpNetworkRequestPrivate(operation, priority, url))
+QHttpNetworkRequest::QHttpNetworkRequest( const QUrl &url, Operation operation, Priority priority )
+    : d( new QHttpNetworkRequestPrivate( operation, priority, url ) )
 {
 }
 
-QHttpNetworkRequest::QHttpNetworkRequest(const QHttpNetworkRequest &other)
-   : QHttpNetworkHeader(other), d(other.d)
+QHttpNetworkRequest::QHttpNetworkRequest( const QHttpNetworkRequest &other )
+    : QHttpNetworkHeader( other ), d( other.d )
 {
 }
 
@@ -211,164 +224,164 @@ QHttpNetworkRequest::~QHttpNetworkRequest()
 
 QUrl QHttpNetworkRequest::url() const
 {
-   return d->url;
+    return d->url;
 }
 
-void QHttpNetworkRequest::setUrl(const QUrl &url)
+void QHttpNetworkRequest::setUrl( const QUrl &url )
 {
-   d->url = url;
+    d->url = url;
 }
 
 bool QHttpNetworkRequest::isSsl() const
 {
-   return d->ssl;
+    return d->ssl;
 }
 
-void QHttpNetworkRequest::setSsl(bool s)
+void QHttpNetworkRequest::setSsl( bool s )
 {
-   d->ssl = s;
+    d->ssl = s;
 }
 
 bool QHttpNetworkRequest::isPreConnect() const
 {
-   return d->preConnect;
+    return d->preConnect;
 }
 
-void QHttpNetworkRequest::setPreConnect(bool preConnect)
+void QHttpNetworkRequest::setPreConnect( bool preConnect )
 {
-   d->preConnect = preConnect;
+    d->preConnect = preConnect;
 }
 
 bool QHttpNetworkRequest::isFollowRedirects() const
 {
-   return d->followRedirect;
+    return d->followRedirect;
 }
 
-void QHttpNetworkRequest::setFollowRedirects(bool followRedirect)
+void QHttpNetworkRequest::setFollowRedirects( bool followRedirect )
 {
-   d->followRedirect = followRedirect;
+    d->followRedirect = followRedirect;
 }
 
 int QHttpNetworkRequest::redirectCount() const
 {
-   return d->redirectCount;
+    return d->redirectCount;
 }
 
-void QHttpNetworkRequest::setRedirectCount(int count)
+void QHttpNetworkRequest::setRedirectCount( int count )
 {
-   d->redirectCount = count;
+    d->redirectCount = count;
 }
 
 qint64 QHttpNetworkRequest::contentLength() const
 {
-   return d->contentLength();
+    return d->contentLength();
 }
 
-void QHttpNetworkRequest::setContentLength(qint64 length)
+void QHttpNetworkRequest::setContentLength( qint64 length )
 {
-   d->setContentLength(length);
+    d->setContentLength( length );
 }
 
 QList<QPair<QByteArray, QByteArray> > QHttpNetworkRequest::header() const
 {
-   return d->fields;
+    return d->fields;
 }
 
-QByteArray QHttpNetworkRequest::headerField(const QByteArray &name, const QByteArray &defaultValue) const
+QByteArray QHttpNetworkRequest::headerField( const QByteArray &name, const QByteArray &defaultValue ) const
 {
-   return d->headerField(name, defaultValue);
+    return d->headerField( name, defaultValue );
 }
 
-void QHttpNetworkRequest::setHeaderField(const QByteArray &name, const QByteArray &data)
+void QHttpNetworkRequest::setHeaderField( const QByteArray &name, const QByteArray &data )
 {
-   d->setHeaderField(name, data);
+    d->setHeaderField( name, data );
 }
 
-QHttpNetworkRequest &QHttpNetworkRequest::operator=(const QHttpNetworkRequest &other)
+QHttpNetworkRequest &QHttpNetworkRequest::operator=( const QHttpNetworkRequest &other )
 {
-   d = other.d;
-   return *this;
+    d = other.d;
+    return *this;
 }
 
-bool QHttpNetworkRequest::operator==(const QHttpNetworkRequest &other) const
+bool QHttpNetworkRequest::operator==( const QHttpNetworkRequest &other ) const
 {
-   return d->operator==(*other.d);
+    return d->operator==( *other.d );
 }
 
 QHttpNetworkRequest::Operation QHttpNetworkRequest::operation() const
 {
-   return d->operation;
+    return d->operation;
 }
 
-void QHttpNetworkRequest::setOperation(Operation operation)
+void QHttpNetworkRequest::setOperation( Operation operation )
 {
-   d->operation = operation;
+    d->operation = operation;
 }
 
 QByteArray QHttpNetworkRequest::customVerb() const
 {
-   return d->customVerb;
+    return d->customVerb;
 }
 
-void QHttpNetworkRequest::setCustomVerb(const QByteArray &customVerb)
+void QHttpNetworkRequest::setCustomVerb( const QByteArray &customVerb )
 {
-   d->customVerb = customVerb;
+    d->customVerb = customVerb;
 }
 
 QHttpNetworkRequest::Priority QHttpNetworkRequest::priority() const
 {
-   return d->priority;
+    return d->priority;
 }
 
-void QHttpNetworkRequest::setPriority(Priority priority)
+void QHttpNetworkRequest::setPriority( Priority priority )
 {
-   d->priority = priority;
+    d->priority = priority;
 }
 
 bool QHttpNetworkRequest::isPipeliningAllowed() const
 {
-   return d->pipeliningAllowed;
+    return d->pipeliningAllowed;
 }
 
-void QHttpNetworkRequest::setPipeliningAllowed(bool b)
+void QHttpNetworkRequest::setPipeliningAllowed( bool b )
 {
-   d->pipeliningAllowed = b;
+    d->pipeliningAllowed = b;
 }
 
 bool QHttpNetworkRequest::isSPDYAllowed() const
 {
-   return d->spdyAllowed;
+    return d->spdyAllowed;
 }
-void QHttpNetworkRequest::setSPDYAllowed(bool b)
+void QHttpNetworkRequest::setSPDYAllowed( bool b )
 {
-   d->spdyAllowed = b;
+    d->spdyAllowed = b;
 }
 bool QHttpNetworkRequest::withCredentials() const
 {
-   return d->withCredentials;
+    return d->withCredentials;
 }
 
-void QHttpNetworkRequest::setWithCredentials(bool b)
+void QHttpNetworkRequest::setWithCredentials( bool b )
 {
-   d->withCredentials = b;
+    d->withCredentials = b;
 }
 
-void QHttpNetworkRequest::setUploadByteDevice(QNonContiguousByteDevice *bd)
+void QHttpNetworkRequest::setUploadByteDevice( QNonContiguousByteDevice *bd )
 {
-   d->uploadByteDevice = bd;
+    d->uploadByteDevice = bd;
 }
 
 QNonContiguousByteDevice *QHttpNetworkRequest::uploadByteDevice() const
 {
-   return d->uploadByteDevice;
+    return d->uploadByteDevice;
 }
 
 int QHttpNetworkRequest::majorVersion() const
 {
-   return 1;
+    return 1;
 }
 
 int QHttpNetworkRequest::minorVersion() const
 {
-   return 1;
+    return 1;
 }

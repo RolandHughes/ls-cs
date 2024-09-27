@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -31,66 +31,80 @@
 #include "Text.h"
 #include <wtf/Assertions.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-SplitTextNodeCommand::SplitTextNodeCommand(PassRefPtr<Text> text, int offset)
-    : SimpleEditCommand(text->document())
-    , m_text2(text)
-    , m_offset(offset)
+SplitTextNodeCommand::SplitTextNodeCommand( PassRefPtr<Text> text, int offset )
+    : SimpleEditCommand( text->document() )
+    , m_text2( text )
+    , m_offset( offset )
 {
     // NOTE: Various callers rely on the fact that the original node becomes
     // the second node (i.e. the new node is inserted before the existing one).
     // That is not a fundamental dependency (i.e. it could be re-coded), but
     // rather is based on how this code happens to work.
-    ASSERT(m_text2);
-    ASSERT(m_text2->length() > 0);
-    ASSERT(m_offset > 0);
-    ASSERT(m_offset < m_text2->length());
+    ASSERT( m_text2 );
+    ASSERT( m_text2->length() > 0 );
+    ASSERT( m_offset > 0 );
+    ASSERT( m_offset < m_text2->length() );
 }
 
 void SplitTextNodeCommand::doApply()
 {
-    ContainerNode* parent = m_text2->parentNode();
-    if (!parent || !parent->rendererIsEditable())
+    ContainerNode *parent = m_text2->parentNode();
+
+    if ( !parent || !parent->rendererIsEditable() )
+    {
         return;
+    }
 
     ExceptionCode ec = 0;
-    String prefixText = m_text2->substringData(0, m_offset, ec);
-    if (prefixText.isEmpty())
-        return;
+    String prefixText = m_text2->substringData( 0, m_offset, ec );
 
-    m_text1 = Text::create(document(), prefixText);
-    ASSERT(m_text1);
-    document()->markers()->copyMarkers(m_text2.get(), 0, m_offset, m_text1.get(), 0);
+    if ( prefixText.isEmpty() )
+    {
+        return;
+    }
+
+    m_text1 = Text::create( document(), prefixText );
+    ASSERT( m_text1 );
+    document()->markers()->copyMarkers( m_text2.get(), 0, m_offset, m_text1.get(), 0 );
 
     insertText1AndTrimText2();
 }
 
 void SplitTextNodeCommand::doUnapply()
 {
-    if (!m_text1 || !m_text1->rendererIsEditable())
+    if ( !m_text1 || !m_text1->rendererIsEditable() )
+    {
         return;
+    }
 
-    ASSERT(m_text1->document() == document());
+    ASSERT( m_text1->document() == document() );
 
     String prefixText = m_text1->data();
 
     ExceptionCode ec = 0;
-    m_text2->insertData(0, prefixText, ec);
-    ASSERT(!ec);
+    m_text2->insertData( 0, prefixText, ec );
+    ASSERT( !ec );
 
-    document()->markers()->copyMarkers(m_text1.get(), 0, prefixText.length(), m_text2.get(), 0);
-    m_text1->remove(ec);
+    document()->markers()->copyMarkers( m_text1.get(), 0, prefixText.length(), m_text2.get(), 0 );
+    m_text1->remove( ec );
 }
 
 void SplitTextNodeCommand::doReapply()
 {
-    if (!m_text1 || !m_text2)
+    if ( !m_text1 || !m_text2 )
+    {
         return;
+    }
 
-    ContainerNode* parent = m_text2->parentNode();
-    if (!parent || !parent->rendererIsEditable())
+    ContainerNode *parent = m_text2->parentNode();
+
+    if ( !parent || !parent->rendererIsEditable() )
+    {
         return;
+    }
 
     insertText1AndTrimText2();
 }
@@ -98,10 +112,14 @@ void SplitTextNodeCommand::doReapply()
 void SplitTextNodeCommand::insertText1AndTrimText2()
 {
     ExceptionCode ec = 0;
-    m_text2->parentNode()->insertBefore(m_text1.get(), m_text2.get(), ec);
-    if (ec)
+    m_text2->parentNode()->insertBefore( m_text1.get(), m_text2.get(), ec );
+
+    if ( ec )
+    {
         return;
-    m_text2->deleteData(0, m_offset, ec);
+    }
+
+    m_text2->deleteData( 0, m_offset, ec );
 }
-    
+
 } // namespace WebCore

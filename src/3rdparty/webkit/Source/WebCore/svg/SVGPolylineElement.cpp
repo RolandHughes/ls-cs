@@ -25,31 +25,38 @@
 
 #include "Path.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-inline SVGPolylineElement::SVGPolylineElement(const QualifiedName& tagName, Document* document)
-    : SVGPolyElement(tagName, document)
+inline SVGPolylineElement::SVGPolylineElement( const QualifiedName &tagName, Document *document )
+    : SVGPolyElement( tagName, document )
 {
 }
 
-PassRefPtr<SVGPolylineElement> SVGPolylineElement::create(const QualifiedName& tagName, Document* document)
+PassRefPtr<SVGPolylineElement> SVGPolylineElement::create( const QualifiedName &tagName, Document *document )
 {
-    return adoptRef(new SVGPolylineElement(tagName, document));
+    return adoptRef( new SVGPolylineElement( tagName, document ) );
 }
 
-void SVGPolylineElement::toPathData(Path& path) const
+void SVGPolylineElement::toPathData( Path &path ) const
 {
-    ASSERT(path.isEmpty());
+    ASSERT( path.isEmpty() );
 
-    SVGPointList& points = pointList();
-    if (points.isEmpty())
+    SVGPointList &points = pointList();
+
+    if ( points.isEmpty() )
+    {
         return;
+    }
 
-    path.moveTo(points.first());
+    path.moveTo( points.first() );
 
     unsigned size = points.size();
-    for (unsigned i = 1; i < size; ++i)
-        path.addLineTo(points.at(i));
+
+    for ( unsigned i = 1; i < size; ++i )
+    {
+        path.addLineTo( points.at( i ) );
+    }
 }
 
 }

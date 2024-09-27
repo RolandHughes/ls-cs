@@ -29,35 +29,38 @@
 #include "WorkQueue.h"
 #include <wtf/StdLibExtras.h>
 
-namespace WebKit {
-
-static WorkQueue& processLauncherWorkQueue()
+namespace WebKit
 {
-    DEFINE_STATIC_LOCAL(WorkQueue, processLauncherWorkQueue, ("com.apple.WebKit.ProcessLauncher"));
+
+static WorkQueue &processLauncherWorkQueue()
+{
+    DEFINE_STATIC_LOCAL( WorkQueue, processLauncherWorkQueue, ( "com.apple.WebKit.ProcessLauncher" ) );
     return processLauncherWorkQueue;
 }
 
-ProcessLauncher::ProcessLauncher(Client* client, const LaunchOptions& launchOptions)
-    : m_client(client)
-    , m_launchOptions(launchOptions)
-    , m_processIdentifier(0)
+ProcessLauncher::ProcessLauncher( Client *client, const LaunchOptions &launchOptions )
+    : m_client( client )
+    , m_launchOptions( launchOptions )
+    , m_processIdentifier( 0 )
 {
     // Launch the process.
     m_isLaunching = true;
-    processLauncherWorkQueue().scheduleWork(WorkItem::create(this, &ProcessLauncher::launchProcess));
+    processLauncherWorkQueue().scheduleWork( WorkItem::create( this, &ProcessLauncher::launchProcess ) );
 }
 
-void ProcessLauncher::didFinishLaunchingProcess(PlatformProcessIdentifier processIdentifier, CoreIPC::Connection::Identifier identifier)
+void ProcessLauncher::didFinishLaunchingProcess( PlatformProcessIdentifier processIdentifier,
+        CoreIPC::Connection::Identifier identifier )
 {
     m_processIdentifier = processIdentifier;
     m_isLaunching = false;
-    
-    if (!m_client) {
+
+    if ( !m_client )
+    {
         // FIXME: Dispose of the connection identifier.
         return;
     }
-    
-    m_client->didFinishLaunching(this, identifier);
+
+    m_client->didFinishLaunching( this, identifier );
 }
 
 void ProcessLauncher::invalidate()
@@ -66,27 +69,31 @@ void ProcessLauncher::invalidate()
     platformInvalidate();
 }
 
-const char* ProcessLauncher::processTypeAsString(ProcessType processType)
+const char *ProcessLauncher::processTypeAsString( ProcessType processType )
 {
-    switch (processType) {
-    case WebProcess:
-        return "webprocess";
-    case PluginProcess:
-        return "pluginprocess";
+    switch ( processType )
+    {
+        case WebProcess:
+            return "webprocess";
+
+        case PluginProcess:
+            return "pluginprocess";
     }
 
     ASSERT_NOT_REACHED();
     return 0;
 }
 
-bool ProcessLauncher::getProcessTypeFromString(const char* string, ProcessType& processType)
+bool ProcessLauncher::getProcessTypeFromString( const char *string, ProcessType &processType )
 {
-    if (!strcmp(string, "webprocess")) {
+    if ( !strcmp( string, "webprocess" ) )
+    {
         processType = WebProcess;
         return true;
     }
 
-    if (!strcmp(string, "pluginprocess")) {
+    if ( !strcmp( string, "pluginprocess" ) )
+    {
         processType = PluginProcess;
         return true;
     }

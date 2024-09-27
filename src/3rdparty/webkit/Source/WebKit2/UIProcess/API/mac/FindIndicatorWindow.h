@@ -36,32 +36,34 @@
 @class WKView;
 @class WebFindIndicatorWindowAnimation;
 
-namespace WebKit {
+namespace WebKit
+{
 
 class FindIndicator;
 
-class FindIndicatorWindow {
-    WTF_MAKE_NONCOPYABLE(FindIndicatorWindow);
+class FindIndicatorWindow
+{
+    WTF_MAKE_NONCOPYABLE( FindIndicatorWindow );
 
 public:
-    static PassOwnPtr<FindIndicatorWindow> create(WKView *);
+    static PassOwnPtr<FindIndicatorWindow> create( WKView * );
     ~FindIndicatorWindow();
 
-    void setFindIndicator(PassRefPtr<FindIndicator>, bool fadeOut);
+    void setFindIndicator( PassRefPtr<FindIndicator>, bool fadeOut );
 
 private:
-    explicit FindIndicatorWindow(WKView *);
+    explicit FindIndicatorWindow( WKView * );
     void closeWindow();
 
     void startFadeOutTimerFired();
 
-    void fadeOutAnimationCallback(double);
+    void fadeOutAnimationCallback( double );
     void fadeOutAnimationDidEnd();
 
-    void bounceAnimationCallback(double);
+    void bounceAnimationCallback( double );
     void bounceAnimationDidEnd();
 
-    WKView* m_wkView;
+    WKView *m_wkView;
     RefPtr<FindIndicator> m_findIndicator;
     RetainPtr<NSWindow> m_findIndicatorWindow;
 

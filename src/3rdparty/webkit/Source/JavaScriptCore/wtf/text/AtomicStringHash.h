@@ -6,13 +6,13 @@
  * are met:
  *
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Apple Computer, Inc. ("Apple") nor the names of
  *     its contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
+ *     from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY APPLE AND ITS CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -32,28 +32,37 @@
 #include <wtf/text/AtomicString.h>
 #include <wtf/HashTraits.h>
 
-namespace WTF {
+namespace WTF
+{
 
-    struct AtomicStringHash {
-        static unsigned hash(const AtomicString& key)
-        {
-            return key.impl()->existingHash();
-        }
+struct AtomicStringHash
+{
+    static unsigned hash( const AtomicString &key )
+    {
+        return key.impl()->existingHash();
+    }
 
-        static bool equal(const AtomicString& a, const AtomicString& b)
-        {
-            return a == b;
-        }
+    static bool equal( const AtomicString &a, const AtomicString &b )
+    {
+        return a == b;
+    }
 
-        static const bool safeToCompareToEmptyOrDeleted = false;
-    };
+    static const bool safeToCompareToEmptyOrDeleted = false;
+};
 
-    // AtomicStringHash is the default hash for AtomicString
-    template<> struct HashTraits<WTF::AtomicString> : GenericHashTraits<WTF::AtomicString> {
-        static const bool emptyValueIsZero = true;
-        static void constructDeletedValue(WTF::AtomicString& slot) { new (&slot) WTF::AtomicString(HashTableDeletedValue); }
-        static bool isDeletedValue(const WTF::AtomicString& slot) { return slot.isHashTableDeletedValue(); }
-    };
+// AtomicStringHash is the default hash for AtomicString
+template<> struct HashTraits<WTF::AtomicString> : GenericHashTraits<WTF::AtomicString>
+{
+    static const bool emptyValueIsZero = true;
+    static void constructDeletedValue( WTF::AtomicString &slot )
+    {
+        new ( &slot ) WTF::AtomicString( HashTableDeletedValue );
+    }
+    static bool isDeletedValue( const WTF::AtomicString &slot )
+    {
+        return slot.isHashTableDeletedValue();
+    }
+};
 
 }
 

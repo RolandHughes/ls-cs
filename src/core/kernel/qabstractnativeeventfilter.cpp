@@ -30,11 +30,12 @@ QAbstractNativeEventFilter::QAbstractNativeEventFilter()
 
 QAbstractNativeEventFilter::~QAbstractNativeEventFilter()
 {
-   QAbstractEventDispatcher *eventDispatcher = QAbstractEventDispatcher::instance();
+    QAbstractEventDispatcher *eventDispatcher = QAbstractEventDispatcher::instance();
 
-   if (eventDispatcher) {
-      eventDispatcher->removeNativeEventFilter(this);
-   }
+    if ( eventDispatcher )
+    {
+        eventDispatcher->removeNativeEventFilter( this );
+    }
 }
 
 

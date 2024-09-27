@@ -29,40 +29,48 @@
 #include "config.h"
 #include "RegisterFile.h"
 
-namespace JSC {
+namespace JSC
+{
 
 RegisterFile::~RegisterFile()
 {
 #if HAVE(MMAP)
-    munmap(reinterpret_cast<char*>(m_buffer), ((m_max - m_start) + m_maxGlobals) * sizeof(Register));
+    munmap( reinterpret_cast<char *>( m_buffer ), ( ( m_max - m_start ) + m_maxGlobals ) * sizeof( Register ) );
 #elif HAVE(VIRTUALALLOC)
 #if OS(WINCE)
-    VirtualFree(m_buffer, DWORD(m_commitEnd) - DWORD(m_buffer), MEM_DECOMMIT);
+    VirtualFree( m_buffer, DWORD( m_commitEnd ) - DWORD( m_buffer ), MEM_DECOMMIT );
 #endif
-    VirtualFree(m_buffer, 0, MEM_RELEASE);
+    VirtualFree( m_buffer, 0, MEM_RELEASE );
 #elif OS(SYMBIAN)
     delete m_registerFileAllocator;
 #else
-    fastFree(m_buffer);
+    fastFree( m_buffer );
 #endif
 }
 
 void RegisterFile::releaseExcessCapacity()
 {
 #if OS(QNX)
-    size_t sizeForGlobals = roundUpAllocationSize(m_maxGlobals * sizeof(Register), commitSize);
-    Register *endOfGlobals = reinterpret_cast<Register*>(reinterpret_cast<char*>(m_buffer) + sizeForGlobals);
-    size_t decommitSize = (m_max - endOfGlobals) * sizeof(Register);
-    if (decommitSize > 0) {
-        if (mmap(endOfGlobals, decommitSize, PROT_NONE, MAP_FIXED|MAP_LAZY|MAP_PRIVATE|MAP_ANON, -1, 0) == MAP_FAILED)
-            fprintf(stderr, "Could not decommit register file memory: %d\n", errno);
+    size_t sizeForGlobals = roundUpAllocationSize( m_maxGlobals * sizeof( Register ), commitSize );
+    Register *endOfGlobals = reinterpret_cast<Register *>( reinterpret_cast<char *>( m_buffer ) + sizeForGlobals );
+    size_t decommitSize = ( m_max - endOfGlobals ) * sizeof( Register );
+
+    if ( decommitSize > 0 )
+    {
+        if ( mmap( endOfGlobals, decommitSize, PROT_NONE, MAP_FIXED|MAP_LAZY|MAP_PRIVATE|MAP_ANON, -1, 0 ) == MAP_FAILED )
+        {
+            fprintf( stderr, "Could not decommit register file memory: %d\n", errno );
+        }
     }
+
     m_commitEnd = endOfGlobals;
 
 #elif HAVE(MMAP) && HAVE(MADV_FREE) && !HAVE(VIRTUALALLOC)
-    while (madvise(m_start, (m_max - m_start) * sizeof(Register), MADV_FREE) == -1 && errno == EAGAIN) { }
+
+    while ( madvise( m_start, ( m_max - m_start ) * sizeof( Register ), MADV_FREE ) == -1 && errno == EAGAIN ) { }
+
 #elif HAVE(VIRTUALALLOC)
-    VirtualFree(m_start, (m_max - m_start) * sizeof(Register), MEM_DECOMMIT);
+    VirtualFree( m_start, ( m_max - m_start ) * sizeof( Register ), MEM_DECOMMIT );
     m_commitEnd = m_start;
 #endif
     m_maxUsed = m_start;

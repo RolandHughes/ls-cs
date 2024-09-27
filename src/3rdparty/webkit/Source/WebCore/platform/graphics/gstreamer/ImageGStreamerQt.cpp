@@ -26,40 +26,49 @@
 using namespace std;
 using namespace WebCore;
 
-PassRefPtr<ImageGStreamer> ImageGStreamer::createImage(GstBuffer* buffer)
+PassRefPtr<ImageGStreamer> ImageGStreamer::createImage( GstBuffer *buffer )
 {
     int width = 0, height = 0;
-    GstCaps* caps = gst_buffer_get_caps(buffer);
+    GstCaps *caps = gst_buffer_get_caps( buffer );
     GstVideoFormat format;
-    if (!gst_video_format_parse_caps(caps, &format, &width, &height)) {
-        gst_caps_unref(caps);
+
+    if ( !gst_video_format_parse_caps( caps, &format, &width, &height ) )
+    {
+        gst_caps_unref( caps );
         return 0;
     }
 
-    gst_caps_unref(caps);
+    gst_caps_unref( caps );
 
     QImage::Format imageFormat;
-    if (format == GST_VIDEO_FORMAT_RGB)
-        imageFormat = QImage::Format_RGB888;
-    else
-        imageFormat = QImage::Format_RGB32;
 
-    return adoptRef(new ImageGStreamer(buffer, IntSize(width, height), imageFormat));
+    if ( format == GST_VIDEO_FORMAT_RGB )
+    {
+        imageFormat = QImage::Format_RGB888;
+    }
+    else
+    {
+        imageFormat = QImage::Format_RGB32;
+    }
+
+    return adoptRef( new ImageGStreamer( buffer, IntSize( width, height ), imageFormat ) );
 }
 
-ImageGStreamer::ImageGStreamer(GstBuffer*& buffer, IntSize size, QImage::Format imageFormat)
-    : m_image(0)
+ImageGStreamer::ImageGStreamer( GstBuffer *&buffer, IntSize size, QImage::Format imageFormat )
+    : m_image( 0 )
 {
-    QPixmap* surface = new QPixmap;
-    QImage image(GST_BUFFER_DATA(buffer), size.width(), size.height(), imageFormat);
-    surface->convertFromImage(image);
-    m_image = BitmapImage::create(surface);
+    QPixmap *surface = new QPixmap;
+    QImage image( GST_BUFFER_DATA( buffer ), size.width(), size.height(), imageFormat );
+    surface->convertFromImage( image );
+    m_image = BitmapImage::create( surface );
 }
 
 ImageGStreamer::~ImageGStreamer()
 {
-    if (m_image)
+    if ( m_image )
+    {
         m_image.clear();
+    }
 
     m_image = 0;
 }

@@ -41,19 +41,20 @@
 #include <CoreFoundation/CoreFoundation.h>
 #endif
 
-namespace WTF {
-
-static UCollator* cachedCollator;
-static Mutex& cachedCollatorMutex()
+namespace WTF
 {
-    AtomicallyInitializedStatic(Mutex&, mutex = *new Mutex);
+
+static UCollator *cachedCollator;
+static Mutex &cachedCollatorMutex()
+{
+    AtomicallyInitializedStatic( Mutex &, mutex = *new Mutex );
     return mutex;
 }
 
-Collator::Collator(const char* locale)
-    : m_collator(0)
-    , m_locale(locale ? strdup(locale) : 0)
-    , m_lowerFirst(false)
+Collator::Collator( const char *locale )
+    : m_collator( 0 )
+    , m_locale( locale ? strdup( locale ) : 0 )
+    , m_lowerFirst( false )
 {
 }
 
@@ -62,59 +63,70 @@ PassOwnPtr<Collator> Collator::userDefault()
 #if OS(DARWIN) && USE(CF)
     // Mac OS X doesn't set UNIX locale to match user-selected one, so ICU default doesn't work.
 #if !defined(BUILDING_ON_LEOPARD) && !OS(IOS)
-    RetainPtr<CFLocaleRef> currentLocale(AdoptCF, CFLocaleCopyCurrent());
-    CFStringRef collationOrder = (CFStringRef)CFLocaleGetValue(currentLocale.get(), kCFLocaleCollatorIdentifier);
+    RetainPtr<CFLocaleRef> currentLocale( AdoptCF, CFLocaleCopyCurrent() );
+    CFStringRef collationOrder = ( CFStringRef )CFLocaleGetValue( currentLocale.get(), kCFLocaleCollatorIdentifier );
 #else
-    RetainPtr<CFStringRef> collationOrderRetainer(AdoptCF, (CFStringRef)CFPreferencesCopyValue(CFSTR("AppleCollationOrder"), kCFPreferencesAnyApplication, kCFPreferencesCurrentUser, kCFPreferencesAnyHost));
+    RetainPtr<CFStringRef> collationOrderRetainer( AdoptCF, ( CFStringRef )CFPreferencesCopyValue( CFSTR( "AppleCollationOrder" ),
+            kCFPreferencesAnyApplication, kCFPreferencesCurrentUser, kCFPreferencesAnyHost ) );
     CFStringRef collationOrder = collationOrderRetainer.get();
 #endif
     char buf[256];
-    if (!collationOrder)
-        return adoptPtr(new Collator(""));
-    CFStringGetCString(collationOrder, buf, sizeof(buf), kCFStringEncodingASCII);
-    return adoptPtr(new Collator(buf));
+
+    if ( !collationOrder )
+    {
+        return adoptPtr( new Collator( "" ) );
+    }
+
+    CFStringGetCString( collationOrder, buf, sizeof( buf ), kCFStringEncodingASCII );
+    return adoptPtr( new Collator( buf ) );
 #else
-    return adoptPtr(new Collator(0));
+    return adoptPtr( new Collator( 0 ) );
 #endif
 }
 
 Collator::~Collator()
 {
     releaseCollator();
-    free(m_locale);
+    free( m_locale );
 }
 
-void Collator::setOrderLowerFirst(bool lowerFirst)
+void Collator::setOrderLowerFirst( bool lowerFirst )
 {
     m_lowerFirst = lowerFirst;
 }
 
-Collator::Result Collator::collate(const UChar* lhs, size_t lhsLength, const UChar* rhs, size_t rhsLength) const
+Collator::Result Collator::collate( const UChar *lhs, size_t lhsLength, const UChar *rhs, size_t rhsLength ) const
 {
-    if (!m_collator)
+    if ( !m_collator )
+    {
         createCollator();
+    }
 
-    return static_cast<Result>(ucol_strcoll(m_collator, lhs, lhsLength, rhs, rhsLength));
+    return static_cast<Result>( ucol_strcoll( m_collator, lhs, lhsLength, rhs, rhsLength ) );
 }
 
 void Collator::createCollator() const
 {
-    ASSERT(!m_collator);
+    ASSERT( !m_collator );
     UErrorCode status = U_ZERO_ERROR;
 
     {
-        Locker<Mutex> lock(cachedCollatorMutex());
-        if (cachedCollator) {
-            const char* cachedCollatorLocale = ucol_getLocaleByType(cachedCollator, ULOC_REQUESTED_LOCALE, &status);
-            ASSERT(U_SUCCESS(status));
-            ASSERT(cachedCollatorLocale);
+        Locker<Mutex> lock( cachedCollatorMutex() );
 
-            UColAttributeValue cachedCollatorLowerFirst = ucol_getAttribute(cachedCollator, UCOL_CASE_FIRST, &status);
-            ASSERT(U_SUCCESS(status));
+        if ( cachedCollator )
+        {
+            const char *cachedCollatorLocale = ucol_getLocaleByType( cachedCollator, ULOC_REQUESTED_LOCALE, &status );
+            ASSERT( U_SUCCESS( status ) );
+            ASSERT( cachedCollatorLocale );
+
+            UColAttributeValue cachedCollatorLowerFirst = ucol_getAttribute( cachedCollator, UCOL_CASE_FIRST, &status );
+            ASSERT( U_SUCCESS( status ) );
 
             // FIXME: default locale is never matched, because ucol_getLocaleByType returns the actual one used, not 0.
-            if (m_locale && 0 == strcmp(cachedCollatorLocale, m_locale)
-                && ((UCOL_LOWER_FIRST == cachedCollatorLowerFirst && m_lowerFirst) || (UCOL_UPPER_FIRST == cachedCollatorLowerFirst && !m_lowerFirst))) {
+            if ( m_locale && 0 == strcmp( cachedCollatorLocale, m_locale )
+                    && ( ( UCOL_LOWER_FIRST == cachedCollatorLowerFirst && m_lowerFirst ) || ( UCOL_UPPER_FIRST == cachedCollatorLowerFirst
+                            && !m_lowerFirst ) ) )
+            {
                 m_collator = cachedCollator;
                 cachedCollator = 0;
                 return;
@@ -122,23 +134,30 @@ void Collator::createCollator() const
         }
     }
 
-    m_collator = ucol_open(m_locale, &status);
-    if (U_FAILURE(status)) {
-        status = U_ZERO_ERROR;
-        m_collator = ucol_open("", &status); // Fallback to Unicode Collation Algorithm.
-    }
-    ASSERT(U_SUCCESS(status));
+    m_collator = ucol_open( m_locale, &status );
 
-    ucol_setAttribute(m_collator, UCOL_CASE_FIRST, m_lowerFirst ? UCOL_LOWER_FIRST : UCOL_UPPER_FIRST, &status);
-    ASSERT(U_SUCCESS(status));
+    if ( U_FAILURE( status ) )
+    {
+        status = U_ZERO_ERROR;
+        m_collator = ucol_open( "", &status ); // Fallback to Unicode Collation Algorithm.
+    }
+
+    ASSERT( U_SUCCESS( status ) );
+
+    ucol_setAttribute( m_collator, UCOL_CASE_FIRST, m_lowerFirst ? UCOL_LOWER_FIRST : UCOL_UPPER_FIRST, &status );
+    ASSERT( U_SUCCESS( status ) );
 }
 
 void Collator::releaseCollator()
 {
     {
-        Locker<Mutex> lock(cachedCollatorMutex());
-        if (cachedCollator)
-            ucol_close(cachedCollator);
+        Locker<Mutex> lock( cachedCollatorMutex() );
+
+        if ( cachedCollator )
+        {
+            ucol_close( cachedCollator );
+        }
+
         cachedCollator = m_collator;
         m_collator  = 0;
     }

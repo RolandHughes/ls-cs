@@ -27,82 +27,107 @@
 #include "SVGPathElement.h"
 #include "SVGPathSegWithContext.h"
 
-namespace WebCore {
-
-void SVGPathSegListPropertyTearOff::clear(ExceptionCode& ec)
+namespace WebCore
 {
-    SVGPathSegList& values = m_animatedProperty->values();
-    if (values.isEmpty())
+
+void SVGPathSegListPropertyTearOff::clear( ExceptionCode &ec )
+{
+    SVGPathSegList &values = m_animatedProperty->values();
+
+    if ( values.isEmpty() )
+    {
         return;
+    }
 
     unsigned size = values.size();
-    for (unsigned i = 0; i < size; ++i) {
-        ListItemType item = values.at(i);
-        static_cast<SVGPathSegWithContext*>(item.get())->setContextAndRole(0, PathSegUndefinedRole);
+
+    for ( unsigned i = 0; i < size; ++i )
+    {
+        ListItemType item = values.at( i );
+        static_cast<SVGPathSegWithContext *>( item.get() )->setContextAndRole( 0, PathSegUndefinedRole );
     }
 
-    SVGPathSegListPropertyTearOff::Base::clearValues(values, ec);
+    SVGPathSegListPropertyTearOff::Base::clearValues( values, ec );
 }
 
-SVGPathSegListPropertyTearOff::PassListItemType SVGPathSegListPropertyTearOff::getItem(unsigned index, ExceptionCode& ec)
+SVGPathSegListPropertyTearOff::PassListItemType SVGPathSegListPropertyTearOff::getItem( unsigned index, ExceptionCode &ec )
 {
-    SVGPathSegList& values = m_animatedProperty->values();
-    ListItemType returnedItem = Base::getItemValues(values, index, ec);
-    if (returnedItem) {
-        ASSERT(static_cast<SVGPathSegWithContext*>(returnedItem.get())->contextElement() == contextElement());
-        ASSERT(static_cast<SVGPathSegWithContext*>(returnedItem.get())->role() == m_pathSegRole);
+    SVGPathSegList &values = m_animatedProperty->values();
+    ListItemType returnedItem = Base::getItemValues( values, index, ec );
+
+    if ( returnedItem )
+    {
+        ASSERT( static_cast<SVGPathSegWithContext *>( returnedItem.get() )->contextElement() == contextElement() );
+        ASSERT( static_cast<SVGPathSegWithContext *>( returnedItem.get() )->role() == m_pathSegRole );
     }
+
     return returnedItem.release();
 }
 
-SVGPathSegListPropertyTearOff::PassListItemType SVGPathSegListPropertyTearOff::removeItem(unsigned index, ExceptionCode& ec)
+SVGPathSegListPropertyTearOff::PassListItemType SVGPathSegListPropertyTearOff::removeItem( unsigned index, ExceptionCode &ec )
 {
-    SVGPathSegList& values = m_animatedProperty->values();
-    SVGPathSegListPropertyTearOff::ListItemType removedItem = SVGPathSegListPropertyTearOff::Base::removeItemValues(values, index, ec);
-    if (removedItem)
-        static_cast<SVGPathSegWithContext*>(removedItem.get())->setContextAndRole(0, PathSegUndefinedRole);
+    SVGPathSegList &values = m_animatedProperty->values();
+    SVGPathSegListPropertyTearOff::ListItemType removedItem = SVGPathSegListPropertyTearOff::Base::removeItemValues( values, index,
+            ec );
+
+    if ( removedItem )
+    {
+        static_cast<SVGPathSegWithContext *>( removedItem.get() )->setContextAndRole( 0, PathSegUndefinedRole );
+    }
+
     return removedItem.release();
 }
 
-SVGPathElement* SVGPathSegListPropertyTearOff::contextElement() const
+SVGPathElement *SVGPathSegListPropertyTearOff::contextElement() const
 {
-    SVGElement* contextElement = m_animatedProperty->contextElement();
-    ASSERT(contextElement);
-    ASSERT(contextElement->hasTagName(SVGNames::pathTag));
-    return static_cast<SVGPathElement*>(contextElement);
+    SVGElement *contextElement = m_animatedProperty->contextElement();
+    ASSERT( contextElement );
+    ASSERT( contextElement->hasTagName( SVGNames::pathTag ) );
+    return static_cast<SVGPathElement *>( contextElement );
 }
 
-void SVGPathSegListPropertyTearOff::processIncomingListItemValue(const ListItemType& newItem, unsigned* indexToModify)
+void SVGPathSegListPropertyTearOff::processIncomingListItemValue( const ListItemType &newItem, unsigned *indexToModify )
 {
-    SVGPathSegWithContext* newItemWithContext = static_cast<SVGPathSegWithContext*>(newItem.get());
-    SVGAnimatedProperty* animatedPropertyOfItem = newItemWithContext->animatedProperty();
+    SVGPathSegWithContext *newItemWithContext = static_cast<SVGPathSegWithContext *>( newItem.get() );
+    SVGAnimatedProperty *animatedPropertyOfItem = newItemWithContext->animatedProperty();
 
     // Alter the role, after calling animatedProperty(), as that may influence the returned animated property.
-    newItemWithContext->setContextAndRole(contextElement(), m_pathSegRole);
+    newItemWithContext->setContextAndRole( contextElement(), m_pathSegRole );
 
-    if (!animatedPropertyOfItem)
+    if ( !animatedPropertyOfItem )
+    {
         return;
+    }
 
     // newItem belongs to a SVGPathElement, but its associated SVGAnimatedProperty is not an animated list tear off.
     // (for example: "pathElement.pathSegList.appendItem(pathElement.createSVGPathSegClosepath())")
-    if (!animatedPropertyOfItem->isAnimatedListTearOff())
+    if ( !animatedPropertyOfItem->isAnimatedListTearOff() )
+    {
         return;
+    }
 
     // Spec: If newItem is already in a list, it is removed from its previous list before it is inserted into this list.
     // 'newItem' is already living in another list. If it's not our list, synchronize the other lists wrappers after the removal.
     bool livesInOtherList = animatedPropertyOfItem != m_animatedProperty;
-    int removedIndex = static_cast<SVGAnimatedPathSegListPropertyTearOff*>(animatedPropertyOfItem)->removeItemFromList(newItem.get(), livesInOtherList);
-    ASSERT(removedIndex != -1);
+    int removedIndex = static_cast<SVGAnimatedPathSegListPropertyTearOff *>( animatedPropertyOfItem )->removeItemFromList(
+                           newItem.get(), livesInOtherList );
+    ASSERT( removedIndex != -1 );
 
-    if (!indexToModify)
+    if ( !indexToModify )
+    {
         return;
+    }
 
     // If the item lived in our list, adjust the insertion index.
-    if (!livesInOtherList) {
-        unsigned& index = *indexToModify;
+    if ( !livesInOtherList )
+    {
+        unsigned &index = *indexToModify;
+
         // Spec: If the item is already in this list, note that the index of the item to (replace|insert before) is before the removal of the item.
-        if (static_cast<unsigned>(removedIndex) < index)
+        if ( static_cast<unsigned>( removedIndex ) < index )
+        {
             --index;
+        }
     }
 }
 

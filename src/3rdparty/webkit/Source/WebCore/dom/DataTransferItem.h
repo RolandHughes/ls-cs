@@ -38,17 +38,20 @@
 #include <wtf/Forward.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Blob;
 class StringCallback;
 class ScriptExecutionContext;
 
-class DataTransferItem : public RefCounted<DataTransferItem> {
+class DataTransferItem : public RefCounted<DataTransferItem>
+{
 public:
     ~DataTransferItem() {}
 
-    static PassRefPtr<DataTransferItem> create(PassRefPtr<Clipboard> owner, ScriptExecutionContext*, const String& data, const String& type);
+    static PassRefPtr<DataTransferItem> create( PassRefPtr<Clipboard> owner, ScriptExecutionContext *, const String &data,
+            const String &type );
 
     static const char kindString[];
     static const char kindFile[];
@@ -56,12 +59,12 @@ public:
     String kind() const;
     String type() const;
 
-    virtual void getAsString(PassRefPtr<StringCallback>) = 0;
+    virtual void getAsString( PassRefPtr<StringCallback> ) = 0;
     virtual PassRefPtr<Blob> getAsFile() = 0;
 
 protected:
-    DataTransferItem(RefPtr<Clipboard> owner, const String& kind, const String& type);
-    Clipboard* owner();
+    DataTransferItem( RefPtr<Clipboard> owner, const String &kind, const String &type );
+    Clipboard *owner();
 
 private:
     const RefPtr<Clipboard> m_owner;

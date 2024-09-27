@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -33,47 +33,63 @@
 #include "MediaList.h"
 #include "MediaQueryEvaluator.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-StyleMedia::StyleMedia(Frame* frame)
-    : m_frame(frame)
+StyleMedia::StyleMedia( Frame *frame )
+    : m_frame( frame )
 {
 }
 
 String StyleMedia::type() const
 {
-    FrameView* view = m_frame ? m_frame->view() : 0;
-    if (view)
+    FrameView *view = m_frame ? m_frame->view() : 0;
+
+    if ( view )
+    {
         return view->mediaType();
+    }
 
     return String();
 }
 
-bool StyleMedia::matchMedium(const String& query) const
+bool StyleMedia::matchMedium( const String &query ) const
 {
-    if (!m_frame)
+    if ( !m_frame )
+    {
         return false;
+    }
 
-    Document* document = m_frame->document();
-    ASSERT(document);
-    Element* documentElement = document->documentElement();
-    if (!documentElement)
+    Document *document = m_frame->document();
+    ASSERT( document );
+    Element *documentElement = document->documentElement();
+
+    if ( !documentElement )
+    {
         return false;
+    }
 
-    CSSStyleSelector* styleSelector = document->styleSelector();
-    if (!styleSelector)
+    CSSStyleSelector *styleSelector = document->styleSelector();
+
+    if ( !styleSelector )
+    {
         return false;
+    }
 
-    RefPtr<RenderStyle> rootStyle = styleSelector->styleForElement(documentElement, 0 /*defaultParent*/, false /*allowSharing*/, true /*resolveForRootDefault*/);
+    RefPtr<RenderStyle> rootStyle = styleSelector->styleForElement( documentElement, 0 /*defaultParent*/, false /*allowSharing*/,
+                                    true /*resolveForRootDefault*/ );
     RefPtr<MediaList> media = MediaList::create();
 
     ExceptionCode ec = 0;
-    media->setMediaText(query, ec);
-    if (ec)
-        return false;
+    media->setMediaText( query, ec );
 
-    MediaQueryEvaluator screenEval(type(), m_frame, rootStyle.get());
-    return screenEval.eval(media.get());
+    if ( ec )
+    {
+        return false;
+    }
+
+    MediaQueryEvaluator screenEval( type(), m_frame, rootStyle.get() );
+    return screenEval.eval( media.get() );
 }
 
 } // namespace WebCore

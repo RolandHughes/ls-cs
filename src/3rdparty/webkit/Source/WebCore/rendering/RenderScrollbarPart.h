@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef RenderScrollbarPart_h
@@ -29,28 +29,36 @@
 #include "RenderBlock.h"
 #include "ScrollTypes.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class RenderScrollbar;
 
-class RenderScrollbarPart : public RenderBlock {
+class RenderScrollbarPart : public RenderBlock
+{
 public:
-    RenderScrollbarPart(Node*, RenderScrollbar* = 0, ScrollbarPart = NoPart);
+    RenderScrollbarPart( Node *, RenderScrollbar * = 0, ScrollbarPart = NoPart );
     virtual ~RenderScrollbarPart();
 
-    virtual const char* renderName() const { return "RenderScrollbarPart"; }
-    
-    virtual bool requiresLayer() const { return false; }
+    virtual const char *renderName() const
+    {
+        return "RenderScrollbarPart";
+    }
+
+    virtual bool requiresLayer() const
+    {
+        return false;
+    }
 
     virtual void layout();
     virtual void computePreferredLogicalWidths();
-    
-    void paintIntoRect(GraphicsContext*, int tx, int ty, const IntRect&);
-    
+
+    void paintIntoRect( GraphicsContext *, int tx, int ty, const IntRect & );
+
 protected:
-    virtual void styleWillChange(StyleDifference diff, const RenderStyle* newStyle);
-    virtual void styleDidChange(StyleDifference, const RenderStyle* oldStyle);
-    virtual void imageChanged(WrappedImagePtr, const IntRect* = 0);
+    virtual void styleWillChange( StyleDifference diff, const RenderStyle *newStyle );
+    virtual void styleDidChange( StyleDifference, const RenderStyle *oldStyle );
+    virtual void imageChanged( WrappedImagePtr, const IntRect * = 0 );
 
 private:
     void layoutHorizontalPart();
@@ -58,8 +66,8 @@ private:
 
     void computeScrollbarWidth();
     void computeScrollbarHeight();
-    
-    RenderScrollbar* m_scrollbar;
+
+    RenderScrollbar *m_scrollbar;
     ScrollbarPart m_part;
 };
 

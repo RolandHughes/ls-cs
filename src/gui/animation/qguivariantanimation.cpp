@@ -33,27 +33,27 @@
 #include <qvector4d.h>
 
 template <>
-inline QColor cs_genericFormula(const QColor &from, const QColor &to, double progress)
+inline QColor cs_genericFormula( const QColor &from, const QColor &to, double progress )
 {
-   return QColor( qBound(0, cs_genericFormula(from.red(),   to.red(),   progress), 255),
-                  qBound(0, cs_genericFormula(from.green(), to.green(), progress), 255),
-                  qBound(0, cs_genericFormula(from.blue(),  to.blue(),  progress), 255),
-                  qBound(0, cs_genericFormula(from.alpha(), to.alpha(), progress), 255));
+    return QColor( qBound( 0, cs_genericFormula( from.red(),   to.red(),   progress ), 255 ),
+                   qBound( 0, cs_genericFormula( from.green(), to.green(), progress ), 255 ),
+                   qBound( 0, cs_genericFormula( from.blue(),  to.blue(),  progress ), 255 ),
+                   qBound( 0, cs_genericFormula( from.alpha(), to.alpha(), progress ), 255 ) );
 }
 
 template <>
-inline QQuaternion cs_genericFormula(const QQuaternion &from, const QQuaternion &to, double progress)
+inline QQuaternion cs_genericFormula( const QQuaternion &from, const QQuaternion &to, double progress )
 {
-   return QQuaternion::slerp(from, to, progress);
+    return QQuaternion::slerp( from, to, progress );
 }
 
 void cs_addGuiFormulas()
 {
-   QVariantAnimation::cs_addCustomType<QColor>(cs_variantFormula<QColor>);
-   QVariantAnimation::cs_addCustomType<QVector2D>(cs_variantFormula<QVector2D>);
-   QVariantAnimation::cs_addCustomType<QVector3D>(cs_variantFormula<QVector3D>);
-   QVariantAnimation::cs_addCustomType<QVector4D>(cs_variantFormula<QVector4D>);
-   QVariantAnimation::cs_addCustomType<QQuaternion>(cs_variantFormula<QQuaternion>);
+    QVariantAnimation::cs_addCustomType<QColor>( cs_variantFormula<QColor> );
+    QVariantAnimation::cs_addCustomType<QVector2D>( cs_variantFormula<QVector2D> );
+    QVariantAnimation::cs_addCustomType<QVector3D>( cs_variantFormula<QVector3D> );
+    QVariantAnimation::cs_addCustomType<QVector4D>( cs_variantFormula<QVector4D> );
+    QVariantAnimation::cs_addCustomType<QQuaternion>( cs_variantFormula<QQuaternion> );
 }
 
 #endif

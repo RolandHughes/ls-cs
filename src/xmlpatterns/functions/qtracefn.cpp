@@ -29,69 +29,79 @@
 
 using namespace QPatternist;
 
-namespace QPatternist {
+namespace QPatternist
+{
 class TraceCallback : public QSharedData
 {
- public:
-   typedef QExplicitlySharedDataPointer<TraceCallback> Ptr;
+public:
+    typedef QExplicitlySharedDataPointer<TraceCallback> Ptr;
 
-   inline TraceCallback(const QString &msg) : m_position(0),
-      m_msg(msg) {
-   }
+    inline TraceCallback( const QString &msg ) : m_position( 0 ),
+        m_msg( msg )
+    {
+    }
 
-   /**
-    * Performs the actual tracing.
-    */
-   Item mapToItem(const Item &item,
-                  const DynamicContext::Ptr &context) {
-      QTextStream out(stderr);
-      ++m_position;
-      if (m_position == 1) {
-         if (item) {
-            out << csPrintable(m_msg)
-                << " : "
-                << csPrintable(item.stringValue());
-         } else {
-            out << csPrintable(m_msg)
-                << " : ("
-                << csPrintable(formatType(context->namePool(), CommonSequenceTypes::Empty))
-                << ")\n";
-            return Item();
-         }
-      } else {
-         out << csPrintable(item.stringValue())
-             << '['
-             << m_position
-             << "]\n";
-      }
+    /**
+     * Performs the actual tracing.
+     */
+    Item mapToItem( const Item &item,
+                    const DynamicContext::Ptr &context )
+    {
+        QTextStream out( stderr );
+        ++m_position;
 
-      return item;
-   }
+        if ( m_position == 1 )
+        {
+            if ( item )
+            {
+                out << csPrintable( m_msg )
+                    << " : "
+                    << csPrintable( item.stringValue() );
+            }
+            else
+            {
+                out << csPrintable( m_msg )
+                    << " : ("
+                    << csPrintable( formatType( context->namePool(), CommonSequenceTypes::Empty ) )
+                    << ")\n";
+                return Item();
+            }
+        }
+        else
+        {
+            out << csPrintable( item.stringValue() )
+                << '['
+                << m_position
+                << "]\n";
+        }
 
- private:
-   xsInteger m_position;
-   const QString m_msg;
+        return item;
+    }
+
+private:
+    xsInteger m_position;
+    const QString m_msg;
 };
 }
 
-Item::Iterator::Ptr TraceFN::evaluateSequence(const DynamicContext::Ptr &context) const
+Item::Iterator::Ptr TraceFN::evaluateSequence( const DynamicContext::Ptr &context ) const
 {
-   const QString msg(m_operands.last()->evaluateSingleton(context).stringValue());
+    const QString msg( m_operands.last()->evaluateSingleton( context ).stringValue() );
 
-   return makeItemMappingIterator<Item>(TraceCallback::Ptr(new TraceCallback(msg)),
-                                        m_operands.first()->evaluateSequence(context),
-                                        context);
+    return makeItemMappingIterator<Item>( TraceCallback::Ptr( new TraceCallback( msg ) ),
+                                          m_operands.first()->evaluateSequence( context ),
+                                          context );
 }
 
-Item TraceFN::evaluateSingleton(const DynamicContext::Ptr &context) const
+Item TraceFN::evaluateSingleton( const DynamicContext::Ptr &context ) const
 {
-   const QString msg(m_operands.last()->evaluateSingleton(context).stringValue());
-   const Item item(m_operands.first()->evaluateSingleton(context));
+    const QString msg( m_operands.last()->evaluateSingleton( context ).stringValue() );
+    const Item item( m_operands.first()->evaluateSingleton( context ) );
 
-   return TraceCallback::Ptr(new TraceCallback(msg))->mapToItem(item, context);
+    return TraceCallback::Ptr( new TraceCallback( msg ) )->mapToItem( item, context );
 }
 
 SequenceType::Ptr TraceFN::staticType() const
 {
-   return m_operands.first()->staticType();
+    return m_operands.first()->staticType();
 }

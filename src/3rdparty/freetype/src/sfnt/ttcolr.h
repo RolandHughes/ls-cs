@@ -28,46 +28,46 @@
 FT_BEGIN_HEADER
 
 
-  FT_LOCAL( FT_Error )
-  tt_face_load_colr( TT_Face    face,
-                     FT_Stream  stream );
+FT_LOCAL( FT_Error )
+tt_face_load_colr( TT_Face    face,
+                   FT_Stream  stream );
 
-  FT_LOCAL( void )
-  tt_face_free_colr( TT_Face  face );
+FT_LOCAL( void )
+tt_face_free_colr( TT_Face  face );
 
-  FT_LOCAL( FT_Bool )
-  tt_face_get_colr_layer( TT_Face            face,
-                          FT_UInt            base_glyph,
-                          FT_UInt           *aglyph_index,
-                          FT_UInt           *acolor_index,
-                          FT_LayerIterator*  iterator );
+FT_LOCAL( FT_Bool )
+tt_face_get_colr_layer( TT_Face            face,
+                        FT_UInt            base_glyph,
+                        FT_UInt           *aglyph_index,
+                        FT_UInt           *acolor_index,
+                        FT_LayerIterator  *iterator );
 
-  FT_LOCAL( FT_Bool )
-  tt_face_get_colr_glyph_paint( TT_Face                  face,
-                                FT_UInt                  base_glyph,
-                                FT_Color_Root_Transform  root_transform,
-                                FT_OpaquePaint*          paint );
+FT_LOCAL( FT_Bool )
+tt_face_get_colr_glyph_paint( TT_Face                  face,
+                              FT_UInt                  base_glyph,
+                              FT_Color_Root_Transform  root_transform,
+                              FT_OpaquePaint          *paint );
 
-  FT_LOCAL( FT_Bool )
-  tt_face_get_paint_layers( TT_Face            face,
-                            FT_LayerIterator*  iterator,
-                            FT_OpaquePaint*    paint );
+FT_LOCAL( FT_Bool )
+tt_face_get_paint_layers( TT_Face            face,
+                          FT_LayerIterator  *iterator,
+                          FT_OpaquePaint    *paint );
 
-  FT_LOCAL( FT_Bool )
-  tt_face_get_colorline_stops( TT_Face                face,
-                               FT_ColorStop*          color_stop,
-                               FT_ColorStopIterator*  iterator );
+FT_LOCAL( FT_Bool )
+tt_face_get_colorline_stops( TT_Face                face,
+                             FT_ColorStop          *color_stop,
+                             FT_ColorStopIterator  *iterator );
 
-  FT_LOCAL( FT_Bool )
-  tt_face_get_paint( TT_Face         face,
-                     FT_OpaquePaint  opaque_paint,
-                     FT_COLR_Paint*  paint );
+FT_LOCAL( FT_Bool )
+tt_face_get_paint( TT_Face         face,
+                   FT_OpaquePaint  opaque_paint,
+                   FT_COLR_Paint  *paint );
 
-  FT_LOCAL( FT_Error )
-  tt_face_colr_blend_layer( TT_Face       face,
-                            FT_UInt       color_index,
-                            FT_GlyphSlot  dstSlot,
-                            FT_GlyphSlot  srcSlot );
+FT_LOCAL( FT_Error )
+tt_face_colr_blend_layer( TT_Face       face,
+                          FT_UInt       color_index,
+                          FT_GlyphSlot  dstSlot,
+                          FT_GlyphSlot  srcSlot );
 
 
 FT_END_HEADER

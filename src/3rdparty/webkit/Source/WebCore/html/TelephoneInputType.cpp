@@ -33,14 +33,15 @@
 
 #include <wtf/PassOwnPtr.h>
 
-namespace WebCore {
-
-PassOwnPtr<InputType> TelephoneInputType::create(HTMLInputElement* element)
+namespace WebCore
 {
-    return adoptPtr(new TelephoneInputType(element));
+
+PassOwnPtr<InputType> TelephoneInputType::create( HTMLInputElement *element )
+{
+    return adoptPtr( new TelephoneInputType( element ) );
 }
 
-const AtomicString& TelephoneInputType::formControlType() const
+const AtomicString &TelephoneInputType::formControlType() const
 {
     return InputTypeNames::telephone();
 }

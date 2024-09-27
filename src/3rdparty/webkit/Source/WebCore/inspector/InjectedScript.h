@@ -38,7 +38,8 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class InspectorArray;
 class InspectorObject;
@@ -48,40 +49,50 @@ class ScriptFunctionCall;
 
 typedef String ErrorString;
 
-class InjectedScript {
+class InjectedScript
+{
 public:
     InjectedScript();
     ~InjectedScript() { }
 
-    bool hasNoValue() const { return m_injectedScriptObject.hasNoValue(); }
+    bool hasNoValue() const
+    {
+        return m_injectedScriptObject.hasNoValue();
+    }
 
-    void evaluate(ErrorString*, const String& expression, const String& objectGroup, bool includeCommandLineAPI, RefPtr<InspectorObject>* result, bool* wasThrown);
-    void evaluateOn(ErrorString*, const String& objectId, const String& expression, RefPtr<InspectorObject>* result, bool* wasThrown);
-    void evaluateOnCallFrame(ErrorString*, const ScriptValue& callFrames, const String& callFrameId, const String& expression, const String& objectGroup, bool includeCommandLineAPI, RefPtr<InspectorObject>* result, bool* wasThrown);
-    void getProperties(ErrorString*, const String& objectId, bool ignoreHasOwnProperty, RefPtr<InspectorArray>* result);
-    Node* nodeForObjectId(const String& objectId);
-    void setPropertyValue(ErrorString*, const String& objectId, const String& propertyName, const String& expression);
-    void releaseObject(const String& objectId);
+    void evaluate( ErrorString *, const String &expression, const String &objectGroup, bool includeCommandLineAPI,
+                   RefPtr<InspectorObject> *result, bool *wasThrown );
+    void evaluateOn( ErrorString *, const String &objectId, const String &expression, RefPtr<InspectorObject> *result,
+                     bool *wasThrown );
+    void evaluateOnCallFrame( ErrorString *, const ScriptValue &callFrames, const String &callFrameId, const String &expression,
+                              const String &objectGroup, bool includeCommandLineAPI, RefPtr<InspectorObject> *result, bool *wasThrown );
+    void getProperties( ErrorString *, const String &objectId, bool ignoreHasOwnProperty, RefPtr<InspectorArray> *result );
+    Node *nodeForObjectId( const String &objectId );
+    void setPropertyValue( ErrorString *, const String &objectId, const String &propertyName, const String &expression );
+    void releaseObject( const String &objectId );
 
 #if ENABLE(JAVASCRIPT_DEBUGGER)
-    PassRefPtr<InspectorArray> wrapCallFrames(const ScriptValue&);
+    PassRefPtr<InspectorArray> wrapCallFrames( const ScriptValue & );
 #endif
 
-    PassRefPtr<InspectorObject> wrapObject(ScriptValue, const String& groupName);
-    PassRefPtr<InspectorObject> wrapNode(Node*);
-    void inspectNode(Node*);
-    void releaseObjectGroup(const String&);
-    ScriptState* scriptState() const { return m_injectedScriptObject.scriptState(); }
+    PassRefPtr<InspectorObject> wrapObject( ScriptValue, const String &groupName );
+    PassRefPtr<InspectorObject> wrapNode( Node * );
+    void inspectNode( Node * );
+    void releaseObjectGroup( const String & );
+    ScriptState *scriptState() const
+    {
+        return m_injectedScriptObject.scriptState();
+    }
 
 private:
-    friend InjectedScript InjectedScriptManager::injectedScriptFor(ScriptState*);
-    typedef bool (*InspectedStateAccessCheck)(ScriptState*);
-    InjectedScript(ScriptObject, InspectedStateAccessCheck);
+    friend InjectedScript InjectedScriptManager::injectedScriptFor( ScriptState * );
+    typedef bool ( *InspectedStateAccessCheck )( ScriptState * );
+    InjectedScript( ScriptObject, InspectedStateAccessCheck );
 
     bool canAccessInspectedWindow();
-    void makeCall(ScriptFunctionCall&, RefPtr<InspectorValue>* result);
-    void makeEvalCall(ErrorString*, ScriptFunctionCall&, RefPtr<InspectorObject>* result, bool* wasThrown);
-    ScriptValue nodeAsScriptValue(Node*);
+    void makeCall( ScriptFunctionCall &, RefPtr<InspectorValue> *result );
+    void makeEvalCall( ErrorString *, ScriptFunctionCall &, RefPtr<InspectorObject> *result, bool *wasThrown );
+    ScriptValue nodeAsScriptValue( Node * );
 
     ScriptObject m_injectedScriptObject;
     InspectedStateAccessCheck m_inspectedStateAccessCheck;

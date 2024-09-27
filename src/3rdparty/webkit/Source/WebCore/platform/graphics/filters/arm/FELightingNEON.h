@@ -34,7 +34,8 @@
 #include "FELighting.h"
 #include <wtf/Alignment.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 // Otherwise: Distant Light.
 #define FLAG_POINT_LIGHT                 0x01
@@ -47,7 +48,8 @@ namespace WebCore {
 #define FLAG_SPECULAR_EXPONENT_IS_1      0x40
 
 // Must be aligned to 16 bytes.
-struct FELightingFloatArgumentsForNeon {
+struct FELightingFloatArgumentsForNeon
+{
     float surfaceScale;
     float minusSurfaceScaleDividedByFour;
     float diffuseConstant;
@@ -74,29 +76,31 @@ struct FELightingFloatArgumentsForNeon {
     float padding4;
 };
 
-struct FELightingPaintingDataForNeon {
-    unsigned char* pixels;
+struct FELightingPaintingDataForNeon
+{
+    unsigned char *pixels;
     int widthDecreasedByTwo;
     int heightDecreasedByTwo;
     // Combination of FLAG constants above.
     int flags;
     int specularExponent;
     int coneExponent;
-    FELightingFloatArgumentsForNeon* floatArguments;
-    short* paintingConstants;
+    FELightingFloatArgumentsForNeon *floatArguments;
+    short *paintingConstants;
 };
 
-short* feLightingConstantsForNeon();
+short *feLightingConstantsForNeon();
 
 extern "C" {
-void neonDrawLighting(FELightingPaintingDataForNeon*);
+    void neonDrawLighting( FELightingPaintingDataForNeon * );
 }
 
-inline void FELighting::platformApplyNeon(LightingData& data, LightSource::PaintingData& paintingData)
+inline void FELighting::platformApplyNeon( LightingData &data, LightSource::PaintingData &paintingData )
 {
-    WTF_ALIGNED(FELightingFloatArgumentsForNeon, floatArguments, 16);
+    WTF_ALIGNED( FELightingFloatArgumentsForNeon, floatArguments, 16 );
 
-    FELightingPaintingDataForNeon neonData = {
+    FELightingPaintingDataForNeon neonData =
+    {
         data.pixels->data(),
         data.widthDecreasedByOne - 1,
         data.heightDecreasedByOne - 1,
@@ -115,16 +119,19 @@ inline void FELighting::platformApplyNeon(LightingData& data, LightSource::Paint
     floatArguments.colorBlue = m_lightingColor.blue();
     floatArguments.padding4 = 0;
 
-    if (m_lightSource->type() == LS_POINT) {
+    if ( m_lightSource->type() == LS_POINT )
+    {
         neonData.flags |= FLAG_POINT_LIGHT;
-        PointLightSource* pointLightSource = static_cast<PointLightSource*>(m_lightSource.get());
+        PointLightSource *pointLightSource = static_cast<PointLightSource *>( m_lightSource.get() );
         floatArguments.lightX = pointLightSource->position().x();
         floatArguments.lightY = pointLightSource->position().y();
         floatArguments.lightZ = pointLightSource->position().z();
         floatArguments.padding2 = 0;
-    } else if (m_lightSource->type() == LS_SPOT) {
+    }
+    else if ( m_lightSource->type() == LS_SPOT )
+    {
         neonData.flags |= FLAG_SPOT_LIGHT;
-        SpotLightSource* spotLightSource = static_cast<SpotLightSource*>(m_lightSource.get());
+        SpotLightSource *spotLightSource = static_cast<SpotLightSource *>( m_lightSource.get() );
         floatArguments.lightX = spotLightSource->position().x();
         floatArguments.lightY = spotLightSource->position().y();
         floatArguments.lightZ = spotLightSource->position().z();
@@ -138,11 +145,16 @@ inline void FELighting::platformApplyNeon(LightingData& data, LightSource::Paint
         floatArguments.coneCutOffLimit = paintingData.coneCutOffLimit;
         floatArguments.coneFullLight = paintingData.coneFullLight;
         floatArguments.coneCutOffRange = paintingData.coneCutOffLimit - paintingData.coneFullLight;
-        neonData.coneExponent = getPowerCoefficients(spotLightSource->specularExponent());
-        if (spotLightSource->specularExponent() == 1)
+        neonData.coneExponent = getPowerCoefficients( spotLightSource->specularExponent() );
+
+        if ( spotLightSource->specularExponent() == 1 )
+        {
             neonData.flags |= FLAG_CONE_EXPONENT_IS_1;
-    } else {
-        ASSERT(m_lightSource->type() == LS_DISTANT);
+        }
+    }
+    else
+    {
+        ASSERT( m_lightSource->type() == LS_DISTANT );
         floatArguments.lightX = paintingData.lightVector.x();
         floatArguments.lightY = paintingData.lightVector.y();
         floatArguments.lightZ = paintingData.lightVector.z();
@@ -152,19 +164,29 @@ inline void FELighting::platformApplyNeon(LightingData& data, LightSource::Paint
     // Set lighting arguments.
     floatArguments.surfaceScale = data.surfaceScale;
     floatArguments.minusSurfaceScaleDividedByFour = -data.surfaceScale / 4;
-    if (m_lightingType == FELighting::DiffuseLighting)
+
+    if ( m_lightingType == FELighting::DiffuseLighting )
+    {
         floatArguments.diffuseConstant = m_diffuseConstant;
-    else {
+    }
+    else
+    {
         neonData.flags |= FLAG_SPECULAR_LIGHT;
         floatArguments.diffuseConstant = m_specularConstant;
-        neonData.specularExponent = getPowerCoefficients(m_specularExponent);
-        if (m_specularExponent == 1)
-            neonData.flags |= FLAG_SPECULAR_EXPONENT_IS_1;
-    }
-    if (floatArguments.diffuseConstant == 1)
-        neonData.flags |= FLAG_DIFFUSE_CONST_IS_1;
+        neonData.specularExponent = getPowerCoefficients( m_specularExponent );
 
-    neonDrawLighting(&neonData);
+        if ( m_specularExponent == 1 )
+        {
+            neonData.flags |= FLAG_SPECULAR_EXPONENT_IS_1;
+        }
+    }
+
+    if ( floatArguments.diffuseConstant == 1 )
+    {
+        neonData.flags |= FLAG_DIFFUSE_CONST_IS_1;
+    }
+
+    neonDrawLighting( &neonData );
 }
 
 } // namespace WebCore

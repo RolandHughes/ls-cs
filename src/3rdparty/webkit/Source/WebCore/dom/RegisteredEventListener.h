@@ -27,24 +27,26 @@
 #include "EventListener.h"
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class RegisteredEventListener {
-    public:
-        RegisteredEventListener(PassRefPtr<EventListener> listener, bool useCapture)
-            : listener(listener)
-            , useCapture(useCapture)
-        {
-        }
-
-        RefPtr<EventListener> listener;
-        bool useCapture;
-    };
-    
-    inline bool operator==(const RegisteredEventListener& a, const RegisteredEventListener& b)
+class RegisteredEventListener
+{
+public:
+    RegisteredEventListener( PassRefPtr<EventListener> listener, bool useCapture )
+        : listener( listener )
+        , useCapture( useCapture )
     {
-        return *a.listener == *b.listener && a.useCapture == b.useCapture;
     }
+
+    RefPtr<EventListener> listener;
+    bool useCapture;
+};
+
+inline bool operator==( const RegisteredEventListener &a, const RegisteredEventListener &b )
+{
+    return *a.listener == *b.listener && a.useCapture == b.useCapture;
+}
 
 } // namespace WebCore
 

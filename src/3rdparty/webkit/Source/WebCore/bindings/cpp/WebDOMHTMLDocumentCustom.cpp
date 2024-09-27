@@ -26,26 +26,34 @@
 #include <wtf/Forward.h>
 #include <wtf/unicode/CharacterNames.h>
 
-static inline void documentWrite(const WebDOMString& text, WebCore::HTMLDocument* document, bool addNewline)
+static inline void documentWrite( const WebDOMString &text, WebCore::HTMLDocument *document, bool addNewline )
 {
-    WebCore::SegmentedString segmentedString = WTF::String(text);
-    if (addNewline)
-        segmentedString.append(WebCore::SegmentedString(WTF::String(&WTF::Unicode::newlineCharacter)));
-    document->write(segmentedString);
+    WebCore::SegmentedString segmentedString = WTF::String( text );
+
+    if ( addNewline )
+    {
+        segmentedString.append( WebCore::SegmentedString( WTF::String( &WTF::Unicode::newlineCharacter ) ) );
+    }
+
+    document->write( segmentedString );
 }
 
-void WebDOMHTMLDocument::write(const WebDOMString& text)
+void WebDOMHTMLDocument::write( const WebDOMString &text )
 {
-    if (!impl())
+    if ( !impl() )
+    {
         return;
+    }
 
-    documentWrite(text, impl(), false);
+    documentWrite( text, impl(), false );
 }
 
-void WebDOMHTMLDocument::writeln(const WebDOMString& text)
+void WebDOMHTMLDocument::writeln( const WebDOMString &text )
 {
-    if (!impl())
+    if ( !impl() )
+    {
         return;
+    }
 
-    documentWrite(text, impl(), true);
+    documentWrite( text, impl(), true );
 }

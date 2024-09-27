@@ -33,31 +33,35 @@
 
 using namespace WebCore;
 
-namespace WebKit {
+namespace WebKit
+{
 
-WebPageProxy* ChunkedUpdateDrawingAreaProxy::page()
+WebPageProxy *ChunkedUpdateDrawingAreaProxy::page()
 {
     return m_webView->page();
 }
 
 void ChunkedUpdateDrawingAreaProxy::ensureBackingStore()
 {
-    if (m_backingStoreBitmap)
+    if ( m_backingStoreBitmap )
+    {
         return;
-
-    BitmapInfo bitmapInfo = BitmapInfo::createBottomUp(size());
-
-    void* pixels = 0;
-    m_backingStoreBitmap = adoptPtr(::CreateDIBSection(0, &bitmapInfo, DIB_RGB_COLORS, &pixels, 0, 0));
-
-    if (!m_backingStoreDC) {
-        // Create a DC for the backing store.
-        HDC screenDC = ::GetDC(0);
-        m_backingStoreDC = adoptPtr(::CreateCompatibleDC(screenDC));
-        ::ReleaseDC(0, screenDC);
     }
 
-    ::SelectObject(m_backingStoreDC.get(), m_backingStoreBitmap.get());
+    BitmapInfo bitmapInfo = BitmapInfo::createBottomUp( size() );
+
+    void *pixels = 0;
+    m_backingStoreBitmap = adoptPtr( ::CreateDIBSection( 0, &bitmapInfo, DIB_RGB_COLORS, &pixels, 0, 0 ) );
+
+    if ( !m_backingStoreDC )
+    {
+        // Create a DC for the backing store.
+        HDC screenDC = ::GetDC( 0 );
+        m_backingStoreDC = adoptPtr( ::CreateCompatibleDC( screenDC ) );
+        ::ReleaseDC( 0, screenDC );
+    }
+
+    ::SelectObject( m_backingStoreDC.get(), m_backingStoreBitmap.get() );
 }
 
 void ChunkedUpdateDrawingAreaProxy::invalidateBackingStore()
@@ -65,43 +69,47 @@ void ChunkedUpdateDrawingAreaProxy::invalidateBackingStore()
     m_backingStoreBitmap.clear();
 }
 
-bool ChunkedUpdateDrawingAreaProxy::platformPaint(const IntRect& rect, HDC hdc)
+bool ChunkedUpdateDrawingAreaProxy::platformPaint( const IntRect &rect, HDC hdc )
 {
-    if (!m_backingStoreBitmap)
+    if ( !m_backingStoreBitmap )
+    {
         return false;
+    }
 
     // BitBlt from the backing-store to the passed in hdc.
-    ::BitBlt(hdc, rect.x(), rect.y(), rect.width(), rect.height(), m_backingStoreDC.get(), rect.x(), rect.y(), SRCCOPY);
+    ::BitBlt( hdc, rect.x(), rect.y(), rect.width(), rect.height(), m_backingStoreDC.get(), rect.x(), rect.y(), SRCCOPY );
     return true;
 }
 
-void ChunkedUpdateDrawingAreaProxy::drawUpdateChunkIntoBackingStore(UpdateChunk* updateChunk)
+void ChunkedUpdateDrawingAreaProxy::drawUpdateChunkIntoBackingStore( UpdateChunk *updateChunk )
 {
     ensureBackingStore();
 
-    OwnPtr<HDC> updateChunkBitmapDC = adoptPtr(::CreateCompatibleDC(m_backingStoreDC.get()));
+    OwnPtr<HDC> updateChunkBitmapDC = adoptPtr( ::CreateCompatibleDC( m_backingStoreDC.get() ) );
 
     // Create a bitmap.
-    BitmapInfo bitmapInfo = BitmapInfo::createBottomUp(updateChunk->rect().size());
+    BitmapInfo bitmapInfo = BitmapInfo::createBottomUp( updateChunk->rect().size() );
 
     // Duplicate the update chunk handle.
     HANDLE updateChunkHandle;
-    BOOL result = ::DuplicateHandle(m_webView->page()->process()->processIdentifier(), updateChunk->memory(),
-                                    ::GetCurrentProcess(), &updateChunkHandle, STANDARD_RIGHTS_REQUIRED | FILE_MAP_READ | FILE_MAP_WRITE, false, DUPLICATE_CLOSE_SOURCE);
+    BOOL result = ::DuplicateHandle( m_webView->page()->process()->processIdentifier(), updateChunk->memory(),
+                                     ::GetCurrentProcess(), &updateChunkHandle, STANDARD_RIGHTS_REQUIRED | FILE_MAP_READ | FILE_MAP_WRITE, false,
+                                     DUPLICATE_CLOSE_SOURCE );
 
-    void* pixels = 0;
-    OwnPtr<HBITMAP> hBitmap = adoptPtr(::CreateDIBSection(0, &bitmapInfo, DIB_RGB_COLORS, &pixels, updateChunkHandle, 0));
-    ::SelectObject(updateChunkBitmapDC.get(), hBitmap.get());
+    void *pixels = 0;
+    OwnPtr<HBITMAP> hBitmap = adoptPtr( ::CreateDIBSection( 0, &bitmapInfo, DIB_RGB_COLORS, &pixels, updateChunkHandle, 0 ) );
+    ::SelectObject( updateChunkBitmapDC.get(), hBitmap.get() );
 
     // BitBlt from the UpdateChunk to the backing store.
-    ::BitBlt(m_backingStoreDC.get(), updateChunk->rect().x(), updateChunk->rect().y(), updateChunk->rect().width(), updateChunk->rect().height(), updateChunkBitmapDC.get(), 0, 0, SRCCOPY);
+    ::BitBlt( m_backingStoreDC.get(), updateChunk->rect().x(), updateChunk->rect().y(), updateChunk->rect().width(),
+              updateChunk->rect().height(), updateChunkBitmapDC.get(), 0, 0, SRCCOPY );
 
     // FIXME: We should not do this here.
-    ::CloseHandle(updateChunkHandle);
+    ::CloseHandle( updateChunkHandle );
 
     // Invalidate the WebView's HWND.
     RECT rect = updateChunk->rect();
-    ::InvalidateRect(m_webView->window(), &rect, false);
+    ::InvalidateRect( m_webView->window(), &rect, false );
 }
 
 } // namespace WebKit

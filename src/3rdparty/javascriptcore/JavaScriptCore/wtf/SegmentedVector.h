@@ -31,222 +31,271 @@
 
 #include <wtf/Vector.h>
 
-namespace WTF {
+namespace WTF
+{
 
-    // An iterator for SegmentedVector. It supports only the pre ++ operator
-    template <typename T, size_t SegmentSize> class SegmentedVector;
-    template <typename T, size_t SegmentSize> class SegmentedVectorIterator {
-    private:
-        friend class SegmentedVector<T, SegmentSize>;
-    public:
-        typedef SegmentedVectorIterator<T, SegmentSize> Iterator;
+// An iterator for SegmentedVector. It supports only the pre ++ operator
+template <typename T, size_t SegmentSize> class SegmentedVector;
+template <typename T, size_t SegmentSize> class SegmentedVectorIterator
+{
+private:
+    friend class SegmentedVector<T, SegmentSize>;
+public:
+    typedef SegmentedVectorIterator<T, SegmentSize> Iterator;
 
-        ~SegmentedVectorIterator() { }
+    ~SegmentedVectorIterator() { }
 
-        T& operator*() const { return m_vector.m_segments.at(m_segment)->at(m_index); }
-        T* operator->() const { return &m_vector.m_segments.at(m_segment)->at(m_index); }
+    T &operator*() const
+    {
+        return m_vector.m_segments.at( m_segment )->at( m_index );
+    }
+    T *operator->() const
+    {
+        return &m_vector.m_segments.at( m_segment )->at( m_index );
+    }
 
-        // Only prefix ++ operator supported
-        Iterator& operator++()
+    // Only prefix ++ operator supported
+    Iterator &operator++()
+    {
+        ASSERT( m_index != SegmentSize );
+        ++m_index;
+
+        if ( m_index >= m_vector.m_segments.at( m_segment )->size() )
         {
-            ASSERT(m_index != SegmentSize);
-            ++m_index;
-            if (m_index >= m_vector.m_segments.at(m_segment)->size())  {
-                if (m_segment + 1 < m_vector.m_segments.size()) {
-                    ASSERT(m_vector.m_segments.at(m_segment)->size() > 0);
-                    ++m_segment;
-                    m_index = 0;
-                } else {
-                    // Points to the "end" symbol
-                    m_segment = 0;
-                    m_index = SegmentSize;
-                }
+            if ( m_segment + 1 < m_vector.m_segments.size() )
+            {
+                ASSERT( m_vector.m_segments.at( m_segment )->size() > 0 );
+                ++m_segment;
+                m_index = 0;
             }
-            return *this;
-        }
-
-        bool operator==(const Iterator& other) const
-        {
-            return (m_index == other.m_index && m_segment = other.m_segment && &m_vector == &other.m_vector);
-        }
-
-        bool operator!=(const Iterator& other) const
-        {
-            return (m_index != other.m_index || m_segment != other.m_segment || &m_vector != &other.m_vector);
-        }
-
-        SegmentedVectorIterator& operator=(const SegmentedVectorIterator<T, SegmentSize>& other)
-        {
-            m_vector = other.m_vector;
-            m_segment = other.m_segment;
-            m_index = other.m_index;
-            return *this;
-        }
-
-    private:
-        SegmentedVectorIterator(SegmentedVector<T, SegmentSize>& vector, size_t segment, size_t index)
-            : m_vector(vector)
-            , m_segment(segment)
-            , m_index(index)
-        {
-        }
-
-        SegmentedVector<T, SegmentSize>& m_vector;
-        size_t m_segment;
-        size_t m_index;
-    };
-
-    // SegmentedVector is just like Vector, but it doesn't move the values
-    // stored in its buffer when it grows. Therefore, it is safe to keep
-    // pointers into a SegmentedVector.
-    template <typename T, size_t SegmentSize> class SegmentedVector {
-        friend class SegmentedVectorIterator<T, SegmentSize>;
-    public:
-        typedef SegmentedVectorIterator<T, SegmentSize> Iterator;
-
-        SegmentedVector()
-            : m_size(0)
-        {
-            m_segments.append(&m_inlineSegment);
-        }
-
-        ~SegmentedVector()
-        {
-            deleteAllSegments();
-        }
-
-        size_t size() const { return m_size; }
-        bool isEmpty() const { return !size(); }
-
-        T& at(size_t index)
-        {
-            if (index < SegmentSize)
-                return m_inlineSegment[index];
-            return segmentFor(index)->at(subscriptFor(index));
-        }
-
-        T& operator[](size_t index)
-        {
-            return at(index);
-        }
-
-        T& last()
-        {
-            return at(size() - 1);
-        }
-
-        template <typename U> void append(const U& value)
-        {
-            ++m_size;
-
-            if (m_size <= SegmentSize) {
-                m_inlineSegment.uncheckedAppend(value);
-                return;
-            }
-
-            if (!segmentExistsFor(m_size - 1))
-                m_segments.append(new Segment);
-            segmentFor(m_size - 1)->uncheckedAppend(value);
-        }
-
-        T& alloc()
-        {
-            append<T>(T());
-            return last();
-        }
-
-        void removeLast()
-        {
-            if (m_size <= SegmentSize)
-                m_inlineSegment.removeLast();
             else
-                segmentFor(m_size - 1)->removeLast();
-            --m_size;
+            {
+                // Points to the "end" symbol
+                m_segment = 0;
+                m_index = SegmentSize;
+            }
         }
 
-        void grow(size_t size)
+        return *this;
+    }
+
+    bool operator==( const Iterator &other ) const
+    {
+        return ( m_index == other.m_index && m_segment = other.m_segment && &m_vector == &other.m_vector );
+    }
+
+    bool operator!=( const Iterator &other ) const
+    {
+        return ( m_index != other.m_index || m_segment != other.m_segment || &m_vector != &other.m_vector );
+    }
+
+    SegmentedVectorIterator &operator=( const SegmentedVectorIterator<T, SegmentSize> &other )
+    {
+        m_vector = other.m_vector;
+        m_segment = other.m_segment;
+        m_index = other.m_index;
+        return *this;
+    }
+
+private:
+    SegmentedVectorIterator( SegmentedVector<T, SegmentSize> &vector, size_t segment, size_t index )
+        : m_vector( vector )
+        , m_segment( segment )
+        , m_index( index )
+    {
+    }
+
+    SegmentedVector<T, SegmentSize> &m_vector;
+    size_t m_segment;
+    size_t m_index;
+};
+
+// SegmentedVector is just like Vector, but it doesn't move the values
+// stored in its buffer when it grows. Therefore, it is safe to keep
+// pointers into a SegmentedVector.
+template <typename T, size_t SegmentSize> class SegmentedVector
+{
+    friend class SegmentedVectorIterator<T, SegmentSize>;
+public:
+    typedef SegmentedVectorIterator<T, SegmentSize> Iterator;
+
+    SegmentedVector()
+        : m_size( 0 )
+    {
+        m_segments.append( &m_inlineSegment );
+    }
+
+    ~SegmentedVector()
+    {
+        deleteAllSegments();
+    }
+
+    size_t size() const
+    {
+        return m_size;
+    }
+    bool isEmpty() const
+    {
+        return !size();
+    }
+
+    T &at( size_t index )
+    {
+        if ( index < SegmentSize )
         {
-            ASSERT(size > m_size);
-            ensureSegmentsFor(size);
-            m_size = size;
+            return m_inlineSegment[index];
         }
 
-        void clear()
+        return segmentFor( index )->at( subscriptFor( index ) );
+    }
+
+    T &operator[]( size_t index )
+    {
+        return at( index );
+    }
+
+    T &last()
+    {
+        return at( size() - 1 );
+    }
+
+    template <typename U> void append( const U &value )
+    {
+        ++m_size;
+
+        if ( m_size <= SegmentSize )
         {
-            deleteAllSegments();
-            m_segments.resize(1);
-            m_inlineSegment.clear();
-            m_size = 0;
+            m_inlineSegment.uncheckedAppend( value );
+            return;
         }
 
-        Iterator begin()
+        if ( !segmentExistsFor( m_size - 1 ) )
         {
-            return Iterator(*this, 0, m_size ? 0 : SegmentSize);
+            m_segments.append( new Segment );
         }
 
-        Iterator end()
+        segmentFor( m_size - 1 )->uncheckedAppend( value );
+    }
+
+    T &alloc()
+    {
+        append<T>( T() );
+        return last();
+    }
+
+    void removeLast()
+    {
+        if ( m_size <= SegmentSize )
         {
-            return Iterator(*this, 0, SegmentSize);
+            m_inlineSegment.removeLast();
         }
-
-    private:
-        typedef Vector<T, SegmentSize> Segment;
-
-        void deleteAllSegments()
+        else
         {
-            // Skip the first segment, because it's our inline segment, which was
-            // not created by new.
-            for (size_t i = 1; i < m_segments.size(); i++)
-                delete m_segments[i];
+            segmentFor( m_size - 1 )->removeLast();
         }
 
-        bool segmentExistsFor(size_t index)
+        --m_size;
+    }
+
+    void grow( size_t size )
+    {
+        ASSERT( size > m_size );
+        ensureSegmentsFor( size );
+        m_size = size;
+    }
+
+    void clear()
+    {
+        deleteAllSegments();
+        m_segments.resize( 1 );
+        m_inlineSegment.clear();
+        m_size = 0;
+    }
+
+    Iterator begin()
+    {
+        return Iterator( *this, 0, m_size ? 0 : SegmentSize );
+    }
+
+    Iterator end()
+    {
+        return Iterator( *this, 0, SegmentSize );
+    }
+
+private:
+    typedef Vector<T, SegmentSize> Segment;
+
+    void deleteAllSegments()
+    {
+        // Skip the first segment, because it's our inline segment, which was
+        // not created by new.
+        for ( size_t i = 1; i < m_segments.size(); i++ )
         {
-            return index / SegmentSize < m_segments.size();
+            delete m_segments[i];
         }
+    }
 
-        Segment* segmentFor(size_t index)
+    bool segmentExistsFor( size_t index )
+    {
+        return index / SegmentSize < m_segments.size();
+    }
+
+    Segment *segmentFor( size_t index )
+    {
+        return m_segments[index / SegmentSize];
+    }
+
+    size_t subscriptFor( size_t index )
+    {
+        return index % SegmentSize;
+    }
+
+    void ensureSegmentsFor( size_t size )
+    {
+        size_t segmentCount = m_size / SegmentSize;
+
+        if ( m_size % SegmentSize )
         {
-            return m_segments[index / SegmentSize];
+            ++segmentCount;
         }
 
-        size_t subscriptFor(size_t index)
+        segmentCount = std::max<size_t>( segmentCount, 1 ); // We always have at least our inline segment.
+
+        size_t neededSegmentCount = size / SegmentSize;
+
+        if ( size % SegmentSize )
         {
-            return index % SegmentSize;
+            ++neededSegmentCount;
         }
 
-        void ensureSegmentsFor(size_t size)
+        // Fill up to N - 1 segments.
+        size_t end = neededSegmentCount - 1;
+
+        for ( size_t i = segmentCount - 1; i < end; ++i )
         {
-            size_t segmentCount = m_size / SegmentSize;
-            if (m_size % SegmentSize)
-                ++segmentCount;
-            segmentCount = std::max<size_t>(segmentCount, 1); // We always have at least our inline segment.
-
-            size_t neededSegmentCount = size / SegmentSize;
-            if (size % SegmentSize)
-                ++neededSegmentCount;
-
-            // Fill up to N - 1 segments.
-            size_t end = neededSegmentCount - 1;
-            for (size_t i = segmentCount - 1; i < end; ++i)
-                ensureSegment(i, SegmentSize);
-
-            // Grow segment N to accomodate the remainder.
-            ensureSegment(end, subscriptFor(size - 1) + 1);
+            ensureSegment( i, SegmentSize );
         }
 
-        void ensureSegment(size_t segmentIndex, size_t size)
+        // Grow segment N to accomodate the remainder.
+        ensureSegment( end, subscriptFor( size - 1 ) + 1 );
+    }
+
+    void ensureSegment( size_t segmentIndex, size_t size )
+    {
+        ASSERT( segmentIndex <= m_segments.size() );
+
+        if ( segmentIndex == m_segments.size() )
         {
-            ASSERT(segmentIndex <= m_segments.size());
-            if (segmentIndex == m_segments.size())
-                m_segments.append(new Segment);
-            m_segments[segmentIndex]->grow(size);
+            m_segments.append( new Segment );
         }
 
-        size_t m_size;
-        Segment m_inlineSegment;
-        Vector<Segment*, 32> m_segments;
-    };
+        m_segments[segmentIndex]->grow( size );
+    }
+
+    size_t m_size;
+    Segment m_inlineSegment;
+    Vector<Segment *, 32> m_segments;
+};
 
 } // namespace WTF
 

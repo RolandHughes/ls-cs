@@ -29,14 +29,16 @@
 
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class NavigatorUserMediaSuccessCallback : public RefCounted<NavigatorUserMediaSuccessCallback> {
+class NavigatorUserMediaSuccessCallback : public RefCounted<NavigatorUserMediaSuccessCallback>
+{
 public:
     virtual ~NavigatorUserMediaSuccessCallback() { }
     // FIXME: set correct type when the GeneratedStream class is available.
     // virtual bool handleEvent(GeneratedStream*) = 0;
-    virtual bool handleEvent(int dummy) = 0;
+    virtual bool handleEvent( int dummy ) = 0;
 };
 
 } // namespace WebCore

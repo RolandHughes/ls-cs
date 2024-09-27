@@ -21,58 +21,58 @@
 
 #include <cs_catch2.h>
 
-TEST_CASE("QNetworkRequest traits", "[qnetwork_request]")
+TEST_CASE( "QNetworkRequest traits", "[qnetwork_request]" )
 {
-   REQUIRE(std::is_copy_constructible_v<QNetworkRequest> == true);
-   REQUIRE(std::is_move_constructible_v<QNetworkRequest> == true);
+    REQUIRE( std::is_copy_constructible_v<QNetworkRequest> == true );
+    REQUIRE( std::is_move_constructible_v<QNetworkRequest> == true );
 
-   REQUIRE(std::is_copy_assignable_v<QNetworkRequest> == true);
-   REQUIRE(std::is_move_assignable_v<QNetworkRequest> == true);
+    REQUIRE( std::is_copy_assignable_v<QNetworkRequest> == true );
+    REQUIRE( std::is_move_assignable_v<QNetworkRequest> == true );
 
-   REQUIRE(std::is_nothrow_move_constructible_v<QNetworkRequest> == false);
-   REQUIRE(std::is_nothrow_move_assignable_v<QNetworkRequest> == false);
+    REQUIRE( std::is_nothrow_move_constructible_v<QNetworkRequest> == false );
+    REQUIRE( std::is_nothrow_move_assignable_v<QNetworkRequest> == false );
 
-   REQUIRE(std::has_virtual_destructor_v<QNetworkRequest> == false);
+    REQUIRE( std::has_virtual_destructor_v<QNetworkRequest> == false );
 }
 
-TEST_CASE("QNetworkRequest constructor", "[qnetwork_request]")
+TEST_CASE( "QNetworkRequest constructor", "[qnetwork_request]" )
 {
-   QUrl url;
+    QUrl url;
 
-   {
-      QNetworkRequest request;
-      REQUIRE(url == request.url());
-   }
+    {
+        QNetworkRequest request;
+        REQUIRE( url == request.url() );
+    }
 
-   {
-      QNetworkRequest request(url);
-      REQUIRE(url == request.url());
-   }
+    {
+        QNetworkRequest request( url );
+        REQUIRE( url == request.url() );
+    }
 
-   url = QUrl("https://copperspice.com");
+    url = QUrl( "https://copperspice.com" );
 
-   {
-      QNetworkRequest request(url);
-      REQUIRE(url == request.url());
-   }
+    {
+        QNetworkRequest request( url );
+        REQUIRE( url == request.url() );
+    }
 }
 
-TEST_CASE("QNetworkRequest setUrl", "[qnetwork_request]")
+TEST_CASE( "QNetworkRequest setUrl", "[qnetwork_request]" )
 {
-   QUrl url;
-   QNetworkRequest request;
+    QUrl url;
+    QNetworkRequest request;
 
-   {
-      request.setUrl(url);
+    {
+        request.setUrl( url );
 
-      REQUIRE(url == request.url());
-   }
+        REQUIRE( url == request.url() );
+    }
 
-   url = QUrl("https://copperspice.com");
+    url = QUrl( "https://copperspice.com" );
 
-   {
-      request.setUrl(url);
+    {
+        request.setUrl( url );
 
-      REQUIRE(url == request.url());
-   }
+        REQUIRE( url == request.url() );
+    }
 }

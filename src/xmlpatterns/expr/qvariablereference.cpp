@@ -25,12 +25,12 @@
 
 using namespace QPatternist;
 
-VariableReference::VariableReference(const VariableSlotID slotP) : m_varSlot(slotP)
+VariableReference::VariableReference( const VariableSlotID slotP ) : m_varSlot( slotP )
 {
-   Q_ASSERT(m_varSlot > -1);
+    Q_ASSERT( m_varSlot > -1 );
 }
 
 Expression::Properties VariableReference::properties() const
 {
-   return DisableElimination;
+    return DisableElimination;
 }

@@ -16,12 +16,12 @@
  */
 
 
-  /**************************************************************************
-   *
-   * This file is used to define the PS names module error enumeration
-   * constants.
-   *
-   */
+/**************************************************************************
+ *
+ * This file is used to define the PS names module error enumeration
+ * constants.
+ *
+ */
 
 #ifndef PSNAMERR_H_
 #define PSNAMERR_H_

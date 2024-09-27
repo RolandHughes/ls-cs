@@ -25,11 +25,11 @@
 
 using namespace QPatternist;
 
-Expression::Ptr StaticNamespacesContainer::typeCheck(const StaticContext::Ptr &context,
-      const SequenceType::Ptr &reqType)
+Expression::Ptr StaticNamespacesContainer::typeCheck( const StaticContext::Ptr &context,
+        const SequenceType::Ptr &reqType )
 {
-   m_resolver = NamespaceResolver::Ptr(context->namespaceBindings());
-   Q_ASSERT(m_resolver);
+    m_resolver = NamespaceResolver::Ptr( context->namespaceBindings() );
+    Q_ASSERT( m_resolver );
 
-   return FunctionCall::typeCheck(context, reqType);
+    return FunctionCall::typeCheck( context, reqType );
 }

@@ -28,30 +28,30 @@
 
 using namespace QPatternist;
 
-StaticCompatibilityStore::StaticCompatibilityStore(const Expression::Ptr &operand) : SingleContainer(operand)
+StaticCompatibilityStore::StaticCompatibilityStore( const Expression::Ptr &operand ) : SingleContainer( operand )
 {
 }
 
-Expression::Ptr StaticCompatibilityStore::typeCheck(const StaticContext::Ptr &context,
-      const SequenceType::Ptr &reqType)
+Expression::Ptr StaticCompatibilityStore::typeCheck( const StaticContext::Ptr &context,
+        const SequenceType::Ptr &reqType )
 {
-   const StaticContext::Ptr newContext(new StaticCompatibilityContext(context));
-   return m_operand->typeCheck(newContext, reqType);
+    const StaticContext::Ptr newContext( new StaticCompatibilityContext( context ) );
+    return m_operand->typeCheck( newContext, reqType );
 }
 
 SequenceType::Ptr StaticCompatibilityStore::staticType() const
 {
-   return m_operand->staticType();
+    return m_operand->staticType();
 }
 
 SequenceType::List StaticCompatibilityStore::expectedOperandTypes() const
 {
-   SequenceType::List ops;
-   ops.append(CommonSequenceTypes::ZeroOrMoreItems);
-   return ops;
+    SequenceType::List ops;
+    ops.append( CommonSequenceTypes::ZeroOrMoreItems );
+    return ops;
 }
 
-ExpressionVisitorResult::Ptr StaticCompatibilityStore::accept(const ExpressionVisitor::Ptr &visitor) const
+ExpressionVisitorResult::Ptr StaticCompatibilityStore::accept( const ExpressionVisitor::Ptr &visitor ) const
 {
-   return visitor->visit(this);
+    return visitor->visit( this );
 }

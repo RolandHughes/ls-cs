@@ -32,23 +32,27 @@
 
 #include <dispatch/dispatch.h>
 
-namespace WTF {
+namespace WTF
+{
 
 static const int maxParallelThreads = 2;
 
-class ParallelEnvironment {
+class ParallelEnvironment
+{
     WTF_MAKE_FAST_ALLOCATED;
 public:
-    typedef void (*ThreadFunction)(void*);
+    typedef void ( *ThreadFunction )( void * );
 
-    ParallelEnvironment(ThreadFunction threadFunction, size_t sizeOfParameter, int requestedJobNumber) :
-        m_threadFunction(threadFunction),
-        m_sizeOfParameter(sizeOfParameter)
+    ParallelEnvironment( ThreadFunction threadFunction, size_t sizeOfParameter, int requestedJobNumber ) :
+        m_threadFunction( threadFunction ),
+        m_sizeOfParameter( sizeOfParameter )
     {
-        if (!requestedJobNumber || requestedJobNumber > maxParallelThreads)
+        if ( !requestedJobNumber || requestedJobNumber > maxParallelThreads )
+        {
             requestedJobNumber = maxParallelThreads;
+        }
 
-        ASSERT(requestedJobNumber > 0);
+        ASSERT( requestedJobNumber > 0 );
 
         m_numberOfJobs = requestedJobNumber;
     }
@@ -58,18 +62,19 @@ public:
         return m_numberOfJobs;
     }
 
-    void execute(unsigned char* parameters)
+    void execute( unsigned char *parameters )
     {
         // libdispatch is NOT supported inside a template
-        dispatch_queue_t parallelJobsQueue = dispatch_queue_create("ParallelJobs", 0);
+        dispatch_queue_t parallelJobsQueue = dispatch_queue_create( "ParallelJobs", 0 );
 
-        for (int i = 0; i < m_numberOfJobs - 1; ++i) {
-            dispatch_async(parallelJobsQueue, ^{(*m_threadFunction)(parameters);});
+        for ( int i = 0; i < m_numberOfJobs - 1; ++i )
+        {
+            dispatch_async( parallelJobsQueue, ^ {( *m_threadFunction )( parameters );} );
             parameters += m_sizeOfParameter;
         }
 
         // The work for the main thread. Wait until all jobs are done.
-        dispatch_sync(parallelJobsQueue, ^{(*m_threadFunction)(parameters);});
+        dispatch_sync( parallelJobsQueue, ^ {( *m_threadFunction )( parameters );} );
     }
 
 private:

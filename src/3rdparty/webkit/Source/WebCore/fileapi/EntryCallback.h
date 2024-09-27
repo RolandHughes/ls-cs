@@ -35,14 +35,16 @@
 
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Entry;
 
-class EntryCallback : public RefCounted<EntryCallback> {
+class EntryCallback : public RefCounted<EntryCallback>
+{
 public:
     virtual ~EntryCallback() { }
-    virtual bool handleEvent(Entry*) = 0;
+    virtual bool handleEvent( Entry * ) = 0;
 };
 
 } // namespace

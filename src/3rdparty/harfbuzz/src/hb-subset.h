@@ -61,7 +61,7 @@ typedef struct hb_subset_plan_t hb_subset_plan_t;
  * subsetter will attempt to remove subroutines from the CFF glyphs.
  * @HB_SUBSET_FLAGS_NAME_LEGACY: If set non-unicode name records will be
  * retained in the subset.
- * @HB_SUBSET_FLAGS_SET_OVERLAPS_FLAG:	If set the subsetter will set the
+ * @HB_SUBSET_FLAGS_SET_OVERLAPS_FLAG:  If set the subsetter will set the
  * OVERLAP_SIMPLE flag on each simple glyph.
  * @HB_SUBSET_FLAGS_PASSTHROUGH_UNRECOGNIZED: If set the subsetter will not
  * drop unrecognized tables and instead pass them through untouched.
@@ -78,18 +78,19 @@ typedef struct hb_subset_plan_t hb_subset_plan_t;
  *
  * Since: 2.9.0
  **/
-typedef enum { /*< flags >*/
-  HB_SUBSET_FLAGS_DEFAULT =		     0x00000000u,
-  HB_SUBSET_FLAGS_NO_HINTING =		     0x00000001u,
-  HB_SUBSET_FLAGS_RETAIN_GIDS =		     0x00000002u,
-  HB_SUBSET_FLAGS_DESUBROUTINIZE =	     0x00000004u,
-  HB_SUBSET_FLAGS_NAME_LEGACY =		     0x00000008u,
-  HB_SUBSET_FLAGS_SET_OVERLAPS_FLAG =	     0x00000010u,
-  HB_SUBSET_FLAGS_PASSTHROUGH_UNRECOGNIZED = 0x00000020u,
-  HB_SUBSET_FLAGS_NOTDEF_OUTLINE =	     0x00000040u,
-  HB_SUBSET_FLAGS_GLYPH_NAMES =		     0x00000080u,
-  HB_SUBSET_FLAGS_NO_PRUNE_UNICODE_RANGES =  0x00000100u,
-  HB_SUBSET_FLAGS_NO_LAYOUT_CLOSURE =        0x00000200u,
+typedef enum   /*< flags >*/
+{
+    HB_SUBSET_FLAGS_DEFAULT =          0x00000000u,
+    HB_SUBSET_FLAGS_NO_HINTING =           0x00000001u,
+    HB_SUBSET_FLAGS_RETAIN_GIDS =          0x00000002u,
+    HB_SUBSET_FLAGS_DESUBROUTINIZE =       0x00000004u,
+    HB_SUBSET_FLAGS_NAME_LEGACY =          0x00000008u,
+    HB_SUBSET_FLAGS_SET_OVERLAPS_FLAG =        0x00000010u,
+    HB_SUBSET_FLAGS_PASSTHROUGH_UNRECOGNIZED = 0x00000020u,
+    HB_SUBSET_FLAGS_NOTDEF_OUTLINE =       0x00000040u,
+    HB_SUBSET_FLAGS_GLYPH_NAMES =          0x00000080u,
+    HB_SUBSET_FLAGS_NO_PRUNE_UNICODE_RANGES =  0x00000100u,
+    HB_SUBSET_FLAGS_NO_LAYOUT_CLOSURE =        0x00000200u,
 } hb_subset_flags_t;
 
 /**
@@ -111,129 +112,130 @@ typedef enum { /*< flags >*/
  *
  * Since: 2.9.1
  **/
-typedef enum {
-  HB_SUBSET_SETS_GLYPH_INDEX = 0,
-  HB_SUBSET_SETS_UNICODE,
-  HB_SUBSET_SETS_NO_SUBSET_TABLE_TAG,
-  HB_SUBSET_SETS_DROP_TABLE_TAG,
-  HB_SUBSET_SETS_NAME_ID,
-  HB_SUBSET_SETS_NAME_LANG_ID,
-  HB_SUBSET_SETS_LAYOUT_FEATURE_TAG,
-  HB_SUBSET_SETS_LAYOUT_SCRIPT_TAG,
+typedef enum
+{
+    HB_SUBSET_SETS_GLYPH_INDEX = 0,
+    HB_SUBSET_SETS_UNICODE,
+    HB_SUBSET_SETS_NO_SUBSET_TABLE_TAG,
+    HB_SUBSET_SETS_DROP_TABLE_TAG,
+    HB_SUBSET_SETS_NAME_ID,
+    HB_SUBSET_SETS_NAME_LANG_ID,
+    HB_SUBSET_SETS_LAYOUT_FEATURE_TAG,
+    HB_SUBSET_SETS_LAYOUT_SCRIPT_TAG,
 } hb_subset_sets_t;
 
 HB_EXTERN hb_subset_input_t *
-hb_subset_input_create_or_fail (void);
+hb_subset_input_create_or_fail ( void );
 
 HB_EXTERN hb_subset_input_t *
-hb_subset_input_reference (hb_subset_input_t *input);
+hb_subset_input_reference ( hb_subset_input_t *input );
 
 HB_EXTERN void
-hb_subset_input_destroy (hb_subset_input_t *input);
+hb_subset_input_destroy ( hb_subset_input_t *input );
 
 HB_EXTERN hb_bool_t
-hb_subset_input_set_user_data (hb_subset_input_t  *input,
-			       hb_user_data_key_t *key,
-			       void *		   data,
-			       hb_destroy_func_t   destroy,
-			       hb_bool_t	   replace);
+hb_subset_input_set_user_data ( hb_subset_input_t  *input,
+                                hb_user_data_key_t *key,
+                                void           *data,
+                                hb_destroy_func_t   destroy,
+                                hb_bool_t       replace );
 
 HB_EXTERN void *
-hb_subset_input_get_user_data (const hb_subset_input_t *input,
-			       hb_user_data_key_t      *key);
+hb_subset_input_get_user_data ( const hb_subset_input_t *input,
+                                hb_user_data_key_t      *key );
 
 HB_EXTERN void
-hb_subset_input_keep_everything (hb_subset_input_t *input);
+hb_subset_input_keep_everything ( hb_subset_input_t *input );
 
 HB_EXTERN hb_set_t *
-hb_subset_input_unicode_set (hb_subset_input_t *input);
+hb_subset_input_unicode_set ( hb_subset_input_t *input );
 
 HB_EXTERN hb_set_t *
-hb_subset_input_glyph_set (hb_subset_input_t *input);
+hb_subset_input_glyph_set ( hb_subset_input_t *input );
 
 HB_EXTERN hb_set_t *
-hb_subset_input_set (hb_subset_input_t *input, hb_subset_sets_t set_type);
+hb_subset_input_set ( hb_subset_input_t *input, hb_subset_sets_t set_type );
 
-HB_EXTERN hb_map_t*
-hb_subset_input_old_to_new_glyph_mapping (hb_subset_input_t *input);
+HB_EXTERN hb_map_t *
+hb_subset_input_old_to_new_glyph_mapping ( hb_subset_input_t *input );
 
 HB_EXTERN hb_subset_flags_t
-hb_subset_input_get_flags (hb_subset_input_t *input);
+hb_subset_input_get_flags ( hb_subset_input_t *input );
 
 HB_EXTERN void
-hb_subset_input_set_flags (hb_subset_input_t *input,
-			   unsigned value);
+hb_subset_input_set_flags ( hb_subset_input_t *input,
+                            unsigned value );
 
 HB_EXTERN hb_bool_t
-hb_subset_input_pin_axis_to_default (hb_subset_input_t  *input,
-				     hb_face_t          *face,
-				     hb_tag_t            axis_tag);
+hb_subset_input_pin_axis_to_default ( hb_subset_input_t  *input,
+                                      hb_face_t          *face,
+                                      hb_tag_t            axis_tag );
 
 HB_EXTERN hb_bool_t
-hb_subset_input_pin_axis_location (hb_subset_input_t  *input,
-				   hb_face_t          *face,
-				   hb_tag_t            axis_tag,
-				   float               axis_value);
+hb_subset_input_pin_axis_location ( hb_subset_input_t  *input,
+                                    hb_face_t          *face,
+                                    hb_tag_t            axis_tag,
+                                    float               axis_value );
 
 #ifdef HB_EXPERIMENTAL_API
 HB_EXTERN hb_bool_t
-hb_subset_input_set_axis_range (hb_subset_input_t  *input,
-				hb_face_t          *face,
-				hb_tag_t            axis_tag,
-				float               axis_min_value,
-				float               axis_max_value,
-				float              *axis_def_value);
+hb_subset_input_set_axis_range ( hb_subset_input_t  *input,
+                                 hb_face_t          *face,
+                                 hb_tag_t            axis_tag,
+                                 float               axis_min_value,
+                                 float               axis_max_value,
+                                 float              *axis_def_value );
 
 HB_EXTERN hb_bool_t
-hb_subset_input_override_name_table (hb_subset_input_t  *input,
-				     hb_ot_name_id_t     name_id,
-				     unsigned            platform_id,
-				     unsigned            encoding_id,
-				     unsigned            language_id,
-				     const char         *name_str,
-				     int                 str_len);
+hb_subset_input_override_name_table ( hb_subset_input_t  *input,
+                                      hb_ot_name_id_t     name_id,
+                                      unsigned            platform_id,
+                                      unsigned            encoding_id,
+                                      unsigned            language_id,
+                                      const char         *name_str,
+                                      int                 str_len );
 
 #endif
 
 HB_EXTERN hb_face_t *
-hb_subset_preprocess (hb_face_t *source);
+hb_subset_preprocess ( hb_face_t *source );
 
 HB_EXTERN hb_face_t *
-hb_subset_or_fail (hb_face_t *source, const hb_subset_input_t *input);
+hb_subset_or_fail ( hb_face_t *source, const hb_subset_input_t *input );
 
 HB_EXTERN hb_face_t *
-hb_subset_plan_execute_or_fail (hb_subset_plan_t *plan);
+hb_subset_plan_execute_or_fail ( hb_subset_plan_t *plan );
 
 HB_EXTERN hb_subset_plan_t *
-hb_subset_plan_create_or_fail (hb_face_t                 *face,
-                               const hb_subset_input_t   *input);
+hb_subset_plan_create_or_fail ( hb_face_t                 *face,
+                                const hb_subset_input_t   *input );
 
 HB_EXTERN void
-hb_subset_plan_destroy (hb_subset_plan_t *plan);
+hb_subset_plan_destroy ( hb_subset_plan_t *plan );
 
 HB_EXTERN hb_map_t *
-hb_subset_plan_old_to_new_glyph_mapping (const hb_subset_plan_t *plan);
+hb_subset_plan_old_to_new_glyph_mapping ( const hb_subset_plan_t *plan );
 
 HB_EXTERN hb_map_t *
-hb_subset_plan_new_to_old_glyph_mapping (const hb_subset_plan_t *plan);
+hb_subset_plan_new_to_old_glyph_mapping ( const hb_subset_plan_t *plan );
 
 HB_EXTERN hb_map_t *
-hb_subset_plan_unicode_to_old_glyph_mapping (const hb_subset_plan_t *plan);
+hb_subset_plan_unicode_to_old_glyph_mapping ( const hb_subset_plan_t *plan );
 
 
 HB_EXTERN hb_subset_plan_t *
-hb_subset_plan_reference (hb_subset_plan_t *plan);
+hb_subset_plan_reference ( hb_subset_plan_t *plan );
 
 HB_EXTERN hb_bool_t
-hb_subset_plan_set_user_data (hb_subset_plan_t   *plan,
-                              hb_user_data_key_t *key,
-                              void               *data,
-                              hb_destroy_func_t   destroy,
-                              hb_bool_t	          replace);
+hb_subset_plan_set_user_data ( hb_subset_plan_t   *plan,
+                               hb_user_data_key_t *key,
+                               void               *data,
+                               hb_destroy_func_t   destroy,
+                               hb_bool_t           replace );
 
 HB_EXTERN void *
-hb_subset_plan_get_user_data (const hb_subset_plan_t *plan,
-                              hb_user_data_key_t     *key);
+hb_subset_plan_get_user_data ( const hb_subset_plan_t *plan,
+                               hb_user_data_key_t     *key );
 
 
 HB_END_DECLS

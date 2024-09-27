@@ -36,7 +36,8 @@
 #include <wtf/PassOwnPtr.h>
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class IDBDatabaseBackendImpl;
 class IDBIndexBackendImpl;
@@ -46,11 +47,13 @@ class IDBBackingStore;
 class IDBTransactionBackendInterface;
 class SerializedScriptValue;
 
-class IDBCursorBackendImpl : public IDBCursorBackendInterface {
+class IDBCursorBackendImpl : public IDBCursorBackendInterface
+{
 public:
-    static PassRefPtr<IDBCursorBackendImpl> create(PassRefPtr<IDBBackingStore::Cursor> cursor, IDBCursor::Direction direction, CursorType cursorType, IDBTransactionBackendInterface* transaction, IDBObjectStoreBackendInterface* objectStore)
+    static PassRefPtr<IDBCursorBackendImpl> create( PassRefPtr<IDBBackingStore::Cursor> cursor, IDBCursor::Direction direction,
+            CursorType cursorType, IDBTransactionBackendInterface *transaction, IDBObjectStoreBackendInterface *objectStore )
     {
-        return adoptRef(new IDBCursorBackendImpl(cursor, direction, cursorType, transaction, objectStore));
+        return adoptRef( new IDBCursorBackendImpl( cursor, direction, cursorType, transaction, objectStore ) );
     }
     virtual ~IDBCursorBackendImpl();
 
@@ -58,14 +61,16 @@ public:
     virtual PassRefPtr<IDBKey> key() const;
     virtual PassRefPtr<IDBKey> primaryKey() const;
     virtual PassRefPtr<SerializedScriptValue> value() const;
-    virtual void update(PassRefPtr<SerializedScriptValue>, PassRefPtr<IDBCallbacks>, ExceptionCode&);
-    virtual void continueFunction(PassRefPtr<IDBKey>, PassRefPtr<IDBCallbacks>, ExceptionCode&);
-    virtual void deleteFunction(PassRefPtr<IDBCallbacks>, ExceptionCode&);
+    virtual void update( PassRefPtr<SerializedScriptValue>, PassRefPtr<IDBCallbacks>, ExceptionCode & );
+    virtual void continueFunction( PassRefPtr<IDBKey>, PassRefPtr<IDBCallbacks>, ExceptionCode & );
+    virtual void deleteFunction( PassRefPtr<IDBCallbacks>, ExceptionCode & );
 
 private:
-    IDBCursorBackendImpl(PassRefPtr<IDBBackingStore::Cursor>, IDBCursor::Direction, CursorType, IDBTransactionBackendInterface*, IDBObjectStoreBackendInterface*);
+    IDBCursorBackendImpl( PassRefPtr<IDBBackingStore::Cursor>, IDBCursor::Direction, CursorType, IDBTransactionBackendInterface *,
+                          IDBObjectStoreBackendInterface * );
 
-    static void continueFunctionInternal(ScriptExecutionContext*, PassRefPtr<IDBCursorBackendImpl>, PassRefPtr<IDBKey>, PassRefPtr<IDBCallbacks>);
+    static void continueFunctionInternal( ScriptExecutionContext *, PassRefPtr<IDBCursorBackendImpl>, PassRefPtr<IDBKey>,
+                                          PassRefPtr<IDBCallbacks> );
 
     RefPtr<IDBBackingStore::Cursor> m_cursor;
     IDBCursor::Direction m_direction;

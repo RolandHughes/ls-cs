@@ -25,23 +25,25 @@
 #include "SVGAnimatedString.h"
 #include "SVGElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class SVGFEMergeNodeElement : public SVGElement {
+class SVGFEMergeNodeElement : public SVGElement
+{
 public:
-    static PassRefPtr<SVGFEMergeNodeElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<SVGFEMergeNodeElement> create( const QualifiedName &, Document * );
 
 private:
-    SVGFEMergeNodeElement(const QualifiedName&, Document*);
+    SVGFEMergeNodeElement( const QualifiedName &, Document * );
 
-    virtual void parseMappedAttribute(Attribute*);
-    virtual void svgAttributeChanged(const QualifiedName&);
-    virtual void synchronizeProperty(const QualifiedName&);
+    virtual void parseMappedAttribute( Attribute * );
+    virtual void svgAttributeChanged( const QualifiedName & );
+    virtual void synchronizeProperty( const QualifiedName & );
     virtual void fillAttributeToPropertyTypeMap();
-    virtual AttributeToPropertyTypeMap& attributeToPropertyTypeMap();
+    virtual AttributeToPropertyTypeMap &attributeToPropertyTypeMap();
 
     // Animated property declarations
-    DECLARE_ANIMATED_STRING(In1, in1)
+    DECLARE_ANIMATED_STRING( In1, in1 )
 };
 
 } // namespace WebCore

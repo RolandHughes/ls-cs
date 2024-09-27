@@ -28,14 +28,16 @@
 
 #include "JSObject.h"
 
-namespace JSC {
+namespace JSC
+{
 
-class StrictEvalActivation : public JSNonFinalObject {
+class StrictEvalActivation : public JSNonFinalObject
+{
 public:
-    StrictEvalActivation(ExecState*);
-    virtual bool deleteProperty(ExecState*, const Identifier&);
-    virtual JSObject* toThisObject(ExecState*) const;
-    virtual JSValue toStrictThisObject(ExecState*) const;
+    StrictEvalActivation( ExecState * );
+    virtual bool deleteProperty( ExecState *, const Identifier & );
+    virtual JSObject *toThisObject( ExecState * ) const;
+    virtual JSValue toStrictThisObject( ExecState * ) const;
 };
 
 } // namespace JSC

@@ -33,16 +33,17 @@ QT_BEGIN_NAMESPACE
 
 class QScriptXmlParser
 {
- public:
-   struct Result {
-      Result(const QMap<QString, int> &fi, const QSet<int> &eln)
-         : functionsInfo(fi), executableLineNumbers(eln) {}
+public:
+    struct Result
+    {
+        Result( const QMap<QString, int> &fi, const QSet<int> &eln )
+            : functionsInfo( fi ), executableLineNumbers( eln ) {}
 
-      QMap<QString, int> functionsInfo;
-      QSet<int> executableLineNumbers;
-   };
+        QMap<QString, int> functionsInfo;
+        QSet<int> executableLineNumbers;
+    };
 
-   static Result parse(const QString &xml);
+    static Result parse( const QString &xml );
 };
 
 QT_END_NAMESPACE

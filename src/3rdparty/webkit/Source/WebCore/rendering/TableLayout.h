@@ -24,25 +24,28 @@
 #include <wtf/FastAllocBase.h>
 #include <wtf/Noncopyable.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class RenderTable;
 
-class TableLayout {
-    WTF_MAKE_NONCOPYABLE(TableLayout); WTF_MAKE_FAST_ALLOCATED;
+class TableLayout
+{
+    WTF_MAKE_NONCOPYABLE( TableLayout );
+    WTF_MAKE_FAST_ALLOCATED;
 public:
-    TableLayout(RenderTable* table)
-        : m_table(table)
+    TableLayout( RenderTable *table )
+        : m_table( table )
     {
     }
 
     virtual ~TableLayout() { }
 
-    virtual void computePreferredLogicalWidths(int& minWidth, int& maxWidth) = 0;
+    virtual void computePreferredLogicalWidths( int &minWidth, int &maxWidth ) = 0;
     virtual void layout() = 0;
 
 protected:
-    RenderTable* m_table;
+    RenderTable *m_table;
 };
 
 } // namespace WebCore

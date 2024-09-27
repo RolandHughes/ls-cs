@@ -50,915 +50,1083 @@
 
 #ifndef QT_NO_ACCESSIBILITY
 
-extern QList<QWidget *> childWidgets(const QWidget *widget);
+extern QList<QWidget *> childWidgets( const QWidget *widget );
 
-QString qt_accStripAmp(const QString &text);
-QString qt_accHotKey(const QString &text);
+QString qt_accStripAmp( const QString &text );
+QString qt_accHotKey( const QString &text );
 
-QAccessibleButton::QAccessibleButton(QWidget *w)
-   : QAccessibleWidget(w)
+QAccessibleButton::QAccessibleButton( QWidget *w )
+    : QAccessibleWidget( w )
 {
-   Q_ASSERT(button());
+    Q_ASSERT( button() );
 
-   // FIXME: The checkable state of the button is dynamic,
-   // while we only update the controlling signal once :(
-   if (button()->isCheckable()) {
-      addControllingSignal(QLatin1String("toggled(bool)"));
-   } else {
-      addControllingSignal(QLatin1String("clicked()"));
-   }
+    // FIXME: The checkable state of the button is dynamic,
+    // while we only update the controlling signal once :(
+    if ( button()->isCheckable() )
+    {
+        addControllingSignal( QLatin1String( "toggled(bool)" ) );
+    }
+    else
+    {
+        addControllingSignal( QLatin1String( "clicked()" ) );
+    }
 }
 
 QAbstractButton *QAccessibleButton::button() const
 {
-   return qobject_cast<QAbstractButton *>(object());
+    return qobject_cast<QAbstractButton *>( object() );
 }
 
-QString QAccessibleButton::text(QAccessible::Text t) const
+QString QAccessibleButton::text( QAccessible::Text t ) const
 {
-   QString str;
+    QString str;
 
-   switch (t) {
-      case QAccessible::Accelerator: {
+    switch ( t )
+    {
+        case QAccessible::Accelerator:
+        {
 #ifndef QT_NO_SHORTCUT
-         QPushButton *pb = qobject_cast<QPushButton *>(object());
-         if (pb && pb->isDefault()) {
-            str = QKeySequence(Qt::Key_Enter).toString(QKeySequence::NativeText);
-         }
+            QPushButton *pb = qobject_cast<QPushButton *>( object() );
+
+            if ( pb && pb->isDefault() )
+            {
+                str = QKeySequence( Qt::Key_Enter ).toString( QKeySequence::NativeText );
+            }
+
 #endif
 
-         if (str.isEmpty()) {
-            str = qt_accHotKey(button()->text());
-         }
-      }
-      break;
+            if ( str.isEmpty() )
+            {
+                str = qt_accHotKey( button()->text() );
+            }
+        }
+        break;
 
-      case QAccessible::Name:
-         str = widget()->accessibleName();
-         if (str.isEmpty()) {
-            str = qt_accStripAmp(button()->text());
-         }
-         break;
+        case QAccessible::Name:
+            str = widget()->accessibleName();
 
-      default:
-         break;
-   }
+            if ( str.isEmpty() )
+            {
+                str = qt_accStripAmp( button()->text() );
+            }
 
-   if (str.isEmpty()) {
-      str = QAccessibleWidget::text(t);
-   }
+            break;
 
-   return str;
+        default:
+            break;
+    }
+
+    if ( str.isEmpty() )
+    {
+        str = QAccessibleWidget::text( t );
+    }
+
+    return str;
 }
 
 QAccessible::State QAccessibleButton::state() const
 {
-   QAccessible::State state = QAccessibleWidget::state();
+    QAccessible::State state = QAccessibleWidget::state();
 
-   QAbstractButton *b = button();
-   QCheckBox *cb = qobject_cast<QCheckBox *>(b);
-   if (b->isCheckable()) {
-      state.checkable = true;
-   }
-   if (b->isChecked()) {
-      state.checked = true;
-   } else if (cb && cb->checkState() == Qt::PartiallyChecked) {
-      state.checkStateMixed = true;
-   }
-   if (b->isDown()) {
-      state.pressed = true;
-   }
-   QPushButton *pb = qobject_cast<QPushButton *>(b);
-   if (pb) {
-      if (pb->isDefault()) {
-         state.defaultButton = true;
-      }
+    QAbstractButton *b = button();
+    QCheckBox *cb = qobject_cast<QCheckBox *>( b );
+
+    if ( b->isCheckable() )
+    {
+        state.checkable = true;
+    }
+
+    if ( b->isChecked() )
+    {
+        state.checked = true;
+    }
+    else if ( cb && cb->checkState() == Qt::PartiallyChecked )
+    {
+        state.checkStateMixed = true;
+    }
+
+    if ( b->isDown() )
+    {
+        state.pressed = true;
+    }
+
+    QPushButton *pb = qobject_cast<QPushButton *>( b );
+
+    if ( pb )
+    {
+        if ( pb->isDefault() )
+        {
+            state.defaultButton = true;
+        }
+
 #ifndef QT_NO_MENU
-      if (pb->menu()) {
-         state.hasPopup = true;
-      }
-#endif
-   }
 
-   return state;
+        if ( pb->menu() )
+        {
+            state.hasPopup = true;
+        }
+
+#endif
+    }
+
+    return state;
 }
 
 QRect QAccessibleButton::rect() const
 {
-   QAbstractButton *ab = button();
+    QAbstractButton *ab = button();
 
-   if (!ab->isVisible()) {
-      return QRect();
-   }
+    if ( !ab->isVisible() )
+    {
+        return QRect();
+    }
 
-   if (QCheckBox *cb = qobject_cast<QCheckBox *>(ab)) {
-      QPoint wpos = cb->mapToGlobal(QPoint(0, 0));
-      QStyleOptionButton opt;
-      cb->initStyleOption(&opt);
-      return cb->style()->subElementRect(QStyle::SE_CheckBoxClickRect, &opt, cb).translated(wpos);
+    if ( QCheckBox *cb = qobject_cast<QCheckBox *>( ab ) )
+    {
+        QPoint wpos = cb->mapToGlobal( QPoint( 0, 0 ) );
+        QStyleOptionButton opt;
+        cb->initStyleOption( &opt );
+        return cb->style()->subElementRect( QStyle::SE_CheckBoxClickRect, &opt, cb ).translated( wpos );
 
-   } else if (QRadioButton *rb = qobject_cast<QRadioButton *>(ab)) {
-      QPoint wpos = rb->mapToGlobal(QPoint(0, 0));
-      QStyleOptionButton opt;
-      rb->initStyleOption(&opt);
-      return rb->style()->subElementRect(QStyle::SE_RadioButtonClickRect, &opt, rb).translated(wpos);
-   }
+    }
+    else if ( QRadioButton *rb = qobject_cast<QRadioButton *>( ab ) )
+    {
+        QPoint wpos = rb->mapToGlobal( QPoint( 0, 0 ) );
+        QStyleOptionButton opt;
+        rb->initStyleOption( &opt );
+        return rb->style()->subElementRect( QStyle::SE_RadioButtonClickRect, &opt, rb ).translated( wpos );
+    }
 
-   return QAccessibleWidget::rect();
+    return QAccessibleWidget::rect();
 }
 
 QAccessible::Role QAccessibleButton::role() const
 {
-   QAbstractButton *ab = button();
+    QAbstractButton *ab = button();
 
 #ifndef QT_NO_MENU
-   if (QPushButton *pb = qobject_cast<QPushButton *>(ab)) {
-      if (pb->menu()) {
-         return QAccessible::ButtonMenu;
-      }
-   }
+
+    if ( QPushButton *pb = qobject_cast<QPushButton *>( ab ) )
+    {
+        if ( pb->menu() )
+        {
+            return QAccessible::ButtonMenu;
+        }
+    }
+
 #endif
 
-   if (ab->isCheckable()) {
-      return ab->autoExclusive() ? QAccessible::RadioButton : QAccessible::CheckBox;
-   }
+    if ( ab->isCheckable() )
+    {
+        return ab->autoExclusive() ? QAccessible::RadioButton : QAccessible::CheckBox;
+    }
 
-   return QAccessible::Button;
+    return QAccessible::Button;
 }
 
 QStringList QAccessibleButton::actionNames() const
 {
-   QStringList names;
-   if (widget()->isEnabled()) {
-      switch (role()) {
-         case QAccessible::ButtonMenu:
-            names << showMenuAction();
-            break;
-         case QAccessible::RadioButton:
-            names << toggleAction();
-            break;
-         default:
-            if (button()->isCheckable()) {
-               names <<  toggleAction();
-            } else {
-               names << pressAction();
-            }
-            break;
-      }
-   }
-   names << QAccessibleWidget::actionNames();
-   return names;
+    QStringList names;
+
+    if ( widget()->isEnabled() )
+    {
+        switch ( role() )
+        {
+            case QAccessible::ButtonMenu:
+                names << showMenuAction();
+                break;
+
+            case QAccessible::RadioButton:
+                names << toggleAction();
+                break;
+
+            default:
+                if ( button()->isCheckable() )
+                {
+                    names <<  toggleAction();
+                }
+                else
+                {
+                    names << pressAction();
+                }
+
+                break;
+        }
+    }
+
+    names << QAccessibleWidget::actionNames();
+    return names;
 }
 
-void QAccessibleButton::doAction(const QString &actionName)
+void QAccessibleButton::doAction( const QString &actionName )
 {
-   if (!widget()->isEnabled()) {
-      return;
-   }
-   if (actionName == pressAction() ||
-      actionName == showMenuAction()) {
+    if ( !widget()->isEnabled() )
+    {
+        return;
+    }
+
+    if ( actionName == pressAction() ||
+            actionName == showMenuAction() )
+    {
 #ifndef QT_NO_MENU
-      QPushButton *pb = qobject_cast<QPushButton *>(object());
-      if (pb && pb->menu()) {
-         pb->showMenu();
-      } else
+        QPushButton *pb = qobject_cast<QPushButton *>( object() );
+
+        if ( pb && pb->menu() )
+        {
+            pb->showMenu();
+        }
+        else
 #endif
-         button()->animateClick();
-   } else if (actionName == toggleAction()) {
-      button()->toggle();
-   } else {
-      QAccessibleWidget::doAction(actionName);
-   }
+            button()->animateClick();
+    }
+    else if ( actionName == toggleAction() )
+    {
+        button()->toggle();
+    }
+    else
+    {
+        QAccessibleWidget::doAction( actionName );
+    }
 }
 
-QStringList QAccessibleButton::keyBindingsForAction(const QString &actionName) const
+QStringList QAccessibleButton::keyBindingsForAction( const QString &actionName ) const
 {
-   if (actionName == pressAction()) {
+    if ( actionName == pressAction() )
+    {
 #ifndef QT_NO_SHORTCUT
-      return QStringList() << button()->shortcut().toString();
+        return QStringList() << button()->shortcut().toString();
 #endif
-   }
+    }
 
-   return QStringList();
+    return QStringList();
 }
 
 #ifndef QT_NO_TOOLBUTTON
 
-QAccessibleToolButton::QAccessibleToolButton(QWidget *w)
-   : QAccessibleButton(w)
+QAccessibleToolButton::QAccessibleToolButton( QWidget *w )
+    : QAccessibleButton( w )
 {
-   Q_ASSERT(toolButton());
+    Q_ASSERT( toolButton() );
 }
 
 QToolButton *QAccessibleToolButton::toolButton() const
 {
-   return qobject_cast<QToolButton *>(object());
+    return qobject_cast<QToolButton *>( object() );
 }
 
 bool QAccessibleToolButton::isSplitButton() const
 {
 #ifndef QT_NO_MENU
-   return toolButton()->menu() && toolButton()->popupMode() == QToolButton::MenuButtonPopup;
+    return toolButton()->menu() && toolButton()->popupMode() == QToolButton::MenuButtonPopup;
 #else
-   return false;
+    return false;
 #endif
 }
 
 QAccessible::State QAccessibleToolButton::state() const
 {
-   QAccessible::State st = QAccessibleButton::state();
+    QAccessible::State st = QAccessibleButton::state();
 
-  if (toolButton()->autoRaise()) {
-      st.hotTracked = true;
-   }
+    if ( toolButton()->autoRaise() )
+    {
+        st.hotTracked = true;
+    }
 
 #ifndef QT_NO_MENU
-   if (toolButton()->menu()) {
-      st.hasPopup = true;
-   }
+
+    if ( toolButton()->menu() )
+    {
+        st.hasPopup = true;
+    }
+
 #endif
 
-   return st;
+    return st;
 }
 
 int QAccessibleToolButton::childCount() const
 {
-   return isSplitButton() ? 1 : 0;
+    return isSplitButton() ? 1 : 0;
 }
 
 QAccessible::Role QAccessibleToolButton::role() const
 {
-   QAbstractButton *ab = button();
+    QAbstractButton *ab = button();
 
 #ifndef QT_NO_MENU
-   QToolButton *tb = qobject_cast<QToolButton *>(ab);
+    QToolButton *tb = qobject_cast<QToolButton *>( ab );
 
-   if (! tb->menu()) {
-      return tb->isCheckable() ? QAccessible::CheckBox : QAccessible::Button;
+    if ( ! tb->menu() )
+    {
+        return tb->isCheckable() ? QAccessible::CheckBox : QAccessible::Button;
 
-   } else if (tb->popupMode() == QToolButton::DelayedPopup) {
-      return QAccessible::ButtonDropDown;
-   }
+    }
+    else if ( tb->popupMode() == QToolButton::DelayedPopup )
+    {
+        return QAccessible::ButtonDropDown;
+    }
+
 #endif
 
-   return QAccessible::ButtonMenu;
+    return QAccessible::ButtonMenu;
 }
 
-QAccessibleInterface *QAccessibleToolButton::child(int index) const
+QAccessibleInterface *QAccessibleToolButton::child( int index ) const
 {
 #ifndef QT_NO_MENU
-   if (index == 0 && toolButton()->menu()) {
-      return QAccessible::queryAccessibleInterface(toolButton()->menu());
-   }
+
+    if ( index == 0 && toolButton()->menu() )
+    {
+        return QAccessible::queryAccessibleInterface( toolButton()->menu() );
+    }
+
 #endif
-   return nullptr;
+    return nullptr;
 }
 
 QStringList QAccessibleToolButton::actionNames() const
 {
-   QStringList names;
+    QStringList names;
 
-   if (widget()->isEnabled()) {
-      if (toolButton()->menu()) {
-         names << showMenuAction();
-      }
+    if ( widget()->isEnabled() )
+    {
+        if ( toolButton()->menu() )
+        {
+            names << showMenuAction();
+        }
 
-      if (toolButton()->popupMode() != QToolButton::InstantPopup) {
-         names << QAccessibleButton::actionNames();
-      }
-   }
+        if ( toolButton()->popupMode() != QToolButton::InstantPopup )
+        {
+            names << QAccessibleButton::actionNames();
+        }
+    }
 
-   return names;
+    return names;
 }
 
-void QAccessibleToolButton::doAction(const QString &actionName)
+void QAccessibleToolButton::doAction( const QString &actionName )
 {
-   if (! widget()->isEnabled()) {
-      return;
-   }
+    if ( ! widget()->isEnabled() )
+    {
+        return;
+    }
 
-   if (actionName == pressAction()) {
-      button()->click();
-   } else if (actionName == showMenuAction()) {
-      if (toolButton()->popupMode() != QToolButton::InstantPopup) {
-         toolButton()->setDown(true);
+    if ( actionName == pressAction() )
+    {
+        button()->click();
+    }
+    else if ( actionName == showMenuAction() )
+    {
+        if ( toolButton()->popupMode() != QToolButton::InstantPopup )
+        {
+            toolButton()->setDown( true );
 #ifndef QT_NO_MENU
-         toolButton()->showMenu();
+            toolButton()->showMenu();
 #endif
-      }
-   } else {
-      QAccessibleButton::doAction(actionName);
-   }
+        }
+    }
+    else
+    {
+        QAccessibleButton::doAction( actionName );
+    }
 
 }
 
 #endif // QT_NO_TOOLBUTTON
 
-QAccessibleDisplay::QAccessibleDisplay(QWidget *w, QAccessible::Role role)
-   : QAccessibleWidget(w, role)
+QAccessibleDisplay::QAccessibleDisplay( QWidget *w, QAccessible::Role role )
+    : QAccessibleWidget( w, role )
 {
 }
 
 QAccessible::Role QAccessibleDisplay::role() const
 {
-   QLabel *l = qobject_cast<QLabel *>(object());
+    QLabel *l = qobject_cast<QLabel *>( object() );
 
-   if (l) {
-      if (l->pixmap()) {
-         return QAccessible::Graphic;
-      }
+    if ( l )
+    {
+        if ( l->pixmap() )
+        {
+            return QAccessible::Graphic;
+        }
 
 #ifndef QT_NO_PICTURE
-      if (l->picture()) {
-         return QAccessible::Graphic;
-      }
+
+        if ( l->picture() )
+        {
+            return QAccessible::Graphic;
+        }
 
 #endif
 
 #ifndef QT_NO_MOVIE
-      if (l->movie()) {
-         return QAccessible::Animation;
-      }
+
+        if ( l->movie() )
+        {
+            return QAccessible::Animation;
+        }
+
 #endif
 
 #ifndef QT_NO_PROGRESSBAR
-   } else if (qobject_cast<QProgressBar *>(object())) {
-      return QAccessible::ProgressBar;
+    }
+    else if ( qobject_cast<QProgressBar *>( object() ) )
+    {
+        return QAccessible::ProgressBar;
 #endif
 
-   } else if (qobject_cast<QStatusBar *>(object())) {
-      return QAccessible::StatusBar;
-   }
+    }
+    else if ( qobject_cast<QStatusBar *>( object() ) )
+    {
+        return QAccessible::StatusBar;
+    }
 
-   return QAccessibleWidget::role();
+    return QAccessibleWidget::role();
 }
 
-QString QAccessibleDisplay::text(QAccessible::Text t) const
+QString QAccessibleDisplay::text( QAccessible::Text t ) const
 {
-   QString str;
+    QString str;
 
-   switch (t) {
-      case QAccessible::Name:
-         str = widget()->accessibleName();
+    switch ( t )
+    {
+        case QAccessible::Name:
+            str = widget()->accessibleName();
 
-         if (str.isEmpty()) {
-            if (qobject_cast<QLabel *>(object())) {
-               QLabel *label = qobject_cast<QLabel *>(object());
-               str = label->text();
+            if ( str.isEmpty() )
+            {
+                if ( qobject_cast<QLabel *>( object() ) )
+                {
+                    QLabel *label = qobject_cast<QLabel *>( object() );
+                    str = label->text();
 
 #ifndef QT_NO_TEXTHTMLPARSER
-               if (label->textFormat() == Qt::RichText
-                  || (label->textFormat() == Qt::AutoText && Qt::mightBeRichText(str))) {
-                  QTextDocument doc;
-                  doc.setHtml(str);
-                  str = doc.toPlainText();
-               }
+
+                    if ( label->textFormat() == Qt::RichText
+                            || ( label->textFormat() == Qt::AutoText && Qt::mightBeRichText( str ) ) )
+                    {
+                        QTextDocument doc;
+                        doc.setHtml( str );
+                        str = doc.toPlainText();
+                    }
+
 #endif
 
-               if (label->buddy()) {
-                  str = qt_accStripAmp(str);
-               }
+                    if ( label->buddy() )
+                    {
+                        str = qt_accStripAmp( str );
+                    }
 
 #ifndef QT_NO_LCDNUMBER
-            } else if (qobject_cast<QLCDNumber *>(object())) {
-               QLCDNumber *l = qobject_cast<QLCDNumber *>(object());
-               if (l->digitCount()) {
-                  str = QString::number(l->value());
-               } else {
-                  str = QString::number(l->intValue());
-               }
+                }
+                else if ( qobject_cast<QLCDNumber *>( object() ) )
+                {
+                    QLCDNumber *l = qobject_cast<QLCDNumber *>( object() );
+
+                    if ( l->digitCount() )
+                    {
+                        str = QString::number( l->value() );
+                    }
+                    else
+                    {
+                        str = QString::number( l->intValue() );
+                    }
+
 #endif
 
-            } else if (qobject_cast<QStatusBar *>(object())) {
-               return qobject_cast<QStatusBar *>(object())->currentMessage();
+                }
+                else if ( qobject_cast<QStatusBar *>( object() ) )
+                {
+                    return qobject_cast<QStatusBar *>( object() )->currentMessage();
+                }
             }
-         }
-         break;
 
-      case QAccessible::Value:
+            break;
+
+        case QAccessible::Value:
 #ifndef QT_NO_PROGRESSBAR
-         if (qobject_cast<QProgressBar *>(object())) {
-            str = QString::number(qobject_cast<QProgressBar *>(object())->value());
-         }
-#endif
-         break;
-      default:
-         break;
-   }
+            if ( qobject_cast<QProgressBar *>( object() ) )
+            {
+                str = QString::number( qobject_cast<QProgressBar *>( object() )->value() );
+            }
 
-   if (str.isEmpty()) {
-      str = QAccessibleWidget::text(t);
-   }
-   return str;
+#endif
+            break;
+
+        default:
+            break;
+    }
+
+    if ( str.isEmpty() )
+    {
+        str = QAccessibleWidget::text( t );
+    }
+
+    return str;
 }
 
-QVector<QPair<QAccessibleInterface *, QAccessible::Relation>> QAccessibleDisplay::relations(QAccessible::Relation match ) const
+QVector<QPair<QAccessibleInterface *, QAccessible::Relation>> QAccessibleDisplay::relations( QAccessible::Relation match ) const
 {
-   QVector<QPair<QAccessibleInterface *, QAccessible::Relation>> rels = QAccessibleWidget::relations(match);
+    QVector<QPair<QAccessibleInterface *, QAccessible::Relation>> rels = QAccessibleWidget::relations( match );
 
-   if (match & QAccessible::Labelled) {
-      QVarLengthArray<QObject *, 4> relatedObjects;
+    if ( match & QAccessible::Labelled )
+    {
+        QVarLengthArray<QObject *, 4> relatedObjects;
 
 #ifndef QT_NO_SHORTCUT
-      if (QLabel *label = qobject_cast<QLabel *>(object())) {
-         relatedObjects.append(label->buddy());
-      }
+
+        if ( QLabel *label = qobject_cast<QLabel *>( object() ) )
+        {
+            relatedObjects.append( label->buddy() );
+        }
+
 #endif
 
-      for (int i = 0; i < relatedObjects.count(); ++i) {
-         const QAccessible::Relation rel = QAccessible::Labelled;
-         QAccessibleInterface *iface = QAccessible::queryAccessibleInterface(relatedObjects.at(i));
+        for ( int i = 0; i < relatedObjects.count(); ++i )
+        {
+            const QAccessible::Relation rel = QAccessible::Labelled;
+            QAccessibleInterface *iface = QAccessible::queryAccessibleInterface( relatedObjects.at( i ) );
 
-         if (iface) {
-            rels.append(qMakePair(iface, rel));
-         }
-      }
-   }
+            if ( iface )
+            {
+                rels.append( qMakePair( iface, rel ) );
+            }
+        }
+    }
 
-   return rels;
+    return rels;
 }
 
-void *QAccessibleDisplay::interface_cast(QAccessible::InterfaceType t)
+void *QAccessibleDisplay::interface_cast( QAccessible::InterfaceType t )
 {
-   if (t == QAccessible::ImageInterface) {
-      return static_cast<QAccessibleImageInterface *>(this);
-   }
+    if ( t == QAccessible::ImageInterface )
+    {
+        return static_cast<QAccessibleImageInterface *>( this );
+    }
 
-   return QAccessibleWidget::interface_cast(t);
+    return QAccessibleWidget::interface_cast( t );
 }
 
 QString QAccessibleDisplay::imageDescription() const
 {
 #ifndef QT_NO_TOOLTIP
-   return widget()->toolTip();
+    return widget()->toolTip();
 #else
-   return QString::null;
+    return QString::null;
 #endif
 }
 QSize QAccessibleDisplay::imageSize() const
 {
-   QLabel *label = qobject_cast<QLabel *>(widget());
+    QLabel *label = qobject_cast<QLabel *>( widget() );
 
-   if (! label) {
-      return QSize();
-   }
+    if ( ! label )
+    {
+        return QSize();
+    }
 
-   const QPixmap *pixmap = label->pixmap();
-   if (! pixmap) {
-      return QSize();
-   }
+    const QPixmap *pixmap = label->pixmap();
 
-   return pixmap->size();
+    if ( ! pixmap )
+    {
+        return QSize();
+    }
+
+    return pixmap->size();
 }
 
 QPoint QAccessibleDisplay::imagePosition() const
 {
-   QLabel *label = qobject_cast<QLabel *>(widget());
+    QLabel *label = qobject_cast<QLabel *>( widget() );
 
-   if (! label) {
-      return QPoint();
-   }
-   const QPixmap *pixmap = label->pixmap();
-   if (! pixmap) {
-      return QPoint();
-   }
+    if ( ! label )
+    {
+        return QPoint();
+    }
 
-   return QPoint(label->mapToGlobal(label->pos()));
+    const QPixmap *pixmap = label->pixmap();
+
+    if ( ! pixmap )
+    {
+        return QPoint();
+    }
+
+    return QPoint( label->mapToGlobal( label->pos() ) );
 }
 
 #ifndef QT_NO_GROUPBOX
-QAccessibleGroupBox::QAccessibleGroupBox(QWidget *w)
-   : QAccessibleWidget(w)
+QAccessibleGroupBox::QAccessibleGroupBox( QWidget *w )
+    : QAccessibleWidget( w )
 {
 }
 
 QGroupBox *QAccessibleGroupBox::groupBox() const
 {
-   return static_cast<QGroupBox *>(widget());
+    return static_cast<QGroupBox *>( widget() );
 }
 
-QString QAccessibleGroupBox::text(QAccessible::Text t) const
+QString QAccessibleGroupBox::text( QAccessible::Text t ) const
 {
-   QString txt = QAccessibleWidget::text(t);
+    QString txt = QAccessibleWidget::text( t );
 
-   if (txt.isEmpty()) {
-      switch (t) {
-         case QAccessible::Name:
-            txt = qt_accStripAmp(groupBox()->title());
-            break;
+    if ( txt.isEmpty() )
+    {
+        switch ( t )
+        {
+            case QAccessible::Name:
+                txt = qt_accStripAmp( groupBox()->title() );
+                break;
 
-         case QAccessible::Description:
-            txt = groupBox()->toolTip();
-            break;
+            case QAccessible::Description:
+                txt = groupBox()->toolTip();
+                break;
 
-         case QAccessible::Accelerator:
-            txt = qt_accHotKey(groupBox()->title());
-            break;
+            case QAccessible::Accelerator:
+                txt = qt_accHotKey( groupBox()->title() );
+                break;
 
-         default:
-            break;
-      }
-   }
+            default:
+                break;
+        }
+    }
 
-   return txt;
+    return txt;
 }
 
 QAccessible::State QAccessibleGroupBox::state() const
 {
-   QAccessible::State st = QAccessibleWidget::state();
-   st.checkable = groupBox()->isCheckable();
-   st.checked = groupBox()->isChecked();
-   return st;
+    QAccessible::State st = QAccessibleWidget::state();
+    st.checkable = groupBox()->isCheckable();
+    st.checked = groupBox()->isChecked();
+    return st;
 }
 
 QAccessible::Role QAccessibleGroupBox::role() const
 {
-   return groupBox()->isCheckable() ? QAccessible::CheckBox : QAccessible::Grouping;
+    return groupBox()->isCheckable() ? QAccessible::CheckBox : QAccessible::Grouping;
 }
 
-QVector<QPair<QAccessibleInterface *, QAccessible::Relation>> QAccessibleGroupBox::relations(QAccessible::Relation match) const
+QVector<QPair<QAccessibleInterface *, QAccessible::Relation>> QAccessibleGroupBox::relations( QAccessible::Relation match ) const
 {
-   QVector<QPair<QAccessibleInterface *, QAccessible::Relation>> rels = QAccessibleWidget::relations(match);
+    QVector<QPair<QAccessibleInterface *, QAccessible::Relation>> rels = QAccessibleWidget::relations( match );
 
-   if ((match & QAccessible::Labelled) && (!groupBox()->title().isEmpty())) {
-      const QList<QWidget *> kids = childWidgets(widget());
+    if ( ( match & QAccessible::Labelled ) && ( !groupBox()->title().isEmpty() ) )
+    {
+        const QList<QWidget *> kids = childWidgets( widget() );
 
-      for (int i = 0; i < kids.count(); ++i) {
-         QAccessibleInterface *iface = QAccessible::queryAccessibleInterface(kids.at(i));
+        for ( int i = 0; i < kids.count(); ++i )
+        {
+            QAccessibleInterface *iface = QAccessible::queryAccessibleInterface( kids.at( i ) );
 
-         if (iface) {
-            rels.append(qMakePair(iface, QAccessible::Relation(QAccessible::Labelled)));
-         }
-      }
-   }
+            if ( iface )
+            {
+                rels.append( qMakePair( iface, QAccessible::Relation( QAccessible::Labelled ) ) );
+            }
+        }
+    }
 
-   return rels;
+    return rels;
 }
 
 QStringList QAccessibleGroupBox::actionNames() const
 {
-   QStringList actions = QAccessibleWidget::actionNames();
+    QStringList actions = QAccessibleWidget::actionNames();
 
-   if (groupBox()->isCheckable()) {
-      actions.prepend(QAccessibleActionInterface::toggleAction());
-   }
+    if ( groupBox()->isCheckable() )
+    {
+        actions.prepend( QAccessibleActionInterface::toggleAction() );
+    }
 
-   return actions;
+    return actions;
 }
 
-void QAccessibleGroupBox::doAction(const QString &actionName)
+void QAccessibleGroupBox::doAction( const QString &actionName )
 {
-   if (actionName == QAccessibleActionInterface::toggleAction()) {
-      groupBox()->setChecked(! groupBox()->isChecked());
-   }
+    if ( actionName == QAccessibleActionInterface::toggleAction() )
+    {
+        groupBox()->setChecked( ! groupBox()->isChecked() );
+    }
 }
 
-QStringList QAccessibleGroupBox::keyBindingsForAction(const QString &) const
+QStringList QAccessibleGroupBox::keyBindingsForAction( const QString & ) const
 {
-   return QStringList();
+    return QStringList();
 }
 
 #endif
 
 #ifndef QT_NO_LINEEDIT
 
-QAccessibleLineEdit::QAccessibleLineEdit(QWidget *w, const QString &name)
-   : QAccessibleWidget(w, QAccessible::EditableText, name)
+QAccessibleLineEdit::QAccessibleLineEdit( QWidget *w, const QString &name )
+    : QAccessibleWidget( w, QAccessible::EditableText, name )
 {
-   addControllingSignal("textChanged(const QString&)");
-   addControllingSignal("returnPressed()");
+    addControllingSignal( "textChanged(const QString&)" );
+    addControllingSignal( "returnPressed()" );
 }
 
 QLineEdit *QAccessibleLineEdit::lineEdit() const
 {
-   return qobject_cast<QLineEdit *>(object());
+    return qobject_cast<QLineEdit *>( object() );
 }
 
-QString QAccessibleLineEdit::text(QAccessible::Text t) const
+QString QAccessibleLineEdit::text( QAccessible::Text t ) const
 {
-   QString str;
+    QString str;
 
-   switch (t) {
-      case QAccessible::Value:
-         if (lineEdit()->echoMode() == QLineEdit::Normal) {
-            str = lineEdit()->text();
-         } else if (lineEdit()->echoMode() != QLineEdit::NoEcho) {
-            str = QString(lineEdit()->text().length(), QChar::fromLatin1('*'));
-         }
-         break;
+    switch ( t )
+    {
+        case QAccessible::Value:
+            if ( lineEdit()->echoMode() == QLineEdit::Normal )
+            {
+                str = lineEdit()->text();
+            }
+            else if ( lineEdit()->echoMode() != QLineEdit::NoEcho )
+            {
+                str = QString( lineEdit()->text().length(), QChar::fromLatin1( '*' ) );
+            }
 
-      default:
-         break;
-   }
+            break;
 
-   if (str.isEmpty()) {
-      str = QAccessibleWidget::text(t);
-   }
+        default:
+            break;
+    }
 
-   return str;
+    if ( str.isEmpty() )
+    {
+        str = QAccessibleWidget::text( t );
+    }
+
+    return str;
 }
 
-void QAccessibleLineEdit::setText(QAccessible::Text t, const QString &text)
+void QAccessibleLineEdit::setText( QAccessible::Text t, const QString &text )
 {
-   if (t != QAccessible::Value) {
-      QAccessibleWidget::setText(t, text);
-      return;
-   }
+    if ( t != QAccessible::Value )
+    {
+        QAccessibleWidget::setText( t, text );
+        return;
+    }
 
-   QString newText = text;
-   if (lineEdit()->validator()) {
-      int pos = 0;
-      if (lineEdit()->validator()->validate(newText, pos) != QValidator::Acceptable) {
-         return;
-      }
-   }
+    QString newText = text;
 
-   lineEdit()->setText(newText);
+    if ( lineEdit()->validator() )
+    {
+        int pos = 0;
+
+        if ( lineEdit()->validator()->validate( newText, pos ) != QValidator::Acceptable )
+        {
+            return;
+        }
+    }
+
+    lineEdit()->setText( newText );
 }
 
 QAccessible::State QAccessibleLineEdit::state() const
 {
-   QAccessible::State state = QAccessibleWidget::state();
+    QAccessible::State state = QAccessibleWidget::state();
 
-   QLineEdit *l = lineEdit();
+    QLineEdit *l = lineEdit();
 
-   if (l->isReadOnly()) {
-      state.readOnly = true;
-   } else {
-      state.editable = true;
-   }
+    if ( l->isReadOnly() )
+    {
+        state.readOnly = true;
+    }
+    else
+    {
+        state.editable = true;
+    }
 
-   if (l->echoMode() != QLineEdit::Normal) {
-      state.passwordEdit = true;
-   }
+    if ( l->echoMode() != QLineEdit::Normal )
+    {
+        state.passwordEdit = true;
+    }
 
-   state.selectableText = true;
-   return state;
+    state.selectableText = true;
+    return state;
 }
 
-void *QAccessibleLineEdit::interface_cast(QAccessible::InterfaceType t)
+void *QAccessibleLineEdit::interface_cast( QAccessible::InterfaceType t )
 {
-   if (t == QAccessible::TextInterface) {
-      return static_cast<QAccessibleTextInterface *>(this);
-   }
+    if ( t == QAccessible::TextInterface )
+    {
+        return static_cast<QAccessibleTextInterface *>( this );
+    }
 
-   if (t == QAccessible::EditableTextInterface) {
-      return static_cast<QAccessibleEditableTextInterface *>(this);
-   }
+    if ( t == QAccessible::EditableTextInterface )
+    {
+        return static_cast<QAccessibleEditableTextInterface *>( this );
+    }
 
-   return QAccessibleWidget::interface_cast(t);
+    return QAccessibleWidget::interface_cast( t );
 }
 
-void QAccessibleLineEdit::addSelection(int startOffset, int endOffset)
+void QAccessibleLineEdit::addSelection( int startOffset, int endOffset )
 {
-   setSelection(0, startOffset, endOffset);
+    setSelection( 0, startOffset, endOffset );
 }
 
-QString QAccessibleLineEdit::attributes(int offset, int *startOffset, int *endOffset) const
+QString QAccessibleLineEdit::attributes( int offset, int *startOffset, int *endOffset ) const
 {
-   // QLineEdit doesn't have text attributes
-   *startOffset = *endOffset = offset;
-   return QString();
+    // QLineEdit doesn't have text attributes
+    *startOffset = *endOffset = offset;
+    return QString();
 }
 
 int QAccessibleLineEdit::cursorPosition() const
 {
-   return lineEdit()->cursorPosition();
+    return lineEdit()->cursorPosition();
 }
 
-QRect QAccessibleLineEdit::characterRect(int offset) const
+QRect QAccessibleLineEdit::characterRect( int offset ) const
 {
-   int x = lineEdit()->d_func()->control->cursorToX(offset);
-   int y;
-   lineEdit()->getTextMargins(nullptr, &y, nullptr, nullptr);
-   QFontMetrics fm(lineEdit()->font());
-   const QString ch = text(offset, offset + 1);
+    int x = lineEdit()->d_func()->control->cursorToX( offset );
+    int y;
+    lineEdit()->getTextMargins( nullptr, &y, nullptr, nullptr );
+    QFontMetrics fm( lineEdit()->font() );
+    const QString ch = text( offset, offset + 1 );
 
-   if (ch.isEmpty()) {
-      return QRect();
-   }
+    if ( ch.isEmpty() )
+    {
+        return QRect();
+    }
 
-   int w = fm.width(ch);
-   int h = fm.height();
+    int w = fm.width( ch );
+    int h = fm.height();
 
-   QRect r(x, y, w, h);
-   r.moveTo(lineEdit()->mapToGlobal(r.topLeft()));
-   return r;
+    QRect r( x, y, w, h );
+    r.moveTo( lineEdit()->mapToGlobal( r.topLeft() ) );
+    return r;
 }
 
 int QAccessibleLineEdit::selectionCount() const
 {
-   return lineEdit()->hasSelectedText() ? 1 : 0;
+    return lineEdit()->hasSelectedText() ? 1 : 0;
 }
 
-int QAccessibleLineEdit::offsetAtPoint(const QPoint &point) const
+int QAccessibleLineEdit::offsetAtPoint( const QPoint &point ) const
 {
-   QPoint p = lineEdit()->mapFromGlobal(point);
+    QPoint p = lineEdit()->mapFromGlobal( point );
 
-   return lineEdit()->cursorPositionAt(p);
+    return lineEdit()->cursorPositionAt( p );
 }
 
-void QAccessibleLineEdit::selection(int selectionIndex, int *startOffset, int *endOffset) const
+void QAccessibleLineEdit::selection( int selectionIndex, int *startOffset, int *endOffset ) const
 {
-   *startOffset = 0;
-   *endOffset   = 0;
+    *startOffset = 0;
+    *endOffset   = 0;
 
-   if (selectionIndex != 0) {
-      return;
-   }
+    if ( selectionIndex != 0 )
+    {
+        return;
+    }
 
-   *startOffset = lineEdit()->selectionStart();
-   *endOffset = *startOffset + lineEdit()->selectedText().count();
+    *startOffset = lineEdit()->selectionStart();
+    *endOffset = *startOffset + lineEdit()->selectedText().count();
 }
 
-QString QAccessibleLineEdit::text(int startOffset, int endOffset) const
+QString QAccessibleLineEdit::text( int startOffset, int endOffset ) const
 {
-   if (startOffset > endOffset) {
-      return QString();
-   }
+    if ( startOffset > endOffset )
+    {
+        return QString();
+    }
 
-   if (lineEdit()->echoMode() != QLineEdit::Normal) {
-      return QString();
-   }
+    if ( lineEdit()->echoMode() != QLineEdit::Normal )
+    {
+        return QString();
+    }
 
-   return lineEdit()->text().mid(startOffset, endOffset - startOffset);
+    return lineEdit()->text().mid( startOffset, endOffset - startOffset );
 }
 
-QString QAccessibleLineEdit::textBeforeOffset(int offset, QAccessible::TextBoundaryType boundaryType,
-   int *startOffset, int *endOffset) const
+QString QAccessibleLineEdit::textBeforeOffset( int offset, QAccessible::TextBoundaryType boundaryType,
+        int *startOffset, int *endOffset ) const
 {
-   if (lineEdit()->echoMode() != QLineEdit::Normal) {
-      *startOffset = *endOffset = -1;
-      return QString();
-   }
+    if ( lineEdit()->echoMode() != QLineEdit::Normal )
+    {
+        *startOffset = *endOffset = -1;
+        return QString();
+    }
 
-   if (offset == -2) {
-      offset = cursorPosition();
-   }
+    if ( offset == -2 )
+    {
+        offset = cursorPosition();
+    }
 
-   return QAccessibleTextInterface::textBeforeOffset(offset, boundaryType, startOffset, endOffset);
+    return QAccessibleTextInterface::textBeforeOffset( offset, boundaryType, startOffset, endOffset );
 }
 
-QString QAccessibleLineEdit::textAfterOffset(int offset, QAccessible::TextBoundaryType boundaryType,
-      int *startOffset, int *endOffset) const
+QString QAccessibleLineEdit::textAfterOffset( int offset, QAccessible::TextBoundaryType boundaryType,
+        int *startOffset, int *endOffset ) const
 {
-   if (lineEdit()->echoMode() != QLineEdit::Normal) {
-      *startOffset = *endOffset = -1;
-      return QString();
-   }
+    if ( lineEdit()->echoMode() != QLineEdit::Normal )
+    {
+        *startOffset = *endOffset = -1;
+        return QString();
+    }
 
-   if (offset == -2) {
-      offset = cursorPosition();
-   }
+    if ( offset == -2 )
+    {
+        offset = cursorPosition();
+    }
 
-   return QAccessibleTextInterface::textAfterOffset(offset, boundaryType, startOffset, endOffset);
+    return QAccessibleTextInterface::textAfterOffset( offset, boundaryType, startOffset, endOffset );
 }
 
-QString QAccessibleLineEdit::textAtOffset(int offset, QAccessible::TextBoundaryType boundaryType,
-      int *startOffset, int *endOffset) const
+QString QAccessibleLineEdit::textAtOffset( int offset, QAccessible::TextBoundaryType boundaryType,
+        int *startOffset, int *endOffset ) const
 {
-   if (lineEdit()->echoMode() != QLineEdit::Normal) {
-      *startOffset = *endOffset = -1;
-      return QString();
-   }
+    if ( lineEdit()->echoMode() != QLineEdit::Normal )
+    {
+        *startOffset = *endOffset = -1;
+        return QString();
+    }
 
-   if (offset == -2) {
-      offset = cursorPosition();
-   }
+    if ( offset == -2 )
+    {
+        offset = cursorPosition();
+    }
 
-   return QAccessibleTextInterface::textAtOffset(offset, boundaryType, startOffset, endOffset);
+    return QAccessibleTextInterface::textAtOffset( offset, boundaryType, startOffset, endOffset );
 }
 
-void QAccessibleLineEdit::removeSelection(int selectionIndex)
+void QAccessibleLineEdit::removeSelection( int selectionIndex )
 {
-   if (selectionIndex != 0) {
-      return;
-   }
+    if ( selectionIndex != 0 )
+    {
+        return;
+    }
 
-   lineEdit()->deselect();
+    lineEdit()->deselect();
 }
 
-void QAccessibleLineEdit::setCursorPosition(int position)
+void QAccessibleLineEdit::setCursorPosition( int position )
 {
-   lineEdit()->setCursorPosition(position);
+    lineEdit()->setCursorPosition( position );
 }
 
-void QAccessibleLineEdit::setSelection(int selectionIndex, int startOffset, int endOffset)
+void QAccessibleLineEdit::setSelection( int selectionIndex, int startOffset, int endOffset )
 {
-   if (selectionIndex != 0) {
-      return;
-   }
+    if ( selectionIndex != 0 )
+    {
+        return;
+    }
 
-   lineEdit()->setSelection(startOffset, endOffset - startOffset);
+    lineEdit()->setSelection( startOffset, endOffset - startOffset );
 }
 
 int QAccessibleLineEdit::characterCount() const
 {
-   return lineEdit()->text().count();
+    return lineEdit()->text().count();
 }
 
-void QAccessibleLineEdit::scrollToSubstring(int startIndex, int endIndex)
+void QAccessibleLineEdit::scrollToSubstring( int startIndex, int endIndex )
 {
-   lineEdit()->setCursorPosition(endIndex);
-   lineEdit()->setCursorPosition(startIndex);
+    lineEdit()->setCursorPosition( endIndex );
+    lineEdit()->setCursorPosition( startIndex );
 }
 
-void QAccessibleLineEdit::deleteText(int startOffset, int endOffset)
+void QAccessibleLineEdit::deleteText( int startOffset, int endOffset )
 {
-   lineEdit()->setText(lineEdit()->text().remove(startOffset, endOffset - startOffset));
+    lineEdit()->setText( lineEdit()->text().remove( startOffset, endOffset - startOffset ) );
 }
 
-void QAccessibleLineEdit::insertText(int offset, const QString &text)
+void QAccessibleLineEdit::insertText( int offset, const QString &text )
 {
-   lineEdit()->setText(lineEdit()->text().insert(offset, text));
+    lineEdit()->setText( lineEdit()->text().insert( offset, text ) );
 }
 
-void QAccessibleLineEdit::replaceText(int startOffset, int endOffset, const QString &text)
+void QAccessibleLineEdit::replaceText( int startOffset, int endOffset, const QString &text )
 {
-   lineEdit()->setText(lineEdit()->text().replace(startOffset, endOffset - startOffset, text));
+    lineEdit()->setText( lineEdit()->text().replace( startOffset, endOffset - startOffset, text ) );
 }
 
 #endif // QT_NO_LINEEDIT
 
 #ifndef QT_NO_PROGRESSBAR
-QAccessibleProgressBar::QAccessibleProgressBar(QWidget *o)
-   : QAccessibleDisplay(o)
+QAccessibleProgressBar::QAccessibleProgressBar( QWidget *o )
+    : QAccessibleDisplay( o )
 {
-   Q_ASSERT(progressBar());
+    Q_ASSERT( progressBar() );
 }
 
-void *QAccessibleProgressBar::interface_cast(QAccessible::InterfaceType t)
+void *QAccessibleProgressBar::interface_cast( QAccessible::InterfaceType t )
 {
-   if (t == QAccessible::ValueInterface) {
-      return static_cast<QAccessibleValueInterface *>(this);
-   }
-   return QAccessibleDisplay::interface_cast(t);
+    if ( t == QAccessible::ValueInterface )
+    {
+        return static_cast<QAccessibleValueInterface *>( this );
+    }
+
+    return QAccessibleDisplay::interface_cast( t );
 }
 
 QVariant QAccessibleProgressBar::currentValue() const
 {
-   return progressBar()->value();
+    return progressBar()->value();
 }
 
 QVariant QAccessibleProgressBar::maximumValue() const
 {
-   return progressBar()->maximum();
+    return progressBar()->maximum();
 }
 
 QVariant QAccessibleProgressBar::minimumValue() const
 {
-   return progressBar()->minimum();
+    return progressBar()->minimum();
 }
 
 QVariant QAccessibleProgressBar::minimumStepSize() const
 {
-   // This is arbitrary since any value between min and max is valid.
-   // Some screen readers (orca use it to calculate how many digits to display though,
-   // so it makes sense to return a "sensible" value. Providing 100 increments seems ok.
-   return (progressBar()->maximum() - progressBar()->minimum()) / 100.0;
+    // This is arbitrary since any value between min and max is valid.
+    // Some screen readers (orca use it to calculate how many digits to display though,
+    // so it makes sense to return a "sensible" value. Providing 100 increments seems ok.
+    return ( progressBar()->maximum() - progressBar()->minimum() ) / 100.0;
 }
 
 QProgressBar *QAccessibleProgressBar::progressBar() const
 {
-   return qobject_cast<QProgressBar *>(object());
+    return qobject_cast<QProgressBar *>( object() );
 }
 #endif
 
-QAccessibleWindowContainer::QAccessibleWindowContainer(QWidget *w)
-   : QAccessibleWidget(w)
+QAccessibleWindowContainer::QAccessibleWindowContainer( QWidget *w )
+    : QAccessibleWidget( w )
 {
 }
 
 int QAccessibleWindowContainer::childCount() const
 {
-   if (container()->containedWindow()) {
-      return 1;
-   }
+    if ( container()->containedWindow() )
+    {
+        return 1;
+    }
 
-   return 0;
+    return 0;
 }
 
-int QAccessibleWindowContainer::indexOfChild(const QAccessibleInterface *child) const
+int QAccessibleWindowContainer::indexOfChild( const QAccessibleInterface *child ) const
 {
-   if (child->object() == container()->containedWindow()) {
-      return 0;
-   }
+    if ( child->object() == container()->containedWindow() )
+    {
+        return 0;
+    }
 
-   return -1;
+    return -1;
 }
 
-QAccessibleInterface *QAccessibleWindowContainer::child(int i) const
+QAccessibleInterface *QAccessibleWindowContainer::child( int i ) const
 {
-   if (i == 0) {
-      return QAccessible::queryAccessibleInterface(container()->containedWindow());
-   }
+    if ( i == 0 )
+    {
+        return QAccessible::queryAccessibleInterface( container()->containedWindow() );
+    }
 
-   return nullptr;
+    return nullptr;
 }
 
 QWindowContainer *QAccessibleWindowContainer::container() const
 {
-   return static_cast<QWindowContainer *>(widget());
+    return static_cast<QWindowContainer *>( widget() );
 }
 
 #endif // QT_NO_ACCESSIBILITY

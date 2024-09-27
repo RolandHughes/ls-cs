@@ -37,26 +37,29 @@
 #include "XMLNames.h"
 
 #include <wtf/StaticConstructors.h>
-namespace WebCore {
+namespace WebCore
+{
 
- namespace XMLNames {
+namespace XMLNames
+{
 
 using namespace WebCore;
 
-DEFINE_GLOBAL(AtomicString, xmlNamespaceURI, "http://www.w3.org/XML/1998/namespace")
+DEFINE_GLOBAL( AtomicString, xmlNamespaceURI, "http://www.w3.org/XML/1998/namespace" )
 
 // Attributes
-DEFINE_GLOBAL(QualifiedName, baseAttr, nullAtom, "base", xmlNamespaceURI);
-DEFINE_GLOBAL(QualifiedName, langAttr, nullAtom, "lang", xmlNamespaceURI);
-DEFINE_GLOBAL(QualifiedName, spaceAttr, nullAtom, "space", xmlNamespaceURI);
+DEFINE_GLOBAL( QualifiedName, baseAttr, nullAtom, "base", xmlNamespaceURI );
+DEFINE_GLOBAL( QualifiedName, langAttr, nullAtom, "lang", xmlNamespaceURI );
+DEFINE_GLOBAL( QualifiedName, spaceAttr, nullAtom, "space", xmlNamespaceURI );
 
 
-WebCore::QualifiedName** getXMLAttrs(size_t* size)
+WebCore::QualifiedName **getXMLAttrs( size_t *size )
 {
-    static WebCore::QualifiedName* XMLAttr[] = {
-        (WebCore::QualifiedName*)&baseAttr,
-        (WebCore::QualifiedName*)&langAttr,
-        (WebCore::QualifiedName*)&spaceAttr,
+    static WebCore::QualifiedName *XMLAttr[] =
+    {
+        ( WebCore::QualifiedName * ) &baseAttr,
+        ( WebCore::QualifiedName * ) &langAttr,
+        ( WebCore::QualifiedName * ) &spaceAttr,
     };
     *size = 3;
     return XMLAttr;
@@ -65,23 +68,28 @@ WebCore::QualifiedName** getXMLAttrs(size_t* size)
 void init()
 {
     static bool initialized = false;
-    if (initialized)
+
+    if ( initialized )
+    {
         return;
+    }
+
     initialized = true;
-    
+
     // Use placement new to initialize the globals.
-    
+
     AtomicString::init();
-    AtomicString xmlNS("http://www.w3.org/XML/1998/namespace");
+    AtomicString xmlNS( "http://www.w3.org/XML/1998/namespace" );
 
     // Namespace
-    new ((void*)&xmlNamespaceURI) AtomicString(xmlNS);
+    new ( ( void * )&xmlNamespaceURI ) AtomicString( xmlNS );
 
     // Attributes
-    new ((void*)&baseAttr) QualifiedName(nullAtom, "base", xmlNS);
-    new ((void*)&langAttr) QualifiedName(nullAtom, "lang", xmlNS);
-    new ((void*)&spaceAttr) QualifiedName(nullAtom, "space", xmlNS);
+    new ( ( void * )&baseAttr ) QualifiedName( nullAtom, "base", xmlNS );
+    new ( ( void * )&langAttr ) QualifiedName( nullAtom, "lang", xmlNS );
+    new ( ( void * )&spaceAttr ) QualifiedName( nullAtom, "space", xmlNS );
 }
 
-} }
+}
+}
 

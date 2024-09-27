@@ -30,22 +30,22 @@
 
 #include <qpdf_p.h>
 
-QPdfWriter::QPdfWriter(const QString &filename)
-    : QObject(), m_engine(new QPdfEngine())
+QPdfWriter::QPdfWriter( const QString &filename )
+    : QObject(), m_engine( new QPdfEngine() )
 {
-   m_engine->setOutputFilename(filename);
+    m_engine->setOutputFilename( filename );
 
-   // set QPagedPaintDevice layout to match the current paint engine layout
-   QPagedPaintDevice::setPageLayout(m_engine->pageLayout());
+    // set QPagedPaintDevice layout to match the current paint engine layout
+    QPagedPaintDevice::setPageLayout( m_engine->pageLayout() );
 }
 
-QPdfWriter::QPdfWriter(QIODevice *device)
-    : QObject(), m_engine(new QPdfEngine())
+QPdfWriter::QPdfWriter( QIODevice *device )
+    : QObject(), m_engine( new QPdfEngine() )
 {
-   m_engine->d_func()->outDevice = device;
+    m_engine->d_func()->outDevice = device;
 
-   // set QPagedPaintDevice layout to match the current paint engine layout
-   QPagedPaintDevice::setPageLayout(m_engine->pageLayout());
+    // set QPagedPaintDevice layout to match the current paint engine layout
+    QPagedPaintDevice::setPageLayout( m_engine->pageLayout() );
 }
 
 QPdfWriter::~QPdfWriter()
@@ -54,27 +54,27 @@ QPdfWriter::~QPdfWriter()
 
 QString QPdfWriter::creator() const
 {
-   return m_engine->d_func()->creator;
+    return m_engine->d_func()->creator;
 }
 
-void QPdfWriter::setCreator(const QString &creator)
+void QPdfWriter::setCreator( const QString &creator )
 {
-   m_engine->d_func()->creator = creator;
+    m_engine->d_func()->creator = creator;
 }
 
 QString QPdfWriter::title() const
 {
-   return m_engine->d_func()->title;
+    return m_engine->d_func()->title;
 }
 
-void QPdfWriter::setTitle(const QString &title)
+void QPdfWriter::setTitle( const QString &title )
 {
-   m_engine->d_func()->title = title;
+    m_engine->d_func()->title = title;
 }
 
 QPaintEngine *QPdfWriter::paintEngine() const
 {
-   return m_engine.get();
+    return m_engine.get();
 }
 
 int QPdfWriter::resolution() const
@@ -82,82 +82,83 @@ int QPdfWriter::resolution() const
     return m_engine->resolution();
 }
 
-void QPdfWriter::setResolution(int resolution)
+void QPdfWriter::setResolution( int resolution )
 {
-   if (resolution > 0) {
-      m_engine->setResolution(resolution);
-   }
+    if ( resolution > 0 )
+    {
+        m_engine->setResolution( resolution );
+    }
 }
 
-int QPdfWriter::metric(PaintDeviceMetric id) const
+int QPdfWriter::metric( PaintDeviceMetric id ) const
 {
-   return m_engine->metric(id);
+    return m_engine->metric( id );
 }
 
 bool QPdfWriter::newPage()
 {
-   return m_engine->newPage();
+    return m_engine->newPage();
 }
 
 QPageLayout QPdfWriter::pageLayout() const
 {
-  return m_engine->pageLayout();
+    return m_engine->pageLayout();
 }
 
-bool QPdfWriter::setPageLayout(const QPageLayout &newPageLayout)
+bool QPdfWriter::setPageLayout( const QPageLayout &newPageLayout )
 {
-  m_engine->setPageLayout(newPageLayout);
+    m_engine->setPageLayout( newPageLayout );
 
-  m_pageLayout = m_engine->pageLayout();
-  return m_pageLayout.isEquivalentTo(newPageLayout);
+    m_pageLayout = m_engine->pageLayout();
+    return m_pageLayout.isEquivalentTo( newPageLayout );
 }
 
-bool QPdfWriter::setPageOrientation(QPageLayout::Orientation orientation)
+bool QPdfWriter::setPageOrientation( QPageLayout::Orientation orientation )
 {
-  m_engine->setPageOrientation(orientation);
+    m_engine->setPageOrientation( orientation );
 
-  m_pageLayout = m_engine->pageLayout();
-  return m_pageLayout.orientation() == orientation;
+    m_pageLayout = m_engine->pageLayout();
+    return m_pageLayout.orientation() == orientation;
 }
 
-void QPdfWriter::setMargins(const QMarginsF &margins)
+void QPdfWriter::setMargins( const QMarginsF &margins )
 {
-   // forward
-   setPageMargins(margins, QPageSize::Unit::Millimeter);
+    // forward
+    setPageMargins( margins, QPageSize::Unit::Millimeter );
 }
 
-bool QPdfWriter::setPageMargins(const QMarginsF &margins)
+bool QPdfWriter::setPageMargins( const QMarginsF &margins )
 {
-  // forward
-  return setPageMargins(margins, pageLayout().units());
+    // forward
+    return setPageMargins( margins, pageLayout().units() );
 }
 
-bool QPdfWriter::setPageMargins(const QMarginsF &margins, QPageLayout::Unit units)
+bool QPdfWriter::setPageMargins( const QMarginsF &margins, QPageLayout::Unit units )
 {
-  m_engine->setPageMargins(margins, units);
+    m_engine->setPageMargins( margins, units );
 
-  m_pageLayout = m_engine->pageLayout();
-  return m_pageLayout.margins() == margins && m_pageLayout.units() == units;
+    m_pageLayout = m_engine->pageLayout();
+    return m_pageLayout.margins() == margins && m_pageLayout.units() == units;
 }
 
-void QPdfWriter::setPageSize(QPageSize::PageSizeId sizeId)
+void QPdfWriter::setPageSize( QPageSize::PageSizeId sizeId )
 {
-   // forward
-   setPageSize(QPageSize(sizeId));
+    // forward
+    setPageSize( QPageSize( sizeId ) );
 }
 
-void QPdfWriter::setPageSizeMM(const QSizeF &size)
+void QPdfWriter::setPageSizeMM( const QSizeF &size )
 {
-   // forward
-   setPageSize(QPageSize(size, QPageSize::Millimeter));
+    // forward
+    setPageSize( QPageSize( size, QPageSize::Millimeter ) );
 }
 
-bool QPdfWriter::setPageSize(const QPageSize &pageSize)
+bool QPdfWriter::setPageSize( const QPageSize &pageSize )
 {
-  m_engine->setPageSize(pageSize);
+    m_engine->setPageSize( pageSize );
 
-  m_pageLayout = m_engine->pageLayout();
-  return m_pageLayout.pageSize().isEquivalentTo(pageSize);
+    m_pageLayout = m_engine->pageLayout();
+    return m_pageLayout.pageSize().isEquivalentTo( pageSize );
 }
 
 #endif // QT_NO_PDF

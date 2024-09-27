@@ -32,34 +32,35 @@ class QAnimationGroupPrivate;
 
 class Q_CORE_EXPORT QAnimationGroup : public QAbstractAnimation
 {
-   CORE_CS_OBJECT(QAnimationGroup)
+    CORE_CS_OBJECT( QAnimationGroup )
 
- public:
-   QAnimationGroup(QObject *parent = nullptr);
+public:
+    QAnimationGroup( QObject *parent = nullptr );
 
-   QAnimationGroup(const QAnimationGroup &) = delete;
-   QAnimationGroup &operator=(const QAnimationGroup &) = delete;
+    QAnimationGroup( const QAnimationGroup & ) = delete;
+    QAnimationGroup &operator=( const QAnimationGroup & ) = delete;
 
-   ~QAnimationGroup();
+    ~QAnimationGroup();
 
-   QAbstractAnimation *animationAt(int index) const;
-   int animationCount() const;
-   int indexOfAnimation(QAbstractAnimation *animation) const;
-   void addAnimation(QAbstractAnimation *animation);
-   void insertAnimation(int index, QAbstractAnimation *animation);
-   void removeAnimation(QAbstractAnimation *animation);
-   QAbstractAnimation *takeAnimation(int index);
-   void clear();
+    QAbstractAnimation *animationAt( int index ) const;
+    int animationCount() const;
+    int indexOfAnimation( QAbstractAnimation *animation ) const;
+    void addAnimation( QAbstractAnimation *animation );
+    void insertAnimation( int index, QAbstractAnimation *animation );
+    void removeAnimation( QAbstractAnimation *animation );
+    QAbstractAnimation *takeAnimation( int index );
+    void clear();
 
- protected:
-   QAnimationGroup(QAnimationGroupPrivate &dd, QObject *parent);
-   bool event(QEvent *event) override;
+protected:
+    QAnimationGroup( QAnimationGroupPrivate &dd, QObject *parent );
+    bool event( QEvent *event ) override;
 
- private:
-   Q_DECLARE_PRIVATE(QAnimationGroup)
+private:
+    Q_DECLARE_PRIVATE( QAnimationGroup )
 
-   virtual void _q_uncontrolledAnimationFinished() {
-   }
+    virtual void _q_uncontrolledAnimationFinished()
+    {
+    }
 };
 
 #endif // QT_NO_ANIMATION

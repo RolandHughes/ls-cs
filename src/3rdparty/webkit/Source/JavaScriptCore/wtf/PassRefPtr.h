@@ -24,286 +24,341 @@
 #include "AlwaysInline.h"
 #include "NullPtr.h"
 
-namespace WTF {
+namespace WTF
+{
 
-    template<typename T> class RefPtr;
-    template<typename T> class PassRefPtr;
-    template<typename T> PassRefPtr<T> adoptRef(T*);
+template<typename T> class RefPtr;
+template<typename T> class PassRefPtr;
+template<typename T> PassRefPtr<T> adoptRef( T * );
 
-    inline void adopted(const void*) { }
+inline void adopted( const void * ) { }
 
 #if !COMPILER(WINSCW)
 #if !PLATFORM(QT)
-    #define REF_DEREF_INLINE ALWAYS_INLINE
+#define REF_DEREF_INLINE ALWAYS_INLINE
 #else
-    // Using ALWAYS_INLINE broke the Qt build. This may be a GCC bug.
-    // See https://bugs.webkit.org/show_bug.cgi?id=37253 for details.
-    #define REF_DEREF_INLINE inline
+// Using ALWAYS_INLINE broke the Qt build. This may be a GCC bug.
+// See https://bugs.webkit.org/show_bug.cgi?id=37253 for details.
+#define REF_DEREF_INLINE inline
 #endif
 #else
-    // No inlining for WINSCW compiler to prevent the compiler agressively resolving
-    // T::ref() and T::deref(), which will fail compiling when PassRefPtr<T> is used as
-    // a class member or function arguments before T is defined.
-    #define REF_DEREF_INLINE
+// No inlining for WINSCW compiler to prevent the compiler agressively resolving
+// T::ref() and T::deref(), which will fail compiling when PassRefPtr<T> is used as
+// a class member or function arguments before T is defined.
+#define REF_DEREF_INLINE
 #endif
 
-    template<typename T> REF_DEREF_INLINE void refIfNotNull(T* ptr)
+template<typename T> REF_DEREF_INLINE void refIfNotNull( T *ptr )
+{
+    if ( LIKELY( ptr != nullptr ) )
     {
-        if (LIKELY(ptr != nullptr))
-            ptr->ref();
+        ptr->ref();
+    }
+}
+
+template<typename T> REF_DEREF_INLINE void derefIfNotNull( T *ptr )
+{
+    if ( LIKELY( ptr != nullptr ) )
+    {
+        ptr->deref();
+    }
+}
+
+#undef REF_DEREF_INLINE
+
+template<typename T> class PassRefPtr
+{
+public:
+    PassRefPtr()
+        : m_ptr( nullptr )
+    { }
+
+    PassRefPtr( T *ptr ) : m_ptr( ptr )
+    {
+        refIfNotNull( ptr );
+    }
+    // It somewhat breaks the type system to allow transfer of ownership out of
+    // a const PassRefPtr. However, it makes it much easier to work with PassRefPtr
+    // temporaries, and we don't have a need to use real const PassRefPtrs anyway.
+    PassRefPtr( const PassRefPtr &o ) : m_ptr( o.leakRef() ) { }
+    template<typename U> PassRefPtr( const PassRefPtr<U> &o ) : m_ptr( o.leakRef() ) { }
+
+    ALWAYS_INLINE ~PassRefPtr()
+    {
+        derefIfNotNull( m_ptr );
     }
 
-    template<typename T> REF_DEREF_INLINE void derefIfNotNull(T* ptr)
+    template<typename U> PassRefPtr( const RefPtr<U> & );
+
+    T *get() const
     {
-        if (LIKELY(ptr != nullptr))
-            ptr->deref();
+        return m_ptr;
     }
 
-    #undef REF_DEREF_INLINE
+    void clear();
+    T *leakRef() const WARN_UNUSED_RETURN;
 
-    template<typename T> class PassRefPtr {
-    public:
-        PassRefPtr()
-          : m_ptr(nullptr)
-        { }
+    T &operator*() const
+    {
+        return *m_ptr;
+    }
+    T *operator->() const
+    {
+        return m_ptr;
+    }
 
-        PassRefPtr(T* ptr) : m_ptr(ptr) { refIfNotNull(ptr); }
-        // It somewhat breaks the type system to allow transfer of ownership out of
-        // a const PassRefPtr. However, it makes it much easier to work with PassRefPtr
-        // temporaries, and we don't have a need to use real const PassRefPtrs anyway.
-        PassRefPtr(const PassRefPtr& o) : m_ptr(o.leakRef()) { }
-        template<typename U> PassRefPtr(const PassRefPtr<U>& o) : m_ptr(o.leakRef()) { }
+    bool operator!() const
+    {
+        return !m_ptr;
+    }
 
-        ALWAYS_INLINE ~PassRefPtr() { derefIfNotNull(m_ptr); }
+    // This conversion operator allows implicit conversion to bool but not to other integer types.
+    typedef T *( PassRefPtr::*UnspecifiedBoolType );
+    operator UnspecifiedBoolType() const
+    {
+        return m_ptr ? &PassRefPtr::m_ptr : nullptr;
+    }
 
-        template<typename U> PassRefPtr(const RefPtr<U>&);
-
-        T* get() const { return m_ptr; }
-
-        void clear();
-        T* leakRef() const WARN_UNUSED_RETURN;
-
-        T& operator*() const { return *m_ptr; }
-        T* operator->() const { return m_ptr; }
-
-        bool operator!() const { return !m_ptr; }
-
-        // This conversion operator allows implicit conversion to bool but not to other integer types.
-        typedef T* (PassRefPtr::*UnspecifiedBoolType);
-        operator UnspecifiedBoolType() const { return m_ptr ? &PassRefPtr::m_ptr : nullptr; }
-
-        PassRefPtr& operator=(T*);
-        PassRefPtr& operator=(const PassRefPtr&);
+    PassRefPtr &operator=( T * );
+    PassRefPtr &operator=( const PassRefPtr & );
 #if !HAVE(NULLPTR)
-        PassRefPtr& operator=(std::nullptr_t) { clear(); return *this; }
+    PassRefPtr &operator=( std::nullptr_t )
+    {
+        clear();
+        return *this;
+    }
 #endif
-        template<typename U> PassRefPtr& operator=(const PassRefPtr<U>&);
-        template<typename U> PassRefPtr& operator=(const RefPtr<U>&);
+    template<typename U> PassRefPtr &operator=( const PassRefPtr<U> & );
+    template<typename U> PassRefPtr &operator=( const RefPtr<U> & );
 
-        friend PassRefPtr adoptRef<T>(T*);
+    friend PassRefPtr adoptRef<T>( T * );
 
-        // FIXME: Remove releaseRef once we change all callers to call leakRef instead.
-        T* releaseRef() const WARN_UNUSED_RETURN { return leakRef(); }
-
-    private:
-        // adopting constructor
-        PassRefPtr(T* ptr, bool) : m_ptr(ptr) { }
-
-        mutable T* m_ptr;
-    };
-
-    // NonNullPassRefPtr: Optimized for passing non-null pointers. A NonNullPassRefPtr
-    // begins life non-null, and can only become null through a call to leakRef()
-    // or clear().
-
-    // FIXME: NonNullPassRefPtr could just inherit from PassRefPtr. However,
-    // if we use inheritance, GCC's optimizer fails to realize that destruction
-    // of a released NonNullPassRefPtr is a no-op. So, for now, just copy the
-    // most important code from PassRefPtr.
-    template<typename T> class NonNullPassRefPtr {
-    public:
-        NonNullPassRefPtr(T* ptr)
-            : m_ptr(ptr)
-        {
-            ASSERT(m_ptr);
-            m_ptr->ref();
-        }
-
-        template<typename U> NonNullPassRefPtr(const RefPtr<U>& o)
-            : m_ptr(o.get())
-        {
-            ASSERT(m_ptr);
-            m_ptr->ref();
-        }
-
-        NonNullPassRefPtr(const NonNullPassRefPtr& o)
-            : m_ptr(o.leakRef())
-        {
-            ASSERT(m_ptr);
-        }
-
-        template<typename U> NonNullPassRefPtr(const NonNullPassRefPtr<U>& o)
-            : m_ptr(o.leakRef())
-        {
-            ASSERT(m_ptr);
-        }
-
-        template<typename U> NonNullPassRefPtr(const PassRefPtr<U>& o)
-            : m_ptr(o.leakRef())
-        {
-            ASSERT(m_ptr);
-        }
-
-        ALWAYS_INLINE ~NonNullPassRefPtr() { derefIfNotNull(m_ptr); }
-
-        T* get() const { return m_ptr; }
-
-        void clear();
-        T* leakRef() const WARN_UNUSED_RETURN { T* tmp = m_ptr; m_ptr = nullptr; return tmp; }
-
-        T& operator*() const { return *m_ptr; }
-        T* operator->() const { return m_ptr; }
-
-        // FIXME: Remove releaseRef once we change all callers to call leakRef instead.
-        T* releaseRef() const WARN_UNUSED_RETURN { return leakRef(); }
-
-    private:
-        mutable T* m_ptr;
-    };
-
-    template<typename T> template<typename U> inline PassRefPtr<T>::PassRefPtr(const RefPtr<U>& o)
-        : m_ptr(o.get())
+    // FIXME: Remove releaseRef once we change all callers to call leakRef instead.
+    T *releaseRef() const WARN_UNUSED_RETURN
     {
-        T* ptr = m_ptr;
-        refIfNotNull(ptr);
+        return leakRef();
     }
 
-    template<typename T> inline void PassRefPtr<T>::clear()
+private:
+    // adopting constructor
+    PassRefPtr( T *ptr, bool ) : m_ptr( ptr ) { }
+
+    mutable T *m_ptr;
+};
+
+// NonNullPassRefPtr: Optimized for passing non-null pointers. A NonNullPassRefPtr
+// begins life non-null, and can only become null through a call to leakRef()
+// or clear().
+
+// FIXME: NonNullPassRefPtr could just inherit from PassRefPtr. However,
+// if we use inheritance, GCC's optimizer fails to realize that destruction
+// of a released NonNullPassRefPtr is a no-op. So, for now, just copy the
+// most important code from PassRefPtr.
+template<typename T> class NonNullPassRefPtr
+{
+public:
+    NonNullPassRefPtr( T *ptr )
+        : m_ptr( ptr )
     {
-        T* ptr = m_ptr;
-        m_ptr  = nullptr;
-        derefIfNotNull(ptr);
+        ASSERT( m_ptr );
+        m_ptr->ref();
     }
 
-    template<typename T> inline T* PassRefPtr<T>::leakRef() const
+    template<typename U> NonNullPassRefPtr( const RefPtr<U> &o )
+        : m_ptr( o.get() )
     {
-        T* ptr = m_ptr;
-        m_ptr  = nullptr;
-        return ptr;
+        ASSERT( m_ptr );
+        m_ptr->ref();
     }
 
-    template<typename T> template<typename U> inline PassRefPtr<T>& PassRefPtr<T>::operator=(const RefPtr<U>& o)
+    NonNullPassRefPtr( const NonNullPassRefPtr &o )
+        : m_ptr( o.leakRef() )
     {
-        T* optr = o.get();
-        refIfNotNull(optr);
-        T* ptr = m_ptr;
-        m_ptr = optr;
-        derefIfNotNull(ptr);
-        return *this;
+        ASSERT( m_ptr );
     }
 
-    template<typename T> inline PassRefPtr<T>& PassRefPtr<T>::operator=(T* optr)
+    template<typename U> NonNullPassRefPtr( const NonNullPassRefPtr<U> &o )
+        : m_ptr( o.leakRef() )
     {
-        refIfNotNull(optr);
-        T* ptr = m_ptr;
-        m_ptr = optr;
-        derefIfNotNull(ptr);
-        return *this;
+        ASSERT( m_ptr );
     }
 
-    template<typename T> inline PassRefPtr<T>& PassRefPtr<T>::operator=(const PassRefPtr<T>& ref)
+    template<typename U> NonNullPassRefPtr( const PassRefPtr<U> &o )
+        : m_ptr( o.leakRef() )
     {
-        T* ptr = m_ptr;
-        m_ptr = ref.leakRef();
-        derefIfNotNull(ptr);
-        return *this;
+        ASSERT( m_ptr );
     }
 
-    template<typename T> template<typename U> inline PassRefPtr<T>& PassRefPtr<T>::operator=(const PassRefPtr<U>& ref)
+    ALWAYS_INLINE ~NonNullPassRefPtr()
     {
-        T* ptr = m_ptr;
-        m_ptr = ref.leakRef();
-        derefIfNotNull(ptr);
-        return *this;
+        derefIfNotNull( m_ptr );
     }
 
-    template<typename T, typename U> inline bool operator==(const PassRefPtr<T>& a, const PassRefPtr<U>& b)
+    T *get() const
     {
-        return a.get() == b.get();
+        return m_ptr;
     }
 
-    template<typename T, typename U> inline bool operator==(const PassRefPtr<T>& a, const RefPtr<U>& b)
+    void clear();
+    T *leakRef() const WARN_UNUSED_RETURN
     {
-        return a.get() == b.get();
-    }
-
-    template<typename T, typename U> inline bool operator==(const RefPtr<T>& a, const PassRefPtr<U>& b)
-    {
-        return a.get() == b.get();
-    }
-
-    template<typename T, typename U> inline bool operator==(const PassRefPtr<T>& a, U* b)
-    {
-        return a.get() == b;
-    }
-
-    template<typename T, typename U> inline bool operator==(T* a, const PassRefPtr<U>& b)
-    {
-        return a == b.get();
-    }
-
-    template<typename T, typename U> inline bool operator!=(const PassRefPtr<T>& a, const PassRefPtr<U>& b)
-    {
-        return a.get() != b.get();
-    }
-
-    template<typename T, typename U> inline bool operator!=(const PassRefPtr<T>& a, const RefPtr<U>& b)
-    {
-        return a.get() != b.get();
-    }
-
-    template<typename T, typename U> inline bool operator!=(const RefPtr<T>& a, const PassRefPtr<U>& b)
-    {
-        return a.get() != b.get();
-    }
-
-    template<typename T, typename U> inline bool operator!=(const PassRefPtr<T>& a, U* b)
-    {
-        return a.get() != b;
-    }
-
-    template<typename T, typename U> inline bool operator!=(T* a, const PassRefPtr<U>& b)
-    {
-        return a != b.get();
-    }
-
-    template<typename T> inline PassRefPtr<T> adoptRef(T* p)
-    {
-        adopted(p);
-        return PassRefPtr<T>(p, true);
-    }
-
-    template<typename T, typename U> inline PassRefPtr<T> static_pointer_cast(const PassRefPtr<U>& p)
-    {
-        return adoptRef(static_cast<T*>(p.leakRef()));
-    }
-
-    template<typename T, typename U> inline PassRefPtr<T> const_pointer_cast(const PassRefPtr<U>& p)
-    {
-        return adoptRef(const_cast<T*>(p.leakRef()));
-    }
-
-    template<typename T> inline T* getPtr(const PassRefPtr<T>& p)
-    {
-        return p.get();
-    }
-
-    template<typename T> inline void NonNullPassRefPtr<T>::clear()
-    {
-        T* ptr = m_ptr;
+        T *tmp = m_ptr;
         m_ptr = nullptr;
-        derefIfNotNull(ptr);
+        return tmp;
     }
+
+    T &operator*() const
+    {
+        return *m_ptr;
+    }
+    T *operator->() const
+    {
+        return m_ptr;
+    }
+
+    // FIXME: Remove releaseRef once we change all callers to call leakRef instead.
+    T *releaseRef() const WARN_UNUSED_RETURN
+    {
+        return leakRef();
+    }
+
+private:
+    mutable T *m_ptr;
+};
+
+template<typename T> template<typename U> inline PassRefPtr<T>::PassRefPtr( const RefPtr<U> &o )
+    : m_ptr( o.get() )
+{
+    T *ptr = m_ptr;
+    refIfNotNull( ptr );
+}
+
+template<typename T> inline void PassRefPtr<T>::clear()
+{
+    T *ptr = m_ptr;
+    m_ptr  = nullptr;
+    derefIfNotNull( ptr );
+}
+
+template<typename T> inline T *PassRefPtr<T>::leakRef() const
+{
+    T *ptr = m_ptr;
+    m_ptr  = nullptr;
+    return ptr;
+}
+
+template<typename T> template<typename U> inline PassRefPtr<T> &PassRefPtr<T>::operator=( const RefPtr<U> &o )
+{
+    T *optr = o.get();
+    refIfNotNull( optr );
+    T *ptr = m_ptr;
+    m_ptr = optr;
+    derefIfNotNull( ptr );
+    return *this;
+}
+
+template<typename T> inline PassRefPtr<T> &PassRefPtr<T>::operator=( T *optr )
+{
+    refIfNotNull( optr );
+    T *ptr = m_ptr;
+    m_ptr = optr;
+    derefIfNotNull( ptr );
+    return *this;
+}
+
+template<typename T> inline PassRefPtr<T> &PassRefPtr<T>::operator=( const PassRefPtr<T> &ref )
+{
+    T *ptr = m_ptr;
+    m_ptr = ref.leakRef();
+    derefIfNotNull( ptr );
+    return *this;
+}
+
+template<typename T> template<typename U> inline PassRefPtr<T> &PassRefPtr<T>::operator=( const PassRefPtr<U> &ref )
+{
+    T *ptr = m_ptr;
+    m_ptr = ref.leakRef();
+    derefIfNotNull( ptr );
+    return *this;
+}
+
+template<typename T, typename U> inline bool operator==( const PassRefPtr<T> &a, const PassRefPtr<U> &b )
+{
+    return a.get() == b.get();
+}
+
+template<typename T, typename U> inline bool operator==( const PassRefPtr<T> &a, const RefPtr<U> &b )
+{
+    return a.get() == b.get();
+}
+
+template<typename T, typename U> inline bool operator==( const RefPtr<T> &a, const PassRefPtr<U> &b )
+{
+    return a.get() == b.get();
+}
+
+template<typename T, typename U> inline bool operator==( const PassRefPtr<T> &a, U *b )
+{
+    return a.get() == b;
+}
+
+template<typename T, typename U> inline bool operator==( T *a, const PassRefPtr<U> &b )
+{
+    return a == b.get();
+}
+
+template<typename T, typename U> inline bool operator!=( const PassRefPtr<T> &a, const PassRefPtr<U> &b )
+{
+    return a.get() != b.get();
+}
+
+template<typename T, typename U> inline bool operator!=( const PassRefPtr<T> &a, const RefPtr<U> &b )
+{
+    return a.get() != b.get();
+}
+
+template<typename T, typename U> inline bool operator!=( const RefPtr<T> &a, const PassRefPtr<U> &b )
+{
+    return a.get() != b.get();
+}
+
+template<typename T, typename U> inline bool operator!=( const PassRefPtr<T> &a, U *b )
+{
+    return a.get() != b;
+}
+
+template<typename T, typename U> inline bool operator!=( T *a, const PassRefPtr<U> &b )
+{
+    return a != b.get();
+}
+
+template<typename T> inline PassRefPtr<T> adoptRef( T *p )
+{
+    adopted( p );
+    return PassRefPtr<T>( p, true );
+}
+
+template<typename T, typename U> inline PassRefPtr<T> static_pointer_cast( const PassRefPtr<U> &p )
+{
+    return adoptRef( static_cast<T *>( p.leakRef() ) );
+}
+
+template<typename T, typename U> inline PassRefPtr<T> const_pointer_cast( const PassRefPtr<U> &p )
+{
+    return adoptRef( const_cast<T *>( p.leakRef() ) );
+}
+
+template<typename T> inline T *getPtr( const PassRefPtr<T> &p )
+{
+    return p.get();
+}
+
+template<typename T> inline void NonNullPassRefPtr<T>::clear()
+{
+    T *ptr = m_ptr;
+    m_ptr = nullptr;
+    derefIfNotNull( ptr );
+}
 
 } // namespace WTF
 

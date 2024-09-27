@@ -33,22 +33,30 @@
 
 #include "RenderBlock.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class RenderRubyText : public RenderBlock {
+class RenderRubyText : public RenderBlock
+{
 public:
-    RenderRubyText(Node*);
+    RenderRubyText( Node * );
     virtual ~RenderRubyText();
 
-    virtual const char* renderName() const { return "RenderRubyText"; }
+    virtual const char *renderName() const
+    {
+        return "RenderRubyText";
+    }
 
-    virtual bool isRubyText() const { return true; }
+    virtual bool isRubyText() const
+    {
+        return true;
+    }
 
-    virtual bool isChildAllowed(RenderObject*, RenderStyle*) const;
+    virtual bool isChildAllowed( RenderObject *, RenderStyle * ) const;
 
 private:
-    virtual ETextAlign textAlignmentForLine(bool endsWithSoftBreak) const;
-    virtual void adjustInlineDirectionLineBounds(int expansionOpportunityCount, float& logicalLeft, float& logicalWidth) const;
+    virtual ETextAlign textAlignmentForLine( bool endsWithSoftBreak ) const;
+    virtual void adjustInlineDirectionLineBounds( int expansionOpportunityCount, float &logicalLeft, float &logicalWidth ) const;
 };
 
 } // namespace WebCore

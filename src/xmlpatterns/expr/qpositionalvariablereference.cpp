@@ -28,35 +28,33 @@
 
 using namespace QPatternist;
 
-PositionalVariableReference::PositionalVariableReference(const VariableSlotID s) : VariableReference(s)
+PositionalVariableReference::PositionalVariableReference( const VariableSlotID s ) : VariableReference( s )
 {
 }
 
-Item PositionalVariableReference::evaluateSingleton(const DynamicContext::Ptr &context) const
+Item PositionalVariableReference::evaluateSingleton( const DynamicContext::Ptr &context ) const
 {
-   Q_ASSERT(context);
-   Q_ASSERT(context->positionIterator(slot()));
-   return Integer::fromValue(context->positionIterator(slot())->position());
+    Q_ASSERT( context );
+    Q_ASSERT( context->positionIterator( slot() ) );
+    return Integer::fromValue( context->positionIterator( slot() )->position() );
 }
 
-bool PositionalVariableReference::evaluateEBV(const DynamicContext::Ptr &) const
+bool PositionalVariableReference::evaluateEBV( const DynamicContext::Ptr & ) const
 {
-   return true;
+    return true;
 }
 
 SequenceType::Ptr PositionalVariableReference::staticType() const
 {
-   return CommonSequenceTypes::ExactlyOneInteger;
+    return CommonSequenceTypes::ExactlyOneInteger;
 }
 
 Expression::Properties PositionalVariableReference::properties() const
 {
-   return DependsOnLocalVariable;
+    return DependsOnLocalVariable;
 }
 
-ExpressionVisitorResult::Ptr
-
-PositionalVariableReference::accept(const ExpressionVisitor::Ptr &visitor) const
+ExpressionVisitorResult::Ptr PositionalVariableReference::accept( const ExpressionVisitor::Ptr &visitor ) const
 {
-   return visitor->visit(this);
+    return visitor->visit( this );
 }

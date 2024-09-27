@@ -25,13 +25,15 @@
 #include "RenderWidget.h"
 #include <wtf/text/StringHash.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class HTMLAppletElement;
 
-class RenderApplet : public RenderWidget {
+class RenderApplet : public RenderWidget
+{
 public:
-    RenderApplet(HTMLAppletElement*, const HashMap<String, String>& args);
+    RenderApplet( HTMLAppletElement *, const HashMap<String, String> &args );
     virtual ~RenderApplet();
 
     void createWidgetIfNecessary();
@@ -41,9 +43,15 @@ public:
 #endif
 
 private:
-    virtual const char* renderName() const { return "RenderApplet"; }
+    virtual const char *renderName() const
+    {
+        return "RenderApplet";
+    }
 
-    virtual bool isApplet() const { return true; }
+    virtual bool isApplet() const
+    {
+        return true;
+    }
 
     virtual void layout();
     virtual IntSize intrinsicSize() const;
@@ -55,14 +63,14 @@ private:
     HashMap<String, String> m_args;
 };
 
-inline RenderApplet* toRenderApplet(RenderObject* object)
+inline RenderApplet *toRenderApplet( RenderObject *object )
 {
-    ASSERT(!object || object->isApplet());
-    return static_cast<RenderApplet*>(object);
+    ASSERT( !object || object->isApplet() );
+    return static_cast<RenderApplet *>( object );
 }
 
 // This will catch anyone doing an unnecessary cast.
-void toRenderApplet(const RenderApplet*);
+void toRenderApplet( const RenderApplet * );
 
 } // namespace WebCore
 

@@ -127,48 +127,61 @@
 //    text         : <string> // Optional - whenever the text is available for a text-based stylesheet
 // }
 
-namespace WebCore {
+namespace WebCore
+{
 
 // static
-CSSStyleSheet* InspectorCSSAgent::parentStyleSheet(StyleBase* styleBase)
+CSSStyleSheet *InspectorCSSAgent::parentStyleSheet( StyleBase *styleBase )
 {
-    if (!styleBase)
+    if ( !styleBase )
+    {
         return 0;
+    }
 
-    StyleSheet* styleSheet = styleBase->stylesheet();
-    if (styleSheet && styleSheet->isCSSStyleSheet())
-        return static_cast<CSSStyleSheet*>(styleSheet);
+    StyleSheet *styleSheet = styleBase->stylesheet();
+
+    if ( styleSheet && styleSheet->isCSSStyleSheet() )
+    {
+        return static_cast<CSSStyleSheet *>( styleSheet );
+    }
 
     return 0;
 }
 
 // static
-CSSStyleRule* InspectorCSSAgent::asCSSStyleRule(StyleBase* styleBase)
+CSSStyleRule *InspectorCSSAgent::asCSSStyleRule( StyleBase *styleBase )
 {
-    if (!styleBase->isStyleRule())
+    if ( !styleBase->isStyleRule() )
+    {
         return 0;
-    CSSRule* rule = static_cast<CSSRule*>(styleBase);
-    if (rule->type() != CSSRule::STYLE_RULE)
+    }
+
+    CSSRule *rule = static_cast<CSSRule *>( styleBase );
+
+    if ( rule->type() != CSSRule::STYLE_RULE )
+    {
         return 0;
-    return static_cast<CSSStyleRule*>(rule);
+    }
+
+    return static_cast<CSSStyleRule *>( rule );
 }
 
-InspectorCSSAgent::InspectorCSSAgent(InstrumentingAgents* instrumentingAgents, InspectorDOMAgent* domAgent)
-    : m_instrumentingAgents(instrumentingAgents)
-    , m_domAgent(domAgent)
-    , m_lastStyleSheetId(1)
-    , m_lastRuleId(1)
-    , m_lastStyleId(1)
+InspectorCSSAgent::InspectorCSSAgent( InstrumentingAgents *instrumentingAgents, InspectorDOMAgent *domAgent )
+    : m_instrumentingAgents( instrumentingAgents )
+    , m_domAgent( domAgent )
+    , m_lastStyleSheetId( 1 )
+    , m_lastRuleId( 1 )
+    , m_lastStyleId( 1 )
 {
-    m_domAgent->setDOMListener(this);
-    m_instrumentingAgents->setInspectorCSSAgent(this);
+    m_domAgent->setDOMListener( this );
+    m_instrumentingAgents->setInspectorCSSAgent( this );
 }
 
 InspectorCSSAgent::~InspectorCSSAgent()
 {
-    m_instrumentingAgents->setInspectorCSSAgent(0);
+    m_instrumentingAgents->setInspectorCSSAgent( 0 );
     // DOM agent should be destroyed after CSS agent.
-    m_domAgent->setDOMListener(0);
+    m_domAgent->setDOMListener( 0 );
     m_domAgent = 0;
     reset();
 }
@@ -181,388 +194,560 @@ void InspectorCSSAgent::reset()
     m_documentToInspectorStyleSheet.clear();
 }
 
-void InspectorCSSAgent::getStylesForNode(ErrorString* errorString, int nodeId, RefPtr<InspectorObject>* result)
+void InspectorCSSAgent::getStylesForNode( ErrorString *errorString, int nodeId, RefPtr<InspectorObject> *result )
 {
-    Element* element = elementForId(errorString, nodeId);
-    if (!element)
+    Element *element = elementForId( errorString, nodeId );
+
+    if ( !element )
+    {
         return;
+    }
 
     RefPtr<InspectorObject> resultObject = InspectorObject::create();
 
-    InspectorStyleSheetForInlineStyle* styleSheet = asInspectorStyleSheet(element);
-    if (styleSheet)
-        resultObject->setObject("inlineStyle", styleSheet->buildObjectForStyle(element->style()));
+    InspectorStyleSheetForInlineStyle *styleSheet = asInspectorStyleSheet( element );
 
-    RefPtr<CSSComputedStyleDeclaration> computedStyleInfo = computedStyle(element, true); // Support the viewing of :visited information in computed style.
-    RefPtr<InspectorStyle> computedInspectorStyle = InspectorStyle::create(InspectorCSSId(), computedStyleInfo, 0);
-    resultObject->setObject("computedStyle", computedInspectorStyle->buildObjectForStyle());
+    if ( styleSheet )
+    {
+        resultObject->setObject( "inlineStyle", styleSheet->buildObjectForStyle( element->style() ) );
+    }
 
-    CSSStyleSelector* selector = element->ownerDocument()->styleSelector();
-    RefPtr<CSSRuleList> matchedRules = selector->styleRulesForElement(element, false, true);
-    resultObject->setArray("matchedCSSRules", buildArrayForRuleList(matchedRules.get()));
+    RefPtr<CSSComputedStyleDeclaration> computedStyleInfo = computedStyle( element,
+            true ); // Support the viewing of :visited information in computed style.
+    RefPtr<InspectorStyle> computedInspectorStyle = InspectorStyle::create( InspectorCSSId(), computedStyleInfo, 0 );
+    resultObject->setObject( "computedStyle", computedInspectorStyle->buildObjectForStyle() );
 
-    resultObject->setArray("styleAttributes", buildArrayForAttributeStyles(element));
+    CSSStyleSelector *selector = element->ownerDocument()->styleSelector();
+    RefPtr<CSSRuleList> matchedRules = selector->styleRulesForElement( element, false, true );
+    resultObject->setArray( "matchedCSSRules", buildArrayForRuleList( matchedRules.get() ) );
+
+    resultObject->setArray( "styleAttributes", buildArrayForAttributeStyles( element ) );
 
     RefPtr<InspectorArray> pseudoElements = InspectorArray::create();
-    for (PseudoId pseudoId = FIRST_PUBLIC_PSEUDOID; pseudoId < AFTER_LAST_INTERNAL_PSEUDOID; pseudoId = static_cast<PseudoId>(pseudoId + 1)) {
-        RefPtr<CSSRuleList> matchedRules = selector->pseudoStyleRulesForElement(element, pseudoId, false, true);
-        if (matchedRules && matchedRules->length()) {
+
+    for ( PseudoId pseudoId = FIRST_PUBLIC_PSEUDOID; pseudoId < AFTER_LAST_INTERNAL_PSEUDOID;
+            pseudoId = static_cast<PseudoId>( pseudoId + 1 ) )
+    {
+        RefPtr<CSSRuleList> matchedRules = selector->pseudoStyleRulesForElement( element, pseudoId, false, true );
+
+        if ( matchedRules && matchedRules->length() )
+        {
             RefPtr<InspectorObject> pseudoStyles = InspectorObject::create();
-            pseudoStyles->setNumber("pseudoId", static_cast<int>(pseudoId));
-            pseudoStyles->setArray("rules", buildArrayForRuleList(matchedRules.get()));
-            pseudoElements->pushObject(pseudoStyles.release());
+            pseudoStyles->setNumber( "pseudoId", static_cast<int>( pseudoId ) );
+            pseudoStyles->setArray( "rules", buildArrayForRuleList( matchedRules.get() ) );
+            pseudoElements->pushObject( pseudoStyles.release() );
         }
     }
-    resultObject->setArray("pseudoElements", pseudoElements.release());
+
+    resultObject->setArray( "pseudoElements", pseudoElements.release() );
 
     RefPtr<InspectorArray> inheritedStyles = InspectorArray::create();
-    Element* parentElement = element->parentElement();
-    while (parentElement) {
+    Element *parentElement = element->parentElement();
+
+    while ( parentElement )
+    {
         RefPtr<InspectorObject> parentStyle = InspectorObject::create();
-        if (parentElement->style() && parentElement->style()->length()) {
-            InspectorStyleSheetForInlineStyle* styleSheet = asInspectorStyleSheet(parentElement);
-            if (styleSheet)
-                parentStyle->setObject("inlineStyle", styleSheet->buildObjectForStyle(styleSheet->styleForId(InspectorCSSId(styleSheet->id(), 0))));
+
+        if ( parentElement->style() && parentElement->style()->length() )
+        {
+            InspectorStyleSheetForInlineStyle *styleSheet = asInspectorStyleSheet( parentElement );
+
+            if ( styleSheet )
+            {
+                parentStyle->setObject( "inlineStyle", styleSheet->buildObjectForStyle( styleSheet->styleForId( InspectorCSSId( styleSheet->id(),
+                                        0 ) ) ) );
+            }
         }
 
-        CSSStyleSelector* parentSelector = parentElement->ownerDocument()->styleSelector();
-        RefPtr<CSSRuleList> parentMatchedRules = parentSelector->styleRulesForElement(parentElement, false, true);
-        parentStyle->setArray("matchedCSSRules", buildArrayForRuleList(parentMatchedRules.get()));
-        inheritedStyles->pushObject(parentStyle.release());
+        CSSStyleSelector *parentSelector = parentElement->ownerDocument()->styleSelector();
+        RefPtr<CSSRuleList> parentMatchedRules = parentSelector->styleRulesForElement( parentElement, false, true );
+        parentStyle->setArray( "matchedCSSRules", buildArrayForRuleList( parentMatchedRules.get() ) );
+        inheritedStyles->pushObject( parentStyle.release() );
         parentElement = parentElement->parentElement();
     }
-    resultObject->setArray("inherited", inheritedStyles.release());
+
+    resultObject->setArray( "inherited", inheritedStyles.release() );
 
     *result = resultObject.release();
 }
 
-void InspectorCSSAgent::getInlineStyleForNode(ErrorString* errorString, int nodeId, RefPtr<InspectorObject>* style)
+void InspectorCSSAgent::getInlineStyleForNode( ErrorString *errorString, int nodeId, RefPtr<InspectorObject> *style )
 {
-    Element* element = elementForId(errorString, nodeId);
-    if (!element)
-        return;
+    Element *element = elementForId( errorString, nodeId );
 
-    InspectorStyleSheetForInlineStyle* styleSheet = asInspectorStyleSheet(element);
-    if (!styleSheet)
+    if ( !element )
+    {
         return;
+    }
 
-    *style = styleSheet->buildObjectForStyle(element->style());
+    InspectorStyleSheetForInlineStyle *styleSheet = asInspectorStyleSheet( element );
+
+    if ( !styleSheet )
+    {
+        return;
+    }
+
+    *style = styleSheet->buildObjectForStyle( element->style() );
 }
 
-void InspectorCSSAgent::getComputedStyleForNode(ErrorString* errorString, int nodeId, RefPtr<InspectorObject>* style)
+void InspectorCSSAgent::getComputedStyleForNode( ErrorString *errorString, int nodeId, RefPtr<InspectorObject> *style )
 {
-    Element* element = elementForId(errorString, nodeId);
-    if (!element)
-        return;
+    Element *element = elementForId( errorString, nodeId );
 
-    RefPtr<CSSComputedStyleDeclaration> computedStyleInfo = computedStyle(element, true);
-    RefPtr<InspectorStyle> inspectorStyle = InspectorStyle::create(InspectorCSSId(), computedStyleInfo, 0);
+    if ( !element )
+    {
+        return;
+    }
+
+    RefPtr<CSSComputedStyleDeclaration> computedStyleInfo = computedStyle( element, true );
+    RefPtr<InspectorStyle> inspectorStyle = InspectorStyle::create( InspectorCSSId(), computedStyleInfo, 0 );
     *style = inspectorStyle->buildObjectForStyle();
 }
 
-void InspectorCSSAgent::getAllStyleSheets(ErrorString*, RefPtr<InspectorArray>* styleInfos)
+void InspectorCSSAgent::getAllStyleSheets( ErrorString *, RefPtr<InspectorArray> *styleInfos )
 {
-    Vector<Document*> documents = m_domAgent->documents();
-    for (Vector<Document*>::iterator it = documents.begin(); it != documents.end(); ++it) {
-        StyleSheetList* list = (*it)->styleSheets();
-        for (unsigned i = 0; i < list->length(); ++i) {
-            StyleSheet* styleSheet = list->item(i);
-            if (styleSheet->isCSSStyleSheet()) {
-                InspectorStyleSheet* inspectorStyleSheet = bindStyleSheet(static_cast<CSSStyleSheet*>(styleSheet));
-                (*styleInfos)->pushObject(inspectorStyleSheet->buildObjectForStyleSheetInfo());
+    Vector<Document *> documents = m_domAgent->documents();
+
+    for ( Vector<Document *>::iterator it = documents.begin(); it != documents.end(); ++it )
+    {
+        StyleSheetList *list = ( *it )->styleSheets();
+
+        for ( unsigned i = 0; i < list->length(); ++i )
+        {
+            StyleSheet *styleSheet = list->item( i );
+
+            if ( styleSheet->isCSSStyleSheet() )
+            {
+                InspectorStyleSheet *inspectorStyleSheet = bindStyleSheet( static_cast<CSSStyleSheet *>( styleSheet ) );
+                ( *styleInfos )->pushObject( inspectorStyleSheet->buildObjectForStyleSheetInfo() );
             }
         }
     }
 }
 
-void InspectorCSSAgent::getStyleSheet(ErrorString* errorString, const String& styleSheetId, RefPtr<InspectorObject>* styleSheetObject)
+void InspectorCSSAgent::getStyleSheet( ErrorString *errorString, const String &styleSheetId,
+                                       RefPtr<InspectorObject> *styleSheetObject )
 {
-    InspectorStyleSheet* inspectorStyleSheet = assertStyleSheetForId(errorString, styleSheetId);
-    if (!inspectorStyleSheet)
+    InspectorStyleSheet *inspectorStyleSheet = assertStyleSheetForId( errorString, styleSheetId );
+
+    if ( !inspectorStyleSheet )
+    {
         return;
+    }
 
     *styleSheetObject = inspectorStyleSheet->buildObjectForStyleSheet();
 }
 
-void InspectorCSSAgent::getStyleSheetText(ErrorString* errorString, const String& styleSheetId, String* result)
+void InspectorCSSAgent::getStyleSheetText( ErrorString *errorString, const String &styleSheetId, String *result )
 {
-    InspectorStyleSheet* inspectorStyleSheet = assertStyleSheetForId(errorString, styleSheetId);
-    if (!inspectorStyleSheet)
-        return;
+    InspectorStyleSheet *inspectorStyleSheet = assertStyleSheetForId( errorString, styleSheetId );
 
-    inspectorStyleSheet->text(result);
+    if ( !inspectorStyleSheet )
+    {
+        return;
+    }
+
+    inspectorStyleSheet->text( result );
 }
 
-void InspectorCSSAgent::setStyleSheetText(ErrorString* errorString, const String& styleSheetId, const String& text)
+void InspectorCSSAgent::setStyleSheetText( ErrorString *errorString, const String &styleSheetId, const String &text )
 {
-    InspectorStyleSheet* inspectorStyleSheet = assertStyleSheetForId(errorString, styleSheetId);
-    if (!inspectorStyleSheet)
-        return;
+    InspectorStyleSheet *inspectorStyleSheet = assertStyleSheetForId( errorString, styleSheetId );
 
-    if (inspectorStyleSheet->setText(text))
-        inspectorStyleSheet->reparseStyleSheet(text);
+    if ( !inspectorStyleSheet )
+    {
+        return;
+    }
+
+    if ( inspectorStyleSheet->setText( text ) )
+    {
+        inspectorStyleSheet->reparseStyleSheet( text );
+    }
     else
+    {
         *errorString = "Internal error setting style sheet text";
+    }
 }
 
-void InspectorCSSAgent::setPropertyText(ErrorString* errorString, const RefPtr<InspectorObject>& fullStyleId, int propertyIndex, const String& text, bool overwrite, RefPtr<InspectorObject>* result)
+void InspectorCSSAgent::setPropertyText( ErrorString *errorString, const RefPtr<InspectorObject> &fullStyleId, int propertyIndex,
+        const String &text, bool overwrite, RefPtr<InspectorObject> *result )
 {
-    InspectorCSSId compoundId(fullStyleId);
-    ASSERT(!compoundId.isEmpty());
+    InspectorCSSId compoundId( fullStyleId );
+    ASSERT( !compoundId.isEmpty() );
 
-    InspectorStyleSheet* inspectorStyleSheet = assertStyleSheetForId(errorString, compoundId.styleSheetId());
-    if (!inspectorStyleSheet)
+    InspectorStyleSheet *inspectorStyleSheet = assertStyleSheetForId( errorString, compoundId.styleSheetId() );
+
+    if ( !inspectorStyleSheet )
+    {
         return;
+    }
 
-    bool success = inspectorStyleSheet->setPropertyText(errorString, compoundId, propertyIndex, text, overwrite);
-    if (success)
-        *result = inspectorStyleSheet->buildObjectForStyle(inspectorStyleSheet->styleForId(compoundId));
+    bool success = inspectorStyleSheet->setPropertyText( errorString, compoundId, propertyIndex, text, overwrite );
+
+    if ( success )
+    {
+        *result = inspectorStyleSheet->buildObjectForStyle( inspectorStyleSheet->styleForId( compoundId ) );
+    }
 }
 
-void InspectorCSSAgent::toggleProperty(ErrorString* errorString, const RefPtr<InspectorObject>& fullStyleId, int propertyIndex, bool disable, RefPtr<InspectorObject>* result)
+void InspectorCSSAgent::toggleProperty( ErrorString *errorString, const RefPtr<InspectorObject> &fullStyleId, int propertyIndex,
+                                        bool disable, RefPtr<InspectorObject> *result )
 {
-    InspectorCSSId compoundId(fullStyleId);
-    ASSERT(!compoundId.isEmpty());
+    InspectorCSSId compoundId( fullStyleId );
+    ASSERT( !compoundId.isEmpty() );
 
-    InspectorStyleSheet* inspectorStyleSheet = assertStyleSheetForId(errorString, compoundId.styleSheetId());
-    if (!inspectorStyleSheet)
+    InspectorStyleSheet *inspectorStyleSheet = assertStyleSheetForId( errorString, compoundId.styleSheetId() );
+
+    if ( !inspectorStyleSheet )
+    {
         return;
+    }
 
-    bool success = inspectorStyleSheet->toggleProperty(errorString, compoundId, propertyIndex, disable);
-    if (success)
-        *result = inspectorStyleSheet->buildObjectForStyle(inspectorStyleSheet->styleForId(compoundId));
+    bool success = inspectorStyleSheet->toggleProperty( errorString, compoundId, propertyIndex, disable );
+
+    if ( success )
+    {
+        *result = inspectorStyleSheet->buildObjectForStyle( inspectorStyleSheet->styleForId( compoundId ) );
+    }
 }
 
-void InspectorCSSAgent::setRuleSelector(ErrorString* errorString, const RefPtr<InspectorObject>& fullRuleId, const String& selector, RefPtr<InspectorObject>* result)
+void InspectorCSSAgent::setRuleSelector( ErrorString *errorString, const RefPtr<InspectorObject> &fullRuleId,
+        const String &selector, RefPtr<InspectorObject> *result )
 {
-    InspectorCSSId compoundId(fullRuleId);
-    ASSERT(!compoundId.isEmpty());
+    InspectorCSSId compoundId( fullRuleId );
+    ASSERT( !compoundId.isEmpty() );
 
-    InspectorStyleSheet* inspectorStyleSheet = assertStyleSheetForId(errorString, compoundId.styleSheetId());
-    if (!inspectorStyleSheet)
+    InspectorStyleSheet *inspectorStyleSheet = assertStyleSheetForId( errorString, compoundId.styleSheetId() );
+
+    if ( !inspectorStyleSheet )
+    {
         return;
+    }
 
-    bool success = inspectorStyleSheet->setRuleSelector(compoundId, selector);
-    if (!success)
+    bool success = inspectorStyleSheet->setRuleSelector( compoundId, selector );
+
+    if ( !success )
+    {
         return;
+    }
 
-    *result = inspectorStyleSheet->buildObjectForRule(inspectorStyleSheet->ruleForId(compoundId));
+    *result = inspectorStyleSheet->buildObjectForRule( inspectorStyleSheet->ruleForId( compoundId ) );
 }
 
-void InspectorCSSAgent::addRule(ErrorString*, const int contextNodeId, const String& selector, RefPtr<InspectorObject>* result)
+void InspectorCSSAgent::addRule( ErrorString *, const int contextNodeId, const String &selector, RefPtr<InspectorObject> *result )
 {
-    Node* node = m_domAgent->nodeForId(contextNodeId);
-    if (!node)
-        return;
+    Node *node = m_domAgent->nodeForId( contextNodeId );
 
-    InspectorStyleSheet* inspectorStyleSheet = viaInspectorStyleSheet(node->document(), true);
-    if (!inspectorStyleSheet)
+    if ( !node )
+    {
         return;
-    CSSStyleRule* newRule = inspectorStyleSheet->addRule(selector);
-    if (!newRule)
-        return;
+    }
 
-    *result = inspectorStyleSheet->buildObjectForRule(newRule);
+    InspectorStyleSheet *inspectorStyleSheet = viaInspectorStyleSheet( node->document(), true );
+
+    if ( !inspectorStyleSheet )
+    {
+        return;
+    }
+
+    CSSStyleRule *newRule = inspectorStyleSheet->addRule( selector );
+
+    if ( !newRule )
+    {
+        return;
+    }
+
+    *result = inspectorStyleSheet->buildObjectForRule( newRule );
 }
 
-void InspectorCSSAgent::getSupportedCSSProperties(ErrorString*, RefPtr<InspectorArray>* cssProperties)
+void InspectorCSSAgent::getSupportedCSSProperties( ErrorString *, RefPtr<InspectorArray> *cssProperties )
 {
     RefPtr<InspectorArray> properties = InspectorArray::create();
-    for (int i = 0; i < numCSSProperties; ++i)
-        properties->pushString(propertyNameStrings[i]);
+
+    for ( int i = 0; i < numCSSProperties; ++i )
+    {
+        properties->pushString( propertyNameStrings[i] );
+    }
 
     *cssProperties = properties.release();
 }
 
 // static
-Element* InspectorCSSAgent::inlineStyleElement(CSSStyleDeclaration* style)
+Element *InspectorCSSAgent::inlineStyleElement( CSSStyleDeclaration *style )
 {
-    if (!style || !style->isMutableStyleDeclaration())
+    if ( !style || !style->isMutableStyleDeclaration() )
+    {
         return 0;
-    Node* node = static_cast<CSSMutableStyleDeclaration*>(style)->node();
-    if (!node || !node->isStyledElement() || static_cast<StyledElement*>(node)->getInlineStyleDecl() != style)
+    }
+
+    Node *node = static_cast<CSSMutableStyleDeclaration *>( style )->node();
+
+    if ( !node || !node->isStyledElement() || static_cast<StyledElement *>( node )->getInlineStyleDecl() != style )
+    {
         return 0;
-    return static_cast<Element*>(node);
+    }
+
+    return static_cast<Element *>( node );
 }
 
-InspectorStyleSheetForInlineStyle* InspectorCSSAgent::asInspectorStyleSheet(Element* element)
+InspectorStyleSheetForInlineStyle *InspectorCSSAgent::asInspectorStyleSheet( Element *element )
 {
-    NodeToInspectorStyleSheet::iterator it = m_nodeToInspectorStyleSheet.find(element);
-    if (it == m_nodeToInspectorStyleSheet.end()) {
-        CSSStyleDeclaration* style = element->isStyledElement() ? element->style() : 0;
-        if (!style)
-            return 0;
+    NodeToInspectorStyleSheet::iterator it = m_nodeToInspectorStyleSheet.find( element );
 
-        String newStyleSheetId = String::number(m_lastStyleSheetId++);
-        RefPtr<InspectorStyleSheetForInlineStyle> inspectorStyleSheet = InspectorStyleSheetForInlineStyle::create(newStyleSheetId, element, "");
-        m_idToInspectorStyleSheet.set(newStyleSheetId, inspectorStyleSheet);
-        m_nodeToInspectorStyleSheet.set(element, inspectorStyleSheet);
+    if ( it == m_nodeToInspectorStyleSheet.end() )
+    {
+        CSSStyleDeclaration *style = element->isStyledElement() ? element->style() : 0;
+
+        if ( !style )
+        {
+            return 0;
+        }
+
+        String newStyleSheetId = String::number( m_lastStyleSheetId++ );
+        RefPtr<InspectorStyleSheetForInlineStyle> inspectorStyleSheet = InspectorStyleSheetForInlineStyle::create( newStyleSheetId,
+                element, "" );
+        m_idToInspectorStyleSheet.set( newStyleSheetId, inspectorStyleSheet );
+        m_nodeToInspectorStyleSheet.set( element, inspectorStyleSheet );
         return inspectorStyleSheet.get();
     }
 
     return it->second.get();
 }
 
-Element* InspectorCSSAgent::elementForId(ErrorString* errorString, int nodeId)
+Element *InspectorCSSAgent::elementForId( ErrorString *errorString, int nodeId )
 {
-    Node* node = m_domAgent->nodeForId(nodeId);
-    if (!node) {
+    Node *node = m_domAgent->nodeForId( nodeId );
+
+    if ( !node )
+    {
         *errorString = "No node with given id found";
         return 0;
     }
-    if (node->nodeType() != Node::ELEMENT_NODE) {
+
+    if ( node->nodeType() != Node::ELEMENT_NODE )
+    {
         *errorString = "Not an element node";
         return 0;
     }
-    return static_cast<Element*>(node);
+
+    return static_cast<Element *>( node );
 }
 
-InspectorStyleSheet* InspectorCSSAgent::bindStyleSheet(CSSStyleSheet* styleSheet)
+InspectorStyleSheet *InspectorCSSAgent::bindStyleSheet( CSSStyleSheet *styleSheet )
 {
-    RefPtr<InspectorStyleSheet> inspectorStyleSheet = m_cssStyleSheetToInspectorStyleSheet.get(styleSheet);
-    if (!inspectorStyleSheet) {
-        String id = String::number(m_lastStyleSheetId++);
-        inspectorStyleSheet = InspectorStyleSheet::create(id, styleSheet, detectOrigin(styleSheet, styleSheet->document()), m_domAgent->documentURLString(styleSheet->document()));
-        m_idToInspectorStyleSheet.set(id, inspectorStyleSheet);
-        m_cssStyleSheetToInspectorStyleSheet.set(styleSheet, inspectorStyleSheet);
+    RefPtr<InspectorStyleSheet> inspectorStyleSheet = m_cssStyleSheetToInspectorStyleSheet.get( styleSheet );
+
+    if ( !inspectorStyleSheet )
+    {
+        String id = String::number( m_lastStyleSheetId++ );
+        inspectorStyleSheet = InspectorStyleSheet::create( id, styleSheet, detectOrigin( styleSheet, styleSheet->document() ),
+                              m_domAgent->documentURLString( styleSheet->document() ) );
+        m_idToInspectorStyleSheet.set( id, inspectorStyleSheet );
+        m_cssStyleSheetToInspectorStyleSheet.set( styleSheet, inspectorStyleSheet );
     }
+
     return inspectorStyleSheet.get();
 }
 
-InspectorStyleSheet* InspectorCSSAgent::viaInspectorStyleSheet(Document* document, bool createIfAbsent)
+InspectorStyleSheet *InspectorCSSAgent::viaInspectorStyleSheet( Document *document, bool createIfAbsent )
 {
-    if (!document) {
-        ASSERT(!createIfAbsent);
+    if ( !document )
+    {
+        ASSERT( !createIfAbsent );
         return 0;
     }
 
-    RefPtr<InspectorStyleSheet> inspectorStyleSheet = m_documentToInspectorStyleSheet.get(document);
-    if (inspectorStyleSheet || !createIfAbsent)
+    RefPtr<InspectorStyleSheet> inspectorStyleSheet = m_documentToInspectorStyleSheet.get( document );
+
+    if ( inspectorStyleSheet || !createIfAbsent )
+    {
         return inspectorStyleSheet.get();
+    }
 
     ExceptionCode ec = 0;
-    RefPtr<Element> styleElement = document->createElement("style", ec);
-    if (!ec)
-        styleElement->setAttribute("type", "text/css", ec);
-    if (!ec) {
-        ContainerNode* targetNode;
-        // HEAD is absent in ImageDocuments, for example.
-        if (document->head())
-            targetNode = document->head();
-        else if (document->body())
-            targetNode = document->body();
-        else
-            return 0;
-        targetNode->appendChild(styleElement, ec);
+    RefPtr<Element> styleElement = document->createElement( "style", ec );
+
+    if ( !ec )
+    {
+        styleElement->setAttribute( "type", "text/css", ec );
     }
-    if (ec)
+
+    if ( !ec )
+    {
+        ContainerNode *targetNode;
+
+        // HEAD is absent in ImageDocuments, for example.
+        if ( document->head() )
+        {
+            targetNode = document->head();
+        }
+        else if ( document->body() )
+        {
+            targetNode = document->body();
+        }
+        else
+        {
+            return 0;
+        }
+
+        targetNode->appendChild( styleElement, ec );
+    }
+
+    if ( ec )
+    {
         return 0;
-    StyleSheetList* styleSheets = document->styleSheets();
-    StyleSheet* styleSheet = styleSheets->item(styleSheets->length() - 1);
-    if (!styleSheet->isCSSStyleSheet())
+    }
+
+    StyleSheetList *styleSheets = document->styleSheets();
+    StyleSheet *styleSheet = styleSheets->item( styleSheets->length() - 1 );
+
+    if ( !styleSheet->isCSSStyleSheet() )
+    {
         return 0;
-    CSSStyleSheet* cssStyleSheet = static_cast<CSSStyleSheet*>(styleSheet);
-    String id = String::number(m_lastStyleSheetId++);
-    inspectorStyleSheet = InspectorStyleSheet::create(id, cssStyleSheet, "inspector", m_domAgent->documentURLString(document));
-    m_idToInspectorStyleSheet.set(id, inspectorStyleSheet);
-    m_cssStyleSheetToInspectorStyleSheet.set(cssStyleSheet, inspectorStyleSheet);
-    m_documentToInspectorStyleSheet.set(document, inspectorStyleSheet);
+    }
+
+    CSSStyleSheet *cssStyleSheet = static_cast<CSSStyleSheet *>( styleSheet );
+    String id = String::number( m_lastStyleSheetId++ );
+    inspectorStyleSheet = InspectorStyleSheet::create( id, cssStyleSheet, "inspector", m_domAgent->documentURLString( document ) );
+    m_idToInspectorStyleSheet.set( id, inspectorStyleSheet );
+    m_cssStyleSheetToInspectorStyleSheet.set( cssStyleSheet, inspectorStyleSheet );
+    m_documentToInspectorStyleSheet.set( document, inspectorStyleSheet );
     return inspectorStyleSheet.get();
 }
 
-InspectorStyleSheet* InspectorCSSAgent::assertStyleSheetForId(ErrorString* errorString, const String& styleSheetId)
+InspectorStyleSheet *InspectorCSSAgent::assertStyleSheetForId( ErrorString *errorString, const String &styleSheetId )
 {
-    IdToInspectorStyleSheet::iterator it = m_idToInspectorStyleSheet.find(styleSheetId);
-    if (it == m_idToInspectorStyleSheet.end()) {
+    IdToInspectorStyleSheet::iterator it = m_idToInspectorStyleSheet.find( styleSheetId );
+
+    if ( it == m_idToInspectorStyleSheet.end() )
+    {
         *errorString = "No style sheet with given id found";
         return 0;
     }
+
     return it->second.get();
 }
 
-String InspectorCSSAgent::detectOrigin(CSSStyleSheet* pageStyleSheet, Document* ownerDocument)
+String InspectorCSSAgent::detectOrigin( CSSStyleSheet *pageStyleSheet, Document *ownerDocument )
 {
-    DEFINE_STATIC_LOCAL(String, userAgent, ("user-agent"));
-    DEFINE_STATIC_LOCAL(String, user, ("user"));
-    DEFINE_STATIC_LOCAL(String, inspector, ("inspector"));
+    DEFINE_STATIC_LOCAL( String, userAgent, ( "user-agent" ) );
+    DEFINE_STATIC_LOCAL( String, user, ( "user" ) );
+    DEFINE_STATIC_LOCAL( String, inspector, ( "inspector" ) );
 
-    String origin("");
-    if (pageStyleSheet && !pageStyleSheet->ownerNode() && pageStyleSheet->href().isEmpty())
+    String origin( "" );
+
+    if ( pageStyleSheet && !pageStyleSheet->ownerNode() && pageStyleSheet->href().isEmpty() )
+    {
         origin = userAgent;
-    else if (pageStyleSheet && pageStyleSheet->ownerNode() && pageStyleSheet->ownerNode()->nodeName() == "#document")
-        origin = user;
-    else {
-        InspectorStyleSheet* viaInspectorStyleSheetForOwner = viaInspectorStyleSheet(ownerDocument, false);
-        if (viaInspectorStyleSheetForOwner && pageStyleSheet == viaInspectorStyleSheetForOwner->pageStyleSheet())
-            origin = inspector;
     }
+    else if ( pageStyleSheet && pageStyleSheet->ownerNode() && pageStyleSheet->ownerNode()->nodeName() == "#document" )
+    {
+        origin = user;
+    }
+    else
+    {
+        InspectorStyleSheet *viaInspectorStyleSheetForOwner = viaInspectorStyleSheet( ownerDocument, false );
+
+        if ( viaInspectorStyleSheetForOwner && pageStyleSheet == viaInspectorStyleSheetForOwner->pageStyleSheet() )
+        {
+            origin = inspector;
+        }
+    }
+
     return origin;
 }
 
-PassRefPtr<InspectorArray> InspectorCSSAgent::buildArrayForRuleList(CSSRuleList* ruleList)
+PassRefPtr<InspectorArray> InspectorCSSAgent::buildArrayForRuleList( CSSRuleList *ruleList )
 {
     RefPtr<InspectorArray> result = InspectorArray::create();
-    if (!ruleList)
+
+    if ( !ruleList )
+    {
         return result.release();
-
-    for (unsigned i = 0, size = ruleList->length(); i < size; ++i) {
-        CSSStyleRule* rule = asCSSStyleRule(ruleList->item(i));
-        if (!rule)
-            continue;
-
-        InspectorStyleSheet* styleSheet = bindStyleSheet(parentStyleSheet(rule));
-        if (styleSheet)
-            result->pushObject(styleSheet->buildObjectForRule(rule));
     }
+
+    for ( unsigned i = 0, size = ruleList->length(); i < size; ++i )
+    {
+        CSSStyleRule *rule = asCSSStyleRule( ruleList->item( i ) );
+
+        if ( !rule )
+        {
+            continue;
+        }
+
+        InspectorStyleSheet *styleSheet = bindStyleSheet( parentStyleSheet( rule ) );
+
+        if ( styleSheet )
+        {
+            result->pushObject( styleSheet->buildObjectForRule( rule ) );
+        }
+    }
+
     return result.release();
 }
 
-PassRefPtr<InspectorArray> InspectorCSSAgent::buildArrayForAttributeStyles(Element* element)
+PassRefPtr<InspectorArray> InspectorCSSAgent::buildArrayForAttributeStyles( Element *element )
 {
     RefPtr<InspectorArray> attrStyles = InspectorArray::create();
-    NamedNodeMap* attributes = element->attributes();
-    for (unsigned i = 0; attributes && i < attributes->length(); ++i) {
-        Attribute* attribute = attributes->attributeItem(i);
-        if (attribute->style()) {
+    NamedNodeMap *attributes = element->attributes();
+
+    for ( unsigned i = 0; attributes && i < attributes->length(); ++i )
+    {
+        Attribute *attribute = attributes->attributeItem( i );
+
+        if ( attribute->style() )
+        {
             RefPtr<InspectorObject> attrStyleObject = InspectorObject::create();
             String attributeName = attribute->localName();
-            RefPtr<InspectorStyle> inspectorStyle = InspectorStyle::create(InspectorCSSId(), attribute->style(), 0);
-            attrStyleObject->setString("name", attributeName.utf8().data());
-            attrStyleObject->setObject("style", inspectorStyle->buildObjectForStyle());
-            attrStyles->pushObject(attrStyleObject.release());
+            RefPtr<InspectorStyle> inspectorStyle = InspectorStyle::create( InspectorCSSId(), attribute->style(), 0 );
+            attrStyleObject->setString( "name", attributeName.utf8().data() );
+            attrStyleObject->setObject( "style", inspectorStyle->buildObjectForStyle() );
+            attrStyles->pushObject( attrStyleObject.release() );
         }
     }
 
     return attrStyles.release();
 }
 
-void InspectorCSSAgent::didRemoveDocument(Document* document)
+void InspectorCSSAgent::didRemoveDocument( Document *document )
 {
-    if (document)
-        m_documentToInspectorStyleSheet.remove(document);
+    if ( document )
+    {
+        m_documentToInspectorStyleSheet.remove( document );
+    }
 }
 
-void InspectorCSSAgent::didRemoveDOMNode(Node* node)
+void InspectorCSSAgent::didRemoveDOMNode( Node *node )
 {
-    if (!node)
+    if ( !node )
+    {
         return;
+    }
 
-    NodeToInspectorStyleSheet::iterator it = m_nodeToInspectorStyleSheet.find(node);
-    if (it == m_nodeToInspectorStyleSheet.end())
+    NodeToInspectorStyleSheet::iterator it = m_nodeToInspectorStyleSheet.find( node );
+
+    if ( it == m_nodeToInspectorStyleSheet.end() )
+    {
         return;
+    }
 
-    m_idToInspectorStyleSheet.remove(it->second->id());
-    m_nodeToInspectorStyleSheet.remove(node);
+    m_idToInspectorStyleSheet.remove( it->second->id() );
+    m_nodeToInspectorStyleSheet.remove( node );
 }
 
-void InspectorCSSAgent::didModifyDOMAttr(Element* element)
+void InspectorCSSAgent::didModifyDOMAttr( Element *element )
 {
-    if (!element)
+    if ( !element )
+    {
         return;
+    }
 
-    NodeToInspectorStyleSheet::iterator it = m_nodeToInspectorStyleSheet.find(element);
-    if (it == m_nodeToInspectorStyleSheet.end())
+    NodeToInspectorStyleSheet::iterator it = m_nodeToInspectorStyleSheet.find( element );
+
+    if ( it == m_nodeToInspectorStyleSheet.end() )
+    {
         return;
+    }
 
     it->second->didModifyElementAttribute();
 }

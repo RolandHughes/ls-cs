@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef PopupMenuStyle_h
@@ -31,33 +31,63 @@
 #include "Length.h"
 #include "TextDirection.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class PopupMenuStyle {
+class PopupMenuStyle
+{
 public:
     enum PopupMenuType { SelectPopup, AutofillPopup };
-    PopupMenuStyle(const Color& foreground, const Color& background, const Font& font, bool visible, bool isDisplayNone, Length textIndent, TextDirection textDirection, bool hasTextDirectionOverride, PopupMenuType menuType = SelectPopup)
-        : m_foregroundColor(foreground)
-        , m_backgroundColor(background)
-        , m_font(font)
-        , m_visible(visible)
-        , m_isDisplayNone(isDisplayNone)
-        , m_textIndent(textIndent)
-        , m_textDirection(textDirection)
-        , m_hasTextDirectionOverride(hasTextDirectionOverride)
-        , m_menuType(menuType)
+    PopupMenuStyle( const Color &foreground, const Color &background, const Font &font, bool visible, bool isDisplayNone,
+                    Length textIndent, TextDirection textDirection, bool hasTextDirectionOverride, PopupMenuType menuType = SelectPopup )
+        : m_foregroundColor( foreground )
+        , m_backgroundColor( background )
+        , m_font( font )
+        , m_visible( visible )
+        , m_isDisplayNone( isDisplayNone )
+        , m_textIndent( textIndent )
+        , m_textDirection( textDirection )
+        , m_hasTextDirectionOverride( hasTextDirectionOverride )
+        , m_menuType( menuType )
     {
     }
 
-    const Color& foregroundColor() const { return m_foregroundColor; }
-    const Color& backgroundColor() const { return m_backgroundColor; }
-    const Font& font() const { return m_font; }
-    bool isVisible() const { return m_visible; }
-    bool isDisplayNone() const { return m_isDisplayNone; }
-    Length textIndent() const { return m_textIndent; }
-    TextDirection textDirection() const { return m_textDirection; }
-    bool hasTextDirectionOverride() const { return m_hasTextDirectionOverride; }
-    PopupMenuType menuType() const { return m_menuType; }
+    const Color &foregroundColor() const
+    {
+        return m_foregroundColor;
+    }
+    const Color &backgroundColor() const
+    {
+        return m_backgroundColor;
+    }
+    const Font &font() const
+    {
+        return m_font;
+    }
+    bool isVisible() const
+    {
+        return m_visible;
+    }
+    bool isDisplayNone() const
+    {
+        return m_isDisplayNone;
+    }
+    Length textIndent() const
+    {
+        return m_textIndent;
+    }
+    TextDirection textDirection() const
+    {
+        return m_textDirection;
+    }
+    bool hasTextDirectionOverride() const
+    {
+        return m_hasTextDirectionOverride;
+    }
+    PopupMenuType menuType() const
+    {
+        return m_menuType;
+    }
 private:
     Color m_foregroundColor;
     Color m_backgroundColor;

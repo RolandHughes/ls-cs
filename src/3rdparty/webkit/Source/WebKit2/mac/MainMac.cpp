@@ -33,29 +33,37 @@ static void closeUnusedFileDescriptors()
     int numFDs = getdtablesize();
 
     // Close all file descriptors except stdin, stdout and stderr.
-    for (int fd = 3; fd < numFDs; ++fd)
-        close(fd);
+    for ( int fd = 3; fd < numFDs; ++fd )
+    {
+        close( fd );
+    }
 }
 
-int main(int argc, char** argv)
+int main( int argc, char **argv )
 {
     closeUnusedFileDescriptors();
 
-    if (argc < 2)
-        return EXIT_FAILURE;
-
-    static void* frameworkLibrary = dlopen(argv[1], RTLD_NOW);
-    if (!frameworkLibrary) {
-        fprintf(stderr, "Unable to load WebKit2.framework: %s\n", dlerror());
+    if ( argc < 2 )
+    {
         return EXIT_FAILURE;
     }
 
-    typedef int (*WebKitMainFunction)(int argc, char** argv);
-    WebKitMainFunction webKitMain = reinterpret_cast<WebKitMainFunction>(dlsym(frameworkLibrary, "WebKitMain"));
-    if (!webKitMain) {
-        fprintf(stderr, "Unable to find entry point in WebKit2.framework: %s\n", dlerror());
+    static void *frameworkLibrary = dlopen( argv[1], RTLD_NOW );
+
+    if ( !frameworkLibrary )
+    {
+        fprintf( stderr, "Unable to load WebKit2.framework: %s\n", dlerror() );
         return EXIT_FAILURE;
     }
 
-    return webKitMain(argc, argv);
+    typedef int ( *WebKitMainFunction )( int argc, char **argv );
+    WebKitMainFunction webKitMain = reinterpret_cast<WebKitMainFunction>( dlsym( frameworkLibrary, "WebKitMain" ) );
+
+    if ( !webKitMain )
+    {
+        fprintf( stderr, "Unable to find entry point in WebKit2.framework: %s\n", dlerror() );
+        return EXIT_FAILURE;
+    }
+
+    return webKitMain( argc, argv );
 }

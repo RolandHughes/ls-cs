@@ -27,100 +27,104 @@
 
 class Ginger_MP : public QObject
 {
-   CS_OBJECT(Ginger_MP)
+    CS_OBJECT( Ginger_MP )
 
-   CS_PROPERTY_READ(flavor,  getFlavor)
-   CS_PROPERTY_WRITE(flavor, setFlavor)
+    CS_PROPERTY_READ( flavor,  getFlavor )
+    CS_PROPERTY_WRITE( flavor, setFlavor )
 
-   CS_PROPERTY_READ(shape,   getCursorShape)
-   CS_PROPERTY_DESIGNABLE(shape, false)
-   CS_PROPERTY_SCRIPTABLE(shape, true)
-   CS_PROPERTY_STORED(shape, false)
+    CS_PROPERTY_READ( shape,   getCursorShape )
+    CS_PROPERTY_DESIGNABLE( shape, false )
+    CS_PROPERTY_SCRIPTABLE( shape, true )
+    CS_PROPERTY_STORED( shape, false )
 
-   CS_ENUM(Spices)
+    CS_ENUM( Spices )
 
-   public:
-      enum Spices {
-         basil,
-         mint,
-         pepper,
-         thyme,
-      };
+public:
+    enum Spices
+    {
+        basil,
+        mint,
+        pepper,
+        thyme,
+    };
 
-      Spices getFlavor() const {
-         return m_flavor;
-      }
+    Spices getFlavor() const
+    {
+        return m_flavor;
+    }
 
-      void setFlavor(Spices data) {
-         m_flavor = data;
-      }
+    void setFlavor( Spices data )
+    {
+        m_flavor = data;
+    }
 
-      Qt::CursorShape getCursorShape() const {
-         return Qt::BusyCursor;
-      }
+    Qt::CursorShape getCursorShape() const
+    {
+        return Qt::BusyCursor;
+    }
 
-   private:
-     Spices m_flavor;
+private:
+    Spices m_flavor;
 };
 
-TEST_CASE("QMetaProperty enumerator", "[qmetaproperty]")
+TEST_CASE( "QMetaProperty enumerator", "[qmetaproperty]" )
 {
-   Ginger_MP obj;
+    Ginger_MP obj;
 
-   const QMetaObject &metaObj = Ginger_MP::staticMetaObject();
+    const QMetaObject &metaObj = Ginger_MP::staticMetaObject();
 
-   int index = metaObj.indexOfProperty("flavor");
-   QMetaProperty prop = metaObj.property(index);
+    int index = metaObj.indexOfProperty( "flavor" );
+    QMetaProperty prop = metaObj.property( index );
 
-   REQUIRE(prop.isValid() == true);
+    REQUIRE( prop.isValid() == true );
 
-   QMetaEnum tmpEnum = prop.enumerator();
+    QMetaEnum tmpEnum = prop.enumerator();
 
-   REQUIRE(tmpEnum.isValid() == true);
-   REQUIRE(tmpEnum.name() == "Spices");
+    REQUIRE( tmpEnum.isValid() == true );
+    REQUIRE( tmpEnum.name() == "Spices" );
 
-   REQUIRE(prop.isDesignable() == true);
+    REQUIRE( prop.isDesignable() == true );
 }
 
-TEST_CASE("QMetaProperty external_enum", "[qmetaproperty]")
+TEST_CASE( "QMetaProperty external_enum", "[qmetaproperty]" )
 {
-   Ginger_MP obj;
+    Ginger_MP obj;
 
-   const QMetaObject &metaObj = Ginger_MP::staticMetaObject();
+    const QMetaObject &metaObj = Ginger_MP::staticMetaObject();
 
-   int index = metaObj.indexOfProperty("shape");
-   REQUIRE(index >= 0);
+    int index = metaObj.indexOfProperty( "shape" );
+    REQUIRE( index >= 0 );
 
-   QMetaProperty prop = metaObj.property(index);
-   REQUIRE(prop.isValid() == true);
-   REQUIRE(prop.name() == "shape");
+    QMetaProperty prop = metaObj.property( index );
+    REQUIRE( prop.isValid() == true );
+    REQUIRE( prop.name() == "shape" );
 
-   QMetaEnum tmpEnum = prop.enumerator();
+    QMetaEnum tmpEnum = prop.enumerator();
 
-   REQUIRE(tmpEnum.isValid() == true);
-   REQUIRE(tmpEnum.name() == "CursorShape");
+    REQUIRE( tmpEnum.isValid() == true );
+    REQUIRE( tmpEnum.name() == "CursorShape" );
 
-   REQUIRE(prop.isDesignable() == false);
-   REQUIRE(prop.isScriptable() == true);
-   REQUIRE(prop.isStored() == false);
+    REQUIRE( prop.isDesignable() == false );
+    REQUIRE( prop.isScriptable() == true );
+    REQUIRE( prop.isStored() == false );
 }
 
-TEST_CASE("QMetaProperty type_name", "[qmetaproperty]")
+TEST_CASE( "QMetaProperty type_name", "[qmetaproperty]" )
 {
-   Ginger_MP obj;
+    Ginger_MP obj;
 
-   const QMetaObject &metaObj = Ginger_MP::staticMetaObject();
+    const QMetaObject &metaObj = Ginger_MP::staticMetaObject();
 
-   int index = metaObj.indexOfProperty("flavor");
-   QMetaProperty prop = metaObj.property(index);
+    int index = metaObj.indexOfProperty( "flavor" );
+    QMetaProperty prop = metaObj.property( index );
 
-   QString name = prop.name();
+    QString name = prop.name();
 
-   REQUIRE(prop.isValid() == true);
-   REQUIRE(prop.isReadable() == true);
-   REQUIRE(prop.isWritable() == true);
+    REQUIRE( prop.isValid() == true );
+    REQUIRE( prop.isReadable() == true );
+    REQUIRE( prop.isWritable() == true );
 
-   REQUIRE(prop.typeName() == "Ginger_MP::Spices");
-   REQUIRE(name == "flavor");
+    REQUIRE( prop.typeName() == "Ginger_MP::Spices" );
+    REQUIRE( name == "flavor" );
 }
 

@@ -29,79 +29,83 @@
 
 #ifndef QT_NO_SYSTEMSEMAPHORE
 
-QSystemSemaphore::QSystemSemaphore(const QString &key, int initialValue, AccessMode mode)
-   : d(new QSystemSemaphorePrivate)
+QSystemSemaphore::QSystemSemaphore( const QString &key, int initialValue, AccessMode mode )
+    : d( new QSystemSemaphorePrivate )
 {
-   setKey(key, initialValue, mode);
+    setKey( key, initialValue, mode );
 }
 
 QSystemSemaphore::~QSystemSemaphore()
 {
-   d->cleanHandle();
+    d->cleanHandle();
 }
 
-void QSystemSemaphore::setKey(const QString &key, int initialValue, AccessMode mode)
+void QSystemSemaphore::setKey( const QString &key, int initialValue, AccessMode mode )
 {
-   if (key == d->key && mode == Open) {
-      return;
-   }
+    if ( key == d->key && mode == Open )
+    {
+        return;
+    }
 
-   d->error = NoError;
-   d->errorString = QString();
+    d->error = NoError;
+    d->errorString = QString();
 
 #if ! defined(Q_OS_WIN) && !defined(QT_POSIX_IPC)
 
-   // optimization to not destroy/create the file & semaphore
-   if (key == d->key && mode == Create && d->createdSemaphore && d->createdFile) {
-      d->initialValue = initialValue;
-      d->unix_key = -1;
-      d->handle(mode);
-      return;
-   }
+    // optimization to not destroy/create the file & semaphore
+    if ( key == d->key && mode == Create && d->createdSemaphore && d->createdFile )
+    {
+        d->initialValue = initialValue;
+        d->unix_key = -1;
+        d->handle( mode );
+        return;
+    }
 
 #endif
 
-   d->cleanHandle();
-   d->key = key;
-   d->initialValue = initialValue;
+    d->cleanHandle();
+    d->key = key;
+    d->initialValue = initialValue;
 
-   // cache the file name so it doesn't have to be generated all the time.
-   d->fileName = d->makeKeyFileName();
-   d->handle(mode);
+    // cache the file name so it doesn't have to be generated all the time.
+    d->fileName = d->makeKeyFileName();
+    d->handle( mode );
 }
 
 QString QSystemSemaphore::key() const
 {
-   return d->key;
+    return d->key;
 }
 
 bool QSystemSemaphore::acquire()
 {
-   return d->modifySemaphore(-1);
+    return d->modifySemaphore( -1 );
 }
 
-bool QSystemSemaphore::release(int n)
+bool QSystemSemaphore::release( int n )
 {
-   if (n == 0) {
-      return true;
-   }
+    if ( n == 0 )
+    {
+        return true;
+    }
 
-   if (n < 0) {
-      qWarning("QSystemSemaphore::release() Value can not be negative.");
-      return false;
-   }
+    if ( n < 0 )
+    {
+        qWarning( "QSystemSemaphore::release() Value can not be negative." );
+        return false;
+    }
 
-   return d->modifySemaphore(n);
+    return d->modifySemaphore( n );
 }
 
 QSystemSemaphore::SystemSemaphoreError QSystemSemaphore::error() const
 {
-   return d->error;
+    return d->error;
 }
 
 QString QSystemSemaphore::errorString() const
 {
-   return d->errorString;
+    return d->errorString;
 }
 
 #endif

@@ -29,76 +29,87 @@
 #include <qthread.h>
 #include <qthreadstorage.h>
 
-namespace {
+namespace
+{
 class CustomFontFileLoader;
 }
 
 class QRawFontPrivate
 {
- public:
-   QRawFontPrivate()
-      : fontEngine(nullptr), hintingPreference(QFont::PreferDefaultHinting), thread(nullptr)
-   {
-   }
+public:
+    QRawFontPrivate()
+        : fontEngine( nullptr ), hintingPreference( QFont::PreferDefaultHinting ), thread( nullptr )
+    {
+    }
 
-   QRawFontPrivate(const QRawFontPrivate &other)
-      : fontEngine(other.fontEngine), hintingPreference(other.hintingPreference), thread(other.thread)
-   {
-      if (fontEngine != nullptr) {
-         fontEngine->m_refCount.ref();
-      }
-   }
+    QRawFontPrivate( const QRawFontPrivate &other )
+        : fontEngine( other.fontEngine ), hintingPreference( other.hintingPreference ), thread( other.thread )
+    {
+        if ( fontEngine != nullptr )
+        {
+            fontEngine->m_refCount.ref();
+        }
+    }
 
-   ~QRawFontPrivate() {
-      cleanUp();
-   }
+    ~QRawFontPrivate()
+    {
+        cleanUp();
+    }
 
-   inline void cleanUp() {
-      setFontEngine(nullptr);
-      hintingPreference = QFont::PreferDefaultHinting;
-   }
+    inline void cleanUp()
+    {
+        setFontEngine( nullptr );
+        hintingPreference = QFont::PreferDefaultHinting;
+    }
 
-   inline bool isValid() const {
-      Q_ASSERT(fontEngine == nullptr || thread == QThread::currentThread());
-      return fontEngine != nullptr;
-   }
+    inline bool isValid() const
+    {
+        Q_ASSERT( fontEngine == nullptr || thread == QThread::currentThread() );
+        return fontEngine != nullptr;
+    }
 
-   inline void setFontEngine(QFontEngine *engine) {
-      Q_ASSERT(fontEngine == nullptr || thread == QThread::currentThread());
+    inline void setFontEngine( QFontEngine *engine )
+    {
+        Q_ASSERT( fontEngine == nullptr || thread == QThread::currentThread() );
 
-      if (fontEngine == engine) {
-         return;
-      }
+        if ( fontEngine == engine )
+        {
+            return;
+        }
 
-      if (fontEngine != nullptr) {
-         if (! fontEngine->m_refCount.deref()) {
-            delete fontEngine;
-         }
+        if ( fontEngine != nullptr )
+        {
+            if ( ! fontEngine->m_refCount.deref() )
+            {
+                delete fontEngine;
+            }
 
-         thread = nullptr;
-      }
+            thread = nullptr;
+        }
 
-      fontEngine = engine;
+        fontEngine = engine;
 
-      if (fontEngine != nullptr) {
-         fontEngine->m_refCount.ref();
+        if ( fontEngine != nullptr )
+        {
+            fontEngine->m_refCount.ref();
 
-         thread = QThread::currentThread();
-         Q_ASSERT(thread);
-      }
-   }
+            thread = QThread::currentThread();
+            Q_ASSERT( thread );
+        }
+    }
 
-   void loadFromData(const QByteArray &fontData, qreal pixelSize, QFont::HintingPreference hintingPreference);
+    void loadFromData( const QByteArray &fontData, qreal pixelSize, QFont::HintingPreference hintingPreference );
 
-   static std::shared_ptr<QRawFontPrivate> get(const QRawFont &font) {
-      return font.m_fontPrivate;
-   }
+    static std::shared_ptr<QRawFontPrivate> get( const QRawFont &font )
+    {
+        return font.m_fontPrivate;
+    }
 
-   QFontEngine *fontEngine;
-   QFont::HintingPreference hintingPreference;
+    QFontEngine *fontEngine;
+    QFont::HintingPreference hintingPreference;
 
- private:
-   QThread *thread;
+private:
+    QThread *thread;
 };
 
 #endif

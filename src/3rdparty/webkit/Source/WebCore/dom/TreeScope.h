@@ -29,49 +29,64 @@
 #include "ContainerNode.h"
 #include "DocumentOrderedMap.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Element;
 class HTMLMapElement;
 
-class TreeScope : public ContainerNode {
+class TreeScope : public ContainerNode
+{
     friend class Document;
 
 public:
-    TreeScope* parentTreeScope() const { return m_parentTreeScope; }
-    void setParentTreeScope(TreeScope*);
+    TreeScope *parentTreeScope() const
+    {
+        return m_parentTreeScope;
+    }
+    void setParentTreeScope( TreeScope * );
 
-    Element* getElementById(const AtomicString&) const;
-    bool hasElementWithId(AtomicStringImpl* id) const;
-    bool containsMultipleElementsWithId(const AtomicString& id) const;
-    void addElementById(const AtomicString& elementId, Element*);
-    void removeElementById(const AtomicString& elementId, Element*);
+    Element *getElementById( const AtomicString & ) const;
+    bool hasElementWithId( AtomicStringImpl *id ) const;
+    bool containsMultipleElementsWithId( const AtomicString &id ) const;
+    void addElementById( const AtomicString &elementId, Element * );
+    void removeElementById( const AtomicString &elementId, Element * );
 
-    void addImageMap(HTMLMapElement*);
-    void removeImageMap(HTMLMapElement*);
-    HTMLMapElement* getImageMap(const String& url) const;
+    void addImageMap( HTMLMapElement * );
+    void removeImageMap( HTMLMapElement * );
+    HTMLMapElement *getImageMap( const String &url ) const;
 
-    void addNodeListCache() { ++m_numNodeListCaches; }
-    void removeNodeListCache() { ASSERT(m_numNodeListCaches > 0); --m_numNodeListCaches; }
-    bool hasNodeListCaches() const { return m_numNodeListCaches; }
+    void addNodeListCache()
+    {
+        ++m_numNodeListCaches;
+    }
+    void removeNodeListCache()
+    {
+        ASSERT( m_numNodeListCaches > 0 );
+        --m_numNodeListCaches;
+    }
+    bool hasNodeListCaches() const
+    {
+        return m_numNodeListCaches;
+    }
 
     // Find first anchor with the given name.
     // First searches for an element with the given ID, but if that fails, then looks
     // for an anchor with the given name. ID matching is always case sensitive, but
     // Anchor name matching is case sensitive in strict mode and not case sensitive in
     // quirks mode for historical compatibility reasons.
-    Element* findAnchor(const String& name);
+    Element *findAnchor( const String &name );
 
     virtual bool applyAuthorSheets() const;
 
 protected:
-    TreeScope(Document*);
+    TreeScope( Document * );
     virtual ~TreeScope();
 
     void destroyTreeScopeData();
 
 private:
-    TreeScope* m_parentTreeScope;
+    TreeScope *m_parentTreeScope;
 
     DocumentOrderedMap m_elementsById;
     DocumentOrderedMap m_imageMapsByName;
@@ -79,15 +94,15 @@ private:
     unsigned m_numNodeListCaches;
 };
 
-inline bool TreeScope::hasElementWithId(AtomicStringImpl* id) const
+inline bool TreeScope::hasElementWithId( AtomicStringImpl *id ) const
 {
-    ASSERT(id);
-    return m_elementsById.contains(id);
+    ASSERT( id );
+    return m_elementsById.contains( id );
 }
 
-inline bool TreeScope::containsMultipleElementsWithId(const AtomicString& id) const
+inline bool TreeScope::containsMultipleElementsWithId( const AtomicString &id ) const
 {
-    return m_elementsById.containsMultiple(id.impl());
+    return m_elementsById.containsMultiple( id.impl() );
 }
 
 } // namespace WebCore

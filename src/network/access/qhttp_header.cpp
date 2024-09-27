@@ -45,67 +45,69 @@
 
 class QHttpHeaderPrivate
 {
-   Q_DECLARE_PUBLIC(QHttpHeader)
+    Q_DECLARE_PUBLIC( QHttpHeader )
 
- public:
-   inline virtual ~QHttpHeaderPrivate() {}
+public:
+    inline virtual ~QHttpHeaderPrivate() {}
 
-   QList<QPair<QString, QString> > values;
-   bool valid;
-   QHttpHeader *q_ptr;
+    QList<QPair<QString, QString> > values;
+    bool valid;
+    QHttpHeader *q_ptr;
 };
 
 QHttpHeader::QHttpHeader()
-   : d_ptr(new QHttpHeaderPrivate)
+    : d_ptr( new QHttpHeaderPrivate )
 {
-   Q_D(QHttpHeader);
-   d->q_ptr = this;
-   d->valid = true;
+    Q_D( QHttpHeader );
+    d->q_ptr = this;
+    d->valid = true;
 }
 
 /*!
         Constructs a copy of \a header.
 */
-QHttpHeader::QHttpHeader(const QHttpHeader &header)
-   : d_ptr(new QHttpHeaderPrivate)
+QHttpHeader::QHttpHeader( const QHttpHeader &header )
+    : d_ptr( new QHttpHeaderPrivate )
 {
-   Q_D(QHttpHeader);
-   d->q_ptr = this;
-   d->valid = header.d_func()->valid;
-   d->values = header.d_func()->values;
+    Q_D( QHttpHeader );
+    d->q_ptr = this;
+    d->valid = header.d_func()->valid;
+    d->values = header.d_func()->values;
 }
 
-QHttpHeader::QHttpHeader(const QString &str)
-   : d_ptr(new QHttpHeaderPrivate)
+QHttpHeader::QHttpHeader( const QString &str )
+    : d_ptr( new QHttpHeaderPrivate )
 {
-   Q_D(QHttpHeader);
-   d->q_ptr = this;
-   d->valid = true;
-   parse(str);
-}
-
-/*! \internal
- */
-QHttpHeader::QHttpHeader(QHttpHeaderPrivate &dd, const QString &str)
-   : d_ptr(&dd)
-{
-   Q_D(QHttpHeader);
-   d->q_ptr = this;
-   d->valid = true;
-   if (!str.isEmpty()) {
-      parse(str);
-   }
+    Q_D( QHttpHeader );
+    d->q_ptr = this;
+    d->valid = true;
+    parse( str );
 }
 
 /*! \internal
  */
-QHttpHeader::QHttpHeader(QHttpHeaderPrivate &dd, const QHttpHeader &header)
-   : d_ptr(&dd)
+QHttpHeader::QHttpHeader( QHttpHeaderPrivate &dd, const QString &str )
+    : d_ptr( &dd )
 {
-   Q_D(QHttpHeader);
-   d->q_ptr = this;
-   d->valid = header.d_func()->valid;
-   d->values = header.d_func()->values;
+    Q_D( QHttpHeader );
+    d->q_ptr = this;
+    d->valid = true;
+
+    if ( !str.isEmpty() )
+    {
+        parse( str );
+    }
+}
+
+/*! \internal
+ */
+QHttpHeader::QHttpHeader( QHttpHeaderPrivate &dd, const QHttpHeader &header )
+    : d_ptr( &dd )
+{
+    Q_D( QHttpHeader );
+    d->q_ptr = this;
+    d->valid = header.d_func()->valid;
+    d->values = header.d_func()->values;
 }
 /*!
     Destructor.
@@ -117,12 +119,12 @@ QHttpHeader::~QHttpHeader()
 /*!
     Assigns \a h and returns a reference to this http header.
 */
-QHttpHeader &QHttpHeader::operator=(const QHttpHeader &h)
+QHttpHeader &QHttpHeader::operator=( const QHttpHeader &h )
 {
-   Q_D(QHttpHeader);
-   d->values = h.d_func()->values;
-   d->valid = h.d_func()->valid;
-   return *this;
+    Q_D( QHttpHeader );
+    d->values = h.d_func()->values;
+    d->valid = h.d_func()->valid;
+    return *this;
 }
 
 /*!
@@ -132,8 +134,8 @@ QHttpHeader &QHttpHeader::operator=(const QHttpHeader &h)
 */
 bool QHttpHeader::isValid() const
 {
-   Q_D(const QHttpHeader);
-   return d->valid;
+    Q_D( const QHttpHeader );
+    return d->valid;
 }
 
 /*! \internal
@@ -145,156 +147,192 @@ bool QHttpHeader::isValid() const
 
     \sa toString()
 */
-bool QHttpHeader::parse(const QString &str)
+bool QHttpHeader::parse( const QString &str )
 {
-   Q_D(QHttpHeader);
-   QStringList lst;
-   int pos = str.indexOf(QLatin1Char('\n'));
+    Q_D( QHttpHeader );
+    QStringList lst;
+    int pos = str.indexOf( QLatin1Char( '\n' ) );
 
-   if (pos > 0 && str.at(pos - 1) == QLatin1Char('\r')) {
-      lst = str.trimmed().split(QLatin1String("\r\n"));
-   } else {
-      lst = str.trimmed().split(QLatin1String("\n"));
-   }
+    if ( pos > 0 && str.at( pos - 1 ) == QLatin1Char( '\r' ) )
+    {
+        lst = str.trimmed().split( QLatin1String( "\r\n" ) );
+    }
+    else
+    {
+        lst = str.trimmed().split( QLatin1String( "\n" ) );
+    }
 
-   lst.removeAll(QString()); // No empties
+    lst.removeAll( QString() ); // No empties
 
-   if (lst.isEmpty()) {
-      return true;
-   }
+    if ( lst.isEmpty() )
+    {
+        return true;
+    }
 
-   QStringList lines;
-   QStringList::iterator it = lst.begin();
+    QStringList lines;
+    QStringList::iterator it = lst.begin();
 
-   for (; it != lst.end(); ++it) {
-      if (!(*it).isEmpty()) {
-         if ((*it)[0].isSpace()) {
-            if (!lines.isEmpty()) {
-               lines.last() += QLatin1Char(' ');
-               lines.last() += (*it).trimmed();
+    for ( ; it != lst.end(); ++it )
+    {
+        if ( !( *it ).isEmpty() )
+        {
+            if ( ( *it )[0].isSpace() )
+            {
+                if ( !lines.isEmpty() )
+                {
+                    lines.last() += QLatin1Char( ' ' );
+                    lines.last() += ( *it ).trimmed();
+                }
             }
-         } else {
-            lines.append((*it));
-         }
-      }
-   }
+            else
+            {
+                lines.append( ( *it ) );
+            }
+        }
+    }
 
-   int number = 0;
-   it = lines.begin();
-   for (; it != lines.end(); ++it) {
-      if (!parseLine(*it, number++)) {
-         d->valid = false;
-         return false;
-      }
-   }
-   return true;
+    int number = 0;
+    it = lines.begin();
+
+    for ( ; it != lines.end(); ++it )
+    {
+        if ( !parseLine( *it, number++ ) )
+        {
+            d->valid = false;
+            return false;
+        }
+    }
+
+    return true;
 }
 
 /*! \internal
 */
-void QHttpHeader::setValid(bool v)
+void QHttpHeader::setValid( bool v )
 {
-   Q_D(QHttpHeader);
-   d->valid = v;
+    Q_D( QHttpHeader );
+    d->valid = v;
 }
 
-QString QHttpHeader::value(const QString &key) const
+QString QHttpHeader::value( const QString &key ) const
 {
-   Q_D(const QHttpHeader);
-   QString lowercaseKey = key.toLower();
-   QList<QPair<QString, QString> >::const_iterator it = d->values.constBegin();
+    Q_D( const QHttpHeader );
+    QString lowercaseKey = key.toLower();
+    QList<QPair<QString, QString> >::const_iterator it = d->values.constBegin();
 
-   while (it != d->values.constEnd()) {
-      if ((*it).first.toLower() == lowercaseKey) {
-         return (*it).second;
-      }
-      ++it;
-   }
-   return QString();
+    while ( it != d->values.constEnd() )
+    {
+        if ( ( *it ).first.toLower() == lowercaseKey )
+        {
+            return ( *it ).second;
+        }
+
+        ++it;
+    }
+
+    return QString();
 }
 
-QStringList QHttpHeader::allValues(const QString &key) const
+QStringList QHttpHeader::allValues( const QString &key ) const
 {
-   Q_D(const QHttpHeader);
-   QString lowercaseKey = key.toLower();
-   QStringList valueList;
-   QList<QPair<QString, QString> >::const_iterator it = d->values.constBegin();
+    Q_D( const QHttpHeader );
+    QString lowercaseKey = key.toLower();
+    QStringList valueList;
+    QList<QPair<QString, QString> >::const_iterator it = d->values.constBegin();
 
-   while (it != d->values.constEnd()) {
-      if ((*it).first.toLower() == lowercaseKey) {
-         valueList.append((*it).second);
-      }
-      ++it;
-   }
-   return valueList;
+    while ( it != d->values.constEnd() )
+    {
+        if ( ( *it ).first.toLower() == lowercaseKey )
+        {
+            valueList.append( ( *it ).second );
+        }
+
+        ++it;
+    }
+
+    return valueList;
 }
 
 QStringList QHttpHeader::keys() const
 {
-   Q_D(const QHttpHeader);
-   QStringList keyList;
-   QSet<QString> seenKeys;
-   QList<QPair<QString, QString> >::const_iterator it = d->values.constBegin();
-   while (it != d->values.constEnd()) {
-      const QString &key = (*it).first;
-      QString lowercaseKey = key.toLower();
-      if (!seenKeys.contains(lowercaseKey)) {
-         keyList.append(key);
-         seenKeys.insert(lowercaseKey);
-      }
-      ++it;
-   }
-   return keyList;
+    Q_D( const QHttpHeader );
+    QStringList keyList;
+    QSet<QString> seenKeys;
+    QList<QPair<QString, QString> >::const_iterator it = d->values.constBegin();
+
+    while ( it != d->values.constEnd() )
+    {
+        const QString &key = ( *it ).first;
+        QString lowercaseKey = key.toLower();
+
+        if ( !seenKeys.contains( lowercaseKey ) )
+        {
+            keyList.append( key );
+            seenKeys.insert( lowercaseKey );
+        }
+
+        ++it;
+    }
+
+    return keyList;
 }
 
-bool QHttpHeader::hasKey(const QString &key) const
+bool QHttpHeader::hasKey( const QString &key ) const
 {
-   Q_D(const QHttpHeader);
-   QString lowercaseKey = key.toLower();
-   QList<QPair<QString, QString> >::const_iterator it = d->values.constBegin();
+    Q_D( const QHttpHeader );
+    QString lowercaseKey = key.toLower();
+    QList<QPair<QString, QString> >::const_iterator it = d->values.constBegin();
 
-   while (it != d->values.constEnd()) {
-      if ((*it).first.toLower() == lowercaseKey) {
-         return true;
-      }
-      ++it;
-   }
-   return false;
+    while ( it != d->values.constEnd() )
+    {
+        if ( ( *it ).first.toLower() == lowercaseKey )
+        {
+            return true;
+        }
+
+        ++it;
+    }
+
+    return false;
 }
 
-void QHttpHeader::setValue(const QString &key, const QString &value)
+void QHttpHeader::setValue( const QString &key, const QString &value )
 {
-   Q_D(QHttpHeader);
-   QString lowercaseKey = key.toLower();
-   QList<QPair<QString, QString> >::iterator it = d->values.begin();
+    Q_D( QHttpHeader );
+    QString lowercaseKey = key.toLower();
+    QList<QPair<QString, QString> >::iterator it = d->values.begin();
 
-   while (it != d->values.end()) {
-      if ((*it).first.toLower() == lowercaseKey) {
-         (*it).second = value;
-         return;
-      }
-      ++it;
-   }
-   // not found so add
-   addValue(key, value);
+    while ( it != d->values.end() )
+    {
+        if ( ( *it ).first.toLower() == lowercaseKey )
+        {
+            ( *it ).second = value;
+            return;
+        }
+
+        ++it;
+    }
+
+    // not found so add
+    addValue( key, value );
 }
 
 /*!
     Sets the header entries to be the list of key value pairs in \a values.
 */
-void QHttpHeader::setValues(const QList<QPair<QString, QString> > &values)
+void QHttpHeader::setValues( const QList<QPair<QString, QString> > &values )
 {
-   Q_D(QHttpHeader);
-   d->values = values;
+    Q_D( QHttpHeader );
+    d->values = values;
 }
 
 /*!
     Adds a new entry with the \a key and \a value.
 */
-void QHttpHeader::addValue(const QString &key, const QString &value)
+void QHttpHeader::addValue( const QString &key, const QString &value )
 {
-   Q_D(QHttpHeader);
-   d->values.append(qMakePair(key, value));
+    Q_D( QHttpHeader );
+    d->values.append( qMakePair( key, value ) );
 }
 
 /*!
@@ -302,8 +340,8 @@ void QHttpHeader::addValue(const QString &key, const QString &value)
 */
 QList<QPair<QString, QString> > QHttpHeader::values() const
 {
-   Q_D(const QHttpHeader);
-   return d->values;
+    Q_D( const QHttpHeader );
+    return d->values;
 }
 
 /*!
@@ -311,38 +349,44 @@ QList<QPair<QString, QString> > QHttpHeader::values() const
 
     \sa value() setValue()
 */
-void QHttpHeader::removeValue(const QString &key)
+void QHttpHeader::removeValue( const QString &key )
 {
-   Q_D(QHttpHeader);
-   QString lowercaseKey = key.toLower();
-   QList<QPair<QString, QString> >::iterator it = d->values.begin();
+    Q_D( QHttpHeader );
+    QString lowercaseKey = key.toLower();
+    QList<QPair<QString, QString> >::iterator it = d->values.begin();
 
-   while (it != d->values.end()) {
-      if ((*it).first.toLower() == lowercaseKey) {
-         d->values.erase(it);
-         return;
-      }
-      ++it;
-   }
+    while ( it != d->values.end() )
+    {
+        if ( ( *it ).first.toLower() == lowercaseKey )
+        {
+            d->values.erase( it );
+            return;
+        }
+
+        ++it;
+    }
 }
 
 /*!
     Removes all the entries with the key \a key from the HTTP header.
 */
-void QHttpHeader::removeAllValues(const QString &key)
+void QHttpHeader::removeAllValues( const QString &key )
 {
-   Q_D(QHttpHeader);
+    Q_D( QHttpHeader );
 
-   QString lowercaseKey = key.toLower();
-   QList<QPair<QString, QString> >::iterator it = d->values.begin();
+    QString lowercaseKey = key.toLower();
+    QList<QPair<QString, QString> >::iterator it = d->values.begin();
 
-   while (it != d->values.end()) {
-      if ((*it).first.toLower() == lowercaseKey) {
-         it = d->values.erase(it);
-         continue;
-      }
-      ++it;
-   }
+    while ( it != d->values.end() )
+    {
+        if ( ( *it ).first.toLower() == lowercaseKey )
+        {
+            it = d->values.erase( it );
+            continue;
+        }
+
+        ++it;
+    }
 }
 
 /*! \internal
@@ -353,33 +397,40 @@ void QHttpHeader::removeAllValues(const QString &key)
 
     \sa parse()
 */
-bool QHttpHeader::parseLine(const QString &line, int)
+bool QHttpHeader::parseLine( const QString &line, int )
 {
-   int i = line.indexOf(QLatin1Char(':'));
-   if (i == -1) {
-      return false;
-   }
+    int i = line.indexOf( QLatin1Char( ':' ) );
 
-   addValue(line.left(i).trimmed(), line.mid(i + 1).trimmed());
+    if ( i == -1 )
+    {
+        return false;
+    }
 
-   return true;
+    addValue( line.left( i ).trimmed(), line.mid( i + 1 ).trimmed() );
+
+    return true;
 }
 
 QString QHttpHeader::toString() const
 {
-   Q_D(const QHttpHeader);
-   if (!isValid()) {
-      return QLatin1String("");
-   }
+    Q_D( const QHttpHeader );
 
-   QString ret = QLatin1String("");
+    if ( !isValid() )
+    {
+        return QLatin1String( "" );
+    }
 
-   QList<QPair<QString, QString> >::const_iterator it = d->values.constBegin();
-   while (it != d->values.constEnd()) {
-      ret += (*it).first + QLatin1String(": ") + (*it).second + QLatin1String("\r\n");
-      ++it;
-   }
-   return ret;
+    QString ret = QLatin1String( "" );
+
+    QList<QPair<QString, QString> >::const_iterator it = d->values.constBegin();
+
+    while ( it != d->values.constEnd() )
+    {
+        ret += ( *it ).first + QLatin1String( ": " ) + ( *it ).second + QLatin1String( "\r\n" );
+        ++it;
+    }
+
+    return ret;
 }
 
 /*!
@@ -390,7 +441,7 @@ QString QHttpHeader::toString() const
 */
 bool QHttpHeader::hasContentLength() const
 {
-   return hasKey(QLatin1String("content-length"));
+    return hasKey( QLatin1String( "content-length" ) );
 }
 
 /*!
@@ -401,7 +452,7 @@ bool QHttpHeader::hasContentLength() const
 */
 qint64 QHttpHeader::contentLength() const
 {
-   return value(QLatin1String("content-length")).toInteger<uint>();
+    return value( QLatin1String( "content-length" ) ).toInteger<uint>();
 }
 
 /*!
@@ -410,9 +461,9 @@ qint64 QHttpHeader::contentLength() const
 
     \sa contentLength() hasContentLength()
 */
-void QHttpHeader::setContentLength(qint64 len)
+void QHttpHeader::setContentLength( qint64 len )
 {
-   setValue(QLatin1String("content-length"), QString::number(len));
+    setValue( QLatin1String( "content-length" ), QString::number( len ) );
 }
 
 /*!
@@ -423,7 +474,7 @@ void QHttpHeader::setContentLength(qint64 len)
 */
 bool QHttpHeader::hasContentType() const
 {
-   return hasKey(QLatin1String("content-type"));
+    return hasKey( QLatin1String( "content-type" ) );
 }
 
 /*!
@@ -433,17 +484,21 @@ bool QHttpHeader::hasContentType() const
 */
 QString QHttpHeader::contentType() const
 {
-   QString type = value(QLatin1String("content-type"));
-   if (type.isEmpty()) {
-      return QString();
-   }
+    QString type = value( QLatin1String( "content-type" ) );
 
-   int pos = type.indexOf(QLatin1Char(';'));
-   if (pos == -1) {
-      return type;
-   }
+    if ( type.isEmpty() )
+    {
+        return QString();
+    }
 
-   return type.left(pos).trimmed();
+    int pos = type.indexOf( QLatin1Char( ';' ) );
+
+    if ( pos == -1 )
+    {
+        return type;
+    }
+
+    return type.left( pos ).trimmed();
 }
 
 /*!
@@ -452,61 +507,61 @@ QString QHttpHeader::contentType() const
 
     \sa contentType() hasContentType()
 */
-void QHttpHeader::setContentType(const QString &type)
+void QHttpHeader::setContentType( const QString &type )
 {
-   setValue(QLatin1String("content-type"), type);
+    setValue( QLatin1String( "content-type" ), type );
 }
 
 // * *    Request Header
 
 class QHttpRequestHeaderPrivate : public QHttpHeaderPrivate
 {
-   Q_DECLARE_PUBLIC(QHttpRequestHeader)
- public:
-   QString m;
-   QString p;
-   int majVer;
-   int minVer;
+    Q_DECLARE_PUBLIC( QHttpRequestHeader )
+public:
+    QString m;
+    QString p;
+    int majVer;
+    int minVer;
 };
 
 QHttpRequestHeader::QHttpRequestHeader()
-   : QHttpHeader(*new QHttpRequestHeaderPrivate)
+    : QHttpHeader( *new QHttpRequestHeaderPrivate )
 {
-   setValid(false);
+    setValid( false );
 }
 
-QHttpRequestHeader::QHttpRequestHeader(const QString &method, const QString &path, int majorVer, int minorVer)
-   : QHttpHeader(*new QHttpRequestHeaderPrivate)
+QHttpRequestHeader::QHttpRequestHeader( const QString &method, const QString &path, int majorVer, int minorVer )
+    : QHttpHeader( *new QHttpRequestHeaderPrivate )
 {
-   Q_D(QHttpRequestHeader);
-   d->m = method;
-   d->p = path;
-   d->majVer = majorVer;
-   d->minVer = minorVer;
+    Q_D( QHttpRequestHeader );
+    d->m = method;
+    d->p = path;
+    d->majVer = majorVer;
+    d->minVer = minorVer;
 }
 
-QHttpRequestHeader::QHttpRequestHeader(const QHttpRequestHeader &header)
-   : QHttpHeader(*new QHttpRequestHeaderPrivate, header)
+QHttpRequestHeader::QHttpRequestHeader( const QHttpRequestHeader &header )
+    : QHttpHeader( *new QHttpRequestHeaderPrivate, header )
 {
-   Q_D(QHttpRequestHeader);
-   d->m = header.d_func()->m;
-   d->p = header.d_func()->p;
-   d->majVer = header.d_func()->majVer;
-   d->minVer = header.d_func()->minVer;
+    Q_D( QHttpRequestHeader );
+    d->m = header.d_func()->m;
+    d->p = header.d_func()->p;
+    d->majVer = header.d_func()->majVer;
+    d->minVer = header.d_func()->minVer;
 }
 
 /*!
     Copies the content of \a header into this QHttpRequestHeader
 */
-QHttpRequestHeader &QHttpRequestHeader::operator=(const QHttpRequestHeader &header)
+QHttpRequestHeader &QHttpRequestHeader::operator=( const QHttpRequestHeader &header )
 {
-   Q_D(QHttpRequestHeader);
-   QHttpHeader::operator=(header);
-   d->m = header.d_func()->m;
-   d->p = header.d_func()->p;
-   d->majVer = header.d_func()->majVer;
-   d->minVer = header.d_func()->minVer;
-   return *this;
+    Q_D( QHttpRequestHeader );
+    QHttpHeader::operator=( header );
+    d->m = header.d_func()->m;
+    d->p = header.d_func()->p;
+    d->majVer = header.d_func()->majVer;
+    d->minVer = header.d_func()->minVer;
+    return *this;
 }
 
 /*!
@@ -516,10 +571,10 @@ QHttpRequestHeader &QHttpRequestHeader::operator=(const QHttpRequestHeader &head
     HTTP-version); each of the remaining lines should have the format key,
     colon, space, value.
 */
-QHttpRequestHeader::QHttpRequestHeader(const QString &str)
-   : QHttpHeader(*new QHttpRequestHeaderPrivate)
+QHttpRequestHeader::QHttpRequestHeader( const QString &str )
+    : QHttpHeader( *new QHttpRequestHeaderPrivate )
 {
-   parse(str);
+    parse( str );
 }
 
 /*!
@@ -530,14 +585,14 @@ QHttpRequestHeader::QHttpRequestHeader(const QString &str)
 
     \sa method() path() majorVersion() minorVersion()
 */
-void QHttpRequestHeader::setRequest(const QString &method, const QString &path, int majorVer, int minorVer)
+void QHttpRequestHeader::setRequest( const QString &method, const QString &path, int majorVer, int minorVer )
 {
-   Q_D(QHttpRequestHeader);
-   setValid(true);
-   d->m = method;
-   d->p = path;
-   d->majVer = majorVer;
-   d->minVer = minorVer;
+    Q_D( QHttpRequestHeader );
+    setValid( true );
+    d->m = method;
+    d->p = path;
+    d->majVer = majorVer;
+    d->minVer = minorVer;
 }
 
 /*!
@@ -547,8 +602,8 @@ void QHttpRequestHeader::setRequest(const QString &method, const QString &path, 
 */
 QString QHttpRequestHeader::method() const
 {
-   Q_D(const QHttpRequestHeader);
-   return d->m;
+    Q_D( const QHttpRequestHeader );
+    return d->m;
 }
 
 /*!
@@ -558,8 +613,8 @@ QString QHttpRequestHeader::method() const
 */
 QString QHttpRequestHeader::path() const
 {
-   Q_D(const QHttpRequestHeader);
-   return d->p;
+    Q_D( const QHttpRequestHeader );
+    return d->p;
 }
 
 /*!
@@ -569,8 +624,8 @@ QString QHttpRequestHeader::path() const
 */
 int QHttpRequestHeader::majorVersion() const
 {
-   Q_D(const QHttpRequestHeader);
-   return d->majVer;
+    Q_D( const QHttpRequestHeader );
+    return d->majVer;
 }
 
 /*!
@@ -580,47 +635,58 @@ int QHttpRequestHeader::majorVersion() const
 */
 int QHttpRequestHeader::minorVersion() const
 {
-   Q_D(const QHttpRequestHeader);
-   return d->minVer;
+    Q_D( const QHttpRequestHeader );
+    return d->minVer;
 }
 
 /*! \internal
 */
-bool QHttpRequestHeader::parseLine(const QString &line, int number)
+bool QHttpRequestHeader::parseLine( const QString &line, int number )
 {
-   Q_D(QHttpRequestHeader);
-   if (number != 0) {
-      return QHttpHeader::parseLine(line, number);
-   }
+    Q_D( QHttpRequestHeader );
 
-   QStringList lst = line.simplified().split(QLatin1String(" "));
-   if (lst.count() > 0) {
-      d->m = lst[0];
-      if (lst.count() > 1) {
-         d->p = lst[1];
-         if (lst.count() > 2) {
-            QString v = lst[2];
-            if (v.length() >= 8 && v.left(5) == QLatin1String("HTTP/") &&
-                  v[5].isDigit() && v[6] == QLatin1Char('.') && v[7].isDigit()) {
-               d->majVer = v[5].toLatin1() - '0';
-               d->minVer = v[7].toLatin1() - '0';
-               return true;
+    if ( number != 0 )
+    {
+        return QHttpHeader::parseLine( line, number );
+    }
+
+    QStringList lst = line.simplified().split( QLatin1String( " " ) );
+
+    if ( lst.count() > 0 )
+    {
+        d->m = lst[0];
+
+        if ( lst.count() > 1 )
+        {
+            d->p = lst[1];
+
+            if ( lst.count() > 2 )
+            {
+                QString v = lst[2];
+
+                if ( v.length() >= 8 && v.left( 5 ) == QLatin1String( "HTTP/" ) &&
+                        v[5].isDigit() && v[6] == QLatin1Char( '.' ) && v[7].isDigit() )
+                {
+                    d->majVer = v[5].toLatin1() - '0';
+                    d->minVer = v[7].toLatin1() - '0';
+                    return true;
+                }
             }
-         }
-      }
-   }
+        }
+    }
 
-   return false;
+    return false;
 }
 
 QString QHttpRequestHeader::toString() const
 {
-   Q_D(const QHttpRequestHeader);
+    Q_D( const QHttpRequestHeader );
 
-   QString first(QLatin1String("%1 %2"));
-   QString last(QLatin1String(" HTTP/%3.%4\r\n%5\r\n"));
+    QString first( QLatin1String( "%1 %2" ) );
+    QString last( QLatin1String( " HTTP/%3.%4\r\n%5\r\n" ) );
 
-   return first.formatArg(d->m).formatArg(d->p) + last.formatArg(d->majVer).formatArg(d->minVer).formatArg(QHttpHeader::toString());
+    return first.formatArg( d->m ).formatArg( d->p ) + last.formatArg( d->majVer ).formatArg( d->minVer ).formatArg(
+               QHttpHeader::toString() );
 }
 
 
@@ -628,74 +694,74 @@ QString QHttpRequestHeader::toString() const
 
 class QHttpResponseHeaderPrivate : public QHttpHeaderPrivate
 {
-   Q_DECLARE_PUBLIC(QHttpResponseHeader)
+    Q_DECLARE_PUBLIC( QHttpResponseHeader )
 
- public:
-   int statCode;
-   QString reasonPhr;
-   int majVer;
-   int minVer;
+public:
+    int statCode;
+    QString reasonPhr;
+    int majVer;
+    int minVer;
 };
 
 QHttpResponseHeader::QHttpResponseHeader()
-   : QHttpHeader(*new QHttpResponseHeaderPrivate)
+    : QHttpHeader( *new QHttpResponseHeaderPrivate )
 {
-   setValid(false);
+    setValid( false );
 }
 
 /*!
     Constructs a copy of \a header.
 */
-QHttpResponseHeader::QHttpResponseHeader(const QHttpResponseHeader &header)
-   : QHttpHeader(*new QHttpResponseHeaderPrivate, header)
+QHttpResponseHeader::QHttpResponseHeader( const QHttpResponseHeader &header )
+    : QHttpHeader( *new QHttpResponseHeaderPrivate, header )
 {
-   Q_D(QHttpResponseHeader);
-   d->statCode = header.d_func()->statCode;
-   d->reasonPhr = header.d_func()->reasonPhr;
-   d->majVer = header.d_func()->majVer;
-   d->minVer = header.d_func()->minVer;
+    Q_D( QHttpResponseHeader );
+    d->statCode = header.d_func()->statCode;
+    d->reasonPhr = header.d_func()->reasonPhr;
+    d->majVer = header.d_func()->majVer;
+    d->minVer = header.d_func()->minVer;
 }
 
 /*!
     Copies the contents of \a header into this QHttpResponseHeader.
 */
-QHttpResponseHeader &QHttpResponseHeader::operator=(const QHttpResponseHeader &header)
+QHttpResponseHeader &QHttpResponseHeader::operator=( const QHttpResponseHeader &header )
 {
-   Q_D(QHttpResponseHeader);
-   QHttpHeader::operator=(header);
-   d->statCode = header.d_func()->statCode;
-   d->reasonPhr = header.d_func()->reasonPhr;
-   d->majVer = header.d_func()->majVer;
-   d->minVer = header.d_func()->minVer;
-   return *this;
+    Q_D( QHttpResponseHeader );
+    QHttpHeader::operator=( header );
+    d->statCode = header.d_func()->statCode;
+    d->reasonPhr = header.d_func()->reasonPhr;
+    d->majVer = header.d_func()->majVer;
+    d->minVer = header.d_func()->minVer;
+    return *this;
 }
 
-QHttpResponseHeader::QHttpResponseHeader(const QString &str)
-   : QHttpHeader(*new QHttpResponseHeaderPrivate)
+QHttpResponseHeader::QHttpResponseHeader( const QString &str )
+    : QHttpHeader( *new QHttpResponseHeaderPrivate )
 {
-   parse(str);
+    parse( str );
 }
 
-QHttpResponseHeader::QHttpResponseHeader(int code, const QString &text, int majorVer, int minorVer)
-   : QHttpHeader(*new QHttpResponseHeaderPrivate)
+QHttpResponseHeader::QHttpResponseHeader( int code, const QString &text, int majorVer, int minorVer )
+    : QHttpHeader( *new QHttpResponseHeaderPrivate )
 {
-   setStatusLine(code, text, majorVer, minorVer);
+    setStatusLine( code, text, majorVer, minorVer );
 }
 
-void QHttpResponseHeader::setStatusLine(int code, const QString &text, int majorVer, int minorVer)
+void QHttpResponseHeader::setStatusLine( int code, const QString &text, int majorVer, int minorVer )
 {
-   Q_D(QHttpResponseHeader);
-   setValid(true);
-   d->statCode = code;
-   d->reasonPhr = text;
-   d->majVer = majorVer;
-   d->minVer = minorVer;
+    Q_D( QHttpResponseHeader );
+    setValid( true );
+    d->statCode = code;
+    d->reasonPhr = text;
+    d->majVer = majorVer;
+    d->minVer = minorVer;
 }
 
 int QHttpResponseHeader::statusCode() const
 {
-   Q_D(const QHttpResponseHeader);
-   return d->statCode;
+    Q_D( const QHttpResponseHeader );
+    return d->statCode;
 }
 
 /*!
@@ -705,8 +771,8 @@ int QHttpResponseHeader::statusCode() const
 */
 QString QHttpResponseHeader::reasonPhrase() const
 {
-   Q_D(const QHttpResponseHeader);
-   return d->reasonPhr;
+    Q_D( const QHttpResponseHeader );
+    return d->reasonPhr;
 }
 
 /*!
@@ -716,8 +782,8 @@ QString QHttpResponseHeader::reasonPhrase() const
 */
 int QHttpResponseHeader::majorVersion() const
 {
-   Q_D(const QHttpResponseHeader);
-   return d->majVer;
+    Q_D( const QHttpResponseHeader );
+    return d->majVer;
 }
 
 /*!
@@ -727,54 +793,64 @@ int QHttpResponseHeader::majorVersion() const
 */
 int QHttpResponseHeader::minorVersion() const
 {
-   Q_D(const QHttpResponseHeader);
-   return d->minVer;
+    Q_D( const QHttpResponseHeader );
+    return d->minVer;
 }
 
 /*! \internal
 */
-bool QHttpResponseHeader::parseLine(const QString &line, int number)
+bool QHttpResponseHeader::parseLine( const QString &line, int number )
 {
-   Q_D(QHttpResponseHeader);
-   if (number != 0) {
-      return QHttpHeader::parseLine(line, number);
-   }
+    Q_D( QHttpResponseHeader );
 
-   QString l = line.simplified();
-   if (l.length() < 10) {
-      return false;
-   }
+    if ( number != 0 )
+    {
+        return QHttpHeader::parseLine( line, number );
+    }
 
-   if (l.left(5) == QLatin1String("HTTP/") && l[5].isDigit() && l[6] == QLatin1Char('.') &&
-         l[7].isDigit() && l[8] == QLatin1Char(' ') && l[9].isDigit()) {
+    QString l = line.simplified();
 
-      d->majVer = l[5].toLatin1() - '0';
-      d->minVer = l[7].toLatin1() - '0';
+    if ( l.length() < 10 )
+    {
+        return false;
+    }
 
-      int pos = l.indexOf(QLatin1Char(' '), 9);
+    if ( l.left( 5 ) == QLatin1String( "HTTP/" ) && l[5].isDigit() && l[6] == QLatin1Char( '.' ) &&
+            l[7].isDigit() && l[8] == QLatin1Char( ' ' ) && l[9].isDigit() )
+    {
 
-      if (pos != -1) {
-         d->reasonPhr = l.mid(pos + 1);
-         d->statCode = l.mid(9, pos - 9).toInteger<int>();
+        d->majVer = l[5].toLatin1() - '0';
+        d->minVer = l[7].toLatin1() - '0';
 
-      } else {
-         d->statCode = l.mid(9).toInteger<int>();
-         d->reasonPhr.clear();
-      }
+        int pos = l.indexOf( QLatin1Char( ' ' ), 9 );
 
-   } else {
-      return false;
-   }
+        if ( pos != -1 )
+        {
+            d->reasonPhr = l.mid( pos + 1 );
+            d->statCode = l.mid( 9, pos - 9 ).toInteger<int>();
 
-   return true;
+        }
+        else
+        {
+            d->statCode = l.mid( 9 ).toInteger<int>();
+            d->reasonPhr.clear();
+        }
+
+    }
+    else
+    {
+        return false;
+    }
+
+    return true;
 }
 
 QString QHttpResponseHeader::toString() const
 {
-   Q_D(const QHttpResponseHeader);
+    Q_D( const QHttpResponseHeader );
 
-   QString retval(QLatin1String("HTTP/%1.%2 %3 %4\r\n%5\r\n"));
+    QString retval( QLatin1String( "HTTP/%1.%2 %3 %4\r\n%5\r\n" ) );
 
-   return retval.formatArg(d->majVer).formatArg(d->minVer).formatArg(d->statCode)
-         .formatArg(d->reasonPhr).formatArg(QHttpHeader::toString());
+    return retval.formatArg( d->majVer ).formatArg( d->minVer ).formatArg( d->statCode )
+           .formatArg( d->reasonPhr ).formatArg( QHttpHeader::toString() );
 }

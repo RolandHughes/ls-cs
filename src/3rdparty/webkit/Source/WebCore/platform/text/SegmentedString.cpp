@@ -20,35 +20,50 @@
 #include "config.h"
 #include "SegmentedString.h"
 
-namespace WebCore {
-
-SegmentedString::SegmentedString(const SegmentedString& other)
-    : m_pushedChar1(other.m_pushedChar1)
-    , m_pushedChar2(other.m_pushedChar2)
-    , m_currentString(other.m_currentString)
-    , m_substrings(other.m_substrings)
-    , m_closed(other.m_closed)
+namespace WebCore
 {
-    if (other.m_currentChar == &other.m_pushedChar1)
+
+SegmentedString::SegmentedString( const SegmentedString &other )
+    : m_pushedChar1( other.m_pushedChar1 )
+    , m_pushedChar2( other.m_pushedChar2 )
+    , m_currentString( other.m_currentString )
+    , m_substrings( other.m_substrings )
+    , m_closed( other.m_closed )
+{
+    if ( other.m_currentChar == &other.m_pushedChar1 )
+    {
         m_currentChar = &m_pushedChar1;
-    else if (other.m_currentChar == &other.m_pushedChar2)
+    }
+    else if ( other.m_currentChar == &other.m_pushedChar2 )
+    {
         m_currentChar = &m_pushedChar2;
+    }
     else
+    {
         m_currentChar = other.m_currentChar;
+    }
 }
 
-const SegmentedString& SegmentedString::operator=(const SegmentedString& other)
+const SegmentedString &SegmentedString::operator=( const SegmentedString &other )
 {
     m_pushedChar1 = other.m_pushedChar1;
     m_pushedChar2 = other.m_pushedChar2;
     m_currentString = other.m_currentString;
     m_substrings = other.m_substrings;
-    if (other.m_currentChar == &other.m_pushedChar1)
+
+    if ( other.m_currentChar == &other.m_pushedChar1 )
+    {
         m_currentChar = &m_pushedChar1;
-    else if (other.m_currentChar == &other.m_pushedChar2)
+    }
+    else if ( other.m_currentChar == &other.m_pushedChar2 )
+    {
         m_currentChar = &m_pushedChar2;
+    }
     else
+    {
         m_currentChar = other.m_currentChar;
+    }
+
     m_closed = other.m_closed;
     m_numberOfCharactersConsumedPriorToCurrentString = other.m_numberOfCharactersConsumedPriorToCurrentString;
     m_numberOfCharactersConsumedPriorToCurrentLine = other.m_numberOfCharactersConsumedPriorToCurrentLine;
@@ -60,28 +75,44 @@ const SegmentedString& SegmentedString::operator=(const SegmentedString& other)
 unsigned SegmentedString::length() const
 {
     unsigned length = m_currentString.m_length;
-    if (m_pushedChar1) {
+
+    if ( m_pushedChar1 )
+    {
         ++length;
-        if (m_pushedChar2)
+
+        if ( m_pushedChar2 )
+        {
             ++length;
+        }
     }
-    if (isComposite()) {
+
+    if ( isComposite() )
+    {
         Deque<SegmentedSubstring>::const_iterator it = m_substrings.begin();
         Deque<SegmentedSubstring>::const_iterator e = m_substrings.end();
-        for (; it != e; ++it)
+
+        for ( ; it != e; ++it )
+        {
             length += it->m_length;
+        }
     }
+
     return length;
 }
 
 void SegmentedString::setExcludeLineNumbers()
 {
     m_currentString.setExcludeLineNumbers();
-    if (isComposite()) {
+
+    if ( isComposite() )
+    {
         Deque<SegmentedSubstring>::iterator it = m_substrings.begin();
         Deque<SegmentedSubstring>::iterator e = m_substrings.end();
-        for (; it != e; ++it)
+
+        for ( ; it != e; ++it )
+        {
             it->setExcludeLineNumbers();
+        }
     }
 }
 
@@ -95,25 +126,35 @@ void SegmentedString::clear()
     m_closed = false;
 }
 
-void SegmentedString::append(const SegmentedSubstring& s)
+void SegmentedString::append( const SegmentedSubstring &s )
 {
-    ASSERT(!m_closed);
-    if (!s.m_length)
-        return;
+    ASSERT( !m_closed );
 
-    if (!m_currentString.m_length) {
+    if ( !s.m_length )
+    {
+        return;
+    }
+
+    if ( !m_currentString.m_length )
+    {
         m_numberOfCharactersConsumedPriorToCurrentString += m_currentString.numberOfCharactersConsumed();
         m_currentString = s;
-    } else
-        m_substrings.append(s);
+    }
+    else
+    {
+        m_substrings.append( s );
+    }
 }
 
-void SegmentedString::prepend(const SegmentedSubstring& s)
+void SegmentedString::prepend( const SegmentedSubstring &s )
 {
-    ASSERT(!escaped());
-    ASSERT(!s.numberOfCharactersConsumed());
-    if (!s.m_length)
+    ASSERT( !escaped() );
+    ASSERT( !s.numberOfCharactersConsumed() );
+
+    if ( !s.m_length )
+    {
         return;
+    }
 
     // FIXME: We're assuming that the prepend were originally consumed by
     //        this SegmentedString.  We're also ASSERTing that s is a fresh
@@ -122,11 +163,15 @@ void SegmentedString::prepend(const SegmentedSubstring& s)
     //        cases in the future.
     m_numberOfCharactersConsumedPriorToCurrentString += m_currentString.numberOfCharactersConsumed();
     m_numberOfCharactersConsumedPriorToCurrentString -= s.m_length;
-    if (!m_currentString.m_length)
+
+    if ( !m_currentString.m_length )
+    {
         m_currentString = s;
-    else {
+    }
+    else
+    {
         // Shift our m_currentString into our list.
-        m_substrings.prepend(m_currentString);
+        m_substrings.prepend( m_currentString );
         m_currentString = s;
     }
 }
@@ -134,73 +179,103 @@ void SegmentedString::prepend(const SegmentedSubstring& s)
 void SegmentedString::close()
 {
     // Closing a stream twice is likely a coding mistake.
-    ASSERT(!m_closed);
+    ASSERT( !m_closed );
     m_closed = true;
 }
 
-void SegmentedString::append(const SegmentedString& s)
+void SegmentedString::append( const SegmentedString &s )
 {
-    ASSERT(!m_closed);
-    ASSERT(!s.escaped());
-    append(s.m_currentString);
-    if (s.isComposite()) {
+    ASSERT( !m_closed );
+    ASSERT( !s.escaped() );
+    append( s.m_currentString );
+
+    if ( s.isComposite() )
+    {
         Deque<SegmentedSubstring>::const_iterator it = s.m_substrings.begin();
         Deque<SegmentedSubstring>::const_iterator e = s.m_substrings.end();
-        for (; it != e; ++it)
-            append(*it);
+
+        for ( ; it != e; ++it )
+        {
+            append( *it );
+        }
     }
+
     m_currentChar = m_pushedChar1 ? &m_pushedChar1 : m_currentString.m_current;
 }
 
-void SegmentedString::prepend(const SegmentedString& s)
+void SegmentedString::prepend( const SegmentedString &s )
 {
-    ASSERT(!escaped());
-    ASSERT(!s.escaped());
-    if (s.isComposite()) {
+    ASSERT( !escaped() );
+    ASSERT( !s.escaped() );
+
+    if ( s.isComposite() )
+    {
         Deque<SegmentedSubstring>::const_reverse_iterator it = s.m_substrings.rbegin();
         Deque<SegmentedSubstring>::const_reverse_iterator e = s.m_substrings.rend();
-        for (; it != e; ++it)
-            prepend(*it);
+
+        for ( ; it != e; ++it )
+        {
+            prepend( *it );
+        }
     }
-    prepend(s.m_currentString);
+
+    prepend( s.m_currentString );
     m_currentChar = m_pushedChar1 ? &m_pushedChar1 : m_currentString.m_current;
 }
 
 void SegmentedString::advanceSubstring()
 {
-    if (isComposite()) {
+    if ( isComposite() )
+    {
         m_numberOfCharactersConsumedPriorToCurrentString += m_currentString.numberOfCharactersConsumed();
         m_currentString = m_substrings.takeFirst();
         // If we've previously consumed some characters of the non-current
         // string, we now account for those characters as part of the current
         // string, not as part of "prior to current string."
         m_numberOfCharactersConsumedPriorToCurrentString -= m_currentString.numberOfCharactersConsumed();
-    } else
+    }
+    else
+    {
         m_currentString.clear();
+    }
 }
 
 String SegmentedString::toString() const
 {
     String result;
-    if (m_pushedChar1) {
-        result.append(m_pushedChar1);
-        if (m_pushedChar2)
-            result.append(m_pushedChar2);
+
+    if ( m_pushedChar1 )
+    {
+        result.append( m_pushedChar1 );
+
+        if ( m_pushedChar2 )
+        {
+            result.append( m_pushedChar2 );
+        }
     }
-    m_currentString.appendTo(result);
-    if (isComposite()) {
+
+    m_currentString.appendTo( result );
+
+    if ( isComposite() )
+    {
         Deque<SegmentedSubstring>::const_iterator it = m_substrings.begin();
         Deque<SegmentedSubstring>::const_iterator e = m_substrings.end();
-        for (; it != e; ++it)
-            it->appendTo(result);
+
+        for ( ; it != e; ++it )
+        {
+            it->appendTo( result );
+        }
     }
+
     return result;
 }
 
-void SegmentedString::advance(unsigned count, UChar* consumedCharacters)
+void SegmentedString::advance( unsigned count, UChar *consumedCharacters )
 {
-    ASSERT(count <= length());
-    for (unsigned i = 0; i < count; ++i) {
+    ASSERT( count <= length() );
+
+    for ( unsigned i = 0; i < count; ++i )
+    {
         consumedCharacters[i] = *current();
         advance();
     }
@@ -208,47 +283,62 @@ void SegmentedString::advance(unsigned count, UChar* consumedCharacters)
 
 void SegmentedString::advanceSlowCase()
 {
-    if (m_pushedChar1) {
+    if ( m_pushedChar1 )
+    {
         m_pushedChar1 = m_pushedChar2;
         m_pushedChar2 = 0;
-    } else if (m_currentString.m_current) {
-        ++m_currentString.m_current;
-        if (--m_currentString.m_length == 0)
-            advanceSubstring();
     }
+    else if ( m_currentString.m_current )
+    {
+        ++m_currentString.m_current;
+
+        if ( --m_currentString.m_length == 0 )
+        {
+            advanceSubstring();
+        }
+    }
+
     m_currentChar = m_pushedChar1 ? &m_pushedChar1 : m_currentString.m_current;
 }
 
-void SegmentedString::advanceSlowCase(int& lineNumber)
+void SegmentedString::advanceSlowCase( int &lineNumber )
 {
-    if (m_pushedChar1) {
+    if ( m_pushedChar1 )
+    {
         m_pushedChar1 = m_pushedChar2;
         m_pushedChar2 = 0;
-    } else if (m_currentString.m_current) {
-        if (*m_currentString.m_current++ == '\n' && m_currentString.doNotExcludeLineNumbers()) {
+    }
+    else if ( m_currentString.m_current )
+    {
+        if ( *m_currentString.m_current++ == '\n' && m_currentString.doNotExcludeLineNumbers() )
+        {
             ++lineNumber;
             ++m_currentLine;
             // Plus 1 because numberOfCharactersConsumed value hasn't incremented yet; it does with m_length decrement below.
             m_numberOfCharactersConsumedPriorToCurrentLine = numberOfCharactersConsumed() + 1;
         }
-        if (--m_currentString.m_length == 0)
+
+        if ( --m_currentString.m_length == 0 )
+        {
             advanceSubstring();
+        }
     }
+
     m_currentChar = m_pushedChar1 ? &m_pushedChar1 : m_currentString.m_current;
 }
 
 WTF::ZeroBasedNumber SegmentedString::currentLine() const
 {
-    return WTF::ZeroBasedNumber::fromZeroBasedInt(m_currentLine);
+    return WTF::ZeroBasedNumber::fromZeroBasedInt( m_currentLine );
 }
 
 WTF::ZeroBasedNumber SegmentedString::currentColumn() const
 {
     int zeroBasedColumn = numberOfCharactersConsumed() - m_numberOfCharactersConsumedPriorToCurrentLine;
-    return WTF::ZeroBasedNumber::fromZeroBasedInt(zeroBasedColumn);
+    return WTF::ZeroBasedNumber::fromZeroBasedInt( zeroBasedColumn );
 }
 
-void SegmentedString::setCurrentPosition(WTF::ZeroBasedNumber line, WTF::ZeroBasedNumber columnAftreProlog, int prologLength)
+void SegmentedString::setCurrentPosition( WTF::ZeroBasedNumber line, WTF::ZeroBasedNumber columnAftreProlog, int prologLength )
 {
     m_currentLine = line.zeroBasedInt();
     m_numberOfCharactersConsumedPriorToCurrentLine = numberOfCharactersConsumed() + prologLength - columnAftreProlog.zeroBasedInt();

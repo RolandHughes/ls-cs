@@ -24,14 +24,17 @@
 #include "SVGRenderStyleDefs.h"
 #include "SVGTextContentElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class SVGInlineTextBox;
 
 // A SVGTextChunk describes a range of SVGTextFragments, see the SVG spec definition of a "text chunk".
-class SVGTextChunk {
+class SVGTextChunk
+{
 public:
-    enum ChunkStyle {
+    enum ChunkStyle
+    {
         DefaultStyle = 1 << 0,
         MiddleAnchor = 1 << 1,
         EndAnchor = 1 << 2,
@@ -41,25 +44,50 @@ public:
         LengthAdjustSpacingAndGlyphs = 1 << 6
     };
 
-    SVGTextChunk(unsigned chunkStyle, float desiredTextLength);
+    SVGTextChunk( unsigned chunkStyle, float desiredTextLength );
 
-    void calculateLength(float& length, unsigned& characters) const;
-    float calculateTextAnchorShift(float length) const;
+    void calculateLength( float &length, unsigned &characters ) const;
+    float calculateTextAnchorShift( float length ) const;
 
-    bool isVerticalText() const { return m_chunkStyle & VerticalText; }
-    float desiredTextLength() const { return m_desiredTextLength; }
+    bool isVerticalText() const
+    {
+        return m_chunkStyle & VerticalText;
+    }
+    float desiredTextLength() const
+    {
+        return m_desiredTextLength;
+    }
 
-    Vector<SVGInlineTextBox*>& boxes() { return m_boxes; }
-    const Vector<SVGInlineTextBox*>& boxes() const { return m_boxes; }
+    Vector<SVGInlineTextBox *> &boxes()
+    {
+        return m_boxes;
+    }
+    const Vector<SVGInlineTextBox *> &boxes() const
+    {
+        return m_boxes;
+    }
 
-    bool hasDesiredTextLength() const { return m_desiredTextLength > 0 && ((m_chunkStyle & LengthAdjustSpacing) || (m_chunkStyle & LengthAdjustSpacingAndGlyphs)); }
-    bool hasTextAnchor() const {  return m_chunkStyle & RightToLeftText ? !(m_chunkStyle & EndAnchor) : (m_chunkStyle & MiddleAnchor) || (m_chunkStyle & EndAnchor); }
-    bool hasLengthAdjustSpacing() const { return m_chunkStyle & LengthAdjustSpacing; }
-    bool hasLengthAdjustSpacingAndGlyphs() const { return m_chunkStyle & LengthAdjustSpacingAndGlyphs; }
+    bool hasDesiredTextLength() const
+    {
+        return m_desiredTextLength > 0 && ( ( m_chunkStyle & LengthAdjustSpacing ) || ( m_chunkStyle & LengthAdjustSpacingAndGlyphs ) );
+    }
+    bool hasTextAnchor() const
+    {
+        return m_chunkStyle & RightToLeftText ? !( m_chunkStyle & EndAnchor ) : ( m_chunkStyle & MiddleAnchor )
+               || ( m_chunkStyle & EndAnchor );
+    }
+    bool hasLengthAdjustSpacing() const
+    {
+        return m_chunkStyle & LengthAdjustSpacing;
+    }
+    bool hasLengthAdjustSpacingAndGlyphs() const
+    {
+        return m_chunkStyle & LengthAdjustSpacingAndGlyphs;
+    }
 
 private:
     // Contains all SVGInlineTextBoxes this chunk spans.
-    Vector<SVGInlineTextBox*> m_boxes;
+    Vector<SVGInlineTextBox *> m_boxes;
 
     unsigned m_chunkStyle;
     float m_desiredTextLength;

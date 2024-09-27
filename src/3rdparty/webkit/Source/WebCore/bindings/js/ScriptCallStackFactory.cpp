@@ -1,10 +1,10 @@
 /*
  * Copyright (c) 2010 Google Inc. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  *     * Redistributions of source code must retain the above copyright
  * notice, this list of conditions and the following disclaimer.
  *     * Redistributions in binary form must reproduce the above
@@ -14,7 +14,7 @@
  *     * Neither the name of Google Inc. nor the names of its
  * contributors may be used to endorse or promote products derived from
  * this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -46,50 +46,69 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-PassRefPtr<ScriptCallStack> createScriptCallStack(size_t, bool)
+PassRefPtr<ScriptCallStack> createScriptCallStack( size_t, bool )
 {
     return 0;
 }
 
-PassRefPtr<ScriptCallStack> createScriptCallStack(JSC::ExecState* exec, size_t maxStackSize)
+PassRefPtr<ScriptCallStack> createScriptCallStack( JSC::ExecState *exec, size_t maxStackSize )
 {
     Vector<ScriptCallFrame> frames;
-    CallFrame* callFrame = exec;
-    while (true) {
-        ASSERT(callFrame);
+    CallFrame *callFrame = exec;
+
+    while ( true )
+    {
+        ASSERT( callFrame );
         int signedLineNumber;
         intptr_t sourceID;
         UString urlString;
         JSValue function;
 
-        exec->interpreter()->retrieveLastCaller(callFrame, signedLineNumber, sourceID, urlString, function);
+        exec->interpreter()->retrieveLastCaller( callFrame, signedLineNumber, sourceID, urlString, function );
         UString functionName;
-        if (function)
-            functionName = asFunction(function)->name(exec);
-        else {
+
+        if ( function )
+        {
+            functionName = asFunction( function )->name( exec );
+        }
+        else
+        {
             // Caller is unknown, but if frames is empty we should still add the frame, because
             // something called us, and gave us arguments.
-            if (!frames.isEmpty())
+            if ( !frames.isEmpty() )
+            {
                 break;
+            }
         }
+
         unsigned lineNumber = signedLineNumber >= 0 ? signedLineNumber : 0;
-        frames.append(ScriptCallFrame(ustringToString(functionName), ustringToString(urlString), lineNumber));
-        if (!function || frames.size() == maxStackSize)
+        frames.append( ScriptCallFrame( ustringToString( functionName ), ustringToString( urlString ), lineNumber ) );
+
+        if ( !function || frames.size() == maxStackSize )
+        {
             break;
+        }
+
         callFrame = callFrame->callerFrame();
     }
-    return ScriptCallStack::create(frames);
+
+    return ScriptCallStack::create( frames );
 }
 
-PassRefPtr<ScriptArguments> createScriptArguments(JSC::ExecState* exec, unsigned skipArgumentCount)
+PassRefPtr<ScriptArguments> createScriptArguments( JSC::ExecState *exec, unsigned skipArgumentCount )
 {
     Vector<ScriptValue> arguments;
     size_t argumentCount = exec->argumentCount();
-    for (size_t i = skipArgumentCount; i < argumentCount; ++i)
-        arguments.append(ScriptValue(exec->globalData(), exec->argument(i)));
-    return ScriptArguments::create(exec, arguments);
+
+    for ( size_t i = skipArgumentCount; i < argumentCount; ++i )
+    {
+        arguments.append( ScriptValue( exec->globalData(), exec->argument( i ) ) );
+    }
+
+    return ScriptArguments::create( exec, arguments );
 }
 
 } // namespace WebCore

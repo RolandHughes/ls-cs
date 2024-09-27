@@ -30,36 +30,37 @@
 
 class QGstreamerBufferProbe
 {
- public:
-   enum Flags {
-      ProbeCaps     = 0x01,
-      ProbeBuffers  = 0x02,
-      ProbeAll      = ProbeCaps | ProbeBuffers
-   };
+public:
+    enum Flags
+    {
+        ProbeCaps     = 0x01,
+        ProbeBuffers  = 0x02,
+        ProbeAll      = ProbeCaps | ProbeBuffers
+    };
 
-   explicit QGstreamerBufferProbe(Flags flags = ProbeAll);
-   virtual ~QGstreamerBufferProbe();
+    explicit QGstreamerBufferProbe( Flags flags = ProbeAll );
+    virtual ~QGstreamerBufferProbe();
 
-   void addProbeToPad(GstPad *pad, bool downstream = true);
-   void removeProbeFromPad(GstPad *pad);
+    void addProbeToPad( GstPad *pad, bool downstream = true );
+    void removeProbeFromPad( GstPad *pad );
 
- protected:
-   virtual void probeCaps(GstCaps *caps);
-   virtual bool probeBuffer(GstBuffer *buffer);
+protected:
+    virtual void probeCaps( GstCaps *caps );
+    virtual bool probeBuffer( GstBuffer *buffer );
 
- private:
+private:
 
 #if GST_CHECK_VERSION(1,0,0)
-   static GstPadProbeReturn capsProbe(GstPad *pad, GstPadProbeInfo *info, gpointer user_data);
-   static GstPadProbeReturn bufferProbe(GstPad *pad, GstPadProbeInfo *info, gpointer user_data);
-   int m_capsProbeId;
+    static GstPadProbeReturn capsProbe( GstPad *pad, GstPadProbeInfo *info, gpointer user_data );
+    static GstPadProbeReturn bufferProbe( GstPad *pad, GstPadProbeInfo *info, gpointer user_data );
+    int m_capsProbeId;
 #else
-   static gboolean bufferProbe(GstElement *element, GstBuffer *buffer, gpointer user_data);
-   GstCaps *m_caps;
+    static gboolean bufferProbe( GstElement *element, GstBuffer *buffer, gpointer user_data );
+    GstCaps *m_caps;
 #endif
 
-   int m_bufferProbeId;
-   const Flags m_flags;
+    int m_bufferProbeId;
+    const Flags m_flags;
 };
 
 #endif

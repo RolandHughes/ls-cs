@@ -28,16 +28,16 @@
 
 class QWindowsPrinterSupport : public QPlatformPrinterSupport
 {
- public:
-   QWindowsPrinterSupport();
-   ~QWindowsPrinterSupport();
+public:
+    QWindowsPrinterSupport();
+    ~QWindowsPrinterSupport();
 
-   QPrintEngine *createNativePrintEngine(QPrinter::PrinterMode printerMode) override;
-   QPaintEngine *createPaintEngine(QPrintEngine *printEngine, QPrinter::PrinterMode) override;
+    QPrintEngine *createNativePrintEngine( QPrinter::PrinterMode printerMode ) override;
+    QPaintEngine *createPaintEngine( QPrintEngine *printEngine, QPrinter::PrinterMode ) override;
 
-   QPrintDevice createPrintDevice(const QString &id) override;
-   QStringList availablePrintDeviceIds() const override;
-   QString defaultPrintDeviceId() const override;
+    QPrintDevice createPrintDevice( const QString &id ) override;
+    QStringList availablePrintDeviceIds() const override;
+    QString defaultPrintDeviceId() const override;
 };
 
 #endif

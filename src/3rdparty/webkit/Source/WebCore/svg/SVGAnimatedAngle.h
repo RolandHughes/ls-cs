@@ -24,7 +24,8 @@
 #include "SVGAngle.h"
 #include "SVGAnimatedPropertyTearOff.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 typedef SVGAnimatedPropertyTearOff<SVGAngle> SVGAnimatedAngle;
 

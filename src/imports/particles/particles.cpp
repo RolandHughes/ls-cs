@@ -32,18 +32,18 @@ class QParticlesQmlModule : public QDeclarativeExtensionPlugin
 {
     Q_OBJECT
 public:
-    virtual void registerTypes(const char *uri)
+    virtual void registerTypes( const char *uri )
     {
-        Q_ASSERT(QLatin1String(uri) == QLatin1String("Qt.labs.particles"));
-        qmlRegisterType<QDeclarativeParticleMotion>(uri,1,0,"ParticleMotion");
-        qmlRegisterType<QDeclarativeParticleMotionGravity>(uri,1,0,"ParticleMotionGravity");
-        qmlRegisterType<QDeclarativeParticleMotionLinear>(uri,1,0,"ParticleMotionLinear");
-        qmlRegisterType<QDeclarativeParticleMotionWander>(uri,1,0,"ParticleMotionWander");
-        qmlRegisterType<QDeclarativeParticles>(uri,1,0,"Particles");
+        Q_ASSERT( QLatin1String( uri ) == QLatin1String( "Qt.labs.particles" ) );
+        qmlRegisterType<QDeclarativeParticleMotion>( uri,1,0,"ParticleMotion" );
+        qmlRegisterType<QDeclarativeParticleMotionGravity>( uri,1,0,"ParticleMotionGravity" );
+        qmlRegisterType<QDeclarativeParticleMotionLinear>( uri,1,0,"ParticleMotionLinear" );
+        qmlRegisterType<QDeclarativeParticleMotionWander>( uri,1,0,"ParticleMotionWander" );
+        qmlRegisterType<QDeclarativeParticles>( uri,1,0,"Particles" );
     }
 };
 
 QT_END_NAMESPACE
 
-Q_EXPORT_PLUGIN2(qmlparticlesplugin, QT_PREPEND_NAMESPACE(QParticlesQmlModule));
+Q_EXPORT_PLUGIN2( qmlparticlesplugin, QT_PREPEND_NAMESPACE( QParticlesQmlModule ) );
 

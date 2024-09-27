@@ -30,30 +30,36 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
-    class DOMWrapperWorld;
+namespace WebCore
+{
+class DOMWrapperWorld;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
-class InjectedBundleScriptWorld : public APIObject {
+class InjectedBundleScriptWorld : public APIObject
+{
 public:
     static const Type APIType = TypeBundleScriptWorld;
 
     static PassRefPtr<InjectedBundleScriptWorld> create();
-    static PassRefPtr<InjectedBundleScriptWorld> getOrCreate(WebCore::DOMWrapperWorld*);
-    static InjectedBundleScriptWorld* normalWorld();
+    static PassRefPtr<InjectedBundleScriptWorld> getOrCreate( WebCore::DOMWrapperWorld * );
+    static InjectedBundleScriptWorld *normalWorld();
 
     virtual ~InjectedBundleScriptWorld();
 
-    WebCore::DOMWrapperWorld* coreWorld() const;
-    
+    WebCore::DOMWrapperWorld *coreWorld() const;
+
     void clearWrappers();
 
 private:
-    InjectedBundleScriptWorld(PassRefPtr<WebCore::DOMWrapperWorld>);
+    InjectedBundleScriptWorld( PassRefPtr<WebCore::DOMWrapperWorld> );
 
-    virtual Type type() const { return APIType; }
+    virtual Type type() const
+    {
+        return APIType;
+    }
 
     RefPtr<WebCore::DOMWrapperWorld> m_world;
 };

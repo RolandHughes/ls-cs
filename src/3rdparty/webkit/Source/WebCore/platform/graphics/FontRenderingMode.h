@@ -20,13 +20,14 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef FontRenderingMode_h
 #define FontRenderingMode_h
 
-namespace WebCore {
+namespace WebCore
+{
 
 // This setting is used to provide ways of switching between multiple rendering modes that may have different
 // metrics.  It is used to switch between CG and GDI text on Windows.

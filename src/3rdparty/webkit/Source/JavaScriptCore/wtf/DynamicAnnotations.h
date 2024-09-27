@@ -77,9 +77,9 @@
 extern "C" {
 #endif
 /* Don't use these directly, use the above macros instead. */
-void WTFAnnotateBenignRaceSized(const char* file, int line, const volatile void* memory, long size, const char* description);
-void WTFAnnotateHappensBefore(const char* file, int line, const volatile void* address);
-void WTFAnnotateHappensAfter(const char* file, int line, const volatile void* address);
+void WTFAnnotateBenignRaceSized( const char *file, int line, const volatile void *memory, long size, const char *description );
+void WTFAnnotateHappensBefore( const char *file, int line, const volatile void *address );
+void WTFAnnotateHappensAfter( const char *file, int line, const volatile void *address );
 #ifdef __cplusplus
 } // extern "C"
 #endif

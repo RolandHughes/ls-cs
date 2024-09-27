@@ -27,29 +27,37 @@
 #include "Timer.h"
 #include <wtf/OwnPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class RenderDetails : public RenderBlock {
+class RenderDetails : public RenderBlock
+{
 public:
-    explicit RenderDetails(Node*);
+    explicit RenderDetails( Node * );
 
     bool isOpen() const;
 
 private:
-    virtual const char* renderName() const { return "RenderDetails"; }
-    virtual bool isDetails() const { return true; }
-    virtual void styleDidChange(StyleDifference, const RenderStyle* oldStyle);
-    virtual void addChild(RenderObject* newChild, RenderObject *beforeChild = 0);
+    virtual const char *renderName() const
+    {
+        return "RenderDetails";
+    }
+    virtual bool isDetails() const
+    {
+        return true;
+    }
+    virtual void styleDidChange( StyleDifference, const RenderStyle *oldStyle );
+    virtual void addChild( RenderObject *newChild, RenderObject *beforeChild = 0 );
 };
 
-inline RenderDetails* toRenderDetails(RenderObject* object)
+inline RenderDetails *toRenderDetails( RenderObject *object )
 {
-    ASSERT(!object || object->isDetails());
-    return static_cast<RenderDetails*>(object);
+    ASSERT( !object || object->isDetails() );
+    return static_cast<RenderDetails *>( object );
 }
 
 // This will catch anyone doing an unnecessary cast.
-void toRenderDetails(const RenderDetails*);
+void toRenderDetails( const RenderDetails * );
 
 } // namespace WebCore
 

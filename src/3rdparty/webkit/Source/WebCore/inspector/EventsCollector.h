@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef EventsCollector_h
@@ -31,16 +31,18 @@
 #include <wtf/Forward.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class InspectorFrontendChannel;
 
-class EventsCollector {
+class EventsCollector
+{
 public:
     EventsCollector();
     ~EventsCollector() { }
-    void addEvent(const String& message);
-    void sendCollectedEvents(InspectorFrontendChannel*);
+    void addEvent( const String &message );
+    void sendCollectedEvents( InspectorFrontendChannel * );
 private:
     static const size_t maxCapacity = 1024*1024; // 1 Mb
     size_t m_totalLength;

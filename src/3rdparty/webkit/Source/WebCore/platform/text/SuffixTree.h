@@ -29,80 +29,111 @@
 #include "PlatformString.h"
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class UnicodeCodebook {
+class UnicodeCodebook
+{
 public:
-    static int codeWord(UChar c) { return c; }
-    enum { codeSize = 1 << 8 * sizeof(UChar) };
+    static int codeWord( UChar c )
+    {
+        return c;
+    }
+    enum { codeSize = 1 << 8 * sizeof( UChar ) };
 };
 
-class ASCIICodebook {
+class ASCIICodebook
+{
 public:
-    static int codeWord(UChar c) { return c & (codeSize - 1); }
-    enum { codeSize = 1 << (8 * sizeof(char) - 1) };
+    static int codeWord( UChar c )
+    {
+        return c & ( codeSize - 1 );
+    }
+    enum { codeSize = 1 << ( 8 * sizeof( char ) - 1 ) };
 };
 
 template<typename Codebook>
-class SuffixTree {
+class SuffixTree
+{
 public:
-    SuffixTree(const String& text, unsigned depth)
-        : m_depth(depth)
-        , m_leaf(true)
+    SuffixTree( const String &text, unsigned depth )
+        : m_depth( depth )
+        , m_leaf( true )
     {
-        build(text);
+        build( text );
     }
 
-    bool mightContain(const String& query)
+    bool mightContain( const String &query )
     {
-        Node* current = &m_root;
-        int limit = std::min(m_depth, query.length());
-        for (int i = 0; i < limit; ++i) {
-            current = current->at(Codebook::codeWord(query[i]));
-            if (!current)
+        Node *current = &m_root;
+        int limit = std::min( m_depth, query.length() );
+
+        for ( int i = 0; i < limit; ++i )
+        {
+            current = current->at( Codebook::codeWord( query[i] ) );
+
+            if ( !current )
+            {
                 return false;
+            }
         }
+
         return true;
     }
 
 private:
-    class Node {
+    class Node
+    {
     public:
-        Node(bool isLeaf = false)
+        Node( bool isLeaf = false )
         {
-            m_children.resize(Codebook::codeSize);
-            m_children.fill(0);
+            m_children.resize( Codebook::codeSize );
+            m_children.fill( 0 );
             m_isLeaf = isLeaf;
         }
 
         ~Node()
         {
-            for (unsigned i = 0; i < m_children.size(); ++i) {
-                Node* child = m_children.at(i);
-                if (child && !child->m_isLeaf)
+            for ( unsigned i = 0; i < m_children.size(); ++i )
+            {
+                Node *child = m_children.at( i );
+
+                if ( child && !child->m_isLeaf )
+                {
                     delete child;
+                }
             }
         }
 
-        Node*& at(int codeWord) { return m_children.at(codeWord); }
+        Node *&at( int codeWord )
+        {
+            return m_children.at( codeWord );
+        }
 
     private:
-        typedef Vector<Node*, Codebook::codeSize> ChildrenVector;
+        typedef Vector<Node *, Codebook::codeSize> ChildrenVector;
 
         ChildrenVector m_children;
         bool m_isLeaf;
     };
 
-    void build(const String& text)
+    void build( const String &text )
     {
-        for (unsigned base = 0; base < text.length(); ++base) {
-            Node* current = &m_root;
-            unsigned limit = std::min(base + m_depth, text.length());
-            for (unsigned offset = 0; base + offset < limit; ++offset) {
-                ASSERT(current != &m_leaf);
-                Node*& child = current->at(Codebook::codeWord(text[base + offset]));
-                if (!child)
+        for ( unsigned base = 0; base < text.length(); ++base )
+        {
+            Node *current = &m_root;
+            unsigned limit = std::min( base + m_depth, text.length() );
+
+            for ( unsigned offset = 0; base + offset < limit; ++offset )
+            {
+                ASSERT( current != &m_leaf );
+                Node *&child = current->at( Codebook::codeWord( text[base + offset] ) );
+
+                if ( !child )
+                {
                     child = base + offset + 1 == limit ? &m_leaf : new Node();
+                }
+
                 current = child;
             }
         }

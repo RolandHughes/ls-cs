@@ -47,7 +47,8 @@
 
 using namespace std;
 
-namespace JSC {
+namespace JSC
+{
 
 // Number of ticks before the first timeout check is done.
 static const int ticksUntilFirstCheck = 1024;
@@ -64,32 +65,33 @@ static inline unsigned getCPUTime()
 
     // Get thread information
     mach_port_t threadPort = mach_thread_self();
-    thread_info(threadPort, THREAD_BASIC_INFO, reinterpret_cast<thread_info_t>(&info), &infoCount);
-    mach_port_deallocate(mach_task_self(), threadPort);
-    
+    thread_info( threadPort, THREAD_BASIC_INFO, reinterpret_cast<thread_info_t>( &info ), &infoCount );
+    mach_port_deallocate( mach_task_self(), threadPort );
+
     unsigned time = info.user_time.seconds * 1000 + info.user_time.microseconds / 1000;
     time += info.system_time.seconds * 1000 + info.system_time.microseconds / 1000;
-    
+
     return time;
 #elif OS(WINDOWS)
-    union {
+    union
+    {
         FILETIME fileTime;
         unsigned long long fileTimeAsLong;
     } userTime, kernelTime;
-    
+
     // GetThreadTimes won't accept NULL arguments so we pass these even though
     // they're not used.
     FILETIME creationTime, exitTime;
-    
-    GetThreadTimes(GetCurrentThread(), &creationTime, &exitTime, &kernelTime.fileTime, &userTime.fileTime);
-    
+
+    GetThreadTimes( GetCurrentThread(), &creationTime, &exitTime, &kernelTime.fileTime, &userTime.fileTime );
+
     return userTime.fileTimeAsLong / 10000 + kernelTime.fileTimeAsLong / 10000;
 #elif OS(SYMBIAN)
     RThread current;
     TTimeIntervalMicroSeconds cpuTime;
 
-    TInt err = current.GetCpuTime(cpuTime);
-    ASSERT_WITH_MESSAGE(err == KErrNone, "GetCpuTime failed with %d", err);
+    TInt err = current.GetCpuTime( cpuTime );
+    ASSERT_WITH_MESSAGE( err == KErrNone, "GetCpuTime failed with %d", err );
     return cpuTime.Int64() / 1000;
 #elif PLATFORM(BREWMP)
     // This function returns a continuously and linearly increasing millisecond
@@ -101,13 +103,13 @@ static inline unsigned getCPUTime()
 
     // use a relative time from first call in order to avoid an overflow
     static double firstTime = currentTime();
-    return static_cast<unsigned> ((currentTime() - firstTime) * 1000);
+    return static_cast<unsigned> ( ( currentTime() - firstTime ) * 1000 );
 #endif
 }
 
 TimeoutChecker::TimeoutChecker()
-    : m_timeoutInterval(0)
-    , m_startCount(0)
+    : m_timeoutInterval( 0 )
+    , m_startCount( 0 )
 {
     reset();
 }
@@ -119,39 +121,49 @@ void TimeoutChecker::reset()
     m_timeExecuting = 0;
 }
 
-bool TimeoutChecker::didTimeOut(ExecState* exec)
+bool TimeoutChecker::didTimeOut( ExecState *exec )
 {
     unsigned currentTime = getCPUTime();
-    
-    if (!m_timeAtLastCheck) {
+
+    if ( !m_timeAtLastCheck )
+    {
         // Suspicious amount of looping in a script -- start timing it
         m_timeAtLastCheck = currentTime;
         return false;
     }
-    
+
     unsigned timeDiff = currentTime - m_timeAtLastCheck;
-    
-    if (timeDiff == 0)
+
+    if ( timeDiff == 0 )
+    {
         timeDiff = 1;
-    
+    }
+
     m_timeExecuting += timeDiff;
     m_timeAtLastCheck = currentTime;
-    
+
     // Adjust the tick threshold so we get the next checkTimeout call in the
     // interval specified in intervalBetweenChecks.
-    m_ticksUntilNextCheck = static_cast<unsigned>((static_cast<float>(intervalBetweenChecks) / timeDiff) * m_ticksUntilNextCheck);
+    m_ticksUntilNextCheck = static_cast<unsigned>( ( static_cast<float>( intervalBetweenChecks ) / timeDiff ) *
+                            m_ticksUntilNextCheck );
+
     // If the new threshold is 0 reset it to the default threshold. This can happen if the timeDiff is higher than the
     // preferred script check time interval.
-    if (m_ticksUntilNextCheck == 0)
+    if ( m_ticksUntilNextCheck == 0 )
+    {
         m_ticksUntilNextCheck = ticksUntilFirstCheck;
-    
-    if (m_timeoutInterval && m_timeExecuting > m_timeoutInterval) {
-        if (exec->dynamicGlobalObject()->shouldInterruptScript())
+    }
+
+    if ( m_timeoutInterval && m_timeExecuting > m_timeoutInterval )
+    {
+        if ( exec->dynamicGlobalObject()->shouldInterruptScript() )
+        {
             return true;
-        
+        }
+
         reset();
     }
-    
+
     return false;
 }
 

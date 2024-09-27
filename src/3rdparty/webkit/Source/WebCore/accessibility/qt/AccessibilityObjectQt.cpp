@@ -22,7 +22,8 @@
 
 #if HAVE(ACCESSIBILITY)
 
-namespace WebCore {
+namespace WebCore
+{
 
 bool AccessibilityObject::accessibilityIgnoreAttachment() const
 {
@@ -31,8 +32,10 @@ bool AccessibilityObject::accessibilityIgnoreAttachment() const
 
 AccessibilityObjectInclusion AccessibilityObject::accessibilityPlatformIncludesObject() const
 {
-    if (isMenuListPopup() || isMenuListOption())
+    if ( isMenuListPopup() || isMenuListOption() )
+    {
         return IgnoreObject;
+    }
 
     return DefaultBehavior;
 }

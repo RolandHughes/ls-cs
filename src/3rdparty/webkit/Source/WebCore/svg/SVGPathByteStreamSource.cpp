@@ -22,12 +22,13 @@
 #if ENABLE(SVG)
 #include "SVGPathByteStreamSource.h"
 
-namespace WebCore {
-
-SVGPathByteStreamSource::SVGPathByteStreamSource(SVGPathByteStream* stream)
-    : m_stream(stream)
+namespace WebCore
 {
-    ASSERT(stream);
+
+SVGPathByteStreamSource::SVGPathByteStreamSource( SVGPathByteStream *stream )
+    : m_stream( stream )
+{
+    ASSERT( stream );
     m_streamCurrent = stream->begin();
     m_streamEnd = stream->end();
 }
@@ -37,42 +38,42 @@ bool SVGPathByteStreamSource::hasMoreData() const
     return m_streamCurrent < m_streamEnd;
 }
 
-bool SVGPathByteStreamSource::parseSVGSegmentType(SVGPathSegType& pathSegType)
+bool SVGPathByteStreamSource::parseSVGSegmentType( SVGPathSegType &pathSegType )
 {
-    pathSegType = static_cast<SVGPathSegType>(readSVGSegmentType());
+    pathSegType = static_cast<SVGPathSegType>( readSVGSegmentType() );
     return true;
 }
 
-SVGPathSegType SVGPathByteStreamSource::nextCommand(SVGPathSegType)
+SVGPathSegType SVGPathByteStreamSource::nextCommand( SVGPathSegType )
 {
-    return static_cast<SVGPathSegType>(readSVGSegmentType());
+    return static_cast<SVGPathSegType>( readSVGSegmentType() );
 }
 
-bool SVGPathByteStreamSource::parseMoveToSegment(FloatPoint& targetPoint)
+bool SVGPathByteStreamSource::parseMoveToSegment( FloatPoint &targetPoint )
 {
     targetPoint = readFloatPoint();
     return true;
 }
 
-bool SVGPathByteStreamSource::parseLineToSegment(FloatPoint& targetPoint)
+bool SVGPathByteStreamSource::parseLineToSegment( FloatPoint &targetPoint )
 {
     targetPoint = readFloatPoint();
     return true;
 }
 
-bool SVGPathByteStreamSource::parseLineToHorizontalSegment(float& x)
+bool SVGPathByteStreamSource::parseLineToHorizontalSegment( float &x )
 {
     x = readFloat();
     return true;
 }
 
-bool SVGPathByteStreamSource::parseLineToVerticalSegment(float& y)
+bool SVGPathByteStreamSource::parseLineToVerticalSegment( float &y )
 {
     y = readFloat();
     return true;
 }
 
-bool SVGPathByteStreamSource::parseCurveToCubicSegment(FloatPoint& point1, FloatPoint& point2, FloatPoint& targetPoint)
+bool SVGPathByteStreamSource::parseCurveToCubicSegment( FloatPoint &point1, FloatPoint &point2, FloatPoint &targetPoint )
 {
     point1 = readFloatPoint();
     point2 = readFloatPoint();
@@ -80,27 +81,28 @@ bool SVGPathByteStreamSource::parseCurveToCubicSegment(FloatPoint& point1, Float
     return true;
 }
 
-bool SVGPathByteStreamSource::parseCurveToCubicSmoothSegment(FloatPoint& point2, FloatPoint& targetPoint)
+bool SVGPathByteStreamSource::parseCurveToCubicSmoothSegment( FloatPoint &point2, FloatPoint &targetPoint )
 {
     point2 = readFloatPoint();
     targetPoint = readFloatPoint();
     return true;
 }
 
-bool SVGPathByteStreamSource::parseCurveToQuadraticSegment(FloatPoint& point1, FloatPoint& targetPoint)
+bool SVGPathByteStreamSource::parseCurveToQuadraticSegment( FloatPoint &point1, FloatPoint &targetPoint )
 {
     point1 = readFloatPoint();
     targetPoint = readFloatPoint();
     return true;
 }
 
-bool SVGPathByteStreamSource::parseCurveToQuadraticSmoothSegment(FloatPoint& targetPoint)
+bool SVGPathByteStreamSource::parseCurveToQuadraticSmoothSegment( FloatPoint &targetPoint )
 {
     targetPoint = readFloatPoint();
     return true;
 }
 
-bool SVGPathByteStreamSource::parseArcToSegment(float& rx, float& ry, float& angle, bool& largeArc, bool& sweep, FloatPoint& targetPoint)
+bool SVGPathByteStreamSource::parseArcToSegment( float &rx, float &ry, float &angle, bool &largeArc, bool &sweep,
+        FloatPoint &targetPoint )
 {
     rx = readFloat();
     ry = readFloat();

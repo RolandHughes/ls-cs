@@ -26,13 +26,15 @@
 #include "SVGPropertyTearOff.h"
 #include "SVGPropertyTraits.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 template<typename PropertyType>
 class SVGAnimatedListPropertyTearOff;
 
 template<typename PropertyType>
-class SVGListProperty : public SVGProperty {
+class SVGListProperty : public SVGProperty
+{
 public:
     typedef SVGListProperty<PropertyType> Self;
 
@@ -42,9 +44,10 @@ public:
     typedef SVGAnimatedListPropertyTearOff<PropertyType> AnimatedListPropertyTearOff;
     typedef typename SVGAnimatedListPropertyTearOff<PropertyType>::ListWrapperCache ListWrapperCache;
 
-    bool canAlterList(ExceptionCode& ec) const
+    bool canAlterList( ExceptionCode &ec ) const
     {
-        if (m_role == AnimValRole) {
+        if ( m_role == AnimValRole )
+        {
             ec = NO_MODIFICATION_ALLOWED_ERR;
             return false;
         }
@@ -53,91 +56,104 @@ public:
     }
 
     // SVGList::clear()
-    void clearValues(PropertyType& values, ExceptionCode& ec)
+    void clearValues( PropertyType &values, ExceptionCode &ec )
     {
-        if (!canAlterList(ec))
+        if ( !canAlterList( ec ) )
+        {
             return;
+        }
 
         values.clear();
         commitChange();
     }
 
-    void clearValuesAndWrappers(AnimatedListPropertyTearOff* animatedList, ExceptionCode& ec)
+    void clearValuesAndWrappers( AnimatedListPropertyTearOff *animatedList, ExceptionCode &ec )
     {
-        ASSERT(animatedList);
-        if (!canAlterList(ec))
-            return;
+        ASSERT( animatedList );
 
-        animatedList->detachListWrappers(0);
+        if ( !canAlterList( ec ) )
+        {
+            return;
+        }
+
+        animatedList->detachListWrappers( 0 );
         animatedList->values().clear();
         commitChange();
     }
 
     // SVGList::numberOfItems()
-    unsigned numberOfItemsValues(PropertyType& values) const
+    unsigned numberOfItemsValues( PropertyType &values ) const
     {
         return values.size();
     }
 
-    unsigned numberOfItemsValuesAndWrappers(AnimatedListPropertyTearOff* animatedList) const
+    unsigned numberOfItemsValuesAndWrappers( AnimatedListPropertyTearOff *animatedList ) const
     {
-        ASSERT(animatedList);
+        ASSERT( animatedList );
         return animatedList->values().size();
     }
 
     // SVGList::initialize()
-    ListItemType initializeValues(PropertyType& values, const ListItemType& newItem, ExceptionCode& ec)
+    ListItemType initializeValues( PropertyType &values, const ListItemType &newItem, ExceptionCode &ec )
     {
-        if (!canAlterList(ec))
+        if ( !canAlterList( ec ) )
+        {
             return ListItemType();
+        }
 
         // Spec: If the inserted item is already in a list, it is removed from its previous list before it is inserted into this list.
-        processIncomingListItemValue(newItem, 0);
+        processIncomingListItemValue( newItem, 0 );
 
         // Spec: Clears all existing current items from the list and re-initializes the list to hold the single item specified by the parameter.
         values.clear();
-        values.append(newItem);
+        values.append( newItem );
 
         commitChange();
         return newItem;
     }
 
-    PassListItemTearOff initializeValuesAndWrappers(AnimatedListPropertyTearOff* animatedList, PassListItemTearOff passNewItem, ExceptionCode& ec)
+    PassListItemTearOff initializeValuesAndWrappers( AnimatedListPropertyTearOff *animatedList, PassListItemTearOff passNewItem,
+            ExceptionCode &ec )
     {
-        ASSERT(animatedList);
-        if (!canAlterList(ec))
+        ASSERT( animatedList );
+
+        if ( !canAlterList( ec ) )
+        {
             return 0;
+        }
 
         // Not specified, but FF/Opera do it this way, and it's just sane.
-        if (!passNewItem) {
+        if ( !passNewItem )
+        {
             ec = SVGException::SVG_WRONG_TYPE_ERR;
             return 0;
         }
 
-        PropertyType& values = animatedList->values();
-        ListWrapperCache& wrappers = animatedList->wrappers();
+        PropertyType &values = animatedList->values();
+        ListWrapperCache &wrappers = animatedList->wrappers();
 
         RefPtr<ListItemTearOff> newItem = passNewItem;
-        ASSERT(values.size() == wrappers.size());
+        ASSERT( values.size() == wrappers.size() );
 
         // Spec: If the inserted item is already in a list, it is removed from its previous list before it is inserted into this list.
-        processIncomingListItemWrapper(newItem, 0);
+        processIncomingListItemWrapper( newItem, 0 );
 
         // Spec: Clears all existing current items from the list and re-initializes the list to hold the single item specified by the parameter.
-        animatedList->detachListWrappers(0);
+        animatedList->detachListWrappers( 0 );
         values.clear();
 
-        values.append(newItem->propertyReference());
-        wrappers.append(newItem);
+        values.append( newItem->propertyReference() );
+        wrappers.append( newItem );
 
         commitChange();
         return newItem.release();
     }
 
     // SVGList::getItem()
-    bool canGetItem(PropertyType& values, unsigned index, ExceptionCode& ec)
+    bool canGetItem( PropertyType &values, unsigned index, ExceptionCode &ec )
     {
-        if (index >= values.size()) {
+        if ( index >= values.size() )
+        {
             ec = INDEX_SIZE_ERR;
             return false;
         }
@@ -145,103 +161,124 @@ public:
         return true;
     }
 
-    ListItemType getItemValues(PropertyType& values, unsigned index, ExceptionCode& ec)
+    ListItemType getItemValues( PropertyType &values, unsigned index, ExceptionCode &ec )
     {
-        if (!canGetItem(values, index, ec)) 
+        if ( !canGetItem( values, index, ec ) )
+        {
             return ListItemType();
+        }
 
         // Spec: Returns the specified item from the list. The returned item is the item itself and not a copy.
-        return values.at(index);
+        return values.at( index );
     }
 
-    PassListItemTearOff getItemValuesAndWrappers(AnimatedListPropertyTearOff* animatedList, unsigned index, ExceptionCode& ec)
+    PassListItemTearOff getItemValuesAndWrappers( AnimatedListPropertyTearOff *animatedList, unsigned index, ExceptionCode &ec )
     {
-        ASSERT(animatedList);
-        PropertyType& values = animatedList->values();
-        if (!canGetItem(values, index, ec))
-            return 0;
+        ASSERT( animatedList );
+        PropertyType &values = animatedList->values();
 
-        ListWrapperCache& wrappers = animatedList->wrappers();
+        if ( !canGetItem( values, index, ec ) )
+        {
+            return 0;
+        }
+
+        ListWrapperCache &wrappers = animatedList->wrappers();
 
         // Spec: Returns the specified item from the list. The returned item is the item itself and not a copy.
         // Any changes made to the item are immediately reflected in the list.
-        ASSERT(values.size() == wrappers.size());
-        RefPtr<ListItemTearOff> wrapper = wrappers.at(index);
-        if (!wrapper) {
+        ASSERT( values.size() == wrappers.size() );
+        RefPtr<ListItemTearOff> wrapper = wrappers.at( index );
+
+        if ( !wrapper )
+        {
             // Create new wrapper, which is allowed to directly modify the item in the list, w/o copying and cache the wrapper in our map.
             // It is also associated with our animated property, so it can notify the SVG Element which holds the SVGAnimated*List
             // that it has been modified (and thus can call svgAttributeChanged(associatedAttributeName)).
-            wrapper = ListItemTearOff::create(animatedList, UndefinedRole, values.at(index));
-            wrappers.at(index) = wrapper;
+            wrapper = ListItemTearOff::create( animatedList, UndefinedRole, values.at( index ) );
+            wrappers.at( index ) = wrapper;
         }
 
         return wrapper.release();
     }
 
     // SVGList::insertItemBefore()
-    ListItemType insertItemBeforeValues(PropertyType& values, const ListItemType& newItem, unsigned index, ExceptionCode& ec)
+    ListItemType insertItemBeforeValues( PropertyType &values, const ListItemType &newItem, unsigned index, ExceptionCode &ec )
     {
-        if (!canAlterList(ec))
+        if ( !canAlterList( ec ) )
+        {
             return ListItemType();
+        }
 
         // Spec: If the index is greater than or equal to numberOfItems, then the new item is appended to the end of the list.
-        if (index > values.size())
+        if ( index > values.size() )
+        {
             index = values.size();
+        }
 
         // Spec: If newItem is already in a list, it is removed from its previous list before it is inserted into this list.
-        processIncomingListItemValue(newItem, &index);
+        processIncomingListItemValue( newItem, &index );
 
         // Spec: Inserts a new item into the list at the specified position. The index of the item before which the new item is to be
         // inserted. The first item is number 0. If the index is equal to 0, then the new item is inserted at the front of the list.
-        values.insert(index, newItem);
+        values.insert( index, newItem );
 
         commitChange();
         return newItem;
     }
 
-    PassListItemTearOff insertItemBeforeValuesAndWrappers(AnimatedListPropertyTearOff* animatedList, PassListItemTearOff passNewItem, unsigned index, ExceptionCode& ec)
+    PassListItemTearOff insertItemBeforeValuesAndWrappers( AnimatedListPropertyTearOff *animatedList, PassListItemTearOff passNewItem,
+            unsigned index, ExceptionCode &ec )
     {
-        ASSERT(animatedList);
-        if (!canAlterList(ec))
+        ASSERT( animatedList );
+
+        if ( !canAlterList( ec ) )
+        {
             return 0;
+        }
 
         // Not specified, but FF/Opera do it this way, and it's just sane.
-        if (!passNewItem) {
+        if ( !passNewItem )
+        {
             ec = SVGException::SVG_WRONG_TYPE_ERR;
             return 0;
         }
 
-        PropertyType& values = animatedList->values();
-        ListWrapperCache& wrappers = animatedList->wrappers();
+        PropertyType &values = animatedList->values();
+        ListWrapperCache &wrappers = animatedList->wrappers();
 
         // Spec: If the index is greater than or equal to numberOfItems, then the new item is appended to the end of the list.
-        if (index > values.size())
-             index = values.size();
+        if ( index > values.size() )
+        {
+            index = values.size();
+        }
 
         RefPtr<ListItemTearOff> newItem = passNewItem;
-        ASSERT(values.size() == wrappers.size());
+        ASSERT( values.size() == wrappers.size() );
 
         // Spec: If newItem is already in a list, it is removed from its previous list before it is inserted into this list.
-        processIncomingListItemWrapper(newItem, &index);
+        processIncomingListItemWrapper( newItem, &index );
 
         // Spec: Inserts a new item into the list at the specified position. The index of the item before which the new item is to be
         // inserted. The first item is number 0. If the index is equal to 0, then the new item is inserted at the front of the list.
-        values.insert(index, newItem->propertyReference());
+        values.insert( index, newItem->propertyReference() );
 
         // Store new wrapper at position 'index', change its underlying value, so mutations of newItem, directly affect the item in the list.
-        wrappers.insert(index, newItem);
+        wrappers.insert( index, newItem );
 
         commitChange();
         return newItem.release();
     }
 
     // SVGList::replaceItem()
-    bool canReplaceItem(PropertyType& values, unsigned index, ExceptionCode& ec)
+    bool canReplaceItem( PropertyType &values, unsigned index, ExceptionCode &ec )
     {
-        if (!canAlterList(ec))
+        if ( !canAlterList( ec ) )
+        {
             return false;
+        }
 
-        if (index >= values.size()) {
+        if ( index >= values.size() )
+        {
             ec = INDEX_SIZE_ERR;
             return false;
         }
@@ -249,76 +286,91 @@ public:
         return true;
     }
 
-    ListItemType replaceItemValues(PropertyType& values, const ListItemType& newItem, unsigned index, ExceptionCode& ec)
+    ListItemType replaceItemValues( PropertyType &values, const ListItemType &newItem, unsigned index, ExceptionCode &ec )
     {
-        if (!canReplaceItem(values, index, ec))
+        if ( !canReplaceItem( values, index, ec ) )
+        {
             return ListItemType();
+        }
 
         // Spec: If newItem is already in a list, it is removed from its previous list before it is inserted into this list.
         // Spec: If the item is already in this list, note that the index of the item to replace is before the removal of the item.
-        processIncomingListItemValue(newItem, &index);
+        processIncomingListItemValue( newItem, &index );
 
-        if (values.isEmpty()) {
+        if ( values.isEmpty() )
+        {
             // 'newItem' already lived in our list, we removed it, and now we're empty, which means there's nothing to replace.
             ec = INDEX_SIZE_ERR;
             return ListItemType();
         }
 
-        // Update the value at the desired position 'index'. 
-        values.at(index) = newItem;
+        // Update the value at the desired position 'index'.
+        values.at( index ) = newItem;
 
         commitChange();
         return newItem;
     }
 
-    PassListItemTearOff replaceItemValuesAndWrappers(AnimatedListPropertyTearOff* animatedList, PassListItemTearOff passNewItem, unsigned index, ExceptionCode& ec)
+    PassListItemTearOff replaceItemValuesAndWrappers( AnimatedListPropertyTearOff *animatedList, PassListItemTearOff passNewItem,
+            unsigned index, ExceptionCode &ec )
     {
-        ASSERT(animatedList);
-        PropertyType& values = animatedList->values();
-        if (!canReplaceItem(values, index, ec))
+        ASSERT( animatedList );
+        PropertyType &values = animatedList->values();
+
+        if ( !canReplaceItem( values, index, ec ) )
+        {
             return 0;
+        }
 
         // Not specified, but FF/Opera do it this way, and it's just sane.
-        if (!passNewItem) {
+        if ( !passNewItem )
+        {
             ec = SVGException::SVG_WRONG_TYPE_ERR;
             return 0;
         }
 
-        ListWrapperCache& wrappers = animatedList->wrappers();
-        ASSERT(values.size() == wrappers.size());
+        ListWrapperCache &wrappers = animatedList->wrappers();
+        ASSERT( values.size() == wrappers.size() );
         RefPtr<ListItemTearOff> newItem = passNewItem;
 
         // Spec: If newItem is already in a list, it is removed from its previous list before it is inserted into this list.
         // Spec: If the item is already in this list, note that the index of the item to replace is before the removal of the item.
-        processIncomingListItemWrapper(newItem, &index);
+        processIncomingListItemWrapper( newItem, &index );
 
-        if (values.isEmpty()) {
-            ASSERT(wrappers.isEmpty());
+        if ( values.isEmpty() )
+        {
+            ASSERT( wrappers.isEmpty() );
             // 'passNewItem' already lived in our list, we removed it, and now we're empty, which means there's nothing to replace.
             ec = INDEX_SIZE_ERR;
             return 0;
         }
 
         // Detach the existing wrapper.
-        RefPtr<ListItemTearOff> oldItem = wrappers.at(index);
-        if (oldItem)
-            oldItem->detachWrapper();
+        RefPtr<ListItemTearOff> oldItem = wrappers.at( index );
 
-        // Update the value and the wrapper at the desired position 'index'. 
-        values.at(index) = newItem->propertyReference();
-        wrappers.at(index) = newItem;
+        if ( oldItem )
+        {
+            oldItem->detachWrapper();
+        }
+
+        // Update the value and the wrapper at the desired position 'index'.
+        values.at( index ) = newItem->propertyReference();
+        wrappers.at( index ) = newItem;
 
         commitChange();
         return newItem.release();
     }
 
     // SVGList::removeItem()
-    bool canRemoveItem(PropertyType& values, unsigned index, ExceptionCode& ec)
+    bool canRemoveItem( PropertyType &values, unsigned index, ExceptionCode &ec )
     {
-        if (!canAlterList(ec))
+        if ( !canAlterList( ec ) )
+        {
             return false;
+        }
 
-        if (index >= values.size()) {
+        if ( index >= values.size() )
+        {
             ec = INDEX_SIZE_ERR;
             return false;
         }
@@ -326,97 +378,115 @@ public:
         return true;
     }
 
-    ListItemType removeItemValues(PropertyType& values, unsigned index, ExceptionCode& ec)
+    ListItemType removeItemValues( PropertyType &values, unsigned index, ExceptionCode &ec )
     {
-        if (!canRemoveItem(values, index, ec))
+        if ( !canRemoveItem( values, index, ec ) )
+        {
             return ListItemType();
+        }
 
-        ListItemType oldItem = values.at(index);
-        values.remove(index);
+        ListItemType oldItem = values.at( index );
+        values.remove( index );
 
         commitChange();
         return oldItem;
     }
 
-    PassListItemTearOff removeItemValuesAndWrappers(AnimatedListPropertyTearOff* animatedList, unsigned index, ExceptionCode& ec)
+    PassListItemTearOff removeItemValuesAndWrappers( AnimatedListPropertyTearOff *animatedList, unsigned index, ExceptionCode &ec )
     {
-        ASSERT(animatedList);
-        PropertyType& values = animatedList->values();
-        if (!canRemoveItem(values, index, ec))
-            return 0;
+        ASSERT( animatedList );
+        PropertyType &values = animatedList->values();
 
-        ListWrapperCache& wrappers = animatedList->wrappers();
-        ASSERT(values.size() == wrappers.size());
+        if ( !canRemoveItem( values, index, ec ) )
+        {
+            return 0;
+        }
+
+        ListWrapperCache &wrappers = animatedList->wrappers();
+        ASSERT( values.size() == wrappers.size() );
 
         // Detach the existing wrapper.
-        RefPtr<ListItemTearOff> oldItem = wrappers.at(index);
-        if (!oldItem)
-            oldItem = ListItemTearOff::create(animatedList, UndefinedRole, values.at(index));
+        RefPtr<ListItemTearOff> oldItem = wrappers.at( index );
+
+        if ( !oldItem )
+        {
+            oldItem = ListItemTearOff::create( animatedList, UndefinedRole, values.at( index ) );
+        }
 
         oldItem->detachWrapper();
-        wrappers.remove(index);
-        values.remove(index);
+        wrappers.remove( index );
+        values.remove( index );
 
         commitChange();
         return oldItem.release();
     }
 
     // SVGList::appendItem()
-    ListItemType appendItemValues(PropertyType& values, const ListItemType& newItem, ExceptionCode& ec)
+    ListItemType appendItemValues( PropertyType &values, const ListItemType &newItem, ExceptionCode &ec )
     {
-        if (!canAlterList(ec))
+        if ( !canAlterList( ec ) )
+        {
             return ListItemType();
+        }
 
         // Spec: If newItem is already in a list, it is removed from its previous list before it is inserted into this list.
-        processIncomingListItemValue(newItem, 0);
+        processIncomingListItemValue( newItem, 0 );
 
         // Append the value at the end of the list.
-        values.append(newItem);
+        values.append( newItem );
 
         commitChange();
         return newItem;
     }
 
-    PassListItemTearOff appendItemValuesAndWrappers(AnimatedListPropertyTearOff* animatedList, PassListItemTearOff passNewItem, ExceptionCode& ec)
+    PassListItemTearOff appendItemValuesAndWrappers( AnimatedListPropertyTearOff *animatedList, PassListItemTearOff passNewItem,
+            ExceptionCode &ec )
     {
-        ASSERT(animatedList);
-        if (!canAlterList(ec))
+        ASSERT( animatedList );
+
+        if ( !canAlterList( ec ) )
+        {
             return 0;
+        }
 
         // Not specified, but FF/Opera do it this way, and it's just sane.
-        if (!passNewItem) {
+        if ( !passNewItem )
+        {
             ec = SVGException::SVG_WRONG_TYPE_ERR;
             return 0;
         }
 
-        PropertyType& values = animatedList->values();
-        ListWrapperCache& wrappers = animatedList->wrappers();
+        PropertyType &values = animatedList->values();
+        ListWrapperCache &wrappers = animatedList->wrappers();
 
         RefPtr<ListItemTearOff> newItem = passNewItem;
-        ASSERT(values.size() == wrappers.size());
+        ASSERT( values.size() == wrappers.size() );
 
         // Spec: If newItem is already in a list, it is removed from its previous list before it is inserted into this list.
-        processIncomingListItemWrapper(newItem, 0);
+        processIncomingListItemWrapper( newItem, 0 );
 
         // Append the value and wrapper at the end of the list.
-        values.append(newItem->propertyReference());
-        wrappers.append(newItem);
+        values.append( newItem->propertyReference() );
+        wrappers.append( newItem );
 
         commitChange();
         return newItem.release();
     }
 
-    virtual SVGPropertyRole role() const { return m_role; }
+    virtual SVGPropertyRole role() const
+    {
+        return m_role;
+    }
 
 protected:
-    SVGListProperty(SVGPropertyRole role)
-        : m_role(role)
+    SVGListProperty( SVGPropertyRole role )
+        : m_role( role )
     {
     }
 
     virtual void commitChange() = 0;
-    virtual void processIncomingListItemValue(const ListItemType& newItem, unsigned* indexToModify) = 0;
-    virtual void processIncomingListItemWrapper(RefPtr<ListItemTearOff>& newItem, unsigned* indexToModify) = 0;
+    virtual void processIncomingListItemValue( const ListItemType &newItem, unsigned *indexToModify ) = 0;
+    virtual void processIncomingListItemWrapper( RefPtr<ListItemTearOff> &newItem, unsigned *indexToModify ) = 0;
 
 private:
     SVGPropertyRole m_role;

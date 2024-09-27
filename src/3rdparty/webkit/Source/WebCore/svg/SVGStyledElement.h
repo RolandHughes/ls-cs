@@ -27,74 +27,98 @@
 #include "SVGStylable.h"
 #include <wtf/HashSet.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-void mapAttributeToCSSProperty(HashMap<AtomicStringImpl*, int>* propertyNameToIdMap, const QualifiedName& attrName);
+void mapAttributeToCSSProperty( HashMap<AtomicStringImpl *, int> *propertyNameToIdMap, const QualifiedName &attrName );
 
 class SVGStyledElement : public SVGElement,
-                         public SVGStylable {
+    public SVGStylable
+{
 public:
     virtual ~SVGStyledElement();
 
     virtual String title() const;
 
-    bool hasRelativeLengths() const { return !m_elementsWithRelativeLengths.isEmpty(); }
+    bool hasRelativeLengths() const
+    {
+        return !m_elementsWithRelativeLengths.isEmpty();
+    }
 
-    virtual bool supportsMarkers() const { return false; }
+    virtual bool supportsMarkers() const
+    {
+        return false;
+    }
 
-    virtual PassRefPtr<CSSValue> getPresentationAttribute(const String& name);
+    virtual PassRefPtr<CSSValue> getPresentationAttribute( const String &name );
 
-    bool isKnownAttribute(const QualifiedName&);
+    bool isKnownAttribute( const QualifiedName & );
 
     // Centralized place to force a manual style resolution. Hacky but needed for now.
-    PassRefPtr<RenderStyle> resolveStyle(RenderStyle* parentStyle);
+    PassRefPtr<RenderStyle> resolveStyle( RenderStyle *parentStyle );
 
     bool instanceUpdatesBlocked() const;
-    void setInstanceUpdatesBlocked(bool);
+    void setInstanceUpdatesBlocked( bool );
 
     bool hasPendingResources() const;
     void setHasPendingResources();
     void clearHasPendingResourcesIfPossible();
 
-    AnimatedAttributeType animatedPropertyTypeForCSSProperty(const QualifiedName&);
-    static bool isAnimatableCSSProperty(const QualifiedName&);
+    AnimatedAttributeType animatedPropertyTypeForCSSProperty( const QualifiedName & );
+    static bool isAnimatableCSSProperty( const QualifiedName & );
 
-    virtual AffineTransform localCoordinateSpaceTransform(SVGLocatable::CTMScope) const;
+    virtual AffineTransform localCoordinateSpaceTransform( SVGLocatable::CTMScope ) const;
 
-    virtual CSSStyleDeclaration* style() { return StyledElement::style(); }
-    virtual bool needsPendingResourceHandling() const { return true; }
+    virtual CSSStyleDeclaration *style()
+    {
+        return StyledElement::style();
+    }
+    virtual bool needsPendingResourceHandling() const
+    {
+        return true;
+    }
 
-protected: 
-    SVGStyledElement(const QualifiedName&, Document*);
+protected:
+    SVGStyledElement( const QualifiedName &, Document * );
 
-    virtual bool rendererIsNeeded(RenderStyle*);
+    virtual bool rendererIsNeeded( RenderStyle * );
 
-    virtual bool mapToEntry(const QualifiedName&, MappedAttributeEntry&) const;
-    virtual void parseMappedAttribute(Attribute*);
-    virtual void svgAttributeChanged(const QualifiedName&);
-    virtual void synchronizeProperty(const QualifiedName&);
+    virtual bool mapToEntry( const QualifiedName &, MappedAttributeEntry & ) const;
+    virtual void parseMappedAttribute( Attribute * );
+    virtual void svgAttributeChanged( const QualifiedName & );
+    virtual void synchronizeProperty( const QualifiedName & );
 
-    void fillPassedAttributeToPropertyTypeMap(AttributeToPropertyTypeMap&);
+    void fillPassedAttributeToPropertyTypeMap( AttributeToPropertyTypeMap & );
 
     virtual void attach();
     virtual void insertedIntoDocument();
     virtual void removedFromDocument();
-    virtual void childrenChanged(bool changedByParser = false, Node* beforeChange = 0, Node* afterChange = 0, int childCountDelta = 0);
+    virtual void childrenChanged( bool changedByParser = false, Node *beforeChange = 0, Node *afterChange = 0,
+                                  int childCountDelta = 0 );
 
-    static int cssPropertyIdForSVGAttributeName(const QualifiedName&);
-    void updateRelativeLengthsInformation() { updateRelativeLengthsInformation(selfHasRelativeLengths(), this); }
-    void updateRelativeLengthsInformation(bool hasRelativeLengths, SVGStyledElement*);
+    static int cssPropertyIdForSVGAttributeName( const QualifiedName & );
+    void updateRelativeLengthsInformation()
+    {
+        updateRelativeLengthsInformation( selfHasRelativeLengths(), this );
+    }
+    void updateRelativeLengthsInformation( bool hasRelativeLengths, SVGStyledElement * );
 
-    virtual bool selfHasRelativeLengths() const { return false; }
+    virtual bool selfHasRelativeLengths() const
+    {
+        return false;
+    }
     virtual void buildPendingResource() { }
 
 private:
-    virtual bool isStyled() const { return true; }
+    virtual bool isStyled() const
+    {
+        return true;
+    }
 
-    HashSet<SVGStyledElement*> m_elementsWithRelativeLengths;
+    HashSet<SVGStyledElement *> m_elementsWithRelativeLengths;
 
     // Animated property declarations
-    DECLARE_ANIMATED_STRING(ClassName, className)
+    DECLARE_ANIMATED_STRING( ClassName, className )
 };
 
 } // namespace WebCore

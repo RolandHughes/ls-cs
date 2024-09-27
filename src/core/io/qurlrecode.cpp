@@ -27,10 +27,11 @@
 #include <qtools_p.h>
 #include <qutfcodec_p.h>
 
-enum EncodingAction {
-   DecodeCharacter = 0,
-   LeaveCharacter  = 1,
-   EncodeCharacter = 2
+enum EncodingAction
+{
+    DecodeCharacter = 0,
+    LeaveCharacter  = 1,
+    EncodeCharacter = 2
 };
 
 // From RFC 3896, Appendix A Collected ABNF for URI
@@ -39,386 +40,423 @@ enum EncodingAction {
 //    gen-delims    = ":" / "/" / "?" / "#" / "[" / "]" / "@"
 //    sub-delims    = "!" / "$" / "&" / "'" / "(" / ")"
 //                  / "*" / "+" / "," / ";" / "="
-static const uchar defaultActionTable[96] = {
-   2, // space
-   1, // '!' (sub-delim)
-   2, // '"'
-   1, // '#' (gen-delim)
-   1, // '$' (gen-delim)
-   2, // '%' (percent)
-   1, // '&' (gen-delim)
-   1, // "'" (sub-delim)
-   1, // '(' (sub-delim)
-   1, // ')' (sub-delim)
-   1, // '*' (sub-delim)
-   1, // '+' (sub-delim)
-   1, // ',' (sub-delim)
-   0, // '-' (unreserved)
-   0, // '.' (unreserved)
-   1, // '/' (gen-delim)
+static const uchar defaultActionTable[96] =
+{
+    2, // space
+    1, // '!' (sub-delim)
+    2, // '"'
+    1, // '#' (gen-delim)
+    1, // '$' (gen-delim)
+    2, // '%' (percent)
+    1, // '&' (gen-delim)
+    1, // "'" (sub-delim)
+    1, // '(' (sub-delim)
+    1, // ')' (sub-delim)
+    1, // '*' (sub-delim)
+    1, // '+' (sub-delim)
+    1, // ',' (sub-delim)
+    0, // '-' (unreserved)
+    0, // '.' (unreserved)
+    1, // '/' (gen-delim)
 
-   0, 0, 0, 0, 0,  // '0' to '4' (unreserved)
-   0, 0, 0, 0, 0,  // '5' to '9' (unreserved)
-   1, // ':' (gen-delim)
-   1, // ';' (sub-delim)
-   2, // '<'
-   1, // '=' (sub-delim)
-   2, // '>'
-   1, // '?' (gen-delim)
+    0, 0, 0, 0, 0,  // '0' to '4' (unreserved)
+    0, 0, 0, 0, 0,  // '5' to '9' (unreserved)
+    1, // ':' (gen-delim)
+    1, // ';' (sub-delim)
+    2, // '<'
+    1, // '=' (sub-delim)
+    2, // '>'
+    1, // '?' (gen-delim)
 
-   1, // '@' (gen-delim)
-   0, 0, 0, 0, 0,  // 'A' to 'E' (unreserved)
-   0, 0, 0, 0, 0,  // 'F' to 'J' (unreserved)
-   0, 0, 0, 0, 0,  // 'K' to 'O' (unreserved)
-   0, 0, 0, 0, 0,  // 'P' to 'T' (unreserved)
-   0, 0, 0, 0, 0, 0,  // 'U' to 'Z' (unreserved)
-   1, // '[' (gen-delim)
-   2, // '\'
-   1, // ']' (gen-delim)
-   2, // '^'
-   0, // '_' (unreserved)
+    1, // '@' (gen-delim)
+    0, 0, 0, 0, 0,  // 'A' to 'E' (unreserved)
+    0, 0, 0, 0, 0,  // 'F' to 'J' (unreserved)
+    0, 0, 0, 0, 0,  // 'K' to 'O' (unreserved)
+    0, 0, 0, 0, 0,  // 'P' to 'T' (unreserved)
+    0, 0, 0, 0, 0, 0,  // 'U' to 'Z' (unreserved)
+    1, // '[' (gen-delim)
+    2, // '\'
+    1, // ']' (gen-delim)
+    2, // '^'
+    0, // '_' (unreserved)
 
-   2, // '`'
-   0, 0, 0, 0, 0,  // 'a' to 'e' (unreserved)
-   0, 0, 0, 0, 0,  // 'f' to 'j' (unreserved)
-   0, 0, 0, 0, 0,  // 'k' to 'o' (unreserved)
-   0, 0, 0, 0, 0,  // 'p' to 't' (unreserved)
-   0, 0, 0, 0, 0, 0,  // 'u' to 'z' (unreserved)
-   2, // '{'
-   2, // '|'
-   2, // '}'
-   0, // '~' (unreserved)
+    2, // '`'
+    0, 0, 0, 0, 0,  // 'a' to 'e' (unreserved)
+    0, 0, 0, 0, 0,  // 'f' to 'j' (unreserved)
+    0, 0, 0, 0, 0,  // 'k' to 'o' (unreserved)
+    0, 0, 0, 0, 0,  // 'p' to 't' (unreserved)
+    0, 0, 0, 0, 0, 0,  // 'u' to 'z' (unreserved)
+    2, // '{'
+    2, // '|'
+    2, // '}'
+    0, // '~' (unreserved)
 
-   2  // BSKP
+    2  // BSKP
 };
 
 // mask tables, in negative polarity
 // 0x00 if it belongs to this category
 // 0xff if it does not
 
-static const uchar reservedMask[96] = {
-   0xff, // space
-   0xff, // '!' (sub-delim)
-   0x00, // '"'
-   0xff, // '#' (gen-delim)
-   0xff, // '$' (gen-delim)
-   0xff, // '%' (percent)
-   0xff, // '&' (gen-delim)
-   0xff, // "'" (sub-delim)
-   0xff, // '(' (sub-delim)
-   0xff, // ')' (sub-delim)
-   0xff, // '*' (sub-delim)
-   0xff, // '+' (sub-delim)
-   0xff, // ',' (sub-delim)
-   0xff, // '-' (unreserved)
-   0xff, // '.' (unreserved)
-   0xff, // '/' (gen-delim)
+static const uchar reservedMask[96] =
+{
+    0xff, // space
+    0xff, // '!' (sub-delim)
+    0x00, // '"'
+    0xff, // '#' (gen-delim)
+    0xff, // '$' (gen-delim)
+    0xff, // '%' (percent)
+    0xff, // '&' (gen-delim)
+    0xff, // "'" (sub-delim)
+    0xff, // '(' (sub-delim)
+    0xff, // ')' (sub-delim)
+    0xff, // '*' (sub-delim)
+    0xff, // '+' (sub-delim)
+    0xff, // ',' (sub-delim)
+    0xff, // '-' (unreserved)
+    0xff, // '.' (unreserved)
+    0xff, // '/' (gen-delim)
 
-   0xff, 0xff, 0xff, 0xff, 0xff,  // '0' to '4' (unreserved)
-   0xff, 0xff, 0xff, 0xff, 0xff,  // '5' to '9' (unreserved)
-   0xff, // ':' (gen-delim)
-   0xff, // ';' (sub-delim)
-   0x00, // '<'
-   0xff, // '=' (sub-delim)
-   0x00, // '>'
-   0xff, // '?' (gen-delim)
+    0xff, 0xff, 0xff, 0xff, 0xff,  // '0' to '4' (unreserved)
+    0xff, 0xff, 0xff, 0xff, 0xff,  // '5' to '9' (unreserved)
+    0xff, // ':' (gen-delim)
+    0xff, // ';' (sub-delim)
+    0x00, // '<'
+    0xff, // '=' (sub-delim)
+    0x00, // '>'
+    0xff, // '?' (gen-delim)
 
-   0xff, // '@' (gen-delim)
-   0xff, 0xff, 0xff, 0xff, 0xff,  // 'A' to 'E' (unreserved)
-   0xff, 0xff, 0xff, 0xff, 0xff,  // 'F' to 'J' (unreserved)
-   0xff, 0xff, 0xff, 0xff, 0xff,  // 'K' to 'O' (unreserved)
-   0xff, 0xff, 0xff, 0xff, 0xff,  // 'P' to 'T' (unreserved)
-   0xff, 0xff, 0xff, 0xff, 0xff, 0xff,  // 'U' to 'Z' (unreserved)
-   0xff, // '[' (gen-delim)
-   0x00, // '\'
-   0xff, // ']' (gen-delim)
-   0x00, // '^'
-   0xff, // '_' (unreserved)
+    0xff, // '@' (gen-delim)
+    0xff, 0xff, 0xff, 0xff, 0xff,  // 'A' to 'E' (unreserved)
+    0xff, 0xff, 0xff, 0xff, 0xff,  // 'F' to 'J' (unreserved)
+    0xff, 0xff, 0xff, 0xff, 0xff,  // 'K' to 'O' (unreserved)
+    0xff, 0xff, 0xff, 0xff, 0xff,  // 'P' to 'T' (unreserved)
+    0xff, 0xff, 0xff, 0xff, 0xff, 0xff,  // 'U' to 'Z' (unreserved)
+    0xff, // '[' (gen-delim)
+    0x00, // '\'
+    0xff, // ']' (gen-delim)
+    0x00, // '^'
+    0xff, // '_' (unreserved)
 
-   0x00, // '`'
-   0xff, 0xff, 0xff, 0xff, 0xff,  // 'a' to 'e' (unreserved)
-   0xff, 0xff, 0xff, 0xff, 0xff,  // 'f' to 'j' (unreserved)
-   0xff, 0xff, 0xff, 0xff, 0xff,  // 'k' to 'o' (unreserved)
-   0xff, 0xff, 0xff, 0xff, 0xff,  // 'p' to 't' (unreserved)
-   0xff, 0xff, 0xff, 0xff, 0xff, 0xff,  // 'u' to 'z' (unreserved)
-   0x00, // '{'
-   0x00, // '|'
-   0x00, // '}'
-   0xff, // '~' (unreserved)
+    0x00, // '`'
+    0xff, 0xff, 0xff, 0xff, 0xff,  // 'a' to 'e' (unreserved)
+    0xff, 0xff, 0xff, 0xff, 0xff,  // 'f' to 'j' (unreserved)
+    0xff, 0xff, 0xff, 0xff, 0xff,  // 'k' to 'o' (unreserved)
+    0xff, 0xff, 0xff, 0xff, 0xff,  // 'p' to 't' (unreserved)
+    0xff, 0xff, 0xff, 0xff, 0xff, 0xff,  // 'u' to 'z' (unreserved)
+    0x00, // '{'
+    0x00, // '|'
+    0x00, // '}'
+    0xff, // '~' (unreserved)
 
-   0xff  // BSKP
+    0xff  // BSKP
 };
 
-static inline bool isHex(QChar c)
+static inline bool isHex( QChar c )
 {
-   return (c >= 'a' && c <= 'f') ||
-         (c >= 'A' && c <= 'F') ||
-         (c >= '0' && c <= '9');
+    return ( c >= 'a' && c <= 'f' ) ||
+           ( c >= 'A' && c <= 'F' ) ||
+           ( c >= '0' && c <= '9' );
 }
 
-static inline bool isUpperHex(QChar c)
+static inline bool isUpperHex( QChar c )
 {
-   return c < 0x60;
+    return c < 0x60;
 }
 
-static inline QChar toUpperHex(QChar c)
+static inline QChar toUpperHex( QChar c )
 {
-   return isUpperHex(c) ? c : QChar( char32_t(c.unicode() - 0x20) );
+    return isUpperHex( c ) ? c : QChar( char32_t( c.unicode() - 0x20 ) );
 }
 
-static inline int decodeNibble(QChar c)
+static inline int decodeNibble( QChar c )
 {
-   return c >= 'a' ? c.unicode() - 'a' + 0xA :
-         c >= 'A' ? c.unicode() - 'A' + 0xA : c.unicode() - '0';
+    return c >= 'a' ? c.unicode() - 'a' + 0xA :
+           c >= 'A' ? c.unicode() - 'A' + 0xA : c.unicode() - '0';
 }
 
 // if the sequence at input is 2*HEXDIG then return its decoding, otherwise returns -1
-static inline int decodePercentEncoding(QString::const_iterator begin, QString::const_iterator end)
+static inline int decodePercentEncoding( QString::const_iterator begin, QString::const_iterator end )
 {
-   ++begin;
+    ++begin;
 
-   if (begin == end) {
-      return -1;
-   }
+    if ( begin == end )
+    {
+        return -1;
+    }
 
-   QChar c1 = *begin;
+    QChar c1 = *begin;
 
-   ++begin;
+    ++begin;
 
-   if (begin == end) {
-      return -1;
-   }
+    if ( begin == end )
+    {
+        return -1;
+    }
 
-   QChar c2 = *begin;
+    QChar c2 = *begin;
 
-   if (! isHex(c1) || ! isHex(c2)) {
-      return -1;
-   }
+    if ( ! isHex( c1 ) || ! isHex( c2 ) )
+    {
+        return -1;
+    }
 
-   return decodeNibble(c1) << 4 | decodeNibble(c2);
+    return decodeNibble( c1 ) << 4 | decodeNibble( c2 );
 }
 
-static inline ushort encodeNibble(ushort c)
+static inline ushort encodeNibble( ushort c )
 {
-   return ushort(QtMiscUtils::toHexUpper(c));
+    return ushort( QtMiscUtils::toHexUpper( c ) );
 }
 
 // returns true if we performed a UTF-8 decoding
-static bool encoded_utf8_to_utf16(int c, QString::const_iterator &iter, QString &retval, QString::const_iterator end)
+static bool encoded_utf8_to_utf16( int c, QString::const_iterator &iter, QString &retval, QString::const_iterator end )
 {
-   QByteArray tmpStr;
-   tmpStr.append(c);
+    QByteArray tmpStr;
+    tmpStr.append( c );
 
-   QString::const_iterator tmpIter = iter + 3;
+    QString::const_iterator tmpIter = iter + 3;
 
-   while (tmpIter != end) {
+    while ( tmpIter != end )
+    {
 
-      if (*tmpIter != '%') {
-         // end of percent encoded data
-         break;
-      }
+        if ( *tmpIter != '%' )
+        {
+            // end of percent encoded data
+            break;
+        }
 
-      int tmp = decodePercentEncoding(tmpIter, end);
+        int tmp = decodePercentEncoding( tmpIter, end );
 
-      if (tmp  == -1) {
-         // invalid char after %
-         return false;
-      }
+        if ( tmp  == -1 )
+        {
+            // invalid char after %
+            return false;
+        }
 
-      tmpStr.append(tmp);
-      tmpIter = tmpIter + 3;
-   }
+        tmpStr.append( tmp );
+        tmpIter = tmpIter + 3;
+    }
 
-   retval.append(QString::fromUtf8(tmpStr));
-   iter = tmpIter - 1;
+    retval.append( QString::fromUtf8( tmpStr ) );
+    iter = tmpIter - 1;
 
-   return true;
+    return true;
 }
 
-static void utf16_to_encoded_utf8(QChar c, QString &retval)
+static void utf16_to_encoded_utf8( QChar c, QString &retval )
 {
-   QString tmpStr;
+    QString tmpStr;
 
-   // have entire code point
-   tmpStr.append(c);
+    // have entire code point
+    tmpStr.append( c );
 
-   // add the percent
-   for (const char *data = tmpStr.constData(); *data != 0; ++data)  {
-      uchar tmp = *data;
+    // add the percent
+    for ( const char *data = tmpStr.constData(); *data != 0; ++data )
+    {
+        uchar tmp = *data;
 
-      retval.append('%');
-      retval.append( encodeNibble(tmp >> 4)  );
-      retval.append( encodeNibble(tmp & 0xf) );
-   }
+        retval.append( '%' );
+        retval.append( encodeNibble( tmp >> 4 )  );
+        retval.append( encodeNibble( tmp & 0xf ) );
+    }
 }
 
 void non_trivial ( QChar c, QString::const_iterator &iter, QString &retval, EncodingAction &action,
-      QString::const_iterator begin, QString::const_iterator end,
-      QUrl::FormattingOptions encoding, const uchar *actionTable)
+                   QString::const_iterator begin, QString::const_iterator end,
+                   QUrl::FormattingOptions encoding, const uchar *actionTable )
 {
-   (void) begin;
-   (void) end;
+    ( void ) begin;
+    ( void ) end;
 
-   QChar decoded;
+    QChar decoded;
 
-   if (c == '%') {
-      // check if the input is valid
-      int tmp = decodePercentEncoding(iter, end);
+    if ( c == '%' )
+    {
+        // check if the input is valid
+        int tmp = decodePercentEncoding( iter, end );
 
-      if (tmp  == -1) {
-         // invalid char
-         retval.append("%25");
-         return;
-      }
-
-      decoded = tmp;
-
-      if (tmp >= 0x80) {
-         // decode the UTF-8 sequence
-         if (! (encoding & QUrl::EncodeUnicode) && encoded_utf8_to_utf16(tmp, iter, retval, end)) {
+        if ( tmp  == -1 )
+        {
+            // invalid char
+            retval.append( "%25" );
             return;
-         }
+        }
 
-         // decoding the encoded UTF-8 failed
-         action = LeaveCharacter;
+        decoded = tmp;
 
-      } else if (decoded >= 0x20) {
-         action = EncodingAction(actionTable[decoded.unicode() - ' ']);
-      }
+        if ( tmp >= 0x80 )
+        {
+            // decode the UTF-8 sequence
+            if ( ! ( encoding & QUrl::EncodeUnicode ) && encoded_utf8_to_utf16( tmp, iter, retval, end ) )
+            {
+                return;
+            }
 
-   } else {
+            // decoding the encoded UTF-8 failed
+            action = LeaveCharacter;
 
-      if (c >= 0x80 && encoding & QUrl::EncodeUnicode) {
-         // encode the UTF-8 sequence
-         utf16_to_encoded_utf8(c, retval);
-         return;
+        }
+        else if ( decoded >= 0x20 )
+        {
+            action = EncodingAction( actionTable[decoded.unicode() - ' '] );
+        }
 
-      } else if (c >= 0x80) {
-         retval.append(c);
-         return;
-      }
+    }
+    else
+    {
 
-      decoded = c;
-   }
+        if ( c >= 0x80 && encoding & QUrl::EncodeUnicode )
+        {
+            // encode the UTF-8 sequence
+            utf16_to_encoded_utf8( c, retval );
+            return;
 
-   // there are six possibilities:
-   //  current \ action  | DecodeCharacter | LeaveCharacter | EncodeCharacter
-   //      decoded       |    1:leave      |    2:leave     |    3:encode
-   //      encoded       |    4:decode     |    5:leave     |    6:leave
-   // cases 1 and 2 were handled before this section
+        }
+        else if ( c >= 0x80 )
+        {
+            retval.append( c );
+            return;
+        }
 
-   if (c == '%' && action != DecodeCharacter) {
-      // cases 5 and 6: it is encoded and we are leaving it as it is except uppercase the hex
+        decoded = c;
+    }
 
-      if (! isUpperHex(iter[1]) || ! isUpperHex(iter[2])) {
+    // there are six possibilities:
+    //  current \ action  | DecodeCharacter | LeaveCharacter | EncodeCharacter
+    //      decoded       |    1:leave      |    2:leave     |    3:encode
+    //      encoded       |    4:decode     |    5:leave     |    6:leave
+    // cases 1 and 2 were handled before this section
 
-         retval.append('%');
-         retval.append( toUpperHex(*++iter) );
-         retval.append( toUpperHex(*++iter) );
-      }
+    if ( c == '%' && action != DecodeCharacter )
+    {
+        // cases 5 and 6: it is encoded and we are leaving it as it is except uppercase the hex
 
-   } else if (c == '%' && action == DecodeCharacter) {
-      // case 4: we need to decode
+        if ( ! isUpperHex( iter[1] ) || ! isUpperHex( iter[2] ) )
+        {
 
-      retval.append(decoded);
-      iter += 2;
+            retval.append( '%' );
+            retval.append( toUpperHex( *++iter ) );
+            retval.append( toUpperHex( *++iter ) );
+        }
 
-   } else {
-      // must be case 3: we need to encode
+    }
+    else if ( c == '%' && action == DecodeCharacter )
+    {
+        // case 4: we need to decode
 
-      retval.append('%');
-      retval.append( encodeNibble(c.unicode() >> 4) );
-      retval.append( encodeNibble(c.unicode() & 0xf) );
-   }
+        retval.append( decoded );
+        iter += 2;
+
+    }
+    else
+    {
+        // must be case 3: we need to encode
+
+        retval.append( '%' );
+        retval.append( encodeNibble( c.unicode() >> 4 ) );
+        retval.append( encodeNibble( c.unicode() & 0xf ) );
+    }
 }
 
-static int decode(QString &appendTo, QString::const_iterator begin, QString::const_iterator end)
+static int decode( QString &appendTo, QString::const_iterator begin, QString::const_iterator end )
 {
-   QString::const_iterator input = begin;
-   QString retval;
+    QString::const_iterator input = begin;
+    QString retval;
 
-   while (input != end) {
+    while ( input != end )
+    {
 
-      if (*input != '%') {
-         retval.append(*input);
-         ++input;
+        if ( *input != '%' )
+        {
+            retval.append( *input );
+            ++input;
 
-         continue;
-      }
+            continue;
+        }
 
-      if (end - input < 3 || ! isHex(input[1]) || ! isHex(input[2])) {
-         // badly-encoded data
-         return end - begin;
-      }
+        if ( end - input < 3 || ! isHex( input[1] ) || ! isHex( input[2] ) )
+        {
+            // badly-encoded data
+            return end - begin;
+        }
 
-      ++input;
-      retval.append(decodeNibble(input[0]) << 4 | decodeNibble(input[1]));
+        ++input;
+        retval.append( decodeNibble( input[0] ) << 4 | decodeNibble( input[1] ) );
 
-      if (retval.last() >= 0x80) {
-         retval.replace(retval.end() - 1, retval.end(), QChar::ReplacementCharacter);
-      }
+        if ( retval.last() >= 0x80 )
+        {
+            retval.replace( retval.end() - 1, retval.end(), QChar::ReplacementCharacter );
+        }
 
-      input += 2;
-   }
+        input += 2;
+    }
 
-   if (retval != appendTo) {
-      int len  = retval.size() - appendTo.size();
-      appendTo = std::move(retval);
+    if ( retval != appendTo )
+    {
+        int len  = retval.size() - appendTo.size();
+        appendTo = std::move( retval );
 
-      return len;
-   }
+        return len;
+    }
 
-   return 0;
+    return 0;
 }
 
-static int recode(QString &result, QString::const_iterator begin, QString::const_iterator end,
-      QUrl::FormattingOptions encoding, const uchar *actionTable)
+static int recode( QString &result, QString::const_iterator begin, QString::const_iterator end,
+                   QUrl::FormattingOptions encoding, const uchar *actionTable )
 {
-   QString retval = result;
+    QString retval = result;
 
-   const int origSize = result.size();
-   QString::const_iterator iter = begin;
-   QChar c;
+    const int origSize = result.size();
+    QString::const_iterator iter = begin;
+    QChar c;
 
-   EncodingAction action = EncodeCharacter;
+    EncodingAction action = EncodeCharacter;
 
-   // try a run where no change is necessary
-   for ( ; iter != end; ++iter) {
-      c = *iter;
+    // try a run where no change is necessary
+    for ( ; iter != end; ++iter )
+    {
+        c = *iter;
 
-      if (c < 0x20) {
-         action = EncodeCharacter;
-      }
+        if ( c < 0x20 )
+        {
+            action = EncodeCharacter;
+        }
 
-      if (c < 0x20 || c >= 0x80) {
-         non_trivial(c, iter, retval, action, begin, end, encoding, actionTable);
-         continue;
-      }
+        if ( c < 0x20 || c >= 0x80 )
+        {
+            non_trivial( c, iter, retval, action, begin, end, encoding, actionTable );
+            continue;
+        }
 
-      action = EncodingAction(actionTable[c.unicode() - ' ']);
+        action = EncodingAction( actionTable[c.unicode() - ' '] );
 
-      if (action == EncodeCharacter) {
-         non_trivial(c, iter, retval, action, begin, end, encoding, actionTable);
-         continue;
-      }
+        if ( action == EncodeCharacter )
+        {
+            non_trivial( c, iter, retval, action, begin, end, encoding, actionTable );
+            continue;
+        }
 
-      retval.append(c);
-   }
+        retval.append( c );
+    }
 
-   if (retval != result) {
-      result = std::move(retval);
-      return result.size() - origSize;
-   }
+    if ( retval != result )
+    {
+        result = std::move( retval );
+        return result.size() - origSize;
+    }
 
-   return 0;
+    return 0;
 }
 
 template <size_t N>
-static void maskTable(uchar (&table)[N], const uchar (&mask)[N])
+static void maskTable( uchar ( &table )[N], const uchar ( &mask )[N] )
 {
-   for (size_t i = 0; i < N; ++i) {
-      table[i] &= mask[i];
-   }
+    for ( size_t i = 0; i < N; ++i )
+    {
+        table[i] &= mask[i];
+    }
 }
 
 /*
@@ -450,77 +488,90 @@ static void maskTable(uchar (&table)[N], const uchar (&mask)[N])
     Corrects percent encoded errors by interpreting every '%' as meaning "%25"
 */
 
-int qt_urlRecode(QString &appendTo, QString::const_iterator begin, QString::const_iterator end,
-      QUrl::FormattingOptions encoding, const ushort *tableModifications)
+int qt_urlRecode( QString &appendTo, QString::const_iterator begin, QString::const_iterator end,
+                  QUrl::FormattingOptions encoding, const ushort *tableModifications )
 {
-   uchar actionTable[sizeof defaultActionTable];
+    uchar actionTable[sizeof defaultActionTable];
 
-   if (encoding == QUrl::FullyDecoded) {
-      return decode(appendTo, begin, end);
-   }
+    if ( encoding == QUrl::FullyDecoded )
+    {
+        return decode( appendTo, begin, end );
+    }
 
-   memcpy(actionTable, defaultActionTable, sizeof actionTable);
+    memcpy( actionTable, defaultActionTable, sizeof actionTable );
 
-   if (encoding & QUrl::DecodeReserved)  {
-      maskTable(actionTable, reservedMask);
-   }
+    if ( encoding & QUrl::DecodeReserved )
+    {
+        maskTable( actionTable, reservedMask );
+    }
 
-   if (! (encoding & QUrl::EncodeSpaces)) {
-      // decode
-      actionTable[0] = DecodeCharacter;
-   }
+    if ( ! ( encoding & QUrl::EncodeSpaces ) )
+    {
+        // decode
+        actionTable[0] = DecodeCharacter;
+    }
 
-   if (tableModifications) {
-      for (const ushort *p = tableModifications; *p; ++p)  {
-         actionTable[uchar(*p) - ' '] = *p >> 8;
-      }
-   }
+    if ( tableModifications )
+    {
+        for ( const ushort *p = tableModifications; *p; ++p )
+        {
+            actionTable[uchar( *p ) - ' '] = *p >> 8;
+        }
+    }
 
-   // begin and end now treated as iterators
-   int retval = recode(appendTo, begin, end, encoding, actionTable);
+    // begin and end now treated as iterators
+    int retval = recode( appendTo, begin, end, encoding, actionTable );
 
-   return retval;
+    return retval;
 }
 
-QString qt_urlRecodeByteArray(const QByteArray &ba)
+QString qt_urlRecodeByteArray( const QByteArray &ba )
 {
-   if (ba.isNull()) {
-      return QString();
-   }
+    if ( ba.isNull() )
+    {
+        return QString();
+    }
 
-   // scan ba for anything above or equal to 0x80
-   // control points below 0x20 are fine in QString
-   const char *in = ba.constData();
-   const char *const end = ba.constEnd();
+    // scan ba for anything above or equal to 0x80
+    // control points below 0x20 are fine in QString
+    const char *in = ba.constData();
+    const char *const end = ba.constEnd();
 
-   for ( ; in < end; ++in) {
-      if (*in & 0x80) {
-         break;
-      }
-   }
+    for ( ; in < end; ++in )
+    {
+        if ( *in & 0x80 )
+        {
+            break;
+        }
+    }
 
-   if (in == end) {
-      // no non-ASCII found
-      return QString::fromLatin1(ba.constData(), ba.size());
-   }
+    if ( in == end )
+    {
+        // no non-ASCII found
+        return QString::fromLatin1( ba.constData(), ba.size() );
+    }
 
-   // we found something that we need to encode
-   QByteArray intermediate = ba;
-   intermediate.resize(ba.size() * 3 - (in - ba.constData()));
-   uchar *out = reinterpret_cast<uchar *>(intermediate.data() + (in - ba.constData()));
+    // we found something that we need to encode
+    QByteArray intermediate = ba;
+    intermediate.resize( ba.size() * 3 - ( in - ba.constData() ) );
+    uchar *out = reinterpret_cast<uchar *>( intermediate.data() + ( in - ba.constData() ) );
 
-   for ( ; in < end; ++in) {
-      if (*in & 0x80) {
-         // encode
-         *out++ = '%';
-         *out++ = encodeNibble(uchar(*in) >> 4);
-         *out++ = encodeNibble(uchar(*in) & 0xf);
+    for ( ; in < end; ++in )
+    {
+        if ( *in & 0x80 )
+        {
+            // encode
+            *out++ = '%';
+            *out++ = encodeNibble( uchar( *in ) >> 4 );
+            *out++ = encodeNibble( uchar( *in ) & 0xf );
 
-      } else {
-         // keep
-         *out++ = uchar(*in);
-      }
-   }
+        }
+        else
+        {
+            // keep
+            *out++ = uchar( *in );
+        }
+    }
 
-   return QString::fromLatin1(intermediate.constData(), out - reinterpret_cast<uchar *>(intermediate.data()));
+    return QString::fromLatin1( intermediate.constData(), out - reinterpret_cast<uchar *>( intermediate.data() ) );
 }

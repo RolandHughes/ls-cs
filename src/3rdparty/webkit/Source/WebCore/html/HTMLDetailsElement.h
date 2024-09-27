@@ -23,42 +23,49 @@
 
 #include "HTMLElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class HTMLDetailsElement : public HTMLElement {
+class HTMLDetailsElement : public HTMLElement
+{
 public:
-    static PassRefPtr<HTMLDetailsElement> create(const QualifiedName& tagName, Document* document);
-    Node* mainSummary() const { return m_mainSummary; }
+    static PassRefPtr<HTMLDetailsElement> create( const QualifiedName &tagName, Document *document );
+    Node *mainSummary() const
+    {
+        return m_mainSummary;
+    }
     void toggleOpen();
 
 private:
-    enum RefreshRenderer {
+    enum RefreshRenderer
+    {
         RefreshRendererAllowed,
         RefreshRendererSupressed,
     };
 
-    enum SummaryType {
+    enum SummaryType
+    {
         NoSummary,
         DefaultSummary,
         ForwardingSummary
     };
 
-    HTMLDetailsElement(const QualifiedName&, Document*);
+    HTMLDetailsElement( const QualifiedName &, Document * );
 
-    virtual RenderObject* createRenderer(RenderArena*, RenderStyle*);
-    virtual void childrenChanged(bool changedByParser, Node* beforeChange, Node* afterChange, int childCountDelta);
+    virtual RenderObject *createRenderer( RenderArena *, RenderStyle * );
+    virtual void childrenChanged( bool changedByParser, Node *beforeChange, Node *afterChange, int childCountDelta );
     virtual void finishParsingChildren();
 
-    void parseMappedAttribute(Attribute*);
-    bool childShouldCreateRenderer(Node*) const;
+    void parseMappedAttribute( Attribute * );
+    bool childShouldCreateRenderer( Node * ) const;
 
-    Node* ensureMainSummary();
-    void refreshMainSummary(RefreshRenderer);
-    void ensureShadowSubtreeOf(SummaryType);
+    Node *ensureMainSummary();
+    void refreshMainSummary( RefreshRenderer );
+    void ensureShadowSubtreeOf( SummaryType );
     void createShadowSubtree();
 
     SummaryType m_summaryType;
-    Node* m_mainSummary;
+    Node *m_mainSummary;
     bool m_isOpen;
 
 };

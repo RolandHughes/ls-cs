@@ -34,70 +34,71 @@ class QShortcutMap;
 
 class QActionPrivate
 {
-   Q_DECLARE_PUBLIC(QAction)
+    Q_DECLARE_PUBLIC( QAction )
 
- public:
-   QActionPrivate();
-   virtual ~QActionPrivate();
+public:
+    QActionPrivate();
+    virtual ~QActionPrivate();
 
-   static QActionPrivate *get(QAction *q) {
-      return q->d_func();
-   }
+    static QActionPrivate *get( QAction *q )
+    {
+        return q->d_func();
+    }
 
-   bool showStatusText(QWidget *w, const QString &str);
+    bool showStatusText( QWidget *w, const QString &str );
 
-   QPointer<QActionGroup> group;
-   QString text;
-   QString iconText;
-   QIcon icon;
-   QString tooltip;
-   QString statustip;
-   QString whatsthis;
+    QPointer<QActionGroup> group;
+    QString text;
+    QString iconText;
+    QIcon icon;
+    QString tooltip;
+    QString statustip;
+    QString whatsthis;
 
-   QVariant userData;
+    QVariant userData;
 
 #ifndef QT_NO_SHORTCUT
-   QKeySequence shortcut;
-   QList<QKeySequence> alternateShortcuts;
+    QKeySequence shortcut;
+    QList<QKeySequence> alternateShortcuts;
 
-   int shortcutId;
-   QList<int> alternateShortcutIds;
-   Qt::ShortcutContext shortcutContext;
-   uint autorepeat : 1;
+    int shortcutId;
+    QList<int> alternateShortcutIds;
+    Qt::ShortcutContext shortcutContext;
+    uint autorepeat : 1;
 #endif
 
-   QFont font;
-   QPointer<QMenu> menu;
-   uint enabled : 1, forceDisabled : 1;
-   uint visible : 1, forceInvisible : 1;
-   uint checkable : 1;
-   uint checked : 1;
-   uint separator : 1;
-   uint fontSet : 1;
+    QFont font;
+    QPointer<QMenu> menu;
+    uint enabled : 1, forceDisabled : 1;
+    uint visible : 1, forceInvisible : 1;
+    uint checkable : 1;
+    uint checked : 1;
+    uint separator : 1;
+    uint fontSet : 1;
 
-   int iconVisibleInMenu : 3;  // Only has values -1, 0, and 1
+    int iconVisibleInMenu : 3;  // Only has values -1, 0, and 1
 
-   QAction::MenuRole menuRole;
-   QAction::Priority priority;
+    QAction::MenuRole menuRole;
+    QAction::Priority priority;
 
-   QList<QWidget *> widgets;
+    QList<QWidget *> widgets;
 
 #ifndef QT_NO_GRAPHICSVIEW
-   QList<QGraphicsWidget *> graphicsWidgets;
+    QList<QGraphicsWidget *> graphicsWidgets;
 #endif
 
 #ifndef QT_NO_SHORTCUT
-   void redoGrab(QShortcutMap &map);
-   void redoGrabAlternate(QShortcutMap &map);
-   void setShortcutEnabled(bool enable, QShortcutMap &map);
+    void redoGrab( QShortcutMap &map );
+    void redoGrabAlternate( QShortcutMap &map );
+    void setShortcutEnabled( bool enable, QShortcutMap &map );
 
-   static QShortcutMap *globalMap;
+    static QShortcutMap *globalMap;
 #endif
 
-   void sendDataChanged();
+    void sendDataChanged();
 
- protected:
-   QAction *q_ptr;
+protected:
+    QAction *q_ptr;
 
 };
 

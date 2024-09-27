@@ -34,44 +34,44 @@
 
 class QCoreTextFontDatabase : public QPlatformFontDatabase
 {
- public:
-   QCoreTextFontDatabase(bool useFreeType = false);
-   ~QCoreTextFontDatabase();
+public:
+    QCoreTextFontDatabase( bool useFreeType = false );
+    ~QCoreTextFontDatabase();
 
-   void populateFontDatabase() override;
-   void populateFamily(const QString &familyName) override;
+    void populateFontDatabase() override;
+    void populateFamily( const QString &familyName ) override;
 
-   QFontEngine *fontEngine(const QFontDef &fontDef, void *handle) override;
-   QFontEngine *fontEngine(const QByteArray &fontData, qreal pixelSize, QFont::HintingPreference hintingPreference) override;
-   QStringList fallbacksForFamily(const QString &family, QFont::Style style, QFont::StyleHint styleHint,
-      QChar::Script script) const override;
-   QStringList addApplicationFont(const QByteArray &fontData, const QString &fileName) override;
+    QFontEngine *fontEngine( const QFontDef &fontDef, void *handle ) override;
+    QFontEngine *fontEngine( const QByteArray &fontData, qreal pixelSize, QFont::HintingPreference hintingPreference ) override;
+    QStringList fallbacksForFamily( const QString &family, QFont::Style style, QFont::StyleHint styleHint,
+                                    QChar::Script script ) const override;
+    QStringList addApplicationFont( const QByteArray &fontData, const QString &fileName ) override;
 
-   void releaseHandle(void *handle) override;
-   bool isPrivateFontFamily(const QString &family) const override;
-   QFont defaultFont() const override;
-   bool fontsAlwaysScalable() const override;
-   QList<int> standardSizes() const override;
+    void releaseHandle( void *handle ) override;
+    bool isPrivateFontFamily( const QString &family ) const override;
+    QFont defaultFont() const override;
+    bool fontsAlwaysScalable() const override;
+    QList<int> standardSizes() const override;
 
-   // For iOS and OS X platform themes
-   QFont *themeFont(QPlatformTheme::Font) const;
-   const QHash<QPlatformTheme::Font, QFont *> &themeFonts() const;
+    // For iOS and OS X platform themes
+    QFont *themeFont( QPlatformTheme::Font ) const;
+    const QHash<QPlatformTheme::Font, QFont *> &themeFonts() const;
 
- private:
-   void populateFromDescriptor(CTFontDescriptorRef font);
+private:
+    void populateFromDescriptor( CTFontDescriptorRef font );
 
 #if defined(QT_USE_FREETYPE)
-   bool m_useFreeType;
-   QFontEngine *freeTypeFontEngine(const QFontDef &fontDef, const QString &filename, const QByteArray &fontData = QByteArray());
+    bool m_useFreeType;
+    QFontEngine *freeTypeFontEngine( const QFontDef &fontDef, const QString &filename, const QByteArray &fontData = QByteArray() );
 #endif
 
-   mutable QString defaultFontName;
+    mutable QString defaultFontName;
 
-   void removeApplicationFonts();
+    void removeApplicationFonts();
 
-   QVector<QVariant> m_applicationFonts;
-   mutable QSet<CTFontDescriptorRef> m_systemFontDescriptors;
-   mutable QHash<QPlatformTheme::Font, QFont *> m_themeFonts;
+    QVector<QVariant> m_applicationFonts;
+    mutable QSet<CTFontDescriptorRef> m_systemFontDescriptors;
+    mutable QHash<QPlatformTheme::Font, QFont *> m_themeFonts;
 };
 
 #endif

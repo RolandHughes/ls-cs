@@ -31,41 +31,42 @@
 #include <qxsdannotated_p.h>
 #include <qxsdxpathexpression_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class XsdAlternative : public NamedSchemaComponent, public XsdAnnotated
 {
- public:
-   typedef QExplicitlySharedDataPointer<XsdAlternative> Ptr;
-   typedef QList<XsdAlternative::Ptr> List;
+public:
+    typedef QExplicitlySharedDataPointer<XsdAlternative> Ptr;
+    typedef QList<XsdAlternative::Ptr> List;
 
-   /**
-    * Sets the xpath @p test of the alternative.
-    *
-    * @see <a href="http://www.w3.org/TR/xmlschema11-1/#tac-test">Test Definition</a>
-    */
-   void setTest(const XsdXPathExpression::Ptr &test);
+    /**
+     * Sets the xpath @p test of the alternative.
+     *
+     * @see <a href="http://www.w3.org/TR/xmlschema11-1/#tac-test">Test Definition</a>
+     */
+    void setTest( const XsdXPathExpression::Ptr &test );
 
-   /**
-    * Returns the xpath test of the alternative.
-    */
-   XsdXPathExpression::Ptr test() const;
+    /**
+     * Returns the xpath test of the alternative.
+     */
+    XsdXPathExpression::Ptr test() const;
 
-   /**
-    * Sets the @p type of the alternative.
-    *
-    * @see <a href="http://www.w3.org/TR/xmlschema11-1/#tac-type_definition">Type Definition</a>
-    */
-   void setType(const SchemaType::Ptr &type);
+    /**
+     * Sets the @p type of the alternative.
+     *
+     * @see <a href="http://www.w3.org/TR/xmlschema11-1/#tac-type_definition">Type Definition</a>
+     */
+    void setType( const SchemaType::Ptr &type );
 
-   /**
-    * Returns the type of the alternative.
-    */
-   SchemaType::Ptr type() const;
+    /**
+     * Returns the type of the alternative.
+     */
+    SchemaType::Ptr type() const;
 
- private:
-   XsdXPathExpression::Ptr m_test;
-   SchemaType::Ptr         m_type;
+private:
+    XsdXPathExpression::Ptr m_test;
+    SchemaType::Ptr         m_type;
 };
 
 }

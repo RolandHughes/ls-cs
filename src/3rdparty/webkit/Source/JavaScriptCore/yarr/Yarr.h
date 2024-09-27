@@ -31,7 +31,10 @@
 #include "YarrInterpreter.h"
 #include "YarrPattern.h"
 
-namespace JSC { namespace Yarr {
+namespace JSC
+{
+namespace Yarr
+{
 
 #define YarrStackSpaceForBackTrackInfoPatternCharacter 1 // Only for !fixed quantifiers.
 #define YarrStackSpaceForBackTrackInfoCharacterClass 1 // Only for !fixed quantifiers.
@@ -48,7 +51,8 @@ static const unsigned quantifyInfinite = UINT_MAX;
 // avoid spending exponential time on complex regular expressions.
 static const unsigned matchLimit = 1000000;
 
-enum JSRegExpResult {
+enum JSRegExpResult
+{
     JSRegExpMatch = 1,
     JSRegExpNoMatch = 0,
     JSRegExpErrorNoMatch = -1,
@@ -57,10 +61,11 @@ enum JSRegExpResult {
     JSRegExpErrorInternal = -4
 };
 
-PassOwnPtr<BytecodePattern> byteCompile(YarrPattern&, BumpPointerAllocator*);
-int interpret(BytecodePattern*, const UChar* input, unsigned start, unsigned length, int* output);
+PassOwnPtr<BytecodePattern> byteCompile( YarrPattern &, BumpPointerAllocator * );
+int interpret( BytecodePattern *, const UChar *input, unsigned start, unsigned length, int *output );
 
-} } // namespace JSC::Yarr
+}
+} // namespace JSC::Yarr
 
 #endif // Yarr_h
 

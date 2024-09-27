@@ -30,9 +30,11 @@
 
 // Messages sent from the web process to the WebPageProxy.
 
-namespace DrawingAreaProxyLegacyMessage {
+namespace DrawingAreaProxyLegacyMessage
+{
 
-enum Kind {
+enum Kind
+{
     Update,
     DidSetSize,
 #if ENABLE(TILED_BACKING_STORE)
@@ -45,9 +47,11 @@ enum Kind {
 
 }
 
-namespace CoreIPC {
+namespace CoreIPC
+{
 
-template<> struct MessageKindTraits<DrawingAreaProxyLegacyMessage::Kind> { 
+template<> struct MessageKindTraits<DrawingAreaProxyLegacyMessage::Kind>
+{
     static const MessageClass messageClass = MessageClassDrawingAreaProxyLegacy;
 };
 

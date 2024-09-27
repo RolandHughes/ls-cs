@@ -32,131 +32,143 @@
 #include "JSInterfaceJIT.h"
 #include "LinkBuffer.h"
 
-namespace JSC {
+namespace JSC
+{
 
-    class SpecializedThunkJIT : public JSInterfaceJIT {
-    public:
-        static const int ThisArgument = -1;
-        SpecializedThunkJIT(int expectedArgCount, JSGlobalData* globalData, ExecutablePool* pool)
-            : m_expectedArgCount(expectedArgCount)
-            , m_globalData(globalData)
-            , m_pool(pool)
+class SpecializedThunkJIT : public JSInterfaceJIT
+{
+public:
+    static const int ThisArgument = -1;
+    SpecializedThunkJIT( int expectedArgCount, JSGlobalData *globalData, ExecutablePool *pool )
+        : m_expectedArgCount( expectedArgCount )
+        , m_globalData( globalData )
+        , m_pool( pool )
+    {
+        // Check that we have the expected number of arguments
+        m_failures.append( branch32( NotEqual, Address( callFrameRegister, RegisterFile::ArgumentCount * ( int )sizeof( Register ) ),
+                                     TrustedImm32( expectedArgCount + 1 ) ) );
+    }
+
+    void loadDoubleArgument( int argument, FPRegisterID dst, RegisterID scratch )
+    {
+        unsigned src = argumentToVirtualRegister( argument );
+        m_failures.append( emitLoadDouble( src, dst, scratch ) );
+    }
+
+    void loadCellArgument( int argument, RegisterID dst )
+    {
+        unsigned src = argumentToVirtualRegister( argument );
+        m_failures.append( emitLoadJSCell( src, dst ) );
+    }
+
+    void loadJSStringArgument( int argument, RegisterID dst )
+    {
+        loadCellArgument( argument, dst );
+        m_failures.append( branchPtr( NotEqual, Address( dst, 0 ), TrustedImmPtr( m_globalData->jsStringVPtr ) ) );
+        m_failures.append( branchTest32( NonZero, Address( dst, OBJECT_OFFSETOF( JSString, m_fiberCount ) ) ) );
+    }
+
+    void loadInt32Argument( int argument, RegisterID dst, Jump &failTarget )
+    {
+        unsigned src = argumentToVirtualRegister( argument );
+        failTarget = emitLoadInt32( src, dst );
+    }
+
+    void loadInt32Argument( int argument, RegisterID dst )
+    {
+        Jump conversionFailed;
+        loadInt32Argument( argument, dst, conversionFailed );
+        m_failures.append( conversionFailed );
+    }
+
+    void appendFailure( const Jump &failure )
+    {
+        m_failures.append( failure );
+    }
+
+    void returnJSValue( RegisterID src )
+    {
+        if ( src != regT0 )
         {
-            // Check that we have the expected number of arguments
-            m_failures.append(branch32(NotEqual, Address(callFrameRegister, RegisterFile::ArgumentCount * (int)sizeof(Register)), TrustedImm32(expectedArgCount + 1)));
-        }
-        
-        void loadDoubleArgument(int argument, FPRegisterID dst, RegisterID scratch)
-        {
-            unsigned src = argumentToVirtualRegister(argument);
-            m_failures.append(emitLoadDouble(src, dst, scratch));
-        }
-        
-        void loadCellArgument(int argument, RegisterID dst)
-        {
-            unsigned src = argumentToVirtualRegister(argument);
-            m_failures.append(emitLoadJSCell(src, dst));
-        }
-        
-        void loadJSStringArgument(int argument, RegisterID dst)
-        {
-            loadCellArgument(argument, dst);
-            m_failures.append(branchPtr(NotEqual, Address(dst, 0), TrustedImmPtr(m_globalData->jsStringVPtr)));
-            m_failures.append(branchTest32(NonZero, Address(dst, OBJECT_OFFSETOF(JSString, m_fiberCount))));
-        }
-        
-        void loadInt32Argument(int argument, RegisterID dst, Jump& failTarget)
-        {
-            unsigned src = argumentToVirtualRegister(argument);
-            failTarget = emitLoadInt32(src, dst);
-        }
-        
-        void loadInt32Argument(int argument, RegisterID dst)
-        {
-            Jump conversionFailed;
-            loadInt32Argument(argument, dst, conversionFailed);
-            m_failures.append(conversionFailed);
-        }
-        
-        void appendFailure(const Jump& failure)
-        {
-            m_failures.append(failure);
+            move( src, regT0 );
         }
 
-        void returnJSValue(RegisterID src)
-        {
-            if (src != regT0)
-                move(src, regT0);
-            loadPtr(payloadFor(RegisterFile::CallerFrame, callFrameRegister), callFrameRegister);
-            ret();
-        }
-        
-        void returnDouble(FPRegisterID src)
-        {
+        loadPtr( payloadFor( RegisterFile::CallerFrame, callFrameRegister ), callFrameRegister );
+        ret();
+    }
+
+    void returnDouble( FPRegisterID src )
+    {
 #if USE(JSVALUE64)
-            moveDoubleToPtr(src, regT0);
-            subPtr(tagTypeNumberRegister, regT0);
+        moveDoubleToPtr( src, regT0 );
+        subPtr( tagTypeNumberRegister, regT0 );
 #else
-            storeDouble(src, Address(stackPointerRegister, -(int)sizeof(double)));
-            loadPtr(Address(stackPointerRegister, OBJECT_OFFSETOF(JSValue, u.asBits.tag) - sizeof(double)), regT1);
-            loadPtr(Address(stackPointerRegister, OBJECT_OFFSETOF(JSValue, u.asBits.payload) - sizeof(double)), regT0);
+        storeDouble( src, Address( stackPointerRegister, -( int )sizeof( double ) ) );
+        loadPtr( Address( stackPointerRegister, OBJECT_OFFSETOF( JSValue, u.asBits.tag ) - sizeof( double ) ), regT1 );
+        loadPtr( Address( stackPointerRegister, OBJECT_OFFSETOF( JSValue, u.asBits.payload ) - sizeof( double ) ), regT0 );
 #endif
-            loadPtr(payloadFor(RegisterFile::CallerFrame, callFrameRegister), callFrameRegister);
-            ret();
+        loadPtr( payloadFor( RegisterFile::CallerFrame, callFrameRegister ), callFrameRegister );
+        ret();
+    }
+
+    void returnInt32( RegisterID src )
+    {
+        if ( src != regT0 )
+        {
+            move( src, regT0 );
         }
 
-        void returnInt32(RegisterID src)
+        tagReturnAsInt32();
+        loadPtr( payloadFor( RegisterFile::CallerFrame, callFrameRegister ), callFrameRegister );
+        ret();
+    }
+
+    void returnJSCell( RegisterID src )
+    {
+        if ( src != regT0 )
         {
-            if (src != regT0)
-                move(src, regT0);
-            tagReturnAsInt32();
-            loadPtr(payloadFor(RegisterFile::CallerFrame, callFrameRegister), callFrameRegister);
-            ret();
+            move( src, regT0 );
         }
 
-        void returnJSCell(RegisterID src)
-        {
-            if (src != regT0)
-                move(src, regT0);
-            tagReturnAsJSCell();
-            loadPtr(payloadFor(RegisterFile::CallerFrame, callFrameRegister), callFrameRegister);
-            ret();
-        }
-        
-        MacroAssemblerCodePtr finalize(MacroAssemblerCodePtr fallback)
-        {
-            LinkBuffer patchBuffer(this, m_pool.get());
-            patchBuffer.link(m_failures, CodeLocationLabel(fallback));
-            return patchBuffer.finalizeCode().m_code;
-        }
-        
-    private:
-        int argumentToVirtualRegister(unsigned argument)
-        {
-            return -static_cast<int>(RegisterFile::CallFrameHeaderSize + (m_expectedArgCount - argument));
-        }
+        tagReturnAsJSCell();
+        loadPtr( payloadFor( RegisterFile::CallerFrame, callFrameRegister ), callFrameRegister );
+        ret();
+    }
 
-        void tagReturnAsInt32()
-        {
+    MacroAssemblerCodePtr finalize( MacroAssemblerCodePtr fallback )
+    {
+        LinkBuffer patchBuffer( this, m_pool.get() );
+        patchBuffer.link( m_failures, CodeLocationLabel( fallback ) );
+        return patchBuffer.finalizeCode().m_code;
+    }
+
+private:
+    int argumentToVirtualRegister( unsigned argument )
+    {
+        return -static_cast<int>( RegisterFile::CallFrameHeaderSize + ( m_expectedArgCount - argument ) );
+    }
+
+    void tagReturnAsInt32()
+    {
 #if USE(JSVALUE64)
-            orPtr(tagTypeNumberRegister, regT0);
+        orPtr( tagTypeNumberRegister, regT0 );
 #else
-            move(TrustedImm32(JSValue::Int32Tag), regT1);
+        move( TrustedImm32( JSValue::Int32Tag ), regT1 );
 #endif
-        }
+    }
 
-        void tagReturnAsJSCell()
-        {
+    void tagReturnAsJSCell()
+    {
 #if USE(JSVALUE32_64)
-            move(TrustedImm32(JSValue::CellTag), regT1);
+        move( TrustedImm32( JSValue::CellTag ), regT1 );
 #endif
-        }
-        
-        int m_expectedArgCount;
-        JSGlobalData* m_globalData;
-        RefPtr<ExecutablePool> m_pool;
-        MacroAssembler::JumpList m_failures;
-    };
+    }
+
+    int m_expectedArgCount;
+    JSGlobalData *m_globalData;
+    RefPtr<ExecutablePool> m_pool;
+    MacroAssembler::JumpList m_failures;
+};
 
 }
 

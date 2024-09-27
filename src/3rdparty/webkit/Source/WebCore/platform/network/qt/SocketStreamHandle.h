@@ -42,34 +42,39 @@
 #error This should only be built on Qt
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class AuthenticationChallenge;
-    class Credential;
-    class SocketStreamHandleClient;
-    class SocketStreamHandlePrivate;
+class AuthenticationChallenge;
+class Credential;
+class SocketStreamHandleClient;
+class SocketStreamHandlePrivate;
 
-    class SocketStreamHandle : public RefCounted<SocketStreamHandle>, public SocketStreamHandleBase {
-    public:
-        static PassRefPtr<SocketStreamHandle> create(const KURL& url, SocketStreamHandleClient* client) { return adoptRef(new SocketStreamHandle(url, client)); }
+class SocketStreamHandle : public RefCounted<SocketStreamHandle>, public SocketStreamHandleBase
+{
+public:
+    static PassRefPtr<SocketStreamHandle> create( const KURL &url, SocketStreamHandleClient *client )
+    {
+        return adoptRef( new SocketStreamHandle( url, client ) );
+    }
 
-        virtual ~SocketStreamHandle();
+    virtual ~SocketStreamHandle();
 
-    protected:
-        virtual int platformSend(const char* data, int length);
-        virtual void platformClose();
+protected:
+    virtual int platformSend( const char *data, int length );
+    virtual void platformClose();
 
-    private:
-        SocketStreamHandle(const KURL&, SocketStreamHandleClient*);
+private:
+    SocketStreamHandle( const KURL &, SocketStreamHandleClient * );
 
-        // No authentication for streams per se, but proxy may ask for credentials.
-        void didReceiveAuthenticationChallenge(const AuthenticationChallenge&);
-        void receivedCredential(const AuthenticationChallenge&, const Credential&);
-        void receivedRequestToContinueWithoutCredential(const AuthenticationChallenge&);
-        void receivedCancellation(const AuthenticationChallenge&);
-        SocketStreamHandlePrivate* m_p;
-        friend class SocketStreamHandlePrivate;
-    };
+    // No authentication for streams per se, but proxy may ask for credentials.
+    void didReceiveAuthenticationChallenge( const AuthenticationChallenge & );
+    void receivedCredential( const AuthenticationChallenge &, const Credential & );
+    void receivedRequestToContinueWithoutCredential( const AuthenticationChallenge & );
+    void receivedCancellation( const AuthenticationChallenge & );
+    SocketStreamHandlePrivate *m_p;
+    friend class SocketStreamHandlePrivate;
+};
 
 }  // namespace WebCore
 

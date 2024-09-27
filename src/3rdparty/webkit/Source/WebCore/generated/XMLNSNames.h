@@ -32,9 +32,11 @@
 
 #include "QualifiedName.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
- namespace XMLNSNames {
+namespace XMLNSNames
+{
 
 #ifndef DOM_XMLNSNAMES_HIDE_GLOBALS
 // Namespace
@@ -44,11 +46,12 @@ extern const WTF::AtomicString xmlnsNamespaceURI;
 extern const WebCore::QualifiedName xmlnsAttr;
 #endif
 
-WebCore::QualifiedName** getXMLNSAttrs(size_t* size);
+WebCore::QualifiedName **getXMLNSAttrs( size_t *size );
 
 void init();
 
-} }
+}
+}
 
 #endif
 

@@ -31,40 +31,55 @@
 #include <wtf/Forward.h>
 #include <wtf/HashSet.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
 class WebPreferences;
 class WebPageProxy;
 
-class WebPageGroup : public APIObject {
+class WebPageGroup : public APIObject
+{
 public:
     static const Type APIType = TypePageGroup;
 
-    static PassRefPtr<WebPageGroup> create(const String& identifier = String(), bool visibleToInjectedBundle = true, bool visibleToHistoryClient = true);
-    static WebPageGroup* get(uint64_t pageGroupID);
+    static PassRefPtr<WebPageGroup> create( const String &identifier = String(), bool visibleToInjectedBundle = true,
+                                            bool visibleToHistoryClient = true );
+    static WebPageGroup *get( uint64_t pageGroupID );
 
     virtual ~WebPageGroup();
 
-    void addPage(WebPageProxy*);
-    void removePage(WebPageProxy*);
+    void addPage( WebPageProxy * );
+    void removePage( WebPageProxy * );
 
-    const String& identifier() const { return m_data.identifer; }
-    uint64_t pageGroupID() const { return m_data.pageGroupID; }
+    const String &identifier() const
+    {
+        return m_data.identifer;
+    }
+    uint64_t pageGroupID() const
+    {
+        return m_data.pageGroupID;
+    }
 
-    const WebPageGroupData& data() { return m_data; }
+    const WebPageGroupData &data()
+    {
+        return m_data;
+    }
 
-    void setPreferences(WebPreferences*);
-    WebPreferences* preferences() const;
+    void setPreferences( WebPreferences * );
+    WebPreferences *preferences() const;
     void preferencesDidChange();
 
 private:
-    WebPageGroup(const String& identifier, bool visibleToInjectedBundle, bool visibleToHistoryClient);
+    WebPageGroup( const String &identifier, bool visibleToInjectedBundle, bool visibleToHistoryClient );
 
-    virtual Type type() const { return APIType; }
+    virtual Type type() const
+    {
+        return APIType;
+    }
 
     WebPageGroupData m_data;
     mutable RefPtr<WebPreferences> m_preferences;
-    HashSet<WebPageProxy*> m_pages;
+    HashSet<WebPageProxy *> m_pages;
 };
 
 } // namespace WebKit

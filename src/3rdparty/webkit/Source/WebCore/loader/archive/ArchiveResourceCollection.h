@@ -37,20 +37,23 @@
 #include <wtf/HashMap.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class ArchiveResourceCollection {
-    WTF_MAKE_NONCOPYABLE(ArchiveResourceCollection); WTF_MAKE_FAST_ALLOCATED;
+class ArchiveResourceCollection
+{
+    WTF_MAKE_NONCOPYABLE( ArchiveResourceCollection );
+    WTF_MAKE_FAST_ALLOCATED;
 public:
     ArchiveResourceCollection();
 
-    void addResource(PassRefPtr<ArchiveResource>);
-    void addAllResources(Archive*);
-    
-    ArchiveResource* archiveResourceForURL(const KURL&);
-    PassRefPtr<Archive> popSubframeArchive(const String& frameName);
-    
-private:    
+    void addResource( PassRefPtr<ArchiveResource> );
+    void addAllResources( Archive * );
+
+    ArchiveResource *archiveResourceForURL( const KURL & );
+    PassRefPtr<Archive> popSubframeArchive( const String &frameName );
+
+private:
     HashMap<String, RefPtr<ArchiveResource> > m_subresources;
     HashMap<String, RefPtr<Archive> > m_subframes;
 };

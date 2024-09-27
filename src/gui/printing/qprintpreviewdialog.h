@@ -34,55 +34,55 @@ class QPrinter;
 
 class Q_GUI_EXPORT QPrintPreviewDialog : public QDialog
 {
-   GUI_CS_OBJECT(QPrintPreviewDialog)
-   Q_DECLARE_PRIVATE(QPrintPreviewDialog)
+    GUI_CS_OBJECT( QPrintPreviewDialog )
+    Q_DECLARE_PRIVATE( QPrintPreviewDialog )
 
- public:
-   explicit QPrintPreviewDialog(QWidget *parent = nullptr, Qt::WindowFlags flags = Qt::EmptyFlag);
-   explicit QPrintPreviewDialog(QPrinter *printer, QWidget *parent = nullptr, Qt::WindowFlags flags = Qt::EmptyFlag);
-   ~QPrintPreviewDialog();
+public:
+    explicit QPrintPreviewDialog( QWidget *parent = nullptr, Qt::WindowFlags flags = Qt::EmptyFlag );
+    explicit QPrintPreviewDialog( QPrinter *printer, QWidget *parent = nullptr, Qt::WindowFlags flags = Qt::EmptyFlag );
+    ~QPrintPreviewDialog();
 
-   using QDialog::open;
-   void open(QObject *receiver, const QString &member);
+    using QDialog::open;
+    void open( QObject *receiver, const QString &member );
 
-   QPrinter *printer();
+    QPrinter *printer();
 
-   void setVisible(bool visible) override;
-   void done(int result) override;
+    void setVisible( bool visible ) override;
+    void done( int result ) override;
 
-   GUI_CS_SIGNAL_1(Public, void paintRequested(QPrinter *printer))
-   GUI_CS_SIGNAL_2(paintRequested, printer)
+    GUI_CS_SIGNAL_1( Public, void paintRequested( QPrinter *printer ) )
+    GUI_CS_SIGNAL_2( paintRequested, printer )
 
- private:
-   GUI_CS_SLOT_1(Private, void _q_fit(QAction *action))
-   GUI_CS_SLOT_2(_q_fit)
+private:
+    GUI_CS_SLOT_1( Private, void _q_fit( QAction *action ) )
+    GUI_CS_SLOT_2( _q_fit )
 
-   GUI_CS_SLOT_1(Private, void _q_zoomIn())
-   GUI_CS_SLOT_2(_q_zoomIn)
+    GUI_CS_SLOT_1( Private, void _q_zoomIn() )
+    GUI_CS_SLOT_2( _q_zoomIn )
 
-   GUI_CS_SLOT_1(Private, void _q_zoomOut())
-   GUI_CS_SLOT_2(_q_zoomOut)
+    GUI_CS_SLOT_1( Private, void _q_zoomOut() )
+    GUI_CS_SLOT_2( _q_zoomOut )
 
-   GUI_CS_SLOT_1(Private, void _q_navigate(QAction *action))
-   GUI_CS_SLOT_2(_q_navigate)
+    GUI_CS_SLOT_1( Private, void _q_navigate( QAction *action ) )
+    GUI_CS_SLOT_2( _q_navigate )
 
-   GUI_CS_SLOT_1(Private, void _q_setMode(QAction *action))
-   GUI_CS_SLOT_2(_q_setMode)
+    GUI_CS_SLOT_1( Private, void _q_setMode( QAction *action ) )
+    GUI_CS_SLOT_2( _q_setMode )
 
-   GUI_CS_SLOT_1(Private, void _q_pageNumEdited())
-   GUI_CS_SLOT_2(_q_pageNumEdited)
+    GUI_CS_SLOT_1( Private, void _q_pageNumEdited() )
+    GUI_CS_SLOT_2( _q_pageNumEdited )
 
-   GUI_CS_SLOT_1(Private, void _q_print())
-   GUI_CS_SLOT_2(_q_print)
+    GUI_CS_SLOT_1( Private, void _q_print() )
+    GUI_CS_SLOT_2( _q_print )
 
-   GUI_CS_SLOT_1(Private, void _q_pageSetup())
-   GUI_CS_SLOT_2(_q_pageSetup)
+    GUI_CS_SLOT_1( Private, void _q_pageSetup() )
+    GUI_CS_SLOT_2( _q_pageSetup )
 
-   GUI_CS_SLOT_1(Private, void _q_previewChanged())
-   GUI_CS_SLOT_2(_q_previewChanged)
+    GUI_CS_SLOT_1( Private, void _q_previewChanged() )
+    GUI_CS_SLOT_2( _q_previewChanged )
 
-   GUI_CS_SLOT_1(Private, void _q_zoomFactorChanged())
-   GUI_CS_SLOT_2(_q_zoomFactorChanged)
+    GUI_CS_SLOT_1( Private, void _q_zoomFactorChanged() )
+    GUI_CS_SLOT_2( _q_zoomFactorChanged )
 
 };
 

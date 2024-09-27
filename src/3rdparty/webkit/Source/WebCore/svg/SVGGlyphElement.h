@@ -26,34 +26,39 @@
 #include "SVGGlyph.h"
 #include "SVGStyledElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class SVGFontData;
 
-class SVGGlyphElement : public SVGStyledElement {
+class SVGGlyphElement : public SVGStyledElement
+{
 public:
-    static PassRefPtr<SVGGlyphElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<SVGGlyphElement> create( const QualifiedName &, Document * );
 
     SVGGlyph buildGlyphIdentifier() const;
 
     // Helper function used by SVGFont
-    static void inheritUnspecifiedAttributes(SVGGlyph&, const SVGFontData*);
-    static String querySVGFontLanguage(const SVGElement*);
+    static void inheritUnspecifiedAttributes( SVGGlyph &, const SVGFontData * );
+    static String querySVGFontLanguage( const SVGElement * );
 
     // Helper function shared between SVGGlyphElement & SVGMissingGlyphElement
-    static SVGGlyph buildGenericGlyphIdentifier(const SVGElement*);
+    static SVGGlyph buildGenericGlyphIdentifier( const SVGElement * );
 
 private:
-    SVGGlyphElement(const QualifiedName&, Document*);
+    SVGGlyphElement( const QualifiedName &, Document * );
 
-    virtual void parseMappedAttribute(Attribute*);
+    virtual void parseMappedAttribute( Attribute * );
     virtual void fillAttributeToPropertyTypeMap();
-    virtual AttributeToPropertyTypeMap& attributeToPropertyTypeMap();
+    virtual AttributeToPropertyTypeMap &attributeToPropertyTypeMap();
 
     virtual void insertedIntoDocument();
     virtual void removedFromDocument();
 
-    virtual bool rendererIsNeeded(RenderStyle*) { return false; }
+    virtual bool rendererIsNeeded( RenderStyle * )
+    {
+        return false;
+    }
 
     void invalidateGlyphCache();
 };

@@ -38,7 +38,8 @@
 #include <wtf/Forward.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 class InjectedScriptManager;
 class InspectorFrontend;
 class InspectorObject;
@@ -47,22 +48,37 @@ class ScriptCallFrame;
 class ScriptCallStack;
 class ScriptValue;
 
-class ConsoleMessage {
-    WTF_MAKE_NONCOPYABLE(ConsoleMessage); WTF_MAKE_FAST_ALLOCATED;
+class ConsoleMessage
+{
+    WTF_MAKE_NONCOPYABLE( ConsoleMessage );
+    WTF_MAKE_FAST_ALLOCATED;
 public:
-    ConsoleMessage(MessageSource, MessageType, MessageLevel, const String& m, unsigned li, const String& u);
-    ConsoleMessage(MessageSource, MessageType, MessageLevel, const String& m, PassRefPtr<ScriptArguments>, PassRefPtr<ScriptCallStack>);
-    ConsoleMessage(MessageSource, MessageType, MessageLevel, const String& m, const String& responseUrl, unsigned long identifier);
+    ConsoleMessage( MessageSource, MessageType, MessageLevel, const String &m, unsigned li, const String &u );
+    ConsoleMessage( MessageSource, MessageType, MessageLevel, const String &m, PassRefPtr<ScriptArguments>,
+                    PassRefPtr<ScriptCallStack> );
+    ConsoleMessage( MessageSource, MessageType, MessageLevel, const String &m, const String &responseUrl, unsigned long identifier );
     ~ConsoleMessage();
 
-    void addToFrontend(InspectorFrontend::Console*, InjectedScriptManager*);
-    void updateRepeatCountInConsole(InspectorFrontend::Console*);
-    void incrementCount() { ++m_repeatCount; }
-    bool isEqual(ConsoleMessage* msg) const;
+    void addToFrontend( InspectorFrontend::Console *, InjectedScriptManager * );
+    void updateRepeatCountInConsole( InspectorFrontend::Console * );
+    void incrementCount()
+    {
+        ++m_repeatCount;
+    }
+    bool isEqual( ConsoleMessage *msg ) const;
 
-    MessageSource source() const { return m_source; }
-    const String& message() const { return m_message; }
-    MessageType type() const { return m_type; }
+    MessageSource source() const
+    {
+        return m_source;
+    }
+    const String &message() const
+    {
+        return m_message;
+    }
+    MessageType type() const
+    {
+        return m_type;
+    }
 
 private:
     MessageSource m_source;

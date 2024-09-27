@@ -36,13 +36,14 @@
 
 #include <Ecore.h>
 
-namespace WTF {
+namespace WTF
+{
 
 void initializeMainThreadPlatform()
 {
 }
 
-static Eina_Bool timeoutFired(void*)
+static Eina_Bool timeoutFired( void * )
 {
     dispatchFunctionsFromMainThread();
     return ECORE_CALLBACK_CANCEL;
@@ -50,7 +51,7 @@ static Eina_Bool timeoutFired(void*)
 
 void scheduleDispatchFunctionsOnMainThread()
 {
-    ecore_timer_add(0, timeoutFired, 0);
+    ecore_timer_add( 0, timeoutFired, 0 );
 }
 
 

@@ -27,31 +27,32 @@
 
 class QMYSQLDriverPlugin : public QSqlDriverPlugin
 {
-   CS_OBJECT(QMYSQLDriverPlugin)
+    CS_OBJECT( QMYSQLDriverPlugin )
 
-   CS_PLUGIN_IID(QSqlDriverInterface_ID)
-   CS_PLUGIN_KEY("QMYSQL, QMARIADB")
+    CS_PLUGIN_IID( QSqlDriverInterface_ID )
+    CS_PLUGIN_KEY( "QMYSQL, QMARIADB" )
 
- public:
-   QMYSQLDriverPlugin();
+public:
+    QMYSQLDriverPlugin();
 
-   QSqlDriver *create(const QString &) override;
+    QSqlDriver *create( const QString & ) override;
 };
 
-CS_PLUGIN_REGISTER(QMYSQLDriverPlugin)
+CS_PLUGIN_REGISTER( QMYSQLDriverPlugin )
 
 QMYSQLDriverPlugin::QMYSQLDriverPlugin()
-   : QSqlDriverPlugin()
+    : QSqlDriverPlugin()
 {
 }
 
-QSqlDriver *QMYSQLDriverPlugin::create(const QString &name)
+QSqlDriver *QMYSQLDriverPlugin::create( const QString &name )
 {
-   if (name == "QMYSQL" || name == "QMARIADB") {
-      QMYSQLDriver *driver = new QMYSQLDriver();
-      return driver;
-   }
+    if ( name == "QMYSQL" || name == "QMARIADB" )
+    {
+        QMYSQLDriver *driver = new QMYSQLDriver();
+        return driver;
+    }
 
-   return nullptr;
+    return nullptr;
 }
 

@@ -37,46 +37,46 @@ class QCupsPrintEnginePrivate;
 
 class QCupsPrintEngine : public QPdfPrintEngine
 {
- public:
-   QCupsPrintEngine(QPrinter::PrinterMode m);
+public:
+    QCupsPrintEngine( QPrinter::PrinterMode m );
 
-   QCupsPrintEngine(const QCupsPrintEngine &) = delete;
-   QCupsPrintEngine &operator=(const QCupsPrintEngine &) = delete;
+    QCupsPrintEngine( const QCupsPrintEngine & ) = delete;
+    QCupsPrintEngine &operator=( const QCupsPrintEngine & ) = delete;
 
-   virtual ~QCupsPrintEngine();
+    virtual ~QCupsPrintEngine();
 
-   // next two are a reimplementations of QPdfPrintEngine
-   void setProperty(PrintEnginePropertyKey key, const QVariant &value) override;
-   QVariant property(PrintEnginePropertyKey key) const override;
+    // next two are a reimplementations of QPdfPrintEngine
+    void setProperty( PrintEnginePropertyKey key, const QVariant &value ) override;
+    QVariant property( PrintEnginePropertyKey key ) const override;
 
- private:
-   Q_DECLARE_PRIVATE(QCupsPrintEngine)
+private:
+    Q_DECLARE_PRIVATE( QCupsPrintEngine )
 
 };
 
 class QCupsPrintEnginePrivate : public QPdfPrintEnginePrivate
 {
- public:
-   QCupsPrintEnginePrivate(QPrinter::PrinterMode m);
+public:
+    QCupsPrintEnginePrivate( QPrinter::PrinterMode m );
 
-   QCupsPrintEnginePrivate(const QCupsPrintEnginePrivate &) = delete;
-   QCupsPrintEnginePrivate &operator=(const QCupsPrintEnginePrivate &) = delete;
+    QCupsPrintEnginePrivate( const QCupsPrintEnginePrivate & ) = delete;
+    QCupsPrintEnginePrivate &operator=( const QCupsPrintEnginePrivate & ) = delete;
 
-   ~QCupsPrintEnginePrivate();
+    ~QCupsPrintEnginePrivate();
 
-   bool openPrintDevice() override;
-   void closePrintDevice() override;
+    bool openPrintDevice() override;
+    void closePrintDevice() override;
 
- private:
-   Q_DECLARE_PUBLIC(QCupsPrintEngine)
+private:
+    Q_DECLARE_PUBLIC( QCupsPrintEngine )
 
-   void setupDefaultPrinter();
-   void changePrinter(const QString &newPrinter);
-   void setPageSize(const QPageSize &pageSize);
+    void setupDefaultPrinter();
+    void changePrinter( const QString &newPrinter );
+    void setPageSize( const QPageSize &pageSize );
 
-   QPrintDevice m_printDevice;
-   QStringList cupsOptions;
-   QString cupsTempFile;
+    QPrintDevice m_printDevice;
+    QStringList cupsOptions;
+    QString cupsTempFile;
 };
 
 #endif

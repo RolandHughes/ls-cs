@@ -34,39 +34,39 @@ class QGIFFormat;
 
 class QGifHandler : public QImageIOHandler
 {
- public:
-   QGifHandler();
-   ~QGifHandler();
+public:
+    QGifHandler();
+    ~QGifHandler();
 
-   bool canRead() override;
-   bool read(QImage *image) override;
-   bool write(const QImage &image) override;
+    bool canRead() override;
+    bool read( QImage *image ) override;
+    bool write( const QImage &image ) override;
 
-   QString name() const override;
+    QString name() const override;
 
-   static bool canRead(QIODevice *device);
+    static bool canRead( QIODevice *device );
 
-   QVariant option(ImageOption option) override;
-   void setOption(ImageOption option, const QVariant &value) override;
-   bool supportsOption(ImageOption option) const override;
+    QVariant option( ImageOption option ) override;
+    void setOption( ImageOption option, const QVariant &value ) override;
+    bool supportsOption( ImageOption option ) const override;
 
-   int imageCount() override;
-   int loopCount() const override;
-   int nextImageDelay() const override;
-   int currentImageNumber() const override;
+    int imageCount() override;
+    int loopCount() const override;
+    int nextImageDelay() const override;
+    int currentImageNumber() const override;
 
- private:
-   bool imageIsComing() const;
-   QGIFFormat *gifFormat;
-   QString fileName;
-   mutable QByteArray buffer;
-   mutable QImage lastImage;
+private:
+    bool imageIsComing() const;
+    QGIFFormat *gifFormat;
+    QString fileName;
+    mutable QByteArray buffer;
+    mutable QImage lastImage;
 
-   mutable int nextDelay;
-   mutable int loopCnt;
-   int frameNumber;
-   mutable QVector<QSize> imageSizes;
-   mutable bool scanIsCached;
+    mutable int nextDelay;
+    mutable int loopCnt;
+    int frameNumber;
+    mutable QVector<QSize> imageSizes;
+    mutable bool scanIsCached;
 };
 
 

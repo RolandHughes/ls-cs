@@ -28,61 +28,67 @@
 
 class QItemSelectionModelPrivate
 {
-   Q_DECLARE_PUBLIC(QItemSelectionModel)
+    Q_DECLARE_PUBLIC( QItemSelectionModel )
 
- public:
-   QItemSelectionModelPrivate()
-      : model(nullptr), currentCommand(QItemSelectionModel::NoUpdate),
-        tableSelected(false), tableColCount(0), tableRowCount(0)
-   {
-   }
+public:
+    QItemSelectionModelPrivate()
+        : model( nullptr ), currentCommand( QItemSelectionModel::NoUpdate ),
+          tableSelected( false ), tableColCount( 0 ), tableRowCount( 0 )
+    {
+    }
 
-   virtual ~QItemSelectionModelPrivate() {}
+    virtual ~QItemSelectionModelPrivate() {}
 
-   QItemSelection expandSelection(const QItemSelection &selection, QItemSelectionModel::SelectionFlags command) const;
+    QItemSelection expandSelection( const QItemSelection &selection, QItemSelectionModel::SelectionFlags command ) const;
 
-   void initModel(QAbstractItemModel *model);
+    void initModel( QAbstractItemModel *model );
 
-   void _q_rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end);
-   void _q_columnsAboutToBeRemoved(const QModelIndex &parent, int start, int end);
-   void _q_rowsAboutToBeInserted(const QModelIndex &parent, int start, int end);
-   void _q_columnsAboutToBeInserted(const QModelIndex &parent, int start, int end);
-   void _q_layoutAboutToBeChanged(const QList<QPersistentModelIndex> &parents = QList<QPersistentModelIndex>(),
-      QAbstractItemModel::LayoutChangeHint hint = QAbstractItemModel::NoLayoutChangeHint);
-   void _q_layoutChanged(const QList<QPersistentModelIndex> &parents = QList<QPersistentModelIndex>(),
-      QAbstractItemModel::LayoutChangeHint hint = QAbstractItemModel::NoLayoutChangeHint);
+    void _q_rowsAboutToBeRemoved( const QModelIndex &parent, int start, int end );
+    void _q_columnsAboutToBeRemoved( const QModelIndex &parent, int start, int end );
+    void _q_rowsAboutToBeInserted( const QModelIndex &parent, int start, int end );
+    void _q_columnsAboutToBeInserted( const QModelIndex &parent, int start, int end );
+    void _q_layoutAboutToBeChanged( const QList<QPersistentModelIndex> &parents = QList<QPersistentModelIndex>(),
+                                    QAbstractItemModel::LayoutChangeHint hint = QAbstractItemModel::NoLayoutChangeHint );
+    void _q_layoutChanged( const QList<QPersistentModelIndex> &parents = QList<QPersistentModelIndex>(),
+                           QAbstractItemModel::LayoutChangeHint hint = QAbstractItemModel::NoLayoutChangeHint );
 
-   inline void remove(QList<QItemSelectionRange> &r) {
-      QList<QItemSelectionRange>::const_iterator it = r.constBegin();
-      for (; it != r.constEnd(); ++it) {
-         ranges.removeAll(*it);
-      }
-   }
+    inline void remove( QList<QItemSelectionRange> &r )
+    {
+        QList<QItemSelectionRange>::const_iterator it = r.constBegin();
 
-   inline void finalize() {
-      ranges.merge(currentSelection, currentCommand);
-      if (!currentSelection.isEmpty()) { // ### perhaps this should be in QList
-         currentSelection.clear();
-      }
-   }
+        for ( ; it != r.constEnd(); ++it )
+        {
+            ranges.removeAll( *it );
+        }
+    }
 
-   QPointer<QAbstractItemModel> model;
-   QItemSelection ranges;
-   QItemSelection currentSelection;
-   QPersistentModelIndex currentIndex;
-   QItemSelectionModel::SelectionFlags currentCommand;
-   QVector<QPersistentModelIndex> savedPersistentIndexes;
-   QVector<QPersistentModelIndex> savedPersistentCurrentIndexes;
-   QVector<QPair<QPersistentModelIndex, uint>> savedPersistentRowLengths;
-   QVector<QPair<QPersistentModelIndex, uint>> savedPersistentCurrentRowLengths;
+    inline void finalize()
+    {
+        ranges.merge( currentSelection, currentCommand );
 
-   // optimization when all indexes are selected
-   bool tableSelected;
-   QPersistentModelIndex tableParent;
-   int tableColCount, tableRowCount;
+        if ( !currentSelection.isEmpty() ) // ### perhaps this should be in QList
+        {
+            currentSelection.clear();
+        }
+    }
 
- protected:
-   QItemSelectionModel *q_ptr;
+    QPointer<QAbstractItemModel> model;
+    QItemSelection ranges;
+    QItemSelection currentSelection;
+    QPersistentModelIndex currentIndex;
+    QItemSelectionModel::SelectionFlags currentCommand;
+    QVector<QPersistentModelIndex> savedPersistentIndexes;
+    QVector<QPersistentModelIndex> savedPersistentCurrentIndexes;
+    QVector<QPair<QPersistentModelIndex, uint>> savedPersistentRowLengths;
+    QVector<QPair<QPersistentModelIndex, uint>> savedPersistentCurrentRowLengths;
+
+    // optimization when all indexes are selected
+    bool tableSelected;
+    QPersistentModelIndex tableParent;
+    int tableColCount, tableRowCount;
+
+protected:
+    QItemSelectionModel *q_ptr;
 
 };
 

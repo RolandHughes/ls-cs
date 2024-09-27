@@ -30,89 +30,97 @@
 
 class QSemaphorePrivate
 {
- public:
-   inline QSemaphorePrivate(int n) : avail(n) { }
+public:
+    inline QSemaphorePrivate( int n ) : avail( n ) { }
 
-   QMutex mutex;
-   QWaitCondition cond;
+    QMutex mutex;
+    QWaitCondition cond;
 
-   int avail;
+    int avail;
 };
 
-QSemaphore::QSemaphore(int n)
+QSemaphore::QSemaphore( int n )
 {
-   Q_ASSERT_X(n >= 0, "QSemaphore", "parameter 'n' must be non-negative");
-   d = new QSemaphorePrivate(n);
+    Q_ASSERT_X( n >= 0, "QSemaphore", "parameter 'n' must be non-negative" );
+    d = new QSemaphorePrivate( n );
 }
 
 QSemaphore::~QSemaphore()
 {
-   delete d;
+    delete d;
 }
 
-void QSemaphore::acquire(int n)
+void QSemaphore::acquire( int n )
 {
-   Q_ASSERT_X(n >= 0, "QSemaphore::acquire", "parameter 'n' must be non-negative");
-   QMutexLocker locker(&d->mutex);
+    Q_ASSERT_X( n >= 0, "QSemaphore::acquire", "parameter 'n' must be non-negative" );
+    QMutexLocker locker( &d->mutex );
 
-   while (n > d->avail) {
-      d->cond.wait(locker.mutex());
-   }
+    while ( n > d->avail )
+    {
+        d->cond.wait( locker.mutex() );
+    }
 
-   d->avail -= n;
+    d->avail -= n;
 }
 
-void QSemaphore::release(int n)
+void QSemaphore::release( int n )
 {
-   Q_ASSERT_X(n >= 0, "QSemaphore::release", "parameter 'n' must be non-negative");
-   QMutexLocker locker(&d->mutex);
-   d->avail += n;
-   d->cond.wakeAll();
+    Q_ASSERT_X( n >= 0, "QSemaphore::release", "parameter 'n' must be non-negative" );
+    QMutexLocker locker( &d->mutex );
+    d->avail += n;
+    d->cond.wakeAll();
 }
 
 int QSemaphore::available() const
 {
-   QMutexLocker locker(&d->mutex);
-   return d->avail;
+    QMutexLocker locker( &d->mutex );
+    return d->avail;
 }
 
-bool QSemaphore::tryAcquire(int n)
+bool QSemaphore::tryAcquire( int n )
 {
-   Q_ASSERT_X(n >= 0, "QSemaphore::tryAcquire", "parameter 'n' must be non-negative");
-   QMutexLocker locker(&d->mutex);
+    Q_ASSERT_X( n >= 0, "QSemaphore::tryAcquire", "parameter 'n' must be non-negative" );
+    QMutexLocker locker( &d->mutex );
 
-   if (n > d->avail) {
-      return false;
-   }
+    if ( n > d->avail )
+    {
+        return false;
+    }
 
-   d->avail -= n;
-   return true;
+    d->avail -= n;
+    return true;
 }
 
-bool QSemaphore::tryAcquire(int n, int timeout)
+bool QSemaphore::tryAcquire( int n, int timeout )
 {
-   Q_ASSERT_X(n >= 0, "QSemaphore::tryAcquire", "parameter 'n' must be non-negative");
-   QMutexLocker locker(&d->mutex);
+    Q_ASSERT_X( n >= 0, "QSemaphore::tryAcquire", "parameter 'n' must be non-negative" );
+    QMutexLocker locker( &d->mutex );
 
-   if (timeout < 0) {
-      while (n > d->avail) {
-         d->cond.wait(locker.mutex());
-      }
-   } else {
-      QElapsedTimer timer;
-      timer.start();
+    if ( timeout < 0 )
+    {
+        while ( n > d->avail )
+        {
+            d->cond.wait( locker.mutex() );
+        }
+    }
+    else
+    {
+        QElapsedTimer timer;
+        timer.start();
 
-      while (n > d->avail) {
-         const qint64 elapsed = timer.elapsed();
+        while ( n > d->avail )
+        {
+            const qint64 elapsed = timer.elapsed();
 
-         if (timeout - elapsed <= 0
-               || !d->cond.wait(locker.mutex(), timeout - elapsed)) {
-            return false;
-         }
-      }
-   }
+            if ( timeout - elapsed <= 0
+                    || !d->cond.wait( locker.mutex(), timeout - elapsed ) )
+            {
+                return false;
+            }
+        }
+    }
 
-   d->avail -= n;
+    d->avail -= n;
 
-   return true;
+    return true;
 }

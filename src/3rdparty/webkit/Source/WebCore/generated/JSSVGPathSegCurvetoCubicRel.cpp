@@ -30,9 +30,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSSVGPathSegCurvetoCubicRel);
+ASSERT_CLASS_FITS_IN_CELL( JSSVGPathSegCurvetoCubicRel );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -43,14 +44,14 @@ ASSERT_CLASS_FITS_IN_CELL(JSSVGPathSegCurvetoCubicRel);
 
 static const HashTableValue JSSVGPathSegCurvetoCubicRelTableValues[8] =
 {
-    { "x", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGPathSegCurvetoCubicRelX), (intptr_t)setJSSVGPathSegCurvetoCubicRelX THUNK_GENERATOR(0) },
-    { "y", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGPathSegCurvetoCubicRelY), (intptr_t)setJSSVGPathSegCurvetoCubicRelY THUNK_GENERATOR(0) },
-    { "x1", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGPathSegCurvetoCubicRelX1), (intptr_t)setJSSVGPathSegCurvetoCubicRelX1 THUNK_GENERATOR(0) },
-    { "y1", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGPathSegCurvetoCubicRelY1), (intptr_t)setJSSVGPathSegCurvetoCubicRelY1 THUNK_GENERATOR(0) },
-    { "x2", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGPathSegCurvetoCubicRelX2), (intptr_t)setJSSVGPathSegCurvetoCubicRelX2 THUNK_GENERATOR(0) },
-    { "y2", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGPathSegCurvetoCubicRelY2), (intptr_t)setJSSVGPathSegCurvetoCubicRelY2 THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGPathSegCurvetoCubicRelConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "x", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGPathSegCurvetoCubicRelX ), ( intptr_t )setJSSVGPathSegCurvetoCubicRelX THUNK_GENERATOR( 0 ) },
+    { "y", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGPathSegCurvetoCubicRelY ), ( intptr_t )setJSSVGPathSegCurvetoCubicRelY THUNK_GENERATOR( 0 ) },
+    { "x1", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGPathSegCurvetoCubicRelX1 ), ( intptr_t )setJSSVGPathSegCurvetoCubicRelX1 THUNK_GENERATOR( 0 ) },
+    { "y1", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGPathSegCurvetoCubicRelY1 ), ( intptr_t )setJSSVGPathSegCurvetoCubicRelY1 THUNK_GENERATOR( 0 ) },
+    { "x2", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGPathSegCurvetoCubicRelX2 ), ( intptr_t )setJSSVGPathSegCurvetoCubicRelX2 THUNK_GENERATOR( 0 ) },
+    { "y2", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGPathSegCurvetoCubicRelY2 ), ( intptr_t )setJSSVGPathSegCurvetoCubicRelY2 THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGPathSegCurvetoCubicRelConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -64,43 +65,52 @@ static JSC_CONST_HASHTABLE HashTable JSSVGPathSegCurvetoCubicRelTable = { 16, 15
 
 static const HashTableValue JSSVGPathSegCurvetoCubicRelConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSSVGPathSegCurvetoCubicRelConstructorTable = { 1, 0, JSSVGPathSegCurvetoCubicRelConstructorTableValues, 0 };
-class JSSVGPathSegCurvetoCubicRelConstructor : public DOMConstructorObject {
+class JSSVGPathSegCurvetoCubicRelConstructor : public DOMConstructorObject
+{
 public:
-    JSSVGPathSegCurvetoCubicRelConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSSVGPathSegCurvetoCubicRelConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSSVGPathSegCurvetoCubicRelConstructor::s_info = { "SVGPathSegCurvetoCubicRelConstructor", &DOMConstructorObject::s_info, &JSSVGPathSegCurvetoCubicRelConstructorTable, 0 };
 
-JSSVGPathSegCurvetoCubicRelConstructor::JSSVGPathSegCurvetoCubicRelConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSSVGPathSegCurvetoCubicRelConstructor::JSSVGPathSegCurvetoCubicRelConstructor( ExecState *exec, Structure *structure,
+        JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSSVGPathSegCurvetoCubicRelPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSSVGPathSegCurvetoCubicRelPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSSVGPathSegCurvetoCubicRelConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGPathSegCurvetoCubicRelConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName,
+        PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSVGPathSegCurvetoCubicRelConstructor, JSDOMWrapper>(exec, &JSSVGPathSegCurvetoCubicRelConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSSVGPathSegCurvetoCubicRelConstructor, JSDOMWrapper>( exec,
+            &JSSVGPathSegCurvetoCubicRelConstructorTable, this, propertyName, slot );
 }
 
-bool JSSVGPathSegCurvetoCubicRelConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGPathSegCurvetoCubicRelConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSVGPathSegCurvetoCubicRelConstructor, JSDOMWrapper>(exec, &JSSVGPathSegCurvetoCubicRelConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSVGPathSegCurvetoCubicRelConstructor, JSDOMWrapper>( exec,
+            &JSSVGPathSegCurvetoCubicRelConstructorTable, this, propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -112,163 +122,167 @@ bool JSSVGPathSegCurvetoCubicRelConstructor::getOwnPropertyDescriptor(ExecState*
 
 static const HashTableValue JSSVGPathSegCurvetoCubicRelPrototypeTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSSVGPathSegCurvetoCubicRelPrototypeTable = { 1, 0, JSSVGPathSegCurvetoCubicRelPrototypeTableValues, 0 };
 const ClassInfo JSSVGPathSegCurvetoCubicRelPrototype::s_info = { "SVGPathSegCurvetoCubicRelPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSSVGPathSegCurvetoCubicRelPrototypeTable, 0 };
 
-JSObject* JSSVGPathSegCurvetoCubicRelPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSVGPathSegCurvetoCubicRelPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSSVGPathSegCurvetoCubicRel>(exec, globalObject);
+    return getDOMPrototype<JSSVGPathSegCurvetoCubicRel>( exec, globalObject );
 }
 
 const ClassInfo JSSVGPathSegCurvetoCubicRel::s_info = { "SVGPathSegCurvetoCubicRel", &JSSVGPathSeg::s_info, &JSSVGPathSegCurvetoCubicRelTable, 0 };
 
-JSSVGPathSegCurvetoCubicRel::JSSVGPathSegCurvetoCubicRel(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<SVGPathSegCurvetoCubicRel> impl)
-    : JSSVGPathSeg(structure, globalObject, impl)
+JSSVGPathSegCurvetoCubicRel::JSSVGPathSegCurvetoCubicRel( Structure *structure, JSDOMGlobalObject *globalObject,
+        PassRefPtr<SVGPathSegCurvetoCubicRel> impl )
+    : JSSVGPathSeg( structure, globalObject, impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSSVGPathSegCurvetoCubicRel::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSVGPathSegCurvetoCubicRel::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSSVGPathSegCurvetoCubicRelPrototype(exec->globalData(), globalObject, JSSVGPathSegCurvetoCubicRelPrototype::createStructure(exec->globalData(), JSSVGPathSegPrototype::self(exec, globalObject)));
+    return new ( exec ) JSSVGPathSegCurvetoCubicRelPrototype( exec->globalData(), globalObject,
+            JSSVGPathSegCurvetoCubicRelPrototype::createStructure( exec->globalData(), JSSVGPathSegPrototype::self( exec, globalObject ) ) );
 }
 
-bool JSSVGPathSegCurvetoCubicRel::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGPathSegCurvetoCubicRel::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSVGPathSegCurvetoCubicRel, Base>(exec, &JSSVGPathSegCurvetoCubicRelTable, this, propertyName, slot);
+    return getStaticValueSlot<JSSVGPathSegCurvetoCubicRel, Base>( exec, &JSSVGPathSegCurvetoCubicRelTable, this, propertyName, slot );
 }
 
-bool JSSVGPathSegCurvetoCubicRel::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGPathSegCurvetoCubicRel::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSVGPathSegCurvetoCubicRel, Base>(exec, &JSSVGPathSegCurvetoCubicRelTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSVGPathSegCurvetoCubicRel, Base>( exec, &JSSVGPathSegCurvetoCubicRelTable, this, propertyName,
+            descriptor );
 }
 
-JSValue jsSVGPathSegCurvetoCubicRelX(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGPathSegCurvetoCubicRelX( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGPathSegCurvetoCubicRel* castedThis = static_cast<JSSVGPathSegCurvetoCubicRel*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGPathSegCurvetoCubicRel* imp = static_cast<SVGPathSegCurvetoCubicRel*>(castedThis->impl());
-    JSValue result = jsNumber(imp->x());
+    JSSVGPathSegCurvetoCubicRel *castedThis = static_cast<JSSVGPathSegCurvetoCubicRel *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGPathSegCurvetoCubicRel *imp = static_cast<SVGPathSegCurvetoCubicRel *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->x() );
     return result;
 }
 
 
-JSValue jsSVGPathSegCurvetoCubicRelY(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGPathSegCurvetoCubicRelY( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGPathSegCurvetoCubicRel* castedThis = static_cast<JSSVGPathSegCurvetoCubicRel*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGPathSegCurvetoCubicRel* imp = static_cast<SVGPathSegCurvetoCubicRel*>(castedThis->impl());
-    JSValue result = jsNumber(imp->y());
+    JSSVGPathSegCurvetoCubicRel *castedThis = static_cast<JSSVGPathSegCurvetoCubicRel *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGPathSegCurvetoCubicRel *imp = static_cast<SVGPathSegCurvetoCubicRel *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->y() );
     return result;
 }
 
 
-JSValue jsSVGPathSegCurvetoCubicRelX1(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGPathSegCurvetoCubicRelX1( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGPathSegCurvetoCubicRel* castedThis = static_cast<JSSVGPathSegCurvetoCubicRel*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGPathSegCurvetoCubicRel* imp = static_cast<SVGPathSegCurvetoCubicRel*>(castedThis->impl());
-    JSValue result = jsNumber(imp->x1());
+    JSSVGPathSegCurvetoCubicRel *castedThis = static_cast<JSSVGPathSegCurvetoCubicRel *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGPathSegCurvetoCubicRel *imp = static_cast<SVGPathSegCurvetoCubicRel *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->x1() );
     return result;
 }
 
 
-JSValue jsSVGPathSegCurvetoCubicRelY1(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGPathSegCurvetoCubicRelY1( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGPathSegCurvetoCubicRel* castedThis = static_cast<JSSVGPathSegCurvetoCubicRel*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGPathSegCurvetoCubicRel* imp = static_cast<SVGPathSegCurvetoCubicRel*>(castedThis->impl());
-    JSValue result = jsNumber(imp->y1());
+    JSSVGPathSegCurvetoCubicRel *castedThis = static_cast<JSSVGPathSegCurvetoCubicRel *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGPathSegCurvetoCubicRel *imp = static_cast<SVGPathSegCurvetoCubicRel *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->y1() );
     return result;
 }
 
 
-JSValue jsSVGPathSegCurvetoCubicRelX2(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGPathSegCurvetoCubicRelX2( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGPathSegCurvetoCubicRel* castedThis = static_cast<JSSVGPathSegCurvetoCubicRel*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGPathSegCurvetoCubicRel* imp = static_cast<SVGPathSegCurvetoCubicRel*>(castedThis->impl());
-    JSValue result = jsNumber(imp->x2());
+    JSSVGPathSegCurvetoCubicRel *castedThis = static_cast<JSSVGPathSegCurvetoCubicRel *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGPathSegCurvetoCubicRel *imp = static_cast<SVGPathSegCurvetoCubicRel *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->x2() );
     return result;
 }
 
 
-JSValue jsSVGPathSegCurvetoCubicRelY2(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGPathSegCurvetoCubicRelY2( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGPathSegCurvetoCubicRel* castedThis = static_cast<JSSVGPathSegCurvetoCubicRel*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGPathSegCurvetoCubicRel* imp = static_cast<SVGPathSegCurvetoCubicRel*>(castedThis->impl());
-    JSValue result = jsNumber(imp->y2());
+    JSSVGPathSegCurvetoCubicRel *castedThis = static_cast<JSSVGPathSegCurvetoCubicRel *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGPathSegCurvetoCubicRel *imp = static_cast<SVGPathSegCurvetoCubicRel *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->y2() );
     return result;
 }
 
 
-JSValue jsSVGPathSegCurvetoCubicRelConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGPathSegCurvetoCubicRelConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGPathSegCurvetoCubicRel* domObject = static_cast<JSSVGPathSegCurvetoCubicRel*>(asObject(slotBase));
-    return JSSVGPathSegCurvetoCubicRel::getConstructor(exec, domObject->globalObject());
+    JSSVGPathSegCurvetoCubicRel *domObject = static_cast<JSSVGPathSegCurvetoCubicRel *>( asObject( slotBase ) );
+    return JSSVGPathSegCurvetoCubicRel::getConstructor( exec, domObject->globalObject() );
 }
 
-void JSSVGPathSegCurvetoCubicRel::put(ExecState* exec, const Identifier& propertyName, JSValue value, PutPropertySlot& slot)
+void JSSVGPathSegCurvetoCubicRel::put( ExecState *exec, const Identifier &propertyName, JSValue value, PutPropertySlot &slot )
 {
-    lookupPut<JSSVGPathSegCurvetoCubicRel, Base>(exec, propertyName, value, &JSSVGPathSegCurvetoCubicRelTable, this, slot);
+    lookupPut<JSSVGPathSegCurvetoCubicRel, Base>( exec, propertyName, value, &JSSVGPathSegCurvetoCubicRelTable, this, slot );
 }
 
-void setJSSVGPathSegCurvetoCubicRelX(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSSVGPathSegCurvetoCubicRelX( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSSVGPathSegCurvetoCubicRel* castedThis = static_cast<JSSVGPathSegCurvetoCubicRel*>(thisObject);
-    SVGPathSegCurvetoCubicRel* imp = static_cast<SVGPathSegCurvetoCubicRel*>(castedThis->impl());
-    imp->setX(value.toFloat(exec));
-}
-
-
-void setJSSVGPathSegCurvetoCubicRelY(ExecState* exec, JSObject* thisObject, JSValue value)
-{
-    JSSVGPathSegCurvetoCubicRel* castedThis = static_cast<JSSVGPathSegCurvetoCubicRel*>(thisObject);
-    SVGPathSegCurvetoCubicRel* imp = static_cast<SVGPathSegCurvetoCubicRel*>(castedThis->impl());
-    imp->setY(value.toFloat(exec));
+    JSSVGPathSegCurvetoCubicRel *castedThis = static_cast<JSSVGPathSegCurvetoCubicRel *>( thisObject );
+    SVGPathSegCurvetoCubicRel *imp = static_cast<SVGPathSegCurvetoCubicRel *>( castedThis->impl() );
+    imp->setX( value.toFloat( exec ) );
 }
 
 
-void setJSSVGPathSegCurvetoCubicRelX1(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSSVGPathSegCurvetoCubicRelY( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSSVGPathSegCurvetoCubicRel* castedThis = static_cast<JSSVGPathSegCurvetoCubicRel*>(thisObject);
-    SVGPathSegCurvetoCubicRel* imp = static_cast<SVGPathSegCurvetoCubicRel*>(castedThis->impl());
-    imp->setX1(value.toFloat(exec));
+    JSSVGPathSegCurvetoCubicRel *castedThis = static_cast<JSSVGPathSegCurvetoCubicRel *>( thisObject );
+    SVGPathSegCurvetoCubicRel *imp = static_cast<SVGPathSegCurvetoCubicRel *>( castedThis->impl() );
+    imp->setY( value.toFloat( exec ) );
 }
 
 
-void setJSSVGPathSegCurvetoCubicRelY1(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSSVGPathSegCurvetoCubicRelX1( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSSVGPathSegCurvetoCubicRel* castedThis = static_cast<JSSVGPathSegCurvetoCubicRel*>(thisObject);
-    SVGPathSegCurvetoCubicRel* imp = static_cast<SVGPathSegCurvetoCubicRel*>(castedThis->impl());
-    imp->setY1(value.toFloat(exec));
+    JSSVGPathSegCurvetoCubicRel *castedThis = static_cast<JSSVGPathSegCurvetoCubicRel *>( thisObject );
+    SVGPathSegCurvetoCubicRel *imp = static_cast<SVGPathSegCurvetoCubicRel *>( castedThis->impl() );
+    imp->setX1( value.toFloat( exec ) );
 }
 
 
-void setJSSVGPathSegCurvetoCubicRelX2(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSSVGPathSegCurvetoCubicRelY1( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSSVGPathSegCurvetoCubicRel* castedThis = static_cast<JSSVGPathSegCurvetoCubicRel*>(thisObject);
-    SVGPathSegCurvetoCubicRel* imp = static_cast<SVGPathSegCurvetoCubicRel*>(castedThis->impl());
-    imp->setX2(value.toFloat(exec));
+    JSSVGPathSegCurvetoCubicRel *castedThis = static_cast<JSSVGPathSegCurvetoCubicRel *>( thisObject );
+    SVGPathSegCurvetoCubicRel *imp = static_cast<SVGPathSegCurvetoCubicRel *>( castedThis->impl() );
+    imp->setY1( value.toFloat( exec ) );
 }
 
 
-void setJSSVGPathSegCurvetoCubicRelY2(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSSVGPathSegCurvetoCubicRelX2( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSSVGPathSegCurvetoCubicRel* castedThis = static_cast<JSSVGPathSegCurvetoCubicRel*>(thisObject);
-    SVGPathSegCurvetoCubicRel* imp = static_cast<SVGPathSegCurvetoCubicRel*>(castedThis->impl());
-    imp->setY2(value.toFloat(exec));
+    JSSVGPathSegCurvetoCubicRel *castedThis = static_cast<JSSVGPathSegCurvetoCubicRel *>( thisObject );
+    SVGPathSegCurvetoCubicRel *imp = static_cast<SVGPathSegCurvetoCubicRel *>( castedThis->impl() );
+    imp->setX2( value.toFloat( exec ) );
 }
 
 
-JSValue JSSVGPathSegCurvetoCubicRel::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+void setJSSVGPathSegCurvetoCubicRelY2( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    return getDOMConstructor<JSSVGPathSegCurvetoCubicRelConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    JSSVGPathSegCurvetoCubicRel *castedThis = static_cast<JSSVGPathSegCurvetoCubicRel *>( thisObject );
+    SVGPathSegCurvetoCubicRel *imp = static_cast<SVGPathSegCurvetoCubicRel *>( castedThis->impl() );
+    imp->setY2( value.toFloat( exec ) );
+}
+
+
+JSValue JSSVGPathSegCurvetoCubicRel::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
+{
+    return getDOMConstructor<JSSVGPathSegCurvetoCubicRelConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
 

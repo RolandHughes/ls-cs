@@ -43,97 +43,146 @@
 
 using namespace JSC;
 
-namespace WebCore {
-
-JSValue JSDirectoryEntry::getFile(ExecState* exec)
+namespace WebCore
 {
-    DirectoryEntry* imp = static_cast<DirectoryEntry*>(impl());
-    const String& path = valueToStringWithUndefinedOrNullCheck(exec, exec->argument(0));
-    if (exec->hadException())
+
+JSValue JSDirectoryEntry::getFile( ExecState *exec )
+{
+    DirectoryEntry *imp = static_cast<DirectoryEntry *>( impl() );
+    const String &path = valueToStringWithUndefinedOrNullCheck( exec, exec->argument( 0 ) );
+
+    if ( exec->hadException() )
+    {
         return jsUndefined();
+    }
 
     int argsCount = exec->argumentCount();
-    if (argsCount <= 1) {
-        imp->getFile(path);
+
+    if ( argsCount <= 1 )
+    {
+        imp->getFile( path );
         return jsUndefined();
     }
 
     RefPtr<WebKitFlags> flags;
-    if (!exec->argument(1).isNull() && !exec->argument(1).isUndefined() && exec->argument(1).isObject() && !exec->argument(1).inherits(&JSWebKitFlags::s_info)) {
-        JSObject* object = exec->argument(1).getObject();
+
+    if ( !exec->argument( 1 ).isNull() && !exec->argument( 1 ).isUndefined() && exec->argument( 1 ).isObject()
+            && !exec->argument( 1 ).inherits( &JSWebKitFlags::s_info ) )
+    {
+        JSObject *object = exec->argument( 1 ).getObject();
         flags = WebKitFlags::create();
-        JSValue jsCreate = object->get(exec, Identifier(exec, "create"));
-        flags->setCreate(jsCreate.toBoolean(exec));
-        JSValue jsExclusive = object->get(exec, Identifier(exec, "exclusive"));
-        flags->setExclusive(jsExclusive.toBoolean(exec));
-    } else
-        flags = toWebKitFlags(exec->argument(1));
-    if (exec->hadException())
-        return jsUndefined();
-    RefPtr<EntryCallback> successCallback;
-    if (exec->argumentCount() > 2 && !exec->argument(2).isNull() && !exec->argument(2).isUndefined()) {
-        if (!exec->argument(2).isObject()) {
-            setDOMException(exec, TYPE_MISMATCH_ERR);
-            return jsUndefined();
-        }
-        successCallback = JSEntryCallback::create(asObject(exec->argument(2)), globalObject());
+        JSValue jsCreate = object->get( exec, Identifier( exec, "create" ) );
+        flags->setCreate( jsCreate.toBoolean( exec ) );
+        JSValue jsExclusive = object->get( exec, Identifier( exec, "exclusive" ) );
+        flags->setExclusive( jsExclusive.toBoolean( exec ) );
     }
-    RefPtr<ErrorCallback> errorCallback;
-    if (exec->argumentCount() > 3 && !exec->argument(3).isNull() && !exec->argument(3).isUndefined()) {
-        if (!exec->argument(3).isObject()) {
-            setDOMException(exec, TYPE_MISMATCH_ERR);
-            return jsUndefined();
-        }
-        errorCallback = JSErrorCallback::create(asObject(exec->argument(3)), globalObject());
+    else
+    {
+        flags = toWebKitFlags( exec->argument( 1 ) );
     }
 
-    imp->getFile(path, flags, successCallback, errorCallback);
+    if ( exec->hadException() )
+    {
+        return jsUndefined();
+    }
+
+    RefPtr<EntryCallback> successCallback;
+
+    if ( exec->argumentCount() > 2 && !exec->argument( 2 ).isNull() && !exec->argument( 2 ).isUndefined() )
+    {
+        if ( !exec->argument( 2 ).isObject() )
+        {
+            setDOMException( exec, TYPE_MISMATCH_ERR );
+            return jsUndefined();
+        }
+
+        successCallback = JSEntryCallback::create( asObject( exec->argument( 2 ) ), globalObject() );
+    }
+
+    RefPtr<ErrorCallback> errorCallback;
+
+    if ( exec->argumentCount() > 3 && !exec->argument( 3 ).isNull() && !exec->argument( 3 ).isUndefined() )
+    {
+        if ( !exec->argument( 3 ).isObject() )
+        {
+            setDOMException( exec, TYPE_MISMATCH_ERR );
+            return jsUndefined();
+        }
+
+        errorCallback = JSErrorCallback::create( asObject( exec->argument( 3 ) ), globalObject() );
+    }
+
+    imp->getFile( path, flags, successCallback, errorCallback );
     return jsUndefined();
 }
 
-JSValue JSDirectoryEntry::getDirectory(ExecState* exec)
+JSValue JSDirectoryEntry::getDirectory( ExecState *exec )
 {
-    DirectoryEntry* imp = static_cast<DirectoryEntry*>(impl());
-    const String& path = valueToStringWithUndefinedOrNullCheck(exec, exec->argument(0));
-    if (exec->hadException())
+    DirectoryEntry *imp = static_cast<DirectoryEntry *>( impl() );
+    const String &path = valueToStringWithUndefinedOrNullCheck( exec, exec->argument( 0 ) );
+
+    if ( exec->hadException() )
+    {
         return jsUndefined();
+    }
 
     int argsCount = exec->argumentCount();
-    if (argsCount <= 1) {
-        imp->getDirectory(path);
+
+    if ( argsCount <= 1 )
+    {
+        imp->getDirectory( path );
         return jsUndefined();
     }
 
     RefPtr<WebKitFlags> flags;
-    if (!exec->argument(1).isNull() && !exec->argument(1).isUndefined() && exec->argument(1).isObject() && !exec->argument(1).inherits(&JSWebKitFlags::s_info)) {
-        JSObject* object = exec->argument(1).getObject();
+
+    if ( !exec->argument( 1 ).isNull() && !exec->argument( 1 ).isUndefined() && exec->argument( 1 ).isObject()
+            && !exec->argument( 1 ).inherits( &JSWebKitFlags::s_info ) )
+    {
+        JSObject *object = exec->argument( 1 ).getObject();
         flags = WebKitFlags::create();
-        JSValue jsCreate = object->get(exec, Identifier(exec, "create"));
-        flags->setCreate(jsCreate.toBoolean(exec));
-        JSValue jsExclusive = object->get(exec, Identifier(exec, "exclusive"));
-        flags->setExclusive(jsExclusive.toBoolean(exec));
-    } else
-        flags = toWebKitFlags(exec->argument(1));
-    if (exec->hadException())
-        return jsUndefined();
-    RefPtr<EntryCallback> successCallback;
-    if (exec->argumentCount() > 2 && !exec->argument(2).isNull() && !exec->argument(2).isUndefined()) {
-        if (!exec->argument(2).isObject()) {
-            setDOMException(exec, TYPE_MISMATCH_ERR);
-            return jsUndefined();
-        }
-        successCallback = JSEntryCallback::create(asObject(exec->argument(2)), globalObject());
+        JSValue jsCreate = object->get( exec, Identifier( exec, "create" ) );
+        flags->setCreate( jsCreate.toBoolean( exec ) );
+        JSValue jsExclusive = object->get( exec, Identifier( exec, "exclusive" ) );
+        flags->setExclusive( jsExclusive.toBoolean( exec ) );
     }
-    RefPtr<ErrorCallback> errorCallback;
-    if (exec->argumentCount() > 3 && !exec->argument(3).isNull() && !exec->argument(3).isUndefined()) {
-        if (!exec->argument(3).isObject()) {
-            setDOMException(exec, TYPE_MISMATCH_ERR);
-            return jsUndefined();
-        }
-        errorCallback = JSErrorCallback::create(asObject(exec->argument(3)), globalObject());
+    else
+    {
+        flags = toWebKitFlags( exec->argument( 1 ) );
     }
 
-    imp->getDirectory(path, flags, successCallback, errorCallback);
+    if ( exec->hadException() )
+    {
+        return jsUndefined();
+    }
+
+    RefPtr<EntryCallback> successCallback;
+
+    if ( exec->argumentCount() > 2 && !exec->argument( 2 ).isNull() && !exec->argument( 2 ).isUndefined() )
+    {
+        if ( !exec->argument( 2 ).isObject() )
+        {
+            setDOMException( exec, TYPE_MISMATCH_ERR );
+            return jsUndefined();
+        }
+
+        successCallback = JSEntryCallback::create( asObject( exec->argument( 2 ) ), globalObject() );
+    }
+
+    RefPtr<ErrorCallback> errorCallback;
+
+    if ( exec->argumentCount() > 3 && !exec->argument( 3 ).isNull() && !exec->argument( 3 ).isUndefined() )
+    {
+        if ( !exec->argument( 3 ).isObject() )
+        {
+            setDOMException( exec, TYPE_MISMATCH_ERR );
+            return jsUndefined();
+        }
+
+        errorCallback = JSErrorCallback::create( asObject( exec->argument( 3 ) ), globalObject() );
+    }
+
+    imp->getDirectory( path, flags, successCallback, errorCallback );
     return jsUndefined();
 }
 

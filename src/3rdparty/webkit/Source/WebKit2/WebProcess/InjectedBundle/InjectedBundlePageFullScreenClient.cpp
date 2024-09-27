@@ -38,34 +38,45 @@
 
 using namespace WebCore;
 
-namespace WebKit {
-
-bool InjectedBundlePageFullScreenClient::supportsFullScreen(WebPage *page, bool withKeyboard)
+namespace WebKit
 {
-    if (m_client.supportsFullScreen) 
-        return m_client.supportsFullScreen(toAPI(page), withKeyboard);
+
+bool InjectedBundlePageFullScreenClient::supportsFullScreen( WebPage *page, bool withKeyboard )
+{
+    if ( m_client.supportsFullScreen )
+    {
+        return m_client.supportsFullScreen( toAPI( page ), withKeyboard );
+    }
 
     bool supports = true;
-    page->sendSync(Messages::WebFullScreenManagerProxy::SupportsFullScreen(withKeyboard), supports);
+    page->sendSync( Messages::WebFullScreenManagerProxy::SupportsFullScreen( withKeyboard ), supports );
     return supports;
 }
 
-void InjectedBundlePageFullScreenClient::enterFullScreenForElement(WebPage *page, WebCore::Element *element)
+void InjectedBundlePageFullScreenClient::enterFullScreenForElement( WebPage *page, WebCore::Element *element )
 {
-    if (m_client.enterFullScreenForElement) {
-        RefPtr<InjectedBundleNodeHandle> nodeHandle = InjectedBundleNodeHandle::getOrCreate(element);
-        m_client.enterFullScreenForElement(toAPI(page), toAPI(nodeHandle.get()));
-    } else
-        page->send(Messages::WebFullScreenManagerProxy::EnterFullScreen());
+    if ( m_client.enterFullScreenForElement )
+    {
+        RefPtr<InjectedBundleNodeHandle> nodeHandle = InjectedBundleNodeHandle::getOrCreate( element );
+        m_client.enterFullScreenForElement( toAPI( page ), toAPI( nodeHandle.get() ) );
+    }
+    else
+    {
+        page->send( Messages::WebFullScreenManagerProxy::EnterFullScreen() );
+    }
 }
 
-void InjectedBundlePageFullScreenClient::exitFullScreenForElement(WebPage *page, WebCore::Element *element)
+void InjectedBundlePageFullScreenClient::exitFullScreenForElement( WebPage *page, WebCore::Element *element )
 {
-    if (m_client.enterFullScreenForElement) {
-        RefPtr<InjectedBundleNodeHandle> nodeHandle = InjectedBundleNodeHandle::getOrCreate(element);
-        m_client.enterFullScreenForElement(toAPI(page), toAPI(nodeHandle.get()));
-    } else
-        page->send(Messages::WebFullScreenManagerProxy::ExitFullScreen());
+    if ( m_client.enterFullScreenForElement )
+    {
+        RefPtr<InjectedBundleNodeHandle> nodeHandle = InjectedBundleNodeHandle::getOrCreate( element );
+        m_client.enterFullScreenForElement( toAPI( page ), toAPI( nodeHandle.get() ) );
+    }
+    else
+    {
+        page->send( Messages::WebFullScreenManagerProxy::ExitFullScreen() );
+    }
 }
 
 } // namespace WebKit

@@ -35,46 +35,46 @@ class QSvgRenderer;
 
 class Q_SVG_EXPORT QGraphicsSvgItem : public QGraphicsObject
 {
-   SVG_CS_OBJECT(QGraphicsSvgItem)
-   CS_INTERFACES(QGraphicsItem)
+    SVG_CS_OBJECT( QGraphicsSvgItem )
+    CS_INTERFACES( QGraphicsItem )
 
-   SVG_CS_PROPERTY_READ(elementId, elementId)
-   SVG_CS_PROPERTY_WRITE(elementId, setElementId)
+    SVG_CS_PROPERTY_READ( elementId, elementId )
+    SVG_CS_PROPERTY_WRITE( elementId, setElementId )
 
-   SVG_CS_PROPERTY_READ(maximumCacheSize, maximumCacheSize)
-   SVG_CS_PROPERTY_WRITE(maximumCacheSize, setMaximumCacheSize)
+    SVG_CS_PROPERTY_READ( maximumCacheSize, maximumCacheSize )
+    SVG_CS_PROPERTY_WRITE( maximumCacheSize, setMaximumCacheSize )
 
- public:
-   QGraphicsSvgItem(QGraphicsItem *parent = nullptr);
-   QGraphicsSvgItem(const QString &fileName, QGraphicsItem *parent = nullptr);
+public:
+    QGraphicsSvgItem( QGraphicsItem *parent = nullptr );
+    QGraphicsSvgItem( const QString &fileName, QGraphicsItem *parent = nullptr );
 
-   QGraphicsSvgItem(const QGraphicsSvgItem &) = delete;
-   QGraphicsSvgItem &operator=(const QGraphicsSvgItem &) = delete;
+    QGraphicsSvgItem( const QGraphicsSvgItem & ) = delete;
+    QGraphicsSvgItem &operator=( const QGraphicsSvgItem & ) = delete;
 
-   void setSharedRenderer(QSvgRenderer *renderer);
-   QSvgRenderer *renderer() const;
+    void setSharedRenderer( QSvgRenderer *renderer );
+    QSvgRenderer *renderer() const;
 
-   void setElementId(const QString &id);
-   QString elementId() const;
+    void setElementId( const QString &id );
+    QString elementId() const;
 
-   void setCachingEnabled(bool caching);
-   bool isCachingEnabled() const;
+    void setCachingEnabled( bool caching );
+    bool isCachingEnabled() const;
 
-   void setMaximumCacheSize(const QSize &size);
-   QSize maximumCacheSize() const;
+    void setMaximumCacheSize( const QSize &size );
+    QSize maximumCacheSize() const;
 
-   QRectF boundingRect() const override;
-   void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
+    QRectF boundingRect() const override;
+    void paint( QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr ) override;
 
-   int type() const override;
+    int type() const override;
 
-   static constexpr int Type = 13;
+    static constexpr int Type = 13;
 
- private:
-   Q_DECLARE_PRIVATE_D(QGraphicsItem::d_ptr.data(), QGraphicsSvgItem)
+private:
+    Q_DECLARE_PRIVATE_D( QGraphicsItem::d_ptr.data(), QGraphicsSvgItem )
 
-   SVG_CS_SLOT_1(Private, void _q_repaintItem())
-   SVG_CS_SLOT_2(_q_repaintItem)
+    SVG_CS_SLOT_1( Private, void _q_repaintItem() )
+    SVG_CS_SLOT_2( _q_repaintItem )
 };
 
 #endif // QT_NO_GRAPHICSVIEW or QT_NO_SVGWIDGETS

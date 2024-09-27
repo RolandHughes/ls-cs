@@ -36,34 +36,34 @@ class AVFCameraService;
 
 class AVFVideoEncoderSettingsControl : public QVideoEncoderSettingsControl
 {
-   CS_OBJECT(AVFVideoEncoderSettingsControl)
+    CS_OBJECT( AVFVideoEncoderSettingsControl )
 
- public:
-   explicit AVFVideoEncoderSettingsControl(AVFCameraService *service);
+public:
+    explicit AVFVideoEncoderSettingsControl( AVFCameraService *service );
 
-   QList<QSize> supportedResolutions(const QVideoEncoderSettings &requestedVideoSettings,
-            bool *continuous = nullptr) const override;
+    QList<QSize> supportedResolutions( const QVideoEncoderSettings &requestedVideoSettings,
+                                       bool *continuous = nullptr ) const override;
 
-   QList<qreal> supportedFrameRates(const QVideoEncoderSettings &requestedVideoSettings,
-            bool *continuous = nullptr) const override;
+    QList<qreal> supportedFrameRates( const QVideoEncoderSettings &requestedVideoSettings,
+                                      bool *continuous = nullptr ) const override;
 
-   QStringList supportedVideoCodecs() const override;
-   QString videoCodecDescription(const QString &codecName) const override;
+    QStringList supportedVideoCodecs() const override;
+    QString videoCodecDescription( const QString &codecName ) const override;
 
-   QVideoEncoderSettings videoSettings() const override;
-   void setVideoSettings(const QVideoEncoderSettings &requestedVideoSettings) override;
+    QVideoEncoderSettings videoSettings() const override;
+    void setVideoSettings( const QVideoEncoderSettings &requestedVideoSettings ) override;
 
-   NSDictionary *applySettings(AVCaptureConnection *connection);
-   void unapplySettings(AVCaptureConnection *connection);
+    NSDictionary *applySettings( AVCaptureConnection *connection );
+    void unapplySettings( AVCaptureConnection *connection );
 
- private:
-   AVFCameraService *m_service;
+private:
+    AVFCameraService *m_service;
 
-   QVideoEncoderSettings m_requestedSettings;
-   QVideoEncoderSettings m_actualSettings;
+    QVideoEncoderSettings m_requestedSettings;
+    QVideoEncoderSettings m_actualSettings;
 
-   AVCaptureDeviceFormat *m_restoreFormat;
-   AVFPSRange m_restoreFps;
+    AVCaptureDeviceFormat *m_restoreFormat;
+    AVFPSRange m_restoreFps;
 };
 
 #endif

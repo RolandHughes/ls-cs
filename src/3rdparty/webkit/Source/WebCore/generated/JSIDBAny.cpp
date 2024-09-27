@@ -29,9 +29,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSIDBAny);
+ASSERT_CLASS_FITS_IN_CELL( JSIDBAny );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -42,8 +43,8 @@ ASSERT_CLASS_FITS_IN_CELL(JSIDBAny);
 
 static const HashTableValue JSIDBAnyTableValues[2] =
 {
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsIDBAnyConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsIDBAnyConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -57,43 +58,49 @@ static JSC_CONST_HASHTABLE HashTable JSIDBAnyTable = { 2, 1, JSIDBAnyTableValues
 
 static const HashTableValue JSIDBAnyConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSIDBAnyConstructorTable = { 1, 0, JSIDBAnyConstructorTableValues, 0 };
-class JSIDBAnyConstructor : public DOMConstructorObject {
+class JSIDBAnyConstructor : public DOMConstructorObject
+{
 public:
-    JSIDBAnyConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSIDBAnyConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSIDBAnyConstructor::s_info = { "IDBAnyConstructor", &DOMConstructorObject::s_info, &JSIDBAnyConstructorTable, 0 };
 
-JSIDBAnyConstructor::JSIDBAnyConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSIDBAnyConstructor::JSIDBAnyConstructor( ExecState *exec, Structure *structure, JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSIDBAnyPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSIDBAnyPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSIDBAnyConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSIDBAnyConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSIDBAnyConstructor, JSDOMWrapper>(exec, &JSIDBAnyConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSIDBAnyConstructor, JSDOMWrapper>( exec, &JSIDBAnyConstructorTable, this, propertyName, slot );
 }
 
-bool JSIDBAnyConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSIDBAnyConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSIDBAnyConstructor, JSDOMWrapper>(exec, &JSIDBAnyConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSIDBAnyConstructor, JSDOMWrapper>( exec, &JSIDBAnyConstructorTable, this, propertyName,
+            descriptor );
 }
 
 /* Hash table for prototype */
@@ -105,56 +112,57 @@ bool JSIDBAnyConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identi
 
 static const HashTableValue JSIDBAnyPrototypeTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSIDBAnyPrototypeTable = { 1, 0, JSIDBAnyPrototypeTableValues, 0 };
 const ClassInfo JSIDBAnyPrototype::s_info = { "IDBAnyPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSIDBAnyPrototypeTable, 0 };
 
-JSObject* JSIDBAnyPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSIDBAnyPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSIDBAny>(exec, globalObject);
+    return getDOMPrototype<JSIDBAny>( exec, globalObject );
 }
 
 const ClassInfo JSIDBAny::s_info = { "IDBAny", &JSDOMWrapper::s_info, &JSIDBAnyTable, 0 };
 
-JSIDBAny::JSIDBAny(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<IDBAny> impl)
-    : JSDOMWrapper(structure, globalObject)
-    , m_impl(impl)
+JSIDBAny::JSIDBAny( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<IDBAny> impl )
+    : JSDOMWrapper( structure, globalObject )
+    , m_impl( impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSIDBAny::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSIDBAny::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSIDBAnyPrototype(exec->globalData(), globalObject, JSIDBAnyPrototype::createStructure(globalObject->globalData(), globalObject->objectPrototype()));
+    return new ( exec ) JSIDBAnyPrototype( exec->globalData(), globalObject,
+                                           JSIDBAnyPrototype::createStructure( globalObject->globalData(), globalObject->objectPrototype() ) );
 }
 
-bool JSIDBAny::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSIDBAny::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSIDBAny, Base>(exec, &JSIDBAnyTable, this, propertyName, slot);
+    return getStaticValueSlot<JSIDBAny, Base>( exec, &JSIDBAnyTable, this, propertyName, slot );
 }
 
-bool JSIDBAny::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSIDBAny::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSIDBAny, Base>(exec, &JSIDBAnyTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSIDBAny, Base>( exec, &JSIDBAnyTable, this, propertyName, descriptor );
 }
 
-JSValue jsIDBAnyConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsIDBAnyConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSIDBAny* domObject = static_cast<JSIDBAny*>(asObject(slotBase));
-    return JSIDBAny::getConstructor(exec, domObject->globalObject());
+    JSIDBAny *domObject = static_cast<JSIDBAny *>( asObject( slotBase ) );
+    return JSIDBAny::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSIDBAny::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSIDBAny::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSIDBAnyConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSIDBAnyConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
-IDBAny* toIDBAny(JSC::JSValue value)
+IDBAny *toIDBAny( JSC::JSValue value )
 {
-    return value.inherits(&JSIDBAny::s_info) ? static_cast<JSIDBAny*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSIDBAny::s_info ) ? static_cast<JSIDBAny *>( asObject( value ) )->impl() : 0;
 }
 
 }

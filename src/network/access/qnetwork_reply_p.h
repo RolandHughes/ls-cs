@@ -35,8 +35,9 @@
 
 class QNetworkReplyPrivate: public QIODevicePrivate, public QNetworkHeadersPrivate
 {
- public:
-    enum ReplyState {
+public:
+    enum ReplyState
+    {
         Idle,               // The reply is idle.
         Buffering,          // The reply is buffering outgoing data.
         Working,            // The reply is uploading/downloading data.
@@ -44,30 +45,31 @@ class QNetworkReplyPrivate: public QIODevicePrivate, public QNetworkHeadersPriva
         Aborted,            // The reply has been aborted.
         WaitingForSession,  // The reply is waiting for the session to open before connecting.
         Reconnecting        // The reply will reconnect to once roaming has completed.
-   };
+    };
 
-   QNetworkReplyPrivate();
+    QNetworkReplyPrivate();
 
-   static void setManager(QNetworkReply *reply, QNetworkAccessManager *manager) {
-      reply->d_func()->manager = manager;
-   }
+    static void setManager( QNetworkReply *reply, QNetworkAccessManager *manager )
+    {
+        reply->d_func()->manager = manager;
+    }
 
-   QNetworkRequest request;
-   QNetworkRequest originalRequest;
-   QUrl url;
-   QPointer<QNetworkAccessManager> manager;
-   qint64 readBufferMaxSize;
+    QNetworkRequest request;
+    QNetworkRequest originalRequest;
+    QUrl url;
+    QPointer<QNetworkAccessManager> manager;
+    qint64 readBufferMaxSize;
 
-   QElapsedTimer downloadProgressSignalChoke;
-   QElapsedTimer uploadProgressSignalChoke;
+    QElapsedTimer downloadProgressSignalChoke;
+    QElapsedTimer uploadProgressSignalChoke;
 
-   bool emitAllUploadProgressSignals;
-   const static int progressSignalInterval;
-   QNetworkAccessManager::Operation operation;
-   QNetworkReply::NetworkError m_errorCode;
-   bool isFinished;
+    bool emitAllUploadProgressSignals;
+    const static int progressSignalInterval;
+    QNetworkAccessManager::Operation operation;
+    QNetworkReply::NetworkError m_errorCode;
+    bool isFinished;
 
-   Q_DECLARE_PUBLIC(QNetworkReply)
+    Q_DECLARE_PUBLIC( QNetworkReply )
 };
 
 #endif

@@ -37,52 +37,53 @@
 
 class QSystemSemaphorePrivate
 {
- public:
-   QSystemSemaphorePrivate();
+public:
+    QSystemSemaphorePrivate();
 
-   QString makeKeyFileName() const {
-      return QSharedMemoryPrivate::makePlatformSafeKey(key, QString("qipc_systemsem_"));
-   }
+    QString makeKeyFileName() const
+    {
+        return QSharedMemoryPrivate::makePlatformSafeKey( key, QString( "qipc_systemsem_" ) );
+    }
 
 #ifdef Q_OS_WIN
-   HANDLE handle(QSystemSemaphore::AccessMode mode = QSystemSemaphore::Open);
-   void setErrorString(const QString &function);
+    HANDLE handle( QSystemSemaphore::AccessMode mode = QSystemSemaphore::Open );
+    void setErrorString( const QString &function );
 
 #elif defined(QT_POSIX_IPC)
-   bool handle(QSystemSemaphore::AccessMode mode = QSystemSemaphore::Open);
-   void setErrorString(const QString &function);
+    bool handle( QSystemSemaphore::AccessMode mode = QSystemSemaphore::Open );
+    void setErrorString( const QString &function );
 
 #else
-   key_t handle(QSystemSemaphore::AccessMode mode = QSystemSemaphore::Open);
-   void setErrorString(const QString &function);
+    key_t handle( QSystemSemaphore::AccessMode mode = QSystemSemaphore::Open );
+    void setErrorString( const QString &function );
 
 #endif
 
-   void cleanHandle();
-   bool modifySemaphore(int count);
+    void cleanHandle();
+    bool modifySemaphore( int count );
 
-   QString key;
-   QString fileName;
-   int initialValue;
+    QString key;
+    QString fileName;
+    int initialValue;
 
 #ifdef Q_OS_WIN
-   HANDLE semaphore;
-   HANDLE semaphoreLock;
+    HANDLE semaphore;
+    HANDLE semaphoreLock;
 
 #elif defined(QT_POSIX_IPC)
-   sem_t *semaphore;
-   bool createdSemaphore;
+    sem_t *semaphore;
+    bool createdSemaphore;
 
 #else
-   key_t unix_key;
-   int semaphore;
-   bool createdFile;
-   bool createdSemaphore;
+    key_t unix_key;
+    int semaphore;
+    bool createdFile;
+    bool createdSemaphore;
 
 #endif
 
-   QString errorString;
-   QSystemSemaphore::SystemSemaphoreError error;
+    QString errorString;
+    QSystemSemaphore::SystemSemaphoreError error;
 };
 
 #endif // QT_NO_SYSTEMSEMAPHORE

@@ -32,20 +32,22 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 // This class holds one speech recognition result including the text and other related
 // fields, as received from the embedder.
-class SpeechInputResult : public RefCounted<SpeechInputResult> {
+class SpeechInputResult : public RefCounted<SpeechInputResult>
+{
 public:
-    static PassRefPtr<SpeechInputResult> create(const SpeechInputResult& source);
-    static PassRefPtr<SpeechInputResult> create(const String& utterance, double confidence);
+    static PassRefPtr<SpeechInputResult> create( const SpeechInputResult &source );
+    static PassRefPtr<SpeechInputResult> create( const String &utterance, double confidence );
 
     double confidence() const;
-    const String& utterance() const;
+    const String &utterance() const;
 
 private:
-    SpeechInputResult(const String& utterance, double confidence);
+    SpeechInputResult( const String &utterance, double confidence );
 
     String m_utterance;
     double m_confidence;

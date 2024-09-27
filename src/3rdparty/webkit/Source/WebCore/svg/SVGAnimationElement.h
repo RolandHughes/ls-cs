@@ -35,79 +35,87 @@
 #include "SVGTests.h"
 #include "UnitBezier.h"
 
-namespace WebCore {
-    
+namespace WebCore
+{
+
 class ConditionEventListener;
 class TimeContainer;
 
 class SVGAnimationElement : public SVGSMILElement,
-                            public SVGTests,
-                            public SVGExternalResourcesRequired,
-                            public ElementTimeControl {
+    public SVGTests,
+    public SVGExternalResourcesRequired,
+    public ElementTimeControl
+{
 public:
     // SVGAnimationElement
     float getStartTime() const;
     float getCurrentTime() const;
-    float getSimpleDuration(ExceptionCode&) const;
-    
+    float getSimpleDuration( ExceptionCode & ) const;
+
     // ElementTimeControl
     virtual void beginElement();
-    virtual void beginElementAt(float offset);
+    virtual void beginElementAt( float offset );
     virtual void endElement();
-    virtual void endElementAt(float offset);
+    virtual void endElementAt( float offset );
 
-    static bool isTargetAttributeCSSProperty(SVGElement*, const QualifiedName&);
+    static bool isTargetAttributeCSSProperty( SVGElement *, const QualifiedName & );
 
 protected:
-    SVGAnimationElement(const QualifiedName&, Document*);
+    SVGAnimationElement( const QualifiedName &, Document * );
 
-    virtual void parseMappedAttribute(Attribute*);
+    virtual void parseMappedAttribute( Attribute * );
 
     enum CalcMode { CalcModeDiscrete, CalcModeLinear, CalcModePaced, CalcModeSpline };
     CalcMode calcMode() const;
-    
+
     enum AttributeType { AttributeTypeCSS, AttributeTypeXML, AttributeTypeAuto };
     AttributeType attributeType() const;
-    
+
     String toValue() const;
     String byValue() const;
     String fromValue() const;
-    
+
     enum AnimationMode { NoAnimation, ToAnimation, ByAnimation, ValuesAnimation, FromToAnimation, FromByAnimation, PathAnimation };
     AnimationMode animationMode() const;
-    
+
     String targetAttributeBaseValue() const;
-    void setTargetAttributeAnimatedValue(const String&);
-    
+    void setTargetAttributeAnimatedValue( const String & );
+
     bool isAdditive() const;
     bool isAccumulated() const;
 
     // from SVGSMILElement
     virtual void startedActiveInterval();
-    virtual void updateAnimation(float percent, unsigned repeat, SVGSMILElement* resultElement);
+    virtual void updateAnimation( float percent, unsigned repeat, SVGSMILElement *resultElement );
     virtual void endedActiveInterval();
-    
-private:
-    virtual void attributeChanged(Attribute*, bool preserveDecls);
-    virtual void synchronizeProperty(const QualifiedName&);
 
-    virtual bool calculateFromAndToValues(const String& fromString, const String& toString) = 0;
-    virtual bool calculateFromAndByValues(const String& fromString, const String& byString) = 0;
-    virtual void calculateAnimatedValue(float percentage, unsigned repeat, SVGSMILElement* resultElement) = 0;
-    virtual float calculateDistance(const String& /*fromString*/, const String& /*toString*/) { return -1.f; }
-    virtual Path animationPath() const { return Path(); }
-    
-    void currentValuesForValuesAnimation(float percent, float& effectivePercent, String& from, String& to) const;
+private:
+    virtual void attributeChanged( Attribute *, bool preserveDecls );
+    virtual void synchronizeProperty( const QualifiedName & );
+
+    virtual bool calculateFromAndToValues( const String &fromString, const String &toString ) = 0;
+    virtual bool calculateFromAndByValues( const String &fromString, const String &byString ) = 0;
+    virtual void calculateAnimatedValue( float percentage, unsigned repeat, SVGSMILElement *resultElement ) = 0;
+    virtual float calculateDistance( const String & /*fromString*/, const String & /*toString*/ )
+    {
+        return -1.f;
+    }
+    virtual Path animationPath() const
+    {
+        return Path();
+    }
+
+    void currentValuesForValuesAnimation( float percent, float &effectivePercent, String &from, String &to ) const;
     void calculateKeyTimesForCalcModePaced();
-    float calculatePercentFromKeyPoints(float percent) const;
-    void currentValuesFromKeyPoints(float percent, float& effectivePercent, String& from, String& to) const;
-    float calculatePercentForSpline(float percent, unsigned splineIndex) const;
-    unsigned calculateKeyTimesIndex(float percent) const;
+    float calculatePercentFromKeyPoints( float percent ) const;
+    void currentValuesFromKeyPoints( float percent, float &effectivePercent, String &from, String &to ) const;
+    float calculatePercentForSpline( float percent, unsigned splineIndex ) const;
+    unsigned calculateKeyTimesIndex( float percent ) const;
 
     // Animated property declarations
 
     // SVGExternalResourcesRequired
-    DECLARE_ANIMATED_BOOLEAN(ExternalResourcesRequired, externalResourcesRequired)
+    DECLARE_ANIMATED_BOOLEAN( ExternalResourcesRequired, externalResourcesRequired )
 
     bool m_animationValid;
 

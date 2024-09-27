@@ -37,48 +37,56 @@
 #include "ExceptionCode.h"
 #include <wtf/OwnPtr.h>
 
-namespace WebCore {
-
-PassRefPtr<AudioBuffer> AudioBuffer::create(unsigned numberOfChannels, size_t numberOfFrames, double sampleRate)
+namespace WebCore
 {
-    return adoptRef(new AudioBuffer(numberOfChannels, numberOfFrames, sampleRate));
+
+PassRefPtr<AudioBuffer> AudioBuffer::create( unsigned numberOfChannels, size_t numberOfFrames, double sampleRate )
+{
+    return adoptRef( new AudioBuffer( numberOfChannels, numberOfFrames, sampleRate ) );
 }
 
-PassRefPtr<AudioBuffer> AudioBuffer::createFromAudioFileData(const void* data, size_t dataSize, bool mixToMono, double sampleRate)
+PassRefPtr<AudioBuffer> AudioBuffer::createFromAudioFileData( const void *data, size_t dataSize, bool mixToMono,
+        double sampleRate )
 {
-    OwnPtr<AudioBus> bus = createBusFromInMemoryAudioFile(data, dataSize, mixToMono, sampleRate);
-    if (bus.get())
-        return adoptRef(new AudioBuffer(bus.get()));
+    OwnPtr<AudioBus> bus = createBusFromInMemoryAudioFile( data, dataSize, mixToMono, sampleRate );
+
+    if ( bus.get() )
+    {
+        return adoptRef( new AudioBuffer( bus.get() ) );
+    }
 
     return 0;
 }
 
-AudioBuffer::AudioBuffer(unsigned numberOfChannels, size_t numberOfFrames, double sampleRate)
-    : m_gain(1.0)
-    , m_sampleRate(sampleRate)
-    , m_length(numberOfFrames)
+AudioBuffer::AudioBuffer( unsigned numberOfChannels, size_t numberOfFrames, double sampleRate )
+    : m_gain( 1.0 )
+    , m_sampleRate( sampleRate )
+    , m_length( numberOfFrames )
 {
-    m_channels.reserveCapacity(numberOfChannels);
+    m_channels.reserveCapacity( numberOfChannels );
 
-    for (unsigned i = 0; i < numberOfChannels; ++i) {
-        RefPtr<Float32Array> channelDataArray = Float32Array::create(m_length);
-        m_channels.append(channelDataArray);
+    for ( unsigned i = 0; i < numberOfChannels; ++i )
+    {
+        RefPtr<Float32Array> channelDataArray = Float32Array::create( m_length );
+        m_channels.append( channelDataArray );
     }
 }
 
-AudioBuffer::AudioBuffer(AudioBus* bus)
-    : m_gain(1.0)
-    , m_sampleRate(bus->sampleRate())
-    , m_length(bus->length())
+AudioBuffer::AudioBuffer( AudioBus *bus )
+    : m_gain( 1.0 )
+    , m_sampleRate( bus->sampleRate() )
+    , m_length( bus->length() )
 {
     // Copy audio data from the bus to the Float32Arrays we manage.
     unsigned numberOfChannels = bus->numberOfChannels();
-    m_channels.reserveCapacity(numberOfChannels);
-    for (unsigned i = 0; i < numberOfChannels; ++i) {
-        RefPtr<Float32Array> channelDataArray = Float32Array::create(m_length);
+    m_channels.reserveCapacity( numberOfChannels );
+
+    for ( unsigned i = 0; i < numberOfChannels; ++i )
+    {
+        RefPtr<Float32Array> channelDataArray = Float32Array::create( m_length );
         ExceptionCode ec;
-        channelDataArray->setRange(bus->channel(i)->data(), m_length, 0, ec);
-        m_channels.append(channelDataArray);
+        channelDataArray->setRange( bus->channel( i )->data(), m_length, 0, ec );
+        m_channels.append( channelDataArray );
     }
 }
 
@@ -87,20 +95,24 @@ void AudioBuffer::releaseMemory()
     m_channels.clear();
 }
 
-Float32Array* AudioBuffer::getChannelData(unsigned channelIndex)
+Float32Array *AudioBuffer::getChannelData( unsigned channelIndex )
 {
-    if (channelIndex >= m_channels.size())
+    if ( channelIndex >= m_channels.size() )
+    {
         return 0;
+    }
 
     return m_channels[channelIndex].get();
 }
 
 void AudioBuffer::zero()
 {
-    for (unsigned i = 0; i < m_channels.size(); ++i) {
-        if (getChannelData(i)) {
+    for ( unsigned i = 0; i < m_channels.size(); ++i )
+    {
+        if ( getChannelData( i ) )
+        {
             ExceptionCode ec;
-            getChannelData(i)->zeroRange(0, length(), ec);
+            getChannelData( i )->zeroRange( 0, length(), ec );
         }
     }
 }

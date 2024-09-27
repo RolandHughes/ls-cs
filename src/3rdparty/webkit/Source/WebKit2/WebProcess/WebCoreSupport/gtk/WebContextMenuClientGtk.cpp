@@ -31,9 +31,10 @@
 
 using namespace WebCore;
 
-namespace WebKit {
+namespace WebKit
+{
 
-void WebContextMenuClient::lookUpInDictionary(Frame*)
+void WebContextMenuClient::lookUpInDictionary( Frame * )
 {
     notImplemented();
 }
@@ -44,7 +45,7 @@ bool WebContextMenuClient::isSpeaking()
     return false;
 }
 
-void WebContextMenuClient::speak(const String&)
+void WebContextMenuClient::speak( const String & )
 {
     notImplemented();
 }

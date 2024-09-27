@@ -33,29 +33,41 @@
 #include <wtf/RefCounted.h>
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class GeolocationError : public RefCounted<GeolocationError> {
+class GeolocationError : public RefCounted<GeolocationError>
+{
 public:
-    enum ErrorCode {
+    enum ErrorCode
+    {
         PermissionDenied,
         PositionUnavailable
     };
 
-    static PassRefPtr<GeolocationError> create(ErrorCode code, const String& message) { return adoptRef(new GeolocationError(code, message)); }
+    static PassRefPtr<GeolocationError> create( ErrorCode code, const String &message )
+    {
+        return adoptRef( new GeolocationError( code, message ) );
+    }
 
-    ErrorCode code() const { return m_code; }
-    const String& message() const { return m_message; }
+    ErrorCode code() const
+    {
+        return m_code;
+    }
+    const String &message() const
+    {
+        return m_message;
+    }
 
 private:
-    GeolocationError(ErrorCode code, const String& message)
-        : m_code(code)
-        , m_message(message)
+    GeolocationError( ErrorCode code, const String &message )
+        : m_code( code )
+        , m_message( message )
     {
     }
 
     ErrorCode m_code;
-    String m_message; 
+    String m_message;
 };
 
 } // namespace WebCore

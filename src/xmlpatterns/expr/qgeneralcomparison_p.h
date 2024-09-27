@@ -28,54 +28,56 @@
 #include <qpaircontainer_p.h>
 #include <qcomparisonplatform_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class GeneralComparison : public PairContainer, public ComparisonPlatform<GeneralComparison,
-   true /* We want to report errors. */, AtomicComparator::AsGeneralComparison>
+    true /* We want to report errors. */, AtomicComparator::AsGeneralComparison>
 {
- public:
-   GeneralComparison(const Expression::Ptr &op1,
-                     const AtomicComparator::Operator op,
-                     const Expression::Ptr &op2,
-                     const bool isBackwardsCompat = false);
+public:
+    GeneralComparison( const Expression::Ptr &op1,
+                       const AtomicComparator::Operator op,
+                       const Expression::Ptr &op2,
+                       const bool isBackwardsCompat = false );
 
-   bool evaluateEBV(const DynamicContext::Ptr &) const override;
-   Expression::Ptr typeCheck(const StaticContext::Ptr &context, const SequenceType::Ptr &reqType) override;
+    bool evaluateEBV( const DynamicContext::Ptr & ) const override;
+    Expression::Ptr typeCheck( const StaticContext::Ptr &context, const SequenceType::Ptr &reqType ) override;
 
-   SequenceType::List expectedOperandTypes() const override;
-   SequenceType::Ptr staticType() const override;
+    SequenceType::List expectedOperandTypes() const override;
+    SequenceType::Ptr staticType() const override;
 
-   ExpressionVisitorResult::Ptr accept(const ExpressionVisitor::Ptr &visitor) const override;
+    ExpressionVisitorResult::Ptr accept( const ExpressionVisitor::Ptr &visitor ) const override;
 
-   /**
-    * @returns always IDGeneralComparison
-    */
-   ID id() const override;
+    /**
+     * @returns always IDGeneralComparison
+     */
+    ID id() const override;
 
-   QList<QExplicitlySharedDataPointer<OptimizationPass> > optimizationPasses() const override;
+    QList<QExplicitlySharedDataPointer<OptimizationPass> > optimizationPasses() const override;
 
-   /**
-    * @returns the operator that this GeneralComparison is using.
-    */
-   AtomicComparator::Operator operatorID() const {
-      return m_operator;
-   }
+    /**
+     * @returns the operator that this GeneralComparison is using.
+     */
+    AtomicComparator::Operator operatorID() const
+    {
+        return m_operator;
+    }
 
-   /**
-    * Overridden to optimize case-insensitive compares.
-    */
-   Expression::Ptr compress(const StaticContext::Ptr &context) override;
+    /**
+     * Overridden to optimize case-insensitive compares.
+     */
+    Expression::Ptr compress( const StaticContext::Ptr &context ) override;
 
- private:
-   static inline void updateType(ItemType::Ptr &type, const Expression::Ptr &source);
+private:
+    static inline void updateType( ItemType::Ptr &type, const Expression::Ptr &source );
 
-   AtomicComparator::Ptr fetchGeneralComparator(Expression::Ptr &op1,
-         Expression::Ptr &op2, const ReportContext::Ptr &context) const;
+    AtomicComparator::Ptr fetchGeneralComparator( Expression::Ptr &op1,
+            Expression::Ptr &op2, const ReportContext::Ptr &context ) const;
 
-   bool generalCompare(const Item &op1, const Item &op2, const DynamicContext::Ptr &context) const;
+    bool generalCompare( const Item &op1, const Item &op2, const DynamicContext::Ptr &context ) const;
 
-   const AtomicComparator::Operator m_operator;
-   const bool m_isBackwardsCompat;
+    const AtomicComparator::Operator m_operator;
+    const bool m_isBackwardsCompat;
 };
 }
 

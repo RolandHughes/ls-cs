@@ -28,25 +28,25 @@
 #include <qmediaplayercontrol.h>
 
 class DSServicePlugin
-   : public QMediaServiceProviderPlugin, public QMediaServiceSupportedDevicesInterface,
-     public QMediaServiceDefaultDeviceInterface, public QMediaServiceFeaturesInterface
+    : public QMediaServiceProviderPlugin, public QMediaServiceSupportedDevicesInterface,
+      public QMediaServiceDefaultDeviceInterface, public QMediaServiceFeaturesInterface
 {
-   CS_OBJECT_MULTIPLE(DSServicePlugin, QMediaServiceProviderPlugin)
+    CS_OBJECT_MULTIPLE( DSServicePlugin, QMediaServiceProviderPlugin )
 
-   CS_PLUGIN_IID(QMediaServiceProviderInterface_ID)
-   CS_PLUGIN_KEY(QString(Q_MEDIASERVICE_MEDIAPLAYER) + ", " + Q_MEDIASERVICE_CAMERA)
+    CS_PLUGIN_IID( QMediaServiceProviderInterface_ID )
+    CS_PLUGIN_KEY( QString( Q_MEDIASERVICE_MEDIAPLAYER ) + ", " + Q_MEDIASERVICE_CAMERA )
 
-   CS_INTERFACES(QMediaServiceSupportedDevicesInterface, QMediaServiceDefaultDeviceInterface, QMediaServiceFeaturesInterface)
+    CS_INTERFACES( QMediaServiceSupportedDevicesInterface, QMediaServiceDefaultDeviceInterface, QMediaServiceFeaturesInterface )
 
- public:
-   QMediaService *create(const QString  &key) override;
-   void release(QMediaService *service) override;
+public:
+    QMediaService *create( const QString  &key ) override;
+    void release( QMediaService *service ) override;
 
-   QMediaServiceProviderHint::Features supportedFeatures(const QString  &service) const override;
+    QMediaServiceProviderHint::Features supportedFeatures( const QString  &service ) const override;
 
-   QString  defaultDevice(const QString &service) const override;
-   QList<QString > devices(const QString  &service) const override;
-   QString deviceDescription(const QString  &service, const QString  &device) override;
+    QString  defaultDevice( const QString &service ) const override;
+    QList<QString > devices( const QString  &service ) const override;
+    QString deviceDescription( const QString  &service, const QString  &device ) override;
 };
 
 #endif

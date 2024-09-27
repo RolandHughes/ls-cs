@@ -21,13 +21,13 @@
 
 #include <cs_catch2.h>
 
-TEST_CASE("QFuture traits", "[qfuture]")
+TEST_CASE( "QFuture traits", "[qfuture]" )
 {
-   REQUIRE(std::is_copy_constructible_v<QFuture<int>> == true);
-   REQUIRE(std::is_move_constructible_v<QFuture<int>> == true);
+    REQUIRE( std::is_copy_constructible_v<QFuture<int>> == true );
+    REQUIRE( std::is_move_constructible_v<QFuture<int>> == true );
 
-   REQUIRE(std::is_copy_assignable_v<QFuture<int>> == true);
-   REQUIRE(std::is_move_assignable_v<QFuture<int>> == true);
+    REQUIRE( std::is_copy_assignable_v<QFuture<int>> == true );
+    REQUIRE( std::is_move_assignable_v<QFuture<int>> == true );
 
-   REQUIRE(std::has_virtual_destructor_v<QFuture<int>> == false);
+    REQUIRE( std::has_virtual_destructor_v<QFuture<int>> == false );
 }

@@ -27,18 +27,18 @@
 #include <qdebug.h>
 #include <qwindowsysteminterface.h>
 
-QWindowsGuiEventDispatcher::QWindowsGuiEventDispatcher(QObject *parent) :
-    QEventDispatcherWin32(parent), m_flags(Qt::EmptyFlag)
+QWindowsGuiEventDispatcher::QWindowsGuiEventDispatcher( QObject *parent ) :
+    QEventDispatcherWin32( parent ), m_flags( Qt::EmptyFlag )
 {
-    setObjectName("QWindowsGuiEventDispatcher");
+    setObjectName( "QWindowsGuiEventDispatcher" );
     createInternalHwnd();                            // Do not delay registering timers, etc. for QtMfc.
 }
 
-bool QWindowsGuiEventDispatcher::processEvents(QEventLoop::ProcessEventsFlags flags)
+bool QWindowsGuiEventDispatcher::processEvents( QEventLoop::ProcessEventsFlags flags )
 {
     const QEventLoop::ProcessEventsFlags oldFlags = m_flags;
     m_flags = flags;
-    const bool rc = QEventDispatcherWin32::processEvents(flags);
+    const bool rc = QEventDispatcherWin32::processEvents( flags );
     m_flags = oldFlags;
     return rc;
 }
@@ -46,7 +46,7 @@ bool QWindowsGuiEventDispatcher::processEvents(QEventLoop::ProcessEventsFlags fl
 void QWindowsGuiEventDispatcher::sendPostedEvents()
 {
     QEventDispatcherWin32::sendPostedEvents();
-    QWindowSystemInterface::sendWindowSystemEvents(m_flags);
+    QWindowSystemInterface::sendWindowSystemEvents( m_flags );
 }
 
 // Helpers for printing debug output for WM_* messages.
@@ -58,7 +58,8 @@ struct MessageDebugEntry
 };
 
 static const MessageDebugEntry
-messageDebugEntries[] = {
+messageDebugEntries[] =
+{
     {WM_CREATE, "WM_CREATE", true},
     {WM_PAINT, "WM_PAINT", true},
     {WM_CLOSE, "WM_CLOSE", true},
@@ -154,19 +155,24 @@ messageDebugEntries[] = {
     {WM_THEMECHANGED, "WM_THEMECHANGED", true}
 };
 
-static inline const MessageDebugEntry *messageDebugEntry(UINT msg)
+static inline const MessageDebugEntry *messageDebugEntry( UINT msg )
 {
-    for (size_t i = 0; i < sizeof(messageDebugEntries)/sizeof(MessageDebugEntry); i++)
-        if (messageDebugEntries[i].message == msg)
+    for ( size_t i = 0; i < sizeof( messageDebugEntries )/sizeof( MessageDebugEntry ); i++ )
+        if ( messageDebugEntries[i].message == msg )
+        {
             return messageDebugEntries + i;
+        }
 
     return nullptr;
 }
 
-const char *QWindowsGuiEventDispatcher::windowsMessageName(UINT msg)
+const char *QWindowsGuiEventDispatcher::windowsMessageName( UINT msg )
 {
-    if (const MessageDebugEntry *e = messageDebugEntry(msg))
+    if ( const MessageDebugEntry *e = messageDebugEntry( msg ) )
+    {
         return e->description;
+    }
+
     return "Unknown";
 }
 

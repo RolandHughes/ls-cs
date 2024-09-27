@@ -24,7 +24,8 @@
 #include "SVGAnimatedPropertyTearOff.h"
 #include "SVGLength.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 typedef SVGAnimatedPropertyTearOff<SVGLength> SVGAnimatedLength;
 

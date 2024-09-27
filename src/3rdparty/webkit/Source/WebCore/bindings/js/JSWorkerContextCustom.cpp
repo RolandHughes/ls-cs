@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -51,98 +51,127 @@
 
 using namespace JSC;
 
-namespace WebCore {
-
-void JSWorkerContext::visitChildren(SlotVisitor& visitor)
+namespace WebCore
 {
-    Base::visitChildren(visitor);
 
-    if (WorkerLocation* location = impl()->optionalLocation())
-        visitor.addOpaqueRoot(location);
-    if (WorkerNavigator* navigator = impl()->optionalNavigator())
-        visitor.addOpaqueRoot(navigator);
+void JSWorkerContext::visitChildren( SlotVisitor &visitor )
+{
+    Base::visitChildren( visitor );
 
-    impl()->visitJSEventListeners(visitor);
+    if ( WorkerLocation *location = impl()->optionalLocation() )
+    {
+        visitor.addOpaqueRoot( location );
+    }
+
+    if ( WorkerNavigator *navigator = impl()->optionalNavigator() )
+    {
+        visitor.addOpaqueRoot( navigator );
+    }
+
+    impl()->visitJSEventListeners( visitor );
 }
 
-bool JSWorkerContext::getOwnPropertySlotDelegate(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSWorkerContext::getOwnPropertySlotDelegate( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
     // Look for overrides before looking at any of our own properties.
-    if (JSGlobalObject::getOwnPropertySlot(exec, propertyName, slot))
+    if ( JSGlobalObject::getOwnPropertySlot( exec, propertyName, slot ) )
+    {
         return true;
+    }
+
     return false;
 }
 
-bool JSWorkerContext::getOwnPropertyDescriptorDelegate(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSWorkerContext::getOwnPropertyDescriptorDelegate( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
     // Look for overrides before looking at any of our own properties.
-    if (JSGlobalObject::getOwnPropertyDescriptor(exec, propertyName, descriptor))
+    if ( JSGlobalObject::getOwnPropertyDescriptor( exec, propertyName, descriptor ) )
+    {
         return true;
+    }
+
     return false;
 }
 
 #if ENABLE(EVENTSOURCE)
-JSValue JSWorkerContext::eventSource(ExecState* exec) const
+JSValue JSWorkerContext::eventSource( ExecState *exec ) const
 {
-    return getDOMConstructor<JSEventSourceConstructor>(exec, this);
+    return getDOMConstructor<JSEventSourceConstructor>( exec, this );
 }
 #endif
 
-JSValue JSWorkerContext::xmlHttpRequest(ExecState* exec) const
+JSValue JSWorkerContext::xmlHttpRequest( ExecState *exec ) const
 {
-    return getDOMConstructor<JSXMLHttpRequestConstructor>(exec, this);
+    return getDOMConstructor<JSXMLHttpRequestConstructor>( exec, this );
 }
 
 #if ENABLE(WEB_SOCKETS)
-JSValue JSWorkerContext::webSocket(ExecState* exec) const
+JSValue JSWorkerContext::webSocket( ExecState *exec ) const
 {
-    return getDOMConstructor<JSWebSocketConstructor>(exec, this);
+    return getDOMConstructor<JSWebSocketConstructor>( exec, this );
 }
 #endif
 
-JSValue JSWorkerContext::importScripts(ExecState* exec)
+JSValue JSWorkerContext::importScripts( ExecState *exec )
 {
-    if (!exec->argumentCount())
+    if ( !exec->argumentCount() )
+    {
         return jsUndefined();
+    }
 
     Vector<String> urls;
-    for (unsigned i = 0; i < exec->argumentCount(); i++) {
-        urls.append(ustringToString(exec->argument(i).toString(exec)));
-        if (exec->hadException())
+
+    for ( unsigned i = 0; i < exec->argumentCount(); i++ )
+    {
+        urls.append( ustringToString( exec->argument( i ).toString( exec ) ) );
+
+        if ( exec->hadException() )
+        {
             return jsUndefined();
+        }
     }
+
     ExceptionCode ec = 0;
 
-    impl()->importScripts(urls, ec);
-    setDOMException(exec, ec);
+    impl()->importScripts( urls, ec );
+    setDOMException( exec, ec );
     return jsUndefined();
 }
 
-JSValue JSWorkerContext::setTimeout(ExecState* exec)
+JSValue JSWorkerContext::setTimeout( ExecState *exec )
 {
     // FIXME: Should we enforce a Content-Security-Policy on workers?
-    OwnPtr<ScheduledAction> action = ScheduledAction::create(exec, currentWorld(exec), 0);
-    if (exec->hadException())
+    OwnPtr<ScheduledAction> action = ScheduledAction::create( exec, currentWorld( exec ), 0 );
+
+    if ( exec->hadException() )
+    {
         return jsUndefined();
-    int delay = exec->argument(1).toInt32(exec);
-    return jsNumber(impl()->setTimeout(action.release(), delay));
+    }
+
+    int delay = exec->argument( 1 ).toInt32( exec );
+    return jsNumber( impl()->setTimeout( action.release(), delay ) );
 }
 
-JSValue JSWorkerContext::setInterval(ExecState* exec)
+JSValue JSWorkerContext::setInterval( ExecState *exec )
 {
     // FIXME: Should we enforce a Content-Security-Policy on workers?
-    OwnPtr<ScheduledAction> action = ScheduledAction::create(exec, currentWorld(exec), 0);
-    if (exec->hadException())
+    OwnPtr<ScheduledAction> action = ScheduledAction::create( exec, currentWorld( exec ), 0 );
+
+    if ( exec->hadException() )
+    {
         return jsUndefined();
-    int delay = exec->argument(1).toInt32(exec);
-    return jsNumber(impl()->setInterval(action.release(), delay));
+    }
+
+    int delay = exec->argument( 1 ).toInt32( exec );
+    return jsNumber( impl()->setInterval( action.release(), delay ) );
 }
 
 
 #if ENABLE(CHANNEL_MESSAGING)
-JSValue JSWorkerContext::messageChannel(ExecState* exec) const
+JSValue JSWorkerContext::messageChannel( ExecState *exec ) const
 {
-    return getDOMConstructor<JSMessageChannelConstructor>(exec, this);
+    return getDOMConstructor<JSMessageChannelConstructor>( exec, this );
 }
 #endif
 

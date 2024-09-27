@@ -34,59 +34,60 @@ class QMimeData;
 
 class QWindowsMime
 {
- public:
-   QWindowsMime();
+public:
+    QWindowsMime();
 
-   QWindowsMime(const QWindowsMime &) = delete;
-   QWindowsMime &operator=(const QWindowsMime &) = delete;
+    QWindowsMime( const QWindowsMime & ) = delete;
+    QWindowsMime &operator=( const QWindowsMime & ) = delete;
 
-   virtual ~QWindowsMime();
+    virtual ~QWindowsMime();
 
-   // for converting from CS
-   virtual bool canConvertFromMime(const FORMATETC &formatetc, const QMimeData *mimeData) const = 0;
-   virtual bool convertFromMime(const FORMATETC &formatetc, const QMimeData *mimeData, STGMEDIUM *pmedium) const = 0;
-   virtual QVector<FORMATETC> formatsForMime(const QString &mimeType, const QMimeData *mimeData) const = 0;
+    // for converting from CS
+    virtual bool canConvertFromMime( const FORMATETC &formatetc, const QMimeData *mimeData ) const = 0;
+    virtual bool convertFromMime( const FORMATETC &formatetc, const QMimeData *mimeData, STGMEDIUM *pmedium ) const = 0;
+    virtual QVector<FORMATETC> formatsForMime( const QString &mimeType, const QMimeData *mimeData ) const = 0;
 
-   virtual bool canConvertToMime(const QString &mimeType, IDataObject *pDataObj) const = 0;
-   virtual QVariant convertToMime(const QString &mimeType, IDataObject *pDataObj, QVariant::Type preferredType) const = 0;
-   virtual QString mimeForFormat(const FORMATETC &formatetc) const = 0;
+    virtual bool canConvertToMime( const QString &mimeType, IDataObject *pDataObj ) const = 0;
+    virtual QVariant convertToMime( const QString &mimeType, IDataObject *pDataObj, QVariant::Type preferredType ) const = 0;
+    virtual QString mimeForFormat( const FORMATETC &formatetc ) const = 0;
 
-   static int registerMimeType(const QString &mime);
+    static int registerMimeType( const QString &mime );
 };
 
 class QWindowsMimeConverter
 {
- public:
-   QWindowsMimeConverter();
+public:
+    QWindowsMimeConverter();
 
-   QWindowsMimeConverter(const QWindowsMimeConverter &) = delete;
-   QWindowsMimeConverter &operator=(const QWindowsMimeConverter &) = delete;
+    QWindowsMimeConverter( const QWindowsMimeConverter & ) = delete;
+    QWindowsMimeConverter &operator=( const QWindowsMimeConverter & ) = delete;
 
-   ~QWindowsMimeConverter();
+    ~QWindowsMimeConverter();
 
-   QWindowsMime *converterToMime(const QString &mimeType, IDataObject *pDataObj) const;
-   QStringList allMimesForFormats(IDataObject *pDataObj) const;
-   QWindowsMime *converterFromMime(const FORMATETC &formatetc, const QMimeData *mimeData) const;
-   QVector<FORMATETC> allFormatsForMime(const QMimeData *mimeData) const;
+    QWindowsMime *converterToMime( const QString &mimeType, IDataObject *pDataObj ) const;
+    QStringList allMimesForFormats( IDataObject *pDataObj ) const;
+    QWindowsMime *converterFromMime( const FORMATETC &formatetc, const QMimeData *mimeData ) const;
+    QVector<FORMATETC> allFormatsForMime( const QMimeData *mimeData ) const;
 
-   QVariant convertToMime(const QStringList &mimeTypes, IDataObject *pDataObj, QVariant::Type preferredType,
-      QString *format = nullptr) const;
+    QVariant convertToMime( const QStringList &mimeTypes, IDataObject *pDataObj, QVariant::Type preferredType,
+                            QString *format = nullptr ) const;
 
-   void registerMime(QWindowsMime *mime);
-   void unregisterMime(QWindowsMime *mime) {
-      m_mimes.removeOne(mime);
-   }
+    void registerMime( QWindowsMime *mime );
+    void unregisterMime( QWindowsMime *mime )
+    {
+        m_mimes.removeOne( mime );
+    }
 
-   static QString clipboardFormatName(int cf);
+    static QString clipboardFormatName( int cf );
 
- private:
-   void ensureInitialized() const;
+private:
+    void ensureInitialized() const;
 
-   mutable QList<QWindowsMime *> m_mimes;
-   mutable int m_internalMimeCount;
+    mutable QList<QWindowsMime *> m_mimes;
+    mutable int m_internalMimeCount;
 };
 
-QDebug operator<<(QDebug debug, const FORMATETC &);
-QDebug operator<<(QDebug debug, IDataObject *);
+QDebug operator<<( QDebug debug, const FORMATETC & );
+QDebug operator<<( QDebug debug, IDataObject * );
 
 #endif // QWINDOWSMIME_H

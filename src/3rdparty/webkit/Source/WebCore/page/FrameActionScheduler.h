@@ -32,33 +32,39 @@
 #include <wtf/PassOwnPtr.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Node;
 class Event;
 
-class FrameAction {
+class FrameAction
+{
     WTF_MAKE_FAST_ALLOCATED;
-    WTF_MAKE_NONCOPYABLE(FrameAction);
+    WTF_MAKE_NONCOPYABLE( FrameAction );
 public:
     FrameAction() {}
     virtual ~FrameAction() {}
     virtual void fire() = 0;
 };
 
-class FrameActionScheduler {
+class FrameActionScheduler
+{
 public:
     FrameActionScheduler();
     ~FrameActionScheduler();
 
     bool isEmpty() const;
-    bool isScheduled() const { return 0 < m_enqueueActions; }
+    bool isScheduled() const
+    {
+        return 0 < m_enqueueActions;
+    }
     void clear();
     void pause();
     void resume();
 
-    void scheduleAction(PassOwnPtr<FrameAction>);
-    void scheduleEvent(PassRefPtr<Event>, PassRefPtr<Node>);
+    void scheduleAction( PassOwnPtr<FrameAction> );
+    void scheduleEvent( PassRefPtr<Event>, PassRefPtr<Node> );
 
 private:
     void dispatch();

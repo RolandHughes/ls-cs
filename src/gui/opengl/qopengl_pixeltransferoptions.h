@@ -37,42 +37,44 @@ class Q_GUI_EXPORT QOpenGLPixelTransferOptions
 {
 public:
     QOpenGLPixelTransferOptions();
-    QOpenGLPixelTransferOptions(const QOpenGLPixelTransferOptions &);
+    QOpenGLPixelTransferOptions( const QOpenGLPixelTransferOptions & );
 
-    QOpenGLPixelTransferOptions &operator=(QOpenGLPixelTransferOptions &&other)
+    QOpenGLPixelTransferOptions &operator=( QOpenGLPixelTransferOptions &&other )
     {
-      swap(other);
-      return *this;
+        swap( other );
+        return *this;
     }
 
-    QOpenGLPixelTransferOptions &operator=(const QOpenGLPixelTransferOptions &);
+    QOpenGLPixelTransferOptions &operator=( const QOpenGLPixelTransferOptions & );
     ~QOpenGLPixelTransferOptions();
 
-    void swap(QOpenGLPixelTransferOptions &other)
-    { data.swap(other.data); }
+    void swap( QOpenGLPixelTransferOptions &other )
+    {
+        data.swap( other.data );
+    }
 
-    void setAlignment(int alignment);
+    void setAlignment( int alignment );
     int alignment() const;
 
-    void setSkipImages(int skipImages);
+    void setSkipImages( int skipImages );
     int skipImages() const;
 
-    void setSkipRows(int skipRows);
+    void setSkipRows( int skipRows );
     int skipRows() const;
 
-    void setSkipPixels(int skipPixels);
+    void setSkipPixels( int skipPixels );
     int skipPixels() const;
 
-    void setImageHeight(int imageHeight);
+    void setImageHeight( int imageHeight );
     int imageHeight() const;
 
-    void setRowLength(int rowLength);
+    void setRowLength( int rowLength );
     int rowLength() const;
 
-    void setLeastSignificantByteFirst(bool lsbFirst);
+    void setLeastSignificantByteFirst( bool lsbFirst );
     bool isLeastSignificantBitFirst() const;
 
-    void setSwapBytesEnabled(bool swapBytes);
+    void setSwapBytesEnabled( bool swapBytes );
     bool isSwapBytesEnabled() const;
 
 private:

@@ -32,7 +32,8 @@
 #include <wtf/text/AtomicStringHash.h>
 #include <wtf/text/StringBuilder.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class ArrayBuffer;
 class Blob;
@@ -43,128 +44,174 @@ class SharedBuffer;
 class TextResourceDecoder;
 class ThreadableLoader;
 
-class XMLHttpRequest : public RefCounted<XMLHttpRequest>, public EventTarget, private ThreadableLoaderClient, public ActiveDOMObject {
+class XMLHttpRequest : public RefCounted<XMLHttpRequest>, public EventTarget, private ThreadableLoaderClient,
+    public ActiveDOMObject
+{
     WTF_MAKE_FAST_ALLOCATED;
 public:
-    static PassRefPtr<XMLHttpRequest> create(ScriptExecutionContext* context) { return adoptRef(new XMLHttpRequest(context)); }
+    static PassRefPtr<XMLHttpRequest> create( ScriptExecutionContext *context )
+    {
+        return adoptRef( new XMLHttpRequest( context ) );
+    }
     ~XMLHttpRequest();
 
     // These exact numeric values are important because JS expects them.
-    enum State {
+    enum State
+    {
         UNSENT = 0,
         OPENED = 1,
         HEADERS_RECEIVED = 2,
         LOADING = 3,
         DONE = 4
     };
-    
-    enum ResponseTypeCode {
+
+    enum ResponseTypeCode
+    {
         ResponseTypeDefault,
-        ResponseTypeText, 
+        ResponseTypeText,
         ResponseTypeDocument,
         ResponseTypeBlob,
         ResponseTypeArrayBuffer
     };
 
-    virtual XMLHttpRequest* toXMLHttpRequest() { return this; }
+    virtual XMLHttpRequest *toXMLHttpRequest()
+    {
+        return this;
+    }
 
     virtual void contextDestroyed();
     virtual bool canSuspend() const;
-    virtual void suspend(ReasonForSuspension);
+    virtual void suspend( ReasonForSuspension );
     virtual void resume();
     virtual void stop();
 
-    virtual ScriptExecutionContext* scriptExecutionContext() const;
+    virtual ScriptExecutionContext *scriptExecutionContext() const;
 
-    const KURL& url() const { return m_url; }
-    String statusText(ExceptionCode&) const;
-    int status(ExceptionCode&) const;
+    const KURL &url() const
+    {
+        return m_url;
+    }
+    String statusText( ExceptionCode & ) const;
+    int status( ExceptionCode & ) const;
     State readyState() const;
-    bool withCredentials() const { return m_includeCredentials; }
-    void setWithCredentials(bool, ExceptionCode&);
+    bool withCredentials() const
+    {
+        return m_includeCredentials;
+    }
+    void setWithCredentials( bool, ExceptionCode & );
 #if ENABLE(XHR_RESPONSE_BLOB)
-    bool asBlob() const { return responseTypeCode() == ResponseTypeBlob; }
-    void setAsBlob(bool, ExceptionCode&);
+    bool asBlob() const
+    {
+        return responseTypeCode() == ResponseTypeBlob;
+    }
+    void setAsBlob( bool, ExceptionCode & );
 #endif
-    void open(const String& method, const KURL&, ExceptionCode&);
-    void open(const String& method, const KURL&, bool async, ExceptionCode&);
-    void open(const String& method, const KURL&, bool async, const String& user, ExceptionCode&);
-    void open(const String& method, const KURL&, bool async, const String& user, const String& password, ExceptionCode&);
-    void send(ExceptionCode&);
-    void send(Document*, ExceptionCode&);
-    void send(const String&, ExceptionCode&);
-    void send(Blob*, ExceptionCode&);
-    void send(DOMFormData*, ExceptionCode&);
-    void send(ArrayBuffer*, ExceptionCode&);
+    void open( const String &method, const KURL &, ExceptionCode & );
+    void open( const String &method, const KURL &, bool async, ExceptionCode & );
+    void open( const String &method, const KURL &, bool async, const String &user, ExceptionCode & );
+    void open( const String &method, const KURL &, bool async, const String &user, const String &password, ExceptionCode & );
+    void send( ExceptionCode & );
+    void send( Document *, ExceptionCode & );
+    void send( const String &, ExceptionCode & );
+    void send( Blob *, ExceptionCode & );
+    void send( DOMFormData *, ExceptionCode & );
+    void send( ArrayBuffer *, ExceptionCode & );
     void abort();
-    void setRequestHeader(const AtomicString& name, const String& value, ExceptionCode&);
-    void overrideMimeType(const String& override);
-    String getAllResponseHeaders(ExceptionCode&) const;
-    String getResponseHeader(const AtomicString& name, ExceptionCode&) const;
-    String responseText(ExceptionCode&);
-    Document* responseXML(ExceptionCode&);
-    Document* optionalResponseXML() const { return m_responseXML.get(); }
+    void setRequestHeader( const AtomicString &name, const String &value, ExceptionCode & );
+    void overrideMimeType( const String &override );
+    String getAllResponseHeaders( ExceptionCode & ) const;
+    String getResponseHeader( const AtomicString &name, ExceptionCode & ) const;
+    String responseText( ExceptionCode & );
+    Document *responseXML( ExceptionCode & );
+    Document *optionalResponseXML() const
+    {
+        return m_responseXML.get();
+    }
 #if ENABLE(XHR_RESPONSE_BLOB)
-    Blob* responseBlob(ExceptionCode&) const;
-    Blob* optionalResponseBlob() const { return m_responseBlob.get(); }
+    Blob *responseBlob( ExceptionCode & ) const;
+    Blob *optionalResponseBlob() const
+    {
+        return m_responseBlob.get();
+    }
 #endif
 
-    void setResponseType(const String&, ExceptionCode&);
+    void setResponseType( const String &, ExceptionCode & );
     String responseType();
-    ResponseTypeCode responseTypeCode() const { return m_responseTypeCode; }
-    
+    ResponseTypeCode responseTypeCode() const
+    {
+        return m_responseTypeCode;
+    }
+
     // response attribute has custom getter.
-    ArrayBuffer* responseArrayBuffer(ExceptionCode&);
-    ArrayBuffer* optionalResponseArrayBuffer() const { return m_responseArrayBuffer.get(); }
+    ArrayBuffer *responseArrayBuffer( ExceptionCode & );
+    ArrayBuffer *optionalResponseArrayBuffer() const
+    {
+        return m_responseArrayBuffer.get();
+    }
 
-    void setLastSendLineNumber(unsigned lineNumber) { m_lastSendLineNumber = lineNumber; }
-    void setLastSendURL(const String& url) { m_lastSendURL = url; }
+    void setLastSendLineNumber( unsigned lineNumber )
+    {
+        m_lastSendLineNumber = lineNumber;
+    }
+    void setLastSendURL( const String &url )
+    {
+        m_lastSendURL = url;
+    }
 
-    XMLHttpRequestUpload* upload();
-    XMLHttpRequestUpload* optionalUpload() const { return m_upload.get(); }
+    XMLHttpRequestUpload *upload();
+    XMLHttpRequestUpload *optionalUpload() const
+    {
+        return m_upload.get();
+    }
 
-    DEFINE_ATTRIBUTE_EVENT_LISTENER(readystatechange);
-    DEFINE_ATTRIBUTE_EVENT_LISTENER(abort);
-    DEFINE_ATTRIBUTE_EVENT_LISTENER(error);
-    DEFINE_ATTRIBUTE_EVENT_LISTENER(load);
-    DEFINE_ATTRIBUTE_EVENT_LISTENER(loadstart);
-    DEFINE_ATTRIBUTE_EVENT_LISTENER(progress);
+    DEFINE_ATTRIBUTE_EVENT_LISTENER( readystatechange );
+    DEFINE_ATTRIBUTE_EVENT_LISTENER( abort );
+    DEFINE_ATTRIBUTE_EVENT_LISTENER( error );
+    DEFINE_ATTRIBUTE_EVENT_LISTENER( load );
+    DEFINE_ATTRIBUTE_EVENT_LISTENER( loadstart );
+    DEFINE_ATTRIBUTE_EVENT_LISTENER( progress );
 
     using RefCounted<XMLHttpRequest>::ref;
     using RefCounted<XMLHttpRequest>::deref;
 
 private:
-    XMLHttpRequest(ScriptExecutionContext*);
+    XMLHttpRequest( ScriptExecutionContext * );
 
-    virtual void refEventTarget() { ref(); }
-    virtual void derefEventTarget() { deref(); }
-    virtual EventTargetData* eventTargetData();
-    virtual EventTargetData* ensureEventTargetData();
+    virtual void refEventTarget()
+    {
+        ref();
+    }
+    virtual void derefEventTarget()
+    {
+        deref();
+    }
+    virtual EventTargetData *eventTargetData();
+    virtual EventTargetData *ensureEventTargetData();
 
-    Document* document() const;
+    Document *document() const;
 
 #if ENABLE(DASHBOARD_SUPPORT)
     bool usesDashboardBackwardCompatibilityMode() const;
 #endif
 
-    virtual void didSendData(unsigned long long bytesSent, unsigned long long totalBytesToBeSent);
-    virtual void didReceiveResponse(const ResourceResponse&);
-    virtual void didReceiveData(const char* data, int dataLength);
-    virtual void didFinishLoading(unsigned long identifier, double finishTime);
-    virtual void didFail(const ResourceError&);
+    virtual void didSendData( unsigned long long bytesSent, unsigned long long totalBytesToBeSent );
+    virtual void didReceiveResponse( const ResourceResponse & );
+    virtual void didReceiveData( const char *data, int dataLength );
+    virtual void didFinishLoading( unsigned long identifier, double finishTime );
+    virtual void didFail( const ResourceError & );
     virtual void didFailRedirectCheck();
-    virtual void didReceiveAuthenticationCancellation(const ResourceResponse&);
+    virtual void didReceiveAuthenticationCancellation( const ResourceResponse & );
 
     String responseMIMEType() const;
     bool responseIsXML() const;
 
-    bool initSend(ExceptionCode&);
+    bool initSend( ExceptionCode & );
 
-    String getRequestHeader(const AtomicString& name) const;
-    void setRequestHeaderInternal(const AtomicString& name, const String& value);
-    bool isSafeRequestHeader(const String&) const;
+    String getRequestHeader( const AtomicString &name ) const;
+    void setRequestHeaderInternal( const AtomicString &name, const String &value );
+    bool isSafeRequestHeader( const String & ) const;
 
-    void changeState(State newState);
+    void changeState( State newState );
     void callReadyStateChangeListener();
     void dropProtection();
     void internalAbort();
@@ -172,7 +219,7 @@ private:
     void clearResponseBuffers();
     void clearRequest();
 
-    void createRequest(ExceptionCode&);
+    void createRequest( ExceptionCode & );
 
     void genericError();
     void networkError();
@@ -202,7 +249,7 @@ private:
     StringBuilder m_responseBuilder;
     mutable bool m_createdDocument;
     mutable RefPtr<Document> m_responseXML;
-    
+
     RefPtr<SharedBuffer> m_binaryResponseBuilder;
     mutable RefPtr<ArrayBuffer> m_responseArrayBuffer;
 

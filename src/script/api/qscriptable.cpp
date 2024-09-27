@@ -26,9 +26,9 @@
 #include "qscriptengine.h"
 
 QScriptable::QScriptable()
-   : d_ptr(new QScriptablePrivate())
+    : d_ptr( new QScriptablePrivate() )
 {
-   d_ptr->q_ptr = this;
+    d_ptr->q_ptr = this;
 }
 
 /*!
@@ -45,8 +45,8 @@ QScriptable::~QScriptable()
 */
 QScriptEngine *QScriptable::engine() const
 {
-   Q_D(const QScriptable);
-   return d->engine;
+    Q_D( const QScriptable );
+    return d->engine;
 }
 
 /*!
@@ -56,11 +56,12 @@ QScriptEngine *QScriptable::engine() const
 */
 QScriptContext *QScriptable::context() const
 {
-   if (QScriptEngine *e = engine()) {
-      return e->currentContext();
-   }
+    if ( QScriptEngine *e = engine() )
+    {
+        return e->currentContext();
+    }
 
-   return nullptr;
+    return nullptr;
 }
 
 /*!
@@ -71,11 +72,12 @@ QScriptContext *QScriptable::context() const
 
 QScriptValue QScriptable::thisObject() const
 {
-   if (QScriptContext *c = context()) {
-      return c->thisObject();
-   }
+    if ( QScriptContext *c = context() )
+    {
+        return c->thisObject();
+    }
 
-   return QScriptValue();
+    return QScriptValue();
 }
 
 /*!
@@ -87,11 +89,12 @@ QScriptValue QScriptable::thisObject() const
 */
 int QScriptable::argumentCount() const
 {
-   if (QScriptContext *c = context()) {
-      return c->argumentCount();
-   }
+    if ( QScriptContext *c = context() )
+    {
+        return c->argumentCount();
+    }
 
-   return -1;
+    return -1;
 }
 
 /*!
@@ -100,12 +103,13 @@ int QScriptable::argumentCount() const
 
   \sa argumentCount()
 */
-QScriptValue QScriptable::argument(int index) const
+QScriptValue QScriptable::argument( int index ) const
 {
-   if (QScriptContext *c = context()) {
-      return c->argument(index);
-   }
+    if ( QScriptContext *c = context() )
+    {
+        return c->argument( index );
+    }
 
-   return QScriptValue();
+    return QScriptValue();
 }
 

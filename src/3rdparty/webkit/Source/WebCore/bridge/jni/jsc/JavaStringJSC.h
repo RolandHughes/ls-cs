@@ -33,45 +33,56 @@
 #include <runtime/ScopeChain.h>
 
 
-namespace JSC {
+namespace JSC
+{
 
-namespace Bindings {
+namespace Bindings
+{
 
-class JavaStringImpl {
+class JavaStringImpl
+{
 public:
     ~JavaStringImpl()
     {
-        JSLock lock(SilenceAssertionsOnly);
+        JSLock lock( SilenceAssertionsOnly );
         m_impl = 0;
     }
 
     void init()
     {
-        JSLock lock(SilenceAssertionsOnly);
+        JSLock lock( SilenceAssertionsOnly );
         m_impl = UString().impl();
     }
 
-    void init(JNIEnv* e, jstring s)
+    void init( JNIEnv *e, jstring s )
     {
-        int size = e->GetStringLength(s);
-        const jchar* uc = getUCharactersFromJStringInEnv(e, s);
+        int size = e->GetStringLength( s );
+        const jchar *uc = getUCharactersFromJStringInEnv( e, s );
         {
-            JSLock lock(SilenceAssertionsOnly);
-            m_impl = UString(reinterpret_cast<const UChar*>(uc), size).impl();
+            JSLock lock( SilenceAssertionsOnly );
+            m_impl = UString( reinterpret_cast<const UChar *>( uc ), size ).impl();
         }
-        releaseUCharactersForJStringInEnv(e, s, uc);
+        releaseUCharactersForJStringInEnv( e, s, uc );
     }
 
-    const char* utf8() const
+    const char *utf8() const
     {
-        if (!m_utf8String.data()) {
-            JSLock lock(SilenceAssertionsOnly);
-            m_utf8String = UString(m_impl).utf8();
+        if ( !m_utf8String.data() )
+        {
+            JSLock lock( SilenceAssertionsOnly );
+            m_utf8String = UString( m_impl ).utf8();
         }
+
         return m_utf8String.data();
     }
-    int length() const { return m_impl->length(); }
-    StringImpl* impl() const { return m_impl.get(); }
+    int length() const
+    {
+        return m_impl->length();
+    }
+    StringImpl *impl() const
+    {
+        return m_impl.get();
+    }
 
 private:
     RefPtr<StringImpl> m_impl;

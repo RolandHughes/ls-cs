@@ -33,19 +33,21 @@
 
 #if ENABLE(WEB_SOCKETS)
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class WebSocketChannelClient {
-    public:
-        virtual ~WebSocketChannelClient() { }
-        virtual void didConnect() { }
-        virtual void didReceiveMessage(const String&) { }
-        virtual void didReceiveMessageError() { }
-        virtual void didClose(unsigned long /* unhandledBufferedAmount */) { }
+class WebSocketChannelClient
+{
+public:
+    virtual ~WebSocketChannelClient() { }
+    virtual void didConnect() { }
+    virtual void didReceiveMessage( const String & ) { }
+    virtual void didReceiveMessageError() { }
+    virtual void didClose( unsigned long /* unhandledBufferedAmount */ ) { }
 
-    protected:
-        WebSocketChannelClient() { }
-    };
+protected:
+    WebSocketChannelClient() { }
+};
 
 } // namespace WebCore
 

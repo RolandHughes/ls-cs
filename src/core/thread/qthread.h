@@ -37,86 +37,87 @@ class QAbstractEventDispatcher;
 
 class Q_CORE_EXPORT QThread : public QObject
 {
-   CORE_CS_OBJECT(QThread)
+    CORE_CS_OBJECT( QThread )
 
- public:
-   static Qt::HANDLE currentThreadId();
-   static QThread *currentThread();
-   static int idealThreadCount();
-   static void yieldCurrentThread();
+public:
+    static Qt::HANDLE currentThreadId();
+    static QThread *currentThread();
+    static int idealThreadCount();
+    static void yieldCurrentThread();
 
-   explicit QThread(QObject *parent = nullptr);
-   ~QThread();
+    explicit QThread( QObject *parent = nullptr );
+    ~QThread();
 
-   enum Priority {
-      IdlePriority,
+    enum Priority
+    {
+        IdlePriority,
 
-      LowestPriority,
-      LowPriority,
-      NormalPriority,
-      HighPriority,
-      HighestPriority,
+        LowestPriority,
+        LowPriority,
+        NormalPriority,
+        HighPriority,
+        HighestPriority,
 
-      TimeCriticalPriority,
+        TimeCriticalPriority,
 
-      InheritPriority
-   };
+        InheritPriority
+    };
 
-   void setPriority(Priority priority);
-   Priority priority() const;
+    void setPriority( Priority priority );
+    Priority priority() const;
 
-   bool isFinished() const;
-   bool isRunning() const;
+    bool isFinished() const;
+    bool isRunning() const;
 
-   void requestInterruption();
-   bool isInterruptionRequested() const;
-   void setStackSize(uint stackSize);
-   uint stackSize() const;
+    void requestInterruption();
+    bool isInterruptionRequested() const;
+    void setStackSize( uint stackSize );
+    uint stackSize() const;
 
-   void exit(int returnCode = 0);
+    void exit( int returnCode = 0 );
 
-   // default argument causes thread to block indefinately
-   bool wait(unsigned long time = ULONG_MAX);
+    // default argument causes thread to block indefinately
+    bool wait( unsigned long time = ULONG_MAX );
 
-   static void sleep(unsigned long secs);
-   static void msleep(unsigned long msecs);
-   static void usleep(unsigned long usecs);
+    static void sleep( unsigned long secs );
+    static void msleep( unsigned long msecs );
+    static void usleep( unsigned long usecs );
 
-   QAbstractEventDispatcher *eventDispatcher() const;
-   void setEventDispatcher(QAbstractEventDispatcher *eventDispatcher);
+    QAbstractEventDispatcher *eventDispatcher() const;
+    void setEventDispatcher( QAbstractEventDispatcher *eventDispatcher );
 
-   bool event(QEvent *event) override;
-   int loopLevel() const;
+    bool event( QEvent *event ) override;
+    int loopLevel() const;
 
-   CORE_CS_SIGNAL_1(Public, void started())
-   CORE_CS_SIGNAL_2(started)
+    CORE_CS_SIGNAL_1( Public, void started() )
+    CORE_CS_SIGNAL_2( started )
 
-   CORE_CS_SIGNAL_1(Public, void finished())
-   CORE_CS_SIGNAL_2(finished)
+    CORE_CS_SIGNAL_1( Public, void finished() )
+    CORE_CS_SIGNAL_2( finished )
 
-   CORE_CS_SLOT_1(Public, void start(Priority priority = InheritPriority))
-   CORE_CS_SLOT_2(start)
+    CORE_CS_SLOT_1( Public, void start( Priority priority = InheritPriority ) )
+    CORE_CS_SLOT_2( start )
 
-   CORE_CS_SLOT_1(Public, void terminate())
-   CORE_CS_SLOT_2(terminate)
+    CORE_CS_SLOT_1( Public, void terminate() )
+    CORE_CS_SLOT_2( terminate )
 
-   CORE_CS_SLOT_1(Public, void quit())
-   CORE_CS_SLOT_2(quit)
+    CORE_CS_SLOT_1( Public, void quit() )
+    CORE_CS_SLOT_2( quit )
 
- protected:
-   virtual void run();
-   int exec();
+protected:
+    virtual void run();
+    int exec();
 
-   static void setTerminationEnabled(bool enabled = true);
+    static void setTerminationEnabled( bool enabled = true );
 
-   QThread(QThreadPrivate &dd, QObject *parent = nullptr);
-   QScopedPointer<QThreadPrivate> d_ptr;
+    QThread( QThreadPrivate &dd, QObject *parent = nullptr );
+    QScopedPointer<QThreadPrivate> d_ptr;
 
- private:
-   Q_DECLARE_PRIVATE(QThread)
+private:
+    Q_DECLARE_PRIVATE( QThread )
 
-   friend class QCoreApplication;
-   friend class QThreadData;
+    friend class QCoreApplication;
+    friend class QThreadData;
 };
 
 #endif

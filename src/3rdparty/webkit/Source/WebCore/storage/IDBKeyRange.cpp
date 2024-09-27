@@ -30,35 +30,36 @@
 
 #if ENABLE(INDEXED_DATABASE)
 
-namespace WebCore {
+namespace WebCore
+{
 
-IDBKeyRange::IDBKeyRange(PassRefPtr<IDBKey> lower, PassRefPtr<IDBKey> upper, bool lowerOpen, bool upperOpen)
-    : m_lower(lower)
-    , m_upper(upper)
-    , m_lowerOpen(lowerOpen)
-    , m_upperOpen(upperOpen)
+IDBKeyRange::IDBKeyRange( PassRefPtr<IDBKey> lower, PassRefPtr<IDBKey> upper, bool lowerOpen, bool upperOpen )
+    : m_lower( lower )
+    , m_upper( upper )
+    , m_lowerOpen( lowerOpen )
+    , m_upperOpen( upperOpen )
 {
 }
 
-PassRefPtr<IDBKeyRange> IDBKeyRange::only(PassRefPtr<IDBKey> prpValue)
+PassRefPtr<IDBKeyRange> IDBKeyRange::only( PassRefPtr<IDBKey> prpValue )
 {
     RefPtr<IDBKey> value = prpValue;
-    return IDBKeyRange::create(value, value, false, false);
+    return IDBKeyRange::create( value, value, false, false );
 }
 
-PassRefPtr<IDBKeyRange> IDBKeyRange::lowerBound(PassRefPtr<IDBKey> bound, bool open)
+PassRefPtr<IDBKeyRange> IDBKeyRange::lowerBound( PassRefPtr<IDBKey> bound, bool open )
 {
-    return IDBKeyRange::create(bound, 0, open, false);
+    return IDBKeyRange::create( bound, 0, open, false );
 }
 
-PassRefPtr<IDBKeyRange> IDBKeyRange::upperBound(PassRefPtr<IDBKey> bound, bool open)
+PassRefPtr<IDBKeyRange> IDBKeyRange::upperBound( PassRefPtr<IDBKey> bound, bool open )
 {
-    return IDBKeyRange::create(0, bound, false, open);
+    return IDBKeyRange::create( 0, bound, false, open );
 }
 
-PassRefPtr<IDBKeyRange> IDBKeyRange::bound(PassRefPtr<IDBKey> lower, PassRefPtr<IDBKey> upper, bool lowerOpen, bool upperOpen)
+PassRefPtr<IDBKeyRange> IDBKeyRange::bound( PassRefPtr<IDBKey> lower, PassRefPtr<IDBKey> upper, bool lowerOpen, bool upperOpen )
 {
-    return IDBKeyRange::create(lower, upper, lowerOpen, upperOpen);
+    return IDBKeyRange::create( lower, upper, lowerOpen, upperOpen );
 }
 
 } // namespace WebCore

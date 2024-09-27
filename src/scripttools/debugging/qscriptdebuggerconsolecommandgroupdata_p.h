@@ -35,28 +35,28 @@ class QString;
 class QScriptDebuggerConsoleCommandGroupDataPrivate;
 class QScriptDebuggerConsoleCommandGroupData
 {
- public:
-   QScriptDebuggerConsoleCommandGroupData();
-   QScriptDebuggerConsoleCommandGroupData(
-      const QString &shortDescription,
-      const QString &longDescription);
-   QScriptDebuggerConsoleCommandGroupData(
-      const QScriptDebuggerConsoleCommandGroupData &other);
-   ~QScriptDebuggerConsoleCommandGroupData();
+public:
+    QScriptDebuggerConsoleCommandGroupData();
+    QScriptDebuggerConsoleCommandGroupData(
+        const QString &shortDescription,
+        const QString &longDescription );
+    QScriptDebuggerConsoleCommandGroupData(
+        const QScriptDebuggerConsoleCommandGroupData &other );
+    ~QScriptDebuggerConsoleCommandGroupData();
 
-   QString shortDescription() const;
-   QString longDescription() const;
+    QString shortDescription() const;
+    QString longDescription() const;
 
-   bool isValid() const;
+    bool isValid() const;
 
-   QScriptDebuggerConsoleCommandGroupData &operator=(
-      const QScriptDebuggerConsoleCommandGroupData &other);
+    QScriptDebuggerConsoleCommandGroupData &operator=(
+        const QScriptDebuggerConsoleCommandGroupData &other );
 
- private:
-   QScopedSharedPointer<QScriptDebuggerConsoleCommandGroupDataPrivate> d_ptr;
+private:
+    QScopedSharedPointer<QScriptDebuggerConsoleCommandGroupDataPrivate> d_ptr;
 
- private:
-   Q_DECLARE_PRIVATE(QScriptDebuggerConsoleCommandGroupData)
+private:
+    Q_DECLARE_PRIVATE( QScriptDebuggerConsoleCommandGroupData )
 };
 
 typedef QMap<QString, QScriptDebuggerConsoleCommandGroupData> QScriptDebuggerConsoleCommandGroupMap;

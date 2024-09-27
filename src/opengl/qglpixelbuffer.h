@@ -31,60 +31,61 @@ class QGLPixelBufferPrivate;
 
 class Q_OPENGL_EXPORT QGLPixelBuffer : public QPaintDevice
 {
- public:
-   QGLPixelBuffer(const QSize &size, const QGLFormat &format = QGLFormat::defaultFormat(),
-      QGLWidget *shareWidget = nullptr);
+public:
+    QGLPixelBuffer( const QSize &size, const QGLFormat &format = QGLFormat::defaultFormat(),
+                    QGLWidget *shareWidget = nullptr );
 
-   QGLPixelBuffer(int width, int height, const QGLFormat &format = QGLFormat::defaultFormat(),
-      QGLWidget *shareWidget = nullptr);
+    QGLPixelBuffer( int width, int height, const QGLFormat &format = QGLFormat::defaultFormat(),
+                    QGLWidget *shareWidget = nullptr );
 
-   QGLPixelBuffer(const QGLPixelBuffer &) = delete;
-   QGLPixelBuffer &operator=(const QGLPixelBuffer &) = delete;
+    QGLPixelBuffer( const QGLPixelBuffer & ) = delete;
+    QGLPixelBuffer &operator=( const QGLPixelBuffer & ) = delete;
 
-   virtual ~QGLPixelBuffer();
+    virtual ~QGLPixelBuffer();
 
-   bool isValid() const;
-   bool makeCurrent();
-   bool doneCurrent();
-   QGLContext *context() const;
+    bool isValid() const;
+    bool makeCurrent();
+    bool doneCurrent();
+    QGLContext *context() const;
 
-   GLuint generateDynamicTexture() const;
-   bool bindToDynamicTexture(GLuint texture_id);
-   void releaseFromDynamicTexture();
-   void updateDynamicTexture(GLuint texture_id) const;
+    GLuint generateDynamicTexture() const;
+    bool bindToDynamicTexture( GLuint texture_id );
+    void releaseFromDynamicTexture();
+    void updateDynamicTexture( GLuint texture_id ) const;
 
-   GLuint bindTexture(const QImage &image, GLenum target = GL_TEXTURE_2D);
-   GLuint bindTexture(const QPixmap &pixmap, GLenum target = GL_TEXTURE_2D);
-   GLuint bindTexture(const QString &fileName);
-   void deleteTexture(GLuint texture_id);
+    GLuint bindTexture( const QImage &image, GLenum target = GL_TEXTURE_2D );
+    GLuint bindTexture( const QPixmap &pixmap, GLenum target = GL_TEXTURE_2D );
+    GLuint bindTexture( const QString &fileName );
+    void deleteTexture( GLuint texture_id );
 
-   void drawTexture(const QRectF &target, GLuint texture_id, GLenum textureTarget = GL_TEXTURE_2D);
-   void drawTexture(const QPointF &point, GLuint texture_id, GLenum textureTarget = GL_TEXTURE_2D);
+    void drawTexture( const QRectF &target, GLuint texture_id, GLenum textureTarget = GL_TEXTURE_2D );
+    void drawTexture( const QPointF &point, GLuint texture_id, GLenum textureTarget = GL_TEXTURE_2D );
 
-   QSize size() const;
-   Qt::HANDLE handle() const;
-   QImage toImage() const;
+    QSize size() const;
+    Qt::HANDLE handle() const;
+    QImage toImage() const;
 
-   QPaintEngine *paintEngine() const override;
-   QGLFormat format() const;
+    QPaintEngine *paintEngine() const override;
+    QGLFormat format() const;
 
-   static bool hasOpenGLPbuffers();
+    static bool hasOpenGLPbuffers();
 
- protected:
-   int metric(PaintDeviceMetric metric) const override;
+protected:
+    int metric( PaintDeviceMetric metric ) const override;
 
-   int devType() const override {
-      return QInternal::Pbuffer;
-   }
+    int devType() const override
+    {
+        return QInternal::Pbuffer;
+    }
 
- private:
-   Q_DECLARE_PRIVATE(QGLPixelBuffer)
-   QScopedPointer<QGLPixelBufferPrivate> d_ptr;
+private:
+    Q_DECLARE_PRIVATE( QGLPixelBuffer )
+    QScopedPointer<QGLPixelBufferPrivate> d_ptr;
 
-   friend class QGLDrawable;
-   friend class QGLPaintDevice;
-   friend class QGLPBufferGLPaintDevice;
-   friend class QGLContextPrivate;
+    friend class QGLDrawable;
+    friend class QGLPaintDevice;
+    friend class QGLPBufferGLPaintDevice;
+    friend class QGLContextPrivate;
 };
 
 #endif

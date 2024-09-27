@@ -23,12 +23,12 @@
 
 #include <qcontiguouscache.h>
 
-QContiguousCacheData *QContiguousCacheData::allocate(int size, int alignment)
+QContiguousCacheData *QContiguousCacheData::allocate( int size, int alignment )
 {
-   return static_cast<QContiguousCacheData *>(qMallocAligned(size, alignment));
+    return static_cast<QContiguousCacheData *>( qMallocAligned( size, alignment ) );
 }
 
-void QContiguousCacheData::free(QContiguousCacheData *data)
+void QContiguousCacheData::free( QContiguousCacheData *data )
 {
-   qFreeAligned(data);
+    qFreeAligned( data );
 }

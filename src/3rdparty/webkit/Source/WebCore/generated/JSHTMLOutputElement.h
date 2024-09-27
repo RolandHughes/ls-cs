@@ -24,72 +24,78 @@
 #include "JSHTMLElement.h"
 #include <runtime/JSObjectWithGlobalObject.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class HTMLOutputElement;
 
-class JSHTMLOutputElement : public JSHTMLElement {
+class JSHTMLOutputElement : public JSHTMLElement
+{
     typedef JSHTMLElement Base;
 public:
-    JSHTMLOutputElement(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<HTMLOutputElement>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
-    virtual void put(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::JSValue, JSC::PutPropertySlot&);
+    JSHTMLOutputElement( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<HTMLOutputElement> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
+    virtual void put( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::JSValue, JSC::PutPropertySlot & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
 
     // Custom attributes
-    JSC::JSValue htmlFor(JSC::ExecState*) const;
-    void setHtmlFor(JSC::ExecState*, JSC::JSValue);
+    JSC::JSValue htmlFor( JSC::ExecState * ) const;
+    void setHtmlFor( JSC::ExecState *, JSC::JSValue );
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 
-class JSHTMLOutputElementPrototype : public JSC::JSObjectWithGlobalObject {
+class JSHTMLOutputElementPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSHTMLOutputElementPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSHTMLOutputElementPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                                  JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 // Functions
 
-JSC::EncodedJSValue JSC_HOST_CALL jsHTMLOutputElementPrototypeFunctionCheckValidity(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsHTMLOutputElementPrototypeFunctionSetCustomValidity(JSC::ExecState*);
+JSC::EncodedJSValue JSC_HOST_CALL jsHTMLOutputElementPrototypeFunctionCheckValidity( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsHTMLOutputElementPrototypeFunctionSetCustomValidity( JSC::ExecState * );
 // Attributes
 
-JSC::JSValue jsHTMLOutputElementHtmlFor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLOutputElementHtmlFor(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLOutputElementForm(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsHTMLOutputElementName(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLOutputElementName(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLOutputElementType(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsHTMLOutputElementDefaultValue(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLOutputElementDefaultValue(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLOutputElementValue(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLOutputElementValue(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLOutputElementWillValidate(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsHTMLOutputElementValidity(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsHTMLOutputElementValidationMessage(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsHTMLOutputElementLabels(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsHTMLOutputElementConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsHTMLOutputElementHtmlFor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLOutputElementHtmlFor( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLOutputElementForm( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsHTMLOutputElementName( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLOutputElementName( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLOutputElementType( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsHTMLOutputElementDefaultValue( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLOutputElementDefaultValue( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLOutputElementValue( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLOutputElementValue( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLOutputElementWillValidate( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsHTMLOutputElementValidity( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsHTMLOutputElementValidationMessage( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsHTMLOutputElementLabels( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsHTMLOutputElementConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

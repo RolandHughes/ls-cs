@@ -36,87 +36,133 @@
 #include "ScriptCallStack.h"
 #include <wtf/PassRefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-inline void InspectorInstrumentation::addMessageToConsole(Page* page, MessageSource source, MessageType type, MessageLevel level, const String& message, PassRefPtr<ScriptArguments> arguments, PassRefPtr<ScriptCallStack> callStack)
+inline void InspectorInstrumentation::addMessageToConsole( Page *page, MessageSource source, MessageType type, MessageLevel level,
+        const String &message, PassRefPtr<ScriptArguments> arguments, PassRefPtr<ScriptCallStack> callStack )
 {
 #if ENABLE(INSPECTOR)
-    if (InspectorAgent* inspectorAgent = inspectorAgentForPage(page))
-        addMessageToConsoleImpl(inspectorAgent, source, type, level, message, arguments, callStack);
+
+    if ( InspectorAgent *inspectorAgent = inspectorAgentForPage( page ) )
+    {
+        addMessageToConsoleImpl( inspectorAgent, source, type, level, message, arguments, callStack );
+    }
+
 #endif
 }
 
-inline void InspectorInstrumentation::addMessageToConsole(Page* page, MessageSource source, MessageType type, MessageLevel level, const String& message, unsigned lineNumber, const String& sourceID)
+inline void InspectorInstrumentation::addMessageToConsole( Page *page, MessageSource source, MessageType type, MessageLevel level,
+        const String &message, unsigned lineNumber, const String &sourceID )
 {
 #if ENABLE(INSPECTOR)
-    if (InspectorAgent* inspectorAgent = inspectorAgentForPage(page))
-        addMessageToConsoleImpl(inspectorAgent, source, type, level, message, lineNumber, sourceID);
+
+    if ( InspectorAgent *inspectorAgent = inspectorAgentForPage( page ) )
+    {
+        addMessageToConsoleImpl( inspectorAgent, source, type, level, message, lineNumber, sourceID );
+    }
+
 #endif
 }
 
-inline void InspectorInstrumentation::consoleCount(Page* page, PassRefPtr<ScriptArguments> arguments, PassRefPtr<ScriptCallStack> stack)
+inline void InspectorInstrumentation::consoleCount( Page *page, PassRefPtr<ScriptArguments> arguments,
+        PassRefPtr<ScriptCallStack> stack )
 {
 #if ENABLE(INSPECTOR)
-    if (InspectorAgent* inspectorAgent = inspectorAgentForPage(page))
-        consoleCountImpl(inspectorAgent, arguments, stack);
+
+    if ( InspectorAgent *inspectorAgent = inspectorAgentForPage( page ) )
+    {
+        consoleCountImpl( inspectorAgent, arguments, stack );
+    }
+
 #endif
 }
 
-inline void InspectorInstrumentation::startConsoleTiming(Page* page, const String& title)
+inline void InspectorInstrumentation::startConsoleTiming( Page *page, const String &title )
 {
 #if ENABLE(INSPECTOR)
-    if (InspectorAgent* inspectorAgent = inspectorAgentForPage(page))
-        startConsoleTimingImpl(inspectorAgent, title);
+
+    if ( InspectorAgent *inspectorAgent = inspectorAgentForPage( page ) )
+    {
+        startConsoleTimingImpl( inspectorAgent, title );
+    }
+
 #endif
 }
 
-inline void InspectorInstrumentation::stopConsoleTiming(Page* page, const String& title, PassRefPtr<ScriptCallStack> stack)
+inline void InspectorInstrumentation::stopConsoleTiming( Page *page, const String &title, PassRefPtr<ScriptCallStack> stack )
 {
 #if ENABLE(INSPECTOR)
-    if (InspectorAgent* inspectorAgent = inspectorAgentForPage(page))
-        stopConsoleTimingImpl(inspectorAgent, title, stack);
+
+    if ( InspectorAgent *inspectorAgent = inspectorAgentForPage( page ) )
+    {
+        stopConsoleTimingImpl( inspectorAgent, title, stack );
+    }
+
 #endif
 }
 
-inline void InspectorInstrumentation::consoleMarkTimeline(Page* page, PassRefPtr<ScriptArguments> arguments)
+inline void InspectorInstrumentation::consoleMarkTimeline( Page *page, PassRefPtr<ScriptArguments> arguments )
 {
 #if ENABLE(INSPECTOR)
-    if (InspectorAgent* inspectorAgent = inspectorAgentWithFrontendForPage(page))
-        consoleMarkTimelineImpl(inspectorAgent, arguments);
+
+    if ( InspectorAgent *inspectorAgent = inspectorAgentWithFrontendForPage( page ) )
+    {
+        consoleMarkTimelineImpl( inspectorAgent, arguments );
+    }
+
 #endif
 }
 
 #if ENABLE(JAVASCRIPT_DEBUGGER)
-inline void InspectorInstrumentation::addStartProfilingMessageToConsole(Page* page, const String& title, unsigned lineNumber, const String& sourceURL)
+inline void InspectorInstrumentation::addStartProfilingMessageToConsole( Page *page, const String &title, unsigned lineNumber,
+        const String &sourceURL )
 {
 #if ENABLE(INSPECTOR)
-    if (InspectorAgent* inspectorAgent = inspectorAgentForPage(page))
-        addStartProfilingMessageToConsoleImpl(inspectorAgent, title, lineNumber, sourceURL);
+
+    if ( InspectorAgent *inspectorAgent = inspectorAgentForPage( page ) )
+    {
+        addStartProfilingMessageToConsoleImpl( inspectorAgent, title, lineNumber, sourceURL );
+    }
+
 #endif
 }
 
-inline void InspectorInstrumentation::addProfile(Page* page, RefPtr<ScriptProfile> profile, PassRefPtr<ScriptCallStack> callStack)
+inline void InspectorInstrumentation::addProfile( Page *page, RefPtr<ScriptProfile> profile,
+        PassRefPtr<ScriptCallStack> callStack )
 {
 #if ENABLE(INSPECTOR)
-    if (InspectorAgent* inspectorAgent = inspectorAgentForPage(page))
-        addProfileImpl(inspectorAgent, profile, callStack);
+
+    if ( InspectorAgent *inspectorAgent = inspectorAgentForPage( page ) )
+    {
+        addProfileImpl( inspectorAgent, profile, callStack );
+    }
+
 #endif
 }
 
-inline bool InspectorInstrumentation::profilerEnabled(Page* page)
+inline bool InspectorInstrumentation::profilerEnabled( Page *page )
 {
 #if ENABLE(INSPECTOR)
-    if (InspectorAgent* inspectorAgent = inspectorAgentForPage(page))
-        return profilerEnabledImpl(inspectorAgent);
+
+    if ( InspectorAgent *inspectorAgent = inspectorAgentForPage( page ) )
+    {
+        return profilerEnabledImpl( inspectorAgent );
+    }
+
 #endif
     return false;
 }
 
-inline String InspectorInstrumentation::getCurrentUserInitiatedProfileName(Page* page, bool incrementProfileNumber)
+inline String InspectorInstrumentation::getCurrentUserInitiatedProfileName( Page *page, bool incrementProfileNumber )
 {
 #if ENABLE(INSPECTOR)
-    if (InspectorAgent* inspectorAgent = inspectorAgentForPage(page))
-        return InspectorInstrumentation::getCurrentUserInitiatedProfileNameImpl(inspectorAgent, incrementProfileNumber);
+
+    if ( InspectorAgent *inspectorAgent = inspectorAgentForPage( page ) )
+    {
+        return InspectorInstrumentation::getCurrentUserInitiatedProfileNameImpl( inspectorAgent, incrementProfileNumber );
+    }
+
 #endif
     return "";
 }

@@ -31,25 +31,36 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 // CSS3 Multi Column Layout
 
-class StyleMultiColData : public RefCounted<StyleMultiColData> {
+class StyleMultiColData : public RefCounted<StyleMultiColData>
+{
 public:
-    static PassRefPtr<StyleMultiColData> create() { return adoptRef(new StyleMultiColData); }
-    PassRefPtr<StyleMultiColData> copy() const { return adoptRef(new StyleMultiColData(*this)); }
-    
-    bool operator==(const StyleMultiColData& o) const;
-    bool operator!=(const StyleMultiColData &o) const
+    static PassRefPtr<StyleMultiColData> create()
     {
-        return !(*this == o);
+        return adoptRef( new StyleMultiColData );
+    }
+    PassRefPtr<StyleMultiColData> copy() const
+    {
+        return adoptRef( new StyleMultiColData( *this ) );
+    }
+
+    bool operator==( const StyleMultiColData &o ) const;
+    bool operator!=( const StyleMultiColData &o ) const
+    {
+        return !( *this == o );
     }
 
     unsigned short ruleWidth() const
     {
-        if (m_rule.style() == BNONE || m_rule.style() == BHIDDEN)
-            return 0; 
+        if ( m_rule.style() == BNONE || m_rule.style() == BHIDDEN )
+        {
+            return 0;
+        }
+
         return m_rule.width();
     }
 
@@ -65,10 +76,10 @@ public:
     unsigned m_breakBefore : 2; // EPageBreak
     unsigned m_breakAfter : 2; // EPageBreak
     unsigned m_breakInside : 2; // EPageBreak
-    
+
 private:
     StyleMultiColData();
-    StyleMultiColData(const StyleMultiColData&);
+    StyleMultiColData( const StyleMultiColData & );
 };
 
 } // namespace WebCore

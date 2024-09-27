@@ -34,21 +34,21 @@ using namespace WebKit;
 
 WKTypeID WKBundleScriptWorldGetTypeID()
 {
-    return toAPI(InjectedBundleScriptWorld::APIType);
+    return toAPI( InjectedBundleScriptWorld::APIType );
 }
 
 WKBundleScriptWorldRef WKBundleScriptWorldCreateWorld()
 {
     RefPtr<InjectedBundleScriptWorld> world = InjectedBundleScriptWorld::create();
-    return toAPI(world.release().releaseRef());
+    return toAPI( world.release().releaseRef() );
 }
 
 WKBundleScriptWorldRef WKBundleScriptWorldNormalWorld()
 {
-    return toAPI(InjectedBundleScriptWorld::normalWorld());
+    return toAPI( InjectedBundleScriptWorld::normalWorld() );
 }
 
-void WKBundleScriptWorldClearWrappers(WKBundleScriptWorldRef scriptWorldRef)
+void WKBundleScriptWorldClearWrappers( WKBundleScriptWorldRef scriptWorldRef )
 {
-    toImpl(scriptWorldRef)->clearWrappers();
+    toImpl( scriptWorldRef )->clearWrappers();
 }

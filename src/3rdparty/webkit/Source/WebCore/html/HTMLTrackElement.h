@@ -30,11 +30,13 @@
 
 #include "HTMLElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class HTMLTrackElement : public HTMLElement {
+class HTMLTrackElement : public HTMLElement
+{
 public:
-    static PassRefPtr<HTMLTrackElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<HTMLTrackElement> create( const QualifiedName &, Document * );
 
     KURL src() const;
     String kind() const;
@@ -42,18 +44,18 @@ public:
     String label() const;
 
     bool isDefault() const;
-    void setKind(const String&);
-    void setSrc(const String&);
-    void setSrclang(const String&);
-    void setLabel(const String&);
-    void setIsDefault(bool);
+    void setKind( const String & );
+    void setSrc( const String & );
+    void setSrclang( const String & );
+    void setLabel( const String & );
+    void setIsDefault( bool );
 
 private:
-    HTMLTrackElement(const QualifiedName&, Document*);
+    HTMLTrackElement( const QualifiedName &, Document * );
 
-    virtual void insertedIntoTree(bool);
+    virtual void insertedIntoTree( bool );
     virtual void willRemove();
-    virtual bool isURLAttribute(Attribute*) const;
+    virtual bool isURLAttribute( Attribute * ) const;
 };
 
 }

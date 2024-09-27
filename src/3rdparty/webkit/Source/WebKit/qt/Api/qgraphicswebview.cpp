@@ -47,13 +47,14 @@
 
 using namespace WebCore;
 
-class QGraphicsWebViewPrivate {
+class QGraphicsWebViewPrivate
+{
 public:
-    QGraphicsWebViewPrivate(QGraphicsWebView* parent)
-        : q(parent)
-        , page(0)
-        , resizesToContents(false)
-        , renderHints(QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform) {}
+    QGraphicsWebViewPrivate( QGraphicsWebView *parent )
+        : q( parent )
+        , page( 0 )
+        , resizesToContents( false )
+        , renderHints( QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform ) {}
 
     virtual ~QGraphicsWebViewPrivate();
 
@@ -63,27 +64,30 @@ public:
 
     void detachCurrentPage();
 
-    void _q_doLoadFinished(bool success);
-    void _q_contentsSizeChanged(const QSize&);
+    void _q_doLoadFinished( bool success );
+    void _q_contentsSizeChanged( const QSize & );
     void _q_scaleChanged();
 
     void _q_pageDestroyed();
 
-    QGraphicsWebView* q;
-    QWebPage* page;
+    QGraphicsWebView *q;
+    QWebPage *page;
     bool resizesToContents;
     QPainter::RenderHints renderHints;
 
-    QGraphicsItemOverlay* overlay() const
+    QGraphicsItemOverlay *overlay() const
     {
-        if (!page || !page->d->client)
+        if ( !page || !page->d->client )
+        {
             return 0;
+        }
+
         return pageClient()->overlay;
     }
 
-    PageClientQGraphicsWidget* pageClient() const
+    PageClientQGraphicsWidget *pageClient() const
     {
-        return static_cast<WebCore::PageClientQGraphicsWidget*> (page->d->client.get());
+        return static_cast<WebCore::PageClientQGraphicsWidget *> ( page->d->client.get() );
     }
 };
 
@@ -99,55 +103,69 @@ void QGraphicsWebViewPrivate::syncLayers()
 #endif
 }
 
-void QGraphicsWebViewPrivate::_q_doLoadFinished(bool success)
+void QGraphicsWebViewPrivate::_q_doLoadFinished( bool success )
 {
     // If the page had no title, still make sure it gets the signal
-    if (q->title().isEmpty())
-        emit q->urlChanged(q->url());
+    if ( q->title().isEmpty() )
+    {
+        emit q->urlChanged( q->url() );
+    }
 
-    emit q->loadFinished(success);
+    emit q->loadFinished( success );
 }
 
 void QGraphicsWebViewPrivate::_q_pageDestroyed()
 {
     page = 0;
-    q->setPage(0);
+    q->setPage( 0 );
 }
 
 void QGraphicsWebViewPrivate::updateResizesToContentsForPage()
 {
-    ASSERT(page);
+    ASSERT( page );
     pageClient()->viewResizesToContents = resizesToContents;
 
-    if (resizesToContents) {
+    if ( resizesToContents )
+    {
         // resizes to contents mode requires preferred contents size to be set
-        if (!page->preferredContentsSize().isValid())
-            page->setPreferredContentsSize(QSize(960, 800));
+        if ( !page->preferredContentsSize().isValid() )
+        {
+            page->setPreferredContentsSize( QSize( 960, 800 ) );
+        }
 
-        QObject::connect(page->mainFrame(), SIGNAL(contentsSizeChanged(const QSize &)),
-                  q, SLOT(_q_contentsSizeChanged(const QSize &)), Qt::UniqueConnection);
+        QObject::connect( page->mainFrame(), SIGNAL( contentsSizeChanged( const QSize & ) ),
+                          q, SLOT( _q_contentsSizeChanged( const QSize & ) ), Qt::UniqueConnection );
 
-    } else {
-        QObject::disconnect(page->mainFrame(), SIGNAL(contentsSizeChanged(const QSize &)),
-                   q, SLOT(_q_contentsSizeChanged(const QSize &)));
+    }
+    else
+    {
+        QObject::disconnect( page->mainFrame(), SIGNAL( contentsSizeChanged( const QSize & ) ),
+                             q, SLOT( _q_contentsSizeChanged( const QSize & ) ) );
     }
 
-    page->d->page->mainFrame()->view()->setPaintsEntireContents(resizesToContents);
-    page->d->page->mainFrame()->view()->setDelegatesScrolling(resizesToContents);
+    page->d->page->mainFrame()->view()->setPaintsEntireContents( resizesToContents );
+    page->d->page->mainFrame()->view()->setDelegatesScrolling( resizesToContents );
 }
 
-void QGraphicsWebViewPrivate::_q_contentsSizeChanged(const QSize& size)
+void QGraphicsWebViewPrivate::_q_contentsSizeChanged( const QSize &size )
 {
-    if (!resizesToContents)
+    if ( !resizesToContents )
+    {
         return;
-    q->setGeometry(QRectF(q->geometry().topLeft(), size));
+    }
+
+    q->setGeometry( QRectF( q->geometry().topLeft(), size ) );
 }
 
 void QGraphicsWebViewPrivate::_q_scaleChanged()
 {
 #if ENABLE(TILED_BACKING_STORE)
-    if (!page)
+
+    if ( !page )
+    {
         return;
+    }
+
     pageClient()->updateTiledBackingStoreScale();
 #endif
 }
@@ -231,19 +249,19 @@ void QGraphicsWebViewPrivate::_q_scaleChanged()
 
     \sa load()
 */
-QGraphicsWebView::QGraphicsWebView(QGraphicsItem* parent)
-    : QGraphicsWidget(parent)
-    , d(new QGraphicsWebViewPrivate(this))
+QGraphicsWebView::QGraphicsWebView( QGraphicsItem *parent )
+    : QGraphicsWidget( parent )
+    , d( new QGraphicsWebViewPrivate( this ) )
 {
-    setFlag(QGraphicsItem::ItemUsesExtendedStyleOption, true);
-    setAcceptDrops(true);
-    setAcceptHoverEvents(true);
-    setAcceptTouchEvents(true);
-    setFocusPolicy(Qt::StrongFocus);
-    setFlag(QGraphicsItem::ItemClipsChildrenToShape, true);
+    setFlag( QGraphicsItem::ItemUsesExtendedStyleOption, true );
+    setAcceptDrops( true );
+    setAcceptHoverEvents( true );
+    setAcceptTouchEvents( true );
+    setFocusPolicy( Qt::StrongFocus );
+    setFlag( QGraphicsItem::ItemClipsChildrenToShape, true );
 
 #if ENABLE(TILED_BACKING_STORE)
-    QObject::connect(this, SIGNAL(scaleChanged()), this, SLOT(_q_scaleChanged()));
+    QObject::connect( this, SIGNAL( scaleChanged() ), this, SLOT( _q_scaleChanged() ) );
 #endif
 }
 
@@ -260,19 +278,20 @@ QGraphicsWebView::~QGraphicsWebView()
 
     \sa setPage()
 */
-QWebPage* QGraphicsWebView::page() const
+QWebPage *QGraphicsWebView::page() const
 {
-    if (!d->page) {
-        QGraphicsWebView* that = const_cast<QGraphicsWebView*>(this);
-        QWebPage* page = new QWebPage(that);
+    if ( !d->page )
+    {
+        QGraphicsWebView *that = const_cast<QGraphicsWebView *>( this );
+        QWebPage *page = new QWebPage( that );
 
         // Default to not having a background, in the case
         // the page doesn't provide one.
         QPalette palette = QApplication::palette();
-        palette.setBrush(QPalette::Base, QColor::fromRgbF(0, 0, 0, 0));
-        page->setPalette(palette);
+        palette.setBrush( QPalette::Base, QColor::fromRgbF( 0, 0, 0, 0 ) );
+        page->setPalette( palette );
 
-        that->setPage(page);
+        that->setPage( page );
     }
 
     return d->page;
@@ -280,87 +299,102 @@ QWebPage* QGraphicsWebView::page() const
 
 /* \reimp
 */
-void QGraphicsWebView::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget*)
+void QGraphicsWebView::paint( QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget * )
 {
     QPainter::RenderHints oldHints = painter->renderHints();
-    painter->setRenderHints(oldHints | d->renderHints);
+    painter->setRenderHints( oldHints | d->renderHints );
 #if ENABLE(TILED_BACKING_STORE)
-    if (WebCore::TiledBackingStore* backingStore = QWebFramePrivate::core(page()->mainFrame())->tiledBackingStore()) {
+
+    if ( WebCore::TiledBackingStore *backingStore = QWebFramePrivate::core( page()->mainFrame() )->tiledBackingStore() )
+    {
         // FIXME: We should set the backing store viewport earlier than in paint
         backingStore->adjustVisibleRect();
         // QWebFrame::render is a public API, bypass it for tiled rendering so behavior does not need to change.
-        WebCore::GraphicsContext context(painter);
-        page()->mainFrame()->d->renderFromTiledBackingStore(&context, option->exposedRect.toAlignedRect());
-        painter->setRenderHints(oldHints);
+        WebCore::GraphicsContext context( painter );
+        page()->mainFrame()->d->renderFromTiledBackingStore( &context, option->exposedRect.toAlignedRect() );
+        painter->setRenderHints( oldHints );
         return;
     }
+
 #endif
 #if USE(ACCELERATED_COMPOSITING) && !USE(TEXTURE_MAPPER)
-    page()->mainFrame()->render(painter, d->overlay() ? QWebFrame::ContentsLayer : QWebFrame::AllLayers, option->exposedRect.toAlignedRect());
+    page()->mainFrame()->render( painter, d->overlay() ? QWebFrame::ContentsLayer : QWebFrame::AllLayers,
+                                 option->exposedRect.toAlignedRect() );
 #else
-    page()->mainFrame()->render(painter, QWebFrame::AllLayers, option->exposedRect.toRect());
+    page()->mainFrame()->render( painter, QWebFrame::AllLayers, option->exposedRect.toRect() );
 #endif
-    painter->setRenderHints(oldHints);
+    painter->setRenderHints( oldHints );
 }
 
 /* \reimp
 */
-bool QGraphicsWebView::sceneEvent(QEvent* event)
+bool QGraphicsWebView::sceneEvent( QEvent *event )
 {
     // Re-implemented in order to allows fixing event-related bugs in patch releases.
 
-    if (d->page && (event->type() == QEvent::TouchBegin
-                || event->type() == QEvent::TouchEnd
-                || event->type() == QEvent::TouchUpdate)) {
-        d->page->event(event);
+    if ( d->page && ( event->type() == QEvent::TouchBegin
+                      || event->type() == QEvent::TouchEnd
+                      || event->type() == QEvent::TouchUpdate ) )
+    {
+        d->page->event( event );
 
         // Always return true so that we'll receive also TouchUpdate and TouchEnd events
         return true;
     }
 
-    return QGraphicsWidget::sceneEvent(event);
+    return QGraphicsWidget::sceneEvent( event );
 }
 
 /* \reimp
 */
-QVariant QGraphicsWebView::itemChange(GraphicsItemChange change, const QVariant& value)
+QVariant QGraphicsWebView::itemChange( GraphicsItemChange change, const QVariant &value )
 {
-    switch (change) {
-    // Differently from QWebView, it is interesting to QGraphicsWebView to handle
-    // post mouse cursor change notifications. Reason: 'ItemCursorChange' is sent
-    // as the first action in QGraphicsItem::setCursor implementation, and at that
-    // item widget's cursor has not been effectively changed yet.
-    // After cursor is properly set (at 'ItemCursorHasChanged' emission time), we
-    // fire 'CursorChange'.
-    case ItemCursorChange:
-        return value;
-    case ItemCursorHasChanged: {
-            QEvent event(QEvent::CursorChange);
-            QApplication::sendEvent(this, &event);
+    switch ( change )
+    {
+        // Differently from QWebView, it is interesting to QGraphicsWebView to handle
+        // post mouse cursor change notifications. Reason: 'ItemCursorChange' is sent
+        // as the first action in QGraphicsItem::setCursor implementation, and at that
+        // item widget's cursor has not been effectively changed yet.
+        // After cursor is properly set (at 'ItemCursorHasChanged' emission time), we
+        // fire 'CursorChange'.
+        case ItemCursorChange:
+            return value;
+
+        case ItemCursorHasChanged:
+        {
+            QEvent event( QEvent::CursorChange );
+            QApplication::sendEvent( this, &event );
             return value;
         }
-    default:
-        break;
+
+        default:
+            break;
     }
 
-    return QGraphicsWidget::itemChange(change, value);
+    return QGraphicsWidget::itemChange( change, value );
 }
 
 /* \reimp
 */
-QSizeF QGraphicsWebView::sizeHint(Qt::SizeHint which, const QSizeF& constraint) const
+QSizeF QGraphicsWebView::sizeHint( Qt::SizeHint which, const QSizeF &constraint ) const
 {
-    if (which == Qt::PreferredSize)
-        return QSizeF(800, 600); // ###
-    return QGraphicsWidget::sizeHint(which, constraint);
+    if ( which == Qt::PreferredSize )
+    {
+        return QSizeF( 800, 600 );    // ###
+    }
+
+    return QGraphicsWidget::sizeHint( which, constraint );
 }
 
 /* \reimp
 */
-QVariant QGraphicsWebView::inputMethodQuery(Qt::InputMethodQuery query) const
+QVariant QGraphicsWebView::inputMethodQuery( Qt::InputMethodQuery query ) const
 {
-    if (d->page)
-        return d->page->inputMethodQuery(query);
+    if ( d->page )
+    {
+        return d->page->inputMethodQuery( query );
+    }
+
     return QVariant();
 }
 
@@ -397,10 +431,13 @@ QPainter::RenderHints QGraphicsWebView::renderHints() const
 
     \sa QPainter::setRenderHints()
 */
-void QGraphicsWebView::setRenderHints(QPainter::RenderHints hints)
+void QGraphicsWebView::setRenderHints( QPainter::RenderHints hints )
 {
-    if (hints == d->renderHints)
+    if ( hints == d->renderHints )
+    {
         return;
+    }
+
     d->renderHints = hints;
     update();
 }
@@ -412,43 +449,65 @@ void QGraphicsWebView::setRenderHints(QPainter::RenderHints hints)
 
     \sa renderHints, QPainter::renderHints()
 */
-void QGraphicsWebView::setRenderHint(QPainter::RenderHint hint, bool enabled)
+void QGraphicsWebView::setRenderHint( QPainter::RenderHint hint, bool enabled )
 {
     QPainter::RenderHints oldHints = d->renderHints;
-    if (enabled)
+
+    if ( enabled )
+    {
         d->renderHints |= hint;
+    }
     else
+    {
         d->renderHints &= ~hint;
-    if (oldHints != d->renderHints)
+    }
+
+    if ( oldHints != d->renderHints )
+    {
         update();
+    }
 }
 
 /* \reimp
 */
-bool QGraphicsWebView::event(QEvent* event)
+bool QGraphicsWebView::event( QEvent *event )
 {
     // Re-implemented in order to allows fixing event-related bugs in patch releases.
 
-    if (d->page) {
-        if (event->type() == QEvent::PaletteChange)
-            d->page->setPalette(palette());
-#ifndef QT_NO_CONTEXTMENU
-        if (event->type() == QEvent::GraphicsSceneContextMenu) {
-            if (!isEnabled())
-                return false;
+    if ( d->page )
+    {
+        if ( event->type() == QEvent::PaletteChange )
+        {
+            d->page->setPalette( palette() );
+        }
 
-            QGraphicsSceneContextMenuEvent* ev = static_cast<QGraphicsSceneContextMenuEvent*>(event);
-            QContextMenuEvent fakeEvent(QContextMenuEvent::Reason(ev->reason()), ev->pos().toPoint());
-            if (d->page->swallowContextMenuEvent(&fakeEvent)) {
+#ifndef QT_NO_CONTEXTMENU
+
+        if ( event->type() == QEvent::GraphicsSceneContextMenu )
+        {
+            if ( !isEnabled() )
+            {
+                return false;
+            }
+
+            QGraphicsSceneContextMenuEvent *ev = static_cast<QGraphicsSceneContextMenuEvent *>( event );
+            QContextMenuEvent fakeEvent( QContextMenuEvent::Reason( ev->reason() ), ev->pos().toPoint() );
+
+            if ( d->page->swallowContextMenuEvent( &fakeEvent ) )
+            {
                 event->accept();
                 return true;
             }
-            d->page->updatePositionDependentActions(fakeEvent.pos());
-        } else
+
+            d->page->updatePositionDependentActions( fakeEvent.pos() );
+        }
+        else
 #endif // QT_NO_CONTEXTMENU
         {
 #ifndef QT_NO_CURSOR
-            if (event->type() == QEvent::CursorChange) {
+
+            if ( event->type() == QEvent::CursorChange )
+            {
                 // An unsetCursor will set the cursor to Qt::ArrowCursor.
                 // Thus this cursor change might be a QWidget::unsetCursor()
                 // If this is not the case and it came from WebCore, the
@@ -457,19 +516,25 @@ bool QGraphicsWebView::event(QEvent* event)
                 // right, as it falls back to the last cursor set by
                 // WebCore.
                 // FIXME: Add a QEvent::CursorUnset or similar to Qt.
-                if (cursor().shape() == Qt::ArrowCursor)
+                if ( cursor().shape() == Qt::ArrowCursor )
+                {
                     d->page->d->client->resetCursor();
+                }
             }
+
 #endif
         }
     }
-    return QGraphicsWidget::event(event);
+
+    return QGraphicsWidget::event( event );
 }
 
 void QGraphicsWebViewPrivate::detachCurrentPage()
 {
-    if (!page)
+    if ( !page )
+    {
         return;
+    }
 
     page->d->view.clear();
     page->d->client = nullptr;
@@ -477,10 +542,14 @@ void QGraphicsWebViewPrivate::detachCurrentPage()
     // if the page was created by us, we own it and need to
     // destroy it as well.
 
-    if (page->parent() == q)
+    if ( page->parent() == q )
+    {
         delete page;
+    }
     else
-        page->disconnect(q);
+    {
+        page->disconnect( q );
+    }
 
     page = 0;
 }
@@ -494,42 +563,50 @@ void QGraphicsWebViewPrivate::detachCurrentPage()
 
     \sa page()
 */
-void QGraphicsWebView::setPage(QWebPage* page)
+void QGraphicsWebView::setPage( QWebPage *page )
 {
-    if (d->page == page)
+    if ( d->page == page )
+    {
         return;
+    }
 
     d->detachCurrentPage();
     d->page = page;
 
-    if (!d->page)
+    if ( !d->page )
+    {
         return;
+    }
 
-    d->page->d->client = new PageClientQGraphicsWidget(this, page); // set the page client
+    d->page->d->client = new PageClientQGraphicsWidget( this, page ); // set the page client
 
-    if (d->overlay())
+    if ( d->overlay() )
+    {
         d->overlay()->prepareGraphicsItemGeometryChange();
+    }
 
     QSize size = geometry().size().toSize();
-    page->setViewportSize(size);
+    page->setViewportSize( size );
 
-    if (d->resizesToContents)
+    if ( d->resizesToContents )
+    {
         d->updateResizesToContentsForPage();
+    }
 
-    QWebFrame* mainFrame = d->page->mainFrame();
+    QWebFrame *mainFrame = d->page->mainFrame();
 
-    connect(mainFrame, SIGNAL(titleChanged(const QString &)),      this, SLOT(titleChanged(const QString &)));
-    connect(mainFrame, SIGNAL(iconChanged()),                      this, SLOT(iconChanged()));
-    connect(mainFrame, SIGNAL(urlChanged(const QUrl &)),           this, SLOT(urlChanged(const QUrl &)));
-    connect(d->page,   SIGNAL(loadStarted()),                      this, SLOT(loadStarted()));
-    connect(d->page,   SIGNAL(loadProgress(int)),                  this, SLOT(loadProgress(int)));
-    connect(d->page,   SIGNAL(loadFinished(bool)),                 this, SLOT(_q_doLoadFinished(bool)));
-    connect(d->page,   SIGNAL(statusBarMessage(const QString &)),  this, SLOT(statusBarMessage(const QString &)));
-    connect(d->page,   SIGNAL(linkClicked(const QUrl &)),          this, SLOT(linkClicked(const QUrl &)));
-    connect(d->page,   SIGNAL(destroyed()),                        this, SLOT(_q_pageDestroyed()));
+    connect( mainFrame, SIGNAL( titleChanged( const QString & ) ),      this, SLOT( titleChanged( const QString & ) ) );
+    connect( mainFrame, SIGNAL( iconChanged() ),                      this, SLOT( iconChanged() ) );
+    connect( mainFrame, SIGNAL( urlChanged( const QUrl & ) ),           this, SLOT( urlChanged( const QUrl & ) ) );
+    connect( d->page,   SIGNAL( loadStarted() ),                      this, SLOT( loadStarted() ) );
+    connect( d->page,   SIGNAL( loadProgress( int ) ),                  this, SLOT( loadProgress( int ) ) );
+    connect( d->page,   SIGNAL( loadFinished( bool ) ),                 this, SLOT( _q_doLoadFinished( bool ) ) );
+    connect( d->page,   SIGNAL( statusBarMessage( const QString & ) ),  this, SLOT( statusBarMessage( const QString & ) ) );
+    connect( d->page,   SIGNAL( linkClicked( const QUrl & ) ),          this, SLOT( linkClicked( const QUrl & ) ) );
+    connect( d->page,   SIGNAL( destroyed() ),                        this, SLOT( _q_pageDestroyed() ) );
 
 #if !defined(QT_NO_IM) && (defined(Q_WS_X11) || defined(Q_WS_QWS))
-    connect(d->page, SIGNAL(microFocusChanged()), this, SLOT(updateMicroFocus()));
+    connect( d->page, SIGNAL( microFocusChanged() ), this, SLOT( updateMicroFocus() ) );
 #endif
 }
 
@@ -544,15 +621,17 @@ void QGraphicsWebView::setPage(QWebPage* page)
     \sa load(), urlChanged()
 */
 
-void QGraphicsWebView::setUrl(const QUrl &url)
+void QGraphicsWebView::setUrl( const QUrl &url )
 {
-    page()->mainFrame()->setUrl(url);
+    page()->mainFrame()->setUrl( url );
 }
 
 QUrl QGraphicsWebView::url() const
 {
-    if (d->page)
+    if ( d->page )
+    {
         return d->page->mainFrame()->url();
+    }
 
     return QUrl();
 }
@@ -567,8 +646,10 @@ QUrl QGraphicsWebView::url() const
 */
 QString QGraphicsWebView::title() const
 {
-    if (d->page)
+    if ( d->page )
+    {
         return d->page->mainFrame()->title();
+    }
 
     return QString();
 }
@@ -583,8 +664,10 @@ QString QGraphicsWebView::title() const
 */
 QIcon QGraphicsWebView::icon() const
 {
-    if (d->page)
+    if ( d->page )
+    {
         return d->page->mainFrame()->icon();
+    }
 
     return QIcon();
 }
@@ -594,12 +677,14 @@ QIcon QGraphicsWebView::icon() const
     \brief the zoom factor for the view
 */
 
-void QGraphicsWebView::setZoomFactor(qreal factor)
+void QGraphicsWebView::setZoomFactor( qreal factor )
 {
-    if (factor == page()->mainFrame()->zoomFactor())
+    if ( factor == page()->mainFrame()->zoomFactor() )
+    {
         return;
+    }
 
-    page()->mainFrame()->setZoomFactor(factor);
+    page()->mainFrame()->setZoomFactor( factor );
 }
 
 qreal QGraphicsWebView::zoomFactor() const
@@ -611,34 +696,42 @@ qreal QGraphicsWebView::zoomFactor() const
 */
 void QGraphicsWebView::updateGeometry()
 {
-    if (d->overlay())
+    if ( d->overlay() )
+    {
         d->overlay()->prepareGraphicsItemGeometryChange();
+    }
 
     QGraphicsWidget::updateGeometry();
 
-    if (!d->page)
+    if ( !d->page )
+    {
         return;
+    }
 
     QSize size = geometry().size().toSize();
-    d->page->setViewportSize(size);
+    d->page->setViewportSize( size );
 }
 
 /* \reimp
 */
-void QGraphicsWebView::setGeometry(const QRectF& rect)
+void QGraphicsWebView::setGeometry( const QRectF &rect )
 {
-    QGraphicsWidget::setGeometry(rect);
+    QGraphicsWidget::setGeometry( rect );
 
-    if (d->overlay())
+    if ( d->overlay() )
+    {
         d->overlay()->prepareGraphicsItemGeometryChange();
+    }
 
-    if (!d->page)
+    if ( !d->page )
+    {
         return;
+    }
 
     // NOTE: call geometry() as setGeometry ensures that
     // the geometry is within legal bounds (minimumSize, maximumSize)
     QSize size = geometry().size().toSize();
-    d->page->setViewportSize(size);
+    d->page->setViewportSize( size );
 }
 
 /*
@@ -648,8 +741,10 @@ void QGraphicsWebView::setGeometry(const QRectF& rect)
 */
 void QGraphicsWebView::stop()
 {
-    if (d->page)
-        d->page->triggerAction(QWebPage::Stop);
+    if ( d->page )
+    {
+        d->page->triggerAction( QWebPage::Stop );
+    }
 }
 
 /*
@@ -660,8 +755,10 @@ void QGraphicsWebView::stop()
 */
 void QGraphicsWebView::back()
 {
-    if (d->page)
-        d->page->triggerAction(QWebPage::Back);
+    if ( d->page )
+    {
+        d->page->triggerAction( QWebPage::Back );
+    }
 }
 
 /*
@@ -672,8 +769,10 @@ void QGraphicsWebView::back()
 */
 void QGraphicsWebView::forward()
 {
-    if (d->page)
-        d->page->triggerAction(QWebPage::Forward);
+    if ( d->page )
+    {
+        d->page->triggerAction( QWebPage::Forward );
+    }
 }
 
 /*
@@ -683,8 +782,10 @@ void QGraphicsWebView::forward()
 */
 void QGraphicsWebView::reload()
 {
-    if (d->page)
-        d->page->triggerAction(QWebPage::Reload);
+    if ( d->page )
+    {
+        d->page->triggerAction( QWebPage::Reload );
+    }
 }
 
 /*
@@ -694,9 +795,9 @@ void QGraphicsWebView::reload()
 
     \sa setUrl(), url(), urlChanged()
 */
-void QGraphicsWebView::load(const QUrl& url)
+void QGraphicsWebView::load( const QUrl &url )
 {
-    page()->mainFrame()->load(url);
+    page()->mainFrame()->load( url );
 }
 
 /*
@@ -711,11 +812,11 @@ void QGraphicsWebView::load(const QUrl& url)
     \sa url(), urlChanged()
 */
 
-void QGraphicsWebView::load(const QNetworkRequest& request,
-                    QNetworkAccessManager::Operation operation,
-                    const QByteArray& body)
+void QGraphicsWebView::load( const QNetworkRequest &request,
+                             QNetworkAccessManager::Operation operation,
+                             const QByteArray &body )
 {
-    page()->mainFrame()->load(request, operation, body);
+    page()->mainFrame()->load( request, operation, body );
 }
 
 /*
@@ -739,9 +840,9 @@ void QGraphicsWebView::load(const QNetworkRequest& request,
 
     \sa load(), setContent(), QWebFrame::toHtml(), QWebFrame::setContent()
 */
-void QGraphicsWebView::setHtml(const QString& html, const QUrl& baseUrl)
+void QGraphicsWebView::setHtml( const QString &html, const QUrl &baseUrl )
 {
-    page()->mainFrame()->setHtml(html, baseUrl);
+    page()->mainFrame()->setHtml( html, baseUrl );
 }
 
 /*
@@ -755,9 +856,9 @@ void QGraphicsWebView::setHtml(const QString& html, const QUrl& baseUrl)
 
     \sa load(), setHtml(), QWebFrame::toHtml()
 */
-void QGraphicsWebView::setContent(const QByteArray& data, const QString& mimeType, const QUrl& baseUrl)
+void QGraphicsWebView::setContent( const QByteArray &data, const QString &mimeType, const QUrl &baseUrl )
 {
-    page()->mainFrame()->setContent(data, mimeType, baseUrl);
+    page()->mainFrame()->setContent( data, mimeType, baseUrl );
 }
 
 /*
@@ -767,7 +868,7 @@ void QGraphicsWebView::setContent(const QByteArray& data, const QString& mimeTyp
 
     \snippet webkitsnippets/qtwebkit_qwebview_snippet.cpp 0
 */
-QWebHistory* QGraphicsWebView::history() const
+QWebHistory *QGraphicsWebView::history() const
 {
     return page()->history();
 }
@@ -783,8 +884,11 @@ QWebHistory* QGraphicsWebView::history() const
 */
 bool QGraphicsWebView::isModified() const
 {
-    if (d->page)
+    if ( d->page )
+    {
         return d->page->isModified();
+    }
+
     return false;
 }
 
@@ -797,7 +901,7 @@ bool QGraphicsWebView::isModified() const
 
     \sa QWebSettings::globalSettings()
 */
-QWebSettings* QGraphicsWebView::settings() const
+QWebSettings *QGraphicsWebView::settings() const
 {
     return page()->settings();
 }
@@ -805,13 +909,13 @@ QWebSettings* QGraphicsWebView::settings() const
 /*
     Returns a pointer to a QAction that encapsulates the specified web action \a action.
 */
-QAction *QGraphicsWebView::pageAction(QWebPage::WebAction action) const
+QAction *QGraphicsWebView::pageAction( QWebPage::WebAction action ) const
 {
 #ifdef QT_NO_ACTION
-    Q_UNUSED(action)
+    Q_UNUSED( action )
     return 0;
 #else
-    return page()->action(action);
+    return page()->action( action );
 #endif
 }
 
@@ -821,9 +925,9 @@ QAction *QGraphicsWebView::pageAction(QWebPage::WebAction action) const
 
     \sa pageAction()
 */
-void QGraphicsWebView::triggerPageAction(QWebPage::WebAction action, bool checked)
+void QGraphicsWebView::triggerPageAction( QWebPage::WebAction action, bool checked )
 {
-    page()->triggerAction(action, checked);
+    page()->triggerAction( action, checked );
 }
 
 /*
@@ -842,10 +946,13 @@ void QGraphicsWebView::triggerPageAction(QWebPage::WebAction action, bool checke
 
     \sa QWebPage::selectedText(), QWebPage::selectionChanged()
 */
-bool QGraphicsWebView::findText(const QString &subString, QWebPage::FindFlags options)
+bool QGraphicsWebView::findText( const QString &subString, QWebPage::FindFlags options )
 {
-    if (d->page)
-        return d->page->findText(subString, options);
+    if ( d->page )
+    {
+        return d->page->findText( subString, options );
+    }
+
     return false;
 }
 
@@ -864,13 +971,19 @@ bool QGraphicsWebView::findText(const QString &subString, QWebPage::FindFlags op
 
     \sa QWebPage::setPreferredContentsSize()
 */
-void QGraphicsWebView::setResizesToContents(bool enabled)
+void QGraphicsWebView::setResizesToContents( bool enabled )
 {
-    if (d->resizesToContents == enabled)
+    if ( d->resizesToContents == enabled )
+    {
         return;
+    }
+
     d->resizesToContents = enabled;
-    if (d->page)
+
+    if ( d->page )
+    {
         d->updateResizesToContentsForPage();
+    }
 }
 
 bool QGraphicsWebView::resizesToContents() const
@@ -899,234 +1012,295 @@ bool QGraphicsWebView::resizesToContents() const
 bool QGraphicsWebView::isTiledBackingStoreFrozen() const
 {
 #if ENABLE(TILED_BACKING_STORE)
-    WebCore::TiledBackingStore* backingStore = QWebFramePrivate::core(page()->mainFrame())->tiledBackingStore();
-    if (!backingStore)
+    WebCore::TiledBackingStore *backingStore = QWebFramePrivate::core( page()->mainFrame() )->tiledBackingStore();
+
+    if ( !backingStore )
+    {
         return false;
+    }
+
     return backingStore->contentsFrozen();
 #else
     return false;
 #endif
 }
 
-void QGraphicsWebView::setTiledBackingStoreFrozen(bool frozen)
+void QGraphicsWebView::setTiledBackingStoreFrozen( bool frozen )
 {
 #if ENABLE(TILED_BACKING_STORE)
-    WebCore::TiledBackingStore* backingStore = QWebFramePrivate::core(page()->mainFrame())->tiledBackingStore();
-    if (!backingStore)
+    WebCore::TiledBackingStore *backingStore = QWebFramePrivate::core( page()->mainFrame() )->tiledBackingStore();
+
+    if ( !backingStore )
+    {
         return;
-    backingStore->setContentsFrozen(frozen);
+    }
+
+    backingStore->setContentsFrozen( frozen );
 #else
-    UNUSED_PARAM(frozen);
+    UNUSED_PARAM( frozen );
 #endif
 }
 
 /* \reimp
 */
-void QGraphicsWebView::hoverMoveEvent(QGraphicsSceneHoverEvent* ev)
+void QGraphicsWebView::hoverMoveEvent( QGraphicsSceneHoverEvent *ev )
 {
-    if (d->page) {
+    if ( d->page )
+    {
         const bool accepted = ev->isAccepted();
-        QMouseEvent me = QMouseEvent(QEvent::MouseMove,
-                ev->pos().toPoint(), Qt::NoButton,
-                Qt::NoButton, Qt::NoModifier);
-        d->page->event(&me);
-        ev->setAccepted(accepted);
+        QMouseEvent me = QMouseEvent( QEvent::MouseMove,
+                                      ev->pos().toPoint(), Qt::NoButton,
+                                      Qt::NoButton, Qt::NoModifier );
+        d->page->event( &me );
+        ev->setAccepted( accepted );
     }
 
-    if (!ev->isAccepted())
-        QGraphicsItem::hoverMoveEvent(ev);
+    if ( !ev->isAccepted() )
+    {
+        QGraphicsItem::hoverMoveEvent( ev );
+    }
 }
 
 /* \reimp
 */
-void QGraphicsWebView::hoverLeaveEvent(QGraphicsSceneHoverEvent* ev)
+void QGraphicsWebView::hoverLeaveEvent( QGraphicsSceneHoverEvent *ev )
 {
-    Q_UNUSED(ev);
+    Q_UNUSED( ev );
 }
 
 /* \reimp
 */
-void QGraphicsWebView::mouseMoveEvent(QGraphicsSceneMouseEvent* ev)
+void QGraphicsWebView::mouseMoveEvent( QGraphicsSceneMouseEvent *ev )
 {
-    if (d->page) {
+    if ( d->page )
+    {
         const bool accepted = ev->isAccepted();
-        d->page->event(ev);
-        ev->setAccepted(accepted);
+        d->page->event( ev );
+        ev->setAccepted( accepted );
     }
 
-    if (!ev->isAccepted())
-        QGraphicsItem::mouseMoveEvent(ev);
+    if ( !ev->isAccepted() )
+    {
+        QGraphicsItem::mouseMoveEvent( ev );
+    }
 }
 
 /* \reimp
 */
-void QGraphicsWebView::mousePressEvent(QGraphicsSceneMouseEvent* ev)
+void QGraphicsWebView::mousePressEvent( QGraphicsSceneMouseEvent *ev )
 {
-    if (d->page) {
+    if ( d->page )
+    {
         const bool accepted = ev->isAccepted();
-        d->page->event(ev);
-        ev->setAccepted(accepted);
+        d->page->event( ev );
+        ev->setAccepted( accepted );
     }
 
-    if (!ev->isAccepted())
-        QGraphicsItem::mousePressEvent(ev);
+    if ( !ev->isAccepted() )
+    {
+        QGraphicsItem::mousePressEvent( ev );
+    }
 }
 
 /* \reimp
 */
-void QGraphicsWebView::mouseReleaseEvent(QGraphicsSceneMouseEvent* ev)
+void QGraphicsWebView::mouseReleaseEvent( QGraphicsSceneMouseEvent *ev )
 {
-    if (d->page) {
+    if ( d->page )
+    {
         const bool accepted = ev->isAccepted();
-        d->page->event(ev);
-        ev->setAccepted(accepted);
+        d->page->event( ev );
+        ev->setAccepted( accepted );
     }
 
-    if (!ev->isAccepted())
-        QGraphicsItem::mouseReleaseEvent(ev);
+    if ( !ev->isAccepted() )
+    {
+        QGraphicsItem::mouseReleaseEvent( ev );
+    }
 }
 
 /* \reimp
 */
-void QGraphicsWebView::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* ev)
+void QGraphicsWebView::mouseDoubleClickEvent( QGraphicsSceneMouseEvent *ev )
 {
-    if (d->page) {
+    if ( d->page )
+    {
         const bool accepted = ev->isAccepted();
-        d->page->event(ev);
-        ev->setAccepted(accepted);
+        d->page->event( ev );
+        ev->setAccepted( accepted );
     }
 
-    if (!ev->isAccepted())
-        QGraphicsItem::mouseDoubleClickEvent(ev);
+    if ( !ev->isAccepted() )
+    {
+        QGraphicsItem::mouseDoubleClickEvent( ev );
+    }
 }
 
 /* \reimp
 */
-void QGraphicsWebView::keyPressEvent(QKeyEvent* ev)
+void QGraphicsWebView::keyPressEvent( QKeyEvent *ev )
 {
-    if (d->page)
-        d->page->event(ev);
+    if ( d->page )
+    {
+        d->page->event( ev );
+    }
 
-    if (!ev->isAccepted())
-        QGraphicsItem::keyPressEvent(ev);
+    if ( !ev->isAccepted() )
+    {
+        QGraphicsItem::keyPressEvent( ev );
+    }
 }
 
 /* \reimp
 */
-void QGraphicsWebView::keyReleaseEvent(QKeyEvent* ev)
+void QGraphicsWebView::keyReleaseEvent( QKeyEvent *ev )
 {
-    if (d->page)
-        d->page->event(ev);
+    if ( d->page )
+    {
+        d->page->event( ev );
+    }
 
-    if (!ev->isAccepted())
-        QGraphicsItem::keyReleaseEvent(ev);
+    if ( !ev->isAccepted() )
+    {
+        QGraphicsItem::keyReleaseEvent( ev );
+    }
 }
 
 /* \reimp
 */
-void QGraphicsWebView::focusInEvent(QFocusEvent* ev)
+void QGraphicsWebView::focusInEvent( QFocusEvent *ev )
 {
-    if (d->page)
-        d->page->event(ev);
+    if ( d->page )
+    {
+        d->page->event( ev );
+    }
     else
-        QGraphicsItem::focusInEvent(ev);
+    {
+        QGraphicsItem::focusInEvent( ev );
+    }
 }
 
 /* \reimp
 */
-void QGraphicsWebView::focusOutEvent(QFocusEvent* ev)
+void QGraphicsWebView::focusOutEvent( QFocusEvent *ev )
 {
-    if (d->page)
-        d->page->event(ev);
+    if ( d->page )
+    {
+        d->page->event( ev );
+    }
     else
-        QGraphicsItem::focusOutEvent(ev);
+    {
+        QGraphicsItem::focusOutEvent( ev );
+    }
 }
 
 /* \reimp
 */
-bool QGraphicsWebView::focusNextPrevChild(bool next)
+bool QGraphicsWebView::focusNextPrevChild( bool next )
 {
-    if (d->page)
-        return d->page->focusNextPrevChild(next);
+    if ( d->page )
+    {
+        return d->page->focusNextPrevChild( next );
+    }
 
-    return QGraphicsWidget::focusNextPrevChild(next);
+    return QGraphicsWidget::focusNextPrevChild( next );
 }
 
 /* \reimp
 */
-void QGraphicsWebView::dragEnterEvent(QGraphicsSceneDragDropEvent* ev)
+void QGraphicsWebView::dragEnterEvent( QGraphicsSceneDragDropEvent *ev )
 {
 #ifndef QT_NO_DRAGANDDROP
-    if (d->page)
-        d->page->event(ev);
+
+    if ( d->page )
+    {
+        d->page->event( ev );
+    }
+
 #else
-    Q_UNUSED(ev);
+    Q_UNUSED( ev );
 #endif
 }
 
 /* \reimp
 */
-void QGraphicsWebView::dragLeaveEvent(QGraphicsSceneDragDropEvent* ev)
+void QGraphicsWebView::dragLeaveEvent( QGraphicsSceneDragDropEvent *ev )
 {
 #ifndef QT_NO_DRAGANDDROP
-    if (d->page) {
+
+    if ( d->page )
+    {
         const bool accepted = ev->isAccepted();
-        d->page->event(ev);
-        ev->setAccepted(accepted);
+        d->page->event( ev );
+        ev->setAccepted( accepted );
     }
 
-    if (!ev->isAccepted())
-        QGraphicsWidget::dragLeaveEvent(ev);
+    if ( !ev->isAccepted() )
+    {
+        QGraphicsWidget::dragLeaveEvent( ev );
+    }
+
 #else
-    Q_UNUSED(ev);
+    Q_UNUSED( ev );
 #endif
 }
 
 /* \reimp
 */
-void QGraphicsWebView::dragMoveEvent(QGraphicsSceneDragDropEvent* ev)
+void QGraphicsWebView::dragMoveEvent( QGraphicsSceneDragDropEvent *ev )
 {
 #ifndef QT_NO_DRAGANDDROP
-    if (d->page) {
+
+    if ( d->page )
+    {
         const bool accepted = ev->isAccepted();
-        d->page->event(ev);
-        ev->setAccepted(accepted);
+        d->page->event( ev );
+        ev->setAccepted( accepted );
     }
 
-    if (!ev->isAccepted())
-        QGraphicsWidget::dragMoveEvent(ev);
+    if ( !ev->isAccepted() )
+    {
+        QGraphicsWidget::dragMoveEvent( ev );
+    }
+
 #else
-    Q_UNUSED(ev);
+    Q_UNUSED( ev );
 #endif
 }
 
 /* \reimp
 */
-void QGraphicsWebView::dropEvent(QGraphicsSceneDragDropEvent* ev)
+void QGraphicsWebView::dropEvent( QGraphicsSceneDragDropEvent *ev )
 {
 #ifndef QT_NO_DRAGANDDROP
-    if (d->page) {
+
+    if ( d->page )
+    {
         const bool accepted = ev->isAccepted();
-        d->page->event(ev);
-        ev->setAccepted(accepted);
+        d->page->event( ev );
+        ev->setAccepted( accepted );
     }
 
-    if (!ev->isAccepted())
-        QGraphicsWidget::dropEvent(ev);
+    if ( !ev->isAccepted() )
+    {
+        QGraphicsWidget::dropEvent( ev );
+    }
+
 #else
-    Q_UNUSED(ev);
+    Q_UNUSED( ev );
 #endif
 }
 
 #ifndef QT_NO_CONTEXTMENU
 /* \reimp
 */
-void QGraphicsWebView::contextMenuEvent(QGraphicsSceneContextMenuEvent* ev)
+void QGraphicsWebView::contextMenuEvent( QGraphicsSceneContextMenuEvent *ev )
 {
-    if (d->page) {
+    if ( d->page )
+    {
         const bool accepted = ev->isAccepted();
-        d->page->event(ev);
-        ev->setAccepted(accepted);
+        d->page->event( ev );
+        ev->setAccepted( accepted );
     }
 }
 #endif // QT_NO_CONTEXTMENU
@@ -1134,28 +1308,35 @@ void QGraphicsWebView::contextMenuEvent(QGraphicsSceneContextMenuEvent* ev)
 #ifndef QT_NO_WHEELEVENT
 /* \reimp
 */
-void QGraphicsWebView::wheelEvent(QGraphicsSceneWheelEvent* ev)
+void QGraphicsWebView::wheelEvent( QGraphicsSceneWheelEvent *ev )
 {
-    if (d->page) {
+    if ( d->page )
+    {
         const bool accepted = ev->isAccepted();
-        d->page->event(ev);
-        ev->setAccepted(accepted);
+        d->page->event( ev );
+        ev->setAccepted( accepted );
     }
 
-    if (!ev->isAccepted())
-        QGraphicsItem::wheelEvent(ev);
+    if ( !ev->isAccepted() )
+    {
+        QGraphicsItem::wheelEvent( ev );
+    }
 }
 #endif // QT_NO_WHEELEVENT
 
 /* \reimp
 */
-void QGraphicsWebView::inputMethodEvent(QInputMethodEvent* ev)
+void QGraphicsWebView::inputMethodEvent( QInputMethodEvent *ev )
 {
-    if (d->page)
-        d->page->event(ev);
+    if ( d->page )
+    {
+        d->page->event( ev );
+    }
 
-    if (!ev->isAccepted())
-        QGraphicsItem::inputMethodEvent(ev);
+    if ( !ev->isAccepted() )
+    {
+        QGraphicsItem::inputMethodEvent( ev );
+    }
 }
 
 /*
@@ -1188,29 +1369,29 @@ void QGraphicsWebView::inputMethodEvent(QInputMethodEvent* ev)
 */
 
 
-void QGraphicsWebView::_q_doLoadFinished(bool success)
+void QGraphicsWebView::_q_doLoadFinished( bool success )
 {
-	d->_q_doLoadFinished(success);
+    d->_q_doLoadFinished( success );
 }
 
 void QGraphicsWebView::_q_pageDestroyed()
 {
-	d->_q_pageDestroyed();
+    d->_q_pageDestroyed();
 }
 
 void QGraphicsWebView::syncLayers()
 {
-	d->syncLayers();
+    d->syncLayers();
 }
 
-void QGraphicsWebView::_q_contentsSizeChanged(const QSize &size)
+void QGraphicsWebView::_q_contentsSizeChanged( const QSize &size )
 {
-	d->_q_contentsSizeChanged(size);
+    d->_q_contentsSizeChanged( size );
 }
 
 void QGraphicsWebView::_q_scaleChanged()
 {
-	d->_q_scaleChanged();
+    d->_q_scaleChanged();
 }
 
 

@@ -44,63 +44,74 @@
 
 using namespace WebCore;
 
-namespace WebKit {
-
-PassOwnPtr<PluginControllerProxy> PluginControllerProxy::create(WebProcessConnection* connection, uint64_t pluginInstanceID, const String& userAgent, bool isPrivateBrowsingEnabled, bool isAcceleratedCompositingEnabled)
+namespace WebKit
 {
-    return adoptPtr(new PluginControllerProxy(connection, pluginInstanceID, userAgent, isPrivateBrowsingEnabled, isAcceleratedCompositingEnabled));
+
+PassOwnPtr<PluginControllerProxy> PluginControllerProxy::create( WebProcessConnection *connection, uint64_t pluginInstanceID,
+        const String &userAgent, bool isPrivateBrowsingEnabled, bool isAcceleratedCompositingEnabled )
+{
+    return adoptPtr( new PluginControllerProxy( connection, pluginInstanceID, userAgent, isPrivateBrowsingEnabled,
+                     isAcceleratedCompositingEnabled ) );
 }
 
-PluginControllerProxy::PluginControllerProxy(WebProcessConnection* connection, uint64_t pluginInstanceID, const String& userAgent, bool isPrivateBrowsingEnabled, bool isAcceleratedCompositingEnabled)
-    : m_connection(connection)
-    , m_pluginInstanceID(pluginInstanceID)
-    , m_userAgent(userAgent)
-    , m_isPrivateBrowsingEnabled(isPrivateBrowsingEnabled)
-    , m_isAcceleratedCompositingEnabled(isAcceleratedCompositingEnabled)
-    , m_paintTimer(RunLoop::main(), this, &PluginControllerProxy::paint)
-    , m_pluginDestructionProtectCount(0)
-    , m_pluginDestroyTimer(RunLoop::main(), this, &PluginControllerProxy::destroy)
-    , m_waitingForDidUpdate(false)
-    , m_pluginCanceledManualStreamLoad(false)
+PluginControllerProxy::PluginControllerProxy( WebProcessConnection *connection, uint64_t pluginInstanceID,
+        const String &userAgent, bool isPrivateBrowsingEnabled, bool isAcceleratedCompositingEnabled )
+    : m_connection( connection )
+    , m_pluginInstanceID( pluginInstanceID )
+    , m_userAgent( userAgent )
+    , m_isPrivateBrowsingEnabled( isPrivateBrowsingEnabled )
+    , m_isAcceleratedCompositingEnabled( isAcceleratedCompositingEnabled )
+    , m_paintTimer( RunLoop::main(), this, &PluginControllerProxy::paint )
+    , m_pluginDestructionProtectCount( 0 )
+    , m_pluginDestroyTimer( RunLoop::main(), this, &PluginControllerProxy::destroy )
+    , m_waitingForDidUpdate( false )
+    , m_pluginCanceledManualStreamLoad( false )
 #if PLATFORM(MAC)
-    , m_isComplexTextInputEnabled(false)
+    , m_isComplexTextInputEnabled( false )
 #endif
-    , m_windowNPObject(0)
-    , m_pluginElementNPObject(0)
+    , m_windowNPObject( 0 )
+    , m_pluginElementNPObject( 0 )
 {
 }
 
 PluginControllerProxy::~PluginControllerProxy()
 {
-    ASSERT(!m_plugin);
+    ASSERT( !m_plugin );
 
-    if (m_windowNPObject)
-        releaseNPObject(m_windowNPObject);
+    if ( m_windowNPObject )
+    {
+        releaseNPObject( m_windowNPObject );
+    }
 
-    if (m_pluginElementNPObject)
-        releaseNPObject(m_pluginElementNPObject);
+    if ( m_pluginElementNPObject )
+    {
+        releaseNPObject( m_pluginElementNPObject );
+    }
 }
 
-bool PluginControllerProxy::initialize(const Plugin::Parameters& parameters)
+bool PluginControllerProxy::initialize( const Plugin::Parameters &parameters )
 {
-    ASSERT(!m_plugin);
+    ASSERT( !m_plugin );
 
-    m_plugin = NetscapePlugin::create(PluginProcess::shared().netscapePluginModule());
-    if (!m_plugin) {
+    m_plugin = NetscapePlugin::create( PluginProcess::shared().netscapePluginModule() );
+
+    if ( !m_plugin )
+    {
         // This will delete the plug-in controller proxy object.
-        m_connection->removePluginControllerProxy(this, 0);
+        m_connection->removePluginControllerProxy( this, 0 );
         return false;
     }
 
-    if (!m_plugin->initialize(this, parameters)) {
+    if ( !m_plugin->initialize( this, parameters ) )
+    {
         // Get the plug-in so we can pass it to removePluginControllerProxy. The pointer is only
         // used as an identifier so it's OK to just get a weak reference.
-        Plugin* plugin = m_plugin.get();
-        
+        Plugin *plugin = m_plugin.get();
+
         m_plugin = 0;
 
         // This will delete the plug-in controller proxy object.
-        m_connection->removePluginControllerProxy(this, plugin);
+        m_connection->removePluginControllerProxy( this, plugin );
         return false;
     }
 
@@ -111,18 +122,19 @@ bool PluginControllerProxy::initialize(const Plugin::Parameters& parameters)
 
 void PluginControllerProxy::destroy()
 {
-    ASSERT(m_plugin);
+    ASSERT( m_plugin );
 
-    if (m_pluginDestructionProtectCount) {
+    if ( m_pluginDestructionProtectCount )
+    {
         // We have plug-in code on the stack so we can't destroy it right now.
         // Destroy it later.
-        m_pluginDestroyTimer.startOneShot(0);
+        m_pluginDestroyTimer.startOneShot( 0 );
         return;
     }
 
     // Get the plug-in so we can pass it to removePluginControllerProxy. The pointer is only
     // used as an identifier so it's OK to just get a weak reference.
-    Plugin* plugin = m_plugin.get();
+    Plugin *plugin = m_plugin.get();
 
     m_plugin->destroy();
     m_plugin = 0;
@@ -130,66 +142,76 @@ void PluginControllerProxy::destroy()
     platformDestroy();
 
     // This will delete the plug-in controller proxy object.
-    m_connection->removePluginControllerProxy(this, plugin);
+    m_connection->removePluginControllerProxy( this, plugin );
 }
 
 void PluginControllerProxy::paint()
 {
-    ASSERT(!m_dirtyRect.isEmpty());
+    ASSERT( !m_dirtyRect.isEmpty() );
     m_paintTimer.stop();
 
-    if (!m_backingStore)
+    if ( !m_backingStore )
+    {
         return;
+    }
 
     IntRect dirtyRect = m_dirtyRect;
     m_dirtyRect = IntRect();
 
-    ASSERT(m_plugin);
+    ASSERT( m_plugin );
 
     // Create a graphics context.
     OwnPtr<GraphicsContext> graphicsContext = m_backingStore->createGraphicsContext();
 
-    graphicsContext->translate(-m_frameRect.x(), -m_frameRect.y());
+    graphicsContext->translate( -m_frameRect.x(), -m_frameRect.y() );
 
-    if (m_plugin->isTransparent())
-        graphicsContext->clearRect(dirtyRect);
+    if ( m_plugin->isTransparent() )
+    {
+        graphicsContext->clearRect( dirtyRect );
+    }
 
-    m_plugin->paint(graphicsContext.get(), dirtyRect);
+    m_plugin->paint( graphicsContext.get(), dirtyRect );
 
-    m_connection->connection()->send(Messages::PluginProxy::Update(dirtyRect), m_pluginInstanceID);
+    m_connection->connection()->send( Messages::PluginProxy::Update( dirtyRect ), m_pluginInstanceID );
 }
 
 void PluginControllerProxy::startPaintTimer()
 {
     // Check if we should start the timer.
-    
-    if (m_dirtyRect.isEmpty())
+
+    if ( m_dirtyRect.isEmpty() )
+    {
         return;
+    }
 
     // FIXME: Check clip rect.
-    
-    if (m_paintTimer.isActive())
-        return;
 
-    if (m_waitingForDidUpdate)
+    if ( m_paintTimer.isActive() )
+    {
         return;
+    }
+
+    if ( m_waitingForDidUpdate )
+    {
+        return;
+    }
 
     // Start the timer.
-    m_paintTimer.startOneShot(0);
+    m_paintTimer.startOneShot( 0 );
 
     m_waitingForDidUpdate = true;
 }
 
-void PluginControllerProxy::invalidate(const IntRect& rect)
+void PluginControllerProxy::invalidate( const IntRect &rect )
 {
     // Convert the dirty rect to window coordinates.
     IntRect dirtyRect = rect;
-    dirtyRect.move(m_frameRect.x(), m_frameRect.y());
+    dirtyRect.move( m_frameRect.x(), m_frameRect.y() );
 
     // Make sure that the dirty rect is not greater than the plug-in itself.
-    dirtyRect.intersect(m_frameRect);
+    dirtyRect.intersect( m_frameRect );
 
-    m_dirtyRect.unite(dirtyRect);
+    m_dirtyRect.unite( dirtyRect );
 
     startPaintTimer();
 }
@@ -199,87 +221,107 @@ String PluginControllerProxy::userAgent()
     return m_userAgent;
 }
 
-void PluginControllerProxy::loadURL(uint64_t requestID, const String& method, const String& urlString, const String& target, const HTTPHeaderMap& headerFields, const Vector<uint8_t>& httpBody, bool allowPopups)
+void PluginControllerProxy::loadURL( uint64_t requestID, const String &method, const String &urlString, const String &target,
+                                     const HTTPHeaderMap &headerFields, const Vector<uint8_t> &httpBody, bool allowPopups )
 {
-    m_connection->connection()->send(Messages::PluginProxy::LoadURL(requestID, method, urlString, target, headerFields, httpBody, allowPopups), m_pluginInstanceID);
+    m_connection->connection()->send( Messages::PluginProxy::LoadURL( requestID, method, urlString, target, headerFields, httpBody,
+                                      allowPopups ), m_pluginInstanceID );
 }
 
-void PluginControllerProxy::cancelStreamLoad(uint64_t streamID)
+void PluginControllerProxy::cancelStreamLoad( uint64_t streamID )
 {
-    m_connection->connection()->send(Messages::PluginProxy::CancelStreamLoad(streamID), m_pluginInstanceID);
+    m_connection->connection()->send( Messages::PluginProxy::CancelStreamLoad( streamID ), m_pluginInstanceID );
 }
 
 void PluginControllerProxy::cancelManualStreamLoad()
 {
     m_pluginCanceledManualStreamLoad = true;
 
-    m_connection->connection()->send(Messages::PluginProxy::CancelManualStreamLoad(), m_pluginInstanceID);
+    m_connection->connection()->send( Messages::PluginProxy::CancelManualStreamLoad(), m_pluginInstanceID );
 }
 
-NPObject* PluginControllerProxy::windowScriptNPObject()
+NPObject *PluginControllerProxy::windowScriptNPObject()
 {
-    if (!m_windowNPObject) {
+    if ( !m_windowNPObject )
+    {
         uint64_t windowScriptNPObjectID = 0;
 
-        if (!m_connection->connection()->sendSync(Messages::PluginProxy::GetWindowScriptNPObject(), Messages::PluginProxy::GetWindowScriptNPObject::Reply(windowScriptNPObjectID), m_pluginInstanceID))
+        if ( !m_connection->connection()->sendSync( Messages::PluginProxy::GetWindowScriptNPObject(),
+                Messages::PluginProxy::GetWindowScriptNPObject::Reply( windowScriptNPObjectID ), m_pluginInstanceID ) )
+        {
             return 0;
+        }
 
-        if (!windowScriptNPObjectID)
+        if ( !windowScriptNPObjectID )
+        {
             return 0;
+        }
 
-        m_windowNPObject = m_connection->npRemoteObjectMap()->createNPObjectProxy(windowScriptNPObjectID, m_plugin.get());
-        ASSERT(m_windowNPObject);
+        m_windowNPObject = m_connection->npRemoteObjectMap()->createNPObjectProxy( windowScriptNPObjectID, m_plugin.get() );
+        ASSERT( m_windowNPObject );
     }
 
-    retainNPObject(m_windowNPObject);
+    retainNPObject( m_windowNPObject );
     return m_windowNPObject;
 }
 
-NPObject* PluginControllerProxy::pluginElementNPObject()
+NPObject *PluginControllerProxy::pluginElementNPObject()
 {
-    if (!m_pluginElementNPObject) {
+    if ( !m_pluginElementNPObject )
+    {
         uint64_t pluginElementNPObjectID = 0;
 
-        if (!m_connection->connection()->sendSync(Messages::PluginProxy::GetPluginElementNPObject(), Messages::PluginProxy::GetPluginElementNPObject::Reply(pluginElementNPObjectID), m_pluginInstanceID))
+        if ( !m_connection->connection()->sendSync( Messages::PluginProxy::GetPluginElementNPObject(),
+                Messages::PluginProxy::GetPluginElementNPObject::Reply( pluginElementNPObjectID ), m_pluginInstanceID ) )
+        {
             return 0;
+        }
 
-        if (!pluginElementNPObjectID)
+        if ( !pluginElementNPObjectID )
+        {
             return 0;
+        }
 
-        m_pluginElementNPObject = m_connection->npRemoteObjectMap()->createNPObjectProxy(pluginElementNPObjectID, m_plugin.get());
-        ASSERT(m_pluginElementNPObject);
+        m_pluginElementNPObject = m_connection->npRemoteObjectMap()->createNPObjectProxy( pluginElementNPObjectID, m_plugin.get() );
+        ASSERT( m_pluginElementNPObject );
     }
 
-    retainNPObject(m_pluginElementNPObject);
+    retainNPObject( m_pluginElementNPObject );
     return m_pluginElementNPObject;
 }
 
-bool PluginControllerProxy::evaluate(NPObject* npObject, const String& scriptString, NPVariant* result, bool allowPopups)
+bool PluginControllerProxy::evaluate( NPObject *npObject, const String &scriptString, NPVariant *result, bool allowPopups )
 {
-    PluginDestructionProtector protector(this);
+    PluginDestructionProtector protector( this );
 
     NPVariant npObjectAsNPVariant;
-    OBJECT_TO_NPVARIANT(npObject, npObjectAsNPVariant);
+    OBJECT_TO_NPVARIANT( npObject, npObjectAsNPVariant );
 
     // Send the NPObject over as an NPVariantData.
-    NPVariantData npObjectAsNPVariantData = m_connection->npRemoteObjectMap()->npVariantToNPVariantData(npObjectAsNPVariant, m_plugin.get());
+    NPVariantData npObjectAsNPVariantData = m_connection->npRemoteObjectMap()->npVariantToNPVariantData( npObjectAsNPVariant,
+                                            m_plugin.get() );
 
     bool returnValue = false;
     NPVariantData resultData;
 
-    if (!m_connection->connection()->sendSync(Messages::PluginProxy::Evaluate(npObjectAsNPVariantData, scriptString, allowPopups), Messages::PluginProxy::Evaluate::Reply(returnValue, resultData), m_pluginInstanceID))
+    if ( !m_connection->connection()->sendSync( Messages::PluginProxy::Evaluate( npObjectAsNPVariantData, scriptString, allowPopups ),
+            Messages::PluginProxy::Evaluate::Reply( returnValue, resultData ), m_pluginInstanceID ) )
+    {
         return false;
+    }
 
-    if (!returnValue)
+    if ( !returnValue )
+    {
         return false;
+    }
 
-    *result = m_connection->npRemoteObjectMap()->npVariantDataToNPVariant(resultData, m_plugin.get());
+    *result = m_connection->npRemoteObjectMap()->npVariantDataToNPVariant( resultData, m_plugin.get() );
     return true;
 }
 
-void PluginControllerProxy::setStatusbarText(const String& statusbarText)
+void PluginControllerProxy::setStatusbarText( const String &statusbarText )
 {
-    m_connection->connection()->send(Messages::PluginProxy::SetStatusbarText(statusbarText), m_pluginInstanceID);
+    m_connection->connection()->send( Messages::PluginProxy::SetStatusbarText( statusbarText ), m_pluginInstanceID );
 }
 
 bool PluginControllerProxy::isAcceleratedCompositingEnabled()
@@ -300,14 +342,17 @@ void PluginControllerProxy::willSendEventToPlugin()
 }
 
 #if PLATFORM(MAC)
-void PluginControllerProxy::setComplexTextInputEnabled(bool complexTextInputEnabled)
+void PluginControllerProxy::setComplexTextInputEnabled( bool complexTextInputEnabled )
 {
-    if (m_isComplexTextInputEnabled == complexTextInputEnabled)
+    if ( m_isComplexTextInputEnabled == complexTextInputEnabled )
+    {
         return;
+    }
 
     m_isComplexTextInputEnabled = complexTextInputEnabled;
 
-    m_connection->connection()->send(Messages::PluginProxy::SetComplexTextInputEnabled(complexTextInputEnabled), m_pluginInstanceID);
+    m_connection->connection()->send( Messages::PluginProxy::SetComplexTextInputEnabled( complexTextInputEnabled ),
+                                      m_pluginInstanceID );
 }
 
 mach_port_t PluginControllerProxy::compositingRenderServerPort()
@@ -316,29 +361,35 @@ mach_port_t PluginControllerProxy::compositingRenderServerPort()
 }
 #endif
 
-String PluginControllerProxy::proxiesForURL(const String& urlString)
+String PluginControllerProxy::proxiesForURL( const String &urlString )
 {
     String proxyString;
-    
-    if (!m_connection->connection()->sendSync(Messages::PluginProxy::CookiesForURL(urlString), Messages::PluginProxy::CookiesForURL::Reply(proxyString), m_pluginInstanceID))
+
+    if ( !m_connection->connection()->sendSync( Messages::PluginProxy::CookiesForURL( urlString ),
+            Messages::PluginProxy::CookiesForURL::Reply( proxyString ), m_pluginInstanceID ) )
+    {
         return String();
-    
+    }
+
     return proxyString;
 }
 
-String PluginControllerProxy::cookiesForURL(const String& urlString)
+String PluginControllerProxy::cookiesForURL( const String &urlString )
 {
     String cookieString;
 
-    if (!m_connection->connection()->sendSync(Messages::PluginProxy::CookiesForURL(urlString), Messages::PluginProxy::CookiesForURL::Reply(cookieString), m_pluginInstanceID))
+    if ( !m_connection->connection()->sendSync( Messages::PluginProxy::CookiesForURL( urlString ),
+            Messages::PluginProxy::CookiesForURL::Reply( cookieString ), m_pluginInstanceID ) )
+    {
         return String();
+    }
 
     return cookieString;
 }
 
-void PluginControllerProxy::setCookiesForURL(const String& urlString, const String& cookieString)
+void PluginControllerProxy::setCookiesForURL( const String &urlString, const String &cookieString )
 {
-    m_connection->connection()->send(Messages::PluginProxy::SetCookiesForURL(urlString, cookieString), m_pluginInstanceID);
+    m_connection->connection()->send( Messages::PluginProxy::SetCookiesForURL( urlString, cookieString ), m_pluginInstanceID );
 }
 
 bool PluginControllerProxy::isPrivateBrowsingEnabled()
@@ -353,150 +404,170 @@ void PluginControllerProxy::protectPluginFromDestruction()
 
 void PluginControllerProxy::unprotectPluginFromDestruction()
 {
-    ASSERT(m_pluginDestructionProtectCount);
+    ASSERT( m_pluginDestructionProtectCount );
 
     m_pluginDestructionProtectCount--;
 }
 
-void PluginControllerProxy::frameDidFinishLoading(uint64_t requestID)
+void PluginControllerProxy::frameDidFinishLoading( uint64_t requestID )
 {
-    m_plugin->frameDidFinishLoading(requestID);
+    m_plugin->frameDidFinishLoading( requestID );
 }
 
-void PluginControllerProxy::frameDidFail(uint64_t requestID, bool wasCancelled)
+void PluginControllerProxy::frameDidFail( uint64_t requestID, bool wasCancelled )
 {
-    m_plugin->frameDidFail(requestID, wasCancelled);
+    m_plugin->frameDidFail( requestID, wasCancelled );
 }
 
-void PluginControllerProxy::geometryDidChange(const IntRect& frameRect, const IntRect& clipRect, const ShareableBitmap::Handle& backingStoreHandle)
+void PluginControllerProxy::geometryDidChange( const IntRect &frameRect, const IntRect &clipRect,
+        const ShareableBitmap::Handle &backingStoreHandle )
 {
     m_frameRect = frameRect;
     m_clipRect = clipRect;
 
-    ASSERT(m_plugin);
+    ASSERT( m_plugin );
 
     platformGeometryDidChange();
 
-    if (!backingStoreHandle.isNull()) {
+    if ( !backingStoreHandle.isNull() )
+    {
         // Create a new backing store.
-        m_backingStore = ShareableBitmap::create(backingStoreHandle);
+        m_backingStore = ShareableBitmap::create( backingStoreHandle );
     }
 
-    m_plugin->geometryDidChange(frameRect, clipRect);
+    m_plugin->geometryDidChange( frameRect, clipRect );
 }
 
-void PluginControllerProxy::didEvaluateJavaScript(uint64_t requestID, const String& requestURLString, const String& result)
+void PluginControllerProxy::didEvaluateJavaScript( uint64_t requestID, const String &requestURLString, const String &result )
 {
-    m_plugin->didEvaluateJavaScript(requestID, requestURLString, result);
+    m_plugin->didEvaluateJavaScript( requestID, requestURLString, result );
 }
 
-void PluginControllerProxy::streamDidReceiveResponse(uint64_t streamID, const String& responseURLString, uint32_t streamLength, uint32_t lastModifiedTime, const String& mimeType, const String& headers)
+void PluginControllerProxy::streamDidReceiveResponse( uint64_t streamID, const String &responseURLString, uint32_t streamLength,
+        uint32_t lastModifiedTime, const String &mimeType, const String &headers )
 {
-    m_plugin->streamDidReceiveResponse(streamID, KURL(ParsedURLString, responseURLString), streamLength, lastModifiedTime, mimeType, headers);
+    m_plugin->streamDidReceiveResponse( streamID, KURL( ParsedURLString, responseURLString ), streamLength, lastModifiedTime,
+                                        mimeType, headers );
 }
 
-void PluginControllerProxy::streamDidReceiveData(uint64_t streamID, const CoreIPC::DataReference& data)
+void PluginControllerProxy::streamDidReceiveData( uint64_t streamID, const CoreIPC::DataReference &data )
 {
-    m_plugin->streamDidReceiveData(streamID, reinterpret_cast<const char*>(data.data()), data.size());
+    m_plugin->streamDidReceiveData( streamID, reinterpret_cast<const char *>( data.data() ), data.size() );
 }
 
-void PluginControllerProxy::streamDidFinishLoading(uint64_t streamID)
+void PluginControllerProxy::streamDidFinishLoading( uint64_t streamID )
 {
-    m_plugin->streamDidFinishLoading(streamID);
+    m_plugin->streamDidFinishLoading( streamID );
 }
 
-void PluginControllerProxy::streamDidFail(uint64_t streamID, bool wasCancelled)
+void PluginControllerProxy::streamDidFail( uint64_t streamID, bool wasCancelled )
 {
-    m_plugin->streamDidFail(streamID, wasCancelled);
+    m_plugin->streamDidFail( streamID, wasCancelled );
 }
 
-void PluginControllerProxy::manualStreamDidReceiveResponse(const String& responseURLString, uint32_t streamLength, uint32_t lastModifiedTime, const String& mimeType, const String& headers)
+void PluginControllerProxy::manualStreamDidReceiveResponse( const String &responseURLString, uint32_t streamLength,
+        uint32_t lastModifiedTime, const String &mimeType, const String &headers )
 {
-    if (m_pluginCanceledManualStreamLoad)
+    if ( m_pluginCanceledManualStreamLoad )
+    {
         return;
+    }
 
-    m_plugin->manualStreamDidReceiveResponse(KURL(ParsedURLString, responseURLString), streamLength, lastModifiedTime, mimeType, headers);
+    m_plugin->manualStreamDidReceiveResponse( KURL( ParsedURLString, responseURLString ), streamLength, lastModifiedTime, mimeType,
+            headers );
 }
 
-void PluginControllerProxy::manualStreamDidReceiveData(const CoreIPC::DataReference& data)
+void PluginControllerProxy::manualStreamDidReceiveData( const CoreIPC::DataReference &data )
 {
-    if (m_pluginCanceledManualStreamLoad)
+    if ( m_pluginCanceledManualStreamLoad )
+    {
         return;
+    }
 
-    m_plugin->manualStreamDidReceiveData(reinterpret_cast<const char*>(data.data()), data.size());
+    m_plugin->manualStreamDidReceiveData( reinterpret_cast<const char *>( data.data() ), data.size() );
 }
 
 void PluginControllerProxy::manualStreamDidFinishLoading()
 {
-    if (m_pluginCanceledManualStreamLoad)
+    if ( m_pluginCanceledManualStreamLoad )
+    {
         return;
-    
+    }
+
     m_plugin->manualStreamDidFinishLoading();
 }
 
-void PluginControllerProxy::manualStreamDidFail(bool wasCancelled)
+void PluginControllerProxy::manualStreamDidFail( bool wasCancelled )
 {
-    if (m_pluginCanceledManualStreamLoad)
+    if ( m_pluginCanceledManualStreamLoad )
+    {
         return;
-    
-    m_plugin->manualStreamDidFail(wasCancelled);
+    }
+
+    m_plugin->manualStreamDidFail( wasCancelled );
 }
-    
-void PluginControllerProxy::handleMouseEvent(const WebMouseEvent& mouseEvent, PassRefPtr<Messages::PluginControllerProxy::HandleMouseEvent::DelayedReply> reply)
+
+void PluginControllerProxy::handleMouseEvent( const WebMouseEvent &mouseEvent,
+        PassRefPtr<Messages::PluginControllerProxy::HandleMouseEvent::DelayedReply> reply )
 {
     // Always let the web process think that we've handled this mouse event, even before passing it along to the plug-in.
-    // This is a workaround for 
+    // This is a workaround for
     // <rdar://problem/9299901> UI process thinks the page is unresponsive when a plug-in is showing a context menu.
     // The web process sends a synchronous HandleMouseEvent message and the plug-in process spawns a nested
     // run loop when showing the context menu, so eventually the unresponsiveness timer kicks in in the UI process.
     // FIXME: We should come up with a better way to do this.
-    reply->send(true);
+    reply->send( true );
 
-    m_plugin->handleMouseEvent(mouseEvent);
+    m_plugin->handleMouseEvent( mouseEvent );
 }
 
-void PluginControllerProxy::handleWheelEvent(const WebWheelEvent& wheelEvent, bool& handled)
+void PluginControllerProxy::handleWheelEvent( const WebWheelEvent &wheelEvent, bool &handled )
 {
-    handled = m_plugin->handleWheelEvent(wheelEvent);
+    handled = m_plugin->handleWheelEvent( wheelEvent );
 }
 
-void PluginControllerProxy::handleMouseEnterEvent(const WebMouseEvent& mouseEnterEvent, bool& handled)
+void PluginControllerProxy::handleMouseEnterEvent( const WebMouseEvent &mouseEnterEvent, bool &handled )
 {
-    handled = m_plugin->handleMouseEnterEvent(mouseEnterEvent);
+    handled = m_plugin->handleMouseEnterEvent( mouseEnterEvent );
 }
 
-void PluginControllerProxy::handleMouseLeaveEvent(const WebMouseEvent& mouseLeaveEvent, bool& handled)
+void PluginControllerProxy::handleMouseLeaveEvent( const WebMouseEvent &mouseLeaveEvent, bool &handled )
 {
-    handled = m_plugin->handleMouseLeaveEvent(mouseLeaveEvent);
+    handled = m_plugin->handleMouseLeaveEvent( mouseLeaveEvent );
 }
 
-void PluginControllerProxy::handleKeyboardEvent(const WebKeyboardEvent& keyboardEvent, bool& handled)
+void PluginControllerProxy::handleKeyboardEvent( const WebKeyboardEvent &keyboardEvent, bool &handled )
 {
-    handled = m_plugin->handleKeyboardEvent(keyboardEvent);
+    handled = m_plugin->handleKeyboardEvent( keyboardEvent );
 }
 
 void PluginControllerProxy::paintEntirePlugin()
 {
-    if (m_frameRect.isEmpty())
+    if ( m_frameRect.isEmpty() )
+    {
         return;
+    }
 
     m_dirtyRect = m_frameRect;
     paint();
 }
 
-void PluginControllerProxy::snapshot(ShareableBitmap::Handle& backingStoreHandle)
+void PluginControllerProxy::snapshot( ShareableBitmap::Handle &backingStoreHandle )
 {
-    ASSERT(m_plugin);
+    ASSERT( m_plugin );
     RefPtr<ShareableBitmap> bitmap = m_plugin->snapshot();
-    if (!bitmap)
-        return;
 
-    bitmap->createHandle(backingStoreHandle);
+    if ( !bitmap )
+    {
+        return;
+    }
+
+    bitmap->createHandle( backingStoreHandle );
 }
 
-void PluginControllerProxy::setFocus(bool hasFocus)
+void PluginControllerProxy::setFocus( bool hasFocus )
 {
-    m_plugin->setFocus(hasFocus);
+    m_plugin->setFocus( hasFocus );
 }
 
 void PluginControllerProxy::didUpdate()
@@ -505,21 +576,23 @@ void PluginControllerProxy::didUpdate()
     startPaintTimer();
 }
 
-void PluginControllerProxy::getPluginScriptableNPObject(uint64_t& pluginScriptableNPObjectID)
+void PluginControllerProxy::getPluginScriptableNPObject( uint64_t &pluginScriptableNPObjectID )
 {
-    NPObject* pluginScriptableNPObject = m_plugin->pluginScriptableNPObject();
-    if (!pluginScriptableNPObject) {
+    NPObject *pluginScriptableNPObject = m_plugin->pluginScriptableNPObject();
+
+    if ( !pluginScriptableNPObject )
+    {
         pluginScriptableNPObjectID = 0;
         return;
     }
-    
-    pluginScriptableNPObjectID = m_connection->npRemoteObjectMap()->registerNPObject(pluginScriptableNPObject, m_plugin.get());
-    releaseNPObject(pluginScriptableNPObject);
+
+    pluginScriptableNPObjectID = m_connection->npRemoteObjectMap()->registerNPObject( pluginScriptableNPObject, m_plugin.get() );
+    releaseNPObject( pluginScriptableNPObject );
 }
 
-void PluginControllerProxy::privateBrowsingStateChanged(bool isPrivateBrowsingEnabled)
+void PluginControllerProxy::privateBrowsingStateChanged( bool isPrivateBrowsingEnabled )
 {
-    m_plugin->privateBrowsingStateChanged(isPrivateBrowsingEnabled);
+    m_plugin->privateBrowsingStateChanged( isPrivateBrowsingEnabled );
 }
 
 } // namespace WebKit

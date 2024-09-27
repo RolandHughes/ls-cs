@@ -24,8 +24,8 @@
 #include <qiconengineplugin.h>
 #include <qiconengine.h>
 
-QIconEnginePlugin::QIconEnginePlugin(QObject *parent)
-   : QObject(parent)
+QIconEnginePlugin::QIconEnginePlugin( QObject *parent )
+    : QObject( parent )
 {
 }
 

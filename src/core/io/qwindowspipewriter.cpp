@@ -26,188 +26,206 @@
 #include <qwindowspipewriter_p.h>
 #include <qiodevice_p.h>
 
-QWindowsPipeWriter::Overlapped::Overlapped(QWindowsPipeWriter *pipeWriter)
-   : pipeWriter(pipeWriter)
+QWindowsPipeWriter::Overlapped::Overlapped( QWindowsPipeWriter *pipeWriter )
+    : pipeWriter( pipeWriter )
 {
 }
 
 void QWindowsPipeWriter::Overlapped::clear()
 {
-   ZeroMemory(this, sizeof(OVERLAPPED));
+    ZeroMemory( this, sizeof( OVERLAPPED ) );
 }
 
-QWindowsPipeWriter::QWindowsPipeWriter(HANDLE pipeWriteEnd, QObject *parent)
-   : QObject(parent),
-     handle(pipeWriteEnd),
-     overlapped(this),
-     numberOfBytesToWrite(0),
-     pendingBytesWrittenValue(0),
-     stopped(true),
-     writeSequenceStarted(false),
-     notifiedCalled(false),
-     bytesWrittenPending(false),
-     inBytesWritten(false)
+QWindowsPipeWriter::QWindowsPipeWriter( HANDLE pipeWriteEnd, QObject *parent )
+    : QObject( parent ),
+      handle( pipeWriteEnd ),
+      overlapped( this ),
+      numberOfBytesToWrite( 0 ),
+      pendingBytesWrittenValue( 0 ),
+      stopped( true ),
+      writeSequenceStarted( false ),
+      notifiedCalled( false ),
+      bytesWrittenPending( false ),
+      inBytesWritten( false )
 {
-   connect(this, &QWindowsPipeWriter::_q_queueBytesWritten,
-         this, &QWindowsPipeWriter::emitPendingBytesWrittenValue, Qt::QueuedConnection);
+    connect( this, &QWindowsPipeWriter::_q_queueBytesWritten,
+             this, &QWindowsPipeWriter::emitPendingBytesWrittenValue, Qt::QueuedConnection );
 }
 
 QWindowsPipeWriter::~QWindowsPipeWriter()
 {
-   stop();
+    stop();
 }
 
-bool QWindowsPipeWriter::waitForWrite(int msecs)
+bool QWindowsPipeWriter::waitForWrite( int msecs )
 {
 
-   if (bytesWrittenPending) {
-      emitPendingBytesWrittenValue();
-      return true;
-   }
+    if ( bytesWrittenPending )
+    {
+        emitPendingBytesWrittenValue();
+        return true;
+    }
 
-   if (! writeSequenceStarted) {
-      return false;
-   }
+    if ( ! writeSequenceStarted )
+    {
+        return false;
+    }
 
-   if (!waitForNotification(msecs)) {
-      return false;
-   }
+    if ( !waitForNotification( msecs ) )
+    {
+        return false;
+    }
 
-   if (bytesWrittenPending) {
-      emitPendingBytesWrittenValue();
-      return true;
-   }
+    if ( bytesWrittenPending )
+    {
+        emitPendingBytesWrittenValue();
+        return true;
+    }
 
-   return false;
+    return false;
 }
 
 qint64 QWindowsPipeWriter::bytesToWrite() const
 {
-   return numberOfBytesToWrite + pendingBytesWrittenValue;
+    return numberOfBytesToWrite + pendingBytesWrittenValue;
 }
 
 void QWindowsPipeWriter::emitPendingBytesWrittenValue()
 {
-   if (bytesWrittenPending) {
-      bytesWrittenPending = false;
-      const qint64 bytes = pendingBytesWrittenValue;
-      pendingBytesWrittenValue = 0;
-      emit canWrite();
+    if ( bytesWrittenPending )
+    {
+        bytesWrittenPending = false;
+        const qint64 bytes = pendingBytesWrittenValue;
+        pendingBytesWrittenValue = 0;
+        emit canWrite();
 
-      if (!inBytesWritten) {
-         inBytesWritten = true;
-         emit bytesWritten(bytes);
-         inBytesWritten = false;
-      }
-   }
+        if ( !inBytesWritten )
+        {
+            inBytesWritten = true;
+            emit bytesWritten( bytes );
+            inBytesWritten = false;
+        }
+    }
 }
 
-void QWindowsPipeWriter::writeFileCompleted(DWORD errorCode, DWORD numberOfBytesTransfered,
-      OVERLAPPED *overlappedBase)
+void QWindowsPipeWriter::writeFileCompleted( DWORD errorCode, DWORD numberOfBytesTransfered,
+        OVERLAPPED *overlappedBase )
 {
-   Overlapped *overlapped = static_cast<Overlapped *>(overlappedBase);
-   overlapped->pipeWriter->notified(errorCode, numberOfBytesTransfered);
+    Overlapped *overlapped = static_cast<Overlapped *>( overlappedBase );
+    overlapped->pipeWriter->notified( errorCode, numberOfBytesTransfered );
 }
 
-void QWindowsPipeWriter::notified(DWORD errorCode, DWORD numberOfBytesWritten)
+void QWindowsPipeWriter::notified( DWORD errorCode, DWORD numberOfBytesWritten )
 {
-   notifiedCalled = true;
-   writeSequenceStarted = false;
-   numberOfBytesToWrite = 0;
+    notifiedCalled = true;
+    writeSequenceStarted = false;
+    numberOfBytesToWrite = 0;
 
-   Q_ASSERT(errorCode != ERROR_SUCCESS || numberOfBytesWritten == DWORD(buffer.size()));
+    Q_ASSERT( errorCode != ERROR_SUCCESS || numberOfBytesWritten == DWORD( buffer.size() ) );
 
-   buffer.clear();
+    buffer.clear();
 
-   switch (errorCode) {
-      case ERROR_SUCCESS:
-         break;
-
-      case ERROR_OPERATION_ABORTED:
-         if (stopped) {
+    switch ( errorCode )
+    {
+        case ERROR_SUCCESS:
             break;
-         }
 
-         [[fallthrough]];
+        case ERROR_OPERATION_ABORTED:
+            if ( stopped )
+            {
+                break;
+            }
 
-      default:
-         qErrnoWarning(errorCode, "QWindowsPipeWriter: asynchronous write failed.");
-         break;
-   }
+            [[fallthrough]];
 
-   // After the writer was stopped, the only reason why this function can be called is the
-   if (stopped) {
-      return;
-   }
+        default:
+            qErrnoWarning( errorCode, "QWindowsPipeWriter: asynchronous write failed." );
+            break;
+    }
 
-   pendingBytesWrittenValue += qint64(numberOfBytesWritten);
+    // After the writer was stopped, the only reason why this function can be called is the
+    if ( stopped )
+    {
+        return;
+    }
 
-   if (! bytesWrittenPending) {
-      bytesWrittenPending = true;
-      emit _q_queueBytesWritten();
-   }
+    pendingBytesWrittenValue += qint64( numberOfBytesWritten );
+
+    if ( ! bytesWrittenPending )
+    {
+        bytesWrittenPending = true;
+        emit _q_queueBytesWritten();
+    }
 }
 
-bool QWindowsPipeWriter::waitForNotification(int timeout)
+bool QWindowsPipeWriter::waitForNotification( int timeout )
 {
-   QElapsedTimer t;
-   t.start();
-   notifiedCalled = false;
-   int msecs = timeout;
+    QElapsedTimer t;
+    t.start();
+    notifiedCalled = false;
+    int msecs = timeout;
 
-   while (SleepEx(msecs == -1 ? INFINITE : msecs, TRUE) == WAIT_IO_COMPLETION) {
-      if (notifiedCalled) {
-         return true;
-      }
+    while ( SleepEx( msecs == -1 ? INFINITE : msecs, TRUE ) == WAIT_IO_COMPLETION )
+    {
+        if ( notifiedCalled )
+        {
+            return true;
+        }
 
-      msecs = qt_subtract_from_timeout(timeout, t.elapsed());
+        msecs = qt_subtract_from_timeout( timeout, t.elapsed() );
 
-      if (!msecs) {
-         break;
-      }
-   }
+        if ( !msecs )
+        {
+            break;
+        }
+    }
 
-   return notifiedCalled;
+    return notifiedCalled;
 }
 
-bool QWindowsPipeWriter::write(const QByteArray &ba)
+bool QWindowsPipeWriter::write( const QByteArray &ba )
 {
-   if (writeSequenceStarted) {
-      return false;
-   }
+    if ( writeSequenceStarted )
+    {
+        return false;
+    }
 
-   overlapped.clear();
-   buffer = ba;
-   numberOfBytesToWrite = buffer.size();
-   stopped = false;
-   writeSequenceStarted = true;
+    overlapped.clear();
+    buffer = ba;
+    numberOfBytesToWrite = buffer.size();
+    stopped = false;
+    writeSequenceStarted = true;
 
-   if (!WriteFileEx(handle, buffer.constData(), numberOfBytesToWrite, &overlapped, &writeFileCompleted)) {
-      writeSequenceStarted = false;
-      numberOfBytesToWrite = 0;
-      buffer.clear();
-      qErrnoWarning("QWindowsPipeWriter::write failed.");
-      return false;
-   }
+    if ( !WriteFileEx( handle, buffer.constData(), numberOfBytesToWrite, &overlapped, &writeFileCompleted ) )
+    {
+        writeSequenceStarted = false;
+        numberOfBytesToWrite = 0;
+        buffer.clear();
+        qErrnoWarning( "QWindowsPipeWriter::write failed." );
+        return false;
+    }
 
-   return true;
+    return true;
 }
 
 void QWindowsPipeWriter::stop()
 {
-   stopped = true;
-   bytesWrittenPending = false;
-   pendingBytesWrittenValue = 0;
+    stopped = true;
+    bytesWrittenPending = false;
+    pendingBytesWrittenValue = 0;
 
-   if (writeSequenceStarted) {
-      if (! CancelIoEx(handle, &overlapped)) {
-         const DWORD dwError = GetLastError();
+    if ( writeSequenceStarted )
+    {
+        if ( ! CancelIoEx( handle, &overlapped ) )
+        {
+            const DWORD dwError = GetLastError();
 
-         if (dwError != ERROR_NOT_FOUND) {
-            qErrnoWarning(dwError, "QWindowsPipeWriter: CancelIoEx on handle %x failed.", handle);
-         }
-      }
+            if ( dwError != ERROR_NOT_FOUND )
+            {
+                qErrnoWarning( dwError, "QWindowsPipeWriter: CancelIoEx on handle %x failed.", handle );
+            }
+        }
 
-      waitForNotification(-1);
-   }
+        waitForNotification( -1 );
+    }
 }

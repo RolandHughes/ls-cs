@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -31,27 +31,35 @@
 
 using namespace JSC;
 
-namespace WebCore {
-    
-void JSMessageChannel::visitChildren(SlotVisitor& visitor)
+namespace WebCore
 {
-    Base::visitChildren(visitor);
 
-    if (MessagePort* port = m_impl->port1())
-        visitor.addOpaqueRoot(port);
+void JSMessageChannel::visitChildren( SlotVisitor &visitor )
+{
+    Base::visitChildren( visitor );
 
-    if (MessagePort* port = m_impl->port2())
-        visitor.addOpaqueRoot(port);
+    if ( MessagePort *port = m_impl->port1() )
+    {
+        visitor.addOpaqueRoot( port );
+    }
+
+    if ( MessagePort *port = m_impl->port2() )
+    {
+        visitor.addOpaqueRoot( port );
+    }
 }
 
-EncodedJSValue JSC_HOST_CALL JSMessageChannelConstructor::constructJSMessageChannel(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL JSMessageChannelConstructor::constructJSMessageChannel( ExecState *exec )
 {
-    JSMessageChannelConstructor* jsConstructor = static_cast<JSMessageChannelConstructor*>(exec->callee());
-    ScriptExecutionContext* context = jsConstructor->scriptExecutionContext();
-    if (!context)
-        return throwVMError(exec, createReferenceError(exec, "MessageChannel constructor associated document is unavailable"));
+    JSMessageChannelConstructor *jsConstructor = static_cast<JSMessageChannelConstructor *>( exec->callee() );
+    ScriptExecutionContext *context = jsConstructor->scriptExecutionContext();
 
-    return JSValue::encode(asObject(toJS(exec, jsConstructor->globalObject(), MessageChannel::create(context))));
+    if ( !context )
+    {
+        return throwVMError( exec, createReferenceError( exec, "MessageChannel constructor associated document is unavailable" ) );
+    }
+
+    return JSValue::encode( asObject( toJS( exec, jsConstructor->globalObject(), MessageChannel::create( context ) ) ) );
 }
 
 } // namespace WebCore

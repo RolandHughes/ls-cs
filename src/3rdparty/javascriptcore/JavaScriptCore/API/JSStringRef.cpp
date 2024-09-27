@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -33,80 +33,90 @@
 using namespace JSC;
 using namespace WTF::Unicode;
 
-JSStringRef JSStringCreateWithCharacters(const JSChar* chars, size_t numChars)
+JSStringRef JSStringCreateWithCharacters( const JSChar *chars, size_t numChars )
 {
     initializeThreading();
-    return OpaqueJSString::create(chars, numChars).releaseRef();
+    return OpaqueJSString::create( chars, numChars ).releaseRef();
 }
 
-JSStringRef JSStringCreateWithUTF8CString(const char* string)
+JSStringRef JSStringCreateWithUTF8CString( const char *string )
 {
     initializeThreading();
-    if (string) {
-        size_t length = strlen(string);
-        Vector<UChar, 1024> buffer(length);
-        UChar* p = buffer.data();
-        if (conversionOK == convertUTF8ToUTF16(&string, string + length, &p, p + length))
-            return OpaqueJSString::create(buffer.data(), p - buffer.data()).releaseRef();
+
+    if ( string )
+    {
+        size_t length = strlen( string );
+        Vector<UChar, 1024> buffer( length );
+        UChar *p = buffer.data();
+
+        if ( conversionOK == convertUTF8ToUTF16( &string, string + length, &p, p + length ) )
+        {
+            return OpaqueJSString::create( buffer.data(), p - buffer.data() ).releaseRef();
+        }
     }
 
     // Null string.
     return OpaqueJSString::create().releaseRef();
 }
 
-JSStringRef JSStringRetain(JSStringRef string)
+JSStringRef JSStringRetain( JSStringRef string )
 {
     string->ref();
     return string;
 }
 
-void JSStringRelease(JSStringRef string)
+void JSStringRelease( JSStringRef string )
 {
     string->deref();
 }
 
-size_t JSStringGetLength(JSStringRef string)
+size_t JSStringGetLength( JSStringRef string )
 {
     return string->length();
 }
 
-const JSChar* JSStringGetCharactersPtr(JSStringRef string)
+const JSChar *JSStringGetCharactersPtr( JSStringRef string )
 {
     return string->characters();
 }
 
-size_t JSStringGetMaximumUTF8CStringSize(JSStringRef string)
+size_t JSStringGetMaximumUTF8CStringSize( JSStringRef string )
 {
     // Any UTF8 character > 3 bytes encodes as a UTF16 surrogate pair.
     return string->length() * 3 + 1; // + 1 for terminating '\0'
 }
 
-size_t JSStringGetUTF8CString(JSStringRef string, char* buffer, size_t bufferSize)
+size_t JSStringGetUTF8CString( JSStringRef string, char *buffer, size_t bufferSize )
 {
-    if (!bufferSize)
+    if ( !bufferSize )
+    {
         return 0;
+    }
 
-    char* p = buffer;
-    const UChar* d = string->characters();
-    ConversionResult result = convertUTF16ToUTF8(&d, d + string->length(), &p, p + bufferSize - 1, true);
+    char *p = buffer;
+    const UChar *d = string->characters();
+    ConversionResult result = convertUTF16ToUTF8( &d, d + string->length(), &p, p + bufferSize - 1, true );
     *p++ = '\0';
-    if (result != conversionOK && result != targetExhausted)
+
+    if ( result != conversionOK && result != targetExhausted )
+    {
         return 0;
+    }
 
     return p - buffer;
 }
 
-bool JSStringIsEqual(JSStringRef a, JSStringRef b)
+bool JSStringIsEqual( JSStringRef a, JSStringRef b )
 {
     unsigned len = a->length();
-    return len == b->length() && 0 == memcmp(a->characters(), b->characters(), len * sizeof(UChar));
+    return len == b->length() && 0 == memcmp( a->characters(), b->characters(), len * sizeof( UChar ) );
 }
 
-bool JSStringIsEqualToUTF8CString(JSStringRef a, const char* b)
+bool JSStringIsEqualToUTF8CString( JSStringRef a, const char *b )
 {
-    JSStringRef bBuf = JSStringCreateWithUTF8CString(b);
-    bool result = JSStringIsEqual(a, bBuf);
-    JSStringRelease(bBuf);
-    
+    JSStringRef bBuf = JSStringCreateWithUTF8CString( b );
+    bool result = JSStringIsEqual( a, bBuf );
+    JSStringRelease( bBuf );
+
     return result;
 }

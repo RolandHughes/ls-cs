@@ -32,81 +32,121 @@
 #include "SpotLightSource.h"
 #include <wtf/MathExtras.h>
 
-namespace WebCore {
-
-bool LightSource::setAzimuth(float azimuth)
+namespace WebCore
 {
-    if (m_type == LS_DISTANT)
-        return static_cast<DistantLightSource*>(this)->setAzimuth(azimuth);
+
+bool LightSource::setAzimuth( float azimuth )
+{
+    if ( m_type == LS_DISTANT )
+    {
+        return static_cast<DistantLightSource *>( this )->setAzimuth( azimuth );
+    }
+
     return false;
 }
 
-bool LightSource::setElevation(float elevation)
+bool LightSource::setElevation( float elevation )
 {
-    if (m_type == LS_DISTANT)
-        return static_cast<DistantLightSource*>(this)->setElevation(elevation);
+    if ( m_type == LS_DISTANT )
+    {
+        return static_cast<DistantLightSource *>( this )->setElevation( elevation );
+    }
+
     return false;
 }
 
-bool LightSource::setX(float x)
+bool LightSource::setX( float x )
 {
-    if (m_type == LS_SPOT)
-        return static_cast<SpotLightSource*>(this)->setX(x);
-    if (m_type == LS_POINT)
-        return static_cast<PointLightSource*>(this)->setX(x);
+    if ( m_type == LS_SPOT )
+    {
+        return static_cast<SpotLightSource *>( this )->setX( x );
+    }
+
+    if ( m_type == LS_POINT )
+    {
+        return static_cast<PointLightSource *>( this )->setX( x );
+    }
+
     return false;
 }
 
-bool LightSource::setY(float y)
+bool LightSource::setY( float y )
 {
-    if (m_type == LS_SPOT)
-        return static_cast<SpotLightSource*>(this)->setY(y);
-    if (m_type == LS_POINT)
-        return static_cast<PointLightSource*>(this)->setY(y);
+    if ( m_type == LS_SPOT )
+    {
+        return static_cast<SpotLightSource *>( this )->setY( y );
+    }
+
+    if ( m_type == LS_POINT )
+    {
+        return static_cast<PointLightSource *>( this )->setY( y );
+    }
+
     return false;
 }
 
-bool LightSource::setZ(float z)
+bool LightSource::setZ( float z )
 {
-    if (m_type == LS_SPOT)
-        return static_cast<SpotLightSource*>(this)->setZ(z);
-    if (m_type == LS_POINT)
-        return static_cast<PointLightSource*>(this)->setZ(z);
+    if ( m_type == LS_SPOT )
+    {
+        return static_cast<SpotLightSource *>( this )->setZ( z );
+    }
+
+    if ( m_type == LS_POINT )
+    {
+        return static_cast<PointLightSource *>( this )->setZ( z );
+    }
+
     return false;
 }
 
-bool LightSource::setPointsAtX(float pointsAtX)
+bool LightSource::setPointsAtX( float pointsAtX )
 {
-    if (m_type == LS_SPOT)
-        return static_cast<SpotLightSource*>(this)->setPointsAtX(pointsAtX);
+    if ( m_type == LS_SPOT )
+    {
+        return static_cast<SpotLightSource *>( this )->setPointsAtX( pointsAtX );
+    }
+
     return false;
 }
 
-bool LightSource::setPointsAtY(float pointsAtY)
+bool LightSource::setPointsAtY( float pointsAtY )
 {
-    if (m_type == LS_SPOT)
-        return static_cast<SpotLightSource*>(this)->setPointsAtY(pointsAtY);
+    if ( m_type == LS_SPOT )
+    {
+        return static_cast<SpotLightSource *>( this )->setPointsAtY( pointsAtY );
+    }
+
     return false;
 }
 
-bool LightSource::setPointsAtZ(float pointsAtZ)
+bool LightSource::setPointsAtZ( float pointsAtZ )
 {
-    if (m_type == LS_SPOT)
-        return static_cast<SpotLightSource*>(this)->setPointsAtZ(pointsAtZ);
+    if ( m_type == LS_SPOT )
+    {
+        return static_cast<SpotLightSource *>( this )->setPointsAtZ( pointsAtZ );
+    }
+
     return false;
 }
 
-bool LightSource::setSpecularExponent(float specularExponent)
+bool LightSource::setSpecularExponent( float specularExponent )
 {
-    if (m_type == LS_SPOT)
-        return static_cast<SpotLightSource*>(this)->setSpecularExponent(specularExponent);
+    if ( m_type == LS_SPOT )
+    {
+        return static_cast<SpotLightSource *>( this )->setSpecularExponent( specularExponent );
+    }
+
     return false;
 }
 
-bool LightSource::setLimitingConeAngle(float limitingConeAngle)
+bool LightSource::setLimitingConeAngle( float limitingConeAngle )
 {
-    if (m_type == LS_SPOT)
-        return static_cast<SpotLightSource*>(this)->setLimitingConeAngle(limitingConeAngle);
+    if ( m_type == LS_SPOT )
+    {
+        return static_cast<SpotLightSource *>( this )->setLimitingConeAngle( limitingConeAngle );
+    }
+
     return false;
 }
 

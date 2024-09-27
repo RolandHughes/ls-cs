@@ -30,17 +30,19 @@
 
 #include "RenderMathMLBlock.h"
 
-namespace WebCore {
-    
-class RenderMathMLRoot : public RenderMathMLBlock {
+namespace WebCore
+{
+
+class RenderMathMLRoot : public RenderMathMLBlock
+{
 public:
-    RenderMathMLRoot(Node* fraction);
-    virtual void addChild(RenderObject* child, RenderObject* beforeChild = 0);
-    virtual void paint(PaintInfo&, int tx, int ty);
+    RenderMathMLRoot( Node *fraction );
+    virtual void addChild( RenderObject *child, RenderObject *beforeChild = 0 );
+    virtual void paint( PaintInfo &, int tx, int ty );
 protected:
     virtual void layout();
 };
-    
+
 }
 
 #endif // ENABLE(MATHML)

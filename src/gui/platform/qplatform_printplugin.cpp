@@ -30,12 +30,12 @@
 
 static QFactoryLoader *loader()
 {
-   static QFactoryLoader retval(QPlatformPrinterSupportPlugin_ID, "/printerdrivers", Qt::CaseInsensitive);
-   return &retval;
+    static QFactoryLoader retval( QPlatformPrinterSupportPlugin_ID, "/printerdrivers", Qt::CaseInsensitive );
+    return &retval;
 }
 
-QPlatformPrinterSupportPlugin::QPlatformPrinterSupportPlugin(QObject *parent)
-    : QObject(parent)
+QPlatformPrinterSupportPlugin::QPlatformPrinterSupportPlugin( QObject *parent )
+    : QObject( parent )
 {
 }
 
@@ -56,18 +56,21 @@ static void cleanupPrinterSupport()
 
 QPlatformPrinterSupport *QPlatformPrinterSupportPlugin::get()
 {
-    if (! printerSupport) {
+    if ( ! printerSupport )
+    {
         QFactoryLoader *factoryObj = loader();
 
         // what keys are available
         auto keySet = factoryObj->keySet();
 
-        if (! keySet.isEmpty()) {
-            printerSupport = cs_load_plugin<QPlatformPrinterSupport, QPlatformPrinterSupportPlugin>(factoryObj, *(keySet.constBegin()));
+        if ( ! keySet.isEmpty() )
+        {
+            printerSupport = cs_load_plugin<QPlatformPrinterSupport, QPlatformPrinterSupportPlugin>( factoryObj, *( keySet.constBegin() ) );
         }
 
-        if (printerSupport) {
-            qAddPostRoutine(cleanupPrinterSupport);
+        if ( printerSupport )
+        {
+            qAddPostRoutine( cleanupPrinterSupport );
         }
     }
 

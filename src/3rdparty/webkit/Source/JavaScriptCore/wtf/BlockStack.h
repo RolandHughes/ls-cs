@@ -29,61 +29,69 @@
 #include <wtf/Assertions.h>
 #include <wtf/Vector.h>
 
-namespace WTF {
+namespace WTF
+{
 
-template <typename T> class BlockStack {
+template <typename T> class BlockStack
+{
 public:
     static const size_t blockSize = 4096;
-    static const size_t blockLength = blockSize / sizeof(T);
+    static const size_t blockLength = blockSize / sizeof( T );
 
     BlockStack();
     ~BlockStack();
 
-    T* grow();
-    void shrink(T*);
+    T *grow();
+    void shrink( T * );
 
-    const Vector<T*>& blocks();
+    const Vector<T *> &blocks();
 
 private:
-    Vector<T*> m_blocks;
-    T* m_spareBlock; // Used to avoid thrash at block boundaries.
+    Vector<T *> m_blocks;
+    T *m_spareBlock; // Used to avoid thrash at block boundaries.
 };
 
 template <typename T> BlockStack<T>::BlockStack()
-    : m_spareBlock(0)
+    : m_spareBlock( 0 )
 {
 }
 
 template <typename T> BlockStack<T>::~BlockStack()
 {
-    if (m_spareBlock)
-        free(m_spareBlock);
-    for (size_t i = 0; i < m_blocks.size(); ++i)
-        free(m_blocks[i]);
+    if ( m_spareBlock )
+    {
+        free( m_spareBlock );
+    }
+
+    for ( size_t i = 0; i < m_blocks.size(); ++i )
+    {
+        free( m_blocks[i] );
+    }
 }
 
-template <typename T> inline const Vector<T*>& BlockStack<T>::blocks()
+template <typename T> inline const Vector<T *> &BlockStack<T>::blocks()
 {
     return m_blocks;
 }
 
-template <typename T> T* BlockStack<T>::grow()
+template <typename T> T *BlockStack<T>::grow()
 {
-    T* block = m_spareBlock ? m_spareBlock : static_cast<T*>(malloc(blockSize));
+    T *block = m_spareBlock ? m_spareBlock : static_cast<T *>( malloc( blockSize ) );
     m_spareBlock = 0;
 
-    m_blocks.append(block);
+    m_blocks.append( block );
     return block;
 }
 
-template <typename T> void BlockStack<T>::shrink(T* newEnd)
+template <typename T> void BlockStack<T>::shrink( T *newEnd )
 {
-    ASSERT(newEnd != m_blocks.last() + blockLength);
+    ASSERT( newEnd != m_blocks.last() + blockLength );
     m_spareBlock = m_blocks.last();
     m_blocks.removeLast();
 
-    while (m_blocks.last() + blockLength != newEnd) {
-        free(m_blocks.last());
+    while ( m_blocks.last() + blockLength != newEnd )
+    {
+        free( m_blocks.last() );
         m_blocks.removeLast();
     }
 }

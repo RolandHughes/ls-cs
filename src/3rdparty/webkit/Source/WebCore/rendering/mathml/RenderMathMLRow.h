@@ -30,19 +30,25 @@
 
 #include "RenderMathMLBlock.h"
 
-namespace WebCore {
-    
-class RenderMathMLRow : public RenderMathMLBlock {
+namespace WebCore
+{
+
+class RenderMathMLRow : public RenderMathMLBlock
+{
 public:
-    RenderMathMLRow(Node* container);
-    virtual bool isRenderMathMLRow() const { return true; }
+    RenderMathMLRow( Node *container );
+    virtual bool isRenderMathMLRow() const
+    {
+        return true;
+    }
     virtual int nonOperatorHeight() const;
-    virtual int baselinePosition(FontBaseline, bool firstLine, LineDirectionMode, LinePositionMode = PositionOnContainingLine) const;    
-    virtual void stretchToHeight(int) {}
+    virtual int baselinePosition( FontBaseline, bool firstLine, LineDirectionMode,
+                                  LinePositionMode = PositionOnContainingLine ) const;
+    virtual void stretchToHeight( int ) {}
 protected:
     virtual void layout();
 };
-    
+
 }
 
 

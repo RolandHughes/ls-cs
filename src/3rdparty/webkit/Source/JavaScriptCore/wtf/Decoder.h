@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef Decoder_h
@@ -28,26 +28,28 @@
 
 #include <wtf/Vector.h>
 
-namespace WTF {
+namespace WTF
+{
 
 class String;
 
-class Decoder {
+class Decoder
+{
 protected:
     Decoder() { }
     virtual ~Decoder() { }
-    
-public:
-    virtual bool decodeBytes(Vector<uint8_t>&) = 0;
 
-    virtual bool decodeBool(bool&) = 0;
-    virtual bool decodeUInt32(uint32_t&) = 0;
-    virtual bool decodeUInt64(uint64_t&) = 0;
-    virtual bool decodeInt32(int32_t&) = 0;
-    virtual bool decodeInt64(int64_t&) = 0;
-    virtual bool decodeFloat(float&) = 0;
-    virtual bool decodeDouble(double&) = 0;
-    virtual bool decodeString(String&) = 0;
+public:
+    virtual bool decodeBytes( Vector<uint8_t> & ) = 0;
+
+    virtual bool decodeBool( bool & ) = 0;
+    virtual bool decodeUInt32( uint32_t & ) = 0;
+    virtual bool decodeUInt64( uint64_t & ) = 0;
+    virtual bool decodeInt32( int32_t & ) = 0;
+    virtual bool decodeInt64( int64_t & ) = 0;
+    virtual bool decodeFloat( float & ) = 0;
+    virtual bool decodeDouble( double & ) = 0;
+    virtual bool decodeString( String & ) = 0;
 };
 
 } // namespace WTF

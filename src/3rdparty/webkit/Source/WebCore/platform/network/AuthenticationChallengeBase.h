@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #ifndef AuthenticationChallengeBase_h
 #define AuthenticationChallengeBase_h
@@ -30,29 +30,35 @@
 #include "ResourceResponse.h"
 #include "ResourceError.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class AuthenticationChallenge;
 
-class AuthenticationChallengeBase {
+class AuthenticationChallengeBase
+{
 public:
     AuthenticationChallengeBase();
-    AuthenticationChallengeBase(const ProtectionSpace& protectionSpace, const Credential& proposedCredential, unsigned previousFailureCount, const ResourceResponse& response, const ResourceError& error);
+    AuthenticationChallengeBase( const ProtectionSpace &protectionSpace, const Credential &proposedCredential,
+                                 unsigned previousFailureCount, const ResourceResponse &response, const ResourceError &error );
 
     unsigned previousFailureCount() const;
-    const Credential& proposedCredential() const;
-    const ProtectionSpace& protectionSpace() const;
-    const ResourceResponse& failureResponse() const;
-    const ResourceError& error() const;
-    
+    const Credential &proposedCredential() const;
+    const ProtectionSpace &protectionSpace() const;
+    const ResourceResponse &failureResponse() const;
+    const ResourceError &error() const;
+
     bool isNull() const;
     void nullify();
 
-    static bool compare(const AuthenticationChallenge& a, const AuthenticationChallenge& b);
+    static bool compare( const AuthenticationChallenge &a, const AuthenticationChallenge &b );
 
 protected:
     // The AuthenticationChallenge subclass may "shadow" this method to compare platform specific fields
-    static bool platformCompare(const AuthenticationChallengeBase&, const AuthenticationChallengeBase&) { return true; }
+    static bool platformCompare( const AuthenticationChallengeBase &, const AuthenticationChallengeBase & )
+    {
+        return true;
+    }
 
     bool m_isNull;
     ProtectionSpace m_protectionSpace;
@@ -62,8 +68,14 @@ protected:
     ResourceError m_error;
 };
 
-inline bool operator==(const AuthenticationChallenge& a, const AuthenticationChallenge& b) { return AuthenticationChallengeBase::compare(a, b); }
-inline bool operator!=(const AuthenticationChallenge& a, const AuthenticationChallenge& b) { return !(a == b); }
+inline bool operator==( const AuthenticationChallenge &a, const AuthenticationChallenge &b )
+{
+    return AuthenticationChallengeBase::compare( a, b );
+}
+inline bool operator!=( const AuthenticationChallenge &a, const AuthenticationChallenge &b )
+{
+    return !( a == b );
+}
 
 }
 

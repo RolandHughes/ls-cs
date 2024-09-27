@@ -29,42 +29,47 @@
 
 class QWindowsNativeImage
 {
- public:
-   QWindowsNativeImage(int width, int height, QImage::Format format);
+public:
+    QWindowsNativeImage( int width, int height, QImage::Format format );
 
-   QWindowsNativeImage(const QWindowsNativeImage &) = delete;
-   QWindowsNativeImage &operator=(const QWindowsNativeImage &) = delete;
+    QWindowsNativeImage( const QWindowsNativeImage & ) = delete;
+    QWindowsNativeImage &operator=( const QWindowsNativeImage & ) = delete;
 
-   ~QWindowsNativeImage();
+    ~QWindowsNativeImage();
 
-   inline int width() const  {
-      return m_image.width();
-   }
+    inline int width() const
+    {
+        return m_image.width();
+    }
 
-   inline int height() const {
-      return m_image.height();
-   }
+    inline int height() const
+    {
+        return m_image.height();
+    }
 
-   QImage &image() {
-      return m_image;
-   }
+    QImage &image()
+    {
+        return m_image;
+    }
 
-   const QImage &image() const {
-      return m_image;
-   }
+    const QImage &image() const
+    {
+        return m_image;
+    }
 
-   HDC hdc() const {
-      return m_hdc;
-   }
+    HDC hdc() const
+    {
+        return m_hdc;
+    }
 
-   static QImage::Format systemFormat();
+    static QImage::Format systemFormat();
 
- private:
-   const HDC m_hdc;
-   QImage m_image;
+private:
+    const HDC m_hdc;
+    QImage m_image;
 
-   HBITMAP m_bitmap;
-   HBITMAP m_null_bitmap;
+    HBITMAP m_bitmap;
+    HBITMAP m_null_bitmap;
 };
 
 #endif

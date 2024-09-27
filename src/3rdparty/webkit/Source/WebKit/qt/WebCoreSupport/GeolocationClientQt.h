@@ -37,36 +37,41 @@ using namespace QtMobility;
 
 class QWebPage;
 
-namespace WebCore {
+namespace WebCore
+{
 
 // This class provides a implementation of a GeolocationService for qtWebkit.
 // It uses QtMobility (v1.0.0) location service to get positions
-class GeolocationClientQt : public QObject, public GeolocationClient {
-    WEB_CS_OBJECT(GeolocationClientQt)
+class GeolocationClientQt : public QObject, public GeolocationClient
+{
+    WEB_CS_OBJECT( GeolocationClientQt )
 
 public:
-    GeolocationClientQt(const QWebPage*);
+    GeolocationClientQt( const QWebPage * );
     virtual ~GeolocationClientQt();
 
     virtual void geolocationDestroyed();
     virtual void startUpdating();
     virtual void stopUpdating();
 
-    void setEnableHighAccuracy(bool);
-    virtual GeolocationPosition* lastPosition() { return m_lastPosition.get(); }
+    void setEnableHighAccuracy( bool );
+    virtual GeolocationPosition *lastPosition()
+    {
+        return m_lastPosition.get();
+    }
 
-    virtual void requestPermission(Geolocation*);
-    virtual void cancelPermissionRequest(Geolocation*);
+    virtual void requestPermission( Geolocation * );
+    virtual void cancelPermissionRequest( Geolocation * );
 
 private :
     // QGeoPositionInfoSource
-    WEB_CS_SLOT_1(Private, void positionUpdated(const QGeoPositionInfo &geoPosition))
-    WEB_CS_SLOT_2(positionUpdated)
+    WEB_CS_SLOT_1( Private, void positionUpdated( const QGeoPositionInfo &geoPosition ) )
+    WEB_CS_SLOT_2( positionUpdated )
 
 private:
-    const QWebPage* m_page;
+    const QWebPage *m_page;
     RefPtr<GeolocationPosition> m_lastPosition;
-    QtMobility::QGeoPositionInfoSource* m_location;
+    QtMobility::QGeoPositionInfoSource *m_location;
 };
 
 } // namespace WebCore

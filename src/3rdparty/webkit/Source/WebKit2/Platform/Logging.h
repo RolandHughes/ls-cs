@@ -34,7 +34,8 @@
 #define LOG_CHANNEL_PREFIX Log
 #endif
 
-namespace WebKit {
+namespace WebKit
+{
 
 extern WTFLogChannel LogContextMenu;
 extern WTFLogChannel LogIconDatabase;
@@ -42,8 +43,8 @@ extern WTFLogChannel LogSessionState;
 extern WTFLogChannel LogTextInput;
 extern WTFLogChannel LogView;
 
-void initializeLogChannel(WTFLogChannel*);
-void initializeLogChannelsIfNecessary(void);
+void initializeLogChannel( WTFLogChannel * );
+void initializeLogChannelsIfNecessary( void );
 
 } // namespace WebKit
 

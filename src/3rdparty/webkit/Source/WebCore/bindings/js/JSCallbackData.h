@@ -36,34 +36,42 @@
 #include <runtime/JSObject.h>
 #include <wtf/Threading.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 // We have to clean up this data on the context thread because unprotecting a
 // JSObject on the wrong thread without synchronization would corrupt the heap
 // (and synchronization would be slow).
 
-class JSCallbackData {
+class JSCallbackData
+{
 public:
-    static void deleteData(void*);
+    static void deleteData( void * );
 
-    JSCallbackData(JSC::JSObject* callback, JSDOMGlobalObject* globalObject)
-        : m_callback(globalObject->globalData(), callback)
-        , m_globalObject(globalObject->globalData(), globalObject)
+    JSCallbackData( JSC::JSObject *callback, JSDOMGlobalObject *globalObject )
+        : m_callback( globalObject->globalData(), callback )
+        , m_globalObject( globalObject->globalData(), globalObject )
 #ifndef NDEBUG
-        , m_thread(currentThread())
+        , m_thread( currentThread() )
 #endif
     {
     }
-    
+
     ~JSCallbackData()
     {
-        ASSERT(m_thread == currentThread());
+        ASSERT( m_thread == currentThread() );
     }
 
-    JSC::JSObject* callback() { return m_callback.get(); }
-    JSDOMGlobalObject* globalObject() { return m_globalObject.get(); }
-    
-    JSC::JSValue invokeCallback(JSC::MarkedArgumentBuffer&, bool* raisedException = 0);
+    JSC::JSObject *callback()
+    {
+        return m_callback.get();
+    }
+    JSDOMGlobalObject *globalObject()
+    {
+        return m_globalObject.get();
+    }
+
+    JSC::JSValue invokeCallback( JSC::MarkedArgumentBuffer &, bool *raisedException = 0 );
 
 private:
     JSC::Strong<JSC::JSObject> m_callback;
@@ -73,23 +81,27 @@ private:
 #endif
 };
 
-class DeleteCallbackDataTask : public ScriptExecutionContext::Task {
+class DeleteCallbackDataTask : public ScriptExecutionContext::Task
+{
 public:
-    static PassOwnPtr<DeleteCallbackDataTask> create(JSCallbackData* data)
+    static PassOwnPtr<DeleteCallbackDataTask> create( JSCallbackData *data )
     {
-        return adoptPtr(new DeleteCallbackDataTask(data));
+        return adoptPtr( new DeleteCallbackDataTask( data ) );
     }
 
-    virtual void performTask(ScriptExecutionContext*)
+    virtual void performTask( ScriptExecutionContext * )
     {
         delete m_data;
     }
-    virtual bool isCleanupTask() const { return true; }
+    virtual bool isCleanupTask() const
+    {
+        return true;
+    }
 private:
 
-    DeleteCallbackDataTask(JSCallbackData* data) : m_data(data) {}
+    DeleteCallbackDataTask( JSCallbackData *data ) : m_data( data ) {}
 
-    JSCallbackData* m_data;
+    JSCallbackData *m_data;
 };
 
 } // namespace WebCore

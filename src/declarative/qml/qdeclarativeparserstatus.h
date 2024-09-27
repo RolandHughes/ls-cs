@@ -30,21 +30,21 @@ QT_BEGIN_NAMESPACE
 
 class Q_DECLARATIVE_EXPORT QDeclarativeParserStatus
 {
- public:
-   QDeclarativeParserStatus();
-   virtual ~QDeclarativeParserStatus();
+public:
+    QDeclarativeParserStatus();
+    virtual ~QDeclarativeParserStatus();
 
-   virtual void classBegin() = 0;
-   virtual void componentComplete() = 0;
+    virtual void classBegin() = 0;
+    virtual void componentComplete() = 0;
 
- private:
-   friend class QDeclarativeVME;
-   friend class QDeclarativeComponent;
-   friend class QDeclarativeComponentPrivate;
-   friend class QDeclarativeEnginePrivate;
-   QDeclarativeParserStatus **d;
+private:
+    friend class QDeclarativeVME;
+    friend class QDeclarativeComponent;
+    friend class QDeclarativeComponentPrivate;
+    friend class QDeclarativeEnginePrivate;
+    QDeclarativeParserStatus **d;
 };
-CS_DECLARE_INTERFACE(QDeclarativeParserStatus, "com.copperspice.qml.QDeclarativeParserStatus")
+CS_DECLARE_INTERFACE( QDeclarativeParserStatus, "com.copperspice.qml.QDeclarativeParserStatus" )
 
 QT_END_NAMESPACE
 

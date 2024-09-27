@@ -46,7 +46,7 @@
 
 #if USE(QUERY_PERFORMANCE_COUNTER)
 #if OS(WINCE)
-extern "C" time_t mktime(struct tm *t);
+extern "C" time_t mktime( struct tm *t );
 #else
 #include <sys/timeb.h>
 #include <sys/types.h>
@@ -67,7 +67,8 @@ extern "C" time_t mktime(struct tm *t);
 #error Chromium uses a different timer implementation
 #endif
 
-namespace WTF {
+namespace WTF
+{
 
 const double msPerSecond = 1000.0;
 
@@ -90,15 +91,20 @@ static double highResUpTime()
     static bool inited;
 
     LARGE_INTEGER qpc;
-    QueryPerformanceCounter(&qpc);
+    QueryPerformanceCounter( &qpc );
     DWORD tickCount = GetTickCount();
 
-    if (inited) {
-        __int64 qpcElapsed = ((qpc.QuadPart - qpcLast.QuadPart) * 1000) / qpcFrequency.QuadPart;
+    if ( inited )
+    {
+        __int64 qpcElapsed = ( ( qpc.QuadPart - qpcLast.QuadPart ) * 1000 ) / qpcFrequency.QuadPart;
         __int64 tickCountElapsed;
-        if (tickCount >= tickCountLast)
-            tickCountElapsed = (tickCount - tickCountLast);
-        else {
+
+        if ( tickCount >= tickCountLast )
+        {
+            tickCountElapsed = ( tickCount - tickCountLast );
+        }
+        else
+        {
 #if COMPILER(MINGW)
             __int64 tickCountLarge = tickCount + 0x100000000ULL;
 #else
@@ -110,22 +116,28 @@ static double highResUpTime()
         // force a re-sync if QueryPerformanceCounter differs from GetTickCount by more than 500ms.
         // (500ms value is from http://support.microsoft.com/kb/274323)
         __int64 diff = tickCountElapsed - qpcElapsed;
-        if (diff > 500 || diff < -500)
+
+        if ( diff > 500 || diff < -500 )
+        {
             syncedTime = false;
-    } else
+        }
+    }
+    else
+    {
         inited = true;
+    }
 
     qpcLast = qpc;
     tickCountLast = tickCount;
 
-    return (1000.0 * qpc.QuadPart) / static_cast<double>(qpcFrequency.QuadPart);
+    return ( 1000.0 * qpc.QuadPart ) / static_cast<double>( qpcFrequency.QuadPart );
 }
 
 static double lowResUTCTime()
 {
 #if OS(WINCE)
     SYSTEMTIME systemTime;
-    GetSystemTime(&systemTime);
+    GetSystemTime( &systemTime );
     struct tm tmtime;
     tmtime.tm_year = systemTime.wYear - 1900;
     tmtime.tm_mon = systemTime.wMonth - 1;
@@ -134,11 +146,11 @@ static double lowResUTCTime()
     tmtime.tm_hour = systemTime.wHour;
     tmtime.tm_min = systemTime.wMinute;
     tmtime.tm_sec = systemTime.wSecond;
-    time_t timet = mktime(&tmtime);
+    time_t timet = mktime( &tmtime );
     return timet * msPerSecond + systemTime.wMilliseconds;
 #else
     struct _timeb timebuffer;
-    _ftime(&timebuffer);
+    _ftime( &timebuffer );
     return timebuffer.time * msPerSecond + timebuffer.millitm;
 #endif
 }
@@ -148,10 +160,12 @@ static bool qpcAvailable()
     static bool available;
     static bool checked;
 
-    if (checked)
+    if ( checked )
+    {
         return available;
+    }
 
-    available = QueryPerformanceFrequency(&qpcFrequency);
+    available = QueryPerformanceFrequency( &qpcFrequency );
     checked = true;
     return available;
 }
@@ -169,15 +183,18 @@ double currentTime()
 
     double lowResTime = lowResUTCTime();
 
-    if (!qpcAvailable())
+    if ( !qpcAvailable() )
+    {
         return lowResTime / 1000.0;
+    }
 
     double highResTime = highResUpTime();
 
-    if (!syncedTime) {
-        timeBeginPeriod(1); // increase time resolution around low-res time getter
+    if ( !syncedTime )
+    {
+        timeBeginPeriod( 1 ); // increase time resolution around low-res time getter
         syncLowResUTCTime = lowResTime = lowResUTCTime();
-        timeEndPeriod(1); // restore time resolution
+        timeEndPeriod( 1 ); // restore time resolution
         syncHighResUpTime = highResTime;
         syncedTime = true;
     }
@@ -188,13 +205,20 @@ double currentTime()
     // force a clock re-sync if we've drifted
     double lowResElapsed = lowResTime - syncLowResUTCTime;
     const double maximumAllowedDriftMsec = 15.625 * 2.0; // 2x the typical low-res accuracy
-    if (fabs(highResElapsed - lowResElapsed) > maximumAllowedDriftMsec)
+
+    if ( fabs( highResElapsed - lowResElapsed ) > maximumAllowedDriftMsec )
+    {
         syncedTime = false;
+    }
 
     // make sure time doesn't run backwards (only correct if difference is < 2 seconds, since DST or clock changes could occur)
     const double backwardTimeLimit = 2000.0;
-    if (utc < lastUTCTime && (lastUTCTime - utc) < backwardTimeLimit)
+
+    if ( utc < lastUTCTime && ( lastUTCTime - utc ) < backwardTimeLimit )
+    {
         return lastUTCTime / 1000.0;
+    }
+
     lastUTCTime = utc;
     return utc / 1000.0;
 }
@@ -204,14 +228,14 @@ double currentTime()
 static double currentSystemTime()
 {
     FILETIME ft;
-    GetCurrentFT(&ft);
+    GetCurrentFT( &ft );
 
     // As per Windows documentation for FILETIME, copy the resulting FILETIME structure to a
     // ULARGE_INTEGER structure using memcpy (using memcpy instead of direct assignment can
     // prevent alignment faults on 64-bit Windows).
 
     ULARGE_INTEGER t;
-    memcpy(&t, &ft, sizeof(t));
+    memcpy( &t, &ft, sizeof( t ) );
 
     // Windows file times are in 100s of nanoseconds.
     // To convert to seconds, we have to divide by 10,000,000, which is more quickly
@@ -229,7 +253,9 @@ double currentTime()
     static bool init = false;
     static double lastTime;
     static DWORD lastTickCount;
-    if (!init) {
+
+    if ( !init )
+    {
         lastTime = currentSystemTime();
         lastTickCount = GetTickCount();
         init = true;
@@ -238,11 +264,14 @@ double currentTime()
 
     DWORD tickCountNow = GetTickCount();
     DWORD elapsed = tickCountNow - lastTickCount;
-    double timeNow = lastTime + (double)elapsed / 1000.;
-    if (elapsed >= 0x7FFFFFFF) {
+    double timeNow = lastTime + ( double )elapsed / 1000.;
+
+    if ( elapsed >= 0x7FFFFFFF )
+    {
         lastTime = timeNow;
         lastTickCount = tickCountNow;
     }
+
     return timeNow;
 }
 
@@ -257,8 +286,8 @@ double currentTime()
 double currentTime()
 {
     GTimeVal now;
-    g_get_current_time(&now);
-    return static_cast<double>(now.tv_sec) + static_cast<double>(now.tv_usec / 1000000.0);
+    g_get_current_time( &now );
+    return static_cast<double>( now.tv_sec ) + static_cast<double>( now.tv_usec / 1000000.0 );
 }
 
 #elif PLATFORM(WX)
@@ -266,7 +295,7 @@ double currentTime()
 double currentTime()
 {
     wxDateTime now = wxDateTime::UNow();
-    return (double)now.GetTicks() + (double)(now.GetMillisecond() / 1000.0);
+    return ( double )now.GetTicks() + ( double )( now.GetMillisecond() / 1000.0 );
 }
 
 #elif PLATFORM(BREWMP)
@@ -280,7 +309,7 @@ double currentTime()
 {
     // diffSeconds is the number of seconds from 1970/01/01 to 1980/01/06
     const unsigned diffSeconds = 315964800;
-    return static_cast<double>(diffSeconds + GETUTCSECONDS() + ((GETTIMEMS() % 1000) / msPerSecond));
+    return static_cast<double>( diffSeconds + GETUTCSECONDS() + ( ( GETTIMEMS() % 1000 ) / msPerSecond ) );
 }
 
 #else
@@ -288,7 +317,7 @@ double currentTime()
 double currentTime()
 {
     struct timeval now;
-    gettimeofday(&now, 0);
+    gettimeofday( &now, 0 );
     return now.tv_sec + now.tv_usec / 1000000.0;
 }
 

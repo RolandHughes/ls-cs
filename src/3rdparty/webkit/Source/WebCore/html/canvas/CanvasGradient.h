@@ -21,7 +21,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef CanvasGradient_h
@@ -32,38 +32,49 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-    typedef int ExceptionCode;
+typedef int ExceptionCode;
 
-    class CanvasGradient : public RefCounted<CanvasGradient> {
-    public:
-        static PassRefPtr<CanvasGradient> create(const FloatPoint& p0, const FloatPoint& p1)
-        {
-            return adoptRef(new CanvasGradient(p0, p1));
-        }
-        static PassRefPtr<CanvasGradient> create(const FloatPoint& p0, float r0, const FloatPoint& p1, float r1)
-        {
-            return adoptRef(new CanvasGradient(p0, r0, p1, r1));
-        }
-        
-        Gradient* gradient() const { return m_gradient.get(); }
+class CanvasGradient : public RefCounted<CanvasGradient>
+{
+public:
+    static PassRefPtr<CanvasGradient> create( const FloatPoint &p0, const FloatPoint &p1 )
+    {
+        return adoptRef( new CanvasGradient( p0, p1 ) );
+    }
+    static PassRefPtr<CanvasGradient> create( const FloatPoint &p0, float r0, const FloatPoint &p1, float r1 )
+    {
+        return adoptRef( new CanvasGradient( p0, r0, p1, r1 ) );
+    }
 
-        void addColorStop(float value, const String& color, ExceptionCode&);
+    Gradient *gradient() const
+    {
+        return m_gradient.get();
+    }
 
-        void getColor(float value, float* r, float* g, float* b, float* a) const { m_gradient->getColor(value, r, g, b, a); }
+    void addColorStop( float value, const String &color, ExceptionCode & );
+
+    void getColor( float value, float *r, float *g, float *b, float *a ) const
+    {
+        m_gradient->getColor( value, r, g, b, a );
+    }
 
 #if ENABLE(DASHBOARD_SUPPORT)
-        void setDashboardCompatibilityMode() { m_dashbardCompatibilityMode = true; }
+    void setDashboardCompatibilityMode()
+    {
+        m_dashbardCompatibilityMode = true;
+    }
 #endif
 
-    private:
-        CanvasGradient(const FloatPoint& p0, const FloatPoint& p1);
-        CanvasGradient(const FloatPoint& p0, float r0, const FloatPoint& p1, float r1);
-        
-        RefPtr<Gradient> m_gradient;
-        bool m_dashbardCompatibilityMode;
-    };
+private:
+    CanvasGradient( const FloatPoint &p0, const FloatPoint &p1 );
+    CanvasGradient( const FloatPoint &p0, float r0, const FloatPoint &p1, float r1 );
+
+    RefPtr<Gradient> m_gradient;
+    bool m_dashbardCompatibilityMode;
+};
 
 } //namespace
 

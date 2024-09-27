@@ -26,27 +26,29 @@
 #include "FilterEffect.h"
 #include "Filter.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class FEOffset : public FilterEffect {
+class FEOffset : public FilterEffect
+{
 public:
-    static PassRefPtr<FEOffset> create(Filter*, float dx, float dy);
+    static PassRefPtr<FEOffset> create( Filter *, float dx, float dy );
 
     float dx() const;
-    void setDx(float);
+    void setDx( float );
 
     float dy() const;
-    void setDy(float);
+    void setDy( float );
 
     virtual void apply();
     virtual void dump();
-    
+
     virtual void determineAbsolutePaintRect();
 
-    virtual TextStream& externalRepresentation(TextStream&, int indention) const;
+    virtual TextStream &externalRepresentation( TextStream &, int indention ) const;
 
 private:
-    FEOffset(Filter*, float dx, float dy);
+    FEOffset( Filter *, float dx, float dy );
 
     float m_dx;
     float m_dy;

@@ -40,8 +40,8 @@ public:
     QList<QByteArray> aliases() const;
     QList<int> mibEnums() const;
 
-    QTextCodec *createForMib(int);
-    QTextCodec *createForName(const QByteArray &);
+    QTextCodec *createForMib( int );
+    QTextCodec *createForName( const QByteArray & );
 };
 
 QList<QByteArray> CNTextCodecs::names() const
@@ -83,44 +83,76 @@ QList<int> CNTextCodecs::mibEnums() const
     return list;
 }
 
-QTextCodec *CNTextCodecs::createForMib(int mib)
+QTextCodec *CNTextCodecs::createForMib( int mib )
 {
-    if (mib == QGb18030Codec::_mibEnum())
+    if ( mib == QGb18030Codec::_mibEnum() )
+    {
         return new QGb18030Codec;
-    if (mib == QGbkCodec::_mibEnum())
+    }
+
+    if ( mib == QGbkCodec::_mibEnum() )
+    {
         return new QGbkCodec;
-    if (mib == QGb2312Codec::_mibEnum())
+    }
+
+    if ( mib == QGb2312Codec::_mibEnum() )
+    {
         return new QGb2312Codec;
+    }
+
 #ifdef Q_WS_X11
-    if (mib == QFontGbkCodec::_mibEnum())
+
+    if ( mib == QFontGbkCodec::_mibEnum() )
+    {
         return new QFontGbkCodec;
-    if (mib == QFontGb2312Codec::_mibEnum())
+    }
+
+    if ( mib == QFontGb2312Codec::_mibEnum() )
+    {
         return new QFontGb2312Codec;
+    }
+
 #endif
     return 0;
 }
 
 
-QTextCodec *CNTextCodecs::createForName(const QByteArray &name)
+QTextCodec *CNTextCodecs::createForName( const QByteArray &name )
 {
-    if (name == QGb18030Codec::_name() || QGb18030Codec::_aliases().contains(name))
+    if ( name == QGb18030Codec::_name() || QGb18030Codec::_aliases().contains( name ) )
+    {
         return new QGb18030Codec;
-    if (name == QGbkCodec::_name() || QGbkCodec::_aliases().contains(name))
+    }
+
+    if ( name == QGbkCodec::_name() || QGbkCodec::_aliases().contains( name ) )
+    {
         return new QGbkCodec;
-    if (name == QGb2312Codec::_name() || QGb2312Codec::_aliases().contains(name))
+    }
+
+    if ( name == QGb2312Codec::_name() || QGb2312Codec::_aliases().contains( name ) )
+    {
         return new QGb2312Codec;
+    }
+
 #ifdef Q_WS_X11
-    if (name == QFontGbkCodec::_name() || QFontGbkCodec::_aliases().contains(name))
+
+    if ( name == QFontGbkCodec::_name() || QFontGbkCodec::_aliases().contains( name ) )
+    {
         return new QFontGbkCodec;
-    if (name == QFontGb2312Codec::_name() || QFontGb2312Codec::_aliases().contains(name))
+    }
+
+    if ( name == QFontGb2312Codec::_name() || QFontGb2312Codec::_aliases().contains( name ) )
+    {
         return new QFontGb2312Codec;
+    }
+
 #endif
     return 0;
 }
 
 
-Q_EXPORT_STATIC_PLUGIN(CNTextCodecs)
-Q_EXPORT_PLUGIN2(qcncodecs, CNTextCodecs)
+Q_EXPORT_STATIC_PLUGIN( CNTextCodecs )
+Q_EXPORT_PLUGIN2( qcncodecs, CNTextCodecs )
 
 QT_END_NAMESPACE
 

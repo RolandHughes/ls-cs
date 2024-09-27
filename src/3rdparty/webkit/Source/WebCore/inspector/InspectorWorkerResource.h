@@ -38,23 +38,34 @@
 #include <wtf/RefCounted.h>
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class InspectorWorkerResource : public RefCounted<InspectorWorkerResource> {
+class InspectorWorkerResource : public RefCounted<InspectorWorkerResource>
+{
 public:
-    static PassRefPtr<InspectorWorkerResource> create(intptr_t id, const String& url, bool isSharedWorker)
+    static PassRefPtr<InspectorWorkerResource> create( intptr_t id, const String &url, bool isSharedWorker )
     {
-        return adoptRef(new InspectorWorkerResource(id, url, isSharedWorker));
+        return adoptRef( new InspectorWorkerResource( id, url, isSharedWorker ) );
     }
 
-    intptr_t id() const { return m_id; }
-    const String& url() const { return m_url; }
-    bool isSharedWorker() const { return m_isSharedWorker; }
+    intptr_t id() const
+    {
+        return m_id;
+    }
+    const String &url() const
+    {
+        return m_url;
+    }
+    bool isSharedWorker() const
+    {
+        return m_isSharedWorker;
+    }
 private:
-    InspectorWorkerResource(intptr_t id, const String& url, bool isSharedWorker)
-        : m_id(id)
-        , m_url(url)
-        , m_isSharedWorker(isSharedWorker)
+    InspectorWorkerResource( intptr_t id, const String &url, bool isSharedWorker )
+        : m_id( id )
+        , m_url( url )
+        , m_isSharedWorker( isSharedWorker )
     {
     }
 

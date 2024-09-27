@@ -23,29 +23,32 @@
 #include "BridgeJSC.h"
 #include <QVariant>
 
-namespace JSC {
+namespace JSC
+{
 
-namespace Bindings {
+namespace Bindings
+{
 
-class QtPixmapInstance : public Instance {
+class QtPixmapInstance : public Instance
+{
     QVariant data;
 public:
-    QtPixmapInstance(PassRefPtr<RootObject> rootObj, const QVariant& newData);
-    virtual Class* getClass() const;
-    virtual JSValue getMethod(ExecState* exec, const Identifier& propertyName);
-    virtual JSValue invokeMethod(ExecState*, RuntimeMethod*);
-    virtual void getPropertyNames(ExecState*, PropertyNameArray&);
+    QtPixmapInstance( PassRefPtr<RootObject> rootObj, const QVariant &newData );
+    virtual Class *getClass() const;
+    virtual JSValue getMethod( ExecState *exec, const Identifier &propertyName );
+    virtual JSValue invokeMethod( ExecState *, RuntimeMethod * );
+    virtual void getPropertyNames( ExecState *, PropertyNameArray & );
 
-    virtual JSValue defaultValue(ExecState*, PreferredPrimitiveType) const;
-    virtual JSValue valueOf(ExecState* exec) const;
+    virtual JSValue defaultValue( ExecState *, PreferredPrimitiveType ) const;
+    virtual JSValue valueOf( ExecState *exec ) const;
     int width() const;
     int height() const;
     QPixmap toPixmap();
     QImage toImage();
-    RuntimeObject* newRuntimeObject(ExecState* exec);
-    static JSObject* createPixmapRuntimeObject(ExecState*, PassRefPtr<RootObject>, const QVariant&);
-    static QVariant variantFromObject(JSObject*, QVariant::Type hint);
-    static bool canHandle(QVariant::Type hint);
+    RuntimeObject *newRuntimeObject( ExecState *exec );
+    static JSObject *createPixmapRuntimeObject( ExecState *, PassRefPtr<RootObject>, const QVariant & );
+    static QVariant variantFromObject( JSObject *, QVariant::Type hint );
+    static bool canHandle( QVariant::Type hint );
 };
 
 }

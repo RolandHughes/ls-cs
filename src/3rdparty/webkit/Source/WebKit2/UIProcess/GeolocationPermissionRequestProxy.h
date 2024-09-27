@@ -29,30 +29,36 @@
 #include "APIObject.h"
 #include <wtf/PassRefPtr.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
 class GeolocationPermissionRequestManagerProxy;
 
-class GeolocationPermissionRequestProxy : public APIObject {
+class GeolocationPermissionRequestProxy : public APIObject
+{
 public:
     static const Type APIType = TypeGeolocationPermissionRequest;
 
-    static PassRefPtr<GeolocationPermissionRequestProxy> create(GeolocationPermissionRequestManagerProxy* manager, uint64_t geolocationID)
+    static PassRefPtr<GeolocationPermissionRequestProxy> create( GeolocationPermissionRequestManagerProxy *manager,
+            uint64_t geolocationID )
     {
-        return adoptRef(new GeolocationPermissionRequestProxy(manager, geolocationID));
+        return adoptRef( new GeolocationPermissionRequestProxy( manager, geolocationID ) );
     }
 
     void allow();
     void deny();
-    
+
     void invalidate();
 
 private:
-    GeolocationPermissionRequestProxy(GeolocationPermissionRequestManagerProxy*, uint64_t geolocationID);
+    GeolocationPermissionRequestProxy( GeolocationPermissionRequestManagerProxy *, uint64_t geolocationID );
 
-    virtual Type type() const { return APIType; }
+    virtual Type type() const
+    {
+        return APIType;
+    }
 
-    GeolocationPermissionRequestManagerProxy* m_manager;
+    GeolocationPermissionRequestManagerProxy *m_manager;
     uint64_t m_geolocationID;
 };
 

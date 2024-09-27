@@ -31,67 +31,75 @@
 #include "Lookup.h"
 #include "PrototypeFunction.h"
 
-namespace JSC {
+namespace JSC
+{
 
-ASSERT_CLASS_FITS_IN_CELL(ArrayConstructor);
-    
-static JSValue JSC_HOST_CALL arrayConstructorIsArray(ExecState*, JSObject*, JSValue, const ArgList&);
+ASSERT_CLASS_FITS_IN_CELL( ArrayConstructor );
 
-ArrayConstructor::ArrayConstructor(ExecState* exec, NonNullPassRefPtr<Structure> structure, ArrayPrototype* arrayPrototype, Structure* prototypeFunctionStructure)
-    : InternalFunction(&exec->globalData(), structure, Identifier(exec, arrayPrototype->classInfo()->className))
+static JSValue JSC_HOST_CALL arrayConstructorIsArray( ExecState *, JSObject *, JSValue, const ArgList & );
+
+ArrayConstructor::ArrayConstructor( ExecState *exec, NonNullPassRefPtr<Structure> structure, ArrayPrototype *arrayPrototype,
+                                    Structure *prototypeFunctionStructure )
+    : InternalFunction( &exec->globalData(), structure, Identifier( exec, arrayPrototype->classInfo()->className ) )
 {
     // ECMA 15.4.3.1 Array.prototype
-    putDirectWithoutTransition(exec->propertyNames().prototype, arrayPrototype, DontEnum | DontDelete | ReadOnly);
+    putDirectWithoutTransition( exec->propertyNames().prototype, arrayPrototype, DontEnum | DontDelete | ReadOnly );
 
     // no. of arguments for constructor
-    putDirectWithoutTransition(exec->propertyNames().length, jsNumber(exec, 1), ReadOnly | DontEnum | DontDelete);
+    putDirectWithoutTransition( exec->propertyNames().length, jsNumber( exec, 1 ), ReadOnly | DontEnum | DontDelete );
 
     // ES5
-    putDirectFunctionWithoutTransition(exec, new (exec) NativeFunctionWrapper(exec, prototypeFunctionStructure, 1, exec->propertyNames().isArray, arrayConstructorIsArray), DontEnum);
+    putDirectFunctionWithoutTransition( exec, new ( exec ) NativeFunctionWrapper( exec, prototypeFunctionStructure, 1,
+                                        exec->propertyNames().isArray, arrayConstructorIsArray ), DontEnum );
 }
 
-static inline JSObject* constructArrayWithSizeQuirk(ExecState* exec, const ArgList& args)
+static inline JSObject *constructArrayWithSizeQuirk( ExecState *exec, const ArgList &args )
 {
     // a single numeric argument denotes the array size (!)
-    if (args.size() == 1 && args.at(0).isNumber()) {
-        uint32_t n = args.at(0).toUInt32(exec);
-        if (n != args.at(0).toNumber(exec))
-            return throwError(exec, RangeError, "Array size is not a small enough positive integer.");
-        return new (exec) JSArray(exec->lexicalGlobalObject()->arrayStructure(), n);
+    if ( args.size() == 1 && args.at( 0 ).isNumber() )
+    {
+        uint32_t n = args.at( 0 ).toUInt32( exec );
+
+        if ( n != args.at( 0 ).toNumber( exec ) )
+        {
+            return throwError( exec, RangeError, "Array size is not a small enough positive integer." );
+        }
+
+        return new ( exec ) JSArray( exec->lexicalGlobalObject()->arrayStructure(), n );
     }
 
     // otherwise the array is constructed with the arguments in it
-    return new (exec) JSArray(exec->lexicalGlobalObject()->arrayStructure(), args);
+    return new ( exec ) JSArray( exec->lexicalGlobalObject()->arrayStructure(), args );
 }
 
-static JSObject* constructWithArrayConstructor(ExecState* exec, JSObject*, const ArgList& args)
+static JSObject *constructWithArrayConstructor( ExecState *exec, JSObject *, const ArgList &args )
 {
-    return constructArrayWithSizeQuirk(exec, args);
+    return constructArrayWithSizeQuirk( exec, args );
 }
 
 // ECMA 15.4.2
-ConstructType ArrayConstructor::getConstructData(ConstructData& constructData)
+ConstructType ArrayConstructor::getConstructData( ConstructData &constructData )
 {
     constructData.native.function = constructWithArrayConstructor;
     return ConstructTypeHost;
 }
 
-static JSValue JSC_HOST_CALL callArrayConstructor(ExecState* exec, JSObject*, JSValue, const ArgList& args)
+static JSValue JSC_HOST_CALL callArrayConstructor( ExecState *exec, JSObject *, JSValue, const ArgList &args )
 {
-    return constructArrayWithSizeQuirk(exec, args);
+    return constructArrayWithSizeQuirk( exec, args );
 }
 
 // ECMA 15.6.1
-CallType ArrayConstructor::getCallData(CallData& callData)
+CallType ArrayConstructor::getCallData( CallData &callData )
 {
     // equivalent to 'new Array(....)'
     callData.native.function = callArrayConstructor;
     return CallTypeHost;
 }
 
-JSValue JSC_HOST_CALL arrayConstructorIsArray(ExecState*, JSObject*, JSValue, const ArgList& args)
+JSValue JSC_HOST_CALL arrayConstructorIsArray( ExecState *, JSObject *, JSValue, const ArgList &args )
 {
-    return jsBoolean(args.at(0).inherits(&JSArray::info));
+    return jsBoolean( args.at( 0 ).inherits( &JSArray::info ) );
 }
 
 } // namespace JSC

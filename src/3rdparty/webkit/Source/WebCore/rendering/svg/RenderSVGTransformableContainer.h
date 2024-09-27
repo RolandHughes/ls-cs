@@ -24,19 +24,30 @@
 #if ENABLE(SVG)
 #include "RenderSVGContainer.h"
 
-namespace WebCore {
-    
-class SVGStyledTransformableElement;
-class RenderSVGTransformableContainer : public RenderSVGContainer {
-public:
-    explicit RenderSVGTransformableContainer(SVGStyledTransformableElement*);
+namespace WebCore
+{
 
-    virtual const AffineTransform& localToParentTransform() const { return m_localTransform; }
-    virtual void setNeedsTransformUpdate() { m_needsTransformUpdate = true; }
+class SVGStyledTransformableElement;
+class RenderSVGTransformableContainer : public RenderSVGContainer
+{
+public:
+    explicit RenderSVGTransformableContainer( SVGStyledTransformableElement * );
+
+    virtual const AffineTransform &localToParentTransform() const
+    {
+        return m_localTransform;
+    }
+    virtual void setNeedsTransformUpdate()
+    {
+        m_needsTransformUpdate = true;
+    }
 
 private:
     virtual bool calculateLocalTransform();
-    virtual AffineTransform localTransform() const { return m_localTransform; }
+    virtual AffineTransform localTransform() const
+    {
+        return m_localTransform;
+    }
 
     bool m_needsTransformUpdate : 1;
     AffineTransform m_localTransform;

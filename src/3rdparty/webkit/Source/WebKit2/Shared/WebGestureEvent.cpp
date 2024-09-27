@@ -33,36 +33,47 @@
 
 using namespace WebCore;
 
-namespace WebKit {    
-
-WebGestureEvent::WebGestureEvent(Type type, const IntPoint& position, const IntPoint& globalPosition, Modifiers modifiers, double timestamp)
-    : WebEvent(type, modifiers, timestamp)
-    , m_position(position)
-    , m_globalPosition(globalPosition)
+namespace WebKit
 {
-    ASSERT(isGestureEventType(type));
+
+WebGestureEvent::WebGestureEvent( Type type, const IntPoint &position, const IntPoint &globalPosition, Modifiers modifiers,
+                                  double timestamp )
+    : WebEvent( type, modifiers, timestamp )
+    , m_position( position )
+    , m_globalPosition( globalPosition )
+{
+    ASSERT( isGestureEventType( type ) );
 }
 
-void WebGestureEvent::encode(CoreIPC::ArgumentEncoder* encoder) const
+void WebGestureEvent::encode( CoreIPC::ArgumentEncoder *encoder ) const
 {
-    WebEvent::encode(encoder);
+    WebEvent::encode( encoder );
 
-    encoder->encode(m_position);
-    encoder->encode(m_globalPosition);
+    encoder->encode( m_position );
+    encoder->encode( m_globalPosition );
 }
 
-bool WebGestureEvent::decode(CoreIPC::ArgumentDecoder* decoder, WebGestureEvent& t)
+bool WebGestureEvent::decode( CoreIPC::ArgumentDecoder *decoder, WebGestureEvent &t )
 {
-    if (!WebEvent::decode(decoder, t))
+    if ( !WebEvent::decode( decoder, t ) )
+    {
         return false;
-    if (!decoder->decode(t.m_position))
+    }
+
+    if ( !decoder->decode( t.m_position ) )
+    {
         return false;
-    if (!decoder->decode(t.m_globalPosition))
+    }
+
+    if ( !decoder->decode( t.m_globalPosition ) )
+    {
         return false;
+    }
+
     return true;
 }
 
-bool WebGestureEvent::isGestureEventType(Type type)
+bool WebGestureEvent::isGestureEventType( Type type )
 {
     return type == GestureScrollBegin || type == GestureScrollEnd;
 }

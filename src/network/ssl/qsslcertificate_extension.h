@@ -35,20 +35,22 @@ class QSslCertificateExtensionPrivate;
 
 class Q_NETWORK_EXPORT QSslCertificateExtension
 {
- public:
+public:
     QSslCertificateExtension();
-    QSslCertificateExtension(const QSslCertificateExtension &other);
+    QSslCertificateExtension( const QSslCertificateExtension &other );
 
-    QSslCertificateExtension &operator=(QSslCertificateExtension &&other) {
-      swap(other);
-      return *this;
+    QSslCertificateExtension &operator=( QSslCertificateExtension &&other )
+    {
+        swap( other );
+        return *this;
     }
 
-    QSslCertificateExtension &operator=(const QSslCertificateExtension &other);
+    QSslCertificateExtension &operator=( const QSslCertificateExtension &other );
     ~QSslCertificateExtension();
 
-    void swap(QSslCertificateExtension &other) {
-      qSwap(d, other.d);
+    void swap( QSslCertificateExtension &other )
+    {
+        qSwap( d, other.d );
     }
 
     QString oid() const;
@@ -58,7 +60,7 @@ class Q_NETWORK_EXPORT QSslCertificateExtension
 
     bool isSupported() const;
 
- private:
+private:
     friend class QSslCertificatePrivate;
     QSharedDataPointer<QSslCertificateExtensionPrivate> d;
 };

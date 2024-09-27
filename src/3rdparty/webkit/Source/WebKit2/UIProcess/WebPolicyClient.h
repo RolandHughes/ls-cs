@@ -32,25 +32,32 @@
 #include <WebCore/FrameLoaderTypes.h>
 #include <wtf/Forward.h>
 
-namespace WebCore {
-    class ResourceError;
-    class ResourceRequest;
-    class ResourceResponse;
+namespace WebCore
+{
+class ResourceError;
+class ResourceRequest;
+class ResourceResponse;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
 class APIObject;
 class WebPageProxy;
 class WebFrameProxy;
 class WebFramePolicyListenerProxy;
 
-class WebPolicyClient : public APIClient<WKPagePolicyClient> {
+class WebPolicyClient : public APIClient<WKPagePolicyClient>
+{
 public:
-    bool decidePolicyForNavigationAction(WebPageProxy*, WebFrameProxy*, WebCore::NavigationType, WebEvent::Modifiers, WebMouseEvent::Button, const WebCore::ResourceRequest&, WebFramePolicyListenerProxy*, APIObject* userData);
-    bool decidePolicyForNewWindowAction(WebPageProxy*, WebFrameProxy*, WebCore::NavigationType, WebEvent::Modifiers, WebMouseEvent::Button, const WebCore::ResourceRequest&, const String& frameName, WebFramePolicyListenerProxy*, APIObject* userData);
-    bool decidePolicyForResponse(WebPageProxy*, WebFrameProxy*, const WebCore::ResourceResponse&, const WebCore::ResourceRequest&, WebFramePolicyListenerProxy*, APIObject* userData);
-    void unableToImplementPolicy(WebPageProxy*, WebFrameProxy*, const WebCore::ResourceError&, APIObject* userData);
+    bool decidePolicyForNavigationAction( WebPageProxy *, WebFrameProxy *, WebCore::NavigationType, WebEvent::Modifiers,
+                                          WebMouseEvent::Button, const WebCore::ResourceRequest &, WebFramePolicyListenerProxy *, APIObject *userData );
+    bool decidePolicyForNewWindowAction( WebPageProxy *, WebFrameProxy *, WebCore::NavigationType, WebEvent::Modifiers,
+                                         WebMouseEvent::Button, const WebCore::ResourceRequest &, const String &frameName, WebFramePolicyListenerProxy *,
+                                         APIObject *userData );
+    bool decidePolicyForResponse( WebPageProxy *, WebFrameProxy *, const WebCore::ResourceResponse &,
+                                  const WebCore::ResourceRequest &, WebFramePolicyListenerProxy *, APIObject *userData );
+    void unableToImplementPolicy( WebPageProxy *, WebFrameProxy *, const WebCore::ResourceError &, APIObject *userData );
 };
 
 } // namespace WebKit

@@ -25,9 +25,11 @@
 class QWKPage;
 class QWKPreferencesPrivate;
 
-class QWEBKIT_EXPORT QWKPreferences {
+class QWEBKIT_EXPORT QWKPreferences
+{
 public:
-    enum FontFamily {
+    enum FontFamily
+    {
         StandardFont,
         FixedFont,
         SerifFont,
@@ -36,7 +38,8 @@ public:
         FantasyFont
     };
 
-    enum WebAttribute {
+    enum WebAttribute
+    {
         AutoLoadImages,
         JavascriptEnabled,
         PluginsEnabled,
@@ -49,25 +52,26 @@ public:
         DnsPrefetchEnabled
     };
 
-    enum FontSize {
+    enum FontSize
+    {
         MinimumFontSize,
         DefaultFontSize,
         DefaultFixedFontSize
     };
 
-    QWKPreferences(const QWKPreferences &) = delete;
-    QWKPreferences &operator=(const QWKPreferences &) = delete;
+    QWKPreferences( const QWKPreferences & ) = delete;
+    QWKPreferences &operator=( const QWKPreferences & ) = delete;
 
-    static QWKPreferences* sharedPreferences();
+    static QWKPreferences *sharedPreferences();
 
-    void setFontFamily(FontFamily which, const QString& family);
-    QString fontFamily(FontFamily which) const;
+    void setFontFamily( FontFamily which, const QString &family );
+    QString fontFamily( FontFamily which ) const;
 
-    void setAttribute(WebAttribute attr, bool on);
-    bool testAttribute(WebAttribute attr) const;
+    void setAttribute( WebAttribute attr, bool on );
+    bool testAttribute( WebAttribute attr ) const;
 
-    void setFontSize(FontSize type, int size);
-    int fontSize(FontSize type) const;
+    void setFontSize( FontSize type, int size );
+    int fontSize( FontSize type ) const;
 
 private:
     QWKPreferences();

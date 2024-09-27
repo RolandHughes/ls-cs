@@ -20,38 +20,47 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef CallFrameClosure_h
 #define CallFrameClosure_h
 
-namespace JSC {
+namespace JSC
+{
 
-struct CallFrameClosure {
-    CallFrame* oldCallFrame;
-    CallFrame* newCallFrame;
-    JSFunction* function;
-    FunctionExecutable* functionExecutable;
-    JSGlobalData* globalData;
-    Register* oldEnd;
-    ScopeChainNode* scopeChain;
+struct CallFrameClosure
+{
+    CallFrame *oldCallFrame;
+    CallFrame *newCallFrame;
+    JSFunction *function;
+    FunctionExecutable *functionExecutable;
+    JSGlobalData *globalData;
+    Register *oldEnd;
+    ScopeChainNode *scopeChain;
     int expectedParams;
     int providedParams;
-    
-    void setArgument(int arg, JSValue value)
+
+    void setArgument( int arg, JSValue value )
     {
-        if (arg < expectedParams)
+        if ( arg < expectedParams )
+        {
             newCallFrame[arg - RegisterFile::CallFrameHeaderSize - expectedParams] = value;
+        }
         else
+        {
             newCallFrame[arg - RegisterFile::CallFrameHeaderSize - expectedParams - providedParams] = value;
+        }
     }
     void resetCallFrame()
     {
-        newCallFrame->setScopeChain(scopeChain);
-        newCallFrame->setCalleeArguments(JSValue());
-        for (int i = providedParams; i < expectedParams; ++i)
+        newCallFrame->setScopeChain( scopeChain );
+        newCallFrame->setCalleeArguments( JSValue() );
+
+        for ( int i = providedParams; i < expectedParams; ++i )
+        {
             newCallFrame[i - RegisterFile::CallFrameHeaderSize - expectedParams] = jsUndefined();
+        }
     }
 };
 

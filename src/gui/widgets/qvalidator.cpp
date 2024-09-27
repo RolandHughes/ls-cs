@@ -37,26 +37,26 @@
 
 class QValidatorPrivate
 {
-   Q_DECLARE_PUBLIC(QValidator)
+    Q_DECLARE_PUBLIC( QValidator )
 
- public:
-   virtual ~QValidatorPrivate() {}
-   QLocale locale;
+public:
+    virtual ~QValidatorPrivate() {}
+    QLocale locale;
 
- protected:
-   QValidator *q_ptr;
+protected:
+    QValidator *q_ptr;
 };
 
-QValidator::QValidator(QObject *parent)
-   : QObject(parent), d_ptr(new QValidatorPrivate)
+QValidator::QValidator( QObject *parent )
+    : QObject( parent ), d_ptr( new QValidatorPrivate )
 {
-   d_ptr->q_ptr = this;
+    d_ptr->q_ptr = this;
 }
 
-QValidator::QValidator(QValidatorPrivate &dd, QObject *parent)
-   : QObject(parent), d_ptr(&dd)
+QValidator::QValidator( QValidatorPrivate &dd, QObject *parent )
+    : QObject( parent ), d_ptr( &dd )
 {
-   d_ptr->q_ptr = this;
+    d_ptr->q_ptr = this;
 }
 
 QValidator::~QValidator()
@@ -65,381 +65,424 @@ QValidator::~QValidator()
 
 QLocale QValidator::locale() const
 {
-   Q_D(const QValidator);
-   return d->locale;
+    Q_D( const QValidator );
+    return d->locale;
 }
 
-void QValidator::setLocale(const QLocale &locale)
+void QValidator::setLocale( const QLocale &locale )
 {
-   Q_D(QValidator);
+    Q_D( QValidator );
 
-   if (d->locale != locale) {
-      d->locale = locale;
-      emit changed();
-   }
+    if ( d->locale != locale )
+    {
+        d->locale = locale;
+        emit changed();
+    }
 }
 
-void QValidator::fixup(QString &) const
+void QValidator::fixup( QString & ) const
 {
 }
 
-QIntValidator::QIntValidator(QObject *parent)
-   : QValidator(parent)
+QIntValidator::QIntValidator( QObject *parent )
+    : QValidator( parent )
 {
-   b = INT_MIN;
-   t = INT_MAX;
+    b = INT_MIN;
+    t = INT_MAX;
 }
 
-QIntValidator::QIntValidator(int minimum, int maximum, QObject *parent)
-   : QValidator(parent)
+QIntValidator::QIntValidator( int minimum, int maximum, QObject *parent )
+    : QValidator( parent )
 {
-   b = minimum;
-   t = maximum;
+    b = minimum;
+    t = maximum;
 }
 
 QIntValidator::~QIntValidator()
 {
 }
 
-static int numDigits(qint64 n)
+static int numDigits( qint64 n )
 {
-   if (n == 0) {
-      return 1;
-   }
+    if ( n == 0 )
+    {
+        return 1;
+    }
 
-   return (int)std::log10(double(n)) + 1;
+    return ( int )std::log10( double( n ) ) + 1;
 }
 
-static qint64 pow10(int exp)
+static qint64 pow10( int exp )
 {
-   qint64 result = 1;
+    qint64 result = 1;
 
-   for (int i = 0; i < exp; ++i) {
-      result *= 10;
-   }
+    for ( int i = 0; i < exp; ++i )
+    {
+        result *= 10;
+    }
 
-   return result;
+    return result;
 }
 
-QValidator::State QIntValidator::validate(QString &input, int &) const
+QValidator::State QIntValidator::validate( QString &input, int & ) const
 {
-   QByteArray buff;
+    QByteArray buff;
 
-   if (! locale().d->m_data->validateChars(input, QLocaleData::IntegerMode, &buff, -1,
-         locale().numberOptions() & QLocale::RejectGroupSeparator)) {
-      return Invalid;
-   }
+    if ( ! locale().d->m_data->validateChars( input, QLocaleData::IntegerMode, &buff, -1,
+            locale().numberOptions() & QLocale::RejectGroupSeparator ) )
+    {
+        return Invalid;
+    }
 
-   if (buff.isEmpty()) {
-      return Intermediate;
-   }
+    if ( buff.isEmpty() )
+    {
+        return Intermediate;
+    }
 
-   if (b >= 0 && buff.startsWith('-')) {
-      return Invalid;
-   }
+    if ( b >= 0 && buff.startsWith( '-' ) )
+    {
+        return Invalid;
+    }
 
-   if (t < 0 && buff.startsWith('+')) {
-      return Invalid;
-   }
+    if ( t < 0 && buff.startsWith( '+' ) )
+    {
+        return Invalid;
+    }
 
-   if (buff.size() == 1 && (buff.at(0) == '+' || buff.at(0) == '-')) {
-      return Intermediate;
-   }
+    if ( buff.size() == 1 && ( buff.at( 0 ) == '+' || buff.at( 0 ) == '-' ) )
+    {
+        return Intermediate;
+    }
 
-   bool ok;
-   bool overflow;
+    bool ok;
+    bool overflow;
 
-   qint64 entered = QLocaleData::bytearrayToLongLong(buff.constData(), 10, &ok, &overflow);
+    qint64 entered = QLocaleData::bytearrayToLongLong( buff.constData(), 10, &ok, &overflow );
 
-   if (overflow || ! ok) {
-      return Invalid;
-   }
+    if ( overflow || ! ok )
+    {
+        return Invalid;
+    }
 
-   if (entered >= b && entered <= t) {
-      locale().toInt(input, &ok, 10);
-      return ok ? Acceptable : Intermediate;
-   }
+    if ( entered >= b && entered <= t )
+    {
+        locale().toInt( input, &ok, 10 );
+        return ok ? Acceptable : Intermediate;
+    }
 
-   if (entered >= 0) {
-      // the -entered < b condition is necessary to allow people to type
-      // the minus last (e.g. for right-to-left languages)
-      return (entered > t && -entered < b) ? Invalid : Intermediate;
-   } else {
-      return (entered < b) ? Invalid : Intermediate;
-   }
+    if ( entered >= 0 )
+    {
+        // the -entered < b condition is necessary to allow people to type
+        // the minus last (e.g. for right-to-left languages)
+        return ( entered > t && -entered < b ) ? Invalid : Intermediate;
+    }
+    else
+    {
+        return ( entered < b ) ? Invalid : Intermediate;
+    }
 }
 
-void QIntValidator::fixup(QString &input) const
+void QIntValidator::fixup( QString &input ) const
 {
-   QByteArray buff;
+    QByteArray buff;
 
-   if (! locale().d->m_data->validateChars(input, QLocaleData::IntegerMode, &buff, -1,
-         locale().numberOptions() & QLocale::RejectGroupSeparator)) {
-      return;
-   }
+    if ( ! locale().d->m_data->validateChars( input, QLocaleData::IntegerMode, &buff, -1,
+            locale().numberOptions() & QLocale::RejectGroupSeparator ) )
+    {
+        return;
+    }
 
-   bool ok;
-   bool overflow;
+    bool ok;
+    bool overflow;
 
-   qint64 entered = QLocaleData::bytearrayToLongLong(buff.constData(), 10, &ok, &overflow);
+    qint64 entered = QLocaleData::bytearrayToLongLong( buff.constData(), 10, &ok, &overflow );
 
-   if (ok && ! overflow) {
-      input = locale().toString(entered);
-   }
+    if ( ok && ! overflow )
+    {
+        input = locale().toString( entered );
+    }
 }
 
-void QIntValidator::setRange(int bottom, int top)
+void QIntValidator::setRange( int bottom, int top )
 {
-   bool rangeChanged = false;
-   if (b != bottom) {
-      b = bottom;
-      rangeChanged = true;
-      emit bottomChanged(b);
-   }
+    bool rangeChanged = false;
 
-   if (t != top) {
-      t = top;
-      rangeChanged = true;
-      emit topChanged(t);
-   }
+    if ( b != bottom )
+    {
+        b = bottom;
+        rangeChanged = true;
+        emit bottomChanged( b );
+    }
 
-   if (rangeChanged) {
-      emit changed();
-   }
+    if ( t != top )
+    {
+        t = top;
+        rangeChanged = true;
+        emit topChanged( t );
+    }
+
+    if ( rangeChanged )
+    {
+        emit changed();
+    }
 }
 
-void QIntValidator::setBottom(int bottom)
+void QIntValidator::setBottom( int bottom )
 {
-   setRange(bottom, top());
+    setRange( bottom, top() );
 }
 
-void QIntValidator::setTop(int top)
+void QIntValidator::setTop( int top )
 {
-   setRange(bottom(), top);
+    setRange( bottom(), top );
 }
 
 #ifndef QT_NO_REGEXP
 
 class QDoubleValidatorPrivate : public QValidatorPrivate
 {
-   Q_DECLARE_PUBLIC(QDoubleValidator)
+    Q_DECLARE_PUBLIC( QDoubleValidator )
 
- public:
-   QDoubleValidatorPrivate()
-      : QValidatorPrivate(), notation(QDoubleValidator::ScientificNotation)
-   { }
+public:
+    QDoubleValidatorPrivate()
+        : QValidatorPrivate(), notation( QDoubleValidator::ScientificNotation )
+    { }
 
-   QDoubleValidator::Notation notation;
+    QDoubleValidator::Notation notation;
 
-   QValidator::State validateWithLocale(QString &input, QLocaleData::NumberMode numMode, const QLocale &locale) const;
+    QValidator::State validateWithLocale( QString &input, QLocaleData::NumberMode numMode, const QLocale &locale ) const;
 };
 
-QDoubleValidator::QDoubleValidator(QObject *parent)
-   : QValidator(*new QDoubleValidatorPrivate, parent)
+QDoubleValidator::QDoubleValidator( QObject *parent )
+    : QValidator( *new QDoubleValidatorPrivate, parent )
 {
-   b   = -HUGE_VAL;
-   t   = HUGE_VAL;
-   dec = 1000;
+    b   = -HUGE_VAL;
+    t   = HUGE_VAL;
+    dec = 1000;
 }
 
-QDoubleValidator::QDoubleValidator(double bottom, double top, int decimals, QObject *parent)
-   : QValidator(*new QDoubleValidatorPrivate, parent)
+QDoubleValidator::QDoubleValidator( double bottom, double top, int decimals, QObject *parent )
+    : QValidator( *new QDoubleValidatorPrivate, parent )
 {
-   b   = bottom;
-   t   = top;
-   dec = decimals;
+    b   = bottom;
+    t   = top;
+    dec = decimals;
 }
 
 QDoubleValidator::~QDoubleValidator()
 {
 }
 
-QValidator::State QDoubleValidator::validate(QString &input, int &) const
+QValidator::State QDoubleValidator::validate( QString &input, int & ) const
 {
-   Q_D(const QDoubleValidator);
+    Q_D( const QDoubleValidator );
 
-   QLocaleData::NumberMode numMode = QLocaleData::DoubleStandardMode;
+    QLocaleData::NumberMode numMode = QLocaleData::DoubleStandardMode;
 
-   switch (d->notation) {
-      case StandardNotation:
-         numMode = QLocaleData::DoubleStandardMode;
-         break;
+    switch ( d->notation )
+    {
+        case StandardNotation:
+            numMode = QLocaleData::DoubleStandardMode;
+            break;
 
-      case ScientificNotation:
-         numMode = QLocaleData::DoubleScientificMode;
-         break;
-   }
+        case ScientificNotation:
+            numMode = QLocaleData::DoubleScientificMode;
+            break;
+    }
 
-   return d->validateWithLocale(input, numMode, locale());
+    return d->validateWithLocale( input, numMode, locale() );
 }
 
-QValidator::State QDoubleValidatorPrivate::validateWithLocale(QString &input, QLocaleData::NumberMode numMode,
-   const QLocale &locale) const
+QValidator::State QDoubleValidatorPrivate::validateWithLocale( QString &input, QLocaleData::NumberMode numMode,
+        const QLocale &locale ) const
 {
-   Q_Q(const QDoubleValidator);
+    Q_Q( const QDoubleValidator );
 
-   QByteArray buff;
+    QByteArray buff;
 
-   if (! locale.d->m_data->validateChars(input, numMode, &buff, q->dec,
-         locale.numberOptions() & QLocale::RejectGroupSeparator)) {
-      return QValidator::Invalid;
-   }
+    if ( ! locale.d->m_data->validateChars( input, numMode, &buff, q->dec,
+                                            locale.numberOptions() & QLocale::RejectGroupSeparator ) )
+    {
+        return QValidator::Invalid;
+    }
 
-   if (buff.isEmpty()) {
-      return QValidator::Intermediate;
-   }
+    if ( buff.isEmpty() )
+    {
+        return QValidator::Intermediate;
+    }
 
-   if (q->b >= 0 && buff.startsWith('-')) {
-      return QValidator::Invalid;
-   }
+    if ( q->b >= 0 && buff.startsWith( '-' ) )
+    {
+        return QValidator::Invalid;
+    }
 
-   if (q->t < 0 && buff.startsWith('+')) {
-      return QValidator::Invalid;
-   }
+    if ( q->t < 0 && buff.startsWith( '+' ) )
+    {
+        return QValidator::Invalid;
+    }
 
-   bool ok;
-   bool overflow;
-   double i = QLocaleData::bytearrayToDouble(buff.constData(), &ok, &overflow);
+    bool ok;
+    bool overflow;
+    double i = QLocaleData::bytearrayToDouble( buff.constData(), &ok, &overflow );
 
-   if (overflow) {
-      return QValidator::Invalid;
-   }
+    if ( overflow )
+    {
+        return QValidator::Invalid;
+    }
 
-   if (!ok) {
-      return QValidator::Intermediate;
-   }
+    if ( !ok )
+    {
+        return QValidator::Intermediate;
+    }
 
-   if (i >= q->b && i <= q->t) {
-      return QValidator::Acceptable;
-   }
+    if ( i >= q->b && i <= q->t )
+    {
+        return QValidator::Acceptable;
+    }
 
-   if (notation == QDoubleValidator::StandardNotation) {
-      double max = qMax(qAbs(q->b), qAbs(q->t));
+    if ( notation == QDoubleValidator::StandardNotation )
+    {
+        double max = qMax( qAbs( q->b ), qAbs( q->t ) );
 
-      if (max < double(LLONG_MAX)) {
-         qint64 n = pow10(numDigits(qint64(max))) - 1;
+        if ( max < double( LLONG_MAX ) )
+        {
+            qint64 n = pow10( numDigits( qint64( max ) ) ) - 1;
 
-         if (qAbs(i) > n) {
-            return QValidator::Invalid;
-         }
-      }
-   }
+            if ( qAbs( i ) > n )
+            {
+                return QValidator::Invalid;
+            }
+        }
+    }
 
-   return QValidator::Intermediate;
+    return QValidator::Intermediate;
 }
 
-void QDoubleValidator::setRange(double minimum, double maximum, int decimals)
+void QDoubleValidator::setRange( double minimum, double maximum, int decimals )
 {
-   bool rangeChanged = false;
-   if (b != minimum) {
-      b = minimum;
-      rangeChanged = true;
-      emit bottomChanged(b);
-   }
+    bool rangeChanged = false;
 
-   if (t != maximum) {
-      t = maximum;
-      rangeChanged = true;
-      emit topChanged(t);
-   }
+    if ( b != minimum )
+    {
+        b = minimum;
+        rangeChanged = true;
+        emit bottomChanged( b );
+    }
 
-   if (dec != decimals) {
-      dec = decimals;
-      rangeChanged = true;
-      emit decimalsChanged(dec);
-   }
+    if ( t != maximum )
+    {
+        t = maximum;
+        rangeChanged = true;
+        emit topChanged( t );
+    }
 
-   if (rangeChanged) {
-      emit changed();
-   }
+    if ( dec != decimals )
+    {
+        dec = decimals;
+        rangeChanged = true;
+        emit decimalsChanged( dec );
+    }
+
+    if ( rangeChanged )
+    {
+        emit changed();
+    }
 }
 
-void QDoubleValidator::setBottom(double bottom)
+void QDoubleValidator::setBottom( double bottom )
 {
-   setRange(bottom, top(), decimals());
+    setRange( bottom, top(), decimals() );
 }
 
-void QDoubleValidator::setTop(double top)
+void QDoubleValidator::setTop( double top )
 {
-   setRange(bottom(), top, decimals());
+    setRange( bottom(), top, decimals() );
 }
 
-void QDoubleValidator::setDecimals(int decimals)
+void QDoubleValidator::setDecimals( int decimals )
 {
-   setRange(bottom(), top(), decimals);
+    setRange( bottom(), top(), decimals );
 }
 
-void QDoubleValidator::setNotation(Notation newNotation)
+void QDoubleValidator::setNotation( Notation newNotation )
 {
-   Q_D(QDoubleValidator);
+    Q_D( QDoubleValidator );
 
-   if (d->notation != newNotation) {
-      d->notation = newNotation;
-      emit notationChanged(d->notation);
-      emit changed();
-   }
+    if ( d->notation != newNotation )
+    {
+        d->notation = newNotation;
+        emit notationChanged( d->notation );
+        emit changed();
+    }
 }
 
 QDoubleValidator::Notation QDoubleValidator::notation() const
 {
-   Q_D(const QDoubleValidator);
-   return d->notation;
+    Q_D( const QDoubleValidator );
+    return d->notation;
 }
 
-QRegularExpressionValidator::QRegularExpressionValidator(QObject *parent)
-   : QValidator(parent), m_regexp(".*")
+QRegularExpressionValidator::QRegularExpressionValidator( QObject *parent )
+    : QValidator( parent ), m_regexp( ".*" )
 {
 }
 
-QRegularExpressionValidator::QRegularExpressionValidator(const QRegularExpression &regExp, QObject *parent)
-   : QValidator(parent)
+QRegularExpressionValidator::QRegularExpressionValidator( const QRegularExpression &regExp, QObject *parent )
+    : QValidator( parent )
 {
-   setRegularExpression(regExp);
+    setRegularExpression( regExp );
 }
 
 QRegularExpressionValidator::~QRegularExpressionValidator()
 {
 }
 
-QValidator::State QRegularExpressionValidator::validate(QString &input, int &pos) const
+QValidator::State QRegularExpressionValidator::validate( QString &input, int &pos ) const
 {
-   if (m_regexp.pattern().isEmpty()) {
-      return Acceptable;
-   }
+    if ( m_regexp.pattern().isEmpty() )
+    {
+        return Acceptable;
+    }
 
-   QRegularExpressionMatch match = m_regexp.match(input, input.begin(), QMatchType::PartialPreferCompleteMatch);
+    QRegularExpressionMatch match = m_regexp.match( input, input.begin(), QMatchType::PartialPreferCompleteMatch );
 
-   if (match.hasMatch()) {
-      return Acceptable;
+    if ( match.hasMatch() )
+    {
+        return Acceptable;
 
-   } else if (input.isEmpty() || match.hasPartialMatch()) {
-      return Intermediate;
+    }
+    else if ( input.isEmpty() || match.hasPartialMatch() )
+    {
+        return Intermediate;
 
-   } else {
-      pos = input.size();
-      return Invalid;
+    }
+    else
+    {
+        pos = input.size();
+        return Invalid;
 
-   }
+    }
 }
 
 const QRegularExpression &QRegularExpressionValidator::regularExpression() const
 {
-   return m_regexp;
+    return m_regexp;
 }
 
-void QRegularExpressionValidator::setRegularExpression(const QRegularExpression &regExp)
+void QRegularExpressionValidator::setRegularExpression( const QRegularExpression &regExp )
 {
-   if (m_regexp.pattern() != regExp.pattern() ||
-      (regExp.patternOptions() | QPatternOption::ExactMatchOption) != m_regexp.patternOptions()  ) {
+    if ( m_regexp.pattern() != regExp.pattern() ||
+            ( regExp.patternOptions() | QPatternOption::ExactMatchOption ) != m_regexp.patternOptions()  )
+    {
 
-      m_regexp = regExp;
+        m_regexp = regExp;
 
-      QPatternOptionFlags flags = m_regexp.patternOptions();
-      flags |= QPatternOption::ExactMatchOption;
-      m_regexp.setPatternOptions(flags);
+        QPatternOptionFlags flags = m_regexp.patternOptions();
+        flags |= QPatternOption::ExactMatchOption;
+        m_regexp.setPatternOptions( flags );
 
-      emit regularExpressionChanged(m_regexp);
-   }
+        emit regularExpressionChanged( m_regexp );
+    }
 }
 
 #endif // QT_NO_REGEXP

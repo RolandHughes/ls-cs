@@ -32,22 +32,22 @@
 
 class QRadioDataPrivate
 {
- public:
+public:
     QRadioDataPrivate();
 
     QMediaObject *mediaObject;
-    QRadioDataControl* control;
+    QRadioDataControl *control;
 
     void _q_serviceDestroyed();
 
     QRadioData *q_ptr;
 
- private:
-    Q_DECLARE_NON_CONST_PUBLIC(QRadioData)
+private:
+    Q_DECLARE_NON_CONST_PUBLIC( QRadioData )
 };
 
 QRadioDataPrivate::QRadioDataPrivate()
-    : mediaObject(nullptr), control(nullptr)
+    : mediaObject( nullptr ), control( nullptr )
 {
 }
 
@@ -57,23 +57,27 @@ void QRadioDataPrivate::_q_serviceDestroyed()
     control     = nullptr;
 }
 
-QRadioData::QRadioData(QMediaObject *mediaObject, QObject *parent)
-    : QObject(parent), d_ptr(new QRadioDataPrivate)
+QRadioData::QRadioData( QMediaObject *mediaObject, QObject *parent )
+    : QObject( parent ), d_ptr( new QRadioDataPrivate )
 {
-    Q_D(QRadioData);
+    Q_D( QRadioData );
 
     d->q_ptr = this;
 
-    if (mediaObject)
-        mediaObject->bind(this);
+    if ( mediaObject )
+    {
+        mediaObject->bind( this );
+    }
 }
 
 QRadioData::~QRadioData()
 {
-    Q_D(QRadioData);
+    Q_D( QRadioData );
 
-    if (d->mediaObject)
-        d->mediaObject->unbind(this);
+    if ( d->mediaObject )
+    {
+        d->mediaObject->unbind( this );
+    }
 
     delete d_ptr;
 }
@@ -83,46 +87,53 @@ QMediaObject *QRadioData::mediaObject() const
     return d_func()->mediaObject;
 }
 
-bool QRadioData::setMediaObject(QMediaObject *mediaObject)
+bool QRadioData::setMediaObject( QMediaObject *mediaObject )
 {
-    Q_D(QRadioData);
+    Q_D( QRadioData );
 
-    if (d->mediaObject) {
-        if (d->control) {
-            disconnect(d->control, &QRadioDataControl::stationIdChanged,                     this, &QRadioData::stationIdChanged);
-            disconnect(d->control, &QRadioDataControl::programTypeChanged,                   this, &QRadioData::programTypeChanged);
-            disconnect(d->control, &QRadioDataControl::programTypeNameChanged,               this, &QRadioData::programTypeNameChanged);
-            disconnect(d->control, &QRadioDataControl::stationNameChanged,                   this, &QRadioData::stationNameChanged);
-            disconnect(d->control, &QRadioDataControl::radioTextChanged,                     this, &QRadioData::radioTextChanged);
-            disconnect(d->control, &QRadioDataControl::alternativeFrequenciesEnabledChanged, this, &QRadioData::alternativeFrequenciesEnabledChanged);
-            disconnect(d->control, &QRadioDataControl::error,                                this, &QRadioData::error);
+    if ( d->mediaObject )
+    {
+        if ( d->control )
+        {
+            disconnect( d->control, &QRadioDataControl::stationIdChanged,                     this, &QRadioData::stationIdChanged );
+            disconnect( d->control, &QRadioDataControl::programTypeChanged,                   this, &QRadioData::programTypeChanged );
+            disconnect( d->control, &QRadioDataControl::programTypeNameChanged,               this, &QRadioData::programTypeNameChanged );
+            disconnect( d->control, &QRadioDataControl::stationNameChanged,                   this, &QRadioData::stationNameChanged );
+            disconnect( d->control, &QRadioDataControl::radioTextChanged,                     this, &QRadioData::radioTextChanged );
+            disconnect( d->control, &QRadioDataControl::alternativeFrequenciesEnabledChanged, this,
+                        &QRadioData::alternativeFrequenciesEnabledChanged );
+            disconnect( d->control, &QRadioDataControl::error,                                this, &QRadioData::error );
 
             QMediaService *service = d->mediaObject->service();
-            service->releaseControl(d->control);
-            disconnect(service, &QMediaService::destroyed, this, &QRadioData::_q_serviceDestroyed);
+            service->releaseControl( d->control );
+            disconnect( service, &QMediaService::destroyed, this, &QRadioData::_q_serviceDestroyed );
         }
     }
 
     d->mediaObject = mediaObject;
 
-    if (d->mediaObject) {
+    if ( d->mediaObject )
+    {
         QMediaService *service = mediaObject->service();
 
-        if (service) {
-            d->control = dynamic_cast<QRadioDataControl*>(service->requestControl(QRadioDataControl_iid));
+        if ( service )
+        {
+            d->control = dynamic_cast<QRadioDataControl *>( service->requestControl( QRadioDataControl_iid ) );
 
-            if (d->control) {
-               connect(d->control, &QRadioDataControl::stationIdChanged,                     this, &QRadioData::stationIdChanged);
-               connect(d->control, &QRadioDataControl::programTypeChanged,                   this, &QRadioData::programTypeChanged);
-               connect(d->control, &QRadioDataControl::programTypeNameChanged,               this, &QRadioData::programTypeNameChanged);
-               connect(d->control, &QRadioDataControl::stationNameChanged,                   this, &QRadioData::stationNameChanged);
-               connect(d->control, &QRadioDataControl::radioTextChanged,                     this, &QRadioData::radioTextChanged);
-               connect(d->control, &QRadioDataControl::alternativeFrequenciesEnabledChanged, this, &QRadioData::alternativeFrequenciesEnabledChanged);
-               connect(d->control, &QRadioDataControl::error,                                this, &QRadioData::error);
+            if ( d->control )
+            {
+                connect( d->control, &QRadioDataControl::stationIdChanged,                     this, &QRadioData::stationIdChanged );
+                connect( d->control, &QRadioDataControl::programTypeChanged,                   this, &QRadioData::programTypeChanged );
+                connect( d->control, &QRadioDataControl::programTypeNameChanged,               this, &QRadioData::programTypeNameChanged );
+                connect( d->control, &QRadioDataControl::stationNameChanged,                   this, &QRadioData::stationNameChanged );
+                connect( d->control, &QRadioDataControl::radioTextChanged,                     this, &QRadioData::radioTextChanged );
+                connect( d->control, &QRadioDataControl::alternativeFrequenciesEnabledChanged, this,
+                         &QRadioData::alternativeFrequenciesEnabledChanged );
+                connect( d->control, &QRadioDataControl::error,                                this, &QRadioData::error );
 
-               connect(service, &QMediaService::destroyed, this, &QRadioData::_q_serviceDestroyed);
+                connect( service, &QMediaService::destroyed, this, &QRadioData::_q_serviceDestroyed );
 
-               return true;
+                return true;
             }
         }
     }
@@ -136,9 +147,10 @@ bool QRadioData::setMediaObject(QMediaObject *mediaObject)
 
 QMultimedia::AvailabilityStatus QRadioData::availability() const
 {
-    Q_D(const QRadioData);
+    Q_D( const QRadioData );
 
-    if (d->control == nullptr) {
+    if ( d->control == nullptr )
+    {
         return QMultimedia::ServiceMissing;
     }
 
@@ -147,9 +159,10 @@ QMultimedia::AvailabilityStatus QRadioData::availability() const
 
 QString QRadioData::stationId() const
 {
-    Q_D(const QRadioData);
+    Q_D( const QRadioData );
 
-    if (d->control != nullptr) {
+    if ( d->control != nullptr )
+    {
         return d->control->stationId();
     }
 
@@ -158,9 +171,10 @@ QString QRadioData::stationId() const
 
 QRadioData::ProgramType QRadioData::programType() const
 {
-    Q_D(const QRadioData);
+    Q_D( const QRadioData );
 
-    if (d->control != nullptr) {
+    if ( d->control != nullptr )
+    {
         return d->control->programType();
     }
 
@@ -169,9 +183,10 @@ QRadioData::ProgramType QRadioData::programType() const
 
 QString QRadioData::programTypeName() const
 {
-    Q_D(const QRadioData);
+    Q_D( const QRadioData );
 
-    if (d->control != nullptr) {
+    if ( d->control != nullptr )
+    {
         return d->control->programTypeName();
     }
 
@@ -180,9 +195,10 @@ QString QRadioData::programTypeName() const
 
 QString QRadioData::stationName() const
 {
-    Q_D(const QRadioData);
+    Q_D( const QRadioData );
 
-    if (d->control != nullptr) {
+    if ( d->control != nullptr )
+    {
         return d->control->stationName();
     }
 
@@ -191,9 +207,10 @@ QString QRadioData::stationName() const
 
 QString QRadioData::radioText() const
 {
-    Q_D(const QRadioData);
+    Q_D( const QRadioData );
 
-    if (d->control != nullptr) {
+    if ( d->control != nullptr )
+    {
         return d->control->radioText();
     }
 
@@ -202,9 +219,10 @@ QString QRadioData::radioText() const
 
 bool QRadioData::isAlternativeFrequenciesEnabled() const
 {
-    Q_D(const QRadioData);
+    Q_D( const QRadioData );
 
-    if (d->control != nullptr) {
+    if ( d->control != nullptr )
+    {
         return d->control->isAlternativeFrequenciesEnabled();
     }
 
@@ -213,18 +231,20 @@ bool QRadioData::isAlternativeFrequenciesEnabled() const
 
 void QRadioData::setAlternativeFrequenciesEnabled( bool enabled )
 {
-    Q_D(const QRadioData);
+    Q_D( const QRadioData );
 
-    if (d->control != nullptr) {
-        return d->control->setAlternativeFrequenciesEnabled(enabled);
+    if ( d->control != nullptr )
+    {
+        return d->control->setAlternativeFrequenciesEnabled( enabled );
     }
 }
 
 QRadioData::Error QRadioData::error() const
 {
-    Q_D(const QRadioData);
+    Q_D( const QRadioData );
 
-    if (d->control != nullptr) {
+    if ( d->control != nullptr )
+    {
         return d->control->error();
     }
 
@@ -233,9 +253,10 @@ QRadioData::Error QRadioData::error() const
 
 QString QRadioData::errorString() const
 {
-    Q_D(const QRadioData);
+    Q_D( const QRadioData );
 
-    if (d->control != nullptr) {
+    if ( d->control != nullptr )
+    {
         return d->control->errorString();
     }
 
@@ -244,6 +265,6 @@ QString QRadioData::errorString() const
 
 void QRadioData::_q_serviceDestroyed()
 {
-	Q_D(QRadioData);
-	d->_q_serviceDestroyed();
+    Q_D( QRadioData );
+    d->_q_serviceDestroyed();
 }

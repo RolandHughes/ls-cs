@@ -63,14 +63,14 @@ struct QDBusSlotCache
 class QDBusCallDeliveryEvent: public QMetaCallEvent
 {
 public:
-    QDBusCallDeliveryEvent(const QDBusConnection &c, int id, QObject *sender,
-                           const QDBusMessage &msg, const QList<int> &types, int f = 0)
-        : QMetaCallEvent(0, id, 0, sender, -1), connection(c), message(msg), metaTypes(types), flags(f)
-        { }
+    QDBusCallDeliveryEvent( const QDBusConnection &c, int id, QObject *sender,
+                            const QDBusMessage &msg, const QList<int> &types, int f = 0 )
+        : QMetaCallEvent( 0, id, 0, sender, -1 ), connection( c ), message( msg ), metaTypes( types ), flags( f )
+    { }
 
-    void placeMetaCall(QObject *object)
+    void placeMetaCall( QObject *object )
     {
-        QDBusConnectionPrivate::d(connection)->deliverCall(object, flags, message, metaTypes, id());
+        QDBusConnectionPrivate::d( connection )->deliverCall( object, flags, message, metaTypes, id() );
     }
 
 private:
@@ -83,15 +83,15 @@ private:
 class QDBusActivateObjectEvent: public QMetaCallEvent
 {
 public:
-    QDBusActivateObjectEvent(const QDBusConnection &c, QObject *sender,
-                             const QDBusConnectionPrivate::ObjectTreeNode &n,
-                             int p, const QDBusMessage &m, QSemaphore *s = 0)
-        : QMetaCallEvent(0, -1, 0, sender, -1, 0, 0, 0, s), connection(c), node(n),
-          pathStartPos(p), message(m), handled(false)
-        { }
+    QDBusActivateObjectEvent( const QDBusConnection &c, QObject *sender,
+                              const QDBusConnectionPrivate::ObjectTreeNode &n,
+                              int p, const QDBusMessage &m, QSemaphore *s = 0 )
+        : QMetaCallEvent( 0, -1, 0, sender, -1, 0, 0, 0, s ), connection( c ), node( n ),
+          pathStartPos( p ), message( m ), handled( false )
+    { }
     ~QDBusActivateObjectEvent();
 
-    void placeMetaCall(QObject *);
+    void placeMetaCall( QObject * );
 
 private:
     QDBusConnection connection; // just for refcounting
@@ -105,17 +105,19 @@ class QDBusConnectionCallbackEvent : public QEvent
 {
 public:
     QDBusConnectionCallbackEvent()
-        : QEvent(User), subtype(Subtype(0))
+        : QEvent( User ), subtype( Subtype( 0 ) )
     { }
 
     DBusWatch *watch;
-    union {
+    union
+    {
         int timerId;
         int fd;
     };
     int extra;
 
-    enum Subtype {
+    enum Subtype
+    {
         AddTimeout = 0,
         KillTimer,
         AddWatch,
@@ -126,7 +128,7 @@ public:
 
 QT_END_NAMESPACE
 
-Q_DECLARE_METATYPE(QDBusSlotCache)
+Q_DECLARE_METATYPE( QDBusSlotCache )
 
 #endif // QT_NO_DBUS
 #endif

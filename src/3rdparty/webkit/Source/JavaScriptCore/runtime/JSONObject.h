@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef JSONObject_h
@@ -28,30 +28,32 @@
 
 #include "JSObjectWithGlobalObject.h"
 
-namespace JSC {
+namespace JSC
+{
 
-    class Stringifier;
+class Stringifier;
 
-    class JSONObject : public JSObjectWithGlobalObject {
-    public:
-        JSONObject(JSGlobalObject*, Structure*);
+class JSONObject : public JSObjectWithGlobalObject
+{
+public:
+    JSONObject( JSGlobalObject *, Structure * );
 
-        static Structure* createStructure(JSGlobalData& globalData, JSValue prototype)
-        {
-            return Structure::create(globalData, prototype, TypeInfo(ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
-        }
+    static Structure *createStructure( JSGlobalData &globalData, JSValue prototype )
+    {
+        return Structure::create( globalData, prototype, TypeInfo( ObjectType, StructureFlags ), AnonymousSlotCount, &s_info );
+    }
 
-    protected:
-        static const unsigned StructureFlags = OverridesGetOwnPropertySlot | JSObject::StructureFlags;
+protected:
+    static const unsigned StructureFlags = OverridesGetOwnPropertySlot | JSObject::StructureFlags;
 
-    private:
-        virtual bool getOwnPropertySlot(ExecState*, const Identifier&, PropertySlot&);
-        virtual bool getOwnPropertyDescriptor(ExecState*, const Identifier&, PropertyDescriptor&);
+private:
+    virtual bool getOwnPropertySlot( ExecState *, const Identifier &, PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( ExecState *, const Identifier &, PropertyDescriptor & );
 
-        static const ClassInfo s_info;
-    };
+    static const ClassInfo s_info;
+};
 
-    UString JSONStringify(ExecState* exec, JSValue value, unsigned indent);
+UString JSONStringify( ExecState *exec, JSValue value, unsigned indent );
 
 } // namespace JSC
 

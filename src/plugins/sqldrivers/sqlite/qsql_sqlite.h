@@ -41,37 +41,37 @@ class QSQLiteDriver;
 
 class Q_EXPORT_SQLDRIVER_SQLITE QSQLiteDriver : public QSqlDriver
 {
-   SQL_CS_OBJECT(QSQLiteDriver)
-   Q_DECLARE_PRIVATE(QSQLiteDriver)
+    SQL_CS_OBJECT( QSQLiteDriver )
+    Q_DECLARE_PRIVATE( QSQLiteDriver )
 
- public:
-   explicit QSQLiteDriver(QObject *parent = nullptr);
-   explicit QSQLiteDriver(sqlite3 *connection, QObject *parent = nullptr);
-   ~QSQLiteDriver();
+public:
+    explicit QSQLiteDriver( QObject *parent = nullptr );
+    explicit QSQLiteDriver( sqlite3 *connection, QObject *parent = nullptr );
+    ~QSQLiteDriver();
 
-   bool hasFeature(DriverFeature f) const override;
+    bool hasFeature( DriverFeature f ) const override;
 
-   bool open(const QString &db, const QString &user, const QString &password, const QString &host,
-      int port, const QString &connOpts) override;
+    bool open( const QString &db, const QString &user, const QString &password, const QString &host,
+               int port, const QString &connOpts ) override;
 
-   void close() override;
-   QSqlResult *createResult() const override;
-   bool beginTransaction() override;
-   bool commitTransaction() override;
-   bool rollbackTransaction() override;
-   QStringList tables(QSql::TableType) const override;
+    void close() override;
+    QSqlResult *createResult() const override;
+    bool beginTransaction() override;
+    bool commitTransaction() override;
+    bool rollbackTransaction() override;
+    QStringList tables( QSql::TableType ) const override;
 
-   QSqlRecord record(const QString &tablename) const override;
-   QSqlIndex primaryIndex(const QString &table) const override;
-   QVariant handle() const override;
-   QString escapeIdentifier(const QString &identifier, IdentifierType) const override;
+    QSqlRecord record( const QString &tablename ) const override;
+    QSqlIndex primaryIndex( const QString &table ) const override;
+    QVariant handle() const override;
+    QString escapeIdentifier( const QString &identifier, IdentifierType ) const override;
 
- private:
-   friend class QSQLiteResult;
+private:
+    friend class QSQLiteResult;
 
 };
 
-CS_DECLARE_METATYPE(sqlite3)
-CS_DECLARE_METATYPE(sqlite3_stmt)
+CS_DECLARE_METATYPE( sqlite3 )
+CS_DECLARE_METATYPE( sqlite3_stmt )
 
 #endif

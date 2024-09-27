@@ -21,131 +21,131 @@
 
 #include <cs_catch2.h>
 
-TEST_CASE("QMarginsF traits", "[qmarginsf]")
+TEST_CASE( "QMarginsF traits", "[qmarginsf]" )
 {
-   REQUIRE(std::is_copy_constructible_v<QMarginsF> == true);
-   REQUIRE(std::is_move_constructible_v<QMarginsF> == true);
+    REQUIRE( std::is_copy_constructible_v<QMarginsF> == true );
+    REQUIRE( std::is_move_constructible_v<QMarginsF> == true );
 
-   REQUIRE(std::is_copy_assignable_v<QMarginsF> == true);
-   REQUIRE(std::is_move_assignable_v<QMarginsF> == true);
+    REQUIRE( std::is_copy_assignable_v<QMarginsF> == true );
+    REQUIRE( std::is_move_assignable_v<QMarginsF> == true );
 
-   REQUIRE(std::has_virtual_destructor_v<QMarginsF> == false);
+    REQUIRE( std::has_virtual_destructor_v<QMarginsF> == false );
 }
 
-TEST_CASE("QMarginsF constructor", "[qmarginsf]")
+TEST_CASE( "QMarginsF constructor", "[qmarginsf]" )
 {
-   QMarginsF data(5, 10, 100, 200);
+    QMarginsF data( 5, 10, 100, 200 );
 
-   REQUIRE(! data.isNull());
+    REQUIRE( ! data.isNull() );
 
-   REQUIRE(data.left()   == 5);
-   REQUIRE(data.top()    == 10);
+    REQUIRE( data.left()   == 5 );
+    REQUIRE( data.top()    == 10 );
 
-   REQUIRE(data.right()  == 100);
-   REQUIRE(data.bottom() == 200);
+    REQUIRE( data.right()  == 100 );
+    REQUIRE( data.bottom() == 200 );
 }
 
-TEST_CASE("QMarginsF is_null", "[qmarginsf]")
+TEST_CASE( "QMarginsF is_null", "[qmarginsf]" )
 {
-   QMarginsF data;
+    QMarginsF data;
 
-   REQUIRE(data.isNull());
+    REQUIRE( data.isNull() );
 }
 
-TEST_CASE("QMarginF operators", "[qmarginsf]")
+TEST_CASE( "QMarginF operators", "[qmarginsf]" )
 {
-   QMarginsF data1(25, 14, 100, 50);
-   QMarginsF data2(2, 3, 4, 5);
+    QMarginsF data1( 25, 14, 100, 50 );
+    QMarginsF data2( 2, 3, 4, 5 );
 
-   SECTION ("add")
-   {
-      QMarginsF data3 =  data1 + data2;
-      QMarginsF result(27, 17, 104, 55);
+    SECTION ( "add" )
+    {
+        QMarginsF data3 =  data1 + data2;
+        QMarginsF result( 27, 17, 104, 55 );
 
-      REQUIRE(data3 == result);
+        REQUIRE( data3 == result );
 
-      QMarginsF data4 = data1;
-      data4 += data2;
+        QMarginsF data4 = data1;
+        data4 += data2;
 
-      REQUIRE(data4 == data3);
-   }
+        REQUIRE( data4 == data3 );
+    }
 
-   SECTION ("subtract")
-   {
-      QMarginsF data3 =  data1 - data2;
-      QMarginsF result(23, 11, 96, 45);
+    SECTION ( "subtract" )
+    {
+        QMarginsF data3 =  data1 - data2;
+        QMarginsF result( 23, 11, 96, 45 );
 
-      REQUIRE(data3 == result);
+        REQUIRE( data3 == result );
 
-      QMarginsF data4 = data1;
-      data4 -= data2;
+        QMarginsF data4 = data1;
+        data4 -= data2;
 
-      REQUIRE(data4 == data3);
-   }
+        REQUIRE( data4 == data3 );
+    }
 
-   SECTION ("plus_minus_equals")
-   {
-      QMarginsF data3 = data1;
-      QMarginsF result(27, 16, 102, 52);
+    SECTION ( "plus_minus_equals" )
+    {
+        QMarginsF data3 = data1;
+        QMarginsF result( 27, 16, 102, 52 );
 
-      data3 += 2;
-      REQUIRE(data3 == result);
+        data3 += 2;
+        REQUIRE( data3 == result );
 
-      data3 -= 2;
-      REQUIRE(data3 == data1);
-   }
+        data3 -= 2;
+        REQUIRE( data3 == data1 );
+    }
 
-   SECTION ("multiple")
-   {
-      QMarginsF data3 = data1 * 2;
-      QMarginsF result(50, 28, 200, 100);
+    SECTION ( "multiple" )
+    {
+        QMarginsF data3 = data1 * 2;
+        QMarginsF result( 50, 28, 200, 100 );
 
-      REQUIRE(data3 == result);
-      REQUIRE(2 * data1 == data3);
-      REQUIRE(qreal(2) * data1 == data3);
-      REQUIRE(data1 * qreal(2) == data3);
+        REQUIRE( data3 == result );
+        REQUIRE( 2 * data1 == data3 );
+        REQUIRE( qreal( 2 ) * data1 == data3 );
+        REQUIRE( data1 * qreal( 2 ) == data3 );
 
-      QMarginsF data4 = data1;
-      data4 *= 2;
+        QMarginsF data4 = data1;
+        data4 *= 2;
 
-      REQUIRE(data4 == data3);
+        REQUIRE( data4 == data3 );
 
-      data4 = data1;
-      data4 *= qreal(2);
-      REQUIRE(data4 == data3);
-   }
+        data4 = data1;
+        data4 *= qreal( 2 );
+        REQUIRE( data4 == data3 );
+    }
 
-   SECTION ("divide")
-   {
-      QMarginsF data3 = data1 / 2;
-      QMarginsF result(12.5, 7, 50, 25);
+    SECTION ( "divide" )
+    {
+        QMarginsF data3 = data1 / 2;
+        QMarginsF result( 12.5, 7, 50, 25 );
 
-      REQUIRE(data3 == result);
+        REQUIRE( data3 == result );
 
-      QMarginsF data4 = data1;
-      data4 /= 2;
-      REQUIRE(data4 == data3);
+        QMarginsF data4 = data1;
+        data4 /= 2;
+        REQUIRE( data4 == data3 );
 
-      data4 = data1;
-      data4 /= 2.0;
+        data4 = data1;
+        data4 /= 2.0;
 
-      QMarginsF result2(12.5, 7, 50, 25);
-      REQUIRE(data4 == result2);
-   }
+        QMarginsF result2( 12.5, 7, 50, 25 );
+        REQUIRE( data4 == result2 );
+    }
 }
 
-TEST_CASE("QMarginF set", "[qmarginsf]")
+TEST_CASE( "QMarginF set", "[qmarginsf]" )
 {
-   QMarginsF data;
+    QMarginsF data;
 
-   data.setLeft(1000);
-   data.setTop(-20000);
-   data.setBottom(40000);
-   data.setRight(50000);
+    data.setLeft( 1000 );
+    data.setTop( -20000 );
+    data.setBottom( 40000 );
+    data.setRight( 50000 );
 
-   REQUIRE(data.left()   == 1000);
-   REQUIRE(data.top()    == -20000);
+    REQUIRE( data.left()   == 1000 );
+    REQUIRE( data.top()    == -20000 );
 
-   REQUIRE(data.right()  == 50000);
-   REQUIRE(data.bottom() == 40000);
+    REQUIRE( data.right()  == 50000 );
+    REQUIRE( data.bottom() == 40000 );
 }

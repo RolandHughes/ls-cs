@@ -30,39 +30,40 @@
 
 class Q_MULTIMEDIA_EXPORT QMediaStreamsControl : public QMediaControl
 {
-   MULTI_CS_OBJECT(QMediaStreamsControl)
-   MULTI_CS_ENUM(StreamType)
+    MULTI_CS_OBJECT( QMediaStreamsControl )
+    MULTI_CS_ENUM( StreamType )
 
- public:
-   enum StreamType {
-      UnknownStream,
-      VideoStream,
-      AudioStream,
-      SubPictureStream,
-      DataStream
-   };
+public:
+    enum StreamType
+    {
+        UnknownStream,
+        VideoStream,
+        AudioStream,
+        SubPictureStream,
+        DataStream
+    };
 
-   virtual ~QMediaStreamsControl();
+    virtual ~QMediaStreamsControl();
 
-   virtual int streamCount() = 0;
-   virtual StreamType streamType(int streamID) = 0;
+    virtual int streamCount() = 0;
+    virtual StreamType streamType( int streamID ) = 0;
 
-   virtual QVariant metaData(int streamID, const QString &key) = 0;
+    virtual QVariant metaData( int streamID, const QString &key ) = 0;
 
-   virtual bool isActive(int streamID) = 0;
-   virtual void setActive(int streamID, bool state) = 0;
+    virtual bool isActive( int streamID ) = 0;
+    virtual void setActive( int streamID, bool state ) = 0;
 
-   MULTI_CS_SIGNAL_1(Public, void streamsChanged())
-   MULTI_CS_SIGNAL_2(streamsChanged)
+    MULTI_CS_SIGNAL_1( Public, void streamsChanged() )
+    MULTI_CS_SIGNAL_2( streamsChanged )
 
-   MULTI_CS_SIGNAL_1(Public, void activeStreamsChanged())
-   MULTI_CS_SIGNAL_2(activeStreamsChanged)
+    MULTI_CS_SIGNAL_1( Public, void activeStreamsChanged() )
+    MULTI_CS_SIGNAL_2( activeStreamsChanged )
 
- protected:
-   explicit QMediaStreamsControl(QObject *parent = nullptr);
+protected:
+    explicit QMediaStreamsControl( QObject *parent = nullptr );
 };
 
 #define QMediaStreamsControl_iid "com.copperspice.CS.mediaStreamsControl/1.0"
-CS_DECLARE_INTERFACE(QMediaStreamsControl, QMediaStreamsControl_iid)
+CS_DECLARE_INTERFACE( QMediaStreamsControl, QMediaStreamsControl_iid )
 
 #endif

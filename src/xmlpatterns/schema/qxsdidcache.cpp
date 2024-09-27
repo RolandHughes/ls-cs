@@ -28,17 +28,17 @@
 
 using namespace QPatternist;
 
-void XsdIdCache::addId(const QString &id)
+void XsdIdCache::addId( const QString &id )
 {
-   const QWriteLocker locker(&m_lock);
-   Q_ASSERT(!m_ids.contains(id));
+    const QWriteLocker locker( &m_lock );
+    Q_ASSERT( !m_ids.contains( id ) );
 
-   m_ids.insert(id);
+    m_ids.insert( id );
 }
 
-bool XsdIdCache::hasId(const QString &id) const
+bool XsdIdCache::hasId( const QString &id ) const
 {
-   const QReadLocker locker(&m_lock);
+    const QReadLocker locker( &m_lock );
 
-   return m_ids.contains(id);
+    return m_ids.contains( id );
 }

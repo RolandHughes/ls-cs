@@ -25,22 +25,22 @@
 
 using namespace QPatternist;
 
-void XsdApplicationInformation::setSource(const AnyURI::Ptr &source)
+void XsdApplicationInformation::setSource( const AnyURI::Ptr &source )
 {
-   m_source = source;
+    m_source = source;
 }
 
 AnyURI::Ptr XsdApplicationInformation::source() const
 {
-   return m_source;
+    return m_source;
 }
 
-void XsdApplicationInformation::setContent(const QString &content)
+void XsdApplicationInformation::setContent( const QString &content )
 {
-   m_content = content;
+    m_content = content;
 }
 
 QString XsdApplicationInformation::content() const
 {
-   return m_content;
+    return m_content;
 }

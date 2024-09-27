@@ -26,26 +26,32 @@
 #include <runtime/JSObjectWithGlobalObject.h>
 #include <runtime/ObjectPrototype.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Counter;
 
-class JSCounter : public JSDOMWrapper {
+class JSCounter : public JSDOMWrapper
+{
     typedef JSDOMWrapper Base;
 public:
-    JSCounter(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<Counter>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
+    JSCounter( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<Counter> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
-    Counter* impl() const { return m_impl.get(); }
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
+    Counter *impl() const
+    {
+        return m_impl.get();
+    }
 
 private:
     RefPtr<Counter> m_impl;
@@ -53,29 +59,32 @@ protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
-JSC::JSValue toJS(JSC::ExecState*, JSDOMGlobalObject*, Counter*);
-Counter* toCounter(JSC::JSValue);
+JSC::JSValue toJS( JSC::ExecState *, JSDOMGlobalObject *, Counter * );
+Counter *toCounter( JSC::JSValue );
 
-class JSCounterPrototype : public JSC::JSObjectWithGlobalObject {
+class JSCounterPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSCounterPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSCounterPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                        JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = Base::StructureFlags;
 };
 
 // Attributes
 
-JSC::JSValue jsCounterIdentifier(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsCounterListStyle(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsCounterSeparator(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsCounterConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsCounterIdentifier( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsCounterListStyle( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsCounterSeparator( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsCounterConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

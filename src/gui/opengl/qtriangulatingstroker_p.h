@@ -35,28 +35,37 @@
 
 class Q_GUI_EXPORT QTriangulatingStroker
 {
- public:
-    QTriangulatingStroker() : m_cx(0), m_cy(0), m_nvx(0), m_nvy(0), m_width(1), m_miter_limit(2),
-        m_roundness(0), m_sin_theta(0), m_cos_theta(0), m_inv_scale(1), m_curvyness_mul(1), m_curvyness_add(0),
-        m_join_style(Qt::BevelJoin), m_cap_style(Qt::SquareCap) {}
+public:
+    QTriangulatingStroker() : m_cx( 0 ), m_cy( 0 ), m_nvx( 0 ), m_nvy( 0 ), m_width( 1 ), m_miter_limit( 2 ),
+        m_roundness( 0 ), m_sin_theta( 0 ), m_cos_theta( 0 ), m_inv_scale( 1 ), m_curvyness_mul( 1 ), m_curvyness_add( 0 ),
+        m_join_style( Qt::BevelJoin ), m_cap_style( Qt::SquareCap ) {}
 
-    void process(const QVectorPath &path, const QPen &pen, const QRectF &clip, QPainter::RenderHints hints);
+    void process( const QVectorPath &path, const QPen &pen, const QRectF &clip, QPainter::RenderHints hints );
 
-    inline int vertexCount() const { return m_vertices.size(); }
-    inline const float *vertices() const { return m_vertices.data(); }
+    inline int vertexCount() const
+    {
+        return m_vertices.size();
+    }
+    inline const float *vertices() const
+    {
+        return m_vertices.data();
+    }
 
-    inline void setInvScale(qreal invScale) { m_inv_scale = invScale; }
+    inline void setInvScale( qreal invScale )
+    {
+        m_inv_scale = invScale;
+    }
 
- private:
-    inline void emitLineSegment(float x, float y, float nx, float ny);
-    void moveTo(const qreal *pts);
-    inline void lineTo(const qreal *pts);
-    void cubicTo(const qreal *pts);
-    void join(const qreal *pts);
-    inline void normalVector(float x1, float y1, float x2, float y2, float *nx, float *ny);
-    void endCap(const qreal *pts);
-    void arcPoints(float cx, float cy, float fromX, float fromY, float toX, float toY, QVarLengthArray<float> &points);
-    void endCapOrJoinClosed(const qreal *start, const qreal *cur, bool implicitClose, bool endsAtStart);
+private:
+    inline void emitLineSegment( float x, float y, float nx, float ny );
+    void moveTo( const qreal *pts );
+    inline void lineTo( const qreal *pts );
+    void cubicTo( const qreal *pts );
+    void join( const qreal *pts );
+    inline void normalVector( float x1, float y1, float x2, float y2, float *nx, float *ny );
+    void endCap( const qreal *pts );
+    void arcPoints( float cx, float cy, float fromX, float fromY, float toX, float toY, QVarLengthArray<float> &points );
+    void endCapOrJoinClosed( const qreal *start, const qreal *cur, bool implicitClose, bool endsAtStart );
 
     QVector<float> m_vertices;
 
@@ -78,69 +87,82 @@ class Q_GUI_EXPORT QTriangulatingStroker
 
 class Q_GUI_EXPORT QDashedStrokeProcessor
 {
- public:
+public:
     QDashedStrokeProcessor();
 
-    void process(const QVectorPath &path, const QPen &pen, const QRectF &clip, QPainter::RenderHints hints);
+    void process( const QVectorPath &path, const QPen &pen, const QRectF &clip, QPainter::RenderHints hints );
 
-    inline void addElement(QPainterPath::ElementType type, qreal x, qreal y) {
-        m_points.append(x);
-        m_points.append(y);
-        m_types.append(type);
+    inline void addElement( QPainterPath::ElementType type, qreal x, qreal y )
+    {
+        m_points.append( x );
+        m_points.append( y );
+        m_types.append( type );
     }
 
-    inline int elementCount() const {
-       return m_types.size();
+    inline int elementCount() const
+    {
+        return m_types.size();
     }
 
-    inline const qreal *points() const {
-       return m_points.data();
+    inline const qreal *points() const
+    {
+        return m_points.data();
     }
 
-    inline const QPainterPath::ElementType *elementTypes() const {
-       return m_types.data();
+    inline const QPainterPath::ElementType *elementTypes() const
+    {
+        return m_types.data();
     }
 
-    inline void setInvScale(qreal invScale) { m_inv_scale = invScale; }
+    inline void setInvScale( qreal invScale )
+    {
+        m_inv_scale = invScale;
+    }
 
- private:
+private:
     QVector<qreal> m_points;
     QVector<QPainterPath::ElementType> m_types;
     QDashStroker m_dash_stroker;
     qreal m_inv_scale;
 };
 
-inline void QTriangulatingStroker::normalVector(float x1, float y1, float x2, float y2,
-                                                float *nx, float *ny)
+inline void QTriangulatingStroker::normalVector( float x1, float y1, float x2, float y2,
+        float *nx, float *ny )
 {
     float dx = x2 - x1;
     float dy = y2 - y1;
-    Q_ASSERT(dx != 0 || dy != 0);
+    Q_ASSERT( dx != 0 || dy != 0 );
 
     float pw;
 
-    if (dx == 0)
-        pw = m_width / std::abs(dy);
-    else if (dy == 0)
-        pw = m_width / std::abs(dx);
+    if ( dx == 0 )
+    {
+        pw = m_width / std::abs( dy );
+    }
+    else if ( dy == 0 )
+    {
+        pw = m_width / std::abs( dx );
+    }
     else
-        pw = m_width / std::sqrt(dx*dx + dy*dy);
+    {
+        pw = m_width / std::sqrt( dx*dx + dy*dy );
+    }
 
     *nx = -dy * pw;
     *ny = dx * pw;
 }
 
-inline void QTriangulatingStroker::emitLineSegment(float x, float y, float vx, float vy)
+inline void QTriangulatingStroker::emitLineSegment( float x, float y, float vx, float vy )
 {
-    m_vertices.append(x + vx);
-    m_vertices.append(y + vy);
-    m_vertices.append(x - vx);
-    m_vertices.append(y - vy);
+    m_vertices.append( x + vx );
+    m_vertices.append( y + vy );
+    m_vertices.append( x - vx );
+    m_vertices.append( y - vy );
 }
 
-void QTriangulatingStroker::lineTo(const qreal *pts)
+void QTriangulatingStroker::lineTo( const qreal *pts )
 {
-    emitLineSegment(pts[0], pts[1], m_nvx, m_nvy);
+    emitLineSegment( pts[0], pts[1], m_nvx, m_nvy );
     m_cx = pts[0];
     m_cy = pts[1];
 }

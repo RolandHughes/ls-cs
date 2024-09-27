@@ -26,29 +26,35 @@
 #include <runtime/JSObjectWithGlobalObject.h>
 #include <runtime/ObjectPrototype.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class StyleSheet;
 
-class JSStyleSheet : public JSDOMWrapper {
+class JSStyleSheet : public JSDOMWrapper
+{
     typedef JSDOMWrapper Base;
 public:
-    JSStyleSheet(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<StyleSheet>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
-    virtual void put(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::JSValue, JSC::PutPropertySlot&);
+    JSStyleSheet( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<StyleSheet> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
+    virtual void put( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::JSValue, JSC::PutPropertySlot & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    virtual void visitChildren(JSC::SlotVisitor&);
+    virtual void visitChildren( JSC::SlotVisitor & );
 
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
-    StyleSheet* impl() const { return m_impl.get(); }
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
+    StyleSheet *impl() const
+    {
+        return m_impl.get();
+    }
 
 private:
     RefPtr<StyleSheet> m_impl;
@@ -56,50 +62,54 @@ protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::OverridesVisitChildren | Base::StructureFlags;
 };
 
-class JSStyleSheetOwner : public JSC::WeakHandleOwner {
-    virtual bool isReachableFromOpaqueRoots(JSC::Handle<JSC::Unknown>, void* context, JSC::SlotVisitor&);
-    virtual void finalize(JSC::Handle<JSC::Unknown>, void* context);
+class JSStyleSheetOwner : public JSC::WeakHandleOwner
+{
+    virtual bool isReachableFromOpaqueRoots( JSC::Handle<JSC::Unknown>, void *context, JSC::SlotVisitor & );
+    virtual void finalize( JSC::Handle<JSC::Unknown>, void *context );
 };
 
-inline JSC::WeakHandleOwner* wrapperOwner(DOMWrapperWorld*, StyleSheet*)
+inline JSC::WeakHandleOwner *wrapperOwner( DOMWrapperWorld *, StyleSheet * )
 {
-    DEFINE_STATIC_LOCAL(JSStyleSheetOwner, jsStyleSheetOwner, ());
+    DEFINE_STATIC_LOCAL( JSStyleSheetOwner, jsStyleSheetOwner, () );
     return &jsStyleSheetOwner;
 }
 
-inline void* wrapperContext(DOMWrapperWorld* world, StyleSheet*)
+inline void *wrapperContext( DOMWrapperWorld *world, StyleSheet * )
 {
     return world;
 }
 
-JSC::JSValue toJS(JSC::ExecState*, JSDOMGlobalObject*, StyleSheet*);
-StyleSheet* toStyleSheet(JSC::JSValue);
+JSC::JSValue toJS( JSC::ExecState *, JSDOMGlobalObject *, StyleSheet * );
+StyleSheet *toStyleSheet( JSC::JSValue );
 
-class JSStyleSheetPrototype : public JSC::JSObjectWithGlobalObject {
+class JSStyleSheetPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSStyleSheetPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSStyleSheetPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                           JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesVisitChildren | Base::StructureFlags;
 };
 
 // Attributes
 
-JSC::JSValue jsStyleSheetType(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsStyleSheetDisabled(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSStyleSheetDisabled(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsStyleSheetOwnerNode(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsStyleSheetParentStyleSheet(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsStyleSheetHref(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsStyleSheetTitle(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsStyleSheetMedia(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsStyleSheetConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsStyleSheetType( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsStyleSheetDisabled( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSStyleSheetDisabled( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsStyleSheetOwnerNode( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsStyleSheetParentStyleSheet( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsStyleSheetHref( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsStyleSheetTitle( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsStyleSheetMedia( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsStyleSheetConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

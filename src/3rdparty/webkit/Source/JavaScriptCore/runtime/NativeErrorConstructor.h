@@ -23,33 +23,38 @@
 
 #include "InternalFunction.h"
 
-namespace JSC {
+namespace JSC
+{
 
-    class ErrorInstance;
-    class FunctionPrototype;
-    class NativeErrorPrototype;
+class ErrorInstance;
+class FunctionPrototype;
+class NativeErrorPrototype;
 
-    class NativeErrorConstructor : public InternalFunction {
-    public:
-        NativeErrorConstructor(ExecState*, JSGlobalObject*, Structure*, Structure* prototypeStructure, const UString&);
+class NativeErrorConstructor : public InternalFunction
+{
+public:
+    NativeErrorConstructor( ExecState *, JSGlobalObject *, Structure *, Structure *prototypeStructure, const UString & );
 
-        static const ClassInfo s_info;
+    static const ClassInfo s_info;
 
-        static Structure* createStructure(JSGlobalData& globalData, JSValue prototype)
-        {
-            return Structure::create(globalData, prototype, TypeInfo(ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
-        }
+    static Structure *createStructure( JSGlobalData &globalData, JSValue prototype )
+    {
+        return Structure::create( globalData, prototype, TypeInfo( ObjectType, StructureFlags ), AnonymousSlotCount, &s_info );
+    }
 
-        Structure* errorStructure() { return m_errorStructure.get(); }
+    Structure *errorStructure()
+    {
+        return m_errorStructure.get();
+    }
 
-    private:
-        static const unsigned StructureFlags = OverridesVisitChildren | InternalFunction::StructureFlags;
-        virtual ConstructType getConstructData(ConstructData&);
-        virtual CallType getCallData(CallData&);
-        virtual void visitChildren(SlotVisitor&);
+private:
+    static const unsigned StructureFlags = OverridesVisitChildren | InternalFunction::StructureFlags;
+    virtual ConstructType getConstructData( ConstructData & );
+    virtual CallType getCallData( CallData & );
+    virtual void visitChildren( SlotVisitor & );
 
-        WriteBarrier<Structure> m_errorStructure;
-    };
+    WriteBarrier<Structure> m_errorStructure;
+};
 
 } // namespace JSC
 

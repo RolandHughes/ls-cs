@@ -31,40 +31,45 @@ class Translator;
 
 constexpr const int textSimilarityThreshold = 190;
 
-struct Candidate {
-   Candidate() {
-   }
+struct Candidate
+{
+    Candidate()
+    {
+    }
 
-   Candidate(const QString &source0, const QString &target0)
-      : source(source0), target(target0) {
-   }
+    Candidate( const QString &source0, const QString &target0 )
+        : source( source0 ), target( target0 )
+    {
+    }
 
-   QString source;
-   QString target;
+    QString source;
+    QString target;
 };
 
 inline bool operator==( const Candidate &c, const Candidate &d )
 {
-   return c.target == d.target && c.source == d.source;
+    return c.target == d.target && c.source == d.source;
 }
 
 inline bool operator!=( const Candidate &c, const Candidate &d )
 {
-   return !operator==( c, d );
+    return !operator==( c, d );
 }
 
-struct CoMatrix {
-   CoMatrix(const QString &str);
-   CoMatrix() {}
+struct CoMatrix
+{
+    CoMatrix( const QString &str );
+    CoMatrix() {}
 
-   /*
-     The matrix has 20 * 20 = 400 entries.  This requires 50 bytes, or 13
-     words.  Some operations are performed on words for more efficiency.
-   */
-   union {
-      quint8 b[52];
-      quint32 w[13];
-   };
+    /*
+      The matrix has 20 * 20 = 400 entries.  This requires 50 bytes, or 13
+      words.  Some operations are performed on words for more efficiency.
+    */
+    union
+    {
+        quint8 b[52];
+        quint32 w[13];
+    };
 };
 /**
  * This class is more efficient for searching through a large array of candidate strings, since we only
@@ -74,21 +79,21 @@ struct CoMatrix {
  */
 class StringSimilarityMatcher
 {
- public:
-   StringSimilarityMatcher(const QString &stringToMatch);
+public:
+    StringSimilarityMatcher( const QString &stringToMatch );
 
-   int getSimilarityScore(const QString &strCandidate);
+    int getSimilarityScore( const QString &strCandidate );
 
- private:
-   CoMatrix m_cm;
-   int m_length;
+private:
+    CoMatrix m_cm;
+    int m_length;
 };
 
-static inline int getSimilarityScore(const QString &str1, const QString &str2)
+static inline int getSimilarityScore( const QString &str1, const QString &str2 )
 {
-   return StringSimilarityMatcher(str1).getSimilarityScore(str2);
+    return StringSimilarityMatcher( str1 ).getSimilarityScore( str2 );
 }
 
-QList<Candidate> similarTextHeuristicCandidates(const Translator *tor, const QString &text, int maxCandidates);
+QList<Candidate> similarTextHeuristicCandidates( const Translator *tor, const QString &text, int maxCandidates );
 
 #endif

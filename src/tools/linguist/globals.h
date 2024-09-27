@@ -27,6 +27,6 @@
 #include <qstring.h>
 
 const QString &settingsPrefix();
-QString settingPath(const QString &path);
+QString settingPath( const QString &path );
 
 #endif

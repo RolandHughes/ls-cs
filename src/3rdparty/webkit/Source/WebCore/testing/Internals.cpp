@@ -30,13 +30,14 @@
 #include "ExceptionCode.h"
 #include "Settings.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-const char* Internals::internalsId = "internals";
+const char *Internals::internalsId = "internals";
 
 PassRefPtr<Internals> Internals::create()
 {
-    return adoptRef(new Internals);
+    return adoptRef( new Internals );
 }
 
 Internals::~Internals()
@@ -44,51 +45,61 @@ Internals::~Internals()
 }
 
 Internals::Internals()
-    : passwordEchoDurationInSecondsBackedUp(false)
-    , passwordEchoEnabledBackedUp(false)
+    : passwordEchoDurationInSecondsBackedUp( false )
+    , passwordEchoEnabledBackedUp( false )
 {
 }
 
-void Internals::setPasswordEchoEnabled(Document* document, bool enabled, ExceptionCode& ec)
+void Internals::setPasswordEchoEnabled( Document *document, bool enabled, ExceptionCode &ec )
 {
-    if (!document || !document->settings()) {
+    if ( !document || !document->settings() )
+    {
         ec = INVALID_ACCESS_ERR;
         return;
     }
 
-    if (!passwordEchoEnabledBackedUp) {
+    if ( !passwordEchoEnabledBackedUp )
+    {
         passwordEchoEnabledBackup = document->settings()->passwordEchoEnabled();
         passwordEchoEnabledBackedUp = true;
     }
-    document->settings()->setPasswordEchoEnabled(enabled);
+
+    document->settings()->setPasswordEchoEnabled( enabled );
 }
 
-void Internals::setPasswordEchoDurationInSeconds(Document* document, double durationInSeconds, ExceptionCode& ec)
+void Internals::setPasswordEchoDurationInSeconds( Document *document, double durationInSeconds, ExceptionCode &ec )
 {
-    if (!document || !document->settings()) {
+    if ( !document || !document->settings() )
+    {
         ec = INVALID_ACCESS_ERR;
         return;
     }
 
-    if (!passwordEchoDurationInSecondsBackedUp) {
+    if ( !passwordEchoDurationInSecondsBackedUp )
+    {
         passwordEchoDurationInSecondsBackup = document->settings()->passwordEchoDurationInSeconds();
         passwordEchoDurationInSecondsBackedUp = true;
     }
-    document->settings()->setPasswordEchoDurationInSeconds(durationInSeconds);
+
+    document->settings()->setPasswordEchoDurationInSeconds( durationInSeconds );
 }
 
-void Internals::reset(Document* document)
+void Internals::reset( Document *document )
 {
-    if (!document || !document->settings())
+    if ( !document || !document->settings() )
+    {
         return;
+    }
 
-    if (passwordEchoDurationInSecondsBackedUp) {
-        document->settings()->setPasswordEchoDurationInSeconds(passwordEchoDurationInSecondsBackup);
+    if ( passwordEchoDurationInSecondsBackedUp )
+    {
+        document->settings()->setPasswordEchoDurationInSeconds( passwordEchoDurationInSecondsBackup );
         passwordEchoDurationInSecondsBackedUp = false;
     }
 
-    if (passwordEchoEnabledBackedUp) {
-        document->settings()->setPasswordEchoEnabled(passwordEchoEnabledBackup);
+    if ( passwordEchoEnabledBackedUp )
+    {
+        document->settings()->setPasswordEchoEnabled( passwordEchoEnabledBackup );
         passwordEchoEnabledBackedUp = false;
     }
 }

@@ -8,13 +8,13 @@
  * are met:
  *
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Apple Computer, Inc. ("Apple") nor the names of
  *     its contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
+ *     from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY APPLE AND ITS CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -38,7 +38,8 @@
 #include <wtf/Noncopyable.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Document;
 class Frame;
@@ -54,46 +55,55 @@ class Node;
 class Widget;
 
 // This is a slight misnomer. It handles the higher level logic of loading both subframes and plugins.
-class SubframeLoader {
-    WTF_MAKE_NONCOPYABLE(SubframeLoader);
+class SubframeLoader
+{
+    WTF_MAKE_NONCOPYABLE( SubframeLoader );
 public:
-    SubframeLoader(Frame*);
+    SubframeLoader( Frame * );
 
     void clear();
 
-    bool requestFrame(HTMLFrameOwnerElement*, const String& url, const AtomicString& frameName, bool lockHistory = true, bool lockBackForwardList = true);    
-    bool requestObject(HTMLPlugInImageElement*, const String& url, const AtomicString& frameName,
-        const String& serviceType, const Vector<String>& paramNames, const Vector<String>& paramValues);
+    bool requestFrame( HTMLFrameOwnerElement *, const String &url, const AtomicString &frameName, bool lockHistory = true,
+                       bool lockBackForwardList = true );
+    bool requestObject( HTMLPlugInImageElement *, const String &url, const AtomicString &frameName,
+                        const String &serviceType, const Vector<String> &paramNames, const Vector<String> &paramValues );
 
 #if ENABLE(PLUGIN_PROXY_FOR_VIDEO)
     // FIXME: This should take Element* instead of Node*, or better yet the
     // specific type of Element which this code depends on.
-    PassRefPtr<Widget> loadMediaPlayerProxyPlugin(Node*, const KURL&, const Vector<String>& paramNames, const Vector<String>& paramValues);
+    PassRefPtr<Widget> loadMediaPlayerProxyPlugin( Node *, const KURL &, const Vector<String> &paramNames,
+            const Vector<String> &paramValues );
 #endif
 
-    PassRefPtr<Widget> createJavaAppletWidget(const IntSize&, HTMLAppletElement*, const HashMap<String, String>& args);
+    PassRefPtr<Widget> createJavaAppletWidget( const IntSize &, HTMLAppletElement *, const HashMap<String, String> &args );
 
-    bool allowPlugins(ReasonForCallingAllowPlugins);
+    bool allowPlugins( ReasonForCallingAllowPlugins );
 
-    bool containsPlugins() const { return m_containsPlugins; }
-    
-    bool resourceWillUsePlugin(const String& url, const String& mimeType, bool shouldPreferPlugInsForImages);
+    bool containsPlugins() const
+    {
+        return m_containsPlugins;
+    }
+
+    bool resourceWillUsePlugin( const String &url, const String &mimeType, bool shouldPreferPlugInsForImages );
 
 private:
-    bool requestPlugin(HTMLPlugInImageElement*, const KURL&, const String& serviceType, const Vector<String>& paramNames, const Vector<String>& paramValues, bool useFallback);
-    Frame* loadOrRedirectSubframe(HTMLFrameOwnerElement*, const KURL&, const AtomicString& frameName, bool lockHistory, bool lockBackForwardList);
-    Frame* loadSubframe(HTMLFrameOwnerElement*, const KURL&, const String& name, const String& referrer);
-    bool loadPlugin(HTMLPlugInImageElement*, const KURL&, const String& mimeType,
-        const Vector<String>& paramNames, const Vector<String>& paramValues, bool useFallback);
+    bool requestPlugin( HTMLPlugInImageElement *, const KURL &, const String &serviceType, const Vector<String> &paramNames,
+                        const Vector<String> &paramValues, bool useFallback );
+    Frame *loadOrRedirectSubframe( HTMLFrameOwnerElement *, const KURL &, const AtomicString &frameName, bool lockHistory,
+                                   bool lockBackForwardList );
+    Frame *loadSubframe( HTMLFrameOwnerElement *, const KURL &, const String &name, const String &referrer );
+    bool loadPlugin( HTMLPlugInImageElement *, const KURL &, const String &mimeType,
+                     const Vector<String> &paramNames, const Vector<String> &paramValues, bool useFallback );
 
-    bool shouldUsePlugin(const KURL&, const String& mimeType, bool shouldPreferPlugInsForImages, bool hasFallback, bool& useFallback);
+    bool shouldUsePlugin( const KURL &, const String &mimeType, bool shouldPreferPlugInsForImages, bool hasFallback,
+                          bool &useFallback );
 
-    Document* document() const;
+    Document *document() const;
 
     bool m_containsPlugins;
-    Frame* m_frame;
+    Frame *m_frame;
 
-    KURL completeURL(const String&) const;
+    KURL completeURL( const String & ) const;
 };
 
 } // namespace WebCore

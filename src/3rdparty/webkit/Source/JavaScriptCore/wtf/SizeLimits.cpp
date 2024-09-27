@@ -38,20 +38,27 @@
 #include <wtf/RefPtr.h>
 #include <wtf/Vector.h>
 
-namespace WTF {
+namespace WTF
+{
 
 #ifndef NDEBUG
-struct StructWithIntAndTwoBools { int a; bool b; bool c; };
-static const size_t refCountedExtraDebugSize = sizeof(StructWithIntAndTwoBools) - sizeof(int);
+struct StructWithIntAndTwoBools
+{
+    int a;
+    bool b;
+    bool c;
+};
+static const size_t refCountedExtraDebugSize = sizeof( StructWithIntAndTwoBools ) - sizeof( int );
 #else
 static const size_t refCountedExtraDebugSize = 0;
 #endif
 
-COMPILE_ASSERT(sizeof(OwnPtr<int>) == sizeof(int*), OwnPtr_should_stay_small);
-COMPILE_ASSERT(sizeof(PassRefPtr<RefCounted<int> >) == sizeof(int*), PassRefPtr_should_stay_small);
-COMPILE_ASSERT(sizeof(RefCounted<int>) == sizeof(int) + refCountedExtraDebugSize, RefCounted_should_stay_small);
-COMPILE_ASSERT(sizeof(RefCountedCustomAllocated<int>) == sizeof(int) + refCountedExtraDebugSize, RefCountedCustomAllocated_should_stay_small);
-COMPILE_ASSERT(sizeof(RefPtr<RefCounted<int> >) == sizeof(int*), RefPtr_should_stay_small);
-COMPILE_ASSERT(sizeof(Vector<int>) == 3 * sizeof(int*), Vector_should_stay_small);
+COMPILE_ASSERT( sizeof( OwnPtr<int> ) == sizeof( int * ), OwnPtr_should_stay_small );
+COMPILE_ASSERT( sizeof( PassRefPtr<RefCounted<int> > ) == sizeof( int * ), PassRefPtr_should_stay_small );
+COMPILE_ASSERT( sizeof( RefCounted<int> ) == sizeof( int ) + refCountedExtraDebugSize, RefCounted_should_stay_small );
+COMPILE_ASSERT( sizeof( RefCountedCustomAllocated<int> ) == sizeof( int ) + refCountedExtraDebugSize,
+                RefCountedCustomAllocated_should_stay_small );
+COMPILE_ASSERT( sizeof( RefPtr<RefCounted<int> > ) == sizeof( int * ), RefPtr_should_stay_small );
+COMPILE_ASSERT( sizeof( Vector<int> ) == 3 * sizeof( int * ), Vector_should_stay_small );
 
 }

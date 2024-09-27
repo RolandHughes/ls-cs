@@ -29,43 +29,45 @@
 
 #include <qtemplatepattern_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class TemplateMode : public QSharedData
 {
- public:
-   typedef QExplicitlySharedDataPointer<TemplateMode> Ptr;
+public:
+    typedef QExplicitlySharedDataPointer<TemplateMode> Ptr;
 
-   inline TemplateMode(const QXmlName &modeName) : m_modeName(modeName) {
-   }
+    inline TemplateMode( const QXmlName &modeName ) : m_modeName( modeName )
+    {
+    }
 
-   TemplatePattern::Vector templatePatterns;
+    TemplatePattern::Vector templatePatterns;
 
-   inline void addMode(const TemplateMode::Ptr &mode);
-   inline const QXmlName &name() const;
+    inline void addMode( const TemplateMode::Ptr &mode );
+    inline const QXmlName &name() const;
 
-   void finalize();
+    void finalize();
 
- private:
-   const QXmlName m_modeName;
+private:
+    const QXmlName m_modeName;
 
-   TemplateMode(const TemplateMode &) = delete;
-   TemplateMode &operator=(const TemplateMode &) = delete;
+    TemplateMode( const TemplateMode & ) = delete;
+    TemplateMode &operator=( const TemplateMode & ) = delete;
 
-   /**
-    * Operator for std::sort()
-    */
-   static inline bool lessThanByPriority(const TemplatePattern::Ptr &t1, const TemplatePattern::Ptr &t2);
+    /**
+     * Operator for std::sort()
+     */
+    static inline bool lessThanByPriority( const TemplatePattern::Ptr &t1, const TemplatePattern::Ptr &t2 );
 };
 
 const QXmlName &TemplateMode::name() const
 {
-   return m_modeName;
+    return m_modeName;
 }
 
-void TemplateMode::addMode(const TemplateMode::Ptr &mode)
+void TemplateMode::addMode( const TemplateMode::Ptr &mode )
 {
-   templatePatterns += mode->templatePatterns;
+    templatePatterns += mode->templatePatterns;
 }
 
 }

@@ -32,18 +32,18 @@
 
 class QSaveFilePrivate : public QFileDevicePrivate
 {
-   Q_DECLARE_PUBLIC(QSaveFile)
+    Q_DECLARE_PUBLIC( QSaveFile )
 
- protected:
-   QSaveFilePrivate();
-   ~QSaveFilePrivate();
+protected:
+    QSaveFilePrivate();
+    ~QSaveFilePrivate();
 
-   QString fileName;
+    QString fileName;
 
-   QFileDevice::FileError writeError;
+    QFileDevice::FileError writeError;
 
-   bool useTemporaryFile;
-   bool directWriteFallback;
+    bool useTemporaryFile;
+    bool directWriteFallback;
 };
 
 #endif

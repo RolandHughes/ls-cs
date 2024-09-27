@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef markup_h
@@ -31,33 +31,36 @@
 #include <wtf/Forward.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class Document;
-    class DocumentFragment;
-    class Element;
-    class KURL;
-    class Node;
-    class Range;
+class Document;
+class DocumentFragment;
+class Element;
+class KURL;
+class Node;
+class Range;
 
-    enum EChildrenOnly { IncludeNode, ChildrenOnly };
-    enum EAbsoluteURLs { DoNotResolveURLs, AbsoluteURLs };
+enum EChildrenOnly { IncludeNode, ChildrenOnly };
+enum EAbsoluteURLs { DoNotResolveURLs, AbsoluteURLs };
 
-    PassRefPtr<DocumentFragment> createFragmentFromText(Range* context, const String& text);
-    PassRefPtr<DocumentFragment> createFragmentFromMarkup(Document*, const String& markup, const String& baseURL, FragmentScriptingPermission = FragmentScriptingAllowed);
-    PassRefPtr<DocumentFragment> createFragmentFromNodes(Document*, const Vector<Node*>&);
+PassRefPtr<DocumentFragment> createFragmentFromText( Range *context, const String &text );
+PassRefPtr<DocumentFragment> createFragmentFromMarkup( Document *, const String &markup, const String &baseURL,
+        FragmentScriptingPermission = FragmentScriptingAllowed );
+PassRefPtr<DocumentFragment> createFragmentFromNodes( Document *, const Vector<Node *> & );
 
-    bool isPlainTextMarkup(Node *node);
+bool isPlainTextMarkup( Node *node );
 
-    String createMarkup(const Range*,
-        Vector<Node*>* = 0, EAnnotateForInterchange = DoNotAnnotateForInterchange, bool convertBlocksToInlines = false, EAbsoluteURLs = DoNotResolveURLs);
-    String createMarkup(const Node*, EChildrenOnly = IncludeNode, Vector<Node*>* = 0, EAbsoluteURLs = DoNotResolveURLs);
-    
-    String createFullMarkup(const Node*);
-    String createFullMarkup(const Range*);
+String createMarkup( const Range *,
+                     Vector<Node *> * = 0, EAnnotateForInterchange = DoNotAnnotateForInterchange, bool convertBlocksToInlines = false,
+                     EAbsoluteURLs = DoNotResolveURLs );
+String createMarkup( const Node *, EChildrenOnly = IncludeNode, Vector<Node *> * = 0, EAbsoluteURLs = DoNotResolveURLs );
 
-    String urlToMarkup(const KURL&, const String& title);
-    String imageToMarkup(const KURL&, Element*);
+String createFullMarkup( const Node * );
+String createFullMarkup( const Range * );
+
+String urlToMarkup( const KURL &, const String &title );
+String imageToMarkup( const KURL &, Element * );
 }
 
 #endif // markup_h

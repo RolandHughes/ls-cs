@@ -28,40 +28,51 @@
 
 #include <wtf/text/AtomicString.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 template<typename T, size_t capacity = 4>
-class AtomicStringKeyedMRUCache {
+class AtomicStringKeyedMRUCache
+{
 public:
-    T get(const AtomicString& key)
+    T get( const AtomicString &key )
     {
-        if (key.isNull()) {
-            DEFINE_STATIC_LOCAL(T, valueForNull, (createValueForNullKey()));
+        if ( key.isNull() )
+        {
+            DEFINE_STATIC_LOCAL( T, valueForNull, ( createValueForNullKey() ) );
             return valueForNull;
         }
 
-        for (size_t i = 0; i < m_cache.size(); ++i) {
-            if (m_cache[i].first == key) {
+        for ( size_t i = 0; i < m_cache.size(); ++i )
+        {
+            if ( m_cache[i].first == key )
+            {
                 size_t foundIndex = i;
-                if (foundIndex + 1 < m_cache.size()) {
+
+                if ( foundIndex + 1 < m_cache.size() )
+                {
                     Entry entry = m_cache[foundIndex];
-                    m_cache.remove(foundIndex);
+                    m_cache.remove( foundIndex );
                     foundIndex = m_cache.size();
-                    m_cache.append(entry);
+                    m_cache.append( entry );
                 }
+
                 return m_cache[foundIndex].second;
             }
         }
-        if (m_cache.size() == capacity)
-            m_cache.remove(0);
 
-        m_cache.append(std::make_pair(key, createValueForKey(key)));
+        if ( m_cache.size() == capacity )
+        {
+            m_cache.remove( 0 );
+        }
+
+        m_cache.append( std::make_pair( key, createValueForKey( key ) ) );
         return m_cache.last().second;
     }
 
 private:
     T createValueForNullKey();
-    T createValueForKey(const AtomicString&);
+    T createValueForKey( const AtomicString & );
 
     typedef pair<AtomicString, T> Entry;
     typedef Vector<Entry, capacity> Cache;

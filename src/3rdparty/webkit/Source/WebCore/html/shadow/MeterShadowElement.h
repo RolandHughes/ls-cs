@@ -34,51 +34,55 @@
 #include "HTMLDivElement.h"
 #include <wtf/Forward.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class HTMLMeterElement;
 
-class MeterShadowElement : public HTMLDivElement {
+class MeterShadowElement : public HTMLDivElement
+{
 public:
-    MeterShadowElement(Document*);
-    HTMLMeterElement* meterElement() const;
+    MeterShadowElement( Document * );
+    HTMLMeterElement *meterElement() const;
 
 private:
-    virtual bool rendererIsNeeded(RenderStyle*);
+    virtual bool rendererIsNeeded( RenderStyle * );
 };
 
-class MeterBarElement : public MeterShadowElement {
+class MeterBarElement : public MeterShadowElement
+{
 public:
-    MeterBarElement(Document* document) 
-        : MeterShadowElement(document)
+    MeterBarElement( Document *document )
+        : MeterShadowElement( document )
     {
     }
 
-    static PassRefPtr<MeterBarElement> create(Document*);
-    virtual const AtomicString& shadowPseudoId() const;
+    static PassRefPtr<MeterBarElement> create( Document * );
+    virtual const AtomicString &shadowPseudoId() const;
 };
 
-inline PassRefPtr<MeterBarElement> MeterBarElement::create(Document* document)
+inline PassRefPtr<MeterBarElement> MeterBarElement::create( Document *document )
 {
-    return adoptRef(new MeterBarElement(document));
+    return adoptRef( new MeterBarElement( document ) );
 }
 
 
-class MeterValueElement : public MeterShadowElement {
+class MeterValueElement : public MeterShadowElement
+{
 public:
-    MeterValueElement(Document* document) 
-        : MeterShadowElement(document)
+    MeterValueElement( Document *document )
+        : MeterShadowElement( document )
     {
     }
 
-    virtual const AtomicString& shadowPseudoId() const;
-    static PassRefPtr<MeterValueElement> create(Document*);
-    void setWidthPercentage(double);
+    virtual const AtomicString &shadowPseudoId() const;
+    static PassRefPtr<MeterValueElement> create( Document * );
+    void setWidthPercentage( double );
 };
 
-inline PassRefPtr<MeterValueElement> MeterValueElement::create(Document* document)
+inline PassRefPtr<MeterValueElement> MeterValueElement::create( Document *document )
 {
-    return adoptRef(new MeterValueElement(document));
+    return adoptRef( new MeterValueElement( document ) );
 }
 
 }

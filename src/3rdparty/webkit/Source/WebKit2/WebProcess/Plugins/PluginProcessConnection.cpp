@@ -37,107 +37,125 @@
 
 using namespace WebCore;
 
-namespace WebKit {
+namespace WebKit
+{
 
 // The timeout, in seconds, when sending sync messages to the plug-in.
 static const double syncMessageTimeout = 45;
 
-static double defaultSyncMessageTimeout(const String& pluginPath)
+static double defaultSyncMessageTimeout( const String &pluginPath )
 {
     // We don't want a message timeout for the AppleConnect plug-in.
     // FIXME: We should key this off something other than the path.
-    if (pathGetFileName(pluginPath) == "AppleConnect.plugin")
+    if ( pathGetFileName( pluginPath ) == "AppleConnect.plugin" )
+    {
         return CoreIPC::Connection::NoTimeout;
+    }
 
     return syncMessageTimeout;
 }
 
-PluginProcessConnection::PluginProcessConnection(PluginProcessConnectionManager* pluginProcessConnectionManager, const String& pluginPath, CoreIPC::Connection::Identifier connectionIdentifier)
-    : m_pluginProcessConnectionManager(pluginProcessConnectionManager)
-    , m_pluginPath(pluginPath)
+PluginProcessConnection::PluginProcessConnection( PluginProcessConnectionManager *pluginProcessConnectionManager,
+        const String &pluginPath, CoreIPC::Connection::Identifier connectionIdentifier )
+    : m_pluginProcessConnectionManager( pluginProcessConnectionManager )
+    , m_pluginPath( pluginPath )
 {
-    m_connection = CoreIPC::Connection::createClientConnection(connectionIdentifier, this, WebProcess::shared().runLoop());
+    m_connection = CoreIPC::Connection::createClientConnection( connectionIdentifier, this, WebProcess::shared().runLoop() );
 
-    m_connection->setDefaultSyncMessageTimeout(defaultSyncMessageTimeout(m_pluginPath));
-    m_npRemoteObjectMap = NPRemoteObjectMap::create(m_connection.get());
+    m_connection->setDefaultSyncMessageTimeout( defaultSyncMessageTimeout( m_pluginPath ) );
+    m_npRemoteObjectMap = NPRemoteObjectMap::create( m_connection.get() );
 
     m_connection->open();
 }
 
 PluginProcessConnection::~PluginProcessConnection()
 {
-    ASSERT(!m_connection);
-    ASSERT(!m_npRemoteObjectMap);
+    ASSERT( !m_connection );
+    ASSERT( !m_npRemoteObjectMap );
 }
 
-void PluginProcessConnection::addPluginProxy(PluginProxy* plugin)
+void PluginProcessConnection::addPluginProxy( PluginProxy *plugin )
 {
-    ASSERT(!m_plugins.contains(plugin->pluginInstanceID()));
-    m_plugins.set(plugin->pluginInstanceID(), plugin);
+    ASSERT( !m_plugins.contains( plugin->pluginInstanceID() ) );
+    m_plugins.set( plugin->pluginInstanceID(), plugin );
 }
 
-void PluginProcessConnection::removePluginProxy(PluginProxy* plugin)
+void PluginProcessConnection::removePluginProxy( PluginProxy *plugin )
 {
-    ASSERT(m_plugins.contains(plugin->pluginInstanceID()));
-    m_plugins.remove(plugin->pluginInstanceID());
+    ASSERT( m_plugins.contains( plugin->pluginInstanceID() ) );
+    m_plugins.remove( plugin->pluginInstanceID() );
 
     // Invalidate all objects related to this plug-in.
-    m_npRemoteObjectMap->pluginDestroyed(plugin);
+    m_npRemoteObjectMap->pluginDestroyed( plugin );
 
-    if (!m_plugins.isEmpty())
+    if ( !m_plugins.isEmpty() )
+    {
         return;
+    }
 
     m_npRemoteObjectMap = nullptr;
 
     // We have no more plug-ins, invalidate the connection to the plug-in process.
-    ASSERT(m_connection);
+    ASSERT( m_connection );
     m_connection->invalidate();
     m_connection = nullptr;
 
     // This will cause us to be deleted.
-    m_pluginProcessConnectionManager->removePluginProcessConnection(this);
+    m_pluginProcessConnectionManager->removePluginProcessConnection( this );
 }
 
-void PluginProcessConnection::didReceiveMessage(CoreIPC::Connection* connection, CoreIPC::MessageID messageID, CoreIPC::ArgumentDecoder* arguments)
+void PluginProcessConnection::didReceiveMessage( CoreIPC::Connection *connection, CoreIPC::MessageID messageID,
+        CoreIPC::ArgumentDecoder *arguments )
 {
-    if (arguments->destinationID()) {
-        if (PluginProxy* pluginProxy = m_plugins.get(arguments->destinationID()))
-            pluginProxy->didReceivePluginProxyMessage(connection, messageID, arguments);
+    if ( arguments->destinationID() )
+    {
+        if ( PluginProxy *pluginProxy = m_plugins.get( arguments->destinationID() ) )
+        {
+            pluginProxy->didReceivePluginProxyMessage( connection, messageID, arguments );
+        }
+
         return;
     }
 
     ASSERT_NOT_REACHED();
 }
 
-CoreIPC::SyncReplyMode PluginProcessConnection::didReceiveSyncMessage(CoreIPC::Connection* connection, CoreIPC::MessageID messageID, CoreIPC::ArgumentDecoder* arguments, CoreIPC::ArgumentEncoder* reply)
+CoreIPC::SyncReplyMode PluginProcessConnection::didReceiveSyncMessage( CoreIPC::Connection *connection,
+        CoreIPC::MessageID messageID, CoreIPC::ArgumentDecoder *arguments, CoreIPC::ArgumentEncoder *reply )
 {
-    if (messageID.is<CoreIPC::MessageClassNPObjectMessageReceiver>())
-        return m_npRemoteObjectMap->didReceiveSyncMessage(connection, messageID, arguments, reply);
+    if ( messageID.is<CoreIPC::MessageClassNPObjectMessageReceiver>() )
+    {
+        return m_npRemoteObjectMap->didReceiveSyncMessage( connection, messageID, arguments, reply );
+    }
 
-    if (PluginProxy* pluginProxy = m_plugins.get(arguments->destinationID()))
-        return pluginProxy->didReceiveSyncPluginProxyMessage(connection, messageID, arguments, reply);
+    if ( PluginProxy *pluginProxy = m_plugins.get( arguments->destinationID() ) )
+    {
+        return pluginProxy->didReceiveSyncPluginProxyMessage( connection, messageID, arguments, reply );
+    }
 
     ASSERT_NOT_REACHED();
     return CoreIPC::AutomaticReply;
 }
 
-void PluginProcessConnection::didClose(CoreIPC::Connection*)
+void PluginProcessConnection::didClose( CoreIPC::Connection * )
 {
     // The plug-in process must have crashed.
-    for (HashMap<uint64_t, PluginProxy*>::const_iterator::Values it = m_plugins.begin().values(), end = m_plugins.end().values(); it != end; ++it) {
-        PluginProxy* pluginProxy = (*it);
+    for ( HashMap<uint64_t, PluginProxy *>::const_iterator::Values it = m_plugins.begin().values(), end = m_plugins.end().values();
+            it != end; ++it )
+    {
+        PluginProxy *pluginProxy = ( *it );
 
         pluginProxy->pluginProcessCrashed();
     }
 }
 
-void PluginProcessConnection::didReceiveInvalidMessage(CoreIPC::Connection*, CoreIPC::MessageID)
+void PluginProcessConnection::didReceiveInvalidMessage( CoreIPC::Connection *, CoreIPC::MessageID )
 {
 }
 
-void PluginProcessConnection::syncMessageSendTimedOut(CoreIPC::Connection*)
+void PluginProcessConnection::syncMessageSendTimedOut( CoreIPC::Connection * )
 {
-    WebProcess::shared().connection()->send(Messages::WebProcessProxy::PluginSyncMessageSendTimedOut(m_pluginPath), 0);
+    WebProcess::shared().connection()->send( Messages::WebProcessProxy::PluginSyncMessageSendTimedOut( m_pluginPath ), 0 );
 }
 
 } // namespace WebKit

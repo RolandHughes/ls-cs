@@ -48,9 +48,9 @@ public:
     // convenience methods
     bool isDelayedReply() const;
     // yes, they are const, so that you can use them even from const methods
-    void setDelayedReply(bool enable) const;
-    void sendErrorReply(const QString &name, const QString &msg = QString()) const;
-    void sendErrorReply(QDBusError::ErrorType type, const QString &msg = QString()) const;
+    void setDelayedReply( bool enable ) const;
+    void sendErrorReply( const QString &name, const QString &msg = QString() ) const;
+    void sendErrorReply( QDBusError::ErrorType type, const QString &msg = QString() ) const;
 
 private:
     QDBusContextPrivate *d_ptr;

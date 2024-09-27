@@ -31,58 +31,83 @@
 
 using namespace WebCore;
 
-namespace WebKit {
-
-void InjectedBundlePageResourceLoadClient::didInitiateLoadForResource(WebPage* page, WebFrame* frame, uint64_t identifier, const WebCore::ResourceRequest& request, bool pageIsProvisionallyLoading)
+namespace WebKit
 {
-    if (!m_client.didInitiateLoadForResource)
-        return;
 
-    m_client.didInitiateLoadForResource(toAPI(page), toAPI(frame), identifier, toAPI(request), pageIsProvisionallyLoading, m_client.clientInfo);
+void InjectedBundlePageResourceLoadClient::didInitiateLoadForResource( WebPage *page, WebFrame *frame, uint64_t identifier,
+        const WebCore::ResourceRequest &request, bool pageIsProvisionallyLoading )
+{
+    if ( !m_client.didInitiateLoadForResource )
+    {
+        return;
+    }
+
+    m_client.didInitiateLoadForResource( toAPI( page ), toAPI( frame ), identifier, toAPI( request ), pageIsProvisionallyLoading,
+                                         m_client.clientInfo );
 }
 
-void InjectedBundlePageResourceLoadClient::willSendRequestForFrame(WebPage* page, WebFrame* frame, uint64_t identifier, ResourceRequest& request, const ResourceResponse& redirectResponse)
+void InjectedBundlePageResourceLoadClient::willSendRequestForFrame( WebPage *page, WebFrame *frame, uint64_t identifier,
+        ResourceRequest &request, const ResourceResponse &redirectResponse )
 {
-    if (!m_client.willSendRequestForFrame)
+    if ( !m_client.willSendRequestForFrame )
+    {
         return;
+    }
 
-    RefPtr<WebURLRequest> returnedRequest = adoptRef(toImpl(m_client.willSendRequestForFrame(toAPI(page), toAPI(frame), identifier, toAPI(request), toAPI(redirectResponse), m_client.clientInfo)));
-    if (returnedRequest)
+    RefPtr<WebURLRequest> returnedRequest = adoptRef( toImpl( m_client.willSendRequestForFrame( toAPI( page ), toAPI( frame ),
+                                            identifier, toAPI( request ), toAPI( redirectResponse ), m_client.clientInfo ) ) );
+
+    if ( returnedRequest )
+    {
         request = returnedRequest->resourceRequest();
+    }
     else
+    {
         request = ResourceRequest();
+    }
 }
 
-void InjectedBundlePageResourceLoadClient::didReceiveResponseForResource(WebPage* page, WebFrame* frame, uint64_t identifier, const WebCore::ResourceResponse& response)
+void InjectedBundlePageResourceLoadClient::didReceiveResponseForResource( WebPage *page, WebFrame *frame, uint64_t identifier,
+        const WebCore::ResourceResponse &response )
 {
-    if (!m_client.didReceiveResponseForResource)
+    if ( !m_client.didReceiveResponseForResource )
+    {
         return;
+    }
 
-    m_client.didReceiveResponseForResource(toAPI(page), toAPI(frame), identifier, toAPI(response), m_client.clientInfo);
+    m_client.didReceiveResponseForResource( toAPI( page ), toAPI( frame ), identifier, toAPI( response ), m_client.clientInfo );
 }
 
-void InjectedBundlePageResourceLoadClient::didReceiveContentLengthForResource(WebPage* page, WebFrame* frame, uint64_t identifier, uint64_t contentLength)
+void InjectedBundlePageResourceLoadClient::didReceiveContentLengthForResource( WebPage *page, WebFrame *frame,
+        uint64_t identifier, uint64_t contentLength )
 {
-    if (!m_client.didReceiveContentLengthForResource)
+    if ( !m_client.didReceiveContentLengthForResource )
+    {
         return;
+    }
 
-    m_client.didReceiveContentLengthForResource(toAPI(page), toAPI(frame), identifier, contentLength, m_client.clientInfo);
+    m_client.didReceiveContentLengthForResource( toAPI( page ), toAPI( frame ), identifier, contentLength, m_client.clientInfo );
 }
 
-void InjectedBundlePageResourceLoadClient::didFinishLoadForResource(WebPage* page, WebFrame* frame, uint64_t identifier)
+void InjectedBundlePageResourceLoadClient::didFinishLoadForResource( WebPage *page, WebFrame *frame, uint64_t identifier )
 {
-    if (!m_client.didFinishLoadForResource)
+    if ( !m_client.didFinishLoadForResource )
+    {
         return;
+    }
 
-    m_client.didFinishLoadForResource(toAPI(page), toAPI(frame), identifier, m_client.clientInfo);
+    m_client.didFinishLoadForResource( toAPI( page ), toAPI( frame ), identifier, m_client.clientInfo );
 }
 
-void InjectedBundlePageResourceLoadClient::didFailLoadForResource(WebPage* page, WebFrame* frame, uint64_t identifier, const WebCore::ResourceError& error)
+void InjectedBundlePageResourceLoadClient::didFailLoadForResource( WebPage *page, WebFrame *frame, uint64_t identifier,
+        const WebCore::ResourceError &error )
 {
-    if (!m_client.didFailLoadForResource)
+    if ( !m_client.didFailLoadForResource )
+    {
         return;
+    }
 
-    m_client.didFailLoadForResource(toAPI(page), toAPI(frame), identifier, toAPI(error), m_client.clientInfo);
+    m_client.didFailLoadForResource( toAPI( page ), toAPI( frame ), identifier, toAPI( error ), m_client.clientInfo );
 }
 
 } // namespace WebKit

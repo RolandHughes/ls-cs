@@ -24,30 +24,45 @@
 
 #include "PlatformString.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-    inline bool skipString(const UChar*& ptr, const UChar* end, const UChar* name, int length)
+inline bool skipString( const UChar *&ptr, const UChar *end, const UChar *name, int length )
+{
+    if ( end - ptr < length )
     {
-        if (end - ptr < length)
-            return false;
-        if (memcmp(name, ptr, sizeof(UChar) * length))
-            return false;
-        ptr += length;
-        return true;
+        return false;
     }
 
-    inline bool skipString(const UChar*& ptr, const UChar* end, const char* str)
+    if ( memcmp( name, ptr, sizeof( UChar ) * length ) )
     {
-        int length = strlen(str);
-        if (end - ptr < length)
+        return false;
+    }
+
+    ptr += length;
+    return true;
+}
+
+inline bool skipString( const UChar *&ptr, const UChar *end, const char *str )
+{
+    int length = strlen( str );
+
+    if ( end - ptr < length )
+    {
+        return false;
+    }
+
+    for ( int i = 0; i < length; ++i )
+    {
+        if ( ptr[i] != str[i] )
+        {
             return false;
-        for (int i = 0; i < length; ++i) {
-            if (ptr[i] != str[i])
-                return false;
         }
-        ptr += length;
-        return true;
     }
+
+    ptr += length;
+    return true;
+}
 
 } // namspace WebCore
 

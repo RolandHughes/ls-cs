@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -29,45 +29,57 @@
 #include "AXObjectCache.h"
 #include "htmlediting.h"
 
-namespace WebCore {
-
-InsertNodeBeforeCommand::InsertNodeBeforeCommand(PassRefPtr<Node> insertChild, PassRefPtr<Node> refChild)
-    : SimpleEditCommand(refChild->document())
-    , m_insertChild(insertChild)
-    , m_refChild(refChild)
+namespace WebCore
 {
-    ASSERT(m_insertChild);
-    ASSERT(!m_insertChild->parentNode());
-    ASSERT(m_refChild);
-    ASSERT(m_refChild->parentNode());
 
-    ASSERT(m_refChild->parentNode()->rendererIsEditable() || !m_refChild->parentNode()->attached());
+InsertNodeBeforeCommand::InsertNodeBeforeCommand( PassRefPtr<Node> insertChild, PassRefPtr<Node> refChild )
+    : SimpleEditCommand( refChild->document() )
+    , m_insertChild( insertChild )
+    , m_refChild( refChild )
+{
+    ASSERT( m_insertChild );
+    ASSERT( !m_insertChild->parentNode() );
+    ASSERT( m_refChild );
+    ASSERT( m_refChild->parentNode() );
+
+    ASSERT( m_refChild->parentNode()->rendererIsEditable() || !m_refChild->parentNode()->attached() );
 }
 
 void InsertNodeBeforeCommand::doApply()
 {
-    ContainerNode* parent = m_refChild->parentNode();
-    if (!parent || !parent->rendererIsEditable())
+    ContainerNode *parent = m_refChild->parentNode();
+
+    if ( !parent || !parent->rendererIsEditable() )
+    {
         return;
+    }
 
     ExceptionCode ec;
-    parent->insertBefore(m_insertChild.get(), m_refChild.get(), ec);
+    parent->insertBefore( m_insertChild.get(), m_refChild.get(), ec );
 
-    if (AXObjectCache::accessibilityEnabled())
-        document()->axObjectCache()->nodeTextChangeNotification(m_insertChild->renderer(), AXObjectCache::AXTextInserted, 0, m_insertChild->nodeValue().length());
+    if ( AXObjectCache::accessibilityEnabled() )
+    {
+        document()->axObjectCache()->nodeTextChangeNotification( m_insertChild->renderer(), AXObjectCache::AXTextInserted, 0,
+                m_insertChild->nodeValue().length() );
+    }
 }
 
 void InsertNodeBeforeCommand::doUnapply()
 {
-    if (!m_insertChild->rendererIsEditable())
+    if ( !m_insertChild->rendererIsEditable() )
+    {
         return;
-        
+    }
+
     // Need to notify this before actually deleting the text
-    if (AXObjectCache::accessibilityEnabled())
-        document()->axObjectCache()->nodeTextChangeNotification(m_insertChild->renderer(), AXObjectCache::AXTextDeleted, 0, m_insertChild->nodeValue().length());
+    if ( AXObjectCache::accessibilityEnabled() )
+    {
+        document()->axObjectCache()->nodeTextChangeNotification( m_insertChild->renderer(), AXObjectCache::AXTextDeleted, 0,
+                m_insertChild->nodeValue().length() );
+    }
 
     ExceptionCode ec;
-    m_insertChild->remove(ec);
+    m_insertChild->remove( ec );
 }
 
 }

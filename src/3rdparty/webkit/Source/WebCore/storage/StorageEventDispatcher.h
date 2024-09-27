@@ -35,17 +35,20 @@
 #include "PlatformString.h"
 #include "StorageArea.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-    // This is in its own class since Chromium must override it.
-    class StorageEventDispatcher {
-    public:
-        static void dispatch(const String& key, const String& oldValue, const String& newValue, StorageType, SecurityOrigin*, Frame* sourceFrame);
+// This is in its own class since Chromium must override it.
+class StorageEventDispatcher
+{
+public:
+    static void dispatch( const String &key, const String &oldValue, const String &newValue, StorageType, SecurityOrigin *,
+                          Frame *sourceFrame );
 
-    private:
-        // Do not instantiate.
-        StorageEventDispatcher();
-    };
+private:
+    // Do not instantiate.
+    StorageEventDispatcher();
+};
 
 } // namespace WebCore
 

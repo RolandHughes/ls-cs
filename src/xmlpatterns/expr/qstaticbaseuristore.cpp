@@ -28,33 +28,33 @@
 
 using namespace QPatternist;
 
-StaticBaseURIStore::StaticBaseURIStore(const QUrl &baseURI,
-                                       const Expression::Ptr &operand) : SingleContainer(operand)
-   , m_baseURI(baseURI)
+StaticBaseURIStore::StaticBaseURIStore( const QUrl &baseURI,
+                                        const Expression::Ptr &operand ) : SingleContainer( operand )
+    , m_baseURI( baseURI )
 {
 }
 
-Expression::Ptr StaticBaseURIStore::typeCheck(const StaticContext::Ptr &context,
-      const SequenceType::Ptr &reqType)
+Expression::Ptr StaticBaseURIStore::typeCheck( const StaticContext::Ptr &context,
+        const SequenceType::Ptr &reqType )
 {
-   const StaticContext::Ptr newContext(new StaticBaseURIContext(context->baseURI().resolved(m_baseURI),
-                                       context));
-   return m_operand->typeCheck(newContext, reqType);
+    const StaticContext::Ptr newContext( new StaticBaseURIContext( context->baseURI().resolved( m_baseURI ),
+                                         context ) );
+    return m_operand->typeCheck( newContext, reqType );
 }
 
 SequenceType::Ptr StaticBaseURIStore::staticType() const
 {
-   return m_operand->staticType();
+    return m_operand->staticType();
 }
 
 SequenceType::List StaticBaseURIStore::expectedOperandTypes() const
 {
-   SequenceType::List ops;
-   ops.append(CommonSequenceTypes::ZeroOrMoreItems);
-   return ops;
+    SequenceType::List ops;
+    ops.append( CommonSequenceTypes::ZeroOrMoreItems );
+    return ops;
 }
 
-ExpressionVisitorResult::Ptr StaticBaseURIStore::accept(const ExpressionVisitor::Ptr &visitor) const
+ExpressionVisitorResult::Ptr StaticBaseURIStore::accept( const ExpressionVisitor::Ptr &visitor ) const
 {
-   return visitor->visit(this);
+    return visitor->visit( this );
 }

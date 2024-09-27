@@ -26,21 +26,23 @@
 
 #include <qfunctioncall_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class ComparesCaseAware : public FunctionCall
 {
- public:
-   ComparesCaseAware();
+public:
+    ComparesCaseAware();
 
-   Expression::Ptr compress(const StaticContext::Ptr &context) override;
+    Expression::Ptr compress( const StaticContext::Ptr &context ) override;
 
-   Qt::CaseSensitivity caseSensitivity() const {
-      return m_caseSensitivity;
-   }
+    Qt::CaseSensitivity caseSensitivity() const
+    {
+        return m_caseSensitivity;
+    }
 
- private:
-   Qt::CaseSensitivity m_caseSensitivity;
+private:
+    Qt::CaseSensitivity m_caseSensitivity;
 };
 }
 

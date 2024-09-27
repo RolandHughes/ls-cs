@@ -26,7 +26,8 @@
 #ifndef ProfileServer_h
 #define ProfileServer_h
 
-namespace JSC {
+namespace JSC
+{
 
 void startProfilerServerIfNeeded();
 

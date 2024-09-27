@@ -30,15 +30,16 @@
 
 #include "IDBDatabase.h"
 
-namespace WebCore {
-
-PassRefPtr<IDBDatabaseCallbacksImpl> IDBDatabaseCallbacksImpl::create(IDBDatabase* database)
+namespace WebCore
 {
-    return adoptRef(new IDBDatabaseCallbacksImpl(database));
+
+PassRefPtr<IDBDatabaseCallbacksImpl> IDBDatabaseCallbacksImpl::create( IDBDatabase *database )
+{
+    return adoptRef( new IDBDatabaseCallbacksImpl( database ) );
 }
 
-IDBDatabaseCallbacksImpl::IDBDatabaseCallbacksImpl(IDBDatabase* database)
-    : m_database(database)
+IDBDatabaseCallbacksImpl::IDBDatabaseCallbacksImpl( IDBDatabase *database )
+    : m_database( database )
 {
 }
 
@@ -46,15 +47,17 @@ IDBDatabaseCallbacksImpl::~IDBDatabaseCallbacksImpl()
 {
 }
 
-void IDBDatabaseCallbacksImpl::onVersionChange(const String& version)
+void IDBDatabaseCallbacksImpl::onVersionChange( const String &version )
 {
-    if (m_database)
-        m_database->onVersionChange(version);
+    if ( m_database )
+    {
+        m_database->onVersionChange( version );
+    }
 }
 
-void IDBDatabaseCallbacksImpl::unregisterDatabase(IDBDatabase* database)
+void IDBDatabaseCallbacksImpl::unregisterDatabase( IDBDatabase *database )
 {
-    ASSERT(database == m_database);
+    ASSERT( database == m_database );
     m_database = 0;
 }
 

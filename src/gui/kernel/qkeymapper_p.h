@@ -38,43 +38,43 @@ struct KeyboardLayoutItem;
 
 class QKeyMapper : public QObject
 {
-   GUI_CS_OBJECT(QKeyMapper)
+    GUI_CS_OBJECT( QKeyMapper )
 
- public:
-   explicit QKeyMapper();
+public:
+    explicit QKeyMapper();
 
-   QKeyMapper(const QKeyMapper &) = delete;
-   QKeyMapper &operator=(const QKeyMapper &) = delete;
+    QKeyMapper( const QKeyMapper & ) = delete;
+    QKeyMapper &operator=( const QKeyMapper & ) = delete;
 
-   ~QKeyMapper();
+    ~QKeyMapper();
 
-   static QKeyMapper *instance();
-   static void changeKeyboard();
-   static QList<int> possibleKeys(QKeyEvent *e);
+    static QKeyMapper *instance();
+    static void changeKeyboard();
+    static QList<int> possibleKeys( QKeyEvent *e );
 
- protected:
-   QScopedPointer<QKeyMapperPrivate> d_ptr;
+protected:
+    QScopedPointer<QKeyMapperPrivate> d_ptr;
 
- private:
-   Q_DECLARE_PRIVATE(QKeyMapper)
-   friend QKeyMapperPrivate *qt_keymapper_private();
+private:
+    Q_DECLARE_PRIVATE( QKeyMapper )
+    friend QKeyMapperPrivate *qt_keymapper_private();
 };
 
 class QKeyMapperPrivate
 {
- public:
-   QKeyMapperPrivate();
-   virtual ~QKeyMapperPrivate();
+public:
+    QKeyMapperPrivate();
+    virtual ~QKeyMapperPrivate();
 
-   void clearMappings();
-   QList<int> possibleKeys(QKeyEvent *e);
+    void clearMappings();
+    QList<int> possibleKeys( QKeyEvent *e );
 
-   QLocale keyboardInputLocale;
-   Qt::LayoutDirection keyboardInputDirection;
+    QLocale keyboardInputLocale;
+    Qt::LayoutDirection keyboardInputDirection;
 
- protected:
-   Q_DECLARE_PUBLIC(QKeyMapper)
-   QKeyMapper *q_ptr;
+protected:
+    Q_DECLARE_PUBLIC( QKeyMapper )
+    QKeyMapper *q_ptr;
 };
 
 QKeyMapperPrivate *qt_keymapper_private(); // from qkeymapper.cpp

@@ -29,9 +29,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSAttr);
+ASSERT_CLASS_FITS_IN_CELL( JSAttr );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -42,13 +43,13 @@ ASSERT_CLASS_FITS_IN_CELL(JSAttr);
 
 static const HashTableValue JSAttrTableValues[7] =
 {
-    { "name", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsAttrName), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "specified", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsAttrSpecified), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "value", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsAttrValue), (intptr_t)setJSAttrValue THUNK_GENERATOR(0) },
-    { "ownerElement", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsAttrOwnerElement), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "isId", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsAttrIsId), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsAttrConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "name", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsAttrName ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "specified", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsAttrSpecified ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "value", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsAttrValue ), ( intptr_t )setJSAttrValue THUNK_GENERATOR( 0 ) },
+    { "ownerElement", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsAttrOwnerElement ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "isId", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsAttrIsId ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsAttrConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -62,43 +63,48 @@ static JSC_CONST_HASHTABLE HashTable JSAttrTable = { 18, 15, JSAttrTableValues, 
 
 static const HashTableValue JSAttrConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSAttrConstructorTable = { 1, 0, JSAttrConstructorTableValues, 0 };
-class JSAttrConstructor : public DOMConstructorObject {
+class JSAttrConstructor : public DOMConstructorObject
+{
 public:
-    JSAttrConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSAttrConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSAttrConstructor::s_info = { "AttrConstructor", &DOMConstructorObject::s_info, &JSAttrConstructorTable, 0 };
 
-JSAttrConstructor::JSAttrConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSAttrConstructor::JSAttrConstructor( ExecState *exec, Structure *structure, JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSAttrPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSAttrPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSAttrConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSAttrConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSAttrConstructor, JSDOMWrapper>(exec, &JSAttrConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSAttrConstructor, JSDOMWrapper>( exec, &JSAttrConstructorTable, this, propertyName, slot );
 }
 
-bool JSAttrConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSAttrConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSAttrConstructor, JSDOMWrapper>(exec, &JSAttrConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSAttrConstructor, JSDOMWrapper>( exec, &JSAttrConstructorTable, this, propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -110,120 +116,121 @@ bool JSAttrConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifi
 
 static const HashTableValue JSAttrPrototypeTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSAttrPrototypeTable = { 1, 0, JSAttrPrototypeTableValues, 0 };
 const ClassInfo JSAttrPrototype::s_info = { "AttrPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSAttrPrototypeTable, 0 };
 
-JSObject* JSAttrPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSAttrPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSAttr>(exec, globalObject);
+    return getDOMPrototype<JSAttr>( exec, globalObject );
 }
 
 const ClassInfo JSAttr::s_info = { "Attr", &JSNode::s_info, &JSAttrTable, 0 };
 
-JSAttr::JSAttr(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<Attr> impl)
-    : JSNode(structure, globalObject, impl)
+JSAttr::JSAttr( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<Attr> impl )
+    : JSNode( structure, globalObject, impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSAttr::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSAttr::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSAttrPrototype(exec->globalData(), globalObject, JSAttrPrototype::createStructure(exec->globalData(), JSNodePrototype::self(exec, globalObject)));
+    return new ( exec ) JSAttrPrototype( exec->globalData(), globalObject, JSAttrPrototype::createStructure( exec->globalData(),
+                                         JSNodePrototype::self( exec, globalObject ) ) );
 }
 
-bool JSAttr::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSAttr::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSAttr, Base>(exec, &JSAttrTable, this, propertyName, slot);
+    return getStaticValueSlot<JSAttr, Base>( exec, &JSAttrTable, this, propertyName, slot );
 }
 
-bool JSAttr::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSAttr::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSAttr, Base>(exec, &JSAttrTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSAttr, Base>( exec, &JSAttrTable, this, propertyName, descriptor );
 }
 
-JSValue jsAttrName(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsAttrName( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSAttr* castedThis = static_cast<JSAttr*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    Attr* imp = static_cast<Attr*>(castedThis->impl());
-    JSValue result = jsStringOrNull(exec, imp->name());
+    JSAttr *castedThis = static_cast<JSAttr *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    Attr *imp = static_cast<Attr *>( castedThis->impl() );
+    JSValue result = jsStringOrNull( exec, imp->name() );
     return result;
 }
 
 
-JSValue jsAttrSpecified(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsAttrSpecified( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSAttr* castedThis = static_cast<JSAttr*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    Attr* imp = static_cast<Attr*>(castedThis->impl());
-    JSValue result = jsBoolean(imp->specified());
+    JSAttr *castedThis = static_cast<JSAttr *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    Attr *imp = static_cast<Attr *>( castedThis->impl() );
+    JSValue result = jsBoolean( imp->specified() );
     return result;
 }
 
 
-JSValue jsAttrValue(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsAttrValue( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSAttr* castedThis = static_cast<JSAttr*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    Attr* imp = static_cast<Attr*>(castedThis->impl());
-    JSValue result = jsStringOrNull(exec, imp->value());
+    JSAttr *castedThis = static_cast<JSAttr *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    Attr *imp = static_cast<Attr *>( castedThis->impl() );
+    JSValue result = jsStringOrNull( exec, imp->value() );
     return result;
 }
 
 
-JSValue jsAttrOwnerElement(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsAttrOwnerElement( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSAttr* castedThis = static_cast<JSAttr*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    Attr* imp = static_cast<Attr*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->ownerElement()));
+    JSAttr *castedThis = static_cast<JSAttr *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    Attr *imp = static_cast<Attr *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->ownerElement() ) );
     return result;
 }
 
 
-JSValue jsAttrIsId(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsAttrIsId( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSAttr* castedThis = static_cast<JSAttr*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    Attr* imp = static_cast<Attr*>(castedThis->impl());
-    JSValue result = jsBoolean(imp->isId());
+    JSAttr *castedThis = static_cast<JSAttr *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    Attr *imp = static_cast<Attr *>( castedThis->impl() );
+    JSValue result = jsBoolean( imp->isId() );
     return result;
 }
 
 
-JSValue jsAttrConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsAttrConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSAttr* domObject = static_cast<JSAttr*>(asObject(slotBase));
-    return JSAttr::getConstructor(exec, domObject->globalObject());
+    JSAttr *domObject = static_cast<JSAttr *>( asObject( slotBase ) );
+    return JSAttr::getConstructor( exec, domObject->globalObject() );
 }
 
-void JSAttr::put(ExecState* exec, const Identifier& propertyName, JSValue value, PutPropertySlot& slot)
+void JSAttr::put( ExecState *exec, const Identifier &propertyName, JSValue value, PutPropertySlot &slot )
 {
-    lookupPut<JSAttr, Base>(exec, propertyName, value, &JSAttrTable, this, slot);
+    lookupPut<JSAttr, Base>( exec, propertyName, value, &JSAttrTable, this, slot );
 }
 
-void setJSAttrValue(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSAttrValue( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSAttr* castedThis = static_cast<JSAttr*>(thisObject);
-    Attr* imp = static_cast<Attr*>(castedThis->impl());
+    JSAttr *castedThis = static_cast<JSAttr *>( thisObject );
+    Attr *imp = static_cast<Attr *>( castedThis->impl() );
     ExceptionCode ec = 0;
-    imp->setValue(valueToStringWithNullCheck(exec, value), ec);
-    setDOMException(exec, ec);
+    imp->setValue( valueToStringWithNullCheck( exec, value ), ec );
+    setDOMException( exec, ec );
 }
 
 
-JSValue JSAttr::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSAttr::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSAttrConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSAttrConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
-Attr* toAttr(JSC::JSValue value)
+Attr *toAttr( JSC::JSValue value )
 {
-    return value.inherits(&JSAttr::s_info) ? static_cast<JSAttr*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSAttr::s_info ) ? static_cast<JSAttr *>( asObject( value ) )->impl() : 0;
 }
 
 }

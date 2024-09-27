@@ -36,19 +36,21 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Event;
 
-class ScopedEventQueue {
-    WTF_MAKE_NONCOPYABLE(ScopedEventQueue);
+class ScopedEventQueue
+{
+    WTF_MAKE_NONCOPYABLE( ScopedEventQueue );
 
 public:
     ~ScopedEventQueue();
 
-    void enqueueEvent(PassRefPtr<Event>);
+    void enqueueEvent( PassRefPtr<Event> );
     void dispatchAllEvents();
-    static ScopedEventQueue* instance();
+    static ScopedEventQueue *instance();
 
     void incrementScopingLevel();
     void decrementScopingLevel();
@@ -56,20 +58,27 @@ public:
 private:
     ScopedEventQueue();
     static void initialize();
-    void dispatchEvent(PassRefPtr<Event>) const;
+    void dispatchEvent( PassRefPtr<Event> ) const;
 
     Vector<RefPtr<Event> > m_queuedEvents;
     unsigned m_scopingLevel;
 
-    static ScopedEventQueue* s_instance;
+    static ScopedEventQueue *s_instance;
 };
 
-class EventQueueScope {
-    WTF_MAKE_NONCOPYABLE(EventQueueScope);
+class EventQueueScope
+{
+    WTF_MAKE_NONCOPYABLE( EventQueueScope );
 
 public:
-    EventQueueScope() { ScopedEventQueue::instance()->incrementScopingLevel(); }
-    ~EventQueueScope() { ScopedEventQueue::instance()->decrementScopingLevel(); }
+    EventQueueScope()
+    {
+        ScopedEventQueue::instance()->incrementScopingLevel();
+    }
+    ~EventQueueScope()
+    {
+        ScopedEventQueue::instance()->decrementScopingLevel();
+    }
 };
 
 }

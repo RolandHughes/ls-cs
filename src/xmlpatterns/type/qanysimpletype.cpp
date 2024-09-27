@@ -35,37 +35,37 @@ AnySimpleType::~AnySimpleType()
 {
 }
 
-QXmlName AnySimpleType::name(const NamePool::Ptr &np) const
+QXmlName AnySimpleType::name( const NamePool::Ptr &np ) const
 {
-   return np->allocateQName(StandardNamespaces::xs, QLatin1String("anySimpleType"));
+    return np->allocateQName( StandardNamespaces::xs, QLatin1String( "anySimpleType" ) );
 }
 
-QString AnySimpleType::displayName(const NamePool::Ptr &np) const
+QString AnySimpleType::displayName( const NamePool::Ptr &np ) const
 {
-   return np->displayName(name(np));
+    return np->displayName( name( np ) );
 }
 
 SchemaType::Ptr AnySimpleType::wxsSuperType() const
 {
-   return BuiltinTypes::xsAnyType;
+    return BuiltinTypes::xsAnyType;
 }
 
 SchemaType::TypeCategory AnySimpleType::category() const
 {
-   return None;
+    return None;
 }
 
 SchemaType::DerivationMethod AnySimpleType::derivationMethod() const
 {
-   return DerivationRestriction;
+    return DerivationRestriction;
 }
 
 bool AnySimpleType::isSimpleType() const
 {
-   return true;
+    return true;
 }
 
 bool AnySimpleType::isComplexType() const
 {
-   return false;
+    return false;
 }

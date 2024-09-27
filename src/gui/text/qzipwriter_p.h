@@ -33,52 +33,54 @@ class QZipWriterPrivate;
 
 class Q_GUI_EXPORT QZipWriter
 {
- public:
-   enum Status {
-      NoError,
-      FileWriteError,
-      FileOpenError,
-      FilePermissionsError,
-      FileError
-   };
+public:
+    enum Status
+    {
+        NoError,
+        FileWriteError,
+        FileOpenError,
+        FilePermissionsError,
+        FileError
+    };
 
-   enum CompressionPolicy {
-      AlwaysCompress,
-      NeverCompress,
-      AutoCompress
-   };
+    enum CompressionPolicy
+    {
+        AlwaysCompress,
+        NeverCompress,
+        AutoCompress
+    };
 
-   explicit QZipWriter(const QString &fileName, QIODevice::OpenMode mode = (QIODevice::WriteOnly | QIODevice::Truncate) );
-   explicit QZipWriter(QIODevice *device);
+    explicit QZipWriter( const QString &fileName, QIODevice::OpenMode mode = ( QIODevice::WriteOnly | QIODevice::Truncate ) );
+    explicit QZipWriter( QIODevice *device );
 
-   QZipWriter(const QZipWriter &) = delete;
-   QZipWriter &operator=(const QZipWriter &) = delete;
+    QZipWriter( const QZipWriter & ) = delete;
+    QZipWriter &operator=( const QZipWriter & ) = delete;
 
-   ~QZipWriter();
+    ~QZipWriter();
 
-   QIODevice *device() const;
+    QIODevice *device() const;
 
-   bool isWritable() const;
-   bool exists() const;
+    bool isWritable() const;
+    bool exists() const;
 
-   Status status() const;
+    Status status() const;
 
-   void setCompressionPolicy(CompressionPolicy policy);
-   CompressionPolicy compressionPolicy() const;
+    void setCompressionPolicy( CompressionPolicy policy );
+    CompressionPolicy compressionPolicy() const;
 
-   void setCreationPermissions(QFile::Permissions permissions);
-   QFile::Permissions creationPermissions() const;
+    void setCreationPermissions( QFile::Permissions permissions );
+    QFile::Permissions creationPermissions() const;
 
-   void addFile(const QString &fileName, const QByteArray &data);
-   void addFile(const QString &fileName, QIODevice *device);
+    void addFile( const QString &fileName, const QByteArray &data );
+    void addFile( const QString &fileName, QIODevice *device );
 
-   void addDirectory(const QString &dirName);
-   void addSymLink(const QString &fileName, const QString &destination);
+    void addDirectory( const QString &dirName );
+    void addSymLink( const QString &fileName, const QString &destination );
 
-   void close();
+    void close();
 
- private:
-   QZipWriterPrivate *d;
+private:
+    QZipWriterPrivate *d;
 };
 
 #endif // QT_NO_TEXTODFWRITER

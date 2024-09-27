@@ -32,40 +32,40 @@ class QSplashScreenPrivate;
 
 class Q_GUI_EXPORT QSplashScreen : public QWidget
 {
-   GUI_CS_OBJECT(QSplashScreen)
+    GUI_CS_OBJECT( QSplashScreen )
 
- public:
-   explicit QSplashScreen(const QPixmap &pixmap = QPixmap(), Qt::WindowFlags flags = Qt::EmptyFlag);
-   QSplashScreen(QWidget *parent, const QPixmap &pixmap = QPixmap(), Qt::WindowFlags flags = Qt::EmptyFlag);
+public:
+    explicit QSplashScreen( const QPixmap &pixmap = QPixmap(), Qt::WindowFlags flags = Qt::EmptyFlag );
+    QSplashScreen( QWidget *parent, const QPixmap &pixmap = QPixmap(), Qt::WindowFlags flags = Qt::EmptyFlag );
 
-   QSplashScreen(const QSplashScreen &) = delete;
-   QSplashScreen &operator=(const QSplashScreen &) = delete;
+    QSplashScreen( const QSplashScreen & ) = delete;
+    QSplashScreen &operator=( const QSplashScreen & ) = delete;
 
-   virtual ~QSplashScreen();
+    virtual ~QSplashScreen();
 
-   void setPixmap(const QPixmap &pixmap);
-   const QPixmap pixmap() const;
-   void finish(QWidget *widget);
-   void repaint();
-   QString message() const;
+    void setPixmap( const QPixmap &pixmap );
+    const QPixmap pixmap() const;
+    void finish( QWidget *widget );
+    void repaint();
+    QString message() const;
 
-   GUI_CS_SLOT_1(Public, void showMessage(const QString &message, int alignment = Qt::AlignLeft,
-         const QColor &color = Qt::black))
-   GUI_CS_SLOT_2(showMessage)
+    GUI_CS_SLOT_1( Public, void showMessage( const QString &message, int alignment = Qt::AlignLeft,
+                   const QColor &color = Qt::black ) )
+    GUI_CS_SLOT_2( showMessage )
 
-   GUI_CS_SLOT_1(Public, void clearMessage())
-   GUI_CS_SLOT_2(clearMessage)
+    GUI_CS_SLOT_1( Public, void clearMessage() )
+    GUI_CS_SLOT_2( clearMessage )
 
-   GUI_CS_SIGNAL_1(Public, void messageChanged(const QString &message))
-   GUI_CS_SIGNAL_2(messageChanged, message)
+    GUI_CS_SIGNAL_1( Public, void messageChanged( const QString &message ) )
+    GUI_CS_SIGNAL_2( messageChanged, message )
 
- protected:
-   bool event(QEvent *event) override;
-   virtual void drawContents(QPainter *painter);
-   void mousePressEvent(QMouseEvent *event) override;
+protected:
+    bool event( QEvent *event ) override;
+    virtual void drawContents( QPainter *painter );
+    void mousePressEvent( QMouseEvent *event ) override;
 
- private:
-   Q_DECLARE_PRIVATE(QSplashScreen)
+private:
+    Q_DECLARE_PRIVATE( QSplashScreen )
 };
 
 #endif // QT_NO_SPLASHSCREEN

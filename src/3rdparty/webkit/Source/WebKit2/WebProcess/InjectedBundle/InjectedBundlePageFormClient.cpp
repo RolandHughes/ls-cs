@@ -36,68 +36,89 @@
 
 using namespace WebCore;
 
-namespace WebKit {
-
-void InjectedBundlePageFormClient::textFieldDidBeginEditing(WebPage* page, HTMLInputElement* inputElement, WebFrame* frame)
+namespace WebKit
 {
-    if (!m_client.textFieldDidBeginEditing)
-        return;
 
-    RefPtr<InjectedBundleNodeHandle> nodeHandle = InjectedBundleNodeHandle::getOrCreate(inputElement);
-    m_client.textFieldDidBeginEditing(toAPI(page), toAPI(nodeHandle.get()), toAPI(frame), m_client.clientInfo);
+void InjectedBundlePageFormClient::textFieldDidBeginEditing( WebPage *page, HTMLInputElement *inputElement, WebFrame *frame )
+{
+    if ( !m_client.textFieldDidBeginEditing )
+    {
+        return;
+    }
+
+    RefPtr<InjectedBundleNodeHandle> nodeHandle = InjectedBundleNodeHandle::getOrCreate( inputElement );
+    m_client.textFieldDidBeginEditing( toAPI( page ), toAPI( nodeHandle.get() ), toAPI( frame ), m_client.clientInfo );
 }
 
-void InjectedBundlePageFormClient::textFieldDidEndEditing(WebPage* page, HTMLInputElement* inputElement, WebFrame* frame)
+void InjectedBundlePageFormClient::textFieldDidEndEditing( WebPage *page, HTMLInputElement *inputElement, WebFrame *frame )
 {
-    if (!m_client.textFieldDidEndEditing)
+    if ( !m_client.textFieldDidEndEditing )
+    {
         return;
+    }
 
-    RefPtr<InjectedBundleNodeHandle> nodeHandle = InjectedBundleNodeHandle::getOrCreate(inputElement);
-    m_client.textFieldDidEndEditing(toAPI(page), toAPI(nodeHandle.get()), toAPI(frame), m_client.clientInfo);
+    RefPtr<InjectedBundleNodeHandle> nodeHandle = InjectedBundleNodeHandle::getOrCreate( inputElement );
+    m_client.textFieldDidEndEditing( toAPI( page ), toAPI( nodeHandle.get() ), toAPI( frame ), m_client.clientInfo );
 }
 
-void InjectedBundlePageFormClient::textDidChangeInTextField(WebPage* page, HTMLInputElement* inputElement, WebFrame* frame)
+void InjectedBundlePageFormClient::textDidChangeInTextField( WebPage *page, HTMLInputElement *inputElement, WebFrame *frame )
 {
-    if (!m_client.textDidChangeInTextField)
+    if ( !m_client.textDidChangeInTextField )
+    {
         return;
+    }
 
-    RefPtr<InjectedBundleNodeHandle> nodeHandle = InjectedBundleNodeHandle::getOrCreate(inputElement);
-    m_client.textDidChangeInTextField(toAPI(page), toAPI(nodeHandle.get()), toAPI(frame), m_client.clientInfo);
+    RefPtr<InjectedBundleNodeHandle> nodeHandle = InjectedBundleNodeHandle::getOrCreate( inputElement );
+    m_client.textDidChangeInTextField( toAPI( page ), toAPI( nodeHandle.get() ), toAPI( frame ), m_client.clientInfo );
 }
 
-void InjectedBundlePageFormClient::textDidChangeInTextArea(WebPage* page, HTMLTextAreaElement* textAreaElement, WebFrame* frame)
+void InjectedBundlePageFormClient::textDidChangeInTextArea( WebPage *page, HTMLTextAreaElement *textAreaElement, WebFrame *frame )
 {
-    if (!m_client.textDidChangeInTextArea)
+    if ( !m_client.textDidChangeInTextArea )
+    {
         return;
+    }
 
-    RefPtr<InjectedBundleNodeHandle> nodeHandle = InjectedBundleNodeHandle::getOrCreate(textAreaElement);
-    m_client.textDidChangeInTextArea(toAPI(page), toAPI(nodeHandle.get()), toAPI(frame), m_client.clientInfo);
+    RefPtr<InjectedBundleNodeHandle> nodeHandle = InjectedBundleNodeHandle::getOrCreate( textAreaElement );
+    m_client.textDidChangeInTextArea( toAPI( page ), toAPI( nodeHandle.get() ), toAPI( frame ), m_client.clientInfo );
 }
 
-bool InjectedBundlePageFormClient::shouldPerformActionInTextField(WebPage* page, HTMLInputElement* inputElement, WKInputFieldActionType actionType, WebFrame* frame)
+bool InjectedBundlePageFormClient::shouldPerformActionInTextField( WebPage *page, HTMLInputElement *inputElement,
+        WKInputFieldActionType actionType, WebFrame *frame )
 {
-    if (!m_client.shouldPerformActionInTextField)
+    if ( !m_client.shouldPerformActionInTextField )
+    {
         return false;
+    }
 
-    RefPtr<InjectedBundleNodeHandle> nodeHandle = InjectedBundleNodeHandle::getOrCreate(inputElement);
-    return m_client.shouldPerformActionInTextField(toAPI(page), toAPI(nodeHandle.get()), actionType, toAPI(frame), m_client.clientInfo);
+    RefPtr<InjectedBundleNodeHandle> nodeHandle = InjectedBundleNodeHandle::getOrCreate( inputElement );
+    return m_client.shouldPerformActionInTextField( toAPI( page ), toAPI( nodeHandle.get() ), actionType, toAPI( frame ),
+            m_client.clientInfo );
 }
 
-void InjectedBundlePageFormClient::willSubmitForm(WebPage* page, HTMLFormElement* formElement, WebFrame* frame, WebFrame* sourceFrame, const Vector<std::pair<String, String> >& values, RefPtr<APIObject>& userData)
+void InjectedBundlePageFormClient::willSubmitForm( WebPage *page, HTMLFormElement *formElement, WebFrame *frame,
+        WebFrame *sourceFrame, const Vector<std::pair<String, String> > &values, RefPtr<APIObject> &userData )
 {
-    if (!m_client.willSubmitForm)
+    if ( !m_client.willSubmitForm )
+    {
         return;
+    }
 
-    RefPtr<InjectedBundleNodeHandle> nodeHandle = InjectedBundleNodeHandle::getOrCreate(formElement);
+    RefPtr<InjectedBundleNodeHandle> nodeHandle = InjectedBundleNodeHandle::getOrCreate( formElement );
 
     ImmutableDictionary::MapType map;
-    for (size_t i = 0; i < values.size(); ++i)
-        map.set(values[i].first, WebString::create(values[i].second));
-    RefPtr<ImmutableDictionary> textFieldsMap = ImmutableDictionary::adopt(map);
+
+    for ( size_t i = 0; i < values.size(); ++i )
+    {
+        map.set( values[i].first, WebString::create( values[i].second ) );
+    }
+
+    RefPtr<ImmutableDictionary> textFieldsMap = ImmutableDictionary::adopt( map );
 
     WKTypeRef userDataToPass = 0;
-    m_client.willSubmitForm(toAPI(page), toAPI(nodeHandle.get()), toAPI(frame), toAPI(sourceFrame), toAPI(textFieldsMap.get()), &userDataToPass, m_client.clientInfo);
-    userData = adoptRef(toImpl(userDataToPass));
+    m_client.willSubmitForm( toAPI( page ), toAPI( nodeHandle.get() ), toAPI( frame ), toAPI( sourceFrame ),
+                             toAPI( textFieldsMap.get() ), &userDataToPass, m_client.clientInfo );
+    userData = adoptRef( toImpl( userDataToPass ) );
 }
 
 } // namespace WebKit

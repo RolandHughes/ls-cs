@@ -27,7 +27,8 @@
 #include "Logging.h"
 #include "PlatformString.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 WTFLogChannel LogNotYetImplemented = { 0x00000001, "WebCoreLogLevel", WTFLogChannelOff };
 
@@ -41,7 +42,7 @@ WTFLogChannel LogLiveConnect =       { 0x00000200, "WebCoreLogLevel", WTFLogChan
 WTFLogChannel LogIconDatabase =      { 0x00000400, "WebCoreLogLevel", WTFLogChannelOff };
 WTFLogChannel LogSQLDatabase =       { 0x00000800, "WebCoreLogLevel", WTFLogChannelOff };
 
-WTFLogChannel LogSpellingAndGrammar ={ 0x00001000, "WebCoreLogLevel", WTFLogChannelOff };
+WTFLogChannel LogSpellingAndGrammar = { 0x00001000, "WebCoreLogLevel", WTFLogChannelOff };
 WTFLogChannel LogBackForward =       { 0x00002000, "WebCoreLogLevel", WTFLogChannelOff };
 WTFLogChannel LogHistory =           { 0x00004000, "WebCoreLogLevel", WTFLogChannelOff };
 WTFLogChannel LogPageCache =         { 0x00008000, "WebCoreLogLevel", WTFLogChannelOff };
@@ -61,79 +62,127 @@ WTFLogChannel LogProgress =          { 0x08000000, "WebCoreLogLevel", WTFLogChan
 
 WTFLogChannel LogFileAPI =           { 0x10000000, "WebCoreLogLevel", WTFLogChannelOff };
 
-WTFLogChannel* getChannelFromName(const String& channelName)
+WTFLogChannel *getChannelFromName( const String &channelName )
 {
-    if (!(channelName.length() >= 2))
+    if ( !( channelName.length() >= 2 ) )
+    {
         return 0;
+    }
 
-    if (equalIgnoringCase(channelName, String("BackForward")))
+    if ( equalIgnoringCase( channelName, String( "BackForward" ) ) )
+    {
         return &LogBackForward;
+    }
 
-    if (equalIgnoringCase(channelName, String("Editing")))
+    if ( equalIgnoringCase( channelName, String( "Editing" ) ) )
+    {
         return &LogEditing;
+    }
 
-    if (equalIgnoringCase(channelName, String("Events")))
+    if ( equalIgnoringCase( channelName, String( "Events" ) ) )
+    {
         return &LogEvents;
+    }
 
-    if (equalIgnoringCase(channelName, String("Frames")))
+    if ( equalIgnoringCase( channelName, String( "Frames" ) ) )
+    {
         return &LogFrames;
+    }
 
-    if (equalIgnoringCase(channelName, String("FTP")))
+    if ( equalIgnoringCase( channelName, String( "FTP" ) ) )
+    {
         return &LogFTP;
+    }
 
-    if (equalIgnoringCase(channelName, String("History")))
+    if ( equalIgnoringCase( channelName, String( "History" ) ) )
+    {
         return &LogHistory;
+    }
 
-    if (equalIgnoringCase(channelName, String("IconDatabase")))
+    if ( equalIgnoringCase( channelName, String( "IconDatabase" ) ) )
+    {
         return &LogIconDatabase;
+    }
 
-    if (equalIgnoringCase(channelName, String("Loading")))
+    if ( equalIgnoringCase( channelName, String( "Loading" ) ) )
+    {
         return &LogLoading;
+    }
 
-    if (equalIgnoringCase(channelName, String("Media")))
+    if ( equalIgnoringCase( channelName, String( "Media" ) ) )
+    {
         return &LogMedia;
+    }
 
-    if (equalIgnoringCase(channelName, String("Network")))
+    if ( equalIgnoringCase( channelName, String( "Network" ) ) )
+    {
         return &LogNetwork;
+    }
 
-    if (equalIgnoringCase(channelName, String("NotYetImplemented")))
+    if ( equalIgnoringCase( channelName, String( "NotYetImplemented" ) ) )
+    {
         return &LogNotYetImplemented;
+    }
 
-    if (equalIgnoringCase(channelName, String("PageCache")))
+    if ( equalIgnoringCase( channelName, String( "PageCache" ) ) )
+    {
         return &LogPageCache;
+    }
 
-    if (equalIgnoringCase(channelName, String("PlatformLeaks")))
+    if ( equalIgnoringCase( channelName, String( "PlatformLeaks" ) ) )
+    {
         return &LogPlatformLeaks;
+    }
 
-    if (equalIgnoringCase(channelName, String("ResourceLoading")))
+    if ( equalIgnoringCase( channelName, String( "ResourceLoading" ) ) )
+    {
         return &LogResourceLoading;
+    }
 
-    if (equalIgnoringCase(channelName, String("Plugins")))
+    if ( equalIgnoringCase( channelName, String( "Plugins" ) ) )
+    {
         return &LogPlugins;
+    }
 
-    if (equalIgnoringCase(channelName, String("PopupBlocking")))
+    if ( equalIgnoringCase( channelName, String( "PopupBlocking" ) ) )
+    {
         return &LogPopupBlocking;
+    }
 
-    if (equalIgnoringCase(channelName, String("Progress")))
+    if ( equalIgnoringCase( channelName, String( "Progress" ) ) )
+    {
         return &LogProgress;
+    }
 
-    if (equalIgnoringCase(channelName, String("SpellingAndGrammar")))
+    if ( equalIgnoringCase( channelName, String( "SpellingAndGrammar" ) ) )
+    {
         return &LogSpellingAndGrammar;
+    }
 
-    if (equalIgnoringCase(channelName, String("SQLDatabase")))
+    if ( equalIgnoringCase( channelName, String( "SQLDatabase" ) ) )
+    {
         return &LogSQLDatabase;
+    }
 
-    if (equalIgnoringCase(channelName, String("StorageAPI")))
+    if ( equalIgnoringCase( channelName, String( "StorageAPI" ) ) )
+    {
         return &LogStorageAPI;
+    }
 
-    if (equalIgnoringCase(channelName, String("LiveConnect")))
+    if ( equalIgnoringCase( channelName, String( "LiveConnect" ) ) )
+    {
         return &LogLiveConnect;
+    }
 
-    if (equalIgnoringCase(channelName, String("Threading")))
+    if ( equalIgnoringCase( channelName, String( "Threading" ) ) )
+    {
         return &LogThreading;
+    }
 
-    if (equalIgnoringCase(channelName, String("FileAPI")))
+    if ( equalIgnoringCase( channelName, String( "FileAPI" ) ) )
+    {
         return &LogFileAPI;
+    }
 
     return 0;
 }

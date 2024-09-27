@@ -28,24 +28,26 @@
 #include "StorageInfoErrorCallback.h"
 #include <wtf/Forward.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class JSStorageInfoErrorCallback : public StorageInfoErrorCallback, public ActiveDOMCallback {
+class JSStorageInfoErrorCallback : public StorageInfoErrorCallback, public ActiveDOMCallback
+{
 public:
-    static PassRefPtr<JSStorageInfoErrorCallback> create(JSC::JSObject* callback, JSDOMGlobalObject* globalObject)
+    static PassRefPtr<JSStorageInfoErrorCallback> create( JSC::JSObject *callback, JSDOMGlobalObject *globalObject )
     {
-        return adoptRef(new JSStorageInfoErrorCallback(callback, globalObject));
+        return adoptRef( new JSStorageInfoErrorCallback( callback, globalObject ) );
     }
 
     virtual ~JSStorageInfoErrorCallback();
 
     // Functions
-    virtual bool handleEvent(DOMCoreException* error);
+    virtual bool handleEvent( DOMCoreException *error );
 
 private:
-    JSStorageInfoErrorCallback(JSC::JSObject* callback, JSDOMGlobalObject*);
+    JSStorageInfoErrorCallback( JSC::JSObject *callback, JSDOMGlobalObject * );
 
-    JSCallbackData* m_data;
+    JSCallbackData *m_data;
 };
 
 } // namespace WebCore

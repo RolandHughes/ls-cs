@@ -35,16 +35,18 @@
 
 #include <wtf/ThreadSafeRefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Database;
 class DatabaseSync;
 
-class DatabaseCallback : public ThreadSafeRefCounted<DatabaseCallback> {
+class DatabaseCallback : public ThreadSafeRefCounted<DatabaseCallback>
+{
 public:
     virtual ~DatabaseCallback() { }
-    virtual bool handleEvent(Database*) = 0;
-    virtual bool handleEvent(DatabaseSync*) = 0;
+    virtual bool handleEvent( Database * ) = 0;
+    virtual bool handleEvent( DatabaseSync * ) = 0;
 };
 
 }

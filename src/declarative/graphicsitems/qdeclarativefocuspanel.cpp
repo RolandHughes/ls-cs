@@ -26,12 +26,10 @@
 #include <QtGui/qgraphicsscene.h>
 #include <QEvent>
 
-QT_BEGIN_NAMESPACE
-
-QDeclarativeFocusPanel::QDeclarativeFocusPanel(QDeclarativeItem *parent) : QDeclarativeItem(parent)
+QT_BEGIN_NAMESPACE QDeclarativeFocusPanel::QDeclarativeFocusPanel( QDeclarativeItem *parent ) : QDeclarativeItem( parent )
 {
-   Q_D(QDeclarativeItem);
-   d->flags |= QGraphicsItem::ItemIsPanel;
+    Q_D( QDeclarativeItem );
+    d->flags |= QGraphicsItem::ItemIsPanel;
 }
 
 QDeclarativeFocusPanel::~QDeclarativeFocusPanel()
@@ -44,13 +42,15 @@ QDeclarativeFocusPanel::~QDeclarativeFocusPanel()
     Sets whether the item is the active focus panel.
 */
 
-bool QDeclarativeFocusPanel::sceneEvent(QEvent *event)
+bool QDeclarativeFocusPanel::sceneEvent( QEvent *event )
 {
-   if (event->type() == QEvent::WindowActivate ||
-         event->type() == QEvent::WindowDeactivate) {
-      emit activeChanged();
-   }
-   return QDeclarativeItem::sceneEvent(event);
+    if ( event->type() == QEvent::WindowActivate ||
+            event->type() == QEvent::WindowDeactivate )
+    {
+        emit activeChanged();
+    }
+
+    return QDeclarativeItem::sceneEvent( event );
 }
 
 QT_END_NAMESPACE

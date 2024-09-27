@@ -36,32 +36,32 @@ class QHttpResponseHeaderPrivate;
 
 class Q_NETWORK_EXPORT QHttpHeader
 {
- public:
+public:
     QHttpHeader();
-    QHttpHeader(const QHttpHeader &other);
-    QHttpHeader(const QString &str);
+    QHttpHeader( const QHttpHeader &other );
+    QHttpHeader( const QString &str );
     virtual ~QHttpHeader();
 
-    QHttpHeader &operator=(const QHttpHeader &other);
+    QHttpHeader &operator=( const QHttpHeader &other );
 
-    void setValue(const QString &key, const QString &value);
-    void setValues(const QList<QPair<QString, QString> > &values);
-    void addValue(const QString &key, const QString &value);
+    void setValue( const QString &key, const QString &value );
+    void setValues( const QList<QPair<QString, QString> > &values );
+    void addValue( const QString &key, const QString &value );
     QList<QPair<QString, QString> > values() const;
-    bool hasKey(const QString &key) const;
+    bool hasKey( const QString &key ) const;
     QStringList keys() const;
-    QString value(const QString &key) const;
-    QStringList allValues(const QString &key) const;
-    void removeValue(const QString &key);
-    void removeAllValues(const QString &key);
+    QString value( const QString &key ) const;
+    QStringList allValues( const QString &key ) const;
+    void removeValue( const QString &key );
+    void removeAllValues( const QString &key );
 
     bool hasContentLength() const;
     qint64 contentLength() const;
-    void setContentLength(qint64 len);
+    void setContentLength( qint64 len );
 
     bool hasContentType() const;
     QString contentType() const;
-    void setContentType(const QString &type);
+    void setContentType( const QString &type );
 
     virtual QString toString() const;
     bool isValid() const;
@@ -69,58 +69,58 @@ class Q_NETWORK_EXPORT QHttpHeader
     virtual int majorVersion() const = 0;
     virtual int minorVersion() const = 0;
 
- protected:
-    virtual bool parseLine(const QString &line, int number);
-    bool parse(const QString &str);
-    void setValid(bool);
+protected:
+    virtual bool parseLine( const QString &line, int number );
+    bool parse( const QString &str );
+    void setValid( bool );
 
-    QHttpHeader(QHttpHeaderPrivate &dd, const QString &str = QString());
-    QHttpHeader(QHttpHeaderPrivate &dd, const QHttpHeader &header);
+    QHttpHeader( QHttpHeaderPrivate &dd, const QString &str = QString() );
+    QHttpHeader( QHttpHeaderPrivate &dd, const QHttpHeader &header );
 
     QScopedPointer<QHttpHeaderPrivate> d_ptr;
 
- private:
-    Q_DECLARE_PRIVATE(QHttpHeader)
+private:
+    Q_DECLARE_PRIVATE( QHttpHeader )
 };
 
 class Q_NETWORK_EXPORT QHttpRequestHeader : public QHttpHeader
 {
- public:
-   QHttpRequestHeader();
-   QHttpRequestHeader(const QString &method, const QString &path, int majorVer = 1, int minorVer = 1);
-   QHttpRequestHeader(const QHttpRequestHeader &other);
-   QHttpRequestHeader(const QString &str);
+public:
+    QHttpRequestHeader();
+    QHttpRequestHeader( const QString &method, const QString &path, int majorVer = 1, int minorVer = 1 );
+    QHttpRequestHeader( const QHttpRequestHeader &other );
+    QHttpRequestHeader( const QString &str );
 
-   QHttpRequestHeader &operator=(const QHttpRequestHeader &other);
+    QHttpRequestHeader &operator=( const QHttpRequestHeader &other );
 
-   void setRequest(const QString &method, const QString &path, int majorVer = 1, int minorVer = 1);
+    void setRequest( const QString &method, const QString &path, int majorVer = 1, int minorVer = 1 );
 
-   QString method() const;
-   QString path() const;
+    QString method() const;
+    QString path() const;
 
-   int majorVersion() const override;
-   int minorVersion() const override;
+    int majorVersion() const override;
+    int minorVersion() const override;
 
-   QString toString() const override;
+    QString toString() const override;
 
- protected:
-   bool parseLine(const QString &line, int number) override;
+protected:
+    bool parseLine( const QString &line, int number ) override;
 
- private:
-   Q_DECLARE_PRIVATE(QHttpRequestHeader)
+private:
+    Q_DECLARE_PRIVATE( QHttpRequestHeader )
 };
 
 class Q_NETWORK_EXPORT QHttpResponseHeader : public QHttpHeader
 {
- public:
+public:
     QHttpResponseHeader();
-    QHttpResponseHeader(const QHttpResponseHeader &other);
-    QHttpResponseHeader(const QString &str);
-    QHttpResponseHeader(int code, const QString &text = QString(), int majorVer = 1, int minorVer = 1);
+    QHttpResponseHeader( const QHttpResponseHeader &other );
+    QHttpResponseHeader( const QString &str );
+    QHttpResponseHeader( int code, const QString &text = QString(), int majorVer = 1, int minorVer = 1 );
 
-    QHttpResponseHeader &operator=(const QHttpResponseHeader &other);
+    QHttpResponseHeader &operator=( const QHttpResponseHeader &other );
 
-    void setStatusLine(int code, const QString &text = QString(), int majorVer = 1, int minorVer = 1);
+    void setStatusLine( int code, const QString &text = QString(), int majorVer = 1, int minorVer = 1 );
 
     int statusCode() const;
     QString reasonPhrase() const;
@@ -130,11 +130,11 @@ class Q_NETWORK_EXPORT QHttpResponseHeader : public QHttpHeader
 
     QString toString() const override;
 
- protected:
-    bool parseLine(const QString &line, int number) override;
+protected:
+    bool parseLine( const QString &line, int number ) override;
 
- private:
-    Q_DECLARE_PRIVATE(QHttpResponseHeader)
+private:
+    Q_DECLARE_PRIVATE( QHttpResponseHeader )
     friend class QHttpPrivate;
 };
 

@@ -21,7 +21,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef WebGLUniformLocation_h
@@ -33,20 +33,22 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class WebGLUniformLocation : public RefCounted<WebGLUniformLocation> {
+class WebGLUniformLocation : public RefCounted<WebGLUniformLocation>
+{
 public:
     virtual ~WebGLUniformLocation() { }
 
-    static PassRefPtr<WebGLUniformLocation> create(WebGLProgram*, GC3Dint location);
+    static PassRefPtr<WebGLUniformLocation> create( WebGLProgram *, GC3Dint location );
 
-    WebGLProgram* program() const;
+    WebGLProgram *program() const;
 
     GC3Dint location() const;
 
 protected:
-    WebGLUniformLocation(WebGLProgram*, GC3Dint location);
+    WebGLUniformLocation( WebGLProgram *, GC3Dint location );
 
 private:
     RefPtr<WebGLProgram> m_program;

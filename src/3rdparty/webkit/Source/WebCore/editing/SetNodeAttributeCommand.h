@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef SetNodeAttributeCommand_h
@@ -28,17 +28,20 @@
 
 #include "EditCommand.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class SetNodeAttributeCommand : public SimpleEditCommand {
+class SetNodeAttributeCommand : public SimpleEditCommand
+{
 public:
-    static PassRefPtr<SetNodeAttributeCommand> create(PassRefPtr<Element> element, const QualifiedName& attribute, const AtomicString& value)
+    static PassRefPtr<SetNodeAttributeCommand> create( PassRefPtr<Element> element, const QualifiedName &attribute,
+            const AtomicString &value )
     {
-        return adoptRef(new SetNodeAttributeCommand(element, attribute, value));
+        return adoptRef( new SetNodeAttributeCommand( element, attribute, value ) );
     }
 
 private:
-    SetNodeAttributeCommand(PassRefPtr<Element>, const QualifiedName& attribute, const AtomicString& value);
+    SetNodeAttributeCommand( PassRefPtr<Element>, const QualifiedName &attribute, const AtomicString &value );
 
     virtual void doApply();
     virtual void doUnapply();

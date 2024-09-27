@@ -30,19 +30,19 @@
 
 class QAbstractItemDelegatePrivate
 {
-   Q_DECLARE_PUBLIC(QAbstractItemDelegate)
+    Q_DECLARE_PUBLIC( QAbstractItemDelegate )
 
- public:
-   QAbstractItemDelegatePrivate();
-   virtual ~QAbstractItemDelegatePrivate() = default;
+public:
+    QAbstractItemDelegatePrivate();
+    virtual ~QAbstractItemDelegatePrivate() = default;
 
-   bool editorEventFilter(QObject *object, QEvent *event);
-   bool tryFixup(QWidget *editor);
-   QString textForRole(Qt::ItemDataRole role, const QVariant &value, const QLocale &locale, int precision = 6) const;
-   void _q_commitDataAndCloseEditor(QWidget *editor);
+    bool editorEventFilter( QObject *object, QEvent *event );
+    bool tryFixup( QWidget *editor );
+    QString textForRole( Qt::ItemDataRole role, const QVariant &value, const QLocale &locale, int precision = 6 ) const;
+    void _q_commitDataAndCloseEditor( QWidget *editor );
 
- protected:
-   QAbstractItemDelegate *q_ptr;
+protected:
+    QAbstractItemDelegate *q_ptr;
 };
 
 #endif // QT_NO_ITEMVIEWS

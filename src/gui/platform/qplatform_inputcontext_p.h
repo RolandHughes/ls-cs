@@ -26,19 +26,19 @@
 
 class QPlatformInputContextPrivate
 {
-   Q_DECLARE_PUBLIC(QPlatformInputContext)
+    Q_DECLARE_PUBLIC( QPlatformInputContext )
 
- public:
-   QPlatformInputContextPrivate() {}
-   ~QPlatformInputContextPrivate() {}
+public:
+    QPlatformInputContextPrivate() {}
+    ~QPlatformInputContextPrivate() {}
 
-   static void setInputMethodAccepted(bool accepted);
-   static bool inputMethodAccepted();
+    static void setInputMethodAccepted( bool accepted );
+    static bool inputMethodAccepted();
 
-   static bool s_inputMethodAccepted;
+    static bool s_inputMethodAccepted;
 
- protected:
-   QPlatformInputContext *q_ptr;
+protected:
+    QPlatformInputContext *q_ptr;
 
 };
 

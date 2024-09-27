@@ -27,62 +27,68 @@
 #include "SVGElement.h"
 #include <runtime/JSObjectWithGlobalObject.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class SVGColor;
 
-class JSSVGColor : public JSCSSValue {
+class JSSVGColor : public JSCSSValue
+{
     typedef JSCSSValue Base;
 public:
-    JSSVGColor(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<SVGColor>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
+    JSSVGColor( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<SVGColor> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 
-class JSSVGColorPrototype : public JSC::JSObjectWithGlobalObject {
+class JSSVGColorPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSSVGColorPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSSVGColorPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                         JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 // Functions
 
-JSC::EncodedJSValue JSC_HOST_CALL jsSVGColorPrototypeFunctionSetRGBColor(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsSVGColorPrototypeFunctionSetRGBColorICCColor(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsSVGColorPrototypeFunctionSetColor(JSC::ExecState*);
+JSC::EncodedJSValue JSC_HOST_CALL jsSVGColorPrototypeFunctionSetRGBColor( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsSVGColorPrototypeFunctionSetRGBColorICCColor( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsSVGColorPrototypeFunctionSetColor( JSC::ExecState * );
 // Attributes
 
-JSC::JSValue jsSVGColorColorType(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsSVGColorRgbColor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsSVGColorConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsSVGColorColorType( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsSVGColorRgbColor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsSVGColorConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 // Constants
 
-JSC::JSValue jsSVGColorSVG_COLORTYPE_UNKNOWN(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsSVGColorSVG_COLORTYPE_RGBCOLOR(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsSVGColorSVG_COLORTYPE_RGBCOLOR_ICCCOLOR(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsSVGColorSVG_COLORTYPE_CURRENTCOLOR(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsSVGColorSVG_COLORTYPE_UNKNOWN( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsSVGColorSVG_COLORTYPE_RGBCOLOR( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsSVGColorSVG_COLORTYPE_RGBCOLOR_ICCCOLOR( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsSVGColorSVG_COLORTYPE_CURRENTCOLOR( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

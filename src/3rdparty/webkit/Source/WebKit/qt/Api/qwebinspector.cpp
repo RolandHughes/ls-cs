@@ -78,9 +78,9 @@
 /*!
     Constructs an unbound QWebInspector with \a parent as its parent.
 */
-QWebInspector::QWebInspector(QWidget* parent)
-    : QWidget(parent)
-    , d(new QWebInspectorPrivate(this))
+QWebInspector::QWebInspector( QWidget *parent )
+    : QWidget( parent )
+    , d( new QWebInspectorPrivate( this ) )
 {
 }
 
@@ -90,7 +90,7 @@ QWebInspector::QWebInspector(QWidget* parent)
 QWebInspector::~QWebInspector()
 {
     // Remove association principally to prevent deleting a child frontend
-    setPage(0);
+    setPage( 0 );
     delete d;
     d = 0;
 }
@@ -109,22 +109,26 @@ QWebInspector::~QWebInspector()
 
     \sa page()
 */
-void QWebInspector::setPage(QWebPage* page)
+void QWebInspector::setPage( QWebPage *page )
 {
-    if (d->page) {
+    if ( d->page )
+    {
         // Break currentPage-->this
-        d->page->d->setInspector(0);
+        d->page->d->setInspector( 0 );
     }
-    if (page && page->d->inspector && page->d->inspector != this) {
+
+    if ( page && page->d->inspector && page->d->inspector != this )
+    {
         // Break newPage<->newPageCurrentInspector
-        page->d->inspector->setPage(0);
+        page->d->inspector->setPage( 0 );
     }
 
     d->page = page;
 
-    if (page) {
+    if ( page )
+    {
         // Setup the reciprocal association
-        page->d->setInspector(this);
+        page->d->setInspector( this );
     }
 }
 
@@ -132,7 +136,7 @@ void QWebInspector::setPage(QWebPage* page)
     Returns the inspected QWebPage.
     If no web page is currently associated, a null pointer is returned.
 */
-QWebPage* QWebInspector::page() const
+QWebPage *QWebInspector::page() const
 {
     return d->page;
 }
@@ -140,92 +144,114 @@ QWebPage* QWebInspector::page() const
 /*! \reimp */
 QSize QWebInspector::sizeHint() const
 {
-    return QSize(450, 300);
+    return QSize( 450, 300 );
 }
 
 /*! \reimp */
-bool QWebInspector::event(QEvent* ev)
+bool QWebInspector::event( QEvent *ev )
 {
-    return QWidget::event(ev);
+    return QWidget::event( ev );
 }
 
 /*! \reimp */
-void QWebInspector::resizeEvent(QResizeEvent* event)
+void QWebInspector::resizeEvent( QResizeEvent *event )
 {
-    d->adjustFrontendSize(event->size());
+    d->adjustFrontendSize( event->size() );
 }
 
 /*! \reimp */
-void QWebInspector::showEvent(QShowEvent* event)
+void QWebInspector::showEvent( QShowEvent *event )
 {
 #if ENABLE(INSPECTOR)
+
     // Allows QWebInspector::show() to init the inspector.
-    if (d->page)
+    if ( d->page )
+    {
         d->page->d->inspectorController()->show();
+    }
+
 #endif
 }
 
 /*! \reimp */
-void QWebInspector::hideEvent(QHideEvent* event)
+void QWebInspector::hideEvent( QHideEvent *event )
 {
 #if ENABLE(INSPECTOR)
-    if (d->page)
+
+    if ( d->page )
+    {
         d->page->d->inspectorController()->close();
+    }
+
 #endif
 }
 
 /*! \reimp */
-void QWebInspector::closeEvent(QCloseEvent* event)
+void QWebInspector::closeEvent( QCloseEvent *event )
 {
 #if ENABLE(INSPECTOR)
-    if (d->page)
+
+    if ( d->page )
+    {
         d->page->d->inspectorController()->close();
+    }
+
 #endif
 }
 
 /*! \internal */
-void QWebInspectorPrivate::setFrontend(QWidget* newFrontend)
+void QWebInspectorPrivate::setFrontend( QWidget *newFrontend )
 {
-    if (frontend)
-        frontend->setParent(0);
+    if ( frontend )
+    {
+        frontend->setParent( 0 );
+    }
 
     frontend = newFrontend;
 
-    if (frontend) {
-        frontend->setParent(q);
+    if ( frontend )
+    {
+        frontend->setParent( q );
         frontend->show();
-        adjustFrontendSize(q->size());
+        adjustFrontendSize( q->size() );
     }
 }
 
-/*! 
- * \internal 
+/*!
+ * \internal
  */
-void QWebInspectorPrivate::attachAndReplaceRemoteFrontend(QObject* newRemoteFrontend)
+void QWebInspectorPrivate::attachAndReplaceRemoteFrontend( QObject *newRemoteFrontend )
 {
-    if (remoteFrontend)
-        remoteFrontend->setParent(0);
+    if ( remoteFrontend )
+    {
+        remoteFrontend->setParent( 0 );
+    }
 
     remoteFrontend = newRemoteFrontend;
 
-    if (remoteFrontend)
-        remoteFrontend->setParent(q);
+    if ( remoteFrontend )
+    {
+        remoteFrontend->setParent( q );
+    }
 }
 
-/*! 
- * \internal 
+/*!
+ * \internal
  */
 void QWebInspectorPrivate::detachRemoteFrontend()
 {
-    if (remoteFrontend) {
+    if ( remoteFrontend )
+    {
         remoteFrontend->deleteLater();
         remoteFrontend = 0;
     }
 }
 
-void QWebInspectorPrivate::adjustFrontendSize(const QSize& size)
+void QWebInspectorPrivate::adjustFrontendSize( const QSize &size )
 {
-    if (frontend)
-        frontend->resize(size);
+    if ( frontend )
+    {
+        frontend->resize( size );
+    }
 }
 

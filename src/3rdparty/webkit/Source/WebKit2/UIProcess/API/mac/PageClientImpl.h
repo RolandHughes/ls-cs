@@ -33,94 +33,101 @@
 @class WKEditorUndoTargetObjC;
 @class WKView;
 
-namespace WebKit {
+namespace WebKit
+{
 
 class FindIndicatorWindow;
 
 // NOTE: This does not use String::operator NSString*() since that function
 // expects to be called on the thread running WebCore.
-NSString* nsStringFromWebCoreString(const String&);
+NSString *nsStringFromWebCoreString( const String & );
 
-class PageClientImpl : public PageClient {
+class PageClientImpl : public PageClient
+{
 public:
-    static PassOwnPtr<PageClientImpl> create(WKView*);
+    static PassOwnPtr<PageClientImpl> create( WKView * );
     virtual ~PageClientImpl();
 
 private:
-    PageClientImpl(WKView*);
+    PageClientImpl( WKView * );
 
     virtual PassOwnPtr<DrawingAreaProxy> createDrawingAreaProxy();
-    virtual void setViewNeedsDisplay(const WebCore::IntRect&);
+    virtual void setViewNeedsDisplay( const WebCore::IntRect & );
     virtual void displayView();
-    virtual void scrollView(const WebCore::IntRect& scrollRect, const WebCore::IntSize& scrollOffset);
+    virtual void scrollView( const WebCore::IntRect &scrollRect, const WebCore::IntSize &scrollOffset );
 
     virtual WebCore::IntSize viewSize();
     virtual bool isViewWindowActive();
     virtual bool isViewFocused();
     virtual bool isViewVisible();
     virtual bool isViewInWindow();
-    
+
     virtual void processDidCrash();
     virtual void pageClosed();
     virtual void didRelaunchProcess();
-    virtual void toolTipChanged(const String& oldToolTip, const String& newToolTip);
-    virtual void setCursor(const WebCore::Cursor&);
-    virtual void setViewportArguments(const WebCore::ViewportArguments&);
+    virtual void toolTipChanged( const String &oldToolTip, const String &newToolTip );
+    virtual void setCursor( const WebCore::Cursor & );
+    virtual void setViewportArguments( const WebCore::ViewportArguments & );
 
-    virtual void registerEditCommand(PassRefPtr<WebEditCommandProxy>, WebPageProxy::UndoOrRedo);
+    virtual void registerEditCommand( PassRefPtr<WebEditCommandProxy>, WebPageProxy::UndoOrRedo );
     virtual void clearAllEditCommands();
-    virtual bool canUndoRedo(WebPageProxy::UndoOrRedo);
-    virtual void executeUndoRedo(WebPageProxy::UndoOrRedo);
-    virtual bool interpretKeyEvent(const NativeWebKeyboardEvent&, Vector<WebCore::KeypressCommand>&);
-    virtual bool executeSavedCommandBySelector(const String& selector);
-    virtual void setDragImage(const WebCore::IntPoint& clientPosition, PassRefPtr<ShareableBitmap> dragImage, bool isLinkDrag);
-    virtual void updateTextInputState(bool updateSecureInputState);
+    virtual bool canUndoRedo( WebPageProxy::UndoOrRedo );
+    virtual void executeUndoRedo( WebPageProxy::UndoOrRedo );
+    virtual bool interpretKeyEvent( const NativeWebKeyboardEvent &, Vector<WebCore::KeypressCommand> & );
+    virtual bool executeSavedCommandBySelector( const String &selector );
+    virtual void setDragImage( const WebCore::IntPoint &clientPosition, PassRefPtr<ShareableBitmap> dragImage, bool isLinkDrag );
+    virtual void updateTextInputState( bool updateSecureInputState );
     virtual void resetTextInputState();
 
-    virtual WebCore::FloatRect convertToDeviceSpace(const WebCore::FloatRect&);
-    virtual WebCore::FloatRect convertToUserSpace(const WebCore::FloatRect&);
-    virtual WebCore::IntRect windowToScreen(const WebCore::IntRect&);
-    
-    virtual void doneWithKeyEvent(const NativeWebKeyboardEvent&, bool wasEventHandled);
+    virtual WebCore::FloatRect convertToDeviceSpace( const WebCore::FloatRect & );
+    virtual WebCore::FloatRect convertToUserSpace( const WebCore::FloatRect & );
+    virtual WebCore::IntRect windowToScreen( const WebCore::IntRect & );
 
-    virtual PassRefPtr<WebPopupMenuProxy> createPopupMenuProxy(WebPageProxy*);
-    virtual PassRefPtr<WebContextMenuProxy> createContextMenuProxy(WebPageProxy*);
+    virtual void doneWithKeyEvent( const NativeWebKeyboardEvent &, bool wasEventHandled );
 
-    void setFindIndicator(PassRefPtr<FindIndicator>, bool fadeOut);
+    virtual PassRefPtr<WebPopupMenuProxy> createPopupMenuProxy( WebPageProxy * );
+    virtual PassRefPtr<WebContextMenuProxy> createContextMenuProxy( WebPageProxy * );
 
-    virtual void enterAcceleratedCompositingMode(const LayerTreeContext&);
+    void setFindIndicator( PassRefPtr<FindIndicator>, bool fadeOut );
+
+    virtual void enterAcceleratedCompositingMode( const LayerTreeContext & );
     virtual void exitAcceleratedCompositingMode();
 
-    virtual void accessibilityWebProcessTokenReceived(const CoreIPC::DataReference&);    
-    virtual void setComplexTextInputEnabled(uint64_t pluginComplexTextInputIdentifier, bool complexTextInputEnabled);
+    virtual void accessibilityWebProcessTokenReceived( const CoreIPC::DataReference & );
+    virtual void setComplexTextInputEnabled( uint64_t pluginComplexTextInputIdentifier, bool complexTextInputEnabled );
 
     virtual CGContextRef containingWindowGraphicsContext();
 
     virtual void didChangeScrollbarsForMainFrame() const;
 
-    virtual void didCommitLoadForMainFrame(bool useCustomRepresentation);
-    virtual void didFinishLoadingDataForCustomRepresentation(const String& suggestedFilename, const CoreIPC::DataReference&);
+    virtual void didCommitLoadForMainFrame( bool useCustomRepresentation );
+    virtual void didFinishLoadingDataForCustomRepresentation( const String &suggestedFilename, const CoreIPC::DataReference & );
 
     virtual double customRepresentationZoomFactor();
-    virtual void setCustomRepresentationZoomFactor(double);
-    virtual void findStringInCustomRepresentation(const String&, FindOptions, unsigned maxMatchCount);
-    virtual void countStringMatchesInCustomRepresentation(const String&, FindOptions, unsigned maxMatchCount);
+    virtual void setCustomRepresentationZoomFactor( double );
+    virtual void findStringInCustomRepresentation( const String &, FindOptions, unsigned maxMatchCount );
+    virtual void countStringMatchesInCustomRepresentation( const String &, FindOptions, unsigned maxMatchCount );
 
-    virtual void flashBackingStoreUpdates(const Vector<WebCore::IntRect>& updateRects);
+    virtual void flashBackingStoreUpdates( const Vector<WebCore::IntRect> &updateRects );
 
-    virtual void didPerformDictionaryLookup(const String&, double scaleFactor, const DictionaryPopupInfo&);
+    virtual void didPerformDictionaryLookup( const String &, double scaleFactor, const DictionaryPopupInfo & );
     virtual void dismissDictionaryLookupPanel();
 
-    virtual void showCorrectionPanel(WebCore::CorrectionPanelInfo::PanelType, const WebCore::FloatRect& boundingBoxOfReplacedString, const String& replacedString, const String& replacementString, const Vector<String>& alternativeReplacementStrings);
-    virtual void dismissCorrectionPanel(WebCore::ReasonForDismissingCorrectionPanel);
-    virtual String dismissCorrectionPanelSoon(WebCore::ReasonForDismissingCorrectionPanel);
-    virtual void recordAutocorrectionResponse(WebCore::EditorClient::AutocorrectionResponseType, const String& replacedString, const String& replacementString);
+    virtual void showCorrectionPanel( WebCore::CorrectionPanelInfo::PanelType, const WebCore::FloatRect &boundingBoxOfReplacedString,
+                                      const String &replacedString, const String &replacementString, const Vector<String> &alternativeReplacementStrings );
+    virtual void dismissCorrectionPanel( WebCore::ReasonForDismissingCorrectionPanel );
+    virtual String dismissCorrectionPanelSoon( WebCore::ReasonForDismissingCorrectionPanel );
+    virtual void recordAutocorrectionResponse( WebCore::EditorClient::AutocorrectionResponseType, const String &replacedString,
+            const String &replacementString );
 
     virtual float userSpaceScaleFactor() const;
-    
-    virtual WKView* wkView() const { return m_wkView; }
 
-    WKView* m_wkView;
+    virtual WKView *wkView() const
+    {
+        return m_wkView;
+    }
+
+    WKView *m_wkView;
     RetainPtr<WKEditorUndoTargetObjC> m_undoTarget;
 #if !defined(BUILDING_ON_SNOW_LEOPARD)
     CorrectionPanel m_correctionPanel;

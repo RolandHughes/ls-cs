@@ -33,26 +33,29 @@
 #include "MathMLNames.h"
 #include "RenderMathMLOperator.h"
 
-namespace WebCore {
-    
+namespace WebCore
+{
+
 using namespace MathMLNames;
 
-inline MathMLTextElement::MathMLTextElement(const QualifiedName& tagName, Document* document)
-    : MathMLElement(tagName, document)
+inline MathMLTextElement::MathMLTextElement( const QualifiedName &tagName, Document *document )
+    : MathMLElement( tagName, document )
 {
 }
 
-PassRefPtr<MathMLTextElement> MathMLTextElement::create(const QualifiedName& tagName, Document* document)
+PassRefPtr<MathMLTextElement> MathMLTextElement::create( const QualifiedName &tagName, Document *document )
 {
-    return adoptRef(new MathMLTextElement(tagName, document));
+    return adoptRef( new MathMLTextElement( tagName, document ) );
 }
 
-RenderObject* MathMLTextElement::createRenderer(RenderArena* arena, RenderStyle* style)
+RenderObject *MathMLTextElement::createRenderer( RenderArena *arena, RenderStyle *style )
 {
-    if (hasLocalName(MathMLNames::moTag))
-        return new (arena) RenderMathMLOperator(this);
+    if ( hasLocalName( MathMLNames::moTag ) )
+    {
+        return new ( arena ) RenderMathMLOperator( this );
+    }
 
-    return MathMLElement::createRenderer(arena, style);
+    return MathMLElement::createRenderer( arena, style );
 }
 
 }

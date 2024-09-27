@@ -20,41 +20,55 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
 #include "RopeImpl.h"
 
-namespace JSC {
+namespace JSC
+{
 
-void RopeImpl::derefFibersNonRecursive(Vector<RopeImpl*, 32>& workQueue)
+void RopeImpl::derefFibersNonRecursive( Vector<RopeImpl *, 32> &workQueue )
 {
     unsigned fiberCount = this->fiberCount();
-    for (unsigned i = 0; i < fiberCount; ++i) {
-        Fiber& fiber = m_fibers[i];
-        if (isRope(fiber)) {
-            RopeImpl* nextRope = static_cast<RopeImpl*>(fiber);
-            if (nextRope->hasOneRef())
-                workQueue.append(nextRope);
+
+    for ( unsigned i = 0; i < fiberCount; ++i )
+    {
+        Fiber &fiber = m_fibers[i];
+
+        if ( isRope( fiber ) )
+        {
+            RopeImpl *nextRope = static_cast<RopeImpl *>( fiber );
+
+            if ( nextRope->hasOneRef() )
+            {
+                workQueue.append( nextRope );
+            }
             else
+            {
                 nextRope->deref();
-        } else
-            static_cast<StringImpl*>(fiber)->deref();
+            }
+        }
+        else
+        {
+            static_cast<StringImpl *>( fiber )->deref();
+        }
     }
 }
 
 void RopeImpl::destructNonRecursive()
 {
-    Vector<RopeImpl*, 32> workQueue;
+    Vector<RopeImpl *, 32> workQueue;
 
-    derefFibersNonRecursive(workQueue);
+    derefFibersNonRecursive( workQueue );
     delete this;
 
-    while (!workQueue.isEmpty()) {
-        RopeImpl* rope = workQueue.last();
+    while ( !workQueue.isEmpty() )
+    {
+        RopeImpl *rope = workQueue.last();
         workQueue.removeLast();
-        rope->derefFibersNonRecursive(workQueue);
+        rope->derefFibersNonRecursive( workQueue );
         delete rope;
     }
 }

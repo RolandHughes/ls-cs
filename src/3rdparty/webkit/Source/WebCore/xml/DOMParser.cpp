@@ -23,15 +23,18 @@
 #include "Document.h"
 #include "PlatformString.h"
 
-namespace WebCore {
-
-PassRefPtr<Document> DOMParser::parseFromString(const String& str, const String& contentType)
+namespace WebCore
 {
-    if (!DOMImplementation::isXMLMIMEType(contentType))
-        return 0;
 
-    RefPtr<Document> doc = DOMImplementation::createDocument(contentType, 0, KURL(), false);
-    doc->setContent(str);
+PassRefPtr<Document> DOMParser::parseFromString( const String &str, const String &contentType )
+{
+    if ( !DOMImplementation::isXMLMIMEType( contentType ) )
+    {
+        return 0;
+    }
+
+    RefPtr<Document> doc = DOMImplementation::createDocument( contentType, 0, KURL(), false );
+    doc->setContent( str );
     return doc.release();
 }
 

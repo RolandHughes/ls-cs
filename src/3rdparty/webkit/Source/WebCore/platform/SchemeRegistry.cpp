@@ -20,176 +20,211 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
 #include "config.h"
 #include "SchemeRegistry.h"
 
-namespace WebCore {
-
-static URLSchemesMap& localURLSchemes()
+namespace WebCore
 {
-    DEFINE_STATIC_LOCAL(URLSchemesMap, localSchemes, ());
 
-    if (localSchemes.isEmpty()) {
-        localSchemes.add("file");
+static URLSchemesMap &localURLSchemes()
+{
+    DEFINE_STATIC_LOCAL( URLSchemesMap, localSchemes, () );
+
+    if ( localSchemes.isEmpty() )
+    {
+        localSchemes.add( "file" );
 #if PLATFORM(MAC)
-        localSchemes.add("applewebdata");
+        localSchemes.add( "applewebdata" );
 #endif
 #if PLATFORM(QT)
-        localSchemes.add("qrc");
+        localSchemes.add( "qrc" );
 #endif
     }
 
     return localSchemes;
 }
 
-static URLSchemesMap& displayIsolatedURLSchemes()
+static URLSchemesMap &displayIsolatedURLSchemes()
 {
-    DEFINE_STATIC_LOCAL(URLSchemesMap, displayIsolatedSchemes, ());
+    DEFINE_STATIC_LOCAL( URLSchemesMap, displayIsolatedSchemes, () );
     return displayIsolatedSchemes;
 }
 
-static URLSchemesMap& secureSchemes()
+static URLSchemesMap &secureSchemes()
 {
-    DEFINE_STATIC_LOCAL(URLSchemesMap, secureSchemes, ());
+    DEFINE_STATIC_LOCAL( URLSchemesMap, secureSchemes, () );
 
-    if (secureSchemes.isEmpty()) {
-        secureSchemes.add("https");
-        secureSchemes.add("about");
-        secureSchemes.add("data");
+    if ( secureSchemes.isEmpty() )
+    {
+        secureSchemes.add( "https" );
+        secureSchemes.add( "about" );
+        secureSchemes.add( "data" );
     }
 
     return secureSchemes;
 }
 
-static URLSchemesMap& schemesWithUniqueOrigins()
+static URLSchemesMap &schemesWithUniqueOrigins()
 {
-    DEFINE_STATIC_LOCAL(URLSchemesMap, schemesWithUniqueOrigins, ());
+    DEFINE_STATIC_LOCAL( URLSchemesMap, schemesWithUniqueOrigins, () );
 
     // This is a willful violation of HTML5.
     // See https://bugs.webkit.org/show_bug.cgi?id=11885
-    if (schemesWithUniqueOrigins.isEmpty())
-        schemesWithUniqueOrigins.add("data");
+    if ( schemesWithUniqueOrigins.isEmpty() )
+    {
+        schemesWithUniqueOrigins.add( "data" );
+    }
 
     return schemesWithUniqueOrigins;
 }
 
-static URLSchemesMap& emptyDocumentSchemes()
+static URLSchemesMap &emptyDocumentSchemes()
 {
-    DEFINE_STATIC_LOCAL(URLSchemesMap, emptyDocumentSchemes, ());
+    DEFINE_STATIC_LOCAL( URLSchemesMap, emptyDocumentSchemes, () );
 
-    if (emptyDocumentSchemes.isEmpty())
-        emptyDocumentSchemes.add("about");
+    if ( emptyDocumentSchemes.isEmpty() )
+    {
+        emptyDocumentSchemes.add( "about" );
+    }
 
     return emptyDocumentSchemes;
 }
 
-static URLSchemesMap& canDisplayOnlyIfCanRequestSchemes()
+static URLSchemesMap &canDisplayOnlyIfCanRequestSchemes()
 {
-    DEFINE_STATIC_LOCAL(URLSchemesMap, canDisplayOnlyIfCanRequestSchemes, ());
+    DEFINE_STATIC_LOCAL( URLSchemesMap, canDisplayOnlyIfCanRequestSchemes, () );
 
 #if ENABLE(BLOB) || ENABLE(FILE_SYSTEM)
-    if (canDisplayOnlyIfCanRequestSchemes.isEmpty()) {
+
+    if ( canDisplayOnlyIfCanRequestSchemes.isEmpty() )
+    {
 #if ENABLE(BLOB)
-        canDisplayOnlyIfCanRequestSchemes.add("blob");
+        canDisplayOnlyIfCanRequestSchemes.add( "blob" );
 #endif
 #if ENABLE(FILE_SYSTEM)
-        canDisplayOnlyIfCanRequestSchemes.add("filesystem");
+        canDisplayOnlyIfCanRequestSchemes.add( "filesystem" );
 #endif
     }
+
 #endif // ENABLE(BLOB) || ENABLE(FILE_SYSTEM)
 
     return canDisplayOnlyIfCanRequestSchemes;
 }
 
-void SchemeRegistry::registerURLSchemeAsLocal(const String& scheme)
+void SchemeRegistry::registerURLSchemeAsLocal( const String &scheme )
 {
-    localURLSchemes().add(scheme);
+    localURLSchemes().add( scheme );
 }
 
-void SchemeRegistry::removeURLSchemeRegisteredAsLocal(const String& scheme)
+void SchemeRegistry::removeURLSchemeRegisteredAsLocal( const String &scheme )
 {
-    if (scheme == "file")
+    if ( scheme == "file" )
+    {
         return;
+    }
+
 #if PLATFORM(MAC)
-    if (scheme == "applewebdata")
+
+    if ( scheme == "applewebdata" )
+    {
         return;
+    }
+
 #endif
-    localURLSchemes().remove(scheme);
+    localURLSchemes().remove( scheme );
 }
 
-const URLSchemesMap& SchemeRegistry::localSchemes()
+const URLSchemesMap &SchemeRegistry::localSchemes()
 {
     return localURLSchemes();
 }
 
-bool SchemeRegistry::shouldTreatURLSchemeAsLocal(const String& scheme)
+bool SchemeRegistry::shouldTreatURLSchemeAsLocal( const String &scheme )
 {
-    if (scheme.isEmpty())
+    if ( scheme.isEmpty() )
+    {
         return false;
-    return localURLSchemes().contains(scheme);
+    }
+
+    return localURLSchemes().contains( scheme );
 }
 
-void SchemeRegistry::registerURLSchemeAsNoAccess(const String& scheme)
+void SchemeRegistry::registerURLSchemeAsNoAccess( const String &scheme )
 {
-    schemesWithUniqueOrigins().add(scheme);
+    schemesWithUniqueOrigins().add( scheme );
 }
 
-bool SchemeRegistry::shouldTreatURLSchemeAsNoAccess(const String& scheme)
+bool SchemeRegistry::shouldTreatURLSchemeAsNoAccess( const String &scheme )
 {
-    if (scheme.isEmpty())
+    if ( scheme.isEmpty() )
+    {
         return false;
-    return schemesWithUniqueOrigins().contains(scheme);
+    }
+
+    return schemesWithUniqueOrigins().contains( scheme );
 }
 
-void SchemeRegistry::registerURLSchemeAsDisplayIsolated(const String& scheme)
+void SchemeRegistry::registerURLSchemeAsDisplayIsolated( const String &scheme )
 {
-    displayIsolatedURLSchemes().add(scheme);
+    displayIsolatedURLSchemes().add( scheme );
 }
 
-bool SchemeRegistry::shouldTreatURLSchemeAsDisplayIsolated(const String& scheme)
+bool SchemeRegistry::shouldTreatURLSchemeAsDisplayIsolated( const String &scheme )
 {
-    if (scheme.isEmpty())
+    if ( scheme.isEmpty() )
+    {
         return false;
-    return displayIsolatedURLSchemes().contains(scheme);
+    }
+
+    return displayIsolatedURLSchemes().contains( scheme );
 }
 
-void SchemeRegistry::registerURLSchemeAsSecure(const String& scheme)
+void SchemeRegistry::registerURLSchemeAsSecure( const String &scheme )
 {
-    secureSchemes().add(scheme);
+    secureSchemes().add( scheme );
 }
 
-bool SchemeRegistry::shouldTreatURLSchemeAsSecure(const String& scheme)
+bool SchemeRegistry::shouldTreatURLSchemeAsSecure( const String &scheme )
 {
-    if (scheme.isEmpty())
+    if ( scheme.isEmpty() )
+    {
         return false;
-    return secureSchemes().contains(scheme);
+    }
+
+    return secureSchemes().contains( scheme );
 }
 
-void SchemeRegistry::registerURLSchemeAsEmptyDocument(const String& scheme)
+void SchemeRegistry::registerURLSchemeAsEmptyDocument( const String &scheme )
 {
-    emptyDocumentSchemes().add(scheme);
+    emptyDocumentSchemes().add( scheme );
 }
 
-bool SchemeRegistry::shouldLoadURLSchemeAsEmptyDocument(const String& scheme)
+bool SchemeRegistry::shouldLoadURLSchemeAsEmptyDocument( const String &scheme )
 {
-    if (scheme.isEmpty())
+    if ( scheme.isEmpty() )
+    {
         return false;
-    return emptyDocumentSchemes().contains(scheme);
+    }
+
+    return emptyDocumentSchemes().contains( scheme );
 }
 
-bool SchemeRegistry::canDisplayOnlyIfCanRequest(const String& scheme)
+bool SchemeRegistry::canDisplayOnlyIfCanRequest( const String &scheme )
 {
-    if (scheme.isEmpty())
+    if ( scheme.isEmpty() )
+    {
         return false;
-    return canDisplayOnlyIfCanRequestSchemes().contains(scheme);
+    }
+
+    return canDisplayOnlyIfCanRequestSchemes().contains( scheme );
 }
 
-void SchemeRegistry::registerAsCanDisplayOnlyIfCanRequest(const String& scheme)
+void SchemeRegistry::registerAsCanDisplayOnlyIfCanRequest( const String &scheme )
 {
-    canDisplayOnlyIfCanRequestSchemes().add(scheme);
+    canDisplayOnlyIfCanRequestSchemes().add( scheme );
 }
 
 } // namespace WebCore

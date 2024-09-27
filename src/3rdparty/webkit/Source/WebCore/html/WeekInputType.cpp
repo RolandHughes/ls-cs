@@ -36,7 +36,8 @@
 #include "HTMLNames.h"
 #include <wtf/PassOwnPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
@@ -44,12 +45,12 @@ static const double weekDefaultStepBase = -259200000.0; // The first day of 1970
 static const double weekDefaultStep = 1.0;
 static const double weekStepScaleFactor = 604800000.0;
 
-PassOwnPtr<InputType> WeekInputType::create(HTMLInputElement* element)
+PassOwnPtr<InputType> WeekInputType::create( HTMLInputElement *element )
 {
-    return adoptPtr(new WeekInputType(element));
+    return adoptPtr( new WeekInputType( element ) );
 }
 
-const AtomicString& WeekInputType::formControlType() const
+const AtomicString &WeekInputType::formControlType() const
 {
     return InputTypeNames::week();
 }
@@ -61,17 +62,17 @@ DateComponents::Type WeekInputType::dateType() const
 
 double WeekInputType::minimum() const
 {
-    return parseToDouble(element()->fastGetAttribute(minAttr), DateComponents::minimumWeek());
+    return parseToDouble( element()->fastGetAttribute( minAttr ), DateComponents::minimumWeek() );
 }
 
 double WeekInputType::maximum() const
 {
-    return parseToDouble(element()->fastGetAttribute(maxAttr), DateComponents::maximumWeek());
+    return parseToDouble( element()->fastGetAttribute( maxAttr ), DateComponents::maximumWeek() );
 }
 
 double WeekInputType::stepBase() const
 {
-    return parseToDouble(element()->fastGetAttribute(minAttr), weekDefaultStepBase);
+    return parseToDouble( element()->fastGetAttribute( minAttr ), weekDefaultStepBase );
 }
 
 double WeekInputType::defaultStep() const
@@ -89,17 +90,17 @@ bool WeekInputType::parsedStepValueShouldBeInteger() const
     return true;
 }
 
-bool WeekInputType::parseToDateComponentsInternal(const UChar* characters, unsigned length, DateComponents* out) const
+bool WeekInputType::parseToDateComponentsInternal( const UChar *characters, unsigned length, DateComponents *out ) const
 {
-    ASSERT(out);
+    ASSERT( out );
     unsigned end;
-    return out->parseWeek(characters, length, 0, end) && end == length;
+    return out->parseWeek( characters, length, 0, end ) && end == length;
 }
 
-bool WeekInputType::setMillisecondToDateComponents(double value, DateComponents* date) const
+bool WeekInputType::setMillisecondToDateComponents( double value, DateComponents *date ) const
 {
-    ASSERT(date);
-    return date->setMillisecondsSinceEpochForWeek(value);
+    ASSERT( date );
+    return date->setMillisecondsSinceEpochForWeek( value );
 }
 
 } // namespace WebCore

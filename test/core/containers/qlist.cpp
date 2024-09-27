@@ -21,129 +21,129 @@
 
 #include <cs_catch2.h>
 
-TEST_CASE("QList traits", "[qlist]")
+TEST_CASE( "QList traits", "[qlist]" )
 {
-   REQUIRE(std::is_copy_constructible_v<QList<int>> == true);
-   REQUIRE(std::is_move_constructible_v<QList<int>> == true);
+    REQUIRE( std::is_copy_constructible_v<QList<int>> == true );
+    REQUIRE( std::is_move_constructible_v<QList<int>> == true );
 
-   REQUIRE(std::is_copy_assignable_v<QList<int>> == true);
-   REQUIRE(std::is_move_assignable_v<QList<int>> == true);
+    REQUIRE( std::is_copy_assignable_v<QList<int>> == true );
+    REQUIRE( std::is_move_assignable_v<QList<int>> == true );
 
-   REQUIRE(std::has_virtual_destructor_v<QList<int>> == false);
+    REQUIRE( std::has_virtual_destructor_v<QList<int>> == false );
 }
 
-TEST_CASE("QList append", "[qlist]")
+TEST_CASE( "QList append", "[qlist]" )
 {
-   QList<QString> v = { "watermelon", "apple", "pear", "grapefruit" };
+    QList<QString> v = { "watermelon", "apple", "pear", "grapefruit" };
 
-   v.append("quince");
+    v.append( "quince" );
 
-   REQUIRE(v.contains("quince"));
-   REQUIRE(v[4] == "quince");
-   REQUIRE(v.length() == 5);
+    REQUIRE( v.contains( "quince" ) );
+    REQUIRE( v[4] == "quince" );
+    REQUIRE( v.length() == 5 );
 }
 
-TEST_CASE("QList clear", "[qlist]")
+TEST_CASE( "QList clear", "[qlist]" )
 {
-   QList<QString> list = { "watermelon", "apple", "pear", "grapefruit" };
+    QList<QString> list = { "watermelon", "apple", "pear", "grapefruit" };
 
-   list.clear();
+    list.clear();
 
-   REQUIRE(list.size() == 0);
+    REQUIRE( list.size() == 0 );
 }
 
-TEST_CASE("QList contains", "[qlist]")
+TEST_CASE( "QList contains", "[qlist]" )
 {
-   QList<QString> list = { "watermelon", "apple", "pear", "grapefruit" };
+    QList<QString> list = { "watermelon", "apple", "pear", "grapefruit" };
 
-   REQUIRE(list.contains("pear"));
-   REQUIRE(! list.contains("orange"));
+    REQUIRE( list.contains( "pear" ) );
+    REQUIRE( ! list.contains( "orange" ) );
 }
 
-TEST_CASE("QList empty", "[qlist]")
+TEST_CASE( "QList empty", "[qlist]" )
 {
-   QList<QString> list;
+    QList<QString> list;
 
-   REQUIRE(list.isEmpty());
+    REQUIRE( list.isEmpty() );
 }
 
-TEST_CASE("QList equality", "[qlist]")
+TEST_CASE( "QList equality", "[qlist]" )
 {
-   QList<QString> list1 = { "watermelon", "apple", "pear", "grapefruit" };
-   QList<QString> list2 = { "watermelon", "apple", "pear", "grapefruit" };
+    QList<QString> list1 = { "watermelon", "apple", "pear", "grapefruit" };
+    QList<QString> list2 = { "watermelon", "apple", "pear", "grapefruit" };
 
-   REQUIRE(list1 == list2);
-   REQUIRE(! (list1 != list2));
+    REQUIRE( list1 == list2 );
+    REQUIRE( ! ( list1 != list2 ) );
 }
 
-TEST_CASE("QList erase", "[qlist]")
+TEST_CASE( "QList erase", "[qlist]" )
 {
-   QList<QString> list = { "watermelon", "apple", "pear", "grapefruit" };
+    QList<QString> list = { "watermelon", "apple", "pear", "grapefruit" };
 
-   list.erase(list.begin() + 1);
+    list.erase( list.begin() + 1 );
 
-   REQUIRE(! list.contains("apple"));
+    REQUIRE( ! list.contains( "apple" ) );
 
-   REQUIRE(list.contains("watermelon"));
-   REQUIRE(list.contains("pear"));
-   REQUIRE(list.contains("grapefruit"));
+    REQUIRE( list.contains( "watermelon" ) );
+    REQUIRE( list.contains( "pear" ) );
+    REQUIRE( list.contains( "grapefruit" ) );
 
-   REQUIRE(list.length() == 3);
+    REQUIRE( list.length() == 3 );
 }
 
-TEST_CASE("QList insert", "[qlist]")
+TEST_CASE( "QList insert", "[qlist]" )
 {
-   QList<QString> list = { "watermelon", "apple", "pear", "grapefruit" };
+    QList<QString> list = { "watermelon", "apple", "pear", "grapefruit" };
 
-   list.insert(1, "mango");
+    list.insert( 1, "mango" );
 
-   REQUIRE(list.contains("mango"));
-   REQUIRE(list[1] == "mango");
-   REQUIRE(list.length() == 5);
+    REQUIRE( list.contains( "mango" ) );
+    REQUIRE( list[1] == "mango" );
+    REQUIRE( list.length() == 5 );
 }
 
-TEST_CASE("QList length", "[qlist]")
+TEST_CASE( "QList length", "[qlist]" )
 {
-   QList<QString> list = { "watermelon", "apple", "pear", "grapefruit" };
+    QList<QString> list = { "watermelon", "apple", "pear", "grapefruit" };
 
-   REQUIRE(list.length() == 4);
-   REQUIRE(list.size() == 4);
+    REQUIRE( list.length() == 4 );
+    REQUIRE( list.size() == 4 );
 }
 
-TEST_CASE("QList position", "[qlist]")
+TEST_CASE( "QList position", "[qlist]" )
 {
-   QList<QString> list = { "watermelon", "apple", "pear", "grapefruit" };
+    QList<QString> list = { "watermelon", "apple", "pear", "grapefruit" };
 
-   REQUIRE(list.first() == "watermelon");
-   REQUIRE(list.last()  == "grapefruit");
+    REQUIRE( list.first() == "watermelon" );
+    REQUIRE( list.last()  == "grapefruit" );
 
-   REQUIRE(list.front() == "watermelon");
-   REQUIRE(list.back()  == "grapefruit");
+    REQUIRE( list.front() == "watermelon" );
+    REQUIRE( list.back()  == "grapefruit" );
 }
 
-TEST_CASE("QList prepend", "[qlist]")
+TEST_CASE( "QList prepend", "[qlist]" )
 {
-   QList<QString> v = { "watermelon", "apple", "pear", "grapefruit" };
+    QList<QString> v = { "watermelon", "apple", "pear", "grapefruit" };
 
-   v.prepend("quince");
+    v.prepend( "quince" );
 
-   REQUIRE(v.contains("quince"));
-   REQUIRE(v[0] == "quince");
-   REQUIRE(v.length() == 5);
+    REQUIRE( v.contains( "quince" ) );
+    REQUIRE( v[0] == "quince" );
+    REQUIRE( v.length() == 5 );
 }
 
-TEST_CASE("QList remove", "[qlist]")
+TEST_CASE( "QList remove", "[qlist]" )
 {
-   QList<QString> list = { "watermelon", "apple", "pear", "grapefruit" };
+    QList<QString> list = { "watermelon", "apple", "pear", "grapefruit" };
 
-   list.removeOne("apple");
-   list.remove(0);
+    list.removeOne( "apple" );
+    list.remove( 0 );
 
-   REQUIRE(! list.contains("apple"));
-   REQUIRE(! list.contains("watermelon"));
+    REQUIRE( ! list.contains( "apple" ) );
+    REQUIRE( ! list.contains( "watermelon" ) );
 
-   REQUIRE(list.contains("pear"));
-   REQUIRE(list.contains("grapefruit"));
+    REQUIRE( list.contains( "pear" ) );
+    REQUIRE( list.contains( "grapefruit" ) );
 
-   REQUIRE(list.length() == 2);
+    REQUIRE( list.length() == 2 );
 }

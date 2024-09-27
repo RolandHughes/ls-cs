@@ -26,21 +26,23 @@
 #ifndef AccessibilityWebPageObject_h
 #define AccessibilityWebPageObject_h
 
-namespace WebKit {
+namespace WebKit
+{
 class WebPage;
 }
 
-@interface AccessibilityWebPageObject : NSObject {
-    WebKit::WebPage* m_page;
-    
+@interface AccessibilityWebPageObject : NSObject
+{
+    WebKit::WebPage *m_page;
+
     id m_parent;
-    NSArray* m_attributeNames;
-    NSMutableArray* m_accessibilityChildren;
+    NSArray *m_attributeNames;
+    NSMutableArray *m_accessibilityChildren;
 }
 
-- (void)setWebPage:(WebKit::WebPage*)page;
+- ( void )setWebPage:( WebKit::WebPage * )page;
 
-- (void)setRemoteParent:(id)parent;
+- ( void )setRemoteParent:( id )parent;
 
 @end
 

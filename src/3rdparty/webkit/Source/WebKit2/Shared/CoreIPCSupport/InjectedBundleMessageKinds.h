@@ -30,17 +30,21 @@
 
 #include "MessageID.h"
 
-namespace InjectedBundleMessage {
+namespace InjectedBundleMessage
+{
 
-enum Kind {
+enum Kind
+{
     PostMessage
 };
 
 }
 
-namespace CoreIPC {
+namespace CoreIPC
+{
 
-template<> struct MessageKindTraits<InjectedBundleMessage::Kind> {
+template<> struct MessageKindTraits<InjectedBundleMessage::Kind>
+{
     static const MessageClass messageClass = MessageClassInjectedBundle;
 };
 

@@ -33,61 +33,63 @@ class QSharedMemoryPrivate;
 
 class Q_CORE_EXPORT QSharedMemory : public QObject
 {
-   CORE_CS_OBJECT(QSharedMemory)
-   Q_DECLARE_PRIVATE(QSharedMemory)
+    CORE_CS_OBJECT( QSharedMemory )
+    Q_DECLARE_PRIVATE( QSharedMemory )
 
- public:
-   enum AccessMode {
-      ReadOnly,
-      ReadWrite
-   };
+public:
+    enum AccessMode
+    {
+        ReadOnly,
+        ReadWrite
+    };
 
-   enum SharedMemoryError {
-      NoError,
-      PermissionDenied,
-      InvalidSize,
-      KeyError,
-      AlreadyExists,
-      NotFound,
-      LockError,
-      OutOfResources,
-      UnknownError
-   };
+    enum SharedMemoryError
+    {
+        NoError,
+        PermissionDenied,
+        InvalidSize,
+        KeyError,
+        AlreadyExists,
+        NotFound,
+        LockError,
+        OutOfResources,
+        UnknownError
+    };
 
-   QSharedMemory(QObject *parent = nullptr);
-   QSharedMemory(const QString &key, QObject *parent = nullptr);
+    QSharedMemory( QObject *parent = nullptr );
+    QSharedMemory( const QString &key, QObject *parent = nullptr );
 
-   QSharedMemory(const QSharedMemory &) = delete;
-   QSharedMemory &operator=(const QSharedMemory &) = delete;
+    QSharedMemory( const QSharedMemory & ) = delete;
+    QSharedMemory &operator=( const QSharedMemory & ) = delete;
 
-   ~QSharedMemory();
+    ~QSharedMemory();
 
-   void setKey(const QString &key);
-   QString key() const;
-   void setNativeKey(const QString &key);
-   QString nativeKey() const;
+    void setKey( const QString &key );
+    QString key() const;
+    void setNativeKey( const QString &key );
+    QString nativeKey() const;
 
-   bool create(int size, AccessMode mode = ReadWrite);
-   int size() const;
+    bool create( int size, AccessMode mode = ReadWrite );
+    int size() const;
 
-   bool attach(AccessMode mode = ReadWrite);
-   bool isAttached() const;
-   bool detach();
+    bool attach( AccessMode mode = ReadWrite );
+    bool isAttached() const;
+    bool detach();
 
-   void *data();
-   const void *constData() const;
-   const void *data() const;
+    void *data();
+    const void *constData() const;
+    const void *data() const;
 
 #ifndef QT_NO_SYSTEMSEMAPHORE
-   bool lock();
-   bool unlock();
+    bool lock();
+    bool unlock();
 #endif
 
-   SharedMemoryError error() const;
-   QString errorString() const;
+    SharedMemoryError error() const;
+    QString errorString() const;
 
- protected:
-   QScopedPointer<QSharedMemoryPrivate> d_ptr;
+protected:
+    QScopedPointer<QSharedMemoryPrivate> d_ptr;
 };
 
 #endif // QT_NO_SHAREDMEMORY

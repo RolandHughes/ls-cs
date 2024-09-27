@@ -27,41 +27,50 @@
 using namespace std;
 using namespace WebCore;
 
-PassRefPtr<ImageGStreamer> ImageGStreamer::createImage(GstBuffer* buffer)
+PassRefPtr<ImageGStreamer> ImageGStreamer::createImage( GstBuffer *buffer )
 {
     int width = 0, height = 0;
-    GstCaps* caps = gst_buffer_get_caps(buffer);
+    GstCaps *caps = gst_buffer_get_caps( buffer );
     GstVideoFormat format;
-    if (!gst_video_format_parse_caps(caps, &format, &width, &height)) {
-        gst_caps_unref(caps);
+
+    if ( !gst_video_format_parse_caps( caps, &format, &width, &height ) )
+    {
+        gst_caps_unref( caps );
         return 0;
     }
 
-    gst_caps_unref(caps);
+    gst_caps_unref( caps );
 
     cairo_format_t cairoFormat;
-    if (format == GST_VIDEO_FORMAT_ARGB || format == GST_VIDEO_FORMAT_BGRA)
-        cairoFormat = CAIRO_FORMAT_ARGB32;
-    else
-        cairoFormat = CAIRO_FORMAT_RGB24;
 
-    return adoptRef(new ImageGStreamer(buffer, IntSize(width, height), cairoFormat));
+    if ( format == GST_VIDEO_FORMAT_ARGB || format == GST_VIDEO_FORMAT_BGRA )
+    {
+        cairoFormat = CAIRO_FORMAT_ARGB32;
+    }
+    else
+    {
+        cairoFormat = CAIRO_FORMAT_RGB24;
+    }
+
+    return adoptRef( new ImageGStreamer( buffer, IntSize( width, height ), cairoFormat ) );
 }
 
-ImageGStreamer::ImageGStreamer(GstBuffer*& buffer, IntSize size, cairo_format_t& cairoFormat)
-    : m_image(0)
+ImageGStreamer::ImageGStreamer( GstBuffer *&buffer, IntSize size, cairo_format_t &cairoFormat )
+    : m_image( 0 )
 {
-    cairo_surface_t* surface = cairo_image_surface_create_for_data(GST_BUFFER_DATA(buffer), cairoFormat,
-                                                    size.width(), size.height(),
-                                                    cairo_format_stride_for_width(cairoFormat, size.width()));
-    ASSERT(cairo_surface_status(surface) == CAIRO_STATUS_SUCCESS);
-    m_image = BitmapImage::create(surface);
+    cairo_surface_t *surface = cairo_image_surface_create_for_data( GST_BUFFER_DATA( buffer ), cairoFormat,
+                               size.width(), size.height(),
+                               cairo_format_stride_for_width( cairoFormat, size.width() ) );
+    ASSERT( cairo_surface_status( surface ) == CAIRO_STATUS_SUCCESS );
+    m_image = BitmapImage::create( surface );
 }
 
 ImageGStreamer::~ImageGStreamer()
 {
-    if (m_image)
+    if ( m_image )
+    {
         m_image.clear();
+    }
 
     m_image = 0;
 }

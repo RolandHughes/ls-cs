@@ -27,39 +27,42 @@
 #include "SimpleFontData.h"
 #include <wtf/Assertions.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 void FontCache::platformInit()
 {
-    if (!FontPlatformData::init())
+    if ( !FontPlatformData::init() )
+    {
         ASSERT_NOT_REACHED();
+    }
 }
 
-const SimpleFontData* FontCache::getFontDataForCharacters(const Font& font, const UChar* characters, int length)
+const SimpleFontData *FontCache::getFontDataForCharacters( const Font &font, const UChar *characters, int length )
 {
     return 0;
 }
 
-SimpleFontData* FontCache::getSimilarFontPlatformData(const Font& font)
+SimpleFontData *FontCache::getSimilarFontPlatformData( const Font &font )
 {
     return 0;
 }
 
-SimpleFontData* FontCache::getLastResortFallbackFont(const FontDescription& fontDescription)
+SimpleFontData *FontCache::getLastResortFallbackFont( const FontDescription &fontDescription )
 {
     // FIXME: Would be even better to somehow get the user's default font here.
     // For now we'll pick the default that the user would get without changing any prefs.
-    static AtomicString timesStr("Times New Roman");
-    return getCachedFontData(fontDescription, timesStr);
+    static AtomicString timesStr( "Times New Roman" );
+    return getCachedFontData( fontDescription, timesStr );
 }
 
-void FontCache::getTraitsInFamily(const AtomicString& familyName, Vector<unsigned>& traitsMasks)
+void FontCache::getTraitsInFamily( const AtomicString &familyName, Vector<unsigned> &traitsMasks )
 {
 }
 
-FontPlatformData* FontCache::createFontPlatformData(const FontDescription& fontDescription, const AtomicString& family)
+FontPlatformData *FontCache::createFontPlatformData( const FontDescription &fontDescription, const AtomicString &family )
 {
-    return new FontPlatformData(fontDescription, family);
+    return new FontPlatformData( fontDescription, family );
 }
 
 }

@@ -22,11 +22,11 @@
 
 #include "WebDOMEvent.h"
 
-WebNativeEventListener::WebNativeEventListener(WebUserEventListener* listener)
-    : WebCore::EventListener(CPPEventListenerType),
-    m_listener(listener)
+WebNativeEventListener::WebNativeEventListener( WebUserEventListener *listener )
+    : WebCore::EventListener( CPPEventListenerType ),
+      m_listener( listener )
 {
-    ASSERT(m_listener);
+    ASSERT( m_listener );
     m_listener->ref();
 }
 
@@ -35,19 +35,19 @@ WebNativeEventListener::~WebNativeEventListener()
     m_listener->deref();
 }
 
-void WebNativeEventListener::handleEvent(WebCore::ScriptExecutionContext*, WebCore::Event* event)
+void WebNativeEventListener::handleEvent( WebCore::ScriptExecutionContext *, WebCore::Event *event )
 {
-    m_listener->handleEvent(toWebKit(event));
+    m_listener->handleEvent( toWebKit( event ) );
 }
 
-bool WebNativeEventListener::reportError(WebCore::ScriptExecutionContext*, const WTF::String&, const WTF::String&, int)
+bool WebNativeEventListener::reportError( WebCore::ScriptExecutionContext *, const WTF::String &, const WTF::String &, int )
 {
     // FIXME: Implement error handling
     return false;
 }
 
-bool WebNativeEventListener::operator==(const WebCore::EventListener& other)
+bool WebNativeEventListener::operator==( const WebCore::EventListener &other )
 {
-    const WebNativeEventListener* ptrOther = cast(&other);
+    const WebNativeEventListener *ptrOther = cast( &other );
     return ptrOther && m_listener == ptrOther->m_listener;
 }

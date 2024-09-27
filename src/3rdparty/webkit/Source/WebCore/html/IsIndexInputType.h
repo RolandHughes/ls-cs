@@ -34,15 +34,17 @@
 #include "TextFieldInputType.h"
 #include <wtf/text/AtomicString.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class IsIndexInputType : public TextFieldInputType {
+class IsIndexInputType : public TextFieldInputType
+{
 public:
-    static PassOwnPtr<InputType> create(HTMLInputElement*);
+    static PassOwnPtr<InputType> create( HTMLInputElement * );
 
 private:
-    IsIndexInputType(HTMLInputElement* element) : TextFieldInputType(element) { };
-    virtual const AtomicString& formControlType() const;
+    IsIndexInputType( HTMLInputElement *element ) : TextFieldInputType( element ) { };
+    virtual const AtomicString &formControlType() const;
     virtual bool supportsRequired() const;
     virtual PassRefPtr<HTMLFormElement> formForSubmission() const;
     virtual bool shouldRespectListAttribute();

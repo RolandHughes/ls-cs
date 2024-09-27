@@ -26,13 +26,14 @@
 #include "Document.h"
 #include "NamedNodeMap.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-DocumentType::DocumentType(Document* document, const String& name, const String& publicId, const String& systemId)
-    : Node(document, CreateOther)
-    , m_name(name)
-    , m_publicId(publicId)
-    , m_systemId(systemId)
+DocumentType::DocumentType( Document *document, const String &name, const String &publicId, const String &systemId )
+    : Node( document, CreateOther )
+    , m_name( name )
+    , m_publicId( publicId )
+    , m_systemId( systemId )
 {
 }
 
@@ -51,27 +52,36 @@ Node::NodeType DocumentType::nodeType() const
     return DOCUMENT_TYPE_NODE;
 }
 
-PassRefPtr<Node> DocumentType::cloneNode(bool /*deep*/)
+PassRefPtr<Node> DocumentType::cloneNode( bool /*deep*/ )
 {
-    return create(document(), m_name, m_publicId, m_systemId);
+    return create( document(), m_name, m_publicId, m_systemId );
 }
 
 void DocumentType::insertedIntoDocument()
 {
     // Our document node can be null if we were created by a DOMImplementation.  We use the parent() instead.
-    ASSERT(parentNode() && parentNode()->isDocumentNode());
-    if (parentNode() && parentNode()->isDocumentNode()) {
-        Document* doc = static_cast<Document*>(parentNode());
-        if (!doc->doctype())
-            doc->setDocType(this);
+    ASSERT( parentNode() && parentNode()->isDocumentNode() );
+
+    if ( parentNode() && parentNode()->isDocumentNode() )
+    {
+        Document *doc = static_cast<Document *>( parentNode() );
+
+        if ( !doc->doctype() )
+        {
+            doc->setDocType( this );
+        }
     }
+
     Node::insertedIntoDocument();
 }
 
 void DocumentType::removedFromDocument()
 {
-    if (document() && document()->doctype() == this)
-        document()->setDocType(0);
+    if ( document() && document()->doctype() == this )
+    {
+        document()->setDocType( 0 );
+    }
+
     Node::removedFromDocument();
 }
 

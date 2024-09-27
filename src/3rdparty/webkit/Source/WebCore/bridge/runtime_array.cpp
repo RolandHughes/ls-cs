@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -33,17 +33,18 @@
 
 using namespace WebCore;
 
-namespace JSC {
+namespace JSC
+{
 
 const ClassInfo RuntimeArray::s_info = { "RuntimeArray", &JSArray::s_info, 0, 0 };
 
-RuntimeArray::RuntimeArray(ExecState* exec, Bindings::Array* array)
-    // FIXME: deprecatedGetDOMStructure uses the prototype off of the wrong global object
-    // We need to pass in the right global object for "array".
-    : JSArray(exec->globalData(), deprecatedGetDOMStructure<RuntimeArray>(exec))
+RuntimeArray::RuntimeArray( ExecState *exec, Bindings::Array *array )
+// FIXME: deprecatedGetDOMStructure uses the prototype off of the wrong global object
+// We need to pass in the right global object for "array".
+    : JSArray( exec->globalData(), deprecatedGetDOMStructure<RuntimeArray>( exec ) )
 {
-    ASSERT(inherits(&s_info));
-    setSubclassData(array);
+    ASSERT( inherits( &s_info ) );
+    setSubclassData( array );
 }
 
 RuntimeArray::~RuntimeArray()
@@ -51,115 +52,133 @@ RuntimeArray::~RuntimeArray()
     delete getConcreteArray();
 }
 
-JSValue RuntimeArray::lengthGetter(ExecState*, JSValue slotBase, const Identifier&)
+JSValue RuntimeArray::lengthGetter( ExecState *, JSValue slotBase, const Identifier & )
 {
-    RuntimeArray* thisObj = static_cast<RuntimeArray*>(asObject(slotBase));
-    return jsNumber(thisObj->getLength());
+    RuntimeArray *thisObj = static_cast<RuntimeArray *>( asObject( slotBase ) );
+    return jsNumber( thisObj->getLength() );
 }
 
-JSValue RuntimeArray::indexGetter(ExecState* exec, JSValue slotBase, unsigned index)
+JSValue RuntimeArray::indexGetter( ExecState *exec, JSValue slotBase, unsigned index )
 {
-    RuntimeArray* thisObj = static_cast<RuntimeArray*>(asObject(slotBase));
-    return thisObj->getConcreteArray()->valueAt(exec, index);
+    RuntimeArray *thisObj = static_cast<RuntimeArray *>( asObject( slotBase ) );
+    return thisObj->getConcreteArray()->valueAt( exec, index );
 }
 
-void RuntimeArray::getOwnPropertyNames(ExecState* exec, PropertyNameArray& propertyNames, EnumerationMode mode)
+void RuntimeArray::getOwnPropertyNames( ExecState *exec, PropertyNameArray &propertyNames, EnumerationMode mode )
 {
     unsigned length = getLength();
-    for (unsigned i = 0; i < length; ++i)
-        propertyNames.add(Identifier::from(exec, i));
 
-    if (mode == IncludeDontEnumProperties)
-        propertyNames.add(exec->propertyNames().length);
+    for ( unsigned i = 0; i < length; ++i )
+    {
+        propertyNames.add( Identifier::from( exec, i ) );
+    }
 
-    JSObject::getOwnPropertyNames(exec, propertyNames, mode);
+    if ( mode == IncludeDontEnumProperties )
+    {
+        propertyNames.add( exec->propertyNames().length );
+    }
+
+    JSObject::getOwnPropertyNames( exec, propertyNames, mode );
 }
 
-bool RuntimeArray::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool RuntimeArray::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    if (propertyName == exec->propertyNames().length) {
-        slot.setCacheableCustom(this, lengthGetter);
+    if ( propertyName == exec->propertyNames().length )
+    {
+        slot.setCacheableCustom( this, lengthGetter );
         return true;
     }
-    
+
     bool ok;
-    unsigned index = propertyName.toArrayIndex(ok);
-    if (ok) {
-        if (index < getLength()) {
-            slot.setCustomIndex(this, index, indexGetter);
+    unsigned index = propertyName.toArrayIndex( ok );
+
+    if ( ok )
+    {
+        if ( index < getLength() )
+        {
+            slot.setCustomIndex( this, index, indexGetter );
             return true;
         }
     }
-    
-    return JSObject::getOwnPropertySlot(exec, propertyName, slot);
+
+    return JSObject::getOwnPropertySlot( exec, propertyName, slot );
 }
 
-bool RuntimeArray::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool RuntimeArray::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    if (propertyName == exec->propertyNames().length) {
+    if ( propertyName == exec->propertyNames().length )
+    {
         PropertySlot slot;
-        slot.setCustom(this, lengthGetter);
-        descriptor.setDescriptor(slot.getValue(exec, propertyName), ReadOnly | DontDelete | DontEnum);
+        slot.setCustom( this, lengthGetter );
+        descriptor.setDescriptor( slot.getValue( exec, propertyName ), ReadOnly | DontDelete | DontEnum );
         return true;
     }
-    
+
     bool ok;
-    unsigned index = propertyName.toArrayIndex(ok);
-    if (ok) {
-        if (index < getLength()) {
+    unsigned index = propertyName.toArrayIndex( ok );
+
+    if ( ok )
+    {
+        if ( index < getLength() )
+        {
             PropertySlot slot;
-            slot.setCustomIndex(this, index, indexGetter);
-            descriptor.setDescriptor(slot.getValue(exec, propertyName), DontDelete | DontEnum);
+            slot.setCustomIndex( this, index, indexGetter );
+            descriptor.setDescriptor( slot.getValue( exec, propertyName ), DontDelete | DontEnum );
             return true;
         }
     }
-    
-    return JSObject::getOwnPropertyDescriptor(exec, propertyName, descriptor);
+
+    return JSObject::getOwnPropertyDescriptor( exec, propertyName, descriptor );
 }
 
-bool RuntimeArray::getOwnPropertySlot(ExecState *exec, unsigned index, PropertySlot& slot)
+bool RuntimeArray::getOwnPropertySlot( ExecState *exec, unsigned index, PropertySlot &slot )
 {
-    if (index < getLength()) {
-        slot.setCustomIndex(this, index, indexGetter);
+    if ( index < getLength() )
+    {
+        slot.setCustomIndex( this, index, indexGetter );
         return true;
     }
-    
-    return JSObject::getOwnPropertySlot(exec, index, slot);
+
+    return JSObject::getOwnPropertySlot( exec, index, slot );
 }
 
-void RuntimeArray::put(ExecState* exec, const Identifier& propertyName, JSValue value, PutPropertySlot& slot)
+void RuntimeArray::put( ExecState *exec, const Identifier &propertyName, JSValue value, PutPropertySlot &slot )
 {
-    if (propertyName == exec->propertyNames().length) {
-        throwError(exec, createRangeError(exec, "Range error"));
+    if ( propertyName == exec->propertyNames().length )
+    {
+        throwError( exec, createRangeError( exec, "Range error" ) );
         return;
     }
-    
+
     bool ok;
-    unsigned index = propertyName.toArrayIndex(ok);
-    if (ok) {
-        getConcreteArray()->setValueAt(exec, index, value);
+    unsigned index = propertyName.toArrayIndex( ok );
+
+    if ( ok )
+    {
+        getConcreteArray()->setValueAt( exec, index, value );
         return;
     }
-    
-    JSObject::put(exec, propertyName, value, slot);
+
+    JSObject::put( exec, propertyName, value, slot );
 }
 
-void RuntimeArray::put(ExecState* exec, unsigned index, JSValue value)
+void RuntimeArray::put( ExecState *exec, unsigned index, JSValue value )
 {
-    if (index >= getLength()) {
-        throwError(exec, createRangeError(exec, "Range error"));
+    if ( index >= getLength() )
+    {
+        throwError( exec, createRangeError( exec, "Range error" ) );
         return;
     }
-    
-    getConcreteArray()->setValueAt(exec, index, value);
+
+    getConcreteArray()->setValueAt( exec, index, value );
 }
 
-bool RuntimeArray::deleteProperty(ExecState*, const Identifier&)
+bool RuntimeArray::deleteProperty( ExecState *, const Identifier & )
 {
     return false;
 }
 
-bool RuntimeArray::deleteProperty(ExecState*, unsigned)
+bool RuntimeArray::deleteProperty( ExecState *, unsigned )
 {
     return false;
 }

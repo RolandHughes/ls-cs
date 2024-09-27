@@ -28,96 +28,108 @@
 #include <qpaintengine_p.h>
 #include <qpaintengine_raster_p.h>
 
-typedef struct {
-   BITMAPINFOHEADER bmiHeader;
-   DWORD redMask;
-   DWORD greenMask;
-   DWORD blueMask;
+typedef struct
+{
+    BITMAPINFOHEADER bmiHeader;
+    DWORD redMask;
+    DWORD greenMask;
+    DWORD blueMask;
 } BITMAPINFO_MASK;
 
 static inline HDC createDC()
 {
-   HDC display_dc = GetDC(nullptr);
-   HDC hdc = CreateCompatibleDC(display_dc);
-   ReleaseDC(nullptr, display_dc);
-   Q_ASSERT(hdc);
+    HDC display_dc = GetDC( nullptr );
+    HDC hdc = CreateCompatibleDC( display_dc );
+    ReleaseDC( nullptr, display_dc );
+    Q_ASSERT( hdc );
 
-   return hdc;
+    return hdc;
 }
 
-static inline HBITMAP createDIB(HDC hdc, int width, int height, QImage::Format format, uchar **bitsIn)
+static inline HBITMAP createDIB( HDC hdc, int width, int height, QImage::Format format, uchar **bitsIn )
 {
-   BITMAPINFO_MASK bmi;
-   memset(&bmi, 0, sizeof(bmi));
-   bmi.bmiHeader.biSize        = sizeof(BITMAPINFOHEADER);
-   bmi.bmiHeader.biWidth       = width;
-   bmi.bmiHeader.biHeight      = -height; // top-down.
-   bmi.bmiHeader.biPlanes      = 1;
-   bmi.bmiHeader.biSizeImage   = 0;
+    BITMAPINFO_MASK bmi;
+    memset( &bmi, 0, sizeof( bmi ) );
+    bmi.bmiHeader.biSize        = sizeof( BITMAPINFOHEADER );
+    bmi.bmiHeader.biWidth       = width;
+    bmi.bmiHeader.biHeight      = -height; // top-down.
+    bmi.bmiHeader.biPlanes      = 1;
+    bmi.bmiHeader.biSizeImage   = 0;
 
-   if (format == QImage::Format_RGB16) {
-      bmi.bmiHeader.biBitCount = 16;
-      bmi.bmiHeader.biCompression = BI_BITFIELDS;
-      bmi.redMask = 0xF800;
-      bmi.greenMask = 0x07E0;
-      bmi.blueMask = 0x001F;
-   } else {
-      bmi.bmiHeader.biBitCount    = 32;
-      bmi.bmiHeader.biCompression = BI_RGB;
-      bmi.redMask   = 0;
-      bmi.greenMask = 0;
-      bmi.blueMask  = 0;
-   }
+    if ( format == QImage::Format_RGB16 )
+    {
+        bmi.bmiHeader.biBitCount = 16;
+        bmi.bmiHeader.biCompression = BI_BITFIELDS;
+        bmi.redMask = 0xF800;
+        bmi.greenMask = 0x07E0;
+        bmi.blueMask = 0x001F;
+    }
+    else
+    {
+        bmi.bmiHeader.biBitCount    = 32;
+        bmi.bmiHeader.biCompression = BI_RGB;
+        bmi.redMask   = 0;
+        bmi.greenMask = 0;
+        bmi.blueMask  = 0;
+    }
 
-   uchar *bits = nullptr;
-   HBITMAP bitmap = CreateDIBSection(hdc, reinterpret_cast<BITMAPINFO *>(&bmi),
-         DIB_RGB_COLORS, reinterpret_cast<void **>(&bits), nullptr, 0);
+    uchar *bits = nullptr;
+    HBITMAP bitmap = CreateDIBSection( hdc, reinterpret_cast<BITMAPINFO *>( &bmi ),
+                                       DIB_RGB_COLORS, reinterpret_cast<void **>( &bits ), nullptr, 0 );
 
-   if (! bitmap || !bits) {
-      qFatal("%s: CreateDIBSection failed.", __FUNCTION__);
-   }
+    if ( ! bitmap || !bits )
+    {
+        qFatal( "%s: CreateDIBSection failed.", __FUNCTION__ );
+    }
 
-   *bitsIn = bits;
+    *bitsIn = bits;
 
-   return bitmap;
+    return bitmap;
 }
 
-QWindowsNativeImage::QWindowsNativeImage(int width, int height, QImage::Format format)
-   : m_hdc(createDC()), m_bitmap(nullptr), m_null_bitmap(nullptr)
+QWindowsNativeImage::QWindowsNativeImage( int width, int height, QImage::Format format )
+    : m_hdc( createDC() ), m_bitmap( nullptr ), m_null_bitmap( nullptr )
 {
-   if (width != 0 && height != 0) {
-      uchar *bits;
-      m_bitmap = createDIB(m_hdc, width, height, format, &bits);
-      m_null_bitmap = static_cast<HBITMAP>(SelectObject(m_hdc, m_bitmap));
-      m_image = QImage(bits, width, height, format);
+    if ( width != 0 && height != 0 )
+    {
+        uchar *bits;
+        m_bitmap = createDIB( m_hdc, width, height, format, &bits );
+        m_null_bitmap = static_cast<HBITMAP>( SelectObject( m_hdc, m_bitmap ) );
+        m_image = QImage( bits, width, height, format );
 
-      Q_ASSERT(m_image.paintEngine()->type() == QPaintEngine::Raster);
-      static_cast<QRasterPaintEngine *>(m_image.paintEngine())->setDC(m_hdc);
+        Q_ASSERT( m_image.paintEngine()->type() == QPaintEngine::Raster );
+        static_cast<QRasterPaintEngine *>( m_image.paintEngine() )->setDC( m_hdc );
 
-   } else {
-      m_image = QImage(width, height, format);
-   }
+    }
+    else
+    {
+        m_image = QImage( width, height, format );
+    }
 
-   GdiFlush();
+    GdiFlush();
 }
 
 QWindowsNativeImage::~QWindowsNativeImage()
 {
-   if (m_hdc) {
-      if (m_bitmap) {
-         if (m_null_bitmap) {
-            SelectObject(m_hdc, m_null_bitmap);
-         }
-         DeleteObject(m_bitmap);
-      }
+    if ( m_hdc )
+    {
+        if ( m_bitmap )
+        {
+            if ( m_null_bitmap )
+            {
+                SelectObject( m_hdc, m_null_bitmap );
+            }
 
-      DeleteDC(m_hdc);
-   }
+            DeleteObject( m_bitmap );
+        }
+
+        DeleteDC( m_hdc );
+    }
 }
 
 QImage::Format QWindowsNativeImage::systemFormat()
 {
-   static const int depth = QWindowsContext::instance()->screenDepth();
-   return depth == 16 ? QImage::Format_RGB16 : QImage::Format_RGB32;
+    static const int depth = QWindowsContext::instance()->screenDepth();
+    return depth == 16 ? QImage::Format_RGB16 : QImage::Format_RGB32;
 }
 

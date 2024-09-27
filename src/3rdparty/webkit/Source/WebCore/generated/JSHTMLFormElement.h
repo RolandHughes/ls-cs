@@ -24,78 +24,85 @@
 #include "JSHTMLElement.h"
 #include <runtime/JSObjectWithGlobalObject.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class HTMLFormElement;
 
-class JSHTMLFormElement : public JSHTMLElement {
+class JSHTMLFormElement : public JSHTMLElement
+{
     typedef JSHTMLElement Base;
 public:
-    JSHTMLFormElement(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<HTMLFormElement>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
-    virtual void put(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::JSValue, JSC::PutPropertySlot&);
+    JSHTMLFormElement( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<HTMLFormElement> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
+    virtual void put( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::JSValue, JSC::PutPropertySlot & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    virtual void getOwnPropertyNames(JSC::ExecState*, JSC::PropertyNameArray&, JSC::EnumerationMode mode = JSC::ExcludeDontEnumProperties);
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
+    virtual void getOwnPropertyNames( JSC::ExecState *, JSC::PropertyNameArray &,
+                                      JSC::EnumerationMode mode = JSC::ExcludeDontEnumProperties );
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetPropertyNames | JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
-    static JSC::JSValue indexGetter(JSC::ExecState*, JSC::JSValue, unsigned);
+    static JSC::JSValue indexGetter( JSC::ExecState *, JSC::JSValue, unsigned );
 private:
-    static bool canGetItemsForName(JSC::ExecState*, HTMLFormElement*, const JSC::Identifier&);
-    static JSC::JSValue nameGetter(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+    static bool canGetItemsForName( JSC::ExecState *, HTMLFormElement *, const JSC::Identifier & );
+    static JSC::JSValue nameGetter( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 };
 
 
-class JSHTMLFormElementPrototype : public JSC::JSObjectWithGlobalObject {
+class JSHTMLFormElementPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSHTMLFormElementPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSHTMLFormElementPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                                JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 // Functions
 
-JSC::EncodedJSValue JSC_HOST_CALL jsHTMLFormElementPrototypeFunctionSubmit(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsHTMLFormElementPrototypeFunctionReset(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsHTMLFormElementPrototypeFunctionCheckValidity(JSC::ExecState*);
+JSC::EncodedJSValue JSC_HOST_CALL jsHTMLFormElementPrototypeFunctionSubmit( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsHTMLFormElementPrototypeFunctionReset( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsHTMLFormElementPrototypeFunctionCheckValidity( JSC::ExecState * );
 // Attributes
 
-JSC::JSValue jsHTMLFormElementElements(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsHTMLFormElementLength(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsHTMLFormElementName(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLFormElementName(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLFormElementNoValidate(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLFormElementNoValidate(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLFormElementAcceptCharset(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLFormElementAcceptCharset(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLFormElementAction(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLFormElementAction(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLFormElementEncoding(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLFormElementEncoding(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLFormElementEnctype(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLFormElementEnctype(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLFormElementMethod(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLFormElementMethod(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLFormElementTarget(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLFormElementTarget(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLFormElementConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsHTMLFormElementElements( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsHTMLFormElementLength( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsHTMLFormElementName( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLFormElementName( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLFormElementNoValidate( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLFormElementNoValidate( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLFormElementAcceptCharset( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLFormElementAcceptCharset( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLFormElementAction( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLFormElementAction( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLFormElementEncoding( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLFormElementEncoding( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLFormElementEnctype( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLFormElementEnctype( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLFormElementMethod( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLFormElementMethod( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLFormElementTarget( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLFormElementTarget( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLFormElementConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

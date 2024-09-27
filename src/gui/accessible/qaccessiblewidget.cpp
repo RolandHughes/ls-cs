@@ -39,513 +39,606 @@
 
 #include <qwidget_p.h>
 
-static QList<QWidget *> childWidgets(const QWidget *widget)
+static QList<QWidget *> childWidgets( const QWidget *widget )
 {
-   QList<QObject *> list = widget->children();
-   QList<QWidget *> widgets;
+    QList<QObject *> list = widget->children();
+    QList<QWidget *> widgets;
 
-   for (int i = 0; i < list.size(); ++i) {
-      QWidget *tmpWidget = qobject_cast<QWidget *>(list.at(i));
+    for ( int i = 0; i < list.size(); ++i )
+    {
+        QWidget *tmpWidget = qobject_cast<QWidget *>( list.at( i ) );
 
-      if (tmpWidget && ! tmpWidget->isWindow() && ! qobject_cast<QFocusFrame *>(tmpWidget)
+        if ( tmpWidget && ! tmpWidget->isWindow() && ! qobject_cast<QFocusFrame *>( tmpWidget )
 
 #if ! defined(QT_NO_MENU)
-            && ! qobject_cast<QMenu *>(tmpWidget)
+                && ! qobject_cast<QMenu *>( tmpWidget )
 #endif
 
-            && tmpWidget->objectName() != "qt_rubberband" && tmpWidget->objectName() != "qt_spinbox_lineedit") {
+                && tmpWidget->objectName() != "qt_rubberband" && tmpWidget->objectName() != "qt_spinbox_lineedit" )
+        {
 
-         widgets.append(tmpWidget);
-      }
-   }
+            widgets.append( tmpWidget );
+        }
+    }
 
-   return widgets;
+    return widgets;
 }
 
-static QString buddyString(const QWidget *widget)
+static QString buddyString( const QWidget *widget )
 {
-   if (! widget) {
-      return QString();
-   }
+    if ( ! widget )
+    {
+        return QString();
+    }
 
-   QWidget *parent = widget->parentWidget();
+    QWidget *parent = widget->parentWidget();
 
-   if (! parent) {
-      return QString();
-   }
+    if ( ! parent )
+    {
+        return QString();
+    }
 
 #ifndef QT_NO_SHORTCUT
-   QObjectList ol = parent->children();
+    QObjectList ol = parent->children();
 
-   for (int i = 0; i < ol.size(); ++i) {
-      QLabel *label = qobject_cast<QLabel *>(ol.at(i));
-      if (label && label->buddy() == widget) {
-         return label->text();
-      }
-   }
+    for ( int i = 0; i < ol.size(); ++i )
+    {
+        QLabel *label = qobject_cast<QLabel *>( ol.at( i ) );
+
+        if ( label && label->buddy() == widget )
+        {
+            return label->text();
+        }
+    }
+
 #endif
 
 #ifndef QT_NO_GROUPBOX
-   QGroupBox *groupbox = qobject_cast<QGroupBox *>(parent);
-   if (groupbox) {
-      return groupbox->title();
-   }
+    QGroupBox *groupbox = qobject_cast<QGroupBox *>( parent );
+
+    if ( groupbox )
+    {
+        return groupbox->title();
+    }
+
 #endif
 
-   return QString();
+    return QString();
 }
 
 // returns the offset of the '&' in the text that would be preceding the accelerator character
 // if the text does not have an accelerator, -1 will be returned.
-static int qt_accAmpIndex(const QString &text)
+static int qt_accAmpIndex( const QString &text )
 {
 #ifndef QT_NO_SHORTCUT
-   if (text.isEmpty()) {
-      return -1;
-   }
 
-   int fa = 0;
+    if ( text.isEmpty() )
+    {
+        return -1;
+    }
 
-   while ((fa = text.indexOf('&', fa)) != -1) {
-      ++fa;
+    int fa = 0;
 
-      if (fa < text.length()) {
-         // ignore "&&"
-         if (text.at(fa) == '&') {
-            ++fa;
-            continue;
-         } else {
-            return fa - 1;
-            break;
-         }
-      }
-   }
+    while ( ( fa = text.indexOf( '&', fa ) ) != -1 )
+    {
+        ++fa;
+
+        if ( fa < text.length() )
+        {
+            // ignore "&&"
+            if ( text.at( fa ) == '&' )
+            {
+                ++fa;
+                continue;
+            }
+            else
+            {
+                return fa - 1;
+                break;
+            }
+        }
+    }
+
 #endif
 
-   return -1;
+    return -1;
 }
 
-QString qt_accStripAmp(const QString &text)
+QString qt_accStripAmp( const QString &text )
 {
-   QString newText(text);
-   int ampIndex = qt_accAmpIndex(newText);
-   if (ampIndex != -1) {
-      newText.remove(ampIndex, 1);
-   }
+    QString newText( text );
+    int ampIndex = qt_accAmpIndex( newText );
 
-   return newText.replace(QLatin1String("&&"), QLatin1String("&"));
+    if ( ampIndex != -1 )
+    {
+        newText.remove( ampIndex, 1 );
+    }
+
+    return newText.replace( QLatin1String( "&&" ), QLatin1String( "&" ) );
 }
 
-QString qt_accHotKey(const QString &text)
+QString qt_accHotKey( const QString &text )
 {
-   int ampIndex = qt_accAmpIndex(text);
+    int ampIndex = qt_accAmpIndex( text );
 
-   if (ampIndex != -1) {
-      return QKeySequence(Qt::AltModifier).toString(QKeySequence::NativeText) + text.at(ampIndex + 1);
-   }
+    if ( ampIndex != -1 )
+    {
+        return QKeySequence( Qt::AltModifier ).toString( QKeySequence::NativeText ) + text.at( ampIndex + 1 );
+    }
 
-   return QString();
+    return QString();
 }
 
 class QAccessibleWidgetPrivate
 {
- public:
-   QAccessibleWidgetPrivate()
-      : role(QAccessible::Client)
-   {
-   }
+public:
+    QAccessibleWidgetPrivate()
+        : role( QAccessible::Client )
+    {
+    }
 
-   QAccessible::Role role;
-   QString name;
+    QAccessible::Role role;
+    QString name;
 
-   QList<QMetaMethod> primarySignals;
+    QList<QMetaMethod> primarySignals;
 };
 
-QAccessibleWidget::QAccessibleWidget(QWidget *w, QAccessible::Role role, const QString &name)
-   : QAccessibleObject(w)
+QAccessibleWidget::QAccessibleWidget( QWidget *w, QAccessible::Role role, const QString &name )
+    : QAccessibleObject( w )
 {
-   Q_ASSERT(widget());
-   d = new QAccessibleWidgetPrivate();
-   d->role = role;
-   d->name = name;
+    Q_ASSERT( widget() );
+    d = new QAccessibleWidgetPrivate();
+    d->role = role;
+    d->name = name;
 }
 
 bool QAccessibleWidget::isValid() const
 {
-   if (! object() || static_cast<QWidget *>(object())->d_func()->m_privateData.in_destructor) {
-      return false;
-   }
-   return QAccessibleObject::isValid();
+    if ( ! object() || static_cast<QWidget *>( object() )->d_func()->m_privateData.in_destructor )
+    {
+        return false;
+    }
+
+    return QAccessibleObject::isValid();
 }
 
 QWindow *QAccessibleWidget::window() const
 {
-   const QWidget *w = widget();
-   Q_ASSERT(w);
+    const QWidget *w = widget();
+    Q_ASSERT( w );
 
-   QWindow *result = w->windowHandle();
+    QWindow *result = w->windowHandle();
 
-   if (!result) {
-      if (const QWidget *nativeParent = w->nativeParentWidget()) {
-         result = nativeParent->windowHandle();
-      }
-   }
-   return result;
+    if ( !result )
+    {
+        if ( const QWidget *nativeParent = w->nativeParentWidget() )
+        {
+            result = nativeParent->windowHandle();
+        }
+    }
+
+    return result;
 }
 
 QAccessibleWidget::~QAccessibleWidget()
 {
-   delete d;
+    delete d;
 }
 
 QWidget *QAccessibleWidget::widget() const
 {
-   return qobject_cast<QWidget *>(object());
+    return qobject_cast<QWidget *>( object() );
 }
 
 QObject *QAccessibleWidget::parentObject() const
 {
-   QWidget *w = widget();
-   if (!w || w->isWindow() || !w->parentWidget()) {
-      return qApp;
-   }
+    QWidget *w = widget();
 
-   return w->parent();
+    if ( !w || w->isWindow() || !w->parentWidget() )
+    {
+        return qApp;
+    }
+
+    return w->parent();
 }
 
 QRect QAccessibleWidget::rect() const
 {
-   QWidget *w = widget();
-   if (! w->isVisible()) {
-      return QRect();
-   }
-   QPoint wpos = w->mapToGlobal(QPoint(0, 0));
+    QWidget *w = widget();
 
-   return QRect(wpos.x(), wpos.y(), w->width(), w->height());
+    if ( ! w->isVisible() )
+    {
+        return QRect();
+    }
+
+    QPoint wpos = w->mapToGlobal( QPoint( 0, 0 ) );
+
+    return QRect( wpos.x(), wpos.y(), w->width(), w->height() );
 }
 
 class QACConnectionObject : public QObject
 {
- public:
-   bool isSender(const QObject *receiver, const QString &signal) const {
-      return CSInternalSender::isSender(this, receiver, signal);
-   }
+public:
+    bool isSender( const QObject *receiver, const QString &signal ) const
+    {
+        return CSInternalSender::isSender( this, receiver, signal );
+    }
 
-   QObjectList receiverList(const QMetaMethod &signalMetaMethod) const {
-      return CSInternalSender::receiverList(this, signalMetaMethod);
-   }
+    QObjectList receiverList( const QMetaMethod &signalMetaMethod ) const
+    {
+        return CSInternalSender::receiverList( this, signalMetaMethod );
+    }
 
-   QObjectList senderList() const {
-      return CSInternalSender::senderList(this);
-   }
+    QObjectList senderList() const
+    {
+        return CSInternalSender::senderList( this );
+    }
 };
 
-void QAccessibleWidget::addControllingSignal(const QString &signal)
+void QAccessibleWidget::addControllingSignal( const QString &signal )
 {
-   QString signalName = QMetaObject::normalizedSignature(signal);
-   int index = object()->metaObject()->indexOfSignal(signalName);
+    QString signalName = QMetaObject::normalizedSignature( signal );
+    int index = object()->metaObject()->indexOfSignal( signalName );
 
-   if (index < 0) {
-      qWarning("QAccessibleWidget::addControllingSignal() Signal %s unknown in %s", csPrintable(signalName),
-                  csPrintable(object()->metaObject()->className()));
+    if ( index < 0 )
+    {
+        qWarning( "QAccessibleWidget::addControllingSignal() Signal %s unknown in %s", csPrintable( signalName ),
+                  csPrintable( object()->metaObject()->className() ) );
 
-   } else {
-      const QMetaMethod &signalMetaMethod = object()->metaObject()->method(index);
+    }
+    else
+    {
+        const QMetaMethod &signalMetaMethod = object()->metaObject()->method( index );
 
-      if (signalMetaMethod.isValid()) {
-         d->primarySignals.append(signalMetaMethod);
-      }
-   }
+        if ( signalMetaMethod.isValid() )
+        {
+            d->primarySignals.append( signalMetaMethod );
+        }
+    }
 }
 
-void QAccessibleWidget::addControllingSignal(const QMetaMethod &signalMetaMethod)
+void QAccessibleWidget::addControllingSignal( const QMetaMethod &signalMetaMethod )
 {
-   if (signalMetaMethod.isValid()) {
-      d->primarySignals.append(signalMetaMethod);
-   }
+    if ( signalMetaMethod.isValid() )
+    {
+        d->primarySignals.append( signalMetaMethod );
+    }
 }
 
-static inline bool isAncestor(const QObject *obj, const QObject *child)
+static inline bool isAncestor( const QObject *obj, const QObject *child )
 {
-   while (child) {
-      if (child == obj) {
-         return true;
-      }
+    while ( child )
+    {
+        if ( child == obj )
+        {
+            return true;
+        }
 
-      child = child->parent();
-   }
+        child = child->parent();
+    }
 
-   return false;
+    return false;
 }
 
-QVector<QPair<QAccessibleInterface *, QAccessible::Relation>> QAccessibleWidget::relations(QAccessible::Relation match ) const
+QVector<QPair<QAccessibleInterface *, QAccessible::Relation>> QAccessibleWidget::relations( QAccessible::Relation match ) const
 {
-   QVector<QPair<QAccessibleInterface *, QAccessible::Relation>> retval;
+    QVector<QPair<QAccessibleInterface *, QAccessible::Relation>> retval;
 
-   if (match & QAccessible::Label) {
-      const QAccessible::Relation rel = QAccessible::Label;
+    if ( match & QAccessible::Label )
+    {
+        const QAccessible::Relation rel = QAccessible::Label;
 
-      if (QWidget *parent = widget()->parentWidget()) {
+        if ( QWidget *parent = widget()->parentWidget() )
+        {
 
 #ifndef QT_NO_SHORTCUT
-         // first check for all siblings that are labels to us ideally
-         // we would go through all objects and check, but that will be too expensive
+            // first check for all siblings that are labels to us ideally
+            // we would go through all objects and check, but that will be too expensive
 
-         const QList<QWidget *> kids = childWidgets(parent);
+            const QList<QWidget *> kids = childWidgets( parent );
 
-         for (auto item : kids) {
-            QLabel *labelSibling = qobject_cast<QLabel *>(item);
+            for ( auto item : kids )
+            {
+                QLabel *labelSibling = qobject_cast<QLabel *>( item );
 
-            if (labelSibling != nullptr && labelSibling->buddy() == widget()) {
-               QAccessibleInterface *iface = QAccessible::queryAccessibleInterface(labelSibling);
-               retval.append(qMakePair(iface, rel));
+                if ( labelSibling != nullptr && labelSibling->buddy() == widget() )
+                {
+                    QAccessibleInterface *iface = QAccessible::queryAccessibleInterface( labelSibling );
+                    retval.append( qMakePair( iface, rel ) );
+                }
             }
-         }
+
 #endif
 
 #ifndef QT_NO_GROUPBOX
-         QGroupBox *groupbox = qobject_cast<QGroupBox *>(parent);
+            QGroupBox *groupbox = qobject_cast<QGroupBox *>( parent );
 
-         if (groupbox != nullptr && ! groupbox->title().isEmpty()) {
-            QAccessibleInterface *iface = QAccessible::queryAccessibleInterface(groupbox);
-            retval.append(qMakePair(iface, rel));
-         }
+            if ( groupbox != nullptr && ! groupbox->title().isEmpty() )
+            {
+                QAccessibleInterface *iface = QAccessible::queryAccessibleInterface( groupbox );
+                retval.append( qMakePair( iface, rel ) );
+            }
+
 #endif
-      }
-   }
+        }
+    }
 
-   if (match & QAccessible::Controlled) {
-      QList<QObject *> allReceivers;
+    if ( match & QAccessible::Controlled )
+    {
+        QList<QObject *> allReceivers;
 
-      QACConnectionObject *connectionObject = dynamic_cast<QACConnectionObject *>(object());
+        QACConnectionObject *connectionObject = dynamic_cast<QACConnectionObject *>( object() );
 
-      if (connectionObject == nullptr) {
-         return retval;
-      }
+        if ( connectionObject == nullptr )
+        {
+            return retval;
+        }
 
-      for (const auto &item : d->primarySignals) {
-         const QList<QObject *> receivers = connectionObject->receiverList(item);
-         allReceivers.append(receivers);
-      }
+        for ( const auto &item : d->primarySignals )
+        {
+            const QList<QObject *> receivers = connectionObject->receiverList( item );
+            allReceivers.append( receivers );
+        }
 
-      // object might connect to itself internally, ignore these
-      allReceivers.removeAll(object());
+        // object might connect to itself internally, ignore these
+        allReceivers.removeAll( object() );
 
-      for (auto item : allReceivers) {
-         const QAccessible::Relation rel = QAccessible::Controlled;
-         QAccessibleInterface *iface = QAccessible::queryAccessibleInterface(item);
+        for ( auto item : allReceivers )
+        {
+            const QAccessible::Relation rel = QAccessible::Controlled;
+            QAccessibleInterface *iface = QAccessible::queryAccessibleInterface( item );
 
-         if (iface) {
-            retval.append(qMakePair(iface, rel));
-         }
-      }
-   }
+            if ( iface )
+            {
+                retval.append( qMakePair( iface, rel ) );
+            }
+        }
+    }
 
-   return retval;
+    return retval;
 }
 
 QAccessibleInterface *QAccessibleWidget::parent() const
 {
-   return QAccessible::queryAccessibleInterface(parentObject());
+    return QAccessible::queryAccessibleInterface( parentObject() );
 }
 
-QAccessibleInterface *QAccessibleWidget::child(int index) const
+QAccessibleInterface *QAccessibleWidget::child( int index ) const
 {
-   Q_ASSERT(widget());
+    Q_ASSERT( widget() );
 
-   QWidgetList childList = childWidgets(widget());
-   if (index >= 0 && index < childList.size()) {
-      return QAccessible::queryAccessibleInterface(childList.at(index));
-   }
-   return nullptr;
+    QWidgetList childList = childWidgets( widget() );
+
+    if ( index >= 0 && index < childList.size() )
+    {
+        return QAccessible::queryAccessibleInterface( childList.at( index ) );
+    }
+
+    return nullptr;
 }
 
 QAccessibleInterface *QAccessibleWidget::focusChild() const
 {
-   if (widget()->hasFocus()) {
-      return QAccessible::queryAccessibleInterface(object());
-   }
+    if ( widget()->hasFocus() )
+    {
+        return QAccessible::queryAccessibleInterface( object() );
+    }
 
-   QWidget *fw = widget()->focusWidget();
-   if (!fw) {
-      return nullptr;
-   }
+    QWidget *fw = widget()->focusWidget();
 
-   if (isAncestor(widget(), fw) || fw == widget()) {
-      return QAccessible::queryAccessibleInterface(fw);
-   }
-   return nullptr;
+    if ( !fw )
+    {
+        return nullptr;
+    }
+
+    if ( isAncestor( widget(), fw ) || fw == widget() )
+    {
+        return QAccessible::queryAccessibleInterface( fw );
+    }
+
+    return nullptr;
 }
 
 int QAccessibleWidget::childCount() const
 {
-   QWidgetList cl = childWidgets(widget());
-   return cl.size();
+    QWidgetList cl = childWidgets( widget() );
+    return cl.size();
 }
 
-int QAccessibleWidget::indexOfChild(const QAccessibleInterface *child) const
+int QAccessibleWidget::indexOfChild( const QAccessibleInterface *child ) const
 {
-   if (!child) {
-      return -1;
-   }
-   QWidgetList cl = childWidgets(widget());
+    if ( !child )
+    {
+        return -1;
+    }
 
-   return cl.indexOf(qobject_cast<QWidget *>(child->object()));
+    QWidgetList cl = childWidgets( widget() );
+
+    return cl.indexOf( qobject_cast<QWidget *>( child->object() ) );
 }
 
 // from qwidget.cpp
-extern QString cs_internal_parseWindowTitle(const QString &, const QWidget *);
+extern QString cs_internal_parseWindowTitle( const QString &, const QWidget * );
 
-QString QAccessibleWidget::text(QAccessible::Text t) const
+QString QAccessibleWidget::text( QAccessible::Text t ) const
 {
-   QString str;
+    QString str;
 
-   switch (t) {
-      case QAccessible::Name:
-         if (!d->name.isEmpty()) {
-            str = d->name;
+    switch ( t )
+    {
+        case QAccessible::Name:
+            if ( !d->name.isEmpty() )
+            {
+                str = d->name;
 
-         } else if (!widget()->accessibleName().isEmpty()) {
-            str = widget()->accessibleName();
+            }
+            else if ( !widget()->accessibleName().isEmpty() )
+            {
+                str = widget()->accessibleName();
 
-         } else if (widget()->isWindow()) {
-            if (widget()->isMinimized()) {
-               str = cs_internal_parseWindowTitle(widget()->windowIconText(), widget());
-            } else {
-               str = cs_internal_parseWindowTitle(widget()->windowTitle(), widget());
+            }
+            else if ( widget()->isWindow() )
+            {
+                if ( widget()->isMinimized() )
+                {
+                    str = cs_internal_parseWindowTitle( widget()->windowIconText(), widget() );
+                }
+                else
+                {
+                    str = cs_internal_parseWindowTitle( widget()->windowTitle(), widget() );
+                }
+
+            }
+            else
+            {
+                str = qt_accStripAmp( buddyString( widget() ) );
             }
 
-         } else {
-            str = qt_accStripAmp(buddyString(widget()));
-         }
-         break;
+            break;
 
-      case QAccessible::Description:
-         str = widget()->accessibleDescription();
+        case QAccessible::Description:
+            str = widget()->accessibleDescription();
 
 #ifndef QT_NO_TOOLTIP
-         if (str.isEmpty()) {
-            str = widget()->toolTip();
-         }
-#endif
-         break;
 
-      case QAccessible::Help:
+            if ( str.isEmpty() )
+            {
+                str = widget()->toolTip();
+            }
+
+#endif
+            break;
+
+        case QAccessible::Help:
 #ifndef QT_NO_WHATSTHIS
-         str = widget()->whatsThis();
+            str = widget()->whatsThis();
 #endif
-         break;
+            break;
 
-      case QAccessible::Accelerator:
-         str = qt_accHotKey(buddyString(widget()));
-         break;
+        case QAccessible::Accelerator:
+            str = qt_accHotKey( buddyString( widget() ) );
+            break;
 
-      case QAccessible::Value:
-         break;
+        case QAccessible::Value:
+            break;
 
-      default:
-         break;
-   }
+        default:
+            break;
+    }
 
-   return str;
+    return str;
 }
 
 QStringList QAccessibleWidget::actionNames() const
 {
-   QStringList names;
+    QStringList names;
 
-   if (widget()->isEnabled()) {
-      if (widget()->focusPolicy() != Qt::NoFocus) {
-         names << setFocusAction();
-      }
-   }
+    if ( widget()->isEnabled() )
+    {
+        if ( widget()->focusPolicy() != Qt::NoFocus )
+        {
+            names << setFocusAction();
+        }
+    }
 
-   return names;
+    return names;
 }
 
-void QAccessibleWidget::doAction(const QString &actionName)
+void QAccessibleWidget::doAction( const QString &actionName )
 {
-   if (!widget()->isEnabled()) {
-      return;
-   }
+    if ( !widget()->isEnabled() )
+    {
+        return;
+    }
 
-   if (actionName == setFocusAction()) {
-      if (widget()->isWindow()) {
-         widget()->activateWindow();
-      }
+    if ( actionName == setFocusAction() )
+    {
+        if ( widget()->isWindow() )
+        {
+            widget()->activateWindow();
+        }
 
-      widget()->setFocus();
-   }
+        widget()->setFocus();
+    }
 }
 
-QStringList QAccessibleWidget::keyBindingsForAction(const QString &) const
+QStringList QAccessibleWidget::keyBindingsForAction( const QString & ) const
 {
-   return QStringList();
+    return QStringList();
 }
 
 QAccessible::Role QAccessibleWidget::role() const
 {
-   return d->role;
+    return d->role;
 }
 
 QAccessible::State QAccessibleWidget::state() const
 {
-   QAccessible::State state;
+    QAccessible::State state;
 
-   QWidget *w = widget();
+    QWidget *w = widget();
 
-   if (w->testAttribute(Qt::WA_WState_Visible) == false) {
-      state.invisible = true;
-   }
+    if ( w->testAttribute( Qt::WA_WState_Visible ) == false )
+    {
+        state.invisible = true;
+    }
 
-   if (w->focusPolicy() != Qt::NoFocus) {
-      state.focusable = true;
-   }
+    if ( w->focusPolicy() != Qt::NoFocus )
+    {
+        state.focusable = true;
+    }
 
-   if (w->hasFocus()) {
-      state.focused = true;
-   }
+    if ( w->hasFocus() )
+    {
+        state.focused = true;
+    }
 
-   if (! w->isEnabled()) {
-      state.disabled = true;
-   }
+    if ( ! w->isEnabled() )
+    {
+        state.disabled = true;
+    }
 
-   if (w->isWindow()) {
-      if (w->windowFlags() & Qt::WindowSystemMenuHint) {
-         state.movable = true;
-      }
+    if ( w->isWindow() )
+    {
+        if ( w->windowFlags() & Qt::WindowSystemMenuHint )
+        {
+            state.movable = true;
+        }
 
-      if (w->minimumSize() != w->maximumSize()) {
-         state.sizeable = true;
-      }
+        if ( w->minimumSize() != w->maximumSize() )
+        {
+            state.sizeable = true;
+        }
 
-      if (w->isActiveWindow()) {
-         state.active = true;
-      }
-   }
+        if ( w->isActiveWindow() )
+        {
+            state.active = true;
+        }
+    }
 
-   return state;
+    return state;
 }
 
 QColor QAccessibleWidget::foregroundColor() const
 {
-   return widget()->palette().color(widget()->foregroundRole());
+    return widget()->palette().color( widget()->foregroundRole() );
 }
 
 QColor QAccessibleWidget::backgroundColor() const
 {
 
-   return widget()->palette().color(widget()->backgroundRole());
+    return widget()->palette().color( widget()->backgroundRole() );
 }
 
-void *QAccessibleWidget::interface_cast(QAccessible::InterfaceType t)
+void *QAccessibleWidget::interface_cast( QAccessible::InterfaceType t )
 {
 
-   if (t == QAccessible::ActionInterface) {
-      return static_cast<QAccessibleActionInterface *>(this);
-   }
+    if ( t == QAccessible::ActionInterface )
+    {
+        return static_cast<QAccessibleActionInterface *>( this );
+    }
 
-   return nullptr;
+    return nullptr;
 }
 
 #endif //QT_NO_ACCESSIBILITY

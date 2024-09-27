@@ -27,12 +27,13 @@
 #include "config.h"
 #include "Module.h"
 
-namespace WebKit {
+namespace WebKit
+{
 
 bool Module::load()
 {
-    m_lib.setFileName(static_cast<QString>(m_path));
-    m_lib.setLoadHints(QLibrary::ResolveAllSymbolsHint);
+    m_lib.setFileName( static_cast<QString>( m_path ) );
+    m_lib.setLoadHints( QLibrary::ResolveAllSymbolsHint );
     return m_lib.load();
 }
 
@@ -41,10 +42,10 @@ void Module::unload()
     m_lib.unload();
 }
 
-void* Module::platformFunctionPointer(const char* functionName) const
+void *Module::platformFunctionPointer( const char *functionName ) const
 {
     // Unfortunately QLibrary::resolve is not const.
-    return const_cast<QLibrary*>(&m_lib)->resolve(functionName);
+    return const_cast<QLibrary *>( &m_lib )->resolve( functionName );
 }
 
 }

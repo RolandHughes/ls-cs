@@ -22,7 +22,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 #ifndef WKAuthenticationChallenge_h
 #define WKAuthenticationChallenge_h
 
@@ -34,10 +34,10 @@ extern "C" {
 
 WK_EXPORT WKTypeID WKAuthenticationChallengeGetTypeID();
 
-WK_EXPORT WKAuthenticationDecisionListenerRef WKAuthenticationChallengeGetDecisionListener(WKAuthenticationChallengeRef);
-WK_EXPORT WKProtectionSpaceRef WKAuthenticationChallengeGetProtectionSpace(WKAuthenticationChallengeRef);
-WK_EXPORT WKCredentialRef WKAuthenticationChallengeGetProposedCredential(WKAuthenticationChallengeRef);
-WK_EXPORT int WKAuthenticationChallengeGetPreviousFailureCount(WKAuthenticationChallengeRef);
+WK_EXPORT WKAuthenticationDecisionListenerRef WKAuthenticationChallengeGetDecisionListener( WKAuthenticationChallengeRef );
+WK_EXPORT WKProtectionSpaceRef WKAuthenticationChallengeGetProtectionSpace( WKAuthenticationChallengeRef );
+WK_EXPORT WKCredentialRef WKAuthenticationChallengeGetProposedCredential( WKAuthenticationChallengeRef );
+WK_EXPORT int WKAuthenticationChallengeGetPreviousFailureCount( WKAuthenticationChallengeRef );
 
 #ifdef __cplusplus
 }

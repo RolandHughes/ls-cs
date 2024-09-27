@@ -35,24 +35,32 @@
 #include "HTMLNames.h"
 #include <wtf/Forward.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 // NOTE: Current implementation doesn't support dynamic insertion/deletion of ShadowContentElement.
 // You should create ShadowContentElement during the host construction.
-class ShadowContentElement : public HTMLDivElement {
+class ShadowContentElement : public HTMLDivElement
+{
 public:
-    ShadowContentElement(Document* document)
-        : HTMLDivElement(HTMLNames::divTag, document)
+    ShadowContentElement( Document *document )
+        : HTMLDivElement( HTMLNames::divTag, document )
     {
     }
 
-    virtual bool shouldInclude(Node*) = 0;
+    virtual bool shouldInclude( Node * ) = 0;
 
 private:
     // FIXME: This should be replaced with tag-name checking once <content> is ready.
     // See also http://webkit.org/b/56973
-    virtual bool isShadowBoundary() const { return true; }
-    virtual RenderObject* createRenderer(RenderArena*, RenderStyle*) { return 0; }
+    virtual bool isShadowBoundary() const
+    {
+        return true;
+    }
+    virtual RenderObject *createRenderer( RenderArena *, RenderStyle * )
+    {
+        return 0;
+    }
 };
 
 }

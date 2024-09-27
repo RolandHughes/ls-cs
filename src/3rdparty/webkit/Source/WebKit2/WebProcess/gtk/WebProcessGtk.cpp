@@ -30,19 +30,20 @@
 #include "WebProcessCreationParameters.h"
 #include <WebCore/NotImplemented.h>
 
-namespace WebKit {
-
-void WebProcess::platformSetCacheModel(CacheModel)
+namespace WebKit
 {
-    notImplemented(); 
-}
 
-void WebProcess::platformClearResourceCaches(ResourceCachesToClear)
+void WebProcess::platformSetCacheModel( CacheModel )
 {
     notImplemented();
 }
 
-void WebProcess::platformInitializeWebProcess(const WebProcessCreationParameters&, CoreIPC::ArgumentDecoder*)
+void WebProcess::platformClearResourceCaches( ResourceCachesToClear )
+{
+    notImplemented();
+}
+
+void WebProcess::platformInitializeWebProcess( const WebProcessCreationParameters &, CoreIPC::ArgumentDecoder * )
 {
     notImplemented();
 }

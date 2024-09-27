@@ -26,8 +26,8 @@
 #include <qscriptvalue.h>
 #include <qscriptengine.h>
 
-QScriptExtensionPlugin::QScriptExtensionPlugin(QObject *parent)
-   : QObject(parent)
+QScriptExtensionPlugin::QScriptExtensionPlugin( QObject *parent )
+    : QObject( parent )
 {
 }
 
@@ -35,18 +35,23 @@ QScriptExtensionPlugin::~QScriptExtensionPlugin()
 {
 }
 
-QScriptValue QScriptExtensionPlugin::setupPackage(const QString &key, QScriptEngine *engine) const
+QScriptValue QScriptExtensionPlugin::setupPackage( const QString &key, QScriptEngine *engine ) const
 {
-   QStringList components = key.split(QLatin1Char('.'));
-   QScriptValue o = engine->globalObject();
+    QStringList components = key.split( QLatin1Char( '.' ) );
+    QScriptValue o = engine->globalObject();
 
-   for (int i = 0; i < components.count(); ++i) {
-      QScriptValue oo = o.property(components.at(i));
-      if (!oo.isValid()) {
-         oo = engine->newObject();
-         o.setProperty(components.at(i), oo);
-      }
-      o = oo;
-   }
-   return o;
+    for ( int i = 0; i < components.count(); ++i )
+    {
+        QScriptValue oo = o.property( components.at( i ) );
+
+        if ( !oo.isValid() )
+        {
+            oo = engine->newObject();
+            o.setProperty( components.at( i ), oo );
+        }
+
+        o = oo;
+    }
+
+    return o;
 }

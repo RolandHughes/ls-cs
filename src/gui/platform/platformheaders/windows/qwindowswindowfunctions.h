@@ -32,7 +32,8 @@ class QWindow;
 class QWindowsWindowFunctions
 {
 public:
-    enum TouchWindowTouchType {
+    enum TouchWindowTouchType
+    {
         NormalTouch   = 0x00000000,
         FineTouch     = 0x00000001,
         WantPalmTouch = 0x00000002
@@ -40,33 +41,41 @@ public:
 
     using TouchWindowTouchTypes = QFlags<TouchWindowTouchType>;
 
-    typedef void (*SetTouchWindowTouchType)(QWindow *window, QWindowsWindowFunctions::TouchWindowTouchTypes touchType);
-    static const QByteArray setTouchWindowTouchTypeIdentifier() { return QByteArray("WindowsSetTouchWindowTouchType"); }
+    typedef void ( *SetTouchWindowTouchType )( QWindow *window, QWindowsWindowFunctions::TouchWindowTouchTypes touchType );
+    static const QByteArray setTouchWindowTouchTypeIdentifier()
+    {
+        return QByteArray( "WindowsSetTouchWindowTouchType" );
+    }
 
-    static void setTouchWindowTouchType(QWindow *window, TouchWindowTouchTypes type)
+    static void setTouchWindowTouchType( QWindow *window, TouchWindowTouchTypes type )
     {
         SetTouchWindowTouchType func =  reinterpret_cast<SetTouchWindowTouchType>(
-            QGuiApplication::platformFunction(setTouchWindowTouchTypeIdentifier()));
+                                            QGuiApplication::platformFunction( setTouchWindowTouchTypeIdentifier() ) );
 
-        if (func) {
-           func(window, type);
+        if ( func )
+        {
+            func( window, type );
         }
     }
 
-    typedef void (*SetHasBorderInFullScreen)(QWindow *window, bool border);
-    static const QByteArray setHasBorderInFullScreenIdentifier() { return QByteArray("WindowsSetHasBorderInFullScreen"); }
+    typedef void ( *SetHasBorderInFullScreen )( QWindow *window, bool border );
+    static const QByteArray setHasBorderInFullScreenIdentifier()
+    {
+        return QByteArray( "WindowsSetHasBorderInFullScreen" );
+    }
 
-    static void setHasBorderInFullScreen(QWindow *window, bool border)
+    static void setHasBorderInFullScreen( QWindow *window, bool border )
     {
         SetHasBorderInFullScreen func = reinterpret_cast<SetHasBorderInFullScreen>(
-            QGuiApplication::platformFunction(setHasBorderInFullScreenIdentifier()));
+                                            QGuiApplication::platformFunction( setHasBorderInFullScreenIdentifier() ) );
 
-        if (func) {
-           func(window, border);
+        if ( func )
+        {
+            func( window, border );
         }
     }
 };
 
-Q_DECLARE_OPERATORS_FOR_FLAGS(QWindowsWindowFunctions::TouchWindowTouchTypes)
+Q_DECLARE_OPERATORS_FOR_FLAGS( QWindowsWindowFunctions::TouchWindowTouchTypes )
 
 #endif

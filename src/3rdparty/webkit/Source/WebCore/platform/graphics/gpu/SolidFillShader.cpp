@@ -37,41 +37,46 @@
 #include "Color.h"
 #include "GraphicsContext3D.h"
 
-namespace WebCore {
-
-SolidFillShader::SolidFillShader(GraphicsContext3D* context, unsigned program)
-    : Shader(context, program)
+namespace WebCore
 {
-    m_matrixLocation = context->getUniformLocation(program, "matrix");
-    m_colorLocation = context->getUniformLocation(program, "color");
-    m_positionLocation = context->getAttribLocation(program, "position");
+
+SolidFillShader::SolidFillShader( GraphicsContext3D *context, unsigned program )
+    : Shader( context, program )
+{
+    m_matrixLocation = context->getUniformLocation( program, "matrix" );
+    m_colorLocation = context->getUniformLocation( program, "color" );
+    m_positionLocation = context->getAttribLocation( program, "position" );
 }
 
-PassOwnPtr<SolidFillShader> SolidFillShader::create(GraphicsContext3D* context)
+PassOwnPtr<SolidFillShader> SolidFillShader::create( GraphicsContext3D *context )
 {
-    unsigned program = loadProgram(context,
-                                   generateVertex(Shader::TwoDimensional, Shader::SolidFill),
-                                   generateFragment(Shader::TwoDimensional, Shader::SolidFill, Shader::NotAntialiased));
-    if (!program)
+    unsigned program = loadProgram( context,
+                                    generateVertex( Shader::TwoDimensional, Shader::SolidFill ),
+                                    generateFragment( Shader::TwoDimensional, Shader::SolidFill, Shader::NotAntialiased ) );
+
+    if ( !program )
+    {
         return nullptr;
-    return new SolidFillShader(context, program);
+    }
+
+    return new SolidFillShader( context, program );
 }
 
-void SolidFillShader::use(const AffineTransform& transform, const Color& color)
+void SolidFillShader::use( const AffineTransform &transform, const Color &color )
 {
-    m_context->useProgram(m_program);
+    m_context->useProgram( m_program );
 
     float rgba[4];
-    color.getRGBA(rgba[0], rgba[1], rgba[2], rgba[3]);
-    m_context->uniform4f(m_colorLocation, rgba[0] * rgba[3], rgba[1] * rgba[3], rgba[2] * rgba[3], rgba[3]);
+    color.getRGBA( rgba[0], rgba[1], rgba[2], rgba[3] );
+    m_context->uniform4f( m_colorLocation, rgba[0] * rgba[3], rgba[1] * rgba[3], rgba[2] * rgba[3], rgba[3] );
 
     float matrix[9];
-    affineTo3x3(transform, matrix);
-    m_context->uniformMatrix3fv(m_matrixLocation, false /*transpose*/, matrix, 1 /*count*/);
+    affineTo3x3( transform, matrix );
+    m_context->uniformMatrix3fv( m_matrixLocation, false /*transpose*/, matrix, 1 /*count*/ );
 
-    m_context->vertexAttribPointer(m_positionLocation, 2, GraphicsContext3D::FLOAT, false, 0, 0);
+    m_context->vertexAttribPointer( m_positionLocation, 2, GraphicsContext3D::FLOAT, false, 0, 0 );
 
-    m_context->enableVertexAttribArray(m_positionLocation);
+    m_context->enableVertexAttribArray( m_positionLocation );
 }
 
 }

@@ -29,61 +29,69 @@
 
 using namespace QPatternist;
 
-Item ErrorFN::evaluateSingleton(const DynamicContext::Ptr &context) const
+Item ErrorFN::evaluateSingleton( const DynamicContext::Ptr &context ) const
 {
-   QString msg;
+    QString msg;
 
-   switch (m_operands.count()) {
-      case 0: { /* No args. */
-         context->error(QtXmlPatterns::tr("%1 was called.").formatArg(formatFunction(context->namePool(), signature())),
-                        ReportContext::FOER0000, this);
-         return Item();
-      }
+    switch ( m_operands.count() )
+    {
+        case 0:   /* No args. */
+        {
+            context->error( QtXmlPatterns::tr( "%1 was called." ).formatArg( formatFunction( context->namePool(), signature() ) ),
+                            ReportContext::FOER0000, this );
+            return Item();
+        }
 
-      case 3:
-      case 2:
-         msg = m_operands.at(1)->evaluateSingleton(context).stringValue();
-        [[fallthrough]];
+        case 3:
+        case 2:
+            msg = m_operands.at( 1 )->evaluateSingleton( context ).stringValue();
+            [[fallthrough]];
 
-      case 1: {
-         const QNameValue::Ptr qName(m_operands.first()->evaluateSingleton(context).as<QNameValue>());
+        case 1:
+        {
+            const QNameValue::Ptr qName( m_operands.first()->evaluateSingleton( context ).as<QNameValue>() );
 
-         if (qName) {
-            context->error(msg, qName->qName(), this);
-         } else {
-            context->error(msg, ReportContext::FOER0000, this);
-         }
+            if ( qName )
+            {
+                context->error( msg, qName->qName(), this );
+            }
+            else
+            {
+                context->error( msg, ReportContext::FOER0000, this );
+            }
 
-         return Item();
-      }
+            return Item();
+        }
 
-      default: {
-         Q_ASSERT_X(false, Q_FUNC_INFO, "Invalid number of arguments passed to fn:error.");
-         return Item();
-      }
-   }
+        default:
+        {
+            Q_ASSERT_X( false, Q_FUNC_INFO, "Invalid number of arguments passed to fn:error." );
+            return Item();
+        }
+    }
 }
 
 FunctionSignature::Ptr ErrorFN::signature() const
 {
-   const FunctionSignature::Ptr e(FunctionCall::signature());
+    const FunctionSignature::Ptr e( FunctionCall::signature() );
 
-   if (m_operands.count() != 1) {
-      return e;
-   }
+    if ( m_operands.count() != 1 )
+    {
+        return e;
+    }
 
-   FunctionSignature::Ptr nev(FunctionSignature::Ptr(new FunctionSignature(e->name(),
-                              e->minimumArguments(),
-                              e->maximumArguments(),
-                              e->returnType(),
-                              e->properties())));
-   const FunctionArgument::List args(e->arguments());
-   FunctionArgument::List nargs;
-   const QXmlName argName(StandardNamespaces::empty, StandardLocalNames::error);
-   nargs.append(FunctionArgument::Ptr(new FunctionArgument(argName, CommonSequenceTypes::ExactlyOneQName)));
-   nargs.append(args[1]);
-   nargs.append(args[2]);
-   nev->setArguments(nargs);
+    FunctionSignature::Ptr nev( FunctionSignature::Ptr( new FunctionSignature( e->name(),
+                                e->minimumArguments(),
+                                e->maximumArguments(),
+                                e->returnType(),
+                                e->properties() ) ) );
+    const FunctionArgument::List args( e->arguments() );
+    FunctionArgument::List nargs;
+    const QXmlName argName( StandardNamespaces::empty, StandardLocalNames::error );
+    nargs.append( FunctionArgument::Ptr( new FunctionArgument( argName, CommonSequenceTypes::ExactlyOneQName ) ) );
+    nargs.append( args[1] );
+    nargs.append( args[2] );
+    nev->setArguments( nargs );
 
-   return nev;
+    return nev;
 }

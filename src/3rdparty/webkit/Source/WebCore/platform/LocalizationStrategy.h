@@ -31,12 +31,14 @@
 
 #include <wtf/Forward.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class IntSize;
 
-class LocalizationStrategy {
-public:    
+class LocalizationStrategy
+{
+public:
     virtual String inputElementAltText() = 0;
     virtual String resetButtonDefaultLabel() = 0;
     virtual String searchableIndexIntroduction() = 0;
@@ -79,11 +81,11 @@ public:
     virtual String contextMenuItemTagIgnoreSpelling() = 0;
     virtual String contextMenuItemTagLearnSpelling() = 0;
     virtual String contextMenuItemTagSearchWeb() = 0;
-    virtual String contextMenuItemTagLookUpInDictionary(const String& selectedString) = 0;
+    virtual String contextMenuItemTagLookUpInDictionary( const String &selectedString ) = 0;
     virtual String contextMenuItemTagOpenLink() = 0;
     virtual String contextMenuItemTagIgnoreGrammar() = 0;
     virtual String contextMenuItemTagSpellingMenu() = 0;
-    virtual String contextMenuItemTagShowSpellingPanel(bool show) = 0;
+    virtual String contextMenuItemTagShowSpellingPanel( bool show ) = 0;
     virtual String contextMenuItemTagCheckSpelling() = 0;
     virtual String contextMenuItemTagCheckSpellingWhileTyping() = 0;
     virtual String contextMenuItemTagCheckGrammarWithSpelling() = 0;
@@ -107,7 +109,7 @@ public:
     virtual String contextMenuItemTagStopSpeaking() = 0;
     virtual String contextMenuItemTagCorrectSpellingAutomatically() = 0;
     virtual String contextMenuItemTagSubstitutionsMenu() = 0;
-    virtual String contextMenuItemTagShowSubstitutions(bool show) = 0;
+    virtual String contextMenuItemTagShowSubstitutions( bool show ) = 0;
     virtual String contextMenuItemTagSmartCopyPaste() = 0;
     virtual String contextMenuItemTagSmartQuotes() = 0;
     virtual String contextMenuItemTagSmartDashes() = 0;
@@ -117,7 +119,7 @@ public:
     virtual String contextMenuItemTagMakeUpperCase() = 0;
     virtual String contextMenuItemTagMakeLowerCase() = 0;
     virtual String contextMenuItemTagCapitalize() = 0;
-    virtual String contextMenuItemTagChangeBack(const String& replacedString) = 0;
+    virtual String contextMenuItemTagChangeBack( const String &replacedString ) = 0;
 #endif
     virtual String contextMenuItemTagOpenVideoInNewWindow() = 0;
     virtual String contextMenuItemTagOpenAudioInNewWindow() = 0;
@@ -145,9 +147,9 @@ public:
     virtual String AXDefinitionListDefinitionText() = 0;
 
 #if PLATFORM(MAC)
-    virtual String AXARIAContentGroupText(const String& ariaType) = 0;
+    virtual String AXARIAContentGroupText( const String &ariaType ) = 0;
 #endif
-    
+
     virtual String AXButtonActionVerb() = 0;
     virtual String AXRadioButtonActionVerb() = 0;
     virtual String AXTextFieldActionVerb() = 0;
@@ -159,7 +161,7 @@ public:
 
     virtual String missingPluginText() = 0;
     virtual String crashedPluginText() = 0;
-    virtual String multipleFileUploadText(unsigned numberOfFiles) = 0;
+    virtual String multipleFileUploadText( unsigned numberOfFiles ) = 0;
     virtual String unknownFileSizeText() = 0;
 
 #if PLATFORM(WIN)
@@ -171,16 +173,16 @@ public:
     virtual String keygenMenuItem512() = 0;
     virtual String keygenMenuItem1024() = 0;
     virtual String keygenMenuItem2048() = 0;
-    virtual String keygenKeychainItemName(const String& host) = 0;
+    virtual String keygenKeychainItemName( const String &host ) = 0;
 #endif
 
-    virtual String imageTitle(const String& filename, const IntSize& size) = 0;
+    virtual String imageTitle( const String &filename, const IntSize &size ) = 0;
 
     virtual String mediaElementLoadingStateText() = 0;
     virtual String mediaElementLiveBroadcastStateText() = 0;
-    virtual String localizedMediaControlElementString(const String&) = 0;
-    virtual String localizedMediaControlElementHelpText(const String&) = 0;
-    virtual String localizedMediaTimeDescription(float) = 0;
+    virtual String localizedMediaControlElementString( const String & ) = 0;
+    virtual String localizedMediaControlElementHelpText( const String & ) = 0;
+    virtual String localizedMediaTimeDescription( float ) = 0;
 
     virtual String validationMessageValueMissingText() = 0;
     virtual String validationMessageTypeMismatchText() = 0;

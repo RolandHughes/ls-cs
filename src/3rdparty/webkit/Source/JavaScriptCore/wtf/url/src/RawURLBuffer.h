@@ -32,13 +32,15 @@
 #include "URLBuffer.h"
 #include <stdlib.h>
 
-namespace WTF {
+namespace WTF
+{
 
 // Simple implementation of the URLBuffer using new[]. This class
 // also supports a static buffer so if it is allocated on the stack, most
 // URLs can be canonicalized with no heap allocations.
 template<typename CHAR, int inlineCapacity = 1024>
-class RawURLBuffer : public URLBuffer<CHAR> {
+class RawURLBuffer : public URLBuffer<CHAR>
+{
 public:
     RawURLBuffer() : URLBuffer<CHAR>()
     {
@@ -48,16 +50,22 @@ public:
 
     virtual ~RawURLBuffer()
     {
-        if (this->m_buffer != m_inlineBuffer)
+        if ( this->m_buffer != m_inlineBuffer )
+        {
             delete[] this->m_buffer;
+        }
     }
 
-    virtual void resize(int size)
+    virtual void resize( int size )
     {
-        CHAR* newBuffer = new CHAR[size];
-        memcpy(newBuffer, this->m_buffer, sizeof(CHAR) * (this->m_length < size ? this->m_length : size));
-        if (this->m_buffer != m_inlineBuffer)
+        CHAR *newBuffer = new CHAR[size];
+        memcpy( newBuffer, this->m_buffer, sizeof( CHAR ) * ( this->m_length < size ? this->m_length : size ) );
+
+        if ( this->m_buffer != m_inlineBuffer )
+        {
             delete[] this->m_buffer;
+        }
+
         this->m_buffer = newBuffer;
         this->m_capacity = size;
     }

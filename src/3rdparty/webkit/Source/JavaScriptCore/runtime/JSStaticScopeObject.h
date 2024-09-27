@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef JSStaticScopeObject_h
@@ -28,34 +28,41 @@
 
 #include "JSVariableObject.h"
 
-namespace JSC{
-    
-    class JSStaticScopeObject : public JSVariableObject {
-    public:
-        JSStaticScopeObject(ExecState* exec, const Identifier& ident, JSValue value, unsigned attributes)
-            : JSVariableObject(exec->globalData(), exec->globalData().staticScopeStructure.get(), &m_symbolTable, reinterpret_cast<Register*>(&m_registerStore + 1))
-        {
-            m_registerStore.set(exec->globalData(), this, value);
-            symbolTable().add(ident.impl(), SymbolTableEntry(-1, attributes));
-        }
+namespace JSC
+{
 
-        virtual void visitChildren(SlotVisitor&);
-        bool isDynamicScope(bool& requiresDynamicChecks) const;
-        virtual JSObject* toThisObject(ExecState*) const;
-        virtual JSValue toStrictThisObject(ExecState*) const;
-        virtual bool getOwnPropertySlot(ExecState*, const Identifier&, PropertySlot&);
-        virtual void put(ExecState*, const Identifier&, JSValue, PutPropertySlot&);
-        void putWithAttributes(ExecState*, const Identifier&, JSValue, unsigned attributes);
+class JSStaticScopeObject : public JSVariableObject
+{
+public:
+    JSStaticScopeObject( ExecState *exec, const Identifier &ident, JSValue value, unsigned attributes )
+        : JSVariableObject( exec->globalData(), exec->globalData().staticScopeStructure.get(), &m_symbolTable,
+                            reinterpret_cast<Register *>( &m_registerStore + 1 ) )
+    {
+        m_registerStore.set( exec->globalData(), this, value );
+        symbolTable().add( ident.impl(), SymbolTableEntry( -1, attributes ) );
+    }
 
-        static Structure* createStructure(JSGlobalData& globalData, JSValue proto) { return Structure::create(globalData, proto, TypeInfo(ObjectType, StructureFlags), AnonymousSlotCount, &s_info); }
+    virtual void visitChildren( SlotVisitor & );
+    bool isDynamicScope( bool &requiresDynamicChecks ) const;
+    virtual JSObject *toThisObject( ExecState * ) const;
+    virtual JSValue toStrictThisObject( ExecState * ) const;
+    virtual bool getOwnPropertySlot( ExecState *, const Identifier &, PropertySlot & );
+    virtual void put( ExecState *, const Identifier &, JSValue, PutPropertySlot & );
+    void putWithAttributes( ExecState *, const Identifier &, JSValue, unsigned attributes );
 
-    protected:
-        static const unsigned StructureFlags = OverridesGetOwnPropertySlot | NeedsThisConversion | OverridesVisitChildren | OverridesGetPropertyNames | JSVariableObject::StructureFlags;
+    static Structure *createStructure( JSGlobalData &globalData, JSValue proto )
+    {
+        return Structure::create( globalData, proto, TypeInfo( ObjectType, StructureFlags ), AnonymousSlotCount, &s_info );
+    }
 
-    private:
-        SymbolTable m_symbolTable;
-        WriteBarrier<Unknown> m_registerStore;
-    };
+protected:
+    static const unsigned StructureFlags = OverridesGetOwnPropertySlot | NeedsThisConversion | OverridesVisitChildren |
+                                           OverridesGetPropertyNames | JSVariableObject::StructureFlags;
+
+private:
+    SymbolTable m_symbolTable;
+    WriteBarrier<Unknown> m_registerStore;
+};
 
 }
 

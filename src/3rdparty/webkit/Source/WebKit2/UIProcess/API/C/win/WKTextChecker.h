@@ -33,26 +33,31 @@ extern "C" {
 #endif
 
 // TextChecker Client
-typedef bool (*WKTextCheckerContinousSpellCheckingAllowed)(const void *clientInfo);
-typedef bool (*WKTextCheckerContinousSpellCheckingEnabled)(const void *clientInfo);
-typedef void (*WKTextCheckerSetContinousSpellCheckingEnabled)(bool enabled, const void *clientInfo);
-typedef bool (*WKTextCheckerGrammarCheckingEnabled)(const void *clientInfo);
-typedef void (*WKTextCheckerSetGrammarCheckingEnabled)(bool enabled, const void *clientInfo);
-typedef uint64_t (*WKTextCheckerUniqueSpellDocumentTag)(WKPageRef page, const void *clientInfo);
-typedef void (*WKTextCheckerCloseSpellDocumentWithTag)(uint64_t tag, const void *clientInfo);
-typedef void (*WKTextCheckerCheckSpellingOfString)(uint64_t tag, WKStringRef text, int32_t* misspellingLocation, int32_t* misspellingLength, const void *clientInfo);
-typedef void (*WKTextCheckerCheckGrammarOfString)(uint64_t tag, WKStringRef text, WKArrayRef* grammarDetails, int32_t* badGrammarLocation, int32_t* badGrammarLength, const void *clientInfo);
-typedef bool (*WKTextCheckerSpellingUIIsShowing)(const void *clientInfo);
-typedef void (*WKTextCheckerToggleSpellingUIIsShowing)(const void *clientInfo);
-typedef void (*WKTextCheckerUpdateSpellingUIWithMisspelledWord)(uint64_t tag, WKStringRef misspelledWord, const void *clientInfo);
-typedef void (*WKTextCheckerUpdateSpellingUIWithGrammarString)(uint64_t tag, WKStringRef badGrammarPhrase, WKGrammarDetailRef grammarDetail, const void *clientInfo);
-typedef WKArrayRef (*WKTextCheckerGuessesForWord)(uint64_t tag, WKStringRef word, const void *clientInfo);
-typedef void (*WKTextCheckerLearnWord)(uint64_t tag, WKStringRef word, const void *clientInfo);
-typedef void (*WKTextCheckerIgnoreWord)(uint64_t tag, WKStringRef word, const void *clientInfo);
+typedef bool ( *WKTextCheckerContinousSpellCheckingAllowed )( const void *clientInfo );
+typedef bool ( *WKTextCheckerContinousSpellCheckingEnabled )( const void *clientInfo );
+typedef void ( *WKTextCheckerSetContinousSpellCheckingEnabled )( bool enabled, const void *clientInfo );
+typedef bool ( *WKTextCheckerGrammarCheckingEnabled )( const void *clientInfo );
+typedef void ( *WKTextCheckerSetGrammarCheckingEnabled )( bool enabled, const void *clientInfo );
+typedef uint64_t ( *WKTextCheckerUniqueSpellDocumentTag )( WKPageRef page, const void *clientInfo );
+typedef void ( *WKTextCheckerCloseSpellDocumentWithTag )( uint64_t tag, const void *clientInfo );
+typedef void ( *WKTextCheckerCheckSpellingOfString )( uint64_t tag, WKStringRef text, int32_t *misspellingLocation,
+        int32_t *misspellingLength, const void *clientInfo );
+typedef void ( *WKTextCheckerCheckGrammarOfString )( uint64_t tag, WKStringRef text, WKArrayRef *grammarDetails,
+        int32_t *badGrammarLocation, int32_t *badGrammarLength, const void *clientInfo );
+typedef bool ( *WKTextCheckerSpellingUIIsShowing )( const void *clientInfo );
+typedef void ( *WKTextCheckerToggleSpellingUIIsShowing )( const void *clientInfo );
+typedef void ( *WKTextCheckerUpdateSpellingUIWithMisspelledWord )( uint64_t tag, WKStringRef misspelledWord,
+        const void *clientInfo );
+typedef void ( *WKTextCheckerUpdateSpellingUIWithGrammarString )( uint64_t tag, WKStringRef badGrammarPhrase,
+        WKGrammarDetailRef grammarDetail, const void *clientInfo );
+typedef WKArrayRef ( *WKTextCheckerGuessesForWord )( uint64_t tag, WKStringRef word, const void *clientInfo );
+typedef void ( *WKTextCheckerLearnWord )( uint64_t tag, WKStringRef word, const void *clientInfo );
+typedef void ( *WKTextCheckerIgnoreWord )( uint64_t tag, WKStringRef word, const void *clientInfo );
 
-struct WKTextCheckerClient {
+struct WKTextCheckerClient
+{
     int                                                                     version;
-    const void *                                                            clientInfo;
+    const void                                                             *clientInfo;
     WKTextCheckerContinousSpellCheckingAllowed                              continuousSpellCheckingAllowed;
     WKTextCheckerContinousSpellCheckingEnabled                              continuousSpellCheckingEnabled;
     WKTextCheckerSetContinousSpellCheckingEnabled                           setContinuousSpellCheckingEnabled;
@@ -72,13 +77,13 @@ struct WKTextCheckerClient {
 };
 typedef struct WKTextCheckerClient WKTextCheckerClient;
 
-WK_EXPORT void WKTextCheckerSetClient(const WKTextCheckerClient* client);
+WK_EXPORT void WKTextCheckerSetClient( const WKTextCheckerClient *client );
 
-WK_EXPORT void WKTextCheckerContinuousSpellCheckingEnabledStateChanged(bool);
-WK_EXPORT void WKTextCheckerGrammarCheckingEnabledStateChanged(bool);
+WK_EXPORT void WKTextCheckerContinuousSpellCheckingEnabledStateChanged( bool );
+WK_EXPORT void WKTextCheckerGrammarCheckingEnabledStateChanged( bool );
 
-WK_EXPORT void WKTextCheckerCheckSpelling(WKPageRef page, bool startBeforeSelection);
-WK_EXPORT void WKTextCheckerChangeSpellingToWord(WKPageRef page, WKStringRef word);
+WK_EXPORT void WKTextCheckerCheckSpelling( WKPageRef page, bool startBeforeSelection );
+WK_EXPORT void WKTextCheckerChangeSpellingToWord( WKPageRef page, WKStringRef word );
 
 #ifdef __cplusplus
 }

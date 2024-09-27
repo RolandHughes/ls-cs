@@ -40,10 +40,12 @@
 #define SH4_ASSEMBLER_TRACING
 #endif
 
-namespace JSC {
+namespace JSC
+{
 typedef uint16_t SH4Word;
 
-enum {
+enum
+{
     INVALID_OPCODE = 0xffff,
     ADD_OPCODE = 0x300c,
     ADDIMM_OPCODE = 0x7000,
@@ -175,8 +177,10 @@ enum {
     CLRT_OPCODE = 8,
 };
 
-namespace SH4Registers {
-typedef enum {
+namespace SH4Registers
+{
+typedef enum
+{
     r0,
     r1,
     r2,
@@ -197,7 +201,8 @@ typedef enum {
     pr,
 } RegisterID;
 
-typedef enum {
+typedef enum
+{
     fr0, dr0 = fr0,
     fr1,
     fr2, dr2 = fr2,
@@ -217,97 +222,98 @@ typedef enum {
 } FPRegisterID;
 }
 
-inline uint16_t getOpcodeGroup1(uint16_t opc, int rm, int rn)
+inline uint16_t getOpcodeGroup1( uint16_t opc, int rm, int rn )
 {
-    return (opc | ((rm & 0xf) << 8) | ((rn & 0xf) << 4));
+    return ( opc | ( ( rm & 0xf ) << 8 ) | ( ( rn & 0xf ) << 4 ) );
 }
 
-inline uint16_t getOpcodeGroup2(uint16_t opc, int rm)
+inline uint16_t getOpcodeGroup2( uint16_t opc, int rm )
 {
-    return (opc | ((rm & 0xf) << 8));
+    return ( opc | ( ( rm & 0xf ) << 8 ) );
 }
 
-inline uint16_t getOpcodeGroup3(uint16_t opc, int rm, int rn)
+inline uint16_t getOpcodeGroup3( uint16_t opc, int rm, int rn )
 {
-    return (opc | ((rm & 0xf) << 8) | (rn & 0xff));
+    return ( opc | ( ( rm & 0xf ) << 8 ) | ( rn & 0xff ) );
 }
 
-inline uint16_t getOpcodeGroup4(uint16_t opc, int rm, int rn, int offset)
+inline uint16_t getOpcodeGroup4( uint16_t opc, int rm, int rn, int offset )
 {
-    return (opc | ((rm & 0xf) << 8) | ((rn & 0xf) << 4) | (offset & 0xf));
+    return ( opc | ( ( rm & 0xf ) << 8 ) | ( ( rn & 0xf ) << 4 ) | ( offset & 0xf ) );
 }
 
-inline uint16_t getOpcodeGroup5(uint16_t opc, int rm)
+inline uint16_t getOpcodeGroup5( uint16_t opc, int rm )
 {
-    return (opc | (rm & 0xff));
+    return ( opc | ( rm & 0xff ) );
 }
 
-inline uint16_t getOpcodeGroup6(uint16_t opc, int rm)
+inline uint16_t getOpcodeGroup6( uint16_t opc, int rm )
 {
-    return (opc | (rm & 0xfff));
+    return ( opc | ( rm & 0xfff ) );
 }
 
-inline uint16_t getOpcodeGroup7(uint16_t opc, int rm)
+inline uint16_t getOpcodeGroup7( uint16_t opc, int rm )
 {
-    return (opc | ((rm & 0x7) << 9));
+    return ( opc | ( ( rm & 0x7 ) << 9 ) );
 }
 
-inline uint16_t getOpcodeGroup8(uint16_t opc, int rm, int rn)
+inline uint16_t getOpcodeGroup8( uint16_t opc, int rm, int rn )
 {
-    return (opc | ((rm & 0x7) << 9) | ((rn & 0x7) << 5));
+    return ( opc | ( ( rm & 0x7 ) << 9 ) | ( ( rn & 0x7 ) << 5 ) );
 }
 
-inline uint16_t getOpcodeGroup9(uint16_t opc, int rm, int rn)
+inline uint16_t getOpcodeGroup9( uint16_t opc, int rm, int rn )
 {
-    return (opc | ((rm & 0xf) << 8) | ((rn & 0x7) << 5));
+    return ( opc | ( ( rm & 0xf ) << 8 ) | ( ( rn & 0x7 ) << 5 ) );
 }
 
-inline uint16_t getOpcodeGroup10(uint16_t opc, int rm, int rn)
+inline uint16_t getOpcodeGroup10( uint16_t opc, int rm, int rn )
 {
-    return (opc | ((rm & 0x7) << 9) | ((rn & 0xf) << 4));
+    return ( opc | ( ( rm & 0x7 ) << 9 ) | ( ( rn & 0xf ) << 4 ) );
 }
 
-inline uint16_t getOpcodeGroup11(uint16_t opc, int rm, int rn)
+inline uint16_t getOpcodeGroup11( uint16_t opc, int rm, int rn )
 {
-    return (opc | ((rm & 0xf) << 4) | (rn & 0xf));
+    return ( opc | ( ( rm & 0xf ) << 4 ) | ( rn & 0xf ) );
 }
 
-inline uint16_t getRn(uint16_t x)
+inline uint16_t getRn( uint16_t x )
 {
-    return ((x & 0xf00) >> 8);
+    return ( ( x & 0xf00 ) >> 8 );
 }
 
-inline uint16_t getRm(uint16_t x)
+inline uint16_t getRm( uint16_t x )
 {
-    return ((x & 0xf0) >> 4);
+    return ( ( x & 0xf0 ) >> 4 );
 }
 
-inline uint16_t getDisp(uint16_t x)
+inline uint16_t getDisp( uint16_t x )
 {
-    return (x & 0xf);
+    return ( x & 0xf );
 }
 
-inline uint16_t getImm8(uint16_t x)
+inline uint16_t getImm8( uint16_t x )
 {
-    return (x & 0xff);
+    return ( x & 0xff );
 }
 
-inline uint16_t getImm12(uint16_t x)
+inline uint16_t getImm12( uint16_t x )
 {
-    return (x & 0xfff);
+    return ( x & 0xfff );
 }
 
-inline uint16_t getDRn(uint16_t x)
+inline uint16_t getDRn( uint16_t x )
 {
-    return ((x & 0xe00) >> 9);
+    return ( ( x & 0xe00 ) >> 9 );
 }
 
-inline uint16_t getDRm(uint16_t x)
+inline uint16_t getDRm( uint16_t x )
 {
-    return ((x & 0xe0) >> 5);
+    return ( ( x & 0xe0 ) >> 5 );
 }
 
-class SH4Assembler {
+class SH4Assembler
+{
 public:
     typedef SH4Registers::RegisterID RegisterID;
     typedef SH4Registers::FPRegisterID FPRegisterID;
@@ -316,7 +322,8 @@ public:
     static const RegisterID scratchReg2 = SH4Registers::r11;
     static const uint32_t maxInstructionSize = 16;
 
-    enum {
+    enum
+    {
         padForAlign8 = 0x00,
         padForAlign16 = 0x0009,
         padForAlign32 = 0x00090009,
@@ -328,7 +335,8 @@ public:
     }
 
     // SH4 condition codes
-    typedef enum {
+    typedef enum
+    {
         EQ = 0x0, // Equal
         NE = 0x1, // Not Equal
         HS = 0x2, // Unsigend Greater Than equal
@@ -351,793 +359,837 @@ public:
 
     // Opaque label types
 public:
-    bool isImmediate(int constant)
+    bool isImmediate( int constant )
     {
-        return ((constant <= 127) && (constant >= -128));
+        return ( ( constant <= 127 ) && ( constant >= -128 ) );
     }
 
     RegisterID claimScratch()
     {
-        ASSERT((m_claimscratchReg != 0x3));
+        ASSERT( ( m_claimscratchReg != 0x3 ) );
 
-        if (!(m_claimscratchReg & 0x1)) {
-            m_claimscratchReg = (m_claimscratchReg | 0x1);
+        if ( !( m_claimscratchReg & 0x1 ) )
+        {
+            m_claimscratchReg = ( m_claimscratchReg | 0x1 );
             return scratchReg1;
         }
 
-        m_claimscratchReg = (m_claimscratchReg | 0x2);
+        m_claimscratchReg = ( m_claimscratchReg | 0x2 );
         return scratchReg2;
     }
 
-    void releaseScratch(RegisterID scratchR)
+    void releaseScratch( RegisterID scratchR )
     {
-        if (scratchR == scratchReg1)
-            m_claimscratchReg = (m_claimscratchReg & 0x2);
+        if ( scratchR == scratchReg1 )
+        {
+            m_claimscratchReg = ( m_claimscratchReg & 0x2 );
+        }
         else
-            m_claimscratchReg = (m_claimscratchReg & 0x1);
+        {
+            m_claimscratchReg = ( m_claimscratchReg & 0x1 );
+        }
     }
 
     // Stack operations
 
-    void pushReg(RegisterID reg)
+    void pushReg( RegisterID reg )
     {
-        if (reg == SH4Registers::pr) {
-            oneShortOp(getOpcodeGroup2(STSLPR_OPCODE, SH4Registers::sp));
+        if ( reg == SH4Registers::pr )
+        {
+            oneShortOp( getOpcodeGroup2( STSLPR_OPCODE, SH4Registers::sp ) );
             return;
         }
 
-        oneShortOp(getOpcodeGroup1(MOVL_WRITE_RNDEC_OPCODE, SH4Registers::sp, reg));
+        oneShortOp( getOpcodeGroup1( MOVL_WRITE_RNDEC_OPCODE, SH4Registers::sp, reg ) );
     }
 
-    void popReg(RegisterID reg)
+    void popReg( RegisterID reg )
     {
-        if (reg == SH4Registers::pr) {
-            oneShortOp(getOpcodeGroup2(LDSLPR_OPCODE, SH4Registers::sp));
+        if ( reg == SH4Registers::pr )
+        {
+            oneShortOp( getOpcodeGroup2( LDSLPR_OPCODE, SH4Registers::sp ) );
             return;
         }
 
-        oneShortOp(getOpcodeGroup1(MOVL_READ_RMINC_OPCODE, reg, SH4Registers::sp));
+        oneShortOp( getOpcodeGroup1( MOVL_READ_RMINC_OPCODE, reg, SH4Registers::sp ) );
     }
 
-    void movt(RegisterID dst)
+    void movt( RegisterID dst )
     {
-        uint16_t opc = getOpcodeGroup2(MOVT_OPCODE, dst);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup2( MOVT_OPCODE, dst );
+        oneShortOp( opc );
     }
 
     // Arithmetic operations
 
-    void addlRegReg(RegisterID src, RegisterID dst)
+    void addlRegReg( RegisterID src, RegisterID dst )
     {
-        uint16_t opc = getOpcodeGroup1(ADD_OPCODE, dst, src);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup1( ADD_OPCODE, dst, src );
+        oneShortOp( opc );
     }
 
-    void addclRegReg(RegisterID src, RegisterID dst)
+    void addclRegReg( RegisterID src, RegisterID dst )
     {
-        uint16_t opc = getOpcodeGroup1(ADDC_OPCODE, dst, src);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup1( ADDC_OPCODE, dst, src );
+        oneShortOp( opc );
     }
 
-    void addvlRegReg(RegisterID src, RegisterID dst)
+    void addvlRegReg( RegisterID src, RegisterID dst )
     {
-        uint16_t opc = getOpcodeGroup1(ADDV_OPCODE, dst, src);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup1( ADDV_OPCODE, dst, src );
+        oneShortOp( opc );
     }
 
-    void addlImm8r(int imm8, RegisterID dst)
+    void addlImm8r( int imm8, RegisterID dst )
     {
-        ASSERT((imm8 <= 127) && (imm8 >= -128));
+        ASSERT( ( imm8 <= 127 ) && ( imm8 >= -128 ) );
 
-        uint16_t opc = getOpcodeGroup3(ADDIMM_OPCODE, dst, imm8);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup3( ADDIMM_OPCODE, dst, imm8 );
+        oneShortOp( opc );
     }
 
-    void andlRegReg(RegisterID src, RegisterID dst)
+    void andlRegReg( RegisterID src, RegisterID dst )
     {
-        uint16_t opc = getOpcodeGroup1(AND_OPCODE, dst, src);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup1( AND_OPCODE, dst, src );
+        oneShortOp( opc );
     }
 
-    void andlImm8r(int imm8, RegisterID dst)
+    void andlImm8r( int imm8, RegisterID dst )
     {
-        ASSERT((imm8 <= 255) && (imm8 >= 0));
-        ASSERT(dst == SH4Registers::r0);
+        ASSERT( ( imm8 <= 255 ) && ( imm8 >= 0 ) );
+        ASSERT( dst == SH4Registers::r0 );
 
-        uint16_t opc = getOpcodeGroup5(ANDIMM_OPCODE, imm8);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup5( ANDIMM_OPCODE, imm8 );
+        oneShortOp( opc );
     }
 
-    void div1lRegReg(RegisterID src, RegisterID dst)
+    void div1lRegReg( RegisterID src, RegisterID dst )
     {
-        uint16_t opc = getOpcodeGroup1(DIV1_OPCODE, dst, src);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup1( DIV1_OPCODE, dst, src );
+        oneShortOp( opc );
     }
 
-    void div0lRegReg(RegisterID src, RegisterID dst)
+    void div0lRegReg( RegisterID src, RegisterID dst )
     {
-        uint16_t opc = getOpcodeGroup1(DIV0_OPCODE, dst, src);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup1( DIV0_OPCODE, dst, src );
+        oneShortOp( opc );
     }
 
-    void notlReg(RegisterID src, RegisterID dst)
+    void notlReg( RegisterID src, RegisterID dst )
     {
-        uint16_t opc = getOpcodeGroup1(NOT_OPCODE, dst, src);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup1( NOT_OPCODE, dst, src );
+        oneShortOp( opc );
     }
 
-    void orlRegReg(RegisterID src, RegisterID dst)
+    void orlRegReg( RegisterID src, RegisterID dst )
     {
-        uint16_t opc = getOpcodeGroup1(OR_OPCODE, dst, src);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup1( OR_OPCODE, dst, src );
+        oneShortOp( opc );
     }
 
-    void orlImm8r(int imm8, RegisterID dst)
+    void orlImm8r( int imm8, RegisterID dst )
     {
-        ASSERT((imm8 <= 255) && (imm8 >= 0));
-        ASSERT(dst == SH4Registers::r0);
+        ASSERT( ( imm8 <= 255 ) && ( imm8 >= 0 ) );
+        ASSERT( dst == SH4Registers::r0 );
 
-        uint16_t opc = getOpcodeGroup5(ORIMM_OPCODE, imm8);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup5( ORIMM_OPCODE, imm8 );
+        oneShortOp( opc );
     }
 
-    void sublRegReg(RegisterID src, RegisterID dst)
+    void sublRegReg( RegisterID src, RegisterID dst )
     {
-         uint16_t opc = getOpcodeGroup1(SUB_OPCODE, dst, src);
-         oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup1( SUB_OPCODE, dst, src );
+        oneShortOp( opc );
     }
 
-    void subvlRegReg(RegisterID src, RegisterID dst)
+    void subvlRegReg( RegisterID src, RegisterID dst )
     {
-         uint16_t opc = getOpcodeGroup1(SUBV_OPCODE, dst, src);
-         oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup1( SUBV_OPCODE, dst, src );
+        oneShortOp( opc );
     }
 
-    void xorlRegReg(RegisterID src, RegisterID dst)
+    void xorlRegReg( RegisterID src, RegisterID dst )
     {
-        uint16_t opc = getOpcodeGroup1(XOR_OPCODE, dst, src);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup1( XOR_OPCODE, dst, src );
+        oneShortOp( opc );
     }
 
-    void xorlImm8r(int imm8, RegisterID dst)
+    void xorlImm8r( int imm8, RegisterID dst )
     {
-        ASSERT((imm8 <= 255) && (imm8 >= 0));
-        ASSERT(dst == SH4Registers::r0);
+        ASSERT( ( imm8 <= 255 ) && ( imm8 >= 0 ) );
+        ASSERT( dst == SH4Registers::r0 );
 
-        uint16_t opc = getOpcodeGroup5(XORIMM_OPCODE, imm8);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup5( XORIMM_OPCODE, imm8 );
+        oneShortOp( opc );
     }
 
-    void shllImm8r(int imm, RegisterID dst)
+    void shllImm8r( int imm, RegisterID dst )
     {
-        switch (imm) {
-        case 1:
-            oneShortOp(getOpcodeGroup2(SHLL_OPCODE, dst));
-            break;
-        case 2:
-            oneShortOp(getOpcodeGroup2(SHLL2_OPCODE, dst));
-            break;
-        case 8:
-            oneShortOp(getOpcodeGroup2(SHLL8_OPCODE, dst));
-            break;
-        case 16:
-            oneShortOp(getOpcodeGroup2(SHLL16_OPCODE, dst));
-            break;
-        default:
-            ASSERT_NOT_REACHED();
+        switch ( imm )
+        {
+            case 1:
+                oneShortOp( getOpcodeGroup2( SHLL_OPCODE, dst ) );
+                break;
+
+            case 2:
+                oneShortOp( getOpcodeGroup2( SHLL2_OPCODE, dst ) );
+                break;
+
+            case 8:
+                oneShortOp( getOpcodeGroup2( SHLL8_OPCODE, dst ) );
+                break;
+
+            case 16:
+                oneShortOp( getOpcodeGroup2( SHLL16_OPCODE, dst ) );
+                break;
+
+            default:
+                ASSERT_NOT_REACHED();
         }
     }
 
-    void neg(RegisterID dst, RegisterID src)
+    void neg( RegisterID dst, RegisterID src )
     {
-        uint16_t opc = getOpcodeGroup1(NEG_OPCODE, dst, src);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup1( NEG_OPCODE, dst, src );
+        oneShortOp( opc );
     }
 
-    void shllRegReg(RegisterID dst, RegisterID rShift)
+    void shllRegReg( RegisterID dst, RegisterID rShift )
     {
-        uint16_t opc = getOpcodeGroup1(SHLD_OPCODE, dst, rShift);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup1( SHLD_OPCODE, dst, rShift );
+        oneShortOp( opc );
     }
 
-    void shlrRegReg(RegisterID dst, RegisterID rShift)
+    void shlrRegReg( RegisterID dst, RegisterID rShift )
     {
-        neg(rShift, rShift);
-        shllRegReg(dst, rShift);
+        neg( rShift, rShift );
+        shllRegReg( dst, rShift );
     }
 
-    void sharRegReg(RegisterID dst, RegisterID rShift)
+    void sharRegReg( RegisterID dst, RegisterID rShift )
     {
-        neg(rShift, rShift);
-        shaRegReg(dst, rShift);
+        neg( rShift, rShift );
+        shaRegReg( dst, rShift );
     }
 
-    void shaRegReg(RegisterID dst, RegisterID rShift)
+    void shaRegReg( RegisterID dst, RegisterID rShift )
     {
-        uint16_t opc = getOpcodeGroup1(SHAD_OPCODE, dst, rShift);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup1( SHAD_OPCODE, dst, rShift );
+        oneShortOp( opc );
     }
 
-    void shlrImm8r(int imm, RegisterID dst)
+    void shlrImm8r( int imm, RegisterID dst )
     {
-        switch (imm) {
-        case 1:
-            oneShortOp(getOpcodeGroup2(SHLR_OPCODE, dst));
-            break;
-        case 2:
-            oneShortOp(getOpcodeGroup2(SHLR2_OPCODE, dst));
-            break;
-        case 8:
-            oneShortOp(getOpcodeGroup2(SHLR8_OPCODE, dst));
-            break;
-        case 16:
-            oneShortOp(getOpcodeGroup2(SHLR16_OPCODE, dst));
-            break;
-        default:
-            ASSERT_NOT_REACHED();
+        switch ( imm )
+        {
+            case 1:
+                oneShortOp( getOpcodeGroup2( SHLR_OPCODE, dst ) );
+                break;
+
+            case 2:
+                oneShortOp( getOpcodeGroup2( SHLR2_OPCODE, dst ) );
+                break;
+
+            case 8:
+                oneShortOp( getOpcodeGroup2( SHLR8_OPCODE, dst ) );
+                break;
+
+            case 16:
+                oneShortOp( getOpcodeGroup2( SHLR16_OPCODE, dst ) );
+                break;
+
+            default:
+                ASSERT_NOT_REACHED();
         }
     }
 
-    void imullRegReg(RegisterID src, RegisterID dst)
+    void imullRegReg( RegisterID src, RegisterID dst )
     {
-        uint16_t opc = getOpcodeGroup1(MULL_OPCODE, dst, src);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup1( MULL_OPCODE, dst, src );
+        oneShortOp( opc );
     }
 
-    void dmullRegReg(RegisterID src, RegisterID dst)
+    void dmullRegReg( RegisterID src, RegisterID dst )
     {
-        uint16_t opc = getOpcodeGroup1(DMULL_L_OPCODE, dst, src);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup1( DMULL_L_OPCODE, dst, src );
+        oneShortOp( opc );
     }
 
-    void dmulslRegReg(RegisterID src, RegisterID dst)
+    void dmulslRegReg( RegisterID src, RegisterID dst )
     {
-        uint16_t opc = getOpcodeGroup1(DMULSL_OPCODE, dst, src);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup1( DMULSL_OPCODE, dst, src );
+        oneShortOp( opc );
     }
 
-    void stsmacl(RegisterID reg)
+    void stsmacl( RegisterID reg )
     {
-        uint16_t opc = getOpcodeGroup2(STSMACL_OPCODE, reg);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup2( STSMACL_OPCODE, reg );
+        oneShortOp( opc );
     }
 
-    void stsmach(RegisterID reg)
+    void stsmach( RegisterID reg )
     {
-        uint16_t opc = getOpcodeGroup2(STSMACH_OPCODE, reg);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup2( STSMACH_OPCODE, reg );
+        oneShortOp( opc );
     }
 
     // Comparisons
 
-    void cmplRegReg(RegisterID left, RegisterID right, Condition cond)
+    void cmplRegReg( RegisterID left, RegisterID right, Condition cond )
     {
-        switch (cond) {
-        case NE:
-            oneShortOp(getOpcodeGroup1(CMPEQ_OPCODE, right, left));
-            break;
-        case GT:
-            oneShortOp(getOpcodeGroup1(CMPGT_OPCODE, right, left));
-            break;
-        case EQ:
-            oneShortOp(getOpcodeGroup1(CMPEQ_OPCODE, right, left));
-            break;
-        case GE:
-            oneShortOp(getOpcodeGroup1(CMPGE_OPCODE, right, left));
-            break;
-        case HS:
-            oneShortOp(getOpcodeGroup1(CMPHS_OPCODE, right, left));
-            break;
-        case HI:
-            oneShortOp(getOpcodeGroup1(CMPHI_OPCODE, right, left));
-            break;
-        case LI:
-            oneShortOp(getOpcodeGroup1(CMPHI_OPCODE, left, right));
-            break;
-        case LS:
-            oneShortOp(getOpcodeGroup1(CMPHS_OPCODE, left, right));
-            break;
-        case LE:
-            oneShortOp(getOpcodeGroup1(CMPGE_OPCODE, left, right));
-            break;
-        case LT:
-            oneShortOp(getOpcodeGroup1(CMPGT_OPCODE, left, right));
-            break;
-        default:
-            ASSERT_NOT_REACHED();
+        switch ( cond )
+        {
+            case NE:
+                oneShortOp( getOpcodeGroup1( CMPEQ_OPCODE, right, left ) );
+                break;
+
+            case GT:
+                oneShortOp( getOpcodeGroup1( CMPGT_OPCODE, right, left ) );
+                break;
+
+            case EQ:
+                oneShortOp( getOpcodeGroup1( CMPEQ_OPCODE, right, left ) );
+                break;
+
+            case GE:
+                oneShortOp( getOpcodeGroup1( CMPGE_OPCODE, right, left ) );
+                break;
+
+            case HS:
+                oneShortOp( getOpcodeGroup1( CMPHS_OPCODE, right, left ) );
+                break;
+
+            case HI:
+                oneShortOp( getOpcodeGroup1( CMPHI_OPCODE, right, left ) );
+                break;
+
+            case LI:
+                oneShortOp( getOpcodeGroup1( CMPHI_OPCODE, left, right ) );
+                break;
+
+            case LS:
+                oneShortOp( getOpcodeGroup1( CMPHS_OPCODE, left, right ) );
+                break;
+
+            case LE:
+                oneShortOp( getOpcodeGroup1( CMPGE_OPCODE, left, right ) );
+                break;
+
+            case LT:
+                oneShortOp( getOpcodeGroup1( CMPGT_OPCODE, left, right ) );
+                break;
+
+            default:
+                ASSERT_NOT_REACHED();
         }
     }
 
-    void cmppl(RegisterID reg)
+    void cmppl( RegisterID reg )
     {
-        uint16_t opc = getOpcodeGroup2(CMPPL_OPCODE, reg);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup2( CMPPL_OPCODE, reg );
+        oneShortOp( opc );
     }
 
-    void cmppz(RegisterID reg)
+    void cmppz( RegisterID reg )
     {
-        uint16_t opc = getOpcodeGroup2(CMPPZ_OPCODE, reg);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup2( CMPPZ_OPCODE, reg );
+        oneShortOp( opc );
     }
 
-    void cmpEqImmR0(int imm, RegisterID dst)
+    void cmpEqImmR0( int imm, RegisterID dst )
     {
-        uint16_t opc = getOpcodeGroup5(CMPEQIMM_OPCODE, imm);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup5( CMPEQIMM_OPCODE, imm );
+        oneShortOp( opc );
     }
 
-    void testlRegReg(RegisterID src, RegisterID dst)
+    void testlRegReg( RegisterID src, RegisterID dst )
     {
-        uint16_t opc = getOpcodeGroup1(TST_OPCODE, dst, src);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup1( TST_OPCODE, dst, src );
+        oneShortOp( opc );
     }
 
-    void testlImm8r(int imm, RegisterID dst)
+    void testlImm8r( int imm, RegisterID dst )
     {
-        ASSERT((dst == SH4Registers::r0) && (imm <= 255) && (imm >= 0));
+        ASSERT( ( dst == SH4Registers::r0 ) && ( imm <= 255 ) && ( imm >= 0 ) );
 
-        uint16_t opc = getOpcodeGroup5(TSTIMM_OPCODE, imm);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup5( TSTIMM_OPCODE, imm );
+        oneShortOp( opc );
     }
 
     void nop()
     {
-        oneShortOp(NOP_OPCODE, false);
+        oneShortOp( NOP_OPCODE, false );
     }
 
     void sett()
     {
-        oneShortOp(SETT_OPCODE);
+        oneShortOp( SETT_OPCODE );
     }
 
     void clrt()
     {
-        oneShortOp(CLRT_OPCODE);
+        oneShortOp( CLRT_OPCODE );
     }
 
     void fschg()
     {
-        oneShortOp(FSCHG_OPCODE);
+        oneShortOp( FSCHG_OPCODE );
     }
 
     void bkpt()
     {
-        oneShortOp(BRK_OPCODE, false);
+        oneShortOp( BRK_OPCODE, false );
     }
 
-    void branch(uint16_t opc, int label)
+    void branch( uint16_t opc, int label )
     {
-        switch (opc) {
-        case BT_OPCODE:
-            ASSERT((label <= 127) && (label >= -128));
-            oneShortOp(getOpcodeGroup5(BT_OPCODE, label));
-            break;
-        case BRA_OPCODE:
-            ASSERT((label <= 2047) && (label >= -2048));
-            oneShortOp(getOpcodeGroup6(BRA_OPCODE, label));
-            break;
-        case BF_OPCODE:
-            ASSERT((label <= 127) && (label >= -128));
-            oneShortOp(getOpcodeGroup5(BF_OPCODE, label));
-            break;
-        default:
-            ASSERT_NOT_REACHED();
+        switch ( opc )
+        {
+            case BT_OPCODE:
+                ASSERT( ( label <= 127 ) && ( label >= -128 ) );
+                oneShortOp( getOpcodeGroup5( BT_OPCODE, label ) );
+                break;
+
+            case BRA_OPCODE:
+                ASSERT( ( label <= 2047 ) && ( label >= -2048 ) );
+                oneShortOp( getOpcodeGroup6( BRA_OPCODE, label ) );
+                break;
+
+            case BF_OPCODE:
+                ASSERT( ( label <= 127 ) && ( label >= -128 ) );
+                oneShortOp( getOpcodeGroup5( BF_OPCODE, label ) );
+                break;
+
+            default:
+                ASSERT_NOT_REACHED();
         }
     }
 
-    void branch(uint16_t opc, RegisterID reg)
+    void branch( uint16_t opc, RegisterID reg )
     {
-        switch (opc) {
-        case BRAF_OPCODE:
-            oneShortOp(getOpcodeGroup2(BRAF_OPCODE, reg));
-            break;
-        case JMP_OPCODE:
-            oneShortOp(getOpcodeGroup2(JMP_OPCODE, reg));
-            break;
-        case JSR_OPCODE:
-            oneShortOp(getOpcodeGroup2(JSR_OPCODE, reg));
-            break;
-        case BSRF_OPCODE:
-            oneShortOp(getOpcodeGroup2(BSRF_OPCODE, reg));
-            break;
-        default:
-            ASSERT_NOT_REACHED();
+        switch ( opc )
+        {
+            case BRAF_OPCODE:
+                oneShortOp( getOpcodeGroup2( BRAF_OPCODE, reg ) );
+                break;
+
+            case JMP_OPCODE:
+                oneShortOp( getOpcodeGroup2( JMP_OPCODE, reg ) );
+                break;
+
+            case JSR_OPCODE:
+                oneShortOp( getOpcodeGroup2( JSR_OPCODE, reg ) );
+                break;
+
+            case BSRF_OPCODE:
+                oneShortOp( getOpcodeGroup2( BSRF_OPCODE, reg ) );
+                break;
+
+            default:
+                ASSERT_NOT_REACHED();
         }
     }
 
-    void ldspr(RegisterID reg)
+    void ldspr( RegisterID reg )
     {
-        uint16_t opc = getOpcodeGroup2(LDSPR_OPCODE, reg);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup2( LDSPR_OPCODE, reg );
+        oneShortOp( opc );
     }
 
-    void stspr(RegisterID reg)
+    void stspr( RegisterID reg )
     {
-        uint16_t opc = getOpcodeGroup2(STSPR_OPCODE, reg);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup2( STSPR_OPCODE, reg );
+        oneShortOp( opc );
     }
 
-    void extuw(RegisterID src, RegisterID dst)
+    void extuw( RegisterID src, RegisterID dst )
     {
-        uint16_t opc = getOpcodeGroup1(EXTUW_OPCODE, dst, src);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup1( EXTUW_OPCODE, dst, src );
+        oneShortOp( opc );
     }
 
     // float operations
 
-    void ldsrmfpul(RegisterID src)
+    void ldsrmfpul( RegisterID src )
     {
-        uint16_t opc = getOpcodeGroup2(LDS_RM_FPUL_OPCODE, src);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup2( LDS_RM_FPUL_OPCODE, src );
+        oneShortOp( opc );
     }
 
-    void fneg(FPRegisterID dst)
+    void fneg( FPRegisterID dst )
     {
-        uint16_t opc = getOpcodeGroup2(FNEG_OPCODE, dst);
-        oneShortOp(opc, true, false);
+        uint16_t opc = getOpcodeGroup2( FNEG_OPCODE, dst );
+        oneShortOp( opc, true, false );
     }
 
-    void fsqrt(FPRegisterID dst)
+    void fsqrt( FPRegisterID dst )
     {
-        uint16_t opc = getOpcodeGroup2(FSQRT_OPCODE, dst);
-        oneShortOp(opc, true, false);
+        uint16_t opc = getOpcodeGroup2( FSQRT_OPCODE, dst );
+        oneShortOp( opc, true, false );
     }
 
-    void stsfpulReg(RegisterID src)
+    void stsfpulReg( RegisterID src )
     {
-        uint16_t opc = getOpcodeGroup2(STS_FPUL_RN_OPCODE, src);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup2( STS_FPUL_RN_OPCODE, src );
+        oneShortOp( opc );
     }
 
-    void floatfpulfrn(RegisterID src)
+    void floatfpulfrn( RegisterID src )
     {
-        uint16_t opc = getOpcodeGroup2(FLOAT_OPCODE, src);
-        oneShortOp(opc, true, false);
+        uint16_t opc = getOpcodeGroup2( FLOAT_OPCODE, src );
+        oneShortOp( opc, true, false );
     }
 
-    void fmull(FPRegisterID src, FPRegisterID dst)
+    void fmull( FPRegisterID src, FPRegisterID dst )
     {
-        uint16_t opc = getOpcodeGroup1(FMUL_OPCODE, dst, src);
-        oneShortOp(opc, true, false);
+        uint16_t opc = getOpcodeGroup1( FMUL_OPCODE, dst, src );
+        oneShortOp( opc, true, false );
     }
 
-    void fmovsReadrm(RegisterID src, FPRegisterID dst)
+    void fmovsReadrm( RegisterID src, FPRegisterID dst )
     {
-        uint16_t opc = getOpcodeGroup1(FMOVS_READ_RM_OPCODE, dst, src);
-        oneShortOp(opc, true, false);
+        uint16_t opc = getOpcodeGroup1( FMOVS_READ_RM_OPCODE, dst, src );
+        oneShortOp( opc, true, false );
     }
 
-    void fmovsWriterm(FPRegisterID src, RegisterID dst)
+    void fmovsWriterm( FPRegisterID src, RegisterID dst )
     {
-        uint16_t opc = getOpcodeGroup1(FMOVS_WRITE_RN_OPCODE, dst, src);
-        oneShortOp(opc, true, false);
+        uint16_t opc = getOpcodeGroup1( FMOVS_WRITE_RN_OPCODE, dst, src );
+        oneShortOp( opc, true, false );
     }
 
-    void fmovsWriter0r(FPRegisterID src, RegisterID dst)
+    void fmovsWriter0r( FPRegisterID src, RegisterID dst )
     {
-        uint16_t opc = getOpcodeGroup1(FMOVS_WRITE_R0RN_OPCODE, dst, src);
-        oneShortOp(opc, true, false);
+        uint16_t opc = getOpcodeGroup1( FMOVS_WRITE_R0RN_OPCODE, dst, src );
+        oneShortOp( opc, true, false );
     }
 
-    void fmovsReadr0r(RegisterID src, FPRegisterID dst)
+    void fmovsReadr0r( RegisterID src, FPRegisterID dst )
     {
-        uint16_t opc = getOpcodeGroup1(FMOVS_READ_R0RM_OPCODE, dst, src);
-        oneShortOp(opc, true, false);
+        uint16_t opc = getOpcodeGroup1( FMOVS_READ_R0RM_OPCODE, dst, src );
+        oneShortOp( opc, true, false );
     }
 
-    void fmovsReadrminc(RegisterID src, FPRegisterID dst)
+    void fmovsReadrminc( RegisterID src, FPRegisterID dst )
     {
-        uint16_t opc = getOpcodeGroup1(FMOVS_READ_RM_INC_OPCODE, dst, src);
-        oneShortOp(opc, true, false);
+        uint16_t opc = getOpcodeGroup1( FMOVS_READ_RM_INC_OPCODE, dst, src );
+        oneShortOp( opc, true, false );
     }
 
-    void fmovsWriterndec(FPRegisterID src, RegisterID dst)
+    void fmovsWriterndec( FPRegisterID src, RegisterID dst )
     {
-        uint16_t opc = getOpcodeGroup1(FMOVS_WRITE_RN_DEC_OPCODE, dst, src);
-        oneShortOp(opc, true, false);
+        uint16_t opc = getOpcodeGroup1( FMOVS_WRITE_RN_DEC_OPCODE, dst, src );
+        oneShortOp( opc, true, false );
     }
 
-    void ftrcRegfpul(FPRegisterID src)
+    void ftrcRegfpul( FPRegisterID src )
     {
-        uint16_t opc = getOpcodeGroup2(FTRC_OPCODE, src);
-        oneShortOp(opc, true, false);
+        uint16_t opc = getOpcodeGroup2( FTRC_OPCODE, src );
+        oneShortOp( opc, true, false );
     }
 
-    void fldsfpul(RegisterID src)
+    void fldsfpul( RegisterID src )
     {
-        uint16_t opc = getOpcodeGroup2(FLDS_FRM_FPUL_OPCODE, src);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup2( FLDS_FRM_FPUL_OPCODE, src );
+        oneShortOp( opc );
     }
 
-    void fstsfpul(RegisterID src)
+    void fstsfpul( RegisterID src )
     {
-        uint16_t opc = getOpcodeGroup2(FSTS_FPUL_FRN_OPCODE, src);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup2( FSTS_FPUL_FRN_OPCODE, src );
+        oneShortOp( opc );
     }
 
-    void ldsfpscr(RegisterID reg)
+    void ldsfpscr( RegisterID reg )
     {
-        uint16_t opc = getOpcodeGroup2(LDSFPSCR_OPCODE, reg);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup2( LDSFPSCR_OPCODE, reg );
+        oneShortOp( opc );
     }
 
-    void stsfpscr(RegisterID reg)
+    void stsfpscr( RegisterID reg )
     {
-        uint16_t opc = getOpcodeGroup2(STSFPSCR_OPCODE, reg);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup2( STSFPSCR_OPCODE, reg );
+        oneShortOp( opc );
     }
 
     // double operations
 
-    void dcnvds(FPRegisterID src)
+    void dcnvds( FPRegisterID src )
     {
-        uint16_t opc = getOpcodeGroup7(FCNVDS_DRM_FPUL_OPCODE, src >> 1);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup7( FCNVDS_DRM_FPUL_OPCODE, src >> 1 );
+        oneShortOp( opc );
     }
 
-    void dcmppeq(FPRegisterID src, FPRegisterID dst)
+    void dcmppeq( FPRegisterID src, FPRegisterID dst )
     {
-        uint16_t opc = getOpcodeGroup8(FCMPEQ_OPCODE, dst >> 1, src >> 1);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup8( FCMPEQ_OPCODE, dst >> 1, src >> 1 );
+        oneShortOp( opc );
     }
 
-    void dcmppgt(FPRegisterID src, FPRegisterID dst)
+    void dcmppgt( FPRegisterID src, FPRegisterID dst )
     {
-        uint16_t opc = getOpcodeGroup8(FCMPGT_OPCODE, dst >> 1, src >> 1);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup8( FCMPGT_OPCODE, dst >> 1, src >> 1 );
+        oneShortOp( opc );
     }
 
-    void dmulRegReg(FPRegisterID src, FPRegisterID dst)
+    void dmulRegReg( FPRegisterID src, FPRegisterID dst )
     {
-        uint16_t opc = getOpcodeGroup8(FMUL_OPCODE, dst >> 1, src >> 1);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup8( FMUL_OPCODE, dst >> 1, src >> 1 );
+        oneShortOp( opc );
     }
 
-    void dsubRegReg(FPRegisterID src, FPRegisterID dst)
+    void dsubRegReg( FPRegisterID src, FPRegisterID dst )
     {
-        uint16_t opc = getOpcodeGroup8(FSUB_OPCODE, dst >> 1, src >> 1);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup8( FSUB_OPCODE, dst >> 1, src >> 1 );
+        oneShortOp( opc );
     }
 
-    void daddRegReg(FPRegisterID src, FPRegisterID dst)
+    void daddRegReg( FPRegisterID src, FPRegisterID dst )
     {
-        uint16_t opc = getOpcodeGroup8(FADD_OPCODE, dst >> 1, src >> 1);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup8( FADD_OPCODE, dst >> 1, src >> 1 );
+        oneShortOp( opc );
     }
 
-    void dmovRegReg(FPRegisterID src, FPRegisterID dst)
+    void dmovRegReg( FPRegisterID src, FPRegisterID dst )
     {
-        uint16_t opc = getOpcodeGroup8(FMOV_OPCODE, dst >> 1, src >> 1);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup8( FMOV_OPCODE, dst >> 1, src >> 1 );
+        oneShortOp( opc );
     }
 
-    void ddivRegReg(FPRegisterID src, FPRegisterID dst)
+    void ddivRegReg( FPRegisterID src, FPRegisterID dst )
     {
-        uint16_t opc = getOpcodeGroup8(FDIV_OPCODE, dst >> 1, src >> 1);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup8( FDIV_OPCODE, dst >> 1, src >> 1 );
+        oneShortOp( opc );
     }
 
-    void dsqrt(FPRegisterID dst)
+    void dsqrt( FPRegisterID dst )
     {
-        uint16_t opc = getOpcodeGroup7(FSQRT_OPCODE, dst >> 1);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup7( FSQRT_OPCODE, dst >> 1 );
+        oneShortOp( opc );
     }
 
-    void dneg(FPRegisterID dst)
+    void dneg( FPRegisterID dst )
     {
-        uint16_t opc = getOpcodeGroup7(FNEG_OPCODE, dst >> 1);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup7( FNEG_OPCODE, dst >> 1 );
+        oneShortOp( opc );
     }
 
-    void fmovReadrm(RegisterID src, FPRegisterID dst)
+    void fmovReadrm( RegisterID src, FPRegisterID dst )
     {
-        uint16_t opc = getOpcodeGroup10(FMOVS_READ_RM_OPCODE, dst >> 1, src);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup10( FMOVS_READ_RM_OPCODE, dst >> 1, src );
+        oneShortOp( opc );
     }
 
-    void fmovWriterm(FPRegisterID src, RegisterID dst)
+    void fmovWriterm( FPRegisterID src, RegisterID dst )
     {
-        uint16_t opc = getOpcodeGroup9(FMOVS_WRITE_RN_OPCODE, dst, src >> 1);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup9( FMOVS_WRITE_RN_OPCODE, dst, src >> 1 );
+        oneShortOp( opc );
     }
 
-    void fmovWriter0r(FPRegisterID src, RegisterID dst)
+    void fmovWriter0r( FPRegisterID src, RegisterID dst )
     {
-        uint16_t opc = getOpcodeGroup9(FMOVS_WRITE_R0RN_OPCODE, dst, src >> 1);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup9( FMOVS_WRITE_R0RN_OPCODE, dst, src >> 1 );
+        oneShortOp( opc );
     }
 
-    void fmovReadr0r(RegisterID src, FPRegisterID dst)
+    void fmovReadr0r( RegisterID src, FPRegisterID dst )
     {
-        uint16_t opc = getOpcodeGroup10(FMOVS_READ_R0RM_OPCODE, dst >> 1, src);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup10( FMOVS_READ_R0RM_OPCODE, dst >> 1, src );
+        oneShortOp( opc );
     }
 
-    void fmovReadrminc(RegisterID src, FPRegisterID dst)
+    void fmovReadrminc( RegisterID src, FPRegisterID dst )
     {
-        uint16_t opc = getOpcodeGroup10(FMOVS_READ_RM_INC_OPCODE, dst >> 1, src);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup10( FMOVS_READ_RM_INC_OPCODE, dst >> 1, src );
+        oneShortOp( opc );
     }
 
-    void fmovWriterndec(FPRegisterID src, RegisterID dst)
+    void fmovWriterndec( FPRegisterID src, RegisterID dst )
     {
-        uint16_t opc = getOpcodeGroup9(FMOVS_WRITE_RN_DEC_OPCODE, dst, src >> 1);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup9( FMOVS_WRITE_RN_DEC_OPCODE, dst, src >> 1 );
+        oneShortOp( opc );
     }
 
-    void floatfpulDreg(FPRegisterID src)
+    void floatfpulDreg( FPRegisterID src )
     {
-        uint16_t opc = getOpcodeGroup7(FLOAT_OPCODE, src >> 1);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup7( FLOAT_OPCODE, src >> 1 );
+        oneShortOp( opc );
     }
 
-    void ftrcdrmfpul(FPRegisterID src)
+    void ftrcdrmfpul( FPRegisterID src )
     {
-        uint16_t opc = getOpcodeGroup7(FTRC_OPCODE, src >> 1);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup7( FTRC_OPCODE, src >> 1 );
+        oneShortOp( opc );
     }
 
     // Various move ops
 
-    void movImm8(int imm8, RegisterID dst)
+    void movImm8( int imm8, RegisterID dst )
     {
-        ASSERT((imm8 <= 127) && (imm8 >= -128));
+        ASSERT( ( imm8 <= 127 ) && ( imm8 >= -128 ) );
 
-        uint16_t opc = getOpcodeGroup3(MOVIMM_OPCODE, dst, imm8);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup3( MOVIMM_OPCODE, dst, imm8 );
+        oneShortOp( opc );
     }
 
-    void movlRegReg(RegisterID src, RegisterID dst)
+    void movlRegReg( RegisterID src, RegisterID dst )
     {
-        uint16_t opc = getOpcodeGroup1(MOV_OPCODE, dst, src);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup1( MOV_OPCODE, dst, src );
+        oneShortOp( opc );
     }
 
-    void movwRegMem(RegisterID src, RegisterID dst)
+    void movwRegMem( RegisterID src, RegisterID dst )
     {
-        uint16_t opc = getOpcodeGroup1(MOVW_WRITE_RN_OPCODE, dst, src);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup1( MOVW_WRITE_RN_OPCODE, dst, src );
+        oneShortOp( opc );
     }
 
-    void movwMemReg(RegisterID src, RegisterID dst)
+    void movwMemReg( RegisterID src, RegisterID dst )
     {
-        uint16_t opc = getOpcodeGroup1(MOVW_READ_RM_OPCODE, dst, src);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup1( MOVW_READ_RM_OPCODE, dst, src );
+        oneShortOp( opc );
     }
 
-    void movwPCReg(int offset, RegisterID base, RegisterID dst)
+    void movwPCReg( int offset, RegisterID base, RegisterID dst )
     {
-        ASSERT(base == SH4Registers::pc);
-        ASSERT((offset <= 255) && (offset >= 0));
+        ASSERT( base == SH4Registers::pc );
+        ASSERT( ( offset <= 255 ) && ( offset >= 0 ) );
 
-        uint16_t opc = getOpcodeGroup3(MOVW_READ_OFFPC_OPCODE, dst, offset);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup3( MOVW_READ_OFFPC_OPCODE, dst, offset );
+        oneShortOp( opc );
     }
 
-    void movwMemReg(int offset, RegisterID base, RegisterID dst)
+    void movwMemReg( int offset, RegisterID base, RegisterID dst )
     {
-        ASSERT(dst == SH4Registers::r0);
+        ASSERT( dst == SH4Registers::r0 );
 
-        uint16_t opc = getOpcodeGroup11(MOVW_READ_OFFRM_OPCODE, base, offset);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup11( MOVW_READ_OFFRM_OPCODE, base, offset );
+        oneShortOp( opc );
     }
 
-    void movwR0mr(RegisterID src, RegisterID dst)
+    void movwR0mr( RegisterID src, RegisterID dst )
     {
-        uint16_t opc = getOpcodeGroup1(MOVW_READ_R0RM_OPCODE, dst, src);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup1( MOVW_READ_R0RM_OPCODE, dst, src );
+        oneShortOp( opc );
     }
 
-    void movlRegMem(RegisterID src, int offset, RegisterID base)
+    void movlRegMem( RegisterID src, int offset, RegisterID base )
     {
-        ASSERT((offset <= 15) && (offset >= 0));
+        ASSERT( ( offset <= 15 ) && ( offset >= 0 ) );
 
-        if (!offset) {
-            oneShortOp(getOpcodeGroup1(MOVL_WRITE_RN_OPCODE, base, src));
+        if ( !offset )
+        {
+            oneShortOp( getOpcodeGroup1( MOVL_WRITE_RN_OPCODE, base, src ) );
             return;
         }
 
-        oneShortOp(getOpcodeGroup4(MOVL_WRITE_OFFRN_OPCODE, base, src, offset));
+        oneShortOp( getOpcodeGroup4( MOVL_WRITE_OFFRN_OPCODE, base, src, offset ) );
     }
 
-    void movlRegMem(RegisterID src, RegisterID base)
+    void movlRegMem( RegisterID src, RegisterID base )
     {
-        uint16_t opc = getOpcodeGroup1(MOVL_WRITE_RN_OPCODE, base, src);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup1( MOVL_WRITE_RN_OPCODE, base, src );
+        oneShortOp( opc );
     }
 
-    void movlMemReg(int offset, RegisterID base, RegisterID dst)
+    void movlMemReg( int offset, RegisterID base, RegisterID dst )
     {
-        if (base == SH4Registers::pc) {
-            ASSERT((offset <= 255) && (offset >= 0));
-            oneShortOp(getOpcodeGroup3(MOVL_READ_OFFPC_OPCODE, dst, offset));
+        if ( base == SH4Registers::pc )
+        {
+            ASSERT( ( offset <= 255 ) && ( offset >= 0 ) );
+            oneShortOp( getOpcodeGroup3( MOVL_READ_OFFPC_OPCODE, dst, offset ) );
             return;
         }
 
-        ASSERT((offset <= 15) && (offset >= 0));
-        if (!offset) {
-            oneShortOp(getOpcodeGroup1(MOVL_READ_RM_OPCODE, dst, base));
+        ASSERT( ( offset <= 15 ) && ( offset >= 0 ) );
+
+        if ( !offset )
+        {
+            oneShortOp( getOpcodeGroup1( MOVL_READ_RM_OPCODE, dst, base ) );
             return;
         }
 
-        oneShortOp(getOpcodeGroup4(MOVL_READ_OFFRM_OPCODE, dst, base, offset));
+        oneShortOp( getOpcodeGroup4( MOVL_READ_OFFRM_OPCODE, dst, base, offset ) );
     }
 
-    void movbMemReg(int offset, RegisterID base, RegisterID dst)
+    void movbMemReg( int offset, RegisterID base, RegisterID dst )
     {
-        ASSERT(dst == SH4Registers::r0);
+        ASSERT( dst == SH4Registers::r0 );
 
-        uint16_t opc = getOpcodeGroup11(MOVB_READ_OFFRM_OPCODE, base, offset);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup11( MOVB_READ_OFFRM_OPCODE, base, offset );
+        oneShortOp( opc );
     }
 
-    void movbR0mr(RegisterID src, RegisterID dst)
+    void movbR0mr( RegisterID src, RegisterID dst )
     {
-        uint16_t opc = getOpcodeGroup1(MOVB_READ_R0RM_OPCODE, dst, src);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup1( MOVB_READ_R0RM_OPCODE, dst, src );
+        oneShortOp( opc );
     }
 
-    void movbMemReg(RegisterID src, RegisterID dst)
+    void movbMemReg( RegisterID src, RegisterID dst )
     {
-        uint16_t opc = getOpcodeGroup1(MOVB_READ_RM_OPCODE, dst, src);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup1( MOVB_READ_RM_OPCODE, dst, src );
+        oneShortOp( opc );
     }
 
-    void movlMemReg(RegisterID base, RegisterID dst)
+    void movlMemReg( RegisterID base, RegisterID dst )
     {
-        uint16_t opc = getOpcodeGroup1(MOVL_READ_RM_OPCODE, dst, base);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup1( MOVL_READ_RM_OPCODE, dst, base );
+        oneShortOp( opc );
     }
 
-    void movlMemRegIn(RegisterID base, RegisterID dst)
+    void movlMemRegIn( RegisterID base, RegisterID dst )
     {
-        uint16_t opc = getOpcodeGroup1(MOVL_READ_RMINC_OPCODE, dst, base);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup1( MOVL_READ_RMINC_OPCODE, dst, base );
+        oneShortOp( opc );
     }
 
-    void movlR0mr(RegisterID src, RegisterID dst)
+    void movlR0mr( RegisterID src, RegisterID dst )
     {
-        uint16_t opc = getOpcodeGroup1(MOVL_READ_R0RM_OPCODE, dst, src);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup1( MOVL_READ_R0RM_OPCODE, dst, src );
+        oneShortOp( opc );
     }
 
-    void movlRegMemr0(RegisterID src, RegisterID dst)
+    void movlRegMemr0( RegisterID src, RegisterID dst )
     {
-        uint16_t opc = getOpcodeGroup1(MOVL_WRITE_R0RN_OPCODE, dst, src);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup1( MOVL_WRITE_R0RN_OPCODE, dst, src );
+        oneShortOp( opc );
     }
 
-    void movlImm8r(int imm8, RegisterID dst)
+    void movlImm8r( int imm8, RegisterID dst )
     {
-        ASSERT((imm8 <= 127) && (imm8 >= -128));
+        ASSERT( ( imm8 <= 127 ) && ( imm8 >= -128 ) );
 
-        uint16_t opc = getOpcodeGroup3(MOVIMM_OPCODE, dst, imm8);
-        oneShortOp(opc);
+        uint16_t opc = getOpcodeGroup3( MOVIMM_OPCODE, dst, imm8 );
+        oneShortOp( opc );
     }
 
-    void loadConstant(uint32_t constant, RegisterID dst)
+    void loadConstant( uint32_t constant, RegisterID dst )
     {
-        if (((int)constant <= 0x7f) && ((int)constant >= -0x80)) {
-            movImm8(constant, dst);
+        if ( ( ( int )constant <= 0x7f ) && ( ( int )constant >= -0x80 ) )
+        {
+            movImm8( constant, dst );
             return;
         }
 
-        uint16_t opc = getOpcodeGroup3(MOVIMM_OPCODE, dst, 0);
+        uint16_t opc = getOpcodeGroup3( MOVIMM_OPCODE, dst, 0 );
 
-        m_buffer.ensureSpace(maxInstructionSize, sizeof(uint32_t));
-        printInstr(getOpcodeGroup3(MOVIMM_OPCODE, dst, constant), m_buffer.codeSize());
-        m_buffer.putShortWithConstantInt(opc, constant, true);
+        m_buffer.ensureSpace( maxInstructionSize, sizeof( uint32_t ) );
+        printInstr( getOpcodeGroup3( MOVIMM_OPCODE, dst, constant ), m_buffer.codeSize() );
+        m_buffer.putShortWithConstantInt( opc, constant, true );
     }
 
-    void loadConstantUnReusable(uint32_t constant, RegisterID dst, bool ensureSpace = false)
+    void loadConstantUnReusable( uint32_t constant, RegisterID dst, bool ensureSpace = false )
     {
-        uint16_t opc = getOpcodeGroup3(MOVIMM_OPCODE, dst, 0);
+        uint16_t opc = getOpcodeGroup3( MOVIMM_OPCODE, dst, 0 );
 
-        if (ensureSpace)
-            m_buffer.ensureSpace(maxInstructionSize, sizeof(uint32_t));
+        if ( ensureSpace )
+        {
+            m_buffer.ensureSpace( maxInstructionSize, sizeof( uint32_t ) );
+        }
 
-        printInstr(getOpcodeGroup3(MOVIMM_OPCODE, dst, constant), m_buffer.codeSize());
-        m_buffer.putShortWithConstantInt(opc, constant);
+        printInstr( getOpcodeGroup3( MOVIMM_OPCODE, dst, constant ), m_buffer.codeSize() );
+        m_buffer.putShortWithConstantInt( opc, constant );
     }
 
     // Flow control
@@ -1145,18 +1197,18 @@ public:
     AssemblerLabel call()
     {
         RegisterID scr = claimScratch();
-        m_buffer.ensureSpace(maxInstructionSize + 4, sizeof(uint32_t));
-        loadConstantUnReusable(0x0, scr);
-        branch(JSR_OPCODE, scr);
+        m_buffer.ensureSpace( maxInstructionSize + 4, sizeof( uint32_t ) );
+        loadConstantUnReusable( 0x0, scr );
+        branch( JSR_OPCODE, scr );
         nop();
-        releaseScratch(scr);
+        releaseScratch( scr );
         return m_buffer.label();
     }
 
-    AssemblerLabel call(RegisterID dst)
+    AssemblerLabel call( RegisterID dst )
     {
-        m_buffer.ensureSpace(maxInstructionSize + 2);
-        branch(JSR_OPCODE, dst);
+        m_buffer.ensureSpace( maxInstructionSize + 2 );
+        branch( JSR_OPCODE, dst );
         nop();
         return m_buffer.label();
     }
@@ -1164,46 +1216,46 @@ public:
     AssemblerLabel jmp()
     {
         RegisterID scr = claimScratch();
-        m_buffer.ensureSpace(maxInstructionSize + 4, sizeof(uint32_t));
+        m_buffer.ensureSpace( maxInstructionSize + 4, sizeof( uint32_t ) );
         AssemblerLabel label = m_buffer.label();
-        loadConstantUnReusable(0x0, scr);
-        branch(BRAF_OPCODE, scr);
+        loadConstantUnReusable( 0x0, scr );
+        branch( BRAF_OPCODE, scr );
         nop();
-        releaseScratch(scr);
+        releaseScratch( scr );
         return label;
     }
 
-    AssemblerLabel jmp(RegisterID dst)
+    AssemblerLabel jmp( RegisterID dst )
     {
-        jmpReg(dst);
+        jmpReg( dst );
         return m_buffer.label();
     }
 
-    void jmpReg(RegisterID dst)
+    void jmpReg( RegisterID dst )
     {
-        m_buffer.ensureSpace(maxInstructionSize + 2);
-        branch(JMP_OPCODE, dst);
+        m_buffer.ensureSpace( maxInstructionSize + 2 );
+        branch( JMP_OPCODE, dst );
         nop();
     }
 
     AssemblerLabel jne()
     {
         AssemblerLabel label = m_buffer.label();
-        branch(BF_OPCODE, 0);
+        branch( BF_OPCODE, 0 );
         return label;
     }
 
     AssemblerLabel je()
     {
         AssemblerLabel label = m_buffer.label();
-        branch(BT_OPCODE, 0);
+        branch( BT_OPCODE, 0 );
         return label;
     }
 
     void ret()
     {
-        m_buffer.ensureSpace(maxInstructionSize + 2);
-        oneShortOp(RTS_OPCODE, false);
+        m_buffer.ensureSpace( maxInstructionSize + 2 );
+        oneShortOp( RTS_OPCODE, false );
     }
 
     AssemblerLabel label()
@@ -1214,39 +1266,43 @@ public:
 
     int sizeOfConstantPool()
     {
-         return m_buffer.sizeOfConstantPool();
+        return m_buffer.sizeOfConstantPool();
     }
 
-    AssemblerLabel align(int alignment)
+    AssemblerLabel align( int alignment )
     {
-        m_buffer.ensureSpace(maxInstructionSize + 2);
-        while (!m_buffer.isAligned(alignment)) {
+        m_buffer.ensureSpace( maxInstructionSize + 2 );
+
+        while ( !m_buffer.isAligned( alignment ) )
+        {
             nop();
-            m_buffer.ensureSpace(maxInstructionSize + 2);
+            m_buffer.ensureSpace( maxInstructionSize + 2 );
         }
+
         return label();
     }
 
-    static void changePCrelativeAddress(int offset, uint16_t* instructionPtr, uint32_t newAddress)
+    static void changePCrelativeAddress( int offset, uint16_t *instructionPtr, uint32_t newAddress )
     {
-        uint32_t address = (offset << 2) + ((reinterpret_cast<uint32_t>(instructionPtr) + 4) &(~0x3));
-        *reinterpret_cast<uint32_t*>(address) = newAddress;
+        uint32_t address = ( offset << 2 ) + ( ( reinterpret_cast<uint32_t>( instructionPtr ) + 4 ) &( ~0x3 ) );
+        *reinterpret_cast<uint32_t *>( address ) = newAddress;
     }
 
-    static uint16_t* getInstructionPtr(void* code, int offset)
+    static uint16_t *getInstructionPtr( void *code, int offset )
     {
-        return reinterpret_cast<uint16_t*> (reinterpret_cast<uint32_t>(code) + offset);
+        return reinterpret_cast<uint16_t *> ( reinterpret_cast<uint32_t>( code ) + offset );
     }
 
-    static void linkJump(void* code, AssemblerLabel from, void* to)
+    static void linkJump( void *code, AssemblerLabel from, void *to )
     {
-        ASSERT(from.isSet());
+        ASSERT( from.isSet() );
 
-        uint16_t* instructionPtr = getInstructionPtr(code, from.m_offset);
+        uint16_t *instructionPtr = getInstructionPtr( code, from.m_offset );
         uint16_t instruction = *instructionPtr;
-        int offsetBits = (reinterpret_cast<uint32_t>(to) - reinterpret_cast<uint32_t>(code)) - from.m_offset;
+        int offsetBits = ( reinterpret_cast<uint32_t>( to ) - reinterpret_cast<uint32_t>( code ) ) - from.m_offset;
 
-        if (((instruction & 0xff00) == BT_OPCODE) || ((instruction & 0xff00) == BF_OPCODE)) {
+        if ( ( ( instruction & 0xff00 ) == BT_OPCODE ) || ( ( instruction & 0xff00 ) == BF_OPCODE ) )
+        {
             /* BT label ==> BF 2
                nop          LDR reg
                nop          braf @reg
@@ -1255,167 +1311,182 @@ public:
             offsetBits -= 8;
             instruction ^= 0x0202;
             *instructionPtr++ = instruction;
-            changePCrelativeAddress((*instructionPtr & 0xff), instructionPtr, offsetBits);
-            instruction = (BRAF_OPCODE | (*instructionPtr++ & 0xf00));
+            changePCrelativeAddress( ( *instructionPtr & 0xff ), instructionPtr, offsetBits );
+            instruction = ( BRAF_OPCODE | ( *instructionPtr++ & 0xf00 ) );
             *instructionPtr = instruction;
-            printBlockInstr(instructionPtr - 2, from.m_offset, 3);
-            return;
-         }
-
-         /* MOV #imm, reg => LDR reg
-            braf @reg        braf @reg
-            nop              nop
-         */
-        ASSERT((*(instructionPtr + 1) & BRAF_OPCODE) == BRAF_OPCODE);
-
-        offsetBits -= 4;
-        if (offsetBits >= -4096 && offsetBits <= 4094) {
-            *instructionPtr = getOpcodeGroup6(BRA_OPCODE, offsetBits >> 1);
-            *(++instructionPtr) = NOP_OPCODE;
-            printBlockInstr(instructionPtr - 1, from.m_offset, 2);
+            printBlockInstr( instructionPtr - 2, from.m_offset, 3 );
             return;
         }
 
-        changePCrelativeAddress((*instructionPtr & 0xff), instructionPtr, offsetBits - 2);
-        printInstr(*instructionPtr, from.m_offset + 2);
+        /* MOV #imm, reg => LDR reg
+           braf @reg        braf @reg
+           nop              nop
+        */
+        ASSERT( ( *( instructionPtr + 1 ) & BRAF_OPCODE ) == BRAF_OPCODE );
+
+        offsetBits -= 4;
+
+        if ( offsetBits >= -4096 && offsetBits <= 4094 )
+        {
+            *instructionPtr = getOpcodeGroup6( BRA_OPCODE, offsetBits >> 1 );
+            *( ++instructionPtr ) = NOP_OPCODE;
+            printBlockInstr( instructionPtr - 1, from.m_offset, 2 );
+            return;
+        }
+
+        changePCrelativeAddress( ( *instructionPtr & 0xff ), instructionPtr, offsetBits - 2 );
+        printInstr( *instructionPtr, from.m_offset + 2 );
     }
 
-    static void linkCall(void* code, AssemblerLabel from, void* to)
+    static void linkCall( void *code, AssemblerLabel from, void *to )
     {
-        uint16_t* instructionPtr = getInstructionPtr(code, from.m_offset);
+        uint16_t *instructionPtr = getInstructionPtr( code, from.m_offset );
         instructionPtr -= 3;
-        changePCrelativeAddress((*instructionPtr & 0xff), instructionPtr, reinterpret_cast<uint32_t>(to));
+        changePCrelativeAddress( ( *instructionPtr & 0xff ), instructionPtr, reinterpret_cast<uint32_t>( to ) );
     }
 
-    static void linkPointer(void* code, AssemblerLabel where, void* value)
+    static void linkPointer( void *code, AssemblerLabel where, void *value )
     {
-        uint16_t* instructionPtr = getInstructionPtr(code, where.m_offset);
-        changePCrelativeAddress((*instructionPtr & 0xff), instructionPtr, reinterpret_cast<uint32_t>(value));
+        uint16_t *instructionPtr = getInstructionPtr( code, where.m_offset );
+        changePCrelativeAddress( ( *instructionPtr & 0xff ), instructionPtr, reinterpret_cast<uint32_t>( value ) );
     }
 
-    static unsigned getCallReturnOffset(AssemblerLabel call)
+    static unsigned getCallReturnOffset( AssemblerLabel call )
     {
-        ASSERT(call.isSet());
+        ASSERT( call.isSet() );
         return call.m_offset;
     }
 
-    static uint32_t* getLdrImmAddressOnPool(SH4Word* insn, uint32_t* constPool)
+    static uint32_t *getLdrImmAddressOnPool( SH4Word *insn, uint32_t *constPool )
     {
-        return (constPool + (*insn & 0xff));
+        return ( constPool + ( *insn & 0xff ) );
     }
 
-    static SH4Word patchConstantPoolLoad(SH4Word load, int value)
+    static SH4Word patchConstantPoolLoad( SH4Word load, int value )
     {
-        return ((load & ~0xff) | value);
+        return ( ( load & ~0xff ) | value );
     }
 
-    static SH4Buffer::TwoShorts placeConstantPoolBarrier(int offset)
+    static SH4Buffer::TwoShorts placeConstantPoolBarrier( int offset )
     {
-        ASSERT(((offset >> 1) <=2047) && ((offset >> 1) >= -2048));
+        ASSERT( ( ( offset >> 1 ) <=2047 ) && ( ( offset >> 1 ) >= -2048 ) );
 
         SH4Buffer::TwoShorts m_barrier;
-        m_barrier.high = (BRA_OPCODE | (offset >> 1));
+        m_barrier.high = ( BRA_OPCODE | ( offset >> 1 ) );
         m_barrier.low = NOP_OPCODE;
-        printInstr(((BRA_OPCODE | (offset >> 1))), 0);
-        printInstr(NOP_OPCODE, 0);
+        printInstr( ( ( BRA_OPCODE | ( offset >> 1 ) ) ), 0 );
+        printInstr( NOP_OPCODE, 0 );
         return m_barrier;
     }
 
-    static void patchConstantPoolLoad(void* loadAddr, void* constPoolAddr)
+    static void patchConstantPoolLoad( void *loadAddr, void *constPoolAddr )
     {
-        SH4Word* instructionPtr = reinterpret_cast<SH4Word*>(loadAddr);
+        SH4Word *instructionPtr = reinterpret_cast<SH4Word *>( loadAddr );
         SH4Word instruction = *instructionPtr;
         SH4Word index = instruction & 0xff;
 
-        if ((instruction & 0xf000) != MOVIMM_OPCODE)
+        if ( ( instruction & 0xf000 ) != MOVIMM_OPCODE )
+        {
             return;
+        }
 
-        ASSERT((((reinterpret_cast<uint32_t>(constPoolAddr) - reinterpret_cast<uint32_t>(loadAddr)) + index * 4)) < 1024);
+        ASSERT( ( ( ( reinterpret_cast<uint32_t>( constPoolAddr ) - reinterpret_cast<uint32_t>( loadAddr ) ) + index * 4 ) ) < 1024 );
 
-        int offset = reinterpret_cast<uint32_t>(constPoolAddr) + (index * 4) - ((reinterpret_cast<uint32_t>(instructionPtr) & ~0x03) + 4);
+        int offset = reinterpret_cast<uint32_t>( constPoolAddr ) + ( index * 4 ) - ( ( reinterpret_cast<uint32_t>
+                     ( instructionPtr ) & ~0x03 ) + 4 );
         instruction &=0xf00;
         instruction |= 0xd000;
         offset &= 0x03ff;
-        instruction |= (offset >> 2);
+        instruction |= ( offset >> 2 );
         *instructionPtr = instruction;
-        printInstr(instruction, reinterpret_cast<uint32_t>(loadAddr));
+        printInstr( instruction, reinterpret_cast<uint32_t>( loadAddr ) );
     }
 
-    static void repatchPointer(void* where, void* value)
+    static void repatchPointer( void *where, void *value )
     {
-        patchPointer(where, value);
+        patchPointer( where, value );
     }
 
-    static void repatchInt32(void* where, int32_t value)
+    static void repatchInt32( void *where, int32_t value )
     {
-        uint16_t* instructionPtr = reinterpret_cast<uint16_t*>(where);
-        changePCrelativeAddress((*instructionPtr & 0xff), instructionPtr, value);
+        uint16_t *instructionPtr = reinterpret_cast<uint16_t *>( where );
+        changePCrelativeAddress( ( *instructionPtr & 0xff ), instructionPtr, value );
     }
 
-    static void relinkCall(void* from, void* to)
+    static void relinkCall( void *from, void *to )
     {
-        uint16_t* instructionPtr = reinterpret_cast<uint16_t*>(from);
+        uint16_t *instructionPtr = reinterpret_cast<uint16_t *>( from );
         instructionPtr -= 3;
-        changePCrelativeAddress((*instructionPtr & 0xff), instructionPtr, reinterpret_cast<uint32_t>(to));
+        changePCrelativeAddress( ( *instructionPtr & 0xff ), instructionPtr, reinterpret_cast<uint32_t>( to ) );
     }
 
-    static void relinkJump(void* from, void* to)
+    static void relinkJump( void *from, void *to )
     {
-        uint16_t* instructionPtr = reinterpret_cast<uint16_t*> (from);
+        uint16_t *instructionPtr = reinterpret_cast<uint16_t *> ( from );
         uint16_t instruction = *instructionPtr;
-        int32_t offsetBits = (reinterpret_cast<uint32_t>(to) - reinterpret_cast<uint32_t>(from));
+        int32_t offsetBits = ( reinterpret_cast<uint32_t>( to ) - reinterpret_cast<uint32_t>( from ) );
 
-        if (((*instructionPtr & 0xff00) == BT_OPCODE) || ((*instructionPtr & 0xff00) == BF_OPCODE)) {
+        if ( ( ( *instructionPtr & 0xff00 ) == BT_OPCODE ) || ( ( *instructionPtr & 0xff00 ) == BF_OPCODE ) )
+        {
             offsetBits -= 8;
             instructionPtr++;
-            changePCrelativeAddress((*instructionPtr & 0xff), instructionPtr, offsetBits);
-            instruction = (BRAF_OPCODE | (*instructionPtr++ & 0xf00));
+            changePCrelativeAddress( ( *instructionPtr & 0xff ), instructionPtr, offsetBits );
+            instruction = ( BRAF_OPCODE | ( *instructionPtr++ & 0xf00 ) );
             *instructionPtr = instruction;
-            printBlockInstr(instructionPtr, reinterpret_cast<uint32_t>(from) + 1, 3);
+            printBlockInstr( instructionPtr, reinterpret_cast<uint32_t>( from ) + 1, 3 );
             return;
         }
 
-        ASSERT((*(instructionPtr + 1) & BRAF_OPCODE) == BRAF_OPCODE);
+        ASSERT( ( *( instructionPtr + 1 ) & BRAF_OPCODE ) == BRAF_OPCODE );
         offsetBits -= 4;
-        if (offsetBits >= -4096 && offsetBits <= 4094) {
-            *instructionPtr = getOpcodeGroup6(BRA_OPCODE, offsetBits >> 1);
-            *(++instructionPtr) = NOP_OPCODE;
-            printBlockInstr(instructionPtr - 2, reinterpret_cast<uint32_t>(from), 2);
+
+        if ( offsetBits >= -4096 && offsetBits <= 4094 )
+        {
+            *instructionPtr = getOpcodeGroup6( BRA_OPCODE, offsetBits >> 1 );
+            *( ++instructionPtr ) = NOP_OPCODE;
+            printBlockInstr( instructionPtr - 2, reinterpret_cast<uint32_t>( from ), 2 );
             return;
         }
 
-        changePCrelativeAddress((*instructionPtr & 0xff), instructionPtr, offsetBits - 2);
-        printInstr(*instructionPtr, reinterpret_cast<uint32_t>(from));
+        changePCrelativeAddress( ( *instructionPtr & 0xff ), instructionPtr, offsetBits - 2 );
+        printInstr( *instructionPtr, reinterpret_cast<uint32_t>( from ) );
     }
 
     // Linking & patching
 
-    void linkJump(AssemblerLabel from, AssemblerLabel to)
+    void linkJump( AssemblerLabel from, AssemblerLabel to )
     {
-        ASSERT(to.isSet());
-        ASSERT(from.isSet());
+        ASSERT( to.isSet() );
+        ASSERT( from.isSet() );
 
-        uint16_t* instructionPtr = getInstructionPtr(data(), from.m_offset);
+        uint16_t *instructionPtr = getInstructionPtr( data(), from.m_offset );
         uint16_t instruction = *instructionPtr;
         int offsetBits;
 
-        if (((instruction & 0xff00) == BT_OPCODE) || ((instruction & 0xff00) == BF_OPCODE)) {
+        if ( ( ( instruction & 0xff00 ) == BT_OPCODE ) || ( ( instruction & 0xff00 ) == BF_OPCODE ) )
+        {
             /* BT label => BF 2
                nop        LDR reg
                nop        braf @reg
                nop        nop
             */
-            offsetBits = (to.m_offset - from.m_offset) - 8;
+            offsetBits = ( to.m_offset - from.m_offset ) - 8;
             instruction ^= 0x0202;
             *instructionPtr++ = instruction;
-            if ((*instructionPtr & 0xf000) == 0xe000) {
-                uint32_t* addr = getLdrImmAddressOnPool(instructionPtr, m_buffer.poolAddress());
+
+            if ( ( *instructionPtr & 0xf000 ) == 0xe000 )
+            {
+                uint32_t *addr = getLdrImmAddressOnPool( instructionPtr, m_buffer.poolAddress() );
                 *addr = offsetBits;
-            } else
-                changePCrelativeAddress((*instructionPtr & 0xff), instructionPtr, offsetBits);
-            instruction = (BRAF_OPCODE | (*instructionPtr++ & 0xf00));
+            }
+            else
+            {
+                changePCrelativeAddress( ( *instructionPtr & 0xff ), instructionPtr, offsetBits );
+            }
+
+            instruction = ( BRAF_OPCODE | ( *instructionPtr++ & 0xf00 ) );
             *instructionPtr = instruction;
-            printBlockInstr(instructionPtr - 2, from.m_offset, 3);
+            printBlockInstr( instructionPtr - 2, from.m_offset, 3 );
             return;
         }
 
@@ -1423,574 +1494,776 @@ public:
            braf @reg         braf @reg
            nop               nop
         */
-        ASSERT((*(instructionPtr + 1) & BRAF_OPCODE) == BRAF_OPCODE);
-        offsetBits = (to.m_offset - from.m_offset) - 4;
-        if (offsetBits >= -4096 && offsetBits <= 4094) {
-            *instructionPtr = getOpcodeGroup6(BRA_OPCODE, offsetBits >> 1);
-            *(++instructionPtr) = NOP_OPCODE;
-            printBlockInstr(instructionPtr - 1, from.m_offset, 2);
+        ASSERT( ( *( instructionPtr + 1 ) & BRAF_OPCODE ) == BRAF_OPCODE );
+        offsetBits = ( to.m_offset - from.m_offset ) - 4;
+
+        if ( offsetBits >= -4096 && offsetBits <= 4094 )
+        {
+            *instructionPtr = getOpcodeGroup6( BRA_OPCODE, offsetBits >> 1 );
+            *( ++instructionPtr ) = NOP_OPCODE;
+            printBlockInstr( instructionPtr - 1, from.m_offset, 2 );
             return;
         }
 
         instruction = *instructionPtr;
-        if ((instruction  & 0xf000) == 0xe000) {
-            uint32_t* addr = getLdrImmAddressOnPool(instructionPtr, m_buffer.poolAddress());
+
+        if ( ( instruction  & 0xf000 ) == 0xe000 )
+        {
+            uint32_t *addr = getLdrImmAddressOnPool( instructionPtr, m_buffer.poolAddress() );
             *addr = offsetBits - 2;
-            printInstr(*instructionPtr, from.m_offset + 2);
+            printInstr( *instructionPtr, from.m_offset + 2 );
             return;
         }
 
-        changePCrelativeAddress((*instructionPtr & 0xff), instructionPtr, offsetBits - 2);
-        printInstr(*instructionPtr, from.m_offset + 2);
+        changePCrelativeAddress( ( *instructionPtr & 0xff ), instructionPtr, offsetBits - 2 );
+        printInstr( *instructionPtr, from.m_offset + 2 );
     }
 
-    static void* getRelocatedAddress(void* code, AssemblerLabel label)
+    static void *getRelocatedAddress( void *code, AssemblerLabel label )
     {
-        return reinterpret_cast<void*>(reinterpret_cast<char*>(code) + label.m_offset);
+        return reinterpret_cast<void *>( reinterpret_cast<char *>( code ) + label.m_offset );
     }
 
-    static int getDifferenceBetweenLabels(AssemblerLabel a, AssemblerLabel b)
+    static int getDifferenceBetweenLabels( AssemblerLabel a, AssemblerLabel b )
     {
         return b.m_offset - a.m_offset;
     }
 
-    static void patchPointer(void* code, AssemblerLabel where, void* value)
+    static void patchPointer( void *code, AssemblerLabel where, void *value )
     {
-        patchPointer(reinterpret_cast<uint32_t*>(code) + where.m_offset, value);
+        patchPointer( reinterpret_cast<uint32_t *>( code ) + where.m_offset, value );
     }
 
-    static void patchPointer(void* code, void* value)
+    static void patchPointer( void *code, void *value )
     {
-        patchInt32(code, reinterpret_cast<uint32_t>(value));
+        patchInt32( code, reinterpret_cast<uint32_t>( value ) );
     }
 
-    static void patchInt32(void* code, uint32_t value)
+    static void patchInt32( void *code, uint32_t value )
     {
-        changePCrelativeAddress((*(reinterpret_cast<uint16_t*>(code)) & 0xff), reinterpret_cast<uint16_t*>(code), value);
+        changePCrelativeAddress( ( *( reinterpret_cast<uint16_t *>( code ) ) & 0xff ), reinterpret_cast<uint16_t *>( code ), value );
     }
 
-    void* executableCopy(ExecutablePool* allocator)
+    void *executableCopy( ExecutablePool *allocator )
     {
-        return m_buffer.executableCopy(allocator);
+        return m_buffer.executableCopy( allocator );
     }
 
-    void prefix(uint16_t pre)
+    void prefix( uint16_t pre )
     {
-        m_buffer.putByte(pre);
+        m_buffer.putByte( pre );
     }
 
-    void oneShortOp(uint16_t opcode, bool checksize = true, bool isDouble = true)
+    void oneShortOp( uint16_t opcode, bool checksize = true, bool isDouble = true )
     {
-        printInstr(opcode, m_buffer.codeSize(), isDouble);
-        if (checksize)
-            m_buffer.ensureSpace(maxInstructionSize);
-        m_buffer.putShortUnchecked(opcode);
+        printInstr( opcode, m_buffer.codeSize(), isDouble );
+
+        if ( checksize )
+        {
+            m_buffer.ensureSpace( maxInstructionSize );
+        }
+
+        m_buffer.putShortUnchecked( opcode );
     }
 
-    void ensureSpace(int space)
+    void ensureSpace( int space )
     {
-        m_buffer.ensureSpace(space);
+        m_buffer.ensureSpace( space );
     }
 
-    void ensureSpace(int insnSpace, int constSpace)
+    void ensureSpace( int insnSpace, int constSpace )
     {
-        m_buffer.ensureSpace(insnSpace, constSpace);
+        m_buffer.ensureSpace( insnSpace, constSpace );
     }
 
     // Administrative methods
 
-    void* data() const { return m_buffer.data(); }
-    size_t codeSize() const { return m_buffer.codeSize(); }
+    void *data() const
+    {
+        return m_buffer.data();
+    }
+    size_t codeSize() const
+    {
+        return m_buffer.codeSize();
+    }
 
 #ifdef SH4_ASSEMBLER_TRACING
-    static void printInstr(uint16_t opc, unsigned int size, bool isdoubleInst = true)
+    static void printInstr( uint16_t opc, unsigned int size, bool isdoubleInst = true )
     {
-        if (!getenv("JavaScriptCoreDumpJIT"))
+        if ( !getenv( "JavaScriptCoreDumpJIT" ) )
+        {
             return;
+        }
 
         const char *format = 0;
-        printfStdoutInstr("offset: 0x%8.8x\t", size);
-        switch (opc) {
-        case BRK_OPCODE:
-            format = "    BRK\n";
-            break;
-        case NOP_OPCODE:
-            format = "    NOP\n";
-            break;
-        case RTS_OPCODE:
-            format ="    *RTS\n";
-            break;
-        case SETS_OPCODE:
-            format = "    SETS\n";
-            break;
-        case SETT_OPCODE:
-            format = "    SETT\n";
-            break;
-        case CLRT_OPCODE:
-            format = "    CLRT\n";
-            break;
-        case FSCHG_OPCODE:
-            format = "    FSCHG\n";
-            break;
+        printfStdoutInstr( "offset: 0x%8.8x\t", size );
+
+        switch ( opc )
+        {
+            case BRK_OPCODE:
+                format = "    BRK\n";
+                break;
+
+            case NOP_OPCODE:
+                format = "    NOP\n";
+                break;
+
+            case RTS_OPCODE:
+                format ="    *RTS\n";
+                break;
+
+            case SETS_OPCODE:
+                format = "    SETS\n";
+                break;
+
+            case SETT_OPCODE:
+                format = "    SETT\n";
+                break;
+
+            case CLRT_OPCODE:
+                format = "    CLRT\n";
+                break;
+
+            case FSCHG_OPCODE:
+                format = "    FSCHG\n";
+                break;
         }
-        if (format) {
-            printfStdoutInstr(format);
+
+        if ( format )
+        {
+            printfStdoutInstr( format );
             return;
         }
-        switch (opc & 0xf0ff) {
-        case BRAF_OPCODE:
-            format = "    *BRAF R%d\n";
-            break;
-        case DT_OPCODE:
-            format = "    DT R%d\n";
-            break;
-        case CMPPL_OPCODE:
-            format = "    CMP/PL R%d\n";
-            break;
-        case CMPPZ_OPCODE:
-            format = "    CMP/PZ R%d\n";
-            break;
-        case JMP_OPCODE:
-            format = "    *JMP @R%d\n";
-            break;
-        case JSR_OPCODE:
-            format = "    *JSR @R%d\n";
-            break;
-        case LDSPR_OPCODE:
-            format = "    LDS R%d, PR\n";
-            break;
-        case LDSLPR_OPCODE:
-            format = "    LDS.L @R%d+, PR\n";
-            break;
-        case MOVT_OPCODE:
-            format = "    MOVT R%d\n";
-            break;
-        case SHAL_OPCODE:
-            format = "    SHAL R%d\n";
-            break;
-        case SHAR_OPCODE:
-            format = "    SHAR R%d\n";
-            break;
-        case SHLL_OPCODE:
-            format = "    SHLL R%d\n";
-            break;
-        case SHLL2_OPCODE:
-            format = "    SHLL2 R%d\n";
-            break;
-        case SHLL8_OPCODE:
-            format = "    SHLL8 R%d\n";
-            break;
-        case SHLL16_OPCODE:
-            format = "    SHLL16 R%d\n";
-            break;
-        case SHLR_OPCODE:
-            format = "    SHLR R%d\n";
-            break;
-        case SHLR2_OPCODE:
-            format = "    SHLR2 R%d\n";
-            break;
-        case SHLR8_OPCODE:
-            format = "    SHLR8 R%d\n";
-            break;
-        case SHLR16_OPCODE:
-            format = "    SHLR16 R%d\n";
-            break;
-        case STSPR_OPCODE:
-            format = "    STS PR, R%d\n";
-            break;
-        case STSLPR_OPCODE:
-            format = "    STS.L PR, @-R%d\n";
-            break;
-        case LDS_RM_FPUL_OPCODE:
-            format = "    LDS R%d, FPUL\n";
-            break;
-        case STS_FPUL_RN_OPCODE:
-            format = "    STS FPUL, R%d \n";
-            break;
-        case FLDS_FRM_FPUL_OPCODE:
-            format = "    FLDS FR%d, FPUL\n";
-            break;
-        case FSTS_FPUL_FRN_OPCODE:
-            format = "    FSTS FPUL, R%d \n";
-            break;
-        case LDSFPSCR_OPCODE:
-            format = "    LDS R%d, FPSCR \n";
-            break;
-        case STSFPSCR_OPCODE:
-            format = "    STS FPSCR, R%d \n";
-            break;
-        case STSMACL_OPCODE:
-            format = "    STS MACL, R%d \n";
-            break;
-        case STSMACH_OPCODE:
-            format = "    STS MACH, R%d \n";
-            break;
-        case BSRF_OPCODE:
-            format = "    *BSRF R%d";
-            break;
-        case FTRC_OPCODE:
-            format = "    FTRC FR%d, FPUL\n";
-            break;
+
+        switch ( opc & 0xf0ff )
+        {
+            case BRAF_OPCODE:
+                format = "    *BRAF R%d\n";
+                break;
+
+            case DT_OPCODE:
+                format = "    DT R%d\n";
+                break;
+
+            case CMPPL_OPCODE:
+                format = "    CMP/PL R%d\n";
+                break;
+
+            case CMPPZ_OPCODE:
+                format = "    CMP/PZ R%d\n";
+                break;
+
+            case JMP_OPCODE:
+                format = "    *JMP @R%d\n";
+                break;
+
+            case JSR_OPCODE:
+                format = "    *JSR @R%d\n";
+                break;
+
+            case LDSPR_OPCODE:
+                format = "    LDS R%d, PR\n";
+                break;
+
+            case LDSLPR_OPCODE:
+                format = "    LDS.L @R%d+, PR\n";
+                break;
+
+            case MOVT_OPCODE:
+                format = "    MOVT R%d\n";
+                break;
+
+            case SHAL_OPCODE:
+                format = "    SHAL R%d\n";
+                break;
+
+            case SHAR_OPCODE:
+                format = "    SHAR R%d\n";
+                break;
+
+            case SHLL_OPCODE:
+                format = "    SHLL R%d\n";
+                break;
+
+            case SHLL2_OPCODE:
+                format = "    SHLL2 R%d\n";
+                break;
+
+            case SHLL8_OPCODE:
+                format = "    SHLL8 R%d\n";
+                break;
+
+            case SHLL16_OPCODE:
+                format = "    SHLL16 R%d\n";
+                break;
+
+            case SHLR_OPCODE:
+                format = "    SHLR R%d\n";
+                break;
+
+            case SHLR2_OPCODE:
+                format = "    SHLR2 R%d\n";
+                break;
+
+            case SHLR8_OPCODE:
+                format = "    SHLR8 R%d\n";
+                break;
+
+            case SHLR16_OPCODE:
+                format = "    SHLR16 R%d\n";
+                break;
+
+            case STSPR_OPCODE:
+                format = "    STS PR, R%d\n";
+                break;
+
+            case STSLPR_OPCODE:
+                format = "    STS.L PR, @-R%d\n";
+                break;
+
+            case LDS_RM_FPUL_OPCODE:
+                format = "    LDS R%d, FPUL\n";
+                break;
+
+            case STS_FPUL_RN_OPCODE:
+                format = "    STS FPUL, R%d \n";
+                break;
+
+            case FLDS_FRM_FPUL_OPCODE:
+                format = "    FLDS FR%d, FPUL\n";
+                break;
+
+            case FSTS_FPUL_FRN_OPCODE:
+                format = "    FSTS FPUL, R%d \n";
+                break;
+
+            case LDSFPSCR_OPCODE:
+                format = "    LDS R%d, FPSCR \n";
+                break;
+
+            case STSFPSCR_OPCODE:
+                format = "    STS FPSCR, R%d \n";
+                break;
+
+            case STSMACL_OPCODE:
+                format = "    STS MACL, R%d \n";
+                break;
+
+            case STSMACH_OPCODE:
+                format = "    STS MACH, R%d \n";
+                break;
+
+            case BSRF_OPCODE:
+                format = "    *BSRF R%d";
+                break;
+
+            case FTRC_OPCODE:
+                format = "    FTRC FR%d, FPUL\n";
+                break;
         }
-        if (format) {
-            printfStdoutInstr(format, getRn(opc));
+
+        if ( format )
+        {
+            printfStdoutInstr( format, getRn( opc ) );
             return;
         }
-        switch (opc & 0xf0ff) {
-        case FNEG_OPCODE:
-            format = "    FNEG DR%d\n";
-            break;
-        case FLOAT_OPCODE:
-            format = "    FLOAT DR%d\n";
-            break;
-        case FTRC_OPCODE:
-            format = "    FTRC FR%d, FPUL\n";
-            break;
-        case FSQRT_OPCODE:
-            format = "    FSQRT FR%d\n";
-            break;
-        case FCNVDS_DRM_FPUL_OPCODE:
-            format = "    FCNVDS FR%d, FPUL\n";
-            break;
+
+        switch ( opc & 0xf0ff )
+        {
+            case FNEG_OPCODE:
+                format = "    FNEG DR%d\n";
+                break;
+
+            case FLOAT_OPCODE:
+                format = "    FLOAT DR%d\n";
+                break;
+
+            case FTRC_OPCODE:
+                format = "    FTRC FR%d, FPUL\n";
+                break;
+
+            case FSQRT_OPCODE:
+                format = "    FSQRT FR%d\n";
+                break;
+
+            case FCNVDS_DRM_FPUL_OPCODE:
+                format = "    FCNVDS FR%d, FPUL\n";
+                break;
         }
-        if (format) {
-            if (isdoubleInst)
-                printfStdoutInstr(format, getDRn(opc) << 1);
+
+        if ( format )
+        {
+            if ( isdoubleInst )
+            {
+                printfStdoutInstr( format, getDRn( opc ) << 1 );
+            }
             else
-                printfStdoutInstr(format, getRn(opc));
+            {
+                printfStdoutInstr( format, getRn( opc ) );
+            }
+
             return;
         }
-        switch (opc & 0xf00f) {
-        case ADD_OPCODE:
-            format = "    ADD R%d, R%d\n";
-            break;
-        case ADDC_OPCODE:
-            format = "    ADDC R%d, R%d\n";
-            break;
-        case ADDV_OPCODE:
-            format = "    ADDV R%d, R%d\n";
-            break;
-        case AND_OPCODE:
-            format = "    AND R%d, R%d\n";
-            break;
-        case DIV1_OPCODE:
-            format = "    DIV1 R%d, R%d\n";
-            break;
-        case CMPEQ_OPCODE:
-            format = "    CMP/EQ R%d, R%d\n";
-            break;
-        case CMPGE_OPCODE:
-            format = "    CMP/GE R%d, R%d\n";
-            break;
-        case CMPGT_OPCODE:
-            format = "    CMP/GT R%d, R%d\n";
-            break;
-        case CMPHI_OPCODE:
-            format = "    CMP/HI R%d, R%d\n";
-            break;
-        case CMPHS_OPCODE:
-            format = "    CMP/HS R%d, R%d\n";
-            break;
-        case MOV_OPCODE:
-            format = "    MOV R%d, R%d\n";
-            break;
-        case MOVB_WRITE_RN_OPCODE:
-            format = "    MOV.B R%d, @R%d\n";
-            break;
-        case MOVB_WRITE_RNDEC_OPCODE:
-            format = "    MOV.B R%d, @-R%d\n";
-            break;
-        case MOVB_WRITE_R0RN_OPCODE:
-            format = "    MOV.B R%d, @(R0, R%d)\n";
-            break;
-        case MOVB_READ_RM_OPCODE:
-            format = "    MOV.B @R%d, R%d\n";
-            break;
-        case MOVB_READ_RMINC_OPCODE:
-            format = "    MOV.B @R%d+, R%d\n";
-            break;
-        case MOVB_READ_R0RM_OPCODE:
-            format = "    MOV.B @(R0, R%d), R%d\n";
-            break;
-        case MOVL_WRITE_RN_OPCODE:
-            format = "    MOV.L R%d, @R%d\n";
-            break;
-        case MOVL_WRITE_RNDEC_OPCODE:
-            format = "    MOV.L R%d, @-R%d\n";
-            break;
-        case MOVL_WRITE_R0RN_OPCODE:
-            format = "    MOV.L R%d, @(R0, R%d)\n";
-            break;
-        case MOVL_READ_RM_OPCODE:
-            format = "    MOV.L @R%d, R%d\n";
-            break;
-        case MOVL_READ_RMINC_OPCODE:
-            format = "    MOV.L @R%d+, R%d\n";
-            break;
-        case MOVL_READ_R0RM_OPCODE:
-            format = "    MOV.L @(R0, R%d), R%d\n";
-            break;
-        case MULL_OPCODE:
-            format = "    MUL.L R%d, R%d\n";
-            break;
-        case DMULL_L_OPCODE:
-            format = "    DMULU.L R%d, R%d\n";
-            break;
-        case DMULSL_OPCODE:
-            format = "    DMULS.L R%d, R%d\n";
-            break;
-        case NEG_OPCODE:
-            format = "    NEG R%d, R%d\n";
-            break;
-        case NEGC_OPCODE:
-            format = "    NEGC R%d, R%d\n";
-            break;
-        case NOT_OPCODE:
-            format = "    NOT R%d, R%d\n";
-            break;
-        case OR_OPCODE:
-            format = "    OR R%d, R%d\n";
-            break;
-        case SHAD_OPCODE:
-            format = "    SHAD R%d, R%d\n";
-            break;
-        case SHLD_OPCODE:
-            format = "    SHLD R%d, R%d\n";
-            break;
-        case SUB_OPCODE:
-            format = "    SUB R%d, R%d\n";
-            break;
-        case SUBC_OPCODE:
-            format = "    SUBC R%d, R%d\n";
-            break;
-        case SUBV_OPCODE:
-            format = "    SUBV R%d, R%d\n";
-            break;
-        case TST_OPCODE:
-            format = "    TST R%d, R%d\n";
-            break;
-        case XOR_OPCODE:
-            format = "    XOR R%d, R%d\n";break;
-        case MOVW_WRITE_RN_OPCODE:
-            format = "    MOV.W R%d, @R%d\n";
-            break;
-        case MOVW_READ_RM_OPCODE:
-            format = "    MOV.W @R%d, R%d\n";
-            break;
-        case MOVW_READ_R0RM_OPCODE:
-            format = "    MOV.W @(R0, R%d), R%d\n";
-            break;
-        case EXTUW_OPCODE:
-            format = "    EXTU.W R%d, R%d\n";
-            break;
+
+        switch ( opc & 0xf00f )
+        {
+            case ADD_OPCODE:
+                format = "    ADD R%d, R%d\n";
+                break;
+
+            case ADDC_OPCODE:
+                format = "    ADDC R%d, R%d\n";
+                break;
+
+            case ADDV_OPCODE:
+                format = "    ADDV R%d, R%d\n";
+                break;
+
+            case AND_OPCODE:
+                format = "    AND R%d, R%d\n";
+                break;
+
+            case DIV1_OPCODE:
+                format = "    DIV1 R%d, R%d\n";
+                break;
+
+            case CMPEQ_OPCODE:
+                format = "    CMP/EQ R%d, R%d\n";
+                break;
+
+            case CMPGE_OPCODE:
+                format = "    CMP/GE R%d, R%d\n";
+                break;
+
+            case CMPGT_OPCODE:
+                format = "    CMP/GT R%d, R%d\n";
+                break;
+
+            case CMPHI_OPCODE:
+                format = "    CMP/HI R%d, R%d\n";
+                break;
+
+            case CMPHS_OPCODE:
+                format = "    CMP/HS R%d, R%d\n";
+                break;
+
+            case MOV_OPCODE:
+                format = "    MOV R%d, R%d\n";
+                break;
+
+            case MOVB_WRITE_RN_OPCODE:
+                format = "    MOV.B R%d, @R%d\n";
+                break;
+
+            case MOVB_WRITE_RNDEC_OPCODE:
+                format = "    MOV.B R%d, @-R%d\n";
+                break;
+
+            case MOVB_WRITE_R0RN_OPCODE:
+                format = "    MOV.B R%d, @(R0, R%d)\n";
+                break;
+
+            case MOVB_READ_RM_OPCODE:
+                format = "    MOV.B @R%d, R%d\n";
+                break;
+
+            case MOVB_READ_RMINC_OPCODE:
+                format = "    MOV.B @R%d+, R%d\n";
+                break;
+
+            case MOVB_READ_R0RM_OPCODE:
+                format = "    MOV.B @(R0, R%d), R%d\n";
+                break;
+
+            case MOVL_WRITE_RN_OPCODE:
+                format = "    MOV.L R%d, @R%d\n";
+                break;
+
+            case MOVL_WRITE_RNDEC_OPCODE:
+                format = "    MOV.L R%d, @-R%d\n";
+                break;
+
+            case MOVL_WRITE_R0RN_OPCODE:
+                format = "    MOV.L R%d, @(R0, R%d)\n";
+                break;
+
+            case MOVL_READ_RM_OPCODE:
+                format = "    MOV.L @R%d, R%d\n";
+                break;
+
+            case MOVL_READ_RMINC_OPCODE:
+                format = "    MOV.L @R%d+, R%d\n";
+                break;
+
+            case MOVL_READ_R0RM_OPCODE:
+                format = "    MOV.L @(R0, R%d), R%d\n";
+                break;
+
+            case MULL_OPCODE:
+                format = "    MUL.L R%d, R%d\n";
+                break;
+
+            case DMULL_L_OPCODE:
+                format = "    DMULU.L R%d, R%d\n";
+                break;
+
+            case DMULSL_OPCODE:
+                format = "    DMULS.L R%d, R%d\n";
+                break;
+
+            case NEG_OPCODE:
+                format = "    NEG R%d, R%d\n";
+                break;
+
+            case NEGC_OPCODE:
+                format = "    NEGC R%d, R%d\n";
+                break;
+
+            case NOT_OPCODE:
+                format = "    NOT R%d, R%d\n";
+                break;
+
+            case OR_OPCODE:
+                format = "    OR R%d, R%d\n";
+                break;
+
+            case SHAD_OPCODE:
+                format = "    SHAD R%d, R%d\n";
+                break;
+
+            case SHLD_OPCODE:
+                format = "    SHLD R%d, R%d\n";
+                break;
+
+            case SUB_OPCODE:
+                format = "    SUB R%d, R%d\n";
+                break;
+
+            case SUBC_OPCODE:
+                format = "    SUBC R%d, R%d\n";
+                break;
+
+            case SUBV_OPCODE:
+                format = "    SUBV R%d, R%d\n";
+                break;
+
+            case TST_OPCODE:
+                format = "    TST R%d, R%d\n";
+                break;
+
+            case XOR_OPCODE:
+                format = "    XOR R%d, R%d\n";
+                break;
+
+            case MOVW_WRITE_RN_OPCODE:
+                format = "    MOV.W R%d, @R%d\n";
+                break;
+
+            case MOVW_READ_RM_OPCODE:
+                format = "    MOV.W @R%d, R%d\n";
+                break;
+
+            case MOVW_READ_R0RM_OPCODE:
+                format = "    MOV.W @(R0, R%d), R%d\n";
+                break;
+
+            case EXTUW_OPCODE:
+                format = "    EXTU.W R%d, R%d\n";
+                break;
         }
-        if (format) {
-            printfStdoutInstr(format, getRm(opc), getRn(opc));
+
+        if ( format )
+        {
+            printfStdoutInstr( format, getRm( opc ), getRn( opc ) );
             return;
         }
-        switch (opc & 0xf00f) {
-        case FSUB_OPCODE:
-            format = "    FSUB FR%d, FR%d\n";
-            break;
-        case FADD_OPCODE:
-            format = "    FADD FR%d, FR%d\n";
-            break;
-        case FDIV_OPCODE:
-            format = "    FDIV FR%d, FR%d\n";
-            break;
-        case FMUL_OPCODE:
-            format = "    DMULL FR%d, FR%d\n";
-            break;
-        case FMOV_OPCODE:
-            format = "    FMOV FR%d, FR%d\n";
-            break;
-        case FCMPEQ_OPCODE:
-            format = "    FCMP/EQ FR%d, FR%d\n";
-            break;
-        case FCMPGT_OPCODE:
-            format = "    FCMP/GT FR%d, FR%d\n";
-            break;
+
+        switch ( opc & 0xf00f )
+        {
+            case FSUB_OPCODE:
+                format = "    FSUB FR%d, FR%d\n";
+                break;
+
+            case FADD_OPCODE:
+                format = "    FADD FR%d, FR%d\n";
+                break;
+
+            case FDIV_OPCODE:
+                format = "    FDIV FR%d, FR%d\n";
+                break;
+
+            case FMUL_OPCODE:
+                format = "    DMULL FR%d, FR%d\n";
+                break;
+
+            case FMOV_OPCODE:
+                format = "    FMOV FR%d, FR%d\n";
+                break;
+
+            case FCMPEQ_OPCODE:
+                format = "    FCMP/EQ FR%d, FR%d\n";
+                break;
+
+            case FCMPGT_OPCODE:
+                format = "    FCMP/GT FR%d, FR%d\n";
+                break;
         }
-        if (format) {
-            if (isdoubleInst)
-                printfStdoutInstr(format, getDRm(opc) << 1, getDRn(opc) << 1);
+
+        if ( format )
+        {
+            if ( isdoubleInst )
+            {
+                printfStdoutInstr( format, getDRm( opc ) << 1, getDRn( opc ) << 1 );
+            }
             else
-                printfStdoutInstr(format, getRm(opc), getRn(opc));
+            {
+                printfStdoutInstr( format, getRm( opc ), getRn( opc ) );
+            }
+
             return;
         }
-        switch (opc & 0xf00f) {
-        case FMOVS_WRITE_RN_DEC_OPCODE:
-            format = "    %s FR%d, @-R%d\n";
-            break;
-        case FMOVS_WRITE_RN_OPCODE:
-            format = "    %s FR%d, @R%d\n";
-            break;
-        case FMOVS_WRITE_R0RN_OPCODE:
-            format = "    %s FR%d, @(R0, R%d)\n";
-            break;
+
+        switch ( opc & 0xf00f )
+        {
+            case FMOVS_WRITE_RN_DEC_OPCODE:
+                format = "    %s FR%d, @-R%d\n";
+                break;
+
+            case FMOVS_WRITE_RN_OPCODE:
+                format = "    %s FR%d, @R%d\n";
+                break;
+
+            case FMOVS_WRITE_R0RN_OPCODE:
+                format = "    %s FR%d, @(R0, R%d)\n";
+                break;
         }
-        if (format) {
-            if (isdoubleInst)
-                printfStdoutInstr(format, "FMOV", getDRm(opc) << 1, getDRn(opc));
+
+        if ( format )
+        {
+            if ( isdoubleInst )
+            {
+                printfStdoutInstr( format, "FMOV", getDRm( opc ) << 1, getDRn( opc ) );
+            }
             else
-                printfStdoutInstr(format, "FMOV.S", getRm(opc), getRn(opc));
+            {
+                printfStdoutInstr( format, "FMOV.S", getRm( opc ), getRn( opc ) );
+            }
+
             return;
         }
-        switch (opc & 0xf00f) {
-        case FMOVS_READ_RM_OPCODE:
-            format = "    %s @R%d, FR%d\n";
-            break;
-        case FMOVS_READ_RM_INC_OPCODE:
-            format = "    %s @R%d+, FR%d\n";
-            break;
-        case FMOVS_READ_R0RM_OPCODE:
-            format = "    %s @(R0, R%d), FR%d\n";
-            break;
+
+        switch ( opc & 0xf00f )
+        {
+            case FMOVS_READ_RM_OPCODE:
+                format = "    %s @R%d, FR%d\n";
+                break;
+
+            case FMOVS_READ_RM_INC_OPCODE:
+                format = "    %s @R%d+, FR%d\n";
+                break;
+
+            case FMOVS_READ_R0RM_OPCODE:
+                format = "    %s @(R0, R%d), FR%d\n";
+                break;
         }
-        if (format) {
-            if (isdoubleInst)
-                printfStdoutInstr(format, "FMOV", getDRm(opc), getDRn(opc) << 1);
+
+        if ( format )
+        {
+            if ( isdoubleInst )
+            {
+                printfStdoutInstr( format, "FMOV", getDRm( opc ), getDRn( opc ) << 1 );
+            }
             else
-                printfStdoutInstr(format, "FMOV.S", getRm(opc), getRn(opc));
+            {
+                printfStdoutInstr( format, "FMOV.S", getRm( opc ), getRn( opc ) );
+            }
+
             return;
         }
-        switch (opc & 0xff00) {
-        case BF_OPCODE:
-            format = "    BF %d\n";
-            break;
-        case BFS_OPCODE:
-            format = "    *BF/S %d\n";
-            break;
-        case ANDIMM_OPCODE:
-            format = "    AND #%d, R0\n";
-            break;
-        case BT_OPCODE:
-            format = "    BT %d\n";
-            break;
-        case BTS_OPCODE:
-            format = "    *BT/S %d\n";
-            break;
-        case CMPEQIMM_OPCODE:
-            format = "    CMP/EQ #%d, R0\n";
-            break;
-        case MOVB_WRITE_OFFGBR_OPCODE:
-            format = "    MOV.B R0, @(%d, GBR)\n";
-            break;
-        case MOVB_READ_OFFGBR_OPCODE:
-            format = "    MOV.B @(%d, GBR), R0\n";
-            break;
-        case MOVL_WRITE_OFFGBR_OPCODE:
-            format = "    MOV.L R0, @(%d, GBR)\n";
-            break;
-        case MOVL_READ_OFFGBR_OPCODE:
-            format = "    MOV.L @(%d, GBR), R0\n";
-            break;
-        case MOVA_READ_OFFPC_OPCODE:
-            format = "    MOVA @(%d, PC), R0\n";
-            break;
-        case ORIMM_OPCODE:
-            format = "    OR #%d, R0\n";
-            break;
-        case ORBIMM_OPCODE:
-            format = "    OR.B #%d, @(R0, GBR)\n";
-            break;
-        case TSTIMM_OPCODE:
-            format = "    TST #%d, R0\n";
-            break;
-        case TSTB_OPCODE:
-            format = "    TST.B %d, @(R0, GBR)\n";
-            break;
-        case XORIMM_OPCODE:
-            format = "    XOR #%d, R0\n";
-            break;
-        case XORB_OPCODE:
-            format = "    XOR.B %d, @(R0, GBR)\n";
-            break;
+
+        switch ( opc & 0xff00 )
+        {
+            case BF_OPCODE:
+                format = "    BF %d\n";
+                break;
+
+            case BFS_OPCODE:
+                format = "    *BF/S %d\n";
+                break;
+
+            case ANDIMM_OPCODE:
+                format = "    AND #%d, R0\n";
+                break;
+
+            case BT_OPCODE:
+                format = "    BT %d\n";
+                break;
+
+            case BTS_OPCODE:
+                format = "    *BT/S %d\n";
+                break;
+
+            case CMPEQIMM_OPCODE:
+                format = "    CMP/EQ #%d, R0\n";
+                break;
+
+            case MOVB_WRITE_OFFGBR_OPCODE:
+                format = "    MOV.B R0, @(%d, GBR)\n";
+                break;
+
+            case MOVB_READ_OFFGBR_OPCODE:
+                format = "    MOV.B @(%d, GBR), R0\n";
+                break;
+
+            case MOVL_WRITE_OFFGBR_OPCODE:
+                format = "    MOV.L R0, @(%d, GBR)\n";
+                break;
+
+            case MOVL_READ_OFFGBR_OPCODE:
+                format = "    MOV.L @(%d, GBR), R0\n";
+                break;
+
+            case MOVA_READ_OFFPC_OPCODE:
+                format = "    MOVA @(%d, PC), R0\n";
+                break;
+
+            case ORIMM_OPCODE:
+                format = "    OR #%d, R0\n";
+                break;
+
+            case ORBIMM_OPCODE:
+                format = "    OR.B #%d, @(R0, GBR)\n";
+                break;
+
+            case TSTIMM_OPCODE:
+                format = "    TST #%d, R0\n";
+                break;
+
+            case TSTB_OPCODE:
+                format = "    TST.B %d, @(R0, GBR)\n";
+                break;
+
+            case XORIMM_OPCODE:
+                format = "    XOR #%d, R0\n";
+                break;
+
+            case XORB_OPCODE:
+                format = "    XOR.B %d, @(R0, GBR)\n";
+                break;
         }
-        if (format) {
-            printfStdoutInstr(format, getImm8(opc));
+
+        if ( format )
+        {
+            printfStdoutInstr( format, getImm8( opc ) );
             return;
         }
-        switch (opc & 0xff00) {
-        case MOVB_WRITE_OFFRN_OPCODE:
-            format = "    MOV.B R0, @(%d, R%d)\n";
-            break;
-        case MOVB_READ_OFFRM_OPCODE:
-            format = "    MOV.B @(%d, R%d), R0\n";
-            break;
+
+        switch ( opc & 0xff00 )
+        {
+            case MOVB_WRITE_OFFRN_OPCODE:
+                format = "    MOV.B R0, @(%d, R%d)\n";
+                break;
+
+            case MOVB_READ_OFFRM_OPCODE:
+                format = "    MOV.B @(%d, R%d), R0\n";
+                break;
         }
-        if (format) {
-            printfStdoutInstr(format, getDisp(opc), getRm(opc));
+
+        if ( format )
+        {
+            printfStdoutInstr( format, getDisp( opc ), getRm( opc ) );
             return;
         }
-        switch (opc & 0xf000) {
-        case BRA_OPCODE:
-            format = "    *BRA %d\n";
-            break;
-        case BSR_OPCODE:
-            format = "    *BSR %d\n";
-            break;
+
+        switch ( opc & 0xf000 )
+        {
+            case BRA_OPCODE:
+                format = "    *BRA %d\n";
+                break;
+
+            case BSR_OPCODE:
+                format = "    *BSR %d\n";
+                break;
         }
-        if (format) {
-            printfStdoutInstr(format, getImm12(opc));
+
+        if ( format )
+        {
+            printfStdoutInstr( format, getImm12( opc ) );
             return;
         }
-        switch (opc & 0xf000) {
-        case MOVL_READ_OFFPC_OPCODE:
-            format = "    MOV.L @(%d, PC), R%d\n";
-            break;
-        case ADDIMM_OPCODE:
-            format = "    ADD #%d, R%d\n";
-            break;
-        case MOVIMM_OPCODE:
-            format = "    MOV #%d, R%d\n";
-            break;
-        case MOVW_READ_OFFPC_OPCODE:
-            format = "    MOV.W @(%d, PC), R%d\n";
-            break;
+
+        switch ( opc & 0xf000 )
+        {
+            case MOVL_READ_OFFPC_OPCODE:
+                format = "    MOV.L @(%d, PC), R%d\n";
+                break;
+
+            case ADDIMM_OPCODE:
+                format = "    ADD #%d, R%d\n";
+                break;
+
+            case MOVIMM_OPCODE:
+                format = "    MOV #%d, R%d\n";
+                break;
+
+            case MOVW_READ_OFFPC_OPCODE:
+                format = "    MOV.W @(%d, PC), R%d\n";
+                break;
         }
-        if (format) {
-            printfStdoutInstr(format, getImm8(opc), getRn(opc));
+
+        if ( format )
+        {
+            printfStdoutInstr( format, getImm8( opc ), getRn( opc ) );
             return;
         }
-        switch (opc & 0xf000) {
-        case MOVL_WRITE_OFFRN_OPCODE:
-            format = "    MOV.L R%d, @(%d, R%d)\n";
-            printfStdoutInstr(format, getRm(opc), getDisp(opc), getRn(opc));
-            break;
-        case MOVL_READ_OFFRM_OPCODE:
-            format = "    MOV.L @(%d, R%d), R%d\n";
-            printfStdoutInstr(format, getDisp(opc), getRm(opc), getRn(opc));
-            break;
+
+        switch ( opc & 0xf000 )
+        {
+            case MOVL_WRITE_OFFRN_OPCODE:
+                format = "    MOV.L R%d, @(%d, R%d)\n";
+                printfStdoutInstr( format, getRm( opc ), getDisp( opc ), getRn( opc ) );
+                break;
+
+            case MOVL_READ_OFFRM_OPCODE:
+                format = "    MOV.L @(%d, R%d), R%d\n";
+                printfStdoutInstr( format, getDisp( opc ), getRm( opc ), getRn( opc ) );
+                break;
         }
     }
 
-    static void printfStdoutInstr(const char* format, ...)
+    static void printfStdoutInstr( const char *format, ... )
     {
-        if (getenv("JavaScriptCoreDumpJIT")) {
+        if ( getenv( "JavaScriptCoreDumpJIT" ) )
+        {
             va_list args;
-            va_start(args, format);
-            vprintfStdoutInstr(format, args);
-            va_end(args);
+            va_start( args, format );
+            vprintfStdoutInstr( format, args );
+            va_end( args );
         }
     }
 
-    static void vprintfStdoutInstr(const char* format, va_list args)
+    static void vprintfStdoutInstr( const char *format, va_list args )
     {
-        if (getenv("JavaScriptCoreDumpJIT"))
-            vfprintf(stdout, format, args);
+        if ( getenv( "JavaScriptCoreDumpJIT" ) )
+        {
+            vfprintf( stdout, format, args );
+        }
     }
 
-    static void printBlockInstr(uint16_t* first, unsigned int offset, int nbInstr)
+    static void printBlockInstr( uint16_t *first, unsigned int offset, int nbInstr )
     {
-        printfStdoutInstr(">> repatch instructions after link\n");
-        for (int i = 0; i <= nbInstr; i++)
-           printInstr(*(first + i), offset + i);
-        printfStdoutInstr(">> end repatch\n");
+        printfStdoutInstr( ">> repatch instructions after link\n" );
+
+        for ( int i = 0; i <= nbInstr; i++ )
+        {
+            printInstr( *( first + i ), offset + i );
+        }
+
+        printfStdoutInstr( ">> end repatch\n" );
     }
 #else
-    static void printInstr(uint16_t opc, unsigned int size, bool isdoubleInst = true) {};
-    static void printBlockInstr(uint16_t* first, unsigned int offset, int nbInstr) {};
+    static void printInstr( uint16_t opc, unsigned int size, bool isdoubleInst = true ) {};
+    static void printBlockInstr( uint16_t *first, unsigned int offset, int nbInstr ) {};
 #endif
 
 private:

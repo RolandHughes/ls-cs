@@ -36,116 +36,137 @@
 
 using namespace JSC::Bindings;
 
-JavaClass::JavaClass(jobject anInstance)
+JavaClass::JavaClass( jobject anInstance )
 {
-    jobject aClass = callJNIMethod<jobject>(anInstance, "getClass", "()Ljava/lang/Class;");
+    jobject aClass = callJNIMethod<jobject>( anInstance, "getClass", "()Ljava/lang/Class;" );
 
-    if (!aClass) {
-        LOG_ERROR("Unable to call getClass on instance %p", anInstance);
-        m_name = fastStrDup("<Unknown>");
+    if ( !aClass )
+    {
+        LOG_ERROR( "Unable to call getClass on instance %p", anInstance );
+        m_name = fastStrDup( "<Unknown>" );
         return;
     }
 
-    if (jstring className = (jstring)callJNIMethod<jobject>(aClass, "getName", "()Ljava/lang/String;")) {
-        const char* classNameC = getCharactersFromJString(className);
-        m_name = fastStrDup(classNameC);
-        releaseCharactersForJString(className, classNameC);
-    } else
-        m_name = fastStrDup("<Unknown>");
+    if ( jstring className = ( jstring )callJNIMethod<jobject>( aClass, "getName", "()Ljava/lang/String;" ) )
+    {
+        const char *classNameC = getCharactersFromJString( className );
+        m_name = fastStrDup( classNameC );
+        releaseCharactersForJString( className, classNameC );
+    }
+    else
+    {
+        m_name = fastStrDup( "<Unknown>" );
+    }
 
     int i;
-    JNIEnv* env = getJNIEnv();
+    JNIEnv *env = getJNIEnv();
 
     // Get the fields
-    if (jarray fields = (jarray)callJNIMethod<jobject>(aClass, "getFields", "()[Ljava/lang/reflect/Field;")) {
-        int numFields = env->GetArrayLength(fields);
-        for (i = 0; i < numFields; i++) {
-            jobject aJField = env->GetObjectArrayElement((jobjectArray)fields, i);
-            JavaField* aField = new JavaField(env, aJField); // deleted in the JavaClass destructor
+    if ( jarray fields = ( jarray )callJNIMethod<jobject>( aClass, "getFields", "()[Ljava/lang/reflect/Field;" ) )
+    {
+        int numFields = env->GetArrayLength( fields );
+
+        for ( i = 0; i < numFields; i++ )
+        {
+            jobject aJField = env->GetObjectArrayElement( ( jobjectArray )fields, i );
+            JavaField *aField = new JavaField( env, aJField ); // deleted in the JavaClass destructor
             {
-                JSLock lock(SilenceAssertionsOnly);
-                m_fields.set(aField->name().impl(), aField);
+                JSLock lock( SilenceAssertionsOnly );
+                m_fields.set( aField->name().impl(), aField );
             }
-            env->DeleteLocalRef(aJField);
+            env->DeleteLocalRef( aJField );
         }
-        env->DeleteLocalRef(fields);
+
+        env->DeleteLocalRef( fields );
     }
 
     // Get the methods
-    if (jarray methods = (jarray)callJNIMethod<jobject>(aClass, "getMethods", "()[Ljava/lang/reflect/Method;")) {
-        int numMethods = env->GetArrayLength(methods);
-        for (i = 0; i < numMethods; i++) {
-            jobject aJMethod = env->GetObjectArrayElement((jobjectArray)methods, i);
-            JavaMethod* aMethod = new JavaMethodJobject(env, aJMethod); // deleted in the JavaClass destructor
-            MethodList* methodList;
-            {
-                JSLock lock(SilenceAssertionsOnly);
+    if ( jarray methods = ( jarray )callJNIMethod<jobject>( aClass, "getMethods", "()[Ljava/lang/reflect/Method;" ) )
+    {
+        int numMethods = env->GetArrayLength( methods );
 
-                methodList = m_methods.get(aMethod->name().impl());
-                if (!methodList) {
+        for ( i = 0; i < numMethods; i++ )
+        {
+            jobject aJMethod = env->GetObjectArrayElement( ( jobjectArray )methods, i );
+            JavaMethod *aMethod = new JavaMethodJobject( env, aJMethod ); // deleted in the JavaClass destructor
+            MethodList *methodList;
+            {
+                JSLock lock( SilenceAssertionsOnly );
+
+                methodList = m_methods.get( aMethod->name().impl() );
+
+                if ( !methodList )
+                {
                     methodList = new MethodList();
-                    m_methods.set(aMethod->name().impl(), methodList);
+                    m_methods.set( aMethod->name().impl(), methodList );
                 }
             }
-            methodList->append(aMethod);
-            env->DeleteLocalRef(aJMethod);
+            methodList->append( aMethod );
+            env->DeleteLocalRef( aJMethod );
         }
-        env->DeleteLocalRef(methods);
+
+        env->DeleteLocalRef( methods );
     }
 
-    env->DeleteLocalRef(aClass);
+    env->DeleteLocalRef( aClass );
 }
 
 JavaClass::~JavaClass()
 {
-    fastFree(const_cast<char*>(m_name));
+    fastFree( const_cast<char *>( m_name ) );
 
-    JSLock lock(SilenceAssertionsOnly);
+    JSLock lock( SilenceAssertionsOnly );
 
-    deleteAllValues(m_fields);
+    deleteAllValues( m_fields );
     m_fields.clear();
 
     MethodListMap::const_iterator end = m_methods.end();
-    for (MethodListMap::const_iterator it = m_methods.begin(); it != end; ++it) {
-        const MethodList* methodList = it->second;
-        deleteAllValues(*methodList);
+
+    for ( MethodListMap::const_iterator it = m_methods.begin(); it != end; ++it )
+    {
+        const MethodList *methodList = it->second;
+        deleteAllValues( *methodList );
         delete methodList;
     }
+
     m_methods.clear();
 }
 
-MethodList JavaClass::methodsNamed(const Identifier& identifier, Instance*) const
+MethodList JavaClass::methodsNamed( const Identifier &identifier, Instance * ) const
 {
-    MethodList* methodList = m_methods.get(identifier.ustring().impl());
+    MethodList *methodList = m_methods.get( identifier.ustring().impl() );
 
-    if (methodList)
+    if ( methodList )
+    {
         return *methodList;
+    }
+
     return MethodList();
 }
 
-Field* JavaClass::fieldNamed(const Identifier& identifier, Instance*) const
+Field *JavaClass::fieldNamed( const Identifier &identifier, Instance * ) const
 {
-    return m_fields.get(identifier.ustring().impl());
+    return m_fields.get( identifier.ustring().impl() );
 }
 
 bool JavaClass::isNumberClass() const
 {
-    return (!strcmp(m_name, "java.lang.Byte")
-        || !strcmp(m_name, "java.lang.Short")
-        || !strcmp(m_name, "java.lang.Integer")
-        || !strcmp(m_name, "java.lang.Long")
-        || !strcmp(m_name, "java.lang.Float")
-        || !strcmp(m_name, "java.lang.Double"));
+    return ( !strcmp( m_name, "java.lang.Byte" )
+             || !strcmp( m_name, "java.lang.Short" )
+             || !strcmp( m_name, "java.lang.Integer" )
+             || !strcmp( m_name, "java.lang.Long" )
+             || !strcmp( m_name, "java.lang.Float" )
+             || !strcmp( m_name, "java.lang.Double" ) );
 }
 
 bool JavaClass::isBooleanClass() const
 {
-    return !strcmp(m_name, "java.lang.Boolean");
+    return !strcmp( m_name, "java.lang.Boolean" );
 }
 
 bool JavaClass::isStringClass() const
 {
-    return !strcmp(m_name, "java.lang.String");
+    return !strcmp( m_name, "java.lang.String" );
 }
 
 #endif // ENABLE(JAVA_BRIDGE)

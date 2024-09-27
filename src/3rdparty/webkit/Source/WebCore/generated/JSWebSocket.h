@@ -28,29 +28,35 @@
 #include <runtime/JSObjectWithGlobalObject.h>
 #include <runtime/ObjectPrototype.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class WebSocket;
 
-class JSWebSocket : public JSDOMWrapper {
+class JSWebSocket : public JSDOMWrapper
+{
     typedef JSDOMWrapper Base;
 public:
-    JSWebSocket(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<WebSocket>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
-    virtual void put(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::JSValue, JSC::PutPropertySlot&);
+    JSWebSocket( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<WebSocket> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
+    virtual void put( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::JSValue, JSC::PutPropertySlot & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    virtual void visitChildren(JSC::SlotVisitor&);
+    virtual void visitChildren( JSC::SlotVisitor & );
 
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
-    WebSocket* impl() const { return m_impl.get(); }
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
+    WebSocket *impl() const
+    {
+        return m_impl.get();
+    }
 
 private:
     RefPtr<WebSocket> m_impl;
@@ -58,84 +64,91 @@ protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::OverridesVisitChildren | Base::StructureFlags;
 };
 
-class JSWebSocketOwner : public JSC::WeakHandleOwner {
-    virtual bool isReachableFromOpaqueRoots(JSC::Handle<JSC::Unknown>, void* context, JSC::SlotVisitor&);
-    virtual void finalize(JSC::Handle<JSC::Unknown>, void* context);
+class JSWebSocketOwner : public JSC::WeakHandleOwner
+{
+    virtual bool isReachableFromOpaqueRoots( JSC::Handle<JSC::Unknown>, void *context, JSC::SlotVisitor & );
+    virtual void finalize( JSC::Handle<JSC::Unknown>, void *context );
 };
 
-inline JSC::WeakHandleOwner* wrapperOwner(DOMWrapperWorld*, WebSocket*)
+inline JSC::WeakHandleOwner *wrapperOwner( DOMWrapperWorld *, WebSocket * )
 {
-    DEFINE_STATIC_LOCAL(JSWebSocketOwner, jsWebSocketOwner, ());
+    DEFINE_STATIC_LOCAL( JSWebSocketOwner, jsWebSocketOwner, () );
     return &jsWebSocketOwner;
 }
 
-inline void* wrapperContext(DOMWrapperWorld* world, WebSocket*)
+inline void *wrapperContext( DOMWrapperWorld *world, WebSocket * )
 {
     return world;
 }
 
-JSC::JSValue toJS(JSC::ExecState*, JSDOMGlobalObject*, WebSocket*);
-WebSocket* toWebSocket(JSC::JSValue);
+JSC::JSValue toJS( JSC::ExecState *, JSDOMGlobalObject *, WebSocket * );
+WebSocket *toWebSocket( JSC::JSValue );
 
-class JSWebSocketPrototype : public JSC::JSObjectWithGlobalObject {
+class JSWebSocketPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSWebSocketPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSWebSocketPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                          JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::OverridesVisitChildren | Base::StructureFlags;
 };
 
-class JSWebSocketConstructor : public DOMConstructorObject {
+class JSWebSocketConstructor : public DOMConstructorObject
+{
 public:
-    JSWebSocketConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSWebSocketConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
-    static JSC::EncodedJSValue JSC_HOST_CALL constructJSWebSocket(JSC::ExecState*);
-    virtual JSC::ConstructType getConstructData(JSC::ConstructData&);
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
+    static JSC::EncodedJSValue JSC_HOST_CALL constructJSWebSocket( JSC::ExecState * );
+    virtual JSC::ConstructType getConstructData( JSC::ConstructData & );
 };
 
 // Functions
 
-JSC::EncodedJSValue JSC_HOST_CALL jsWebSocketPrototypeFunctionSend(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsWebSocketPrototypeFunctionClose(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsWebSocketPrototypeFunctionAddEventListener(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsWebSocketPrototypeFunctionRemoveEventListener(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsWebSocketPrototypeFunctionDispatchEvent(JSC::ExecState*);
+JSC::EncodedJSValue JSC_HOST_CALL jsWebSocketPrototypeFunctionSend( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsWebSocketPrototypeFunctionClose( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsWebSocketPrototypeFunctionAddEventListener( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsWebSocketPrototypeFunctionRemoveEventListener( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsWebSocketPrototypeFunctionDispatchEvent( JSC::ExecState * );
 // Attributes
 
-JSC::JSValue jsWebSocketURL(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsWebSocketReadyState(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsWebSocketBufferedAmount(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsWebSocketOnopen(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSWebSocketOnopen(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsWebSocketOnmessage(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSWebSocketOnmessage(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsWebSocketOnerror(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSWebSocketOnerror(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsWebSocketOnclose(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSWebSocketOnclose(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsWebSocketConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsWebSocketURL( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsWebSocketReadyState( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsWebSocketBufferedAmount( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsWebSocketOnopen( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSWebSocketOnopen( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsWebSocketOnmessage( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSWebSocketOnmessage( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsWebSocketOnerror( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSWebSocketOnerror( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsWebSocketOnclose( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSWebSocketOnclose( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsWebSocketConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 // Constants
 
-JSC::JSValue jsWebSocketCONNECTING(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsWebSocketOPEN(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsWebSocketCLOSED(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsWebSocketCONNECTING( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsWebSocketOPEN( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsWebSocketCLOSED( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

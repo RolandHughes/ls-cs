@@ -23,26 +23,34 @@
 #if ENABLE(SVG)
 #include "RenderSVGTransformableContainer.h"
 
-namespace WebCore {
-    
+namespace WebCore
+{
+
 class SVGUseElement;
 class SVGShadowTreeRootElement;
 
-class RenderSVGShadowTreeRootContainer : public RenderSVGTransformableContainer {
+class RenderSVGShadowTreeRootContainer : public RenderSVGTransformableContainer
+{
 public:
-    RenderSVGShadowTreeRootContainer(SVGUseElement*);
+    RenderSVGShadowTreeRootContainer( SVGUseElement * );
     virtual ~RenderSVGShadowTreeRootContainer();
 
-    virtual bool isSVGShadowTreeRootContainer() const { return true; }
+    virtual bool isSVGShadowTreeRootContainer() const
+    {
+        return true;
+    }
 
-    void markShadowTreeForRecreation() { m_recreateTree = true; }
-    void updateStyle(Node::StyleChange);
+    void markShadowTreeForRecreation()
+    {
+        m_recreateTree = true;
+    }
+    void updateStyle( Node::StyleChange );
     virtual void updateFromElement();
 
-    Node* rootElement() const;
+    Node *rootElement() const;
 
 private:
-    virtual void styleDidChange(StyleDifference, const RenderStyle* oldStyle);
+    virtual void styleDidChange( StyleDifference, const RenderStyle *oldStyle );
 
     bool m_recreateTree;
     RefPtr<SVGShadowTreeRootElement> m_shadowRoot;

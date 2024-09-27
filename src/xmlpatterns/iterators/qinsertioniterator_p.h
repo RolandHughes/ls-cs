@@ -27,40 +27,41 @@
 #include <qabstractxmlforwarditerator_p.h>
 #include <qitem_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class InsertionIterator : public Item::Iterator
 {
- public:
+public:
 
-   /**
-    * Creates an InsertionIterator whose result is a merge of the
-    * iterator @p insertIterator into the iterator @p target at position @p
-    * position.
-    *
-    * @param target the iterator containing the items that the
-    * item in @p insertIterator will be inserted into.
-    * @param position the insertion position. Must be 1 or larger
-    * @param insertIterator the iterator containing the items to insert
-    * at position @p position
-    */
-   InsertionIterator(const Item::Iterator::Ptr &target,
-                     const xsInteger position,
-                     const Item::Iterator::Ptr &insertIterator);
+    /**
+     * Creates an InsertionIterator whose result is a merge of the
+     * iterator @p insertIterator into the iterator @p target at position @p
+     * position.
+     *
+     * @param target the iterator containing the items that the
+     * item in @p insertIterator will be inserted into.
+     * @param position the insertion position. Must be 1 or larger
+     * @param insertIterator the iterator containing the items to insert
+     * at position @p position
+     */
+    InsertionIterator( const Item::Iterator::Ptr &target,
+                       const xsInteger position,
+                       const Item::Iterator::Ptr &insertIterator );
 
-   Item next() override;
-   Item current() const override;
-   xsInteger position() const override;
-   xsInteger count() override;
-   Item::Iterator::Ptr copy() const override;
+    Item next() override;
+    Item current() const override;
+    xsInteger position() const override;
+    xsInteger count() override;
+    Item::Iterator::Ptr copy() const override;
 
- private:
-   const Item::Iterator::Ptr m_target;
-   const xsInteger m_insertPos;
-   const Item::Iterator::Ptr m_inserts;
-   Item m_current;
-   xsInteger m_position;
-   bool m_isInserting;
+private:
+    const Item::Iterator::Ptr m_target;
+    const xsInteger m_insertPos;
+    const Item::Iterator::Ptr m_inserts;
+    Item m_current;
+    xsInteger m_position;
+    bool m_isInserting;
 };
 
 }

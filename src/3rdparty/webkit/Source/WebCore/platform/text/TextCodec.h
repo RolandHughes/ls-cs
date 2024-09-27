@@ -21,7 +21,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef TextCodec_h
@@ -36,52 +36,56 @@
 
 #include "PlatformString.h"
 
-namespace WebCore {
-    class TextEncoding;
+namespace WebCore
+{
+class TextEncoding;
 
-    // Specifies what will happen when a character is encountered that is
-    // not encodable in the character set.
-    enum UnencodableHandling {
-        // Substitutes the replacement character "?".
-        QuestionMarksForUnencodables,
+// Specifies what will happen when a character is encountered that is
+// not encodable in the character set.
+enum UnencodableHandling
+{
+    // Substitutes the replacement character "?".
+    QuestionMarksForUnencodables,
 
-        // Encodes the character as an XML entity. For example, U+06DE
-        // would be "&#1758;" (0x6DE = 1758 in octal).
-        EntitiesForUnencodables,
+    // Encodes the character as an XML entity. For example, U+06DE
+    // would be "&#1758;" (0x6DE = 1758 in octal).
+    EntitiesForUnencodables,
 
-        // Encodes the character as en entity as above, but escaped
-        // non-alphanumeric characters. This is used in URLs.
-        // For example, U+6DE would be "%26%231758%3B".
-        URLEncodedEntitiesForUnencodables
-    };
+    // Encodes the character as en entity as above, but escaped
+    // non-alphanumeric characters. This is used in URLs.
+    // For example, U+6DE would be "%26%231758%3B".
+    URLEncodedEntitiesForUnencodables
+};
 
-    typedef char UnencodableReplacementArray[32];
+typedef char UnencodableReplacementArray[32];
 
-    class TextCodec {
-        WTF_MAKE_NONCOPYABLE(TextCodec); WTF_MAKE_FAST_ALLOCATED;
-    public:
-        TextCodec() { }
-        virtual ~TextCodec();
+class TextCodec
+{
+    WTF_MAKE_NONCOPYABLE( TextCodec );
+    WTF_MAKE_FAST_ALLOCATED;
+public:
+    TextCodec() { }
+    virtual ~TextCodec();
 
-        String decode(const char* str, size_t length, bool flush = false)
-        {
-            bool ignored;
-            return decode(str, length, flush, false, ignored);
-        }
-        
-        virtual String decode(const char*, size_t length, bool flush, bool stopOnError, bool& sawError) = 0;
-        virtual CString encode(const UChar*, size_t length, UnencodableHandling) = 0;
+    String decode( const char *str, size_t length, bool flush = false )
+    {
+        bool ignored;
+        return decode( str, length, flush, false, ignored );
+    }
 
-        // Fills a null-terminated string representation of the given
-        // unencodable character into the given replacement buffer. 
-        // The length of the string (not including the null) will be returned.
-        static int getUnencodableReplacement(unsigned codePoint, UnencodableHandling, UnencodableReplacementArray);
-    };
+    virtual String decode( const char *, size_t length, bool flush, bool stopOnError, bool &sawError ) = 0;
+    virtual CString encode( const UChar *, size_t length, UnencodableHandling ) = 0;
 
-    typedef void (*EncodingNameRegistrar)(const char* alias, const char* name);
+    // Fills a null-terminated string representation of the given
+    // unencodable character into the given replacement buffer.
+    // The length of the string (not including the null) will be returned.
+    static int getUnencodableReplacement( unsigned codePoint, UnencodableHandling, UnencodableReplacementArray );
+};
 
-    typedef PassOwnPtr<TextCodec> (*NewTextCodecFunction)(const TextEncoding&, const void* additionalData);
-    typedef void (*TextCodecRegistrar)(const char* name, NewTextCodecFunction, const void* additionalData);
+typedef void ( *EncodingNameRegistrar )( const char *alias, const char *name );
+
+typedef PassOwnPtr<TextCodec> ( *NewTextCodecFunction )( const TextEncoding &, const void *additionalData );
+typedef void ( *TextCodecRegistrar )( const char *name, NewTextCodecFunction, const void *additionalData );
 
 } // namespace WebCore
 

@@ -26,36 +26,50 @@
 
 #include "RenderBlock.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class RenderFieldset : public RenderBlock {
+class RenderFieldset : public RenderBlock
+{
 public:
-    explicit RenderFieldset(Node*);
+    explicit RenderFieldset( Node * );
 
-    RenderBox* findLegend() const;
+    RenderBox *findLegend() const;
 
 private:
-    virtual const char* renderName() const { return "RenderFieldSet"; }
-    virtual bool isFieldset() const { return true; }
+    virtual const char *renderName() const
+    {
+        return "RenderFieldSet";
+    }
+    virtual bool isFieldset() const
+    {
+        return true;
+    }
 
-    virtual RenderObject* layoutSpecialExcludedChild(bool relayoutChildren);
+    virtual RenderObject *layoutSpecialExcludedChild( bool relayoutChildren );
 
     virtual void computePreferredLogicalWidths();
-    virtual bool avoidsFloats() const { return true; }
-    virtual bool stretchesToMinIntrinsicLogicalWidth() const { return true; }
+    virtual bool avoidsFloats() const
+    {
+        return true;
+    }
+    virtual bool stretchesToMinIntrinsicLogicalWidth() const
+    {
+        return true;
+    }
 
-    virtual void paintBoxDecorations(PaintInfo&, int tx, int ty);
-    virtual void paintMask(PaintInfo&, int tx, int ty);
+    virtual void paintBoxDecorations( PaintInfo &, int tx, int ty );
+    virtual void paintMask( PaintInfo &, int tx, int ty );
 };
 
-inline RenderFieldset* toRenderFieldset(RenderObject* object)
+inline RenderFieldset *toRenderFieldset( RenderObject *object )
 {
-    ASSERT(!object || object->isFieldset());
-    return static_cast<RenderFieldset*>(object);
+    ASSERT( !object || object->isFieldset() );
+    return static_cast<RenderFieldset *>( object );
 }
 
 // This will catch anyone doing an unnecessary cast.
-void toRenderFieldset(const RenderFieldset*);
+void toRenderFieldset( const RenderFieldset * );
 
 } // namespace WebCore
 

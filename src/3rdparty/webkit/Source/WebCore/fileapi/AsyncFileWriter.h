@@ -36,16 +36,18 @@
 #include "PlatformString.h"
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Blob;
 
-class AsyncFileWriter {
+class AsyncFileWriter
+{
 public:
     virtual ~AsyncFileWriter() {}
 
-    virtual void write(long long position, Blob* data) = 0;
-    virtual void truncate(long long length) = 0;
+    virtual void write( long long position, Blob *data ) = 0;
+    virtual void truncate( long long length ) = 0;
     virtual void abort() = 0;
     virtual bool waitForOperationToComplete() // Needed for FileWriterSync only.
     {

@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -36,43 +36,52 @@
 #include <runtime/JSLock.h>
 #include <wtf/Vector.h>
 
-namespace JSC {
+namespace JSC
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSCallbackFunction);
+ASSERT_CLASS_FITS_IN_CELL( JSCallbackFunction );
 
 const ClassInfo JSCallbackFunction::s_info = { "CallbackFunction", &InternalFunction::s_info, 0, 0 };
 
-JSCallbackFunction::JSCallbackFunction(ExecState* exec, JSGlobalObject* globalObject, JSObjectCallAsFunctionCallback callback, const Identifier& name)
-    : InternalFunction(&exec->globalData(), globalObject, globalObject->callbackFunctionStructure(), name)
-    , m_callback(callback)
+JSCallbackFunction::JSCallbackFunction( ExecState *exec, JSGlobalObject *globalObject, JSObjectCallAsFunctionCallback callback,
+                                        const Identifier &name )
+    : InternalFunction( &exec->globalData(), globalObject, globalObject->callbackFunctionStructure(), name )
+    , m_callback( callback )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-EncodedJSValue JSCallbackFunction::call(ExecState* exec)
+EncodedJSValue JSCallbackFunction::call( ExecState *exec )
 {
-    JSContextRef execRef = toRef(exec);
-    JSObjectRef functionRef = toRef(exec->callee());
-    JSObjectRef thisObjRef = toRef(exec->hostThisValue().toThisObject(exec));
+    JSContextRef execRef = toRef( exec );
+    JSObjectRef functionRef = toRef( exec->callee() );
+    JSObjectRef thisObjRef = toRef( exec->hostThisValue().toThisObject( exec ) );
 
-    int argumentCount = static_cast<int>(exec->argumentCount());
-    Vector<JSValueRef, 16> arguments(argumentCount);
-    for (int i = 0; i < argumentCount; i++)
-        arguments[i] = toRef(exec, exec->argument(i));
+    int argumentCount = static_cast<int>( exec->argumentCount() );
+    Vector<JSValueRef, 16> arguments( argumentCount );
+
+    for ( int i = 0; i < argumentCount; i++ )
+    {
+        arguments[i] = toRef( exec, exec->argument( i ) );
+    }
 
     JSValueRef exception = 0;
     JSValueRef result;
     {
-        APICallbackShim callbackShim(exec);
-        result = static_cast<JSCallbackFunction*>(toJS(functionRef))->m_callback(execRef, functionRef, thisObjRef, argumentCount, arguments.data(), &exception);
+        APICallbackShim callbackShim( exec );
+        result = static_cast<JSCallbackFunction *>( toJS( functionRef ) )->m_callback( execRef, functionRef, thisObjRef, argumentCount,
+                 arguments.data(), &exception );
     }
-    if (exception)
-        throwError(exec, toJS(exec, exception));
 
-    return JSValue::encode(toJS(exec, result));
+    if ( exception )
+    {
+        throwError( exec, toJS( exec, exception ) );
+    }
+
+    return JSValue::encode( toJS( exec, result ) );
 }
 
-CallType JSCallbackFunction::getCallData(CallData& callData)
+CallType JSCallbackFunction::getCallData( CallData &callData )
 {
     callData.native.function = call;
     return CallTypeHost;

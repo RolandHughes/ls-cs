@@ -25,19 +25,21 @@
 #include "TableLayout.h"
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class RenderTable;
 
-class FixedTableLayout : public TableLayout {
+class FixedTableLayout : public TableLayout
+{
 public:
-    FixedTableLayout(RenderTable*);
+    FixedTableLayout( RenderTable * );
 
-    virtual void computePreferredLogicalWidths(int& minWidth, int& maxWidth);
+    virtual void computePreferredLogicalWidths( int &minWidth, int &maxWidth );
     virtual void layout();
 
 private:
-    int calcWidthArray(int tableWidth);
+    int calcWidthArray( int tableWidth );
 
     Vector<Length> m_width;
 };

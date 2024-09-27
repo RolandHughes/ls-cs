@@ -29,14 +29,15 @@
 #include <WebCore/NotImplemented.h>
 #include <WebCore/ResourceResponse.h>
 
-namespace CoreIPC {
+namespace CoreIPC
+{
 
-void encodeResourceRequest(ArgumentEncoder* encoder, const WebCore::ResourceRequest& resourceRequest)
+void encodeResourceRequest( ArgumentEncoder *encoder, const WebCore::ResourceRequest &resourceRequest )
 {
     notImplemented();
 }
 
-bool decodeResourceRequest(ArgumentDecoder* decoder, WebCore::ResourceRequest& resourceRequest)
+bool decodeResourceRequest( ArgumentDecoder *decoder, WebCore::ResourceRequest &resourceRequest )
 {
     notImplemented();
 
@@ -46,12 +47,12 @@ bool decodeResourceRequest(ArgumentDecoder* decoder, WebCore::ResourceRequest& r
     return true;
 }
 
-void encodeResourceResponse(ArgumentEncoder* encoder, const WebCore::ResourceResponse& resourceResponse)
+void encodeResourceResponse( ArgumentEncoder *encoder, const WebCore::ResourceResponse &resourceResponse )
 {
     notImplemented();
 }
 
-bool decodeResourceResponse(ArgumentDecoder* decoder, WebCore::ResourceResponse& resourceResponse)
+bool decodeResourceResponse( ArgumentDecoder *decoder, WebCore::ResourceResponse &resourceResponse )
 {
     notImplemented();
 
@@ -60,20 +61,25 @@ bool decodeResourceResponse(ArgumentDecoder* decoder, WebCore::ResourceResponse&
     return true;
 }
 
-void encodeResourceError(ArgumentEncoder* encoder, const WebCore::ResourceError& resourceError)
+void encodeResourceError( ArgumentEncoder *encoder, const WebCore::ResourceError &resourceError )
 {
-    encoder->encode(CoreIPC::In(resourceError.domain(), resourceError.errorCode(), resourceError.failingURL(), resourceError.localizedDescription()));
+    encoder->encode( CoreIPC::In( resourceError.domain(), resourceError.errorCode(), resourceError.failingURL(),
+                                  resourceError.localizedDescription() ) );
 }
 
-bool decodeResourceError(ArgumentDecoder* decoder, WebCore::ResourceError& resourceError)
+bool decodeResourceError( ArgumentDecoder *decoder, WebCore::ResourceError &resourceError )
 {
     String domain;
     int errorCode;
     String failingURL;
     String localizedDescription;
-    if (!decoder->decode(CoreIPC::Out(domain, errorCode, failingURL, localizedDescription)))
+
+    if ( !decoder->decode( CoreIPC::Out( domain, errorCode, failingURL, localizedDescription ) ) )
+    {
         return false;
-    resourceError = WebCore::ResourceError(domain, errorCode, failingURL, localizedDescription);
+    }
+
+    resourceError = WebCore::ResourceError( domain, errorCode, failingURL, localizedDescription );
     return true;
 }
 

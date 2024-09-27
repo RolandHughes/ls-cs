@@ -31,91 +31,92 @@ class QPushButton;
 
 class Q_GUI_EXPORT QDialog : public QWidget
 {
-   GUI_CS_OBJECT(QDialog)
+    GUI_CS_OBJECT( QDialog )
 
-   GUI_CS_PROPERTY_READ(sizeGripEnabled,  isSizeGripEnabled)
-   GUI_CS_PROPERTY_WRITE(sizeGripEnabled, setSizeGripEnabled)
+    GUI_CS_PROPERTY_READ( sizeGripEnabled,  isSizeGripEnabled )
+    GUI_CS_PROPERTY_WRITE( sizeGripEnabled, setSizeGripEnabled )
 
-   GUI_CS_PROPERTY_READ(modal,  isModal)
-   GUI_CS_PROPERTY_WRITE(modal, setModal)
+    GUI_CS_PROPERTY_READ( modal,  isModal )
+    GUI_CS_PROPERTY_WRITE( modal, setModal )
 
- public:
-   explicit QDialog(QWidget *parent = nullptr, Qt::WindowFlags flags = Qt::EmptyFlag);
+public:
+    explicit QDialog( QWidget *parent = nullptr, Qt::WindowFlags flags = Qt::EmptyFlag );
 
-   QDialog(const QDialog &) = delete;
-   QDialog &operator=(const QDialog &) = delete;
+    QDialog( const QDialog & ) = delete;
+    QDialog &operator=( const QDialog & ) = delete;
 
-   ~QDialog();
+    ~QDialog();
 
-   enum DialogCode {
-      Rejected,
-      Accepted
-   };
+    enum DialogCode
+    {
+        Rejected,
+        Accepted
+    };
 
-   int result() const;
+    int result() const;
 
-   void setVisible(bool visible) override;
+    void setVisible( bool visible ) override;
 
-   void setOrientation(Qt::Orientation orientation);
-   Qt::Orientation orientation() const;
+    void setOrientation( Qt::Orientation orientation );
+    Qt::Orientation orientation() const;
 
-   void setExtension(QWidget *extension);
-   QWidget *extension() const;
+    void setExtension( QWidget *extension );
+    QWidget *extension() const;
 
-   QSize sizeHint() const override;
-   QSize minimumSizeHint() const override;
+    QSize sizeHint() const override;
+    QSize minimumSizeHint() const override;
 
-   void setSizeGripEnabled(bool enabled);
-   bool isSizeGripEnabled() const;
+    void setSizeGripEnabled( bool enabled );
+    bool isSizeGripEnabled() const;
 
-   void setModal(bool modal);
-   void setResult(int result);
+    void setModal( bool modal );
+    void setResult( int result );
 
-   GUI_CS_SIGNAL_1(Public, void finished(int result))
-   GUI_CS_SIGNAL_2(finished, result)
+    GUI_CS_SIGNAL_1( Public, void finished( int result ) )
+    GUI_CS_SIGNAL_2( finished, result )
 
-   GUI_CS_SIGNAL_1(Public, void accepted())
-   GUI_CS_SIGNAL_2(accepted)
+    GUI_CS_SIGNAL_1( Public, void accepted() )
+    GUI_CS_SIGNAL_2( accepted )
 
-   GUI_CS_SIGNAL_1(Public, void rejected())
-   GUI_CS_SIGNAL_2(rejected)
+    GUI_CS_SIGNAL_1( Public, void rejected() )
+    GUI_CS_SIGNAL_2( rejected )
 
-   GUI_CS_SLOT_1(Public, virtual void open())
-   GUI_CS_SLOT_2(open)
+    GUI_CS_SLOT_1( Public, virtual void open() )
+    GUI_CS_SLOT_2( open )
 
-   GUI_CS_SLOT_1(Public, virtual int exec())
-   GUI_CS_SLOT_2(exec)
+    GUI_CS_SLOT_1( Public, virtual int exec() )
+    GUI_CS_SLOT_2( exec )
 
-   GUI_CS_SLOT_1(Public, virtual void done(int result))
-   GUI_CS_SLOT_2(done)
+    GUI_CS_SLOT_1( Public, virtual void done( int result ) )
+    GUI_CS_SLOT_2( done )
 
-   GUI_CS_SLOT_1(Public, virtual void accept())
-   GUI_CS_SLOT_2(accept)
+    GUI_CS_SLOT_1( Public, virtual void accept() )
+    GUI_CS_SLOT_2( accept )
 
-   GUI_CS_SLOT_1(Public, virtual void reject())
-   GUI_CS_SLOT_2(reject)
+    GUI_CS_SLOT_1( Public, virtual void reject() )
+    GUI_CS_SLOT_2( reject )
 
-   GUI_CS_SLOT_1(Public, void showExtension(bool showExt))
-   GUI_CS_SLOT_2(showExtension)
+    GUI_CS_SLOT_1( Public, void showExtension( bool showExt ) )
+    GUI_CS_SLOT_2( showExtension )
 
- protected:
-   QDialog(QDialogPrivate &, QWidget *parent, Qt::WindowFlags flags = Qt::EmptyFlag);
+protected:
+    QDialog( QDialogPrivate &, QWidget *parent, Qt::WindowFlags flags = Qt::EmptyFlag );
 
-   void keyPressEvent(QKeyEvent *event) override;
-   void closeEvent(QCloseEvent *event) override;
-   void showEvent(QShowEvent *event) override;
-   void resizeEvent(QResizeEvent *event) override;
+    void keyPressEvent( QKeyEvent *event ) override;
+    void closeEvent( QCloseEvent *event ) override;
+    void showEvent( QShowEvent *event ) override;
+    void resizeEvent( QResizeEvent *event ) override;
 
 #ifndef QT_NO_CONTEXTMENU
-   void contextMenuEvent(QContextMenuEvent *event) override;
+    void contextMenuEvent( QContextMenuEvent *event ) override;
 #endif
 
-   bool eventFilter(QObject *object, QEvent *event) override;
-   void adjustPosition(QWidget *widget);
+    bool eventFilter( QObject *object, QEvent *event ) override;
+    void adjustPosition( QWidget *widget );
 
- private:
-   Q_DECLARE_PRIVATE(QDialog)
-   friend class QPushButton;
+private:
+    Q_DECLARE_PRIVATE( QDialog )
+    friend class QPushButton;
 };
 
 #endif

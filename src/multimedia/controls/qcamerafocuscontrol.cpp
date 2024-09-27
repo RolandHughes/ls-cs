@@ -25,8 +25,8 @@
 
 #include <qmediacontrol_p.h>
 
-QCameraFocusControl::QCameraFocusControl(QObject *parent)
-   : QMediaControl(*new QMediaControlPrivate, parent)
+QCameraFocusControl::QCameraFocusControl( QObject *parent )
+    : QMediaControl( *new QMediaControlPrivate, parent )
 {
 }
 

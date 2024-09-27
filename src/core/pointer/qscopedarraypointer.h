@@ -27,26 +27,26 @@
 #include <quniquepointer.h>
 
 template <typename T, typename Deleter = std::default_delete<CsPointer::cs_add_missing_extent_t<T>>>
-class QScopedArrayPointer : public QUniqueArrayPointer<T, Deleter>
+          class QScopedArrayPointer : public QUniqueArrayPointer<T, Deleter>
 {
 public:
-   using QUniqueArrayPointer<T, Deleter>::QUniqueArrayPointer;
+    using QUniqueArrayPointer<T, Deleter>::QUniqueArrayPointer;
 
-   QScopedArrayPointer(QScopedArrayPointer && other) = delete;
-   QScopedArrayPointer &operator=(QScopedArrayPointer && other) = delete;
+    QScopedArrayPointer( QScopedArrayPointer &&other ) = delete;
+    QScopedArrayPointer &operator=( QScopedArrayPointer &&other ) = delete;
 };
 
 // free functions
 template <typename T, typename Deleter>
-void swap(QScopedArrayPointer<T, Deleter> &ptr1, QScopedArrayPointer<T, Deleter> &ptr2) noexcept
+void swap( QScopedArrayPointer<T, Deleter> &ptr1, QScopedArrayPointer<T, Deleter> &ptr2 ) noexcept
 {
-   ptr1.swap(ptr2);
+    ptr1.swap( ptr2 );
 }
 
 template <typename T, typename = typename std::enable_if_t<std::is_array_v<T>>>
-QScopedArrayPointer<T> QMakeScoped(std::size_t size)
+          QScopedArrayPointer<T> QMakeScoped( std::size_t size )
 {
-   return CsPointer::make_unique<T>(size);
+    return CsPointer::make_unique<T>( size );
 }
 
 #endif

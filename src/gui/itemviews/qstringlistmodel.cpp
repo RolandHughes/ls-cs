@@ -28,171 +28,188 @@
 
 #ifndef QT_NO_STRINGLISTMODEL
 
-QStringListModel::QStringListModel(QObject *parent)
-   : QAbstractListModel(parent)
+QStringListModel::QStringListModel( QObject *parent )
+    : QAbstractListModel( parent )
 {
 }
 
-QStringListModel::QStringListModel(const QStringList &strings, QObject *parent)
-   : QAbstractListModel(parent), lst(strings)
+QStringListModel::QStringListModel( const QStringList &strings, QObject *parent )
+    : QAbstractListModel( parent ), lst( strings )
 {
 }
 
-int QStringListModel::rowCount(const QModelIndex &parent) const
+int QStringListModel::rowCount( const QModelIndex &parent ) const
 {
-   if (parent.isValid()) {
-      return 0;
-   }
+    if ( parent.isValid() )
+    {
+        return 0;
+    }
 
-   return lst.count();
+    return lst.count();
 }
 
-QModelIndex QStringListModel::sibling(int row, int column, const QModelIndex &idx) const
+QModelIndex QStringListModel::sibling( int row, int column, const QModelIndex &idx ) const
 {
-   if (! idx.isValid() || column != 0 || row >= lst.count()) {
-      return QModelIndex();
-   }
+    if ( ! idx.isValid() || column != 0 || row >= lst.count() )
+    {
+        return QModelIndex();
+    }
 
-   return createIndex(row, 0);
+    return createIndex( row, 0 );
 }
 
-QVariant QStringListModel::data(const QModelIndex &index, int role) const
+QVariant QStringListModel::data( const QModelIndex &index, int role ) const
 {
-   if (index.row() < 0 || index.row() >= lst.size()) {
-      return QVariant();
-   }
+    if ( index.row() < 0 || index.row() >= lst.size() )
+    {
+        return QVariant();
+    }
 
-   if (role == Qt::DisplayRole || role == Qt::EditRole) {
-      return lst.at(index.row());
-   }
+    if ( role == Qt::DisplayRole || role == Qt::EditRole )
+    {
+        return lst.at( index.row() );
+    }
 
-   return QVariant();
+    return QVariant();
 }
 
-Qt::ItemFlags QStringListModel::flags(const QModelIndex &index) const
+Qt::ItemFlags QStringListModel::flags( const QModelIndex &index ) const
 {
-   if (!index.isValid()) {
-      return QAbstractListModel::flags(index) | Qt::ItemIsDropEnabled;
-   }
+    if ( !index.isValid() )
+    {
+        return QAbstractListModel::flags( index ) | Qt::ItemIsDropEnabled;
+    }
 
-   return QAbstractListModel::flags(index) | Qt::ItemIsEditable | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled;
+    return QAbstractListModel::flags( index ) | Qt::ItemIsEditable | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled;
 }
 
-bool QStringListModel::setData(const QModelIndex &index, const QVariant &value, int role)
+bool QStringListModel::setData( const QModelIndex &index, const QVariant &value, int role )
 {
-   if (index.row() >= 0 && index.row() < lst.size()
-         && (role == Qt::EditRole || role == Qt::DisplayRole)) {
-      lst.replace(index.row(), value.toString());
+    if ( index.row() >= 0 && index.row() < lst.size()
+            && ( role == Qt::EditRole || role == Qt::DisplayRole ) )
+    {
+        lst.replace( index.row(), value.toString() );
 
-      QVector<int> roles;
-      roles.reserve(2);
-      roles.append(Qt::DisplayRole);
-      roles.append(Qt::EditRole);
+        QVector<int> roles;
+        roles.reserve( 2 );
+        roles.append( Qt::DisplayRole );
+        roles.append( Qt::EditRole );
 
-      emit dataChanged(index, index, roles);
-      return true;
-   }
+        emit dataChanged( index, index, roles );
+        return true;
+    }
 
-   return false;
+    return false;
 }
 
-bool QStringListModel::insertRows(int row, int count, const QModelIndex &parent)
+bool QStringListModel::insertRows( int row, int count, const QModelIndex &parent )
 {
-   if (count < 1 || row < 0 || row > rowCount(parent)) {
-      return false;
-   }
+    if ( count < 1 || row < 0 || row > rowCount( parent ) )
+    {
+        return false;
+    }
 
-   beginInsertRows(QModelIndex(), row, row + count - 1);
+    beginInsertRows( QModelIndex(), row, row + count - 1 );
 
-   for (int r = 0; r < count; ++r) {
-      lst.insert(row, QString());
-   }
+    for ( int r = 0; r < count; ++r )
+    {
+        lst.insert( row, QString() );
+    }
 
-   endInsertRows();
+    endInsertRows();
 
-   return true;
+    return true;
 }
 
-bool QStringListModel::removeRows(int row, int count, const QModelIndex &parent)
+bool QStringListModel::removeRows( int row, int count, const QModelIndex &parent )
 {
-   if (count <= 0 || row < 0 || (row + count) > rowCount(parent)) {
-      return false;
-   }
+    if ( count <= 0 || row < 0 || ( row + count ) > rowCount( parent ) )
+    {
+        return false;
+    }
 
-   beginRemoveRows(QModelIndex(), row, row + count - 1);
+    beginRemoveRows( QModelIndex(), row, row + count - 1 );
 
-   for (int r = 0; r < count; ++r) {
-      lst.removeAt(row);
-   }
+    for ( int r = 0; r < count; ++r )
+    {
+        lst.removeAt( row );
+    }
 
-   endRemoveRows();
+    endRemoveRows();
 
-   return true;
+    return true;
 }
 
-static bool ascendingLessThan(const QPair<QString, int> &s1, const QPair<QString, int> &s2)
+static bool ascendingLessThan( const QPair<QString, int> &s1, const QPair<QString, int> &s2 )
 {
-   return s1.first < s2.first;
+    return s1.first < s2.first;
 }
 
-static bool decendingLessThan(const QPair<QString, int> &s1, const QPair<QString, int> &s2)
+static bool decendingLessThan( const QPair<QString, int> &s1, const QPair<QString, int> &s2 )
 {
-   return s1.first > s2.first;
+    return s1.first > s2.first;
 }
 
-void QStringListModel::sort(int, Qt::SortOrder order)
+void QStringListModel::sort( int, Qt::SortOrder order )
 {
-   emit layoutAboutToBeChanged(QList<QPersistentModelIndex>(), VerticalSortHint);
+    emit layoutAboutToBeChanged( QList<QPersistentModelIndex>(), VerticalSortHint );
 
-   QList<QPair<QString, int>> list;
-   const int lstCount = lst.count();
+    QList<QPair<QString, int>> list;
+    const int lstCount = lst.count();
 
-   for (int i = 0; i < lstCount; ++i) {
-      list.append(QPair<QString, int>(lst.at(i), i));
-   }
+    for ( int i = 0; i < lstCount; ++i )
+    {
+        list.append( QPair<QString, int>( lst.at( i ), i ) );
+    }
 
-   if (order == Qt::AscendingOrder) {
-      std::sort(list.begin(), list.end(), ascendingLessThan);
-   } else {
-      std::sort(list.begin(), list.end(), decendingLessThan);
-   }
+    if ( order == Qt::AscendingOrder )
+    {
+        std::sort( list.begin(), list.end(), ascendingLessThan );
+    }
+    else
+    {
+        std::sort( list.begin(), list.end(), decendingLessThan );
+    }
 
-   lst.clear();
-   QVector<int> forwarding(list.count());
+    lst.clear();
+    QVector<int> forwarding( list.count() );
 
-   for (int i = 0; i < list.count(); ++i) {
-      lst.append(list.at(i).first);
-      forwarding[list.at(i).second] = i;
-   }
+    for ( int i = 0; i < list.count(); ++i )
+    {
+        lst.append( list.at( i ).first );
+        forwarding[list.at( i ).second] = i;
+    }
 
-   QModelIndexList oldList = persistentIndexList();
-   QModelIndexList newList;
+    QModelIndexList oldList = persistentIndexList();
+    QModelIndexList newList;
 
-   const int numOldIndexes = oldList.count();
+    const int numOldIndexes = oldList.count();
 
-   for (int i = 0; i < numOldIndexes; ++i) {
-      newList.append(index(forwarding.at(oldList.at(i).row()), 0));
-   }
-   changePersistentIndexList(oldList, newList);
+    for ( int i = 0; i < numOldIndexes; ++i )
+    {
+        newList.append( index( forwarding.at( oldList.at( i ).row() ), 0 ) );
+    }
 
-   emit layoutChanged(QList<QPersistentModelIndex>(), VerticalSortHint);
+    changePersistentIndexList( oldList, newList );
+
+    emit layoutChanged( QList<QPersistentModelIndex>(), VerticalSortHint );
 }
 
 QStringList QStringListModel::stringList() const
 {
-   return lst;
+    return lst;
 }
 
-void QStringListModel::setStringList(const QStringList &strings)
+void QStringListModel::setStringList( const QStringList &strings )
 {
-   beginResetModel();
-   lst = strings;
-   endResetModel();
+    beginResetModel();
+    lst = strings;
+    endResetModel();
 }
 
 Qt::DropActions QStringListModel::supportedDropActions() const
 {
-   return QAbstractItemModel::supportedDropActions() | Qt::MoveAction;
+    return QAbstractItemModel::supportedDropActions() | Qt::MoveAction;
 }
 
 #endif // QT_NO_STRINGLISTMODEL

@@ -36,7 +36,8 @@
 
 using namespace WebCore;
 
-namespace WebKit {
+namespace WebKit
+{
 
 WebGeolocationClient::~WebGeolocationClient()
 {
@@ -44,38 +45,38 @@ WebGeolocationClient::~WebGeolocationClient()
 
 void WebGeolocationClient::geolocationDestroyed()
 {
-    WebProcess::shared().geolocationManager().unregisterWebPage(m_page);
+    WebProcess::shared().geolocationManager().unregisterWebPage( m_page );
     delete this;
 }
 
 void WebGeolocationClient::startUpdating()
 {
-    WebProcess::shared().geolocationManager().registerWebPage(m_page);
+    WebProcess::shared().geolocationManager().registerWebPage( m_page );
 }
 
 void WebGeolocationClient::stopUpdating()
 {
-    WebProcess::shared().geolocationManager().unregisterWebPage(m_page);
+    WebProcess::shared().geolocationManager().unregisterWebPage( m_page );
 }
 
-void WebGeolocationClient::setEnableHighAccuracy(bool)
+void WebGeolocationClient::setEnableHighAccuracy( bool )
 {
 }
 
-GeolocationPosition* WebGeolocationClient::lastPosition()
+GeolocationPosition *WebGeolocationClient::lastPosition()
 {
     // FIXME: Implement this.
     return 0;
 }
 
-void WebGeolocationClient::requestPermission(Geolocation* geolocation)
+void WebGeolocationClient::requestPermission( Geolocation *geolocation )
 {
-    m_page->geolocationPermissionRequestManager().startRequestForGeolocation(geolocation);
+    m_page->geolocationPermissionRequestManager().startRequestForGeolocation( geolocation );
 }
 
-void WebGeolocationClient::cancelPermissionRequest(Geolocation* geolocation)
+void WebGeolocationClient::cancelPermissionRequest( Geolocation *geolocation )
 {
-    m_page->geolocationPermissionRequestManager().cancelRequestForGeolocation(geolocation);
+    m_page->geolocationPermissionRequestManager().cancelRequestForGeolocation( geolocation );
 }
 
 } // namespace WebKit

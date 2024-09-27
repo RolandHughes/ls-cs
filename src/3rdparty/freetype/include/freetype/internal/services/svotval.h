@@ -28,8 +28,8 @@ FT_BEGIN_HEADER
 #define FT_SERVICE_ID_OPENTYPE_VALIDATE  "opentype-validate"
 
 
-  typedef FT_Error
-  (*otv_validate_func)( FT_Face volatile  face,
+typedef FT_Error
+( *otv_validate_func )( FT_Face volatile  face,
                         FT_UInt           ot_flags,
                         FT_Bytes         *base,
                         FT_Bytes         *gdef,
@@ -38,12 +38,12 @@ FT_BEGIN_HEADER
                         FT_Bytes         *jstf );
 
 
-  FT_DEFINE_SERVICE( OTvalidate )
-  {
+FT_DEFINE_SERVICE( OTvalidate )
+{
     otv_validate_func  validate;
-  };
+};
 
-  /* */
+/* */
 
 
 FT_END_HEADER

@@ -31,7 +31,8 @@
 #include "config.h"
 #include "PlatformGestureRecognizer.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 PlatformGestureRecognizer::PlatformGestureRecognizer() { }
 PlatformGestureRecognizer::~PlatformGestureRecognizer() { }

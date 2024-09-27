@@ -42,15 +42,18 @@ class WebScriptObject;
 
 struct NPObject;
 
-namespace JSC {
-    class JSGlobalObject;
+namespace JSC
+{
+class JSGlobalObject;
 
-    namespace Bindings {
-        class RootObject;
-    }
+namespace Bindings
+{
+class RootObject;
+}
 }
 
-namespace WebCore {
+namespace WebCore
+{
 
 class HTMLPlugInElement;
 class Frame;
@@ -58,80 +61,100 @@ class ScriptSourceCode;
 class ScriptValue;
 class Widget;
 
-typedef HashMap<void*, RefPtr<JSC::Bindings::RootObject> > RootObjectMap;
+typedef HashMap<void *, RefPtr<JSC::Bindings::RootObject> > RootObjectMap;
 
-class ScriptController {
+class ScriptController
+{
     friend class ScriptCachedFrameData;
     typedef WTF::HashMap< RefPtr<DOMWrapperWorld>, JSC::Strong<JSDOMWindowShell> > ShellMap;
 
 public:
-    ScriptController(Frame*);
+    ScriptController( Frame * );
     ~ScriptController();
 
     static PassRefPtr<DOMWrapperWorld> createWorld();
 
-    JSDOMWindowShell* createWindowShell(DOMWrapperWorld*);
-    void destroyWindowShell(DOMWrapperWorld*);
+    JSDOMWindowShell *createWindowShell( DOMWrapperWorld * );
+    void destroyWindowShell( DOMWrapperWorld * );
 
-    JSDOMWindowShell* windowShell(DOMWrapperWorld* world)
+    JSDOMWindowShell *windowShell( DOMWrapperWorld *world )
     {
-        ShellMap::iterator iter = m_windowShells.find(world);
-        return (iter != m_windowShells.end()) ? iter->second.get() : initScript(world);
+        ShellMap::iterator iter = m_windowShells.find( world );
+        return ( iter != m_windowShells.end() ) ? iter->second.get() : initScript( world );
     }
-    JSDOMWindowShell* existingWindowShell(DOMWrapperWorld* world) const
+    JSDOMWindowShell *existingWindowShell( DOMWrapperWorld *world ) const
     {
-        ShellMap::const_iterator iter = m_windowShells.find(world);
-        return (iter != m_windowShells.end()) ? iter->second.get() : 0;
+        ShellMap::const_iterator iter = m_windowShells.find( world );
+        return ( iter != m_windowShells.end() ) ? iter->second.get() : 0;
     }
-    JSDOMWindow* globalObject(DOMWrapperWorld* world)
+    JSDOMWindow *globalObject( DOMWrapperWorld *world )
     {
-        return windowShell(world)->window();
+        return windowShell( world )->window();
     }
 
-    static void getAllWorlds(Vector<DOMWrapperWorld*>&);
+    static void getAllWorlds( Vector<DOMWrapperWorld *> & );
 
-    ScriptValue executeScript(const ScriptSourceCode&);
-    ScriptValue executeScript(const String& script, bool forceUserGesture = false);
-    ScriptValue executeScriptInWorld(DOMWrapperWorld*, const String& script, bool forceUserGesture = false);
+    ScriptValue executeScript( const ScriptSourceCode & );
+    ScriptValue executeScript( const String &script, bool forceUserGesture = false );
+    ScriptValue executeScriptInWorld( DOMWrapperWorld *, const String &script, bool forceUserGesture = false );
 
     // Returns true if argument is a JavaScript URL.
-    bool executeIfJavaScriptURL(const KURL&, ShouldReplaceDocumentIfJavaScriptURL shouldReplaceDocumentIfJavaScriptURL = ReplaceDocumentIfJavaScriptURL);
+    bool executeIfJavaScriptURL( const KURL &,
+                                 ShouldReplaceDocumentIfJavaScriptURL shouldReplaceDocumentIfJavaScriptURL = ReplaceDocumentIfJavaScriptURL );
 
     // This function must be called from the main thread. It is safe to call it repeatedly.
     // Darwin is an exception to this rule: it is OK to call this function from any thread, even reentrantly.
     static void initializeThreading();
 
-    ScriptValue evaluate(const ScriptSourceCode&);
-    ScriptValue evaluateInWorld(const ScriptSourceCode&, DOMWrapperWorld*);
+    ScriptValue evaluate( const ScriptSourceCode & );
+    ScriptValue evaluateInWorld( const ScriptSourceCode &, DOMWrapperWorld * );
 
     int eventHandlerLineNumber() const;
 
     void disableEval();
 
-    void setProcessingTimerCallback(bool b) { m_processingTimerCallback = b; }
+    void setProcessingTimerCallback( bool b )
+    {
+        m_processingTimerCallback = b;
+    }
     static bool processingUserGesture();
     bool anyPageIsProcessingUserGesture() const;
 
-    static bool canAccessFromCurrentOrigin(Frame*);
-    bool canExecuteScripts(ReasonForCallingCanExecuteScripts);
+    static bool canAccessFromCurrentOrigin( Frame * );
+    bool canExecuteScripts( ReasonForCallingCanExecuteScripts );
 
     // Debugger can be 0 to detach any existing Debugger.
-    void attachDebugger(JSC::Debugger*); // Attaches/detaches in all worlds/window shells.
-    void attachDebugger(JSDOMWindowShell*, JSC::Debugger*);
+    void attachDebugger( JSC::Debugger * ); // Attaches/detaches in all worlds/window shells.
+    void attachDebugger( JSDOMWindowShell *, JSC::Debugger * );
 
-    void setPaused(bool b) { m_paused = b; }
-    bool isPaused() const { return m_paused; }
+    void setPaused( bool b )
+    {
+        m_paused = b;
+    }
+    bool isPaused() const
+    {
+        return m_paused;
+    }
 
-    void setAllowPopupsFromPlugin(bool allowPopupsFromPlugin) { m_allowPopupsFromPlugin = allowPopupsFromPlugin; }
-    bool allowPopupsFromPlugin() const { return m_allowPopupsFromPlugin; }
-    
-    const String* sourceURL() const { return m_sourceURL; } // 0 if we are not evaluating any script
+    void setAllowPopupsFromPlugin( bool allowPopupsFromPlugin )
+    {
+        m_allowPopupsFromPlugin = allowPopupsFromPlugin;
+    }
+    bool allowPopupsFromPlugin() const
+    {
+        return m_allowPopupsFromPlugin;
+    }
 
-    void clearWindowShell(bool goingIntoPageCache = false);
+    const String *sourceURL() const
+    {
+        return m_sourceURL;    // 0 if we are not evaluating any script
+    }
+
+    void clearWindowShell( bool goingIntoPageCache = false );
     void updateDocument();
 
-    void namedItemAdded(HTMLDocument*, const AtomicString&) { }
-    void namedItemRemoved(HTMLDocument*, const AtomicString&) { }
+    void namedItemAdded( HTMLDocument *, const AtomicString & ) { }
+    void namedItemRemoved( HTMLDocument *, const AtomicString & ) { }
 
     // Notifies the ScriptController that the securityOrigin of the current
     // document was modified.  For example, this method is called when
@@ -140,44 +163,44 @@ public:
     void updateSecurityOrigin();
 
     void clearScriptObjects();
-    void cleanupScriptObjectsForPlugin(void*);
+    void cleanupScriptObjectsForPlugin( void * );
 
     void updatePlatformScriptObjects();
 
-    PassScriptInstance createScriptInstanceForWidget(Widget*);
-    JSC::Bindings::RootObject* bindingRootObject();
-    JSC::Bindings::RootObject* cacheableBindingRootObject();
+    PassScriptInstance createScriptInstanceForWidget( Widget * );
+    JSC::Bindings::RootObject *bindingRootObject();
+    JSC::Bindings::RootObject *cacheableBindingRootObject();
 
-    PassRefPtr<JSC::Bindings::RootObject> createRootObject(void* nativeHandle);
+    PassRefPtr<JSC::Bindings::RootObject> createRootObject( void *nativeHandle );
 
 #if ENABLE(INSPECTOR)
-    static void setCaptureCallStackForUncaughtExceptions(bool);
+    static void setCaptureCallStackForUncaughtExceptions( bool );
 #endif
 
 #if PLATFORM(MAC)
 #if ENABLE(JAVA_BRIDGE)
     static void initJavaJSBindings();
 #endif
-    WebScriptObject* windowScriptObject();
+    WebScriptObject *windowScriptObject();
 #endif
 
-    JSC::JSObject* jsObjectForPluginElement(HTMLPlugInElement*);
-    
+    JSC::JSObject *jsObjectForPluginElement( HTMLPlugInElement * );
+
 #if ENABLE(NETSCAPE_PLUGIN_API)
-    NPObject* createScriptObjectForPluginElement(HTMLPlugInElement*);
-    NPObject* windowScriptNPObject();
+    NPObject *createScriptObjectForPluginElement( HTMLPlugInElement * );
+    NPObject *windowScriptNPObject();
 #endif
 
 private:
-    JSDOMWindowShell* initScript(DOMWrapperWorld* world);
+    JSDOMWindowShell *initScript( DOMWrapperWorld *world );
 
     void disconnectPlatformScriptObjects();
 
     bool isJavaScriptAnchorNavigation() const;
 
     ShellMap m_windowShells;
-    Frame* m_frame;
-    const String* m_sourceURL;
+    Frame *m_frame;
+    const String *m_sourceURL;
 
     bool m_inExecuteScript;
 
@@ -194,7 +217,7 @@ private:
     RefPtr<JSC::Bindings::RootObject> m_cacheableBindingRootObject;
     RootObjectMap m_rootObjects;
 #if ENABLE(NETSCAPE_PLUGIN_API)
-    NPObject* m_windowScriptNPObject;
+    NPObject *m_windowScriptNPObject;
 #endif
 #if PLATFORM(MAC)
     RetainPtr<WebScriptObject> m_windowScriptObject;

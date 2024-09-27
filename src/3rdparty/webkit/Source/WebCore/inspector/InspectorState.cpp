@@ -33,23 +33,30 @@
 
 #include "InspectorClient.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-InspectorState::InspectorState(InspectorClient* client)
-    : m_client(client)
-    , m_properties(InspectorObject::create())
-    , m_isOnMute(false)
+InspectorState::InspectorState( InspectorClient *client )
+    : m_client( client )
+    , m_properties( InspectorObject::create() )
+    , m_isOnMute( false )
 {
 }
 
-void InspectorState::loadFromCookie(const String& inspectorStateCookie)
+void InspectorState::loadFromCookie( const String &inspectorStateCookie )
 {
     m_properties.clear();
-    RefPtr<InspectorValue> cookie = InspectorValue::parseJSON(inspectorStateCookie);
-    if (cookie)
+    RefPtr<InspectorValue> cookie = InspectorValue::parseJSON( inspectorStateCookie );
+
+    if ( cookie )
+    {
         m_properties = cookie->asObject();
-    if (!m_properties)
+    }
+
+    if ( !m_properties )
+    {
         m_properties = InspectorObject::create();
+    }
 }
 
 void InspectorState::mute()
@@ -64,50 +71,67 @@ void InspectorState::unmute()
 
 void InspectorState::updateCookie()
 {
-    if (m_client && !m_isOnMute)
-        m_client->updateInspectorStateCookie(m_properties->toJSONString());
+    if ( m_client && !m_isOnMute )
+    {
+        m_client->updateInspectorStateCookie( m_properties->toJSONString() );
+    }
 }
 
-void InspectorState::setValue(const String& propertyName, PassRefPtr<InspectorValue> value)
+void InspectorState::setValue( const String &propertyName, PassRefPtr<InspectorValue> value )
 {
-    m_properties->setValue(propertyName, value);
+    m_properties->setValue( propertyName, value );
     updateCookie();
 }
 
-bool InspectorState::getBoolean(const String& propertyName)
+bool InspectorState::getBoolean( const String &propertyName )
 {
-    InspectorObject::iterator it = m_properties->find(propertyName);
+    InspectorObject::iterator it = m_properties->find( propertyName );
     bool value = false;
-    if (it != m_properties->end())
-        it->second->asBoolean(&value);
-    return value;
-}
 
-String InspectorState::getString(const String& propertyName)
-{
-    InspectorObject::iterator it = m_properties->find(propertyName);
-    String value;
-    if (it != m_properties->end())
-        it->second->asString(&value);
-    return value;
-}
-
-long InspectorState::getLong(const String& propertyName)
-{
-    InspectorObject::iterator it = m_properties->find(propertyName);
-    long value = 0;
-    if (it != m_properties->end())
-        it->second->asNumber(&value);
-    return value;
-}
-
-PassRefPtr<InspectorObject> InspectorState::getObject(const String& propertyName)
-{
-    InspectorObject::iterator it = m_properties->find(propertyName);
-    if (it == m_properties->end()) {
-        m_properties->setObject(propertyName, InspectorObject::create());
-        it = m_properties->find(propertyName);
+    if ( it != m_properties->end() )
+    {
+        it->second->asBoolean( &value );
     }
+
+    return value;
+}
+
+String InspectorState::getString( const String &propertyName )
+{
+    InspectorObject::iterator it = m_properties->find( propertyName );
+    String value;
+
+    if ( it != m_properties->end() )
+    {
+        it->second->asString( &value );
+    }
+
+    return value;
+}
+
+long InspectorState::getLong( const String &propertyName )
+{
+    InspectorObject::iterator it = m_properties->find( propertyName );
+    long value = 0;
+
+    if ( it != m_properties->end() )
+    {
+        it->second->asNumber( &value );
+    }
+
+    return value;
+}
+
+PassRefPtr<InspectorObject> InspectorState::getObject( const String &propertyName )
+{
+    InspectorObject::iterator it = m_properties->find( propertyName );
+
+    if ( it == m_properties->end() )
+    {
+        m_properties->setObject( propertyName, InspectorObject::create() );
+        it = m_properties->find( propertyName );
+    }
+
     return it->second->asObject();
 }
 

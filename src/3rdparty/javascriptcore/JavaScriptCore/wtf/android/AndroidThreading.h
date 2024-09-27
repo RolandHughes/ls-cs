@@ -26,10 +26,12 @@
 #ifndef AndroidThreading_h
 #define AndroidThreading_h
 
-namespace WTF {
+namespace WTF
+{
 
 // An interface to the embedding layer, which provides threading support.
-class AndroidThreading {
+class AndroidThreading
+{
 public:
     static void scheduleDispatchFunctionsOnMainThread();
 };

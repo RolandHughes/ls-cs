@@ -28,9 +28,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSHTMLTitleElement);
+ASSERT_CLASS_FITS_IN_CELL( JSHTMLTitleElement );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -41,9 +42,9 @@ ASSERT_CLASS_FITS_IN_CELL(JSHTMLTitleElement);
 
 static const HashTableValue JSHTMLTitleElementTableValues[3] =
 {
-    { "text", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLTitleElementText), (intptr_t)setJSHTMLTitleElementText THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLTitleElementConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "text", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLTitleElementText ), ( intptr_t )setJSHTMLTitleElementText THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLTitleElementConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -57,43 +58,51 @@ static JSC_CONST_HASHTABLE HashTable JSHTMLTitleElementTable = { 4, 3, JSHTMLTit
 
 static const HashTableValue JSHTMLTitleElementConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSHTMLTitleElementConstructorTable = { 1, 0, JSHTMLTitleElementConstructorTableValues, 0 };
-class JSHTMLTitleElementConstructor : public DOMConstructorObject {
+class JSHTMLTitleElementConstructor : public DOMConstructorObject
+{
 public:
-    JSHTMLTitleElementConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSHTMLTitleElementConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSHTMLTitleElementConstructor::s_info = { "HTMLTitleElementConstructor", &DOMConstructorObject::s_info, &JSHTMLTitleElementConstructorTable, 0 };
 
-JSHTMLTitleElementConstructor::JSHTMLTitleElementConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSHTMLTitleElementConstructor::JSHTMLTitleElementConstructor( ExecState *exec, Structure *structure,
+        JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSHTMLTitleElementPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSHTMLTitleElementPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSHTMLTitleElementConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSHTMLTitleElementConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSHTMLTitleElementConstructor, JSDOMWrapper>(exec, &JSHTMLTitleElementConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSHTMLTitleElementConstructor, JSDOMWrapper>( exec, &JSHTMLTitleElementConstructorTable, this,
+            propertyName, slot );
 }
 
-bool JSHTMLTitleElementConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSHTMLTitleElementConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSHTMLTitleElementConstructor, JSDOMWrapper>(exec, &JSHTMLTitleElementConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSHTMLTitleElementConstructor, JSDOMWrapper>( exec, &JSHTMLTitleElementConstructorTable, this,
+            propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -105,73 +114,75 @@ bool JSHTMLTitleElementConstructor::getOwnPropertyDescriptor(ExecState* exec, co
 
 static const HashTableValue JSHTMLTitleElementPrototypeTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSHTMLTitleElementPrototypeTable = { 1, 0, JSHTMLTitleElementPrototypeTableValues, 0 };
 const ClassInfo JSHTMLTitleElementPrototype::s_info = { "HTMLTitleElementPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSHTMLTitleElementPrototypeTable, 0 };
 
-JSObject* JSHTMLTitleElementPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSHTMLTitleElementPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSHTMLTitleElement>(exec, globalObject);
+    return getDOMPrototype<JSHTMLTitleElement>( exec, globalObject );
 }
 
 const ClassInfo JSHTMLTitleElement::s_info = { "HTMLTitleElement", &JSHTMLElement::s_info, &JSHTMLTitleElementTable, 0 };
 
-JSHTMLTitleElement::JSHTMLTitleElement(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<HTMLTitleElement> impl)
-    : JSHTMLElement(structure, globalObject, impl)
+JSHTMLTitleElement::JSHTMLTitleElement( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<HTMLTitleElement> impl )
+    : JSHTMLElement( structure, globalObject, impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSHTMLTitleElement::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSHTMLTitleElement::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSHTMLTitleElementPrototype(exec->globalData(), globalObject, JSHTMLTitleElementPrototype::createStructure(exec->globalData(), JSHTMLElementPrototype::self(exec, globalObject)));
+    return new ( exec ) JSHTMLTitleElementPrototype( exec->globalData(), globalObject,
+            JSHTMLTitleElementPrototype::createStructure( exec->globalData(), JSHTMLElementPrototype::self( exec, globalObject ) ) );
 }
 
-bool JSHTMLTitleElement::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSHTMLTitleElement::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSHTMLTitleElement, Base>(exec, &JSHTMLTitleElementTable, this, propertyName, slot);
+    return getStaticValueSlot<JSHTMLTitleElement, Base>( exec, &JSHTMLTitleElementTable, this, propertyName, slot );
 }
 
-bool JSHTMLTitleElement::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSHTMLTitleElement::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSHTMLTitleElement, Base>(exec, &JSHTMLTitleElementTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSHTMLTitleElement, Base>( exec, &JSHTMLTitleElementTable, this, propertyName, descriptor );
 }
 
-JSValue jsHTMLTitleElementText(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLTitleElementText( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLTitleElement* castedThis = static_cast<JSHTMLTitleElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    HTMLTitleElement* imp = static_cast<HTMLTitleElement*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->text());
+    JSHTMLTitleElement *castedThis = static_cast<JSHTMLTitleElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    HTMLTitleElement *imp = static_cast<HTMLTitleElement *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->text() );
     return result;
 }
 
 
-JSValue jsHTMLTitleElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLTitleElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLTitleElement* domObject = static_cast<JSHTMLTitleElement*>(asObject(slotBase));
-    return JSHTMLTitleElement::getConstructor(exec, domObject->globalObject());
+    JSHTMLTitleElement *domObject = static_cast<JSHTMLTitleElement *>( asObject( slotBase ) );
+    return JSHTMLTitleElement::getConstructor( exec, domObject->globalObject() );
 }
 
-void JSHTMLTitleElement::put(ExecState* exec, const Identifier& propertyName, JSValue value, PutPropertySlot& slot)
+void JSHTMLTitleElement::put( ExecState *exec, const Identifier &propertyName, JSValue value, PutPropertySlot &slot )
 {
-    lookupPut<JSHTMLTitleElement, Base>(exec, propertyName, value, &JSHTMLTitleElementTable, this, slot);
+    lookupPut<JSHTMLTitleElement, Base>( exec, propertyName, value, &JSHTMLTitleElementTable, this, slot );
 }
 
-void setJSHTMLTitleElementText(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSHTMLTitleElementText( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSHTMLTitleElement* castedThis = static_cast<JSHTMLTitleElement*>(thisObject);
-    HTMLTitleElement* imp = static_cast<HTMLTitleElement*>(castedThis->impl());
-    imp->setText(valueToStringWithNullCheck(exec, value));
+    JSHTMLTitleElement *castedThis = static_cast<JSHTMLTitleElement *>( thisObject );
+    HTMLTitleElement *imp = static_cast<HTMLTitleElement *>( castedThis->impl() );
+    imp->setText( valueToStringWithNullCheck( exec, value ) );
 }
 
 
-JSValue JSHTMLTitleElement::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSHTMLTitleElement::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSHTMLTitleElementConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSHTMLTitleElementConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
 

@@ -25,63 +25,67 @@
 
 using namespace QPatternist;
 
-TokenRevealer::TokenRevealer(const QUrl &uri,
-                             const Tokenizer::Ptr &other) : Tokenizer(uri)
-   , m_tokenizer(other)
+TokenRevealer::TokenRevealer( const QUrl &uri,
+                              const Tokenizer::Ptr &other ) : Tokenizer( uri )
+    , m_tokenizer( other )
 {
-   Q_ASSERT(other);
+    Q_ASSERT( other );
 }
 
 TokenRevealer::~TokenRevealer()
 {
-   qDebug() << "Tokens Revealed:" << m_result;
+    qDebug() << "Tokens Revealed:" << m_result;
 }
 
-void TokenRevealer::setParserContext(const ParserContext::Ptr &parseInfo)
+void TokenRevealer::setParserContext( const ParserContext::Ptr &parseInfo )
 {
-   m_tokenizer->setParserContext(parseInfo);
+    m_tokenizer->setParserContext( parseInfo );
 }
 
-Tokenizer::Token TokenRevealer::nextToken(YYLTYPE *const sourceLocator)
+Tokenizer::Token TokenRevealer::nextToken( YYLTYPE *const sourceLocator )
 {
-   const Token token(m_tokenizer->nextToken(sourceLocator));
-   const QString asString(tokenToString(token));
-   const TokenType type = token.type;
+    const Token token( m_tokenizer->nextToken( sourceLocator ) );
+    const QString asString( tokenToString( token ) );
+    const TokenType type = token.type;
 
-   /* Indent. */
-   switch (type) {
-      case CURLY_LBRACE: {
-         m_result += QLatin1Char('\n') + m_indentationString + asString + QLatin1Char('\n');
-         m_indentationString.append(QLatin1String("    "));
-         m_result += m_indentationString;
-         break;
-      }
+    /* Indent. */
+    switch ( type )
+    {
+        case CURLY_LBRACE:
+        {
+            m_result += QLatin1Char( '\n' ) + m_indentationString + asString + QLatin1Char( '\n' );
+            m_indentationString.append( QLatin1String( "    " ) );
+            m_result += m_indentationString;
+            break;
+        }
 
-      case CURLY_RBRACE: {
-         m_indentationString.chop(4);
-         m_result += QLatin1Char('\n') + m_indentationString + asString;
-         break;
-      }
+        case CURLY_RBRACE:
+        {
+            m_indentationString.chop( 4 );
+            m_result += QLatin1Char( '\n' ) + m_indentationString + asString;
+            break;
+        }
 
-      case SEMI_COLON:
-      case COMMA: {
-         m_result += asString + QLatin1Char('\n') + m_indentationString;
-         break;
-      }
+        case SEMI_COLON:
+        case COMMA:
+        {
+            m_result += asString + QLatin1Char( '\n' ) + m_indentationString;
+            break;
+        }
 
-      default:
-         m_result += asString + QLatin1Char(' ');
-   }
+        default:
+            m_result += asString + QLatin1Char( ' ' );
+    }
 
-   return token;
+    return token;
 }
 
 int TokenRevealer::commenceScanOnly()
 {
-   return m_tokenizer->commenceScanOnly();
+    return m_tokenizer->commenceScanOnly();
 }
 
-void TokenRevealer::resumeTokenizationFrom(const int position)
+void TokenRevealer::resumeTokenizationFrom( const int position )
 {
-   m_tokenizer->resumeTokenizationFrom(position);
+    m_tokenizer->resumeTokenizationFrom( position );
 }

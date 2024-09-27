@@ -38,47 +38,49 @@ class QLockFilePrivate;
 
 class Q_CORE_EXPORT QTemporaryFile : public QFile
 {
-   CORE_CS_OBJECT(QTemporaryFile)
+    CORE_CS_OBJECT( QTemporaryFile )
 
- public:
-   QTemporaryFile();
-   explicit QTemporaryFile(const QString &tempPath);
+public:
+    QTemporaryFile();
+    explicit QTemporaryFile( const QString &tempPath );
 
-   explicit QTemporaryFile(QObject *parent);
-   QTemporaryFile(const QString &tempPath, QObject *parent);
+    explicit QTemporaryFile( QObject *parent );
+    QTemporaryFile( const QString &tempPath, QObject *parent );
 
-   QTemporaryFile(const QTemporaryFile &) = delete;
-   QTemporaryFile &operator=(const QTemporaryFile &) = delete;
+    QTemporaryFile( const QTemporaryFile & ) = delete;
+    QTemporaryFile &operator=( const QTemporaryFile & ) = delete;
 
-   ~QTemporaryFile();
+    ~QTemporaryFile();
 
-   bool autoRemove() const;
-   void setAutoRemove(bool b);
+    bool autoRemove() const;
+    void setAutoRemove( bool b );
 
-   // hide open(flags)
-   bool open() {
-      return open(QIODevice::ReadWrite);
-   }
+    // hide open(flags)
+    bool open()
+    {
+        return open( QIODevice::ReadWrite );
+    }
 
-   QString fileName() const override;
-   QString fileTemplate() const;
-   void setFileTemplate(const QString &name);
+    QString fileName() const override;
+    QString fileTemplate() const;
+    void setFileTemplate( const QString &name );
 
-   static QTemporaryFile *createNativeFile(const QString &fileName) {
-      QFile file(fileName);
-      return createNativeFile(file);
-   }
+    static QTemporaryFile *createNativeFile( const QString &fileName )
+    {
+        QFile file( fileName );
+        return createNativeFile( file );
+    }
 
-   static QTemporaryFile *createNativeFile(QFile &file);
+    static QTemporaryFile *createNativeFile( QFile &file );
 
- protected:
-   bool open(OpenMode flags) override;
+protected:
+    bool open( OpenMode flags ) override;
 
- private:
-   Q_DECLARE_PRIVATE(QTemporaryFile)
+private:
+    Q_DECLARE_PRIVATE( QTemporaryFile )
 
-   friend class QFile;
-   friend class QLockFilePrivate;
+    friend class QFile;
+    friend class QLockFilePrivate;
 };
 
 #endif // QT_NO_TEMPORARYFILE

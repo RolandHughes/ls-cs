@@ -104,145 +104,181 @@
     the properties and determine the contents of the reply.
 */
 
-void QDBusPendingCallWatcherHelper::add(QDBusPendingCallWatcher *watcher)
+void QDBusPendingCallWatcherHelper::add( QDBusPendingCallWatcher *watcher )
 {
-    connect(this, SIGNAL(finished()), watcher, SLOT(_q_finished()), Qt::QueuedConnection);
+    connect( this, SIGNAL( finished() ), watcher, SLOT( _q_finished() ), Qt::QueuedConnection );
 }
 
 QDBusPendingCallPrivate::~QDBusPendingCallPrivate()
 {
-    if (pending) {
-        q_dbus_pending_call_cancel(pending);
-        q_dbus_pending_call_unref(pending);
+    if ( pending )
+    {
+        q_dbus_pending_call_cancel( pending );
+        q_dbus_pending_call_unref( pending );
     }
+
     delete watcherHelper;
 }
 
-bool QDBusPendingCallPrivate::setReplyCallback(QObject *target, const char *member)
+bool QDBusPendingCallPrivate::setReplyCallback( QObject *target, const char *member )
 {
     receiver = target;
     metaTypes.clear();
     methodIdx = -1;
-    if (!target)
-        return true;;           // unsetting
 
-    if (!member || !*member) {
+    if ( !target )
+    {
+        return true;
+    };           // unsetting
+
+    if ( !member || !*member )
+    {
         // would not be able to deliver a reply
-        qWarning("QDBusPendingCall::setReplyCallback: error: cannot deliver a reply to %s::%s (%s)",
-                 target ? target->metaObject()->className() : "(null)",
-                 member ? member + 1 : "(null)",
-                 target ? qPrintable(target->objectName()) : "no name");
+        qWarning( "QDBusPendingCall::setReplyCallback: error: cannot deliver a reply to %s::%s (%s)",
+                  target ? target->metaObject()->className() : "(null)",
+                  member ? member + 1 : "(null)",
+                  target ? qPrintable( target->objectName() ) : "no name" );
         return false;
     }
 
-    methodIdx = QDBusConnectionPrivate::findSlot(target, member + 1, metaTypes);
-    if (methodIdx == -1) {
-        QByteArray normalizedName = QMetaObject::normalizedSignature(member + 1);
-        methodIdx = QDBusConnectionPrivate::findSlot(target, normalizedName, metaTypes);
+    methodIdx = QDBusConnectionPrivate::findSlot( target, member + 1, metaTypes );
+
+    if ( methodIdx == -1 )
+    {
+        QByteArray normalizedName = QMetaObject::normalizedSignature( member + 1 );
+        methodIdx = QDBusConnectionPrivate::findSlot( target, normalizedName, metaTypes );
     }
-    if (methodIdx == -1) {
+
+    if ( methodIdx == -1 )
+    {
         // would not be able to deliver a reply
-        qWarning("QDBusPendingCall::setReplyCallback: error: cannot deliver a reply to %s::%s (%s)",
-                 target->metaObject()->className(),
-                 member + 1, qPrintable(target->objectName()));
+        qWarning( "QDBusPendingCall::setReplyCallback: error: cannot deliver a reply to %s::%s (%s)",
+                  target->metaObject()->className(),
+                  member + 1, qPrintable( target->objectName() ) );
         return false;
     }
 
     // success
     // construct the expected signature
     int count = metaTypes.count() - 1;
-    if (count == 1 && metaTypes.at(1) == QDBusMetaTypeId::message) {
+
+    if ( count == 1 && metaTypes.at( 1 ) == QDBusMetaTypeId::message )
+    {
         // wildcard slot, can receive anything, so don't set the signature
         return true;
     }
 
-    if (metaTypes.at(count) == QDBusMetaTypeId::message)
+    if ( metaTypes.at( count ) == QDBusMetaTypeId::message )
+    {
         --count;
-
-    if (count == 0) {
-        setMetaTypes(count, 0);
-    } else {
-        QVector<int> types = QVector<int>::fromList(metaTypes);
-        setMetaTypes(count, types.constData() + 1);
     }
+
+    if ( count == 0 )
+    {
+        setMetaTypes( count, 0 );
+    }
+    else
+    {
+        QVector<int> types = QVector<int>::fromList( metaTypes );
+        setMetaTypes( count, types.constData() + 1 );
+    }
+
     return true;
 }
 
-void QDBusPendingCallPrivate::setMetaTypes(int count, const int *types)
+void QDBusPendingCallPrivate::setMetaTypes( int count, const int *types )
 {
     expectedReplyCount = count;
-    if (count == 0) {
-        expectedReplySignature = QLatin1String(""); // not null
+
+    if ( count == 0 )
+    {
+        expectedReplySignature = QLatin1String( "" ); // not null
         return;
     }
 
     QByteArray sig;
-    sig.reserve(count + count / 2);
-    for (int i = 0; i < count; ++i) {
-        const char *typeSig = QDBusMetaType::typeToSignature(types[i]);
-        if (!typeSig) {
-            qFatal("QDBusPendingReply: type %s is not registered with QtDBus",
-                   QMetaType::typeName(types[i]));
+    sig.reserve( count + count / 2 );
+
+    for ( int i = 0; i < count; ++i )
+    {
+        const char *typeSig = QDBusMetaType::typeToSignature( types[i] );
+
+        if ( !typeSig )
+        {
+            qFatal( "QDBusPendingReply: type %s is not registered with QtDBus",
+                    QMetaType::typeName( types[i] ) );
         }
+
         sig += typeSig;
     }
 
-    expectedReplySignature = QString::fromLatin1(sig);
+    expectedReplySignature = QString::fromLatin1( sig );
 }
 
 void QDBusPendingCallPrivate::checkReceivedSignature()
 {
     // MUST BE CALLED WITH A LOCKED MUTEX!
 
-    if (replyMessage.type() == QDBusMessage::InvalidMessage)
-        return;                 // not yet finished - no message to
-                                // validate against
-    if (replyMessage.type() == QDBusMessage::ErrorMessage)
-        return;                 // we don't have to check the signature of an error reply
+    if ( replyMessage.type() == QDBusMessage::InvalidMessage )
+    {
+        return;    // not yet finished - no message to
+    }
 
-    if (expectedReplySignature.isNull())
-        return;                 // no signature to validate against
+    // validate against
+    if ( replyMessage.type() == QDBusMessage::ErrorMessage )
+    {
+        return;    // we don't have to check the signature of an error reply
+    }
+
+    if ( expectedReplySignature.isNull() )
+    {
+        return;    // no signature to validate against
+    }
 
     // can't use startsWith here because a null string doesn't start or end with an empty string
-    if (replyMessage.signature().indexOf(expectedReplySignature) != 0) {
-        QString errorMsg = QLatin1String("Unexpected reply signature: got \"%1\", "
-                                         "expected \"%2\"");
+    if ( replyMessage.signature().indexOf( expectedReplySignature ) != 0 )
+    {
+        QString errorMsg = QLatin1String( "Unexpected reply signature: got \"%1\", "
+                                          "expected \"%2\"" );
         replyMessage = QDBusMessage::createError(
-            QDBusError::InvalidSignature,
-            errorMsg.arg(replyMessage.signature(), expectedReplySignature));
+                           QDBusError::InvalidSignature,
+                           errorMsg.arg( replyMessage.signature(), expectedReplySignature ) );
 
     }
 }
 
 void QDBusPendingCallPrivate::waitForFinished()
 {
-    QMutexLocker locker(&mutex);
+    QMutexLocker locker( &mutex );
 
-    if (replyMessage.type() != QDBusMessage::InvalidMessage)
-        return;                 // already finished
+    if ( replyMessage.type() != QDBusMessage::InvalidMessage )
+    {
+        return;    // already finished
+    }
 
-    connection->waitForFinished(this);
+    connection->waitForFinished( this );
 }
 
 /*!
     Creates a copy of the \a other pending asynchronous call. Note
     that both objects will refer to the same pending call.
 */
-QDBusPendingCall::QDBusPendingCall(const QDBusPendingCall &other)
-    : d(other.d)
+QDBusPendingCall::QDBusPendingCall( const QDBusPendingCall &other )
+    : d( other.d )
 {
 }
 
 /*!
     \internal
 */
-QDBusPendingCall::QDBusPendingCall(QDBusPendingCallPrivate *dd)
-    : d(dd)
+QDBusPendingCall::QDBusPendingCall( QDBusPendingCallPrivate *dd )
+    : d( dd )
 {
-    if (dd) {
+    if ( dd )
+    {
         bool r = dd->ref.deref();
-        Q_ASSERT(r);
-        Q_UNUSED(r);
+        Q_ASSERT( r );
+        Q_UNUSED( r );
     }
 }
 
@@ -268,7 +304,7 @@ QDBusPendingCall::~QDBusPendingCall()
     notifications will be received. There will be no way of accessing
     the reply's contents when it arrives.
 */
-QDBusPendingCall &QDBusPendingCall::operator=(const QDBusPendingCall &other)
+QDBusPendingCall &QDBusPendingCall::operator=( const QDBusPendingCall &other )
 {
     d = other.d;
     return *this;
@@ -303,16 +339,21 @@ QDBusPendingCall &QDBusPendingCall::operator=(const QDBusPendingCall &other)
 
 bool QDBusPendingCall::isFinished() const
 {
-    if (!d)
-        return true; // considered finished
+    if ( !d )
+    {
+        return true;    // considered finished
+    }
 
-    QMutexLocker locker(&d->mutex);
+    QMutexLocker locker( &d->mutex );
     return d->replyMessage.type() != QDBusMessage::InvalidMessage;
 }
 
 void QDBusPendingCall::waitForFinished()
 {
-    if (d) d->waitForFinished();
+    if ( d )
+    {
+        d->waitForFinished();
+    }
 }
 
 /*!
@@ -326,9 +367,12 @@ void QDBusPendingCall::waitForFinished()
 */
 bool QDBusPendingCall::isValid() const
 {
-    if (!d)
+    if ( !d )
+    {
         return false;
-    QMutexLocker locker(&d->mutex);
+    }
+
+    QMutexLocker locker( &d->mutex );
     return d->replyMessage.type() == QDBusMessage::ReplyMessage;
 }
 
@@ -343,9 +387,12 @@ bool QDBusPendingCall::isValid() const
 */
 bool QDBusPendingCall::isError() const
 {
-    if (!d)
-        return true; // considered finished and an error
-    QMutexLocker locker(&d->mutex);
+    if ( !d )
+    {
+        return true;    // considered finished and an error
+    }
+
+    QMutexLocker locker( &d->mutex );
     return d->replyMessage.type() == QDBusMessage::ErrorMessage;
 }
 
@@ -359,14 +406,15 @@ bool QDBusPendingCall::isError() const
 */
 QDBusError QDBusPendingCall::error() const
 {
-    if (d) {
-        QMutexLocker locker(&d->mutex);
+    if ( d )
+    {
+        QMutexLocker locker( &d->mutex );
         return d->replyMessage;
     }
 
     // not connected, return an error
-    QDBusError err = QDBusError(QDBusError::Disconnected,
-                                QLatin1String("Not connected to D-Bus server"));
+    QDBusError err = QDBusError( QDBusError::Disconnected,
+                                 QLatin1String( "Not connected to D-Bus server" ) );
     return err;
 }
 
@@ -383,9 +431,12 @@ QDBusError QDBusPendingCall::error() const
 */
 QDBusMessage QDBusPendingCall::reply() const
 {
-    if (!d)
-        return QDBusMessage::createError(error());
-    QMutexLocker locker(&d->mutex);
+    if ( !d )
+    {
+        return QDBusMessage::createError( error() );
+    }
+
+    QMutexLocker locker( &d->mutex );
     return d->replyMessage;
 }
 
@@ -408,12 +459,14 @@ QDBusMessage QDBusPendingCall::reply() const
              asynchronous call, even if multiple QDBusPendingCall
              objects are referencing the same pending call.
 */
-bool QDBusPendingCall::setReplyCallback(QObject *target, const char *member)
+bool QDBusPendingCall::setReplyCallback( QObject *target, const char *member )
 {
-    if (!d)
+    if ( !d )
+    {
         return false;
+    }
 
-    return d->setReplyCallback(target, member);
+    return d->setReplyCallback( target, member );
 }
 #endif
 
@@ -425,9 +478,9 @@ bool QDBusPendingCall::setReplyCallback(QObject *target, const char *member)
 
     \sa fromCompletedCall()
 */
-QDBusPendingCall QDBusPendingCall::fromError(const QDBusError &error)
+QDBusPendingCall QDBusPendingCall::fromError( const QDBusError &error )
 {
-    return fromCompletedCall(QDBusMessage::createError(error));
+    return fromCompletedCall( QDBusMessage::createError( error ) );
 }
 
 /*!
@@ -442,17 +495,19 @@ QDBusPendingCall QDBusPendingCall::fromError(const QDBusError &error)
 
     \sa fromError()
 */
-QDBusPendingCall QDBusPendingCall::fromCompletedCall(const QDBusMessage &msg)
+QDBusPendingCall QDBusPendingCall::fromCompletedCall( const QDBusMessage &msg )
 {
     QDBusPendingCallPrivate *d = 0;
-    if (msg.type() == QDBusMessage::ErrorMessage ||
-        msg.type() == QDBusMessage::ReplyMessage) {
-        d = new QDBusPendingCallPrivate(QDBusMessage(), 0);
+
+    if ( msg.type() == QDBusMessage::ErrorMessage ||
+            msg.type() == QDBusMessage::ReplyMessage )
+    {
+        d = new QDBusPendingCallPrivate( QDBusMessage(), 0 );
         d->replyMessage = msg;
         d->ref = 1;
     }
 
-    return QDBusPendingCall(d);
+    return QDBusPendingCall( d );
 }
 
 
@@ -461,13 +516,13 @@ class QDBusPendingCallWatcherPrivate: public QObjectPrivate
 public:
     void _q_finished();
 
-    Q_DECLARE_PUBLIC(QDBusPendingCallWatcher)
+    Q_DECLARE_PUBLIC( QDBusPendingCallWatcher )
 };
 
 inline void QDBusPendingCallWatcherPrivate::_q_finished()
 {
-    Q_Q(QDBusPendingCallWatcher);
-    emit q->finished(q);
+    Q_Q( QDBusPendingCallWatcher );
+    emit q->finished( q );
 }
 
 /*!
@@ -475,19 +530,25 @@ inline void QDBusPendingCallWatcherPrivate::_q_finished()
     asynchronous pending call \a call and sets this object's parent
     to \a parent.
 */
-QDBusPendingCallWatcher::QDBusPendingCallWatcher(const QDBusPendingCall &call, QObject *parent)
-    : QObject(*new QDBusPendingCallWatcherPrivate, parent), QDBusPendingCall(call)
+QDBusPendingCallWatcher::QDBusPendingCallWatcher( const QDBusPendingCall &call, QObject *parent )
+    : QObject( *new QDBusPendingCallWatcherPrivate, parent ), QDBusPendingCall( call )
 {
-    if (d) {                    // QDBusPendingCall::d
-        QMutexLocker locker(&d->mutex);
-        if (!d->watcherHelper) {
+    if ( d )                    // QDBusPendingCall::d
+    {
+        QMutexLocker locker( &d->mutex );
+
+        if ( !d->watcherHelper )
+        {
             d->watcherHelper = new QDBusPendingCallWatcherHelper;
-            if (d->replyMessage.type() != QDBusMessage::InvalidMessage) {
+
+            if ( d->replyMessage.type() != QDBusMessage::InvalidMessage )
+            {
                 // cause a signal emission anyways
-                QMetaObject::invokeMethod(d->watcherHelper, "finished", Qt::QueuedConnection);
+                QMetaObject::invokeMethod( d->watcherHelper, "finished", Qt::QueuedConnection );
             }
         }
-        d->watcherHelper->add(this);
+
+        d->watcherHelper->add( this );
     }
 }
 
@@ -512,19 +573,20 @@ QDBusPendingCallWatcher::~QDBusPendingCallWatcher()
 */
 void QDBusPendingCallWatcher::waitForFinished()
 {
-    if (d) {
+    if ( d )
+    {
         d->waitForFinished();
 
         // our signals were queued, so deliver them
-        QCoreApplication::sendPostedEvents(d->watcherHelper, QEvent::MetaCall);
-        QCoreApplication::sendPostedEvents(this, QEvent::MetaCall);
+        QCoreApplication::sendPostedEvents( d->watcherHelper, QEvent::MetaCall );
+        QCoreApplication::sendPostedEvents( this, QEvent::MetaCall );
     }
 }
 
 void QDBusPendingCallWatcher::_q_finished()
 {
-	Q_D(QDBusPendingCallWatcher);
-	d->_q_finished();
+    Q_D( QDBusPendingCallWatcher );
+    d->_q_finished();
 }
 
 

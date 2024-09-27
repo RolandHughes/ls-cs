@@ -28,69 +28,84 @@
 #include "StyleCachedImage.h"
 #include "StylePendingImage.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-CSSImageValue::CSSImageValue(const String& url)
-    : CSSPrimitiveValue(url, CSS_URI)
-    , m_accessedImage(false)
+CSSImageValue::CSSImageValue( const String &url )
+    : CSSPrimitiveValue( url, CSS_URI )
+    , m_accessedImage( false )
 {
 }
 
 CSSImageValue::CSSImageValue()
-    : CSSPrimitiveValue(CSSValueNone)
-    , m_accessedImage(true)
+    : CSSPrimitiveValue( CSSValueNone )
+    , m_accessedImage( true )
 {
 }
 
 CSSImageValue::~CSSImageValue()
 {
-    if (m_image && m_image->isCachedImage())
-        static_cast<StyleCachedImage*>(m_image.get())->cachedImage()->removeClient(this);
+    if ( m_image && m_image->isCachedImage() )
+    {
+        static_cast<StyleCachedImage *>( m_image.get() )->cachedImage()->removeClient( this );
+    }
 }
 
-StyleImage* CSSImageValue::cachedOrPendingImage()
+StyleImage *CSSImageValue::cachedOrPendingImage()
 {
-    if (getIdent() == CSSValueNone)
+    if ( getIdent() == CSSValueNone )
+    {
         return 0;
+    }
 
-    if (!m_image)
-        m_image = StylePendingImage::create(this);
+    if ( !m_image )
+    {
+        m_image = StylePendingImage::create( this );
+    }
 
     return m_image.get();
 }
 
-StyleCachedImage* CSSImageValue::cachedImage(CachedResourceLoader* loader)
+StyleCachedImage *CSSImageValue::cachedImage( CachedResourceLoader *loader )
 {
-    return cachedImage(loader, getStringValue());
+    return cachedImage( loader, getStringValue() );
 }
 
-StyleCachedImage* CSSImageValue::cachedImage(CachedResourceLoader* loader, const String& url)
+StyleCachedImage *CSSImageValue::cachedImage( CachedResourceLoader *loader, const String &url )
 {
-    ASSERT(loader);
+    ASSERT( loader );
 
-    if (!m_accessedImage) {
+    if ( !m_accessedImage )
+    {
         m_accessedImage = true;
 
-        if (CachedImage* cachedImage = loader->requestImage(url)) {
-            cachedImage->addClient(this);
-            m_image = StyleCachedImage::create(cachedImage);
+        if ( CachedImage *cachedImage = loader->requestImage( url ) )
+        {
+            cachedImage->addClient( this );
+            m_image = StyleCachedImage::create( cachedImage );
         }
     }
-    
-    return (m_image && m_image->isCachedImage()) ? static_cast<StyleCachedImage*>(m_image.get()) : 0;
+
+    return ( m_image && m_image->isCachedImage() ) ? static_cast<StyleCachedImage *>( m_image.get() ) : 0;
 }
 
 String CSSImageValue::cachedImageURL()
 {
-    if (!m_image || !m_image->isCachedImage())
+    if ( !m_image || !m_image->isCachedImage() )
+    {
         return String();
-    return static_cast<StyleCachedImage*>(m_image.get())->cachedImage()->url();
+    }
+
+    return static_cast<StyleCachedImage *>( m_image.get() )->cachedImage()->url();
 }
 
 void CSSImageValue::clearCachedImage()
 {
-    if (m_image && m_image->isCachedImage())
-        static_cast<StyleCachedImage*>(m_image.get())->cachedImage()->removeClient(this);
+    if ( m_image && m_image->isCachedImage() )
+    {
+        static_cast<StyleCachedImage *>( m_image.get() )->cachedImage()->removeClient( this );
+    }
+
     m_image = 0;
     m_accessedImage = false;
 }

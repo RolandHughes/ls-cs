@@ -37,38 +37,52 @@
 #include "HTMLNames.h"
 #include "StaticNodeList.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
-PassRefPtr<StaticNodeList> createSelectorNodeList(Node* rootNode, const CSSSelectorList& querySelectorList)
+PassRefPtr<StaticNodeList> createSelectorNodeList( Node *rootNode, const CSSSelectorList &querySelectorList )
 {
     Vector<RefPtr<Node> > nodes;
-    Document* document = rootNode->document();
-    CSSSelector* onlySelector = querySelectorList.hasOneSelector() ? querySelectorList.first() : 0;
+    Document *document = rootNode->document();
+    CSSSelector *onlySelector = querySelectorList.hasOneSelector() ? querySelectorList.first() : 0;
     bool strictParsing = !document->inQuirksMode();
 
-    CSSStyleSelector::SelectorChecker selectorChecker(document, strictParsing);
+    CSSStyleSelector::SelectorChecker selectorChecker( document, strictParsing );
 
-    if (strictParsing && rootNode->inDocument() && onlySelector && onlySelector->m_match == CSSSelector::Id && !document->containsMultipleElementsWithId(onlySelector->value())) {
-        Element* element = document->getElementById(onlySelector->value());
-        if (element && (rootNode->isDocumentNode() || element->isDescendantOf(rootNode)) && selectorChecker.checkSelector(onlySelector, element))
-            nodes.append(element);
-    } else {
-        for (Node* n = rootNode->firstChild(); n; n = n->traverseNextNode(rootNode)) {
-            if (n->isElementNode()) {
-                Element* element = static_cast<Element*>(n);
-                for (CSSSelector* selector = querySelectorList.first(); selector; selector = CSSSelectorList::next(selector)) {
-                    if (selectorChecker.checkSelector(selector, element)) {
-                        nodes.append(n);
+    if ( strictParsing && rootNode->inDocument() && onlySelector && onlySelector->m_match == CSSSelector::Id
+            && !document->containsMultipleElementsWithId( onlySelector->value() ) )
+    {
+        Element *element = document->getElementById( onlySelector->value() );
+
+        if ( element && ( rootNode->isDocumentNode() || element->isDescendantOf( rootNode ) )
+                && selectorChecker.checkSelector( onlySelector, element ) )
+        {
+            nodes.append( element );
+        }
+    }
+    else
+    {
+        for ( Node *n = rootNode->firstChild(); n; n = n->traverseNextNode( rootNode ) )
+        {
+            if ( n->isElementNode() )
+            {
+                Element *element = static_cast<Element *>( n );
+
+                for ( CSSSelector *selector = querySelectorList.first(); selector; selector = CSSSelectorList::next( selector ) )
+                {
+                    if ( selectorChecker.checkSelector( selector, element ) )
+                    {
+                        nodes.append( n );
                         break;
                     }
                 }
             }
         }
     }
-    
-    return StaticNodeList::adopt(nodes);
+
+    return StaticNodeList::adopt( nodes );
 }
 
 } // namespace WebCore

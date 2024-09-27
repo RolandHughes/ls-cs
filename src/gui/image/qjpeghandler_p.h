@@ -32,24 +32,24 @@ class QJpegHandlerPrivate;
 
 class QJpegHandler : public QImageIOHandler
 {
- public:
-   QJpegHandler();
-   ~QJpegHandler();
+public:
+    QJpegHandler();
+    ~QJpegHandler();
 
-   bool canRead() override;
-   bool read(QImage *image) override;
-   bool write(const QImage &image) override;
+    bool canRead() override;
+    bool read( QImage *image ) override;
+    bool write( const QImage &image ) override;
 
-   QString name() const override;
+    QString name() const override;
 
-   static bool canRead(QIODevice *device);
+    static bool canRead( QIODevice *device );
 
-   QVariant option(ImageOption option) override;
-   void setOption(ImageOption option, const QVariant &value) override;
-   bool supportsOption(ImageOption option) const override;
+    QVariant option( ImageOption option ) override;
+    void setOption( ImageOption option, const QVariant &value ) override;
+    bool supportsOption( ImageOption option ) const override;
 
- private:
-   QJpegHandlerPrivate *d;
+private:
+    QJpegHandlerPrivate *d;
 };
 
 #endif

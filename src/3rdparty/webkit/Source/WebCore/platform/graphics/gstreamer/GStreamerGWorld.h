@@ -32,33 +32,41 @@ typedef struct _GstMessage GstMessage;
 typedef struct _GstBus GstBus;
 typedef struct _GstBin GstBin;
 
-namespace WebCore {
+namespace WebCore
+{
 
 class MediaPlayerPrivateGStreamer;
 
-gboolean gstGWorldSyncMessageCallback(GstBus* bus, GstMessage* message, gpointer data);
+gboolean gstGWorldSyncMessageCallback( GstBus *bus, GstMessage *message, gpointer data );
 
-class GStreamerGWorld : public RefCounted<GStreamerGWorld> {
-    friend gboolean gstGWorldSyncMessageCallback(GstBus* bus, GstMessage* message, gpointer data);
+class GStreamerGWorld : public RefCounted<GStreamerGWorld>
+{
+    friend gboolean gstGWorldSyncMessageCallback( GstBus *bus, GstMessage *message, gpointer data );
 
 public:
-    static PassRefPtr<GStreamerGWorld> createGWorld(GstElement*);
+    static PassRefPtr<GStreamerGWorld> createGWorld( GstElement * );
     ~GStreamerGWorld();
 
-    GstElement* pipeline() const { return m_pipeline; }
+    GstElement *pipeline() const
+    {
+        return m_pipeline;
+    }
 
     // Returns the full-screen window created
     bool enterFullscreen();
     void exitFullscreen();
 
-    void setWindowOverlay(GstMessage* message);
-    PlatformVideoWindow* platformVideoWindow() const { return m_videoWindow.get(); }
+    void setWindowOverlay( GstMessage *message );
+    PlatformVideoWindow *platformVideoWindow() const
+    {
+        return m_videoWindow.get();
+    }
 
 private:
-    GStreamerGWorld(GstElement*);
-    GstElement* m_pipeline;
+    GStreamerGWorld( GstElement * );
+    GstElement *m_pipeline;
     RefPtr<PlatformVideoWindow> m_videoWindow;
-    gchar* m_dynamicPadName;
+    gchar *m_dynamicPadName;
 };
 
 }

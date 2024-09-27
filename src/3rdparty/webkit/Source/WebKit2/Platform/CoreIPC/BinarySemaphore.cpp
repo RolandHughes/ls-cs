@@ -26,36 +26,42 @@
 #include "config.h"
 #include "BinarySemaphore.h"
 
-namespace CoreIPC {
+namespace CoreIPC
+{
 
 #if !PLATFORM(WIN)
 
 BinarySemaphore::BinarySemaphore()
-    : m_isSet(false)
+    : m_isSet( false )
 {
 }
-    
+
 BinarySemaphore::~BinarySemaphore()
 {
 }
 
 void BinarySemaphore::signal()
 {
-    MutexLocker locker(m_mutex);
+    MutexLocker locker( m_mutex );
 
     m_isSet = true;
     m_condition.signal();
 }
 
-bool BinarySemaphore::wait(double absoluteTime)
+bool BinarySemaphore::wait( double absoluteTime )
 {
-    MutexLocker locker(m_mutex);
+    MutexLocker locker( m_mutex );
 
     bool timedOut = false;
-    while (!m_isSet) {
-        timedOut = !m_condition.timedWait(m_mutex, absoluteTime);
-        if (timedOut)
+
+    while ( !m_isSet )
+    {
+        timedOut = !m_condition.timedWait( m_mutex, absoluteTime );
+
+        if ( timedOut )
+        {
             return false;
+        }
     }
 
     // Reset the semaphore.

@@ -30,9 +30,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSCrypto);
+ASSERT_CLASS_FITS_IN_CELL( JSCrypto );
 
 /* Hash table for prototype */
 #if ENABLE(JIT)
@@ -43,68 +44,77 @@ ASSERT_CLASS_FITS_IN_CELL(JSCrypto);
 
 static const HashTableValue JSCryptoPrototypeTableValues[2] =
 {
-    { "getRandomValues", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsCryptoPrototypeFunctionGetRandomValues), (intptr_t)1 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "getRandomValues", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsCryptoPrototypeFunctionGetRandomValues ), ( intptr_t )1 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSCryptoPrototypeTable = { 2, 1, JSCryptoPrototypeTableValues, 0 };
 const ClassInfo JSCryptoPrototype::s_info = { "CryptoPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSCryptoPrototypeTable, 0 };
 
-JSObject* JSCryptoPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSCryptoPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSCrypto>(exec, globalObject);
+    return getDOMPrototype<JSCrypto>( exec, globalObject );
 }
 
-bool JSCryptoPrototype::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSCryptoPrototype::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticFunctionSlot<JSObject>(exec, &JSCryptoPrototypeTable, this, propertyName, slot);
+    return getStaticFunctionSlot<JSObject>( exec, &JSCryptoPrototypeTable, this, propertyName, slot );
 }
 
-bool JSCryptoPrototype::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSCryptoPrototype::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticFunctionDescriptor<JSObject>(exec, &JSCryptoPrototypeTable, this, propertyName, descriptor);
+    return getStaticFunctionDescriptor<JSObject>( exec, &JSCryptoPrototypeTable, this, propertyName, descriptor );
 }
 
 const ClassInfo JSCrypto::s_info = { "Crypto", &JSDOMWrapper::s_info, 0, 0 };
 
-JSCrypto::JSCrypto(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<Crypto> impl)
-    : JSDOMWrapper(structure, globalObject)
-    , m_impl(impl)
+JSCrypto::JSCrypto( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<Crypto> impl )
+    : JSDOMWrapper( structure, globalObject )
+    , m_impl( impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSCrypto::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSCrypto::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSCryptoPrototype(exec->globalData(), globalObject, JSCryptoPrototype::createStructure(globalObject->globalData(), globalObject->objectPrototype()));
+    return new ( exec ) JSCryptoPrototype( exec->globalData(), globalObject,
+                                           JSCryptoPrototype::createStructure( globalObject->globalData(), globalObject->objectPrototype() ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsCryptoPrototypeFunctionGetRandomValues(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsCryptoPrototypeFunctionGetRandomValues( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSCrypto::s_info))
-        return throwVMTypeError(exec);
-    JSCrypto* castedThis = static_cast<JSCrypto*>(asObject(thisValue));
-    Crypto* imp = static_cast<Crypto*>(castedThis->impl());
+
+    if ( !thisValue.inherits( &JSCrypto::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSCrypto *castedThis = static_cast<JSCrypto *>( asObject( thisValue ) );
+    Crypto *imp = static_cast<Crypto *>( castedThis->impl() );
     ExceptionCode ec = 0;
-    ArrayBufferView* array(toArrayBufferView(exec->argument(0)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
+    ArrayBufferView *array( toArrayBufferView( exec->argument( 0 ) ) );
 
-    imp->getRandomValues(array, ec);
-    setDOMException(exec, ec);
-    return JSValue::encode(jsUndefined());
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    imp->getRandomValues( array, ec );
+    setDOMException( exec, ec );
+    return JSValue::encode( jsUndefined() );
 }
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, Crypto* impl)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, Crypto *impl )
 {
-    return wrap<JSCrypto>(exec, globalObject, impl);
+    return wrap<JSCrypto>( exec, globalObject, impl );
 }
 
-Crypto* toCrypto(JSC::JSValue value)
+Crypto *toCrypto( JSC::JSValue value )
 {
-    return value.inherits(&JSCrypto::s_info) ? static_cast<JSCrypto*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSCrypto::s_info ) ? static_cast<JSCrypto *>( asObject( value ) )->impl() : 0;
 }
 
 }

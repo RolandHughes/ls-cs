@@ -35,16 +35,20 @@
 #include "ScriptState.h"
 #include <wtf/Forward.h>
 
-namespace WebCore {
+namespace WebCore
+{
 class ScriptValue;
 
-class ScriptDebugListener {
+class ScriptDebugListener
+{
 public:
     virtual ~ScriptDebugListener() { }
 
-    virtual void didParseSource(const String&  sourceID, const String& url, const String& data,  int startLine, int startColumn, int endLine, int endColumn, bool isContentScript) = 0;
-    virtual void failedToParseSource(const String& url, const String& data, int firstLine, int errorLine, const String& errorMessage) = 0;
-    virtual void didPause(ScriptState*, const ScriptValue& callFrames, const ScriptValue& exception) = 0;
+    virtual void didParseSource( const String  &sourceID, const String &url, const String &data,  int startLine, int startColumn,
+                                 int endLine, int endColumn, bool isContentScript ) = 0;
+    virtual void failedToParseSource( const String &url, const String &data, int firstLine, int errorLine,
+                                      const String &errorMessage ) = 0;
+    virtual void didPause( ScriptState *, const ScriptValue &callFrames, const ScriptValue &exception ) = 0;
     virtual void didContinue() = 0;
 };
 

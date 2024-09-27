@@ -28,9 +28,11 @@
 
 #include "ArgumentCoders.h"
 
-namespace WebKit {
+namespace WebKit
+{
 
-struct TextCheckerState {
+struct TextCheckerState
+{
     bool isContinuousSpellCheckingEnabled;
     bool isGrammarCheckingEnabled;
 
@@ -45,7 +47,8 @@ struct TextCheckerState {
 
 } // namespace WebKit
 
-namespace CoreIPC {
+namespace CoreIPC
+{
 template<> struct ArgumentCoder<WebKit::TextCheckerState> : SimpleArgumentCoder<WebKit::TextCheckerState> { };
 };
 

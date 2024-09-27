@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -30,22 +30,32 @@
 #include "Structure.h"
 #include <wtf/RefPtr.h>
 
-namespace JSC {
-    
+namespace JSC
+{
+
 ClassInfo StructureChain::s_info = { "StructureChain", 0, 0, 0 };
 
-StructureChain::StructureChain(JSGlobalData& globalData, Structure* structure, Structure* head)
-    : JSCell(globalData, structure)
+StructureChain::StructureChain( JSGlobalData &globalData, Structure *structure, Structure *head )
+    : JSCell( globalData, structure )
 {
     size_t size = 0;
-    for (Structure* current = head; current; current = current->storedPrototype().isNull() ? 0 : asObject(current->storedPrototype())->structure())
+
+    for ( Structure *current = head; current;
+            current = current->storedPrototype().isNull() ? 0 : asObject( current->storedPrototype() )->structure() )
+    {
         ++size;
-    
-    m_vector = adoptArrayPtr(new WriteBarrier<Structure>[size + 1]);
+    }
+
+    m_vector = adoptArrayPtr( new WriteBarrier<Structure>[size + 1] );
 
     size_t i = 0;
-    for (Structure* current = head; current; current = current->storedPrototype().isNull() ? 0 : asObject(current->storedPrototype())->structure())
-        m_vector[i++].set(globalData, this, current);
+
+    for ( Structure *current = head; current;
+            current = current->storedPrototype().isNull() ? 0 : asObject( current->storedPrototype() )->structure() )
+    {
+        m_vector[i++].set( globalData, this, current );
+    }
+
     m_vector[i].clear();
 }
 
@@ -53,11 +63,14 @@ StructureChain::~StructureChain()
 {
 }
 
-void StructureChain::visitChildren(SlotVisitor& visitor)
+void StructureChain::visitChildren( SlotVisitor &visitor )
 {
     size_t i = 0;
-    while (m_vector[i])
-        visitor.append(&m_vector[i++]);
+
+    while ( m_vector[i] )
+    {
+        visitor.append( &m_vector[i++] );
+    }
 }
 
 } // namespace JSC

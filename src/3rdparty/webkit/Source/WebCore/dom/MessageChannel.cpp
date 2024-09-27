@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
 
@@ -30,13 +30,14 @@
 #include "MessagePort.h"
 #include "MessagePortChannel.h"
 
-namespace WebCore {
-
-MessageChannel::MessageChannel(ScriptExecutionContext* context)
-    : m_port1(MessagePort::create(*context))
-    , m_port2(MessagePort::create(*context))
+namespace WebCore
 {
-    MessagePortChannel::createChannel(m_port1.get(), m_port2.get());
+
+MessageChannel::MessageChannel( ScriptExecutionContext *context )
+    : m_port1( MessagePort::create( *context ) )
+    , m_port2( MessagePort::create( *context ) )
+{
+    MessagePortChannel::createChannel( m_port1.get(), m_port2.get() );
 }
 
 MessageChannel::~MessageChannel()

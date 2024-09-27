@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -28,62 +28,83 @@
 
 #include "Element.h"
 
-namespace WebCore {
-
-MergeIdenticalElementsCommand::MergeIdenticalElementsCommand(PassRefPtr<Element> first, PassRefPtr<Element> second)
-    : SimpleEditCommand(first->document())
-    , m_element1(first)
-    , m_element2(second)
+namespace WebCore
 {
-    ASSERT(m_element1);
-    ASSERT(m_element2);
-    ASSERT(m_element1->nextSibling() == m_element2);
+
+MergeIdenticalElementsCommand::MergeIdenticalElementsCommand( PassRefPtr<Element> first, PassRefPtr<Element> second )
+    : SimpleEditCommand( first->document() )
+    , m_element1( first )
+    , m_element2( second )
+{
+    ASSERT( m_element1 );
+    ASSERT( m_element2 );
+    ASSERT( m_element1->nextSibling() == m_element2 );
 }
 
 void MergeIdenticalElementsCommand::doApply()
 {
-    if (m_element1->nextSibling() != m_element2 || !m_element1->rendererIsEditable() || !m_element2->rendererIsEditable())
+    if ( m_element1->nextSibling() != m_element2 || !m_element1->rendererIsEditable() || !m_element2->rendererIsEditable() )
+    {
         return;
+    }
 
     m_atChild = m_element2->firstChild();
 
     ExceptionCode ec = 0;
 
     Vector<RefPtr<Node> > children;
-    for (Node* child = m_element1->firstChild(); child; child = child->nextSibling())
-        children.append(child);
+
+    for ( Node *child = m_element1->firstChild(); child; child = child->nextSibling() )
+    {
+        children.append( child );
+    }
 
     size_t size = children.size();
-    for (size_t i = 0; i < size; ++i)
-        m_element2->insertBefore(children[i].release(), m_atChild.get(), ec);
 
-    m_element1->remove(ec);
+    for ( size_t i = 0; i < size; ++i )
+    {
+        m_element2->insertBefore( children[i].release(), m_atChild.get(), ec );
+    }
+
+    m_element1->remove( ec );
 }
 
 void MergeIdenticalElementsCommand::doUnapply()
 {
-    ASSERT(m_element1);
-    ASSERT(m_element2);
+    ASSERT( m_element1 );
+    ASSERT( m_element2 );
 
     RefPtr<Node> atChild = m_atChild.release();
 
-    ContainerNode* parent = m_element2->parentNode();
-    if (!parent || !parent->rendererIsEditable())
+    ContainerNode *parent = m_element2->parentNode();
+
+    if ( !parent || !parent->rendererIsEditable() )
+    {
         return;
+    }
 
     ExceptionCode ec = 0;
 
-    parent->insertBefore(m_element1.get(), m_element2.get(), ec);
-    if (ec)
+    parent->insertBefore( m_element1.get(), m_element2.get(), ec );
+
+    if ( ec )
+    {
         return;
+    }
 
     Vector<RefPtr<Node> > children;
-    for (Node* child = m_element2->firstChild(); child && child != atChild; child = child->nextSibling())
-        children.append(child);
+
+    for ( Node *child = m_element2->firstChild(); child && child != atChild; child = child->nextSibling() )
+    {
+        children.append( child );
+    }
 
     size_t size = children.size();
-    for (size_t i = 0; i < size; ++i)
-        m_element1->appendChild(children[i].release(), ec);
+
+    for ( size_t i = 0; i < size; ++i )
+    {
+        m_element1->appendChild( children[i].release(), ec );
+    }
 }
 
 } // namespace WebCore

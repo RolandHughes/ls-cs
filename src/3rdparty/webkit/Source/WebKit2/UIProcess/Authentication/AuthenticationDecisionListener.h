@@ -30,31 +30,36 @@
 
 #include <wtf/RefPtr.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
 class AuthenticationChallengeProxy;
 class WebCredential;
 
-class AuthenticationDecisionListener : public APIObject {
+class AuthenticationDecisionListener : public APIObject
+{
 public:
     static const Type APIType = TypeAuthenticationDecisionListener;
 
-    static PassRefPtr<AuthenticationDecisionListener> create(AuthenticationChallengeProxy* authenticationChallenge)
+    static PassRefPtr<AuthenticationDecisionListener> create( AuthenticationChallengeProxy *authenticationChallenge )
     {
-        return adoptRef(new AuthenticationDecisionListener(authenticationChallenge));
+        return adoptRef( new AuthenticationDecisionListener( authenticationChallenge ) );
     }
-    
-    void useCredential(WebCredential*);
+
+    void useCredential( WebCredential * );
     void cancel();
-    
+
     void detachChallenge();
 
 private:
-    AuthenticationDecisionListener(AuthenticationChallengeProxy* authenticationChallenge);
+    AuthenticationDecisionListener( AuthenticationChallengeProxy *authenticationChallenge );
 
-    virtual Type type() const { return APIType; }
-    
-    AuthenticationChallengeProxy* m_challengeProxy;
+    virtual Type type() const
+    {
+        return APIType;
+    }
+
+    AuthenticationChallengeProxy *m_challengeProxy;
 };
 
 } // namespace WebKit

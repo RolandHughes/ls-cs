@@ -21,9 +21,9 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 #ifndef TextControlInnerElements_h
 #define TextControlInnerElements_h
 
@@ -32,83 +32,105 @@
 #include "Timer.h"
 #include <wtf/Forward.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class SpeechInput;
 
-class TextControlInnerElement : public HTMLDivElement {
+class TextControlInnerElement : public HTMLDivElement
+{
 public:
-    static PassRefPtr<TextControlInnerElement> create(HTMLElement* shadowParent);
+    static PassRefPtr<TextControlInnerElement> create( HTMLElement *shadowParent );
     virtual void detach();
 
-    void attachInnerElement(Node*, PassRefPtr<RenderStyle>, RenderArena*);
+    void attachInnerElement( Node *, PassRefPtr<RenderStyle>, RenderArena * );
 
 protected:
-    TextControlInnerElement(Document*, HTMLElement* shadowParent = 0);
+    TextControlInnerElement( Document *, HTMLElement *shadowParent = 0 );
 
 private:
-    virtual bool isMouseFocusable() const { return false; }
+    virtual bool isMouseFocusable() const
+    {
+        return false;
+    }
 };
 
-class TextControlInnerTextElement : public TextControlInnerElement {
+class TextControlInnerTextElement : public TextControlInnerElement
+{
 public:
-    static PassRefPtr<TextControlInnerTextElement> create(Document*, HTMLElement* shadowParent);
+    static PassRefPtr<TextControlInnerTextElement> create( Document *, HTMLElement *shadowParent );
 
-    virtual void defaultEventHandler(Event*);
+    virtual void defaultEventHandler( Event * );
 
 private:
-    TextControlInnerTextElement(Document*, HTMLElement* shadowParent);
-    virtual RenderObject* createRenderer(RenderArena*, RenderStyle*);  
+    TextControlInnerTextElement( Document *, HTMLElement *shadowParent );
+    virtual RenderObject *createRenderer( RenderArena *, RenderStyle * );
 };
 
-class SearchFieldResultsButtonElement : public TextControlInnerElement {
+class SearchFieldResultsButtonElement : public TextControlInnerElement
+{
 public:
-    static PassRefPtr<SearchFieldResultsButtonElement> create(Document*);
+    static PassRefPtr<SearchFieldResultsButtonElement> create( Document * );
 
-    virtual void defaultEventHandler(Event*);
+    virtual void defaultEventHandler( Event * );
 
 private:
-    SearchFieldResultsButtonElement(Document*);
+    SearchFieldResultsButtonElement( Document * );
 };
 
-class SearchFieldCancelButtonElement : public TextControlInnerElement {
+class SearchFieldCancelButtonElement : public TextControlInnerElement
+{
 public:
-    static PassRefPtr<SearchFieldCancelButtonElement> create(Document*);
+    static PassRefPtr<SearchFieldCancelButtonElement> create( Document * );
 
-    virtual void defaultEventHandler(Event*);
+    virtual void defaultEventHandler( Event * );
 
 private:
-    SearchFieldCancelButtonElement(Document*);
+    SearchFieldCancelButtonElement( Document * );
 
     virtual void detach();
 
     bool m_capturing;
 };
 
-class SpinButtonElement : public TextControlInnerElement {
+class SpinButtonElement : public TextControlInnerElement
+{
 public:
-    enum UpDownState {
+    enum UpDownState
+    {
         Indeterminate, // Hovered, but the event is not handled.
         Down,
         Up,
     };
 
-    static PassRefPtr<SpinButtonElement> create(HTMLElement*);
-    UpDownState upDownState() const { return m_upDownState; }
+    static PassRefPtr<SpinButtonElement> create( HTMLElement * );
+    UpDownState upDownState() const
+    {
+        return m_upDownState;
+    }
 
 private:
-    SpinButtonElement(HTMLElement*);
+    SpinButtonElement( HTMLElement * );
 
     virtual void detach();
-    virtual bool isSpinButtonElement() const { return true; }
+    virtual bool isSpinButtonElement() const
+    {
+        return true;
+    }
     // FIXME: shadowAncestorNode() should be const.
-    virtual bool isEnabledFormControl() const { return static_cast<Element*>(const_cast<SpinButtonElement*>(this)->shadowAncestorNode())->isEnabledFormControl(); }
-    virtual bool isReadOnlyFormControl() const { return static_cast<Element*>(const_cast<SpinButtonElement*>(this)->shadowAncestorNode())->isReadOnlyFormControl(); }
-    virtual void defaultEventHandler(Event*);
+    virtual bool isEnabledFormControl() const
+    {
+        return static_cast<Element *>( const_cast<SpinButtonElement *>( this )->shadowAncestorNode() )->isEnabledFormControl();
+    }
+    virtual bool isReadOnlyFormControl() const
+    {
+        return static_cast<Element *>( const_cast<SpinButtonElement *>( this )->shadowAncestorNode() )->isReadOnlyFormControl();
+    }
+    virtual void defaultEventHandler( Event * );
     void startRepeatingTimer();
     void stopRepeatingTimer();
-    void repeatingTimerFired(Timer<SpinButtonElement>*);
-    virtual void setHovered(bool = true);
+    void repeatingTimerFired( Timer<SpinButtonElement> * );
+    virtual void setHovered( bool = true );
 
     bool m_capturing;
     UpDownState m_upDownState;
@@ -120,31 +142,39 @@ private:
 
 class InputFieldSpeechButtonElement
     : public TextControlInnerElement,
-      public SpeechInputListener {
+      public SpeechInputListener
+{
 public:
-    enum SpeechInputState {
+    enum SpeechInputState
+    {
         Idle,
         Recording,
         Recognizing,
     };
 
-    static PassRefPtr<InputFieldSpeechButtonElement> create(HTMLElement*);
+    static PassRefPtr<InputFieldSpeechButtonElement> create( HTMLElement * );
     virtual ~InputFieldSpeechButtonElement();
 
     virtual void detach();
-    virtual void defaultEventHandler(Event*);
-    virtual bool isInputFieldSpeechButtonElement() const { return true; }
-    SpeechInputState state() const { return m_state; }
+    virtual void defaultEventHandler( Event * );
+    virtual bool isInputFieldSpeechButtonElement() const
+    {
+        return true;
+    }
+    SpeechInputState state() const
+    {
+        return m_state;
+    }
 
     // SpeechInputListener methods.
-    void didCompleteRecording(int);
-    void didCompleteRecognition(int);
-    void setRecognitionResult(int, const SpeechInputResultArray&);
+    void didCompleteRecording( int );
+    void didCompleteRecognition( int );
+    void setRecognitionResult( int, const SpeechInputResultArray & );
 
 private:
-    InputFieldSpeechButtonElement(HTMLElement*);
-    SpeechInput* speechInput();
-    void setState(SpeechInputState state);
+    InputFieldSpeechButtonElement( HTMLElement * );
+    SpeechInput *speechInput();
+    void setState( SpeechInputState state );
 
     bool m_capturing;
     SpeechInputState m_state;
@@ -152,10 +182,10 @@ private:
     SpeechInputResultArray m_results;
 };
 
-inline InputFieldSpeechButtonElement* toInputFieldSpeechButtonElement(Element* element)
+inline InputFieldSpeechButtonElement *toInputFieldSpeechButtonElement( Element *element )
 {
-    ASSERT(!element || element->isInputFieldSpeechButtonElement());
-    return static_cast<InputFieldSpeechButtonElement*>(element);
+    ASSERT( !element || element->isInputFieldSpeechButtonElement() );
+    return static_cast<InputFieldSpeechButtonElement *>( element );
 }
 
 #endif // ENABLE(INPUT_SPEECH)

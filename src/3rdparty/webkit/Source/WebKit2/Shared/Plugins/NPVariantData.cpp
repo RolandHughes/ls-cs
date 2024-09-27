@@ -33,15 +33,16 @@
 #include "WebCoreArgumentCoders.h"
 #include <WebCore/NotImplemented.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
 NPVariantData::NPVariantData()
-    : m_type(NPVariantData::Void)
-    , m_boolValue(false)
-    , m_int32Value(0)
-    , m_doubleValue(0)
-    , m_localNPObjectIDValue(0)
-    , m_remoteNPObjectIDValue(0)
+    : m_type( NPVariantData::Void )
+    , m_boolValue( false )
+    , m_int32Value( 0 )
+    , m_doubleValue( 0 )
+    , m_localNPObjectIDValue( 0 )
+    , m_remoteNPObjectIDValue( 0 )
 {
 }
 
@@ -53,13 +54,13 @@ NPVariantData NPVariantData::makeVoid()
 NPVariantData NPVariantData::makeNull()
 {
     NPVariantData npVariantData;
-    
+
     npVariantData.m_type = NPVariantData::Null;
-    
+
     return npVariantData;
 }
-    
-NPVariantData NPVariantData::makeBool(bool value)
+
+NPVariantData NPVariantData::makeBool( bool value )
 {
     NPVariantData npVariantData;
 
@@ -69,7 +70,7 @@ NPVariantData NPVariantData::makeBool(bool value)
     return npVariantData;
 }
 
-NPVariantData NPVariantData::makeInt32(int32_t value)
+NPVariantData NPVariantData::makeInt32( int32_t value )
 {
     NPVariantData npVariantData;
 
@@ -77,9 +78,9 @@ NPVariantData NPVariantData::makeInt32(int32_t value)
     npVariantData.m_int32Value = value;
 
     return npVariantData;
-}    
+}
 
-NPVariantData NPVariantData::makeDouble(double value)
+NPVariantData NPVariantData::makeDouble( double value )
 {
     NPVariantData npVariantData;
 
@@ -89,17 +90,17 @@ NPVariantData NPVariantData::makeDouble(double value)
     return npVariantData;
 }
 
-NPVariantData NPVariantData::makeString(const char* string, unsigned length)
+NPVariantData NPVariantData::makeString( const char *string, unsigned length )
 {
     NPVariantData npVariantData;
-    
+
     npVariantData.m_type = NPVariantData::String;
-    npVariantData.m_stringValue = CString(string, length);
-    
+    npVariantData.m_stringValue = CString( string, length );
+
     return npVariantData;
 }
 
-NPVariantData NPVariantData::makeLocalNPObjectID(uint64_t value)
+NPVariantData NPVariantData::makeLocalNPObjectID( uint64_t value )
 {
     NPVariantData npVariantData;
 
@@ -109,7 +110,7 @@ NPVariantData NPVariantData::makeLocalNPObjectID(uint64_t value)
     return npVariantData;
 }
 
-NPVariantData NPVariantData::makeRemoteNPObjectID(uint64_t value)
+NPVariantData NPVariantData::makeRemoteNPObjectID( uint64_t value )
 {
     NPVariantData npVariantData;
 
@@ -119,68 +120,89 @@ NPVariantData NPVariantData::makeRemoteNPObjectID(uint64_t value)
     return npVariantData;
 }
 
-void NPVariantData::encode(CoreIPC::ArgumentEncoder* encoder) const
+void NPVariantData::encode( CoreIPC::ArgumentEncoder *encoder ) const
 {
-    encoder->encode(m_type);
+    encoder->encode( m_type );
 
-    switch (type()) {
-    case NPVariantData::Void:
-    case NPVariantData::Null:
-        break;
-    case NPVariantData::Bool:
-        encoder->encode(boolValue());
-        break;
-    case NPVariantData::Int32:
-        encoder->encode(int32Value());
-        break;
-    case NPVariantData::Double:
-        encoder->encode(doubleValue());
-        break;
-    case NPVariantData::String:
-        encoder->encode(stringValue());
-        break;
-    case NPVariantData::LocalNPObjectID:
-        encoder->encode(localNPObjectIDValue());
-        break;
-    case NPVariantData::RemoteNPObjectID:
-        encoder->encode(remoteNPObjectIDValue());
-        break;
+    switch ( type() )
+    {
+        case NPVariantData::Void:
+        case NPVariantData::Null:
+            break;
+
+        case NPVariantData::Bool:
+            encoder->encode( boolValue() );
+            break;
+
+        case NPVariantData::Int32:
+            encoder->encode( int32Value() );
+            break;
+
+        case NPVariantData::Double:
+            encoder->encode( doubleValue() );
+            break;
+
+        case NPVariantData::String:
+            encoder->encode( stringValue() );
+            break;
+
+        case NPVariantData::LocalNPObjectID:
+            encoder->encode( localNPObjectIDValue() );
+            break;
+
+        case NPVariantData::RemoteNPObjectID:
+            encoder->encode( remoteNPObjectIDValue() );
+            break;
     }
 }
 
-bool NPVariantData::decode(CoreIPC::ArgumentDecoder* decoder, NPVariantData& result)
+bool NPVariantData::decode( CoreIPC::ArgumentDecoder *decoder, NPVariantData &result )
 {
     uint32_t type;
-    if (!decoder->decode(type))
+
+    if ( !decoder->decode( type ) )
+    {
         return false;
+    }
 
     // We special-case LocalNPObjectID and RemoteNPObjectID here so a LocalNPObjectID is
     // decoded as a RemoteNPObjectID and vice versa.
     // This is done because the type is from the perspective of the other connection, and
     // thus we have to adjust it to match our own perspective.
-    if (type == NPVariantData::LocalNPObjectID)
+    if ( type == NPVariantData::LocalNPObjectID )
+    {
         type = NPVariantData::RemoteNPObjectID;
-    else if (type == NPVariantData::RemoteNPObjectID)
+    }
+    else if ( type == NPVariantData::RemoteNPObjectID )
+    {
         type = NPVariantData::LocalNPObjectID;
+    }
 
     result.m_type = type;
 
-    switch (result.m_type) {
-    case NPVariantData::Void:
-    case NPVariantData::Null:
-        return true;
-    case NPVariantData::Bool:
-        return decoder->decode(result.m_boolValue);
-    case NPVariantData::Int32:
-        return decoder->decode(result.m_int32Value);
-    case NPVariantData::Double:
-        return decoder->decode(result.m_doubleValue);
-    case NPVariantData::String:
-        return decoder->decode(result.m_stringValue);
-    case NPVariantData::LocalNPObjectID:
-        return decoder->decode(result.m_localNPObjectIDValue);
-    case NPVariantData::RemoteNPObjectID:
-        return decoder->decode(result.m_remoteNPObjectIDValue);
+    switch ( result.m_type )
+    {
+        case NPVariantData::Void:
+        case NPVariantData::Null:
+            return true;
+
+        case NPVariantData::Bool:
+            return decoder->decode( result.m_boolValue );
+
+        case NPVariantData::Int32:
+            return decoder->decode( result.m_int32Value );
+
+        case NPVariantData::Double:
+            return decoder->decode( result.m_doubleValue );
+
+        case NPVariantData::String:
+            return decoder->decode( result.m_stringValue );
+
+        case NPVariantData::LocalNPObjectID:
+            return decoder->decode( result.m_localNPObjectIDValue );
+
+        case NPVariantData::RemoteNPObjectID:
+            return decoder->decode( result.m_remoteNPObjectIDValue );
     }
 
     return false;

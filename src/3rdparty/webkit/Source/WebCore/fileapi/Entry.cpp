@@ -44,46 +44,64 @@
 #include "VoidCallback.h"
 #include <wtf/text/StringBuilder.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-Entry::Entry(PassRefPtr<DOMFileSystemBase> fileSystem, const String& fullPath)
-    : EntryBase(fileSystem, fullPath)
+Entry::Entry( PassRefPtr<DOMFileSystemBase> fileSystem, const String &fullPath )
+    : EntryBase( fileSystem, fullPath )
 {
 }
 
-void Entry::getMetadata(PassRefPtr<MetadataCallback> successCallback, PassRefPtr<ErrorCallback> errorCallbackRef)
+void Entry::getMetadata( PassRefPtr<MetadataCallback> successCallback, PassRefPtr<ErrorCallback> errorCallbackRef )
 {
-    RefPtr<ErrorCallback> errorCallback(errorCallbackRef);
-    if (!m_fileSystem->getMetadata(this, successCallback, errorCallback))
-        filesystem()->scheduleCallback(errorCallback.release(), FileError::create(FileError::INVALID_MODIFICATION_ERR));
+    RefPtr<ErrorCallback> errorCallback( errorCallbackRef );
+
+    if ( !m_fileSystem->getMetadata( this, successCallback, errorCallback ) )
+    {
+        filesystem()->scheduleCallback( errorCallback.release(), FileError::create( FileError::INVALID_MODIFICATION_ERR ) );
+    }
 }
 
-void Entry::moveTo(PassRefPtr<DirectoryEntry> parent, const String& name, PassRefPtr<EntryCallback> successCallback, PassRefPtr<ErrorCallback> errorCallbackRef) const
+void Entry::moveTo( PassRefPtr<DirectoryEntry> parent, const String &name, PassRefPtr<EntryCallback> successCallback,
+                    PassRefPtr<ErrorCallback> errorCallbackRef ) const
 {
-    RefPtr<ErrorCallback> errorCallback(errorCallbackRef);
-    if (!m_fileSystem->move(this, parent.get(), name, successCallback, errorCallback))
-        filesystem()->scheduleCallback(errorCallback.release(), FileError::create(FileError::INVALID_MODIFICATION_ERR));
+    RefPtr<ErrorCallback> errorCallback( errorCallbackRef );
+
+    if ( !m_fileSystem->move( this, parent.get(), name, successCallback, errorCallback ) )
+    {
+        filesystem()->scheduleCallback( errorCallback.release(), FileError::create( FileError::INVALID_MODIFICATION_ERR ) );
+    }
 }
 
-void Entry::copyTo(PassRefPtr<DirectoryEntry> parent, const String& name, PassRefPtr<EntryCallback> successCallback, PassRefPtr<ErrorCallback> errorCallbackRef) const
+void Entry::copyTo( PassRefPtr<DirectoryEntry> parent, const String &name, PassRefPtr<EntryCallback> successCallback,
+                    PassRefPtr<ErrorCallback> errorCallbackRef ) const
 {
-    RefPtr<ErrorCallback> errorCallback(errorCallbackRef);
-    if (!m_fileSystem->copy(this, parent.get(), name, successCallback, errorCallback))
-        filesystem()->scheduleCallback(errorCallback.release(), FileError::create(FileError::INVALID_MODIFICATION_ERR));
+    RefPtr<ErrorCallback> errorCallback( errorCallbackRef );
+
+    if ( !m_fileSystem->copy( this, parent.get(), name, successCallback, errorCallback ) )
+    {
+        filesystem()->scheduleCallback( errorCallback.release(), FileError::create( FileError::INVALID_MODIFICATION_ERR ) );
+    }
 }
 
-void Entry::remove(PassRefPtr<VoidCallback> successCallback, PassRefPtr<ErrorCallback> errorCallbackRef) const
+void Entry::remove( PassRefPtr<VoidCallback> successCallback, PassRefPtr<ErrorCallback> errorCallbackRef ) const
 {
-    RefPtr<ErrorCallback> errorCallback(errorCallbackRef);
-    if (!m_fileSystem->remove(this, successCallback, errorCallback))
-        filesystem()->scheduleCallback(errorCallback.release(), FileError::create(FileError::INVALID_MODIFICATION_ERR));
+    RefPtr<ErrorCallback> errorCallback( errorCallbackRef );
+
+    if ( !m_fileSystem->remove( this, successCallback, errorCallback ) )
+    {
+        filesystem()->scheduleCallback( errorCallback.release(), FileError::create( FileError::INVALID_MODIFICATION_ERR ) );
+    }
 }
 
-void Entry::getParent(PassRefPtr<EntryCallback> successCallback, PassRefPtr<ErrorCallback> errorCallbackRef) const
+void Entry::getParent( PassRefPtr<EntryCallback> successCallback, PassRefPtr<ErrorCallback> errorCallbackRef ) const
 {
-    RefPtr<ErrorCallback> errorCallback(errorCallbackRef);
-    if (!m_fileSystem->getParent(this, successCallback, errorCallback))
-        filesystem()->scheduleCallback(errorCallback.release(), FileError::create(FileError::INVALID_MODIFICATION_ERR));
+    RefPtr<ErrorCallback> errorCallback( errorCallbackRef );
+
+    if ( !m_fileSystem->getParent( this, successCallback, errorCallback ) )
+    {
+        filesystem()->scheduleCallback( errorCallback.release(), FileError::create( FileError::INVALID_MODIFICATION_ERR ) );
+    }
 }
 
 } // namespace WebCore

@@ -35,31 +35,34 @@ G_BEGIN_DECLS
 #define WEBKIT_DOM_IS_TEST_CALLBACK_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE((klass),  WEBKIT_TYPE_DOM_TEST_CALLBACK))
 #define WEBKIT_DOM_TEST_CALLBACK_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS((obj),  WEBKIT_TYPE_DOM_TEST_CALLBACK, WebKitDOMTestCallbackClass))
 
-struct _WebKitDOMTestCallback {
+struct _WebKitDOMTestCallback
+{
     WebKitDOMObject parent_instance;
 };
 
-struct _WebKitDOMTestCallbackClass {
+struct _WebKitDOMTestCallbackClass
+{
     WebKitDOMObjectClass parent_class;
 };
 
 WEBKIT_API GType
-webkit_dom_test_callback_get_type (void);
+webkit_dom_test_callback_get_type ( void );
 
 WEBKIT_API gboolean
-webkit_dom_test_callback_callback_with_no_param(WebKitDOMTestCallback* self);
+webkit_dom_test_callback_callback_with_no_param( WebKitDOMTestCallback *self );
 
 WEBKIT_API gboolean
-webkit_dom_test_callback_callback_with_class1param(WebKitDOMTestCallback* self, WebKitDOMClass1* class1param);
+webkit_dom_test_callback_callback_with_class1param( WebKitDOMTestCallback *self, WebKitDOMClass1 *class1param );
 
 WEBKIT_API gboolean
-webkit_dom_test_callback_callback_with_class2param(WebKitDOMTestCallback* self, WebKitDOMClass2* class2param, const gchar* str_arg);
+webkit_dom_test_callback_callback_with_class2param( WebKitDOMTestCallback *self, WebKitDOMClass2 *class2param,
+        const gchar *str_arg );
 
 WEBKIT_API glong
-webkit_dom_test_callback_callback_with_non_bool_return_type(WebKitDOMTestCallback* self, WebKitDOMClass3* class3param);
+webkit_dom_test_callback_callback_with_non_bool_return_type( WebKitDOMTestCallback *self, WebKitDOMClass3 *class3param );
 
 WEBKIT_API gboolean
-webkit_dom_test_callback_callback_with_string_list(WebKitDOMTestCallback* self, WebKitDOMDOMStringList* list_param);
+webkit_dom_test_callback_callback_with_string_list( WebKitDOMTestCallback *self, WebKitDOMDOMStringList *list_param );
 
 G_END_DECLS
 

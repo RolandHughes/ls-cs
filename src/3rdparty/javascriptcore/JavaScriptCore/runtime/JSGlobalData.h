@@ -6,13 +6,13 @@
  * are met:
  *
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Apple Computer, Inc. ("Apple") nor the names of
  *     its contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
+ *     from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY APPLE AND ITS CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -47,161 +47,169 @@
 struct OpaqueJSClass;
 struct OpaqueJSClassContextData;
 
-namespace JSC {
+namespace JSC
+{
 
-    class CodeBlock;
-    class CommonIdentifiers;
-    class IdentifierTable;
-    class Interpreter;
-    class JSGlobalObject;
-    class JSObject;
-    class Lexer;
-    class Parser;
-    class Stringifier;
-    class Structure;
-    class UString;
+class CodeBlock;
+class CommonIdentifiers;
+class IdentifierTable;
+class Interpreter;
+class JSGlobalObject;
+class JSObject;
+class Lexer;
+class Parser;
+class Stringifier;
+class Structure;
+class UString;
 
-    struct HashTable;
-    struct Instruction;    
+struct HashTable;
+struct Instruction;
 
-    struct LocalTimeOffsetCache {
-        LocalTimeOffsetCache()
-            : start(0.0)
-            , end(-1.0)
-            , increment(0.0)
-        {
-        }
+struct LocalTimeOffsetCache
+{
+    LocalTimeOffsetCache()
+        : start( 0.0 )
+        , end( -1.0 )
+        , increment( 0.0 )
+    {
+    }
 
-        void reset()
-        {
-            offset = LocalTimeOffset();
-            start = 0.0;
-            end = -1.0;
-            increment = 0.0;
-        }
+    void reset()
+    {
+        offset = LocalTimeOffset();
+        start = 0.0;
+        end = -1.0;
+        increment = 0.0;
+    }
 
-        LocalTimeOffset offset;
-        double start;
-        double end;
-        double increment;
+    LocalTimeOffset offset;
+    double start;
+    double end;
+    double increment;
+};
+
+class JSGlobalData : public RefCounted<JSGlobalData>
+{
+public:
+    struct ClientData
+    {
+        virtual ~ClientData() = 0;
+#ifdef QT_BUILD_SCRIPT_LIB
+        virtual void mark( MarkStack & ) {}
+#endif
     };
 
-    class JSGlobalData : public RefCounted<JSGlobalData> {
-    public:
-        struct ClientData {
-            virtual ~ClientData() = 0;
-#ifdef QT_BUILD_SCRIPT_LIB
-            virtual void mark(MarkStack&) {}
-#endif
-        };
+    static bool sharedInstanceExists();
+    static JSGlobalData &sharedInstance();
 
-        static bool sharedInstanceExists();
-        static JSGlobalData& sharedInstance();
-
-        static PassRefPtr<JSGlobalData> create();
-        static PassRefPtr<JSGlobalData> createLeaked();
-        static PassRefPtr<JSGlobalData> createNonDefault();
-        ~JSGlobalData();
+    static PassRefPtr<JSGlobalData> create();
+    static PassRefPtr<JSGlobalData> createLeaked();
+    static PassRefPtr<JSGlobalData> createNonDefault();
+    ~JSGlobalData();
 
 #if ENABLE(JSC_MULTIPLE_THREADS)
-        // Will start tracking threads that use the heap, which is resource-heavy.
-        void makeUsableFromMultipleThreads() { heap.makeUsableFromMultipleThreads(); }
+    // Will start tracking threads that use the heap, which is resource-heavy.
+    void makeUsableFromMultipleThreads()
+    {
+        heap.makeUsableFromMultipleThreads();
+    }
 #endif
 
-        bool isSharedInstance;
-        ClientData* clientData;
+    bool isSharedInstance;
+    ClientData *clientData;
 
-        const HashTable* arrayTable;
-        const HashTable* dateTable;
-        const HashTable* jsonTable;
-        const HashTable* mathTable;
-        const HashTable* numberTable;
-        const HashTable* regExpTable;
-        const HashTable* regExpConstructorTable;
-        const HashTable* stringTable;
-        
-        RefPtr<Structure> activationStructure;
-        RefPtr<Structure> interruptedExecutionErrorStructure;
-        RefPtr<Structure> staticScopeStructure;
-        RefPtr<Structure> stringStructure;
-        RefPtr<Structure> notAnObjectErrorStubStructure;
-        RefPtr<Structure> notAnObjectStructure;
-        RefPtr<Structure> propertyNameIteratorStructure;
-        RefPtr<Structure> getterSetterStructure;
-        RefPtr<Structure> apiWrapperStructure;
-        RefPtr<Structure> dummyMarkableCellStructure;
+    const HashTable *arrayTable;
+    const HashTable *dateTable;
+    const HashTable *jsonTable;
+    const HashTable *mathTable;
+    const HashTable *numberTable;
+    const HashTable *regExpTable;
+    const HashTable *regExpConstructorTable;
+    const HashTable *stringTable;
+
+    RefPtr<Structure> activationStructure;
+    RefPtr<Structure> interruptedExecutionErrorStructure;
+    RefPtr<Structure> staticScopeStructure;
+    RefPtr<Structure> stringStructure;
+    RefPtr<Structure> notAnObjectErrorStubStructure;
+    RefPtr<Structure> notAnObjectStructure;
+    RefPtr<Structure> propertyNameIteratorStructure;
+    RefPtr<Structure> getterSetterStructure;
+    RefPtr<Structure> apiWrapperStructure;
+    RefPtr<Structure> dummyMarkableCellStructure;
 
 #if USE(JSVALUE32)
-        RefPtr<Structure> numberStructure;
+    RefPtr<Structure> numberStructure;
 #endif
 
-        static void storeVPtrs();
-        static JS_EXPORTDATA void* jsArrayVPtr;
-        static JS_EXPORTDATA void* jsByteArrayVPtr;
-        static JS_EXPORTDATA void* jsStringVPtr;
-        static JS_EXPORTDATA void* jsFunctionVPtr;
+    static void storeVPtrs();
+    static JS_EXPORTDATA void *jsArrayVPtr;
+    static JS_EXPORTDATA void *jsByteArrayVPtr;
+    static JS_EXPORTDATA void *jsStringVPtr;
+    static JS_EXPORTDATA void *jsFunctionVPtr;
 
-        IdentifierTable* identifierTable;
-        CommonIdentifiers* propertyNames;
-        const MarkedArgumentBuffer* emptyList; // Lists are supposed to be allocated on the stack to have their elements properly marked, which is not the case here - but this list has nothing to mark.
-        SmallStrings smallStrings;
-        NumericStrings numericStrings;
-        DateInstanceCache dateInstanceCache;
-        
+    IdentifierTable *identifierTable;
+    CommonIdentifiers *propertyNames;
+    const MarkedArgumentBuffer
+    *emptyList; // Lists are supposed to be allocated on the stack to have their elements properly marked, which is not the case here - but this list has nothing to mark.
+    SmallStrings smallStrings;
+    NumericStrings numericStrings;
+    DateInstanceCache dateInstanceCache;
+
 #if ENABLE(ASSEMBLER)
-        ExecutableAllocator executableAllocator;
+    ExecutableAllocator executableAllocator;
 #endif
 
-        Lexer* lexer;
-        Parser* parser;
-        Interpreter* interpreter;
+    Lexer *lexer;
+    Parser *parser;
+    Interpreter *interpreter;
 #if ENABLE(JIT)
-        JITThunks jitStubs;
+    JITThunks jitStubs;
 #endif
-        TimeoutChecker* timeoutChecker;
-        Heap heap;
+    TimeoutChecker *timeoutChecker;
+    Heap heap;
 
-        JSValue exception;
+    JSValue exception;
 #if ENABLE(JIT)
-        ReturnAddressPtr exceptionLocation;
+    ReturnAddressPtr exceptionLocation;
 #endif
 
-        const Vector<Instruction>& numericCompareFunction(ExecState*);
-        Vector<Instruction> lazyNumericCompareFunction;
-        bool initializingLazyNumericCompareFunction;
+    const Vector<Instruction> &numericCompareFunction( ExecState * );
+    Vector<Instruction> lazyNumericCompareFunction;
+    bool initializingLazyNumericCompareFunction;
 
-        HashMap<OpaqueJSClass*, OpaqueJSClassContextData*> opaqueJSClassData;
+    HashMap<OpaqueJSClass *, OpaqueJSClassContextData *> opaqueJSClassData;
 
-        JSGlobalObject* head;
-        JSGlobalObject* dynamicGlobalObject;
+    JSGlobalObject *head;
+    JSGlobalObject *dynamicGlobalObject;
 
-        HashSet<JSObject*> arrayVisitedElements;
+    HashSet<JSObject *> arrayVisitedElements;
 
-        CodeBlock* functionCodeBlockBeingReparsed;
-        Stringifier* firstStringifierToMark;
+    CodeBlock *functionCodeBlockBeingReparsed;
+    Stringifier *firstStringifierToMark;
 
-        MarkStack markStack;
+    MarkStack markStack;
 
-        LocalTimeOffsetCache localTimeOffsetCache;
-        
-        UString cachedDateString;
-        double cachedDateStringValue;
+    LocalTimeOffsetCache localTimeOffsetCache;
+
+    UString cachedDateString;
+    double cachedDateStringValue;
 
 #ifndef NDEBUG
-        bool mainThreadOnly;
+    bool mainThreadOnly;
 #endif
 
-        void resetDateCache();
+    void resetDateCache();
 
-        void startSampling();
-        void stopSampling();
-        void dumpSampleData(ExecState* exec);
-    private:
-        JSGlobalData(bool isShared);
-        static JSGlobalData*& sharedInstanceInternal();
-        void createNativeThunk();
-    };
-    
+    void startSampling();
+    void stopSampling();
+    void dumpSampleData( ExecState *exec );
+private:
+    JSGlobalData( bool isShared );
+    static JSGlobalData *&sharedInstanceInternal();
+    void createNativeThunk();
+};
+
 } // namespace JSC
 
 #endif // JSGlobalData_h

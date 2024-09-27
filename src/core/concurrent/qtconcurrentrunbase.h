@@ -29,89 +29,109 @@
 #include <qrunnable.h>
 #include <qthreadpool.h>
 
-namespace QtConcurrent {
+namespace QtConcurrent
+{
 
 template <typename T>
-struct SelectSpecialization {
-   template <class Normal, class Void>
-   struct Type {
-      using type = Normal;
-   };
+struct SelectSpecialization
+{
+    template <class Normal, class Void>
+    struct Type
+    {
+        using type = Normal;
+    };
 };
 
 template <>
-struct SelectSpecialization<void> {
-   template <class Normal, class Void>
-   struct Type {
-      using type = Void;
-   };
+struct SelectSpecialization<void>
+{
+    template <class Normal, class Void>
+    struct Type
+    {
+        using type = Void;
+    };
 };
 
 template <typename T>
 class RunFunctionTaskBase : public QFutureInterface<T>, public QRunnable
 {
- public:
-   QFuture<T> start() {
-      this->setRunnable(this);
-      this->reportStarted();
+public:
+    QFuture<T> start()
+    {
+        this->setRunnable( this );
+        this->reportStarted();
 
-      QFuture<T> future = this->future();
-      QThreadPool::globalInstance()->start(this, 0);
+        QFuture<T> future = this->future();
+        QThreadPool::globalInstance()->start( this, 0 );
 
-      return future;
-   }
+        return future;
+    }
 
-   void run() override {}
-   virtual void runFunctor() = 0;
+    void run() override {}
+    virtual void runFunctor() = 0;
 };
 
 template <typename T>
 class RunFunctionTask : public RunFunctionTaskBase<T>
 {
- public:
-   void run() {
-      if (this->isCanceled()) {
-         this->reportFinished();
-         return;
-      }
+public:
+    void run()
+    {
+        if ( this->isCanceled() )
+        {
+            this->reportFinished();
+            return;
+        }
 
-      try {
-         this->runFunctor();
+        try
+        {
+            this->runFunctor();
 
-      } catch (QtConcurrent::Exception &e) {
-         QFutureInterface<T>::reportException(e);
-      } catch (...) {
-         QFutureInterface<T>::reportException(QtConcurrent::UnhandledException());
-      }
+        }
+        catch ( QtConcurrent::Exception &e )
+        {
+            QFutureInterface<T>::reportException( e );
+        }
+        catch ( ... )
+        {
+            QFutureInterface<T>::reportException( QtConcurrent::UnhandledException() );
+        }
 
-      this->reportResult(result);
-      this->reportFinished();
-   }
+        this->reportResult( result );
+        this->reportFinished();
+    }
 
-   T result;
+    T result;
 };
 
 template <>
 class RunFunctionTask<void> : public RunFunctionTaskBase<void>
 {
- public:
-   void run() override {
-      if (this->isCanceled()) {
-         this->reportFinished();
-         return;
-      }
+public:
+    void run() override
+    {
+        if ( this->isCanceled() )
+        {
+            this->reportFinished();
+            return;
+        }
 
-      try {
-         this->runFunctor();
+        try
+        {
+            this->runFunctor();
 
-      } catch (QtConcurrent::Exception &e) {
-         QFutureInterface<void>::reportException(e);
-      } catch (...) {
-         QFutureInterface<void>::reportException(QtConcurrent::UnhandledException());
-      }
+        }
+        catch ( QtConcurrent::Exception &e )
+        {
+            QFutureInterface<void>::reportException( e );
+        }
+        catch ( ... )
+        {
+            QFutureInterface<void>::reportException( QtConcurrent::UnhandledException() );
+        }
 
-      this->reportFinished();
-   }
+        this->reportFinished();
+    }
 };
 
 } //namespace QtConcurrent

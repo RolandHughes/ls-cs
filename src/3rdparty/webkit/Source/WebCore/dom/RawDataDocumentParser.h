@@ -28,29 +28,33 @@
 
 #include "DocumentParser.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class RawDataDocumentParser : public DocumentParser {
+class RawDataDocumentParser : public DocumentParser
+{
 protected:
-    RawDataDocumentParser(Document* document)
-        : DocumentParser(document)
+    RawDataDocumentParser( Document *document )
+        : DocumentParser( document )
     {
     }
 
     virtual void finish()
     {
-        if (!isStopped())
+        if ( !isStopped() )
+        {
             document()->finishedParsing();
+        }
     }
 
 private:
-    virtual void insert(const SegmentedString&)
+    virtual void insert( const SegmentedString & )
     {
         // <https://bugs.webkit.org/show_bug.cgi?id=25397>: JS code can always call document.write, we need to handle it.
         ASSERT_NOT_REACHED();
     }
 
-    virtual void append(const SegmentedString&)
+    virtual void append( const SegmentedString & )
     {
         ASSERT_NOT_REACHED();
     }

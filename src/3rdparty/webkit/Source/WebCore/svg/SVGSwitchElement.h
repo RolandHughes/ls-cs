@@ -28,32 +28,37 @@
 #include "SVGStyledTransformableElement.h"
 #include "SVGTests.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class SVGSwitchElement : public SVGStyledTransformableElement,
-                         public SVGTests,
-                         public SVGLangSpace,
-                         public SVGExternalResourcesRequired {
+    public SVGTests,
+    public SVGLangSpace,
+    public SVGExternalResourcesRequired
+{
 public:
-    static PassRefPtr<SVGSwitchElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<SVGSwitchElement> create( const QualifiedName &, Document * );
 
 private:
-    SVGSwitchElement(const QualifiedName&, Document*);
-    
-    virtual bool isValid() const { return SVGTests::isValid(); }
+    SVGSwitchElement( const QualifiedName &, Document * );
 
-    virtual bool childShouldCreateRenderer(Node*) const;
+    virtual bool isValid() const
+    {
+        return SVGTests::isValid();
+    }
 
-    virtual RenderObject* createRenderer(RenderArena*, RenderStyle*);
-    virtual void synchronizeProperty(const QualifiedName&);
-     
+    virtual bool childShouldCreateRenderer( Node * ) const;
+
+    virtual RenderObject *createRenderer( RenderArena *, RenderStyle * );
+    virtual void synchronizeProperty( const QualifiedName & );
+
     virtual void fillAttributeToPropertyTypeMap();
-    virtual AttributeToPropertyTypeMap& attributeToPropertyTypeMap();
+    virtual AttributeToPropertyTypeMap &attributeToPropertyTypeMap();
 
     // Animated property declarations
 
     // SVGExternalResourcesRequired
-    DECLARE_ANIMATED_BOOLEAN(ExternalResourcesRequired, externalResourcesRequired)
+    DECLARE_ANIMATED_BOOLEAN( ExternalResourcesRequired, externalResourcesRequired )
 };
 
 } // namespace WebCore

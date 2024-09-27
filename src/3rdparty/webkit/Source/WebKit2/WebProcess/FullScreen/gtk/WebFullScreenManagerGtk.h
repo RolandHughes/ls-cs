@@ -30,16 +30,18 @@
 
 #include "WebFullScreenManager.h"
 
-namespace WebKit {
+namespace WebKit
+{
 
-class WebFullScreenManagerGtk : public WebFullScreenManager {
+class WebFullScreenManagerGtk : public WebFullScreenManager
+{
 public:
-    WebFullScreenManagerGtk(WebPage*);
-    virtual void setRootFullScreenLayer(WebCore::GraphicsLayer*);
+    WebFullScreenManagerGtk( WebPage * );
+    virtual void setRootFullScreenLayer( WebCore::GraphicsLayer * );
 
 private:
-    virtual void beginEnterFullScreenAnimation(float duration);
-    virtual void beginExitFullScreenAnimation(float duration);
+    virtual void beginEnterFullScreenAnimation( float duration );
+    virtual void beginExitFullScreenAnimation( float duration );
 
 };
 

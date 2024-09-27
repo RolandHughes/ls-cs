@@ -43,50 +43,66 @@
 #include <wtf/PassOwnPtr.h>
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class InspectorWorkerAgent::WorkerFrontendChannel : public InspectorFrontendChannel {
+class InspectorWorkerAgent::WorkerFrontendChannel : public InspectorFrontendChannel
+{
 public:
-    explicit WorkerFrontendChannel(InspectorFrontend* frontend, WorkerContextInspectorProxy* inspectorProxy)
-        : m_frontend(frontend)
-        , m_inspectorProxy(inspectorProxy)
-        , m_id(s_nextId++)
+    explicit WorkerFrontendChannel( InspectorFrontend *frontend, WorkerContextInspectorProxy *inspectorProxy )
+        : m_frontend( frontend )
+        , m_inspectorProxy( inspectorProxy )
+        , m_id( s_nextId++ )
     {
     }
     virtual ~WorkerFrontendChannel() { }
 
-    int id() const { return m_id; }
-    WorkerContextInspectorProxy* inspectorProxy() const { return m_inspectorProxy; }
+    int id() const
+    {
+        return m_id;
+    }
+    WorkerContextInspectorProxy *inspectorProxy() const
+    {
+        return m_inspectorProxy;
+    }
 
 private:
-    virtual bool sendMessageToFrontend(const String& message)
+    virtual bool sendMessageToFrontend( const String &message )
     {
-        RefPtr<InspectorValue> value = InspectorValue::parseJSON(message);
-        if (!value)
+        RefPtr<InspectorValue> value = InspectorValue::parseJSON( message );
+
+        if ( !value )
+        {
             return false;
+        }
+
         RefPtr<InspectorObject> messageObject = value->asObject();
-        if (!messageObject)
+
+        if ( !messageObject )
+        {
             return false;
-        m_frontend->worker()->dispatchMessageFromWorker(m_id, messageObject);
+        }
+
+        m_frontend->worker()->dispatchMessageFromWorker( m_id, messageObject );
         return true;
     }
 
-    InspectorFrontend* m_frontend;
-    WorkerContextInspectorProxy* m_inspectorProxy;
+    InspectorFrontend *m_frontend;
+    WorkerContextInspectorProxy *m_inspectorProxy;
     int m_id;
     static int s_nextId;
 };
 
 int InspectorWorkerAgent::WorkerFrontendChannel::s_nextId = 1;
 
-PassOwnPtr<InspectorWorkerAgent> InspectorWorkerAgent::create(InstrumentingAgents* instrumentingAgents)
+PassOwnPtr<InspectorWorkerAgent> InspectorWorkerAgent::create( InstrumentingAgents *instrumentingAgents )
 {
-    return adoptPtr(new InspectorWorkerAgent(instrumentingAgents));
+    return adoptPtr( new InspectorWorkerAgent( instrumentingAgents ) );
 }
 
-InspectorWorkerAgent::InspectorWorkerAgent(InstrumentingAgents* instrumentingAgents)
-    : m_instrumentingAgents(instrumentingAgents)
-    , m_inspectorFrontend(0)
+InspectorWorkerAgent::InspectorWorkerAgent( InstrumentingAgents *instrumentingAgents )
+    : m_instrumentingAgents( instrumentingAgents )
+    , m_inspectorFrontend( 0 )
 {
 }
 
@@ -94,7 +110,7 @@ InspectorWorkerAgent::~InspectorWorkerAgent()
 {
 }
 
-void InspectorWorkerAgent::setFrontend(InspectorFrontend* frontend)
+void InspectorWorkerAgent::setFrontend( InspectorFrontend *frontend )
 {
     m_inspectorFrontend = frontend;
     // Disabled for now.
@@ -104,26 +120,34 @@ void InspectorWorkerAgent::setFrontend(InspectorFrontend* frontend)
 void InspectorWorkerAgent::clearFrontend()
 {
     m_inspectorFrontend = 0;
-    m_instrumentingAgents->setInspectorWorkerAgent(0);
+    m_instrumentingAgents->setInspectorWorkerAgent( 0 );
 }
 
-void InspectorWorkerAgent::sendMessageToWorker(ErrorString* error, int workerId, PassRefPtr<InspectorObject> message)
+void InspectorWorkerAgent::sendMessageToWorker( ErrorString *error, int workerId, PassRefPtr<InspectorObject> message )
 {
-    WorkerFrontendChannel* channel = m_idToChannel.get(workerId);
-    if (channel)
-        channel->inspectorProxy()->sendMessageToWorkerContextInspector(message->toJSONString());
+    WorkerFrontendChannel *channel = m_idToChannel.get( workerId );
+
+    if ( channel )
+    {
+        channel->inspectorProxy()->sendMessageToWorkerContextInspector( message->toJSONString() );
+    }
     else
+    {
         *error = "Worker is gone";
+    }
 }
 
-void InspectorWorkerAgent::didStartWorkerContext(WorkerContextProxy* workerContextProxy)
+void InspectorWorkerAgent::didStartWorkerContext( WorkerContextProxy *workerContextProxy )
 {
-    WorkerFrontendChannel* channel = new WorkerFrontendChannel(m_inspectorFrontend, workerContextProxy->inspectorProxy());
-    m_idToChannel.set(channel->id(), channel);
+    WorkerFrontendChannel *channel = new WorkerFrontendChannel( m_inspectorFrontend, workerContextProxy->inspectorProxy() );
+    m_idToChannel.set( channel->id(), channel );
 
-    workerContextProxy->inspectorProxy()->connectFrontend(channel);
-    if (m_inspectorFrontend)
-        m_inspectorFrontend->worker()->workerCreated(channel->id());
+    workerContextProxy->inspectorProxy()->connectFrontend( channel );
+
+    if ( m_inspectorFrontend )
+    {
+        m_inspectorFrontend->worker()->workerCreated( channel->id() );
+    }
 }
 
 } // namespace WebCore

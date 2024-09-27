@@ -26,15 +26,16 @@
 
 #include <qfunctioncall_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class TraceFN : public FunctionCall
 {
- public:
-   Item evaluateSingleton(const DynamicContext::Ptr &context) const override;
-   Item::Iterator::Ptr evaluateSequence(const DynamicContext::Ptr &context) const override;
+public:
+    Item evaluateSingleton( const DynamicContext::Ptr &context ) const override;
+    Item::Iterator::Ptr evaluateSequence( const DynamicContext::Ptr &context ) const override;
 
-   SequenceType::Ptr staticType() const override;
+    SequenceType::Ptr staticType() const override;
 };
 
 }

@@ -22,71 +22,97 @@
 
 #include "JSArray.h"
 
-namespace JSC {
+namespace JSC
+{
 
-    class RegExpMatchesArray : public JSArray {
-    public:
-        RegExpMatchesArray(ExecState*, RegExpConstructorPrivate*);
-        virtual ~RegExpMatchesArray();
+class RegExpMatchesArray : public JSArray
+{
+public:
+    RegExpMatchesArray( ExecState *, RegExpConstructorPrivate * );
+    virtual ~RegExpMatchesArray();
 
-    private:
-        virtual bool getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+private:
+    virtual bool getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
+    {
+        if ( subclassData() )
         {
-            if (subclassData())
-                fillArrayInstance(exec);
-            return JSArray::getOwnPropertySlot(exec, propertyName, slot);
+            fillArrayInstance( exec );
         }
 
-        virtual bool getOwnPropertySlot(ExecState* exec, unsigned propertyName, PropertySlot& slot)
+        return JSArray::getOwnPropertySlot( exec, propertyName, slot );
+    }
+
+    virtual bool getOwnPropertySlot( ExecState *exec, unsigned propertyName, PropertySlot &slot )
+    {
+        if ( subclassData() )
         {
-            if (subclassData())
-                fillArrayInstance(exec);
-            return JSArray::getOwnPropertySlot(exec, propertyName, slot);
+            fillArrayInstance( exec );
         }
 
-        virtual bool getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+        return JSArray::getOwnPropertySlot( exec, propertyName, slot );
+    }
+
+    virtual bool getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
+    {
+        if ( subclassData() )
         {
-            if (subclassData())
-                fillArrayInstance(exec);
-            return JSArray::getOwnPropertyDescriptor(exec, propertyName, descriptor);
+            fillArrayInstance( exec );
         }
 
-        virtual void put(ExecState* exec, const Identifier& propertyName, JSValue v, PutPropertySlot& slot)
+        return JSArray::getOwnPropertyDescriptor( exec, propertyName, descriptor );
+    }
+
+    virtual void put( ExecState *exec, const Identifier &propertyName, JSValue v, PutPropertySlot &slot )
+    {
+        if ( subclassData() )
         {
-            if (subclassData())
-                fillArrayInstance(exec);
-            JSArray::put(exec, propertyName, v, slot);
+            fillArrayInstance( exec );
         }
 
-        virtual void put(ExecState* exec, unsigned propertyName, JSValue v)
+        JSArray::put( exec, propertyName, v, slot );
+    }
+
+    virtual void put( ExecState *exec, unsigned propertyName, JSValue v )
+    {
+        if ( subclassData() )
         {
-            if (subclassData())
-                fillArrayInstance(exec);
-            JSArray::put(exec, propertyName, v);
+            fillArrayInstance( exec );
         }
 
-        virtual bool deleteProperty(ExecState* exec, const Identifier& propertyName)
+        JSArray::put( exec, propertyName, v );
+    }
+
+    virtual bool deleteProperty( ExecState *exec, const Identifier &propertyName )
+    {
+        if ( subclassData() )
         {
-            if (subclassData())
-                fillArrayInstance(exec);
-            return JSArray::deleteProperty(exec, propertyName);
+            fillArrayInstance( exec );
         }
 
-        virtual bool deleteProperty(ExecState* exec, unsigned propertyName)
+        return JSArray::deleteProperty( exec, propertyName );
+    }
+
+    virtual bool deleteProperty( ExecState *exec, unsigned propertyName )
+    {
+        if ( subclassData() )
         {
-            if (subclassData())
-                fillArrayInstance(exec);
-            return JSArray::deleteProperty(exec, propertyName);
+            fillArrayInstance( exec );
         }
 
-        virtual void getOwnPropertyNames(ExecState* exec, PropertyNameArray& arr, EnumerationMode mode = ExcludeDontEnumProperties)
+        return JSArray::deleteProperty( exec, propertyName );
+    }
+
+    virtual void getOwnPropertyNames( ExecState *exec, PropertyNameArray &arr, EnumerationMode mode = ExcludeDontEnumProperties )
+    {
+        if ( subclassData() )
         {
-            if (subclassData())
-                fillArrayInstance(exec);
-            JSArray::getOwnPropertyNames(exec, arr, mode);
+            fillArrayInstance( exec );
         }
 
-        void fillArrayInstance(ExecState*);
+        JSArray::getOwnPropertyNames( exec, arr, mode );
+    }
+
+    void fillArrayInstance( ExecState * );
 };
 
 }

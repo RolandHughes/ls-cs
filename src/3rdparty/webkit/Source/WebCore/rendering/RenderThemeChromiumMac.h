@@ -26,39 +26,47 @@
 
 #import "RenderThemeMac.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class RenderThemeChromiumMac : public RenderThemeMac {
+class RenderThemeChromiumMac : public RenderThemeMac
+{
 public:
     static PassRefPtr<RenderTheme> create();
 protected:
 #if ENABLE(VIDEO)
-    virtual void adjustMediaSliderThumbSize(RenderObject*) const;
-    virtual bool paintMediaPlayButton(RenderObject*, const PaintInfo&, const IntRect&);
-    virtual bool paintMediaMuteButton(RenderObject*, const PaintInfo&, const IntRect&);
-    virtual bool paintMediaSliderTrack(RenderObject*, const PaintInfo&, const IntRect&);
-    virtual bool paintMediaControlsBackground(RenderObject*, const PaintInfo&, const IntRect&);
+    virtual void adjustMediaSliderThumbSize( RenderObject * ) const;
+    virtual bool paintMediaPlayButton( RenderObject *, const PaintInfo &, const IntRect & );
+    virtual bool paintMediaMuteButton( RenderObject *, const PaintInfo &, const IntRect & );
+    virtual bool paintMediaSliderTrack( RenderObject *, const PaintInfo &, const IntRect & );
+    virtual bool paintMediaControlsBackground( RenderObject *, const PaintInfo &, const IntRect & );
     virtual String extraMediaControlsStyleSheet();
 #if ENABLE(FULLSCREEN_API)
     virtual String extraFullScreenStyleSheet();
 #endif
-  
-    virtual bool paintMediaSliderThumb(RenderObject*, const PaintInfo&, const IntRect&);
-    virtual bool paintMediaVolumeSliderContainer(RenderObject*, const PaintInfo&, const IntRect&);
-    virtual bool paintMediaVolumeSliderTrack(RenderObject*, const PaintInfo&, const IntRect&);
-    virtual bool paintMediaVolumeSliderThumb(RenderObject*, const PaintInfo&, const IntRect&);
-    virtual IntPoint volumeSliderOffsetFromMuteButton(RenderBox*, const IntSize&) const;
-    virtual bool usesMediaControlStatusDisplay() { return false; }
-    virtual bool hasOwnDisabledStateHandlingFor(ControlPart) const { return true; }
+
+    virtual bool paintMediaSliderThumb( RenderObject *, const PaintInfo &, const IntRect & );
+    virtual bool paintMediaVolumeSliderContainer( RenderObject *, const PaintInfo &, const IntRect & );
+    virtual bool paintMediaVolumeSliderTrack( RenderObject *, const PaintInfo &, const IntRect & );
+    virtual bool paintMediaVolumeSliderThumb( RenderObject *, const PaintInfo &, const IntRect & );
+    virtual IntPoint volumeSliderOffsetFromMuteButton( RenderBox *, const IntSize & ) const;
+    virtual bool usesMediaControlStatusDisplay()
+    {
+        return false;
+    }
+    virtual bool hasOwnDisabledStateHandlingFor( ControlPart ) const
+    {
+        return true;
+    }
 #endif
 
     virtual bool usesTestModeFocusRingColor() const;
-    virtual NSView* documentViewFor(RenderObject*) const;
+    virtual NSView *documentViewFor( RenderObject * ) const;
 
-    virtual int popupInternalPaddingLeft(RenderStyle*) const;
-    virtual int popupInternalPaddingRight(RenderStyle*) const;
+    virtual int popupInternalPaddingLeft( RenderStyle * ) const;
+    virtual int popupInternalPaddingRight( RenderStyle * ) const;
 private:
-    virtual void updateActiveState(NSCell*, const RenderObject*);
+    virtual void updateActiveState( NSCell *, const RenderObject * );
 };
 
 } // namespace WebCore

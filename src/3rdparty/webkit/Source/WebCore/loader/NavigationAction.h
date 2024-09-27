@@ -6,13 +6,13 @@
  * are met:
  *
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Apple Computer, Inc. ("Apple") nor the names of
  *     its contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
+ *     from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY APPLE AND ITS CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -34,27 +34,41 @@
 #include "KURL.h"
 #include <wtf/Forward.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class NavigationAction {
-    public:
-        NavigationAction();
-        NavigationAction(const KURL&, NavigationType);
-        NavigationAction(const KURL&, FrameLoadType, bool isFormSubmission);
-        NavigationAction(const KURL&, NavigationType, PassRefPtr<Event>);
-        NavigationAction(const KURL&, FrameLoadType, bool isFormSubmission, PassRefPtr<Event>);
+class NavigationAction
+{
+public:
+    NavigationAction();
+    NavigationAction( const KURL &, NavigationType );
+    NavigationAction( const KURL &, FrameLoadType, bool isFormSubmission );
+    NavigationAction( const KURL &, NavigationType, PassRefPtr<Event> );
+    NavigationAction( const KURL &, FrameLoadType, bool isFormSubmission, PassRefPtr<Event> );
 
-        bool isEmpty() const { return m_URL.isEmpty(); }
+    bool isEmpty() const
+    {
+        return m_URL.isEmpty();
+    }
 
-        KURL url() const { return m_URL; }
-        NavigationType type() const { return m_type; }
-        const Event* event() const { return m_event.get(); }
+    KURL url() const
+    {
+        return m_URL;
+    }
+    NavigationType type() const
+    {
+        return m_type;
+    }
+    const Event *event() const
+    {
+        return m_event.get();
+    }
 
-    private:
-        KURL m_URL;
-        NavigationType m_type;
-        RefPtr<Event> m_event;
-    };
+private:
+    KURL m_URL;
+    NavigationType m_type;
+    RefPtr<Event> m_event;
+};
 
 }
 

@@ -1,10 +1,10 @@
 /*
  * Copyright (c) 2008, Google Inc. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  *     * Redistributions of source code must retain the above copyright
  * notice, this list of conditions and the following disclaimer.
  *     * Redistributions in binary form must reproduce the above
@@ -14,7 +14,7 @@
  *     * Neither the name of Google Inc. nor the names of its
  * contributors may be used to endorse or promote products derived from
  * this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -33,25 +33,26 @@
 
 #include "InspectorValues.h"
 
-namespace WebCore {
-
-PassRefPtr<ScriptCallStack> ScriptCallStack::create(Vector<ScriptCallFrame>& frames)
+namespace WebCore
 {
-    return adoptRef(new ScriptCallStack(frames));
+
+PassRefPtr<ScriptCallStack> ScriptCallStack::create( Vector<ScriptCallFrame> &frames )
+{
+    return adoptRef( new ScriptCallStack( frames ) );
 }
 
-ScriptCallStack::ScriptCallStack(Vector<ScriptCallFrame>& frames)
+ScriptCallStack::ScriptCallStack( Vector<ScriptCallFrame> &frames )
 {
-    m_frames.swap(frames);
+    m_frames.swap( frames );
 }
 
 ScriptCallStack::~ScriptCallStack()
 {
 }
 
-const ScriptCallFrame &ScriptCallStack::at(size_t index) const
+const ScriptCallFrame &ScriptCallStack::at( size_t index ) const
 {
-    ASSERT(m_frames.size() > index);
+    ASSERT( m_frames.size() > index );
     return m_frames[index];
 }
 
@@ -60,18 +61,26 @@ size_t ScriptCallStack::size() const
     return m_frames.size();
 }
 
-bool ScriptCallStack::isEqual(ScriptCallStack* o) const
+bool ScriptCallStack::isEqual( ScriptCallStack *o ) const
 {
-    if (!o)
+    if ( !o )
+    {
         return false;
+    }
 
     size_t frameCount = o->m_frames.size();
-    if (frameCount != m_frames.size())
-        return false;
 
-    for (size_t i = 0; i < frameCount; ++i) {
-        if (!m_frames[i].isEqual(o->m_frames[i]))
+    if ( frameCount != m_frames.size() )
+    {
+        return false;
+    }
+
+    for ( size_t i = 0; i < frameCount; ++i )
+    {
+        if ( !m_frames[i].isEqual( o->m_frames[i] ) )
+        {
             return false;
+        }
     }
 
     return true;
@@ -81,8 +90,12 @@ bool ScriptCallStack::isEqual(ScriptCallStack* o) const
 PassRefPtr<InspectorArray> ScriptCallStack::buildInspectorArray() const
 {
     RefPtr<InspectorArray> frames = InspectorArray::create();
-    for (size_t i = 0; i < m_frames.size(); i++)
-        frames->pushObject(m_frames.at(i).buildInspectorObject());
+
+    for ( size_t i = 0; i < m_frames.size(); i++ )
+    {
+        frames->pushObject( m_frames.at( i ).buildInspectorObject() );
+    }
+
     return frames;
 }
 #endif

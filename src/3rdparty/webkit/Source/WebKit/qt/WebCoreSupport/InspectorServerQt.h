@@ -31,82 +31,86 @@ class QTcpServer;
 class QTcpSocket;
 class QWebPage;
 
-namespace WebCore {
+namespace WebCore
+{
 class InspectorServerRequestHandlerQt;
 class InspectorClientQt;
 
-class InspectorServerQt : public QObject {
-    WEB_CS_OBJECT(InspectorServerQt)
+class InspectorServerQt : public QObject
+{
+    WEB_CS_OBJECT( InspectorServerQt )
 public:
 
-    static InspectorServerQt* server();
+    static InspectorServerQt *server();
 
-    void listen(quint16 port);
+    void listen( quint16 port );
 
-    void registerClient(InspectorClientQt* client);
-    void unregisterClient(InspectorClientQt* client);
+    void registerClient( InspectorClientQt *client );
+    void unregisterClient( InspectorClientQt *client );
 
     void close();
-    InspectorClientQt* inspectorClientForPage(int pageNum);
+    InspectorClientQt *inspectorClientForPage( int pageNum );
 
 protected:
     InspectorServerQt();
     virtual ~InspectorServerQt();
 
 private :
-    WEB_CS_SLOT_1(Private, void newConnection())
-    WEB_CS_SLOT_2(newConnection)
+    WEB_CS_SLOT_1( Private, void newConnection() )
+    WEB_CS_SLOT_2( newConnection )
 
 private:
-    QTcpServer* m_tcpServer;
-    QMap<int, InspectorClientQt*> m_inspectorClients;
+    QTcpServer *m_tcpServer;
+    QMap<int, InspectorClientQt *> m_inspectorClients;
     int m_pageNumber;
 
     friend class InspectorServerRequestHandlerQt;
 };
 
-class RemoteFrontendChannel : public QObject {
-    WEB_CS_OBJECT(RemoteFrontendChannel)
+class RemoteFrontendChannel : public QObject
+{
+    WEB_CS_OBJECT( RemoteFrontendChannel )
 public:
 
-    RemoteFrontendChannel(InspectorServerRequestHandlerQt* requestHandler);
-    bool sendMessageToFrontend(const String& message);
+    RemoteFrontendChannel( InspectorServerRequestHandlerQt *requestHandler );
+    bool sendMessageToFrontend( const String &message );
 
 private:
-    InspectorServerRequestHandlerQt* m_requestHandler;
+    InspectorServerRequestHandlerQt *m_requestHandler;
 };
 
-class InspectorServerRequestHandlerQt : public QObject {
-    WEB_CS_OBJECT(InspectorServerRequestHandlerQt)
+class InspectorServerRequestHandlerQt : public QObject
+{
+    WEB_CS_OBJECT( InspectorServerRequestHandlerQt )
 
 public:
 
-    InspectorServerRequestHandlerQt(QTcpSocket *tcpConnection, InspectorServerQt *server);
+    InspectorServerRequestHandlerQt( QTcpSocket *tcpConnection, InspectorServerQt *server );
     virtual ~InspectorServerRequestHandlerQt();
-    virtual int webSocketSend(QByteArray payload);
-    virtual int webSocketSend(const char *payload, size_t length);
+    virtual int webSocketSend( QByteArray payload );
+    virtual int webSocketSend( const char *payload, size_t length );
 
 private :
-    WEB_CS_SLOT_1(Private, void tcpReadyRead())
-    WEB_CS_SLOT_2(tcpReadyRead)
-    WEB_CS_SLOT_1(Private, void tcpConnectionDisconnected())
-    WEB_CS_SLOT_2(tcpConnectionDisconnected)
-    WEB_CS_SLOT_1(Private, void webSocketReadyRead())
-    WEB_CS_SLOT_2(webSocketReadyRead)
+    WEB_CS_SLOT_1( Private, void tcpReadyRead() )
+    WEB_CS_SLOT_2( tcpReadyRead )
+    WEB_CS_SLOT_1( Private, void tcpConnectionDisconnected() )
+    WEB_CS_SLOT_2( tcpConnectionDisconnected )
+    WEB_CS_SLOT_1( Private, void webSocketReadyRead() )
+    WEB_CS_SLOT_2( webSocketReadyRead )
 
-    QTcpSocket* m_tcpConnection;
-    InspectorServerQt* m_server;
+    QTcpSocket *m_tcpConnection;
+    InspectorServerQt *m_server;
 
     QString m_path;
     QByteArray m_contentType;
     int m_contentLength;
     bool m_endOfHeaders;
     QByteArray m_data;
-    InspectorClientQt* m_inspectorClient;
+    InspectorClientQt *m_inspectorClient;
 
-    void handleInspectorRequest(QStringList words);
+    void handleInspectorRequest( QStringList words );
     void handleFromFrontendRequest();
-    void handleResourceRequest(QStringList words);
+    void handleResourceRequest( QStringList words );
 
 };
 

@@ -26,26 +26,32 @@
 #include <runtime/JSObjectWithGlobalObject.h>
 #include <runtime/ObjectPrototype.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class DOMParser;
 
-class JSDOMParser : public JSDOMWrapper {
+class JSDOMParser : public JSDOMWrapper
+{
     typedef JSDOMWrapper Base;
 public:
-    JSDOMParser(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<DOMParser>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
+    JSDOMParser( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<DOMParser> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
-    DOMParser* impl() const { return m_impl.get(); }
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
+    DOMParser *impl() const
+    {
+        return m_impl.get();
+    }
 
 private:
     RefPtr<DOMParser> m_impl;
@@ -53,31 +59,34 @@ protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
-JSC::JSValue toJS(JSC::ExecState*, JSDOMGlobalObject*, DOMParser*);
-DOMParser* toDOMParser(JSC::JSValue);
+JSC::JSValue toJS( JSC::ExecState *, JSDOMGlobalObject *, DOMParser * );
+DOMParser *toDOMParser( JSC::JSValue );
 
-class JSDOMParserPrototype : public JSC::JSObjectWithGlobalObject {
+class JSDOMParserPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSDOMParserPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSDOMParserPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                          JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 // Functions
 
-JSC::EncodedJSValue JSC_HOST_CALL jsDOMParserPrototypeFunctionParseFromString(JSC::ExecState*);
+JSC::EncodedJSValue JSC_HOST_CALL jsDOMParserPrototypeFunctionParseFromString( JSC::ExecState * );
 // Attributes
 
-JSC::JSValue jsDOMParserConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsDOMParserConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

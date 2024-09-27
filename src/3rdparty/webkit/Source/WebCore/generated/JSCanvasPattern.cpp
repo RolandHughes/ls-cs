@@ -26,9 +26,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSCanvasPattern);
+ASSERT_CLASS_FITS_IN_CELL( JSCanvasPattern );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -39,8 +40,8 @@ ASSERT_CLASS_FITS_IN_CELL(JSCanvasPattern);
 
 static const HashTableValue JSCanvasPatternTableValues[2] =
 {
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsCanvasPatternConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsCanvasPatternConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -54,43 +55,50 @@ static JSC_CONST_HASHTABLE HashTable JSCanvasPatternTable = { 2, 1, JSCanvasPatt
 
 static const HashTableValue JSCanvasPatternConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSCanvasPatternConstructorTable = { 1, 0, JSCanvasPatternConstructorTableValues, 0 };
-class JSCanvasPatternConstructor : public DOMConstructorObject {
+class JSCanvasPatternConstructor : public DOMConstructorObject
+{
 public:
-    JSCanvasPatternConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSCanvasPatternConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSCanvasPatternConstructor::s_info = { "CanvasPatternConstructor", &DOMConstructorObject::s_info, &JSCanvasPatternConstructorTable, 0 };
 
-JSCanvasPatternConstructor::JSCanvasPatternConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSCanvasPatternConstructor::JSCanvasPatternConstructor( ExecState *exec, Structure *structure, JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSCanvasPatternPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSCanvasPatternPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSCanvasPatternConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSCanvasPatternConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSCanvasPatternConstructor, JSDOMWrapper>(exec, &JSCanvasPatternConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSCanvasPatternConstructor, JSDOMWrapper>( exec, &JSCanvasPatternConstructorTable, this, propertyName,
+            slot );
 }
 
-bool JSCanvasPatternConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSCanvasPatternConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSCanvasPatternConstructor, JSDOMWrapper>(exec, &JSCanvasPatternConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSCanvasPatternConstructor, JSDOMWrapper>( exec, &JSCanvasPatternConstructorTable, this,
+            propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -102,61 +110,62 @@ bool JSCanvasPatternConstructor::getOwnPropertyDescriptor(ExecState* exec, const
 
 static const HashTableValue JSCanvasPatternPrototypeTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSCanvasPatternPrototypeTable = { 1, 0, JSCanvasPatternPrototypeTableValues, 0 };
 const ClassInfo JSCanvasPatternPrototype::s_info = { "CanvasPatternPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSCanvasPatternPrototypeTable, 0 };
 
-JSObject* JSCanvasPatternPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSCanvasPatternPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSCanvasPattern>(exec, globalObject);
+    return getDOMPrototype<JSCanvasPattern>( exec, globalObject );
 }
 
 const ClassInfo JSCanvasPattern::s_info = { "CanvasPattern", &JSDOMWrapper::s_info, &JSCanvasPatternTable, 0 };
 
-JSCanvasPattern::JSCanvasPattern(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<CanvasPattern> impl)
-    : JSDOMWrapper(structure, globalObject)
-    , m_impl(impl)
+JSCanvasPattern::JSCanvasPattern( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<CanvasPattern> impl )
+    : JSDOMWrapper( structure, globalObject )
+    , m_impl( impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSCanvasPattern::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSCanvasPattern::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSCanvasPatternPrototype(exec->globalData(), globalObject, JSCanvasPatternPrototype::createStructure(globalObject->globalData(), globalObject->objectPrototype()));
+    return new ( exec ) JSCanvasPatternPrototype( exec->globalData(), globalObject,
+            JSCanvasPatternPrototype::createStructure( globalObject->globalData(), globalObject->objectPrototype() ) );
 }
 
-bool JSCanvasPattern::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSCanvasPattern::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSCanvasPattern, Base>(exec, &JSCanvasPatternTable, this, propertyName, slot);
+    return getStaticValueSlot<JSCanvasPattern, Base>( exec, &JSCanvasPatternTable, this, propertyName, slot );
 }
 
-bool JSCanvasPattern::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSCanvasPattern::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSCanvasPattern, Base>(exec, &JSCanvasPatternTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSCanvasPattern, Base>( exec, &JSCanvasPatternTable, this, propertyName, descriptor );
 }
 
-JSValue jsCanvasPatternConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsCanvasPatternConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSCanvasPattern* domObject = static_cast<JSCanvasPattern*>(asObject(slotBase));
-    return JSCanvasPattern::getConstructor(exec, domObject->globalObject());
+    JSCanvasPattern *domObject = static_cast<JSCanvasPattern *>( asObject( slotBase ) );
+    return JSCanvasPattern::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSCanvasPattern::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSCanvasPattern::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSCanvasPatternConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSCanvasPatternConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, CanvasPattern* impl)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, CanvasPattern *impl )
 {
-    return wrap<JSCanvasPattern>(exec, globalObject, impl);
+    return wrap<JSCanvasPattern>( exec, globalObject, impl );
 }
 
-CanvasPattern* toCanvasPattern(JSC::JSValue value)
+CanvasPattern *toCanvasPattern( JSC::JSValue value )
 {
-    return value.inherits(&JSCanvasPattern::s_info) ? static_cast<JSCanvasPattern*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSCanvasPattern::s_info ) ? static_cast<JSCanvasPattern *>( asObject( value ) )->impl() : 0;
 }
 
 }

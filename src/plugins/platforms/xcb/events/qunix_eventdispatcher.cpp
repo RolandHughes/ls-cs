@@ -33,17 +33,17 @@
 
 #include <errno.h>
 
-QUnixEventDispatcher::QUnixEventDispatcher(QObject *parent)
-    : QEventDispatcherUNIX(parent)
+QUnixEventDispatcher::QUnixEventDispatcher( QObject *parent )
+    : QEventDispatcherUNIX( parent )
 { }
 
 QUnixEventDispatcher::~QUnixEventDispatcher()
 { }
 
-bool QUnixEventDispatcher::processEvents(QEventLoop::ProcessEventsFlags flags)
+bool QUnixEventDispatcher::processEvents( QEventLoop::ProcessEventsFlags flags )
 {
-    const bool didSendEvents = QEventDispatcherUNIX::processEvents(flags);
-    return QWindowSystemInterface::sendWindowSystemEvents(flags) || didSendEvents;
+    const bool didSendEvents = QEventDispatcherUNIX::processEvents( flags );
+    return QWindowSystemInterface::sendWindowSystemEvents( flags ) || didSendEvents;
 }
 
 bool QUnixEventDispatcher::hasPendingEvents()
@@ -54,7 +54,8 @@ bool QUnixEventDispatcher::hasPendingEvents()
 
 void QUnixEventDispatcher::flush()
 {
-    if(qApp) {
+    if ( qApp )
+    {
         qApp->sendPostedEvents();
     }
 }

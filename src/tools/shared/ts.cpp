@@ -65,765 +65,949 @@ static const QString text_value               = "value";
 static const QString text_vanished            = "vanished";
 static const QString text_yes                 = "yes";
 
-QDebug &operator<<(QDebug &d, const QXmlStreamAttribute &attr)
+QDebug &operator<<( QDebug &d, const QXmlStreamAttribute &attr )
 {
-   return d << "[" << attr.name().toString() << "," << attr.value().toString() << "]";
+    return d << "[" << attr.name().toString() << "," << attr.value().toString() << "]";
 }
 
 class TSReader : public QXmlStreamReader
 {
- public:
-   TSReader(QIODevice &dev, ConversionData &cd)
-      : QXmlStreamReader(&dev), m_cd(cd) {
-   }
+public:
+    TSReader( QIODevice &dev, ConversionData &cd )
+        : QXmlStreamReader( &dev ), m_cd( cd )
+    {
+    }
 
-   // the "real thing"
-   bool read(Translator &translator);
+    // the "real thing"
+    bool read( Translator &translator );
 
- private:
-   bool elementStarts(const QString &str) const {
-      return isStartElement() && name() == str;
-   }
+private:
+    bool elementStarts( const QString &str ) const
+    {
+        return isStartElement() && name() == str;
+    }
 
-   bool isWhiteSpace() const {
-      return isCharacters() && text().toString().trimmed().isEmpty();
-   }
+    bool isWhiteSpace() const
+    {
+        return isCharacters() && text().toString().trimmed().isEmpty();
+    }
 
-   // needed to expand <byte ... />
-   QString readContents();
+    // needed to expand <byte ... />
+    QString readContents();
 
-   // needed to join <lengthvariant>s
-   QString readTransContents();
+    // needed to join <lengthvariant>s
+    QString readTransContents();
 
-   void handleError();
+    void handleError();
 
-   ConversionData &m_cd;
+    ConversionData &m_cd;
 };
 
 void TSReader::handleError()
 {
-   if (isComment()) {
-      return;
-   }
+    if ( isComment() )
+    {
+        return;
+    }
 
-   if (hasError() && error() == CustomError) {
-      // raised by readContents
-      return;
-   }
+    if ( hasError() && error() == CustomError )
+    {
+        // raised by readContents
+        return;
+    }
 
-   const QString loc = QString("in %1 at Line: %2 Column: %3").formatArg(m_cd.m_sourceFileName).formatArg(lineNumber()).formatArg(columnNumber());
+    const QString loc = QString( "in %1 at Line: %2 Column: %3" ).formatArg( m_cd.m_sourceFileName ).formatArg(
+                            lineNumber() ).formatArg( columnNumber() );
 
-   switch (tokenType()) {
-      case NoToken:
-      case Invalid:
-      default:
-         raiseError(QString("Parse error %1: \n%2").formatArg(loc).formatArg(errorString()));
-         break;
+    switch ( tokenType() )
+    {
+        case NoToken:
+        case Invalid:
+        default:
+            raiseError( QString( "Parse error %1: \n%2" ).formatArg( loc ).formatArg( errorString() ) );
+            break;
 
-      case StartElement:
-         raiseError(QString("Unexpected tag <%1> \n%2").formatArg(name().toString()).formatArg(loc));
-         break;
+        case StartElement:
+            raiseError( QString( "Unexpected tag <%1> \n%2" ).formatArg( name().toString() ).formatArg( loc ) );
+            break;
 
-      case Characters: {
-         QString tok = text().toString();
+        case Characters:
+        {
+            QString tok = text().toString();
 
-         if (tok.length() > 30) {
-            tok = tok.left(30) + "[...]";
-         }
+            if ( tok.length() > 30 )
+            {
+                tok = tok.left( 30 ) + "[...]";
+            }
 
-         raiseError(QString("Unexpected characters '%1' %2").formatArg(tok).formatArg(loc));
-      }
-      break;
+            raiseError( QString( "Unexpected characters '%1' %2" ).formatArg( tok ).formatArg( loc ) );
+        }
+        break;
 
-      case EntityReference:
-         raiseError(QString("Unexpected entity '&%1;' %2").formatArg(name().toString()).formatArg(loc));
-         break;
+        case EntityReference:
+            raiseError( QString( "Unexpected entity '&%1;' %2" ).formatArg( name().toString() ).formatArg( loc ) );
+            break;
 
-      case ProcessingInstruction:
-         raiseError(QString("Unexpected processing instruction %1").formatArg(loc));
-         break;
-   }
+        case ProcessingInstruction:
+            raiseError( QString( "Unexpected processing instruction %1" ).formatArg( loc ) );
+            break;
+    }
 }
 
-static QString byteValue(QString value)
+static QString byteValue( QString value )
 {
-   int base = 10;
+    int base = 10;
 
-   if (value.startsWith("x")) {
-      base = 16;
-      value.remove(0, 1);
-   }
+    if ( value.startsWith( "x" ) )
+    {
+        base = 16;
+        value.remove( 0, 1 );
+    }
 
-   int n = value.toInteger<uint>(nullptr, base);
+    int n = value.toInteger<uint>( nullptr, base );
 
-   return (n != 0) ? QString(QChar(n)) : QString();
+    return ( n != 0 ) ? QString( QChar( n ) ) : QString();
 }
 
 QString TSReader::readContents()
 {
-   QString result;
+    QString result;
 
-   while (! atEnd()) {
-      readNext();
+    while ( ! atEnd() )
+    {
+        readNext();
 
-      if (isEndElement()) {
-         break;
+        if ( isEndElement() )
+        {
+            break;
 
-      } else if (isCharacters()) {
-         result += text();
+        }
+        else if ( isCharacters() )
+        {
+            result += text();
 
-      } else if (elementStarts(text_byte)) {
-         // <byte value="...">
-         result += byteValue(attributes().value(text_value).toString());
-         readNext();
+        }
+        else if ( elementStarts( text_byte ) )
+        {
+            // <byte value="...">
+            result += byteValue( attributes().value( text_value ).toString() );
+            readNext();
 
-         if (! isEndElement()) {
+            if ( ! isEndElement() )
+            {
+                handleError();
+                break;
+            }
+
+        }
+        else
+        {
             handleError();
             break;
-         }
+        }
+    }
 
-      } else {
-         handleError();
-         break;
-      }
-   }
-
-   return result;
+    return result;
 }
 
 QString TSReader::readTransContents()
 {
-   if (attributes().value(text_variants) == text_yes) {
-      QString result;
+    if ( attributes().value( text_variants ) == text_yes )
+    {
+        QString result;
 
-      while (! atEnd()) {
-         readNext();
-
-         if (isEndElement()) {
-            break;
-
-         } else if (isWhiteSpace()) {
-            // ignore these, just whitespace
-
-         } else if (elementStarts(text_lengthvariant)) {
-            if (! result.isEmpty()) {
-               result += QChar(Translator::BinaryVariantSeparator);
-            }
-            result += readContents();
-
-         } else {
-            handleError();
-            break;
-         }
-      }
-
-      return result;
-
-   } else {
-      return readContents();
-   }
-}
-
-bool TSReader::read(Translator &translator)
-{
-   static const QString text_extrans("extra-");
-
-   while (! atEnd()) {
-      readNext();
-
-      if (isStartDocument()) {
-         // ignore state
-
-      } else if (isEndDocument()) {
-         // ignore state
-
-      } else if (isDTD()) {
-         // ignore state
-
-      } else if (elementStarts(text_TS)) {
-         QHash<QString, int> currentLine;
-         QString currentFile;
-         bool maybeRelative = false, maybeAbsolute = false;
-
-         QXmlStreamAttributes atts = attributes();
-
-         translator.setLanguageCode(atts.value(text_language).toString());
-         translator.setSourceLanguageCode(atts.value(text_sourcelanguage).toString());
-
-         while (! atEnd()) {
+        while ( ! atEnd() )
+        {
             readNext();
 
-            if (isEndElement()) {
-               break;
+            if ( isEndElement() )
+            {
+                break;
 
-            } else if (isWhiteSpace()) {
-               // ignore these, just whitespace
+            }
+            else if ( isWhiteSpace() )
+            {
+                // ignore these, just whitespace
 
-            } else if (elementStarts(text_defaultcodec)) {
+            }
+            else if ( elementStarts( text_lengthvariant ) )
+            {
+                if ( ! result.isEmpty() )
+                {
+                    result += QChar( Translator::BinaryVariantSeparator );
+                }
 
-               readElementText();
-               m_cd.appendError("Warning: ignoring <defaultcodec> element");
+                result += readContents();
 
-            } else if (isStartElement() && name().toString().startsWith(text_extrans)) {
+            }
+            else
+            {
+                handleError();
+                break;
+            }
+        }
 
-               QString tag = name().toString();
-               translator.setExtra(tag.mid(6), readContents());
+        return result;
 
-            } else if (elementStarts(text_dependencies)) {
-               /*
-               * <dependencies>
-               *   <dependency catalog="qtsystems_no"/>
-               *   <dependency catalog="qtbase_no"/>
-               * </dependencies>
-               **/
+    }
+    else
+    {
+        return readContents();
+    }
+}
 
-               QStringList dependencies;
+bool TSReader::read( Translator &translator )
+{
+    static const QString text_extrans( "extra-" );
 
-               while (! atEnd()) {
-                  readNext();
+    while ( ! atEnd() )
+    {
+        readNext();
 
-                  if (isEndElement()) {
-                     // </dependencies> found, finish local loop
-                     break;
+        if ( isStartDocument() )
+        {
+            // ignore state
 
-                  } else if (elementStarts(text_dependency)) {
-                     // <dependency>
-                     QXmlStreamAttributes atts = attributes();
-                     dependencies.append(atts.value(text_catalog).toString());
+        }
+        else if ( isEndDocument() )
+        {
+            // ignore state
 
-                     while (! atEnd()) {
+        }
+        else if ( isDTD() )
+        {
+            // ignore state
+
+        }
+        else if ( elementStarts( text_TS ) )
+        {
+            QHash<QString, int> currentLine;
+            QString currentFile;
+            bool maybeRelative = false, maybeAbsolute = false;
+
+            QXmlStreamAttributes atts = attributes();
+
+            translator.setLanguageCode( atts.value( text_language ).toString() );
+            translator.setSourceLanguageCode( atts.value( text_sourcelanguage ).toString() );
+
+            while ( ! atEnd() )
+            {
+                readNext();
+
+                if ( isEndElement() )
+                {
+                    break;
+
+                }
+                else if ( isWhiteSpace() )
+                {
+                    // ignore these, just whitespace
+
+                }
+                else if ( elementStarts( text_defaultcodec ) )
+                {
+
+                    readElementText();
+                    m_cd.appendError( "Warning: ignoring <defaultcodec> element" );
+
+                }
+                else if ( isStartElement() && name().toString().startsWith( text_extrans ) )
+                {
+
+                    QString tag = name().toString();
+                    translator.setExtra( tag.mid( 6 ), readContents() );
+
+                }
+                else if ( elementStarts( text_dependencies ) )
+                {
+                    /*
+                    * <dependencies>
+                    *   <dependency catalog="qtsystems_no"/>
+                    *   <dependency catalog="qtbase_no"/>
+                    * </dependencies>
+                    **/
+
+                    QStringList dependencies;
+
+                    while ( ! atEnd() )
+                    {
                         readNext();
 
-                        if (isEndElement()) {
-                           // </dependency> found, finish local loop
-                           break;
+                        if ( isEndElement() )
+                        {
+                            // </dependencies> found, finish local loop
+                            break;
+
                         }
-                     }
-                  }
-               }
+                        else if ( elementStarts( text_dependency ) )
+                        {
+                            // <dependency>
+                            QXmlStreamAttributes atts = attributes();
+                            dependencies.append( atts.value( text_catalog ).toString() );
 
-               translator.setDependencies(dependencies);
+                            while ( ! atEnd() )
+                            {
+                                readNext();
 
-            } else if (elementStarts(text_context)) {
-               // <context>
-               QString context;
+                                if ( isEndElement() )
+                                {
+                                    // </dependency> found, finish local loop
+                                    break;
+                                }
+                            }
+                        }
+                    }
 
-               while (! atEnd()) {
-                  readNext();
+                    translator.setDependencies( dependencies );
 
-                  if (isEndElement()) {
-                     // </context> found, finish local loop
-                     break;
+                }
+                else if ( elementStarts( text_context ) )
+                {
+                    // <context>
+                    QString context;
 
-                  } else if (isWhiteSpace()) {
-                     // ignore these, just whitespace
-
-                  } else if (elementStarts(text_name)) {
-                     // <name>
-                     context = readElementText();
-
-                  } else if (elementStarts(text_message)) {
-                     // <message>
-                     QList<TranslatorMessage::Reference> refs;
-                     QString currentMsgFile = currentFile;
-
-                     TranslatorMessage msg;
-                     msg.setId(attributes().value(text_id).toString());
-                     msg.setContext(context);
-                     msg.setType(TranslatorMessage::Type::Finished);
-                     msg.setPlural(attributes().value(text_numerus) == text_yes);
-
-                     while (! atEnd()) {
+                    while ( ! atEnd() )
+                    {
                         readNext();
 
-                        if (isEndElement()) {
-                           // </message> found, finish local loop
-                           msg.setReferences(refs);
-                           translator.append(msg);
-                           break;
+                        if ( isEndElement() )
+                        {
+                            // </context> found, finish local loop
+                            break;
 
-                        } else if (isWhiteSpace()) {
-                           // ignore these, just whitespace
+                        }
+                        else if ( isWhiteSpace() )
+                        {
+                            // ignore these, just whitespace
 
-                        } else if (elementStarts(text_source)) {
-                           // <source>...</source>
-                           msg.setSourceText(readContents());
+                        }
+                        else if ( elementStarts( text_name ) )
+                        {
+                            // <name>
+                            context = readElementText();
 
-                        } else if (elementStarts(text_oldsource)) {
-                           // <oldsource>...</oldsource>
-                           msg.setOldSourceText(readContents());
+                        }
+                        else if ( elementStarts( text_message ) )
+                        {
+                            // <message>
+                            QList<TranslatorMessage::Reference> refs;
+                            QString currentMsgFile = currentFile;
 
-                        } else if (elementStarts(text_oldcomment)) {
-                           // <oldcomment>...</oldcomment>
-                           msg.setOldComment(readContents());
+                            TranslatorMessage msg;
+                            msg.setId( attributes().value( text_id ).toString() );
+                            msg.setContext( context );
+                            msg.setType( TranslatorMessage::Type::Finished );
+                            msg.setPlural( attributes().value( text_numerus ) == text_yes );
 
-                        } else if (elementStarts(text_extracomment)) {
-                           // <extracomment>...</extracomment>
-                           msg.setExtraComment(readContents());
+                            while ( ! atEnd() )
+                            {
+                                readNext();
 
-                        } else if (elementStarts(text_translatorcomment)) {
-                           // <translatorcomment>...</translatorcomment>
-                           msg.setTranslatorComment(readContents());
-
-                        } else if (elementStarts(text_location)) {
-                           // <location/>
-                           maybeAbsolute = true;
-                           QXmlStreamAttributes atts = attributes();
-
-                           QString fileName = atts.value(text_filename).toString();
-
-                           if (fileName.isEmpty()) {
-                              fileName = currentMsgFile;
-                              maybeRelative = true;
-
-                           } else {
-                              if (refs.isEmpty()) {
-                                 currentFile = fileName;
-                              }
-
-                              currentMsgFile = fileName;
-                           }
-
-                           const QString lin = atts.value(text_line).toString();
-
-                           if (lin.isEmpty()) {
-                              refs.append(TranslatorMessage::Reference(fileName, -1));
-
-                           } else {
-                              bool bOK;
-                              int lineNo = lin.toInteger<int>(&bOK);
-
-                              if (bOK) {
-                                 if (lin.startsWith('+') || lin.startsWith('-')) {
-                                    lineNo = (currentLine[fileName] += lineNo);
-                                    maybeRelative = true;
-                                 }
-                                 refs.append(TranslatorMessage::Reference(fileName, lineNo));
-                              }
-                           }
-                           readContents();
-
-                        } else if (elementStarts(text_comment)) {
-                           // <comment>...</comment>
-                           msg.setComment(readContents());
-
-                        } else if (elementStarts(text_userdata)) {
-                           // <userdata>...</userdata>
-                           msg.setUserData(readContents());
-
-                        } else if (elementStarts(text_translation)) {
-                           // <translation>
-                           QXmlStreamAttributes atts = attributes();
-                           QStringView type = atts.value(text_type);
-
-                           if (type == text_unfinished) {
-                              msg.setType(TranslatorMessage::Type::Unfinished);
-
-                           } else if (type == text_vanished) {
-                              msg.setType(TranslatorMessage::Type::Vanished);
-
-                           } else if (type == text_obsolete) {
-                              msg.setType(TranslatorMessage::Type::Obsolete);
-
-                           }
-
-                           if (msg.isPlural()) {
-                              QStringList translations;
-
-                              while (! atEnd()) {
-                                 readNext();
-
-                                 if (isEndElement()) {
+                                if ( isEndElement() )
+                                {
+                                    // </message> found, finish local loop
+                                    msg.setReferences( refs );
+                                    translator.append( msg );
                                     break;
 
-                                 } else if (isWhiteSpace()) {
+                                }
+                                else if ( isWhiteSpace() )
+                                {
                                     // ignore these, just whitespace
 
-                                 } else if (elementStarts(text_numerusform)) {
-                                    translations.append(readTransContents());
+                                }
+                                else if ( elementStarts( text_source ) )
+                                {
+                                    // <source>...</source>
+                                    msg.setSourceText( readContents() );
 
-                                 } else {
+                                }
+                                else if ( elementStarts( text_oldsource ) )
+                                {
+                                    // <oldsource>...</oldsource>
+                                    msg.setOldSourceText( readContents() );
+
+                                }
+                                else if ( elementStarts( text_oldcomment ) )
+                                {
+                                    // <oldcomment>...</oldcomment>
+                                    msg.setOldComment( readContents() );
+
+                                }
+                                else if ( elementStarts( text_extracomment ) )
+                                {
+                                    // <extracomment>...</extracomment>
+                                    msg.setExtraComment( readContents() );
+
+                                }
+                                else if ( elementStarts( text_translatorcomment ) )
+                                {
+                                    // <translatorcomment>...</translatorcomment>
+                                    msg.setTranslatorComment( readContents() );
+
+                                }
+                                else if ( elementStarts( text_location ) )
+                                {
+                                    // <location/>
+                                    maybeAbsolute = true;
+                                    QXmlStreamAttributes atts = attributes();
+
+                                    QString fileName = atts.value( text_filename ).toString();
+
+                                    if ( fileName.isEmpty() )
+                                    {
+                                        fileName = currentMsgFile;
+                                        maybeRelative = true;
+
+                                    }
+                                    else
+                                    {
+                                        if ( refs.isEmpty() )
+                                        {
+                                            currentFile = fileName;
+                                        }
+
+                                        currentMsgFile = fileName;
+                                    }
+
+                                    const QString lin = atts.value( text_line ).toString();
+
+                                    if ( lin.isEmpty() )
+                                    {
+                                        refs.append( TranslatorMessage::Reference( fileName, -1 ) );
+
+                                    }
+                                    else
+                                    {
+                                        bool bOK;
+                                        int lineNo = lin.toInteger<int>( &bOK );
+
+                                        if ( bOK )
+                                        {
+                                            if ( lin.startsWith( '+' ) || lin.startsWith( '-' ) )
+                                            {
+                                                lineNo = ( currentLine[fileName] += lineNo );
+                                                maybeRelative = true;
+                                            }
+
+                                            refs.append( TranslatorMessage::Reference( fileName, lineNo ) );
+                                        }
+                                    }
+
+                                    readContents();
+
+                                }
+                                else if ( elementStarts( text_comment ) )
+                                {
+                                    // <comment>...</comment>
+                                    msg.setComment( readContents() );
+
+                                }
+                                else if ( elementStarts( text_userdata ) )
+                                {
+                                    // <userdata>...</userdata>
+                                    msg.setUserData( readContents() );
+
+                                }
+                                else if ( elementStarts( text_translation ) )
+                                {
+                                    // <translation>
+                                    QXmlStreamAttributes atts = attributes();
+                                    QStringView type = atts.value( text_type );
+
+                                    if ( type == text_unfinished )
+                                    {
+                                        msg.setType( TranslatorMessage::Type::Unfinished );
+
+                                    }
+                                    else if ( type == text_vanished )
+                                    {
+                                        msg.setType( TranslatorMessage::Type::Vanished );
+
+                                    }
+                                    else if ( type == text_obsolete )
+                                    {
+                                        msg.setType( TranslatorMessage::Type::Obsolete );
+
+                                    }
+
+                                    if ( msg.isPlural() )
+                                    {
+                                        QStringList translations;
+
+                                        while ( ! atEnd() )
+                                        {
+                                            readNext();
+
+                                            if ( isEndElement() )
+                                            {
+                                                break;
+
+                                            }
+                                            else if ( isWhiteSpace() )
+                                            {
+                                                // ignore these, just whitespace
+
+                                            }
+                                            else if ( elementStarts( text_numerusform ) )
+                                            {
+                                                translations.append( readTransContents() );
+
+                                            }
+                                            else
+                                            {
+                                                handleError();
+                                                break;
+                                            }
+                                        }
+
+                                        msg.setTranslations( translations );
+
+                                    }
+                                    else
+                                    {
+                                        msg.setTranslation( readTransContents() );
+                                    }
+
+
+                                }
+                                else if ( isStartElement() && name().toString().startsWith( text_extrans ) )
+                                {
+                                    // <extra-...>
+                                    QString tag = name().toString();
+                                    msg.setExtra( tag.mid( 6 ), readContents() );
+
+                                }
+                                else
+                                {
                                     handleError();
-                                    break;
-                                 }
-                              }
+                                }
+                            }
 
-                              msg.setTranslations(translations);
-
-                           } else {
-                              msg.setTranslation(readTransContents());
-                           }
-
-
-                        } else if (isStartElement() && name().toString().startsWith(text_extrans)) {
-                           // <extra-...>
-                           QString tag = name().toString();
-                           msg.setExtra(tag.mid(6), readContents());
-
-                        } else {
-                           handleError();
                         }
-                     }
+                        else
+                        {
+                            handleError();
+                        }
+                    }
 
-                  } else {
-                     handleError();
-                  }
-               }
+                }
+                else
+                {
+                    handleError();
+                }
 
-            } else {
-               handleError();
+                translator.setLocationsType( maybeRelative ? Translator::RelativeLocations :
+                                             maybeAbsolute ? Translator::AbsoluteLocations : Translator::NoLocations );
+            } // </TS>
+
+        }
+        else
+        {
+            handleError();
+        }
+    }
+
+    if ( hasError() )
+    {
+        m_cd.appendError( errorString() );
+        return false;
+    }
+
+    return true;
+}
+
+static QString numericEntity( int ch )
+{
+    return ( ch <= 0x20 ? QString( "<byte value=\"x%1\"/>" ) : QString( "&#x%1;" ) ).formatArg( ch, 0, 16 );
+}
+
+static QString protect( const QString &str )
+{
+    QString result;
+
+    for ( QChar c : str )
+    {
+
+        switch ( c.unicode() )
+        {
+            case '\"':
+                result += "&quot;";
+                break;
+
+            case '&':
+                result += "&amp;";
+                break;
+
+            case '>':
+                result += "&gt;";
+                break;
+
+            case '<':
+                result += "&lt;";
+                break;
+
+            case '\'':
+                result += "&apos;";
+                break;
+
+            default:
+                if ( c < 0x20 && c != '\r' && c != '\n' && c != '\t' )
+                {
+                    result += numericEntity( c.unicode() );
+
+                }
+                else
+                {
+                    result += c;
+                }
+        }
+    }
+
+    return result;
+}
+
+static void writeExtras( QTextStream &t, const char *indent, const QHash<QString, QString> &extras,
+                         const QRegularExpression &drops )
+{
+    QStringList list;
+
+    for ( auto iter = extras.cbegin(); iter != extras.cend(); ++iter )
+    {
+        QRegularExpressionMatch match = drops.match( iter.key() );
+
+        if ( ! match.hasMatch() )
+        {
+            list.append( "<extra-" + iter.key() + '>' + protect( iter.value() ) + "</extra-" + iter.key() + ">" );
+        }
+    }
+
+    list.sort();
+
+    for ( const QString &out : list )
+    {
+        t << indent << out << endl;
+    }
+}
+
+static void writeVariants( QTextStream &t, const char *indent, const QString &input )
+{
+    int offset;
+
+    if ( ( offset = input.indexOf( QChar( Translator::BinaryVariantSeparator ) ) ) >= 0 )
+    {
+        t << " variants=\"yes\">";
+        int start = 0;
+
+        while ( true )
+        {
+            t << "\n    " << indent << "<lengthvariant>"
+              << protect( input.mid( start, offset - start ) )
+              << "</lengthvariant>";
+
+            if ( offset == input.length() )
+            {
+                break;
             }
 
-            translator.setLocationsType(maybeRelative ? Translator::RelativeLocations :
-                                        maybeAbsolute ? Translator::AbsoluteLocations : Translator::NoLocations);
-         } // </TS>
+            start = offset + 1;
+            offset = input.indexOf( QChar( Translator::BinaryVariantSeparator ), start );
 
-      } else {
-         handleError();
-      }
-   }
-
-   if (hasError()) {
-      m_cd.appendError(errorString());
-      return false;
-   }
-
-   return true;
-}
-
-static QString numericEntity(int ch)
-{
-   return (ch <= 0x20 ? QString("<byte value=\"x%1\"/>") : QString("&#x%1;")).formatArg(ch, 0, 16);
-}
-
-static QString protect(const QString &str)
-{
-   QString result;
-
-   for (QChar c : str) {
-
-      switch (c.unicode()) {
-         case '\"':
-            result += "&quot;";
-            break;
-
-         case '&':
-            result += "&amp;";
-            break;
-
-         case '>':
-            result += "&gt;";
-            break;
-
-         case '<':
-            result += "&lt;";
-            break;
-
-         case '\'':
-            result += "&apos;";
-            break;
-
-         default:
-            if (c < 0x20 && c != '\r' && c != '\n' && c != '\t') {
-               result += numericEntity(c.unicode());
-
-            } else {
-               result += c;
+            if ( offset < 0 )
+            {
+                offset = input.length();
             }
-      }
-   }
+        }
 
-   return result;
+        t << "\n" << indent;
+
+    }
+    else
+    {
+        t << ">" << protect( input );
+    }
 }
 
-static void writeExtras(QTextStream &t, const char *indent, const QHash<QString, QString> &extras,
-            const QRegularExpression &drops)
+bool saveTS( const Translator &translator, QIODevice &dev, ConversionData &cd )
 {
-   QStringList list;
+    bool result = true;
+    QTextStream t( &dev );
 
-   for (auto iter = extras.cbegin(); iter != extras.cend(); ++iter) {
-      QRegularExpressionMatch match = drops.match(iter.key());
+    t.setCodec( QTextCodec::codecForName( "UTF-8" ) );
+    t << "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<!DOCTYPE TS>\n";
+    t << "<TS version=\"2.1\"";
 
-      if (! match.hasMatch()) {
-         list.append("<extra-" + iter.key() + '>' + protect(iter.value()) + "</extra-" + iter.key() + ">");
-      }
-   }
-   list.sort();
+    QString languageCode = translator.languageCode();
 
-   for (const QString &out : list) {
-      t << indent << out << endl;
-   }
-}
+    if ( ! languageCode.isEmpty() && languageCode != "C" )
+    {
+        t << " language=\"" << languageCode << "\"";
+    }
 
-static void writeVariants(QTextStream &t, const char *indent, const QString &input)
-{
-   int offset;
+    languageCode = translator.sourceLanguageCode();
 
-   if ((offset = input.indexOf(QChar(Translator::BinaryVariantSeparator))) >= 0) {
-      t << " variants=\"yes\">";
-      int start = 0;
+    if ( ! languageCode.isEmpty() && languageCode != "C" )
+    {
+        t << " sourcelanguage=\"" << languageCode << "\"";
+    }
 
-      while (true) {
-         t << "\n    " << indent << "<lengthvariant>"
-                       << protect(input.mid(start, offset - start))
-                       << "</lengthvariant>";
+    t << ">\n";
 
-         if (offset == input.length()) {
-            break;
-         }
+    QStringList deps = translator.dependencies();
 
-         start = offset + 1;
-         offset = input.indexOf(QChar(Translator::BinaryVariantSeparator), start);
+    if ( !deps.isEmpty() )
+    {
+        t << "<dependencies>\n";
 
-         if (offset < 0) {
-            offset = input.length();
-         }
-      }
+        for ( const QString &dep : deps )
+        {
+            t << "<dependency catalog=\"" << dep << "\"/>\n";
+        }
 
-      t << "\n" << indent;
+        t << "</dependencies>\n";
+    }
 
-   } else {
-      t << ">" << protect(input);
-   }
-}
+    QRegularExpression drops( cd.dropTags().join( "|" ) );
 
-bool saveTS(const Translator &translator, QIODevice &dev, ConversionData &cd)
-{
-   bool result = true;
-   QTextStream t(&dev);
+    writeExtras( t, "    ", translator.extras(), drops );
 
-   t.setCodec(QTextCodec::codecForName("UTF-8"));
-   t << "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<!DOCTYPE TS>\n";
-   t << "<TS version=\"2.1\"";
+    QHash<QString, QList<TranslatorMessage> > messageOrder;
+    QList<QString> contextOrder;
 
-   QString languageCode = translator.languageCode();
+    for ( const TranslatorMessage &msg : translator.messages() )
+    {
 
-   if (! languageCode.isEmpty() && languageCode != "C") {
-      t << " language=\"" << languageCode << "\"";
-   }
+        if ( ( msg.type() == TranslatorMessage::Type::Obsolete || msg.type() == TranslatorMessage::Type::Vanished ) &&
+                msg.translation().isEmpty() )
+        {
+            continue;
+        }
 
-   languageCode = translator.sourceLanguageCode();
+        QList<TranslatorMessage> &context = messageOrder[msg.context()];
 
-   if (! languageCode.isEmpty() && languageCode != "C") {
-      t << " sourcelanguage=\"" << languageCode << "\"";
-   }
-   t << ">\n";
+        if ( context.isEmpty() )
+        {
+            contextOrder.append( msg.context() );
+        }
 
-   QStringList deps = translator.dependencies();
+        context.append( msg );
+    }
 
-   if (!deps.isEmpty()) {
-      t << "<dependencies>\n";
+    if ( cd.sortContexts() )
+    {
+        std::sort( contextOrder.begin(), contextOrder.end() );
+    }
 
-      for (const QString &dep : deps) {
-         t << "<dependency catalog=\"" << dep << "\"/>\n";
-      }
+    QHash<QString, int> currentLine;
+    QString currentFile;
 
-      t << "</dependencies>\n";
-   }
+    for ( const QString &context : contextOrder )
+    {
 
-   QRegularExpression drops(cd.dropTags().join("|"));
+        t << "<context>\n"
+          "    <name>";
 
-   writeExtras(t, "    ", translator.extras(), drops);
+        t << protect( context )
+          << "</name>\n";
 
-   QHash<QString, QList<TranslatorMessage> > messageOrder;
-   QList<QString> contextOrder;
+        for ( const TranslatorMessage &msg : messageOrder[context] )
+        {
 
-   for (const TranslatorMessage &msg : translator.messages()) {
+            t << "    <message";
 
-      if ((msg.type() == TranslatorMessage::Type::Obsolete || msg.type() == TranslatorMessage::Type::Vanished) &&
-            msg.translation().isEmpty()) {
-         continue;
-      }
-
-      QList<TranslatorMessage> &context = messageOrder[msg.context()];
-      if (context.isEmpty()) {
-         contextOrder.append(msg.context());
-      }
-
-      context.append(msg);
-   }
-
-   if (cd.sortContexts()) {
-      std::sort(contextOrder.begin(), contextOrder.end());
-   }
-
-   QHash<QString, int> currentLine;
-   QString currentFile;
-
-   for (const QString &context : contextOrder) {
-
-      t << "<context>\n"
-        "    <name>";
-
-      t << protect(context)
-        << "</name>\n";
-
-      for (const TranslatorMessage &msg : messageOrder[context]) {
-
-         t << "    <message";
-
-         if (! msg.id().isEmpty()) {
-            t << " id=\"" << msg.id() << "\"";
-         }
-
-         if (msg.isPlural()) {
-            t << " numerus=\"yes\"";
-         }
-
-         t << ">\n";
-
-         if (translator.locationsType() != Translator::NoLocations) {
-            QString cfile = currentFile;
-            bool first = true;
-
-            for (const TranslatorMessage::Reference &ref : msg.allReferences()) {
-               QString fn = cd.m_targetDir.relativeFilePath(ref.fileName()).replace(QChar('\\'), QChar('/'));
-
-               int ln = ref.lineNumber();
-               QString ld;
-
-               if (translator.locationsType() == Translator::RelativeLocations) {
-                  if (ln != -1) {
-                     int dlt = ln - currentLine[fn];
-
-                     if (dlt >= 0) {
-                        ld.append('+');
-                     }
-
-                     ld.append(QString::number(dlt));
-                     currentLine[fn] = ln;
-                  }
-
-                  if (fn != cfile) {
-                     if (first) {
-                        currentFile = fn;
-                     }
-
-                     cfile = fn;
-
-                  } else {
-                     fn.clear();
-                  }
-
-                  first = false;
-
-               } else {
-                  if (ln != -1) {
-                     ld = QString::number(ln);
-                  }
-               }
-
-               t << "        <location";
-
-               if (! fn.isEmpty()) {
-                  t << " filename=\"" << fn << "\"";
-               }
-
-               if (! ld.isEmpty()) {
-                  t << " line=\"" << ld << "\"";
-               }
-
-               t << "/>\n";
-            }
-         }
-
-         t << "        <source>"
-           << protect(msg.sourceText())
-           << "</source>\n";
-
-         if (! msg.oldSourceText().isEmpty()) {
-            t << "        <oldsource>" << protect(msg.oldSourceText()) << "</oldsource>\n";
-         }
-
-         if (! msg.comment().isEmpty()) {
-            t << "        <comment>"
-              << protect(msg.comment())
-              << "</comment>\n";
-         }
-
-         if (! msg.oldComment().isEmpty()) {
-            t << "        <oldcomment>" << protect(msg.oldComment()) << "</oldcomment>\n";
-         }
-
-         if (! msg.extraComment().isEmpty()) {
-            t << "        <extracomment>" << protect(msg.extraComment())
-              << "</extracomment>\n";
-         }
-
-         if (! msg.translatorComment().isEmpty()) {
-            t << "        <translatorcomment>" << protect(msg.translatorComment())
-              << "</translatorcomment>\n";
-         }
-
-         t << "        <translation";
-
-         if (msg.type() == TranslatorMessage::Type::Unfinished) {
-            t << " type=\"unfinished\"";
-
-         } else if (msg.type() == TranslatorMessage::Type::Vanished) {
-            t << " type=\"vanished\"";
-
-         } else if (msg.type() == TranslatorMessage::Type::Obsolete) {
-            t << " type=\"obsolete\"";
-         }
-
-         if (msg.isPlural()) {
-            t << ">";
-            const QStringList &translns = msg.translations();
-
-            for (int j = 0; j < translns.count(); ++j) {
-               t << "\n            <numerusform";
-               writeVariants(t, "            ", translns[j]);
-               t << "</numerusform>";
+            if ( ! msg.id().isEmpty() )
+            {
+                t << " id=\"" << msg.id() << "\"";
             }
 
-            t << "\n        ";
+            if ( msg.isPlural() )
+            {
+                t << " numerus=\"yes\"";
+            }
 
-         } else {
-            writeVariants(t, "        ", msg.translation());
-         }
+            t << ">\n";
 
-         t << "</translation>\n";
+            if ( translator.locationsType() != Translator::NoLocations )
+            {
+                QString cfile = currentFile;
+                bool first = true;
+
+                for ( const TranslatorMessage::Reference &ref : msg.allReferences() )
+                {
+                    QString fn = cd.m_targetDir.relativeFilePath( ref.fileName() ).replace( QChar( '\\' ), QChar( '/' ) );
+
+                    int ln = ref.lineNumber();
+                    QString ld;
+
+                    if ( translator.locationsType() == Translator::RelativeLocations )
+                    {
+                        if ( ln != -1 )
+                        {
+                            int dlt = ln - currentLine[fn];
+
+                            if ( dlt >= 0 )
+                            {
+                                ld.append( '+' );
+                            }
+
+                            ld.append( QString::number( dlt ) );
+                            currentLine[fn] = ln;
+                        }
+
+                        if ( fn != cfile )
+                        {
+                            if ( first )
+                            {
+                                currentFile = fn;
+                            }
+
+                            cfile = fn;
+
+                        }
+                        else
+                        {
+                            fn.clear();
+                        }
+
+                        first = false;
+
+                    }
+                    else
+                    {
+                        if ( ln != -1 )
+                        {
+                            ld = QString::number( ln );
+                        }
+                    }
+
+                    t << "        <location";
+
+                    if ( ! fn.isEmpty() )
+                    {
+                        t << " filename=\"" << fn << "\"";
+                    }
+
+                    if ( ! ld.isEmpty() )
+                    {
+                        t << " line=\"" << ld << "\"";
+                    }
+
+                    t << "/>\n";
+                }
+            }
+
+            t << "        <source>"
+              << protect( msg.sourceText() )
+              << "</source>\n";
+
+            if ( ! msg.oldSourceText().isEmpty() )
+            {
+                t << "        <oldsource>" << protect( msg.oldSourceText() ) << "</oldsource>\n";
+            }
+
+            if ( ! msg.comment().isEmpty() )
+            {
+                t << "        <comment>"
+                  << protect( msg.comment() )
+                  << "</comment>\n";
+            }
+
+            if ( ! msg.oldComment().isEmpty() )
+            {
+                t << "        <oldcomment>" << protect( msg.oldComment() ) << "</oldcomment>\n";
+            }
+
+            if ( ! msg.extraComment().isEmpty() )
+            {
+                t << "        <extracomment>" << protect( msg.extraComment() )
+                  << "</extracomment>\n";
+            }
+
+            if ( ! msg.translatorComment().isEmpty() )
+            {
+                t << "        <translatorcomment>" << protect( msg.translatorComment() )
+                  << "</translatorcomment>\n";
+            }
+
+            t << "        <translation";
+
+            if ( msg.type() == TranslatorMessage::Type::Unfinished )
+            {
+                t << " type=\"unfinished\"";
+
+            }
+            else if ( msg.type() == TranslatorMessage::Type::Vanished )
+            {
+                t << " type=\"vanished\"";
+
+            }
+            else if ( msg.type() == TranslatorMessage::Type::Obsolete )
+            {
+                t << " type=\"obsolete\"";
+            }
+
+            if ( msg.isPlural() )
+            {
+                t << ">";
+                const QStringList &translns = msg.translations();
+
+                for ( int j = 0; j < translns.count(); ++j )
+                {
+                    t << "\n            <numerusform";
+                    writeVariants( t, "            ", translns[j] );
+                    t << "</numerusform>";
+                }
+
+                t << "\n        ";
+
+            }
+            else
+            {
+                writeVariants( t, "        ", msg.translation() );
+            }
+
+            t << "</translation>\n";
 
 
-         writeExtras(t, "        ", msg.extras(), drops);
+            writeExtras( t, "        ", msg.extras(), drops );
 
 
-         if (! msg.userData().isEmpty()) {
-            t << "        <userdata>" << msg.userData() << "</userdata>\n";
-         }
+            if ( ! msg.userData().isEmpty() )
+            {
+                t << "        <userdata>" << msg.userData() << "</userdata>\n";
+            }
 
-         t << "    </message>\n";
-      }
+            t << "    </message>\n";
+        }
 
-      t << "</context>\n";
-   }
+        t << "</context>\n";
+    }
 
-   t << "</TS>\n";
-   return result;
+    t << "</TS>\n";
+    return result;
 }
 
-bool loadTS(Translator &translator, QIODevice &dev, ConversionData &cd)
+bool loadTS( Translator &translator, QIODevice &dev, ConversionData &cd )
 {
-   TSReader reader(dev, cd);
-   return reader.read(translator);
+    TSReader reader( dev, cd );
+    return reader.read( translator );
 }
 
 int initTS()
 {
-   Translator::FileFormat format;
+    Translator::FileFormat format;
 
-   format.extension   = "ts";
-   format.fileType    = Translator::FileFormat::TranslationSource;
-   format.priority    = 0;
+    format.extension   = "ts";
+    format.fileType    = Translator::FileFormat::TranslationSource;
+    format.priority    = 0;
 
-   format.description = "Translate source text";
-   format.loader      = &loadTS;
-   format.saver       = &saveTS;
+    format.description = "Translate source text";
+    format.loader      = &loadTS;
+    format.saver       = &saveTS;
 
-   Translator::registerFileFormat(format);
+    Translator::registerFileFormat( format );
 
-   return 1;
+    return 1;
 }
 
-Q_CONSTRUCTOR_FUNCTION(initTS)
+Q_CONSTRUCTOR_FUNCTION( initTS )

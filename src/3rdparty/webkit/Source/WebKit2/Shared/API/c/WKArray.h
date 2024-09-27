@@ -36,10 +36,10 @@ extern "C" {
 
 WK_EXPORT WKTypeID WKArrayGetTypeID();
 
-WK_EXPORT WKArrayRef WKArrayCreate(WKTypeRef* values, size_t numberOfValues);
+WK_EXPORT WKArrayRef WKArrayCreate( WKTypeRef *values, size_t numberOfValues );
 
-WK_EXPORT WKTypeRef WKArrayGetItemAtIndex(WKArrayRef array, size_t index);
-WK_EXPORT size_t WKArrayGetSize(WKArrayRef array);
+WK_EXPORT WKTypeRef WKArrayGetItemAtIndex( WKArrayRef array, size_t index );
+WK_EXPORT size_t WKArrayGetSize( WKArrayRef array );
 
 #ifdef __cplusplus
 }

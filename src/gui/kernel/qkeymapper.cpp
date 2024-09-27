@@ -30,93 +30,107 @@
 #include <qkeymapper_p.h>
 
 QKeyMapper::QKeyMapper()
-   : QObject(nullptr), d_ptr(new QKeyMapperPrivate)
+    : QObject( nullptr ), d_ptr( new QKeyMapperPrivate )
 {
-   d_ptr->q_ptr = this;
+    d_ptr->q_ptr = this;
 }
 
 QKeyMapper::~QKeyMapper()
 {
 }
 
-QList<int> QKeyMapper::possibleKeys(QKeyEvent *e)
+QList<int> QKeyMapper::possibleKeys( QKeyEvent *e )
 {
-   QList<int> result;
+    QList<int> result;
 
-   if (!e->nativeScanCode()) {
-      if (e->key() && (e->key() != Qt::Key_unknown)) {
-         result << int(e->key() + e->modifiers());
-      } else if (!e->text().isEmpty()) {
-         result << int(e->text().at(0).unicode() + e->modifiers());
-      }
-      return result;
-   }
+    if ( !e->nativeScanCode() )
+    {
+        if ( e->key() && ( e->key() != Qt::Key_unknown ) )
+        {
+            result << int( e->key() + e->modifiers() );
+        }
+        else if ( !e->text().isEmpty() )
+        {
+            result << int( e->text().at( 0 ).unicode() + e->modifiers() );
+        }
 
-   return instance()->d_func()->possibleKeys(e);
+        return result;
+    }
+
+    return instance()->d_func()->possibleKeys( e );
 }
 
 // in qapplication_*.cpp
-extern bool qt_sendSpontaneousEvent(QObject *receiver, QEvent *event);
+extern bool qt_sendSpontaneousEvent( QObject *receiver, QEvent *event );
 
 void QKeyMapper::changeKeyboard()
 {
-   instance()->d_func()->clearMappings();
+    instance()->d_func()->clearMappings();
 
-   // emerald - support KeyboardLayoutChange
+    // emerald - support KeyboardLayoutChange
 #if 0
-   // inform all toplevel widgets of the change
-   QEvent e(QEvent::KeyboardLayoutChange);
-   QWidgetList list = QApplication::topLevelWidgets();
+    // inform all toplevel widgets of the change
+    QEvent e( QEvent::KeyboardLayoutChange );
+    QWidgetList list = QApplication::topLevelWidgets();
 
-   for (int i = 0; i < list.size(); ++i) {
-      QWidget *w = list.at(i);
-      qt_sendSpontaneousEvent(w, &e);
-   }
+    for ( int i = 0; i < list.size(); ++i )
+    {
+        QWidget *w = list.at( i );
+        qt_sendSpontaneousEvent( w, &e );
+    }
+
 #endif
 
 }
 
 static QKeyMapper *keymapper()
 {
-   static QKeyMapper retval;
-   return &retval;
+    static QKeyMapper retval;
+    return &retval;
 }
 
 QKeyMapper *QKeyMapper::instance()
 {
-   return keymapper();
+    return keymapper();
 }
 
 QKeyMapperPrivate *qt_keymapper_private()
 {
-   return QKeyMapper::instance()->d_func();
+    return QKeyMapper::instance()->d_func();
 }
 
 QKeyMapperPrivate::QKeyMapperPrivate()
 {
-   keyboardInputLocale = QLocale::system();
-   keyboardInputDirection = keyboardInputLocale.textDirection();
+    keyboardInputLocale = QLocale::system();
+    keyboardInputDirection = keyboardInputLocale.textDirection();
 }
 
 QKeyMapperPrivate::~QKeyMapperPrivate()
 {
-   // clearMappings();
+    // clearMappings();
 }
 
 void QKeyMapperPrivate::clearMappings()
 {
 }
-QList<int> QKeyMapperPrivate::possibleKeys(QKeyEvent *e)
+QList<int> QKeyMapperPrivate::possibleKeys( QKeyEvent *e )
 {
-   QList<int> result = QGuiApplicationPrivate::platformIntegration()->possibleKeys(e);
-   if (!result.isEmpty()) {
-      return result;
-   }
-   if (e->key() && (e->key() != Qt::Key_unknown)) {
-      result << int(e->key() + e->modifiers());
-   } else if (!e->text().isEmpty()) {
-      result << int(e->text().at(0).unicode() + e->modifiers());
-   }
-   return result;
+    QList<int> result = QGuiApplicationPrivate::platformIntegration()->possibleKeys( e );
+
+    if ( !result.isEmpty() )
+    {
+        return result;
+    }
+
+    if ( e->key() && ( e->key() != Qt::Key_unknown ) )
+    {
+        result << int( e->key() + e->modifiers() );
+    }
+    else if ( !e->text().isEmpty() )
+    {
+        result << int( e->text().at( 0 ).unicode() + e->modifiers() );
+    }
+
+    return result;
 }
 

@@ -25,24 +25,38 @@
 #include "LinearGradientAttributes.h"
 #include "RenderSVGResourceGradient.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class SVGLinearGradientElement;
 
-class RenderSVGResourceLinearGradient : public RenderSVGResourceGradient {
+class RenderSVGResourceLinearGradient : public RenderSVGResourceGradient
+{
 public:
-    RenderSVGResourceLinearGradient(SVGLinearGradientElement*);
+    RenderSVGResourceLinearGradient( SVGLinearGradientElement * );
     virtual ~RenderSVGResourceLinearGradient();
 
-    virtual const char* renderName() const { return "RenderSVGResourceLinearGradient"; }
+    virtual const char *renderName() const
+    {
+        return "RenderSVGResourceLinearGradient";
+    }
 
-    virtual RenderSVGResourceType resourceType() const { return s_resourceType; }
+    virtual RenderSVGResourceType resourceType() const
+    {
+        return s_resourceType;
+    }
     static RenderSVGResourceType s_resourceType;
 
-    virtual bool boundingBoxMode() const { return m_attributes.boundingBoxMode(); }
-    virtual void calculateGradientTransform(AffineTransform& transform) { transform = m_attributes.gradientTransform(); }
-    virtual void collectGradientAttributes(SVGGradientElement*);
-    virtual void buildGradient(GradientData*, SVGGradientElement*) const;
+    virtual bool boundingBoxMode() const
+    {
+        return m_attributes.boundingBoxMode();
+    }
+    virtual void calculateGradientTransform( AffineTransform &transform )
+    {
+        transform = m_attributes.gradientTransform();
+    }
+    virtual void collectGradientAttributes( SVGGradientElement * );
+    virtual void buildGradient( GradientData *, SVGGradientElement * ) const;
 
 private:
     LinearGradientAttributes m_attributes;

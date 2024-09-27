@@ -70,113 +70,172 @@
 
 using namespace std;
 
-namespace WebCore {
+namespace WebCore
+{
 
-FixedTableLayout::FixedTableLayout(RenderTable* table)
-    : TableLayout(table)
+FixedTableLayout::FixedTableLayout( RenderTable *table )
+    : TableLayout( table )
 {
 }
 
-int FixedTableLayout::calcWidthArray(int)
+int FixedTableLayout::calcWidthArray( int )
 {
     int usedWidth = 0;
 
     // iterate over all <col> elements
-    RenderObject* child = m_table->firstChild();
+    RenderObject *child = m_table->firstChild();
     int nEffCols = m_table->numEffCols();
-    m_width.resize(nEffCols);
-    m_width.fill(Length(Auto));
+    m_width.resize( nEffCols );
+    m_width.fill( Length( Auto ) );
 
     int currentEffectiveColumn = 0;
     Length grpWidth;
-    while (child && child->isTableCol()) {
-        RenderTableCol* col = toRenderTableCol(child);
-        if (col->firstChild())
+
+    while ( child && child->isTableCol() )
+    {
+        RenderTableCol *col = toRenderTableCol( child );
+
+        if ( col->firstChild() )
+        {
             grpWidth = col->style()->logicalWidth();
-        else {
+        }
+        else
+        {
             Length w = col->style()->logicalWidth();
-            if (w.isAuto())
+
+            if ( w.isAuto() )
+            {
                 w = grpWidth;
+            }
+
             int effWidth = 0;
-            if (w.isFixed() && w.value() > 0)
+
+            if ( w.isFixed() && w.value() > 0 )
+            {
                 effWidth = w.value();
+            }
 
             int span = col->span();
-            while (span) {
+
+            while ( span )
+            {
                 int spanInCurrentEffectiveColumn;
-                if (currentEffectiveColumn >= nEffCols) {
-                    m_table->appendColumn(span);
+
+                if ( currentEffectiveColumn >= nEffCols )
+                {
+                    m_table->appendColumn( span );
                     nEffCols++;
-                    m_width.append(Length());
+                    m_width.append( Length() );
                     spanInCurrentEffectiveColumn = span;
-                } else {
-                    if (span < m_table->spanOfEffCol(currentEffectiveColumn)) {
-                        m_table->splitColumn(currentEffectiveColumn, span);
-                        nEffCols++;
-                        m_width.append(Length());
-                    }
-                    spanInCurrentEffectiveColumn = m_table->spanOfEffCol(currentEffectiveColumn);
                 }
-                if ((w.isFixed() || w.isPercent()) && w.isPositive()) {
+                else
+                {
+                    if ( span < m_table->spanOfEffCol( currentEffectiveColumn ) )
+                    {
+                        m_table->splitColumn( currentEffectiveColumn, span );
+                        nEffCols++;
+                        m_width.append( Length() );
+                    }
+
+                    spanInCurrentEffectiveColumn = m_table->spanOfEffCol( currentEffectiveColumn );
+                }
+
+                if ( ( w.isFixed() || w.isPercent() ) && w.isPositive() )
+                {
                     m_width[currentEffectiveColumn] = w;
                     m_width[currentEffectiveColumn] *= spanInCurrentEffectiveColumn;
                     usedWidth += effWidth * spanInCurrentEffectiveColumn;
                 }
+
                 span -= spanInCurrentEffectiveColumn;
                 currentEffectiveColumn++;
             }
         }
+
         col->computePreferredLogicalWidths();
 
-        RenderObject* next = child->firstChild();
-        if (!next)
+        RenderObject *next = child->firstChild();
+
+        if ( !next )
+        {
             next = child->nextSibling();
-        if (!next && child->parent()->isTableCol()) {
+        }
+
+        if ( !next && child->parent()->isTableCol() )
+        {
             next = child->parent()->nextSibling();
             grpWidth = Length();
         }
+
         child = next;
     }
 
     // Iterate over the first row in case some are unspecified.
-    RenderTableSection* section = m_table->header();
-    if (!section)
+    RenderTableSection *section = m_table->header();
+
+    if ( !section )
+    {
         section = m_table->firstBody();
-    if (!section)
+    }
+
+    if ( !section )
+    {
         section = m_table->footer();
-    if (section && !section->numRows())
-        section = m_table->sectionBelow(section, true);
-    if (section) {
+    }
+
+    if ( section && !section->numRows() )
+    {
+        section = m_table->sectionBelow( section, true );
+    }
+
+    if ( section )
+    {
         int cCol = 0;
-        RenderObject* firstRow = section->firstChild();
+        RenderObject *firstRow = section->firstChild();
         child = firstRow->firstChild();
-        while (child) {
-            if (child->isTableCell()) {
-                RenderTableCell* cell = toRenderTableCell(child);
-                if (cell->preferredLogicalWidthsDirty())
+
+        while ( child )
+        {
+            if ( child->isTableCell() )
+            {
+                RenderTableCell *cell = toRenderTableCell( child );
+
+                if ( cell->preferredLogicalWidthsDirty() )
+                {
                     cell->computePreferredLogicalWidths();
+                }
 
                 Length w = cell->styleOrColLogicalWidth();
                 int span = cell->colSpan();
                 int effWidth = 0;
-                if (w.isFixed() && w.isPositive())
+
+                if ( w.isFixed() && w.isPositive() )
+                {
                     effWidth = w.value();
-                
+                }
+
                 int usedSpan = 0;
                 int i = 0;
-                while (usedSpan < span && cCol + i < nEffCols) {
-                    float eSpan = m_table->spanOfEffCol(cCol + i);
+
+                while ( usedSpan < span && cCol + i < nEffCols )
+                {
+                    float eSpan = m_table->spanOfEffCol( cCol + i );
+
                     // Only set if no col element has already set it.
-                    if (m_width[cCol + i].isAuto() && w.type() != Auto) {
+                    if ( m_width[cCol + i].isAuto() && w.type() != Auto )
+                    {
                         m_width[cCol + i] = w;
                         m_width[cCol + i] *= eSpan / span;
                         usedWidth += effWidth * eSpan / span;
                     }
+
                     usedSpan += eSpan;
                     i++;
                 }
+
                 cCol += i;
             }
+
             child = child->nextSibling();
         }
     }
@@ -189,10 +248,10 @@ int FixedTableLayout::calcWidthArray(int)
 // Keep this in synch with BLOCK_MAX_WIDTH in RenderBlock.cpp
 #define TABLE_MAX_WIDTH 15000
 
-void FixedTableLayout::computePreferredLogicalWidths(int& minWidth, int& maxWidth)
+void FixedTableLayout::computePreferredLogicalWidths( int &minWidth, int &maxWidth )
 {
     // FIXME: This entire calculation is incorrect for both minwidth and maxwidth.
-    
+
     // we might want to wait until we have all of the first row before
     // layouting for the first time.
 
@@ -202,10 +261,11 @@ void FixedTableLayout::computePreferredLogicalWidths(int& minWidth, int& maxWidt
     // The maximum width is max(minWidth, tableWidth).
     int bordersPaddingAndSpacing = m_table->bordersPaddingAndSpacingInRowDirection();
 
-    int tableLogicalWidth = m_table->style()->logicalWidth().isFixed() ? m_table->style()->logicalWidth().value() - bordersPaddingAndSpacing : 0;
-    int mw = calcWidthArray(tableLogicalWidth) + bordersPaddingAndSpacing;
+    int tableLogicalWidth = m_table->style()->logicalWidth().isFixed() ? m_table->style()->logicalWidth().value() -
+                            bordersPaddingAndSpacing : 0;
+    int mw = calcWidthArray( tableLogicalWidth ) + bordersPaddingAndSpacing;
 
-    minWidth = max(mw, tableLogicalWidth);
+    minWidth = max( mw, tableLogicalWidth );
     maxWidth = minWidth;
 
     // This quirk is very similar to one that exists in RenderBlock::calcBlockPrefWidths().
@@ -218,19 +278,21 @@ void FixedTableLayout::computePreferredLogicalWidths(int& minWidth, int& maxWidt
                 </td></tr></table>
             </td></tr></table>
         </td></tr></table>
-    */ 
-    // In this example, the two inner tables should be as large as the outer table. 
+    */
+    // In this example, the two inner tables should be as large as the outer table.
     // We can achieve this effect by making the maxwidth of fixed tables with percentage
     // widths be infinite.
-    if (m_table->document()->inQuirksMode() && m_table->style()->logicalWidth().isPercent() && maxWidth < TABLE_MAX_WIDTH)
+    if ( m_table->document()->inQuirksMode() && m_table->style()->logicalWidth().isPercent() && maxWidth < TABLE_MAX_WIDTH )
+    {
         maxWidth = TABLE_MAX_WIDTH;
+    }
 }
 
 void FixedTableLayout::layout()
 {
     int tableLogicalWidth = m_table->logicalWidth() - m_table->bordersPaddingAndSpacingInRowDirection();
     int nEffCols = m_table->numEffCols();
-    Vector<int> calcWidth(nEffCols, 0);
+    Vector<int> calcWidth( nEffCols, 0 );
 
     int numAuto = 0;
     int autoSpan = 0;
@@ -242,91 +304,135 @@ void FixedTableLayout::layout()
     // Percentages are of the table's width, so for example
     // for a table width of 100px with columns (40px, 10%), the 10% compute
     // to 10px here, and will scale up to 20px in the final (80px, 20px).
-    for (int i = 0; i < nEffCols; i++) {
-        if (m_width[i].isFixed()) {
+    for ( int i = 0; i < nEffCols; i++ )
+    {
+        if ( m_width[i].isFixed() )
+        {
             calcWidth[i] = m_width[i].value();
             totalFixedWidth += calcWidth[i];
-        } else if (m_width[i].isPercent()) {
-            calcWidth[i] = m_width[i].calcValue(tableLogicalWidth);
+        }
+        else if ( m_width[i].isPercent() )
+        {
+            calcWidth[i] = m_width[i].calcValue( tableLogicalWidth );
             totalPercentWidth += calcWidth[i];
             totalPercent += m_width[i].percent();
-        } else if (m_width[i].isAuto()) {
+        }
+        else if ( m_width[i].isAuto() )
+        {
             numAuto++;
-            autoSpan += m_table->spanOfEffCol(i);
+            autoSpan += m_table->spanOfEffCol( i );
         }
     }
 
     int hspacing = m_table->hBorderSpacing();
     int totalWidth = totalFixedWidth + totalPercentWidth;
-    if (!numAuto || totalWidth > tableLogicalWidth) {
+
+    if ( !numAuto || totalWidth > tableLogicalWidth )
+    {
         // If there are no auto columns, or if the total is too wide, take
         // what we have and scale it to fit as necessary.
-        if (totalWidth != tableLogicalWidth) {
+        if ( totalWidth != tableLogicalWidth )
+        {
             // Fixed widths only scale up
-            if (totalFixedWidth && totalWidth < tableLogicalWidth) {
+            if ( totalFixedWidth && totalWidth < tableLogicalWidth )
+            {
                 totalFixedWidth = 0;
-                for (int i = 0; i < nEffCols; i++) {
-                    if (m_width[i].isFixed()) {
+
+                for ( int i = 0; i < nEffCols; i++ )
+                {
+                    if ( m_width[i].isFixed() )
+                    {
                         calcWidth[i] = calcWidth[i] * tableLogicalWidth / totalWidth;
                         totalFixedWidth += calcWidth[i];
                     }
                 }
             }
-            if (totalPercent) {
+
+            if ( totalPercent )
+            {
                 totalPercentWidth = 0;
-                for (int i = 0; i < nEffCols; i++) {
-                    if (m_width[i].isPercent()) {
-                        calcWidth[i] = m_width[i].percent() * (tableLogicalWidth - totalFixedWidth) / totalPercent;
+
+                for ( int i = 0; i < nEffCols; i++ )
+                {
+                    if ( m_width[i].isPercent() )
+                    {
+                        calcWidth[i] = m_width[i].percent() * ( tableLogicalWidth - totalFixedWidth ) / totalPercent;
                         totalPercentWidth += calcWidth[i];
                     }
                 }
             }
+
             totalWidth = totalFixedWidth + totalPercentWidth;
         }
-    } else {
+    }
+    else
+    {
         // Divide the remaining width among the auto columns.
-        int remainingWidth = tableLogicalWidth - totalFixedWidth - totalPercentWidth - hspacing * (autoSpan - numAuto);
+        int remainingWidth = tableLogicalWidth - totalFixedWidth - totalPercentWidth - hspacing * ( autoSpan - numAuto );
         int lastAuto = 0;
-        for (int i = 0; i < nEffCols; i++) {
-            if (m_width[i].isAuto()) {
-                int span = m_table->spanOfEffCol(i);
+
+        for ( int i = 0; i < nEffCols; i++ )
+        {
+            if ( m_width[i].isAuto() )
+            {
+                int span = m_table->spanOfEffCol( i );
                 int w = remainingWidth * span / autoSpan;
-                calcWidth[i] = w + hspacing * (span - 1);
+                calcWidth[i] = w + hspacing * ( span - 1 );
                 remainingWidth -= w;
-                if (!remainingWidth)
+
+                if ( !remainingWidth )
+                {
                     break;
+                }
+
                 lastAuto = i;
                 numAuto--;
                 autoSpan -= span;
             }
         }
+
         // Last one gets the remainder.
-        if (remainingWidth)
+        if ( remainingWidth )
+        {
             calcWidth[lastAuto] += remainingWidth;
+        }
+
         totalWidth = tableLogicalWidth;
     }
 
-    if (totalWidth < tableLogicalWidth) {
+    if ( totalWidth < tableLogicalWidth )
+    {
         // Spread extra space over columns.
         int remainingWidth = tableLogicalWidth - totalWidth;
         int total = nEffCols;
-        while (total) {
+
+        while ( total )
+        {
             int w = remainingWidth / total;
             remainingWidth -= w;
             calcWidth[--total] += w;
         }
-        if (nEffCols > 0)
+
+        if ( nEffCols > 0 )
+        {
             calcWidth[nEffCols - 1] += remainingWidth;
+        }
     }
-    
+
     int pos = 0;
-    for (int i = 0; i < nEffCols; i++) {
+
+    for ( int i = 0; i < nEffCols; i++ )
+    {
         m_table->columnPositions()[i] = pos;
         pos += calcWidth[i] + hspacing;
     }
+
     int colPositionsSize = m_table->columnPositions().size();
-    if (colPositionsSize > 0)
+
+    if ( colPositionsSize > 0 )
+    {
         m_table->columnPositions()[colPositionsSize - 1] = pos;
+    }
 }
 
 } // namespace WebCore

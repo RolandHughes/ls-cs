@@ -32,17 +32,17 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-    
-/* @typedef JSWeakObjectMapRef A weak map for storing JSObjectRefs */
-typedef struct OpaqueJSWeakObjectMap* JSWeakObjectMapRef;
 
-/* 
+/* @typedef JSWeakObjectMapRef A weak map for storing JSObjectRefs */
+typedef struct OpaqueJSWeakObjectMap *JSWeakObjectMapRef;
+
+/*
  @typedef JSWeakMapDestroyedCallback
  @abstract The callback invoked when a JSWeakObjectMapRef is being destroyed.
  @param map The map that is being destroyed.
  @param data The private data (if any) that was associated with the map instance.
  */
-typedef void (*JSWeakMapDestroyedCallback)(JSWeakObjectMapRef map, void* data);
+typedef void ( *JSWeakMapDestroyedCallback )( JSWeakObjectMapRef map, void *data );
 
 /*
  @function
@@ -54,7 +54,7 @@ typedef void (*JSWeakMapDestroyedCallback)(JSWeakObjectMapRef map, void* data);
  @discussion The JSWeakObjectMapRef can be used as a storage mechanism to hold custom JS objects without forcing those objects to
  remain live as JSValueProtect would.
  */
-JS_EXPORT JSWeakObjectMapRef JSWeakObjectMapCreate(JSContextRef ctx, void* data, JSWeakMapDestroyedCallback destructor);
+JS_EXPORT JSWeakObjectMapRef JSWeakObjectMapCreate( JSContextRef ctx, void *data, JSWeakMapDestroyedCallback destructor );
 
 /*
  @function
@@ -64,7 +64,7 @@ JS_EXPORT JSWeakObjectMapRef JSWeakObjectMapCreate(JSContextRef ctx, void* data,
  @param key The key to associate a weak reference with.
  @param object The user defined object to associate with the key.
  */
-JS_EXPORT void JSWeakObjectMapSet(JSContextRef ctx, JSWeakObjectMapRef map, void* key, JSObjectRef);
+JS_EXPORT void JSWeakObjectMapSet( JSContextRef ctx, JSWeakObjectMapRef map, void *key, JSObjectRef );
 
 /*
  @function
@@ -74,7 +74,7 @@ JS_EXPORT void JSWeakObjectMapSet(JSContextRef ctx, JSWeakObjectMapRef map, void
  @param key The key to search for.
  @result Either the live object associated with the provided key, or NULL.
  */
-JS_EXPORT JSObjectRef JSWeakObjectMapGet(JSContextRef ctx, JSWeakObjectMapRef map, void* key);
+JS_EXPORT JSObjectRef JSWeakObjectMapGet( JSContextRef ctx, JSWeakObjectMapRef map, void *key );
 
 /*
  @function
@@ -83,7 +83,7 @@ JS_EXPORT JSObjectRef JSWeakObjectMapGet(JSContextRef ctx, JSWeakObjectMapRef ma
  @param map The map to use.
  @param key The key to remove.
  */
-JS_EXPORT void JSWeakObjectMapRemove(JSContextRef ctx, JSWeakObjectMapRef map, void* key);
+JS_EXPORT void JSWeakObjectMapRemove( JSContextRef ctx, JSWeakObjectMapRef map, void *key );
 
 #ifdef __cplusplus
 }

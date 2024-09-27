@@ -25,97 +25,103 @@
 #include <runtime/CallData.h>
 #include <runtime/JSObjectWithGlobalObject.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class HTMLObjectElement;
 
-class JSHTMLObjectElement : public JSHTMLElement {
+class JSHTMLObjectElement : public JSHTMLElement
+{
     typedef JSHTMLElement Base;
 public:
-    JSHTMLObjectElement(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<HTMLObjectElement>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
-    bool getOwnPropertySlotDelegate(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    bool getOwnPropertyDescriptorDelegate(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    virtual void put(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::JSValue, JSC::PutPropertySlot&);
-    bool putDelegate(JSC::ExecState*, const JSC::Identifier&, JSC::JSValue, JSC::PutPropertySlot&);
+    JSHTMLObjectElement( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<HTMLObjectElement> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
+    bool getOwnPropertySlotDelegate( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    bool getOwnPropertyDescriptorDelegate( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    virtual void put( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::JSValue, JSC::PutPropertySlot & );
+    bool putDelegate( JSC::ExecState *, const JSC::Identifier &, JSC::JSValue, JSC::PutPropertySlot & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    virtual JSC::CallType getCallData(JSC::CallData&);
+    virtual JSC::CallType getCallData( JSC::CallData & );
 
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 
-class JSHTMLObjectElementPrototype : public JSC::JSObjectWithGlobalObject {
+class JSHTMLObjectElementPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSHTMLObjectElementPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSHTMLObjectElementPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                                  JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 // Functions
 
-JSC::EncodedJSValue JSC_HOST_CALL jsHTMLObjectElementPrototypeFunctionCheckValidity(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsHTMLObjectElementPrototypeFunctionSetCustomValidity(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsHTMLObjectElementPrototypeFunctionGetSVGDocument(JSC::ExecState*);
+JSC::EncodedJSValue JSC_HOST_CALL jsHTMLObjectElementPrototypeFunctionCheckValidity( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsHTMLObjectElementPrototypeFunctionSetCustomValidity( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsHTMLObjectElementPrototypeFunctionGetSVGDocument( JSC::ExecState * );
 // Attributes
 
-JSC::JSValue jsHTMLObjectElementForm(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsHTMLObjectElementCode(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLObjectElementCode(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLObjectElementAlign(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLObjectElementAlign(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLObjectElementArchive(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLObjectElementArchive(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLObjectElementBorder(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLObjectElementBorder(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLObjectElementCodeBase(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLObjectElementCodeBase(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLObjectElementCodeType(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLObjectElementCodeType(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLObjectElementData(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLObjectElementData(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLObjectElementDeclare(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLObjectElementDeclare(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLObjectElementHeight(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLObjectElementHeight(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLObjectElementHspace(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLObjectElementHspace(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLObjectElementName(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLObjectElementName(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLObjectElementStandby(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLObjectElementStandby(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLObjectElementType(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLObjectElementType(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLObjectElementUseMap(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLObjectElementUseMap(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLObjectElementVspace(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLObjectElementVspace(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLObjectElementWidth(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLObjectElementWidth(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLObjectElementWillValidate(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsHTMLObjectElementValidity(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsHTMLObjectElementValidationMessage(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsHTMLObjectElementContentDocument(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsHTMLObjectElementConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsHTMLObjectElementForm( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsHTMLObjectElementCode( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLObjectElementCode( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLObjectElementAlign( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLObjectElementAlign( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLObjectElementArchive( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLObjectElementArchive( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLObjectElementBorder( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLObjectElementBorder( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLObjectElementCodeBase( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLObjectElementCodeBase( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLObjectElementCodeType( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLObjectElementCodeType( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLObjectElementData( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLObjectElementData( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLObjectElementDeclare( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLObjectElementDeclare( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLObjectElementHeight( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLObjectElementHeight( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLObjectElementHspace( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLObjectElementHspace( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLObjectElementName( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLObjectElementName( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLObjectElementStandby( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLObjectElementStandby( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLObjectElementType( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLObjectElementType( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLObjectElementUseMap( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLObjectElementUseMap( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLObjectElementVspace( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLObjectElementVspace( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLObjectElementWidth( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLObjectElementWidth( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLObjectElementWillValidate( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsHTMLObjectElementValidity( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsHTMLObjectElementValidationMessage( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsHTMLObjectElementContentDocument( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsHTMLObjectElementConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

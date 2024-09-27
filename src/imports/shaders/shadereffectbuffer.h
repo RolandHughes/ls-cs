@@ -32,7 +32,7 @@ class ShaderEffectBuffer : public QGLFramebufferObject
 {
 
 public:
-    ShaderEffectBuffer(const QSize &size, const QGLFramebufferObjectFormat &format);
+    ShaderEffectBuffer( const QSize &size, const QGLFramebufferObjectFormat &format );
     ~ShaderEffectBuffer();
 };
 

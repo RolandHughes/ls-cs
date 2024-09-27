@@ -27,9 +27,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSHTMLMenuElement);
+ASSERT_CLASS_FITS_IN_CELL( JSHTMLMenuElement );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -40,9 +41,9 @@ ASSERT_CLASS_FITS_IN_CELL(JSHTMLMenuElement);
 
 static const HashTableValue JSHTMLMenuElementTableValues[3] =
 {
-    { "compact", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLMenuElementCompact), (intptr_t)setJSHTMLMenuElementCompact THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLMenuElementConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "compact", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLMenuElementCompact ), ( intptr_t )setJSHTMLMenuElementCompact THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLMenuElementConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -56,43 +57,51 @@ static JSC_CONST_HASHTABLE HashTable JSHTMLMenuElementTable = { 4, 3, JSHTMLMenu
 
 static const HashTableValue JSHTMLMenuElementConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSHTMLMenuElementConstructorTable = { 1, 0, JSHTMLMenuElementConstructorTableValues, 0 };
-class JSHTMLMenuElementConstructor : public DOMConstructorObject {
+class JSHTMLMenuElementConstructor : public DOMConstructorObject
+{
 public:
-    JSHTMLMenuElementConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSHTMLMenuElementConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSHTMLMenuElementConstructor::s_info = { "HTMLMenuElementConstructor", &DOMConstructorObject::s_info, &JSHTMLMenuElementConstructorTable, 0 };
 
-JSHTMLMenuElementConstructor::JSHTMLMenuElementConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSHTMLMenuElementConstructor::JSHTMLMenuElementConstructor( ExecState *exec, Structure *structure,
+        JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSHTMLMenuElementPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSHTMLMenuElementPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSHTMLMenuElementConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSHTMLMenuElementConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSHTMLMenuElementConstructor, JSDOMWrapper>(exec, &JSHTMLMenuElementConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSHTMLMenuElementConstructor, JSDOMWrapper>( exec, &JSHTMLMenuElementConstructorTable, this,
+            propertyName, slot );
 }
 
-bool JSHTMLMenuElementConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSHTMLMenuElementConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSHTMLMenuElementConstructor, JSDOMWrapper>(exec, &JSHTMLMenuElementConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSHTMLMenuElementConstructor, JSDOMWrapper>( exec, &JSHTMLMenuElementConstructorTable, this,
+            propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -104,73 +113,75 @@ bool JSHTMLMenuElementConstructor::getOwnPropertyDescriptor(ExecState* exec, con
 
 static const HashTableValue JSHTMLMenuElementPrototypeTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSHTMLMenuElementPrototypeTable = { 1, 0, JSHTMLMenuElementPrototypeTableValues, 0 };
 const ClassInfo JSHTMLMenuElementPrototype::s_info = { "HTMLMenuElementPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSHTMLMenuElementPrototypeTable, 0 };
 
-JSObject* JSHTMLMenuElementPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSHTMLMenuElementPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSHTMLMenuElement>(exec, globalObject);
+    return getDOMPrototype<JSHTMLMenuElement>( exec, globalObject );
 }
 
 const ClassInfo JSHTMLMenuElement::s_info = { "HTMLMenuElement", &JSHTMLElement::s_info, &JSHTMLMenuElementTable, 0 };
 
-JSHTMLMenuElement::JSHTMLMenuElement(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<HTMLMenuElement> impl)
-    : JSHTMLElement(structure, globalObject, impl)
+JSHTMLMenuElement::JSHTMLMenuElement( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<HTMLMenuElement> impl )
+    : JSHTMLElement( structure, globalObject, impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSHTMLMenuElement::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSHTMLMenuElement::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSHTMLMenuElementPrototype(exec->globalData(), globalObject, JSHTMLMenuElementPrototype::createStructure(exec->globalData(), JSHTMLElementPrototype::self(exec, globalObject)));
+    return new ( exec ) JSHTMLMenuElementPrototype( exec->globalData(), globalObject,
+            JSHTMLMenuElementPrototype::createStructure( exec->globalData(), JSHTMLElementPrototype::self( exec, globalObject ) ) );
 }
 
-bool JSHTMLMenuElement::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSHTMLMenuElement::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSHTMLMenuElement, Base>(exec, &JSHTMLMenuElementTable, this, propertyName, slot);
+    return getStaticValueSlot<JSHTMLMenuElement, Base>( exec, &JSHTMLMenuElementTable, this, propertyName, slot );
 }
 
-bool JSHTMLMenuElement::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSHTMLMenuElement::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSHTMLMenuElement, Base>(exec, &JSHTMLMenuElementTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSHTMLMenuElement, Base>( exec, &JSHTMLMenuElementTable, this, propertyName, descriptor );
 }
 
-JSValue jsHTMLMenuElementCompact(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLMenuElementCompact( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLMenuElement* castedThis = static_cast<JSHTMLMenuElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    HTMLMenuElement* imp = static_cast<HTMLMenuElement*>(castedThis->impl());
-    JSValue result = jsBoolean(imp->hasAttribute(WebCore::HTMLNames::compactAttr));
+    JSHTMLMenuElement *castedThis = static_cast<JSHTMLMenuElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    HTMLMenuElement *imp = static_cast<HTMLMenuElement *>( castedThis->impl() );
+    JSValue result = jsBoolean( imp->hasAttribute( WebCore::HTMLNames::compactAttr ) );
     return result;
 }
 
 
-JSValue jsHTMLMenuElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLMenuElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLMenuElement* domObject = static_cast<JSHTMLMenuElement*>(asObject(slotBase));
-    return JSHTMLMenuElement::getConstructor(exec, domObject->globalObject());
+    JSHTMLMenuElement *domObject = static_cast<JSHTMLMenuElement *>( asObject( slotBase ) );
+    return JSHTMLMenuElement::getConstructor( exec, domObject->globalObject() );
 }
 
-void JSHTMLMenuElement::put(ExecState* exec, const Identifier& propertyName, JSValue value, PutPropertySlot& slot)
+void JSHTMLMenuElement::put( ExecState *exec, const Identifier &propertyName, JSValue value, PutPropertySlot &slot )
 {
-    lookupPut<JSHTMLMenuElement, Base>(exec, propertyName, value, &JSHTMLMenuElementTable, this, slot);
+    lookupPut<JSHTMLMenuElement, Base>( exec, propertyName, value, &JSHTMLMenuElementTable, this, slot );
 }
 
-void setJSHTMLMenuElementCompact(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSHTMLMenuElementCompact( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSHTMLMenuElement* castedThis = static_cast<JSHTMLMenuElement*>(thisObject);
-    HTMLMenuElement* imp = static_cast<HTMLMenuElement*>(castedThis->impl());
-    imp->setBooleanAttribute(WebCore::HTMLNames::compactAttr, value.toBoolean(exec));
+    JSHTMLMenuElement *castedThis = static_cast<JSHTMLMenuElement *>( thisObject );
+    HTMLMenuElement *imp = static_cast<HTMLMenuElement *>( castedThis->impl() );
+    imp->setBooleanAttribute( WebCore::HTMLNames::compactAttr, value.toBoolean( exec ) );
 }
 
 
-JSValue JSHTMLMenuElement::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSHTMLMenuElement::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSHTMLMenuElementConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSHTMLMenuElementConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
 

@@ -24,27 +24,36 @@
 #include "RenderSVGHiddenContainer.h"
 #include "RenderSVGResource.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class RenderSVGResourceContainer : public RenderSVGHiddenContainer,
-                                   public RenderSVGResource {
+    public RenderSVGResource
+{
 public:
-    RenderSVGResourceContainer(SVGStyledElement*);
+    RenderSVGResourceContainer( SVGStyledElement * );
     virtual ~RenderSVGResourceContainer();
 
     virtual void layout();
     virtual void destroy();
-    virtual void styleDidChange(StyleDifference, const RenderStyle* oldStyle);
+    virtual void styleDidChange( StyleDifference, const RenderStyle *oldStyle );
 
-    virtual bool isSVGResourceContainer() const { return true; }
-    virtual RenderSVGResourceContainer* toRenderSVGResourceContainer() { return this; }
+    virtual bool isSVGResourceContainer() const
+    {
+        return true;
+    }
+    virtual RenderSVGResourceContainer *toRenderSVGResourceContainer()
+    {
+        return this;
+    }
 
-    static AffineTransform transformOnNonScalingStroke(RenderObject*, const AffineTransform& resourceTransform);
+    static AffineTransform transformOnNonScalingStroke( RenderObject *, const AffineTransform &resourceTransform );
 
     void idChanged();
 
 protected:
-    enum InvalidationMode {
+    enum InvalidationMode
+    {
         LayoutAndBoundariesInvalidation,
         BoundariesInvalidation,
         RepaintInvalidation,
@@ -52,38 +61,44 @@ protected:
     };
 
     // Used from the invalidateClient/invalidateClients methods from classes, inheriting from us.
-    void markAllClientsForInvalidation(InvalidationMode);
-    void markClientForInvalidation(RenderObject*, InvalidationMode);
+    void markAllClientsForInvalidation( InvalidationMode );
+    void markClientForInvalidation( RenderObject *, InvalidationMode );
 
 private:
     friend class SVGResourcesCache;
-    void addClient(RenderObject*);
-    void removeClient(RenderObject*);
+    void addClient( RenderObject * );
+    void removeClient( RenderObject * );
 
 private:
     void registerResource();
 
     AtomicString m_id;
     bool m_registered;
-    HashSet<RenderObject*> m_clients;
+    HashSet<RenderObject *> m_clients;
 };
 
-inline RenderSVGResourceContainer* getRenderSVGResourceContainerById(Document* document, const AtomicString& id)
+inline RenderSVGResourceContainer *getRenderSVGResourceContainerById( Document *document, const AtomicString &id )
 {
-    if (id.isEmpty())
+    if ( id.isEmpty() )
+    {
         return 0;
+    }
 
-    if (RenderSVGResourceContainer* renderResource = document->accessSVGExtensions()->resourceById(id))
+    if ( RenderSVGResourceContainer *renderResource = document->accessSVGExtensions()->resourceById( id ) )
+    {
         return renderResource;
+    }
 
     return 0;
 }
 
 template<typename Renderer>
-Renderer* getRenderSVGResourceById(Document* document, const AtomicString& id)
+Renderer *getRenderSVGResourceById( Document *document, const AtomicString &id )
 {
-    if (RenderSVGResourceContainer* container = getRenderSVGResourceContainerById(document, id))
+    if ( RenderSVGResourceContainer *container = getRenderSVGResourceContainerById( document, id ) )
+    {
         return container->cast<Renderer>();
+    }
 
     return 0;
 }

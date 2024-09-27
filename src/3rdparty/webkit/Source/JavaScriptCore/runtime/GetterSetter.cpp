@@ -26,18 +26,24 @@
 #include "JSObject.h"
 #include <wtf/Assertions.h>
 
-namespace JSC {
+namespace JSC
+{
 
 const ClassInfo GetterSetter::s_info = { "GetterSetter", 0, 0, 0 };
 
-void GetterSetter::visitChildren(SlotVisitor& visitor)
+void GetterSetter::visitChildren( SlotVisitor &visitor )
 {
-    JSCell::visitChildren(visitor);
+    JSCell::visitChildren( visitor );
 
-    if (m_getter)
-        visitor.append(&m_getter);
-    if (m_setter)
-        visitor.append(&m_setter);
+    if ( m_getter )
+    {
+        visitor.append( &m_getter );
+    }
+
+    if ( m_setter )
+    {
+        visitor.append( &m_setter );
+    }
 }
 
 bool GetterSetter::isGetterSetter() const

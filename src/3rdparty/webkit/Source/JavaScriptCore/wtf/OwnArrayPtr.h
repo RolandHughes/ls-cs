@@ -27,66 +27,103 @@
 #include "PassOwnArrayPtr.h"
 #include <algorithm>
 
-namespace WTF {
+namespace WTF
+{
 
 template<typename T> class PassOwnArrayPtr;
-template<typename T> PassOwnArrayPtr<T> adoptArrayPtr(T*);
+template<typename T> PassOwnArrayPtr<T> adoptArrayPtr( T * );
 
-template <typename T> class OwnArrayPtr {
+template <typename T> class OwnArrayPtr
+{
 public:
-    typedef T* PtrType;
+    typedef T *PtrType;
 
-    OwnArrayPtr() : m_ptr(nullptr) { }
+    OwnArrayPtr() : m_ptr( nullptr ) { }
 
     // See comment in PassOwnArrayPtr.h for why this takes a const reference.
-    template<typename U> OwnArrayPtr(const PassOwnArrayPtr<U>& o);
+    template<typename U> OwnArrayPtr( const PassOwnArrayPtr<U> &o );
 
     // This copy constructor is used implicitly by gcc when it generates
     // transients for assigning a PassOwnArrayPtr<T> object to a stack-allocated
     // OwnArrayPtr<T> object. It should never be called explicitly and gcc
     // should optimize away the constructor when generating code.
-    OwnArrayPtr(const OwnArrayPtr<T>&);
+    OwnArrayPtr( const OwnArrayPtr<T> & );
 
-    ~OwnArrayPtr() { deleteOwnedArrayPtr(m_ptr); }
+    ~OwnArrayPtr()
+    {
+        deleteOwnedArrayPtr( m_ptr );
+    }
 
-    PtrType get() const { return m_ptr; }
+    PtrType get() const
+    {
+        return m_ptr;
+    }
 
     void clear();
     PassOwnArrayPtr<T> release();
     PtrType leakPtr() WARN_UNUSED_RETURN;
 
-    T& operator*() const { ASSERT(m_ptr); return *m_ptr; }
-    PtrType operator->() const { ASSERT(m_ptr); return m_ptr; }
+    T &operator*() const
+    {
+        ASSERT( m_ptr );
+        return *m_ptr;
+    }
+    PtrType operator->() const
+    {
+        ASSERT( m_ptr );
+        return m_ptr;
+    }
 
-    T& operator[](std::ptrdiff_t i) const { ASSERT(m_ptr); ASSERT(i >= 0); return m_ptr[i]; }
+    T &operator[]( std::ptrdiff_t i ) const
+    {
+        ASSERT( m_ptr );
+        ASSERT( i >= 0 );
+        return m_ptr[i];
+    }
 
-    bool operator!() const { return !m_ptr; }
+    bool operator!() const
+    {
+        return !m_ptr;
+    }
 
     // This conversion operator allows implicit conversion to bool but not to other integer types.
 #if COMPILER(WINSCW)
-    operator bool() const { return m_ptr; }
+    operator bool() const
+    {
+        return m_ptr;
+    }
 #else
-    typedef T* OwnArrayPtr::*UnspecifiedBoolType;
-    operator UnspecifiedBoolType() const { return m_ptr ? &OwnArrayPtr::m_ptr : nullptr; }
+    typedef T *OwnArrayPtr::*UnspecifiedBoolType;
+    operator UnspecifiedBoolType() const
+    {
+        return m_ptr ? &OwnArrayPtr::m_ptr : nullptr;
+    }
 #endif
 
-    OwnArrayPtr& operator=(const PassOwnArrayPtr<T>&);
-    OwnArrayPtr& operator=(std::nullptr_t) { clear(); return *this; }
-    template<typename U> OwnArrayPtr& operator=(const PassOwnArrayPtr<U>&);
+    OwnArrayPtr &operator=( const PassOwnArrayPtr<T> & );
+    OwnArrayPtr &operator=( std::nullptr_t )
+    {
+        clear();
+        return *this;
+    }
+    template<typename U> OwnArrayPtr &operator=( const PassOwnArrayPtr<U> & );
 
-    void swap(OwnArrayPtr& o) { std::swap(m_ptr, o.m_ptr); }
+    void swap( OwnArrayPtr &o )
+    {
+        std::swap( m_ptr, o.m_ptr );
+    }
 
 #ifdef LOOSE_OWN_ARRAY_PTR
-    explicit OwnArrayPtr(PtrType ptr) : m_ptr(ptr) { }
-    void set(PtrType);
+    explicit OwnArrayPtr( PtrType ptr ) : m_ptr( ptr ) { }
+    void set( PtrType );
 #endif
 
 private:
     PtrType m_ptr;
 };
 
-template<typename T> template<typename U> inline OwnArrayPtr<T>::OwnArrayPtr(const PassOwnArrayPtr<U>& o)
-    : m_ptr(o.leakPtr())
+template<typename T> template<typename U> inline OwnArrayPtr<T>::OwnArrayPtr( const PassOwnArrayPtr<U> &o )
+    : m_ptr( o.leakPtr() )
 {
 }
 
@@ -94,14 +131,14 @@ template<typename T> inline void OwnArrayPtr<T>::clear()
 {
     PtrType ptr = m_ptr;
     m_ptr = nullptr;
-    deleteOwnedArrayPtr(ptr);
+    deleteOwnedArrayPtr( ptr );
 }
 
 template<typename T> inline PassOwnArrayPtr<T> OwnArrayPtr<T>::release()
 {
     PtrType ptr = m_ptr;
     m_ptr = nullptr;
-    return adoptArrayPtr(ptr);
+    return adoptArrayPtr( ptr );
 }
 
 template<typename T> inline typename OwnArrayPtr<T>::PtrType OwnArrayPtr<T>::leakPtr()
@@ -112,59 +149,59 @@ template<typename T> inline typename OwnArrayPtr<T>::PtrType OwnArrayPtr<T>::lea
 }
 
 #ifdef LOOSE_OWN_ARRAY_PTR
-template<typename T> inline void OwnArrayPtr<T>::set(PtrType ptr)
+template<typename T> inline void OwnArrayPtr<T>::set( PtrType ptr )
 {
-    ASSERT(!ptr || m_ptr != ptr);
+    ASSERT( !ptr || m_ptr != ptr );
     PtrType oldPtr = m_ptr;
     m_ptr = ptr;
-    deleteOwnedArrayPtr(oldPtr);
+    deleteOwnedArrayPtr( oldPtr );
 }
 #endif
 
-template<typename T> inline OwnArrayPtr<T>& OwnArrayPtr<T>::operator=(const PassOwnArrayPtr<T>& o)
+template<typename T> inline OwnArrayPtr<T> &OwnArrayPtr<T>::operator=( const PassOwnArrayPtr<T> &o )
 {
     PtrType ptr = m_ptr;
     m_ptr = o.leakPtr();
-    ASSERT(!ptr || m_ptr != ptr);
-    deleteOwnedArrayPtr(ptr);
+    ASSERT( !ptr || m_ptr != ptr );
+    deleteOwnedArrayPtr( ptr );
     return *this;
 }
 
-template<typename T> template<typename U> inline OwnArrayPtr<T>& OwnArrayPtr<T>::operator=(const PassOwnArrayPtr<U>& o)
+template<typename T> template<typename U> inline OwnArrayPtr<T> &OwnArrayPtr<T>::operator=( const PassOwnArrayPtr<U> &o )
 {
     PtrType ptr = m_ptr;
     m_ptr = o.leakPtr();
-    ASSERT(!ptr || m_ptr != ptr);
-    deleteOwnedArrayPtr(ptr);
+    ASSERT( !ptr || m_ptr != ptr );
+    deleteOwnedArrayPtr( ptr );
     return *this;
 }
 
-template <typename T> inline void swap(OwnArrayPtr<T>& a, OwnArrayPtr<T>& b)
+template <typename T> inline void swap( OwnArrayPtr<T> &a, OwnArrayPtr<T> &b )
 {
-    a.swap(b);
+    a.swap( b );
 }
 
-template<typename T, typename U> inline bool operator==(const OwnArrayPtr<T>& a, U* b)
+template<typename T, typename U> inline bool operator==( const OwnArrayPtr<T> &a, U *b )
 {
     return a.get() == b;
 }
 
-template<typename T, typename U> inline bool operator==(T* a, const OwnArrayPtr<U>& b)
+template<typename T, typename U> inline bool operator==( T *a, const OwnArrayPtr<U> &b )
 {
     return a == b.get();
 }
 
-template<typename T, typename U> inline bool operator!=(const OwnArrayPtr<T>& a, U* b)
+template<typename T, typename U> inline bool operator!=( const OwnArrayPtr<T> &a, U *b )
 {
     return a.get() != b;
 }
 
-template<typename T, typename U> inline bool operator!=(T* a, const OwnArrayPtr<U>& b)
+template<typename T, typename U> inline bool operator!=( T *a, const OwnArrayPtr<U> &b )
 {
     return a != b.get();
 }
 
-template <typename T> inline T* getPtr(const OwnArrayPtr<T>& p)
+template <typename T> inline T *getPtr( const OwnArrayPtr<T> &p )
 {
     return p.get();
 }

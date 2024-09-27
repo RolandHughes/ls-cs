@@ -25,19 +25,24 @@
 #if ENABLE(XHTMLMP)
 #include "HTMLElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class HTMLNoScriptElement : public HTMLElement {
+class HTMLNoScriptElement : public HTMLElement
+{
 public:
-    static PassRefPtr<HTMLNoScriptElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<HTMLNoScriptElement> create( const QualifiedName &, Document * );
 
 private:
-    HTMLNoScriptElement(const QualifiedName&, Document*);
+    HTMLNoScriptElement( const QualifiedName &, Document * );
 
     virtual void attach();
-    virtual void recalcStyle(StyleChange);
-    virtual bool childShouldCreateRenderer(Node*) const;
-    virtual bool rendererIsNeeded(RenderStyle*) {  return true; }
+    virtual void recalcStyle( StyleChange );
+    virtual bool childShouldCreateRenderer( Node * ) const;
+    virtual bool rendererIsNeeded( RenderStyle * )
+    {
+        return true;
+    }
 };
 
 } //namespace

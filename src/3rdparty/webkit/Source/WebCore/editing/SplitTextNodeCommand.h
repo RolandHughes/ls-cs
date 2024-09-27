@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef SplitTextNodeCommand_h
@@ -28,19 +28,21 @@
 
 #include "EditCommand.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Text;
 
-class SplitTextNodeCommand : public SimpleEditCommand {
+class SplitTextNodeCommand : public SimpleEditCommand
+{
 public:
-    static PassRefPtr<SplitTextNodeCommand> create(PassRefPtr<Text> node, int offset)
+    static PassRefPtr<SplitTextNodeCommand> create( PassRefPtr<Text> node, int offset )
     {
-        return adoptRef(new SplitTextNodeCommand(node, offset));
+        return adoptRef( new SplitTextNodeCommand( node, offset ) );
     }
 
 private:
-    SplitTextNodeCommand(PassRefPtr<Text>, int offset);
+    SplitTextNodeCommand( PassRefPtr<Text>, int offset );
 
     virtual void doApply();
     virtual void doUnapply();

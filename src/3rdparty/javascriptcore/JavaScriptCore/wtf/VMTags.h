@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef VMTags_h
@@ -29,7 +29,7 @@
 #include <wtf/Platform.h>
 
 // On Mac OS X, the VM subsystem allows tagging memory requested from mmap and vm_map
-// in order to aid tools that inspect system memory use. 
+// in order to aid tools that inspect system memory use.
 #if OS(DARWIN)
 
 #include <mach/vm_statistics.h>

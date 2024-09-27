@@ -53,14 +53,15 @@
 #include "Settings.h"
 #include <wtf/UnusedParam.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-InspectorController::InspectorController(Page* page, InspectorClient* inspectorClient)
-    : m_injectedScriptManager(InjectedScriptManager::createForPage())
-    , m_inspectorAgent(adoptPtr(new InspectorAgent(page, inspectorClient, m_injectedScriptManager.get())))
-    , m_inspectorClient(inspectorClient)
-    , m_openingFrontend(false)
-    , m_startUserInitiatedDebuggingWhenFrontedIsConnected(false)
+InspectorController::InspectorController( Page *page, InspectorClient *inspectorClient )
+    : m_injectedScriptManager( InjectedScriptManager::createForPage() )
+    , m_inspectorAgent( adoptPtr( new InspectorAgent( page, inspectorClient, m_injectedScriptManager.get() ) ) )
+    , m_inspectorClient( inspectorClient )
+    , m_openingFrontend( false )
+    , m_startUserInitiatedDebuggingWhenFrontedIsConnected( false )
 {
 }
 
@@ -68,7 +69,7 @@ InspectorController::~InspectorController()
 {
 }
 
-void InspectorController::setInspectorFrontendClient(PassOwnPtr<InspectorFrontendClient> inspectorFrontendClient)
+void InspectorController::setInspectorFrontendClient( PassOwnPtr<InspectorFrontendClient> inspectorFrontendClient )
 {
     m_inspectorFrontendClient = inspectorFrontendClient;
 }
@@ -78,74 +79,82 @@ bool InspectorController::hasInspectorFrontendClient() const
     return m_inspectorFrontendClient;
 }
 
-void InspectorController::didClearWindowObjectInWorld(Frame* frame, DOMWrapperWorld* world)
+void InspectorController::didClearWindowObjectInWorld( Frame *frame, DOMWrapperWorld *world )
 {
-    if (world != mainThreadNormalWorld())
+    if ( world != mainThreadNormalWorld() )
+    {
         return;
+    }
 
     // If the page is supposed to serve as InspectorFrontend notify inspector frontend
     // client that it's cleared so that the client can expose inspector bindings.
-    if (m_inspectorFrontendClient && frame == m_inspectorAgent->inspectedPage()->mainFrame())
+    if ( m_inspectorFrontendClient && frame == m_inspectorAgent->inspectedPage()->mainFrame() )
+    {
         m_inspectorFrontendClient->windowObjectCleared();
+    }
 }
 
 void InspectorController::startTimelineProfiler()
 {
     ErrorString error;
-    m_inspectorAgent->timelineAgent()->start(&error);
+    m_inspectorAgent->timelineAgent()->start( &error );
 }
 
 void InspectorController::stopTimelineProfiler()
 {
     ErrorString error;
-    m_inspectorAgent->timelineAgent()->stop(&error);
+    m_inspectorAgent->timelineAgent()->stop( &error );
 }
 
 void InspectorController::connectFrontend()
 {
     m_openingFrontend = false;
-    m_inspectorFrontend = adoptPtr(new InspectorFrontend(m_inspectorClient));
-    m_injectedScriptManager->injectedScriptHost()->setFrontend(m_inspectorFrontend.get());
-    m_inspectorAgent->setFrontend(m_inspectorFrontend.get());
+    m_inspectorFrontend = adoptPtr( new InspectorFrontend( m_inspectorClient ) );
+    m_injectedScriptManager->injectedScriptHost()->setFrontend( m_inspectorFrontend.get() );
+    m_inspectorAgent->setFrontend( m_inspectorFrontend.get() );
 
-    if (!InspectorInstrumentation::hasFrontends())
-        ScriptController::setCaptureCallStackForUncaughtExceptions(true);
+    if ( !InspectorInstrumentation::hasFrontends() )
+    {
+        ScriptController::setCaptureCallStackForUncaughtExceptions( true );
+    }
+
     InspectorInstrumentation::frontendCreated();
 
-    ASSERT(m_inspectorClient);
-    m_inspectorBackendDispatcher = adoptPtr(new InspectorBackendDispatcher(
-        m_inspectorClient,
+    ASSERT( m_inspectorClient );
+    m_inspectorBackendDispatcher = adoptPtr( new InspectorBackendDispatcher(
+                                       m_inspectorClient,
 #if ENABLE(OFFLINE_WEB_APPLICATIONS)
-        m_inspectorAgent->applicationCacheAgent(),
+                                       m_inspectorAgent->applicationCacheAgent(),
 #endif
-        m_inspectorAgent->cssAgent(),
-        m_inspectorAgent->consoleAgent(),
-        m_inspectorAgent->domAgent(),
+                                       m_inspectorAgent->cssAgent(),
+                                       m_inspectorAgent->consoleAgent(),
+                                       m_inspectorAgent->domAgent(),
 #if ENABLE(JAVASCRIPT_DEBUGGER)
-        m_inspectorAgent->domDebuggerAgent(),
+                                       m_inspectorAgent->domDebuggerAgent(),
 #endif
 #if ENABLE(DOM_STORAGE)
-        m_inspectorAgent->domStorageAgent(),
+                                       m_inspectorAgent->domStorageAgent(),
 #endif
 #if ENABLE(DATABASE)
-        m_inspectorAgent->databaseAgent(),
+                                       m_inspectorAgent->databaseAgent(),
 #endif
 #if ENABLE(JAVASCRIPT_DEBUGGER)
-        m_inspectorAgent->debuggerAgent(),
+                                       m_inspectorAgent->debuggerAgent(),
 #endif
-        m_inspectorAgent->resourceAgent(),
-        m_inspectorAgent->pageAgent(),
+                                       m_inspectorAgent->resourceAgent(),
+                                       m_inspectorAgent->pageAgent(),
 #if ENABLE(JAVASCRIPT_DEBUGGER)
-        m_inspectorAgent->profilerAgent(),
+                                       m_inspectorAgent->profilerAgent(),
 #endif
-        m_inspectorAgent->runtimeAgent(),
-        m_inspectorAgent->timelineAgent()
+                                       m_inspectorAgent->runtimeAgent(),
+                                       m_inspectorAgent->timelineAgent()
 #if ENABLE(WORKERS)
-        , m_inspectorAgent->workerAgent()
+                                       , m_inspectorAgent->workerAgent()
 #endif
-    ));
+                                   ) );
 
-    if (m_startUserInitiatedDebuggingWhenFrontedIsConnected) {
+    if ( m_startUserInitiatedDebuggingWhenFrontedIsConnected )
+    {
         m_inspectorFrontend->inspector()->startUserInitiatedDebugging();
         m_startUserInitiatedDebuggingWhenFrontedIsConnected = false;
     }
@@ -153,8 +162,11 @@ void InspectorController::connectFrontend()
 
 void InspectorController::disconnectFrontend()
 {
-    if (!m_inspectorFrontend)
+    if ( !m_inspectorFrontend )
+    {
         return;
+    }
+
     m_inspectorBackendDispatcher.clear();
 
     m_inspectorAgent->disconnectFrontend();
@@ -163,67 +175,85 @@ void InspectorController::disconnectFrontend()
     m_inspectorFrontend.clear();
 
     InspectorInstrumentation::frontendDeleted();
-    if (!InspectorInstrumentation::hasFrontends())
-        ScriptController::setCaptureCallStackForUncaughtExceptions(false);
+
+    if ( !InspectorInstrumentation::hasFrontends() )
+    {
+        ScriptController::setCaptureCallStackForUncaughtExceptions( false );
+    }
 }
 
 void InspectorController::show()
 {
-    if (!enabled())
+    if ( !enabled() )
+    {
         return;
+    }
 
-    if (m_openingFrontend)
+    if ( m_openingFrontend )
+    {
         return;
+    }
 
-    if (m_inspectorFrontend)
+    if ( m_inspectorFrontend )
+    {
         m_inspectorFrontend->inspector()->bringToFront();
-    else {
+    }
+    else
+    {
         m_openingFrontend = true;
-        m_inspectorClient->openInspectorFrontend(this);
+        m_inspectorClient->openInspectorFrontend( this );
     }
 }
 
 void InspectorController::close()
 {
-    if (!m_inspectorFrontend)
+    if ( !m_inspectorFrontend )
+    {
         return;
+    }
+
     m_inspectorFrontend->inspector()->disconnectFromBackend();
     disconnectFrontend();
 }
 
-void InspectorController::restoreInspectorStateFromCookie(const String& inspectorStateCookie)
+void InspectorController::restoreInspectorStateFromCookie( const String &inspectorStateCookie )
 {
-    ASSERT(!m_inspectorFrontend);
+    ASSERT( !m_inspectorFrontend );
     connectFrontend();
-    m_inspectorAgent->restoreInspectorStateFromCookie(inspectorStateCookie);
+    m_inspectorAgent->restoreInspectorStateFromCookie( inspectorStateCookie );
 }
 
-void InspectorController::evaluateForTestInFrontend(long callId, const String& script)
+void InspectorController::evaluateForTestInFrontend( long callId, const String &script )
 {
-    m_inspectorAgent->evaluateForTestInFrontend(callId, script);
+    m_inspectorAgent->evaluateForTestInFrontend( callId, script );
 }
 
-void InspectorController::drawNodeHighlight(GraphicsContext& context) const
+void InspectorController::drawNodeHighlight( GraphicsContext &context ) const
 {
-    m_inspectorAgent->domAgent()->drawNodeHighlight(context);
+    m_inspectorAgent->domAgent()->drawNodeHighlight( context );
 }
 
 void InspectorController::showConsole()
 {
-    if (!enabled())
+    if ( !enabled() )
+    {
         return;
+    }
+
     show();
     m_inspectorAgent->showConsole();
 }
 
-void InspectorController::inspect(Node* node)
+void InspectorController::inspect( Node *node )
 {
-    if (!enabled())
+    if ( !enabled() )
+    {
         return;
+    }
 
     show();
 
-    m_inspectorAgent->domAgent()->inspect(node);
+    m_inspectorAgent->domAgent()->inspect( node );
 }
 
 bool InspectorController::enabled() const
@@ -231,7 +261,7 @@ bool InspectorController::enabled() const
     return m_inspectorAgent->enabled();
 }
 
-Page* InspectorController::inspectedPage() const
+Page *InspectorController::inspectedPage() const
 {
     return m_inspectorAgent->inspectedPage();
 }
@@ -241,24 +271,26 @@ bool InspectorController::timelineProfilerEnabled()
     return m_inspectorAgent->timelineAgent()->started();
 }
 
-void InspectorController::setInspectorExtensionAPI(const String& source)
+void InspectorController::setInspectorExtensionAPI( const String &source )
 {
-    m_inspectorAgent->setInspectorExtensionAPI(source);
+    m_inspectorAgent->setInspectorExtensionAPI( source );
 }
 
-void InspectorController::dispatchMessageFromFrontend(const String& message)
+void InspectorController::dispatchMessageFromFrontend( const String &message )
 {
-    if (m_inspectorBackendDispatcher)
-        m_inspectorBackendDispatcher->dispatch(message);
+    if ( m_inspectorBackendDispatcher )
+    {
+        m_inspectorBackendDispatcher->dispatch( message );
+    }
 }
 
 void InspectorController::hideHighlight()
 {
     ErrorString error;
-    m_inspectorAgent->domAgent()->hideHighlight(&error);
+    m_inspectorAgent->domAgent()->hideHighlight( &error );
 }
 
-Node* InspectorController::highlightedNode() const
+Node *InspectorController::highlightedNode() const
 {
     return m_inspectorAgent->domAgent()->highlightedNode();
 }
@@ -267,13 +299,13 @@ Node* InspectorController::highlightedNode() const
 void InspectorController::enableProfiler()
 {
     ErrorString error;
-    m_inspectorAgent->profilerAgent()->enable(&error);
+    m_inspectorAgent->profilerAgent()->enable( &error );
 }
 
 void InspectorController::disableProfiler()
 {
     ErrorString error;
-    m_inspectorAgent->profilerAgent()->disable(&error);
+    m_inspectorAgent->profilerAgent()->disable( &error );
 }
 
 bool InspectorController::profilerEnabled()
@@ -288,14 +320,21 @@ bool InspectorController::debuggerEnabled()
 
 void InspectorController::showAndEnableDebugger()
 {
-    if (!enabled())
+    if ( !enabled() )
+    {
         return;
+    }
+
     show();
 
-    if (m_inspectorFrontend)
+    if ( m_inspectorFrontend )
+    {
         m_inspectorFrontend->inspector()->startUserInitiatedDebugging();
+    }
     else
+    {
         m_startUserInitiatedDebuggingWhenFrontedIsConnected = true;
+    }
 }
 
 void InspectorController::disableDebugger()
@@ -310,8 +349,11 @@ void InspectorController::startUserInitiatedProfiling()
 
 void InspectorController::stopUserInitiatedProfiling()
 {
-    if (!enabled())
+    if ( !enabled() )
+    {
         return;
+    }
+
     show();
     m_inspectorAgent->profilerAgent()->stopUserInitiatedProfiling();
     m_inspectorAgent->showProfilesPanel();
@@ -324,9 +366,10 @@ bool InspectorController::isRecordingUserInitiatedProfile() const
 
 void InspectorController::resume()
 {
-    if (InspectorDebuggerAgent* debuggerAgent = m_inspectorAgent->debuggerAgent()) {
+    if ( InspectorDebuggerAgent *debuggerAgent = m_inspectorAgent->debuggerAgent() )
+    {
         ErrorString error;
-        debuggerAgent->resume(&error);
+        debuggerAgent->resume( &error );
     }
 }
 

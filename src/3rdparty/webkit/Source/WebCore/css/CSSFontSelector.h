@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef CSSFontSelector_h
@@ -33,7 +33,8 @@
 #include <wtf/RefPtr.h>
 #include <wtf/text/StringHash.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class CSSFontFace;
 class CSSFontFaceRule;
@@ -42,40 +43,44 @@ class Document;
 class CachedResourceLoader;
 class FontDescription;
 
-class CSSFontSelector : public FontSelector {
+class CSSFontSelector : public FontSelector
+{
 public:
-    static PassRefPtr<CSSFontSelector> create(Document* document)
+    static PassRefPtr<CSSFontSelector> create( Document *document )
     {
-        return adoptRef(new CSSFontSelector(document));
+        return adoptRef( new CSSFontSelector( document ) );
     }
     virtual ~CSSFontSelector();
 
-    virtual FontData* getFontData(const FontDescription& fontDescription, const AtomicString& familyName);
-    
-    void clearDocument() { m_document = 0; }
+    virtual FontData *getFontData( const FontDescription &fontDescription, const AtomicString &familyName );
 
-    void addFontFaceRule(const CSSFontFaceRule*);
+    void clearDocument()
+    {
+        m_document = 0;
+    }
+
+    void addFontFaceRule( const CSSFontFaceRule * );
 
     void fontLoaded();
     virtual void fontCacheInvalidated();
 
     bool isEmpty() const;
 
-    CachedResourceLoader* cachedResourceLoader() const;
+    CachedResourceLoader *cachedResourceLoader() const;
 
-    virtual void registerForInvalidationCallbacks(FontSelectorClient*);
-    virtual void unregisterForInvalidationCallbacks(FontSelectorClient*);
+    virtual void registerForInvalidationCallbacks( FontSelectorClient * );
+    virtual void unregisterForInvalidationCallbacks( FontSelectorClient * );
 
 private:
-    CSSFontSelector(Document*);
+    CSSFontSelector( Document * );
 
     void dispatchInvalidationCallbacks();
 
-    Document* m_document;
+    Document *m_document;
     HashMap<String, Vector<RefPtr<CSSFontFace> >*, CaseFoldingHash> m_fontFaces;
     HashMap<String, Vector<RefPtr<CSSFontFace> >*, CaseFoldingHash> m_locallyInstalledFontFaces;
     HashMap<String, HashMap<unsigned, RefPtr<CSSSegmentedFontFace> >*, CaseFoldingHash> m_fonts;
-    HashSet<FontSelectorClient*> m_clients;
+    HashSet<FontSelectorClient *> m_clients;
 };
 
 } // namespace WebCore

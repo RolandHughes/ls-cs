@@ -33,6 +33,6 @@ using namespace WebKit;
 
 WKTypeID WKURLResponseGetTypeID()
 {
-    return toAPI(WebURLResponse::APIType);
+    return toAPI( WebURLResponse::APIType );
 }
 

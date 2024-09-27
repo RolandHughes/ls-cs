@@ -16,11 +16,11 @@
  */
 
 
-  /**************************************************************************
-   *
-   * This file is used to define the PSHinter error enumeration constants.
-   *
-   */
+/**************************************************************************
+ *
+ * This file is used to define the PSHinter error enumeration constants.
+ *
+ */
 
 #ifndef PSHNTERR_H_
 #define PSHNTERR_H_

@@ -26,73 +26,75 @@
 
 #include <qschematype_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class AtomicType;
 
 class AnyType : public SchemaType
 {
- public:
+public:
 
-   typedef QExplicitlySharedDataPointer<AnyType> Ptr;
-   friend class BuiltinTypes;
+    typedef QExplicitlySharedDataPointer<AnyType> Ptr;
+    friend class BuiltinTypes;
 
-   virtual ~AnyType();
+    virtual ~AnyType();
 
-   QXmlName name(const NamePool::Ptr &np) const override;
+    QXmlName name( const NamePool::Ptr &np ) const override;
 
-   /**
-    * @returns always "xs:anyType"
-    */
-   QString displayName(const NamePool::Ptr &np) const override;
+    /**
+     * @returns always "xs:anyType"
+     */
+    QString displayName( const NamePool::Ptr &np ) const override;
 
-   /**
-    * @returns always @c false
-    */
-   bool isAbstract() const override;
+    /**
+     * @returns always @c false
+     */
+    bool isAbstract() const override;
 
-   /**
-    * @returns @c null, since <tt>xs:anyType</tt> has no base type, it is the ur-type.
-    *
-    * @returns always @c null
-    */
-   SchemaType::Ptr wxsSuperType() const override;
+    /**
+     * @returns @c null, since <tt>xs:anyType</tt> has no base type, it is the ur-type.
+     *
+     * @returns always @c null
+     */
+    SchemaType::Ptr wxsSuperType() const override;
 
-   /**
-    * @returns @c true only if @p other is xsAnyType.
-    */
-   bool wxsTypeMatches(const SchemaType::Ptr &other) const override;
+    /**
+     * @returns @c true only if @p other is xsAnyType.
+     */
+    bool wxsTypeMatches( const SchemaType::Ptr &other ) const override;
 
-   /**
-    * <tt>xs:anyType</tt> is the "ur-type" and special. Therefore, this function
-    * returns SchemaType::None.
-    *
-    * @returns SchemaType::None
-    */
-   TypeCategory category() const override;
+    /**
+     * <tt>xs:anyType</tt> is the "ur-type" and special. Therefore, this function
+     * returns SchemaType::None.
+     *
+     * @returns SchemaType::None
+     */
+    TypeCategory category() const override;
 
-   /**
-    * @returns always NoDerivation.
-    */
-   DerivationMethod derivationMethod() const override;
+    /**
+     * @returns always NoDerivation.
+     */
+    DerivationMethod derivationMethod() const override;
 
-   /**
-    * @returns an empty set of derivation constraint flags.
-    */
-   DerivationConstraints derivationConstraints() const override;
+    /**
+     * @returns an empty set of derivation constraint flags.
+     */
+    DerivationConstraints derivationConstraints() const override;
 
-   /**
-    * Always returns @c true.
-    */
-   bool isComplexType() const override;
+    /**
+     * Always returns @c true.
+     */
+    bool isComplexType() const override;
 
- protected:
-   /**
-    * @short This constructor is protected, because this
-    * class must be sub-classed.
-    */
-   inline AnyType() {
-   }
+protected:
+    /**
+     * @short This constructor is protected, because this
+     * class must be sub-classed.
+     */
+    inline AnyType()
+    {
+    }
 };
 
 }

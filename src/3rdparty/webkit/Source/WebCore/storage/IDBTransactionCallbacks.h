@@ -34,9 +34,11 @@
 #include "SerializedScriptValue.h"
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class IDBTransactionCallbacks : public RefCounted<IDBTransactionCallbacks> {
+class IDBTransactionCallbacks : public RefCounted<IDBTransactionCallbacks>
+{
 public:
     virtual ~IDBTransactionCallbacks() { }
 

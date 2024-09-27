@@ -31,40 +31,42 @@ class CameraBinSession;
 
 class CameraBinV4LImageProcessing : public QCameraImageProcessingControl
 {
-   CS_OBJECT(CameraBinV4LImageProcessing)
+    CS_OBJECT( CameraBinV4LImageProcessing )
 
- public:
-   CameraBinV4LImageProcessing(CameraBinSession *session);
-   virtual ~CameraBinV4LImageProcessing();
+public:
+    CameraBinV4LImageProcessing( CameraBinSession *session );
+    virtual ~CameraBinV4LImageProcessing();
 
-   bool isParameterSupported(ProcessingParameter) const;
-   bool isParameterValueSupported(ProcessingParameter parameter, const QVariant &value) const;
-   QVariant parameter(ProcessingParameter parameter) const;
-   void setParameter(ProcessingParameter parameter, const QVariant &value);
+    bool isParameterSupported( ProcessingParameter ) const;
+    bool isParameterValueSupported( ProcessingParameter parameter, const QVariant &value ) const;
+    QVariant parameter( ProcessingParameter parameter ) const;
+    void setParameter( ProcessingParameter parameter, const QVariant &value );
 
- public :
-   CS_SLOT_1(Public, void updateParametersInfo(QCamera::Status cameraStatus))
-   CS_SLOT_2(updateParametersInfo)
+public :
+    CS_SLOT_1( Public, void updateParametersInfo( QCamera::Status cameraStatus ) )
+    CS_SLOT_2( updateParametersInfo )
 
- private:
-   struct SourceParameterValueInfo {
-      SourceParameterValueInfo()
-         : cid(0) {
-      }
+private:
+    struct SourceParameterValueInfo
+    {
+        SourceParameterValueInfo()
+            : cid( 0 )
+        {
+        }
 
-      qint32 defaultValue;
-      qint32 minimumValue;
-      qint32 maximumValue;
-      quint32 cid; // V4L control id
-   };
+        qint32 defaultValue;
+        qint32 minimumValue;
+        qint32 maximumValue;
+        quint32 cid; // V4L control id
+    };
 
-   static qreal scaledImageProcessingParameterValue(
-      qint32 sourceValue, const SourceParameterValueInfo &sourceValueInfo);
-   static qint32 sourceImageProcessingParameterValue(
-      qreal scaledValue, const SourceParameterValueInfo &valueRange);
- private:
-   CameraBinSession *m_session;
-   QMap<ProcessingParameter, SourceParameterValueInfo> m_parametersInfo;
+    static qreal scaledImageProcessingParameterValue(
+        qint32 sourceValue, const SourceParameterValueInfo &sourceValueInfo );
+    static qint32 sourceImageProcessingParameterValue(
+        qreal scaledValue, const SourceParameterValueInfo &valueRange );
+private:
+    CameraBinSession *m_session;
+    QMap<ProcessingParameter, SourceParameterValueInfo> m_parametersInfo;
 };
 
 #endif

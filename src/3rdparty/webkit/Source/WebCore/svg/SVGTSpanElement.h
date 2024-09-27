@@ -24,21 +24,23 @@
 #if ENABLE(SVG)
 #include "SVGTextPositioningElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class SVGTSpanElement : public SVGTextPositioningElement {
+class SVGTSpanElement : public SVGTextPositioningElement
+{
 public:
-    static PassRefPtr<SVGTSpanElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<SVGTSpanElement> create( const QualifiedName &, Document * );
 
 private:
-    SVGTSpanElement(const QualifiedName&, Document*);
-            
-    virtual RenderObject* createRenderer(RenderArena*, RenderStyle*);
-    virtual bool childShouldCreateRenderer(Node*) const;
-    virtual bool rendererIsNeeded(RenderStyle*);
+    SVGTSpanElement( const QualifiedName &, Document * );
+
+    virtual RenderObject *createRenderer( RenderArena *, RenderStyle * );
+    virtual bool childShouldCreateRenderer( Node * ) const;
+    virtual bool rendererIsNeeded( RenderStyle * );
 
     virtual void fillAttributeToPropertyTypeMap();
-    virtual AttributeToPropertyTypeMap& attributeToPropertyTypeMap();
+    virtual AttributeToPropertyTypeMap &attributeToPropertyTypeMap();
 };
 
 } // namespace WebCore

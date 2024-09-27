@@ -33,24 +33,26 @@
 
 #if ENABLE(BLOB) || ENABLE(FILE_SYSTEM)
 
-namespace WebCore {
+namespace WebCore
+{
 
-class FileStreamClient {
+class FileStreamClient
+{
 public:
     // For reading.
-    virtual void didRead(int) { }
+    virtual void didRead( int ) { }
 
     // For writing.
-    virtual void didWrite(int) { }
-    virtual void didTruncate(bool) { }
+    virtual void didWrite( int ) { }
+    virtual void didTruncate( bool ) { }
 
     // FIXME: To be removed when we switch to using BlobData.
     virtual void didStart() { }
 
     // For both reading and writing.
-    virtual void didOpen(bool) { }
+    virtual void didOpen( bool ) { }
     virtual void didStop() { }
-    virtual void didGetSize(long long) { }
+    virtual void didGetSize( long long ) { }
 
 protected:
     virtual ~FileStreamClient() { }

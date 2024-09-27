@@ -27,33 +27,42 @@
 #include "Document.h"
 #include "HTMLNames.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
-inline HTMLMetaElement::HTMLMetaElement(const QualifiedName& tagName, Document* document)
-    : HTMLElement(tagName, document)
+inline HTMLMetaElement::HTMLMetaElement( const QualifiedName &tagName, Document *document )
+    : HTMLElement( tagName, document )
 {
-    ASSERT(hasTagName(metaTag));
+    ASSERT( hasTagName( metaTag ) );
 }
 
-PassRefPtr<HTMLMetaElement> HTMLMetaElement::create(const QualifiedName& tagName, Document* document)
+PassRefPtr<HTMLMetaElement> HTMLMetaElement::create( const QualifiedName &tagName, Document *document )
 {
-    return adoptRef(new HTMLMetaElement(tagName, document));
+    return adoptRef( new HTMLMetaElement( tagName, document ) );
 }
 
-void HTMLMetaElement::parseMappedAttribute(Attribute* attr)
+void HTMLMetaElement::parseMappedAttribute( Attribute *attr )
 {
-    if (attr->name() == http_equivAttr) {
+    if ( attr->name() == http_equivAttr )
+    {
         m_equiv = attr->value();
         process();
-    } else if (attr->name() == contentAttr) {
+    }
+    else if ( attr->name() == contentAttr )
+    {
         m_content = attr->value();
         process();
-    } else if (attr->name() == nameAttr) {
+    }
+    else if ( attr->name() == nameAttr )
+    {
         // Do nothing.
-    } else
-        HTMLElement::parseMappedAttribute(attr);
+    }
+    else
+    {
+        HTMLElement::parseMappedAttribute( attr );
+    }
 }
 
 void HTMLMetaElement::insertedIntoDocument()
@@ -64,31 +73,37 @@ void HTMLMetaElement::insertedIntoDocument()
 
 void HTMLMetaElement::process()
 {
-    if (!inDocument() || m_content.isNull())
+    if ( !inDocument() || m_content.isNull() )
+    {
         return;
+    }
 
-    if (equalIgnoringCase(name(), "viewport"))
-        document()->processViewport(m_content);
+    if ( equalIgnoringCase( name(), "viewport" ) )
+    {
+        document()->processViewport( m_content );
+    }
 
     // Get the document to process the tag, but only if we're actually part of DOM tree (changing a meta tag while
     // it's not in the tree shouldn't have any effect on the document)
-    if (!m_equiv.isNull())
-        document()->processHttpEquiv(m_equiv, m_content);
+    if ( !m_equiv.isNull() )
+    {
+        document()->processHttpEquiv( m_equiv, m_content );
+    }
 }
 
 String HTMLMetaElement::content() const
 {
-    return getAttribute(contentAttr);
+    return getAttribute( contentAttr );
 }
 
 String HTMLMetaElement::httpEquiv() const
 {
-    return getAttribute(http_equivAttr);
+    return getAttribute( http_equivAttr );
 }
 
 String HTMLMetaElement::name() const
 {
-    return getAttribute(nameAttr);
+    return getAttribute( nameAttr );
 }
 
 }

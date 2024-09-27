@@ -31,24 +31,30 @@
 #include <runtime/JSObjectWithGlobalObject.h>
 #include <runtime/ObjectPrototype.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class JSSVGPointList : public JSDOMWrapper {
+class JSSVGPointList : public JSDOMWrapper
+{
     typedef JSDOMWrapper Base;
 public:
-    JSSVGPointList(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<SVGListPropertyTearOff<SVGPointList> >);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
+    JSSVGPointList( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<SVGListPropertyTearOff<SVGPointList> > );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
-    SVGListPropertyTearOff<SVGPointList> * impl() const { return m_impl.get(); }
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
+    SVGListPropertyTearOff<SVGPointList> *impl() const
+    {
+        return m_impl.get();
+    }
 
 private:
     RefPtr<SVGListPropertyTearOff<SVGPointList> > m_impl;
@@ -56,38 +62,41 @@ protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
-JSC::JSValue toJS(JSC::ExecState*, JSDOMGlobalObject*, SVGListPropertyTearOff<SVGPointList> *);
-SVGListPropertyTearOff<SVGPointList> * toSVGPointList(JSC::JSValue);
+JSC::JSValue toJS( JSC::ExecState *, JSDOMGlobalObject *, SVGListPropertyTearOff<SVGPointList> * );
+SVGListPropertyTearOff<SVGPointList> *toSVGPointList( JSC::JSValue );
 
-class JSSVGPointListPrototype : public JSC::JSObjectWithGlobalObject {
+class JSSVGPointListPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSSVGPointListPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSSVGPointListPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                             JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 // Functions
 
-JSC::EncodedJSValue JSC_HOST_CALL jsSVGPointListPrototypeFunctionClear(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsSVGPointListPrototypeFunctionInitialize(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsSVGPointListPrototypeFunctionGetItem(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsSVGPointListPrototypeFunctionInsertItemBefore(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsSVGPointListPrototypeFunctionReplaceItem(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsSVGPointListPrototypeFunctionRemoveItem(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsSVGPointListPrototypeFunctionAppendItem(JSC::ExecState*);
+JSC::EncodedJSValue JSC_HOST_CALL jsSVGPointListPrototypeFunctionClear( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsSVGPointListPrototypeFunctionInitialize( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsSVGPointListPrototypeFunctionGetItem( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsSVGPointListPrototypeFunctionInsertItemBefore( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsSVGPointListPrototypeFunctionReplaceItem( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsSVGPointListPrototypeFunctionRemoveItem( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsSVGPointListPrototypeFunctionAppendItem( JSC::ExecState * );
 // Attributes
 
-JSC::JSValue jsSVGPointListNumberOfItems(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsSVGPointListConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsSVGPointListNumberOfItems( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsSVGPointListConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

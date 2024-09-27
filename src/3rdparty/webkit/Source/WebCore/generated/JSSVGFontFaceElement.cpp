@@ -29,9 +29,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSSVGFontFaceElement);
+ASSERT_CLASS_FITS_IN_CELL( JSSVGFontFaceElement );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -42,8 +43,8 @@ ASSERT_CLASS_FITS_IN_CELL(JSSVGFontFaceElement);
 
 static const HashTableValue JSSVGFontFaceElementTableValues[2] =
 {
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGFontFaceElementConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGFontFaceElementConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -57,43 +58,51 @@ static JSC_CONST_HASHTABLE HashTable JSSVGFontFaceElementTable = { 2, 1, JSSVGFo
 
 static const HashTableValue JSSVGFontFaceElementConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSSVGFontFaceElementConstructorTable = { 1, 0, JSSVGFontFaceElementConstructorTableValues, 0 };
-class JSSVGFontFaceElementConstructor : public DOMConstructorObject {
+class JSSVGFontFaceElementConstructor : public DOMConstructorObject
+{
 public:
-    JSSVGFontFaceElementConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSSVGFontFaceElementConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSSVGFontFaceElementConstructor::s_info = { "SVGFontFaceElementConstructor", &DOMConstructorObject::s_info, &JSSVGFontFaceElementConstructorTable, 0 };
 
-JSSVGFontFaceElementConstructor::JSSVGFontFaceElementConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSSVGFontFaceElementConstructor::JSSVGFontFaceElementConstructor( ExecState *exec, Structure *structure,
+        JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSSVGFontFaceElementPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSSVGFontFaceElementPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSSVGFontFaceElementConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGFontFaceElementConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSVGFontFaceElementConstructor, JSDOMWrapper>(exec, &JSSVGFontFaceElementConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSSVGFontFaceElementConstructor, JSDOMWrapper>( exec, &JSSVGFontFaceElementConstructorTable, this,
+            propertyName, slot );
 }
 
-bool JSSVGFontFaceElementConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGFontFaceElementConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSVGFontFaceElementConstructor, JSDOMWrapper>(exec, &JSSVGFontFaceElementConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSVGFontFaceElementConstructor, JSDOMWrapper>( exec, &JSSVGFontFaceElementConstructorTable, this,
+            propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -105,50 +114,53 @@ bool JSSVGFontFaceElementConstructor::getOwnPropertyDescriptor(ExecState* exec, 
 
 static const HashTableValue JSSVGFontFaceElementPrototypeTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSSVGFontFaceElementPrototypeTable = { 1, 0, JSSVGFontFaceElementPrototypeTableValues, 0 };
 const ClassInfo JSSVGFontFaceElementPrototype::s_info = { "SVGFontFaceElementPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSSVGFontFaceElementPrototypeTable, 0 };
 
-JSObject* JSSVGFontFaceElementPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSVGFontFaceElementPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSSVGFontFaceElement>(exec, globalObject);
+    return getDOMPrototype<JSSVGFontFaceElement>( exec, globalObject );
 }
 
 const ClassInfo JSSVGFontFaceElement::s_info = { "SVGFontFaceElement", &JSSVGElement::s_info, &JSSVGFontFaceElementTable, 0 };
 
-JSSVGFontFaceElement::JSSVGFontFaceElement(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<SVGFontFaceElement> impl)
-    : JSSVGElement(structure, globalObject, impl)
+JSSVGFontFaceElement::JSSVGFontFaceElement( Structure *structure, JSDOMGlobalObject *globalObject,
+        PassRefPtr<SVGFontFaceElement> impl )
+    : JSSVGElement( structure, globalObject, impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSSVGFontFaceElement::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSVGFontFaceElement::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSSVGFontFaceElementPrototype(exec->globalData(), globalObject, JSSVGFontFaceElementPrototype::createStructure(exec->globalData(), JSSVGElementPrototype::self(exec, globalObject)));
+    return new ( exec ) JSSVGFontFaceElementPrototype( exec->globalData(), globalObject,
+            JSSVGFontFaceElementPrototype::createStructure( exec->globalData(), JSSVGElementPrototype::self( exec, globalObject ) ) );
 }
 
-bool JSSVGFontFaceElement::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGFontFaceElement::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSVGFontFaceElement, Base>(exec, &JSSVGFontFaceElementTable, this, propertyName, slot);
+    return getStaticValueSlot<JSSVGFontFaceElement, Base>( exec, &JSSVGFontFaceElementTable, this, propertyName, slot );
 }
 
-bool JSSVGFontFaceElement::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGFontFaceElement::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSVGFontFaceElement, Base>(exec, &JSSVGFontFaceElementTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSVGFontFaceElement, Base>( exec, &JSSVGFontFaceElementTable, this, propertyName, descriptor );
 }
 
-JSValue jsSVGFontFaceElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGFontFaceElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGFontFaceElement* domObject = static_cast<JSSVGFontFaceElement*>(asObject(slotBase));
-    return JSSVGFontFaceElement::getConstructor(exec, domObject->globalObject());
+    JSSVGFontFaceElement *domObject = static_cast<JSSVGFontFaceElement *>( asObject( slotBase ) );
+    return JSSVGFontFaceElement::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSSVGFontFaceElement::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSSVGFontFaceElement::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSSVGFontFaceElementConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSSVGFontFaceElementConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
 

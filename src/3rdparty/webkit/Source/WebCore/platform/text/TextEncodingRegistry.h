@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef TextEncodingRegistry_h
@@ -30,24 +30,25 @@
 #include <wtf/PassOwnPtr.h>
 #include <wtf/unicode/Unicode.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class TextCodec;
-    class TextEncoding;
+class TextCodec;
+class TextEncoding;
 
-    // Use TextResourceDecoder::decode to decode resources, since it handles BOMs.
-    // Use TextEncoding::encode to encode, since it takes care of normalization.
-    PassOwnPtr<TextCodec> newTextCodec(const TextEncoding&);
+// Use TextResourceDecoder::decode to decode resources, since it handles BOMs.
+// Use TextEncoding::encode to encode, since it takes care of normalization.
+PassOwnPtr<TextCodec> newTextCodec( const TextEncoding & );
 
-    // Only TextEncoding should use the following functions directly.
-    const char* atomicCanonicalTextEncodingName(const char* alias);
-    const char* atomicCanonicalTextEncodingName(const UChar* aliasCharacters, size_t aliasLength);
-    bool noExtendedTextEncodingNameUsed();
-    bool isJapaneseEncoding(const char* canonicalEncodingName);
-    bool shouldShowBackslashAsCurrencySymbolIn(const char* canonicalEncodingName);
+// Only TextEncoding should use the following functions directly.
+const char *atomicCanonicalTextEncodingName( const char *alias );
+const char *atomicCanonicalTextEncodingName( const UChar *aliasCharacters, size_t aliasLength );
+bool noExtendedTextEncodingNameUsed();
+bool isJapaneseEncoding( const char *canonicalEncodingName );
+bool shouldShowBackslashAsCurrencySymbolIn( const char *canonicalEncodingName );
 
 #ifndef NDEBUG
-    void dumpTextEncodingNameMap();
+void dumpTextEncodingNameMap();
 #endif
 }
 

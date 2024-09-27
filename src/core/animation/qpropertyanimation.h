@@ -32,36 +32,36 @@ class QPropertyAnimationPrivate;
 
 class Q_CORE_EXPORT QPropertyAnimation : public QVariantAnimation
 {
-   CORE_CS_OBJECT(QPropertyAnimation)
+    CORE_CS_OBJECT( QPropertyAnimation )
 
-   CORE_CS_PROPERTY_READ(propertyName, propertyName)
-   CORE_CS_PROPERTY_WRITE(propertyName, setPropertyName)
+    CORE_CS_PROPERTY_READ( propertyName, propertyName )
+    CORE_CS_PROPERTY_WRITE( propertyName, setPropertyName )
 
-   CORE_CS_PROPERTY_READ(targetObject, targetObject)
-   CORE_CS_PROPERTY_WRITE(targetObject, setTargetObject)
+    CORE_CS_PROPERTY_READ( targetObject, targetObject )
+    CORE_CS_PROPERTY_WRITE( targetObject, setTargetObject )
 
- public:
-   QPropertyAnimation(QObject *parent = nullptr);
-   QPropertyAnimation(QObject *target, const QString &propertyName, QObject *parent = nullptr);
+public:
+    QPropertyAnimation( QObject *parent = nullptr );
+    QPropertyAnimation( QObject *target, const QString &propertyName, QObject *parent = nullptr );
 
-   QPropertyAnimation(const QPropertyAnimation &) = delete;
-   QPropertyAnimation &operator=(const QPropertyAnimation &) = delete;
+    QPropertyAnimation( const QPropertyAnimation & ) = delete;
+    QPropertyAnimation &operator=( const QPropertyAnimation & ) = delete;
 
-   ~QPropertyAnimation();
+    ~QPropertyAnimation();
 
-   QObject *targetObject() const;
-   void setTargetObject(QObject *target);
+    QObject *targetObject() const;
+    void setTargetObject( QObject *target );
 
-   QString propertyName() const;
-   void setPropertyName(const QString &propertyName);
+    QString propertyName() const;
+    void setPropertyName( const QString &propertyName );
 
- protected:
-   bool event(QEvent *event) override;
-   void updateCurrentValue(const QVariant &value) override;
-   void updateState(QAbstractAnimation::State newState, QAbstractAnimation::State oldState) override;
+protected:
+    bool event( QEvent *event ) override;
+    void updateCurrentValue( const QVariant &value ) override;
+    void updateState( QAbstractAnimation::State newState, QAbstractAnimation::State oldState ) override;
 
- private:
-   Q_DECLARE_PRIVATE(QPropertyAnimation)
+private:
+    Q_DECLARE_PRIVATE( QPropertyAnimation )
 };
 
 #endif

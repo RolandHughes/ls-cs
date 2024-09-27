@@ -23,45 +23,63 @@
 
 #include "RenderText.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class RenderCombineText : public RenderText {
+class RenderCombineText : public RenderText
+{
 public:
-    RenderCombineText(Node*, PassRefPtr<StringImpl>);
+    RenderCombineText( Node *, PassRefPtr<StringImpl> );
 
     void combineText();
-    void adjustTextOrigin(FloatPoint& textOrigin, const FloatRect& boxRect) const;
-    void charactersToRender(int start, const UChar*& characters, int& length) const;
-    bool isCombined() const { return m_isCombined; }
-    float combinedTextWidth(const Font& font) const { return font.size(); }
-    const Font& originalFont() const { return parent()->style()->font(); }
+    void adjustTextOrigin( FloatPoint &textOrigin, const FloatRect &boxRect ) const;
+    void charactersToRender( int start, const UChar *&characters, int &length ) const;
+    bool isCombined() const
+    {
+        return m_isCombined;
+    }
+    float combinedTextWidth( const Font &font ) const
+    {
+        return font.size();
+    }
+    const Font &originalFont() const
+    {
+        return parent()->style()->font();
+    }
 
 private:
-    virtual bool isCombineText() const { return true; }
-    virtual float width(unsigned from, unsigned length, const Font&, float xPosition, HashSet<const SimpleFontData*>* fallbackFonts = 0, GlyphOverflow* = 0) const;
-    virtual const char* renderName() const { return "RenderCombineText"; }
-    virtual void styleDidChange(StyleDifference, const RenderStyle* oldStyle);
-    virtual void setTextInternal(PassRefPtr<StringImpl>);
+    virtual bool isCombineText() const
+    {
+        return true;
+    }
+    virtual float width( unsigned from, unsigned length, const Font &, float xPosition,
+                         HashSet<const SimpleFontData *> *fallbackFonts = 0, GlyphOverflow * = 0 ) const;
+    virtual const char *renderName() const
+    {
+        return "RenderCombineText";
+    }
+    virtual void styleDidChange( StyleDifference, const RenderStyle *oldStyle );
+    virtual void setTextInternal( PassRefPtr<StringImpl> );
 
     float m_combinedTextWidth;
     bool m_isCombined : 1;
     bool m_needsFontUpdate : 1;
 };
 
-inline RenderCombineText* toRenderCombineText(RenderObject* object)
-{ 
-    ASSERT(!object || object->isCombineText());
-    return static_cast<RenderCombineText*>(object);
+inline RenderCombineText *toRenderCombineText( RenderObject *object )
+{
+    ASSERT( !object || object->isCombineText() );
+    return static_cast<RenderCombineText *>( object );
 }
 
-inline const RenderCombineText* toRenderCombineText(const RenderObject* object)
-{ 
-    ASSERT(!object || object->isCombineText());
-    return static_cast<const RenderCombineText*>(object);
+inline const RenderCombineText *toRenderCombineText( const RenderObject *object )
+{
+    ASSERT( !object || object->isCombineText() );
+    return static_cast<const RenderCombineText *>( object );
 }
 
 // This will catch anyone doing an unnecessary cast.
-void toRenderCombineText(const RenderCombineText*);
+void toRenderCombineText( const RenderCombineText * );
 
 } // namespace WebCore
 

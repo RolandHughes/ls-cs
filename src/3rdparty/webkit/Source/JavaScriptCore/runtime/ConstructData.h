@@ -31,33 +31,38 @@
 
 #include "JSValue.h"
 
-namespace JSC {
+namespace JSC
+{
 
-    class ArgList;
-    class ExecState;
-    class FunctionExecutable;
-    class JSObject;
-    class ScopeChainNode;
+class ArgList;
+class ExecState;
+class FunctionExecutable;
+class JSObject;
+class ScopeChainNode;
 
-    enum ConstructType {
-        ConstructTypeNone,
-        ConstructTypeHost,
-        ConstructTypeJS
-    };
+enum ConstructType
+{
+    ConstructTypeNone,
+    ConstructTypeHost,
+    ConstructTypeJS
+};
 
-    typedef EncodedJSValue (JSC_HOST_CALL *NativeConstructor)(ExecState*);
+typedef EncodedJSValue ( JSC_HOST_CALL *NativeConstructor )( ExecState * );
 
-    union ConstructData {
-        struct {
-            NativeConstructor function;
-        } native;
-        struct {
-            FunctionExecutable* functionExecutable;
-            ScopeChainNode* scopeChain;
-        } js;
-    };
+union ConstructData
+{
+    struct
+    {
+        NativeConstructor function;
+    } native;
+    struct
+    {
+        FunctionExecutable *functionExecutable;
+        ScopeChainNode *scopeChain;
+    } js;
+};
 
-    JSObject* construct(ExecState*, JSValue constructor, ConstructType, const ConstructData&, const ArgList&);
+JSObject *construct( ExecState *, JSValue constructor, ConstructType, const ConstructData &, const ArgList & );
 
 } // namespace JSC
 

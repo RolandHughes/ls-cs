@@ -28,9 +28,11 @@
 #include <qexpression_p.h>
 #include <qoptimizerframework_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
-namespace OptimizationPasses {
+namespace OptimizationPasses
+{
 
 extern OptimizationPass::List comparisonPasses;
 extern OptimizationPass::List forPasses;
@@ -39,14 +41,14 @@ extern OptimizationPass::List notFN;
 
 class Coordinator
 {
- public:
-   static void init();
+public:
+    static void init();
 
- private:
-   Coordinator(const Coordinator &) = delete;
-   Coordinator &operator=(const Coordinator &) = delete;
+private:
+    Coordinator( const Coordinator & ) = delete;
+    Coordinator &operator=( const Coordinator & ) = delete;
 
-   inline Coordinator();
+    inline Coordinator();
 };
 
 }

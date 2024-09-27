@@ -39,44 +39,52 @@
 #include <CFNetwork/CFURLCachePriv.h>
 #include <CFNetwork/CFURLProtocolPriv.h>
 #include <WebCore/CookieStorageCFNet.h>
-#include <WebKitSystemInterface/WebKitSystemInterface.h> 
+#include <WebKitSystemInterface/WebKitSystemInterface.h>
 #include <wtf/RetainPtr.h>
 #endif
 
 using namespace WebCore;
 using namespace std;
 
-namespace WebKit {
+namespace WebKit
+{
 
 static uint64_t memorySize()
 {
     MEMORYSTATUSEX statex;
-    statex.dwLength = sizeof(statex);
-    GlobalMemoryStatusEx(&statex);
+    statex.dwLength = sizeof( statex );
+    GlobalMemoryStatusEx( &statex );
     return statex.ullTotalPhys;
 }
 
-static uint64_t volumeFreeSize(CFStringRef cfstringPath)
+static uint64_t volumeFreeSize( CFStringRef cfstringPath )
 {
-    WTF::String path(cfstringPath);
+    WTF::String path( cfstringPath );
     ULARGE_INTEGER freeBytesToCaller;
-    BOOL result = GetDiskFreeSpaceExW((LPCWSTR)path.charactersWithNullTermination(), &freeBytesToCaller, 0, 0);
-    if (!result)
+    BOOL result = GetDiskFreeSpaceExW( ( LPCWSTR )path.charactersWithNullTermination(), &freeBytesToCaller, 0, 0 );
+
+    if ( !result )
+    {
         return 0;
+    }
+
     return freeBytesToCaller.QuadPart;
 }
 
-void WebProcess::platformSetCacheModel(CacheModel cacheModel)
+void WebProcess::platformSetCacheModel( CacheModel cacheModel )
 {
 #if USE(CFNETWORK)
-    RetainPtr<CFStringRef> cfurlCacheDirectory(AdoptCF, wkCopyFoundationCacheDirectory());
-    if (!cfurlCacheDirectory)
-        cfurlCacheDirectory.adoptCF(WebCore::localUserSpecificStorageDirectory().createCFString());
+    RetainPtr<CFStringRef> cfurlCacheDirectory( AdoptCF, wkCopyFoundationCacheDirectory() );
 
-    // As a fudge factor, use 1000 instead of 1024, in case the reported byte 
+    if ( !cfurlCacheDirectory )
+    {
+        cfurlCacheDirectory.adoptCF( WebCore::localUserSpecificStorageDirectory().createCFString() );
+    }
+
+    // As a fudge factor, use 1000 instead of 1024, in case the reported byte
     // count doesn't align exactly to a megabyte boundary.
     uint64_t memSize = memorySize() / 1024 / 1000;
-    uint64_t diskFreeSize = volumeFreeSize(cfurlCacheDirectory.get()) / 1024 / 1000;
+    uint64_t diskFreeSize = volumeFreeSize( cfurlCacheDirectory.get() ) / 1024 / 1000;
 
     unsigned cacheTotalCapacity = 0;
     unsigned cacheMinDeadCapacity = 0;
@@ -86,71 +94,83 @@ void WebProcess::platformSetCacheModel(CacheModel cacheModel)
     unsigned long urlCacheMemoryCapacity = 0;
     unsigned long urlCacheDiskCapacity = 0;
 
-    calculateCacheSizes(cacheModel, memSize, diskFreeSize,
-        cacheTotalCapacity, cacheMinDeadCapacity, cacheMaxDeadCapacity, deadDecodedDataDeletionInterval,
-        pageCacheCapacity, urlCacheMemoryCapacity, urlCacheDiskCapacity);
+    calculateCacheSizes( cacheModel, memSize, diskFreeSize,
+                         cacheTotalCapacity, cacheMinDeadCapacity, cacheMaxDeadCapacity, deadDecodedDataDeletionInterval,
+                         pageCacheCapacity, urlCacheMemoryCapacity, urlCacheDiskCapacity );
 
-    memoryCache()->setCapacities(cacheMinDeadCapacity, cacheMaxDeadCapacity, cacheTotalCapacity);
-    memoryCache()->setDeadDecodedDataDeletionInterval(deadDecodedDataDeletionInterval);
-    pageCache()->setCapacity(pageCacheCapacity);
+    memoryCache()->setCapacities( cacheMinDeadCapacity, cacheMaxDeadCapacity, cacheTotalCapacity );
+    memoryCache()->setDeadDecodedDataDeletionInterval( deadDecodedDataDeletionInterval );
+    pageCache()->setCapacity( pageCacheCapacity );
 
-    RetainPtr<CFURLCacheRef> cfurlCache(AdoptCF, CFURLCacheCopySharedURLCache());
-    CFURLCacheSetMemoryCapacity(cfurlCache.get(), urlCacheMemoryCapacity);
-    CFURLCacheSetDiskCapacity(cfurlCache.get(), max<unsigned long>(urlCacheDiskCapacity, CFURLCacheDiskCapacity(cfurlCache.get()))); // Don't shrink a big disk cache, since that would cause churn.
+    RetainPtr<CFURLCacheRef> cfurlCache( AdoptCF, CFURLCacheCopySharedURLCache() );
+    CFURLCacheSetMemoryCapacity( cfurlCache.get(), urlCacheMemoryCapacity );
+    CFURLCacheSetDiskCapacity( cfurlCache.get(), max<unsigned long>( urlCacheDiskCapacity,
+                               CFURLCacheDiskCapacity( cfurlCache.get() ) ) ); // Don't shrink a big disk cache, since that would cause churn.
 #endif
 }
 
-void WebProcess::platformClearResourceCaches(ResourceCachesToClear cachesToClear)
+void WebProcess::platformClearResourceCaches( ResourceCachesToClear cachesToClear )
 {
 #if USE(CFNETWORK)
-    if (cachesToClear == InMemoryResourceCachesOnly)
+
+    if ( cachesToClear == InMemoryResourceCachesOnly )
+    {
         return;
-    CFURLCacheRemoveAllCachedResponses(RetainPtr<CFURLCacheRef>(AdoptCF, CFURLCacheCopySharedURLCache()).get());
+    }
+
+    CFURLCacheRemoveAllCachedResponses( RetainPtr<CFURLCacheRef>( AdoptCF, CFURLCacheCopySharedURLCache() ).get() );
 #endif
 }
 
-void WebProcess::platformInitializeWebProcess(const WebProcessCreationParameters& parameters, CoreIPC::ArgumentDecoder*)
+void WebProcess::platformInitializeWebProcess( const WebProcessCreationParameters &parameters, CoreIPC::ArgumentDecoder * )
 {
-    setShouldPaintNativeControls(parameters.shouldPaintNativeControls);
+    setShouldPaintNativeControls( parameters.shouldPaintNativeControls );
 
 #if USE(CFNETWORK)
-    RetainPtr<CFStringRef> cachePath(AdoptCF, parameters.cfURLCachePath.createCFString());
-    if (!cachePath)
+    RetainPtr<CFStringRef> cachePath( AdoptCF, parameters.cfURLCachePath.createCFString() );
+
+    if ( !cachePath )
+    {
         return;
+    }
 
     CFIndex cacheDiskCapacity = parameters.cfURLCacheDiskCapacity;
     CFIndex cacheMemoryCapacity = parameters.cfURLCacheMemoryCapacity;
-    RetainPtr<CFURLCacheRef> uiProcessCache(AdoptCF, CFURLCacheCreate(kCFAllocatorDefault, cacheMemoryCapacity, cacheDiskCapacity, cachePath.get()));
-    CFURLCacheSetSharedURLCache(uiProcessCache.get());
+    RetainPtr<CFURLCacheRef> uiProcessCache( AdoptCF, CFURLCacheCreate( kCFAllocatorDefault, cacheMemoryCapacity, cacheDiskCapacity,
+            cachePath.get() ) );
+    CFURLCacheSetSharedURLCache( uiProcessCache.get() );
 #endif
 
-    WebCookieManager::shared().setHTTPCookieAcceptPolicy(parameters.initialHTTPCookieAcceptPolicy);
+    WebCookieManager::shared().setHTTPCookieAcceptPolicy( parameters.initialHTTPCookieAcceptPolicy );
 }
 
 void WebProcess::platformTerminate()
 {
 }
 
-void WebProcess::setShouldPaintNativeControls(bool shouldPaintNativeControls)
+void WebProcess::setShouldPaintNativeControls( bool shouldPaintNativeControls )
 {
 #if USE(SAFARI_THEME)
-    Settings::setShouldPaintNativeControls(shouldPaintNativeControls);
+    Settings::setShouldPaintNativeControls( shouldPaintNativeControls );
 #endif
 }
 
-struct EnumWindowsContext {
+struct EnumWindowsContext
+{
     DWORD currentThreadID;
-    Vector<HWND>* windows;
+    Vector<HWND> *windows;
 };
 
-static BOOL CALLBACK addWindowToVectorIfOwnedByCurrentThread(HWND window, LPARAM lParam)
+static BOOL CALLBACK addWindowToVectorIfOwnedByCurrentThread( HWND window, LPARAM lParam )
 {
-    EnumWindowsContext* context = reinterpret_cast<EnumWindowsContext*>(lParam);
+    EnumWindowsContext *context = reinterpret_cast<EnumWindowsContext *>( lParam );
 
-    if (::GetWindowThreadProcessId(window, 0) != context->currentThreadID)
+    if ( ::GetWindowThreadProcessId( window, 0 ) != context->currentThreadID )
+    {
         return TRUE;
+    }
 
-    context->windows->append(window);
+    context->windows->append( window );
     return TRUE;
 }
 
@@ -168,17 +188,23 @@ Vector<HWND> WebProcess::windowsToReceiveSentMessagesWhileWaitingForSyncReply()
 
     // Start out with top-level windows created by this thread (like Flash's hidden
     // SWFlash_PlaceholderX top-level windows).
-    ::EnumThreadWindows(context.currentThreadID, addWindowToVectorIfOwnedByCurrentThread, reinterpret_cast<LPARAM>(&context));
+    ::EnumThreadWindows( context.currentThreadID, addWindowToVectorIfOwnedByCurrentThread, reinterpret_cast<LPARAM>( &context ) );
 
     // Also include any descendants of those top-level windows.
     size_t topLevelWindowCount = windows.size();
-    for (size_t i = 0; i < topLevelWindowCount; ++i)
-        ::EnumChildWindows(windows[i], addWindowToVectorIfOwnedByCurrentThread, reinterpret_cast<LPARAM>(&context));
+
+    for ( size_t i = 0; i < topLevelWindowCount; ++i )
+    {
+        ::EnumChildWindows( windows[i], addWindowToVectorIfOwnedByCurrentThread, reinterpret_cast<LPARAM>( &context ) );
+    }
 
     // Also include any descendants of the WebPages' windows which we've created (e.g., for windowed plugins).
     HashMap<uint64_t, RefPtr<WebPage> >::const_iterator::Values end = m_pageMap.end();
-    for (HashMap<uint64_t, RefPtr<WebPage> >::const_iterator::Values it = m_pageMap.begin(); it != end; ++it)
-        ::EnumChildWindows((*it)->nativeWindow(), addWindowToVectorIfOwnedByCurrentThread, reinterpret_cast<LPARAM>(&context));
+
+    for ( HashMap<uint64_t, RefPtr<WebPage> >::const_iterator::Values it = m_pageMap.begin(); it != end; ++it )
+    {
+        ::EnumChildWindows( ( *it )->nativeWindow(), addWindowToVectorIfOwnedByCurrentThread, reinterpret_cast<LPARAM>( &context ) );
+    }
 
     return windows;
 }

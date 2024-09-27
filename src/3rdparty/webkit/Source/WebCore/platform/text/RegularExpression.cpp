@@ -22,7 +22,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -32,13 +32,15 @@
 #include <yarr/Yarr.h>
 #include "Logging.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class RegularExpression::Private : public RefCounted<RegularExpression::Private> {
+class RegularExpression::Private : public RefCounted<RegularExpression::Private>
+{
 public:
-    static PassRefPtr<Private> create(const String& pattern, TextCaseSensitivity caseSensitivity)
+    static PassRefPtr<Private> create( const String &pattern, TextCaseSensitivity caseSensitivity )
     {
-        return adoptRef(new Private(pattern, caseSensitivity));
+        return adoptRef( new Private( pattern, caseSensitivity ) );
     }
 
     int lastMatchLength;
@@ -47,37 +49,40 @@ public:
     OwnPtr<JSC::Yarr::BytecodePattern> m_regExpByteCode;
 
 private:
-    Private(const String& pattern, TextCaseSensitivity caseSensitivity)
-        : lastMatchLength(-1)
-        , m_regExpByteCode(compile(pattern, caseSensitivity))
-        , m_constructionError(0)
+    Private( const String &pattern, TextCaseSensitivity caseSensitivity )
+        : lastMatchLength( -1 )
+        , m_regExpByteCode( compile( pattern, caseSensitivity ) )
+        , m_constructionError( 0 )
     {
     }
 
-    PassOwnPtr<JSC::Yarr::BytecodePattern> compile(const String& patternString, TextCaseSensitivity caseSensitivity)
+    PassOwnPtr<JSC::Yarr::BytecodePattern> compile( const String &patternString, TextCaseSensitivity caseSensitivity )
     {
-        JSC::Yarr::YarrPattern pattern(JSC::UString(patternString.impl()), (caseSensitivity == TextCaseInsensitive), false, &m_constructionError);
-        if (m_constructionError) {
-            LOG_ERROR("RegularExpression: YARR compile failed with '%s'", m_constructionError);
+        JSC::Yarr::YarrPattern pattern( JSC::UString( patternString.impl() ), ( caseSensitivity == TextCaseInsensitive ), false,
+                                        &m_constructionError );
+
+        if ( m_constructionError )
+        {
+            LOG_ERROR( "RegularExpression: YARR compile failed with '%s'", m_constructionError );
             return nullptr;
         }
 
         m_numSubpatterns = pattern.m_numSubpatterns;
 
-        return JSC::Yarr::byteCompile(pattern, &m_regexAllocator);
+        return JSC::Yarr::byteCompile( pattern, &m_regexAllocator );
     }
 
     BumpPointerAllocator m_regexAllocator;
-    const char* m_constructionError;
+    const char *m_constructionError;
 };
 
-RegularExpression::RegularExpression(const String& pattern, TextCaseSensitivity caseSensitivity)
-    : d(Private::create(pattern, caseSensitivity))
+RegularExpression::RegularExpression( const String &pattern, TextCaseSensitivity caseSensitivity )
+    : d( Private::create( pattern, caseSensitivity ) )
 {
 }
 
-RegularExpression::RegularExpression(const RegularExpression& re)
-    : d(re.d)
+RegularExpression::RegularExpression( const RegularExpression &re )
+    : d( re.d )
 {
 }
 
@@ -85,47 +90,59 @@ RegularExpression::~RegularExpression()
 {
 }
 
-RegularExpression& RegularExpression::operator=(const RegularExpression& re)
+RegularExpression &RegularExpression::operator=( const RegularExpression &re )
 {
     d = re.d;
     return *this;
 }
 
-int RegularExpression::match(const String& str, int startFrom, int* matchLength) const
+int RegularExpression::match( const String &str, int startFrom, int *matchLength ) const
 {
-    if (!d->m_regExpByteCode)
+    if ( !d->m_regExpByteCode )
+    {
         return -1;
+    }
 
-    if (str.isNull())
+    if ( str.isNull() )
+    {
         return -1;
+    }
 
-    int offsetVectorSize = (d->m_numSubpatterns + 1) * 2;
-    int* offsetVector;
+    int offsetVectorSize = ( d->m_numSubpatterns + 1 ) * 2;
+    int *offsetVector;
     Vector<int, 32> nonReturnedOvector;
 
-    nonReturnedOvector.resize(offsetVectorSize);
+    nonReturnedOvector.resize( offsetVectorSize );
     offsetVector = nonReturnedOvector.data();
 
-    ASSERT(offsetVector);
-    for (unsigned j = 0, i = 0; i < d->m_numSubpatterns + 1; j += 2, i++)
+    ASSERT( offsetVector );
+
+    for ( unsigned j = 0, i = 0; i < d->m_numSubpatterns + 1; j += 2, i++ )
+    {
         offsetVector[j] = -1;
+    }
 
-    int result = JSC::Yarr::interpret(d->m_regExpByteCode.get(), str.characters(), startFrom, str.length(), offsetVector);
-    ASSERT(result >= -1);
+    int result = JSC::Yarr::interpret( d->m_regExpByteCode.get(), str.characters(), startFrom, str.length(), offsetVector );
+    ASSERT( result >= -1 );
 
-    if (result < 0) {
+    if ( result < 0 )
+    {
         d->lastMatchLength = -1;
         return -1;
     }
 
     // 1 means 1 match; 0 means more than one match. First match is recorded in offsetVector.
     d->lastMatchLength = offsetVector[1] - offsetVector[0];
-    if (matchLength)
+
+    if ( matchLength )
+    {
         *matchLength = d->lastMatchLength;
+    }
+
     return offsetVector[0];
 }
 
-int RegularExpression::searchRev(const String& str) const
+int RegularExpression::searchRev( const String &str ) const
 {
     // FIXME: This could be faster if it actually searched backwards.
     // Instead, it just searches forwards, multiple times until it finds the last match.
@@ -134,18 +151,26 @@ int RegularExpression::searchRev(const String& str) const
     int pos;
     int lastPos = -1;
     int lastMatchLength = -1;
-    do {
+
+    do
+    {
         int matchLength;
-        pos = match(str, start, &matchLength);
-        if (pos >= 0) {
-            if (pos + matchLength > lastPos + lastMatchLength) {
+        pos = match( str, start, &matchLength );
+
+        if ( pos >= 0 )
+        {
+            if ( pos + matchLength > lastPos + lastMatchLength )
+            {
                 // replace last match if this one is later and not a subset of the last match
                 lastPos = pos;
                 lastMatchLength = matchLength;
             }
+
             start = pos + 1;
         }
-    } while (pos != -1);
+    }
+    while ( pos != -1 );
+
     d->lastMatchLength = lastMatchLength;
     return lastPos;
 }
@@ -155,18 +180,27 @@ int RegularExpression::matchedLength() const
     return d->lastMatchLength;
 }
 
-void replace(String& string, const RegularExpression& target, const String& replacement)
+void replace( String &string, const RegularExpression &target, const String &replacement )
 {
     int index = 0;
-    while (index < static_cast<int>(string.length())) {
+
+    while ( index < static_cast<int>( string.length() ) )
+    {
         int matchLength;
-        index = target.match(string, index, &matchLength);
-        if (index < 0)
+        index = target.match( string, index, &matchLength );
+
+        if ( index < 0 )
+        {
             break;
-        string.replace(index, matchLength, replacement);
+        }
+
+        string.replace( index, matchLength, replacement );
         index += replacement.length();
-        if (!matchLength)
-            break;  // Avoid infinite loop on 0-length matches, e.g. [a-z]*
+
+        if ( !matchLength )
+        {
+            break;    // Avoid infinite loop on 0-length matches, e.g. [a-z]*
+        }
     }
 }
 

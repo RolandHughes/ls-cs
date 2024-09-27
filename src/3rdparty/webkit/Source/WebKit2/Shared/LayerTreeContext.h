@@ -26,22 +26,25 @@
 #ifndef LayerTreeContext_h
 #define LayerTreeContext_h
 
-namespace CoreIPC {
-    class ArgumentDecoder;
-    class ArgumentEncoder;
+namespace CoreIPC
+{
+class ArgumentDecoder;
+class ArgumentEncoder;
 }
 
 #if USE(ACCELERATED_COMPOSITING)
 
-namespace WebKit {
+namespace WebKit
+{
 
-class LayerTreeContext {
+class LayerTreeContext
+{
 public:
     LayerTreeContext();
     ~LayerTreeContext();
 
-    void encode(CoreIPC::ArgumentEncoder*) const;
-    static bool decode(CoreIPC::ArgumentDecoder*, LayerTreeContext&);
+    void encode( CoreIPC::ArgumentEncoder * ) const;
+    static bool decode( CoreIPC::ArgumentDecoder *, LayerTreeContext & );
 
     bool isEmpty() const;
 
@@ -50,11 +53,11 @@ public:
 #endif
 };
 
-bool operator==(const LayerTreeContext&, const LayerTreeContext&);
+bool operator==( const LayerTreeContext &, const LayerTreeContext & );
 
-inline bool operator!=(const LayerTreeContext& a, const LayerTreeContext& b)
+inline bool operator!=( const LayerTreeContext &a, const LayerTreeContext &b )
 {
-    return !(a == b);
+    return !( a == b );
 }
 
 };

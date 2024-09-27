@@ -36,54 +36,62 @@
 
 class QGraphicsSceneLinearIndex : public QGraphicsSceneIndex
 {
-   GUI_CS_OBJECT(QGraphicsSceneLinearIndex)
+    GUI_CS_OBJECT( QGraphicsSceneLinearIndex )
 
- public:
-   QGraphicsSceneLinearIndex(QGraphicsScene *scene = nullptr)
-      : QGraphicsSceneIndex(scene)
-   {
-   }
+public:
+    QGraphicsSceneLinearIndex( QGraphicsScene *scene = nullptr )
+        : QGraphicsSceneIndex( scene )
+    {
+    }
 
-   QList<QGraphicsItem *> items(Qt::SortOrder order = Qt::DescendingOrder) const override {
-      (void) order;
-      return m_items;
-   }
+    QList<QGraphicsItem *> items( Qt::SortOrder order = Qt::DescendingOrder ) const override
+    {
+        ( void ) order;
+        return m_items;
+    }
 
-   QList<QGraphicsItem *> estimateItems(const QRectF &rect, Qt::SortOrder order) const override {
-      (void) rect;
-      (void) order;
+    QList<QGraphicsItem *> estimateItems( const QRectF &rect, Qt::SortOrder order ) const override
+    {
+        ( void ) rect;
+        ( void ) order;
 
-      return m_items;
-   }
+        return m_items;
+    }
 
- protected :
-   void clear() override {
-      m_items.clear();
-      m_numSortedElements = 0;
-   }
+protected :
+    void clear() override
+    {
+        m_items.clear();
+        m_numSortedElements = 0;
+    }
 
-   void addItem(QGraphicsItem *item) override {
-      m_items << item;
-   }
+    void addItem( QGraphicsItem *item ) override
+    {
+        m_items << item;
+    }
 
-   void removeItem(QGraphicsItem *item) override {
-      // Sort m_items if needed
-      if (m_numSortedElements < m_items.size()) {
-         std::sort(m_items.begin() + m_numSortedElements, m_items.end() );
-         std::inplace_merge(m_items.begin(), m_items.begin() + m_numSortedElements, m_items.end());
-         m_numSortedElements = m_items.size();
-      }
+    void removeItem( QGraphicsItem *item ) override
+    {
+        // Sort m_items if needed
+        if ( m_numSortedElements < m_items.size() )
+        {
+            std::sort( m_items.begin() + m_numSortedElements, m_items.end() );
+            std::inplace_merge( m_items.begin(), m_items.begin() + m_numSortedElements, m_items.end() );
+            m_numSortedElements = m_items.size();
+        }
 
-      QList<QGraphicsItem *>::iterator element = std::lower_bound(m_items.begin(), m_items.end(), item);
-      if (element != m_items.end() && *element == item) {
-         m_items.erase(element);
-         --m_numSortedElements;
-      }
-   }
+        QList<QGraphicsItem *>::iterator element = std::lower_bound( m_items.begin(), m_items.end(), item );
 
- private:
-   QList<QGraphicsItem *> m_items;
-   int m_numSortedElements;
+        if ( element != m_items.end() && *element == item )
+        {
+            m_items.erase( element );
+            --m_numSortedElements;
+        }
+    }
+
+private:
+    QList<QGraphicsItem *> m_items;
+    int m_numSortedElements;
 };
 
 #endif // QT_NO_GRAPHICSVIEW

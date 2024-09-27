@@ -35,9 +35,10 @@
 
 #include <wtf/Assertions.h>
 
-namespace JSC {
+namespace JSC
+{
 
-    #define FOR_EACH_OPCODE_ID(macro) \
+#define FOR_EACH_OPCODE_ID(macro) \
         macro(op_enter, 1) \
         macro(op_create_activation, 2) \
         macro(op_init_lazy_reg, 2) \
@@ -195,34 +196,34 @@ namespace JSC {
         \
         macro(op_end, 2) // end must be the last opcode in the list
 
-    #define OPCODE_ID_ENUM(opcode, length) opcode,
-        typedef enum { FOR_EACH_OPCODE_ID(OPCODE_ID_ENUM) } OpcodeID;
-    #undef OPCODE_ID_ENUM
+#define OPCODE_ID_ENUM(opcode, length) opcode,
+typedef enum { FOR_EACH_OPCODE_ID( OPCODE_ID_ENUM ) } OpcodeID;
+#undef OPCODE_ID_ENUM
 
-    const int numOpcodeIDs = op_end + 1;
+const int numOpcodeIDs = op_end + 1;
 
-    #define OPCODE_ID_LENGTHS(id, length) const int id##_length = length;
-         FOR_EACH_OPCODE_ID(OPCODE_ID_LENGTHS);
-    #undef OPCODE_ID_LENGTHS
-    
-    #define OPCODE_LENGTH(opcode) opcode##_length
+#define OPCODE_ID_LENGTHS(id, length) const int id##_length = length;
+FOR_EACH_OPCODE_ID( OPCODE_ID_LENGTHS );
+#undef OPCODE_ID_LENGTHS
 
-    #define OPCODE_ID_LENGTH_MAP(opcode, length) length,
-        const int opcodeLengths[numOpcodeIDs] = { FOR_EACH_OPCODE_ID(OPCODE_ID_LENGTH_MAP) };
-    #undef OPCODE_ID_LENGTH_MAP
+#define OPCODE_LENGTH(opcode) opcode##_length
 
-    #define VERIFY_OPCODE_ID(id, size) COMPILE_ASSERT(id <= op_end, ASSERT_THAT_JS_OPCODE_IDS_ARE_VALID);
-        FOR_EACH_OPCODE_ID(VERIFY_OPCODE_ID);
-    #undef VERIFY_OPCODE_ID
+#define OPCODE_ID_LENGTH_MAP(opcode, length) length,
+const int opcodeLengths[numOpcodeIDs] = { FOR_EACH_OPCODE_ID( OPCODE_ID_LENGTH_MAP ) };
+#undef OPCODE_ID_LENGTH_MAP
+
+#define VERIFY_OPCODE_ID(id, size) COMPILE_ASSERT(id <= op_end, ASSERT_THAT_JS_OPCODE_IDS_ARE_VALID);
+FOR_EACH_OPCODE_ID( VERIFY_OPCODE_ID );
+#undef VERIFY_OPCODE_ID
 
 #if ENABLE(COMPUTED_GOTO_INTERPRETER)
 #if COMPILER(RVCT) || COMPILER(INTEL)
-    typedef void* Opcode;
+typedef void *Opcode;
 #else
-    typedef const void* Opcode;
+typedef const void *Opcode;
 #endif
 #else
-    typedef OpcodeID Opcode;
+typedef OpcodeID Opcode;
 #endif
 
 #if ENABLE(OPCODE_SAMPLING) || ENABLE(CODEBLOCK_SAMPLING) || ENABLE(OPCODE_STATS)
@@ -230,14 +231,14 @@ namespace JSC {
 #define PADDING_STRING "                                "
 #define PADDING_STRING_LENGTH static_cast<unsigned>(strlen(PADDING_STRING))
 
-    extern const char* const opcodeNames[];
+extern const char *const opcodeNames[];
 
-    inline const char* padOpcodeName(OpcodeID op, unsigned width)
-    {
-        unsigned pad = width - strlen(opcodeNames[op]);
-        pad = std::min(pad, PADDING_STRING_LENGTH);
-        return PADDING_STRING + PADDING_STRING_LENGTH - pad;
-    }
+inline const char *padOpcodeName( OpcodeID op, unsigned width )
+{
+    unsigned pad = width - strlen( opcodeNames[op] );
+    pad = std::min( pad, PADDING_STRING_LENGTH );
+    return PADDING_STRING + PADDING_STRING_LENGTH - pad;
+}
 
 #undef PADDING_STRING_LENGTH
 #undef PADDING_STRING
@@ -246,29 +247,32 @@ namespace JSC {
 
 #if ENABLE(OPCODE_STATS)
 
-    struct OpcodeStats {
-        OpcodeStats();
-        ~OpcodeStats();
-        static long long opcodeCounts[numOpcodeIDs];
-        static long long opcodePairCounts[numOpcodeIDs][numOpcodeIDs];
-        static int lastOpcode;
+struct OpcodeStats
+{
+    OpcodeStats();
+    ~OpcodeStats();
+    static long long opcodeCounts[numOpcodeIDs];
+    static long long opcodePairCounts[numOpcodeIDs][numOpcodeIDs];
+    static int lastOpcode;
 
-        static void recordInstruction(int opcode);
-        static void resetLastInstruction();
-    };
+    static void recordInstruction( int opcode );
+    static void resetLastInstruction();
+};
 
 #endif
 
-    inline size_t opcodeLength(OpcodeID opcode)
+inline size_t opcodeLength( OpcodeID opcode )
+{
+    switch ( opcode )
     {
-        switch (opcode) {
 #define OPCODE_ID_LENGTHS(id, length) case id: return OPCODE_LENGTH(id);
-             FOR_EACH_OPCODE_ID(OPCODE_ID_LENGTHS)
+            FOR_EACH_OPCODE_ID( OPCODE_ID_LENGTHS )
 #undef OPCODE_ID_LENGTHS
-        }
-        ASSERT_NOT_REACHED();
-        return 0;
     }
+
+    ASSERT_NOT_REACHED();
+    return 0;
+}
 
 } // namespace JSC
 

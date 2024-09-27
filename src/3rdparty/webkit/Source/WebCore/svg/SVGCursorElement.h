@@ -30,45 +30,50 @@
 #include "SVGTests.h"
 #include "SVGURIReference.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class SVGCursorElement : public SVGElement,
-                         public SVGTests,
-                         public SVGExternalResourcesRequired,
-                         public SVGURIReference {
+    public SVGTests,
+    public SVGExternalResourcesRequired,
+    public SVGURIReference
+{
 public:
-    static PassRefPtr<SVGCursorElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<SVGCursorElement> create( const QualifiedName &, Document * );
 
     virtual ~SVGCursorElement();
 
-    void addClient(SVGElement*);
-    void removeClient(SVGElement*);
-    void removeReferencedElement(SVGElement*);
+    void addClient( SVGElement * );
+    void removeClient( SVGElement * );
+    void removeReferencedElement( SVGElement * );
 
 private:
-    SVGCursorElement(const QualifiedName&, Document*);
+    SVGCursorElement( const QualifiedName &, Document * );
 
-    virtual bool isValid() const { return SVGTests::isValid(); }
+    virtual bool isValid() const
+    {
+        return SVGTests::isValid();
+    }
 
-    virtual void parseMappedAttribute(Attribute*);
-    virtual void svgAttributeChanged(const QualifiedName&);
-    virtual void synchronizeProperty(const QualifiedName&);
+    virtual void parseMappedAttribute( Attribute * );
+    virtual void svgAttributeChanged( const QualifiedName & );
+    virtual void synchronizeProperty( const QualifiedName & );
     virtual void fillAttributeToPropertyTypeMap();
-    virtual AttributeToPropertyTypeMap& attributeToPropertyTypeMap();
+    virtual AttributeToPropertyTypeMap &attributeToPropertyTypeMap();
 
-    virtual void addSubresourceAttributeURLs(ListHashSet<KURL>&) const;
+    virtual void addSubresourceAttributeURLs( ListHashSet<KURL> & ) const;
 
     // Animated property declarations
-    DECLARE_ANIMATED_LENGTH(X, x)
-    DECLARE_ANIMATED_LENGTH(Y, y)
+    DECLARE_ANIMATED_LENGTH( X, x )
+    DECLARE_ANIMATED_LENGTH( Y, y )
 
     // SVGURIReference
-    DECLARE_ANIMATED_STRING(Href, href)
+    DECLARE_ANIMATED_STRING( Href, href )
 
     // SVGExternalResourcesRequired
-    DECLARE_ANIMATED_BOOLEAN(ExternalResourcesRequired, externalResourcesRequired)
+    DECLARE_ANIMATED_BOOLEAN( ExternalResourcesRequired, externalResourcesRequired )
 
-    HashSet<SVGElement*> m_clients;
+    HashSet<SVGElement *> m_clients;
 };
 
 } // namespace WebCore

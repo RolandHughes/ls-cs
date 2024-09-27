@@ -32,30 +32,31 @@
 struct NPClass;
 struct NPObject;
 
-namespace WebKit {
-
-void* npnMemAlloc(uint32_t);
-void npnMemFree(void*);
-
-template<typename T> T* npnMemNew()
+namespace WebKit
 {
-    return static_cast<T*>(npnMemAlloc(sizeof(T)));
+
+void *npnMemAlloc( uint32_t );
+void npnMemFree( void * );
+
+template<typename T> T *npnMemNew()
+{
+    return static_cast<T *>( npnMemAlloc( sizeof( T ) ) );
 }
 
-template<typename T> T* npnMemNewArray(size_t count)
+template<typename T> T *npnMemNewArray( size_t count )
 {
-    return static_cast<T*>(npnMemAlloc(sizeof(T) * count));
+    return static_cast<T *>( npnMemAlloc( sizeof( T ) * count ) );
 }
 
-NPString createNPString(const CString&);
+NPString createNPString( const CString & );
 
-NPObject* createNPObject(NPP, NPClass*);
-void deallocateNPObject(NPObject*);
+NPObject *createNPObject( NPP, NPClass * );
+void deallocateNPObject( NPObject * );
 
-void retainNPObject(NPObject*);
-void releaseNPObject(NPObject*);
+void retainNPObject( NPObject * );
+void releaseNPObject( NPObject * );
 
-void releaseNPVariantValue(NPVariant*);
+void releaseNPVariantValue( NPVariant * );
 
 }
 

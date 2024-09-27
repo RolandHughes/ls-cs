@@ -28,115 +28,122 @@
 
 static QImagePixmapCleanupHooks *qt_image_and_pixmap_cleanup_hooks()
 {
-   static QImagePixmapCleanupHooks retval;
-   return &retval;
+    static QImagePixmapCleanupHooks retval;
+    return &retval;
 }
 
 QImagePixmapCleanupHooks *QImagePixmapCleanupHooks::instance()
 {
-   return qt_image_and_pixmap_cleanup_hooks();
+    return qt_image_and_pixmap_cleanup_hooks();
 }
 
-void QImagePixmapCleanupHooks::addPlatformPixmapModificationHook(_qt_pixmap_cleanup_hook_pmd hook)
+void QImagePixmapCleanupHooks::addPlatformPixmapModificationHook( _qt_pixmap_cleanup_hook_pmd hook )
 {
-   pixmapModificationHooks.append(hook);
+    pixmapModificationHooks.append( hook );
 }
 
-void QImagePixmapCleanupHooks::addPlatformPixmapDestructionHook(_qt_pixmap_cleanup_hook_pmd hook)
+void QImagePixmapCleanupHooks::addPlatformPixmapDestructionHook( _qt_pixmap_cleanup_hook_pmd hook )
 {
-   pixmapDestructionHooks.append(hook);
+    pixmapDestructionHooks.append( hook );
 }
 
 
-void QImagePixmapCleanupHooks::addImageHook(_qt_image_cleanup_hook_64 hook)
+void QImagePixmapCleanupHooks::addImageHook( _qt_image_cleanup_hook_64 hook )
 {
-   imageHooks.append(hook);
+    imageHooks.append( hook );
 }
 
-void QImagePixmapCleanupHooks::removePlatformPixmapModificationHook(_qt_pixmap_cleanup_hook_pmd hook)
+void QImagePixmapCleanupHooks::removePlatformPixmapModificationHook( _qt_pixmap_cleanup_hook_pmd hook )
 {
-   pixmapModificationHooks.removeAll(hook);
+    pixmapModificationHooks.removeAll( hook );
 }
 
-void QImagePixmapCleanupHooks::removePlatformPixmapDestructionHook(_qt_pixmap_cleanup_hook_pmd hook)
+void QImagePixmapCleanupHooks::removePlatformPixmapDestructionHook( _qt_pixmap_cleanup_hook_pmd hook )
 {
-   pixmapDestructionHooks.removeAll(hook);
+    pixmapDestructionHooks.removeAll( hook );
 }
 
-void QImagePixmapCleanupHooks::removeImageHook(_qt_image_cleanup_hook_64 hook)
+void QImagePixmapCleanupHooks::removeImageHook( _qt_image_cleanup_hook_64 hook )
 {
-   imageHooks.removeAll(hook);
+    imageHooks.removeAll( hook );
 }
 
-void QImagePixmapCleanupHooks::executePlatformPixmapModificationHooks(QPlatformPixmap *pmd)
+void QImagePixmapCleanupHooks::executePlatformPixmapModificationHooks( QPlatformPixmap *pmd )
 {
-   QImagePixmapCleanupHooks *h = qt_image_and_pixmap_cleanup_hooks();
-   // the global destructor for the pixmap and image hooks might have
-   // been called already if the app is "leaking" global
-   // pixmaps/images
+    QImagePixmapCleanupHooks *h = qt_image_and_pixmap_cleanup_hooks();
+    // the global destructor for the pixmap and image hooks might have
+    // been called already if the app is "leaking" global
+    // pixmaps/images
 
-   if (! h) {
-      return;
-   }
+    if ( ! h )
+    {
+        return;
+    }
 
-   for (int i = 0; i < h->pixmapModificationHooks.count(); ++i) {
-      h->pixmapModificationHooks[i](pmd);
-   }
+    for ( int i = 0; i < h->pixmapModificationHooks.count(); ++i )
+    {
+        h->pixmapModificationHooks[i]( pmd );
+    }
 }
 
-void QImagePixmapCleanupHooks::executePlatformPixmapDestructionHooks(QPlatformPixmap *pmd)
+void QImagePixmapCleanupHooks::executePlatformPixmapDestructionHooks( QPlatformPixmap *pmd )
 {
-   QImagePixmapCleanupHooks *h = qt_image_and_pixmap_cleanup_hooks();
-   // the global destructor for the pixmap and image hooks might have
-   // been called already if the app is "leaking" global
-   // pixmaps/images
-   if (!h) {
-      return;
-   }
+    QImagePixmapCleanupHooks *h = qt_image_and_pixmap_cleanup_hooks();
 
-   for (int i = 0; i < h->pixmapDestructionHooks.count(); ++i) {
-      h->pixmapDestructionHooks[i](pmd);
-   }
+    // the global destructor for the pixmap and image hooks might have
+    // been called already if the app is "leaking" global
+    // pixmaps/images
+    if ( !h )
+    {
+        return;
+    }
+
+    for ( int i = 0; i < h->pixmapDestructionHooks.count(); ++i )
+    {
+        h->pixmapDestructionHooks[i]( pmd );
+    }
 }
 
-void QImagePixmapCleanupHooks::executeImageHooks(qint64 key)
+void QImagePixmapCleanupHooks::executeImageHooks( qint64 key )
 {
-   QImagePixmapCleanupHooks *h = qt_image_and_pixmap_cleanup_hooks();
-   // the global destructor for the pixmap and image hooks might have
-   // been called already if the app is "leaking" global pixmaps/images
+    QImagePixmapCleanupHooks *h = qt_image_and_pixmap_cleanup_hooks();
+    // the global destructor for the pixmap and image hooks might have
+    // been called already if the app is "leaking" global pixmaps/images
 
-   if (!h) {
-      return;
-   }
+    if ( !h )
+    {
+        return;
+    }
 
-   for (int i = 0; i < h->imageHooks.count(); ++i) {
-      h->imageHooks[i](key);
-   }
+    for ( int i = 0; i < h->imageHooks.count(); ++i )
+    {
+        h->imageHooks[i]( key );
+    }
 }
 
-void QImagePixmapCleanupHooks::enableCleanupHooks(QPlatformPixmap *handle)
+void QImagePixmapCleanupHooks::enableCleanupHooks( QPlatformPixmap *handle )
 {
-   handle->is_cached = true;
+    handle->is_cached = true;
 }
 
-void QImagePixmapCleanupHooks::enableCleanupHooks(const QPixmap &pixmap)
+void QImagePixmapCleanupHooks::enableCleanupHooks( const QPixmap &pixmap )
 {
-   auto tmp = const_cast<QPixmap &>(pixmap).data_ptr().data();
-   enableCleanupHooks(tmp);
+    auto tmp = const_cast<QPixmap &>( pixmap ).data_ptr().data();
+    enableCleanupHooks( tmp );
 }
 
-void QImagePixmapCleanupHooks::enableCleanupHooks(const QImage &image)
+void QImagePixmapCleanupHooks::enableCleanupHooks( const QImage &image )
 {
-   const_cast<QImage &>(image).data_ptr()->is_cached = true;
+    const_cast<QImage &>( image ).data_ptr()->is_cached = true;
 }
 
-bool QImagePixmapCleanupHooks::isImageCached(const QImage &image)
+bool QImagePixmapCleanupHooks::isImageCached( const QImage &image )
 {
-   return const_cast<QImage &>(image).data_ptr()->is_cached;
+    return const_cast<QImage &>( image ).data_ptr()->is_cached;
 }
 
-bool QImagePixmapCleanupHooks::isPixmapCached(const QPixmap &pixmap)
+bool QImagePixmapCleanupHooks::isPixmapCached( const QPixmap &pixmap )
 {
-   return const_cast<QPixmap &>(pixmap).data_ptr().data()->is_cached;
+    return const_cast<QPixmap &>( pixmap ).data_ptr().data()->is_cached;
 }
 

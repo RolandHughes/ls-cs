@@ -31,55 +31,55 @@ class AVFMediaPlayerSession;
 
 class AVFMediaPlayerControl : public QMediaPlayerControl
 {
-   CS_OBJECT(AVFMediaPlayerControl)
+    CS_OBJECT( AVFMediaPlayerControl )
 
- public:
-   explicit AVFMediaPlayerControl(QObject *parent = nullptr);
-   ~AVFMediaPlayerControl();
+public:
+    explicit AVFMediaPlayerControl( QObject *parent = nullptr );
+    ~AVFMediaPlayerControl();
 
-   void setSession(AVFMediaPlayerSession *session);
+    void setSession( AVFMediaPlayerSession *session );
 
-   QMediaPlayer::State state() const override;
-   QMediaPlayer::MediaStatus mediaStatus() const override;
+    QMediaPlayer::State state() const override;
+    QMediaPlayer::MediaStatus mediaStatus() const override;
 
-   QMediaContent media() const override;
-   const QIODevice *mediaStream() const override;
-   void setMedia(const QMediaContent &content, QIODevice *stream) override;
+    QMediaContent media() const override;
+    const QIODevice *mediaStream() const override;
+    void setMedia( const QMediaContent &content, QIODevice *stream ) override;
 
-   qint64 position() const override;
-   qint64 duration() const override;
+    qint64 position() const override;
+    qint64 duration() const override;
 
-   int bufferStatus() const override;
+    int bufferStatus() const override;
 
-   int volume() const override;
-   bool isMuted() const override;
+    int volume() const override;
+    bool isMuted() const override;
 
-   bool isAudioAvailable() const override;
-   bool isVideoAvailable() const override;
+    bool isAudioAvailable() const override;
+    bool isVideoAvailable() const override;
 
-   bool isSeekable() const override;
-   QMediaTimeRange availablePlaybackRanges() const override;
+    bool isSeekable() const override;
+    QMediaTimeRange availablePlaybackRanges() const override;
 
-   qreal playbackRate() const override;
-   void setPlaybackRate(qreal rate) override;
+    qreal playbackRate() const override;
+    void setPlaybackRate( qreal rate ) override;
 
-   CS_SLOT_1(Public, void setPosition(qint64 pos) override)
-   CS_SLOT_2(setPosition)
+    CS_SLOT_1( Public, void setPosition( qint64 pos ) override )
+    CS_SLOT_2( setPosition )
 
-   CS_SLOT_1(Public, void play() override)
-   CS_SLOT_2(play)
-   CS_SLOT_1(Public, void pause() override)
-   CS_SLOT_2(pause)
-   CS_SLOT_1(Public, void stop() override)
-   CS_SLOT_2(stop)
+    CS_SLOT_1( Public, void play() override )
+    CS_SLOT_2( play )
+    CS_SLOT_1( Public, void pause() override )
+    CS_SLOT_2( pause )
+    CS_SLOT_1( Public, void stop() override )
+    CS_SLOT_2( stop )
 
-   CS_SLOT_1(Public, void setVolume(int volume) override)
-   CS_SLOT_2(setVolume)
-   CS_SLOT_1(Public, void setMuted(bool muted) override)
-   CS_SLOT_2(setMuted)
+    CS_SLOT_1( Public, void setVolume( int volume ) override )
+    CS_SLOT_2( setVolume )
+    CS_SLOT_1( Public, void setMuted( bool muted ) override )
+    CS_SLOT_2( setMuted )
 
- private:
-   AVFMediaPlayerSession *m_session;
+private:
+    AVFMediaPlayerSession *m_session;
 };
 
 #endif

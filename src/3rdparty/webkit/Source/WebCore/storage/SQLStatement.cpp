@@ -41,65 +41,79 @@
 #include "SQLValue.h"
 #include <wtf/text/CString.h>
 
-namespace WebCore {
-
-PassRefPtr<SQLStatement> SQLStatement::create(Database* database, const String& statement, const Vector<SQLValue>& arguments, PassRefPtr<SQLStatementCallback> callback, PassRefPtr<SQLStatementErrorCallback> errorCallback, int permissions)
+namespace WebCore
 {
-    return adoptRef(new SQLStatement(database, statement, arguments, callback, errorCallback, permissions));
+
+PassRefPtr<SQLStatement> SQLStatement::create( Database *database, const String &statement, const Vector<SQLValue> &arguments,
+        PassRefPtr<SQLStatementCallback> callback, PassRefPtr<SQLStatementErrorCallback> errorCallback, int permissions )
+{
+    return adoptRef( new SQLStatement( database, statement, arguments, callback, errorCallback, permissions ) );
 }
 
-SQLStatement::SQLStatement(Database* database, const String& statement, const Vector<SQLValue>& arguments, PassRefPtr<SQLStatementCallback> callback, PassRefPtr<SQLStatementErrorCallback> errorCallback, int permissions)
-    : m_statement(statement.crossThreadString())
-    , m_arguments(arguments)
-    , m_statementCallbackWrapper(callback, database->scriptExecutionContext())
-    , m_statementErrorCallbackWrapper(errorCallback, database->scriptExecutionContext())
-    , m_permissions(permissions)
+SQLStatement::SQLStatement( Database *database, const String &statement, const Vector<SQLValue> &arguments,
+                            PassRefPtr<SQLStatementCallback> callback, PassRefPtr<SQLStatementErrorCallback> errorCallback, int permissions )
+    : m_statement( statement.crossThreadString() )
+    , m_arguments( arguments )
+    , m_statementCallbackWrapper( callback, database->scriptExecutionContext() )
+    , m_statementErrorCallbackWrapper( errorCallback, database->scriptExecutionContext() )
+    , m_permissions( permissions )
 {
 }
 
-bool SQLStatement::execute(Database* db)
+bool SQLStatement::execute( Database *db )
 {
-    ASSERT(!m_resultSet);
+    ASSERT( !m_resultSet );
 
     // If we're re-running this statement after a quota violation, we need to clear that error now
     clearFailureDueToQuota();
 
     // This transaction might have been marked bad while it was being set up on the main thread,
     // so if there is still an error, return false.
-    if (m_error)
+    if ( m_error )
+    {
         return false;
+    }
 
-    db->setAuthorizerPermissions(m_permissions);
+    db->setAuthorizerPermissions( m_permissions );
 
-    SQLiteDatabase* database = &db->sqliteDatabase();
+    SQLiteDatabase *database = &db->sqliteDatabase();
 
-    SQLiteStatement statement(*database, m_statement);
+    SQLiteStatement statement( *database, m_statement );
     int result = statement.prepare();
 
-    if (result != SQLResultOk) {
-        LOG(StorageAPI, "Unable to verify correctness of statement %s - error %i (%s)", m_statement.ascii().data(), result, database->lastErrorMsg());
-        m_error = SQLError::create(result == SQLResultInterrupt ? SQLError::DATABASE_ERR : SQLError::SYNTAX_ERR, database->lastErrorMsg());
+    if ( result != SQLResultOk )
+    {
+        LOG( StorageAPI, "Unable to verify correctness of statement %s - error %i (%s)", m_statement.ascii().data(), result,
+             database->lastErrorMsg() );
+        m_error = SQLError::create( result == SQLResultInterrupt ? SQLError::DATABASE_ERR : SQLError::SYNTAX_ERR,
+                                    database->lastErrorMsg() );
         return false;
     }
 
     // FIXME:  If the statement uses the ?### syntax supported by sqlite, the bind parameter count is very likely off from the number of question marks.
     // If this is the case, they might be trying to do something fishy or malicious
-    if (statement.bindParameterCount() != m_arguments.size()) {
-        LOG(StorageAPI, "Bind parameter count doesn't match number of question marks");
-        m_error = SQLError::create(db->isInterrupted() ? SQLError::DATABASE_ERR : SQLError::SYNTAX_ERR, "number of '?'s in statement string does not match argument count");
+    if ( statement.bindParameterCount() != m_arguments.size() )
+    {
+        LOG( StorageAPI, "Bind parameter count doesn't match number of question marks" );
+        m_error = SQLError::create( db->isInterrupted() ? SQLError::DATABASE_ERR : SQLError::SYNTAX_ERR,
+                                    "number of '?'s in statement string does not match argument count" );
         return false;
     }
 
-    for (unsigned i = 0; i < m_arguments.size(); ++i) {
-        result = statement.bindValue(i + 1, m_arguments[i]);
-        if (result == SQLResultFull) {
+    for ( unsigned i = 0; i < m_arguments.size(); ++i )
+    {
+        result = statement.bindValue( i + 1, m_arguments[i] );
+
+        if ( result == SQLResultFull )
+        {
             setFailureDueToQuota();
             return false;
         }
 
-        if (result != SQLResultOk) {
-            LOG(StorageAPI, "Failed to bind value index %i to statement for query '%s'", i + 1, m_statement.ascii().data());
-            m_error = SQLError::create(SQLError::DATABASE_ERR, database->lastErrorMsg());
+        if ( result != SQLResultOk )
+        {
+            LOG( StorageAPI, "Failed to bind value index %i to statement for query '%s'", i + 1, m_statement.ascii().data() );
+            m_error = SQLError::create( SQLError::DATABASE_ERR, database->lastErrorMsg() );
             return false;
         }
     }
@@ -108,41 +122,58 @@ bool SQLStatement::execute(Database* db)
 
     // Step so we can fetch the column names.
     result = statement.step();
-    if (result == SQLResultRow) {
+
+    if ( result == SQLResultRow )
+    {
         int columnCount = statement.columnCount();
-        SQLResultSetRowList* rows = resultSet->rows();
+        SQLResultSetRowList *rows = resultSet->rows();
 
-        for (int i = 0; i < columnCount; i++)
-            rows->addColumn(statement.getColumnName(i));
+        for ( int i = 0; i < columnCount; i++ )
+        {
+            rows->addColumn( statement.getColumnName( i ) );
+        }
 
-        do {
-            for (int i = 0; i < columnCount; i++)
-                rows->addResult(statement.getColumnValue(i));
+        do
+        {
+            for ( int i = 0; i < columnCount; i++ )
+            {
+                rows->addResult( statement.getColumnValue( i ) );
+            }
 
             result = statement.step();
-        } while (result == SQLResultRow);
+        }
+        while ( result == SQLResultRow );
 
-        if (result != SQLResultDone) {
-            m_error = SQLError::create(SQLError::DATABASE_ERR, database->lastErrorMsg());
+        if ( result != SQLResultDone )
+        {
+            m_error = SQLError::create( SQLError::DATABASE_ERR, database->lastErrorMsg() );
             return false;
         }
-    } else if (result == SQLResultDone) {
+    }
+    else if ( result == SQLResultDone )
+    {
         // Didn't find anything, or was an insert
-        if (db->lastActionWasInsert())
-            resultSet->setInsertId(database->lastInsertRowID());
-    } else if (result == SQLResultFull) {
+        if ( db->lastActionWasInsert() )
+        {
+            resultSet->setInsertId( database->lastInsertRowID() );
+        }
+    }
+    else if ( result == SQLResultFull )
+    {
         // Return the Quota error - the delegate will be asked for more space and this statement might be re-run
         setFailureDueToQuota();
         return false;
-    } else {
-        m_error = SQLError::create(SQLError::DATABASE_ERR, database->lastErrorMsg());
+    }
+    else
+    {
+        m_error = SQLError::create( SQLError::DATABASE_ERR, database->lastErrorMsg() );
         return false;
     }
 
     // FIXME: If the spec allows triggers, and we want to be "accurate" in a different way, we'd use
     // sqlite3_total_changes() here instead of sqlite3_changed, because that includes rows modified from within a trigger
     // For now, this seems sufficient
-    resultSet->setRowsAffected(database->lastChanges());
+    resultSet->setRowsAffected( database->lastChanges() );
 
     m_resultSet = resultSet;
     return true;
@@ -150,19 +181,19 @@ bool SQLStatement::execute(Database* db)
 
 void SQLStatement::setDatabaseDeletedError()
 {
-    ASSERT(!m_error && !m_resultSet);
-    m_error = SQLError::create(SQLError::UNKNOWN_ERR, "unable to execute statement, because the user deleted the database");
+    ASSERT( !m_error && !m_resultSet );
+    m_error = SQLError::create( SQLError::UNKNOWN_ERR, "unable to execute statement, because the user deleted the database" );
 }
 
 void SQLStatement::setVersionMismatchedError()
 {
-    ASSERT(!m_error && !m_resultSet);
-    m_error = SQLError::create(SQLError::VERSION_ERR, "current version of the database and `oldVersion` argument do not match");
+    ASSERT( !m_error && !m_resultSet );
+    m_error = SQLError::create( SQLError::VERSION_ERR, "current version of the database and `oldVersion` argument do not match" );
 }
 
-bool SQLStatement::performCallback(SQLTransaction* transaction)
+bool SQLStatement::performCallback( SQLTransaction *transaction )
 {
-    ASSERT(transaction);
+    ASSERT( transaction );
 
     bool callbackError = false;
 
@@ -171,25 +202,32 @@ bool SQLStatement::performCallback(SQLTransaction* transaction)
 
     // Call the appropriate statement callback and track if it resulted in an error,
     // because then we need to jump to the transaction error callback.
-    if (m_error) {
-        ASSERT(errorCallback);
-        callbackError = errorCallback->handleEvent(transaction, m_error.get());
-    } else if (callback)
-        callbackError = !callback->handleEvent(transaction, m_resultSet.get());
+    if ( m_error )
+    {
+        ASSERT( errorCallback );
+        callbackError = errorCallback->handleEvent( transaction, m_error.get() );
+    }
+    else if ( callback )
+    {
+        callbackError = !callback->handleEvent( transaction, m_resultSet.get() );
+    }
 
     return callbackError;
 }
 
 void SQLStatement::setFailureDueToQuota()
 {
-    ASSERT(!m_error && !m_resultSet);
-    m_error = SQLError::create(SQLError::QUOTA_ERR, "there was not enough remaining storage space, or the storage quota was reached and the user declined to allow more space");
+    ASSERT( !m_error && !m_resultSet );
+    m_error = SQLError::create( SQLError::QUOTA_ERR,
+                                "there was not enough remaining storage space, or the storage quota was reached and the user declined to allow more space" );
 }
 
 void SQLStatement::clearFailureDueToQuota()
 {
-    if (lastExecutionFailedDueToQuota())
+    if ( lastExecutionFailedDueToQuota() )
+    {
         m_error = 0;
+    }
 }
 
 bool SQLStatement::lastExecutionFailedDueToQuota() const

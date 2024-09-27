@@ -25,17 +25,19 @@
 
 #include "HTMLElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class HTMLBlockquoteElement : public HTMLElement {
+class HTMLBlockquoteElement : public HTMLElement
+{
 public:
-    static PassRefPtr<HTMLBlockquoteElement> create(Document*);
-    static PassRefPtr<HTMLBlockquoteElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<HTMLBlockquoteElement> create( Document * );
+    static PassRefPtr<HTMLBlockquoteElement> create( const QualifiedName &, Document * );
 
 private:
-    HTMLBlockquoteElement(const QualifiedName&, Document*);
+    HTMLBlockquoteElement( const QualifiedName &, Document * );
 
-    virtual bool isURLAttribute(Attribute*) const;
+    virtual bool isURLAttribute( Attribute * ) const;
 };
 
 } // namespace WebCore

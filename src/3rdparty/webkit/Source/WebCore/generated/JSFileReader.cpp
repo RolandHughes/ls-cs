@@ -37,9 +37,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSFileReader);
+ASSERT_CLASS_FITS_IN_CELL( JSFileReader );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -50,17 +51,17 @@ ASSERT_CLASS_FITS_IN_CELL(JSFileReader);
 
 static const HashTableValue JSFileReaderTableValues[11] =
 {
-    { "readyState", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsFileReaderReadyState), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "result", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsFileReaderResult), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "error", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsFileReaderError), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "onloadstart", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsFileReaderOnloadstart), (intptr_t)setJSFileReaderOnloadstart THUNK_GENERATOR(0) },
-    { "onprogress", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsFileReaderOnprogress), (intptr_t)setJSFileReaderOnprogress THUNK_GENERATOR(0) },
-    { "onload", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsFileReaderOnload), (intptr_t)setJSFileReaderOnload THUNK_GENERATOR(0) },
-    { "onabort", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsFileReaderOnabort), (intptr_t)setJSFileReaderOnabort THUNK_GENERATOR(0) },
-    { "onerror", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsFileReaderOnerror), (intptr_t)setJSFileReaderOnerror THUNK_GENERATOR(0) },
-    { "onloadend", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsFileReaderOnloadend), (intptr_t)setJSFileReaderOnloadend THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsFileReaderConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "readyState", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsFileReaderReadyState ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "result", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsFileReaderResult ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "error", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsFileReaderError ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "onloadstart", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsFileReaderOnloadstart ), ( intptr_t )setJSFileReaderOnloadstart THUNK_GENERATOR( 0 ) },
+    { "onprogress", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsFileReaderOnprogress ), ( intptr_t )setJSFileReaderOnprogress THUNK_GENERATOR( 0 ) },
+    { "onload", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsFileReaderOnload ), ( intptr_t )setJSFileReaderOnload THUNK_GENERATOR( 0 ) },
+    { "onabort", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsFileReaderOnabort ), ( intptr_t )setJSFileReaderOnabort THUNK_GENERATOR( 0 ) },
+    { "onerror", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsFileReaderOnerror ), ( intptr_t )setJSFileReaderOnerror THUNK_GENERATOR( 0 ) },
+    { "onloadend", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsFileReaderOnloadend ), ( intptr_t )setJSFileReaderOnloadend THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsFileReaderConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -74,64 +75,75 @@ static JSC_CONST_HASHTABLE HashTable JSFileReaderTable = { 34, 31, JSFileReaderT
 
 static const HashTableValue JSFileReaderConstructorTableValues[4] =
 {
-    { "EMPTY", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsFileReaderEMPTY), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "LOADING", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsFileReaderLOADING), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "DONE", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsFileReaderDONE), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "EMPTY", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsFileReaderEMPTY ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "LOADING", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsFileReaderLOADING ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "DONE", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsFileReaderDONE ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSFileReaderConstructorTable = { 9, 7, JSFileReaderConstructorTableValues, 0 };
 
-COMPILE_ASSERT(0 == FileReader::EMPTY, FileReaderEnumEMPTYIsWrongUseDontCheckEnums);
-COMPILE_ASSERT(1 == FileReader::LOADING, FileReaderEnumLOADINGIsWrongUseDontCheckEnums);
-COMPILE_ASSERT(2 == FileReader::DONE, FileReaderEnumDONEIsWrongUseDontCheckEnums);
+COMPILE_ASSERT( 0 == FileReader::EMPTY, FileReaderEnumEMPTYIsWrongUseDontCheckEnums );
+COMPILE_ASSERT( 1 == FileReader::LOADING, FileReaderEnumLOADINGIsWrongUseDontCheckEnums );
+COMPILE_ASSERT( 2 == FileReader::DONE, FileReaderEnumDONEIsWrongUseDontCheckEnums );
 
-class JSFileReaderConstructor : public DOMConstructorObject {
+class JSFileReaderConstructor : public DOMConstructorObject
+{
 public:
-    JSFileReaderConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSFileReaderConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
-    static JSC::EncodedJSValue JSC_HOST_CALL constructJSFileReader(JSC::ExecState*);
-    virtual JSC::ConstructType getConstructData(JSC::ConstructData&);
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
+    static JSC::EncodedJSValue JSC_HOST_CALL constructJSFileReader( JSC::ExecState * );
+    virtual JSC::ConstructType getConstructData( JSC::ConstructData & );
 };
 
 const ClassInfo JSFileReaderConstructor::s_info = { "FileReaderConstructor", &DOMConstructorObject::s_info, &JSFileReaderConstructorTable, 0 };
 
-JSFileReaderConstructor::JSFileReaderConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSFileReaderConstructor::JSFileReaderConstructor( ExecState *exec, Structure *structure, JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSFileReaderPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSFileReaderPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSFileReaderConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSFileReaderConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSFileReaderConstructor, JSDOMWrapper>(exec, &JSFileReaderConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSFileReaderConstructor, JSDOMWrapper>( exec, &JSFileReaderConstructorTable, this, propertyName, slot );
 }
 
-bool JSFileReaderConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSFileReaderConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSFileReaderConstructor, JSDOMWrapper>(exec, &JSFileReaderConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSFileReaderConstructor, JSDOMWrapper>( exec, &JSFileReaderConstructorTable, this, propertyName,
+            descriptor );
 }
 
-EncodedJSValue JSC_HOST_CALL JSFileReaderConstructor::constructJSFileReader(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL JSFileReaderConstructor::constructJSFileReader( ExecState *exec )
 {
-    ScriptExecutionContext* context = static_cast<JSFileReaderConstructor*>(exec->callee())->scriptExecutionContext();
-    if (!context)
-        return throwVMError(exec, createReferenceError(exec, "Reference error"));
-    return JSValue::encode(asObject(toJS(exec, static_cast<JSFileReaderConstructor*>(exec->callee())->globalObject(), FileReader::create(context))));
+    ScriptExecutionContext *context = static_cast<JSFileReaderConstructor *>( exec->callee() )->scriptExecutionContext();
+
+    if ( !context )
+    {
+        return throwVMError( exec, createReferenceError( exec, "Reference error" ) );
+    }
+
+    return JSValue::encode( asObject( toJS( exec, static_cast<JSFileReaderConstructor *>( exec->callee() )->globalObject(),
+                                            FileReader::create( context ) ) ) );
 }
 
-ConstructType JSFileReaderConstructor::getConstructData(ConstructData& constructData)
+ConstructType JSFileReaderConstructor::getConstructData( ConstructData &constructData )
 {
     constructData.native.function = constructJSFileReader;
     return ConstructTypeHost;
@@ -146,400 +158,490 @@ ConstructType JSFileReaderConstructor::getConstructData(ConstructData& construct
 
 static const HashTableValue JSFileReaderPrototypeTableValues[9] =
 {
-    { "EMPTY", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsFileReaderEMPTY), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "LOADING", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsFileReaderLOADING), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "DONE", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsFileReaderDONE), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "readAsArrayBuffer", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsFileReaderPrototypeFunctionReadAsArrayBuffer), (intptr_t)1 THUNK_GENERATOR(0) },
-    { "readAsBinaryString", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsFileReaderPrototypeFunctionReadAsBinaryString), (intptr_t)1 THUNK_GENERATOR(0) },
-    { "readAsText", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsFileReaderPrototypeFunctionReadAsText), (intptr_t)2 THUNK_GENERATOR(0) },
-    { "readAsDataURL", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsFileReaderPrototypeFunctionReadAsDataURL), (intptr_t)1 THUNK_GENERATOR(0) },
-    { "abort", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsFileReaderPrototypeFunctionAbort), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "EMPTY", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsFileReaderEMPTY ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "LOADING", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsFileReaderLOADING ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "DONE", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsFileReaderDONE ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "readAsArrayBuffer", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsFileReaderPrototypeFunctionReadAsArrayBuffer ), ( intptr_t )1 THUNK_GENERATOR( 0 ) },
+    { "readAsBinaryString", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsFileReaderPrototypeFunctionReadAsBinaryString ), ( intptr_t )1 THUNK_GENERATOR( 0 ) },
+    { "readAsText", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsFileReaderPrototypeFunctionReadAsText ), ( intptr_t )2 THUNK_GENERATOR( 0 ) },
+    { "readAsDataURL", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsFileReaderPrototypeFunctionReadAsDataURL ), ( intptr_t )1 THUNK_GENERATOR( 0 ) },
+    { "abort", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsFileReaderPrototypeFunctionAbort ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSFileReaderPrototypeTable = { 18, 15, JSFileReaderPrototypeTableValues, 0 };
-static const HashTable* getJSFileReaderPrototypeTable(ExecState* exec)
+static const HashTable *getJSFileReaderPrototypeTable( ExecState *exec )
 {
-    return getHashTableForGlobalData(exec->globalData(), &JSFileReaderPrototypeTable);
+    return getHashTableForGlobalData( exec->globalData(), &JSFileReaderPrototypeTable );
 }
 
 const ClassInfo JSFileReaderPrototype::s_info = { "FileReaderPrototype", &JSC::JSObjectWithGlobalObject::s_info, 0, getJSFileReaderPrototypeTable };
 
-JSObject* JSFileReaderPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSFileReaderPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSFileReader>(exec, globalObject);
+    return getDOMPrototype<JSFileReader>( exec, globalObject );
 }
 
-bool JSFileReaderPrototype::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSFileReaderPrototype::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticPropertySlot<JSFileReaderPrototype, JSObject>(exec, getJSFileReaderPrototypeTable(exec), this, propertyName, slot);
+    return getStaticPropertySlot<JSFileReaderPrototype, JSObject>( exec, getJSFileReaderPrototypeTable( exec ), this, propertyName,
+            slot );
 }
 
-bool JSFileReaderPrototype::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSFileReaderPrototype::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticPropertyDescriptor<JSFileReaderPrototype, JSObject>(exec, getJSFileReaderPrototypeTable(exec), this, propertyName, descriptor);
+    return getStaticPropertyDescriptor<JSFileReaderPrototype, JSObject>( exec, getJSFileReaderPrototypeTable( exec ), this,
+            propertyName, descriptor );
 }
 
-static const HashTable* getJSFileReaderTable(ExecState* exec)
+static const HashTable *getJSFileReaderTable( ExecState *exec )
 {
-    return getHashTableForGlobalData(exec->globalData(), &JSFileReaderTable);
+    return getHashTableForGlobalData( exec->globalData(), &JSFileReaderTable );
 }
 
 const ClassInfo JSFileReader::s_info = { "FileReader", &JSDOMWrapper::s_info, 0, getJSFileReaderTable };
 
-JSFileReader::JSFileReader(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<FileReader> impl)
-    : JSDOMWrapper(structure, globalObject)
-    , m_impl(impl)
+JSFileReader::JSFileReader( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<FileReader> impl )
+    : JSDOMWrapper( structure, globalObject )
+    , m_impl( impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-void JSFileReader::visitChildren(SlotVisitor& visitor)
+void JSFileReader::visitChildren( SlotVisitor &visitor )
 {
-    Base::visitChildren(visitor);
-    impl()->visitJSEventListeners(visitor);
+    Base::visitChildren( visitor );
+    impl()->visitJSEventListeners( visitor );
 }
 
-JSObject* JSFileReader::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSFileReader::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSFileReaderPrototype(exec->globalData(), globalObject, JSFileReaderPrototype::createStructure(globalObject->globalData(), globalObject->objectPrototype()));
+    return new ( exec ) JSFileReaderPrototype( exec->globalData(), globalObject,
+            JSFileReaderPrototype::createStructure( globalObject->globalData(), globalObject->objectPrototype() ) );
 }
 
-bool JSFileReader::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSFileReader::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSFileReader, Base>(exec, getJSFileReaderTable(exec), this, propertyName, slot);
+    return getStaticValueSlot<JSFileReader, Base>( exec, getJSFileReaderTable( exec ), this, propertyName, slot );
 }
 
-bool JSFileReader::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSFileReader::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSFileReader, Base>(exec, getJSFileReaderTable(exec), this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSFileReader, Base>( exec, getJSFileReaderTable( exec ), this, propertyName, descriptor );
 }
 
-JSValue jsFileReaderReadyState(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsFileReaderReadyState( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSFileReader* castedThis = static_cast<JSFileReader*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    FileReader* imp = static_cast<FileReader*>(castedThis->impl());
-    JSValue result = jsNumber(imp->readyState());
+    JSFileReader *castedThis = static_cast<JSFileReader *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    FileReader *imp = static_cast<FileReader *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->readyState() );
     return result;
 }
 
 
-JSValue jsFileReaderResult(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsFileReaderResult( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSFileReader* castedThis = static_cast<JSFileReader*>(asObject(slotBase));
-    return castedThis->result(exec);
+    JSFileReader *castedThis = static_cast<JSFileReader *>( asObject( slotBase ) );
+    return castedThis->result( exec );
 }
 
 
-JSValue jsFileReaderError(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsFileReaderError( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSFileReader* castedThis = static_cast<JSFileReader*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    FileReader* imp = static_cast<FileReader*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->error()));
+    JSFileReader *castedThis = static_cast<JSFileReader *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    FileReader *imp = static_cast<FileReader *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->error() ) );
     return result;
 }
 
 
-JSValue jsFileReaderOnloadstart(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsFileReaderOnloadstart( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSFileReader* castedThis = static_cast<JSFileReader*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    FileReader* imp = static_cast<FileReader*>(castedThis->impl());
-    if (EventListener* listener = imp->onloadstart()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    JSFileReader *castedThis = static_cast<JSFileReader *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    FileReader *imp = static_cast<FileReader *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->onloadstart() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsFileReaderOnprogress(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsFileReaderOnprogress( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSFileReader* castedThis = static_cast<JSFileReader*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    FileReader* imp = static_cast<FileReader*>(castedThis->impl());
-    if (EventListener* listener = imp->onprogress()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    JSFileReader *castedThis = static_cast<JSFileReader *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    FileReader *imp = static_cast<FileReader *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->onprogress() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsFileReaderOnload(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsFileReaderOnload( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSFileReader* castedThis = static_cast<JSFileReader*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    FileReader* imp = static_cast<FileReader*>(castedThis->impl());
-    if (EventListener* listener = imp->onload()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    JSFileReader *castedThis = static_cast<JSFileReader *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    FileReader *imp = static_cast<FileReader *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->onload() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsFileReaderOnabort(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsFileReaderOnabort( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSFileReader* castedThis = static_cast<JSFileReader*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    FileReader* imp = static_cast<FileReader*>(castedThis->impl());
-    if (EventListener* listener = imp->onabort()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    JSFileReader *castedThis = static_cast<JSFileReader *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    FileReader *imp = static_cast<FileReader *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->onabort() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsFileReaderOnerror(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsFileReaderOnerror( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSFileReader* castedThis = static_cast<JSFileReader*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    FileReader* imp = static_cast<FileReader*>(castedThis->impl());
-    if (EventListener* listener = imp->onerror()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    JSFileReader *castedThis = static_cast<JSFileReader *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    FileReader *imp = static_cast<FileReader *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->onerror() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsFileReaderOnloadend(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsFileReaderOnloadend( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSFileReader* castedThis = static_cast<JSFileReader*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    FileReader* imp = static_cast<FileReader*>(castedThis->impl());
-    if (EventListener* listener = imp->onloadend()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    JSFileReader *castedThis = static_cast<JSFileReader *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    FileReader *imp = static_cast<FileReader *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->onloadend() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsFileReaderConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsFileReaderConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSFileReader* domObject = static_cast<JSFileReader*>(asObject(slotBase));
-    return JSFileReader::getConstructor(exec, domObject->globalObject());
+    JSFileReader *domObject = static_cast<JSFileReader *>( asObject( slotBase ) );
+    return JSFileReader::getConstructor( exec, domObject->globalObject() );
 }
 
-void JSFileReader::put(ExecState* exec, const Identifier& propertyName, JSValue value, PutPropertySlot& slot)
+void JSFileReader::put( ExecState *exec, const Identifier &propertyName, JSValue value, PutPropertySlot &slot )
 {
-    lookupPut<JSFileReader, Base>(exec, propertyName, value, getJSFileReaderTable(exec), this, slot);
+    lookupPut<JSFileReader, Base>( exec, propertyName, value, getJSFileReaderTable( exec ), this, slot );
 }
 
-void setJSFileReaderOnloadstart(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSFileReaderOnloadstart( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    UNUSED_PARAM(exec);
-    JSFileReader* castedThis = static_cast<JSFileReader*>(thisObject);
-    FileReader* imp = static_cast<FileReader*>(castedThis->impl());
-    imp->setOnloadstart(createJSAttributeEventListener(exec, value, thisObject));
-}
-
-
-void setJSFileReaderOnprogress(ExecState* exec, JSObject* thisObject, JSValue value)
-{
-    UNUSED_PARAM(exec);
-    JSFileReader* castedThis = static_cast<JSFileReader*>(thisObject);
-    FileReader* imp = static_cast<FileReader*>(castedThis->impl());
-    imp->setOnprogress(createJSAttributeEventListener(exec, value, thisObject));
+    UNUSED_PARAM( exec );
+    JSFileReader *castedThis = static_cast<JSFileReader *>( thisObject );
+    FileReader *imp = static_cast<FileReader *>( castedThis->impl() );
+    imp->setOnloadstart( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSFileReaderOnload(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSFileReaderOnprogress( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    UNUSED_PARAM(exec);
-    JSFileReader* castedThis = static_cast<JSFileReader*>(thisObject);
-    FileReader* imp = static_cast<FileReader*>(castedThis->impl());
-    imp->setOnload(createJSAttributeEventListener(exec, value, thisObject));
+    UNUSED_PARAM( exec );
+    JSFileReader *castedThis = static_cast<JSFileReader *>( thisObject );
+    FileReader *imp = static_cast<FileReader *>( castedThis->impl() );
+    imp->setOnprogress( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSFileReaderOnabort(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSFileReaderOnload( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    UNUSED_PARAM(exec);
-    JSFileReader* castedThis = static_cast<JSFileReader*>(thisObject);
-    FileReader* imp = static_cast<FileReader*>(castedThis->impl());
-    imp->setOnabort(createJSAttributeEventListener(exec, value, thisObject));
+    UNUSED_PARAM( exec );
+    JSFileReader *castedThis = static_cast<JSFileReader *>( thisObject );
+    FileReader *imp = static_cast<FileReader *>( castedThis->impl() );
+    imp->setOnload( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSFileReaderOnerror(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSFileReaderOnabort( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    UNUSED_PARAM(exec);
-    JSFileReader* castedThis = static_cast<JSFileReader*>(thisObject);
-    FileReader* imp = static_cast<FileReader*>(castedThis->impl());
-    imp->setOnerror(createJSAttributeEventListener(exec, value, thisObject));
+    UNUSED_PARAM( exec );
+    JSFileReader *castedThis = static_cast<JSFileReader *>( thisObject );
+    FileReader *imp = static_cast<FileReader *>( castedThis->impl() );
+    imp->setOnabort( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSFileReaderOnloadend(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSFileReaderOnerror( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    UNUSED_PARAM(exec);
-    JSFileReader* castedThis = static_cast<JSFileReader*>(thisObject);
-    FileReader* imp = static_cast<FileReader*>(castedThis->impl());
-    imp->setOnloadend(createJSAttributeEventListener(exec, value, thisObject));
+    UNUSED_PARAM( exec );
+    JSFileReader *castedThis = static_cast<JSFileReader *>( thisObject );
+    FileReader *imp = static_cast<FileReader *>( castedThis->impl() );
+    imp->setOnerror( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-JSValue JSFileReader::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+void setJSFileReaderOnloadend( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    return getDOMConstructor<JSFileReaderConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    UNUSED_PARAM( exec );
+    JSFileReader *castedThis = static_cast<JSFileReader *>( thisObject );
+    FileReader *imp = static_cast<FileReader *>( castedThis->impl() );
+    imp->setOnloadend( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsFileReaderPrototypeFunctionReadAsArrayBuffer(ExecState* exec)
+
+JSValue JSFileReader::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
+{
+    return getDOMConstructor<JSFileReaderConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
+}
+
+EncodedJSValue JSC_HOST_CALL jsFileReaderPrototypeFunctionReadAsArrayBuffer( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSFileReader::s_info))
-        return throwVMTypeError(exec);
-    JSFileReader* castedThis = static_cast<JSFileReader*>(asObject(thisValue));
-    FileReader* imp = static_cast<FileReader*>(castedThis->impl());
-    Blob* blob(toBlob(exec->argument(0)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
 
-    imp->readAsArrayBuffer(blob);
-    return JSValue::encode(jsUndefined());
+    if ( !thisValue.inherits( &JSFileReader::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSFileReader *castedThis = static_cast<JSFileReader *>( asObject( thisValue ) );
+    FileReader *imp = static_cast<FileReader *>( castedThis->impl() );
+    Blob *blob( toBlob( exec->argument( 0 ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    imp->readAsArrayBuffer( blob );
+    return JSValue::encode( jsUndefined() );
 }
 
-EncodedJSValue JSC_HOST_CALL jsFileReaderPrototypeFunctionReadAsBinaryString(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsFileReaderPrototypeFunctionReadAsBinaryString( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSFileReader::s_info))
-        return throwVMTypeError(exec);
-    JSFileReader* castedThis = static_cast<JSFileReader*>(asObject(thisValue));
-    FileReader* imp = static_cast<FileReader*>(castedThis->impl());
-    Blob* blob(toBlob(exec->argument(0)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
 
-    imp->readAsBinaryString(blob);
-    return JSValue::encode(jsUndefined());
+    if ( !thisValue.inherits( &JSFileReader::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSFileReader *castedThis = static_cast<JSFileReader *>( asObject( thisValue ) );
+    FileReader *imp = static_cast<FileReader *>( castedThis->impl() );
+    Blob *blob( toBlob( exec->argument( 0 ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    imp->readAsBinaryString( blob );
+    return JSValue::encode( jsUndefined() );
 }
 
-EncodedJSValue JSC_HOST_CALL jsFileReaderPrototypeFunctionReadAsText(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsFileReaderPrototypeFunctionReadAsText( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSFileReader::s_info))
-        return throwVMTypeError(exec);
-    JSFileReader* castedThis = static_cast<JSFileReader*>(asObject(thisValue));
-    FileReader* imp = static_cast<FileReader*>(castedThis->impl());
-    Blob* blob(toBlob(exec->argument(0)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
+
+    if ( !thisValue.inherits( &JSFileReader::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSFileReader *castedThis = static_cast<JSFileReader *>( asObject( thisValue ) );
+    FileReader *imp = static_cast<FileReader *>( castedThis->impl() );
+    Blob *blob( toBlob( exec->argument( 0 ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
 
     int argsCount = exec->argumentCount();
-    if (argsCount <= 1) {
-        imp->readAsText(blob);
-        return JSValue::encode(jsUndefined());
+
+    if ( argsCount <= 1 )
+    {
+        imp->readAsText( blob );
+        return JSValue::encode( jsUndefined() );
     }
 
-    const String& encoding(ustringToString(exec->argument(1).toString(exec)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
+    const String &encoding( ustringToString( exec->argument( 1 ).toString( exec ) ) );
 
-    imp->readAsText(blob, encoding);
-    return JSValue::encode(jsUndefined());
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    imp->readAsText( blob, encoding );
+    return JSValue::encode( jsUndefined() );
 }
 
-EncodedJSValue JSC_HOST_CALL jsFileReaderPrototypeFunctionReadAsDataURL(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsFileReaderPrototypeFunctionReadAsDataURL( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSFileReader::s_info))
-        return throwVMTypeError(exec);
-    JSFileReader* castedThis = static_cast<JSFileReader*>(asObject(thisValue));
-    FileReader* imp = static_cast<FileReader*>(castedThis->impl());
-    Blob* blob(toBlob(exec->argument(0)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
 
-    imp->readAsDataURL(blob);
-    return JSValue::encode(jsUndefined());
+    if ( !thisValue.inherits( &JSFileReader::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSFileReader *castedThis = static_cast<JSFileReader *>( asObject( thisValue ) );
+    FileReader *imp = static_cast<FileReader *>( castedThis->impl() );
+    Blob *blob( toBlob( exec->argument( 0 ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    imp->readAsDataURL( blob );
+    return JSValue::encode( jsUndefined() );
 }
 
-EncodedJSValue JSC_HOST_CALL jsFileReaderPrototypeFunctionAbort(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsFileReaderPrototypeFunctionAbort( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSFileReader::s_info))
-        return throwVMTypeError(exec);
-    JSFileReader* castedThis = static_cast<JSFileReader*>(asObject(thisValue));
-    FileReader* imp = static_cast<FileReader*>(castedThis->impl());
+
+    if ( !thisValue.inherits( &JSFileReader::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSFileReader *castedThis = static_cast<JSFileReader *>( asObject( thisValue ) );
+    FileReader *imp = static_cast<FileReader *>( castedThis->impl() );
 
     imp->abort();
-    return JSValue::encode(jsUndefined());
+    return JSValue::encode( jsUndefined() );
 }
 
 // Constant getters
 
-JSValue jsFileReaderEMPTY(ExecState* exec, JSValue, const Identifier&)
+JSValue jsFileReaderEMPTY( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(0));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 0 ) );
 }
 
-JSValue jsFileReaderLOADING(ExecState* exec, JSValue, const Identifier&)
+JSValue jsFileReaderLOADING( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(1));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 1 ) );
 }
 
-JSValue jsFileReaderDONE(ExecState* exec, JSValue, const Identifier&)
+JSValue jsFileReaderDONE( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(2));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 2 ) );
 }
 
-static inline bool isObservable(JSFileReader* jsFileReader)
+static inline bool isObservable( JSFileReader *jsFileReader )
 {
-    if (jsFileReader->hasCustomProperties())
+    if ( jsFileReader->hasCustomProperties() )
+    {
         return true;
-    if (jsFileReader->impl()->hasEventListeners())
+    }
+
+    if ( jsFileReader->impl()->hasEventListeners() )
+    {
         return true;
+    }
+
     return false;
 }
 
-bool JSFileReaderOwner::isReachableFromOpaqueRoots(JSC::Handle<JSC::Unknown> handle, void*, SlotVisitor& visitor)
+bool JSFileReaderOwner::isReachableFromOpaqueRoots( JSC::Handle<JSC::Unknown> handle, void *, SlotVisitor &visitor )
 {
-    JSFileReader* jsFileReader = static_cast<JSFileReader*>(handle.get().asCell());
-    if (jsFileReader->impl()->hasPendingActivity())
+    JSFileReader *jsFileReader = static_cast<JSFileReader *>( handle.get().asCell() );
+
+    if ( jsFileReader->impl()->hasPendingActivity() )
+    {
         return true;
-    if (!isObservable(jsFileReader))
+    }
+
+    if ( !isObservable( jsFileReader ) )
+    {
         return false;
-    UNUSED_PARAM(visitor);
+    }
+
+    UNUSED_PARAM( visitor );
     return false;
 }
 
-void JSFileReaderOwner::finalize(JSC::Handle<JSC::Unknown> handle, void* context)
+void JSFileReaderOwner::finalize( JSC::Handle<JSC::Unknown> handle, void *context )
 {
-    JSFileReader* jsFileReader = static_cast<JSFileReader*>(handle.get().asCell());
-    DOMWrapperWorld* world = static_cast<DOMWrapperWorld*>(context);
-    uncacheWrapper(world, jsFileReader->impl(), jsFileReader);
+    JSFileReader *jsFileReader = static_cast<JSFileReader *>( handle.get().asCell() );
+    DOMWrapperWorld *world = static_cast<DOMWrapperWorld *>( context );
+    uncacheWrapper( world, jsFileReader->impl(), jsFileReader );
 }
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, FileReader* impl)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, FileReader *impl )
 {
-    return wrap<JSFileReader>(exec, globalObject, impl);
+    return wrap<JSFileReader>( exec, globalObject, impl );
 }
 
-FileReader* toFileReader(JSC::JSValue value)
+FileReader *toFileReader( JSC::JSValue value )
 {
-    return value.inherits(&JSFileReader::s_info) ? static_cast<JSFileReader*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSFileReader::s_info ) ? static_cast<JSFileReader *>( asObject( value ) )->impl() : 0;
 }
 
 }

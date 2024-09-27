@@ -35,48 +35,56 @@
 
 using namespace QPatternist;
 
-Item DateTimeFN::evaluateSingleton(const DynamicContext::Ptr &context) const
+Item DateTimeFN::evaluateSingleton( const DynamicContext::Ptr &context ) const
 {
-   const Item di(m_operands.first()->evaluateSingleton(context));
+    const Item di( m_operands.first()->evaluateSingleton( context ) );
 
-   if (!di) {
-      return Item();
-   }
+    if ( !di )
+    {
+        return Item();
+    }
 
-   const Item ti(m_operands.last()->evaluateSingleton(context));
+    const Item ti( m_operands.last()->evaluateSingleton( context ) );
 
-   if (!ti) {
-      return Item();
-   }
+    if ( !ti )
+    {
+        return Item();
+    }
 
-   QDateTime date(di.as<AbstractDateTime>()->toDateTime());
-   Q_ASSERT(date.isValid());
+    QDateTime date( di.as<AbstractDateTime>()->toDateTime() );
+    Q_ASSERT( date.isValid() );
 
-   QDateTime time(ti.as<AbstractDateTime>()->toDateTime());
-   Q_ASSERT(time.isValid());
+    QDateTime time( ti.as<AbstractDateTime>()->toDateTime() );
+    Q_ASSERT( time.isValid() );
 
-   if ((date.timeZone() == time.timeZone()) || (time.timeZone() == QTimeZone::systemTimeZone())) {
+    if ( ( date.timeZone() == time.timeZone() ) || ( time.timeZone() == QTimeZone::systemTimeZone() ) )
+    {
 
-      /* Identical timezone properties. */
-      /* time has no timezone, but dates do. */
+        /* Identical timezone properties. */
+        /* time has no timezone, but dates do. */
 
-      date.setTime(time.time());
+        date.setTime( time.time() );
 
-      Q_ASSERT(date.isValid());
-      return DateTime::fromDateTime(date);
+        Q_ASSERT( date.isValid() );
+        return DateTime::fromDateTime( date );
 
-   } else if (date.timeZone() == QTimeZone::systemTimeZone()) {
-      /* date has no timezone, but times do. */
-      time.setDate(date.date());
+    }
+    else if ( date.timeZone() == QTimeZone::systemTimeZone() )
+    {
+        /* date has no timezone, but times do. */
+        time.setDate( date.date() );
 
-      Q_ASSERT(time.isValid());
-      return DateTime::fromDateTime(time);
+        Q_ASSERT( time.isValid() );
+        return DateTime::fromDateTime( time );
 
-   } else {
-      context->error(QtXmlPatterns::tr("If both values have zone offsets, they must have the same zone offset. %1 and %2 are not the same.")
-                  .formatArgs(formatData(di.stringValue()), formatData(di.stringValue())), ReportContext::FORG0008, this);
-      return Item(); /* Silence GCC warning. */
-   }
+    }
+    else
+    {
+        context->error(
+            QtXmlPatterns::tr( "If both values have zone offsets, they must have the same zone offset. %1 and %2 are not the same." )
+            .formatArgs( formatData( di.stringValue() ), formatData( di.stringValue() ) ), ReportContext::FORG0008, this );
+        return Item(); /* Silence GCC warning. */
+    }
 }
 
 

@@ -24,42 +24,51 @@
 #include "SVGAnimatedProperty.h"
 #include "SVGPropertyTearOff.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 template<typename PropertyType>
-class SVGAnimatedPropertyTearOff : public SVGAnimatedProperty {
+class SVGAnimatedPropertyTearOff : public SVGAnimatedProperty
+{
 public:
-    SVGProperty* baseVal()
+    SVGProperty *baseVal()
     {
-        if (!m_baseVal)
-            m_baseVal = SVGPropertyTearOff<PropertyType>::create(this, BaseValRole, m_property);
+        if ( !m_baseVal )
+        {
+            m_baseVal = SVGPropertyTearOff<PropertyType>::create( this, BaseValRole, m_property );
+        }
+
         return m_baseVal.get();
     }
 
-    SVGProperty* animVal()
+    SVGProperty *animVal()
     {
-        if (!m_animVal)
-            m_animVal = SVGPropertyTearOff<PropertyType>::create(this, AnimValRole, m_property);
+        if ( !m_animVal )
+        {
+            m_animVal = SVGPropertyTearOff<PropertyType>::create( this, AnimValRole, m_property );
+        }
+
         return m_animVal.get();
     }
 
 private:
     friend class SVGAnimatedProperty;
 
-    static PassRefPtr<SVGAnimatedPropertyTearOff<PropertyType> > create(SVGElement* contextElement, const QualifiedName& attributeName, PropertyType& property)
+    static PassRefPtr<SVGAnimatedPropertyTearOff<PropertyType> > create( SVGElement *contextElement,
+            const QualifiedName &attributeName, PropertyType &property )
     {
-        ASSERT(contextElement);
-        return adoptRef(new SVGAnimatedPropertyTearOff<PropertyType>(contextElement, attributeName, property));
+        ASSERT( contextElement );
+        return adoptRef( new SVGAnimatedPropertyTearOff<PropertyType>( contextElement, attributeName, property ) );
     }
 
-    SVGAnimatedPropertyTearOff(SVGElement* contextElement, const QualifiedName& attributeName, PropertyType& property)
-        : SVGAnimatedProperty(contextElement, attributeName)
-        , m_property(property)
+    SVGAnimatedPropertyTearOff( SVGElement *contextElement, const QualifiedName &attributeName, PropertyType &property )
+        : SVGAnimatedProperty( contextElement, attributeName )
+        , m_property( property )
     {
     }
 
 private:
-    PropertyType& m_property;
+    PropertyType &m_property;
 
     RefPtr<SVGProperty> m_baseVal;
     RefPtr<SVGProperty> m_animVal;

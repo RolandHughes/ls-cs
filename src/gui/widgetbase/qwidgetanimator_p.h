@@ -35,24 +35,24 @@ class QRect;
 
 class QWidgetAnimator : public QObject
 {
-   GUI_CS_OBJECT(QWidgetAnimator)
+    GUI_CS_OBJECT( QWidgetAnimator )
 
- public:
-   QWidgetAnimator(QMainWindowLayout *layout);
-   void animate(QWidget *widget, const QRect &final_geometry, bool animate);
-   bool animating() const;
+public:
+    QWidgetAnimator( QMainWindowLayout *layout );
+    void animate( QWidget *widget, const QRect &final_geometry, bool animate );
+    bool animating() const;
 
-   void abort(QWidget *widget);
+    void abort( QWidget *widget );
 
- private:
-   typedef QHash<QWidget *, QPointer<QPropertyAnimation>> AnimationMap;
+private:
+    typedef QHash<QWidget *, QPointer<QPropertyAnimation>> AnimationMap;
 
-   AnimationMap m_animation_map;
-   QMainWindowLayout *m_mainWindowLayout;
+    AnimationMap m_animation_map;
+    QMainWindowLayout *m_mainWindowLayout;
 
 #ifndef QT_NO_ANIMATION
-   GUI_CS_SLOT_1(Private, void animationFinished())
-   GUI_CS_SLOT_2(animationFinished)
+    GUI_CS_SLOT_1( Private, void animationFinished() )
+    GUI_CS_SLOT_2( animationFinished )
 #endif
 
 };

@@ -58,44 +58,54 @@
 
 using namespace WebCore;
 
-namespace WebKit {
+namespace WebKit
+{
 
 void WebPage::platformInitialize()
 {
-    m_page->settings()->setFontRenderingMode(AlternateRenderingMode);
+    m_page->settings()->setFontRenderingMode( AlternateRenderingMode );
 }
 
-void WebPage::platformPreferencesDidChange(const WebPreferencesStore& store)
+void WebPage::platformPreferencesDidChange( const WebPreferencesStore &store )
 {
-    FontSmoothingLevel fontSmoothingLevel = static_cast<FontSmoothingLevel>(store.getUInt32ValueForKey(WebPreferencesKey::fontSmoothingLevelKey()));
+    FontSmoothingLevel fontSmoothingLevel = static_cast<FontSmoothingLevel>( store.getUInt32ValueForKey(
+            WebPreferencesKey::fontSmoothingLevelKey() ) );
 
 #if USE(CG)
     FontSmoothingLevel adjustedLevel = fontSmoothingLevel;
-    if (adjustedLevel == FontSmoothingLevelWindows)
+
+    if ( adjustedLevel == FontSmoothingLevelWindows )
+    {
         adjustedLevel = FontSmoothingLevelMedium;
-    wkSetFontSmoothingLevel(adjustedLevel);
+    }
+
+    wkSetFontSmoothingLevel( adjustedLevel );
 #endif
 
-    m_page->settings()->setFontRenderingMode(fontSmoothingLevel == FontSmoothingLevelWindows ? AlternateRenderingMode : NormalRenderingMode);
+    m_page->settings()->setFontRenderingMode( fontSmoothingLevel == FontSmoothingLevelWindows ? AlternateRenderingMode :
+            NormalRenderingMode );
 }
 
 static const unsigned CtrlKey = 1 << 0;
 static const unsigned AltKey = 1 << 1;
 static const unsigned ShiftKey = 1 << 2;
 
-struct KeyDownEntry {
+struct KeyDownEntry
+{
     unsigned virtualKey;
     unsigned modifiers;
-    const char* name;
+    const char *name;
 };
 
-struct KeyPressEntry {
+struct KeyPressEntry
+{
     unsigned charCode;
     unsigned modifiers;
-    const char* name;
+    const char *name;
 };
 
-static const KeyDownEntry keyDownEntries[] = {
+static const KeyDownEntry keyDownEntries[] =
+{
     { VK_LEFT,   0,                  "MoveLeft"                                    },
     { VK_LEFT,   ShiftKey,           "MoveLeftAndModifySelection"                  },
     { VK_LEFT,   CtrlKey,            "MoveWordLeft"                                },
@@ -127,7 +137,7 @@ static const KeyDownEntry keyDownEntries[] = {
     { VK_DELETE, 0,                  "DeleteForward"                               },
     { VK_BACK,   CtrlKey,            "DeleteWordBackward"                          },
     { VK_DELETE, CtrlKey,            "DeleteWordForward"                           },
-    
+
     { 'B',       CtrlKey,            "ToggleBold"                                  },
     { 'I',       CtrlKey,            "ToggleItalic"                                },
 
@@ -154,7 +164,8 @@ static const KeyDownEntry keyDownEntries[] = {
     { 'Z',       CtrlKey | ShiftKey, "Redo"                                        },
 };
 
-static const KeyPressEntry keyPressEntries[] = {
+static const KeyPressEntry keyPressEntries[] =
+{
     { '\t',   0,                  "InsertTab"                                   },
     { '\t',   ShiftKey,           "InsertBacktab"                               },
     { '\r',   0,                  "InsertNewline"                               },
@@ -164,154 +175,225 @@ static const KeyPressEntry keyPressEntries[] = {
     { '\r',   AltKey | ShiftKey,  "InsertNewline"                               },
 };
 
-const char* WebPage::interpretKeyEvent(const KeyboardEvent* evt)
+const char *WebPage::interpretKeyEvent( const KeyboardEvent *evt )
 {
-    ASSERT(evt->type() == eventNames().keydownEvent || evt->type() == eventNames().keypressEvent);
+    ASSERT( evt->type() == eventNames().keydownEvent || evt->type() == eventNames().keypressEvent );
 
-    static HashMap<int, const char*>* keyDownCommandsMap = 0;
-    static HashMap<int, const char*>* keyPressCommandsMap = 0;
+    static HashMap<int, const char *> *keyDownCommandsMap = 0;
+    static HashMap<int, const char *> *keyPressCommandsMap = 0;
 
-    if (!keyDownCommandsMap) {
-        keyDownCommandsMap = new HashMap<int, const char*>;
-        keyPressCommandsMap = new HashMap<int, const char*>;
+    if ( !keyDownCommandsMap )
+    {
+        keyDownCommandsMap = new HashMap<int, const char *>;
+        keyPressCommandsMap = new HashMap<int, const char *>;
 
-        for (size_t i = 0; i < WTF_ARRAY_LENGTH(keyDownEntries); ++i)
-            keyDownCommandsMap->set(keyDownEntries[i].modifiers << 16 | keyDownEntries[i].virtualKey, keyDownEntries[i].name);
+        for ( size_t i = 0; i < WTF_ARRAY_LENGTH( keyDownEntries ); ++i )
+        {
+            keyDownCommandsMap->set( keyDownEntries[i].modifiers << 16 | keyDownEntries[i].virtualKey, keyDownEntries[i].name );
+        }
 
-        for (size_t i = 0; i < WTF_ARRAY_LENGTH(keyPressEntries); ++i)
-            keyPressCommandsMap->set(keyPressEntries[i].modifiers << 16 | keyPressEntries[i].charCode, keyPressEntries[i].name);
+        for ( size_t i = 0; i < WTF_ARRAY_LENGTH( keyPressEntries ); ++i )
+        {
+            keyPressCommandsMap->set( keyPressEntries[i].modifiers << 16 | keyPressEntries[i].charCode, keyPressEntries[i].name );
+        }
     }
 
     unsigned modifiers = 0;
-    if (evt->shiftKey())
-        modifiers |= ShiftKey;
-    if (evt->altKey())
-        modifiers |= AltKey;
-    if (evt->ctrlKey())
-        modifiers |= CtrlKey;
 
-    if (evt->type() == eventNames().keydownEvent) {
+    if ( evt->shiftKey() )
+    {
+        modifiers |= ShiftKey;
+    }
+
+    if ( evt->altKey() )
+    {
+        modifiers |= AltKey;
+    }
+
+    if ( evt->ctrlKey() )
+    {
+        modifiers |= CtrlKey;
+    }
+
+    if ( evt->type() == eventNames().keydownEvent )
+    {
         int mapKey = modifiers << 16 | evt->keyCode();
-        return mapKey ? keyDownCommandsMap->get(mapKey) : 0;
+        return mapKey ? keyDownCommandsMap->get( mapKey ) : 0;
     }
 
     int mapKey = modifiers << 16 | evt->charCode();
-    return mapKey ? keyPressCommandsMap->get(mapKey) : 0;
+    return mapKey ? keyPressCommandsMap->get( mapKey ) : 0;
 }
 
-bool WebPage::performDefaultBehaviorForKeyEvent(const WebKeyboardEvent& keyboardEvent)
+bool WebPage::performDefaultBehaviorForKeyEvent( const WebKeyboardEvent &keyboardEvent )
 {
-    if (keyboardEvent.type() != WebEvent::KeyDown && keyboardEvent.type() != WebEvent::RawKeyDown)
+    if ( keyboardEvent.type() != WebEvent::KeyDown && keyboardEvent.type() != WebEvent::RawKeyDown )
+    {
         return false;
+    }
 
-    switch (keyboardEvent.windowsVirtualKeyCode()) {
-    case VK_BACK:
-        if (keyboardEvent.isSystemKey())
+    switch ( keyboardEvent.windowsVirtualKeyCode() )
+    {
+        case VK_BACK:
+            if ( keyboardEvent.isSystemKey() )
+            {
+                return false;
+            }
+
+            if ( keyboardEvent.shiftKey() )
+            {
+                m_page->goForward();
+            }
+            else
+            {
+                m_page->goBack();
+            }
+
+            break;
+
+        case VK_LEFT:
+            if ( keyboardEvent.isSystemKey() )
+            {
+                m_page->goBack();
+            }
+            else
+            {
+                scroll( m_page.get(), ScrollLeft, ScrollByLine );
+            }
+
+            break;
+
+        case VK_RIGHT:
+            if ( keyboardEvent.isSystemKey() )
+            {
+                m_page->goForward();
+            }
+            else
+            {
+                scroll( m_page.get(), ScrollRight, ScrollByLine );
+            }
+
+            break;
+
+        case VK_UP:
+            if ( keyboardEvent.isSystemKey() )
+            {
+                return false;
+            }
+
+            scroll( m_page.get(), ScrollUp, ScrollByLine );
+            break;
+
+        case VK_DOWN:
+            if ( keyboardEvent.isSystemKey() )
+            {
+                return false;
+            }
+
+            scroll( m_page.get(), ScrollDown, ScrollByLine );
+            break;
+
+        case VK_HOME:
+            if ( keyboardEvent.isSystemKey() )
+            {
+                return false;
+            }
+
+            logicalScroll( m_page.get(), ScrollBlockDirectionBackward, ScrollByDocument );
+            break;
+
+        case VK_END:
+            if ( keyboardEvent.isSystemKey() )
+            {
+                return false;
+            }
+
+            logicalScroll( m_page.get(), ScrollBlockDirectionForward, ScrollByDocument );
+            break;
+
+        case VK_PRIOR:
+            if ( keyboardEvent.isSystemKey() )
+            {
+                return false;
+            }
+
+            logicalScroll( m_page.get(), ScrollBlockDirectionBackward, ScrollByPage );
+            break;
+
+        case VK_NEXT:
+            if ( keyboardEvent.isSystemKey() )
+            {
+                return false;
+            }
+
+            logicalScroll( m_page.get(), ScrollBlockDirectionForward, ScrollByPage );
+            break;
+
+        default:
             return false;
-        if (keyboardEvent.shiftKey())
-            m_page->goForward();
-        else
-            m_page->goBack();
-        break;
-    case VK_LEFT:
-        if (keyboardEvent.isSystemKey())
-            m_page->goBack();
-        else
-            scroll(m_page.get(), ScrollLeft, ScrollByLine);
-        break;
-    case VK_RIGHT:
-        if (keyboardEvent.isSystemKey())
-            m_page->goForward();
-        else
-            scroll(m_page.get(), ScrollRight, ScrollByLine);
-        break;
-    case VK_UP:
-        if (keyboardEvent.isSystemKey())
-            return false;
-        scroll(m_page.get(), ScrollUp, ScrollByLine);
-        break;
-    case VK_DOWN:
-        if (keyboardEvent.isSystemKey())
-            return false;
-        scroll(m_page.get(), ScrollDown, ScrollByLine);
-        break;
-    case VK_HOME:
-        if (keyboardEvent.isSystemKey())
-            return false;
-        logicalScroll(m_page.get(), ScrollBlockDirectionBackward, ScrollByDocument);
-        break;
-    case VK_END:
-        if (keyboardEvent.isSystemKey())
-            return false;
-        logicalScroll(m_page.get(), ScrollBlockDirectionForward, ScrollByDocument);
-        break;
-    case VK_PRIOR:
-        if (keyboardEvent.isSystemKey())
-            return false;
-        logicalScroll(m_page.get(), ScrollBlockDirectionBackward, ScrollByPage);
-        break;
-    case VK_NEXT:
-        if (keyboardEvent.isSystemKey())
-            return false;
-        logicalScroll(m_page.get(), ScrollBlockDirectionForward, ScrollByPage);
-        break;
-    default:
-        return false;
     }
 
     return true;
 }
 
 #if USE(CFNETWORK)
-static RetainPtr<CFCachedURLResponseRef> cachedResponseForURL(WebPage* webPage, const KURL& url)
+static RetainPtr<CFCachedURLResponseRef> cachedResponseForURL( WebPage *webPage, const KURL &url )
 {
-    RetainPtr<CFURLRef> cfURL(AdoptCF, url.createCFURL());
-    RetainPtr<CFMutableURLRequestRef> request(AdoptCF, CFURLRequestCreateMutable(0, cfURL.get(), kCFURLRequestCachePolicyReloadIgnoringCache, 60, 0));
+    RetainPtr<CFURLRef> cfURL( AdoptCF, url.createCFURL() );
+    RetainPtr<CFMutableURLRequestRef> request( AdoptCF, CFURLRequestCreateMutable( 0, cfURL.get(),
+            kCFURLRequestCachePolicyReloadIgnoringCache, 60, 0 ) );
 
-    RetainPtr<CFStringRef> userAgent(AdoptCF, webPage->userAgent().createCFString());
-    CFURLRequestSetHTTPHeaderFieldValue(request.get(), CFSTR("User-Agent"), userAgent.get());
+    RetainPtr<CFStringRef> userAgent( AdoptCF, webPage->userAgent().createCFString() );
+    CFURLRequestSetHTTPHeaderFieldValue( request.get(), CFSTR( "User-Agent" ), userAgent.get() );
 
     RetainPtr<CFURLCacheRef> cache;
 #if USE(CFURLSTORAGESESSIONS)
-    if (CFURLStorageSessionRef storageSession = ResourceHandle::privateBrowsingStorageSession())
-        cache.adoptCF(wkCopyURLCache(storageSession));
+
+    if ( CFURLStorageSessionRef storageSession = ResourceHandle::privateBrowsingStorageSession() )
+    {
+        cache.adoptCF( wkCopyURLCache( storageSession ) );
+    }
     else
 #endif
-        cache.adoptCF(CFURLCacheCopySharedURLCache());
+        cache.adoptCF( CFURLCacheCopySharedURLCache() );
 
-    RetainPtr<CFCachedURLResponseRef> response(AdoptCF, CFURLCacheCopyResponseForRequest(cache.get(), request.get()));
-    return response;        
+    RetainPtr<CFCachedURLResponseRef> response( AdoptCF, CFURLCacheCopyResponseForRequest( cache.get(), request.get() ) );
+    return response;
 }
 #endif
 
-bool WebPage::platformHasLocalDataForURL(const KURL& url)
+bool WebPage::platformHasLocalDataForURL( const KURL &url )
 {
 #if USE(CFNETWORK)
-    return cachedResponseForURL(this, url);
+    return cachedResponseForURL( this, url );
 #else
     return false;
 #endif
 }
 
-String WebPage::cachedResponseMIMETypeForURL(const KURL& url)
+String WebPage::cachedResponseMIMETypeForURL( const KURL &url )
 {
 #if USE(CFNETWORK)
-    RetainPtr<CFCachedURLResponseRef> cachedResponse = cachedResponseForURL(this, url);
-    CFURLResponseRef response = CFCachedURLResponseGetWrappedResponse(cachedResponse.get());
-    return response ? CFURLResponseGetMIMEType(response) : String();
+    RetainPtr<CFCachedURLResponseRef> cachedResponse = cachedResponseForURL( this, url );
+    CFURLResponseRef response = CFCachedURLResponseGetWrappedResponse( cachedResponse.get() );
+    return response ? CFURLResponseGetMIMEType( response ) : String();
 #else
     return String();
 #endif
 }
 
-String WebPage::cachedSuggestedFilenameForURL(const KURL& url)
+String WebPage::cachedSuggestedFilenameForURL( const KURL &url )
 {
 #if USE(CFNETWORK)
-    RetainPtr<CFCachedURLResponseRef> cachedResponse = cachedResponseForURL(this, url);
-    CFURLResponseRef response = CFCachedURLResponseGetWrappedResponse(cachedResponse.get());
-    if (!response)
+    RetainPtr<CFCachedURLResponseRef> cachedResponse = cachedResponseForURL( this, url );
+    CFURLResponseRef response = CFCachedURLResponseGetWrappedResponse( cachedResponse.get() );
+
+    if ( !response )
+    {
         return String();
-    RetainPtr<CFStringRef> suggestedFilename(AdoptCF, CFURLResponseCopySuggestedFilename(response));
+    }
+
+    RetainPtr<CFStringRef> suggestedFilename( AdoptCF, CFURLResponseCopySuggestedFilename( response ) );
 
     return suggestedFilename.get();
 #else
@@ -319,101 +401,135 @@ String WebPage::cachedSuggestedFilenameForURL(const KURL& url)
 #endif
 }
 
-PassRefPtr<SharedBuffer> WebPage::cachedResponseDataForURL(const KURL& url)
+PassRefPtr<SharedBuffer> WebPage::cachedResponseDataForURL( const KURL &url )
 {
-    RetainPtr<CFCachedURLResponseRef> cachedResponse = cachedResponseForURL(this, url);
-    CFDataRef data = CFCachedURLResponseGetReceiverData(cachedResponse.get());
-    if (!data)
-        return 0;
+    RetainPtr<CFCachedURLResponseRef> cachedResponse = cachedResponseForURL( this, url );
+    CFDataRef data = CFCachedURLResponseGetReceiverData( cachedResponse.get() );
 
-    return SharedBuffer::wrapCFData(data);
+    if ( !data )
+    {
+        return 0;
+    }
+
+    return SharedBuffer::wrapCFData( data );
 }
 
-bool WebPage::platformCanHandleRequest(const WebCore::ResourceRequest& request)
+bool WebPage::platformCanHandleRequest( const WebCore::ResourceRequest &request )
 {
 #if USE(CFNETWORK)
-    return CFURLProtocolCanHandleRequest(request.cfURLRequest());
+    return CFURLProtocolCanHandleRequest( request.cfURLRequest() );
 #else
     return true;
 #endif
 }
 
-void WebPage::confirmComposition(const String& compositionString)
+void WebPage::confirmComposition( const String &compositionString )
 {
-    Frame* frame = m_page->focusController()->focusedOrMainFrame();
-    if (!frame || !frame->editor()->canEdit())
-        return;
-    frame->editor()->confirmComposition(compositionString);
-}
+    Frame *frame = m_page->focusController()->focusedOrMainFrame();
 
-void WebPage::setComposition(const String& compositionString, const Vector<WebCore::CompositionUnderline>& underlines, uint64_t cursorPosition)
-{
-    Frame* frame = m_page->focusController()->focusedOrMainFrame();
-    if (!frame || !frame->editor()->canEdit())
+    if ( !frame || !frame->editor()->canEdit() )
+    {
         return;
-    frame->editor()->setComposition(compositionString, underlines, cursorPosition, 0);
-}
-
-void WebPage::firstRectForCharacterInSelectedRange(const uint64_t characterPosition, WebCore::IntRect& resultRect)
-{
-    Frame* frame = m_page->focusController()->focusedOrMainFrame();
-    IntRect rect;
-    if (RefPtr<Range> range = frame->editor()->hasComposition() ? frame->editor()->compositionRange() : frame->selection()->selection().toNormalizedRange()) {
-        ExceptionCode ec = 0;
-        RefPtr<Range> tempRange = range->cloneRange(ec);
-        tempRange->setStart(tempRange->startContainer(ec), tempRange->startOffset(ec) + characterPosition, ec);
-        rect = frame->editor()->firstRectForRange(tempRange.get());
     }
-    resultRect = frame->view()->contentsToWindow(rect);
+
+    frame->editor()->confirmComposition( compositionString );
 }
 
-void WebPage::getSelectedText(String& text)
+void WebPage::setComposition( const String &compositionString, const Vector<WebCore::CompositionUnderline> &underlines,
+                              uint64_t cursorPosition )
 {
-    Frame* frame = m_page->focusController()->focusedOrMainFrame();
+    Frame *frame = m_page->focusController()->focusedOrMainFrame();
+
+    if ( !frame || !frame->editor()->canEdit() )
+    {
+        return;
+    }
+
+    frame->editor()->setComposition( compositionString, underlines, cursorPosition, 0 );
+}
+
+void WebPage::firstRectForCharacterInSelectedRange( const uint64_t characterPosition, WebCore::IntRect &resultRect )
+{
+    Frame *frame = m_page->focusController()->focusedOrMainFrame();
+    IntRect rect;
+
+    if ( RefPtr<Range> range = frame->editor()->hasComposition() ? frame->editor()->compositionRange() :
+                               frame->selection()->selection().toNormalizedRange() )
+    {
+        ExceptionCode ec = 0;
+        RefPtr<Range> tempRange = range->cloneRange( ec );
+        tempRange->setStart( tempRange->startContainer( ec ), tempRange->startOffset( ec ) + characterPosition, ec );
+        rect = frame->editor()->firstRectForRange( tempRange.get() );
+    }
+
+    resultRect = frame->view()->contentsToWindow( rect );
+}
+
+void WebPage::getSelectedText( String &text )
+{
+    Frame *frame = m_page->focusController()->focusedOrMainFrame();
     RefPtr<Range> selectedRange = frame->selection()->toNormalizedRange();
     text = selectedRange->text();
 }
 
-void WebPage::gestureWillBegin(const WebCore::IntPoint& point, bool& canBeginPanning)
+void WebPage::gestureWillBegin( const WebCore::IntPoint &point, bool &canBeginPanning )
 {
     m_gestureReachedScrollingLimit = false;
 
     bool hitScrollbar = false;
 
-    HitTestRequest request(HitTestRequest::ReadOnly);
-    for (Frame* childFrame = m_page->mainFrame(); childFrame; childFrame = EventHandler::subframeForTargetNode(m_gestureTargetNode.get())) {
-        ScrollView* scollView = childFrame->view();
-        if (!scollView)
-            break;
-        
-        RenderView* renderView = childFrame->document()->renderView();
-        if (!renderView)
-            break;
+    HitTestRequest request( HitTestRequest::ReadOnly );
 
-        RenderLayer* layer = renderView->layer();
-        if (!layer)
-            break;
+    for ( Frame *childFrame = m_page->mainFrame(); childFrame;
+            childFrame = EventHandler::subframeForTargetNode( m_gestureTargetNode.get() ) )
+    {
+        ScrollView *scollView = childFrame->view();
 
-        HitTestResult result = scollView->windowToContents(point);
-        layer->hitTest(request, result);
+        if ( !scollView )
+        {
+            break;
+        }
+
+        RenderView *renderView = childFrame->document()->renderView();
+
+        if ( !renderView )
+        {
+            break;
+        }
+
+        RenderLayer *layer = renderView->layer();
+
+        if ( !layer )
+        {
+            break;
+        }
+
+        HitTestResult result = scollView->windowToContents( point );
+        layer->hitTest( request, result );
         m_gestureTargetNode = result.innerNode();
 
-        if (!hitScrollbar)
+        if ( !hitScrollbar )
+        {
             hitScrollbar = result.scrollbar();
+        }
     }
 
-    if (hitScrollbar) {
+    if ( hitScrollbar )
+    {
         canBeginPanning = false;
         return;
     }
 
-    if (!m_gestureTargetNode) {
+    if ( !m_gestureTargetNode )
+    {
         canBeginPanning = false;
         return;
     }
 
-    for (RenderObject* renderer = m_gestureTargetNode->renderer(); renderer; renderer = renderer->parent()) {
-        if (renderer->isBox() && toRenderBox(renderer)->canBeScrolledAndHasScrollableArea()) {
+    for ( RenderObject *renderer = m_gestureTargetNode->renderer(); renderer; renderer = renderer->parent() )
+    {
+        if ( renderer->isBox() && toRenderBox( renderer )->canBeScrolledAndHasScrollableArea() )
+        {
             canBeginPanning = true;
             return;
         }
@@ -422,35 +538,43 @@ void WebPage::gestureWillBegin(const WebCore::IntPoint& point, bool& canBeginPan
     canBeginPanning = false;
 }
 
-static bool scrollbarAtTopOrBottomOfDocument(Scrollbar* scrollbar)
+static bool scrollbarAtTopOrBottomOfDocument( Scrollbar *scrollbar )
 {
-    ASSERT_ARG(scrollbar, scrollbar);
+    ASSERT_ARG( scrollbar, scrollbar );
     return !scrollbar->currentPos() || scrollbar->currentPos() >= scrollbar->maximum();
 }
 
-void WebPage::gestureDidScroll(const IntSize& size)
+void WebPage::gestureDidScroll( const IntSize &size )
 {
-    ASSERT_ARG(size, !size.isZero());
+    ASSERT_ARG( size, !size.isZero() );
 
-    if (!m_gestureTargetNode || !m_gestureTargetNode->renderer() || !m_gestureTargetNode->renderer()->enclosingLayer())
+    if ( !m_gestureTargetNode || !m_gestureTargetNode->renderer() || !m_gestureTargetNode->renderer()->enclosingLayer() )
+    {
         return;
-
-    Scrollbar* verticalScrollbar = 0;
-    if (Frame* frame = m_page->mainFrame()) {
-        if (ScrollView* view = frame->view())
-            verticalScrollbar = view->verticalScrollbar();
     }
 
-    m_gestureTargetNode->renderer()->enclosingLayer()->scrollByRecursively(size.width(), size.height());
-    bool gestureReachedScrollingLimit = verticalScrollbar && scrollbarAtTopOrBottomOfDocument(verticalScrollbar);
+    Scrollbar *verticalScrollbar = 0;
+
+    if ( Frame *frame = m_page->mainFrame() )
+    {
+        if ( ScrollView *view = frame->view() )
+        {
+            verticalScrollbar = view->verticalScrollbar();
+        }
+    }
+
+    m_gestureTargetNode->renderer()->enclosingLayer()->scrollByRecursively( size.width(), size.height() );
+    bool gestureReachedScrollingLimit = verticalScrollbar && scrollbarAtTopOrBottomOfDocument( verticalScrollbar );
 
     // FIXME: We really only want to update this state if the state was updated via scrolling the main frame,
     // not scrolling something in a main frame when the main frame had already reached its scrolling limit.
 
-    if (gestureReachedScrollingLimit == m_gestureReachedScrollingLimit)
+    if ( gestureReachedScrollingLimit == m_gestureReachedScrollingLimit )
+    {
         return;
+    }
 
-    send(Messages::WebPageProxy::SetGestureReachedScrollingLimit(gestureReachedScrollingLimit));
+    send( Messages::WebPageProxy::SetGestureReachedScrollingLimit( gestureReachedScrollingLimit ) );
     m_gestureReachedScrollingLimit = gestureReachedScrollingLimit;
 }
 
@@ -459,9 +583,11 @@ void WebPage::gestureDidEnd()
     m_gestureTargetNode = nullptr;
 }
 
-void WebPage::scheduleChildWindowGeometryUpdate(HWND window, const IntRect& rectInParentClientCoordinates, const IntRect& clipRectInChildClientCoordinates)
+void WebPage::scheduleChildWindowGeometryUpdate( HWND window, const IntRect &rectInParentClientCoordinates,
+        const IntRect &clipRectInChildClientCoordinates )
 {
-    WebProcess::shared().connection()->send(Messages::WebPageProxy::ScheduleChildWindowGeometryUpdate(reinterpret_cast<uint64_t>(window), rectInParentClientCoordinates, clipRectInChildClientCoordinates), m_pageID);
+    WebProcess::shared().connection()->send( Messages::WebPageProxy::ScheduleChildWindowGeometryUpdate( reinterpret_cast<uint64_t>
+            ( window ), rectInParentClientCoordinates, clipRectInChildClientCoordinates ), m_pageID );
 }
 
 } // namespace WebKit

@@ -45,8 +45,8 @@ public:
     QList<QByteArray> aliases() const;
     QList<int> mibEnums() const;
 
-    QTextCodec *createForMib(int);
-    QTextCodec *createForName(const QByteArray &);
+    QTextCodec *createForMib( int );
+    QTextCodec *createForName( const QByteArray & );
 };
 
 QList<QByteArray> JPTextCodecs::names() const
@@ -88,43 +88,75 @@ QList<int> JPTextCodecs::mibEnums() const
     return list;
 }
 
-QTextCodec *JPTextCodecs::createForMib(int mib)
+QTextCodec *JPTextCodecs::createForMib( int mib )
 {
-    if (mib == QEucJpCodec::_mibEnum())
+    if ( mib == QEucJpCodec::_mibEnum() )
+    {
         return new QEucJpCodec;
-    if (mib == QJisCodec::_mibEnum())
+    }
+
+    if ( mib == QJisCodec::_mibEnum() )
+    {
         return new QJisCodec;
-    if (mib == QSjisCodec::_mibEnum())
+    }
+
+    if ( mib == QSjisCodec::_mibEnum() )
+    {
         return new QSjisCodec;
+    }
+
 #ifdef Q_WS_X11
-    if (mib == QFontJis0208Codec::_mibEnum())
+
+    if ( mib == QFontJis0208Codec::_mibEnum() )
+    {
         return new QFontJis0208Codec;
-    if (mib == QFontJis0201Codec::_mibEnum())
+    }
+
+    if ( mib == QFontJis0201Codec::_mibEnum() )
+    {
         return new QFontJis0201Codec;
+    }
+
 #endif
     return 0;
 }
 
 
-QTextCodec *JPTextCodecs::createForName(const QByteArray &name)
+QTextCodec *JPTextCodecs::createForName( const QByteArray &name )
 {
-    if (name == QEucJpCodec::_name() || QEucJpCodec::_aliases().contains(name))
+    if ( name == QEucJpCodec::_name() || QEucJpCodec::_aliases().contains( name ) )
+    {
         return new QEucJpCodec;
-    if (name == QJisCodec::_name() || QJisCodec::_aliases().contains(name))
+    }
+
+    if ( name == QJisCodec::_name() || QJisCodec::_aliases().contains( name ) )
+    {
         return new QJisCodec;
-    if (name == QSjisCodec::_name() || QSjisCodec::_aliases().contains(name))
+    }
+
+    if ( name == QSjisCodec::_name() || QSjisCodec::_aliases().contains( name ) )
+    {
         return new QSjisCodec;
+    }
+
 #ifdef Q_WS_X11
-    if (name == QFontJis0208Codec::_name() || QFontJis0208Codec::_aliases().contains(name))
+
+    if ( name == QFontJis0208Codec::_name() || QFontJis0208Codec::_aliases().contains( name ) )
+    {
         return new QFontJis0208Codec;
-    if (name == QFontJis0201Codec::_name() || QFontJis0201Codec::_aliases().contains(name))
+    }
+
+    if ( name == QFontJis0201Codec::_name() || QFontJis0201Codec::_aliases().contains( name ) )
+    {
         return new QFontJis0201Codec;
+    }
+
 #endif
     return 0;
 }
 
-Q_EXPORT_STATIC_PLUGIN(JPTextCodecs);
-Q_EXPORT_PLUGIN2(qjpcodecs, JPTextCodecs);
+Q_EXPORT_STATIC_PLUGIN( JPTextCodecs );
+Q_EXPORT_PLUGIN2( qjpcodecs, JPTextCodecs );
 
 QT_END_NAMESPACE
 

@@ -26,15 +26,17 @@
 
 #include "HTMLElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class HTMLHeadElement : public HTMLElement {
+class HTMLHeadElement : public HTMLElement
+{
 public:
-    static PassRefPtr<HTMLHeadElement> create(Document*);
-    static PassRefPtr<HTMLHeadElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<HTMLHeadElement> create( Document * );
+    static PassRefPtr<HTMLHeadElement> create( const QualifiedName &, Document * );
 
 private:
-    HTMLHeadElement(const QualifiedName&, Document*);
+    HTMLHeadElement( const QualifiedName &, Document * );
 };
 
 } // namespace

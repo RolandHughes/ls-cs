@@ -37,32 +37,43 @@
 // put in Shared/Plugins.
 #include "PluginInfoStore.h"
 
-namespace WebKit {
+namespace WebKit
+{
 
-class NetscapePluginModule : public RefCounted<NetscapePluginModule> {
+class NetscapePluginModule : public RefCounted<NetscapePluginModule>
+{
 public:
-    static PassRefPtr<NetscapePluginModule> getOrCreate(const String& pluginPath);
+    static PassRefPtr<NetscapePluginModule> getOrCreate( const String &pluginPath );
     ~NetscapePluginModule();
 
-    const NPPluginFuncs& pluginFuncs() const { return m_pluginFuncs; }
- 
+    const NPPluginFuncs &pluginFuncs() const
+    {
+        return m_pluginFuncs;
+    }
+
     void incrementLoadCount();
     void decrementLoadCount();
 
-    static bool getPluginInfo(const String& pluginPath, PluginInfoStore::Plugin&);
+    static bool getPluginInfo( const String &pluginPath, PluginInfoStore::Plugin & );
 
-    const PluginQuirks& pluginQuirks() const { return m_pluginQuirks; }
+    const PluginQuirks &pluginQuirks() const
+    {
+        return m_pluginQuirks;
+    }
 
     // Return a list of domains for which the plug-in has data stored.
     Vector<String> sitesWithData();
 
     // Request that the plug-in clear the site data.
-    bool clearSiteData(const String& site, uint64_t flags, uint64_t maxAge);
+    bool clearSiteData( const String &site, uint64_t flags, uint64_t maxAge );
 
-    Module* module() const { return m_module.get(); }
+    Module *module() const
+    {
+        return m_module.get();
+    }
 
 private:
-    explicit NetscapePluginModule(const String& pluginPath);
+    explicit NetscapePluginModule( const String &pluginPath );
 
     void determineQuirks();
 
@@ -70,8 +81,8 @@ private:
     void applyX11QuirksBeforeLoad();
 #endif
 
-    bool tryGetSitesWithData(Vector<String>&);
-    bool tryClearSiteData(const String& site, uint64_t flags, uint64_t maxAge);
+    bool tryGetSitesWithData( Vector<String> & );
+    bool tryClearSiteData( const String &site, uint64_t flags, uint64_t maxAge );
 
     bool tryLoad();
     bool load();
@@ -90,7 +101,7 @@ private:
 
     OwnPtr<Module> m_module;
 };
-    
+
 } // namespace WebKit
 
 #endif // NetscapePluginModule_h

@@ -41,33 +41,42 @@
 #include "FileException.h"
 #include "ProgressEvent.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 FileWriterBase::~FileWriterBase()
 {
 }
 
-void FileWriterBase::initialize(PassOwnPtr<AsyncFileWriter> writer, long long length)
+void FileWriterBase::initialize( PassOwnPtr<AsyncFileWriter> writer, long long length )
 {
-    ASSERT(!m_writer);
-    ASSERT(length >= 0);
+    ASSERT( !m_writer );
+    ASSERT( length >= 0 );
     m_writer = writer;
     m_length = length;
 }
 
 FileWriterBase::FileWriterBase()
-    : m_position(0)
+    : m_position( 0 )
 {
 }
 
-void FileWriterBase::seekInternal(long long position)
+void FileWriterBase::seekInternal( long long position )
 {
-    if (position > m_length)
+    if ( position > m_length )
+    {
         position = m_length;
-    else if (position < 0)
+    }
+    else if ( position < 0 )
+    {
         position = m_length + position;
-    if (position < 0)
+    }
+
+    if ( position < 0 )
+    {
         position = 0;
+    }
+
     m_position = position;
 }
 

@@ -37,190 +37,209 @@ class AVFVideoOutput;
 
 class AVFMediaPlayerSession : public QObject
 {
-   CS_OBJECT(AVFMediaPlayerSession)
+    CS_OBJECT( AVFMediaPlayerSession )
 
- public:
-   AVFMediaPlayerSession(AVFMediaPlayerService *service, QObject *parent = nullptr);
-   virtual ~AVFMediaPlayerSession();
+public:
+    AVFMediaPlayerSession( AVFMediaPlayerService *service, QObject *parent = nullptr );
+    virtual ~AVFMediaPlayerSession();
 
-   void setVideoOutput(AVFVideoOutput *output);
-   void *currentAssetHandle();
+    void setVideoOutput( AVFVideoOutput *output );
+    void *currentAssetHandle();
 
-   QMediaPlayer::State state() const;
-   QMediaPlayer::MediaStatus mediaStatus() const;
+    QMediaPlayer::State state() const;
+    QMediaPlayer::MediaStatus mediaStatus() const;
 
-   QMediaContent media() const;
-   const QIODevice *mediaStream() const;
-   void setMedia(const QMediaContent &content, QIODevice *stream);
+    QMediaContent media() const;
+    const QIODevice *mediaStream() const;
+    void setMedia( const QMediaContent &content, QIODevice *stream );
 
-   qint64 position() const;
-   qint64 duration() const;
+    qint64 position() const;
+    qint64 duration() const;
 
-   int bufferStatus() const;
+    int bufferStatus() const;
 
-   int volume() const;
-   bool isMuted() const;
+    int volume() const;
+    bool isMuted() const;
 
-   bool isAudioAvailable() const;
-   bool isVideoAvailable() const;
+    bool isAudioAvailable() const;
+    bool isVideoAvailable() const;
 
-   bool isSeekable() const;
-   QMediaTimeRange availablePlaybackRanges() const;
+    bool isSeekable() const;
+    QMediaTimeRange availablePlaybackRanges() const;
 
-   qreal playbackRate() const;
+    qreal playbackRate() const;
 
-   inline bool isVolumeSupported() const {
-      return m_volumeSupported;
-   }
+    inline bool isVolumeSupported() const
+    {
+        return m_volumeSupported;
+    }
 
-   CS_SLOT_1(Public, void setPlaybackRate(qreal rate))
-   CS_SLOT_2(setPlaybackRate)
+    CS_SLOT_1( Public, void setPlaybackRate( qreal rate ) )
+    CS_SLOT_2( setPlaybackRate )
 
-   CS_SLOT_1(Public, void setPosition(qint64 pos))
-   CS_SLOT_2(setPosition)
+    CS_SLOT_1( Public, void setPosition( qint64 pos ) )
+    CS_SLOT_2( setPosition )
 
-   CS_SLOT_1(Public, void play())
-   CS_SLOT_2(play)
-   CS_SLOT_1(Public, void pause())
-   CS_SLOT_2(pause)
+    CS_SLOT_1( Public, void play() )
+    CS_SLOT_2( play )
+    CS_SLOT_1( Public, void pause() )
+    CS_SLOT_2( pause )
 
-   CS_SLOT_1(Public, void stop())
-   CS_SLOT_2(stop)
+    CS_SLOT_1( Public, void stop() )
+    CS_SLOT_2( stop )
 
-   CS_SLOT_1(Public, void setVolume(int volume))
-   CS_SLOT_2(setVolume)
+    CS_SLOT_1( Public, void setVolume( int volume ) )
+    CS_SLOT_2( setVolume )
 
-   CS_SLOT_1(Public, void setMuted(bool muted))
-   CS_SLOT_2(setMuted)
+    CS_SLOT_1( Public, void setMuted( bool muted ) )
+    CS_SLOT_2( setMuted )
 
-   CS_SLOT_1(Public, void processEOS())
-   CS_SLOT_2(processEOS)
+    CS_SLOT_1( Public, void processEOS() )
+    CS_SLOT_2( processEOS )
 
-   CS_SLOT_1(Public, void processLoadStateChange())
-   CS_SLOT_2(processLoadStateChange)
+    CS_SLOT_1( Public, void processLoadStateChange() )
+    CS_SLOT_2( processLoadStateChange )
 
-   CS_SLOT_1(Public, void processPositionChange())
-   CS_SLOT_2(processPositionChange)
+    CS_SLOT_1( Public, void processPositionChange() )
+    CS_SLOT_2( processPositionChange )
 
-   CS_SLOT_1(Public, void processMediaLoadError())
-   CS_SLOT_2(processMediaLoadError)
+    CS_SLOT_1( Public, void processMediaLoadError() )
+    CS_SLOT_2( processMediaLoadError )
 
-   CS_SIGNAL_1(Public, void positionChanged(qint64 position))
-   CS_SIGNAL_2(positionChanged, position)
+    CS_SIGNAL_1( Public, void positionChanged( qint64 position ) )
+    CS_SIGNAL_2( positionChanged, position )
 
-   CS_SIGNAL_1(Public, void durationChanged(qint64 duration))
-   CS_SIGNAL_2(durationChanged, duration)
+    CS_SIGNAL_1( Public, void durationChanged( qint64 duration ) )
+    CS_SIGNAL_2( durationChanged, duration )
 
-   CS_SIGNAL_1(Public, void stateChanged(QMediaPlayer::State newState))
-   CS_SIGNAL_2(stateChanged, newState)
+    CS_SIGNAL_1( Public, void stateChanged( QMediaPlayer::State newState ) )
+    CS_SIGNAL_2( stateChanged, newState )
 
-   CS_SIGNAL_1(Public, void mediaStatusChanged(QMediaPlayer::MediaStatus status))
-   CS_SIGNAL_2(mediaStatusChanged, status)
+    CS_SIGNAL_1( Public, void mediaStatusChanged( QMediaPlayer::MediaStatus status ) )
+    CS_SIGNAL_2( mediaStatusChanged, status )
 
-   CS_SIGNAL_1(Public, void volumeChanged(int volume))
-   CS_SIGNAL_2(volumeChanged, volume)
+    CS_SIGNAL_1( Public, void volumeChanged( int volume ) )
+    CS_SIGNAL_2( volumeChanged, volume )
 
-   CS_SIGNAL_1(Public, void mutedChanged(bool muted))
-   CS_SIGNAL_2(mutedChanged, muted)
+    CS_SIGNAL_1( Public, void mutedChanged( bool muted ) )
+    CS_SIGNAL_2( mutedChanged, muted )
 
-   CS_SIGNAL_1(Public, void audioAvailableChanged(bool audioAvailable))
-   CS_SIGNAL_2(audioAvailableChanged, audioAvailable)
+    CS_SIGNAL_1( Public, void audioAvailableChanged( bool audioAvailable ) )
+    CS_SIGNAL_2( audioAvailableChanged, audioAvailable )
 
-   CS_SIGNAL_1(Public, void videoAvailableChanged(bool videoAvailable))
-   CS_SIGNAL_2(videoAvailableChanged, videoAvailable)
+    CS_SIGNAL_1( Public, void videoAvailableChanged( bool videoAvailable ) )
+    CS_SIGNAL_2( videoAvailableChanged, videoAvailable )
 
-   CS_SIGNAL_1(Public, void playbackRateChanged(qreal rate))
-   CS_SIGNAL_2(playbackRateChanged, rate)
+    CS_SIGNAL_1( Public, void playbackRateChanged( qreal rate ) )
+    CS_SIGNAL_2( playbackRateChanged, rate )
 
-   CS_SIGNAL_1(Public, void seekableChanged(bool seekable))
-   CS_SIGNAL_2(seekableChanged, seekable)
+    CS_SIGNAL_1( Public, void seekableChanged( bool seekable ) )
+    CS_SIGNAL_2( seekableChanged, seekable )
 
-   CS_SIGNAL_1(Public, void error(int error, const QString &errorString))
-   CS_SIGNAL_2(error, error, errorString)
+    CS_SIGNAL_1( Public, void error( int error, const QString &errorString ) )
+    CS_SIGNAL_2( error, error, errorString )
 
- private:
-   class ResourceHandler
-   {
+private:
+    class ResourceHandler
+    {
     public:
-      ResourceHandler()
-         : resource(nullptr)
-      {
-      }
+        ResourceHandler()
+            : resource( nullptr )
+        {
+        }
 
-      ~ResourceHandler() {
-         clear();
-      }
+        ~ResourceHandler()
+        {
+            clear();
+        }
 
-      void setResourceFile(const QString &file) {
-         if (resource) {
-            if (resource->fileName() == file) {
-               return;
+        void setResourceFile( const QString &file )
+        {
+            if ( resource )
+            {
+                if ( resource->fileName() == file )
+                {
+                    return;
+                }
+
+                delete resource;
+                rawData.clear();
             }
+
+            resource = new QResource( file );
+        }
+
+        bool isValid() const
+        {
+            return resource && resource->isValid() && resource->data() != nullptr;
+        }
+
+        const uchar *data()
+        {
+            if ( !isValid() )
+            {
+                return nullptr;
+            }
+
+            if ( resource->isCompressed() )
+            {
+                if ( rawData.size() == 0 )
+                {
+                    rawData = qUncompress( resource->data(), resource->size() );
+                }
+
+                return ( const uchar * )rawData.constData();
+            }
+
+            return resource->data();
+        }
+
+        qint64 size()
+        {
+            if ( data() == nullptr )
+            {
+                return 0;
+            }
+
+            return resource->isCompressed() ? rawData.size() : resource->size();
+        }
+
+        void clear()
+        {
             delete resource;
             rawData.clear();
-         }
-         resource = new QResource(file);
-      }
+        }
 
-      bool isValid() const {
-         return resource && resource->isValid() && resource->data() != nullptr;
-      }
+        QResource *resource;
+        QByteArray rawData;
+    };
 
-      const uchar *data() {
-         if (!isValid()) {
-            return nullptr;
-         }
-         if (resource->isCompressed()) {
-            if (rawData.size() == 0) {
-               rawData = qUncompress(resource->data(), resource->size());
-            }
-            return (const uchar *)rawData.constData();
-         }
-         return resource->data();
-      }
+    void setAudioAvailable( bool available );
+    void setVideoAvailable( bool available );
+    void setSeekable( bool seekable );
 
-      qint64 size() {
-         if (data() == nullptr) {
-            return 0;
-         }
-         return resource->isCompressed() ? rawData.size() : resource->size();
-      }
+    AVFMediaPlayerService *m_service;
+    AVFVideoOutput *m_videoOutput;
 
-      void clear() {
-         delete resource;
-         rawData.clear();
-      }
+    QMediaPlayer::State m_state;
+    QMediaPlayer::MediaStatus m_mediaStatus;
+    QIODevice *m_mediaStream;
+    QMediaContent m_resources;
+    ResourceHandler m_resourceHandler;
 
-      QResource *resource;
-      QByteArray rawData;
-   };
+    const bool m_volumeSupported;
+    bool m_muted;
+    bool m_tryingAsync;
+    int m_volume;
+    qreal m_rate;
+    qint64 m_requestedPosition;
 
-   void setAudioAvailable(bool available);
-   void setVideoAvailable(bool available);
-   void setSeekable(bool seekable);
+    qint64 m_duration;
+    bool m_videoAvailable;
+    bool m_audioAvailable;
+    bool m_seekable;
 
-   AVFMediaPlayerService *m_service;
-   AVFVideoOutput *m_videoOutput;
-
-   QMediaPlayer::State m_state;
-   QMediaPlayer::MediaStatus m_mediaStatus;
-   QIODevice *m_mediaStream;
-   QMediaContent m_resources;
-   ResourceHandler m_resourceHandler;
-
-   const bool m_volumeSupported;
-   bool m_muted;
-   bool m_tryingAsync;
-   int m_volume;
-   qreal m_rate;
-   qint64 m_requestedPosition;
-
-   qint64 m_duration;
-   bool m_videoAvailable;
-   bool m_audioAvailable;
-   bool m_seekable;
-
-   void *m_observer;
+    void *m_observer;
 };
 
 #endif

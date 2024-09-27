@@ -27,24 +27,25 @@
 #include "HTMLNames.h"
 #include "Text.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
-HTMLHeadElement::HTMLHeadElement(const QualifiedName& tagName, Document* document)
-    : HTMLElement(tagName, document)
+HTMLHeadElement::HTMLHeadElement( const QualifiedName &tagName, Document *document )
+    : HTMLElement( tagName, document )
 {
-    ASSERT(hasTagName(headTag));
+    ASSERT( hasTagName( headTag ) );
 }
 
-PassRefPtr<HTMLHeadElement> HTMLHeadElement::create(Document* document)
+PassRefPtr<HTMLHeadElement> HTMLHeadElement::create( Document *document )
 {
-    return adoptRef(new HTMLHeadElement(headTag, document));
+    return adoptRef( new HTMLHeadElement( headTag, document ) );
 }
 
-PassRefPtr<HTMLHeadElement> HTMLHeadElement::create(const QualifiedName& tagName, Document* document)
+PassRefPtr<HTMLHeadElement> HTMLHeadElement::create( const QualifiedName &tagName, Document *document )
 {
-    return adoptRef(new HTMLHeadElement(tagName, document));
+    return adoptRef( new HTMLHeadElement( tagName, document ) );
 }
 
 }

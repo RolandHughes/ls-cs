@@ -33,41 +33,43 @@
 
 #include "TextFieldInputType.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class NumberInputType : public TextFieldInputType {
+class NumberInputType : public TextFieldInputType
+{
 public:
-    static PassOwnPtr<InputType> create(HTMLInputElement*);
+    static PassOwnPtr<InputType> create( HTMLInputElement * );
 
 private:
-    NumberInputType(HTMLInputElement* element) : TextFieldInputType(element) { }
-    virtual const AtomicString& formControlType() const;
+    NumberInputType( HTMLInputElement *element ) : TextFieldInputType( element ) { }
+    virtual const AtomicString &formControlType() const;
     virtual double valueAsNumber() const;
-    virtual void setValueAsNumber(double, ExceptionCode&) const;
-    virtual bool typeMismatchFor(const String&) const;
+    virtual void setValueAsNumber( double, ExceptionCode & ) const;
+    virtual bool typeMismatchFor( const String & ) const;
     virtual bool typeMismatch() const;
-    virtual bool rangeUnderflow(const String&) const;
-    virtual bool rangeOverflow(const String&) const;
+    virtual bool rangeUnderflow( const String & ) const;
+    virtual bool rangeOverflow( const String & ) const;
     virtual bool supportsRangeLimitation() const;
     virtual double minimum() const;
     virtual double maximum() const;
     virtual bool isSteppable() const;
-    virtual bool stepMismatch(const String&, double) const;
+    virtual bool stepMismatch( const String &, double ) const;
     virtual double stepBase() const;
-    virtual double stepBaseWithDecimalPlaces(unsigned*) const;
+    virtual double stepBaseWithDecimalPlaces( unsigned * ) const;
     virtual double defaultStep() const;
     virtual double stepScaleFactor() const;
-    virtual void handleKeydownEvent(KeyboardEvent*);
-    virtual void handleWheelEvent(WheelEvent*);
-    virtual double parseToDouble(const String&, double) const;
-    virtual double parseToDoubleWithDecimalPlaces(const String&, double, unsigned*) const;
-    virtual String serialize(double) const;
-    virtual double acceptableError(double) const;
+    virtual void handleKeydownEvent( KeyboardEvent * );
+    virtual void handleWheelEvent( WheelEvent * );
+    virtual double parseToDouble( const String &, double ) const;
+    virtual double parseToDoubleWithDecimalPlaces( const String &, double, unsigned * ) const;
+    virtual String serialize( double ) const;
+    virtual double acceptableError( double ) const;
     virtual void handleBlurEvent();
     virtual String visibleValue() const;
-    virtual String convertFromVisibleValue(const String&) const;
-    virtual bool isAcceptableValue(const String&);
-    virtual String sanitizeValue(const String&);
+    virtual String convertFromVisibleValue( const String & ) const;
+    virtual bool isAcceptableValue( const String & );
+    virtual String sanitizeValue( const String & );
     virtual bool hasUnacceptableValue();
     virtual bool shouldRespectSpeechAttribute();
     virtual bool isNumberField() const;

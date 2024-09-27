@@ -31,34 +31,45 @@
 
 #include "AccessibilityRenderObject.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class AccessibilityListBox : public AccessibilityRenderObject {
+class AccessibilityListBox : public AccessibilityRenderObject
+{
 
 private:
-    AccessibilityListBox(RenderObject*);
+    AccessibilityListBox( RenderObject * );
 public:
-    static PassRefPtr<AccessibilityListBox> create(RenderObject*);
+    static PassRefPtr<AccessibilityListBox> create( RenderObject * );
     virtual ~AccessibilityListBox();
-    
-    virtual bool isListBox() const { return true; }
-    
-    virtual bool canSetFocusAttribute() const { return true; }
+
+    virtual bool isListBox() const
+    {
+        return true;
+    }
+
+    virtual bool canSetFocusAttribute() const
+    {
+        return true;
+    }
     virtual bool canSetSelectedChildrenAttribute() const;
-    void setSelectedChildren(AccessibilityChildrenVector&);
-    virtual AccessibilityRole roleValue() const { return ListBoxRole; }
-        
-    virtual void selectedChildren(AccessibilityChildrenVector&);
-    virtual void visibleChildren(AccessibilityChildrenVector&);
-    
+    void setSelectedChildren( AccessibilityChildrenVector & );
+    virtual AccessibilityRole roleValue() const
+    {
+        return ListBoxRole;
+    }
+
+    virtual void selectedChildren( AccessibilityChildrenVector & );
+    virtual void visibleChildren( AccessibilityChildrenVector & );
+
     virtual void addChildren();
 
-private:    
-    AccessibilityObject* listBoxOptionAccessibilityObject(HTMLElement*) const;
+private:
+    AccessibilityObject *listBoxOptionAccessibilityObject( HTMLElement * ) const;
     virtual bool accessibilityIsIgnored() const;
-    virtual AccessibilityObject* elementAccessibilityHitTest(const IntPoint&) const;
+    virtual AccessibilityObject *elementAccessibilityHitTest( const IntPoint & ) const;
 };
-    
+
 } // namespace WebCore
 
 #endif // AccessibilityListBox_h

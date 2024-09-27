@@ -28,24 +28,26 @@
 
 #include <wtf/Noncopyable.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class NestingLevelIncrementer {
-    WTF_MAKE_NONCOPYABLE(NestingLevelIncrementer);
+class NestingLevelIncrementer
+{
+    WTF_MAKE_NONCOPYABLE( NestingLevelIncrementer );
 public:
-    explicit NestingLevelIncrementer(unsigned& nestingLevel)
-        : m_nestingLevel(&nestingLevel)
+    explicit NestingLevelIncrementer( unsigned &nestingLevel )
+        : m_nestingLevel( &nestingLevel )
     {
-        ++(*m_nestingLevel);
+        ++( *m_nestingLevel );
     }
-            
+
     ~NestingLevelIncrementer()
     {
-        --(*m_nestingLevel);
+        --( *m_nestingLevel );
     }
-            
+
 private:
-    unsigned* m_nestingLevel;
+    unsigned *m_nestingLevel;
 };
 
 }

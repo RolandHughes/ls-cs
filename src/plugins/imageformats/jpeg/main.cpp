@@ -34,47 +34,61 @@
 
 class QJpegPlugin : public QImageIOPlugin
 {
-   CS_OBJECT(QJpegPlugin)
+    CS_OBJECT( QJpegPlugin )
 
-   CS_PLUGIN_IID(QImageIOHandlerInterface_ID)
-   CS_PLUGIN_KEY("jpeg, jpg")
+    CS_PLUGIN_IID( QImageIOHandlerInterface_ID )
+    CS_PLUGIN_KEY( "jpeg, jpg" )
 
 public:
     QStringList keys() const;
-    Capabilities capabilities(QIODevice *device, const QByteArray &format) const;
-    QImageIOHandler *create(QIODevice *device, const QByteArray &format = QByteArray()) const;
+    Capabilities capabilities( QIODevice *device, const QByteArray &format ) const;
+    QImageIOHandler *create( QIODevice *device, const QByteArray &format = QByteArray() ) const;
 };
 
-CS_PLUGIN_REGISTER(QJpegPlugin)
+CS_PLUGIN_REGISTER( QJpegPlugin )
 
 QStringList QJpegPlugin::keys() const
 {
     return QStringList() << "jpeg" << "jpg";
 }
 
-QImageIOPlugin::Capabilities QJpegPlugin::capabilities(QIODevice *device, const QByteArray &format) const
+QImageIOPlugin::Capabilities QJpegPlugin::capabilities( QIODevice *device, const QByteArray &format ) const
 {
-    if (format == "jpeg" || format == "jpg")
-        return Capabilities(CanRead | CanWrite);
+    if ( format == "jpeg" || format == "jpg" )
+    {
+        return Capabilities( CanRead | CanWrite );
+    }
 
-    if (!format.isEmpty())
+    if ( !format.isEmpty() )
+    {
         return 0;
-    if (!device->isOpen())
+    }
+
+    if ( !device->isOpen() )
+    {
         return 0;
+    }
 
     Capabilities cap;
-    if (device->isReadable() && QJpegHandler::canRead(device))
+
+    if ( device->isReadable() && QJpegHandler::canRead( device ) )
+    {
         cap |= CanRead;
-    if (device->isWritable())
+    }
+
+    if ( device->isWritable() )
+    {
         cap |= CanWrite;
+    }
+
     return cap;
 }
 
-QImageIOHandler *QJpegPlugin::create(QIODevice *device, const QByteArray &format) const
+QImageIOHandler *QJpegPlugin::create( QIODevice *device, const QByteArray &format ) const
 {
     QImageIOHandler *handler = new QJpegHandler;
-    handler->setDevice(device);
-    handler->setFormat(format);
+    handler->setDevice( device );
+    handler->setFormat( format );
     return handler;
 }
 

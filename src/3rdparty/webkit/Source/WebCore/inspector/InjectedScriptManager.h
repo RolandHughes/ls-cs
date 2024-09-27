@@ -7,13 +7,13 @@
  * are met:
  *
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Apple Computer, Inc. ("Apple") nor the names of
  *     its contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
+ *     from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY APPLE AND ITS CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -36,15 +36,17 @@
 #include <wtf/Forward.h>
 #include <wtf/HashMap.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class InjectedScript;
 class InjectedScriptHost;
 class InspectorObject;
 class ScriptObject;
 
-class InjectedScriptManager {
-    WTF_MAKE_NONCOPYABLE(InjectedScriptManager);
+class InjectedScriptManager
+{
+    WTF_MAKE_NONCOPYABLE( InjectedScriptManager );
 public:
     static PassOwnPtr<InjectedScriptManager> createForPage();
     static PassOwnPtr<InjectedScriptManager> createForWorker();
@@ -52,26 +54,26 @@ public:
 
     void disconnect();
 
-    InjectedScriptHost* injectedScriptHost();
+    InjectedScriptHost *injectedScriptHost();
 
-    pair<long, ScriptObject> injectScript(const String& source, ScriptState*);
-    InjectedScript injectedScriptFor(ScriptState*);
-    InjectedScript injectedScriptForId(long);
-    InjectedScript injectedScriptForObjectId(const String& objectId);
+    pair<long, ScriptObject> injectScript( const String &source, ScriptState * );
+    InjectedScript injectedScriptFor( ScriptState * );
+    InjectedScript injectedScriptForId( long );
+    InjectedScript injectedScriptForObjectId( const String &objectId );
     void discardInjectedScripts();
-    void releaseObjectGroup(const String& objectGroup);
+    void releaseObjectGroup( const String &objectGroup );
 
 
 private:
-    typedef bool (*InspectedStateAccessCheck)(ScriptState*);
-    explicit InjectedScriptManager(InspectedStateAccessCheck);
+    typedef bool ( *InspectedStateAccessCheck )( ScriptState * );
+    explicit InjectedScriptManager( InspectedStateAccessCheck );
 
     String injectedScriptSource();
-    ScriptObject createInjectedScript(const String& source, ScriptState*, long id);
-    void discardInjectedScript(ScriptState*);
+    ScriptObject createInjectedScript( const String &source, ScriptState *, long id );
+    void discardInjectedScript( ScriptState * );
 
-    static bool canAccessInspectedWindow(ScriptState*);
-    static bool canAccessInspectedWorkerContext(ScriptState*);
+    static bool canAccessInspectedWindow( ScriptState * );
+    static bool canAccessInspectedWorkerContext( ScriptState * );
 
     long m_nextInjectedScriptId;
     typedef HashMap<long, InjectedScript> IdToInjectedScriptMap;

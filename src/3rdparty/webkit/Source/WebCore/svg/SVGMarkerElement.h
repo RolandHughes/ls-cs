@@ -33,66 +33,74 @@
 #include "SVGLangSpace.h"
 #include "SVGStyledElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class SVGMarkerElement : public SVGStyledElement,
-                         public SVGLangSpace,
-                         public SVGExternalResourcesRequired,
-                         public SVGFitToViewBox {
+    public SVGLangSpace,
+    public SVGExternalResourcesRequired,
+    public SVGFitToViewBox
+{
 public:
-    enum SVGMarkerUnitsType {
+    enum SVGMarkerUnitsType
+    {
         SVG_MARKERUNITS_UNKNOWN           = 0,
         SVG_MARKERUNITS_USERSPACEONUSE    = 1,
         SVG_MARKERUNITS_STROKEWIDTH       = 2
     };
 
-    enum SVGMarkerOrientType {
+    enum SVGMarkerOrientType
+    {
         SVG_MARKER_ORIENT_UNKNOWN    = 0,
         SVG_MARKER_ORIENT_AUTO       = 1,
         SVG_MARKER_ORIENT_ANGLE      = 2
     };
 
-    static PassRefPtr<SVGMarkerElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<SVGMarkerElement> create( const QualifiedName &, Document * );
 
-    AffineTransform viewBoxToViewTransform(float viewWidth, float viewHeight) const;
+    AffineTransform viewBoxToViewTransform( float viewWidth, float viewHeight ) const;
 
     void setOrientToAuto();
-    void setOrientToAngle(const SVGAngle&);
+    void setOrientToAngle( const SVGAngle & );
 
 private:
-    SVGMarkerElement(const QualifiedName&, Document*);
+    SVGMarkerElement( const QualifiedName &, Document * );
 
-    virtual bool needsPendingResourceHandling() const { return false; }
+    virtual bool needsPendingResourceHandling() const
+    {
+        return false;
+    }
 
-    virtual void parseMappedAttribute(Attribute*);
-    virtual void svgAttributeChanged(const QualifiedName&);
-    virtual void synchronizeProperty(const QualifiedName&);
+    virtual void parseMappedAttribute( Attribute * );
+    virtual void svgAttributeChanged( const QualifiedName & );
+    virtual void synchronizeProperty( const QualifiedName & );
     virtual void fillAttributeToPropertyTypeMap();
-    virtual AttributeToPropertyTypeMap& attributeToPropertyTypeMap();
-    virtual void childrenChanged(bool changedByParser = false, Node* beforeChange = 0, Node* afterChange = 0, int childCountDelta = 0);
+    virtual AttributeToPropertyTypeMap &attributeToPropertyTypeMap();
+    virtual void childrenChanged( bool changedByParser = false, Node *beforeChange = 0, Node *afterChange = 0,
+                                  int childCountDelta = 0 );
 
-    virtual RenderObject* createRenderer(RenderArena*, RenderStyle*);
+    virtual RenderObject *createRenderer( RenderArena *, RenderStyle * );
 
     virtual bool selfHasRelativeLengths() const;
 
-    static const AtomicString& orientTypeIdentifier();
-    static const AtomicString& orientAngleIdentifier();
+    static const AtomicString &orientTypeIdentifier();
+    static const AtomicString &orientAngleIdentifier();
 
     // Animated property declarations
-    DECLARE_ANIMATED_LENGTH(RefX, refX)
-    DECLARE_ANIMATED_LENGTH(RefY, refY)
-    DECLARE_ANIMATED_LENGTH(MarkerWidth, markerWidth)
-    DECLARE_ANIMATED_LENGTH(MarkerHeight, markerHeight)
-    DECLARE_ANIMATED_ENUMERATION(MarkerUnits, markerUnits)
-    DECLARE_ANIMATED_ENUMERATION(OrientType, orientType)
-    DECLARE_ANIMATED_ANGLE(OrientAngle, orientAngle)
+    DECLARE_ANIMATED_LENGTH( RefX, refX )
+    DECLARE_ANIMATED_LENGTH( RefY, refY )
+    DECLARE_ANIMATED_LENGTH( MarkerWidth, markerWidth )
+    DECLARE_ANIMATED_LENGTH( MarkerHeight, markerHeight )
+    DECLARE_ANIMATED_ENUMERATION( MarkerUnits, markerUnits )
+    DECLARE_ANIMATED_ENUMERATION( OrientType, orientType )
+    DECLARE_ANIMATED_ANGLE( OrientAngle, orientAngle )
 
     // SVGExternalResourcesRequired
-    DECLARE_ANIMATED_BOOLEAN(ExternalResourcesRequired, externalResourcesRequired)
+    DECLARE_ANIMATED_BOOLEAN( ExternalResourcesRequired, externalResourcesRequired )
 
     // SVGFitToViewBox
-    DECLARE_ANIMATED_RECT(ViewBox, viewBox)
-    DECLARE_ANIMATED_PRESERVEASPECTRATIO(PreserveAspectRatio, preserveAspectRatio)
+    DECLARE_ANIMATED_RECT( ViewBox, viewBox )
+    DECLARE_ANIMATED_PRESERVEASPECTRATIO( PreserveAspectRatio, preserveAspectRatio )
 };
 
 }

@@ -34,30 +34,30 @@ class PhraseBook;
 
 class SettingsDialog : public QDialog
 {
-   CS_OBJECT(SettingsDialog)
+    CS_OBJECT( SettingsDialog )
 
- public:
-   SettingsDialog(QWidget *parent = nullptr);
-   ~SettingsDialog();
+public:
+    SettingsDialog( QWidget *parent = nullptr );
+    ~SettingsDialog();
 
-   void setDataModel(DataModel *model);
-   void setPhraseBook(PhraseBook *phraseBook);
+    void setDataModel( DataModel *model );
+    void setPhraseBook( PhraseBook *phraseBook );
 
- private:
-   void showEvent(QShowEvent *e) override;
-   Ui::SettingsDialog *m_ui;
+private:
+    void showEvent( QShowEvent *e ) override;
+    Ui::SettingsDialog *m_ui;
 
-   DataModel *m_dataModel;
-   PhraseBook *m_phraseBook;
+    DataModel *m_dataModel;
+    PhraseBook *m_phraseBook;
 
-   CS_SLOT_1(Private, void on_buttonBox_accepted())
-   CS_SLOT_2(on_buttonBox_accepted)
+    CS_SLOT_1( Private, void on_buttonBox_accepted() )
+    CS_SLOT_2( on_buttonBox_accepted )
 
-   CS_SLOT_1(Private, void on_srcCbLanguageList_currentIndexChanged(int idx))
-   CS_SLOT_2(on_srcCbLanguageList_currentIndexChanged)
+    CS_SLOT_1( Private, void on_srcCbLanguageList_currentIndexChanged( int idx ) )
+    CS_SLOT_2( on_srcCbLanguageList_currentIndexChanged )
 
-   CS_SLOT_1(Private, void on_tgtCbLanguageList_currentIndexChanged(int idx))
-   CS_SLOT_2(on_tgtCbLanguageList_currentIndexChanged)
+    CS_SLOT_1( Private, void on_tgtCbLanguageList_currentIndexChanged( int idx ) )
+    CS_SLOT_2( on_tgtCbLanguageList_currentIndexChanged )
 };
 
 #endif

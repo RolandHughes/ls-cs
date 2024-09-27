@@ -43,67 +43,72 @@ class QToolBox;
 class QTableWidgetItem;
 class QTreeWidgetItem;
 
-enum TranslatableEntryType {
-   TranslatableProperty,
-   TranslatableToolItemText,
-   TranslatableToolItemToolTip,
-   TranslatableTabPageText,
-   TranslatableTabPageToolTip,
-   TranslatableTabPageWhatsThis,
-   TranslatableListWidgetItem,
-   TranslatableTableWidgetItem,
-   TranslatableTreeWidgetItem,
-   TranslatableComboBoxItem
+enum TranslatableEntryType
+{
+    TranslatableProperty,
+    TranslatableToolItemText,
+    TranslatableToolItemToolTip,
+    TranslatableTabPageText,
+    TranslatableTabPageToolTip,
+    TranslatableTabPageWhatsThis,
+    TranslatableListWidgetItem,
+    TranslatableTableWidgetItem,
+    TranslatableTreeWidgetItem,
+    TranslatableComboBoxItem
 };
 
-struct TranslatableEntry {
-   TranslatableEntryType type;
+struct TranslatableEntry
+{
+    TranslatableEntryType type;
 
-   union {
-      QObject *object;
-      QComboBox *comboBox;
-      QTabWidget *tabWidget;
-      QToolBox *toolBox;
-      QListWidgetItem *listWidgetItem;
-      QTableWidgetItem *tableWidgetItem;
-      QTreeWidgetItem *treeWidgetItem;
-   } target;
+    union
+    {
+        QObject *object;
+        QComboBox *comboBox;
+        QTabWidget *tabWidget;
+        QToolBox *toolBox;
+        QListWidgetItem *listWidgetItem;
+        QTableWidgetItem *tableWidgetItem;
+        QTreeWidgetItem *treeWidgetItem;
+    } target;
 
-   union {
-      char *name;
-      int index;
+    union
+    {
+        char *name;
+        int index;
 
-      struct {
-         short index; // Known to be below 1000
-         short column;
-      } treeIndex;
-   } prop;
+        struct
+        {
+            short index; // Known to be below 1000
+            short column;
+        } treeIndex;
+    } prop;
 };
 
 using TargetsHash = QHash<QUiTranslatableStringValue, QList<TranslatableEntry>>;
 
 class FormPreviewView : public QMainWindow
 {
-   CS_OBJECT(FormPreviewView)
+    CS_OBJECT( FormPreviewView )
 
- public:
-   FormPreviewView(QWidget *parent, MultiDataModel *dataModel);
+public:
+    FormPreviewView( QWidget *parent, MultiDataModel *dataModel );
 
-   void setSourceContext(int model, MessageItem *messageItem);
+    void setSourceContext( int model, MessageItem *messageItem );
 
- private:
-   bool m_isActive;
-   QString m_currentFileName;
-   QMdiArea *m_mdiArea;
-   QMdiSubWindow *m_mdiSubWindow;
-   QWidget *m_form;
-   TargetsHash m_targets;
-   QList<TranslatableEntry> m_highlights;
-   MultiDataModel *m_dataModel;
+private:
+    bool m_isActive;
+    QString m_currentFileName;
+    QMdiArea *m_mdiArea;
+    QMdiSubWindow *m_mdiSubWindow;
+    QWidget *m_form;
+    TargetsHash m_targets;
+    QList<TranslatableEntry> m_highlights;
+    MultiDataModel *m_dataModel;
 
-   QString m_lastFormName;
-   QString m_lastClassName;
-   int m_lastModel;
+    QString m_lastFormName;
+    QString m_lastClassName;
+    int m_lastModel;
 };
 
 #endif

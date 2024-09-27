@@ -36,37 +36,37 @@ class QSize;
 
 class Q_MULTIMEDIA_EXPORT QAudioRecorder : public QMediaRecorder
 {
-   MULTI_CS_OBJECT(QAudioRecorder)
+    MULTI_CS_OBJECT( QAudioRecorder )
 
-   MULTI_CS_PROPERTY_READ(audioInput, audioInput)
-   MULTI_CS_PROPERTY_WRITE(audioInput, setAudioInput)
-   MULTI_CS_PROPERTY_NOTIFY(audioInput, audioInputChanged)
+    MULTI_CS_PROPERTY_READ( audioInput, audioInput )
+    MULTI_CS_PROPERTY_WRITE( audioInput, setAudioInput )
+    MULTI_CS_PROPERTY_NOTIFY( audioInput, audioInputChanged )
 
- public:
-   explicit QAudioRecorder(QObject *parent = nullptr);
+public:
+    explicit QAudioRecorder( QObject *parent = nullptr );
 
-   QAudioRecorder(const QAudioRecorder &) = delete;
-   QAudioRecorder &operator=(const QAudioRecorder &) = delete;
+    QAudioRecorder( const QAudioRecorder & ) = delete;
+    QAudioRecorder &operator=( const QAudioRecorder & ) = delete;
 
-   ~QAudioRecorder();
+    ~QAudioRecorder();
 
-   QStringList audioInputs() const;
-   QString defaultAudioInput() const;
-   QString audioInputDescription(const QString &name) const;
+    QStringList audioInputs() const;
+    QString defaultAudioInput() const;
+    QString audioInputDescription( const QString &name ) const;
 
-   QString audioInput() const;
+    QString audioInput() const;
 
-   MULTI_CS_SLOT_1(Public, void setAudioInput(const QString &name))
-   MULTI_CS_SLOT_2(setAudioInput)
+    MULTI_CS_SLOT_1( Public, void setAudioInput( const QString &name ) )
+    MULTI_CS_SLOT_2( setAudioInput )
 
-   MULTI_CS_SIGNAL_1(Public, void audioInputChanged(const QString &name))
-   MULTI_CS_SIGNAL_2(audioInputChanged, name)
+    MULTI_CS_SIGNAL_1( Public, void audioInputChanged( const QString &name ) )
+    MULTI_CS_SIGNAL_2( audioInputChanged, name )
 
-   MULTI_CS_SIGNAL_1(Public, void availableAudioInputsChanged())
-   MULTI_CS_SIGNAL_2(availableAudioInputsChanged)
+    MULTI_CS_SIGNAL_1( Public, void availableAudioInputsChanged() )
+    MULTI_CS_SIGNAL_2( availableAudioInputsChanged )
 
- private:
-   Q_DECLARE_PRIVATE(QAudioRecorder)
+private:
+    Q_DECLARE_PRIVATE( QAudioRecorder )
 };
 
 #endif

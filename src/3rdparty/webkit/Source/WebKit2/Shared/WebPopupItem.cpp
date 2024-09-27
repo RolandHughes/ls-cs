@@ -32,43 +32,46 @@
 
 using namespace WebCore;
 
-namespace WebKit {
+namespace WebKit
+{
 
 WebPopupItem::WebPopupItem()
-    : m_type(Item)
-    , m_textDirection(LTR)
-    , m_hasTextDirectionOverride(false)
-    , m_isEnabled(true)
+    : m_type( Item )
+    , m_textDirection( LTR )
+    , m_hasTextDirectionOverride( false )
+    , m_isEnabled( true )
 {
 }
 
-WebPopupItem::WebPopupItem(Type type)
-    : m_type(type)
-    , m_textDirection(LTR)
-    , m_hasTextDirectionOverride(false)
-    , m_isEnabled(true)
-    , m_isLabel(false)
+WebPopupItem::WebPopupItem( Type type )
+    : m_type( type )
+    , m_textDirection( LTR )
+    , m_hasTextDirectionOverride( false )
+    , m_isEnabled( true )
+    , m_isLabel( false )
 {
 }
 
-WebPopupItem::WebPopupItem(Type type, const String& text, TextDirection textDirection, bool hasTextDirectionOverride, const String& toolTip, const String& accessibilityText, bool isEnabled, bool isLabel)
-    : m_type(type)
-    , m_text(text)
-    , m_textDirection(textDirection)
-    , m_hasTextDirectionOverride(hasTextDirectionOverride)
-    , m_toolTip(toolTip)
-    , m_accessibilityText(accessibilityText)
-    , m_isEnabled(isEnabled)
-    , m_isLabel(isLabel)
+WebPopupItem::WebPopupItem( Type type, const String &text, TextDirection textDirection, bool hasTextDirectionOverride,
+                            const String &toolTip, const String &accessibilityText, bool isEnabled, bool isLabel )
+    : m_type( type )
+    , m_text( text )
+    , m_textDirection( textDirection )
+    , m_hasTextDirectionOverride( hasTextDirectionOverride )
+    , m_toolTip( toolTip )
+    , m_accessibilityText( accessibilityText )
+    , m_isEnabled( isEnabled )
+    , m_isLabel( isLabel )
 {
 }
 
-void WebPopupItem::encode(CoreIPC::ArgumentEncoder* encoder) const
+void WebPopupItem::encode( CoreIPC::ArgumentEncoder *encoder ) const
 {
-    encoder->encode(CoreIPC::In(static_cast<uint32_t>(m_type), m_text, static_cast<uint64_t>(m_textDirection), m_hasTextDirectionOverride, m_toolTip, m_accessibilityText, m_isEnabled, m_isLabel));
+    encoder->encode( CoreIPC::In( static_cast<uint32_t>( m_type ), m_text, static_cast<uint64_t>( m_textDirection ),
+                                  m_hasTextDirectionOverride, m_toolTip, m_accessibilityText, m_isEnabled, m_isLabel ) );
 }
 
-bool WebPopupItem::decode(CoreIPC::ArgumentDecoder* decoder, WebPopupItem& item)
+bool WebPopupItem::decode( CoreIPC::ArgumentDecoder *decoder, WebPopupItem &item )
 {
     uint32_t type;
     String text;
@@ -78,10 +81,15 @@ bool WebPopupItem::decode(CoreIPC::ArgumentDecoder* decoder, WebPopupItem& item)
     String accessibilityText;
     bool isEnabled;
     bool isLabel;
-    if (!decoder->decode(CoreIPC::Out(type, text, textDirection, hasTextDirectionOverride, toolTip, accessibilityText, isEnabled, isLabel)))
-        return false;
 
-    item = WebPopupItem(static_cast<Type>(type), text, static_cast<TextDirection>(textDirection), hasTextDirectionOverride, toolTip, accessibilityText, isEnabled, isLabel);
+    if ( !decoder->decode( CoreIPC::Out( type, text, textDirection, hasTextDirectionOverride, toolTip, accessibilityText, isEnabled,
+                                         isLabel ) ) )
+    {
+        return false;
+    }
+
+    item = WebPopupItem( static_cast<Type>( type ), text, static_cast<TextDirection>( textDirection ), hasTextDirectionOverride,
+                         toolTip, accessibilityText, isEnabled, isLabel );
     return true;
 }
 

@@ -24,21 +24,22 @@
 
 #include "PointLightSource.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-inline SVGFEPointLightElement::SVGFEPointLightElement(const QualifiedName& tagName, Document* document)
-    : SVGFELightElement(tagName, document)
+inline SVGFEPointLightElement::SVGFEPointLightElement( const QualifiedName &tagName, Document *document )
+    : SVGFELightElement( tagName, document )
 {
 }
 
-PassRefPtr<SVGFEPointLightElement> SVGFEPointLightElement::create(const QualifiedName& tagName, Document* document)
+PassRefPtr<SVGFEPointLightElement> SVGFEPointLightElement::create( const QualifiedName &tagName, Document *document )
 {
-    return adoptRef(new SVGFEPointLightElement(tagName, document));
+    return adoptRef( new SVGFEPointLightElement( tagName, document ) );
 }
 
 PassRefPtr<LightSource> SVGFEPointLightElement::lightSource() const
 {
-    return PointLightSource::create(FloatPoint3D(x(), y(), z()));
+    return PointLightSource::create( FloatPoint3D( x(), y(), z() ) );
 }
 
 }

@@ -44,22 +44,34 @@
 #ifndef ScrollBehavior_h
 #define ScrollBehavior_h
 
-namespace WebCore {
+namespace WebCore
+{
 
-enum ScrollBehavior {
+enum ScrollBehavior
+{
     noScroll,
     alignCenter,
     alignTop,
-    alignBottom, 
+    alignBottom,
     alignLeft,
     alignRight,
     alignToClosestEdge
 };
 
-struct ScrollAlignment {
-    static ScrollBehavior getVisibleBehavior(const ScrollAlignment& s) { return s.m_rectVisible; }
-    static ScrollBehavior getPartialBehavior(const ScrollAlignment& s) { return s.m_rectPartial; }
-    static ScrollBehavior getHiddenBehavior(const ScrollAlignment& s) { return s.m_rectHidden; }
+struct ScrollAlignment
+{
+    static ScrollBehavior getVisibleBehavior( const ScrollAlignment &s )
+    {
+        return s.m_rectVisible;
+    }
+    static ScrollBehavior getPartialBehavior( const ScrollAlignment &s )
+    {
+        return s.m_rectPartial;
+    }
+    static ScrollBehavior getHiddenBehavior( const ScrollAlignment &s )
+    {
+        return s.m_rectHidden;
+    }
 
     static const ScrollAlignment alignCenterIfNeeded;
     static const ScrollAlignment alignToEdgeIfNeeded;

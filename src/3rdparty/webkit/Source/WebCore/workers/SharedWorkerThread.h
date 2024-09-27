@@ -34,21 +34,25 @@
 
 #include "WorkerThread.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class SharedWorkerThread : public WorkerThread {
-    public:
-        static PassRefPtr<SharedWorkerThread> create(const String& name, const KURL&, const String& userAgent, const String& sourceCode, WorkerLoaderProxy&, WorkerReportingProxy&);
-        ~SharedWorkerThread();
+class SharedWorkerThread : public WorkerThread
+{
+public:
+    static PassRefPtr<SharedWorkerThread> create( const String &name, const KURL &, const String &userAgent, const String &sourceCode,
+            WorkerLoaderProxy &, WorkerReportingProxy & );
+    ~SharedWorkerThread();
 
-    protected:
-        virtual PassRefPtr<WorkerContext> createWorkerContext(const KURL&, const String&);
+protected:
+    virtual PassRefPtr<WorkerContext> createWorkerContext( const KURL &, const String & );
 
-    private:
-        SharedWorkerThread(const String& name, const KURL&, const String& userAgent, const String& sourceCode, WorkerLoaderProxy&, WorkerReportingProxy&);
+private:
+    SharedWorkerThread( const String &name, const KURL &, const String &userAgent, const String &sourceCode, WorkerLoaderProxy &,
+                        WorkerReportingProxy & );
 
-        String m_name;
-    };
+    String m_name;
+};
 } // namespace WebCore
 
 #endif // ENABLE(SHARED_WORKERS)

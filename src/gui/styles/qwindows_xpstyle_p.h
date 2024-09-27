@@ -49,57 +49,57 @@ class QWindowsXPStylePrivate;
 
 class QWindowsXPStyle : public QWindowsStyle
 {
-   GUI_CS_OBJECT(QWindowsXPStyle)
+    GUI_CS_OBJECT( QWindowsXPStyle )
 
- public:
-   QWindowsXPStyle();
-   QWindowsXPStyle(QWindowsXPStylePrivate &dd);
+public:
+    QWindowsXPStyle();
+    QWindowsXPStyle( QWindowsXPStylePrivate &dd );
 
-   QWindowsXPStyle(const QWindowsXPStyle &) = delete;
-   QWindowsXPStyle &operator=(const QWindowsXPStyle &) = delete;
+    QWindowsXPStyle( const QWindowsXPStyle & ) = delete;
+    QWindowsXPStyle &operator=( const QWindowsXPStyle & ) = delete;
 
-   ~QWindowsXPStyle();
+    ~QWindowsXPStyle();
 
-   void drawPrimitive(PrimitiveElement pe, const QStyleOption *option, QPainter *painter,
-      const QWidget *widget = nullptr) const override;
+    void drawPrimitive( PrimitiveElement pe, const QStyleOption *option, QPainter *painter,
+                        const QWidget *widget = nullptr ) const override;
 
-   void drawControl(ControlElement element, const QStyleOption *option,
-      QPainter *painter, const QWidget *widget = nullptr) const override;
+    void drawControl( ControlElement element, const QStyleOption *option,
+                      QPainter *painter, const QWidget *widget = nullptr ) const override;
 
-   QRect subElementRect(SubElement subElement, const QStyleOption *option, const QWidget *widget = nullptr) const override;
+    QRect subElementRect( SubElement subElement, const QStyleOption *option, const QWidget *widget = nullptr ) const override;
 
-   QRect subControlRect(ComplexControl cc, const QStyleOptionComplex *option, SubControl subControl,
-      const QWidget *widget = nullptr) const override;
+    QRect subControlRect( ComplexControl cc, const QStyleOptionComplex *option, SubControl subControl,
+                          const QWidget *widget = nullptr ) const override;
 
-   void drawComplexControl(ComplexControl cc, const QStyleOptionComplex *option, QPainter *painter,
-      const QWidget *widget = nullptr) const override;
+    void drawComplexControl( ComplexControl cc, const QStyleOptionComplex *option, QPainter *painter,
+                             const QWidget *widget = nullptr ) const override;
 
-   QSize sizeFromContents(ContentsType ct, const QStyleOption *option, const QSize &contentsSize,
-      const QWidget *widget = nullptr) const override;
+    QSize sizeFromContents( ContentsType ct, const QStyleOption *option, const QSize &contentsSize,
+                            const QWidget *widget = nullptr ) const override;
 
-   int pixelMetric(PixelMetric pm, const QStyleOption *option = nullptr, const QWidget *widget = nullptr) const override;
+    int pixelMetric( PixelMetric pm, const QStyleOption *option = nullptr, const QWidget *widget = nullptr ) const override;
 
-   int styleHint(StyleHint hint, const QStyleOption *option = nullptr, const QWidget *widget = nullptr,
-      QStyleHintReturn *styleHintReturn = nullptr) const override;
+    int styleHint( StyleHint hint, const QStyleOption *option = nullptr, const QWidget *widget = nullptr,
+                   QStyleHintReturn *styleHintReturn = nullptr ) const override;
 
-   QPalette standardPalette() const override;
+    QPalette standardPalette() const override;
 
-   QPixmap standardPixmap(StandardPixmap standardPixmap, const QStyleOption *option,
-      const QWidget *widget = nullptr) const override;
+    QPixmap standardPixmap( StandardPixmap standardPixmap, const QStyleOption *option,
+                            const QWidget *widget = nullptr ) const override;
 
-   QIcon standardIcon(StandardPixmap standardPixmap, const QStyleOption *option = nullptr,
-      const QWidget *widget = nullptr) const override;
+    QIcon standardIcon( StandardPixmap standardPixmap, const QStyleOption *option = nullptr,
+                        const QWidget *widget = nullptr ) const override;
 
-   void polish(QApplication *app) override;
-   void polish(QWidget *widget) override;
-   void polish(QPalette &palette) override;
-   void unpolish(QApplication *app) override;
-   void unpolish(QWidget *widget) override;
+    void polish( QApplication *app ) override;
+    void polish( QWidget *widget ) override;
+    void polish( QPalette &palette ) override;
+    void unpolish( QApplication *app ) override;
+    void unpolish( QWidget *widget ) override;
 
- private:
-   Q_DECLARE_PRIVATE(QWindowsXPStyle)
+private:
+    Q_DECLARE_PRIVATE( QWindowsXPStyle )
 
-   friend class QStyleFactory;
+    friend class QStyleFactory;
 };
 
 #endif // QT_NO_STYLE_WINDOWSXP
@@ -135,10 +135,11 @@ class QWindowsXPStyle : public QWindowsStyle
 #   define DTBG_MIRRORDC        0x00000020
 #  endif
 
-typedef struct _DTBGOPTS {
-   DWORD dwSize;
-   DWORD dwFlags;
-   RECT rcClip;
+typedef struct _DTBGOPTS
+{
+    DWORD dwSize;
+    DWORD dwFlags;
+    RECT rcClip;
 } DTBGOPTS, *PDTBGOPTS;
 #endif
 
@@ -251,348 +252,366 @@ typedef struct _DTBGOPTS {
 
 class XPThemeData
 {
- public:
-   explicit XPThemeData(const QWidget *w = nullptr, QPainter *p = nullptr, int themeIn = -1,
-      int part = 0, int state = 0, const QRect &r = QRect())
-      : widget(w), painter(p), theme(themeIn), htheme(nullptr), partId(part), stateId(state),
-        mirrorHorizontally(false), mirrorVertically(false), noBorder(false),
-        noContent(false), rotate(0), rect(r)
-   {
-   }
+public:
+    explicit XPThemeData( const QWidget *w = nullptr, QPainter *p = nullptr, int themeIn = -1,
+                          int part = 0, int state = 0, const QRect &r = QRect() )
+        : widget( w ), painter( p ), theme( themeIn ), htheme( nullptr ), partId( part ), stateId( state ),
+          mirrorHorizontally( false ), mirrorVertically( false ), noBorder( false ),
+          noContent( false ), rotate( 0 ), rect( r )
+    {
+    }
 
-   HRGN mask(QWidget *widget);
-   HTHEME handle();
+    HRGN mask( QWidget *widget );
+    HTHEME handle();
 
-   static RECT toRECT(const QRect &qr);
-   bool isValid();
+    static RECT toRECT( const QRect &qr );
+    bool isValid();
 
-   QSizeF size();
-   QMarginsF margins(const QRect &rect, int propId = TMT_CONTENTMARGINS);
-   QMarginsF margins(int propId = TMT_CONTENTMARGINS);
+    QSizeF size();
+    QMarginsF margins( const QRect &rect, int propId = TMT_CONTENTMARGINS );
+    QMarginsF margins( int propId = TMT_CONTENTMARGINS );
 
-   static QSizeF themeSize(const QWidget *widget = nullptr, QPainter *painter = nullptr, int themeIn = -1,
-               int part = 0, int state = 0);
+    static QSizeF themeSize( const QWidget *widget = nullptr, QPainter *painter = nullptr, int themeIn = -1,
+                             int part = 0, int state = 0 );
 
-   static QMarginsF themeMargins(const QRect &rect, const QWidget *widget = nullptr, QPainter *painter = nullptr,
-               int themeIn = -1, int part = 0, int state = 0, int propId = TMT_CONTENTMARGINS);
+    static QMarginsF themeMargins( const QRect &rect, const QWidget *widget = nullptr, QPainter *painter = nullptr,
+                                   int themeIn = -1, int part = 0, int state = 0, int propId = TMT_CONTENTMARGINS );
 
-   static QMarginsF themeMargins(const QWidget *widget = nullptr, QPainter *painter = nullptr, int themeIn = -1,
-               int part = 0, int state = 0, int propId = TMT_CONTENTMARGINS);
+    static QMarginsF themeMargins( const QWidget *widget = nullptr, QPainter *painter = nullptr, int themeIn = -1,
+                                   int part = 0, int state = 0, int propId = TMT_CONTENTMARGINS );
 
-   const QWidget *widget;
-   QPainter *painter;
+    const QWidget *widget;
+    QPainter *painter;
 
-   int theme;
-   HTHEME htheme;
-   int partId;
-   int stateId;
+    int theme;
+    HTHEME htheme;
+    int partId;
+    int stateId;
 
-   uint mirrorHorizontally : 1;
-   uint mirrorVertically : 1;
-   uint noBorder : 1;
-   uint noContent : 1;
-   uint rotate;
-   QRect rect;
+    uint mirrorHorizontally : 1;
+    uint mirrorVertically : 1;
+    uint noBorder : 1;
+    uint noContent : 1;
+    uint rotate;
+    QRect rect;
 };
 
-struct ThemeMapKey {
-   int theme;
-   int partId;
-   int stateId;
-   bool noBorder;
-   bool noContent;
-
-   ThemeMapKey() : partId(-1), stateId(-1) {}
-   ThemeMapKey(const XPThemeData &data)
-      : theme(data.theme), partId(data.partId), stateId(data.stateId),
-        noBorder(data.noBorder), noContent(data.noContent)
-   { }
-
-};
-
-inline uint qHash(const ThemeMapKey &key)
+struct ThemeMapKey
 {
-   return key.theme ^ key.partId ^ key.stateId;
+    int theme;
+    int partId;
+    int stateId;
+    bool noBorder;
+    bool noContent;
+
+    ThemeMapKey() : partId( -1 ), stateId( -1 ) {}
+    ThemeMapKey( const XPThemeData &data )
+        : theme( data.theme ), partId( data.partId ), stateId( data.stateId ),
+          noBorder( data.noBorder ), noContent( data.noContent )
+    { }
+
+};
+
+inline uint qHash( const ThemeMapKey &key )
+{
+    return key.theme ^ key.partId ^ key.stateId;
 }
 
-inline bool operator==(const ThemeMapKey &k1, const ThemeMapKey &k2)
+inline bool operator==( const ThemeMapKey &k1, const ThemeMapKey &k2 )
 {
-   return k1.theme == k2.theme
-      && k1.partId == k2.partId
-      && k1.stateId == k2.stateId;
+    return k1.theme == k2.theme
+           && k1.partId == k2.partId
+           && k1.stateId == k2.stateId;
 }
 
-enum AlphaChannelType {
-   UnknownAlpha = -1,          // Alpha of part & state not yet known
-   NoAlpha,                    // Totally opaque, no need to touch alpha (RGB)
-   MaskAlpha,                  // Alpha channel must be fixed            (ARGB)
-   RealAlpha                   // Proper alpha values from Windows       (ARGB_Premultiplied)
+enum AlphaChannelType
+{
+    UnknownAlpha = -1,          // Alpha of part & state not yet known
+    NoAlpha,                    // Totally opaque, no need to touch alpha (RGB)
+    MaskAlpha,                  // Alpha channel must be fixed            (ARGB)
+    RealAlpha                   // Proper alpha values from Windows       (ARGB_Premultiplied)
 };
 
-struct ThemeMapData {
-   AlphaChannelType alphaType; // Which type of alpha on part & state
+struct ThemeMapData
+{
+    AlphaChannelType alphaType; // Which type of alpha on part & state
 
-   bool dataValid         : 1; // Only used to detect if hash value is ok
-   bool partIsTransparent : 1;
-   bool hasAlphaChannel   : 1; // True =  part & state has real Alpha
-   bool wasAlphaSwapped   : 1; // True =  alpha channel needs to be swapped
-   bool hadInvalidAlpha   : 1; // True =  alpha channel contained invalid alpha values
+    bool dataValid         : 1; // Only used to detect if hash value is ok
+    bool partIsTransparent : 1;
+    bool hasAlphaChannel   : 1; // True =  part & state has real Alpha
+    bool wasAlphaSwapped   : 1; // True =  alpha channel needs to be swapped
+    bool hadInvalidAlpha   : 1; // True =  alpha channel contained invalid alpha values
 
-   ThemeMapData() : dataValid(false), partIsTransparent(false),
-      hasAlphaChannel(false), wasAlphaSwapped(false), hadInvalidAlpha(false) {}
+    ThemeMapData() : dataValid( false ), partIsTransparent( false ),
+        hasAlphaChannel( false ), wasAlphaSwapped( false ), hadInvalidAlpha( false ) {}
 };
 
-struct QWindowsUxThemeLib {
-   typedef bool (WINAPI *PtrIsAppThemed)();
-   typedef bool (WINAPI *PtrIsThemeActive)();
-   typedef HTHEME (WINAPI *PtrOpenThemeData)(HWND hwnd, LPCWSTR pszClassList);
-   typedef HRESULT (WINAPI *PtrCloseThemeData)(HTHEME hTheme);
+struct QWindowsUxThemeLib
+{
+    typedef bool ( WINAPI *PtrIsAppThemed )();
+    typedef bool ( WINAPI *PtrIsThemeActive )();
+    typedef HTHEME ( WINAPI *PtrOpenThemeData )( HWND hwnd, LPCWSTR pszClassList );
+    typedef HRESULT ( WINAPI *PtrCloseThemeData )( HTHEME hTheme );
 
-   typedef HRESULT (WINAPI *PtrDrawThemeBackground)(HTHEME hTheme, HDC hdc, int iPartId, int iStateId,
-      const RECT *pRect, OPTIONAL const RECT *pClipRect);
+    typedef HRESULT ( WINAPI *PtrDrawThemeBackground )( HTHEME hTheme, HDC hdc, int iPartId, int iStateId,
+            const RECT *pRect, OPTIONAL const RECT *pClipRect );
 
-   typedef HRESULT (WINAPI *PtrDrawThemeBackgroundEx)(HTHEME hTheme, HDC hdc, int iPartId, int iStateId,
-      const RECT *pRect, OPTIONAL const DTBGOPTS *pOptions);
+    typedef HRESULT ( WINAPI *PtrDrawThemeBackgroundEx )( HTHEME hTheme, HDC hdc, int iPartId, int iStateId,
+            const RECT *pRect, OPTIONAL const DTBGOPTS *pOptions );
 
-   typedef HRESULT (WINAPI *PtrGetCurrentThemeName)(OUT LPWSTR pszThemeFileName, int cchMaxNameChars,
-      OUT OPTIONAL LPWSTR pszColorBuff, int cchMaxColorChars, OUT OPTIONAL LPWSTR pszSizeBuff, int cchMaxSizeChars);
+    typedef HRESULT ( WINAPI *PtrGetCurrentThemeName )( OUT LPWSTR pszThemeFileName, int cchMaxNameChars,
+            OUT OPTIONAL LPWSTR pszColorBuff, int cchMaxColorChars, OUT OPTIONAL LPWSTR pszSizeBuff, int cchMaxSizeChars );
 
-   typedef HRESULT (WINAPI *PtrGetThemeDocumentationProperty)(LPCWSTR pszThemeName, LPCWSTR pszPropertyName,
-      OUT LPWSTR pszValueBuff, int cchMaxValChars);
+    typedef HRESULT ( WINAPI *PtrGetThemeDocumentationProperty )( LPCWSTR pszThemeName, LPCWSTR pszPropertyName,
+            OUT LPWSTR pszValueBuff, int cchMaxValChars );
 
-   typedef HRESULT (WINAPI *PtrGetThemeBool)(HTHEME hTheme, int iPartId, int iStateId, int iPropId, OUT BOOL *pfVal);
-   typedef HRESULT (WINAPI *PtrGetThemeColor)(HTHEME hTheme, int iPartId, int iStateId, int iPropId, OUT COLORREF *pColor);
-   typedef HRESULT (WINAPI *PtrGetThemeEnumValue)(HTHEME hTheme, int iPartId, int iStateId, int iPropId, OUT int *piVal);
-   typedef HRESULT (WINAPI *PtrGetThemeFilename)(HTHEME hTheme, int iPartId, int iStateId, int iPropId,
-      OUT LPWSTR pszThemeFileName, int cchMaxBuffChars);
+    typedef HRESULT ( WINAPI *PtrGetThemeBool )( HTHEME hTheme, int iPartId, int iStateId, int iPropId, OUT BOOL *pfVal );
+    typedef HRESULT ( WINAPI *PtrGetThemeColor )( HTHEME hTheme, int iPartId, int iStateId, int iPropId, OUT COLORREF *pColor );
+    typedef HRESULT ( WINAPI *PtrGetThemeEnumValue )( HTHEME hTheme, int iPartId, int iStateId, int iPropId, OUT int *piVal );
+    typedef HRESULT ( WINAPI *PtrGetThemeFilename )( HTHEME hTheme, int iPartId, int iStateId, int iPropId,
+            OUT LPWSTR pszThemeFileName, int cchMaxBuffChars );
 
-   typedef HRESULT (WINAPI *PtrGetThemeFont)(HTHEME hTheme, OPTIONAL HDC hdc, int iPartId, int iStateId,
-      int iPropId, OUT LOGFONT *pFont);
+    typedef HRESULT ( WINAPI *PtrGetThemeFont )( HTHEME hTheme, OPTIONAL HDC hdc, int iPartId, int iStateId,
+            int iPropId, OUT LOGFONT *pFont );
 
-   typedef HRESULT (WINAPI *PtrGetThemeInt)(HTHEME hTheme, int iPartId, int iStateId, int iPropId, OUT int *piVal);
-   typedef HRESULT (WINAPI *PtrGetThemeIntList)(HTHEME hTheme, int iPartId, int iStateId, int iPropId, OUT INTLIST *pIntList);
-   typedef HRESULT (WINAPI *PtrGetThemeMargins)(HTHEME hTheme, OPTIONAL HDC hdc, int iPartId, int iStateId, int iPropId,
-      OPTIONAL RECT *prc, OUT MARGINS *pMargins);
+    typedef HRESULT ( WINAPI *PtrGetThemeInt )( HTHEME hTheme, int iPartId, int iStateId, int iPropId, OUT int *piVal );
+    typedef HRESULT ( WINAPI *PtrGetThemeIntList )( HTHEME hTheme, int iPartId, int iStateId, int iPropId, OUT INTLIST *pIntList );
+    typedef HRESULT ( WINAPI *PtrGetThemeMargins )( HTHEME hTheme, OPTIONAL HDC hdc, int iPartId, int iStateId, int iPropId,
+            OPTIONAL RECT *prc, OUT MARGINS *pMargins );
 
-   typedef HRESULT (WINAPI *PtrGetThemeMetric)(HTHEME hTheme, OPTIONAL HDC hdc, int iPartId, int iStateId,
-      int iPropId, OUT int *piVal);
+    typedef HRESULT ( WINAPI *PtrGetThemeMetric )( HTHEME hTheme, OPTIONAL HDC hdc, int iPartId, int iStateId,
+            int iPropId, OUT int *piVal );
 
-   typedef HRESULT (WINAPI *PtrGetThemePartSize)(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, OPTIONAL RECT *prc,
-      enum THEMESIZE eSize, OUT SIZE *psz);
+    typedef HRESULT ( WINAPI *PtrGetThemePartSize )( HTHEME hTheme, HDC hdc, int iPartId, int iStateId, OPTIONAL RECT *prc,
+            enum THEMESIZE eSize, OUT SIZE *psz );
 
-   typedef HRESULT (WINAPI *PtrGetThemePosition)(HTHEME hTheme, int iPartId, int iStateId, int iPropId, OUT POINT *pPoint);
-   typedef HRESULT (WINAPI *PtrGetThemePropertyOrigin)(HTHEME hTheme, int iPartId, int iStateId, int iPropId,
-      OUT enum PROPERTYORIGIN *pOrigin);
+    typedef HRESULT ( WINAPI *PtrGetThemePosition )( HTHEME hTheme, int iPartId, int iStateId, int iPropId, OUT POINT *pPoint );
+    typedef HRESULT ( WINAPI *PtrGetThemePropertyOrigin )( HTHEME hTheme, int iPartId, int iStateId, int iPropId,
+            OUT enum PROPERTYORIGIN *pOrigin );
 
-   typedef HRESULT (WINAPI *PtrGetThemeRect)(HTHEME hTheme, int iPartId, int iStateId, int iPropId, OUT RECT *pRect);
-   typedef HRESULT (WINAPI *PtrGetThemeString)(HTHEME hTheme, int iPartId, int iStateId, int iPropId, OUT LPWSTR pszBuff,
-      int cchMaxBuffChars);
+    typedef HRESULT ( WINAPI *PtrGetThemeRect )( HTHEME hTheme, int iPartId, int iStateId, int iPropId, OUT RECT *pRect );
+    typedef HRESULT ( WINAPI *PtrGetThemeString )( HTHEME hTheme, int iPartId, int iStateId, int iPropId, OUT LPWSTR pszBuff,
+            int cchMaxBuffChars );
 
-   typedef HRESULT (WINAPI *PtrGetThemeBackgroundRegion)(HTHEME hTheme, OPTIONAL HDC hdc, int iPartId,
-      int iStateId, const RECT *pRect, OUT HRGN *pRegion);
+    typedef HRESULT ( WINAPI *PtrGetThemeBackgroundRegion )( HTHEME hTheme, OPTIONAL HDC hdc, int iPartId,
+            int iStateId, const RECT *pRect, OUT HRGN *pRegion );
 
-   typedef BOOL (WINAPI *PtrIsThemeBackgroundPartiallyTransparent)(HTHEME hTheme, int iPartId, int iStateId);
-   typedef HRESULT (WINAPI *PtrSetWindowTheme)(HWND hwnd, LPCWSTR pszSubAppName, LPCWSTR pszSubIdList);
+    typedef BOOL ( WINAPI *PtrIsThemeBackgroundPartiallyTransparent )( HTHEME hTheme, int iPartId, int iStateId );
+    typedef HRESULT ( WINAPI *PtrSetWindowTheme )( HWND hwnd, LPCWSTR pszSubAppName, LPCWSTR pszSubIdList );
 
-   typedef HRESULT (WINAPI *PtrGetThemeTransitionDuration)(HTHEME hTheme, int iPartId, int iStateFromId,
-      int iStateToId, int iPropId, int *pDuration);
+    typedef HRESULT ( WINAPI *PtrGetThemeTransitionDuration )( HTHEME hTheme, int iPartId, int iStateFromId,
+            int iStateToId, int iPropId, int *pDuration );
 
-   static bool resolveSymbols();
+    static bool resolveSymbols();
 
-   static PtrIsAppThemed pIsAppThemed;
-   static PtrIsThemeActive pIsThemeActive;
-   static PtrOpenThemeData pOpenThemeData;
-   static PtrCloseThemeData pCloseThemeData;
-   static PtrDrawThemeBackground pDrawThemeBackground;
-   static PtrDrawThemeBackgroundEx pDrawThemeBackgroundEx;
-   static PtrGetCurrentThemeName pGetCurrentThemeName;
-   static PtrGetThemeBool pGetThemeBool;
-   static PtrGetThemeColor pGetThemeColor;
-   static PtrGetThemeEnumValue pGetThemeEnumValue;
-   static PtrGetThemeFilename pGetThemeFilename;
-   static PtrGetThemeFont pGetThemeFont;
-   static PtrGetThemeInt pGetThemeInt;
-   static PtrGetThemeIntList pGetThemeIntList;
-   static PtrGetThemeMargins pGetThemeMargins;
-   static PtrGetThemeMetric pGetThemeMetric;
-   static PtrGetThemePartSize pGetThemePartSize;
-   static PtrGetThemePosition pGetThemePosition;
-   static PtrGetThemePropertyOrigin pGetThemePropertyOrigin;
-   static PtrGetThemeRect pGetThemeRect;
-   static PtrGetThemeString pGetThemeString;
-   static PtrGetThemeBackgroundRegion pGetThemeBackgroundRegion;
-   static PtrGetThemeDocumentationProperty pGetThemeDocumentationProperty;
-   static PtrIsThemeBackgroundPartiallyTransparent pIsThemeBackgroundPartiallyTransparent;
-   static PtrSetWindowTheme pSetWindowTheme;
-   static PtrGetThemeTransitionDuration pGetThemeTransitionDuration; // Windows Vista onwards.
+    static PtrIsAppThemed pIsAppThemed;
+    static PtrIsThemeActive pIsThemeActive;
+    static PtrOpenThemeData pOpenThemeData;
+    static PtrCloseThemeData pCloseThemeData;
+    static PtrDrawThemeBackground pDrawThemeBackground;
+    static PtrDrawThemeBackgroundEx pDrawThemeBackgroundEx;
+    static PtrGetCurrentThemeName pGetCurrentThemeName;
+    static PtrGetThemeBool pGetThemeBool;
+    static PtrGetThemeColor pGetThemeColor;
+    static PtrGetThemeEnumValue pGetThemeEnumValue;
+    static PtrGetThemeFilename pGetThemeFilename;
+    static PtrGetThemeFont pGetThemeFont;
+    static PtrGetThemeInt pGetThemeInt;
+    static PtrGetThemeIntList pGetThemeIntList;
+    static PtrGetThemeMargins pGetThemeMargins;
+    static PtrGetThemeMetric pGetThemeMetric;
+    static PtrGetThemePartSize pGetThemePartSize;
+    static PtrGetThemePosition pGetThemePosition;
+    static PtrGetThemePropertyOrigin pGetThemePropertyOrigin;
+    static PtrGetThemeRect pGetThemeRect;
+    static PtrGetThemeString pGetThemeString;
+    static PtrGetThemeBackgroundRegion pGetThemeBackgroundRegion;
+    static PtrGetThemeDocumentationProperty pGetThemeDocumentationProperty;
+    static PtrIsThemeBackgroundPartiallyTransparent pIsThemeBackgroundPartiallyTransparent;
+    static PtrSetWindowTheme pSetWindowTheme;
+    static PtrGetThemeTransitionDuration pGetThemeTransitionDuration; // Windows Vista onwards.
 };
 
 class QWindowsXPStylePrivate : public QWindowsStylePrivate, public QWindowsUxThemeLib
 {
-   Q_DECLARE_PUBLIC(QWindowsXPStyle)
+    Q_DECLARE_PUBLIC( QWindowsXPStyle )
 
- public:
-   enum Theme {
-      ButtonTheme,
-      ComboboxTheme,
-      EditTheme,
-      HeaderTheme,
-      ListViewTheme,
-      MenuTheme,
-      ProgressTheme,
-      RebarTheme,
-      ScrollBarTheme,
-      SpinTheme,
-      TabTheme,
-      TaskDialogTheme,
-      ToolBarTheme,
-      ToolTipTheme,
-      TrackBarTheme,
-      XpTreeViewTheme,      // '+'/'-' shape treeview indicators (XP)
-      WindowTheme,
-      StatusTheme,
-      VistaTreeViewTheme,   // arrow shape treeview indicators (Vista) obtained from "explorer" theme.
-      NThemes
-   };
+public:
+    enum Theme
+    {
+        ButtonTheme,
+        ComboboxTheme,
+        EditTheme,
+        HeaderTheme,
+        ListViewTheme,
+        MenuTheme,
+        ProgressTheme,
+        RebarTheme,
+        ScrollBarTheme,
+        SpinTheme,
+        TabTheme,
+        TaskDialogTheme,
+        ToolBarTheme,
+        ToolTipTheme,
+        TrackBarTheme,
+        XpTreeViewTheme,      // '+'/'-' shape treeview indicators (XP)
+        WindowTheme,
+        StatusTheme,
+        VistaTreeViewTheme,   // arrow shape treeview indicators (Vista) obtained from "explorer" theme.
+        NThemes
+    };
 
-   QWindowsXPStylePrivate()
-      : QWindowsStylePrivate(), hasInitColors(false), bufferDC(nullptr), bufferBitmap(nullptr),
-        nullBitmap(nullptr), bufferPixels(nullptr), bufferW(0), bufferH(0)
-   {
-      init();
-   }
+    QWindowsXPStylePrivate()
+        : QWindowsStylePrivate(), hasInitColors( false ), bufferDC( nullptr ), bufferBitmap( nullptr ),
+          nullBitmap( nullptr ), bufferPixels( nullptr ), bufferW( 0 ), bufferH( 0 )
+    {
+        init();
+    }
 
-   ~QWindowsXPStylePrivate() {
-      cleanup();
-   }
+    ~QWindowsXPStylePrivate()
+    {
+        cleanup();
+    }
 
-   static int pixelMetricFromSystemDp(QStyle::PixelMetric pm, const QStyleOption *option = nullptr,
-               const QWidget *widget = nullptr);
-   static int fixedPixelMetric(QStyle::PixelMetric pm, const QStyleOption *option = nullptr,
-               const QWidget *widget = nullptr);
+    static int pixelMetricFromSystemDp( QStyle::PixelMetric pm, const QStyleOption *option = nullptr,
+                                        const QWidget *widget = nullptr );
+    static int fixedPixelMetric( QStyle::PixelMetric pm, const QStyleOption *option = nullptr,
+                                 const QWidget *widget = nullptr );
 
-   static HWND winId(const QWidget *widget);
+    static HWND winId( const QWidget *widget );
 
-   void init(bool force = false);
-   void cleanup(bool force = false);
-   void cleanupHandleMap();
-   const QPixmap *tabBody(QWidget *widget);
+    void init( bool force = false );
+    void cleanup( bool force = false );
+    void cleanupHandleMap();
+    const QPixmap *tabBody( QWidget *widget );
 
-   HBITMAP buffer(int w = 0, int h = 0);
-   HDC bufferHDC() {
-      return bufferDC;
-   }
+    HBITMAP buffer( int w = 0, int h = 0 );
+    HDC bufferHDC()
+    {
+        return bufferDC;
+    }
 
-   static bool resolveSymbols();
-   static bool useXP(bool update = false);
-   static QRect scrollBarGripperBounds(QStyle::State flags, const QWidget *widget, XPThemeData *theme);
+    static bool resolveSymbols();
+    static bool useXP( bool update = false );
+    static QRect scrollBarGripperBounds( QStyle::State flags, const QWidget *widget, XPThemeData *theme );
 
-   bool isTransparent(XPThemeData &themeData);
-   QRegion region(XPThemeData &themeData);
+    bool isTransparent( XPThemeData &themeData );
+    QRegion region( XPThemeData &themeData );
 
-   void setTransparency(QWidget *widget, XPThemeData &themeData);
-   bool drawBackground(XPThemeData &themeData);
-   bool drawBackgroundThruNativeBuffer(XPThemeData &themeData, qreal aditionalDevicePixelRatio);
-   bool drawBackgroundDirectly(HDC dc, XPThemeData &themeData, qreal aditionalDevicePixelRatio);
+    void setTransparency( QWidget *widget, XPThemeData &themeData );
+    bool drawBackground( XPThemeData &themeData );
+    bool drawBackgroundThruNativeBuffer( XPThemeData &themeData, qreal aditionalDevicePixelRatio );
+    bool drawBackgroundDirectly( HDC dc, XPThemeData &themeData, qreal aditionalDevicePixelRatio );
 
-   bool hasAlphaChannel(const QRect &rect);
-   bool fixAlphaChannel(const QRect &rect);
-   bool swapAlphaChannel(const QRect &rect, bool allPixels = false);
+    bool hasAlphaChannel( const QRect &rect );
+    bool fixAlphaChannel( const QRect &rect );
+    bool swapAlphaChannel( const QRect &rect, bool allPixels = false );
 
-   QRgb groupBoxTextColor;
-   QRgb groupBoxTextColorDisabled;
-   QRgb sliderTickColor;
-   bool hasInitColors;
+    QRgb groupBoxTextColor;
+    QRgb groupBoxTextColorDisabled;
+    QRgb sliderTickColor;
+    bool hasInitColors;
 
-   static HTHEME createTheme(int theme, HWND hwnd);
-   static QString themeName(int theme);
-   static inline bool hasTheme(int theme) {
-      return theme >= 0 && theme < NThemes && m_themes[theme];
-   }
+    static HTHEME createTheme( int theme, HWND hwnd );
+    static QString themeName( int theme );
+    static inline bool hasTheme( int theme )
+    {
+        return theme >= 0 && theme < NThemes && m_themes[theme];
+    }
 
-   static bool isItemViewDelegateLineEdit(const QWidget *widget);
-   static bool isLineEditBaseColorSet(const QStyleOption *option, const QWidget *widget);
+    static bool isItemViewDelegateLineEdit( const QWidget *widget );
+    static bool isLineEditBaseColorSet( const QStyleOption *option, const QWidget *widget );
 
-   QIcon dockFloat;
-   QIcon dockClose;
+    QIcon dockFloat;
+    QIcon dockClose;
 
- private:
-   static bool initVistaTreeViewTheming();
-   static void cleanupVistaTreeViewTheming();
-   static QAtomicInt ref;
-   static bool use_xp;
-   static QPixmap *tabbody;
+private:
+    static bool initVistaTreeViewTheming();
+    static void cleanupVistaTreeViewTheming();
+    static QAtomicInt ref;
+    static bool use_xp;
+    static QPixmap *tabbody;
 
-   QHash<ThemeMapKey, ThemeMapData> alphaCache;
-   HDC bufferDC;
-   HBITMAP bufferBitmap;
-   HBITMAP nullBitmap;
-   uchar *bufferPixels;
-   int bufferW, bufferH;
-   static HWND m_vistaTreeViewHelper;
-   static HTHEME m_themes[NThemes];
+    QHash<ThemeMapKey, ThemeMapData> alphaCache;
+    HDC bufferDC;
+    HBITMAP bufferBitmap;
+    HBITMAP nullBitmap;
+    uchar *bufferPixels;
+    int bufferW, bufferH;
+    static HWND m_vistaTreeViewHelper;
+    static HTHEME m_themes[NThemes];
 };
 
 inline QSizeF XPThemeData::size()
 {
-   QSizeF result(0, 0);
+    QSizeF result( 0, 0 );
 
-   if (isValid()) {
-      SIZE size;
-      if (SUCCEEDED(QWindowsXPStylePrivate::pGetThemePartSize(handle(), nullptr, partId, stateId, nullptr, TS_TRUE, &size))) {
-         result = QSize(size.cx, size.cy);
-      }
-   }
-   return result;
+    if ( isValid() )
+    {
+        SIZE size;
+
+        if ( SUCCEEDED( QWindowsXPStylePrivate::pGetThemePartSize( handle(), nullptr, partId, stateId, nullptr, TS_TRUE, &size ) ) )
+        {
+            result = QSize( size.cx, size.cy );
+        }
+    }
+
+    return result;
 }
 
-inline QMarginsF XPThemeData::margins(const QRect &qRect, int propId)
+inline QMarginsF XPThemeData::margins( const QRect &qRect, int propId )
 {
-   QMarginsF result(0, 0, 0, 0);
+    QMarginsF result( 0, 0, 0, 0 );
 
-   if (isValid()) {
-      MARGINS margins;
-      RECT rect = XPThemeData::toRECT(qRect);
-      if (SUCCEEDED(QWindowsXPStylePrivate::pGetThemeMargins(handle(), nullptr, partId, stateId, propId, &rect, &margins))) {
-         result = QMargins(margins.cxLeftWidth, margins.cyTopHeight, margins.cxRightWidth, margins.cyBottomHeight);
-      }
-   }
+    if ( isValid() )
+    {
+        MARGINS margins;
+        RECT rect = XPThemeData::toRECT( qRect );
 
-   return result;
+        if ( SUCCEEDED( QWindowsXPStylePrivate::pGetThemeMargins( handle(), nullptr, partId, stateId, propId, &rect, &margins ) ) )
+        {
+            result = QMargins( margins.cxLeftWidth, margins.cyTopHeight, margins.cxRightWidth, margins.cyBottomHeight );
+        }
+    }
+
+    return result;
 }
 
-inline QMarginsF XPThemeData::margins(int propId)
+inline QMarginsF XPThemeData::margins( int propId )
 {
-   QMarginsF result(0, 0, 0, 0);
+    QMarginsF result( 0, 0, 0, 0 );
 
-   if (isValid()) {
-      MARGINS margins;
-      if (SUCCEEDED(QWindowsXPStylePrivate::pGetThemeMargins(handle(), nullptr, partId, stateId, propId, nullptr, &margins))) {
-         result = QMargins(margins.cxLeftWidth, margins.cyTopHeight, margins.cxRightWidth, margins.cyBottomHeight);
-      }
-   }
+    if ( isValid() )
+    {
+        MARGINS margins;
 
-   return result;
+        if ( SUCCEEDED( QWindowsXPStylePrivate::pGetThemeMargins( handle(), nullptr, partId, stateId, propId, nullptr, &margins ) ) )
+        {
+            result = QMargins( margins.cxLeftWidth, margins.cyTopHeight, margins.cxRightWidth, margins.cyBottomHeight );
+        }
+    }
+
+    return result;
 }
 
-inline QSizeF XPThemeData::themeSize(const QWidget *w, QPainter *p, int themeIn, int part, int state)
+inline QSizeF XPThemeData::themeSize( const QWidget *w, QPainter *p, int themeIn, int part, int state )
 {
-   XPThemeData theme(w, p, themeIn, part, state);
-   return theme.size();
+    XPThemeData theme( w, p, themeIn, part, state );
+    return theme.size();
 }
 
-inline QMarginsF XPThemeData::themeMargins(const QRect &rect, const QWidget *w, QPainter *p, int themeIn,
-   int part, int state, int propId)
+inline QMarginsF XPThemeData::themeMargins( const QRect &rect, const QWidget *w, QPainter *p, int themeIn,
+        int part, int state, int propId )
 {
-   XPThemeData theme(w, p, themeIn, part, state);
-   return theme.margins(rect, propId);
+    XPThemeData theme( w, p, themeIn, part, state );
+    return theme.margins( rect, propId );
 }
 
-inline QMarginsF XPThemeData::themeMargins(const QWidget *w, QPainter *p, int themeIn,
-   int part, int state, int propId)
+inline QMarginsF XPThemeData::themeMargins( const QWidget *w, QPainter *p, int themeIn,
+        int part, int state, int propId )
 {
-   XPThemeData theme(w, p, themeIn, part, state);
-   return theme.margins(propId);
+    XPThemeData theme( w, p, themeIn, part, state );
+    return theme.margins( propId );
 }
 #endif // QT_NO_STYLE_WINDOWS
 

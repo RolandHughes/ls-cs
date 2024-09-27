@@ -30,14 +30,14 @@ class QOpenGLPixelTransferOptionsData : public QSharedData
 {
 public:
     QOpenGLPixelTransferOptionsData()
-        : alignment(4)
-        , skipImages(0)
-        , skipRows(0)
-        , skipPixels(0)
-        , imageHeight(0)
-        , rowLength(0)
-        , lsbFirst(false)
-        , swapBytes(false)
+        : alignment( 4 )
+        , skipImages( 0 )
+        , skipRows( 0 )
+        , skipPixels( 0 )
+        , imageHeight( 0 )
+        , rowLength( 0 )
+        , lsbFirst( false )
+        , swapBytes( false )
     {}
 
     int alignment;
@@ -54,25 +54,28 @@ public:
  * Constructs a new QOpenGLPixelTransferOptions instance with the default settings.
  */
 QOpenGLPixelTransferOptions::QOpenGLPixelTransferOptions()
-    : data(new QOpenGLPixelTransferOptionsData)
+    : data( new QOpenGLPixelTransferOptionsData )
 {
 }
 
 /*!
  * \internal
  */
-QOpenGLPixelTransferOptions::QOpenGLPixelTransferOptions(const QOpenGLPixelTransferOptions &rhs)
-    : data(rhs.data)
+QOpenGLPixelTransferOptions::QOpenGLPixelTransferOptions( const QOpenGLPixelTransferOptions &rhs )
+    : data( rhs.data )
 {
 }
 
 /*!
  * \internal
  */
-QOpenGLPixelTransferOptions &QOpenGLPixelTransferOptions::operator=(const QOpenGLPixelTransferOptions &rhs)
+QOpenGLPixelTransferOptions &QOpenGLPixelTransferOptions::operator=( const QOpenGLPixelTransferOptions &rhs )
 {
-    if (this != &rhs)
-        data.operator=(rhs.data);
+    if ( this != &rhs )
+    {
+        data.operator=( rhs.data );
+    }
+
     return *this;
 }
 
@@ -87,7 +90,7 @@ QOpenGLPixelTransferOptions::~QOpenGLPixelTransferOptions()
  * Sets the \a alignment requirements for each pixel row. Corresponds to \c GL_UNPACK_ALIGNMENT.
  * The default value is 4, as specified by OpenGL.
  */
-void QOpenGLPixelTransferOptions::setAlignment(int alignment)
+void QOpenGLPixelTransferOptions::setAlignment( int alignment )
 {
     data->alignment = alignment;
 }
@@ -105,7 +108,7 @@ int QOpenGLPixelTransferOptions::alignment() const
  * Corresponds to \c GL_UNPACK_SKIP_IMAGES. Equivalent to incrementing the pointer
  * passed to QOpenGLTexture::setData(). The default value is 0.
  */
-void QOpenGLPixelTransferOptions::setSkipImages(int skipImages)
+void QOpenGLPixelTransferOptions::setSkipImages( int skipImages )
 {
     data->skipImages = skipImages;
 }
@@ -123,7 +126,7 @@ int QOpenGLPixelTransferOptions::skipImages() const
  * Corresponds to \c GL_UNPACK_SKIP_ROWS. Equivalent to incrementing the pointer
  * passed to QOpenGLTexture::setData(). The default value is 0.
  */
-void QOpenGLPixelTransferOptions::setSkipRows(int skipRows)
+void QOpenGLPixelTransferOptions::setSkipRows( int skipRows )
 {
     data->skipRows = skipRows;
 }
@@ -141,7 +144,7 @@ int QOpenGLPixelTransferOptions::skipRows() const
  * Corresponds to \c GL_UNPACK_SKIP_PIXELS. Equivalent to incrementing the pointer
  * passed to QOpenGLTexture::setData(). The default value is 0.
  */
-void QOpenGLPixelTransferOptions::setSkipPixels(int skipPixels)
+void QOpenGLPixelTransferOptions::setSkipPixels( int skipPixels )
 {
     data->skipPixels = skipPixels;
 }
@@ -159,7 +162,7 @@ int QOpenGLPixelTransferOptions::skipPixels() const
  * Corresponds to \c GL_UNPACK_IMAGE_HEIGHT.
  * The default value is 0.
  */
-void QOpenGLPixelTransferOptions::setImageHeight(int imageHeight)
+void QOpenGLPixelTransferOptions::setImageHeight( int imageHeight )
 {
     data->imageHeight = imageHeight;
 }
@@ -177,7 +180,7 @@ int QOpenGLPixelTransferOptions::imageHeight() const
  * Corresponds to \c GL_UNPACK_ROW_LENGTH.
  * The default value is 0.
  */
-void QOpenGLPixelTransferOptions::setRowLength(int rowLength)
+void QOpenGLPixelTransferOptions::setRowLength( int rowLength )
 {
     data->rowLength = rowLength;
 }
@@ -196,7 +199,7 @@ int QOpenGLPixelTransferOptions::rowLength() const
  * most significant one. This is significant for bitmap data only.
  * Corresponds to \c GL_UNPACK_LSB_FIRST.
  */
-void QOpenGLPixelTransferOptions::setLeastSignificantByteFirst(bool lsbFirst)
+void QOpenGLPixelTransferOptions::setLeastSignificantByteFirst( bool lsbFirst )
 {
     data->lsbFirst = lsbFirst;
 }
@@ -214,7 +217,7 @@ bool QOpenGLPixelTransferOptions::isLeastSignificantBitFirst() const
  * The default value is \c false.
  * Corresponds to \c GL_UNPACK_SWAP_BYTES.
  */
-void QOpenGLPixelTransferOptions::setSwapBytesEnabled(bool swapBytes)
+void QOpenGLPixelTransferOptions::setSwapBytesEnabled( bool swapBytes )
 {
     data->swapBytes = swapBytes;
 }

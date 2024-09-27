@@ -20,16 +20,17 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 #ifndef UserScriptTypes_h
 #define UserScriptTypes_h
 
 #include <wtf/HashMap.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 enum UserScriptInjectionTime { InjectAtDocumentStart, InjectAtDocumentEnd };
 
@@ -37,8 +38,8 @@ class DOMWrapperWorld;
 class UserScript;
 
 typedef Vector<OwnPtr<UserScript> > UserScriptVector;
-typedef HashMap<RefPtr<DOMWrapperWorld>, UserScriptVector*> UserScriptMap;
+typedef HashMap<RefPtr<DOMWrapperWorld>, UserScriptVector *> UserScriptMap;
 
 } // namespace WebCore
- 
+
 #endif // UserScriptTypes_h

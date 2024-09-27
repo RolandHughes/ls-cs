@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
 
@@ -33,61 +33,70 @@
 #include <wtf/Forward.h>
 #include <wtf/Threading.h>
 
-namespace JSC {
-    class JSGlobalData;
+namespace JSC
+{
+class JSGlobalData;
 }
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class JSWorkerContext;
-    class ScriptSourceCode;
-    class ScriptValue;
-    class WorkerContext;
+class JSWorkerContext;
+class ScriptSourceCode;
+class ScriptValue;
+class WorkerContext;
 
-    class WorkerScriptController {
-        WTF_MAKE_NONCOPYABLE(WorkerScriptController); WTF_MAKE_FAST_ALLOCATED;
-    public:
-        WorkerScriptController(WorkerContext*);
-        ~WorkerScriptController();
+class WorkerScriptController
+{
+    WTF_MAKE_NONCOPYABLE( WorkerScriptController );
+    WTF_MAKE_FAST_ALLOCATED;
+public:
+    WorkerScriptController( WorkerContext * );
+    ~WorkerScriptController();
 
-        JSWorkerContext* workerContextWrapper()
+    JSWorkerContext *workerContextWrapper()
+    {
+        initScriptIfNeeded();
+        return m_workerContextWrapper.get();
+    }
+
+    ScriptValue evaluate( const ScriptSourceCode & );
+    ScriptValue evaluate( const ScriptSourceCode &, ScriptValue *exception );
+
+    void setException( ScriptValue );
+
+    // Async request to terminate a JS run execution. Eventually causes termination
+    // exception raised during JS execution, if the worker thread happens to run JS.
+    // After JS execution was terminated in this way, the Worker thread has to use
+    // forbidExecution()/isExecutionForbidden() to guard against reentry into JS.
+    // Can be called from any thread.
+    void scheduleExecutionTermination();
+
+    // Called on Worker thread when JS exits with termination exception caused by forbidExecution() request,
+    // or by Worker thread termination code to prevent future entry into JS.
+    void forbidExecution();
+    bool isExecutionForbidden() const;
+
+    JSC::JSGlobalData *globalData()
+    {
+        return m_globalData.get();
+    }
+
+private:
+    void initScriptIfNeeded()
+    {
+        if ( !m_workerContextWrapper )
         {
-            initScriptIfNeeded();
-            return m_workerContextWrapper.get();
+            initScript();
         }
+    }
+    void initScript();
 
-        ScriptValue evaluate(const ScriptSourceCode&);
-        ScriptValue evaluate(const ScriptSourceCode&, ScriptValue* exception);
-
-        void setException(ScriptValue);
-
-        // Async request to terminate a JS run execution. Eventually causes termination
-        // exception raised during JS execution, if the worker thread happens to run JS.
-        // After JS execution was terminated in this way, the Worker thread has to use
-        // forbidExecution()/isExecutionForbidden() to guard against reentry into JS.
-        // Can be called from any thread.
-        void scheduleExecutionTermination();
-
-        // Called on Worker thread when JS exits with termination exception caused by forbidExecution() request,
-        // or by Worker thread termination code to prevent future entry into JS.
-        void forbidExecution();
-        bool isExecutionForbidden() const;
-
-        JSC::JSGlobalData* globalData() { return m_globalData.get(); }
-
-    private:
-        void initScriptIfNeeded()
-        {
-            if (!m_workerContextWrapper)
-                initScript();
-        }
-        void initScript();
-
-        RefPtr<JSC::JSGlobalData> m_globalData;
-        WorkerContext* m_workerContext;
-        JSC::Strong<JSWorkerContext> m_workerContextWrapper;
-        bool m_executionForbidden;
-    };
+    RefPtr<JSC::JSGlobalData> m_globalData;
+    WorkerContext *m_workerContext;
+    JSC::Strong<JSWorkerContext> m_workerContextWrapper;
+    bool m_executionForbidden;
+};
 
 } // namespace WebCore
 

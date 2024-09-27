@@ -29,16 +29,17 @@
 #include "ArgumentDecoder.h"
 #include "ArgumentEncoder.h"
 
-namespace CoreIPC {
-
-void DataReference::encode(ArgumentEncoder* encoder) const
+namespace CoreIPC
 {
-    encoder->encodeBytes(m_data, m_size);
+
+void DataReference::encode( ArgumentEncoder *encoder ) const
+{
+    encoder->encodeBytes( m_data, m_size );
 }
 
-bool DataReference::decode(ArgumentDecoder* decoder, DataReference& dataReference)
+bool DataReference::decode( ArgumentDecoder *decoder, DataReference &dataReference )
 {
-    return decoder->decodeBytes(dataReference);
+    return decoder->decodeBytes( dataReference );
 }
 
 } // namespace CoreIPC

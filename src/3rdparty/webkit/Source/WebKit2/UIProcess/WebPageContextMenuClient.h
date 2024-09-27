@@ -30,16 +30,19 @@
 #include "WKPage.h"
 #include <wtf/Vector.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
 class APIObject;
 class WebContextMenuItemData;
 class WebPageProxy;
 
-class WebPageContextMenuClient : public APIClient<WKPageContextMenuClient> {
+class WebPageContextMenuClient : public APIClient<WKPageContextMenuClient>
+{
 public:
-    bool getContextMenuFromProposedMenu(WebPageProxy*, const Vector<WebContextMenuItemData>& proposedMenu, Vector<WebContextMenuItemData>& customMenu, APIObject* userData);
-    void customContextMenuItemSelected(WebPageProxy*, const WebContextMenuItemData&);
+    bool getContextMenuFromProposedMenu( WebPageProxy *, const Vector<WebContextMenuItemData> &proposedMenu,
+                                         Vector<WebContextMenuItemData> &customMenu, APIObject *userData );
+    void customContextMenuItemSelected( WebPageProxy *, const WebContextMenuItemData & );
 };
 
 } // namespace WebKit

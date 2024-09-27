@@ -30,32 +30,37 @@
 #include <wtf/RefCounted.h>
 #include <wtf/Threading.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class AudioBus;
 class AudioNodeInput;
 class AudioProcessor;
-    
+
 // AudioBasicProcessorNode is an AudioNode with one input and one output where the input and output have the same number of channels.
-class AudioBasicProcessorNode : public AudioNode {
+class AudioBasicProcessorNode : public AudioNode
+{
 public:
-    AudioBasicProcessorNode(AudioContext*, double sampleRate);
+    AudioBasicProcessorNode( AudioContext *, double sampleRate );
 
     // AudioNode
-    virtual void process(size_t framesToProcess);
-    virtual void pullInputs(size_t framesToProcess);
+    virtual void process( size_t framesToProcess );
+    virtual void pullInputs( size_t framesToProcess );
     virtual void reset();
     virtual void initialize();
     virtual void uninitialize();
 
     // Called in the main thread when the number of channels for the input may have changed.
-    virtual void checkNumberOfChannelsForInput(AudioNodeInput*);
+    virtual void checkNumberOfChannelsForInput( AudioNodeInput * );
 
     // Returns the number of channels for both the input and the output.
     unsigned numberOfChannels();
 
 protected:
-    AudioProcessor* processor() { return m_processor.get(); }
+    AudioProcessor *processor()
+    {
+        return m_processor.get();
+    }
     OwnPtr<AudioProcessor> m_processor;
 
 private:

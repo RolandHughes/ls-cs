@@ -36,25 +36,26 @@
 
 #include "FFTFrame.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 const int kMaxFFTPow2Size = 24;
 
-FFTSetup* FFTFrame::fftSetups = 0;
+FFTSetup *FFTFrame::fftSetups = 0;
 
 // Normal constructor: allocates for a given fftSize
-FFTFrame::FFTFrame(unsigned fftSize)
-    : m_realData(fftSize)
-    , m_imagData(fftSize)
+FFTFrame::FFTFrame( unsigned fftSize )
+    : m_realData( fftSize )
+    , m_imagData( fftSize )
 {
     m_FFTSize = fftSize;
-    m_log2FFTSize = static_cast<unsigned>(log2(fftSize));
+    m_log2FFTSize = static_cast<unsigned>( log2( fftSize ) );
 
     // We only allow power of two
-    ASSERT(1UL << m_log2FFTSize == m_FFTSize);
+    ASSERT( 1UL << m_log2FFTSize == m_FFTSize );
 
     // Lazily create and share fftSetup with other frames
-    m_FFTSetup = fftSetupForSize(fftSize);
+    m_FFTSetup = fftSetupForSize( fftSize );
 
     // Setup frame data
     m_frame.realp = m_realData.data();
@@ -63,8 +64,8 @@ FFTFrame::FFTFrame(unsigned fftSize)
 
 // Creates a blank/empty frame (interpolate() must later be called)
 FFTFrame::FFTFrame()
-    : m_realData(0)
-    , m_imagData(0)
+    : m_realData( 0 )
+    , m_imagData( 0 )
 {
     // Later will be set to correct values when interpolate() is called
     m_frame.realp = 0;
@@ -75,36 +76,36 @@ FFTFrame::FFTFrame()
 }
 
 // Copy constructor
-FFTFrame::FFTFrame(const FFTFrame& frame)
-    : m_FFTSize(frame.m_FFTSize)
-    , m_log2FFTSize(frame.m_log2FFTSize)
-    , m_FFTSetup(frame.m_FFTSetup)
-    , m_realData(frame.m_FFTSize)
-    , m_imagData(frame.m_FFTSize)
+FFTFrame::FFTFrame( const FFTFrame &frame )
+    : m_FFTSize( frame.m_FFTSize )
+    , m_log2FFTSize( frame.m_log2FFTSize )
+    , m_FFTSetup( frame.m_FFTSetup )
+    , m_realData( frame.m_FFTSize )
+    , m_imagData( frame.m_FFTSize )
 {
     // Setup frame data
     m_frame.realp = m_realData.data();
     m_frame.imagp = m_imagData.data();
 
     // Copy/setup frame data
-    unsigned nbytes = sizeof(float) * m_FFTSize;
-    memcpy(realData(), frame.m_frame.realp, nbytes);
-    memcpy(imagData(), frame.m_frame.imagp, nbytes);
+    unsigned nbytes = sizeof( float ) * m_FFTSize;
+    memcpy( realData(), frame.m_frame.realp, nbytes );
+    memcpy( imagData(), frame.m_frame.imagp, nbytes );
 }
 
 FFTFrame::~FFTFrame()
 {
 }
 
-void FFTFrame::multiply(const FFTFrame& frame)
+void FFTFrame::multiply( const FFTFrame &frame )
 {
-    FFTFrame& frame1 = *this;
-    const FFTFrame& frame2 = frame;
+    FFTFrame &frame1 = *this;
+    const FFTFrame &frame2 = frame;
 
-    float* realP1 = frame1.realData();
-    float* imagP1 = frame1.imagData();
-    const float* realP2 = frame2.realData();
-    const float* imagP2 = frame2.imagData();
+    float *realP1 = frame1.realData();
+    float *imagP1 = frame1.imagData();
+    const float *realP2 = frame2.realData();
+    const float *imagP2 = frame2.imagData();
 
     // Scale accounts for vecLib's peculiar scaling
     // This ensures the right scaling all the way back to inverse FFT
@@ -126,40 +127,44 @@ void FFTFrame::multiply(const FFTFrame& frame)
     unsigned halfSize = m_FFTSize / 2;
 
     // Complex multiply
-    vDSP_zvmul(&sc1, 1, &sc2, 1, &sc1, 1, halfSize - 1, 1 /* normal multiplication */);
+    vDSP_zvmul( &sc1, 1, &sc2, 1, &sc1, 1, halfSize - 1, 1 /* normal multiplication */ );
 
     // We've previously scaled the packed part, now scale the rest.....
-    vDSP_vsmul(sc1.realp, 1, &scale, sc1.realp, 1, halfSize - 1);
-    vDSP_vsmul(sc1.imagp, 1, &scale, sc1.imagp, 1, halfSize - 1);
+    vDSP_vsmul( sc1.realp, 1, &scale, sc1.realp, 1, halfSize - 1 );
+    vDSP_vsmul( sc1.imagp, 1, &scale, sc1.imagp, 1, halfSize - 1 );
 }
 
-void FFTFrame::doFFT(float* data)
+void FFTFrame::doFFT( float *data )
 {
-    vDSP_ctoz((DSPComplex*)data, 2, &m_frame, 1, m_FFTSize / 2);
-    vDSP_fft_zrip(m_FFTSetup, &m_frame, 1, m_log2FFTSize, FFT_FORWARD);
+    vDSP_ctoz( ( DSPComplex * )data, 2, &m_frame, 1, m_FFTSize / 2 );
+    vDSP_fft_zrip( m_FFTSetup, &m_frame, 1, m_log2FFTSize, FFT_FORWARD );
 }
 
-void FFTFrame::doInverseFFT(float* data)
+void FFTFrame::doInverseFFT( float *data )
 {
-    vDSP_fft_zrip(m_FFTSetup, &m_frame, 1, m_log2FFTSize, FFT_INVERSE);
-    vDSP_ztoc(&m_frame, 1, (DSPComplex*)data, 2, m_FFTSize / 2);
+    vDSP_fft_zrip( m_FFTSetup, &m_frame, 1, m_log2FFTSize, FFT_INVERSE );
+    vDSP_ztoc( &m_frame, 1, ( DSPComplex * )data, 2, m_FFTSize / 2 );
 
     // Do final scaling so that x == IFFT(FFT(x))
     float scale = 0.5f / m_FFTSize;
-    vDSP_vsmul(data, 1, &scale, data, 1, m_FFTSize);
+    vDSP_vsmul( data, 1, &scale, data, 1, m_FFTSize );
 }
 
-FFTSetup FFTFrame::fftSetupForSize(unsigned fftSize)
+FFTSetup FFTFrame::fftSetupForSize( unsigned fftSize )
 {
-    if (!fftSetups) {
-        fftSetups = (FFTSetup*)malloc(sizeof(FFTSetup) * kMaxFFTPow2Size);
-        memset(fftSetups, 0, sizeof(FFTSetup) * kMaxFFTPow2Size);
+    if ( !fftSetups )
+    {
+        fftSetups = ( FFTSetup * )malloc( sizeof( FFTSetup ) * kMaxFFTPow2Size );
+        memset( fftSetups, 0, sizeof( FFTSetup ) * kMaxFFTPow2Size );
     }
 
-    int pow2size = static_cast<int>(log2(fftSize));
-    ASSERT(pow2size < kMaxFFTPow2Size);
-    if (!fftSetups[pow2size])
-        fftSetups[pow2size] = vDSP_create_fftsetup(pow2size, FFT_RADIX2);
+    int pow2size = static_cast<int>( log2( fftSize ) );
+    ASSERT( pow2size < kMaxFFTPow2Size );
+
+    if ( !fftSetups[pow2size] )
+    {
+        fftSetups[pow2size] = vDSP_create_fftsetup( pow2size, FFT_RADIX2 );
+    }
 
     return fftSetups[pow2size];
 }
@@ -170,24 +175,29 @@ void FFTFrame::initialize()
 
 void FFTFrame::cleanup()
 {
-    if (!fftSetups)
+    if ( !fftSetups )
+    {
         return;
-
-    for (int i = 0; i < kMaxFFTPow2Size; ++i) {
-        if (fftSetups[i])
-            vDSP_destroy_fftsetup(fftSetups[i]);
     }
 
-    free(fftSetups);
+    for ( int i = 0; i < kMaxFFTPow2Size; ++i )
+    {
+        if ( fftSetups[i] )
+        {
+            vDSP_destroy_fftsetup( fftSetups[i] );
+        }
+    }
+
+    free( fftSetups );
     fftSetups = 0;
 }
 
-float* FFTFrame::realData() const
+float *FFTFrame::realData() const
 {
     return m_frame.realp;
 }
-    
-float* FFTFrame::imagData() const
+
+float *FFTFrame::imagData() const
 {
     return m_frame.imagp;
 }

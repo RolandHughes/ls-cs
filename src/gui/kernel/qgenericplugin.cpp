@@ -23,8 +23,8 @@
 
 #include <qgenericplugin.h>
 
-QGenericPlugin::QGenericPlugin(QObject *parent)
-   : QObject(parent)
+QGenericPlugin::QGenericPlugin( QObject *parent )
+    : QObject( parent )
 {
 }
 

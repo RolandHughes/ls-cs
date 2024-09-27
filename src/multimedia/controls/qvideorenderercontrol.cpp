@@ -25,8 +25,8 @@
 
 #include <qmediacontrol_p.h>
 
-QVideoRendererControl::QVideoRendererControl(QObject *parent)
-   : QMediaControl(parent)
+QVideoRendererControl::QVideoRendererControl( QObject *parent )
+    : QMediaControl( parent )
 {
 }
 

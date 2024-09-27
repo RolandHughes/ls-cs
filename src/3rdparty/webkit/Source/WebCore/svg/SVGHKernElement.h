@@ -25,21 +25,26 @@
 #if ENABLE(SVG_FONTS)
 #include "SVGFontElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class SVGHKernElement : public SVGElement {
+class SVGHKernElement : public SVGElement
+{
 public:
-    static PassRefPtr<SVGHKernElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<SVGHKernElement> create( const QualifiedName &, Document * );
 
-    void buildHorizontalKerningPair(KerningPairVector&);
+    void buildHorizontalKerningPair( KerningPairVector & );
 
 private:
-    SVGHKernElement(const QualifiedName&, Document*);
+    SVGHKernElement( const QualifiedName &, Document * );
 
     virtual void insertedIntoDocument();
     virtual void removedFromDocument();
 
-    virtual bool rendererIsNeeded(RenderStyle*) { return false; }
+    virtual bool rendererIsNeeded( RenderStyle * )
+    {
+        return false;
+    }
 };
 
 } // namespace WebCore

@@ -29,38 +29,43 @@
 #include "SVGStyledTransformableElement.h"
 #include "SVGTests.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class SVGEllipseElement : public SVGStyledTransformableElement,
-                          public SVGTests,
-                          public SVGLangSpace,
-                          public SVGExternalResourcesRequired {
+    public SVGTests,
+    public SVGLangSpace,
+    public SVGExternalResourcesRequired
+{
 public:
-    static PassRefPtr<SVGEllipseElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<SVGEllipseElement> create( const QualifiedName &, Document * );
 
 private:
-    SVGEllipseElement(const QualifiedName&, Document*);
-    
-    virtual bool isValid() const { return SVGTests::isValid(); }
+    SVGEllipseElement( const QualifiedName &, Document * );
 
-    virtual void parseMappedAttribute(Attribute*);
-    virtual void svgAttributeChanged(const QualifiedName&);
-    virtual void synchronizeProperty(const QualifiedName&);
+    virtual bool isValid() const
+    {
+        return SVGTests::isValid();
+    }
+
+    virtual void parseMappedAttribute( Attribute * );
+    virtual void svgAttributeChanged( const QualifiedName & );
+    virtual void synchronizeProperty( const QualifiedName & );
     virtual void fillAttributeToPropertyTypeMap();
-    virtual AttributeToPropertyTypeMap& attributeToPropertyTypeMap();
+    virtual AttributeToPropertyTypeMap &attributeToPropertyTypeMap();
 
-    virtual void toPathData(Path&) const;
+    virtual void toPathData( Path & ) const;
 
     virtual bool selfHasRelativeLengths() const;
 
     // Animated property declarations
-    DECLARE_ANIMATED_LENGTH(Cx, cx)
-    DECLARE_ANIMATED_LENGTH(Cy, cy)
-    DECLARE_ANIMATED_LENGTH(Rx, rx)
-    DECLARE_ANIMATED_LENGTH(Ry, ry)
+    DECLARE_ANIMATED_LENGTH( Cx, cx )
+    DECLARE_ANIMATED_LENGTH( Cy, cy )
+    DECLARE_ANIMATED_LENGTH( Rx, rx )
+    DECLARE_ANIMATED_LENGTH( Ry, ry )
 
     // SVGExternalResourcesRequired
-    DECLARE_ANIMATED_BOOLEAN(ExternalResourcesRequired, externalResourcesRequired)
+    DECLARE_ANIMATED_BOOLEAN( ExternalResourcesRequired, externalResourcesRequired )
 };
 
 } // namespace WebCore

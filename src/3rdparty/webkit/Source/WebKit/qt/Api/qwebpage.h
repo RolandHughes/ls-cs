@@ -49,55 +49,57 @@ class QWebPluginFactory;
 class QWebSecurityOrigin;
 class QtViewportAttributesPrivate;
 
-namespace WebCore {
-    class ChromeClientQt;
-    class EditorClientQt;
-    class FrameLoaderClientQt;
-    class InspectorClientQt;
-    class InspectorServerRequestHandlerQt;
-    class InspectorFrontendClientQt;
-    class NotificationPresenterClientQt;
-    class GeolocationPermissionClientQt;
-    class ResourceHandle;
-    class HitTestResult;
-    class QNetworkReplyHandler;
+namespace WebCore
+{
+class ChromeClientQt;
+class EditorClientQt;
+class FrameLoaderClientQt;
+class InspectorClientQt;
+class InspectorServerRequestHandlerQt;
+class InspectorFrontendClientQt;
+class NotificationPresenterClientQt;
+class GeolocationPermissionClientQt;
+class ResourceHandle;
+class HitTestResult;
+class QNetworkReplyHandler;
 
-    struct FrameLoadRequest;
+struct FrameLoadRequest;
 }
 
 class QWEBKIT_EXPORT QWebPage : public QObject
 {
-    WEB_CS_OBJECT(QWebPage)
+    WEB_CS_OBJECT( QWebPage )
 
-    WEB_CS_PROPERTY_READ(modified, isModified)
-    WEB_CS_PROPERTY_READ(selectedText, selectedText)
-    WEB_CS_PROPERTY_READ(selectedHtml, selectedHtml)
-    WEB_CS_PROPERTY_READ(hasSelection, hasSelection)
+    WEB_CS_PROPERTY_READ( modified, isModified )
+    WEB_CS_PROPERTY_READ( selectedText, selectedText )
+    WEB_CS_PROPERTY_READ( selectedHtml, selectedHtml )
+    WEB_CS_PROPERTY_READ( hasSelection, hasSelection )
 
-    WEB_CS_PROPERTY_READ(viewportSize, viewportSize)
-    WEB_CS_PROPERTY_WRITE(viewportSize, setViewportSize)
+    WEB_CS_PROPERTY_READ( viewportSize, viewportSize )
+    WEB_CS_PROPERTY_WRITE( viewportSize, setViewportSize )
 
-    WEB_CS_PROPERTY_READ(preferredContentsSize, preferredContentsSize)
-    WEB_CS_PROPERTY_WRITE(preferredContentsSize, setPreferredContentsSize)
+    WEB_CS_PROPERTY_READ( preferredContentsSize, preferredContentsSize )
+    WEB_CS_PROPERTY_WRITE( preferredContentsSize, setPreferredContentsSize )
 
-    WEB_CS_PROPERTY_READ(forwardUnsupportedContent, forwardUnsupportedContent)
-    WEB_CS_PROPERTY_WRITE(forwardUnsupportedContent, setForwardUnsupportedContent)
+    WEB_CS_PROPERTY_READ( forwardUnsupportedContent, forwardUnsupportedContent )
+    WEB_CS_PROPERTY_WRITE( forwardUnsupportedContent, setForwardUnsupportedContent )
 
-    WEB_CS_PROPERTY_READ(linkDelegationPolicy, linkDelegationPolicy)
-    WEB_CS_PROPERTY_WRITE(linkDelegationPolicy, setLinkDelegationPolicy)
+    WEB_CS_PROPERTY_READ( linkDelegationPolicy, linkDelegationPolicy )
+    WEB_CS_PROPERTY_WRITE( linkDelegationPolicy, setLinkDelegationPolicy )
 
-    WEB_CS_PROPERTY_READ(palette, palette)
-    WEB_CS_PROPERTY_WRITE(palette, setPalette)
+    WEB_CS_PROPERTY_READ( palette, palette )
+    WEB_CS_PROPERTY_WRITE( palette, setPalette )
 
-    WEB_CS_PROPERTY_READ(contentEditable, isContentEditable)
-    WEB_CS_PROPERTY_WRITE(contentEditable, setContentEditable)
+    WEB_CS_PROPERTY_READ( contentEditable, isContentEditable )
+    WEB_CS_PROPERTY_WRITE( contentEditable, setContentEditable )
 
-    WEB_CS_ENUM(LinkDelegationPolicy)
-    WEB_CS_ENUM(NavigationType)
-    WEB_CS_ENUM(WebAction)
+    WEB_CS_ENUM( LinkDelegationPolicy )
+    WEB_CS_ENUM( NavigationType )
+    WEB_CS_ENUM( WebAction )
 
 public:
-    enum NavigationType {
+    enum NavigationType
+    {
         NavigationTypeLinkClicked,
         NavigationTypeFormSubmitted,
         NavigationTypeBackOrForward,
@@ -106,7 +108,8 @@ public:
         NavigationTypeOther
     };
 
-    enum WebAction {
+    enum WebAction
+    {
         NoWebAction = - 1,
 
         OpenLink,
@@ -198,7 +201,8 @@ public:
         WebActionCount
     };
 
-    enum FindFlag {
+    enum FindFlag
+    {
         FindBackward = 1,
         FindCaseSensitively = 2,
         FindWrapsAroundDocument = 4,
@@ -206,44 +210,70 @@ public:
     };
     using FindFlags = QFlags<FindFlag>;
 
-    enum LinkDelegationPolicy {
+    enum LinkDelegationPolicy
+    {
         DontDelegateLinks,
         DelegateExternalLinks,
         DelegateAllLinks
     };
 
-    enum WebWindowType {
+    enum WebWindowType
+    {
         WebBrowserWindow,
         WebModalDialog
     };
 
-    enum PermissionPolicy {
+    enum PermissionPolicy
+    {
         PermissionUnknown,
         PermissionGrantedByUser,
         PermissionDeniedByUser
     };
 
-    enum Feature {
+    enum Feature
+    {
         Notifications,
         Geolocation
     };
 
-    class QWEBKIT_EXPORT ViewportAttributes {
+    class QWEBKIT_EXPORT ViewportAttributes
+    {
     public:
         ViewportAttributes();
-        ViewportAttributes(const QWebPage::ViewportAttributes& other);
+        ViewportAttributes( const QWebPage::ViewportAttributes &other );
 
         ~ViewportAttributes();
 
-        QWebPage::ViewportAttributes& operator=(const QWebPage::ViewportAttributes& other);
+        QWebPage::ViewportAttributes &operator=( const QWebPage::ViewportAttributes &other );
 
-        inline qreal initialScaleFactor() const { return m_initialScaleFactor; }
-        inline qreal minimumScaleFactor() const { return m_minimumScaleFactor; }
-        inline qreal maximumScaleFactor() const { return m_maximumScaleFactor; }
-        inline qreal devicePixelRatio() const { return m_devicePixelRatio; }
-        inline bool isUserScalable() const { return m_isUserScalable; }
-        inline bool isValid() const { return m_isValid; }
-        inline QSize size() const { return m_size; }
+        inline qreal initialScaleFactor() const
+        {
+            return m_initialScaleFactor;
+        }
+        inline qreal minimumScaleFactor() const
+        {
+            return m_minimumScaleFactor;
+        }
+        inline qreal maximumScaleFactor() const
+        {
+            return m_maximumScaleFactor;
+        }
+        inline qreal devicePixelRatio() const
+        {
+            return m_devicePixelRatio;
+        }
+        inline bool isUserScalable() const
+        {
+            return m_isUserScalable;
+        }
+        inline bool isValid() const
+        {
+            return m_isValid;
+        }
+        inline QSize size() const
+        {
+            return m_size;
+        }
 
     private:
         QSharedDataPointer<QtViewportAttributesPrivate> d;
@@ -259,17 +289,17 @@ public:
         friend class QWebPage;
     };
 
-    explicit QWebPage(QObject *parent = nullptr);
+    explicit QWebPage( QObject *parent = nullptr );
     ~QWebPage();
 
     QWebFrame *mainFrame() const;
     QWebFrame *currentFrame() const;
-    QWebFrame* frameAt(const QPoint& pos) const;
+    QWebFrame *frameAt( const QPoint &pos ) const;
 
     QWebHistory *history() const;
     QWebSettings *settings() const;
 
-    void setView(QWidget *view);
+    void setView( QWidget *view );
     QWidget *view() const;
 
     bool isModified() const;
@@ -278,10 +308,10 @@ public:
     QUndoStack *undoStack() const;
 #endif
 
-    void setNetworkAccessManager(QNetworkAccessManager *manager);
+    void setNetworkAccessManager( QNetworkAccessManager *manager );
     QNetworkAccessManager *networkAccessManager() const;
 
-    void setPluginFactory(QWebPluginFactory *factory);
+    void setPluginFactory( QWebPluginFactory *factory );
     QWebPluginFactory *pluginFactory() const;
 
     quint64 totalBytes() const;
@@ -292,51 +322,52 @@ public:
     QString selectedHtml() const;
 
 #ifndef QT_NO_ACTION
-    QAction *action(WebAction action) const;
+    QAction *action( WebAction action ) const;
 #endif
 
-    virtual void triggerAction(WebAction action, bool checked = false);
+    virtual void triggerAction( WebAction action, bool checked = false );
 
     QSize viewportSize() const;
-    void setViewportSize(const QSize &size);
-    ViewportAttributes viewportAttributesForSize(const QSize &availableSize) const;
+    void setViewportSize( const QSize &size );
+    ViewportAttributes viewportAttributesForSize( const QSize &availableSize ) const;
 
     QSize preferredContentsSize() const;
-    void setPreferredContentsSize(const QSize &size);
-    void setActualVisibleContentRect(const QRect& rect) const;
+    void setPreferredContentsSize( const QSize &size );
+    void setActualVisibleContentRect( const QRect &rect ) const;
 
-    bool event(QEvent *event) override;
-    bool focusNextPrevChild(bool next);
+    bool event( QEvent *event ) override;
+    bool focusNextPrevChild( bool next );
 
-    QVariant inputMethodQuery(Qt::InputMethodQuery property) const;
+    QVariant inputMethodQuery( Qt::InputMethodQuery property ) const;
 
-    bool findText(const QString &subString, FindFlags options = 0);
+    bool findText( const QString &subString, FindFlags options = 0 );
 
-    void setForwardUnsupportedContent(bool forward);
+    void setForwardUnsupportedContent( bool forward );
     bool forwardUnsupportedContent() const;
 
-    void setLinkDelegationPolicy(LinkDelegationPolicy policy);
+    void setLinkDelegationPolicy( LinkDelegationPolicy policy );
     LinkDelegationPolicy linkDelegationPolicy() const;
 
-    void setPalette(const QPalette &palette);
+    void setPalette( const QPalette &palette );
     QPalette palette() const;
 
-    void setContentEditable(bool editable);
+    void setContentEditable( bool editable );
     bool isContentEditable() const;
 
 #ifndef QT_NO_CONTEXTMENU
-    bool swallowContextMenuEvent(QContextMenuEvent *event);
+    bool swallowContextMenuEvent( QContextMenuEvent *event );
 #endif
-    void updatePositionDependentActions(const QPoint &pos);
+    void updatePositionDependentActions( const QPoint &pos );
 
     QMenu *createStandardContextMenu();
 
-    void setFeaturePermission(QWebFrame* frame, Feature feature, PermissionPolicy policy);
+    void setFeaturePermission( QWebFrame *frame, Feature feature, PermissionPolicy policy );
 
     QStringList supportedContentTypes() const;
-    bool supportsContentType(const QString& mimeType) const;
+    bool supportsContentType( const QString &mimeType ) const;
 
-    enum Extension {
+    enum Extension
+    {
         ChooseMultipleFilesExtension,
         ErrorPageExtension
     };
@@ -345,30 +376,34 @@ public:
     class ExtensionReturn
     {};
 
-    class ChooseMultipleFilesExtensionOption : public ExtensionOption {
+    class ChooseMultipleFilesExtensionOption : public ExtensionOption
+    {
     public:
         QWebFrame *parentFrame;
         QStringList suggestedFileNames;
     };
 
-    class ChooseMultipleFilesExtensionReturn : public ExtensionReturn {
+    class ChooseMultipleFilesExtensionReturn : public ExtensionReturn
+    {
     public:
         QStringList fileNames;
     };
 
     enum ErrorDomain { QtNetwork, Http, WebKit };
-    class ErrorPageExtensionOption : public ExtensionOption {
+    class ErrorPageExtensionOption : public ExtensionOption
+    {
     public:
         QUrl url;
-        QWebFrame* frame;
+        QWebFrame *frame;
         ErrorDomain domain;
         int error;
         QString errorString;
     };
 
-    class ErrorPageExtensionReturn : public ExtensionReturn {
+    class ErrorPageExtensionReturn : public ExtensionReturn
+    {
     public:
-        ErrorPageExtensionReturn() : contentType(QLatin1String("text/html")), encoding(QLatin1String("utf-8")) {};
+        ErrorPageExtensionReturn() : contentType( QLatin1String( "text/html" ) ), encoding( QLatin1String( "utf-8" ) ) {};
         QString contentType;
         QString encoding;
         QUrl baseUrl;
@@ -376,121 +411,124 @@ public:
     };
 
 
-    virtual bool extension(Extension extension, const ExtensionOption *option = 0, ExtensionReturn *output = 0);
-    virtual bool supportsExtension(Extension extension) const;
+    virtual bool extension( Extension extension, const ExtensionOption *option = 0, ExtensionReturn *output = 0 );
+    virtual bool supportsExtension( Extension extension ) const;
 
-    inline QWebPagePrivate* handle() const { return d; }
+    inline QWebPagePrivate *handle() const
+    {
+        return d;
+    }
 
 public:
-    WEB_CS_SLOT_1(Public, bool shouldInterruptJavaScript())
-    WEB_CS_SLOT_2(shouldInterruptJavaScript)
+    WEB_CS_SLOT_1( Public, bool shouldInterruptJavaScript() )
+    WEB_CS_SLOT_2( shouldInterruptJavaScript )
 
-    WEB_CS_SIGNAL_1(Public, void loadStarted())
-    WEB_CS_SIGNAL_2(loadStarted)
+    WEB_CS_SIGNAL_1( Public, void loadStarted() )
+    WEB_CS_SIGNAL_2( loadStarted )
 
-    WEB_CS_SIGNAL_1(Public, void loadProgress(int progress))
-    WEB_CS_SIGNAL_2(loadProgress,progress)
+    WEB_CS_SIGNAL_1( Public, void loadProgress( int progress ) )
+    WEB_CS_SIGNAL_2( loadProgress,progress )
 
-    WEB_CS_SIGNAL_1(Public, void loadFinished(bool ok))
-    WEB_CS_SIGNAL_2(loadFinished,ok)
+    WEB_CS_SIGNAL_1( Public, void loadFinished( bool ok ) )
+    WEB_CS_SIGNAL_2( loadFinished,ok )
 
-    WEB_CS_SIGNAL_1(Public, void linkHovered(const QString & link,const QString & title,const QString & textContent))
-    WEB_CS_SIGNAL_2(linkHovered,link,title,textContent)
+    WEB_CS_SIGNAL_1( Public, void linkHovered( const QString &link,const QString &title,const QString &textContent ) )
+    WEB_CS_SIGNAL_2( linkHovered,link,title,textContent )
 
-    WEB_CS_SIGNAL_1(Public, void statusBarMessage(const QString & text))
-    WEB_CS_SIGNAL_2(statusBarMessage,text)
+    WEB_CS_SIGNAL_1( Public, void statusBarMessage( const QString &text ) )
+    WEB_CS_SIGNAL_2( statusBarMessage,text )
 
-    WEB_CS_SIGNAL_1(Public, void selectionChanged())
-    WEB_CS_SIGNAL_2(selectionChanged)
+    WEB_CS_SIGNAL_1( Public, void selectionChanged() )
+    WEB_CS_SIGNAL_2( selectionChanged )
 
-    WEB_CS_SIGNAL_1(Public, void frameCreated(QWebFrame * frame))
-    WEB_CS_SIGNAL_2(frameCreated,frame)
+    WEB_CS_SIGNAL_1( Public, void frameCreated( QWebFrame *frame ) )
+    WEB_CS_SIGNAL_2( frameCreated,frame )
 
-    WEB_CS_SIGNAL_1(Public, void geometryChangeRequested(const QRect & geom))
-    WEB_CS_SIGNAL_2(geometryChangeRequested,geom)
+    WEB_CS_SIGNAL_1( Public, void geometryChangeRequested( const QRect &geom ) )
+    WEB_CS_SIGNAL_2( geometryChangeRequested,geom )
 
-    WEB_CS_SIGNAL_1(Public, void repaintRequested(const QRect & dirtyRect))
-    WEB_CS_SIGNAL_2(repaintRequested,dirtyRect)
+    WEB_CS_SIGNAL_1( Public, void repaintRequested( const QRect &dirtyRect ) )
+    WEB_CS_SIGNAL_2( repaintRequested,dirtyRect )
 
-    WEB_CS_SIGNAL_1(Public, void scrollRequested(int dx,int dy,const QRect & rect))
-    WEB_CS_SIGNAL_2(scrollRequested, dx, dy, rect)
+    WEB_CS_SIGNAL_1( Public, void scrollRequested( int dx,int dy,const QRect &rect ) )
+    WEB_CS_SIGNAL_2( scrollRequested, dx, dy, rect )
 
-    WEB_CS_SIGNAL_1(Public, void windowCloseRequested())
-    WEB_CS_SIGNAL_2(windowCloseRequested)
+    WEB_CS_SIGNAL_1( Public, void windowCloseRequested() )
+    WEB_CS_SIGNAL_2( windowCloseRequested )
 
-    WEB_CS_SIGNAL_1(Public, void printRequested(QWebFrame * frame))
-    WEB_CS_SIGNAL_2(printRequested,frame)
+    WEB_CS_SIGNAL_1( Public, void printRequested( QWebFrame *frame ) )
+    WEB_CS_SIGNAL_2( printRequested,frame )
 
-    WEB_CS_SIGNAL_1(Public, void linkClicked(const QUrl & url))
-    WEB_CS_SIGNAL_2(linkClicked,url)
+    WEB_CS_SIGNAL_1( Public, void linkClicked( const QUrl &url ) )
+    WEB_CS_SIGNAL_2( linkClicked,url )
 
-    WEB_CS_SIGNAL_1(Public, void toolBarVisibilityChangeRequested(bool visible))
-    WEB_CS_SIGNAL_2(toolBarVisibilityChangeRequested,visible)
+    WEB_CS_SIGNAL_1( Public, void toolBarVisibilityChangeRequested( bool visible ) )
+    WEB_CS_SIGNAL_2( toolBarVisibilityChangeRequested,visible )
 
-    WEB_CS_SIGNAL_1(Public, void statusBarVisibilityChangeRequested(bool visible))
-    WEB_CS_SIGNAL_2(statusBarVisibilityChangeRequested,visible)
+    WEB_CS_SIGNAL_1( Public, void statusBarVisibilityChangeRequested( bool visible ) )
+    WEB_CS_SIGNAL_2( statusBarVisibilityChangeRequested,visible )
 
-    WEB_CS_SIGNAL_1(Public, void menuBarVisibilityChangeRequested(bool visible))
-    WEB_CS_SIGNAL_2(menuBarVisibilityChangeRequested,visible)
+    WEB_CS_SIGNAL_1( Public, void menuBarVisibilityChangeRequested( bool visible ) )
+    WEB_CS_SIGNAL_2( menuBarVisibilityChangeRequested,visible )
 
-    WEB_CS_SIGNAL_1(Public, void unsupportedContent(QNetworkReply * reply))
-    WEB_CS_SIGNAL_2(unsupportedContent,reply)
+    WEB_CS_SIGNAL_1( Public, void unsupportedContent( QNetworkReply *reply ) )
+    WEB_CS_SIGNAL_2( unsupportedContent,reply )
 
-    WEB_CS_SIGNAL_1(Public, void downloadRequested(const QNetworkRequest & request))
-    WEB_CS_SIGNAL_2(downloadRequested,request)
+    WEB_CS_SIGNAL_1( Public, void downloadRequested( const QNetworkRequest &request ) )
+    WEB_CS_SIGNAL_2( downloadRequested,request )
 
-    WEB_CS_SIGNAL_1(Public, void microFocusChanged())
-    WEB_CS_SIGNAL_2(microFocusChanged)
+    WEB_CS_SIGNAL_1( Public, void microFocusChanged() )
+    WEB_CS_SIGNAL_2( microFocusChanged )
 
-    WEB_CS_SIGNAL_1(Public, void contentsChanged())
-    WEB_CS_SIGNAL_2(contentsChanged)
+    WEB_CS_SIGNAL_1( Public, void contentsChanged() )
+    WEB_CS_SIGNAL_2( contentsChanged )
 
-    WEB_CS_SIGNAL_1(Public, void databaseQuotaExceeded(QWebFrame * frame,QString databaseName))
-    WEB_CS_SIGNAL_2(databaseQuotaExceeded,frame,databaseName)
+    WEB_CS_SIGNAL_1( Public, void databaseQuotaExceeded( QWebFrame *frame,QString databaseName ) )
+    WEB_CS_SIGNAL_2( databaseQuotaExceeded,frame,databaseName )
 
-    WEB_CS_SIGNAL_1(Public, void applicationCacheQuotaExceeded(QWebSecurityOrigin * origin,quint64 defaultOriginQuota))
-    WEB_CS_SIGNAL_2(applicationCacheQuotaExceeded,origin,defaultOriginQuota)
+    WEB_CS_SIGNAL_1( Public, void applicationCacheQuotaExceeded( QWebSecurityOrigin *origin,quint64 defaultOriginQuota ) )
+    WEB_CS_SIGNAL_2( applicationCacheQuotaExceeded,origin,defaultOriginQuota )
 
-    WEB_CS_SIGNAL_1(Public, void saveFrameStateRequested(QWebFrame * frame,QWebHistoryItem * item))
-    WEB_CS_SIGNAL_2(saveFrameStateRequested,frame,item)
+    WEB_CS_SIGNAL_1( Public, void saveFrameStateRequested( QWebFrame *frame,QWebHistoryItem *item ) )
+    WEB_CS_SIGNAL_2( saveFrameStateRequested,frame,item )
 
-    WEB_CS_SIGNAL_1(Public, void restoreFrameStateRequested(QWebFrame * frame))
-    WEB_CS_SIGNAL_2(restoreFrameStateRequested,frame)
+    WEB_CS_SIGNAL_1( Public, void restoreFrameStateRequested( QWebFrame *frame ) )
+    WEB_CS_SIGNAL_2( restoreFrameStateRequested,frame )
 
-    WEB_CS_SIGNAL_1(Public, void viewportChangeRequested())
-    WEB_CS_SIGNAL_2(viewportChangeRequested)
+    WEB_CS_SIGNAL_1( Public, void viewportChangeRequested() )
+    WEB_CS_SIGNAL_2( viewportChangeRequested )
 
-    WEB_CS_SIGNAL_1(Public, void featurePermissionRequested(QWebFrame * frame,QWebPage::Feature feature))
-    WEB_CS_SIGNAL_2(featurePermissionRequested,frame,feature)
+    WEB_CS_SIGNAL_1( Public, void featurePermissionRequested( QWebFrame *frame,QWebPage::Feature feature ) )
+    WEB_CS_SIGNAL_2( featurePermissionRequested,frame,feature )
 
-    WEB_CS_SIGNAL_1(Public, void featurePermissionRequestCanceled(QWebFrame * frame,QWebPage::Feature feature))
-    WEB_CS_SIGNAL_2(featurePermissionRequestCanceled,frame,feature)
+    WEB_CS_SIGNAL_1( Public, void featurePermissionRequestCanceled( QWebFrame *frame,QWebPage::Feature feature ) )
+    WEB_CS_SIGNAL_2( featurePermissionRequestCanceled,frame,feature )
 
 protected:
-    virtual QWebPage *createWindow(WebWindowType type);
-    virtual QObject *createPlugin(const QString &classid, const QUrl &url,
-          const QStringList &paramNames, const QStringList &paramValues);
+    virtual QWebPage *createWindow( WebWindowType type );
+    virtual QObject *createPlugin( const QString &classid, const QUrl &url,
+                                   const QStringList &paramNames, const QStringList &paramValues );
 
-    virtual bool acceptNavigationRequest(QWebFrame *frame, const QNetworkRequest &request, NavigationType type);
-    virtual QString chooseFile(QWebFrame *frame, const QString &suggestedFile);
-    virtual void javaScriptAlert(QWebFrame *frame, const QString &msg);
-    virtual bool javaScriptConfirm(QWebFrame *frame, const QString &msg);
-    virtual bool javaScriptPrompt(QWebFrame *frame, const QString &msg, const QString &defaultValue, QString *result);
-    virtual void javaScriptConsoleMessage(const QString &message, int lineNumber, const QString &sourceID);
+    virtual bool acceptNavigationRequest( QWebFrame *frame, const QNetworkRequest &request, NavigationType type );
+    virtual QString chooseFile( QWebFrame *frame, const QString &suggestedFile );
+    virtual void javaScriptAlert( QWebFrame *frame, const QString &msg );
+    virtual bool javaScriptConfirm( QWebFrame *frame, const QString &msg );
+    virtual bool javaScriptPrompt( QWebFrame *frame, const QString &msg, const QString &defaultValue, QString *result );
+    virtual void javaScriptConsoleMessage( const QString &message, int lineNumber, const QString &sourceID );
 
-    virtual QString userAgentForUrl(const QUrl &url) const;
+    virtual QString userAgentForUrl( const QUrl &url ) const;
 
 private:
-    WEB_CS_SLOT_1(Private, void _q_onLoadProgressChanged(int progress))
-    WEB_CS_SLOT_2(_q_onLoadProgressChanged)
+    WEB_CS_SLOT_1( Private, void _q_onLoadProgressChanged( int progress ) )
+    WEB_CS_SLOT_2( _q_onLoadProgressChanged )
 
 #ifndef QT_NO_ACTION
-    WEB_CS_SLOT_1(Private, void _q_webActionTriggered(bool checked))
-    WEB_CS_SLOT_2(_q_webActionTriggered)
+    WEB_CS_SLOT_1( Private, void _q_webActionTriggered( bool checked ) )
+    WEB_CS_SLOT_2( _q_webActionTriggered )
 #endif
 
-    WEB_CS_SLOT_1(Private, void _q_cleanupLeakMessages())
-    WEB_CS_SLOT_2(_q_cleanupLeakMessages)
+    WEB_CS_SLOT_1( Private, void _q_cleanupLeakMessages() )
+    WEB_CS_SLOT_2( _q_cleanupLeakMessages )
 
     QWebPagePrivate *d;
 
@@ -514,6 +552,6 @@ private:
     friend class DumpRenderTreeSupportQt;
 };
 
-Q_DECLARE_OPERATORS_FOR_FLAGS(QWebPage::FindFlags)
+Q_DECLARE_OPERATORS_FOR_FLAGS( QWebPage::FindFlags )
 
 #endif

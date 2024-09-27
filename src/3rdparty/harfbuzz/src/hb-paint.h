@@ -63,34 +63,34 @@ HB_BEGIN_DECLS
 typedef struct hb_paint_funcs_t hb_paint_funcs_t;
 
 HB_EXTERN hb_paint_funcs_t *
-hb_paint_funcs_create (void);
+hb_paint_funcs_create ( void );
 
 HB_EXTERN hb_paint_funcs_t *
-hb_paint_funcs_get_empty (void);
+hb_paint_funcs_get_empty ( void );
 
 HB_EXTERN hb_paint_funcs_t *
-hb_paint_funcs_reference (hb_paint_funcs_t *funcs);
+hb_paint_funcs_reference ( hb_paint_funcs_t *funcs );
 
 HB_EXTERN void
-hb_paint_funcs_destroy (hb_paint_funcs_t *funcs);
+hb_paint_funcs_destroy ( hb_paint_funcs_t *funcs );
 
 HB_EXTERN hb_bool_t
-hb_paint_funcs_set_user_data (hb_paint_funcs_t *funcs,
-			      hb_user_data_key_t *key,
-			      void *              data,
-			      hb_destroy_func_t   destroy,
-			      hb_bool_t           replace);
+hb_paint_funcs_set_user_data ( hb_paint_funcs_t *funcs,
+                               hb_user_data_key_t *key,
+                               void               *data,
+                               hb_destroy_func_t   destroy,
+                               hb_bool_t           replace );
 
 
 HB_EXTERN void *
-hb_paint_funcs_get_user_data (const hb_paint_funcs_t *funcs,
-			      hb_user_data_key_t       *key);
+hb_paint_funcs_get_user_data ( const hb_paint_funcs_t *funcs,
+                               hb_user_data_key_t       *key );
 
 HB_EXTERN void
-hb_paint_funcs_make_immutable (hb_paint_funcs_t *funcs);
+hb_paint_funcs_make_immutable ( hb_paint_funcs_t *funcs );
 
 HB_EXTERN hb_bool_t
-hb_paint_funcs_is_immutable (hb_paint_funcs_t *funcs);
+hb_paint_funcs_is_immutable ( hb_paint_funcs_t *funcs );
 
 /**
  * hb_paint_push_transform_func_t:
@@ -113,12 +113,12 @@ hb_paint_funcs_is_immutable (hb_paint_funcs_t *funcs);
  *
  * Since: 7.0.0
  */
-typedef void (*hb_paint_push_transform_func_t) (hb_paint_funcs_t *funcs,
-                                                void *paint_data,
-                                                float xx, float yx,
-                                                float xy, float yy,
-                                                float dx, float dy,
-                                                void *user_data);
+typedef void ( *hb_paint_push_transform_func_t ) ( hb_paint_funcs_t *funcs,
+        void *paint_data,
+        float xx, float yx,
+        float xy, float yy,
+        float dx, float dy,
+        void *user_data );
 
 /**
  * hb_paint_pop_transform_func_t:
@@ -132,9 +132,9 @@ typedef void (*hb_paint_push_transform_func_t) (hb_paint_funcs_t *funcs,
  *
  * Since: 7.0.0
  */
-typedef void (*hb_paint_pop_transform_func_t) (hb_paint_funcs_t *funcs,
-                                               void *paint_data,
-                                               void *user_data);
+typedef void ( *hb_paint_pop_transform_func_t ) ( hb_paint_funcs_t *funcs,
+        void *paint_data,
+        void *user_data );
 
 /**
  * hb_paint_color_glyph_func_t:
@@ -150,11 +150,11 @@ typedef void (*hb_paint_pop_transform_func_t) (hb_paint_funcs_t *funcs,
  *
  * Since: 8.2.0
  */
-typedef hb_bool_t (*hb_paint_color_glyph_func_t) (hb_paint_funcs_t *funcs,
-                                                  void *paint_data,
-                                                  hb_codepoint_t glyph,
-                                                  hb_font_t *font,
-                                                  void *user_data);
+typedef hb_bool_t ( *hb_paint_color_glyph_func_t ) ( hb_paint_funcs_t *funcs,
+        void *paint_data,
+        hb_codepoint_t glyph,
+        hb_font_t *font,
+        void *user_data );
 
 /**
  * hb_paint_push_clip_glyph_func_t:
@@ -176,11 +176,11 @@ typedef hb_bool_t (*hb_paint_color_glyph_func_t) (hb_paint_funcs_t *funcs,
  *
  * Since: 7.0.0
  */
-typedef void (*hb_paint_push_clip_glyph_func_t) (hb_paint_funcs_t *funcs,
-                                                 void *paint_data,
-                                                 hb_codepoint_t glyph,
-                                                 hb_font_t *font,
-                                                 void *user_data);
+typedef void ( *hb_paint_push_clip_glyph_func_t ) ( hb_paint_funcs_t *funcs,
+        void *paint_data,
+        hb_codepoint_t glyph,
+        hb_font_t *font,
+        void *user_data );
 
 /**
  * hb_paint_push_clip_rectangle_func_t:
@@ -204,11 +204,11 @@ typedef void (*hb_paint_push_clip_glyph_func_t) (hb_paint_funcs_t *funcs,
  *
  * Since: 7.0.0
  */
-typedef void (*hb_paint_push_clip_rectangle_func_t) (hb_paint_funcs_t *funcs,
-                                                     void *paint_data,
-                                                     float xmin, float ymin,
-                                                     float xmax, float ymax,
-                                                     void *user_data);
+typedef void ( *hb_paint_push_clip_rectangle_func_t ) ( hb_paint_funcs_t *funcs,
+        void *paint_data,
+        float xmin, float ymin,
+        float xmax, float ymax,
+        void *user_data );
 
 /**
  * hb_paint_pop_clip_func_t:
@@ -222,9 +222,9 @@ typedef void (*hb_paint_push_clip_rectangle_func_t) (hb_paint_funcs_t *funcs,
  *
  * Since: 7.0.0
  */
-typedef void (*hb_paint_pop_clip_func_t) (hb_paint_funcs_t *funcs,
-                                          void *paint_data,
-                                          void *user_data);
+typedef void ( *hb_paint_pop_clip_func_t ) ( hb_paint_funcs_t *funcs,
+        void *paint_data,
+        void *user_data );
 
 /**
  * hb_paint_color_func_t:
@@ -239,11 +239,11 @@ typedef void (*hb_paint_pop_clip_func_t) (hb_paint_funcs_t *funcs,
  *
  * Since: 7.0.0
  */
-typedef void (*hb_paint_color_func_t) (hb_paint_funcs_t *funcs,
-                                       void *paint_data,
-                                       hb_bool_t is_foreground,
-                                       hb_color_t color,
-                                       void *user_data);
+typedef void ( *hb_paint_color_func_t ) ( hb_paint_funcs_t *funcs,
+        void *paint_data,
+        hb_bool_t is_foreground,
+        hb_color_t color,
+        void *user_data );
 
 /**
  * HB_PAINT_IMAGE_FORMAT_PNG:
@@ -299,15 +299,15 @@ typedef void (*hb_paint_color_func_t) (hb_paint_funcs_t *funcs,
  *
  * Since: 7.0.0
  */
-typedef hb_bool_t (*hb_paint_image_func_t) (hb_paint_funcs_t *funcs,
-					    void *paint_data,
-					    hb_blob_t *image,
-					    unsigned int width,
-					    unsigned int height,
-					    hb_tag_t format,
-					    float slant,
-					    hb_glyph_extents_t *extents,
-					    void *user_data);
+typedef hb_bool_t ( *hb_paint_image_func_t ) ( hb_paint_funcs_t *funcs,
+        void *paint_data,
+        hb_blob_t *image,
+        unsigned int width,
+        unsigned int height,
+        hb_tag_t format,
+        float slant,
+        hb_glyph_extents_t *extents,
+        void *user_data );
 
 /**
  * hb_color_stop_t:
@@ -327,10 +327,11 @@ typedef hb_bool_t (*hb_paint_image_func_t) (hb_paint_funcs_t *funcs,
  *
  * Since: 7.0.0
  */
-typedef struct {
-  float offset;
-  hb_bool_t is_foreground;
-  hb_color_t color;
+typedef struct
+{
+    float offset;
+    hb_bool_t is_foreground;
+    hb_color_t color;
 } hb_color_stop_t;
 
 /**
@@ -353,10 +354,11 @@ typedef struct {
  *
  * Since: 7.0.0
  */
-typedef enum {
-  HB_PAINT_EXTEND_PAD,
-  HB_PAINT_EXTEND_REPEAT,
-  HB_PAINT_EXTEND_REFLECT
+typedef enum
+{
+    HB_PAINT_EXTEND_PAD,
+    HB_PAINT_EXTEND_REPEAT,
+    HB_PAINT_EXTEND_REFLECT
 } hb_paint_extend_t;
 
 typedef struct hb_color_line_t hb_color_line_t;
@@ -377,12 +379,12 @@ typedef struct hb_color_line_t hb_color_line_t;
  *
  * Since: 7.0.0
  */
-typedef unsigned int (*hb_color_line_get_color_stops_func_t) (hb_color_line_t *color_line,
-							      void *color_line_data,
-							      unsigned int start,
-							      unsigned int *count,
-							      hb_color_stop_t *color_stops,
-							      void *user_data);
+typedef unsigned int ( *hb_color_line_get_color_stops_func_t ) ( hb_color_line_t *color_line,
+        void *color_line_data,
+        unsigned int start,
+        unsigned int *count,
+        hb_color_stop_t *color_stops,
+        void *user_data );
 
 /**
  * hb_color_line_get_extend_func_t:
@@ -396,9 +398,9 @@ typedef unsigned int (*hb_color_line_get_color_stops_func_t) (hb_color_line_t *c
  *
  * Since: 7.0.0
  */
-typedef hb_paint_extend_t (*hb_color_line_get_extend_func_t) (hb_color_line_t *color_line,
-							      void *color_line_data,
-							      void *user_data);
+typedef hb_paint_extend_t ( *hb_color_line_get_extend_func_t ) ( hb_color_line_t *color_line,
+        void *color_line_data,
+        void *user_data );
 
 /**
  * hb_color_line_t:
@@ -407,33 +409,34 @@ typedef hb_paint_extend_t (*hb_color_line_get_extend_func_t) (hb_color_line_t *c
  *
  * Since: 7.0.0
  */
-struct hb_color_line_t {
-  void *data;
+struct hb_color_line_t
+{
+    void *data;
 
-  hb_color_line_get_color_stops_func_t get_color_stops;
-  void *get_color_stops_user_data;
+    hb_color_line_get_color_stops_func_t get_color_stops;
+    void *get_color_stops_user_data;
 
-  hb_color_line_get_extend_func_t get_extend;
-  void *get_extend_user_data;
+    hb_color_line_get_extend_func_t get_extend;
+    void *get_extend_user_data;
 
-  void *reserved0;
-  void *reserved1;
-  void *reserved2;
-  void *reserved3;
-  void *reserved5;
-  void *reserved6;
-  void *reserved7;
-  void *reserved8;
+    void *reserved0;
+    void *reserved1;
+    void *reserved2;
+    void *reserved3;
+    void *reserved5;
+    void *reserved6;
+    void *reserved7;
+    void *reserved8;
 };
 
 HB_EXTERN unsigned int
-hb_color_line_get_color_stops (hb_color_line_t *color_line,
-                               unsigned int start,
-                               unsigned int *count,
-                               hb_color_stop_t *color_stops);
+hb_color_line_get_color_stops ( hb_color_line_t *color_line,
+                                unsigned int start,
+                                unsigned int *count,
+                                hb_color_stop_t *color_stops );
 
 HB_EXTERN hb_paint_extend_t
-hb_color_line_get_extend (hb_color_line_t *color_line);
+hb_color_line_get_extend ( hb_color_line_t *color_line );
 
 /**
  * hb_paint_linear_gradient_func_t:
@@ -463,13 +466,13 @@ hb_color_line_get_extend (hb_color_line_t *color_line);
  *
  * Since: 7.0.0
  */
-typedef void (*hb_paint_linear_gradient_func_t) (hb_paint_funcs_t *funcs,
-                                                 void *paint_data,
-                                                 hb_color_line_t *color_line,
-                                                 float x0, float y0,
-                                                 float x1, float y1,
-                                                 float x2, float y2,
-                                                 void *user_data);
+typedef void ( *hb_paint_linear_gradient_func_t ) ( hb_paint_funcs_t *funcs,
+        void *paint_data,
+        hb_color_line_t *color_line,
+        float x0, float y0,
+        float x1, float y1,
+        float x2, float y2,
+        void *user_data );
 
 /**
  * hb_paint_radial_gradient_func_t:
@@ -499,12 +502,12 @@ typedef void (*hb_paint_linear_gradient_func_t) (hb_paint_funcs_t *funcs,
  *
  * Since: 7.0.0
  */
-typedef void (*hb_paint_radial_gradient_func_t) (hb_paint_funcs_t *funcs,
-                                                 void *paint_data,
-                                                 hb_color_line_t *color_line,
-                                                 float x0, float y0, float r0,
-                                                 float x1, float y1, float r1,
-                                                 void *user_data);
+typedef void ( *hb_paint_radial_gradient_func_t ) ( hb_paint_funcs_t *funcs,
+        void *paint_data,
+        hb_color_line_t *color_line,
+        float x0, float y0, float r0,
+        float x1, float y1, float r1,
+        void *user_data );
 
 /**
  * hb_paint_sweep_gradient_func_t:
@@ -532,13 +535,13 @@ typedef void (*hb_paint_radial_gradient_func_t) (hb_paint_funcs_t *funcs,
  *
  * Since: 7.0.0
  */
-typedef void (*hb_paint_sweep_gradient_func_t)  (hb_paint_funcs_t *funcs,
-                                                 void *paint_data,
-                                                 hb_color_line_t *color_line,
-                                                 float x0, float y0,
-                                                 float start_angle,
-                                                 float end_angle,
-                                                 void *user_data);
+typedef void ( *hb_paint_sweep_gradient_func_t )  ( hb_paint_funcs_t *funcs,
+        void *paint_data,
+        hb_color_line_t *color_line,
+        float x0, float y0,
+        float start_angle,
+        float end_angle,
+        void *user_data );
 
 /**
  * hb_paint_composite_mode_t:
@@ -608,35 +611,36 @@ typedef void (*hb_paint_sweep_gradient_func_t)  (hb_paint_funcs_t *funcs,
  *
  * Since: 7.0.0
  */
-typedef enum {
-  HB_PAINT_COMPOSITE_MODE_CLEAR,
-  HB_PAINT_COMPOSITE_MODE_SRC,
-  HB_PAINT_COMPOSITE_MODE_DEST,
-  HB_PAINT_COMPOSITE_MODE_SRC_OVER,
-  HB_PAINT_COMPOSITE_MODE_DEST_OVER,
-  HB_PAINT_COMPOSITE_MODE_SRC_IN,
-  HB_PAINT_COMPOSITE_MODE_DEST_IN,
-  HB_PAINT_COMPOSITE_MODE_SRC_OUT,
-  HB_PAINT_COMPOSITE_MODE_DEST_OUT,
-  HB_PAINT_COMPOSITE_MODE_SRC_ATOP,
-  HB_PAINT_COMPOSITE_MODE_DEST_ATOP,
-  HB_PAINT_COMPOSITE_MODE_XOR,
-  HB_PAINT_COMPOSITE_MODE_PLUS,
-  HB_PAINT_COMPOSITE_MODE_SCREEN,
-  HB_PAINT_COMPOSITE_MODE_OVERLAY,
-  HB_PAINT_COMPOSITE_MODE_DARKEN,
-  HB_PAINT_COMPOSITE_MODE_LIGHTEN,
-  HB_PAINT_COMPOSITE_MODE_COLOR_DODGE,
-  HB_PAINT_COMPOSITE_MODE_COLOR_BURN,
-  HB_PAINT_COMPOSITE_MODE_HARD_LIGHT,
-  HB_PAINT_COMPOSITE_MODE_SOFT_LIGHT,
-  HB_PAINT_COMPOSITE_MODE_DIFFERENCE,
-  HB_PAINT_COMPOSITE_MODE_EXCLUSION,
-  HB_PAINT_COMPOSITE_MODE_MULTIPLY,
-  HB_PAINT_COMPOSITE_MODE_HSL_HUE,
-  HB_PAINT_COMPOSITE_MODE_HSL_SATURATION,
-  HB_PAINT_COMPOSITE_MODE_HSL_COLOR,
-  HB_PAINT_COMPOSITE_MODE_HSL_LUMINOSITY
+typedef enum
+{
+    HB_PAINT_COMPOSITE_MODE_CLEAR,
+    HB_PAINT_COMPOSITE_MODE_SRC,
+    HB_PAINT_COMPOSITE_MODE_DEST,
+    HB_PAINT_COMPOSITE_MODE_SRC_OVER,
+    HB_PAINT_COMPOSITE_MODE_DEST_OVER,
+    HB_PAINT_COMPOSITE_MODE_SRC_IN,
+    HB_PAINT_COMPOSITE_MODE_DEST_IN,
+    HB_PAINT_COMPOSITE_MODE_SRC_OUT,
+    HB_PAINT_COMPOSITE_MODE_DEST_OUT,
+    HB_PAINT_COMPOSITE_MODE_SRC_ATOP,
+    HB_PAINT_COMPOSITE_MODE_DEST_ATOP,
+    HB_PAINT_COMPOSITE_MODE_XOR,
+    HB_PAINT_COMPOSITE_MODE_PLUS,
+    HB_PAINT_COMPOSITE_MODE_SCREEN,
+    HB_PAINT_COMPOSITE_MODE_OVERLAY,
+    HB_PAINT_COMPOSITE_MODE_DARKEN,
+    HB_PAINT_COMPOSITE_MODE_LIGHTEN,
+    HB_PAINT_COMPOSITE_MODE_COLOR_DODGE,
+    HB_PAINT_COMPOSITE_MODE_COLOR_BURN,
+    HB_PAINT_COMPOSITE_MODE_HARD_LIGHT,
+    HB_PAINT_COMPOSITE_MODE_SOFT_LIGHT,
+    HB_PAINT_COMPOSITE_MODE_DIFFERENCE,
+    HB_PAINT_COMPOSITE_MODE_EXCLUSION,
+    HB_PAINT_COMPOSITE_MODE_MULTIPLY,
+    HB_PAINT_COMPOSITE_MODE_HSL_HUE,
+    HB_PAINT_COMPOSITE_MODE_HSL_SATURATION,
+    HB_PAINT_COMPOSITE_MODE_HSL_COLOR,
+    HB_PAINT_COMPOSITE_MODE_HSL_LUMINOSITY
 } hb_paint_composite_mode_t;
 
 /**
@@ -654,9 +658,9 @@ typedef enum {
  *
  * Since: 7.0.0
  */
-typedef void (*hb_paint_push_group_func_t) (hb_paint_funcs_t *funcs,
-                                            void *paint_data,
-                                            void *user_data);
+typedef void ( *hb_paint_push_group_func_t ) ( hb_paint_funcs_t *funcs,
+        void *paint_data,
+        void *user_data );
 
 /**
  * hb_paint_pop_group_func_t:
@@ -675,10 +679,10 @@ typedef void (*hb_paint_push_group_func_t) (hb_paint_funcs_t *funcs,
  *
  * Since: 7.0.0
  */
-typedef void (*hb_paint_pop_group_func_t) (hb_paint_funcs_t *funcs,
-                                           void *paint_data,
-                                           hb_paint_composite_mode_t mode,
-                                           void *user_data);
+typedef void ( *hb_paint_pop_group_func_t ) ( hb_paint_funcs_t *funcs,
+        void *paint_data,
+        hb_paint_composite_mode_t mode,
+        void *user_data );
 
 /**
  * hb_paint_custom_palette_color_func_t:
@@ -702,11 +706,11 @@ typedef void (*hb_paint_pop_group_func_t) (hb_paint_funcs_t *funcs,
  *
  * Since: 7.0.0
  */
-typedef hb_bool_t (*hb_paint_custom_palette_color_func_t) (hb_paint_funcs_t *funcs,
-                                                           void *paint_data,
-                                                           unsigned int color_index,
-                                                           hb_color_t *color,
-                                                           void *user_data);
+typedef hb_bool_t ( *hb_paint_custom_palette_color_func_t ) ( hb_paint_funcs_t *funcs,
+        void *paint_data,
+        unsigned int color_index,
+        hb_color_t *color,
+        void *user_data );
 
 
 /**
@@ -721,10 +725,10 @@ typedef hb_bool_t (*hb_paint_custom_palette_color_func_t) (hb_paint_funcs_t *fun
  * Since: 7.0.0
  */
 HB_EXTERN void
-hb_paint_funcs_set_push_transform_func (hb_paint_funcs_t               *funcs,
-                                        hb_paint_push_transform_func_t  func,
-                                        void                           *user_data,
-                                        hb_destroy_func_t               destroy);
+hb_paint_funcs_set_push_transform_func ( hb_paint_funcs_t               *funcs,
+        hb_paint_push_transform_func_t  func,
+        void                           *user_data,
+        hb_destroy_func_t               destroy );
 
 /**
  * hb_paint_funcs_set_pop_transform_func:
@@ -738,10 +742,10 @@ hb_paint_funcs_set_push_transform_func (hb_paint_funcs_t               *funcs,
  * Since: 7.0.0
  */
 HB_EXTERN void
-hb_paint_funcs_set_pop_transform_func (hb_paint_funcs_t              *funcs,
-                                       hb_paint_pop_transform_func_t  func,
-                                       void                          *user_data,
-                                       hb_destroy_func_t              destroy);
+hb_paint_funcs_set_pop_transform_func ( hb_paint_funcs_t              *funcs,
+                                        hb_paint_pop_transform_func_t  func,
+                                        void                          *user_data,
+                                        hb_destroy_func_t              destroy );
 
 /**
  * hb_paint_funcs_set_color_glyph_func:
@@ -755,10 +759,10 @@ hb_paint_funcs_set_pop_transform_func (hb_paint_funcs_t              *funcs,
  * Since: 8.2.0
  */
 HB_EXTERN void
-hb_paint_funcs_set_color_glyph_func (hb_paint_funcs_t                *funcs,
-				     hb_paint_color_glyph_func_t     func,
-				     void                            *user_data,
-				     hb_destroy_func_t                destroy);
+hb_paint_funcs_set_color_glyph_func ( hb_paint_funcs_t                *funcs,
+                                      hb_paint_color_glyph_func_t     func,
+                                      void                            *user_data,
+                                      hb_destroy_func_t                destroy );
 
 /**
  * hb_paint_funcs_set_push_clip_glyph_func:
@@ -772,10 +776,10 @@ hb_paint_funcs_set_color_glyph_func (hb_paint_funcs_t                *funcs,
  * Since: 7.0.0
  */
 HB_EXTERN void
-hb_paint_funcs_set_push_clip_glyph_func (hb_paint_funcs_t                *funcs,
-                                         hb_paint_push_clip_glyph_func_t  func,
-                                         void                            *user_data,
-                                         hb_destroy_func_t                destroy);
+hb_paint_funcs_set_push_clip_glyph_func ( hb_paint_funcs_t                *funcs,
+        hb_paint_push_clip_glyph_func_t  func,
+        void                            *user_data,
+        hb_destroy_func_t                destroy );
 
 /**
  * hb_paint_funcs_set_push_clip_rectangle_func:
@@ -789,10 +793,10 @@ hb_paint_funcs_set_push_clip_glyph_func (hb_paint_funcs_t                *funcs,
  * Since: 7.0.0
  */
 HB_EXTERN void
-hb_paint_funcs_set_push_clip_rectangle_func (hb_paint_funcs_t                    *funcs,
-                                             hb_paint_push_clip_rectangle_func_t  func,
-                                             void                                *user_data,
-                                             hb_destroy_func_t                    destroy);
+hb_paint_funcs_set_push_clip_rectangle_func ( hb_paint_funcs_t                    *funcs,
+        hb_paint_push_clip_rectangle_func_t  func,
+        void                                *user_data,
+        hb_destroy_func_t                    destroy );
 
 /**
  * hb_paint_funcs_set_pop_clip_func:
@@ -806,10 +810,10 @@ hb_paint_funcs_set_push_clip_rectangle_func (hb_paint_funcs_t                   
  * Since: 7.0.0
  */
 HB_EXTERN void
-hb_paint_funcs_set_pop_clip_func (hb_paint_funcs_t         *funcs,
-                                  hb_paint_pop_clip_func_t  func,
-                                  void                     *user_data,
-                                  hb_destroy_func_t         destroy);
+hb_paint_funcs_set_pop_clip_func ( hb_paint_funcs_t         *funcs,
+                                   hb_paint_pop_clip_func_t  func,
+                                   void                     *user_data,
+                                   hb_destroy_func_t         destroy );
 
 /**
  * hb_paint_funcs_set_color_func:
@@ -823,10 +827,10 @@ hb_paint_funcs_set_pop_clip_func (hb_paint_funcs_t         *funcs,
  * Since: 7.0.0
  */
 HB_EXTERN void
-hb_paint_funcs_set_color_func (hb_paint_funcs_t      *funcs,
-                               hb_paint_color_func_t  func,
-                               void                  *user_data,
-                               hb_destroy_func_t      destroy);
+hb_paint_funcs_set_color_func ( hb_paint_funcs_t      *funcs,
+                                hb_paint_color_func_t  func,
+                                void                  *user_data,
+                                hb_destroy_func_t      destroy );
 
 /**
  * hb_paint_funcs_set_image_func:
@@ -840,10 +844,10 @@ hb_paint_funcs_set_color_func (hb_paint_funcs_t      *funcs,
  * Since: 7.0.0
  */
 HB_EXTERN void
-hb_paint_funcs_set_image_func (hb_paint_funcs_t      *funcs,
-                               hb_paint_image_func_t  func,
-                               void                  *user_data,
-                               hb_destroy_func_t      destroy);
+hb_paint_funcs_set_image_func ( hb_paint_funcs_t      *funcs,
+                                hb_paint_image_func_t  func,
+                                void                  *user_data,
+                                hb_destroy_func_t      destroy );
 
 /**
  * hb_paint_funcs_set_linear_gradient_func:
@@ -857,10 +861,10 @@ hb_paint_funcs_set_image_func (hb_paint_funcs_t      *funcs,
  * Since: 7.0.0
  */
 HB_EXTERN void
-hb_paint_funcs_set_linear_gradient_func (hb_paint_funcs_t                *funcs,
-                                         hb_paint_linear_gradient_func_t  func,
-                                         void                            *user_data,
-                                         hb_destroy_func_t                destroy);
+hb_paint_funcs_set_linear_gradient_func ( hb_paint_funcs_t                *funcs,
+        hb_paint_linear_gradient_func_t  func,
+        void                            *user_data,
+        hb_destroy_func_t                destroy );
 
 /**
  * hb_paint_funcs_set_radial_gradient_func:
@@ -874,10 +878,10 @@ hb_paint_funcs_set_linear_gradient_func (hb_paint_funcs_t                *funcs,
  * Since: 7.0.0
  */
 HB_EXTERN void
-hb_paint_funcs_set_radial_gradient_func (hb_paint_funcs_t                *funcs,
-                                         hb_paint_radial_gradient_func_t  func,
-                                         void                            *user_data,
-                                         hb_destroy_func_t                destroy);
+hb_paint_funcs_set_radial_gradient_func ( hb_paint_funcs_t                *funcs,
+        hb_paint_radial_gradient_func_t  func,
+        void                            *user_data,
+        hb_destroy_func_t                destroy );
 
 /**
  * hb_paint_funcs_set_sweep_gradient_func:
@@ -891,10 +895,10 @@ hb_paint_funcs_set_radial_gradient_func (hb_paint_funcs_t                *funcs,
  * Since: 7.0.0
  */
 HB_EXTERN void
-hb_paint_funcs_set_sweep_gradient_func (hb_paint_funcs_t               *funcs,
-                                        hb_paint_sweep_gradient_func_t  func,
-                                        void                           *user_data,
-                                        hb_destroy_func_t               destroy);
+hb_paint_funcs_set_sweep_gradient_func ( hb_paint_funcs_t               *funcs,
+        hb_paint_sweep_gradient_func_t  func,
+        void                           *user_data,
+        hb_destroy_func_t               destroy );
 
 /**
  * hb_paint_funcs_set_push_group_func:
@@ -908,10 +912,10 @@ hb_paint_funcs_set_sweep_gradient_func (hb_paint_funcs_t               *funcs,
  * Since: 7.0.0
  */
 HB_EXTERN void
-hb_paint_funcs_set_push_group_func (hb_paint_funcs_t           *funcs,
-                                    hb_paint_push_group_func_t  func,
-                                    void                       *user_data,
-                                    hb_destroy_func_t           destroy);
+hb_paint_funcs_set_push_group_func ( hb_paint_funcs_t           *funcs,
+                                     hb_paint_push_group_func_t  func,
+                                     void                       *user_data,
+                                     hb_destroy_func_t           destroy );
 
 /**
  * hb_paint_funcs_set_pop_group_func:
@@ -925,10 +929,10 @@ hb_paint_funcs_set_push_group_func (hb_paint_funcs_t           *funcs,
  * Since: 7.0.0
  */
 HB_EXTERN void
-hb_paint_funcs_set_pop_group_func (hb_paint_funcs_t          *funcs,
-                                   hb_paint_pop_group_func_t  func,
-                                   void                       *user_data,
-                                   hb_destroy_func_t           destroy);
+hb_paint_funcs_set_pop_group_func ( hb_paint_funcs_t          *funcs,
+                                    hb_paint_pop_group_func_t  func,
+                                    void                       *user_data,
+                                    hb_destroy_func_t           destroy );
 
 /**
  * hb_paint_funcs_set_custom_palette_color_func:
@@ -942,87 +946,87 @@ hb_paint_funcs_set_pop_group_func (hb_paint_funcs_t          *funcs,
  * Since: 7.0.0
  */
 HB_EXTERN void
-hb_paint_funcs_set_custom_palette_color_func (hb_paint_funcs_t                     *funcs,
-                                              hb_paint_custom_palette_color_func_t  func,
-                                              void                                 *user_data,
-                                              hb_destroy_func_t                     destroy);
+hb_paint_funcs_set_custom_palette_color_func ( hb_paint_funcs_t                     *funcs,
+        hb_paint_custom_palette_color_func_t  func,
+        void                                 *user_data,
+        hb_destroy_func_t                     destroy );
 /*
  * Manual API
  */
 
 HB_EXTERN void
-hb_paint_push_transform (hb_paint_funcs_t *funcs, void *paint_data,
-                         float xx, float yx,
-                         float xy, float yy,
-                         float dx, float dy);
+hb_paint_push_transform ( hb_paint_funcs_t *funcs, void *paint_data,
+                          float xx, float yx,
+                          float xy, float yy,
+                          float dx, float dy );
 
 HB_EXTERN void
-hb_paint_pop_transform (hb_paint_funcs_t *funcs, void *paint_data);
+hb_paint_pop_transform ( hb_paint_funcs_t *funcs, void *paint_data );
 
 HB_EXTERN hb_bool_t
-hb_paint_color_glyph (hb_paint_funcs_t *funcs, void *paint_data,
-                      hb_codepoint_t glyph,
-                      hb_font_t *font);
+hb_paint_color_glyph ( hb_paint_funcs_t *funcs, void *paint_data,
+                       hb_codepoint_t glyph,
+                       hb_font_t *font );
 
 HB_EXTERN void
-hb_paint_push_clip_glyph (hb_paint_funcs_t *funcs, void *paint_data,
-                          hb_codepoint_t glyph,
-                          hb_font_t *font);
+hb_paint_push_clip_glyph ( hb_paint_funcs_t *funcs, void *paint_data,
+                           hb_codepoint_t glyph,
+                           hb_font_t *font );
 
 HB_EXTERN void
-hb_paint_push_clip_rectangle (hb_paint_funcs_t *funcs, void *paint_data,
-                              float xmin, float ymin,
-                              float xmax, float ymax);
+hb_paint_push_clip_rectangle ( hb_paint_funcs_t *funcs, void *paint_data,
+                               float xmin, float ymin,
+                               float xmax, float ymax );
 
 HB_EXTERN void
-hb_paint_pop_clip (hb_paint_funcs_t *funcs, void *paint_data);
+hb_paint_pop_clip ( hb_paint_funcs_t *funcs, void *paint_data );
 
 HB_EXTERN void
-hb_paint_color (hb_paint_funcs_t *funcs, void *paint_data,
-                hb_bool_t is_foreground,
-                hb_color_t color);
+hb_paint_color ( hb_paint_funcs_t *funcs, void *paint_data,
+                 hb_bool_t is_foreground,
+                 hb_color_t color );
 
 HB_EXTERN void
-hb_paint_image (hb_paint_funcs_t *funcs, void *paint_data,
-                hb_blob_t *image,
-                unsigned int width,
-                unsigned int height,
-                hb_tag_t format,
-                float slant,
-                hb_glyph_extents_t *extents);
+hb_paint_image ( hb_paint_funcs_t *funcs, void *paint_data,
+                 hb_blob_t *image,
+                 unsigned int width,
+                 unsigned int height,
+                 hb_tag_t format,
+                 float slant,
+                 hb_glyph_extents_t *extents );
 
 HB_EXTERN void
-hb_paint_linear_gradient (hb_paint_funcs_t *funcs, void *paint_data,
+hb_paint_linear_gradient ( hb_paint_funcs_t *funcs, void *paint_data,
+                           hb_color_line_t *color_line,
+                           float x0, float y0,
+                           float x1, float y1,
+                           float x2, float y2 );
+
+HB_EXTERN void
+hb_paint_radial_gradient ( hb_paint_funcs_t *funcs, void *paint_data,
+                           hb_color_line_t *color_line,
+                           float x0, float y0,
+                           float r0,
+                           float x1, float y1,
+                           float r1 );
+
+HB_EXTERN void
+hb_paint_sweep_gradient ( hb_paint_funcs_t *funcs, void *paint_data,
                           hb_color_line_t *color_line,
                           float x0, float y0,
-                          float x1, float y1,
-                          float x2, float y2);
+                          float start_angle, float end_angle );
 
 HB_EXTERN void
-hb_paint_radial_gradient (hb_paint_funcs_t *funcs, void *paint_data,
-                          hb_color_line_t *color_line,
-                          float x0, float y0,
-                          float r0,
-                          float x1, float y1,
-                          float r1);
+hb_paint_push_group ( hb_paint_funcs_t *funcs, void *paint_data );
 
 HB_EXTERN void
-hb_paint_sweep_gradient (hb_paint_funcs_t *funcs, void *paint_data,
-                         hb_color_line_t *color_line,
-                         float x0, float y0,
-                         float start_angle, float end_angle);
-
-HB_EXTERN void
-hb_paint_push_group (hb_paint_funcs_t *funcs, void *paint_data);
-
-HB_EXTERN void
-hb_paint_pop_group (hb_paint_funcs_t *funcs, void *paint_data,
-                    hb_paint_composite_mode_t mode);
+hb_paint_pop_group ( hb_paint_funcs_t *funcs, void *paint_data,
+                     hb_paint_composite_mode_t mode );
 
 HB_EXTERN hb_bool_t
-hb_paint_custom_palette_color (hb_paint_funcs_t *funcs, void *paint_data,
-                               unsigned int color_index,
-                               hb_color_t *color);
+hb_paint_custom_palette_color ( hb_paint_funcs_t *funcs, void *paint_data,
+                                unsigned int color_index,
+                                hb_color_t *color );
 
 HB_END_DECLS
 

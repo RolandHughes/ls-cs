@@ -25,22 +25,22 @@
 
 using namespace QPatternist;
 
-void XsdNotation::setPublicId(const DerivedString<TypeToken>::Ptr &id)
+void XsdNotation::setPublicId( const DerivedString<TypeToken>::Ptr &id )
 {
-   m_publicId = id;
+    m_publicId = id;
 }
 
 DerivedString<TypeToken>::Ptr XsdNotation::publicId() const
 {
-   return m_publicId;
+    return m_publicId;
 }
 
-void XsdNotation::setSystemId(const AnyURI::Ptr &id)
+void XsdNotation::setSystemId( const AnyURI::Ptr &id )
 {
-   m_systemId = id;
+    m_systemId = id;
 }
 
 AnyURI::Ptr XsdNotation::systemId() const
 {
-   return m_systemId;
+    return m_systemId;
 }

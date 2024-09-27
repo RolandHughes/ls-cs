@@ -35,48 +35,49 @@
 
 using namespace WebCore;
 
-namespace WebKit {
-
-ResourceError cancelledError(const ResourceRequest& request)
+namespace WebKit
 {
-    return ResourceError(g_quark_to_string(WEBKIT_NETWORK_ERROR), WEBKIT_NETWORK_ERROR_CANCELLED,
-                         request.url().string(), _("Load request cancelled"));
+
+ResourceError cancelledError( const ResourceRequest &request )
+{
+    return ResourceError( g_quark_to_string( WEBKIT_NETWORK_ERROR ), WEBKIT_NETWORK_ERROR_CANCELLED,
+                          request.url().string(), _( "Load request cancelled" ) );
 }
 
-ResourceError blockedError(const ResourceRequest& request)
+ResourceError blockedError( const ResourceRequest &request )
 {
-    return ResourceError(g_quark_to_string(WEBKIT_POLICY_ERROR), WEBKIT_POLICY_ERROR_CANNOT_USE_RESTRICTED_PORT,
-                         request.url().string(), _("Not allowed to use restricted network port"));
+    return ResourceError( g_quark_to_string( WEBKIT_POLICY_ERROR ), WEBKIT_POLICY_ERROR_CANNOT_USE_RESTRICTED_PORT,
+                          request.url().string(), _( "Not allowed to use restricted network port" ) );
 }
 
-ResourceError cannotShowURLError(const ResourceRequest& request)
+ResourceError cannotShowURLError( const ResourceRequest &request )
 {
-    return ResourceError(g_quark_to_string(WEBKIT_POLICY_ERROR), WEBKIT_POLICY_ERROR_CANNOT_SHOW_URL,
-                         request.url().string(), _("URL cannot be shown"));
+    return ResourceError( g_quark_to_string( WEBKIT_POLICY_ERROR ), WEBKIT_POLICY_ERROR_CANNOT_SHOW_URL,
+                          request.url().string(), _( "URL cannot be shown" ) );
 }
 
-ResourceError interruptForPolicyChangeError(const ResourceRequest& request)
+ResourceError interruptForPolicyChangeError( const ResourceRequest &request )
 {
-    return ResourceError(g_quark_to_string(WEBKIT_POLICY_ERROR), WEBKIT_POLICY_ERROR_FRAME_LOAD_INTERRUPTED_BY_POLICY_CHANGE,
-                         request.url().string(), _("Frame load was interrupted"));
+    return ResourceError( g_quark_to_string( WEBKIT_POLICY_ERROR ), WEBKIT_POLICY_ERROR_FRAME_LOAD_INTERRUPTED_BY_POLICY_CHANGE,
+                          request.url().string(), _( "Frame load was interrupted" ) );
 }
 
-ResourceError cannotShowMIMETypeError(const ResourceResponse& response)
+ResourceError cannotShowMIMETypeError( const ResourceResponse &response )
 {
-    return ResourceError(g_quark_to_string(WEBKIT_POLICY_ERROR), WEBKIT_POLICY_ERROR_CANNOT_SHOW_MIME_TYPE,
-                         response.url().string(), _("Content with the specified MIME type cannot be shown"));
+    return ResourceError( g_quark_to_string( WEBKIT_POLICY_ERROR ), WEBKIT_POLICY_ERROR_CANNOT_SHOW_MIME_TYPE,
+                          response.url().string(), _( "Content with the specified MIME type cannot be shown" ) );
 }
 
-ResourceError fileDoesNotExistError(const ResourceResponse& response)
+ResourceError fileDoesNotExistError( const ResourceResponse &response )
 {
-    return ResourceError(g_quark_to_string(WEBKIT_NETWORK_ERROR), WEBKIT_NETWORK_ERROR_FILE_DOES_NOT_EXIST,
-                         response.url().string(), _("File does not exist"));
+    return ResourceError( g_quark_to_string( WEBKIT_NETWORK_ERROR ), WEBKIT_NETWORK_ERROR_FILE_DOES_NOT_EXIST,
+                          response.url().string(), _( "File does not exist" ) );
 }
 
-ResourceError pluginWillHandleLoadError(const ResourceResponse& response)
+ResourceError pluginWillHandleLoadError( const ResourceResponse &response )
 {
-    return ResourceError(g_quark_to_string(WEBKIT_PLUGIN_ERROR), WEBKIT_PLUGIN_ERROR_WILL_HANDLE_LOAD,
-                         response.url().string(), _("Plugin will handle load"));
+    return ResourceError( g_quark_to_string( WEBKIT_PLUGIN_ERROR ), WEBKIT_PLUGIN_ERROR_WILL_HANDLE_LOAD,
+                          response.url().string(), _( "Plugin will handle load" ) );
 }
 
 } // namespace WebKit

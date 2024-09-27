@@ -31,32 +31,35 @@
 #include "V8Proxy.h"
 #include <wtf/UnusedParam.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 WrapperTypeInfo V8TestInterface::info = { V8TestInterface::GetTemplate, V8TestInterface::derefObject, 0, 0 };
 
-namespace TestInterfaceInternal {
+namespace TestInterfaceInternal
+{
 
-template <typename T> void V8_USE(T) { }
+template <typename T> void V8_USE( T ) { }
 
 } // namespace TestInterfaceInternal
 
-v8::Handle<v8::Value> V8TestInterface::constructorCallback(const v8::Arguments& args)
+v8::Handle<v8::Value> V8TestInterface::constructorCallback( const v8::Arguments &args )
 {
-    INC_STATS("DOM.TestInterface.Contructor");
-    return V8Proxy::constructDOMObjectWithScriptExecutionContext<TestInterface>(args, &info);
+    INC_STATS( "DOM.TestInterface.Contructor" );
+    return V8Proxy::constructDOMObjectWithScriptExecutionContext<TestInterface>( args, &info );
 }
-static v8::Persistent<v8::FunctionTemplate> ConfigureV8TestInterfaceTemplate(v8::Persistent<v8::FunctionTemplate> desc)
+static v8::Persistent<v8::FunctionTemplate> ConfigureV8TestInterfaceTemplate( v8::Persistent<v8::FunctionTemplate> desc )
 {
-    v8::Local<v8::Signature> defaultSignature = configureTemplate(desc, "TestInterface", v8::Persistent<v8::FunctionTemplate>(), V8TestInterface::internalFieldCount,
-        0, 0,
-        0, 0);
-    UNUSED_PARAM(defaultSignature); // In some cases, it will not be used.
-        desc->SetCallHandler(V8TestInterface::constructorCallback);
-    
+    v8::Local<v8::Signature> defaultSignature = configureTemplate( desc, "TestInterface", v8::Persistent<v8::FunctionTemplate>(),
+            V8TestInterface::internalFieldCount,
+            0, 0,
+            0, 0 );
+    UNUSED_PARAM( defaultSignature ); // In some cases, it will not be used.
+    desc->SetCallHandler( V8TestInterface::constructorCallback );
+
 
     // Custom toString template
-    desc->Set(getToStringName(), getToStringTemplate());
+    desc->Set( getToStringName(), getToStringTemplate() );
     return desc;
 }
 
@@ -68,33 +71,36 @@ v8::Persistent<v8::FunctionTemplate> V8TestInterface::GetRawTemplate()
 
 v8::Persistent<v8::FunctionTemplate> V8TestInterface::GetTemplate()
 {
-    static v8::Persistent<v8::FunctionTemplate> V8TestInterfaceCache = ConfigureV8TestInterfaceTemplate(GetRawTemplate());
+    static v8::Persistent<v8::FunctionTemplate> V8TestInterfaceCache = ConfigureV8TestInterfaceTemplate( GetRawTemplate() );
     return V8TestInterfaceCache;
 }
 
-bool V8TestInterface::HasInstance(v8::Handle<v8::Value> value)
+bool V8TestInterface::HasInstance( v8::Handle<v8::Value> value )
 {
-    return GetRawTemplate()->HasInstance(value);
+    return GetRawTemplate()->HasInstance( value );
 }
 
 
-v8::Handle<v8::Object> V8TestInterface::wrapSlow(TestInterface* impl)
+v8::Handle<v8::Object> V8TestInterface::wrapSlow( TestInterface *impl )
 {
     v8::Handle<v8::Object> wrapper;
-    V8Proxy* proxy = 0;
-    wrapper = V8DOMWrapper::instantiateV8Object(proxy, &info, impl);
-    if (wrapper.IsEmpty())
+    V8Proxy *proxy = 0;
+    wrapper = V8DOMWrapper::instantiateV8Object( proxy, &info, impl );
+
+    if ( wrapper.IsEmpty() )
+    {
         return wrapper;
+    }
 
     impl->ref();
-    v8::Persistent<v8::Object> wrapperHandle = v8::Persistent<v8::Object>::New(wrapper);
-    getDOMObjectMap().set(impl, wrapperHandle);
+    v8::Persistent<v8::Object> wrapperHandle = v8::Persistent<v8::Object>::New( wrapper );
+    getDOMObjectMap().set( impl, wrapperHandle );
     return wrapper;
 }
 
-void V8TestInterface::derefObject(void* object)
+void V8TestInterface::derefObject( void *object )
 {
-    static_cast<TestInterface*>(object)->deref();
+    static_cast<TestInterface *>( object )->deref();
 }
 
 } // namespace WebCore

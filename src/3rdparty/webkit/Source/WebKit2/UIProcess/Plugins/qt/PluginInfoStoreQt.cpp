@@ -34,21 +34,26 @@
 
 using namespace WebCore;
 
-namespace WebKit {
+namespace WebKit
+{
 
 Vector<String> PluginInfoStore::pluginsDirectories()
 {
     return PluginDatabase::defaultPluginDirectories();
 }
 
-Vector<String> PluginInfoStore::pluginPathsInDirectory(const String& directory)
+Vector<String> PluginInfoStore::pluginPathsInDirectory( const String &directory )
 {
     Vector<String> result;
-    Vector<String> pluginPaths = listDirectory(directory, String("*.so"));
+    Vector<String> pluginPaths = listDirectory( directory, String( "*.so" ) );
     Vector<String>::const_iterator end = pluginPaths.end();
-    for (Vector<String>::const_iterator it = pluginPaths.begin(); it != end; ++it) {
-        if (fileExists(*it))
-            result.append(*it);
+
+    for ( Vector<String>::const_iterator it = pluginPaths.begin(); it != end; ++it )
+    {
+        if ( fileExists( *it ) )
+        {
+            result.append( *it );
+        }
     }
 
     return result;
@@ -59,12 +64,12 @@ Vector<String> PluginInfoStore::individualPluginPaths()
     return Vector<String>();
 }
 
-bool PluginInfoStore::getPluginInfo(const String& pluginPath, Plugin& plugin)
+bool PluginInfoStore::getPluginInfo( const String &pluginPath, Plugin &plugin )
 {
-    return NetscapePluginModule::getPluginInfo(pluginPath, plugin);
+    return NetscapePluginModule::getPluginInfo( pluginPath, plugin );
 }
 
-bool PluginInfoStore::shouldUsePlugin(const Plugin& plugin)
+bool PluginInfoStore::shouldUsePlugin( const Plugin &plugin )
 {
     // We do not do any black-listing presently.
     return true;

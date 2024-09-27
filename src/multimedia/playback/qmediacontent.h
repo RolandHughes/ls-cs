@@ -32,37 +32,37 @@ class QMediaPlaylist;
 
 class Q_MULTIMEDIA_EXPORT QMediaContent
 {
- public:
-   QMediaContent();
+public:
+    QMediaContent();
 
-   QMediaContent(const QUrl &contentUrl);
-   QMediaContent(const QNetworkRequest &contentRequest);
-   QMediaContent(const QMediaResource &contentResource);
-   QMediaContent(const QList<QMediaResource> &resources);
-   QMediaContent(const QMediaContent &other);
-   QMediaContent(QMediaPlaylist *playlist, const QUrl &contentUrl = QUrl(), bool takeOwnership = false);
+    QMediaContent( const QUrl &contentUrl );
+    QMediaContent( const QNetworkRequest &contentRequest );
+    QMediaContent( const QMediaResource &contentResource );
+    QMediaContent( const QList<QMediaResource> &resources );
+    QMediaContent( const QMediaContent &other );
+    QMediaContent( QMediaPlaylist *playlist, const QUrl &contentUrl = QUrl(), bool takeOwnership = false );
 
-   ~QMediaContent();
+    ~QMediaContent();
 
-   QMediaContent &operator=(const QMediaContent &other);
+    QMediaContent &operator=( const QMediaContent &other );
 
-   bool operator==(const QMediaContent &other) const;
-   bool operator!=(const QMediaContent &other) const;
+    bool operator==( const QMediaContent &other ) const;
+    bool operator!=( const QMediaContent &other ) const;
 
-   bool isNull() const;
+    bool isNull() const;
 
-   QUrl canonicalUrl() const;
-   QNetworkRequest canonicalRequest() const;
-   QMediaResource canonicalResource() const;
+    QUrl canonicalUrl() const;
+    QNetworkRequest canonicalRequest() const;
+    QMediaResource canonicalResource() const;
 
-   QList<QMediaResource> resources() const;
+    QList<QMediaResource> resources() const;
 
-   QMediaPlaylist *playlist() const;
+    QMediaPlaylist *playlist() const;
 
- private:
-   QSharedDataPointer<QMediaContentPrivate> d;
+private:
+    QSharedDataPointer<QMediaContentPrivate> d;
 };
 
-CS_DECLARE_METATYPE(QMediaContent)
+CS_DECLARE_METATYPE( QMediaContent )
 
 #endif

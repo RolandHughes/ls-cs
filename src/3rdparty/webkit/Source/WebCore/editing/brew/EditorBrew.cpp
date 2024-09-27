@@ -21,7 +21,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -29,11 +29,12 @@
 
 #include "ClipboardBrew.h"
 
-namespace WebCore {
-
-PassRefPtr<Clipboard> Editor::newGeneralClipboard(ClipboardAccessPolicy policy, Frame*)
+namespace WebCore
 {
-    return new ClipboardBrew(policy, Clipboard::CopyAndPaste);
+
+PassRefPtr<Clipboard> Editor::newGeneralClipboard( ClipboardAccessPolicy policy, Frame * )
+{
+    return new ClipboardBrew( policy, Clipboard::CopyAndPaste );
 }
 
 } // namespace WebCore

@@ -39,19 +39,20 @@
 #include <wtf/MathExtras.h>
 #include <wtf/PassOwnPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
 static const double timeDefaultStep = 60.0;
 static const double timeStepScaleFactor = 1000.0;
 
-PassOwnPtr<InputType> TimeInputType::create(HTMLInputElement* element)
+PassOwnPtr<InputType> TimeInputType::create( HTMLInputElement *element )
 {
-    return adoptPtr(new TimeInputType(element));
+    return adoptPtr( new TimeInputType( element ) );
 }
 
-const AtomicString& TimeInputType::formControlType() const
+const AtomicString &TimeInputType::formControlType() const
 {
     return InputTypeNames::time();
 }
@@ -64,24 +65,24 @@ DateComponents::Type TimeInputType::dateType() const
 double TimeInputType::defaultValueForStepUp() const
 {
     double current = currentTimeMS();
-    int offset = calculateLocalTimeOffset(current).offset / msPerMinute;
+    int offset = calculateLocalTimeOffset( current ).offset / msPerMinute;
     current += offset * msPerMinute;
 
     DateComponents date;
-    date.setMillisecondsSinceMidnight(current);
+    date.setMillisecondsSinceMidnight( current );
     double milliseconds = date.millisecondsSinceEpoch();
-    ASSERT(std::isfinite(milliseconds));
+    ASSERT( std::isfinite( milliseconds ) );
     return milliseconds;
 }
 
 double TimeInputType::minimum() const
 {
-    return parseToDouble(element()->fastGetAttribute(minAttr), DateComponents::minimumTime());
+    return parseToDouble( element()->fastGetAttribute( minAttr ), DateComponents::minimumTime() );
 }
 
 double TimeInputType::maximum() const
 {
-    return parseToDouble(element()->fastGetAttribute(maxAttr), DateComponents::maximumTime());
+    return parseToDouble( element()->fastGetAttribute( maxAttr ), DateComponents::maximumTime() );
 }
 
 double TimeInputType::defaultStep() const
@@ -99,17 +100,17 @@ bool TimeInputType::scaledStepValueShouldBeInteger() const
     return true;
 }
 
-bool TimeInputType::parseToDateComponentsInternal(const UChar* characters, unsigned length, DateComponents* out) const
+bool TimeInputType::parseToDateComponentsInternal( const UChar *characters, unsigned length, DateComponents *out ) const
 {
-    ASSERT(out);
+    ASSERT( out );
     unsigned end;
-    return out->parseTime(characters, length, 0, end) && end == length;
+    return out->parseTime( characters, length, 0, end ) && end == length;
 }
 
-bool TimeInputType::setMillisecondToDateComponents(double value, DateComponents* date) const
+bool TimeInputType::setMillisecondToDateComponents( double value, DateComponents *date ) const
 {
-    ASSERT(date);
-    return date->setMillisecondsSinceMidnight(value);
+    ASSERT( date );
+    return date->setMillisecondsSinceMidnight( value );
 }
 
 } // namespace WebCore

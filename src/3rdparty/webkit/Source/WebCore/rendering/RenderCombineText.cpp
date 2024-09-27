@@ -23,115 +23,143 @@
 
 #include "TextRun.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 const float textCombineMargin = 1.1f; // Allow em + 10% margin
 
-RenderCombineText::RenderCombineText(Node* node, PassRefPtr<StringImpl> string)
-     : RenderText(node, string)
-     , m_combinedTextWidth(0)
-     , m_isCombined(false)
-     , m_needsFontUpdate(false)
+RenderCombineText::RenderCombineText( Node *node, PassRefPtr<StringImpl> string )
+    : RenderText( node, string )
+    , m_combinedTextWidth( 0 )
+    , m_isCombined( false )
+    , m_needsFontUpdate( false )
 {
 }
 
-void RenderCombineText::styleDidChange(StyleDifference diff, const RenderStyle* oldStyle)
+void RenderCombineText::styleDidChange( StyleDifference diff, const RenderStyle *oldStyle )
 {
-    setStyleInternal(RenderStyle::clone(style()));
-    RenderText::styleDidChange(diff, oldStyle);
+    setStyleInternal( RenderStyle::clone( style() ) );
+    RenderText::styleDidChange( diff, oldStyle );
 
-    if (m_isCombined)
-        RenderText::setTextInternal(originalText()); // This RenderCombineText has been combined once. Restore the original text for the next combineText().
+    if ( m_isCombined )
+    {
+        RenderText::setTextInternal(
+            originalText() );    // This RenderCombineText has been combined once. Restore the original text for the next combineText().
+    }
 
     m_needsFontUpdate = true;
 }
 
-void RenderCombineText::setTextInternal(PassRefPtr<StringImpl> text)
+void RenderCombineText::setTextInternal( PassRefPtr<StringImpl> text )
 {
-    RenderText::setTextInternal(text);
+    RenderText::setTextInternal( text );
 
     m_needsFontUpdate = true;
 }
 
-float RenderCombineText::width(unsigned from, unsigned length, const Font& font, float xPosition, HashSet<const SimpleFontData*>* fallbackFonts, GlyphOverflow* glyphOverflow) const
+float RenderCombineText::width( unsigned from, unsigned length, const Font &font, float xPosition,
+                                HashSet<const SimpleFontData *> *fallbackFonts, GlyphOverflow *glyphOverflow ) const
 {
-    if (!characters())
+    if ( !characters() )
+    {
         return 0;
+    }
 
-    if (m_isCombined)
+    if ( m_isCombined )
+    {
         return font.size();
+    }
 
-    return RenderText::width(from, length, font, xPosition, fallbackFonts, glyphOverflow);
+    return RenderText::width( from, length, font, xPosition, fallbackFonts, glyphOverflow );
 }
 
-void RenderCombineText::adjustTextOrigin(FloatPoint& textOrigin, const FloatRect& boxRect) const
+void RenderCombineText::adjustTextOrigin( FloatPoint &textOrigin, const FloatRect &boxRect ) const
 {
-    if (m_isCombined)
-        textOrigin.move(boxRect.height() / 2 - ceilf(m_combinedTextWidth) / 2, style()->font().pixelSize());
+    if ( m_isCombined )
+    {
+        textOrigin.move( boxRect.height() / 2 - ceilf( m_combinedTextWidth ) / 2, style()->font().pixelSize() );
+    }
 }
 
-void RenderCombineText::charactersToRender(int start, const UChar*& characters, int& length) const
+void RenderCombineText::charactersToRender( int start, const UChar *&characters, int &length ) const
 {
-    if (m_isCombined) {
+    if ( m_isCombined )
+    {
         length = originalText()->length();
         characters = originalText()->characters();
         return;
     }
- 
+
     characters = text()->characters() + start;
 }
 
 void RenderCombineText::combineText()
 {
-    if (!m_needsFontUpdate)
+    if ( !m_needsFontUpdate )
+    {
         return;
+    }
 
     m_isCombined = false;
     m_needsFontUpdate = false;
 
     // CSS3 spec says text-combine works only in vertical writing mode.
-    if (style()->isHorizontalWritingMode())
+    if ( style()->isHorizontalWritingMode() )
+    {
         return;
+    }
 
-    TextRun run = TextRun(String(text()));
+    TextRun run = TextRun( String( text() ) );
     FontDescription description = originalFont().fontDescription();
     float emWidth = description.computedSize() * textCombineMargin;
     bool shouldUpdateFont = false;
 
-    description.setOrientation(Horizontal); // We are going to draw combined text horizontally.
-    m_combinedTextWidth = originalFont().width(run);
+    description.setOrientation( Horizontal ); // We are going to draw combined text horizontally.
+    m_combinedTextWidth = originalFont().width( run );
     m_isCombined = m_combinedTextWidth <= emWidth;
 
-    if (m_isCombined)
-        shouldUpdateFont = style()->setFontDescription(description); // Need to change font orientation to horizontal.
-    else {
+    if ( m_isCombined )
+    {
+        shouldUpdateFont = style()->setFontDescription( description );    // Need to change font orientation to horizontal.
+    }
+    else
+    {
         // Need to try compressed glyphs.
         static const FontWidthVariant widthVariants[] = { HalfWidth, ThirdWidth, QuarterWidth };
-        for (size_t i = 0 ; i < WTF_ARRAY_LENGTH(widthVariants) ; ++i) {
-            description.setWidthVariant(widthVariants[i]);
-            Font compressedFont = Font(description, style()->font().letterSpacing(), style()->font().wordSpacing());
-            compressedFont.update(style()->font().fontSelector());
-            float runWidth = compressedFont.width(run);
-            if (runWidth <= emWidth) {
+
+        for ( size_t i = 0 ; i < WTF_ARRAY_LENGTH( widthVariants ) ; ++i )
+        {
+            description.setWidthVariant( widthVariants[i] );
+            Font compressedFont = Font( description, style()->font().letterSpacing(), style()->font().wordSpacing() );
+            compressedFont.update( style()->font().fontSelector() );
+            float runWidth = compressedFont.width( run );
+
+            if ( runWidth <= emWidth )
+            {
                 m_combinedTextWidth = runWidth;
                 m_isCombined = true;
 
                 // Replace my font with the new one.
-                shouldUpdateFont = style()->setFontDescription(description);
+                shouldUpdateFont = style()->setFontDescription( description );
                 break;
             }
         }
     }
 
-    if (!m_isCombined)
-        shouldUpdateFont = style()->setFontDescription(originalFont().fontDescription());
+    if ( !m_isCombined )
+    {
+        shouldUpdateFont = style()->setFontDescription( originalFont().fontDescription() );
+    }
 
-    if (shouldUpdateFont)
-        style()->font().update(style()->font().fontSelector());
+    if ( shouldUpdateFont )
+    {
+        style()->font().update( style()->font().fontSelector() );
+    }
 
-    if (m_isCombined) {
-        DEFINE_STATIC_LOCAL(String, objectReplacementCharacterString, (&objectReplacementCharacter, 1));
-        RenderText::setTextInternal(objectReplacementCharacterString.impl());
+    if ( m_isCombined )
+    {
+        DEFINE_STATIC_LOCAL( String, objectReplacementCharacterString, ( &objectReplacementCharacter, 1 ) );
+        RenderText::setTextInternal( objectReplacementCharacterString.impl() );
     }
 }
 

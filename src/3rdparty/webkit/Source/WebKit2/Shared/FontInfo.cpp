@@ -32,22 +32,27 @@
 #include "ArgumentCodersCF.h"
 #endif
 
-namespace WebKit {
+namespace WebKit
+{
 
-void FontInfo::encode(CoreIPC::ArgumentEncoder* encoder) const
+void FontInfo::encode( CoreIPC::ArgumentEncoder *encoder ) const
 {
 #if PLATFORM(MAC)
-    CoreIPC::encode(encoder, fontAttributeDictionary.get());
+    CoreIPC::encode( encoder, fontAttributeDictionary.get() );
 #endif
 }
 
-bool FontInfo::decode(CoreIPC::ArgumentDecoder* decoder, FontInfo& fontInfo)
-{    
+bool FontInfo::decode( CoreIPC::ArgumentDecoder *decoder, FontInfo &fontInfo )
+{
 #if PLATFORM(MAC)
-    if (!CoreIPC::decode(decoder, fontInfo.fontAttributeDictionary))
+
+    if ( !CoreIPC::decode( decoder, fontInfo.fontAttributeDictionary ) )
+    {
         return false;
+    }
+
 #endif
-    
+
     return true;
 }
 

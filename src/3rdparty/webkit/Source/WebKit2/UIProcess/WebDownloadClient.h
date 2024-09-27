@@ -30,30 +30,33 @@
 #include "WKContext.h"
 #include <wtf/Forward.h>
 
-namespace WebCore {
-    class ResourceError;
-    class ResourceResponse;
+namespace WebCore
+{
+class ResourceError;
+class ResourceResponse;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
 class AuthenticationChallengeProxy;
 class DownloadProxy;
 class WebContext;
 
-class WebDownloadClient : public APIClient<WKContextDownloadClient> {
+class WebDownloadClient : public APIClient<WKContextDownloadClient>
+{
 public:
-    void didStart(WebContext*, DownloadProxy*);
-    void didReceiveAuthenticationChallenge(WebContext*, DownloadProxy*, AuthenticationChallengeProxy*);
-    void didReceiveResponse(WebContext*, DownloadProxy*, const WebCore::ResourceResponse&);
-    void didReceiveData(WebContext*, DownloadProxy*, uint64_t length);
-    bool shouldDecodeSourceDataOfMIMEType(WebContext*, DownloadProxy*, const String& mimeType);
-    String decideDestinationWithSuggestedFilename(WebContext*, DownloadProxy*, const String& filename, bool& allowOverwrite);
-    void didCreateDestination(WebContext*, DownloadProxy*, const String& path);
-    void didFinish(WebContext*, DownloadProxy*);
-    void didFail(WebContext*, DownloadProxy*, const WebCore::ResourceError&);
-    void didCancel(WebContext*, DownloadProxy*);
-    void processDidCrash(WebContext*, DownloadProxy*);
+    void didStart( WebContext *, DownloadProxy * );
+    void didReceiveAuthenticationChallenge( WebContext *, DownloadProxy *, AuthenticationChallengeProxy * );
+    void didReceiveResponse( WebContext *, DownloadProxy *, const WebCore::ResourceResponse & );
+    void didReceiveData( WebContext *, DownloadProxy *, uint64_t length );
+    bool shouldDecodeSourceDataOfMIMEType( WebContext *, DownloadProxy *, const String &mimeType );
+    String decideDestinationWithSuggestedFilename( WebContext *, DownloadProxy *, const String &filename, bool &allowOverwrite );
+    void didCreateDestination( WebContext *, DownloadProxy *, const String &path );
+    void didFinish( WebContext *, DownloadProxy * );
+    void didFail( WebContext *, DownloadProxy *, const WebCore::ResourceError & );
+    void didCancel( WebContext *, DownloadProxy * );
+    void processDidCrash( WebContext *, DownloadProxy * );
 };
 
 } // namespace WebKit

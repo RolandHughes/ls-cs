@@ -28,7 +28,8 @@
 
 #include "EventNames.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 CustomEvent::CustomEvent()
 {
@@ -38,12 +39,14 @@ CustomEvent::~CustomEvent()
 {
 }
 
-void CustomEvent::initCustomEvent(const AtomicString& type, bool canBubble, bool cancelable, ScriptValue detail)
+void CustomEvent::initCustomEvent( const AtomicString &type, bool canBubble, bool cancelable, ScriptValue detail )
 {
-    if (dispatched())
+    if ( dispatched() )
+    {
         return;
+    }
 
-    initEvent(type, canBubble, cancelable);
+    initEvent( type, canBubble, cancelable );
 
     m_detail = detail;
 }

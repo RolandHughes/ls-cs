@@ -31,16 +31,18 @@
 #include "WebPageProxy.h"
 #include <wtf/Forward.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
 class WebEditCommandProxy;
 
-class WebUndoClient : public APIClient<WKViewUndoClient> {
+class WebUndoClient : public APIClient<WKViewUndoClient>
+{
 public:
-    void registerEditCommand(WebView*, PassRefPtr<WebEditCommandProxy>, WebPageProxy::UndoOrRedo);
-    void clearAllEditCommands(WebView*);
-    bool canUndoRedo(WebView*, WebPageProxy::UndoOrRedo);
-    void executeUndoRedo(WebView*, WebPageProxy::UndoOrRedo);
+    void registerEditCommand( WebView *, PassRefPtr<WebEditCommandProxy>, WebPageProxy::UndoOrRedo );
+    void clearAllEditCommands( WebView * );
+    bool canUndoRedo( WebView *, WebPageProxy::UndoOrRedo );
+    void executeUndoRedo( WebView *, WebPageProxy::UndoOrRedo );
 };
 
 } // namespace WebKit

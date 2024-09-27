@@ -23,16 +23,20 @@
 
 #include <wtf/unicode/Unicode.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class LazyLineBreakIterator;
 
-int nextBreakablePosition(LazyLineBreakIterator&, int pos, bool breakNBSP = false);
+int nextBreakablePosition( LazyLineBreakIterator &, int pos, bool breakNBSP = false );
 
-inline bool isBreakable(LazyLineBreakIterator& lazyBreakIterator, int pos, int& nextBreakable, bool breakNBSP = false)
+inline bool isBreakable( LazyLineBreakIterator &lazyBreakIterator, int pos, int &nextBreakable, bool breakNBSP = false )
 {
-    if (pos > nextBreakable)
-        nextBreakable = nextBreakablePosition(lazyBreakIterator, pos, breakNBSP);
+    if ( pos > nextBreakable )
+    {
+        nextBreakable = nextBreakablePosition( lazyBreakIterator, pos, breakNBSP );
+    }
+
     return pos == nextBreakable;
 }
 

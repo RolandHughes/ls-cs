@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -28,20 +28,23 @@
 
 #include "HTMLAnchorElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-UnlinkCommand::UnlinkCommand(Document* document)
-    : CompositeEditCommand(document)
+UnlinkCommand::UnlinkCommand( Document *document )
+    : CompositeEditCommand( document )
 {
 }
 
 void UnlinkCommand::doApply()
 {
     // FIXME: If a caret is inside a link, we should remove it, but currently we don't.
-    if (!endingSelection().isNonOrphanedRange())
+    if ( !endingSelection().isNonOrphanedRange() )
+    {
         return;
+    }
 
-    removeStyledElement(HTMLAnchorElement::create(document()));
+    removeStyledElement( HTMLAnchorElement::create( document() ) );
 }
 
 }

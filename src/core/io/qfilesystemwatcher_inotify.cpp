@@ -132,48 +132,49 @@
 
 #ifdef QT_LINUXBASE
 // ### the LSB doesn't standardize syscall, need to wait until glib2.4 is standardized
-static inline int syscall(...)
+static inline int syscall( ... )
 {
-   return -1;
+    return -1;
 }
 #endif
 
 static inline int inotify_init()
 {
 #ifdef __NR_inotify_init
-   return syscall(__NR_inotify_init);
+    return syscall( __NR_inotify_init );
 #else
-   return syscall(__NR_inotify_init1, 0);
+    return syscall( __NR_inotify_init1, 0 );
 #endif
 }
 
-static inline int inotify_add_watch(int fd, const char *name, __u32 mask)
+static inline int inotify_add_watch( int fd, const char *name, __u32 mask )
 {
-   return syscall(__NR_inotify_add_watch, fd, name, mask);
+    return syscall( __NR_inotify_add_watch, fd, name, mask );
 }
 
-static inline int inotify_rm_watch(int fd, __u32 wd)
+static inline int inotify_rm_watch( int fd, __u32 wd )
 {
-   return syscall(__NR_inotify_rm_watch, fd, wd);
+    return syscall( __NR_inotify_rm_watch, fd, wd );
 }
 
 #ifdef IN_CLOEXEC
-static inline int inotify_init1(int flags)
+static inline int inotify_init1( int flags )
 {
-   return syscall(__NR_inotify_init1, flags);
+    return syscall( __NR_inotify_init1, flags );
 }
 #endif
 
 // the following struct and values are documented in linux/inotify.h
 extern "C" {
 
-   struct inotify_event {
-      __s32           wd;
-      __u32           mask;
-      __u32           cookie;
-      __u32           len;
-      char            name[0];
-   };
+    struct inotify_event
+    {
+        __s32           wd;
+        __u32           mask;
+        __u32           cookie;
+        __u32           len;
+        char            name[0];
+    };
 
 #define IN_ACCESS               0x00000001
 #define IN_MODIFY               0x00000002
@@ -205,200 +206,234 @@ extern "C" {
 
 QInotifyFileSystemWatcherEngine *QInotifyFileSystemWatcherEngine::create()
 {
-   int fd = -1;
+    int fd = -1;
 #ifdef IN_CLOEXEC
-   fd = inotify_init1(IN_CLOEXEC);
+    fd = inotify_init1( IN_CLOEXEC );
 #endif
 
-   if (fd == -1) {
-      fd = inotify_init();
+    if ( fd == -1 )
+    {
+        fd = inotify_init();
 
-      if (fd == -1) {
-         return nullptr;
-      }
+        if ( fd == -1 )
+        {
+            return nullptr;
+        }
 
-      ::fcntl(fd, F_SETFD, FD_CLOEXEC);
-   }
+        ::fcntl( fd, F_SETFD, FD_CLOEXEC );
+    }
 
-   return new QInotifyFileSystemWatcherEngine(fd);
+    return new QInotifyFileSystemWatcherEngine( fd );
 }
 
-QInotifyFileSystemWatcherEngine::QInotifyFileSystemWatcherEngine(int fd)
-   : inotifyFd(fd)
+QInotifyFileSystemWatcherEngine::QInotifyFileSystemWatcherEngine( int fd )
+    : inotifyFd( fd )
 {
-   fcntl(inotifyFd, F_SETFD, FD_CLOEXEC);
+    fcntl( inotifyFd, F_SETFD, FD_CLOEXEC );
 
-   moveToThread(this);
+    moveToThread( this );
 }
 
 QInotifyFileSystemWatcherEngine::~QInotifyFileSystemWatcherEngine()
 {
-   for (int id : pathToID) {
-      inotify_rm_watch(inotifyFd, id < 0 ? -id : id);
-   }
+    for ( int id : pathToID )
+    {
+        inotify_rm_watch( inotifyFd, id < 0 ? -id : id );
+    }
 
-   ::close(inotifyFd);
+    ::close( inotifyFd );
 }
 
 void QInotifyFileSystemWatcherEngine::run()
 {
-   QSocketNotifier sn(inotifyFd, QSocketNotifier::Read, this);
-   connect(&sn, &QSocketNotifier::activated, this, &QInotifyFileSystemWatcherEngine::readFromInotify);
-   (void) exec();
+    QSocketNotifier sn( inotifyFd, QSocketNotifier::Read, this );
+    connect( &sn, &QSocketNotifier::activated, this, &QInotifyFileSystemWatcherEngine::readFromInotify );
+    ( void ) exec();
 }
 
-QStringList QInotifyFileSystemWatcherEngine::addPaths(const QStringList &paths, QStringList *files, QStringList *directories)
+QStringList QInotifyFileSystemWatcherEngine::addPaths( const QStringList &paths, QStringList *files, QStringList *directories )
 {
-   QMutexLocker locker(&mutex);
+    QMutexLocker locker( &mutex );
 
-   QStringList p = paths;
-   QMutableListIterator<QString> it(p);
+    QStringList p = paths;
+    QMutableListIterator<QString> it( p );
 
-   while (it.hasNext()) {
-      QString path = it.next();
-      QFileInfo fi(path);
-      bool isDir = fi.isDir();
+    while ( it.hasNext() )
+    {
+        QString path = it.next();
+        QFileInfo fi( path );
+        bool isDir = fi.isDir();
 
-      if (isDir) {
-         if (directories->contains(path)) {
+        if ( isDir )
+        {
+            if ( directories->contains( path ) )
+            {
+                continue;
+            }
+
+        }
+        else
+        {
+            if ( files->contains( path ) )
+            {
+                continue;
+            }
+        }
+
+        int wd = inotify_add_watch( inotifyFd, QFile::encodeName( path ).constData(),
+                                    ( isDir ? ( 0 | IN_ATTRIB | IN_MOVE | IN_CREATE | IN_DELETE | IN_DELETE_SELF )
+                                      : ( 0 | IN_ATTRIB | IN_MODIFY | IN_MOVE | IN_MOVE_SELF | IN_DELETE_SELF ) ) );
+
+        if ( wd <= 0 )
+        {
+            perror( "QInotifyFileSystemWatcherEngine::addPaths: inotify_add_watch failed" );
             continue;
-         }
+        }
 
-      } else {
-         if (files->contains(path)) {
-            continue;
-         }
-      }
+        it.remove();
 
-      int wd = inotify_add_watch(inotifyFd, QFile::encodeName(path).constData(),
-            (isDir ? (0 | IN_ATTRIB | IN_MOVE | IN_CREATE | IN_DELETE | IN_DELETE_SELF)
-            : (0 | IN_ATTRIB | IN_MODIFY | IN_MOVE | IN_MOVE_SELF | IN_DELETE_SELF)));
+        int id = isDir ? -wd : wd;
 
-      if (wd <= 0) {
-         perror("QInotifyFileSystemWatcherEngine::addPaths: inotify_add_watch failed");
-         continue;
-      }
+        if ( id < 0 )
+        {
+            directories->append( path );
+        }
+        else
+        {
+            files->append( path );
+        }
 
-      it.remove();
+        pathToID.insert( path, id );
+        idToPath.insert( id, path );
+    }
 
-      int id = isDir ? -wd : wd;
+    start();
 
-      if (id < 0) {
-         directories->append(path);
-      } else {
-         files->append(path);
-      }
-
-      pathToID.insert(path, id);
-      idToPath.insert(id, path);
-   }
-
-   start();
-
-   return p;
+    return p;
 }
 
-QStringList QInotifyFileSystemWatcherEngine::removePaths(const QStringList &paths,
-      QStringList *files,
-      QStringList *directories)
+QStringList QInotifyFileSystemWatcherEngine::removePaths( const QStringList &paths,
+        QStringList *files,
+        QStringList *directories )
 {
-   QMutexLocker locker(&mutex);
+    QMutexLocker locker( &mutex );
 
-   QStringList p = paths;
-   QMutableListIterator<QString> it(p);
+    QStringList p = paths;
+    QMutableListIterator<QString> it( p );
 
-   while (it.hasNext()) {
-      QString path = it.next();
-      int id = pathToID.take(path);
-      QString x = idToPath.take(id);
+    while ( it.hasNext() )
+    {
+        QString path = it.next();
+        int id = pathToID.take( path );
+        QString x = idToPath.take( id );
 
-      if (x.isEmpty() || x != path) {
-         continue;
-      }
+        if ( x.isEmpty() || x != path )
+        {
+            continue;
+        }
 
-      int wd = id < 0 ? -id : id;
-      inotify_rm_watch(inotifyFd, wd);
+        int wd = id < 0 ? -id : id;
+        inotify_rm_watch( inotifyFd, wd );
 
-      it.remove();
+        it.remove();
 
-      if (id < 0) {
-         directories->removeAll(path);
-      } else {
-         files->removeAll(path);
-      }
-   }
+        if ( id < 0 )
+        {
+            directories->removeAll( path );
+        }
+        else
+        {
+            files->removeAll( path );
+        }
+    }
 
-   return p;
+    return p;
 }
 
 void QInotifyFileSystemWatcherEngine::stop()
 {
-   quit();
+    quit();
 }
 
 void QInotifyFileSystemWatcherEngine::readFromInotify()
 {
-   QMutexLocker locker(&mutex);
+    QMutexLocker locker( &mutex );
 
-   int buffSize = 0;
-   ioctl(inotifyFd, FIONREAD, (char *) &buffSize);
+    int buffSize = 0;
+    ioctl( inotifyFd, FIONREAD, ( char * ) &buffSize );
 
-   QVarLengthArray<char, 4096> buffer(buffSize);
-   buffSize = read(inotifyFd, buffer.data(), buffSize);
-   char *at = buffer.data();
-   char *const end = at + buffSize;
+    QVarLengthArray<char, 4096> buffer( buffSize );
+    buffSize = read( inotifyFd, buffer.data(), buffSize );
+    char *at = buffer.data();
+    char *const end = at + buffSize;
 
-   QHash<int, inotify_event *> eventForId;
+    QHash<int, inotify_event *> eventForId;
 
-   while (at < end) {
-      inotify_event *event = reinterpret_cast<inotify_event *>(at);
+    while ( at < end )
+    {
+        inotify_event *event = reinterpret_cast<inotify_event *>( at );
 
-      if (eventForId.contains(event->wd)) {
-         eventForId[event->wd]->mask |= event->mask;
-      } else {
-         eventForId.insert(event->wd, event);
-      }
+        if ( eventForId.contains( event->wd ) )
+        {
+            eventForId[event->wd]->mask |= event->mask;
+        }
+        else
+        {
+            eventForId.insert( event->wd, event );
+        }
 
-      at += sizeof(inotify_event) + event->len;
-   }
+        at += sizeof( inotify_event ) + event->len;
+    }
 
-   QHash<int, inotify_event *>::const_iterator it = eventForId.constBegin();
+    QHash<int, inotify_event *>::const_iterator it = eventForId.constBegin();
 
-   while (it != eventForId.constEnd()) {
-      const inotify_event &event = **it;
-      ++it;
+    while ( it != eventForId.constEnd() )
+    {
+        const inotify_event &event = **it;
+        ++it;
 
-      int id = event.wd;
-      QString path = idToPath.value(id);
+        int id = event.wd;
+        QString path = idToPath.value( id );
 
-      if (path.isEmpty()) {
-         // perhaps a directory?
-         id = -id;
-         path = idToPath.value(id);
+        if ( path.isEmpty() )
+        {
+            // perhaps a directory?
+            id = -id;
+            path = idToPath.value( id );
 
-         if (path.isEmpty()) {
-            continue;
-         }
-      }
+            if ( path.isEmpty() )
+            {
+                continue;
+            }
+        }
 
-      if ((event.mask & (IN_DELETE_SELF | IN_MOVE_SELF | IN_UNMOUNT)) != 0) {
-         pathToID.remove(path);
-         idToPath.remove(id);
-         inotify_rm_watch(inotifyFd, event.wd);
+        if ( ( event.mask & ( IN_DELETE_SELF | IN_MOVE_SELF | IN_UNMOUNT ) ) != 0 )
+        {
+            pathToID.remove( path );
+            idToPath.remove( id );
+            inotify_rm_watch( inotifyFd, event.wd );
 
-         if (id < 0) {
-            emit directoryChanged(path, true);
-         } else {
-            emit fileChanged(path, true);
-         }
-      } else {
-         if (id < 0) {
-            emit directoryChanged(path, false);
-         } else {
-            emit fileChanged(path, false);
-         }
-      }
-   }
+            if ( id < 0 )
+            {
+                emit directoryChanged( path, true );
+            }
+            else
+            {
+                emit fileChanged( path, true );
+            }
+        }
+        else
+        {
+            if ( id < 0 )
+            {
+                emit directoryChanged( path, false );
+            }
+            else
+            {
+                emit fileChanged( path, false );
+            }
+        }
+    }
 }
 
 #endif // QT_NO_FILESYSTEMWATCHER

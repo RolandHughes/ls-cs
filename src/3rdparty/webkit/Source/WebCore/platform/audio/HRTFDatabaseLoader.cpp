@@ -34,83 +34,92 @@
 
 #include "HRTFDatabase.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 // Singleton
-HRTFDatabaseLoader* HRTFDatabaseLoader::s_loader = 0;
+HRTFDatabaseLoader *HRTFDatabaseLoader::s_loader = 0;
 
-PassRefPtr<HRTFDatabaseLoader> HRTFDatabaseLoader::createAndLoadAsynchronouslyIfNecessary(double sampleRate)
+PassRefPtr<HRTFDatabaseLoader> HRTFDatabaseLoader::createAndLoadAsynchronouslyIfNecessary( double sampleRate )
 {
-    ASSERT(isMainThread());
+    ASSERT( isMainThread() );
 
     RefPtr<HRTFDatabaseLoader> loader;
-    
-    if (!s_loader) {
+
+    if ( !s_loader )
+    {
         // Lazily create and load.
-        loader = adoptRef(new HRTFDatabaseLoader(sampleRate));
+        loader = adoptRef( new HRTFDatabaseLoader( sampleRate ) );
         s_loader = loader.get();
         loader->loadAsynchronously();
-    } else {
-        loader = s_loader;
-        ASSERT(sampleRate == loader->databaseSampleRate());
     }
-    
+    else
+    {
+        loader = s_loader;
+        ASSERT( sampleRate == loader->databaseSampleRate() );
+    }
+
     return loader;
 }
 
-HRTFDatabaseLoader::HRTFDatabaseLoader(double sampleRate)
-    : m_databaseLoaderThread(0)
-    , m_startedLoadingDatabase(false)
-    , m_databaseSampleRate(sampleRate)
+HRTFDatabaseLoader::HRTFDatabaseLoader( double sampleRate )
+    : m_databaseLoaderThread( 0 )
+    , m_startedLoadingDatabase( false )
+    , m_databaseSampleRate( sampleRate )
 {
-    ASSERT(isMainThread());
+    ASSERT( isMainThread() );
 }
 
 HRTFDatabaseLoader::~HRTFDatabaseLoader()
 {
-    ASSERT(isMainThread());
+    ASSERT( isMainThread() );
 
-    if (m_startedLoadingDatabase)
-        waitForThreadCompletion(m_databaseLoaderThread, 0);
-    
+    if ( m_startedLoadingDatabase )
+    {
+        waitForThreadCompletion( m_databaseLoaderThread, 0 );
+    }
+
     m_startedLoadingDatabase = false;
     m_databaseLoaderThread = 0;
-    
+
     m_hrtfDatabase.clear();
-    
+
     // Clear out singleton.
-    ASSERT(this == s_loader);
+    ASSERT( this == s_loader );
     s_loader = 0;
 }
 
 
 // Asynchronously load the database in this thread.
-static void* databaseLoaderEntry(void* threadData)
+static void *databaseLoaderEntry( void *threadData )
 {
-    HRTFDatabaseLoader* loader = reinterpret_cast<HRTFDatabaseLoader*>(threadData);
-    ASSERT(loader);
+    HRTFDatabaseLoader *loader = reinterpret_cast<HRTFDatabaseLoader *>( threadData );
+    ASSERT( loader );
     loader->load();
-    
+
     return 0;
 }
 
 void HRTFDatabaseLoader::load()
 {
-    ASSERT(!isMainThread());
-    if (!m_hrtfDatabase.get()) {
+    ASSERT( !isMainThread() );
+
+    if ( !m_hrtfDatabase.get() )
+    {
         // Load the default HRTF database.
-        m_hrtfDatabase = HRTFDatabase::create(m_databaseSampleRate);
+        m_hrtfDatabase = HRTFDatabase::create( m_databaseSampleRate );
     }
 }
 
 void HRTFDatabaseLoader::loadAsynchronously()
 {
-    ASSERT(isMainThread());
-    
-    if (!m_hrtfDatabase.get() && !m_startedLoadingDatabase) {
+    ASSERT( isMainThread() );
+
+    if ( !m_hrtfDatabase.get() && !m_startedLoadingDatabase )
+    {
         // Start the asynchronous database loading process.
         m_startedLoadingDatabase = true;
-        m_databaseLoaderThread = createThread(databaseLoaderEntry, this, "HRTF database loader");
+        m_databaseLoaderThread = createThread( databaseLoaderEntry, this, "HRTF database loader" );
     }
 }
 
@@ -122,16 +131,18 @@ bool HRTFDatabaseLoader::isLoaded() const
 
 void HRTFDatabaseLoader::waitForLoaderThreadCompletion()
 {
-    ASSERT(!isMainThread());
-    ASSERT(m_databaseLoaderThread);
-    waitForThreadCompletion(m_databaseLoaderThread, 0);    
+    ASSERT( !isMainThread() );
+    ASSERT( m_databaseLoaderThread );
+    waitForThreadCompletion( m_databaseLoaderThread, 0 );
 }
 
-HRTFDatabase* HRTFDatabaseLoader::defaultHRTFDatabase()
+HRTFDatabase *HRTFDatabaseLoader::defaultHRTFDatabase()
 {
-    if (!s_loader)
+    if ( !s_loader )
+    {
         return 0;
-    
+    }
+
     return s_loader->database();
 }
 

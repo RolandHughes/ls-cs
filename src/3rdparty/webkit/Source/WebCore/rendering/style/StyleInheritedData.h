@@ -32,20 +32,28 @@
 #include <wtf/RefCounted.h>
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class StyleImage;
 
-class StyleInheritedData : public RefCounted<StyleInheritedData> {
+class StyleInheritedData : public RefCounted<StyleInheritedData>
+{
 public:
-    static PassRefPtr<StyleInheritedData> create() { return adoptRef(new StyleInheritedData); }
-    PassRefPtr<StyleInheritedData> copy() const { return adoptRef(new StyleInheritedData(*this)); }
+    static PassRefPtr<StyleInheritedData> create()
+    {
+        return adoptRef( new StyleInheritedData );
+    }
+    PassRefPtr<StyleInheritedData> copy() const
+    {
+        return adoptRef( new StyleInheritedData( *this ) );
+    }
     ~StyleInheritedData();
 
-    bool operator==(const StyleInheritedData& o) const;
-    bool operator!=(const StyleInheritedData& o) const
+    bool operator==( const StyleInheritedData &o ) const;
+    bool operator!=( const StyleInheritedData &o ) const
     {
-        return !(*this == o);
+        return !( *this == o );
     }
 
     // could be packed in a short but doesn't
@@ -61,7 +69,7 @@ public:
     short vertical_border_spacing;
 private:
     StyleInheritedData();
-    StyleInheritedData(const StyleInheritedData&);
+    StyleInheritedData( const StyleInheritedData & );
 };
 
 } // namespace WebCore

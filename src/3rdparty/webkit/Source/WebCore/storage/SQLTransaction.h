@@ -37,7 +37,8 @@
 #include <wtf/ThreadSafeRefCounted.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Database;
 class SQLError;
@@ -50,41 +51,49 @@ class SQLTransactionErrorCallback;
 class SQLValue;
 class VoidCallback;
 
-class SQLTransactionWrapper : public ThreadSafeRefCounted<SQLTransactionWrapper> {
+class SQLTransactionWrapper : public ThreadSafeRefCounted<SQLTransactionWrapper>
+{
 public:
     virtual ~SQLTransactionWrapper() { }
-    virtual bool performPreflight(SQLTransaction*) = 0;
-    virtual bool performPostflight(SQLTransaction*) = 0;
+    virtual bool performPreflight( SQLTransaction * ) = 0;
+    virtual bool performPostflight( SQLTransaction * ) = 0;
 
-    virtual SQLError* sqlError() const = 0;
+    virtual SQLError *sqlError() const = 0;
 };
 
-class SQLTransaction : public ThreadSafeRefCounted<SQLTransaction> {
+class SQLTransaction : public ThreadSafeRefCounted<SQLTransaction>
+{
 public:
-    static PassRefPtr<SQLTransaction> create(Database*, PassRefPtr<SQLTransactionCallback>, PassRefPtr<SQLTransactionErrorCallback>,
-                                             PassRefPtr<VoidCallback>, PassRefPtr<SQLTransactionWrapper>, bool readOnly = false);
+    static PassRefPtr<SQLTransaction> create( Database *, PassRefPtr<SQLTransactionCallback>, PassRefPtr<SQLTransactionErrorCallback>,
+            PassRefPtr<VoidCallback>, PassRefPtr<SQLTransactionWrapper>, bool readOnly = false );
 
     ~SQLTransaction();
 
-    void executeSQL(const String& sqlStatement, const Vector<SQLValue>& arguments,
-                    PassRefPtr<SQLStatementCallback>, PassRefPtr<SQLStatementErrorCallback>, ExceptionCode&);
+    void executeSQL( const String &sqlStatement, const Vector<SQLValue> &arguments,
+                     PassRefPtr<SQLStatementCallback>, PassRefPtr<SQLStatementErrorCallback>, ExceptionCode & );
 
     void lockAcquired();
     bool performNextStep();
     void performPendingCallback();
 
-    Database* database() { return m_database.get(); }
-    bool isReadOnly() { return m_readOnly; }
+    Database *database()
+    {
+        return m_database.get();
+    }
+    bool isReadOnly()
+    {
+        return m_readOnly;
+    }
     void notifyDatabaseThreadIsShuttingDown();
 
 private:
-    SQLTransaction(Database*, PassRefPtr<SQLTransactionCallback>, PassRefPtr<SQLTransactionErrorCallback>,
-                   PassRefPtr<VoidCallback>, PassRefPtr<SQLTransactionWrapper>, bool readOnly);
+    SQLTransaction( Database *, PassRefPtr<SQLTransactionCallback>, PassRefPtr<SQLTransactionErrorCallback>,
+                    PassRefPtr<VoidCallback>, PassRefPtr<SQLTransactionWrapper>, bool readOnly );
 
-    typedef void (SQLTransaction::*TransactionStepMethod)();
+    typedef void ( SQLTransaction::*TransactionStepMethod )();
     TransactionStepMethod m_nextStep;
 
-    void enqueueStatement(PassRefPtr<SQLStatement>);
+    void enqueueStatement( PassRefPtr<SQLStatement> );
 
     void checkAndHandleClosedOrInterruptedDatabase();
 
@@ -101,12 +110,12 @@ private:
     void postflightAndCommit();
     void deliverSuccessCallback();
     void cleanupAfterSuccessCallback();
-    void handleTransactionError(bool inCallback);
+    void handleTransactionError( bool inCallback );
     void deliverTransactionErrorCallback();
     void cleanupAfterTransactionErrorCallback();
 
 #ifndef NDEBUG
-    static const char* debugStepName(TransactionStepMethod);
+    static const char *debugStepName( TransactionStepMethod );
 #endif
 
     RefPtr<SQLStatement> m_currentStatement;

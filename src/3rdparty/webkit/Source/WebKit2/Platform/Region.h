@@ -31,32 +31,41 @@
 
 #include <vector>
 
-namespace WebKit {
+namespace WebKit
+{
 
-class Region {
+class Region
+{
 public:
     Region();
-    Region(const WebCore::IntRect&);
+    Region( const WebCore::IntRect & );
 
-    WebCore::IntRect bounds() const { return m_bounds; }
-    bool isEmpty() const { return m_bounds.isEmpty(); }
+    WebCore::IntRect bounds() const
+    {
+        return m_bounds;
+    }
+    bool isEmpty() const
+    {
+        return m_bounds.isEmpty();
+    }
 
     Vector<WebCore::IntRect> rects() const;
 
-    void unite(const Region&);
-    void intersect(const Region&);
-    void subtract(const Region&);
+    void unite( const Region & );
+    void intersect( const Region & );
+    void subtract( const Region & );
 
-    void translate(const WebCore::IntSize&);
+    void translate( const WebCore::IntSize & );
 
 #ifndef NDEBUG
     void dump() const;
 #endif
 
 private:
-    struct Span {
-        Span(int y, size_t segmentIndex)
-            : y(y), segmentIndex(segmentIndex)
+    struct Span
+    {
+        Span( int y, size_t segmentIndex )
+            : y( y ), segmentIndex( segmentIndex )
         {
         }
 
@@ -64,28 +73,32 @@ private:
         size_t segmentIndex;
     };
 
-    class Shape {
+    class Shape
+    {
     public:
         Shape();
-        Shape(const WebCore::IntRect&);
+        Shape( const WebCore::IntRect & );
 
         WebCore::IntRect bounds() const;
-        bool isEmpty() const { return m_spans.isEmpty(); }
+        bool isEmpty() const
+        {
+            return m_spans.isEmpty();
+        }
 
-        typedef const Span* SpanIterator;
+        typedef const Span *SpanIterator;
         SpanIterator spans_begin() const;
         SpanIterator spans_end() const;
-        
-        typedef const int* SegmentIterator;
-        SegmentIterator segments_begin(SpanIterator) const;
-        SegmentIterator segments_end(SpanIterator) const;
 
-        static Shape unionShapes(const Shape& shape1, const Shape& shape2);
-        static Shape intersectShapes(const Shape& shape1, const Shape& shape2);
-        static Shape subtractShapes(const Shape& shape1, const Shape& shape2);
+        typedef const int *SegmentIterator;
+        SegmentIterator segments_begin( SpanIterator ) const;
+        SegmentIterator segments_end( SpanIterator ) const;
 
-        void translate(const WebCore::IntSize&);
-        void swap(Shape&);
+        static Shape unionShapes( const Shape &shape1, const Shape &shape2 );
+        static Shape intersectShapes( const Shape &shape1, const Shape &shape2 );
+        static Shape subtractShapes( const Shape &shape1, const Shape &shape2 );
+
+        void translate( const WebCore::IntSize & );
+        void swap( Shape & );
 
 #ifndef NDEBUG
         void dump() const;
@@ -95,46 +108,46 @@ private:
         struct UnionOperation;
         struct IntersectOperation;
         struct SubtractOperation;
-        
+
         template<typename Operation>
-        static Shape shapeOperation(const Shape& shape1, const Shape& shape2);
+        static Shape shapeOperation( const Shape &shape1, const Shape &shape2 );
 
-        void appendSegment(int x);
-        void appendSpan(int y);
-        void appendSpan(int y, SegmentIterator begin, SegmentIterator end);
-        void appendSpans(const Shape&, SpanIterator begin, SpanIterator end);
+        void appendSegment( int x );
+        void appendSpan( int y );
+        void appendSpan( int y, SegmentIterator begin, SegmentIterator end );
+        void appendSpans( const Shape &, SpanIterator begin, SpanIterator end );
 
-        bool canCoalesce(SegmentIterator begin, SegmentIterator end);
+        bool canCoalesce( SegmentIterator begin, SegmentIterator end );
 
         // FIXME: These vectors should have inline sizes. Figure out a good optimal value.
         Vector<int> m_segments;
-        Vector<Span> m_spans;        
+        Vector<Span> m_spans;
     };
 
     WebCore::IntRect m_bounds;
     Shape m_shape;
 };
 
-static inline Region intersect(const Region& a, const Region& b)
+static inline Region intersect( const Region &a, const Region &b )
 {
-    Region result(a);
-    result.intersect(b);
-
-    return result;
-}
-    
-static inline Region subtract(const Region& a, const Region& b)
-{
-    Region result(a);
-    result.subtract(b);
+    Region result( a );
+    result.intersect( b );
 
     return result;
 }
 
-static inline Region translate(const Region& region, const WebCore::IntSize& offset)
+static inline Region subtract( const Region &a, const Region &b )
 {
-    Region result(region);
-    result.translate(offset);
+    Region result( a );
+    result.subtract( b );
+
+    return result;
+}
+
+static inline Region translate( const Region &region, const WebCore::IntSize &offset )
+{
+    Region result( region );
+    result.translate( offset );
 
     return result;
 }

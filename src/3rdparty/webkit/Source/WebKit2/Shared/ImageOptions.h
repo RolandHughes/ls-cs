@@ -26,9 +26,11 @@
 #ifndef ImageOptions_h
 #define ImageOptions_h
 
-namespace WebKit {
+namespace WebKit
+{
 
-enum ImageOptions {
+enum ImageOptions
+{
     ImageOptionsShareable = 1 << 0,
 };
 

@@ -42,29 +42,34 @@
 #include "ScriptExecutionContext.h"
 #include "SharedWorkerRepository.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-inline SharedWorker::SharedWorker(ScriptExecutionContext* context)
-    : AbstractWorker(context)
+inline SharedWorker::SharedWorker( ScriptExecutionContext *context )
+    : AbstractWorker( context )
 {
 }
 
-PassRefPtr<SharedWorker> SharedWorker::create(const String& url, const String& name, ScriptExecutionContext* context, ExceptionCode& ec)
+PassRefPtr<SharedWorker> SharedWorker::create( const String &url, const String &name, ScriptExecutionContext *context,
+        ExceptionCode &ec )
 {
-    RefPtr<SharedWorker> worker = adoptRef(new SharedWorker(context));
+    RefPtr<SharedWorker> worker = adoptRef( new SharedWorker( context ) );
 
-    RefPtr<MessageChannel> channel = MessageChannel::create(context);
+    RefPtr<MessageChannel> channel = MessageChannel::create( context );
     worker->m_port = channel->port1();
-    OwnPtr<MessagePortChannel> remotePort = channel->port2()->disentangle(ec);
-    ASSERT(remotePort);
+    OwnPtr<MessagePortChannel> remotePort = channel->port2()->disentangle( ec );
+    ASSERT( remotePort );
 
-    KURL scriptURL = worker->resolveURL(url, ec);
-    if (scriptURL.isEmpty())
+    KURL scriptURL = worker->resolveURL( url, ec );
+
+    if ( scriptURL.isEmpty() )
+    {
         return 0;
+    }
 
-    SharedWorkerRepository::connect(worker.get(), remotePort.release(), scriptURL, name, ec);
+    SharedWorkerRepository::connect( worker.get(), remotePort.release(), scriptURL, name, ec );
 
-    InspectorInstrumentation::didCreateWorker(context, worker->asID(), scriptURL.string(), true);
+    InspectorInstrumentation::didCreateWorker( context, worker->asID(), scriptURL.string(), true );
 
     return worker.release();
 }

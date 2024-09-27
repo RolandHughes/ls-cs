@@ -34,34 +34,40 @@
 
 #include <qdebug.h>
 
-QT_BEGIN_NAMESPACE
-
-QTsLibMouseHandler::QTsLibMouseHandler(const QString &key,
-                                                 const QString &specification)
-    : m_notify(0), m_x(0), m_y(0), m_pressed(0), m_rawMode(false)
+QT_BEGIN_NAMESPACE QTsLibMouseHandler::QTsLibMouseHandler( const QString &key,
+        const QString &specification )
+    : m_notify( 0 ), m_x( 0 ), m_y( 0 ), m_pressed( 0 ), m_rawMode( false )
 {
     qDebug() << "QTsLibMouseHandler" << key << specification;
-    setObjectName(QLatin1String("TSLib Mouse Handler"));
+    setObjectName( QLatin1String( "TSLib Mouse Handler" ) );
 
     QByteArray device = "/dev/input/event1";
-    if (specification.startsWith("/dev/"))
+
+    if ( specification.startsWith( "/dev/" ) )
+    {
         device = specification.toLocal8Bit();
+    }
 
-    m_dev =  ts_open(device.constData(), 1);
+    m_dev =  ts_open( device.constData(), 1 );
 
-    if (ts_config(m_dev)) {
-        perror("Error configuring\n");
+    if ( ts_config( m_dev ) )
+    {
+        perror( "Error configuring\n" );
     }
 
 
-    m_rawMode =  !key.compare(QLatin1String("TslibRaw"), Qt::CaseInsensitive);
+    m_rawMode =  !key.compare( QLatin1String( "TslibRaw" ), Qt::CaseInsensitive );
 
-    int fd = ts_fd(m_dev);
-    if (fd >= 0) {
-        m_notify = new QSocketNotifier(fd, QSocketNotifier::Read, this);
-        connect(m_notify, SIGNAL(activated(int)), this, SLOT(readMouseData()));
-    } else {
-        qWarning("Unable to open mouse input device '%s': %s", device.constData(), strerror(errno));
+    int fd = ts_fd( m_dev );
+
+    if ( fd >= 0 )
+    {
+        m_notify = new QSocketNotifier( fd, QSocketNotifier::Read, this );
+        connect( m_notify, SIGNAL( activated( int ) ), this, SLOT( readMouseData() ) );
+    }
+    else
+    {
+        qWarning( "Unable to open mouse input device '%s': %s", device.constData(), strerror( errno ) );
         return;
     }
 }
@@ -69,18 +75,23 @@ QTsLibMouseHandler::QTsLibMouseHandler(const QString &key,
 
 QTsLibMouseHandler::~QTsLibMouseHandler()
 {
-    if (m_dev)
-        ts_close(m_dev);
+    if ( m_dev )
+    {
+        ts_close( m_dev );
+    }
 }
 
 
-static bool get_sample(struct tsdev *dev, struct ts_sample *sample, bool rawMode)
+static bool get_sample( struct tsdev *dev, struct ts_sample *sample, bool rawMode )
 {
-    if (rawMode) {
-        return (ts_read_raw(dev, sample, 1) == 1);
-    } else {
-        int ret = ts_read(dev, sample, 1);
-        return ( ret == 1);
+    if ( rawMode )
+    {
+        return ( ts_read_raw( dev, sample, 1 ) == 1 );
+    }
+    else
+    {
+        int ret = ts_read( dev, sample, 1 );
+        return ( ret == 1 );
     }
 }
 
@@ -89,29 +100,36 @@ void QTsLibMouseHandler::readMouseData()
 {
     ts_sample sample;
 
-    while (get_sample(m_dev, &sample, m_rawMode)) {
+    while ( get_sample( m_dev, &sample, m_rawMode ) )
+    {
         bool pressed = sample.pressure;
         int x = sample.x;
         int y = sample.y;
 
         // work around missing coordinates on mouse release
-        if (sample.pressure == 0 && sample.x == 0 && sample.y == 0) {
+        if ( sample.pressure == 0 && sample.x == 0 && sample.y == 0 )
+        {
             x = m_x;
             y = m_y;
         }
 
-        if (!m_rawMode) {
+        if ( !m_rawMode )
+        {
             //filtering: ignore movements of 2 pixels or less
             int dx = x - m_x;
             int dy = y - m_y;
-            if (dx*dx <= 4 && dy*dy <= 4 && pressed == m_pressed)
+
+            if ( dx*dx <= 4 && dy*dy <= 4 && pressed == m_pressed )
+            {
                 continue;
+            }
         }
-        QPoint pos(x, y);
+
+        QPoint pos( x, y );
 
         //printf("handleMouseEvent %d %d %d %ld\n", m_x, m_y, pressed, sample.tv.tv_usec);
 
-        QWindowSystemInterface::handleMouseEvent(0, pos, pos, pressed ? Qt::LeftButton : Qt::NoButton);
+        QWindowSystemInterface::handleMouseEvent( 0, pos, pos, pressed ? Qt::LeftButton : Qt::NoButton );
 
         m_x = x;
         m_y = y;

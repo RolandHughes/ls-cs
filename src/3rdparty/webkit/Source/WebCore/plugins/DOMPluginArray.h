@@ -27,31 +27,42 @@
 #include <wtf/RefCounted.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Frame;
 class PluginData;
 
-class DOMPluginArray : public RefCounted<DOMPluginArray> {
+class DOMPluginArray : public RefCounted<DOMPluginArray>
+{
 public:
-    static PassRefPtr<DOMPluginArray> create(Frame* frame) { return adoptRef(new DOMPluginArray(frame)); }
+    static PassRefPtr<DOMPluginArray> create( Frame *frame )
+    {
+        return adoptRef( new DOMPluginArray( frame ) );
+    }
     ~DOMPluginArray();
 
-    Frame* frame() { return m_frame; }
-    void disconnectFrame() { m_frame = 0; }
+    Frame *frame()
+    {
+        return m_frame;
+    }
+    void disconnectFrame()
+    {
+        m_frame = 0;
+    }
 
     unsigned length() const;
-    PassRefPtr<DOMPlugin> item(unsigned index);
-    bool canGetItemsForName(const AtomicString& propertyName);
-    PassRefPtr<DOMPlugin> namedItem(const AtomicString& propertyName);
+    PassRefPtr<DOMPlugin> item( unsigned index );
+    bool canGetItemsForName( const AtomicString &propertyName );
+    PassRefPtr<DOMPlugin> namedItem( const AtomicString &propertyName );
 
-    void refresh(bool reload);
+    void refresh( bool reload );
 
 private:
-    DOMPluginArray(Frame*);
-    PluginData* pluginData() const;
+    DOMPluginArray( Frame * );
+    PluginData *pluginData() const;
 
-    Frame* m_frame;
+    Frame *m_frame;
 };
 
 } // namespace WebCore

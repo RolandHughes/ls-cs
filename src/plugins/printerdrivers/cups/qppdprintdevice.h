@@ -37,54 +37,54 @@
 
 class QPpdPrintDevice : public QPlatformPrintDevice
 {
- public:
-   QPpdPrintDevice();
-   explicit QPpdPrintDevice(const QString &id);
-   virtual ~QPpdPrintDevice();
+public:
+    QPpdPrintDevice();
+    explicit QPpdPrintDevice( const QString &id );
+    virtual ~QPpdPrintDevice();
 
-   bool isValid() const override;
-   bool isDefault() const override;
+    bool isValid() const override;
+    bool isDefault() const override;
 
-   QPrint::DeviceState state() const override;
+    QPrint::DeviceState state() const override;
 
-   QPageSize defaultPageSize() const override;
+    QPageSize defaultPageSize() const override;
 
-   QMarginsF printableMargins(const QPageSize &pageSize, QPageLayout::Orientation orientation,
-      int resolution) const override;
+    QMarginsF printableMargins( const QPageSize &pageSize, QPageLayout::Orientation orientation,
+                                int resolution ) const override;
 
-   int defaultResolution() const override;
+    int defaultResolution() const override;
 
-   QPrint::InputSlot defaultInputSlot() const override;
+    QPrint::InputSlot defaultInputSlot() const override;
 
-   QPrint::OutputBin defaultOutputBin() const override;
+    QPrint::OutputBin defaultOutputBin() const override;
 
-   QPrint::DuplexMode defaultDuplexMode() const override;
+    QPrint::DuplexMode defaultDuplexMode() const override;
 
-   QPrint::ColorMode defaultColorMode() const override;
+    QPrint::ColorMode defaultColorMode() const override;
 
- protected:
-   void loadPageSizes() const override;
-   void loadResolutions() const override;
-   void loadInputSlots() const override;
-   void loadOutputBins() const override;
-   void loadDuplexModes() const override;
-   void loadColorModes() const override;
+protected:
+    void loadPageSizes() const override;
+    void loadResolutions() const override;
+    void loadInputSlots() const override;
+    void loadOutputBins() const override;
+    void loadDuplexModes() const override;
+    void loadColorModes() const override;
 
 #ifndef QT_NO_MIMETYPE
-   void loadMimeTypes() const override;
+    void loadMimeTypes() const override;
 #endif
 
- private:
-   void loadPrinter();
-   QString printerOption(const QString &key) const;
-   cups_ptype_e printerTypeFlags() const;
+private:
+    void loadPrinter();
+    QString printerOption( const QString &key ) const;
+    cups_ptype_e printerTypeFlags() const;
 
-   cups_dest_t *m_cupsDest;
-   ppd_file_t *m_ppd;
-   QByteArray m_cupsName;
-   QByteArray m_cupsInstance;
-   QMarginsF m_customMargins;
-   mutable QHash<QString, QMarginsF> m_printableMargins;
+    cups_dest_t *m_cupsDest;
+    ppd_file_t *m_ppd;
+    QByteArray m_cupsName;
+    QByteArray m_cupsInstance;
+    QMarginsF m_customMargins;
+    mutable QHash<QString, QMarginsF> m_printableMargins;
 };
 
 #endif

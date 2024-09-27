@@ -33,55 +33,63 @@ QT_BEGIN_NAMESPACE
 // primarily read from bindings is a candidate for inclusion as a fast
 // property.
 
-static void QObject_objectName(QObject *object, void *output, QDeclarativeNotifierEndpoint *endpoint)
+static void QObject_objectName( QObject *object, void *output, QDeclarativeNotifierEndpoint *endpoint )
 {
-   if (endpoint) {
-      endpoint->connect(QDeclarativeData::get(object, true)->objectNameNotifier());
-   }
-   *((QString *)output) = object->objectName();
+    if ( endpoint )
+    {
+        endpoint->connect( QDeclarativeData::get( object, true )->objectNameNotifier() );
+    }
+
+    *( ( QString * )output ) = object->objectName();
 }
 
 QDeclarativeFastProperties::QDeclarativeFastProperties()
 {
-   add(&QDeclarativeItem::staticMetaObject, QDeclarativeItem::staticMetaObject.indexOfProperty("parent"),
-       QDeclarativeItemPrivate::parentProperty);
-   add(&QObject::staticMetaObject, QObject::staticMetaObject.indexOfProperty("objectName"),
-       QObject_objectName);
+    add( &QDeclarativeItem::staticMetaObject, QDeclarativeItem::staticMetaObject.indexOfProperty( "parent" ),
+         QDeclarativeItemPrivate::parentProperty );
+    add( &QObject::staticMetaObject, QObject::staticMetaObject.indexOfProperty( "objectName" ),
+         QObject_objectName );
 }
 
-int QDeclarativeFastProperties::accessorIndexForProperty(const QMetaObject *metaObject, int propertyIndex)
+int QDeclarativeFastProperties::accessorIndexForProperty( const QMetaObject *metaObject, int propertyIndex )
 {
-   Q_ASSERT(metaObject);
-   Q_ASSERT(propertyIndex >= 0);
+    Q_ASSERT( metaObject );
+    Q_ASSERT( propertyIndex >= 0 );
 
-   // Find the "real" metaObject
-   while (metaObject->propertyOffset() > propertyIndex) {
-      metaObject = metaObject->superClass();
-   }
+    // Find the "real" metaObject
+    while ( metaObject->propertyOffset() > propertyIndex )
+    {
+        metaObject = metaObject->superClass();
+    }
 
-   QHash<QPair<const QMetaObject *, int>, int>::Iterator iter =
-      m_index.find(qMakePair(metaObject, propertyIndex));
-   if (iter != m_index.end()) {
-      return *iter;
-   } else {
-      return -1;
-   }
+    QHash<QPair<const QMetaObject *, int>, int>::Iterator iter =
+        m_index.find( qMakePair( metaObject, propertyIndex ) );
+
+    if ( iter != m_index.end() )
+    {
+        return *iter;
+    }
+    else
+    {
+        return -1;
+    }
 }
 
-void QDeclarativeFastProperties::add(const QMetaObject *metaObject, int propertyIndex, Accessor accessor)
+void QDeclarativeFastProperties::add( const QMetaObject *metaObject, int propertyIndex, Accessor accessor )
 {
-   Q_ASSERT(metaObject);
-   Q_ASSERT(propertyIndex >= 0);
+    Q_ASSERT( metaObject );
+    Q_ASSERT( propertyIndex >= 0 );
 
-   // Find the "real" metaObject
-   while (metaObject->propertyOffset() > propertyIndex) {
-      metaObject = metaObject->superClass();
-   }
+    // Find the "real" metaObject
+    while ( metaObject->propertyOffset() > propertyIndex )
+    {
+        metaObject = metaObject->superClass();
+    }
 
-   QPair<const QMetaObject *, int> data = qMakePair(metaObject, propertyIndex);
-   int accessorIndex = m_accessors.count();
-   m_accessors.append(accessor);
-   m_index.insert(data, accessorIndex);
+    QPair<const QMetaObject *, int> data = qMakePair( metaObject, propertyIndex );
+    int accessorIndex = m_accessors.count();
+    m_accessors.append( accessor );
+    m_index.insert( data, accessorIndex );
 }
 
 QT_END_NAMESPACE

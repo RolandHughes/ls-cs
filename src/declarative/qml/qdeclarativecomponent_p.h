@@ -44,95 +44,103 @@ class QDeclarativeCompiledData;
 class QDeclarativeComponentAttached;
 class QDeclarativeComponentPrivate : public QDeclarativeTypeData::TypeDataCallback
 {
-   Q_DECLARE_PUBLIC(QDeclarativeComponent)
+    Q_DECLARE_PUBLIC( QDeclarativeComponent )
 
- public:
-   QDeclarativeComponentPrivate() : typeData(0), progress(0.), start(-1), count(-1), cc(0), engine(0),
-      creationContext(0) {}
+public:
+    QDeclarativeComponentPrivate() : typeData( 0 ), progress( 0. ), start( -1 ), count( -1 ), cc( 0 ), engine( 0 ),
+        creationContext( 0 ) {}
 
-   QObject *beginCreate(QDeclarativeContextData *, const QBitField &);
-   void completeCreate();
+    QObject *beginCreate( QDeclarativeContextData *, const QBitField & );
+    void completeCreate();
 
-   QDeclarativeTypeData *typeData;
-   virtual void typeDataReady(QDeclarativeTypeData *);
-   virtual void typeDataProgress(QDeclarativeTypeData *, qreal);
+    QDeclarativeTypeData *typeData;
+    virtual void typeDataReady( QDeclarativeTypeData * );
+    virtual void typeDataProgress( QDeclarativeTypeData *, qreal );
 
-   void fromTypeData(QDeclarativeTypeData *data);
+    void fromTypeData( QDeclarativeTypeData *data );
 
-   QUrl url;
-   qreal progress;
+    QUrl url;
+    qreal progress;
 
-   int start;
-   int count;
-   QDeclarativeCompiledData *cc;
+    int start;
+    int count;
+    QDeclarativeCompiledData *cc;
 
-   struct ConstructionState {
-      ConstructionState() : componentAttached(0), completePending(false) {}
-      QList<QDeclarativeEnginePrivate::SimpleList<QDeclarativeAbstractBinding> > bindValues;
-      QList<QDeclarativeEnginePrivate::SimpleList<QDeclarativeParserStatus> > parserStatus;
-      QList<QPair<QDeclarativeGuard<QObject>, int> > finalizedParserStatus;
-      QDeclarativeComponentAttached *componentAttached;
-      QList<QDeclarativeError> errors;
-      bool completePending;
-   };
-   ConstructionState state;
+    struct ConstructionState
+    {
+        ConstructionState() : componentAttached( 0 ), completePending( false ) {}
+        QList<QDeclarativeEnginePrivate::SimpleList<QDeclarativeAbstractBinding> > bindValues;
+        QList<QDeclarativeEnginePrivate::SimpleList<QDeclarativeParserStatus> > parserStatus;
+        QList<QPair<QDeclarativeGuard<QObject>, int> > finalizedParserStatus;
+        QDeclarativeComponentAttached *componentAttached;
+        QList<QDeclarativeError> errors;
+        bool completePending;
+    };
+    ConstructionState state;
 
-   static QObject *begin(QDeclarativeContextData *parentContext, QDeclarativeContextData *componentCreationContext,
-                         QDeclarativeCompiledData *component, int start, int count,
-                         ConstructionState *state, QList<QDeclarativeError> *errors,
-                         const QBitField &bindings = QBitField());
-   static void beginDeferred(QDeclarativeEnginePrivate *enginePriv, QObject *object,
-                             ConstructionState *state);
-   static void complete(QDeclarativeEnginePrivate *enginePriv, ConstructionState *state);
+    static QObject *begin( QDeclarativeContextData *parentContext, QDeclarativeContextData *componentCreationContext,
+                           QDeclarativeCompiledData *component, int start, int count,
+                           ConstructionState *state, QList<QDeclarativeError> *errors,
+                           const QBitField &bindings = QBitField() );
+    static void beginDeferred( QDeclarativeEnginePrivate *enginePriv, QObject *object,
+                               ConstructionState *state );
+    static void complete( QDeclarativeEnginePrivate *enginePriv, ConstructionState *state );
 
-   QScriptValue createObject(QObject *publicParent, const QScriptValue valuemap);
+    QScriptValue createObject( QObject *publicParent, const QScriptValue valuemap );
 
-   QDeclarativeEngine *engine;
-   QDeclarativeGuardedContextData creationContext;
+    QDeclarativeEngine *engine;
+    QDeclarativeGuardedContextData creationContext;
 
-   void clear();
+    void clear();
 
-   static QDeclarativeComponentPrivate *get(QDeclarativeComponent *c) {
-      return static_cast<QDeclarativeComponentPrivate *>(QObjectPrivate::get(c));
-   }
+    static QDeclarativeComponentPrivate *get( QDeclarativeComponent *c )
+    {
+        return static_cast<QDeclarativeComponentPrivate *>( QObjectPrivate::get( c ) );
+    }
 };
 
 class QDeclarativeComponentAttached : public QObject
 {
-   DECL_CS_OBJECT(QDeclarativeComponentAttached)
+    DECL_CS_OBJECT( QDeclarativeComponentAttached )
 
- public:
-   QDeclarativeComponentAttached(QObject *parent = nullptr);
-   ~QDeclarativeComponentAttached();
+public:
+    QDeclarativeComponentAttached( QObject *parent = nullptr );
+    ~QDeclarativeComponentAttached();
 
-   void add(QDeclarativeComponentAttached **a) {
-      prev = a;
-      next = *a;
-      *a = this;
-      if (next) {
-         next->prev = &next;
-      }
-   }
-   void rem() {
-      if (next) {
-         next->prev = prev;
-      }
-      *prev = next;
-      next = 0;
-      prev = 0;
-   }
-   QDeclarativeComponentAttached **prev;
-   QDeclarativeComponentAttached *next;
+    void add( QDeclarativeComponentAttached **a )
+    {
+        prev = a;
+        next = *a;
+        *a = this;
 
- public:
-   DECL_CS_SIGNAL_1(Public, void completed())
-   DECL_CS_SIGNAL_2(completed)
-   DECL_CS_SIGNAL_1(Public, void destruction())
-   DECL_CS_SIGNAL_2(destruction)
+        if ( next )
+        {
+            next->prev = &next;
+        }
+    }
+    void rem()
+    {
+        if ( next )
+        {
+            next->prev = prev;
+        }
 
- private:
-   friend class QDeclarativeContextData;
-   friend class QDeclarativeComponentPrivate;
+        *prev = next;
+        next = 0;
+        prev = 0;
+    }
+    QDeclarativeComponentAttached **prev;
+    QDeclarativeComponentAttached *next;
+
+public:
+    DECL_CS_SIGNAL_1( Public, void completed() )
+    DECL_CS_SIGNAL_2( completed )
+    DECL_CS_SIGNAL_1( Public, void destruction() )
+    DECL_CS_SIGNAL_2( destruction )
+
+private:
+    friend class QDeclarativeContextData;
+    friend class QDeclarativeComponentPrivate;
 };
 
 QT_END_NAMESPACE

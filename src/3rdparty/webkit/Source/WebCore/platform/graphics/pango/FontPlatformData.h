@@ -32,54 +32,74 @@
 #include <pango/pangocairo.h>
 #include <wtf/Forward.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class FontPlatformData {
+class FontPlatformData
+{
 public:
-    FontPlatformData(WTF::HashTableDeletedValueType)
-        : m_context(0)
-        , m_font(hashTableDeletedFontValue())
-        , m_size(0)
-        , m_syntheticBold(false)
-        , m_syntheticOblique(false)
-        , m_scaledFont(0)
-        { }
+    FontPlatformData( WTF::HashTableDeletedValueType )
+        : m_context( 0 )
+        , m_font( hashTableDeletedFontValue() )
+        , m_size( 0 )
+        , m_syntheticBold( false )
+        , m_syntheticOblique( false )
+        , m_scaledFont( 0 )
+    { }
 
     FontPlatformData()
-        : m_context(0)
-        , m_font(0)
-        , m_size(0)
-        , m_syntheticBold(false)
-        , m_syntheticOblique(false)
-        , m_scaledFont(0)
-        { }
+        : m_context( 0 )
+        , m_font( 0 )
+        , m_size( 0 )
+        , m_syntheticBold( false )
+        , m_syntheticOblique( false )
+        , m_scaledFont( 0 )
+    { }
 
-    FontPlatformData(const FontDescription&, const AtomicString& family);
-    FontPlatformData(cairo_font_face_t* fontFace, float size, bool bold, bool italic);
-    FontPlatformData(float size, bool bold, bool italic);
-    FontPlatformData(const FontPlatformData&);
+    FontPlatformData( const FontDescription &, const AtomicString &family );
+    FontPlatformData( cairo_font_face_t *fontFace, float size, bool bold, bool italic );
+    FontPlatformData( float size, bool bold, bool italic );
+    FontPlatformData( const FontPlatformData & );
     ~FontPlatformData();
 
     static bool init();
     bool isFixedPitch();
-    float size() const { return m_size; }
-    void setSize(float size) { m_size = size; }
-    bool syntheticBold() const { return m_syntheticBold; }
-    bool syntheticOblique() const { return m_syntheticOblique; }
+    float size() const
+    {
+        return m_size;
+    }
+    void setSize( float size )
+    {
+        m_size = size;
+    }
+    bool syntheticBold() const
+    {
+        return m_syntheticBold;
+    }
+    bool syntheticOblique() const
+    {
+        return m_syntheticOblique;
+    }
 
-    FontOrientation orientation() const { return Horizontal; } // FIXME: Implement.
-    void setOrientation(FontOrientation) { } // FIXME: Implement.
+    FontOrientation orientation() const
+    {
+        return Horizontal;    // FIXME: Implement.
+    }
+    void setOrientation( FontOrientation ) { } // FIXME: Implement.
 
-    cairo_scaled_font_t* scaledFont() const { return m_scaledFont; }
+    cairo_scaled_font_t *scaledFont() const
+    {
+        return m_scaledFont;
+    }
 
     unsigned hash() const
     {
-        uintptr_t hashCodes[1] = { reinterpret_cast<uintptr_t>(m_scaledFont) };
-        return StringHasher::hashMemory<sizeof(hashCodes)>(hashCodes);
+        uintptr_t hashCodes[1] = { reinterpret_cast<uintptr_t>( m_scaledFont ) };
+        return StringHasher::hashMemory<sizeof( hashCodes )>( hashCodes );
     }
 
-    bool operator==(const FontPlatformData&) const;
-    FontPlatformData& operator=(const FontPlatformData&);
+    bool operator==( const FontPlatformData & ) const;
+    FontPlatformData &operator=( const FontPlatformData & );
     bool isHashTableDeletedValue() const
     {
         return m_font == hashTableDeletedFontValue();
@@ -89,16 +109,19 @@ public:
     String description() const;
 #endif
 
-    static PangoFontMap* m_fontMap;
-    static GHashTable* m_hashTable;
-    PangoContext* m_context;
-    PangoFont* m_font;
+    static PangoFontMap *m_fontMap;
+    static GHashTable *m_hashTable;
+    PangoContext *m_context;
+    PangoFont *m_font;
     float m_size;
     bool m_syntheticBold;
     bool m_syntheticOblique;
-    cairo_scaled_font_t* m_scaledFont;
+    cairo_scaled_font_t *m_scaledFont;
 private:
-    static PangoFont *hashTableDeletedFontValue() { return reinterpret_cast<PangoFont*>(-1); }
+    static PangoFont *hashTableDeletedFontValue()
+    {
+        return reinterpret_cast<PangoFont *>( -1 );
+    }
 };
 
 }

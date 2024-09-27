@@ -42,10 +42,11 @@
 #include "ScriptExecutionContext.h"
 #include "SecurityOrigin.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-AbstractWorker::AbstractWorker(ScriptExecutionContext* context)
-    : ActiveDOMObject(context, this)
+AbstractWorker::AbstractWorker( ScriptExecutionContext *context )
+    : ActiveDOMObject( context, this )
 {
 }
 
@@ -56,42 +57,47 @@ AbstractWorker::~AbstractWorker()
 
 void AbstractWorker::onDestroyWorker()
 {
-    InspectorInstrumentation::didDestroyWorker(scriptExecutionContext(), asID());
+    InspectorInstrumentation::didDestroyWorker( scriptExecutionContext(), asID() );
 }
 
 void AbstractWorker::contextDestroyed()
 {
     onDestroyWorker();
-    ActiveDOMObject::contextDestroyed(); 
+    ActiveDOMObject::contextDestroyed();
 }
 
-KURL AbstractWorker::resolveURL(const String& url, ExceptionCode& ec)
+KURL AbstractWorker::resolveURL( const String &url, ExceptionCode &ec )
 {
-    if (url.isEmpty()) {
+    if ( url.isEmpty() )
+    {
         ec = SYNTAX_ERR;
         return KURL();
     }
 
     // FIXME: This should use the dynamic global scope (bug #27887)
-    KURL scriptURL = scriptExecutionContext()->completeURL(url);
-    if (!scriptURL.isValid()) {
+    KURL scriptURL = scriptExecutionContext()->completeURL( url );
+
+    if ( !scriptURL.isValid() )
+    {
         ec = SYNTAX_ERR;
         return KURL();
     }
 
-    if (!scriptExecutionContext()->securityOrigin()->canAccess(SecurityOrigin::create(scriptURL).get())) {
+    if ( !scriptExecutionContext()->securityOrigin()->canAccess( SecurityOrigin::create( scriptURL ).get() ) )
+    {
         ec = SECURITY_ERR;
         return KURL();
     }
+
     return scriptURL;
 }
 
-EventTargetData* AbstractWorker::eventTargetData()
+EventTargetData *AbstractWorker::eventTargetData()
 {
     return &m_eventTargetData;
 }
 
-EventTargetData* AbstractWorker::ensureEventTargetData()
+EventTargetData *AbstractWorker::ensureEventTargetData()
 {
     return &m_eventTargetData;
 }

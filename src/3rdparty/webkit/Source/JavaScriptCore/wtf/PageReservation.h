@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef PageReservation_h
@@ -28,7 +28,8 @@
 
 #include <wtf/PageAllocation.h>
 
-namespace WTF {
+namespace WTF
+{
 
 /*
     PageReservation
@@ -54,12 +55,13 @@ namespace WTF {
     protection before decommit is called.
 */
 
-class PageReservation : private PageBlock {
+class PageReservation : private PageBlock
+{
 public:
     PageReservation()
-        : m_committed(0)
-        , m_writable(false)
-        , m_executable(false)
+        : m_committed( 0 )
+        , m_writable( false )
+        , m_executable( false )
     {
     }
 
@@ -71,29 +73,32 @@ public:
 #else
     // FIXME: This is a workaround for <rdar://problem/8876150>, wherein Clang incorrectly emits an access
     // control warning when a client tries to use operator bool exposed above via "using PageBlock::operator bool".
-    operator bool() const { return PageBlock::operator bool(); }
+    operator bool() const
+    {
+        return PageBlock::operator bool();
+    }
 #endif
 
-    void commit(void* start, size_t size)
+    void commit( void *start, size_t size )
     {
-        ASSERT(*this);
-        ASSERT(isPageAligned(start));
-        ASSERT(isPageAligned(size));
-        ASSERT(contains(start, size));
+        ASSERT( *this );
+        ASSERT( isPageAligned( start ) );
+        ASSERT( isPageAligned( size ) );
+        ASSERT( contains( start, size ) );
 
         m_committed += size;
-        OSAllocator::commit(start, size, m_writable, m_executable);
+        OSAllocator::commit( start, size, m_writable, m_executable );
     }
 
-    void decommit(void* start, size_t size)
+    void decommit( void *start, size_t size )
     {
-        ASSERT(*this);
-        ASSERT(isPageAligned(start));
-        ASSERT(isPageAligned(size));
-        ASSERT(contains(start, size));
+        ASSERT( *this );
+        ASSERT( isPageAligned( start ) );
+        ASSERT( isPageAligned( size ) );
+        ASSERT( contains( start, size ) );
 
         m_committed -= size;
-        OSAllocator::decommit(start, size);
+        OSAllocator::decommit( start, size );
     }
 
     size_t committed()
@@ -101,33 +106,34 @@ public:
         return m_committed;
     }
 
-    static PageReservation reserve(size_t size, OSAllocator::Usage usage = OSAllocator::UnknownUsage, bool writable = true, bool executable = false)
+    static PageReservation reserve( size_t size, OSAllocator::Usage usage = OSAllocator::UnknownUsage, bool writable = true,
+                                    bool executable = false )
     {
-        ASSERT(isPageAligned(size));
-        return PageReservation(OSAllocator::reserveUncommitted(size, usage, writable, executable), size, writable, executable);
+        ASSERT( isPageAligned( size ) );
+        return PageReservation( OSAllocator::reserveUncommitted( size, usage, writable, executable ), size, writable, executable );
     }
 
     void deallocate()
     {
-        ASSERT(!m_committed);
+        ASSERT( !m_committed );
 
         // Clear base & size before calling release; if this is *inside* allocation
         // then we won't be able to clear then after deallocating the memory.
         PageReservation tmp;
-        std::swap(tmp, *this);
+        std::swap( tmp, *this );
 
-        ASSERT(tmp);
-        ASSERT(!*this);
+        ASSERT( tmp );
+        ASSERT( !*this );
 
-        OSAllocator::releaseDecommitted(tmp.base(), tmp.size());
+        OSAllocator::releaseDecommitted( tmp.base(), tmp.size() );
     }
 
 private:
-    PageReservation(void* base, size_t size, bool writable, bool executable)
-        : PageBlock(base, size)
-        , m_committed(0)
-        , m_writable(writable)
-        , m_executable(executable)
+    PageReservation( void *base, size_t size, bool writable, bool executable )
+        : PageBlock( base, size )
+        , m_committed( 0 )
+        , m_writable( writable )
+        , m_executable( executable )
     {
     }
 

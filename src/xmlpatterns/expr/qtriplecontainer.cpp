@@ -27,39 +27,39 @@
 
 using namespace QPatternist;
 
-TripleContainer::TripleContainer(const Expression::Ptr &operand1,
-                                 const Expression::Ptr &operand2,
-                                 const Expression::Ptr &operand3) : m_operand1(operand1),
-   m_operand2(operand2),
-   m_operand3(operand3)
+TripleContainer::TripleContainer( const Expression::Ptr &operand1,
+                                  const Expression::Ptr &operand2,
+                                  const Expression::Ptr &operand3 ) : m_operand1( operand1 ),
+    m_operand2( operand2 ),
+    m_operand3( operand3 )
 {
-   Q_ASSERT(operand1);
-   Q_ASSERT(operand2);
-   Q_ASSERT(operand3);
+    Q_ASSERT( operand1 );
+    Q_ASSERT( operand2 );
+    Q_ASSERT( operand3 );
 }
 
 Expression::List TripleContainer::operands() const
 {
-   Expression::List result;
-   result.append(m_operand1);
-   result.append(m_operand2);
-   result.append(m_operand3);
-   return result;
+    Expression::List result;
+    result.append( m_operand1 );
+    result.append( m_operand2 );
+    result.append( m_operand3 );
+    return result;
 }
 
-void TripleContainer::setOperands(const Expression::List &ops)
+void TripleContainer::setOperands( const Expression::List &ops )
 {
-   Q_ASSERT(ops.count() == 3);
-   m_operand1 = ops.first();
-   m_operand2 = ops.at(1);
-   m_operand3 = ops.at(2);
+    Q_ASSERT( ops.count() == 3 );
+    m_operand1 = ops.first();
+    m_operand2 = ops.at( 1 );
+    m_operand3 = ops.at( 2 );
 }
 
-bool TripleContainer::compressOperands(const StaticContext::Ptr &context)
+bool TripleContainer::compressOperands( const StaticContext::Ptr &context )
 {
-   rewrite(m_operand1, m_operand1->compress(context), context);
-   rewrite(m_operand2, m_operand2->compress(context), context);
-   rewrite(m_operand3, m_operand3->compress(context), context);
+    rewrite( m_operand1, m_operand1->compress( context ), context );
+    rewrite( m_operand2, m_operand2->compress( context ), context );
+    rewrite( m_operand3, m_operand3->compress( context ), context );
 
-   return m_operand1->isEvaluated() && m_operand2->isEvaluated() && m_operand3->isEvaluated();
+    return m_operand1->isEvaluated() && m_operand2->isEvaluated() && m_operand3->isEvaluated();
 }

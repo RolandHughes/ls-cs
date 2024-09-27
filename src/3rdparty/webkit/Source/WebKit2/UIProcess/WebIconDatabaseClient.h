@@ -29,16 +29,18 @@
 #include "APIClient.h"
 #include "WKIconDatabase.h"
 
-namespace WebKit {
+namespace WebKit
+{
 
 class APIObject;
 class WebIconDatabase;
 class WebURL;
 
-class WebIconDatabaseClient : public APIClient<WKIconDatabaseClient> {
+class WebIconDatabaseClient : public APIClient<WKIconDatabaseClient>
+{
 public:
-    void didChangeIconForPageURL(WebIconDatabase*, WebURL*);
-    void didRemoveAllIcons(WebIconDatabase*);
+    void didChangeIconForPageURL( WebIconDatabase *, WebURL * );
+    void didRemoveAllIcons( WebIconDatabase * );
 };
 
 } // namespace WebKit

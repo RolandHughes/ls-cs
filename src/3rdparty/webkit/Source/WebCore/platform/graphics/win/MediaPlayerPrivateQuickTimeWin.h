@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef MediaPlayerPrivateQuickTimeWin_h
@@ -38,7 +38,7 @@
 
 #if USE(ACCELERATED_COMPOSITING)
 #include "GraphicsLayerClient.h"
-#endif 
+#endif
 
 #ifndef DRAW_FRAME_RATE
 #define DRAW_FRAME_RATE 0
@@ -46,19 +46,20 @@
 
 typedef struct CGImage *CGImageRef;
 
-namespace WebCore {
+namespace WebCore
+{
 
 class GraphicsContext;
 class IntSize;
 class IntRect;
 
-class MediaPlayerPrivate : public MediaPlayerPrivateInterface, public QTMovieClient, public QTMovieGWorldClient 
+class MediaPlayerPrivate : public MediaPlayerPrivateInterface, public QTMovieClient, public QTMovieGWorldClient
 #if USE(ACCELERATED_COMPOSITING)
-        , public GraphicsLayerClient
-#endif 
+    , public GraphicsLayerClient
+#endif
 {
 public:
-    static void registerMediaEngine(MediaEngineRegistrar);
+    static void registerMediaEngine( MediaEngineRegistrar );
 
     ~MediaPlayerPrivate();
 
@@ -66,80 +67,92 @@ private:
 
 #if USE(ACCELERATED_COMPOSITING)
     // GraphicsLayerClient methods
-    virtual void paintContents(const GraphicsLayer*, GraphicsContext&, GraphicsLayerPaintingPhase, const IntRect& inClip);
-    virtual void notifyAnimationStarted(const GraphicsLayer*, double time) { }
-    virtual void notifySyncRequired(const GraphicsLayer*) { }
-    virtual bool showDebugBorders() const { return false; }
-    virtual bool showRepaintCounter() const { return false; }
-#endif 
+    virtual void paintContents( const GraphicsLayer *, GraphicsContext &, GraphicsLayerPaintingPhase, const IntRect &inClip );
+    virtual void notifyAnimationStarted( const GraphicsLayer *, double time ) { }
+    virtual void notifySyncRequired( const GraphicsLayer * ) { }
+    virtual bool showDebugBorders() const
+    {
+        return false;
+    }
+    virtual bool showRepaintCounter() const
+    {
+        return false;
+    }
+#endif
 
-    MediaPlayerPrivate(MediaPlayer*);
+    MediaPlayerPrivate( MediaPlayer * );
 
     virtual bool supportsFullscreen() const;
     virtual PlatformMedia platformMedia() const;
 #if USE(ACCELERATED_COMPOSITING)
-    PlatformLayer* platformLayer() const;
+    PlatformLayer *platformLayer() const;
 #endif
 
     IntSize naturalSize() const;
     bool hasVideo() const;
     bool hasAudio() const;
 
-    void load(const String& url);
+    void load( const String &url );
     void cancelLoad();
-    
+
     void play();
-    void pause();    
-    
+    void pause();
+
     bool paused() const;
     bool seeking() const;
-    
+
     float duration() const;
     float currentTime() const;
-    void seek(float time);
-    
-    void setRate(float);
-    void setVolume(float);
-    void setPreservesPitch(bool);
-    
-    MediaPlayer::NetworkState networkState() const { return m_networkState; }
-    MediaPlayer::ReadyState readyState() const { return m_readyState; }
-    
+    void seek( float time );
+
+    void setRate( float );
+    void setVolume( float );
+    void setPreservesPitch( bool );
+
+    MediaPlayer::NetworkState networkState() const
+    {
+        return m_networkState;
+    }
+    MediaPlayer::ReadyState readyState() const
+    {
+        return m_readyState;
+    }
+
     PassRefPtr<TimeRanges> buffered() const;
     float maxTimeSeekable() const;
     unsigned bytesLoaded() const;
     unsigned totalBytes() const;
-    
-    void setVisible(bool);
-    void setSize(const IntSize&);
-    
+
+    void setVisible( bool );
+    void setSize( const IntSize & );
+
     void loadStateChanged();
     void didEnd();
-    
-    void paint(GraphicsContext*, const IntRect&);
-    void paintCompleted(GraphicsContext&, const IntRect&);
+
+    void paint( GraphicsContext *, const IntRect & );
+    void paintCompleted( GraphicsContext &, const IntRect & );
 
     bool hasSingleSecurityOrigin() const;
 
     bool hasClosedCaptions() const;
-    void setClosedCaptionsVisible(bool);
+    void setClosedCaptionsVisible( bool );
 
     void updateStates();
     void doSeek();
     void cancelSeek();
-    void seekTimerFired(Timer<MediaPlayerPrivate>*);
+    void seekTimerFired( Timer<MediaPlayerPrivate> * );
     float maxTimeLoaded() const;
     void sawUnsupportedTracks();
 
-    virtual void movieEnded(QTMovie*);
-    virtual void movieLoadStateChanged(QTMovie*);
-    virtual void movieTimeChanged(QTMovie*);
-    virtual void movieNewImageAvailable(QTMovieGWorld*);
+    virtual void movieEnded( QTMovie * );
+    virtual void movieLoadStateChanged( QTMovie * );
+    virtual void movieTimeChanged( QTMovie * );
+    virtual void movieNewImageAvailable( QTMovieGWorld * );
 
     // engine support
-    static PassOwnPtr<MediaPlayerPrivateInterface> create(MediaPlayer*);
-    static void getSupportedTypes(HashSet<String>& types);
-    static MediaPlayer::SupportsType supportsType(const String& type, const String& codecs);
+    static PassOwnPtr<MediaPlayerPrivateInterface> create( MediaPlayer * );
+    static void getSupportedTypes( HashSet<String> &types );
+    static MediaPlayer::SupportsType supportsType( const String &type, const String &codecs );
     static bool isAvailable();
 
 #if USE(ACCELERATED_COMPOSITING)
@@ -159,10 +172,10 @@ private:
     void createLayerForMovie();
     void destroyLayerForMovie();
 
-    void setUpCookiesForQuickTime(const String& url);
-    String rfc2616DateStringFromTime(CFAbsoluteTime);
+    void setUpCookiesForQuickTime( const String &url );
+    String rfc2616DateStringFromTime( CFAbsoluteTime );
 
-    MediaPlayer* m_player;
+    MediaPlayer *m_player;
     RefPtr<QTMovie> m_qtMovie;
     RefPtr<QTMovieGWorld> m_qtGWorld;
 #if USE(ACCELERATED_COMPOSITING)

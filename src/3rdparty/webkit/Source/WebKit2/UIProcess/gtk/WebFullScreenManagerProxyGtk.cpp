@@ -29,7 +29,8 @@
 
 #include <WebCore/NotImplemented.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
 void WebFullScreenManagerProxy::enterFullScreen()
 {
@@ -46,7 +47,7 @@ void WebFullScreenManagerProxy::beganEnterFullScreenAnimation()
     notImplemented();
 }
 
-void WebFullScreenManagerProxy::finishedEnterFullScreenAnimation(bool completed)
+void WebFullScreenManagerProxy::finishedEnterFullScreenAnimation( bool completed )
 {
     notImplemented();
 }
@@ -56,12 +57,12 @@ void WebFullScreenManagerProxy::beganExitFullScreenAnimation()
     notImplemented();
 }
 
-void WebFullScreenManagerProxy::finishedExitFullScreenAnimation(bool completed)
+void WebFullScreenManagerProxy::finishedExitFullScreenAnimation( bool completed )
 {
     notImplemented();
 }
 
-void WebFullScreenManagerProxy::enterAcceleratedCompositingMode(const LayerTreeContext& context)
+void WebFullScreenManagerProxy::enterAcceleratedCompositingMode( const LayerTreeContext &context )
 {
     notImplemented();
 }
@@ -71,7 +72,7 @@ void WebFullScreenManagerProxy::exitAcceleratedCompositingMode()
     notImplemented();
 }
 
-void WebFullScreenManagerProxy::getFullScreenRect(WebCore::IntRect& rect)
+void WebFullScreenManagerProxy::getFullScreenRect( WebCore::IntRect &rect )
 {
     notImplemented();
 }

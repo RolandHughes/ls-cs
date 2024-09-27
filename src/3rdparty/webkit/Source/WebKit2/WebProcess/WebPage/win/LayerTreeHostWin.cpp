@@ -30,7 +30,8 @@
 #include "LayerTreeHostCAWin.h"
 #endif
 
-namespace WebKit {
+namespace WebKit
+{
 
 bool LayerTreeHost::supportsAcceleratedCompositing()
 {

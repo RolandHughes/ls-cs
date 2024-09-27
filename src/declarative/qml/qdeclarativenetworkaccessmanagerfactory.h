@@ -32,9 +32,9 @@ class QNetworkAccessManager;
 
 class Q_DECLARATIVE_EXPORT QDeclarativeNetworkAccessManagerFactory
 {
- public:
-   virtual ~QDeclarativeNetworkAccessManagerFactory();
-   virtual QNetworkAccessManager *create(QObject *parent) = 0;
+public:
+    virtual ~QDeclarativeNetworkAccessManagerFactory();
+    virtual QNetworkAccessManager *create( QObject *parent ) = 0;
 
 };
 

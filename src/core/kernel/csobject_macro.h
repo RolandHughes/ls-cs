@@ -79,15 +79,15 @@ class QMetaObject;
 template<int N>
 class cs_number : public cs_number<N - 1>
 {
- public:
-   static constexpr int value = N;
+public:
+    static constexpr int value = N;
 };
 
 template<>
 class cs_number<0>
 {
- public:
-   static constexpr int value = 0;
+public:
+    static constexpr int value = 0;
 };
 
 #endif // doxypress

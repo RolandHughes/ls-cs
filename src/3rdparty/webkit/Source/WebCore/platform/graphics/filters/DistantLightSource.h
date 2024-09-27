@@ -26,30 +26,38 @@
 #if ENABLE(FILTERS)
 #include "LightSource.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class DistantLightSource : public LightSource {
+class DistantLightSource : public LightSource
+{
 public:
-    static PassRefPtr<DistantLightSource> create(float azimuth, float elevation)
+    static PassRefPtr<DistantLightSource> create( float azimuth, float elevation )
     {
-        return adoptRef(new DistantLightSource(azimuth, elevation));
+        return adoptRef( new DistantLightSource( azimuth, elevation ) );
     }
 
-    float azimuth() const { return m_azimuth; }
-    bool setAzimuth(float);
-    float elevation() const { return m_elevation; }
-    bool setElevation(float);
+    float azimuth() const
+    {
+        return m_azimuth;
+    }
+    bool setAzimuth( float );
+    float elevation() const
+    {
+        return m_elevation;
+    }
+    bool setElevation( float );
 
-    virtual void initPaintingData(PaintingData&);
-    virtual void updatePaintingData(PaintingData&, int x, int y, float z);
+    virtual void initPaintingData( PaintingData & );
+    virtual void updatePaintingData( PaintingData &, int x, int y, float z );
 
-    virtual TextStream& externalRepresentation(TextStream&) const;
+    virtual TextStream &externalRepresentation( TextStream & ) const;
 
 private:
-    DistantLightSource(float azimuth, float elevation)
-        : LightSource(LS_DISTANT)
-        , m_azimuth(azimuth)
-        , m_elevation(elevation)
+    DistantLightSource( float azimuth, float elevation )
+        : LightSource( LS_DISTANT )
+        , m_azimuth( azimuth )
+        , m_elevation( elevation )
     {
     }
 

@@ -34,25 +34,25 @@ using namespace WebKit;
 
 WKTypeID WKBundleBackForwardListGetTypeID()
 {
-    return toAPI(InjectedBundleBackForwardList::APIType);
+    return toAPI( InjectedBundleBackForwardList::APIType );
 }
 
-WKBundleBackForwardListItemRef WKBundleBackForwardListCopyItemAtIndex(WKBundleBackForwardListRef listRef, int index)
+WKBundleBackForwardListItemRef WKBundleBackForwardListCopyItemAtIndex( WKBundleBackForwardListRef listRef, int index )
 {
-    return toAPI(toImpl(listRef)->itemAtIndex(index).leakRef());
+    return toAPI( toImpl( listRef )->itemAtIndex( index ).leakRef() );
 }
 
-unsigned WKBundleBackForwardListGetBackListCount(WKBundleBackForwardListRef listRef)
+unsigned WKBundleBackForwardListGetBackListCount( WKBundleBackForwardListRef listRef )
 {
-    return toImpl(listRef)->backListCount();
+    return toImpl( listRef )->backListCount();
 }
 
-unsigned WKBundleBackForwardListGetForwardListCount(WKBundleBackForwardListRef listRef)
+unsigned WKBundleBackForwardListGetForwardListCount( WKBundleBackForwardListRef listRef )
 {
-    return toImpl(listRef)->forwardListCount();
+    return toImpl( listRef )->forwardListCount();
 }
 
-void WKBundleBackForwardListClear(WKBundleBackForwardListRef listRef)
+void WKBundleBackForwardListClear( WKBundleBackForwardListRef listRef )
 {
-    return toImpl(listRef)->clear();
+    return toImpl( listRef )->clear();
 }

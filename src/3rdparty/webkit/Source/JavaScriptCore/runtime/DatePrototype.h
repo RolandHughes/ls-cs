@@ -23,30 +23,32 @@
 
 #include "DateInstance.h"
 
-namespace JSC {
+namespace JSC
+{
 
-    class ObjectPrototype;
+class ObjectPrototype;
 
-    class DatePrototype : public DateInstance {
-    public:
-        DatePrototype(ExecState*, JSGlobalObject*, Structure*);
+class DatePrototype : public DateInstance
+{
+public:
+    DatePrototype( ExecState *, JSGlobalObject *, Structure * );
 
-        virtual bool getOwnPropertySlot(ExecState*, const Identifier&, PropertySlot&);
-        virtual bool getOwnPropertyDescriptor(ExecState*, const Identifier&, PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( ExecState *, const Identifier &, PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( ExecState *, const Identifier &, PropertyDescriptor & );
 
-        static const ClassInfo s_info;
+    static const ClassInfo s_info;
 
-        static Structure* createStructure(JSGlobalData& globalData, JSValue prototype)
-        {
-            return Structure::create(globalData, prototype, TypeInfo(ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
-        }
+    static Structure *createStructure( JSGlobalData &globalData, JSValue prototype )
+    {
+        return Structure::create( globalData, prototype, TypeInfo( ObjectType, StructureFlags ), AnonymousSlotCount, &s_info );
+    }
 
-    protected:
-        static const unsigned StructureFlags = OverridesGetOwnPropertySlot | DateInstance::StructureFlags;
+protected:
+    static const unsigned StructureFlags = OverridesGetOwnPropertySlot | DateInstance::StructureFlags;
 
-        COMPILE_ASSERT(!DateInstance::AnonymousSlotCount, DatePrototype_stomps_on_your_anonymous_slot);
-        static const unsigned AnonymousSlotCount = 1;
-    };
+    COMPILE_ASSERT( !DateInstance::AnonymousSlotCount, DatePrototype_stomps_on_your_anonymous_slot );
+    static const unsigned AnonymousSlotCount = 1;
+};
 
 } // namespace JSC
 

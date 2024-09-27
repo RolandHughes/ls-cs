@@ -28,17 +28,19 @@
 
 #include "HTMLElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class HTMLTablePartElement : public HTMLElement {
+class HTMLTablePartElement : public HTMLElement
+{
 protected:
-    HTMLTablePartElement(const QualifiedName& tagName, Document* document)
-        : HTMLElement(tagName, document)
+    HTMLTablePartElement( const QualifiedName &tagName, Document *document )
+        : HTMLElement( tagName, document )
     {
     }
 
-    virtual bool mapToEntry(const QualifiedName&, MappedAttributeEntry&) const;
-    virtual void parseMappedAttribute(Attribute*);
+    virtual bool mapToEntry( const QualifiedName &, MappedAttributeEntry & ) const;
+    virtual void parseMappedAttribute( Attribute * );
 };
 
 } //namespace

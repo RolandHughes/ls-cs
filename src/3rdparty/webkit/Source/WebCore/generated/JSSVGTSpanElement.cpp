@@ -29,9 +29,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSSVGTSpanElement);
+ASSERT_CLASS_FITS_IN_CELL( JSSVGTSpanElement );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -42,8 +43,8 @@ ASSERT_CLASS_FITS_IN_CELL(JSSVGTSpanElement);
 
 static const HashTableValue JSSVGTSpanElementTableValues[2] =
 {
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGTSpanElementConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGTSpanElementConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -57,43 +58,51 @@ static JSC_CONST_HASHTABLE HashTable JSSVGTSpanElementTable = { 2, 1, JSSVGTSpan
 
 static const HashTableValue JSSVGTSpanElementConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSSVGTSpanElementConstructorTable = { 1, 0, JSSVGTSpanElementConstructorTableValues, 0 };
-class JSSVGTSpanElementConstructor : public DOMConstructorObject {
+class JSSVGTSpanElementConstructor : public DOMConstructorObject
+{
 public:
-    JSSVGTSpanElementConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSSVGTSpanElementConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSSVGTSpanElementConstructor::s_info = { "SVGTSpanElementConstructor", &DOMConstructorObject::s_info, &JSSVGTSpanElementConstructorTable, 0 };
 
-JSSVGTSpanElementConstructor::JSSVGTSpanElementConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSSVGTSpanElementConstructor::JSSVGTSpanElementConstructor( ExecState *exec, Structure *structure,
+        JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSSVGTSpanElementPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSSVGTSpanElementPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSSVGTSpanElementConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGTSpanElementConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSVGTSpanElementConstructor, JSDOMWrapper>(exec, &JSSVGTSpanElementConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSSVGTSpanElementConstructor, JSDOMWrapper>( exec, &JSSVGTSpanElementConstructorTable, this,
+            propertyName, slot );
 }
 
-bool JSSVGTSpanElementConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGTSpanElementConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSVGTSpanElementConstructor, JSDOMWrapper>(exec, &JSSVGTSpanElementConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSVGTSpanElementConstructor, JSDOMWrapper>( exec, &JSSVGTSpanElementConstructorTable, this,
+            propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -105,50 +114,53 @@ bool JSSVGTSpanElementConstructor::getOwnPropertyDescriptor(ExecState* exec, con
 
 static const HashTableValue JSSVGTSpanElementPrototypeTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSSVGTSpanElementPrototypeTable = { 1, 0, JSSVGTSpanElementPrototypeTableValues, 0 };
 const ClassInfo JSSVGTSpanElementPrototype::s_info = { "SVGTSpanElementPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSSVGTSpanElementPrototypeTable, 0 };
 
-JSObject* JSSVGTSpanElementPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSVGTSpanElementPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSSVGTSpanElement>(exec, globalObject);
+    return getDOMPrototype<JSSVGTSpanElement>( exec, globalObject );
 }
 
 const ClassInfo JSSVGTSpanElement::s_info = { "SVGTSpanElement", &JSSVGTextPositioningElement::s_info, &JSSVGTSpanElementTable, 0 };
 
-JSSVGTSpanElement::JSSVGTSpanElement(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<SVGTSpanElement> impl)
-    : JSSVGTextPositioningElement(structure, globalObject, impl)
+JSSVGTSpanElement::JSSVGTSpanElement( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<SVGTSpanElement> impl )
+    : JSSVGTextPositioningElement( structure, globalObject, impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSSVGTSpanElement::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSVGTSpanElement::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSSVGTSpanElementPrototype(exec->globalData(), globalObject, JSSVGTSpanElementPrototype::createStructure(exec->globalData(), JSSVGTextPositioningElementPrototype::self(exec, globalObject)));
+    return new ( exec ) JSSVGTSpanElementPrototype( exec->globalData(), globalObject,
+            JSSVGTSpanElementPrototype::createStructure( exec->globalData(), JSSVGTextPositioningElementPrototype::self( exec,
+                    globalObject ) ) );
 }
 
-bool JSSVGTSpanElement::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGTSpanElement::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSVGTSpanElement, Base>(exec, &JSSVGTSpanElementTable, this, propertyName, slot);
+    return getStaticValueSlot<JSSVGTSpanElement, Base>( exec, &JSSVGTSpanElementTable, this, propertyName, slot );
 }
 
-bool JSSVGTSpanElement::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGTSpanElement::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSVGTSpanElement, Base>(exec, &JSSVGTSpanElementTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSVGTSpanElement, Base>( exec, &JSSVGTSpanElementTable, this, propertyName, descriptor );
 }
 
-JSValue jsSVGTSpanElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGTSpanElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGTSpanElement* domObject = static_cast<JSSVGTSpanElement*>(asObject(slotBase));
-    return JSSVGTSpanElement::getConstructor(exec, domObject->globalObject());
+    JSSVGTSpanElement *domObject = static_cast<JSSVGTSpanElement *>( asObject( slotBase ) );
+    return JSSVGTSpanElement::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSSVGTSpanElement::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSSVGTSpanElement::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSSVGTSpanElementConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSSVGTSpanElementConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
 

@@ -35,14 +35,14 @@
 
 #if COMPILER(MSVC)
 
-inline int strncasecmp(const char* s1, const char* s2, size_t len)
+inline int strncasecmp( const char *s1, const char *s2, size_t len )
 {
-    return _strnicmp(s1, s2, len);
+    return _strnicmp( s1, s2, len );
 }
 
-inline int strcasecmp(const char* s1, const char* s2)
+inline int strcasecmp( const char *s1, const char *s2 )
 {
-    return _stricmp(s1, s2);
+    return _stricmp( s1, s2 );
 }
 
 #endif
@@ -50,15 +50,23 @@ inline int strcasecmp(const char* s1, const char* s2)
 #if OS(WINDOWS) || OS(LINUX)
 // FIXME: should check HAVE_STRNSTR
 
-inline char* strnstr(const char* buffer, const char* target, size_t bufferLength)
+inline char *strnstr( const char *buffer, const char *target, size_t bufferLength )
 {
-    size_t targetLength = strlen(target);
-    if (targetLength == 0)
-        return const_cast<char*>(buffer);
-    for (const char* start = buffer; *start && start + targetLength <= buffer + bufferLength; start++) {
-        if (*start == *target && strncmp(start + 1, target + 1, targetLength - 1) == 0)
-            return const_cast<char*>(start);
+    size_t targetLength = strlen( target );
+
+    if ( targetLength == 0 )
+    {
+        return const_cast<char *>( buffer );
     }
+
+    for ( const char *start = buffer; *start && start + targetLength <= buffer + bufferLength; start++ )
+    {
+        if ( *start == *target && strncmp( start + 1, target + 1, targetLength - 1 ) == 0 )
+        {
+            return const_cast<char *>( start );
+        }
+    }
+
     return nullptr;
 }
 
@@ -66,8 +74,8 @@ inline char* strnstr(const char* buffer, const char* target, size_t bufferLength
 
 #if COMPILER(RVCT) && __ARMCC_VERSION < 400000
 
-int strcasecmp(const char* s1, const char* s2);
-int strncasecmp(const char* s1, const char* s2, size_t len);
+int strcasecmp( const char *s1, const char *s2 );
+int strncasecmp( const char *s1, const char *s2, size_t len );
 
 #endif
 

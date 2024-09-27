@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef CSSSegmentedFontFace_h
@@ -32,7 +32,8 @@
 #include <wtf/Vector.h>
 #include <wtf/unicode/Unicode.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class CSSFontFace;
 class CSSFontSelector;
@@ -40,27 +41,34 @@ class FontData;
 class FontDescription;
 class SegmentedFontData;
 
-class CSSSegmentedFontFace : public RefCounted<CSSSegmentedFontFace> {
+class CSSSegmentedFontFace : public RefCounted<CSSSegmentedFontFace>
+{
 public:
-    static PassRefPtr<CSSSegmentedFontFace> create(CSSFontSelector* selector) { return adoptRef(new CSSSegmentedFontFace(selector)); }
+    static PassRefPtr<CSSSegmentedFontFace> create( CSSFontSelector *selector )
+    {
+        return adoptRef( new CSSSegmentedFontFace( selector ) );
+    }
     ~CSSSegmentedFontFace();
 
-    CSSFontSelector* fontSelector() const { return m_fontSelector; }
+    CSSFontSelector *fontSelector() const
+    {
+        return m_fontSelector;
+    }
 
-    void fontLoaded(CSSFontFace*);
+    void fontLoaded( CSSFontFace * );
 
-    void appendFontFace(PassRefPtr<CSSFontFace>);
+    void appendFontFace( PassRefPtr<CSSFontFace> );
 
-    FontData* getFontData(const FontDescription&);
+    FontData *getFontData( const FontDescription & );
 
 private:
-    CSSSegmentedFontFace(CSSFontSelector*);
+    CSSSegmentedFontFace( CSSFontSelector * );
 
     void pruneTable();
     bool isValid() const;
 
-    CSSFontSelector* m_fontSelector;
-    HashMap<unsigned, SegmentedFontData*> m_fontDataTable;
+    CSSFontSelector *m_fontSelector;
+    HashMap<unsigned, SegmentedFontData *> m_fontDataTable;
     Vector<RefPtr<CSSFontFace>, 1> m_fontFaces;
 };
 

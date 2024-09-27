@@ -30,53 +30,54 @@
 #include <qdynamiccontext_p.h>
 #include <qitem_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class CachingIterator : public Item::Iterator
 {
- public:
-   /**
-    * We always use the same cache cell so why don't we use it directly,
-    * instead of passing the slot and ItemSequenceCacheCell::Vector to
-    * this class? Because the GenericDynamicContext might decide to resize
-    * the vector and that would invalidate the reference.
-    *
-    * We intentionally pass in a non-const reference here.
-    */
-   CachingIterator(ItemSequenceCacheCell::Vector &cacheCells, const VariableSlotID slot, const DynamicContext::Ptr &context);
+public:
+    /**
+     * We always use the same cache cell so why don't we use it directly,
+     * instead of passing the slot and ItemSequenceCacheCell::Vector to
+     * this class? Because the GenericDynamicContext might decide to resize
+     * the vector and that would invalidate the reference.
+     *
+     * We intentionally pass in a non-const reference here.
+     */
+    CachingIterator( ItemSequenceCacheCell::Vector &cacheCells, const VariableSlotID slot, const DynamicContext::Ptr &context );
 
-   Item next() override;
-   Item current() const override;
-   xsInteger position() const override;
-   Item::Iterator::Ptr copy() const override;
+    Item next() override;
+    Item current() const override;
+    xsInteger position() const override;
+    Item::Iterator::Ptr copy() const override;
 
- private:
-   Item      m_current;
-   xsInteger m_position;
+private:
+    Item      m_current;
+    xsInteger m_position;
 
-   /**
-    * This variable cannot be called m_slot, because
-    * /usr/include/sys/sysmacros.h on hpuxi-acc defines it.
-    */
-   const VariableSlotID        m_varSlot;
+    /**
+     * This variable cannot be called m_slot, because
+     * /usr/include/sys/sysmacros.h on hpuxi-acc defines it.
+     */
+    const VariableSlotID        m_varSlot;
 
-   /**
-    * We don't use the context. We only keep a reference such that it
-    * doesn't get deleted, and m_cacheCells starts to dangle.
-    */
-   const DynamicContext::Ptr   m_context;
+    /**
+     * We don't use the context. We only keep a reference such that it
+     * doesn't get deleted, and m_cacheCells starts to dangle.
+     */
+    const DynamicContext::Ptr   m_context;
 
-   /**
-    * We intentionally store a reference here such that we are able to
-    * modify the item.
-    */
-   ItemSequenceCacheCell::Vector &m_cacheCells;
+    /**
+     * We intentionally store a reference here such that we are able to
+     * modify the item.
+     */
+    ItemSequenceCacheCell::Vector &m_cacheCells;
 
-   /**
-    * Whether this CachingIterator is delivering items from
-    * m_cacheCell.cacheItems or from m_cacheCell.sourceIterator.
-    */
-   bool m_usingCache;
+    /**
+     * Whether this CachingIterator is delivering items from
+     * m_cacheCell.cacheItems or from m_cacheCell.sourceIterator.
+     */
+    bool m_usingCache;
 };
 
 }

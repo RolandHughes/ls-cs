@@ -23,16 +23,17 @@
 #include "Error.h"
 #include "ExceptionHelpers.h"
 
-namespace JSC {
+namespace JSC
+{
 
 EncodedJSValue StringRecursionChecker::throwStackOverflowError()
 {
-    return throwVMError(m_exec, createStackOverflowError(m_exec));
+    return throwVMError( m_exec, createStackOverflowError( m_exec ) );
 }
 
 EncodedJSValue StringRecursionChecker::emptyString()
 {
-    return JSValue::encode(jsEmptyString(m_exec));
+    return JSValue::encode( jsEmptyString( m_exec ) );
 }
 
 }

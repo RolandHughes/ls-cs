@@ -28,13 +28,13 @@
 
 class AVFCameraInfoControl : public QCameraInfoControl
 {
-   CS_OBJECT(AVFCameraInfoControl)
+    CS_OBJECT( AVFCameraInfoControl )
 
- public:
-   explicit AVFCameraInfoControl(QObject *parent = nullptr);
+public:
+    explicit AVFCameraInfoControl( QObject *parent = nullptr );
 
-   QCamera::Position cameraPosition(const QString &deviceName) const override;
-   int cameraOrientation(const QString &deviceName) const override;
+    QCamera::Position cameraPosition( const QString &deviceName ) const override;
+    int cameraOrientation( const QString &deviceName ) const override;
 };
 
 #endif

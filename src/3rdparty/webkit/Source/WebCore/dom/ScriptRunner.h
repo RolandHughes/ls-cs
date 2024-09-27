@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef ScriptRunner_h
@@ -33,34 +33,44 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class CachedScript;
 class Document;
 class PendingScript;
 class ScriptElement;
 
-class ScriptRunner {
-    WTF_MAKE_NONCOPYABLE(ScriptRunner); WTF_MAKE_FAST_ALLOCATED;
+class ScriptRunner
+{
+    WTF_MAKE_NONCOPYABLE( ScriptRunner );
+    WTF_MAKE_FAST_ALLOCATED;
 public:
-    static PassOwnPtr<ScriptRunner> create(Document* document) { return adoptPtr(new ScriptRunner(document)); }
+    static PassOwnPtr<ScriptRunner> create( Document *document )
+    {
+        return adoptPtr( new ScriptRunner( document ) );
+    }
     ~ScriptRunner();
 
     enum ExecutionType { ASYNC_EXECUTION, IN_ORDER_EXECUTION };
-    void queueScriptForExecution(ScriptElement*, CachedResourceHandle<CachedScript>, ExecutionType);
-    bool hasPendingScripts() const { return !m_scriptsToExecuteSoon.isEmpty() || !m_scriptsToExecuteInOrder.isEmpty(); }
+    void queueScriptForExecution( ScriptElement *, CachedResourceHandle<CachedScript>, ExecutionType );
+    bool hasPendingScripts() const
+    {
+        return !m_scriptsToExecuteSoon.isEmpty() || !m_scriptsToExecuteInOrder.isEmpty();
+    }
     void suspend();
     void resume();
     void notifyInOrderScriptReady();
 
 private:
-    ScriptRunner(Document*);
+    ScriptRunner( Document * );
 
-    void timerFired(Timer<ScriptRunner>*);
+    void timerFired( Timer<ScriptRunner> * );
 
-    Document* m_document;
+    Document *m_document;
     Vector<PendingScript> m_scriptsToExecuteInOrder;
-    Vector<PendingScript> m_scriptsToExecuteSoon; // http://www.whatwg.org/specs/web-apps/current-work/#set-of-scripts-that-will-execute-as-soon-as-possible
+    Vector<PendingScript>
+    m_scriptsToExecuteSoon; // http://www.whatwg.org/specs/web-apps/current-work/#set-of-scripts-that-will-execute-as-soon-as-possible
     Timer<ScriptRunner> m_timer;
 };
 

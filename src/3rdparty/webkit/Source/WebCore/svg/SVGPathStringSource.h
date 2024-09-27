@@ -26,37 +26,39 @@
 #include "SVGPathSource.h"
 #include <wtf/PassOwnPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class SVGPathStringSource : public SVGPathSource {
+class SVGPathStringSource : public SVGPathSource
+{
 public:
-    static PassOwnPtr<SVGPathStringSource> create(const String& string)
+    static PassOwnPtr<SVGPathStringSource> create( const String &string )
     {
-        return adoptPtr(new SVGPathStringSource(string));
+        return adoptPtr( new SVGPathStringSource( string ) );
     }
 
 private:
-    SVGPathStringSource(const String&);
+    SVGPathStringSource( const String & );
 
     virtual bool hasMoreData() const;
     virtual bool moveToNextToken();
-    virtual bool parseSVGSegmentType(SVGPathSegType&);
-    virtual SVGPathSegType nextCommand(SVGPathSegType previousCommand);
+    virtual bool parseSVGSegmentType( SVGPathSegType & );
+    virtual SVGPathSegType nextCommand( SVGPathSegType previousCommand );
 
-    virtual bool parseMoveToSegment(FloatPoint&);
-    virtual bool parseLineToSegment(FloatPoint&);
-    virtual bool parseLineToHorizontalSegment(float&);
-    virtual bool parseLineToVerticalSegment(float&);
-    virtual bool parseCurveToCubicSegment(FloatPoint&, FloatPoint&, FloatPoint&);
-    virtual bool parseCurveToCubicSmoothSegment(FloatPoint&, FloatPoint&);
-    virtual bool parseCurveToQuadraticSegment(FloatPoint&, FloatPoint&);
-    virtual bool parseCurveToQuadraticSmoothSegment(FloatPoint&);
-    virtual bool parseArcToSegment(float&, float&, float&, bool&, bool&, FloatPoint&);
+    virtual bool parseMoveToSegment( FloatPoint & );
+    virtual bool parseLineToSegment( FloatPoint & );
+    virtual bool parseLineToHorizontalSegment( float & );
+    virtual bool parseLineToVerticalSegment( float & );
+    virtual bool parseCurveToCubicSegment( FloatPoint &, FloatPoint &, FloatPoint & );
+    virtual bool parseCurveToCubicSmoothSegment( FloatPoint &, FloatPoint & );
+    virtual bool parseCurveToQuadraticSegment( FloatPoint &, FloatPoint & );
+    virtual bool parseCurveToQuadraticSmoothSegment( FloatPoint & );
+    virtual bool parseArcToSegment( float &, float &, float &, bool &, bool &, FloatPoint & );
 
     String m_string;
 
-    const UChar* m_current;
-    const UChar* m_end;
+    const UChar *m_current;
+    const UChar *m_end;
 };
 
 } // namespace WebCore

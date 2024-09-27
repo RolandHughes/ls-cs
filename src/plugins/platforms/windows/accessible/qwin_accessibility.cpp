@@ -66,60 +66,67 @@ QWindowsAccessibility::QWindowsAccessibility()
 }
 
 // Retrieve sound name by checking the icon property of a message box
-static inline QString messageBoxAlertSound(const QObject *messageBox)
+static inline QString messageBoxAlertSound( const QObject *messageBox )
 {
-    enum MessageBoxIcon { // Keep in sync with QMessageBox::Icon
+    enum MessageBoxIcon   // Keep in sync with QMessageBox::Icon
+    {
         Information = 1,
         Warning = 2,
         Critical = 3
     };
 
-    switch (messageBox->property("icon").toInt()) {
-    case Information:
-        return QString("SystemAsterisk");
-    case Warning:
-        return QString("SystemExclamation");
-    case Critical:
-        return QString("SystemHand");
+    switch ( messageBox->property( "icon" ).toInt() )
+    {
+        case Information:
+            return QString( "SystemAsterisk" );
+
+        case Warning:
+            return QString( "SystemExclamation" );
+
+        case Critical:
+            return QString( "SystemHand" );
     }
 
     return QString();
 }
 
-void QWindowsAccessibility::notifyAccessibilityUpdate(QAccessibleEvent *event)
+void QWindowsAccessibility::notifyAccessibilityUpdate( QAccessibleEvent *event )
 {
     QString soundName;
 
-    switch (event->type()) {
-       case QAccessible::PopupMenuStart:
-           soundName = "MenuPopup";
-           break;
+    switch ( event->type() )
+    {
+        case QAccessible::PopupMenuStart:
+            soundName = "MenuPopup";
+            break;
 
-       case QAccessible::MenuCommand:
-           soundName = "MenuCommand";
-           break;
+        case QAccessible::MenuCommand:
+            soundName = "MenuCommand";
+            break;
 
-       case QAccessible::Alert:
-           soundName = event->object()->inherits("QMessageBox") ?
-               messageBoxAlertSound(event->object()) : QString("SystemAsterisk");
-           break;
+        case QAccessible::Alert:
+            soundName = event->object()->inherits( "QMessageBox" ) ?
+                        messageBoxAlertSound( event->object() ) : QString( "SystemAsterisk" );
+            break;
 
-       default:
-           break;
+        default:
+            break;
     }
 
-    if (! soundName.isEmpty()) {
+    if ( ! soundName.isEmpty() )
+    {
 
 #ifndef QT_NO_SETTINGS
-        QSettings settings("HKEY_CURRENT_USER\\AppEvents\\Schemes\\Apps\\.Default\\" + soundName, QSettings::NativeFormat);
-        QString file = settings.value(".Current/.").toString();
+        QSettings settings( "HKEY_CURRENT_USER\\AppEvents\\Schemes\\Apps\\.Default\\" + soundName, QSettings::NativeFormat );
+        QString file = settings.value( ".Current/." ).toString();
 #else
         QString file;
 #endif
 
-        if (! file.isEmpty()) {
+        if ( ! file.isEmpty() )
+        {
             std::wstring tmp = soundName.toStdWString();
-            PlaySound(tmp.data(), nullptr, SND_ALIAS | SND_ASYNC | SND_NODEFAULT | SND_NOWAIT);
+            PlaySound( tmp.data(), nullptr, SND_ALIAS | SND_ASYNC | SND_NODEFAULT | SND_NOWAIT );
         }
     }
 
@@ -127,41 +134,56 @@ void QWindowsAccessibility::notifyAccessibilityUpdate(QAccessibleEvent *event)
     // so find the first parent that is a widget and that has a WId
     QAccessibleInterface *iface = event->accessibleInterface();
 
-    if (! isActive() || !iface || ! iface->isValid())
+    if ( ! isActive() || !iface || ! iface->isValid() )
+    {
         return;
+    }
 
-    QWindow *window = QWindowsAccessibility::windowHelper(iface);
+    QWindow *window = QWindowsAccessibility::windowHelper( iface );
 
-    if (!window) {
+    if ( !window )
+    {
         window = QApplication::focusWindow();
-        if (!window)
+
+        if ( !window )
+        {
             return;
+        }
     }
 
     QPlatformNativeInterface *platform = QApplication::platformNativeInterface();
-    if (!window->handle()) // Called before show(), no native window yet.
+
+    if ( !window->handle() ) // Called before show(), no native window yet.
+    {
         return;
+    }
 
-    const HWND hWnd = reinterpret_cast<HWND>(platform->nativeResourceForWindow("handle", window));
+    const HWND hWnd = reinterpret_cast<HWND>( platform->nativeResourceForWindow( "handle", window ) );
 
-    if (event->type() != QAccessible::MenuCommand && // MenuCommand is faked
-        event->type() != QAccessible::ObjectDestroyed) {
-        ::NotifyWinEvent(event->type(), hWnd, OBJID_CLIENT, QAccessible::uniqueId(iface));
+    if ( event->type() != QAccessible::MenuCommand && // MenuCommand is faked
+            event->type() != QAccessible::ObjectDestroyed )
+    {
+        ::NotifyWinEvent( event->type(), hWnd, OBJID_CLIENT, QAccessible::uniqueId( iface ) );
     }
 
 }
 
-QWindow *QWindowsAccessibility::windowHelper(const QAccessibleInterface *iface)
+QWindow *QWindowsAccessibility::windowHelper( const QAccessibleInterface *iface )
 {
     QWindow *window = iface->window();
-    if (!window) {
+
+    if ( !window )
+    {
         QAccessibleInterface *acc = iface->parent();
-        while (acc && acc->isValid() && !window) {
+
+        while ( acc && acc->isValid() && !window )
+        {
             window = acc->window();
             QAccessibleInterface *par = acc->parent();
             acc = par;
         }
     }
+
     return window;
 }
 
@@ -169,57 +191,75 @@ QWindow *QWindowsAccessibility::windowHelper(const QAccessibleInterface *iface)
   \internal
   helper to wrap a QAccessibleInterface inside a IAccessible*
 */
-IAccessible *QWindowsAccessibility::wrap(QAccessibleInterface *acc)
+IAccessible *QWindowsAccessibility::wrap( QAccessibleInterface *acc )
 {
-    if (! acc)
+    if ( ! acc )
+    {
         return nullptr;
+    }
 
     // ### FIXME: maybe we should accept double insertions into the cache
-    if (!QAccessible::uniqueId(acc))
-        QAccessible::registerAccessibleInterface(acc);
+    if ( !QAccessible::uniqueId( acc ) )
+    {
+        QAccessible::registerAccessibleInterface( acc );
+    }
 
-    QWindowsMsaaAccessible *wacc = new QWindowsMsaaAccessible(acc);
+    QWindowsMsaaAccessible *wacc = new QWindowsMsaaAccessible( acc );
 
     IAccessible *iacc = nullptr;
-    wacc->QueryInterface(IID_IAccessible, reinterpret_cast<void **>(&iacc));
+    wacc->QueryInterface( IID_IAccessible, reinterpret_cast<void **>( &iacc ) );
 
     return iacc;
 }
 
-bool QWindowsAccessibility::handleAccessibleObjectFromWindowRequest(HWND hwnd, WPARAM wParam, LPARAM lParam, LRESULT *lResult)
+bool QWindowsAccessibility::handleAccessibleObjectFromWindowRequest( HWND hwnd, WPARAM wParam, LPARAM lParam, LRESULT *lResult )
 {
-    if (static_cast<long>(lParam) == static_cast<long>(UiaRootObjectId)) {
+    if ( static_cast<long>( lParam ) == static_cast<long>( UiaRootObjectId ) )
+    {
         /* For UI Automation */
 
-    } else if (DWORD(lParam) == DWORD(OBJID_CLIENT)) {
+    }
+    else if ( DWORD( lParam ) == DWORD( OBJID_CLIENT ) )
+    {
         // Start handling accessibility internally
-        QApplicationPrivate::platformIntegration()->accessibility()->setActive(true);
+        QApplicationPrivate::platformIntegration()->accessibility()->setActive( true );
 
         // Ignoring all requests while starting up
-        if (QCoreApplication::startingUp() || QCoreApplication::closingDown())
+        if ( QCoreApplication::startingUp() || QCoreApplication::closingDown() )
+        {
             return false;
+        }
 
-        typedef LRESULT (WINAPI *PtrLresultFromObject)(REFIID, WPARAM, LPUNKNOWN);
+        typedef LRESULT ( WINAPI *PtrLresultFromObject )( REFIID, WPARAM, LPUNKNOWN );
         static PtrLresultFromObject ptrLresultFromObject = nullptr;
         static bool oleaccChecked = false;
 
-        if (! oleaccChecked) {
+        if ( ! oleaccChecked )
+        {
             oleaccChecked = true;
             ptrLresultFromObject = reinterpret_cast<PtrLresultFromObject>
-                  (QSystemLibrary::resolve(QString("oleacc"), "LresultFromObject"));
+                                   ( QSystemLibrary::resolve( QString( "oleacc" ), "LresultFromObject" ) );
         }
 
-        if (ptrLresultFromObject) {
-            QWindow *window = QWindowsContext::instance()->findWindow(hwnd);
+        if ( ptrLresultFromObject )
+        {
+            QWindow *window = QWindowsContext::instance()->findWindow( hwnd );
 
-            if (window) {
+            if ( window )
+            {
                 QAccessibleInterface *acc = window->accessibleRoot();
-                if (acc) {
-                    if (IAccessible *iface = wrap(acc)) {
-                        *lResult = ptrLresultFromObject(IID_IAccessible, wParam, iface);  // ref == 2
-                        if (*lResult) {
+
+                if ( acc )
+                {
+                    if ( IAccessible *iface = wrap( acc ) )
+                    {
+                        *lResult = ptrLresultFromObject( IID_IAccessible, wParam, iface ); // ref == 2
+
+                        if ( *lResult )
+                        {
                             iface->Release(); // the client will release the object again, and then it will destroy itself
                         }
+
                         return true;
                     }
                 }

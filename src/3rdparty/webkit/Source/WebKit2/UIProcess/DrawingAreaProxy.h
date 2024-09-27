@@ -38,17 +38,20 @@ class QPainter;
 typedef struct _cairo cairo_t;
 #endif
 
-namespace CoreIPC {
-    class ArgumentDecoder;
-    class Connection;
-    class MessageID;
+namespace CoreIPC
+{
+class ArgumentDecoder;
+class Connection;
+class MessageID;
 }
 
-namespace WebCore {
-    class IntRect;
+namespace WebCore
+{
+class IntRect;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
 class LayerTreeContext;
 class UpdateInfo;
@@ -59,44 +62,51 @@ typedef CGContextRef PlatformDrawingContext;
 #elif PLATFORM(WIN)
 typedef HDC PlatformDrawingContext;
 #elif PLATFORM(QT)
-typedef QPainter* PlatformDrawingContext;
+typedef QPainter *PlatformDrawingContext;
 #elif PLATFORM(GTK)
-typedef cairo_t* PlatformDrawingContext;
+typedef cairo_t *PlatformDrawingContext;
 #endif
 
-class DrawingAreaProxy {
-    WTF_MAKE_NONCOPYABLE(DrawingAreaProxy);
+class DrawingAreaProxy
+{
+    WTF_MAKE_NONCOPYABLE( DrawingAreaProxy );
 
 public:
     virtual ~DrawingAreaProxy();
 
-    DrawingAreaType type() const { return m_type; }
+    DrawingAreaType type() const
+    {
+        return m_type;
+    }
 
 #if PLATFORM(MAC) || PLATFORM(WIN) || PLATFORM(QT)
-    void didReceiveDrawingAreaProxyMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*);
+    void didReceiveDrawingAreaProxyMessage( CoreIPC::Connection *, CoreIPC::MessageID, CoreIPC::ArgumentDecoder * );
 #endif
 
-    virtual void didReceiveMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*) = 0;
+    virtual void didReceiveMessage( CoreIPC::Connection *, CoreIPC::MessageID, CoreIPC::ArgumentDecoder * ) = 0;
 
     // Returns true if painting was successful, false otherwise.
-    virtual bool paint(const WebCore::IntRect&, PlatformDrawingContext) = 0;
+    virtual bool paint( const WebCore::IntRect &, PlatformDrawingContext ) = 0;
 
     virtual void sizeDidChange() = 0;
 
     // FIXME: These should be pure virtual.
     virtual void visibilityDidChange() { }
-    virtual void setBackingStoreIsDiscardable(bool) { }
-    
-    virtual void setPageIsVisible(bool isVisible) = 0;
+    virtual void setBackingStoreIsDiscardable( bool ) { }
 
-    const WebCore::IntSize& size() const { return m_size; }
-    void setSize(const WebCore::IntSize&, const WebCore::IntSize& scrollOffset);
+    virtual void setPageIsVisible( bool isVisible ) = 0;
+
+    const WebCore::IntSize &size() const
+    {
+        return m_size;
+    }
+    void setSize( const WebCore::IntSize &, const WebCore::IntSize &scrollOffset );
 
 protected:
-    explicit DrawingAreaProxy(DrawingAreaType, WebPageProxy*);
+    explicit DrawingAreaProxy( DrawingAreaType, WebPageProxy * );
 
     DrawingAreaType m_type;
-    WebPageProxy* m_webPageProxy;
+    WebPageProxy *m_webPageProxy;
 
     WebCore::IntSize m_size;
     WebCore::IntSize m_scrollOffset;
@@ -104,11 +114,11 @@ protected:
 private:
     // CoreIPC message handlers.
     // FIXME: These should be pure virtual.
-    virtual void update(uint64_t backingStoreStateID, const UpdateInfo&) { }
-    virtual void didUpdateBackingStoreState(uint64_t backingStoreStateID, const UpdateInfo&, const LayerTreeContext&) { }
+    virtual void update( uint64_t backingStoreStateID, const UpdateInfo & ) { }
+    virtual void didUpdateBackingStoreState( uint64_t backingStoreStateID, const UpdateInfo &, const LayerTreeContext & ) { }
 #if USE(ACCELERATED_COMPOSITING)
-    virtual void enterAcceleratedCompositingMode(uint64_t backingStoreStateID, const LayerTreeContext&) { }
-    virtual void exitAcceleratedCompositingMode(uint64_t backingStoreStateID, const UpdateInfo&) { }
+    virtual void enterAcceleratedCompositingMode( uint64_t backingStoreStateID, const LayerTreeContext & ) { }
+    virtual void exitAcceleratedCompositingMode( uint64_t backingStoreStateID, const UpdateInfo & ) { }
 #endif
 };
 

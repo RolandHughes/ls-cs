@@ -31,9 +31,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSPositionError);
+ASSERT_CLASS_FITS_IN_CELL( JSPositionError );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -44,10 +45,10 @@ ASSERT_CLASS_FITS_IN_CELL(JSPositionError);
 
 static const HashTableValue JSPositionErrorTableValues[4] =
 {
-    { "code", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsPositionErrorCode), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "message", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsPositionErrorMessage), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsPositionErrorConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "code", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsPositionErrorCode ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "message", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsPositionErrorMessage ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsPositionErrorConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -61,51 +62,58 @@ static JSC_CONST_HASHTABLE HashTable JSPositionErrorTable = { 9, 7, JSPositionEr
 
 static const HashTableValue JSPositionErrorConstructorTableValues[4] =
 {
-    { "PERMISSION_DENIED", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsPositionErrorPERMISSION_DENIED), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "POSITION_UNAVAILABLE", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsPositionErrorPOSITION_UNAVAILABLE), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "TIMEOUT", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsPositionErrorTIMEOUT), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "PERMISSION_DENIED", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsPositionErrorPERMISSION_DENIED ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "POSITION_UNAVAILABLE", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsPositionErrorPOSITION_UNAVAILABLE ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "TIMEOUT", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsPositionErrorTIMEOUT ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSPositionErrorConstructorTable = { 9, 7, JSPositionErrorConstructorTableValues, 0 };
 
-COMPILE_ASSERT(1 == PositionError::PERMISSION_DENIED, PositionErrorEnumPERMISSION_DENIEDIsWrongUseDontCheckEnums);
-COMPILE_ASSERT(2 == PositionError::POSITION_UNAVAILABLE, PositionErrorEnumPOSITION_UNAVAILABLEIsWrongUseDontCheckEnums);
-COMPILE_ASSERT(3 == PositionError::TIMEOUT, PositionErrorEnumTIMEOUTIsWrongUseDontCheckEnums);
+COMPILE_ASSERT( 1 == PositionError::PERMISSION_DENIED, PositionErrorEnumPERMISSION_DENIEDIsWrongUseDontCheckEnums );
+COMPILE_ASSERT( 2 == PositionError::POSITION_UNAVAILABLE, PositionErrorEnumPOSITION_UNAVAILABLEIsWrongUseDontCheckEnums );
+COMPILE_ASSERT( 3 == PositionError::TIMEOUT, PositionErrorEnumTIMEOUTIsWrongUseDontCheckEnums );
 
-class JSPositionErrorConstructor : public DOMConstructorObject {
+class JSPositionErrorConstructor : public DOMConstructorObject
+{
 public:
-    JSPositionErrorConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSPositionErrorConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSPositionErrorConstructor::s_info = { "PositionErrorConstructor", &DOMConstructorObject::s_info, &JSPositionErrorConstructorTable, 0 };
 
-JSPositionErrorConstructor::JSPositionErrorConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSPositionErrorConstructor::JSPositionErrorConstructor( ExecState *exec, Structure *structure, JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSPositionErrorPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSPositionErrorPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSPositionErrorConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSPositionErrorConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSPositionErrorConstructor, JSDOMWrapper>(exec, &JSPositionErrorConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSPositionErrorConstructor, JSDOMWrapper>( exec, &JSPositionErrorConstructorTable, this, propertyName,
+            slot );
 }
 
-bool JSPositionErrorConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSPositionErrorConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSPositionErrorConstructor, JSDOMWrapper>(exec, &JSPositionErrorConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSPositionErrorConstructor, JSDOMWrapper>( exec, &JSPositionErrorConstructorTable, this,
+            propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -117,114 +125,117 @@ bool JSPositionErrorConstructor::getOwnPropertyDescriptor(ExecState* exec, const
 
 static const HashTableValue JSPositionErrorPrototypeTableValues[4] =
 {
-    { "PERMISSION_DENIED", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsPositionErrorPERMISSION_DENIED), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "POSITION_UNAVAILABLE", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsPositionErrorPOSITION_UNAVAILABLE), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "TIMEOUT", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsPositionErrorTIMEOUT), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "PERMISSION_DENIED", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsPositionErrorPERMISSION_DENIED ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "POSITION_UNAVAILABLE", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsPositionErrorPOSITION_UNAVAILABLE ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "TIMEOUT", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsPositionErrorTIMEOUT ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSPositionErrorPrototypeTable = { 9, 7, JSPositionErrorPrototypeTableValues, 0 };
 const ClassInfo JSPositionErrorPrototype::s_info = { "PositionErrorPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSPositionErrorPrototypeTable, 0 };
 
-JSObject* JSPositionErrorPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSPositionErrorPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSPositionError>(exec, globalObject);
+    return getDOMPrototype<JSPositionError>( exec, globalObject );
 }
 
-bool JSPositionErrorPrototype::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSPositionErrorPrototype::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSPositionErrorPrototype, JSObject>(exec, &JSPositionErrorPrototypeTable, this, propertyName, slot);
+    return getStaticValueSlot<JSPositionErrorPrototype, JSObject>( exec, &JSPositionErrorPrototypeTable, this, propertyName, slot );
 }
 
-bool JSPositionErrorPrototype::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSPositionErrorPrototype::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSPositionErrorPrototype, JSObject>(exec, &JSPositionErrorPrototypeTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSPositionErrorPrototype, JSObject>( exec, &JSPositionErrorPrototypeTable, this, propertyName,
+            descriptor );
 }
 
 const ClassInfo JSPositionError::s_info = { "PositionError", &JSDOMWrapper::s_info, &JSPositionErrorTable, 0 };
 
-JSPositionError::JSPositionError(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<PositionError> impl)
-    : JSDOMWrapper(structure, globalObject)
-    , m_impl(impl)
+JSPositionError::JSPositionError( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<PositionError> impl )
+    : JSDOMWrapper( structure, globalObject )
+    , m_impl( impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSPositionError::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSPositionError::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSPositionErrorPrototype(exec->globalData(), globalObject, JSPositionErrorPrototype::createStructure(globalObject->globalData(), globalObject->objectPrototype()));
+    return new ( exec ) JSPositionErrorPrototype( exec->globalData(), globalObject,
+            JSPositionErrorPrototype::createStructure( globalObject->globalData(), globalObject->objectPrototype() ) );
 }
 
-bool JSPositionError::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSPositionError::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSPositionError, Base>(exec, &JSPositionErrorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSPositionError, Base>( exec, &JSPositionErrorTable, this, propertyName, slot );
 }
 
-bool JSPositionError::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSPositionError::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSPositionError, Base>(exec, &JSPositionErrorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSPositionError, Base>( exec, &JSPositionErrorTable, this, propertyName, descriptor );
 }
 
-JSValue jsPositionErrorCode(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsPositionErrorCode( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSPositionError* castedThis = static_cast<JSPositionError*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    PositionError* imp = static_cast<PositionError*>(castedThis->impl());
-    JSValue result = jsNumber(imp->code());
+    JSPositionError *castedThis = static_cast<JSPositionError *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    PositionError *imp = static_cast<PositionError *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->code() );
     return result;
 }
 
 
-JSValue jsPositionErrorMessage(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsPositionErrorMessage( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSPositionError* castedThis = static_cast<JSPositionError*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    PositionError* imp = static_cast<PositionError*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->message());
+    JSPositionError *castedThis = static_cast<JSPositionError *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    PositionError *imp = static_cast<PositionError *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->message() );
     return result;
 }
 
 
-JSValue jsPositionErrorConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsPositionErrorConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSPositionError* domObject = static_cast<JSPositionError*>(asObject(slotBase));
-    return JSPositionError::getConstructor(exec, domObject->globalObject());
+    JSPositionError *domObject = static_cast<JSPositionError *>( asObject( slotBase ) );
+    return JSPositionError::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSPositionError::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSPositionError::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSPositionErrorConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSPositionErrorConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
 // Constant getters
 
-JSValue jsPositionErrorPERMISSION_DENIED(ExecState* exec, JSValue, const Identifier&)
+JSValue jsPositionErrorPERMISSION_DENIED( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(1));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 1 ) );
 }
 
-JSValue jsPositionErrorPOSITION_UNAVAILABLE(ExecState* exec, JSValue, const Identifier&)
+JSValue jsPositionErrorPOSITION_UNAVAILABLE( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(2));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 2 ) );
 }
 
-JSValue jsPositionErrorTIMEOUT(ExecState* exec, JSValue, const Identifier&)
+JSValue jsPositionErrorTIMEOUT( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(3));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 3 ) );
 }
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, PositionError* impl)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, PositionError *impl )
 {
-    return wrap<JSPositionError>(exec, globalObject, impl);
+    return wrap<JSPositionError>( exec, globalObject, impl );
 }
 
-PositionError* toPositionError(JSC::JSValue value)
+PositionError *toPositionError( JSC::JSValue value )
 {
-    return value.inherits(&JSPositionError::s_info) ? static_cast<JSPositionError*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSPositionError::s_info ) ? static_cast<JSPositionError *>( asObject( value ) )->impl() : 0;
 }
 
 }

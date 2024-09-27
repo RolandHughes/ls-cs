@@ -30,12 +30,13 @@
 #include "PluginViewBase.h"
 #include "RenderView.h"
 
-namespace WebCore {
-
-RenderPart::RenderPart(Element* node)
-    : RenderWidget(node)
+namespace WebCore
 {
-    setInline(false);
+
+RenderPart::RenderPart( Element *node )
+    : RenderWidget( node )
+{
+    setInline( false );
 }
 
 RenderPart::~RenderPart()
@@ -43,12 +44,14 @@ RenderPart::~RenderPart()
     clearWidget();
 }
 
-void RenderPart::setWidget(PassRefPtr<Widget> widget)
+void RenderPart::setWidget( PassRefPtr<Widget> widget )
 {
-    if (widget == this->widget())
+    if ( widget == this->widget() )
+    {
         return;
+    }
 
-    RenderWidget::setWidget(widget);
+    RenderWidget::setWidget( widget );
 
     // make sure the scrollbars are set correctly for restore
     // ### find better fix
@@ -62,28 +65,38 @@ void RenderPart::viewCleared()
 #if USE(ACCELERATED_COMPOSITING)
 bool RenderPart::requiresLayer() const
 {
-    if (RenderWidget::requiresLayer())
+    if ( RenderWidget::requiresLayer() )
+    {
         return true;
-    
+    }
+
     return requiresAcceleratedCompositing();
 }
 
 bool RenderPart::requiresAcceleratedCompositing() const
 {
-    // There are two general cases in which we can return true. First, if this is a plugin 
-    // renderer and the plugin has a layer, then we need a layer. Second, if this is 
+    // There are two general cases in which we can return true. First, if this is a plugin
+    // renderer and the plugin has a layer, then we need a layer. Second, if this is
     // a renderer with a contentDocument and that document needs a layer, then we need
     // a layer.
-    if (widget() && widget()->isPluginViewBase() && static_cast<PluginViewBase*>(widget())->platformLayer())
+    if ( widget() && widget()->isPluginViewBase() && static_cast<PluginViewBase *>( widget() )->platformLayer() )
+    {
         return true;
+    }
 
-    if (!node() || !node()->isFrameOwnerElement())
+    if ( !node() || !node()->isFrameOwnerElement() )
+    {
         return false;
+    }
 
-    HTMLFrameOwnerElement* element = static_cast<HTMLFrameOwnerElement*>(node());
-    if (Document* contentDocument = element->contentDocument()) {
-        if (RenderView* view = contentDocument->renderView())
+    HTMLFrameOwnerElement *element = static_cast<HTMLFrameOwnerElement *>( node() );
+
+    if ( Document *contentDocument = element->contentDocument() )
+    {
+        if ( RenderView *view = contentDocument->renderView() )
+        {
             return view->usesCompositing();
+        }
     }
 
     return false;

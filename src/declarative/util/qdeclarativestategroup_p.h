@@ -32,47 +32,47 @@ class QDeclarativeStateGroupPrivate;
 
 class Q_DECLARATIVE_EXPORT QDeclarativeStateGroup : public QObject, public QDeclarativeParserStatus
 {
-   DECL_CS_OBJECT_MULTIPLE(QDeclarativeStateGroup, QObject)
+    DECL_CS_OBJECT_MULTIPLE( QDeclarativeStateGroup, QObject )
 
-   CS_INTERFACES(QDeclarativeParserStatus)
-   Q_DECLARE_PRIVATE(QDeclarativeStateGroup)
+    CS_INTERFACES( QDeclarativeParserStatus )
+    Q_DECLARE_PRIVATE( QDeclarativeStateGroup )
 
-   DECL_CS_PROPERTY_READ(state, state)
-   DECL_CS_PROPERTY_WRITE(state, setState)
-   DECL_CS_PROPERTY_NOTIFY(state, stateChanged)
-   DECL_CS_PROPERTY_READ(states, statesProperty)
-   DECL_CS_PROPERTY_DESIGNABLE(states, false)
-   DECL_CS_PROPERTY_READ(transitions, transitionsProperty)
-   DECL_CS_PROPERTY_DESIGNABLE(transitions, false)
+    DECL_CS_PROPERTY_READ( state, state )
+    DECL_CS_PROPERTY_WRITE( state, setState )
+    DECL_CS_PROPERTY_NOTIFY( state, stateChanged )
+    DECL_CS_PROPERTY_READ( states, statesProperty )
+    DECL_CS_PROPERTY_DESIGNABLE( states, false )
+    DECL_CS_PROPERTY_READ( transitions, transitionsProperty )
+    DECL_CS_PROPERTY_DESIGNABLE( transitions, false )
 
- public:
-   QDeclarativeStateGroup(QObject * = 0);
-   virtual ~QDeclarativeStateGroup();
+public:
+    QDeclarativeStateGroup( QObject * = 0 );
+    virtual ~QDeclarativeStateGroup();
 
-   QString state() const;
-   void setState(const QString &);
+    QString state() const;
+    void setState( const QString & );
 
-   QDeclarativeListProperty<QDeclarativeState> statesProperty();
-   QList<QDeclarativeState *> states() const;
+    QDeclarativeListProperty<QDeclarativeState> statesProperty();
+    QList<QDeclarativeState *> states() const;
 
-   QDeclarativeListProperty<QDeclarativeTransition> transitionsProperty();
+    QDeclarativeListProperty<QDeclarativeTransition> transitionsProperty();
 
-   QDeclarativeState *findState(const QString &name) const;
+    QDeclarativeState *findState( const QString &name ) const;
 
-   virtual void classBegin();
-   virtual void componentComplete();
+    virtual void classBegin();
+    virtual void componentComplete();
 
-   DECL_CS_SIGNAL_1(Public, void stateChanged(const QString &un_named_arg1))
-   DECL_CS_SIGNAL_2(stateChanged, un_named_arg1)
+    DECL_CS_SIGNAL_1( Public, void stateChanged( const QString &un_named_arg1 ) )
+    DECL_CS_SIGNAL_2( stateChanged, un_named_arg1 )
 
- private:
-   friend class QDeclarativeState;
-   bool updateAutoState();
-   void removeState(QDeclarativeState *state);
+private:
+    friend class QDeclarativeState;
+    bool updateAutoState();
+    void removeState( QDeclarativeState *state );
 };
 
 QT_END_NAMESPACE
 
-QML_DECLARE_TYPE(QDeclarativeStateGroup)
+QML_DECLARE_TYPE( QDeclarativeStateGroup )
 
 #endif // QDECLARATIVESTATEGROUP_H

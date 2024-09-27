@@ -26,57 +26,58 @@
 
 #include <qschemanumeric_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 class Integer : public Numeric
 {
- public:
+public:
 
-   typedef Numeric::Ptr Ptr;
+    typedef Numeric::Ptr Ptr;
 
-   static AtomicValue::Ptr fromLexical(const QString &strNumeric);
+    static AtomicValue::Ptr fromLexical( const QString &strNumeric );
 
-   static Item fromValue(const xsInteger num);
+    static Item fromValue( const xsInteger num );
 
-   bool evaluateEBV(const QExplicitlySharedDataPointer<DynamicContext> &) const  override;
+    bool evaluateEBV( const QExplicitlySharedDataPointer<DynamicContext> & ) const  override;
 
-   QString stringValue() const override;
-   ItemType::Ptr type() const override;
+    QString stringValue() const override;
+    ItemType::Ptr type() const override;
 
-   xsDouble toDouble() const override;
-   xsInteger toInteger() const override;
-   xsFloat toFloat() const override;
-   xsDecimal toDecimal() const override;
+    xsDouble toDouble() const override;
+    xsInteger toInteger() const override;
+    xsFloat toFloat() const override;
+    xsDecimal toDecimal() const override;
 
-   Numeric::Ptr round() const override;
-   Numeric::Ptr roundHalfToEven(const xsInteger scale) const override;
-   Numeric::Ptr floor() const override;
-   Numeric::Ptr ceiling() const override;
-   Numeric::Ptr abs() const override;
-   quint64 toUnsignedInteger() const override;
+    Numeric::Ptr round() const override;
+    Numeric::Ptr roundHalfToEven( const xsInteger scale ) const override;
+    Numeric::Ptr floor() const override;
+    Numeric::Ptr ceiling() const override;
+    Numeric::Ptr abs() const override;
+    quint64 toUnsignedInteger() const override;
 
-   /**
-    * @returns always @c false, @c xs:integer doesn't have
-    * not-a-number in its value space.
-    */
-   bool isNaN() const  override;
+    /**
+     * @returns always @c false, @c xs:integer doesn't have
+     * not-a-number in its value space.
+     */
+    bool isNaN() const  override;
 
-   /**
-    * @returns always @c false, @c xs:integer doesn't have
-    * infinity in its value space.
-    */
-   bool isInf() const  override;
-   Item toNegated() const  override;
+    /**
+     * @returns always @c false, @c xs:integer doesn't have
+     * infinity in its value space.
+     */
+    bool isInf() const  override;
+    Item toNegated() const  override;
 
-   /**
-    * @short Returns always @c true.
-    */
-   bool isSigned() const  override;
+    /**
+     * @short Returns always @c true.
+     */
+    bool isSigned() const  override;
 
- protected:
-   Integer(const xsInteger num);
+protected:
+    Integer( const xsInteger num );
 
- private:
-   const xsInteger m_value;
+private:
+    const xsInteger m_value;
 };
 }
 

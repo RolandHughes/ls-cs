@@ -27,22 +27,31 @@
 #include "FormAssociatedElement.h"
 #include <wtf/PassOwnPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class ValidityState {
-    WTF_MAKE_NONCOPYABLE(ValidityState); WTF_MAKE_FAST_ALLOCATED;
+class ValidityState
+{
+    WTF_MAKE_NONCOPYABLE( ValidityState );
+    WTF_MAKE_FAST_ALLOCATED;
 public:
-    static PassOwnPtr<ValidityState> create(FormAssociatedElement* control)
+    static PassOwnPtr<ValidityState> create( FormAssociatedElement *control )
     {
-        return adoptPtr(new ValidityState(control));
+        return adoptPtr( new ValidityState( control ) );
     }
 
-    void ref() { m_control->ref(); }
-    void deref() { m_control->deref(); }
+    void ref()
+    {
+        m_control->ref();
+    }
+    void deref()
+    {
+        m_control->deref();
+    }
 
     String validationMessage() const;
 
-    void setCustomErrorMessage(const String&);
+    void setCustomErrorMessage( const String & );
 
     bool valueMissing() const;
     bool typeMismatch() const;
@@ -55,12 +64,12 @@ public:
     bool valid() const;
 
 private:
-    ValidityState(FormAssociatedElement* control) : m_control(control) { }
+    ValidityState( FormAssociatedElement *control ) : m_control( control ) { }
 
-    static bool isValidColorString(const String&);
-    static bool isValidEmailAddress(const String&);
+    static bool isValidColorString( const String & );
+    static bool isValidEmailAddress( const String & );
 
-    FormAssociatedElement* m_control;
+    FormAssociatedElement *m_control;
     String m_customErrorMessage;
 };
 

@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef TextCodecUTF8_h
@@ -28,27 +28,30 @@
 
 #include "TextCodec.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class TextCodecUTF8 : public TextCodec {
+class TextCodecUTF8 : public TextCodec
+{
 public:
-    static void registerEncodingNames(EncodingNameRegistrar);
-    static void registerCodecs(TextCodecRegistrar);
+    static void registerEncodingNames( EncodingNameRegistrar );
+    static void registerCodecs( TextCodecRegistrar );
 
 private:
-    static PassOwnPtr<TextCodec> create(const TextEncoding&, const void*);
-    TextCodecUTF8() : m_partialSequenceSize(0) { }
+    static PassOwnPtr<TextCodec> create( const TextEncoding &, const void * );
+    TextCodecUTF8() : m_partialSequenceSize( 0 ) { }
 
-    virtual String decode(const char*, size_t length, bool flush, bool stopOnError, bool& sawError);
-    virtual CString encode(const UChar*, size_t length, UnencodableHandling);
+    virtual String decode( const char *, size_t length, bool flush, bool stopOnError, bool &sawError );
+    virtual CString encode( const UChar *, size_t length, UnencodableHandling );
 
-    void handlePartialSequence(UChar*& destination, const uint8_t*& source, const uint8_t* end, bool flush, bool stopOnError, bool& sawError);
-    void handleError(UChar*& destination, bool stopOnError, bool& sawError);
+    void handlePartialSequence( UChar *&destination, const uint8_t *&source, const uint8_t *end, bool flush, bool stopOnError,
+                                bool &sawError );
+    void handleError( UChar *&destination, bool stopOnError, bool &sawError );
     void consumePartialSequenceByte();
 
     int m_partialSequenceSize;
     uint8_t m_partialSequence[U8_MAX_LENGTH];
-    
+
 };
 
 } // namespace WebCore

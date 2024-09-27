@@ -29,34 +29,37 @@
 #include <wtf/Forward.h>
 #include <wtf/Noncopyable.h>
 
-typedef struct CGFont* CGFontRef;
+typedef struct CGFont *CGFontRef;
 
-namespace WebCore {
+namespace WebCore
+{
 
 class FontPlatformData;
 class SharedBuffer;
 
-struct FontCustomPlatformData {
-    WTF_MAKE_NONCOPYABLE(FontCustomPlatformData);
+struct FontCustomPlatformData
+{
+    WTF_MAKE_NONCOPYABLE( FontCustomPlatformData );
 public:
-    FontCustomPlatformData(HANDLE fontReference, const String& name)
-        : m_fontReference(fontReference)
-        , m_name(name)
+    FontCustomPlatformData( HANDLE fontReference, const String &name )
+        : m_fontReference( fontReference )
+        , m_name( name )
     {
     }
 
     ~FontCustomPlatformData();
 
-    FontPlatformData fontPlatformData(int size, bool bold, bool italic, FontOrientation = Horizontal, TextOrientation = TextOrientationVerticalRight,
-                                      FontWidthVariant = RegularWidth, FontRenderingMode = NormalRenderingMode);
+    FontPlatformData fontPlatformData( int size, bool bold, bool italic, FontOrientation = Horizontal,
+                                       TextOrientation = TextOrientationVerticalRight,
+                                       FontWidthVariant = RegularWidth, FontRenderingMode = NormalRenderingMode );
 
-    static bool supportsFormat(const String&);
+    static bool supportsFormat( const String & );
 
     HANDLE m_fontReference;
     String m_name;
 };
 
-FontCustomPlatformData* createFontCustomPlatformData(SharedBuffer*);
+FontCustomPlatformData *createFontCustomPlatformData( SharedBuffer * );
 
 }
 

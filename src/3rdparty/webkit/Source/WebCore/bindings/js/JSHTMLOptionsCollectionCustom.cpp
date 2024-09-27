@@ -33,66 +33,92 @@
 
 using namespace JSC;
 
-namespace WebCore {
-
-JSValue JSHTMLOptionsCollection::length(ExecState*) const
+namespace WebCore
 {
-    HTMLOptionsCollection* imp = static_cast<HTMLOptionsCollection*>(impl());
-    return jsNumber(imp->length());
+
+JSValue JSHTMLOptionsCollection::length( ExecState * ) const
+{
+    HTMLOptionsCollection *imp = static_cast<HTMLOptionsCollection *>( impl() );
+    return jsNumber( imp->length() );
 }
 
-void JSHTMLOptionsCollection::setLength(ExecState* exec, JSValue value)
+void JSHTMLOptionsCollection::setLength( ExecState *exec, JSValue value )
 {
-    HTMLOptionsCollection* imp = static_cast<HTMLOptionsCollection*>(impl());
+    HTMLOptionsCollection *imp = static_cast<HTMLOptionsCollection *>( impl() );
     ExceptionCode ec = 0;
     unsigned newLength = 0;
-    double lengthValue = value.toNumber(exec);
-    if (! std::isnan(lengthValue) && ! std::isinf(lengthValue)) {
-        if (lengthValue < 0.0)
+    double lengthValue = value.toNumber( exec );
+
+    if ( ! std::isnan( lengthValue ) && ! std::isinf( lengthValue ) )
+    {
+        if ( lengthValue < 0.0 )
+        {
             ec = INDEX_SIZE_ERR;
-        else if (lengthValue > static_cast<double>(UINT_MAX))
+        }
+        else if ( lengthValue > static_cast<double>( UINT_MAX ) )
+        {
             newLength = UINT_MAX;
+        }
         else
-            newLength = static_cast<unsigned>(lengthValue);
+        {
+            newLength = static_cast<unsigned>( lengthValue );
+        }
     }
-    if (!ec)
-        imp->setLength(newLength, ec);
-    setDOMException(exec, ec);
+
+    if ( !ec )
+    {
+        imp->setLength( newLength, ec );
+    }
+
+    setDOMException( exec, ec );
 }
 
-void JSHTMLOptionsCollection::indexSetter(ExecState* exec, unsigned index, JSValue value)
+void JSHTMLOptionsCollection::indexSetter( ExecState *exec, unsigned index, JSValue value )
 {
-    HTMLOptionsCollection* imp = static_cast<HTMLOptionsCollection*>(impl());
-    HTMLSelectElement* base = static_cast<HTMLSelectElement*>(imp->base());
-    selectIndexSetter(base, exec, index, value);
+    HTMLOptionsCollection *imp = static_cast<HTMLOptionsCollection *>( impl() );
+    HTMLSelectElement *base = static_cast<HTMLSelectElement *>( imp->base() );
+    selectIndexSetter( base, exec, index, value );
 }
 
-JSValue JSHTMLOptionsCollection::add(ExecState* exec)
+JSValue JSHTMLOptionsCollection::add( ExecState *exec )
 {
-    HTMLOptionsCollection* imp = static_cast<HTMLOptionsCollection*>(impl());
-    HTMLOptionElement* option = toHTMLOptionElement(exec->argument(0));
+    HTMLOptionsCollection *imp = static_cast<HTMLOptionsCollection *>( impl() );
+    HTMLOptionElement *option = toHTMLOptionElement( exec->argument( 0 ) );
     ExceptionCode ec = 0;
-    if (exec->argumentCount() < 2)
-        imp->add(option, ec);
-    else {
-        bool ok;
-        int index = finiteInt32Value(exec->argument(1), exec, ok);
-        if (exec->hadException())
-            return jsUndefined();
-        if (!ok)
-            ec = TYPE_MISMATCH_ERR;
-        else
-            imp->add(option, index, ec);
+
+    if ( exec->argumentCount() < 2 )
+    {
+        imp->add( option, ec );
     }
-    setDOMException(exec, ec);
+    else
+    {
+        bool ok;
+        int index = finiteInt32Value( exec->argument( 1 ), exec, ok );
+
+        if ( exec->hadException() )
+        {
+            return jsUndefined();
+        }
+
+        if ( !ok )
+        {
+            ec = TYPE_MISMATCH_ERR;
+        }
+        else
+        {
+            imp->add( option, index, ec );
+        }
+    }
+
+    setDOMException( exec, ec );
     return jsUndefined();
 }
 
-JSValue JSHTMLOptionsCollection::remove(ExecState* exec)
+JSValue JSHTMLOptionsCollection::remove( ExecState *exec )
 {
-    HTMLOptionsCollection* imp = static_cast<HTMLOptionsCollection*>(impl());
-    JSHTMLSelectElement* base = static_cast<JSHTMLSelectElement*>(asObject(toJS(exec, globalObject(), imp->base())));
-    return base->remove(exec);
+    HTMLOptionsCollection *imp = static_cast<HTMLOptionsCollection *>( impl() );
+    JSHTMLSelectElement *base = static_cast<JSHTMLSelectElement *>( asObject( toJS( exec, globalObject(), imp->base() ) ) );
+    return base->remove( exec );
 }
 
 }

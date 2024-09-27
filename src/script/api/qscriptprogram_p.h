@@ -27,7 +27,8 @@
 #include <qshareddata.h>
 #include "RefPtr.h"
 
-namespace JSC {
+namespace JSC
+{
 class EvalExecutable;
 class ExecState;
 }
@@ -38,24 +39,24 @@ class QScriptEnginePrivate;
 
 class QScriptProgramPrivate : public QSharedData
 {
- public:
-   QScriptProgramPrivate(const QString &sourceCode, const QString &fileName, int firstLineNumber);
-   ~QScriptProgramPrivate();
+public:
+    QScriptProgramPrivate( const QString &sourceCode, const QString &fileName, int firstLineNumber );
+    ~QScriptProgramPrivate();
 
-   static QScriptProgramPrivate *get(const QScriptProgram &q);
+    static QScriptProgramPrivate *get( const QScriptProgram &q );
 
-   JSC::EvalExecutable *executable(JSC::ExecState *exec, QScriptEnginePrivate *engine);
-   void detachFromEngine();
+    JSC::EvalExecutable *executable( JSC::ExecState *exec, QScriptEnginePrivate *engine );
+    void detachFromEngine();
 
 
-   QString sourceCode;
-   QString fileName;
-   int firstLineNumber;
+    QString sourceCode;
+    QString fileName;
+    int firstLineNumber;
 
-   QScriptEnginePrivate *engine;
-   WTF::RefPtr<JSC::EvalExecutable> _executable;
-   intptr_t sourceId;
-   bool isCompiled;
+    QScriptEnginePrivate *engine;
+    WTF::RefPtr<JSC::EvalExecutable> _executable;
+    intptr_t sourceId;
+    bool isCompiled;
 };
 
 

@@ -28,15 +28,16 @@
 
 #include <wtf/Forward.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 String defaultLanguage();
-void overrideDefaultLanguage(const String&);
+void overrideDefaultLanguage( const String & );
 
 // The observer function will be called when system language changes (unless it's overridden by overrideDefaultLanguage()).
-typedef void (*LanguageChangeObserverFunction)(void* context);
-void addLanguageChangeObserver(void* context, LanguageChangeObserverFunction);
-void removeLanguageChangeObserver(void* context);
+typedef void ( *LanguageChangeObserverFunction )( void *context );
+void addLanguageChangeObserver( void *context, LanguageChangeObserverFunction );
+void removeLanguageChangeObserver( void *context );
 
 String platformDefaultLanguage();
 void languageDidChange();

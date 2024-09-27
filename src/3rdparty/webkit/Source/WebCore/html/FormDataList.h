@@ -26,54 +26,69 @@
 #include <wtf/Forward.h>
 #include <wtf/text/CString.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class FormDataList {
+class FormDataList
+{
 public:
-    class Item {
+    class Item
+    {
     public:
         Item() { }
-        Item(const WTF::CString& data) : m_data(data) { }
-        Item(PassRefPtr<Blob> blob) : m_blob(blob) { }
+        Item( const WTF::CString &data ) : m_data( data ) { }
+        Item( PassRefPtr<Blob> blob ) : m_blob( blob ) { }
 
-        const WTF::CString& data() const { return m_data; }
-        Blob* blob() const { return m_blob.get(); }
+        const WTF::CString &data() const
+        {
+            return m_data;
+        }
+        Blob *blob() const
+        {
+            return m_blob.get();
+        }
 
     private:
         WTF::CString m_data;
         RefPtr<Blob> m_blob;
     };
 
-    FormDataList(const TextEncoding&);
+    FormDataList( const TextEncoding & );
 
-    void appendData(const String& key, const String& value)
+    void appendData( const String &key, const String &value )
     {
-        appendString(key);
-        appendString(value);
+        appendString( key );
+        appendString( value );
     }
-    void appendData(const String& key, const CString& value)
+    void appendData( const String &key, const CString &value )
     {
-        appendString(key);
-        appendString(value);
+        appendString( key );
+        appendString( value );
     }
-    void appendData(const String& key, int value)
+    void appendData( const String &key, int value )
     {
-        appendString(key);
-        appendString(String::number(value));
+        appendString( key );
+        appendString( String::number( value ) );
     }
-    void appendBlob(const String& key, PassRefPtr<Blob> blob)
+    void appendBlob( const String &key, PassRefPtr<Blob> blob )
     {
-        appendString(key);
-        appendBlob(blob);
+        appendString( key );
+        appendBlob( blob );
     }
 
-    const Vector<Item>& items() const { return m_items; }
-    const TextEncoding& encoding() const { return m_encoding; }
+    const Vector<Item> &items() const
+    {
+        return m_items;
+    }
+    const TextEncoding &encoding() const
+    {
+        return m_encoding;
+    }
 
 private:
-    void appendString(const CString&);
-    void appendString(const String&);
-    void appendBlob(PassRefPtr<Blob>);
+    void appendString( const CString & );
+    void appendString( const String & );
+    void appendBlob( PassRefPtr<Blob> );
 
     TextEncoding m_encoding;
     Vector<Item> m_items;

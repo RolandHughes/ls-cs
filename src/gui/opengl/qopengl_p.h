@@ -38,12 +38,15 @@ class Q_GUI_EXPORT QOpenGLExtensionMatcher
 public:
     QOpenGLExtensionMatcher();
 
-    bool match(const QByteArray &extension) const
+    bool match( const QByteArray &extension ) const
     {
-        return m_extensions.contains(extension);
+        return m_extensions.contains( extension );
     }
 
-    QSet<QByteArray> extensions() const { return m_extensions; }
+    QSet<QByteArray> extensions() const
+    {
+        return m_extensions;
+    }
 
 private:
     QSet<QByteArray> m_extensions;
@@ -52,12 +55,17 @@ private:
 class Q_GUI_EXPORT QOpenGLConfig
 {
 public:
-    struct Q_GUI_EXPORT Gpu {
-        Gpu() : vendorId(0), deviceId(0) {}
-        bool isValid() const { return deviceId || !glVendor.isEmpty(); }
-        bool equals(const Gpu &other) const {
+    struct Q_GUI_EXPORT Gpu
+    {
+        Gpu() : vendorId( 0 ), deviceId( 0 ) {}
+        bool isValid() const
+        {
+            return deviceId || !glVendor.isEmpty();
+        }
+        bool equals( const Gpu &other ) const
+        {
             return vendorId == other.vendorId && deviceId == other.deviceId && driverVersion == other.driverVersion
-                && driverDescription == other.driverDescription && glVendor == other.glVendor;
+                   && driverDescription == other.driverDescription && glVendor == other.glVendor;
         }
 
         uint vendorId;
@@ -66,7 +74,8 @@ public:
         QByteArray driverDescription;
         QByteArray glVendor;
 
-        static Gpu fromDevice(uint vendorId, uint deviceId, QVersionNumber driverVersion, const QByteArray &driverDescription) {
+        static Gpu fromDevice( uint vendorId, uint deviceId, QVersionNumber driverVersion, const QByteArray &driverDescription )
+        {
             Gpu gpu;
             gpu.vendorId = vendorId;
             gpu.deviceId = deviceId;
@@ -75,7 +84,8 @@ public:
             return gpu;
         }
 
-        static Gpu fromGLVendor(const QByteArray &glVendor) {
+        static Gpu fromGLVendor( const QByteArray &glVendor )
+        {
             Gpu gpu;
             gpu.glVendor = glVendor;
             return gpu;
@@ -84,29 +94,29 @@ public:
         static Gpu fromContext();
     };
 
-    static QSet<QString> gpuFeatures(const Gpu &gpu, const QString &osName, const QString &osVersion,
-                                     const QJsonDocument &doc);
+    static QSet<QString> gpuFeatures( const Gpu &gpu, const QString &osName, const QString &osVersion,
+                                      const QJsonDocument &doc );
 
-    static QSet<QString> gpuFeatures(const Gpu &gpu, const QString &osName, const QString &osVersion,
-                                     const QString &fileName);
+    static QSet<QString> gpuFeatures( const Gpu &gpu, const QString &osName, const QString &osVersion,
+                                      const QString &fileName );
 
-    static QSet<QString> gpuFeatures(const Gpu &gpu, const QJsonDocument &doc);
-    static QSet<QString> gpuFeatures(const Gpu &gpu, const QString &fileName);
+    static QSet<QString> gpuFeatures( const Gpu &gpu, const QJsonDocument &doc );
+    static QSet<QString> gpuFeatures( const Gpu &gpu, const QString &fileName );
 };
 
-inline bool operator==(const QOpenGLConfig::Gpu &a, const QOpenGLConfig::Gpu &b)
+inline bool operator==( const QOpenGLConfig::Gpu &a, const QOpenGLConfig::Gpu &b )
 {
-    return a.equals(b);
+    return a.equals( b );
 }
 
-inline bool operator!=(const QOpenGLConfig::Gpu &a, const QOpenGLConfig::Gpu &b)
+inline bool operator!=( const QOpenGLConfig::Gpu &a, const QOpenGLConfig::Gpu &b )
 {
-    return !a.equals(b);
+    return !a.equals( b );
 }
 
-inline uint qHash(const QOpenGLConfig::Gpu &gpu)
+inline uint qHash( const QOpenGLConfig::Gpu &gpu )
 {
-    return qHash(gpu.vendorId) + qHash(gpu.deviceId) + qHash(gpu.driverVersion);
+    return qHash( gpu.vendorId ) + qHash( gpu.deviceId ) + qHash( gpu.driverVersion );
 }
 
 #endif

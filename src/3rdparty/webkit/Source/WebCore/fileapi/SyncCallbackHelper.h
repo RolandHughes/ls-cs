@@ -48,7 +48,8 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class AsyncFileSystem;
 class DirectoryEntrySync;
@@ -58,101 +59,114 @@ class FileEntrySync;
 
 // A helper template for FileSystemSync implementation.
 template <typename SuccessCallback, typename ObserverType, typename CallbackArg, typename ResultType>
-class SyncCallbackHelper {
-    WTF_MAKE_NONCOPYABLE(SyncCallbackHelper);
+class SyncCallbackHelper
+{
+    WTF_MAKE_NONCOPYABLE( SyncCallbackHelper );
 public:
     typedef SyncCallbackHelper<SuccessCallback, ObserverType, CallbackArg, ResultType> HelperType;
-    SyncCallbackHelper(ObserverType* observer = 0)
-        : m_observer(observer)
-        , m_successCallback(SuccessCallbackImpl::create(this))
-        , m_errorCallback(ErrorCallbackImpl::create(this))
-        , m_exceptionCode(0)
-        , m_completed(false)
+    SyncCallbackHelper( ObserverType *observer = 0 )
+        : m_observer( observer )
+        , m_successCallback( SuccessCallbackImpl::create( this ) )
+        , m_errorCallback( ErrorCallbackImpl::create( this ) )
+        , m_exceptionCode( 0 )
+        , m_completed( false )
     {
     }
 
-    PassRefPtr<ResultType> getResult(ExceptionCode& ec)
+    PassRefPtr<ResultType> getResult( ExceptionCode &ec )
     {
-        if (m_observer) {
-            while (!m_completed) {
-                if (!m_observer->waitForOperationToComplete()) {
+        if ( m_observer )
+        {
+            while ( !m_completed )
+            {
+                if ( !m_observer->waitForOperationToComplete() )
+                {
                     m_exceptionCode = FileException::ABORT_ERR;
                     break;
                 }
             }
         }
+
         ec = m_exceptionCode;
         return m_result.release();
     }
 
-    PassRefPtr<SuccessCallback> successCallback() { return m_successCallback; }
-    PassRefPtr<ErrorCallback> errorCallback() { return m_errorCallback; }
+    PassRefPtr<SuccessCallback> successCallback()
+    {
+        return m_successCallback;
+    }
+    PassRefPtr<ErrorCallback> errorCallback()
+    {
+        return m_errorCallback;
+    }
 
 private:
-    class SuccessCallbackImpl : public SuccessCallback {
+    class SuccessCallbackImpl : public SuccessCallback
+    {
     public:
-        static PassRefPtr<SuccessCallbackImpl> create(HelperType* helper)
+        static PassRefPtr<SuccessCallbackImpl> create( HelperType *helper )
         {
-            return adoptRef(new SuccessCallbackImpl(helper));
+            return adoptRef( new SuccessCallbackImpl( helper ) );
         }
 
         virtual void handleEvent()
         {
-            m_helper->setError(0);
+            m_helper->setError( 0 );
         }
 
-        virtual bool handleEvent(CallbackArg* arg)
+        virtual bool handleEvent( CallbackArg *arg )
         {
-            m_helper->setResult(ResultType::create(arg));
+            m_helper->setResult( ResultType::create( arg ) );
             return true;
         }
 
     private:
-        SuccessCallbackImpl(HelperType* helper)
-            : m_helper(helper)
+        SuccessCallbackImpl( HelperType *helper )
+            : m_helper( helper )
         {
         }
-        HelperType* m_helper;
+        HelperType *m_helper;
     };
 
-    class ErrorCallbackImpl : public ErrorCallback {
+    class ErrorCallbackImpl : public ErrorCallback
+    {
     public:
-        static PassRefPtr<ErrorCallbackImpl> create(HelperType* helper)
+        static PassRefPtr<ErrorCallbackImpl> create( HelperType *helper )
         {
-            return adoptRef(new ErrorCallbackImpl(helper));
+            return adoptRef( new ErrorCallbackImpl( helper ) );
         }
 
-        virtual bool handleEvent(FileError* error)
+        virtual bool handleEvent( FileError *error )
         {
-            ASSERT(error);
-            m_helper->setError(error->code());
+            ASSERT( error );
+            m_helper->setError( error->code() );
             return true;
         }
 
     private:
-        ErrorCallbackImpl(HelperType* helper)
-            : m_helper(helper)
+        ErrorCallbackImpl( HelperType *helper )
+            : m_helper( helper )
         {
         }
-        HelperType* m_helper;
+        HelperType *m_helper;
     };
 
     friend class SuccessCallbackImpl;
     friend class ErrorCallbackImpl;
 
-    void setError(int code)
+    void setError( int code )
     {
-        m_exceptionCode = FileException::ErrorCodeToExceptionCode(code);
+        m_exceptionCode = FileException::ErrorCodeToExceptionCode( code );
         m_completed = true;
     }
 
-    void setResult(PassRefPtr<ResultType> result)
+    void setResult( PassRefPtr<ResultType> result )
     {
         m_result = result;
         m_completed = true;
     }
 
-    ObserverType* m_observer;
+    ObserverType *m_observer;
     RefPtr<SuccessCallbackImpl> m_successCallback;
     RefPtr<ErrorCallbackImpl> m_errorCallback;
     RefPtr<ResultType> m_result;
@@ -160,14 +174,16 @@ private:
     bool m_completed;
 };
 
-struct EmptyType : public RefCounted<EmptyType> {
-    static PassRefPtr<EmptyType> create(EmptyType*)
+struct EmptyType : public RefCounted<EmptyType>
+{
+    static PassRefPtr<EmptyType> create( EmptyType * )
     {
         return 0;
     }
 };
 
-struct EmptyObserverType {
+struct EmptyObserverType
+{
     bool waitForOperationToComplete()
     {
         return false;

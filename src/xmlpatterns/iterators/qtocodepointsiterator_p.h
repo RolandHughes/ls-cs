@@ -26,29 +26,30 @@
 
 #include <qitem_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class ToCodepointsIterator : public Item::Iterator
 {
- public:
-   /**
-    * Constructs a ToCodepointsIterator.
-    *
-    * @param string the string to retrieve Unicode codepoints from. Can not be
-    * empty.
-    */
-   ToCodepointsIterator(const QString &string);
-   Item next() override;
-   Item current() const override;
-   xsInteger position() const override;
-   xsInteger count() override;
-   Item::Iterator::Ptr copy() const override;
+public:
+    /**
+     * Constructs a ToCodepointsIterator.
+     *
+     * @param string the string to retrieve Unicode codepoints from. Can not be
+     * empty.
+     */
+    ToCodepointsIterator( const QString &string );
+    Item next() override;
+    Item current() const override;
+    xsInteger position() const override;
+    xsInteger count() override;
+    Item::Iterator::Ptr copy() const override;
 
- private:
-   const QString m_string;
-   const int m_len;
-   Item m_current;
-   xsInteger m_position;
+private:
+    const QString m_string;
+    const int m_len;
+    Item m_current;
+    xsInteger m_position;
 };
 
 }

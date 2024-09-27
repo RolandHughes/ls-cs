@@ -30,27 +30,35 @@
 #include <wtf/RefCounted.h>
 #include <wtf/PassRefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class StyleSurroundData : public RefCounted<StyleSurroundData> {
+class StyleSurroundData : public RefCounted<StyleSurroundData>
+{
 public:
-    static PassRefPtr<StyleSurroundData> create() { return adoptRef(new StyleSurroundData); }
-    PassRefPtr<StyleSurroundData> copy() const { return adoptRef(new StyleSurroundData(*this)); }
-    
-    bool operator==(const StyleSurroundData& o) const;
-    bool operator!=(const StyleSurroundData& o) const
+    static PassRefPtr<StyleSurroundData> create()
     {
-        return !(*this == o);
+        return adoptRef( new StyleSurroundData );
+    }
+    PassRefPtr<StyleSurroundData> copy() const
+    {
+        return adoptRef( new StyleSurroundData( *this ) );
+    }
+
+    bool operator==( const StyleSurroundData &o ) const;
+    bool operator!=( const StyleSurroundData &o ) const
+    {
+        return !( *this == o );
     }
 
     LengthBox offset;
     LengthBox margin;
     LengthBox padding;
     BorderData border;
-    
+
 private:
     StyleSurroundData();
-    StyleSurroundData(const StyleSurroundData&);    
+    StyleSurroundData( const StyleSurroundData & );
 };
 
 } // namespace WebCore

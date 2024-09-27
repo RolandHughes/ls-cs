@@ -24,11 +24,14 @@
 
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class SVGRenderingIntent : public RefCounted<SVGRenderingIntent> {
+class SVGRenderingIntent : public RefCounted<SVGRenderingIntent>
+{
 public:
-    enum SVGRenderingIntentType {
+    enum SVGRenderingIntentType
+    {
         RENDERING_INTENT_UNKNOWN                  = 0,
         RENDERING_INTENT_AUTO                     = 1,
         RENDERING_INTENT_PERCEPTUAL               = 2,

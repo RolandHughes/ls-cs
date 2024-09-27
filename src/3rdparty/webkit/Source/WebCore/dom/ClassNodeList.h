@@ -34,25 +34,27 @@
 #include "Node.h"
 #include "SpaceSplitString.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class ClassNodeList : public DynamicNodeList {
-    public:
-        static PassRefPtr<ClassNodeList> create(PassRefPtr<Node> rootNode, const String& classNames)
-        {
-            return adoptRef(new ClassNodeList(rootNode, classNames));
-        }
+class ClassNodeList : public DynamicNodeList
+{
+public:
+    static PassRefPtr<ClassNodeList> create( PassRefPtr<Node> rootNode, const String &classNames )
+    {
+        return adoptRef( new ClassNodeList( rootNode, classNames ) );
+    }
 
-        virtual ~ClassNodeList();
+    virtual ~ClassNodeList();
 
-    private:
-        ClassNodeList(PassRefPtr<Node> rootNode, const String& classNames);
+private:
+    ClassNodeList( PassRefPtr<Node> rootNode, const String &classNames );
 
-        virtual bool nodeMatches(Element*) const;
+    virtual bool nodeMatches( Element * ) const;
 
-        SpaceSplitString m_classNames;
-        String m_originalClassNames;
-    };
+    SpaceSplitString m_classNames;
+    String m_originalClassNames;
+};
 
 } // namespace WebCore
 

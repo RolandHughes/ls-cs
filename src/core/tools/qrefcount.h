@@ -28,91 +28,110 @@
 #include <qatomic.h>
 #include <qglobal.h>
 
-namespace QtPrivate {
+namespace QtPrivate
+{
 
 class RefCount
 {
- public:
-   bool ref() {
-      int count = atomic.load();
+public:
+    bool ref()
+    {
+        int count = atomic.load();
 
-      if (count == 0) {
-         // !isSharable
-         return false;
-      }
+        if ( count == 0 )
+        {
+            // !isSharable
+            return false;
+        }
 
-      if (count != -1) {
-         // !isStatic
-         atomic.ref();
-      }
+        if ( count != -1 )
+        {
+            // !isStatic
+            atomic.ref();
+        }
 
-      return true;
-   }
+        return true;
+    }
 
-   bool deref() {
-      int count = atomic.load();
+    bool deref()
+    {
+        int count = atomic.load();
 
-      if (count == 0) {
-         // !isSharable
-         return false;
-      }
+        if ( count == 0 )
+        {
+            // !isSharable
+            return false;
+        }
 
-      if (count == -1) {
-         // isStatic
-         return true;
-      }
+        if ( count == -1 )
+        {
+            // isStatic
+            return true;
+        }
 
-      return atomic.deref();
-   }
+        return atomic.deref();
+    }
 
-   bool setSharable(bool sharable) {
-      Q_ASSERT(!isShared());
+    bool setSharable( bool sharable )
+    {
+        Q_ASSERT( !isShared() );
 
-      if (sharable) {
-         int expected = 0;
-         return atomic.compareExchange(expected, 1, std::memory_order_relaxed);
-      } else {
-         int expected = 1;
-         return atomic.compareExchange(expected, 0, std::memory_order_relaxed);
-      }
-   }
+        if ( sharable )
+        {
+            int expected = 0;
+            return atomic.compareExchange( expected, 1, std::memory_order_relaxed );
+        }
+        else
+        {
+            int expected = 1;
+            return atomic.compareExchange( expected, 0, std::memory_order_relaxed );
+        }
+    }
 
-   bool isStatic() const {
-      // Persistent object, never deleted
-      return atomic.load() == -1;
-   }
+    bool isStatic() const
+    {
+        // Persistent object, never deleted
+        return atomic.load() == -1;
+    }
 
-   bool isSharable() const {
-      // Sharable === Shared ownership.
-      return atomic.load() != 0;
-   }
+    bool isSharable() const
+    {
+        // Sharable === Shared ownership.
+        return atomic.load() != 0;
+    }
 
-   bool isShared() const {
-      int count = atomic.load();
-      return (count != 1) && (count != 0);
-   }
+    bool isShared() const
+    {
+        int count = atomic.load();
+        return ( count != 1 ) && ( count != 0 );
+    }
 
-   bool operator==(int value) const {
-      return atomic.load() == value;
-   }
+    bool operator==( int value ) const
+    {
+        return atomic.load() == value;
+    }
 
-   bool operator!=(int value) const {
-      return atomic.load() != value;
-   }
+    bool operator!=( int value ) const
+    {
+        return atomic.load() != value;
+    }
 
-   bool operator!() const {
-      return !atomic.load();
-   }
+    bool operator!() const
+    {
+        return !atomic.load();
+    }
 
-   operator int() const {
-      return atomic.load();
-   }
+    operator int() const
+    {
+        return atomic.load();
+    }
 
-   void initializeOwned() {
-      atomic.store(1);
-   }
+    void initializeOwned()
+    {
+        atomic.store( 1 );
+    }
 
-   QAtomicInt atomic;
+    QAtomicInt atomic;
 };
 
 }

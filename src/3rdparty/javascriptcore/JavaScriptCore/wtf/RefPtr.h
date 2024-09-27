@@ -28,208 +28,321 @@
 #include "PassRefPtr.h"
 #endif
 
-namespace WTF {
+namespace WTF
+{
 
-    enum PlacementNewAdoptType { PlacementNewAdopt };
+enum PlacementNewAdoptType { PlacementNewAdopt };
 
-    template <typename T> class PassRefPtr;
-    template <typename T> class NonNullPassRefPtr;
+template <typename T> class PassRefPtr;
+template <typename T> class NonNullPassRefPtr;
 
-    enum HashTableDeletedValueType { HashTableDeletedValue };
+enum HashTableDeletedValueType { HashTableDeletedValue };
 
-    template <typename T> class RefPtr : public FastAllocBase {
-    public:
-        RefPtr() : m_ptr(nullptr) { }
-        RefPtr(T* ptr) : m_ptr(ptr) { if (ptr) ptr->ref(); }
-        RefPtr(const RefPtr& o) : m_ptr(o.m_ptr) { if (T* ptr = m_ptr) ptr->ref(); }
-        // see comment in PassRefPtr.h for why this takes const reference
-        template <typename U> RefPtr(const PassRefPtr<U>&);
-        template <typename U> RefPtr(const NonNullPassRefPtr<U>&);
+template <typename T> class RefPtr : public FastAllocBase
+{
+public:
+    RefPtr() : m_ptr( nullptr ) { }
+    RefPtr( T *ptr ) : m_ptr( ptr )
+    {
+        if ( ptr )
+        {
+            ptr->ref();
+        }
+    }
+    RefPtr( const RefPtr &o ) : m_ptr( o.m_ptr )
+    {
+        if ( T *ptr = m_ptr )
+        {
+            ptr->ref();
+        }
+    }
+    // see comment in PassRefPtr.h for why this takes const reference
+    template <typename U> RefPtr( const PassRefPtr<U> & );
+    template <typename U> RefPtr( const NonNullPassRefPtr<U> & );
 
-        // Special constructor for cases where we overwrite an object in place.
-        RefPtr(PlacementNewAdoptType) { }
+    // Special constructor for cases where we overwrite an object in place.
+    RefPtr( PlacementNewAdoptType ) { }
 
-        // Hash table deleted values, which are only constructed and never copied or destroyed.
-        RefPtr(HashTableDeletedValueType) : m_ptr(hashTableDeletedValue()) { }
-        bool isHashTableDeletedValue() const { return m_ptr == hashTableDeletedValue(); }
+    // Hash table deleted values, which are only constructed and never copied or destroyed.
+    RefPtr( HashTableDeletedValueType ) : m_ptr( hashTableDeletedValue() ) { }
+    bool isHashTableDeletedValue() const
+    {
+        return m_ptr == hashTableDeletedValue();
+    }
 
 #if COMPILER(WINSCW)
-        ~RefPtr() { if (T* ptr = m_ptr) derefIfNotNull<T>(ptr); }
+    ~RefPtr()
+    {
+        if ( T *ptr = m_ptr )
+        {
+            derefIfNotNull<T>( ptr );
+        }
+    }
 #else
-        ~RefPtr() { if (T* ptr = m_ptr) ptr->deref(); }
+    ~RefPtr()
+    {
+        if ( T *ptr = m_ptr )
+        {
+            ptr->deref();
+        }
+    }
 #endif
 
-        template <typename U> RefPtr(const RefPtr<U>& o) : m_ptr(o.get()) { if (T* ptr = m_ptr) ptr->ref(); }
+    template <typename U> RefPtr( const RefPtr<U> &o ) : m_ptr( o.get() )
+    {
+        if ( T *ptr = m_ptr )
+        {
+            ptr->ref();
+        }
+    }
 
-        T* get() const { return m_ptr; }
+    T *get() const
+    {
+        return m_ptr;
+    }
 
 #if COMPILER(WINSCW)
-        void clear() { if (T* ptr = m_ptr) derefIfNotNull<T>(ptr); m_ptr = nullptr; }
+    void clear()
+    {
+        if ( T *ptr = m_ptr )
+        {
+            derefIfNotNull<T>( ptr );
+        }
+
+        m_ptr = nullptr;
+    }
 #else
-        void clear() { if (T* ptr = m_ptr) ptr->deref(); m_ptr = nullptr; }
+    void clear()
+    {
+        if ( T *ptr = m_ptr )
+        {
+            ptr->deref();
+        }
+
+        m_ptr = nullptr;
+    }
 #endif
-        PassRefPtr<T> release() { PassRefPtr<T> tmp = adoptRef(m_ptr); m_ptr = nullptr; return tmp; }
-
-        T& operator*() const { return *m_ptr; }
-        ALWAYS_INLINE T* operator->() const { return m_ptr; }
-
-        bool operator!() const { return !m_ptr; }
-
-        // This conversion operator allows implicit conversion to bool but not to other integer types.
-        typedef T* (RefPtr::*UnspecifiedBoolType);
-        operator UnspecifiedBoolType() const { return m_ptr ? &RefPtr::m_ptr : nullptr; }
-
-        RefPtr& operator=(const RefPtr&);
-        RefPtr& operator=(T*);
-        RefPtr& operator=(const PassRefPtr<T>&);
-        RefPtr& operator=(const NonNullPassRefPtr<T>&);
-        template <typename U> RefPtr& operator=(const RefPtr<U>&);
-        template <typename U> RefPtr& operator=(const PassRefPtr<U>&);
-        template <typename U> RefPtr& operator=(const NonNullPassRefPtr<U>&);
-
-        void swap(RefPtr&);
-
-    private:
-        static T* hashTableDeletedValue() { return reinterpret_cast<T*>(-1); }
-
-        T* m_ptr;
-    };
-
-    template <typename T> template <typename U> inline RefPtr<T>::RefPtr(const PassRefPtr<U>& o)
-        : m_ptr(o.releaseRef())
+    PassRefPtr<T> release()
     {
+        PassRefPtr<T> tmp = adoptRef( m_ptr );
+        m_ptr = nullptr;
+        return tmp;
     }
 
-    template <typename T> template <typename U> inline RefPtr<T>::RefPtr(const NonNullPassRefPtr<U>& o)
-        : m_ptr(o.releaseRef())
+    T &operator*() const
     {
+        return *m_ptr;
+    }
+    ALWAYS_INLINE T *operator->() const
+    {
+        return m_ptr;
     }
 
-    template <typename T> inline RefPtr<T>& RefPtr<T>::operator=(const RefPtr<T>& o)
+    bool operator!() const
     {
-        T* optr = o.get();
-        if (optr)
-            optr->ref();
-        T* ptr = m_ptr;
-        m_ptr = optr;
-        if (ptr)
-            ptr->deref();
-        return *this;
+        return !m_ptr;
     }
 
-    template <typename T> template <typename U> inline RefPtr<T>& RefPtr<T>::operator=(const RefPtr<U>& o)
+    // This conversion operator allows implicit conversion to bool but not to other integer types.
+    typedef T *( RefPtr::*UnspecifiedBoolType );
+    operator UnspecifiedBoolType() const
     {
-        T* optr = o.get();
-        if (optr)
-            optr->ref();
-        T* ptr = m_ptr;
-        m_ptr = optr;
-        if (ptr)
-            ptr->deref();
-        return *this;
+        return m_ptr ? &RefPtr::m_ptr : nullptr;
     }
 
-    template <typename T> inline RefPtr<T>& RefPtr<T>::operator=(T* optr)
+    RefPtr &operator=( const RefPtr & );
+    RefPtr &operator=( T * );
+    RefPtr &operator=( const PassRefPtr<T> & );
+    RefPtr &operator=( const NonNullPassRefPtr<T> & );
+    template <typename U> RefPtr &operator=( const RefPtr<U> & );
+    template <typename U> RefPtr &operator=( const PassRefPtr<U> & );
+    template <typename U> RefPtr &operator=( const NonNullPassRefPtr<U> & );
+
+    void swap( RefPtr & );
+
+private:
+    static T *hashTableDeletedValue()
     {
-        if (optr)
-            optr->ref();
-        T* ptr = m_ptr;
-        m_ptr = optr;
-        if (ptr)
-            ptr->deref();
-        return *this;
+        return reinterpret_cast<T *>( -1 );
     }
 
-    template <typename T> inline RefPtr<T>& RefPtr<T>::operator=(const PassRefPtr<T>& o)
+    T *m_ptr;
+};
+
+template <typename T> template <typename U> inline RefPtr<T>::RefPtr( const PassRefPtr<U> &o )
+    : m_ptr( o.releaseRef() )
+{
+}
+
+template <typename T> template <typename U> inline RefPtr<T>::RefPtr( const NonNullPassRefPtr<U> &o )
+    : m_ptr( o.releaseRef() )
+{
+}
+
+template <typename T> inline RefPtr<T> &RefPtr<T>::operator=( const RefPtr<T> &o )
+{
+    T *optr = o.get();
+
+    if ( optr )
     {
-        T* ptr = m_ptr;
-        m_ptr = o.releaseRef();
-        if (ptr)
-            ptr->deref();
-        return *this;
+        optr->ref();
     }
 
-    template <typename T> inline RefPtr<T>& RefPtr<T>::operator=(const NonNullPassRefPtr<T>& o)
+    T *ptr = m_ptr;
+    m_ptr = optr;
+
+    if ( ptr )
     {
-        T* ptr = m_ptr;
-        m_ptr = o.releaseRef();
-        if (ptr)
-            ptr->deref();
-        return *this;
+        ptr->deref();
     }
 
-    template <typename T> template <typename U> inline RefPtr<T>& RefPtr<T>::operator=(const PassRefPtr<U>& o)
+    return *this;
+}
+
+template <typename T> template <typename U> inline RefPtr<T> &RefPtr<T>::operator=( const RefPtr<U> &o )
+{
+    T *optr = o.get();
+
+    if ( optr )
     {
-        T* ptr = m_ptr;
-        m_ptr = o.releaseRef();
-        if (ptr)
-            ptr->deref();
-        return *this;
+        optr->ref();
     }
 
-    template <typename T> template <typename U> inline RefPtr<T>& RefPtr<T>::operator=(const NonNullPassRefPtr<U>& o)
+    T *ptr = m_ptr;
+    m_ptr = optr;
+
+    if ( ptr )
     {
-        T* ptr = m_ptr;
-        m_ptr = o.releaseRef();
-        if (ptr)
-            ptr->deref();
-        return *this;
+        ptr->deref();
     }
 
-    template <class T> inline void RefPtr<T>::swap(RefPtr<T>& o)
+    return *this;
+}
+
+template <typename T> inline RefPtr<T> &RefPtr<T>::operator=( T *optr )
+{
+    if ( optr )
     {
-        std::swap(m_ptr, o.m_ptr);
+        optr->ref();
     }
 
-    template <class T> inline void swap(RefPtr<T>& a, RefPtr<T>& b)
+    T *ptr = m_ptr;
+    m_ptr = optr;
+
+    if ( ptr )
     {
-        a.swap(b);
+        ptr->deref();
     }
 
-    template <typename T, typename U> inline bool operator==(const RefPtr<T>& a, const RefPtr<U>& b)
+    return *this;
+}
+
+template <typename T> inline RefPtr<T> &RefPtr<T>::operator=( const PassRefPtr<T> &o )
+{
+    T *ptr = m_ptr;
+    m_ptr = o.releaseRef();
+
+    if ( ptr )
     {
-        return a.get() == b.get();
+        ptr->deref();
     }
 
-    template <typename T, typename U> inline bool operator==(const RefPtr<T>& a, U* b)
+    return *this;
+}
+
+template <typename T> inline RefPtr<T> &RefPtr<T>::operator=( const NonNullPassRefPtr<T> &o )
+{
+    T *ptr = m_ptr;
+    m_ptr = o.releaseRef();
+
+    if ( ptr )
     {
-        return a.get() == b;
+        ptr->deref();
     }
 
-    template <typename T, typename U> inline bool operator==(T* a, const RefPtr<U>& b)
+    return *this;
+}
+
+template <typename T> template <typename U> inline RefPtr<T> &RefPtr<T>::operator=( const PassRefPtr<U> &o )
+{
+    T *ptr = m_ptr;
+    m_ptr = o.releaseRef();
+
+    if ( ptr )
     {
-        return a == b.get();
+        ptr->deref();
     }
 
-    template <typename T, typename U> inline bool operator!=(const RefPtr<T>& a, const RefPtr<U>& b)
+    return *this;
+}
+
+template <typename T> template <typename U> inline RefPtr<T> &RefPtr<T>::operator=( const NonNullPassRefPtr<U> &o )
+{
+    T *ptr = m_ptr;
+    m_ptr = o.releaseRef();
+
+    if ( ptr )
     {
-        return a.get() != b.get();
+        ptr->deref();
     }
 
-    template <typename T, typename U> inline bool operator!=(const RefPtr<T>& a, U* b)
-    {
-        return a.get() != b;
-    }
+    return *this;
+}
 
-    template <typename T, typename U> inline bool operator!=(T* a, const RefPtr<U>& b)
-    {
-        return a != b.get();
-    }
+template <class T> inline void RefPtr<T>::swap( RefPtr<T> &o )
+{
+    std::swap( m_ptr, o.m_ptr );
+}
 
-    template <typename T, typename U> inline RefPtr<T> static_pointer_cast(const RefPtr<U>& p)
-    {
-        return RefPtr<T>(static_cast<T*>(p.get()));
-    }
+template <class T> inline void swap( RefPtr<T> &a, RefPtr<T> &b )
+{
+    a.swap( b );
+}
 
-    template <typename T, typename U> inline RefPtr<T> const_pointer_cast(const RefPtr<U>& p)
-    {
-        return RefPtr<T>(const_cast<T*>(p.get()));
-    }
+template <typename T, typename U> inline bool operator==( const RefPtr<T> &a, const RefPtr<U> &b )
+{
+    return a.get() == b.get();
+}
 
-    template <typename T> inline T* getPtr(const RefPtr<T>& p)
-    {
-        return p.get();
-    }
+template <typename T, typename U> inline bool operator==( const RefPtr<T> &a, U *b )
+{
+    return a.get() == b;
+}
+
+template <typename T, typename U> inline bool operator==( T *a, const RefPtr<U> &b )
+{
+    return a == b.get();
+}
+
+template <typename T, typename U> inline bool operator!=( const RefPtr<T> &a, const RefPtr<U> &b )
+{
+    return a.get() != b.get();
+}
+
+template <typename T, typename U> inline bool operator!=( const RefPtr<T> &a, U *b )
+{
+    return a.get() != b;
+}
+
+template <typename T, typename U> inline bool operator!=( T *a, const RefPtr<U> &b )
+{
+    return a != b.get();
+}
+
+template <typename T, typename U> inline RefPtr<T> static_pointer_cast( const RefPtr<U> &p )
+{
+    return RefPtr<T>( static_cast<T *>( p.get() ) );
+}
+
+template <typename T, typename U> inline RefPtr<T> const_pointer_cast( const RefPtr<U> &p )
+{
+    return RefPtr<T>( const_cast<T *>( p.get() ) );
+}
+
+template <typename T> inline T *getPtr( const RefPtr<T> &p )
+{
+    return p.get();
+}
 
 } // namespace WTF
 

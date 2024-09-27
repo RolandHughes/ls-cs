@@ -31,38 +31,55 @@
 #include "GlyphBuffer.h"
 #include "Vector.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class UniscribeController {
+class UniscribeController
+{
 public:
-    UniscribeController(const Font*, const TextRun&, HashSet<const SimpleFontData*>* fallbackFonts = 0);
+    UniscribeController( const Font *, const TextRun &, HashSet<const SimpleFontData *> *fallbackFonts = 0 );
 
     // Advance and measure/place up to the specified character.
-    void advance(unsigned to, GlyphBuffer* = 0);
+    void advance( unsigned to, GlyphBuffer * = 0 );
 
     // Compute the character offset for a given x coordinate.
-    int offsetForPosition(int x, bool includePartialGlyphs);
+    int offsetForPosition( int x, bool includePartialGlyphs );
 
     // Returns the width of everything we've consumed so far.
-    float runWidthSoFar() const { return m_runWidthSoFar; }
+    float runWidthSoFar() const
+    {
+        return m_runWidthSoFar;
+    }
 
-    float minGlyphBoundingBoxX() const { return m_minGlyphBoundingBoxX; }
-    float maxGlyphBoundingBoxX() const { return m_maxGlyphBoundingBoxX; }
-    float minGlyphBoundingBoxY() const { return m_minGlyphBoundingBoxY; }
-    float maxGlyphBoundingBoxY() const { return m_maxGlyphBoundingBoxY; }
+    float minGlyphBoundingBoxX() const
+    {
+        return m_minGlyphBoundingBoxX;
+    }
+    float maxGlyphBoundingBoxX() const
+    {
+        return m_maxGlyphBoundingBoxX;
+    }
+    float minGlyphBoundingBoxY() const
+    {
+        return m_minGlyphBoundingBoxY;
+    }
+    float maxGlyphBoundingBoxY() const
+    {
+        return m_maxGlyphBoundingBoxY;
+    }
 
-private:    
+private:
     void resetControlAndState();
 
-    void itemizeShapeAndPlace(const UChar*, unsigned length, const SimpleFontData*, GlyphBuffer*);
-    bool shapeAndPlaceItem(const UChar*, unsigned index, const SimpleFontData*, GlyphBuffer*);
-    bool shape(const UChar* str, int len, SCRIPT_ITEM item, const SimpleFontData* fontData,
-               Vector<WORD>& glyphs, Vector<WORD>& clusters,
-               Vector<SCRIPT_VISATTR>& visualAttributes);
+    void itemizeShapeAndPlace( const UChar *, unsigned length, const SimpleFontData *, GlyphBuffer * );
+    bool shapeAndPlaceItem( const UChar *, unsigned index, const SimpleFontData *, GlyphBuffer * );
+    bool shape( const UChar *str, int len, SCRIPT_ITEM item, const SimpleFontData *fontData,
+                Vector<WORD> &glyphs, Vector<WORD> &clusters,
+                Vector<SCRIPT_VISATTR> &visualAttributes );
 
-    const Font& m_font;
-    const TextRun& m_run;
-    HashSet<const SimpleFontData*>* m_fallbackFonts;
+    const Font &m_font;
+    const TextRun &m_run;
+    HashSet<const SimpleFontData *> *m_fallbackFonts;
     FloatPoint m_glyphOrigin;
     float m_minGlyphBoundingBoxX;
     float m_maxGlyphBoundingBoxX;
@@ -72,7 +89,7 @@ private:
     SCRIPT_CONTROL m_control;
     SCRIPT_STATE m_state;
     Vector<SCRIPT_ITEM> m_items;
- 
+
     unsigned m_currentCharacter;
     int m_end;
 

@@ -23,21 +23,23 @@
 
 #include "InternalFunction.h"
 
-namespace JSC {
+namespace JSC
+{
 
-    class BooleanPrototype;
+class BooleanPrototype;
 
-    class BooleanConstructor : public InternalFunction {
-    public:
-        BooleanConstructor(ExecState*, JSGlobalObject*, Structure*, BooleanPrototype*);
+class BooleanConstructor : public InternalFunction
+{
+public:
+    BooleanConstructor( ExecState *, JSGlobalObject *, Structure *, BooleanPrototype * );
 
-    private:
-        virtual ConstructType getConstructData(ConstructData&);
-        virtual CallType getCallData(CallData&);
-    };
+private:
+    virtual ConstructType getConstructData( ConstructData & );
+    virtual CallType getCallData( CallData & );
+};
 
-    JSObject* constructBooleanFromImmediateBoolean(ExecState*, JSGlobalObject*, JSValue);
-    JSObject* constructBoolean(ExecState*, const ArgList&);
+JSObject *constructBooleanFromImmediateBoolean( ExecState *, JSGlobalObject *, JSValue );
+JSObject *constructBoolean( ExecState *, const ArgList & );
 
 } // namespace JSC
 

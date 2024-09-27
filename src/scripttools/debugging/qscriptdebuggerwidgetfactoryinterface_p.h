@@ -40,18 +40,18 @@ class QScriptBreakpointsWidgetInterface;
 
 class QScriptDebuggerWidgetFactoryInterface
 {
- public:
-   virtual ~QScriptDebuggerWidgetFactoryInterface() {}
+public:
+    virtual ~QScriptDebuggerWidgetFactoryInterface() {}
 
-   virtual QScriptDebugOutputWidgetInterface *createDebugOutputWidget() = 0;
-   virtual QScriptDebuggerConsoleWidgetInterface *createConsoleWidget() = 0;
-   virtual QScriptErrorLogWidgetInterface *createErrorLogWidget() = 0;
-   virtual QScriptDebuggerCodeFinderWidgetInterface *createCodeFinderWidget() = 0;
-   virtual QScriptDebuggerStackWidgetInterface *createStackWidget() = 0;
-   virtual QScriptDebuggerScriptsWidgetInterface *createScriptsWidget() = 0;
-   virtual QScriptDebuggerLocalsWidgetInterface *createLocalsWidget() = 0;
-   virtual QScriptDebuggerCodeWidgetInterface *createCodeWidget() = 0;
-   virtual QScriptBreakpointsWidgetInterface *createBreakpointsWidget() = 0;
+    virtual QScriptDebugOutputWidgetInterface *createDebugOutputWidget() = 0;
+    virtual QScriptDebuggerConsoleWidgetInterface *createConsoleWidget() = 0;
+    virtual QScriptErrorLogWidgetInterface *createErrorLogWidget() = 0;
+    virtual QScriptDebuggerCodeFinderWidgetInterface *createCodeFinderWidget() = 0;
+    virtual QScriptDebuggerStackWidgetInterface *createStackWidget() = 0;
+    virtual QScriptDebuggerScriptsWidgetInterface *createScriptsWidget() = 0;
+    virtual QScriptDebuggerLocalsWidgetInterface *createLocalsWidget() = 0;
+    virtual QScriptDebuggerCodeWidgetInterface *createCodeWidget() = 0;
+    virtual QScriptBreakpointsWidgetInterface *createBreakpointsWidget() = 0;
 };
 
 QT_END_NAMESPACE

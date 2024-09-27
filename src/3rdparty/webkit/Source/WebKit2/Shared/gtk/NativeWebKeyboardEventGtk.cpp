@@ -31,17 +31,18 @@
 #include "WebEventFactory.h"
 #include <gdk/gdk.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
-NativeWebKeyboardEvent::NativeWebKeyboardEvent(GdkEvent* event)
-    : WebKeyboardEvent(WebEventFactory::createWebKeyboardEvent(&event->key))
-    , m_nativeEvent(gdk_event_copy(event))
+NativeWebKeyboardEvent::NativeWebKeyboardEvent( GdkEvent *event )
+    : WebKeyboardEvent( WebEventFactory::createWebKeyboardEvent( &event->key ) )
+    , m_nativeEvent( gdk_event_copy( event ) )
 {
 }
 
-NativeWebKeyboardEvent::NativeWebKeyboardEvent(const NativeWebKeyboardEvent& event)
-    : WebKeyboardEvent(WebEventFactory::createWebKeyboardEvent(&event.nativeEvent()->key))
-    , m_nativeEvent(gdk_event_copy(event.nativeEvent()))
+NativeWebKeyboardEvent::NativeWebKeyboardEvent( const NativeWebKeyboardEvent &event )
+    : WebKeyboardEvent( WebEventFactory::createWebKeyboardEvent( &event.nativeEvent()->key ) )
+    , m_nativeEvent( gdk_event_copy( event.nativeEvent() ) )
 {
 }
 

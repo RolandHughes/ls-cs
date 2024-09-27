@@ -26,13 +26,13 @@
 
 #ifndef QT_NO_ANIMATION
 
-QParallelAnimationGroup::QParallelAnimationGroup(QObject *parent)
-   : QAnimationGroup(*new QParallelAnimationGroupPrivate, parent)
+QParallelAnimationGroup::QParallelAnimationGroup( QObject *parent )
+    : QAnimationGroup( *new QParallelAnimationGroupPrivate, parent )
 {
 }
 
-QParallelAnimationGroup::QParallelAnimationGroup(QParallelAnimationGroupPrivate &dd, QObject *parent)
-   : QAnimationGroup(dd, parent)
+QParallelAnimationGroup::QParallelAnimationGroup( QParallelAnimationGroupPrivate &dd, QObject *parent )
+    : QAnimationGroup( dd, parent )
 {
 }
 
@@ -42,275 +42,318 @@ QParallelAnimationGroup::~QParallelAnimationGroup()
 
 int QParallelAnimationGroup::duration() const
 {
-   Q_D(const QParallelAnimationGroup);
-   int ret = 0;
+    Q_D( const QParallelAnimationGroup );
+    int ret = 0;
 
-   for (int i = 0; i < d->animations.size(); ++i) {
-      QAbstractAnimation *animation = d->animations.at(i);
-      const int currentDuration = animation->totalDuration();
+    for ( int i = 0; i < d->animations.size(); ++i )
+    {
+        QAbstractAnimation *animation = d->animations.at( i );
+        const int currentDuration = animation->totalDuration();
 
-      if (currentDuration == -1) {
-         return -1;   // Undetermined length
-      }
+        if ( currentDuration == -1 )
+        {
+            return -1;   // Undetermined length
+        }
 
-      ret = qMax(ret, currentDuration);
-   }
+        ret = qMax( ret, currentDuration );
+    }
 
-   return ret;
+    return ret;
 }
 
-void QParallelAnimationGroup::updateCurrentTime(int currentTime)
+void QParallelAnimationGroup::updateCurrentTime( int currentTime )
 {
-   Q_D(QParallelAnimationGroup);
+    Q_D( QParallelAnimationGroup );
 
-   if (d->animations.isEmpty()) {
-      return;
-   }
+    if ( d->animations.isEmpty() )
+    {
+        return;
+    }
 
-   if (d->currentLoop > d->lastLoop) {
-      // simulate completion of the loop
-      int dura = duration();
+    if ( d->currentLoop > d->lastLoop )
+    {
+        // simulate completion of the loop
+        int dura = duration();
 
-      if (dura > 0) {
-         for (int i = 0; i < d->animations.size(); ++i) {
-            QAbstractAnimation *animation = d->animations.at(i);
+        if ( dura > 0 )
+        {
+            for ( int i = 0; i < d->animations.size(); ++i )
+            {
+                QAbstractAnimation *animation = d->animations.at( i );
 
-            if (animation->state() != QAbstractAnimation::Stopped) {
-               d->animations.at(i)->setCurrentTime(dura);   // will stop
+                if ( animation->state() != QAbstractAnimation::Stopped )
+                {
+                    d->animations.at( i )->setCurrentTime( dura ); // will stop
+                }
             }
-         }
-      }
+        }
 
-   } else if (d->currentLoop < d->lastLoop) {
-      // simulate completion of the loop seeking backwards
+    }
+    else if ( d->currentLoop < d->lastLoop )
+    {
+        // simulate completion of the loop seeking backwards
 
-      for (int i = 0; i < d->animations.size(); ++i) {
-         QAbstractAnimation *animation = d->animations.at(i);
-         // need to make sure the animation is in the right state and then rewind it
-         d->applyGroupState(animation);
-         animation->setCurrentTime(0);
-         animation->stop();
-      }
-   }
+        for ( int i = 0; i < d->animations.size(); ++i )
+        {
+            QAbstractAnimation *animation = d->animations.at( i );
+            // need to make sure the animation is in the right state and then rewind it
+            d->applyGroupState( animation );
+            animation->setCurrentTime( 0 );
+            animation->stop();
+        }
+    }
 
 #if defined(CS_SHOW_DEBUG_CORE)
-   qDebug("QParallellAnimationGroup %5d: setCurrentTime(%d), loop:%d, last:%d, lastcurrent:%d, %d",
-         __LINE__, d->currentTime, d->currentLoop, d->lastLoop, d->lastCurrentTime, state());
+    qDebug( "QParallellAnimationGroup %5d: setCurrentTime(%d), loop:%d, last:%d, lastcurrent:%d, %d",
+            __LINE__, d->currentTime, d->currentLoop, d->lastLoop, d->lastCurrentTime, state() );
 #endif
 
-   // finally move into the actual time of the current loop
-   for (int i = 0; i < d->animations.size(); ++i) {
-      QAbstractAnimation *animation = d->animations.at(i);
-      const int dura = animation->totalDuration();
+    // finally move into the actual time of the current loop
+    for ( int i = 0; i < d->animations.size(); ++i )
+    {
+        QAbstractAnimation *animation = d->animations.at( i );
+        const int dura = animation->totalDuration();
 
-      //if the loopcount is bigger we should always start all animations
-      if (d->currentLoop > d->lastLoop || d->shouldAnimationStart(animation, d->lastCurrentTime > dura)) {
-         // if we're at the end of the animation, we need to start it if it wasn't already started in this loop
-         // this happens in Backward direction where not all animations are started at the same time
-         d->applyGroupState(animation);
-      }
+        //if the loopcount is bigger we should always start all animations
+        if ( d->currentLoop > d->lastLoop || d->shouldAnimationStart( animation, d->lastCurrentTime > dura ) )
+        {
+            // if we're at the end of the animation, we need to start it if it wasn't already started in this loop
+            // this happens in Backward direction where not all animations are started at the same time
+            d->applyGroupState( animation );
+        }
 
-      if (animation->state() == state()) {
-         animation->setCurrentTime(currentTime);
+        if ( animation->state() == state() )
+        {
+            animation->setCurrentTime( currentTime );
 
-         if (dura > 0 && currentTime > dura) {
-            animation->stop();
-         }
-      }
-   }
+            if ( dura > 0 && currentTime > dura )
+            {
+                animation->stop();
+            }
+        }
+    }
 
-   d->lastLoop = d->currentLoop;
-   d->lastCurrentTime = currentTime;
+    d->lastLoop = d->currentLoop;
+    d->lastCurrentTime = currentTime;
 }
 
-void QParallelAnimationGroup::updateState(QAbstractAnimation::State newState,
-      QAbstractAnimation::State oldState)
+void QParallelAnimationGroup::updateState( QAbstractAnimation::State newState,
+        QAbstractAnimation::State oldState )
 {
-   Q_D(QParallelAnimationGroup);
-   QAnimationGroup::updateState(newState, oldState);
+    Q_D( QParallelAnimationGroup );
+    QAnimationGroup::updateState( newState, oldState );
 
-   switch (newState) {
-      case Stopped:
-         for (int i = 0; i < d->animations.size(); ++i) {
-            d->animations.at(i)->stop();
-         }
-
-         d->disconnectUncontrolledAnimations();
-         break;
-
-      case Paused:
-         for (int i = 0; i < d->animations.size(); ++i)
-            if (d->animations.at(i)->state() == Running) {
-               d->animations.at(i)->pause();
+    switch ( newState )
+    {
+        case Stopped:
+            for ( int i = 0; i < d->animations.size(); ++i )
+            {
+                d->animations.at( i )->stop();
             }
 
-         break;
+            d->disconnectUncontrolledAnimations();
+            break;
 
-      case Running:
-         d->connectUncontrolledAnimations();
+        case Paused:
+            for ( int i = 0; i < d->animations.size(); ++i )
+                if ( d->animations.at( i )->state() == Running )
+                {
+                    d->animations.at( i )->pause();
+                }
 
-         for (int i = 0; i < d->animations.size(); ++i) {
-            QAbstractAnimation *animation = d->animations.at(i);
+            break;
 
-            if (oldState == Stopped) {
-               animation->stop();
+        case Running:
+            d->connectUncontrolledAnimations();
+
+            for ( int i = 0; i < d->animations.size(); ++i )
+            {
+                QAbstractAnimation *animation = d->animations.at( i );
+
+                if ( oldState == Stopped )
+                {
+                    animation->stop();
+                }
+
+                animation->setDirection( d->direction );
+
+                if ( d->shouldAnimationStart( animation, oldState == Stopped ) )
+                {
+                    animation->start();
+                }
             }
 
-            animation->setDirection(d->direction);
-
-            if (d->shouldAnimationStart(animation, oldState == Stopped)) {
-               animation->start();
-            }
-         }
-
-         break;
-   }
+            break;
+    }
 }
 
 void QParallelAnimationGroup::_q_uncontrolledAnimationFinished()
 {
-   Q_D(QParallelAnimationGroup);
-   d->_q_uncontrolledAnimationFinished();
+    Q_D( QParallelAnimationGroup );
+    d->_q_uncontrolledAnimationFinished();
 }
 
 void QParallelAnimationGroupPrivate::_q_uncontrolledAnimationFinished()
 {
-   Q_Q(QParallelAnimationGroup);
+    Q_Q( QParallelAnimationGroup );
 
-   QAbstractAnimation *animation = qobject_cast<QAbstractAnimation *>(q->sender());
-   Q_ASSERT(animation);
+    QAbstractAnimation *animation = qobject_cast<QAbstractAnimation *>( q->sender() );
+    Q_ASSERT( animation );
 
-   int uncontrolledRunningCount = 0;
+    int uncontrolledRunningCount = 0;
 
-   if (animation->duration() == -1 || animation->loopCount() < 0) {
-      QHash<QAbstractAnimation *, int>::iterator it = uncontrolledFinishTime.begin();
+    if ( animation->duration() == -1 || animation->loopCount() < 0 )
+    {
+        QHash<QAbstractAnimation *, int>::iterator it = uncontrolledFinishTime.begin();
 
-      while (it != uncontrolledFinishTime.end()) {
-         if (it.key() == animation) {
-            *it = animation->currentTime();
-         }
+        while ( it != uncontrolledFinishTime.end() )
+        {
+            if ( it.key() == animation )
+            {
+                *it = animation->currentTime();
+            }
 
-         if (it.value() == -1) {
-            ++uncontrolledRunningCount;
-         }
+            if ( it.value() == -1 )
+            {
+                ++uncontrolledRunningCount;
+            }
 
-         ++it;
-      }
-   }
+            ++it;
+        }
+    }
 
-   if (uncontrolledRunningCount > 0) {
-      return;
-   }
+    if ( uncontrolledRunningCount > 0 )
+    {
+        return;
+    }
 
-   int maxDuration = 0;
+    int maxDuration = 0;
 
-   for (int i = 0; i < animations.size(); ++i) {
-      maxDuration = qMax(maxDuration, animations.at(i)->totalDuration());
-   }
+    for ( int i = 0; i < animations.size(); ++i )
+    {
+        maxDuration = qMax( maxDuration, animations.at( i )->totalDuration() );
+    }
 
-   if (currentTime >= maxDuration) {
-      q->stop();
-   }
+    if ( currentTime >= maxDuration )
+    {
+        q->stop();
+    }
 }
 
 void QParallelAnimationGroupPrivate::disconnectUncontrolledAnimations()
 {
-   QHash<QAbstractAnimation *, int>::iterator it = uncontrolledFinishTime.begin();
+    QHash<QAbstractAnimation *, int>::iterator it = uncontrolledFinishTime.begin();
 
-   while (it != uncontrolledFinishTime.end()) {
-      disconnectUncontrolledAnimation(it.key());
-      ++it;
-   }
+    while ( it != uncontrolledFinishTime.end() )
+    {
+        disconnectUncontrolledAnimation( it.key() );
+        ++it;
+    }
 
-   uncontrolledFinishTime.clear();
+    uncontrolledFinishTime.clear();
 }
 
 void QParallelAnimationGroupPrivate::connectUncontrolledAnimations()
 {
-   for (int i = 0; i < animations.size(); ++i) {
-      QAbstractAnimation *animation = animations.at(i);
+    for ( int i = 0; i < animations.size(); ++i )
+    {
+        QAbstractAnimation *animation = animations.at( i );
 
-      if (animation->duration() == -1 || animation->loopCount() < 0) {
-         uncontrolledFinishTime[animation] = -1;
-         connectUncontrolledAnimation(animation);
-      }
-   }
+        if ( animation->duration() == -1 || animation->loopCount() < 0 )
+        {
+            uncontrolledFinishTime[animation] = -1;
+            connectUncontrolledAnimation( animation );
+        }
+    }
 }
 
-bool QParallelAnimationGroupPrivate::shouldAnimationStart(QAbstractAnimation *animation, bool startIfAtEnd) const
+bool QParallelAnimationGroupPrivate::shouldAnimationStart( QAbstractAnimation *animation, bool startIfAtEnd ) const
 {
-   const int dura = animation->totalDuration();
+    const int dura = animation->totalDuration();
 
-   if (dura == -1) {
-      return !isUncontrolledAnimationFinished(animation);
-   }
+    if ( dura == -1 )
+    {
+        return !isUncontrolledAnimationFinished( animation );
+    }
 
-   if (startIfAtEnd) {
-      return currentTime <= dura;
-   }
+    if ( startIfAtEnd )
+    {
+        return currentTime <= dura;
+    }
 
-   if (direction == QAbstractAnimation::Forward) {
-      return currentTime < dura;
-   } else { //direction == QAbstractAnimation::Backward
-      return currentTime && currentTime <= dura;
-   }
+    if ( direction == QAbstractAnimation::Forward )
+    {
+        return currentTime < dura;
+    }
+    else     //direction == QAbstractAnimation::Backward
+    {
+        return currentTime && currentTime <= dura;
+    }
 }
 
-void QParallelAnimationGroupPrivate::applyGroupState(QAbstractAnimation *animation)
+void QParallelAnimationGroupPrivate::applyGroupState( QAbstractAnimation *animation )
 {
-   switch (state) {
-      case QAbstractAnimation::Running:
-         animation->start();
-         break;
+    switch ( state )
+    {
+        case QAbstractAnimation::Running:
+            animation->start();
+            break;
 
-      case QAbstractAnimation::Paused:
-         animation->pause();
-         break;
+        case QAbstractAnimation::Paused:
+            animation->pause();
+            break;
 
-      case QAbstractAnimation::Stopped:
-      default:
-         break;
-   }
+        case QAbstractAnimation::Stopped:
+        default:
+            break;
+    }
 }
 
-bool QParallelAnimationGroupPrivate::isUncontrolledAnimationFinished(QAbstractAnimation *anim) const
+bool QParallelAnimationGroupPrivate::isUncontrolledAnimationFinished( QAbstractAnimation *anim ) const
 {
-   return uncontrolledFinishTime.value(anim, -1) >= 0;
+    return uncontrolledFinishTime.value( anim, -1 ) >= 0;
 }
 
-void QParallelAnimationGroupPrivate::animationRemoved(int index, QAbstractAnimation *anim)
+void QParallelAnimationGroupPrivate::animationRemoved( int index, QAbstractAnimation *anim )
 {
-   QAnimationGroupPrivate::animationRemoved(index, anim);
-   disconnectUncontrolledAnimation(anim);
-   uncontrolledFinishTime.remove(anim);
+    QAnimationGroupPrivate::animationRemoved( index, anim );
+    disconnectUncontrolledAnimation( anim );
+    uncontrolledFinishTime.remove( anim );
 }
 
-void QParallelAnimationGroup::updateDirection(QAbstractAnimation::Direction direction)
+void QParallelAnimationGroup::updateDirection( QAbstractAnimation::Direction direction )
 {
-   Q_D(QParallelAnimationGroup);
+    Q_D( QParallelAnimationGroup );
 
-   //we need to update the direction of the current animation
-   if (state() != Stopped) {
-      for (int i = 0; i < d->animations.size(); ++i) {
-         QAbstractAnimation *animation = d->animations.at(i);
-         animation->setDirection(direction);
-      }
+    //we need to update the direction of the current animation
+    if ( state() != Stopped )
+    {
+        for ( int i = 0; i < d->animations.size(); ++i )
+        {
+            QAbstractAnimation *animation = d->animations.at( i );
+            animation->setDirection( direction );
+        }
 
-   } else {
-      if (direction == Forward) {
-         d->lastLoop = 0;
-         d->lastCurrentTime = 0;
-      } else {
-         // Looping backwards with loopCount == -1 does not really work well...
-         d->lastLoop = (d->loopCount == -1 ? 0 : d->loopCount - 1);
-         d->lastCurrentTime = duration();
-      }
-   }
+    }
+    else
+    {
+        if ( direction == Forward )
+        {
+            d->lastLoop = 0;
+            d->lastCurrentTime = 0;
+        }
+        else
+        {
+            // Looping backwards with loopCount == -1 does not really work well...
+            d->lastLoop = ( d->loopCount == -1 ? 0 : d->loopCount - 1 );
+            d->lastCurrentTime = duration();
+        }
+    }
 }
 
-bool QParallelAnimationGroup::event(QEvent *event)
+bool QParallelAnimationGroup::event( QEvent *event )
 {
-   return QAnimationGroup::event(event);
+    return QAnimationGroup::event( event );
 }
 
 #endif //QT_NO_ANIMATION

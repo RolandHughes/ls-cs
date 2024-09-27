@@ -33,46 +33,55 @@
 #include <wtf/Noncopyable.h>
 #include <wtf/PassOwnPtr.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
 class NPIdentifierData;
 class NPRemoteObjectMap;
 class NPVariantData;
 class Plugin;
 
-class NPObjectMessageReceiver {
-    WTF_MAKE_NONCOPYABLE(NPObjectMessageReceiver);
+class NPObjectMessageReceiver
+{
+    WTF_MAKE_NONCOPYABLE( NPObjectMessageReceiver );
 
 public:
-    static PassOwnPtr<NPObjectMessageReceiver> create(NPRemoteObjectMap*, Plugin*, uint64_t npObjectID, NPObject*);
+    static PassOwnPtr<NPObjectMessageReceiver> create( NPRemoteObjectMap *, Plugin *, uint64_t npObjectID, NPObject * );
     ~NPObjectMessageReceiver();
 
-    CoreIPC::SyncReplyMode didReceiveSyncNPObjectMessageReceiverMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*, CoreIPC::ArgumentEncoder*);
+    CoreIPC::SyncReplyMode didReceiveSyncNPObjectMessageReceiverMessage( CoreIPC::Connection *, CoreIPC::MessageID,
+            CoreIPC::ArgumentDecoder *, CoreIPC::ArgumentEncoder * );
 
-    Plugin* plugin() const { return m_plugin; }
-    NPObject* npObject() const { return m_npObject; }
-    
+    Plugin *plugin() const
+    {
+        return m_plugin;
+    }
+    NPObject *npObject() const
+    {
+        return m_npObject;
+    }
+
 private:
-    NPObjectMessageReceiver(NPRemoteObjectMap*, Plugin*, uint64_t npObjectID, NPObject*);
+    NPObjectMessageReceiver( NPRemoteObjectMap *, Plugin *, uint64_t npObjectID, NPObject * );
 
     // Message handlers.
     void deallocate();
-    void hasMethod(const NPIdentifierData&, bool& returnValue);
-    void invoke(const NPIdentifierData&, const Vector<NPVariantData>& argumentsData, bool& returnValue, NPVariantData& resultData);
-    void invokeDefault(const Vector<NPVariantData>& argumentsData, bool& returnValue, NPVariantData& resultData);
-    void hasProperty(const NPIdentifierData&, bool& returnValue);
-    void getProperty(const NPIdentifierData&, bool& returnValue, NPVariantData& resultData);
-    void setProperty(const NPIdentifierData&, const NPVariantData& propertyValueData, bool& returnValue);
-    void removeProperty(const NPIdentifierData&, bool& returnValue);
-    void enumerate(bool& returnValue, Vector<NPIdentifierData>& identifiersData);
-    void construct(const Vector<NPVariantData>& argumentsData, bool& returnValue, NPVariantData& resultData);
+    void hasMethod( const NPIdentifierData &, bool &returnValue );
+    void invoke( const NPIdentifierData &, const Vector<NPVariantData> &argumentsData, bool &returnValue, NPVariantData &resultData );
+    void invokeDefault( const Vector<NPVariantData> &argumentsData, bool &returnValue, NPVariantData &resultData );
+    void hasProperty( const NPIdentifierData &, bool &returnValue );
+    void getProperty( const NPIdentifierData &, bool &returnValue, NPVariantData &resultData );
+    void setProperty( const NPIdentifierData &, const NPVariantData &propertyValueData, bool &returnValue );
+    void removeProperty( const NPIdentifierData &, bool &returnValue );
+    void enumerate( bool &returnValue, Vector<NPIdentifierData> &identifiersData );
+    void construct( const Vector<NPVariantData> &argumentsData, bool &returnValue, NPVariantData &resultData );
 
-    NPRemoteObjectMap* m_npRemoteObjectMap;
-    Plugin* m_plugin;
+    NPRemoteObjectMap *m_npRemoteObjectMap;
+    Plugin *m_plugin;
     uint64_t m_npObjectID;
-    NPObject* m_npObject;
+    NPObject *m_npObject;
 };
-    
+
 } // namespace WebKit
 
 #endif // ENABLE(PLUGIN_PROCESS)

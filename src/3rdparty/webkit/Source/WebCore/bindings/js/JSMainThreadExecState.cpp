@@ -26,8 +26,9 @@
 #include "config.h"
 #include "JSMainThreadExecState.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-JSC::ExecState* JSMainThreadExecState::s_mainThreadState = 0;
+JSC::ExecState *JSMainThreadExecState::s_mainThreadState = 0;
 
 } // namespace WebCore

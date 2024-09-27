@@ -31,30 +31,35 @@
 #include "SVGDocument.h"
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
-HTMLFrameOwnerElement::HTMLFrameOwnerElement(const QualifiedName& tagName, Document* document)
-    : HTMLElement(tagName, document)
-    , m_contentFrame(0)
-    , m_sandboxFlags(SandboxNone)
+HTMLFrameOwnerElement::HTMLFrameOwnerElement( const QualifiedName &tagName, Document *document )
+    : HTMLElement( tagName, document )
+    , m_contentFrame( 0 )
+    , m_sandboxFlags( SandboxNone )
 {
 }
 
-RenderPart* HTMLFrameOwnerElement::renderPart() const
+RenderPart *HTMLFrameOwnerElement::renderPart() const
 {
     // HTMLObjectElement and HTMLEmbedElement may return arbitrary renderers
     // when using fallback content.
-    if (!renderer() || !renderer()->isRenderPart())
+    if ( !renderer() || !renderer()->isRenderPart() )
+    {
         return 0;
-    return toRenderPart(renderer());
+    }
+
+    return toRenderPart( renderer() );
 }
 
 void HTMLFrameOwnerElement::willRemove()
 {
     // FIXME: It is unclear why this can't be moved to removedFromDocument()
     // this is the only implementation of willRemove in WebCore!
-    if (Frame* frame = contentFrame()) {
-        RefPtr<Frame> protect(frame);
+    if ( Frame *frame = contentFrame() )
+    {
+        RefPtr<Frame> protect( frame );
         frame->loader()->frameDetached();
         frame->disconnectOwnerElement();
     }
@@ -64,42 +69,52 @@ void HTMLFrameOwnerElement::willRemove()
 
 HTMLFrameOwnerElement::~HTMLFrameOwnerElement()
 {
-    if (m_contentFrame)
+    if ( m_contentFrame )
+    {
         m_contentFrame->disconnectOwnerElement();
+    }
 }
 
-Document* HTMLFrameOwnerElement::contentDocument() const
+Document *HTMLFrameOwnerElement::contentDocument() const
 {
     return m_contentFrame ? m_contentFrame->document() : 0;
 }
 
-DOMWindow* HTMLFrameOwnerElement::contentWindow() const
+DOMWindow *HTMLFrameOwnerElement::contentWindow() const
 {
     return m_contentFrame ? m_contentFrame->domWindow() : 0;
 }
 
-void HTMLFrameOwnerElement::setSandboxFlags(SandboxFlags flags)
+void HTMLFrameOwnerElement::setSandboxFlags( SandboxFlags flags )
 {
-    if (m_sandboxFlags == flags)
+    if ( m_sandboxFlags == flags )
+    {
         return;
+    }
 
     m_sandboxFlags = flags;
 
-    if (Frame* frame = contentFrame())
+    if ( Frame *frame = contentFrame() )
+    {
         frame->loader()->ownerElementSandboxFlagsChanged();
+    }
 }
 
-bool HTMLFrameOwnerElement::isKeyboardFocusable(KeyboardEvent* event) const
+bool HTMLFrameOwnerElement::isKeyboardFocusable( KeyboardEvent *event ) const
 {
-    return m_contentFrame && HTMLElement::isKeyboardFocusable(event);
+    return m_contentFrame && HTMLElement::isKeyboardFocusable( event );
 }
 
 #if ENABLE(SVG)
-SVGDocument* HTMLFrameOwnerElement::getSVGDocument(ExceptionCode& ec) const
+SVGDocument *HTMLFrameOwnerElement::getSVGDocument( ExceptionCode &ec ) const
 {
-    Document* doc = contentDocument();
-    if (doc && doc->isSVGDocument())
-        return static_cast<SVGDocument*>(doc);
+    Document *doc = contentDocument();
+
+    if ( doc && doc->isSVGDocument() )
+    {
+        return static_cast<SVGDocument *>( doc );
+    }
+
     // Spec: http://www.w3.org/TR/SVG/struct.html#InterfaceGetSVGDocument
     ec = NOT_SUPPORTED_ERR;
     return 0;

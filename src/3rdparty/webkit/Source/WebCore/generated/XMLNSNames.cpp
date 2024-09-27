@@ -37,22 +37,25 @@
 #include "XMLNSNames.h"
 
 #include <wtf/StaticConstructors.h>
-namespace WebCore {
+namespace WebCore
+{
 
- namespace XMLNSNames {
+namespace XMLNSNames
+{
 
 using namespace WebCore;
 
-DEFINE_GLOBAL(AtomicString, xmlnsNamespaceURI, "http://www.w3.org/2000/xmlns/")
+DEFINE_GLOBAL( AtomicString, xmlnsNamespaceURI, "http://www.w3.org/2000/xmlns/" )
 
 // Attributes
-DEFINE_GLOBAL(QualifiedName, xmlnsAttr, nullAtom, "xmlns", xmlnsNamespaceURI);
+DEFINE_GLOBAL( QualifiedName, xmlnsAttr, nullAtom, "xmlns", xmlnsNamespaceURI );
 
 
-WebCore::QualifiedName** getXMLNSAttrs(size_t* size)
+WebCore::QualifiedName **getXMLNSAttrs( size_t *size )
 {
-    static WebCore::QualifiedName* XMLNSAttr[] = {
-        (WebCore::QualifiedName*)&xmlnsAttr,
+    static WebCore::QualifiedName *XMLNSAttr[] =
+    {
+        ( WebCore::QualifiedName * ) &xmlnsAttr,
     };
     *size = 1;
     return XMLNSAttr;
@@ -61,21 +64,26 @@ WebCore::QualifiedName** getXMLNSAttrs(size_t* size)
 void init()
 {
     static bool initialized = false;
-    if (initialized)
+
+    if ( initialized )
+    {
         return;
+    }
+
     initialized = true;
-    
+
     // Use placement new to initialize the globals.
-    
+
     AtomicString::init();
-    AtomicString xmlnsNS("http://www.w3.org/2000/xmlns/");
+    AtomicString xmlnsNS( "http://www.w3.org/2000/xmlns/" );
 
     // Namespace
-    new ((void*)&xmlnsNamespaceURI) AtomicString(xmlnsNS);
+    new ( ( void * )&xmlnsNamespaceURI ) AtomicString( xmlnsNS );
 
     // Attributes
-    new ((void*)&xmlnsAttr) QualifiedName(nullAtom, "xmlns", xmlnsNS);
+    new ( ( void * )&xmlnsAttr ) QualifiedName( nullAtom, "xmlns", xmlnsNS );
 }
 
-} }
+}
+}
 

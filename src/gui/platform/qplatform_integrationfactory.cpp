@@ -32,74 +32,83 @@
 
 static QFactoryLoader *loader()
 {
-   static QFactoryLoader retval(QPlatformIntegrationInterface_ID, "/platforms", Qt::CaseInsensitive);
-   return &retval;
+    static QFactoryLoader retval( QPlatformIntegrationInterface_ID, "/platforms", Qt::CaseInsensitive );
+    return &retval;
 }
 
 static QFactoryLoader *directLoader()
 {
-   static QFactoryLoader retval(QPlatformIntegrationInterface_ID, "", Qt::CaseInsensitive);
-   return &retval;
+    static QFactoryLoader retval( QPlatformIntegrationInterface_ID, "", Qt::CaseInsensitive );
+    return &retval;
 }
 
-static inline QPlatformIntegration *loadIntegration(QFactoryLoader *loader, const QString &key,
-                  const QStringList &parameters, int &argc, char ** argv)
+static inline QPlatformIntegration *loadIntegration( QFactoryLoader *loader, const QString &key,
+        const QStringList &parameters, int &argc, char **argv )
 {
-   if (loader->keySet().contains(key)) {
+    if ( loader->keySet().contains( key ) )
+    {
 
-      if (QPlatformIntegrationPlugin *factory = dynamic_cast<QPlatformIntegrationPlugin *>(loader->instance(key))) {
+        if ( QPlatformIntegrationPlugin *factory = dynamic_cast<QPlatformIntegrationPlugin *>( loader->instance( key ) ) )
+        {
 
-         if (QPlatformIntegration *result = factory->create(key, parameters, argc, argv)) {
-            return result;
-         }
-      }
-   }
+            if ( QPlatformIntegration *result = factory->create( key, parameters, argc, argv ) )
+            {
+                return result;
+            }
+        }
+    }
 
-   return nullptr;
+    return nullptr;
 }
 
-QPlatformIntegration *QPlatformIntegrationFactory::create(const QString &platform, const QStringList &paramList,
-                  int &argc, char **argv, const QString &platformPluginPath)
+QPlatformIntegration *QPlatformIntegrationFactory::create( const QString &platform, const QStringList &paramList,
+        int &argc, char **argv, const QString &platformPluginPath )
 {
     // try loading the plugin from the passed value of platformPluginPath
-    if (! platformPluginPath.isEmpty()) {
+    if ( ! platformPluginPath.isEmpty() )
+    {
 
-        QCoreApplication::addLibraryPath(platformPluginPath);
+        QCoreApplication::addLibraryPath( platformPluginPath );
 
-        if (QPlatformIntegration *retval = loadIntegration(directLoader(), platform, paramList, argc, argv)) {
+        if ( QPlatformIntegration *retval = loadIntegration( directLoader(), platform, paramList, argc, argv ) )
+        {
             return retval;
         }
     }
 
     // try loading using the default path or the path in cs.conf
-    if (QPlatformIntegration *retval = loadIntegration(loader(), platform, paramList, argc, argv)) {
+    if ( QPlatformIntegration *retval = loadIntegration( loader(), platform, paramList, argc, argv ) )
+    {
         return retval;
     }
 
     return nullptr;
 }
 
-QStringList QPlatformIntegrationFactory::keys(const QString &platformPluginPath)
+QStringList QPlatformIntegrationFactory::keys( const QString &platformPluginPath )
 {
     QStringList list;
 
-    if (! platformPluginPath.isEmpty()) {
-        QCoreApplication::addLibraryPath(platformPluginPath);
+    if ( ! platformPluginPath.isEmpty() )
+    {
+        QCoreApplication::addLibraryPath( platformPluginPath );
 
         auto keySet = directLoader()->keySet();
-        list.append(keySet.toList());
+        list.append( keySet.toList() );
 
-        if (! list.isEmpty()) {
-            const QString postFix = QString(" (from ") + QDir::toNativeSeparators(platformPluginPath) + ')';
+        if ( ! list.isEmpty() )
+        {
+            const QString postFix = QString( " (from " ) + QDir::toNativeSeparators( platformPluginPath ) + ')';
 
-            for (auto &tmp : list) {
-               tmp.append(postFix);
+            for ( auto &tmp : list )
+            {
+                tmp.append( postFix );
             }
         }
     }
 
     auto keySet = loader()->keySet();
-    list.append(keySet.toList());
+    list.append( keySet.toList() );
 
     return list;
 }

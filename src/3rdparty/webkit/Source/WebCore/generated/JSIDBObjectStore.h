@@ -28,26 +28,32 @@
 #include <runtime/JSObjectWithGlobalObject.h>
 #include <runtime/ObjectPrototype.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class IDBObjectStore;
 
-class JSIDBObjectStore : public JSDOMWrapper {
+class JSIDBObjectStore : public JSDOMWrapper
+{
     typedef JSDOMWrapper Base;
 public:
-    JSIDBObjectStore(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<IDBObjectStore>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
+    JSIDBObjectStore( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<IDBObjectStore> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
-    IDBObjectStore* impl() const { return m_impl.get(); }
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
+    IDBObjectStore *impl() const
+    {
+        return m_impl.get();
+    }
 
 private:
     RefPtr<IDBObjectStore> m_impl;
@@ -55,42 +61,45 @@ protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
-JSC::JSValue toJS(JSC::ExecState*, JSDOMGlobalObject*, IDBObjectStore*);
-IDBObjectStore* toIDBObjectStore(JSC::JSValue);
+JSC::JSValue toJS( JSC::ExecState *, JSDOMGlobalObject *, IDBObjectStore * );
+IDBObjectStore *toIDBObjectStore( JSC::JSValue );
 
-class JSIDBObjectStorePrototype : public JSC::JSObjectWithGlobalObject {
+class JSIDBObjectStorePrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSIDBObjectStorePrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSIDBObjectStorePrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                               JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 // Functions
 
-JSC::EncodedJSValue JSC_HOST_CALL jsIDBObjectStorePrototypeFunctionPut(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsIDBObjectStorePrototypeFunctionAdd(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsIDBObjectStorePrototypeFunctionDelete(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsIDBObjectStorePrototypeFunctionClear(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsIDBObjectStorePrototypeFunctionGet(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsIDBObjectStorePrototypeFunctionOpenCursor(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsIDBObjectStorePrototypeFunctionCreateIndex(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsIDBObjectStorePrototypeFunctionIndex(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsIDBObjectStorePrototypeFunctionDeleteIndex(JSC::ExecState*);
+JSC::EncodedJSValue JSC_HOST_CALL jsIDBObjectStorePrototypeFunctionPut( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsIDBObjectStorePrototypeFunctionAdd( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsIDBObjectStorePrototypeFunctionDelete( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsIDBObjectStorePrototypeFunctionClear( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsIDBObjectStorePrototypeFunctionGet( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsIDBObjectStorePrototypeFunctionOpenCursor( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsIDBObjectStorePrototypeFunctionCreateIndex( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsIDBObjectStorePrototypeFunctionIndex( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsIDBObjectStorePrototypeFunctionDeleteIndex( JSC::ExecState * );
 // Attributes
 
-JSC::JSValue jsIDBObjectStoreName(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsIDBObjectStoreKeyPath(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsIDBObjectStoreIndexNames(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsIDBObjectStoreConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsIDBObjectStoreName( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsIDBObjectStoreKeyPath( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsIDBObjectStoreIndexNames( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsIDBObjectStoreConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

@@ -30,25 +30,25 @@
 
 class DirectShowMediaTypeList : public IUnknown
 {
- public:
-   DirectShowMediaTypeList();
-   virtual ~DirectShowMediaTypeList();
+public:
+    DirectShowMediaTypeList();
+    virtual ~DirectShowMediaTypeList();
 
-   IEnumMediaTypes *createMediaTypeEnum();
+    IEnumMediaTypes *createMediaTypeEnum();
 
-   void setMediaTypes(const QVector<AM_MEDIA_TYPE> &types);
+    void setMediaTypes( const QVector<AM_MEDIA_TYPE> &types );
 
-   virtual int currentMediaTypeToken();
-   virtual HRESULT nextMediaType(
-      int token, int *index, ULONG count, AM_MEDIA_TYPE **types, ULONG *fetchedCount);
-   virtual HRESULT skipMediaType(int token, int *index, ULONG count);
-   virtual HRESULT cloneMediaType(int token, int index, IEnumMediaTypes **enumeration);
+    virtual int currentMediaTypeToken();
+    virtual HRESULT nextMediaType(
+        int token, int *index, ULONG count, AM_MEDIA_TYPE **types, ULONG *fetchedCount );
+    virtual HRESULT skipMediaType( int token, int *index, ULONG count );
+    virtual HRESULT cloneMediaType( int token, int index, IEnumMediaTypes **enumeration );
 
- protected:
-   QVector<AM_MEDIA_TYPE> m_mediaTypes;
+protected:
+    QVector<AM_MEDIA_TYPE> m_mediaTypes;
 
- private:
-   int m_mediaTypeToken;
+private:
+    int m_mediaTypeToken;
 };
 
 #endif

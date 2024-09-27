@@ -33,8 +33,8 @@
 extern "C" {
 #endif
 
-WK_EXPORT WKURLRequestRef WKURLRequestCreateWithCFURLRequest(CFURLRequestRef urlRequest);
-WK_EXPORT CFURLRequestRef WKURLRequestCopyCFURLRequest(CFAllocatorRef alloc, WKURLRequestRef urlRequest);
+WK_EXPORT WKURLRequestRef WKURLRequestCreateWithCFURLRequest( CFURLRequestRef urlRequest );
+WK_EXPORT CFURLRequestRef WKURLRequestCopyCFURLRequest( CFAllocatorRef alloc, WKURLRequestRef urlRequest );
 
 #ifdef __cplusplus
 }

@@ -23,104 +23,115 @@
 
 #include <qhttp_networkheader_p.h>
 
-QHttpNetworkHeaderPrivate::QHttpNetworkHeaderPrivate(const QUrl &newUrl)
-   : url(newUrl)
+QHttpNetworkHeaderPrivate::QHttpNetworkHeaderPrivate( const QUrl &newUrl )
+    : url( newUrl )
 {
 }
 
-QHttpNetworkHeaderPrivate::QHttpNetworkHeaderPrivate(const QHttpNetworkHeaderPrivate &other)
-   : QSharedData(other)
+QHttpNetworkHeaderPrivate::QHttpNetworkHeaderPrivate( const QHttpNetworkHeaderPrivate &other )
+    : QSharedData( other )
 {
-   url = other.url;
-   fields = other.fields;
+    url = other.url;
+    fields = other.fields;
 }
 
 qint64 QHttpNetworkHeaderPrivate::contentLength() const
 {
-   bool ok = false;
+    bool ok = false;
 
-   // We are not using the headerField() method here because servers might send us multiple content-length
-   // headers, just take the first content-length header field
+    // We are not using the headerField() method here because servers might send us multiple content-length
+    // headers, just take the first content-length header field
 
-   QByteArray value;
+    QByteArray value;
 
-   QList<QPair<QByteArray, QByteArray> >::const_iterator it  = fields.constBegin();
-   QList<QPair<QByteArray, QByteArray> >::const_iterator end = fields.constEnd();
+    QList<QPair<QByteArray, QByteArray> >::const_iterator it  = fields.constBegin();
+    QList<QPair<QByteArray, QByteArray> >::const_iterator end = fields.constEnd();
 
-   for ( ; it != end; ++it)
-      if ( qstricmp("content-length", it->first.constData() ) == 0) {
-         value = it->second;
-         break;
-      }
+    for ( ; it != end; ++it )
+        if ( qstricmp( "content-length", it->first.constData() ) == 0 )
+        {
+            value = it->second;
+            break;
+        }
 
-   qint64 length = value.toULongLong(&ok);
+    qint64 length = value.toULongLong( &ok );
 
-   if (ok) {
-      return length;
-   }
+    if ( ok )
+    {
+        return length;
+    }
 
-   return -1; // the header field is not set
+    return -1; // the header field is not set
 }
 
-void QHttpNetworkHeaderPrivate::setContentLength(qint64 length)
+void QHttpNetworkHeaderPrivate::setContentLength( qint64 length )
 {
-   setHeaderField("Content-Length", QByteArray::number(length));
+    setHeaderField( "Content-Length", QByteArray::number( length ) );
 }
 
-QByteArray QHttpNetworkHeaderPrivate::headerField(const QByteArray &name, const QByteArray &defaultValue) const
+QByteArray QHttpNetworkHeaderPrivate::headerField( const QByteArray &name, const QByteArray &defaultValue ) const
 {
-   QList<QByteArray> allValues = headerFieldValues(name);
-   if (allValues.isEmpty()) {
-      return defaultValue;
-   }
+    QList<QByteArray> allValues = headerFieldValues( name );
 
-   QByteArray result;
-   bool first = true;
+    if ( allValues.isEmpty() )
+    {
+        return defaultValue;
+    }
 
-   for (const QByteArray &value : allValues) {
-      if (! first) {
-         result += ", ";
-      }
+    QByteArray result;
+    bool first = true;
 
-      first = false;
-      result += value;
-   }
+    for ( const QByteArray &value : allValues )
+    {
+        if ( ! first )
+        {
+            result += ", ";
+        }
 
-   return result;
+        first = false;
+        result += value;
+    }
+
+    return result;
 }
 
-QList<QByteArray> QHttpNetworkHeaderPrivate::headerFieldValues(const QByteArray &name) const
+QList<QByteArray> QHttpNetworkHeaderPrivate::headerFieldValues( const QByteArray &name ) const
 {
-   QList<QByteArray> result;
-   QList<QPair<QByteArray, QByteArray> >::const_iterator it  = fields.constBegin();
-   QList<QPair<QByteArray, QByteArray> >::const_iterator end = fields.constEnd();
+    QList<QByteArray> result;
+    QList<QPair<QByteArray, QByteArray> >::const_iterator it  = fields.constBegin();
+    QList<QPair<QByteArray, QByteArray> >::const_iterator end = fields.constEnd();
 
-   for ( ; it != end; ++it)
-      if (qstricmp(name.constData(), it->first.constData()) == 0) {
-         result += it->second;
-      }
+    for ( ; it != end; ++it )
+        if ( qstricmp( name.constData(), it->first.constData() ) == 0 )
+        {
+            result += it->second;
+        }
 
-   return result;
+    return result;
 }
 
-void QHttpNetworkHeaderPrivate::setHeaderField(const QByteArray &name, const QByteArray &data)
+void QHttpNetworkHeaderPrivate::setHeaderField( const QByteArray &name, const QByteArray &data )
 {
-   QList<QPair<QByteArray, QByteArray> >::iterator it = fields.begin();
+    QList<QPair<QByteArray, QByteArray> >::iterator it = fields.begin();
 
-   while (it != fields.end()) {
-      if (qstricmp(name.constData(), it->first.constData()) == 0) {
-         it = fields.erase(it);
-      } else {
-         ++it;
-      }
-   }
+    while ( it != fields.end() )
+    {
+        if ( qstricmp( name.constData(), it->first.constData() ) == 0 )
+        {
+            it = fields.erase( it );
+        }
+        else
+        {
+            ++it;
+        }
+    }
 
-   fields.append(qMakePair(name, data));
+    fields.append( qMakePair( name, data ) );
 }
 
-bool QHttpNetworkHeaderPrivate::operator==(const QHttpNetworkHeaderPrivate &other) const
+bool QHttpNetworkHeaderPrivate::operator==( const QHttpNetworkHeaderPrivate &other ) const
 {
-   return (url == other.url);
+    return ( url == other.url );
 }
 
 

@@ -31,48 +31,50 @@
 
 #include "JSObject.h"
 
-namespace JSC {
+namespace JSC
+{
 
-    // This unholy class is used to allow us to avoid multiple exception checks
-    // in certain SquirrelFish bytecodes -- effectively it just silently consumes
-    // any operations performed on the result of a failed toObject call.
-    class JSNotAnObject : public JSNonFinalObject {
-    public:
-        JSNotAnObject(ExecState* exec)
-            : JSNonFinalObject(exec->globalData(), exec->globalData().notAnObjectStructure.get())
-        {
-        }
+// This unholy class is used to allow us to avoid multiple exception checks
+// in certain SquirrelFish bytecodes -- effectively it just silently consumes
+// any operations performed on the result of a failed toObject call.
+class JSNotAnObject : public JSNonFinalObject
+{
+public:
+    JSNotAnObject( ExecState *exec )
+        : JSNonFinalObject( exec->globalData(), exec->globalData().notAnObjectStructure.get() )
+    {
+    }
 
-        static Structure* createStructure(JSGlobalData& globalData, JSValue prototype)
-        {
-            return Structure::create(globalData, prototype, TypeInfo(ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
-        }
+    static Structure *createStructure( JSGlobalData &globalData, JSValue prototype )
+    {
+        return Structure::create( globalData, prototype, TypeInfo( ObjectType, StructureFlags ), AnonymousSlotCount, &s_info );
+    }
 
-     private:
-        
-        static const unsigned StructureFlags = OverridesGetOwnPropertySlot | OverridesGetPropertyNames | JSObject::StructureFlags;
+private:
 
-        // JSValue methods
-        virtual JSValue toPrimitive(ExecState*, PreferredPrimitiveType) const;
-        virtual bool getPrimitiveNumber(ExecState*, double& number, JSValue&);
-        virtual bool toBoolean(ExecState*) const;
-        virtual double toNumber(ExecState*) const;
-        virtual UString toString(ExecState*) const;
-        virtual JSObject* toObject(ExecState*, JSGlobalObject*) const;
+    static const unsigned StructureFlags = OverridesGetOwnPropertySlot | OverridesGetPropertyNames | JSObject::StructureFlags;
 
-        // JSObject methods
-        virtual bool getOwnPropertySlot(ExecState*, const Identifier& propertyName, PropertySlot&);
-        virtual bool getOwnPropertySlot(ExecState*, unsigned propertyName, PropertySlot&);
-        virtual bool getOwnPropertyDescriptor(ExecState*, const Identifier&, PropertyDescriptor&);
+    // JSValue methods
+    virtual JSValue toPrimitive( ExecState *, PreferredPrimitiveType ) const;
+    virtual bool getPrimitiveNumber( ExecState *, double &number, JSValue & );
+    virtual bool toBoolean( ExecState * ) const;
+    virtual double toNumber( ExecState * ) const;
+    virtual UString toString( ExecState * ) const;
+    virtual JSObject *toObject( ExecState *, JSGlobalObject * ) const;
 
-        virtual void put(ExecState*, const Identifier& propertyName, JSValue, PutPropertySlot&);
-        virtual void put(ExecState*, unsigned propertyName, JSValue);
+    // JSObject methods
+    virtual bool getOwnPropertySlot( ExecState *, const Identifier &propertyName, PropertySlot & );
+    virtual bool getOwnPropertySlot( ExecState *, unsigned propertyName, PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( ExecState *, const Identifier &, PropertyDescriptor & );
 
-        virtual bool deleteProperty(ExecState*, const Identifier& propertyName);
-        virtual bool deleteProperty(ExecState*, unsigned propertyName);
+    virtual void put( ExecState *, const Identifier &propertyName, JSValue, PutPropertySlot & );
+    virtual void put( ExecState *, unsigned propertyName, JSValue );
 
-        virtual void getOwnPropertyNames(ExecState*, PropertyNameArray&, EnumerationMode mode = ExcludeDontEnumProperties);
-    };
+    virtual bool deleteProperty( ExecState *, const Identifier &propertyName );
+    virtual bool deleteProperty( ExecState *, unsigned propertyName );
+
+    virtual void getOwnPropertyNames( ExecState *, PropertyNameArray &, EnumerationMode mode = ExcludeDontEnumProperties );
+};
 
 } // namespace JSC
 

@@ -23,24 +23,26 @@
 
 #include "JSWrapperObject.h"
 
-namespace JSC {
+namespace JSC
+{
 
-    class NumberObject : public JSWrapperObject {
-    public:
-        explicit NumberObject(JSGlobalData&, Structure*);
+class NumberObject : public JSWrapperObject
+{
+public:
+    explicit NumberObject( JSGlobalData &, Structure * );
 
-        static const ClassInfo s_info;
+    static const ClassInfo s_info;
 
-        static Structure* createStructure(JSGlobalData& globalData, JSValue prototype)
-        {
-            return Structure::create(globalData, prototype, TypeInfo(ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
-        }
+    static Structure *createStructure( JSGlobalData &globalData, JSValue prototype )
+    {
+        return Structure::create( globalData, prototype, TypeInfo( ObjectType, StructureFlags ), AnonymousSlotCount, &s_info );
+    }
 
-    private:
-        virtual JSValue getJSNumber();
-    };
+private:
+    virtual JSValue getJSNumber();
+};
 
-    NumberObject* constructNumber(ExecState*, JSGlobalObject*, JSValue);
+NumberObject *constructNumber( ExecState *, JSGlobalObject *, JSValue );
 
 } // namespace JSC
 

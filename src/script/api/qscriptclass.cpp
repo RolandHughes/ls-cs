@@ -26,15 +26,15 @@
 
 class QScriptClassPrivate
 {
-   Q_DECLARE_PUBLIC(QScriptClass)
+    Q_DECLARE_PUBLIC( QScriptClass )
 
- public:
-   QScriptClassPrivate() {}
-   virtual ~QScriptClassPrivate() {}
+public:
+    QScriptClassPrivate() {}
+    virtual ~QScriptClassPrivate() {}
 
-   QScriptEngine *engine;
+    QScriptEngine *engine;
 
-   QScriptClass *q_ptr;
+    QScriptClass *q_ptr;
 };
 
 /*!
@@ -42,21 +42,21 @@ class QScriptClassPrivate
 
   The engine does not take ownership of the QScriptClass object.
 */
-QScriptClass::QScriptClass(QScriptEngine *engine)
-   : d_ptr(new QScriptClassPrivate)
+QScriptClass::QScriptClass( QScriptEngine *engine )
+    : d_ptr( new QScriptClassPrivate )
 {
-   d_ptr->q_ptr = this;
-   d_ptr->engine = engine;
+    d_ptr->q_ptr = this;
+    d_ptr->engine = engine;
 }
 
 /*!
   \internal
 */
-QScriptClass::QScriptClass(QScriptEngine *engine, QScriptClassPrivate &dd)
-   : d_ptr(&dd)
+QScriptClass::QScriptClass( QScriptEngine *engine, QScriptClassPrivate &dd )
+    : d_ptr( &dd )
 {
-   d_ptr->q_ptr = this;
-   d_ptr->engine = engine;
+    d_ptr->q_ptr = this;
+    d_ptr->engine = engine;
 }
 
 /*!
@@ -75,8 +75,8 @@ QScriptClass::~QScriptClass()
 */
 QScriptEngine *QScriptClass::engine() const
 {
-   Q_D(const QScriptClass);
-   return d->engine;
+    Q_D( const QScriptClass );
+    return d->engine;
 }
 
 /*!
@@ -96,7 +96,7 @@ QScriptEngine *QScriptClass::engine() const
 */
 QScriptValue QScriptClass::prototype() const
 {
-   return QScriptValue();
+    return QScriptValue();
 }
 
 /*!
@@ -109,7 +109,7 @@ QScriptValue QScriptClass::prototype() const
 */
 QString QScriptClass::name() const
 {
-   return QString();
+    return QString();
 }
 
 /*!
@@ -141,15 +141,15 @@ QString QScriptClass::name() const
 
   \sa property()
 */
-QScriptClass::QueryFlags QScriptClass::queryProperty(const QScriptValue &object,
-            const QScriptString &name, QueryFlags flags, uint *id)
+QScriptClass::QueryFlags QScriptClass::queryProperty( const QScriptValue &object,
+        const QScriptString &name, QueryFlags flags, uint *id )
 {
-   Q_UNUSED(object);
-   Q_UNUSED(name);
-   Q_UNUSED(flags);
-   Q_UNUSED(id);
+    Q_UNUSED( object );
+    Q_UNUSED( name );
+    Q_UNUSED( flags );
+    Q_UNUSED( id );
 
-   return Qt::EmptyFlag;
+    return Qt::EmptyFlag;
 }
 
 /*!
@@ -163,12 +163,12 @@ QScriptClass::QueryFlags QScriptClass::queryProperty(const QScriptValue &object,
 
   \sa setProperty(), propertyFlags()
 */
-QScriptValue QScriptClass::property(const QScriptValue &object, const QScriptString &name, uint id)
+QScriptValue QScriptClass::property( const QScriptValue &object, const QScriptString &name, uint id )
 {
-   Q_UNUSED(object);
-   Q_UNUSED(name);
-   Q_UNUSED(id);
-   return QScriptValue();
+    Q_UNUSED( object );
+    Q_UNUSED( name );
+    Q_UNUSED( id );
+    return QScriptValue();
 }
 
 /*!
@@ -183,40 +183,40 @@ QScriptValue QScriptClass::property(const QScriptValue &object, const QScriptStr
   \sa property()
 */
 QScriptValue::PropertyFlags QScriptClass::propertyFlags(
-   const QScriptValue &object, const QScriptString &name, uint id)
+    const QScriptValue &object, const QScriptString &name, uint id )
 {
-   Q_UNUSED(object);
-   Q_UNUSED(name);
-   Q_UNUSED(id);
+    Q_UNUSED( object );
+    Q_UNUSED( name );
+    Q_UNUSED( id );
 
-   return Qt::EmptyFlag;
+    return Qt::EmptyFlag;
 }
 
-void QScriptClass::setProperty(QScriptValue &object, const QScriptString &name,
-   uint id, const QScriptValue &value)
+void QScriptClass::setProperty( QScriptValue &object, const QScriptString &name,
+                                uint id, const QScriptValue &value )
 {
-   Q_UNUSED(object);
-   Q_UNUSED(name);
-   Q_UNUSED(id);
-   Q_UNUSED(value);
+    Q_UNUSED( object );
+    Q_UNUSED( name );
+    Q_UNUSED( id );
+    Q_UNUSED( value );
 }
 
-QScriptClassPropertyIterator *QScriptClass::newIterator(const QScriptValue &object)
+QScriptClassPropertyIterator *QScriptClass::newIterator( const QScriptValue &object )
 {
-   Q_UNUSED(object);
-   return nullptr;
+    Q_UNUSED( object );
+    return nullptr;
 }
 
-bool QScriptClass::supportsExtension(Extension extension) const
+bool QScriptClass::supportsExtension( Extension extension ) const
 {
-   Q_UNUSED(extension);
-   return false;
+    Q_UNUSED( extension );
+    return false;
 }
 
-QVariant QScriptClass::extension(Extension extension, const QVariant &argument)
+QVariant QScriptClass::extension( Extension extension, const QVariant &argument )
 {
-   Q_UNUSED(extension);
-   Q_UNUSED(argument);
-   return QVariant();
+    Q_UNUSED( extension );
+    Q_UNUSED( argument );
+    return QVariant();
 }
 

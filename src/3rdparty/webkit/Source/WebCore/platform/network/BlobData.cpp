@@ -37,7 +37,8 @@
 #include <wtf/RefPtr.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 const long long BlobDataItem::toEndOfFile = -1;
 const double BlobDataItem::doNotCheckFileChange = 0;
@@ -59,40 +60,43 @@ void BlobDataItem::detachFromCurrentThread()
 
 PassOwnPtr<BlobData> BlobData::create()
 {
-    return adoptPtr(new BlobData());
+    return adoptPtr( new BlobData() );
 }
 
 void BlobData::detachFromCurrentThread()
 {
     m_contentType = m_contentType.crossThreadString();
     m_contentDisposition = m_contentDisposition.crossThreadString();
-    for (size_t i = 0; i < m_items.size(); ++i)
-        m_items.at(i).detachFromCurrentThread();
+
+    for ( size_t i = 0; i < m_items.size(); ++i )
+    {
+        m_items.at( i ).detachFromCurrentThread();
+    }
 }
 
-void BlobData::appendData(PassRefPtr<RawData> data, long long offset, long long length)
+void BlobData::appendData( PassRefPtr<RawData> data, long long offset, long long length )
 {
-    m_items.append(BlobDataItem(data, offset, length));
+    m_items.append( BlobDataItem( data, offset, length ) );
 }
 
-void BlobData::appendFile(const String& path)
+void BlobData::appendFile( const String &path )
 {
-    m_items.append(BlobDataItem(path));
+    m_items.append( BlobDataItem( path ) );
 }
 
-void BlobData::appendFile(const String& path, long long offset, long long length, double expectedModificationTime)
+void BlobData::appendFile( const String &path, long long offset, long long length, double expectedModificationTime )
 {
-    m_items.append(BlobDataItem(path, offset, length, expectedModificationTime));
+    m_items.append( BlobDataItem( path, offset, length, expectedModificationTime ) );
 }
 
-void BlobData::appendBlob(const KURL& url, long long offset, long long length)
+void BlobData::appendBlob( const KURL &url, long long offset, long long length )
 {
-    m_items.append(BlobDataItem(url, offset, length));
+    m_items.append( BlobDataItem( url, offset, length ) );
 }
 
-void BlobData::swapItems(BlobDataItemList& items)
+void BlobData::swapItems( BlobDataItemList &items )
 {
-    m_items.swap(items);
+    m_items.swap( items );
 }
 
 } // namespace WebCore

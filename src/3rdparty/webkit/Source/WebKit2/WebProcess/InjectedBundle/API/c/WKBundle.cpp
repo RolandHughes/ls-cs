@@ -35,160 +35,185 @@ using namespace WebKit;
 
 WKTypeID WKBundleGetTypeID()
 {
-    return toAPI(InjectedBundle::APIType);
+    return toAPI( InjectedBundle::APIType );
 }
 
-void WKBundleSetClient(WKBundleRef bundleRef, WKBundleClient * wkClient)
+void WKBundleSetClient( WKBundleRef bundleRef, WKBundleClient *wkClient )
 {
-    if (wkClient && wkClient->version)
+    if ( wkClient && wkClient->version )
+    {
         return;
-    toImpl(bundleRef)->initializeClient(wkClient);
+    }
+
+    toImpl( bundleRef )->initializeClient( wkClient );
 }
 
-void WKBundlePostMessage(WKBundleRef bundleRef, WKStringRef messageNameRef, WKTypeRef messageBodyRef)
+void WKBundlePostMessage( WKBundleRef bundleRef, WKStringRef messageNameRef, WKTypeRef messageBodyRef )
 {
-    toImpl(bundleRef)->postMessage(toImpl(messageNameRef)->string(), toImpl(messageBodyRef));
+    toImpl( bundleRef )->postMessage( toImpl( messageNameRef )->string(), toImpl( messageBodyRef ) );
 }
 
-void WKBundlePostSynchronousMessage(WKBundleRef bundleRef, WKStringRef messageNameRef, WKTypeRef messageBodyRef, WKTypeRef* returnDataRef)
+void WKBundlePostSynchronousMessage( WKBundleRef bundleRef, WKStringRef messageNameRef, WKTypeRef messageBodyRef,
+                                     WKTypeRef *returnDataRef )
 {
     RefPtr<APIObject> returnData;
-    toImpl(bundleRef)->postSynchronousMessage(toImpl(messageNameRef)->string(), toImpl(messageBodyRef), returnData);
-    if (returnDataRef)
-        *returnDataRef = toAPI(returnData.release().leakRef());
+    toImpl( bundleRef )->postSynchronousMessage( toImpl( messageNameRef )->string(), toImpl( messageBodyRef ), returnData );
+
+    if ( returnDataRef )
+    {
+        *returnDataRef = toAPI( returnData.release().leakRef() );
+    }
 }
 
-void WKBundleSetShouldTrackVisitedLinks(WKBundleRef bundleRef, bool shouldTrackVisitedLinks)
+void WKBundleSetShouldTrackVisitedLinks( WKBundleRef bundleRef, bool shouldTrackVisitedLinks )
 {
-    toImpl(bundleRef)->setShouldTrackVisitedLinks(shouldTrackVisitedLinks);
+    toImpl( bundleRef )->setShouldTrackVisitedLinks( shouldTrackVisitedLinks );
 }
 
-void WKBundleRemoveAllVisitedLinks(WKBundleRef bundleRef)
+void WKBundleRemoveAllVisitedLinks( WKBundleRef bundleRef )
 {
-    toImpl(bundleRef)->removeAllVisitedLinks();
+    toImpl( bundleRef )->removeAllVisitedLinks();
 }
 
-void WKBundleActivateMacFontAscentHack(WKBundleRef bundleRef)
+void WKBundleActivateMacFontAscentHack( WKBundleRef bundleRef )
 {
-    toImpl(bundleRef)->activateMacFontAscentHack();
+    toImpl( bundleRef )->activateMacFontAscentHack();
 }
 
-void WKBundleGarbageCollectJavaScriptObjects(WKBundleRef bundleRef)
+void WKBundleGarbageCollectJavaScriptObjects( WKBundleRef bundleRef )
 {
-    toImpl(bundleRef)->garbageCollectJavaScriptObjects();
+    toImpl( bundleRef )->garbageCollectJavaScriptObjects();
 }
 
-void WKBundleGarbageCollectJavaScriptObjectsOnAlternateThreadForDebugging(WKBundleRef bundleRef, bool waitUntilDone)
+void WKBundleGarbageCollectJavaScriptObjectsOnAlternateThreadForDebugging( WKBundleRef bundleRef, bool waitUntilDone )
 {
-    toImpl(bundleRef)->garbageCollectJavaScriptObjectsOnAlternateThreadForDebugging(waitUntilDone);
+    toImpl( bundleRef )->garbageCollectJavaScriptObjectsOnAlternateThreadForDebugging( waitUntilDone );
 }
 
-size_t WKBundleGetJavaScriptObjectsCount(WKBundleRef bundleRef)
+size_t WKBundleGetJavaScriptObjectsCount( WKBundleRef bundleRef )
 {
-    return toImpl(bundleRef)->javaScriptObjectsCount();
+    return toImpl( bundleRef )->javaScriptObjectsCount();
 }
 
-void WKBundleAddUserScript(WKBundleRef bundleRef, WKBundlePageGroupRef pageGroupRef, WKBundleScriptWorldRef scriptWorldRef, WKStringRef sourceRef, WKURLRef urlRef, WKArrayRef whitelistRef, WKArrayRef blacklistRef, WKUserScriptInjectionTime injectionTimeRef, WKUserContentInjectedFrames injectedFramesRef)
+void WKBundleAddUserScript( WKBundleRef bundleRef, WKBundlePageGroupRef pageGroupRef, WKBundleScriptWorldRef scriptWorldRef,
+                            WKStringRef sourceRef, WKURLRef urlRef, WKArrayRef whitelistRef, WKArrayRef blacklistRef,
+                            WKUserScriptInjectionTime injectionTimeRef, WKUserContentInjectedFrames injectedFramesRef )
 {
-    toImpl(bundleRef)->addUserScript(toImpl(pageGroupRef), toImpl(scriptWorldRef), toWTFString(sourceRef), toWTFString(urlRef), toImpl(whitelistRef), toImpl(blacklistRef), toUserScriptInjectionTime(injectionTimeRef), toUserContentInjectedFrames(injectedFramesRef));
+    toImpl( bundleRef )->addUserScript( toImpl( pageGroupRef ), toImpl( scriptWorldRef ), toWTFString( sourceRef ),
+                                        toWTFString( urlRef ), toImpl( whitelistRef ), toImpl( blacklistRef ), toUserScriptInjectionTime( injectionTimeRef ),
+                                        toUserContentInjectedFrames( injectedFramesRef ) );
 }
 
-void WKBundleAddUserStyleSheet(WKBundleRef bundleRef, WKBundlePageGroupRef pageGroupRef, WKBundleScriptWorldRef scriptWorldRef, WKStringRef sourceRef, WKURLRef urlRef, WKArrayRef whitelistRef, WKArrayRef blacklistRef, WKUserContentInjectedFrames injectedFramesRef)
+void WKBundleAddUserStyleSheet( WKBundleRef bundleRef, WKBundlePageGroupRef pageGroupRef, WKBundleScriptWorldRef scriptWorldRef,
+                                WKStringRef sourceRef, WKURLRef urlRef, WKArrayRef whitelistRef, WKArrayRef blacklistRef,
+                                WKUserContentInjectedFrames injectedFramesRef )
 {
-    toImpl(bundleRef)->addUserStyleSheet(toImpl(pageGroupRef), toImpl(scriptWorldRef), toWTFString(sourceRef), toWTFString(urlRef), toImpl(whitelistRef), toImpl(blacklistRef), toUserContentInjectedFrames(injectedFramesRef));
+    toImpl( bundleRef )->addUserStyleSheet( toImpl( pageGroupRef ), toImpl( scriptWorldRef ), toWTFString( sourceRef ),
+                                            toWTFString( urlRef ), toImpl( whitelistRef ), toImpl( blacklistRef ), toUserContentInjectedFrames( injectedFramesRef ) );
 }
 
-void WKBundleRemoveUserScript(WKBundleRef bundleRef, WKBundlePageGroupRef pageGroupRef, WKBundleScriptWorldRef scriptWorldRef, WKURLRef urlRef)
+void WKBundleRemoveUserScript( WKBundleRef bundleRef, WKBundlePageGroupRef pageGroupRef, WKBundleScriptWorldRef scriptWorldRef,
+                               WKURLRef urlRef )
 {
-    toImpl(bundleRef)->removeUserScript(toImpl(pageGroupRef), toImpl(scriptWorldRef), toWTFString(urlRef));
+    toImpl( bundleRef )->removeUserScript( toImpl( pageGroupRef ), toImpl( scriptWorldRef ), toWTFString( urlRef ) );
 }
 
-void WKBundleRemoveUserStyleSheet(WKBundleRef bundleRef, WKBundlePageGroupRef pageGroupRef, WKBundleScriptWorldRef scriptWorldRef, WKURLRef urlRef)
+void WKBundleRemoveUserStyleSheet( WKBundleRef bundleRef, WKBundlePageGroupRef pageGroupRef,
+                                   WKBundleScriptWorldRef scriptWorldRef, WKURLRef urlRef )
 {
-    toImpl(bundleRef)->removeUserStyleSheet(toImpl(pageGroupRef), toImpl(scriptWorldRef), toWTFString(urlRef));
+    toImpl( bundleRef )->removeUserStyleSheet( toImpl( pageGroupRef ), toImpl( scriptWorldRef ), toWTFString( urlRef ) );
 }
 
-void WKBundleRemoveUserScripts(WKBundleRef bundleRef, WKBundlePageGroupRef pageGroupRef, WKBundleScriptWorldRef scriptWorldRef)
+void WKBundleRemoveUserScripts( WKBundleRef bundleRef, WKBundlePageGroupRef pageGroupRef, WKBundleScriptWorldRef scriptWorldRef )
 {
-    toImpl(bundleRef)->removeUserScripts(toImpl(pageGroupRef), toImpl(scriptWorldRef));
+    toImpl( bundleRef )->removeUserScripts( toImpl( pageGroupRef ), toImpl( scriptWorldRef ) );
 }
 
-void WKBundleRemoveUserStyleSheets(WKBundleRef bundleRef, WKBundlePageGroupRef pageGroupRef, WKBundleScriptWorldRef scriptWorldRef)
+void WKBundleRemoveUserStyleSheets( WKBundleRef bundleRef, WKBundlePageGroupRef pageGroupRef,
+                                    WKBundleScriptWorldRef scriptWorldRef )
 {
-    toImpl(bundleRef)->removeUserStyleSheets(toImpl(pageGroupRef), toImpl(scriptWorldRef));
+    toImpl( bundleRef )->removeUserStyleSheets( toImpl( pageGroupRef ), toImpl( scriptWorldRef ) );
 }
 
-void WKBundleRemoveAllUserContent(WKBundleRef bundleRef, WKBundlePageGroupRef pageGroupRef)
+void WKBundleRemoveAllUserContent( WKBundleRef bundleRef, WKBundlePageGroupRef pageGroupRef )
 {
-    toImpl(bundleRef)->removeAllUserContent(toImpl(pageGroupRef));
+    toImpl( bundleRef )->removeAllUserContent( toImpl( pageGroupRef ) );
 }
 
-void WKBundleOverrideXSSAuditorEnabledForTestRunner(WKBundleRef bundleRef, WKBundlePageGroupRef pageGroupRef, bool enabled)
+void WKBundleOverrideXSSAuditorEnabledForTestRunner( WKBundleRef bundleRef, WKBundlePageGroupRef pageGroupRef, bool enabled )
 {
-    toImpl(bundleRef)->overrideXSSAuditorEnabledForTestRunner(toImpl(pageGroupRef), enabled);
+    toImpl( bundleRef )->overrideXSSAuditorEnabledForTestRunner( toImpl( pageGroupRef ), enabled );
 }
 
-void WKBundleSetAllowUniversalAccessFromFileURLs(WKBundleRef bundleRef, WKBundlePageGroupRef pageGroupRef, bool enabled)
+void WKBundleSetAllowUniversalAccessFromFileURLs( WKBundleRef bundleRef, WKBundlePageGroupRef pageGroupRef, bool enabled )
 {
-    toImpl(bundleRef)->setAllowUniversalAccessFromFileURLs(toImpl(pageGroupRef), enabled);
+    toImpl( bundleRef )->setAllowUniversalAccessFromFileURLs( toImpl( pageGroupRef ), enabled );
 }
 
-void WKBundleSetAllowFileAccessFromFileURLs(WKBundleRef bundleRef, WKBundlePageGroupRef pageGroupRef, bool enabled)
+void WKBundleSetAllowFileAccessFromFileURLs( WKBundleRef bundleRef, WKBundlePageGroupRef pageGroupRef, bool enabled )
 {
-    toImpl(bundleRef)->setAllowFileAccessFromFileURLs(toImpl(pageGroupRef), enabled);
+    toImpl( bundleRef )->setAllowFileAccessFromFileURLs( toImpl( pageGroupRef ), enabled );
 }
 
-void WKBundleSetFrameFlatteningEnabled(WKBundleRef bundleRef, WKBundlePageGroupRef pageGroupRef, bool enabled)
+void WKBundleSetFrameFlatteningEnabled( WKBundleRef bundleRef, WKBundlePageGroupRef pageGroupRef, bool enabled )
 {
-    toImpl(bundleRef)->setFrameFlatteningEnabled(toImpl(pageGroupRef), enabled);
+    toImpl( bundleRef )->setFrameFlatteningEnabled( toImpl( pageGroupRef ), enabled );
 }
 
-void WKBundleAddOriginAccessWhitelistEntry(WKBundleRef bundleRef, WKStringRef sourceOrigin, WKStringRef destinationProtocol, WKStringRef destinationHost, bool allowDestinationSubdomains)
+void WKBundleAddOriginAccessWhitelistEntry( WKBundleRef bundleRef, WKStringRef sourceOrigin, WKStringRef destinationProtocol,
+        WKStringRef destinationHost, bool allowDestinationSubdomains )
 {
-    toImpl(bundleRef)->addOriginAccessWhitelistEntry(toImpl(sourceOrigin)->string(), toImpl(destinationProtocol)->string(), toImpl(destinationHost)->string(), allowDestinationSubdomains);
+    toImpl( bundleRef )->addOriginAccessWhitelistEntry( toImpl( sourceOrigin )->string(), toImpl( destinationProtocol )->string(),
+            toImpl( destinationHost )->string(), allowDestinationSubdomains );
 }
 
-void WKBundleRemoveOriginAccessWhitelistEntry(WKBundleRef bundleRef, WKStringRef sourceOrigin, WKStringRef destinationProtocol, WKStringRef destinationHost, bool allowDestinationSubdomains)
+void WKBundleRemoveOriginAccessWhitelistEntry( WKBundleRef bundleRef, WKStringRef sourceOrigin, WKStringRef destinationProtocol,
+        WKStringRef destinationHost, bool allowDestinationSubdomains )
 {
-    toImpl(bundleRef)->removeOriginAccessWhitelistEntry(toImpl(sourceOrigin)->string(), toImpl(destinationProtocol)->string(), toImpl(destinationHost)->string(), allowDestinationSubdomains);
+    toImpl( bundleRef )->removeOriginAccessWhitelistEntry( toImpl( sourceOrigin )->string(), toImpl( destinationProtocol )->string(),
+            toImpl( destinationHost )->string(), allowDestinationSubdomains );
 }
 
-void WKBundleResetOriginAccessWhitelists(WKBundleRef bundleRef)
+void WKBundleResetOriginAccessWhitelists( WKBundleRef bundleRef )
 {
-    toImpl(bundleRef)->resetOriginAccessWhitelists();
+    toImpl( bundleRef )->resetOriginAccessWhitelists();
 }
 
-void WKBundleReportException(JSContextRef context, JSValueRef exception)
+void WKBundleReportException( JSContextRef context, JSValueRef exception )
 {
-    InjectedBundle::reportException(context, exception);
+    InjectedBundle::reportException( context, exception );
 }
 
-void WKBundleClearAllDatabases(WKBundleRef bundleRef)
+void WKBundleClearAllDatabases( WKBundleRef bundleRef )
 {
-    toImpl(bundleRef)->clearAllDatabases();
+    toImpl( bundleRef )->clearAllDatabases();
 }
 
-void WKBundleSetDatabaseQuota(WKBundleRef bundleRef, uint64_t quota)
+void WKBundleSetDatabaseQuota( WKBundleRef bundleRef, uint64_t quota )
 {
-    toImpl(bundleRef)->setDatabaseQuota(quota);
+    toImpl( bundleRef )->setDatabaseQuota( quota );
 }
 
-int WKBundleNumberOfPages(WKBundleRef bundleRef, WKBundleFrameRef frameRef, double pageWidthInPixels, double pageHeightInPixels)
+int WKBundleNumberOfPages( WKBundleRef bundleRef, WKBundleFrameRef frameRef, double pageWidthInPixels, double pageHeightInPixels )
 {
-    return toImpl(bundleRef)->numberOfPages(toImpl(frameRef), pageWidthInPixels, pageHeightInPixels);
+    return toImpl( bundleRef )->numberOfPages( toImpl( frameRef ), pageWidthInPixels, pageHeightInPixels );
 }
 
-int WKBundlePageNumberForElementById(WKBundleRef bundleRef, WKBundleFrameRef frameRef, WKStringRef idRef, double pageWidthInPixels, double pageHeightInPixels)
+int WKBundlePageNumberForElementById( WKBundleRef bundleRef, WKBundleFrameRef frameRef, WKStringRef idRef,
+                                      double pageWidthInPixels, double pageHeightInPixels )
 {
-    return toImpl(bundleRef)->pageNumberForElementById(toImpl(frameRef), toImpl(idRef)->string(), pageWidthInPixels, pageHeightInPixels);
+    return toImpl( bundleRef )->pageNumberForElementById( toImpl( frameRef ), toImpl( idRef )->string(), pageWidthInPixels,
+            pageHeightInPixels );
 }
 
-WKStringRef WKBundlePageSizeAndMarginsInPixels(WKBundleRef bundleRef, WKBundleFrameRef frameRef, int pageIndex, int width, int height, int marginTop, int marginRight, int marginBottom, int marginLeft)
+WKStringRef WKBundlePageSizeAndMarginsInPixels( WKBundleRef bundleRef, WKBundleFrameRef frameRef, int pageIndex, int width,
+        int height, int marginTop, int marginRight, int marginBottom, int marginLeft )
 {
-    return toCopiedAPI(toImpl(bundleRef)->pageSizeAndMarginsInPixels(toImpl(frameRef), pageIndex, width, height, marginTop, marginRight, marginBottom, marginLeft));
+    return toCopiedAPI( toImpl( bundleRef )->pageSizeAndMarginsInPixels( toImpl( frameRef ), pageIndex, width, height, marginTop,
+                        marginRight, marginBottom, marginLeft ) );
 }
 
-WK_EXPORT bool WKBundleIsPageBoxVisible(WKBundleRef bundleRef, WKBundleFrameRef frameRef, int pageIndex)
+WK_EXPORT bool WKBundleIsPageBoxVisible( WKBundleRef bundleRef, WKBundleFrameRef frameRef, int pageIndex )
 {
-    return toImpl(bundleRef)->isPageBoxVisible(toImpl(frameRef), pageIndex);
+    return toImpl( bundleRef )->isPageBoxVisible( toImpl( frameRef ), pageIndex );
 }

@@ -27,7 +27,7 @@
 #include <qurl.h>
 #include <qstring.h>
 
-Q_CORE_EXPORT QString qTopLevelDomain(const QString &domain);
-Q_CORE_EXPORT bool qIsEffectiveTLD(const QString &domain);
+Q_CORE_EXPORT QString qTopLevelDomain( const QString &domain );
+Q_CORE_EXPORT bool qIsEffectiveTLD( const QString &domain );
 
 #endif

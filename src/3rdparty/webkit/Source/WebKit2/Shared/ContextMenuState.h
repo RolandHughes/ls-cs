@@ -28,25 +28,32 @@
 
 #include "WebCoreArgumentCoders.h"
 
-namespace WebKit {
+namespace WebKit
+{
 
-struct ContextMenuState {
+struct ContextMenuState
+{
     String absoluteLinkURLString;
     String absoluteImageURLString;
 
-    void encode(CoreIPC::ArgumentEncoder* encoder) const
+    void encode( CoreIPC::ArgumentEncoder *encoder ) const
     {
-        encoder->encode(absoluteLinkURLString);
-        encoder->encode(absoluteImageURLString);
+        encoder->encode( absoluteLinkURLString );
+        encoder->encode( absoluteImageURLString );
     }
 
-    static bool decode(CoreIPC::ArgumentDecoder* decoder, ContextMenuState& result)
+    static bool decode( CoreIPC::ArgumentDecoder *decoder, ContextMenuState &result )
     {
-        if (!decoder->decode(result.absoluteLinkURLString))
+        if ( !decoder->decode( result.absoluteLinkURLString ) )
+        {
             return false;
-        if (!decoder->decode(result.absoluteImageURLString))
+        }
+
+        if ( !decoder->decode( result.absoluteImageURLString ) )
+        {
             return false;
-    
+        }
+
         return true;
     }
 };

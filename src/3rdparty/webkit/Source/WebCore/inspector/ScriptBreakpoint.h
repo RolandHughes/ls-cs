@@ -32,17 +32,19 @@
 
 #include "PlatformString.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-struct ScriptBreakpoint {
+struct ScriptBreakpoint
+{
     ScriptBreakpoint()
     {
     }
 
-    ScriptBreakpoint(int lineNumber, int columnNumber, const String& condition)
-        : lineNumber(lineNumber)
-        , columnNumber(columnNumber)
-        , condition(condition)
+    ScriptBreakpoint( int lineNumber, int columnNumber, const String &condition )
+        : lineNumber( lineNumber )
+        , columnNumber( columnNumber )
+        , condition( condition )
     {
     }
 

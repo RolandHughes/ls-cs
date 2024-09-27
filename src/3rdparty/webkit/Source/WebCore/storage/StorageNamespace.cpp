@@ -34,17 +34,18 @@
 
 #if ENABLE(DOM_STORAGE)
 
-namespace WebCore {
-
-PassRefPtr<StorageNamespace> StorageNamespace::localStorageNamespace(const String& path, unsigned quota)
+namespace WebCore
 {
-    return StorageNamespaceImpl::localStorageNamespace(path, quota);
+
+PassRefPtr<StorageNamespace> StorageNamespace::localStorageNamespace( const String &path, unsigned quota )
+{
+    return StorageNamespaceImpl::localStorageNamespace( path, quota );
 }
 
 // The page argument is only used by the Chromium port.
-PassRefPtr<StorageNamespace> StorageNamespace::sessionStorageNamespace(Page*, unsigned quota)
+PassRefPtr<StorageNamespace> StorageNamespace::sessionStorageNamespace( Page *, unsigned quota )
 {
-    return StorageNamespaceImpl::sessionStorageNamespace(quota);
+    return StorageNamespaceImpl::sessionStorageNamespace( quota );
 }
 
 } // namespace WebCore

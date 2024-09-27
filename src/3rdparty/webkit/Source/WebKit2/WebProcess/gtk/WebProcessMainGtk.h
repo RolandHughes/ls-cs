@@ -29,11 +29,12 @@
 
 #include <WebKit2/WKBase.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
 #ifdef __cplusplus
 extern "C" {
-WK_EXPORT int WebProcessMainGtk(int argc, char* argv[]);
+WK_EXPORT int WebProcessMainGtk( int argc, char *argv[] );
 } // extern "C"
 #endif // __cplusplus
 

@@ -32,40 +32,44 @@
 #include <JavaScriptCore/JSBase.h>
 #include <wtf/Forward.h>
 
-namespace WebCore {
+namespace WebCore
+{
 class DOMWrapperWorld;
 class ResourceError;
 class ResourceRequest;
 class ResourceResponse;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
 class APIObject;
 class WebPage;
 class WebFrame;
 
-class InjectedBundlePageLoaderClient : public APIClient<WKBundlePageLoaderClient> {
+class InjectedBundlePageLoaderClient : public APIClient<WKBundlePageLoaderClient>
+{
 public:
-    void didStartProvisionalLoadForFrame(WebPage*, WebFrame*, RefPtr<APIObject>& userData);
-    void didReceiveServerRedirectForProvisionalLoadForFrame(WebPage*, WebFrame*, RefPtr<APIObject>& userData);
-    void didFailProvisionalLoadWithErrorForFrame(WebPage*, WebFrame*, const WebCore::ResourceError&, RefPtr<APIObject>& userData);
-    void didCommitLoadForFrame(WebPage*, WebFrame*, RefPtr<APIObject>& userData);
-    void didFinishDocumentLoadForFrame(WebPage*, WebFrame*, RefPtr<APIObject>& userData);
-    void didFinishLoadForFrame(WebPage*, WebFrame*, RefPtr<APIObject>& userData);
-    void didFailLoadWithErrorForFrame(WebPage*, WebFrame*, const WebCore::ResourceError&, RefPtr<APIObject>& userData);
-    void didSameDocumentNavigationForFrame(WebPage*, WebFrame*, SameDocumentNavigationType, RefPtr<APIObject>& userData);
-    void didReceiveTitleForFrame(WebPage*, const String&, WebFrame*, RefPtr<APIObject>& userData);
-    void didFirstLayoutForFrame(WebPage*, WebFrame*, RefPtr<APIObject>& userData);
-    void didFirstVisuallyNonEmptyLayoutForFrame(WebPage*, WebFrame*, RefPtr<APIObject>& userData);
-    void didRemoveFrameFromHierarchy(WebPage*, WebFrame*, RefPtr<APIObject>& userData);
-    void didDisplayInsecureContentForFrame(WebPage*, WebFrame*, RefPtr<APIObject>& userData);
-    void didRunInsecureContentForFrame(WebPage*, WebFrame*, RefPtr<APIObject>& userData);
+    void didStartProvisionalLoadForFrame( WebPage *, WebFrame *, RefPtr<APIObject> &userData );
+    void didReceiveServerRedirectForProvisionalLoadForFrame( WebPage *, WebFrame *, RefPtr<APIObject> &userData );
+    void didFailProvisionalLoadWithErrorForFrame( WebPage *, WebFrame *, const WebCore::ResourceError &,
+            RefPtr<APIObject> &userData );
+    void didCommitLoadForFrame( WebPage *, WebFrame *, RefPtr<APIObject> &userData );
+    void didFinishDocumentLoadForFrame( WebPage *, WebFrame *, RefPtr<APIObject> &userData );
+    void didFinishLoadForFrame( WebPage *, WebFrame *, RefPtr<APIObject> &userData );
+    void didFailLoadWithErrorForFrame( WebPage *, WebFrame *, const WebCore::ResourceError &, RefPtr<APIObject> &userData );
+    void didSameDocumentNavigationForFrame( WebPage *, WebFrame *, SameDocumentNavigationType, RefPtr<APIObject> &userData );
+    void didReceiveTitleForFrame( WebPage *, const String &, WebFrame *, RefPtr<APIObject> &userData );
+    void didFirstLayoutForFrame( WebPage *, WebFrame *, RefPtr<APIObject> &userData );
+    void didFirstVisuallyNonEmptyLayoutForFrame( WebPage *, WebFrame *, RefPtr<APIObject> &userData );
+    void didRemoveFrameFromHierarchy( WebPage *, WebFrame *, RefPtr<APIObject> &userData );
+    void didDisplayInsecureContentForFrame( WebPage *, WebFrame *, RefPtr<APIObject> &userData );
+    void didRunInsecureContentForFrame( WebPage *, WebFrame *, RefPtr<APIObject> &userData );
 
-    void didClearWindowObjectForFrame(WebPage*, WebFrame*, WebCore::DOMWrapperWorld*);
-    void didCancelClientRedirectForFrame(WebPage*, WebFrame*);
-    void willPerformClientRedirectForFrame(WebPage*, WebFrame*, const String& url, double delay, double date);
-    void didHandleOnloadEventsForFrame(WebPage*, WebFrame*);
+    void didClearWindowObjectForFrame( WebPage *, WebFrame *, WebCore::DOMWrapperWorld * );
+    void didCancelClientRedirectForFrame( WebPage *, WebFrame * );
+    void willPerformClientRedirectForFrame( WebPage *, WebFrame *, const String &url, double delay, double date );
+    void didHandleOnloadEventsForFrame( WebPage *, WebFrame * );
 };
 
 } // namespace WebKit

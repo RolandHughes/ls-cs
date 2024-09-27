@@ -26,11 +26,12 @@
 #include "InlineTextBox.h"
 #include "VisiblePosition.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-RenderBR::RenderBR(Node* node)
-    : RenderText(node, StringImpl::create("\n"))
-    , m_lineHeight(-1)
+RenderBR::RenderBR( Node *node )
+    : RenderText( node, StringImpl::create( "\n" ) )
+    , m_lineHeight( -1 )
 {
 }
 
@@ -38,33 +39,39 @@ RenderBR::~RenderBR()
 {
 }
 
-int RenderBR::lineHeight(bool firstLine) const
+int RenderBR::lineHeight( bool firstLine ) const
 {
-    if (firstLine && document()->usesFirstLineRules()) {
-        RenderStyle* s = style(firstLine);
-        if (s != style())
+    if ( firstLine && document()->usesFirstLineRules() )
+    {
+        RenderStyle *s = style( firstLine );
+
+        if ( s != style() )
+        {
             return s->computedLineHeight();
+        }
     }
-    
-    if (m_lineHeight == -1)
+
+    if ( m_lineHeight == -1 )
+    {
         m_lineHeight = style()->computedLineHeight();
-    
+    }
+
     return m_lineHeight;
 }
 
-void RenderBR::styleDidChange(StyleDifference diff, const RenderStyle* oldStyle)
+void RenderBR::styleDidChange( StyleDifference diff, const RenderStyle *oldStyle )
 {
-    RenderText::styleDidChange(diff, oldStyle);
+    RenderText::styleDidChange( diff, oldStyle );
     m_lineHeight = -1;
 }
 
-int RenderBR::caretMinOffset() const 
-{ 
+int RenderBR::caretMinOffset() const
+{
     return 0;
 }
 
-int RenderBR::caretMaxOffset() const 
-{ 
+int RenderBR::caretMaxOffset() const
+{
     return 1;
 }
 
@@ -73,9 +80,9 @@ unsigned RenderBR::caretMaxRenderedOffset() const
     return 1;
 }
 
-VisiblePosition RenderBR::positionForPoint(const IntPoint&)
+VisiblePosition RenderBR::positionForPoint( const IntPoint & )
 {
-    return createVisiblePosition(0, DOWNSTREAM);
+    return createVisiblePosition( 0, DOWNSTREAM );
 }
 
 } // namespace WebCore

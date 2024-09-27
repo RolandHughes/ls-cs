@@ -28,26 +28,32 @@
 #include <runtime/JSObjectWithGlobalObject.h>
 #include <runtime/ObjectPrototype.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class NavigatorUserMediaError;
 
-class JSNavigatorUserMediaError : public JSDOMWrapper {
+class JSNavigatorUserMediaError : public JSDOMWrapper
+{
     typedef JSDOMWrapper Base;
 public:
-    JSNavigatorUserMediaError(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<NavigatorUserMediaError>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
+    JSNavigatorUserMediaError( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<NavigatorUserMediaError> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
-    NavigatorUserMediaError* impl() const { return m_impl.get(); }
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
+    NavigatorUserMediaError *impl() const
+    {
+        return m_impl.get();
+    }
 
 private:
     RefPtr<NavigatorUserMediaError> m_impl;
@@ -55,32 +61,35 @@ protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
-JSC::JSValue toJS(JSC::ExecState*, JSDOMGlobalObject*, NavigatorUserMediaError*);
-NavigatorUserMediaError* toNavigatorUserMediaError(JSC::JSValue);
+JSC::JSValue toJS( JSC::ExecState *, JSDOMGlobalObject *, NavigatorUserMediaError * );
+NavigatorUserMediaError *toNavigatorUserMediaError( JSC::JSValue );
 
-class JSNavigatorUserMediaErrorPrototype : public JSC::JSObjectWithGlobalObject {
+class JSNavigatorUserMediaErrorPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSNavigatorUserMediaErrorPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSNavigatorUserMediaErrorPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                                        JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 // Attributes
 
-JSC::JSValue jsNavigatorUserMediaErrorCode(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsNavigatorUserMediaErrorConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsNavigatorUserMediaErrorCode( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsNavigatorUserMediaErrorConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 // Constants
 
-JSC::JSValue jsNavigatorUserMediaErrorPERMISSION_DENIED(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsNavigatorUserMediaErrorPERMISSION_DENIED( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef ColumnInfo_h
@@ -29,67 +29,110 @@
 #include <wtf/Vector.h>
 #include "IntRect.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class ColumnInfo {
-    WTF_MAKE_NONCOPYABLE(ColumnInfo); WTF_MAKE_FAST_ALLOCATED;
+class ColumnInfo
+{
+    WTF_MAKE_NONCOPYABLE( ColumnInfo );
+    WTF_MAKE_FAST_ALLOCATED;
 public:
     ColumnInfo()
-        : m_desiredColumnWidth(0)
-        , m_desiredColumnCount(1)
-        , m_columnCount(1)
-        , m_columnHeight(0)
-        , m_minimumColumnHeight(0)
-        , m_forcedBreaks(0)
-        , m_maximumDistanceBetweenForcedBreaks(0)
-        , m_forcedBreakOffset(0)
-        { }
-    
-    int desiredColumnWidth() const { return m_desiredColumnWidth; }
-    void setDesiredColumnWidth(int width) { m_desiredColumnWidth = width; }
-    
-    unsigned desiredColumnCount() const { return m_desiredColumnCount; }
-    void setDesiredColumnCount(unsigned count) { m_desiredColumnCount = count; }
+        : m_desiredColumnWidth( 0 )
+        , m_desiredColumnCount( 1 )
+        , m_columnCount( 1 )
+        , m_columnHeight( 0 )
+        , m_minimumColumnHeight( 0 )
+        , m_forcedBreaks( 0 )
+        , m_maximumDistanceBetweenForcedBreaks( 0 )
+        , m_forcedBreakOffset( 0 )
+    { }
 
-    unsigned columnCount() const { return m_columnCount; }
-    int columnHeight() const { return m_columnHeight; }
+    int desiredColumnWidth() const
+    {
+        return m_desiredColumnWidth;
+    }
+    void setDesiredColumnWidth( int width )
+    {
+        m_desiredColumnWidth = width;
+    }
+
+    unsigned desiredColumnCount() const
+    {
+        return m_desiredColumnCount;
+    }
+    void setDesiredColumnCount( unsigned count )
+    {
+        m_desiredColumnCount = count;
+    }
+
+    unsigned columnCount() const
+    {
+        return m_columnCount;
+    }
+    int columnHeight() const
+    {
+        return m_columnHeight;
+    }
 
     // Set our count and height.  This is enough info for a RenderBlock to compute page rects
     // dynamically.
-    void setColumnCountAndHeight(int count, int height)
-    { 
+    void setColumnCountAndHeight( int count, int height )
+    {
         m_columnCount = count;
         m_columnHeight = height;
     }
-    void setColumnHeight(int height) { m_columnHeight = height; }
+    void setColumnHeight( int height )
+    {
+        m_columnHeight = height;
+    }
 
-    void updateMinimumColumnHeight(int height) { m_minimumColumnHeight = std::max(height, m_minimumColumnHeight); }
-    int minimumColumnHeight() const { return m_minimumColumnHeight; }
+    void updateMinimumColumnHeight( int height )
+    {
+        m_minimumColumnHeight = std::max( height, m_minimumColumnHeight );
+    }
+    int minimumColumnHeight() const
+    {
+        return m_minimumColumnHeight;
+    }
 
-    int forcedBreaks() const { return m_forcedBreaks; }
-    int forcedBreakOffset() const { return m_forcedBreakOffset; }
-    int maximumDistanceBetweenForcedBreaks() const { return m_maximumDistanceBetweenForcedBreaks; }
+    int forcedBreaks() const
+    {
+        return m_forcedBreaks;
+    }
+    int forcedBreakOffset() const
+    {
+        return m_forcedBreakOffset;
+    }
+    int maximumDistanceBetweenForcedBreaks() const
+    {
+        return m_maximumDistanceBetweenForcedBreaks;
+    }
     void clearForcedBreaks()
-    { 
+    {
         m_forcedBreaks = 0;
         m_maximumDistanceBetweenForcedBreaks = 0;
         m_forcedBreakOffset = 0;
     }
-    void addForcedBreak(int offsetFromFirstPage)
-    { 
-        ASSERT(!m_columnHeight);
+    void addForcedBreak( int offsetFromFirstPage )
+    {
+        ASSERT( !m_columnHeight );
         int distanceFromLastBreak = offsetFromFirstPage - m_forcedBreakOffset;
-        if (!distanceFromLastBreak)
+
+        if ( !distanceFromLastBreak )
+        {
             return;
+        }
+
         m_forcedBreaks++;
-        m_maximumDistanceBetweenForcedBreaks = std::max(m_maximumDistanceBetweenForcedBreaks, distanceFromLastBreak);
+        m_maximumDistanceBetweenForcedBreaks = std::max( m_maximumDistanceBetweenForcedBreaks, distanceFromLastBreak );
         m_forcedBreakOffset = offsetFromFirstPage;
     }
 
 private:
     int m_desiredColumnWidth;
     unsigned m_desiredColumnCount;
-    
+
     unsigned m_columnCount;
     int m_columnHeight;
     int m_minimumColumnHeight;

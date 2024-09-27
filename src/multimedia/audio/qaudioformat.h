@@ -32,65 +32,67 @@ class QAudioFormatPrivate;
 
 class Q_MULTIMEDIA_EXPORT QAudioFormat
 {
- public:
-   enum SampleType {
-      Unknown,
-      SignedInt,
-      UnSignedInt,
-      Float
-   };
+public:
+    enum SampleType
+    {
+        Unknown,
+        SignedInt,
+        UnSignedInt,
+        Float
+    };
 
-   enum Endian {
-      BigEndian    = QSysInfo::BigEndian,
-      LittleEndian = QSysInfo::LittleEndian
-   };
+    enum Endian
+    {
+        BigEndian    = QSysInfo::BigEndian,
+        LittleEndian = QSysInfo::LittleEndian
+    };
 
-   QAudioFormat();
-   QAudioFormat(const QAudioFormat &other);
-   ~QAudioFormat();
+    QAudioFormat();
+    QAudioFormat( const QAudioFormat &other );
+    ~QAudioFormat();
 
-   QAudioFormat &operator=(const QAudioFormat &other);
-   bool operator==(const QAudioFormat &other) const;
-   bool operator!=(const QAudioFormat &other) const;
+    QAudioFormat &operator=( const QAudioFormat &other );
+    bool operator==( const QAudioFormat &other ) const;
+    bool operator!=( const QAudioFormat &other ) const;
 
-   bool isValid() const;
+    bool isValid() const;
 
-   void setSampleRate(int sampleRate);
-   int sampleRate() const;
+    void setSampleRate( int sampleRate );
+    int sampleRate() const;
 
-   void setChannelCount(int channelCount);
-   int channelCount() const;
+    void setChannelCount( int channelCount );
+    int channelCount() const;
 
-   void setSampleSize(int sampleSize);
-   int sampleSize() const;
+    void setSampleSize( int sampleSize );
+    int sampleSize() const;
 
-   void setCodec(const QString &codec);
-   QString codec() const;
+    void setCodec( const QString &codec );
+    QString codec() const;
 
-   void setByteOrder(QAudioFormat::Endian byteOrder);
-   QAudioFormat::Endian byteOrder() const;
+    void setByteOrder( QAudioFormat::Endian byteOrder );
+    QAudioFormat::Endian byteOrder() const;
 
-   void setSampleType(QAudioFormat::SampleType sampleType);
-   QAudioFormat::SampleType sampleType() const;
+    void setSampleType( QAudioFormat::SampleType sampleType );
+    QAudioFormat::SampleType sampleType() const;
 
-   // Helper functions
-   qint32 bytesForDuration(qint64 duration) const;
-   qint64 durationForBytes(qint32 byteCount) const;
+    // Helper functions
+    qint32 bytesForDuration( qint64 duration ) const;
+    qint64 durationForBytes( qint32 byteCount ) const;
 
-   qint32 bytesForFrames(qint32 frameCount) const;
-   qint32 framesForBytes(qint32 byteCount) const;
+    qint32 bytesForFrames( qint32 frameCount ) const;
+    qint32 framesForBytes( qint32 byteCount ) const;
 
-   qint32 framesForDuration(qint64 duration) const;
-   qint64 durationForFrames(qint32 frameCount) const;
+    qint32 framesForDuration( qint64 duration ) const;
+    qint64 durationForFrames( qint32 frameCount ) const;
 
-   int bytesPerFrame() const;
+    int bytesPerFrame() const;
 
- private:
-   QSharedDataPointer<QAudioFormatPrivate> d;
+private:
+    QSharedDataPointer<QAudioFormatPrivate> d;
 };
 
-Q_MULTIMEDIA_EXPORT QDebug operator<<(QDebug, const QAudioFormat &);
-Q_MULTIMEDIA_EXPORT QDebug operator<<(QDebug, QAudioFormat::SampleType);
-Q_MULTIMEDIA_EXPORT QDebug operator<<(QDebug, QAudioFormat::Endian);
+Q_MULTIMEDIA_EXPORT QDebug operator<<( QDebug, const QAudioFormat & );
+Q_MULTIMEDIA_EXPORT QDebug operator<<( QDebug, QAudioFormat::SampleType );
+Q_MULTIMEDIA_EXPORT QDebug operator<<( QDebug, QAudioFormat::Endian );
 
 #endif

@@ -38,41 +38,41 @@ struct QShortcutEntry;
 
 class Q_GUI_EXPORT QShortcutMap
 {
-   Q_DECLARE_PRIVATE(QShortcutMap)
+    Q_DECLARE_PRIVATE( QShortcutMap )
 
- public:
-   QShortcutMap();
-   ~QShortcutMap();
+public:
+    QShortcutMap();
+    ~QShortcutMap();
 
-   typedef bool (*ContextMatcher)(QObject *object, Qt::ShortcutContext context);
+    typedef bool ( *ContextMatcher )( QObject *object, Qt::ShortcutContext context );
 
-   int addShortcut(QObject *owner, const QKeySequence &key, Qt::ShortcutContext context, ContextMatcher matcher);
-   int removeShortcut(int id, QObject *owner, const QKeySequence &key = QKeySequence());
-   int setShortcutEnabled(bool enable, int id, QObject *owner, const QKeySequence &key = QKeySequence());
-   int setShortcutAutoRepeat(bool on, int id, QObject *owner, const QKeySequence &key = QKeySequence());
+    int addShortcut( QObject *owner, const QKeySequence &key, Qt::ShortcutContext context, ContextMatcher matcher );
+    int removeShortcut( int id, QObject *owner, const QKeySequence &key = QKeySequence() );
+    int setShortcutEnabled( bool enable, int id, QObject *owner, const QKeySequence &key = QKeySequence() );
+    int setShortcutAutoRepeat( bool on, int id, QObject *owner, const QKeySequence &key = QKeySequence() );
 
-   QKeySequence::SequenceMatch state();
+    QKeySequence::SequenceMatch state();
 
-   bool tryShortcut(QKeyEvent *event);
-   bool hasShortcutForKeySequence(const QKeySequence &seq) const;
+    bool tryShortcut( QKeyEvent *event );
+    bool hasShortcutForKeySequence( const QKeySequence &seq ) const;
 
 #if defined(CS_SHOW_DEBUG_GUI)
-   void dumpMap() const;
+    void dumpMap() const;
 #endif
 
- private:
-   void resetState();
-   QKeySequence::SequenceMatch nextState(QKeyEvent *e);
-   void dispatchEvent(QKeyEvent *e);
+private:
+    void resetState();
+    QKeySequence::SequenceMatch nextState( QKeyEvent *e );
+    void dispatchEvent( QKeyEvent *e );
 
-   QKeySequence::SequenceMatch find(QKeyEvent *e, int ignoredModifiers = 0);
-   QKeySequence::SequenceMatch matches(const QKeySequence &seq1, const QKeySequence &seq2) const;
-   QVector<const QShortcutEntry *> matches() const;
-   void createNewSequences(QKeyEvent *e, QVector<QKeySequence> &ksl, int ignoredModifiers);
-   void clearSequence(QVector<QKeySequence> &ksl);
+    QKeySequence::SequenceMatch find( QKeyEvent *e, int ignoredModifiers = 0 );
+    QKeySequence::SequenceMatch matches( const QKeySequence &seq1, const QKeySequence &seq2 ) const;
+    QVector<const QShortcutEntry *> matches() const;
+    void createNewSequences( QKeyEvent *e, QVector<QKeySequence> &ksl, int ignoredModifiers );
+    void clearSequence( QVector<QKeySequence> &ksl );
 
-   int translateModifiers(Qt::KeyboardModifiers modifiers);
-   QScopedPointer<QShortcutMapPrivate> d_ptr;
+    int translateModifiers( Qt::KeyboardModifiers modifiers );
+    QScopedPointer<QShortcutMapPrivate> d_ptr;
 };
 
 #endif // QT_NO_SHORTCUT

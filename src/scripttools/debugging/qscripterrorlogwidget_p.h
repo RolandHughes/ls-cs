@@ -30,23 +30,23 @@ QT_BEGIN_NAMESPACE
 
 class QScriptErrorLogWidgetPrivate;
 class QScriptErrorLogWidget:
-   public QScriptErrorLogWidgetInterface
+    public QScriptErrorLogWidgetInterface
 {
-   SCRIPT_T_CS_OBJECT(QScriptErrorLogWidget)
- public:
-   QScriptErrorLogWidget(QWidget *parent = nullptr);
-   ~QScriptErrorLogWidget();
+    SCRIPT_T_CS_OBJECT( QScriptErrorLogWidget )
+public:
+    QScriptErrorLogWidget( QWidget *parent = nullptr );
+    ~QScriptErrorLogWidget();
 
-   void message(QtMsgType type, const QString &text,
-                const QString &fileName = QString(),
-                int lineNumber = -1, int columnNumber = -1,
-                const QVariant &data = QVariant());
+    void message( QtMsgType type, const QString &text,
+                  const QString &fileName = QString(),
+                  int lineNumber = -1, int columnNumber = -1,
+                  const QVariant &data = QVariant() );
 
-   void clear();
+    void clear();
 
- private:
-   Q_DECLARE_PRIVATE(QScriptErrorLogWidget)
-   Q_DISABLE_COPY(QScriptErrorLogWidget)
+private:
+    Q_DECLARE_PRIVATE( QScriptErrorLogWidget )
+    Q_DISABLE_COPY( QScriptErrorLogWidget )
 };
 
 QT_END_NAMESPACE

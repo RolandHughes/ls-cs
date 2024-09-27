@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef CSSFontFace_h
@@ -33,48 +33,72 @@
 #include <wtf/Vector.h>
 #include <wtf/unicode/Unicode.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class CSSFontFaceSource;
 class CSSSegmentedFontFace;
 class FontDescription;
 class SimpleFontData;
 
-class CSSFontFace : public RefCounted<CSSFontFace> {
+class CSSFontFace : public RefCounted<CSSFontFace>
+{
 public:
-    static PassRefPtr<CSSFontFace> create(FontTraitsMask traitsMask, bool isLocalFallback = false) { return adoptRef(new CSSFontFace(traitsMask, isLocalFallback)); }
+    static PassRefPtr<CSSFontFace> create( FontTraitsMask traitsMask, bool isLocalFallback = false )
+    {
+        return adoptRef( new CSSFontFace( traitsMask, isLocalFallback ) );
+    }
     ~CSSFontFace();
 
-    FontTraitsMask traitsMask() const { return m_traitsMask; }
+    FontTraitsMask traitsMask() const
+    {
+        return m_traitsMask;
+    }
 
     struct UnicodeRange;
 
-    void addRange(UChar32 from, UChar32 to) { m_ranges.append(UnicodeRange(from, to)); }
-    const Vector<UnicodeRange>& ranges() const { return m_ranges; }
+    void addRange( UChar32 from, UChar32 to )
+    {
+        m_ranges.append( UnicodeRange( from, to ) );
+    }
+    const Vector<UnicodeRange> &ranges() const
+    {
+        return m_ranges;
+    }
 
-    void addedToSegmentedFontFace(CSSSegmentedFontFace*);
-    void removedFromSegmentedFontFace(CSSSegmentedFontFace*);
+    void addedToSegmentedFontFace( CSSSegmentedFontFace * );
+    void removedFromSegmentedFontFace( CSSSegmentedFontFace * );
 
     bool isLoaded() const;
     bool isValid() const;
 
-    bool isLocalFallback() const { return m_isLocalFallback; }
+    bool isLocalFallback() const
+    {
+        return m_isLocalFallback;
+    }
 
-    void addSource(CSSFontFaceSource*);
+    void addSource( CSSFontFaceSource * );
 
-    void fontLoaded(CSSFontFaceSource*);
+    void fontLoaded( CSSFontFaceSource * );
 
-    SimpleFontData* getFontData(const FontDescription&, bool syntheticBold, bool syntheticItalic);
+    SimpleFontData *getFontData( const FontDescription &, bool syntheticBold, bool syntheticItalic );
 
-    struct UnicodeRange {
-        UnicodeRange(UChar32 from, UChar32 to)
-            : m_from(from)
-            , m_to(to)
+    struct UnicodeRange
+    {
+        UnicodeRange( UChar32 from, UChar32 to )
+            : m_from( from )
+            , m_to( to )
         {
         }
 
-        UChar32 from() const { return m_from; }
-        UChar32 to() const { return m_to; }
+        UChar32 from() const
+        {
+            return m_from;
+        }
+        UChar32 to() const
+        {
+            return m_to;
+        }
 
     private:
         UChar32 m_from;
@@ -86,18 +110,18 @@ public:
 #endif
 
 private:
-    CSSFontFace(FontTraitsMask traitsMask, bool isLocalFallback)
-        : m_traitsMask(traitsMask)
-        , m_activeSource(0)
-        , m_isLocalFallback(isLocalFallback)
+    CSSFontFace( FontTraitsMask traitsMask, bool isLocalFallback )
+        : m_traitsMask( traitsMask )
+        , m_activeSource( 0 )
+        , m_isLocalFallback( isLocalFallback )
     {
     }
 
     FontTraitsMask m_traitsMask;
     Vector<UnicodeRange> m_ranges;
-    HashSet<CSSSegmentedFontFace*> m_segmentedFontFaces;
-    Vector<CSSFontFaceSource*> m_sources;
-    CSSFontFaceSource* m_activeSource;
+    HashSet<CSSSegmentedFontFace *> m_segmentedFontFaces;
+    Vector<CSSFontFaceSource *> m_sources;
+    CSSFontFaceSource *m_activeSource;
     bool m_isLocalFallback;
 };
 

@@ -47,588 +47,668 @@ static constexpr const int NESTING_LIMIT = 1024;
 
 QString QJsonParseError::errorString() const
 {
-   QString sz;
+    QString sz;
 
-   switch (error) {
-      case NoError:
-         sz = JSONERR_OK;
-         break;
+    switch ( error )
+    {
+        case NoError:
+            sz = JSONERR_OK;
+            break;
 
-      case UnterminatedObject:
-         sz = JSONERR_UNTERM_OBJ;
-         break;
+        case UnterminatedObject:
+            sz = JSONERR_UNTERM_OBJ;
+            break;
 
-      case MissingNameSeparator:
-         sz = JSONERR_MISS_NSEP;
-         break;
+        case MissingNameSeparator:
+            sz = JSONERR_MISS_NSEP;
+            break;
 
-      case UnterminatedArray:
-         sz = JSONERR_UNTERM_AR;
-         break;
+        case UnterminatedArray:
+            sz = JSONERR_UNTERM_AR;
+            break;
 
-      case MissingValueSeparator:
-         sz = JSONERR_MISS_VSEP;
-         break;
+        case MissingValueSeparator:
+            sz = JSONERR_MISS_VSEP;
+            break;
 
-      case IllegalValue:
-         sz = JSONERR_ILLEGAL_VAL;
-         break;
+        case IllegalValue:
+            sz = JSONERR_ILLEGAL_VAL;
+            break;
 
-      case TerminationByNumber:
-         sz = JSONERR_END_OF_NUM;
-         break;
+        case TerminationByNumber:
+            sz = JSONERR_END_OF_NUM;
+            break;
 
-      case IllegalNumber:
-         sz = JSONERR_ILLEGAL_NUM;
-         break;
+        case IllegalNumber:
+            sz = JSONERR_ILLEGAL_NUM;
+            break;
 
-      case IllegalEscapeSequence:
-         sz = JSONERR_STR_ESC_SEQ;
-         break;
+        case IllegalEscapeSequence:
+            sz = JSONERR_STR_ESC_SEQ;
+            break;
 
-      case IllegalUTF8String:
-         sz = JSONERR_STR_UTF8;
-         break;
+        case IllegalUTF8String:
+            sz = JSONERR_STR_UTF8;
+            break;
 
-      case UnterminatedString:
-         sz = JSONERR_UTERM_STR;
-         break;
+        case UnterminatedString:
+            sz = JSONERR_UTERM_STR;
+            break;
 
-      case MissingObject:
-         sz = JSONERR_MISS_OBJ;
-         break;
+        case MissingObject:
+            sz = JSONERR_MISS_OBJ;
+            break;
 
-      case DeepNesting:
-         sz = JSONERR_DEEP_NEST;
-         break;
+        case DeepNesting:
+            sz = JSONERR_DEEP_NEST;
+            break;
 
-      case DocumentTooLarge:
-         sz = JSONERR_DOC_LARGE;
-         break;
-   }
+        case DocumentTooLarge:
+            sz = JSONERR_DOC_LARGE;
+            break;
+    }
 
-   return sz;
+    return sz;
 }
 
-QJsonParser::QJsonParser(QStringView data)
-   : m_data(data), nestingLevel(0), lastError(QJsonParseError::NoError)
+QJsonParser::QJsonParser( QStringView data )
+    : m_data( data ), nestingLevel( 0 ), lastError( QJsonParseError::NoError )
 {
 }
 
 void QJsonParser::eatBOM()
 {
-   // eat byte order mark
-   if (m_data.startsWith(char32_t(0xFEFF))  )  {
-      ++m_position;
-   }
+    // eat byte order mark
+    if ( m_data.startsWith( char32_t( 0xFEFF ) )  )
+    {
+        ++m_position;
+    }
 }
 
 bool QJsonParser::eatWhiteSpace()
 {
-   while (m_position != m_data.end()) {
-      QChar uc = *m_position;
+    while ( m_position != m_data.end() )
+    {
+        QChar uc = *m_position;
 
-      if (uc > QChar::Space) {
-         break;
+        if ( uc > QChar::Space )
+        {
+            break;
 
-      } else if (uc != QChar::Space && uc != QChar::Tabulation && uc != QChar::LineFeed && uc != QChar::CarriageReturn) {
-         break;
+        }
+        else if ( uc != QChar::Space && uc != QChar::Tabulation && uc != QChar::LineFeed && uc != QChar::CarriageReturn )
+        {
+            break;
 
-      }
+        }
 
-      ++m_position;
-   }
+        ++m_position;
+    }
 
-   return (m_position != m_data.end());
+    return ( m_position != m_data.end() );
 }
 
 QJsonParser::TokenType QJsonParser::nextToken()
 {
-   if (! eatWhiteSpace()) {
-      return TokenType::Null;
-   }
+    if ( ! eatWhiteSpace() )
+    {
+        return TokenType::Null;
+    }
 
-   TokenType token;
+    TokenType token;
 
-   QChar ch = *m_position;
-   m_position++;
+    QChar ch = *m_position;
+    m_position++;
 
-   switch (ch.unicode()) {
+    switch ( ch.unicode() )
+    {
 
-      case '[':
-         eatWhiteSpace();
+        case '[':
+            eatWhiteSpace();
 
-         token = TokenType::BeginArray;
-         break;
-
-      case '{':
-         eatWhiteSpace();
-
-         token = TokenType::BeginObject;
-         break;
-
-      case ':':
-         eatWhiteSpace();
-
-         token = TokenType::NameSeparator;
-         break;
-
-      case ',':
-         eatWhiteSpace();
-
-         token = TokenType::ValueSeparator;
-         break;
-
-      case ']':
-         eatWhiteSpace();
-
-         token = TokenType::EndArray;
-         break;
-
-      case '}':
-         eatWhiteSpace();
-
-         token = TokenType::EndObject;
-         break;
-
-      case '"':
-         token = TokenType::Quote;
-         break;
-
-      default:
-         token = TokenType::Null;
-         break;
-   }
-
-   return token;
-}
-
-QJsonDocument QJsonParser::parse(QJsonParseError *error)
-{
-   if (error != nullptr) {
-      error->offset = 0;
-      error->error  = QJsonParseError::NoError;
-   }
-
-   m_position = m_data.begin();
-   eatBOM();
-
-   TokenType token = nextToken();
-
-   if (token == TokenType::BeginArray) {
-      QJsonArray array;
-
-      if (parseArray(array)) {
-         return QJsonDocument(array);
-      }
-
-   } else if (token == TokenType::BeginObject) {
-      QJsonObject object;
-
-      if (parseObject(object)) {
-         return QJsonDocument(object);
-      }
-
-   } else {
-      lastError = QJsonParseError::IllegalValue;
-   }
-
-   if (error != nullptr) {
-      error->offset = m_position - m_data.begin();
-      error->error  = lastError;
-   }
-
-   return QJsonDocument();
-}
-
-bool QJsonParser::parseArray(QJsonArray &array)
-{
-   if (++nestingLevel > NESTING_LIMIT) {
-      lastError = QJsonParseError::DeepNesting;
-      return false;
-   }
-
-   eatWhiteSpace();
-
-   if (m_position == m_data.end()) {
-      lastError = QJsonParseError::UnterminatedArray;
-      return false;
-   }
-
-   if (*m_position == ']') {
-      // valid empty array
-      nextToken();
-
-   } else {
-
-      while (true) {
-         // parse a value
-         QJsonValue value;
-
-         if (! parseValue(value)) {
-            return false;
-         }
-
-         array.append(value);
-
-         //
-         TokenType token = nextToken();
-
-         if (token == TokenType::EndArray) {
-            // close square bracket
+            token = TokenType::BeginArray;
             break;
 
-         } else if (token != TokenType::ValueSeparator) {
-            // not a comma
+        case '{':
+            eatWhiteSpace();
 
-            if (! eatWhiteSpace()) {
-               lastError = QJsonParseError::UnterminatedArray;
+            token = TokenType::BeginObject;
+            break;
 
-            } else {
-               lastError = QJsonParseError::MissingValueSeparator;
+        case ':':
+            eatWhiteSpace();
+
+            token = TokenType::NameSeparator;
+            break;
+
+        case ',':
+            eatWhiteSpace();
+
+            token = TokenType::ValueSeparator;
+            break;
+
+        case ']':
+            eatWhiteSpace();
+
+            token = TokenType::EndArray;
+            break;
+
+        case '}':
+            eatWhiteSpace();
+
+            token = TokenType::EndObject;
+            break;
+
+        case '"':
+            token = TokenType::Quote;
+            break;
+
+        default:
+            token = TokenType::Null;
+            break;
+    }
+
+    return token;
+}
+
+QJsonDocument QJsonParser::parse( QJsonParseError *error )
+{
+    if ( error != nullptr )
+    {
+        error->offset = 0;
+        error->error  = QJsonParseError::NoError;
+    }
+
+    m_position = m_data.begin();
+    eatBOM();
+
+    TokenType token = nextToken();
+
+    if ( token == TokenType::BeginArray )
+    {
+        QJsonArray array;
+
+        if ( parseArray( array ) )
+        {
+            return QJsonDocument( array );
+        }
+
+    }
+    else if ( token == TokenType::BeginObject )
+    {
+        QJsonObject object;
+
+        if ( parseObject( object ) )
+        {
+            return QJsonDocument( object );
+        }
+
+    }
+    else
+    {
+        lastError = QJsonParseError::IllegalValue;
+    }
+
+    if ( error != nullptr )
+    {
+        error->offset = m_position - m_data.begin();
+        error->error  = lastError;
+    }
+
+    return QJsonDocument();
+}
+
+bool QJsonParser::parseArray( QJsonArray &array )
+{
+    if ( ++nestingLevel > NESTING_LIMIT )
+    {
+        lastError = QJsonParseError::DeepNesting;
+        return false;
+    }
+
+    eatWhiteSpace();
+
+    if ( m_position == m_data.end() )
+    {
+        lastError = QJsonParseError::UnterminatedArray;
+        return false;
+    }
+
+    if ( *m_position == ']' )
+    {
+        // valid empty array
+        nextToken();
+
+    }
+    else
+    {
+
+        while ( true )
+        {
+            // parse a value
+            QJsonValue value;
+
+            if ( ! parseValue( value ) )
+            {
+                return false;
             }
 
-            return false;
-         }
-      }
-   }
+            array.append( value );
 
-   --nestingLevel;
+            //
+            TokenType token = nextToken();
 
-   return true;
+            if ( token == TokenType::EndArray )
+            {
+                // close square bracket
+                break;
+
+            }
+            else if ( token != TokenType::ValueSeparator )
+            {
+                // not a comma
+
+                if ( ! eatWhiteSpace() )
+                {
+                    lastError = QJsonParseError::UnterminatedArray;
+
+                }
+                else
+                {
+                    lastError = QJsonParseError::MissingValueSeparator;
+                }
+
+                return false;
+            }
+        }
+    }
+
+    --nestingLevel;
+
+    return true;
 }
 
-bool QJsonParser::parseObject(QJsonObject &object)
+bool QJsonParser::parseObject( QJsonObject &object )
 {
-   if (++nestingLevel > NESTING_LIMIT) {
-      lastError = QJsonParseError::DeepNesting;
-      return false;
-   }
+    if ( ++nestingLevel > NESTING_LIMIT )
+    {
+        lastError = QJsonParseError::DeepNesting;
+        return false;
+    }
 
-   TokenType token = nextToken();
+    TokenType token = nextToken();
 
-   while (token == TokenType::Quote) {
+    while ( token == TokenType::Quote )
+    {
 
-      if (! parseMember(object)) {
-         return false;
-      }
+        if ( ! parseMember( object ) )
+        {
+            return false;
+        }
 
-      //
-      token = nextToken();
+        //
+        token = nextToken();
 
-      if (token != TokenType::ValueSeparator) {
-         // not a comma so we are done
-         break;
-      }
+        if ( token != TokenType::ValueSeparator )
+        {
+            // not a comma so we are done
+            break;
+        }
 
-      //
-      token = nextToken();
+        //
+        token = nextToken();
 
-      if (token == TokenType::EndObject) {
-         // found closing curly which is invalid
-         lastError = QJsonParseError::MissingObject;
-         return false;
-      }
-   }
+        if ( token == TokenType::EndObject )
+        {
+            // found closing curly which is invalid
+            lastError = QJsonParseError::MissingObject;
+            return false;
+        }
+    }
 
-   if (token != TokenType::EndObject) {
-      lastError = QJsonParseError::UnterminatedObject;
-      return false;
-   }
+    if ( token != TokenType::EndObject )
+    {
+        lastError = QJsonParseError::UnterminatedObject;
+        return false;
+    }
 
-   --nestingLevel;
+    --nestingLevel;
 
-   return true;
+    return true;
 }
 
-bool QJsonParser::parseMember(QJsonObject &object)
+bool QJsonParser::parseMember( QJsonObject &object )
 {
-   QString key;
+    QString key;
 
-   if (! parseString(key) ) {
-      return false;
-   }
+    if ( ! parseString( key ) )
+    {
+        return false;
+    }
 
-   //
-   TokenType token = nextToken();
+    //
+    TokenType token = nextToken();
 
-   if (token != TokenType::NameSeparator) {
-      lastError = QJsonParseError::MissingNameSeparator;
-      return false;
-   }
+    if ( token != TokenType::NameSeparator )
+    {
+        lastError = QJsonParseError::MissingNameSeparator;
+        return false;
+    }
 
-   QJsonValue value;
+    QJsonValue value;
 
-   if (! parseValue(value)) {
-      return false;
-   }
+    if ( ! parseValue( value ) )
+    {
+        return false;
+    }
 
-   // save key and value
-   object.insert(key, value);
+    // save key and value
+    object.insert( key, value );
 
-   return true;
+    return true;
 }
 
-bool QJsonParser::parseValue(QJsonValue &value)
+bool QJsonParser::parseValue( QJsonValue &value )
 {
-   QChar32 ch = *m_position;
-   ++m_position;
+    QChar32 ch = *m_position;
+    ++m_position;
 
-   switch (ch.unicode()) {
+    switch ( ch.unicode() )
+    {
 
-      case 'n':
-         if (m_data.end() - m_position < 4) {
-            lastError = QJsonParseError::IllegalValue;
-            return false;
-         }
-
-         if (QStringView(m_position, m_data.end()).startsWith("ull")) {
-            m_position += 3;
-
-            value = QJsonValue(QJsonValue::Null);
-            return true;
-         }
-
-         lastError = QJsonParseError::IllegalValue;
-         return false;
-
-      case 't':
-         if (m_data.end() - m_position < 4) {
-            lastError = QJsonParseError::IllegalValue;
-            return false;
-         }
-
-         if (QStringView(m_position, m_data.end()).startsWith("rue")) {
-            m_position += 3;
-
-            value = QJsonValue(true);
-            return true;
-         }
-
-         lastError = QJsonParseError::IllegalValue;
-         return false;
-
-      case 'f':
-         if (m_data.end() - m_position < 5) {
-            lastError = QJsonParseError::IllegalValue;
-            return false;
-         }
-
-         if (QStringView(m_position, m_data.end()).startsWith("alse")) {
-            m_position += 4;
-
-            value = QJsonValue(false);
-            return true;
-         }
-
-         lastError = QJsonParseError::IllegalValue;
-         return false;
-
-      case '"': {
-         QString key;
-
-         if (! parseString(key) ) {
-            return false;
-         }
-
-         value = QJsonValue(key);
-
-         return true;
-      }
-
-      case '[': {
-         QJsonArray array;
-
-         if (! parseArray(array)) {
-            return false;
-         }
-
-         value = QJsonValue(array);
-         return true;
-      }
-
-      case '{':  {
-         QJsonObject object;
-
-         if (! parseObject(object)) {
-            return false;
-         }
-
-         value = QJsonValue(object);
-         return true;
-      }
-
-      case ']':
-         lastError = QJsonParseError::MissingObject;
-         return false;
-
-      default:
-         --m_position;
-
-         if (! parseNumber(value)) {
-            return false;
-         }
-   }
-
-   return true;
-}
-
-bool QJsonParser::parseNumber(QJsonValue &value)
-{
-   QString::const_iterator start = m_position;
-
-   while (m_position != m_data.end())  {
-
-      QChar ch = *m_position;
-
-      if (ch == '.' || ch == '-' || ch == '+' || ch == 'e' || ch == 'E' ||  (ch >= '0' && ch <= '9') ) {
-         ++m_position;
-
-      } else {
-         break;
-
-      }
-   }
-
-   bool ok;
-   double retval = QStringParser::toDouble(QStringView(start, m_position), &ok);
-
-   if (m_position == m_data.end()) {
-      lastError = QJsonParseError::TerminationByNumber;
-      return false;
-   }
-
-   if (! ok) {
-      lastError = QJsonParseError::IllegalNumber;
-      return false;
-   }
-
-   value = QJsonValue(retval);
-
-   return true;
-}
-
-static inline bool addHexDigit(QChar digit, char32_t &result)
-{
-   result <<= 4;
-
-   if (digit >= '0' && digit <= '9') {
-      result |= (digit.unicode() - '0');
-
-   } else if (digit >= 'a' && digit <= 'f') {
-      result |= (digit.unicode()  - 'a') + 10;
-
-   } else if (digit >= 'A' && digit <= 'F') {
-      result |= (digit.unicode()  - 'A') + 10;
-
-   } else {
-      return false;
-   }
-
-   return true;
-}
-
-static inline bool scanEscapeSequence(QString::const_iterator &m_position, QString::const_iterator end, QChar32 &ch)
-{
-   ++m_position;
-
-   if (m_position == end) {
-      return false;
-   }
-
-   QChar32 escaped = *m_position;
-   ++m_position;
-
-   switch (escaped.unicode()) {
-      case '"':
-         ch = '"';
-         break;
-
-      case '\\':
-         ch = '\\';
-         break;
-
-      case '/':
-         ch = '/';
-         break;
-
-      case 'b':
-         ch = 0x8;
-         break;
-
-      case 'f':
-         ch = 0xc;
-         break;
-
-      case 'n':
-         ch = 0xa;
-         break;
-
-      case 'r':
-         ch = 0xd;
-         break;
-
-      case 't':
-         ch = 0x9;
-         break;
-
-      case 'u': {
-         char32_t tmp = 0;
-
-         for (int i = 0; i < 4; ++i) {
-
-            if (! addHexDigit(*m_position, tmp)) {
-               return false;
+        case 'n':
+            if ( m_data.end() - m_position < 4 )
+            {
+                lastError = QJsonParseError::IllegalValue;
+                return false;
             }
 
+            if ( QStringView( m_position, m_data.end() ).startsWith( "ull" ) )
+            {
+                m_position += 3;
+
+                value = QJsonValue( QJsonValue::Null );
+                return true;
+            }
+
+            lastError = QJsonParseError::IllegalValue;
+            return false;
+
+        case 't':
+            if ( m_data.end() - m_position < 4 )
+            {
+                lastError = QJsonParseError::IllegalValue;
+                return false;
+            }
+
+            if ( QStringView( m_position, m_data.end() ).startsWith( "rue" ) )
+            {
+                m_position += 3;
+
+                value = QJsonValue( true );
+                return true;
+            }
+
+            lastError = QJsonParseError::IllegalValue;
+            return false;
+
+        case 'f':
+            if ( m_data.end() - m_position < 5 )
+            {
+                lastError = QJsonParseError::IllegalValue;
+                return false;
+            }
+
+            if ( QStringView( m_position, m_data.end() ).startsWith( "alse" ) )
+            {
+                m_position += 4;
+
+                value = QJsonValue( false );
+                return true;
+            }
+
+            lastError = QJsonParseError::IllegalValue;
+            return false;
+
+        case '"':
+        {
+            QString key;
+
+            if ( ! parseString( key ) )
+            {
+                return false;
+            }
+
+            value = QJsonValue( key );
+
+            return true;
+        }
+
+        case '[':
+        {
+            QJsonArray array;
+
+            if ( ! parseArray( array ) )
+            {
+                return false;
+            }
+
+            value = QJsonValue( array );
+            return true;
+        }
+
+        case '{':
+        {
+            QJsonObject object;
+
+            if ( ! parseObject( object ) )
+            {
+                return false;
+            }
+
+            value = QJsonValue( object );
+            return true;
+        }
+
+        case ']':
+            lastError = QJsonParseError::MissingObject;
+            return false;
+
+        default:
+            --m_position;
+
+            if ( ! parseNumber( value ) )
+            {
+                return false;
+            }
+    }
+
+    return true;
+}
+
+bool QJsonParser::parseNumber( QJsonValue &value )
+{
+    QString::const_iterator start = m_position;
+
+    while ( m_position != m_data.end() )
+    {
+
+        QChar ch = *m_position;
+
+        if ( ch == '.' || ch == '-' || ch == '+' || ch == 'e' || ch == 'E' ||  ( ch >= '0' && ch <= '9' ) )
+        {
             ++m_position;
 
-            if (m_position == end && i != 3) {
-               return false;
-            }
-         }
+        }
+        else
+        {
+            break;
 
-         ch = tmp;
-         return true;
-      }
+        }
+    }
 
-      default:
-         // not as strict, allows for more Json files to be parsed correctly
-         ch = escaped;
-         return true;
-   }
+    bool ok;
+    double retval = QStringParser::toDouble( QStringView( start, m_position ), &ok );
 
-   return true;
+    if ( m_position == m_data.end() )
+    {
+        lastError = QJsonParseError::TerminationByNumber;
+        return false;
+    }
+
+    if ( ! ok )
+    {
+        lastError = QJsonParseError::IllegalNumber;
+        return false;
+    }
+
+    value = QJsonValue( retval );
+
+    return true;
 }
 
-bool QJsonParser::parseString(QString &str)
+static inline bool addHexDigit( QChar digit, char32_t &result )
 {
-   while (m_position != m_data.end()) {
-      QChar32 ch = *m_position;
+    result <<= 4;
 
-      if (ch == '"') {
-         break;
+    if ( digit >= '0' && digit <= '9' )
+    {
+        result |= ( digit.unicode() - '0' );
 
-      } else if (ch == '\\') {
-         if (! scanEscapeSequence(m_position, m_data.end(), ch)) {
-            lastError = QJsonParseError::IllegalEscapeSequence;
-            return false;
-         }
+    }
+    else if ( digit >= 'a' && digit <= 'f' )
+    {
+        result |= ( digit.unicode()  - 'a' ) + 10;
 
-      } else {
-         ++m_position;
+    }
+    else if ( digit >= 'A' && digit <= 'F' )
+    {
+        result |= ( digit.unicode()  - 'A' ) + 10;
 
-      }
+    }
+    else
+    {
+        return false;
+    }
 
-      str.append(ch);
-   }
+    return true;
+}
 
-   ++m_position;
+static inline bool scanEscapeSequence( QString::const_iterator &m_position, QString::const_iterator end, QChar32 &ch )
+{
+    ++m_position;
 
-   if (m_position == m_data.end()) {
-      lastError = QJsonParseError::UnterminatedString;
-      return false;
-   }
+    if ( m_position == end )
+    {
+        return false;
+    }
 
-   return true;
+    QChar32 escaped = *m_position;
+    ++m_position;
+
+    switch ( escaped.unicode() )
+    {
+        case '"':
+            ch = '"';
+            break;
+
+        case '\\':
+            ch = '\\';
+            break;
+
+        case '/':
+            ch = '/';
+            break;
+
+        case 'b':
+            ch = 0x8;
+            break;
+
+        case 'f':
+            ch = 0xc;
+            break;
+
+        case 'n':
+            ch = 0xa;
+            break;
+
+        case 'r':
+            ch = 0xd;
+            break;
+
+        case 't':
+            ch = 0x9;
+            break;
+
+        case 'u':
+        {
+            char32_t tmp = 0;
+
+            for ( int i = 0; i < 4; ++i )
+            {
+
+                if ( ! addHexDigit( *m_position, tmp ) )
+                {
+                    return false;
+                }
+
+                ++m_position;
+
+                if ( m_position == end && i != 3 )
+                {
+                    return false;
+                }
+            }
+
+            ch = tmp;
+            return true;
+        }
+
+        default:
+            // not as strict, allows for more Json files to be parsed correctly
+            ch = escaped;
+            return true;
+    }
+
+    return true;
+}
+
+bool QJsonParser::parseString( QString &str )
+{
+    while ( m_position != m_data.end() )
+    {
+        QChar32 ch = *m_position;
+
+        if ( ch == '"' )
+        {
+            break;
+
+        }
+        else if ( ch == '\\' )
+        {
+            if ( ! scanEscapeSequence( m_position, m_data.end(), ch ) )
+            {
+                lastError = QJsonParseError::IllegalEscapeSequence;
+                return false;
+            }
+
+        }
+        else
+        {
+            ++m_position;
+
+        }
+
+        str.append( ch );
+    }
+
+    ++m_position;
+
+    if ( m_position == m_data.end() )
+    {
+        lastError = QJsonParseError::UnterminatedString;
+        return false;
+    }
+
+    return true;
 }

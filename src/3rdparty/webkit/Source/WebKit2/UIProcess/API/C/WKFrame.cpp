@@ -37,149 +37,153 @@ using namespace WebKit;
 
 WKTypeID WKFrameGetTypeID()
 {
-    return toAPI(WebFrameProxy::APIType);
+    return toAPI( WebFrameProxy::APIType );
 }
 
-bool WKFrameIsMainFrame(WKFrameRef frameRef)
+bool WKFrameIsMainFrame( WKFrameRef frameRef )
 {
-    return toImpl(frameRef)->isMainFrame();
+    return toImpl( frameRef )->isMainFrame();
 }
 
-WKFrameLoadState WKFrameGetFrameLoadState(WKFrameRef frameRef)
+WKFrameLoadState WKFrameGetFrameLoadState( WKFrameRef frameRef )
 {
-    WebFrameProxy* frame = toImpl(frameRef);
-    switch (frame->loadState()) {
+    WebFrameProxy *frame = toImpl( frameRef );
+
+    switch ( frame->loadState() )
+    {
         case WebFrameProxy::LoadStateProvisional:
             return kWKFrameLoadStateProvisional;
+
         case WebFrameProxy::LoadStateCommitted:
             return kWKFrameLoadStateCommitted;
+
         case WebFrameProxy::LoadStateFinished:
             return kWKFrameLoadStateFinished;
     }
-    
+
     ASSERT_NOT_REACHED();
     return kWKFrameLoadStateFinished;
 }
 
-WKURLRef WKFrameCopyProvisionalURL(WKFrameRef frameRef)
+WKURLRef WKFrameCopyProvisionalURL( WKFrameRef frameRef )
 {
-    return toCopiedURLAPI(toImpl(frameRef)->provisionalURL());
+    return toCopiedURLAPI( toImpl( frameRef )->provisionalURL() );
 }
 
-WKURLRef WKFrameCopyURL(WKFrameRef frameRef)
+WKURLRef WKFrameCopyURL( WKFrameRef frameRef )
 {
-    return toCopiedURLAPI(toImpl(frameRef)->url());
+    return toCopiedURLAPI( toImpl( frameRef )->url() );
 }
 
-WKURLRef WKFrameCopyUnreachableURL(WKFrameRef frameRef)
+WKURLRef WKFrameCopyUnreachableURL( WKFrameRef frameRef )
 {
-    return toCopiedURLAPI(toImpl(frameRef)->unreachableURL());
+    return toCopiedURLAPI( toImpl( frameRef )->unreachableURL() );
 }
 
-void WKFrameStopLoading(WKFrameRef frameRef)
+void WKFrameStopLoading( WKFrameRef frameRef )
 {
-    toImpl(frameRef)->stopLoading();
+    toImpl( frameRef )->stopLoading();
 }
 
-WKStringRef WKFrameCopyMIMEType(WKFrameRef frameRef)
+WKStringRef WKFrameCopyMIMEType( WKFrameRef frameRef )
 {
-    return toCopiedAPI(toImpl(frameRef)->mimeType());
+    return toCopiedAPI( toImpl( frameRef )->mimeType() );
 }
 
-WKStringRef WKFrameCopyTitle(WKFrameRef frameRef)
+WKStringRef WKFrameCopyTitle( WKFrameRef frameRef )
 {
-    return toCopiedAPI(toImpl(frameRef)->title());
+    return toCopiedAPI( toImpl( frameRef )->title() );
 }
 
-WKPageRef WKFrameGetPage(WKFrameRef frameRef)
+WKPageRef WKFrameGetPage( WKFrameRef frameRef )
 {
-    return toAPI(toImpl(frameRef)->page());
+    return toAPI( toImpl( frameRef )->page() );
 }
 
-WKArrayRef WKFrameCopyChildFrames(WKFrameRef frameRef)
+WKArrayRef WKFrameCopyChildFrames( WKFrameRef frameRef )
 {
-    return toAPI(toImpl(frameRef)->childFrames().releaseRef());
+    return toAPI( toImpl( frameRef )->childFrames().releaseRef() );
 }
 
-WKFrameRef WKFrameGetParentFrame(WKFrameRef frameRef)
+WKFrameRef WKFrameGetParentFrame( WKFrameRef frameRef )
 {
-    return toAPI(toImpl(frameRef)->parentFrame());
+    return toAPI( toImpl( frameRef )->parentFrame() );
 }
 
-WKCertificateInfoRef WKFrameGetCertificateInfo(WKFrameRef frameRef)
+WKCertificateInfoRef WKFrameGetCertificateInfo( WKFrameRef frameRef )
 {
-    return toAPI(toImpl(frameRef)->certificateInfo());
+    return toAPI( toImpl( frameRef )->certificateInfo() );
 }
 
-bool WKFrameCanProvideSource(WKFrameRef frameRef)
+bool WKFrameCanProvideSource( WKFrameRef frameRef )
 {
-    return toImpl(frameRef)->canProvideSource();
+    return toImpl( frameRef )->canProvideSource();
 }
 
-bool WKFrameCanShowMIMEType(WKFrameRef frameRef, WKStringRef mimeTypeRef)
+bool WKFrameCanShowMIMEType( WKFrameRef frameRef, WKStringRef mimeTypeRef )
 {
-    return toImpl(frameRef)->canShowMIMEType(toWTFString(mimeTypeRef));
+    return toImpl( frameRef )->canShowMIMEType( toWTFString( mimeTypeRef ) );
 }
 
-bool WKFrameIsDisplayingStandaloneImageDocument(WKFrameRef frameRef)
+bool WKFrameIsDisplayingStandaloneImageDocument( WKFrameRef frameRef )
 {
-    return toImpl(frameRef)->isDisplayingStandaloneImageDocument();
+    return toImpl( frameRef )->isDisplayingStandaloneImageDocument();
 }
 
-bool WKFrameIsDisplayingMarkupDocument(WKFrameRef frameRef)
+bool WKFrameIsDisplayingMarkupDocument( WKFrameRef frameRef )
 {
-    return toImpl(frameRef)->isDisplayingMarkupDocument();
+    return toImpl( frameRef )->isDisplayingMarkupDocument();
 }
 
-bool WKFrameIsFrameSet(WKFrameRef frameRef)
+bool WKFrameIsFrameSet( WKFrameRef frameRef )
 {
-    return toImpl(frameRef)->isFrameSet();
+    return toImpl( frameRef )->isFrameSet();
 }
 
-void WKFrameGetMainResourceData(WKFrameRef frameRef, WKFrameGetResourceDataFunction callback, void* context)
+void WKFrameGetMainResourceData( WKFrameRef frameRef, WKFrameGetResourceDataFunction callback, void *context )
 {
-    toImpl(frameRef)->getMainResourceData(DataCallback::create(context, callback));
+    toImpl( frameRef )->getMainResourceData( DataCallback::create( context, callback ) );
 }
 
-void WKFrameGetResourceData(WKFrameRef frameRef, WKURLRef resourceURL, WKFrameGetResourceDataFunction callback, void* context)
+void WKFrameGetResourceData( WKFrameRef frameRef, WKURLRef resourceURL, WKFrameGetResourceDataFunction callback, void *context )
 {
-    toImpl(frameRef)->getResourceData(toImpl(resourceURL), DataCallback::create(context, callback));
+    toImpl( frameRef )->getResourceData( toImpl( resourceURL ), DataCallback::create( context, callback ) );
 }
 
 #ifdef __BLOCKS__
-static void callGetResourceDataBlockAndDispose(WKDataRef data, WKErrorRef error, void* context)
+static void callGetResourceDataBlockAndDispose( WKDataRef data, WKErrorRef error, void *context )
 {
-    WKFrameGetResourceDataBlock block = (WKFrameGetResourceDataBlock)context;
-    block(data, error);
-    Block_release(block);
+    WKFrameGetResourceDataBlock block = ( WKFrameGetResourceDataBlock )context;
+    block( data, error );
+    Block_release( block );
 }
 
-void WKFrameGetMainResourceData_b(WKFrameRef frameRef, WKFrameGetResourceDataBlock block)
+void WKFrameGetMainResourceData_b( WKFrameRef frameRef, WKFrameGetResourceDataBlock block )
 {
-    WKFrameGetMainResourceData(frameRef, callGetResourceDataBlockAndDispose, Block_copy(block));
+    WKFrameGetMainResourceData( frameRef, callGetResourceDataBlockAndDispose, Block_copy( block ) );
 }
 
-void WKFrameGetResourceData_b(WKFrameRef frameRef, WKURLRef resourceURL, WKFrameGetResourceDataBlock block)
+void WKFrameGetResourceData_b( WKFrameRef frameRef, WKURLRef resourceURL, WKFrameGetResourceDataBlock block )
 {
-    WKFrameGetResourceData(frameRef, resourceURL, callGetResourceDataBlockAndDispose, Block_copy(block));
+    WKFrameGetResourceData( frameRef, resourceURL, callGetResourceDataBlockAndDispose, Block_copy( block ) );
 }
 #endif
 
-void WKFrameGetWebArchive(WKFrameRef frameRef, WKFrameGetWebArchiveFunction callback, void* context)
+void WKFrameGetWebArchive( WKFrameRef frameRef, WKFrameGetWebArchiveFunction callback, void *context )
 {
-    toImpl(frameRef)->getWebArchive(DataCallback::create(context, callback));
+    toImpl( frameRef )->getWebArchive( DataCallback::create( context, callback ) );
 }
 
 #ifdef __BLOCKS__
-static void callGetWebArchiveBlockAndDispose(WKDataRef archiveData, WKErrorRef error, void* context)
+static void callGetWebArchiveBlockAndDispose( WKDataRef archiveData, WKErrorRef error, void *context )
 {
-    WKFrameGetWebArchiveBlock block = (WKFrameGetWebArchiveBlock)context;
-    block(archiveData, error);
-    Block_release(block);
+    WKFrameGetWebArchiveBlock block = ( WKFrameGetWebArchiveBlock )context;
+    block( archiveData, error );
+    Block_release( block );
 }
 
-void WKFrameGetWebArchive_b(WKFrameRef frameRef, WKFrameGetWebArchiveBlock block)
+void WKFrameGetWebArchive_b( WKFrameRef frameRef, WKFrameGetWebArchiveBlock block )
 {
-    WKFrameGetWebArchive(frameRef, callGetWebArchiveBlockAndDispose, Block_copy(block));
+    WKFrameGetWebArchive( frameRef, callGetWebArchiveBlockAndDispose, Block_copy( block ) );
 }
 #endif

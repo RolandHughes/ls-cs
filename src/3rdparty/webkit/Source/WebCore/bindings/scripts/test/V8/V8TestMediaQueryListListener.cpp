@@ -31,39 +31,44 @@
 #include "V8IsolatedContext.h"
 #include "V8Proxy.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 WrapperTypeInfo V8TestMediaQueryListListener::info = { V8TestMediaQueryListListener::GetTemplate, V8TestMediaQueryListListener::derefObject, 0, 0 };
 
-namespace TestMediaQueryListListenerInternal {
-
-template <typename T> void V8_USE(T) { }
-
-static v8::Handle<v8::Value> methodCallback(const v8::Arguments& args)
+namespace TestMediaQueryListListenerInternal
 {
-    INC_STATS("DOM.TestMediaQueryListListener.method");
-    TestMediaQueryListListener* imp = V8TestMediaQueryListListener::toNative(args.Holder());
-    EXCEPTION_BLOCK(RefPtr<MediaQueryListListener>, listener, MediaQueryListListener::create(args[0]));
-    imp->method(listener);
+
+template <typename T> void V8_USE( T ) { }
+
+static v8::Handle<v8::Value> methodCallback( const v8::Arguments &args )
+{
+    INC_STATS( "DOM.TestMediaQueryListListener.method" );
+    TestMediaQueryListListener *imp = V8TestMediaQueryListListener::toNative( args.Holder() );
+    EXCEPTION_BLOCK( RefPtr<MediaQueryListListener>, listener, MediaQueryListListener::create( args[0] ) );
+    imp->method( listener );
     return v8::Handle<v8::Value>();
 }
 
 } // namespace TestMediaQueryListListenerInternal
 
-static const BatchedCallback TestMediaQueryListListenerCallbacks[] = {
+static const BatchedCallback TestMediaQueryListListenerCallbacks[] =
+{
     {"method", TestMediaQueryListListenerInternal::methodCallback},
 };
-static v8::Persistent<v8::FunctionTemplate> ConfigureV8TestMediaQueryListListenerTemplate(v8::Persistent<v8::FunctionTemplate> desc)
+static v8::Persistent<v8::FunctionTemplate> ConfigureV8TestMediaQueryListListenerTemplate( v8::Persistent<v8::FunctionTemplate>
+        desc )
 {
-    v8::Local<v8::Signature> defaultSignature = configureTemplate(desc, "TestMediaQueryListListener", v8::Persistent<v8::FunctionTemplate>(), V8TestMediaQueryListListener::internalFieldCount,
-        0, 0,
-        TestMediaQueryListListenerCallbacks, WTF_ARRAY_LENGTH(TestMediaQueryListListenerCallbacks));
+    v8::Local<v8::Signature> defaultSignature = configureTemplate( desc, "TestMediaQueryListListener",
+            v8::Persistent<v8::FunctionTemplate>(), V8TestMediaQueryListListener::internalFieldCount,
+            0, 0,
+            TestMediaQueryListListenerCallbacks, WTF_ARRAY_LENGTH( TestMediaQueryListListenerCallbacks ) );
     v8::Local<v8::ObjectTemplate> instance = desc->InstanceTemplate();
     v8::Local<v8::ObjectTemplate> proto = desc->PrototypeTemplate();
-    
+
 
     // Custom toString template
-    desc->Set(getToStringName(), getToStringTemplate());
+    desc->Set( getToStringName(), getToStringTemplate() );
     return desc;
 }
 
@@ -75,33 +80,37 @@ v8::Persistent<v8::FunctionTemplate> V8TestMediaQueryListListener::GetRawTemplat
 
 v8::Persistent<v8::FunctionTemplate> V8TestMediaQueryListListener::GetTemplate()
 {
-    static v8::Persistent<v8::FunctionTemplate> V8TestMediaQueryListListenerCache = ConfigureV8TestMediaQueryListListenerTemplate(GetRawTemplate());
+    static v8::Persistent<v8::FunctionTemplate> V8TestMediaQueryListListenerCache = ConfigureV8TestMediaQueryListListenerTemplate(
+                GetRawTemplate() );
     return V8TestMediaQueryListListenerCache;
 }
 
-bool V8TestMediaQueryListListener::HasInstance(v8::Handle<v8::Value> value)
+bool V8TestMediaQueryListListener::HasInstance( v8::Handle<v8::Value> value )
 {
-    return GetRawTemplate()->HasInstance(value);
+    return GetRawTemplate()->HasInstance( value );
 }
 
 
-v8::Handle<v8::Object> V8TestMediaQueryListListener::wrapSlow(TestMediaQueryListListener* impl)
+v8::Handle<v8::Object> V8TestMediaQueryListListener::wrapSlow( TestMediaQueryListListener *impl )
 {
     v8::Handle<v8::Object> wrapper;
-    V8Proxy* proxy = 0;
-    wrapper = V8DOMWrapper::instantiateV8Object(proxy, &info, impl);
-    if (wrapper.IsEmpty())
+    V8Proxy *proxy = 0;
+    wrapper = V8DOMWrapper::instantiateV8Object( proxy, &info, impl );
+
+    if ( wrapper.IsEmpty() )
+    {
         return wrapper;
+    }
 
     impl->ref();
-    v8::Persistent<v8::Object> wrapperHandle = v8::Persistent<v8::Object>::New(wrapper);
-    getDOMObjectMap().set(impl, wrapperHandle);
+    v8::Persistent<v8::Object> wrapperHandle = v8::Persistent<v8::Object>::New( wrapper );
+    getDOMObjectMap().set( impl, wrapperHandle );
     return wrapper;
 }
 
-void V8TestMediaQueryListListener::derefObject(void* object)
+void V8TestMediaQueryListListener::derefObject( void *object )
 {
-    static_cast<TestMediaQueryListListener*>(object)->deref();
+    static_cast<TestMediaQueryListListener *>( object )->deref();
 }
 
 } // namespace WebCore

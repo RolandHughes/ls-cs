@@ -33,11 +33,12 @@
 #include <wtf/StdLibExtras.h>
 #include <wtf/text/WTFString.h>
 
-namespace WebKit {
-
-PluginProcessManager& PluginProcessManager::shared()
+namespace WebKit
 {
-    DEFINE_STATIC_LOCAL(PluginProcessManager, pluginProcessManager, ());
+
+PluginProcessManager &PluginProcessManager::shared()
+{
+    DEFINE_STATIC_LOCAL( PluginProcessManager, pluginProcessManager, () );
     return pluginProcessManager;
 }
 
@@ -45,60 +46,73 @@ PluginProcessManager::PluginProcessManager()
 {
 }
 
-void PluginProcessManager::getPluginProcessConnection(PluginInfoStore* pluginInfoStore, const String& pluginPath, PassRefPtr<Messages::WebProcessProxy::GetPluginProcessConnection::DelayedReply> reply)
+void PluginProcessManager::getPluginProcessConnection( PluginInfoStore *pluginInfoStore, const String &pluginPath,
+        PassRefPtr<Messages::WebProcessProxy::GetPluginProcessConnection::DelayedReply> reply )
 {
-    ASSERT(!pluginPath.isNull());
+    ASSERT( !pluginPath.isNull() );
 
-    PluginInfoStore::Plugin plugin = pluginInfoStore->infoForPluginWithPath(pluginPath);
-    PluginProcessProxy* pluginProcess = getOrCreatePluginProcess(plugin);
-    pluginProcess->getPluginProcessConnection(reply);
+    PluginInfoStore::Plugin plugin = pluginInfoStore->infoForPluginWithPath( pluginPath );
+    PluginProcessProxy *pluginProcess = getOrCreatePluginProcess( plugin );
+    pluginProcess->getPluginProcessConnection( reply );
 }
 
-void PluginProcessManager::removePluginProcessProxy(PluginProcessProxy* pluginProcessProxy)
+void PluginProcessManager::removePluginProcessProxy( PluginProcessProxy *pluginProcessProxy )
 {
-    size_t vectorIndex = m_pluginProcesses.find(pluginProcessProxy);
-    ASSERT(vectorIndex != notFound);
+    size_t vectorIndex = m_pluginProcesses.find( pluginProcessProxy );
+    ASSERT( vectorIndex != notFound );
 
-    m_pluginProcesses.remove(vectorIndex);
+    m_pluginProcesses.remove( vectorIndex );
 }
 
-void PluginProcessManager::getSitesWithData(const PluginInfoStore::Plugin& plugin, WebPluginSiteDataManager* webPluginSiteDataManager, uint64_t callbackID)
+void PluginProcessManager::getSitesWithData( const PluginInfoStore::Plugin &plugin,
+        WebPluginSiteDataManager *webPluginSiteDataManager, uint64_t callbackID )
 {
-    PluginProcessProxy* pluginProcess = getOrCreatePluginProcess(plugin);
-    pluginProcess->getSitesWithData(webPluginSiteDataManager, callbackID);
+    PluginProcessProxy *pluginProcess = getOrCreatePluginProcess( plugin );
+    pluginProcess->getSitesWithData( webPluginSiteDataManager, callbackID );
 }
 
-void PluginProcessManager::clearSiteData(const PluginInfoStore::Plugin& plugin, WebPluginSiteDataManager* webPluginSiteDataManager, const Vector<String>& sites, uint64_t flags, uint64_t maxAgeInSeconds, uint64_t callbackID)
+void PluginProcessManager::clearSiteData( const PluginInfoStore::Plugin &plugin,
+        WebPluginSiteDataManager *webPluginSiteDataManager, const Vector<String> &sites, uint64_t flags, uint64_t maxAgeInSeconds,
+        uint64_t callbackID )
 {
-    PluginProcessProxy* pluginProcess = getOrCreatePluginProcess(plugin);
-    pluginProcess->clearSiteData(webPluginSiteDataManager, sites, flags, maxAgeInSeconds, callbackID);
+    PluginProcessProxy *pluginProcess = getOrCreatePluginProcess( plugin );
+    pluginProcess->clearSiteData( webPluginSiteDataManager, sites, flags, maxAgeInSeconds, callbackID );
 }
 
-void PluginProcessManager::pluginSyncMessageSendTimedOut(const String& pluginPath)
+void PluginProcessManager::pluginSyncMessageSendTimedOut( const String &pluginPath )
 {
-    PluginProcessProxy* pluginProcess = pluginProcessWithPath(pluginPath);
-    if (!pluginProcess)
+    PluginProcessProxy *pluginProcess = pluginProcessWithPath( pluginPath );
+
+    if ( !pluginProcess )
+    {
         return;
+    }
 
     pluginProcess->terminate();
 }
 
-PluginProcessProxy* PluginProcessManager::pluginProcessWithPath(const String& pluginPath)
+PluginProcessProxy *PluginProcessManager::pluginProcessWithPath( const String &pluginPath )
 {
-    for (size_t i = 0; i < m_pluginProcesses.size(); ++i) {
-        if (m_pluginProcesses[i]->pluginInfo().path == pluginPath)
+    for ( size_t i = 0; i < m_pluginProcesses.size(); ++i )
+    {
+        if ( m_pluginProcesses[i]->pluginInfo().path == pluginPath )
+        {
             return m_pluginProcesses[i];
+        }
     }
+
     return 0;
 }
 
-PluginProcessProxy* PluginProcessManager::getOrCreatePluginProcess(const PluginInfoStore::Plugin& plugin)
+PluginProcessProxy *PluginProcessManager::getOrCreatePluginProcess( const PluginInfoStore::Plugin &plugin )
 {
-    if (PluginProcessProxy* pluginProcess = pluginProcessWithPath(plugin.path))
+    if ( PluginProcessProxy *pluginProcess = pluginProcessWithPath( plugin.path ) )
+    {
         return pluginProcess;
+    }
 
-    PluginProcessProxy* pluginProcess = PluginProcessProxy::create(this, plugin).leakPtr();
-    m_pluginProcesses.append(pluginProcess);
+    PluginProcessProxy *pluginProcess = PluginProcessProxy::create( this, plugin ).leakPtr();
+    m_pluginProcesses.append( pluginProcess );
 
     return pluginProcess;
 }

@@ -34,201 +34,222 @@
 
 QT_BEGIN_NAMESPACE
 
-typedef QObject *(*QDeclarativeAttachedPropertiesFunc)(QObject *);
+typedef QObject *( *QDeclarativeAttachedPropertiesFunc )( QObject * );
 
 template <typename TYPE>
 class QDeclarativeTypeInfo
 {
- public:
-   enum {
-      hasAttachedProperties = 0
-   };
+public:
+    enum
+    {
+        hasAttachedProperties = 0
+    };
 };
 
 
 class QDeclarativeCustomParser;
-namespace QDeclarativePrivate {
-void Q_DECLARATIVE_EXPORT qdeclarativeelement_destructor(QObject *);
+namespace QDeclarativePrivate
+{
+void Q_DECLARATIVE_EXPORT qdeclarativeelement_destructor( QObject * );
 template<typename T>
 class QDeclarativeElement : public T
 {
- public:
-   virtual ~QDeclarativeElement() {
-      QDeclarativePrivate::qdeclarativeelement_destructor(this);
-   }
+public:
+    virtual ~QDeclarativeElement()
+    {
+        QDeclarativePrivate::qdeclarativeelement_destructor( this );
+    }
 };
 
 template<typename T>
-void createInto(void *memory)
+void createInto( void *memory )
 {
-   new (memory) QDeclarativeElement<T>;
+    new ( memory ) QDeclarativeElement<T>;
 }
 
 template<typename T>
-QObject *createParent(QObject *p)
+QObject *createParent( QObject *p )
 {
-   return new T(p);
+    return new T( p );
 }
 
 template<class From, class To, int N>
-struct StaticCastSelectorClass {
-   static inline int cast() {
-      return -1;
-   }
+struct StaticCastSelectorClass
+{
+    static inline int cast()
+    {
+        return -1;
+    }
 };
 
 template<class From, class To>
-struct StaticCastSelectorClass<From, To, sizeof(int)> {
-static inline int cast() {
-   return int(reinterpret_cast<quintptr>(static_cast<To *>(reinterpret_cast<From *>(0x10000000)))) - 0x10000000;
-}
+struct StaticCastSelectorClass<From, To, sizeof( int )>
+{
+    static inline int cast()
+    {
+        return int( reinterpret_cast<quintptr>( static_cast<To *>( reinterpret_cast<From *>( 0x10000000 ) ) ) ) - 0x10000000;
+    }
 };
 
 template<class From, class To>
-struct StaticCastSelector {
-   typedef int yes_type;
-   typedef char no_type;
+struct StaticCastSelector
+{
+    typedef int yes_type;
+    typedef char no_type;
 
-   static yes_type check(To *);
-   static no_type check(...);
+    static yes_type check( To * );
+    static no_type check( ... );
 
-   static inline int cast() {
-      return StaticCastSelectorClass<From, To, sizeof(check(reinterpret_cast<From *>(0)))>::cast();
-   }
+    static inline int cast()
+    {
+        return StaticCastSelectorClass<From, To, sizeof( check( reinterpret_cast<From *>( 0 ) ) )>::cast();
+    }
 };
 
 template <typename T>
-struct has_attachedPropertiesMember {
-   static bool const value = QDeclarativeTypeInfo<T>::hasAttachedProperties;
+struct has_attachedPropertiesMember
+{
+    static bool const value = QDeclarativeTypeInfo<T>::hasAttachedProperties;
 };
 
 template <typename T, bool hasMember>
 class has_attachedPropertiesMethod
 {
- public:
-   typedef int yes_type;
-   typedef char no_type;
+public:
+    typedef int yes_type;
+    typedef char no_type;
 
-   template<typename ReturnType>
-   static yes_type check(ReturnType * (*)(QObject *));
-   static no_type check(...);
+    template<typename ReturnType>
+    static yes_type check( ReturnType * ( * )( QObject * ) );
+    static no_type check( ... );
 
-   static bool const value = sizeof(check(&T::qmlAttachedProperties)) == sizeof(yes_type);
+    static bool const value = sizeof( check( &T::qmlAttachedProperties ) ) == sizeof( yes_type );
 };
 
 template <typename T>
 class has_attachedPropertiesMethod<T, false>
 {
- public:
-   static bool const value = false;
+public:
+    static bool const value = false;
 };
 
 template<typename T, int N>
 class AttachedPropertySelector
 {
- public:
-   static inline QDeclarativeAttachedPropertiesFunc func() {
-      return 0;
-   }
-   static inline const QMetaObject *metaObject() {
-      return 0;
-   }
+public:
+    static inline QDeclarativeAttachedPropertiesFunc func()
+    {
+        return 0;
+    }
+    static inline const QMetaObject *metaObject()
+    {
+        return 0;
+    }
 };
 template<typename T>
 class AttachedPropertySelector<T, 1>
 {
-   static inline QObject *attachedProperties(QObject *obj) {
-      return T::qmlAttachedProperties(obj);
-   }
-   template<typename ReturnType>
-   static inline const QMetaObject *attachedPropertiesMetaObject(ReturnType * (*)(QObject *)) {
-      return &ReturnType::staticMetaObject;
-   }
- public:
-   static inline QDeclarativeAttachedPropertiesFunc func() {
-      return &attachedProperties;
-   }
-   static inline const QMetaObject *metaObject() {
-      return attachedPropertiesMetaObject(&T::qmlAttachedProperties);
-   }
+    static inline QObject *attachedProperties( QObject *obj )
+    {
+        return T::qmlAttachedProperties( obj );
+    }
+    template<typename ReturnType>
+    static inline const QMetaObject *attachedPropertiesMetaObject( ReturnType * ( * )( QObject * ) )
+    {
+        return &ReturnType::staticMetaObject;
+    }
+public:
+    static inline QDeclarativeAttachedPropertiesFunc func()
+    {
+        return &attachedProperties;
+    }
+    static inline const QMetaObject *metaObject()
+    {
+        return attachedPropertiesMetaObject( &T::qmlAttachedProperties );
+    }
 };
 
 template<typename T>
 inline QDeclarativeAttachedPropertiesFunc attachedPropertiesFunc()
 {
-   return AttachedPropertySelector<T, has_attachedPropertiesMethod<T, has_attachedPropertiesMember<T>::value>::value>::func();
+    return AttachedPropertySelector<T, has_attachedPropertiesMethod<T, has_attachedPropertiesMember<T>::value>::value>::func();
 }
 
 template<typename T>
 inline const QMetaObject *attachedPropertiesMetaObject()
 {
-   return AttachedPropertySelector<T, has_attachedPropertiesMethod<T, has_attachedPropertiesMember<T>::value>::value>::metaObject();
+    return AttachedPropertySelector<T, has_attachedPropertiesMethod<T, has_attachedPropertiesMember<T>::value>::value>::metaObject();
 }
 
 enum AutoParentResult { Parented, IncompatibleObject, IncompatibleParent };
-typedef AutoParentResult (*AutoParentFunction)(QObject *object, QObject *parent);
+typedef AutoParentResult ( *AutoParentFunction )( QObject *object, QObject *parent );
 
-struct RegisterType {
-   int version;
+struct RegisterType
+{
+    int version;
 
-   int typeId;
-   int listId;
-   int objectSize;
-   void (*create)(void *);
-   QString noCreationReason;
+    int typeId;
+    int listId;
+    int objectSize;
+    void ( *create )( void * );
+    QString noCreationReason;
 
-   const char *uri;
-   int versionMajor;
-   int versionMinor;
-   const char *elementName;
-   const QMetaObject *metaObject;
+    const char *uri;
+    int versionMajor;
+    int versionMinor;
+    const char *elementName;
+    const QMetaObject *metaObject;
 
-   QDeclarativeAttachedPropertiesFunc attachedPropertiesFunction;
-   const QMetaObject *attachedPropertiesMetaObject;
+    QDeclarativeAttachedPropertiesFunc attachedPropertiesFunction;
+    const QMetaObject *attachedPropertiesMetaObject;
 
-   int parserStatusCast;
-   int valueSourceCast;
-   int valueInterceptorCast;
+    int parserStatusCast;
+    int valueSourceCast;
+    int valueInterceptorCast;
 
-   QObject *(*extensionObjectCreate)(QObject *);
-   const QMetaObject *extensionMetaObject;
+    QObject *( *extensionObjectCreate )( QObject * );
+    const QMetaObject *extensionMetaObject;
 
-   QDeclarativeCustomParser *customParser;
-   int revision;
-   // If this is extended ensure "version" is bumped!!!
+    QDeclarativeCustomParser *customParser;
+    int revision;
+    // If this is extended ensure "version" is bumped!!!
 };
 
-struct RegisterInterface {
-   int version;
+struct RegisterInterface
+{
+    int version;
 
-   int typeId;
-   int listId;
+    int typeId;
+    int listId;
 
-   const char *iid;
+    const char *iid;
 };
 
-struct RegisterAutoParent {
-   int version;
+struct RegisterAutoParent
+{
+    int version;
 
-   AutoParentFunction function;
+    AutoParentFunction function;
 };
 
-struct RegisterComponent {
-   const QUrl &url;
-   const char *uri;
-   const char *typeName;
-   int majorVersion;
-   int minorVersion;
+struct RegisterComponent
+{
+    const QUrl &url;
+    const char *uri;
+    const char *typeName;
+    int majorVersion;
+    int minorVersion;
 };
 
-enum RegistrationType {
-   TypeRegistration       = 0,
-   InterfaceRegistration  = 1,
-   AutoParentRegistration = 2,
-   ComponentRegistration  = 3
+enum RegistrationType
+{
+    TypeRegistration       = 0,
+    InterfaceRegistration  = 1,
+    AutoParentRegistration = 2,
+    ComponentRegistration  = 3
 };
 
-int Q_DECLARATIVE_EXPORT qmlregister(RegistrationType, void *);
+int Q_DECLARATIVE_EXPORT qmlregister( RegistrationType, void * );
 
 
 /*!
@@ -246,17 +267,18 @@ int Q_DECLARATIVE_EXPORT qmlregister(RegistrationType, void *);
 
   This function is added to QtQuick 1 in Qt5, and is here as private API for developers needing compatibility.
 */
-inline int qmlRegisterType(const QUrl &url, const char *uri, int versionMajor, int versionMinor, const char *qmlName)
+inline int qmlRegisterType( const QUrl &url, const char *uri, int versionMajor, int versionMinor, const char *qmlName )
 {
-   RegisterComponent type = {
-      url,
-      uri,
-      qmlName,
-      versionMajor,
-      versionMinor
-   };
+    RegisterComponent type =
+    {
+        url,
+        uri,
+        qmlName,
+        versionMajor,
+        versionMinor
+    };
 
-   return qmlregister(QDeclarativePrivate::ComponentRegistration, &type);
+    return qmlregister( QDeclarativePrivate::ComponentRegistration, &type );
 }
 /*!
   \internal
@@ -266,38 +288,39 @@ inline int qmlRegisterType(const QUrl &url, const char *uri, int versionMajor, i
   This overload is backported from Qt5, and allows uncreatable types to be versioned.
 */
 template<typename T, int metaObjectRevision>
-int qmlRegisterUncreatableType(const char *uri, int versionMajor, int versionMinor, const char *qmlName,
-                               const QString &reason)
+int qmlRegisterUncreatableType( const char *uri, int versionMajor, int versionMinor, const char *qmlName,
+                                const QString &reason )
 {
-   QByteArray name(T::staticMetaObject.className());
+    QByteArray name( T::staticMetaObject.className() );
 
-   QByteArray pointerName(name + '*');
-   QByteArray listName("QDeclarativeListProperty<" + name + ">");
+    QByteArray pointerName( name + '*' );
+    QByteArray listName( "QDeclarativeListProperty<" + name + ">" );
 
-   QDeclarativePrivate::RegisterType type = {
-      1,
+    QDeclarativePrivate::RegisterType type =
+    {
+        1,
 
-      qRegisterMetaType<T *>(pointerName.constData()),
-      qRegisterMetaType<QDeclarativeListProperty<T> >(listName.constData()),
-      0, 0,
-      reason,
+        qRegisterMetaType<T *>( pointerName.constData() ),
+        qRegisterMetaType<QDeclarativeListProperty<T> >( listName.constData() ),
+        0, 0,
+        reason,
 
-      uri, versionMajor, versionMinor, qmlName, &T::staticMetaObject,
+        uri, versionMajor, versionMinor, qmlName, &T::staticMetaObject,
 
-      QDeclarativePrivate::attachedPropertiesFunc<T>(),
-      QDeclarativePrivate::attachedPropertiesMetaObject<T>(),
+        QDeclarativePrivate::attachedPropertiesFunc<T>(),
+        QDeclarativePrivate::attachedPropertiesMetaObject<T>(),
 
-      QDeclarativePrivate::StaticCastSelector<T, QDeclarativeParserStatus>::cast(),
-      QDeclarativePrivate::StaticCastSelector<T, QDeclarativePropertyValueSource>::cast(),
-      QDeclarativePrivate::StaticCastSelector<T, QDeclarativePropertyValueInterceptor>::cast(),
+        QDeclarativePrivate::StaticCastSelector<T, QDeclarativeParserStatus>::cast(),
+        QDeclarativePrivate::StaticCastSelector<T, QDeclarativePropertyValueSource>::cast(),
+        QDeclarativePrivate::StaticCastSelector<T, QDeclarativePropertyValueInterceptor>::cast(),
 
-      0, 0,
+        0, 0,
 
-      0,
-      metaObjectRevision
-   };
+        0,
+        metaObjectRevision
+    };
 
-   return QDeclarativePrivate::qmlregister(QDeclarativePrivate::TypeRegistration, &type);
+    return QDeclarativePrivate::qmlregister( QDeclarativePrivate::TypeRegistration, &type );
 }
 
 

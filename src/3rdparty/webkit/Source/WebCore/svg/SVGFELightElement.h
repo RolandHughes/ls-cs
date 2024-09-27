@@ -27,36 +27,39 @@
 #include "SVGAnimatedNumber.h"
 #include "SVGElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class SVGFELightElement : public SVGElement {
+class SVGFELightElement : public SVGElement
+{
 public:
     virtual PassRefPtr<LightSource> lightSource() const = 0;
-    static SVGFELightElement* findLightElement(const SVGElement*);
-    static PassRefPtr<LightSource> findLightSource(const SVGElement*);
+    static SVGFELightElement *findLightElement( const SVGElement * );
+    static PassRefPtr<LightSource> findLightSource( const SVGElement * );
 
 protected:
-    SVGFELightElement(const QualifiedName&, Document*);
+    SVGFELightElement( const QualifiedName &, Document * );
 
 private:
-    virtual void parseMappedAttribute(Attribute*);
-    virtual void svgAttributeChanged(const QualifiedName&);
-    virtual void synchronizeProperty(const QualifiedName&);
+    virtual void parseMappedAttribute( Attribute * );
+    virtual void svgAttributeChanged( const QualifiedName & );
+    virtual void synchronizeProperty( const QualifiedName & );
     virtual void fillAttributeToPropertyTypeMap();
-    virtual AttributeToPropertyTypeMap& attributeToPropertyTypeMap();
-    virtual void childrenChanged(bool changedByParser = false, Node* beforeChange = 0, Node* afterChange = 0, int childCountDelta = 0);
+    virtual AttributeToPropertyTypeMap &attributeToPropertyTypeMap();
+    virtual void childrenChanged( bool changedByParser = false, Node *beforeChange = 0, Node *afterChange = 0,
+                                  int childCountDelta = 0 );
 
     // Animated property declarations
-    DECLARE_ANIMATED_NUMBER(Azimuth, azimuth)
-    DECLARE_ANIMATED_NUMBER(Elevation, elevation)
-    DECLARE_ANIMATED_NUMBER(X, x)
-    DECLARE_ANIMATED_NUMBER(Y, y)
-    DECLARE_ANIMATED_NUMBER(Z, z)
-    DECLARE_ANIMATED_NUMBER(PointsAtX, pointsAtX)
-    DECLARE_ANIMATED_NUMBER(PointsAtY, pointsAtY)
-    DECLARE_ANIMATED_NUMBER(PointsAtZ, pointsAtZ)
-    DECLARE_ANIMATED_NUMBER(SpecularExponent, specularExponent)
-    DECLARE_ANIMATED_NUMBER(LimitingConeAngle, limitingConeAngle)
+    DECLARE_ANIMATED_NUMBER( Azimuth, azimuth )
+    DECLARE_ANIMATED_NUMBER( Elevation, elevation )
+    DECLARE_ANIMATED_NUMBER( X, x )
+    DECLARE_ANIMATED_NUMBER( Y, y )
+    DECLARE_ANIMATED_NUMBER( Z, z )
+    DECLARE_ANIMATED_NUMBER( PointsAtX, pointsAtX )
+    DECLARE_ANIMATED_NUMBER( PointsAtY, pointsAtY )
+    DECLARE_ANIMATED_NUMBER( PointsAtZ, pointsAtZ )
+    DECLARE_ANIMATED_NUMBER( SpecularExponent, specularExponent )
+    DECLARE_ANIMATED_NUMBER( LimitingConeAngle, limitingConeAngle )
 };
 
 } // namespace WebCore

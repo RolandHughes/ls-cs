@@ -33,47 +33,52 @@ class QWindowsOpenGLContext;
 
 class QWindowsStaticOpenGLContext
 {
- public:
-   static QWindowsStaticOpenGLContext *create();
-   virtual ~QWindowsStaticOpenGLContext() { }
+public:
+    static QWindowsStaticOpenGLContext *create();
+    virtual ~QWindowsStaticOpenGLContext() { }
 
-   virtual QWindowsOpenGLContext *createContext(QOpenGLContext *context) = 0;
-   virtual void *moduleHandle() const = 0;
-   virtual QOpenGLContext::OpenGLModuleType moduleType() const = 0;
-   virtual bool supportsThreadedOpenGL() const {
-      return false;
-   }
+    virtual QWindowsOpenGLContext *createContext( QOpenGLContext *context ) = 0;
+    virtual void *moduleHandle() const = 0;
+    virtual QOpenGLContext::OpenGLModuleType moduleType() const = 0;
+    virtual bool supportsThreadedOpenGL() const
+    {
+        return false;
+    }
 
-   // If the windowing system interface needs explicitly created window surfaces (like EGL),
-   // reimplement these.
-   virtual void *createWindowSurface(void * /*nativeWindow*/, void * /*nativeConfig*/, int * /*err*/) {
-      return nullptr;
-   }
+    // If the windowing system interface needs explicitly created window surfaces (like EGL),
+    // reimplement these.
+    virtual void *createWindowSurface( void * /*nativeWindow*/, void * /*nativeConfig*/, int * /*err*/ )
+    {
+        return nullptr;
+    }
 
-   virtual void destroyWindowSurface(void * /*nativeSurface*/) {
-   }
+    virtual void destroyWindowSurface( void * /*nativeSurface*/ )
+    {
+    }
 
- private:
-   static QWindowsStaticOpenGLContext *doCreate();
+private:
+    static QWindowsStaticOpenGLContext *doCreate();
 };
 
 class QWindowsOpenGLContext : public QPlatformOpenGLContext
 {
- public:
-   virtual ~QWindowsOpenGLContext() { }
+public:
+    virtual ~QWindowsOpenGLContext() { }
 
-   // Returns the native context handle (e.g. HGLRC for WGL, EGLContext for EGL).
-   virtual void *nativeContext() const = 0;
+    // Returns the native context handle (e.g. HGLRC for WGL, EGLContext for EGL).
+    virtual void *nativeContext() const = 0;
 
-   // These should be implemented only for some winsys interfaces, for example EGL.
-   // For others, like WGL, they are not relevant.
-   virtual void *nativeDisplay() const {
-      return nullptr;
-   }
+    // These should be implemented only for some winsys interfaces, for example EGL.
+    // For others, like WGL, they are not relevant.
+    virtual void *nativeDisplay() const
+    {
+        return nullptr;
+    }
 
-   virtual void *nativeConfig() const {
-      return nullptr;
-   }
+    virtual void *nativeConfig() const
+    {
+        return nullptr;
+    }
 };
 
 #endif // QT_NO_OPENGL

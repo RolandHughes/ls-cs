@@ -29,10 +29,11 @@
 
 #include "OESStandardDerivatives.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-OESStandardDerivatives::OESStandardDerivatives(WebGLRenderingContext* context)
-    : WebGLExtension(context)
+OESStandardDerivatives::OESStandardDerivatives( WebGLRenderingContext *context )
+    : WebGLExtension( context )
 {
 }
 
@@ -45,9 +46,9 @@ WebGLExtension::ExtensionName OESStandardDerivatives::getName() const
     return OESStandardDerivativesName;
 }
 
-PassOwnPtr<OESStandardDerivatives> OESStandardDerivatives::create(WebGLRenderingContext* context)
+PassOwnPtr<OESStandardDerivatives> OESStandardDerivatives::create( WebGLRenderingContext *context )
 {
-    return adoptPtr(new OESStandardDerivatives(context));
+    return adoptPtr( new OESStandardDerivatives( context ) );
 }
 
 } // namespace WebCore

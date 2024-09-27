@@ -26,22 +26,23 @@
 
 #include <qobject.h>
 
-struct Q_MULTIMEDIA_EXPORT QMediaResourceSetFactoryInterface {
-   virtual QObject *create(const QString &interfaceId) = 0;
-   virtual void destroy(QObject *resourceSet) = 0;
+struct Q_MULTIMEDIA_EXPORT QMediaResourceSetFactoryInterface
+{
+    virtual QObject *create( const QString &interfaceId ) = 0;
+    virtual void destroy( QObject *resourceSet ) = 0;
 };
 
 #define QMediaResourceSetFactoryInterface_iid "com.copperspice.CS.mediaResourceSetFactory/1.0"
-CS_DECLARE_INTERFACE(QMediaResourceSetFactoryInterface, QMediaResourceSetFactoryInterface_iid)
+CS_DECLARE_INTERFACE( QMediaResourceSetFactoryInterface, QMediaResourceSetFactoryInterface_iid )
 
 class Q_MULTIMEDIA_EXPORT QMediaResourcePolicyPlugin : public QObject, public QMediaResourceSetFactoryInterface
 {
-   MULTI_CS_OBJECT_MULTIPLE(QMediaResourcePolicyPlugin, QObject)
-   CS_INTERFACES(QMediaResourceSetFactoryInterface)
+    MULTI_CS_OBJECT_MULTIPLE( QMediaResourcePolicyPlugin, QObject )
+    CS_INTERFACES( QMediaResourceSetFactoryInterface )
 
- public:
-   QMediaResourcePolicyPlugin(QObject *parent = nullptr);
-   ~QMediaResourcePolicyPlugin();
+public:
+    QMediaResourcePolicyPlugin( QObject *parent = nullptr );
+    ~QMediaResourcePolicyPlugin();
 };
 
 

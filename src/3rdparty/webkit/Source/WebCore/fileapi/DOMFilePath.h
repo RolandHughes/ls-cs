@@ -35,47 +35,49 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 // DOMFileSystem path utilities. All methods in this class are static.
-class DOMFilePath {
+class DOMFilePath
+{
 public:
     static const char separator;
     static const char root[];
 
     // Returns the name part from the given path.
-    static String getName(const String& path);
+    static String getName( const String &path );
 
     // Returns the parent directory path of the given path.
-    static String getDirectory(const String& path);
+    static String getDirectory( const String &path );
 
     // Checks if a given path is a parent of mayBeChild. This method assumes given paths are absolute and do not have extra references to a parent (i.e. "../").
-    static bool isParentOf(const String& path, const String& mayBeChild);
+    static bool isParentOf( const String &path, const String &mayBeChild );
 
     // Appends the separator at the end of the path if it's not there already.
-    static String ensureDirectoryPath(const String& path);
+    static String ensureDirectoryPath( const String &path );
 
     // Returns a new path by appending a separator and the supplied path component to the path.
-    static String append(const String& path, const String& component);
+    static String append( const String &path, const String &component );
 
-    static bool isAbsolute(const String& path)
+    static bool isAbsolute( const String &path )
     {
-        return path.startsWith(DOMFilePath::root);
+        return path.startsWith( DOMFilePath::root );
     }
 
-    static bool endsWithSeparator(const String& path)
+    static bool endsWithSeparator( const String &path )
     {
         return path[path.length() - 1] == DOMFilePath::separator;
     }
 
     // Evaluates all "../" and "./" segments.  Note that "/../" expands to "/", so you can't ever refer to anything above the root directory.
-    static String removeExtraParentReferences(const String& path);
+    static String removeExtraParentReferences( const String &path );
 
     // Checks if the given path follows the FileSystem API naming restrictions.
-    static bool isValidPath(const String& path);
+    static bool isValidPath( const String &path );
 
     // Checks if the given name follows the FileSystem API naming restrictions.
-    static bool isValidName(const String& name);
+    static bool isValidName( const String &name );
 
 private:
     DOMFilePath() { }

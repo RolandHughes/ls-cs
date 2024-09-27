@@ -31,371 +31,371 @@ class QDebug;
 
 class Q_CORE_EXPORT QPoint
 {
- public:
-   QPoint();
-   QPoint(int xPos, int yPos);
+public:
+    QPoint();
+    QPoint( int xPos, int yPos );
 
-   inline bool isNull() const;
+    inline bool isNull() const;
 
-   inline int x() const;
-   inline int y() const;
-   inline void setX(int xPos);
-   inline void setY(int yPos);
+    inline int x() const;
+    inline int y() const;
+    inline void setX( int xPos );
+    inline void setY( int yPos );
 
-   int manhattanLength() const;
+    int manhattanLength() const;
 
-   inline int &rx();
-   inline int &ry();
+    inline int &rx();
+    inline int &ry();
 
-   inline QPoint &operator+=(const QPoint &point);
-   inline QPoint &operator-=(const QPoint &point);
+    inline QPoint &operator+=( const QPoint &point );
+    inline QPoint &operator-=( const QPoint &point );
 
-   inline QPoint &operator*=(float factor);
-   inline QPoint &operator*=(double factor);
-   inline QPoint &operator*=(int factor);
-   inline QPoint &operator/=(qreal factor);
+    inline QPoint &operator*=( float factor );
+    inline QPoint &operator*=( double factor );
+    inline QPoint &operator*=( int factor );
+    inline QPoint &operator/=( qreal factor );
 
- private:
-   int xp;
-   int yp;
+private:
+    int xp;
+    int yp;
 
-   friend inline bool operator==(const QPoint &point1, const QPoint &point2);
-   friend inline bool operator!=(const QPoint &point1, const QPoint &point2);
+    friend inline bool operator==( const QPoint &point1, const QPoint &point2 );
+    friend inline bool operator!=( const QPoint &point1, const QPoint &point2 );
 
-   friend inline const QPoint operator+(const QPoint &point1, const QPoint &point2);
-   friend inline const QPoint operator-(const QPoint &point1, const QPoint &point2);
-   friend inline const QPoint operator*(const QPoint &point, float factor);
-   friend inline const QPoint operator*(float factor, const QPoint &point);
-   friend inline const QPoint operator*(const QPoint &point, double factor);
-   friend inline const QPoint operator*(double factor, const QPoint &point);
-   friend inline const QPoint operator*(const QPoint &point, int factor);
-   friend inline const QPoint operator*(int factor, const QPoint &point);
-   friend inline const QPoint operator-(const QPoint &point);
-   friend inline const QPoint operator/(const QPoint &point, qreal factor);
-   friend class QTransform;
+    friend inline const QPoint operator+( const QPoint &point1, const QPoint &point2 );
+    friend inline const QPoint operator-( const QPoint &point1, const QPoint &point2 );
+    friend inline const QPoint operator*( const QPoint &point, float factor );
+    friend inline const QPoint operator*( float factor, const QPoint &point );
+    friend inline const QPoint operator*( const QPoint &point, double factor );
+    friend inline const QPoint operator*( double factor, const QPoint &point );
+    friend inline const QPoint operator*( const QPoint &point, int factor );
+    friend inline const QPoint operator*( int factor, const QPoint &point );
+    friend inline const QPoint operator-( const QPoint &point );
+    friend inline const QPoint operator/( const QPoint &point, qreal factor );
+    friend class QTransform;
 };
 
-Q_CORE_EXPORT QDataStream &operator<<(QDataStream &stream, const QPoint &point);
-Q_CORE_EXPORT QDataStream &operator>>(QDataStream &stream, QPoint &point);
+Q_CORE_EXPORT QDataStream &operator<<( QDataStream &stream, const QPoint &point );
+Q_CORE_EXPORT QDataStream &operator>>( QDataStream &stream, QPoint &point );
 
 inline QPoint::QPoint()
 {
-   xp = 0;
-   yp = 0;
+    xp = 0;
+    yp = 0;
 }
 
-inline QPoint::QPoint(int xPos, int yPos)
+inline QPoint::QPoint( int xPos, int yPos )
 {
-   xp = xPos;
-   yp = yPos;
+    xp = xPos;
+    yp = yPos;
 }
 
 inline bool QPoint::isNull() const
 {
-   return xp == 0 && yp == 0;
+    return xp == 0 && yp == 0;
 }
 
 inline int QPoint::x() const
 {
-   return xp;
+    return xp;
 }
 
 inline int QPoint::y() const
 {
-   return yp;
+    return yp;
 }
 
-inline void QPoint::setX(int xPos)
+inline void QPoint::setX( int xPos )
 {
-   xp = xPos;
+    xp = xPos;
 }
 
-inline void QPoint::setY(int yPos)
+inline void QPoint::setY( int yPos )
 {
-   yp = yPos;
+    yp = yPos;
 }
 
 inline int &QPoint::rx()
 {
-   return xp;
+    return xp;
 }
 
 inline int &QPoint::ry()
 {
-   return yp;
+    return yp;
 }
 
-inline QPoint &QPoint::operator+=(const QPoint &p)
+inline QPoint &QPoint::operator+=( const QPoint &p )
 {
-   xp += p.xp;
-   yp += p.yp;
-   return *this;
+    xp += p.xp;
+    yp += p.yp;
+    return *this;
 }
 
-inline QPoint &QPoint::operator-=(const QPoint &p)
+inline QPoint &QPoint::operator-=( const QPoint &p )
 {
-   xp -= p.xp;
-   yp -= p.yp;
-   return *this;
+    xp -= p.xp;
+    yp -= p.yp;
+    return *this;
 }
 
-inline QPoint &QPoint::operator*=(float factor)
+inline QPoint &QPoint::operator*=( float factor )
 {
-   xp = qRound(xp * factor);
-   yp = qRound(yp * factor);
-   return *this;
+    xp = qRound( xp * factor );
+    yp = qRound( yp * factor );
+    return *this;
 }
 
-inline QPoint &QPoint::operator*=(double factor)
+inline QPoint &QPoint::operator*=( double factor )
 {
-   xp = qRound(xp * factor);
-   yp = qRound(yp * factor);
-   return *this;
+    xp = qRound( xp * factor );
+    yp = qRound( yp * factor );
+    return *this;
 }
 
-inline QPoint &QPoint::operator*=(int factor)
+inline QPoint &QPoint::operator*=( int factor )
 {
-   xp = xp * factor;
-   yp = yp * factor;
-   return *this;
+    xp = xp * factor;
+    yp = yp * factor;
+    return *this;
 }
 
-inline bool operator==(const QPoint &point1, const QPoint &point2)
+inline bool operator==( const QPoint &point1, const QPoint &point2 )
 {
-   return point1.xp == point2.xp && point1.yp == point2.yp;
+    return point1.xp == point2.xp && point1.yp == point2.yp;
 }
 
-inline bool operator!=(const QPoint &point1, const QPoint &point2)
+inline bool operator!=( const QPoint &point1, const QPoint &point2 )
 {
-   return point1.xp != point2.xp || point1.yp != point2.yp;
+    return point1.xp != point2.xp || point1.yp != point2.yp;
 }
 
-inline const QPoint operator+(const QPoint &point1, const QPoint &point2)
+inline const QPoint operator+( const QPoint &point1, const QPoint &point2 )
 {
-   return QPoint(point1.xp + point2.xp, point1.yp + point2.yp);
+    return QPoint( point1.xp + point2.xp, point1.yp + point2.yp );
 }
 
-inline const QPoint operator-(const QPoint &point1, const QPoint &point2)
+inline const QPoint operator-( const QPoint &point1, const QPoint &point2 )
 {
-   return QPoint(point1.xp - point2.xp, point1.yp - point2.yp);
+    return QPoint( point1.xp - point2.xp, point1.yp - point2.yp );
 }
 
-inline const QPoint operator*(const QPoint &p, float factor)
+inline const QPoint operator*( const QPoint &p, float factor )
 {
-   return QPoint(qRound(p.xp * factor), qRound(p.yp * factor));
+    return QPoint( qRound( p.xp * factor ), qRound( p.yp * factor ) );
 }
 
-inline const QPoint operator*(const QPoint &p, double factor)
+inline const QPoint operator*( const QPoint &p, double factor )
 {
-   return QPoint(qRound(p.xp * factor), qRound(p.yp * factor));
+    return QPoint( qRound( p.xp * factor ), qRound( p.yp * factor ) );
 }
 
-inline const QPoint operator*(const QPoint &p, int factor)
+inline const QPoint operator*( const QPoint &p, int factor )
 {
-   return QPoint(p.xp * factor, p.yp * factor);
+    return QPoint( p.xp * factor, p.yp * factor );
 }
 
-inline const QPoint operator*(float factor, const QPoint &p)
+inline const QPoint operator*( float factor, const QPoint &p )
 {
-   return QPoint(qRound(p.xp * factor), qRound(p.yp * factor));
+    return QPoint( qRound( p.xp * factor ), qRound( p.yp * factor ) );
 }
 
-inline const QPoint operator*(double factor, const QPoint &p)
+inline const QPoint operator*( double factor, const QPoint &p )
 {
-   return QPoint(qRound(p.xp * factor), qRound(p.yp * factor));
+    return QPoint( qRound( p.xp * factor ), qRound( p.yp * factor ) );
 }
 
-inline const QPoint operator*(int factor, const QPoint &point)
+inline const QPoint operator*( int factor, const QPoint &point )
 {
-   return QPoint(point.xp * factor, point.yp * factor);
+    return QPoint( point.xp * factor, point.yp * factor );
 }
 
-inline const QPoint operator-(const QPoint &point)
+inline const QPoint operator-( const QPoint &point )
 {
-   return QPoint(-point.xp, -point.yp);
+    return QPoint( -point.xp, -point.yp );
 }
 
-inline QPoint &QPoint::operator/=(qreal factor)
+inline QPoint &QPoint::operator/=( qreal factor )
 {
-   xp = qRound(xp / factor);
-   yp = qRound(yp / factor);
-   return *this;
+    xp = qRound( xp / factor );
+    yp = qRound( yp / factor );
+    return *this;
 }
 
-inline const QPoint operator/(const QPoint &p, qreal factor)
+inline const QPoint operator/( const QPoint &p, qreal factor )
 {
-   return QPoint(qRound(p.xp / factor), qRound(p.yp / factor));
+    return QPoint( qRound( p.xp / factor ), qRound( p.yp / factor ) );
 }
 
-Q_CORE_EXPORT QDebug operator<<(QDebug, const QPoint &point);
+Q_CORE_EXPORT QDebug operator<<( QDebug, const QPoint &point );
 
 class Q_CORE_EXPORT QPointF
 {
- public:
-   QPointF();
-   QPointF(const QPoint &point);
-   QPointF(qreal xPos, qreal yPos);
+public:
+    QPointF();
+    QPointF( const QPoint &point );
+    QPointF( qreal xPos, qreal yPos );
 
-   qreal manhattanLength() const;
+    qreal manhattanLength() const;
 
-   inline bool isNull() const;
+    inline bool isNull() const;
 
-   inline qreal x() const;
-   inline qreal y() const;
-   inline void setX(qreal xPos);
-   inline void setY(qreal yPos);
+    inline qreal x() const;
+    inline qreal y() const;
+    inline void setX( qreal xPos );
+    inline void setY( qreal yPos );
 
-   inline qreal &rx();
-   inline qreal &ry();
+    inline qreal &rx();
+    inline qreal &ry();
 
-   inline QPointF &operator+=(const QPointF &point);
-   inline QPointF &operator-=(const QPointF &point);
+    inline QPointF &operator+=( const QPointF &point );
+    inline QPointF &operator-=( const QPointF &point );
 
-   inline QPointF &operator*=(qreal factor);
-   inline QPointF &operator/=(qreal factor);
+    inline QPointF &operator*=( qreal factor );
+    inline QPointF &operator/=( qreal factor );
 
-   inline QPoint toPoint() const;
+    inline QPoint toPoint() const;
 
- private:
-   double xp;
-   double yp;
+private:
+    double xp;
+    double yp;
 
-   friend inline bool operator==(const QPointF &point1, const QPointF &point2);
-   friend inline bool operator!=(const QPointF &point1, const QPointF &point2);
-   friend inline const QPointF operator+(const QPointF &point1, const QPointF &point2);
-   friend inline const QPointF operator-(const QPointF &point1, const QPointF &point2);
-   friend inline const QPointF operator*(qreal factor, const QPointF &point);
-   friend inline const QPointF operator*(const QPointF &point, qreal factor);
-   friend inline const QPointF operator-(const QPointF &point);
-   friend inline const QPointF operator/(const QPointF &point, qreal factor);
+    friend inline bool operator==( const QPointF &point1, const QPointF &point2 );
+    friend inline bool operator!=( const QPointF &point1, const QPointF &point2 );
+    friend inline const QPointF operator+( const QPointF &point1, const QPointF &point2 );
+    friend inline const QPointF operator-( const QPointF &point1, const QPointF &point2 );
+    friend inline const QPointF operator*( qreal factor, const QPointF &point );
+    friend inline const QPointF operator*( const QPointF &point, qreal factor );
+    friend inline const QPointF operator-( const QPointF &point );
+    friend inline const QPointF operator/( const QPointF &point, qreal factor );
 
-   friend class QMatrix;
-   friend class QTransform;
+    friend class QMatrix;
+    friend class QTransform;
 };
 
-Q_CORE_EXPORT QDataStream &operator<<(QDataStream &stream, const QPointF &pointF);
-Q_CORE_EXPORT QDataStream &operator>>(QDataStream &stream, QPointF &pointF);
+Q_CORE_EXPORT QDataStream &operator<<( QDataStream &stream, const QPointF &pointF );
+Q_CORE_EXPORT QDataStream &operator>>( QDataStream &stream, QPointF &pointF );
 
 inline QPointF::QPointF()
-   : xp(0), yp(0)
+    : xp( 0 ), yp( 0 )
 { }
 
-inline QPointF::QPointF(qreal xPos, qreal yPos)
-   : xp(xPos), yp(yPos)
+inline QPointF::QPointF( qreal xPos, qreal yPos )
+    : xp( xPos ), yp( yPos )
 { }
 
-inline QPointF::QPointF(const QPoint &p)
-   : xp(p.x()), yp(p.y())
+inline QPointF::QPointF( const QPoint &p )
+    : xp( p.x() ), yp( p.y() )
 { }
 
 inline bool QPointF::isNull() const
 {
-   return qIsNull(xp) && qIsNull(yp);
+    return qIsNull( xp ) && qIsNull( yp );
 }
 
 inline qreal QPointF::x() const
 {
-   return xp;
+    return xp;
 }
 
 inline qreal QPointF::y() const
 {
-   return yp;
+    return yp;
 }
 
-inline void QPointF::setX(qreal xPos)
+inline void QPointF::setX( qreal xPos )
 {
-   xp = xPos;
+    xp = xPos;
 }
 
-inline void QPointF::setY(qreal yPos)
+inline void QPointF::setY( qreal yPos )
 {
-   yp = yPos;
+    yp = yPos;
 }
 
 inline qreal &QPointF::rx()
 {
-   return xp;
+    return xp;
 }
 
 inline qreal &QPointF::ry()
 {
-   return yp;
+    return yp;
 }
 
-inline QPointF &QPointF::operator+=(const QPointF &p)
+inline QPointF &QPointF::operator+=( const QPointF &p )
 {
-   xp += p.xp;
-   yp += p.yp;
-   return *this;
+    xp += p.xp;
+    yp += p.yp;
+    return *this;
 }
 
-inline QPointF &QPointF::operator-=(const QPointF &p)
+inline QPointF &QPointF::operator-=( const QPointF &p )
 {
-   xp -= p.xp;
-   yp -= p.yp;
-   return *this;
+    xp -= p.xp;
+    yp -= p.yp;
+    return *this;
 }
 
-inline QPointF &QPointF::operator*=(qreal factor)
+inline QPointF &QPointF::operator*=( qreal factor )
 {
-   xp *= factor;
-   yp *= factor;
-   return *this;
+    xp *= factor;
+    yp *= factor;
+    return *this;
 }
 
-inline bool operator==(const QPointF &point1, const QPointF &point2)
+inline bool operator==( const QPointF &point1, const QPointF &point2 )
 {
-   return qFuzzyIsNull(point1.xp - point2.xp) && qFuzzyIsNull(point1.yp - point2.yp);
+    return qFuzzyIsNull( point1.xp - point2.xp ) && qFuzzyIsNull( point1.yp - point2.yp );
 }
 
-inline bool operator!=(const QPointF &point1, const QPointF &point2)
+inline bool operator!=( const QPointF &point1, const QPointF &point2 )
 {
-   return !qFuzzyIsNull(point1.xp - point2.xp) || !qFuzzyIsNull(point1.yp - point2.yp);
+    return !qFuzzyIsNull( point1.xp - point2.xp ) || !qFuzzyIsNull( point1.yp - point2.yp );
 }
 
-inline const QPointF operator+(const QPointF &point1, const QPointF &point2)
+inline const QPointF operator+( const QPointF &point1, const QPointF &point2 )
 {
-   return QPointF(point1.xp + point2.xp, point1.yp + point2.yp);
+    return QPointF( point1.xp + point2.xp, point1.yp + point2.yp );
 }
 
-inline const QPointF operator-(const QPointF &point1, const QPointF &point2)
+inline const QPointF operator-( const QPointF &point1, const QPointF &point2 )
 {
-   return QPointF(point1.xp - point2.xp, point1.yp - point2.yp);
+    return QPointF( point1.xp - point2.xp, point1.yp - point2.yp );
 }
 
-inline const QPointF operator*(const QPointF &p, qreal factor)
+inline const QPointF operator*( const QPointF &p, qreal factor )
 {
-   return QPointF(p.xp * factor, p.yp * factor);
+    return QPointF( p.xp * factor, p.yp * factor );
 }
 
-inline const QPointF operator*(qreal factor, const QPointF &point)
+inline const QPointF operator*( qreal factor, const QPointF &point )
 {
-   return QPointF(point.xp * factor, point.yp * factor);
+    return QPointF( point.xp * factor, point.yp * factor );
 }
 
-inline const QPointF operator-(const QPointF &point)
+inline const QPointF operator-( const QPointF &point )
 {
-   return QPointF(-point.xp, -point.yp);
+    return QPointF( -point.xp, -point.yp );
 }
 
-inline QPointF &QPointF::operator/=(qreal factor)
+inline QPointF &QPointF::operator/=( qreal factor )
 {
-   xp /= factor;
-   yp /= factor;
-   return *this;
+    xp /= factor;
+    yp /= factor;
+    return *this;
 }
 
-inline const QPointF operator/(const QPointF &point, qreal factor)
+inline const QPointF operator/( const QPointF &point, qreal factor )
 {
-   return QPointF(point.xp / factor, point.yp / factor);
+    return QPointF( point.xp / factor, point.yp / factor );
 }
 
 inline QPoint QPointF::toPoint() const
 {
-   return QPoint(qRound(xp), qRound(yp));
+    return QPoint( qRound( xp ), qRound( yp ) );
 }
 
-Q_CORE_EXPORT QDebug operator<<(QDebug d, const QPointF &point);
+Q_CORE_EXPORT QDebug operator<<( QDebug d, const QPointF &point );
 
 #endif // QPOINT_H

@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef QTMovieTask_h
@@ -34,24 +34,26 @@
 #define QTMOVIEWIN_API __declspec(dllimport)
 #endif
 
-class QTMovieTaskClient {
+class QTMovieTaskClient
+{
 public:
     virtual void task() = 0;
 };
 
-typedef void (*SetTaskTimerDelayFunc)(double);
-typedef void (*StopTaskTimerFunc)();
+typedef void ( *SetTaskTimerDelayFunc )( double );
+typedef void ( *StopTaskTimerFunc )();
 
-class QTMOVIEWIN_API QTMovieTask {
+class QTMOVIEWIN_API QTMovieTask
+{
 public:
-    static QTMovieTask* sharedTask();
+    static QTMovieTask *sharedTask();
 
-    void addTaskClient(QTMovieTaskClient* client);
-    void removeTaskClient(QTMovieTaskClient*);
+    void addTaskClient( QTMovieTaskClient *client );
+    void removeTaskClient( QTMovieTaskClient * );
     void fireTaskClients();
 
-    void updateTaskTimer(double maxInterval = 1.0, double minInterval = 1.0 / 30);
-    void setTaskTimerFuncs(SetTaskTimerDelayFunc setTaskTimerDelay, StopTaskTimerFunc stopTaskTimer);
+    void updateTaskTimer( double maxInterval = 1.0, double minInterval = 1.0 / 30 );
+    void setTaskTimerFuncs( SetTaskTimerDelayFunc setTaskTimerDelay, StopTaskTimerFunc stopTaskTimer );
 
 protected:
     QTMovieTask();
@@ -59,11 +61,11 @@ protected:
 
     SetTaskTimerDelayFunc m_setTaskTimerDelay;
     StopTaskTimerFunc m_stopTaskTimer;
-    HashSet<QTMovieTaskClient*> m_taskList;
+    HashSet<QTMovieTaskClient *> m_taskList;
 
 private:
-    QTMovieTask(const QTMovieTask&);
-    QTMovieTask& operator=(const QTMovieTask&);
+    QTMovieTask( const QTMovieTask & );
+    QTMovieTask &operator=( const QTMovieTask & );
 };
 
 #endif

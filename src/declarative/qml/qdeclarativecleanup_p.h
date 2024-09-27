@@ -32,17 +32,17 @@ class QDeclarativeEngine;
 
 class QDeclarativeCleanup
 {
- public:
-   QDeclarativeCleanup(QDeclarativeEngine *);
-   virtual ~QDeclarativeCleanup();
+public:
+    QDeclarativeCleanup( QDeclarativeEngine * );
+    virtual ~QDeclarativeCleanup();
 
- protected:
-   virtual void clear() = 0;
+protected:
+    virtual void clear() = 0;
 
- private:
-   friend class QDeclarativeEnginePrivate;
-   QDeclarativeCleanup **prev;
-   QDeclarativeCleanup  *next;
+private:
+    friend class QDeclarativeEnginePrivate;
+    QDeclarativeCleanup **prev;
+    QDeclarativeCleanup  *next;
 };
 
 QT_END_NAMESPACE

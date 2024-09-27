@@ -27,89 +27,99 @@
 #include "SharedWorker.h"
 #include <runtime/JSObjectWithGlobalObject.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class SharedWorker;
 
-class JSSharedWorker : public JSAbstractWorker {
+class JSSharedWorker : public JSAbstractWorker
+{
     typedef JSAbstractWorker Base;
 public:
-    JSSharedWorker(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<SharedWorker>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
+    JSSharedWorker( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<SharedWorker> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    virtual void visitChildren(JSC::SlotVisitor&);
+    virtual void visitChildren( JSC::SlotVisitor & );
 
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
-    SharedWorker* impl() const
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
+    SharedWorker *impl() const
     {
-        return static_cast<SharedWorker*>(Base::impl());
+        return static_cast<SharedWorker *>( Base::impl() );
     }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::OverridesVisitChildren | Base::StructureFlags;
 };
 
-class JSSharedWorkerOwner : public JSC::WeakHandleOwner {
-    virtual bool isReachableFromOpaqueRoots(JSC::Handle<JSC::Unknown>, void* context, JSC::SlotVisitor&);
-    virtual void finalize(JSC::Handle<JSC::Unknown>, void* context);
+class JSSharedWorkerOwner : public JSC::WeakHandleOwner
+{
+    virtual bool isReachableFromOpaqueRoots( JSC::Handle<JSC::Unknown>, void *context, JSC::SlotVisitor & );
+    virtual void finalize( JSC::Handle<JSC::Unknown>, void *context );
 };
 
-inline JSC::WeakHandleOwner* wrapperOwner(DOMWrapperWorld*, SharedWorker*)
+inline JSC::WeakHandleOwner *wrapperOwner( DOMWrapperWorld *, SharedWorker * )
 {
-    DEFINE_STATIC_LOCAL(JSSharedWorkerOwner, jsSharedWorkerOwner, ());
+    DEFINE_STATIC_LOCAL( JSSharedWorkerOwner, jsSharedWorkerOwner, () );
     return &jsSharedWorkerOwner;
 }
 
-inline void* wrapperContext(DOMWrapperWorld* world, SharedWorker*)
+inline void *wrapperContext( DOMWrapperWorld *world, SharedWorker * )
 {
     return world;
 }
 
-JSC::JSValue toJS(JSC::ExecState*, JSDOMGlobalObject*, SharedWorker*);
-SharedWorker* toSharedWorker(JSC::JSValue);
+JSC::JSValue toJS( JSC::ExecState *, JSDOMGlobalObject *, SharedWorker * );
+SharedWorker *toSharedWorker( JSC::JSValue );
 
-class JSSharedWorkerPrototype : public JSC::JSObjectWithGlobalObject {
+class JSSharedWorkerPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSSharedWorkerPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSSharedWorkerPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                             JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesVisitChildren | Base::StructureFlags;
 };
 
-class JSSharedWorkerConstructor : public DOMConstructorObject {
+class JSSharedWorkerConstructor : public DOMConstructorObject
+{
 public:
-    JSSharedWorkerConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSSharedWorkerConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
-    static JSC::EncodedJSValue JSC_HOST_CALL constructJSSharedWorker(JSC::ExecState*);
-    virtual JSC::ConstructType getConstructData(JSC::ConstructData&);
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
+    static JSC::EncodedJSValue JSC_HOST_CALL constructJSSharedWorker( JSC::ExecState * );
+    virtual JSC::ConstructType getConstructData( JSC::ConstructData & );
 };
 
 // Attributes
 
-JSC::JSValue jsSharedWorkerPort(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsSharedWorkerConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsSharedWorkerPort( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsSharedWorkerConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

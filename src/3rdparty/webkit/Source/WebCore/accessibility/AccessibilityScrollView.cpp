@@ -34,34 +34,40 @@
 #include "ScrollView.h"
 #include "Widget.h"
 
-namespace WebCore {
-    
-AccessibilityScrollView::AccessibilityScrollView(ScrollView* view)
-    : m_scrollView(view)
+namespace WebCore
+{
+
+AccessibilityScrollView::AccessibilityScrollView( ScrollView *view )
+    : m_scrollView( view )
 {
 }
 
-PassRefPtr<AccessibilityScrollView> AccessibilityScrollView::create(ScrollView* view)
+PassRefPtr<AccessibilityScrollView> AccessibilityScrollView::create( ScrollView *view )
 {
-    return adoptRef(new AccessibilityScrollView(view));
+    return adoptRef( new AccessibilityScrollView( view ) );
 }
-    
-AccessibilityObject* AccessibilityScrollView::scrollBar(AccessibilityOrientation orientation) const
+
+AccessibilityObject *AccessibilityScrollView::scrollBar( AccessibilityOrientation orientation ) const
 {
-    switch (orientation) {
-    case AccessibilityOrientationVertical:
-        return m_verticalScrollbar ? m_verticalScrollbar.get() : 0;
-    case AccessibilityOrientationHorizontal:
-        return m_horizontalScrollbar ? m_horizontalScrollbar.get() : 0;
+    switch ( orientation )
+    {
+        case AccessibilityOrientationVertical:
+            return m_verticalScrollbar ? m_verticalScrollbar.get() : 0;
+
+        case AccessibilityOrientationHorizontal:
+            return m_horizontalScrollbar ? m_horizontalScrollbar.get() : 0;
     }
-    
+
     return 0;
 }
 
-const AccessibilityObject::AccessibilityChildrenVector& AccessibilityScrollView::children()
+const AccessibilityObject::AccessibilityChildrenVector &AccessibilityScrollView::children()
 {
-    if (!m_haveChildren)
+    if ( !m_haveChildren )
+    {
         addChildren();
+    }
+
     return m_children;
 }
 
@@ -73,82 +79,109 @@ bool AccessibilityScrollView::isAttachment() const
     return m_scrollView->platformWidget();
 }
 
-Widget* AccessibilityScrollView::widgetForAttachmentView() const
+Widget *AccessibilityScrollView::widgetForAttachmentView() const
 {
     return m_scrollView.get();
 }
-    
+
 void AccessibilityScrollView::updateChildrenIfNecessary()
 {
-    if (m_scrollView->horizontalScrollbar() && !m_horizontalScrollbar)
-        m_horizontalScrollbar = addChildScrollbar(m_scrollView->horizontalScrollbar());
-    else if (!m_scrollView->horizontalScrollbar() && m_horizontalScrollbar) {
-        removeChildScrollbar(m_horizontalScrollbar.get());
+    if ( m_scrollView->horizontalScrollbar() && !m_horizontalScrollbar )
+    {
+        m_horizontalScrollbar = addChildScrollbar( m_scrollView->horizontalScrollbar() );
+    }
+    else if ( !m_scrollView->horizontalScrollbar() && m_horizontalScrollbar )
+    {
+        removeChildScrollbar( m_horizontalScrollbar.get() );
         m_horizontalScrollbar = 0;
     }
 
-    if (m_scrollView->verticalScrollbar() && !m_verticalScrollbar)
-        m_verticalScrollbar = addChildScrollbar(m_scrollView->verticalScrollbar());
-    else if (!m_scrollView->verticalScrollbar() && m_verticalScrollbar) {
-        removeChildScrollbar(m_verticalScrollbar.get());
+    if ( m_scrollView->verticalScrollbar() && !m_verticalScrollbar )
+    {
+        m_verticalScrollbar = addChildScrollbar( m_scrollView->verticalScrollbar() );
+    }
+    else if ( !m_scrollView->verticalScrollbar() && m_verticalScrollbar )
+    {
+        removeChildScrollbar( m_verticalScrollbar.get() );
         m_verticalScrollbar = 0;
     }
 }
-    
-void AccessibilityScrollView::removeChildScrollbar(AccessibilityObject* scrollbar)
+
+void AccessibilityScrollView::removeChildScrollbar( AccessibilityObject *scrollbar )
 {
-    size_t pos = m_children.find(scrollbar);
-    if (pos != WTF::notFound)
-        m_children.remove(pos);
+    size_t pos = m_children.find( scrollbar );
+
+    if ( pos != WTF::notFound )
+    {
+        m_children.remove( pos );
+    }
 }
-    
-AccessibilityScrollbar* AccessibilityScrollView::addChildScrollbar(Scrollbar* scrollbar)
+
+AccessibilityScrollbar *AccessibilityScrollView::addChildScrollbar( Scrollbar *scrollbar )
 {
-    if (!scrollbar)
+    if ( !scrollbar )
+    {
         return 0;
-    
-    AccessibilityScrollbar* scrollBarObject = static_cast<AccessibilityScrollbar*>(axObjectCache()->getOrCreate(scrollbar));
-    scrollBarObject->setParent(this);
-    m_children.append(scrollBarObject);
+    }
+
+    AccessibilityScrollbar *scrollBarObject = static_cast<AccessibilityScrollbar *>( axObjectCache()->getOrCreate( scrollbar ) );
+    scrollBarObject->setParent( this );
+    m_children.append( scrollBarObject );
     return scrollBarObject;
 }
-        
+
 void AccessibilityScrollView::addChildren()
 {
-    ASSERT(!m_haveChildren);
+    ASSERT( !m_haveChildren );
     m_haveChildren = true;
-    
-    AccessibilityObject* webArea = webAreaObject();
-    if (webArea)
-        m_children.append(webArea);
-    
+
+    AccessibilityObject *webArea = webAreaObject();
+
+    if ( webArea )
+    {
+        m_children.append( webArea );
+    }
+
     updateChildrenIfNecessary();
 }
 
-AccessibilityObject* AccessibilityScrollView::webAreaObject() const
+AccessibilityObject *AccessibilityScrollView::webAreaObject() const
 {
-    if (!m_scrollView->isFrameView())
+    if ( !m_scrollView->isFrameView() )
+    {
         return 0;
-    
-    Document* doc = static_cast<FrameView*>(m_scrollView.get())->frame()->document();
-    if (!doc || !doc->renderer())
-        return 0;
+    }
 
-    return axObjectCache()->getOrCreate(doc->renderer());
+    Document *doc = static_cast<FrameView *>( m_scrollView.get() )->frame()->document();
+
+    if ( !doc || !doc->renderer() )
+    {
+        return 0;
+    }
+
+    return axObjectCache()->getOrCreate( doc->renderer() );
 }
 
-AccessibilityObject* AccessibilityScrollView::accessibilityHitTest(const IntPoint& point) const
+AccessibilityObject *AccessibilityScrollView::accessibilityHitTest( const IntPoint &point ) const
 {
-    AccessibilityObject* webArea = webAreaObject();
-    if (!webArea)
+    AccessibilityObject *webArea = webAreaObject();
+
+    if ( !webArea )
+    {
         return 0;
-    
-    if (m_horizontalScrollbar && m_horizontalScrollbar->elementRect().contains(point))
+    }
+
+    if ( m_horizontalScrollbar && m_horizontalScrollbar->elementRect().contains( point ) )
+    {
         return m_horizontalScrollbar.get();
-    if (m_verticalScrollbar && m_verticalScrollbar->elementRect().contains(point))
+    }
+
+    if ( m_verticalScrollbar && m_verticalScrollbar->elementRect().contains( point ) )
+    {
         return m_verticalScrollbar.get();
-    
-    return webArea->accessibilityHitTest(point);
+    }
+
+    return webArea->accessibilityHitTest( point );
 }
 
 IntRect AccessibilityScrollView::elementRect() const
@@ -156,24 +189,31 @@ IntRect AccessibilityScrollView::elementRect() const
     return m_scrollView->frameRect();
 }
 
-FrameView* AccessibilityScrollView::documentFrameView() const
+FrameView *AccessibilityScrollView::documentFrameView() const
 {
-    if (!m_scrollView->isFrameView())
+    if ( !m_scrollView->isFrameView() )
+    {
         return 0;
-    
-    return static_cast<FrameView*>(m_scrollView.get());
-}    
+    }
 
-AccessibilityObject* AccessibilityScrollView::parentObject() const
+    return static_cast<FrameView *>( m_scrollView.get() );
+}
+
+AccessibilityObject *AccessibilityScrollView::parentObject() const
 {
-    if (!m_scrollView->isFrameView())
+    if ( !m_scrollView->isFrameView() )
+    {
         return 0;
-    
-    HTMLFrameOwnerElement* owner = static_cast<FrameView*>(m_scrollView.get())->frame()->ownerElement();
-    if (owner && owner->renderPart())
-        return axObjectCache()->getOrCreate(owner->renderPart()->parent());
-    
+    }
+
+    HTMLFrameOwnerElement *owner = static_cast<FrameView *>( m_scrollView.get() )->frame()->ownerElement();
+
+    if ( owner && owner->renderPart() )
+    {
+        return axObjectCache()->getOrCreate( owner->renderPart()->parent() );
+    }
+
     return 0;
 }
-    
-} // namespace WebCore    
+
+} // namespace WebCore

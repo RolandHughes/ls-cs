@@ -39,29 +39,32 @@
 #include "IDBObjectStoreBackendInterface.h"
 #include "IDBPendingTransactionMonitor.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-PassRefPtr<IDBTransaction> IDBTransaction::create(ScriptExecutionContext* context, PassRefPtr<IDBTransactionBackendInterface> backend, IDBDatabase* db)
-{ 
-    return adoptRef(new IDBTransaction(context, backend, db));
+PassRefPtr<IDBTransaction> IDBTransaction::create( ScriptExecutionContext *context,
+        PassRefPtr<IDBTransactionBackendInterface> backend, IDBDatabase *db )
+{
+    return adoptRef( new IDBTransaction( context, backend, db ) );
 }
 
-IDBTransaction::IDBTransaction(ScriptExecutionContext* context, PassRefPtr<IDBTransactionBackendInterface> backend, IDBDatabase* db)
-    : ActiveDOMObject(context, this)
-    , m_backend(backend)
-    , m_database(db)
-    , m_mode(m_backend->mode())
-    , m_finished(false)
+IDBTransaction::IDBTransaction( ScriptExecutionContext *context, PassRefPtr<IDBTransactionBackendInterface> backend,
+                                IDBDatabase *db )
+    : ActiveDOMObject( context, this )
+    , m_backend( backend )
+    , m_database( db )
+    , m_mode( m_backend->mode() )
+    , m_finished( false )
 {
-    ASSERT(m_backend);
-    IDBPendingTransactionMonitor::addPendingTransaction(m_backend.get());
+    ASSERT( m_backend );
+    IDBPendingTransactionMonitor::addPendingTransaction( m_backend.get() );
 }
 
 IDBTransaction::~IDBTransaction()
 {
 }
 
-IDBTransactionBackendInterface* IDBTransaction::backend() const
+IDBTransactionBackendInterface *IDBTransaction::backend() const
 {
     return m_backend.get();
 }
@@ -76,58 +79,67 @@ unsigned short IDBTransaction::mode() const
     return m_mode;
 }
 
-IDBDatabase* IDBTransaction::db() const
+IDBDatabase *IDBTransaction::db() const
 {
     return m_database.get();
 }
 
-PassRefPtr<IDBObjectStore> IDBTransaction::objectStore(const String& name, ExceptionCode& ec)
+PassRefPtr<IDBObjectStore> IDBTransaction::objectStore( const String &name, ExceptionCode &ec )
 {
-    if (m_finished) {
+    if ( m_finished )
+    {
         ec = IDBDatabaseException::NOT_ALLOWED_ERR;
         return 0;
     }
-    RefPtr<IDBObjectStoreBackendInterface> objectStoreBackend = m_backend->objectStore(name, ec);
-    if (!objectStoreBackend) {
-        ASSERT(ec);
+
+    RefPtr<IDBObjectStoreBackendInterface> objectStoreBackend = m_backend->objectStore( name, ec );
+
+    if ( !objectStoreBackend )
+    {
+        ASSERT( ec );
         return 0;
     }
-    RefPtr<IDBObjectStore> objectStore = IDBObjectStore::create(objectStoreBackend, this);
+
+    RefPtr<IDBObjectStore> objectStore = IDBObjectStore::create( objectStoreBackend, this );
     return objectStore.release();
 }
 
 void IDBTransaction::abort()
 {
     RefPtr<IDBTransaction> selfRef = this;
-    if (m_backend)
+
+    if ( m_backend )
+    {
         m_backend->abort();
+    }
 }
 
-void IDBTransaction::registerRequest(IDBRequest* request)
+void IDBTransaction::registerRequest( IDBRequest *request )
 {
-    m_childRequests.add(request);
+    m_childRequests.add( request );
 }
 
-void IDBTransaction::unregisterRequest(IDBRequest* request)
+void IDBTransaction::unregisterRequest( IDBRequest *request )
 {
     // If we aborted the request, it will already have been removed.
-    m_childRequests.remove(request);
+    m_childRequests.remove( request );
 }
 
 void IDBTransaction::onAbort()
 {
-    while (!m_childRequests.isEmpty()) {
-        IDBRequest* request = *m_childRequests.begin();
-        m_childRequests.remove(request);
+    while ( !m_childRequests.isEmpty() )
+    {
+        IDBRequest *request = *m_childRequests.begin();
+        m_childRequests.remove( request );
         request->abort();
     }
 
-    enqueueEvent(Event::create(eventNames().abortEvent, true, false));
+    enqueueEvent( Event::create( eventNames().abortEvent, true, false ) );
 }
 
 void IDBTransaction::onComplete()
 {
-    enqueueEvent(Event::create(eventNames().completeEvent, false, false));
+    enqueueEvent( Event::create( eventNames().completeEvent, false, false ) );
 }
 
 bool IDBTransaction::hasPendingActivity() const
@@ -138,26 +150,26 @@ bool IDBTransaction::hasPendingActivity() const
     return !m_finished || ActiveDOMObject::hasPendingActivity();
 }
 
-ScriptExecutionContext* IDBTransaction::scriptExecutionContext() const
+ScriptExecutionContext *IDBTransaction::scriptExecutionContext() const
 {
     return ActiveDOMObject::scriptExecutionContext();
 }
 
-bool IDBTransaction::dispatchEvent(PassRefPtr<Event> event)
+bool IDBTransaction::dispatchEvent( PassRefPtr<Event> event )
 {
-    ASSERT(!m_finished);
-    ASSERT(scriptExecutionContext());
-    ASSERT(event->target() == this);
-    ASSERT(!m_finished);
+    ASSERT( !m_finished );
+    ASSERT( scriptExecutionContext() );
+    ASSERT( event->target() == this );
+    ASSERT( !m_finished );
     m_finished = true;
 
     Vector<RefPtr<EventTarget> > targets;
-    targets.append(this);
-    targets.append(db());
+    targets.append( this );
+    targets.append( db() );
 
     // FIXME: When we allow custom event dispatching, this will probably need to change.
-    ASSERT(event->type() == eventNames().completeEvent || event->type() == eventNames().abortEvent);
-    return IDBEventDispatcher::dispatch(event.get(), targets);
+    ASSERT( event->type() == eventNames().completeEvent || event->type() == eventNames().abortEvent );
+    return IDBEventDispatcher::dispatch( event.get(), targets );
 }
 
 bool IDBTransaction::canSuspend() const
@@ -174,30 +186,36 @@ void IDBTransaction::contextDestroyed()
     // Must happen in contextDestroyed since it can result in ActiveDOMObjects being destructed
     // (and contextDestroyed is the only one resilient against this).
     RefPtr<IDBTransaction> selfRef = this;
-    if (m_backend)
+
+    if ( m_backend )
+    {
         m_backend->abort();
+    }
 
     m_finished = true;
 }
 
-void IDBTransaction::enqueueEvent(PassRefPtr<Event> event)
+void IDBTransaction::enqueueEvent( PassRefPtr<Event> event )
 {
-    ASSERT(!m_finished);
-    if (!scriptExecutionContext())
-        return;
+    ASSERT( !m_finished );
 
-    ASSERT(scriptExecutionContext()->isDocument());
-    EventQueue* eventQueue = static_cast<Document*>(scriptExecutionContext())->eventQueue();
-    event->setTarget(this);
-    eventQueue->enqueueEvent(event);
+    if ( !scriptExecutionContext() )
+    {
+        return;
+    }
+
+    ASSERT( scriptExecutionContext()->isDocument() );
+    EventQueue *eventQueue = static_cast<Document *>( scriptExecutionContext() )->eventQueue();
+    event->setTarget( this );
+    eventQueue->enqueueEvent( event );
 }
 
-EventTargetData* IDBTransaction::eventTargetData()
+EventTargetData *IDBTransaction::eventTargetData()
 {
     return &m_eventTargetData;
 }
 
-EventTargetData* IDBTransaction::ensureEventTargetData()
+EventTargetData *IDBTransaction::ensureEventTargetData()
 {
     return &m_eventTargetData;
 }

@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
 
@@ -30,33 +30,43 @@
 #include "Event.h"
 #include "EventNames.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class BeforeLoadEvent : public Event {
+class BeforeLoadEvent : public Event
+{
 public:
-    virtual bool isBeforeLoadEvent() const { return true; }
-
-    static PassRefPtr<BeforeLoadEvent> create(const String& url)
+    virtual bool isBeforeLoadEvent() const
     {
-        return adoptRef(new BeforeLoadEvent(url));
+        return true;
     }
 
-    void initBeforeLoadEvent(const AtomicString& type, bool canBubble, bool cancelable, const String& url)
+    static PassRefPtr<BeforeLoadEvent> create( const String &url )
     {
-        if (dispatched())
+        return adoptRef( new BeforeLoadEvent( url ) );
+    }
+
+    void initBeforeLoadEvent( const AtomicString &type, bool canBubble, bool cancelable, const String &url )
+    {
+        if ( dispatched() )
+        {
             return;
-        
-        initEvent(type, canBubble, cancelable);
+        }
+
+        initEvent( type, canBubble, cancelable );
 
         m_url = url;
     }
 
-    const String& url() const { return m_url; }
+    const String &url() const
+    {
+        return m_url;
+    }
 
 private:
-    BeforeLoadEvent(const String& url)
-        : Event(eventNames().beforeloadEvent, false, true)
-        , m_url(url)
+    BeforeLoadEvent( const String &url )
+        : Event( eventNames().beforeloadEvent, false, true )
+        , m_url( url )
     {}
 
     String m_url;

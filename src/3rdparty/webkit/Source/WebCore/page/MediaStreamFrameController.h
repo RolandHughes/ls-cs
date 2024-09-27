@@ -31,7 +31,8 @@
 #include <wtf/HashMap.h>
 #include <wtf/Noncopyable.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Frame;
 class MediaStreamController;
@@ -39,36 +40,38 @@ class Page;
 class ScriptExecutionContext;
 class SecurityOrigin;
 
-class MediaStreamFrameController {
-    WTF_MAKE_NONCOPYABLE(MediaStreamFrameController);
+class MediaStreamFrameController
+{
+    WTF_MAKE_NONCOPYABLE( MediaStreamFrameController );
 public:
-    MediaStreamFrameController(Frame*);
+    MediaStreamFrameController( Frame * );
     virtual ~MediaStreamFrameController();
 
-    SecurityOrigin* securityOrigin() const;
-    ScriptExecutionContext* scriptExecutionContext() const;
+    SecurityOrigin *securityOrigin() const;
+    ScriptExecutionContext *scriptExecutionContext() const;
 
     void disconnectPage();
     void disconnectFrame();
-    void transferToNewPage(Page*);
+    void transferToNewPage( Page * );
 
 private:
     class Request;
 
-    class RequestMap : public HashMap<int, RefPtr<Request> > {
+    class RequestMap : public HashMap<int, RefPtr<Request> >
+    {
     public:
-        void abort(int requestId);
+        void abort( int requestId );
         void abortAll();
     };
 
     // Detached from a page, and hence from a embedder client.
     void enterDetachedState();
 
-    MediaStreamController* pageController() const;
+    MediaStreamController *pageController() const;
 
     RequestMap m_requests;
 
-    Frame* m_frame;
+    Frame *m_frame;
     bool m_isInDetachedState;
 };
 

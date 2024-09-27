@@ -23,12 +23,15 @@
 #if USE(GSTREAMER)
 #include <gst/gstelement.h>
 
-namespace WTF {
-
-template <> void freeOwnedGPtr<GstElement>(GstElement* ptr)
+namespace WTF
 {
-    if (ptr)
-        gst_object_unref(ptr);
+
+template <> void freeOwnedGPtr<GstElement>( GstElement *ptr )
+{
+    if ( ptr )
+    {
+        gst_object_unref( ptr );
+    }
 }
 
 }

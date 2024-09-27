@@ -33,88 +33,103 @@
 #ifndef QT_NO_SYSTEMTRAYICON
 
 QSystemTrayIconPrivate::QSystemTrayIconPrivate()
-   : qpa_sys(QGuiApplicationPrivate::platformTheme()->createPlatformSystemTrayIcon()),
-     visible(false)
+    : qpa_sys( QGuiApplicationPrivate::platformTheme()->createPlatformSystemTrayIcon() ),
+      visible( false )
 {
 }
 
 QSystemTrayIconPrivate::~QSystemTrayIconPrivate()
 {
-   delete qpa_sys;
+    delete qpa_sys;
 }
 
 void QSystemTrayIconPrivate::install_sys()
 {
-   if (qpa_sys) {
-      install_sys_qpa();
-   }
+    if ( qpa_sys )
+    {
+        install_sys_qpa();
+    }
 }
 
 void QSystemTrayIconPrivate::remove_sys()
 {
-   if (qpa_sys) {
-      remove_sys_qpa();
-   }
+    if ( qpa_sys )
+    {
+        remove_sys_qpa();
+    }
 }
 
 QRect QSystemTrayIconPrivate::geometry_sys() const
 {
-   if (qpa_sys) {
-      return geometry_sys_qpa();
-   } else {
-      return QRect();
-   }
+    if ( qpa_sys )
+    {
+        return geometry_sys_qpa();
+    }
+    else
+    {
+        return QRect();
+    }
 }
 
 void QSystemTrayIconPrivate::updateIcon_sys()
 {
-   if (qpa_sys) {
-      updateIcon_sys_qpa();
-   }
+    if ( qpa_sys )
+    {
+        updateIcon_sys_qpa();
+    }
 }
 
 void QSystemTrayIconPrivate::updateMenu_sys()
 {
-   if (qpa_sys) {
-      updateMenu_sys_qpa();
-   }
+    if ( qpa_sys )
+    {
+        updateMenu_sys_qpa();
+    }
 }
 
 void QSystemTrayIconPrivate::updateToolTip_sys()
 {
-   if (qpa_sys) {
-      updateToolTip_sys_qpa();
-   }
+    if ( qpa_sys )
+    {
+        updateToolTip_sys_qpa();
+    }
 }
 
 bool QSystemTrayIconPrivate::isSystemTrayAvailable_sys()
 {
-   QScopedPointer<QPlatformSystemTrayIcon> sys(QGuiApplicationPrivate::platformTheme()->createPlatformSystemTrayIcon());
+    QScopedPointer<QPlatformSystemTrayIcon> sys( QGuiApplicationPrivate::platformTheme()->createPlatformSystemTrayIcon() );
 
-   if (sys) {
-      return sys->isSystemTrayAvailable();
-   } else {
-      return false;
-   }
+    if ( sys )
+    {
+        return sys->isSystemTrayAvailable();
+    }
+    else
+    {
+        return false;
+    }
 }
 
 bool QSystemTrayIconPrivate::supportsMessages_sys()
 {
-   QScopedPointer<QPlatformSystemTrayIcon> sys(QGuiApplicationPrivate::platformTheme()->createPlatformSystemTrayIcon());
+    QScopedPointer<QPlatformSystemTrayIcon> sys( QGuiApplicationPrivate::platformTheme()->createPlatformSystemTrayIcon() );
 
-   if (sys) {
-      return sys->supportsMessages();
-   } else {
-      return false;
-   }
+    if ( sys )
+    {
+        return sys->supportsMessages();
+    }
+    else
+    {
+        return false;
+    }
 }
 
-void QSystemTrayIconPrivate::showMessage_sys(const QString &title, const QString &message,
-      QSystemTrayIcon::MessageIcon icon, int msecs)
+void QSystemTrayIconPrivate::showMessage_sys( const QString &title, const QString &message,
+        QSystemTrayIcon::MessageIcon icon, int msecs )
 {
-   if (qpa_sys) {
-      showMessage_sys_qpa(title, message, icon, msecs);
-   }
+    if ( qpa_sys )
+    {
+        showMessage_sys_qpa( title, message, icon, msecs );
+    }
 }
 
 #endif // QT_NO_SYSTEMTRAYICON

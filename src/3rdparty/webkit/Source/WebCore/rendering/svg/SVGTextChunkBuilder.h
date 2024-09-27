@@ -24,7 +24,8 @@
 #include "SVGTextChunk.h"
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class SVGInlineTextBox;
 struct SVGTextFragment;
@@ -35,28 +36,33 @@ struct SVGTextFragment;
 // Phase two performed the actual per-character layout, computing the final positions for each character, stored in the SVGInlineTextBox objects (SVGTextFragment).
 // Phase three performs all modifications that have to be applied to each individual text chunk (text-anchor & textLength).
 
-class SVGTextChunkBuilder {
-    WTF_MAKE_NONCOPYABLE(SVGTextChunkBuilder);
+class SVGTextChunkBuilder
+{
+    WTF_MAKE_NONCOPYABLE( SVGTextChunkBuilder );
 public:
     SVGTextChunkBuilder();
 
-    const Vector<SVGTextChunk>& textChunks() const { return m_textChunks; }
-    void transformationForTextBox(SVGInlineTextBox*, AffineTransform&) const;
+    const Vector<SVGTextChunk> &textChunks() const
+    {
+        return m_textChunks;
+    }
+    void transformationForTextBox( SVGInlineTextBox *, AffineTransform & ) const;
 
-    void buildTextChunks(Vector<SVGInlineTextBox*>& lineLayoutBoxes);
-    void layoutTextChunks(Vector<SVGInlineTextBox*>& lineLayoutBoxes);
+    void buildTextChunks( Vector<SVGInlineTextBox *> &lineLayoutBoxes );
+    void layoutTextChunks( Vector<SVGInlineTextBox *> &lineLayoutBoxes );
 
 private:
-    void addTextChunk(Vector<SVGInlineTextBox*>& lineLayoutBoxes, unsigned boxPosition, unsigned boxCount);
-    void processTextChunk(const SVGTextChunk&);
+    void addTextChunk( Vector<SVGInlineTextBox *> &lineLayoutBoxes, unsigned boxPosition, unsigned boxCount );
+    void processTextChunk( const SVGTextChunk & );
 
-    void processTextLengthSpacingCorrection(bool isVerticalText, float textLengthShift, Vector<SVGTextFragment>&, unsigned& atCharacter);
-    void processTextAnchorCorrection(bool isVerticalText, float textAnchorShift, Vector<SVGTextFragment>&);
-    void buildSpacingAndGlyphsTransform(bool isVerticalText, float scale, const SVGTextFragment&, AffineTransform&);
+    void processTextLengthSpacingCorrection( bool isVerticalText, float textLengthShift, Vector<SVGTextFragment> &,
+            unsigned &atCharacter );
+    void processTextAnchorCorrection( bool isVerticalText, float textAnchorShift, Vector<SVGTextFragment> & );
+    void buildSpacingAndGlyphsTransform( bool isVerticalText, float scale, const SVGTextFragment &, AffineTransform & );
 
 private:
     Vector<SVGTextChunk> m_textChunks;
-    HashMap<SVGInlineTextBox*, AffineTransform> m_textBoxTransformations;
+    HashMap<SVGInlineTextBox *, AffineTransform> m_textBoxTransformations;
 };
 
 } // namespace WebCore

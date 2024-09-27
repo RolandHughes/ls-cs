@@ -40,9 +40,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSSVGTitleElement);
+ASSERT_CLASS_FITS_IN_CELL( JSSVGTitleElement );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -53,12 +54,12 @@ ASSERT_CLASS_FITS_IN_CELL(JSSVGTitleElement);
 
 static const HashTableValue JSSVGTitleElementTableValues[6] =
 {
-    { "xmllang", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGTitleElementXmllang), (intptr_t)setJSSVGTitleElementXmllang THUNK_GENERATOR(0) },
-    { "xmlspace", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGTitleElementXmlspace), (intptr_t)setJSSVGTitleElementXmlspace THUNK_GENERATOR(0) },
-    { "className", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGTitleElementClassName), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "style", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGTitleElementStyle), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGTitleElementConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "xmllang", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGTitleElementXmllang ), ( intptr_t )setJSSVGTitleElementXmllang THUNK_GENERATOR( 0 ) },
+    { "xmlspace", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGTitleElementXmlspace ), ( intptr_t )setJSSVGTitleElementXmlspace THUNK_GENERATOR( 0 ) },
+    { "className", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGTitleElementClassName ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "style", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGTitleElementStyle ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGTitleElementConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -72,43 +73,51 @@ static JSC_CONST_HASHTABLE HashTable JSSVGTitleElementTable = { 16, 15, JSSVGTit
 
 static const HashTableValue JSSVGTitleElementConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSSVGTitleElementConstructorTable = { 1, 0, JSSVGTitleElementConstructorTableValues, 0 };
-class JSSVGTitleElementConstructor : public DOMConstructorObject {
+class JSSVGTitleElementConstructor : public DOMConstructorObject
+{
 public:
-    JSSVGTitleElementConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSSVGTitleElementConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSSVGTitleElementConstructor::s_info = { "SVGTitleElementConstructor", &DOMConstructorObject::s_info, &JSSVGTitleElementConstructorTable, 0 };
 
-JSSVGTitleElementConstructor::JSSVGTitleElementConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSSVGTitleElementConstructor::JSSVGTitleElementConstructor( ExecState *exec, Structure *structure,
+        JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSSVGTitleElementPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSSVGTitleElementPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSSVGTitleElementConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGTitleElementConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSVGTitleElementConstructor, JSDOMWrapper>(exec, &JSSVGTitleElementConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSSVGTitleElementConstructor, JSDOMWrapper>( exec, &JSSVGTitleElementConstructorTable, this,
+            propertyName, slot );
 }
 
-bool JSSVGTitleElementConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGTitleElementConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSVGTitleElementConstructor, JSDOMWrapper>(exec, &JSSVGTitleElementConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSVGTitleElementConstructor, JSDOMWrapper>( exec, &JSSVGTitleElementConstructorTable, this,
+            propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -120,139 +129,149 @@ bool JSSVGTitleElementConstructor::getOwnPropertyDescriptor(ExecState* exec, con
 
 static const HashTableValue JSSVGTitleElementPrototypeTableValues[2] =
 {
-    { "getPresentationAttribute", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsSVGTitleElementPrototypeFunctionGetPresentationAttribute), (intptr_t)1 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "getPresentationAttribute", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsSVGTitleElementPrototypeFunctionGetPresentationAttribute ), ( intptr_t )1 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSSVGTitleElementPrototypeTable = { 2, 1, JSSVGTitleElementPrototypeTableValues, 0 };
 const ClassInfo JSSVGTitleElementPrototype::s_info = { "SVGTitleElementPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSSVGTitleElementPrototypeTable, 0 };
 
-JSObject* JSSVGTitleElementPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSVGTitleElementPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSSVGTitleElement>(exec, globalObject);
+    return getDOMPrototype<JSSVGTitleElement>( exec, globalObject );
 }
 
-bool JSSVGTitleElementPrototype::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGTitleElementPrototype::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticFunctionSlot<JSObject>(exec, &JSSVGTitleElementPrototypeTable, this, propertyName, slot);
+    return getStaticFunctionSlot<JSObject>( exec, &JSSVGTitleElementPrototypeTable, this, propertyName, slot );
 }
 
-bool JSSVGTitleElementPrototype::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGTitleElementPrototype::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticFunctionDescriptor<JSObject>(exec, &JSSVGTitleElementPrototypeTable, this, propertyName, descriptor);
+    return getStaticFunctionDescriptor<JSObject>( exec, &JSSVGTitleElementPrototypeTable, this, propertyName, descriptor );
 }
 
 const ClassInfo JSSVGTitleElement::s_info = { "SVGTitleElement", &JSSVGElement::s_info, &JSSVGTitleElementTable, 0 };
 
-JSSVGTitleElement::JSSVGTitleElement(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<SVGTitleElement> impl)
-    : JSSVGElement(structure, globalObject, impl)
+JSSVGTitleElement::JSSVGTitleElement( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<SVGTitleElement> impl )
+    : JSSVGElement( structure, globalObject, impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSSVGTitleElement::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSVGTitleElement::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSSVGTitleElementPrototype(exec->globalData(), globalObject, JSSVGTitleElementPrototype::createStructure(exec->globalData(), JSSVGElementPrototype::self(exec, globalObject)));
+    return new ( exec ) JSSVGTitleElementPrototype( exec->globalData(), globalObject,
+            JSSVGTitleElementPrototype::createStructure( exec->globalData(), JSSVGElementPrototype::self( exec, globalObject ) ) );
 }
 
-bool JSSVGTitleElement::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGTitleElement::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSVGTitleElement, Base>(exec, &JSSVGTitleElementTable, this, propertyName, slot);
+    return getStaticValueSlot<JSSVGTitleElement, Base>( exec, &JSSVGTitleElementTable, this, propertyName, slot );
 }
 
-bool JSSVGTitleElement::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGTitleElement::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSVGTitleElement, Base>(exec, &JSSVGTitleElementTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSVGTitleElement, Base>( exec, &JSSVGTitleElementTable, this, propertyName, descriptor );
 }
 
-JSValue jsSVGTitleElementXmllang(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGTitleElementXmllang( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGTitleElement* castedThis = static_cast<JSSVGTitleElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGTitleElement* imp = static_cast<SVGTitleElement*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->xmllang());
+    JSSVGTitleElement *castedThis = static_cast<JSSVGTitleElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGTitleElement *imp = static_cast<SVGTitleElement *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->xmllang() );
     return result;
 }
 
 
-JSValue jsSVGTitleElementXmlspace(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGTitleElementXmlspace( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGTitleElement* castedThis = static_cast<JSSVGTitleElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGTitleElement* imp = static_cast<SVGTitleElement*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->xmlspace());
+    JSSVGTitleElement *castedThis = static_cast<JSSVGTitleElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGTitleElement *imp = static_cast<SVGTitleElement *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->xmlspace() );
     return result;
 }
 
 
-JSValue jsSVGTitleElementClassName(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGTitleElementClassName( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGTitleElement* castedThis = static_cast<JSSVGTitleElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGTitleElement* imp = static_cast<SVGTitleElement*>(castedThis->impl());
+    JSSVGTitleElement *castedThis = static_cast<JSSVGTitleElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGTitleElement *imp = static_cast<SVGTitleElement *>( castedThis->impl() );
     RefPtr<SVGAnimatedString> obj = imp->classNameAnimated();
-    JSValue result =  toJS(exec, castedThis->globalObject(), obj.get());
+    JSValue result =  toJS( exec, castedThis->globalObject(), obj.get() );
     return result;
 }
 
 
-JSValue jsSVGTitleElementStyle(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGTitleElementStyle( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGTitleElement* castedThis = static_cast<JSSVGTitleElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGTitleElement* imp = static_cast<SVGTitleElement*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->style()));
+    JSSVGTitleElement *castedThis = static_cast<JSSVGTitleElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGTitleElement *imp = static_cast<SVGTitleElement *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->style() ) );
     return result;
 }
 
 
-JSValue jsSVGTitleElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGTitleElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGTitleElement* domObject = static_cast<JSSVGTitleElement*>(asObject(slotBase));
-    return JSSVGTitleElement::getConstructor(exec, domObject->globalObject());
+    JSSVGTitleElement *domObject = static_cast<JSSVGTitleElement *>( asObject( slotBase ) );
+    return JSSVGTitleElement::getConstructor( exec, domObject->globalObject() );
 }
 
-void JSSVGTitleElement::put(ExecState* exec, const Identifier& propertyName, JSValue value, PutPropertySlot& slot)
+void JSSVGTitleElement::put( ExecState *exec, const Identifier &propertyName, JSValue value, PutPropertySlot &slot )
 {
-    lookupPut<JSSVGTitleElement, Base>(exec, propertyName, value, &JSSVGTitleElementTable, this, slot);
+    lookupPut<JSSVGTitleElement, Base>( exec, propertyName, value, &JSSVGTitleElementTable, this, slot );
 }
 
-void setJSSVGTitleElementXmllang(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSSVGTitleElementXmllang( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSSVGTitleElement* castedThis = static_cast<JSSVGTitleElement*>(thisObject);
-    SVGTitleElement* imp = static_cast<SVGTitleElement*>(castedThis->impl());
-    imp->setXmllang(ustringToString(value.toString(exec)));
-}
-
-
-void setJSSVGTitleElementXmlspace(ExecState* exec, JSObject* thisObject, JSValue value)
-{
-    JSSVGTitleElement* castedThis = static_cast<JSSVGTitleElement*>(thisObject);
-    SVGTitleElement* imp = static_cast<SVGTitleElement*>(castedThis->impl());
-    imp->setXmlspace(ustringToString(value.toString(exec)));
+    JSSVGTitleElement *castedThis = static_cast<JSSVGTitleElement *>( thisObject );
+    SVGTitleElement *imp = static_cast<SVGTitleElement *>( castedThis->impl() );
+    imp->setXmllang( ustringToString( value.toString( exec ) ) );
 }
 
 
-JSValue JSSVGTitleElement::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+void setJSSVGTitleElementXmlspace( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    return getDOMConstructor<JSSVGTitleElementConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    JSSVGTitleElement *castedThis = static_cast<JSSVGTitleElement *>( thisObject );
+    SVGTitleElement *imp = static_cast<SVGTitleElement *>( castedThis->impl() );
+    imp->setXmlspace( ustringToString( value.toString( exec ) ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsSVGTitleElementPrototypeFunctionGetPresentationAttribute(ExecState* exec)
+
+JSValue JSSVGTitleElement::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
+{
+    return getDOMConstructor<JSSVGTitleElementConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
+}
+
+EncodedJSValue JSC_HOST_CALL jsSVGTitleElementPrototypeFunctionGetPresentationAttribute( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSSVGTitleElement::s_info))
-        return throwVMTypeError(exec);
-    JSSVGTitleElement* castedThis = static_cast<JSSVGTitleElement*>(asObject(thisValue));
-    SVGTitleElement* imp = static_cast<SVGTitleElement*>(castedThis->impl());
-    const String& name(ustringToString(exec->argument(0).toString(exec)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
+
+    if ( !thisValue.inherits( &JSSVGTitleElement::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSSVGTitleElement *castedThis = static_cast<JSSVGTitleElement *>( asObject( thisValue ) );
+    SVGTitleElement *imp = static_cast<SVGTitleElement *>( castedThis->impl() );
+    const String &name( ustringToString( exec->argument( 0 ).toString( exec ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
 
 
-    JSC::JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->getPresentationAttribute(name)));
-    return JSValue::encode(result);
+    JSC::JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->getPresentationAttribute( name ) ) );
+    return JSValue::encode( result );
 }
 
 

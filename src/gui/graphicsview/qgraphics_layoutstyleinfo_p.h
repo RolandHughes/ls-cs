@@ -33,33 +33,34 @@ class QGraphicsLayoutPrivate;
 
 class QGraphicsLayoutStyleInfo : public QAbstractLayoutStyleInfo
 {
- public:
-   QGraphicsLayoutStyleInfo(const QGraphicsLayoutPrivate *layout);
-   ~QGraphicsLayoutStyleInfo();
+public:
+    QGraphicsLayoutStyleInfo( const QGraphicsLayoutPrivate *layout );
+    ~QGraphicsLayoutStyleInfo();
 
-   qreal combinedLayoutSpacing(QLayoutPolicy::ControlTypes controls1,
-      QLayoutPolicy::ControlTypes controls2, Qt::Orientation orientation) const override;
+    qreal combinedLayoutSpacing( QLayoutPolicy::ControlTypes controls1,
+                                 QLayoutPolicy::ControlTypes controls2, Qt::Orientation orientation ) const override;
 
-   qreal perItemSpacing(QLayoutPolicy::ControlType control1,
-      QLayoutPolicy::ControlType control2, Qt::Orientation orientation) const override;
+    qreal perItemSpacing( QLayoutPolicy::ControlType control1,
+                          QLayoutPolicy::ControlType control2, Qt::Orientation orientation ) const override;
 
-   qreal spacing(Qt::Orientation orientation) const override;
+    qreal spacing( Qt::Orientation orientation ) const override;
 
-   qreal windowMargin(Qt::Orientation orientation) const override;
+    qreal windowMargin( Qt::Orientation orientation ) const override;
 
-   void invalidate() override {
-      m_style = nullptr;
-      QAbstractLayoutStyleInfo::invalidate();
-   }
+    void invalidate() override
+    {
+        m_style = nullptr;
+        QAbstractLayoutStyleInfo::invalidate();
+    }
 
-   QWidget *widget() const;
-   QStyle *style() const;
+    QWidget *widget() const;
+    QStyle *style() const;
 
- private:
-   const QGraphicsLayoutPrivate *m_layout;
-   mutable QStyle *m_style;
-   QStyleOption m_styleOption;
-   QWidget *m_widget;
+private:
+    const QGraphicsLayoutPrivate *m_layout;
+    mutable QStyle *m_style;
+    QStyleOption m_styleOption;
+    QWidget *m_widget;
 };
 
 #endif

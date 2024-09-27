@@ -31,9 +31,10 @@
 
 #include <wtf/Assertions.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-BitmapInfo bitmapInfoForSize(int width, int height, BitmapInfo::BitCount bitCount)
+BitmapInfo bitmapInfoForSize( int width, int height, BitmapInfo::BitCount bitCount )
 {
     BitmapInfo bitmapInfo;
     bitmapInfo.bmiHeader.biWidth         = width;
@@ -47,18 +48,18 @@ BitmapInfo bitmapInfoForSize(int width, int height, BitmapInfo::BitCount bitCoun
 
 BitmapInfo::BitmapInfo()
 {
-    memset(&bmiHeader, 0, sizeof(bmiHeader));
-    bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
+    memset( &bmiHeader, 0, sizeof( bmiHeader ) );
+    bmiHeader.biSize = sizeof( BITMAPINFOHEADER );
 }
 
-BitmapInfo BitmapInfo::create(const IntSize& size, BitCount bitCount)
+BitmapInfo BitmapInfo::create( const IntSize &size, BitCount bitCount )
 {
-    return bitmapInfoForSize(size.width(), size.height(), bitCount);
+    return bitmapInfoForSize( size.width(), size.height(), bitCount );
 }
 
-BitmapInfo BitmapInfo::createBottomUp(const IntSize& size, BitCount bitCount)
+BitmapInfo BitmapInfo::createBottomUp( const IntSize &size, BitCount bitCount )
 {
-    return bitmapInfoForSize(size.width(), -size.height(), bitCount);
+    return bitmapInfoForSize( size.width(), -size.height(), bitCount );
 }
 
 } // namespace WebCore

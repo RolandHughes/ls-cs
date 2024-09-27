@@ -28,14 +28,15 @@
 
 #include "WorkItem.h"
 
-namespace WebKit {
+namespace WebKit
+{
 
 static const double kResponsivenessTimeout = 3;
 
-ResponsivenessTimer::ResponsivenessTimer(ResponsivenessTimer::Client* client)
-    : m_client(client)
-    , m_isResponsive(true)
-    , m_timer(RunLoop::main(), this, &ResponsivenessTimer::timerFired)
+ResponsivenessTimer::ResponsivenessTimer( ResponsivenessTimer::Client *client )
+    : m_client( client )
+    , m_isResponsive( true )
+    , m_timer( RunLoop::main(), this, &ResponsivenessTimer::timerFired )
 {
 }
 
@@ -52,30 +53,35 @@ void ResponsivenessTimer::invalidate()
 void ResponsivenessTimer::timerFired()
 {
     // We'll never schedule the timer unless we're responsive.
-    ASSERT(m_isResponsive);
-    
+    ASSERT( m_isResponsive );
+
     m_isResponsive = false;
-    m_client->didBecomeUnresponsive(this);
+    m_client->didBecomeUnresponsive( this );
 
     m_timer.stop();
 }
-    
+
 void ResponsivenessTimer::start()
 {
-    if (m_timer.isActive())
+    if ( m_timer.isActive() )
+    {
         return;
+    }
 
-    if (!m_isResponsive)
+    if ( !m_isResponsive )
+    {
         return;
+    }
 
-    m_timer.startOneShot(kResponsivenessTimeout);
+    m_timer.startOneShot( kResponsivenessTimeout );
 }
 
 void ResponsivenessTimer::stop()
 {
-    if (!m_isResponsive) {
+    if ( !m_isResponsive )
+    {
         // We got a life sign from the web process!
-        m_client->didBecomeResponsive(this);
+        m_client->didBecomeResponsive( this );
         m_isResponsive = true;
     }
 

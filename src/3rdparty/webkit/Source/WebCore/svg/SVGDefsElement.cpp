@@ -26,19 +26,21 @@
 #include "RenderSVGHiddenContainer.h"
 #include "SVGNames.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 // Animated property definitions
-DEFINE_ANIMATED_BOOLEAN(SVGDefsElement, SVGNames::externalResourcesRequiredAttr, ExternalResourcesRequired, externalResourcesRequired)
+DEFINE_ANIMATED_BOOLEAN( SVGDefsElement, SVGNames::externalResourcesRequiredAttr, ExternalResourcesRequired,
+                         externalResourcesRequired )
 
-inline SVGDefsElement::SVGDefsElement(const QualifiedName& tagName, Document* document)
-    : SVGStyledTransformableElement(tagName, document)
+inline SVGDefsElement::SVGDefsElement( const QualifiedName &tagName, Document *document )
+    : SVGStyledTransformableElement( tagName, document )
 {
 }
 
-PassRefPtr<SVGDefsElement> SVGDefsElement::create(const QualifiedName& tagName, Document* document)
+PassRefPtr<SVGDefsElement> SVGDefsElement::create( const QualifiedName &tagName, Document *document )
 {
-    return adoptRef(new SVGDefsElement(tagName, document));
+    return adoptRef( new SVGDefsElement( tagName, document ) );
 }
 
 bool SVGDefsElement::isValid() const
@@ -46,25 +48,30 @@ bool SVGDefsElement::isValid() const
     return SVGTests::isValid();
 }
 
-RenderObject* SVGDefsElement::createRenderer(RenderArena* arena, RenderStyle*)
+RenderObject *SVGDefsElement::createRenderer( RenderArena *arena, RenderStyle * )
 {
-    return new (arena) RenderSVGHiddenContainer(this);
+    return new ( arena ) RenderSVGHiddenContainer( this );
 }
 
-void SVGDefsElement::synchronizeProperty(const QualifiedName& attrName)
+void SVGDefsElement::synchronizeProperty( const QualifiedName &attrName )
 {
-    SVGStyledTransformableElement::synchronizeProperty(attrName);
+    SVGStyledTransformableElement::synchronizeProperty( attrName );
 
-    if (attrName == anyQName()) {
+    if ( attrName == anyQName() )
+    {
         synchronizeExternalResourcesRequired();
-        SVGTests::synchronizeProperties(this, attrName);
+        SVGTests::synchronizeProperties( this, attrName );
         return;
     }
 
-    if (SVGExternalResourcesRequired::isKnownAttribute(attrName))
+    if ( SVGExternalResourcesRequired::isKnownAttribute( attrName ) )
+    {
         synchronizeExternalResourcesRequired();
-    else if (SVGTests::isKnownAttribute(attrName))
-        SVGTests::synchronizeProperties(this, attrName);
+    }
+    else if ( SVGTests::isKnownAttribute( attrName ) )
+    {
+        SVGTests::synchronizeProperties( this, attrName );
+    }
 }
 
 }

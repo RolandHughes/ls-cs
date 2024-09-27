@@ -28,18 +28,23 @@
 
 #include "RootInlineBox.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class TrailingFloatsRootInlineBox : public RootInlineBox {
+class TrailingFloatsRootInlineBox : public RootInlineBox
+{
 public:
-    TrailingFloatsRootInlineBox(RenderBlock* block)
-        : RootInlineBox(block)
+    TrailingFloatsRootInlineBox( RenderBlock *block )
+        : RootInlineBox( block )
     {
         setHasVirtualLogicalHeight();
     }
 
 private:
-    virtual int virtualLogicalHeight() const { return 0; }
+    virtual int virtualLogicalHeight() const
+    {
+        return 0;
+    }
 };
 
 } // namespace WebCore

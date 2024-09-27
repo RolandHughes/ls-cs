@@ -67,122 +67,202 @@ struct SkRect;
 struct SkIRect;
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
 class FloatRect;
 
-class IntRect {
+class IntRect
+{
 public:
     IntRect() { }
-    IntRect(const IntPoint& location, const IntSize& size)
-        : m_location(location), m_size(size) { }
-    IntRect(int x, int y, int width, int height)
-        : m_location(IntPoint(x, y)), m_size(IntSize(width, height)) { }
+    IntRect( const IntPoint &location, const IntSize &size )
+        : m_location( location ), m_size( size ) { }
+    IntRect( int x, int y, int width, int height )
+        : m_location( IntPoint( x, y ) ), m_size( IntSize( width, height ) ) { }
 
-    explicit IntRect(const FloatRect& rect); // don't do this implicitly since it's lossy
+    explicit IntRect( const FloatRect &rect ); // don't do this implicitly since it's lossy
 
-    IntPoint location() const { return m_location; }
-    IntSize size() const { return m_size; }
+    IntPoint location() const
+    {
+        return m_location;
+    }
+    IntSize size() const
+    {
+        return m_size;
+    }
 
-    void setLocation(const IntPoint& location) { m_location = location; }
-    void setSize(const IntSize& size) { m_size = size; }
+    void setLocation( const IntPoint &location )
+    {
+        m_location = location;
+    }
+    void setSize( const IntSize &size )
+    {
+        m_size = size;
+    }
 
-    int x() const { return m_location.x(); }
-    int y() const { return m_location.y(); }
-    int maxX() const { return x() + width(); }
-    int maxY() const { return y() + height(); }
-    int width() const { return m_size.width(); }
-    int height() const { return m_size.height(); }
+    int x() const
+    {
+        return m_location.x();
+    }
+    int y() const
+    {
+        return m_location.y();
+    }
+    int maxX() const
+    {
+        return x() + width();
+    }
+    int maxY() const
+    {
+        return y() + height();
+    }
+    int width() const
+    {
+        return m_size.width();
+    }
+    int height() const
+    {
+        return m_size.height();
+    }
 
-    void setX(int x) { m_location.setX(x); }
-    void setY(int y) { m_location.setY(y); }
-    void setWidth(int width) { m_size.setWidth(width); }
-    void setHeight(int height) { m_size.setHeight(height); }
+    void setX( int x )
+    {
+        m_location.setX( x );
+    }
+    void setY( int y )
+    {
+        m_location.setY( y );
+    }
+    void setWidth( int width )
+    {
+        m_size.setWidth( width );
+    }
+    void setHeight( int height )
+    {
+        m_size.setHeight( height );
+    }
 
-    bool isEmpty() const { return m_size.isEmpty(); }
+    bool isEmpty() const
+    {
+        return m_size.isEmpty();
+    }
 
     // NOTE: The result is rounded to integer values, and thus may be not the exact
     // center point.
-    IntPoint center() const { return IntPoint(x() + width() / 2, y() + height() / 2); }
+    IntPoint center() const
+    {
+        return IntPoint( x() + width() / 2, y() + height() / 2 );
+    }
 
-    void move(const IntSize& s) { m_location += s; }
-    void move(int dx, int dy) { m_location.move(dx, dy); }
+    void move( const IntSize &s )
+    {
+        m_location += s;
+    }
+    void move( int dx, int dy )
+    {
+        m_location.move( dx, dy );
+    }
 
-    void shiftXEdgeTo(int edge)
+    void shiftXEdgeTo( int edge )
     {
         int delta = edge - x();
-        setX(edge);
-        setWidth(std::max(0, width() - delta));
+        setX( edge );
+        setWidth( std::max( 0, width() - delta ) );
     }
-    void shiftMaxXEdgeTo(int edge)
+    void shiftMaxXEdgeTo( int edge )
     {
         int delta = edge - maxX();
-        setWidth(std::max(0, width() + delta));
+        setWidth( std::max( 0, width() + delta ) );
     }
-    void shiftYEdgeTo(int edge)
+    void shiftYEdgeTo( int edge )
     {
         int delta = edge - y();
-        setY(edge);
-        setHeight(std::max(0, height() - delta));
+        setY( edge );
+        setHeight( std::max( 0, height() - delta ) );
     }
-    void shiftMaxYEdgeTo(int edge)
+    void shiftMaxYEdgeTo( int edge )
     {
         int delta = edge - maxY();
-        setHeight(std::max(0, height() + delta));
+        setHeight( std::max( 0, height() + delta ) );
     }
 
-    IntPoint minXMinYCorner() const { return m_location; } // typically topLeft
-    IntPoint maxXMinYCorner() const { return IntPoint(m_location.x() + m_size.width(), m_location.y()); } // typically topRight
-    IntPoint minXMaxYCorner() const { return IntPoint(m_location.x(), m_location.y() + m_size.height()); } // typically bottomLeft
-    IntPoint maxXMaxYCorner() const { return IntPoint(m_location.x() + m_size.width(), m_location.y() + m_size.height()); } // typically bottomRight
+    IntPoint minXMinYCorner() const
+    {
+        return m_location;    // typically topLeft
+    }
+    IntPoint maxXMinYCorner() const
+    {
+        return IntPoint( m_location.x() + m_size.width(), m_location.y() );    // typically topRight
+    }
+    IntPoint minXMaxYCorner() const
+    {
+        return IntPoint( m_location.x(), m_location.y() + m_size.height() );    // typically bottomLeft
+    }
+    IntPoint maxXMaxYCorner() const
+    {
+        return IntPoint( m_location.x() + m_size.width(), m_location.y() + m_size.height() );    // typically bottomRight
+    }
 
-    bool intersects(const IntRect&) const;
-    bool contains(const IntRect&) const;
+    bool intersects( const IntRect & ) const;
+    bool contains( const IntRect & ) const;
 
     // This checks to see if the rect contains x,y in the traditional sense.
     // Equivalent to checking if the rect contains a 1x1 rect below and to the right of (px,py).
-    bool contains(int px, int py) const
-        { return px >= x() && px < maxX() && py >= y() && py < maxY(); }
-    bool contains(const IntPoint& point) const { return contains(point.x(), point.y()); }
-
-    void intersect(const IntRect&);
-    void unite(const IntRect&);
-    void uniteIfNonZero(const IntRect&);
-
-    void inflateX(int dx)
+    bool contains( int px, int py ) const
     {
-        m_location.setX(m_location.x() - dx);
-        m_size.setWidth(m_size.width() + dx + dx);
+        return px >= x() && px < maxX() && py >= y() && py < maxY();
     }
-    void inflateY(int dy)
+    bool contains( const IntPoint &point ) const
     {
-        m_location.setY(m_location.y() - dy);
-        m_size.setHeight(m_size.height() + dy + dy);
+        return contains( point.x(), point.y() );
     }
-    void inflate(int d) { inflateX(d); inflateY(d); }
-    void scale(float s);
 
-    IntRect transposedRect() const { return IntRect(m_location.transposedPoint(), m_size.transposedSize()); }
+    void intersect( const IntRect & );
+    void unite( const IntRect & );
+    void uniteIfNonZero( const IntRect & );
+
+    void inflateX( int dx )
+    {
+        m_location.setX( m_location.x() - dx );
+        m_size.setWidth( m_size.width() + dx + dx );
+    }
+    void inflateY( int dy )
+    {
+        m_location.setY( m_location.y() - dy );
+        m_size.setHeight( m_size.height() + dy + dy );
+    }
+    void inflate( int d )
+    {
+        inflateX( d );
+        inflateY( d );
+    }
+    void scale( float s );
+
+    IntRect transposedRect() const
+    {
+        return IntRect( m_location.transposedPoint(), m_size.transposedSize() );
+    }
 
 #if PLATFORM(WX)
-    IntRect(const wxRect&);
+    IntRect( const wxRect & );
     operator wxRect() const;
 #endif
 
 #if PLATFORM(WIN)
-    IntRect(const RECT&);
+    IntRect( const RECT & );
     operator RECT() const;
 #elif PLATFORM(QT)
-    IntRect(const QRect&);
+    IntRect( const QRect & );
     operator QRect() const;
 #elif PLATFORM(GTK)
-    IntRect(const GdkRectangle&);
+    IntRect( const GdkRectangle & );
     operator GdkRectangle() const;
 #elif PLATFORM(HAIKU)
-    explicit IntRect(const BRect&);
+    explicit IntRect( const BRect & );
     operator BRect() const;
 #elif PLATFORM(EFL)
-    explicit IntRect(const Eina_Rectangle&);
+    explicit IntRect( const Eina_Rectangle & );
     operator Eina_Rectangle() const;
 #endif
 
@@ -191,7 +271,7 @@ public:
 #endif
 
 #if USE(SKIA)
-    IntRect(const SkIRect&);
+    IntRect( const SkIRect & );
     operator SkRect() const;
     operator SkIRect() const;
 #endif
@@ -206,39 +286,39 @@ private:
     IntSize m_size;
 };
 
-inline IntRect intersection(const IntRect& a, const IntRect& b)
+inline IntRect intersection( const IntRect &a, const IntRect &b )
 {
     IntRect c = a;
-    c.intersect(b);
+    c.intersect( b );
     return c;
 }
 
-inline IntRect unionRect(const IntRect& a, const IntRect& b)
+inline IntRect unionRect( const IntRect &a, const IntRect &b )
 {
     IntRect c = a;
-    c.unite(b);
+    c.unite( b );
     return c;
 }
 
-IntRect unionRect(const Vector<IntRect>&);
+IntRect unionRect( const Vector<IntRect> & );
 
-inline bool operator==(const IntRect& a, const IntRect& b)
+inline bool operator==( const IntRect &a, const IntRect &b )
 {
     return a.location() == b.location() && a.size() == b.size();
 }
 
-inline bool operator!=(const IntRect& a, const IntRect& b)
+inline bool operator!=( const IntRect &a, const IntRect &b )
 {
     return a.location() != b.location() || a.size() != b.size();
 }
 
 #if USE(CG) || USE(SKIA_ON_MAC_CHROME)
-IntRect enclosingIntRect(const CGRect&);
+IntRect enclosingIntRect( const CGRect & );
 #endif
 
 #if (PLATFORM(MAC) && !defined(NSGEOMETRY_TYPES_SAME_AS_CGGEOMETRY_TYPES)) \
         || (PLATFORM(CHROMIUM) && OS(DARWIN)) || (PLATFORM(QT) && USE(QTKIT))
-IntRect enclosingIntRect(const NSRect&);
+IntRect enclosingIntRect( const NSRect & );
 #endif
 
 } // namespace WebCore

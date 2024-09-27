@@ -27,49 +27,52 @@
 
 using namespace QPatternist;
 
-GenericNamespaceResolver::GenericNamespaceResolver(const Bindings &list) : m_bindings(list)
+GenericNamespaceResolver::GenericNamespaceResolver( const Bindings &list ) : m_bindings( list )
 {
 }
 
-void GenericNamespaceResolver::addBinding(const QXmlName nb)
+void GenericNamespaceResolver::addBinding( const QXmlName nb )
 {
-   if (nb.namespaceURI() == StandardNamespaces::UndeclarePrefix) {
-      m_bindings.remove(nb.prefix());
-   } else {
-      m_bindings.insert(nb.prefix(), nb.namespaceURI());
-   }
+    if ( nb.namespaceURI() == StandardNamespaces::UndeclarePrefix )
+    {
+        m_bindings.remove( nb.prefix() );
+    }
+    else
+    {
+        m_bindings.insert( nb.prefix(), nb.namespaceURI() );
+    }
 }
 
-QXmlName::NamespaceCode GenericNamespaceResolver::lookupNamespaceURI(const QXmlName::PrefixCode prefix) const
+QXmlName::NamespaceCode GenericNamespaceResolver::lookupNamespaceURI( const QXmlName::PrefixCode prefix ) const
 {
-   return m_bindings.value(prefix, NoBinding);
+    return m_bindings.value( prefix, NoBinding );
 }
 
 NamespaceResolver::Ptr GenericNamespaceResolver::defaultXQueryBindings()
 {
-   Bindings list;
+    Bindings list;
 
-   list.insert(StandardPrefixes::xml,    StandardNamespaces::xml);
-   list.insert(StandardPrefixes::xs,     StandardNamespaces::xs);
-   list.insert(StandardPrefixes::xsi,    StandardNamespaces::xsi);
-   list.insert(StandardPrefixes::fn,     StandardNamespaces::fn);
-   list.insert(StandardPrefixes::local,  StandardNamespaces::local);
-   list.insert(StandardPrefixes::empty,  StandardNamespaces::empty);
+    list.insert( StandardPrefixes::xml,    StandardNamespaces::xml );
+    list.insert( StandardPrefixes::xs,     StandardNamespaces::xs );
+    list.insert( StandardPrefixes::xsi,    StandardNamespaces::xsi );
+    list.insert( StandardPrefixes::fn,     StandardNamespaces::fn );
+    list.insert( StandardPrefixes::local,  StandardNamespaces::local );
+    list.insert( StandardPrefixes::empty,  StandardNamespaces::empty );
 
-   return NamespaceResolver::Ptr(new GenericNamespaceResolver(list));
+    return NamespaceResolver::Ptr( new GenericNamespaceResolver( list ) );
 }
 
 NamespaceResolver::Ptr GenericNamespaceResolver::defaultXSLTBindings()
 {
-   Bindings list;
+    Bindings list;
 
-   list.insert(StandardPrefixes::xml,    StandardNamespaces::xml);
-   list.insert(StandardPrefixes::empty,  StandardNamespaces::empty);
+    list.insert( StandardPrefixes::xml,    StandardNamespaces::xml );
+    list.insert( StandardPrefixes::empty,  StandardNamespaces::empty );
 
-   return NamespaceResolver::Ptr(new GenericNamespaceResolver(list));
+    return NamespaceResolver::Ptr( new GenericNamespaceResolver( list ) );
 }
 
 NamespaceResolver::Bindings GenericNamespaceResolver::bindings() const
 {
-   return m_bindings;
+    return m_bindings;
 }

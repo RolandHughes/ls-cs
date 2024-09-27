@@ -30,16 +30,18 @@
 #include "ArgumentEncoder.h"
 #include <wtf/TypeTraits.h>
 
-namespace CoreIPC {
-    
-struct Arguments0 {
+namespace CoreIPC
+{
+
+struct Arguments0
+{
     typedef Arguments0 ValueType;
 
-    void encode(ArgumentEncoder*) const 
+    void encode( ArgumentEncoder * ) const
     {
     }
 
-    static bool decode(ArgumentDecoder*, Arguments0&)
+    static bool decode( ArgumentDecoder *, Arguments0 & )
     {
         return true;
     }
@@ -55,347 +57,389 @@ inline Arguments0 Out()
     return Arguments0();
 }
 
-template<typename T1> struct Arguments1 {
+template<typename T1> struct Arguments1
+{
     typedef Arguments1<typename WTF::RemoveConst<typename WTF::RemoveReference<T1>::Type>::Type> ValueType;
 
     Arguments1()
     {
     }
 
-    Arguments1(T1 t1) 
-        : argument1(t1)
+    Arguments1( T1 t1 )
+        : argument1( t1 )
     {
     }
 
-    void encode(ArgumentEncoder* encoder) const 
+    void encode( ArgumentEncoder *encoder ) const
     {
-        encoder->encode(argument1);
+        encoder->encode( argument1 );
     }
 
-    static bool decode(ArgumentDecoder* decoder, Arguments1& result)
+    static bool decode( ArgumentDecoder *decoder, Arguments1 &result )
     {
-        return decoder->decode(result.argument1);
+        return decoder->decode( result.argument1 );
     }
-    
+
     T1 argument1;
 };
-    
-template<typename T1> Arguments1<const T1&> In(const T1& t1) 
+
+template<typename T1> Arguments1<const T1 &> In( const T1 &t1 )
 {
-    return Arguments1<const T1&>(t1);
+    return Arguments1<const T1 &>( t1 );
 }
 
-template<typename T1> Arguments1<T1&> Out(T1& t1)
+template<typename T1> Arguments1<T1 &> Out( T1 &t1 )
 {
-    return Arguments1<T1&>(t1);
+    return Arguments1<T1 &>( t1 );
 }
 
-template<typename T1, typename T2> struct Arguments2 : Arguments1<T1> {
+template<typename T1, typename T2> struct Arguments2 : Arguments1<T1>
+{
     typedef Arguments2<typename WTF::RemoveConst<typename WTF::RemoveReference<T1>::Type>::Type,
-                       typename WTF::RemoveConst<typename WTF::RemoveReference<T2>::Type>::Type> ValueType;
+            typename WTF::RemoveConst<typename WTF::RemoveReference<T2>::Type>::Type> ValueType;
 
-    Arguments2() 
+    Arguments2()
     {
     }
 
-    Arguments2(T1 t1, T2 t2) 
-        : Arguments1<T1>(t1)
-        , argument2(t2)
+    Arguments2( T1 t1, T2 t2 )
+        : Arguments1<T1>( t1 )
+        , argument2( t2 )
     {
     }
 
-    void encode(ArgumentEncoder* encoder) const 
+    void encode( ArgumentEncoder *encoder ) const
     {
-        Arguments1<T1>::encode(encoder);
-        encoder->encode(argument2);
+        Arguments1<T1>::encode( encoder );
+        encoder->encode( argument2 );
     }
 
-    static bool decode(ArgumentDecoder* decoder, Arguments2& result)
+    static bool decode( ArgumentDecoder *decoder, Arguments2 &result )
     {
-        if (!Arguments1<T1>::decode(decoder, result))
+        if ( !Arguments1<T1>::decode( decoder, result ) )
+        {
             return false;
-        
-        return decoder->decode(result.argument2);
+        }
+
+        return decoder->decode( result.argument2 );
     }
 
     T2 argument2;
 };
 
-template<typename T1, typename T2> Arguments2<const T1&, const T2&> In(const T1& t1, const T2& t2)
+template<typename T1, typename T2> Arguments2<const T1 &, const T2 &> In( const T1 &t1, const T2 &t2 )
 {
-    return Arguments2<const T1&, const T2&>(t1, t2);
+    return Arguments2<const T1 &, const T2 &>( t1, t2 );
 }
 
-template<typename T1, typename T2> Arguments2<T1&, T2&> Out(T1& t1, T2& t2)
+template<typename T1, typename T2> Arguments2<T1 &, T2 &> Out( T1 &t1, T2 &t2 )
 {
-    return Arguments2<T1&, T2&>(t1, t2);
+    return Arguments2<T1 &, T2 &>( t1, t2 );
 }
 
-template<typename T1, typename T2, typename T3> struct Arguments3 : Arguments2<T1, T2> {
+template<typename T1, typename T2, typename T3> struct Arguments3 : Arguments2<T1, T2>
+{
     typedef Arguments3<typename WTF::RemoveConst<typename WTF::RemoveReference<T1>::Type>::Type,
-                       typename WTF::RemoveConst<typename WTF::RemoveReference<T2>::Type>::Type,
-                       typename WTF::RemoveConst<typename WTF::RemoveReference<T3>::Type>::Type> ValueType;
+            typename WTF::RemoveConst<typename WTF::RemoveReference<T2>::Type>::Type,
+            typename WTF::RemoveConst<typename WTF::RemoveReference<T3>::Type>::Type> ValueType;
 
     Arguments3()
     {
     }
 
-    Arguments3(T1 t1, T2 t2, T3 t3) 
-        : Arguments2<T1, T2>(t1, t2)
-        , argument3(t3)
+    Arguments3( T1 t1, T2 t2, T3 t3 )
+        : Arguments2<T1, T2>( t1, t2 )
+        , argument3( t3 )
     {
     }
 
-    void encode(ArgumentEncoder* encoder) const 
+    void encode( ArgumentEncoder *encoder ) const
     {
-        Arguments2<T1, T2>::encode(encoder);
-        encoder->encode(argument3);
+        Arguments2<T1, T2>::encode( encoder );
+        encoder->encode( argument3 );
     }
 
-    static bool decode(ArgumentDecoder* decoder, Arguments3& result)
+    static bool decode( ArgumentDecoder *decoder, Arguments3 &result )
     {
-        if (!Arguments2<T1, T2>::decode(decoder, result))
+        if ( !Arguments2<T1, T2>::decode( decoder, result ) )
+        {
             return false;
-        
-        return decoder->decode(result.argument3);
+        }
+
+        return decoder->decode( result.argument3 );
     }
 
     T3 argument3;
 };
 
-template<typename T1, typename T2, typename T3> Arguments3<const T1&, const T2&, const T3&> In(const T1& t1, const T2& t2, const T3 &t3)
+template<typename T1, typename T2, typename T3> Arguments3<const T1 &, const T2 &, const T3 &> In( const T1 &t1, const T2 &t2,
+        const T3 &t3 )
 {
-    return Arguments3<const T1&, const T2&, const T3&>(t1, t2, t3);
+    return Arguments3<const T1 &, const T2 &, const T3 &>( t1, t2, t3 );
 }
 
-template<typename T1, typename T2, typename T3> Arguments3<T1&, T2&, T3&> Out(T1& t1, T2& t2, T3& t3)
+template<typename T1, typename T2, typename T3> Arguments3<T1 &, T2 &, T3 &> Out( T1 &t1, T2 &t2, T3 &t3 )
 {
-    return Arguments3<T1&, T2&, T3&>(t1, t2, t3);
+    return Arguments3<T1 &, T2 &, T3 &>( t1, t2, t3 );
 }
 
-template<typename T1, typename T2, typename T3, typename T4> struct Arguments4 : Arguments3<T1, T2, T3> {
+template<typename T1, typename T2, typename T3, typename T4> struct Arguments4 : Arguments3<T1, T2, T3>
+{
     typedef Arguments4<typename WTF::RemoveConst<typename WTF::RemoveReference<T1>::Type>::Type,
-                       typename WTF::RemoveConst<typename WTF::RemoveReference<T2>::Type>::Type,
-                       typename WTF::RemoveConst<typename WTF::RemoveReference<T3>::Type>::Type,
-                       typename WTF::RemoveConst<typename WTF::RemoveReference<T4>::Type>::Type> ValueType;
+            typename WTF::RemoveConst<typename WTF::RemoveReference<T2>::Type>::Type,
+            typename WTF::RemoveConst<typename WTF::RemoveReference<T3>::Type>::Type,
+            typename WTF::RemoveConst<typename WTF::RemoveReference<T4>::Type>::Type> ValueType;
 
     Arguments4()
     {
     }
 
-    Arguments4(T1 t1, T2 t2, T3 t3, T4 t4)
-        : Arguments3<T1, T2, T3>(t1, t2, t3)
-        , argument4(t4)
+    Arguments4( T1 t1, T2 t2, T3 t3, T4 t4 )
+        : Arguments3<T1, T2, T3>( t1, t2, t3 )
+        , argument4( t4 )
     {
     }
 
-    void encode(ArgumentEncoder* encoder) const
+    void encode( ArgumentEncoder *encoder ) const
     {
-        Arguments3<T1, T2, T3>::encode(encoder);
-        encoder->encode(argument4);
+        Arguments3<T1, T2, T3>::encode( encoder );
+        encoder->encode( argument4 );
     }
-    
-    static bool decode(ArgumentDecoder* decoder, Arguments4& result)
+
+    static bool decode( ArgumentDecoder *decoder, Arguments4 &result )
     {
-        if (!Arguments3<T1, T2, T3>::decode(decoder, result))
+        if ( !Arguments3<T1, T2, T3>::decode( decoder, result ) )
+        {
             return false;
-        
-        return decoder->decode(result.argument4);
+        }
+
+        return decoder->decode( result.argument4 );
     }
 
     T4 argument4;
 };
 
-template<typename T1, typename T2, typename T3, typename T4> Arguments4<const T1&, const T2&, const T3&, const T4&> In(const T1& t1, const T2& t2, const T3 &t3, const T4& t4)
+template<typename T1, typename T2, typename T3, typename T4> Arguments4<const T1 &, const T2 &, const T3 &, const T4 &> In(
+    const T1 &t1, const T2 &t2, const T3 &t3, const T4 &t4 )
 {
-    return Arguments4<const T1&, const T2&, const T3&, const T4&>(t1, t2, t3, t4);
+    return Arguments4<const T1 &, const T2 &, const T3 &, const T4 &>( t1, t2, t3, t4 );
 }
 
-template<typename T1, typename T2, typename T3, typename T4> Arguments4<T1&, T2&, T3&, T4&> Out(T1& t1, T2& t2, T3& t3, T4& t4)
+template<typename T1, typename T2, typename T3, typename T4> Arguments4<T1 &, T2 &, T3 &, T4 &> Out( T1 &t1, T2 &t2, T3 &t3,
+        T4 &t4 )
 {
-    return Arguments4<T1&, T2&, T3&, T4&>(t1, t2, t3, t4);
+    return Arguments4<T1 &, T2 &, T3 &, T4 &>( t1, t2, t3, t4 );
 }
 
-template<typename T1, typename T2, typename T3, typename T4, typename T5> struct Arguments5 : Arguments4<T1, T2, T3, T4> {
+template<typename T1, typename T2, typename T3, typename T4, typename T5> struct Arguments5 : Arguments4<T1, T2, T3, T4>
+{
     typedef Arguments5<typename WTF::RemoveConst<typename WTF::RemoveReference<T1>::Type>::Type,
-                       typename WTF::RemoveConst<typename WTF::RemoveReference<T2>::Type>::Type,
-                       typename WTF::RemoveConst<typename WTF::RemoveReference<T3>::Type>::Type,
-                       typename WTF::RemoveConst<typename WTF::RemoveReference<T4>::Type>::Type,
-                       typename WTF::RemoveConst<typename WTF::RemoveReference<T5>::Type>::Type> ValueType;
+            typename WTF::RemoveConst<typename WTF::RemoveReference<T2>::Type>::Type,
+            typename WTF::RemoveConst<typename WTF::RemoveReference<T3>::Type>::Type,
+            typename WTF::RemoveConst<typename WTF::RemoveReference<T4>::Type>::Type,
+            typename WTF::RemoveConst<typename WTF::RemoveReference<T5>::Type>::Type> ValueType;
 
     Arguments5()
     {
     }
 
-    Arguments5(T1 t1, T2 t2, T3 t3, T4 t4, T5 t5)
-        : Arguments4<T1, T2, T3, T4>(t1, t2, t3, t4)
-        , argument5(t5)
+    Arguments5( T1 t1, T2 t2, T3 t3, T4 t4, T5 t5 )
+        : Arguments4<T1, T2, T3, T4>( t1, t2, t3, t4 )
+        , argument5( t5 )
     {
     }
 
-    void encode(ArgumentEncoder* encoder) const
+    void encode( ArgumentEncoder *encoder ) const
     {
-        Arguments4<T1, T2, T3, T4>::encode(encoder);
-        encoder->encode(argument5);
+        Arguments4<T1, T2, T3, T4>::encode( encoder );
+        encoder->encode( argument5 );
     }
-    
-    static bool decode(ArgumentDecoder* decoder, Arguments5& result)
+
+    static bool decode( ArgumentDecoder *decoder, Arguments5 &result )
     {
-        if (!Arguments4<T1, T2, T3, T4>::decode(decoder, result))
+        if ( !Arguments4<T1, T2, T3, T4>::decode( decoder, result ) )
+        {
             return false;
-        
-        return decoder->decode(result.argument5);
+        }
+
+        return decoder->decode( result.argument5 );
     }
 
     T5 argument5;
 };
 
-template<typename T1, typename T2, typename T3, typename T4, typename T5> Arguments5<const T1&, const T2&, const T3&, const T4&, const T5&> In(const T1& t1, const T2& t2, const T3 &t3, const T4& t4, const T5& t5)
+template<typename T1, typename T2, typename T3, typename T4, typename T5>
+Arguments5<const T1 &, const T2 &, const T3 &, const T4 &, const T5 &> In( const T1 &t1, const T2 &t2, const T3 &t3, const T4 &t4,
+        const T5 &t5 )
 {
-    return Arguments5<const T1&, const T2&, const T3&, const T4&, const T5&>(t1, t2, t3, t4, t5);
+    return Arguments5<const T1 &, const T2 &, const T3 &, const T4 &, const T5 &>( t1, t2, t3, t4, t5 );
 }
 
-template<typename T1, typename T2, typename T3, typename T4, typename T5> Arguments5<T1&, T2&, T3&, T4&, T5&> Out(T1& t1, T2& t2, T3& t3, T4& t4, T5& t5)
+template<typename T1, typename T2, typename T3, typename T4, typename T5> Arguments5<T1 &, T2 &, T3 &, T4 &, T5 &> Out( T1 &t1,
+        T2 &t2, T3 &t3, T4 &t4, T5 &t5 )
 {
-    return Arguments5<T1&, T2&, T3&, T4&, T5&>(t1, t2, t3, t4, t5);
+    return Arguments5<T1 &, T2 &, T3 &, T4 &, T5 &>( t1, t2, t3, t4, t5 );
 }
 
-template<typename T1, typename T2, typename T3, typename T4, typename T5, typename T6> struct Arguments6 : Arguments5<T1, T2, T3, T4, T5> {
+template<typename T1, typename T2, typename T3, typename T4, typename T5, typename T6> struct Arguments6 :
+    Arguments5<T1, T2, T3, T4, T5>
+{
     typedef Arguments6<typename WTF::RemoveConst<typename WTF::RemoveReference<T1>::Type>::Type,
-                       typename WTF::RemoveConst<typename WTF::RemoveReference<T2>::Type>::Type,
-                       typename WTF::RemoveConst<typename WTF::RemoveReference<T3>::Type>::Type,
-                       typename WTF::RemoveConst<typename WTF::RemoveReference<T4>::Type>::Type,
-                       typename WTF::RemoveConst<typename WTF::RemoveReference<T5>::Type>::Type,
-                       typename WTF::RemoveConst<typename WTF::RemoveReference<T6>::Type>::Type> ValueType;
+            typename WTF::RemoveConst<typename WTF::RemoveReference<T2>::Type>::Type,
+            typename WTF::RemoveConst<typename WTF::RemoveReference<T3>::Type>::Type,
+            typename WTF::RemoveConst<typename WTF::RemoveReference<T4>::Type>::Type,
+            typename WTF::RemoveConst<typename WTF::RemoveReference<T5>::Type>::Type,
+            typename WTF::RemoveConst<typename WTF::RemoveReference<T6>::Type>::Type> ValueType;
 
     Arguments6()
     {
     }
 
-    Arguments6(T1 t1, T2 t2, T3 t3, T4 t4, T5 t5, T6 t6)
-        : Arguments5<T1, T2, T3, T4, T5>(t1, t2, t3, t4, t5)
-        , argument6(t6)
+    Arguments6( T1 t1, T2 t2, T3 t3, T4 t4, T5 t5, T6 t6 )
+        : Arguments5<T1, T2, T3, T4, T5>( t1, t2, t3, t4, t5 )
+        , argument6( t6 )
     {
     }
 
-    void encode(ArgumentEncoder* encoder) const
+    void encode( ArgumentEncoder *encoder ) const
     {
-        Arguments5<T1, T2, T3, T4, T5>::encode(encoder);
-        encoder->encode(argument6);
+        Arguments5<T1, T2, T3, T4, T5>::encode( encoder );
+        encoder->encode( argument6 );
     }
-    
-    static bool decode(ArgumentDecoder* decoder, Arguments6& result)
+
+    static bool decode( ArgumentDecoder *decoder, Arguments6 &result )
     {
-        if (!Arguments5<T1, T2, T3, T4, T5>::decode(decoder, result))
+        if ( !Arguments5<T1, T2, T3, T4, T5>::decode( decoder, result ) )
+        {
             return false;
-        
-        return decoder->decode(result.argument6);
+        }
+
+        return decoder->decode( result.argument6 );
     }
 
     T6 argument6;
 };
 
-template<typename T1, typename T2, typename T3, typename T4, typename T5, typename T6> Arguments6<const T1&, const T2&, const T3&, const T4&, const T5&, const T6&> In(const T1& t1, const T2& t2, const T3 &t3, const T4& t4, const T5& t5, const T6& t6)
+template<typename T1, typename T2, typename T3, typename T4, typename T5, typename T6>
+Arguments6<const T1 &, const T2 &, const T3 &, const T4 &, const T5 &, const T6 &> In( const T1 &t1, const T2 &t2, const T3 &t3,
+        const T4 &t4, const T5 &t5, const T6 &t6 )
 {
-    return Arguments6<const T1&, const T2&, const T3&, const T4&, const T5&, const T6&>(t1, t2, t3, t4, t5, t6);
+    return Arguments6<const T1 &, const T2 &, const T3 &, const T4 &, const T5 &, const T6 &>( t1, t2, t3, t4, t5, t6 );
 }
 
-template<typename T1, typename T2, typename T3, typename T4, typename T5, typename T6> Arguments6<T1&, T2&, T3&, T4&, T5&, T6&> Out(T1& t1, T2& t2, T3& t3, T4& t4, T5& t5, T6& t6)
+template<typename T1, typename T2, typename T3, typename T4, typename T5, typename T6>
+Arguments6<T1 &, T2 &, T3 &, T4 &, T5 &, T6 &> Out( T1 &t1, T2 &t2, T3 &t3, T4 &t4, T5 &t5, T6 &t6 )
 {
-    return Arguments6<T1&, T2&, T3&, T4&, T5&, T6&>(t1, t2, t3, t4, t5, t6);
+    return Arguments6<T1 &, T2 &, T3 &, T4 &, T5 &, T6 &>( t1, t2, t3, t4, t5, t6 );
 }
 
-template<typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7> struct Arguments7 : Arguments6<T1, T2, T3, T4, T5, T6> {
+template<typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7> struct Arguments7 :
+    Arguments6<T1, T2, T3, T4, T5, T6>
+{
     typedef Arguments7<typename WTF::RemoveConst<typename WTF::RemoveReference<T1>::Type>::Type,
-                       typename WTF::RemoveConst<typename WTF::RemoveReference<T2>::Type>::Type,
-                       typename WTF::RemoveConst<typename WTF::RemoveReference<T3>::Type>::Type,
-                       typename WTF::RemoveConst<typename WTF::RemoveReference<T4>::Type>::Type,
-                       typename WTF::RemoveConst<typename WTF::RemoveReference<T5>::Type>::Type,
-                       typename WTF::RemoveConst<typename WTF::RemoveReference<T6>::Type>::Type,
-                       typename WTF::RemoveConst<typename WTF::RemoveReference<T7>::Type>::Type> ValueType;
+            typename WTF::RemoveConst<typename WTF::RemoveReference<T2>::Type>::Type,
+            typename WTF::RemoveConst<typename WTF::RemoveReference<T3>::Type>::Type,
+            typename WTF::RemoveConst<typename WTF::RemoveReference<T4>::Type>::Type,
+            typename WTF::RemoveConst<typename WTF::RemoveReference<T5>::Type>::Type,
+            typename WTF::RemoveConst<typename WTF::RemoveReference<T6>::Type>::Type,
+            typename WTF::RemoveConst<typename WTF::RemoveReference<T7>::Type>::Type> ValueType;
 
     Arguments7()
     {
     }
 
-    Arguments7(T1 t1, T2 t2, T3 t3, T4 t4, T5 t5, T6 t6, T7 t7)
-        : Arguments6<T1, T2, T3, T4, T5, T6>(t1, t2, t3, t4, t5, t6)
-        , argument7(t7)
+    Arguments7( T1 t1, T2 t2, T3 t3, T4 t4, T5 t5, T6 t6, T7 t7 )
+        : Arguments6<T1, T2, T3, T4, T5, T6>( t1, t2, t3, t4, t5, t6 )
+        , argument7( t7 )
     {
     }
 
-    void encode(ArgumentEncoder* encoder) const
+    void encode( ArgumentEncoder *encoder ) const
     {
-        Arguments6<T1, T2, T3, T4, T5, T6>::encode(encoder);
-        encoder->encode(argument7);
+        Arguments6<T1, T2, T3, T4, T5, T6>::encode( encoder );
+        encoder->encode( argument7 );
     }
-    
-    static bool decode(ArgumentDecoder* decoder, Arguments7& result)
+
+    static bool decode( ArgumentDecoder *decoder, Arguments7 &result )
     {
-        if (!Arguments6<T1, T2, T3, T4, T5, T6>::decode(decoder, result))
+        if ( !Arguments6<T1, T2, T3, T4, T5, T6>::decode( decoder, result ) )
+        {
             return false;
-        
-        return decoder->decode(result.argument7);
+        }
+
+        return decoder->decode( result.argument7 );
     }
 
     T7 argument7;
 };
 
-template<typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7> Arguments7<const T1&, const T2&, const T3&, const T4&, const T5&, const T6&, const T7&> In(const T1& t1, const T2& t2, const T3 &t3, const T4& t4, const T5& t5, const T6& t6, const T7& t7)
+template<typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7>
+Arguments7<const T1 &, const T2 &, const T3 &, const T4 &, const T5 &, const T6 &, const T7 &> In( const T1 &t1, const T2 &t2,
+        const T3 &t3, const T4 &t4, const T5 &t5, const T6 &t6, const T7 &t7 )
 {
-    return Arguments7<const T1&, const T2&, const T3&, const T4&, const T5&, const T6&, const T7&>(t1, t2, t3, t4, t5, t6, t7);
+    return Arguments7<const T1 &, const T2 &, const T3 &, const T4 &, const T5 &, const T6 &, const T7 &>( t1, t2, t3, t4, t5, t6,
+            t7 );
 }
 
-template<typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7> Arguments7<T1&, T2&, T3&, T4&, T5&, T6&, T7&> Out(T1& t1, T2& t2, T3& t3, T4& t4, T5& t5, T6& t6, T7& t7)
+template<typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7>
+Arguments7<T1 &, T2 &, T3 &, T4 &, T5 &, T6 &, T7 &> Out( T1 &t1, T2 &t2, T3 &t3, T4 &t4, T5 &t5, T6 &t6, T7 &t7 )
 {
-    return Arguments7<T1&, T2&, T3&, T4&, T5&, T6&, T7&>(t1, t2, t3, t4, t5, t6, t7);
+    return Arguments7<T1 &, T2 &, T3 &, T4 &, T5 &, T6 &, T7 &>( t1, t2, t3, t4, t5, t6, t7 );
 }
 
-template<typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8> struct Arguments8 : Arguments7<T1, T2, T3, T4, T5, T6, T7> {
+template<typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8> struct
+    Arguments8 : Arguments7<T1, T2, T3, T4, T5, T6, T7>
+{
     typedef Arguments8<typename WTF::RemoveConst<typename WTF::RemoveReference<T1>::Type>::Type,
-    typename WTF::RemoveConst<typename WTF::RemoveReference<T2>::Type>::Type,
-    typename WTF::RemoveConst<typename WTF::RemoveReference<T3>::Type>::Type,
-    typename WTF::RemoveConst<typename WTF::RemoveReference<T4>::Type>::Type,
-    typename WTF::RemoveConst<typename WTF::RemoveReference<T5>::Type>::Type,
-    typename WTF::RemoveConst<typename WTF::RemoveReference<T6>::Type>::Type,
-    typename WTF::RemoveConst<typename WTF::RemoveReference<T7>::Type>::Type,
-    typename WTF::RemoveConst<typename WTF::RemoveReference<T8>::Type>::Type> ValueType;
+            typename WTF::RemoveConst<typename WTF::RemoveReference<T2>::Type>::Type,
+            typename WTF::RemoveConst<typename WTF::RemoveReference<T3>::Type>::Type,
+            typename WTF::RemoveConst<typename WTF::RemoveReference<T4>::Type>::Type,
+            typename WTF::RemoveConst<typename WTF::RemoveReference<T5>::Type>::Type,
+            typename WTF::RemoveConst<typename WTF::RemoveReference<T6>::Type>::Type,
+            typename WTF::RemoveConst<typename WTF::RemoveReference<T7>::Type>::Type,
+            typename WTF::RemoveConst<typename WTF::RemoveReference<T8>::Type>::Type> ValueType;
 
     Arguments8() { }
-    
-    Arguments8(T1 t1, T2 t2, T3 t3, T4 t4, T5 t5, T6 t6, T7 t7, T8 t8)
-        : Arguments7<T1, T2, T3, T4, T5, T6, T7>(t1, t2, t3, t4, t5, t6, t7)
-        , argument8(t8)
+
+    Arguments8( T1 t1, T2 t2, T3 t3, T4 t4, T5 t5, T6 t6, T7 t7, T8 t8 )
+        : Arguments7<T1, T2, T3, T4, T5, T6, T7>( t1, t2, t3, t4, t5, t6, t7 )
+        , argument8( t8 )
     {
     }
 
-    void encode(ArgumentEncoder* encoder) const
+    void encode( ArgumentEncoder *encoder ) const
     {
-        Arguments7<T1, T2, T3, T4, T5, T6, T7>::encode(encoder);
-        encoder->encode(argument8);
+        Arguments7<T1, T2, T3, T4, T5, T6, T7>::encode( encoder );
+        encoder->encode( argument8 );
     }
 
-    static bool decode(ArgumentDecoder* decoder, Arguments8& result)
+    static bool decode( ArgumentDecoder *decoder, Arguments8 &result )
     {
-        if (!Arguments7<T1, T2, T3, T4, T5, T6, T7>::decode(decoder, result))
+        if ( !Arguments7<T1, T2, T3, T4, T5, T6, T7>::decode( decoder, result ) )
+        {
             return false;
+        }
 
-        return decoder->decode(result.argument8);
+        return decoder->decode( result.argument8 );
     }
 
     T8 argument8;
 };
 
-template<typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8> Arguments8<const T1&, const T2&, const T3&, const T4&, const T5&, const T6&, const T7&, const T8&> In(const T1& t1, const T2& t2, const T3 &t3, const T4& t4, const T5& t5, const T6& t6, const T7& t7, const T8& t8)
+template<typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8>
+Arguments8<const T1 &, const T2 &, const T3 &, const T4 &, const T5 &, const T6 &, const T7 &, const T8 &> In( const T1 &t1,
+        const T2 &t2, const T3 &t3, const T4 &t4, const T5 &t5, const T6 &t6, const T7 &t7, const T8 &t8 )
 {
-    return Arguments8<const T1&, const T2&, const T3&, const T4&, const T5&, const T6&, const T7&, const T8&>(t1, t2, t3, t4, t5, t6, t7, t8);
+    return Arguments8<const T1 &, const T2 &, const T3 &, const T4 &, const T5 &, const T6 &, const T7 &, const T8 &>( t1, t2, t3, t4,
+            t5, t6, t7, t8 );
 }
 
-template<typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8> Arguments8<T1&, T2&, T3&, T4&, T5&, T6&, T7&, T8&> Out(T1& t1, T2& t2, T3& t3, T4& t4, T5& t5, T6& t6, T7& t7, T8& t8)
+template<typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8>
+Arguments8<T1 &, T2 &, T3 &, T4 &, T5 &, T6 &, T7 &, T8 &> Out( T1 &t1, T2 &t2, T3 &t3, T4 &t4, T5 &t5, T6 &t6, T7 &t7, T8 &t8 )
 {
-    return Arguments8<T1&, T2&, T3&, T4&, T5&, T6&, T7&, T8&>(t1, t2, t3, t4, t5, t6, t7, t8);
+    return Arguments8<T1 &, T2 &, T3 &, T4 &, T5 &, T6 &, T7 &, T8 &>( t1, t2, t3, t4, t5, t6, t7, t8 );
 }
-    
+
 } // namespace CoreIPC
 
 #endif // Arguments_h

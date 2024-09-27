@@ -32,7 +32,8 @@
 
 #include <openvg.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 NativeImagePtr ImageFrame::asNewNativeImage() const
 {
@@ -44,30 +45,32 @@ NativeImagePtr ImageFrame::asNewNativeImage() const
     EGLDisplayOpenVG::current()->sharedPlatformSurface()->makeCurrent();
 #endif
 
-    const IntSize vgMaxImageSize(vgGeti(VG_MAX_IMAGE_WIDTH), vgGeti(VG_MAX_IMAGE_HEIGHT));
+    const IntSize vgMaxImageSize( vgGeti( VG_MAX_IMAGE_WIDTH ), vgGeti( VG_MAX_IMAGE_HEIGHT ) );
     ASSERT_VG_NO_ERROR();
 
-    TiledImageOpenVG* tiledImage = new TiledImageOpenVG(IntSize(width(), height()), vgMaxImageSize);
+    TiledImageOpenVG *tiledImage = new TiledImageOpenVG( IntSize( width(), height() ), vgMaxImageSize );
 
     const int numColumns = tiledImage->numColumns();
     const int numRows = tiledImage->numRows();
 
-    for (int yIndex = 0; yIndex < numRows; ++yIndex) {
-        for (int xIndex = 0; xIndex < numColumns; ++xIndex) {
-            IntRect tileRect = tiledImage->tileRect(xIndex, yIndex);
-            VGImage image = vgCreateImage(imageFormat,
-                tileRect.width(), tileRect.height(), VG_IMAGE_QUALITY_FASTER);
+    for ( int yIndex = 0; yIndex < numRows; ++yIndex )
+    {
+        for ( int xIndex = 0; xIndex < numColumns; ++xIndex )
+        {
+            IntRect tileRect = tiledImage->tileRect( xIndex, yIndex );
+            VGImage image = vgCreateImage( imageFormat,
+                                           tileRect.width(), tileRect.height(), VG_IMAGE_QUALITY_FASTER );
             ASSERT_VG_NO_ERROR();
 
-            PixelData* pixelData = const_cast<PixelData*>(m_bytes);
-            pixelData += (tileRect.y() * width()) + tileRect.x();
+            PixelData *pixelData = const_cast<PixelData *>( m_bytes );
+            pixelData += ( tileRect.y() * width() ) + tileRect.x();
 
-            vgImageSubData(image, reinterpret_cast<unsigned char*>(pixelData),
-                width() * sizeof(PixelData), bufferFormat,
-                0, 0, tileRect.width(), tileRect.height());
+            vgImageSubData( image, reinterpret_cast<unsigned char *>( pixelData ),
+                            width() * sizeof( PixelData ), bufferFormat,
+                            0, 0, tileRect.width(), tileRect.height() );
             ASSERT_VG_NO_ERROR();
 
-            tiledImage->setTile(xIndex, yIndex, image);
+            tiledImage->setTile( xIndex, yIndex, image );
         }
     }
 

@@ -30,21 +30,22 @@
 #include <unistd.h>
 #include <errno.h>
 
-namespace CoreIPC {
-
-Attachment::Attachment(int fileDescriptor, size_t size)
-    : m_type(MappedMemory)
-    , m_fileDescriptor(fileDescriptor)
-    , m_size(size)
+namespace CoreIPC
 {
-    ASSERT(m_fileDescriptor);
-    ASSERT(m_size);
+
+Attachment::Attachment( int fileDescriptor, size_t size )
+    : m_type( MappedMemory )
+    , m_fileDescriptor( fileDescriptor )
+    , m_size( size )
+{
+    ASSERT( m_fileDescriptor );
+    ASSERT( m_size );
 }
 
 void Attachment::dispose()
 {
-    if (m_fileDescriptor != -1)
-        while (close(m_fileDescriptor) == -1 && (errno == EINTR)) { }
+    if ( m_fileDescriptor != -1 )
+        while ( close( m_fileDescriptor ) == -1 && ( errno == EINTR ) ) { }
 }
 
 } // namespace CoreIPC

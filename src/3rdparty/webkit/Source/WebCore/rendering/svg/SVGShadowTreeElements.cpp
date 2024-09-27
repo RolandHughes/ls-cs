@@ -28,65 +28,70 @@
 #include "SVGNames.h"
 #include "SVGUseElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 // SVGShadowTreeContainerElement
 
-SVGShadowTreeContainerElement::SVGShadowTreeContainerElement(Document* document)
-    : SVGGElement(SVGNames::gTag, document)
+SVGShadowTreeContainerElement::SVGShadowTreeContainerElement( Document *document )
+    : SVGGElement( SVGNames::gTag, document )
 {
 }
 
-PassRefPtr<SVGShadowTreeContainerElement> SVGShadowTreeContainerElement::create(Document* document)
+PassRefPtr<SVGShadowTreeContainerElement> SVGShadowTreeContainerElement::create( Document *document )
 {
-    return adoptRef(new SVGShadowTreeContainerElement(document));
+    return adoptRef( new SVGShadowTreeContainerElement( document ) );
 }
 
 FloatSize SVGShadowTreeContainerElement::containerTranslation() const
 {
-    return FloatSize(m_xOffset.value(this), m_yOffset.value(this));
+    return FloatSize( m_xOffset.value( this ), m_yOffset.value( this ) );
 }
 
 PassRefPtr<Element> SVGShadowTreeContainerElement::cloneElementWithoutAttributesAndChildren() const
 {
-    return adoptRef(new SVGShadowTreeContainerElement(document()));
+    return adoptRef( new SVGShadowTreeContainerElement( document() ) );
 }
 // SVGShadowTreeRootElement
 
-inline SVGShadowTreeRootElement::SVGShadowTreeRootElement(Document* document, SVGUseElement* host)
-    : SVGShadowTreeContainerElement(document)
+inline SVGShadowTreeRootElement::SVGShadowTreeRootElement( Document *document, SVGUseElement *host )
+    : SVGShadowTreeContainerElement( document )
 {
-    setParent(host);
+    setParent( host );
     setInDocument();
 }
 
-PassRefPtr<SVGShadowTreeRootElement> SVGShadowTreeRootElement::create(Document* document, SVGUseElement* host)
+PassRefPtr<SVGShadowTreeRootElement> SVGShadowTreeRootElement::create( Document *document, SVGUseElement *host )
 {
-    return adoptRef(new SVGShadowTreeRootElement(document, host));
+    return adoptRef( new SVGShadowTreeRootElement( document, host ) );
 }
 
-void SVGShadowTreeRootElement::attachElement(PassRefPtr<RenderStyle> style, RenderArena* arena)
+void SVGShadowTreeRootElement::attachElement( PassRefPtr<RenderStyle> style, RenderArena *arena )
 {
-    ASSERT(svgShadowHost());
+    ASSERT( svgShadowHost() );
 
     // Create the renderer with the specified style
-    RenderObject* renderer = createRenderer(arena, style.get());
-    if (renderer) {
-        setRenderer(renderer);
-        renderer->setStyle(style);
+    RenderObject *renderer = createRenderer( arena, style.get() );
+
+    if ( renderer )
+    {
+        setRenderer( renderer );
+        renderer->setStyle( style );
     }
 
     // Set these explicitly since this normally happens during an attach()
     setAttached();
 
     // Add the renderer to the render tree
-    if (renderer)
-        svgShadowHost()->renderer()->addChild(renderer);
+    if ( renderer )
+    {
+        svgShadowHost()->renderer()->addChild( renderer );
+    }
 }
 
 void SVGShadowTreeRootElement::clearSVGShadowHost()
 {
-    setParent(0);
+    setParent( 0 );
 }
 
 }

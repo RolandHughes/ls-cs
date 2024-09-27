@@ -26,10 +26,11 @@
 #include "PluginData.h"
 #include <wtf/text/AtomicString.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-DOMMimeTypeArray::DOMMimeTypeArray(Frame* frame)
-    : m_frame(frame)
+DOMMimeTypeArray::DOMMimeTypeArray( Frame *frame )
+    : m_frame( frame )
 {
 }
 
@@ -39,56 +40,93 @@ DOMMimeTypeArray::~DOMMimeTypeArray()
 
 unsigned DOMMimeTypeArray::length() const
 {
-    PluginData* data = getPluginData();
-    if (!data)
+    PluginData *data = getPluginData();
+
+    if ( !data )
+    {
         return 0;
+    }
+
     return data->mimes().size();
 }
 
-PassRefPtr<DOMMimeType> DOMMimeTypeArray::item(unsigned index)
-{
-    PluginData* data = getPluginData();
-    if (!data)
-        return 0;
-    const Vector<MimeClassInfo>& mimes = data->mimes();
-    if (index >= mimes.size())
-        return 0;
-    return DOMMimeType::create(data, m_frame, index).get();
-}
-
-bool DOMMimeTypeArray::canGetItemsForName(const AtomicString& propertyName)
+PassRefPtr<DOMMimeType> DOMMimeTypeArray::item( unsigned index )
 {
     PluginData *data = getPluginData();
-    if (!data)
+
+    if ( !data )
+    {
         return 0;
-    const Vector<MimeClassInfo>& mimes = data->mimes();
-    for (unsigned i = 0; i < mimes.size(); ++i) {
-        if (mimes[i].type == propertyName)
-            return true;
     }
+
+    const Vector<MimeClassInfo> &mimes = data->mimes();
+
+    if ( index >= mimes.size() )
+    {
+        return 0;
+    }
+
+    return DOMMimeType::create( data, m_frame, index ).get();
+}
+
+bool DOMMimeTypeArray::canGetItemsForName( const AtomicString &propertyName )
+{
+    PluginData *data = getPluginData();
+
+    if ( !data )
+    {
+        return 0;
+    }
+
+    const Vector<MimeClassInfo> &mimes = data->mimes();
+
+    for ( unsigned i = 0; i < mimes.size(); ++i )
+    {
+        if ( mimes[i].type == propertyName )
+        {
+            return true;
+        }
+    }
+
     return false;
 }
 
-PassRefPtr<DOMMimeType> DOMMimeTypeArray::namedItem(const AtomicString& propertyName)
+PassRefPtr<DOMMimeType> DOMMimeTypeArray::namedItem( const AtomicString &propertyName )
 {
     PluginData *data = getPluginData();
-    if (!data)
+
+    if ( !data )
+    {
         return 0;
-    const Vector<MimeClassInfo>& mimes = data->mimes();
-    for (unsigned i = 0; i < mimes.size(); ++i) {
-        if (mimes[i].type == propertyName)
-            return DOMMimeType::create(data, m_frame, i).get();
     }
+
+    const Vector<MimeClassInfo> &mimes = data->mimes();
+
+    for ( unsigned i = 0; i < mimes.size(); ++i )
+    {
+        if ( mimes[i].type == propertyName )
+        {
+            return DOMMimeType::create( data, m_frame, i ).get();
+        }
+    }
+
     return 0;
 }
 
-PluginData* DOMMimeTypeArray::getPluginData() const
+PluginData *DOMMimeTypeArray::getPluginData() const
 {
-    if (!m_frame)
+    if ( !m_frame )
+    {
         return 0;
-    Page* p = m_frame->page();
-    if (!p)
+    }
+
+    Page *p = m_frame->page();
+
+    if ( !p )
+    {
         return 0;
+    }
+
     return p->pluginData();
 }
 

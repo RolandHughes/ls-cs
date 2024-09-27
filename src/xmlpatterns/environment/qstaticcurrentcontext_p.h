@@ -26,20 +26,21 @@
 
 #include <qdelegatingstaticcontext_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class StaticCurrentContext : public DelegatingStaticContext
 {
- public:
-   StaticCurrentContext(const ItemType::Ptr &currentItemType,
-                        const StaticContext::Ptr &context);
-   /**
-    * @returns the type passed in the constructor.
-    */
-   ItemType::Ptr currentItemType() const override;
+public:
+    StaticCurrentContext( const ItemType::Ptr &currentItemType,
+                          const StaticContext::Ptr &context );
+    /**
+     * @returns the type passed in the constructor.
+     */
+    ItemType::Ptr currentItemType() const override;
 
- private:
-   const ItemType::Ptr         m_currentItemType;
+private:
+    const ItemType::Ptr         m_currentItemType;
 };
 
 }

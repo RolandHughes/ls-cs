@@ -6,13 +6,13 @@
  * are met:
  *
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Apple Computer, Inc. ("Apple") nor the names of
  *     its contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
+ *     from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY APPLE AND ITS CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -33,57 +33,77 @@
 #include "Document.h"
 #include "KeyframeList.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class RenderStyle;
 
 // A KeyframeAnimation tracks the state of an explicit animation
 // for a single RenderObject.
-class KeyframeAnimation : public AnimationBase {
+class KeyframeAnimation : public AnimationBase
+{
 public:
-    static PassRefPtr<KeyframeAnimation> create(const Animation* animation, RenderObject* renderer, int index, CompositeAnimation* compositeAnimation, RenderStyle* unanimatedStyle)
+    static PassRefPtr<KeyframeAnimation> create( const Animation *animation, RenderObject *renderer, int index,
+            CompositeAnimation *compositeAnimation, RenderStyle *unanimatedStyle )
     {
-        return adoptRef(new KeyframeAnimation(animation, renderer, index, compositeAnimation, unanimatedStyle));
+        return adoptRef( new KeyframeAnimation( animation, renderer, index, compositeAnimation, unanimatedStyle ) );
     };
 
-    virtual void animate(CompositeAnimation*, RenderObject*, const RenderStyle* currentStyle, RenderStyle* targetStyle, RefPtr<RenderStyle>& animatedStyle);
-    virtual void getAnimatedStyle(RefPtr<RenderStyle>& animatedStyle);
+    virtual void animate( CompositeAnimation *, RenderObject *, const RenderStyle *currentStyle, RenderStyle *targetStyle,
+                          RefPtr<RenderStyle> &animatedStyle );
+    virtual void getAnimatedStyle( RefPtr<RenderStyle> &animatedStyle );
 
-    const AtomicString& name() const { return m_keyframes.animationName(); }
-    int index() const { return m_index; }
-    void setIndex(int i) { m_index = i; }
+    const AtomicString &name() const
+    {
+        return m_keyframes.animationName();
+    }
+    int index() const
+    {
+        return m_index;
+    }
+    void setIndex( int i )
+    {
+        m_index = i;
+    }
 
-    bool hasAnimationForProperty(int property) const;
-    
-    void setUnanimatedStyle(PassRefPtr<RenderStyle> style) { m_unanimatedStyle = style; }
-    RenderStyle* unanimatedStyle() const { return m_unanimatedStyle.get(); }
+    bool hasAnimationForProperty( int property ) const;
+
+    void setUnanimatedStyle( PassRefPtr<RenderStyle> style )
+    {
+        m_unanimatedStyle = style;
+    }
+    RenderStyle *unanimatedStyle() const
+    {
+        return m_unanimatedStyle.get();
+    }
 
     virtual double timeToNextService();
 
 protected:
-    virtual void onAnimationStart(double elapsedTime);
-    virtual void onAnimationIteration(double elapsedTime);
-    virtual void onAnimationEnd(double elapsedTime);
-    virtual bool startAnimation(double timeOffset);
-    virtual void pauseAnimation(double timeOffset);
+    virtual void onAnimationStart( double elapsedTime );
+    virtual void onAnimationIteration( double elapsedTime );
+    virtual void onAnimationEnd( double elapsedTime );
+    virtual bool startAnimation( double timeOffset );
+    virtual void pauseAnimation( double timeOffset );
     virtual void endAnimation();
 
     virtual void overrideAnimations();
     virtual void resumeOverriddenAnimations();
 
-    bool shouldSendEventForListener(Document::ListenerType inListenerType) const;
-    bool sendAnimationEvent(const AtomicString&, double elapsedTime);
+    bool shouldSendEventForListener( Document::ListenerType inListenerType ) const;
+    bool sendAnimationEvent( const AtomicString &, double elapsedTime );
 
-    virtual bool affectsProperty(int) const;
+    virtual bool affectsProperty( int ) const;
 
     void validateTransformFunctionList();
 
 private:
-    KeyframeAnimation(const Animation* animation, RenderObject*, int index, CompositeAnimation*, RenderStyle* unanimatedStyle);
+    KeyframeAnimation( const Animation *animation, RenderObject *, int index, CompositeAnimation *, RenderStyle *unanimatedStyle );
     virtual ~KeyframeAnimation();
-    
+
     // Get the styles for the given property surrounding the current animation time and the progress between them.
-    void fetchIntervalEndpointsForProperty(int property, const RenderStyle*& fromStyle, const RenderStyle*& toStyle, double& progress) const;
+    void fetchIntervalEndpointsForProperty( int property, const RenderStyle *&fromStyle, const RenderStyle *&toStyle,
+                                            double &progress ) const;
 
     // The keyframes that we are blending.
     KeyframeList m_keyframes;

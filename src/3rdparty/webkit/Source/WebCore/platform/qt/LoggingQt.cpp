@@ -24,26 +24,35 @@
 #include <QDebug>
 #include <QStringList>
 
-namespace WebCore {
+namespace WebCore
+{
 
 void InitializeLoggingChannelsIfNecessary()
 {
     static bool haveInitializedLoggingChannels = false;
-    if (haveInitializedLoggingChannels)
+
+    if ( haveInitializedLoggingChannels )
+    {
         return;
+    }
 
     haveInitializedLoggingChannels = true;
 
-    QByteArray loggingEnv = qgetenv("QT_WEBKIT_LOG");
+    QByteArray loggingEnv = qgetenv( "QT_WEBKIT_LOG" );
 
-    if (loggingEnv.isEmpty())
+    if ( loggingEnv.isEmpty() )
+    {
         return;
+    }
 
-    QStringList channels = QString::fromUtf8(loggingEnv).split(",");
+    QStringList channels = QString::fromUtf8( loggingEnv ).split( "," );
 
-    for (int i = 0; i < channels.count(); i++) {
-        if (WTFLogChannel* channel = getChannelFromName(channels.at(i)))
+    for ( int i = 0; i < channels.count(); i++ )
+    {
+        if ( WTFLogChannel *channel = getChannelFromName( channels.at( i ) ) )
+        {
             channel->state = WTFLogChannelOn;
+        }
     }
 
     // By default we log calls to notImplemented(). This can be turned

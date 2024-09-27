@@ -23,12 +23,14 @@
 
 #include "NumberObject.h"
 
-namespace JSC {
+namespace JSC
+{
 
-    class NumberPrototype : public NumberObject {
-    public:
-        NumberPrototype(ExecState*, NonNullPassRefPtr<Structure>, Structure* prototypeFunctionStructure);
-    };
+class NumberPrototype : public NumberObject
+{
+public:
+    NumberPrototype( ExecState *, NonNullPassRefPtr<Structure>, Structure *prototypeFunctionStructure );
+};
 
 } // namespace JSC
 

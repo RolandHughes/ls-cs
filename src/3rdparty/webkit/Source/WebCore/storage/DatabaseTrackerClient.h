@@ -32,15 +32,17 @@
 
 #include <wtf/Forward.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class SecurityOrigin;
 
-class DatabaseTrackerClient {
+class DatabaseTrackerClient
+{
 public:
     virtual ~DatabaseTrackerClient() { }
-    virtual void dispatchDidModifyOrigin(SecurityOrigin*) = 0;
-    virtual void dispatchDidModifyDatabase(SecurityOrigin*, const String& databaseName) = 0;
+    virtual void dispatchDidModifyOrigin( SecurityOrigin * ) = 0;
+    virtual void dispatchDidModifyDatabase( SecurityOrigin *, const String &databaseName ) = 0;
 };
 
 } // namespace WebCore

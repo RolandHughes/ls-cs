@@ -36,75 +36,77 @@ class QVideoSurfaceFormatPrivate;
 
 class Q_MULTIMEDIA_EXPORT QVideoSurfaceFormat
 {
- public:
-   enum Direction {
-      TopToBottom,
-      BottomToTop
-   };
+public:
+    enum Direction
+    {
+        TopToBottom,
+        BottomToTop
+    };
 
-   enum YCbCrColorSpace {
-      YCbCr_Undefined,
-      YCbCr_BT601,
-      YCbCr_BT709,
-      YCbCr_xvYCC601,
-      YCbCr_xvYCC709,
-      YCbCr_JPEG,
-      YCbCr_CustomMatrix
-   };
+    enum YCbCrColorSpace
+    {
+        YCbCr_Undefined,
+        YCbCr_BT601,
+        YCbCr_BT709,
+        YCbCr_xvYCC601,
+        YCbCr_xvYCC709,
+        YCbCr_JPEG,
+        YCbCr_CustomMatrix
+    };
 
-   QVideoSurfaceFormat();
-   QVideoSurfaceFormat(const QSize &size, QVideoFrame::PixelFormat pixelFormat,
-      QAbstractVideoBuffer::HandleType handleType = QAbstractVideoBuffer::NoHandle);
+    QVideoSurfaceFormat();
+    QVideoSurfaceFormat( const QSize &size, QVideoFrame::PixelFormat pixelFormat,
+                         QAbstractVideoBuffer::HandleType handleType = QAbstractVideoBuffer::NoHandle );
 
-   QVideoSurfaceFormat(const QVideoSurfaceFormat &other);
-   ~QVideoSurfaceFormat();
+    QVideoSurfaceFormat( const QVideoSurfaceFormat &other );
+    ~QVideoSurfaceFormat();
 
-   QVideoSurfaceFormat &operator =(const QVideoSurfaceFormat &other);
+    QVideoSurfaceFormat &operator =( const QVideoSurfaceFormat &other );
 
-   bool operator ==(const QVideoSurfaceFormat &other) const;
-   bool operator !=(const QVideoSurfaceFormat &other) const;
+    bool operator ==( const QVideoSurfaceFormat &other ) const;
+    bool operator !=( const QVideoSurfaceFormat &other ) const;
 
-   bool isValid() const;
+    bool isValid() const;
 
-   QVideoFrame::PixelFormat pixelFormat() const;
-   QAbstractVideoBuffer::HandleType handleType() const;
+    QVideoFrame::PixelFormat pixelFormat() const;
+    QAbstractVideoBuffer::HandleType handleType() const;
 
-   QSize frameSize() const;
-   void setFrameSize(const QSize &size);
-   void setFrameSize(int width, int height);
+    QSize frameSize() const;
+    void setFrameSize( const QSize &size );
+    void setFrameSize( int width, int height );
 
-   int frameWidth() const;
-   int frameHeight() const;
+    int frameWidth() const;
+    int frameHeight() const;
 
-   QRect viewport() const;
-   void setViewport(const QRect &viewport);
+    QRect viewport() const;
+    void setViewport( const QRect &viewport );
 
-   Direction scanLineDirection() const;
-   void setScanLineDirection(Direction direction);
+    Direction scanLineDirection() const;
+    void setScanLineDirection( Direction direction );
 
-   qreal frameRate() const;
-   void setFrameRate(qreal rate);
+    qreal frameRate() const;
+    void setFrameRate( qreal rate );
 
-   QSize pixelAspectRatio() const;
-   void setPixelAspectRatio(const QSize &ratio);
-   void setPixelAspectRatio(int horizontal, int vertical);
+    QSize pixelAspectRatio() const;
+    void setPixelAspectRatio( const QSize &ratio );
+    void setPixelAspectRatio( int horizontal, int vertical );
 
-   YCbCrColorSpace yCbCrColorSpace() const;
-   void setYCbCrColorSpace(YCbCrColorSpace colorSpace);
+    YCbCrColorSpace yCbCrColorSpace() const;
+    void setYCbCrColorSpace( YCbCrColorSpace colorSpace );
 
-   QSize sizeHint() const;
+    QSize sizeHint() const;
 
-   QList<QString > propertyNames() const;
-   QVariant property(const QString &name) const;
-   void setProperty(QStringView name, const QVariant &value);
+    QList<QString > propertyNames() const;
+    QVariant property( const QString &name ) const;
+    void setProperty( QStringView name, const QVariant &value );
 
- private:
-   QSharedDataPointer<QVideoSurfaceFormatPrivate> d;
+private:
+    QSharedDataPointer<QVideoSurfaceFormatPrivate> d;
 };
 
-Q_MULTIMEDIA_EXPORT QDebug operator<<(QDebug, const QVideoSurfaceFormat &);
-Q_MULTIMEDIA_EXPORT QDebug operator<<(QDebug, QVideoSurfaceFormat::Direction);
-Q_MULTIMEDIA_EXPORT QDebug operator<<(QDebug, QVideoSurfaceFormat::YCbCrColorSpace);
+Q_MULTIMEDIA_EXPORT QDebug operator<<( QDebug, const QVideoSurfaceFormat & );
+Q_MULTIMEDIA_EXPORT QDebug operator<<( QDebug, QVideoSurfaceFormat::Direction );
+Q_MULTIMEDIA_EXPORT QDebug operator<<( QDebug, QVideoSurfaceFormat::YCbCrColorSpace );
 
 #endif
 

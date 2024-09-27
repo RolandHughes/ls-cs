@@ -31,19 +31,19 @@ QT_BEGIN_NAMESPACE
 class QDeclarativeDebugServer;
 class Q_DECLARATIVE_EXPORT QDeclarativeDebugServerConnection
 {
- public:
-   QDeclarativeDebugServerConnection() {}
-   virtual ~QDeclarativeDebugServerConnection() {}
+public:
+    QDeclarativeDebugServerConnection() {}
+    virtual ~QDeclarativeDebugServerConnection() {}
 
-   virtual void setServer(QDeclarativeDebugServer *server) = 0;
-   virtual void setPort(int port, bool bock) = 0;
-   virtual bool isConnected() const = 0;
-   virtual void send(const QByteArray &message) = 0;
-   virtual void disconnect() = 0;
-   virtual bool waitForMessage() = 0;
+    virtual void setServer( QDeclarativeDebugServer *server ) = 0;
+    virtual void setPort( int port, bool bock ) = 0;
+    virtual bool isConnected() const = 0;
+    virtual void send( const QByteArray &message ) = 0;
+    virtual void disconnect() = 0;
+    virtual bool waitForMessage() = 0;
 };
 
-CS_DECLARE_INTERFACE(QDeclarativeDebugServerConnection, "com.copperspice.QDeclarativeDebugServerConnection/1.0")
+CS_DECLARE_INTERFACE( QDeclarativeDebugServerConnection, "com.copperspice.QDeclarativeDebugServerConnection/1.0" )
 
 QT_END_NAMESPACE
 

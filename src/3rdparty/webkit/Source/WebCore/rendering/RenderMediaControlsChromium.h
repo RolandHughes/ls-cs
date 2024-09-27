@@ -31,13 +31,15 @@
 #include "RenderObject.h"
 #include "MediaControlElements.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class HTMLMediaElement;
-class RenderMediaControlsChromium {
+class RenderMediaControlsChromium
+{
 public:
-    static bool paintMediaControlsPart(MediaControlElementType, RenderObject*, const PaintInfo&, const IntRect&);
-    static void adjustMediaSliderThumbSize(RenderObject*);
+    static bool paintMediaControlsPart( MediaControlElementType, RenderObject *, const PaintInfo &, const IntRect & );
+    static void adjustMediaSliderThumbSize( RenderObject * );
 };
 
 } // namespace WebCore

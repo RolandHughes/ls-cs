@@ -27,16 +27,16 @@
 
 using namespace QPatternist;
 
-bool TemplateMode::lessThanByPriority(const TemplatePattern::Ptr &t1,
-                                      const TemplatePattern::Ptr &t2)
+bool TemplateMode::lessThanByPriority( const TemplatePattern::Ptr &t1,
+                                       const TemplatePattern::Ptr &t2 )
 {
-   return t1->priority() > t2->priority();
+    return t1->priority() > t2->priority();
 }
 
 void TemplateMode::finalize()
 {
-   std::sort(templatePatterns.begin(), templatePatterns.end(), lessThanByPriority);
+    std::sort( templatePatterns.begin(), templatePatterns.end(), lessThanByPriority );
 
-   /* Now we have a list of patterns sorted by priority. */
+    /* Now we have a list of patterns sorted by priority. */
 }
 

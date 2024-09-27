@@ -23,40 +23,53 @@
 
 #include <qpatternistlocale_p.h>
 
-namespace QPatternist {
-
-QString escape(const QString &input)
+namespace QPatternist
 {
-   QString rich;
 
-   for (int i = 0; i < input.length(); ++i) {
-      switch (input.at(i).unicode()) {
-         case '<': {
-            rich += QLatin1String("&lt;");
-            break;
-         }
-         case '>': {
-            rich += QLatin1String("&gt;");
-            break;
-         }
-         case '&': {
-            rich += QLatin1String("&amp;");
-            break;
-         }
-         case '"': {
-            rich += QLatin1String("&quot;");
-            break;
-         }
-         case '\'': {
-            rich += QLatin1String("&apos;");
-            break;
-         }
-         default:
-            rich += input.at(i);
-      }
-   }
+QString escape( const QString &input )
+{
+    QString rich;
 
-   return rich;
+    for ( int i = 0; i < input.length(); ++i )
+    {
+        switch ( input.at( i ).unicode() )
+        {
+            case '<':
+            {
+                rich += QLatin1String( "&lt;" );
+                break;
+            }
+
+            case '>':
+            {
+                rich += QLatin1String( "&gt;" );
+                break;
+            }
+
+            case '&':
+            {
+                rich += QLatin1String( "&amp;" );
+                break;
+            }
+
+            case '"':
+            {
+                rich += QLatin1String( "&quot;" );
+                break;
+            }
+
+            case '\'':
+            {
+                rich += QLatin1String( "&apos;" );
+                break;
+            }
+
+            default:
+                rich += input.at( i );
+        }
+    }
+
+    return rich;
 }
 }
 

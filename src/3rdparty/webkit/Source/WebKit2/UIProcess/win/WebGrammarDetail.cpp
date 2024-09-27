@@ -30,27 +30,32 @@
 #include "WKGrammarDetail.h"
 #include "WebString.h"
 
-namespace WebKit {
-
-PassRefPtr<WebGrammarDetail> WebGrammarDetail::create(int location, int length, ImmutableArray* guesses, const String& userDescription)
+namespace WebKit
 {
-    return adoptRef(new WebGrammarDetail(location, length, guesses, userDescription));
+
+PassRefPtr<WebGrammarDetail> WebGrammarDetail::create( int location, int length, ImmutableArray *guesses,
+        const String &userDescription )
+{
+    return adoptRef( new WebGrammarDetail( location, length, guesses, userDescription ) );
 }
 
-PassRefPtr<WebGrammarDetail> WebGrammarDetail::create(const WebCore::GrammarDetail& grammarDetail)
+PassRefPtr<WebGrammarDetail> WebGrammarDetail::create( const WebCore::GrammarDetail &grammarDetail )
 {
-    return adoptRef(new WebGrammarDetail(grammarDetail));
+    return adoptRef( new WebGrammarDetail( grammarDetail ) );
 }
 
-WebGrammarDetail::WebGrammarDetail(int location, int length, ImmutableArray* guesses, const String& userDescription)
+WebGrammarDetail::WebGrammarDetail( int location, int length, ImmutableArray *guesses, const String &userDescription )
 {
     m_grammarDetail.location = location;
     m_grammarDetail.length = length;
 
     size_t numGuesses = guesses->size();
-    m_grammarDetail.guesses.reserveCapacity(numGuesses);
-    for (size_t i = 0; i < numGuesses; ++i)
-        m_grammarDetail.guesses.uncheckedAppend(guesses->at<WebString>(i)->string());
+    m_grammarDetail.guesses.reserveCapacity( numGuesses );
+
+    for ( size_t i = 0; i < numGuesses; ++i )
+    {
+        m_grammarDetail.guesses.uncheckedAppend( guesses->at<WebString>( i )->string() );
+    }
 
     m_grammarDetail.userDescription = userDescription;
 }
@@ -58,14 +63,18 @@ WebGrammarDetail::WebGrammarDetail(int location, int length, ImmutableArray* gue
 PassRefPtr<ImmutableArray> WebGrammarDetail::guesses() const
 {
     size_t numGuesses = m_grammarDetail.guesses.size();
-    Vector<RefPtr<APIObject> > wkGuesses(numGuesses);
-    for (unsigned i = 0; i < numGuesses; ++i)
-        wkGuesses[i] = WebString::create(m_grammarDetail.guesses[i]);
-    return ImmutableArray::adopt(wkGuesses);
+    Vector<RefPtr<APIObject> > wkGuesses( numGuesses );
+
+    for ( unsigned i = 0; i < numGuesses; ++i )
+    {
+        wkGuesses[i] = WebString::create( m_grammarDetail.guesses[i] );
+    }
+
+    return ImmutableArray::adopt( wkGuesses );
 }
 
-WebGrammarDetail::WebGrammarDetail(const WebCore::GrammarDetail& grammarDetail)
-    : m_grammarDetail(grammarDetail)
+WebGrammarDetail::WebGrammarDetail( const WebCore::GrammarDetail &grammarDetail )
+    : m_grammarDetail( grammarDetail )
 {
 }
 

@@ -31,13 +31,13 @@
 
 class Q_GUI_EXPORT QGenericPlugin : public QObject
 {
-   GUI_CS_OBJECT(QGenericPlugin)
+    GUI_CS_OBJECT( QGenericPlugin )
 
- public:
-   explicit QGenericPlugin(QObject *parent = nullptr);
-   ~QGenericPlugin();
+public:
+    explicit QGenericPlugin( QObject *parent = nullptr );
+    ~QGenericPlugin();
 
-   virtual QObject *create(const QString &key, const QString &spec) = 0;
+    virtual QObject *create( const QString &key, const QString &spec ) = 0;
 };
 
 #endif

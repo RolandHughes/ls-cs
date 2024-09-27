@@ -6,13 +6,13 @@
  * are met:
  *
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Apple Computer, Inc. ("Apple") nor the names of
  *     its contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
+ *     from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY APPLE AND ITS CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -40,75 +40,80 @@
 #include "Timer.h"
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class FormState;
-    class ResourceRequest;
+class FormState;
+class ResourceRequest;
 
-    class MainResourceLoader : public ResourceLoader {
-    public:
-        static PassRefPtr<MainResourceLoader> create(Frame*);
-        virtual ~MainResourceLoader();
+class MainResourceLoader : public ResourceLoader
+{
+public:
+    static PassRefPtr<MainResourceLoader> create( Frame * );
+    virtual ~MainResourceLoader();
 
-        virtual bool load(const ResourceRequest&, const SubstituteData&);
-        virtual void addData(const char*, int, bool allAtOnce);
+    virtual bool load( const ResourceRequest &, const SubstituteData & );
+    virtual void addData( const char *, int, bool allAtOnce );
 
-        virtual void setDefersLoading(bool);
+    virtual void setDefersLoading( bool );
 
-        virtual void willSendRequest(ResourceRequest&, const ResourceResponse& redirectResponse);
-        virtual void didReceiveResponse(const ResourceResponse&);
-        virtual void didReceiveData(const char*, int, long long encodedDataLength, bool allAtOnce);
-        virtual void didFinishLoading(double finishTime);
-        virtual void didFail(const ResourceError&);
+    virtual void willSendRequest( ResourceRequest &, const ResourceResponse &redirectResponse );
+    virtual void didReceiveResponse( const ResourceResponse & );
+    virtual void didReceiveData( const char *, int, long long encodedDataLength, bool allAtOnce );
+    virtual void didFinishLoading( double finishTime );
+    virtual void didFail( const ResourceError & );
 
 #if HAVE(RUNLOOP_TIMER)
-        typedef RunLoopTimer<MainResourceLoader> MainResourceLoaderTimer;
+    typedef RunLoopTimer<MainResourceLoader> MainResourceLoaderTimer;
 #else
-        typedef Timer<MainResourceLoader> MainResourceLoaderTimer;
+    typedef Timer<MainResourceLoader> MainResourceLoaderTimer;
 #endif
 
-        void handleDataLoadNow(MainResourceLoaderTimer*);
+    void handleDataLoadNow( MainResourceLoaderTimer * );
 
-        bool isLoadingMultipartContent() const { return m_loadingMultipartContent; }
+    bool isLoadingMultipartContent() const
+    {
+        return m_loadingMultipartContent;
+    }
 
-    private:
-        MainResourceLoader(Frame*);
+private:
+    MainResourceLoader( Frame * );
 
-        virtual void didCancel(const ResourceError&);
+    virtual void didCancel( const ResourceError & );
 
-        bool loadNow(ResourceRequest&);
+    bool loadNow( ResourceRequest & );
 
-        void handleEmptyLoad(const KURL&, bool forURLScheme);
-        void handleDataLoadSoon(const ResourceRequest& r);
+    void handleEmptyLoad( const KURL &, bool forURLScheme );
+    void handleDataLoadSoon( const ResourceRequest &r );
 
-        void startDataLoadTimer();
-        void handleDataLoad(ResourceRequest&);
+    void startDataLoadTimer();
+    void handleDataLoad( ResourceRequest & );
 
-        void receivedError(const ResourceError&);
-        ResourceError interruptionForPolicyChangeError() const;
-        void stopLoadingForPolicyChange();
-        bool isPostOrRedirectAfterPost(const ResourceRequest& newRequest, const ResourceResponse& redirectResponse);
+    void receivedError( const ResourceError & );
+    ResourceError interruptionForPolicyChangeError() const;
+    void stopLoadingForPolicyChange();
+    bool isPostOrRedirectAfterPost( const ResourceRequest &newRequest, const ResourceResponse &redirectResponse );
 
-        static void callContinueAfterNavigationPolicy(void*, const ResourceRequest&, PassRefPtr<FormState>, bool shouldContinue);
-        void continueAfterNavigationPolicy(const ResourceRequest&, bool shouldContinue);
+    static void callContinueAfterNavigationPolicy( void *, const ResourceRequest &, PassRefPtr<FormState>, bool shouldContinue );
+    void continueAfterNavigationPolicy( const ResourceRequest &, bool shouldContinue );
 
-        static void callContinueAfterContentPolicy(void*, PolicyAction);
-        void continueAfterContentPolicy(PolicyAction);
-        void continueAfterContentPolicy(PolicyAction, const ResourceResponse&);
-        
+    static void callContinueAfterContentPolicy( void *, PolicyAction );
+    void continueAfterContentPolicy( PolicyAction );
+    void continueAfterContentPolicy( PolicyAction, const ResourceResponse & );
+
 #if PLATFORM(QT)
-        void substituteMIMETypeFromPluginDatabase(const ResourceResponse&);
+    void substituteMIMETypeFromPluginDatabase( const ResourceResponse & );
 #endif
 
-        ResourceRequest m_initialRequest;
-        SubstituteData m_substituteData;
+    ResourceRequest m_initialRequest;
+    SubstituteData m_substituteData;
 
-        MainResourceLoaderTimer m_dataLoadTimer;
+    MainResourceLoaderTimer m_dataLoadTimer;
 
-        bool m_loadingMultipartContent;
-        bool m_waitingForContentPolicy;
-        double m_timeOfLastDataReceived;
-    };
+    bool m_loadingMultipartContent;
+    bool m_waitingForContentPolicy;
+    double m_timeOfLastDataReceived;
+};
 
 }
 

@@ -32,7 +32,8 @@
 #include <WebCore/NotImplemented.h>
 #include <wtf/text/WTFString.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
 String WebInspector::localizedStringsURL() const
 {

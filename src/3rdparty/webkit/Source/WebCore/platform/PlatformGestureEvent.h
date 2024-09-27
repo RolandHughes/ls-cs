@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef PlatformGestureEvent_h
@@ -30,27 +30,42 @@
 
 #include "IntPoint.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class PlatformGestureEvent {
+class PlatformGestureEvent
+{
 public:
-    enum Type {
+    enum Type
+    {
         ScrollBeginType,
         ScrollEndType,
     };
 
     PlatformGestureEvent()
-        : m_type(ScrollBeginType)
-        , m_timestamp(0)
+        : m_type( ScrollBeginType )
+        , m_timestamp( 0 )
     {
     }
 
-    Type type() const { return m_type; }
+    Type type() const
+    {
+        return m_type;
+    }
 
-    const IntPoint& position() const { return m_position; } // PlatformWindow coordinates.
-    const IntPoint& globalPosition() const { return m_globalPosition; } // Screen coordinates.
+    const IntPoint &position() const
+    {
+        return m_position;    // PlatformWindow coordinates.
+    }
+    const IntPoint &globalPosition() const
+    {
+        return m_globalPosition;    // Screen coordinates.
+    }
 
-    double timestamp() const { return m_timestamp; }
+    double timestamp() const
+    {
+        return m_timestamp;
+    }
 
 protected:
     Type m_type;

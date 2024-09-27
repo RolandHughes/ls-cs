@@ -37,20 +37,22 @@
 #include <wtf/PassOwnPtr.h>
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-struct FilterData {
+struct FilterData
+{
     FilterData()
-        : savedContext(0)
-        , builded(false)
-        , markedForRemoval(false)
+        : savedContext( 0 )
+        , builded( false )
+        , markedForRemoval( false )
     {
     }
 
     RefPtr<SVGFilter> filter;
     RefPtr<SVGFilterBuilder> builder;
     OwnPtr<ImageBuffer> sourceGraphicBuffer;
-    GraphicsContext* savedContext;
+    GraphicsContext *savedContext;
     AffineTransform shearFreeAbsoluteTransform;
     FloatRect boundaries;
     FloatSize scale;
@@ -60,36 +62,52 @@ struct FilterData {
 
 class GraphicsContext;
 
-class RenderSVGResourceFilter : public RenderSVGResourceContainer {
+class RenderSVGResourceFilter : public RenderSVGResourceContainer
+{
 public:
-    RenderSVGResourceFilter(SVGFilterElement*);
+    RenderSVGResourceFilter( SVGFilterElement * );
     virtual ~RenderSVGResourceFilter();
 
-    virtual const char* renderName() const { return "RenderSVGResourceFilter"; }
-    virtual bool isSVGResourceFilter() const { return true; }
+    virtual const char *renderName() const
+    {
+        return "RenderSVGResourceFilter";
+    }
+    virtual bool isSVGResourceFilter() const
+    {
+        return true;
+    }
 
-    virtual void removeAllClientsFromCache(bool markForInvalidation = true);
-    virtual void removeClientFromCache(RenderObject*, bool markForInvalidation = true);
+    virtual void removeAllClientsFromCache( bool markForInvalidation = true );
+    virtual void removeClientFromCache( RenderObject *, bool markForInvalidation = true );
 
-    virtual bool applyResource(RenderObject*, RenderStyle*, GraphicsContext*&, unsigned short resourceMode);
-    virtual void postApplyResource(RenderObject*, GraphicsContext*&, unsigned short resourceMode, const Path*);
+    virtual bool applyResource( RenderObject *, RenderStyle *, GraphicsContext *&, unsigned short resourceMode );
+    virtual void postApplyResource( RenderObject *, GraphicsContext *&, unsigned short resourceMode, const Path * );
 
-    virtual FloatRect resourceBoundingBox(RenderObject*);
+    virtual FloatRect resourceBoundingBox( RenderObject * );
 
-    PassRefPtr<SVGFilterBuilder> buildPrimitives(Filter*);
+    PassRefPtr<SVGFilterBuilder> buildPrimitives( Filter * );
 
-    SVGUnitTypes::SVGUnitType filterUnits() const { return toUnitType(static_cast<SVGFilterElement*>(node())->filterUnits()); }
-    SVGUnitTypes::SVGUnitType primitiveUnits() const { return toUnitType(static_cast<SVGFilterElement*>(node())->primitiveUnits()); }
+    SVGUnitTypes::SVGUnitType filterUnits() const
+    {
+        return toUnitType( static_cast<SVGFilterElement *>( node() )->filterUnits() );
+    }
+    SVGUnitTypes::SVGUnitType primitiveUnits() const
+    {
+        return toUnitType( static_cast<SVGFilterElement *>( node() )->primitiveUnits() );
+    }
 
-    void primitiveAttributeChanged(RenderObject*, const QualifiedName&);
+    void primitiveAttributeChanged( RenderObject *, const QualifiedName & );
 
-    virtual RenderSVGResourceType resourceType() const { return s_resourceType; }
+    virtual RenderSVGResourceType resourceType() const
+    {
+        return s_resourceType;
+    }
     static RenderSVGResourceType s_resourceType;
 
 private:
-    bool fitsInMaximumImageSize(const FloatSize&, FloatSize&);
+    bool fitsInMaximumImageSize( const FloatSize &, FloatSize & );
 
-    HashMap<RenderObject*, FilterData*> m_filter;
+    HashMap<RenderObject *, FilterData *> m_filter;
 };
 
 }

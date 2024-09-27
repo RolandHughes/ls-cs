@@ -28,12 +28,13 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface FullKeyboardAccessWatcher : NSObject {
+@interface FullKeyboardAccessWatcher : NSObject
+{
 @private
     BOOL fullKeyboardAccessEnabled;
 }
 
-+ (BOOL)fullKeyboardAccessEnabled;
++ ( BOOL )fullKeyboardAccessEnabled;
 
 @end;
 

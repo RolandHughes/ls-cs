@@ -36,13 +36,14 @@
 
 using namespace WebCore;
 
-namespace WebKit {
+namespace WebKit
+{
 
-ChunkedUpdateDrawingArea::ChunkedUpdateDrawingArea(WebPage* webPage)
-    : DrawingArea(DrawingAreaTypeChunkedUpdate, webPage)
-    , m_isWaitingForUpdate(false)
-    , m_paintingIsSuspended(false)
-    , m_displayTimer(WebProcess::shared().runLoop(), this, &ChunkedUpdateDrawingArea::display)
+ChunkedUpdateDrawingArea::ChunkedUpdateDrawingArea( WebPage *webPage )
+    : DrawingArea( DrawingAreaTypeChunkedUpdate, webPage )
+    , m_isWaitingForUpdate( false )
+    , m_paintingIsSuspended( false )
+    , m_displayTimer( WebProcess::shared().runLoop(), this, &ChunkedUpdateDrawingArea::display )
 {
 }
 
@@ -50,41 +51,46 @@ ChunkedUpdateDrawingArea::~ChunkedUpdateDrawingArea()
 {
 }
 
-void ChunkedUpdateDrawingArea::scroll(const IntRect& scrollRect, const IntSize& scrollOffset)
+void ChunkedUpdateDrawingArea::scroll( const IntRect &scrollRect, const IntSize &scrollOffset )
 {
     // FIXME: Do something much smarter.
-    setNeedsDisplay(scrollRect);
+    setNeedsDisplay( scrollRect );
 }
 
-void ChunkedUpdateDrawingArea::setNeedsDisplay(const IntRect& rect)
+void ChunkedUpdateDrawingArea::setNeedsDisplay( const IntRect &rect )
 {
     // FIXME: Collect a set of rects/region instead of just the union
     // of all rects.
-    m_dirtyRect.unite(rect);
+    m_dirtyRect.unite( rect );
     scheduleDisplay();
 }
 
 void ChunkedUpdateDrawingArea::display()
 {
-    ASSERT(!m_isWaitingForUpdate);
- 
-    if (m_paintingIsSuspended)
-        return;
+    ASSERT( !m_isWaitingForUpdate );
 
-    if (m_dirtyRect.isEmpty())
+    if ( m_paintingIsSuspended )
+    {
         return;
+    }
+
+    if ( m_dirtyRect.isEmpty() )
+    {
+        return;
+    }
 
     // Layout if necessary.
     m_webPage->layoutIfNeeded();
- 
+
     IntRect dirtyRect = m_dirtyRect;
     m_dirtyRect = IntRect();
 
     // Create a new UpdateChunk and paint into it.
-    UpdateChunk updateChunk(dirtyRect);
-    paintIntoUpdateChunk(&updateChunk);
+    UpdateChunk updateChunk( dirtyRect );
+    paintIntoUpdateChunk( &updateChunk );
 
-    WebProcess::shared().connection()->deprecatedSend(DrawingAreaProxyLegacyMessage::Update, m_webPage->pageID(), CoreIPC::In(updateChunk));
+    WebProcess::shared().connection()->deprecatedSend( DrawingAreaProxyLegacyMessage::Update, m_webPage->pageID(),
+            CoreIPC::In( updateChunk ) );
 
     m_isWaitingForUpdate = true;
     m_displayTimer.stop();
@@ -98,63 +104,75 @@ void ChunkedUpdateDrawingArea::forceRepaint()
 
 void ChunkedUpdateDrawingArea::scheduleDisplay()
 {
-    if (m_paintingIsSuspended)
+    if ( m_paintingIsSuspended )
+    {
         return;
+    }
 
-    if (m_isWaitingForUpdate)
+    if ( m_isWaitingForUpdate )
+    {
         return;
-    
-    if (m_dirtyRect.isEmpty())
-        return;
+    }
 
-    if (m_displayTimer.isActive())
+    if ( m_dirtyRect.isEmpty() )
+    {
         return;
+    }
 
-    m_displayTimer.startOneShot(0);
+    if ( m_displayTimer.isActive() )
+    {
+        return;
+    }
+
+    m_displayTimer.startOneShot( 0 );
 }
 
-void ChunkedUpdateDrawingArea::setSize(const IntSize& viewSize)
+void ChunkedUpdateDrawingArea::setSize( const IntSize &viewSize )
 {
-    ASSERT_ARG(viewSize, !viewSize.isEmpty());
+    ASSERT_ARG( viewSize, !viewSize.isEmpty() );
 
     // We don't want to wait for an update until we display.
     m_isWaitingForUpdate = false;
-    
-    m_webPage->setSize(viewSize);
+
+    m_webPage->setSize( viewSize );
     m_webPage->layoutIfNeeded();
 
-    if (m_paintingIsSuspended) {
-        ASSERT(!m_displayTimer.isActive());
+    if ( m_paintingIsSuspended )
+    {
+        ASSERT( !m_displayTimer.isActive() );
 
         // Painting is suspended, just send back an empty update chunk.
-        WebProcess::shared().connection()->deprecatedSend(DrawingAreaProxyLegacyMessage::DidSetSize, m_webPage->pageID(), CoreIPC::In(UpdateChunk()));
+        WebProcess::shared().connection()->deprecatedSend( DrawingAreaProxyLegacyMessage::DidSetSize, m_webPage->pageID(),
+                CoreIPC::In( UpdateChunk() ) );
         return;
     }
 
     // Create a new UpdateChunk and paint into it.
-    UpdateChunk updateChunk(IntRect(0, 0, viewSize.width(), viewSize.height()));
-    paintIntoUpdateChunk(&updateChunk);
+    UpdateChunk updateChunk( IntRect( 0, 0, viewSize.width(), viewSize.height() ) );
+    paintIntoUpdateChunk( &updateChunk );
 
     m_displayTimer.stop();
 
-    WebProcess::shared().connection()->deprecatedSend(DrawingAreaProxyLegacyMessage::DidSetSize, m_webPage->pageID(), CoreIPC::In(updateChunk));
+    WebProcess::shared().connection()->deprecatedSend( DrawingAreaProxyLegacyMessage::DidSetSize, m_webPage->pageID(),
+            CoreIPC::In( updateChunk ) );
 }
 
 void ChunkedUpdateDrawingArea::suspendPainting()
 {
-    ASSERT(!m_paintingIsSuspended);
-    
+    ASSERT( !m_paintingIsSuspended );
+
     m_paintingIsSuspended = true;
     m_displayTimer.stop();
 }
 
-void ChunkedUpdateDrawingArea::deprecatedResumePainting(bool forceRepaint)
+void ChunkedUpdateDrawingArea::deprecatedResumePainting( bool forceRepaint )
 {
-    ASSERT(m_paintingIsSuspended);
-    
+    ASSERT( m_paintingIsSuspended );
+
     m_paintingIsSuspended = false;
 
-    if (forceRepaint) {
+    if ( forceRepaint )
+    {
         // Just set the dirty rect to the entire page size.
         m_dirtyRect = m_webPage->bounds();
     }
@@ -171,30 +189,41 @@ void ChunkedUpdateDrawingArea::didUpdate()
     display();
 }
 
-void ChunkedUpdateDrawingArea::didReceiveMessage(CoreIPC::Connection*, CoreIPC::MessageID messageID, CoreIPC::ArgumentDecoder* arguments)
+void ChunkedUpdateDrawingArea::didReceiveMessage( CoreIPC::Connection *, CoreIPC::MessageID messageID,
+        CoreIPC::ArgumentDecoder *arguments )
 {
-    switch (messageID.get<DrawingAreaLegacyMessage::Kind>()) {
-        case DrawingAreaLegacyMessage::SetSize: {
+    switch ( messageID.get<DrawingAreaLegacyMessage::Kind>() )
+    {
+        case DrawingAreaLegacyMessage::SetSize:
+        {
             IntSize size;
-            if (!arguments->decode(CoreIPC::Out(size)))
-                return;
 
-            setSize(size);
+            if ( !arguments->decode( CoreIPC::Out( size ) ) )
+            {
+                return;
+            }
+
+            setSize( size );
             break;
         }
-        
+
         case DrawingAreaLegacyMessage::SuspendPainting:
             suspendPainting();
             break;
 
-        case DrawingAreaLegacyMessage::ResumePainting: {
+        case DrawingAreaLegacyMessage::ResumePainting:
+        {
             bool forceRepaint;
-            if (!arguments->decode(CoreIPC::Out(forceRepaint)))
+
+            if ( !arguments->decode( CoreIPC::Out( forceRepaint ) ) )
+            {
                 return;
-            
-            deprecatedResumePainting(forceRepaint);
+            }
+
+            deprecatedResumePainting( forceRepaint );
             break;
         }
+
         case DrawingAreaLegacyMessage::DidUpdate:
             didUpdate();
             break;

@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef BINDINGS_C_RUNTIME_H_
@@ -31,17 +31,23 @@
 #include "BridgeJSC.h"
 #include "npruntime_internal.h"
 
-namespace JSC {
-namespace Bindings {
+namespace JSC
+{
+namespace Bindings
+{
 
-class CField : public Field {
+class CField : public Field
+{
 public:
-    CField(NPIdentifier ident) : _fieldIdentifier(ident) { }
+    CField( NPIdentifier ident ) : _fieldIdentifier( ident ) { }
 
-    virtual JSValue valueFromInstance(ExecState*, const Instance*) const;
-    virtual void setValueToInstance(ExecState*, const Instance*, JSValue) const;
+    virtual JSValue valueFromInstance( ExecState *, const Instance * ) const;
+    virtual void setValueToInstance( ExecState *, const Instance *, JSValue ) const;
 
-    NPIdentifier identifier() const { return _fieldIdentifier; }
+    NPIdentifier identifier() const
+    {
+        return _fieldIdentifier;
+    }
 
 private:
     NPIdentifier _fieldIdentifier;
@@ -51,10 +57,16 @@ private:
 class CMethod : public Method
 {
 public:
-    CMethod(NPIdentifier ident) : _methodIdentifier(ident) { }
+    CMethod( NPIdentifier ident ) : _methodIdentifier( ident ) { }
 
-    NPIdentifier identifier() const { return _methodIdentifier; }
-    virtual int numParameters() const { return 0; }
+    NPIdentifier identifier() const
+    {
+        return _methodIdentifier;
+    }
+    virtual int numParameters() const
+    {
+        return 0;
+    }
 
 private:
     NPIdentifier _methodIdentifier;

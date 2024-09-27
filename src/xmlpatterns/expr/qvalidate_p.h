@@ -26,33 +26,35 @@
 
 #include <qexpression_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class Validate
 {
- public:
+public:
 
-   /**
-    * Represents the validation mode.
-    */
-   enum Mode {
-      Lax = 1,
-      Strict
-   };
+    /**
+     * Represents the validation mode.
+     */
+    enum Mode
+    {
+        Lax = 1,
+        Strict
+    };
 
-   /**
-    * Creates the necessary Expression instances
-    * that validates the operand node @p operandNode in mode @p validationMode,
-    * and returns it.
-    */
-   static Expression::Ptr create(const Expression::Ptr &operandNode,
-                                 const Mode validationMode,
-                                 const StaticContext::Ptr &context);
- private:
-   Validate();
+    /**
+     * Creates the necessary Expression instances
+     * that validates the operand node @p operandNode in mode @p validationMode,
+     * and returns it.
+     */
+    static Expression::Ptr create( const Expression::Ptr &operandNode,
+                                   const Mode validationMode,
+                                   const StaticContext::Ptr &context );
+private:
+    Validate();
 
-   Validate(const Validate &) = delete;
-   Validate &operator=(const Validate &) = delete;
+    Validate( const Validate & ) = delete;
+    Validate &operator=( const Validate & ) = delete;
 };
 
 }

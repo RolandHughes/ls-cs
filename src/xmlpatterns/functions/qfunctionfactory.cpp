@@ -31,29 +31,34 @@ FunctionFactory::~FunctionFactory()
 {
 }
 
-bool FunctionFactory::isAvailable(const NamePool::Ptr &np,
-                                  const QXmlName name, const xsInteger arity)
+bool FunctionFactory::isAvailable( const NamePool::Ptr &np,
+                                   const QXmlName name, const xsInteger arity )
 {
-   const FunctionSignature::Ptr sign(retrieveFunctionSignature(np, name));
+    const FunctionSignature::Ptr sign( retrieveFunctionSignature( np, name ) );
 
-   if (sign) {
-      return arity == FunctionSignature::UnlimitedArity || sign->isArityValid(arity);
-   } else {
-      return false;
-   }
+    if ( sign )
+    {
+        return arity == FunctionSignature::UnlimitedArity || sign->isArityValid( arity );
+    }
+    else
+    {
+        return false;
+    }
 }
 
-bool FunctionFactory::hasSignature(const FunctionSignature::Ptr &signature) const
+bool FunctionFactory::hasSignature( const FunctionSignature::Ptr &signature ) const
 {
-   const FunctionSignature::Hash signs(functionSignatures());
-   const FunctionSignature::Hash::const_iterator end(signs.constEnd());
-   FunctionSignature::Hash::const_iterator it(signs.constBegin());
+    const FunctionSignature::Hash signs( functionSignatures() );
+    const FunctionSignature::Hash::const_iterator end( signs.constEnd() );
+    FunctionSignature::Hash::const_iterator it( signs.constBegin() );
 
-   for (; it != end; ++it) {
-      if (*(*it) == *signature) {
-         return true;
-      }
-   }
+    for ( ; it != end; ++it )
+    {
+        if ( *( *it ) == *signature )
+        {
+            return true;
+        }
+    }
 
-   return false;
+    return false;
 }

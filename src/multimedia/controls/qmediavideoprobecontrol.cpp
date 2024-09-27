@@ -24,8 +24,8 @@
 #include <qmediavideoprobecontrol.h>
 #include <qmediacontrol_p.h>
 
-QMediaVideoProbeControl::QMediaVideoProbeControl(QObject *parent)
-   : QMediaControl(*new QMediaControlPrivate, parent)
+QMediaVideoProbeControl::QMediaVideoProbeControl( QObject *parent )
+    : QMediaControl( *new QMediaControlPrivate, parent )
 {
 }
 

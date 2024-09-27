@@ -37,25 +37,28 @@
 
 // Manages plug-in process connections for the given web process.
 
-namespace CoreIPC {
-    class Connection;
+namespace CoreIPC
+{
+class Connection;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
 class PluginProcessConnection;
-        
-class PluginProcessConnectionManager {
-    WTF_MAKE_NONCOPYABLE(PluginProcessConnectionManager);
+
+class PluginProcessConnectionManager
+{
+    WTF_MAKE_NONCOPYABLE( PluginProcessConnectionManager );
 public:
     PluginProcessConnectionManager();
     ~PluginProcessConnectionManager();
 
-    PluginProcessConnection* getPluginProcessConnection(const String& pluginPath);
-    void removePluginProcessConnection(PluginProcessConnection*);
+    PluginProcessConnection *getPluginProcessConnection( const String &pluginPath );
+    void removePluginProcessConnection( PluginProcessConnection * );
 
     // Called on the web process connection work queue.
-    void pluginProcessCrashed(const String& pluginPath);
+    void pluginProcessCrashed( const String &pluginPath );
 
 private:
     Vector<RefPtr<PluginProcessConnection> > m_pluginProcessConnections;

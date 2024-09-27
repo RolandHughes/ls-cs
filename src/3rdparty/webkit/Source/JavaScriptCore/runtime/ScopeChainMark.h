@@ -23,7 +23,8 @@
 
 #include "ScopeChain.h"
 
-namespace JSC {
+namespace JSC
+{
 
 } // namespace JSC
 

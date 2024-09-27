@@ -26,41 +26,54 @@
 #include "SVGMarkerData.h"
 #include <wtf/Noncopyable.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Path;
 class RenderSVGResourceMarker;
 
-struct MarkerLayout {
-    MarkerLayout(RenderSVGResourceMarker* markerObj = 0, AffineTransform matrixObj = AffineTransform())
-        : marker(markerObj)
-        , matrix(matrixObj)
+struct MarkerLayout
+{
+    MarkerLayout( RenderSVGResourceMarker *markerObj = 0, AffineTransform matrixObj = AffineTransform() )
+        : marker( markerObj )
+        , matrix( matrixObj )
     {
-        ASSERT(marker);
+        ASSERT( marker );
     }
 
-    RenderSVGResourceMarker* marker;
+    RenderSVGResourceMarker *marker;
     AffineTransform matrix;
 };
 
-class SVGMarkerLayoutInfo {
-    WTF_MAKE_NONCOPYABLE(SVGMarkerLayoutInfo);
+class SVGMarkerLayoutInfo
+{
+    WTF_MAKE_NONCOPYABLE( SVGMarkerLayoutInfo );
 public:
     SVGMarkerLayoutInfo();
     ~SVGMarkerLayoutInfo();
 
-    FloatRect calculateBoundaries(RenderSVGResourceMarker* startMarker, RenderSVGResourceMarker* midMarker, RenderSVGResourceMarker* endMarker, float strokeWidth, const Path&);
-    void drawMarkers(PaintInfo&);
+    FloatRect calculateBoundaries( RenderSVGResourceMarker *startMarker, RenderSVGResourceMarker *midMarker,
+                                   RenderSVGResourceMarker *endMarker, float strokeWidth, const Path & );
+    void drawMarkers( PaintInfo & );
 
     // Used by static inline helper functions in SVGMarkerLayoutInfo.cpp
-    SVGMarkerData& markerData() { return m_markerData; }
-    RenderSVGResourceMarker* midMarker() const { return m_midMarker; }
-    int& elementIndex() { return m_elementIndex; }
-    void addLayoutedMarker(RenderSVGResourceMarker*, const FloatPoint& origin, float angle);
+    SVGMarkerData &markerData()
+    {
+        return m_markerData;
+    }
+    RenderSVGResourceMarker *midMarker() const
+    {
+        return m_midMarker;
+    }
+    int &elementIndex()
+    {
+        return m_elementIndex;
+    }
+    void addLayoutedMarker( RenderSVGResourceMarker *, const FloatPoint &origin, float angle );
     void clear();
 
 private:
-    RenderSVGResourceMarker* m_midMarker;
+    RenderSVGResourceMarker *m_midMarker;
 
     // Used while layouting markers
     int m_elementIndex;

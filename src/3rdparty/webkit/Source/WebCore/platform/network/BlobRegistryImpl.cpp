@@ -43,136 +43,172 @@
 #include <wtf/MainThread.h>
 #include <wtf/StdLibExtras.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 #if !PLATFORM(CHROMIUM)
-BlobRegistry& blobRegistry()
+BlobRegistry &blobRegistry()
 {
-    ASSERT(isMainThread());
-    DEFINE_STATIC_LOCAL(BlobRegistryImpl, instance, ());
+    ASSERT( isMainThread() );
+    DEFINE_STATIC_LOCAL( BlobRegistryImpl, instance, () );
     return instance;
 }
 #endif
 
-bool BlobRegistryImpl::shouldLoadResource(const ResourceRequest& request) const
+bool BlobRegistryImpl::shouldLoadResource( const ResourceRequest &request ) const
 {
     // If the resource is not fetched using the GET method, bail out.
-    if (!equalIgnoringCase(request.httpMethod(), "GET"))
+    if ( !equalIgnoringCase( request.httpMethod(), "GET" ) )
+    {
         return false;
+    }
 
     return true;
 }
 
-PassRefPtr<ResourceHandle> BlobRegistryImpl::createResourceHandle(const ResourceRequest& request, ResourceHandleClient* client)
+PassRefPtr<ResourceHandle> BlobRegistryImpl::createResourceHandle( const ResourceRequest &request, ResourceHandleClient *client )
 {
-    if (!shouldLoadResource(request))
+    if ( !shouldLoadResource( request ) )
+    {
         return 0;
+    }
 
-    RefPtr<BlobResourceHandle> handle = BlobResourceHandle::create(m_blobs.get(request.url().string()), request, client);
+    RefPtr<BlobResourceHandle> handle = BlobResourceHandle::create( m_blobs.get( request.url().string() ), request, client );
     handle->start();
     return handle.release();
 }
 
-bool BlobRegistryImpl::loadResourceSynchronously(const ResourceRequest& request, ResourceError& error, ResourceResponse& response, Vector<char>& data)
+bool BlobRegistryImpl::loadResourceSynchronously( const ResourceRequest &request, ResourceError &error,
+        ResourceResponse &response, Vector<char> &data )
 {
-    if (!shouldLoadResource(request))
+    if ( !shouldLoadResource( request ) )
+    {
         return false;
+    }
 
-    BlobResourceHandle::loadResourceSynchronously(m_blobs.get(request.url().string()), request, error, response, data);
+    BlobResourceHandle::loadResourceSynchronously( m_blobs.get( request.url().string() ), request, error, response, data );
     return true;
 }
 
-void BlobRegistryImpl::appendStorageItems(BlobStorageData* blobStorageData, const BlobDataItemList& items)
+void BlobRegistryImpl::appendStorageItems( BlobStorageData *blobStorageData, const BlobDataItemList &items )
 {
-    for (BlobDataItemList::const_iterator iter = items.begin(); iter != items.end(); ++iter) {
-        if (iter->type == BlobDataItem::Data)
-            blobStorageData->m_data.appendData(iter->data, iter->offset, iter->length);
-        else {
-            ASSERT(iter->type == BlobDataItem::File);
-            blobStorageData->m_data.appendFile(iter->path, iter->offset, iter->length, iter->expectedModificationTime);
+    for ( BlobDataItemList::const_iterator iter = items.begin(); iter != items.end(); ++iter )
+    {
+        if ( iter->type == BlobDataItem::Data )
+        {
+            blobStorageData->m_data.appendData( iter->data, iter->offset, iter->length );
+        }
+        else
+        {
+            ASSERT( iter->type == BlobDataItem::File );
+            blobStorageData->m_data.appendFile( iter->path, iter->offset, iter->length, iter->expectedModificationTime );
         }
     }
 }
 
-void BlobRegistryImpl::appendStorageItems(BlobStorageData* blobStorageData, const BlobDataItemList& items, long long offset, long long length)
+void BlobRegistryImpl::appendStorageItems( BlobStorageData *blobStorageData, const BlobDataItemList &items, long long offset,
+        long long length )
 {
-    ASSERT(length != BlobDataItem::toEndOfFile);
+    ASSERT( length != BlobDataItem::toEndOfFile );
 
     BlobDataItemList::const_iterator iter = items.begin();
-    if (offset) {
-        for (; iter != items.end(); ++iter) {
-            if (offset >= iter->length)
+
+    if ( offset )
+    {
+        for ( ; iter != items.end(); ++iter )
+        {
+            if ( offset >= iter->length )
+            {
                 offset -= iter->length;
+            }
             else
+            {
                 break;
+            }
         }
     }
 
-    for (; iter != items.end() && length > 0; ++iter) {
+    for ( ; iter != items.end() && length > 0; ++iter )
+    {
         long long currentLength = iter->length - offset;
         long long newLength = currentLength > length ? length : currentLength;
-        if (iter->type == BlobDataItem::Data)
-            blobStorageData->m_data.appendData(iter->data, iter->offset + offset, newLength);
-        else {
-            ASSERT(iter->type == BlobDataItem::File);
-            blobStorageData->m_data.appendFile(iter->path, iter->offset + offset, newLength, iter->expectedModificationTime);
+
+        if ( iter->type == BlobDataItem::Data )
+        {
+            blobStorageData->m_data.appendData( iter->data, iter->offset + offset, newLength );
         }
+        else
+        {
+            ASSERT( iter->type == BlobDataItem::File );
+            blobStorageData->m_data.appendFile( iter->path, iter->offset + offset, newLength, iter->expectedModificationTime );
+        }
+
         length -= newLength;
         offset = 0;
     }
 }
 
-void BlobRegistryImpl::registerBlobURL(const KURL& url, PassOwnPtr<BlobData> blobData)
+void BlobRegistryImpl::registerBlobURL( const KURL &url, PassOwnPtr<BlobData> blobData )
 {
-    ASSERT(isMainThread());
+    ASSERT( isMainThread() );
 
-    RefPtr<BlobStorageData> blobStorageData = BlobStorageData::create(blobData->contentType(), blobData->contentDisposition());
+    RefPtr<BlobStorageData> blobStorageData = BlobStorageData::create( blobData->contentType(), blobData->contentDisposition() );
 
     // The blob data is stored in the "canonical" way. That is, it only contains a list of Data and File items.
     // 1) The Data item is denoted by the raw data and the range.
     // 2) The File item is denoted by the file path, the range and the expected modification time.
     // All the Blob items in the passing blob data are resolved and expanded into a set of Data and File items.
 
-    for (BlobDataItemList::const_iterator iter = blobData->items().begin(); iter != blobData->items().end(); ++iter) {
-        switch (iter->type) {
-        case BlobDataItem::Data:
-            blobStorageData->m_data.appendData(iter->data, 0, iter->data->length());
-            break;
-        case BlobDataItem::File:
-            blobStorageData->m_data.appendFile(iter->path, iter->offset, iter->length, iter->expectedModificationTime);
-            break;
-        case BlobDataItem::Blob:
-            if (m_blobs.contains(iter->url.string()))
-                appendStorageItems(blobStorageData.get(), m_blobs.get(iter->url.string())->items(), iter->offset, iter->length);
-            break;
+    for ( BlobDataItemList::const_iterator iter = blobData->items().begin(); iter != blobData->items().end(); ++iter )
+    {
+        switch ( iter->type )
+        {
+            case BlobDataItem::Data:
+                blobStorageData->m_data.appendData( iter->data, 0, iter->data->length() );
+                break;
+
+            case BlobDataItem::File:
+                blobStorageData->m_data.appendFile( iter->path, iter->offset, iter->length, iter->expectedModificationTime );
+                break;
+
+            case BlobDataItem::Blob:
+                if ( m_blobs.contains( iter->url.string() ) )
+                {
+                    appendStorageItems( blobStorageData.get(), m_blobs.get( iter->url.string() )->items(), iter->offset, iter->length );
+                }
+
+                break;
         }
     }
 
-    m_blobs.set(url.string(), blobStorageData);
+    m_blobs.set( url.string(), blobStorageData );
 }
 
-void BlobRegistryImpl::registerBlobURL(const KURL& url, const KURL& srcURL)
+void BlobRegistryImpl::registerBlobURL( const KURL &url, const KURL &srcURL )
 {
-    ASSERT(isMainThread());
+    ASSERT( isMainThread() );
 
-    RefPtr<BlobStorageData> src = m_blobs.get(srcURL.string());
-    ASSERT(src);
-    if (!src)
+    RefPtr<BlobStorageData> src = m_blobs.get( srcURL.string() );
+    ASSERT( src );
+
+    if ( !src )
+    {
         return;
+    }
 
-    m_blobs.set(url.string(), src);
+    m_blobs.set( url.string(), src );
 }
 
-void BlobRegistryImpl::unregisterBlobURL(const KURL& url)
+void BlobRegistryImpl::unregisterBlobURL( const KURL &url )
 {
-    ASSERT(isMainThread());
-    m_blobs.remove(url.string());
+    ASSERT( isMainThread() );
+    m_blobs.remove( url.string() );
 }
 
-PassRefPtr<BlobStorageData> BlobRegistryImpl::getBlobDataFromURL(const KURL& url) const
+PassRefPtr<BlobStorageData> BlobRegistryImpl::getBlobDataFromURL( const KURL &url ) const
 {
-    ASSERT(isMainThread());
-    return m_blobs.get(url.string());
+    ASSERT( isMainThread() );
+    return m_blobs.get( url.string() );
 }
 
 } // namespace WebCore

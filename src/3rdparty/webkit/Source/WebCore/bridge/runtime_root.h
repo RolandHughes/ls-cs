@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef RUNTIME_ROOT_H_
@@ -37,61 +37,71 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefCounted.h>
 
-namespace JSC {
+namespace JSC
+{
 
 class Interpreter;
 class JSGlobalObject;
 
-namespace Bindings {
+namespace Bindings
+{
 
 class RootObject;
 class RuntimeObject;
 
-typedef HashCountedSet<JSObject*> ProtectCountSet;
+typedef HashCountedSet<JSObject *> ProtectCountSet;
 
-extern RootObject* findProtectingRootObject(JSObject*);
-extern RootObject* findRootObject(JSGlobalObject*);
+extern RootObject *findProtectingRootObject( JSObject * );
+extern RootObject *findRootObject( JSGlobalObject * );
 
-class RootObject : public RefCounted<RootObject> {
+class RootObject : public RefCounted<RootObject>
+{
     friend class JavaJSObject;
 
 public:
     ~RootObject();
-    
-    static PassRefPtr<RootObject> create(const void* nativeHandle, JSGlobalObject*);
 
-    bool isValid() { return m_isValid; }
+    static PassRefPtr<RootObject> create( const void *nativeHandle, JSGlobalObject * );
+
+    bool isValid()
+    {
+        return m_isValid;
+    }
     void invalidate();
-    
-    void gcProtect(JSObject*);
-    void gcUnprotect(JSObject*);
-    bool gcIsProtected(JSObject*);
 
-    const void* nativeHandle() const;
-    JSGlobalObject* globalObject() const;
-    void updateGlobalObject(JSGlobalObject*);
+    void gcProtect( JSObject * );
+    void gcUnprotect( JSObject * );
+    bool gcIsProtected( JSObject * );
 
-    void addRuntimeObject(JSGlobalData&, RuntimeObject*);
-    void removeRuntimeObject(RuntimeObject*);
+    const void *nativeHandle() const;
+    JSGlobalObject *globalObject() const;
+    void updateGlobalObject( JSGlobalObject * );
 
-    struct InvalidationCallback {
-        virtual void operator()(RootObject*) = 0;
+    void addRuntimeObject( JSGlobalData &, RuntimeObject * );
+    void removeRuntimeObject( RuntimeObject * );
+
+    struct InvalidationCallback
+    {
+        virtual void operator()( RootObject * ) = 0;
         virtual ~InvalidationCallback();
     };
-    void addInvalidationCallback(InvalidationCallback* callback) { m_invalidationCallbacks.add(callback); }
+    void addInvalidationCallback( InvalidationCallback *callback )
+    {
+        m_invalidationCallbacks.add( callback );
+    }
 
 private:
-    RootObject(const void* nativeHandle, JSGlobalObject*);
-    
+    RootObject( const void *nativeHandle, JSGlobalObject * );
+
     bool m_isValid;
-    
-    const void* m_nativeHandle;
+
+    const void *m_nativeHandle;
     Strong<JSGlobalObject> m_globalObject;
 
     ProtectCountSet m_protectCountSet;
-    WeakGCMap<RuntimeObject*, RuntimeObject> m_runtimeObjects; // Really need a WeakGCSet, but this will do.
+    WeakGCMap<RuntimeObject *, RuntimeObject> m_runtimeObjects; // Really need a WeakGCSet, but this will do.
 
-    HashSet<InvalidationCallback*> m_invalidationCallbacks;
+    HashSet<InvalidationCallback *> m_invalidationCallbacks;
 };
 
 } // namespace Bindings

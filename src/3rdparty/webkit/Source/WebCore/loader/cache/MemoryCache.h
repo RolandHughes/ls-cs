@@ -34,7 +34,8 @@
 #include <wtf/Vector.h>
 #include <wtf/text/StringHash.h>
 
-namespace WebCore  {
+namespace WebCore
+{
 
 class CachedCSSStyleSheet;
 class CachedResource;
@@ -45,7 +46,7 @@ struct SecurityOriginHash;
 
 // This cache holds subresources used by Web pages: images, scripts, stylesheets, etc.
 
-// The cache keeps a flexible but bounded window of dead resources that grows/shrinks 
+// The cache keeps a flexible but bounded window of dead resources that grows/shrinks
 // depending on the live resource load. Here's an example of cache growth over time,
 // with a min dead resource capacity of 25% and a max dead resource capacity of 50%:
 
@@ -72,31 +73,36 @@ struct SecurityOriginHash;
 // its member variables) are allocated in non-purgeable TC-malloc'd memory so we would see slightly
 // more memory use due to this.
 
-class MemoryCache {
-    WTF_MAKE_NONCOPYABLE(MemoryCache); WTF_MAKE_FAST_ALLOCATED;
+class MemoryCache
+{
+    WTF_MAKE_NONCOPYABLE( MemoryCache );
+    WTF_MAKE_FAST_ALLOCATED;
 public:
-    friend MemoryCache* memoryCache();
+    friend MemoryCache *memoryCache();
 
-    typedef HashMap<String, CachedResource*> CachedResourceMap;
+    typedef HashMap<String, CachedResource *> CachedResourceMap;
 
-    struct LRUList {
-        CachedResource* m_head;
-        CachedResource* m_tail;
-        LRUList() : m_head(0), m_tail(0) { }
+    struct LRUList
+    {
+        CachedResource *m_head;
+        CachedResource *m_tail;
+        LRUList() : m_head( 0 ), m_tail( 0 ) { }
     };
 
-    struct TypeStatistic {
+    struct TypeStatistic
+    {
         int count;
         int size;
         int liveSize;
         int decodedSize;
         int purgeableSize;
         int purgedSize;
-        TypeStatistic() : count(0), size(0), liveSize(0), decodedSize(0), purgeableSize(0), purgedSize(0) { }
-        void addResource(CachedResource*);
+        TypeStatistic() : count( 0 ), size( 0 ), liveSize( 0 ), decodedSize( 0 ), purgeableSize( 0 ), purgedSize( 0 ) { }
+        void addResource( CachedResource * );
     };
-    
-    struct Statistics {
+
+    struct Statistics
+    {
         TypeStatistic images;
         TypeStatistic cssStyleSheets;
         TypeStatistic scripts;
@@ -105,90 +111,107 @@ public:
 #endif
         TypeStatistic fonts;
     };
-    
-    CachedResource* resourceForURL(const KURL&);
-    
-    bool add(CachedResource* resource);
-    void remove(CachedResource* resource) { evict(resource); }
 
-    static KURL removeFragmentIdentifierIfNeeded(const KURL& originalURL);
-    
-    void revalidationSucceeded(CachedResource* revalidatingResource, const ResourceResponse&);
-    void revalidationFailed(CachedResource* revalidatingResource);
-    
-    // Sets the cache's memory capacities, in bytes. These will hold only approximately, 
+    CachedResource *resourceForURL( const KURL & );
+
+    bool add( CachedResource *resource );
+    void remove( CachedResource *resource )
+    {
+        evict( resource );
+    }
+
+    static KURL removeFragmentIdentifierIfNeeded( const KURL &originalURL );
+
+    void revalidationSucceeded( CachedResource *revalidatingResource, const ResourceResponse & );
+    void revalidationFailed( CachedResource *revalidatingResource );
+
+    // Sets the cache's memory capacities, in bytes. These will hold only approximately,
     // since the decoded cost of resources like scripts and stylesheets is not known.
     //  - minDeadBytes: The maximum number of bytes that dead resources should consume when the cache is under pressure.
     //  - maxDeadBytes: The maximum number of bytes that dead resources should consume when the cache is not under pressure.
     //  - totalBytes: The maximum number of bytes that the cache should consume overall.
-    void setCapacities(unsigned minDeadBytes, unsigned maxDeadBytes, unsigned totalBytes);
+    void setCapacities( unsigned minDeadBytes, unsigned maxDeadBytes, unsigned totalBytes );
 
     // Turn the cache on and off.  Disabling the cache will remove all resources from the cache.  They may
     // still live on if they are referenced by some Web page though.
-    void setDisabled(bool);
-    bool disabled() const { return m_disabled; }
+    void setDisabled( bool );
+    bool disabled() const
+    {
+        return m_disabled;
+    }
 
     void evictResources();
-    
-    void setPruneEnabled(bool enabled) { m_pruneEnabled = enabled; }
+
+    void setPruneEnabled( bool enabled )
+    {
+        m_pruneEnabled = enabled;
+    }
     void prune()
     {
-        if (m_liveSize + m_deadSize <= m_capacity && m_maxDeadCapacity && m_deadSize <= m_maxDeadCapacity) // Fast path.
+        if ( m_liveSize + m_deadSize <= m_capacity && m_maxDeadCapacity && m_deadSize <= m_maxDeadCapacity ) // Fast path.
+        {
             return;
-            
+        }
+
         pruneDeadResources(); // Prune dead first, in case it was "borrowing" capacity from live.
         pruneLiveResources();
     }
 
-    void setDeadDecodedDataDeletionInterval(double interval) { m_deadDecodedDataDeletionInterval = interval; }
-    double deadDecodedDataDeletionInterval() const { return m_deadDecodedDataDeletionInterval; }
+    void setDeadDecodedDataDeletionInterval( double interval )
+    {
+        m_deadDecodedDataDeletionInterval = interval;
+    }
+    double deadDecodedDataDeletionInterval() const
+    {
+        return m_deadDecodedDataDeletionInterval;
+    }
 
-    void addCachedResourceLoader(CachedResourceLoader*);
-    void removeCachedResourceLoader(CachedResourceLoader*);
+    void addCachedResourceLoader( CachedResourceLoader * );
+    void removeCachedResourceLoader( CachedResourceLoader * );
 
     // Calls to put the cached resource into and out of LRU lists.
-    void insertInLRUList(CachedResource*);
-    void removeFromLRUList(CachedResource*);
+    void insertInLRUList( CachedResource * );
+    void removeFromLRUList( CachedResource * );
 
     // Called to adjust the cache totals when a resource changes size.
-    void adjustSize(bool live, int delta);
+    void adjustSize( bool live, int delta );
 
     // Track decoded resources that are in the cache and referenced by a Web page.
-    void insertInLiveDecodedResourcesList(CachedResource*);
-    void removeFromLiveDecodedResourcesList(CachedResource*);
+    void insertInLiveDecodedResourcesList( CachedResource * );
+    void removeFromLiveDecodedResourcesList( CachedResource * );
 
-    void addToLiveResourcesSize(CachedResource*);
-    void removeFromLiveResourcesSize(CachedResource*);
+    void addToLiveResourcesSize( CachedResource * );
+    void removeFromLiveResourcesSize( CachedResource * );
 
     static bool shouldMakeResourcePurgeableOnEviction();
 
     // Function to collect cache statistics for the caches window in the Safari Debug menu.
     Statistics getStatistics();
-    
-    void resourceAccessed(CachedResource*);
+
+    void resourceAccessed( CachedResource * );
 
     typedef HashSet<RefPtr<SecurityOrigin>, SecurityOriginHash> SecurityOriginSet;
-    void removeResourcesWithOrigin(SecurityOrigin*);
-    void getOriginsWithCache(SecurityOriginSet& origins);
+    void removeResourcesWithOrigin( SecurityOrigin * );
+    void getOriginsWithCache( SecurityOriginSet &origins );
 
 private:
     MemoryCache();
     ~MemoryCache(); // Not implemented to make sure nobody accidentally calls delete -- WebCore does not delete singletons.
-       
-    LRUList* lruListFor(CachedResource*);
+
+    LRUList *lruListFor( CachedResource * );
 #ifndef NDEBUG
     void dumpStats();
-    void dumpLRULists(bool includeLive) const;
+    void dumpLRULists( bool includeLive ) const;
 #endif
 
     unsigned liveCapacity() const;
     unsigned deadCapacity() const;
-    
+
     void pruneDeadResources(); // Flush decoded and encoded data from resources not referenced by Web pages.
     void pruneLiveResources(); // Flush decoded data from resources still referenced by Web pages.
 
-    bool makeResourcePurgeable(CachedResource*);
-    void evict(CachedResource*);
+    bool makeResourcePurgeable( CachedResource * );
+    void evict( CachedResource * );
 
     bool m_disabled;  // Whether or not the cache is enabled.
     bool m_pruneEnabled;
@@ -206,13 +229,13 @@ private:
     // more resources than the cached resource map, since it can also hold "stale" multiple versions of objects that are
     // waiting to die when the clients referencing them go away.
     Vector<LRUList, 32> m_allResources;
-    
+
     // List just for live resources with decoded data.  Access to this list is based off of painting the resource.
     LRUList m_liveDecodedResources;
-    
-    // A URL-based map of all resources that are in the cache (including the freshest version of objects that are currently being 
+
+    // A URL-based map of all resources that are in the cache (including the freshest version of objects that are currently being
     // referenced by a Web page).
-    HashMap<String, CachedResource*> m_resources;
+    HashMap<String, CachedResource *> m_resources;
 };
 
 inline bool MemoryCache::shouldMakeResourcePurgeableOnEviction()
@@ -225,7 +248,7 @@ inline bool MemoryCache::shouldMakeResourcePurgeableOnEviction()
 }
 
 // Function to obtain the global cache.
-MemoryCache* memoryCache();
+MemoryCache *memoryCache();
 
 }
 

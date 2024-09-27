@@ -28,32 +28,41 @@
 # include "opengl/TextureMapperGL.h"
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
 void BitmapTextureQt::destroy()
 {
-    if (m_pixmap.paintingActive())
-        qFatal("Destroying an active pixmap");
+    if ( m_pixmap.paintingActive() )
+    {
+        qFatal( "Destroying an active pixmap" );
+    }
+
     m_pixmap = QPixmap();
 }
 
-void BitmapTextureQt::reset(const IntSize& size, bool isOpaque)
+void BitmapTextureQt::reset( const IntSize &size, bool isOpaque )
 {
-    BitmapTexture::reset(size, isOpaque);
+    BitmapTexture::reset( size, isOpaque );
 
-    if (size.width() > m_pixmap.size().width() || size.height() > m_pixmap.size().height() || m_pixmap.isNull())
-        m_pixmap = QPixmap(size.width(), size.height());
-    if (!isOpaque)
-        m_pixmap.fill(Qt::transparent);
+    if ( size.width() > m_pixmap.size().width() || size.height() > m_pixmap.size().height() || m_pixmap.isNull() )
+    {
+        m_pixmap = QPixmap( size.width(), size.height() );
+    }
+
+    if ( !isOpaque )
+    {
+        m_pixmap.fill( Qt::transparent );
+    }
 }
 
-PlatformGraphicsContext* BitmapTextureQt::beginPaint(const IntRect& dirtyRect)
+PlatformGraphicsContext *BitmapTextureQt::beginPaint( const IntRect &dirtyRect )
 {
-    m_painter.begin(&m_pixmap);
-    TextureMapperQt::initialize(&m_painter);
-    m_painter.setCompositionMode(QPainter::CompositionMode_Clear);
-    m_painter.fillRect(QRect(dirtyRect), Qt::transparent);
-    m_painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
+    m_painter.begin( &m_pixmap );
+    TextureMapperQt::initialize( &m_painter );
+    m_painter.setCompositionMode( QPainter::CompositionMode_Clear );
+    m_painter.fillRect( QRect( dirtyRect ), Qt::transparent );
+    m_painter.setCompositionMode( QPainter::CompositionMode_SourceOver );
     return &m_painter;
 }
 
@@ -62,26 +71,35 @@ void BitmapTextureQt::endPaint()
     m_painter.end();
 }
 
-bool BitmapTextureQt::save(const String& path)
+bool BitmapTextureQt::save( const String &path )
 {
-    return m_pixmap.save(path, "PNG");
+    return m_pixmap.save( path, "PNG" );
 }
 
-void BitmapTextureQt::setContentsToImage(Image* image)
+void BitmapTextureQt::setContentsToImage( Image *image )
 {
-    if (!image)
+    if ( !image )
+    {
         return;
-    const QPixmap* pixmap = image->nativeImageForCurrentFrame();
-    if (!pixmap)
+    }
+
+    const QPixmap *pixmap = image->nativeImageForCurrentFrame();
+
+    if ( !pixmap )
+    {
         return;
-    BitmapTexture::reset(pixmap->size(), !pixmap->hasAlphaChannel());
+    }
+
+    BitmapTexture::reset( pixmap->size(), !pixmap->hasAlphaChannel() );
     m_pixmap = *pixmap;
 }
 
 void BitmapTextureQt::pack()
 {
-    if (m_pixmap.isNull())
+    if ( m_pixmap.isNull() )
+    {
         return;
+    }
 
     m_image = m_pixmap.toImage();
     m_pixmap = QPixmap();
@@ -91,114 +109,149 @@ void BitmapTextureQt::pack()
 void BitmapTextureQt::unpack()
 {
     m_isPacked = false;
-    if (m_image.isNull())
-        return;
 
-    m_pixmap = QPixmap::fromImage(m_image);
+    if ( m_image.isNull() )
+    {
+        return;
+    }
+
+    m_pixmap = QPixmap::fromImage( m_image );
     m_image = QImage();
 }
 
-void TextureMapperQt::setClip(const IntRect& rect)
+void TextureMapperQt::setClip( const IntRect &rect )
 {
-     QPainter* painter = m_currentSurface ? &m_currentSurface->m_painter : m_painter;
-     painter->setClipRect(rect);
+    QPainter *painter = m_currentSurface ? &m_currentSurface->m_painter : m_painter;
+    painter->setClipRect( rect );
 }
 
 TextureMapperQt::TextureMapperQt()
-    : m_currentSurface(0)
+    : m_currentSurface( 0 )
 {
 }
 
-void TextureMapperQt::setGraphicsContext(GraphicsContext* context)
+void TextureMapperQt::setGraphicsContext( GraphicsContext *context )
 {
     m_painter = context->platformContext();
-    initialize(m_painter);
+    initialize( m_painter );
 }
 
-void TextureMapperQt::bindSurface(BitmapTexture* surface)
+void TextureMapperQt::bindSurface( BitmapTexture *surface )
 {
-    if (m_currentSurface == surface)
+    if ( m_currentSurface == surface )
+    {
         return;
-    if (m_currentSurface)
+    }
+
+    if ( m_currentSurface )
+    {
         m_currentSurface->m_painter.end();
-    if (!surface) {
+    }
+
+    if ( !surface )
+    {
         m_currentSurface = 0;
         return;
     }
-    BitmapTextureQt* surfaceQt = static_cast<BitmapTextureQt*>(surface);
-    if (!surfaceQt->m_painter.isActive())
-        surfaceQt->m_painter.begin(&surfaceQt->m_pixmap);
+
+    BitmapTextureQt *surfaceQt = static_cast<BitmapTextureQt *>( surface );
+
+    if ( !surfaceQt->m_painter.isActive() )
+    {
+        surfaceQt->m_painter.begin( &surfaceQt->m_pixmap );
+    }
+
     m_currentSurface = surfaceQt;
 }
 
 
-void TextureMapperQt::drawTexture(const BitmapTexture& texture, const IntRect& targetRect, const TransformationMatrix& matrix, float opacity, const BitmapTexture* maskTexture)
+void TextureMapperQt::drawTexture( const BitmapTexture &texture, const IntRect &targetRect, const TransformationMatrix &matrix,
+                                   float opacity, const BitmapTexture *maskTexture )
 {
-    const BitmapTextureQt& textureQt = static_cast<const BitmapTextureQt&>(texture);
-    QPainter* painter = m_painter;
+    const BitmapTextureQt &textureQt = static_cast<const BitmapTextureQt &>( texture );
+    QPainter *painter = m_painter;
     QPixmap pixmap = textureQt.m_pixmap;
-    if (m_currentSurface)
-        painter = &m_currentSurface->m_painter;
 
-    if (maskTexture && maskTexture->isValid()) {
-        const BitmapTextureQt* mask = static_cast<const BitmapTextureQt*>(maskTexture);
-        QPixmap intermediatePixmap(pixmap.size());
-        intermediatePixmap.fill(Qt::transparent);
-        QPainter maskPainter(&intermediatePixmap);
-        maskPainter.setCompositionMode(QPainter::CompositionMode_Source);
-        maskPainter.drawPixmap(0, 0, pixmap);
-        maskPainter.setCompositionMode(QPainter::CompositionMode_DestinationIn);
-        maskPainter.drawPixmap(QRect(0, 0, pixmap.width(), pixmap.height()), mask->m_pixmap, mask->sourceRect());
+    if ( m_currentSurface )
+    {
+        painter = &m_currentSurface->m_painter;
+    }
+
+    if ( maskTexture && maskTexture->isValid() )
+    {
+        const BitmapTextureQt *mask = static_cast<const BitmapTextureQt *>( maskTexture );
+        QPixmap intermediatePixmap( pixmap.size() );
+        intermediatePixmap.fill( Qt::transparent );
+        QPainter maskPainter( &intermediatePixmap );
+        maskPainter.setCompositionMode( QPainter::CompositionMode_Source );
+        maskPainter.drawPixmap( 0, 0, pixmap );
+        maskPainter.setCompositionMode( QPainter::CompositionMode_DestinationIn );
+        maskPainter.drawPixmap( QRect( 0, 0, pixmap.width(), pixmap.height() ), mask->m_pixmap, mask->sourceRect() );
         maskPainter.end();
         pixmap = intermediatePixmap;
     }
 
     const qreal prevOpacity = painter->opacity();
     const QTransform prevTransform = painter->transform();
-    painter->setOpacity(opacity);
-    painter->setTransform(matrix, true);
-    painter->drawPixmap(targetRect, pixmap, textureQt.sourceRect());
-    painter->setTransform(prevTransform);
-    painter->setOpacity(prevOpacity);
+    painter->setOpacity( opacity );
+    painter->setTransform( matrix, true );
+    painter->drawPixmap( targetRect, pixmap, textureQt.sourceRect() );
+    painter->setTransform( prevTransform );
+    painter->setOpacity( prevOpacity );
 }
 
-PassOwnPtr<TextureMapper> TextureMapper::create(GraphicsContext* context)
+PassOwnPtr<TextureMapper> TextureMapper::create( GraphicsContext *context )
 {
 #ifdef QT_OPENGL_LIB
-    if (context && context->platformContext()->paintEngine()->type() == QPaintEngine::OpenGL2)
+
+    if ( context && context->platformContext()->paintEngine()->type() == QPaintEngine::OpenGL2 )
+    {
         return new TextureMapperGL;
+    }
+
 #endif
     return new TextureMapperQt;
 }
 
 PassRefPtr<BitmapTexture> TextureMapperQt::createTexture()
 {
-    return adoptRef(new BitmapTextureQt());
+    return adoptRef( new BitmapTextureQt() );
 }
 
 BitmapTextureQt::BitmapTextureQt()
-    : m_isPacked(false)
+    : m_isPacked( false )
 {
 
 }
 
 #ifdef QT_OPENGL_LIB
-class RGBA32PremultimpliedBufferQt : public RGBA32PremultimpliedBuffer {
+class RGBA32PremultimpliedBufferQt : public RGBA32PremultimpliedBuffer
+{
 public:
-    virtual PlatformGraphicsContext* beginPaint(const IntRect& rect, bool opaque)
+    virtual PlatformGraphicsContext *beginPaint( const IntRect &rect, bool opaque )
     {
         // m_image is only using during paint, it's safe to override it.
-        m_image = QImage(rect.size().width(), rect.size().height(), QImage::Format_ARGB32_Premultiplied);
-        if (!opaque)
-            m_image.fill(0);
-        m_painter.begin(&m_image);
-        TextureMapperQt::initialize(&m_painter);
-        m_painter.translate(-rect.x(), -rect.y());
+        m_image = QImage( rect.size().width(), rect.size().height(), QImage::Format_ARGB32_Premultiplied );
+
+        if ( !opaque )
+        {
+            m_image.fill( 0 );
+        }
+
+        m_painter.begin( &m_image );
+        TextureMapperQt::initialize( &m_painter );
+        m_painter.translate( -rect.x(), -rect.y() );
         return &m_painter;
     }
 
-    virtual void endPaint() { m_painter.end(); }
-    virtual const void* data() const { return m_image.constBits(); }
+    virtual void endPaint()
+    {
+        m_painter.end();
+    }
+    virtual const void *data() const
+    {
+        return m_image.constBits();
+    }
 
 private:
     QPainter m_painter;
@@ -207,7 +260,7 @@ private:
 
 PassRefPtr<RGBA32PremultimpliedBuffer> RGBA32PremultimpliedBuffer::create()
 {
-    return adoptRef(new RGBA32PremultimpliedBufferQt());
+    return adoptRef( new RGBA32PremultimpliedBufferQt() );
 }
 
 #endif

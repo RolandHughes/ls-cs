@@ -31,12 +31,14 @@
 
 #include "AudioNode.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class AudioSourceNode : public AudioNode {
+class AudioSourceNode : public AudioNode
+{
 public:
-    AudioSourceNode(AudioContext* context, double sampleRate)
-        : AudioNode(context, sampleRate)
+    AudioSourceNode( AudioContext *context, double sampleRate )
+        : AudioNode( context, sampleRate )
     {
     }
 };

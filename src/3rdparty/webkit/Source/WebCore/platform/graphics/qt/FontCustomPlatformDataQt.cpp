@@ -27,43 +27,52 @@
 #include <QFontDatabase>
 #include <QStringList>
 
-namespace WebCore {
+namespace WebCore
+{
 
 FontCustomPlatformData::~FontCustomPlatformData()
 {
-    QFontDatabase::removeApplicationFont(m_handle);
+    QFontDatabase::removeApplicationFont( m_handle );
 }
 
-FontPlatformData FontCustomPlatformData::fontPlatformData(int size, bool bold, bool italic, FontOrientation, TextOrientation, FontWidthVariant, FontRenderingMode)
+FontPlatformData FontCustomPlatformData::fontPlatformData( int size, bool bold, bool italic, FontOrientation, TextOrientation,
+        FontWidthVariant, FontRenderingMode )
 {
     QFont font;
-    font.setFamily(QFontDatabase::applicationFontFamilies(m_handle)[0]);
-    font.setPixelSize(size);
-    if (bold)
-        font.setWeight(QFont::Bold);
-    font.setItalic(italic);
+    font.setFamily( QFontDatabase::applicationFontFamilies( m_handle )[0] );
+    font.setPixelSize( size );
 
-    return FontPlatformData(font);
+    if ( bold )
+    {
+        font.setWeight( QFont::Bold );
+    }
+
+    font.setItalic( italic );
+
+    return FontPlatformData( font );
 }
 
-FontCustomPlatformData* createFontCustomPlatformData(SharedBuffer* buffer)
+FontCustomPlatformData *createFontCustomPlatformData( SharedBuffer *buffer )
 {
-    ASSERT_ARG(buffer, buffer);
+    ASSERT_ARG( buffer, buffer );
 
-    int id = QFontDatabase::addApplicationFontFromData(QByteArray(buffer->data(), buffer->size()));
-    if (id == -1)
+    int id = QFontDatabase::addApplicationFontFromData( QByteArray( buffer->data(), buffer->size() ) );
+
+    if ( id == -1 )
+    {
         return 0;
+    }
 
-    Q_ASSERT(QFontDatabase::applicationFontFamilies(id).size() > 0);
+    Q_ASSERT( QFontDatabase::applicationFontFamilies( id ).size() > 0 );
 
     FontCustomPlatformData *data = new FontCustomPlatformData;
     data->m_handle = id;
     return data;
 }
 
-bool FontCustomPlatformData::supportsFormat(const String& format)
+bool FontCustomPlatformData::supportsFormat( const String &format )
 {
-    return equalIgnoringCase(format, "truetype") || equalIgnoringCase(format, "opentype");
+    return equalIgnoringCase( format, "truetype" ) || equalIgnoringCase( format, "opentype" );
 }
 
 }

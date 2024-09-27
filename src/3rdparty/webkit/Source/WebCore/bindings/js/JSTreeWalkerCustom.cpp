@@ -27,14 +27,17 @@
 
 using namespace JSC;
 
-namespace WebCore {
-    
-void JSTreeWalker::visitChildren(SlotVisitor& visitor)
+namespace WebCore
 {
-    Base::visitChildren(visitor);
 
-    if (NodeFilter* filter = m_impl->filter())
-        visitor.addOpaqueRoot(filter);
+void JSTreeWalker::visitChildren( SlotVisitor &visitor )
+{
+    Base::visitChildren( visitor );
+
+    if ( NodeFilter *filter = m_impl->filter() )
+    {
+        visitor.addOpaqueRoot( filter );
+    }
 }
 
 }

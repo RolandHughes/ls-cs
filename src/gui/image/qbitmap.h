@@ -29,47 +29,51 @@
 
 class Q_GUI_EXPORT QBitmap : public QPixmap
 {
- public:
-   QBitmap();
-   QBitmap(const QPixmap &pixmap);
-   QBitmap(int width, int height);
-   explicit QBitmap(const QSize &size);
-   explicit QBitmap(const QString &fileName, const QString &format = QString());
+public:
+    QBitmap();
+    QBitmap( const QPixmap &pixmap );
+    QBitmap( int width, int height );
+    explicit QBitmap( const QSize &size );
+    explicit QBitmap( const QString &fileName, const QString &format = QString() );
 
-   ~QBitmap();
+    ~QBitmap();
 
-   QBitmap &operator=(const QPixmap &pixmap);
+    QBitmap &operator=( const QPixmap &pixmap );
 
-   inline void swap(QBitmap &other) {
-      QPixmap::swap(other);   // prevent QBitmap<->QPixmap swaps
-   }
+    inline void swap( QBitmap &other )
+    {
+        QPixmap::swap( other ); // prevent QBitmap<->QPixmap swaps
+    }
 
-   operator QVariant() const;
+    operator QVariant() const;
 
-   inline void clear() {
-      fill(Qt::color0);
-   }
+    inline void clear()
+    {
+        fill( Qt::color0 );
+    }
 
-   static QBitmap fromImage(const QImage &image, Qt::ImageConversionFlags flags = Qt::AutoColor);
-   static QBitmap fromData(const QSize &size, const uchar *bits,
-      QImage::Format monoFormat = QImage::Format_MonoLSB);
+    static QBitmap fromImage( const QImage &image, Qt::ImageConversionFlags flags = Qt::AutoColor );
+    static QBitmap fromData( const QSize &size, const uchar *bits,
+                             QImage::Format monoFormat = QImage::Format_MonoLSB );
 
-   QBitmap transformed(const QMatrix &matrix) const;
-   QBitmap transformed(const QTransform &matrix) const;
+    QBitmap transformed( const QMatrix &matrix ) const;
+    QBitmap transformed( const QTransform &matrix ) const;
 
-   using DataPtr = QExplicitlySharedDataPointer<QPlatformPixmap>;
+    using DataPtr = QExplicitlySharedDataPointer<QPlatformPixmap>;
 };
 
 template <>
-inline bool CustomType_T<QBitmap>::compare(const CustomType &other) const {
+inline bool CustomType_T<QBitmap>::compare( const CustomType &other ) const
+{
 
-   auto ptr = dynamic_cast<const CustomType_T<QBitmap>*>(&other);
+    auto ptr = dynamic_cast<const CustomType_T<QBitmap>*>( &other );
 
-   if (ptr != nullptr) {
-      return m_value.cacheKey() == (ptr->m_value).cacheKey();
-   }
+    if ( ptr != nullptr )
+    {
+        return m_value.cacheKey() == ( ptr->m_value ).cacheKey();
+    }
 
-   return false;
+    return false;
 }
 
 #endif

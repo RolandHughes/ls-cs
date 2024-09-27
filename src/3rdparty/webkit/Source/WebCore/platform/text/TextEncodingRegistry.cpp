@@ -21,7 +21,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -63,188 +63,242 @@
 
 using namespace WTF;
 
-namespace WebCore {
+namespace WebCore
+{
 
 const size_t maxEncodingNameLength = 63;
 
 // Hash for all-ASCII strings that does case folding.
-struct TextEncodingNameHash {
-    static bool equal(const char* s1, const char* s2)
+struct TextEncodingNameHash
+{
+    static bool equal( const char *s1, const char *s2 )
     {
         char c1;
         char c2;
-        do {
+
+        do
+        {
             c1 = *s1++;
             c2 = *s2++;
-            if (toASCIILower(c1) != toASCIILower(c2))
+
+            if ( toASCIILower( c1 ) != toASCIILower( c2 ) )
+            {
                 return false;
-        } while (c1 && c2);
+            }
+        }
+        while ( c1 && c2 );
+
         return !c1 && !c2;
     }
 
     // This algorithm is the one-at-a-time hash from:
     // http://burtleburtle.net/bob/hash/hashfaq.html
     // http://burtleburtle.net/bob/hash/doobs.html
-    static unsigned hash(const char* s)
+    static unsigned hash( const char *s )
     {
         unsigned h = WTF::stringHashingStartValue;
-        for (;;) {
+
+        for ( ;; )
+        {
             char c = *s++;
-            if (!c) {
-                h += (h << 3);
-                h ^= (h >> 11);
-                h += (h << 15);
+
+            if ( !c )
+            {
+                h += ( h << 3 );
+                h ^= ( h >> 11 );
+                h += ( h << 15 );
                 return h;
             }
-            h += toASCIILower(c);
-            h += (h << 10); 
-            h ^= (h >> 6); 
+
+            h += toASCIILower( c );
+            h += ( h << 10 );
+            h ^= ( h >> 6 );
         }
     }
 
     static const bool safeToCompareToEmptyOrDeleted = false;
 };
 
-struct TextCodecFactory {
+struct TextCodecFactory
+{
     NewTextCodecFunction function;
-    const void* additionalData;
-    TextCodecFactory(NewTextCodecFunction f = 0, const void* d = 0) : function(f), additionalData(d) { }
+    const void *additionalData;
+    TextCodecFactory( NewTextCodecFunction f = 0, const void *d = 0 ) : function( f ), additionalData( d ) { }
 };
 
-typedef HashMap<const char*, const char*, TextEncodingNameHash> TextEncodingNameMap;
-typedef HashMap<const char*, TextCodecFactory> TextCodecMap;
+typedef HashMap<const char *, const char *, TextEncodingNameHash> TextEncodingNameMap;
+typedef HashMap<const char *, TextCodecFactory> TextCodecMap;
 
-static Mutex& encodingRegistryMutex()
+static Mutex &encodingRegistryMutex()
 {
     // We don't have to use AtomicallyInitializedStatic here because
     // this function is called on the main thread for any page before
     // it is used in worker threads.
-    DEFINE_STATIC_LOCAL(Mutex, mutex, ());
+    DEFINE_STATIC_LOCAL( Mutex, mutex, () );
     return mutex;
 }
 
-static TextEncodingNameMap* textEncodingNameMap;
-static TextCodecMap* textCodecMap;
+static TextEncodingNameMap *textEncodingNameMap;
+static TextCodecMap *textCodecMap;
 static bool didExtendTextCodecMaps;
-static HashSet<const char*>* japaneseEncodings;
-static HashSet<const char*>* nonBackslashEncodings;
+static HashSet<const char *> *japaneseEncodings;
+static HashSet<const char *> *nonBackslashEncodings;
 
-static const char* const textEncodingNameBlacklist[] = { "UTF-7" };
+static const char *const textEncodingNameBlacklist[] = { "UTF-7" };
 
 #if ERROR_DISABLED
 
-static inline void checkExistingName(const char*, const char*) { }
+static inline void checkExistingName( const char *, const char * ) { }
 
 #else
 
-static void checkExistingName(const char* alias, const char* atomicName)
+static void checkExistingName( const char *alias, const char *atomicName )
 {
-    const char* oldAtomicName = textEncodingNameMap->get(alias);
-    if (!oldAtomicName)
+    const char *oldAtomicName = textEncodingNameMap->get( alias );
+
+    if ( !oldAtomicName )
+    {
         return;
-    if (oldAtomicName == atomicName)
+    }
+
+    if ( oldAtomicName == atomicName )
+    {
         return;
+    }
+
     // Keep the warning silent about one case where we know this will happen.
-    if (strcmp(alias, "ISO-8859-8-I") == 0
-            && strcmp(oldAtomicName, "ISO-8859-8-I") == 0
-            && strcasecmp(atomicName, "iso-8859-8") == 0)
+    if ( strcmp( alias, "ISO-8859-8-I" ) == 0
+            && strcmp( oldAtomicName, "ISO-8859-8-I" ) == 0
+            && strcasecmp( atomicName, "iso-8859-8" ) == 0 )
+    {
         return;
-    LOG_ERROR("alias %s maps to %s already, but someone is trying to make it map to %s", alias, oldAtomicName, atomicName);
+    }
+
+    LOG_ERROR( "alias %s maps to %s already, but someone is trying to make it map to %s", alias, oldAtomicName, atomicName );
 }
 
 #endif
 
-static bool isUndesiredAlias(const char* alias)
+static bool isUndesiredAlias( const char *alias )
 {
     // Reject aliases with version numbers that are supported by some back-ends (such as "ISO_2022,locale=ja,version=0" in ICU).
-    for (const char* p = alias; *p; ++p) {
-        if (*p == ',')
+    for ( const char *p = alias; *p; ++p )
+    {
+        if ( *p == ',' )
+        {
             return true;
+        }
     }
+
     // 8859_1 is known to (at least) ICU, but other browsers don't support this name - and having it caused a compatibility
     // problem, see bug 43554.
-    if (0 == strcmp(alias, "8859_1"))
+    if ( 0 == strcmp( alias, "8859_1" ) )
+    {
         return true;
+    }
+
     return false;
 }
 
-static void addToTextEncodingNameMap(const char* alias, const char* name)
+static void addToTextEncodingNameMap( const char *alias, const char *name )
 {
-    ASSERT(strlen(alias) <= maxEncodingNameLength);
-    if (isUndesiredAlias(alias))
+    ASSERT( strlen( alias ) <= maxEncodingNameLength );
+
+    if ( isUndesiredAlias( alias ) )
+    {
         return;
-    const char* atomicName = textEncodingNameMap->get(name);
-    ASSERT(strcmp(alias, name) == 0 || atomicName);
-    if (!atomicName)
+    }
+
+    const char *atomicName = textEncodingNameMap->get( name );
+    ASSERT( strcmp( alias, name ) == 0 || atomicName );
+
+    if ( !atomicName )
+    {
         atomicName = name;
-    checkExistingName(alias, atomicName);
-    textEncodingNameMap->add(alias, atomicName);
+    }
+
+    checkExistingName( alias, atomicName );
+    textEncodingNameMap->add( alias, atomicName );
 }
 
-static void addToTextCodecMap(const char* name, NewTextCodecFunction function, const void* additionalData)
+static void addToTextCodecMap( const char *name, NewTextCodecFunction function, const void *additionalData )
 {
-    const char* atomicName = textEncodingNameMap->get(name);
-    ASSERT(atomicName);
-    textCodecMap->add(atomicName, TextCodecFactory(function, additionalData));
+    const char *atomicName = textEncodingNameMap->get( name );
+    ASSERT( atomicName );
+    textCodecMap->add( atomicName, TextCodecFactory( function, additionalData ) );
 }
 
 static void pruneBlacklistedCodecs()
 {
-    for (size_t i = 0; i < WTF_ARRAY_LENGTH(textEncodingNameBlacklist); ++i) {
-        const char* atomicName = textEncodingNameMap->get(textEncodingNameBlacklist[i]);
-        if (!atomicName)
-            continue;
+    for ( size_t i = 0; i < WTF_ARRAY_LENGTH( textEncodingNameBlacklist ); ++i )
+    {
+        const char *atomicName = textEncodingNameMap->get( textEncodingNameBlacklist[i] );
 
-        Vector<const char*> names;
+        if ( !atomicName )
+        {
+            continue;
+        }
+
+        Vector<const char *> names;
         TextEncodingNameMap::const_iterator it = textEncodingNameMap->begin();
         TextEncodingNameMap::const_iterator end = textEncodingNameMap->end();
-        for (; it != end; ++it) {
-            if (it->second == atomicName)
-                names.append(it->first);
+
+        for ( ; it != end; ++it )
+        {
+            if ( it->second == atomicName )
+            {
+                names.append( it->first );
+            }
         }
 
         size_t length = names.size();
-        for (size_t j = 0; j < length; ++j)
-            textEncodingNameMap->remove(names[j]);
 
-        textCodecMap->remove(atomicName);
+        for ( size_t j = 0; j < length; ++j )
+        {
+            textEncodingNameMap->remove( names[j] );
+        }
+
+        textCodecMap->remove( atomicName );
     }
 }
 
 static void buildBaseTextCodecMaps()
 {
-    ASSERT(isMainThread());
-    ASSERT(!textCodecMap);
-    ASSERT(!textEncodingNameMap);
+    ASSERT( isMainThread() );
+    ASSERT( !textCodecMap );
+    ASSERT( !textEncodingNameMap );
 
     textCodecMap = new TextCodecMap;
     textEncodingNameMap = new TextEncodingNameMap;
 
-    TextCodecLatin1::registerEncodingNames(addToTextEncodingNameMap);
-    TextCodecLatin1::registerCodecs(addToTextCodecMap);
+    TextCodecLatin1::registerEncodingNames( addToTextEncodingNameMap );
+    TextCodecLatin1::registerCodecs( addToTextCodecMap );
 
-    TextCodecUTF8::registerEncodingNames(addToTextEncodingNameMap);
-    TextCodecUTF8::registerCodecs(addToTextCodecMap);
+    TextCodecUTF8::registerEncodingNames( addToTextEncodingNameMap );
+    TextCodecUTF8::registerCodecs( addToTextCodecMap );
 
-    TextCodecUTF16::registerEncodingNames(addToTextEncodingNameMap);
-    TextCodecUTF16::registerCodecs(addToTextCodecMap);
+    TextCodecUTF16::registerEncodingNames( addToTextEncodingNameMap );
+    TextCodecUTF16::registerCodecs( addToTextCodecMap );
 
-    TextCodecUserDefined::registerEncodingNames(addToTextEncodingNameMap);
-    TextCodecUserDefined::registerCodecs(addToTextCodecMap);
+    TextCodecUserDefined::registerEncodingNames( addToTextEncodingNameMap );
+    TextCodecUserDefined::registerCodecs( addToTextCodecMap );
 
 #if USE(GLIB_UNICODE)
     // FIXME: This is not needed. The code above covers all the base codecs.
-    TextCodecGtk::registerBaseEncodingNames(addToTextEncodingNameMap);
-    TextCodecGtk::registerBaseCodecs(addToTextCodecMap);
+    TextCodecGtk::registerBaseEncodingNames( addToTextEncodingNameMap );
+    TextCodecGtk::registerBaseCodecs( addToTextCodecMap );
 #endif
 }
 
-static void addEncodingName(HashSet<const char*>* set, const char* name)
+static void addEncodingName( HashSet<const char *> *set, const char *name )
 {
     // We must not use atomicCanonicalTextEncodingName() because this function is called in it.
-    const char* atomicName = textEncodingNameMap->get(name);
-    if (atomicName)
-        set->add(atomicName);
+    const char *atomicName = textEncodingNameMap->get( name );
+
+    if ( atomicName )
+    {
+        set->add( atomicName );
+    }
 }
 
 static void buildQuirksSets()
@@ -252,117 +306,135 @@ static void buildQuirksSets()
     // FIXME: Having isJapaneseEncoding() and shouldShowBackslashAsCurrencySymbolIn()
     // and initializing the sets for them in TextEncodingRegistry.cpp look strange.
 
-    ASSERT(!japaneseEncodings);
-    ASSERT(!nonBackslashEncodings);
+    ASSERT( !japaneseEncodings );
+    ASSERT( !nonBackslashEncodings );
 
-    japaneseEncodings = new HashSet<const char*>;
-    addEncodingName(japaneseEncodings, "EUC-JP");
-    addEncodingName(japaneseEncodings, "ISO-2022-JP");
-    addEncodingName(japaneseEncodings, "ISO-2022-JP-1");
-    addEncodingName(japaneseEncodings, "ISO-2022-JP-2");
-    addEncodingName(japaneseEncodings, "ISO-2022-JP-3");
-    addEncodingName(japaneseEncodings, "JIS_C6226-1978");
-    addEncodingName(japaneseEncodings, "JIS_X0201");
-    addEncodingName(japaneseEncodings, "JIS_X0208-1983");
-    addEncodingName(japaneseEncodings, "JIS_X0208-1990");
-    addEncodingName(japaneseEncodings, "JIS_X0212-1990");
-    addEncodingName(japaneseEncodings, "Shift_JIS");
-    addEncodingName(japaneseEncodings, "Shift_JIS_X0213-2000");
-    addEncodingName(japaneseEncodings, "cp932");
-    addEncodingName(japaneseEncodings, "x-mac-japanese");
+    japaneseEncodings = new HashSet<const char *>;
+    addEncodingName( japaneseEncodings, "EUC-JP" );
+    addEncodingName( japaneseEncodings, "ISO-2022-JP" );
+    addEncodingName( japaneseEncodings, "ISO-2022-JP-1" );
+    addEncodingName( japaneseEncodings, "ISO-2022-JP-2" );
+    addEncodingName( japaneseEncodings, "ISO-2022-JP-3" );
+    addEncodingName( japaneseEncodings, "JIS_C6226-1978" );
+    addEncodingName( japaneseEncodings, "JIS_X0201" );
+    addEncodingName( japaneseEncodings, "JIS_X0208-1983" );
+    addEncodingName( japaneseEncodings, "JIS_X0208-1990" );
+    addEncodingName( japaneseEncodings, "JIS_X0212-1990" );
+    addEncodingName( japaneseEncodings, "Shift_JIS" );
+    addEncodingName( japaneseEncodings, "Shift_JIS_X0213-2000" );
+    addEncodingName( japaneseEncodings, "cp932" );
+    addEncodingName( japaneseEncodings, "x-mac-japanese" );
 
-    nonBackslashEncodings = new HashSet<const char*>;
+    nonBackslashEncodings = new HashSet<const char *>;
     // The text encodings below treat backslash as a currency symbol for IE compatibility.
     // See http://blogs.msdn.com/michkap/archive/2005/09/17/469941.aspx for more information.
-    addEncodingName(nonBackslashEncodings, "x-mac-japanese");
-    addEncodingName(nonBackslashEncodings, "ISO-2022-JP");
-    addEncodingName(nonBackslashEncodings, "EUC-JP");
+    addEncodingName( nonBackslashEncodings, "x-mac-japanese" );
+    addEncodingName( nonBackslashEncodings, "ISO-2022-JP" );
+    addEncodingName( nonBackslashEncodings, "EUC-JP" );
     // Shift_JIS_X0213-2000 is not the same encoding as Shift_JIS on Mac. We need to register both of them.
-    addEncodingName(nonBackslashEncodings, "Shift_JIS");
-    addEncodingName(nonBackslashEncodings, "Shift_JIS_X0213-2000");
+    addEncodingName( nonBackslashEncodings, "Shift_JIS" );
+    addEncodingName( nonBackslashEncodings, "Shift_JIS_X0213-2000" );
 }
 
-bool isJapaneseEncoding(const char* canonicalEncodingName)
+bool isJapaneseEncoding( const char *canonicalEncodingName )
 {
-    return canonicalEncodingName && japaneseEncodings && japaneseEncodings->contains(canonicalEncodingName);
+    return canonicalEncodingName && japaneseEncodings && japaneseEncodings->contains( canonicalEncodingName );
 }
 
-bool shouldShowBackslashAsCurrencySymbolIn(const char* canonicalEncodingName)
+bool shouldShowBackslashAsCurrencySymbolIn( const char *canonicalEncodingName )
 {
-    return canonicalEncodingName && nonBackslashEncodings && nonBackslashEncodings->contains(canonicalEncodingName);
+    return canonicalEncodingName && nonBackslashEncodings && nonBackslashEncodings->contains( canonicalEncodingName );
 }
 
 static void extendTextCodecMaps()
 {
 #if USE(ICU_UNICODE)
-    TextCodecICU::registerEncodingNames(addToTextEncodingNameMap);
-    TextCodecICU::registerCodecs(addToTextCodecMap);
+    TextCodecICU::registerEncodingNames( addToTextEncodingNameMap );
+    TextCodecICU::registerCodecs( addToTextCodecMap );
 #endif
 
 #if USE(QT4_UNICODE)
-    TextCodecQt::registerEncodingNames(addToTextEncodingNameMap);
-    TextCodecQt::registerCodecs(addToTextCodecMap);
+    TextCodecQt::registerEncodingNames( addToTextEncodingNameMap );
+    TextCodecQt::registerCodecs( addToTextCodecMap );
 #endif
 
 #if PLATFORM(MAC)
-    TextCodecMac::registerEncodingNames(addToTextEncodingNameMap);
-    TextCodecMac::registerCodecs(addToTextCodecMap);
+    TextCodecMac::registerEncodingNames( addToTextEncodingNameMap );
+    TextCodecMac::registerCodecs( addToTextCodecMap );
 #endif
 
 #if USE(GLIB_UNICODE)
-    TextCodecGtk::registerExtendedEncodingNames(addToTextEncodingNameMap);
-    TextCodecGtk::registerExtendedCodecs(addToTextCodecMap);
+    TextCodecGtk::registerExtendedEncodingNames( addToTextEncodingNameMap );
+    TextCodecGtk::registerExtendedCodecs( addToTextCodecMap );
 #endif
 
 #if OS(WINCE) && !PLATFORM(QT)
-    TextCodecWinCE::registerExtendedEncodingNames(addToTextEncodingNameMap);
-    TextCodecWinCE::registerExtendedCodecs(addToTextCodecMap);
+    TextCodecWinCE::registerExtendedEncodingNames( addToTextEncodingNameMap );
+    TextCodecWinCE::registerExtendedCodecs( addToTextCodecMap );
 #endif
 
     pruneBlacklistedCodecs();
     buildQuirksSets();
 }
 
-PassOwnPtr<TextCodec> newTextCodec(const TextEncoding& encoding)
+PassOwnPtr<TextCodec> newTextCodec( const TextEncoding &encoding )
 {
-    MutexLocker lock(encodingRegistryMutex());
+    MutexLocker lock( encodingRegistryMutex() );
 
-    ASSERT(textCodecMap);
-    TextCodecFactory factory = textCodecMap->get(encoding.name());
-    ASSERT(factory.function);
-    return factory.function(encoding, factory.additionalData);
+    ASSERT( textCodecMap );
+    TextCodecFactory factory = textCodecMap->get( encoding.name() );
+    ASSERT( factory.function );
+    return factory.function( encoding, factory.additionalData );
 }
 
-const char* atomicCanonicalTextEncodingName(const char* name)
+const char *atomicCanonicalTextEncodingName( const char *name )
 {
-    if (!name || !name[0])
+    if ( !name || !name[0] )
+    {
         return 0;
-    if (!textEncodingNameMap)
+    }
+
+    if ( !textEncodingNameMap )
+    {
         buildBaseTextCodecMaps();
+    }
 
-    MutexLocker lock(encodingRegistryMutex());
+    MutexLocker lock( encodingRegistryMutex() );
 
-    if (const char* atomicName = textEncodingNameMap->get(name))
+    if ( const char *atomicName = textEncodingNameMap->get( name ) )
+    {
         return atomicName;
-    if (didExtendTextCodecMaps)
+    }
+
+    if ( didExtendTextCodecMaps )
+    {
         return 0;
+    }
+
     extendTextCodecMaps();
     didExtendTextCodecMaps = true;
-    return textEncodingNameMap->get(name);
+    return textEncodingNameMap->get( name );
 }
 
-const char* atomicCanonicalTextEncodingName(const UChar* characters, size_t length)
+const char *atomicCanonicalTextEncodingName( const UChar *characters, size_t length )
 {
     char buffer[maxEncodingNameLength + 1];
     size_t j = 0;
-    for (size_t i = 0; i < length; ++i) {
+
+    for ( size_t i = 0; i < length; ++i )
+    {
         UChar c = characters[i];
-        if (j == maxEncodingNameLength)
+
+        if ( j == maxEncodingNameLength )
+        {
             return 0;
+        }
+
         buffer[j++] = c;
     }
+
     buffer[j] = 0;
-    return atomicCanonicalTextEncodingName(buffer);
+    return atomicCanonicalTextEncodingName( buffer );
 }
 
 bool noExtendedTextEncodingNameUsed()
@@ -375,14 +447,17 @@ bool noExtendedTextEncodingNameUsed()
 void dumpTextEncodingNameMap()
 {
     unsigned size = textEncodingNameMap->size();
-    fprintf(stderr, "Dumping %u entries in WebCore::textEncodingNameMap...\n", size);
+    fprintf( stderr, "Dumping %u entries in WebCore::textEncodingNameMap...\n", size );
 
-    MutexLocker lock(encodingRegistryMutex());
+    MutexLocker lock( encodingRegistryMutex() );
 
     TextEncodingNameMap::const_iterator it = textEncodingNameMap->begin();
     TextEncodingNameMap::const_iterator end = textEncodingNameMap->end();
-    for (; it != end; ++it)
-        fprintf(stderr, "'%s' => '%s'\n", it->first, it->second);
+
+    for ( ; it != end; ++it )
+    {
+        fprintf( stderr, "'%s' => '%s'\n", it->first, it->second );
+    }
 }
 #endif
 

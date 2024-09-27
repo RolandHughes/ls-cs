@@ -29,26 +29,32 @@
 #include "APIClient.h"
 #include "WKPage.h"
 
-namespace WebCore {
+namespace WebCore
+{
 class ResourceError;
 class ResourceRequest;
 class ResourceResponse;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
 class APIObject;
 class WebFrameProxy;
 class WebPageProxy;
 
-class WebResourceLoadClient : public APIClient<WKPageResourceLoadClient> {
+class WebResourceLoadClient : public APIClient<WKPageResourceLoadClient>
+{
 public:
-    void didInitiateLoadForResource(WebPageProxy*, WebFrameProxy*, uint64_t resourceIdentifier, const WebCore::ResourceRequest&, bool pageIsProvisionallyLoading);
-    void didSendRequestForResource(WebPageProxy*, WebFrameProxy*, uint64_t resourceIdentifier, const WebCore::ResourceRequest&, const WebCore::ResourceResponse&);
-    void didReceiveResponseForResource(WebPageProxy*, WebFrameProxy*, uint64_t resourceIdentifier, const WebCore::ResourceResponse&);
-    void didReceiveContentLengthForResource(WebPageProxy*, WebFrameProxy*, uint64_t resourceIdentifier, uint64_t contentLength);
-    void didFinishLoadForResource(WebPageProxy*, WebFrameProxy*, uint64_t resourceIdentifier);
-    void didFailLoadForResource(WebPageProxy*, WebFrameProxy*, uint64_t resourceIdentifier, const WebCore::ResourceError&);
+    void didInitiateLoadForResource( WebPageProxy *, WebFrameProxy *, uint64_t resourceIdentifier, const WebCore::ResourceRequest &,
+                                     bool pageIsProvisionallyLoading );
+    void didSendRequestForResource( WebPageProxy *, WebFrameProxy *, uint64_t resourceIdentifier, const WebCore::ResourceRequest &,
+                                    const WebCore::ResourceResponse & );
+    void didReceiveResponseForResource( WebPageProxy *, WebFrameProxy *, uint64_t resourceIdentifier,
+                                        const WebCore::ResourceResponse & );
+    void didReceiveContentLengthForResource( WebPageProxy *, WebFrameProxy *, uint64_t resourceIdentifier, uint64_t contentLength );
+    void didFinishLoadForResource( WebPageProxy *, WebFrameProxy *, uint64_t resourceIdentifier );
+    void didFailLoadForResource( WebPageProxy *, WebFrameProxy *, uint64_t resourceIdentifier, const WebCore::ResourceError & );
 };
 
 } // namespace WebKit

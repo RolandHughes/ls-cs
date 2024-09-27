@@ -33,84 +33,87 @@ using namespace WebKit;
 
 WKTypeID WKViewGetTypeID()
 {
-    return toAPI(APIObject::TypeView);
+    return toAPI( APIObject::TypeView );
 }
 
-WKViewRef WKViewCreate(RECT rect, WKContextRef contextRef, WKPageGroupRef pageGroupRef, HWND parentWindow)
+WKViewRef WKViewCreate( RECT rect, WKContextRef contextRef, WKPageGroupRef pageGroupRef, HWND parentWindow )
 {
-    RefPtr<WebView> view = WebView::create(rect, toImpl(contextRef), toImpl(pageGroupRef), parentWindow);
-    return toAPI(view.release().releaseRef());
+    RefPtr<WebView> view = WebView::create( rect, toImpl( contextRef ), toImpl( pageGroupRef ), parentWindow );
+    return toAPI( view.release().releaseRef() );
 }
 
-HWND WKViewGetWindow(WKViewRef viewRef)
+HWND WKViewGetWindow( WKViewRef viewRef )
 {
-    return toImpl(viewRef)->window();
+    return toImpl( viewRef )->window();
 }
 
-WKPageRef WKViewGetPage(WKViewRef viewRef)
+WKPageRef WKViewGetPage( WKViewRef viewRef )
 {
-    return toAPI(toImpl(viewRef)->page());
+    return toAPI( toImpl( viewRef )->page() );
 }
 
-void WKViewSetParentWindow(WKViewRef viewRef, HWND hostWindow)
+void WKViewSetParentWindow( WKViewRef viewRef, HWND hostWindow )
 {
-    toImpl(viewRef)->setParentWindow(hostWindow);
+    toImpl( viewRef )->setParentWindow( hostWindow );
 }
 
-void WKViewWindowAncestryDidChange(WKViewRef viewRef)
+void WKViewWindowAncestryDidChange( WKViewRef viewRef )
 {
-    toImpl(viewRef)->windowAncestryDidChange();
+    toImpl( viewRef )->windowAncestryDidChange();
 }
 
-void WKViewSetIsInWindow(WKViewRef viewRef, bool isInWindow)
+void WKViewSetIsInWindow( WKViewRef viewRef, bool isInWindow )
 {
-    toImpl(viewRef)->setIsInWindow(isInWindow);
+    toImpl( viewRef )->setIsInWindow( isInWindow );
 }
 
-void WKViewSetInitialFocus(WKViewRef viewRef, bool forward)
+void WKViewSetInitialFocus( WKViewRef viewRef, bool forward )
 {
-    toImpl(viewRef)->setInitialFocus(forward);
+    toImpl( viewRef )->setInitialFocus( forward );
 }
 
-void WKViewSetScrollOffsetOnNextResize(WKViewRef viewRef, WKSize scrollOffset)
+void WKViewSetScrollOffsetOnNextResize( WKViewRef viewRef, WKSize scrollOffset )
 {
-    toImpl(viewRef)->setScrollOffsetOnNextResize(toIntSize(scrollOffset));
+    toImpl( viewRef )->setScrollOffsetOnNextResize( toIntSize( scrollOffset ) );
 }
 
-void WKViewSetFindIndicatorCallback(WKViewRef viewRef, WKViewFindIndicatorCallback callback, void* context)
+void WKViewSetFindIndicatorCallback( WKViewRef viewRef, WKViewFindIndicatorCallback callback, void *context )
 {
-    toImpl(viewRef)->setFindIndicatorCallback(callback, context);
+    toImpl( viewRef )->setFindIndicatorCallback( callback, context );
 }
 
-WKViewFindIndicatorCallback WKViewGetFindIndicatorCallback(WKViewRef viewRef, void** context)
-{    
-    return toImpl(viewRef)->getFindIndicatorCallback(context);
-}
-
-void WKViewSetViewUndoClient(WKViewRef viewRef, const WKViewUndoClient* wkClient)
+WKViewFindIndicatorCallback WKViewGetFindIndicatorCallback( WKViewRef viewRef, void **context )
 {
-    if (wkClient && wkClient->version)
+    return toImpl( viewRef )->getFindIndicatorCallback( context );
+}
+
+void WKViewSetViewUndoClient( WKViewRef viewRef, const WKViewUndoClient *wkClient )
+{
+    if ( wkClient && wkClient->version )
+    {
         return;
-    toImpl(viewRef)->initializeUndoClient(wkClient);
+    }
+
+    toImpl( viewRef )->initializeUndoClient( wkClient );
 }
 
-void WKViewReapplyEditCommand(WKViewRef viewRef, WKEditCommandRef command)
+void WKViewReapplyEditCommand( WKViewRef viewRef, WKEditCommandRef command )
 {
-    toImpl(viewRef)->reapplyEditCommand(toImpl(command));
+    toImpl( viewRef )->reapplyEditCommand( toImpl( command ) );
 }
 
-void WKViewUnapplyEditCommand(WKViewRef viewRef, WKEditCommandRef command)
+void WKViewUnapplyEditCommand( WKViewRef viewRef, WKEditCommandRef command )
 {
-    toImpl(viewRef)->unapplyEditCommand(toImpl(command));
+    toImpl( viewRef )->unapplyEditCommand( toImpl( command ) );
 }
 
-void WKViewSetDrawsTransparentBackground(WKViewRef viewRef, bool drawsTransparentBackground)
+void WKViewSetDrawsTransparentBackground( WKViewRef viewRef, bool drawsTransparentBackground )
 {
-    toImpl(viewRef)->page()->setDrawsTransparentBackground(drawsTransparentBackground);
+    toImpl( viewRef )->page()->setDrawsTransparentBackground( drawsTransparentBackground );
 }
 
-bool WKViewDrawsTransparentBackground(WKViewRef viewRef)
+bool WKViewDrawsTransparentBackground( WKViewRef viewRef )
 {
-    return toImpl(viewRef)->page()->drawsTransparentBackground();
+    return toImpl( viewRef )->page()->drawsTransparentBackground();
 }
 

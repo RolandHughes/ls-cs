@@ -32,47 +32,56 @@
 //####todo remove the noops (looks like their where there in the initial commit)
 class QXcbEglContext : public QEGLPlatformContext
 {
- public:
-   QXcbEglContext(const QSurfaceFormat &glFormat, QPlatformOpenGLContext *share,
-      EGLDisplay display, QXcbConnection *c, const QVariant &nativeHandle)
-      : QEGLPlatformContext(glFormat, share, display, 0, nativeHandle)
-      , m_connection(c) {
-      Q_XCB_NOOP(m_connection);
-   }
+public:
+    QXcbEglContext( const QSurfaceFormat &glFormat, QPlatformOpenGLContext *share,
+                    EGLDisplay display, QXcbConnection *c, const QVariant &nativeHandle )
+        : QEGLPlatformContext( glFormat, share, display, 0, nativeHandle )
+        , m_connection( c )
+    {
+        Q_XCB_NOOP( m_connection );
+    }
 
-   void swapBuffers(QPlatformSurface *surface) {
-      Q_XCB_NOOP(m_connection);
-      QEGLPlatformContext::swapBuffers(surface);
-      Q_XCB_NOOP(m_connection);
-   }
+    void swapBuffers( QPlatformSurface *surface )
+    {
+        Q_XCB_NOOP( m_connection );
+        QEGLPlatformContext::swapBuffers( surface );
+        Q_XCB_NOOP( m_connection );
+    }
 
-   bool makeCurrent(QPlatformSurface *surface) {
-      Q_XCB_NOOP(m_connection);
-      bool ret = QEGLPlatformContext::makeCurrent(surface);
-      Q_XCB_NOOP(m_connection);
-      return ret;
-   }
+    bool makeCurrent( QPlatformSurface *surface )
+    {
+        Q_XCB_NOOP( m_connection );
+        bool ret = QEGLPlatformContext::makeCurrent( surface );
+        Q_XCB_NOOP( m_connection );
+        return ret;
+    }
 
-   void doneCurrent() {
-      Q_XCB_NOOP(m_connection);
-      QEGLPlatformContext::doneCurrent();
-      Q_XCB_NOOP(m_connection);
-   }
+    void doneCurrent()
+    {
+        Q_XCB_NOOP( m_connection );
+        QEGLPlatformContext::doneCurrent();
+        Q_XCB_NOOP( m_connection );
+    }
 
-   EGLSurface eglSurfaceForPlatformSurface(QPlatformSurface *surface) {
-      if (surface->surface()->surfaceClass() == QSurface::Window) {
-         return static_cast<QXcbEglWindow *>(surface)->eglSurface();
-      } else {
-         return static_cast<QEGLPbuffer *>(surface)->pbuffer();
-      }
-   }
+    EGLSurface eglSurfaceForPlatformSurface( QPlatformSurface *surface )
+    {
+        if ( surface->surface()->surfaceClass() == QSurface::Window )
+        {
+            return static_cast<QXcbEglWindow *>( surface )->eglSurface();
+        }
+        else
+        {
+            return static_cast<QEGLPbuffer *>( surface )->pbuffer();
+        }
+    }
 
-   QVariant nativeHandle() const {
-      return QVariant::fromValue<QEGLNativeContext>(QEGLNativeContext(eglContext(), eglDisplay()));
-   }
+    QVariant nativeHandle() const
+    {
+        return QVariant::fromValue<QEGLNativeContext>( QEGLNativeContext( eglContext(), eglDisplay() ) );
+    }
 
- private:
-   QXcbConnection *m_connection;
+private:
+    QXcbConnection *m_connection;
 };
 
 #endif //QXCBEGLCONTEXT_H

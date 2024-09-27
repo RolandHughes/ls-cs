@@ -23,11 +23,12 @@
 #if ENABLE(SVG)
 #include "SVGZoomEvent.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 SVGZoomEvent::SVGZoomEvent()
-    : m_newScale(0.0f)
-    , m_previousScale(0.0f)
+    : m_newScale( 0.0f )
+    , m_previousScale( 0.0f )
 {
 }
 
@@ -41,7 +42,7 @@ float SVGZoomEvent::previousScale() const
     return m_previousScale;
 }
 
-void SVGZoomEvent::setPreviousScale(float scale)
+void SVGZoomEvent::setPreviousScale( float scale )
 {
     m_previousScale = scale;
 }
@@ -56,7 +57,7 @@ float SVGZoomEvent::newScale() const
     return m_newScale;
 }
 
-void SVGZoomEvent::setNewScale(float scale)
+void SVGZoomEvent::setNewScale( float scale )
 {
     m_newScale = scale;
 }

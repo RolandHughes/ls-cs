@@ -28,29 +28,31 @@
 #include <WebDOMObject.h>
 #include <WebDOMString.h>
 
-namespace WebCore {
+namespace WebCore
+{
 class TestInterface;
 };
 
 
-class WebDOMTestInterface : public WebDOMObject {
+class WebDOMTestInterface : public WebDOMObject
+{
 public:
     WebDOMTestInterface();
-    explicit WebDOMTestInterface(WebCore::TestInterface*);
-    WebDOMTestInterface(const WebDOMTestInterface&);
-    WebDOMTestInterface& operator=(const WebDOMTestInterface&);
+    explicit WebDOMTestInterface( WebCore::TestInterface * );
+    WebDOMTestInterface( const WebDOMTestInterface & );
+    WebDOMTestInterface &operator=( const WebDOMTestInterface & );
     virtual ~WebDOMTestInterface();
 
 
-    WebCore::TestInterface* impl() const;
+    WebCore::TestInterface *impl() const;
 
 protected:
     struct WebDOMTestInterfacePrivate;
-    WebDOMTestInterfacePrivate* m_impl;
+    WebDOMTestInterfacePrivate *m_impl;
 };
 
-WebCore::TestInterface* toWebCore(const WebDOMTestInterface&);
-WebDOMTestInterface toWebKit(WebCore::TestInterface*);
+WebCore::TestInterface *toWebCore( const WebDOMTestInterface & );
+WebDOMTestInterface toWebKit( WebCore::TestInterface * );
 
 #endif
 #endif // ENABLE(Condition1) || ENABLE(Condition2)

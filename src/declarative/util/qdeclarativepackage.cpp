@@ -62,123 +62,143 @@ QT_BEGIN_NAMESPACE
 
 class QDeclarativePackagePrivate
 {
- public:
-   QDeclarativePackagePrivate() {}
+public:
+    QDeclarativePackagePrivate() {}
 
-   struct DataGuard : public QDeclarativeGuard<QObject> {
-      DataGuard(QObject *obj, QList<DataGuard> *l) : list(l) {
-         (QDeclarativeGuard<QObject> &)*this = obj;
-      }
-      QList<DataGuard> *list;
-      void objectDestroyed(QObject *) {
-         // we assume priv will always be destroyed after objectDestroyed calls
-         list->removeOne(*this);
-      }
-   };
+    struct DataGuard : public QDeclarativeGuard<QObject>
+    {
+        DataGuard( QObject *obj, QList<DataGuard> *l ) : list( l )
+        {
+            ( QDeclarativeGuard<QObject> & )*this = obj;
+        }
+        QList<DataGuard> *list;
+        void objectDestroyed( QObject * )
+        {
+            // we assume priv will always be destroyed after objectDestroyed calls
+            list->removeOne( *this );
+        }
+    };
 
-   QList<DataGuard> dataList;
-   static void data_append(QDeclarativeListProperty<QObject> *prop, QObject *o) {
-      QList<DataGuard> *list = static_cast<QList<DataGuard> *>(prop->data);
-      list->append(DataGuard(o, list));
-   }
-   static void data_clear(QDeclarativeListProperty<QObject> *prop) {
-      QList<DataGuard> *list = static_cast<QList<DataGuard> *>(prop->data);
-      list->clear();
-   }
-   static QObject *data_at(QDeclarativeListProperty<QObject> *prop, int index) {
-      QList<DataGuard> *list = static_cast<QList<DataGuard> *>(prop->data);
-      return list->at(index);
-   }
-   static int data_count(QDeclarativeListProperty<QObject> *prop) {
-      QList<DataGuard> *list = static_cast<QList<DataGuard> *>(prop->data);
-      return list->count();
-   }
+    QList<DataGuard> dataList;
+    static void data_append( QDeclarativeListProperty<QObject> *prop, QObject *o )
+    {
+        QList<DataGuard> *list = static_cast<QList<DataGuard> *>( prop->data );
+        list->append( DataGuard( o, list ) );
+    }
+    static void data_clear( QDeclarativeListProperty<QObject> *prop )
+    {
+        QList<DataGuard> *list = static_cast<QList<DataGuard> *>( prop->data );
+        list->clear();
+    }
+    static QObject *data_at( QDeclarativeListProperty<QObject> *prop, int index )
+    {
+        QList<DataGuard> *list = static_cast<QList<DataGuard> *>( prop->data );
+        return list->at( index );
+    }
+    static int data_count( QDeclarativeListProperty<QObject> *prop )
+    {
+        QList<DataGuard> *list = static_cast<QList<DataGuard> *>( prop->data );
+        return list->count();
+    }
 };
 
 QHash<QObject *, QDeclarativePackageAttached *> QDeclarativePackageAttached::attached;
 
-QDeclarativePackageAttached::QDeclarativePackageAttached(QObject *parent)
-   : QObject(parent)
+QDeclarativePackageAttached::QDeclarativePackageAttached( QObject *parent )
+    : QObject( parent )
 {
-   attached.insert(parent, this);
+    attached.insert( parent, this );
 }
 
 QDeclarativePackageAttached::~QDeclarativePackageAttached()
 {
-   attached.remove(parent());
+    attached.remove( parent() );
 }
 
 QString QDeclarativePackageAttached::name() const
 {
-   return _name;
+    return _name;
 }
 
-void QDeclarativePackageAttached::setName(const QString &n)
+void QDeclarativePackageAttached::setName( const QString &n )
 {
-   _name = n;
+    _name = n;
 }
 
-QDeclarativePackage::QDeclarativePackage(QObject *parent)
-   : QObject(*(new QDeclarativePackagePrivate), parent)
+QDeclarativePackage::QDeclarativePackage( QObject *parent )
+    : QObject( *( new QDeclarativePackagePrivate ), parent )
 {
 }
 
 QDeclarativePackage::~QDeclarativePackage()
 {
-   Q_D(QDeclarativePackage);
-   for (int ii = 0; ii < d->dataList.count(); ++ii) {
-      QObject *obj = d->dataList.at(ii);
-      obj->setParent(this);
-   }
+    Q_D( QDeclarativePackage );
+
+    for ( int ii = 0; ii < d->dataList.count(); ++ii )
+    {
+        QObject *obj = d->dataList.at( ii );
+        obj->setParent( this );
+    }
 }
 
 QDeclarativeListProperty<QObject> QDeclarativePackage::data()
 {
-   Q_D(QDeclarativePackage);
-   return QDeclarativeListProperty<QObject>(this, &d->dataList, QDeclarativePackagePrivate::data_append,
-          QDeclarativePackagePrivate::data_count,
-          QDeclarativePackagePrivate::data_at,
-          QDeclarativePackagePrivate::data_clear);
+    Q_D( QDeclarativePackage );
+    return QDeclarativeListProperty<QObject>( this, &d->dataList, QDeclarativePackagePrivate::data_append,
+            QDeclarativePackagePrivate::data_count,
+            QDeclarativePackagePrivate::data_at,
+            QDeclarativePackagePrivate::data_clear );
 }
 
-bool QDeclarativePackage::hasPart(const QString &name)
+bool QDeclarativePackage::hasPart( const QString &name )
 {
-   Q_D(QDeclarativePackage);
-   for (int ii = 0; ii < d->dataList.count(); ++ii) {
-      QObject *obj = d->dataList.at(ii);
-      QDeclarativePackageAttached *a = QDeclarativePackageAttached::attached.value(obj);
-      if (a && a->name() == name) {
-         return true;
-      }
-   }
-   return false;
+    Q_D( QDeclarativePackage );
+
+    for ( int ii = 0; ii < d->dataList.count(); ++ii )
+    {
+        QObject *obj = d->dataList.at( ii );
+        QDeclarativePackageAttached *a = QDeclarativePackageAttached::attached.value( obj );
+
+        if ( a && a->name() == name )
+        {
+            return true;
+        }
+    }
+
+    return false;
 }
 
-QObject *QDeclarativePackage::part(const QString &name)
+QObject *QDeclarativePackage::part( const QString &name )
 {
-   Q_D(QDeclarativePackage);
-   if (name.isEmpty() && !d->dataList.isEmpty()) {
-      return d->dataList.at(0);
-   }
+    Q_D( QDeclarativePackage );
 
-   for (int ii = 0; ii < d->dataList.count(); ++ii) {
-      QObject *obj = d->dataList.at(ii);
-      QDeclarativePackageAttached *a = QDeclarativePackageAttached::attached.value(obj);
-      if (a && a->name() == name) {
-         return obj;
-      }
-   }
+    if ( name.isEmpty() && !d->dataList.isEmpty() )
+    {
+        return d->dataList.at( 0 );
+    }
 
-   if (name == QLatin1String("default") && !d->dataList.isEmpty()) {
-      return d->dataList.at(0);
-   }
+    for ( int ii = 0; ii < d->dataList.count(); ++ii )
+    {
+        QObject *obj = d->dataList.at( ii );
+        QDeclarativePackageAttached *a = QDeclarativePackageAttached::attached.value( obj );
 
-   return 0;
+        if ( a && a->name() == name )
+        {
+            return obj;
+        }
+    }
+
+    if ( name == QLatin1String( "default" ) && !d->dataList.isEmpty() )
+    {
+        return d->dataList.at( 0 );
+    }
+
+    return 0;
 }
 
-QDeclarativePackageAttached *QDeclarativePackage::qmlAttachedProperties(QObject *o)
+QDeclarativePackageAttached *QDeclarativePackage::qmlAttachedProperties( QObject *o )
 {
-   return new QDeclarativePackageAttached(o);
+    return new QDeclarativePackageAttached( o );
 }
 
 

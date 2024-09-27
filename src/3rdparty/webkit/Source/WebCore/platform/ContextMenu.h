@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef ContextMenu_h
@@ -37,83 +37,98 @@
 #include <QMenu>
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class ContextMenuController;
+class ContextMenuController;
 
-    class ContextMenu {
-        WTF_MAKE_NONCOPYABLE(ContextMenu); WTF_MAKE_FAST_ALLOCATED;
-    public:
-        ContextMenu();
+class ContextMenu
+{
+    WTF_MAKE_NONCOPYABLE( ContextMenu );
+    WTF_MAKE_FAST_ALLOCATED;
+public:
+    ContextMenu();
 
-        ContextMenuItem* itemWithAction(unsigned);
+    ContextMenuItem *itemWithAction( unsigned );
 
 #if USE(CROSS_PLATFORM_CONTEXT_MENUS)
 #if PLATFORM(WIN)
-        typedef HMENU NativeMenu;
+    typedef HMENU NativeMenu;
 #elif PLATFORM(EFL)
-        typedef void* NativeMenu;
+    typedef void *NativeMenu;
 #endif
-        explicit ContextMenu(NativeMenu);
+    explicit ContextMenu( NativeMenu );
 
-        NativeMenu nativeMenu() const;
+    NativeMenu nativeMenu() const;
 
-        static NativeMenu createNativeMenuFromItems(const Vector<ContextMenuItem>&);
-        static void getContextMenuItems(NativeMenu, Vector<ContextMenuItem>&);
+    static NativeMenu createNativeMenuFromItems( const Vector<ContextMenuItem> & );
+    static void getContextMenuItems( NativeMenu, Vector<ContextMenuItem> & );
 
-        // FIXME: When more platforms switch over, this should return const ContextMenuItem*'s.
-        ContextMenuItem* itemAtIndex(unsigned index) { return &m_items[index]; }
+    // FIXME: When more platforms switch over, this should return const ContextMenuItem*'s.
+    ContextMenuItem *itemAtIndex( unsigned index )
+    {
+        return &m_items[index];
+    }
 
-        void setItems(const Vector<ContextMenuItem>& items) { m_items = items; }
-        const Vector<ContextMenuItem>& items() const { return m_items; }
+    void setItems( const Vector<ContextMenuItem> &items )
+    {
+        m_items = items;
+    }
+    const Vector<ContextMenuItem> &items() const
+    {
+        return m_items;
+    }
 
-        void appendItem(const ContextMenuItem& item) { m_items.append(item); } 
+    void appendItem( const ContextMenuItem &item )
+    {
+        m_items.append( item );
+    }
 #else
-        ContextMenu(const PlatformMenuDescription);
-        ~ContextMenu();
+    ContextMenu( const PlatformMenuDescription );
+    ~ContextMenu();
 
-        void insertItem(unsigned position, ContextMenuItem&);
-        void appendItem(ContextMenuItem&);
+    void insertItem( unsigned position, ContextMenuItem & );
+    void appendItem( ContextMenuItem & );
 
-        ContextMenuItem* itemAtIndex(unsigned, const PlatformMenuDescription);
+    ContextMenuItem *itemAtIndex( unsigned, const PlatformMenuDescription );
 
-        unsigned itemCount() const;
+    unsigned itemCount() const;
 
-        PlatformMenuDescription platformDescription() const;
-        void setPlatformDescription(PlatformMenuDescription);
+    PlatformMenuDescription platformDescription() const;
+    void setPlatformDescription( PlatformMenuDescription );
 
-        PlatformMenuDescription releasePlatformDescription();
+    PlatformMenuDescription releasePlatformDescription();
 
 #if PLATFORM(WX)
-        static ContextMenuItem* itemWithId(int);
+    static ContextMenuItem *itemWithId( int );
 #endif
 
 #endif // USE(CROSS_PLATFORM_CONTEXT_MENUS)
 
-    private:
+private:
 #if USE(CROSS_PLATFORM_CONTEXT_MENUS)
-        Vector<ContextMenuItem> m_items;
+    Vector<ContextMenuItem> m_items;
 #else
 #if PLATFORM(MAC)
-        // Keep this in sync with the PlatformMenuDescription typedef
-        RetainPtr<NSMutableArray> m_platformDescription;
+    // Keep this in sync with the PlatformMenuDescription typedef
+    RetainPtr<NSMutableArray> m_platformDescription;
 #elif PLATFORM(QT)
-        QList<ContextMenuItem> m_items;
+    QList<ContextMenuItem> m_items;
 #elif PLATFORM(CHROMIUM)
-        Vector<ContextMenuItem> m_items;
+    Vector<ContextMenuItem> m_items;
 #else
-        PlatformMenuDescription m_platformDescription;
+    PlatformMenuDescription m_platformDescription;
 #if OS(WINCE)
-        unsigned m_itemCount;
+    unsigned m_itemCount;
 #endif
 #endif
 
 #endif // USE(CROSS_PLATFORM_CONTEXT_MENUS)
-    };
+};
 
 #if !USE(CROSS_PLATFORM_CONTEXT_MENUS)
-Vector<ContextMenuItem> contextMenuItemVector(PlatformMenuDescription);
-PlatformMenuDescription platformMenuDescription(Vector<ContextMenuItem>&);
+Vector<ContextMenuItem> contextMenuItemVector( PlatformMenuDescription );
+PlatformMenuDescription platformMenuDescription( Vector<ContextMenuItem> & );
 #endif
 
 }

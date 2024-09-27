@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef ManifestParser_h
@@ -30,18 +30,20 @@
 
 #include "ApplicationCache.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class KURL;
+class KURL;
 
-    struct Manifest {
-        Vector<KURL> onlineWhitelistedURLs;
-        HashSet<String> explicitURLs;
-        FallbackURLVector fallbackURLs;
-        bool allowAllNetworkRequests; // Wildcard found in NETWORK section.
-    };
+struct Manifest
+{
+    Vector<KURL> onlineWhitelistedURLs;
+    HashSet<String> explicitURLs;
+    FallbackURLVector fallbackURLs;
+    bool allowAllNetworkRequests; // Wildcard found in NETWORK section.
+};
 
-    bool parseManifest(const KURL& manifestURL, const char* data, int length, Manifest&);
+bool parseManifest( const KURL &manifestURL, const char *data, int length, Manifest & );
 
 }
 

@@ -35,71 +35,83 @@
 #include "TextEncoding.h"
 #include <wtf/unicode/CharacterNames.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 FontTranscoder::FontTranscoder()
 {
-    m_converterTypes.add("MS PGothic", BackslashToYenSign);
+    m_converterTypes.add( "MS PGothic", BackslashToYenSign );
     UChar unicodeNameMSPGothic[] = {0xFF2D, 0xFF33, 0x0020, 0xFF30, 0x30B4, 0x30B7, 0x30C3, 0x30AF};
-    m_converterTypes.add(AtomicString(unicodeNameMSPGothic, WTF_ARRAY_LENGTH(unicodeNameMSPGothic)), BackslashToYenSign);
+    m_converterTypes.add( AtomicString( unicodeNameMSPGothic, WTF_ARRAY_LENGTH( unicodeNameMSPGothic ) ), BackslashToYenSign );
 
-    m_converterTypes.add("MS PMincho", BackslashToYenSign);
+    m_converterTypes.add( "MS PMincho", BackslashToYenSign );
     UChar unicodeNameMSPMincho[] = {0xFF2D, 0xFF33, 0x0020, 0xFF30, 0x660E, 0x671D};
-    m_converterTypes.add(AtomicString(unicodeNameMSPMincho, WTF_ARRAY_LENGTH(unicodeNameMSPMincho)), BackslashToYenSign);
+    m_converterTypes.add( AtomicString( unicodeNameMSPMincho, WTF_ARRAY_LENGTH( unicodeNameMSPMincho ) ), BackslashToYenSign );
 
-    m_converterTypes.add("MS Gothic", BackslashToYenSign);
+    m_converterTypes.add( "MS Gothic", BackslashToYenSign );
     UChar unicodeNameMSGothic[] = {0xFF2D, 0xFF33, 0x0020, 0x30B4, 0x30B7, 0x30C3, 0x30AF};
-    m_converterTypes.add(AtomicString(unicodeNameMSGothic, WTF_ARRAY_LENGTH(unicodeNameMSGothic)), BackslashToYenSign);
+    m_converterTypes.add( AtomicString( unicodeNameMSGothic, WTF_ARRAY_LENGTH( unicodeNameMSGothic ) ), BackslashToYenSign );
 
-    m_converterTypes.add("MS Mincho", BackslashToYenSign);
+    m_converterTypes.add( "MS Mincho", BackslashToYenSign );
     UChar unicodeNameMSMincho[] = {0xFF2D, 0xFF33, 0x0020, 0x660E, 0x671D};
-    m_converterTypes.add(AtomicString(unicodeNameMSMincho, WTF_ARRAY_LENGTH(unicodeNameMSMincho)), BackslashToYenSign);
+    m_converterTypes.add( AtomicString( unicodeNameMSMincho, WTF_ARRAY_LENGTH( unicodeNameMSMincho ) ), BackslashToYenSign );
 
-    m_converterTypes.add("Meiryo", BackslashToYenSign);
+    m_converterTypes.add( "Meiryo", BackslashToYenSign );
     UChar unicodeNameMeiryo[] = {0x30E1, 0x30A4, 0x30EA, 0x30AA};
-    m_converterTypes.add(AtomicString(unicodeNameMeiryo, WTF_ARRAY_LENGTH(unicodeNameMeiryo)), BackslashToYenSign);
+    m_converterTypes.add( AtomicString( unicodeNameMeiryo, WTF_ARRAY_LENGTH( unicodeNameMeiryo ) ), BackslashToYenSign );
 }
 
-FontTranscoder::ConverterType FontTranscoder::converterType(const FontDescription& fontDescription, const TextEncoding* encoding) const
+FontTranscoder::ConverterType FontTranscoder::converterType( const FontDescription &fontDescription,
+        const TextEncoding *encoding ) const
 {
-    const AtomicString& fontFamily = fontDescription.family().family().string();
-    if (!fontFamily.isNull()) {
-        HashMap<AtomicString, ConverterType>::const_iterator found = m_converterTypes.find(fontFamily);
-        if (found != m_converterTypes.end())
+    const AtomicString &fontFamily = fontDescription.family().family().string();
+
+    if ( !fontFamily.isNull() )
+    {
+        HashMap<AtomicString, ConverterType>::const_iterator found = m_converterTypes.find( fontFamily );
+
+        if ( found != m_converterTypes.end() )
+        {
             return found->second;
+        }
     }
 
     // IE's default fonts for Japanese encodings change backslashes into yen signs.
     // We emulate this behavior only when no font is explicitly specified.
-    if (encoding && encoding->backslashAsCurrencySymbol() != '\\' && !fontDescription.isSpecifiedFont())
+    if ( encoding && encoding->backslashAsCurrencySymbol() != '\\' && !fontDescription.isSpecifiedFont() )
+    {
         return BackslashToYenSign;
+    }
 
     return NoConversion;
 }
 
-void FontTranscoder::convert(String& text, const FontDescription& fontDescription, const TextEncoding* encoding) const
+void FontTranscoder::convert( String &text, const FontDescription &fontDescription, const TextEncoding *encoding ) const
 {
-    switch (converterType(fontDescription, encoding)) {
-    case BackslashToYenSign: {
-        // FIXME: TextEncoding.h has similar code. We need to factor them out.
-        text.replace('\\', yenSign);
-        break;
-    }
-    case NoConversion:
-    default:
-        ASSERT_NOT_REACHED();
+    switch ( converterType( fontDescription, encoding ) )
+    {
+        case BackslashToYenSign:
+        {
+            // FIXME: TextEncoding.h has similar code. We need to factor them out.
+            text.replace( '\\', yenSign );
+            break;
+        }
+
+        case NoConversion:
+        default:
+            ASSERT_NOT_REACHED();
     }
 }
 
-bool FontTranscoder::needsTranscoding(const FontDescription& fontDescription, const TextEncoding* encoding) const
+bool FontTranscoder::needsTranscoding( const FontDescription &fontDescription, const TextEncoding *encoding ) const
 {
-    ConverterType type = converterType(fontDescription, encoding);
+    ConverterType type = converterType( fontDescription, encoding );
     return type != NoConversion;
 }
 
-FontTranscoder& fontTranscoder()
+FontTranscoder &fontTranscoder()
 {
-    static FontTranscoder* transcoder = new FontTranscoder;
+    static FontTranscoder *transcoder = new FontTranscoder;
     return *transcoder;
 }
 

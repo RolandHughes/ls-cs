@@ -31,32 +31,35 @@
 #include "RenderObject.h"
 #include "StyleCachedImage.h"
 
-namespace WebCore {
-
-RenderImageResourceStyleImage::RenderImageResourceStyleImage(StyleImage* styleImage)
-    : m_styleImage(styleImage)
+namespace WebCore
 {
-    ASSERT(m_styleImage);
+
+RenderImageResourceStyleImage::RenderImageResourceStyleImage( StyleImage *styleImage )
+    : m_styleImage( styleImage )
+{
+    ASSERT( m_styleImage );
 }
 
 RenderImageResourceStyleImage::~RenderImageResourceStyleImage()
 {
 }
 
-void RenderImageResourceStyleImage::initialize(RenderObject* renderer)
+void RenderImageResourceStyleImage::initialize( RenderObject *renderer )
 {
-    RenderImageResource::initialize(renderer);
+    RenderImageResource::initialize( renderer );
 
-    if (m_styleImage->isCachedImage())
-        m_cachedImage = static_cast<StyleCachedImage*>(m_styleImage.get())->cachedImage();
+    if ( m_styleImage->isCachedImage() )
+    {
+        m_cachedImage = static_cast<StyleCachedImage *>( m_styleImage.get() )->cachedImage();
+    }
 
-    m_styleImage->addClient(m_renderer);
+    m_styleImage->addClient( m_renderer );
 }
 
 void RenderImageResourceStyleImage::shutdown()
 {
-    ASSERT(m_renderer);
-    m_styleImage->removeClient(m_renderer);
+    ASSERT( m_renderer );
+    m_styleImage->removeClient( m_renderer );
     m_cachedImage = 0;
 }
 

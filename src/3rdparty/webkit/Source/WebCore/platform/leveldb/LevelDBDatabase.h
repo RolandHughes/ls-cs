@@ -33,25 +33,28 @@
 #include <wtf/Vector.h>
 #include <wtf/text/WTFString.h>
 
-namespace leveldb {
+namespace leveldb
+{
 class Comparator;
 class DB;
 }
 
-namespace WebCore {
+namespace WebCore
+{
 
 class LevelDBComparator;
 class LevelDBIterator;
 class LevelDBSlice;
 
-class LevelDBDatabase {
+class LevelDBDatabase
+{
 public:
-    static PassOwnPtr<LevelDBDatabase> open(const String& fileName, const LevelDBComparator*);
+    static PassOwnPtr<LevelDBDatabase> open( const String &fileName, const LevelDBComparator * );
     ~LevelDBDatabase();
 
-    bool put(const LevelDBSlice& key, const Vector<char>& value);
-    bool remove(const LevelDBSlice& key);
-    bool get(const LevelDBSlice& key, Vector<char>& value);
+    bool put( const LevelDBSlice &key, const Vector<char> &value );
+    bool remove( const LevelDBSlice &key );
+    bool get( const LevelDBSlice &key, Vector<char> &value );
     PassOwnPtr<LevelDBIterator> createIterator();
 
 private:

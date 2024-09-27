@@ -16,12 +16,12 @@
  */
 
 
-  /**************************************************************************
-   *
-   * This file is used to define the TrueType error enumeration
-   * constants.
-   *
-   */
+/**************************************************************************
+ *
+ * This file is used to define the TrueType error enumeration
+ * constants.
+ *
+ */
 
 #ifndef TTERRORS_H_
 #define TTERRORS_H_

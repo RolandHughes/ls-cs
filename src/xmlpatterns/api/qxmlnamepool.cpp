@@ -24,12 +24,12 @@
 #include <qnamepool_p.h>
 #include <qxmlnamepool.h>
 
-QXmlNamePool::QXmlNamePool() : d(new QPatternist::NamePool())
+QXmlNamePool::QXmlNamePool() : d( new QPatternist::NamePool() )
 {
 }
 
-QXmlNamePool::QXmlNamePool(const QXmlNamePool &other)
-   : d(other.d)
+QXmlNamePool::QXmlNamePool( const QXmlNamePool &other )
+    : d( other.d )
 {
 }
 
@@ -37,13 +37,13 @@ QXmlNamePool::~QXmlNamePool()
 {
 }
 
-QXmlNamePool::QXmlNamePool(QPatternist::NamePool *namePool)
-   : d(QExplicitlySharedDataPointer<QPatternist::NamePool>(namePool))
+QXmlNamePool::QXmlNamePool( QPatternist::NamePool *namePool )
+    : d( QExplicitlySharedDataPointer<QPatternist::NamePool>( namePool ) )
 {
 }
 
-QXmlNamePool &QXmlNamePool::operator=(const QXmlNamePool &other)
+QXmlNamePool &QXmlNamePool::operator=( const QXmlNamePool &other )
 {
-   d = other.d;
-   return *this;
+    d = other.d;
+    return *this;
 }

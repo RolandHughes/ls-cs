@@ -42,39 +42,48 @@
 #include <wtf/RefCounted.h>
 #include <wtf/text/WTFString.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class ArrayBuffer;
 class Blob;
 class ScriptExecutionContext;
 
-class FileReader : public RefCounted<FileReader>, public ActiveDOMObject, public EventTarget, public FileReaderLoaderClient {
+class FileReader : public RefCounted<FileReader>, public ActiveDOMObject, public EventTarget, public FileReaderLoaderClient
+{
 public:
-    static PassRefPtr<FileReader> create(ScriptExecutionContext* context)
+    static PassRefPtr<FileReader> create( ScriptExecutionContext *context )
     {
-        return adoptRef(new FileReader(context));
+        return adoptRef( new FileReader( context ) );
     }
 
     virtual ~FileReader();
 
-    enum ReadyState {
+    enum ReadyState
+    {
         EMPTY = 0,
         LOADING = 1,
         DONE = 2
     };
 
-    void readAsArrayBuffer(Blob*);
-    void readAsBinaryString(Blob*);
-    void readAsText(Blob*, const String& encoding = "");
-    void readAsDataURL(Blob*);
+    void readAsArrayBuffer( Blob * );
+    void readAsBinaryString( Blob * );
+    void readAsText( Blob *, const String &encoding = "" );
+    void readAsDataURL( Blob * );
     void abort();
 
     void start();
     void doAbort();
 
     ReadyState readyState() const;
-    PassRefPtr<FileError> error() { return m_error; }
-    FileReaderLoader::ReadType readType() const { return m_readType; }
+    PassRefPtr<FileError> error()
+    {
+        return m_error;
+    }
+    FileReaderLoader::ReadType readType() const
+    {
+        return m_readType;
+    }
     PassRefPtr<ArrayBuffer> arrayBufferResult() const;
     String stringResult();
 
@@ -84,27 +93,34 @@ public:
     virtual bool hasPendingActivity() const;
 
     // EventTarget
-    virtual FileReader* toFileReader() { return this; }
-    virtual ScriptExecutionContext* scriptExecutionContext() const { return ActiveDOMObject::scriptExecutionContext(); }
+    virtual FileReader *toFileReader()
+    {
+        return this;
+    }
+    virtual ScriptExecutionContext *scriptExecutionContext() const
+    {
+        return ActiveDOMObject::scriptExecutionContext();
+    }
 
     // FileReaderLoaderClient
     virtual void didStartLoading();
     virtual void didReceiveData();
     virtual void didFinishLoading();
-    virtual void didFail(int errorCode);
+    virtual void didFail( int errorCode );
 
     using RefCounted<FileReader>::ref;
     using RefCounted<FileReader>::deref;
 
-    DEFINE_ATTRIBUTE_EVENT_LISTENER(loadstart);
-    DEFINE_ATTRIBUTE_EVENT_LISTENER(progress);
-    DEFINE_ATTRIBUTE_EVENT_LISTENER(load);
-    DEFINE_ATTRIBUTE_EVENT_LISTENER(abort);
-    DEFINE_ATTRIBUTE_EVENT_LISTENER(error);
-    DEFINE_ATTRIBUTE_EVENT_LISTENER(loadend);
+    DEFINE_ATTRIBUTE_EVENT_LISTENER( loadstart );
+    DEFINE_ATTRIBUTE_EVENT_LISTENER( progress );
+    DEFINE_ATTRIBUTE_EVENT_LISTENER( load );
+    DEFINE_ATTRIBUTE_EVENT_LISTENER( abort );
+    DEFINE_ATTRIBUTE_EVENT_LISTENER( error );
+    DEFINE_ATTRIBUTE_EVENT_LISTENER( loadend );
 
 private:
-    enum InternalState {
+    enum InternalState
+    {
         None,
         Starting,
         Opening,
@@ -113,18 +129,30 @@ private:
         Completed
     };
 
-    FileReader(ScriptExecutionContext*);
+    FileReader( ScriptExecutionContext * );
 
     // EventTarget
-    virtual void refEventTarget() { ref(); }
-    virtual void derefEventTarget() { deref(); }
-    virtual EventTargetData* eventTargetData() { return &m_eventTargetData; }
-    virtual EventTargetData* ensureEventTargetData() { return &m_eventTargetData; }
+    virtual void refEventTarget()
+    {
+        ref();
+    }
+    virtual void derefEventTarget()
+    {
+        deref();
+    }
+    virtual EventTargetData *eventTargetData()
+    {
+        return &m_eventTargetData;
+    }
+    virtual EventTargetData *ensureEventTargetData()
+    {
+        return &m_eventTargetData;
+    }
 
     void terminate();
-    void readInternal(Blob*, FileReaderLoader::ReadType);
-    void fireErrorEvent(int httpStatusCode);
-    void fireEvent(const AtomicString& type);
+    void readInternal( Blob *, FileReaderLoader::ReadType );
+    void fireErrorEvent( int httpStatusCode );
+    void fireEvent( const AtomicString &type );
 
     InternalState m_state;
     EventTargetData m_eventTargetData;

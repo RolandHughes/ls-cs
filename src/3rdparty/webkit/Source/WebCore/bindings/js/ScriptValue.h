@@ -1,10 +1,10 @@
 /*
  * Copyright (c) 2008, 2011 Google Inc. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  *     * Redistributions of source code must retain the above copyright
  * notice, this list of conditions and the following disclaimer.
  *     * Redistributions in binary form must reproduce the above
@@ -14,7 +14,7 @@
  *     * Neither the name of Google Inc. nor the names of its
  * contributors may be used to endorse or promote products derived from
  * this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -39,36 +39,47 @@
 #include <runtime/JSValue.h>
 #include <wtf/PassRefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class InspectorValue;
 class SerializedScriptValue;
 
-class ScriptValue {
+class ScriptValue
+{
 public:
     ScriptValue() { }
-    ScriptValue(JSC::JSGlobalData& globalData, JSC::JSValue value) : m_value(globalData, value) {}
+    ScriptValue( JSC::JSGlobalData &globalData, JSC::JSValue value ) : m_value( globalData, value ) {}
     virtual ~ScriptValue() {}
 
-    JSC::JSValue jsValue() const { return m_value.get(); }
-    bool getString(ScriptState*, String& result) const;
-    String toString(ScriptState*) const;
-    bool isEqual(ScriptState*, const ScriptValue&) const;
+    JSC::JSValue jsValue() const
+    {
+        return m_value.get();
+    }
+    bool getString( ScriptState *, String &result ) const;
+    String toString( ScriptState * ) const;
+    bool isEqual( ScriptState *, const ScriptValue & ) const;
     bool isNull() const;
     bool isUndefined() const;
     bool isObject() const;
     bool isFunction() const;
-    bool hasNoValue() const { return !m_value; }
+    bool hasNoValue() const
+    {
+        return !m_value;
+    }
 
-    bool operator==(const ScriptValue& other) const { return m_value == other.m_value; }
+    bool operator==( const ScriptValue &other ) const
+    {
+        return m_value == other.m_value;
+    }
 
-    PassRefPtr<SerializedScriptValue> serialize(ScriptState*, SerializationErrorMode = Throwing);
-    static ScriptValue deserialize(ScriptState*, SerializedScriptValue*, SerializationErrorMode = Throwing);
+    PassRefPtr<SerializedScriptValue> serialize( ScriptState *, SerializationErrorMode = Throwing );
+    static ScriptValue deserialize( ScriptState *, SerializedScriptValue *, SerializationErrorMode = Throwing );
 
     static ScriptValue undefined();
 
 #if ENABLE(INSPECTOR)
-    PassRefPtr<InspectorValue> toInspectorValue(ScriptState*) const;
+    PassRefPtr<InspectorValue> toInspectorValue( ScriptState * ) const;
 #endif
 
 private:

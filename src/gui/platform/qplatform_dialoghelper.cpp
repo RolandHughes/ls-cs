@@ -32,106 +32,107 @@
 
 #include <algorithm>
 
-static const int buttonRoleLayouts[2][5][14] = {
-   // Qt::Horizontal
-   {
-      // WinLayout
-      {
-         QPlatformDialogHelper::ResetRole, QPlatformDialogHelper::Stretch, QPlatformDialogHelper::YesRole, QPlatformDialogHelper::AcceptRole,
-         QPlatformDialogHelper::AlternateRole, QPlatformDialogHelper::DestructiveRole, QPlatformDialogHelper::NoRole,
-         QPlatformDialogHelper::ActionRole, QPlatformDialogHelper::RejectRole, QPlatformDialogHelper::ApplyRole,
-         QPlatformDialogHelper::HelpRole, QPlatformDialogHelper::EOL, QPlatformDialogHelper::EOL, QPlatformDialogHelper::EOL
-      },
+static const int buttonRoleLayouts[2][5][14] =
+{
+    // Qt::Horizontal
+    {
+        // WinLayout
+        {
+            QPlatformDialogHelper::ResetRole, QPlatformDialogHelper::Stretch, QPlatformDialogHelper::YesRole, QPlatformDialogHelper::AcceptRole,
+            QPlatformDialogHelper::AlternateRole, QPlatformDialogHelper::DestructiveRole, QPlatformDialogHelper::NoRole,
+            QPlatformDialogHelper::ActionRole, QPlatformDialogHelper::RejectRole, QPlatformDialogHelper::ApplyRole,
+            QPlatformDialogHelper::HelpRole, QPlatformDialogHelper::EOL, QPlatformDialogHelper::EOL, QPlatformDialogHelper::EOL
+        },
 
-      // MacLayout
-      {
-         QPlatformDialogHelper::HelpRole, QPlatformDialogHelper::ResetRole, QPlatformDialogHelper::ApplyRole, QPlatformDialogHelper::ActionRole,
-         QPlatformDialogHelper::Stretch, QPlatformDialogHelper::DestructiveRole | QPlatformDialogHelper::Reverse,
-         QPlatformDialogHelper::AlternateRole | QPlatformDialogHelper::Reverse, QPlatformDialogHelper::RejectRole | QPlatformDialogHelper::Reverse,
-         QPlatformDialogHelper::AcceptRole | QPlatformDialogHelper::Reverse, QPlatformDialogHelper::NoRole | QPlatformDialogHelper::Reverse,
-         QPlatformDialogHelper::YesRole | QPlatformDialogHelper::Reverse, QPlatformDialogHelper::EOL, QPlatformDialogHelper::EOL
-      },
+        // MacLayout
+        {
+            QPlatformDialogHelper::HelpRole, QPlatformDialogHelper::ResetRole, QPlatformDialogHelper::ApplyRole, QPlatformDialogHelper::ActionRole,
+            QPlatformDialogHelper::Stretch, QPlatformDialogHelper::DestructiveRole | QPlatformDialogHelper::Reverse,
+            QPlatformDialogHelper::AlternateRole | QPlatformDialogHelper::Reverse, QPlatformDialogHelper::RejectRole | QPlatformDialogHelper::Reverse,
+            QPlatformDialogHelper::AcceptRole | QPlatformDialogHelper::Reverse, QPlatformDialogHelper::NoRole | QPlatformDialogHelper::Reverse,
+            QPlatformDialogHelper::YesRole | QPlatformDialogHelper::Reverse, QPlatformDialogHelper::EOL, QPlatformDialogHelper::EOL
+        },
 
-      // KdeLayout
-      {
-         QPlatformDialogHelper::HelpRole, QPlatformDialogHelper::ResetRole, QPlatformDialogHelper::Stretch, QPlatformDialogHelper::YesRole,
-         QPlatformDialogHelper::NoRole, QPlatformDialogHelper::ActionRole, QPlatformDialogHelper::AcceptRole, QPlatformDialogHelper::AlternateRole,
-         QPlatformDialogHelper::ApplyRole, QPlatformDialogHelper::DestructiveRole, QPlatformDialogHelper::RejectRole, QPlatformDialogHelper::EOL
-      },
+        // KdeLayout
+        {
+            QPlatformDialogHelper::HelpRole, QPlatformDialogHelper::ResetRole, QPlatformDialogHelper::Stretch, QPlatformDialogHelper::YesRole,
+            QPlatformDialogHelper::NoRole, QPlatformDialogHelper::ActionRole, QPlatformDialogHelper::AcceptRole, QPlatformDialogHelper::AlternateRole,
+            QPlatformDialogHelper::ApplyRole, QPlatformDialogHelper::DestructiveRole, QPlatformDialogHelper::RejectRole, QPlatformDialogHelper::EOL
+        },
 
-      // GnomeLayout
-      {
-         QPlatformDialogHelper::HelpRole, QPlatformDialogHelper::ResetRole, QPlatformDialogHelper::Stretch, QPlatformDialogHelper::ActionRole,
-         QPlatformDialogHelper::ApplyRole | QPlatformDialogHelper::Reverse, QPlatformDialogHelper::DestructiveRole | QPlatformDialogHelper::Reverse,
-         QPlatformDialogHelper::AlternateRole | QPlatformDialogHelper::Reverse, QPlatformDialogHelper::RejectRole | QPlatformDialogHelper::Reverse,
-         QPlatformDialogHelper::AcceptRole | QPlatformDialogHelper::Reverse, QPlatformDialogHelper::NoRole | QPlatformDialogHelper::Reverse,
-         QPlatformDialogHelper::YesRole | QPlatformDialogHelper::Reverse, QPlatformDialogHelper::EOL
-      },
+        // GnomeLayout
+        {
+            QPlatformDialogHelper::HelpRole, QPlatformDialogHelper::ResetRole, QPlatformDialogHelper::Stretch, QPlatformDialogHelper::ActionRole,
+            QPlatformDialogHelper::ApplyRole | QPlatformDialogHelper::Reverse, QPlatformDialogHelper::DestructiveRole | QPlatformDialogHelper::Reverse,
+            QPlatformDialogHelper::AlternateRole | QPlatformDialogHelper::Reverse, QPlatformDialogHelper::RejectRole | QPlatformDialogHelper::Reverse,
+            QPlatformDialogHelper::AcceptRole | QPlatformDialogHelper::Reverse, QPlatformDialogHelper::NoRole | QPlatformDialogHelper::Reverse,
+            QPlatformDialogHelper::YesRole | QPlatformDialogHelper::Reverse, QPlatformDialogHelper::EOL
+        },
 
-      // MacModelessLayout
-      {
-         QPlatformDialogHelper::ResetRole, QPlatformDialogHelper::ApplyRole, QPlatformDialogHelper::ActionRole, QPlatformDialogHelper::Stretch,
-         QPlatformDialogHelper::HelpRole, QPlatformDialogHelper::EOL, QPlatformDialogHelper::EOL, QPlatformDialogHelper::EOL,
-         QPlatformDialogHelper::EOL,
-         QPlatformDialogHelper::EOL, QPlatformDialogHelper::EOL, QPlatformDialogHelper::EOL, QPlatformDialogHelper::EOL,
-         QPlatformDialogHelper::EOL
-      }
-   },
+        // MacModelessLayout
+        {
+            QPlatformDialogHelper::ResetRole, QPlatformDialogHelper::ApplyRole, QPlatformDialogHelper::ActionRole, QPlatformDialogHelper::Stretch,
+            QPlatformDialogHelper::HelpRole, QPlatformDialogHelper::EOL, QPlatformDialogHelper::EOL, QPlatformDialogHelper::EOL,
+            QPlatformDialogHelper::EOL,
+            QPlatformDialogHelper::EOL, QPlatformDialogHelper::EOL, QPlatformDialogHelper::EOL, QPlatformDialogHelper::EOL,
+            QPlatformDialogHelper::EOL
+        }
+    },
 
-   // Qt::Vertical
-   {
-      // WinLayout
-      {
-         QPlatformDialogHelper::ActionRole, QPlatformDialogHelper::YesRole, QPlatformDialogHelper::AcceptRole,
-         QPlatformDialogHelper::AlternateRole,
-         QPlatformDialogHelper::DestructiveRole, QPlatformDialogHelper::NoRole, QPlatformDialogHelper::RejectRole,
-         QPlatformDialogHelper::ApplyRole,
-         QPlatformDialogHelper::ResetRole,
-         QPlatformDialogHelper::HelpRole, QPlatformDialogHelper::Stretch, QPlatformDialogHelper::EOL,
-         QPlatformDialogHelper::EOL, QPlatformDialogHelper::EOL
-      },
+    // Qt::Vertical
+    {
+        // WinLayout
+        {
+            QPlatformDialogHelper::ActionRole, QPlatformDialogHelper::YesRole, QPlatformDialogHelper::AcceptRole,
+            QPlatformDialogHelper::AlternateRole,
+            QPlatformDialogHelper::DestructiveRole, QPlatformDialogHelper::NoRole, QPlatformDialogHelper::RejectRole,
+            QPlatformDialogHelper::ApplyRole,
+            QPlatformDialogHelper::ResetRole,
+            QPlatformDialogHelper::HelpRole, QPlatformDialogHelper::Stretch, QPlatformDialogHelper::EOL,
+            QPlatformDialogHelper::EOL, QPlatformDialogHelper::EOL
+        },
 
-      // MacLayout
-      {
-         QPlatformDialogHelper::YesRole, QPlatformDialogHelper::NoRole, QPlatformDialogHelper::AcceptRole,
-         QPlatformDialogHelper::RejectRole,
-         QPlatformDialogHelper::AlternateRole, QPlatformDialogHelper::DestructiveRole, QPlatformDialogHelper::Stretch,
-         QPlatformDialogHelper::ActionRole,
-         QPlatformDialogHelper::ApplyRole,
-         QPlatformDialogHelper::ResetRole, QPlatformDialogHelper::HelpRole, QPlatformDialogHelper::EOL, QPlatformDialogHelper::EOL
-      },
+        // MacLayout
+        {
+            QPlatformDialogHelper::YesRole, QPlatformDialogHelper::NoRole, QPlatformDialogHelper::AcceptRole,
+            QPlatformDialogHelper::RejectRole,
+            QPlatformDialogHelper::AlternateRole, QPlatformDialogHelper::DestructiveRole, QPlatformDialogHelper::Stretch,
+            QPlatformDialogHelper::ActionRole,
+            QPlatformDialogHelper::ApplyRole,
+            QPlatformDialogHelper::ResetRole, QPlatformDialogHelper::HelpRole, QPlatformDialogHelper::EOL, QPlatformDialogHelper::EOL
+        },
 
-      // KdeLayout
-      {
-         QPlatformDialogHelper::AcceptRole, QPlatformDialogHelper::AlternateRole, QPlatformDialogHelper::ApplyRole,
-         QPlatformDialogHelper::ActionRole,
-         QPlatformDialogHelper::YesRole, QPlatformDialogHelper::NoRole, QPlatformDialogHelper::Stretch,
-         QPlatformDialogHelper::ResetRole,
-         QPlatformDialogHelper::DestructiveRole, QPlatformDialogHelper::RejectRole, QPlatformDialogHelper::HelpRole,
-         QPlatformDialogHelper::EOL
-      },
+        // KdeLayout
+        {
+            QPlatformDialogHelper::AcceptRole, QPlatformDialogHelper::AlternateRole, QPlatformDialogHelper::ApplyRole,
+            QPlatformDialogHelper::ActionRole,
+            QPlatformDialogHelper::YesRole, QPlatformDialogHelper::NoRole, QPlatformDialogHelper::Stretch,
+            QPlatformDialogHelper::ResetRole,
+            QPlatformDialogHelper::DestructiveRole, QPlatformDialogHelper::RejectRole, QPlatformDialogHelper::HelpRole,
+            QPlatformDialogHelper::EOL
+        },
 
-      // GnomeLayout
-      {
-         QPlatformDialogHelper::YesRole, QPlatformDialogHelper::NoRole, QPlatformDialogHelper::AcceptRole,
-         QPlatformDialogHelper::RejectRole,
-         QPlatformDialogHelper::AlternateRole, QPlatformDialogHelper::DestructiveRole, QPlatformDialogHelper::ApplyRole,
-         QPlatformDialogHelper::ActionRole,
-         QPlatformDialogHelper::Stretch,
-         QPlatformDialogHelper::ResetRole, QPlatformDialogHelper::HelpRole, QPlatformDialogHelper::EOL, QPlatformDialogHelper::EOL,
-         QPlatformDialogHelper::EOL
-      },
+        // GnomeLayout
+        {
+            QPlatformDialogHelper::YesRole, QPlatformDialogHelper::NoRole, QPlatformDialogHelper::AcceptRole,
+            QPlatformDialogHelper::RejectRole,
+            QPlatformDialogHelper::AlternateRole, QPlatformDialogHelper::DestructiveRole, QPlatformDialogHelper::ApplyRole,
+            QPlatformDialogHelper::ActionRole,
+            QPlatformDialogHelper::Stretch,
+            QPlatformDialogHelper::ResetRole, QPlatformDialogHelper::HelpRole, QPlatformDialogHelper::EOL, QPlatformDialogHelper::EOL,
+            QPlatformDialogHelper::EOL
+        },
 
-      // MacModelessLayout
-      {
-         QPlatformDialogHelper::ActionRole, QPlatformDialogHelper::ApplyRole, QPlatformDialogHelper::ResetRole,
-         QPlatformDialogHelper::Stretch,
-         QPlatformDialogHelper::HelpRole, QPlatformDialogHelper::EOL, QPlatformDialogHelper::EOL, QPlatformDialogHelper::EOL,
-         QPlatformDialogHelper::EOL,
-         QPlatformDialogHelper::EOL, QPlatformDialogHelper::EOL, QPlatformDialogHelper::EOL, QPlatformDialogHelper::EOL,
-         QPlatformDialogHelper::EOL
-      }
-   }
+        // MacModelessLayout
+        {
+            QPlatformDialogHelper::ActionRole, QPlatformDialogHelper::ApplyRole, QPlatformDialogHelper::ResetRole,
+            QPlatformDialogHelper::Stretch,
+            QPlatformDialogHelper::HelpRole, QPlatformDialogHelper::EOL, QPlatformDialogHelper::EOL, QPlatformDialogHelper::EOL,
+            QPlatformDialogHelper::EOL,
+            QPlatformDialogHelper::EOL, QPlatformDialogHelper::EOL, QPlatformDialogHelper::EOL, QPlatformDialogHelper::EOL,
+            QPlatformDialogHelper::EOL
+        }
+    }
 };
 
 QPlatformDialogHelper::QPlatformDialogHelper()
@@ -142,46 +143,47 @@ QPlatformDialogHelper::~QPlatformDialogHelper()
 {
 }
 
-QVariant QPlatformDialogHelper::styleHint(StyleHint hint) const
+QVariant QPlatformDialogHelper::styleHint( StyleHint hint ) const
 {
-   return QPlatformDialogHelper::defaultStyleHint(hint);
+    return QPlatformDialogHelper::defaultStyleHint( hint );
 }
 
-QVariant  QPlatformDialogHelper::defaultStyleHint(QPlatformDialogHelper::StyleHint hint)
+QVariant  QPlatformDialogHelper::defaultStyleHint( QPlatformDialogHelper::StyleHint hint )
 {
-   (void) hint;
-   return QVariant();
+    ( void ) hint;
+    return QVariant();
 }
 
 // Font dialog
 
 class QFontDialogOptionsPrivate : public QSharedData
 {
- public:
-   QFontDialogOptionsPrivate()
-      : options(Qt::EmptyFlag)
-   {
-   }
+public:
+    QFontDialogOptionsPrivate()
+        : options( Qt::EmptyFlag )
+    {
+    }
 
-   QFontDialogOptions::FontDialogOptions options;
-   QString windowTitle;
+    QFontDialogOptions::FontDialogOptions options;
+    QString windowTitle;
 };
 
-QFontDialogOptions::QFontDialogOptions() : d(new QFontDialogOptionsPrivate)
+QFontDialogOptions::QFontDialogOptions() : d( new QFontDialogOptionsPrivate )
 {
 }
 
-QFontDialogOptions::QFontDialogOptions(const QFontDialogOptions &rhs) : d(rhs.d)
+QFontDialogOptions::QFontDialogOptions( const QFontDialogOptions &rhs ) : d( rhs.d )
 {
 }
 
-QFontDialogOptions &QFontDialogOptions::operator=(const QFontDialogOptions &rhs)
+QFontDialogOptions &QFontDialogOptions::operator=( const QFontDialogOptions &rhs )
 {
-   if (this != &rhs) {
-      d = rhs.d;
-   }
+    if ( this != &rhs )
+    {
+        d = rhs.d;
+    }
 
-   return *this;
+    return *this;
 }
 
 QFontDialogOptions::~QFontDialogOptions()
@@ -190,145 +192,161 @@ QFontDialogOptions::~QFontDialogOptions()
 
 QString QFontDialogOptions::windowTitle() const
 {
-   return d->windowTitle;
+    return d->windowTitle;
 }
 
-void QFontDialogOptions::setWindowTitle(const QString &title)
+void QFontDialogOptions::setWindowTitle( const QString &title )
 {
-   d->windowTitle = title;
+    d->windowTitle = title;
 }
 
-void QFontDialogOptions::setOption(QFontDialogOptions::FontDialogOption option, bool on)
+void QFontDialogOptions::setOption( QFontDialogOptions::FontDialogOption option, bool on )
 {
-   if (!(d->options & option) != !on) {
-      setOptions(d->options ^ option);
-   }
+    if ( !( d->options & option ) != !on )
+    {
+        setOptions( d->options ^ option );
+    }
 }
 
-bool QFontDialogOptions::testOption(QFontDialogOptions::FontDialogOption option) const
+bool QFontDialogOptions::testOption( QFontDialogOptions::FontDialogOption option ) const
 {
-   return d->options & option;
+    return d->options & option;
 }
 
-void QFontDialogOptions::setOptions(FontDialogOptions options)
+void QFontDialogOptions::setOptions( FontDialogOptions options )
 {
-   if (options != d->options) {
-      d->options = options;
-   }
+    if ( options != d->options )
+    {
+        d->options = options;
+    }
 }
 
 QFontDialogOptions::FontDialogOptions QFontDialogOptions::options() const
 {
-   return d->options;
+    return d->options;
 }
 
 const QSharedPointer<QFontDialogOptions> &QPlatformFontDialogHelper::options() const
 {
-   return m_options;
+    return m_options;
 }
 
-void QPlatformFontDialogHelper::setOptions(const QSharedPointer<QFontDialogOptions> &options)
+void QPlatformFontDialogHelper::setOptions( const QSharedPointer<QFontDialogOptions> &options )
 {
-   m_options = options;
+    m_options = options;
 }
 
 // Color dialog
 
 class QColorDialogStaticData
 {
- public:
-   static constexpr const int CustomColorCount   = 16;
-   static constexpr const int StandardColorCount = 6 * 8;
+public:
+    static constexpr const int CustomColorCount   = 16;
+    static constexpr const int StandardColorCount = 6 * 8;
 
-   QColorDialogStaticData();
-   inline void readSettings();
-   inline void writeSettings() const;
+    QColorDialogStaticData();
+    inline void readSettings();
+    inline void writeSettings() const;
 
-   QRgb customRgb[CustomColorCount];
-   QRgb standardRgb[StandardColorCount];
-   bool customSet;
+    QRgb customRgb[CustomColorCount];
+    QRgb standardRgb[StandardColorCount];
+    bool customSet;
 };
 
-QColorDialogStaticData::QColorDialogStaticData() : customSet(false)
+QColorDialogStaticData::QColorDialogStaticData() : customSet( false )
 {
-   int i = 0;
+    int i = 0;
 
-   for (int g = 0; g < 4; ++g)  {
-      for (int r = 0;  r < 4; ++r) {
-         for (int b = 0; b < 3; ++b) {
-            standardRgb[i++] = qRgb(r * 255 / 3, g * 255 / 3, b * 255 / 2);
-         }
-      }
-   }
+    for ( int g = 0; g < 4; ++g )
+    {
+        for ( int r = 0;  r < 4; ++r )
+        {
+            for ( int b = 0; b < 3; ++b )
+            {
+                standardRgb[i++] = qRgb( r * 255 / 3, g * 255 / 3, b * 255 / 2 );
+            }
+        }
+    }
 
-   std::fill(customRgb, customRgb + CustomColorCount, 0xffffffff);
-   readSettings();
+    std::fill( customRgb, customRgb + CustomColorCount, 0xffffffff );
+    readSettings();
 }
 
 void QColorDialogStaticData::readSettings()
 {
 #ifndef QT_NO_SETTINGS
-   const QSettings settings(QSettings::UserScope, "CsProject");
+    const QSettings settings( QSettings::UserScope, "CsProject" );
 
-   for (int i = 0; i < int(CustomColorCount); ++i) {
-      const QVariant v = settings.value("CS/customColors/" + QString::number(i));
-      if (v.isValid()) {
-         customRgb[i] = v.toUInt();
-      }
-   }
+    for ( int i = 0; i < int( CustomColorCount ); ++i )
+    {
+        const QVariant v = settings.value( "CS/customColors/" + QString::number( i ) );
+
+        if ( v.isValid() )
+        {
+            customRgb[i] = v.toUInt();
+        }
+    }
+
 #endif
 }
 
 void QColorDialogStaticData::writeSettings() const
 {
 #ifndef QT_NO_SETTINGS
-   if (!customSet) {
-      QSettings settings(QSettings::UserScope, "CsProject");
 
-      for (int i = 0; i < int(CustomColorCount); ++i) {
-         settings.setValue("CS/customColors/" + QString::number(i), customRgb[i]);
-      }
-   }
+    if ( !customSet )
+    {
+        QSettings settings( QSettings::UserScope, "CsProject" );
+
+        for ( int i = 0; i < int( CustomColorCount ); ++i )
+        {
+            settings.setValue( "CS/customColors/" + QString::number( i ), customRgb[i] );
+        }
+    }
+
 #endif
 }
 
 static QColorDialogStaticData *qColorDialogStaticData()
 {
-   static QColorDialogStaticData retval;
-   return &retval;
+    static QColorDialogStaticData retval;
+    return &retval;
 }
 
 class QColorDialogOptionsPrivate : public QSharedData
 {
- public:
-   QColorDialogOptionsPrivate()
-      : options(Qt::EmptyFlag)
-   {
-   }
+public:
+    QColorDialogOptionsPrivate()
+        : options( Qt::EmptyFlag )
+    {
+    }
 
-   // Write out settings around destruction of dialogs
-   ~QColorDialogOptionsPrivate() {
-      qColorDialogStaticData()->writeSettings();
-   }
+    // Write out settings around destruction of dialogs
+    ~QColorDialogOptionsPrivate()
+    {
+        qColorDialogStaticData()->writeSettings();
+    }
 
-   QColorDialogOptions::ColorDialogOptions options;
-   QString windowTitle;
+    QColorDialogOptions::ColorDialogOptions options;
+    QString windowTitle;
 };
 
-QColorDialogOptions::QColorDialogOptions() : d(new QColorDialogOptionsPrivate)
+QColorDialogOptions::QColorDialogOptions() : d( new QColorDialogOptionsPrivate )
 {
 }
 
-QColorDialogOptions::QColorDialogOptions(const QColorDialogOptions &rhs) : d(rhs.d)
+QColorDialogOptions::QColorDialogOptions( const QColorDialogOptions &rhs ) : d( rhs.d )
 {
 }
 
-QColorDialogOptions &QColorDialogOptions::operator=(const QColorDialogOptions &rhs)
+QColorDialogOptions &QColorDialogOptions::operator=( const QColorDialogOptions &rhs )
 {
-   if (this != &rhs) {
-      d = rhs.d;
-   }
-   return *this;
+    if ( this != &rhs )
+    {
+        d = rhs.d;
+    }
+
+    return *this;
 }
 
 QColorDialogOptions::~QColorDialogOptions()
@@ -337,144 +355,155 @@ QColorDialogOptions::~QColorDialogOptions()
 
 QString QColorDialogOptions::windowTitle() const
 {
-   return d->windowTitle;
+    return d->windowTitle;
 }
 
-void QColorDialogOptions::setWindowTitle(const QString &title)
+void QColorDialogOptions::setWindowTitle( const QString &title )
 {
-   d->windowTitle = title;
+    d->windowTitle = title;
 }
 
-void QColorDialogOptions::setOption(QColorDialogOptions::ColorDialogOption option, bool on)
+void QColorDialogOptions::setOption( QColorDialogOptions::ColorDialogOption option, bool on )
 {
-   if (!(d->options & option) != !on) {
-      setOptions(d->options ^ option);
-   }
+    if ( !( d->options & option ) != !on )
+    {
+        setOptions( d->options ^ option );
+    }
 }
 
-bool QColorDialogOptions::testOption(QColorDialogOptions::ColorDialogOption option) const
+bool QColorDialogOptions::testOption( QColorDialogOptions::ColorDialogOption option ) const
 {
-   return d->options & option;
+    return d->options & option;
 }
 
-void QColorDialogOptions::setOptions(ColorDialogOptions options)
+void QColorDialogOptions::setOptions( ColorDialogOptions options )
 {
-   if (options != d->options) {
-      d->options = options;
-   }
+    if ( options != d->options )
+    {
+        d->options = options;
+    }
 }
 
 QColorDialogOptions::ColorDialogOptions QColorDialogOptions::options() const
 {
-   return d->options;
+    return d->options;
 }
 
 int QColorDialogOptions::customColorCount()
 {
-   return QColorDialogStaticData::CustomColorCount;
+    return QColorDialogStaticData::CustomColorCount;
 }
 
-QRgb QColorDialogOptions::customColor(int index)
+QRgb QColorDialogOptions::customColor( int index )
 {
-   if (uint(index) >= uint(QColorDialogStaticData::CustomColorCount)) {
-      return qRgb(255, 255, 255);
-   }
-   return qColorDialogStaticData()->customRgb[index];
+    if ( uint( index ) >= uint( QColorDialogStaticData::CustomColorCount ) )
+    {
+        return qRgb( 255, 255, 255 );
+    }
+
+    return qColorDialogStaticData()->customRgb[index];
 }
 
 QRgb *QColorDialogOptions::customColors()
 {
-   return qColorDialogStaticData()->customRgb;
+    return qColorDialogStaticData()->customRgb;
 }
 
-void QColorDialogOptions::setCustomColor(int index, QRgb color)
+void QColorDialogOptions::setCustomColor( int index, QRgb color )
 {
-   if (uint(index) >= uint(QColorDialogStaticData::CustomColorCount)) {
-      return;
-   }
-   qColorDialogStaticData()->customSet = true;
-   qColorDialogStaticData()->customRgb[index] = color;
+    if ( uint( index ) >= uint( QColorDialogStaticData::CustomColorCount ) )
+    {
+        return;
+    }
+
+    qColorDialogStaticData()->customSet = true;
+    qColorDialogStaticData()->customRgb[index] = color;
 }
 
 QRgb *QColorDialogOptions::standardColors()
 {
-   return qColorDialogStaticData()->standardRgb;
+    return qColorDialogStaticData()->standardRgb;
 }
 
-QRgb QColorDialogOptions::standardColor(int index)
+QRgb QColorDialogOptions::standardColor( int index )
 {
-   if (uint(index) >= uint(QColorDialogStaticData::StandardColorCount)) {
-      return qRgb(255, 255, 255);
-   }
-   return qColorDialogStaticData()->standardRgb[index];
+    if ( uint( index ) >= uint( QColorDialogStaticData::StandardColorCount ) )
+    {
+        return qRgb( 255, 255, 255 );
+    }
+
+    return qColorDialogStaticData()->standardRgb[index];
 }
 
-void QColorDialogOptions::setStandardColor(int index, QRgb color)
+void QColorDialogOptions::setStandardColor( int index, QRgb color )
 {
-   if (uint(index) >= uint(QColorDialogStaticData::StandardColorCount)) {
-      return;
-   }
-   qColorDialogStaticData()->standardRgb[index] = color;
+    if ( uint( index ) >= uint( QColorDialogStaticData::StandardColorCount ) )
+    {
+        return;
+    }
+
+    qColorDialogStaticData()->standardRgb[index] = color;
 }
 
 const QSharedPointer<QColorDialogOptions> &QPlatformColorDialogHelper::options() const
 {
-   return m_options;
+    return m_options;
 }
 
-void QPlatformColorDialogHelper::setOptions(const QSharedPointer<QColorDialogOptions> &options)
+void QPlatformColorDialogHelper::setOptions( const QSharedPointer<QColorDialogOptions> &options )
 {
-   m_options = options;
+    m_options = options;
 }
 
 // File dialog
 
 class QPlatformFileDialogOptionsPrivate : public QSharedData
 {
- public:
-   QPlatformFileDialogOptionsPrivate()
-      : options(Qt::EmptyFlag), viewMode(QPlatformFileDialogOptions::Detail),
-        fileMode(QPlatformFileDialogOptions::AnyFile), acceptMode(QPlatformFileDialogOptions::AcceptOpen),
-        filters(QDir::AllEntries | QDir::NoDotAndDotDot | QDir::AllDirs)
-   {
-   }
+public:
+    QPlatformFileDialogOptionsPrivate()
+        : options( Qt::EmptyFlag ), viewMode( QPlatformFileDialogOptions::Detail ),
+          fileMode( QPlatformFileDialogOptions::AnyFile ), acceptMode( QPlatformFileDialogOptions::AcceptOpen ),
+          filters( QDir::AllEntries | QDir::NoDotAndDotDot | QDir::AllDirs )
+    {
+    }
 
-   QFileDialog::FileDialogOptions options;
-   QString windowTitle;
+    QFileDialog::FileDialogOptions options;
+    QString windowTitle;
 
-   QPlatformFileDialogOptions::ViewMode viewMode;
-   QPlatformFileDialogOptions::FileMode fileMode;
-   QPlatformFileDialogOptions::AcceptMode acceptMode;
-   QString labels[QPlatformFileDialogOptions::DialogLabelCount];
-   QDir::Filters filters;
-   QList<QUrl> sidebarUrls;
-   QStringList nameFilters;
-   QStringList mimeTypeFilters;
-   QString defaultSuffix;
-   QStringList history;
-   QUrl initialDirectory;
-   QString initiallySelectedNameFilter;
-   QList<QUrl> initiallySelectedFiles;
-   QStringList supportedSchemes;
+    QPlatformFileDialogOptions::ViewMode viewMode;
+    QPlatformFileDialogOptions::FileMode fileMode;
+    QPlatformFileDialogOptions::AcceptMode acceptMode;
+    QString labels[QPlatformFileDialogOptions::DialogLabelCount];
+    QDir::Filters filters;
+    QList<QUrl> sidebarUrls;
+    QStringList nameFilters;
+    QStringList mimeTypeFilters;
+    QString defaultSuffix;
+    QStringList history;
+    QUrl initialDirectory;
+    QString initiallySelectedNameFilter;
+    QList<QUrl> initiallySelectedFiles;
+    QStringList supportedSchemes;
 };
 
 QPlatformFileDialogOptions::QPlatformFileDialogOptions()
-   : d(new QPlatformFileDialogOptionsPrivate)
+    : d( new QPlatformFileDialogOptionsPrivate )
 {
 }
 
-QPlatformFileDialogOptions::QPlatformFileDialogOptions(const QPlatformFileDialogOptions &other)
-   : d(other.d)
+QPlatformFileDialogOptions::QPlatformFileDialogOptions( const QPlatformFileDialogOptions &other )
+    : d( other.d )
 {
 }
 
-QPlatformFileDialogOptions &QPlatformFileDialogOptions::operator=(const QPlatformFileDialogOptions &other)
+QPlatformFileDialogOptions &QPlatformFileDialogOptions::operator=( const QPlatformFileDialogOptions &other )
 {
-   if (this != &other) {
-      d = other.d;
-   }
+    if ( this != &other )
+    {
+        d = other.d;
+    }
 
-   return *this;
+    return *this;
 }
 
 QPlatformFileDialogOptions::~QPlatformFileDialogOptions()
@@ -483,256 +512,263 @@ QPlatformFileDialogOptions::~QPlatformFileDialogOptions()
 
 QString QPlatformFileDialogOptions::windowTitle() const
 {
-   return d->windowTitle;
+    return d->windowTitle;
 }
 
-void QPlatformFileDialogOptions::setWindowTitle(const QString &title)
+void QPlatformFileDialogOptions::setWindowTitle( const QString &title )
 {
-   d->windowTitle = title;
+    d->windowTitle = title;
 }
 
-void QPlatformFileDialogOptions::setOption(QFileDialog::FileDialogOption option, bool on)
+void QPlatformFileDialogOptions::setOption( QFileDialog::FileDialogOption option, bool on )
 {
-   if (! (d->options & option) != !on) {
-      setOptions(d->options ^ option);
-   }
+    if ( ! ( d->options & option ) != !on )
+    {
+        setOptions( d->options ^ option );
+    }
 }
 
-bool QPlatformFileDialogOptions::testOption(QFileDialog::FileDialogOption option) const
+bool QPlatformFileDialogOptions::testOption( QFileDialog::FileDialogOption option ) const
 {
-   return d->options & option;
+    return d->options & option;
 }
 
-void QPlatformFileDialogOptions::setOptions(QFileDialog::FileDialogOptions options)
+void QPlatformFileDialogOptions::setOptions( QFileDialog::FileDialogOptions options )
 {
-   if (options != d->options) {
-      d->options = options;
-   }
+    if ( options != d->options )
+    {
+        d->options = options;
+    }
 }
 
 QFileDialog::FileDialogOptions QPlatformFileDialogOptions::options() const
 {
-   return d->options;
+    return d->options;
 }
 
 QDir::Filters QPlatformFileDialogOptions::filter() const
 {
-   return d->filters;
+    return d->filters;
 }
 
-void QPlatformFileDialogOptions::setFilter(QDir::Filters filters)
+void QPlatformFileDialogOptions::setFilter( QDir::Filters filters )
 {
-   d->filters  = filters;
+    d->filters  = filters;
 }
 
-void QPlatformFileDialogOptions::setViewMode(QPlatformFileDialogOptions::ViewMode mode)
+void QPlatformFileDialogOptions::setViewMode( QPlatformFileDialogOptions::ViewMode mode )
 {
-   d->viewMode = mode;
+    d->viewMode = mode;
 }
 
 QPlatformFileDialogOptions::ViewMode QPlatformFileDialogOptions::viewMode() const
 {
-   return d->viewMode;
+    return d->viewMode;
 }
 
-void QPlatformFileDialogOptions::setFileMode(QPlatformFileDialogOptions::FileMode mode)
+void QPlatformFileDialogOptions::setFileMode( QPlatformFileDialogOptions::FileMode mode )
 {
-   d->fileMode = mode;
+    d->fileMode = mode;
 }
 
 QPlatformFileDialogOptions::FileMode QPlatformFileDialogOptions::fileMode() const
 {
-   return d->fileMode;
+    return d->fileMode;
 }
 
-void QPlatformFileDialogOptions::setAcceptMode(QPlatformFileDialogOptions::AcceptMode mode)
+void QPlatformFileDialogOptions::setAcceptMode( QPlatformFileDialogOptions::AcceptMode mode )
 {
-   d->acceptMode = mode;
+    d->acceptMode = mode;
 }
 
 QPlatformFileDialogOptions::AcceptMode QPlatformFileDialogOptions::acceptMode() const
 {
-   return d->acceptMode;
+    return d->acceptMode;
 }
 
-void QPlatformFileDialogOptions::setSidebarUrls(const QList<QUrl> &urls)
+void QPlatformFileDialogOptions::setSidebarUrls( const QList<QUrl> &urls )
 {
-   d->sidebarUrls = urls;
+    d->sidebarUrls = urls;
 }
 
 QList<QUrl> QPlatformFileDialogOptions::sidebarUrls() const
 {
-   return d->sidebarUrls;
+    return d->sidebarUrls;
 }
 
-void QPlatformFileDialogOptions::setNameFilters(const QStringList &filters)
+void QPlatformFileDialogOptions::setNameFilters( const QStringList &filters )
 {
-   d->nameFilters = filters;
+    d->nameFilters = filters;
 }
 
 QStringList QPlatformFileDialogOptions::nameFilters() const
 {
-   return d->nameFilters;
+    return d->nameFilters;
 }
 
-void QPlatformFileDialogOptions::setMimeTypeFilters(const QStringList &filters)
+void QPlatformFileDialogOptions::setMimeTypeFilters( const QStringList &filters )
 {
-   d->mimeTypeFilters = filters;
+    d->mimeTypeFilters = filters;
 }
 
 QStringList QPlatformFileDialogOptions::mimeTypeFilters() const
 {
-   return d->mimeTypeFilters;
+    return d->mimeTypeFilters;
 }
 
-void QPlatformFileDialogOptions::setDefaultSuffix(const QString &suffix)
+void QPlatformFileDialogOptions::setDefaultSuffix( const QString &suffix )
 {
-   d->defaultSuffix = suffix;
+    d->defaultSuffix = suffix;
 
-   if (d->defaultSuffix.size() > 1 && d->defaultSuffix.startsWith('.')) {
-      d->defaultSuffix.remove(0, 1);   // Silently change ".txt" -> "txt".
-   }
+    if ( d->defaultSuffix.size() > 1 && d->defaultSuffix.startsWith( '.' ) )
+    {
+        d->defaultSuffix.remove( 0, 1 ); // Silently change ".txt" -> "txt".
+    }
 }
 
 QString QPlatformFileDialogOptions::defaultSuffix() const
 {
-   return d->defaultSuffix;
+    return d->defaultSuffix;
 }
 
-void QPlatformFileDialogOptions::setHistory(const QStringList &paths)
+void QPlatformFileDialogOptions::setHistory( const QStringList &paths )
 {
-   d->history = paths;
+    d->history = paths;
 }
 
 QStringList QPlatformFileDialogOptions::history() const
 {
-   return d->history;
+    return d->history;
 }
 
-void QPlatformFileDialogOptions::setLabelText(QPlatformFileDialogOptions::DialogLabel label, const QString &text)
+void QPlatformFileDialogOptions::setLabelText( QPlatformFileDialogOptions::DialogLabel label, const QString &text )
 {
-   if (label >= 0 && label < QPlatformFileDialogOptions::DialogLabelCount) {
-      d->labels[label] = text;
-   }
+    if ( label >= 0 && label < QPlatformFileDialogOptions::DialogLabelCount )
+    {
+        d->labels[label] = text;
+    }
 }
 
-QString QPlatformFileDialogOptions::labelText(QPlatformFileDialogOptions::DialogLabel label) const
+QString QPlatformFileDialogOptions::labelText( QPlatformFileDialogOptions::DialogLabel label ) const
 {
-   return (label >= 0 && label < QPlatformFileDialogOptions::DialogLabelCount) ? d->labels[label] : QString();
+    return ( label >= 0 && label < QPlatformFileDialogOptions::DialogLabelCount ) ? d->labels[label] : QString();
 }
 
-bool QPlatformFileDialogOptions::isLabelExplicitlySet(DialogLabel label)
+bool QPlatformFileDialogOptions::isLabelExplicitlySet( DialogLabel label )
 {
-   return label >= 0 && label < QPlatformFileDialogOptions::DialogLabelCount && ! d->labels[label].isEmpty();
+    return label >= 0 && label < QPlatformFileDialogOptions::DialogLabelCount && ! d->labels[label].isEmpty();
 }
 
 QUrl QPlatformFileDialogOptions::initialDirectory() const
 {
-   return d->initialDirectory;
+    return d->initialDirectory;
 }
 
-void QPlatformFileDialogOptions::setInitialDirectory(const QUrl &directory)
+void QPlatformFileDialogOptions::setInitialDirectory( const QUrl &directory )
 {
-   d->initialDirectory = directory;
+    d->initialDirectory = directory;
 }
 
 QString QPlatformFileDialogOptions::initiallySelectedNameFilter() const
 {
-   return d->initiallySelectedNameFilter;
+    return d->initiallySelectedNameFilter;
 }
 
-void QPlatformFileDialogOptions::setInitiallySelectedNameFilter(const QString &filter)
+void QPlatformFileDialogOptions::setInitiallySelectedNameFilter( const QString &filter )
 {
-   d->initiallySelectedNameFilter = filter;
+    d->initiallySelectedNameFilter = filter;
 }
 
 QList<QUrl> QPlatformFileDialogOptions::initiallySelectedFiles() const
 {
-   return d->initiallySelectedFiles;
+    return d->initiallySelectedFiles;
 }
 
-void QPlatformFileDialogOptions::setInitiallySelectedFiles(const QList<QUrl> &files)
+void QPlatformFileDialogOptions::setInitiallySelectedFiles( const QList<QUrl> &files )
 {
-   d->initiallySelectedFiles = files;
+    d->initiallySelectedFiles = files;
 }
 
 // Schemes supported by the application
-void QPlatformFileDialogOptions::setSupportedSchemes(const QStringList &schemes)
+void QPlatformFileDialogOptions::setSupportedSchemes( const QStringList &schemes )
 {
-   d->supportedSchemes = schemes;
+    d->supportedSchemes = schemes;
 }
 
 QStringList QPlatformFileDialogOptions::supportedSchemes() const
 {
-   return d->supportedSchemes;
+    return d->supportedSchemes;
 }
 
 // Return true if the URL is supported by the filedialog implementation *and* by the application.
-bool QPlatformFileDialogHelper::isSupportedUrl(const QUrl &url) const
+bool QPlatformFileDialogHelper::isSupportedUrl( const QUrl &url ) const
 {
-   return url.isLocalFile();
+    return url.isLocalFile();
 }
 
 const QSharedPointer<QPlatformFileDialogOptions> &QPlatformFileDialogHelper::options() const
 {
-   return m_options;
+    return m_options;
 }
 
-void QPlatformFileDialogHelper::setOptions(const QSharedPointer<QPlatformFileDialogOptions> &options)
+void QPlatformFileDialogHelper::setOptions( const QSharedPointer<QPlatformFileDialogOptions> &options )
 {
-   m_options = options;
+    m_options = options;
 }
 
 const QString QPlatformFileDialogHelper::filterRegExp = "^(.*)\\(([a-zA-Z0-9_.,*? +;#\\-\\[\\]@\\{\\}/!<>\\$%&=^~:\\|]*)\\)$";
 
 // Makes a list of filters from a normal filter string "Image Files (*.png *.jpg)"
-QStringList QPlatformFileDialogHelper::cleanFilterList(const QString &filter)
+QStringList QPlatformFileDialogHelper::cleanFilterList( const QString &filter )
 {
-   QRegularExpression regexp(filterRegExp);
-   Q_ASSERT(regexp.isValid());
+    QRegularExpression regexp( filterRegExp );
+    Q_ASSERT( regexp.isValid() );
 
-   QRegularExpressionMatch match;
+    QRegularExpressionMatch match;
 
-   QString f = filter;
-   match = regexp.match(filter);
+    QString f = filter;
+    match = regexp.match( filter );
 
-   if (match.hasMatch()) {
-      f = match.capturedView(2);
-   }
+    if ( match.hasMatch() )
+    {
+        f = match.capturedView( 2 );
+    }
 
-   return QStringParser::split(f, ' ', QStringParser::SkipEmptyParts);
+    return QStringParser::split( f, ' ', QStringParser::SkipEmptyParts );
 }
 
 // Message dialog
 class QMessageDialogOptionsPrivate : public QSharedData
 {
- public:
-   QMessageDialogOptionsPrivate() :
-      icon(QMessageDialogOptions::NoIcon), buttons(QPlatformDialogHelper::Ok)
-   {}
+public:
+    QMessageDialogOptionsPrivate() :
+        icon( QMessageDialogOptions::NoIcon ), buttons( QPlatformDialogHelper::Ok )
+    {}
 
-   QString windowTitle;
-   QMessageDialogOptions::Icon icon;
-   QString text;
-   QString informativeText;
-   QString detailedText;
-   QPlatformDialogHelper::StandardButtons buttons;
+    QString windowTitle;
+    QMessageDialogOptions::Icon icon;
+    QString text;
+    QString informativeText;
+    QString detailedText;
+    QPlatformDialogHelper::StandardButtons buttons;
 };
 
-QMessageDialogOptions::QMessageDialogOptions() : d(new QMessageDialogOptionsPrivate)
+QMessageDialogOptions::QMessageDialogOptions() : d( new QMessageDialogOptionsPrivate )
 {
 }
 
-QMessageDialogOptions::QMessageDialogOptions(const QMessageDialogOptions &rhs) : d(rhs.d)
+QMessageDialogOptions::QMessageDialogOptions( const QMessageDialogOptions &rhs ) : d( rhs.d )
 {
 }
 
-QMessageDialogOptions &QMessageDialogOptions::operator=(const QMessageDialogOptions &rhs)
+QMessageDialogOptions &QMessageDialogOptions::operator=( const QMessageDialogOptions &rhs )
 {
-   if (this != &rhs) {
-      d = rhs.d;
-   }
-   return *this;
+    if ( this != &rhs )
+    {
+        d = rhs.d;
+    }
+
+    return *this;
 }
 
 QMessageDialogOptions::~QMessageDialogOptions()
@@ -741,127 +777,131 @@ QMessageDialogOptions::~QMessageDialogOptions()
 
 QString QMessageDialogOptions::windowTitle() const
 {
-   return d->windowTitle;
+    return d->windowTitle;
 }
 
-void QMessageDialogOptions::setWindowTitle(const QString &title)
+void QMessageDialogOptions::setWindowTitle( const QString &title )
 {
-   d->windowTitle = title;
+    d->windowTitle = title;
 }
 
 QMessageDialogOptions::Icon QMessageDialogOptions::icon() const
 {
-   return d->icon;
+    return d->icon;
 }
 
-void QMessageDialogOptions::setIcon(Icon icon)
+void QMessageDialogOptions::setIcon( Icon icon )
 {
-   d->icon = icon;
+    d->icon = icon;
 }
 
 QString QMessageDialogOptions::text() const
 {
-   return d->text;
+    return d->text;
 }
 
-void QMessageDialogOptions::setText(const QString &text)
+void QMessageDialogOptions::setText( const QString &text )
 {
-   d->text = text;
+    d->text = text;
 }
 
 QString QMessageDialogOptions::informativeText() const
 {
-   return d->informativeText;
+    return d->informativeText;
 }
 
-void QMessageDialogOptions::setInformativeText(const QString &informativeText)
+void QMessageDialogOptions::setInformativeText( const QString &informativeText )
 {
-   d->informativeText = informativeText;
+    d->informativeText = informativeText;
 }
 
 QString QMessageDialogOptions::detailedText() const
 {
-   return d->detailedText;
+    return d->detailedText;
 }
 
-void QMessageDialogOptions::setDetailedText(const QString &detailedText)
+void QMessageDialogOptions::setDetailedText( const QString &detailedText )
 {
-   d->detailedText = detailedText;
+    d->detailedText = detailedText;
 }
 
-void QMessageDialogOptions::setStandardButtons(QPlatformDialogHelper::StandardButtons buttons)
+void QMessageDialogOptions::setStandardButtons( QPlatformDialogHelper::StandardButtons buttons )
 {
-   d->buttons = buttons;
+    d->buttons = buttons;
 }
 
 QPlatformDialogHelper::StandardButtons QMessageDialogOptions::standardButtons() const
 {
-   return d->buttons;
+    return d->buttons;
 }
 
-QPlatformDialogHelper::ButtonRole QPlatformDialogHelper::buttonRole(QPlatformDialogHelper::StandardButton button)
+QPlatformDialogHelper::ButtonRole QPlatformDialogHelper::buttonRole( QPlatformDialogHelper::StandardButton button )
 {
-   switch (button) {
-      case Ok:
-      case Save:
-      case Open:
-      case SaveAll:
-      case Retry:
-      case Ignore:
-         return AcceptRole;
+    switch ( button )
+    {
+        case Ok:
+        case Save:
+        case Open:
+        case SaveAll:
+        case Retry:
+        case Ignore:
+            return AcceptRole;
 
-      case Cancel:
-      case Close:
-      case Abort:
-         return RejectRole;
+        case Cancel:
+        case Close:
+        case Abort:
+            return RejectRole;
 
-      case Discard:
-         return DestructiveRole;
+        case Discard:
+            return DestructiveRole;
 
-      case Help:
-         return HelpRole;
+        case Help:
+            return HelpRole;
 
-      case Apply:
-         return ApplyRole;
+        case Apply:
+            return ApplyRole;
 
-      case Yes:
-      case YesToAll:
-         return YesRole;
+        case Yes:
+        case YesToAll:
+            return YesRole;
 
-      case No:
-      case NoToAll:
-         return NoRole;
+        case No:
+        case NoToAll:
+            return NoRole;
 
-      case RestoreDefaults:
-      case Reset:
-         return ResetRole;
+        case RestoreDefaults:
+        case Reset:
+            return ResetRole;
 
-      default:
-         break;
-   }
-   return InvalidRole;
+        default:
+            break;
+    }
+
+    return InvalidRole;
 }
 
-const int *QPlatformDialogHelper::buttonLayout(Qt::Orientation orientation, ButtonLayout policy)
+const int *QPlatformDialogHelper::buttonLayout( Qt::Orientation orientation, ButtonLayout policy )
 {
-   if (policy == UnknownLayout) {
+    if ( policy == UnknownLayout )
+    {
 #if defined (Q_OS_DARWIN)
-      policy = MacLayout;
+        policy = MacLayout;
 #elif defined (Q_OS_LINUX) || defined (Q_OS_UNIX)
-      policy = KdeLayout;
+        policy = KdeLayout;
 #else
-      policy = WinLayout;
+        policy = WinLayout;
 #endif
-   }
-   return buttonRoleLayouts[orientation == Qt::Vertical][policy];
+    }
+
+    return buttonRoleLayouts[orientation == Qt::Vertical][policy];
 }
 
 const QSharedPointer<QMessageDialogOptions> &QPlatformMessageDialogHelper::options() const
 {
-   return m_options;
+    return m_options;
 }
 
-void QPlatformMessageDialogHelper::setOptions(const QSharedPointer<QMessageDialogOptions> &options)
+void QPlatformMessageDialogHelper::setOptions( const QSharedPointer<QMessageDialogOptions> &options )
 {
-   m_options = options;
+    m_options = options;
 }

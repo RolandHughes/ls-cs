@@ -32,72 +32,99 @@
 #include "RenderTableCol.h"
 #include "Text.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
-inline HTMLTableColElement::HTMLTableColElement(const QualifiedName& tagName, Document* document)
-    : HTMLTablePartElement(tagName, document)
-    , m_span(1)
+inline HTMLTableColElement::HTMLTableColElement( const QualifiedName &tagName, Document *document )
+    : HTMLTablePartElement( tagName, document )
+    , m_span( 1 )
 {
 }
 
-PassRefPtr<HTMLTableColElement> HTMLTableColElement::create(const QualifiedName& tagName, Document* document)
+PassRefPtr<HTMLTableColElement> HTMLTableColElement::create( const QualifiedName &tagName, Document *document )
 {
-    return adoptRef(new HTMLTableColElement(tagName, document));
+    return adoptRef( new HTMLTableColElement( tagName, document ) );
 }
 
-bool HTMLTableColElement::mapToEntry(const QualifiedName& attrName, MappedAttributeEntry& result) const
+bool HTMLTableColElement::mapToEntry( const QualifiedName &attrName, MappedAttributeEntry &result ) const
 {
-    if (attrName == widthAttr) {
+    if ( attrName == widthAttr )
+    {
         result = eUniversal;
         return false;
     }
 
-    return HTMLTablePartElement::mapToEntry(attrName, result);
+    return HTMLTablePartElement::mapToEntry( attrName, result );
 }
 
-void HTMLTableColElement::parseMappedAttribute(Attribute* attr)
+void HTMLTableColElement::parseMappedAttribute( Attribute *attr )
 {
-    if (attr->name() == spanAttr) {
+    if ( attr->name() == spanAttr )
+    {
         m_span = !attr->isNull() ? attr->value().toInt() : 1;
-        if (renderer() && renderer()->isTableCol())
+
+        if ( renderer() && renderer()->isTableCol() )
+        {
             renderer()->updateFromElement();
-    } else if (attr->name() == widthAttr) {
-        if (!attr->value().isEmpty()) {
-            addCSSLength(attr, CSSPropertyWidth, attr->value());
-            if (renderer() && renderer()->isTableCol()) {
-                RenderTableCol* col = toRenderTableCol(renderer());
+        }
+    }
+    else if ( attr->name() == widthAttr )
+    {
+        if ( !attr->value().isEmpty() )
+        {
+            addCSSLength( attr, CSSPropertyWidth, attr->value() );
+
+            if ( renderer() && renderer()->isTableCol() )
+            {
+                RenderTableCol *col = toRenderTableCol( renderer() );
                 int newWidth = width().toInt();
-                if (newWidth != col->width())
+
+                if ( newWidth != col->width() )
+                {
                     col->setNeedsLayoutAndPrefWidthsRecalc();
+                }
             }
         }
-    } else
-        HTMLTablePartElement::parseMappedAttribute(attr);
+    }
+    else
+    {
+        HTMLTablePartElement::parseMappedAttribute( attr );
+    }
 }
 
 // used by table columns and column groups to share style decls created by the enclosing table.
-void HTMLTableColElement::additionalAttributeStyleDecls(Vector<CSSMutableStyleDeclaration*>& results)
+void HTMLTableColElement::additionalAttributeStyleDecls( Vector<CSSMutableStyleDeclaration *> &results )
 {
-    if (!hasLocalName(colgroupTag))
+    if ( !hasLocalName( colgroupTag ) )
+    {
         return;
-    ContainerNode* p = parentNode();
-    while (p && !p->hasTagName(tableTag))
+    }
+
+    ContainerNode *p = parentNode();
+
+    while ( p && !p->hasTagName( tableTag ) )
+    {
         p = p->parentNode();
-    if (!p)
+    }
+
+    if ( !p )
+    {
         return;
-    static_cast<HTMLTableElement*>(p)->addSharedGroupDecls(false, results);
+    }
+
+    static_cast<HTMLTableElement *>( p )->addSharedGroupDecls( false, results );
 }
 
-void HTMLTableColElement::setSpan(int n)
+void HTMLTableColElement::setSpan( int n )
 {
-    setAttribute(spanAttr, String::number(n));
+    setAttribute( spanAttr, String::number( n ) );
 }
 
 String HTMLTableColElement::width() const
 {
-    return getAttribute(widthAttr);
+    return getAttribute( widthAttr );
 }
 
 }

@@ -36,56 +36,57 @@ class QCoreApplication;
 
 class Q_CORE_EXPORT QCommandLineParser
 {
-   Q_DECLARE_TR_FUNCTIONS(QCommandLineParser)
+    Q_DECLARE_TR_FUNCTIONS( QCommandLineParser )
 
- public:
-   enum SingleDashWordOptionMode {
-      ParseAsCompactedShortOptions,
-      ParseAsLongOptions
-   };
+public:
+    enum SingleDashWordOptionMode
+    {
+        ParseAsCompactedShortOptions,
+        ParseAsLongOptions
+    };
 
-   QCommandLineParser();
+    QCommandLineParser();
 
-   QCommandLineParser(const QCommandLineParser &) = delete;
-   QCommandLineParser &operator=(const QCommandLineParser &) = delete;
+    QCommandLineParser( const QCommandLineParser & ) = delete;
+    QCommandLineParser &operator=( const QCommandLineParser & ) = delete;
 
-   ~QCommandLineParser();
+    ~QCommandLineParser();
 
-   void setSingleDashWordOptionMode(SingleDashWordOptionMode parsingMode);
+    void setSingleDashWordOptionMode( SingleDashWordOptionMode parsingMode );
 
-   bool addOption(const QCommandLineOption &option);
+    bool addOption( const QCommandLineOption &option );
 
-   QCommandLineOption addVersionOption();
-   QCommandLineOption addHelpOption();
-   void setApplicationDescription(const QString &description);
-   QString applicationDescription() const;
-   void addPositionalArgument(const QString &name, const QString &description, const QString &syntax = QString());
-   void clearPositionalArguments();
+    QCommandLineOption addVersionOption();
+    QCommandLineOption addHelpOption();
+    void setApplicationDescription( const QString &description );
+    QString applicationDescription() const;
+    void addPositionalArgument( const QString &name, const QString &description, const QString &syntax = QString() );
+    void clearPositionalArguments();
 
-   void process(const QStringList &arguments);
-   void process(const QCoreApplication &app);
+    void process( const QStringList &arguments );
+    void process( const QCoreApplication &app );
 
-   bool parse(const QStringList &arguments);
-   QString errorText() const;
+    bool parse( const QStringList &arguments );
+    QString errorText() const;
 
-   bool isSet(const QString &name) const;
-   QString value(const QString &optionName) const;
-   QStringList values(const QString &optionName) const;
+    bool isSet( const QString &name ) const;
+    QString value( const QString &optionName ) const;
+    QStringList values( const QString &optionName ) const;
 
-   bool isSet(const QCommandLineOption &option) const;
-   QString value(const QCommandLineOption &option) const;
-   QStringList values(const QCommandLineOption &option) const;
+    bool isSet( const QCommandLineOption &option ) const;
+    QString value( const QCommandLineOption &option ) const;
+    QStringList values( const QCommandLineOption &option ) const;
 
-   QStringList positionalArguments() const;
-   QStringList optionNames() const;
-   QStringList unknownOptionNames() const;
+    QStringList positionalArguments() const;
+    QStringList optionNames() const;
+    QStringList unknownOptionNames() const;
 
-   void showVersion();
-   void showHelp(int exitCode = 0);
-   QString helpText() const;
+    void showVersion();
+    void showHelp( int exitCode = 0 );
+    QString helpText() const;
 
- private:
-   QCommandLineParserPrivate *const d;
+private:
+    QCommandLineParserPrivate *const d;
 };
 
 #endif

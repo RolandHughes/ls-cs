@@ -30,17 +30,17 @@
 
 class Q_VULKAN_EXPORT QVulkanWindowRenderer
 {
- public:
-   virtual ~QVulkanWindowRenderer();
+public:
+    virtual ~QVulkanWindowRenderer();
 
-   virtual void initResources();
-   virtual void initSwapChainResources();
-   virtual void logicalDeviceLost();
-   virtual void physicalDeviceLost();
-   virtual void preInitResources();
-   virtual void releaseResources();
-   virtual void releaseSwapChainResources();
-   virtual void startNextFrame() = 0;
+    virtual void initResources();
+    virtual void initSwapChainResources();
+    virtual void logicalDeviceLost();
+    virtual void physicalDeviceLost();
+    virtual void preInitResources();
+    virtual void releaseResources();
+    virtual void releaseSwapChainResources();
+    virtual void startNextFrame() = 0;
 };
 
 #endif

@@ -34,187 +34,241 @@
 // Remove this once we make all WebKit code compatible with stricter rules about PassOwnPtr.
 #define LOOSE_PASS_OWN_PTR
 
-namespace WTF {
+namespace WTF
+{
 
-    // Unlike most of our smart pointers, PassOwnPtr can take either the pointer type or the pointed-to type.
+// Unlike most of our smart pointers, PassOwnPtr can take either the pointer type or the pointed-to type.
 
-    template<typename T> class OwnPtr;
-    template<typename T> class PassOwnPtr;
-    template<typename T> PassOwnPtr<T> adoptPtr(T*);
+template<typename T> class OwnPtr;
+template<typename T> class PassOwnPtr;
+template<typename T> PassOwnPtr<T> adoptPtr( T * );
 
-    template<typename T> class PassOwnPtr {
-    public:
-        typedef typename RemovePointer<T>::Type ValueType;
-        typedef ValueType* PtrType;
+template<typename T> class PassOwnPtr
+{
+public:
+    typedef typename RemovePointer<T>::Type ValueType;
+    typedef ValueType *PtrType;
 
-        PassOwnPtr() : m_ptr(nullptr) { }
-        PassOwnPtr(std::nullptr_t) : m_ptr(nullptr) { }
+    PassOwnPtr() : m_ptr( nullptr ) { }
+    PassOwnPtr( std::nullptr_t ) : m_ptr( nullptr ) { }
 
-        // It somewhat breaks the type system to allow transfer of ownership out of
-        // a const PassOwnPtr. However, it makes it much easier to work with PassOwnPtr
-        // temporaries, and we don't have a need to use real const PassOwnPtrs anyway.
-        PassOwnPtr(const PassOwnPtr& o) : m_ptr(o.leakPtr()) { }
-        template<typename U> PassOwnPtr(const PassOwnPtr<U>& o) : m_ptr(o.leakPtr()) { }
+    // It somewhat breaks the type system to allow transfer of ownership out of
+    // a const PassOwnPtr. However, it makes it much easier to work with PassOwnPtr
+    // temporaries, and we don't have a need to use real const PassOwnPtrs anyway.
+    PassOwnPtr( const PassOwnPtr &o ) : m_ptr( o.leakPtr() ) { }
+    template<typename U> PassOwnPtr( const PassOwnPtr<U> &o ) : m_ptr( o.leakPtr() ) { }
 
-        ~PassOwnPtr() { deleteOwnedPtr(m_ptr); }
+    ~PassOwnPtr()
+    {
+        deleteOwnedPtr( m_ptr );
+    }
 
-        PtrType get() const { return m_ptr; }
+    PtrType get() const
+    {
+        return m_ptr;
+    }
 
-        void clear();
-        PtrType leakPtr() const WARN_UNUSED_RETURN;
+    void clear();
+    PtrType leakPtr() const WARN_UNUSED_RETURN;
 
-        ValueType& operator*() const { ASSERT(m_ptr); return *m_ptr; }
-        PtrType operator->() const { ASSERT(m_ptr); return m_ptr; }
+    ValueType &operator*() const
+    {
+        ASSERT( m_ptr );
+        return *m_ptr;
+    }
+    PtrType operator->() const
+    {
+        ASSERT( m_ptr );
+        return m_ptr;
+    }
 
-        bool operator!() const { return !m_ptr; }
+    bool operator!() const
+    {
+        return !m_ptr;
+    }
 
-        // This conversion operator allows implicit conversion to bool but not to other integer types.
-        typedef PtrType PassOwnPtr::*UnspecifiedBoolType;
-        operator UnspecifiedBoolType() const { return m_ptr ? &PassOwnPtr::m_ptr : nullptr; }
+    // This conversion operator allows implicit conversion to bool but not to other integer types.
+    typedef PtrType PassOwnPtr::*UnspecifiedBoolType;
+    operator UnspecifiedBoolType() const
+    {
+        return m_ptr ? &PassOwnPtr::m_ptr : nullptr;
+    }
 
-        PassOwnPtr& operator=(const PassOwnPtr<T>&);
+    PassOwnPtr &operator=( const PassOwnPtr<T> & );
 #if !defined(LOOSE_PASS_OWN_PTR) || !HAVE(NULLPTR)
-        PassOwnPtr& operator=(std::nullptr_t) { clear(); return *this; }
+    PassOwnPtr &operator=( std::nullptr_t )
+    {
+        clear();
+        return *this;
+    }
 #endif
-        template<typename U> PassOwnPtr& operator=(const PassOwnPtr<U>&);
+    template<typename U> PassOwnPtr &operator=( const PassOwnPtr<U> & );
 
-        template<typename U> friend PassOwnPtr<U> adoptPtr(U*);
+    template<typename U> friend PassOwnPtr<U> adoptPtr( U * );
 
 #ifdef LOOSE_PASS_OWN_PTR
-        PassOwnPtr(PtrType ptr) : m_ptr(ptr) { }
-        PassOwnPtr& operator=(PtrType);
+    PassOwnPtr( PtrType ptr ) : m_ptr( ptr ) { }
+    PassOwnPtr &operator=( PtrType );
 #endif
 
-    private:
+private:
 #ifndef LOOSE_PASS_OWN_PTR
-        explicit PassOwnPtr(PtrType ptr) : m_ptr(ptr) { }
+    explicit PassOwnPtr( PtrType ptr ) : m_ptr( ptr ) { }
 #endif
 
-        // We should never have two OwnPtrs for the same underlying object (otherwise we'll get
-        // double-destruction), so these equality operators should never be needed.
-        template<typename U> bool operator==(const PassOwnPtr<U>&) { COMPILE_ASSERT(!sizeof(U*), OwnPtrs_should_never_be_equal); return false; }
-        template<typename U> bool operator!=(const PassOwnPtr<U>&) { COMPILE_ASSERT(!sizeof(U*), OwnPtrs_should_never_be_equal); return false; }
-        template<typename U> bool operator==(const OwnPtr<U>&) { COMPILE_ASSERT(!sizeof(U*), OwnPtrs_should_never_be_equal); return false; }
-        template<typename U> bool operator!=(const OwnPtr<U>&) { COMPILE_ASSERT(!sizeof(U*), OwnPtrs_should_never_be_equal); return false; }
-
-        mutable PtrType m_ptr;
-    };
-
-    template<typename T> inline void PassOwnPtr<T>::clear()
+    // We should never have two OwnPtrs for the same underlying object (otherwise we'll get
+    // double-destruction), so these equality operators should never be needed.
+    template<typename U> bool operator==( const PassOwnPtr<U> & )
     {
-        PtrType ptr = m_ptr;
-        m_ptr = nullptr;
-        deleteOwnedPtr(ptr);
+        COMPILE_ASSERT( !sizeof( U * ), OwnPtrs_should_never_be_equal );
+        return false;
+    }
+    template<typename U> bool operator!=( const PassOwnPtr<U> & )
+    {
+        COMPILE_ASSERT( !sizeof( U * ), OwnPtrs_should_never_be_equal );
+        return false;
+    }
+    template<typename U> bool operator==( const OwnPtr<U> & )
+    {
+        COMPILE_ASSERT( !sizeof( U * ), OwnPtrs_should_never_be_equal );
+        return false;
+    }
+    template<typename U> bool operator!=( const OwnPtr<U> & )
+    {
+        COMPILE_ASSERT( !sizeof( U * ), OwnPtrs_should_never_be_equal );
+        return false;
     }
 
-    template<typename T> inline typename PassOwnPtr<T>::PtrType PassOwnPtr<T>::leakPtr() const
-    {
-        PtrType ptr = m_ptr;
-        m_ptr = nullptr;
-        return ptr;
-    }
+    mutable PtrType m_ptr;
+};
+
+template<typename T> inline void PassOwnPtr<T>::clear()
+{
+    PtrType ptr = m_ptr;
+    m_ptr = nullptr;
+    deleteOwnedPtr( ptr );
+}
+
+template<typename T> inline typename PassOwnPtr<T>::PtrType PassOwnPtr<T>::leakPtr() const
+{
+    PtrType ptr = m_ptr;
+    m_ptr = nullptr;
+    return ptr;
+}
 
 #ifdef LOOSE_PASS_OWN_PTR
-    template<typename T> inline PassOwnPtr<T>& PassOwnPtr<T>::operator=(PtrType optr)
+template<typename T> inline PassOwnPtr<T> &PassOwnPtr<T>::operator=( PtrType optr )
+{
+    PtrType ptr = m_ptr;
+    m_ptr = optr;
+    ASSERT( !ptr || m_ptr != ptr );
+
+    if ( ptr )
     {
-        PtrType ptr = m_ptr;
-        m_ptr = optr;
-        ASSERT(!ptr || m_ptr != ptr);
-        if (ptr)
-            deleteOwnedPtr(ptr);
-        return *this;
+        deleteOwnedPtr( ptr );
     }
+
+    return *this;
+}
 #endif
 
-    template<typename T> inline PassOwnPtr<T>& PassOwnPtr<T>::operator=(const PassOwnPtr<T>& optr)
+template<typename T> inline PassOwnPtr<T> &PassOwnPtr<T>::operator=( const PassOwnPtr<T> &optr )
+{
+    PtrType ptr = m_ptr;
+    m_ptr = optr.leakPtr();
+    ASSERT( !ptr || m_ptr != ptr );
+
+    if ( ptr )
     {
-        PtrType ptr = m_ptr;
-        m_ptr = optr.leakPtr();
-        ASSERT(!ptr || m_ptr != ptr);
-        if (ptr)
-            deleteOwnedPtr(ptr);
-        return *this;
+        deleteOwnedPtr( ptr );
     }
 
-    template<typename T> template<typename U> inline PassOwnPtr<T>& PassOwnPtr<T>::operator=(const PassOwnPtr<U>& optr)
+    return *this;
+}
+
+template<typename T> template<typename U> inline PassOwnPtr<T> &PassOwnPtr<T>::operator=( const PassOwnPtr<U> &optr )
+{
+    PtrType ptr = m_ptr;
+    m_ptr = optr.leakPtr();
+    ASSERT( !ptr || m_ptr != ptr );
+
+    if ( ptr )
     {
-        PtrType ptr = m_ptr;
-        m_ptr = optr.leakPtr();
-        ASSERT(!ptr || m_ptr != ptr);
-        if (ptr)
-            deleteOwnedPtr(ptr);
-        return *this;
+        deleteOwnedPtr( ptr );
     }
 
-    template<typename T, typename U> inline bool operator==(const PassOwnPtr<T>& a, const PassOwnPtr<U>& b)
-    {
-        return a.get() == b.get();
-    }
+    return *this;
+}
 
-    template<typename T, typename U> inline bool operator==(const PassOwnPtr<T>& a, const OwnPtr<U>& b)
-    {
-        return a.get() == b.get();
-    }
+template<typename T, typename U> inline bool operator==( const PassOwnPtr<T> &a, const PassOwnPtr<U> &b )
+{
+    return a.get() == b.get();
+}
 
-    template<typename T, typename U> inline bool operator==(const OwnPtr<T>& a, const PassOwnPtr<U>& b)
-    {
-        return a.get() == b.get();
-    }
+template<typename T, typename U> inline bool operator==( const PassOwnPtr<T> &a, const OwnPtr<U> &b )
+{
+    return a.get() == b.get();
+}
 
-    template<typename T, typename U> inline bool operator==(const PassOwnPtr<T>& a, U* b)
-    {
-        return a.get() == b;
-    }
+template<typename T, typename U> inline bool operator==( const OwnPtr<T> &a, const PassOwnPtr<U> &b )
+{
+    return a.get() == b.get();
+}
 
-    template<typename T, typename U> inline bool operator==(T* a, const PassOwnPtr<U>& b)
-    {
-        return a == b.get();
-    }
+template<typename T, typename U> inline bool operator==( const PassOwnPtr<T> &a, U *b )
+{
+    return a.get() == b;
+}
 
-    template<typename T, typename U> inline bool operator!=(const PassOwnPtr<T>& a, const PassOwnPtr<U>& b)
-    {
-        return a.get() != b.get();
-    }
+template<typename T, typename U> inline bool operator==( T *a, const PassOwnPtr<U> &b )
+{
+    return a == b.get();
+}
 
-    template<typename T, typename U> inline bool operator!=(const PassOwnPtr<T>& a, const OwnPtr<U>& b)
-    {
-        return a.get() != b.get();
-    }
+template<typename T, typename U> inline bool operator!=( const PassOwnPtr<T> &a, const PassOwnPtr<U> &b )
+{
+    return a.get() != b.get();
+}
 
-    template<typename T, typename U> inline bool operator!=(const OwnPtr<T>& a, const PassOwnPtr<U>& b)
-    {
-        return a.get() != b.get();
-    }
+template<typename T, typename U> inline bool operator!=( const PassOwnPtr<T> &a, const OwnPtr<U> &b )
+{
+    return a.get() != b.get();
+}
 
-    template<typename T, typename U> inline bool operator!=(const PassOwnPtr<T>& a, U* b)
-    {
-        return a.get() != b;
-    }
+template<typename T, typename U> inline bool operator!=( const OwnPtr<T> &a, const PassOwnPtr<U> &b )
+{
+    return a.get() != b.get();
+}
 
-    template<typename T, typename U> inline bool operator!=(T* a, const PassOwnPtr<U>& b)
-    {
-        return a != b.get();
-    }
+template<typename T, typename U> inline bool operator!=( const PassOwnPtr<T> &a, U *b )
+{
+    return a.get() != b;
+}
 
-    template<typename T> inline PassOwnPtr<T> adoptPtr(T* ptr)
-    {
-        return PassOwnPtr<T>(ptr);
-    }
+template<typename T, typename U> inline bool operator!=( T *a, const PassOwnPtr<U> &b )
+{
+    return a != b.get();
+}
 
-    template<typename T, typename U> inline PassOwnPtr<T> static_pointer_cast(const PassOwnPtr<U>& p)
-    {
-        return adoptPtr(static_cast<T*>(p.leakPtr()));
-    }
+template<typename T> inline PassOwnPtr<T> adoptPtr( T *ptr )
+{
+    return PassOwnPtr<T>( ptr );
+}
 
-    template<typename T, typename U> inline PassOwnPtr<T> const_pointer_cast(const PassOwnPtr<U>& p)
-    {
-        return adoptPtr(const_cast<T*>(p.leakPtr()));
-    }
+template<typename T, typename U> inline PassOwnPtr<T> static_pointer_cast( const PassOwnPtr<U> &p )
+{
+    return adoptPtr( static_cast<T *>( p.leakPtr() ) );
+}
 
-    template<typename T> inline T* getPtr(const PassOwnPtr<T>& p)
-    {
-        return p.get();
-    }
+template<typename T, typename U> inline PassOwnPtr<T> const_pointer_cast( const PassOwnPtr<U> &p )
+{
+    return adoptPtr( const_cast<T *>( p.leakPtr() ) );
+}
+
+template<typename T> inline T *getPtr( const PassOwnPtr<T> &p )
+{
+    return p.get();
+}
 
 } // namespace WTF
 

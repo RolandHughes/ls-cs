@@ -35,44 +35,55 @@
 #include <wtf/RefCounted.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
-    
-class CanvasPixelArray : public RefCounted<CanvasPixelArray> {
+namespace WebCore
+{
+
+class CanvasPixelArray : public RefCounted<CanvasPixelArray>
+{
 public:
-    static PassRefPtr<CanvasPixelArray> create(unsigned length);
-    static PassRefPtr<CanvasPixelArray> create(PassRefPtr<ByteArray>);
+    static PassRefPtr<CanvasPixelArray> create( unsigned length );
+    static PassRefPtr<CanvasPixelArray> create( PassRefPtr<ByteArray> );
 
-    ByteArray* data() { return m_data.get(); }
-    const ByteArray* data() const { return m_data.get(); }
-    unsigned length() const { return m_data->length(); }
-    
-    void set(unsigned index, double value)
+    ByteArray *data()
     {
-        m_data->set(index, value);
+        return m_data.get();
+    }
+    const ByteArray *data() const
+    {
+        return m_data.get();
+    }
+    unsigned length() const
+    {
+        return m_data->length();
     }
 
-    void set(unsigned index, unsigned char value)
+    void set( unsigned index, double value )
     {
-        m_data->set(index, value);
-    }
-    
-    bool get(unsigned index, unsigned char& result) const
-    {
-        return m_data->get(index, result);
+        m_data->set( index, value );
     }
 
-    unsigned char get(unsigned index) const
+    void set( unsigned index, unsigned char value )
     {
-        return m_data->get(index);
+        m_data->set( index, value );
+    }
+
+    bool get( unsigned index, unsigned char &result ) const
+    {
+        return m_data->get( index, result );
+    }
+
+    unsigned char get( unsigned index ) const
+    {
+        return m_data->get( index );
     }
 
 private:
-    CanvasPixelArray(unsigned length);
-    CanvasPixelArray(PassRefPtr<ByteArray>);
+    CanvasPixelArray( unsigned length );
+    CanvasPixelArray( PassRefPtr<ByteArray> );
 
     RefPtr<ByteArray> m_data;
 };
-    
+
 } // namespace WebCore
 
 #endif // CanvasPixelArray_h

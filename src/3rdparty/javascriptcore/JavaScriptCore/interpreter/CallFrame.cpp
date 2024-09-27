@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -29,7 +29,8 @@
 #include "CodeBlock.h"
 #include "Interpreter.h"
 
-namespace JSC {
+namespace JSC
+{
 
 JSValue CallFrame::thisValue()
 {
@@ -43,9 +44,9 @@ void CallFrame::dumpCaller()
     intptr_t sourceID;
     UString urlString;
     JSValue function;
-    
-    interpreter()->retrieveLastCaller(this, signedLineNumber, sourceID, urlString, function);
-    printf("Callpoint => %s:%d\n", urlString.ascii(), signedLineNumber);
+
+    interpreter()->retrieveLastCaller( this, signedLineNumber, sourceID, urlString, function );
+    printf( "Callpoint => %s:%d\n", urlString.ascii(), signedLineNumber );
 }
 #endif
 

@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef NP_JSOBJECT_H
@@ -31,24 +31,26 @@
 #include "npruntime_internal.h"
 #include <wtf/Forward.h>
 
-namespace JSC {
-    class JSObject;
-    namespace Bindings {
-        class RootObject;
-    }
+namespace JSC
+{
+class JSObject;
+namespace Bindings
+{
+class RootObject;
+}
 }
 
-extern NPClass* NPScriptObjectClass;
+extern NPClass *NPScriptObjectClass;
 
 struct JavaScriptObject
 {
     NPObject object;
-    JSC::JSObject* imp;
-    JSC::Bindings::RootObject* rootObject;
+    JSC::JSObject *imp;
+    JSC::Bindings::RootObject *rootObject;
 };
 
-NPObject* _NPN_CreateScriptObject(NPP npp, JSC::JSObject*, PassRefPtr<JSC::Bindings::RootObject> rootObject);
-NPObject* _NPN_CreateNoScriptObject(void);
+NPObject *_NPN_CreateScriptObject( NPP npp, JSC::JSObject *, PassRefPtr<JSC::Bindings::RootObject> rootObject );
+NPObject *_NPN_CreateNoScriptObject( void );
 
 #endif // ENABLE(NETSCAPE_PLUGIN_API)
 

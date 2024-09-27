@@ -28,45 +28,49 @@
 
 #include <wtf/HashMap.h>
 
-namespace CoreIPC {
-    class ArgumentDecoder;
-    class Connection;
-    class MessageID;
+namespace CoreIPC
+{
+class ArgumentDecoder;
+class Connection;
+class MessageID;
 }
 
-namespace WebCore {
-    class AuthenticationChallenge;
-    class Credential;
+namespace WebCore
+{
+class AuthenticationChallenge;
+class Credential;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
 class Download;
 class PlatformCertificateInfo;
 class WebFrame;
 
-class AuthenticationManager {
-    WTF_MAKE_NONCOPYABLE(AuthenticationManager);
+class AuthenticationManager
+{
+    WTF_MAKE_NONCOPYABLE( AuthenticationManager );
 
 public:
-    static AuthenticationManager& shared();
+    static AuthenticationManager &shared();
 
-    void didReceiveMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*);
+    void didReceiveMessage( CoreIPC::Connection *, CoreIPC::MessageID, CoreIPC::ArgumentDecoder * );
 
-    void didReceiveAuthenticationChallenge(WebFrame*, const WebCore::AuthenticationChallenge&);
-    void didReceiveAuthenticationChallenge(Download*, const WebCore::AuthenticationChallenge&);
+    void didReceiveAuthenticationChallenge( WebFrame *, const WebCore::AuthenticationChallenge & );
+    void didReceiveAuthenticationChallenge( Download *, const WebCore::AuthenticationChallenge & );
 
-    void useCredentialForChallenge(uint64_t challengeID, const WebCore::Credential&, const PlatformCertificateInfo&);
-    void continueWithoutCredentialForChallenge(uint64_t challengeID);
-    void cancelChallenge(uint64_t challengeID);
+    void useCredentialForChallenge( uint64_t challengeID, const WebCore::Credential &, const PlatformCertificateInfo & );
+    void continueWithoutCredentialForChallenge( uint64_t challengeID );
+    void cancelChallenge( uint64_t challengeID );
 
 private:
     AuthenticationManager();
 
-    void didReceiveAuthenticationManagerMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*);
+    void didReceiveAuthenticationManagerMessage( CoreIPC::Connection *, CoreIPC::MessageID, CoreIPC::ArgumentDecoder * );
 
-    bool tryUsePlatformCertificateInfoForChallenge(const WebCore::AuthenticationChallenge&, const PlatformCertificateInfo&);
-    
+    bool tryUsePlatformCertificateInfoForChallenge( const WebCore::AuthenticationChallenge &, const PlatformCertificateInfo & );
+
     typedef HashMap<uint64_t, WebCore::AuthenticationChallenge> AuthenticationChallengeMap;
     AuthenticationChallengeMap m_challenges;
 };

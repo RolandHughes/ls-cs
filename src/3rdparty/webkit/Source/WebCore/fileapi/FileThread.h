@@ -38,15 +38,17 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/Threading.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class FileStream;
 
-class FileThread : public ThreadSafeRefCounted<FileThread> {
+class FileThread : public ThreadSafeRefCounted<FileThread>
+{
 public:
     static PassRefPtr<FileThread> create()
     {
-        return adoptRef(new FileThread());
+        return adoptRef( new FileThread() );
     }
 
     ~FileThread();
@@ -54,26 +56,30 @@ public:
     bool start();
     void stop();
 
-    class Task {
-        WTF_MAKE_NONCOPYABLE(Task);
+    class Task
+    {
+        WTF_MAKE_NONCOPYABLE( Task );
     public:
         virtual ~Task() { }
         virtual void performTask() = 0;
-        void* instance() const { return m_instance; }
+        void *instance() const
+        {
+            return m_instance;
+        }
     protected:
-        Task(void* instance) : m_instance(instance) { }
-        void* m_instance;
+        Task( void *instance ) : m_instance( instance ) { }
+        void *m_instance;
     };
 
-    void postTask(PassOwnPtr<Task> task);
+    void postTask( PassOwnPtr<Task> task );
 
-    void unscheduleTasks(const void* instance);
+    void unscheduleTasks( const void *instance );
 
 private:
     FileThread();
 
-    static void* fileThreadStart(void*);
-    void* runLoop();
+    static void *fileThreadStart( void * );
+    void *runLoop();
 
     ThreadIdentifier m_threadID;
     RefPtr<FileThread> m_selfRef;

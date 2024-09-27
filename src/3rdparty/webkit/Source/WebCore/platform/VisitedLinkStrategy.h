@@ -28,15 +28,17 @@
 
 #if USE(PLATFORM_STRATEGIES)
 
-namespace WebCore {
+namespace WebCore
+{
 
 typedef uint64_t LinkHash;
 class Page;
 
-class VisitedLinkStrategy {
+class VisitedLinkStrategy
+{
 public:
-    virtual bool isLinkVisited(Page*, LinkHash) = 0;
-    virtual void addVisitedLink(Page*, LinkHash) = 0;
+    virtual bool isLinkVisited( Page *, LinkHash ) = 0;
+    virtual void addVisitedLink( Page *, LinkHash ) = 0;
 
 protected:
     virtual ~VisitedLinkStrategy()

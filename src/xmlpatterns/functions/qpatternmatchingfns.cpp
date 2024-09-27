@@ -33,167 +33,197 @@
 
 using namespace QPatternist;
 
-MatchesFN::MatchesFN() : PatternPlatform(2)
+MatchesFN::MatchesFN() : PatternPlatform( 2 )
 {
 }
 
-Item MatchesFN::evaluateSingleton(const DynamicContext::Ptr &context) const
+Item MatchesFN::evaluateSingleton( const DynamicContext::Ptr &context ) const
 {
-   const QRegularExpression regexp(pattern(context));
-   QString input;
+    const QRegularExpression regexp( pattern( context ) );
+    QString input;
 
-   const Item arg(m_operands.first()->evaluateSingleton(context));
-   if (arg) {
-      input = arg.stringValue();
-   }
+    const Item arg( m_operands.first()->evaluateSingleton( context ) );
 
-   return Boolean::fromValue(input.contains(regexp));
+    if ( arg )
+    {
+        input = arg.stringValue();
+    }
+
+    return Boolean::fromValue( input.contains( regexp ) );
 }
 
-ReplaceFN::ReplaceFN() : PatternPlatform(3)
+ReplaceFN::ReplaceFN() : PatternPlatform( 3 )
 {
 }
 
-Item ReplaceFN::evaluateSingleton(const DynamicContext::Ptr &context) const
+Item ReplaceFN::evaluateSingleton( const DynamicContext::Ptr &context ) const
 {
-   const QRegularExpression regexp(pattern(context));
-   QString input;
+    const QRegularExpression regexp( pattern( context ) );
+    QString input;
 
-   const Item arg(m_operands.first()->evaluateSingleton(context));
-   if (arg) {
-      input = arg.stringValue();
-   }
+    const Item arg( m_operands.first()->evaluateSingleton( context ) );
 
-   const QString replacement(m_replacementString.isEmpty() ?
-                  parseReplacement(regexp.captureCount(), context) : m_replacementString);
+    if ( arg )
+    {
+        input = arg.stringValue();
+    }
 
-   return AtomicString::fromValue(input.replace(regexp, replacement));
+    const QString replacement( m_replacementString.isEmpty() ?
+                               parseReplacement( regexp.captureCount(), context ) : m_replacementString );
+
+    return AtomicString::fromValue( input.replace( regexp, replacement ) );
 }
 
-QString ReplaceFN::errorAtEnd(const char ch)
+QString ReplaceFN::errorAtEnd( const char ch )
 {
-   return QtXmlPatterns::tr("%1 must be followed by %2 or %3, not at the end of the replacement string.")
-          .formatArg(formatKeyword(QLatin1Char(ch)))
-          .formatArg(formatKeyword(QLatin1Char('\\')))
-          .formatArg(formatKeyword(QLatin1Char('$')));
+    return QtXmlPatterns::tr( "%1 must be followed by %2 or %3, not at the end of the replacement string." )
+           .formatArg( formatKeyword( QLatin1Char( ch ) ) )
+           .formatArg( formatKeyword( QLatin1Char( '\\' ) ) )
+           .formatArg( formatKeyword( QLatin1Char( '$' ) ) );
 }
 
-QString ReplaceFN::parseReplacement(const int, const DynamicContext::Ptr &context) const
+QString ReplaceFN::parseReplacement( const int, const DynamicContext::Ptr &context ) const
 {
-   // TODO what if there is no groups, can one rewrite to the replacement then?
-   const QString input(m_operands.at(2)->evaluateSingleton(context).stringValue());
+    // TODO what if there is no groups, can one rewrite to the replacement then?
+    const QString input( m_operands.at( 2 )->evaluateSingleton( context ).stringValue() );
 
-   QString retval;
-   const int len = input.length();
+    QString retval;
+    const int len = input.length();
 
-   for (int i = 0; i < len; ++i) {
-      const QChar ch(input.at(i));
+    for ( int i = 0; i < len; ++i )
+    {
+        const QChar ch( input.at( i ) );
 
-      switch (ch.toLatin1()) {
-         case '$': {
-            /* QRegularExpression uses '\' as opposed to '$' for marking sub groups. */
-            retval.append(QLatin1Char('\\'));
+        switch ( ch.toLatin1() )
+        {
+            case '$':
+            {
+                /* QRegularExpression uses '\' as opposed to '$' for marking sub groups. */
+                retval.append( QLatin1Char( '\\' ) );
 
-            ++i;
-            if (i == len) {
-               context->error(errorAtEnd('$'), ReportContext::FORX0004, this);
-               return QString();
+                ++i;
+
+                if ( i == len )
+                {
+                    context->error( errorAtEnd( '$' ), ReportContext::FORX0004, this );
+                    return QString();
+                }
+
+                const QChar nextCh( input.at( i ) );
+
+                if ( nextCh.isDigit() )
+                {
+                    retval.append( nextCh );
+                }
+                else
+                {
+                    context->error( QtXmlPatterns::tr( "In the replacement string, %1 must be followed by at least one digit when not escaped." )
+                                    .formatArg( formatKeyword( QLatin1Char( '$' ) ) ), ReportContext::FORX0004, this );
+                    return QString();
+                }
+
+                break;
             }
 
-            const QChar nextCh(input.at(i));
-            if (nextCh.isDigit()) {
-               retval.append(nextCh);
-            } else {
-               context->error(QtXmlPatterns::tr("In the replacement string, %1 must be followed by at least one digit when not escaped.")
-                              .formatArg(formatKeyword(QLatin1Char('$'))), ReportContext::FORX0004, this);
-               return QString();
+            case '\\':
+            {
+                ++i;
+
+                if ( i == len )
+                {
+                    /* error, we've reached the end. */;
+                    context->error( errorAtEnd( '\\' ), ReportContext::FORX0004, this );
+                }
+
+                const QChar nextCh( input.at( i ) );
+
+                if ( nextCh == QLatin1Char( '\\' ) || nextCh == QLatin1Char( '$' ) )
+                {
+                    retval.append( ch );
+                    break;
+                }
+                else
+                {
+                    context->error( QtXmlPatterns::tr( "In the replacement string, %1 can only be used to "
+                                                       "escape itself or %2, not %3" )
+                                    .formatArg( formatKeyword( QLatin1Char( '\\' ) ) )
+                                    .formatArg( formatKeyword( QLatin1Char( '$' ) ) )
+                                    .formatArg( formatKeyword( nextCh ) ),
+                                    ReportContext::FORX0004, this );
+                    return QString();
+                }
             }
 
-            break;
-         }
-         case '\\': {
-            ++i;
-            if (i == len) {
-               /* error, we've reached the end. */;
-               context->error(errorAtEnd('\\'), ReportContext::FORX0004, this);
-            }
+            default:
+                retval.append( ch );
+        }
+    }
 
-            const QChar nextCh(input.at(i));
-            if (nextCh == QLatin1Char('\\') || nextCh == QLatin1Char('$')) {
-               retval.append(ch);
-               break;
-            } else {
-               context->error(QtXmlPatterns::tr("In the replacement string, %1 can only be used to "
-                                                "escape itself or %2, not %3")
-                              .formatArg(formatKeyword(QLatin1Char('\\')))
-                              .formatArg(formatKeyword(QLatin1Char('$')))
-                              .formatArg(formatKeyword(nextCh)),
-                              ReportContext::FORX0004, this);
-               return QString();
-            }
-         }
-         default:
-            retval.append(ch);
-      }
-   }
-
-   return retval;
+    return retval;
 }
 
-Expression::Ptr ReplaceFN::compress(const StaticContext::Ptr &context)
+Expression::Ptr ReplaceFN::compress( const StaticContext::Ptr &context )
 {
-   const Expression::Ptr me(PatternPlatform::compress(context));
+    const Expression::Ptr me( PatternPlatform::compress( context ) );
 
-   if (me != this) {
-      return me;
-   }
+    if ( me != this )
+    {
+        return me;
+    }
 
-   if (m_operands.at(2)->is(IDStringValue)) {
-      const int capt = captureCount();
-      if (capt == -1) {
-         return me;
-      } else {
-         m_replacementString = parseReplacement(captureCount(), context->dynamicContext());
-      }
-   }
+    if ( m_operands.at( 2 )->is( IDStringValue ) )
+    {
+        const int capt = captureCount();
 
-   return me;
+        if ( capt == -1 )
+        {
+            return me;
+        }
+        else
+        {
+            m_replacementString = parseReplacement( captureCount(), context->dynamicContext() );
+        }
+    }
+
+    return me;
 }
 
-TokenizeFN::TokenizeFN() : PatternPlatform(2)
+TokenizeFN::TokenizeFN() : PatternPlatform( 2 )
 {
 }
 
 /**
  * Used by QAbstractXmlForwardIterator.
  */
-static inline bool qIsForwardIteratorEnd(const QString &item)
+static inline bool qIsForwardIteratorEnd( const QString &item )
 {
-   return item.isEmpty();
+    return item.isEmpty();
 }
 
-Item TokenizeFN::mapToItem(const QString &subject, const DynamicContext::Ptr &) const
+Item TokenizeFN::mapToItem( const QString &subject, const DynamicContext::Ptr & ) const
 {
-   return AtomicString::fromValue(subject);
+    return AtomicString::fromValue( subject );
 }
 
-Item::Iterator::Ptr TokenizeFN::evaluateSequence(const DynamicContext::Ptr &context) const
+Item::Iterator::Ptr TokenizeFN::evaluateSequence( const DynamicContext::Ptr &context ) const
 {
-   const Item arg(m_operands.first()->evaluateSingleton(context));
+    const Item arg( m_operands.first()->evaluateSingleton( context ) );
 
-   if (! arg) {
-      return CommonValues::emptyIterator;
-   }
+    if ( ! arg )
+    {
+        return CommonValues::emptyIterator;
+    }
 
-   const QString input(arg.stringValue());
+    const QString input( arg.stringValue() );
 
-   if (input.isEmpty()) {
-      return CommonValues::emptyIterator;
-   }
+    if ( input.isEmpty() )
+    {
+        return CommonValues::emptyIterator;
+    }
 
-   const QRegularExpression regExp(pattern(context));
-   const QStringList result(input.split(regExp, QStringParser::KeepEmptyParts));
+    const QRegularExpression regExp( pattern( context ) );
+    const QStringList result( input.split( regExp, QStringParser::KeepEmptyParts ) );
 
-   return makeItemMappingIterator<Item>(ConstPtr(this), makeListIterator(result), DynamicContext::Ptr());
+    return makeItemMappingIterator<Item>( ConstPtr( this ), makeListIterator( result ), DynamicContext::Ptr() );
 }
 

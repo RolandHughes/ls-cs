@@ -36,87 +36,90 @@ class QScrollBar;
 
 class Q_GUI_EXPORT QAbstractScrollAreaPrivate: public QFramePrivate
 {
-   Q_DECLARE_PUBLIC(QAbstractScrollArea)
+    Q_DECLARE_PUBLIC( QAbstractScrollArea )
 
- public:
-   QAbstractScrollAreaPrivate();
-   ~QAbstractScrollAreaPrivate();
+public:
+    QAbstractScrollAreaPrivate();
+    ~QAbstractScrollAreaPrivate();
 
-   void replaceScrollBar(QScrollBar *scrollBar, Qt::Orientation orientation);
+    void replaceScrollBar( QScrollBar *scrollBar, Qt::Orientation orientation );
 
-   QAbstractScrollAreaScrollBarContainer *scrollBarContainers[Qt::Vertical + 1];
-   QScrollBar *hbar;
-   QScrollBar *vbar;
-   Qt::ScrollBarPolicy vbarpolicy, hbarpolicy;
+    QAbstractScrollAreaScrollBarContainer *scrollBarContainers[Qt::Vertical + 1];
+    QScrollBar *hbar;
+    QScrollBar *vbar;
+    Qt::ScrollBarPolicy vbarpolicy, hbarpolicy;
 
-   bool shownOnce;
-   bool inResize;
-   mutable QSize sizeHint;
-   QAbstractScrollArea::SizeAdjustPolicy sizeAdjustPolicy;
-   QWidget *viewport;
-   QWidget *cornerWidget;
-   QRect cornerPaintingRect;
+    bool shownOnce;
+    bool inResize;
+    mutable QSize sizeHint;
+    QAbstractScrollArea::SizeAdjustPolicy sizeAdjustPolicy;
+    QWidget *viewport;
+    QWidget *cornerWidget;
+    QRect cornerPaintingRect;
 
-   int left, top, right, bottom; // viewport margin
+    int left, top, right, bottom; // viewport margin
 
-   int xoffset, yoffset;
-   QPoint overshoot;
+    int xoffset, yoffset;
+    QPoint overshoot;
 
-   void init();
-   void layoutChildren();
+    void init();
+    void layoutChildren();
 
-   virtual void scrollBarPolicyChanged(Qt::Orientation, Qt::ScrollBarPolicy) {}
-   bool canStartScrollingAt( const QPoint &startPos );
+    virtual void scrollBarPolicyChanged( Qt::Orientation, Qt::ScrollBarPolicy ) {}
+    bool canStartScrollingAt( const QPoint &startPos );
 
-   void flashScrollBars();
-   void setScrollBarTransient(QScrollBar *scrollBar, bool transient);
-   void _q_hslide(int);
-   void _q_vslide(int);
-   void _q_showOrHideScrollBars();
+    void flashScrollBars();
+    void setScrollBarTransient( QScrollBar *scrollBar, bool transient );
+    void _q_hslide( int );
+    void _q_vslide( int );
+    void _q_showOrHideScrollBars();
 
-   virtual QPoint contentsOffset() const;
+    virtual QPoint contentsOffset() const;
 
-   bool viewportEvent(QEvent *event) {
-      return q_func()->viewportEvent(event);
-   }
+    bool viewportEvent( QEvent *event )
+    {
+        return q_func()->viewportEvent( event );
+    }
 
-   QScopedPointer<QObject> viewportFilter;
+    QScopedPointer<QObject> viewportFilter;
 };
 
 class QAbstractScrollAreaFilter : public QObject
 {
-   GUI_CS_OBJECT(QAbstractScrollAreaFilter)
+    GUI_CS_OBJECT( QAbstractScrollAreaFilter )
 
- public:
-   QAbstractScrollAreaFilter(QAbstractScrollAreaPrivate *p) : d(p) {
-      setObjectName("qt_abstractscrollarea_filter");
-   }
+public:
+    QAbstractScrollAreaFilter( QAbstractScrollAreaPrivate *p ) : d( p )
+    {
+        setObjectName( "qt_abstractscrollarea_filter" );
+    }
 
-   bool eventFilter(QObject *o, QEvent *e) override {
-      return (o == d->viewport ? d->viewportEvent(e) : false);
-   }
+    bool eventFilter( QObject *o, QEvent *e ) override
+    {
+        return ( o == d->viewport ? d->viewportEvent( e ) : false );
+    }
 
- private:
-   QAbstractScrollAreaPrivate *d;
+private:
+    QAbstractScrollAreaPrivate *d;
 };
 
 class QAbstractScrollAreaScrollBarContainer : public QWidget
 {
- public:
-   enum LogicalPosition { LogicalLeft = 1, LogicalRight = 2 };
+public:
+    enum LogicalPosition { LogicalLeft = 1, LogicalRight = 2 };
 
-   QAbstractScrollAreaScrollBarContainer(Qt::Orientation orientation, QWidget *parent);
-   void addWidget(QWidget *widget, LogicalPosition position);
-   QWidgetList widgets(LogicalPosition position);
-   void removeWidget(QWidget *widget);
+    QAbstractScrollAreaScrollBarContainer( Qt::Orientation orientation, QWidget *parent );
+    void addWidget( QWidget *widget, LogicalPosition position );
+    QWidgetList widgets( LogicalPosition position );
+    void removeWidget( QWidget *widget );
 
-   QScrollBar *scrollBar;
-   QBoxLayout *layout;
+    QScrollBar *scrollBar;
+    QBoxLayout *layout;
 
- private:
-   int scrollBarLayoutIndex() const;
+private:
+    int scrollBarLayoutIndex() const;
 
-   Qt::Orientation orientation;
+    Qt::Orientation orientation;
 };
 
 #endif // QT_NO_SCROLLAREA

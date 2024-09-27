@@ -24,17 +24,20 @@
 #include "JSFunction.h"
 #include "JSGlobalObject.h"
 
-namespace JSC {
+namespace JSC
+{
 
-JSValue PropertySlot::functionGetter(ExecState* exec) const
+JSValue PropertySlot::functionGetter( ExecState *exec ) const
 {
     // Prevent getter functions from observing execution if an exception is pending.
-    if (exec->hadException())
+    if ( exec->hadException() )
+    {
         return exec->exception();
+    }
 
     CallData callData;
-    CallType callType = m_data.getterFunc->getCallData(callData);
-    return call(exec, m_data.getterFunc, callType, callData, thisValue(), exec->emptyList());
+    CallType callType = m_data.getterFunc->getCallData( callData );
+    return call( exec, m_data.getterFunc, callType, callData, thisValue(), exec->emptyList() );
 }
 
 } // namespace JSC

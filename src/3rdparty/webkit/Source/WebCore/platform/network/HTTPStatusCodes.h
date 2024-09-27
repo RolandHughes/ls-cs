@@ -17,9 +17,11 @@
     Boston, MA 02110-1301, USA.
 */
 
-namespace WebCore {
+namespace WebCore
+{
 
-enum HTTPStatusCodes {
+enum HTTPStatusCodes
+{
     HTTPNoContent = 204,
     HTTPResetContent = 205
 };

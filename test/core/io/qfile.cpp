@@ -24,82 +24,82 @@
 
 #include <cs_catch2.h>
 
-TEST_CASE("QFile traits", "[qfile]")
+TEST_CASE( "QFile traits", "[qfile]" )
 {
-   REQUIRE(std::is_copy_constructible_v<QFile> == false);
-   REQUIRE(std::is_move_constructible_v<QFile> == false);
+    REQUIRE( std::is_copy_constructible_v<QFile> == false );
+    REQUIRE( std::is_move_constructible_v<QFile> == false );
 
-   REQUIRE(std::is_copy_assignable_v<QFile> == false);
-   REQUIRE(std::is_move_assignable_v<QFile> == false);
+    REQUIRE( std::is_copy_assignable_v<QFile> == false );
+    REQUIRE( std::is_move_assignable_v<QFile> == false );
 
-   REQUIRE(std::has_virtual_destructor_v<QFile> == true);
+    REQUIRE( std::has_virtual_destructor_v<QFile> == true );
 }
 
-TEST_CASE("QFile exists", "[qfile]")
+TEST_CASE( "QFile exists", "[qfile]" )
 {
-   QFile file;
+    QFile file;
 
-   REQUIRE(file.exists() == false);
-   REQUIRE(file.open(QIODevice::ReadOnly) == false);
+    REQUIRE( file.exists() == false );
+    REQUIRE( file.open( QIODevice::ReadOnly ) == false );
 
-   REQUIRE(file.pos() == 0);
-   REQUIRE(file.size() == 0);
-   REQUIRE(file.resize(10) == false);
+    REQUIRE( file.pos() == 0 );
+    REQUIRE( file.size() == 0 );
+    REQUIRE( file.resize( 10 ) == false );
 }
 
-TEST_CASE("QFile file_name", "[qfile]")
+TEST_CASE( "QFile file_name", "[qfile]" )
 {
-   QFile file("c:/machine/path1/dir1/file1");
+    QFile file( "c:/machine/path1/dir1/file1" );
 
-   REQUIRE(file.fileName() == "c:/machine/path1/dir1/file1");
+    REQUIRE( file.fileName() == "c:/machine/path1/dir1/file1" );
 
-   REQUIRE(file.pos() == 0);
-   REQUIRE(file.size() == 0);
-   REQUIRE(file.resize(10) == false);
+    REQUIRE( file.pos() == 0 );
+    REQUIRE( file.size() == 0 );
+    REQUIRE( file.resize( 10 ) == false );
 }
 
-TEST_CASE("QFile size", "[qfile]")
+TEST_CASE( "QFile size", "[qfile]" )
 {
-   QString fileName = "MyFileName.cfg";
-   QString str(QDir::tempPath() + "/" + fileName);
+    QString fileName = "MyFileName.cfg";
+    QString str( QDir::tempPath() + "/" + fileName );
 
-   QTemporaryFile tmpFile(str);
-   tmpFile.open();
+    QTemporaryFile tmpFile( str );
+    tmpFile.open();
 
-   qint64 size = tmpFile.write("a", 1);
+    qint64 size = tmpFile.write( "a", 1 );
 
-   REQUIRE(size == 1);
-   REQUIRE(tmpFile.size() == 1);
+    REQUIRE( size == 1 );
+    REQUIRE( tmpFile.size() == 1 );
 
-   tmpFile.resize(10);
-   REQUIRE(tmpFile.size() == 10);
+    tmpFile.resize( 10 );
+    REQUIRE( tmpFile.size() == 10 );
 }
 
-TEST_CASE("QFile read", "[qfile]")
+TEST_CASE( "QFile read", "[qfile]" )
 {
-   QString fileName = "MyFileName.cfg";
-   QString str(QDir::tempPath() + "/" + fileName);
+    QString fileName = "MyFileName.cfg";
+    QString str( QDir::tempPath() + "/" + fileName );
 
-   QTemporaryFile tmpFile(str);
-   tmpFile.open();
+    QTemporaryFile tmpFile( str );
+    tmpFile.open();
 
-   tmpFile.write("CopperSpice", 11);
+    tmpFile.write( "CopperSpice", 11 );
 
-   REQUIRE((tmpFile.permissions() & QFileDevice::ReadOwner)  == QFileDevice::ReadOwner);
-   REQUIRE((tmpFile.permissions() & QFileDevice::WriteOwner) == QFileDevice::WriteOwner);
+    REQUIRE( ( tmpFile.permissions() & QFileDevice::ReadOwner )  == QFileDevice::ReadOwner );
+    REQUIRE( ( tmpFile.permissions() & QFileDevice::WriteOwner ) == QFileDevice::WriteOwner );
 
-   {
-      tmpFile.seek(0);
-      QByteArray data = tmpFile.readAll();
+    {
+        tmpFile.seek( 0 );
+        QByteArray data = tmpFile.readAll();
 
-      REQUIRE(data == "CopperSpice");
-   }
+        REQUIRE( data == "CopperSpice" );
+    }
 
-   {
-      tmpFile.seek(0);
-      QByteArray data = tmpFile.read(4096);
+    {
+        tmpFile.seek( 0 );
+        QByteArray data = tmpFile.read( 4096 );
 
-      REQUIRE(data == "CopperSpice");
-   }
+        REQUIRE( data == "CopperSpice" );
+    }
 }
 

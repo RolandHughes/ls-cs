@@ -27,89 +27,94 @@
 #include "SVGPathStringSource.h"
 #include <wtf/OwnPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 SVGPathByteStreamBuilder::SVGPathByteStreamBuilder()
-    : m_byteStream(0)
+    : m_byteStream( 0 )
 {
 }
 
-void SVGPathByteStreamBuilder::moveTo(const FloatPoint& targetPoint, bool, PathCoordinateMode mode)
+void SVGPathByteStreamBuilder::moveTo( const FloatPoint &targetPoint, bool, PathCoordinateMode mode )
 {
-    ASSERT(m_byteStream);
-    writeSegmentType(mode == RelativeCoordinates ?  PathSegMoveToRel : PathSegMoveToAbs);
-    writeFloatPoint(targetPoint);
+    ASSERT( m_byteStream );
+    writeSegmentType( mode == RelativeCoordinates ?  PathSegMoveToRel : PathSegMoveToAbs );
+    writeFloatPoint( targetPoint );
 }
 
-void SVGPathByteStreamBuilder::lineTo(const FloatPoint& targetPoint, PathCoordinateMode mode)
+void SVGPathByteStreamBuilder::lineTo( const FloatPoint &targetPoint, PathCoordinateMode mode )
 {
-    ASSERT(m_byteStream);
-    writeSegmentType(mode == RelativeCoordinates ? PathSegLineToRel : PathSegLineToAbs);
-    writeFloatPoint(targetPoint);
+    ASSERT( m_byteStream );
+    writeSegmentType( mode == RelativeCoordinates ? PathSegLineToRel : PathSegLineToAbs );
+    writeFloatPoint( targetPoint );
 }
 
-void SVGPathByteStreamBuilder::lineToHorizontal(float x, PathCoordinateMode mode)
+void SVGPathByteStreamBuilder::lineToHorizontal( float x, PathCoordinateMode mode )
 {
-    ASSERT(m_byteStream);
-    writeSegmentType(mode == RelativeCoordinates ? PathSegLineToHorizontalRel : PathSegLineToHorizontalAbs);
-    writeFloat(x);
+    ASSERT( m_byteStream );
+    writeSegmentType( mode == RelativeCoordinates ? PathSegLineToHorizontalRel : PathSegLineToHorizontalAbs );
+    writeFloat( x );
 }
 
-void SVGPathByteStreamBuilder::lineToVertical(float y, PathCoordinateMode mode)
+void SVGPathByteStreamBuilder::lineToVertical( float y, PathCoordinateMode mode )
 {
-    ASSERT(m_byteStream);
-    writeSegmentType(mode == RelativeCoordinates ? PathSegLineToVerticalRel : PathSegLineToVerticalAbs);
-    writeFloat(y);
+    ASSERT( m_byteStream );
+    writeSegmentType( mode == RelativeCoordinates ? PathSegLineToVerticalRel : PathSegLineToVerticalAbs );
+    writeFloat( y );
 }
 
-void SVGPathByteStreamBuilder::curveToCubic(const FloatPoint& point1, const FloatPoint& point2, const FloatPoint& targetPoint, PathCoordinateMode mode)
+void SVGPathByteStreamBuilder::curveToCubic( const FloatPoint &point1, const FloatPoint &point2, const FloatPoint &targetPoint,
+        PathCoordinateMode mode )
 {
-    ASSERT(m_byteStream);
-    writeSegmentType(mode == RelativeCoordinates ? PathSegCurveToCubicRel : PathSegCurveToCubicAbs);
-    writeFloatPoint(point1);
-    writeFloatPoint(point2);
-    writeFloatPoint(targetPoint);
+    ASSERT( m_byteStream );
+    writeSegmentType( mode == RelativeCoordinates ? PathSegCurveToCubicRel : PathSegCurveToCubicAbs );
+    writeFloatPoint( point1 );
+    writeFloatPoint( point2 );
+    writeFloatPoint( targetPoint );
 }
 
-void SVGPathByteStreamBuilder::curveToCubicSmooth(const FloatPoint& point2, const FloatPoint& targetPoint, PathCoordinateMode mode)
+void SVGPathByteStreamBuilder::curveToCubicSmooth( const FloatPoint &point2, const FloatPoint &targetPoint,
+        PathCoordinateMode mode )
 {
-    ASSERT(m_byteStream);
-    writeSegmentType(mode == RelativeCoordinates ? PathSegCurveToCubicSmoothRel : PathSegCurveToCubicSmoothAbs);
-    writeFloatPoint(point2);
-    writeFloatPoint(targetPoint);
+    ASSERT( m_byteStream );
+    writeSegmentType( mode == RelativeCoordinates ? PathSegCurveToCubicSmoothRel : PathSegCurveToCubicSmoothAbs );
+    writeFloatPoint( point2 );
+    writeFloatPoint( targetPoint );
 }
 
-void SVGPathByteStreamBuilder::curveToQuadratic(const FloatPoint& point1, const FloatPoint& targetPoint, PathCoordinateMode mode)
+void SVGPathByteStreamBuilder::curveToQuadratic( const FloatPoint &point1, const FloatPoint &targetPoint,
+        PathCoordinateMode mode )
 {
-    ASSERT(m_byteStream);
-    writeSegmentType(mode == RelativeCoordinates ? PathSegCurveToQuadraticRel : PathSegCurveToQuadraticAbs);
-    writeFloatPoint(point1);
-    writeFloatPoint(targetPoint);
+    ASSERT( m_byteStream );
+    writeSegmentType( mode == RelativeCoordinates ? PathSegCurveToQuadraticRel : PathSegCurveToQuadraticAbs );
+    writeFloatPoint( point1 );
+    writeFloatPoint( targetPoint );
 }
 
-void SVGPathByteStreamBuilder::curveToQuadraticSmooth(const FloatPoint& targetPoint, PathCoordinateMode mode)
+void SVGPathByteStreamBuilder::curveToQuadraticSmooth( const FloatPoint &targetPoint, PathCoordinateMode mode )
 {
-    ASSERT(m_byteStream);
-    writeSegmentType(mode == RelativeCoordinates ? PathSegCurveToQuadraticSmoothRel : PathSegCurveToQuadraticSmoothAbs);
-    writeFloatPoint(targetPoint);
+    ASSERT( m_byteStream );
+    writeSegmentType( mode == RelativeCoordinates ? PathSegCurveToQuadraticSmoothRel : PathSegCurveToQuadraticSmoothAbs );
+    writeFloatPoint( targetPoint );
 }
 
-void SVGPathByteStreamBuilder::arcTo(float r1, float r2, float angle, bool largeArcFlag, bool sweepFlag, const FloatPoint& targetPoint, PathCoordinateMode mode)
+void SVGPathByteStreamBuilder::arcTo( float r1, float r2, float angle, bool largeArcFlag, bool sweepFlag,
+                                      const FloatPoint &targetPoint, PathCoordinateMode mode )
 {
-    ASSERT(m_byteStream);
-    writeSegmentType(mode == RelativeCoordinates ? PathSegArcRel : PathSegArcAbs);
-    writeFloat(r1);
-    writeFloat(r2);
-    writeFloat(angle);
-    writeFlag(largeArcFlag);
-    writeFlag(sweepFlag);
-    writeFloatPoint(targetPoint);
+    ASSERT( m_byteStream );
+    writeSegmentType( mode == RelativeCoordinates ? PathSegArcRel : PathSegArcAbs );
+    writeFloat( r1 );
+    writeFloat( r2 );
+    writeFloat( angle );
+    writeFlag( largeArcFlag );
+    writeFlag( sweepFlag );
+    writeFloatPoint( targetPoint );
 }
 
 void SVGPathByteStreamBuilder::closePath()
 {
-    ASSERT(m_byteStream);
-    writeSegmentType(PathSegClosePath);
+    ASSERT( m_byteStream );
+    writeSegmentType( PathSegClosePath );
 }
 
 } // namespace WebCore

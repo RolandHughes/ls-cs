@@ -27,11 +27,9 @@
 #include <qdeclarativeengine_p.h>
 #include <qdeclarativeglobal_p.h>
 
-QT_BEGIN_NAMESPACE
-
-QDeclarativeLoaderPrivate::QDeclarativeLoaderPrivate()
-   : item(0), component(0), ownComponent(false), updatingSize(false),
-     itemWidthValid(false), itemHeightValid(false)
+QT_BEGIN_NAMESPACE QDeclarativeLoaderPrivate::QDeclarativeLoaderPrivate()
+    : item( 0 ), component( 0 ), ownComponent( false ), updatingSize( false ),
+      itemWidthValid( false ), itemHeightValid( false )
 {
 }
 
@@ -39,66 +37,85 @@ QDeclarativeLoaderPrivate::~QDeclarativeLoaderPrivate()
 {
 }
 
-void QDeclarativeLoaderPrivate::itemGeometryChanged(QDeclarativeItem *resizeItem, const QRectF &newGeometry,
-      const QRectF &oldGeometry)
+void QDeclarativeLoaderPrivate::itemGeometryChanged( QDeclarativeItem *resizeItem, const QRectF &newGeometry,
+        const QRectF &oldGeometry )
 {
-   if (resizeItem == item) {
-      if (!updatingSize && newGeometry.width() != oldGeometry.width()) {
-         itemWidthValid = true;
-      }
-      if (!updatingSize && newGeometry.height() != oldGeometry.height()) {
-         itemHeightValid = true;
-      }
-      _q_updateSize(false);
-   }
-   QDeclarativeItemChangeListener::itemGeometryChanged(resizeItem, newGeometry, oldGeometry);
+    if ( resizeItem == item )
+    {
+        if ( !updatingSize && newGeometry.width() != oldGeometry.width() )
+        {
+            itemWidthValid = true;
+        }
+
+        if ( !updatingSize && newGeometry.height() != oldGeometry.height() )
+        {
+            itemHeightValid = true;
+        }
+
+        _q_updateSize( false );
+    }
+
+    QDeclarativeItemChangeListener::itemGeometryChanged( resizeItem, newGeometry, oldGeometry );
 }
 
 void QDeclarativeLoaderPrivate::clear()
 {
-   if (ownComponent) {
-      component->deleteLater();
-      component = 0;
-      ownComponent = false;
-   }
-   source = QUrl();
+    if ( ownComponent )
+    {
+        component->deleteLater();
+        component = 0;
+        ownComponent = false;
+    }
 
-   if (item) {
-      if (QDeclarativeItem *qmlItem = qobject_cast<QDeclarativeItem *>(item)) {
-         QDeclarativeItemPrivate *p =
-            static_cast<QDeclarativeItemPrivate *>(QGraphicsItemPrivate::get(qmlItem));
-         p->removeItemChangeListener(this, QDeclarativeItemPrivate::Geometry);
-      }
+    source = QUrl();
 
-      // We can't delete immediately because our item may have triggered
-      // the Loader to load a different item.
-      if (item->scene()) {
-         item->scene()->removeItem(item);
-      } else {
-         item->setParentItem(0);
-         item->setVisible(false);
-      }
-      item->deleteLater();
-      item = 0;
-   }
+    if ( item )
+    {
+        if ( QDeclarativeItem *qmlItem = qobject_cast<QDeclarativeItem *>( item ) )
+        {
+            QDeclarativeItemPrivate *p =
+                static_cast<QDeclarativeItemPrivate *>( QGraphicsItemPrivate::get( qmlItem ) );
+            p->removeItemChangeListener( this, QDeclarativeItemPrivate::Geometry );
+        }
+
+        // We can't delete immediately because our item may have triggered
+        // the Loader to load a different item.
+        if ( item->scene() )
+        {
+            item->scene()->removeItem( item );
+        }
+        else
+        {
+            item->setParentItem( 0 );
+            item->setVisible( false );
+        }
+
+        item->deleteLater();
+        item = 0;
+    }
 }
 
 void QDeclarativeLoaderPrivate::initResize()
 {
-   Q_Q(QDeclarativeLoader);
-   if (QDeclarativeItem *qmlItem = qobject_cast<QDeclarativeItem *>(item)) {
-      QDeclarativeItemPrivate *p =
-         static_cast<QDeclarativeItemPrivate *>(QGraphicsItemPrivate::get(qmlItem));
-      p->addItemChangeListener(this, QDeclarativeItemPrivate::Geometry);
-      // We may override the item's size, so we need to remember
-      // whether the item provided its own valid size.
-      itemWidthValid = p->widthValid;
-      itemHeightValid = p->heightValid;
-   } else if (item && item->isWidget()) {
-      QGraphicsWidget *widget = static_cast<QGraphicsWidget *>(item);
-      widget->installEventFilter(q);
-   }
-   _q_updateSize();
+    Q_Q( QDeclarativeLoader );
+
+    if ( QDeclarativeItem *qmlItem = qobject_cast<QDeclarativeItem *>( item ) )
+    {
+        QDeclarativeItemPrivate *p =
+            static_cast<QDeclarativeItemPrivate *>( QGraphicsItemPrivate::get( qmlItem ) );
+        p->addItemChangeListener( this, QDeclarativeItemPrivate::Geometry );
+        // We may override the item's size, so we need to remember
+        // whether the item provided its own valid size.
+        itemWidthValid = p->widthValid;
+        itemHeightValid = p->heightValid;
+    }
+    else if ( item && item->isWidget() )
+    {
+        QGraphicsWidget *widget = static_cast<QGraphicsWidget *>( item );
+        widget->installEventFilter( q );
+    }
+
+    _q_updateSize();
 }
 
 /*!
@@ -210,23 +227,26 @@ void QDeclarativeLoaderPrivate::initResize()
     \sa {dynamic-object-creation}{Dynamic Object Creation}
 */
 
-QDeclarativeLoader::QDeclarativeLoader(QDeclarativeItem *parent)
-   : QDeclarativeImplicitSizeItem(*(new QDeclarativeLoaderPrivate), parent)
+QDeclarativeLoader::QDeclarativeLoader( QDeclarativeItem *parent )
+    : QDeclarativeImplicitSizeItem( *( new QDeclarativeLoaderPrivate ), parent )
 {
-   Q_D(QDeclarativeLoader);
-   d->flags |= QGraphicsItem::ItemIsFocusScope;
+    Q_D( QDeclarativeLoader );
+    d->flags |= QGraphicsItem::ItemIsFocusScope;
 }
 
 QDeclarativeLoader::~QDeclarativeLoader()
 {
-   Q_D(QDeclarativeLoader);
-   if (d->item) {
-      if (QDeclarativeItem *qmlItem = qobject_cast<QDeclarativeItem *>(d->item)) {
-         QDeclarativeItemPrivate *p =
-            static_cast<QDeclarativeItemPrivate *>(QGraphicsItemPrivate::get(qmlItem));
-         p->removeItemChangeListener(d, QDeclarativeItemPrivate::Geometry);
-      }
-   }
+    Q_D( QDeclarativeLoader );
+
+    if ( d->item )
+    {
+        if ( QDeclarativeItem *qmlItem = qobject_cast<QDeclarativeItem *>( d->item ) )
+        {
+            QDeclarativeItemPrivate *p =
+                static_cast<QDeclarativeItemPrivate *>( QGraphicsItemPrivate::get( qmlItem ) );
+            p->removeItemChangeListener( d, QDeclarativeItemPrivate::Geometry );
+        }
+    }
 }
 
 /*!
@@ -244,35 +264,39 @@ QDeclarativeLoader::~QDeclarativeLoader()
 */
 QUrl QDeclarativeLoader::source() const
 {
-   Q_D(const QDeclarativeLoader);
-   return d->source;
+    Q_D( const QDeclarativeLoader );
+    return d->source;
 }
 
-void QDeclarativeLoader::setSource(const QUrl &url)
+void QDeclarativeLoader::setSource( const QUrl &url )
 {
-   Q_D(QDeclarativeLoader);
-   if (d->source == url) {
-      return;
-   }
+    Q_D( QDeclarativeLoader );
 
-   d->clear();
+    if ( d->source == url )
+    {
+        return;
+    }
 
-   d->source = url;
+    d->clear();
 
-   if (d->source.isEmpty()) {
-      emit sourceChanged();
-      emit statusChanged();
-      emit progressChanged();
-      emit itemChanged();
-      return;
-   }
+    d->source = url;
 
-   d->component = new QDeclarativeComponent(qmlEngine(this), d->source, this);
-   d->ownComponent = true;
+    if ( d->source.isEmpty() )
+    {
+        emit sourceChanged();
+        emit statusChanged();
+        emit progressChanged();
+        emit itemChanged();
+        return;
+    }
 
-   if (isComponentComplete()) {
-      d->load();
-   }
+    d->component = new QDeclarativeComponent( qmlEngine( this ), d->source, this );
+    d->ownComponent = true;
+
+    if ( isComponentComplete() )
+    {
+        d->load();
+    }
 }
 
 /*!
@@ -299,123 +323,151 @@ void QDeclarativeLoader::setSource(const QUrl &url)
 
 QDeclarativeComponent *QDeclarativeLoader::sourceComponent() const
 {
-   Q_D(const QDeclarativeLoader);
-   return d->component;
+    Q_D( const QDeclarativeLoader );
+    return d->component;
 }
 
-void QDeclarativeLoader::setSourceComponent(QDeclarativeComponent *comp)
+void QDeclarativeLoader::setSourceComponent( QDeclarativeComponent *comp )
 {
-   Q_D(QDeclarativeLoader);
-   if (comp == d->component) {
-      return;
-   }
+    Q_D( QDeclarativeLoader );
 
-   d->clear();
+    if ( comp == d->component )
+    {
+        return;
+    }
 
-   d->component = comp;
-   d->ownComponent = false;
+    d->clear();
 
-   if (!d->component) {
-      emit sourceChanged();
-      emit statusChanged();
-      emit progressChanged();
-      emit itemChanged();
-      return;
-   }
+    d->component = comp;
+    d->ownComponent = false;
 
-   if (isComponentComplete()) {
-      d->load();
-   }
+    if ( !d->component )
+    {
+        emit sourceChanged();
+        emit statusChanged();
+        emit progressChanged();
+        emit itemChanged();
+        return;
+    }
+
+    if ( isComponentComplete() )
+    {
+        d->load();
+    }
 }
 
 void QDeclarativeLoader::resetSourceComponent()
 {
-   setSourceComponent(0);
+    setSourceComponent( 0 );
 }
 
 void QDeclarativeLoaderPrivate::load()
 {
-   Q_Q(QDeclarativeLoader);
+    Q_Q( QDeclarativeLoader );
 
-   if (!q->isComponentComplete() || !component) {
-      return;
-   }
+    if ( !q->isComponentComplete() || !component )
+    {
+        return;
+    }
 
-   if (!component->isLoading()) {
-      _q_sourceLoaded();
-   } else {
-      QObject::connect(component, SIGNAL(statusChanged(QDeclarativeComponent::Status)),
-                       q, SLOT(_q_sourceLoaded()));
-      QObject::connect(component, SIGNAL(progressChanged(qreal)),
-                       q, SIGNAL(progressChanged()));
-      emit q->statusChanged();
-      emit q->progressChanged();
-      emit q->sourceChanged();
-      emit q->itemChanged();
-   }
+    if ( !component->isLoading() )
+    {
+        _q_sourceLoaded();
+    }
+    else
+    {
+        QObject::connect( component, SIGNAL( statusChanged( QDeclarativeComponent::Status ) ),
+                          q, SLOT( _q_sourceLoaded() ) );
+        QObject::connect( component, SIGNAL( progressChanged( qreal ) ),
+                          q, SIGNAL( progressChanged() ) );
+        emit q->statusChanged();
+        emit q->progressChanged();
+        emit q->sourceChanged();
+        emit q->itemChanged();
+    }
 }
 
 void QDeclarativeLoaderPrivate::_q_sourceLoaded()
 {
-   Q_Q(QDeclarativeLoader);
+    Q_Q( QDeclarativeLoader );
 
-   if (component) {
-      if (!component->errors().isEmpty()) {
-         QDeclarativeEnginePrivate::warning(qmlEngine(q), component->errors());
-         emit q->sourceChanged();
-         emit q->statusChanged();
-         emit q->progressChanged();
-         return;
-      }
+    if ( component )
+    {
+        if ( !component->errors().isEmpty() )
+        {
+            QDeclarativeEnginePrivate::warning( qmlEngine( q ), component->errors() );
+            emit q->sourceChanged();
+            emit q->statusChanged();
+            emit q->progressChanged();
+            return;
+        }
 
-      QDeclarativeContext *creationContext = component->creationContext();
-      if (!creationContext) {
-         creationContext = qmlContext(q);
-      }
-      QDeclarativeContext *ctxt = new QDeclarativeContext(creationContext);
-      ctxt->setContextObject(q);
+        QDeclarativeContext *creationContext = component->creationContext();
 
-      QDeclarativeGuard<QDeclarativeComponent> c = component;
-      QObject *obj = component->beginCreate(ctxt);
-      if (component != c) {
-         // component->create could trigger a change in source that causes
-         // component to be set to something else. In that case we just
-         // need to cleanup.
-         if (c) {
-            c->completeCreate();
-         }
-         delete obj;
-         delete ctxt;
-         return;
-      }
-      if (obj) {
-         item = qobject_cast<QGraphicsObject *>(obj);
-         if (item) {
-            QDeclarative_setParent_noEvent(ctxt, obj);
-            QDeclarative_setParent_noEvent(item, q);
-            item->setParentItem(q);
-            //                item->setFocus(true);
-            initResize();
-         } else {
-            qmlInfo(q) << QDeclarativeLoader::tr("Loader does not support loading non-visual elements.");
+        if ( !creationContext )
+        {
+            creationContext = qmlContext( q );
+        }
+
+        QDeclarativeContext *ctxt = new QDeclarativeContext( creationContext );
+        ctxt->setContextObject( q );
+
+        QDeclarativeGuard<QDeclarativeComponent> c = component;
+        QObject *obj = component->beginCreate( ctxt );
+
+        if ( component != c )
+        {
+            // component->create could trigger a change in source that causes
+            // component to be set to something else. In that case we just
+            // need to cleanup.
+            if ( c )
+            {
+                c->completeCreate();
+            }
+
             delete obj;
             delete ctxt;
-         }
-      } else {
-         if (!component->errors().isEmpty()) {
-            QDeclarativeEnginePrivate::warning(qmlEngine(q), component->errors());
-         }
-         delete obj;
-         delete ctxt;
-         source = QUrl();
-      }
-      component->completeCreate();
-      emit q->sourceChanged();
-      emit q->statusChanged();
-      emit q->progressChanged();
-      emit q->itemChanged();
-      emit q->loaded();
-   }
+            return;
+        }
+
+        if ( obj )
+        {
+            item = qobject_cast<QGraphicsObject *>( obj );
+
+            if ( item )
+            {
+                QDeclarative_setParent_noEvent( ctxt, obj );
+                QDeclarative_setParent_noEvent( item, q );
+                item->setParentItem( q );
+                //                item->setFocus(true);
+                initResize();
+            }
+            else
+            {
+                qmlInfo( q ) << QDeclarativeLoader::tr( "Loader does not support loading non-visual elements." );
+                delete obj;
+                delete ctxt;
+            }
+        }
+        else
+        {
+            if ( !component->errors().isEmpty() )
+            {
+                QDeclarativeEnginePrivate::warning( qmlEngine( q ), component->errors() );
+            }
+
+            delete obj;
+            delete ctxt;
+            source = QUrl();
+        }
+
+        component->completeCreate();
+        emit q->sourceChanged();
+        emit q->statusChanged();
+        emit q->progressChanged();
+        emit q->itemChanged();
+        emit q->loaded();
+    }
 }
 
 /*!
@@ -460,25 +512,27 @@ void QDeclarativeLoaderPrivate::_q_sourceLoaded()
 
 QDeclarativeLoader::Status QDeclarativeLoader::status() const
 {
-   Q_D(const QDeclarativeLoader);
+    Q_D( const QDeclarativeLoader );
 
-   if (d->component) {
-      return static_cast<QDeclarativeLoader::Status>(d->component->status());
-   }
+    if ( d->component )
+    {
+        return static_cast<QDeclarativeLoader::Status>( d->component->status() );
+    }
 
-   if (d->item) {
-      return Ready;
-   }
+    if ( d->item )
+    {
+        return Ready;
+    }
 
-   return d->source.isEmpty() ? Null : Error;
+    return d->source.isEmpty() ? Null : Error;
 }
 
 void QDeclarativeLoader::componentComplete()
 {
-   Q_D(QDeclarativeLoader);
+    Q_D( QDeclarativeLoader );
 
-   QDeclarativeItem::componentComplete();
-   d->load();
+    QDeclarativeItem::componentComplete();
+    d->load();
 }
 
 
@@ -501,60 +555,87 @@ this value will rapidly change from 0 to 1.
 */
 qreal QDeclarativeLoader::progress() const
 {
-   Q_D(const QDeclarativeLoader);
+    Q_D( const QDeclarativeLoader );
 
-   if (d->item) {
-      return 1.0;
-   }
+    if ( d->item )
+    {
+        return 1.0;
+    }
 
-   if (d->component) {
-      return d->component->progress();
-   }
+    if ( d->component )
+    {
+        return d->component->progress();
+    }
 
-   return 0.0;
+    return 0.0;
 }
 
-void QDeclarativeLoaderPrivate::_q_updateSize(bool loaderGeometryChanged)
+void QDeclarativeLoaderPrivate::_q_updateSize( bool loaderGeometryChanged )
 {
-   Q_Q(QDeclarativeLoader);
-   if (!item || updatingSize) {
-      return;
-   }
+    Q_Q( QDeclarativeLoader );
 
-   updatingSize = true;
-   if (QDeclarativeItem *qmlItem = qobject_cast<QDeclarativeItem *>(item)) {
-      if (!itemWidthValid) {
-         q->setImplicitWidth(qmlItem->implicitWidth());
-      } else {
-         q->setImplicitWidth(qmlItem->width());
-      }
-      if (loaderGeometryChanged && q->widthValid()) {
-         qmlItem->setWidth(q->width());
-      }
-      if (!itemHeightValid) {
-         q->setImplicitHeight(qmlItem->implicitHeight());
-      } else {
-         q->setImplicitHeight(qmlItem->height());
-      }
-      if (loaderGeometryChanged && q->heightValid()) {
-         qmlItem->setHeight(q->height());
-      }
-   } else if (item && item->isWidget()) {
-      QGraphicsWidget *widget = static_cast<QGraphicsWidget *>(item);
-      QSizeF widgetSize = widget->size();
-      q->setImplicitWidth(widgetSize.width());
-      if (loaderGeometryChanged && q->widthValid()) {
-         widgetSize.setWidth(q->width());
-      }
-      q->setImplicitHeight(widgetSize.height());
-      if (loaderGeometryChanged && q->heightValid()) {
-         widgetSize.setHeight(q->height());
-      }
-      if (widget->size() != widgetSize) {
-         widget->resize(widgetSize);
-      }
-   }
-   updatingSize = false;
+    if ( !item || updatingSize )
+    {
+        return;
+    }
+
+    updatingSize = true;
+
+    if ( QDeclarativeItem *qmlItem = qobject_cast<QDeclarativeItem *>( item ) )
+    {
+        if ( !itemWidthValid )
+        {
+            q->setImplicitWidth( qmlItem->implicitWidth() );
+        }
+        else
+        {
+            q->setImplicitWidth( qmlItem->width() );
+        }
+
+        if ( loaderGeometryChanged && q->widthValid() )
+        {
+            qmlItem->setWidth( q->width() );
+        }
+
+        if ( !itemHeightValid )
+        {
+            q->setImplicitHeight( qmlItem->implicitHeight() );
+        }
+        else
+        {
+            q->setImplicitHeight( qmlItem->height() );
+        }
+
+        if ( loaderGeometryChanged && q->heightValid() )
+        {
+            qmlItem->setHeight( q->height() );
+        }
+    }
+    else if ( item && item->isWidget() )
+    {
+        QGraphicsWidget *widget = static_cast<QGraphicsWidget *>( item );
+        QSizeF widgetSize = widget->size();
+        q->setImplicitWidth( widgetSize.width() );
+
+        if ( loaderGeometryChanged && q->widthValid() )
+        {
+            widgetSize.setWidth( q->width() );
+        }
+
+        q->setImplicitHeight( widgetSize.height() );
+
+        if ( loaderGeometryChanged && q->heightValid() )
+        {
+            widgetSize.setHeight( q->height() );
+        }
+
+        if ( widget->size() != widgetSize )
+        {
+            widget->resize( widgetSize );
+        }
+    }
+
+    updatingSize = false;
 }
 
 /*!
@@ -563,52 +644,63 @@ void QDeclarativeLoaderPrivate::_q_updateSize(bool loaderGeometryChanged)
 */
 QGraphicsObject *QDeclarativeLoader::item() const
 {
-   Q_D(const QDeclarativeLoader);
-   return d->item;
+    Q_D( const QDeclarativeLoader );
+    return d->item;
 }
 
-void QDeclarativeLoader::geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry)
+void QDeclarativeLoader::geometryChanged( const QRectF &newGeometry, const QRectF &oldGeometry )
 {
-   Q_D(QDeclarativeLoader);
-   if (newGeometry != oldGeometry) {
-      d->_q_updateSize();
-   }
-   QDeclarativeItem::geometryChanged(newGeometry, oldGeometry);
+    Q_D( QDeclarativeLoader );
+
+    if ( newGeometry != oldGeometry )
+    {
+        d->_q_updateSize();
+    }
+
+    QDeclarativeItem::geometryChanged( newGeometry, oldGeometry );
 }
 
-QVariant QDeclarativeLoader::itemChange(GraphicsItemChange change, const QVariant &value)
+QVariant QDeclarativeLoader::itemChange( GraphicsItemChange change, const QVariant &value )
 {
-   Q_D(QDeclarativeLoader);
-   if (change == ItemSceneHasChanged) {
-      if (d->item && d->item->isWidget()) {
-         d->item->removeEventFilter(this);
-         d->item->installEventFilter(this);
-      }
-   }
-   return QDeclarativeItem::itemChange(change, value);
+    Q_D( QDeclarativeLoader );
+
+    if ( change == ItemSceneHasChanged )
+    {
+        if ( d->item && d->item->isWidget() )
+        {
+            d->item->removeEventFilter( this );
+            d->item->installEventFilter( this );
+        }
+    }
+
+    return QDeclarativeItem::itemChange( change, value );
 }
 
-bool QDeclarativeLoader::eventFilter(QObject *watched, QEvent *e)
+bool QDeclarativeLoader::eventFilter( QObject *watched, QEvent *e )
 {
-   Q_D(QDeclarativeLoader);
-   if (watched == d->item && e->type() == QEvent::GraphicsSceneResize) {
-      if (d->item && d->item->isWidget()) {
-         d->_q_updateSize(false);
-      }
-   }
-   return QDeclarativeItem::eventFilter(watched, e);
+    Q_D( QDeclarativeLoader );
+
+    if ( watched == d->item && e->type() == QEvent::GraphicsSceneResize )
+    {
+        if ( d->item && d->item->isWidget() )
+        {
+            d->_q_updateSize( false );
+        }
+    }
+
+    return QDeclarativeItem::eventFilter( watched, e );
 }
 
 void QDeclarativeLoader::_q_sourceLoaded()
 {
-   Q_D(QDeclarativeLoader);
-   d->_q_sourceLoaded();
+    Q_D( QDeclarativeLoader );
+    d->_q_sourceLoaded();
 }
 
 void QDeclarativeLoader::_q_updateSize()
 {
-   Q_D(QDeclarativeLoader);
-   d->_q_updateSize();
+    Q_D( QDeclarativeLoader );
+    d->_q_updateSize();
 }
 
 

@@ -29,54 +29,58 @@
 class Q_GUI_EXPORT QPixmapCache
 {
 
- public:
-   class KeyData;
-   class Q_GUI_EXPORT Key
-   {
+public:
+    class KeyData;
+    class Q_GUI_EXPORT Key
+    {
     public:
-      Key();
-      Key(const Key &other);
+        Key();
+        Key( const Key &other );
 
-      Key(Key &&other) : d(other.d) {
-         other.d = nullptr;
-      }
+        Key( Key &&other ) : d( other.d )
+        {
+            other.d = nullptr;
+        }
 
-      ~Key();
+        ~Key();
 
-      bool operator ==(const Key &other) const;
+        bool operator ==( const Key &other ) const;
 
-      inline bool operator !=(const Key &other) const {
-         return !operator==(other);
-      }
+        inline bool operator !=( const Key &other ) const
+        {
+            return !operator==( other );
+        }
 
-      Key &operator =(Key &&other) {
-         swap(other);
-         return *this;
-      }
+        Key &operator =( Key &&other )
+        {
+            swap( other );
+            return *this;
+        }
 
-      Key &operator =(const Key &other);
-      void swap(Key &other) {
-         qSwap(d, other.d);
-      }
+        Key &operator =( const Key &other );
+        void swap( Key &other )
+        {
+            qSwap( d, other.d );
+        }
 
     private:
-      KeyData *d;
-      friend class QPMCache;
-      friend class QPixmapCache;
-   };
+        KeyData *d;
+        friend class QPMCache;
+        friend class QPixmapCache;
+    };
 
-   static int cacheLimit();
-   static void setCacheLimit(int max);
-   static QPixmap *find(const QString &key);
-   static bool find(const QString &key, QPixmap &pixmap);
-   static bool find(const QString &key, QPixmap *pixmap);
-   static bool find(const Key &key, QPixmap *pixmap);
-   static bool insert(const QString &key, const QPixmap &pixmap);
-   static Key insert(const QPixmap &pixmap);
-   static bool replace(const Key &key, const QPixmap &pixmap);
-   static void remove(const QString &key);
-   static void remove(const Key &key);
-   static void clear();
+    static int cacheLimit();
+    static void setCacheLimit( int max );
+    static QPixmap *find( const QString &key );
+    static bool find( const QString &key, QPixmap &pixmap );
+    static bool find( const QString &key, QPixmap *pixmap );
+    static bool find( const Key &key, QPixmap *pixmap );
+    static bool insert( const QString &key, const QPixmap &pixmap );
+    static Key insert( const QPixmap &pixmap );
+    static bool replace( const Key &key, const QPixmap &pixmap );
+    static void remove( const QString &key );
+    static void remove( const Key &key );
+    static void clear();
 
 
 

@@ -39,14 +39,15 @@
 
 using namespace WebCore;
 
-namespace WebKit {
+namespace WebKit
+{
 
-TiledDrawingAreaTile::TiledDrawingAreaTile(TiledDrawingAreaProxy* proxy, const Coordinate& tileCoordinate)
-    : m_proxy(proxy)
-    , m_coordinate(tileCoordinate)
-    , m_rect(proxy->tileRectForCoordinate(tileCoordinate))
-    , m_hasUpdatePending(false)
-    , m_dirtyRegion(m_rect)
+TiledDrawingAreaTile::TiledDrawingAreaTile( TiledDrawingAreaProxy *proxy, const Coordinate &tileCoordinate )
+    : m_proxy( proxy )
+    , m_coordinate( tileCoordinate )
+    , m_rect( proxy->tileRectForCoordinate( tileCoordinate ) )
+    , m_hasUpdatePending( false )
+    , m_dirtyRegion( m_rect )
 {
     static int id = 0;
     m_ID = ++id;
@@ -77,82 +78,105 @@ bool TiledDrawingAreaTile::hasReadyBackBuffer() const
     return !m_backBuffer.isNull() && !m_hasUpdatePending;
 }
 
-void TiledDrawingAreaTile::invalidate(const IntRect& dirtyRect)
+void TiledDrawingAreaTile::invalidate( const IntRect &dirtyRect )
 {
-    IntRect tileDirtyRect = intersection(dirtyRect, m_rect);
-    if (tileDirtyRect.isEmpty())
+    IntRect tileDirtyRect = intersection( dirtyRect, m_rect );
+
+    if ( tileDirtyRect.isEmpty() )
+    {
         return;
+    }
 
     m_dirtyRegion += tileDirtyRect;
 }
 
-void TiledDrawingAreaTile::resize(const IntSize& newSize)
+void TiledDrawingAreaTile::resize( const IntSize &newSize )
 {
     IntRect oldRect = m_rect;
-    m_rect = IntRect(m_rect.location(), newSize);
-    if (m_rect.maxX() > oldRect.maxX())
-        invalidate(IntRect(oldRect.maxX(), oldRect.y(), m_rect.maxX() - oldRect.maxX(), m_rect.height()));
-    if (m_rect.maxY() > oldRect.maxY())
-        invalidate(IntRect(oldRect.x(), oldRect.maxY(), m_rect.width(), m_rect.maxY() - oldRect.maxY()));
+    m_rect = IntRect( m_rect.location(), newSize );
+
+    if ( m_rect.maxX() > oldRect.maxX() )
+    {
+        invalidate( IntRect( oldRect.maxX(), oldRect.y(), m_rect.maxX() - oldRect.maxX(), m_rect.height() ) );
+    }
+
+    if ( m_rect.maxY() > oldRect.maxY() )
+    {
+        invalidate( IntRect( oldRect.x(), oldRect.maxY(), m_rect.width(), m_rect.maxY() - oldRect.maxY() ) );
+    }
 }
 
 void TiledDrawingAreaTile::swapBackBufferToFront()
 {
-    ASSERT(!m_backBuffer.isNull());
+    ASSERT( !m_backBuffer.isNull() );
 
     m_buffer = m_backBuffer;
     m_backBuffer = QPixmap();
 }
 
-void TiledDrawingAreaTile::paint(GraphicsContext* context, const IntRect& rect)
+void TiledDrawingAreaTile::paint( GraphicsContext *context, const IntRect &rect )
 {
-    ASSERT(!m_buffer.isNull());
+    ASSERT( !m_buffer.isNull() );
 
-    IntRect target = intersection(rect, m_rect);
-    IntRect source((target.x() - m_rect.x()),
-                   (target.y() - m_rect.y()),
-                   target.width(),
-                   target.height());
+    IntRect target = intersection( rect, m_rect );
+    IntRect source( ( target.x() - m_rect.x() ),
+                    ( target.y() - m_rect.y() ),
+                    target.width(),
+                    target.height() );
 
-    context->platformContext()->drawPixmap(target, m_buffer, source);
+    context->platformContext()->drawPixmap( target, m_buffer, source );
 }
 
-void TiledDrawingAreaTile::updateFromChunk(UpdateChunk* updateChunk, float)
+void TiledDrawingAreaTile::updateFromChunk( UpdateChunk *updateChunk, float )
 {
-    QImage image(updateChunk->createImage());
-    const IntRect& updateChunkRect = updateChunk->rect();
+    QImage image( updateChunk->createImage() );
+    const IntRect &updateChunkRect = updateChunk->rect();
 
 #ifdef TILE_DEBUG_LOG
-    qDebug() << "tile updated id=" << ID() << " rect=" << QRect(updateChunkRect);
+    qDebug() << "tile updated id=" << ID() << " rect=" << QRect( updateChunkRect );
 #endif
-    if (updateChunkRect.size() == m_proxy->tileSize()) {
+
+    if ( updateChunkRect.size() == m_proxy->tileSize() )
+    {
         // Make a deep copy of the image since it's in shared memory.
-        m_backBuffer = QPixmap::fromImage(image.copy());
-    } else {
-        if (m_backBuffer.isNull())
-            m_backBuffer = m_buffer.isNull() ? QPixmap(m_proxy->tileSize()) : m_buffer;
-        QPainter painter(&m_backBuffer);
-        IntSize drawPoint = updateChunkRect.location() - m_rect.location();
-        painter.drawImage(QPoint(drawPoint.width(), drawPoint.height()), image);
+        m_backBuffer = QPixmap::fromImage( image.copy() );
     }
+    else
+    {
+        if ( m_backBuffer.isNull() )
+        {
+            m_backBuffer = m_buffer.isNull() ? QPixmap( m_proxy->tileSize() ) : m_buffer;
+        }
+
+        QPainter painter( &m_backBuffer );
+        IntSize drawPoint = updateChunkRect.location() - m_rect.location();
+        painter.drawImage( QPoint( drawPoint.width(), drawPoint.height() ), image );
+    }
+
     m_hasUpdatePending = false;
 }
 
 void TiledDrawingAreaTile::updateBackBuffer()
 {
-    if (isReadyToPaint() && !isDirty())
+    if ( isReadyToPaint() && !isDirty() )
+    {
         return;
+    }
 
     // FIXME: individual rects
     IntRect dirtyRect = m_dirtyRegion.boundingRect();
     m_dirtyRegion = QRegion();
 
 #ifdef TILE_DEBUG_LOG
-    qDebug() << "requesting tile update id=" << m_ID << " rect=" << QRect(dirtyRect) << " scale=" << m_proxy->contentsScale();
+    qDebug() << "requesting tile update id=" << m_ID << " rect=" << QRect( dirtyRect ) << " scale=" << m_proxy->contentsScale();
 #endif
-    if (!m_proxy->page()->process()->isValid())
+
+    if ( !m_proxy->page()->process()->isValid() )
+    {
         return;
-    m_proxy->requestTileUpdate(m_ID, dirtyRect);
+    }
+
+    m_proxy->requestTileUpdate( m_ID, dirtyRect );
 
     m_hasUpdatePending = true;
 }

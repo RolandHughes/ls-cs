@@ -32,40 +32,44 @@
 
 class QSqlRecordPrivate
 {
- public:
-   QSqlRecordPrivate();
-   QSqlRecordPrivate(const QSqlRecordPrivate &other);
+public:
+    QSqlRecordPrivate();
+    QSqlRecordPrivate( const QSqlRecordPrivate &other );
 
-   inline bool contains(int index) {
-      return index >= 0 && index < fields.count();
-   }
-   QString createField(int index, const QString &prefix) const;
+    inline bool contains( int index )
+    {
+        return index >= 0 && index < fields.count();
+    }
+    QString createField( int index, const QString &prefix ) const;
 
-   QVector<QSqlField> fields;
-   QAtomicInt ref;
+    QVector<QSqlField> fields;
+    QAtomicInt ref;
 };
 
 QSqlRecordPrivate::QSqlRecordPrivate()
 {
-   ref = 1;
+    ref = 1;
 }
 
-QSqlRecordPrivate::QSqlRecordPrivate(const QSqlRecordPrivate &other): fields(other.fields)
+QSqlRecordPrivate::QSqlRecordPrivate( const QSqlRecordPrivate &other ): fields( other.fields )
 {
-   ref = 1;
+    ref = 1;
 }
 
 /*! \internal
     Just for compat
 */
-QString QSqlRecordPrivate::createField(int index, const QString &prefix) const
+QString QSqlRecordPrivate::createField( int index, const QString &prefix ) const
 {
-   QString f;
-   if (!prefix.isEmpty()) {
-      f = prefix + QLatin1Char('.');
-   }
-   f += fields.at(index).name();
-   return f;
+    QString f;
+
+    if ( !prefix.isEmpty() )
+    {
+        f = prefix + QLatin1Char( '.' );
+    }
+
+    f += fields.at( index ).name();
+    return f;
 }
 
 /*!
@@ -110,7 +114,7 @@ QString QSqlRecordPrivate::createField(int index, const QString &prefix) const
 
 QSqlRecord::QSqlRecord()
 {
-   d = new QSqlRecordPrivate();
+    d = new QSqlRecordPrivate();
 }
 
 /*!
@@ -120,10 +124,10 @@ QSqlRecord::QSqlRecord()
     of a record in \l{constant time}.
 */
 
-QSqlRecord::QSqlRecord(const QSqlRecord &other)
+QSqlRecord::QSqlRecord( const QSqlRecord &other )
 {
-   d = other.d;
-   d->ref.ref();
+    d = other.d;
+    d->ref.ref();
 }
 
 /*!
@@ -133,10 +137,10 @@ QSqlRecord::QSqlRecord(const QSqlRecord &other)
     of a record in \l{constant time}.
 */
 
-QSqlRecord &QSqlRecord::operator=(const QSqlRecord &other)
+QSqlRecord &QSqlRecord::operator=( const QSqlRecord &other )
 {
-   qAtomicAssign(d, other.d);
-   return *this;
+    qAtomicAssign( d, other.d );
+    return *this;
 }
 
 /*!
@@ -145,9 +149,10 @@ QSqlRecord &QSqlRecord::operator=(const QSqlRecord &other)
 
 QSqlRecord::~QSqlRecord()
 {
-   if (!d->ref.deref()) {
-      delete d;
-   }
+    if ( !d->ref.deref() )
+    {
+        delete d;
+    }
 }
 
 /*!
@@ -165,9 +170,9 @@ QSqlRecord::~QSqlRecord()
 
     \sa operator!=()
 */
-bool QSqlRecord::operator==(const QSqlRecord &other) const
+bool QSqlRecord::operator==( const QSqlRecord &other ) const
 {
-   return d->fields == other.d->fields;
+    return d->fields == other.d->fields;
 }
 
 /*!
@@ -178,9 +183,9 @@ bool QSqlRecord::operator==(const QSqlRecord &other) const
     \sa fieldName() isNull()
 */
 
-QVariant QSqlRecord::value(int index) const
+QVariant QSqlRecord::value( int index ) const
 {
-   return d->fields.value(index).value();
+    return d->fields.value( index ).value();
 }
 
 /*!
@@ -192,9 +197,9 @@ QVariant QSqlRecord::value(int index) const
     \sa indexOf()
 */
 
-QVariant QSqlRecord::value(const QString &name) const
+QVariant QSqlRecord::value( const QString &name ) const
 {
-   return value(indexOf(name));
+    return value( indexOf( name ) );
 }
 
 /*!
@@ -204,9 +209,9 @@ QVariant QSqlRecord::value(const QString &name) const
     \sa indexOf()
 */
 
-QString QSqlRecord::fieldName(int index) const
+QString QSqlRecord::fieldName( int index ) const
 {
-   return d->fields.value(index).name();
+    return d->fields.value( index ).name();
 }
 
 /*!
@@ -218,15 +223,19 @@ QString QSqlRecord::fieldName(int index) const
     \sa fieldName()
 */
 
-int QSqlRecord::indexOf(const QString &name) const
+int QSqlRecord::indexOf( const QString &name ) const
 {
-   QString nm = name.toUpper();
-   for (int i = 0; i < count(); ++i) {
-      if (d->fields.at(i).name().toUpper() == nm) { // TODO: case-insensitive comparison
-         return i;
-      }
-   }
-   return -1;
+    QString nm = name.toUpper();
+
+    for ( int i = 0; i < count(); ++i )
+    {
+        if ( d->fields.at( i ).name().toUpper() == nm ) // TODO: case-insensitive comparison
+        {
+            return i;
+        }
+    }
+
+    return -1;
 }
 
 
@@ -235,17 +244,17 @@ int QSqlRecord::indexOf(const QString &name) const
     is out of range, function returns
     a \l{default-constructed value}.
  */
-QSqlField QSqlRecord::field(int index) const
+QSqlField QSqlRecord::field( int index ) const
 {
-   return d->fields.value(index);
+    return d->fields.value( index );
 }
 
 /*! \overload
     Returns the field called \a name.
  */
-QSqlField QSqlRecord::field(const QString &name) const
+QSqlField QSqlRecord::field( const QString &name ) const
 {
-   return field(indexOf(name));
+    return field( indexOf( name ) );
 }
 
 
@@ -255,10 +264,10 @@ QSqlField QSqlRecord::field(const QString &name) const
     \sa insert() replace() remove()
 */
 
-void QSqlRecord::append(const QSqlField &field)
+void QSqlRecord::append( const QSqlField &field )
 {
-   detach();
-   d->fields.append(field);
+    detach();
+    d->fields.append( field );
 }
 
 /*!
@@ -266,10 +275,10 @@ void QSqlRecord::append(const QSqlField &field)
 
     \sa append() replace() remove()
  */
-void QSqlRecord::insert(int pos, const QSqlField &field)
+void QSqlRecord::insert( int pos, const QSqlField &field )
 {
-   detach();
-   d->fields.insert(pos, field);
+    detach();
+    d->fields.insert( pos, field );
 }
 
 /*!
@@ -279,14 +288,15 @@ void QSqlRecord::insert(int pos, const QSqlField &field)
     \sa append() insert() remove()
 */
 
-void QSqlRecord::replace(int pos, const QSqlField &field)
+void QSqlRecord::replace( int pos, const QSqlField &field )
 {
-   if (!d->contains(pos)) {
-      return;
-   }
+    if ( !d->contains( pos ) )
+    {
+        return;
+    }
 
-   detach();
-   d->fields[pos] = field;
+    detach();
+    d->fields[pos] = field;
 }
 
 /*!
@@ -296,14 +306,15 @@ void QSqlRecord::replace(int pos, const QSqlField &field)
     \sa append() insert() replace()
 */
 
-void QSqlRecord::remove(int pos)
+void QSqlRecord::remove( int pos )
 {
-   if (!d->contains(pos)) {
-      return;
-   }
+    if ( !d->contains( pos ) )
+    {
+        return;
+    }
 
-   detach();
-   d->fields.remove(pos);
+    detach();
+    d->fields.remove( pos );
 }
 
 /*!
@@ -314,8 +325,8 @@ void QSqlRecord::remove(int pos)
 
 void QSqlRecord::clear()
 {
-   detach();
-   d->fields.clear();
+    detach();
+    d->fields.clear();
 }
 
 /*!
@@ -327,7 +338,7 @@ void QSqlRecord::clear()
 
 bool QSqlRecord::isEmpty() const
 {
-   return d->fields.isEmpty();
+    return d->fields.isEmpty();
 }
 
 
@@ -336,9 +347,9 @@ bool QSqlRecord::isEmpty() const
     otherwise returns false.
 */
 
-bool QSqlRecord::contains(const QString &name) const
+bool QSqlRecord::contains( const QString &name ) const
 {
-   return indexOf(name) >= 0;
+    return indexOf( name ) >= 0;
 }
 
 /*!
@@ -350,11 +361,13 @@ bool QSqlRecord::contains(const QString &name) const
 
 void QSqlRecord::clearValues()
 {
-   detach();
-   int count = d->fields.count();
-   for (int i = 0; i < count; ++i) {
-      d->fields[i].clear();
-   }
+    detach();
+    int count = d->fields.count();
+
+    for ( int i = 0; i < count; ++i )
+    {
+        d->fields[i].clear();
+    }
 }
 
 /*!
@@ -366,9 +379,9 @@ void QSqlRecord::clearValues()
     \sa isGenerated()
 */
 
-void QSqlRecord::setGenerated(const QString &name, bool generated)
+void QSqlRecord::setGenerated( const QString &name, bool generated )
 {
-   setGenerated(indexOf(name), generated);
+    setGenerated( indexOf( name ), generated );
 }
 
 /*!
@@ -379,13 +392,15 @@ void QSqlRecord::setGenerated(const QString &name, bool generated)
     \sa isGenerated()
 */
 
-void QSqlRecord::setGenerated(int index, bool generated)
+void QSqlRecord::setGenerated( int index, bool generated )
 {
-   if (!d->contains(index)) {
-      return;
-   }
-   detach();
-   d->fields[index].setGenerated(generated);
+    if ( !d->contains( index ) )
+    {
+        return;
+    }
+
+    detach();
+    d->fields[index].setGenerated( generated );
 }
 
 /*!
@@ -394,9 +409,9 @@ void QSqlRecord::setGenerated(int index, bool generated)
     Returns true if the field \a index is null or if there is no field at
     position \a index; otherwise returns false.
 */
-bool QSqlRecord::isNull(int index) const
+bool QSqlRecord::isNull( int index ) const
 {
-   return d->fields.value(index).isNull();
+    return d->fields.value( index ).isNull();
 }
 
 /*!
@@ -405,9 +420,9 @@ bool QSqlRecord::isNull(int index) const
 
     \sa setNull()
 */
-bool QSqlRecord::isNull(const QString &name) const
+bool QSqlRecord::isNull( const QString &name ) const
 {
-   return isNull(indexOf(name));
+    return isNull( indexOf( name ) );
 }
 
 /*!
@@ -416,13 +431,15 @@ bool QSqlRecord::isNull(const QString &name) const
 
     \sa setValue()
 */
-void QSqlRecord::setNull(int index)
+void QSqlRecord::setNull( int index )
 {
-   if (!d->contains(index)) {
-      return;
-   }
-   detach();
-   d->fields[index].clear();
+    if ( !d->contains( index ) )
+    {
+        return;
+    }
+
+    detach();
+    d->fields[index].clear();
 }
 
 /*!
@@ -431,9 +448,9 @@ void QSqlRecord::setNull(int index)
     Sets the value of the field called \a name to null. If the field
     does not exist, nothing happens.
 */
-void QSqlRecord::setNull(const QString &name)
+void QSqlRecord::setNull( const QString &name )
 {
-   setNull(indexOf(name));
+    setNull( indexOf( name ) );
 }
 
 
@@ -443,9 +460,9 @@ void QSqlRecord::setNull(const QString &name)
 
     \sa setGenerated()
 */
-bool QSqlRecord::isGenerated(const QString &name) const
+bool QSqlRecord::isGenerated( const QString &name ) const
 {
-   return isGenerated(indexOf(name));
+    return isGenerated( indexOf( name ) );
 }
 
 /*! \overload
@@ -455,9 +472,9 @@ bool QSqlRecord::isGenerated(const QString &name) const
 
     \sa setGenerated()
 */
-bool QSqlRecord::isGenerated(int index) const
+bool QSqlRecord::isGenerated( int index ) const
 {
-   return d->fields.value(index).isGenerated();
+    return d->fields.value( index ).isGenerated();
 }
 
 /*!
@@ -468,7 +485,7 @@ bool QSqlRecord::isGenerated(int index) const
 
 int QSqlRecord::count() const
 {
-   return d->fields.count();
+    return d->fields.count();
 }
 
 /*!
@@ -478,13 +495,15 @@ int QSqlRecord::count() const
     \sa setNull()
 */
 
-void QSqlRecord::setValue(int index, const QVariant &val)
+void QSqlRecord::setValue( int index, const QVariant &val )
 {
-   if (!d->contains(index)) {
-      return;
-   }
-   detach();
-   d->fields[index].setValue(val);
+    if ( !d->contains( index ) )
+    {
+        return;
+    }
+
+    detach();
+    d->fields[index].setValue( val );
 }
 
 
@@ -495,9 +514,9 @@ void QSqlRecord::setValue(int index, const QVariant &val)
     does not exist, nothing happens.
 */
 
-void QSqlRecord::setValue(const QString &name, const QVariant &val)
+void QSqlRecord::setValue( const QString &name, const QVariant &val )
 {
-   setValue(indexOf(name), val);
+    setValue( indexOf( name ), val );
 }
 
 
@@ -505,32 +524,36 @@ void QSqlRecord::setValue(const QString &name, const QVariant &val)
 */
 void QSqlRecord::detach()
 {
-   qAtomicDetach(d);
+    qAtomicDetach( d );
 }
 
-QDebug operator<<(QDebug dbg, const QSqlRecord &r)
+QDebug operator<<( QDebug dbg, const QSqlRecord &r )
 {
-   QDebugStateSaver saver(dbg);
-   dbg.nospace();
-   const int count = r.count();
-   dbg << "QSqlRecord(" << count << ')';
-   for (int i = 0; i < count; ++i) {
-      dbg.nospace();
-      dbg << '\n' << qSetFieldWidth(2) << right << i << left << qSetFieldWidth(0) << ':';
-      dbg.space();
-      dbg << r.field(i) << r.value(i).toString();
-   }
-   return dbg;
+    QDebugStateSaver saver( dbg );
+    dbg.nospace();
+    const int count = r.count();
+    dbg << "QSqlRecord(" << count << ')';
+
+    for ( int i = 0; i < count; ++i )
+    {
+        dbg.nospace();
+        dbg << '\n' << qSetFieldWidth( 2 ) << right << i << left << qSetFieldWidth( 0 ) << ':';
+        dbg.space();
+        dbg << r.field( i ) << r.value( i ).toString();
+    }
+
+    return dbg;
 }
 
-QSqlRecord QSqlRecord::keyValues(const QSqlRecord &keyFields) const
+QSqlRecord QSqlRecord::keyValues( const QSqlRecord &keyFields ) const
 {
-   QSqlRecord retValues(keyFields);
+    QSqlRecord retValues( keyFields );
 
-   for (int i = retValues.count() - 1; i >= 0; --i) {
-      retValues.setValue(i, value(retValues.fieldName(i)));
-   }
+    for ( int i = retValues.count() - 1; i >= 0; --i )
+    {
+        retValues.setValue( i, value( retValues.fieldName( i ) ) );
+    }
 
-   return retValues;
+    return retValues;
 }
 

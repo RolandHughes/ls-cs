@@ -32,9 +32,11 @@
 
 #include "QualifiedName.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
- namespace XLinkNames {
+namespace XLinkNames
+{
 
 #ifndef DOM_XLinkNAMES_HIDE_GLOBALS
 // Namespace
@@ -50,11 +52,12 @@ extern const WebCore::QualifiedName titleAttr;
 extern const WebCore::QualifiedName typeAttr;
 #endif
 
-WebCore::QualifiedName** getXLinkAttrs(size_t* size);
+WebCore::QualifiedName **getXLinkAttrs( size_t *size );
 
 void init();
 
-} }
+}
+}
 
 #endif
 

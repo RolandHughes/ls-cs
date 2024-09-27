@@ -25,37 +25,45 @@
 #include "IntPoint.h"
 #include <wtf/HashSet.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Element;
 class SVGElement;
 
-class CSSCursorImageValue : public CSSImageValue {
+class CSSCursorImageValue : public CSSImageValue
+{
 public:
-    static PassRefPtr<CSSCursorImageValue> create(const String& url, const IntPoint& hotSpot)
+    static PassRefPtr<CSSCursorImageValue> create( const String &url, const IntPoint &hotSpot )
     {
-        return adoptRef(new CSSCursorImageValue(url, hotSpot));
+        return adoptRef( new CSSCursorImageValue( url, hotSpot ) );
     }
 
     virtual ~CSSCursorImageValue();
 
-    IntPoint hotSpot() const { return m_hotSpot; }
+    IntPoint hotSpot() const
+    {
+        return m_hotSpot;
+    }
 
-    bool updateIfSVGCursorIsUsed(Element*);
-    virtual StyleCachedImage* cachedImage(CachedResourceLoader*);
+    bool updateIfSVGCursorIsUsed( Element * );
+    virtual StyleCachedImage *cachedImage( CachedResourceLoader * );
 
 #if ENABLE(SVG)
-    void removeReferencedElement(SVGElement*);
+    void removeReferencedElement( SVGElement * );
 #endif
 
 private:
-    CSSCursorImageValue(const String& url, const IntPoint& hotSpot);
-    virtual bool isCursorImageValue() const { return true; }
+    CSSCursorImageValue( const String &url, const IntPoint &hotSpot );
+    virtual bool isCursorImageValue() const
+    {
+        return true;
+    }
 
     IntPoint m_hotSpot;
 
 #if ENABLE(SVG)
-    HashSet<SVGElement*> m_referencedElements;
+    HashSet<SVGElement *> m_referencedElements;
 #endif
 };
 

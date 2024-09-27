@@ -31,63 +31,78 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefCounted.h>
 
-namespace JSC {
+namespace JSC
+{
 
-    extern const double NaN;
+extern const double NaN;
 
-    class DateInstanceData : public RefCounted<DateInstanceData> {
-    public:
-        static PassRefPtr<DateInstanceData> create() { return adoptRef(new DateInstanceData); }
+class DateInstanceData : public RefCounted<DateInstanceData>
+{
+public:
+    static PassRefPtr<DateInstanceData> create()
+    {
+        return adoptRef( new DateInstanceData );
+    }
 
-        double m_gregorianDateTimeCachedForMS;
-        GregorianDateTime m_cachedGregorianDateTime;
-        double m_gregorianDateTimeUTCCachedForMS;
-        GregorianDateTime m_cachedGregorianDateTimeUTC;
+    double m_gregorianDateTimeCachedForMS;
+    GregorianDateTime m_cachedGregorianDateTime;
+    double m_gregorianDateTimeUTCCachedForMS;
+    GregorianDateTime m_cachedGregorianDateTimeUTC;
 
-    private:
-        DateInstanceData()
-            : m_gregorianDateTimeCachedForMS(NaN)
-            , m_gregorianDateTimeUTCCachedForMS(NaN)
+private:
+    DateInstanceData()
+        : m_gregorianDateTimeCachedForMS( NaN )
+        , m_gregorianDateTimeUTCCachedForMS( NaN )
+    {
+    }
+};
+
+class DateInstanceCache
+{
+public:
+    DateInstanceCache()
+    {
+        reset();
+    }
+
+    void reset()
+    {
+        for ( size_t i = 0; i < cacheSize; ++i )
         {
+            m_cache[i].key = NaN;
         }
-    };
+    }
 
-    class DateInstanceCache {
-    public:
-        DateInstanceCache()
-        {
-            reset();
-        }
-        
-        void reset()
-        {
-            for (size_t i = 0; i < cacheSize; ++i)
-                m_cache[i].key = NaN;
-        }
-        
-        DateInstanceData* add(double d)
-        {
-            CacheEntry& entry = lookup(d);
-            if (d == entry.key)
-                return entry.value.get();
+    DateInstanceData *add( double d )
+    {
+        CacheEntry &entry = lookup( d );
 
-            entry.key = d;
-            entry.value = DateInstanceData::create();
+        if ( d == entry.key )
+        {
             return entry.value.get();
         }
 
-    private:
-        static const size_t cacheSize = 16;
+        entry.key = d;
+        entry.value = DateInstanceData::create();
+        return entry.value.get();
+    }
 
-        struct CacheEntry {
-            double key;
-            RefPtr<DateInstanceData> value;
-        };
+private:
+    static const size_t cacheSize = 16;
 
-        CacheEntry& lookup(double d) { return m_cache[WTF::FloatHash<double>::hash(d) & (cacheSize - 1)]; }
-
-        FixedArray<CacheEntry, cacheSize> m_cache;
+    struct CacheEntry
+    {
+        double key;
+        RefPtr<DateInstanceData> value;
     };
+
+    CacheEntry &lookup( double d )
+    {
+        return m_cache[WTF::FloatHash<double>::hash( d ) & ( cacheSize - 1 )];
+    }
+
+    FixedArray<CacheEntry, cacheSize> m_cache;
+};
 
 } // namespace JSC
 

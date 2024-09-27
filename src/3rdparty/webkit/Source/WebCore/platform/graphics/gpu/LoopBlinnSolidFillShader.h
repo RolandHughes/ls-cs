@@ -28,21 +28,23 @@
 
 #include "LoopBlinnShader.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class GraphicsContext3D;
 
-class LoopBlinnSolidFillShader : public LoopBlinnShader {
+class LoopBlinnSolidFillShader : public LoopBlinnShader
+{
 public:
-    static PassOwnPtr<LoopBlinnSolidFillShader> create(GraphicsContext3D*, Region, AntialiasType);
+    static PassOwnPtr<LoopBlinnSolidFillShader> create( GraphicsContext3D *, Region, AntialiasType );
 
     // This assumes the vertices and klm coordinates are stored in the
     // same, currently bound, buffer object, contiguously and at the
     // specified offsets.
-    void use(unsigned vertexOffset, unsigned klmOffset, const AffineTransform&, const Color&);
+    void use( unsigned vertexOffset, unsigned klmOffset, const AffineTransform &, const Color & );
 
 private:
-    LoopBlinnSolidFillShader(GraphicsContext3D*, unsigned program);
+    LoopBlinnSolidFillShader( GraphicsContext3D *, unsigned program );
 
     int m_colorLocation;
 };

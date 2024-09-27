@@ -28,17 +28,20 @@
 
 #include "WebPopupMenuProxy.h"
 
-namespace WebKit {
+namespace WebKit
+{
 
-class WebPopupMenuProxyQt : public WebPopupMenuProxy {
+class WebPopupMenuProxyQt : public WebPopupMenuProxy
+{
 public:
     static PassRefPtr<WebPopupMenuProxyQt> create()
     {
-        return adoptRef(new WebPopupMenuProxyQt());
+        return adoptRef( new WebPopupMenuProxyQt() );
     }
     ~WebPopupMenuProxyQt();
 
-    virtual void showPopupMenu(const WebCore::IntRect&, WebCore::TextDirection, double scaleFactor, const Vector<WebPopupItem>&, const PlatformPopupMenuData&, int32_t selectedIndex);
+    virtual void showPopupMenu( const WebCore::IntRect &, WebCore::TextDirection, double scaleFactor, const Vector<WebPopupItem> &,
+                                const PlatformPopupMenuData &, int32_t selectedIndex );
     virtual void hidePopupMenu();
 
 private:

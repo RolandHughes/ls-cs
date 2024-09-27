@@ -29,51 +29,66 @@
 #include <wtf/Noncopyable.h>
 #include <wtf/PassOwnPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class GeolocationService;
 class Geoposition;
 class PositionError;
 class PositionOptions;
 
-class GeolocationServiceClient {
+class GeolocationServiceClient
+{
 public:
     virtual ~GeolocationServiceClient() { }
-    virtual void geolocationServicePositionChanged(GeolocationService*) = 0;
-    virtual void geolocationServiceErrorOccurred(GeolocationService*) = 0;
+    virtual void geolocationServicePositionChanged( GeolocationService * ) = 0;
+    virtual void geolocationServiceErrorOccurred( GeolocationService * ) = 0;
 };
 
-class GeolocationService {
-    WTF_MAKE_NONCOPYABLE(GeolocationService);
+class GeolocationService
+{
+    WTF_MAKE_NONCOPYABLE( GeolocationService );
 public:
-    static PassOwnPtr<GeolocationService> create(GeolocationServiceClient*);
+    static PassOwnPtr<GeolocationService> create( GeolocationServiceClient * );
     virtual ~GeolocationService() { }
 
-    virtual bool startUpdating(PositionOptions*) { return false; }
+    virtual bool startUpdating( PositionOptions * )
+    {
+        return false;
+    }
     virtual void stopUpdating() { }
 
     virtual void suspend() { }
     virtual void resume() { }
 
-    virtual Geoposition* lastPosition() const { return 0; }
-    virtual PositionError* lastError() const { return 0; }
+    virtual Geoposition *lastPosition() const
+    {
+        return 0;
+    }
+    virtual PositionError *lastError() const
+    {
+        return 0;
+    }
 
     void positionChanged();
     void errorOccurred();
 
     static void useMock();
-    typedef PassOwnPtr<GeolocationService> (FactoryFunction)(GeolocationServiceClient*);
-    static void setCustomMockFactory(FactoryFunction);
+    typedef PassOwnPtr<GeolocationService> ( FactoryFunction )( GeolocationServiceClient * );
+    static void setCustomMockFactory( FactoryFunction );
 
 protected:
-    GeolocationService(GeolocationServiceClient*);
-    GeolocationServiceClient* geolocationServiceClient() const { return m_geolocationServiceClient; }
+    GeolocationService( GeolocationServiceClient * );
+    GeolocationServiceClient *geolocationServiceClient() const
+    {
+        return m_geolocationServiceClient;
+    }
 
 private:
-    GeolocationServiceClient* m_geolocationServiceClient;
+    GeolocationServiceClient *m_geolocationServiceClient;
 
-    static FactoryFunction* s_factoryFunction;
-    static FactoryFunction* s_mockFactoryFunction;
+    static FactoryFunction *s_factoryFunction;
+    static FactoryFunction *s_mockFactoryFunction;
 };
 
 } // namespace WebCore

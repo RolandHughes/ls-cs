@@ -38,43 +38,43 @@ class QGraphicsItem;
 
 class Q_GUI_EXPORT QFlickGesture : public QGesture
 {
-   GUI_CS_OBJECT(QFlickGesture)
-   Q_DECLARE_PRIVATE(QFlickGesture)
+    GUI_CS_OBJECT( QFlickGesture )
+    Q_DECLARE_PRIVATE( QFlickGesture )
 
- public:
-   QFlickGesture(QObject *receiver, Qt::MouseButton button, QObject *parent = nullptr);
-   ~QFlickGesture();
+public:
+    QFlickGesture( QObject *receiver, Qt::MouseButton button, QObject *parent = nullptr );
+    ~QFlickGesture();
 
-   friend class QFlickGestureRecognizer;
+    friend class QFlickGestureRecognizer;
 };
 
 class PressDelayHandler;
 
 class QFlickGesturePrivate : public QGesturePrivate
 {
-   Q_DECLARE_PUBLIC(QFlickGesture)
+    Q_DECLARE_PUBLIC( QFlickGesture )
 
- public:
-   QFlickGesturePrivate();
+public:
+    QFlickGesturePrivate();
 
-   QPointer<QObject> receiver;
-   QScroller *receiverScroller;
-   Qt::MouseButton button;          // NoButton == Touch
-   bool macIgnoreWheel;
-   static PressDelayHandler *pressDelayHandler;
+    QPointer<QObject> receiver;
+    QScroller *receiverScroller;
+    Qt::MouseButton button;          // NoButton == Touch
+    bool macIgnoreWheel;
+    static PressDelayHandler *pressDelayHandler;
 };
 
 class QFlickGestureRecognizer : public QGestureRecognizer
 {
- public:
-   QFlickGestureRecognizer(Qt::MouseButton button);
+public:
+    QFlickGestureRecognizer( Qt::MouseButton button );
 
-   QGesture *create(QObject *target) override;
-   QGestureRecognizer::Result recognize(QGesture *state, QObject *watched, QEvent *event) override;
-   void reset(QGesture *state) override;
+    QGesture *create( QObject *target ) override;
+    QGestureRecognizer::Result recognize( QGesture *state, QObject *watched, QEvent *event ) override;
+    void reset( QGesture *state ) override;
 
- private:
-   Qt::MouseButton button;          // NoButton == Touch
+private:
+    Qt::MouseButton button;          // NoButton == Touch
 };
 
 #endif // QT_NO_GESTURES

@@ -227,13 +227,14 @@ class QOpenGLEngineShaderProg;
 
 class Q_GUI_EXPORT QOpenGLEngineSharedShaders
 {
-    GUI_CS_GADGET(QOpenGLEngineSharedShaders)
+    GUI_CS_GADGET( QOpenGLEngineSharedShaders )
 
-    GUI_CS_ENUM(SnippetName)
+    GUI_CS_ENUM( SnippetName )
 
 public:
 
-    enum SnippetName {
+    enum SnippetName
+    {
         MainVertexShader,
         MainWithTexCoordsVertexShader,
         MainWithTexCoordsAndOpacityVertexShader,
@@ -304,57 +305,66 @@ public:
         TotalSnippetCount, InvalidSnippetName
     };
 
-    static QString snippetNameStr(SnippetName snippetName);
+    static QString snippetNameStr( SnippetName snippetName );
 
 
-/*
-    // These allow the ShaderName enum to be used as a cache key
-    const int mainVertexOffset = 0;
-    const int positionVertexOffset = (1<<2) - PositionOnlyVertexShader;
-    const int mainFragOffset = (1<<6) - MainFragmentShader_CMO;
-    const int srcPixelOffset = (1<<10) - ImageSrcFragmentShader;
-    const int maskOffset = (1<<14) - NoMaskShader;
-    const int compositionOffset = (1 << 16) - MultiplyCompositionModeFragmentShader;
-*/
+    /*
+        // These allow the ShaderName enum to be used as a cache key
+        const int mainVertexOffset = 0;
+        const int positionVertexOffset = (1<<2) - PositionOnlyVertexShader;
+        const int mainFragOffset = (1<<6) - MainFragmentShader_CMO;
+        const int srcPixelOffset = (1<<10) - ImageSrcFragmentShader;
+        const int maskOffset = (1<<14) - NoMaskShader;
+        const int compositionOffset = (1 << 16) - MultiplyCompositionModeFragmentShader;
+    */
 
-    QOpenGLEngineSharedShaders(QOpenGLContext *context);
+    QOpenGLEngineSharedShaders( QOpenGLContext *context );
     ~QOpenGLEngineSharedShaders();
 
-    QOpenGLShaderProgram *simpleProgram() { return simpleShaderProg; }
-    QOpenGLShaderProgram *blitProgram() { return blitShaderProg; }
+    QOpenGLShaderProgram *simpleProgram()
+    {
+        return simpleShaderProg;
+    }
+    QOpenGLShaderProgram *blitProgram()
+    {
+        return blitShaderProg;
+    }
     // Compile the program if it's not already in the cache, return the item in the cache.
-    QOpenGLEngineShaderProg *findProgramInCache(const QOpenGLEngineShaderProg &prog);
+    QOpenGLEngineShaderProg *findProgramInCache( const QOpenGLEngineShaderProg &prog );
     // Compile the custom shader if it's not already in the cache, return the item in the cache.
 
-    static QOpenGLEngineSharedShaders *shadersForContext(QOpenGLContext *context);
+    static QOpenGLEngineSharedShaders *shadersForContext( QOpenGLContext *context );
 
     // Ideally, this would be static and cleanup all programs in all contexts which
     // contain the custom code. Currently it is just a hint and we rely on deleted
     // custom shaders being cleaned up by being kicked out of the cache when it's
     // full.
-    void cleanupCustomStage(QOpenGLCustomShaderStage* stage);
+    void cleanupCustomStage( QOpenGLCustomShaderStage *stage );
 
 private:
     QOpenGLShaderProgram *blitShaderProg;
     QOpenGLShaderProgram *simpleShaderProg;
-    QList<QOpenGLEngineShaderProg*> cachedPrograms;
+    QList<QOpenGLEngineShaderProg *> cachedPrograms;
     QList<QOpenGLShader *> shaders;
 
-    static const char* qShaderSnippets[TotalSnippetCount];
+    static const char *qShaderSnippets[TotalSnippetCount];
 };
 
 
 class QOpenGLEngineShaderProg
 {
- public:
-   QOpenGLEngineShaderProg()
-      : program(nullptr)
-   {
-   }
+public:
+    QOpenGLEngineShaderProg()
+        : program( nullptr )
+    {
+    }
 
-    ~QOpenGLEngineShaderProg() {
-        if (program)
+    ~QOpenGLEngineShaderProg()
+    {
+        if ( program )
+        {
             delete program;
+        }
     }
 
     QOpenGLEngineSharedShaders::SnippetName mainVertexShader;
@@ -373,7 +383,8 @@ class QOpenGLEngineShaderProg
     bool useOpacityAttribute;
     bool usePmvMatrixAttribute;
 
-    bool operator==(const QOpenGLEngineShaderProg& other) const {
+    bool operator==( const QOpenGLEngineShaderProg &other ) const
+    {
         // do not care about the program
         return ( mainVertexShader      == other.mainVertexShader &&
                  positionVertexShader  == other.positionVertexShader &&
@@ -388,14 +399,15 @@ class QOpenGLEngineShaderProg
 
 class Q_GUI_EXPORT QOpenGLEngineShaderManager : public QObject
 {
-    GUI_CS_OBJECT(QOpenGLEngineShaderManager)
+    GUI_CS_OBJECT( QOpenGLEngineShaderManager )
 
 public:
-    QOpenGLEngineShaderManager(QOpenGLContext* context);
+    QOpenGLEngineShaderManager( QOpenGLContext *context );
     ~QOpenGLEngineShaderManager();
 
     enum MaskType {NoMask, PixelMask, SubPixelMaskPass1, SubPixelMaskPass2, SubPixelWithGammaMask};
-    enum PixelSrcType {
+    enum PixelSrcType
+    {
         ImageSrc = Qt::TexturePattern+1,
         NonPremultipliedImageSrc = Qt::TexturePattern+2,
         PatternSrc = Qt::TexturePattern+3,
@@ -404,7 +416,8 @@ public:
         AlphaImageSrc = Qt::TexturePattern+6,
     };
 
-    enum Uniform {
+    enum Uniform
+    {
         ImageTexture,
         PatternColor,
         GlobalOpacity,
@@ -426,7 +439,8 @@ public:
         NumUniforms
     };
 
-    enum OpacityMode {
+    enum OpacityMode
+    {
         NoOpacity,
         UniformOpacity,
         AttributeOpacity
@@ -435,16 +449,16 @@ public:
     // There are optimizations we can do, depending on the brush transform:
     //    1) May not have to apply perspective-correction
     //    2) Can use lower precision for matrix
-    void optimiseForBrushTransform(QTransform::TransformationType transformType);
-    void setSrcPixelType(Qt::BrushStyle);
-    void setSrcPixelType(PixelSrcType); // For non-brush sources, like pixmaps & images
-    void setOpacityMode(OpacityMode);
-    void setMaskType(MaskType);
-    void setCompositionMode(QPainter::CompositionMode);
-    void setCustomStage(QOpenGLCustomShaderStage* stage);
+    void optimiseForBrushTransform( QTransform::TransformationType transformType );
+    void setSrcPixelType( Qt::BrushStyle );
+    void setSrcPixelType( PixelSrcType ); // For non-brush sources, like pixmaps & images
+    void setOpacityMode( OpacityMode );
+    void setMaskType( MaskType );
+    void setCompositionMode( QPainter::CompositionMode );
+    void setCustomStage( QOpenGLCustomShaderStage *stage );
     void removeCustomStage();
 
-    GLuint getUniformLocation(Uniform id);
+    GLuint getUniformLocation( Uniform id );
 
     void setDirty(); // someone has manually changed the current shader program
     bool useCorrectShaderProg(); // returns true if the shader program needed to be changed
@@ -452,20 +466,22 @@ public:
     void useSimpleProgram();
     void useBlitProgram();
 
-    void setHasComplexGeometry(bool hasComplexGeometry) {
+    void setHasComplexGeometry( bool hasComplexGeometry )
+    {
         complexGeometry = hasComplexGeometry;
         shaderProgNeedsChanging = true;
     }
 
-    bool hasComplexGeometry() const {
+    bool hasComplexGeometry() const
+    {
         return complexGeometry;
     }
 
-    QOpenGLShaderProgram* currentProgram(); // Returns pointer to the shader the manager has chosen
-    QOpenGLShaderProgram* simpleProgram(); // Used to draw into e.g. stencil buffers
-    QOpenGLShaderProgram* blitProgram(); // Used to blit a texture into the framebuffer
+    QOpenGLShaderProgram *currentProgram(); // Returns pointer to the shader the manager has chosen
+    QOpenGLShaderProgram *simpleProgram(); // Used to draw into e.g. stencil buffers
+    QOpenGLShaderProgram *blitProgram(); // Used to blit a texture into the framebuffer
 
-    QOpenGLEngineSharedShaders* sharedShaders;
+    QOpenGLEngineSharedShaders *sharedShaders;
 
 private:
     QOpenGLContext *ctx;

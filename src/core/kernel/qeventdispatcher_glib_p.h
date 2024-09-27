@@ -34,54 +34,54 @@ class QEventDispatcherGlibPrivate;
 
 using GMainContext = _GMainContext
 
-struct GPostEventSource;
+                     struct GPostEventSource;
 struct GSocketNotifierSource;
 struct GTimerSource;
 struct GIdleTimerSource;
 
 class Q_CORE_EXPORT QEventDispatcherGlib : public QAbstractEventDispatcher
 {
-   CORE_CS_OBJECT(QEventDispatcherGlib)
-   Q_DECLARE_PRIVATE(QEventDispatcherGlib)
+    CORE_CS_OBJECT( QEventDispatcherGlib )
+    Q_DECLARE_PRIVATE( QEventDispatcherGlib )
 
- public:
-   explicit QEventDispatcherGlib(QObject *parent = nullptr);
-   explicit QEventDispatcherGlib(GMainContext *context, QObject *parent = nullptr);
-   ~QEventDispatcherGlib();
+public:
+    explicit QEventDispatcherGlib( QObject *parent = nullptr );
+    explicit QEventDispatcherGlib( GMainContext *context, QObject *parent = nullptr );
+    ~QEventDispatcherGlib();
 
-   bool processEvents(QEventLoop::ProcessEventsFlags flags) override;
-   bool hasPendingEvents() override;
+    bool processEvents( QEventLoop::ProcessEventsFlags flags ) override;
+    bool hasPendingEvents() override;
 
-   void registerSocketNotifier(QSocketNotifier *socketNotifier) override;
-   void unregisterSocketNotifier(QSocketNotifier *socketNotifier) override;
+    void registerSocketNotifier( QSocketNotifier *socketNotifier ) override;
+    void unregisterSocketNotifier( QSocketNotifier *socketNotifier ) override;
 
-   void registerTimer(int timerId, int interval, Qt::TimerType timerType, QObject *object) override;
-   bool unregisterTimer(int timerId) override;
-   bool unregisterTimers(QObject *object) override;
-   QList<QTimerInfo> registeredTimers(QObject *object) const override;
+    void registerTimer( int timerId, int interval, Qt::TimerType timerType, QObject *object ) override;
+    bool unregisterTimer( int timerId ) override;
+    bool unregisterTimers( QObject *object ) override;
+    QList<QTimerInfo> registeredTimers( QObject *object ) const override;
 
-   int remainingTime(int timerId) override;
-   void wakeUp() override;
-   void interrupt() override;
-   void flush() override;
+    int remainingTime( int timerId ) override;
+    void wakeUp() override;
+    void interrupt() override;
+    void flush() override;
 
-   static bool versionSupported();
+    static bool versionSupported();
 
- protected:
-   QEventDispatcherGlib(QEventDispatcherGlibPrivate &dd, QObject *parent);
+protected:
+    QEventDispatcherGlib( QEventDispatcherGlibPrivate &dd, QObject *parent );
 };
 
 class Q_CORE_EXPORT QEventDispatcherGlibPrivate : public QAbstractEventDispatcherPrivate
 {
- public:
-   QEventDispatcherGlibPrivate(GMainContext *context = nullptr);
-   GMainContext *mainContext;
-   GPostEventSource *postEventSource;
-   GSocketNotifierSource *socketNotifierSource;
-   GTimerSource *timerSource;
-   GIdleTimerSource *idleTimerSource;
+public:
+    QEventDispatcherGlibPrivate( GMainContext *context = nullptr );
+    GMainContext *mainContext;
+    GPostEventSource *postEventSource;
+    GSocketNotifierSource *socketNotifierSource;
+    GTimerSource *timerSource;
+    GIdleTimerSource *idleTimerSource;
 
-   void runTimersOnceWithNormalPriority();
+    void runTimersOnceWithNormalPriority();
 };
 
 #endif

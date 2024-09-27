@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef PositionIterator_h
@@ -29,24 +29,26 @@
 #include "Node.h"
 #include "Position.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 // A Position iterator with constant-time
 // increment, decrement, and several predicates on the Position it is at.
 // Conversion to/from Position is O(n) in the offset.
-class PositionIterator {
+class PositionIterator
+{
 public:
     PositionIterator()
-        : m_anchorNode(0)
-        , m_nodeAfterPositionInAnchor(0)
-        , m_offsetInAnchor(0)
+        : m_anchorNode( 0 )
+        , m_nodeAfterPositionInAnchor( 0 )
+        , m_offsetInAnchor( 0 )
     {
     }
 
-    PositionIterator(const Position& pos)
-        : m_anchorNode(pos.anchorNode())
-        , m_nodeAfterPositionInAnchor(m_anchorNode->childNode(pos.deprecatedEditingOffset()))
-        , m_offsetInAnchor(m_nodeAfterPositionInAnchor ? 0 : pos.deprecatedEditingOffset())
+    PositionIterator( const Position &pos )
+        : m_anchorNode( pos.anchorNode() )
+        , m_nodeAfterPositionInAnchor( m_anchorNode->childNode( pos.deprecatedEditingOffset() ) )
+        , m_offsetInAnchor( m_nodeAfterPositionInAnchor ? 0 : pos.deprecatedEditingOffset() )
     {
     }
     operator Position() const;
@@ -54,9 +56,15 @@ public:
     void increment();
     void decrement();
 
-    Node* node() const { return m_anchorNode; }
-    int offsetInLeafNode() const { return m_offsetInAnchor; }
-    void setOffsetInLeafNode(int offset);
+    Node *node() const
+    {
+        return m_anchorNode;
+    }
+    int offsetInLeafNode() const
+    {
+        return m_offsetInAnchor;
+    }
+    void setOffsetInLeafNode( int offset );
 
     bool atStart() const;
     bool atEnd() const;
@@ -65,8 +73,8 @@ public:
     bool isCandidate() const;
 
 private:
-    Node* m_anchorNode;
-    Node* m_nodeAfterPositionInAnchor; // If this is non-null, m_nodeAfterPositionInAnchor->parentNode() == m_anchorNode;
+    Node *m_anchorNode;
+    Node *m_nodeAfterPositionInAnchor; // If this is non-null, m_nodeAfterPositionInAnchor->parentNode() == m_anchorNode;
     int m_offsetInAnchor;
 };
 

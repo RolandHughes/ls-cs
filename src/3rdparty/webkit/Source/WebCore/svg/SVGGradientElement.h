@@ -30,37 +30,43 @@
 #include "SVGStyledElement.h"
 #include "SVGURIReference.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class SVGGradientElement : public SVGStyledElement,
-                           public SVGURIReference,
-                           public SVGExternalResourcesRequired {
+    public SVGURIReference,
+    public SVGExternalResourcesRequired
+{
 public:
     Vector<Gradient::ColorStop> buildStops();
- 
-protected:
-    SVGGradientElement(const QualifiedName&, Document*);
 
-    virtual void parseMappedAttribute(Attribute*);
-    virtual void svgAttributeChanged(const QualifiedName&);
-    virtual void synchronizeProperty(const QualifiedName&);
-    void fillPassedAttributeToPropertyTypeMap(AttributeToPropertyTypeMap&);
+protected:
+    SVGGradientElement( const QualifiedName &, Document * );
+
+    virtual void parseMappedAttribute( Attribute * );
+    virtual void svgAttributeChanged( const QualifiedName & );
+    virtual void synchronizeProperty( const QualifiedName & );
+    void fillPassedAttributeToPropertyTypeMap( AttributeToPropertyTypeMap & );
 
 private:
-    virtual bool needsPendingResourceHandling() const { return false; }
+    virtual bool needsPendingResourceHandling() const
+    {
+        return false;
+    }
 
-    virtual void childrenChanged(bool changedByParser = false, Node* beforeChange = 0, Node* afterChange = 0, int childCountDelta = 0);
+    virtual void childrenChanged( bool changedByParser = false, Node *beforeChange = 0, Node *afterChange = 0,
+                                  int childCountDelta = 0 );
 
     // Animated property declarations
-    DECLARE_ANIMATED_ENUMERATION(SpreadMethod, spreadMethod)
-    DECLARE_ANIMATED_ENUMERATION(GradientUnits, gradientUnits)
-    DECLARE_ANIMATED_TRANSFORM_LIST(GradientTransform, gradientTransform)
+    DECLARE_ANIMATED_ENUMERATION( SpreadMethod, spreadMethod )
+    DECLARE_ANIMATED_ENUMERATION( GradientUnits, gradientUnits )
+    DECLARE_ANIMATED_TRANSFORM_LIST( GradientTransform, gradientTransform )
 
     // SVGURIReference
-    DECLARE_ANIMATED_STRING(Href, href)
+    DECLARE_ANIMATED_STRING( Href, href )
 
     // SVGExternalResourcesRequired
-    DECLARE_ANIMATED_BOOLEAN(ExternalResourcesRequired, externalResourcesRequired)
+    DECLARE_ANIMATED_BOOLEAN( ExternalResourcesRequired, externalResourcesRequired )
 };
 
 } // namespace WebCore

@@ -34,16 +34,16 @@ extern "C" {
 
 WK_EXPORT WKTypeID WKBundleBackForwardListItemGetTypeID();
 
-WK_EXPORT bool WKBundleBackForwardListItemIsSame(WKBundleBackForwardListItemRef item1, WKBundleBackForwardListItemRef item2);
+WK_EXPORT bool WKBundleBackForwardListItemIsSame( WKBundleBackForwardListItemRef item1, WKBundleBackForwardListItemRef item2 );
 
-WK_EXPORT WKURLRef WKBundleBackForwardListItemCopyOriginalURL(WKBundleBackForwardListItemRef item);
-WK_EXPORT WKURLRef WKBundleBackForwardListItemCopyURL(WKBundleBackForwardListItemRef item);
-WK_EXPORT WKStringRef WKBundleBackForwardListItemCopyTitle(WKBundleBackForwardListItemRef item);
+WK_EXPORT WKURLRef WKBundleBackForwardListItemCopyOriginalURL( WKBundleBackForwardListItemRef item );
+WK_EXPORT WKURLRef WKBundleBackForwardListItemCopyURL( WKBundleBackForwardListItemRef item );
+WK_EXPORT WKStringRef WKBundleBackForwardListItemCopyTitle( WKBundleBackForwardListItemRef item );
 
-WK_EXPORT WKStringRef WKBundleBackForwardListItemCopyTarget(WKBundleBackForwardListItemRef item);
-WK_EXPORT bool WKBundleBackForwardListItemIsTargetItem(WKBundleBackForwardListItemRef item);
+WK_EXPORT WKStringRef WKBundleBackForwardListItemCopyTarget( WKBundleBackForwardListItemRef item );
+WK_EXPORT bool WKBundleBackForwardListItemIsTargetItem( WKBundleBackForwardListItemRef item );
 
-WK_EXPORT WKArrayRef WKBundleBackForwardListItemCopyChildren(WKBundleBackForwardListItemRef item);
+WK_EXPORT WKArrayRef WKBundleBackForwardListItemCopyChildren( WKBundleBackForwardListItemRef item );
 
 #ifdef __cplusplus
 }

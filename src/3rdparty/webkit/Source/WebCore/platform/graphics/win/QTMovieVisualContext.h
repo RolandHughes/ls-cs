@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef QTMovieVisualContext_h
@@ -38,38 +38,40 @@
 #include <WTF/OwnPtr.h>
 #include <WTF/RefCounted.h>
 
-typedef const struct __CFDictionary* CFDictionaryRef;
-typedef struct OpaqueQTVisualContext*   QTVisualContextRef;
+typedef const struct __CFDictionary *CFDictionaryRef;
+typedef struct OpaqueQTVisualContext   *QTVisualContextRef;
 
-// QTCVTimeStamp is a struct containing only a CVTimeStamp.  This is to 
-// work around the inability of CVTimeStamp to be forward declared, in 
+// QTCVTimeStamp is a struct containing only a CVTimeStamp.  This is to
+// work around the inability of CVTimeStamp to be forward declared, in
 // addition to it being declared in different header files when building
 // the QTMovieWin and WebCore projects.
 struct QTCVTimeStamp;
 
-class QTMovieVisualContextClient {
+class QTMovieVisualContextClient
+{
 public:
-    virtual void imageAvailableForTime(const QTCVTimeStamp*) = 0;
+    virtual void imageAvailableForTime( const QTCVTimeStamp * ) = 0;
 };
 
-class QTMOVIEWIN_API QTMovieVisualContext : public RefCounted<QTMovieVisualContext> {
+class QTMOVIEWIN_API QTMovieVisualContext : public RefCounted<QTMovieVisualContext>
+{
 public:
-    static PassRefPtr<QTMovieVisualContext> create(QTMovieVisualContextClient*, QTPixelBuffer::Type);
+    static PassRefPtr<QTMovieVisualContext> create( QTMovieVisualContextClient *, QTPixelBuffer::Type );
     ~QTMovieVisualContext();
 
-    bool isImageAvailableForTime(const QTCVTimeStamp*) const;
-    QTPixelBuffer imageForTime(const QTCVTimeStamp*);
+    bool isImageAvailableForTime( const QTCVTimeStamp * ) const;
+    QTPixelBuffer imageForTime( const QTCVTimeStamp * );
     void task();
 
     QTVisualContextRef visualContextRef();
 
-    void setMovie(PassRefPtr<QTMovie>);
-    QTMovie* movie() const;
+    void setMovie( PassRefPtr<QTMovie> );
+    QTMovie *movie() const;
 
     static double currentHostTime();
 
 protected:
-    QTMovieVisualContext(QTMovieVisualContextClient*, QTPixelBuffer::Type);
+    QTMovieVisualContext( QTMovieVisualContextClient *, QTPixelBuffer::Type );
     void setupVisualContext();
 
     friend class QTMovieVisualContextPriv;

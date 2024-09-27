@@ -31,7 +31,8 @@
 #include <wtf/Noncopyable.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class IDBTransactionBackendInterface;
 
@@ -44,17 +45,18 @@ class IDBTransactionBackendInterface;
 // FIXME: move the vector of transactions to TLS. Keeping it static
 // will not work once we add support for workers. Another possible
 // solution is to keep the vector in the ScriptExecutionContext.
-class IDBPendingTransactionMonitor {
-    WTF_MAKE_NONCOPYABLE(IDBPendingTransactionMonitor);
+class IDBPendingTransactionMonitor
+{
+    WTF_MAKE_NONCOPYABLE( IDBPendingTransactionMonitor );
 public:
-    static void addPendingTransaction(IDBTransactionBackendInterface*);
-    static void removePendingTransaction(IDBTransactionBackendInterface*);
+    static void addPendingTransaction( IDBTransactionBackendInterface * );
+    static void removePendingTransaction( IDBTransactionBackendInterface * );
     static void abortPendingTransactions();
 
 private:
     IDBPendingTransactionMonitor();
 
-    static Vector<IDBTransactionBackendInterface*>* m_transactions;
+    static Vector<IDBTransactionBackendInterface *> *m_transactions;
 };
 
 } // namespace WebCore

@@ -34,18 +34,23 @@
 #include <wtf/RefCounted.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class SpeechInputResultList : public RefCounted<SpeechInputResultList> {
+class SpeechInputResultList : public RefCounted<SpeechInputResultList>
+{
 public:
-    static PassRefPtr<SpeechInputResultList> create(const SpeechInputResultArray& results);
+    static PassRefPtr<SpeechInputResultList> create( const SpeechInputResultArray &results );
 
     // Methods from the IDL.
-    size_t length() { return m_results.size(); }
-    SpeechInputResult* item(unsigned index);
+    size_t length()
+    {
+        return m_results.size();
+    }
+    SpeechInputResult *item( unsigned index );
 
 private:
-    SpeechInputResultList(const SpeechInputResultArray& results);
+    SpeechInputResultList( const SpeechInputResultArray &results );
 
     SpeechInputResultArray m_results;
 };

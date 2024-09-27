@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -29,7 +29,8 @@
 #include "FontCustomPlatformData.h"
 #include "Node.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 CSSFontFaceSrcValue::~CSSFontFaceSrcValue()
 {
@@ -38,7 +39,7 @@ CSSFontFaceSrcValue::~CSSFontFaceSrcValue()
 #if ENABLE(SVG_FONTS)
 bool CSSFontFaceSrcValue::isSVGFontFaceSrc() const
 {
-    return equalIgnoringCase(m_format, "svg");
+    return equalIgnoringCase( m_format, "svg" );
 }
 #endif
 
@@ -46,14 +47,18 @@ bool CSSFontFaceSrcValue::isSupportedFormat() const
 {
     // Normally we would just check the format, but in order to avoid conflicts with the old WinIE style of font-face,
     // we will also check to see if the URL ends with .eot.  If so, we'll go ahead and assume that we shouldn't load it.
-    if (m_format.isEmpty()) {
+    if ( m_format.isEmpty() )
+    {
         // Check for .eot.
-        if (!m_resource.startsWith("data:", false) && m_resource.endsWith(".eot", false))
+        if ( !m_resource.startsWith( "data:", false ) && m_resource.endsWith( ".eot", false ) )
+        {
             return false;
+        }
+
         return true;
     }
 
-    return FontCustomPlatformData::supportsFormat(m_format)
+    return FontCustomPlatformData::supportsFormat( m_format )
 #if ENABLE(SVG_FONTS)
            || isSVGFontFaceSrc()
 #endif
@@ -63,21 +68,33 @@ bool CSSFontFaceSrcValue::isSupportedFormat() const
 String CSSFontFaceSrcValue::cssText() const
 {
     String result;
-    if (isLocal())
+
+    if ( isLocal() )
+    {
         result += "local(";
+    }
     else
+    {
         result += "url(";
+    }
+
     result += m_resource;
     result += ")";
-    if (!m_format.isEmpty())
+
+    if ( !m_format.isEmpty() )
+    {
         result += " format(" + m_format + ")";
+    }
+
     return result;
 }
 
-void CSSFontFaceSrcValue::addSubresourceStyleURLs(ListHashSet<KURL>& urls, const CSSStyleSheet* styleSheet)
+void CSSFontFaceSrcValue::addSubresourceStyleURLs( ListHashSet<KURL> &urls, const CSSStyleSheet *styleSheet )
 {
-    if (!isLocal())
-        addSubresourceURL(urls, styleSheet->completeURL(m_resource));
+    if ( !isLocal() )
+    {
+        addSubresourceURL( urls, styleSheet->completeURL( m_resource ) );
+    }
 }
 
 }

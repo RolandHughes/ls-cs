@@ -25,42 +25,80 @@
 #include "Filter.h"
 #include "FilterEffect.h"
 
-namespace WebCore {
-    
-class FEDropShadow : public FilterEffect {
+namespace WebCore
+{
+
+class FEDropShadow : public FilterEffect
+{
 public:
-    static PassRefPtr<FEDropShadow> create(Filter*, float, float, float, float, const Color&, float);
+    static PassRefPtr<FEDropShadow> create( Filter *, float, float, float, float, const Color &, float );
 
-    float stdDeviationX() const { return m_stdX; }
-    void setStdDeviationX(float stdX) { m_stdX = stdX; }
+    float stdDeviationX() const
+    {
+        return m_stdX;
+    }
+    void setStdDeviationX( float stdX )
+    {
+        m_stdX = stdX;
+    }
 
-    float stdDeviationY() const { return m_stdY; }
-    void setStdDeviationY(float stdY) { m_stdY = stdY; }
+    float stdDeviationY() const
+    {
+        return m_stdY;
+    }
+    void setStdDeviationY( float stdY )
+    {
+        m_stdY = stdY;
+    }
 
-    float dx() const { return m_dx; }
-    void setDx(float dx) { m_dx = dx; }
+    float dx() const
+    {
+        return m_dx;
+    }
+    void setDx( float dx )
+    {
+        m_dx = dx;
+    }
 
-    float dy() const { return m_dy; }
-    void setDy(float dy) { m_dy = dy; }
+    float dy() const
+    {
+        return m_dy;
+    }
+    void setDy( float dy )
+    {
+        m_dy = dy;
+    }
 
-    Color shadowColor() const { return m_shadowColor; } 
-    void setShadowColor(const Color& shadowColor) { m_shadowColor = shadowColor; }
+    Color shadowColor() const
+    {
+        return m_shadowColor;
+    }
+    void setShadowColor( const Color &shadowColor )
+    {
+        m_shadowColor = shadowColor;
+    }
 
-    float shadowOpacity() const { return m_shadowOpacity; }
-    void setShadowOpacity(float shadowOpacity) { m_shadowOpacity = shadowOpacity; }
+    float shadowOpacity() const
+    {
+        return m_shadowOpacity;
+    }
+    void setShadowOpacity( float shadowOpacity )
+    {
+        m_shadowOpacity = shadowOpacity;
+    }
 
-    static float calculateStdDeviation(float);
+    static float calculateStdDeviation( float );
 
     virtual void apply();
     virtual void dump();
 
     virtual void determineAbsolutePaintRect();
 
-    virtual TextStream& externalRepresentation(TextStream&, int indention) const;
+    virtual TextStream &externalRepresentation( TextStream &, int indention ) const;
 
 private:
-    FEDropShadow(Filter*, float, float, float, float, const Color&, float);
-    
+    FEDropShadow( Filter *, float, float, float, float, const Color &, float );
+
     float m_stdX;
     float m_stdY;
     float m_dx;
@@ -68,7 +106,7 @@ private:
     Color m_shadowColor;
     float m_shadowOpacity;
 };
-    
+
 } // namespace WebCore
 
 #endif // ENABLE(FILTERS)

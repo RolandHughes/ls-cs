@@ -35,80 +35,84 @@ struct QWindowsWindowData;
 
 class QWindowsIntegration : public QPlatformIntegration
 {
- public:
-   enum Options {
-      // Options to be passed on command line.
-      FontDatabaseFreeType = 0x1,
-      FontDatabaseNative = 0x2,
-      DisableArb = 0x4,
-      NoNativeDialogs = 0x8,
-      XpNativeDialogs = 0x10,
-      DontPassOsMouseEventsSynthesizedFromTouch = 0x20 // Do not pass OS-generated mouse events from touch.
-   };
+public:
+    enum Options
+    {
+        // Options to be passed on command line.
+        FontDatabaseFreeType = 0x1,
+        FontDatabaseNative = 0x2,
+        DisableArb = 0x4,
+        NoNativeDialogs = 0x8,
+        XpNativeDialogs = 0x10,
+        DontPassOsMouseEventsSynthesizedFromTouch = 0x20 // Do not pass OS-generated mouse events from touch.
+    };
 
-   explicit QWindowsIntegration(const QStringList &paramList);
-   virtual ~QWindowsIntegration();
+    explicit QWindowsIntegration( const QStringList &paramList );
+    virtual ~QWindowsIntegration();
 
-   bool hasCapability(QPlatformIntegration::Capability cap) const override;
+    bool hasCapability( QPlatformIntegration::Capability cap ) const override;
 
-   QPlatformWindow *createPlatformWindow(QWindow *window) const override;
+    QPlatformWindow *createPlatformWindow( QWindow *window ) const override;
 
 #ifndef QT_NO_OPENGL
-   QPlatformOpenGLContext *createPlatformOpenGLContext(QOpenGLContext *context) const override;
-   QOpenGLContext::OpenGLModuleType openGLModuleType() override;
-   static QWindowsStaticOpenGLContext *staticOpenGLContext();
+    QPlatformOpenGLContext *createPlatformOpenGLContext( QOpenGLContext *context ) const override;
+    QOpenGLContext::OpenGLModuleType openGLModuleType() override;
+    static QWindowsStaticOpenGLContext *staticOpenGLContext();
 #endif
 
-   QAbstractEventDispatcher *createEventDispatcher() const override;
-   void initialize() override;
+    QAbstractEventDispatcher *createEventDispatcher() const override;
+    void initialize() override;
 
 #ifndef QT_NO_CLIPBOARD
-   QPlatformClipboard *clipboard() const override;
+    QPlatformClipboard *clipboard() const override;
 #  ifndef QT_NO_DRAGANDDROP
-   QPlatformDrag *drag() const override;
+    QPlatformDrag *drag() const override;
 #  endif
 #endif
 
-   QPlatformInputContext *inputContext() const override;
+    QPlatformInputContext *inputContext() const override;
 
 #ifndef QT_NO_ACCESSIBILITY
-   QPlatformAccessibility *accessibility() const override;
+    QPlatformAccessibility *accessibility() const override;
 #endif
 
-   QPlatformFontDatabase *fontDatabase() const override;
-   QStringList themeNames() const override;
-   QPlatformTheme *createPlatformTheme(const QString &name) const override;
-   QPlatformServices *services() const override;
-   QVariant styleHint(StyleHint hint) const override;
+    QPlatformFontDatabase *fontDatabase() const override;
+    QStringList themeNames() const override;
+    QPlatformTheme *createPlatformTheme( const QString &name ) const override;
+    QPlatformServices *services() const override;
+    QVariant styleHint( StyleHint hint ) const override;
 
-   Qt::KeyboardModifiers queryKeyboardModifiers() const override;
-   QList<int> possibleKeys(const QKeyEvent *e) const override;
+    Qt::KeyboardModifiers queryKeyboardModifiers() const override;
+    QList<int> possibleKeys( const QKeyEvent *e ) const override;
 
-   static QWindowsIntegration *instance() {
-      return m_instance;
-   }
+    static QWindowsIntegration *instance()
+    {
+        return m_instance;
+    }
 
-   inline void emitScreenAdded(QPlatformScreen *s, bool isPrimary = false) {
-      screenAdded(s, isPrimary);
-   }
+    inline void emitScreenAdded( QPlatformScreen *s, bool isPrimary = false )
+    {
+        screenAdded( s, isPrimary );
+    }
 
-   inline void emitDestroyScreen(QPlatformScreen *s) {
-      destroyScreen(s);
-   }
+    inline void emitDestroyScreen( QPlatformScreen *s )
+    {
+        destroyScreen( s );
+    }
 
-   unsigned options() const;
+    unsigned options() const;
 
 #if ! defined(QT_NO_SESSIONMANAGER)
-   QPlatformSessionManager *createPlatformSessionManager(const QString &id, const QString &key) const override;
+    QPlatformSessionManager *createPlatformSessionManager( const QString &id, const QString &key ) const override;
 #endif
 
- protected:
-   virtual QWindowsWindow *createPlatformWindowHelper(QWindow *window, const QWindowsWindowData &) const;
+protected:
+    virtual QWindowsWindow *createPlatformWindowHelper( QWindow *window, const QWindowsWindowData & ) const;
 
- private:
-   QScopedPointer<QWindowsIntegrationPrivate> d;
+private:
+    QScopedPointer<QWindowsIntegrationPrivate> d;
 
-   static QWindowsIntegration *m_instance;
+    static QWindowsIntegration *m_instance;
 };
 
 #endif

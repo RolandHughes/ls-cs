@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -30,27 +30,36 @@
 
 using namespace std;
 
-namespace WebCore {
-
-PassRefPtr<TransformOperation> Matrix3DTransformOperation::blend(const TransformOperation* from, double progress, bool blendToIdentity)
+namespace WebCore
 {
-    if (from && !from->isSameType(*this))
+
+PassRefPtr<TransformOperation> Matrix3DTransformOperation::blend( const TransformOperation *from, double progress,
+        bool blendToIdentity )
+{
+    if ( from && !from->isSameType( *this ) )
+    {
         return this;
+    }
 
     // Convert the TransformOperations into matrices
     IntSize size;
     TransformationMatrix fromT;
     TransformationMatrix toT;
-    if (from)
-        from->apply(fromT, size);
 
-    apply(toT, size);
+    if ( from )
+    {
+        from->apply( fromT, size );
+    }
 
-    if (blendToIdentity)
-        std::swap(fromT, toT);
+    apply( toT, size );
 
-    toT.blend(fromT, progress);
-    return Matrix3DTransformOperation::create(toT);
+    if ( blendToIdentity )
+    {
+        std::swap( fromT, toT );
+    }
+
+    toT.blend( fromT, progress );
+    return Matrix3DTransformOperation::create( toT );
 }
 
 } // namespace WebCore

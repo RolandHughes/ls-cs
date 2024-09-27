@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef RenderMediaControls_h
@@ -31,18 +31,20 @@
 #include "RenderObject.h"
 #include "MediaControlElements.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class HTMLMediaElement;
 
-class RenderMediaControls {
+class RenderMediaControls
+{
 public:
 
 #if PLATFORM(WIN)
-    static bool paintMediaControlsPart(MediaControlElementType, RenderObject*, const PaintInfo&, const IntRect&);
-    static void adjustMediaSliderThumbSize(RenderObject*);
+    static bool paintMediaControlsPart( MediaControlElementType, RenderObject *, const PaintInfo &, const IntRect & );
+    static void adjustMediaSliderThumbSize( RenderObject * );
 #endif
-    static IntPoint volumeSliderOffsetFromMuteButton(RenderBox*, const IntSize&);
+    static IntPoint volumeSliderOffsetFromMuteButton( RenderBox *, const IntSize & );
 };
 
 } // namespace WebCore

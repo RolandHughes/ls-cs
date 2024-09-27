@@ -32,51 +32,52 @@ class QScriptDebuggerCodeWidgetPrivate;
 
 class QScriptDebuggerCodeWidget : public QScriptDebuggerCodeWidgetInterface
 {
-   SCRIPT_T_CS_OBJECT(QScriptDebuggerCodeWidget)
+    SCRIPT_T_CS_OBJECT( QScriptDebuggerCodeWidget )
 
- public:
-   QScriptDebuggerCodeWidget(QWidget *parent = nullptr);
-   ~QScriptDebuggerCodeWidget();
+public:
+    QScriptDebuggerCodeWidget( QWidget *parent = nullptr );
+    ~QScriptDebuggerCodeWidget();
 
-   QScriptDebuggerScriptsModel *scriptsModel() const;
-   void setScriptsModel(QScriptDebuggerScriptsModel *model);
+    QScriptDebuggerScriptsModel *scriptsModel() const;
+    void setScriptsModel( QScriptDebuggerScriptsModel *model );
 
-   void setToolTipProvider(QScriptToolTipProviderInterface *toolTipProvider);
+    void setToolTipProvider( QScriptToolTipProviderInterface *toolTipProvider );
 
-   qint64 currentScriptId() const;
-   void setCurrentScript(qint64 scriptId);
+    qint64 currentScriptId() const;
+    void setCurrentScript( qint64 scriptId );
 
-   void invalidateExecutionLineNumbers();
+    void invalidateExecutionLineNumbers();
 
-   QScriptBreakpointsModel *breakpointsModel() const;
-   void setBreakpointsModel(QScriptBreakpointsModel *model);
+    QScriptBreakpointsModel *breakpointsModel() const;
+    void setBreakpointsModel( QScriptBreakpointsModel *model );
 
-   QScriptDebuggerCodeViewInterface *currentView() const;
+    QScriptDebuggerCodeViewInterface *currentView() const;
 
- private:
-   Q_DECLARE_PRIVATE(QScriptDebuggerCodeWidget)
-   Q_DISABLE_COPY(QScriptDebuggerCodeWidget)
+private:
+    Q_DECLARE_PRIVATE( QScriptDebuggerCodeWidget )
+    Q_DISABLE_COPY( QScriptDebuggerCodeWidget )
 
-   CS_SLOT_1(Private, void _q_onBreakpointToggleRequest(int un_named_arg1, bool un_named_arg2))
-   CS_SLOT_2(_q_onBreakpointToggleRequest)
+    CS_SLOT_1( Private, void _q_onBreakpointToggleRequest( int un_named_arg1, bool un_named_arg2 ) )
+    CS_SLOT_2( _q_onBreakpointToggleRequest )
 
-   CS_SLOT_1(Private, void _q_onBreakpointEnableRequest(int un_named_arg1, bool un_named_arg2))
-   CS_SLOT_2(_q_onBreakpointEnableRequest)
+    CS_SLOT_1( Private, void _q_onBreakpointEnableRequest( int un_named_arg1, bool un_named_arg2 ) )
+    CS_SLOT_2( _q_onBreakpointEnableRequest )
 
-   CS_SLOT_1(Private, void _q_onBreakpointsAboutToBeRemoved(const QModelIndex &un_named_arg1, int un_named_arg2, int un_named_arg3))
-   CS_SLOT_2(_q_onBreakpointsAboutToBeRemoved)
-    
-   CS_SLOT_1(Private, void _q_onBreakpointsInserted(const QModelIndex &un_named_arg1, int un_named_arg2, int un_named_arg3))
-   CS_SLOT_2(_q_onBreakpointsInserted)
-   
-   CS_SLOT_1(Private, void _q_onBreakpointsDataChanged(const QModelIndex &un_named_arg1, const QModelIndex &un_named_arg2))
-   CS_SLOT_2(_q_onBreakpointsDataChanged)   
-   
-   CS_SLOT_1(Private, void _q_onScriptsChanged())
-   CS_SLOT_2(_q_onScriptsChanged)
-   
-   CS_SLOT_1(Private, void _q_onToolTipRequest(const QPoint &un_named_arg1, int un_named_arg2, const QStringList &un_named_arg3))
-   CS_SLOT_2(_q_onToolTipRequest)
+    CS_SLOT_1( Private, void _q_onBreakpointsAboutToBeRemoved( const QModelIndex &un_named_arg1, int un_named_arg2,
+               int un_named_arg3 ) )
+    CS_SLOT_2( _q_onBreakpointsAboutToBeRemoved )
+
+    CS_SLOT_1( Private, void _q_onBreakpointsInserted( const QModelIndex &un_named_arg1, int un_named_arg2, int un_named_arg3 ) )
+    CS_SLOT_2( _q_onBreakpointsInserted )
+
+    CS_SLOT_1( Private, void _q_onBreakpointsDataChanged( const QModelIndex &un_named_arg1, const QModelIndex &un_named_arg2 ) )
+    CS_SLOT_2( _q_onBreakpointsDataChanged )
+
+    CS_SLOT_1( Private, void _q_onScriptsChanged() )
+    CS_SLOT_2( _q_onScriptsChanged )
+
+    CS_SLOT_1( Private, void _q_onToolTipRequest( const QPoint &un_named_arg1, int un_named_arg2, const QStringList &un_named_arg3 ) )
+    CS_SLOT_2( _q_onToolTipRequest )
 
 };
 

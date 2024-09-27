@@ -29,15 +29,15 @@ SequenceType::~SequenceType()
 {
 }
 
-bool SequenceType::matches(const SequenceType::Ptr other) const
+bool SequenceType::matches( const SequenceType::Ptr other ) const
 {
-   Q_ASSERT(other);
+    Q_ASSERT( other );
 
-   return itemType()->xdtTypeMatches(other->itemType()) &&
-          cardinality().isMatch(other->cardinality());
+    return itemType()->xdtTypeMatches( other->itemType() ) &&
+           cardinality().isMatch( other->cardinality() );
 }
 
-bool SequenceType::is(const SequenceType::Ptr &other) const
+bool SequenceType::is( const SequenceType::Ptr &other ) const
 {
-   return matches(other) && other->matches(Ptr(this));
+    return matches( other ) && other->matches( Ptr( this ) );
 }

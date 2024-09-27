@@ -25,46 +25,72 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 #ifndef AccessibilityScrollbar_h
 #define AccessibilityScrollbar_h
 
 #include "AccessibilityObject.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Scrollbar;
 
-class AccessibilityScrollbar : public AccessibilityObject {
+class AccessibilityScrollbar : public AccessibilityObject
+{
 public:
-    static PassRefPtr<AccessibilityScrollbar> create(Scrollbar*);
+    static PassRefPtr<AccessibilityScrollbar> create( Scrollbar * );
 
-    Scrollbar* scrollbar() const { return m_scrollbar.get(); }
-    void setParent(AccessibilityObject* parent) { m_parent = parent; }
-    
+    Scrollbar *scrollbar() const
+    {
+        return m_scrollbar.get();
+    }
+    void setParent( AccessibilityObject *parent )
+    {
+        m_parent = parent;
+    }
+
 private:
-    AccessibilityScrollbar(Scrollbar*);
+    AccessibilityScrollbar( Scrollbar * );
 
-    virtual bool accessibilityIsIgnored() const { return false; }
-    virtual bool canSetValueAttribute() const { return true; }
-    virtual bool canSetNumericValue() const { return true; }
+    virtual bool accessibilityIsIgnored() const
+    {
+        return false;
+    }
+    virtual bool canSetValueAttribute() const
+    {
+        return true;
+    }
+    virtual bool canSetNumericValue() const
+    {
+        return true;
+    }
 
-    virtual bool isAccessibilityScrollbar() const { return true; }
-    virtual AccessibilityObject* parentObject() const { return m_parent; }
+    virtual bool isAccessibilityScrollbar() const
+    {
+        return true;
+    }
+    virtual AccessibilityObject *parentObject() const
+    {
+        return m_parent;
+    }
     virtual IntRect elementRect() const;
-    
-    virtual AccessibilityRole roleValue() const { return ScrollBarRole; }
+
+    virtual AccessibilityRole roleValue() const
+    {
+        return ScrollBarRole;
+    }
     virtual AccessibilityOrientation orientation() const;
-    virtual Document* document() const;
+    virtual Document *document() const;
     virtual bool isEnabled() const;
-    
+
     // Assumes float [0..1]
-    virtual void setValue(float);
+    virtual void setValue( float );
     virtual float valueForRange() const;
 
     RefPtr<Scrollbar> m_scrollbar;
     AccessibilityOrientation m_orientation;
-    AccessibilityObject* m_parent;
+    AccessibilityObject *m_parent;
 };
 
 } // namespace WebCore

@@ -36,28 +36,37 @@
 #include <wtf/Deque.h>
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class IDBDatabaseBackendImpl;
 
-class IDBTransactionBackendImpl : public IDBTransactionBackendInterface {
+class IDBTransactionBackendImpl : public IDBTransactionBackendInterface
+{
 public:
-    static PassRefPtr<IDBTransactionBackendImpl> create(DOMStringList* objectStores, unsigned short mode, IDBDatabaseBackendImpl*);
+    static PassRefPtr<IDBTransactionBackendImpl> create( DOMStringList *objectStores, unsigned short mode, IDBDatabaseBackendImpl * );
     virtual ~IDBTransactionBackendImpl();
 
-    virtual PassRefPtr<IDBObjectStoreBackendInterface> objectStore(const String& name, ExceptionCode&);
-    virtual unsigned short mode() const { return m_mode; }
-    virtual bool scheduleTask(PassOwnPtr<ScriptExecutionContext::Task> task, PassOwnPtr<ScriptExecutionContext::Task> abortTask);
+    virtual PassRefPtr<IDBObjectStoreBackendInterface> objectStore( const String &name, ExceptionCode & );
+    virtual unsigned short mode() const
+    {
+        return m_mode;
+    }
+    virtual bool scheduleTask( PassOwnPtr<ScriptExecutionContext::Task> task, PassOwnPtr<ScriptExecutionContext::Task> abortTask );
     virtual void didCompleteTaskEvents();
     virtual void abort();
-    virtual void setCallbacks(IDBTransactionCallbacks* callbacks) { m_callbacks = callbacks; }
+    virtual void setCallbacks( IDBTransactionCallbacks *callbacks )
+    {
+        m_callbacks = callbacks;
+    }
 
     void run();
 
 private:
-    IDBTransactionBackendImpl(DOMStringList* objectStores, unsigned short mode, IDBDatabaseBackendImpl*);
+    IDBTransactionBackendImpl( DOMStringList *objectStores, unsigned short mode, IDBDatabaseBackendImpl * );
 
-    enum State {
+    enum State
+    {
         Unused, // Created, but no tasks yet.
         StartPending, // Enqueued tasks, but SQLite transaction not yet started.
         Running, // SQLite transaction started but not yet finished.
@@ -67,8 +76,8 @@ private:
     void start();
     void commit();
 
-    void taskTimerFired(Timer<IDBTransactionBackendImpl>*);
-    void taskEventTimerFired(Timer<IDBTransactionBackendImpl>*);
+    void taskTimerFired( Timer<IDBTransactionBackendImpl> * );
+    void taskEventTimerFired( Timer<IDBTransactionBackendImpl> * );
 
     RefPtr<DOMStringList> m_objectStoreNames;
     unsigned short m_mode;

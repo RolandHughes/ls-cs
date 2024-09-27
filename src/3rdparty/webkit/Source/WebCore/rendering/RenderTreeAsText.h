@@ -30,7 +30,8 @@
 #include <wtf/Forward.h>
 #include <wtf/MathExtras.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Element;
 class FloatPoint;
@@ -41,7 +42,8 @@ class IntRect;
 class RenderObject;
 class TextStream;
 
-enum RenderAsTextBehaviorFlags {
+enum RenderAsTextBehaviorFlags
+{
     RenderAsTextBehaviorNormal = 0,
     RenderAsTextShowAllLayers = 1 << 0, // Dump all layers, not just those that would paint.
     RenderAsTextShowLayerNesting = 1 << 1, // Annotate the layer lists.
@@ -55,33 +57,39 @@ enum RenderAsTextBehaviorFlags {
 typedef unsigned RenderAsTextBehavior;
 
 // You don't need pageWidthInPixels if you don't specify RenderAsTextInPrintingMode.
-String externalRepresentation(Frame*, RenderAsTextBehavior = RenderAsTextBehaviorNormal);
-void write(TextStream&, const RenderObject&, int indent = 0, RenderAsTextBehavior = RenderAsTextBehaviorNormal);
-void writeIndent(TextStream&, int indent);
+String externalRepresentation( Frame *, RenderAsTextBehavior = RenderAsTextBehaviorNormal );
+void write( TextStream &, const RenderObject &, int indent = 0, RenderAsTextBehavior = RenderAsTextBehaviorNormal );
+void writeIndent( TextStream &, int indent );
 
-class RenderTreeAsText {
+class RenderTreeAsText
+{
 // FIXME: This is a cheesy hack to allow easy access to RenderStyle colors.  It won't be needed if we convert
 // it to use visitedDependentColor instead. (This just involves rebaselining many results though, so for now it's
 // not being done).
 public:
-static void writeRenderObject(TextStream& ts, const RenderObject& o, RenderAsTextBehavior behavior);
+    static void writeRenderObject( TextStream &ts, const RenderObject &o, RenderAsTextBehavior behavior );
 };
 
-TextStream& operator<<(TextStream&, const IntPoint&);
-TextStream& operator<<(TextStream&, const IntRect&);
-TextStream& operator<<(TextStream&, const FloatPoint&);
-TextStream& operator<<(TextStream&, const FloatSize&);
+TextStream &operator<<( TextStream &, const IntPoint & );
+TextStream &operator<<( TextStream &, const IntRect & );
+TextStream &operator<<( TextStream &, const FloatPoint & );
+TextStream &operator<<( TextStream &, const FloatSize & );
 
 template<typename Item>
-TextStream& operator<<(TextStream& ts, const Vector<Item>& vector)
+TextStream &operator<<( TextStream &ts, const Vector<Item> &vector )
 {
     ts << "[";
 
     unsigned size = vector.size();
-    for (unsigned i = 0; i < size; ++i) {
+
+    for ( unsigned i = 0; i < size; ++i )
+    {
         ts << vector[i];
-        if (i < size - 1)
+
+        if ( i < size - 1 )
+        {
             ts << ", ";
+        }
     }
 
     ts << "]";
@@ -89,13 +97,13 @@ TextStream& operator<<(TextStream& ts, const Vector<Item>& vector)
 }
 
 // Helper function shared with SVGRenderTreeAsText
-String quoteAndEscapeNonPrintables(const String&);
+String quoteAndEscapeNonPrintables( const String & );
 
-String counterValueForElement(Element*);
+String counterValueForElement( Element * );
 
-String markerTextForListItem(Element*);
+String markerTextForListItem( Element * );
 
-bool hasFractions(double val);
+bool hasFractions( double val );
 
 } // namespace WebCore
 

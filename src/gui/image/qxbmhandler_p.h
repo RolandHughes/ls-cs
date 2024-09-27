@@ -32,34 +32,35 @@
 
 class QXbmHandler : public QImageIOHandler
 {
- public:
-   QXbmHandler();
+public:
+    QXbmHandler();
 
-   bool canRead() override;
-   bool read(QImage *image) override;
-   bool write(const QImage &image) override;
+    bool canRead() override;
+    bool read( QImage *image ) override;
+    bool write( const QImage &image ) override;
 
-   QString name() const override;
+    QString name() const override;
 
-   static bool canRead(QIODevice *device);
+    static bool canRead( QIODevice *device );
 
-   QVariant option(ImageOption option) override;
-   void setOption(ImageOption option, const QVariant &value) override;
-   bool supportsOption(ImageOption option) const override;
+    QVariant option( ImageOption option ) override;
+    void setOption( ImageOption option, const QVariant &value ) override;
+    bool supportsOption( ImageOption option ) const override;
 
- private:
-   bool readHeader();
+private:
+    bool readHeader();
 
-   enum State {
-      Ready,
-      ReadHeader,
-      Error
-   };
-   State state;
+    enum State
+    {
+        Ready,
+        ReadHeader,
+        Error
+    };
+    State state;
 
-   int width;
-   int height;
-   QString fileName;
+    int width;
+    int height;
+    QString fileName;
 };
 
 

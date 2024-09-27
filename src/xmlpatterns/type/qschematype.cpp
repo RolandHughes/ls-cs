@@ -35,23 +35,24 @@ SchemaType::~SchemaType()
 
 bool SchemaType::isSimpleType() const
 {
-   switch (category()) {
-      case SimpleTypeAtomic:
-      case SimpleTypeList:
-      case SimpleTypeUnion:
-         return true;
+    switch ( category() )
+    {
+        case SimpleTypeAtomic:
+        case SimpleTypeList:
+        case SimpleTypeUnion:
+            return true;
 
-      default:
-         return false;
-   }
+        default:
+            return false;
+    }
 }
 
 bool SchemaType::isComplexType() const
 {
-   return category() == ComplexType;
+    return category() == ComplexType;
 }
 
 bool SchemaType::isDefinedBySchema() const
 {
-   return false;
+    return false;
 }

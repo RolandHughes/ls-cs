@@ -23,20 +23,25 @@
 
 #include "StringObject.h"
 
-namespace JSC {
+namespace JSC
+{
 
-    class ObjectPrototype;
+class ObjectPrototype;
 
-    class StringPrototype : public StringObject {
-    public:
-        StringPrototype(ExecState*, NonNullPassRefPtr<Structure>);
+class StringPrototype : public StringObject
+{
+public:
+    StringPrototype( ExecState *, NonNullPassRefPtr<Structure> );
 
-        virtual bool getOwnPropertySlot(ExecState*, const Identifier& propertyName, PropertySlot&);
-        virtual bool getOwnPropertyDescriptor(ExecState*, const Identifier&, PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( ExecState *, const Identifier &propertyName, PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( ExecState *, const Identifier &, PropertyDescriptor & );
 
-        virtual const ClassInfo* classInfo() const { return &info; }
-        static const ClassInfo info;
-    };
+    virtual const ClassInfo *classInfo() const
+    {
+        return &info;
+    }
+    static const ClassInfo info;
+};
 
 } // namespace JSC
 

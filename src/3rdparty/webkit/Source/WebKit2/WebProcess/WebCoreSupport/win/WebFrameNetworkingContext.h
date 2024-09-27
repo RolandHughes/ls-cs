@@ -24,22 +24,23 @@
 #include <WebCore/ResourceError.h>
 #include <WebCore/ResourceRequest.h>
 
-class WebFrameNetworkingContext : public WebCore::FrameNetworkingContext {
+class WebFrameNetworkingContext : public WebCore::FrameNetworkingContext
+{
 public:
-    static PassRefPtr<WebFrameNetworkingContext> create(WebCore::Frame* frame)
+    static PassRefPtr<WebFrameNetworkingContext> create( WebCore::Frame *frame )
     {
-        return adoptRef(new WebFrameNetworkingContext(frame));
+        return adoptRef( new WebFrameNetworkingContext( frame ) );
     }
 
 private:
-    WebFrameNetworkingContext(WebCore::Frame* frame)
-        : WebCore::FrameNetworkingContext(frame)
+    WebFrameNetworkingContext( WebCore::Frame *frame )
+        : WebCore::FrameNetworkingContext( frame )
     {
     }
 
     virtual WTF::String userAgent() const;
     virtual WTF::String referrer() const;
-    virtual WebCore::ResourceError blockedError(const WebCore::ResourceRequest&) const;
+    virtual WebCore::ResourceError blockedError( const WebCore::ResourceRequest & ) const;
 
     WTF::String m_userAgent;
 };

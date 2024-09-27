@@ -28,53 +28,61 @@
 
 #include <JavaScriptCore/JSObjectWithGlobalObject.h>
 
-typedef void* NPIdentifier;
+typedef void *NPIdentifier;
 struct NPObject;
 
-namespace WebKit {
+namespace WebKit
+{
 
 class NPRuntimeObjectMap;
-    
+
 // JSNPObject is a JSObject that wraps an NPObject.
 
-class JSNPObject : public JSC::JSObjectWithGlobalObject {
+class JSNPObject : public JSC::JSObjectWithGlobalObject
+{
 public:
-    JSNPObject(JSC::JSGlobalObject*, NPRuntimeObjectMap* objectMap, NPObject* npObject);
+    JSNPObject( JSC::JSGlobalObject *, NPRuntimeObjectMap *objectMap, NPObject *npObject );
     ~JSNPObject();
 
     void invalidate();
 
-    JSC::JSValue callMethod(JSC::ExecState*, NPIdentifier methodName);
-    JSC::JSValue callObject(JSC::ExecState*);
-    JSC::JSValue callConstructor(JSC::ExecState*);
+    JSC::JSValue callMethod( JSC::ExecState *, NPIdentifier methodName );
+    JSC::JSValue callObject( JSC::ExecState * );
+    JSC::JSValue callConstructor( JSC::ExecState * );
 
     static const JSC::ClassInfo s_info;
 
-    NPObject* npObject() const { return m_npObject; }
-
-private:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::OverridesGetPropertyNames | JSObject::StructureFlags;
-    
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    NPObject *npObject() const
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return m_npObject;
     }
 
-    virtual JSC::CallType getCallData(JSC::CallData&);
-    virtual JSC::ConstructType getConstructData(JSC::ConstructData&);
+private:
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::OverridesGetPropertyNames |
+                                           JSObject::StructureFlags;
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
-    virtual void put(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::JSValue, JSC::PutPropertySlot&);
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
+    {
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
+    }
 
-    virtual void getOwnPropertyNames(JSC::ExecState*, JSC::PropertyNameArray&, JSC::EnumerationMode mode = JSC::ExcludeDontEnumProperties);
+    virtual JSC::CallType getCallData( JSC::CallData & );
+    virtual JSC::ConstructType getConstructData( JSC::ConstructData & );
 
-    static JSC::JSValue propertyGetter(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-    static JSC::JSValue methodGetter(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-    static JSC::JSObject* throwInvalidAccessError(JSC::ExecState*);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
+    virtual void put( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::JSValue, JSC::PutPropertySlot & );
 
-    NPRuntimeObjectMap* m_objectMap;
-    NPObject* m_npObject;
+    virtual void getOwnPropertyNames( JSC::ExecState *, JSC::PropertyNameArray &,
+                                      JSC::EnumerationMode mode = JSC::ExcludeDontEnumProperties );
+
+    static JSC::JSValue propertyGetter( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+    static JSC::JSValue methodGetter( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+    static JSC::JSObject *throwInvalidAccessError( JSC::ExecState * );
+
+    NPRuntimeObjectMap *m_objectMap;
+    NPObject *m_npObject;
 };
 
 } // namespace WebKit

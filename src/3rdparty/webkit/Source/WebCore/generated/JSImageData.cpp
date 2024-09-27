@@ -26,9 +26,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSImageData);
+ASSERT_CLASS_FITS_IN_CELL( JSImageData );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -39,10 +40,10 @@ ASSERT_CLASS_FITS_IN_CELL(JSImageData);
 
 static const HashTableValue JSImageDataTableValues[4] =
 {
-    { "width", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsImageDataWidth), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "height", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsImageDataHeight), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsImageDataConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "width", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsImageDataWidth ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "height", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsImageDataHeight ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsImageDataConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -56,43 +57,49 @@ static JSC_CONST_HASHTABLE HashTable JSImageDataTable = { 9, 7, JSImageDataTable
 
 static const HashTableValue JSImageDataConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSImageDataConstructorTable = { 1, 0, JSImageDataConstructorTableValues, 0 };
-class JSImageDataConstructor : public DOMConstructorObject {
+class JSImageDataConstructor : public DOMConstructorObject
+{
 public:
-    JSImageDataConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSImageDataConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSImageDataConstructor::s_info = { "ImageDataConstructor", &DOMConstructorObject::s_info, &JSImageDataConstructorTable, 0 };
 
-JSImageDataConstructor::JSImageDataConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSImageDataConstructor::JSImageDataConstructor( ExecState *exec, Structure *structure, JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSImageDataPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSImageDataPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSImageDataConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSImageDataConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSImageDataConstructor, JSDOMWrapper>(exec, &JSImageDataConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSImageDataConstructor, JSDOMWrapper>( exec, &JSImageDataConstructorTable, this, propertyName, slot );
 }
 
-bool JSImageDataConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSImageDataConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSImageDataConstructor, JSDOMWrapper>(exec, &JSImageDataConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSImageDataConstructor, JSDOMWrapper>( exec, &JSImageDataConstructorTable, this, propertyName,
+            descriptor );
 }
 
 /* Hash table for prototype */
@@ -104,76 +111,77 @@ bool JSImageDataConstructor::getOwnPropertyDescriptor(ExecState* exec, const Ide
 
 static const HashTableValue JSImageDataPrototypeTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSImageDataPrototypeTable = { 1, 0, JSImageDataPrototypeTableValues, 0 };
 const ClassInfo JSImageDataPrototype::s_info = { "ImageDataPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSImageDataPrototypeTable, 0 };
 
-JSObject* JSImageDataPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSImageDataPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSImageData>(exec, globalObject);
+    return getDOMPrototype<JSImageData>( exec, globalObject );
 }
 
 const ClassInfo JSImageData::s_info = { "ImageData", &JSDOMWrapper::s_info, &JSImageDataTable, 0 };
 
-JSImageData::JSImageData(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<ImageData> impl)
-    : JSDOMWrapper(structure, globalObject)
-    , m_impl(impl)
+JSImageData::JSImageData( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<ImageData> impl )
+    : JSDOMWrapper( structure, globalObject )
+    , m_impl( impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSImageData::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSImageData::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSImageDataPrototype(exec->globalData(), globalObject, JSImageDataPrototype::createStructure(globalObject->globalData(), globalObject->objectPrototype()));
+    return new ( exec ) JSImageDataPrototype( exec->globalData(), globalObject,
+            JSImageDataPrototype::createStructure( globalObject->globalData(), globalObject->objectPrototype() ) );
 }
 
-bool JSImageData::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSImageData::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSImageData, Base>(exec, &JSImageDataTable, this, propertyName, slot);
+    return getStaticValueSlot<JSImageData, Base>( exec, &JSImageDataTable, this, propertyName, slot );
 }
 
-bool JSImageData::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSImageData::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSImageData, Base>(exec, &JSImageDataTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSImageData, Base>( exec, &JSImageDataTable, this, propertyName, descriptor );
 }
 
-JSValue jsImageDataWidth(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsImageDataWidth( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSImageData* castedThis = static_cast<JSImageData*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    ImageData* imp = static_cast<ImageData*>(castedThis->impl());
-    JSValue result = jsNumber(imp->width());
+    JSImageData *castedThis = static_cast<JSImageData *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    ImageData *imp = static_cast<ImageData *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->width() );
     return result;
 }
 
 
-JSValue jsImageDataHeight(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsImageDataHeight( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSImageData* castedThis = static_cast<JSImageData*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    ImageData* imp = static_cast<ImageData*>(castedThis->impl());
-    JSValue result = jsNumber(imp->height());
+    JSImageData *castedThis = static_cast<JSImageData *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    ImageData *imp = static_cast<ImageData *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->height() );
     return result;
 }
 
 
-JSValue jsImageDataConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsImageDataConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSImageData* domObject = static_cast<JSImageData*>(asObject(slotBase));
-    return JSImageData::getConstructor(exec, domObject->globalObject());
+    JSImageData *domObject = static_cast<JSImageData *>( asObject( slotBase ) );
+    return JSImageData::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSImageData::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSImageData::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSImageDataConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSImageDataConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
-ImageData* toImageData(JSC::JSValue value)
+ImageData *toImageData( JSC::JSValue value )
 {
-    return value.inherits(&JSImageData::s_info) ? static_cast<JSImageData*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSImageData::s_info ) ? static_cast<JSImageData *>( asObject( value ) )->impl() : 0;
 }
 
 }

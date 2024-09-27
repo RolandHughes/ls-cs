@@ -21,7 +21,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef Uint32Array_h
@@ -29,32 +29,43 @@
 
 #include "IntegralTypedArrayBase.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class ArrayBuffer;
 
-class Uint32Array : public IntegralTypedArrayBase<unsigned int> {
+class Uint32Array : public IntegralTypedArrayBase<unsigned int>
+{
 public:
-    static PassRefPtr<Uint32Array> create(unsigned length);
-    static PassRefPtr<Uint32Array> create(unsigned int* array, unsigned length);
-    static PassRefPtr<Uint32Array> create(PassRefPtr<ArrayBuffer> buffer, unsigned byteOffset, unsigned length);
+    static PassRefPtr<Uint32Array> create( unsigned length );
+    static PassRefPtr<Uint32Array> create( unsigned int *array, unsigned length );
+    static PassRefPtr<Uint32Array> create( PassRefPtr<ArrayBuffer> buffer, unsigned byteOffset, unsigned length );
 
     // Can’t use "using" here due to a bug in the RVCT compiler.
-    void set(TypedArrayBase<unsigned int>* array, unsigned offset, ExceptionCode& ec) { TypedArrayBase<unsigned int>::set(array, offset, ec); }
-    void set(unsigned index, double value) { IntegralTypedArrayBase<unsigned int>::set(index, value); }
+    void set( TypedArrayBase<unsigned int> *array, unsigned offset, ExceptionCode &ec )
+    {
+        TypedArrayBase<unsigned int>::set( array, offset, ec );
+    }
+    void set( unsigned index, double value )
+    {
+        IntegralTypedArrayBase<unsigned int>::set( index, value );
+    }
 
-    PassRefPtr<Uint32Array> subarray(int start) const;
-    PassRefPtr<Uint32Array> subarray(int start, int end) const;
+    PassRefPtr<Uint32Array> subarray( int start ) const;
+    PassRefPtr<Uint32Array> subarray( int start, int end ) const;
 
 private:
-    Uint32Array(PassRefPtr<ArrayBuffer> buffer,
-                          unsigned byteOffset,
-                          unsigned length);
+    Uint32Array( PassRefPtr<ArrayBuffer> buffer,
+                 unsigned byteOffset,
+                 unsigned length );
     // Make constructor visible to superclass.
     friend class TypedArrayBase<unsigned int>;
 
     // Overridden from ArrayBufferView.
-    virtual bool isUnsignedIntArray() const { return true; }
+    virtual bool isUnsignedIntArray() const
+    {
+        return true;
+    }
 };
 
 } // namespace WebCore

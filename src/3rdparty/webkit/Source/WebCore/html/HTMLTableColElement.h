@@ -28,25 +28,33 @@
 
 #include "HTMLTablePartElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class HTMLTableColElement : public HTMLTablePartElement {
+class HTMLTableColElement : public HTMLTablePartElement
+{
 public:
-    static PassRefPtr<HTMLTableColElement> create(const QualifiedName& tagName, Document*);
+    static PassRefPtr<HTMLTableColElement> create( const QualifiedName &tagName, Document * );
 
-    int span() const { return m_span; }
-    void setSpan(int);
+    int span() const
+    {
+        return m_span;
+    }
+    void setSpan( int );
 
     String width() const;
 
 private:
-    HTMLTableColElement(const QualifiedName& tagName, Document*);
+    HTMLTableColElement( const QualifiedName &tagName, Document * );
 
-    virtual bool mapToEntry(const QualifiedName&, MappedAttributeEntry&) const;
-    virtual void parseMappedAttribute(Attribute*);
-    virtual bool canHaveAdditionalAttributeStyleDecls() const { return true; }
-    virtual void additionalAttributeStyleDecls(Vector<CSSMutableStyleDeclaration*>&);
-   
+    virtual bool mapToEntry( const QualifiedName &, MappedAttributeEntry & ) const;
+    virtual void parseMappedAttribute( Attribute * );
+    virtual bool canHaveAdditionalAttributeStyleDecls() const
+    {
+        return true;
+    }
+    virtual void additionalAttributeStyleDecls( Vector<CSSMutableStyleDeclaration *> & );
+
     int m_span;
 };
 

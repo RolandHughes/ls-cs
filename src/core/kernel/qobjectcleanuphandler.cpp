@@ -29,45 +29,48 @@ QObjectCleanupHandler::QObjectCleanupHandler()
 
 QObjectCleanupHandler::~QObjectCleanupHandler()
 {
-   clear();
+    clear();
 }
 
-QObject *QObjectCleanupHandler::add(QObject *object)
+QObject *QObjectCleanupHandler::add( QObject *object )
 {
-   if (! object) {
-      return nullptr;
-   }
+    if ( ! object )
+    {
+        return nullptr;
+    }
 
-   connect(object, &QObject::destroyed, this, &QObjectCleanupHandler::objectDestroyed);
-   cleanupObjects.insert(0, object);
+    connect( object, &QObject::destroyed, this, &QObjectCleanupHandler::objectDestroyed );
+    cleanupObjects.insert( 0, object );
 
-   return object;
+    return object;
 }
 
-void QObjectCleanupHandler::remove(QObject *object)
+void QObjectCleanupHandler::remove( QObject *object )
 {
-   int index;
+    int index;
 
-   if ((index = cleanupObjects.indexOf(object)) != -1) {
-      cleanupObjects.removeAt(index);
-      disconnect(object, &QObject::destroyed, this, &QObjectCleanupHandler::objectDestroyed);
-   }
+    if ( ( index = cleanupObjects.indexOf( object ) ) != -1 )
+    {
+        cleanupObjects.removeAt( index );
+        disconnect( object, &QObject::destroyed, this, &QObjectCleanupHandler::objectDestroyed );
+    }
 }
 
 bool QObjectCleanupHandler::isEmpty() const
 {
-   return cleanupObjects.isEmpty();
+    return cleanupObjects.isEmpty();
 }
 
 void QObjectCleanupHandler::clear()
 {
-   while (!cleanupObjects.isEmpty()) {
-      delete cleanupObjects.takeFirst();
-   }
+    while ( !cleanupObjects.isEmpty() )
+    {
+        delete cleanupObjects.takeFirst();
+    }
 }
 
-void QObjectCleanupHandler::objectDestroyed(QObject *object)
+void QObjectCleanupHandler::objectDestroyed( QObject *object )
 {
-   remove(object);
+    remove( object );
 }
 

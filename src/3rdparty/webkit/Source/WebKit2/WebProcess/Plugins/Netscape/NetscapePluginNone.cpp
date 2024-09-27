@@ -31,7 +31,8 @@
 
 using namespace WebCore;
 
-namespace WebKit {
+namespace WebKit
+{
 
 bool NetscapePlugin::platformPostInitialize()
 {
@@ -42,7 +43,7 @@ void NetscapePlugin::platformDestroy()
 {
 }
 
-bool NetscapePlugin::platformInvalidate(const IntRect&)
+bool NetscapePlugin::platformInvalidate( const IntRect & )
 {
     return false;
 }
@@ -51,35 +52,35 @@ void NetscapePlugin::platformGeometryDidChange()
 {
 }
 
-void NetscapePlugin::platformPaint(GraphicsContext*, const IntRect&, bool)
+void NetscapePlugin::platformPaint( GraphicsContext *, const IntRect &, bool )
 {
 }
 
-bool NetscapePlugin::platformHandleMouseEvent(const WebMouseEvent&)
-{
-    return false;
-}
-
-bool NetscapePlugin::platformHandleWheelEvent(const WebWheelEvent&)
+bool NetscapePlugin::platformHandleMouseEvent( const WebMouseEvent & )
 {
     return false;
 }
 
-void NetscapePlugin::platformSetFocus(bool)
-{
-}
-
-bool NetscapePlugin::platformHandleMouseEnterEvent(const WebMouseEvent&)
+bool NetscapePlugin::platformHandleWheelEvent( const WebWheelEvent & )
 {
     return false;
 }
 
-bool NetscapePlugin::platformHandleMouseLeaveEvent(const WebMouseEvent&)
+void NetscapePlugin::platformSetFocus( bool )
+{
+}
+
+bool NetscapePlugin::platformHandleMouseEnterEvent( const WebMouseEvent & )
 {
     return false;
 }
 
-bool NetscapePlugin::platformHandleKeyboardEvent(const WebKeyboardEvent& event)
+bool NetscapePlugin::platformHandleMouseLeaveEvent( const WebMouseEvent & )
+{
+    return false;
+}
+
+bool NetscapePlugin::platformHandleKeyboardEvent( const WebKeyboardEvent &event )
 {
     return false;
 }

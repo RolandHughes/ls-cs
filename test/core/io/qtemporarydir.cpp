@@ -21,42 +21,42 @@
 
 #include <cs_catch2.h>
 
-TEST_CASE("QTemporaryDir traits", "[qtemporarydir]")
+TEST_CASE( "QTemporaryDir traits", "[qtemporarydir]" )
 {
-   REQUIRE(std::is_copy_constructible_v<QTemporaryDir> == false);
-   REQUIRE(std::is_move_constructible_v<QTemporaryDir> == false);
+    REQUIRE( std::is_copy_constructible_v<QTemporaryDir> == false );
+    REQUIRE( std::is_move_constructible_v<QTemporaryDir> == false );
 
-   REQUIRE(std::is_copy_assignable_v<QTemporaryDir> == false);
-   REQUIRE(std::is_move_assignable_v<QTemporaryDir> == false);
+    REQUIRE( std::is_copy_assignable_v<QTemporaryDir> == false );
+    REQUIRE( std::is_move_assignable_v<QTemporaryDir> == false );
 
-   REQUIRE(std::has_virtual_destructor_v<QTemporaryDir> == false);
+    REQUIRE( std::has_virtual_destructor_v<QTemporaryDir> == false );
 }
 
-TEST_CASE("QTemporaryDir auto_remove", "[qtemporarydir]")
+TEST_CASE( "QTemporaryDir auto_remove", "[qtemporarydir]" )
 {
-   QTemporaryDir tmpDir;
+    QTemporaryDir tmpDir;
 
-   tmpDir.setAutoRemove(false);
-   REQUIRE(tmpDir.autoRemove() == false);
+    tmpDir.setAutoRemove( false );
+    REQUIRE( tmpDir.autoRemove() == false );
 
-   tmpDir.setAutoRemove(true);
-   REQUIRE(tmpDir.autoRemove() == true);
+    tmpDir.setAutoRemove( true );
+    REQUIRE( tmpDir.autoRemove() == true );
 }
 
-TEST_CASE("QTemporaryDir constructor", "[qtemporarydir]")
+TEST_CASE( "QTemporaryDir constructor", "[qtemporarydir]" )
 {
-   QTemporaryDir tmpDir;
-   QString tmpPath = QDir::tempPath();
+    QTemporaryDir tmpDir;
+    QString tmpPath = QDir::tempPath();
 
-   REQUIRE(tmpDir.path().left(tmpPath.size()) == tmpPath);
-   REQUIRE(QFileInfo(tmpDir.path()).isDir() == true);
-   REQUIRE(tmpDir.errorString() == QString());
+    REQUIRE( tmpDir.path().left( tmpPath.size() ) == tmpPath );
+    REQUIRE( QFileInfo( tmpDir.path() ).isDir() == true );
+    REQUIRE( tmpDir.errorString() == QString() );
 }
 
-TEST_CASE("QTemporaryDir remove", "[qtemporarydir]")
+TEST_CASE( "QTemporaryDir remove", "[qtemporarydir]" )
 {
-   QTemporaryDir tmpDir;
+    QTemporaryDir tmpDir;
 
-   REQUIRE(tmpDir.isValid() == true);
-   REQUIRE(tmpDir.remove() == true);
+    REQUIRE( tmpDir.isValid() == true );
+    REQUIRE( tmpDir.remove() == true );
 }

@@ -33,65 +33,73 @@
 #include <dsvideo_renderer.h>
 #include <dsvideo_devicecontrol.h>
 
-DSCameraService::DSCameraService(QObject *parent)
-   : QMediaService(parent), m_videoRenderer(nullptr)
+DSCameraService::DSCameraService( QObject *parent )
+    : QMediaService( parent ), m_videoRenderer( nullptr )
 {
-   m_session      = new DSCameraSession(this);
-   m_control      = new DSCameraControl(m_session);
-   m_videoDevice  = new DSVideoDeviceControl(m_session);
-   m_imageCapture = new DSImageCaptureControl(m_session);
-   m_viewfinderSettings     = new DSCameraViewfinderSettingsControl(m_session);
-   m_imageProcessingControl = new DSCameraImageProcessingControl(m_session);
+    m_session      = new DSCameraSession( this );
+    m_control      = new DSCameraControl( m_session );
+    m_videoDevice  = new DSVideoDeviceControl( m_session );
+    m_imageCapture = new DSImageCaptureControl( m_session );
+    m_viewfinderSettings     = new DSCameraViewfinderSettingsControl( m_session );
+    m_imageProcessingControl = new DSCameraImageProcessingControl( m_session );
 }
 
 DSCameraService::~DSCameraService()
 {
-   delete m_control;
-   delete m_viewfinderSettings;
-   delete m_imageProcessingControl;
-   delete m_videoDevice;
-   delete m_videoRenderer;
-   delete m_imageCapture;
-   delete m_session;
+    delete m_control;
+    delete m_viewfinderSettings;
+    delete m_imageProcessingControl;
+    delete m_videoDevice;
+    delete m_videoRenderer;
+    delete m_imageCapture;
+    delete m_session;
 }
 
-QMediaControl *DSCameraService::requestControl(const QString &name)
+QMediaControl *DSCameraService::requestControl( const QString &name )
 {
-   if (name == QCameraControl_iid) {
-      return m_control;
-   }
+    if ( name == QCameraControl_iid )
+    {
+        return m_control;
+    }
 
-   if (name == QCameraImageCaptureControl_iid) {
-      return m_imageCapture;
-   }
+    if ( name == QCameraImageCaptureControl_iid )
+    {
+        return m_imageCapture;
+    }
 
-   if (name == QVideoRendererControl_iid) {
-      if (! m_videoRenderer) {
-         m_videoRenderer = new DSVideoRendererControl(m_session, this);
-         return m_videoRenderer;
-      }
-   }
+    if ( name == QVideoRendererControl_iid )
+    {
+        if ( ! m_videoRenderer )
+        {
+            m_videoRenderer = new DSVideoRendererControl( m_session, this );
+            return m_videoRenderer;
+        }
+    }
 
-   if (name == QVideoDeviceSelectorControl_iid) {
-      return m_videoDevice;
-   }
+    if ( name == QVideoDeviceSelectorControl_iid )
+    {
+        return m_videoDevice;
+    }
 
-   if (name ==  QCameraViewfinderSettingsControl2_iid) {
-      return m_viewfinderSettings;
-   }
+    if ( name ==  QCameraViewfinderSettingsControl2_iid )
+    {
+        return m_viewfinderSettings;
+    }
 
-   if (name == QCameraImageProcessingControl_iid) {
-      return m_imageProcessingControl;
-   }
+    if ( name == QCameraImageProcessingControl_iid )
+    {
+        return m_imageProcessingControl;
+    }
 
-   return nullptr;
+    return nullptr;
 }
 
-void DSCameraService::releaseControl(QMediaControl *control)
+void DSCameraService::releaseControl( QMediaControl *control )
 {
-   if (control == m_videoRenderer) {
-      delete m_videoRenderer;
-      m_videoRenderer = nullptr;
-      return;
-   }
+    if ( control == m_videoRenderer )
+    {
+        delete m_videoRenderer;
+        m_videoRenderer = nullptr;
+        return;
+    }
 }

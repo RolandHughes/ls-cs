@@ -28,31 +28,37 @@
 
 #include "RunLoop.h"
 
-namespace WebKit {
+namespace WebKit
+{
 
-class ResponsivenessTimer {
+class ResponsivenessTimer
+{
 public:
-    class Client {
+    class Client
+    {
     public:
         virtual ~Client() { }
-        virtual void didBecomeUnresponsive(ResponsivenessTimer*) = 0;
-        virtual void didBecomeResponsive(ResponsivenessTimer*) = 0;
+        virtual void didBecomeUnresponsive( ResponsivenessTimer * ) = 0;
+        virtual void didBecomeResponsive( ResponsivenessTimer * ) = 0;
     };
 
-    ResponsivenessTimer(ResponsivenessTimer::Client*);
+    ResponsivenessTimer( ResponsivenessTimer::Client * );
     ~ResponsivenessTimer();
-    
+
     void start();
     void stop();
 
     void invalidate();
-    
-    bool isResponsive() { return m_isResponsive; }
+
+    bool isResponsive()
+    {
+        return m_isResponsive;
+    }
 
 private:
     void timerFired();
 
-    ResponsivenessTimer::Client* m_client;
+    ResponsivenessTimer::Client *m_client;
     bool m_isResponsive;
 
     RunLoop::Timer<ResponsivenessTimer> m_timer;

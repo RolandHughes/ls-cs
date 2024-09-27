@@ -28,8 +28,8 @@
 #if defined(QT_OPENGL_ES_2)
 
 QOpenGLFunctions_ES2::QOpenGLFunctions_ES2()
- : QAbstractOpenGLFunctions()
- , d_es2(0)
+    : QAbstractOpenGLFunctions()
+    , d_es2( 0 )
 {
 }
 
@@ -40,30 +40,39 @@ QOpenGLFunctions_ES2::~QOpenGLFunctions_ES2()
 bool QOpenGLFunctions_ES2::initializeOpenGLFunctions()
 {
     if ( isInitialized() )
+    {
         return true;
+    }
 
-    QOpenGLContext* context = QOpenGLContext::currentContext();
+    QOpenGLContext *context = QOpenGLContext::currentContext();
 
     // If owned by a context object make sure it is current.
     // Also check that current context is compatible
-    if (((owningContext() && owningContext() == context) || !owningContext())
-        && QOpenGLFunctions_ES2::isContextCompatible(context))
+    if ( ( ( owningContext() && owningContext() == context ) || !owningContext() )
+            && QOpenGLFunctions_ES2::isContextCompatible( context ) )
     {
         // Nothing to do, just flag that we are initialized
         QAbstractOpenGLFunctions::initializeOpenGLFunctions();
     }
+
     return isInitialized();
 }
 
-bool QOpenGLFunctions_ES2::isContextCompatible(QOpenGLContext *context)
+bool QOpenGLFunctions_ES2::isContextCompatible( QOpenGLContext *context )
 {
-    Q_ASSERT(context);
+    Q_ASSERT( context );
     QSurfaceFormat f = context->format();
-    const QPair<int, int> v = qMakePair(f.majorVersion(), f.minorVersion());
-    if (v < qMakePair(2, 0))
+    const QPair<int, int> v = qMakePair( f.majorVersion(), f.minorVersion() );
+
+    if ( v < qMakePair( 2, 0 ) )
+    {
         return false;
-    if (f.renderableType() != QSurfaceFormat::OpenGLES)
+    }
+
+    if ( f.renderableType() != QSurfaceFormat::OpenGLES )
+    {
         return false;
+    }
 
     return true;
 }

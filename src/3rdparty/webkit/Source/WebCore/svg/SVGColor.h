@@ -27,60 +27,78 @@
 #include "Color.h"
 #include <wtf/PassRefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class RGBColor;
 
-class SVGColor : public CSSMutableValue {
+class SVGColor : public CSSMutableValue
+{
 public:
-    enum SVGColorType {
+    enum SVGColorType
+    {
         SVG_COLORTYPE_UNKNOWN = 0,
         SVG_COLORTYPE_RGBCOLOR = 1,
         SVG_COLORTYPE_RGBCOLOR_ICCCOLOR = 2,
         SVG_COLORTYPE_CURRENTCOLOR = 3
     };
 
-    static PassRefPtr<SVGColor> createFromString(const String& rgbColor)
+    static PassRefPtr<SVGColor> createFromString( const String &rgbColor )
     {
-        RefPtr<SVGColor> color = adoptRef(new SVGColor(SVG_COLORTYPE_RGBCOLOR));
-        color->setColor(colorFromRGBColorString(rgbColor));
+        RefPtr<SVGColor> color = adoptRef( new SVGColor( SVG_COLORTYPE_RGBCOLOR ) );
+        color->setColor( colorFromRGBColorString( rgbColor ) );
         return color.release();
     }
 
-    static PassRefPtr<SVGColor> createFromColor(const Color& rgbColor)
+    static PassRefPtr<SVGColor> createFromColor( const Color &rgbColor )
     {
-        RefPtr<SVGColor> color = adoptRef(new SVGColor(SVG_COLORTYPE_RGBCOLOR));
-        color->setColor(rgbColor);
+        RefPtr<SVGColor> color = adoptRef( new SVGColor( SVG_COLORTYPE_RGBCOLOR ) );
+        color->setColor( rgbColor );
         return color.release();
     }
 
     static PassRefPtr<SVGColor> createCurrentColor()
     {
-        return adoptRef(new SVGColor(SVG_COLORTYPE_CURRENTCOLOR));
+        return adoptRef( new SVGColor( SVG_COLORTYPE_CURRENTCOLOR ) );
     }
 
-    const Color& color() const { return m_color; }
-    const SVGColorType& colorType() const { return m_colorType; }
+    const Color &color() const
+    {
+        return m_color;
+    }
+    const SVGColorType &colorType() const
+    {
+        return m_colorType;
+    }
     PassRefPtr<RGBColor> rgbColor() const;
 
-    static Color colorFromRGBColorString(const String&);
+    static Color colorFromRGBColorString( const String & );
 
-    void setRGBColor(const String& rgbColor, ExceptionCode&);
-    void setRGBColorICCColor(const String& rgbColor, const String& iccColor, ExceptionCode&);
-    void setColor(unsigned short colorType, const String& rgbColor, const String& iccColor, ExceptionCode&);
+    void setRGBColor( const String &rgbColor, ExceptionCode & );
+    void setRGBColorICCColor( const String &rgbColor, const String &iccColor, ExceptionCode & );
+    void setColor( unsigned short colorType, const String &rgbColor, const String &iccColor, ExceptionCode & );
 
 protected:
     friend class CSSComputedStyleDeclaration;
 
-    SVGColor(const SVGColorType&);
+    SVGColor( const SVGColorType & );
     virtual ~SVGColor() { }
     virtual String cssText() const;
 
-    void setColor(const Color& color) { m_color = color; }
-    void setColorType(const SVGColorType& type) { m_colorType = type; }
+    void setColor( const Color &color )
+    {
+        m_color = color;
+    }
+    void setColorType( const SVGColorType &type )
+    {
+        m_colorType = type;
+    }
 
 private:
-    virtual bool isSVGColor() const { return true; }
+    virtual bool isSVGColor() const
+    {
+        return true;
+    }
 
     Color m_color;
     SVGColorType m_colorType;

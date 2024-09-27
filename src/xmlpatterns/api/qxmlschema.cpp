@@ -28,7 +28,7 @@
 #include <qurl.h>
 
 QXmlSchema::QXmlSchema()
-   : d(new QXmlSchemaPrivate(QXmlNamePool()))
+    : d( new QXmlSchemaPrivate( QXmlNamePool() ) )
 {
 }
 
@@ -36,66 +36,66 @@ QXmlSchema::~QXmlSchema()
 {
 }
 
-bool QXmlSchema::load(const QUrl &source)
+bool QXmlSchema::load( const QUrl &source )
 {
-   d->load(source, QString());
-   return d->isValid();
+    d->load( source, QString() );
+    return d->isValid();
 }
 
-bool QXmlSchema::load(QIODevice *source, const QUrl &documentUri)
+bool QXmlSchema::load( QIODevice *source, const QUrl &documentUri )
 {
-   d->load(source, documentUri, QString());
-   return d->isValid();
+    d->load( source, documentUri, QString() );
+    return d->isValid();
 }
 
-bool QXmlSchema::load(const QByteArray &data, const QUrl &documentUri)
+bool QXmlSchema::load( const QByteArray &data, const QUrl &documentUri )
 {
-   d->load(data, documentUri, QString());
-   return d->isValid();
+    d->load( data, documentUri, QString() );
+    return d->isValid();
 }
 
 bool QXmlSchema::isValid() const
 {
-   return d->isValid();
+    return d->isValid();
 }
 
 QXmlNamePool QXmlSchema::namePool() const
 {
-   return d->namePool();
+    return d->namePool();
 }
 
 QUrl QXmlSchema::documentUri() const
 {
-   return d->documentUri();
+    return d->documentUri();
 }
 
-void QXmlSchema::setMessageHandler(QAbstractMessageHandler *handler)
+void QXmlSchema::setMessageHandler( QAbstractMessageHandler *handler )
 {
-   d->setMessageHandler(handler);
+    d->setMessageHandler( handler );
 }
 
 QAbstractMessageHandler *QXmlSchema::messageHandler() const
 {
-   return d->messageHandler();
+    return d->messageHandler();
 }
 
-void QXmlSchema::setUriResolver(const QAbstractUriResolver *resolver)
+void QXmlSchema::setUriResolver( const QAbstractUriResolver *resolver )
 {
-   d->setUriResolver(resolver);
+    d->setUriResolver( resolver );
 }
 
 const QAbstractUriResolver *QXmlSchema::uriResolver() const
 {
-   return d->uriResolver();
+    return d->uriResolver();
 }
 
-void QXmlSchema::setNetworkAccessManager(QNetworkAccessManager *manager)
+void QXmlSchema::setNetworkAccessManager( QNetworkAccessManager *manager )
 {
-   d->setNetworkAccessManager(manager);
+    d->setNetworkAccessManager( manager );
 }
 
 QNetworkAccessManager *QXmlSchema::networkAccessManager() const
 {
-   return d->networkAccessManager();
+    return d->networkAccessManager();
 }
 

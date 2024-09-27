@@ -33,7 +33,8 @@
 
 #include "KURL.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 #if ENABLE(TOUCH_ICON_LOADING)
 #define ICON_COUNT 3
@@ -41,25 +42,27 @@ namespace WebCore {
 #define ICON_COUNT 1
 #endif
 
-enum IconType {
+enum IconType
+{
     InvalidIcon = 0,
     Favicon = 1,
     TouchIcon = 1 << 1,
     TouchPrecomposedIcon = 1 << 2
 };
 
-struct IconURL {
+struct IconURL
+{
     IconType m_iconType;
     KURL m_iconURL;
 
     IconURL()
-        : m_iconType(InvalidIcon)
+        : m_iconType( InvalidIcon )
     {
     }
 
-    IconURL(const KURL& url, IconType type)
-        : m_iconType(type)
-        , m_iconURL(url)
+    IconURL( const KURL &url, IconType type )
+        : m_iconType( type )
+        , m_iconURL( url )
     {
     }
 };
@@ -67,7 +70,7 @@ struct IconURL {
 typedef Vector<IconURL, ICON_COUNT> IconURLs;
 
 // Returns the index of the given type, 0 is returned if the type is invalid.
-size_t toIconIndex(IconType);
+size_t toIconIndex( IconType );
 
 }
 

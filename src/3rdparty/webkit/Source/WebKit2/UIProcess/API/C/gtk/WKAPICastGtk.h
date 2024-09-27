@@ -33,9 +33,10 @@
 
 typedef struct _WebKitWebViewBase WebKitWebViewBase;
 
-namespace WebKit {
+namespace WebKit
+{
 
-WK_ADD_API_MAPPING(WKViewRef, WebKitWebViewBase)
+WK_ADD_API_MAPPING( WKViewRef, WebKitWebViewBase )
 
 }
 

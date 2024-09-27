@@ -27,26 +27,29 @@
 #include "DynamicNodeList.h"
 #include <wtf/text/AtomicString.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-    // NodeList that limits to a particular tag.
-    class TagNodeList : public DynamicNodeList {
-    public:
-        static PassRefPtr<TagNodeList> create(PassRefPtr<Node> rootNode, const AtomicString& namespaceURI, const AtomicString& localName)
-        {
-            return adoptRef(new TagNodeList(rootNode, namespaceURI, localName));
-        }
+// NodeList that limits to a particular tag.
+class TagNodeList : public DynamicNodeList
+{
+public:
+    static PassRefPtr<TagNodeList> create( PassRefPtr<Node> rootNode, const AtomicString &namespaceURI,
+                                           const AtomicString &localName )
+    {
+        return adoptRef( new TagNodeList( rootNode, namespaceURI, localName ) );
+    }
 
-        virtual ~TagNodeList();
+    virtual ~TagNodeList();
 
-    private:
-        TagNodeList(PassRefPtr<Node> rootNode, const AtomicString& namespaceURI, const AtomicString& localName);
+private:
+    TagNodeList( PassRefPtr<Node> rootNode, const AtomicString &namespaceURI, const AtomicString &localName );
 
-        virtual bool nodeMatches(Element*) const;
+    virtual bool nodeMatches( Element * ) const;
 
-        AtomicString m_namespaceURI;
-        AtomicString m_localName;
-    };
+    AtomicString m_namespaceURI;
+    AtomicString m_localName;
+};
 
 } // namespace WebCore
 

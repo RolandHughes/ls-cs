@@ -31,9 +31,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSSpeechInputResult);
+ASSERT_CLASS_FITS_IN_CELL( JSSpeechInputResult );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -44,10 +45,10 @@ ASSERT_CLASS_FITS_IN_CELL(JSSpeechInputResult);
 
 static const HashTableValue JSSpeechInputResultTableValues[4] =
 {
-    { "utterance", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSpeechInputResultUtterance), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "confidence", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSpeechInputResultConfidence), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSpeechInputResultConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "utterance", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSpeechInputResultUtterance ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "confidence", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSpeechInputResultConfidence ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSpeechInputResultConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -61,43 +62,51 @@ static JSC_CONST_HASHTABLE HashTable JSSpeechInputResultTable = { 8, 7, JSSpeech
 
 static const HashTableValue JSSpeechInputResultConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSSpeechInputResultConstructorTable = { 1, 0, JSSpeechInputResultConstructorTableValues, 0 };
-class JSSpeechInputResultConstructor : public DOMConstructorObject {
+class JSSpeechInputResultConstructor : public DOMConstructorObject
+{
 public:
-    JSSpeechInputResultConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSSpeechInputResultConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSSpeechInputResultConstructor::s_info = { "SpeechInputResultConstructor", &DOMConstructorObject::s_info, &JSSpeechInputResultConstructorTable, 0 };
 
-JSSpeechInputResultConstructor::JSSpeechInputResultConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSSpeechInputResultConstructor::JSSpeechInputResultConstructor( ExecState *exec, Structure *structure,
+        JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSSpeechInputResultPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSSpeechInputResultPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSSpeechInputResultConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSpeechInputResultConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSpeechInputResultConstructor, JSDOMWrapper>(exec, &JSSpeechInputResultConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSSpeechInputResultConstructor, JSDOMWrapper>( exec, &JSSpeechInputResultConstructorTable, this,
+            propertyName, slot );
 }
 
-bool JSSpeechInputResultConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSpeechInputResultConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSpeechInputResultConstructor, JSDOMWrapper>(exec, &JSSpeechInputResultConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSpeechInputResultConstructor, JSDOMWrapper>( exec, &JSSpeechInputResultConstructorTable, this,
+            propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -109,81 +118,84 @@ bool JSSpeechInputResultConstructor::getOwnPropertyDescriptor(ExecState* exec, c
 
 static const HashTableValue JSSpeechInputResultPrototypeTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSSpeechInputResultPrototypeTable = { 1, 0, JSSpeechInputResultPrototypeTableValues, 0 };
 const ClassInfo JSSpeechInputResultPrototype::s_info = { "SpeechInputResultPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSSpeechInputResultPrototypeTable, 0 };
 
-JSObject* JSSpeechInputResultPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSpeechInputResultPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSSpeechInputResult>(exec, globalObject);
+    return getDOMPrototype<JSSpeechInputResult>( exec, globalObject );
 }
 
 const ClassInfo JSSpeechInputResult::s_info = { "SpeechInputResult", &JSDOMWrapper::s_info, &JSSpeechInputResultTable, 0 };
 
-JSSpeechInputResult::JSSpeechInputResult(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<SpeechInputResult> impl)
-    : JSDOMWrapper(structure, globalObject)
-    , m_impl(impl)
+JSSpeechInputResult::JSSpeechInputResult( Structure *structure, JSDOMGlobalObject *globalObject,
+        PassRefPtr<SpeechInputResult> impl )
+    : JSDOMWrapper( structure, globalObject )
+    , m_impl( impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSSpeechInputResult::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSpeechInputResult::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSSpeechInputResultPrototype(exec->globalData(), globalObject, JSSpeechInputResultPrototype::createStructure(globalObject->globalData(), globalObject->objectPrototype()));
+    return new ( exec ) JSSpeechInputResultPrototype( exec->globalData(), globalObject,
+            JSSpeechInputResultPrototype::createStructure( globalObject->globalData(), globalObject->objectPrototype() ) );
 }
 
-bool JSSpeechInputResult::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSpeechInputResult::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSpeechInputResult, Base>(exec, &JSSpeechInputResultTable, this, propertyName, slot);
+    return getStaticValueSlot<JSSpeechInputResult, Base>( exec, &JSSpeechInputResultTable, this, propertyName, slot );
 }
 
-bool JSSpeechInputResult::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSpeechInputResult::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSpeechInputResult, Base>(exec, &JSSpeechInputResultTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSpeechInputResult, Base>( exec, &JSSpeechInputResultTable, this, propertyName, descriptor );
 }
 
-JSValue jsSpeechInputResultUtterance(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSpeechInputResultUtterance( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSpeechInputResult* castedThis = static_cast<JSSpeechInputResult*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SpeechInputResult* imp = static_cast<SpeechInputResult*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->utterance());
+    JSSpeechInputResult *castedThis = static_cast<JSSpeechInputResult *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SpeechInputResult *imp = static_cast<SpeechInputResult *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->utterance() );
     return result;
 }
 
 
-JSValue jsSpeechInputResultConfidence(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSpeechInputResultConfidence( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSpeechInputResult* castedThis = static_cast<JSSpeechInputResult*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SpeechInputResult* imp = static_cast<SpeechInputResult*>(castedThis->impl());
-    JSValue result = jsNumber(imp->confidence());
+    JSSpeechInputResult *castedThis = static_cast<JSSpeechInputResult *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SpeechInputResult *imp = static_cast<SpeechInputResult *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->confidence() );
     return result;
 }
 
 
-JSValue jsSpeechInputResultConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSpeechInputResultConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSpeechInputResult* domObject = static_cast<JSSpeechInputResult*>(asObject(slotBase));
-    return JSSpeechInputResult::getConstructor(exec, domObject->globalObject());
+    JSSpeechInputResult *domObject = static_cast<JSSpeechInputResult *>( asObject( slotBase ) );
+    return JSSpeechInputResult::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSSpeechInputResult::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSSpeechInputResult::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSSpeechInputResultConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSSpeechInputResultConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, SpeechInputResult* impl)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, SpeechInputResult *impl )
 {
-    return wrap<JSSpeechInputResult>(exec, globalObject, impl);
+    return wrap<JSSpeechInputResult>( exec, globalObject, impl );
 }
 
-SpeechInputResult* toSpeechInputResult(JSC::JSValue value)
+SpeechInputResult *toSpeechInputResult( JSC::JSValue value )
 {
-    return value.inherits(&JSSpeechInputResult::s_info) ? static_cast<JSSpeechInputResult*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSSpeechInputResult::s_info ) ? static_cast<JSSpeechInputResult *>( asObject( value ) )->impl() : 0;
 }
 
 }

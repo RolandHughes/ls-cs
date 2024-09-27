@@ -39,12 +39,13 @@
 
 using namespace std;
 
-namespace WebCore {
-    
+namespace WebCore
+{
+
 using namespace HTMLNames;
-    
-AccessibilityTableRow::AccessibilityTableRow(RenderObject* renderer)
-    : AccessibilityRenderObject(renderer)
+
+AccessibilityTableRow::AccessibilityTableRow( RenderObject *renderer )
+    : AccessibilityRenderObject( renderer )
 {
 }
 
@@ -52,74 +53,103 @@ AccessibilityTableRow::~AccessibilityTableRow()
 {
 }
 
-PassRefPtr<AccessibilityTableRow> AccessibilityTableRow::create(RenderObject* renderer)
+PassRefPtr<AccessibilityTableRow> AccessibilityTableRow::create( RenderObject *renderer )
 {
-    return adoptRef(new AccessibilityTableRow(renderer));
+    return adoptRef( new AccessibilityTableRow( renderer ) );
 }
 
 AccessibilityRole AccessibilityTableRow::roleValue() const
 {
-    if (!isTableRow())
+    if ( !isTableRow() )
+    {
         return AccessibilityRenderObject::roleValue();
-    
+    }
+
     return RowRole;
 }
 
 bool AccessibilityTableRow::isTableRow() const
 {
-    AccessibilityObject* table = parentTable();
-    if (!table || !table->isAccessibilityTable())
+    AccessibilityObject *table = parentTable();
+
+    if ( !table || !table->isAccessibilityTable() )
+    {
         return false;
-    
+    }
+
     return true;
 }
-    
+
 bool AccessibilityTableRow::accessibilityIsIgnored() const
-{    
+{
     AccessibilityObjectInclusion decision = accessibilityIsIgnoredBase();
-    if (decision == IncludeObject)
+
+    if ( decision == IncludeObject )
+    {
         return false;
-    if (decision == IgnoreObject)
+    }
+
+    if ( decision == IgnoreObject )
+    {
         return true;
-    
-    if (!isTableRow())
+    }
+
+    if ( !isTableRow() )
+    {
         return AccessibilityRenderObject::accessibilityIsIgnored();
+    }
 
     return false;
 }
-    
-AccessibilityObject* AccessibilityTableRow::parentTable() const
+
+AccessibilityObject *AccessibilityTableRow::parentTable() const
 {
-    if (!m_renderer || !m_renderer->isTableRow())
+    if ( !m_renderer || !m_renderer->isTableRow() )
+    {
         return 0;
-    
+    }
+
     // Do not use getOrCreate. parentTable() can be called while the render tree is being modified.
-    return axObjectCache()->get(toRenderTableRow(m_renderer)->table());
+    return axObjectCache()->get( toRenderTableRow( m_renderer )->table() );
 }
-    
-AccessibilityObject* AccessibilityTableRow::headerObject()
+
+AccessibilityObject *AccessibilityTableRow::headerObject()
 {
-    if (!m_renderer || !m_renderer->isTableRow())
+    if ( !m_renderer || !m_renderer->isTableRow() )
+    {
         return 0;
-    
+    }
+
     AccessibilityChildrenVector rowChildren = children();
-    if (!rowChildren.size())
+
+    if ( !rowChildren.size() )
+    {
         return 0;
-    
+    }
+
     // check the first element in the row to see if it is a TH element
-    AccessibilityObject* cell = rowChildren[0].get();
-    if (!cell->isTableCell())
+    AccessibilityObject *cell = rowChildren[0].get();
+
+    if ( !cell->isTableCell() )
+    {
         return 0;
-    
-    RenderObject* cellRenderer = static_cast<AccessibilityTableCell*>(cell)->renderer();
-    if (!cellRenderer)
+    }
+
+    RenderObject *cellRenderer = static_cast<AccessibilityTableCell *>( cell )->renderer();
+
+    if ( !cellRenderer )
+    {
         return 0;
-    
-    Node* cellNode = cellRenderer->node();
-    if (!cellNode || !cellNode->hasTagName(thTag))
+    }
+
+    Node *cellNode = cellRenderer->node();
+
+    if ( !cellNode || !cellNode->hasTagName( thTag ) )
+    {
         return 0;
-    
+    }
+
     return cell;
 }
-    
+
 } // namespace WebCore

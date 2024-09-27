@@ -34,21 +34,21 @@ class QScriptDebuggerStackModelPrivate;
 
 class QScriptDebuggerStackModel : public QAbstractTableModel
 {
- public:
-   QScriptDebuggerStackModel(QObject *parent = nullptr);
-   ~QScriptDebuggerStackModel();
+public:
+    QScriptDebuggerStackModel( QObject *parent = nullptr );
+    ~QScriptDebuggerStackModel();
 
-   QList<QScriptContextInfo> contextInfos() const;
-   void setContextInfos(const QList<QScriptContextInfo> &infos);
+    QList<QScriptContextInfo> contextInfos() const;
+    void setContextInfos( const QList<QScriptContextInfo> &infos );
 
-   int columnCount(const QModelIndex &parent) const;
-   int rowCount(const QModelIndex &parent) const;
-   QVariant data(const QModelIndex &index, int role) const;
-   QVariant headerData(int section, Qt::Orientation, int role) const;
+    int columnCount( const QModelIndex &parent ) const;
+    int rowCount( const QModelIndex &parent ) const;
+    QVariant data( const QModelIndex &index, int role ) const;
+    QVariant headerData( int section, Qt::Orientation, int role ) const;
 
- private:
-   Q_DECLARE_PRIVATE(QScriptDebuggerStackModel)
-   Q_DISABLE_COPY(QScriptDebuggerStackModel)
+private:
+    Q_DECLARE_PRIVATE( QScriptDebuggerStackModel )
+    Q_DISABLE_COPY( QScriptDebuggerStackModel )
 };
 
 QT_END_NAMESPACE

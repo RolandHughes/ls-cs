@@ -26,8 +26,10 @@
 
 #include <qglobal.h>
 
-namespace QScript {
-namespace AST {
+namespace QScript
+{
+namespace AST
+{
 
 class Visitor;
 class Node;

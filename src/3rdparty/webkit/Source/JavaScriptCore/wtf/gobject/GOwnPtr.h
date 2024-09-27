@@ -28,107 +28,124 @@
 #include <wtf/Assertions.h>
 #include <wtf/Noncopyable.h>
 
-extern "C" void g_free(void*);
+extern "C" void g_free( void * );
 
-namespace WTF {
+namespace WTF
+{
 
-template <typename T> inline void freeOwnedGPtr(T* ptr);
-template<> void freeOwnedGPtr<GError>(GError*);
-template<> void freeOwnedGPtr<GList>(GList*);
-template<> void freeOwnedGPtr<GPatternSpec>(GPatternSpec*);
-template<> void freeOwnedGPtr<GDir>(GDir*);
+template <typename T> inline void freeOwnedGPtr( T *ptr );
+template<> void freeOwnedGPtr<GError>( GError * );
+template<> void freeOwnedGPtr<GList>( GList * );
+template<> void freeOwnedGPtr<GPatternSpec>( GPatternSpec * );
+template<> void freeOwnedGPtr<GDir>( GDir * );
 
-template <typename T> class GOwnPtr {
-    WTF_MAKE_NONCOPYABLE(GOwnPtr);
+template <typename T> class GOwnPtr
+{
+    WTF_MAKE_NONCOPYABLE( GOwnPtr );
 public:
-    explicit GOwnPtr(T* ptr = 0) : m_ptr(ptr) { }
-    ~GOwnPtr() { freeOwnedGPtr(m_ptr); }
-
-    T* get() const { return m_ptr; }
-    T* release()
+    explicit GOwnPtr( T *ptr = 0 ) : m_ptr( ptr ) { }
+    ~GOwnPtr()
     {
-        T* ptr = m_ptr;
+        freeOwnedGPtr( m_ptr );
+    }
+
+    T *get() const
+    {
+        return m_ptr;
+    }
+    T *release()
+    {
+        T *ptr = m_ptr;
         m_ptr = 0;
         return ptr;
     }
 
-    T*& outPtr()
+    T *&outPtr()
     {
-        ASSERT(!m_ptr);
+        ASSERT( !m_ptr );
         return m_ptr;
     }
 
-    void set(T* ptr)
+    void set( T *ptr )
     {
-        ASSERT(!ptr || m_ptr != ptr);
-        freeOwnedGPtr(m_ptr);
+        ASSERT( !ptr || m_ptr != ptr );
+        freeOwnedGPtr( m_ptr );
         m_ptr = ptr;
     }
 
     void clear()
     {
-        T* ptr = m_ptr;
+        T *ptr = m_ptr;
         m_ptr = 0;
-        freeOwnedGPtr(ptr);
+        freeOwnedGPtr( ptr );
     }
 
-    T& operator*() const
+    T &operator*() const
     {
-        ASSERT(m_ptr);
+        ASSERT( m_ptr );
         return *m_ptr;
     }
 
-    T* operator->() const
+    T *operator->() const
     {
-        ASSERT(m_ptr);
+        ASSERT( m_ptr );
         return m_ptr;
     }
 
-    bool operator!() const { return !m_ptr; }
+    bool operator!() const
+    {
+        return !m_ptr;
+    }
 
     // This conversion operator allows implicit conversion to bool but not to other integer types.
-    typedef T* GOwnPtr::*UnspecifiedBoolType;
-    operator UnspecifiedBoolType() const { return m_ptr ? &GOwnPtr::m_ptr : 0; }
+    typedef T *GOwnPtr::*UnspecifiedBoolType;
+    operator UnspecifiedBoolType() const
+    {
+        return m_ptr ? &GOwnPtr::m_ptr : 0;
+    }
 
-    void swap(GOwnPtr& o) { std::swap(m_ptr, o.m_ptr); }
+    void swap( GOwnPtr &o )
+    {
+        std::swap( m_ptr, o.m_ptr );
+    }
 
 private:
-    T* m_ptr;
+    T *m_ptr;
 };
 
-template <typename T> inline void swap(GOwnPtr<T>& a, GOwnPtr<T>& b)
+template <typename T> inline void swap( GOwnPtr<T> &a, GOwnPtr<T> &b )
 {
-    a.swap(b);
+    a.swap( b );
 }
 
-template <typename T, typename U> inline bool operator==(const GOwnPtr<T>& a, U* b)
-{ 
-    return a.get() == b; 
-}
-
-template <typename T, typename U> inline bool operator==(T* a, const GOwnPtr<U>& b) 
+template <typename T, typename U> inline bool operator==( const GOwnPtr<T> &a, U *b )
 {
-    return a == b.get(); 
+    return a.get() == b;
 }
 
-template <typename T, typename U> inline bool operator!=(const GOwnPtr<T>& a, U* b)
+template <typename T, typename U> inline bool operator==( T *a, const GOwnPtr<U> &b )
 {
-    return a.get() != b; 
+    return a == b.get();
 }
 
-template <typename T, typename U> inline bool operator!=(T* a, const GOwnPtr<U>& b)
-{ 
-    return a != b.get(); 
+template <typename T, typename U> inline bool operator!=( const GOwnPtr<T> &a, U *b )
+{
+    return a.get() != b;
 }
 
-template <typename T> inline typename GOwnPtr<T>::PtrType getPtr(const GOwnPtr<T>& p)
+template <typename T, typename U> inline bool operator!=( T *a, const GOwnPtr<U> &b )
+{
+    return a != b.get();
+}
+
+template <typename T> inline typename GOwnPtr<T>::PtrType getPtr( const GOwnPtr<T> &p )
 {
     return p.get();
 }
 
-template <typename T> inline void freeOwnedGPtr(T* ptr)
+template <typename T> inline void freeOwnedGPtr( T *ptr )
 {
-    g_free(ptr);
+    g_free( ptr );
 }
 
 } // namespace WTF

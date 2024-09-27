@@ -24,81 +24,87 @@
 #include "JSHTMLElement.h"
 #include <runtime/JSObjectWithGlobalObject.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class HTMLButtonElement;
 
-class JSHTMLButtonElement : public JSHTMLElement {
+class JSHTMLButtonElement : public JSHTMLElement
+{
     typedef JSHTMLElement Base;
 public:
-    JSHTMLButtonElement(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<HTMLButtonElement>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
-    virtual void put(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::JSValue, JSC::PutPropertySlot&);
+    JSHTMLButtonElement( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<HTMLButtonElement> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
+    virtual void put( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::JSValue, JSC::PutPropertySlot & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 
-class JSHTMLButtonElementPrototype : public JSC::JSObjectWithGlobalObject {
+class JSHTMLButtonElementPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSHTMLButtonElementPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSHTMLButtonElementPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                                  JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 // Functions
 
-JSC::EncodedJSValue JSC_HOST_CALL jsHTMLButtonElementPrototypeFunctionCheckValidity(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsHTMLButtonElementPrototypeFunctionSetCustomValidity(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsHTMLButtonElementPrototypeFunctionClick(JSC::ExecState*);
+JSC::EncodedJSValue JSC_HOST_CALL jsHTMLButtonElementPrototypeFunctionCheckValidity( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsHTMLButtonElementPrototypeFunctionSetCustomValidity( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsHTMLButtonElementPrototypeFunctionClick( JSC::ExecState * );
 // Attributes
 
-JSC::JSValue jsHTMLButtonElementForm(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsHTMLButtonElementFormAction(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLButtonElementFormAction(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLButtonElementFormEnctype(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLButtonElementFormEnctype(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLButtonElementFormMethod(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLButtonElementFormMethod(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLButtonElementFormNoValidate(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLButtonElementFormNoValidate(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLButtonElementFormTarget(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLButtonElementFormTarget(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLButtonElementValidity(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsHTMLButtonElementAccessKey(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLButtonElementAccessKey(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLButtonElementDisabled(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLButtonElementDisabled(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLButtonElementAutofocus(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLButtonElementAutofocus(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLButtonElementName(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLButtonElementName(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLButtonElementType(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsHTMLButtonElementValue(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLButtonElementValue(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLButtonElementWillValidate(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsHTMLButtonElementValidationMessage(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsHTMLButtonElementLabels(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsHTMLButtonElementConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsHTMLButtonElementForm( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsHTMLButtonElementFormAction( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLButtonElementFormAction( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLButtonElementFormEnctype( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLButtonElementFormEnctype( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLButtonElementFormMethod( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLButtonElementFormMethod( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLButtonElementFormNoValidate( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLButtonElementFormNoValidate( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLButtonElementFormTarget( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLButtonElementFormTarget( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLButtonElementValidity( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsHTMLButtonElementAccessKey( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLButtonElementAccessKey( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLButtonElementDisabled( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLButtonElementDisabled( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLButtonElementAutofocus( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLButtonElementAutofocus( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLButtonElementName( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLButtonElementName( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLButtonElementType( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsHTMLButtonElementValue( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLButtonElementValue( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLButtonElementWillValidate( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsHTMLButtonElementValidationMessage( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsHTMLButtonElementLabels( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsHTMLButtonElementConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

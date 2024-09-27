@@ -28,26 +28,32 @@
 #include <runtime/JSObjectWithGlobalObject.h>
 #include <runtime/ObjectPrototype.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class DOMFileSystemSync;
 
-class JSDOMFileSystemSync : public JSDOMWrapper {
+class JSDOMFileSystemSync : public JSDOMWrapper
+{
     typedef JSDOMWrapper Base;
 public:
-    JSDOMFileSystemSync(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<DOMFileSystemSync>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
+    JSDOMFileSystemSync( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<DOMFileSystemSync> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
-    DOMFileSystemSync* impl() const { return m_impl.get(); }
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
+    DOMFileSystemSync *impl() const
+    {
+        return m_impl.get();
+    }
 
 private:
     RefPtr<DOMFileSystemSync> m_impl;
@@ -55,28 +61,31 @@ protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
-JSC::JSValue toJS(JSC::ExecState*, JSDOMGlobalObject*, DOMFileSystemSync*);
-DOMFileSystemSync* toDOMFileSystemSync(JSC::JSValue);
+JSC::JSValue toJS( JSC::ExecState *, JSDOMGlobalObject *, DOMFileSystemSync * );
+DOMFileSystemSync *toDOMFileSystemSync( JSC::JSValue );
 
-class JSDOMFileSystemSyncPrototype : public JSC::JSObjectWithGlobalObject {
+class JSDOMFileSystemSyncPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSDOMFileSystemSyncPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSDOMFileSystemSyncPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                                  JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = Base::StructureFlags;
 };
 
 // Attributes
 
-JSC::JSValue jsDOMFileSystemSyncName(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsDOMFileSystemSyncRoot(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsDOMFileSystemSyncConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsDOMFileSystemSyncName( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsDOMFileSystemSyncRoot( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsDOMFileSystemSyncConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

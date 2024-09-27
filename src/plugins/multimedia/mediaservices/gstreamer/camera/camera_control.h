@@ -32,64 +32,66 @@ class CamerabinResourcePolicy;
 
 class CameraBinControl : public QCameraControl
 {
-   CS_OBJECT(CameraBinControl)
+    CS_OBJECT( CameraBinControl )
 
-   CS_PROPERTY_READ(viewfinderColorSpaceConversion, viewfinderColorSpaceConversion)
-   CS_PROPERTY_WRITE(viewfinderColorSpaceConversion, setViewfinderColorSpaceConversion)
+    CS_PROPERTY_READ( viewfinderColorSpaceConversion, viewfinderColorSpaceConversion )
+    CS_PROPERTY_WRITE( viewfinderColorSpaceConversion, setViewfinderColorSpaceConversion )
 
- public:
-   CameraBinControl( CameraBinSession *session );
-   virtual ~CameraBinControl();
+public:
+    CameraBinControl( CameraBinSession *session );
+    virtual ~CameraBinControl();
 
-   bool isValid() const {
-      return true;
-   }
+    bool isValid() const
+    {
+        return true;
+    }
 
-   QCamera::State state() const override;
-   void setState(QCamera::State state) override;
+    QCamera::State state() const override;
+    void setState( QCamera::State state ) override;
 
-   QCamera::Status status() const override;
+    QCamera::Status status() const override;
 
-   QCamera::CaptureModes captureMode() const override;
-   void setCaptureMode(QCamera::CaptureModes mode) override;
+    QCamera::CaptureModes captureMode() const override;
+    void setCaptureMode( QCamera::CaptureModes mode ) override;
 
-   bool isCaptureModeSupported(QCamera::CaptureModes mode) const override;
-   bool canChangeProperty(PropertyChangeType changeType, QCamera::Status status) const override;
-   bool viewfinderColorSpaceConversion() const;
+    bool isCaptureModeSupported( QCamera::CaptureModes mode ) const override;
+    bool canChangeProperty( PropertyChangeType changeType, QCamera::Status status ) const override;
+    bool viewfinderColorSpaceConversion() const;
 
-   CamerabinResourcePolicy *resourcePolicy() {
-      return m_resourcePolicy;
-   }
+    CamerabinResourcePolicy *resourcePolicy()
+    {
+        return m_resourcePolicy;
+    }
 
-   CS_SLOT_1(Public, void reloadLater())
-   CS_SLOT_2(reloadLater)
+    CS_SLOT_1( Public, void reloadLater() )
+    CS_SLOT_2( reloadLater )
 
-   CS_SLOT_1(Public, void setViewfinderColorSpaceConversion(bool enabled))
-   CS_SLOT_2(setViewfinderColorSpaceConversion)
+    CS_SLOT_1( Public, void setViewfinderColorSpaceConversion( bool enabled ) )
+    CS_SLOT_2( setViewfinderColorSpaceConversion )
 
- private:
-   CS_SLOT_1(Private, void delayedReload())
-   CS_SLOT_2(delayedReload)
+private:
+    CS_SLOT_1( Private, void delayedReload() )
+    CS_SLOT_2( delayedReload )
 
-   CS_SLOT_1(Private, void handleResourcesGranted())
-   CS_SLOT_2(handleResourcesGranted)
+    CS_SLOT_1( Private, void handleResourcesGranted() )
+    CS_SLOT_2( handleResourcesGranted )
 
-   CS_SLOT_1(Private, void handleResourcesLost())
-   CS_SLOT_2(handleResourcesLost)
+    CS_SLOT_1( Private, void handleResourcesLost() )
+    CS_SLOT_2( handleResourcesLost )
 
-   CS_SLOT_1(Private, void handleBusyChanged(bool busy))
-   CS_SLOT_2(handleBusyChanged)
+    CS_SLOT_1( Private, void handleBusyChanged( bool busy ) )
+    CS_SLOT_2( handleBusyChanged )
 
-   CS_SLOT_1(Private, void handleCameraError(int error, const QString &errorString))
-   CS_SLOT_2(handleCameraError)
+    CS_SLOT_1( Private, void handleCameraError( int error, const QString &errorString ) )
+    CS_SLOT_2( handleCameraError )
 
-   void updateSupportedResolutions(const QString &device);
+    void updateSupportedResolutions( const QString &device );
 
-   CameraBinSession *m_session;
-   QCamera::State m_state;
-   CamerabinResourcePolicy *m_resourcePolicy;
+    CameraBinSession *m_session;
+    QCamera::State m_state;
+    CamerabinResourcePolicy *m_resourcePolicy;
 
-   bool m_reloadPending;
+    bool m_reloadPending;
 };
 
 #endif

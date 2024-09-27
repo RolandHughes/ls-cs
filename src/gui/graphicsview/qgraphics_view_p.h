@@ -38,157 +38,167 @@
 
 class Q_GUI_EXPORT QGraphicsViewPrivate : public QAbstractScrollAreaPrivate
 {
-   Q_DECLARE_PUBLIC(QGraphicsView)
+    Q_DECLARE_PUBLIC( QGraphicsView )
 
- public:
-   QGraphicsViewPrivate();
-   ~QGraphicsViewPrivate();
+public:
+    QGraphicsViewPrivate();
+    ~QGraphicsViewPrivate();
 
-   void recalculateContentSize();
-   void centerView(QGraphicsView::ViewportAnchor anchor);
+    void recalculateContentSize();
+    void centerView( QGraphicsView::ViewportAnchor anchor );
 
-   QPainter::RenderHints renderHints;
-   QGraphicsView::DragMode dragMode;
+    QPainter::RenderHints renderHints;
+    QGraphicsView::DragMode dragMode;
 
-   quint32 sceneInteractionAllowed : 1;
-   quint32 hasSceneRect : 1;
-   quint32 connectedToScene : 1;
-   quint32 useLastMouseEvent : 1;
-   quint32 identityMatrix : 1;
-   quint32 dirtyScroll : 1;
-   quint32 accelerateScrolling : 1;
-   quint32 keepLastCenterPoint : 1;
-   quint32 transforming : 1;
-   quint32 handScrolling : 1;
-   quint32 mustAllocateStyleOptions : 1;
-   quint32 mustResizeBackgroundPixmap : 1;
-   quint32 fullUpdatePending : 1;
-   quint32 hasUpdateClip : 1;
-   quint32 padding : 18;
+    quint32 sceneInteractionAllowed : 1;
+    quint32 hasSceneRect : 1;
+    quint32 connectedToScene : 1;
+    quint32 useLastMouseEvent : 1;
+    quint32 identityMatrix : 1;
+    quint32 dirtyScroll : 1;
+    quint32 accelerateScrolling : 1;
+    quint32 keepLastCenterPoint : 1;
+    quint32 transforming : 1;
+    quint32 handScrolling : 1;
+    quint32 mustAllocateStyleOptions : 1;
+    quint32 mustResizeBackgroundPixmap : 1;
+    quint32 fullUpdatePending : 1;
+    quint32 hasUpdateClip : 1;
+    quint32 padding : 18;
 
-   QRectF sceneRect;
-   void updateLastCenterPoint();
+    QRectF sceneRect;
+    void updateLastCenterPoint();
 
-   qint64 horizontalScroll() const;
-   qint64 verticalScroll() const;
+    qint64 horizontalScroll() const;
+    qint64 verticalScroll() const;
 
-   QRectF mapRectToScene(const QRect &rect) const;
-   QRectF mapRectFromScene(const QRectF &rect) const;
+    QRectF mapRectToScene( const QRect &rect ) const;
+    QRectF mapRectFromScene( const QRectF &rect ) const;
 
-   QRect updateClip;
-   QPointF mousePressItemPoint;
-   QPointF mousePressScenePoint;
-   QPoint mousePressViewPoint;
-   QPoint mousePressScreenPoint;
-   QPointF lastMouseMoveScenePoint;
-   QPointF lastRubberbandScenePoint;
-   QPoint lastMouseMoveScreenPoint;
-   QPoint dirtyScrollOffset;
-   Qt::MouseButton mousePressButton;
-   QTransform matrix;
-   qint64 scrollX, scrollY;
-   void updateScroll();
+    QRect updateClip;
+    QPointF mousePressItemPoint;
+    QPointF mousePressScenePoint;
+    QPoint mousePressViewPoint;
+    QPoint mousePressScreenPoint;
+    QPointF lastMouseMoveScenePoint;
+    QPointF lastRubberbandScenePoint;
+    QPoint lastMouseMoveScreenPoint;
+    QPoint dirtyScrollOffset;
+    Qt::MouseButton mousePressButton;
+    QTransform matrix;
+    qint64 scrollX, scrollY;
+    void updateScroll();
 
-   qreal leftIndent;
-   qreal topIndent;
+    qreal leftIndent;
+    qreal topIndent;
 
-   // Replaying mouse events
-   QMouseEvent lastMouseEvent;
-   void replayLastMouseEvent();
-   void storeMouseEvent(QMouseEvent *event);
-   void mouseMoveEventHandler(QMouseEvent *event);
+    // Replaying mouse events
+    QMouseEvent lastMouseEvent;
+    void replayLastMouseEvent();
+    void storeMouseEvent( QMouseEvent *event );
+    void mouseMoveEventHandler( QMouseEvent *event );
 
-   QPointF lastCenterPoint;
-   Qt::Alignment alignment;
+    QPointF lastCenterPoint;
+    Qt::Alignment alignment;
 
-   QGraphicsView::ViewportAnchor transformationAnchor;
-   QGraphicsView::ViewportAnchor resizeAnchor;
-   QGraphicsView::ViewportUpdateMode viewportUpdateMode;
-   QGraphicsView::OptimizationFlags optimizationFlags;
+    QGraphicsView::ViewportAnchor transformationAnchor;
+    QGraphicsView::ViewportAnchor resizeAnchor;
+    QGraphicsView::ViewportUpdateMode viewportUpdateMode;
+    QGraphicsView::OptimizationFlags optimizationFlags;
 
-   QPointer<QGraphicsScene> scene;
+    QPointer<QGraphicsScene> scene;
 
 #ifndef QT_NO_RUBBERBAND
-   QRect rubberBandRect;
-   QRegion rubberBandRegion(const QWidget *widget, const QRect &rect) const;
-   void updateRubberBand(const QMouseEvent *event);
-   bool rubberBanding;
-   Qt::ItemSelectionMode rubberBandSelectionMode;
-   Qt::ItemSelectionOperation rubberBandSelectionOperation;
+    QRect rubberBandRect;
+    QRegion rubberBandRegion( const QWidget *widget, const QRect &rect ) const;
+    void updateRubberBand( const QMouseEvent *event );
+    bool rubberBanding;
+    Qt::ItemSelectionMode rubberBandSelectionMode;
+    Qt::ItemSelectionOperation rubberBandSelectionOperation;
 #endif
 
-   int handScrollMotions;
+    int handScrollMotions;
 
-   QGraphicsView::CacheMode cacheMode;
+    QGraphicsView::CacheMode cacheMode;
 
-   QVector<QStyleOptionGraphicsItem> styleOptions;
-   QStyleOptionGraphicsItem *allocStyleOptionsArray(int numItems);
-   void freeStyleOptionsArray(QStyleOptionGraphicsItem *array);
+    QVector<QStyleOptionGraphicsItem> styleOptions;
+    QStyleOptionGraphicsItem *allocStyleOptionsArray( int numItems );
+    void freeStyleOptionsArray( QStyleOptionGraphicsItem *array );
 
-   QBrush backgroundBrush;
-   QBrush foregroundBrush;
-   QPixmap backgroundPixmap;
-   QRegion backgroundPixmapExposed;
+    QBrush backgroundBrush;
+    QBrush foregroundBrush;
+    QPixmap backgroundPixmap;
+    QRegion backgroundPixmapExposed;
 
 #ifndef QT_NO_CURSOR
-   QCursor originalCursor;
-   bool hasStoredOriginalCursor;
-   void _q_setViewportCursor(const QCursor &cursor);
-   void _q_unsetViewportCursor();
+    QCursor originalCursor;
+    bool hasStoredOriginalCursor;
+    void _q_setViewportCursor( const QCursor &cursor );
+    void _q_unsetViewportCursor();
 #endif
 
-   QGraphicsSceneDragDropEvent *lastDragDropEvent;
-   void storeDragDropEvent(const QGraphicsSceneDragDropEvent *event);
-   void populateSceneDragDropEvent(QGraphicsSceneDragDropEvent *dest, QDropEvent *source);
+    QGraphicsSceneDragDropEvent *lastDragDropEvent;
+    void storeDragDropEvent( const QGraphicsSceneDragDropEvent *event );
+    void populateSceneDragDropEvent( QGraphicsSceneDragDropEvent *dest, QDropEvent *source );
 
-   QRect mapToViewRect(const QGraphicsItem *item, const QRectF &rect) const;
-   QRegion mapToViewRegion(const QGraphicsItem *item, const QRectF &rect) const;
-   QRegion dirtyRegion;
-   QRect dirtyBoundingRect;
-   void processPendingUpdates();
-   inline void updateAll() {
-      viewport->update();
-      fullUpdatePending = true;
-      dirtyBoundingRect = QRect();
-      dirtyRegion = QRegion();
-   }
+    QRect mapToViewRect( const QGraphicsItem *item, const QRectF &rect ) const;
+    QRegion mapToViewRegion( const QGraphicsItem *item, const QRectF &rect ) const;
+    QRegion dirtyRegion;
+    QRect dirtyBoundingRect;
+    void processPendingUpdates();
+    inline void updateAll()
+    {
+        viewport->update();
+        fullUpdatePending = true;
+        dirtyBoundingRect = QRect();
+        dirtyRegion = QRegion();
+    }
 
-   inline void dispatchPendingUpdateRequests() {
+    inline void dispatchPendingUpdateRequests()
+    {
 
 
-      {
-         if (qt_widget_private(viewport)->paintOnScreen()) {
-            QCoreApplication::sendPostedEvents(viewport, QEvent::UpdateRequest);
-         } else {
-            QCoreApplication::sendPostedEvents(viewport->window(), QEvent::UpdateRequest);
-         }
-      }
-   }
+        {
+            if ( qt_widget_private( viewport )->paintOnScreen() )
+            {
+                QCoreApplication::sendPostedEvents( viewport, QEvent::UpdateRequest );
+            }
+            else
+            {
+                QCoreApplication::sendPostedEvents( viewport->window(), QEvent::UpdateRequest );
+            }
+        }
+    }
 
-   void setUpdateClip(QGraphicsItem *);
+    void setUpdateClip( QGraphicsItem * );
 
-   inline bool updateRectF(const QRectF &rect) {
-      if (rect.isEmpty()) {
-         return false;
-      }
-      if (optimizationFlags & QGraphicsView::DontAdjustForAntialiasing) {
-         return updateRect(rect.toAlignedRect().adjusted(-1, -1, 1, 1));
-      }
-      return updateRect(rect.toAlignedRect().adjusted(-2, -2, 2, 2));
-   }
+    inline bool updateRectF( const QRectF &rect )
+    {
+        if ( rect.isEmpty() )
+        {
+            return false;
+        }
 
-   bool updateRect(const QRect &rect);
-   bool updateRegion(const QRectF &rect, const QTransform &xform);
-   bool updateSceneSlotReimplementedChecked;
-   QRegion exposedRegion;
+        if ( optimizationFlags & QGraphicsView::DontAdjustForAntialiasing )
+        {
+            return updateRect( rect.toAlignedRect().adjusted( -1, -1, 1, 1 ) );
+        }
 
-   QList<QGraphicsItem *> findItems(const QRegion &exposedRegion, bool *allItems,
-      const QTransform &viewTransform) const;
+        return updateRect( rect.toAlignedRect().adjusted( -2, -2, 2, 2 ) );
+    }
 
-   QPointF mapToScene(const QPointF &point) const;
-   QRectF mapToScene(const QRectF &rect) const;
-   static void translateTouchEvent(QGraphicsViewPrivate *d, QTouchEvent *touchEvent);
-   void updateInputMethodSensitivity();
+    bool updateRect( const QRect &rect );
+    bool updateRegion( const QRectF &rect, const QTransform &xform );
+    bool updateSceneSlotReimplementedChecked;
+    QRegion exposedRegion;
+
+    QList<QGraphicsItem *> findItems( const QRegion &exposedRegion, bool *allItems,
+                                      const QTransform &viewTransform ) const;
+
+    QPointF mapToScene( const QPointF &point ) const;
+    QRectF mapToScene( const QRectF &rect ) const;
+    static void translateTouchEvent( QGraphicsViewPrivate *d, QTouchEvent *touchEvent );
+    void updateInputMethodSensitivity();
 };
 
 

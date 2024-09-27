@@ -40,7 +40,8 @@
 #include "SecurityOrigin.h"
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
 class DatabaseCallback;
 class SQLTransactionSync;
@@ -49,23 +50,24 @@ class ScriptExecutionContext;
 class SecurityOrigin;
 
 // Instances of this class should be created and used only on the worker's context thread.
-class DatabaseSync : public AbstractDatabase {
+class DatabaseSync : public AbstractDatabase
+{
 public:
     virtual ~DatabaseSync();
 
-    static PassRefPtr<DatabaseSync> openDatabaseSync(ScriptExecutionContext*, const String& name, const String& expectedVersion,
-                                                     const String& displayName, unsigned long estimatedSize, PassRefPtr<DatabaseCallback>, ExceptionCode&);
-    void changeVersion(const String& oldVersion, const String& newVersion, PassRefPtr<SQLTransactionSyncCallback>, ExceptionCode&);
-    void transaction(PassRefPtr<SQLTransactionSyncCallback>, ExceptionCode&);
-    void readTransaction(PassRefPtr<SQLTransactionSyncCallback>, ExceptionCode&);
+    static PassRefPtr<DatabaseSync> openDatabaseSync( ScriptExecutionContext *, const String &name, const String &expectedVersion,
+            const String &displayName, unsigned long estimatedSize, PassRefPtr<DatabaseCallback>, ExceptionCode & );
+    void changeVersion( const String &oldVersion, const String &newVersion, PassRefPtr<SQLTransactionSyncCallback>, ExceptionCode & );
+    void transaction( PassRefPtr<SQLTransactionSyncCallback>, ExceptionCode & );
+    void readTransaction( PassRefPtr<SQLTransactionSyncCallback>, ExceptionCode & );
 
     virtual void markAsDeletedAndClose();
     virtual void closeImmediately();
 
 private:
-    DatabaseSync(ScriptExecutionContext*, const String& name, const String& expectedVersion,
-                 const String& displayName, unsigned long estimatedSize);
-    void runTransaction(PassRefPtr<SQLTransactionSyncCallback>, bool readOnly, ExceptionCode&);
+    DatabaseSync( ScriptExecutionContext *, const String &name, const String &expectedVersion,
+                  const String &displayName, unsigned long estimatedSize );
+    void runTransaction( PassRefPtr<SQLTransactionSyncCallback>, bool readOnly, ExceptionCode & );
 };
 
 } // namespace WebCore

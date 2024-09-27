@@ -36,31 +36,31 @@ class QSvgWidgetPrivate;
 
 class Q_SVG_EXPORT QSvgWidget : public QWidget
 {
-   SVG_CS_OBJECT(QSvgWidget)
+    SVG_CS_OBJECT( QSvgWidget )
 
- public:
-   QSvgWidget(QWidget *parent = nullptr);
-   QSvgWidget(const QString &file, QWidget *parent = nullptr);
+public:
+    QSvgWidget( QWidget *parent = nullptr );
+    QSvgWidget( const QString &file, QWidget *parent = nullptr );
 
-   QSvgWidget(const QSvgWidget &) = delete;
-   QSvgWidget &operator=(const QSvgWidget &) = delete;
+    QSvgWidget( const QSvgWidget & ) = delete;
+    QSvgWidget &operator=( const QSvgWidget & ) = delete;
 
-   ~QSvgWidget();
+    ~QSvgWidget();
 
-   QSvgRenderer *renderer() const;
-   QSize sizeHint() const override;
+    QSvgRenderer *renderer() const;
+    QSize sizeHint() const override;
 
-   SVG_CS_SLOT_1(Public, void load(const QString &file))
-   SVG_CS_SLOT_OVERLOAD(load, (const QString &))
+    SVG_CS_SLOT_1( Public, void load( const QString &file ) )
+    SVG_CS_SLOT_OVERLOAD( load, ( const QString & ) )
 
-   SVG_CS_SLOT_1(Public, void load(const QByteArray &contents))
-   SVG_CS_SLOT_OVERLOAD(load, (const QByteArray &))
+    SVG_CS_SLOT_1( Public, void load( const QByteArray &contents ) )
+    SVG_CS_SLOT_OVERLOAD( load, ( const QByteArray & ) )
 
- protected:
-   void paintEvent(QPaintEvent *event) override;
+protected:
+    void paintEvent( QPaintEvent *event ) override;
 
- private:
-   Q_DECLARE_PRIVATE(QSvgWidget)
+private:
+    Q_DECLARE_PRIVATE( QSvgWidget )
 };
 
 #endif // QT_NO_SVGWIDGET

@@ -27,9 +27,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSEntity);
+ASSERT_CLASS_FITS_IN_CELL( JSEntity );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -40,11 +41,11 @@ ASSERT_CLASS_FITS_IN_CELL(JSEntity);
 
 static const HashTableValue JSEntityTableValues[5] =
 {
-    { "publicId", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsEntityPublicId), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "systemId", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsEntitySystemId), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "notationName", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsEntityNotationName), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsEntityConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "publicId", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsEntityPublicId ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "systemId", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsEntitySystemId ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "notationName", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsEntityNotationName ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsEntityConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -58,43 +59,49 @@ static JSC_CONST_HASHTABLE HashTable JSEntityTable = { 10, 7, JSEntityTableValue
 
 static const HashTableValue JSEntityConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSEntityConstructorTable = { 1, 0, JSEntityConstructorTableValues, 0 };
-class JSEntityConstructor : public DOMConstructorObject {
+class JSEntityConstructor : public DOMConstructorObject
+{
 public:
-    JSEntityConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSEntityConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSEntityConstructor::s_info = { "EntityConstructor", &DOMConstructorObject::s_info, &JSEntityConstructorTable, 0 };
 
-JSEntityConstructor::JSEntityConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSEntityConstructor::JSEntityConstructor( ExecState *exec, Structure *structure, JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSEntityPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSEntityPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSEntityConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSEntityConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSEntityConstructor, JSDOMWrapper>(exec, &JSEntityConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSEntityConstructor, JSDOMWrapper>( exec, &JSEntityConstructorTable, this, propertyName, slot );
 }
 
-bool JSEntityConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSEntityConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSEntityConstructor, JSDOMWrapper>(exec, &JSEntityConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSEntityConstructor, JSDOMWrapper>( exec, &JSEntityConstructorTable, this, propertyName,
+            descriptor );
 }
 
 /* Hash table for prototype */
@@ -106,80 +113,81 @@ bool JSEntityConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identi
 
 static const HashTableValue JSEntityPrototypeTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSEntityPrototypeTable = { 1, 0, JSEntityPrototypeTableValues, 0 };
 const ClassInfo JSEntityPrototype::s_info = { "EntityPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSEntityPrototypeTable, 0 };
 
-JSObject* JSEntityPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSEntityPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSEntity>(exec, globalObject);
+    return getDOMPrototype<JSEntity>( exec, globalObject );
 }
 
 const ClassInfo JSEntity::s_info = { "Entity", &JSNode::s_info, &JSEntityTable, 0 };
 
-JSEntity::JSEntity(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<Entity> impl)
-    : JSNode(structure, globalObject, impl)
+JSEntity::JSEntity( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<Entity> impl )
+    : JSNode( structure, globalObject, impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSEntity::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSEntity::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSEntityPrototype(exec->globalData(), globalObject, JSEntityPrototype::createStructure(exec->globalData(), JSNodePrototype::self(exec, globalObject)));
+    return new ( exec ) JSEntityPrototype( exec->globalData(), globalObject, JSEntityPrototype::createStructure( exec->globalData(),
+                                           JSNodePrototype::self( exec, globalObject ) ) );
 }
 
-bool JSEntity::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSEntity::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSEntity, Base>(exec, &JSEntityTable, this, propertyName, slot);
+    return getStaticValueSlot<JSEntity, Base>( exec, &JSEntityTable, this, propertyName, slot );
 }
 
-bool JSEntity::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSEntity::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSEntity, Base>(exec, &JSEntityTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSEntity, Base>( exec, &JSEntityTable, this, propertyName, descriptor );
 }
 
-JSValue jsEntityPublicId(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsEntityPublicId( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSEntity* castedThis = static_cast<JSEntity*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    Entity* imp = static_cast<Entity*>(castedThis->impl());
-    JSValue result = jsStringOrNull(exec, imp->publicId());
+    JSEntity *castedThis = static_cast<JSEntity *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    Entity *imp = static_cast<Entity *>( castedThis->impl() );
+    JSValue result = jsStringOrNull( exec, imp->publicId() );
     return result;
 }
 
 
-JSValue jsEntitySystemId(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsEntitySystemId( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSEntity* castedThis = static_cast<JSEntity*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    Entity* imp = static_cast<Entity*>(castedThis->impl());
-    JSValue result = jsStringOrNull(exec, imp->systemId());
+    JSEntity *castedThis = static_cast<JSEntity *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    Entity *imp = static_cast<Entity *>( castedThis->impl() );
+    JSValue result = jsStringOrNull( exec, imp->systemId() );
     return result;
 }
 
 
-JSValue jsEntityNotationName(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsEntityNotationName( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSEntity* castedThis = static_cast<JSEntity*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    Entity* imp = static_cast<Entity*>(castedThis->impl());
-    JSValue result = jsStringOrNull(exec, imp->notationName());
+    JSEntity *castedThis = static_cast<JSEntity *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    Entity *imp = static_cast<Entity *>( castedThis->impl() );
+    JSValue result = jsStringOrNull( exec, imp->notationName() );
     return result;
 }
 
 
-JSValue jsEntityConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsEntityConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSEntity* domObject = static_cast<JSEntity*>(asObject(slotBase));
-    return JSEntity::getConstructor(exec, domObject->globalObject());
+    JSEntity *domObject = static_cast<JSEntity *>( asObject( slotBase ) );
+    return JSEntity::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSEntity::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSEntity::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSEntityConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSEntityConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
 

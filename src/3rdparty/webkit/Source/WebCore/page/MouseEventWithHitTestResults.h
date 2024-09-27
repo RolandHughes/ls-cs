@@ -1,4 +1,4 @@
-/* 
+/*
    Copyright (C) 2000 Simon Hausmann <hausmann@kde.org>
    Copyright (C) 2006 Apple Computer, Inc.
 
@@ -24,20 +24,31 @@
 #include "HitTestResult.h"
 #include "PlatformMouseEvent.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Scrollbar;
 
-class MouseEventWithHitTestResults {
+class MouseEventWithHitTestResults
+{
 public:
-    MouseEventWithHitTestResults(const PlatformMouseEvent&, const HitTestResult&);
+    MouseEventWithHitTestResults( const PlatformMouseEvent &, const HitTestResult & );
 
-    const PlatformMouseEvent& event() const { return m_event; }
-    const HitTestResult& hitTestResult() const { return m_hitTestResult; }
+    const PlatformMouseEvent &event() const
+    {
+        return m_event;
+    }
+    const HitTestResult &hitTestResult() const
+    {
+        return m_hitTestResult;
+    }
     const IntPoint localPoint() const;
-    Scrollbar* scrollbar() const;
+    Scrollbar *scrollbar() const;
     bool isOverLink() const;
-    bool isOverWidget() const { return m_hitTestResult.isOverWidget(); }
+    bool isOverWidget() const
+    {
+        return m_hitTestResult.isOverWidget();
+    }
 
 private:
     PlatformMouseEvent m_event;

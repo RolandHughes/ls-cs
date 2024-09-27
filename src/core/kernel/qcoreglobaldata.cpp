@@ -25,12 +25,12 @@
 
 static QCoreGlobalData *globalInstance()
 {
-   static QCoreGlobalData retval;
-   return &retval;
+    static QCoreGlobalData retval;
+    return &retval;
 }
 
 QCoreGlobalData *QCoreGlobalData::instance()
 {
-   return globalInstance();
+    return globalInstance();
 }
 

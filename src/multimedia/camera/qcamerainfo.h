@@ -31,36 +31,36 @@ class QCameraInfoPrivate;
 
 class Q_MULTIMEDIA_EXPORT QCameraInfo
 {
- public:
-   explicit QCameraInfo(const QString &name = QString());
-   explicit QCameraInfo(const QCamera &camera);
-   QCameraInfo(const QCameraInfo &other);
+public:
+    explicit QCameraInfo( const QString &name = QString() );
+    explicit QCameraInfo( const QCamera &camera );
+    QCameraInfo( const QCameraInfo &other );
 
-   ~QCameraInfo();
+    ~QCameraInfo();
 
-   QCameraInfo &operator=(const QCameraInfo &other);
-   bool operator==(const QCameraInfo &other) const;
-   inline bool operator!=(const QCameraInfo &other) const;
+    QCameraInfo &operator=( const QCameraInfo &other );
+    bool operator==( const QCameraInfo &other ) const;
+    inline bool operator!=( const QCameraInfo &other ) const;
 
-   bool isNull() const;
+    bool isNull() const;
 
-   QString deviceName() const;
-   QString description() const;
-   QCamera::Position position() const;
-   int orientation() const;
+    QString deviceName() const;
+    QString description() const;
+    QCamera::Position position() const;
+    int orientation() const;
 
-   static QCameraInfo defaultCamera();
-   static QList<QCameraInfo> availableCameras(QCamera::Position position = QCamera::UnspecifiedPosition);
+    static QCameraInfo defaultCamera();
+    static QList<QCameraInfo> availableCameras( QCamera::Position position = QCamera::UnspecifiedPosition );
 
- private:
-   QSharedPointer<QCameraInfoPrivate> d;
+private:
+    QSharedPointer<QCameraInfoPrivate> d;
 };
 
-bool QCameraInfo::operator!=(const QCameraInfo &other) const
+bool QCameraInfo::operator!=( const QCameraInfo &other ) const
 {
-   return !operator==(other);
+    return !operator==( other );
 }
 
-Q_MULTIMEDIA_EXPORT QDebug operator<<(QDebug, const QCameraInfo &);
+Q_MULTIMEDIA_EXPORT QDebug operator<<( QDebug, const QCameraInfo & );
 
 #endif

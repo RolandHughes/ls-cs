@@ -6,13 +6,13 @@
  * are met:
  *
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Apple Computer, Inc. ("Apple") nor the names of
  *     its contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
+ *     from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY APPLE AND ITS CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -60,7 +60,8 @@
 
 using namespace WTF;
 
-namespace JSC {
+namespace JSC
+{
 
 extern JSC_CONST_HASHTABLE HashTable arrayTable;
 extern JSC_CONST_HASHTABLE HashTable jsonTable;
@@ -71,80 +72,80 @@ extern JSC_CONST_HASHTABLE HashTable regExpTable;
 extern JSC_CONST_HASHTABLE HashTable regExpConstructorTable;
 extern JSC_CONST_HASHTABLE HashTable stringTable;
 
-void* JSGlobalData::jsArrayVPtr;
-void* JSGlobalData::jsByteArrayVPtr;
-void* JSGlobalData::jsStringVPtr;
-void* JSGlobalData::jsFunctionVPtr;
+void *JSGlobalData::jsArrayVPtr;
+void *JSGlobalData::jsByteArrayVPtr;
+void *JSGlobalData::jsStringVPtr;
+void *JSGlobalData::jsFunctionVPtr;
 
 void JSGlobalData::storeVPtrs()
 {
     CollectorCell cell;
-    void* storage = &cell;
+    void *storage = &cell;
 
-    COMPILE_ASSERT(sizeof(JSArray) <= sizeof(CollectorCell), sizeof_JSArray_must_be_less_than_CollectorCell);
-    JSCell* jsArray = new (storage) JSArray(JSArray::createStructure(jsNull()));
+    COMPILE_ASSERT( sizeof( JSArray ) <= sizeof( CollectorCell ), sizeof_JSArray_must_be_less_than_CollectorCell );
+    JSCell *jsArray = new ( storage ) JSArray( JSArray::createStructure( jsNull() ) );
     JSGlobalData::jsArrayVPtr = jsArray->vptr();
     jsArray->~JSCell();
 
-    COMPILE_ASSERT(sizeof(JSByteArray) <= sizeof(CollectorCell), sizeof_JSByteArray_must_be_less_than_CollectorCell);
-    JSCell* jsByteArray = new (storage) JSByteArray(JSByteArray::VPtrStealingHack);
+    COMPILE_ASSERT( sizeof( JSByteArray ) <= sizeof( CollectorCell ), sizeof_JSByteArray_must_be_less_than_CollectorCell );
+    JSCell *jsByteArray = new ( storage ) JSByteArray( JSByteArray::VPtrStealingHack );
     JSGlobalData::jsByteArrayVPtr = jsByteArray->vptr();
     jsByteArray->~JSCell();
 
-    COMPILE_ASSERT(sizeof(JSString) <= sizeof(CollectorCell), sizeof_JSString_must_be_less_than_CollectorCell);
-    JSCell* jsString = new (storage) JSString(JSString::VPtrStealingHack);
+    COMPILE_ASSERT( sizeof( JSString ) <= sizeof( CollectorCell ), sizeof_JSString_must_be_less_than_CollectorCell );
+    JSCell *jsString = new ( storage ) JSString( JSString::VPtrStealingHack );
     JSGlobalData::jsStringVPtr = jsString->vptr();
     jsString->~JSCell();
 
-    COMPILE_ASSERT(sizeof(JSFunction) <= sizeof(CollectorCell), sizeof_JSFunction_must_be_less_than_CollectorCell);
-    JSCell* jsFunction = new (storage) JSFunction(JSFunction::createStructure(jsNull()));
+    COMPILE_ASSERT( sizeof( JSFunction ) <= sizeof( CollectorCell ), sizeof_JSFunction_must_be_less_than_CollectorCell );
+    JSCell *jsFunction = new ( storage ) JSFunction( JSFunction::createStructure( jsNull() ) );
     JSGlobalData::jsFunctionVPtr = jsFunction->vptr();
     jsFunction->~JSCell();
 }
 
-JSGlobalData::JSGlobalData(bool isShared)
-    : isSharedInstance(isShared)
-    , clientData(0)
-    , arrayTable(fastNew<HashTable>(JSC::arrayTable))
-    , dateTable(fastNew<HashTable>(JSC::dateTable))
-    , jsonTable(fastNew<HashTable>(JSC::jsonTable))
-    , mathTable(fastNew<HashTable>(JSC::mathTable))
-    , numberTable(fastNew<HashTable>(JSC::numberTable))
-    , regExpTable(fastNew<HashTable>(JSC::regExpTable))
-    , regExpConstructorTable(fastNew<HashTable>(JSC::regExpConstructorTable))
-    , stringTable(fastNew<HashTable>(JSC::stringTable))
-    , activationStructure(JSActivation::createStructure(jsNull()))
-    , interruptedExecutionErrorStructure(JSObject::createStructure(jsNull()))
-    , staticScopeStructure(JSStaticScopeObject::createStructure(jsNull()))
-    , stringStructure(JSString::createStructure(jsNull()))
-    , notAnObjectErrorStubStructure(JSNotAnObjectErrorStub::createStructure(jsNull()))
-    , notAnObjectStructure(JSNotAnObject::createStructure(jsNull()))
-    , propertyNameIteratorStructure(JSPropertyNameIterator::createStructure(jsNull()))
-    , getterSetterStructure(GetterSetter::createStructure(jsNull()))
-    , apiWrapperStructure(JSAPIValueWrapper::createStructure(jsNull()))
-    , dummyMarkableCellStructure(JSCell::createDummyStructure())
+JSGlobalData::JSGlobalData( bool isShared )
+    : isSharedInstance( isShared )
+    , clientData( 0 )
+    , arrayTable( fastNew<HashTable>( JSC::arrayTable ) )
+    , dateTable( fastNew<HashTable>( JSC::dateTable ) )
+    , jsonTable( fastNew<HashTable>( JSC::jsonTable ) )
+    , mathTable( fastNew<HashTable>( JSC::mathTable ) )
+    , numberTable( fastNew<HashTable>( JSC::numberTable ) )
+    , regExpTable( fastNew<HashTable>( JSC::regExpTable ) )
+    , regExpConstructorTable( fastNew<HashTable>( JSC::regExpConstructorTable ) )
+    , stringTable( fastNew<HashTable>( JSC::stringTable ) )
+    , activationStructure( JSActivation::createStructure( jsNull() ) )
+    , interruptedExecutionErrorStructure( JSObject::createStructure( jsNull() ) )
+    , staticScopeStructure( JSStaticScopeObject::createStructure( jsNull() ) )
+    , stringStructure( JSString::createStructure( jsNull() ) )
+    , notAnObjectErrorStubStructure( JSNotAnObjectErrorStub::createStructure( jsNull() ) )
+    , notAnObjectStructure( JSNotAnObject::createStructure( jsNull() ) )
+    , propertyNameIteratorStructure( JSPropertyNameIterator::createStructure( jsNull() ) )
+    , getterSetterStructure( GetterSetter::createStructure( jsNull() ) )
+    , apiWrapperStructure( JSAPIValueWrapper::createStructure( jsNull() ) )
+    , dummyMarkableCellStructure( JSCell::createDummyStructure() )
 #if USE(JSVALUE32)
-    , numberStructure(JSNumberCell::createStructure(jsNull()))
+    , numberStructure( JSNumberCell::createStructure( jsNull() ) )
 #endif
-    , identifierTable(createIdentifierTable())
-    , propertyNames(new CommonIdentifiers(this))
-    , emptyList(new MarkedArgumentBuffer)
-    , lexer(new Lexer(this))
-    , parser(new Parser)
-    , interpreter(new Interpreter)
+    , identifierTable( createIdentifierTable() )
+    , propertyNames( new CommonIdentifiers( this ) )
+    , emptyList( new MarkedArgumentBuffer )
+    , lexer( new Lexer( this ) )
+    , parser( new Parser )
+    , interpreter( new Interpreter )
 #if ENABLE(JIT)
-    , jitStubs(this)
+    , jitStubs( this )
 #endif
-    , timeoutChecker(new TimeoutChecker)
-    , heap(this)
-    , initializingLazyNumericCompareFunction(false)
-    , head(0)
-    , dynamicGlobalObject(0)
-    , functionCodeBlockBeingReparsed(0)
-    , firstStringifierToMark(0)
-    , markStack(jsArrayVPtr)
+    , timeoutChecker( new TimeoutChecker )
+    , heap( this )
+    , initializingLazyNumericCompareFunction( false )
+    , head( 0 )
+    , dynamicGlobalObject( 0 )
+    , functionCodeBlockBeingReparsed( 0 )
+    , firstStringifierToMark( 0 )
+    , markStack( jsArrayVPtr )
 #ifndef NDEBUG
-    , mainThreadOnly(false)
+    , mainThreadOnly( false )
 #endif
 {
 #if PLATFORM(MAC)
@@ -171,40 +172,40 @@ JSGlobalData::~JSGlobalData()
     regExpConstructorTable->deleteTable();
     stringTable->deleteTable();
 
-    fastDelete(const_cast<HashTable*>(arrayTable));
-    fastDelete(const_cast<HashTable*>(dateTable));
-    fastDelete(const_cast<HashTable*>(jsonTable));
-    fastDelete(const_cast<HashTable*>(mathTable));
-    fastDelete(const_cast<HashTable*>(numberTable));
-    fastDelete(const_cast<HashTable*>(regExpTable));
-    fastDelete(const_cast<HashTable*>(regExpConstructorTable));
-    fastDelete(const_cast<HashTable*>(stringTable));
+    fastDelete( const_cast<HashTable *>( arrayTable ) );
+    fastDelete( const_cast<HashTable *>( dateTable ) );
+    fastDelete( const_cast<HashTable *>( jsonTable ) );
+    fastDelete( const_cast<HashTable *>( mathTable ) );
+    fastDelete( const_cast<HashTable *>( numberTable ) );
+    fastDelete( const_cast<HashTable *>( regExpTable ) );
+    fastDelete( const_cast<HashTable *>( regExpConstructorTable ) );
+    fastDelete( const_cast<HashTable *>( stringTable ) );
 
     delete parser;
     delete lexer;
     delete timeoutChecker;
 
-    deleteAllValues(opaqueJSClassData);
+    deleteAllValues( opaqueJSClassData );
 
     delete emptyList;
 
     delete propertyNames;
-    deleteIdentifierTable(identifierTable);
+    deleteIdentifierTable( identifierTable );
 
     delete clientData;
 }
 
 PassRefPtr<JSGlobalData> JSGlobalData::createNonDefault()
 {
-    return adoptRef(new JSGlobalData(false));
+    return adoptRef( new JSGlobalData( false ) );
 }
 
 PassRefPtr<JSGlobalData> JSGlobalData::create()
 {
-    JSGlobalData* globalData = new JSGlobalData(false);
-    setDefaultIdentifierTable(globalData->identifierTable);
-    setCurrentIdentifierTable(globalData->identifierTable);
-    return adoptRef(globalData);
+    JSGlobalData *globalData = new JSGlobalData( false );
+    setDefaultIdentifierTable( globalData->identifierTable );
+    setCurrentIdentifierTable( globalData->identifierTable );
+    return adoptRef( globalData );
 }
 
 PassRefPtr<JSGlobalData> JSGlobalData::createLeaked()
@@ -220,32 +221,37 @@ bool JSGlobalData::sharedInstanceExists()
     return sharedInstanceInternal();
 }
 
-JSGlobalData& JSGlobalData::sharedInstance()
+JSGlobalData &JSGlobalData::sharedInstance()
 {
-    JSGlobalData*& instance = sharedInstanceInternal();
-    if (!instance) {
-        instance = new JSGlobalData(true);
+    JSGlobalData *&instance = sharedInstanceInternal();
+
+    if ( !instance )
+    {
+        instance = new JSGlobalData( true );
 #if ENABLE(JSC_MULTIPLE_THREADS)
         instance->makeUsableFromMultipleThreads();
 #endif
     }
+
     return *instance;
 }
 
-JSGlobalData*& JSGlobalData::sharedInstanceInternal()
+JSGlobalData *&JSGlobalData::sharedInstanceInternal()
 {
-    ASSERT(JSLock::currentThreadIsHoldingLock());
-    static JSGlobalData* sharedInstance;
+    ASSERT( JSLock::currentThreadIsHoldingLock() );
+    static JSGlobalData *sharedInstance;
     return sharedInstance;
 }
 
 // FIXME: We can also detect forms like v1 < v2 ? -1 : 0, reverse comparison, etc.
-const Vector<Instruction>& JSGlobalData::numericCompareFunction(ExecState* exec)
+const Vector<Instruction> &JSGlobalData::numericCompareFunction( ExecState *exec )
 {
-    if (!lazyNumericCompareFunction.size() && !initializingLazyNumericCompareFunction) {
+    if ( !lazyNumericCompareFunction.size() && !initializingLazyNumericCompareFunction )
+    {
         initializingLazyNumericCompareFunction = true;
-        RefPtr<FunctionExecutable> function = FunctionExecutable::fromGlobalCode(Identifier(exec, "numericCompare"), exec, 0, makeSource(UString("(function (v1, v2) { return v1 - v2; })")), 0, 0);
-        lazyNumericCompareFunction = function->bytecode(exec, exec->scopeChain()).instructions();
+        RefPtr<FunctionExecutable> function = FunctionExecutable::fromGlobalCode( Identifier( exec, "numericCompare" ), exec, 0,
+                                              makeSource( UString( "(function (v1, v2) { return v1 - v2; })" ) ), 0, 0 );
+        lazyNumericCompareFunction = function->bytecode( exec, exec->scopeChain() ).instructions();
         initializingLazyNumericCompareFunction = false;
     }
 
@@ -273,9 +279,9 @@ void JSGlobalData::stopSampling()
     interpreter->stopSampling();
 }
 
-void JSGlobalData::dumpSampleData(ExecState* exec)
+void JSGlobalData::dumpSampleData( ExecState *exec )
 {
-    interpreter->dumpSampleData(exec);
+    interpreter->dumpSampleData( exec );
 }
 
 } // namespace JSC

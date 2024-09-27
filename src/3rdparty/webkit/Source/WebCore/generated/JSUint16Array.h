@@ -25,89 +25,99 @@
 #include "Uint16Array.h"
 #include <runtime/JSObjectWithGlobalObject.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Uint16Array;
 
-class JSUint16Array : public JSArrayBufferView {
+class JSUint16Array : public JSArrayBufferView
+{
     typedef JSArrayBufferView Base;
 public:
-    JSUint16Array(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<Uint16Array>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, unsigned propertyName, JSC::PropertySlot&);
-    virtual void put(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::JSValue, JSC::PutPropertySlot&);
-    virtual void put(JSC::ExecState*, unsigned propertyName, JSC::JSValue);
+    JSUint16Array( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<Uint16Array> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, unsigned propertyName, JSC::PropertySlot & );
+    virtual void put( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::JSValue, JSC::PutPropertySlot & );
+    virtual void put( JSC::ExecState *, unsigned propertyName, JSC::JSValue );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    virtual void getOwnPropertyNames(JSC::ExecState*, JSC::PropertyNameArray&, JSC::EnumerationMode mode = JSC::ExcludeDontEnumProperties);
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
+    virtual void getOwnPropertyNames( JSC::ExecState *, JSC::PropertyNameArray &,
+                                      JSC::EnumerationMode mode = JSC::ExcludeDontEnumProperties );
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
 
     // Custom functions
-    JSC::JSValue set(JSC::ExecState*);
-    Uint16Array* impl() const
+    JSC::JSValue set( JSC::ExecState * );
+    Uint16Array *impl() const
     {
-        return static_cast<Uint16Array*>(Base::impl());
+        return static_cast<Uint16Array *>( Base::impl() );
     }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetPropertyNames | JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
-    JSC::JSValue getByIndex(JSC::ExecState*, unsigned index);
-    void indexSetter(JSC::ExecState*, unsigned index, JSC::JSValue);
+    JSC::JSValue getByIndex( JSC::ExecState *, unsigned index );
+    void indexSetter( JSC::ExecState *, unsigned index, JSC::JSValue );
 };
 
-JSC::JSValue toJS(JSC::ExecState*, JSDOMGlobalObject*, Uint16Array*);
-Uint16Array* toUint16Array(JSC::JSValue);
+JSC::JSValue toJS( JSC::ExecState *, JSDOMGlobalObject *, Uint16Array * );
+Uint16Array *toUint16Array( JSC::JSValue );
 
-class JSUint16ArrayPrototype : public JSC::JSObjectWithGlobalObject {
+class JSUint16ArrayPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSUint16ArrayPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSUint16ArrayPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                            JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
-class JSUint16ArrayConstructor : public DOMConstructorObject {
+class JSUint16ArrayConstructor : public DOMConstructorObject
+{
 public:
-    JSUint16ArrayConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSUint16ArrayConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
-    static JSC::EncodedJSValue JSC_HOST_CALL constructJSUint16Array(JSC::ExecState*);
-    virtual JSC::ConstructType getConstructData(JSC::ConstructData&);
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
+    static JSC::EncodedJSValue JSC_HOST_CALL constructJSUint16Array( JSC::ExecState * );
+    virtual JSC::ConstructType getConstructData( JSC::ConstructData & );
 };
 
 // Functions
 
-JSC::EncodedJSValue JSC_HOST_CALL jsUint16ArrayPrototypeFunctionSubarray(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsUint16ArrayPrototypeFunctionSet(JSC::ExecState*);
+JSC::EncodedJSValue JSC_HOST_CALL jsUint16ArrayPrototypeFunctionSubarray( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsUint16ArrayPrototypeFunctionSet( JSC::ExecState * );
 // Attributes
 
-JSC::JSValue jsUint16ArrayLength(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsUint16ArrayConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsUint16ArrayLength( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsUint16ArrayConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 // Constants
 
-JSC::JSValue jsUint16ArrayBYTES_PER_ELEMENT(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsUint16ArrayBYTES_PER_ELEMENT( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

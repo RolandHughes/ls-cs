@@ -40,7 +40,8 @@
 #include <e32std.h>
 #endif
 
-namespace WTF {
+namespace WTF
+{
 
 static size_t s_pageSize;
 
@@ -57,7 +58,7 @@ inline size_t systemPageSize()
 {
     static size_t size = 0;
     SYSTEM_INFO system_info;
-    GetSystemInfo(&system_info);
+    GetSystemInfo( &system_info );
     size = system_info.dwPageSize;
     return size;
 }
@@ -67,7 +68,7 @@ inline size_t systemPageSize()
 inline size_t systemPageSize()
 {
     static TInt page_size = 0;
-    UserHal::PageSizeInBytes(page_size);
+    UserHal::PageSizeInBytes( page_size );
     return page_size;
 }
 
@@ -75,9 +76,12 @@ inline size_t systemPageSize()
 
 size_t pageSize()
 {
-    if (!s_pageSize)
+    if ( !s_pageSize )
+    {
         s_pageSize = systemPageSize();
-    ASSERT(isPowerOfTwo(s_pageSize));
+    }
+
+    ASSERT( isPowerOfTwo( s_pageSize ) );
     return s_pageSize;
 }
 

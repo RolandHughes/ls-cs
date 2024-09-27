@@ -26,49 +26,51 @@
 
 #include <qitem_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class Base64Binary : public AtomicValue
 {
- public:
-   friend class CommonValues;
+public:
+    friend class CommonValues;
 
-   typedef AtomicValue::Ptr Ptr;
+    typedef AtomicValue::Ptr Ptr;
 
-   /**
-    * Creates an instance representing @p value.
-    */
-   static AtomicValue::Ptr fromLexical(const QString &value);
+    /**
+     * Creates an instance representing @p value.
+     */
+    static AtomicValue::Ptr fromLexical( const QString &value );
 
-   static Base64Binary::Ptr fromValue(const QByteArray &data);
+    static Base64Binary::Ptr fromValue( const QByteArray &data );
 
-   QString stringValue() const override;
-   ItemType::Ptr type() const override;
+    QString stringValue() const override;
+    ItemType::Ptr type() const override;
 
-   const QByteArray &asByteArray() const {
-      return m_value;
-   }
+    const QByteArray &asByteArray() const
+    {
+        return m_value;
+    }
 
- protected:
-   Base64Binary(const QByteArray &val);
+protected:
+    Base64Binary( const QByteArray &val );
 
-   const QByteArray m_value;
+    const QByteArray m_value;
 
- private:
-   /**
-    * @short Assumes @p in is a lexical representation of @c xs:base64Binary, and
-    * converts it to the binary data set in @p out.
-    *
-    * If @p instr is invalid Base64 content, @p ok is set to
-    * false, and the returned QByteArray has an undefined value.
-    *
-    *  We cannot use QByteArray::fromBase64() because it doesn't do the
-    *  necessary validation that we need to properly implement W3C XML
-    *  Schema's xs:base64Binary type.
-    */
-   static void base64Decode(const QByteArray &in, QByteArray &out, bool &ok);
+private:
+    /**
+     * @short Assumes @p in is a lexical representation of @c xs:base64Binary, and
+     * converts it to the binary data set in @p out.
+     *
+     * If @p instr is invalid Base64 content, @p ok is set to
+     * false, and the returned QByteArray has an undefined value.
+     *
+     *  We cannot use QByteArray::fromBase64() because it doesn't do the
+     *  necessary validation that we need to properly implement W3C XML
+     *  Schema's xs:base64Binary type.
+     */
+    static void base64Decode( const QByteArray &in, QByteArray &out, bool &ok );
 
-   static const char Base64DecMap[128];
+    static const char Base64DecMap[128];
 };
 }
 

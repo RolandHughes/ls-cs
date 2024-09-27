@@ -31,85 +31,90 @@
 
 class QCoreTextFontEngine : public QFontEngine
 {
- public:
-   QCoreTextFontEngine(CTFontRef font, const QFontDef &def);
-   QCoreTextFontEngine(CGFontRef font, const QFontDef &def);
-   ~QCoreTextFontEngine();
+public:
+    QCoreTextFontEngine( CTFontRef font, const QFontDef &def );
+    QCoreTextFontEngine( CGFontRef font, const QFontDef &def );
+    ~QCoreTextFontEngine();
 
-   glyph_t glyphIndex(char32_t ch) const override;
+    glyph_t glyphIndex( char32_t ch ) const override;
 
-   bool stringToCMap(QStringView str, QGlyphLayout *glyphs, int *nglyphs, QFontEngine::ShaperFlags flags) const override;
-   void recalcAdvances(QGlyphLayout *, ShaperFlags) const override;
+    bool stringToCMap( QStringView str, QGlyphLayout *glyphs, int *nglyphs, QFontEngine::ShaperFlags flags ) const override;
+    void recalcAdvances( QGlyphLayout *, ShaperFlags ) const override;
 
-   glyph_metrics_t boundingBox(const QGlyphLayout &glyphs) override;
-   glyph_metrics_t boundingBox(glyph_t glyph) override;
+    glyph_metrics_t boundingBox( const QGlyphLayout &glyphs ) override;
+    glyph_metrics_t boundingBox( glyph_t glyph ) override;
 
-   QFixed ascent()  const override;
-   QFixed descent() const override;
-   QFixed leading() const override;
-   QFixed xHeight() const override;
+    QFixed ascent()  const override;
+    QFixed descent() const override;
+    QFixed leading() const override;
+    QFixed xHeight() const override;
 
-   QFixed averageCharWidth() const override;
-   qreal maxCharWidth() const override;
+    QFixed averageCharWidth() const override;
+    qreal maxCharWidth() const override;
 
-   void addGlyphsToPath(glyph_t *glyphs, QFixedPoint *positions, int numGlyphs, QPainterPath *path, QTextItem::RenderFlags) override;
+    void addGlyphsToPath( glyph_t *glyphs, QFixedPoint *positions, int numGlyphs, QPainterPath *path,
+                          QTextItem::RenderFlags ) override;
 
-   bool canRender(QStringView str) const override;
+    bool canRender( QStringView str ) const override;
 
-   const QString &fontEngineName() const override {
-      static QString retval = "CoreText";
-      return retval;
-   }
+    const QString &fontEngineName() const override
+    {
+        static QString retval = "CoreText";
+        return retval;
+    }
 
-   int synthesized() const override {
-      return synthesisFlags;
-   }
+    int synthesized() const override
+    {
+        return synthesisFlags;
+    }
 
-   bool supportsSubPixelPositions() const override {
-      return true;
-   }
+    bool supportsSubPixelPositions() const override
+    {
+        return true;
+    }
 
-   void draw(CGContextRef ctx, qreal x, qreal y, const QTextItemInt &ti, int paintDeviceHeight);
+    void draw( CGContextRef ctx, qreal x, qreal y, const QTextItemInt &ti, int paintDeviceHeight );
 
-   FaceId faceId() const override;
-   bool getSfntTableData(uint tag, uchar *buffer, uint *length) const override;
-   void getUnscaledGlyph(glyph_t glyph, QPainterPath *path, glyph_metrics_t *metrics) override;
-   QImage alphaMapForGlyph(glyph_t, QFixed subPixelPosition) override;
-   QImage alphaMapForGlyph(glyph_t glyph, QFixed subPixelPosition, const QTransform &t) override;
-   QImage alphaRGBMapForGlyph(glyph_t, QFixed subPixelPosition, const QTransform &t) override;
-   glyph_metrics_t alphaMapBoundingBox(glyph_t glyph, QFixed, const QTransform &matrix, GlyphFormat) override;
-   QImage bitmapForGlyph(glyph_t, QFixed subPixelPosition, const QTransform &t) override;
-   QFixed emSquareSize() const override;
+    FaceId faceId() const override;
+    bool getSfntTableData( uint tag, uchar *buffer, uint *length ) const override;
+    void getUnscaledGlyph( glyph_t glyph, QPainterPath *path, glyph_metrics_t *metrics ) override;
+    QImage alphaMapForGlyph( glyph_t, QFixed subPixelPosition ) override;
+    QImage alphaMapForGlyph( glyph_t glyph, QFixed subPixelPosition, const QTransform &t ) override;
+    QImage alphaRGBMapForGlyph( glyph_t, QFixed subPixelPosition, const QTransform &t ) override;
+    glyph_metrics_t alphaMapBoundingBox( glyph_t glyph, QFixed, const QTransform &matrix, GlyphFormat ) override;
+    QImage bitmapForGlyph( glyph_t, QFixed subPixelPosition, const QTransform &t ) override;
+    QFixed emSquareSize() const override;
 
-   bool supportsTransformation(const QTransform &transform) const override;
+    bool supportsTransformation( const QTransform &transform ) const override;
 
-   QFontEngine *cloneWithSize(qreal pixelSize) const override;
-   Qt::HANDLE handle() const override;
+    QFontEngine *cloneWithSize( qreal pixelSize ) const override;
+    Qt::HANDLE handle() const override;
 
-   int glyphMargin(QFontEngine::GlyphFormat format) override {
-      (void) format;
-      return 0;
-   }
+    int glyphMargin( QFontEngine::GlyphFormat format ) override
+    {
+        ( void ) format;
+        return 0;
+    }
 
-   QFontEngine::Properties properties() const override;
+    QFontEngine::Properties properties() const override;
 
-   static bool ct_getSfntTable(void *user_data, uint tag, uchar *buffer, uint *length);
-   static QFont::Weight qtWeightFromCFWeight(float value);
+    static bool ct_getSfntTable( void *user_data, uint tag, uchar *buffer, uint *length );
+    static QFont::Weight qtWeightFromCFWeight( float value );
 
-   static int antialiasingThreshold;
-   static QFontEngine::GlyphFormat defaultGlyphFormat;
+    static int antialiasingThreshold;
+    static QFontEngine::GlyphFormat defaultGlyphFormat;
 
- private:
-   void init();
-   QImage imageForGlyph(glyph_t glyph, QFixed subPixelPosition, bool colorful, const QTransform &m);
-   CTFontRef ctfont;
-   CGFontRef cgFont;
-   int synthesisFlags;
-   CGAffineTransform transform;
-   QFixed avgCharWidth;
-   QFontEngine::FaceId face_id;
+private:
+    void init();
+    QImage imageForGlyph( glyph_t glyph, QFixed subPixelPosition, bool colorful, const QTransform &m );
+    CTFontRef ctfont;
+    CGFontRef cgFont;
+    int synthesisFlags;
+    CGAffineTransform transform;
+    QFixed avgCharWidth;
+    QFontEngine::FaceId face_id;
 };
 
-CGAffineTransform qt_transform_from_fontdef(const QFontDef &fontDef);
+CGAffineTransform qt_transform_from_fontdef( const QFontDef &fontDef );
 
 #endif

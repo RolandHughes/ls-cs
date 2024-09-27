@@ -29,33 +29,41 @@
 #include "APIObject.h"
 #include "WebContextMenuItemData.h"
 
-namespace WebKit {
+namespace WebKit
+{
 
 class ImmutableArray;
 
-class WebContextMenuItem : public APIObject {
+class WebContextMenuItem : public APIObject
+{
 public:
     static const Type APIType = TypeContextMenuItem;
 
-    static PassRefPtr<WebContextMenuItem> create(const WebContextMenuItemData& data)
+    static PassRefPtr<WebContextMenuItem> create( const WebContextMenuItemData &data )
     {
-        return adoptRef(new WebContextMenuItem(data));
+        return adoptRef( new WebContextMenuItem( data ) );
     }
-    static PassRefPtr<WebContextMenuItem> create(const String& title, bool enabled, ImmutableArray* submenuItems);
-    static WebContextMenuItem* separatorItem();
-    
+    static PassRefPtr<WebContextMenuItem> create( const String &title, bool enabled, ImmutableArray *submenuItems );
+    static WebContextMenuItem *separatorItem();
+
     PassRefPtr<ImmutableArray> submenuItemsAsImmutableArray() const;
-    
-    APIObject* userData() const;
-    void setUserData(APIObject*);
-    
-    WebContextMenuItemData* data() { return &m_webContextMenuItemData; }
+
+    APIObject *userData() const;
+    void setUserData( APIObject * );
+
+    WebContextMenuItemData *data()
+    {
+        return &m_webContextMenuItemData;
+    }
 
 private:
-    WebContextMenuItem(const WebContextMenuItemData&);
-    
-    virtual Type type() const { return APIType; }
-    
+    WebContextMenuItem( const WebContextMenuItemData & );
+
+    virtual Type type() const
+    {
+        return APIType;
+    }
+
     WebContextMenuItemData m_webContextMenuItemData;
 };
 

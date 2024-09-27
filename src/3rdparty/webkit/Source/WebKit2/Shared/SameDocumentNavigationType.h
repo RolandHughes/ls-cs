@@ -26,9 +26,11 @@
 #ifndef SameDocumentNavigationType_h
 #define SameDocumentNavigationType_h
 
-namespace WebKit {
+namespace WebKit
+{
 
-enum SameDocumentNavigationType {
+enum SameDocumentNavigationType
+{
     SameDocumentNavigationAnchorNavigation,
     SameDocumentNavigationSessionStatePush,
     SameDocumentNavigationSessionStateReplace,

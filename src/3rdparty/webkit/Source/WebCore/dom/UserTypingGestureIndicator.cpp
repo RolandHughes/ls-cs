@@ -31,7 +31,8 @@
 #include "Node.h"
 #include <wtf/StdLibExtras.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 static bool s_processingUserTypingGesture;
 bool UserTypingGestureIndicator::processingUserTypingGesture()
@@ -39,20 +40,20 @@ bool UserTypingGestureIndicator::processingUserTypingGesture()
     return s_processingUserTypingGesture;
 }
 
-static RefPtr<Node>& focusedNode()
+static RefPtr<Node> &focusedNode()
 {
-    DEFINE_STATIC_LOCAL(RefPtr<Node>, node, ());
+    DEFINE_STATIC_LOCAL( RefPtr<Node>, node, () );
     return node;
 }
 
-Node* UserTypingGestureIndicator::focusedElementAtGestureStart()
+Node *UserTypingGestureIndicator::focusedElementAtGestureStart()
 {
     return focusedNode().get();
 }
 
-UserTypingGestureIndicator::UserTypingGestureIndicator(Frame* frame)
-    : m_previousProcessingUserTypingGesture(s_processingUserTypingGesture)
-    , m_previousFocusedNode(focusedNode())
+UserTypingGestureIndicator::UserTypingGestureIndicator( Frame *frame )
+    : m_previousProcessingUserTypingGesture( s_processingUserTypingGesture )
+    , m_previousFocusedNode( focusedNode() )
 {
     s_processingUserTypingGesture = true;
     focusedNode() = frame->document() ? frame->document()->focusedNode() : 0;

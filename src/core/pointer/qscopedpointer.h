@@ -31,26 +31,26 @@
 template <typename T, typename Deleter = std::default_delete<T>>
 class QScopedPointer : public QUniquePointer<T, Deleter>
 {
- public:
-   using QUniquePointer<T, Deleter>::QUniquePointer;
+public:
+    using QUniquePointer<T, Deleter>::QUniquePointer;
 
-   QScopedPointer(QScopedPointer && other) = delete;
-   QScopedPointer &operator=(QScopedPointer && other) = delete;
+    QScopedPointer( QScopedPointer &&other ) = delete;
+    QScopedPointer &operator=( QScopedPointer &&other ) = delete;
 };
 
 #endif
 
 // free functions
 template <typename T, typename Deleter>
-void swap(QScopedPointer<T, Deleter> &ptr1, QScopedPointer<T, Deleter> &ptr2) noexcept
+void swap( QScopedPointer<T, Deleter> &ptr1, QScopedPointer<T, Deleter> &ptr2 ) noexcept
 {
-   ptr1.swap(ptr2);
+    ptr1.swap( ptr2 );
 }
 
 template <typename T, typename... Args, typename = typename std::enable_if_t<! std::is_array_v<T>>>
-QScopedPointer<T> QMakeScoped(Args && ... args)
+          QScopedPointer<T> QMakeScoped( Args && ... args )
 {
-   return CsPointer::make_unique<T>(std::forward<Args>(args)...);
+    return CsPointer::make_unique<T>( std::forward<Args>( args )... );
 }
 
 #endif

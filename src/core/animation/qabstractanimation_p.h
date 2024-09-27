@@ -43,73 +43,75 @@ class QUnifiedTimer;
 
 class QAbstractAnimationPrivate
 {
- public:
-   QAbstractAnimationPrivate()
-      : state(QAbstractAnimation::Stopped), direction(QAbstractAnimation::Forward),
-        totalCurrentTime(0), currentTime(0),  loopCount(1), currentLoop(0), deleteWhenStopped(false),
-        hasRegisteredTimer(false), isPause(false), isGroup(false), group(nullptr)
-   {
-   }
+public:
+    QAbstractAnimationPrivate()
+        : state( QAbstractAnimation::Stopped ), direction( QAbstractAnimation::Forward ),
+          totalCurrentTime( 0 ), currentTime( 0 ),  loopCount( 1 ), currentLoop( 0 ), deleteWhenStopped( false ),
+          hasRegisteredTimer( false ), isPause( false ), isGroup( false ), group( nullptr )
+    {
+    }
 
-   virtual ~QAbstractAnimationPrivate()
-   {
-   }
+    virtual ~QAbstractAnimationPrivate()
+    {
+    }
 
-   static QAbstractAnimationPrivate *get(QAbstractAnimation *q) {
-      return q->d_func();
-   }
+    static QAbstractAnimationPrivate *get( QAbstractAnimation *q )
+    {
+        return q->d_func();
+    }
 
-   QAbstractAnimation::State state;
-   QAbstractAnimation::Direction direction;
-   void setState(QAbstractAnimation::State state);
+    QAbstractAnimation::State state;
+    QAbstractAnimation::Direction direction;
+    void setState( QAbstractAnimation::State state );
 
-   int totalCurrentTime;
-   int currentTime;
-   int loopCount;
-   int currentLoop;
+    int totalCurrentTime;
+    int currentTime;
+    int loopCount;
+    int currentLoop;
 
-   bool deleteWhenStopped;
-   bool hasRegisteredTimer;
-   bool isPause;
-   bool isGroup;
+    bool deleteWhenStopped;
+    bool hasRegisteredTimer;
+    bool isPause;
+    bool isGroup;
 
-   QAnimationGroup *group;
+    QAnimationGroup *group;
 
- private:
-   Q_DECLARE_PUBLIC(QAbstractAnimation)
+private:
+    Q_DECLARE_PUBLIC( QAbstractAnimation )
 
- protected:
-   QAbstractAnimation *q_ptr;
+protected:
+    QAbstractAnimation *q_ptr;
 };
 
 class QDefaultAnimationDriver : public QAnimationDriver
 {
-   CORE_CS_OBJECT(QDefaultAnimationDriver)
+    CORE_CS_OBJECT( QDefaultAnimationDriver )
 
- public:
-   QDefaultAnimationDriver(QUnifiedTimer *timer);
-   void timerEvent(QTimerEvent *e) override;
+public:
+    QDefaultAnimationDriver( QUnifiedTimer *timer );
+    void timerEvent( QTimerEvent *e ) override;
 
-   void started() override;
-   void stopped() override;
+    void started() override;
+    void stopped() override;
 
- private:
-   QBasicTimer m_timer;
-   QUnifiedTimer *m_unified_timer;
+private:
+    QBasicTimer m_timer;
+    QUnifiedTimer *m_unified_timer;
 };
 
 class Q_CORE_EXPORT QAnimationDriverPrivate
 {
 
- public:
-   QAnimationDriverPrivate()
-      : running(false)
-   { }
+public:
+    QAnimationDriverPrivate()
+        : running( false )
+    { }
 
-   virtual ~QAnimationDriverPrivate() {
-   }
+    virtual ~QAnimationDriverPrivate()
+    {
+    }
 
-   bool running;
+    bool running;
 };
 
 using ElapsedTimer = QElapsedTimer;
@@ -117,99 +119,103 @@ using ElapsedTimer = QElapsedTimer;
 class Q_CORE_EXPORT QUnifiedTimer : public QObject
 {
 
- private:
-   QUnifiedTimer();
+private:
+    QUnifiedTimer();
 
- public:
-   // may be required for declarative
-   static QUnifiedTimer *instance();
-   static QUnifiedTimer *instance(bool create);
+public:
+    // may be required for declarative
+    static QUnifiedTimer *instance();
+    static QUnifiedTimer *instance( bool create );
 
-   static void registerAnimation(QAbstractAnimation *animation, bool isTopLevel);
-   static void unregisterAnimation(QAbstractAnimation *animation);
+    static void registerAnimation( QAbstractAnimation *animation, bool isTopLevel );
+    static void unregisterAnimation( QAbstractAnimation *animation );
 
-   //defines the timing interval. Default is DEFAULT_TIMER_INTERVAL
-   void setTimingInterval(int interval);
+    //defines the timing interval. Default is DEFAULT_TIMER_INTERVAL
+    void setTimingInterval( int interval );
 
-   /*
-      this allows to have a consistent timer interval at each tick from the timer
-      not taking the real time that passed into account.
-   */
-   void setConsistentTiming(bool consistent) {
-      consistentTiming = consistent;
-   }
+    /*
+       this allows to have a consistent timer interval at each tick from the timer
+       not taking the real time that passed into account.
+    */
+    void setConsistentTiming( bool consistent )
+    {
+        consistentTiming = consistent;
+    }
 
-   // these facilitate fine-tuning of complex animations
-   void setSlowModeEnabled(bool enabled) {
-      slowMode = enabled;
-   }
+    // these facilitate fine-tuning of complex animations
+    void setSlowModeEnabled( bool enabled )
+    {
+        slowMode = enabled;
+    }
 
-   void setSlowdownFactor(double factor) {
-      slowdownFactor = factor;
-   }
+    void setSlowdownFactor( double factor )
+    {
+        slowdownFactor = factor;
+    }
 
-   /*
-       this is used for updating the currentTime of all animations in case the pause
-       timer is active or, otherwise, only of the animation passed as parameter.
-   */
-   static void ensureTimerUpdate();
+    /*
+        this is used for updating the currentTime of all animations in case the pause
+        timer is active or, otherwise, only of the animation passed as parameter.
+    */
+    static void ensureTimerUpdate();
 
-   /*
-       this will evaluate the need of restarting the pause timer in case there is still
-       some pause animations running.
-   */
-   static void updateAnimationTimer();
+    /*
+        this will evaluate the need of restarting the pause timer in case there is still
+        some pause animations running.
+    */
+    static void updateAnimationTimer();
 
-   void installAnimationDriver(QAnimationDriver *driver);
+    void installAnimationDriver( QAnimationDriver *driver );
 
-   void restartAnimationTimer();
-   void updateAnimationsTime();
+    void restartAnimationTimer();
+    void updateAnimationsTime();
 
-   //useful for profiling/debugging
-   int runningAnimationCount() {
-      return animations.count();
-   }
+    //useful for profiling/debugging
+    int runningAnimationCount()
+    {
+        return animations.count();
+    }
 
- protected:
-   void timerEvent(QTimerEvent *) override;
+protected:
+    void timerEvent( QTimerEvent * ) override;
 
- private:
-   friend class QDefaultAnimationDriver;
+private:
+    friend class QDefaultAnimationDriver;
 
-   QAnimationDriver *driver;
-   QDefaultAnimationDriver defaultDriver;
+    QAnimationDriver *driver;
+    QDefaultAnimationDriver defaultDriver;
 
-   QBasicTimer animationTimer;
-   // timer used to delay the check if we should start/stop the animation timer
-   QBasicTimer startStopAnimationTimer;
+    QBasicTimer animationTimer;
+    // timer used to delay the check if we should start/stop the animation timer
+    QBasicTimer startStopAnimationTimer;
 
-   ElapsedTimer time;
+    ElapsedTimer time;
 
-   qint64 lastTick;
-   int timingInterval;
-   int currentAnimationIdx;
-   bool insideTick;
-   bool consistentTiming;
-   bool slowMode;
+    qint64 lastTick;
+    int timingInterval;
+    int currentAnimationIdx;
+    bool insideTick;
+    bool consistentTiming;
+    bool slowMode;
 
-   // This factor will be used to divide the DEFAULT_TIMER_INTERVAL at each tick
-   // when slowMode is enabled. Setting it to 0 or higher than DEFAULT_TIMER_INTERVAL (16)
-   // stops all animations.
-   double slowdownFactor;
+    // This factor will be used to divide the DEFAULT_TIMER_INTERVAL at each tick
+    // when slowMode is enabled. Setting it to 0 or higher than DEFAULT_TIMER_INTERVAL (16)
+    // stops all animations.
+    double slowdownFactor;
 
-   // bool to indicate that only pause animations are active
-   bool isPauseTimerActive;
+    // bool to indicate that only pause animations are active
+    bool isPauseTimerActive;
 
-   QList<QAbstractAnimation *> animations, animationsToStart;
+    QList<QAbstractAnimation *> animations, animationsToStart;
 
-   // this is the count of running animations that are not a group neither a pause animation
-   int runningLeafAnimations;
-   QList<QAbstractAnimation *> runningPauseAnimations;
+    // this is the count of running animations that are not a group neither a pause animation
+    int runningLeafAnimations;
+    QList<QAbstractAnimation *> runningPauseAnimations;
 
-   void registerRunningAnimation(QAbstractAnimation *animation);
-   void unregisterRunningAnimation(QAbstractAnimation *animation);
+    void registerRunningAnimation( QAbstractAnimation *animation );
+    void unregisterRunningAnimation( QAbstractAnimation *animation );
 
-   int closestPauseAnimationTimeToFinish();
+    int closestPauseAnimationTimeToFinish();
 };
 
 #endif //QT_NO_ANIMATION

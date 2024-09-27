@@ -24,59 +24,71 @@
 #include "SecurityOrigin.h"
 #include <wtf/AlwaysInline.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-inline JSDOMWindow* asJSDOMWindow(JSC::JSGlobalObject* globalObject)
+inline JSDOMWindow *asJSDOMWindow( JSC::JSGlobalObject *globalObject )
 {
-    return static_cast<JSDOMWindow*>(globalObject);
-}
- 
-inline const JSDOMWindow* asJSDOMWindow(const JSC::JSGlobalObject* globalObject)
-{
-    return static_cast<const JSDOMWindow*>(globalObject);
+    return static_cast<JSDOMWindow *>( globalObject );
 }
 
-inline bool JSDOMWindowBase::allowsAccessFrom(const JSGlobalObject* other) const
+inline const JSDOMWindow *asJSDOMWindow( const JSC::JSGlobalObject *globalObject )
 {
-    if (allowsAccessFromPrivate(other))
+    return static_cast<const JSDOMWindow *>( globalObject );
+}
+
+inline bool JSDOMWindowBase::allowsAccessFrom( const JSGlobalObject *other ) const
+{
+    if ( allowsAccessFromPrivate( other ) )
+    {
         return true;
-    printErrorMessage(crossDomainAccessErrorMessage(other));
+    }
+
+    printErrorMessage( crossDomainAccessErrorMessage( other ) );
     return false;
 }
 
-inline bool JSDOMWindowBase::allowsAccessFrom(JSC::ExecState* exec) const
+inline bool JSDOMWindowBase::allowsAccessFrom( JSC::ExecState *exec ) const
 {
-    if (allowsAccessFromPrivate(exec->lexicalGlobalObject()))
+    if ( allowsAccessFromPrivate( exec->lexicalGlobalObject() ) )
+    {
         return true;
-    printErrorMessage(crossDomainAccessErrorMessage(exec->lexicalGlobalObject()));
+    }
+
+    printErrorMessage( crossDomainAccessErrorMessage( exec->lexicalGlobalObject() ) );
     return false;
 }
-    
-inline bool JSDOMWindowBase::allowsAccessFromNoErrorMessage(JSC::ExecState* exec) const
+
+inline bool JSDOMWindowBase::allowsAccessFromNoErrorMessage( JSC::ExecState *exec ) const
 {
-    return allowsAccessFromPrivate(exec->lexicalGlobalObject());
+    return allowsAccessFromPrivate( exec->lexicalGlobalObject() );
 }
-    
-inline bool JSDOMWindowBase::allowsAccessFrom(JSC::ExecState* exec, String& message) const
+
+inline bool JSDOMWindowBase::allowsAccessFrom( JSC::ExecState *exec, String &message ) const
 {
-    if (allowsAccessFromPrivate(exec->lexicalGlobalObject()))
+    if ( allowsAccessFromPrivate( exec->lexicalGlobalObject() ) )
+    {
         return true;
-    message = crossDomainAccessErrorMessage(exec->lexicalGlobalObject());
+    }
+
+    message = crossDomainAccessErrorMessage( exec->lexicalGlobalObject() );
     return false;
 }
-    
-ALWAYS_INLINE bool JSDOMWindowBase::allowsAccessFromPrivate(const JSGlobalObject* other) const
+
+ALWAYS_INLINE bool JSDOMWindowBase::allowsAccessFromPrivate( const JSGlobalObject *other ) const
 {
-    const JSDOMWindow* originWindow = asJSDOMWindow(other);
-    const JSDOMWindow* targetWindow = m_shell->window();
+    const JSDOMWindow *originWindow = asJSDOMWindow( other );
+    const JSDOMWindow *targetWindow = m_shell->window();
 
-    if (originWindow == targetWindow)
+    if ( originWindow == targetWindow )
+    {
         return true;
+    }
 
-    const SecurityOrigin* originSecurityOrigin = originWindow->impl()->securityOrigin();
-    const SecurityOrigin* targetSecurityOrigin = targetWindow->impl()->securityOrigin();
+    const SecurityOrigin *originSecurityOrigin = originWindow->impl()->securityOrigin();
+    const SecurityOrigin *targetSecurityOrigin = targetWindow->impl()->securityOrigin();
 
-    return originSecurityOrigin->canAccess(targetSecurityOrigin);
+    return originSecurityOrigin->canAccess( targetSecurityOrigin );
 }
 
 }

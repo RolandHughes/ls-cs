@@ -36,36 +36,42 @@
 #include <runtime/JSLock.h>
 #include <wtf/MainThread.h>
 
-namespace WebCore {
-    
+namespace WebCore
+{
+
 using namespace JSC;
-    
-JSCustomVoidCallback::JSCustomVoidCallback(JSObject* callback, JSDOMGlobalObject* globalObject)
-    : m_data(new JSCallbackData(callback, globalObject))
-    , m_scriptExecutionContext(globalObject->scriptExecutionContext())
+
+JSCustomVoidCallback::JSCustomVoidCallback( JSObject *callback, JSDOMGlobalObject *globalObject )
+    : m_data( new JSCallbackData( callback, globalObject ) )
+    , m_scriptExecutionContext( globalObject->scriptExecutionContext() )
 {
 }
 
 JSCustomVoidCallback::~JSCustomVoidCallback()
 {
-    if (m_scriptExecutionContext->isContextThread())
+    if ( m_scriptExecutionContext->isContextThread() )
+    {
         delete m_data;
+    }
     else
-        m_scriptExecutionContext->postTask(DeleteCallbackDataTask::create(m_data));
+    {
+        m_scriptExecutionContext->postTask( DeleteCallbackDataTask::create( m_data ) );
+    }
+
 #ifndef NDEBUG
     m_data = 0;
 #endif
 }
-    
+
 void JSCustomVoidCallback::handleEvent()
 {
-    ASSERT(m_data);
+    ASSERT( m_data );
 
-    RefPtr<JSCustomVoidCallback> protect(this);
-        
-    JSC::JSLock lock(SilenceAssertionsOnly);
+    RefPtr<JSCustomVoidCallback> protect( this );
+
+    JSC::JSLock lock( SilenceAssertionsOnly );
     MarkedArgumentBuffer args;
-    m_data->invokeCallback(args);
+    m_data->invokeCallback( args );
 }
 
 } // namespace WebCore

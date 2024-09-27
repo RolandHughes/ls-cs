@@ -35,24 +35,37 @@
 #include "JavaString.h"
 #include "JobjectWrapper.h"
 
-namespace JSC {
+namespace JSC
+{
 
-namespace Bindings {
+namespace Bindings
+{
 
-class JavaField : public Field {
+class JavaField : public Field
+{
 public:
-    JavaField(JNIEnv*, jobject aField);
+    JavaField( JNIEnv *, jobject aField );
 
-    virtual JSValue valueFromInstance(ExecState*, const Instance*) const;
-    virtual void setValueToInstance(ExecState*, const Instance*, JSValue) const;
+    virtual JSValue valueFromInstance( ExecState *, const Instance * ) const;
+    virtual void setValueToInstance( ExecState *, const Instance *, JSValue ) const;
 
-    const JavaString& name() const { return m_name; }
-    virtual RuntimeType typeClassName() const { return m_typeClassName.utf8(); }
-    JavaType type() const { return m_type; }
+    const JavaString &name() const
+    {
+        return m_name;
+    }
+    virtual RuntimeType typeClassName() const
+    {
+        return m_typeClassName.utf8();
+    }
+    JavaType type() const
+    {
+        return m_type;
+    }
 
 private:
-    void dispatchSetValueToInstance(ExecState*, const JavaInstance*, jvalue, const char* name, const char* sig) const;
-    jvalue dispatchValueFromInstance(ExecState*, const JavaInstance*, const char* name, const char* sig, JavaType returnType) const;
+    void dispatchSetValueToInstance( ExecState *, const JavaInstance *, jvalue, const char *name, const char *sig ) const;
+    jvalue dispatchValueFromInstance( ExecState *, const JavaInstance *, const char *name, const char *sig,
+                                      JavaType returnType ) const;
 
     JavaString m_name;
     JavaString m_typeClassName;

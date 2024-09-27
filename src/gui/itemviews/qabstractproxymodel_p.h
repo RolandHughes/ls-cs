@@ -30,15 +30,15 @@
 
 class QAbstractProxyModelPrivate : public QAbstractItemModelPrivate
 {
-   Q_DECLARE_PUBLIC(QAbstractProxyModel)
+    Q_DECLARE_PUBLIC( QAbstractProxyModel )
 
- public:
-   QAbstractProxyModelPrivate() : QAbstractItemModelPrivate(), model(nullptr) {}
-   QAbstractItemModel *model;
-   virtual void _q_sourceModelDestroyed();
+public:
+    QAbstractProxyModelPrivate() : QAbstractItemModelPrivate(), model( nullptr ) {}
+    QAbstractItemModel *model;
+    virtual void _q_sourceModelDestroyed();
 
-   void mapDropCoordinatesToSource(int row, int column, const QModelIndex &parent,
-      int *source_row, int *source_column, QModelIndex *source_parent) const;
+    void mapDropCoordinatesToSource( int row, int column, const QModelIndex &parent,
+                                     int *source_row, int *source_column, QModelIndex *source_parent ) const;
 };
 
 #endif // QT_NO_PROXYMODEL

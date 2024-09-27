@@ -36,44 +36,47 @@
 
 using namespace std;
 
-namespace JSC {
+namespace JSC
+{
 
 const size_t minBytesPerCycle = 512 * 1024;
 
-Heap::Heap(JSGlobalData* globalData)
-    : m_operationInProgress(NoOperation)
-    , m_markedSpace(globalData)
-    , m_markListSet(0)
-    , m_activityCallback(DefaultGCActivityCallback::create(this))
-    , m_globalData(globalData)
-    , m_machineThreads(this)
-    , m_markStack(globalData->jsArrayVPtr)
-    , m_handleHeap(globalData)
-    , m_extraCost(0)
+Heap::Heap( JSGlobalData *globalData )
+    : m_operationInProgress( NoOperation )
+    , m_markedSpace( globalData )
+    , m_markListSet( 0 )
+    , m_activityCallback( DefaultGCActivityCallback::create( this ) )
+    , m_globalData( globalData )
+    , m_machineThreads( this )
+    , m_markStack( globalData->jsArrayVPtr )
+    , m_handleHeap( globalData )
+    , m_extraCost( 0 )
 {
-    m_markedSpace.setHighWaterMark(minBytesPerCycle);
-    (*m_activityCallback)();
+    m_markedSpace.setHighWaterMark( minBytesPerCycle );
+    ( *m_activityCallback )();
 }
 
 Heap::~Heap()
 {
     // The destroy function must already have been called, so assert this.
-    ASSERT(!m_globalData);
+    ASSERT( !m_globalData );
 }
 
 void Heap::destroy()
 {
-    JSLock lock(SilenceAssertionsOnly);
+    JSLock lock( SilenceAssertionsOnly );
 
-    if (!m_globalData)
+    if ( !m_globalData )
+    {
         return;
+    }
 
-    ASSERT(!m_globalData->dynamicGlobalObject);
-    ASSERT(m_operationInProgress == NoOperation);
-    
+    ASSERT( !m_globalData->dynamicGlobalObject );
+    ASSERT( m_operationInProgress == NoOperation );
+
     // The global object is not GC protected at this point, so sweeping may delete it
     // (and thus the global data) before other objects that may use the global data.
-    RefPtr<JSGlobalData> protect(m_globalData);
+    RefPtr<JSGlobalData> protect( m_globalData );
 
 #if ENABLE(JIT)
     m_globalData->jitStubs->clearHostFunctionStubs();
@@ -88,7 +91,7 @@ void Heap::destroy()
     m_globalData = 0;
 }
 
-void Heap::reportExtraMemoryCostSlowCase(size_t cost)
+void Heap::reportExtraMemoryCostSlowCase( size_t cost )
 {
     // Our frequency of garbage collection tries to balance memory use against speed
     // by collecting based on the number of newly created values. However, for values
@@ -101,91 +104,107 @@ void Heap::reportExtraMemoryCostSlowCase(size_t cost)
     // if a large value survives one garbage collection, there is not much point to
     // collecting more frequently as long as it stays alive.
 
-    if (m_extraCost > maxExtraCost && m_extraCost > m_markedSpace.highWaterMark() / 2)
+    if ( m_extraCost > maxExtraCost && m_extraCost > m_markedSpace.highWaterMark() / 2 )
+    {
         collectAllGarbage();
+    }
+
     m_extraCost += cost;
 }
 
-void* Heap::allocateSlowCase(size_t bytes)
+void *Heap::allocateSlowCase( size_t bytes )
 {
-    ASSERT(globalData()->identifierTable == wtfThreadData().currentIdentifierTable());
-    ASSERT(JSLock::lockCount() > 0);
-    ASSERT(JSLock::currentThreadIsHoldingLock());
-    ASSERT(bytes <= MarkedSpace::maxCellSize);
-    ASSERT(m_operationInProgress == NoOperation);
+    ASSERT( globalData()->identifierTable == wtfThreadData().currentIdentifierTable() );
+    ASSERT( JSLock::lockCount() > 0 );
+    ASSERT( JSLock::currentThreadIsHoldingLock() );
+    ASSERT( bytes <= MarkedSpace::maxCellSize );
+    ASSERT( m_operationInProgress == NoOperation );
 
 #if COLLECT_ON_EVERY_SLOW_ALLOCATION
     collectAllGarbage();
-    ASSERT(m_operationInProgress == NoOperation);
+    ASSERT( m_operationInProgress == NoOperation );
 #endif
 
-    reset(DoNotSweep);
+    reset( DoNotSweep );
 
     m_operationInProgress = Allocation;
-    void* result = m_markedSpace.allocate(bytes);
+    void *result = m_markedSpace.allocate( bytes );
     m_operationInProgress = NoOperation;
 
-    ASSERT(result);
+    ASSERT( result );
     return result;
 }
 
-void Heap::protect(JSValue k)
+void Heap::protect( JSValue k )
 {
-    ASSERT(k);
-    ASSERT(JSLock::currentThreadIsHoldingLock() || !m_globalData->isSharedInstance());
+    ASSERT( k );
+    ASSERT( JSLock::currentThreadIsHoldingLock() || !m_globalData->isSharedInstance() );
 
-    if (!k.isCell())
+    if ( !k.isCell() )
+    {
         return;
+    }
 
-    m_protectedValues.add(k.asCell());
+    m_protectedValues.add( k.asCell() );
 }
 
-bool Heap::unprotect(JSValue k)
+bool Heap::unprotect( JSValue k )
 {
-    ASSERT(k);
-    ASSERT(JSLock::currentThreadIsHoldingLock() || !m_globalData->isSharedInstance());
+    ASSERT( k );
+    ASSERT( JSLock::currentThreadIsHoldingLock() || !m_globalData->isSharedInstance() );
 
-    if (!k.isCell())
+    if ( !k.isCell() )
+    {
         return false;
+    }
 
-    return m_protectedValues.remove(k.asCell());
+    return m_protectedValues.remove( k.asCell() );
 }
 
-void Heap::markProtectedObjects(HeapRootVisitor& heapRootMarker)
+void Heap::markProtectedObjects( HeapRootVisitor &heapRootMarker )
 {
     ProtectCountSet::iterator end = m_protectedValues.end();
-    for (ProtectCountSet::iterator it = m_protectedValues.begin(); it != end; ++it)
-        heapRootMarker.mark(&it->first);
+
+    for ( ProtectCountSet::iterator it = m_protectedValues.begin(); it != end; ++it )
+    {
+        heapRootMarker.mark( &it->first );
+    }
 }
 
-void Heap::pushTempSortVector(Vector<ValueStringPair>* tempVector)
+void Heap::pushTempSortVector( Vector<ValueStringPair> *tempVector )
 {
-    m_tempSortingVectors.append(tempVector);
+    m_tempSortingVectors.append( tempVector );
 }
 
-void Heap::popTempSortVector(Vector<ValueStringPair>* tempVector)
+void Heap::popTempSortVector( Vector<ValueStringPair> *tempVector )
 {
-    ASSERT_UNUSED(tempVector, tempVector == m_tempSortingVectors.last());
+    ASSERT_UNUSED( tempVector, tempVector == m_tempSortingVectors.last() );
     m_tempSortingVectors.removeLast();
 }
-    
-void Heap::markTempSortVectors(HeapRootVisitor& heapRootMarker)
+
+void Heap::markTempSortVectors( HeapRootVisitor &heapRootMarker )
 {
     typedef Vector<Vector<ValueStringPair>* > VectorOfValueStringVectors;
 
     VectorOfValueStringVectors::iterator end = m_tempSortingVectors.end();
-    for (VectorOfValueStringVectors::iterator it = m_tempSortingVectors.begin(); it != end; ++it) {
-        Vector<ValueStringPair>* tempSortingVector = *it;
+
+    for ( VectorOfValueStringVectors::iterator it = m_tempSortingVectors.begin(); it != end; ++it )
+    {
+        Vector<ValueStringPair> *tempSortingVector = *it;
 
         Vector<ValueStringPair>::iterator vectorEnd = tempSortingVector->end();
-        for (Vector<ValueStringPair>::iterator vectorIt = tempSortingVector->begin(); vectorIt != vectorEnd; ++vectorIt) {
-            if (vectorIt->first)
-                heapRootMarker.mark(&vectorIt->first);
+
+        for ( Vector<ValueStringPair>::iterator vectorIt = tempSortingVector->begin(); vectorIt != vectorEnd; ++vectorIt )
+        {
+            if ( vectorIt->first )
+            {
+                heapRootMarker.mark( &vectorIt->first );
+            }
         }
     }
 }
 
-inline RegisterFile& Heap::registerFile()
+inline RegisterFile &Heap::registerFile()
 {
     return m_globalData->interpreter->registerFile();
 }
@@ -193,73 +212,88 @@ inline RegisterFile& Heap::registerFile()
 void Heap::markRoots()
 {
 #ifndef NDEBUG
-    if (m_globalData->isSharedInstance()) {
-        ASSERT(JSLock::lockCount() > 0);
-        ASSERT(JSLock::currentThreadIsHoldingLock());
+
+    if ( m_globalData->isSharedInstance() )
+    {
+        ASSERT( JSLock::lockCount() > 0 );
+        ASSERT( JSLock::currentThreadIsHoldingLock() );
     }
+
 #endif
 
-    void* dummy;
+    void *dummy;
 
-    ASSERT(m_operationInProgress == NoOperation);
-    if (m_operationInProgress != NoOperation)
+    ASSERT( m_operationInProgress == NoOperation );
+
+    if ( m_operationInProgress != NoOperation )
+    {
         CRASH();
+    }
 
     m_operationInProgress = Collection;
 
-    MarkStack& visitor = m_markStack;
-    HeapRootVisitor heapRootMarker(visitor);
-    
+    MarkStack &visitor = m_markStack;
+    HeapRootVisitor heapRootMarker( visitor );
+
     // We gather conservative roots before clearing mark bits because
     // conservative gathering uses the mark bits from our last mark pass to
     // determine whether a reference is valid.
-    ConservativeRoots machineThreadRoots(this);
-    m_machineThreads.gatherConservativeRoots(machineThreadRoots, &dummy);
+    ConservativeRoots machineThreadRoots( this );
+    m_machineThreads.gatherConservativeRoots( machineThreadRoots, &dummy );
 
-    ConservativeRoots registerFileRoots(this);
-    registerFile().gatherConservativeRoots(registerFileRoots);
+    ConservativeRoots registerFileRoots( this );
+    registerFile().gatherConservativeRoots( registerFileRoots );
 
     m_markedSpace.clearMarks();
 
-    visitor.append(machineThreadRoots);
+    visitor.append( machineThreadRoots );
     visitor.drain();
 
-    visitor.append(registerFileRoots);
+    visitor.append( registerFileRoots );
     visitor.drain();
 
-    markProtectedObjects(heapRootMarker);
-    visitor.drain();
-    
-    markTempSortVectors(heapRootMarker);
+    markProtectedObjects( heapRootMarker );
     visitor.drain();
 
-    if (m_markListSet && m_markListSet->size())
-        MarkedArgumentBuffer::markLists(heapRootMarker, *m_markListSet);
-    if (m_globalData->exception)
-        heapRootMarker.mark(&m_globalData->exception);
+    markTempSortVectors( heapRootMarker );
     visitor.drain();
 
-    m_handleHeap.markStrongHandles(heapRootMarker);
+    if ( m_markListSet && m_markListSet->size() )
+    {
+        MarkedArgumentBuffer::markLists( heapRootMarker, *m_markListSet );
+    }
+
+    if ( m_globalData->exception )
+    {
+        heapRootMarker.mark( &m_globalData->exception );
+    }
+
     visitor.drain();
 
-    m_handleStack.mark(heapRootMarker);
+    m_handleHeap.markStrongHandles( heapRootMarker );
+    visitor.drain();
+
+    m_handleStack.mark( heapRootMarker );
     visitor.drain();
 
     // Mark the small strings cache as late as possible, since it will clear
     // itself if nothing else has marked it.
     // FIXME: Change the small strings cache to use Weak<T>.
-    m_globalData->smallStrings.visitChildren(heapRootMarker);
+    m_globalData->smallStrings.visitChildren( heapRootMarker );
     visitor.drain();
-    
+
     // Weak handles must be marked last, because their owners use the set of
     // opaque roots to determine reachability.
     int lastOpaqueRootCount;
-    do {
+
+    do
+    {
         lastOpaqueRootCount = visitor.opaqueRootCount();
-        m_handleHeap.markWeakHandles(heapRootMarker);
+        m_handleHeap.markWeakHandles( heapRootMarker );
         visitor.drain();
-    // If the set of opaque roots has grown, more weak handles may have become reachable.
-    } while (lastOpaqueRootCount != visitor.opaqueRootCount());
+        // If the set of opaque roots has grown, more weak handles may have become reachable.
+    }
+    while ( lastOpaqueRootCount != visitor.opaqueRootCount() );
 
     visitor.reset();
 
@@ -291,9 +325,13 @@ size_t Heap::protectedGlobalObjectCount()
     size_t count = m_handleHeap.protectedGlobalObjectCount();
 
     ProtectCountSet::iterator end = m_protectedValues.end();
-    for (ProtectCountSet::iterator it = m_protectedValues.begin(); it != end; ++it) {
-        if (it->first->isObject() && asObject(it->first)->isGlobalObject())
+
+    for ( ProtectCountSet::iterator it = m_protectedValues.begin(); it != end; ++it )
+    {
+        if ( it->first->isObject() && asObject( it->first )->isGlobalObject() )
+        {
             count++;
+        }
     }
 
     return count;
@@ -304,42 +342,61 @@ size_t Heap::protectedObjectCount()
     return m_protectedValues.size();
 }
 
-class TypeCounter {
+class TypeCounter
+{
 public:
     TypeCounter();
-    void operator()(JSCell*);
+    void operator()( JSCell * );
     PassOwnPtr<TypeCountSet> take();
-    
+
 private:
-    const char* typeName(JSCell*);
+    const char *typeName( JSCell * );
     OwnPtr<TypeCountSet> m_typeCountSet;
 };
 
 inline TypeCounter::TypeCounter()
-    : m_typeCountSet(adoptPtr(new TypeCountSet))
+    : m_typeCountSet( adoptPtr( new TypeCountSet ) )
 {
 }
 
-inline const char* TypeCounter::typeName(JSCell* cell)
+inline const char *TypeCounter::typeName( JSCell *cell )
 {
-    if (cell->isString())
+    if ( cell->isString() )
+    {
         return "string";
-    if (cell->isGetterSetter())
+    }
+
+    if ( cell->isGetterSetter() )
+    {
         return "Getter-Setter";
-    if (cell->isAPIValueWrapper())
+    }
+
+    if ( cell->isAPIValueWrapper() )
+    {
         return "API wrapper";
-    if (cell->isPropertyNameIterator())
+    }
+
+    if ( cell->isPropertyNameIterator() )
+    {
         return "For-in iterator";
-    if (const ClassInfo* info = cell->classInfo())
+    }
+
+    if ( const ClassInfo *info = cell->classInfo() )
+    {
         return info->className;
-    if (!cell->isObject())
+    }
+
+    if ( !cell->isObject() )
+    {
         return "[empty cell]";
+    }
+
     return "Object";
 }
 
-inline void TypeCounter::operator()(JSCell* cell)
+inline void TypeCounter::operator()( JSCell *cell )
 {
-    m_typeCountSet->add(typeName(cell));
+    m_typeCountSet->add( typeName( cell ) );
 }
 
 inline PassOwnPtr<TypeCountSet> TypeCounter::take()
@@ -352,27 +409,36 @@ PassOwnPtr<TypeCountSet> Heap::protectedObjectTypeCounts()
     TypeCounter typeCounter;
 
     ProtectCountSet::iterator end = m_protectedValues.end();
-    for (ProtectCountSet::iterator it = m_protectedValues.begin(); it != end; ++it)
-        typeCounter(it->first);
-    m_handleHeap.protectedObjectTypeCounts(typeCounter);
+
+    for ( ProtectCountSet::iterator it = m_protectedValues.begin(); it != end; ++it )
+    {
+        typeCounter( it->first );
+    }
+
+    m_handleHeap.protectedObjectTypeCounts( typeCounter );
 
     return typeCounter.take();
 }
 
-void HandleHeap::protectedObjectTypeCounts(TypeCounter& typeCounter)
+void HandleHeap::protectedObjectTypeCounts( TypeCounter &typeCounter )
 {
-    Node* end = m_strongList.end();
-    for (Node* node = m_strongList.begin(); node != end; node = node->next()) {
+    Node *end = m_strongList.end();
+
+    for ( Node *node = m_strongList.begin(); node != end; node = node->next() )
+    {
         JSValue value = *node->slot();
-        if (value && value.isCell())
-            typeCounter(value.asCell());
+
+        if ( value && value.isCell() )
+        {
+            typeCounter( value.asCell() );
+        }
     }
 }
 
 PassOwnPtr<TypeCountSet> Heap::objectTypeCounts()
 {
     TypeCounter typeCounter;
-    forEach(typeCounter);
+    forEach( typeCounter );
     return typeCounter.take();
 }
 
@@ -383,15 +449,17 @@ bool Heap::isBusy()
 
 void Heap::collectAllGarbage()
 {
-    if (!m_globalData->dynamicGlobalObject)
+    if ( !m_globalData->dynamicGlobalObject )
+    {
         m_globalData->recompileAllJSFunctions();
+    }
 
-    reset(DoSweep);
+    reset( DoSweep );
 }
 
-void Heap::reset(SweepToggle sweepToggle)
+void Heap::reset( SweepToggle sweepToggle )
 {
-    ASSERT(globalData()->identifierTable == wtfThreadData().currentIdentifierTable());
+    ASSERT( globalData()->identifierTable == wtfThreadData().currentIdentifierTable() );
     JAVASCRIPTCORE_GC_BEGIN();
 
     markRoots();
@@ -406,7 +474,8 @@ void Heap::reset(SweepToggle sweepToggle)
     sweepToggle = DoSweep;
 #endif
 
-    if (sweepToggle == DoSweep) {
+    if ( sweepToggle == DoSweep )
+    {
         m_markedSpace.sweep();
         m_markedSpace.shrink();
     }
@@ -416,19 +485,19 @@ void Heap::reset(SweepToggle sweepToggle)
     // proportion is a bit arbitrary. A 2X multiplier gives a 1:1 (heap size :
     // new bytes allocated) proportion, and seems to work well in benchmarks.
     size_t proportionalBytes = 2 * m_markedSpace.size();
-    m_markedSpace.setHighWaterMark(max(proportionalBytes, minBytesPerCycle));
+    m_markedSpace.setHighWaterMark( max( proportionalBytes, minBytesPerCycle ) );
 
     JAVASCRIPTCORE_GC_END();
 
-    (*m_activityCallback)();
+    ( *m_activityCallback )();
 }
 
-void Heap::setActivityCallback(PassOwnPtr<GCActivityCallback> activityCallback)
+void Heap::setActivityCallback( PassOwnPtr<GCActivityCallback> activityCallback )
 {
     m_activityCallback = activityCallback;
 }
 
-GCActivityCallback* Heap::activityCallback()
+GCActivityCallback *Heap::activityCallback()
 {
     return m_activityCallback.get();
 }

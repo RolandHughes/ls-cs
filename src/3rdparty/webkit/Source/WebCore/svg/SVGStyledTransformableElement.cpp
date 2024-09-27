@@ -29,13 +29,14 @@
 #include "RenderSVGResource.h"
 #include "SVGNames.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 // Animated property definitions
-DEFINE_ANIMATED_TRANSFORM_LIST(SVGStyledTransformableElement, SVGNames::transformAttr, Transform, transform)
+DEFINE_ANIMATED_TRANSFORM_LIST( SVGStyledTransformableElement, SVGNames::transformAttr, Transform, transform )
 
-SVGStyledTransformableElement::SVGStyledTransformableElement(const QualifiedName& tagName, Document* document)
-    : SVGStyledLocatableElement(tagName, document)
+SVGStyledTransformableElement::SVGStyledTransformableElement( const QualifiedName &tagName, Document *document )
+    : SVGStyledLocatableElement( tagName, document )
 {
 }
 
@@ -43,105 +44,127 @@ SVGStyledTransformableElement::~SVGStyledTransformableElement()
 {
 }
 
-AffineTransform SVGStyledTransformableElement::getCTM(StyleUpdateStrategy styleUpdateStrategy) const
+AffineTransform SVGStyledTransformableElement::getCTM( StyleUpdateStrategy styleUpdateStrategy ) const
 {
-    return SVGLocatable::computeCTM(this, SVGLocatable::NearestViewportScope, styleUpdateStrategy);
+    return SVGLocatable::computeCTM( this, SVGLocatable::NearestViewportScope, styleUpdateStrategy );
 }
 
-AffineTransform SVGStyledTransformableElement::getScreenCTM(StyleUpdateStrategy styleUpdateStrategy) const
+AffineTransform SVGStyledTransformableElement::getScreenCTM( StyleUpdateStrategy styleUpdateStrategy ) const
 {
-    return SVGLocatable::computeCTM(this, SVGLocatable::ScreenScope, styleUpdateStrategy);
+    return SVGLocatable::computeCTM( this, SVGLocatable::ScreenScope, styleUpdateStrategy );
 }
 
 AffineTransform SVGStyledTransformableElement::animatedLocalTransform() const
 {
     AffineTransform matrix;
-    transform().concatenate(matrix);
-    if (m_supplementalTransform)
+    transform().concatenate( matrix );
+
+    if ( m_supplementalTransform )
+    {
         matrix *= *m_supplementalTransform;
+    }
+
     return matrix;
 }
 
-AffineTransform* SVGStyledTransformableElement::supplementalTransform()
+AffineTransform *SVGStyledTransformableElement::supplementalTransform()
 {
-    if (!m_supplementalTransform)
-        m_supplementalTransform = adoptPtr(new AffineTransform);
+    if ( !m_supplementalTransform )
+    {
+        m_supplementalTransform = adoptPtr( new AffineTransform );
+    }
+
     return m_supplementalTransform.get();
 }
 
-void SVGStyledTransformableElement::parseMappedAttribute(Attribute* attr)
+void SVGStyledTransformableElement::parseMappedAttribute( Attribute *attr )
 {
-    if (SVGTransformable::isKnownAttribute(attr->name())) {
+    if ( SVGTransformable::isKnownAttribute( attr->name() ) )
+    {
         SVGTransformList newList;
-        if (!SVGTransformable::parseTransformAttribute(newList, attr->value()))
+
+        if ( !SVGTransformable::parseTransformAttribute( newList, attr->value() ) )
+        {
             newList.clear();
-        detachAnimatedTransformListWrappers(newList.size());
-        setTransformBaseValue(newList);
-    } else 
-        SVGStyledLocatableElement::parseMappedAttribute(attr);
+        }
+
+        detachAnimatedTransformListWrappers( newList.size() );
+        setTransformBaseValue( newList );
+    }
+    else
+    {
+        SVGStyledLocatableElement::parseMappedAttribute( attr );
+    }
 }
 
-void SVGStyledTransformableElement::svgAttributeChanged(const QualifiedName& attrName)
+void SVGStyledTransformableElement::svgAttributeChanged( const QualifiedName &attrName )
 {
-    SVGStyledLocatableElement::svgAttributeChanged(attrName);
+    SVGStyledLocatableElement::svgAttributeChanged( attrName );
 
-    if (!SVGStyledTransformableElement::isKnownAttribute(attrName))
+    if ( !SVGStyledTransformableElement::isKnownAttribute( attrName ) )
+    {
         return;
+    }
 
-    RenderObject* object = renderer();
-    if (!object)
+    RenderObject *object = renderer();
+
+    if ( !object )
+    {
         return;
+    }
 
     object->setNeedsTransformUpdate();
-    RenderSVGResource::markForLayoutAndParentResourceInvalidation(object);
+    RenderSVGResource::markForLayoutAndParentResourceInvalidation( object );
 }
 
-void SVGStyledTransformableElement::synchronizeProperty(const QualifiedName& attrName)
+void SVGStyledTransformableElement::synchronizeProperty( const QualifiedName &attrName )
 {
-    SVGStyledLocatableElement::synchronizeProperty(attrName);
+    SVGStyledLocatableElement::synchronizeProperty( attrName );
 
-    if (attrName == anyQName() || SVGTransformable::isKnownAttribute(attrName))
+    if ( attrName == anyQName() || SVGTransformable::isKnownAttribute( attrName ) )
+    {
         synchronizeTransform();
+    }
 }
 
-bool SVGStyledTransformableElement::isKnownAttribute(const QualifiedName& attrName)
+bool SVGStyledTransformableElement::isKnownAttribute( const QualifiedName &attrName )
 {
-    return SVGTransformable::isKnownAttribute(attrName) || SVGStyledLocatableElement::isKnownAttribute(attrName);
+    return SVGTransformable::isKnownAttribute( attrName ) || SVGStyledLocatableElement::isKnownAttribute( attrName );
 }
 
-SVGElement* SVGStyledTransformableElement::nearestViewportElement() const
+SVGElement *SVGStyledTransformableElement::nearestViewportElement() const
 {
-    return SVGTransformable::nearestViewportElement(this);
+    return SVGTransformable::nearestViewportElement( this );
 }
 
-SVGElement* SVGStyledTransformableElement::farthestViewportElement() const
+SVGElement *SVGStyledTransformableElement::farthestViewportElement() const
 {
-    return SVGTransformable::farthestViewportElement(this);
+    return SVGTransformable::farthestViewportElement( this );
 }
 
-FloatRect SVGStyledTransformableElement::getBBox(StyleUpdateStrategy styleUpdateStrategy) const
+FloatRect SVGStyledTransformableElement::getBBox( StyleUpdateStrategy styleUpdateStrategy ) const
 {
-    return SVGTransformable::getBBox(this, styleUpdateStrategy);
+    return SVGTransformable::getBBox( this, styleUpdateStrategy );
 }
 
-RenderObject* SVGStyledTransformableElement::createRenderer(RenderArena* arena, RenderStyle*)
+RenderObject *SVGStyledTransformableElement::createRenderer( RenderArena *arena, RenderStyle * )
 {
     // By default, any subclass is expected to do path-based drawing
-    return new (arena) RenderSVGPath(this);
+    return new ( arena ) RenderSVGPath( this );
 }
 
-void SVGStyledTransformableElement::fillPassedAttributeToPropertyTypeMap(AttributeToPropertyTypeMap& attributeToPropertyTypeMap)
+void SVGStyledTransformableElement::fillPassedAttributeToPropertyTypeMap( AttributeToPropertyTypeMap &attributeToPropertyTypeMap )
 {
-    SVGStyledElement::fillPassedAttributeToPropertyTypeMap(attributeToPropertyTypeMap);
-    
-    attributeToPropertyTypeMap.set(SVGNames::transformAttr, AnimatedTransformList);
+    SVGStyledElement::fillPassedAttributeToPropertyTypeMap( attributeToPropertyTypeMap );
+
+    attributeToPropertyTypeMap.set( SVGNames::transformAttr, AnimatedTransformList );
 }
 
-void SVGStyledTransformableElement::toClipPath(Path& path) const
+void SVGStyledTransformableElement::toClipPath( Path &path ) const
 {
-    toPathData(path);
+    toPathData( path );
     // FIXME: How do we know the element has done a layout?
-    path.transform(animatedLocalTransform());
+    path.transform( animatedLocalTransform() );
 }
 
 }

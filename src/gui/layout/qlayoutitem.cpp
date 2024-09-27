@@ -33,42 +33,42 @@
 #include <qlayoutengine_p.h>
 #include <qwidget_p.h>
 
-static inline QRect fromLayoutItemRect(QWidgetPrivate *priv, const QRect &rect)
+static inline QRect fromLayoutItemRect( QWidgetPrivate *priv, const QRect &rect )
 {
-   return rect.adjusted(priv->leftLayoutItemMargin, priv->topLayoutItemMargin,
-         -priv->rightLayoutItemMargin, -priv->bottomLayoutItemMargin);
+    return rect.adjusted( priv->leftLayoutItemMargin, priv->topLayoutItemMargin,
+                          -priv->rightLayoutItemMargin, -priv->bottomLayoutItemMargin );
 }
 
-static inline QSize fromLayoutItemSize(QWidgetPrivate *priv, const QSize &size)
+static inline QSize fromLayoutItemSize( QWidgetPrivate *priv, const QSize &size )
 {
-   return fromLayoutItemRect(priv, QRect(QPoint(0, 0), size)).size();
+    return fromLayoutItemRect( priv, QRect( QPoint( 0, 0 ), size ) ).size();
 }
 
-static inline QRect toLayoutItemRect(QWidgetPrivate *priv, const QRect &rect)
+static inline QRect toLayoutItemRect( QWidgetPrivate *priv, const QRect &rect )
 {
-   return rect.adjusted(-priv->leftLayoutItemMargin, -priv->topLayoutItemMargin,
-         priv->rightLayoutItemMargin, priv->bottomLayoutItemMargin);
+    return rect.adjusted( -priv->leftLayoutItemMargin, -priv->topLayoutItemMargin,
+                          priv->rightLayoutItemMargin, priv->bottomLayoutItemMargin );
 }
 
-static inline QSize toLayoutItemSize(QWidgetPrivate *priv, const QSize &size)
+static inline QSize toLayoutItemSize( QWidgetPrivate *priv, const QSize &size )
 {
-   return toLayoutItemRect(priv, QRect(QPoint(0, 0), size)).size();
+    return toLayoutItemRect( priv, QRect( QPoint( 0, 0 ), size ) ).size();
 }
 
-void QLayoutItem::setAlignment(Qt::Alignment alignment)
+void QLayoutItem::setAlignment( Qt::Alignment alignment )
 {
-   align = alignment;
+    align = alignment;
 }
 
 QSpacerItem::~QSpacerItem()
 {
 }
 
-void QSpacerItem::changeSize(int w, int h, QSizePolicy::Policy hPolicy, QSizePolicy::Policy vPolicy)
+void QSpacerItem::changeSize( int w, int h, QSizePolicy::Policy hPolicy, QSizePolicy::Policy vPolicy )
 {
-   width = w;
-   height = h;
-   sizeP = QSizePolicy(hPolicy, vPolicy);
+    width = w;
+    height = h;
+    sizeP = QSizePolicy( hPolicy, vPolicy );
 }
 
 QWidgetItem::~QWidgetItem()
@@ -85,442 +85,506 @@ void QLayoutItem::invalidate()
 
 QLayout *QLayoutItem::layout()
 {
-   return nullptr;
+    return nullptr;
 }
 
 QSpacerItem *QLayoutItem::spacerItem()
 {
-   return nullptr;
+    return nullptr;
 }
 
 QLayout *QLayout::layout()
 {
-   return this;
+    return this;
 }
 
 QSpacerItem *QSpacerItem::spacerItem()
 {
-   return this;
+    return this;
 }
 
 QWidget *QLayoutItem::widget()
 {
-   return nullptr;
+    return nullptr;
 }
 
 QWidget *QWidgetItem::widget()
 {
-   return wid;
+    return wid;
 }
 
 bool QLayoutItem::hasHeightForWidth() const
 {
-   return false;
+    return false;
 }
 
-int QLayoutItem::minimumHeightForWidth(int w) const
+int QLayoutItem::minimumHeightForWidth( int w ) const
 {
-   return heightForWidth(w);
+    return heightForWidth( w );
 }
 
-int QLayoutItem::heightForWidth(int) const
+int QLayoutItem::heightForWidth( int ) const
 {
-   return -1;
+    return -1;
 }
 
 QSizePolicy::ControlTypes QLayoutItem::controlTypes() const
 {
-   return QSizePolicy::DefaultType;
+    return QSizePolicy::DefaultType;
 }
 
-void QSpacerItem::setGeometry(const QRect &r)
+void QSpacerItem::setGeometry( const QRect &r )
 {
-   rect = r;
+    rect = r;
 }
 
-void QWidgetItem::setGeometry(const QRect &rect)
+void QWidgetItem::setGeometry( const QRect &rect )
 {
-   if (isEmpty()) {
-      return;
-   }
+    if ( isEmpty() )
+    {
+        return;
+    }
 
-   QRect r = ! wid->testAttribute(Qt::WA_LayoutUsesWidgetRect)
-      ? fromLayoutItemRect(wid->d_func(), rect) : rect;
+    QRect r = ! wid->testAttribute( Qt::WA_LayoutUsesWidgetRect )
+              ? fromLayoutItemRect( wid->d_func(), rect ) : rect;
 
-   const QSize widgetRectSurplus = r.size() - rect.size();
+    const QSize widgetRectSurplus = r.size() - rect.size();
 
-   /*
-      this code is done using widget rect coordinates, not layout item rect coordinates.
-      However, QWidgetItem's sizeHint(), maximumSize(), and heightForWidth() all work in
-      terms of layout item rect coordinates. Therefore, we have to add or subtract
-      widgetRectSurplus here and there. The code could be simpler if we did everything
-      using layout item rect coordinates and did the conversion right before the call to QWidget::setGeometry().
-    */
+    /*
+       this code is done using widget rect coordinates, not layout item rect coordinates.
+       However, QWidgetItem's sizeHint(), maximumSize(), and heightForWidth() all work in
+       terms of layout item rect coordinates. Therefore, we have to add or subtract
+       widgetRectSurplus here and there. The code could be simpler if we did everything
+       using layout item rect coordinates and did the conversion right before the call to QWidget::setGeometry().
+     */
 
-   QSize s = r.size().boundedTo(maximumSize() + widgetRectSurplus);
-   int x   = r.x();
-   int y   = r.y();
+    QSize s = r.size().boundedTo( maximumSize() + widgetRectSurplus );
+    int x   = r.x();
+    int y   = r.y();
 
 
-   if (align & (Qt::AlignHorizontal_Mask | Qt::AlignVertical_Mask)) {
-      QSize pref(sizeHint());
-      QSizePolicy sp = wid->sizePolicy();
+    if ( align & ( Qt::AlignHorizontal_Mask | Qt::AlignVertical_Mask ) )
+    {
+        QSize pref( sizeHint() );
+        QSizePolicy sp = wid->sizePolicy();
 
-      if (sp.horizontalPolicy() == QSizePolicy::Ignored) {
-         pref.setWidth(wid->sizeHint().expandedTo(wid->minimumSize()).width());
-      }
+        if ( sp.horizontalPolicy() == QSizePolicy::Ignored )
+        {
+            pref.setWidth( wid->sizeHint().expandedTo( wid->minimumSize() ).width() );
+        }
 
-      if (sp.verticalPolicy() == QSizePolicy::Ignored) {
-         pref.setHeight(wid->sizeHint().expandedTo(wid->minimumSize()).height());
-      }
+        if ( sp.verticalPolicy() == QSizePolicy::Ignored )
+        {
+            pref.setHeight( wid->sizeHint().expandedTo( wid->minimumSize() ).height() );
+        }
 
-      pref += widgetRectSurplus;
-      if (align & Qt::AlignHorizontal_Mask) {
-         s.setWidth(qMin(s.width(), pref.width()));
-      }
+        pref += widgetRectSurplus;
 
-      if (align & Qt::AlignVertical_Mask) {
-         if (hasHeightForWidth())
-            s.setHeight(qMin(s.height(), heightForWidth(s.width() - widgetRectSurplus.width())
-                  + widgetRectSurplus.height()));
-         else {
-            s.setHeight(qMin(s.height(), pref.height()));
-         }
-      }
-   }
+        if ( align & Qt::AlignHorizontal_Mask )
+        {
+            s.setWidth( qMin( s.width(), pref.width() ) );
+        }
 
-   Qt::Alignment alignHoriz = QStyle::visualAlignment(wid->layoutDirection(), align);
+        if ( align & Qt::AlignVertical_Mask )
+        {
+            if ( hasHeightForWidth() )
+                s.setHeight( qMin( s.height(), heightForWidth( s.width() - widgetRectSurplus.width() )
+                                   + widgetRectSurplus.height() ) );
+            else
+            {
+                s.setHeight( qMin( s.height(), pref.height() ) );
+            }
+        }
+    }
 
-   if (alignHoriz & Qt::AlignRight) {
-      x = x + (r.width() - s.width());
+    Qt::Alignment alignHoriz = QStyle::visualAlignment( wid->layoutDirection(), align );
 
-   } else if (!(alignHoriz & Qt::AlignLeft)) {
-      x = x + (r.width() - s.width()) / 2;
+    if ( alignHoriz & Qt::AlignRight )
+    {
+        x = x + ( r.width() - s.width() );
 
-   }
+    }
+    else if ( !( alignHoriz & Qt::AlignLeft ) )
+    {
+        x = x + ( r.width() - s.width() ) / 2;
 
-   if (align & Qt::AlignBottom) {
-      y = y + (r.height() - s.height());
+    }
 
-   } else if (!(align & Qt::AlignTop)) {
-      y = y + (r.height() - s.height()) / 2;
-   }
+    if ( align & Qt::AlignBottom )
+    {
+        y = y + ( r.height() - s.height() );
 
-   wid->setGeometry(x, y, s.width(), s.height());
+    }
+    else if ( !( align & Qt::AlignTop ) )
+    {
+        y = y + ( r.height() - s.height() ) / 2;
+    }
+
+    wid->setGeometry( x, y, s.width(), s.height() );
 }
 
 QRect QSpacerItem::geometry() const
 {
-   return rect;
+    return rect;
 }
 
 QRect QWidgetItem::geometry() const
 {
-   return ! wid->testAttribute(Qt::WA_LayoutUsesWidgetRect)
-      ? toLayoutItemRect(wid->d_func(), wid->geometry()) : wid->geometry();
+    return ! wid->testAttribute( Qt::WA_LayoutUsesWidgetRect )
+           ? toLayoutItemRect( wid->d_func(), wid->geometry() ) : wid->geometry();
 }
 
 bool QWidgetItem::hasHeightForWidth() const
 {
-   if (isEmpty()) {
-      return false;
-   }
+    if ( isEmpty() )
+    {
+        return false;
+    }
 
-   return wid->hasHeightForWidth();
+    return wid->hasHeightForWidth();
 }
 
-int QWidgetItem::heightForWidth(int w) const
+int QWidgetItem::heightForWidth( int w ) const
 {
-   if (isEmpty()) {
-      return -1;
-   }
+    if ( isEmpty() )
+    {
+        return -1;
+    }
 
-   w = ! wid->testAttribute(Qt::WA_LayoutUsesWidgetRect)
-      ? fromLayoutItemSize(wid->d_func(), QSize(w, 0)).width() : w;
+    w = ! wid->testAttribute( Qt::WA_LayoutUsesWidgetRect )
+        ? fromLayoutItemSize( wid->d_func(), QSize( w, 0 ) ).width() : w;
 
-   int hfw;
-   if (wid->layout()) {
-      hfw = wid->layout()->totalHeightForWidth(w);
-   } else {
-      hfw = wid->heightForWidth(w);
-   }
+    int hfw;
 
-   if (hfw > wid->maximumHeight()) {
-      hfw = wid->maximumHeight();
-   }
-   if (hfw < wid->minimumHeight()) {
-      hfw = wid->minimumHeight();
-   }
+    if ( wid->layout() )
+    {
+        hfw = wid->layout()->totalHeightForWidth( w );
+    }
+    else
+    {
+        hfw = wid->heightForWidth( w );
+    }
 
-   hfw = !wid->testAttribute(Qt::WA_LayoutUsesWidgetRect)
-      ? toLayoutItemSize(wid->d_func(), QSize(0, hfw)).height()
-      : hfw;
+    if ( hfw > wid->maximumHeight() )
+    {
+        hfw = wid->maximumHeight();
+    }
 
-   if (hfw < 0) {
-      hfw = 0;
-   }
-   return hfw;
+    if ( hfw < wid->minimumHeight() )
+    {
+        hfw = wid->minimumHeight();
+    }
+
+    hfw = !wid->testAttribute( Qt::WA_LayoutUsesWidgetRect )
+          ? toLayoutItemSize( wid->d_func(), QSize( 0, hfw ) ).height()
+          : hfw;
+
+    if ( hfw < 0 )
+    {
+        hfw = 0;
+    }
+
+    return hfw;
 }
 
 Qt::Orientations QSpacerItem::expandingDirections() const
 {
-   return sizeP.expandingDirections();
+    return sizeP.expandingDirections();
 }
 
 Qt::Orientations QWidgetItem::expandingDirections() const
 {
-   if (isEmpty()) {
-      return Qt::Orientations(Qt::EmptyFlag);
-   }
+    if ( isEmpty() )
+    {
+        return Qt::Orientations( Qt::EmptyFlag );
+    }
 
-   Qt::Orientations e = wid->sizePolicy().expandingDirections();
+    Qt::Orientations e = wid->sizePolicy().expandingDirections();
 
-   //  If the layout is expanding then make the widget expanding, even if
-   //  its own size policy isn't expanding. This behavior should be reconsidered.
+    //  If the layout is expanding then make the widget expanding, even if
+    //  its own size policy isn't expanding. This behavior should be reconsidered.
 
-   if (wid->layout()) {
-      if (wid->sizePolicy().horizontalPolicy() & QSizePolicy::GrowFlag
-         && (wid->layout()->expandingDirections() & Qt::Horizontal)) {
-         e |= Qt::Horizontal;
-      }
+    if ( wid->layout() )
+    {
+        if ( wid->sizePolicy().horizontalPolicy() & QSizePolicy::GrowFlag
+                && ( wid->layout()->expandingDirections() & Qt::Horizontal ) )
+        {
+            e |= Qt::Horizontal;
+        }
 
-      if (wid->sizePolicy().verticalPolicy() & QSizePolicy::GrowFlag
-         && (wid->layout()->expandingDirections() & Qt::Vertical)) {
-         e |= Qt::Vertical;
-      }
-   }
+        if ( wid->sizePolicy().verticalPolicy() & QSizePolicy::GrowFlag
+                && ( wid->layout()->expandingDirections() & Qt::Vertical ) )
+        {
+            e |= Qt::Vertical;
+        }
+    }
 
-   if (align & Qt::AlignHorizontal_Mask) {
-      e &= ~Qt::Horizontal;
-   }
+    if ( align & Qt::AlignHorizontal_Mask )
+    {
+        e &= ~Qt::Horizontal;
+    }
 
-   if (align & Qt::AlignVertical_Mask) {
-      e &= ~Qt::Vertical;
-   }
+    if ( align & Qt::AlignVertical_Mask )
+    {
+        e &= ~Qt::Vertical;
+    }
 
-   return e;
+    return e;
 }
 
 QSize QSpacerItem::minimumSize() const
 {
-   return QSize(sizeP.horizontalPolicy() & QSizePolicy::ShrinkFlag ? 0 : width,
-         sizeP.verticalPolicy() & QSizePolicy::ShrinkFlag ? 0 : height);
+    return QSize( sizeP.horizontalPolicy() & QSizePolicy::ShrinkFlag ? 0 : width,
+                  sizeP.verticalPolicy() & QSizePolicy::ShrinkFlag ? 0 : height );
 }
 
 QSize QWidgetItem::minimumSize() const
 {
-   if (isEmpty()) {
-      return QSize(0, 0);
-   }
+    if ( isEmpty() )
+    {
+        return QSize( 0, 0 );
+    }
 
-   return ! wid->testAttribute(Qt::WA_LayoutUsesWidgetRect)
-      ? toLayoutItemSize(wid->d_func(), qSmartMinSize(this))
-      : qSmartMinSize(this);
+    return ! wid->testAttribute( Qt::WA_LayoutUsesWidgetRect )
+           ? toLayoutItemSize( wid->d_func(), qSmartMinSize( this ) )
+           : qSmartMinSize( this );
 }
 
 QSize QSpacerItem::maximumSize() const
 {
-   return QSize(sizeP.horizontalPolicy() & QSizePolicy::GrowFlag ? QLAYOUTSIZE_MAX : width,
-         sizeP.verticalPolicy() & QSizePolicy::GrowFlag ? QLAYOUTSIZE_MAX : height);
+    return QSize( sizeP.horizontalPolicy() & QSizePolicy::GrowFlag ? QLAYOUTSIZE_MAX : width,
+                  sizeP.verticalPolicy() & QSizePolicy::GrowFlag ? QLAYOUTSIZE_MAX : height );
 }
 
 QSize QWidgetItem::maximumSize() const
 {
-   if (isEmpty()) {
-      return QSize(0, 0);
+    if ( isEmpty() )
+    {
+        return QSize( 0, 0 );
 
-   } else {
-      return !wid->testAttribute(Qt::WA_LayoutUsesWidgetRect)
-         ? toLayoutItemSize(wid->d_func(), qSmartMaxSize(this, align))
-         : qSmartMaxSize(this, align);
-   }
+    }
+    else
+    {
+        return !wid->testAttribute( Qt::WA_LayoutUsesWidgetRect )
+               ? toLayoutItemSize( wid->d_func(), qSmartMaxSize( this, align ) )
+               : qSmartMaxSize( this, align );
+    }
 }
 
 QSize QSpacerItem::sizeHint() const
 {
-   return QSize(width, height);
+    return QSize( width, height );
 }
 
 QSize QWidgetItem::sizeHint() const
 {
-   QSize s(0, 0);
+    QSize s( 0, 0 );
 
-   if (!isEmpty()) {
-      s = wid->sizeHint().expandedTo(wid->minimumSizeHint());
-      s = s.boundedTo(wid->maximumSize()).expandedTo(wid->minimumSize());
+    if ( !isEmpty() )
+    {
+        s = wid->sizeHint().expandedTo( wid->minimumSizeHint() );
+        s = s.boundedTo( wid->maximumSize() ).expandedTo( wid->minimumSize() );
 
-      s = ! wid->testAttribute(Qt::WA_LayoutUsesWidgetRect)
-         ? toLayoutItemSize(wid->d_func(), s)
-         : s;
+        s = ! wid->testAttribute( Qt::WA_LayoutUsesWidgetRect )
+            ? toLayoutItemSize( wid->d_func(), s )
+            : s;
 
-      if (wid->sizePolicy().horizontalPolicy() == QSizePolicy::Ignored) {
-         s.setWidth(0);
-      }
+        if ( wid->sizePolicy().horizontalPolicy() == QSizePolicy::Ignored )
+        {
+            s.setWidth( 0 );
+        }
 
-      if (wid->sizePolicy().verticalPolicy() == QSizePolicy::Ignored) {
-         s.setHeight(0);
-      }
-   }
-   return s;
+        if ( wid->sizePolicy().verticalPolicy() == QSizePolicy::Ignored )
+        {
+            s.setHeight( 0 );
+        }
+    }
+
+    return s;
 }
 
 bool QSpacerItem::isEmpty() const
 {
-   return true;
+    return true;
 }
 
 bool QWidgetItem::isEmpty() const
 {
-   return (wid->isHidden() && !wid->sizePolicy().retainSizeWhenHidden()) || wid->isWindow();
+    return ( wid->isHidden() && !wid->sizePolicy().retainSizeWhenHidden() ) || wid->isWindow();
 }
 
 QSizePolicy::ControlTypes QWidgetItem::controlTypes() const
 {
-   return wid->sizePolicy().controlType();
+    return wid->sizePolicy().controlType();
 }
 
-QWidgetItemV2::QWidgetItemV2(QWidget *widget)
-   : QWidgetItem(widget), q_cachedMinimumSize(ItemDirty, ItemDirty), q_cachedSizeHint(ItemDirty, ItemDirty),
-     q_cachedMaximumSize(ItemDirty, ItemDirty), q_firstCachedHfw(0), q_hfwCacheSize(0), d(nullptr)
+QWidgetItemV2::QWidgetItemV2( QWidget *widget )
+    : QWidgetItem( widget ), q_cachedMinimumSize( ItemDirty, ItemDirty ), q_cachedSizeHint( ItemDirty, ItemDirty ),
+      q_cachedMaximumSize( ItemDirty, ItemDirty ), q_firstCachedHfw( 0 ), q_hfwCacheSize( 0 ), d( nullptr )
 {
-   QWidgetPrivate *wd = wid->d_func();
+    QWidgetPrivate *wd = wid->d_func();
 
-   if (! wd->widgetItem) {
-      wd->widgetItem = this;
-   }
+    if ( ! wd->widgetItem )
+    {
+        wd->widgetItem = this;
+    }
 }
 
 QWidgetItemV2::~QWidgetItemV2()
 {
-   if (wid) {
-      QWidgetPrivate *wd = wid->d_func();
-      if (wd->widgetItem == this) {
-         wd->widgetItem = nullptr;
-      }
-   }
+    if ( wid )
+    {
+        QWidgetPrivate *wd = wid->d_func();
+
+        if ( wd->widgetItem == this )
+        {
+            wd->widgetItem = nullptr;
+        }
+    }
 }
 
 inline bool QWidgetItemV2::useSizeCache() const
 {
-   return wid->d_func()->widgetItem == this;
+    return wid->d_func()->widgetItem == this;
 }
 
 void QWidgetItemV2::updateCacheIfNecessary() const
 {
-   if (q_cachedMinimumSize.width() != ItemDirty) {
-      return;
-   }
+    if ( q_cachedMinimumSize.width() != ItemDirty )
+    {
+        return;
+    }
 
-   const QSize sizeHint(wid->sizeHint());
-   const QSize minimumSizeHint(wid->minimumSizeHint());
-   const QSize minimumSize(wid->minimumSize());
-   const QSize maximumSize(wid->maximumSize());
-   const QSizePolicy sizePolicy(wid->sizePolicy());
-   const QSize expandedSizeHint(sizeHint.expandedTo(minimumSizeHint));
+    const QSize sizeHint( wid->sizeHint() );
+    const QSize minimumSizeHint( wid->minimumSizeHint() );
+    const QSize minimumSize( wid->minimumSize() );
+    const QSize maximumSize( wid->maximumSize() );
+    const QSizePolicy sizePolicy( wid->sizePolicy() );
+    const QSize expandedSizeHint( sizeHint.expandedTo( minimumSizeHint ) );
 
-   const QSize smartMinSize(qSmartMinSize(sizeHint, minimumSizeHint, minimumSize, maximumSize, sizePolicy));
-   const QSize smartMaxSize(qSmartMaxSize(expandedSizeHint, minimumSize, maximumSize, sizePolicy, align));
+    const QSize smartMinSize( qSmartMinSize( sizeHint, minimumSizeHint, minimumSize, maximumSize, sizePolicy ) );
+    const QSize smartMaxSize( qSmartMaxSize( expandedSizeHint, minimumSize, maximumSize, sizePolicy, align ) );
 
-   const bool useLayoutItemRect = !wid->testAttribute(Qt::WA_LayoutUsesWidgetRect);
+    const bool useLayoutItemRect = !wid->testAttribute( Qt::WA_LayoutUsesWidgetRect );
 
-   q_cachedMinimumSize = useLayoutItemRect
-      ? toLayoutItemSize(wid->d_func(), smartMinSize)
-      : smartMinSize;
+    q_cachedMinimumSize = useLayoutItemRect
+                          ? toLayoutItemSize( wid->d_func(), smartMinSize )
+                          : smartMinSize;
 
-   q_cachedSizeHint = expandedSizeHint;
-   q_cachedSizeHint = q_cachedSizeHint.boundedTo(maximumSize).expandedTo(minimumSize);
+    q_cachedSizeHint = expandedSizeHint;
+    q_cachedSizeHint = q_cachedSizeHint.boundedTo( maximumSize ).expandedTo( minimumSize );
 
-   q_cachedSizeHint = useLayoutItemRect
-      ? toLayoutItemSize(wid->d_func(), q_cachedSizeHint)
-      : q_cachedSizeHint;
-   if (wid->sizePolicy().horizontalPolicy() == QSizePolicy::Ignored) {
-      q_cachedSizeHint.setWidth(0);
-   }
+    q_cachedSizeHint = useLayoutItemRect
+                       ? toLayoutItemSize( wid->d_func(), q_cachedSizeHint )
+                       : q_cachedSizeHint;
 
-   if (wid->sizePolicy().verticalPolicy() == QSizePolicy::Ignored) {
-      q_cachedSizeHint.setHeight(0);
-   }
+    if ( wid->sizePolicy().horizontalPolicy() == QSizePolicy::Ignored )
+    {
+        q_cachedSizeHint.setWidth( 0 );
+    }
 
-   q_cachedMaximumSize = useLayoutItemRect
-      ? toLayoutItemSize(wid->d_func(), smartMaxSize)
-      : smartMaxSize;
+    if ( wid->sizePolicy().verticalPolicy() == QSizePolicy::Ignored )
+    {
+        q_cachedSizeHint.setHeight( 0 );
+    }
+
+    q_cachedMaximumSize = useLayoutItemRect
+                          ? toLayoutItemSize( wid->d_func(), smartMaxSize )
+                          : smartMaxSize;
 }
 
 QSize QWidgetItemV2::sizeHint() const
 {
 
-   if (isEmpty()) {
-      return QSize(0, 0);
-   }
+    if ( isEmpty() )
+    {
+        return QSize( 0, 0 );
+    }
 
-   if (useSizeCache()) {
-      updateCacheIfNecessary();
-      return q_cachedSizeHint;
+    if ( useSizeCache() )
+    {
+        updateCacheIfNecessary();
+        return q_cachedSizeHint;
 
-   } else {
-      return QWidgetItem::sizeHint();
+    }
+    else
+    {
+        return QWidgetItem::sizeHint();
 
-   }
+    }
 }
 
 QSize QWidgetItemV2::minimumSize() const
 {
-   if (isEmpty()) {
-      return QSize(0, 0);
-   }
+    if ( isEmpty() )
+    {
+        return QSize( 0, 0 );
+    }
 
-   if (useSizeCache()) {
-      updateCacheIfNecessary();
-      return q_cachedMinimumSize;
+    if ( useSizeCache() )
+    {
+        updateCacheIfNecessary();
+        return q_cachedMinimumSize;
 
-   } else {
-      return QWidgetItem::minimumSize();
+    }
+    else
+    {
+        return QWidgetItem::minimumSize();
 
-   }
+    }
 }
 
 QSize QWidgetItemV2::maximumSize() const
 {
-   if (isEmpty()) {
-      return QSize(0, 0);
-   }
+    if ( isEmpty() )
+    {
+        return QSize( 0, 0 );
+    }
 
-   if (useSizeCache()) {
-      updateCacheIfNecessary();
-      return q_cachedMaximumSize;
+    if ( useSizeCache() )
+    {
+        updateCacheIfNecessary();
+        return q_cachedMaximumSize;
 
-   } else {
-      return QWidgetItem::maximumSize();
+    }
+    else
+    {
+        return QWidgetItem::maximumSize();
 
-   }
+    }
 }
 
-int QWidgetItemV2::heightForWidth(int width) const
+int QWidgetItemV2::heightForWidth( int width ) const
 {
-   if (isEmpty()) {
-      return -1;
-   }
+    if ( isEmpty() )
+    {
+        return -1;
+    }
 
-   for (int i = 0; i < q_hfwCacheSize; ++i) {
-      int offset = q_firstCachedHfw + i;
-      const QSize &size = q_cachedHfws[offset % SizeCacheMax];
+    for ( int i = 0; i < q_hfwCacheSize; ++i )
+    {
+        int offset = q_firstCachedHfw + i;
+        const QSize &size = q_cachedHfws[offset % SizeCacheMax];
 
-      if (size.width() == width) {
-         if (q_hfwCacheSize == SizeCacheMax) {
-            q_firstCachedHfw = offset;
-         }
+        if ( size.width() == width )
+        {
+            if ( q_hfwCacheSize == SizeCacheMax )
+            {
+                q_firstCachedHfw = offset;
+            }
 
-         return size.height();
-      }
-   }
+            return size.height();
+        }
+    }
 
-   if (q_hfwCacheSize < SizeCacheMax) {
-      ++q_hfwCacheSize;
-   }
+    if ( q_hfwCacheSize < SizeCacheMax )
+    {
+        ++q_hfwCacheSize;
+    }
 
-   q_firstCachedHfw = (q_firstCachedHfw + SizeCacheMax - 1) % SizeCacheMax;
+    q_firstCachedHfw = ( q_firstCachedHfw + SizeCacheMax - 1 ) % SizeCacheMax;
 
-   int height = QWidgetItem::heightForWidth(width);
-   q_cachedHfws[q_firstCachedHfw] = QSize(width, height);
-   return height;
+    int height = QWidgetItem::heightForWidth( width );
+    q_cachedHfws[q_firstCachedHfw] = QSize( width, height );
+    return height;
 }

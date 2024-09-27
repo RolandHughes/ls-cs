@@ -36,52 +36,72 @@
 #include <wtf/RefPtr.h>
 #include <wtf/Threading.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class AudioContext;
 
 // AudioBufferSourceNode is an AudioNode representing an audio source from an in-memory audio asset represented by an AudioBuffer.
 // It generally will be used for short sounds which require a high degree of scheduling flexibility (can playback in rhythmically perfect ways).
 
-class AudioBufferSourceNode : public AudioSourceNode, public AudioSourceProvider {
+class AudioBufferSourceNode : public AudioSourceNode, public AudioSourceProvider
+{
 public:
-    static PassRefPtr<AudioBufferSourceNode> create(AudioContext*, double sampleRate);
+    static PassRefPtr<AudioBufferSourceNode> create( AudioContext *, double sampleRate );
 
     virtual ~AudioBufferSourceNode();
-    
+
     // AudioNode
-    virtual void process(size_t framesToProcess);
+    virtual void process( size_t framesToProcess );
     virtual void reset();
 
     // AudioSourceProvider
     // When process() is called, the resampler calls provideInput (in the audio thread) to gets its input stream.
-    virtual void provideInput(AudioBus*, size_t numberOfFrames);
-    
+    virtual void provideInput( AudioBus *, size_t numberOfFrames );
+
     // setBuffer() is called on the main thread.  This is the buffer we use for playback.
-    void setBuffer(AudioBuffer*);
-    AudioBuffer* buffer() { return m_buffer.get(); }
-                    
+    void setBuffer( AudioBuffer * );
+    AudioBuffer *buffer()
+    {
+        return m_buffer.get();
+    }
+
     // numberOfChannels() returns the number of output channels.  This value equals the number of channels from the buffer.
     // If a new buffer is set with a different number of channels, then this value will dynamically change.
     unsigned numberOfChannels();
-                    
+
     // Play-state
     // noteOn(), noteGrainOn(), and noteOff() must all be called from the main thread.
-    void noteOn(double when);
-    void noteGrainOn(double when, double grainOffset, double grainDuration);
-    void noteOff(double when);
+    void noteOn( double when );
+    void noteGrainOn( double when, double grainOffset, double grainDuration );
+    void noteOff( double when );
 
-    bool looping() const { return m_isLooping; }
-    void setLooping(bool looping) { m_isLooping = looping; }
-    
-    AudioGain* gain() { return m_gain.get(); }                                        
-    AudioParam* playbackRate() { return m_playbackRate.get(); }
+    bool looping() const
+    {
+        return m_isLooping;
+    }
+    void setLooping( bool looping )
+    {
+        m_isLooping = looping;
+    }
+
+    AudioGain *gain()
+    {
+        return m_gain.get();
+    }
+    AudioParam *playbackRate()
+    {
+        return m_playbackRate.get();
+    }
 
     // If a panner node is set, then we can incorporate doppler shift into the playback pitch rate.
-    void setPannerNode(PassRefPtr<AudioPannerNode> pannerNode) { m_pannerNode = pannerNode; }
+    void setPannerNode( PassRefPtr<AudioPannerNode> pannerNode )
+    {
+        m_pannerNode = pannerNode;
+    }
 
 private:
-    AudioBufferSourceNode(AudioContext*, double sampleRate);
+    AudioBufferSourceNode( AudioContext *, double sampleRate );
 
     // m_buffer holds the sample data which this node outputs.
     RefPtr<AudioBuffer> m_buffer;
@@ -127,7 +147,7 @@ private:
 
     // m_lastGain provides continuity when we dynamically adjust the gain.
     double m_lastGain;
-    
+
     // We optionally keep track of a panner node which has a doppler shift that is incorporated into the pitch rate.
     RefPtr<AudioPannerNode> m_pannerNode;
 
@@ -136,10 +156,11 @@ private:
 
     // Reads the next framesToProcess sample-frames from the AudioBuffer into destinationBus.
     // A grain envelope will be applied if m_isGrain is set to true.
-    void readFromBuffer(AudioBus* destinationBus, size_t framesToProcess);
+    void readFromBuffer( AudioBus *destinationBus, size_t framesToProcess );
 
     // readFromBufferWithGrainEnvelope() is a low-level blitter which reads from the AudioBuffer and applies a grain envelope.
-    void readFromBufferWithGrainEnvelope(float* sourceL, float* sourceR, float* destinationL, float* destinationR, size_t framesToProcess);
+    void readFromBufferWithGrainEnvelope( float *sourceL, float *sourceR, float *destinationL, float *destinationR,
+                                          size_t framesToProcess );
 };
 
 } // namespace WebCore

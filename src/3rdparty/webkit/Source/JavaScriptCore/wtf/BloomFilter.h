@@ -29,40 +29,69 @@
 #include <wtf/AlwaysInline.h>
 #include <wtf/text/AtomicString.h>
 
-namespace WTF {
+namespace WTF
+{
 
 // Counting bloom filter with k=2 and 8 bit counters. Uses 2^keyBits bytes of memory.
-// False positive rate is approximately (1-e^(-2n/m))^2, where n is the number of unique 
+// False positive rate is approximately (1-e^(-2n/m))^2, where n is the number of unique
 // keys and m is the table size (==2^keyBits).
 template <unsigned keyBits>
-class BloomFilter {
+class BloomFilter
+{
 public:
-    COMPILE_ASSERT(keyBits <= 16, bloom_filter_key_size);
+    COMPILE_ASSERT( keyBits <= 16, bloom_filter_key_size );
 
     static const size_t tableSize = 1 << keyBits;
-    static const unsigned keyMask = (1 << keyBits) - 1;
-    static uint8_t maximumCount() { return std::numeric_limits<uint8_t>::max(); }
-    
-    BloomFilter() { clear(); }
+    static const unsigned keyMask = ( 1 << keyBits ) - 1;
+    static uint8_t maximumCount()
+    {
+        return std::numeric_limits<uint8_t>::max();
+    }
 
-    void add(unsigned hash);
-    void remove(unsigned hash);
+    BloomFilter()
+    {
+        clear();
+    }
+
+    void add( unsigned hash );
+    void remove( unsigned hash );
 
     // The filter may give false positives (claim it may contain a key it doesn't)
     // but never false negatives (claim it doesn't contain a key it does).
-    bool mayContain(unsigned hash) const { return firstSlot(hash) && secondSlot(hash); }
-    
+    bool mayContain( unsigned hash ) const
+    {
+        return firstSlot( hash ) && secondSlot( hash );
+    }
+
     // The filter must be cleared before reuse even if all keys are removed.
     // Otherwise overflowed keys will stick around.
     void clear();
 
-    void add(const AtomicString& string) { add(string.impl()->existingHash()); }
-    void add(const String& string) { add(string.impl()->hash()); }
-    void remove(const AtomicString& string) { remove(string.impl()->existingHash()); }
-    void remove(const String& string) { remove(string.impl()->hash()); }
+    void add( const AtomicString &string )
+    {
+        add( string.impl()->existingHash() );
+    }
+    void add( const String &string )
+    {
+        add( string.impl()->hash() );
+    }
+    void remove( const AtomicString &string )
+    {
+        remove( string.impl()->existingHash() );
+    }
+    void remove( const String &string )
+    {
+        remove( string.impl()->hash() );
+    }
 
-    bool mayContain(const AtomicString& string) const { return mayContain(string.impl()->existingHash()); }
-    bool mayContain(const String& string) const { return mayContain(string.impl()->hash()); }
+    bool mayContain( const AtomicString &string ) const
+    {
+        return mayContain( string.impl()->existingHash() );
+    }
+    bool mayContain( const String &string ) const
+    {
+        return mayContain( string.impl()->hash() );
+    }
 
 #if !ASSERT_DISABLED
     // Slow.
@@ -71,63 +100,95 @@ public:
 #endif
 
 private:
-    uint8_t& firstSlot(unsigned hash) { return m_table[hash & keyMask]; }
-    uint8_t& secondSlot(unsigned hash) { return m_table[(hash >> 16) & keyMask]; }
-    const uint8_t& firstSlot(unsigned hash) const { return m_table[hash & keyMask]; }
-    const uint8_t& secondSlot(unsigned hash) const { return m_table[(hash >> 16) & keyMask]; }
+    uint8_t &firstSlot( unsigned hash )
+    {
+        return m_table[hash & keyMask];
+    }
+    uint8_t &secondSlot( unsigned hash )
+    {
+        return m_table[( hash >> 16 ) & keyMask];
+    }
+    const uint8_t &firstSlot( unsigned hash ) const
+    {
+        return m_table[hash & keyMask];
+    }
+    const uint8_t &secondSlot( unsigned hash ) const
+    {
+        return m_table[( hash >> 16 ) & keyMask];
+    }
 
     uint8_t m_table[tableSize];
 };
-    
+
 template <unsigned keyBits>
-inline void BloomFilter<keyBits>::add(unsigned hash)
+inline void BloomFilter<keyBits>::add( unsigned hash )
 {
-    uint8_t& first = firstSlot(hash);
-    uint8_t& second = secondSlot(hash);
-    if (LIKELY(first < maximumCount()))
+    uint8_t &first = firstSlot( hash );
+    uint8_t &second = secondSlot( hash );
+
+    if ( LIKELY( first < maximumCount() ) )
+    {
         ++first;
-    if (LIKELY(second < maximumCount()))
+    }
+
+    if ( LIKELY( second < maximumCount() ) )
+    {
         ++second;
+    }
 }
 
 template <unsigned keyBits>
-inline void BloomFilter<keyBits>::remove(unsigned hash)
+inline void BloomFilter<keyBits>::remove( unsigned hash )
 {
-    uint8_t& first = firstSlot(hash);
-    uint8_t& second = secondSlot(hash);
-    ASSERT(first);
-    ASSERT(second);
+    uint8_t &first = firstSlot( hash );
+    uint8_t &second = secondSlot( hash );
+    ASSERT( first );
+    ASSERT( second );
+
     // In case of an overflow, the slot sticks in the table until clear().
-    if (LIKELY(first < maximumCount()))
+    if ( LIKELY( first < maximumCount() ) )
+    {
         --first;
-    if (LIKELY(second < maximumCount()))
+    }
+
+    if ( LIKELY( second < maximumCount() ) )
+    {
         --second;
+    }
 }
-    
+
 template <unsigned keyBits>
 inline void BloomFilter<keyBits>::clear()
 {
-    memset(m_table, 0, tableSize);
+    memset( m_table, 0, tableSize );
 }
 
 #if !ASSERT_DISABLED
 template <unsigned keyBits>
 bool BloomFilter<keyBits>::likelyEmpty() const
 {
-    for (size_t n = 0; n < tableSize; ++n) {
-        if (m_table[n] && m_table[n] != maximumCount())
+    for ( size_t n = 0; n < tableSize; ++n )
+    {
+        if ( m_table[n] && m_table[n] != maximumCount() )
+        {
             return false;
+        }
     }
+
     return true;
 }
 
 template <unsigned keyBits>
 bool BloomFilter<keyBits>::isClear() const
 {
-    for (size_t n = 0; n < tableSize; ++n) {
-        if (m_table[n])
+    for ( size_t n = 0; n < tableSize; ++n )
+    {
+        if ( m_table[n] )
+        {
             return false;
+        }
     }
+
     return true;
 }
 #endif

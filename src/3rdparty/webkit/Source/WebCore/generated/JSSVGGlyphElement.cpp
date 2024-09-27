@@ -29,9 +29,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSSVGGlyphElement);
+ASSERT_CLASS_FITS_IN_CELL( JSSVGGlyphElement );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -42,8 +43,8 @@ ASSERT_CLASS_FITS_IN_CELL(JSSVGGlyphElement);
 
 static const HashTableValue JSSVGGlyphElementTableValues[2] =
 {
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGGlyphElementConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGGlyphElementConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -57,43 +58,51 @@ static JSC_CONST_HASHTABLE HashTable JSSVGGlyphElementTable = { 2, 1, JSSVGGlyph
 
 static const HashTableValue JSSVGGlyphElementConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSSVGGlyphElementConstructorTable = { 1, 0, JSSVGGlyphElementConstructorTableValues, 0 };
-class JSSVGGlyphElementConstructor : public DOMConstructorObject {
+class JSSVGGlyphElementConstructor : public DOMConstructorObject
+{
 public:
-    JSSVGGlyphElementConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSSVGGlyphElementConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSSVGGlyphElementConstructor::s_info = { "SVGGlyphElementConstructor", &DOMConstructorObject::s_info, &JSSVGGlyphElementConstructorTable, 0 };
 
-JSSVGGlyphElementConstructor::JSSVGGlyphElementConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSSVGGlyphElementConstructor::JSSVGGlyphElementConstructor( ExecState *exec, Structure *structure,
+        JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSSVGGlyphElementPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSSVGGlyphElementPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSSVGGlyphElementConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGGlyphElementConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSVGGlyphElementConstructor, JSDOMWrapper>(exec, &JSSVGGlyphElementConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSSVGGlyphElementConstructor, JSDOMWrapper>( exec, &JSSVGGlyphElementConstructorTable, this,
+            propertyName, slot );
 }
 
-bool JSSVGGlyphElementConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGGlyphElementConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSVGGlyphElementConstructor, JSDOMWrapper>(exec, &JSSVGGlyphElementConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSVGGlyphElementConstructor, JSDOMWrapper>( exec, &JSSVGGlyphElementConstructorTable, this,
+            propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -105,50 +114,52 @@ bool JSSVGGlyphElementConstructor::getOwnPropertyDescriptor(ExecState* exec, con
 
 static const HashTableValue JSSVGGlyphElementPrototypeTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSSVGGlyphElementPrototypeTable = { 1, 0, JSSVGGlyphElementPrototypeTableValues, 0 };
 const ClassInfo JSSVGGlyphElementPrototype::s_info = { "SVGGlyphElementPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSSVGGlyphElementPrototypeTable, 0 };
 
-JSObject* JSSVGGlyphElementPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSVGGlyphElementPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSSVGGlyphElement>(exec, globalObject);
+    return getDOMPrototype<JSSVGGlyphElement>( exec, globalObject );
 }
 
 const ClassInfo JSSVGGlyphElement::s_info = { "SVGGlyphElement", &JSSVGElement::s_info, &JSSVGGlyphElementTable, 0 };
 
-JSSVGGlyphElement::JSSVGGlyphElement(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<SVGGlyphElement> impl)
-    : JSSVGElement(structure, globalObject, impl)
+JSSVGGlyphElement::JSSVGGlyphElement( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<SVGGlyphElement> impl )
+    : JSSVGElement( structure, globalObject, impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSSVGGlyphElement::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSVGGlyphElement::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSSVGGlyphElementPrototype(exec->globalData(), globalObject, JSSVGGlyphElementPrototype::createStructure(exec->globalData(), JSSVGElementPrototype::self(exec, globalObject)));
+    return new ( exec ) JSSVGGlyphElementPrototype( exec->globalData(), globalObject,
+            JSSVGGlyphElementPrototype::createStructure( exec->globalData(), JSSVGElementPrototype::self( exec, globalObject ) ) );
 }
 
-bool JSSVGGlyphElement::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGGlyphElement::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSVGGlyphElement, Base>(exec, &JSSVGGlyphElementTable, this, propertyName, slot);
+    return getStaticValueSlot<JSSVGGlyphElement, Base>( exec, &JSSVGGlyphElementTable, this, propertyName, slot );
 }
 
-bool JSSVGGlyphElement::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGGlyphElement::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSVGGlyphElement, Base>(exec, &JSSVGGlyphElementTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSVGGlyphElement, Base>( exec, &JSSVGGlyphElementTable, this, propertyName, descriptor );
 }
 
-JSValue jsSVGGlyphElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGGlyphElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGGlyphElement* domObject = static_cast<JSSVGGlyphElement*>(asObject(slotBase));
-    return JSSVGGlyphElement::getConstructor(exec, domObject->globalObject());
+    JSSVGGlyphElement *domObject = static_cast<JSSVGGlyphElement *>( asObject( slotBase ) );
+    return JSSVGGlyphElement::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSSVGGlyphElement::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSSVGGlyphElement::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSSVGGlyphElementConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSSVGGlyphElementConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
 

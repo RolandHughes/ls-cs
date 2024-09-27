@@ -31,27 +31,28 @@
 #include "Frame.h"
 #include "HTMLNames.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
-HTMLHtmlElement::HTMLHtmlElement(const QualifiedName& tagName, Document* document)
-    : HTMLElement(tagName, document)
+HTMLHtmlElement::HTMLHtmlElement( const QualifiedName &tagName, Document *document )
+    : HTMLElement( tagName, document )
 {
-    ASSERT(hasTagName(htmlTag));
+    ASSERT( hasTagName( htmlTag ) );
 }
 
-PassRefPtr<HTMLHtmlElement> HTMLHtmlElement::create(Document* document)
+PassRefPtr<HTMLHtmlElement> HTMLHtmlElement::create( Document *document )
 {
-    return adoptRef(new HTMLHtmlElement(htmlTag, document));
+    return adoptRef( new HTMLHtmlElement( htmlTag, document ) );
 }
 
-PassRefPtr<HTMLHtmlElement> HTMLHtmlElement::create(const QualifiedName& tagName, Document* document)
+PassRefPtr<HTMLHtmlElement> HTMLHtmlElement::create( const QualifiedName &tagName, Document *document )
 {
-    return adoptRef(new HTMLHtmlElement(tagName, document));
+    return adoptRef( new HTMLHtmlElement( tagName, document ) );
 }
 
-bool HTMLHtmlElement::isURLAttribute(Attribute* attribute) const
+bool HTMLHtmlElement::isURLAttribute( Attribute *attribute ) const
 {
     return attribute->name() == manifestAttr;
 }
@@ -60,21 +61,33 @@ bool HTMLHtmlElement::isURLAttribute(Attribute* attribute) const
 void HTMLHtmlElement::insertedByParser()
 {
     // When parsing a fragment, its dummy document has a null parser.
-    if (!document()->parser() || !document()->parser()->documentWasLoadedAsPartOfNavigation())
+    if ( !document()->parser() || !document()->parser()->documentWasLoadedAsPartOfNavigation() )
+    {
         return;
+    }
 
-    if (!document()->frame())
+    if ( !document()->frame() )
+    {
         return;
+    }
 
-    DocumentLoader* documentLoader = document()->frame()->loader()->documentLoader();
-    if (!documentLoader)
+    DocumentLoader *documentLoader = document()->frame()->loader()->documentLoader();
+
+    if ( !documentLoader )
+    {
         return;
+    }
 
-    const AtomicString& manifest = getAttribute(manifestAttr);
-    if (manifest.isEmpty())
+    const AtomicString &manifest = getAttribute( manifestAttr );
+
+    if ( manifest.isEmpty() )
+    {
         documentLoader->applicationCacheHost()->selectCacheWithoutManifest();
+    }
     else
-        documentLoader->applicationCacheHost()->selectCacheWithManifest(document()->completeURL(manifest));
+    {
+        documentLoader->applicationCacheHost()->selectCacheWithManifest( document()->completeURL( manifest ) );
+    }
 }
 #endif
 

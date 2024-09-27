@@ -136,21 +136,23 @@ QT_BEGIN_NAMESPACE
     \internal
 */
 const char *QDBusConnectionInterface::staticInterfaceName()
-{ return "org.freedesktop.DBus"; }
+{
+    return "org.freedesktop.DBus";
+}
 
 /*!
     \internal
 */
-QDBusConnectionInterface::QDBusConnectionInterface(const QDBusConnection &connection,
-                                                   QObject *parent)
-    : QDBusAbstractInterface(QLatin1String(DBUS_SERVICE_DBUS),
-                             QLatin1String(DBUS_PATH_DBUS),
-                             DBUS_INTERFACE_DBUS, connection, parent)
+QDBusConnectionInterface::QDBusConnectionInterface( const QDBusConnection &connection,
+        QObject *parent )
+    : QDBusAbstractInterface( QLatin1String( DBUS_SERVICE_DBUS ),
+                              QLatin1String( DBUS_PATH_DBUS ),
+                              DBUS_INTERFACE_DBUS, connection, parent )
 {
-    connect(this, SIGNAL(NameAcquired(QString)), this, SIGNAL(serviceRegistered(QString)));
-    connect(this, SIGNAL(NameLost(QString)), this, SIGNAL(serviceUnregistered(QString)));
-    connect(this, SIGNAL(NameOwnerChanged(QString,QString,QString)),
-            this, SIGNAL(serviceOwnerChanged(QString,QString,QString)));
+    connect( this, SIGNAL( NameAcquired( QString ) ), this, SIGNAL( serviceRegistered( QString ) ) );
+    connect( this, SIGNAL( NameLost( QString ) ), this, SIGNAL( serviceUnregistered( QString ) ) );
+    connect( this, SIGNAL( NameOwnerChanged( QString,QString,QString ) ),
+             this, SIGNAL( serviceOwnerChanged( QString,QString,QString ) ) );
 }
 
 /*!
@@ -165,9 +167,9 @@ QDBusConnectionInterface::~QDBusConnectionInterface()
     name \a name. If the requested name doesn't have an owner, returns
     a \c org.freedesktop.DBus.Error.NameHasNoOwner error.
 */
-QDBusReply<QString> QDBusConnectionInterface::serviceOwner(const QString &name) const
+QDBusReply<QString> QDBusConnectionInterface::serviceOwner( const QString &name ) const
 {
-    return internalConstCall(QDBus::AutoDetect, QLatin1String("GetNameOwner"), QList<QVariant>() << name);
+    return internalConstCall( QDBus::AutoDetect, QLatin1String( "GetNameOwner" ), QList<QVariant>() << name );
 }
 
 /*!
@@ -178,45 +180,45 @@ QDBusReply<QString> QDBusConnectionInterface::serviceOwner(const QString &name) 
 */
 QDBusReply<QStringList> QDBusConnectionInterface::registeredServiceNames() const
 {
-    return internalConstCall(QDBus::AutoDetect, QLatin1String("ListNames"));
+    return internalConstCall( QDBus::AutoDetect, QLatin1String( "ListNames" ) );
 }
 
 /*!
     Returns true if the service name \a serviceName has is currently
     registered.
 */
-QDBusReply<bool> QDBusConnectionInterface::isServiceRegistered(const QString &serviceName) const
+QDBusReply<bool> QDBusConnectionInterface::isServiceRegistered( const QString &serviceName ) const
 {
-    return internalConstCall(QDBus::AutoDetect, QLatin1String("NameHasOwner"),
-                             QList<QVariant>() << serviceName);
+    return internalConstCall( QDBus::AutoDetect, QLatin1String( "NameHasOwner" ),
+                              QList<QVariant>() << serviceName );
 }
 
 /*!
     Returns the Unix Process ID (PID) for the process currently
     holding the bus service \a serviceName.
 */
-QDBusReply<uint> QDBusConnectionInterface::servicePid(const QString &serviceName) const
+QDBusReply<uint> QDBusConnectionInterface::servicePid( const QString &serviceName ) const
 {
-    return internalConstCall(QDBus::AutoDetect, QLatin1String("GetConnectionUnixProcessID"),
-                             QList<QVariant>() << serviceName);
+    return internalConstCall( QDBus::AutoDetect, QLatin1String( "GetConnectionUnixProcessID" ),
+                              QList<QVariant>() << serviceName );
 }
 
 /*!
     Returns the Unix User ID (UID) for the process currently holding
     the bus service \a serviceName.
 */
-QDBusReply<uint> QDBusConnectionInterface::serviceUid(const QString &serviceName) const
+QDBusReply<uint> QDBusConnectionInterface::serviceUid( const QString &serviceName ) const
 {
-    return internalConstCall(QDBus::AutoDetect, QLatin1String("GetConnectionUnixUser"),
-                             QList<QVariant>() << serviceName);
+    return internalConstCall( QDBus::AutoDetect, QLatin1String( "GetConnectionUnixUser" ),
+                              QList<QVariant>() << serviceName );
 }
 
 /*!
     Requests that the bus start the service given by the name \a name.
 */
-QDBusReply<void> QDBusConnectionInterface::startService(const QString &name)
+QDBusReply<void> QDBusConnectionInterface::startService( const QString &name )
 {
-    return call(QLatin1String("StartServiceByName"), name, uint(0));
+    return call( QLatin1String( "StartServiceByName" ), name, uint( 0 ) );
 }
 
 /*!
@@ -234,56 +236,63 @@ QDBusReply<void> QDBusConnectionInterface::startService(const QString &name)
 
     \sa unregisterService()
 */
-QDBusReply<QDBusConnectionInterface::RegisterServiceReply>
-QDBusConnectionInterface::registerService(const QString &serviceName,
-                                          ServiceQueueOptions qoption,
-                                          ServiceReplacementOptions roption)
+QDBusReply<QDBusConnectionInterface::RegisterServiceReply> QDBusConnectionInterface::registerService( const QString &serviceName,
+        ServiceQueueOptions qoption,
+        ServiceReplacementOptions roption )
 {
     // reconstruct the low-level flags
     uint flags = 0;
-    switch (qoption) {
-    case DontQueueService:
-        flags = DBUS_NAME_FLAG_DO_NOT_QUEUE;
-        break;
-    case QueueService:
-        flags = 0;
-        break;
-    case ReplaceExistingService:
-        flags = DBUS_NAME_FLAG_DO_NOT_QUEUE | DBUS_NAME_FLAG_REPLACE_EXISTING;
-        break;
+
+    switch ( qoption )
+    {
+        case DontQueueService:
+            flags = DBUS_NAME_FLAG_DO_NOT_QUEUE;
+            break;
+
+        case QueueService:
+            flags = 0;
+            break;
+
+        case ReplaceExistingService:
+            flags = DBUS_NAME_FLAG_DO_NOT_QUEUE | DBUS_NAME_FLAG_REPLACE_EXISTING;
+            break;
     }
 
-    switch (roption) {
-    case DontAllowReplacement:
-        break;
-    case AllowReplacement:
-        flags |= DBUS_NAME_FLAG_ALLOW_REPLACEMENT;
-        break;
+    switch ( roption )
+    {
+        case DontAllowReplacement:
+            break;
+
+        case AllowReplacement:
+            flags |= DBUS_NAME_FLAG_ALLOW_REPLACEMENT;
+            break;
     }
 
-    QDBusMessage reply = call(QLatin1String("RequestName"), serviceName, flags);
+    QDBusMessage reply = call( QLatin1String( "RequestName" ), serviceName, flags );
 //    qDebug() << "QDBusConnectionInterface::registerService" << serviceName << "Reply:" << reply;
 
     // convert the low-level flags to something that we can use
-    if (reply.type() == QDBusMessage::ReplyMessage) {
+    if ( reply.type() == QDBusMessage::ReplyMessage )
+    {
         uint code = 0;
 
-        switch (reply.arguments().at(0).toUInt()) {
-        case DBUS_REQUEST_NAME_REPLY_PRIMARY_OWNER:
-        case DBUS_REQUEST_NAME_REPLY_ALREADY_OWNER:
-            code = uint(ServiceRegistered);
-            break;
+        switch ( reply.arguments().at( 0 ).toUInt() )
+        {
+            case DBUS_REQUEST_NAME_REPLY_PRIMARY_OWNER:
+            case DBUS_REQUEST_NAME_REPLY_ALREADY_OWNER:
+                code = uint( ServiceRegistered );
+                break;
 
-        case DBUS_REQUEST_NAME_REPLY_EXISTS:
-            code = uint(ServiceNotRegistered);
-            break;
+            case DBUS_REQUEST_NAME_REPLY_EXISTS:
+                code = uint( ServiceNotRegistered );
+                break;
 
-        case DBUS_REQUEST_NAME_REPLY_IN_QUEUE:
-            code = uint(ServiceQueued);
-            break;
+            case DBUS_REQUEST_NAME_REPLY_IN_QUEUE:
+                code = uint( ServiceQueued );
+                break;
         }
 
-        reply.setArguments(QVariantList() << code);
+        reply.setArguments( QVariantList() << code );
     }
 
     return reply;
@@ -296,55 +305,71 @@ QDBusConnectionInterface::registerService(const QString &serviceName,
     other applications to claim. If it only had the name queued, it
     gives up its position in the queue.
 */
-QDBusReply<bool>
-QDBusConnectionInterface::unregisterService(const QString &serviceName)
+QDBusReply<bool> QDBusConnectionInterface::unregisterService( const QString &serviceName )
 {
-    QDBusMessage reply = call(QLatin1String("ReleaseName"), serviceName);
-    if (reply.type() == QDBusMessage::ReplyMessage) {
-        bool success = reply.arguments().at(0).toUInt() == DBUS_RELEASE_NAME_REPLY_RELEASED;
-        reply.setArguments(QVariantList() << success);
+    QDBusMessage reply = call( QLatin1String( "ReleaseName" ), serviceName );
+
+    if ( reply.type() == QDBusMessage::ReplyMessage )
+    {
+        bool success = reply.arguments().at( 0 ).toUInt() == DBUS_RELEASE_NAME_REPLY_RELEASED;
+        reply.setArguments( QVariantList() << success );
     }
+
     return reply;
 }
 
 /*!
     \internal
 */
-void QDBusConnectionInterface::connectNotify(const char *signalName)
+void QDBusConnectionInterface::connectNotify( const char *signalName )
 {
     // translate the signal names to what we really want
     // this avoids setting hooks for signals that don't exist on the bus
-    if (qstrcmp(signalName, SIGNAL(serviceRegistered(QString))) == 0)
-        QDBusAbstractInterface::connectNotify(SIGNAL(NameAcquired(QString)));
+    if ( qstrcmp( signalName, SIGNAL( serviceRegistered( QString ) ) ) == 0 )
+    {
+        QDBusAbstractInterface::connectNotify( SIGNAL( NameAcquired( QString ) ) );
+    }
 
-    else if (qstrcmp(signalName, SIGNAL(serviceUnregistered(QString))) == 0)
-        QDBusAbstractInterface::connectNotify(SIGNAL(NameLost(QString)));
+    else if ( qstrcmp( signalName, SIGNAL( serviceUnregistered( QString ) ) ) == 0 )
+    {
+        QDBusAbstractInterface::connectNotify( SIGNAL( NameLost( QString ) ) );
+    }
 
-    else if (qstrcmp(signalName, SIGNAL(serviceOwnerChanged(QString,QString,QString))) == 0) {
+    else if ( qstrcmp( signalName, SIGNAL( serviceOwnerChanged( QString,QString,QString ) ) ) == 0 )
+    {
         static bool warningPrinted = false;
-        if (!warningPrinted) {
-            qWarning("Connecting to deprecated signal QDBusConnectionInterface::serviceOwnerChanged(QString,QString,QString)");
+
+        if ( !warningPrinted )
+        {
+            qWarning( "Connecting to deprecated signal QDBusConnectionInterface::serviceOwnerChanged(QString,QString,QString)" );
             warningPrinted = true;
         }
-        QDBusAbstractInterface::connectNotify(SIGNAL(NameOwnerChanged(QString,QString,QString)));
+
+        QDBusAbstractInterface::connectNotify( SIGNAL( NameOwnerChanged( QString,QString,QString ) ) );
     }
 }
 
 /*!
     \internal
 */
-void QDBusConnectionInterface::disconnectNotify(const char *signalName)
+void QDBusConnectionInterface::disconnectNotify( const char *signalName )
 {
     // translate the signal names to what we really want
     // this avoids setting hooks for signals that don't exist on the bus
-    if (qstrcmp(signalName, SIGNAL(serviceRegistered(QString))) == 0)
-        QDBusAbstractInterface::disconnectNotify(SIGNAL(NameAcquired(QString)));
+    if ( qstrcmp( signalName, SIGNAL( serviceRegistered( QString ) ) ) == 0 )
+    {
+        QDBusAbstractInterface::disconnectNotify( SIGNAL( NameAcquired( QString ) ) );
+    }
 
-    else if (qstrcmp(signalName, SIGNAL(serviceUnregistered(QString))) == 0)
-        QDBusAbstractInterface::disconnectNotify(SIGNAL(NameLost(QString)));
+    else if ( qstrcmp( signalName, SIGNAL( serviceUnregistered( QString ) ) ) == 0 )
+    {
+        QDBusAbstractInterface::disconnectNotify( SIGNAL( NameLost( QString ) ) );
+    }
 
-    else if (qstrcmp(signalName, SIGNAL(serviceOwnerChanged(QString,QString,QString))) == 0)
-        QDBusAbstractInterface::disconnectNotify(SIGNAL(NameOwnerChanged(QString,QString,QString)));
+    else if ( qstrcmp( signalName, SIGNAL( serviceOwnerChanged( QString,QString,QString ) ) ) == 0 )
+    {
+        QDBusAbstractInterface::disconnectNotify( SIGNAL( NameOwnerChanged( QString,QString,QString ) ) );
+    }
 }
 
 // signals

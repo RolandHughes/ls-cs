@@ -35,17 +35,18 @@
 
 using namespace WebCore;
 
-namespace WebKit {
-
-void ChunkedUpdateDrawingArea::paintIntoUpdateChunk(UpdateChunk* updateChunk)
+namespace WebKit
 {
-    QImage image(updateChunk->createImage());
-    QPainter painter(&image);
-    // Now paint into the backing store.
-    GraphicsContext graphicsContext(&painter);
-    graphicsContext.translate(-updateChunk->rect().x(), -updateChunk->rect().y());
 
-    m_webPage->drawRect(graphicsContext, updateChunk->rect());
+void ChunkedUpdateDrawingArea::paintIntoUpdateChunk( UpdateChunk *updateChunk )
+{
+    QImage image( updateChunk->createImage() );
+    QPainter painter( &image );
+    // Now paint into the backing store.
+    GraphicsContext graphicsContext( &painter );
+    graphicsContext.translate( -updateChunk->rect().x(), -updateChunk->rect().y() );
+
+    m_webPage->drawRect( graphicsContext, updateChunk->rect() );
 }
 
 } // namespace WebKit

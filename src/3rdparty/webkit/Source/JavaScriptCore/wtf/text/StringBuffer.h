@@ -6,13 +6,13 @@
  * are met:
  *
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Apple Inc. ("Apple") nor the names of its
  *     contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
+ *     from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY APPLE AND ITS CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -33,50 +33,75 @@
 #include <wtf/unicode/Unicode.h>
 #include <limits>
 
-namespace WTF {
+namespace WTF
+{
 
-class StringBuffer {
-    WTF_MAKE_NONCOPYABLE(StringBuffer);
+class StringBuffer
+{
+    WTF_MAKE_NONCOPYABLE( StringBuffer );
 public:
-    explicit StringBuffer(unsigned length)
-        : m_length(length)
+    explicit StringBuffer( unsigned length )
+        : m_length( length )
     {
-        if (m_length > std::numeric_limits<unsigned>::max() / sizeof(UChar))
+        if ( m_length > std::numeric_limits<unsigned>::max() / sizeof( UChar ) )
+        {
             CRASH();
-        m_data = static_cast<UChar*>(fastMalloc(m_length * sizeof(UChar)));
+        }
+
+        m_data = static_cast<UChar *>( fastMalloc( m_length * sizeof( UChar ) ) );
     }
 
     ~StringBuffer()
     {
-        fastFree(m_data);
+        fastFree( m_data );
     }
 
-    void shrink(unsigned newLength)
+    void shrink( unsigned newLength )
     {
-        ASSERT(newLength <= m_length);
+        ASSERT( newLength <= m_length );
         m_length = newLength;
     }
 
-    void resize(unsigned newLength)
+    void resize( unsigned newLength )
     {
-        if (newLength > m_length) {
-            if (newLength > std::numeric_limits<unsigned>::max() / sizeof(UChar))
+        if ( newLength > m_length )
+        {
+            if ( newLength > std::numeric_limits<unsigned>::max() / sizeof( UChar ) )
+            {
                 CRASH();
-            m_data = static_cast<UChar*>(fastRealloc(m_data, newLength * sizeof(UChar)));
+            }
+
+            m_data = static_cast<UChar *>( fastRealloc( m_data, newLength * sizeof( UChar ) ) );
         }
+
         m_length = newLength;
     }
 
-    unsigned length() const { return m_length; }
-    UChar* characters() { return m_data; }
+    unsigned length() const
+    {
+        return m_length;
+    }
+    UChar *characters()
+    {
+        return m_data;
+    }
 
-    UChar& operator[](unsigned i) { ASSERT(i < m_length); return m_data[i]; }
+    UChar &operator[]( unsigned i )
+    {
+        ASSERT( i < m_length );
+        return m_data[i];
+    }
 
-    UChar* release() { UChar* data = m_data; m_data = 0; return data; }
+    UChar *release()
+    {
+        UChar *data = m_data;
+        m_data = 0;
+        return data;
+    }
 
 private:
     unsigned m_length;
-    UChar* m_data;
+    UChar *m_data;
 };
 
 } // namespace WTF

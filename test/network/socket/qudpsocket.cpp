@@ -21,33 +21,33 @@
 
 #include <cs_catch2.h>
 
-TEST_CASE("QUdpSocket traits", "[qudpsocket]")
+TEST_CASE( "QUdpSocket traits", "[qudpsocket]" )
 {
-   REQUIRE(std::is_copy_constructible_v<QUdpSocket> == false);
-   REQUIRE(std::is_move_constructible_v<QUdpSocket> == false);
+    REQUIRE( std::is_copy_constructible_v<QUdpSocket> == false );
+    REQUIRE( std::is_move_constructible_v<QUdpSocket> == false );
 
-   REQUIRE(std::is_copy_assignable_v<QUdpSocket> == false);
-   REQUIRE(std::is_move_assignable_v<QUdpSocket> == false);
+    REQUIRE( std::is_copy_assignable_v<QUdpSocket> == false );
+    REQUIRE( std::is_move_assignable_v<QUdpSocket> == false );
 
-   REQUIRE(std::is_nothrow_move_constructible_v<QUdpSocket> == false);
-   REQUIRE(std::is_nothrow_move_assignable_v<QUdpSocket> == false);
+    REQUIRE( std::is_nothrow_move_constructible_v<QUdpSocket> == false );
+    REQUIRE( std::is_nothrow_move_assignable_v<QUdpSocket> == false );
 
-   REQUIRE(std::has_virtual_destructor_v<QUdpSocket> == true);
+    REQUIRE( std::has_virtual_destructor_v<QUdpSocket> == true );
 }
 
-TEST_CASE("QUdpSocket constructor", "[qudpsocket]")
+TEST_CASE( "QUdpSocket constructor", "[qudpsocket]" )
 {
-   auto testApp = initCoreApp();
+    auto testApp = initCoreApp();
 
-   QUdpSocket socket;
+    QUdpSocket socket;
 
-   REQUIRE(socket.isSequential()     == true);
-   REQUIRE(socket.isOpen()           == false);
-   REQUIRE(socket.socketType()       == QUdpSocket::UdpSocket);
-   REQUIRE(socket.bytesAvailable()   == 0);
-   REQUIRE(socket.canReadLine()      == false);
-   REQUIRE(socket.readLine()         == QByteArray());
-   REQUIRE(socket.socketDescriptor() == (qintptr)-1);
-   REQUIRE(socket.error()            == QUdpSocket::UnknownSocketError);
-   REQUIRE(socket.errorString()      == QString("Unknown error"));
+    REQUIRE( socket.isSequential()     == true );
+    REQUIRE( socket.isOpen()           == false );
+    REQUIRE( socket.socketType()       == QUdpSocket::UdpSocket );
+    REQUIRE( socket.bytesAvailable()   == 0 );
+    REQUIRE( socket.canReadLine()      == false );
+    REQUIRE( socket.readLine()         == QByteArray() );
+    REQUIRE( socket.socketDescriptor() == ( qintptr )-1 );
+    REQUIRE( socket.error()            == QUdpSocket::UnknownSocketError );
+    REQUIRE( socket.errorString()      == QString( "Unknown error" ) );
 }

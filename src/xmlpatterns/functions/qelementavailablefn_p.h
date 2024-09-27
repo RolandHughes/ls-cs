@@ -26,17 +26,18 @@
 
 #include <qstaticnamespacescontainer_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class ElementAvailableFN : public StaticNamespacesContainer
 {
- public:
-   ElementAvailableFN();
-   bool evaluateEBV(const DynamicContext::Ptr &context) const override;
+public:
+    ElementAvailableFN();
+    bool evaluateEBV( const DynamicContext::Ptr &context ) const override;
 
- private:
-   static QSet<QString> allXSLTInstructions();
-   const QSet<QString> m_xsltInstructions;
+private:
+    static QSet<QString> allXSLTInstructions();
+    const QSet<QString> m_xsltInstructions;
 };
 
 }

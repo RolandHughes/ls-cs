@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -29,23 +29,26 @@
 #include "Document.h"
 #include "HTMLFormElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace JSC;
 
-ScopeChainNode* JSHTMLElement::pushEventHandlerScope(ExecState* exec, ScopeChainNode* scope) const
+ScopeChainNode *JSHTMLElement::pushEventHandlerScope( ExecState *exec, ScopeChainNode *scope ) const
 {
-    HTMLElement* element = impl();
+    HTMLElement *element = impl();
 
     // The document is put on first, fall back to searching it only after the element and form.
-    scope = scope->push(asObject(toJS(exec, globalObject(), element->ownerDocument())));
+    scope = scope->push( asObject( toJS( exec, globalObject(), element->ownerDocument() ) ) );
 
     // The form is next, searched before the document, but after the element itself.
-    if (HTMLFormElement* form = element->form())
-        scope = scope->push(asObject(toJS(exec, globalObject(), form)));
+    if ( HTMLFormElement *form = element->form() )
+    {
+        scope = scope->push( asObject( toJS( exec, globalObject(), form ) ) );
+    }
 
     // The element is on top, searched first.
-    return scope->push(asObject(toJS(exec, globalObject(), element)));
+    return scope->push( asObject( toJS( exec, globalObject(), element ) ) );
 }
 
 } // namespace WebCore

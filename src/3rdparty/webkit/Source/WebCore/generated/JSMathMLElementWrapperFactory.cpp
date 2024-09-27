@@ -51,53 +51,64 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace MathMLNames;
 
-typedef JSDOMWrapper* (*CreateMathMLElementWrapperFunction)(ExecState*, JSDOMGlobalObject*, PassRefPtr<MathMLElement>);
+typedef JSDOMWrapper *( *CreateMathMLElementWrapperFunction )( ExecState *, JSDOMGlobalObject *, PassRefPtr<MathMLElement> );
 
-static JSDOMWrapper* createMathMLMathElementWrapper(ExecState* exec, JSDOMGlobalObject* globalObject, PassRefPtr<MathMLElement> element)
+static JSDOMWrapper *createMathMLMathElementWrapper( ExecState *exec, JSDOMGlobalObject *globalObject,
+        PassRefPtr<MathMLElement> element )
 {
-    return CREATE_DOM_WRAPPER(exec, globalObject, MathMLMathElement, element.get());
+    return CREATE_DOM_WRAPPER( exec, globalObject, MathMLMathElement, element.get() );
 }
 
-static JSDOMWrapper* createMathMLInlineContainerElementWrapper(ExecState* exec, JSDOMGlobalObject* globalObject, PassRefPtr<MathMLElement> element)
+static JSDOMWrapper *createMathMLInlineContainerElementWrapper( ExecState *exec, JSDOMGlobalObject *globalObject,
+        PassRefPtr<MathMLElement> element )
 {
-    return CREATE_DOM_WRAPPER(exec, globalObject, MathMLInlineContainerElement, element.get());
+    return CREATE_DOM_WRAPPER( exec, globalObject, MathMLInlineContainerElement, element.get() );
 }
 
-static JSDOMWrapper* createMathMLTextElementWrapper(ExecState* exec, JSDOMGlobalObject* globalObject, PassRefPtr<MathMLElement> element)
+static JSDOMWrapper *createMathMLTextElementWrapper( ExecState *exec, JSDOMGlobalObject *globalObject,
+        PassRefPtr<MathMLElement> element )
 {
-    return CREATE_DOM_WRAPPER(exec, globalObject, MathMLTextElement, element.get());
+    return CREATE_DOM_WRAPPER( exec, globalObject, MathMLTextElement, element.get() );
 }
 
-JSDOMWrapper* createJSMathMLWrapper(ExecState* exec, JSDOMGlobalObject* globalObject, PassRefPtr<MathMLElement> element)
+JSDOMWrapper *createJSMathMLWrapper( ExecState *exec, JSDOMGlobalObject *globalObject, PassRefPtr<MathMLElement> element )
 {
-    typedef HashMap<WTF::AtomicStringImpl*, CreateMathMLElementWrapperFunction> FunctionMap;
-    DEFINE_STATIC_LOCAL(FunctionMap, map, ());
-    if (map.isEmpty()) {
-       map.set(mathTag.localName().impl(), createMathMLMathElementWrapper);
-       map.set(mfencedTag.localName().impl(), createMathMLInlineContainerElementWrapper);
-       map.set(mfracTag.localName().impl(), createMathMLInlineContainerElementWrapper);
-       map.set(miTag.localName().impl(), createMathMLTextElementWrapper);
-       map.set(mnTag.localName().impl(), createMathMLTextElementWrapper);
-       map.set(moTag.localName().impl(), createMathMLTextElementWrapper);
-       map.set(moverTag.localName().impl(), createMathMLInlineContainerElementWrapper);
-       map.set(mrootTag.localName().impl(), createMathMLInlineContainerElementWrapper);
-       map.set(mrowTag.localName().impl(), createMathMLInlineContainerElementWrapper);
-       map.set(msqrtTag.localName().impl(), createMathMLInlineContainerElementWrapper);
-       map.set(msubTag.localName().impl(), createMathMLInlineContainerElementWrapper);
-       map.set(msubsupTag.localName().impl(), createMathMLInlineContainerElementWrapper);
-       map.set(msupTag.localName().impl(), createMathMLInlineContainerElementWrapper);
-       map.set(mtextTag.localName().impl(), createMathMLTextElementWrapper);
-       map.set(munderTag.localName().impl(), createMathMLInlineContainerElementWrapper);
-       map.set(munderoverTag.localName().impl(), createMathMLInlineContainerElementWrapper);
+    typedef HashMap<WTF::AtomicStringImpl *, CreateMathMLElementWrapperFunction> FunctionMap;
+    DEFINE_STATIC_LOCAL( FunctionMap, map, () );
+
+    if ( map.isEmpty() )
+    {
+        map.set( mathTag.localName().impl(), createMathMLMathElementWrapper );
+        map.set( mfencedTag.localName().impl(), createMathMLInlineContainerElementWrapper );
+        map.set( mfracTag.localName().impl(), createMathMLInlineContainerElementWrapper );
+        map.set( miTag.localName().impl(), createMathMLTextElementWrapper );
+        map.set( mnTag.localName().impl(), createMathMLTextElementWrapper );
+        map.set( moTag.localName().impl(), createMathMLTextElementWrapper );
+        map.set( moverTag.localName().impl(), createMathMLInlineContainerElementWrapper );
+        map.set( mrootTag.localName().impl(), createMathMLInlineContainerElementWrapper );
+        map.set( mrowTag.localName().impl(), createMathMLInlineContainerElementWrapper );
+        map.set( msqrtTag.localName().impl(), createMathMLInlineContainerElementWrapper );
+        map.set( msubTag.localName().impl(), createMathMLInlineContainerElementWrapper );
+        map.set( msubsupTag.localName().impl(), createMathMLInlineContainerElementWrapper );
+        map.set( msupTag.localName().impl(), createMathMLInlineContainerElementWrapper );
+        map.set( mtextTag.localName().impl(), createMathMLTextElementWrapper );
+        map.set( munderTag.localName().impl(), createMathMLInlineContainerElementWrapper );
+        map.set( munderoverTag.localName().impl(), createMathMLInlineContainerElementWrapper );
     }
-    CreateMathMLElementWrapperFunction createWrapperFunction = map.get(element->localName().impl());
-    if (createWrapperFunction)
-        return createWrapperFunction(exec, globalObject, element);
-    return CREATE_DOM_WRAPPER(exec, globalObject, MathMLElement, element.get());
+
+    CreateMathMLElementWrapperFunction createWrapperFunction = map.get( element->localName().impl() );
+
+    if ( createWrapperFunction )
+    {
+        return createWrapperFunction( exec, globalObject, element );
+    }
+
+    return CREATE_DOM_WRAPPER( exec, globalObject, MathMLElement, element.get() );
 }
 
 }

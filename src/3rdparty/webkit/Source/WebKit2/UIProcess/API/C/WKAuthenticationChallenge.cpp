@@ -36,25 +36,25 @@ using namespace WebKit;
 
 WKTypeID WKAuthenticationChallengeGetTypeID()
 {
-    return toAPI(AuthenticationChallengeProxy::APIType);
+    return toAPI( AuthenticationChallengeProxy::APIType );
 }
 
-WKAuthenticationDecisionListenerRef WKAuthenticationChallengeGetDecisionListener(WKAuthenticationChallengeRef challenge)
+WKAuthenticationDecisionListenerRef WKAuthenticationChallengeGetDecisionListener( WKAuthenticationChallengeRef challenge )
 {
-    return toAPI(toImpl(challenge)->listener());
+    return toAPI( toImpl( challenge )->listener() );
 }
 
-WKProtectionSpaceRef WKAuthenticationChallengeGetProtectionSpace(WKAuthenticationChallengeRef challenge)
+WKProtectionSpaceRef WKAuthenticationChallengeGetProtectionSpace( WKAuthenticationChallengeRef challenge )
 {
-    return toAPI(toImpl(challenge)->protectionSpace());
+    return toAPI( toImpl( challenge )->protectionSpace() );
 }
 
-WKCredentialRef WKAuthenticationChallengeGetProposedCredential(WKAuthenticationChallengeRef challenge)
+WKCredentialRef WKAuthenticationChallengeGetProposedCredential( WKAuthenticationChallengeRef challenge )
 {
-    return toAPI(toImpl(challenge)->proposedCredential());
+    return toAPI( toImpl( challenge )->proposedCredential() );
 }
 
-int WKAuthenticationChallengeGetPreviousFailureCount(WKAuthenticationChallengeRef challenge)
+int WKAuthenticationChallengeGetPreviousFailureCount( WKAuthenticationChallengeRef challenge )
 {
-    return toImpl(challenge)->previousFailureCount();
+    return toImpl( challenge )->previousFailureCount();
 }

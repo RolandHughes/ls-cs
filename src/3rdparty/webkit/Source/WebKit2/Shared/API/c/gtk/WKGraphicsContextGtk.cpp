@@ -32,7 +32,7 @@
 
 using namespace WebKit;
 
-cairo_t* WKGraphicsContextGetGtkContext(WKGraphicsContextRef graphicsContextRef)
+cairo_t *WKGraphicsContextGetGtkContext( WKGraphicsContextRef graphicsContextRef )
 {
-    return toImpl(graphicsContextRef)->platformContext();
+    return toImpl( graphicsContextRef )->platformContext();
 }

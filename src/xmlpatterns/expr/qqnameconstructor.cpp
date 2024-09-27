@@ -29,60 +29,64 @@
 
 using namespace QPatternist;
 
-QNameConstructor::QNameConstructor(const Expression::Ptr &source, const NamespaceResolver::Ptr &nsResolver) : SingleContainer(source),
-   m_nsResolver(nsResolver)
+QNameConstructor::QNameConstructor( const Expression::Ptr &source,
+                                    const NamespaceResolver::Ptr &nsResolver ) : SingleContainer( source ),
+    m_nsResolver( nsResolver )
 {
-   Q_ASSERT(m_nsResolver);
+    Q_ASSERT( m_nsResolver );
 }
 
-Item QNameConstructor::evaluateSingleton(const DynamicContext::Ptr &context) const
+Item QNameConstructor::evaluateSingleton( const DynamicContext::Ptr &context ) const
 {
-   Q_ASSERT(context);
-   const QString lexQName(m_operand->evaluateSingleton(context).stringValue());
+    Q_ASSERT( context );
+    const QString lexQName( m_operand->evaluateSingleton( context ).stringValue() );
 
-   const QXmlName expQName(expandQName<DynamicContext::Ptr,
-                           ReportContext::XQDY0074,
-                           ReportContext::XQDY0074>(lexQName,
-                           context, m_nsResolver, this));
+    const QXmlName expQName( expandQName<DynamicContext::Ptr,
+                             ReportContext::XQDY0074,
+                             ReportContext::XQDY0074>( lexQName,
+                                     context, m_nsResolver, this ) );
 
-   return toItem(QNameValue::fromValue(context->namePool(), expQName));
+    return toItem( QNameValue::fromValue( context->namePool(), expQName ) );
 }
 
-QXmlName::NamespaceCode QNameConstructor::namespaceForPrefix(const QXmlName::PrefixCode prefix,
-      const StaticContext::Ptr &context, const SourceLocationReflection *const r)
+QXmlName::NamespaceCode QNameConstructor::namespaceForPrefix( const QXmlName::PrefixCode prefix,
+        const StaticContext::Ptr &context, const SourceLocationReflection *const r )
 {
-   Q_ASSERT(context);
-   const QXmlName::NamespaceCode ns(context->namespaceBindings()->lookupNamespaceURI(prefix));
+    Q_ASSERT( context );
+    const QXmlName::NamespaceCode ns( context->namespaceBindings()->lookupNamespaceURI( prefix ) );
 
-   if (ns == NamespaceResolver::NoBinding) {
-      context->error(QtXmlPatterns::tr("No namespace binding exists for the prefix %1")
-                     .formatArgs(formatKeyword(context->namePool()->stringForPrefix(prefix))), ReportContext::XPST0081, r);
+    if ( ns == NamespaceResolver::NoBinding )
+    {
+        context->error( QtXmlPatterns::tr( "No namespace binding exists for the prefix %1" )
+                        .formatArgs( formatKeyword( context->namePool()->stringForPrefix( prefix ) ) ), ReportContext::XPST0081, r );
 
-      return NamespaceResolver::NoBinding;
+        return NamespaceResolver::NoBinding;
 
-   } else {
-      return ns;
-   }
+    }
+    else
+    {
+        return ns;
+    }
 }
 
 SequenceType::Ptr QNameConstructor::staticType() const
 {
-   return CommonSequenceTypes::ExactlyOneQName;
+    return CommonSequenceTypes::ExactlyOneQName;
 }
 
 SequenceType::List QNameConstructor::expectedOperandTypes() const
 {
-   SequenceType::List result;
-   result.append(CommonSequenceTypes::ExactlyOneString);
-   return result;
+    SequenceType::List result;
+    result.append( CommonSequenceTypes::ExactlyOneString );
+    return result;
 }
 
-ExpressionVisitorResult::Ptr QNameConstructor::accept(const ExpressionVisitor::Ptr &visitor) const
+ExpressionVisitorResult::Ptr QNameConstructor::accept( const ExpressionVisitor::Ptr &visitor ) const
 {
-   return visitor->visit(this);
+    return visitor->visit( this );
 }
 
 const SourceLocationReflection *QNameConstructor::actualReflection() const
 {
-   return m_operand.data();
+    return m_operand.data();
 }

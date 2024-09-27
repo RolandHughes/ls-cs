@@ -27,50 +27,52 @@
 #include <qtimer.h>
 #include <qnetwork_reply.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 /**
  * This is read-only currently.
  */
 class QIODeviceDelegate : public QNetworkReply
 {
-   XMLP_CS_OBJECT(QIODeviceDelegate)
+    XMLP_CS_OBJECT( QIODeviceDelegate )
 
- public:
-   QIODeviceDelegate(QIODevice *const source);
+public:
+    QIODeviceDelegate( QIODevice *const source );
 
-   void abort() override;
+    void abort() override;
 
-   bool atEnd() const override;
-   qint64 bytesAvailable() const override;
-   qint64 bytesToWrite() const override;
-   bool canReadLine() const override;
-   void close() override;
-   bool isSequential() const override;
-   bool open(OpenMode mode) override;
-   qint64 pos() const override;
-   bool reset() override;
-   bool seek(qint64 pos) override;
-   qint64 size() const override;
-   bool waitForBytesWritten(int msecs) override;
-   bool waitForReadyRead(int msecs) override;
+    bool atEnd() const override;
+    qint64 bytesAvailable() const override;
+    qint64 bytesToWrite() const override;
+    bool canReadLine() const override;
+    void close() override;
+    bool isSequential() const override;
+    bool open( OpenMode mode ) override;
+    qint64 pos() const override;
+    bool reset() override;
+    bool seek( qint64 pos ) override;
+    qint64 size() const override;
+    bool waitForBytesWritten( int msecs ) override;
+    bool waitForReadyRead( int msecs ) override;
 
- protected:
-   qint64 readData(char *data, qint64 maxSize) override;
+protected:
+    qint64 readData( char *data, qint64 maxSize ) override;
 
- private :
-   XMLP_CS_SLOT_1(Private, void networkTimeout())
-   XMLP_CS_SLOT_2(networkTimeout)
+private :
+    XMLP_CS_SLOT_1( Private, void networkTimeout() )
+    XMLP_CS_SLOT_2( networkTimeout )
 
- private:
-   enum {
-      /**
-       * 20 seconds expressed in milliseconds.
-       */
-      Timeout = 20000
-   };
+private:
+    enum
+    {
+        /**
+         * 20 seconds expressed in milliseconds.
+         */
+        Timeout = 20000
+    };
 
-   QIODevice *const m_source;
-   QTimer m_timeout;
+    QIODevice *const m_source;
+    QTimer m_timeout;
 };
 }
 

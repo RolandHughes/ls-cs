@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -29,35 +29,43 @@
 
 #include "Nodes.h"
 
-namespace JSC {
+namespace JSC
+{
 
 ParserArena::ParserArena()
-    : m_freeableMemory(0)
-    , m_freeablePoolEnd(0)
-    , m_identifierArena(new IdentifierArena)
+    : m_freeableMemory( 0 )
+    , m_freeablePoolEnd( 0 )
+    , m_identifierArena( new IdentifierArena )
 {
 }
 
-inline void* ParserArena::freeablePool()
+inline void *ParserArena::freeablePool()
 {
-    ASSERT(m_freeablePoolEnd);
+    ASSERT( m_freeablePoolEnd );
     return m_freeablePoolEnd - freeablePoolSize;
 }
 
 inline void ParserArena::deallocateObjects()
 {
-    if (m_freeablePoolEnd)
-        fastFree(freeablePool());
+    if ( m_freeablePoolEnd )
+    {
+        fastFree( freeablePool() );
+    }
 
     size_t size = m_freeablePools.size();
-    for (size_t i = 0; i < size; ++i)
-        fastFree(m_freeablePools[i]);
+
+    for ( size_t i = 0; i < size; ++i )
+    {
+        fastFree( m_freeablePools[i] );
+    }
 
     size = m_deletableObjects.size();
-    for (size_t i = 0; i < size; ++i) {
-        ParserArenaDeletable* object = m_deletableObjects[i];
+
+    for ( size_t i = 0; i < size; ++i )
+    {
+        ParserArenaDeletable *object = m_deletableObjects[i];
         object->~ParserArenaDeletable();
-        fastFree(object);
+        fastFree( object );
     }
 }
 
@@ -66,12 +74,12 @@ ParserArena::~ParserArena()
     deallocateObjects();
 }
 
-bool ParserArena::contains(ParserArenaRefCounted* object) const
+bool ParserArena::contains( ParserArenaRefCounted *object ) const
 {
-    return m_refCountedObjects.find(object) != notFound;
+    return m_refCountedObjects.find( object ) != notFound;
 }
 
-ParserArenaRefCounted* ParserArena::last() const
+ParserArenaRefCounted *ParserArena::last() const
 {
     return m_refCountedObjects.last().get();
 }
@@ -99,37 +107,39 @@ void ParserArena::reset()
 
 void ParserArena::allocateFreeablePool()
 {
-    if (m_freeablePoolEnd)
-        m_freeablePools.append(freeablePool());
+    if ( m_freeablePoolEnd )
+    {
+        m_freeablePools.append( freeablePool() );
+    }
 
-    char* pool = static_cast<char*>(fastMalloc(freeablePoolSize));
+    char *pool = static_cast<char *>( fastMalloc( freeablePoolSize ) );
     m_freeableMemory = pool;
     m_freeablePoolEnd = pool + freeablePoolSize;
-    ASSERT(freeablePool() == pool);
+    ASSERT( freeablePool() == pool );
 }
 
 bool ParserArena::isEmpty() const
 {
     return !m_freeablePoolEnd
-        && m_identifierArena->isEmpty()
-        && m_freeablePools.isEmpty()
-        && m_deletableObjects.isEmpty()
-        && m_refCountedObjects.isEmpty();
+           && m_identifierArena->isEmpty()
+           && m_freeablePools.isEmpty()
+           && m_deletableObjects.isEmpty()
+           && m_refCountedObjects.isEmpty();
 }
 
-void ParserArena::derefWithArena(PassRefPtr<ParserArenaRefCounted> object)
+void ParserArena::derefWithArena( PassRefPtr<ParserArenaRefCounted> object )
 {
-    m_refCountedObjects.append(object);
+    m_refCountedObjects.append( object );
 }
 
-void* ParserArenaFreeable::operator new(size_t size, JSGlobalData* globalData)
+void *ParserArenaFreeable::operator new ( size_t size, JSGlobalData *globalData )
 {
-    return globalData->parser->arena().allocateFreeable(size);
+    return globalData->parser->arena().allocateFreeable( size );
 }
 
-void* ParserArenaDeletable::operator new(size_t size, JSGlobalData* globalData)
+void *ParserArenaDeletable::operator new ( size_t size, JSGlobalData *globalData )
 {
-    return globalData->parser->arena().allocateDeletable(size);
+    return globalData->parser->arena().allocateDeletable( size );
 }
 
 }

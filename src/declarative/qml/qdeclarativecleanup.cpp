@@ -41,24 +41,28 @@ called by QDeclarativeEngine just before it deletes the QScriptEngine.
 \internal
 
 Create a QDeclarativeCleanup for \a engine
-*/
-QDeclarativeCleanup::QDeclarativeCleanup(QDeclarativeEngine *engine)
-   : prev(0), next(0)
+*/ QDeclarativeCleanup::QDeclarativeCleanup( QDeclarativeEngine *engine )
+    : prev( 0 ), next( 0 )
 {
-   if (!engine) {
-      return;
-   }
+    if ( !engine )
+    {
+        return;
+    }
 
-   QDeclarativeEnginePrivate *p = QDeclarativeEnginePrivate::get(engine);
+    QDeclarativeEnginePrivate *p = QDeclarativeEnginePrivate::get( engine );
 
-   if (p->cleanup) {
-      next = p->cleanup;
-   }
-   p->cleanup = this;
-   prev = &p->cleanup;
-   if (next) {
-      next->prev = &next;
-   }
+    if ( p->cleanup )
+    {
+        next = p->cleanup;
+    }
+
+    p->cleanup = this;
+    prev = &p->cleanup;
+
+    if ( next )
+    {
+        next->prev = &next;
+    }
 }
 
 /*!
@@ -66,13 +70,17 @@ QDeclarativeCleanup::QDeclarativeCleanup(QDeclarativeEngine *engine)
 */
 QDeclarativeCleanup::~QDeclarativeCleanup()
 {
-   if (prev) {
-      *prev = next;
-   }
-   if (next) {
-      next->prev = prev;
-   }
-   prev = 0;
-   next = 0;
+    if ( prev )
+    {
+        *prev = next;
+    }
+
+    if ( next )
+    {
+        next->prev = prev;
+    }
+
+    prev = 0;
+    next = 0;
 }
 QT_END_NAMESPACE

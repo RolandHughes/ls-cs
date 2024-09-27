@@ -20,16 +20,17 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 #ifndef UserStyleSheetTypes_h
 #define UserStyleSheetTypes_h
 
 #include <wtf/HashMap.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 enum UserStyleInjectionTime { InjectInExistingDocuments, InjectInSubsequentDocuments };
 enum UserStyleLevel { UserStyleUserLevel, UserStyleAuthorLevel };
@@ -38,8 +39,8 @@ class DOMWrapperWorld;
 class UserStyleSheet;
 
 typedef Vector<OwnPtr<UserStyleSheet> > UserStyleSheetVector;
-typedef HashMap<RefPtr<DOMWrapperWorld>, UserStyleSheetVector*> UserStyleSheetMap;
+typedef HashMap<RefPtr<DOMWrapperWorld>, UserStyleSheetVector *> UserStyleSheetMap;
 
 } // namespace WebCore
- 
+
 #endif // UserStyleSheetTypes_h

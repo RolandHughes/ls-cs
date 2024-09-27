@@ -32,188 +32,212 @@
 
 class QPaintEngineEx;
 
-typedef void (*qvectorpath_cache_cleanup)(QPaintEngineEx *engine, void *data);
+typedef void ( *qvectorpath_cache_cleanup )( QPaintEngineEx *engine, void *data );
 
-struct QRealRect {
-   qreal x1, y1, x2, y2;
+struct QRealRect
+{
+    qreal x1, y1, x2, y2;
 };
 
 class Q_GUI_EXPORT QVectorPath
 {
- public:
-   enum Hint {
-      // Shape hints, in 0x000000ff, access using shape()
-      AreaShapeMask           = 0x0001,       // shape covers an area
-      NonConvexShapeMask      = 0x0002,       // shape is not convex
-      CurvedShapeMask         = 0x0004,       // shape contains curves...
-      LinesShapeMask          = 0x0008,
-      RectangleShapeMask      = 0x0010,
-      ShapeMask               = 0x001f,
+public:
+    enum Hint
+    {
+        // Shape hints, in 0x000000ff, access using shape()
+        AreaShapeMask           = 0x0001,       // shape covers an area
+        NonConvexShapeMask      = 0x0002,       // shape is not convex
+        CurvedShapeMask         = 0x0004,       // shape contains curves...
+        LinesShapeMask          = 0x0008,
+        RectangleShapeMask      = 0x0010,
+        ShapeMask               = 0x001f,
 
-      // Shape hints merged into basic shapes..
-      LinesHint               = LinesShapeMask,
-      RectangleHint           = AreaShapeMask | RectangleShapeMask,
-      EllipseHint             = AreaShapeMask | CurvedShapeMask,
-      ConvexPolygonHint       = AreaShapeMask,
-      PolygonHint             = AreaShapeMask | NonConvexShapeMask,
-      RoundedRectHint         = AreaShapeMask | CurvedShapeMask,
-      ArbitraryShapeHint      = AreaShapeMask | NonConvexShapeMask | CurvedShapeMask,
+        // Shape hints merged into basic shapes..
+        LinesHint               = LinesShapeMask,
+        RectangleHint           = AreaShapeMask | RectangleShapeMask,
+        EllipseHint             = AreaShapeMask | CurvedShapeMask,
+        ConvexPolygonHint       = AreaShapeMask,
+        PolygonHint             = AreaShapeMask | NonConvexShapeMask,
+        RoundedRectHint         = AreaShapeMask | CurvedShapeMask,
+        ArbitraryShapeHint      = AreaShapeMask | NonConvexShapeMask | CurvedShapeMask,
 
-      // Other hints
-      IsCachedHint            = 0x0100, // Set if the cache hint is set
-      ShouldUseCacheHint      = 0x0200, // Set if the path should be cached when possible..
-      ControlPointRect        = 0x0400, // Set if the control point rect has been calculated...
+        // Other hints
+        IsCachedHint            = 0x0100, // Set if the cache hint is set
+        ShouldUseCacheHint      = 0x0200, // Set if the path should be cached when possible..
+        ControlPointRect        = 0x0400, // Set if the control point rect has been calculated...
 
-      // Shape rendering specifiers
-      OddEvenFill             = 0x1000,
-      WindingFill             = 0x2000,
-      ImplicitClose           = 0x4000
-   };
+        // Shape rendering specifiers
+        OddEvenFill             = 0x1000,
+        WindingFill             = 0x2000,
+        ImplicitClose           = 0x4000
+    };
 
-   // ### add a struct XY for points
-   QVectorPath(const qreal *points, int count,
-      const QPainterPath::ElementType *elements = nullptr, uint hints = ArbitraryShapeHint)
-      : m_elements(elements), m_points(points), m_count(count), m_hints(hints)
-   {
-   }
+    // ### add a struct XY for points
+    QVectorPath( const qreal *points, int count,
+                 const QPainterPath::ElementType *elements = nullptr, uint hints = ArbitraryShapeHint )
+        : m_elements( elements ), m_points( points ), m_count( count ), m_hints( hints )
+    {
+    }
 
-   QVectorPath(const QVectorPath &) = delete;
-   QVectorPath &operator=(const QVectorPath &) = delete;
+    QVectorPath( const QVectorPath & ) = delete;
+    QVectorPath &operator=( const QVectorPath & ) = delete;
 
-   ~QVectorPath();
+    ~QVectorPath();
 
-   QRectF controlPointRect() const;
+    QRectF controlPointRect() const;
 
-   Hint shape() const {
-      return (Hint) (m_hints & ShapeMask);
-   }
+    Hint shape() const
+    {
+        return ( Hint ) ( m_hints & ShapeMask );
+    }
 
-   bool isConvex() const {
-      return (m_hints & NonConvexShapeMask) == 0;
-   }
+    bool isConvex() const
+    {
+        return ( m_hints & NonConvexShapeMask ) == 0;
+    }
 
-   bool isCurved() const {
-      return m_hints & CurvedShapeMask;
-   }
+    bool isCurved() const
+    {
+        return m_hints & CurvedShapeMask;
+    }
 
-   bool isCacheable() const {
-      return m_hints & ShouldUseCacheHint;
-   }
+    bool isCacheable() const
+    {
+        return m_hints & ShouldUseCacheHint;
+    }
 
-   bool hasImplicitClose() const {
-      return m_hints & ImplicitClose;
-   }
+    bool hasImplicitClose() const
+    {
+        return m_hints & ImplicitClose;
+    }
 
-   bool hasWindingFill() const {
-      return m_hints & WindingFill;
-   }
+    bool hasWindingFill() const
+    {
+        return m_hints & WindingFill;
+    }
 
-   void makeCacheable() const {
-      m_hints |= ShouldUseCacheHint;
-      m_cache = nullptr;
-   }
+    void makeCacheable() const
+    {
+        m_hints |= ShouldUseCacheHint;
+        m_cache = nullptr;
+    }
 
-   uint hints() const {
-      return m_hints;
-   }
+    uint hints() const
+    {
+        return m_hints;
+    }
 
-   const QPainterPath::ElementType *elements() const {
-      return m_elements;
-   }
+    const QPainterPath::ElementType *elements() const
+    {
+        return m_elements;
+    }
 
-   static uint polygonFlags(QPaintEngine::PolygonDrawMode mode) {
-      switch (mode) {
-         case QPaintEngine::ConvexMode:
-            return ConvexPolygonHint | ImplicitClose;
+    static uint polygonFlags( QPaintEngine::PolygonDrawMode mode )
+    {
+        switch ( mode )
+        {
+            case QPaintEngine::ConvexMode:
+                return ConvexPolygonHint | ImplicitClose;
 
-         case QPaintEngine::OddEvenMode:
-            return PolygonHint | OddEvenFill | ImplicitClose;
+            case QPaintEngine::OddEvenMode:
+                return PolygonHint | OddEvenFill | ImplicitClose;
 
-         case QPaintEngine::WindingMode:
+            case QPaintEngine::WindingMode:
 
-            return PolygonHint | WindingFill | ImplicitClose;
-         case QPaintEngine::PolylineMode:
-            return PolygonHint;
+                return PolygonHint | WindingFill | ImplicitClose;
 
-         default:
-            return 0;
-      }
-   }
+            case QPaintEngine::PolylineMode:
+                return PolygonHint;
 
-   const qreal *points() const {
-      return m_points;
-   }
+            default:
+                return 0;
+        }
+    }
 
-   bool isEmpty() const {
-      return m_points == nullptr;
-   }
+    const qreal *points() const
+    {
+        return m_points;
+    }
 
-   int elementCount() const {
-      return m_count;
-   }
+    bool isEmpty() const
+    {
+        return m_points == nullptr;
+    }
 
-   const QPainterPath convertToPainterPath() const;
+    int elementCount() const
+    {
+        return m_count;
+    }
 
-   struct CacheEntry {
-      QPaintEngineEx *engine;
-      void *data;
-      qvectorpath_cache_cleanup cleanup;
-      CacheEntry *next;
-   };
+    const QPainterPath convertToPainterPath() const;
 
-   CacheEntry *addCacheData(QPaintEngineEx *engine, void *data, qvectorpath_cache_cleanup cleanup) const;
+    struct CacheEntry
+    {
+        QPaintEngineEx *engine;
+        void *data;
+        qvectorpath_cache_cleanup cleanup;
+        CacheEntry *next;
+    };
 
-   CacheEntry *lookupCacheData(QPaintEngineEx *engine) const {
-      Q_ASSERT(m_hints & ShouldUseCacheHint);
-      CacheEntry *e = m_cache;
+    CacheEntry *addCacheData( QPaintEngineEx *engine, void *data, qvectorpath_cache_cleanup cleanup ) const;
 
-      while (e) {
-         if (e->engine == engine) {
-            return e;
-         }
-         e = e->next;
-      }
+    CacheEntry *lookupCacheData( QPaintEngineEx *engine ) const
+    {
+        Q_ASSERT( m_hints & ShouldUseCacheHint );
+        CacheEntry *e = m_cache;
 
-      return nullptr;
-   }
+        while ( e )
+        {
+            if ( e->engine == engine )
+            {
+                return e;
+            }
 
-   template <typename T>
-   static bool isRect(const T *pts, int elementCount) {
-      return (elementCount == 5 // 5-point polygon, check for closed rect
-            && pts[0] == pts[8] && pts[1] == pts[9] // last point == first point
-            && pts[0] == pts[6] && pts[2] == pts[4] // x values equal
-            && pts[1] == pts[3] && pts[5] == pts[7] // y values equal...
-            && pts[0] < pts[4] && pts[1] < pts[5]
-         ) ||
-         (elementCount == 4 // 4-point polygon, check for unclosed rect
-            && pts[0] == pts[6] && pts[2] == pts[4] // x values equal
-            && pts[1] == pts[3] && pts[5] == pts[7] // y values equal...
-            && pts[0] < pts[4] && pts[1] < pts[5]
-         );
-   }
+            e = e->next;
+        }
 
-   bool isRect() const {
-      const QPainterPath::ElementType *const types = elements();
+        return nullptr;
+    }
 
-      return (shape() == QVectorPath::RectangleHint)
-         || (isRect(points(), elementCount())
-            && (! types || (types[0] == QPainterPath::MoveToElement
-                  && types[1] == QPainterPath::LineToElement
-                  && types[2] == QPainterPath::LineToElement
-                  && types[3] == QPainterPath::LineToElement)));
-   }
+    template <typename T>
+    static bool isRect( const T *pts, int elementCount )
+    {
+        return ( elementCount == 5 // 5-point polygon, check for closed rect
+                 && pts[0] == pts[8] && pts[1] == pts[9] // last point == first point
+                 && pts[0] == pts[6] && pts[2] == pts[4] // x values equal
+                 && pts[1] == pts[3] && pts[5] == pts[7] // y values equal...
+                 && pts[0] < pts[4] && pts[1] < pts[5]
+               ) ||
+               ( elementCount == 4 // 4-point polygon, check for unclosed rect
+                 && pts[0] == pts[6] && pts[2] == pts[4] // x values equal
+                 && pts[1] == pts[3] && pts[5] == pts[7] // y values equal...
+                 && pts[0] < pts[4] && pts[1] < pts[5]
+               );
+    }
 
- private:
-   const QPainterPath::ElementType *m_elements;
-   const qreal *m_points;
-   const int m_count;
+    bool isRect() const
+    {
+        const QPainterPath::ElementType *const types = elements();
 
-   mutable uint m_hints;
-   mutable QRealRect m_cp_rect;
+        return ( shape() == QVectorPath::RectangleHint )
+               || ( isRect( points(), elementCount() )
+                    && ( ! types || ( types[0] == QPainterPath::MoveToElement
+                                      && types[1] == QPainterPath::LineToElement
+                                      && types[2] == QPainterPath::LineToElement
+                                      && types[3] == QPainterPath::LineToElement ) ) );
+    }
 
-   mutable CacheEntry *m_cache;
+private:
+    const QPainterPath::ElementType *m_elements;
+    const qreal *m_points;
+    const int m_count;
+
+    mutable uint m_hints;
+    mutable QRealRect m_cp_rect;
+
+    mutable CacheEntry *m_cache;
 };
 
-Q_GUI_EXPORT const QVectorPath &qtVectorPathForPath(const QPainterPath &path);
+Q_GUI_EXPORT const QVectorPath &qtVectorPathForPath( const QPainterPath &path );
 
 #endif

@@ -23,7 +23,7 @@
 
 QString qWebKitVersion()
 {
-    return QString("%1.%2").formatArg(WEBKIT_MAJOR_VERSION).formatArg(WEBKIT_MINOR_VERSION);
+    return QString( "%1.%2" ).formatArg( WEBKIT_MAJOR_VERSION ).formatArg( WEBKIT_MINOR_VERSION );
 }
 
 int qWebKitMajorVersion()

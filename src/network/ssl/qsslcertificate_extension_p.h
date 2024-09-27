@@ -28,9 +28,9 @@
 
 class QSslCertificateExtensionPrivate : public QSharedData
 {
- public:
+public:
     inline QSslCertificateExtensionPrivate()
-        : critical(false), supported(false)
+        : critical( false ), supported( false )
     { }
 
     QString oid;

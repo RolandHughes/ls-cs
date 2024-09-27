@@ -36,7 +36,7 @@
 #include <wtf/MathExtras.h>
 
 #if OS(WINCE) && !PLATFORM(QT)
-extern "C" time_t time(time_t* timer); // Provided by libce.
+extern "C" time_t time( time_t *timer ); // Provided by libce.
 #endif
 
 #if HAVE(SYS_TIME_H)
@@ -49,133 +49,157 @@ extern "C" time_t time(time_t* timer); // Provided by libce.
 
 using namespace WTF;
 
-namespace JSC {
-
-ASSERT_CLASS_FITS_IN_CELL(DateConstructor);
-
-static JSValue JSC_HOST_CALL dateParse(ExecState*, JSObject*, JSValue, const ArgList&);
-static JSValue JSC_HOST_CALL dateNow(ExecState*, JSObject*, JSValue, const ArgList&);
-static JSValue JSC_HOST_CALL dateUTC(ExecState*, JSObject*, JSValue, const ArgList&);
-
-DateConstructor::DateConstructor(ExecState* exec, NonNullPassRefPtr<Structure> structure, Structure* prototypeFunctionStructure, DatePrototype* datePrototype)
-    : InternalFunction(&exec->globalData(), structure, Identifier(exec, datePrototype->classInfo()->className))
+namespace JSC
 {
-      putDirectWithoutTransition(exec->propertyNames().prototype, datePrototype, DontEnum|DontDelete|ReadOnly);
 
-      putDirectFunctionWithoutTransition(exec, new (exec) NativeFunctionWrapper(exec, prototypeFunctionStructure, 1, exec->propertyNames().parse, dateParse), DontEnum);
-      putDirectFunctionWithoutTransition(exec, new (exec) NativeFunctionWrapper(exec, prototypeFunctionStructure, 7, exec->propertyNames().UTC, dateUTC), DontEnum);
-      putDirectFunctionWithoutTransition(exec, new (exec) NativeFunctionWrapper(exec, prototypeFunctionStructure, 0, exec->propertyNames().now, dateNow), DontEnum);
+ASSERT_CLASS_FITS_IN_CELL( DateConstructor );
 
-      putDirectWithoutTransition(exec->propertyNames().length, jsNumber(exec, 7), ReadOnly | DontEnum | DontDelete);
+static JSValue JSC_HOST_CALL dateParse( ExecState *, JSObject *, JSValue, const ArgList & );
+static JSValue JSC_HOST_CALL dateNow( ExecState *, JSObject *, JSValue, const ArgList & );
+static JSValue JSC_HOST_CALL dateUTC( ExecState *, JSObject *, JSValue, const ArgList & );
+
+DateConstructor::DateConstructor( ExecState *exec, NonNullPassRefPtr<Structure> structure, Structure *prototypeFunctionStructure,
+                                  DatePrototype *datePrototype )
+    : InternalFunction( &exec->globalData(), structure, Identifier( exec, datePrototype->classInfo()->className ) )
+{
+    putDirectWithoutTransition( exec->propertyNames().prototype, datePrototype, DontEnum|DontDelete|ReadOnly );
+
+    putDirectFunctionWithoutTransition( exec, new ( exec ) NativeFunctionWrapper( exec, prototypeFunctionStructure, 1,
+                                        exec->propertyNames().parse, dateParse ), DontEnum );
+    putDirectFunctionWithoutTransition( exec, new ( exec ) NativeFunctionWrapper( exec, prototypeFunctionStructure, 7,
+                                        exec->propertyNames().UTC, dateUTC ), DontEnum );
+    putDirectFunctionWithoutTransition( exec, new ( exec ) NativeFunctionWrapper( exec, prototypeFunctionStructure, 0,
+                                        exec->propertyNames().now, dateNow ), DontEnum );
+
+    putDirectWithoutTransition( exec->propertyNames().length, jsNumber( exec, 7 ), ReadOnly | DontEnum | DontDelete );
 }
 
 // ECMA 15.9.3
-JSObject* constructDate(ExecState* exec, const ArgList& args)
+JSObject *constructDate( ExecState *exec, const ArgList &args )
 {
     int numArgs = args.size();
 
     double value;
 
-    if (numArgs == 0) // new Date() ECMA 15.9.3.3
+    if ( numArgs == 0 ) // new Date() ECMA 15.9.3.3
+    {
         value = jsCurrentTime();
-    else if (numArgs == 1) {
-        if (args.at(0).inherits(&DateInstance::info))
-            value = asDateInstance(args.at(0))->internalNumber();
-        else {
-            JSValue primitive = args.at(0).toPrimitive(exec);
-            if (primitive.isString())
-                value = parseDate(exec, primitive.getString(exec));
-            else
-                value = primitive.toNumber(exec);
+    }
+    else if ( numArgs == 1 )
+    {
+        if ( args.at( 0 ).inherits( &DateInstance::info ) )
+        {
+            value = asDateInstance( args.at( 0 ) )->internalNumber();
         }
-    } else {
-        if (std::isnan(args.at(0).toNumber(exec))
-                || std::isnan(args.at(1).toNumber(exec))
-                || (numArgs >= 3 && std::isnan(args.at(2).toNumber(exec)))
-                || (numArgs >= 4 && std::isnan(args.at(3).toNumber(exec)))
-                || (numArgs >= 5 && std::isnan(args.at(4).toNumber(exec)))
-                || (numArgs >= 6 && std::isnan(args.at(5).toNumber(exec)))
-                || (numArgs >= 7 && std::isnan(args.at(6).toNumber(exec))))
+        else
+        {
+            JSValue primitive = args.at( 0 ).toPrimitive( exec );
+
+            if ( primitive.isString() )
+            {
+                value = parseDate( exec, primitive.getString( exec ) );
+            }
+            else
+            {
+                value = primitive.toNumber( exec );
+            }
+        }
+    }
+    else
+    {
+        if ( std::isnan( args.at( 0 ).toNumber( exec ) )
+                || std::isnan( args.at( 1 ).toNumber( exec ) )
+                || ( numArgs >= 3 && std::isnan( args.at( 2 ).toNumber( exec ) ) )
+                || ( numArgs >= 4 && std::isnan( args.at( 3 ).toNumber( exec ) ) )
+                || ( numArgs >= 5 && std::isnan( args.at( 4 ).toNumber( exec ) ) )
+                || ( numArgs >= 6 && std::isnan( args.at( 5 ).toNumber( exec ) ) )
+                || ( numArgs >= 7 && std::isnan( args.at( 6 ).toNumber( exec ) ) ) )
+        {
             value = NaN;
-        else {
+        }
+        else
+        {
             GregorianDateTime t;
-            int year = args.at(0).toInt32(exec);
-            t.year = (year >= 0 && year <= 99) ? year : year - 1900;
-            t.month = args.at(1).toInt32(exec);
-            t.monthDay = (numArgs >= 3) ? args.at(2).toInt32(exec) : 1;
-            t.hour = args.at(3).toInt32(exec);
-            t.minute = args.at(4).toInt32(exec);
-            t.second = args.at(5).toInt32(exec);
+            int year = args.at( 0 ).toInt32( exec );
+            t.year = ( year >= 0 && year <= 99 ) ? year : year - 1900;
+            t.month = args.at( 1 ).toInt32( exec );
+            t.monthDay = ( numArgs >= 3 ) ? args.at( 2 ).toInt32( exec ) : 1;
+            t.hour = args.at( 3 ).toInt32( exec );
+            t.minute = args.at( 4 ).toInt32( exec );
+            t.second = args.at( 5 ).toInt32( exec );
             t.isDST = -1;
-            double ms = (numArgs >= 7) ? args.at(6).toNumber(exec) : 0;
-            value = gregorianDateTimeToMS(exec, t, ms, false);
+            double ms = ( numArgs >= 7 ) ? args.at( 6 ).toNumber( exec ) : 0;
+            value = gregorianDateTimeToMS( exec, t, ms, false );
         }
     }
 
-    return new (exec) DateInstance(exec, value);
-}
-    
-static JSObject* constructWithDateConstructor(ExecState* exec, JSObject*, const ArgList& args)
-{
-    return constructDate(exec, args);
+    return new ( exec ) DateInstance( exec, value );
 }
 
-ConstructType DateConstructor::getConstructData(ConstructData& constructData)
+static JSObject *constructWithDateConstructor( ExecState *exec, JSObject *, const ArgList &args )
+{
+    return constructDate( exec, args );
+}
+
+ConstructType DateConstructor::getConstructData( ConstructData &constructData )
 {
     constructData.native.function = constructWithDateConstructor;
     return ConstructTypeHost;
 }
 
 // ECMA 15.9.2
-static JSValue JSC_HOST_CALL callDate(ExecState* exec, JSObject*, JSValue, const ArgList&)
+static JSValue JSC_HOST_CALL callDate( ExecState *exec, JSObject *, JSValue, const ArgList & )
 {
     GregorianDateTime ts;
-    msToGregorianDateTime(exec, currentTimeMS(), false, ts);
+    msToGregorianDateTime( exec, currentTimeMS(), false, ts );
     DateConversionBuffer date;
     DateConversionBuffer time;
-    formatDate(ts, date);
-    formatTime(ts, time);
-    return jsNontrivialString(exec, makeString(date, " ", time));
+    formatDate( ts, date );
+    formatTime( ts, time );
+    return jsNontrivialString( exec, makeString( date, " ", time ) );
 }
 
-CallType DateConstructor::getCallData(CallData& callData)
+CallType DateConstructor::getCallData( CallData &callData )
 {
     callData.native.function = callDate;
     return CallTypeHost;
 }
 
-static JSValue JSC_HOST_CALL dateParse(ExecState* exec, JSObject*, JSValue, const ArgList& args)
+static JSValue JSC_HOST_CALL dateParse( ExecState *exec, JSObject *, JSValue, const ArgList &args )
 {
-    return jsNumber(exec, parseDate(exec, args.at(0).toString(exec)));
+    return jsNumber( exec, parseDate( exec, args.at( 0 ).toString( exec ) ) );
 }
 
-static JSValue JSC_HOST_CALL dateNow(ExecState* exec, JSObject*, JSValue, const ArgList&)
+static JSValue JSC_HOST_CALL dateNow( ExecState *exec, JSObject *, JSValue, const ArgList & )
 {
-    return jsNumber(exec, jsCurrentTime());
+    return jsNumber( exec, jsCurrentTime() );
 }
 
-static JSValue JSC_HOST_CALL dateUTC(ExecState* exec, JSObject*, JSValue, const ArgList& args) 
+static JSValue JSC_HOST_CALL dateUTC( ExecState *exec, JSObject *, JSValue, const ArgList &args )
 {
     int n = args.size();
-    if (std::isnan(args.at(0).toNumber(exec))
-            || std::isnan(args.at(1).toNumber(exec))
-            || (n >= 3 && std::isnan(args.at(2).toNumber(exec)))
-            || (n >= 4 && std::isnan(args.at(3).toNumber(exec)))
-            || (n >= 5 && std::isnan(args.at(4).toNumber(exec)))
-            || (n >= 6 && std::isnan(args.at(5).toNumber(exec)))
-            || (n >= 7 && std::isnan(args.at(6).toNumber(exec))))
-        return jsNaN(exec);
+
+    if ( std::isnan( args.at( 0 ).toNumber( exec ) )
+            || std::isnan( args.at( 1 ).toNumber( exec ) )
+            || ( n >= 3 && std::isnan( args.at( 2 ).toNumber( exec ) ) )
+            || ( n >= 4 && std::isnan( args.at( 3 ).toNumber( exec ) ) )
+            || ( n >= 5 && std::isnan( args.at( 4 ).toNumber( exec ) ) )
+            || ( n >= 6 && std::isnan( args.at( 5 ).toNumber( exec ) ) )
+            || ( n >= 7 && std::isnan( args.at( 6 ).toNumber( exec ) ) ) )
+    {
+        return jsNaN( exec );
+    }
 
     GregorianDateTime t;
-    int year = args.at(0).toInt32(exec);
-    t.year = (year >= 0 && year <= 99) ? year : year - 1900;
-    t.month = args.at(1).toInt32(exec);
-    t.monthDay = (n >= 3) ? args.at(2).toInt32(exec) : 1;
-    t.hour = args.at(3).toInt32(exec);
-    t.minute = args.at(4).toInt32(exec);
-    t.second = args.at(5).toInt32(exec);
-    double ms = (n >= 7) ? args.at(6).toNumber(exec) : 0;
-    return jsNumber(exec, timeClip(gregorianDateTimeToMS(exec, t, ms, true)));
+    int year = args.at( 0 ).toInt32( exec );
+    t.year = ( year >= 0 && year <= 99 ) ? year : year - 1900;
+    t.month = args.at( 1 ).toInt32( exec );
+    t.monthDay = ( n >= 3 ) ? args.at( 2 ).toInt32( exec ) : 1;
+    t.hour = args.at( 3 ).toInt32( exec );
+    t.minute = args.at( 4 ).toInt32( exec );
+    t.second = args.at( 5 ).toInt32( exec );
+    double ms = ( n >= 7 ) ? args.at( 6 ).toNumber( exec ) : 0;
+    return jsNumber( exec, timeClip( gregorianDateTimeToMS( exec, t, ms, true ) ) );
 }
 
 } // namespace JSC

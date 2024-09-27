@@ -23,10 +23,8 @@
 
 #include "private/qdeclarativerefcount_p.h"
 
-QT_BEGIN_NAMESPACE
-
-QDeclarativeRefCount::QDeclarativeRefCount()
-   : refCount(1)
+QT_BEGIN_NAMESPACE QDeclarativeRefCount::QDeclarativeRefCount()
+    : refCount( 1 )
 {
 }
 
@@ -36,17 +34,19 @@ QDeclarativeRefCount::~QDeclarativeRefCount()
 
 void QDeclarativeRefCount::addref()
 {
-   Q_ASSERT(refCount > 0);
-   ++refCount;
+    Q_ASSERT( refCount > 0 );
+    ++refCount;
 }
 
 void QDeclarativeRefCount::release()
 {
-   Q_ASSERT(refCount > 0);
-   --refCount;
-   if (refCount == 0) {
-      delete this;
-   }
+    Q_ASSERT( refCount > 0 );
+    --refCount;
+
+    if ( refCount == 0 )
+    {
+        delete this;
+    }
 }
 
 QT_END_NAMESPACE

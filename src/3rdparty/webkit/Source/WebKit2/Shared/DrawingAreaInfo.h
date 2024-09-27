@@ -26,9 +26,11 @@
 #ifndef DrawingAreaType_h
 #define DrawingAreaType_h
 
-namespace WebKit {
+namespace WebKit
+{
 
-enum DrawingAreaType {
+enum DrawingAreaType
+{
     DrawingAreaTypeImpl,
     DrawingAreaTypeChunkedUpdate,
 #if ENABLE(TILED_BACKING_STORE)

@@ -32,40 +32,42 @@
 
 class QHistoryStatePrivate : public QAbstractStatePrivate
 {
-   Q_DECLARE_PUBLIC(QHistoryState)
+    Q_DECLARE_PUBLIC( QHistoryState )
 
- public:
-   QHistoryStatePrivate();
+public:
+    QHistoryStatePrivate();
 
-   static QHistoryStatePrivate *get(QHistoryState *q);
+    static QHistoryStatePrivate *get( QHistoryState *q );
 
-   QAbstractTransition *defaultTransition;
-   QHistoryState::HistoryType historyType;
-   QList<QAbstractState *> configuration;
+    QAbstractTransition *defaultTransition;
+    QHistoryState::HistoryType historyType;
+    QList<QAbstractState *> configuration;
 };
 
 class DefaultStateTransition : public QAbstractTransition
 {
-   CORE_CS_OBJECT(DefaultStateTransition)
+    CORE_CS_OBJECT( DefaultStateTransition )
 
- public:
-   DefaultStateTransition(QHistoryState *source, QAbstractState *target);
+public:
+    DefaultStateTransition( QHistoryState *source, QAbstractState *target );
 
- protected:
-   // It does not matter whether this transition matches any event or not. It is always associated
-   // with a QHistoryState, and as soon as the state-machine detects that it enters a history
-   // state, it will handle this transition as a special case. The history state itself is never
-   // entered either: either the stored configuration will be used, or the target(s) of this
-   // transition are used.
+protected:
+    // It does not matter whether this transition matches any event or not. It is always associated
+    // with a QHistoryState, and as soon as the state-machine detects that it enters a history
+    // state, it will handle this transition as a special case. The history state itself is never
+    // entered either: either the stored configuration will be used, or the target(s) of this
+    // transition are used.
 
-   bool eventTest(QEvent *event) override {
-      (void) event;
-      return false;
-   }
+    bool eventTest( QEvent *event ) override
+    {
+        ( void ) event;
+        return false;
+    }
 
-   void onTransition(QEvent *event) override {
-      (void) event;
-   }
+    void onTransition( QEvent *event ) override
+    {
+        ( void ) event;
+    }
 };
 
 #endif

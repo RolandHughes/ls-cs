@@ -40,15 +40,16 @@
 using namespace WebCore;
 using namespace std;
 
-namespace WebKit {
+namespace WebKit
+{
 
 UpdateChunk::UpdateChunk()
 {
 }
 
-UpdateChunk::UpdateChunk(const IntRect& rect)
-    : m_rect(rect)
-    , m_sharedMemory(SharedMemory::create(size()))
+UpdateChunk::UpdateChunk( const IntRect &rect )
+    : m_rect( rect )
+    , m_sharedMemory( SharedMemory::create( size() ) )
 {
 }
 
@@ -56,80 +57,110 @@ UpdateChunk::~UpdateChunk()
 {
 }
 
-void UpdateChunk::encode(CoreIPC::ArgumentEncoder* encoder) const
+void UpdateChunk::encode( CoreIPC::ArgumentEncoder *encoder ) const
 {
-    encoder->encode(m_rect);
-    if (!m_sharedMemory) {
-        encoder->encode(false);
+    encoder->encode( m_rect );
+
+    if ( !m_sharedMemory )
+    {
+        encoder->encode( false );
         return;
     }
 
     SharedMemory::Handle handle;
-    if (m_sharedMemory->createHandle(handle, SharedMemory::ReadOnly)) {
-        encoder->encode(true);
-        encoder->encode(handle);
-    } else
-        encoder->encode(false);
+
+    if ( m_sharedMemory->createHandle( handle, SharedMemory::ReadOnly ) )
+    {
+        encoder->encode( true );
+        encoder->encode( handle );
+    }
+    else
+    {
+        encoder->encode( false );
+    }
 
     m_sharedMemory = 0;
 }
 
-bool UpdateChunk::decode(CoreIPC::ArgumentDecoder* decoder, UpdateChunk& chunk)
+bool UpdateChunk::decode( CoreIPC::ArgumentDecoder *decoder, UpdateChunk &chunk )
 {
-    ASSERT_ARG(chunk, chunk.isEmpty());
+    ASSERT_ARG( chunk, chunk.isEmpty() );
 
     IntRect rect;
-    if (!decoder->decode(rect))
+
+    if ( !decoder->decode( rect ) )
+    {
         return false;
+    }
 
     chunk.m_rect = rect;
 
     bool hasSharedMemory;
-    if (!decoder->decode(hasSharedMemory))
-        return false;
 
-    if (!hasSharedMemory) {
+    if ( !decoder->decode( hasSharedMemory ) )
+    {
+        return false;
+    }
+
+    if ( !hasSharedMemory )
+    {
         chunk.m_sharedMemory = 0;
         return true;
     }
 
     SharedMemory::Handle handle;
-    if (!decoder->decode(handle))
-        return false;
 
-    chunk.m_sharedMemory = SharedMemory::create(handle, SharedMemory::ReadOnly);
+    if ( !decoder->decode( handle ) )
+    {
+        return false;
+    }
+
+    chunk.m_sharedMemory = SharedMemory::create( handle, SharedMemory::ReadOnly );
     return true;
 }
 
 size_t UpdateChunk::size() const
 {
     int bpp;
-    if (QPixmap::defaultDepth() == 16)
-        bpp = 2;
-    else
-        bpp = 4;
 
-    return ((m_rect.width() * bpp + 3) & ~0x3)
+    if ( QPixmap::defaultDepth() == 16 )
+    {
+        bpp = 2;
+    }
+    else
+    {
+        bpp = 4;
+    }
+
+    return ( ( m_rect.width() * bpp + 3 ) & ~0x3 )
            * m_rect.height();
 }
 
 QImage UpdateChunk::createImage() const
 {
-    ASSERT(m_sharedMemory);
-    if (!m_sharedMemory)
+    ASSERT( m_sharedMemory );
+
+    if ( !m_sharedMemory )
+    {
         return QImage();
+    }
 
     QImage::Format format;
     int bpp;
-    if (QPixmap::defaultDepth() == 16) {
+
+    if ( QPixmap::defaultDepth() == 16 )
+    {
         format = QImage::Format_RGB16;
         bpp = 2;
-    } else {
+    }
+    else
+    {
         format = QImage::Format_RGB32;
         bpp = 4;
     }
 
-    return QImage(reinterpret_cast<unsigned char*>(m_sharedMemory->data()), m_rect.width(), m_rect.height(), (m_rect.width() * bpp + 3) & ~0x3, format);
+    return QImage( reinterpret_cast<unsigned char *>( m_sharedMemory->data() ), m_rect.width(), m_rect.height(),
+                   ( m_rect.width() * bpp + 3 ) & ~0x3, format );
 }
 
 } // namespace WebKit

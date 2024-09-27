@@ -30,57 +30,62 @@
 
 class TranslateDialog : public QDialog
 {
-   CS_OBJECT(TranslateDialog)
+    CS_OBJECT( TranslateDialog )
 
- public:
-   enum {
-      Skip,
-      Translate,
-      TranslateAll
-   };
+public:
+    enum
+    {
+        Skip,
+        Translate,
+        TranslateAll
+    };
 
-   TranslateDialog(QWidget *parent = nullptr);
-   ~TranslateDialog();
+    TranslateDialog( QWidget *parent = nullptr );
+    ~TranslateDialog();
 
-   bool markFinished() const {
-      return m_ui->ckMarkFinished->isChecked();
-   }
+    bool markFinished() const
+    {
+        return m_ui->ckMarkFinished->isChecked();
+    }
 
-   Qt::CaseSensitivity caseSensitivity() const {
-      return m_ui->ckMatchCase->isChecked() ? Qt::CaseSensitive : Qt::CaseInsensitive;
-   }
+    Qt::CaseSensitivity caseSensitivity() const
+    {
+        return m_ui->ckMatchCase->isChecked() ? Qt::CaseSensitive : Qt::CaseInsensitive;
+    }
 
-   QString findText() const {
-      return m_ui->ledFindWhat->text();
-   }
+    QString findText() const
+    {
+        return m_ui->ledFindWhat->text();
+    }
 
-   QString replaceText() const {
-      return m_ui->ledTranslateTo->text();
-   }
+    QString replaceText() const
+    {
+        return m_ui->ledTranslateTo->text();
+    }
 
-   CS_SIGNAL_1(Public, void requestMatchUpdate(bool &hit))
-   CS_SIGNAL_2(requestMatchUpdate,hit)
+    CS_SIGNAL_1( Public, void requestMatchUpdate( bool &hit ) )
+    CS_SIGNAL_2( requestMatchUpdate,hit )
 
-   CS_SIGNAL_1(Public, void activated(int mode))
-   CS_SIGNAL_2(activated,mode)
+    CS_SIGNAL_1( Public, void activated( int mode ) )
+    CS_SIGNAL_2( activated,mode )
 
- protected:
-   void showEvent(QShowEvent *event) override;
+protected:
+    void showEvent( QShowEvent *event ) override;
 
- private:
-   Ui::TranslateDialog *m_ui;
+private:
+    Ui::TranslateDialog *m_ui;
 
-   CS_SLOT_1(Private, void emitFindNext())
-   CS_SLOT_2(emitFindNext)
+    CS_SLOT_1( Private, void emitFindNext() )
+    CS_SLOT_2( emitFindNext )
 
-   CS_SLOT_1(Private, void emitTranslateAndFindNext())
-   CS_SLOT_2(emitTranslateAndFindNext)
+    CS_SLOT_1( Private, void emitTranslateAndFindNext() )
+    CS_SLOT_2( emitTranslateAndFindNext )
 
-   CS_SLOT_1(Private, void emitTranslateAll())
-   CS_SLOT_2(emitTranslateAll)
+    CS_SLOT_1( Private, void emitTranslateAll() )
+    CS_SLOT_2( emitTranslateAll )
 
-   CS_SLOT_1(Private, void verifyText())
-   CS_SLOT_2(verifyText)
+    CS_SLOT_1( Private, void verifyText() )
+    CS_SLOT_2( verifyText )
 
 };
 

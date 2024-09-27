@@ -33,37 +33,37 @@ class QPainterPath;
 
 class Q_GUI_EXPORT QMouseEventTransition : public QEventTransition
 {
-   GUI_CS_OBJECT(QMouseEventTransition)
+    GUI_CS_OBJECT( QMouseEventTransition )
 
-   GUI_CS_PROPERTY_READ(button, button)
-   GUI_CS_PROPERTY_WRITE(button, setButton)
-   GUI_CS_PROPERTY_READ(modifierMask, modifierMask)
-   GUI_CS_PROPERTY_WRITE(modifierMask, setModifierMask)
+    GUI_CS_PROPERTY_READ( button, button )
+    GUI_CS_PROPERTY_WRITE( button, setButton )
+    GUI_CS_PROPERTY_READ( modifierMask, modifierMask )
+    GUI_CS_PROPERTY_WRITE( modifierMask, setModifierMask )
 
- public:
-   QMouseEventTransition(QState *sourceState = nullptr);
-   QMouseEventTransition(QObject *object, QEvent::Type type, Qt::MouseButton button, QState *sourceState = nullptr);
+public:
+    QMouseEventTransition( QState *sourceState = nullptr );
+    QMouseEventTransition( QObject *object, QEvent::Type type, Qt::MouseButton button, QState *sourceState = nullptr );
 
-   QMouseEventTransition(const QMouseEventTransition &) = delete;
-   QMouseEventTransition &operator=(const QMouseEventTransition &) = delete;
+    QMouseEventTransition( const QMouseEventTransition & ) = delete;
+    QMouseEventTransition &operator=( const QMouseEventTransition & ) = delete;
 
-   ~QMouseEventTransition();
+    ~QMouseEventTransition();
 
-   Qt::MouseButton button() const;
-   void setButton(Qt::MouseButton button);
+    Qt::MouseButton button() const;
+    void setButton( Qt::MouseButton button );
 
-   Qt::KeyboardModifiers modifierMask() const;
-   void setModifierMask(Qt::KeyboardModifiers modifiers);
+    Qt::KeyboardModifiers modifierMask() const;
+    void setModifierMask( Qt::KeyboardModifiers modifiers );
 
-   QPainterPath hitTestPath() const;
-   void setHitTestPath(const QPainterPath &path);
+    QPainterPath hitTestPath() const;
+    void setHitTestPath( const QPainterPath &path );
 
- protected:
-   void onTransition(QEvent *event) override;
-   bool eventTest(QEvent *event) override;
+protected:
+    void onTransition( QEvent *event ) override;
+    bool eventTest( QEvent *event ) override;
 
- private:
-   Q_DECLARE_PRIVATE(QMouseEventTransition)
+private:
+    Q_DECLARE_PRIVATE( QMouseEventTransition )
 };
 
 #endif //QT_NO_STATEMACHINE

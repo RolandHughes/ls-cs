@@ -27,15 +27,15 @@
 #include <math.h>
 #include <qmath.h>
 
-static constexpr const qreal Q_PI   = qreal(M_PI);
-static constexpr const qreal Q_2PI  = qreal(M_PI * 2);
-static constexpr const qreal Q_PI2  = qreal(M_PI / 2);
+static constexpr const qreal Q_PI   = qreal( M_PI );
+static constexpr const qreal Q_2PI  = qreal( M_PI * 2 );
+static constexpr const qreal Q_PI2  = qreal( M_PI / 2 );
 
 static constexpr const qreal Q_MM_PER_INCH = 25.4;
 
-inline int qIntSqrtInt(int v)
+inline int qIntSqrtInt( int v )
 {
-   return static_cast<int>(qSqrt(static_cast<qreal>(v)));
+    return static_cast<int>( qSqrt( static_cast<qreal>( v ) ) );
 }
 
 #endif

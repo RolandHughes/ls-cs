@@ -30,9 +30,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSSVGTRefElement);
+ASSERT_CLASS_FITS_IN_CELL( JSSVGTRefElement );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -43,9 +44,9 @@ ASSERT_CLASS_FITS_IN_CELL(JSSVGTRefElement);
 
 static const HashTableValue JSSVGTRefElementTableValues[3] =
 {
-    { "href", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGTRefElementHref), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGTRefElementConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "href", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGTRefElementHref ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGTRefElementConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -59,43 +60,50 @@ static JSC_CONST_HASHTABLE HashTable JSSVGTRefElementTable = { 4, 3, JSSVGTRefEl
 
 static const HashTableValue JSSVGTRefElementConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSSVGTRefElementConstructorTable = { 1, 0, JSSVGTRefElementConstructorTableValues, 0 };
-class JSSVGTRefElementConstructor : public DOMConstructorObject {
+class JSSVGTRefElementConstructor : public DOMConstructorObject
+{
 public:
-    JSSVGTRefElementConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSSVGTRefElementConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSSVGTRefElementConstructor::s_info = { "SVGTRefElementConstructor", &DOMConstructorObject::s_info, &JSSVGTRefElementConstructorTable, 0 };
 
-JSSVGTRefElementConstructor::JSSVGTRefElementConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSSVGTRefElementConstructor::JSSVGTRefElementConstructor( ExecState *exec, Structure *structure, JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSSVGTRefElementPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSSVGTRefElementPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSSVGTRefElementConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGTRefElementConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSVGTRefElementConstructor, JSDOMWrapper>(exec, &JSSVGTRefElementConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSSVGTRefElementConstructor, JSDOMWrapper>( exec, &JSSVGTRefElementConstructorTable, this, propertyName,
+            slot );
 }
 
-bool JSSVGTRefElementConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGTRefElementConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSVGTRefElementConstructor, JSDOMWrapper>(exec, &JSSVGTRefElementConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSVGTRefElementConstructor, JSDOMWrapper>( exec, &JSSVGTRefElementConstructorTable, this,
+            propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -107,61 +115,63 @@ bool JSSVGTRefElementConstructor::getOwnPropertyDescriptor(ExecState* exec, cons
 
 static const HashTableValue JSSVGTRefElementPrototypeTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSSVGTRefElementPrototypeTable = { 1, 0, JSSVGTRefElementPrototypeTableValues, 0 };
 const ClassInfo JSSVGTRefElementPrototype::s_info = { "SVGTRefElementPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSSVGTRefElementPrototypeTable, 0 };
 
-JSObject* JSSVGTRefElementPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSVGTRefElementPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSSVGTRefElement>(exec, globalObject);
+    return getDOMPrototype<JSSVGTRefElement>( exec, globalObject );
 }
 
 const ClassInfo JSSVGTRefElement::s_info = { "SVGTRefElement", &JSSVGTextPositioningElement::s_info, &JSSVGTRefElementTable, 0 };
 
-JSSVGTRefElement::JSSVGTRefElement(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<SVGTRefElement> impl)
-    : JSSVGTextPositioningElement(structure, globalObject, impl)
+JSSVGTRefElement::JSSVGTRefElement( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<SVGTRefElement> impl )
+    : JSSVGTextPositioningElement( structure, globalObject, impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSSVGTRefElement::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSVGTRefElement::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSSVGTRefElementPrototype(exec->globalData(), globalObject, JSSVGTRefElementPrototype::createStructure(exec->globalData(), JSSVGTextPositioningElementPrototype::self(exec, globalObject)));
+    return new ( exec ) JSSVGTRefElementPrototype( exec->globalData(), globalObject,
+            JSSVGTRefElementPrototype::createStructure( exec->globalData(), JSSVGTextPositioningElementPrototype::self( exec,
+                    globalObject ) ) );
 }
 
-bool JSSVGTRefElement::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGTRefElement::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSVGTRefElement, Base>(exec, &JSSVGTRefElementTable, this, propertyName, slot);
+    return getStaticValueSlot<JSSVGTRefElement, Base>( exec, &JSSVGTRefElementTable, this, propertyName, slot );
 }
 
-bool JSSVGTRefElement::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGTRefElement::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSVGTRefElement, Base>(exec, &JSSVGTRefElementTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSVGTRefElement, Base>( exec, &JSSVGTRefElementTable, this, propertyName, descriptor );
 }
 
-JSValue jsSVGTRefElementHref(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGTRefElementHref( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGTRefElement* castedThis = static_cast<JSSVGTRefElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGTRefElement* imp = static_cast<SVGTRefElement*>(castedThis->impl());
+    JSSVGTRefElement *castedThis = static_cast<JSSVGTRefElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGTRefElement *imp = static_cast<SVGTRefElement *>( castedThis->impl() );
     RefPtr<SVGAnimatedString> obj = imp->hrefAnimated();
-    JSValue result =  toJS(exec, castedThis->globalObject(), obj.get());
+    JSValue result =  toJS( exec, castedThis->globalObject(), obj.get() );
     return result;
 }
 
 
-JSValue jsSVGTRefElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGTRefElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGTRefElement* domObject = static_cast<JSSVGTRefElement*>(asObject(slotBase));
-    return JSSVGTRefElement::getConstructor(exec, domObject->globalObject());
+    JSSVGTRefElement *domObject = static_cast<JSSVGTRefElement *>( asObject( slotBase ) );
+    return JSSVGTRefElement::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSSVGTRefElement::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSSVGTRefElement::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSSVGTRefElementConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSSVGTRefElementConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
 

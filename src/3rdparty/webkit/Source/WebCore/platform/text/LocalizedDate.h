@@ -29,7 +29,8 @@
 #include "DateComponents.h"
 #include <wtf/text/WTFString.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 // Parses a string representation of a date string localized
 // for the browser's current locale for a particular date type.
@@ -37,12 +38,12 @@ namespace WebCore {
 // support localized dates, this function returns NaN. If the
 // input string is valid this function returns the number
 // of milliseconds since 1970-01-01 00:00:00.000 UTC.
-double parseLocalizedDate(const String&, DateComponents::Type);
+double parseLocalizedDate( const String &, DateComponents::Type );
 
 // Serializes the specified date into a formatted date string
 // to display to the user. If an implementation doesn't support
 // localized dates the function should return an empty string.
-String formatLocalizedDate(const DateComponents& dateComponents);
+String formatLocalizedDate( const DateComponents &dateComponents );
 
 } // namespace WebCore
 

@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -28,20 +28,26 @@
 
 #include <QFile>
 
-namespace WebCore {
-
-PassRefPtr<SharedBuffer> SharedBuffer::createWithContentsOfFile(const String& fileName)
+namespace WebCore
 {
-    if (fileName.isEmpty())
-        return 0;
 
-    QFile file(fileName);
-    if (!file.exists() || !file.open(QFile::ReadOnly))
+PassRefPtr<SharedBuffer> SharedBuffer::createWithContentsOfFile( const String &fileName )
+{
+    if ( fileName.isEmpty() )
+    {
         return 0;
+    }
 
-    Vector<char> buffer(file.size());
-    file.read(buffer.data(), buffer.size());
-    return SharedBuffer::adoptVector(buffer);
+    QFile file( fileName );
+
+    if ( !file.exists() || !file.open( QFile::ReadOnly ) )
+    {
+        return 0;
+    }
+
+    Vector<char> buffer( file.size() );
+    file.read( buffer.data(), buffer.size() );
+    return SharedBuffer::adoptVector( buffer );
 }
 
 } // namespace WebCore

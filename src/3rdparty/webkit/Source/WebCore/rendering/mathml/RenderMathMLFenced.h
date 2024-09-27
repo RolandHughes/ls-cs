@@ -30,14 +30,16 @@
 
 #include "RenderMathMLRow.h"
 
-namespace WebCore {
-    
-class RenderMathMLFenced : public RenderMathMLRow {
+namespace WebCore
+{
+
+class RenderMathMLFenced : public RenderMathMLRow
+{
 public:
-    RenderMathMLFenced(Node *fraction);
-    virtual void addChild(RenderObject* child, RenderObject* beforeChild = 0);
+    RenderMathMLFenced( Node *fraction );
+    virtual void addChild( RenderObject *child, RenderObject *beforeChild = 0 );
     virtual void updateFromElement();
-    
+
 private:
     void makeFences();
     RefPtr<RenderStyle> makeOperatorStyle();
@@ -45,7 +47,7 @@ private:
     UChar m_close;
     RefPtr<StringImpl> m_separators;
 };
-    
+
 }
 
 #endif // ENABLE(MATHML)

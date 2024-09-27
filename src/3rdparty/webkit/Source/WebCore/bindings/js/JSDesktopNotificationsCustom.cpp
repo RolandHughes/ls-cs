@@ -43,28 +43,35 @@
 
 using namespace JSC;
 
-namespace WebCore {
-
-JSValue JSNotificationCenter::requestPermission(ExecState* exec)
+namespace WebCore
 {
-    ScriptExecutionContext* context = impl()->scriptExecutionContext();
+
+JSValue JSNotificationCenter::requestPermission( ExecState *exec )
+{
+    ScriptExecutionContext *context = impl()->scriptExecutionContext();
 
     // Make sure that script execution context is valid.
-    if (!context) {
-        setDOMException(exec, INVALID_STATE_ERR);
+    if ( !context )
+    {
+        setDOMException( exec, INVALID_STATE_ERR );
         return jsUndefined();
     }
 
     // Permission request is only valid from page context.
-    if (context->isWorkerContext())
-        return throwSyntaxError(exec);
+    if ( context->isWorkerContext() )
+    {
+        return throwSyntaxError( exec );
+    }
 
-    if (!exec->argument(0).isObject())
-        return throwTypeError(exec);
+    if ( !exec->argument( 0 ).isObject() )
+    {
+        return throwTypeError( exec );
+    }
 
-    PassRefPtr<JSCustomVoidCallback> callback = JSCustomVoidCallback::create(exec->argument(0).getObject(), toJSDOMGlobalObject(static_cast<Document*>(context), exec));
+    PassRefPtr<JSCustomVoidCallback> callback = JSCustomVoidCallback::create( exec->argument( 0 ).getObject(),
+            toJSDOMGlobalObject( static_cast<Document *>( context ), exec ) );
 
-    impl()->requestPermission(callback);
+    impl()->requestPermission( callback );
     return jsUndefined();
 }
 

@@ -33,38 +33,52 @@
 
 #include "AudioDSPKernelProcessor.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 // AudioDSPKernel does the processing for one channel of an AudioDSPKernelProcessor.
 
-class AudioDSPKernel {
+class AudioDSPKernel
+{
 public:
-    AudioDSPKernel(AudioDSPKernelProcessor* kernelProcessor)
-        : m_kernelProcessor(kernelProcessor)
-        , m_sampleRate(kernelProcessor->sampleRate())
+    AudioDSPKernel( AudioDSPKernelProcessor *kernelProcessor )
+        : m_kernelProcessor( kernelProcessor )
+        , m_sampleRate( kernelProcessor->sampleRate() )
     {
     }
 
-    AudioDSPKernel(double sampleRate)
-        : m_kernelProcessor(0)
-        , m_sampleRate(sampleRate)
+    AudioDSPKernel( double sampleRate )
+        : m_kernelProcessor( 0 )
+        , m_sampleRate( sampleRate )
     {
     }
 
     virtual ~AudioDSPKernel() { };
 
     // Subclasses must override process() to do the processing and reset() to reset DSP state.
-    virtual void process(const float* source, float* destination, size_t framesToProcess) = 0;
+    virtual void process( const float *source, float *destination, size_t framesToProcess ) = 0;
     virtual void reset() = 0;
 
-    double sampleRate() const { return m_sampleRate; }
-    double nyquist() const { return 0.5 * sampleRate(); }
+    double sampleRate() const
+    {
+        return m_sampleRate;
+    }
+    double nyquist() const
+    {
+        return 0.5 * sampleRate();
+    }
 
-    AudioDSPKernelProcessor* processor() { return m_kernelProcessor; }
-    const AudioDSPKernelProcessor* processor() const { return m_kernelProcessor; }
+    AudioDSPKernelProcessor *processor()
+    {
+        return m_kernelProcessor;
+    }
+    const AudioDSPKernelProcessor *processor() const
+    {
+        return m_kernelProcessor;
+    }
 
 protected:
-    AudioDSPKernelProcessor* m_kernelProcessor;
+    AudioDSPKernelProcessor *m_kernelProcessor;
     double m_sampleRate;
 };
 

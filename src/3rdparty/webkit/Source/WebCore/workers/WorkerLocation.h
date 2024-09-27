@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
 
@@ -35,35 +35,40 @@
 #include <wtf/RefCounted.h>
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class WorkerLocation : public RefCounted<WorkerLocation> {
-    public:
-        static PassRefPtr<WorkerLocation> create(const KURL& url)
-        {
-            return adoptRef(new WorkerLocation(url));
-        }
+class WorkerLocation : public RefCounted<WorkerLocation>
+{
+public:
+    static PassRefPtr<WorkerLocation> create( const KURL &url )
+    {
+        return adoptRef( new WorkerLocation( url ) );
+    }
 
-        const KURL& url() const { return m_url; }
+    const KURL &url() const
+    {
+        return m_url;
+    }
 
-        String href() const;
+    String href() const;
 
-        // URI decomposition attributes
-        String protocol() const;
-        String host() const;
-        String hostname() const;
-        String port() const;
-        String pathname() const;
-        String search() const;
-        String hash() const;
+    // URI decomposition attributes
+    String protocol() const;
+    String host() const;
+    String hostname() const;
+    String port() const;
+    String pathname() const;
+    String search() const;
+    String hash() const;
 
-        String toString() const;
+    String toString() const;
 
-    private:
-        WorkerLocation(const KURL& url) : m_url(url) { }
+private:
+    WorkerLocation( const KURL &url ) : m_url( url ) { }
 
-        KURL m_url;
-    };
+    KURL m_url;
+};
 
 } // namespace WebCore
 

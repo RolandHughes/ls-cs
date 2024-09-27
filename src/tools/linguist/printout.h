@@ -36,64 +36,67 @@ class QPrinter;
 
 class PrintOut
 {
- public:
-   enum Rule { NoRule, ThinRule, ThickRule };
-   enum Style { Normal, Strong, Emphasis };
+public:
+    enum Rule { NoRule, ThinRule, ThickRule };
+    enum Style { Normal, Strong, Emphasis };
 
-   PrintOut(QPrinter *printer);
-   ~PrintOut();
+    PrintOut( QPrinter *printer );
+    ~PrintOut();
 
-   void setRule(Rule rule);
-   void setGuide(const QString &guide);
-   void vskip();
-   void flushLine(bool mayBreak = false);
-   void addBox(int percent, const QString &text = QString(),
-               Style style = Normal,
-               Qt::Alignment halign = Qt::AlignLeft);
+    void setRule( Rule rule );
+    void setGuide( const QString &guide );
+    void vskip();
+    void flushLine( bool mayBreak = false );
+    void addBox( int percent, const QString &text = QString(),
+                 Style style = Normal,
+                 Qt::Alignment halign = Qt::AlignLeft );
 
-   int pageNum() const {
-      return page;
-   }
+    int pageNum() const
+    {
+        return page;
+    }
 
-   struct Box {
-      QRect rect;
-      QString text;
-      QFont font;
-      QTextOption options;
+    struct Box
+    {
+        QRect rect;
+        QString text;
+        QFont font;
+        QTextOption options;
 
-      Box( const QRect &r, const QString &t, const QFont &f, const QTextOption &o )
-         : rect( r ), text( t ), font( f ), options( o ) { }
-   };
+        Box( const QRect &r, const QString &t, const QFont &f, const QTextOption &o )
+            : rect( r ), text( t ), font( f ), options( o ) { }
+    };
 
- private:
-   void breakPage(bool init = false);
-   void drawRule( Rule rule );
+private:
+    void breakPage( bool init = false );
+    void drawRule( Rule rule );
 
-   struct Paragraph {
-      QRect rect;
-      QList<Box> boxes;
+    struct Paragraph
+    {
+        QRect rect;
+        QList<Box> boxes;
 
-      Paragraph() { }
-      Paragraph( QPoint p ) : rect( p, QSize(0, 0) ) { }
-   };
+        Paragraph() { }
+        Paragraph( QPoint p ) : rect( p, QSize( 0, 0 ) ) { }
+    };
 
-   QPrinter *pr;
-   QPainter p;
-   QFont f8;
-   QFont f10;
-   QFontMetrics *fmetrics;
-   Rule nextRule;
-   Paragraph cp;
-   int page;
-   bool firstParagraph;
-   QString g;
-   QDateTime dateTime;
+    QPrinter *pr;
+    QPainter p;
+    QFont f8;
+    QFont f10;
+    QFontMetrics *fmetrics;
+    Rule nextRule;
+    Paragraph cp;
+    int page;
+    bool firstParagraph;
+    QString g;
+    QDateTime dateTime;
 
-   int hmargin;
-   int vmargin;
-   int voffset;
-   int hsize;
-   int vsize;
+    int hmargin;
+    int vmargin;
+    int voffset;
+    int hsize;
+    int vsize;
 };
 
 #endif

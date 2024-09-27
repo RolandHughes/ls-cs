@@ -38,69 +38,70 @@ class QAbstractItemDelegatePrivate;
 
 class Q_GUI_EXPORT QAbstractItemDelegate : public QObject
 {
-   GUI_CS_OBJECT(QAbstractItemDelegate)
-   Q_DECLARE_PRIVATE(QAbstractItemDelegate)
+    GUI_CS_OBJECT( QAbstractItemDelegate )
+    Q_DECLARE_PRIVATE( QAbstractItemDelegate )
 
- public:
+public:
 
-   enum EndEditHint {
-      NoHint,
-      EditNextItem,
-      EditPreviousItem,
-      SubmitModelCache,
-      RevertModelCache
-   };
+    enum EndEditHint
+    {
+        NoHint,
+        EditNextItem,
+        EditPreviousItem,
+        SubmitModelCache,
+        RevertModelCache
+    };
 
-   explicit QAbstractItemDelegate(QObject *parent = nullptr);
+    explicit QAbstractItemDelegate( QObject *parent = nullptr );
 
-   QAbstractItemDelegate(const QAbstractItemDelegate &) = delete;
-   QAbstractItemDelegate &operator=(const QAbstractItemDelegate &) = delete;
+    QAbstractItemDelegate( const QAbstractItemDelegate & ) = delete;
+    QAbstractItemDelegate &operator=( const QAbstractItemDelegate & ) = delete;
 
-   virtual ~QAbstractItemDelegate();
+    virtual ~QAbstractItemDelegate();
 
-   // painting
-   virtual void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const = 0;
+    // painting
+    virtual void paint( QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index ) const = 0;
 
-   virtual QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const = 0;
+    virtual QSize sizeHint( const QStyleOptionViewItem &option, const QModelIndex &index ) const = 0;
 
-   // editing
-   virtual QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
+    // editing
+    virtual QWidget *createEditor( QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index ) const;
 
-   virtual void destroyEditor(QWidget *editor, const QModelIndex &index) const;
-   virtual void setEditorData(QWidget *editor, const QModelIndex &index) const;
+    virtual void destroyEditor( QWidget *editor, const QModelIndex &index ) const;
+    virtual void setEditorData( QWidget *editor, const QModelIndex &index ) const;
 
-   virtual void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const;
+    virtual void setModelData( QWidget *editor, QAbstractItemModel *model, const QModelIndex &index ) const;
 
-   virtual void updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const;
+    virtual void updateEditorGeometry( QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index ) const;
 
-   // for non-widget editors
-   virtual bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option,
-      const QModelIndex &index);
+    // for non-widget editors
+    virtual bool editorEvent( QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option,
+                              const QModelIndex &index );
 
-   static QString elidedText(const QFontMetrics &fontMetrics, int width, Qt::TextElideMode mode, const QString &text);
+    static QString elidedText( const QFontMetrics &fontMetrics, int width, Qt::TextElideMode mode, const QString &text );
 
-   //
-   virtual bool helpEvent(QHelpEvent *event, QAbstractItemView *view, const QStyleOptionViewItem &option,
-      const QModelIndex &index);
+    //
+    virtual bool helpEvent( QHelpEvent *event, QAbstractItemView *view, const QStyleOptionViewItem &option,
+                            const QModelIndex &index );
 
-   virtual QVector<int> paintingRoles() const;
+    virtual QVector<int> paintingRoles() const;
 
-   GUI_CS_SIGNAL_1(Public, void commitData(QWidget *editor))
-   GUI_CS_SIGNAL_2(commitData, editor)
+    GUI_CS_SIGNAL_1( Public, void commitData( QWidget *editor ) )
+    GUI_CS_SIGNAL_2( commitData, editor )
 
-   GUI_CS_SIGNAL_1(Public, void closeEditor(QWidget *editor, QAbstractItemDelegate::EndEditHint hint = NoHint))
-   GUI_CS_SIGNAL_2(closeEditor, editor, hint)
+    GUI_CS_SIGNAL_1( Public, void closeEditor( QWidget *editor, QAbstractItemDelegate::EndEditHint hint = NoHint ) )
+    GUI_CS_SIGNAL_2( closeEditor, editor, hint )
 
-   GUI_CS_SIGNAL_1(Public, void sizeHintChanged(const QModelIndex &index))
-   GUI_CS_SIGNAL_2(sizeHintChanged, index)
+    GUI_CS_SIGNAL_1( Public, void sizeHintChanged( const QModelIndex &index ) )
+    GUI_CS_SIGNAL_2( sizeHintChanged, index )
 
- protected:
-   QAbstractItemDelegate(QAbstractItemDelegatePrivate &, QObject *parent = nullptr);
-   QScopedPointer<QAbstractItemDelegatePrivate> d_ptr;
+protected:
+    QAbstractItemDelegate( QAbstractItemDelegatePrivate &, QObject *parent = nullptr );
+    QScopedPointer<QAbstractItemDelegatePrivate> d_ptr;
 
- private:
-   GUI_CS_SLOT_1(Private, void _q_commitDataAndCloseEditor(QWidget *))
-   GUI_CS_SLOT_2(_q_commitDataAndCloseEditor)
+private:
+    GUI_CS_SLOT_1( Private, void _q_commitDataAndCloseEditor( QWidget * ) )
+    GUI_CS_SLOT_2( _q_commitDataAndCloseEditor )
 };
 
 #endif // QT_NO_ITEMVIEWS

@@ -27,13 +27,15 @@
 #include <qshareddata.h>
 #include <qstring.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 class NamePool;
 class XsdSchemaParser;
 class XsdValidatingInstanceReader;
 }
 
-namespace QPatternistSDK {
+namespace QPatternistSDK
+{
 class Global;
 }
 
@@ -42,24 +44,24 @@ class QXmlName;
 
 class Q_XMLPATTERNS_EXPORT QXmlNamePool
 {
- public:
-   QXmlNamePool();
-   QXmlNamePool(const QXmlNamePool &other);
-   ~QXmlNamePool();
-   QXmlNamePool &operator=(const QXmlNamePool &other);
+public:
+    QXmlNamePool();
+    QXmlNamePool( const QXmlNamePool &other );
+    ~QXmlNamePool();
+    QXmlNamePool &operator=( const QXmlNamePool &other );
 
- private:
-   QXmlNamePool(QPatternist::NamePool *namePool);
-   friend class QXmlQueryPrivate;
-   friend class QXmlQuery;
-   friend class QXmlSchemaPrivate;
-   friend class QXmlSchemaValidatorPrivate;
-   friend class QXmlSerializerPrivate;
-   friend class QXmlName;
-   friend class QPatternist::XsdSchemaParser;
-   friend class QPatternist::XsdValidatingInstanceReader;
-   friend class QPatternistSDK::Global;
-   QExplicitlySharedDataPointer<QPatternist::NamePool> d;
+private:
+    QXmlNamePool( QPatternist::NamePool *namePool );
+    friend class QXmlQueryPrivate;
+    friend class QXmlQuery;
+    friend class QXmlSchemaPrivate;
+    friend class QXmlSchemaValidatorPrivate;
+    friend class QXmlSerializerPrivate;
+    friend class QXmlName;
+    friend class QPatternist::XsdSchemaParser;
+    friend class QPatternist::XsdValidatingInstanceReader;
+    friend class QPatternistSDK::Global;
+    QExplicitlySharedDataPointer<QPatternist::NamePool> d;
 };
 
 #endif

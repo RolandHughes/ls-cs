@@ -23,8 +23,8 @@
 
 #include <qvideowindowcontrol.h>
 
-QVideoWindowControl::QVideoWindowControl(QObject *parent)
-   : QMediaControl(parent)
+QVideoWindowControl::QVideoWindowControl( QObject *parent )
+    : QMediaControl( parent )
 {
 }
 

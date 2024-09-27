@@ -36,21 +36,21 @@ class QSvgIOHandlerPrivate;
 
 class QSvgIOHandler : public QImageIOHandler
 {
- public:
+public:
     QSvgIOHandler();
     ~QSvgIOHandler();
 
     bool canRead() override;
     QString name() const override;
-    bool read(QImage *image) override;
+    bool read( QImage *image ) override;
 
-    static bool canRead(QIODevice *device);
+    static bool canRead( QIODevice *device );
 
-    QVariant option(ImageOption option) override;
-    void setOption(ImageOption option, const QVariant & value) override;
-    bool supportsOption(ImageOption option) const override;
+    QVariant option( ImageOption option ) override;
+    void setOption( ImageOption option, const QVariant &value ) override;
+    bool supportsOption( ImageOption option ) const override;
 
- private:
+private:
     QSvgIOHandlerPrivate *d;
 };
 

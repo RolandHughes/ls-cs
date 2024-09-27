@@ -30,11 +30,13 @@
 
 #define UNICODE_DATA_VERSION QChar::Unicode_15_1
 
-namespace QUnicodeTables {
+namespace QUnicodeTables
+{
 
 extern bool cs_isTurkishLocale;
 
-struct NormalizationCorrection {
+struct NormalizationCorrection
+{
     char32_t ucs4;
     char32_t old_mapping;
     int      version;
@@ -45,7 +47,8 @@ extern const NormalizationCorrection uc_normalization_corrections[];
 static constexpr const int NumNormalizationCorrections        = 6;
 static constexpr const int NormalizationCorrectionsVersionMax = 7;
 
-struct Properties {
+struct Properties
+{
     ushort category            : 8;       /* 5 used */
     ushort direction           : 8;       /* 5 used */
     ushort combiningClass      : 8;
@@ -61,111 +64,124 @@ struct Properties {
     ushort script              : 8;
 };
 
-Q_CORE_EXPORT const Properties * properties(uint ucs4);
-Q_CORE_EXPORT const Properties * properties(ushort ucs2);
+Q_CORE_EXPORT const Properties *properties( uint ucs4 );
+Q_CORE_EXPORT const Properties *properties( ushort ucs2 );
 
 extern const unsigned short uc_decomposition_trie[];
 extern const char32_t       uc_decomposition_map[];
 extern const unsigned short uc_ligature_trie[];
 extern const char32_t       uc_ligature_map[];
 
-char32_t uc_caseFold(char32_t value);
-char32_t uc_lowerCase(char32_t value);
-char32_t uc_titleCase(char32_t value);
-char32_t uc_upperCase(char32_t value);
+char32_t uc_caseFold( char32_t value );
+char32_t uc_lowerCase( char32_t value );
+char32_t uc_titleCase( char32_t value );
+char32_t uc_upperCase( char32_t value );
 
-const char32_t *uc_caseFoldSpecial(char32_t value);
-const char32_t *uc_lowerCaseSpecial(char32_t value);
-const char32_t *uc_titleCaseSpecial(char32_t value);
-const char32_t *uc_upperCaseSpecial(char32_t value);
+const char32_t *uc_caseFoldSpecial( char32_t value );
+const char32_t *uc_lowerCaseSpecial( char32_t value );
+const char32_t *uc_titleCaseSpecial( char32_t value );
+const char32_t *uc_upperCaseSpecial( char32_t value );
 
 struct CaseFoldTraits
-   {
-      static inline char32_t caseValue(char32_t ch)
-      {
-         if (ch >= QChar::SpecialCharacter::LastValidCodePoint) {
+{
+    static inline char32_t caseValue( char32_t ch )
+    {
+        if ( ch >= QChar::SpecialCharacter::LastValidCodePoint )
+        {
             return ch;
 
-         } else {
-            return QUnicodeTables::uc_caseFold(ch);
-         }
-      }
+        }
+        else
+        {
+            return QUnicodeTables::uc_caseFold( ch );
+        }
+    }
 
-      static inline const char32_t *caseSpecial(char32_t ch)
-      {
-         return QUnicodeTables::uc_caseFoldSpecial(ch);
-      }
-   };
+    static inline const char32_t *caseSpecial( char32_t ch )
+    {
+        return QUnicodeTables::uc_caseFoldSpecial( ch );
+    }
+};
 
-   struct LowerCaseTraits
-   {
-      static inline char32_t caseValue(char32_t ch)
-      {
-         if (ch >= QChar::SpecialCharacter::LastValidCodePoint) {
+struct LowerCaseTraits
+{
+    static inline char32_t caseValue( char32_t ch )
+    {
+        if ( ch >= QChar::SpecialCharacter::LastValidCodePoint )
+        {
             return ch;
 
-         } else {
-            return QUnicodeTables::uc_lowerCase(ch);
-         }
-      }
+        }
+        else
+        {
+            return QUnicodeTables::uc_lowerCase( ch );
+        }
+    }
 
-      static inline const char32_t *caseSpecial(char32_t ch)
-      {
-         return QUnicodeTables::uc_lowerCaseSpecial(ch);
-      }
-   };
+    static inline const char32_t *caseSpecial( char32_t ch )
+    {
+        return QUnicodeTables::uc_lowerCaseSpecial( ch );
+    }
+};
 
-   struct TitleCaseTraits
-   {
-      static inline char32_t caseValue(char32_t ch)
-      {
-         if (ch >= QChar::SpecialCharacter::LastValidCodePoint) {
+struct TitleCaseTraits
+{
+    static inline char32_t caseValue( char32_t ch )
+    {
+        if ( ch >= QChar::SpecialCharacter::LastValidCodePoint )
+        {
             return ch;
 
-         } else {
-            return QUnicodeTables::uc_titleCase(ch);
-         }
-      }
+        }
+        else
+        {
+            return QUnicodeTables::uc_titleCase( ch );
+        }
+    }
 
-      static inline const char32_t *caseSpecial(char32_t ch)
-      {
-         return QUnicodeTables::uc_titleCaseSpecial(ch);
-      }
-   };
+    static inline const char32_t *caseSpecial( char32_t ch )
+    {
+        return QUnicodeTables::uc_titleCaseSpecial( ch );
+    }
+};
 
-   struct UpperCaseTraits
-   {
-      static inline char32_t caseValue(char32_t ch)
-      {
-         if (ch >= QChar::SpecialCharacter::LastValidCodePoint) {
+struct UpperCaseTraits
+{
+    static inline char32_t caseValue( char32_t ch )
+    {
+        if ( ch >= QChar::SpecialCharacter::LastValidCodePoint )
+        {
             return ch;
 
-         } else {
-            return QUnicodeTables::uc_upperCase(ch);
-         }
-      }
+        }
+        else
+        {
+            return QUnicodeTables::uc_upperCase( ch );
+        }
+    }
 
-      static inline const char32_t *caseSpecial(char32_t ch)
-      {
-         return QUnicodeTables::uc_upperCaseSpecial(ch);
-      }
-   };
+    static inline const char32_t *caseSpecial( char32_t ch )
+    {
+        return QUnicodeTables::uc_upperCaseSpecial( ch );
+    }
+};
 
-   #define GET_DECOMPOSITION_INDEX(ucs4) \
+#define GET_DECOMPOSITION_INDEX(ucs4) \
        (ucs4 < 0x3400 \
         ? (QUnicodeTables::uc_decomposition_trie[QUnicodeTables::uc_decomposition_trie[ucs4 >> 4] + (ucs4 & 0xf)]) \
         : (ucs4 < 0x30000 \
         ? QUnicodeTables::uc_decomposition_trie[QUnicodeTables::uc_decomposition_trie[((ucs4 - 0x3400) >> 8) + 0x340] + \
         (ucs4 & 0xff)] : 0xffff))
 
-   #define GET_LIGATURE_INDEX(ucs4) \
+#define GET_LIGATURE_INDEX(ucs4) \
        (ucs4 < 0x3100 \
         ? (QUnicodeTables::uc_ligature_trie[QUnicodeTables::uc_ligature_trie[ucs4 >> 5] + (ucs4 & 0x1f)]) \
         : (ucs4 < 0x12000 \
         ? QUnicodeTables::uc_ligature_trie[QUnicodeTables::uc_ligature_trie[((ucs4 - 0x3100) >> 8) + 0x188] + \
         (ucs4 & 0xff)] : 0xffff))
 
-enum GraphemeBreakClass {
+enum GraphemeBreakClass
+{
     GraphemeBreak_Any,
     GraphemeBreak_CR,
     GraphemeBreak_LF,
@@ -187,7 +203,8 @@ enum GraphemeBreakClass {
     NumGraphemeBreakClasses,
 };
 
-enum WordBreakClass {
+enum WordBreakClass
+{
     WordBreak_Any,
     WordBreak_CR,
     WordBreak_LF,
@@ -214,7 +231,8 @@ enum WordBreakClass {
     NumWordBreakClasses,
 };
 
-enum SentenceBreakClass {
+enum SentenceBreakClass
+{
     SentenceBreak_Any,
     SentenceBreak_CR,
     SentenceBreak_LF,
@@ -235,7 +253,8 @@ enum SentenceBreakClass {
 
 // see http://www.unicode.org/reports/tr14/tr14-30.html
 // XX, AI, and AK classes are  mapped to AL
-enum LineBreakClass {
+enum LineBreakClass
+{
     LineBreak_OP, LineBreak_CL, LineBreak_CP, LineBreak_QU, LineBreak_GL,
     LineBreak_NS, LineBreak_EX, LineBreak_SY, LineBreak_IS, LineBreak_PR,
     LineBreak_PO, LineBreak_NU, LineBreak_AL, LineBreak_HL, LineBreak_ID,
@@ -248,44 +267,45 @@ enum LineBreakClass {
     NumLineBreakClasses
 };
 
-Q_CORE_EXPORT QUnicodeTables::GraphemeBreakClass graphemeBreakClass(uint ucs4);
-Q_CORE_EXPORT QUnicodeTables::WordBreakClass wordBreakClass(uint ucs4);
-Q_CORE_EXPORT QUnicodeTables::SentenceBreakClass sentenceBreakClass(uint ucs4);
-Q_CORE_EXPORT QUnicodeTables::LineBreakClass lineBreakClass(uint ucs4);
+Q_CORE_EXPORT QUnicodeTables::GraphemeBreakClass graphemeBreakClass( uint ucs4 );
+Q_CORE_EXPORT QUnicodeTables::WordBreakClass wordBreakClass( uint ucs4 );
+Q_CORE_EXPORT QUnicodeTables::SentenceBreakClass sentenceBreakClass( uint ucs4 );
+Q_CORE_EXPORT QUnicodeTables::LineBreakClass lineBreakClass( uint ucs4 );
 
-inline GraphemeBreakClass graphemeBreakClass(QChar ch)
+inline GraphemeBreakClass graphemeBreakClass( QChar ch )
 {
-   return graphemeBreakClass(ch.unicode());
+    return graphemeBreakClass( ch.unicode() );
 }
 
-inline WordBreakClass wordBreakClass(QChar ch)
+inline WordBreakClass wordBreakClass( QChar ch )
 {
-   return wordBreakClass(ch.unicode());
+    return wordBreakClass( ch.unicode() );
 }
 
-inline SentenceBreakClass sentenceBreakClass(QChar ch)
+inline SentenceBreakClass sentenceBreakClass( QChar ch )
 {
-   return sentenceBreakClass(ch.unicode());
+    return sentenceBreakClass( ch.unicode() );
 }
 
-inline LineBreakClass lineBreakClass(QChar ch)
+inline LineBreakClass lineBreakClass( QChar ch )
 {
-   return lineBreakClass(ch.unicode());
+    return lineBreakClass( ch.unicode() );
 }
 
-}  // namespace 
+}  // namespace
 
 // constants for Hangul (de)composition, see UAX #15
-enum Hangul_Constants {
-   Hangul_SBase  = 0xac00,
-   Hangul_LBase  = 0x1100,
-   Hangul_VBase  = 0x1161,
-   Hangul_TBase  = 0x11a7,
-   Hangul_LCount = 19,
-   Hangul_VCount = 21,
-   Hangul_TCount = 28,
-   Hangul_NCount = Hangul_VCount * Hangul_TCount,
-   Hangul_SCount = Hangul_LCount * Hangul_NCount
+enum Hangul_Constants
+{
+    Hangul_SBase  = 0xac00,
+    Hangul_LBase  = 0x1100,
+    Hangul_VBase  = 0x1161,
+    Hangul_TBase  = 0x11a7,
+    Hangul_LCount = 19,
+    Hangul_VCount = 21,
+    Hangul_TCount = 28,
+    Hangul_NCount = Hangul_VCount * Hangul_TCount,
+    Hangul_SCount = Hangul_LCount * Hangul_NCount
 };
 
 #endif

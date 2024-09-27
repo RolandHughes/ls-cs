@@ -31,13 +31,13 @@ QT_BEGIN_NAMESPACE
 class QDeclarativeProperty;
 class Q_DECLARATIVE_EXPORT QDeclarativePropertyValueInterceptor
 {
- public:
-   QDeclarativePropertyValueInterceptor();
-   virtual ~QDeclarativePropertyValueInterceptor();
-   virtual void setTarget(const QDeclarativeProperty &property) = 0;
-   virtual void write(const QVariant &value) = 0;
+public:
+    QDeclarativePropertyValueInterceptor();
+    virtual ~QDeclarativePropertyValueInterceptor();
+    virtual void setTarget( const QDeclarativeProperty &property ) = 0;
+    virtual void write( const QVariant &value ) = 0;
 };
-CS_DECLARE_INTERFACE(QDeclarativePropertyValueInterceptor, "com.copperspice.qml.QDeclarativePropertyValueInterceptor")
+CS_DECLARE_INTERFACE( QDeclarativePropertyValueInterceptor, "com.copperspice.qml.QDeclarativePropertyValueInterceptor" )
 
 QT_END_NAMESPACE
 

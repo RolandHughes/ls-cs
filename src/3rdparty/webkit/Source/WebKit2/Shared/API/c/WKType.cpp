@@ -31,18 +31,18 @@
 
 using namespace WebKit;
 
-WKTypeID WKGetTypeID(WKTypeRef typeRef)
+WKTypeID WKGetTypeID( WKTypeRef typeRef )
 {
-    return toAPI(static_cast<APIObject*>(const_cast<void*>(typeRef))->type());
+    return toAPI( static_cast<APIObject *>( const_cast<void *>( typeRef ) )->type() );
 }
 
-WKTypeRef WKRetain(WKTypeRef typeRef)
+WKTypeRef WKRetain( WKTypeRef typeRef )
 {
-    static_cast<APIObject*>(const_cast<void*>(typeRef))->ref();
+    static_cast<APIObject *>( const_cast<void *>( typeRef ) )->ref();
     return typeRef;
 }
 
-void WKRelease(WKTypeRef typeRef)
+void WKRelease( WKTypeRef typeRef )
 {
-    static_cast<APIObject*>(const_cast<void*>(typeRef))->deref();
+    static_cast<APIObject *>( const_cast<void *>( typeRef ) )->deref();
 }

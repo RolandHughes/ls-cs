@@ -35,23 +35,26 @@ OBJC_CLASS NSPrintInfo;
 class NSPrintInfo;
 #endif
 
-namespace CoreIPC {
-    class ArgumentDecoder;
-    class ArgumentEncoder;
+namespace CoreIPC
+{
+class ArgumentDecoder;
+class ArgumentEncoder;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
-struct PrintInfo {
+struct PrintInfo
+{
     PrintInfo();
-    explicit PrintInfo(NSPrintInfo *);
+    explicit PrintInfo( NSPrintInfo * );
 
     float pageSetupScaleFactor;
     float availablePaperWidth;
     float availablePaperHeight;
 
-    void encode(CoreIPC::ArgumentEncoder*) const;
-    static bool decode(CoreIPC::ArgumentDecoder*, PrintInfo&);
+    void encode( CoreIPC::ArgumentEncoder * ) const;
+    static bool decode( CoreIPC::ArgumentDecoder *, PrintInfo & );
 };
 
 }

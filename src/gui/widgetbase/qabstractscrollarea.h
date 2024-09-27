@@ -34,113 +34,114 @@ class QAbstractScrollAreaPrivate;
 
 class Q_GUI_EXPORT QAbstractScrollArea : public QFrame
 {
-   GUI_CS_OBJECT(QAbstractScrollArea)
+    GUI_CS_OBJECT( QAbstractScrollArea )
 
-   GUI_CS_ENUM(SizeAdjustPolicy)
+    GUI_CS_ENUM( SizeAdjustPolicy )
 
-   GUI_CS_PROPERTY_READ(verticalScrollBarPolicy,  verticalScrollBarPolicy)
-   GUI_CS_PROPERTY_WRITE(verticalScrollBarPolicy, setVerticalScrollBarPolicy)
+    GUI_CS_PROPERTY_READ( verticalScrollBarPolicy,  verticalScrollBarPolicy )
+    GUI_CS_PROPERTY_WRITE( verticalScrollBarPolicy, setVerticalScrollBarPolicy )
 
-   GUI_CS_PROPERTY_READ(horizontalScrollBarPolicy,  horizontalScrollBarPolicy)
-   GUI_CS_PROPERTY_WRITE(horizontalScrollBarPolicy, setHorizontalScrollBarPolicy)
+    GUI_CS_PROPERTY_READ( horizontalScrollBarPolicy,  horizontalScrollBarPolicy )
+    GUI_CS_PROPERTY_WRITE( horizontalScrollBarPolicy, setHorizontalScrollBarPolicy )
 
-   GUI_CS_PROPERTY_READ(sizeAdjustPolicy,  sizeAdjustPolicy)
-   GUI_CS_PROPERTY_WRITE(sizeAdjustPolicy, setSizeAdjustPolicy)
+    GUI_CS_PROPERTY_READ( sizeAdjustPolicy,  sizeAdjustPolicy )
+    GUI_CS_PROPERTY_WRITE( sizeAdjustPolicy, setSizeAdjustPolicy )
 
- public:
-   GUI_CS_REGISTER_ENUM(
-      enum SizeAdjustPolicy {
-         AdjustIgnored,
-         AdjustToContentsOnFirstShow,
-         AdjustToContents
-      };
-   )
+public:
+    GUI_CS_REGISTER_ENUM(
+        enum SizeAdjustPolicy
+    {
+        AdjustIgnored,
+        AdjustToContentsOnFirstShow,
+        AdjustToContents
+    };
+    )
 
-   explicit QAbstractScrollArea(QWidget *parent = nullptr);
+    explicit QAbstractScrollArea( QWidget *parent = nullptr );
 
-   QAbstractScrollArea(const QAbstractScrollArea &) = delete;
-   QAbstractScrollArea &operator=(const QAbstractScrollArea &) = delete;
+    QAbstractScrollArea( const QAbstractScrollArea & ) = delete;
+    QAbstractScrollArea &operator=( const QAbstractScrollArea & ) = delete;
 
-   ~QAbstractScrollArea();
+    ~QAbstractScrollArea();
 
-   Qt::ScrollBarPolicy verticalScrollBarPolicy() const;
-   void setVerticalScrollBarPolicy(Qt::ScrollBarPolicy policy);
-   QScrollBar *verticalScrollBar() const;
-   void setVerticalScrollBar(QScrollBar *scrollBar);
+    Qt::ScrollBarPolicy verticalScrollBarPolicy() const;
+    void setVerticalScrollBarPolicy( Qt::ScrollBarPolicy policy );
+    QScrollBar *verticalScrollBar() const;
+    void setVerticalScrollBar( QScrollBar *scrollBar );
 
-   Qt::ScrollBarPolicy horizontalScrollBarPolicy() const;
-   void setHorizontalScrollBarPolicy(Qt::ScrollBarPolicy policy);
-   QScrollBar *horizontalScrollBar() const;
-   void setHorizontalScrollBar(QScrollBar *scrollBar);
+    Qt::ScrollBarPolicy horizontalScrollBarPolicy() const;
+    void setHorizontalScrollBarPolicy( Qt::ScrollBarPolicy policy );
+    QScrollBar *horizontalScrollBar() const;
+    void setHorizontalScrollBar( QScrollBar *scrollBar );
 
-   QWidget *cornerWidget() const;
-   void setCornerWidget(QWidget *widget);
+    QWidget *cornerWidget() const;
+    void setCornerWidget( QWidget *widget );
 
-   void addScrollBarWidget(QWidget *widget, Qt::Alignment alignment);
-   QWidgetList scrollBarWidgets(Qt::Alignment alignment);
+    void addScrollBarWidget( QWidget *widget, Qt::Alignment alignment );
+    QWidgetList scrollBarWidgets( Qt::Alignment alignment );
 
-   QWidget *viewport() const;
-   void setViewport(QWidget *widget);
-   QSize maximumViewportSize() const;
+    QWidget *viewport() const;
+    void setViewport( QWidget *widget );
+    QSize maximumViewportSize() const;
 
-   QSize minimumSizeHint() const override;
-   QSize sizeHint() const override;
+    QSize minimumSizeHint() const override;
+    QSize sizeHint() const override;
 
-   virtual void setupViewport(QWidget *viewport);
-   SizeAdjustPolicy sizeAdjustPolicy() const;
-   void setSizeAdjustPolicy(SizeAdjustPolicy policy);
+    virtual void setupViewport( QWidget *viewport );
+    SizeAdjustPolicy sizeAdjustPolicy() const;
+    void setSizeAdjustPolicy( SizeAdjustPolicy policy );
 
- protected:
-   QAbstractScrollArea(QAbstractScrollAreaPrivate &dd, QWidget *parent = nullptr);
-   void setViewportMargins(int left, int top, int right, int bottom);
-   void setViewportMargins(const QMargins &margins);
-   QMargins viewportMargins() const;
+protected:
+    QAbstractScrollArea( QAbstractScrollAreaPrivate &dd, QWidget *parent = nullptr );
+    void setViewportMargins( int left, int top, int right, int bottom );
+    void setViewportMargins( const QMargins &margins );
+    QMargins viewportMargins() const;
 
-   bool eventFilter(QObject *object, QEvent *event) override;
-   bool event(QEvent *event) override;
-   virtual bool viewportEvent(QEvent *event);
+    bool eventFilter( QObject *object, QEvent *event ) override;
+    bool event( QEvent *event ) override;
+    virtual bool viewportEvent( QEvent *event );
 
-   void resizeEvent(QResizeEvent *event) override;
-   void paintEvent(QPaintEvent *event) override;
-   void mousePressEvent(QMouseEvent *event) override;
-   void mouseReleaseEvent(QMouseEvent *event) override;
-   void mouseDoubleClickEvent(QMouseEvent *event) override;
-   void mouseMoveEvent(QMouseEvent *event) override;
+    void resizeEvent( QResizeEvent *event ) override;
+    void paintEvent( QPaintEvent *event ) override;
+    void mousePressEvent( QMouseEvent *event ) override;
+    void mouseReleaseEvent( QMouseEvent *event ) override;
+    void mouseDoubleClickEvent( QMouseEvent *event ) override;
+    void mouseMoveEvent( QMouseEvent *event ) override;
 
 #ifndef QT_NO_WHEELEVENT
-   void wheelEvent(QWheelEvent *event) override;
+    void wheelEvent( QWheelEvent *event ) override;
 #endif
 
 #ifndef QT_NO_CONTEXTMENU
-   void contextMenuEvent(QContextMenuEvent *event) override;
+    void contextMenuEvent( QContextMenuEvent *event ) override;
 #endif
 
 #ifndef QT_NO_DRAGANDDROP
-   void dragEnterEvent(QDragEnterEvent *event) override;
-   void dragMoveEvent(QDragMoveEvent *event) override;
-   void dragLeaveEvent(QDragLeaveEvent *event) override;
-   void dropEvent(QDropEvent *event) override;
+    void dragEnterEvent( QDragEnterEvent *event ) override;
+    void dragMoveEvent( QDragMoveEvent *event ) override;
+    void dragLeaveEvent( QDragLeaveEvent *event ) override;
+    void dropEvent( QDropEvent *event ) override;
 #endif
 
-   void keyPressEvent(QKeyEvent *event) override;
+    void keyPressEvent( QKeyEvent *event ) override;
 
-   virtual void scrollContentsBy(int dx, int dy);
-   virtual QSize viewportSizeHint() const;
+    virtual void scrollContentsBy( int dx, int dy );
+    virtual QSize viewportSizeHint() const;
 
- private:
-   Q_DECLARE_PRIVATE(QAbstractScrollArea)
+private:
+    Q_DECLARE_PRIVATE( QAbstractScrollArea )
 
-   GUI_CS_SLOT_1(Private, void _q_hslide(int x))
-   GUI_CS_SLOT_2(_q_hslide)
+    GUI_CS_SLOT_1( Private, void _q_hslide( int x ) )
+    GUI_CS_SLOT_2( _q_hslide )
 
-   GUI_CS_SLOT_1(Private, void _q_vslide(int y))
-   GUI_CS_SLOT_2(_q_vslide)
+    GUI_CS_SLOT_1( Private, void _q_vslide( int y ) )
+    GUI_CS_SLOT_2( _q_vslide )
 
-   GUI_CS_SLOT_1(Private, void _q_showOrHideScrollBars())
-   GUI_CS_SLOT_2(_q_showOrHideScrollBars)
+    GUI_CS_SLOT_1( Private, void _q_showOrHideScrollBars() )
+    GUI_CS_SLOT_2( _q_showOrHideScrollBars )
 
-   friend class QStyleSheetStyle;
-   friend class QWidgetPrivate;
+    friend class QStyleSheetStyle;
+    friend class QWidgetPrivate;
 };
 
 #endif // QT_NO_SCROLLAREA

@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef DeleteButtonController_h
@@ -28,7 +28,8 @@
 
 #include "DeleteButton.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class DeleteButton;
 class Frame;
@@ -36,34 +37,45 @@ class HTMLElement;
 class RenderObject;
 class VisibleSelection;
 
-class DeleteButtonController {
-    WTF_MAKE_NONCOPYABLE(DeleteButtonController); WTF_MAKE_FAST_ALLOCATED;
+class DeleteButtonController
+{
+    WTF_MAKE_NONCOPYABLE( DeleteButtonController );
+    WTF_MAKE_FAST_ALLOCATED;
 public:
-    DeleteButtonController(Frame*);
+    DeleteButtonController( Frame * );
 
-    static const char* const containerElementIdentifier;
+    static const char *const containerElementIdentifier;
 
-    HTMLElement* target() const { return m_target.get(); }
-    HTMLElement* containerElement() const { return m_containerElement.get(); }
+    HTMLElement *target() const
+    {
+        return m_target.get();
+    }
+    HTMLElement *containerElement() const
+    {
+        return m_containerElement.get();
+    }
 
-    void respondToChangedSelection(const VisibleSelection& oldSelection);
+    void respondToChangedSelection( const VisibleSelection &oldSelection );
 
-    void show(HTMLElement*);
+    void show( HTMLElement * );
     void hide();
 
-    bool enabled() const { return (m_disableStack == 0); }
+    bool enabled() const
+    {
+        return ( m_disableStack == 0 );
+    }
     void enable();
     void disable();
 
     void deleteTarget();
 
 private:
-    static const char* const buttonElementIdentifier;
-    static const char* const outlineElementIdentifier;
+    static const char *const buttonElementIdentifier;
+    static const char *const outlineElementIdentifier;
 
     void createDeletionUI();
 
-    Frame* m_frame;
+    Frame *m_frame;
     RefPtr<HTMLElement> m_target;
     RefPtr<HTMLElement> m_containerElement;
     RefPtr<HTMLElement> m_outlineElement;

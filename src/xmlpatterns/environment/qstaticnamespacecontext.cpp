@@ -25,14 +25,14 @@
 
 using namespace QPatternist;
 
-StaticNamespaceContext::StaticNamespaceContext(const NamespaceResolver::Ptr &resolver,
-      const StaticContext::Ptr &context) : DelegatingStaticContext(context)
-   , m_namespaceBindings(resolver)
+StaticNamespaceContext::StaticNamespaceContext( const NamespaceResolver::Ptr &resolver,
+        const StaticContext::Ptr &context ) : DelegatingStaticContext( context )
+    , m_namespaceBindings( resolver )
 {
-   Q_ASSERT(m_namespaceBindings);
+    Q_ASSERT( m_namespaceBindings );
 }
 
 NamespaceResolver::Ptr StaticNamespaceContext::namespaceBindings() const
 {
-   return m_namespaceBindings;
+    return m_namespaceBindings;
 }

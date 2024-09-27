@@ -26,25 +26,34 @@
 #include "config.h"
 #include "DOMStringList.h"
 
-namespace WebCore {
-
-String DOMStringList::item(unsigned index) const
+namespace WebCore
 {
-    if (index >= m_strings.size())
+
+String DOMStringList::item( unsigned index ) const
+{
+    if ( index >= m_strings.size() )
+    {
         return String();
+    }
+
     return m_strings[index];
 }
 
-bool DOMStringList::contains(const String& string) const
+bool DOMStringList::contains( const String &string ) const
 {
     // FIXME: Currently, all consumers of DOMStringList store fairly small lists and thus an O(n)
     //        algorithm is OK.  But this may need to be optimized if larger amounts of data are
     //        stored in m_strings.
     size_t count = m_strings.size();
-    for (size_t i = 0; i < count; ++i) {
-        if (m_strings[i] == string)
+
+    for ( size_t i = 0; i < count; ++i )
+    {
+        if ( m_strings[i] == string )
+        {
             return true;
+        }
     }
+
     return false;
 }
 

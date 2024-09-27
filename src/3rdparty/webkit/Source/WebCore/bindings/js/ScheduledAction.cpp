@@ -46,111 +46,156 @@
 
 using namespace JSC;
 
-namespace WebCore {
-
-PassOwnPtr<ScheduledAction> ScheduledAction::create(ExecState* exec, DOMWrapperWorld* isolatedWorld, ContentSecurityPolicy* policy)
+namespace WebCore
 {
-    JSValue v = exec->argument(0);
+
+PassOwnPtr<ScheduledAction> ScheduledAction::create( ExecState *exec, DOMWrapperWorld *isolatedWorld,
+        ContentSecurityPolicy *policy )
+{
+    JSValue v = exec->argument( 0 );
     CallData callData;
-    if (getCallData(v, callData) == CallTypeNone) {
-        if (policy && !policy->allowEval())
+
+    if ( getCallData( v, callData ) == CallTypeNone )
+    {
+        if ( policy && !policy->allowEval() )
+        {
             return nullptr;
-        UString string = v.toString(exec);
-        if (exec->hadException())
+        }
+
+        UString string = v.toString( exec );
+
+        if ( exec->hadException() )
+        {
             return nullptr;
-        return adoptPtr(new ScheduledAction(ustringToString(string), isolatedWorld));
+        }
+
+        return adoptPtr( new ScheduledAction( ustringToString( string ), isolatedWorld ) );
     }
 
-    return adoptPtr(new ScheduledAction(exec, v, isolatedWorld));
+    return adoptPtr( new ScheduledAction( exec, v, isolatedWorld ) );
 }
 
-ScheduledAction::ScheduledAction(ExecState* exec, JSValue function, DOMWrapperWorld* isolatedWorld)
-    : m_function(exec->globalData(), function)
-    , m_isolatedWorld(isolatedWorld)
+ScheduledAction::ScheduledAction( ExecState *exec, JSValue function, DOMWrapperWorld *isolatedWorld )
+    : m_function( exec->globalData(), function )
+    , m_isolatedWorld( isolatedWorld )
 {
     // setTimeout(function, interval, arg0, arg1...).
     // Start at 2 to skip function and interval.
-    for (size_t i = 2; i < exec->argumentCount(); ++i)
-        m_args.append(Strong<JSC::Unknown>(exec->globalData(), exec->argument(i)));
+    for ( size_t i = 2; i < exec->argumentCount(); ++i )
+    {
+        m_args.append( Strong<JSC::Unknown>( exec->globalData(), exec->argument( i ) ) );
+    }
 }
 
-void ScheduledAction::execute(ScriptExecutionContext* context)
+void ScheduledAction::execute( ScriptExecutionContext *context )
 {
-    if (context->isDocument())
-        execute(static_cast<Document*>(context));
-#if ENABLE(WORKERS)
-    else {
-        ASSERT(context->isWorkerContext());
-        execute(static_cast<WorkerContext*>(context));
+    if ( context->isDocument() )
+    {
+        execute( static_cast<Document *>( context ) );
     }
+
+#if ENABLE(WORKERS)
+    else
+    {
+        ASSERT( context->isWorkerContext() );
+        execute( static_cast<WorkerContext *>( context ) );
+    }
+
 #else
-    ASSERT(context->isDocument());
+    ASSERT( context->isDocument() );
 #endif
 }
 
-void ScheduledAction::executeFunctionInContext(JSGlobalObject* globalObject, JSValue thisValue, ScriptExecutionContext* context)
+void ScheduledAction::executeFunctionInContext( JSGlobalObject *globalObject, JSValue thisValue, ScriptExecutionContext *context )
 {
-    ASSERT(m_function);
-    JSLock lock(SilenceAssertionsOnly);
+    ASSERT( m_function );
+    JSLock lock( SilenceAssertionsOnly );
 
     CallData callData;
-    CallType callType = getCallData(m_function.get(), callData);
-    if (callType == CallTypeNone)
-        return;
+    CallType callType = getCallData( m_function.get(), callData );
 
-    ExecState* exec = globalObject->globalExec();
+    if ( callType == CallTypeNone )
+    {
+        return;
+    }
+
+    ExecState *exec = globalObject->globalExec();
 
     MarkedArgumentBuffer args;
     size_t size = m_args.size();
-    for (size_t i = 0; i < size; ++i)
-        args.append(m_args[i].get());
+
+    for ( size_t i = 0; i < size; ++i )
+    {
+        args.append( m_args[i].get() );
+    }
 
     globalObject->globalData().timeoutChecker.start();
-    if (context->isDocument())
-        JSMainThreadExecState::call(exec, m_function.get(), callType, callData, thisValue, args);
+
+    if ( context->isDocument() )
+    {
+        JSMainThreadExecState::call( exec, m_function.get(), callType, callData, thisValue, args );
+    }
     else
-        JSC::call(exec, m_function.get(), callType, callData, thisValue, args);
+    {
+        JSC::call( exec, m_function.get(), callType, callData, thisValue, args );
+    }
+
     globalObject->globalData().timeoutChecker.stop();
 
-    if (exec->hadException())
-        reportCurrentException(exec);
+    if ( exec->hadException() )
+    {
+        reportCurrentException( exec );
+    }
 }
 
-void ScheduledAction::execute(Document* document)
+void ScheduledAction::execute( Document *document )
 {
-    JSDOMWindow* window = toJSDOMWindow(document->frame(), m_isolatedWorld.get());
-    if (!window)
+    JSDOMWindow *window = toJSDOMWindow( document->frame(), m_isolatedWorld.get() );
+
+    if ( !window )
+    {
         return;
+    }
 
     RefPtr<Frame> frame = window->impl()->frame();
-    if (!frame || !frame->script()->canExecuteScripts(AboutToExecuteScript))
+
+    if ( !frame || !frame->script()->canExecuteScripts( AboutToExecuteScript ) )
+    {
         return;
+    }
 
-    frame->script()->setProcessingTimerCallback(true);
+    frame->script()->setProcessingTimerCallback( true );
 
-    if (m_function) {
-        executeFunctionInContext(window, window->shell(), document);
+    if ( m_function )
+    {
+        executeFunctionInContext( window, window->shell(), document );
         Document::updateStyleForAllDocuments();
-    } else
-        frame->script()->executeScriptInWorld(m_isolatedWorld.get(), m_code);
+    }
+    else
+    {
+        frame->script()->executeScriptInWorld( m_isolatedWorld.get(), m_code );
+    }
 
-    frame->script()->setProcessingTimerCallback(false);
+    frame->script()->setProcessingTimerCallback( false );
 }
 
 #if ENABLE(WORKERS)
-void ScheduledAction::execute(WorkerContext* workerContext)
+void ScheduledAction::execute( WorkerContext *workerContext )
 {
     // In a Worker, the execution should always happen on a worker thread.
-    ASSERT(workerContext->thread()->threadID() == currentThread());
+    ASSERT( workerContext->thread()->threadID() == currentThread() );
 
-    WorkerScriptController* scriptController = workerContext->script();
+    WorkerScriptController *scriptController = workerContext->script();
 
-    if (m_function) {
-        JSWorkerContext* contextWrapper = scriptController->workerContextWrapper();
-        executeFunctionInContext(contextWrapper, contextWrapper, workerContext);
-    } else {
-        ScriptSourceCode code(m_code, workerContext->url());
-        scriptController->evaluate(code);
+    if ( m_function )
+    {
+        JSWorkerContext *contextWrapper = scriptController->workerContextWrapper();
+        executeFunctionInContext( contextWrapper, contextWrapper, workerContext );
+    }
+    else
+    {
+        ScriptSourceCode code( m_code, workerContext->url() );
+        scriptController->evaluate( code );
     }
 }
 #endif // ENABLE(WORKERS)

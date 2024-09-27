@@ -26,54 +26,60 @@
 #include "JSAudioNode.h"
 #include <runtime/JSObjectWithGlobalObject.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class JavaScriptAudioNode;
 
-class JSJavaScriptAudioNode : public JSAudioNode {
+class JSJavaScriptAudioNode : public JSAudioNode
+{
     typedef JSAudioNode Base;
 public:
-    JSJavaScriptAudioNode(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<JavaScriptAudioNode>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
-    virtual void put(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::JSValue, JSC::PutPropertySlot&);
+    JSJavaScriptAudioNode( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<JavaScriptAudioNode> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
+    virtual void put( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::JSValue, JSC::PutPropertySlot & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    virtual void visitChildren(JSC::SlotVisitor&);
+    virtual void visitChildren( JSC::SlotVisitor & );
 
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::OverridesVisitChildren | Base::StructureFlags;
 };
 
-JSC::JSValue toJS(JSC::ExecState*, JSDOMGlobalObject*, JavaScriptAudioNode*);
+JSC::JSValue toJS( JSC::ExecState *, JSDOMGlobalObject *, JavaScriptAudioNode * );
 
-class JSJavaScriptAudioNodePrototype : public JSC::JSObjectWithGlobalObject {
+class JSJavaScriptAudioNodePrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSJavaScriptAudioNodePrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSJavaScriptAudioNodePrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                                    JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesVisitChildren | Base::StructureFlags;
 };
 
 // Attributes
 
-JSC::JSValue jsJavaScriptAudioNodeOnaudioprocess(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSJavaScriptAudioNodeOnaudioprocess(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsJavaScriptAudioNodeBufferSize(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsJavaScriptAudioNodeConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsJavaScriptAudioNodeOnaudioprocess( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSJavaScriptAudioNodeOnaudioprocess( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsJavaScriptAudioNodeBufferSize( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsJavaScriptAudioNodeConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

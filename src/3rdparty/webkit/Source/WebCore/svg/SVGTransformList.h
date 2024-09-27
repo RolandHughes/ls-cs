@@ -26,25 +26,34 @@
 #include "SVGTransform.h"
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class SVGTransformList : public Vector<SVGTransform> {
+class SVGTransformList : public Vector<SVGTransform>
+{
 public:
     SVGTransformList() { }
 
-    SVGTransform createSVGTransformFromMatrix(const SVGMatrix&) const;
+    SVGTransform createSVGTransformFromMatrix( const SVGMatrix & ) const;
     SVGTransform consolidate();
 
     // Internal use only
-    bool concatenate(AffineTransform& result) const;
- 
+    bool concatenate( AffineTransform &result ) const;
+
     String valueAsString() const;
 };
 
 template<>
-struct SVGPropertyTraits<SVGTransformList> {
-    static SVGTransformList initialValue() { return SVGTransformList(); }
-    static String toString(const SVGTransformList& type) { return type.valueAsString(); }
+struct SVGPropertyTraits<SVGTransformList>
+{
+    static SVGTransformList initialValue()
+    {
+        return SVGTransformList();
+    }
+    static String toString( const SVGTransformList &type )
+    {
+        return type.valueAsString();
+    }
     typedef SVGTransform ListItemType;
 };
 

@@ -61,20 +61,20 @@ HB_BEGIN_DECLS
  **/
 typedef enum
 {
-  HB_STYLE_TAG_ITALIC		= HB_TAG ('i','t','a','l'),
-  HB_STYLE_TAG_OPTICAL_SIZE	= HB_TAG ('o','p','s','z'),
-  HB_STYLE_TAG_SLANT_ANGLE	= HB_TAG ('s','l','n','t'),
-  HB_STYLE_TAG_SLANT_RATIO	= HB_TAG ('S','l','n','t'),
-  HB_STYLE_TAG_WIDTH		= HB_TAG ('w','d','t','h'),
-  HB_STYLE_TAG_WEIGHT		= HB_TAG ('w','g','h','t'),
+    HB_STYLE_TAG_ITALIC       = HB_TAG ( 'i','t','a','l' ),
+    HB_STYLE_TAG_OPTICAL_SIZE = HB_TAG ( 'o','p','s','z' ),
+    HB_STYLE_TAG_SLANT_ANGLE  = HB_TAG ( 's','l','n','t' ),
+    HB_STYLE_TAG_SLANT_RATIO  = HB_TAG ( 'S','l','n','t' ),
+    HB_STYLE_TAG_WIDTH        = HB_TAG ( 'w','d','t','h' ),
+    HB_STYLE_TAG_WEIGHT       = HB_TAG ( 'w','g','h','t' ),
 
-  /*< private >*/
-  _HB_STYLE_TAG_MAX_VALUE	= HB_TAG_MAX_SIGNED /*< skip >*/
+    /*< private >*/
+    _HB_STYLE_TAG_MAX_VALUE   = HB_TAG_MAX_SIGNED /*< skip >*/
 } hb_style_tag_t;
 
 
 HB_EXTERN float
-hb_style_get_value (hb_font_t *font, hb_style_tag_t style_tag);
+hb_style_get_value ( hb_font_t *font, hb_style_tag_t style_tag );
 
 HB_END_DECLS
 

@@ -29,32 +29,34 @@
 template <typename T>
 class QScopedValueRollback
 {
- public:
-   explicit QScopedValueRollback(T &var)
-      : varRef(var), oldValue(var)
-   {
-   }
+public:
+    explicit QScopedValueRollback( T &var )
+        : varRef( var ), oldValue( var )
+    {
+    }
 
-   explicit QScopedValueRollback(T &var, T value)
-      : varRef(var), oldValue(var)
-   {
-      varRef = std::move(value);
-   }
+    explicit QScopedValueRollback( T &var, T value )
+        : varRef( var ), oldValue( var )
+    {
+        varRef = std::move( value );
+    }
 
-   QScopedValueRollback(const QScopedValueRollback &) = delete;
-   QScopedValueRollback &operator=(const QScopedValueRollback &) = delete;
+    QScopedValueRollback( const QScopedValueRollback & ) = delete;
+    QScopedValueRollback &operator=( const QScopedValueRollback & ) = delete;
 
-   ~QScopedValueRollback() {
-      varRef = std::move(oldValue);
-   }
+    ~QScopedValueRollback()
+    {
+        varRef = std::move( oldValue );
+    }
 
-   void commit() {
-      oldValue = varRef;
-   }
+    void commit()
+    {
+        oldValue = varRef;
+    }
 
- private:
-   T &varRef;
-   T oldValue;
+private:
+    T &varRef;
+    T oldValue;
 };
 
 #endif

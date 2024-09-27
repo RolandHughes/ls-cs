@@ -34,22 +34,22 @@ class QReadWriteLock;
 
 class Q_CORE_EXPORT QWaitCondition
 {
- public:
-   QWaitCondition();
+public:
+    QWaitCondition();
 
-   QWaitCondition(const QWaitCondition &) = delete;
-   QWaitCondition &operator=(const QWaitCondition &) = delete;
+    QWaitCondition( const QWaitCondition & ) = delete;
+    QWaitCondition &operator=( const QWaitCondition & ) = delete;
 
-   ~QWaitCondition();
+    ~QWaitCondition();
 
-   bool wait(QMutex *mutex, unsigned long time = ULONG_MAX);
-   bool wait(QReadWriteLock *readWriteLock, unsigned long time = ULONG_MAX);
+    bool wait( QMutex *mutex, unsigned long time = ULONG_MAX );
+    bool wait( QReadWriteLock *readWriteLock, unsigned long time = ULONG_MAX );
 
-   void wakeOne();
-   void wakeAll();
+    void wakeOne();
+    void wakeAll();
 
- private:
-   QWaitConditionPrivate *d;
+private:
+    QWaitConditionPrivate *d;
 };
 
 #endif

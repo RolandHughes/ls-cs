@@ -29,56 +29,95 @@
 
 #include "SVGRenderSupport.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class SVGStyledElement;
 class AffineTransform;
 
-class RenderSVGRoot : public RenderBox {
+class RenderSVGRoot : public RenderBox
+{
 public:
-    explicit RenderSVGRoot(SVGStyledElement*);
+    explicit RenderSVGRoot( SVGStyledElement * );
     virtual ~RenderSVGRoot();
 
-    const RenderObjectChildList* children() const { return &m_children; }
-    RenderObjectChildList* children() { return &m_children; }
+    const RenderObjectChildList *children() const
+    {
+        return &m_children;
+    }
+    RenderObjectChildList *children()
+    {
+        return &m_children;
+    }
 
-    bool isLayoutSizeChanged() const { return m_isLayoutSizeChanged; }
-    virtual void setNeedsBoundariesUpdate() { m_needsBoundariesOrTransformUpdate = true; }
-    virtual void setNeedsTransformUpdate() { m_needsBoundariesOrTransformUpdate = true; }
+    bool isLayoutSizeChanged() const
+    {
+        return m_isLayoutSizeChanged;
+    }
+    virtual void setNeedsBoundariesUpdate()
+    {
+        m_needsBoundariesOrTransformUpdate = true;
+    }
+    virtual void setNeedsTransformUpdate()
+    {
+        m_needsBoundariesOrTransformUpdate = true;
+    }
 
 private:
-    virtual RenderObjectChildList* virtualChildren() { return children(); }
-    virtual const RenderObjectChildList* virtualChildren() const { return children(); }
+    virtual RenderObjectChildList *virtualChildren()
+    {
+        return children();
+    }
+    virtual const RenderObjectChildList *virtualChildren() const
+    {
+        return children();
+    }
 
-    virtual bool isSVGRoot() const { return true; }
-    virtual const char* renderName() const { return "RenderSVGRoot"; }
+    virtual bool isSVGRoot() const
+    {
+        return true;
+    }
+    virtual const char *renderName() const
+    {
+        return "RenderSVGRoot";
+    }
 
     virtual void computePreferredLogicalWidths();
-    virtual int computeReplacedLogicalWidth(bool includeMaxWidth = true) const;
+    virtual int computeReplacedLogicalWidth( bool includeMaxWidth = true ) const;
     virtual int computeReplacedLogicalHeight() const;
     virtual void layout();
-    virtual void paint(PaintInfo&, int parentX, int parentY);
+    virtual void paint( PaintInfo &, int parentX, int parentY );
 
     virtual void destroy();
-    virtual void styleWillChange(StyleDifference, const RenderStyle* newStyle);
-    virtual void styleDidChange(StyleDifference, const RenderStyle* oldStyle);
+    virtual void styleWillChange( StyleDifference, const RenderStyle *newStyle );
+    virtual void styleDidChange( StyleDifference, const RenderStyle *oldStyle );
     virtual void updateFromElement();
 
-    virtual const AffineTransform& localToParentTransform() const;
+    virtual const AffineTransform &localToParentTransform() const;
 
-    bool fillContains(const FloatPoint&) const;
-    bool strokeContains(const FloatPoint&) const;
+    bool fillContains( const FloatPoint & ) const;
+    bool strokeContains( const FloatPoint & ) const;
 
-    virtual FloatRect objectBoundingBox() const { return m_objectBoundingBox; }
-    virtual FloatRect strokeBoundingBox() const { return m_strokeBoundingBox; }
-    virtual FloatRect repaintRectInLocalCoordinates() const { return m_repaintBoundingBox; }
+    virtual FloatRect objectBoundingBox() const
+    {
+        return m_objectBoundingBox;
+    }
+    virtual FloatRect strokeBoundingBox() const
+    {
+        return m_strokeBoundingBox;
+    }
+    virtual FloatRect repaintRectInLocalCoordinates() const
+    {
+        return m_repaintBoundingBox;
+    }
 
-    virtual bool nodeAtPoint(const HitTestRequest&, HitTestResult&, int x, int y, int tx, int ty, HitTestAction);
+    virtual bool nodeAtPoint( const HitTestRequest &, HitTestResult &, int x, int y, int tx, int ty, HitTestAction );
 
-    virtual IntRect clippedOverflowRectForRepaint(RenderBoxModelObject* repaintContainer);
-    virtual void computeRectForRepaint(RenderBoxModelObject* repaintContainer, IntRect& repaintRect, bool fixed);
+    virtual IntRect clippedOverflowRectForRepaint( RenderBoxModelObject *repaintContainer );
+    virtual void computeRectForRepaint( RenderBoxModelObject *repaintContainer, IntRect &repaintRect, bool fixed );
 
-    virtual void mapLocalToContainer(RenderBoxModelObject* repaintContainer, bool useTransforms, bool fixed, TransformState&) const;
+    virtual void mapLocalToContainer( RenderBoxModelObject *repaintContainer, bool useTransforms, bool fixed,
+                                      TransformState & ) const;
 
     void calcViewport();
 
@@ -87,7 +126,7 @@ private:
 
     IntSize parentOriginToBorderBox() const;
     IntSize borderOriginToContentBox() const;
-    AffineTransform localToRepaintContainerTransform(const IntPoint& parentOriginInContainer) const;
+    AffineTransform localToRepaintContainerTransform( const IntPoint &parentOriginInContainer ) const;
     AffineTransform localToBorderBoxTransform() const;
 
     RenderObjectChildList m_children;
@@ -100,20 +139,20 @@ private:
     bool m_needsBoundariesOrTransformUpdate : 1;
 };
 
-inline RenderSVGRoot* toRenderSVGRoot(RenderObject* object)
-{ 
-    ASSERT(!object || object->isSVGRoot());
-    return static_cast<RenderSVGRoot*>(object);
+inline RenderSVGRoot *toRenderSVGRoot( RenderObject *object )
+{
+    ASSERT( !object || object->isSVGRoot() );
+    return static_cast<RenderSVGRoot *>( object );
 }
 
-inline const RenderSVGRoot* toRenderSVGRoot(const RenderObject* object)
-{ 
-    ASSERT(!object || object->isSVGRoot());
-    return static_cast<const RenderSVGRoot*>(object);
+inline const RenderSVGRoot *toRenderSVGRoot( const RenderObject *object )
+{
+    ASSERT( !object || object->isSVGRoot() );
+    return static_cast<const RenderSVGRoot *>( object );
 }
 
 // This will catch anyone doing an unnecessary cast.
-void toRenderSVGRoot(const RenderSVGRoot*);
+void toRenderSVGRoot( const RenderSVGRoot * );
 
 } // namespace WebCore
 

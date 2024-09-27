@@ -26,16 +26,23 @@
 #ifndef WebCoreInstanceHandle_h
 #define WebCoreInstanceHandle_h
 
-typedef struct HINSTANCE__* HINSTANCE;
+typedef struct HINSTANCE__ *HINSTANCE;
 
-namespace WebCore {
+namespace WebCore
+{
 
 // The global DLL or application instance used for all windows.
 extern HINSTANCE s_instanceHandle;
 
-inline void setInstanceHandle(HINSTANCE instanceHandle) { s_instanceHandle = instanceHandle; }
-inline HINSTANCE instanceHandle() { return s_instanceHandle; }
-    
+inline void setInstanceHandle( HINSTANCE instanceHandle )
+{
+    s_instanceHandle = instanceHandle;
+}
+inline HINSTANCE instanceHandle()
+{
+    return s_instanceHandle;
+}
+
 }
 
 #endif // WebCoreInstanceHandle_h

@@ -25,22 +25,31 @@
 #include "SVGLength.h"
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class SVGLengthList : public Vector<SVGLength> {
+class SVGLengthList : public Vector<SVGLength>
+{
 public:
     SVGLengthList() { }
 
-    void parse(const String& value, SVGLengthMode); 
+    void parse( const String &value, SVGLengthMode );
     String valueAsString() const;
 };
 
 template<>
-struct SVGPropertyTraits<SVGLengthList> {
+struct SVGPropertyTraits<SVGLengthList>
+{
     typedef SVGLength ListItemType;
 
-    static SVGLengthList initialValue() { return SVGLengthList(); }
-    static String toString(const SVGLengthList& type) { return type.valueAsString(); }
+    static SVGLengthList initialValue()
+    {
+        return SVGLengthList();
+    }
+    static String toString( const SVGLengthList &type )
+    {
+        return type.valueAsString();
+    }
 };
 
 } // namespace WebCore

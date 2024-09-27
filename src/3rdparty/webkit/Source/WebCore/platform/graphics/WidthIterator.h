@@ -25,27 +25,46 @@
 #include <wtf/HashSet.h>
 #include <wtf/unicode/Unicode.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Font;
 class GlyphBuffer;
 class SimpleFontData;
 class TextRun;
 
-struct WidthIterator {
-    WidthIterator(const Font*, const TextRun&, HashSet<const SimpleFontData*>* fallbackFonts = 0, bool accountForGlyphBounds = false, bool forTextEmphasis = false);
+struct WidthIterator
+{
+    WidthIterator( const Font *, const TextRun &, HashSet<const SimpleFontData *> *fallbackFonts = 0,
+                   bool accountForGlyphBounds = false, bool forTextEmphasis = false );
 
-    void advance(int to, GlyphBuffer* = 0);
-    bool advanceOneCharacter(float& width, GlyphBuffer* = 0);
+    void advance( int to, GlyphBuffer * = 0 );
+    bool advanceOneCharacter( float &width, GlyphBuffer * = 0 );
 
-    float maxGlyphBoundingBoxY() const { ASSERT(m_accountForGlyphBounds); return m_maxGlyphBoundingBoxY; }
-    float minGlyphBoundingBoxY() const { ASSERT(m_accountForGlyphBounds); return m_minGlyphBoundingBoxY; }
-    float firstGlyphOverflow() const { ASSERT(m_accountForGlyphBounds); return m_firstGlyphOverflow; }
-    float lastGlyphOverflow() const { ASSERT(m_accountForGlyphBounds); return m_lastGlyphOverflow; }
+    float maxGlyphBoundingBoxY() const
+    {
+        ASSERT( m_accountForGlyphBounds );
+        return m_maxGlyphBoundingBoxY;
+    }
+    float minGlyphBoundingBoxY() const
+    {
+        ASSERT( m_accountForGlyphBounds );
+        return m_minGlyphBoundingBoxY;
+    }
+    float firstGlyphOverflow() const
+    {
+        ASSERT( m_accountForGlyphBounds );
+        return m_firstGlyphOverflow;
+    }
+    float lastGlyphOverflow() const
+    {
+        ASSERT( m_accountForGlyphBounds );
+        return m_lastGlyphOverflow;
+    }
 
-    const Font* m_font;
+    const Font *m_font;
 
-    const TextRun& m_run;
+    const TextRun &m_run;
     int m_end;
 
     unsigned m_currentCharacter;
@@ -55,9 +74,9 @@ struct WidthIterator {
     bool m_isAfterExpansion;
 
 private:
-    UChar32 normalizeVoicingMarks(int currentCharacter);
+    UChar32 normalizeVoicingMarks( int currentCharacter );
 
-    HashSet<const SimpleFontData*>* m_fallbackFonts;
+    HashSet<const SimpleFontData *> *m_fallbackFonts;
     bool m_accountForGlyphBounds;
     float m_maxGlyphBoundingBoxY;
     float m_minGlyphBoundingBoxY;

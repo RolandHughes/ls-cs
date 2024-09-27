@@ -60,7 +60,7 @@ public:
     // {
     //     set only during construction:
     const QDBusMessage sentMessage;
-    QDBusConnectionPrivate * const connection;
+    QDBusConnectionPrivate *const connection;
 
     // for the callback mechanism (see setReplyCallback and QDBusConnectionPrivate::sendWithReplyAsync)
     QPointer<QObject> receiver;
@@ -83,40 +83,45 @@ public:
     int expectedReplyCount;
     // }
 
-    QDBusPendingCallPrivate(const QDBusMessage &sent, QDBusConnectionPrivate *connection)
-        : sentMessage(sent), connection(connection), watcherHelper(0), pending(0), waitingForFinished(false)
+    QDBusPendingCallPrivate( const QDBusMessage &sent, QDBusConnectionPrivate *connection )
+        : sentMessage( sent ), connection( connection ), watcherHelper( 0 ), pending( 0 ), waitingForFinished( false )
     { }
     ~QDBusPendingCallPrivate();
-    bool setReplyCallback(QObject *target, const char *member);
+    bool setReplyCallback( QObject *target, const char *member );
     void waitForFinished();
-    void setMetaTypes(int count, const int *types);
+    void setMetaTypes( int count, const int *types );
     void checkReceivedSignature();
 
-    static QDBusPendingCall fromMessage(const QDBusMessage &msg);
+    static QDBusPendingCall fromMessage( const QDBusMessage &msg );
 };
 
 class QDBusPendingCallWatcherHelper: public QObject
 {
-    CS_OBJECT(QDBusPendingCallWatcherHelper)
+    CS_OBJECT( QDBusPendingCallWatcherHelper )
 public:
-    void add(QDBusPendingCallWatcher *watcher);
+    void add( QDBusPendingCallWatcher *watcher );
 
-    void emitSignals(const QDBusMessage &replyMessage, const QDBusMessage &sentMessage)
+    void emitSignals( const QDBusMessage &replyMessage, const QDBusMessage &sentMessage )
     {
-        if (replyMessage.type() == QDBusMessage::ReplyMessage)
-            emit reply(replyMessage);
+        if ( replyMessage.type() == QDBusMessage::ReplyMessage )
+        {
+            emit reply( replyMessage );
+        }
         else
-            emit error(replyMessage, sentMessage);
+        {
+            emit error( replyMessage, sentMessage );
+        }
+
         emit finished();
     }
 
 public:
-    CS_SIGNAL_1(Public, void finished())
-    CS_SIGNAL_2(finished) 
-    CS_SIGNAL_1(Public, void reply(const QDBusMessage & msg))
-    CS_SIGNAL_2(reply,msg) 
-    CS_SIGNAL_1(Public, void error(const QDBusError & error,const QDBusMessage & msg))
-    CS_SIGNAL_2(error,error,msg) 
+    CS_SIGNAL_1( Public, void finished() )
+    CS_SIGNAL_2( finished )
+    CS_SIGNAL_1( Public, void reply( const QDBusMessage &msg ) )
+    CS_SIGNAL_2( reply,msg )
+    CS_SIGNAL_1( Public, void error( const QDBusError &error,const QDBusMessage &msg ) )
+    CS_SIGNAL_2( error,error,msg )
 };
 
 QT_END_NAMESPACE

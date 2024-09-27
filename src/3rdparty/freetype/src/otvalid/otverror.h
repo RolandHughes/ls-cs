@@ -16,12 +16,12 @@
  */
 
 
-  /**************************************************************************
-   *
-   * This file is used to define the OpenType validation module error
-   * enumeration constants.
-   *
-   */
+/**************************************************************************
+ *
+ * This file is used to define the OpenType validation module error
+ * enumeration constants.
+ *
+ */
 
 #ifndef OTVERROR_H_
 #define OTVERROR_H_

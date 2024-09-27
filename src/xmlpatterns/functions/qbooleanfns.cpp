@@ -27,23 +27,23 @@
 
 using namespace QPatternist;
 
-bool TrueFN::evaluateEBV(const DynamicContext::Ptr &) const
+bool TrueFN::evaluateEBV( const DynamicContext::Ptr & ) const
 {
-   return true;
+    return true;
 }
 
-bool FalseFN::evaluateEBV(const DynamicContext::Ptr &) const
+bool FalseFN::evaluateEBV( const DynamicContext::Ptr & ) const
 {
-   return false;
+    return false;
 }
 
-bool NotFN::evaluateEBV(const DynamicContext::Ptr &context) const
+bool NotFN::evaluateEBV( const DynamicContext::Ptr &context ) const
 {
-   /* That little '!' is quite important in this function -- I forgot it ;-) */
-   return !m_operands.first()->evaluateEBV(context);
+    /* That little '!' is quite important in this function -- I forgot it ;-) */
+    return !m_operands.first()->evaluateEBV( context );
 }
 
 OptimizationPass::List NotFN::optimizationPasses() const
 {
-   return OptimizationPasses::notFN;
+    return OptimizationPasses::notFN;
 }

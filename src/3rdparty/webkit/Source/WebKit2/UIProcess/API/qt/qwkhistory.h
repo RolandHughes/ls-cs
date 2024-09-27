@@ -35,21 +35,23 @@ class QWKHistoryItemPrivate;
 class QUrl;
 class QString;
 
-namespace WebKit {
+namespace WebKit
+{
 class WebBackForwardList;
 }
 
-class QWEBKIT_EXPORT QWKHistoryItem {
+class QWEBKIT_EXPORT QWKHistoryItem
+{
 public:
-    QWKHistoryItem(const QWKHistoryItem& other);
-    QWKHistoryItem &operator=(const QWKHistoryItem& other);
+    QWKHistoryItem( const QWKHistoryItem &other );
+    QWKHistoryItem &operator=( const QWKHistoryItem &other );
 
     ~QWKHistoryItem();
     QString title() const;
     QUrl url() const;
 
 private:
-    QWKHistoryItem(WKBackForwardListItemRef);
+    QWKHistoryItem( WKBackForwardListItemRef );
 
     QExplicitlySharedDataPointer<QWKHistoryItemPrivate> d;
 
@@ -57,7 +59,8 @@ private:
     friend class QWKHistoryItemPrivate;
 };
 
-class QWEBKIT_EXPORT QWKHistory : public QObject {
+class QWEBKIT_EXPORT QWKHistory : public QObject
+{
     Q_OBJECT
 public:
     int backListCount() const;
@@ -66,15 +69,15 @@ public:
     QWKHistoryItem currentItem() const;
     QWKHistoryItem backItem() const;
     QWKHistoryItem forwardItem() const;
-    QWKHistoryItem itemAt(int index) const;
-    QList<QWKHistoryItem> backItems(int maxItems) const;
-    QList<QWKHistoryItem> forwardItems(int maxItems) const;
+    QWKHistoryItem itemAt( int index ) const;
+    QList<QWKHistoryItem> backItems( int maxItems ) const;
+    QList<QWKHistoryItem> forwardItems( int maxItems ) const;
 
 private:
     QWKHistory();
     ~QWKHistory();
 
-    QWKHistoryPrivate* d;
+    QWKHistoryPrivate *d;
     friend class QWKHistoryPrivate;
     friend class QWKPagePrivate;
 };

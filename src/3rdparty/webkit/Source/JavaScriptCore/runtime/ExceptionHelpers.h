@@ -31,32 +31,33 @@
 
 #include "JSValue.h"
 
-namespace JSC {
+namespace JSC
+{
 
-    class CodeBlock;
-    class ExecState;
-    class Identifier;
-    class JSGlobalData;
-    class JSGlobalObject;
-    class JSNotAnObjectErrorStub;
-    class JSObject;
-    class Node;
-    struct Instruction;
-    
-    JSObject* createInterruptedExecutionException(JSGlobalData*);
-    JSObject* createTerminatedExecutionException(JSGlobalData*);
-    JSObject* createStackOverflowError(ExecState*);
-    JSObject* createStackOverflowError(JSGlobalObject*);
-    JSObject* createOutOfMemoryError(JSGlobalObject*);
-    JSObject* createUndefinedVariableError(ExecState*, const Identifier&);
-    JSObject* createNotAnObjectError(ExecState*, JSValue);
-    JSObject* createInvalidParamError(ExecState*, const char* op, JSValue);
-    JSObject* createNotAConstructorError(ExecState*, JSValue);
-    JSObject* createNotAFunctionError(ExecState*, JSValue);
-    JSObject* createErrorForInvalidGlobalAssignment(ExecState*, const UString&);
+class CodeBlock;
+class ExecState;
+class Identifier;
+class JSGlobalData;
+class JSGlobalObject;
+class JSNotAnObjectErrorStub;
+class JSObject;
+class Node;
+struct Instruction;
 
-    JSObject* throwOutOfMemoryError(ExecState*);
-    JSObject* throwStackOverflowError(ExecState*);
+JSObject *createInterruptedExecutionException( JSGlobalData * );
+JSObject *createTerminatedExecutionException( JSGlobalData * );
+JSObject *createStackOverflowError( ExecState * );
+JSObject *createStackOverflowError( JSGlobalObject * );
+JSObject *createOutOfMemoryError( JSGlobalObject * );
+JSObject *createUndefinedVariableError( ExecState *, const Identifier & );
+JSObject *createNotAnObjectError( ExecState *, JSValue );
+JSObject *createInvalidParamError( ExecState *, const char *op, JSValue );
+JSObject *createNotAConstructorError( ExecState *, JSValue );
+JSObject *createNotAFunctionError( ExecState *, JSValue );
+JSObject *createErrorForInvalidGlobalAssignment( ExecState *, const UString & );
+
+JSObject *throwOutOfMemoryError( ExecState * );
+JSObject *throwStackOverflowError( ExecState * );
 
 } // namespace JSC
 

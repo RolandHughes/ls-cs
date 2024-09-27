@@ -26,37 +26,38 @@
 
 #include <qemptycontainer_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class UnresolvedVariableReference : public EmptyContainer
 {
- public:
-   UnresolvedVariableReference(const QXmlName &name);
+public:
+    UnresolvedVariableReference( const QXmlName &name );
 
-   Expression::Ptr typeCheck(const StaticContext::Ptr &context, const SequenceType::Ptr &reqType) override;
-   SequenceType::List expectedOperandTypes() const override;
-   SequenceType::Ptr staticType() const override;
-   ExpressionVisitorResult::Ptr accept(const ExpressionVisitor::Ptr &visitor) const override;
-   ID id() const override;
+    Expression::Ptr typeCheck( const StaticContext::Ptr &context, const SequenceType::Ptr &reqType ) override;
+    SequenceType::List expectedOperandTypes() const override;
+    SequenceType::Ptr staticType() const override;
+    ExpressionVisitorResult::Ptr accept( const ExpressionVisitor::Ptr &visitor ) const override;
+    ID id() const override;
 
-   inline void bindTo(const Expression::Ptr &body);
-   inline Expression::Ptr replacement() const;
+    inline void bindTo( const Expression::Ptr &body );
+    inline Expression::Ptr replacement() const;
 
- private:
-   const QXmlName  m_name;
-   Expression::Ptr m_replacement;
+private:
+    const QXmlName  m_name;
+    Expression::Ptr m_replacement;
 };
 
-void UnresolvedVariableReference::bindTo(const Expression::Ptr &body)
+void UnresolvedVariableReference::bindTo( const Expression::Ptr &body )
 {
-   Q_ASSERT(body);
-   m_replacement = body;
+    Q_ASSERT( body );
+    m_replacement = body;
 }
 
 Expression::Ptr UnresolvedVariableReference::replacement() const
 {
-   Q_ASSERT(m_replacement);
-   return m_replacement;
+    Q_ASSERT( m_replacement );
+    return m_replacement;
 }
 
 }

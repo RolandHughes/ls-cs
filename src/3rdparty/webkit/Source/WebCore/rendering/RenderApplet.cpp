@@ -29,15 +29,16 @@
 #include "PluginViewBase.h"
 #include "Widget.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
-RenderApplet::RenderApplet(HTMLAppletElement* applet, const HashMap<String, String>& args)
-    : RenderWidget(applet)
-    , m_args(args)
+RenderApplet::RenderApplet( HTMLAppletElement *applet, const HashMap<String, String> &args )
+    : RenderWidget( applet )
+    , m_args( args )
 {
-    setInline(true);
+    setInline( true );
 }
 
 RenderApplet::~RenderApplet()
@@ -50,60 +51,71 @@ IntSize RenderApplet::intrinsicSize() const
     // a different size once we've created the widget and expect
     // layout and sizing to be correct. We should remove this and
     // pass the appropriate intrinsic size in the constructor.
-    return widget() ? IntSize(50, 50) : IntSize(150, 150);
+    return widget() ? IntSize( 50, 50 ) : IntSize( 150, 150 );
 }
 
 void RenderApplet::createWidgetIfNecessary()
 {
-    HTMLAppletElement* element = static_cast<HTMLAppletElement*>(node());
-    if (widget() || !element->isFinishedParsingChildren())
+    HTMLAppletElement *element = static_cast<HTMLAppletElement *>( node() );
+
+    if ( widget() || !element->isFinishedParsingChildren() )
+    {
         return;
+    }
 
     // FIXME: Java applets can't be resized (this is a bug in Apple's Java implementation).
     // In order to work around this problem and have a correct size from the start, we will
     // use fixed widths/heights from the style system when we can, since the widget might
     // not have an accurate m_width/m_height.
-    int contentWidth = style()->width().isFixed() ? style()->width().value() : 
-        width() - borderAndPaddingWidth();
+    int contentWidth = style()->width().isFixed() ? style()->width().value() :
+                       width() - borderAndPaddingWidth();
     int contentHeight = style()->height().isFixed() ? style()->height().value() :
-        height() - borderAndPaddingHeight();
-    for (Node* child = element->firstChild(); child; child = child->nextSibling()) {
-        if (child->hasTagName(paramTag)) {
-            HTMLParamElement* p = static_cast<HTMLParamElement*>(child);
-            if (!p->name().isEmpty())
-                m_args.set(p->name(), p->value());
+                        height() - borderAndPaddingHeight();
+
+    for ( Node *child = element->firstChild(); child; child = child->nextSibling() )
+    {
+        if ( child->hasTagName( paramTag ) )
+        {
+            HTMLParamElement *p = static_cast<HTMLParamElement *>( child );
+
+            if ( !p->name().isEmpty() )
+            {
+                m_args.set( p->name(), p->value() );
+            }
         }
     }
 
-    Frame* frame = this->frame();
-    ASSERT(frame);
-    setWidget(frame->loader()->subframeLoader()->createJavaAppletWidget(IntSize(contentWidth, contentHeight), element, m_args));
+    Frame *frame = this->frame();
+    ASSERT( frame );
+    setWidget( frame->loader()->subframeLoader()->createJavaAppletWidget( IntSize( contentWidth, contentHeight ), element, m_args ) );
 }
 
 void RenderApplet::layout()
 {
-    ASSERT(needsLayout());
+    ASSERT( needsLayout() );
 
     computeLogicalWidth();
     computeLogicalHeight();
 
     // The applet's widget gets created lazily upon first layout.
     createWidgetIfNecessary();
-    setNeedsLayout(false);
+    setNeedsLayout( false );
 }
 
 #if USE(ACCELERATED_COMPOSITING)
 bool RenderApplet::requiresLayer() const
 {
-    if (RenderWidget::requiresLayer())
+    if ( RenderWidget::requiresLayer() )
+    {
         return true;
-    
+    }
+
     return allowsAcceleratedCompositing();
 }
 
 bool RenderApplet::allowsAcceleratedCompositing() const
 {
-    return widget() && widget()->isPluginViewBase() && static_cast<PluginViewBase*>(widget())->platformLayer();
+    return widget() && widget()->isPluginViewBase() && static_cast<PluginViewBase *>( widget() )->platformLayer();
 }
 #endif
 

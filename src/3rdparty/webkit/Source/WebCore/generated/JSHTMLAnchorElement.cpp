@@ -32,9 +32,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSHTMLAnchorElement);
+ASSERT_CLASS_FITS_IN_CELL( JSHTMLAnchorElement );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -45,29 +46,29 @@ ASSERT_CLASS_FITS_IN_CELL(JSHTMLAnchorElement);
 
 static const HashTableValue JSHTMLAnchorElementTableValues[23] =
 {
-    { "accessKey", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLAnchorElementAccessKey), (intptr_t)setJSHTMLAnchorElementAccessKey THUNK_GENERATOR(0) },
-    { "charset", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLAnchorElementCharset), (intptr_t)setJSHTMLAnchorElementCharset THUNK_GENERATOR(0) },
-    { "coords", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLAnchorElementCoords), (intptr_t)setJSHTMLAnchorElementCoords THUNK_GENERATOR(0) },
-    { "href", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLAnchorElementHref), (intptr_t)setJSHTMLAnchorElementHref THUNK_GENERATOR(0) },
-    { "hreflang", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLAnchorElementHreflang), (intptr_t)setJSHTMLAnchorElementHreflang THUNK_GENERATOR(0) },
-    { "name", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLAnchorElementName), (intptr_t)setJSHTMLAnchorElementName THUNK_GENERATOR(0) },
-    { "ping", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLAnchorElementPing), (intptr_t)setJSHTMLAnchorElementPing THUNK_GENERATOR(0) },
-    { "rel", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLAnchorElementRel), (intptr_t)setJSHTMLAnchorElementRel THUNK_GENERATOR(0) },
-    { "rev", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLAnchorElementRev), (intptr_t)setJSHTMLAnchorElementRev THUNK_GENERATOR(0) },
-    { "shape", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLAnchorElementShape), (intptr_t)setJSHTMLAnchorElementShape THUNK_GENERATOR(0) },
-    { "target", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLAnchorElementTarget), (intptr_t)setJSHTMLAnchorElementTarget THUNK_GENERATOR(0) },
-    { "type", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLAnchorElementType), (intptr_t)setJSHTMLAnchorElementType THUNK_GENERATOR(0) },
-    { "hash", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLAnchorElementHash), (intptr_t)setJSHTMLAnchorElementHash THUNK_GENERATOR(0) },
-    { "host", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLAnchorElementHost), (intptr_t)setJSHTMLAnchorElementHost THUNK_GENERATOR(0) },
-    { "hostname", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLAnchorElementHostname), (intptr_t)setJSHTMLAnchorElementHostname THUNK_GENERATOR(0) },
-    { "pathname", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLAnchorElementPathname), (intptr_t)setJSHTMLAnchorElementPathname THUNK_GENERATOR(0) },
-    { "port", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLAnchorElementPort), (intptr_t)setJSHTMLAnchorElementPort THUNK_GENERATOR(0) },
-    { "protocol", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLAnchorElementProtocol), (intptr_t)setJSHTMLAnchorElementProtocol THUNK_GENERATOR(0) },
-    { "search", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLAnchorElementSearch), (intptr_t)setJSHTMLAnchorElementSearch THUNK_GENERATOR(0) },
-    { "origin", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLAnchorElementOrigin), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "text", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLAnchorElementText), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLAnchorElementConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "accessKey", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLAnchorElementAccessKey ), ( intptr_t )setJSHTMLAnchorElementAccessKey THUNK_GENERATOR( 0 ) },
+    { "charset", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLAnchorElementCharset ), ( intptr_t )setJSHTMLAnchorElementCharset THUNK_GENERATOR( 0 ) },
+    { "coords", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLAnchorElementCoords ), ( intptr_t )setJSHTMLAnchorElementCoords THUNK_GENERATOR( 0 ) },
+    { "href", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLAnchorElementHref ), ( intptr_t )setJSHTMLAnchorElementHref THUNK_GENERATOR( 0 ) },
+    { "hreflang", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLAnchorElementHreflang ), ( intptr_t )setJSHTMLAnchorElementHreflang THUNK_GENERATOR( 0 ) },
+    { "name", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLAnchorElementName ), ( intptr_t )setJSHTMLAnchorElementName THUNK_GENERATOR( 0 ) },
+    { "ping", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLAnchorElementPing ), ( intptr_t )setJSHTMLAnchorElementPing THUNK_GENERATOR( 0 ) },
+    { "rel", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLAnchorElementRel ), ( intptr_t )setJSHTMLAnchorElementRel THUNK_GENERATOR( 0 ) },
+    { "rev", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLAnchorElementRev ), ( intptr_t )setJSHTMLAnchorElementRev THUNK_GENERATOR( 0 ) },
+    { "shape", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLAnchorElementShape ), ( intptr_t )setJSHTMLAnchorElementShape THUNK_GENERATOR( 0 ) },
+    { "target", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLAnchorElementTarget ), ( intptr_t )setJSHTMLAnchorElementTarget THUNK_GENERATOR( 0 ) },
+    { "type", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLAnchorElementType ), ( intptr_t )setJSHTMLAnchorElementType THUNK_GENERATOR( 0 ) },
+    { "hash", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLAnchorElementHash ), ( intptr_t )setJSHTMLAnchorElementHash THUNK_GENERATOR( 0 ) },
+    { "host", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLAnchorElementHost ), ( intptr_t )setJSHTMLAnchorElementHost THUNK_GENERATOR( 0 ) },
+    { "hostname", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLAnchorElementHostname ), ( intptr_t )setJSHTMLAnchorElementHostname THUNK_GENERATOR( 0 ) },
+    { "pathname", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLAnchorElementPathname ), ( intptr_t )setJSHTMLAnchorElementPathname THUNK_GENERATOR( 0 ) },
+    { "port", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLAnchorElementPort ), ( intptr_t )setJSHTMLAnchorElementPort THUNK_GENERATOR( 0 ) },
+    { "protocol", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLAnchorElementProtocol ), ( intptr_t )setJSHTMLAnchorElementProtocol THUNK_GENERATOR( 0 ) },
+    { "search", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLAnchorElementSearch ), ( intptr_t )setJSHTMLAnchorElementSearch THUNK_GENERATOR( 0 ) },
+    { "origin", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLAnchorElementOrigin ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "text", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLAnchorElementText ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLAnchorElementConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -81,43 +82,51 @@ static JSC_CONST_HASHTABLE HashTable JSHTMLAnchorElementTable = { 68, 63, JSHTML
 
 static const HashTableValue JSHTMLAnchorElementConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSHTMLAnchorElementConstructorTable = { 1, 0, JSHTMLAnchorElementConstructorTableValues, 0 };
-class JSHTMLAnchorElementConstructor : public DOMConstructorObject {
+class JSHTMLAnchorElementConstructor : public DOMConstructorObject
+{
 public:
-    JSHTMLAnchorElementConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSHTMLAnchorElementConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSHTMLAnchorElementConstructor::s_info = { "HTMLAnchorElementConstructor", &DOMConstructorObject::s_info, &JSHTMLAnchorElementConstructorTable, 0 };
 
-JSHTMLAnchorElementConstructor::JSHTMLAnchorElementConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSHTMLAnchorElementConstructor::JSHTMLAnchorElementConstructor( ExecState *exec, Structure *structure,
+        JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSHTMLAnchorElementPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSHTMLAnchorElementPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSHTMLAnchorElementConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSHTMLAnchorElementConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSHTMLAnchorElementConstructor, JSDOMWrapper>(exec, &JSHTMLAnchorElementConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSHTMLAnchorElementConstructor, JSDOMWrapper>( exec, &JSHTMLAnchorElementConstructorTable, this,
+            propertyName, slot );
 }
 
-bool JSHTMLAnchorElementConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSHTMLAnchorElementConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSHTMLAnchorElementConstructor, JSDOMWrapper>(exec, &JSHTMLAnchorElementConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSHTMLAnchorElementConstructor, JSDOMWrapper>( exec, &JSHTMLAnchorElementConstructorTable, this,
+            propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -129,458 +138,473 @@ bool JSHTMLAnchorElementConstructor::getOwnPropertyDescriptor(ExecState* exec, c
 
 static const HashTableValue JSHTMLAnchorElementPrototypeTableValues[3] =
 {
-    { "getParameter", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsHTMLAnchorElementPrototypeFunctionGetParameter), (intptr_t)1 THUNK_GENERATOR(0) },
-    { "toString", DontDelete | DontEnum | Function, (intptr_t)static_cast<NativeFunction>(jsHTMLAnchorElementPrototypeFunctionToString), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "getParameter", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsHTMLAnchorElementPrototypeFunctionGetParameter ), ( intptr_t )1 THUNK_GENERATOR( 0 ) },
+    { "toString", DontDelete | DontEnum | Function, ( intptr_t )static_cast<NativeFunction>( jsHTMLAnchorElementPrototypeFunctionToString ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSHTMLAnchorElementPrototypeTable = { 5, 3, JSHTMLAnchorElementPrototypeTableValues, 0 };
 const ClassInfo JSHTMLAnchorElementPrototype::s_info = { "HTMLAnchorElementPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSHTMLAnchorElementPrototypeTable, 0 };
 
-JSObject* JSHTMLAnchorElementPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSHTMLAnchorElementPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSHTMLAnchorElement>(exec, globalObject);
+    return getDOMPrototype<JSHTMLAnchorElement>( exec, globalObject );
 }
 
-bool JSHTMLAnchorElementPrototype::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSHTMLAnchorElementPrototype::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticFunctionSlot<JSObject>(exec, &JSHTMLAnchorElementPrototypeTable, this, propertyName, slot);
+    return getStaticFunctionSlot<JSObject>( exec, &JSHTMLAnchorElementPrototypeTable, this, propertyName, slot );
 }
 
-bool JSHTMLAnchorElementPrototype::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSHTMLAnchorElementPrototype::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticFunctionDescriptor<JSObject>(exec, &JSHTMLAnchorElementPrototypeTable, this, propertyName, descriptor);
+    return getStaticFunctionDescriptor<JSObject>( exec, &JSHTMLAnchorElementPrototypeTable, this, propertyName, descriptor );
 }
 
 const ClassInfo JSHTMLAnchorElement::s_info = { "HTMLAnchorElement", &JSHTMLElement::s_info, &JSHTMLAnchorElementTable, 0 };
 
-JSHTMLAnchorElement::JSHTMLAnchorElement(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<HTMLAnchorElement> impl)
-    : JSHTMLElement(structure, globalObject, impl)
+JSHTMLAnchorElement::JSHTMLAnchorElement( Structure *structure, JSDOMGlobalObject *globalObject,
+        PassRefPtr<HTMLAnchorElement> impl )
+    : JSHTMLElement( structure, globalObject, impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSHTMLAnchorElement::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSHTMLAnchorElement::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSHTMLAnchorElementPrototype(exec->globalData(), globalObject, JSHTMLAnchorElementPrototype::createStructure(exec->globalData(), JSHTMLElementPrototype::self(exec, globalObject)));
+    return new ( exec ) JSHTMLAnchorElementPrototype( exec->globalData(), globalObject,
+            JSHTMLAnchorElementPrototype::createStructure( exec->globalData(), JSHTMLElementPrototype::self( exec, globalObject ) ) );
 }
 
-bool JSHTMLAnchorElement::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSHTMLAnchorElement::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSHTMLAnchorElement, Base>(exec, &JSHTMLAnchorElementTable, this, propertyName, slot);
+    return getStaticValueSlot<JSHTMLAnchorElement, Base>( exec, &JSHTMLAnchorElementTable, this, propertyName, slot );
 }
 
-bool JSHTMLAnchorElement::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSHTMLAnchorElement::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSHTMLAnchorElement, Base>(exec, &JSHTMLAnchorElementTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSHTMLAnchorElement, Base>( exec, &JSHTMLAnchorElementTable, this, propertyName, descriptor );
 }
 
-JSValue jsHTMLAnchorElementAccessKey(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLAnchorElementAccessKey( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLAnchorElement* castedThis = static_cast<JSHTMLAnchorElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    HTMLAnchorElement* imp = static_cast<HTMLAnchorElement*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->getAttribute(WebCore::HTMLNames::accesskeyAttr));
+    JSHTMLAnchorElement *castedThis = static_cast<JSHTMLAnchorElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    HTMLAnchorElement *imp = static_cast<HTMLAnchorElement *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->getAttribute( WebCore::HTMLNames::accesskeyAttr ) );
     return result;
 }
 
 
-JSValue jsHTMLAnchorElementCharset(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLAnchorElementCharset( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLAnchorElement* castedThis = static_cast<JSHTMLAnchorElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    HTMLAnchorElement* imp = static_cast<HTMLAnchorElement*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->getAttribute(WebCore::HTMLNames::charsetAttr));
+    JSHTMLAnchorElement *castedThis = static_cast<JSHTMLAnchorElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    HTMLAnchorElement *imp = static_cast<HTMLAnchorElement *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->getAttribute( WebCore::HTMLNames::charsetAttr ) );
     return result;
 }
 
 
-JSValue jsHTMLAnchorElementCoords(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLAnchorElementCoords( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLAnchorElement* castedThis = static_cast<JSHTMLAnchorElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    HTMLAnchorElement* imp = static_cast<HTMLAnchorElement*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->getAttribute(WebCore::HTMLNames::coordsAttr));
+    JSHTMLAnchorElement *castedThis = static_cast<JSHTMLAnchorElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    HTMLAnchorElement *imp = static_cast<HTMLAnchorElement *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->getAttribute( WebCore::HTMLNames::coordsAttr ) );
     return result;
 }
 
 
-JSValue jsHTMLAnchorElementHref(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLAnchorElementHref( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLAnchorElement* castedThis = static_cast<JSHTMLAnchorElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    HTMLAnchorElement* imp = static_cast<HTMLAnchorElement*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->getURLAttribute(WebCore::HTMLNames::hrefAttr));
+    JSHTMLAnchorElement *castedThis = static_cast<JSHTMLAnchorElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    HTMLAnchorElement *imp = static_cast<HTMLAnchorElement *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->getURLAttribute( WebCore::HTMLNames::hrefAttr ) );
     return result;
 }
 
 
-JSValue jsHTMLAnchorElementHreflang(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLAnchorElementHreflang( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLAnchorElement* castedThis = static_cast<JSHTMLAnchorElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    HTMLAnchorElement* imp = static_cast<HTMLAnchorElement*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->getAttribute(WebCore::HTMLNames::hreflangAttr));
+    JSHTMLAnchorElement *castedThis = static_cast<JSHTMLAnchorElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    HTMLAnchorElement *imp = static_cast<HTMLAnchorElement *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->getAttribute( WebCore::HTMLNames::hreflangAttr ) );
     return result;
 }
 
 
-JSValue jsHTMLAnchorElementName(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLAnchorElementName( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLAnchorElement* castedThis = static_cast<JSHTMLAnchorElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    HTMLAnchorElement* imp = static_cast<HTMLAnchorElement*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->getAttribute(WebCore::HTMLNames::nameAttr));
+    JSHTMLAnchorElement *castedThis = static_cast<JSHTMLAnchorElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    HTMLAnchorElement *imp = static_cast<HTMLAnchorElement *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->getAttribute( WebCore::HTMLNames::nameAttr ) );
     return result;
 }
 
 
-JSValue jsHTMLAnchorElementPing(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLAnchorElementPing( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLAnchorElement* castedThis = static_cast<JSHTMLAnchorElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    HTMLAnchorElement* imp = static_cast<HTMLAnchorElement*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->getAttribute(WebCore::HTMLNames::pingAttr));
+    JSHTMLAnchorElement *castedThis = static_cast<JSHTMLAnchorElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    HTMLAnchorElement *imp = static_cast<HTMLAnchorElement *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->getAttribute( WebCore::HTMLNames::pingAttr ) );
     return result;
 }
 
 
-JSValue jsHTMLAnchorElementRel(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLAnchorElementRel( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLAnchorElement* castedThis = static_cast<JSHTMLAnchorElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    HTMLAnchorElement* imp = static_cast<HTMLAnchorElement*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->getAttribute(WebCore::HTMLNames::relAttr));
+    JSHTMLAnchorElement *castedThis = static_cast<JSHTMLAnchorElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    HTMLAnchorElement *imp = static_cast<HTMLAnchorElement *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->getAttribute( WebCore::HTMLNames::relAttr ) );
     return result;
 }
 
 
-JSValue jsHTMLAnchorElementRev(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLAnchorElementRev( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLAnchorElement* castedThis = static_cast<JSHTMLAnchorElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    HTMLAnchorElement* imp = static_cast<HTMLAnchorElement*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->getAttribute(WebCore::HTMLNames::revAttr));
+    JSHTMLAnchorElement *castedThis = static_cast<JSHTMLAnchorElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    HTMLAnchorElement *imp = static_cast<HTMLAnchorElement *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->getAttribute( WebCore::HTMLNames::revAttr ) );
     return result;
 }
 
 
-JSValue jsHTMLAnchorElementShape(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLAnchorElementShape( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLAnchorElement* castedThis = static_cast<JSHTMLAnchorElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    HTMLAnchorElement* imp = static_cast<HTMLAnchorElement*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->getAttribute(WebCore::HTMLNames::shapeAttr));
+    JSHTMLAnchorElement *castedThis = static_cast<JSHTMLAnchorElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    HTMLAnchorElement *imp = static_cast<HTMLAnchorElement *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->getAttribute( WebCore::HTMLNames::shapeAttr ) );
     return result;
 }
 
 
-JSValue jsHTMLAnchorElementTarget(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLAnchorElementTarget( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLAnchorElement* castedThis = static_cast<JSHTMLAnchorElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    HTMLAnchorElement* imp = static_cast<HTMLAnchorElement*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->getAttribute(WebCore::HTMLNames::targetAttr));
+    JSHTMLAnchorElement *castedThis = static_cast<JSHTMLAnchorElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    HTMLAnchorElement *imp = static_cast<HTMLAnchorElement *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->getAttribute( WebCore::HTMLNames::targetAttr ) );
     return result;
 }
 
 
-JSValue jsHTMLAnchorElementType(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLAnchorElementType( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLAnchorElement* castedThis = static_cast<JSHTMLAnchorElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    HTMLAnchorElement* imp = static_cast<HTMLAnchorElement*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->getAttribute(WebCore::HTMLNames::typeAttr));
+    JSHTMLAnchorElement *castedThis = static_cast<JSHTMLAnchorElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    HTMLAnchorElement *imp = static_cast<HTMLAnchorElement *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->getAttribute( WebCore::HTMLNames::typeAttr ) );
     return result;
 }
 
 
-JSValue jsHTMLAnchorElementHash(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLAnchorElementHash( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLAnchorElement* castedThis = static_cast<JSHTMLAnchorElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    HTMLAnchorElement* imp = static_cast<HTMLAnchorElement*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->hash());
+    JSHTMLAnchorElement *castedThis = static_cast<JSHTMLAnchorElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    HTMLAnchorElement *imp = static_cast<HTMLAnchorElement *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->hash() );
     return result;
 }
 
 
-JSValue jsHTMLAnchorElementHost(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLAnchorElementHost( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLAnchorElement* castedThis = static_cast<JSHTMLAnchorElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    HTMLAnchorElement* imp = static_cast<HTMLAnchorElement*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->host());
+    JSHTMLAnchorElement *castedThis = static_cast<JSHTMLAnchorElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    HTMLAnchorElement *imp = static_cast<HTMLAnchorElement *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->host() );
     return result;
 }
 
 
-JSValue jsHTMLAnchorElementHostname(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLAnchorElementHostname( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLAnchorElement* castedThis = static_cast<JSHTMLAnchorElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    HTMLAnchorElement* imp = static_cast<HTMLAnchorElement*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->hostname());
+    JSHTMLAnchorElement *castedThis = static_cast<JSHTMLAnchorElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    HTMLAnchorElement *imp = static_cast<HTMLAnchorElement *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->hostname() );
     return result;
 }
 
 
-JSValue jsHTMLAnchorElementPathname(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLAnchorElementPathname( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLAnchorElement* castedThis = static_cast<JSHTMLAnchorElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    HTMLAnchorElement* imp = static_cast<HTMLAnchorElement*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->pathname());
+    JSHTMLAnchorElement *castedThis = static_cast<JSHTMLAnchorElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    HTMLAnchorElement *imp = static_cast<HTMLAnchorElement *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->pathname() );
     return result;
 }
 
 
-JSValue jsHTMLAnchorElementPort(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLAnchorElementPort( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLAnchorElement* castedThis = static_cast<JSHTMLAnchorElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    HTMLAnchorElement* imp = static_cast<HTMLAnchorElement*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->port());
+    JSHTMLAnchorElement *castedThis = static_cast<JSHTMLAnchorElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    HTMLAnchorElement *imp = static_cast<HTMLAnchorElement *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->port() );
     return result;
 }
 
 
-JSValue jsHTMLAnchorElementProtocol(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLAnchorElementProtocol( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLAnchorElement* castedThis = static_cast<JSHTMLAnchorElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    HTMLAnchorElement* imp = static_cast<HTMLAnchorElement*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->protocol());
+    JSHTMLAnchorElement *castedThis = static_cast<JSHTMLAnchorElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    HTMLAnchorElement *imp = static_cast<HTMLAnchorElement *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->protocol() );
     return result;
 }
 
 
-JSValue jsHTMLAnchorElementSearch(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLAnchorElementSearch( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLAnchorElement* castedThis = static_cast<JSHTMLAnchorElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    HTMLAnchorElement* imp = static_cast<HTMLAnchorElement*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->search());
+    JSHTMLAnchorElement *castedThis = static_cast<JSHTMLAnchorElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    HTMLAnchorElement *imp = static_cast<HTMLAnchorElement *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->search() );
     return result;
 }
 
 
-JSValue jsHTMLAnchorElementOrigin(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLAnchorElementOrigin( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLAnchorElement* castedThis = static_cast<JSHTMLAnchorElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    HTMLAnchorElement* imp = static_cast<HTMLAnchorElement*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->origin());
+    JSHTMLAnchorElement *castedThis = static_cast<JSHTMLAnchorElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    HTMLAnchorElement *imp = static_cast<HTMLAnchorElement *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->origin() );
     return result;
 }
 
 
-JSValue jsHTMLAnchorElementText(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLAnchorElementText( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLAnchorElement* castedThis = static_cast<JSHTMLAnchorElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    HTMLAnchorElement* imp = static_cast<HTMLAnchorElement*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->text());
+    JSHTMLAnchorElement *castedThis = static_cast<JSHTMLAnchorElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    HTMLAnchorElement *imp = static_cast<HTMLAnchorElement *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->text() );
     return result;
 }
 
 
-JSValue jsHTMLAnchorElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLAnchorElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLAnchorElement* domObject = static_cast<JSHTMLAnchorElement*>(asObject(slotBase));
-    return JSHTMLAnchorElement::getConstructor(exec, domObject->globalObject());
+    JSHTMLAnchorElement *domObject = static_cast<JSHTMLAnchorElement *>( asObject( slotBase ) );
+    return JSHTMLAnchorElement::getConstructor( exec, domObject->globalObject() );
 }
 
-void JSHTMLAnchorElement::put(ExecState* exec, const Identifier& propertyName, JSValue value, PutPropertySlot& slot)
+void JSHTMLAnchorElement::put( ExecState *exec, const Identifier &propertyName, JSValue value, PutPropertySlot &slot )
 {
-    lookupPut<JSHTMLAnchorElement, Base>(exec, propertyName, value, &JSHTMLAnchorElementTable, this, slot);
+    lookupPut<JSHTMLAnchorElement, Base>( exec, propertyName, value, &JSHTMLAnchorElementTable, this, slot );
 }
 
-void setJSHTMLAnchorElementAccessKey(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSHTMLAnchorElementAccessKey( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSHTMLAnchorElement* castedThis = static_cast<JSHTMLAnchorElement*>(thisObject);
-    HTMLAnchorElement* imp = static_cast<HTMLAnchorElement*>(castedThis->impl());
-    imp->setAttribute(WebCore::HTMLNames::accesskeyAttr, valueToStringWithNullCheck(exec, value));
-}
-
-
-void setJSHTMLAnchorElementCharset(ExecState* exec, JSObject* thisObject, JSValue value)
-{
-    JSHTMLAnchorElement* castedThis = static_cast<JSHTMLAnchorElement*>(thisObject);
-    HTMLAnchorElement* imp = static_cast<HTMLAnchorElement*>(castedThis->impl());
-    imp->setAttribute(WebCore::HTMLNames::charsetAttr, valueToStringWithNullCheck(exec, value));
+    JSHTMLAnchorElement *castedThis = static_cast<JSHTMLAnchorElement *>( thisObject );
+    HTMLAnchorElement *imp = static_cast<HTMLAnchorElement *>( castedThis->impl() );
+    imp->setAttribute( WebCore::HTMLNames::accesskeyAttr, valueToStringWithNullCheck( exec, value ) );
 }
 
 
-void setJSHTMLAnchorElementCoords(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSHTMLAnchorElementCharset( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSHTMLAnchorElement* castedThis = static_cast<JSHTMLAnchorElement*>(thisObject);
-    HTMLAnchorElement* imp = static_cast<HTMLAnchorElement*>(castedThis->impl());
-    imp->setAttribute(WebCore::HTMLNames::coordsAttr, valueToStringWithNullCheck(exec, value));
+    JSHTMLAnchorElement *castedThis = static_cast<JSHTMLAnchorElement *>( thisObject );
+    HTMLAnchorElement *imp = static_cast<HTMLAnchorElement *>( castedThis->impl() );
+    imp->setAttribute( WebCore::HTMLNames::charsetAttr, valueToStringWithNullCheck( exec, value ) );
 }
 
 
-void setJSHTMLAnchorElementHref(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSHTMLAnchorElementCoords( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSHTMLAnchorElement* castedThis = static_cast<JSHTMLAnchorElement*>(thisObject);
-    HTMLAnchorElement* imp = static_cast<HTMLAnchorElement*>(castedThis->impl());
-    imp->setAttribute(WebCore::HTMLNames::hrefAttr, valueToStringWithNullCheck(exec, value));
+    JSHTMLAnchorElement *castedThis = static_cast<JSHTMLAnchorElement *>( thisObject );
+    HTMLAnchorElement *imp = static_cast<HTMLAnchorElement *>( castedThis->impl() );
+    imp->setAttribute( WebCore::HTMLNames::coordsAttr, valueToStringWithNullCheck( exec, value ) );
 }
 
 
-void setJSHTMLAnchorElementHreflang(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSHTMLAnchorElementHref( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSHTMLAnchorElement* castedThis = static_cast<JSHTMLAnchorElement*>(thisObject);
-    HTMLAnchorElement* imp = static_cast<HTMLAnchorElement*>(castedThis->impl());
-    imp->setAttribute(WebCore::HTMLNames::hreflangAttr, valueToStringWithNullCheck(exec, value));
+    JSHTMLAnchorElement *castedThis = static_cast<JSHTMLAnchorElement *>( thisObject );
+    HTMLAnchorElement *imp = static_cast<HTMLAnchorElement *>( castedThis->impl() );
+    imp->setAttribute( WebCore::HTMLNames::hrefAttr, valueToStringWithNullCheck( exec, value ) );
 }
 
 
-void setJSHTMLAnchorElementName(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSHTMLAnchorElementHreflang( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSHTMLAnchorElement* castedThis = static_cast<JSHTMLAnchorElement*>(thisObject);
-    HTMLAnchorElement* imp = static_cast<HTMLAnchorElement*>(castedThis->impl());
-    imp->setAttribute(WebCore::HTMLNames::nameAttr, valueToStringWithNullCheck(exec, value));
+    JSHTMLAnchorElement *castedThis = static_cast<JSHTMLAnchorElement *>( thisObject );
+    HTMLAnchorElement *imp = static_cast<HTMLAnchorElement *>( castedThis->impl() );
+    imp->setAttribute( WebCore::HTMLNames::hreflangAttr, valueToStringWithNullCheck( exec, value ) );
 }
 
 
-void setJSHTMLAnchorElementPing(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSHTMLAnchorElementName( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSHTMLAnchorElement* castedThis = static_cast<JSHTMLAnchorElement*>(thisObject);
-    HTMLAnchorElement* imp = static_cast<HTMLAnchorElement*>(castedThis->impl());
-    imp->setAttribute(WebCore::HTMLNames::pingAttr, valueToStringWithNullCheck(exec, value));
+    JSHTMLAnchorElement *castedThis = static_cast<JSHTMLAnchorElement *>( thisObject );
+    HTMLAnchorElement *imp = static_cast<HTMLAnchorElement *>( castedThis->impl() );
+    imp->setAttribute( WebCore::HTMLNames::nameAttr, valueToStringWithNullCheck( exec, value ) );
 }
 
 
-void setJSHTMLAnchorElementRel(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSHTMLAnchorElementPing( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSHTMLAnchorElement* castedThis = static_cast<JSHTMLAnchorElement*>(thisObject);
-    HTMLAnchorElement* imp = static_cast<HTMLAnchorElement*>(castedThis->impl());
-    imp->setAttribute(WebCore::HTMLNames::relAttr, valueToStringWithNullCheck(exec, value));
+    JSHTMLAnchorElement *castedThis = static_cast<JSHTMLAnchorElement *>( thisObject );
+    HTMLAnchorElement *imp = static_cast<HTMLAnchorElement *>( castedThis->impl() );
+    imp->setAttribute( WebCore::HTMLNames::pingAttr, valueToStringWithNullCheck( exec, value ) );
 }
 
 
-void setJSHTMLAnchorElementRev(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSHTMLAnchorElementRel( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSHTMLAnchorElement* castedThis = static_cast<JSHTMLAnchorElement*>(thisObject);
-    HTMLAnchorElement* imp = static_cast<HTMLAnchorElement*>(castedThis->impl());
-    imp->setAttribute(WebCore::HTMLNames::revAttr, valueToStringWithNullCheck(exec, value));
+    JSHTMLAnchorElement *castedThis = static_cast<JSHTMLAnchorElement *>( thisObject );
+    HTMLAnchorElement *imp = static_cast<HTMLAnchorElement *>( castedThis->impl() );
+    imp->setAttribute( WebCore::HTMLNames::relAttr, valueToStringWithNullCheck( exec, value ) );
 }
 
 
-void setJSHTMLAnchorElementShape(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSHTMLAnchorElementRev( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSHTMLAnchorElement* castedThis = static_cast<JSHTMLAnchorElement*>(thisObject);
-    HTMLAnchorElement* imp = static_cast<HTMLAnchorElement*>(castedThis->impl());
-    imp->setAttribute(WebCore::HTMLNames::shapeAttr, valueToStringWithNullCheck(exec, value));
+    JSHTMLAnchorElement *castedThis = static_cast<JSHTMLAnchorElement *>( thisObject );
+    HTMLAnchorElement *imp = static_cast<HTMLAnchorElement *>( castedThis->impl() );
+    imp->setAttribute( WebCore::HTMLNames::revAttr, valueToStringWithNullCheck( exec, value ) );
 }
 
 
-void setJSHTMLAnchorElementTarget(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSHTMLAnchorElementShape( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSHTMLAnchorElement* castedThis = static_cast<JSHTMLAnchorElement*>(thisObject);
-    HTMLAnchorElement* imp = static_cast<HTMLAnchorElement*>(castedThis->impl());
-    imp->setAttribute(WebCore::HTMLNames::targetAttr, valueToStringWithNullCheck(exec, value));
+    JSHTMLAnchorElement *castedThis = static_cast<JSHTMLAnchorElement *>( thisObject );
+    HTMLAnchorElement *imp = static_cast<HTMLAnchorElement *>( castedThis->impl() );
+    imp->setAttribute( WebCore::HTMLNames::shapeAttr, valueToStringWithNullCheck( exec, value ) );
 }
 
 
-void setJSHTMLAnchorElementType(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSHTMLAnchorElementTarget( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSHTMLAnchorElement* castedThis = static_cast<JSHTMLAnchorElement*>(thisObject);
-    HTMLAnchorElement* imp = static_cast<HTMLAnchorElement*>(castedThis->impl());
-    imp->setAttribute(WebCore::HTMLNames::typeAttr, valueToStringWithNullCheck(exec, value));
+    JSHTMLAnchorElement *castedThis = static_cast<JSHTMLAnchorElement *>( thisObject );
+    HTMLAnchorElement *imp = static_cast<HTMLAnchorElement *>( castedThis->impl() );
+    imp->setAttribute( WebCore::HTMLNames::targetAttr, valueToStringWithNullCheck( exec, value ) );
 }
 
 
-void setJSHTMLAnchorElementHash(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSHTMLAnchorElementType( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSHTMLAnchorElement* castedThis = static_cast<JSHTMLAnchorElement*>(thisObject);
-    HTMLAnchorElement* imp = static_cast<HTMLAnchorElement*>(castedThis->impl());
-    imp->setHash(valueToStringWithNullCheck(exec, value));
+    JSHTMLAnchorElement *castedThis = static_cast<JSHTMLAnchorElement *>( thisObject );
+    HTMLAnchorElement *imp = static_cast<HTMLAnchorElement *>( castedThis->impl() );
+    imp->setAttribute( WebCore::HTMLNames::typeAttr, valueToStringWithNullCheck( exec, value ) );
 }
 
 
-void setJSHTMLAnchorElementHost(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSHTMLAnchorElementHash( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSHTMLAnchorElement* castedThis = static_cast<JSHTMLAnchorElement*>(thisObject);
-    HTMLAnchorElement* imp = static_cast<HTMLAnchorElement*>(castedThis->impl());
-    imp->setHost(valueToStringWithNullCheck(exec, value));
+    JSHTMLAnchorElement *castedThis = static_cast<JSHTMLAnchorElement *>( thisObject );
+    HTMLAnchorElement *imp = static_cast<HTMLAnchorElement *>( castedThis->impl() );
+    imp->setHash( valueToStringWithNullCheck( exec, value ) );
 }
 
 
-void setJSHTMLAnchorElementHostname(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSHTMLAnchorElementHost( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSHTMLAnchorElement* castedThis = static_cast<JSHTMLAnchorElement*>(thisObject);
-    HTMLAnchorElement* imp = static_cast<HTMLAnchorElement*>(castedThis->impl());
-    imp->setHostname(valueToStringWithNullCheck(exec, value));
+    JSHTMLAnchorElement *castedThis = static_cast<JSHTMLAnchorElement *>( thisObject );
+    HTMLAnchorElement *imp = static_cast<HTMLAnchorElement *>( castedThis->impl() );
+    imp->setHost( valueToStringWithNullCheck( exec, value ) );
 }
 
 
-void setJSHTMLAnchorElementPathname(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSHTMLAnchorElementHostname( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSHTMLAnchorElement* castedThis = static_cast<JSHTMLAnchorElement*>(thisObject);
-    HTMLAnchorElement* imp = static_cast<HTMLAnchorElement*>(castedThis->impl());
-    imp->setPathname(valueToStringWithNullCheck(exec, value));
+    JSHTMLAnchorElement *castedThis = static_cast<JSHTMLAnchorElement *>( thisObject );
+    HTMLAnchorElement *imp = static_cast<HTMLAnchorElement *>( castedThis->impl() );
+    imp->setHostname( valueToStringWithNullCheck( exec, value ) );
 }
 
 
-void setJSHTMLAnchorElementPort(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSHTMLAnchorElementPathname( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSHTMLAnchorElement* castedThis = static_cast<JSHTMLAnchorElement*>(thisObject);
-    HTMLAnchorElement* imp = static_cast<HTMLAnchorElement*>(castedThis->impl());
-    imp->setPort(valueToStringWithNullCheck(exec, value));
+    JSHTMLAnchorElement *castedThis = static_cast<JSHTMLAnchorElement *>( thisObject );
+    HTMLAnchorElement *imp = static_cast<HTMLAnchorElement *>( castedThis->impl() );
+    imp->setPathname( valueToStringWithNullCheck( exec, value ) );
 }
 
 
-void setJSHTMLAnchorElementProtocol(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSHTMLAnchorElementPort( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSHTMLAnchorElement* castedThis = static_cast<JSHTMLAnchorElement*>(thisObject);
-    HTMLAnchorElement* imp = static_cast<HTMLAnchorElement*>(castedThis->impl());
-    imp->setProtocol(valueToStringWithNullCheck(exec, value));
+    JSHTMLAnchorElement *castedThis = static_cast<JSHTMLAnchorElement *>( thisObject );
+    HTMLAnchorElement *imp = static_cast<HTMLAnchorElement *>( castedThis->impl() );
+    imp->setPort( valueToStringWithNullCheck( exec, value ) );
 }
 
 
-void setJSHTMLAnchorElementSearch(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSHTMLAnchorElementProtocol( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSHTMLAnchorElement* castedThis = static_cast<JSHTMLAnchorElement*>(thisObject);
-    HTMLAnchorElement* imp = static_cast<HTMLAnchorElement*>(castedThis->impl());
-    imp->setSearch(valueToStringWithNullCheck(exec, value));
+    JSHTMLAnchorElement *castedThis = static_cast<JSHTMLAnchorElement *>( thisObject );
+    HTMLAnchorElement *imp = static_cast<HTMLAnchorElement *>( castedThis->impl() );
+    imp->setProtocol( valueToStringWithNullCheck( exec, value ) );
 }
 
 
-JSValue JSHTMLAnchorElement::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+void setJSHTMLAnchorElementSearch( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    return getDOMConstructor<JSHTMLAnchorElementConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    JSHTMLAnchorElement *castedThis = static_cast<JSHTMLAnchorElement *>( thisObject );
+    HTMLAnchorElement *imp = static_cast<HTMLAnchorElement *>( castedThis->impl() );
+    imp->setSearch( valueToStringWithNullCheck( exec, value ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsHTMLAnchorElementPrototypeFunctionGetParameter(ExecState* exec)
+
+JSValue JSHTMLAnchorElement::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
+{
+    return getDOMConstructor<JSHTMLAnchorElementConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
+}
+
+EncodedJSValue JSC_HOST_CALL jsHTMLAnchorElementPrototypeFunctionGetParameter( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSHTMLAnchorElement::s_info))
-        return throwVMTypeError(exec);
-    JSHTMLAnchorElement* castedThis = static_cast<JSHTMLAnchorElement*>(asObject(thisValue));
-    HTMLAnchorElement* imp = static_cast<HTMLAnchorElement*>(castedThis->impl());
-    const String& name(ustringToString(exec->argument(0).toString(exec)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
+
+    if ( !thisValue.inherits( &JSHTMLAnchorElement::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSHTMLAnchorElement *castedThis = static_cast<JSHTMLAnchorElement *>( asObject( thisValue ) );
+    HTMLAnchorElement *imp = static_cast<HTMLAnchorElement *>( castedThis->impl() );
+    const String &name( ustringToString( exec->argument( 0 ).toString( exec ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
 
 
-    JSC::JSValue result = jsString(exec, imp->getParameter(name));
-    return JSValue::encode(result);
+    JSC::JSValue result = jsString( exec, imp->getParameter( name ) );
+    return JSValue::encode( result );
 }
 
-EncodedJSValue JSC_HOST_CALL jsHTMLAnchorElementPrototypeFunctionToString(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsHTMLAnchorElementPrototypeFunctionToString( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSHTMLAnchorElement::s_info))
-        return throwVMTypeError(exec);
-    JSHTMLAnchorElement* castedThis = static_cast<JSHTMLAnchorElement*>(asObject(thisValue));
-    HTMLAnchorElement* imp = static_cast<HTMLAnchorElement*>(castedThis->impl());
+
+    if ( !thisValue.inherits( &JSHTMLAnchorElement::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSHTMLAnchorElement *castedThis = static_cast<JSHTMLAnchorElement *>( asObject( thisValue ) );
+    HTMLAnchorElement *imp = static_cast<HTMLAnchorElement *>( castedThis->impl() );
 
 
-    JSC::JSValue result = jsString(exec, imp->toString());
-    return JSValue::encode(result);
+    JSC::JSValue result = jsString( exec, imp->toString() );
+    return JSValue::encode( result );
 }
 
 

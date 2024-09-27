@@ -25,89 +25,122 @@
 
 #include <wtf/Noncopyable.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 template <class Run>
-class BidiRunList {
-    WTF_MAKE_NONCOPYABLE(BidiRunList);
+class BidiRunList
+{
+    WTF_MAKE_NONCOPYABLE( BidiRunList );
 public:
     BidiRunList()
-        : m_firstRun(0)
-        , m_lastRun(0)
-        , m_logicallyLastRun(0)
-        , m_runCount(0)
+        : m_firstRun( 0 )
+        , m_lastRun( 0 )
+        , m_logicallyLastRun( 0 )
+        , m_runCount( 0 )
     {
     }
 
     // FIXME: Once BidiResolver no longer owns the BidiRunList,
     // then ~BidiRunList should call deleteRuns() automatically.
 
-    Run* firstRun() const { return m_firstRun; }
-    Run* lastRun() const { return m_lastRun; }
-    Run* logicallyLastRun() const { return m_logicallyLastRun; }
-    unsigned runCount() const { return m_runCount; }
+    Run *firstRun() const
+    {
+        return m_firstRun;
+    }
+    Run *lastRun() const
+    {
+        return m_lastRun;
+    }
+    Run *logicallyLastRun() const
+    {
+        return m_logicallyLastRun;
+    }
+    unsigned runCount() const
+    {
+        return m_runCount;
+    }
 
-    void addRun(Run*);
-    void prependRun(Run*);
+    void addRun( Run * );
+    void prependRun( Run * );
 
-    void moveRunToEnd(Run*);
-    void moveRunToBeginning(Run*);
+    void moveRunToEnd( Run * );
+    void moveRunToBeginning( Run * );
 
     void deleteRuns();
-    void reverseRuns(unsigned start, unsigned end);
+    void reverseRuns( unsigned start, unsigned end );
     void reorderRunsFromLevels();
 
-    void setLogicallyLastRun(Run* run) { m_logicallyLastRun = run; }
+    void setLogicallyLastRun( Run *run )
+    {
+        m_logicallyLastRun = run;
+    }
 
 private:
-    Run* m_firstRun;
-    Run* m_lastRun;
-    Run* m_logicallyLastRun;
+    Run *m_firstRun;
+    Run *m_lastRun;
+    Run *m_logicallyLastRun;
     unsigned m_runCount;
 };
 
 template <class Run>
-inline void BidiRunList<Run>::addRun(Run* run)
+inline void BidiRunList<Run>::addRun( Run *run )
 {
-    if (!m_firstRun)
+    if ( !m_firstRun )
+    {
         m_firstRun = run;
+    }
     else
+    {
         m_lastRun->m_next = run;
+    }
+
     m_lastRun = run;
     m_runCount++;
 }
 
 template <class Run>
-inline void BidiRunList<Run>::prependRun(Run* run)
+inline void BidiRunList<Run>::prependRun( Run *run )
 {
-    ASSERT(!run->m_next);
+    ASSERT( !run->m_next );
 
-    if (!m_lastRun)
+    if ( !m_lastRun )
+    {
         m_lastRun = run;
+    }
     else
+    {
         run->m_next = m_firstRun;
+    }
+
     m_firstRun = run;
     m_runCount++;
 }
 
 template <class Run>
-inline void BidiRunList<Run>::moveRunToEnd(Run* run)
+inline void BidiRunList<Run>::moveRunToEnd( Run *run )
 {
-    ASSERT(m_firstRun);
-    ASSERT(m_lastRun);
-    ASSERT(run->m_next);
+    ASSERT( m_firstRun );
+    ASSERT( m_lastRun );
+    ASSERT( run->m_next );
 
-    Run* current = 0;
-    Run* next = m_firstRun;
-    while (next != run) {
+    Run *current = 0;
+    Run *next = m_firstRun;
+
+    while ( next != run )
+    {
         current = next;
         next = current->next();
     }
 
-    if (!current)
+    if ( !current )
+    {
         m_firstRun = run->next();
+    }
     else
+    {
         current->m_next = run->m_next;
+    }
 
     run->m_next = 0;
     m_lastRun->m_next = run;
@@ -115,22 +148,27 @@ inline void BidiRunList<Run>::moveRunToEnd(Run* run)
 }
 
 template <class Run>
-inline void BidiRunList<Run>::moveRunToBeginning(Run* run)
+inline void BidiRunList<Run>::moveRunToBeginning( Run *run )
 {
-    ASSERT(m_firstRun);
-    ASSERT(m_lastRun);
-    ASSERT(run != m_firstRun);
+    ASSERT( m_firstRun );
+    ASSERT( m_lastRun );
+    ASSERT( run != m_firstRun );
 
-    Run* current = m_firstRun;
-    Run* next = current->next();
-    while (next != run) {
+    Run *current = m_firstRun;
+    Run *next = current->next();
+
+    while ( next != run )
+    {
         current = next;
         next = current->next();
     }
 
     current->m_next = run->m_next;
-    if (run == m_lastRun)
+
+    if ( run == m_lastRun )
+    {
         m_lastRun = current;
+    }
 
     run->m_next = m_firstRun;
     m_firstRun = run;
@@ -139,12 +177,16 @@ inline void BidiRunList<Run>::moveRunToBeginning(Run* run)
 template <class Run>
 void BidiRunList<Run>::deleteRuns()
 {
-    if (!m_firstRun)
+    if ( !m_firstRun )
+    {
         return;
+    }
 
-    Run* curr = m_firstRun;
-    while (curr) {
-        Run* s = curr->next();
+    Run *curr = m_firstRun;
+
+    while ( curr )
+    {
+        Run *s = curr->next();
         curr->destroy();
         curr = s;
     }
@@ -155,38 +197,47 @@ void BidiRunList<Run>::deleteRuns()
 }
 
 template <class Run>
-void BidiRunList<Run>::reverseRuns(unsigned start, unsigned end)
+void BidiRunList<Run>::reverseRuns( unsigned start, unsigned end )
 {
-    if (start >= end)
+    if ( start >= end )
+    {
         return;
+    }
 
-    ASSERT(end < m_runCount);
+    ASSERT( end < m_runCount );
 
     // Get the item before the start of the runs to reverse and put it in
     // |beforeStart|. |curr| should point to the first run to reverse.
-    Run* curr = m_firstRun;
-    Run* beforeStart = 0;
+    Run *curr = m_firstRun;
+    Run *beforeStart = 0;
     unsigned i = 0;
-    while (i < start) {
+
+    while ( i < start )
+    {
         i++;
         beforeStart = curr;
         curr = curr->next();
     }
 
-    Run* startRun = curr;
-    while (i < end) {
+    Run *startRun = curr;
+
+    while ( i < end )
+    {
         i++;
         curr = curr->next();
     }
-    Run* endRun = curr;
-    Run* afterEnd = curr->next();
+
+    Run *endRun = curr;
+    Run *afterEnd = curr->next();
 
     i = start;
     curr = startRun;
-    Run* newNext = afterEnd;
-    while (i <= end) {
+    Run *newNext = afterEnd;
+
+    while ( i <= end )
+    {
         // Do the reversal.
-        Run* next = curr->next();
+        Run *next = curr->next();
         curr->m_next = newNext;
         newNext = curr;
         curr = next;
@@ -194,14 +245,21 @@ void BidiRunList<Run>::reverseRuns(unsigned start, unsigned end)
     }
 
     // Now hook up beforeStart and afterEnd to the startRun and endRun.
-    if (beforeStart)
+    if ( beforeStart )
+    {
         beforeStart->m_next = endRun;
+    }
     else
+    {
         m_firstRun = endRun;
+    }
 
     startRun->m_next = afterEnd;
-    if (!afterEnd)
+
+    if ( !afterEnd )
+    {
         m_lastRun = startRun;
+    }
 }
 
 } // namespace WebCore

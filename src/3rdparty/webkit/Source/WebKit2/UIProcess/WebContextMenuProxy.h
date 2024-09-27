@@ -30,19 +30,22 @@
 #include <wtf/RefCounted.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
-    class IntPoint;
+namespace WebCore
+{
+class IntPoint;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
 class WebContextMenuItemData;
 
-class WebContextMenuProxy : public RefCounted<WebContextMenuProxy> {
+class WebContextMenuProxy : public RefCounted<WebContextMenuProxy>
+{
 public:
     virtual ~WebContextMenuProxy();
 
-    virtual void showContextMenu(const WebCore::IntPoint&, const Vector<WebContextMenuItemData>& items) = 0;
+    virtual void showContextMenu( const WebCore::IntPoint &, const Vector<WebContextMenuItemData> &items ) = 0;
     virtual void hideContextMenu() = 0;
 
 protected:

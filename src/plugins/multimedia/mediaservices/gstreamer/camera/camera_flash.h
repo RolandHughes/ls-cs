@@ -34,19 +34,19 @@ class CameraBinSession;
 
 class Q_MULTIMEDIA_EXPORT CameraBinFlash : public QCameraFlashControl
 {
-   CS_OBJECT(CameraBinFlash)
- public:
-   CameraBinFlash(CameraBinSession *session);
-   virtual ~CameraBinFlash();
+    CS_OBJECT( CameraBinFlash )
+public:
+    CameraBinFlash( CameraBinSession *session );
+    virtual ~CameraBinFlash();
 
-   QCameraExposure::FlashModes flashMode() const;
-   void setFlashMode(QCameraExposure::FlashModes mode);
-   bool isFlashModeSupported(QCameraExposure::FlashModes mode) const;
+    QCameraExposure::FlashModes flashMode() const;
+    void setFlashMode( QCameraExposure::FlashModes mode );
+    bool isFlashModeSupported( QCameraExposure::FlashModes mode ) const;
 
-   bool isFlashReady() const;
+    bool isFlashReady() const;
 
- private:
-   CameraBinSession *m_session;
+private:
+    CameraBinSession *m_session;
 };
 
 #endif

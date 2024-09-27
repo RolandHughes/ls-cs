@@ -24,25 +24,27 @@
 #include "JSArray.h"
 #include "Lookup.h"
 
-namespace JSC {
+namespace JSC
+{
 
-    class ArrayPrototype : public JSArray {
-    public:
-        explicit ArrayPrototype(JSGlobalObject*, Structure*);
+class ArrayPrototype : public JSArray
+{
+public:
+    explicit ArrayPrototype( JSGlobalObject *, Structure * );
 
-        bool getOwnPropertySlot(ExecState*, const Identifier&, PropertySlot&);
-        virtual bool getOwnPropertyDescriptor(ExecState*, const Identifier&, PropertyDescriptor&);
+    bool getOwnPropertySlot( ExecState *, const Identifier &, PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( ExecState *, const Identifier &, PropertyDescriptor & );
 
-        static const ClassInfo s_info;
+    static const ClassInfo s_info;
 
-        static Structure* createStructure(JSGlobalData& globalData, JSValue prototype)
-        {
-            return Structure::create(globalData, prototype, TypeInfo(ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
-        }
+    static Structure *createStructure( JSGlobalData &globalData, JSValue prototype )
+    {
+        return Structure::create( globalData, prototype, TypeInfo( ObjectType, StructureFlags ), AnonymousSlotCount, &s_info );
+    }
 
-    protected:
-        static const unsigned AnonymousSlotCount = JSArray::AnonymousSlotCount + 1;
-    };
+protected:
+    static const unsigned AnonymousSlotCount = JSArray::AnonymousSlotCount + 1;
+};
 
 } // namespace JSC
 

@@ -29,17 +29,18 @@
 #include "Settings.h"
 #include "XMLDocumentParser.h"
 
-namespace WebCore {
-
-DocumentFragment::DocumentFragment(Document* document)
-    : ContainerNode(document)
+namespace WebCore
 {
-    ASSERT(document);
+
+DocumentFragment::DocumentFragment( Document *document )
+    : ContainerNode( document )
+{
+    ASSERT( document );
 }
 
-PassRefPtr<DocumentFragment> DocumentFragment::create(Document* document)
+PassRefPtr<DocumentFragment> DocumentFragment::create( Document *document )
 {
-    return adoptRef(new DocumentFragment(document));
+    return adoptRef( new DocumentFragment( document ) );
 }
 
 String DocumentFragment::nodeName() const
@@ -52,9 +53,10 @@ Node::NodeType DocumentFragment::nodeType() const
     return DOCUMENT_FRAGMENT_NODE;
 }
 
-bool DocumentFragment::childTypeAllowed(NodeType type) const
+bool DocumentFragment::childTypeAllowed( NodeType type ) const
 {
-    switch (type) {
+    switch ( type )
+    {
         case ELEMENT_NODE:
         case PROCESSING_INSTRUCTION_NODE:
         case COMMENT_NODE:
@@ -62,27 +64,32 @@ bool DocumentFragment::childTypeAllowed(NodeType type) const
         case CDATA_SECTION_NODE:
         case ENTITY_REFERENCE_NODE:
             return true;
+
         default:
             return false;
     }
 }
 
-PassRefPtr<Node> DocumentFragment::cloneNode(bool deep)
+PassRefPtr<Node> DocumentFragment::cloneNode( bool deep )
 {
-    RefPtr<DocumentFragment> clone = create(document());
-    if (deep)
-        cloneChildNodes(clone.get());
+    RefPtr<DocumentFragment> clone = create( document() );
+
+    if ( deep )
+    {
+        cloneChildNodes( clone.get() );
+    }
+
     return clone.release();
 }
 
-void DocumentFragment::parseHTML(const String& source, Element* contextElement, FragmentScriptingPermission scriptingPermission)
+void DocumentFragment::parseHTML( const String &source, Element *contextElement, FragmentScriptingPermission scriptingPermission )
 {
-    HTMLDocumentParser::parseDocumentFragment(source, this, contextElement, scriptingPermission);
+    HTMLDocumentParser::parseDocumentFragment( source, this, contextElement, scriptingPermission );
 }
 
-bool DocumentFragment::parseXML(const String& source, Element* contextElement, FragmentScriptingPermission scriptingPermission)
+bool DocumentFragment::parseXML( const String &source, Element *contextElement, FragmentScriptingPermission scriptingPermission )
 {
-    return XMLDocumentParser::parseDocumentFragment(source, this, contextElement, scriptingPermission);
+    return XMLDocumentParser::parseDocumentFragment( source, this, contextElement, scriptingPermission );
 }
 
 }

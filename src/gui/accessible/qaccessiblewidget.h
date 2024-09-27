@@ -32,49 +32,49 @@ class QAccessibleWidgetPrivate;
 
 class Q_GUI_EXPORT QAccessibleWidget : public QAccessibleObject, public QAccessibleActionInterface
 {
- public:
-   explicit QAccessibleWidget(QWidget *widget, QAccessible::Role role = QAccessible::Client, const QString &name = QString());
+public:
+    explicit QAccessibleWidget( QWidget *widget, QAccessible::Role role = QAccessible::Client, const QString &name = QString() );
 
-   QAccessibleWidget(const QAccessibleWidget &) = delete;
-   QAccessibleWidget &operator=(const QAccessibleWidget &) = delete;
+    QAccessibleWidget( const QAccessibleWidget & ) = delete;
+    QAccessibleWidget &operator=( const QAccessibleWidget & ) = delete;
 
-   bool isValid() const override;
-   QWindow *window() const override;
-   int childCount() const override;
-   int indexOfChild(const QAccessibleInterface *child) const override;
+    bool isValid() const override;
+    QWindow *window() const override;
+    int childCount() const override;
+    int indexOfChild( const QAccessibleInterface *child ) const override;
 
-   QVector<QPair<QAccessibleInterface *, QAccessible::Relation>>
-         relations(QAccessible::Relation match = QAccessible::AllRelations) const override;
+    QVector<QPair<QAccessibleInterface *, QAccessible::Relation>>
+            relations( QAccessible::Relation match = QAccessible::AllRelations ) const override;
 
-   QAccessibleInterface *focusChild() const override;
+    QAccessibleInterface *focusChild() const override;
 
-   QRect rect() const override;
+    QRect rect() const override;
 
-   QAccessibleInterface *parent() const override;
-   QAccessibleInterface *child(int index) const override;
+    QAccessibleInterface *parent() const override;
+    QAccessibleInterface *child( int index ) const override;
 
-   QString text(QAccessible::Text text) const override;
-   QAccessible::Role role() const override;
-   QAccessible::State state() const override;
+    QString text( QAccessible::Text text ) const override;
+    QAccessible::Role role() const override;
+    QAccessible::State state() const override;
 
-   QColor foregroundColor() const override;
-   QColor backgroundColor() const override;
+    QColor foregroundColor() const override;
+    QColor backgroundColor() const override;
 
-   void *interface_cast(QAccessible::InterfaceType type) override;
-   QStringList actionNames() const override;
-   void doAction(const QString &actionName) override;
-   QStringList keyBindingsForAction(const QString &actionName) const override;
+    void *interface_cast( QAccessible::InterfaceType type ) override;
+    QStringList actionNames() const override;
+    void doAction( const QString &actionName ) override;
+    QStringList keyBindingsForAction( const QString &actionName ) const override;
 
- protected:
-   ~QAccessibleWidget();
-   QWidget *widget() const;
-   QObject *parentObject() const;
+protected:
+    ~QAccessibleWidget();
+    QWidget *widget() const;
+    QObject *parentObject() const;
 
-   void addControllingSignal(const QString &signal);
-   void addControllingSignal(const QMetaMethod &signal);
+    void addControllingSignal( const QString &signal );
+    void addControllingSignal( const QMetaMethod &signal );
 
- private:
-   QAccessibleWidgetPrivate *d;
+private:
+    QAccessibleWidgetPrivate *d;
 };
 
 #endif // QT_NO_ACCESSIBILITY

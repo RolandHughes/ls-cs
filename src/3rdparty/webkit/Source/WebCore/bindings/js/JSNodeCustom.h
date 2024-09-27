@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef JSNodeCustom_h
@@ -30,45 +30,60 @@
 #include "StyleBase.h"
 #include <wtf/AlwaysInline.h>
 
-namespace WebCore {
-
-inline JSDOMWrapper* getInlineCachedWrapper(DOMWrapperWorld* world, Node* node)
+namespace WebCore
 {
-    if (!world->isNormal())
+
+inline JSDOMWrapper *getInlineCachedWrapper( DOMWrapperWorld *world, Node *node )
+{
+    if ( !world->isNormal() )
+    {
         return 0;
+    }
+
     return node->wrapper();
 }
 
-inline bool setInlineCachedWrapper(DOMWrapperWorld* world, Node* node, JSDOMWrapper* wrapper)
+inline bool setInlineCachedWrapper( DOMWrapperWorld *world, Node *node, JSDOMWrapper *wrapper )
 {
-    if (!world->isNormal())
+    if ( !world->isNormal() )
+    {
         return false;
-    ASSERT(!node->wrapper());
-    node->setWrapper(*world->globalData(), wrapper, wrapperOwner(world, node), wrapperContext(world, node));
+    }
+
+    ASSERT( !node->wrapper() );
+    node->setWrapper( *world->globalData(), wrapper, wrapperOwner( world, node ), wrapperContext( world, node ) );
     return true;
 }
 
-inline bool clearInlineCachedWrapper(DOMWrapperWorld* world, Node* node, JSDOMWrapper* wrapper)
+inline bool clearInlineCachedWrapper( DOMWrapperWorld *world, Node *node, JSDOMWrapper *wrapper )
 {
-    if (!world->isNormal())
+    if ( !world->isNormal() )
+    {
         return false;
-    ASSERT_UNUSED(wrapper, node->wrapper() == wrapper);
+    }
+
+    ASSERT_UNUSED( wrapper, node->wrapper() == wrapper );
     node->clearWrapper();
     return true;
 }
 
-JSC::JSValue createWrapper(JSC::ExecState*, JSDOMGlobalObject*, Node*);
+JSC::JSValue createWrapper( JSC::ExecState *, JSDOMGlobalObject *, Node * );
 
-inline JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, Node* node)
+inline JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, Node *node )
 {
-    if (!node)
+    if ( !node )
+    {
         return JSC::jsNull();
+    }
 
-    JSNode* wrapper = static_cast<JSNode*>(getCachedWrapper(currentWorld(exec), node));
-    if (wrapper)
+    JSNode *wrapper = static_cast<JSNode *>( getCachedWrapper( currentWorld( exec ), node ) );
+
+    if ( wrapper )
+    {
         return wrapper;
+    }
 
-    return createWrapper(exec, globalObject, node);
+    return createWrapper( exec, globalObject, node );
 }
 
 }

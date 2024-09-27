@@ -31,8 +31,9 @@
 
 class Q_MULTIMEDIA_EXPORT QMediaStorageLocation
 {
- public:
-    enum MediaType {
+public:
+    enum MediaType
+    {
         Movies,
         Music,
         Pictures,
@@ -41,13 +42,13 @@ class Q_MULTIMEDIA_EXPORT QMediaStorageLocation
 
     QMediaStorageLocation();
 
-    void addStorageLocation(MediaType type, const QString &location);
-    QDir defaultLocation(MediaType type) const;
+    void addStorageLocation( MediaType type, const QString &location );
+    QDir defaultLocation( MediaType type ) const;
 
-    QString generateFileName(const QString &requestedName, MediaType type, const QString &prefix, const QString &extension) const;
-    QString generateFileName(const QString &prefix, const QDir &dir, const QString &extension) const;
+    QString generateFileName( const QString &requestedName, MediaType type, const QString &prefix, const QString &extension ) const;
+    QString generateFileName( const QString &prefix, const QDir &dir, const QString &extension ) const;
 
- private:
+private:
     mutable QMutex m_mutex;
     mutable QHash<QString, qint64> m_lastUsedIndex;
     QMap<MediaType, QStringList> m_customLocations;

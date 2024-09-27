@@ -21,42 +21,43 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
 #include "Float32Array.h"
 
-namespace WebCore {
-
-PassRefPtr<Float32Array> Float32Array::create(unsigned length)
+namespace WebCore
 {
-    return TypedArrayBase<float>::create<Float32Array>(length);
+
+PassRefPtr<Float32Array> Float32Array::create( unsigned length )
+{
+    return TypedArrayBase<float>::create<Float32Array>( length );
 }
 
-PassRefPtr<Float32Array> Float32Array::create(const float* array, unsigned length)
+PassRefPtr<Float32Array> Float32Array::create( const float *array, unsigned length )
 {
-    return TypedArrayBase<float>::create<Float32Array>(array, length);
+    return TypedArrayBase<float>::create<Float32Array>( array, length );
 }
 
-PassRefPtr<Float32Array> Float32Array::create(PassRefPtr<ArrayBuffer> buffer, unsigned byteOffset, unsigned length)
+PassRefPtr<Float32Array> Float32Array::create( PassRefPtr<ArrayBuffer> buffer, unsigned byteOffset, unsigned length )
 {
-    return TypedArrayBase<float>::create<Float32Array>(buffer, byteOffset, length);
+    return TypedArrayBase<float>::create<Float32Array>( buffer, byteOffset, length );
 }
 
-Float32Array::Float32Array(PassRefPtr<ArrayBuffer> buffer, unsigned byteOffset, unsigned length)
-    : TypedArrayBase<float>(buffer, byteOffset, length)
+Float32Array::Float32Array( PassRefPtr<ArrayBuffer> buffer, unsigned byteOffset, unsigned length )
+    : TypedArrayBase<float>( buffer, byteOffset, length )
 {
 }
 
-PassRefPtr<Float32Array> Float32Array::subarray(int start) const
+PassRefPtr<Float32Array> Float32Array::subarray( int start ) const
 {
-    return subarray(start, length());
+    return subarray( start, length() );
 }
 
-PassRefPtr<Float32Array> Float32Array::subarray(int start, int end) const
+PassRefPtr<Float32Array> Float32Array::subarray( int start, int end ) const
 {
-    return subarrayImpl<Float32Array>(start, end);
+    return subarrayImpl<Float32Array>( start, end );
 }
 
 }

@@ -31,124 +31,140 @@ struct QReadWriteLockPrivate;
 
 class Q_CORE_EXPORT QReadWriteLock
 {
- public:
-   enum RecursionMode {
-      NonRecursive,
-      Recursive
-   };
+public:
+    enum RecursionMode
+    {
+        NonRecursive,
+        Recursive
+    };
 
-   explicit QReadWriteLock(RecursionMode recursionMode = NonRecursive);
+    explicit QReadWriteLock( RecursionMode recursionMode = NonRecursive );
 
-   QReadWriteLock(const QReadWriteLock &) = delete;
-   QReadWriteLock &operator=(const QReadWriteLock &) = delete;
+    QReadWriteLock( const QReadWriteLock & ) = delete;
+    QReadWriteLock &operator=( const QReadWriteLock & ) = delete;
 
-   ~QReadWriteLock();
+    ~QReadWriteLock();
 
-   void lockForRead();
-   bool tryLockForRead();
-   bool tryLockForRead(int timeout);
+    void lockForRead();
+    bool tryLockForRead();
+    bool tryLockForRead( int timeout );
 
-   void lockForWrite();
-   bool tryLockForWrite();
-   bool tryLockForWrite(int timeout);
+    void lockForWrite();
+    bool tryLockForWrite();
+    bool tryLockForWrite( int timeout );
 
-   void unlock();
+    void unlock();
 
- private:
-   QReadWriteLockPrivate *d;
+private:
+    QReadWriteLockPrivate *d;
 
-   friend class QWaitCondition;
+    friend class QWaitCondition;
 };
 
 class Q_CORE_EXPORT QReadLocker
 {
- public:
-   inline QReadLocker(QReadWriteLock *lock);
+public:
+    inline QReadLocker( QReadWriteLock *lock );
 
-   QReadLocker(const QReadLocker &) = delete;
-   QReadLocker &operator=(const QReadLocker &) = delete;
+    QReadLocker( const QReadLocker & ) = delete;
+    QReadLocker &operator=( const QReadLocker & ) = delete;
 
-   ~QReadLocker()
-   {
-      unlock();
-   }
+    ~QReadLocker()
+    {
+        unlock();
+    }
 
-   void unlock() {
-      if (q_val) {
-         if ((q_val & quintptr(1u)) == quintptr(1u)) {
-            q_val &= ~quintptr(1u);
-            readWriteLock()->unlock();
-         }
-      }
-   }
+    void unlock()
+    {
+        if ( q_val )
+        {
+            if ( ( q_val & quintptr( 1u ) ) == quintptr( 1u ) )
+            {
+                q_val &= ~quintptr( 1u );
+                readWriteLock()->unlock();
+            }
+        }
+    }
 
-   void relock() {
-      if (q_val) {
-         if ((q_val & quintptr(1u)) == quintptr(0u)) {
-            readWriteLock()->lockForRead();
-            q_val |= quintptr(1u);
-         }
-      }
-   }
+    void relock()
+    {
+        if ( q_val )
+        {
+            if ( ( q_val & quintptr( 1u ) ) == quintptr( 0u ) )
+            {
+                readWriteLock()->lockForRead();
+                q_val |= quintptr( 1u );
+            }
+        }
+    }
 
-   QReadWriteLock *readWriteLock() const {
-      return reinterpret_cast<QReadWriteLock *>(q_val & ~quintptr(1u));
-   }
+    QReadWriteLock *readWriteLock() const
+    {
+        return reinterpret_cast<QReadWriteLock *>( q_val & ~quintptr( 1u ) );
+    }
 
- private:
-   quintptr q_val;
+private:
+    quintptr q_val;
 };
 
-inline QReadLocker::QReadLocker(QReadWriteLock *lock)
-   : q_val(reinterpret_cast<quintptr>(lock))
+inline QReadLocker::QReadLocker( QReadWriteLock *lock )
+    : q_val( reinterpret_cast<quintptr>( lock ) )
 {
-   Q_ASSERT_X((q_val & quintptr(1u)) == quintptr(0), "QReadLocker", "QReadWriteLock pointer is misaligned");
-   relock();
+    Q_ASSERT_X( ( q_val & quintptr( 1u ) ) == quintptr( 0 ), "QReadLocker", "QReadWriteLock pointer is misaligned" );
+    relock();
 }
 
 class Q_CORE_EXPORT QWriteLocker
 {
- public:
-   inline QWriteLocker(QReadWriteLock *lock);
+public:
+    inline QWriteLocker( QReadWriteLock *lock );
 
-   QWriteLocker(const QWriteLocker &) = delete;
-   QWriteLocker &operator=(const QWriteLocker &) = delete;
+    QWriteLocker( const QWriteLocker & ) = delete;
+    QWriteLocker &operator=( const QWriteLocker & ) = delete;
 
-   ~QWriteLocker() {
-      unlock();
-   }
+    ~QWriteLocker()
+    {
+        unlock();
+    }
 
-   void unlock() {
-      if (q_val) {
-         if ((q_val & quintptr(1u)) == quintptr(1u)) {
-            q_val &= ~quintptr(1u);
-            readWriteLock()->unlock();
-         }
-      }
-   }
+    void unlock()
+    {
+        if ( q_val )
+        {
+            if ( ( q_val & quintptr( 1u ) ) == quintptr( 1u ) )
+            {
+                q_val &= ~quintptr( 1u );
+                readWriteLock()->unlock();
+            }
+        }
+    }
 
-   void relock() {
-      if (q_val) {
-         if ((q_val & quintptr(1u)) == quintptr(0u)) {
-            readWriteLock()->lockForWrite();
-            q_val |= quintptr(1u);
-         }
-      }
-   }
+    void relock()
+    {
+        if ( q_val )
+        {
+            if ( ( q_val & quintptr( 1u ) ) == quintptr( 0u ) )
+            {
+                readWriteLock()->lockForWrite();
+                q_val |= quintptr( 1u );
+            }
+        }
+    }
 
-   QReadWriteLock *readWriteLock() const {
-      return reinterpret_cast<QReadWriteLock *>(q_val & ~quintptr(1u));
-   }
+    QReadWriteLock *readWriteLock() const
+    {
+        return reinterpret_cast<QReadWriteLock *>( q_val & ~quintptr( 1u ) );
+    }
 
- private:
-   quintptr q_val;
+private:
+    quintptr q_val;
 };
 
-inline QWriteLocker::QWriteLocker(QReadWriteLock *lock)
-   : q_val(reinterpret_cast<quintptr>(lock))
+inline QWriteLocker::QWriteLocker( QReadWriteLock *lock )
+    : q_val( reinterpret_cast<quintptr>( lock ) )
 {
-   Q_ASSERT_X((q_val & quintptr(1u)) == quintptr(0), "QWriteLocker", "QReadWriteLock pointer is misaligned");
-   relock();
+    Q_ASSERT_X( ( q_val & quintptr( 1u ) ) == quintptr( 0 ), "QWriteLocker", "QReadWriteLock pointer is misaligned" );
+    relock();
 }
 
 #endif // QREADWRITELOCK_H

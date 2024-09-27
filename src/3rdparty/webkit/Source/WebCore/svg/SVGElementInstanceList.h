@@ -25,18 +25,23 @@
 #include "SVGElementInstance.h"
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class SVGElementInstanceList : public RefCounted<SVGElementInstanceList> {
+class SVGElementInstanceList : public RefCounted<SVGElementInstanceList>
+{
 public:
-    static PassRefPtr<SVGElementInstanceList> create(PassRefPtr<SVGElementInstance> root) { return adoptRef(new SVGElementInstanceList(root)); }
+    static PassRefPtr<SVGElementInstanceList> create( PassRefPtr<SVGElementInstance> root )
+    {
+        return adoptRef( new SVGElementInstanceList( root ) );
+    }
     virtual ~SVGElementInstanceList();
 
     unsigned length() const;
-    SVGElementInstance* item(unsigned index);
+    SVGElementInstance *item( unsigned index );
 
 private:
-    SVGElementInstanceList(PassRefPtr<SVGElementInstance>);
+    SVGElementInstanceList( PassRefPtr<SVGElementInstance> );
 
     RefPtr<SVGElementInstance> m_rootInstance;
 };

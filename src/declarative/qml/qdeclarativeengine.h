@@ -49,66 +49,66 @@ class QDeclarativeNetworkAccessManagerFactory;
 
 class Q_DECLARATIVE_EXPORT QDeclarativeEngine : public QObject
 {
-   DECL_CS_OBJECT(QDeclarativeEngine)
+    DECL_CS_OBJECT( QDeclarativeEngine )
 
-   DECL_CS_PROPERTY_READ(offlineStoragePath, offlineStoragePath)
-   DECL_CS_PROPERTY_WRITE(offlineStoragePath, setOfflineStoragePath)
+    DECL_CS_PROPERTY_READ( offlineStoragePath, offlineStoragePath )
+    DECL_CS_PROPERTY_WRITE( offlineStoragePath, setOfflineStoragePath )
 
- public:
-   QDeclarativeEngine(QObject *p = 0);
-   virtual ~QDeclarativeEngine();
+public:
+    QDeclarativeEngine( QObject *p = 0 );
+    virtual ~QDeclarativeEngine();
 
-   QDeclarativeContext *rootContext() const;
+    QDeclarativeContext *rootContext() const;
 
-   void clearComponentCache();
+    void clearComponentCache();
 
-   QStringList importPathList() const;
-   void setImportPathList(const QStringList &paths);
-   void addImportPath(const QString &dir);
+    QStringList importPathList() const;
+    void setImportPathList( const QStringList &paths );
+    void addImportPath( const QString &dir );
 
-   QStringList pluginPathList() const;
-   void setPluginPathList(const QStringList &paths);
-   void addPluginPath(const QString &dir);
+    QStringList pluginPathList() const;
+    void setPluginPathList( const QStringList &paths );
+    void addPluginPath( const QString &dir );
 
-   bool importPlugin(const QString &filePath, const QString &uri, QString *errorString);
+    bool importPlugin( const QString &filePath, const QString &uri, QString *errorString );
 
-   void setNetworkAccessManagerFactory(QDeclarativeNetworkAccessManagerFactory *);
-   QDeclarativeNetworkAccessManagerFactory *networkAccessManagerFactory() const;
+    void setNetworkAccessManagerFactory( QDeclarativeNetworkAccessManagerFactory * );
+    QDeclarativeNetworkAccessManagerFactory *networkAccessManagerFactory() const;
 
-   QNetworkAccessManager *networkAccessManager() const;
+    QNetworkAccessManager *networkAccessManager() const;
 
-   void addImageProvider(const QString &id, QDeclarativeImageProvider *);
-   QDeclarativeImageProvider *imageProvider(const QString &id) const;
-   void removeImageProvider(const QString &id);
+    void addImageProvider( const QString &id, QDeclarativeImageProvider * );
+    QDeclarativeImageProvider *imageProvider( const QString &id ) const;
+    void removeImageProvider( const QString &id );
 
-   void setOfflineStoragePath(const QString &dir);
-   QString offlineStoragePath() const;
+    void setOfflineStoragePath( const QString &dir );
+    QString offlineStoragePath() const;
 
-   QUrl baseUrl() const;
-   void setBaseUrl(const QUrl &);
+    QUrl baseUrl() const;
+    void setBaseUrl( const QUrl & );
 
-   bool outputWarningsToStandardError() const;
-   void setOutputWarningsToStandardError(bool);
+    bool outputWarningsToStandardError() const;
+    void setOutputWarningsToStandardError( bool );
 
-   static QDeclarativeContext *contextForObject(const QObject *);
-   static void setContextForObject(QObject *, QDeclarativeContext *);
+    static QDeclarativeContext *contextForObject( const QObject * );
+    static void setContextForObject( QObject *, QDeclarativeContext * );
 
-   enum ObjectOwnership { CppOwnership, JavaScriptOwnership };
-   static void setObjectOwnership(QObject *, ObjectOwnership);
-   static ObjectOwnership objectOwnership(QObject *);
+    enum ObjectOwnership { CppOwnership, JavaScriptOwnership };
+    static void setObjectOwnership( QObject *, ObjectOwnership );
+    static ObjectOwnership objectOwnership( QObject * );
 
- public:
-   DECL_CS_SIGNAL_1(Public, void quit())
-   DECL_CS_SIGNAL_2(quit)
-   DECL_CS_SIGNAL_1(Public, void warnings(const QList <QDeclarativeError> &warnings))
-   DECL_CS_SIGNAL_2(warnings, warnings)
+public:
+    DECL_CS_SIGNAL_1( Public, void quit() )
+    DECL_CS_SIGNAL_2( quit )
+    DECL_CS_SIGNAL_1( Public, void warnings( const QList <QDeclarativeError> &warnings ) )
+    DECL_CS_SIGNAL_2( warnings, warnings )
 
- private:
-   Q_DISABLE_COPY(QDeclarativeEngine)
-   Q_DECLARE_PRIVATE(QDeclarativeEngine)
+private:
+    Q_DISABLE_COPY( QDeclarativeEngine )
+    Q_DECLARE_PRIVATE( QDeclarativeEngine )
 
- protected:
-   QScopedPointer<QDeclarativeEnginePrivate> d_ptr;
+protected:
+    QScopedPointer<QDeclarativeEnginePrivate> d_ptr;
 
 };
 

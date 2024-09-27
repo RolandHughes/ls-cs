@@ -52,68 +52,70 @@ class QPdfPrintEnginePrivate;
 
 class QPdfPrintEngine: public QPdfEngine, public QPrintEngine
 {
-   Q_DECLARE_PRIVATE(QPdfPrintEngine)
+    Q_DECLARE_PRIVATE( QPdfPrintEngine )
 
- public:
-   QPdfPrintEngine(QPrinter::PrinterMode m);
+public:
+    QPdfPrintEngine( QPrinter::PrinterMode m );
 
-   QPdfPrintEngine(const QPdfPrintEngine &) = delete;
-   QPdfPrintEngine &operator=(const QPdfPrintEngine &) = delete;
+    QPdfPrintEngine( const QPdfPrintEngine & ) = delete;
+    QPdfPrintEngine &operator=( const QPdfPrintEngine & ) = delete;
 
-   virtual ~QPdfPrintEngine();
+    virtual ~QPdfPrintEngine();
 
-   bool begin(QPaintDevice *pdev) override;
-   bool end() override;
+    bool begin( QPaintDevice *pdev ) override;
+    bool end() override;
 
-   bool abort() override {
-      return false;
-   }
+    bool abort() override
+    {
+        return false;
+    }
 
-   bool newPage() override;
+    bool newPage() override;
 
-   QPrinter::PrinterState printerState() const override {
-      return state;
-   }
+    QPrinter::PrinterState printerState() const override
+    {
+        return state;
+    }
 
-   int metric(QPaintDevice::PaintDeviceMetric) const override;
-   void setProperty(PrintEnginePropertyKey key, const QVariant &value) override;
-   QVariant property(PrintEnginePropertyKey key) const override;
+    int metric( QPaintDevice::PaintDeviceMetric ) const override;
+    void setProperty( PrintEnginePropertyKey key, const QVariant &value ) override;
+    QVariant property( PrintEnginePropertyKey key ) const override;
 
-   QPrinter::PrinterState state;
+    QPrinter::PrinterState state;
 
- protected:
-   QPdfPrintEngine(QPdfPrintEnginePrivate &p);
+protected:
+    QPdfPrintEngine( QPdfPrintEnginePrivate &p );
 };
 
 class Q_GUI_EXPORT QPdfPrintEnginePrivate : public QPdfEnginePrivate
 {
-   Q_DECLARE_PUBLIC(QPdfPrintEngine)
+    Q_DECLARE_PUBLIC( QPdfPrintEngine )
 
- public:
-   QPdfPrintEnginePrivate(QPrinter::PrinterMode m);
+public:
+    QPdfPrintEnginePrivate( QPrinter::PrinterMode m );
 
-   QPdfPrintEnginePrivate(const QPdfPrintEnginePrivate &) = delete;
-   QPdfPrintEnginePrivate &operator=(const QPdfPrintEnginePrivate &) = delete;
+    QPdfPrintEnginePrivate( const QPdfPrintEnginePrivate & ) = delete;
+    QPdfPrintEnginePrivate &operator=( const QPdfPrintEnginePrivate & ) = delete;
 
-   ~QPdfPrintEnginePrivate();
+    ~QPdfPrintEnginePrivate();
 
-   virtual bool openPrintDevice();
-   virtual void closePrintDevice();
+    virtual bool openPrintDevice();
+    virtual void closePrintDevice();
 
- private:
-   friend class QCupsPrintEngine;
-   friend class QCupsPrintEnginePrivate;
+private:
+    friend class QCupsPrintEngine;
+    friend class QCupsPrintEnginePrivate;
 
-   QString printerName;
-   QString printProgram;
-   QString selectionOption;
-   QPrint::DuplexMode duplex;
-   bool collate;
-   int copies;
-   QPrinter::PageOrder pageOrder;
-   QPrinter::PaperSource paperSource;
+    QString printerName;
+    QString printProgram;
+    QString selectionOption;
+    QPrint::DuplexMode duplex;
+    bool collate;
+    int copies;
+    QPrinter::PageOrder pageOrder;
+    QPrinter::PaperSource paperSource;
 
-   int fd;
+    int fd;
 };
 
 #endif // QT_NO_PRINTER

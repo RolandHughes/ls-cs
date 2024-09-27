@@ -23,45 +23,80 @@
 
 #include "EditorClient.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Range;
 class Position;
 
-class TextCheckingParagraph {
+class TextCheckingParagraph
+{
 public:
-    explicit TextCheckingParagraph(PassRefPtr<Range> checkingRange);
+    explicit TextCheckingParagraph( PassRefPtr<Range> checkingRange );
     ~TextCheckingParagraph();
 
     int rangeLength() const;
-    PassRefPtr<Range> subrange(int characterOffset, int characterCount) const;
-    int offsetTo(const Position&, ExceptionCode&) const;
+    PassRefPtr<Range> subrange( int characterOffset, int characterCount ) const;
+    int offsetTo( const Position &, ExceptionCode & ) const;
     void expandRangeToNextEnd();
 
-    int textLength() const { return text().length(); }
-    String textSubstring(unsigned pos, unsigned len = UINT_MAX) const { return text().substring(pos, len); }
-    const UChar* textCharacters() const { return text().characters(); }
-    UChar textCharAt(int index) const { return text()[index]; }
+    int textLength() const
+    {
+        return text().length();
+    }
+    String textSubstring( unsigned pos, unsigned len = UINT_MAX ) const
+    {
+        return text().substring( pos, len );
+    }
+    const UChar *textCharacters() const
+    {
+        return text().characters();
+    }
+    UChar textCharAt( int index ) const
+    {
+        return text()[index];
+    }
 
     bool isEmpty() const;
-    bool isTextEmpty() const { return text().isEmpty(); }
-    bool isRangeEmpty() const { return checkingStart() >= checkingEnd(); }
+    bool isTextEmpty() const
+    {
+        return text().isEmpty();
+    }
+    bool isRangeEmpty() const
+    {
+        return checkingStart() >= checkingEnd();
+    }
 
     int checkingStart() const;
     int checkingEnd() const;
     int checkingLength() const;
-    String checkingSubstring() const { return textSubstring(checkingStart(), checkingLength()); }
+    String checkingSubstring() const
+    {
+        return textSubstring( checkingStart(), checkingLength() );
+    }
 
-    bool checkingRangeMatches(int location, int length) const { return location == checkingStart() && length == checkingLength(); }
-    bool isCheckingRangeCoveredBy(int location, int length) const { return location <= checkingStart() && location + length >= checkingStart() + checkingLength(); }
-    bool checkingRangeCovers(int location, int length) const { return location < checkingEnd() && location + length > checkingStart(); }
+    bool checkingRangeMatches( int location, int length ) const
+    {
+        return location == checkingStart() && length == checkingLength();
+    }
+    bool isCheckingRangeCoveredBy( int location, int length ) const
+    {
+        return location <= checkingStart() && location + length >= checkingStart() + checkingLength();
+    }
+    bool checkingRangeCovers( int location, int length ) const
+    {
+        return location < checkingEnd() && location + length > checkingStart();
+    }
     PassRefPtr<Range> paragraphRange() const;
 
 private:
     void invalidateParagraphRangeValues();
-    PassRefPtr<Range> checkingRange() const { return m_checkingRange; }
+    PassRefPtr<Range> checkingRange() const
+    {
+        return m_checkingRange;
+    }
     PassRefPtr<Range> offsetAsRange() const;
-    const String& text() const;
+    const String &text() const;
 
     RefPtr<Range> m_checkingRange;
     mutable RefPtr<Range> m_paragraphRange;
@@ -72,23 +107,26 @@ private:
     mutable int m_checkingLength;
 };
 
-class TextCheckingHelper {
-    WTF_MAKE_NONCOPYABLE(TextCheckingHelper);
+class TextCheckingHelper
+{
+    WTF_MAKE_NONCOPYABLE( TextCheckingHelper );
 public:
-    TextCheckingHelper(EditorClient*, PassRefPtr<Range>);
+    TextCheckingHelper( EditorClient *, PassRefPtr<Range> );
     ~TextCheckingHelper();
 
-    String findFirstMisspelling(int& firstMisspellingOffset, bool markAll, RefPtr<Range>& firstMisspellingRange);
-    String findFirstMisspellingOrBadGrammar(bool checkGrammar, bool& outIsSpelling, int& outFirstFoundOffset, GrammarDetail& outGrammarDetail);
-    String findFirstBadGrammar(GrammarDetail& outGrammarDetail, int& outGrammarPhraseOffset, bool markAll);
-    int findFirstGrammarDetail(const Vector<GrammarDetail>& grammarDetails, int badGrammarPhraseLocation, int badGrammarPhraseLength, int startOffset, int endOffset, bool markAll);
-    void markAllMisspellings(RefPtr<Range>& firstMisspellingRange);
+    String findFirstMisspelling( int &firstMisspellingOffset, bool markAll, RefPtr<Range> &firstMisspellingRange );
+    String findFirstMisspellingOrBadGrammar( bool checkGrammar, bool &outIsSpelling, int &outFirstFoundOffset,
+            GrammarDetail &outGrammarDetail );
+    String findFirstBadGrammar( GrammarDetail &outGrammarDetail, int &outGrammarPhraseOffset, bool markAll );
+    int findFirstGrammarDetail( const Vector<GrammarDetail> &grammarDetails, int badGrammarPhraseLocation, int badGrammarPhraseLength,
+                                int startOffset, int endOffset, bool markAll );
+    void markAllMisspellings( RefPtr<Range> &firstMisspellingRange );
     void markAllBadGrammar();
 
-    bool isUngrammatical(Vector<String>& guessesVector) const;
-    Vector<String> guessesForMisspelledOrUngrammaticalRange(bool checkGrammar, bool& misspelled, bool& ungrammatical) const;
+    bool isUngrammatical( Vector<String> &guessesVector ) const;
+    Vector<String> guessesForMisspelledOrUngrammaticalRange( bool checkGrammar, bool &misspelled, bool &ungrammatical ) const;
 private:
-    EditorClient* m_client;
+    EditorClient *m_client;
     RefPtr<Range> m_range;
 };
 

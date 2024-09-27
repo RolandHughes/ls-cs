@@ -39,14 +39,16 @@
 #include "IDBTransactionBackendInterface.h"
 #include "SerializedScriptValue.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-IDBCursorBackendImpl::IDBCursorBackendImpl(PassRefPtr<IDBBackingStore::Cursor> cursor, IDBCursor::Direction direction, CursorType cursorType, IDBTransactionBackendInterface* transaction, IDBObjectStoreBackendInterface* objectStore)
-    : m_cursor(cursor)
-    , m_direction(direction)
-    , m_cursorType(cursorType)
-    , m_transaction(transaction)
-    , m_objectStore(objectStore)
+IDBCursorBackendImpl::IDBCursorBackendImpl( PassRefPtr<IDBBackingStore::Cursor> cursor, IDBCursor::Direction direction,
+        CursorType cursorType, IDBTransactionBackendInterface *transaction, IDBObjectStoreBackendInterface *objectStore )
+    : m_cursor( cursor )
+    , m_direction( direction )
+    , m_cursorType( cursorType )
+    , m_transaction( transaction )
+    , m_objectStore( objectStore )
 {
 }
 
@@ -71,53 +73,63 @@ PassRefPtr<IDBKey> IDBCursorBackendImpl::primaryKey() const
 
 PassRefPtr<SerializedScriptValue> IDBCursorBackendImpl::value() const
 {
-    ASSERT(m_cursorType != IndexKeyCursor);
-    return SerializedScriptValue::createFromWire(m_cursor->value());
+    ASSERT( m_cursorType != IndexKeyCursor );
+    return SerializedScriptValue::createFromWire( m_cursor->value() );
 }
 
-void IDBCursorBackendImpl::update(PassRefPtr<SerializedScriptValue> value, PassRefPtr<IDBCallbacks> callbacks, ExceptionCode& ec)
+void IDBCursorBackendImpl::update( PassRefPtr<SerializedScriptValue> value, PassRefPtr<IDBCallbacks> callbacks,
+                                   ExceptionCode &ec )
 {
-    if (!m_cursor || m_cursorType == IndexKeyCursor) {
+    if ( !m_cursor || m_cursorType == IndexKeyCursor )
+    {
         ec = IDBDatabaseException::NOT_ALLOWED_ERR;
         return;
     }
 
-    m_objectStore->put(value, m_cursor->primaryKey(), IDBObjectStoreBackendInterface::CursorUpdate, callbacks, m_transaction.get(), ec);
+    m_objectStore->put( value, m_cursor->primaryKey(), IDBObjectStoreBackendInterface::CursorUpdate, callbacks, m_transaction.get(),
+                        ec );
 }
 
-void IDBCursorBackendImpl::continueFunction(PassRefPtr<IDBKey> prpKey, PassRefPtr<IDBCallbacks> prpCallbacks, ExceptionCode& ec)
+void IDBCursorBackendImpl::continueFunction( PassRefPtr<IDBKey> prpKey, PassRefPtr<IDBCallbacks> prpCallbacks, ExceptionCode &ec )
 {
     RefPtr<IDBCursorBackendImpl> cursor = this;
     RefPtr<IDBKey> key = prpKey;
     RefPtr<IDBCallbacks> callbacks = prpCallbacks;
-    if (!m_transaction->scheduleTask(createCallbackTask(&IDBCursorBackendImpl::continueFunctionInternal, cursor, key, callbacks)))
+
+    if ( !m_transaction->scheduleTask( createCallbackTask( &IDBCursorBackendImpl::continueFunctionInternal, cursor, key,
+                                       callbacks ) ) )
+    {
         ec = IDBDatabaseException::NOT_ALLOWED_ERR;
+    }
 }
 
 // IMPORTANT: If this ever 1) fires an 'error' event and 2) it's possible to fire another event afterwards,
 //            IDBRequest::hasPendingActivity() will need to be modified to handle this!!!
-void IDBCursorBackendImpl::continueFunctionInternal(ScriptExecutionContext*, PassRefPtr<IDBCursorBackendImpl> prpCursor, PassRefPtr<IDBKey> prpKey, PassRefPtr<IDBCallbacks> callbacks)
+void IDBCursorBackendImpl::continueFunctionInternal( ScriptExecutionContext *, PassRefPtr<IDBCursorBackendImpl> prpCursor,
+        PassRefPtr<IDBKey> prpKey, PassRefPtr<IDBCallbacks> callbacks )
 {
     RefPtr<IDBCursorBackendImpl> cursor = prpCursor;
     RefPtr<IDBKey> key = prpKey;
 
-    if (!cursor->m_cursor || !cursor->m_cursor->continueFunction(key.get())) {
+    if ( !cursor->m_cursor || !cursor->m_cursor->continueFunction( key.get() ) )
+    {
         cursor->m_cursor = 0;
-        callbacks->onSuccess(SerializedScriptValue::nullValue());
+        callbacks->onSuccess( SerializedScriptValue::nullValue() );
         return;
     }
 
-    callbacks->onSuccess(cursor.get());
+    callbacks->onSuccess( cursor.get() );
 }
 
-void IDBCursorBackendImpl::deleteFunction(PassRefPtr<IDBCallbacks> prpCallbacks, ExceptionCode& ec)
+void IDBCursorBackendImpl::deleteFunction( PassRefPtr<IDBCallbacks> prpCallbacks, ExceptionCode &ec )
 {
-    if (!m_cursor || m_cursorType == IndexKeyCursor) {
+    if ( !m_cursor || m_cursorType == IndexKeyCursor )
+    {
         ec = IDBDatabaseException::NOT_ALLOWED_ERR;
         return;
     }
 
-    m_objectStore->deleteFunction(m_cursor->primaryKey(), prpCallbacks, m_transaction.get(), ec);
+    m_objectStore->deleteFunction( m_cursor->primaryKey(), prpCallbacks, m_transaction.get(), ec );
 }
 
 } // namespace WebCore

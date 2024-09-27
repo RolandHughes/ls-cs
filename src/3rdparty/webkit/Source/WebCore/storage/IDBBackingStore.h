@@ -35,57 +35,71 @@
 #include <wtf/RefPtr.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class IDBFactoryBackendImpl;
 class IDBKey;
 class IDBKeyRange;
 class SecurityOrigin;
 
-class IDBBackingStore : public RefCounted<IDBBackingStore> {
+class IDBBackingStore : public RefCounted<IDBBackingStore>
+{
 public:
     virtual ~IDBBackingStore() {};
 
-    virtual bool extractIDBDatabaseMetaData(const String& name, String& foundVersion, int64_t& foundId) = 0;
-    virtual bool setIDBDatabaseMetaData(const String& name, const String& version, int64_t& rowId, bool invalidRowId) = 0;
+    virtual bool extractIDBDatabaseMetaData( const String &name, String &foundVersion, int64_t &foundId ) = 0;
+    virtual bool setIDBDatabaseMetaData( const String &name, const String &version, int64_t &rowId, bool invalidRowId ) = 0;
 
-    virtual void getObjectStores(int64_t databaseId, Vector<int64_t>& foundIds, Vector<String>& foundNames, Vector<String>& foundKeyPaths, Vector<bool>& foundAutoIncrementFlags) = 0;
-    virtual bool createObjectStore(int64_t databaseId, const String& name, const String& keyPath, bool autoIncrement, int64_t& assignedObjectStoreId) = 0;
-    virtual void deleteObjectStore(int64_t databaseId, int64_t objectStoreId) = 0;
+    virtual void getObjectStores( int64_t databaseId, Vector<int64_t> &foundIds, Vector<String> &foundNames,
+                                  Vector<String> &foundKeyPaths, Vector<bool> &foundAutoIncrementFlags ) = 0;
+    virtual bool createObjectStore( int64_t databaseId, const String &name, const String &keyPath, bool autoIncrement,
+                                    int64_t &assignedObjectStoreId ) = 0;
+    virtual void deleteObjectStore( int64_t databaseId, int64_t objectStoreId ) = 0;
 
-    class ObjectStoreRecordIdentifier : public RefCounted<ObjectStoreRecordIdentifier> {
+    class ObjectStoreRecordIdentifier : public RefCounted<ObjectStoreRecordIdentifier>
+    {
     public:
         virtual bool isValid() const = 0;
         virtual ~ObjectStoreRecordIdentifier() {}
     };
     virtual PassRefPtr<ObjectStoreRecordIdentifier> createInvalidRecordIdentifier() = 0;
 
-    virtual String getObjectStoreRecord(int64_t databaseId, int64_t objectStoreId, const IDBKey&) = 0;
-    virtual bool putObjectStoreRecord(int64_t databaseId, int64_t objectStoreId, const IDBKey&, const String& value, ObjectStoreRecordIdentifier*) = 0;
-    virtual void clearObjectStore(int64_t databaseId, int64_t objectStoreId) = 0;
-    virtual void deleteObjectStoreRecord(int64_t databaseId, int64_t objectStoreId, const ObjectStoreRecordIdentifier*) = 0;
-    virtual double nextAutoIncrementNumber(int64_t databaseId, int64_t objectStoreId) = 0;
-    virtual bool keyExistsInObjectStore(int64_t databaseId, int64_t objectStoreId, const IDBKey&, ObjectStoreRecordIdentifier* foundRecordIdentifier) = 0;
+    virtual String getObjectStoreRecord( int64_t databaseId, int64_t objectStoreId, const IDBKey & ) = 0;
+    virtual bool putObjectStoreRecord( int64_t databaseId, int64_t objectStoreId, const IDBKey &, const String &value,
+                                       ObjectStoreRecordIdentifier * ) = 0;
+    virtual void clearObjectStore( int64_t databaseId, int64_t objectStoreId ) = 0;
+    virtual void deleteObjectStoreRecord( int64_t databaseId, int64_t objectStoreId, const ObjectStoreRecordIdentifier * ) = 0;
+    virtual double nextAutoIncrementNumber( int64_t databaseId, int64_t objectStoreId ) = 0;
+    virtual bool keyExistsInObjectStore( int64_t databaseId, int64_t objectStoreId, const IDBKey &,
+                                         ObjectStoreRecordIdentifier *foundRecordIdentifier ) = 0;
 
-    class ObjectStoreRecordCallback {
+    class ObjectStoreRecordCallback
+    {
     public:
-         virtual bool callback(const ObjectStoreRecordIdentifier*, const String& value) = 0;
-         virtual ~ObjectStoreRecordCallback() {};
+        virtual bool callback( const ObjectStoreRecordIdentifier *, const String &value ) = 0;
+        virtual ~ObjectStoreRecordCallback() {};
     };
-    virtual bool forEachObjectStoreRecord(int64_t databaseId, int64_t objectStoreId, ObjectStoreRecordCallback&) = 0;
+    virtual bool forEachObjectStoreRecord( int64_t databaseId, int64_t objectStoreId, ObjectStoreRecordCallback & ) = 0;
 
-    virtual void getIndexes(int64_t databaseId, int64_t objectStoreId, Vector<int64_t>& foundIds, Vector<String>& foundNames, Vector<String>& foundKeyPaths, Vector<bool>& foundUniqueFlags) = 0;
-    virtual bool createIndex(int64_t databaseId, int64_t objectStoreId, const String& name, const String& keyPath, bool isUnique, int64_t& indexId) = 0;
-    virtual void deleteIndex(int64_t databaseId, int64_t objectStoreId, int64_t indexId) = 0;
-    virtual bool putIndexDataForRecord(int64_t databaseId, int64_t objectStoreId, int64_t indexId, const IDBKey&, const ObjectStoreRecordIdentifier*) = 0;
-    virtual bool deleteIndexDataForRecord(int64_t databaseId, int64_t objectStoreId, int64_t indexId, const ObjectStoreRecordIdentifier*) = 0;
-    virtual String getObjectViaIndex(int64_t databaseId, int64_t objectStoreId, int64_t indexId, const IDBKey&) = 0;
-    virtual PassRefPtr<IDBKey> getPrimaryKeyViaIndex(int64_t databaseId, int64_t objectStoreId, int64_t indexId, const IDBKey&) = 0;
-    virtual bool keyExistsInIndex(int64_t databaseid, int64_t objectStoreId, int64_t indexId, const IDBKey&) = 0;
+    virtual void getIndexes( int64_t databaseId, int64_t objectStoreId, Vector<int64_t> &foundIds, Vector<String> &foundNames,
+                             Vector<String> &foundKeyPaths, Vector<bool> &foundUniqueFlags ) = 0;
+    virtual bool createIndex( int64_t databaseId, int64_t objectStoreId, const String &name, const String &keyPath, bool isUnique,
+                              int64_t &indexId ) = 0;
+    virtual void deleteIndex( int64_t databaseId, int64_t objectStoreId, int64_t indexId ) = 0;
+    virtual bool putIndexDataForRecord( int64_t databaseId, int64_t objectStoreId, int64_t indexId, const IDBKey &,
+                                        const ObjectStoreRecordIdentifier * ) = 0;
+    virtual bool deleteIndexDataForRecord( int64_t databaseId, int64_t objectStoreId, int64_t indexId,
+                                           const ObjectStoreRecordIdentifier * ) = 0;
+    virtual String getObjectViaIndex( int64_t databaseId, int64_t objectStoreId, int64_t indexId, const IDBKey & ) = 0;
+    virtual PassRefPtr<IDBKey> getPrimaryKeyViaIndex( int64_t databaseId, int64_t objectStoreId, int64_t indexId,
+            const IDBKey & ) = 0;
+    virtual bool keyExistsInIndex( int64_t databaseid, int64_t objectStoreId, int64_t indexId, const IDBKey & ) = 0;
 
-    class Cursor : public RefCounted<Cursor> {
+    class Cursor : public RefCounted<Cursor>
+    {
     public:
-        virtual bool continueFunction(const IDBKey* = 0) = 0;
+        virtual bool continueFunction( const IDBKey * = 0 ) = 0;
         virtual PassRefPtr<IDBKey> key() = 0;
         virtual PassRefPtr<IDBKey> primaryKey() = 0;
         virtual String value() = 0;
@@ -94,11 +108,15 @@ public:
         virtual ~Cursor() {};
     };
 
-    virtual PassRefPtr<Cursor> openObjectStoreCursor(int64_t databaseId, int64_t objectStoreId, const IDBKeyRange*, IDBCursor::Direction) = 0;
-    virtual PassRefPtr<Cursor> openIndexKeyCursor(int64_t databaseId, int64_t objectStoreId, int64_t indexId, const IDBKeyRange*, IDBCursor::Direction) = 0;
-    virtual PassRefPtr<Cursor> openIndexCursor(int64_t databaseId, int64_t objectStoreId, int64_t indexId, const IDBKeyRange*, IDBCursor::Direction) = 0;
+    virtual PassRefPtr<Cursor> openObjectStoreCursor( int64_t databaseId, int64_t objectStoreId, const IDBKeyRange *,
+            IDBCursor::Direction ) = 0;
+    virtual PassRefPtr<Cursor> openIndexKeyCursor( int64_t databaseId, int64_t objectStoreId, int64_t indexId, const IDBKeyRange *,
+            IDBCursor::Direction ) = 0;
+    virtual PassRefPtr<Cursor> openIndexCursor( int64_t databaseId, int64_t objectStoreId, int64_t indexId, const IDBKeyRange *,
+            IDBCursor::Direction ) = 0;
 
-    class Transaction : public RefCounted<Transaction> {
+    class Transaction : public RefCounted<Transaction>
+    {
     public:
         virtual void begin() = 0;
         virtual void commit() = 0;

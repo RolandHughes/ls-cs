@@ -35,52 +35,55 @@
 #include <wtf/RefPtr.h>
 #include <wtf/Vector.h>
 
-namespace CoreIPC {
+namespace CoreIPC
+{
 class ArgumentDecoder;
 class Connection;
 class MessageID;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
 class WebProcess;
 
-class WebIconDatabaseProxy : public WebCore::IconDatabaseBase {
+class WebIconDatabaseProxy : public WebCore::IconDatabaseBase
+{
 public:
-    explicit WebIconDatabaseProxy(WebProcess*);
+    explicit WebIconDatabaseProxy( WebProcess * );
     virtual ~WebIconDatabaseProxy();
 
     virtual bool isEnabled() const;
-    void setEnabled(bool);
-    
-    
-    virtual void retainIconForPageURL(const String&);
-    virtual void releaseIconForPageURL(const String&);
-    virtual void setIconURLForPageURL(const String&, const String&);
-    virtual void setIconDataForIconURL(PassRefPtr<WebCore::SharedBuffer>, const String&);
+    void setEnabled( bool );
 
-    virtual String synchronousIconURLForPageURL(const String&);
-    virtual bool synchronousIconDataKnownForIconURL(const String&);
-    virtual WebCore::IconLoadDecision synchronousLoadDecisionForIconURL(const String&, WebCore::DocumentLoader*);
-    virtual WebCore::Image* synchronousIconForPageURL(const String&, const WebCore::IntSize&);
-    
+
+    virtual void retainIconForPageURL( const String & );
+    virtual void releaseIconForPageURL( const String & );
+    virtual void setIconURLForPageURL( const String &, const String & );
+    virtual void setIconDataForIconURL( PassRefPtr<WebCore::SharedBuffer>, const String & );
+
+    virtual String synchronousIconURLForPageURL( const String & );
+    virtual bool synchronousIconDataKnownForIconURL( const String & );
+    virtual WebCore::IconLoadDecision synchronousLoadDecisionForIconURL( const String &, WebCore::DocumentLoader * );
+    virtual WebCore::Image *synchronousIconForPageURL( const String &, const WebCore::IntSize & );
+
     // Asynchronous calls we should use to replace the above when supported.
     virtual bool supportsAsynchronousMode();
-    virtual void loadDecisionForIconURL(const String&, PassRefPtr<WebCore::IconLoadDecisionCallback>);
-    void receivedIconLoadDecision(int decision, uint64_t callbackID);
-    virtual void iconDataForIconURL(const String&, PassRefPtr<WebCore::IconDataCallback>);
-        
-    void didReceiveMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*);
-    
+    virtual void loadDecisionForIconURL( const String &, PassRefPtr<WebCore::IconLoadDecisionCallback> );
+    void receivedIconLoadDecision( int decision, uint64_t callbackID );
+    virtual void iconDataForIconURL( const String &, PassRefPtr<WebCore::IconDataCallback> );
+
+    void didReceiveMessage( CoreIPC::Connection *, CoreIPC::MessageID, CoreIPC::ArgumentDecoder * );
+
 private:
-    void didReceiveWebIconDatabaseProxyMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*);
-    
+    void didReceiveWebIconDatabaseProxyMessage( CoreIPC::Connection *, CoreIPC::MessageID, CoreIPC::ArgumentDecoder * );
+
     // Callbacks from the UIProcess
     void urlImportFinished();
 
     bool m_isEnabled;
-    WebProcess* m_process;
-    
+    WebProcess *m_process;
+
     HashMap<uint64_t, RefPtr<WebCore::IconLoadDecisionCallback> > m_iconLoadDecisionCallbacks;
 };
 

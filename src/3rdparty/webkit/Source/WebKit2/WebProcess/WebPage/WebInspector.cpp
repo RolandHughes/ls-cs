@@ -37,40 +37,46 @@
 
 using namespace WebCore;
 
-namespace WebKit {
-
-PassRefPtr<WebInspector> WebInspector::create(WebPage* page)
+namespace WebKit
 {
-    return adoptRef(new WebInspector(page));
+
+PassRefPtr<WebInspector> WebInspector::create( WebPage *page )
+{
+    return adoptRef( new WebInspector( page ) );
 }
 
-WebInspector::WebInspector(WebPage* page)
-    : m_page(page)
-    , m_inspectorPage(0)
+WebInspector::WebInspector( WebPage *page )
+    : m_page( page )
+    , m_inspectorPage( 0 )
 {
 }
 
 // Called from WebInspectorClient
-WebPage* WebInspector::createInspectorPage()
+WebPage *WebInspector::createInspectorPage()
 {
-    if (!m_page)
+    if ( !m_page )
+    {
         return 0;
+    }
 
     uint64_t inspectorPageID = 0;
     WebPageCreationParameters parameters;
 
-    if (!WebProcess::shared().connection()->sendSync(Messages::WebInspectorProxy::CreateInspectorPage(),
-            Messages::WebInspectorProxy::CreateInspectorPage::Reply(inspectorPageID, parameters),
-            m_page->pageID(), CoreIPC::Connection::NoTimeout)) {
+    if ( !WebProcess::shared().connection()->sendSync( Messages::WebInspectorProxy::CreateInspectorPage(),
+            Messages::WebInspectorProxy::CreateInspectorPage::Reply( inspectorPageID, parameters ),
+            m_page->pageID(), CoreIPC::Connection::NoTimeout ) )
+    {
         return 0;
     }
 
-    if (!inspectorPageID)
+    if ( !inspectorPageID )
+    {
         return 0;
+    }
 
-    WebProcess::shared().createWebPage(inspectorPageID, parameters);
-    m_inspectorPage = WebProcess::shared().webPage(inspectorPageID);
-    ASSERT(m_inspectorPage);
+    WebProcess::shared().createWebPage( inspectorPageID, parameters );
+    m_inspectorPage = WebProcess::shared().webPage( inspectorPageID );
+    ASSERT( m_inspectorPage );
 
     return m_inspectorPage;
 }
@@ -78,37 +84,37 @@ WebPage* WebInspector::createInspectorPage()
 // Called from WebInspectorFrontendClient
 void WebInspector::didLoadInspectorPage()
 {
-    WebProcess::shared().connection()->send(Messages::WebInspectorProxy::DidLoadInspectorPage(), m_page->pageID());
+    WebProcess::shared().connection()->send( Messages::WebInspectorProxy::DidLoadInspectorPage(), m_page->pageID() );
 }
 
 void WebInspector::didClose()
 {
-    WebProcess::shared().connection()->send(Messages::WebInspectorProxy::DidClose(), m_page->pageID());
+    WebProcess::shared().connection()->send( Messages::WebInspectorProxy::DidClose(), m_page->pageID() );
 }
 
 void WebInspector::bringToFront()
 {
-    WebProcess::shared().connection()->send(Messages::WebInspectorProxy::BringToFront(), m_page->pageID());
+    WebProcess::shared().connection()->send( Messages::WebInspectorProxy::BringToFront(), m_page->pageID() );
 }
 
-void WebInspector::inspectedURLChanged(const String& urlString)
+void WebInspector::inspectedURLChanged( const String &urlString )
 {
-    WebProcess::shared().connection()->send(Messages::WebInspectorProxy::InspectedURLChanged(urlString), m_page->pageID());
+    WebProcess::shared().connection()->send( Messages::WebInspectorProxy::InspectedURLChanged( urlString ), m_page->pageID() );
 }
 
 void WebInspector::attach()
 {
-    WebProcess::shared().connection()->send(Messages::WebInspectorProxy::Attach(), m_page->pageID());
+    WebProcess::shared().connection()->send( Messages::WebInspectorProxy::Attach(), m_page->pageID() );
 }
 
 void WebInspector::detach()
 {
-    WebProcess::shared().connection()->send(Messages::WebInspectorProxy::Detach(), m_page->pageID());
+    WebProcess::shared().connection()->send( Messages::WebInspectorProxy::Detach(), m_page->pageID() );
 }
 
-void WebInspector::setAttachedWindowHeight(unsigned height)
+void WebInspector::setAttachedWindowHeight( unsigned height )
 {
-    WebProcess::shared().connection()->send(Messages::WebInspectorProxy::SetAttachedWindowHeight(height), m_page->pageID());
+    WebProcess::shared().connection()->send( Messages::WebInspectorProxy::SetAttachedWindowHeight( height ), m_page->pageID() );
 }
 
 // Called by WebInspector messages
@@ -122,9 +128,9 @@ void WebInspector::close()
     m_page->corePage()->inspectorController()->close();
 }
 
-void WebInspector::evaluateScriptForTest(long callID, const String& script)
+void WebInspector::evaluateScriptForTest( long callID, const String &script )
 {
-    m_page->corePage()->inspectorController()->evaluateForTestInFrontend(callID, script);
+    m_page->corePage()->inspectorController()->evaluateForTestInFrontend( callID, script );
 }
 
 void WebInspector::showConsole()

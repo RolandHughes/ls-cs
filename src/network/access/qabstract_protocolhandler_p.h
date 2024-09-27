@@ -33,16 +33,16 @@ class QHttpNetworkConnection;
 
 class QAbstractProtocolHandler
 {
- public:
-    QAbstractProtocolHandler(QHttpNetworkConnectionChannel *channel);
+public:
+    QAbstractProtocolHandler( QHttpNetworkConnectionChannel *channel );
     virtual ~QAbstractProtocolHandler();
 
     virtual void _q_receiveReply() = 0;
     virtual void _q_readyRead() = 0;
     virtual bool sendRequest() = 0;
-    void setReply(QHttpNetworkReply *reply);
+    void setReply( QHttpNetworkReply *reply );
 
- protected:
+protected:
     QHttpNetworkConnectionChannel *m_channel;
     QHttpNetworkReply *m_reply;
     QAbstractSocket *m_socket;

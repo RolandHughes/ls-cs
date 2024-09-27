@@ -34,15 +34,18 @@
 #include <qdebug.h>
 
 QWindowsSockInit2::QWindowsSockInit2()
-   :   version(0)
+    :   version( 0 )
 {
     //### should we try for 2.2 on all platforms ??
     WSAData wsadata;
 
     // IPv6 requires Winsock v2.0 or better.
-    if (WSAStartup(MAKEWORD(2,0), &wsadata) != 0) {
-        qWarning("QBearerManagementAPI: WinSock v2.0 initialization failed.");
-    } else {
+    if ( WSAStartup( MAKEWORD( 2,0 ), &wsadata ) != 0 )
+    {
+        qWarning( "QBearerManagementAPI: WinSock v2.0 initialization failed." );
+    }
+    else
+    {
         version = 0x20;
     }
 }
@@ -53,7 +56,7 @@ QWindowsSockInit2::~QWindowsSockInit2()
 }
 
 #ifdef BEARER_MANAGEMENT_DEBUG
-static void printBlob(NLA_BLOB *blob)
+static void printBlob( NLA_BLOB *blob )
 {
     qDebug() << "==== BEGIN NLA_BLOB ====";
 
@@ -61,43 +64,49 @@ static void printBlob(NLA_BLOB *blob)
     qDebug() << "size:" << blob->header.dwSize;
     qDebug() << "next offset:" << blob->header.nextOffset;
 
-    switch (blob->header.type) {
-    case NLA_RAW_DATA:
-        qDebug() << "Raw Data";
-        qDebug() << '\t' << blob->data.rawData;
-        break;
-    case NLA_INTERFACE:
-        qDebug() << "Interface";
-        qDebug() << "\ttype:" << blob->data.interfaceData.dwType;
-        qDebug() << "\tspeed:" << blob->data.interfaceData.dwSpeed;
-        qDebug() << "\tadapter:" << blob->data.interfaceData.adapterName;
-        break;
-    case NLA_802_1X_LOCATION:
-        qDebug() << "802.1x Location";
-        qDebug() << '\t' << blob->data.locationData.information;
-        break;
-    case NLA_CONNECTIVITY:
-        qDebug() << "Connectivity";
-        qDebug() << "\ttype:" << blob->data.connectivity.type;
-        qDebug() << "\tinternet:" << blob->data.connectivity.internet;
-        break;
-    case NLA_ICS:
-        qDebug() << "ICS";
-        qDebug() << "\tspeed:" << blob->data.ICS.remote.speed;
-        qDebug() << "\ttype:" << blob->data.ICS.remote.type;
-        qDebug() << "\tstate:" << blob->data.ICS.remote.state;
-        qDebug() << "\tmachine name:" << blob->data.ICS.remote.machineName;
-        qDebug() << "\tshared adapter name:" << blob->data.ICS.remote.sharedAdapterName;
-        break;
-    default:
-        qDebug() << "UNKNOWN BLOB TYPE";
+    switch ( blob->header.type )
+    {
+        case NLA_RAW_DATA:
+            qDebug() << "Raw Data";
+            qDebug() << '\t' << blob->data.rawData;
+            break;
+
+        case NLA_INTERFACE:
+            qDebug() << "Interface";
+            qDebug() << "\ttype:" << blob->data.interfaceData.dwType;
+            qDebug() << "\tspeed:" << blob->data.interfaceData.dwSpeed;
+            qDebug() << "\tadapter:" << blob->data.interfaceData.adapterName;
+            break;
+
+        case NLA_802_1X_LOCATION:
+            qDebug() << "802.1x Location";
+            qDebug() << '\t' << blob->data.locationData.information;
+            break;
+
+        case NLA_CONNECTIVITY:
+            qDebug() << "Connectivity";
+            qDebug() << "\ttype:" << blob->data.connectivity.type;
+            qDebug() << "\tinternet:" << blob->data.connectivity.internet;
+            break;
+
+        case NLA_ICS:
+            qDebug() << "ICS";
+            qDebug() << "\tspeed:" << blob->data.ICS.remote.speed;
+            qDebug() << "\ttype:" << blob->data.ICS.remote.type;
+            qDebug() << "\tstate:" << blob->data.ICS.remote.state;
+            qDebug() << "\tmachine name:" << blob->data.ICS.remote.machineName;
+            qDebug() << "\tshared adapter name:" << blob->data.ICS.remote.sharedAdapterName;
+            break;
+
+        default:
+            qDebug() << "UNKNOWN BLOB TYPE";
     }
 
     qDebug() << "===== END NLA_BLOB =====";
 }
 #endif
 
-static QNetworkConfiguration::BearerType qGetInterfaceType(const QString &interface)
+static QNetworkConfiguration::BearerType qGetInterfaceType( const QString &interface )
 {
     unsigned long oid;
     DWORD bytesWritten;
@@ -105,48 +114,64 @@ static QNetworkConfiguration::BearerType qGetInterfaceType(const QString &interf
     NDIS_MEDIUM medium;
     NDIS_PHYSICAL_MEDIUM physicalMedium;
 
-    HANDLE handle = CreateFile((TCHAR *)QString::fromLatin1("\\\\.\\%1").arg(interface).utf16(), 0,
-                               FILE_SHARE_READ, 0, OPEN_EXISTING, 0, 0);
-    if (handle == INVALID_HANDLE_VALUE)
+    HANDLE handle = CreateFile( ( TCHAR * )QString::fromLatin1( "\\\\.\\%1" ).arg( interface ).utf16(), 0,
+                                FILE_SHARE_READ, 0, OPEN_EXISTING, 0, 0 );
+
+    if ( handle == INVALID_HANDLE_VALUE )
+    {
         return QNetworkConfiguration::BearerUnknown;
+    }
 
     oid = OID_GEN_MEDIA_SUPPORTED;
     bytesWritten = 0;
-    bool result = DeviceIoControl(handle, IOCTL_NDIS_QUERY_GLOBAL_STATS, &oid, sizeof(oid),
-                                  &medium, sizeof(medium), &bytesWritten, 0);
-    if (!result) {
-        CloseHandle(handle);
+    bool result = DeviceIoControl( handle, IOCTL_NDIS_QUERY_GLOBAL_STATS, &oid, sizeof( oid ),
+                                   &medium, sizeof( medium ), &bytesWritten, 0 );
+
+    if ( !result )
+    {
+        CloseHandle( handle );
         return QNetworkConfiguration::BearerUnknown;
     }
 
     oid = OID_GEN_PHYSICAL_MEDIUM;
     bytesWritten = 0;
-    result = DeviceIoControl(handle, IOCTL_NDIS_QUERY_GLOBAL_STATS, &oid, sizeof(oid),
-                             &physicalMedium, sizeof(physicalMedium), &bytesWritten, 0);
-    if (!result) {
-        CloseHandle(handle);
+    result = DeviceIoControl( handle, IOCTL_NDIS_QUERY_GLOBAL_STATS, &oid, sizeof( oid ),
+                              &physicalMedium, sizeof( physicalMedium ), &bytesWritten, 0 );
 
-        if (medium == NdisMedium802_3)
+    if ( !result )
+    {
+        CloseHandle( handle );
+
+        if ( medium == NdisMedium802_3 )
+        {
             return QNetworkConfiguration::BearerEthernet;
+        }
         else
+        {
             return QNetworkConfiguration::BearerUnknown;
+        }
     }
 
-    CloseHandle(handle);
+    CloseHandle( handle );
 
-    if (medium == NdisMedium802_3) {
-        switch (physicalMedium) {
-        case NdisPhysicalMediumWirelessLan:
-            return QNetworkConfiguration::BearerWLAN;
-        case NdisPhysicalMediumBluetooth:
-            return QNetworkConfiguration::BearerBluetooth;
-        case NdisPhysicalMediumWiMax:
-            return QNetworkConfiguration::BearerWiMAX;
-        default:
+    if ( medium == NdisMedium802_3 )
+    {
+        switch ( physicalMedium )
+        {
+            case NdisPhysicalMediumWirelessLan:
+                return QNetworkConfiguration::BearerWLAN;
+
+            case NdisPhysicalMediumBluetooth:
+                return QNetworkConfiguration::BearerBluetooth;
+
+            case NdisPhysicalMediumWiMax:
+                return QNetworkConfiguration::BearerWiMAX;
+
+            default:
 #ifdef BEARER_MANAGEMENT_DEBUG
-            qDebug() << "Physical Medium" << physicalMedium;
+                qDebug() << "Physical Medium" << physicalMedium;
 #endif
-            return QNetworkConfiguration::BearerEthernet;
+                return QNetworkConfiguration::BearerEthernet;
         }
     }
 
@@ -162,7 +187,7 @@ class QNlaThread : public QThread
     Q_OBJECT
 
 public:
-    QNlaThread(QNlaEngine *parent = 0);
+    QNlaThread( QNlaEngine *parent = 0 );
     ~QNlaThread();
 
     QList<QNetworkConfigurationPrivate *> getConfigurations();
@@ -173,9 +198,9 @@ protected:
     virtual void run();
 
 private:
-    void updateConfigurations(QList<QNetworkConfigurationPrivate *> &configs);
-    DWORD parseBlob(NLA_BLOB *blob, QNetworkConfigurationPrivate *cpPriv) const;
-    QNetworkConfigurationPrivate *parseQuerySet(const WSAQUERYSET *querySet) const;
+    void updateConfigurations( QList<QNetworkConfigurationPrivate *> &configs );
+    DWORD parseBlob( NLA_BLOB *blob, QNetworkConfigurationPrivate *cpPriv ) const;
+    QNetworkConfigurationPrivate *parseQuerySet( const WSAQUERYSET *querySet ) const;
     void fetchConfigurations();
 
 signals:
@@ -188,8 +213,8 @@ private:
     QList<QNetworkConfigurationPrivate *> fetchedConfigurations;
 };
 
-QNlaThread::QNlaThread(QNlaEngine *parent)
-:   QThread(parent), handle(0), done(false)
+QNlaThread::QNlaThread( QNlaEngine *parent )
+    :   QThread( parent ), handle( 0 ), done( false )
 {
 }
 
@@ -199,14 +224,17 @@ QNlaThread::~QNlaThread()
 
     done = true;
 
-    if (handle) {
+    if ( handle )
+    {
         /* cancel completion event */
-        if (WSALookupServiceEnd(handle) == SOCKET_ERROR) {
+        if ( WSALookupServiceEnd( handle ) == SOCKET_ERROR )
+        {
 #ifdef BEARER_MANAGEMENT_DEBUG
-            qDebug("WSALookupServiceEnd error %d", WSAGetLastError());
+            qDebug( "WSALookupServiceEnd error %d", WSAGetLastError() );
 #endif
         }
     }
+
     mutex.unlock();
 
     wait();
@@ -214,7 +242,7 @@ QNlaThread::~QNlaThread()
 
 QList<QNetworkConfigurationPrivate *> QNlaThread::getConfigurations()
 {
-    QMutexLocker locker(&mutex);
+    QMutexLocker locker( &mutex );
 
     QList<QNetworkConfigurationPrivate *> foundConfigurations = fetchedConfigurations;
     fetchedConfigurations.clear();
@@ -226,90 +254,115 @@ void QNlaThread::forceUpdate()
 {
     mutex.lock();
 
-    if (handle) {
+    if ( handle )
+    {
         /* cancel completion event */
-        if (WSALookupServiceEnd(handle) == SOCKET_ERROR) {
+        if ( WSALookupServiceEnd( handle ) == SOCKET_ERROR )
+        {
 #ifdef BEARER_MANAGEMENT_DEBUG
-            qDebug("WSALookupServiceEnd error %d", WSAGetLastError());
+            qDebug( "WSALookupServiceEnd error %d", WSAGetLastError() );
 #endif
         }
+
         handle = 0;
     }
+
     mutex.unlock();
 }
 
 void QNlaThread::run()
 {
     WSAEVENT changeEvent = WSACreateEvent();
-    if (changeEvent == WSA_INVALID_EVENT)
-        return;
 
-    while (true) {
+    if ( changeEvent == WSA_INVALID_EVENT )
+    {
+        return;
+    }
+
+    while ( true )
+    {
         fetchConfigurations();
 
         WSAQUERYSET qsRestrictions;
 
-        memset(&qsRestrictions, 0, sizeof(qsRestrictions));
-        qsRestrictions.dwSize = sizeof(qsRestrictions);
+        memset( &qsRestrictions, 0, sizeof( qsRestrictions ) );
+        qsRestrictions.dwSize = sizeof( qsRestrictions );
         qsRestrictions.dwNameSpace = NS_NLA;
 
         mutex.lock();
-        if (done) {
+
+        if ( done )
+        {
             mutex.unlock();
             break;
         }
-        int result = WSALookupServiceBegin(&qsRestrictions, LUP_RETURN_ALL, &handle);
+
+        int result = WSALookupServiceBegin( &qsRestrictions, LUP_RETURN_ALL, &handle );
         mutex.unlock();
 
-        if (result == SOCKET_ERROR)
+        if ( result == SOCKET_ERROR )
+        {
             break;
+        }
 
         WSACOMPLETION completion;
         WSAOVERLAPPED overlapped;
 
-        memset(&overlapped, 0, sizeof(overlapped));
+        memset( &overlapped, 0, sizeof( overlapped ) );
         overlapped.hEvent = changeEvent;
 
-        memset(&completion, 0, sizeof(completion));
+        memset( &completion, 0, sizeof( completion ) );
         completion.Type = NSP_NOTIFY_EVENT;
         completion.Parameters.Event.lpOverlapped = &overlapped;
 
         DWORD bytesReturned = 0;
-        result = WSANSPIoctl(handle, SIO_NSP_NOTIFY_CHANGE, 0, 0, 0, 0,
-                             &bytesReturned, &completion);
-        if (result == SOCKET_ERROR) {
-            if (WSAGetLastError() != WSA_IO_PENDING)
+        result = WSANSPIoctl( handle, SIO_NSP_NOTIFY_CHANGE, 0, 0, 0, 0,
+                              &bytesReturned, &completion );
+
+        if ( result == SOCKET_ERROR )
+        {
+            if ( WSAGetLastError() != WSA_IO_PENDING )
+            {
                 break;
+            }
         }
 
         // Not interested in unrelated IO completion events
         // although we also don't want to block them
-        while (WaitForSingleObjectEx(changeEvent, WSA_INFINITE, true) != WAIT_IO_COMPLETION &&
-               handle)
+        while ( WaitForSingleObjectEx( changeEvent, WSA_INFINITE, true ) != WAIT_IO_COMPLETION &&
+                handle )
         {
         }
 
         mutex.lock();
-        if (handle) {
-            result = WSALookupServiceEnd(handle);
-            if (result == SOCKET_ERROR) {
+
+        if ( handle )
+        {
+            result = WSALookupServiceEnd( handle );
+
+            if ( result == SOCKET_ERROR )
+            {
                 mutex.unlock();
                 break;
             }
+
             handle = 0;
         }
+
         mutex.unlock();
     }
 
-    WSACloseEvent(changeEvent);
+    WSACloseEvent( changeEvent );
 }
 
-void QNlaThread::updateConfigurations(QList<QNetworkConfigurationPrivate *> &configs)
+void QNlaThread::updateConfigurations( QList<QNetworkConfigurationPrivate *> &configs )
 {
     mutex.lock();
 
-    while (!fetchedConfigurations.isEmpty())
+    while ( !fetchedConfigurations.isEmpty() )
+    {
         delete fetchedConfigurations.takeFirst();
+    }
 
     fetchedConfigurations = configs;
 
@@ -318,97 +371,116 @@ void QNlaThread::updateConfigurations(QList<QNetworkConfigurationPrivate *> &con
     emit networksChanged();
 }
 
-DWORD QNlaThread::parseBlob(NLA_BLOB *blob, QNetworkConfigurationPrivate *cpPriv) const
+DWORD QNlaThread::parseBlob( NLA_BLOB *blob, QNetworkConfigurationPrivate *cpPriv ) const
 {
 #ifdef BEARER_MANAGEMENT_DEBUG
-    printBlob(blob);
+    printBlob( blob );
 #endif
 
-    switch (blob->header.type) {
-    case NLA_RAW_DATA:
+    switch ( blob->header.type )
+    {
+        case NLA_RAW_DATA:
 #ifdef BEARER_MANAGEMENT_DEBUG
-        qDebug("%s: unhandled header type NLA_RAW_DATA", __FUNCTION__);
+            qDebug( "%s: unhandled header type NLA_RAW_DATA", __FUNCTION__ );
 #endif
-        break;
-    case NLA_INTERFACE:
-        cpPriv->state = QNetworkConfiguration::Active;
-        if (QNlaEngine *engine = dynamic_cast<QNlaEngine *>(parent())) {
-            engine->configurationInterface[cpPriv->id.toUInt()] =
-                QString::fromLatin1(blob->data.interfaceData.adapterName);
-        }
-        break;
-    case NLA_802_1X_LOCATION:
+            break;
+
+        case NLA_INTERFACE:
+            cpPriv->state = QNetworkConfiguration::Active;
+
+            if ( QNlaEngine *engine = dynamic_cast<QNlaEngine *>( parent() ) )
+            {
+                engine->configurationInterface[cpPriv->id.toUInt()] =
+                    QString::fromLatin1( blob->data.interfaceData.adapterName );
+            }
+
+            break;
+
+        case NLA_802_1X_LOCATION:
 #ifdef BEARER_MANAGEMENT_DEBUG
-        qDebug("%s: unhandled header type NLA_802_1X_LOCATION", __FUNCTION__);
+            qDebug( "%s: unhandled header type NLA_802_1X_LOCATION", __FUNCTION__ );
 #endif
-        break;
-    case NLA_CONNECTIVITY:
+            break;
+
+        case NLA_CONNECTIVITY:
 #ifdef BEARER_MANAGEMENT_DEBUG
-        qDebug("%s: unhandled header type NLA_CONNECTIVITY", __FUNCTION__);
+            qDebug( "%s: unhandled header type NLA_CONNECTIVITY", __FUNCTION__ );
 #endif
-        break;
-    case NLA_ICS:
+            break;
+
+        case NLA_ICS:
 #ifdef BEARER_MANAGEMENT_DEBUG
-        qDebug("%s: unhandled header type NLA_ICS", __FUNCTION__);
+            qDebug( "%s: unhandled header type NLA_ICS", __FUNCTION__ );
 #endif
-        break;
-    default:
+            break;
+
+        default:
 #ifdef BEARER_MANAGEMENT_DEBUG
-        qDebug("%s: unhandled header type %d", __FUNCTION__, blob->header.type);
+            qDebug( "%s: unhandled header type %d", __FUNCTION__, blob->header.type );
 #endif
-        ;
+            ;
     }
 
     return blob->header.nextOffset;
 }
 
-QNetworkConfigurationPrivate *QNlaThread::parseQuerySet(const WSAQUERYSET *querySet) const
+QNetworkConfigurationPrivate *QNlaThread::parseQuerySet( const WSAQUERYSET *querySet ) const
 {
     QNetworkConfigurationPrivate *cpPriv = new QNetworkConfigurationPrivate;
 
-    cpPriv->name = QString::fromWCharArray(querySet->lpszServiceInstanceName);
+    cpPriv->name = QString::fromWCharArray( querySet->lpszServiceInstanceName );
     cpPriv->isValid = true;
-    cpPriv->id = QString::number(qHash(QLatin1String("NLA:") + cpPriv->name));
+    cpPriv->id = QString::number( qHash( QLatin1String( "NLA:" ) + cpPriv->name ) );
     cpPriv->state = QNetworkConfiguration::Defined;
     cpPriv->type = QNetworkConfiguration::InternetAccessPoint;
 
 #ifdef BEARER_MANAGEMENT_DEBUG
     qDebug() << "size:" << querySet->dwSize;
-    qDebug() << "service instance name:" << QString::fromUtf16(querySet->lpszServiceInstanceName);
+    qDebug() << "service instance name:" << QString::fromUtf16( querySet->lpszServiceInstanceName );
     qDebug() << "service class id:" << querySet->lpServiceClassId;
     qDebug() << "version:" << querySet->lpVersion;
-    qDebug() << "comment:" << QString::fromUtf16(querySet->lpszComment);
+    qDebug() << "comment:" << QString::fromUtf16( querySet->lpszComment );
     qDebug() << "namespace:" << querySet->dwNameSpace;
     qDebug() << "namespace provider id:" << querySet->lpNSProviderId;
-    qDebug() << "context:" << QString::fromUtf16(querySet->lpszContext);
+    qDebug() << "context:" << QString::fromUtf16( querySet->lpszContext );
     qDebug() << "number of protocols:" << querySet->dwNumberOfProtocols;
     qDebug() << "protocols:" << querySet->lpafpProtocols;
-    qDebug() << "query string:" << QString::fromUtf16(querySet->lpszQueryString);
+    qDebug() << "query string:" << QString::fromUtf16( querySet->lpszQueryString );
     qDebug() << "number of cs addresses:" << querySet->dwNumberOfCsAddrs;
     qDebug() << "cs addresses:" << querySet->lpcsaBuffer;
     qDebug() << "output flags:" << querySet->dwOutputFlags;
 #endif
 
-    if (querySet->lpBlob) {
+    if ( querySet->lpBlob )
+    {
 #ifdef BEARER_MANAGEMENT_DEBUG
         qDebug() << "blob size:" << querySet->lpBlob->cbSize;
         qDebug() << "blob data:" << querySet->lpBlob->pBlobData;
 #endif
 
         DWORD offset = 0;
-        do {
-            NLA_BLOB *blob = reinterpret_cast<NLA_BLOB *>(querySet->lpBlob->pBlobData + offset);
-            DWORD nextOffset = parseBlob(blob, cpPriv);
-            if (nextOffset == offset)
+
+        do
+        {
+            NLA_BLOB *blob = reinterpret_cast<NLA_BLOB *>( querySet->lpBlob->pBlobData + offset );
+            DWORD nextOffset = parseBlob( blob, cpPriv );
+
+            if ( nextOffset == offset )
+            {
                 break;
+            }
             else
+            {
                 offset = nextOffset;
-        } while (offset != 0 && offset < querySet->lpBlob->cbSize);
+            }
+        }
+        while ( offset != 0 && offset < querySet->lpBlob->cbSize );
     }
 
-    if (QNlaEngine *engine = dynamic_cast<QNlaEngine *>(parent())) {
-        const QString interface = engine->getInterfaceFromId(cpPriv->id);
-        cpPriv->bearerType = qGetInterfaceType(interface);
+    if ( QNlaEngine *engine = dynamic_cast<QNlaEngine *>( parent() ) )
+    {
+        const QString interface = engine->getInterfaceFromId( cpPriv->id );
+        cpPriv->bearerType = qGetInterfaceType( interface );
     }
 
     return cpPriv;
@@ -421,53 +493,62 @@ void QNlaThread::fetchConfigurations()
     WSAQUERYSET qsRestrictions;
     HANDLE hLookup = 0;
 
-    memset(&qsRestrictions, 0, sizeof(qsRestrictions));
-    qsRestrictions.dwSize = sizeof(qsRestrictions);
+    memset( &qsRestrictions, 0, sizeof( qsRestrictions ) );
+    qsRestrictions.dwSize = sizeof( qsRestrictions );
     qsRestrictions.dwNameSpace = NS_NLA;
 
-    int result = WSALookupServiceBegin(&qsRestrictions, LUP_RETURN_ALL | LUP_DEEP, &hLookup);
-    if (result == SOCKET_ERROR) {
+    int result = WSALookupServiceBegin( &qsRestrictions, LUP_RETURN_ALL | LUP_DEEP, &hLookup );
+
+    if ( result == SOCKET_ERROR )
+    {
         mutex.lock();
         fetchedConfigurations.clear();
         mutex.unlock();
     }
 
     char buffer[0x10000];
-    while (result == 0) {
-        DWORD bufferLength = sizeof(buffer);
-        result = WSALookupServiceNext(hLookup, LUP_RETURN_ALL,
-                                      &bufferLength, reinterpret_cast<WSAQUERYSET *>(buffer));
 
-        if (result == SOCKET_ERROR)
+    while ( result == 0 )
+    {
+        DWORD bufferLength = sizeof( buffer );
+        result = WSALookupServiceNext( hLookup, LUP_RETURN_ALL,
+                                       &bufferLength, reinterpret_cast<WSAQUERYSET *>( buffer ) );
+
+        if ( result == SOCKET_ERROR )
+        {
             break;
+        }
 
         QNetworkConfigurationPrivate *cpPriv =
-            parseQuerySet(reinterpret_cast<WSAQUERYSET *>(buffer));
+            parseQuerySet( reinterpret_cast<WSAQUERYSET *>( buffer ) );
 
-        foundConfigurations.append(cpPriv);
+        foundConfigurations.append( cpPriv );
     }
 
-    if (hLookup) {
-        result = WSALookupServiceEnd(hLookup);
-        if (result == SOCKET_ERROR) {
+    if ( hLookup )
+    {
+        result = WSALookupServiceEnd( hLookup );
+
+        if ( result == SOCKET_ERROR )
+        {
 #ifdef BEARER_MANAGEMENT_DEBUG
-            qDebug("WSALookupServiceEnd error %d", WSAGetLastError());
+            qDebug( "WSALookupServiceEnd error %d", WSAGetLastError() );
 #endif
         }
     }
 
-    updateConfigurations(foundConfigurations);
+    updateConfigurations( foundConfigurations );
 }
 
-QNlaEngine::QNlaEngine(QObject *parent)
-:   QBearerEngineImpl(parent), nlaThread(0)
+QNlaEngine::QNlaEngine( QObject *parent )
+    :   QBearerEngineImpl( parent ), nlaThread( 0 )
 {
-    nlaThread = new QNlaThread(this);
-    connect(nlaThread, SIGNAL(networksChanged()),
-            this, SLOT(networksChanged()));
+    nlaThread = new QNlaThread( this );
+    connect( nlaThread, SIGNAL( networksChanged() ),
+             this, SLOT( networksChanged() ) );
     nlaThread->start();
 
-    qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
+    qApp->processEvents( QEventLoop::ExcludeUserInputEvents );
 }
 
 QNlaEngine::~QNlaEngine()
@@ -477,64 +558,74 @@ QNlaEngine::~QNlaEngine()
 
 void QNlaEngine::networksChanged()
 {
-    QMutexLocker locker(&mutex);
+    QMutexLocker locker( &mutex );
 
     QStringList previous = accessPointConfigurations.keys();
 
     QList<QNetworkConfigurationPrivate *> foundConfigurations = nlaThread->getConfigurations();
-    while (!foundConfigurations.isEmpty()) {
+
+    while ( !foundConfigurations.isEmpty() )
+    {
         QNetworkConfigurationPrivate *cpPriv = foundConfigurations.takeFirst();
 
-        previous.removeAll(cpPriv->id);
+        previous.removeAll( cpPriv->id );
 
-        if (accessPointConfigurations.contains(cpPriv->id)) {
-            QNetworkConfigurationPrivatePointer ptr = accessPointConfigurations.value(cpPriv->id);
+        if ( accessPointConfigurations.contains( cpPriv->id ) )
+        {
+            QNetworkConfigurationPrivatePointer ptr = accessPointConfigurations.value( cpPriv->id );
 
             bool changed = false;
 
             ptr->mutex.lock();
 
-            if (ptr->isValid != cpPriv->isValid) {
+            if ( ptr->isValid != cpPriv->isValid )
+            {
                 ptr->isValid = cpPriv->isValid;
                 changed = true;
             }
 
-            if (ptr->name != cpPriv->name) {
+            if ( ptr->name != cpPriv->name )
+            {
                 ptr->name = cpPriv->name;
                 changed = true;
             }
 
-            if (ptr->state != cpPriv->state) {
+            if ( ptr->state != cpPriv->state )
+            {
                 ptr->state = cpPriv->state;
                 changed = true;
             }
 
             ptr->mutex.unlock();
 
-            if (changed) {
+            if ( changed )
+            {
                 locker.unlock();
-                emit configurationChanged(ptr);
+                emit configurationChanged( ptr );
                 locker.relock();
             }
 
             delete cpPriv;
-        } else {
-            QNetworkConfigurationPrivatePointer ptr(cpPriv);
+        }
+        else
+        {
+            QNetworkConfigurationPrivatePointer ptr( cpPriv );
 
-            accessPointConfigurations.insert(ptr->id, ptr);
+            accessPointConfigurations.insert( ptr->id, ptr );
 
             locker.unlock();
-            emit configurationAdded(ptr);
+            emit configurationAdded( ptr );
             locker.relock();
         }
     }
 
-    while (!previous.isEmpty()) {
+    while ( !previous.isEmpty() )
+    {
         QNetworkConfigurationPrivatePointer ptr =
-            accessPointConfigurations.take(previous.takeFirst());
+            accessPointConfigurations.take( previous.takeFirst() );
 
         locker.unlock();
-        emit configurationRemoved(ptr);
+        emit configurationRemoved( ptr );
         locker.relock();
     }
 
@@ -542,57 +633,68 @@ void QNlaEngine::networksChanged()
     emit updateCompleted();
 }
 
-QString QNlaEngine::getInterfaceFromId(const QString &id)
+QString QNlaEngine::getInterfaceFromId( const QString &id )
 {
-    QMutexLocker locker(&mutex);
+    QMutexLocker locker( &mutex );
 
-    return configurationInterface.value(id.toUInt());
+    return configurationInterface.value( id.toUInt() );
 }
 
-bool QNlaEngine::hasIdentifier(const QString &id)
+bool QNlaEngine::hasIdentifier( const QString &id )
 {
-    QMutexLocker locker(&mutex);
+    QMutexLocker locker( &mutex );
 
-    return configurationInterface.contains(id.toUInt());
+    return configurationInterface.contains( id.toUInt() );
 }
 
-void QNlaEngine::connectToId(const QString &id)
+void QNlaEngine::connectToId( const QString &id )
 {
-    emit connectionError(id, OperationNotSupported);
+    emit connectionError( id, OperationNotSupported );
 }
 
-void QNlaEngine::disconnectFromId(const QString &id)
+void QNlaEngine::disconnectFromId( const QString &id )
 {
-    emit connectionError(id, OperationNotSupported);
+    emit connectionError( id, OperationNotSupported );
 }
 
 void QNlaEngine::requestUpdate()
 {
-    QMutexLocker locker(&mutex);
+    QMutexLocker locker( &mutex );
 
     nlaThread->forceUpdate();
 }
 
-QNetworkSession::State QNlaEngine::sessionStateForId(const QString &id)
+QNetworkSession::State QNlaEngine::sessionStateForId( const QString &id )
 {
-    QMutexLocker locker(&mutex);
+    QMutexLocker locker( &mutex );
 
-    QNetworkConfigurationPrivatePointer ptr = accessPointConfigurations.value(id);
+    QNetworkConfigurationPrivatePointer ptr = accessPointConfigurations.value( id );
 
-    if (!ptr)
+    if ( !ptr )
+    {
         return QNetworkSession::Invalid;
+    }
 
-    if (!ptr->isValid) {
+    if ( !ptr->isValid )
+    {
         return QNetworkSession::Invalid;
-    } else if ((ptr->state & QNetworkConfiguration::Active) == QNetworkConfiguration::Active) {
+    }
+    else if ( ( ptr->state & QNetworkConfiguration::Active ) == QNetworkConfiguration::Active )
+    {
         return QNetworkSession::Connected;
-    } else if ((ptr->state & QNetworkConfiguration::Discovered) ==
-                QNetworkConfiguration::Discovered) {
+    }
+    else if ( ( ptr->state & QNetworkConfiguration::Discovered ) ==
+              QNetworkConfiguration::Discovered )
+    {
         return QNetworkSession::Disconnected;
-    } else if ((ptr->state & QNetworkConfiguration::Defined) == QNetworkConfiguration::Defined) {
+    }
+    else if ( ( ptr->state & QNetworkConfiguration::Defined ) == QNetworkConfiguration::Defined )
+    {
         return QNetworkSession::NotAvailable;
-    } else if ((ptr->state & QNetworkConfiguration::Undefined) ==
-                QNetworkConfiguration::Undefined) {
+    }
+    else if ( ( ptr->state & QNetworkConfiguration::Undefined ) ==
+              QNetworkConfiguration::Undefined )
+    {
         return QNetworkSession::NotAvailable;
     }
 

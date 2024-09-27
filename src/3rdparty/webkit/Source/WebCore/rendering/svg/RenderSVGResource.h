@@ -24,9 +24,11 @@
 #include "RenderStyleConstants.h"
 #include "SVGDocumentExtensions.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-enum RenderSVGResourceType {
+enum RenderSVGResourceType
+{
     MaskerResourceType,
     MarkerResourceType,
     PatternResourceType,
@@ -37,7 +39,8 @@ enum RenderSVGResourceType {
     ClipperResourceType
 };
 
-enum RenderSVGResourceMode {
+enum RenderSVGResourceMode
+{
     ApplyToDefaultMode = 1 << 0, // used for all resources except gradient/pattern
     ApplyToFillMode    = 1 << 1,
     ApplyToStrokeMode  = 1 << 2,
@@ -52,35 +55,38 @@ class RenderObject;
 class RenderStyle;
 class RenderSVGResourceSolidColor;
 
-class RenderSVGResource {
+class RenderSVGResource
+{
 public:
     RenderSVGResource() { }
     virtual ~RenderSVGResource() { }
 
-    virtual void removeAllClientsFromCache(bool markForInvalidation = true) = 0;
-    virtual void removeClientFromCache(RenderObject*, bool markForInvalidation = true) = 0;
+    virtual void removeAllClientsFromCache( bool markForInvalidation = true ) = 0;
+    virtual void removeClientFromCache( RenderObject *, bool markForInvalidation = true ) = 0;
 
-    virtual bool applyResource(RenderObject*, RenderStyle*, GraphicsContext*&, unsigned short resourceMode) = 0;
-    virtual void postApplyResource(RenderObject*, GraphicsContext*&, unsigned short, const Path*) { }
-    virtual FloatRect resourceBoundingBox(RenderObject*) = 0;
+    virtual bool applyResource( RenderObject *, RenderStyle *, GraphicsContext *&, unsigned short resourceMode ) = 0;
+    virtual void postApplyResource( RenderObject *, GraphicsContext *&, unsigned short, const Path * ) { }
+    virtual FloatRect resourceBoundingBox( RenderObject * ) = 0;
 
     virtual RenderSVGResourceType resourceType() const = 0;
 
     template<class Renderer>
-    Renderer* cast()
+    Renderer *cast()
     {
-        if (Renderer::s_resourceType == resourceType())
-            return static_cast<Renderer*>(this);
+        if ( Renderer::s_resourceType == resourceType() )
+        {
+            return static_cast<Renderer *>( this );
+        }
 
         return 0;
     }
 
     // Helper utilities used in the render tree to access resources used for painting shapes/text (gradients & patterns & solid colors only)
-    static RenderSVGResource* fillPaintingResource(RenderObject*, const RenderStyle*, Color& fallbackColor);
-    static RenderSVGResource* strokePaintingResource(RenderObject*, const RenderStyle*, Color& fallbackColor);
-    static RenderSVGResourceSolidColor* sharedSolidPaintingResource();
+    static RenderSVGResource *fillPaintingResource( RenderObject *, const RenderStyle *, Color &fallbackColor );
+    static RenderSVGResource *strokePaintingResource( RenderObject *, const RenderStyle *, Color &fallbackColor );
+    static RenderSVGResourceSolidColor *sharedSolidPaintingResource();
 
-    static void markForLayoutAndParentResourceInvalidation(RenderObject*, bool needsLayout = true);
+    static void markForLayoutAndParentResourceInvalidation( RenderObject *, bool needsLayout = true );
 };
 
 }

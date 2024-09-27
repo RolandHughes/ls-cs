@@ -20,39 +20,51 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
 #include "FontFamily.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-FontFamily::FontFamily(const FontFamily& other)
-    : m_family(other.m_family)
-    , m_next(other.m_next)
+FontFamily::FontFamily( const FontFamily &other )
+    : m_family( other.m_family )
+    , m_next( other.m_next )
 {
 }
 
-FontFamily& FontFamily::operator=(const FontFamily& other)
+FontFamily &FontFamily::operator=( const FontFamily &other )
 {
     m_family = other.m_family;
     m_next = other.m_next;
     return *this;
 }
 
-bool operator==(const FontFamily& a, const FontFamily& b)
+bool operator==( const FontFamily &a, const FontFamily &b )
 {
-    if (a.family() != b.family())
+    if ( a.family() != b.family() )
+    {
         return false;
-    const FontFamily* ap;
-    const FontFamily* bp;
-    for (ap = a.next(), bp = b.next(); ap != bp; ap = ap->next(), bp = bp->next()) {
-        if (!ap || !bp)
-            return false;
-        if (ap->family() != bp->family())
-            return false;
     }
+
+    const FontFamily *ap;
+    const FontFamily *bp;
+
+    for ( ap = a.next(), bp = b.next(); ap != bp; ap = ap->next(), bp = bp->next() )
+    {
+        if ( !ap || !bp )
+        {
+            return false;
+        }
+
+        if ( ap->family() != bp->family() )
+        {
+            return false;
+        }
+    }
+
     return true;
 }
 

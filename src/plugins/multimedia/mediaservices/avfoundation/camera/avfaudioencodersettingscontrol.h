@@ -33,23 +33,23 @@ class AVFCameraService;
 
 class AVFAudioEncoderSettingsControl : public QAudioEncoderSettingsControl
 {
- public:
-   explicit AVFAudioEncoderSettingsControl(AVFCameraService *service);
+public:
+    explicit AVFAudioEncoderSettingsControl( AVFCameraService *service );
 
-   QStringList supportedAudioCodecs() const override;
-   QString codecDescription(const QString &codecName) const override;
-   QList<int> supportedSampleRates(const QAudioEncoderSettings &settings, bool *continuous = nullptr) const override;
-   QAudioEncoderSettings audioSettings() const override;
-   void setAudioSettings(const QAudioEncoderSettings &settings) override;
+    QStringList supportedAudioCodecs() const override;
+    QString codecDescription( const QString &codecName ) const override;
+    QList<int> supportedSampleRates( const QAudioEncoderSettings &settings, bool *continuous = nullptr ) const override;
+    QAudioEncoderSettings audioSettings() const override;
+    void setAudioSettings( const QAudioEncoderSettings &settings ) override;
 
-   NSDictionary *applySettings();
-   void unapplySettings();
+    NSDictionary *applySettings();
+    void unapplySettings();
 
- private:
-   AVFCameraService *m_service;
+private:
+    AVFCameraService *m_service;
 
-   QAudioEncoderSettings m_requestedSettings;
-   QAudioEncoderSettings m_actualSettings;
+    QAudioEncoderSettings m_requestedSettings;
+    QAudioEncoderSettings m_actualSettings;
 };
 
 #endif

@@ -26,27 +26,28 @@
 
 #include <qsinglecontainer_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class NodeSortExpression : public SingleContainer
 {
- public:
-   NodeSortExpression(const Expression::Ptr &operand);
+public:
+    NodeSortExpression( const Expression::Ptr &operand );
 
-   Item::Iterator::Ptr evaluateSequence(const DynamicContext::Ptr &context) const override;
-   SequenceType::Ptr staticType() const override;
-   SequenceType::List expectedOperandTypes() const override;
-   Expression::Ptr compress(const StaticContext::Ptr &context) override;
-   ExpressionVisitorResult::Ptr accept(const ExpressionVisitor::Ptr &visitor) const override;
-   Properties properties() const override;
+    Item::Iterator::Ptr evaluateSequence( const DynamicContext::Ptr &context ) const override;
+    SequenceType::Ptr staticType() const override;
+    SequenceType::List expectedOperandTypes() const override;
+    Expression::Ptr compress( const StaticContext::Ptr &context ) override;
+    ExpressionVisitorResult::Ptr accept( const ExpressionVisitor::Ptr &visitor ) const override;
+    Properties properties() const override;
 
-   /**
-    * Ensures that result delivered from @p operand, is in document order.
-    */
-   static Expression::Ptr wrapAround(const Expression::Ptr &operand, const StaticContext::Ptr &context);
+    /**
+     * Ensures that result delivered from @p operand, is in document order.
+     */
+    static Expression::Ptr wrapAround( const Expression::Ptr &operand, const StaticContext::Ptr &context );
 
- private:
-   static inline bool lessThanUsingNodeModel(const Item &n1, const Item &n2);
+private:
+    static inline bool lessThanUsingNodeModel( const Item &n1, const Item &n2 );
 };
 
 }

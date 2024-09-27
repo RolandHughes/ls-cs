@@ -25,63 +25,68 @@
 
 using namespace QPatternist;
 
-DistinctIterator::DistinctIterator(const Item::Iterator::Ptr &seq,
-                                   const AtomicComparator::Ptr &comp,
-                                   const Expression::ConstPtr &expression,
-                                   const DynamicContext::Ptr &context)
-   : m_seq(seq)
-   , m_context(context)
-   , m_expr(expression)
-   , m_position(0)
+DistinctIterator::DistinctIterator( const Item::Iterator::Ptr &seq,
+                                    const AtomicComparator::Ptr &comp,
+                                    const Expression::ConstPtr &expression,
+                                    const DynamicContext::Ptr &context )
+    : m_seq( seq )
+    , m_context( context )
+    , m_expr( expression )
+    , m_position( 0 )
 {
-   Q_ASSERT(seq);
-   prepareComparison(comp);
+    Q_ASSERT( seq );
+    prepareComparison( comp );
 }
 
 Item DistinctIterator::next()
 {
-   if (m_position == -1) {
-      return Item();
-   }
+    if ( m_position == -1 )
+    {
+        return Item();
+    }
 
-   const Item nitem(m_seq->next());
-   if (!nitem) {
-      m_position = -1;
-      m_current.reset();
-      return Item();
-   }
+    const Item nitem( m_seq->next() );
 
-   const Item::List::const_iterator end(m_processed.constEnd());
-   Item::List::const_iterator it(m_processed.constBegin());
+    if ( !nitem )
+    {
+        m_position = -1;
+        m_current.reset();
+        return Item();
+    }
 
-   for (; it != end; ++it) {
-      if (flexibleCompare(*it, nitem, m_context)) {
-         return next();
-      }
-   }
+    const Item::List::const_iterator end( m_processed.constEnd() );
+    Item::List::const_iterator it( m_processed.constBegin() );
 
-   m_current = nitem;
-   ++m_position;
-   m_processed.append(nitem);
-   return nitem;
+    for ( ; it != end; ++it )
+    {
+        if ( flexibleCompare( *it, nitem, m_context ) )
+        {
+            return next();
+        }
+    }
+
+    m_current = nitem;
+    ++m_position;
+    m_processed.append( nitem );
+    return nitem;
 }
 
 Item DistinctIterator::current() const
 {
-   return m_current;
+    return m_current;
 }
 
 xsInteger DistinctIterator::position() const
 {
-   return m_position;
+    return m_position;
 }
 
 Item::Iterator::Ptr DistinctIterator::copy() const
 {
-   return Item::Iterator::Ptr(new DistinctIterator(m_seq->copy(), comparator(), m_expr, m_context));
+    return Item::Iterator::Ptr( new DistinctIterator( m_seq->copy(), comparator(), m_expr, m_context ) );
 }
 
 const SourceLocationReflection *DistinctIterator::actualReflection() const
 {
-   return m_expr.data();
+    return m_expr.data();
 }

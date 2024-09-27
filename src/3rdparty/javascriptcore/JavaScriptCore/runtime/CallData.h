@@ -31,60 +31,71 @@
 
 #include "NativeFunctionWrapper.h"
 
-namespace JSC {
+namespace JSC
+{
 
-    class ArgList;
-    class ExecState;
-    class FunctionExecutable;
-    class JSObject;
-    class JSValue;
-    class ScopeChainNode;
+class ArgList;
+class ExecState;
+class FunctionExecutable;
+class JSObject;
+class JSValue;
+class ScopeChainNode;
 
-    enum CallType {
-        CallTypeNone,
-        CallTypeHost,
-        CallTypeJS
-    };
+enum CallType
+{
+    CallTypeNone,
+    CallTypeHost,
+    CallTypeJS
+};
 
-    typedef JSValue (JSC_HOST_CALL *NativeFunction)(ExecState*, JSObject*, JSValue thisValue, const ArgList&);
+typedef JSValue ( JSC_HOST_CALL *NativeFunction )( ExecState *, JSObject *, JSValue thisValue, const ArgList & );
 
 #ifdef QT_BUILD_SCRIPT_LIB
-    class NativeFuncWrapper
+class NativeFuncWrapper
+{
+    NativeFunction ptr;
+public:
+    inline NativeFuncWrapper &operator=( NativeFunction func )
     {
-        NativeFunction ptr;
-    public:
-        inline NativeFuncWrapper& operator=(NativeFunction func)
-        {
-            ptr = func;
-            return *this;
-        }
-        inline operator NativeFunction() const {return ptr;}
-        inline operator bool() const {return ptr;}
+        ptr = func;
+        return *this;
+    }
+    inline operator NativeFunction() const
+    {
+        return ptr;
+    }
+    inline operator bool() const
+    {
+        return ptr;
+    }
 
-        JSValue operator()(ExecState* exec, JSObject* jsobj, JSValue thisValue, const ArgList& argList) const;
-    };
+    JSValue operator()( ExecState *exec, JSObject *jsobj, JSValue thisValue, const ArgList &argList ) const;
+};
 #endif
 
 #if defined(QT_BUILD_SCRIPT_LIB) && OS(SOLARIS)
+struct
+#else
+union
+#endif
+    CallData
+{
     struct
-#else
-    union
-#endif
-    CallData {
-        struct {
+    {
 #ifndef QT_BUILD_SCRIPT_LIB
-            NativeFunction function;
+        NativeFunction function;
 #else
-            NativeFuncWrapper function;
+        NativeFuncWrapper function;
 #endif
-        } native;
-        struct {
-            FunctionExecutable* functionExecutable;
-            ScopeChainNode* scopeChain;
-        } js;
-    };
+    } native;
+    struct
+    {
+        FunctionExecutable *functionExecutable;
+        ScopeChainNode *scopeChain;
+    } js;
+};
 
-    JSValue call(ExecState*, JSValue functionObject, CallType, const CallData&, JSValue thisValue, const ArgList&);
+JSValue call( ExecState *, JSValue functionObject, CallType, const CallData &, JSValue thisValue, const ArgList & );
 
 } // namespace JSC
 

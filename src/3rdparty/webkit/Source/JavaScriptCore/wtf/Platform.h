@@ -95,9 +95,9 @@
 #if defined(__MINGW32__)
 #define WTF_COMPILER_MINGW 1
 #include <_mingw.h> /* private MinGW header */
-    #if defined(__MINGW64_VERSION_MAJOR) /* best way to check for mingw-w64 vs mingw.org */
-        #define WTF_COMPILER_MINGW64 1
-    #endif /* __MINGW64_VERSION_MAJOR */
+#if defined(__MINGW64_VERSION_MAJOR) /* best way to check for mingw-w64 vs mingw.org */
+#define WTF_COMPILER_MINGW64 1
+#endif /* __MINGW64_VERSION_MAJOR */
 #endif /* __MINGW32__ */
 
 /* COMPILER(WINSCW) - CodeWarrior for Symbian emulator */
@@ -1066,24 +1066,24 @@
 
 /* Configure the JIT */
 #if ENABLE(JIT)
-    #if CPU(ARM)
-    #if !defined(ENABLE_JIT_USE_SOFT_MODULO) && WTF_ARM_ARCH_AT_LEAST(5)
-    #define ENABLE_JIT_USE_SOFT_MODULO 1
-    #endif
-    #endif
+#if CPU(ARM)
+#if !defined(ENABLE_JIT_USE_SOFT_MODULO) && WTF_ARM_ARCH_AT_LEAST(5)
+#define ENABLE_JIT_USE_SOFT_MODULO 1
+#endif
+#endif
 
-    #ifndef ENABLE_JIT_OPTIMIZE_CALL
-    #define ENABLE_JIT_OPTIMIZE_CALL 1
-    #endif
-    #ifndef ENABLE_JIT_OPTIMIZE_NATIVE_CALL
-    #define ENABLE_JIT_OPTIMIZE_NATIVE_CALL 1
-    #endif
-    #ifndef ENABLE_JIT_OPTIMIZE_PROPERTY_ACCESS
-    #define ENABLE_JIT_OPTIMIZE_PROPERTY_ACCESS 1
-    #endif
-    #ifndef ENABLE_JIT_OPTIMIZE_METHOD_CALLS
-    #define ENABLE_JIT_OPTIMIZE_METHOD_CALLS 1
-    #endif
+#ifndef ENABLE_JIT_OPTIMIZE_CALL
+#define ENABLE_JIT_OPTIMIZE_CALL 1
+#endif
+#ifndef ENABLE_JIT_OPTIMIZE_NATIVE_CALL
+#define ENABLE_JIT_OPTIMIZE_NATIVE_CALL 1
+#endif
+#ifndef ENABLE_JIT_OPTIMIZE_PROPERTY_ACCESS
+#define ENABLE_JIT_OPTIMIZE_PROPERTY_ACCESS 1
+#endif
+#ifndef ENABLE_JIT_OPTIMIZE_METHOD_CALLS
+#define ENABLE_JIT_OPTIMIZE_METHOD_CALLS 1
+#endif
 #endif
 
 #if CPU(X86) && COMPILER(MSVC)

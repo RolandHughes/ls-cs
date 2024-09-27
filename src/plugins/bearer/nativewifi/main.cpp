@@ -34,30 +34,35 @@ QT_BEGIN_NAMESPACE
 static void resolveLibrary()
 {
     static bool triedResolve = false;
-    if (!triedResolve) {
-        QSystemLibrary wlanapi(QLatin1String("wlanapi"));
-        if (wlanapi.load()) {
-            local_WlanOpenHandle = (WlanOpenHandleProto)
-                wlanapi.resolve("WlanOpenHandle");
-            local_WlanRegisterNotification = (WlanRegisterNotificationProto)
-                wlanapi.resolve("WlanRegisterNotification");
-            local_WlanEnumInterfaces = (WlanEnumInterfacesProto)
-                wlanapi.resolve("WlanEnumInterfaces");
-            local_WlanGetAvailableNetworkList = (WlanGetAvailableNetworkListProto)
-                wlanapi.resolve("WlanGetAvailableNetworkList");
-            local_WlanQueryInterface = (WlanQueryInterfaceProto)
-                wlanapi.resolve("WlanQueryInterface");
-            local_WlanConnect = (WlanConnectProto)
-                wlanapi.resolve("WlanConnect");
-            local_WlanDisconnect = (WlanDisconnectProto)
-                wlanapi.resolve("WlanDisconnect");
-            local_WlanScan = (WlanScanProto)
-                wlanapi.resolve("WlanScan");
-            local_WlanFreeMemory = (WlanFreeMemoryProto)
-                wlanapi.resolve("WlanFreeMemory");
-            local_WlanCloseHandle = (WlanCloseHandleProto)
-                wlanapi.resolve("WlanCloseHandle");
+
+    if ( !triedResolve )
+    {
+        QSystemLibrary wlanapi( QLatin1String( "wlanapi" ) );
+
+        if ( wlanapi.load() )
+        {
+            local_WlanOpenHandle = ( WlanOpenHandleProto )
+                                   wlanapi.resolve( "WlanOpenHandle" );
+            local_WlanRegisterNotification = ( WlanRegisterNotificationProto )
+                                             wlanapi.resolve( "WlanRegisterNotification" );
+            local_WlanEnumInterfaces = ( WlanEnumInterfacesProto )
+                                       wlanapi.resolve( "WlanEnumInterfaces" );
+            local_WlanGetAvailableNetworkList = ( WlanGetAvailableNetworkListProto )
+                                                wlanapi.resolve( "WlanGetAvailableNetworkList" );
+            local_WlanQueryInterface = ( WlanQueryInterfaceProto )
+                                       wlanapi.resolve( "WlanQueryInterface" );
+            local_WlanConnect = ( WlanConnectProto )
+                                wlanapi.resolve( "WlanConnect" );
+            local_WlanDisconnect = ( WlanDisconnectProto )
+                                   wlanapi.resolve( "WlanDisconnect" );
+            local_WlanScan = ( WlanScanProto )
+                             wlanapi.resolve( "WlanScan" );
+            local_WlanFreeMemory = ( WlanFreeMemoryProto )
+                                   wlanapi.resolve( "WlanFreeMemory" );
+            local_WlanCloseHandle = ( WlanCloseHandleProto )
+                                    wlanapi.resolve( "WlanCloseHandle" );
         }
+
         triedResolve = true;
     }
 }
@@ -69,7 +74,7 @@ public:
     ~QNativeWifiEnginePlugin();
 
     QStringList keys() const;
-    QBearerEngine *create(const QString &key) const;
+    QBearerEngine *create( const QString &key ) const;
 };
 
 QNativeWifiEnginePlugin::QNativeWifiEnginePlugin()
@@ -82,24 +87,29 @@ QNativeWifiEnginePlugin::~QNativeWifiEnginePlugin()
 
 QStringList QNativeWifiEnginePlugin::keys() const
 {
-    return QStringList() << QLatin1String("nativewifi");
+    return QStringList() << QLatin1String( "nativewifi" );
 }
 
-QBearerEngine *QNativeWifiEnginePlugin::create(const QString &key) const
+QBearerEngine *QNativeWifiEnginePlugin::create( const QString &key ) const
 {
-    if (key != QLatin1String("nativewifi"))
+    if ( key != QLatin1String( "nativewifi" ) )
+    {
         return 0;
+    }
 
     resolveLibrary();
 
     // native wifi dll not available
-    if (!local_WlanOpenHandle)
+    if ( !local_WlanOpenHandle )
+    {
         return 0;
+    }
 
     QNativeWifiEngine *engine = new QNativeWifiEngine;
 
     // could not initialise subsystem
-    if (engine && !engine->available()) {
+    if ( engine && !engine->available() )
+    {
         delete engine;
         return 0;
     }
@@ -107,8 +117,8 @@ QBearerEngine *QNativeWifiEnginePlugin::create(const QString &key) const
     return engine;
 }
 
-Q_EXPORT_STATIC_PLUGIN(QNativeWifiEnginePlugin)
-Q_EXPORT_PLUGIN2(qnativewifibearer, QNativeWifiEnginePlugin)
+Q_EXPORT_STATIC_PLUGIN( QNativeWifiEnginePlugin )
+Q_EXPORT_PLUGIN2( qnativewifibearer, QNativeWifiEnginePlugin )
 
 QT_END_NAMESPACE
 

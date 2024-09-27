@@ -32,24 +32,25 @@
 #include "VoidCallback.h"
 #include <wtf/PassRefPtr.h>
 
-// FIXME: This is just a stub to keep compilation working. We need to revisit 
+// FIXME: This is just a stub to keep compilation working. We need to revisit
 // this when we add support for these callbacks to the WebDOM bindings.
 
-class WebDOMCustomVoidCallback : public WebCore::VoidCallback {
-public: 
+class WebDOMCustomVoidCallback : public WebCore::VoidCallback
+{
+public:
     static PassRefPtr<WebDOMCustomVoidCallback> create()
     {
-        return adoptRef(new WebDOMCustomVoidCallback());
+        return adoptRef( new WebDOMCustomVoidCallback() );
     }
-    
+
     virtual ~WebDOMCustomVoidCallback();
-    
+
     virtual void handleEvent();
-    
+
 private:
     WebDOMCustomVoidCallback();
 };
 
-WebCore::VoidCallback* toWebCore(const WebDOMCustomVoidCallback&);
+WebCore::VoidCallback *toWebCore( const WebDOMCustomVoidCallback & );
 
 #endif // WebDOMCustomVoidCallback_h

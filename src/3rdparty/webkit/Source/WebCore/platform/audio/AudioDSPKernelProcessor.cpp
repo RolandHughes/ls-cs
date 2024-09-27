@@ -36,79 +36,103 @@
 
 #include "AudioDSPKernel.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 // setNumberOfChannels() may later be called if the object is not yet in an "initialized" state.
-AudioDSPKernelProcessor::AudioDSPKernelProcessor(double sampleRate, unsigned numberOfChannels)
-    : AudioProcessor(sampleRate)
-    , m_numberOfChannels(numberOfChannels)
-    , m_hasJustReset(true)
+AudioDSPKernelProcessor::AudioDSPKernelProcessor( double sampleRate, unsigned numberOfChannels )
+    : AudioProcessor( sampleRate )
+    , m_numberOfChannels( numberOfChannels )
+    , m_hasJustReset( true )
 {
 }
 
 void AudioDSPKernelProcessor::initialize()
 {
-    if (isInitialized())
+    if ( isInitialized() )
+    {
         return;
+    }
 
-    ASSERT(!m_kernels.size());
+    ASSERT( !m_kernels.size() );
 
     // Create processing kernels, one per channel.
-    for (unsigned i = 0; i < numberOfChannels(); ++i)
-        m_kernels.append(createKernel());
+    for ( unsigned i = 0; i < numberOfChannels(); ++i )
+    {
+        m_kernels.append( createKernel() );
+    }
 
     m_initialized = true;
 }
 
 void AudioDSPKernelProcessor::uninitialize()
 {
-    if (!isInitialized())
+    if ( !isInitialized() )
+    {
         return;
-        
+    }
+
     m_kernels.clear();
 
     m_initialized = false;
 }
 
-void AudioDSPKernelProcessor::process(AudioBus* source, AudioBus* destination, size_t framesToProcess)
+void AudioDSPKernelProcessor::process( AudioBus *source, AudioBus *destination, size_t framesToProcess )
 {
-    ASSERT(source && destination);
-    if (!source || !destination)
+    ASSERT( source && destination );
+
+    if ( !source || !destination )
+    {
         return;
-        
-    if (!isInitialized()) {
+    }
+
+    if ( !isInitialized() )
+    {
         destination->zero();
         return;
     }
 
-    bool channelCountMatches = source->numberOfChannels() == destination->numberOfChannels() && source->numberOfChannels() == m_kernels.size();
-    ASSERT(channelCountMatches);
-    if (!channelCountMatches)
+    bool channelCountMatches = source->numberOfChannels() == destination->numberOfChannels()
+                               && source->numberOfChannels() == m_kernels.size();
+    ASSERT( channelCountMatches );
+
+    if ( !channelCountMatches )
+    {
         return;
-        
-    for (unsigned i = 0; i < m_kernels.size(); ++i)
-        m_kernels[i]->process(source->channel(i)->data(), destination->channel(i)->data(), framesToProcess);
+    }
+
+    for ( unsigned i = 0; i < m_kernels.size(); ++i )
+    {
+        m_kernels[i]->process( source->channel( i )->data(), destination->channel( i )->data(), framesToProcess );
+    }
 }
 
 // Resets filter state
 void AudioDSPKernelProcessor::reset()
 {
-    if (!isInitialized())
+    if ( !isInitialized() )
+    {
         return;
+    }
 
     // Forces snap to parameter values - first time.
     // Any processing depending on this value must set it to false at the appropriate time.
     m_hasJustReset = true;
 
-    for (unsigned i = 0; i < m_kernels.size(); ++i)
+    for ( unsigned i = 0; i < m_kernels.size(); ++i )
+    {
         m_kernels[i]->reset();
+    }
 }
 
-void AudioDSPKernelProcessor::setNumberOfChannels(unsigned numberOfChannels)
+void AudioDSPKernelProcessor::setNumberOfChannels( unsigned numberOfChannels )
 {
-    ASSERT(!isInitialized());
-    if (!isInitialized())
+    ASSERT( !isInitialized() );
+
+    if ( !isInitialized() )
+    {
         m_numberOfChannels = numberOfChannels;
+    }
 }
 
 } // namespace WebCore

@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -31,131 +31,193 @@
 #include "FrameLoader.h"
 #include "Image.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-Clipboard::Clipboard(ClipboardAccessPolicy policy, ClipboardType clipboardType) 
-    : m_policy(policy)
-    , m_dropEffect("uninitialized")
-    , m_effectAllowed("uninitialized")
-    , m_dragStarted(false)
-    , m_clipboardType(clipboardType)
-    , m_dragImage(0)
+Clipboard::Clipboard( ClipboardAccessPolicy policy, ClipboardType clipboardType )
+    : m_policy( policy )
+    , m_dropEffect( "uninitialized" )
+    , m_effectAllowed( "uninitialized" )
+    , m_dragStarted( false )
+    , m_clipboardType( clipboardType )
+    , m_dragImage( 0 )
 {
 }
-    
-void Clipboard::setAccessPolicy(ClipboardAccessPolicy policy)
+
+void Clipboard::setAccessPolicy( ClipboardAccessPolicy policy )
 {
     // once you go numb, can never go back
-    ASSERT(m_policy != ClipboardNumb || policy == ClipboardNumb);
+    ASSERT( m_policy != ClipboardNumb || policy == ClipboardNumb );
     m_policy = policy;
 }
 
 // These "conversion" methods are called by both WebCore and WebKit, and never make sense to JS, so we don't
 // worry about security for these. They don't allow access to the pasteboard anyway.
 
-static DragOperation dragOpFromIEOp(const String& op)
+static DragOperation dragOpFromIEOp( const String &op )
 {
     // yep, it's really just this fixed set
-    if (op == "uninitialized")
+    if ( op == "uninitialized" )
+    {
         return DragOperationEvery;
-    if (op == "none")
+    }
+
+    if ( op == "none" )
+    {
         return DragOperationNone;
-    if (op == "copy")
+    }
+
+    if ( op == "copy" )
+    {
         return DragOperationCopy;
-    if (op == "link")
+    }
+
+    if ( op == "link" )
+    {
         return DragOperationLink;
-    if (op == "move")
-        return (DragOperation)(DragOperationGeneric | DragOperationMove);
-    if (op == "copyLink")
-        return (DragOperation)(DragOperationCopy | DragOperationLink);
-    if (op == "copyMove")
-        return (DragOperation)(DragOperationCopy | DragOperationGeneric | DragOperationMove);
-    if (op == "linkMove")
-        return (DragOperation)(DragOperationLink | DragOperationGeneric | DragOperationMove);
-    if (op == "all")
+    }
+
+    if ( op == "move" )
+    {
+        return ( DragOperation )( DragOperationGeneric | DragOperationMove );
+    }
+
+    if ( op == "copyLink" )
+    {
+        return ( DragOperation )( DragOperationCopy | DragOperationLink );
+    }
+
+    if ( op == "copyMove" )
+    {
+        return ( DragOperation )( DragOperationCopy | DragOperationGeneric | DragOperationMove );
+    }
+
+    if ( op == "linkMove" )
+    {
+        return ( DragOperation )( DragOperationLink | DragOperationGeneric | DragOperationMove );
+    }
+
+    if ( op == "all" )
+    {
         return DragOperationEvery;
+    }
+
     return DragOperationPrivate;  // really a marker for "no conversion"
 }
 
-static String IEOpFromDragOp(DragOperation op)
+static String IEOpFromDragOp( DragOperation op )
 {
-    bool moveSet = !!((DragOperationGeneric | DragOperationMove) & op);
-    
-    if ((moveSet && (op & DragOperationCopy) && (op & DragOperationLink))
-        || (op == DragOperationEvery))
+    bool moveSet = !!( ( DragOperationGeneric | DragOperationMove ) & op );
+
+    if ( ( moveSet && ( op & DragOperationCopy ) && ( op & DragOperationLink ) )
+            || ( op == DragOperationEvery ) )
+    {
         return "all";
-    if (moveSet && (op & DragOperationCopy))
+    }
+
+    if ( moveSet && ( op & DragOperationCopy ) )
+    {
         return "copyMove";
-    if (moveSet && (op & DragOperationLink))
+    }
+
+    if ( moveSet && ( op & DragOperationLink ) )
+    {
         return "linkMove";
-    if ((op & DragOperationCopy) && (op & DragOperationLink))
+    }
+
+    if ( ( op & DragOperationCopy ) && ( op & DragOperationLink ) )
+    {
         return "copyLink";
-    if (moveSet)
+    }
+
+    if ( moveSet )
+    {
         return "move";
-    if (op & DragOperationCopy)
+    }
+
+    if ( op & DragOperationCopy )
+    {
         return "copy";
-    if (op & DragOperationLink)
+    }
+
+    if ( op & DragOperationLink )
+    {
         return "link";
+    }
+
     return "none";
 }
 
 DragOperation Clipboard::sourceOperation() const
 {
-    DragOperation op = dragOpFromIEOp(m_effectAllowed);
-    ASSERT(op != DragOperationPrivate);
+    DragOperation op = dragOpFromIEOp( m_effectAllowed );
+    ASSERT( op != DragOperationPrivate );
     return op;
 }
 
 DragOperation Clipboard::destinationOperation() const
 {
-    DragOperation op = dragOpFromIEOp(m_dropEffect);
-    ASSERT(op == DragOperationCopy || op == DragOperationNone || op == DragOperationLink || op == (DragOperation)(DragOperationGeneric | DragOperationMove) || op == DragOperationEvery);
+    DragOperation op = dragOpFromIEOp( m_dropEffect );
+    ASSERT( op == DragOperationCopy || op == DragOperationNone || op == DragOperationLink
+            || op == ( DragOperation )( DragOperationGeneric | DragOperationMove ) || op == DragOperationEvery );
     return op;
 }
 
-void Clipboard::setSourceOperation(DragOperation op)
+void Clipboard::setSourceOperation( DragOperation op )
 {
-    ASSERT_ARG(op, op != DragOperationPrivate);
-    m_effectAllowed = IEOpFromDragOp(op);
+    ASSERT_ARG( op, op != DragOperationPrivate );
+    m_effectAllowed = IEOpFromDragOp( op );
 }
 
-void Clipboard::setDestinationOperation(DragOperation op)
+void Clipboard::setDestinationOperation( DragOperation op )
 {
-    ASSERT_ARG(op, op == DragOperationCopy || op == DragOperationNone || op == DragOperationLink || op == DragOperationGeneric || op == DragOperationMove || op == (DragOperation)(DragOperationGeneric | DragOperationMove));
-    m_dropEffect = IEOpFromDragOp(op);
+    ASSERT_ARG( op, op == DragOperationCopy || op == DragOperationNone || op == DragOperationLink || op == DragOperationGeneric
+                || op == DragOperationMove || op == ( DragOperation )( DragOperationGeneric | DragOperationMove ) );
+    m_dropEffect = IEOpFromDragOp( op );
 }
 
-void Clipboard::setDropEffect(const String &effect)
+void Clipboard::setDropEffect( const String &effect )
 {
-    if (!isForDragAndDrop())
+    if ( !isForDragAndDrop() )
+    {
         return;
+    }
 
-    // The attribute must ignore any attempts to set it to a value other than none, copy, link, and move. 
-    if (effect != "none" && effect != "copy"  && effect != "link" && effect != "move")
+    // The attribute must ignore any attempts to set it to a value other than none, copy, link, and move.
+    if ( effect != "none" && effect != "copy"  && effect != "link" && effect != "move" )
+    {
         return;
+    }
 
-    if (m_policy == ClipboardReadable || m_policy == ClipboardTypesReadable)
+    if ( m_policy == ClipboardReadable || m_policy == ClipboardTypesReadable )
+    {
         m_dropEffect = effect;
+    }
 }
 
-void Clipboard::setEffectAllowed(const String &effect)
+void Clipboard::setEffectAllowed( const String &effect )
 {
-    if (!isForDragAndDrop())
+    if ( !isForDragAndDrop() )
+    {
         return;
+    }
 
-    if (dragOpFromIEOp(effect) == DragOperationPrivate) {
+    if ( dragOpFromIEOp( effect ) == DragOperationPrivate )
+    {
         // This means that there was no conversion, and the effectAllowed that
         // we are passed isn't a valid effectAllowed, so we should ignore it,
         // and not set m_effectAllowed.
 
-        // The attribute must ignore any attempts to set it to a value other than 
+        // The attribute must ignore any attempts to set it to a value other than
         // none, copy, copyLink, copyMove, link, linkMove, move, all, and uninitialized.
         return;
     }
 
 
-    if (m_policy == ClipboardWritable)
+    if ( m_policy == ClipboardWritable )
+    {
         m_effectAllowed = effect;
+    }
 }
 
 } // namespace WebCore

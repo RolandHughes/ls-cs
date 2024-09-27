@@ -27,73 +27,90 @@
 #include <qabstractxmlforwarditerator_p.h>
 #include <qprimitives_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 template<typename T>
 class SingletonIterator : public QAbstractXmlForwardIterator<T>
 {
- public:
-   /**
-    * Creates an iterator over @p item.
-    *
-    * @note item may not be @c null. Use the EmptyIterator for
-    * the empty sequence
-    */
-   SingletonIterator(const T &item) : m_item(item),
-      m_position(0) {
-      Q_ASSERT(!qIsForwardIteratorEnd(item));
-   }
+public:
+    /**
+     * Creates an iterator over @p item.
+     *
+     * @note item may not be @c null. Use the EmptyIterator for
+     * the empty sequence
+     */
+    SingletonIterator( const T &item ) : m_item( item ),
+        m_position( 0 )
+    {
+        Q_ASSERT( !qIsForwardIteratorEnd( item ) );
+    }
 
-   T next() override {
-      switch (m_position) {
-         case 0: {
-            ++m_position;
+    T next() override
+    {
+        switch ( m_position )
+        {
+            case 0:
+            {
+                ++m_position;
+                return m_item;
+            }
+
+            case 1:
+            {
+                m_position = -1;
+                return T();
+            }
+
+            default:
+            {
+                Q_ASSERT( m_position == -1 );
+                return T();
+            }
+        }
+    }
+
+    T current() const override
+    {
+        if ( m_position == 1 )
+        {
             return m_item;
-         }
-         case 1: {
-            m_position = -1;
+        }
+        else
+        {
             return T();
-         }
-         default: {
-            Q_ASSERT(m_position == -1);
-            return T();
-         }
-      }
-   }
+        }
+    }
 
-   T current() const override {
-      if (m_position == 1) {
-         return m_item;
-      } else {
-         return T();
-      }
-   }
+    xsInteger position() const override
+    {
+        return m_position;
+    }
 
-   xsInteger position() const override {
-      return m_position;
-   }
+    /**
+     * @returns a copy of this instance, rewinded to the beginning.
+     */
+    typename QAbstractXmlForwardIterator<T>::Ptr toReversed() override
+    {
+        return typename QAbstractXmlForwardIterator<T>::Ptr( new SingletonIterator<T>( m_item ) );
+    }
 
-   /**
-    * @returns a copy of this instance, rewinded to the beginning.
-    */
-   typename QAbstractXmlForwardIterator<T>::Ptr toReversed() override {
-      return typename QAbstractXmlForwardIterator<T>::Ptr(new SingletonIterator<T>(m_item));
-   }
+    /**
+     * @returns always 1
+     */
+    xsInteger count() override
+    {
+        return 1;
+    }
 
-   /**
-    * @returns always 1
-    */
-   xsInteger count() override {
-      return 1;
-   }
+    typename QAbstractXmlForwardIterator<T>::Ptr copy() const  override
+    {
+        return typename QAbstractXmlForwardIterator<T>::Ptr( new SingletonIterator( m_item ) );
+    }
 
-   typename QAbstractXmlForwardIterator<T>::Ptr copy() const  override {
-      return typename QAbstractXmlForwardIterator<T>::Ptr(new SingletonIterator(m_item));
-   }
-
- private:
-   const T m_item;
-   qint8 m_position;
+private:
+    const T m_item;
+    qint8 m_position;
 };
 
 /**
@@ -106,9 +123,9 @@ class SingletonIterator : public QAbstractXmlForwardIterator<T>
  * @relates SingletonIterator
  */
 template<typename T>
-inline typename SingletonIterator<T>::Ptr makeSingletonIterator(const T &item)
+inline typename SingletonIterator<T>::Ptr makeSingletonIterator( const T &item )
 {
-   return typename SingletonIterator<T>::Ptr(new SingletonIterator<T>(item));
+    return typename SingletonIterator<T>::Ptr( new SingletonIterator<T>( item ) );
 }
 
 }

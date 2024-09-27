@@ -31,18 +31,23 @@
 #include <wtf/PassOwnPtr.h>
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class AudioDSPKernel;
-    
-class DelayProcessor : public AudioDSPKernelProcessor {
+
+class DelayProcessor : public AudioDSPKernelProcessor
+{
 public:
-    DelayProcessor(double sampleRate, unsigned numberOfChannels);
+    DelayProcessor( double sampleRate, unsigned numberOfChannels );
     virtual ~DelayProcessor();
-    
+
     virtual PassOwnPtr<AudioDSPKernel> createKernel();
-        
-    AudioParam* delayTime() const { return m_delayTime.get(); }
+
+    AudioParam *delayTime() const
+    {
+        return m_delayTime.get();
+    }
 
 private:
     RefPtr<AudioParam> m_delayTime;

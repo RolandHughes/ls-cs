@@ -23,16 +23,18 @@
 
 #include "Text.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class EditingText : public Text {
+class EditingText : public Text
+{
 public:
-    static PassRefPtr<EditingText> create(Document*, const String&);
+    static PassRefPtr<EditingText> create( Document *, const String & );
 
 private:
-    virtual bool rendererIsNeeded(RenderStyle *);
+    virtual bool rendererIsNeeded( RenderStyle * );
 
-    EditingText(Document*, const String&);
+    EditingText( Document *, const String & );
 };
 
 } // namespace WebCore

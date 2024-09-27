@@ -37,23 +37,24 @@
 #include "GraphicsContext3D.h"
 #include "StringExtras.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-ConvolutionShader::ConvolutionShader(GraphicsContext3D* context, unsigned program, int kernelWidth)
-    : Shader(context, program)
-    , m_kernelWidth(kernelWidth)
-    , m_matrixLocation(context->getUniformLocation(program, "matrix"))
-    , m_texMatrixLocation(context->getUniformLocation(program, "texMatrix"))
-    , m_kernelLocation(context->getUniformLocation(program, "kernel"))
-    , m_imageLocation(context->getUniformLocation(program, "image"))
-    , m_imageIncrementLocation(context->getUniformLocation(program, "imageIncrement"))
-    , m_positionLocation(context->getAttribLocation(program, "position"))
+ConvolutionShader::ConvolutionShader( GraphicsContext3D *context, unsigned program, int kernelWidth )
+    : Shader( context, program )
+    , m_kernelWidth( kernelWidth )
+    , m_matrixLocation( context->getUniformLocation( program, "matrix" ) )
+    , m_texMatrixLocation( context->getUniformLocation( program, "texMatrix" ) )
+    , m_kernelLocation( context->getUniformLocation( program, "kernel" ) )
+    , m_imageLocation( context->getUniformLocation( program, "image" ) )
+    , m_imageIncrementLocation( context->getUniformLocation( program, "imageIncrement" ) )
+    , m_positionLocation( context->getAttribLocation( program, "position" ) )
 {
 }
 
-PassOwnPtr<ConvolutionShader> ConvolutionShader::create(GraphicsContext3D* context, int kernelWidth)
+PassOwnPtr<ConvolutionShader> ConvolutionShader::create( GraphicsContext3D *context, int kernelWidth )
 {
-    static const char* vertexShaderRaw =
+    static const char *vertexShaderRaw =
         "#define KERNEL_WIDTH %d\n"
         "uniform mat3 matrix;\n"
         "uniform mat3 texMatrix;\n"
@@ -68,8 +69,8 @@ PassOwnPtr<ConvolutionShader> ConvolutionShader::create(GraphicsContext3D* conte
         "    imageCoord = (texMatrix * pos).xy - vec2(scale, scale) * imageIncrement;\n"
         "}\n";
     char vertexShaderSource[1024];
-    snprintf(vertexShaderSource, sizeof(vertexShaderSource), vertexShaderRaw, kernelWidth);
-    static const char* fragmentShaderRaw =
+    snprintf( vertexShaderSource, sizeof( vertexShaderSource ), vertexShaderRaw, kernelWidth );
+    static const char *fragmentShaderRaw =
         "#ifdef GL_ES\n"
         "precision mediump float;\n"
         "#endif\n"
@@ -88,37 +89,46 @@ PassOwnPtr<ConvolutionShader> ConvolutionShader::create(GraphicsContext3D* conte
         "    gl_FragColor = sum;\n"
         "}\n";
     char fragmentShaderSource[1024];
-    snprintf(fragmentShaderSource, sizeof(fragmentShaderSource), fragmentShaderRaw, kernelWidth);
+    snprintf( fragmentShaderSource, sizeof( fragmentShaderSource ), fragmentShaderRaw, kernelWidth );
 
-    unsigned program = loadProgram(context, vertexShaderSource, fragmentShaderSource);
-    if (!program)
+    unsigned program = loadProgram( context, vertexShaderSource, fragmentShaderSource );
+
+    if ( !program )
+    {
         return nullptr;
-    return new ConvolutionShader(context, program, kernelWidth);
+    }
+
+    return new ConvolutionShader( context, program, kernelWidth );
 }
 
-void ConvolutionShader::use(const AffineTransform& transform, const AffineTransform& texTransform, const float* kernel, int kernelWidth, float imageIncrement[2])
+void ConvolutionShader::use( const AffineTransform &transform, const AffineTransform &texTransform, const float *kernel,
+                             int kernelWidth, float imageIncrement[2] )
 {
-    m_context->useProgram(m_program);
+    m_context->useProgram( m_program );
     float matrix[9];
-    affineTo3x3(transform, matrix);
-    m_context->uniformMatrix3fv(m_matrixLocation, false /*transpose*/, matrix, 1 /*count*/);
+    affineTo3x3( transform, matrix );
+    m_context->uniformMatrix3fv( m_matrixLocation, false /*transpose*/, matrix, 1 /*count*/ );
 
     float texMatrix[9];
-    affineTo3x3(texTransform, texMatrix);
-    m_context->uniformMatrix3fv(m_texMatrixLocation, false /*transpose*/, texMatrix, 1 /*count*/);
+    affineTo3x3( texTransform, texMatrix );
+    m_context->uniformMatrix3fv( m_texMatrixLocation, false /*transpose*/, texMatrix, 1 /*count*/ );
 
-    m_context->uniform2f(m_imageIncrementLocation, imageIncrement[0], imageIncrement[1]);
+    m_context->uniform2f( m_imageIncrementLocation, imageIncrement[0], imageIncrement[1] );
 
     // For now, we always use texture unit 0. If that ever changes, we should
     // expose this parameter to the caller.
-    m_context->uniform1i(m_imageLocation, 0);
-    if (kernelWidth > m_kernelWidth)
+    m_context->uniform1i( m_imageLocation, 0 );
+
+    if ( kernelWidth > m_kernelWidth )
+    {
         kernelWidth = m_kernelWidth;
-    m_context->uniform1fv(m_kernelLocation, const_cast<float*>(kernel), kernelWidth);
+    }
 
-    m_context->vertexAttribPointer(m_positionLocation, 2, GraphicsContext3D::FLOAT, false, 0, 0);
+    m_context->uniform1fv( m_kernelLocation, const_cast<float *>( kernel ), kernelWidth );
 
-    m_context->enableVertexAttribArray(m_positionLocation);
+    m_context->vertexAttribPointer( m_positionLocation, 2, GraphicsContext3D::FLOAT, false, 0, 0 );
+
+    m_context->enableVertexAttribArray( m_positionLocation );
 }
 
 }

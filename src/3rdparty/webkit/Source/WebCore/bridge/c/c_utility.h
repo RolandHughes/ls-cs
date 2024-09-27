@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef C_UTILITY_H_
@@ -32,23 +32,26 @@
 #include <runtime/JSValue.h>
 #include <wtf/Forward.h>
 
-namespace JSC {
+namespace JSC
+{
 
 class ExecState;
 class Identifier;
 
-namespace Bindings {
+namespace Bindings
+{
 
 class RootObject;
-    
+
 typedef uint16_t NPUTF16;
 
-WTF::String convertNPStringToUTF16(const NPString *string);
-void convertValueToNPVariant(ExecState*, JSValue, NPVariant* result);
-JSValue convertNPVariantToValue(ExecState*, const NPVariant*, RootObject*);
-Identifier identifierFromNPIdentifier(ExecState*, const NPUTF8* name);
+WTF::String convertNPStringToUTF16( const NPString *string );
+void convertValueToNPVariant( ExecState *, JSValue, NPVariant *result );
+JSValue convertNPVariantToValue( ExecState *, const NPVariant *, RootObject * );
+Identifier identifierFromNPIdentifier( ExecState *, const NPUTF8 *name );
 
-} }
+}
+}
 
 #endif // ENABLE(NETSCAPE_PLUGIN_API)
 

@@ -37,45 +37,46 @@ class QOpenGLPaintDevicePrivate;
 
 class Q_GUI_EXPORT QOpenGLPaintDevice : public QPaintDevice
 {
- public:
+public:
     QOpenGLPaintDevice();
-    explicit QOpenGLPaintDevice(const QSize &size);
-    QOpenGLPaintDevice(int width, int height);
+    explicit QOpenGLPaintDevice( const QSize &size );
+    QOpenGLPaintDevice( int width, int height );
 
-    QOpenGLPaintDevice(const QOpenGLPaintDevice &) = delete;
-    QOpenGLPaintDevice &operator=(const QOpenGLPaintDevice &) = delete;
+    QOpenGLPaintDevice( const QOpenGLPaintDevice & ) = delete;
+    QOpenGLPaintDevice &operator=( const QOpenGLPaintDevice & ) = delete;
 
     virtual ~QOpenGLPaintDevice();
 
-    int devType() const override {
-      return QInternal::OpenGL;
+    int devType() const override
+    {
+        return QInternal::OpenGL;
     }
 
     QPaintEngine *paintEngine() const override;
 
     QOpenGLContext *context() const;
     QSize size() const;
-    void setSize(const QSize &size);
-    void setDevicePixelRatio(qreal devicePixelRatio);
+    void setSize( const QSize &size );
+    void setDevicePixelRatio( qreal devicePixelRatio );
 
     qreal dotsPerMeterX() const;
     qreal dotsPerMeterY() const;
 
-    void setDotsPerMeterX(qreal dpmx);
-    void setDotsPerMeterY(qreal dpmy);
+    void setDotsPerMeterX( qreal dpmx );
+    void setDotsPerMeterY( qreal dpmy );
 
-    void setPaintFlipped(bool flipped);
+    void setPaintFlipped( bool flipped );
     bool paintFlipped() const;
 
     virtual void ensureActiveTarget();
 
- protected:
-    QOpenGLPaintDevice(QOpenGLPaintDevicePrivate &dd);
-    int metric(QPaintDevice::PaintDeviceMetric metric) const override;
+protected:
+    QOpenGLPaintDevice( QOpenGLPaintDevicePrivate &dd );
+    int metric( QPaintDevice::PaintDeviceMetric metric ) const override;
     QScopedPointer<QOpenGLPaintDevicePrivate> d_ptr;
 
- private:
-    Q_DECLARE_PRIVATE(QOpenGLPaintDevice)
+private:
+    Q_DECLARE_PRIVATE( QOpenGLPaintDevice )
 };
 
 #endif // QT_NO_OPENGL

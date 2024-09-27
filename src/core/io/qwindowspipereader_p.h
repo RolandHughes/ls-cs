@@ -31,80 +31,84 @@
 
 class Q_CORE_EXPORT QWindowsPipeReader : public QObject
 {
-   CORE_CS_OBJECT(QWindowsPipeReader)
+    CORE_CS_OBJECT( QWindowsPipeReader )
 
- public:
-   explicit QWindowsPipeReader(QObject *parent = nullptr);
-   ~QWindowsPipeReader();
+public:
+    explicit QWindowsPipeReader( QObject *parent = nullptr );
+    ~QWindowsPipeReader();
 
-   void setHandle(HANDLE hPipeReadEnd);
-   void startAsyncRead();
-   void stop();
+    void setHandle( HANDLE hPipeReadEnd );
+    void startAsyncRead();
+    void stop();
 
-   void setMaxReadBufferSize(qint64 size) {
-      readBufferMaxSize = size;
-   }
+    void setMaxReadBufferSize( qint64 size )
+    {
+        readBufferMaxSize = size;
+    }
 
-   qint64 maxReadBufferSize() const {
-      return readBufferMaxSize;
-   }
+    qint64 maxReadBufferSize() const
+    {
+        return readBufferMaxSize;
+    }
 
-   bool isPipeClosed() const {
-      return pipeBroken;
-   }
+    bool isPipeClosed() const
+    {
+        return pipeBroken;
+    }
 
-   qint64 bytesAvailable() const;
-   qint64 read(char *data, qint64 maxlen);
-   bool canReadLine() const;
-   bool waitForReadyRead(int msecs);
-   bool waitForPipeClosed(int msecs);
+    qint64 bytesAvailable() const;
+    qint64 read( char *data, qint64 maxlen );
+    bool canReadLine() const;
+    bool waitForReadyRead( int msecs );
+    bool waitForPipeClosed( int msecs );
 
-   bool isReadOperationActive() const {
-      return readSequenceStarted;
-   }
+    bool isReadOperationActive() const
+    {
+        return readSequenceStarted;
+    }
 
-   CORE_CS_SIGNAL_1(Public, void winError(ulong errorCode, const QString &text))
-   CORE_CS_SIGNAL_2(winError, errorCode, text)
+    CORE_CS_SIGNAL_1( Public, void winError( ulong errorCode, const QString &text ) )
+    CORE_CS_SIGNAL_2( winError, errorCode, text )
 
-   CORE_CS_SIGNAL_1(Public, void readyRead())
-   CORE_CS_SIGNAL_2(readyRead)
+    CORE_CS_SIGNAL_1( Public, void readyRead() )
+    CORE_CS_SIGNAL_2( readyRead )
 
-   CORE_CS_SIGNAL_1(Public, void pipeClosed())
-   CORE_CS_SIGNAL_2(pipeClosed)
+    CORE_CS_SIGNAL_1( Public, void pipeClosed() )
+    CORE_CS_SIGNAL_2( pipeClosed )
 
-   CORE_CS_SIGNAL_1(Public, void _q_queueReadyRead())
-   CORE_CS_SIGNAL_2(_q_queueReadyRead)
+    CORE_CS_SIGNAL_1( Public, void _q_queueReadyRead() )
+    CORE_CS_SIGNAL_2( _q_queueReadyRead )
 
- private:
-   static void CALLBACK readFileCompleted(DWORD errorCode, DWORD numberOfBytesTransfered, OVERLAPPED *overlappedBase);
-   void notified(DWORD errorCode, DWORD numberOfBytesRead);
-   DWORD checkPipeState();
-   bool waitForNotification(int timeout);
-   void emitPendingReadyRead();
+private:
+    static void CALLBACK readFileCompleted( DWORD errorCode, DWORD numberOfBytesTransfered, OVERLAPPED *overlappedBase );
+    void notified( DWORD errorCode, DWORD numberOfBytesRead );
+    DWORD checkPipeState();
+    bool waitForNotification( int timeout );
+    void emitPendingReadyRead();
 
-   class Overlapped : public OVERLAPPED
-   {
+    class Overlapped : public OVERLAPPED
+    {
     public:
-      explicit Overlapped(QWindowsPipeReader *reader);
+        explicit Overlapped( QWindowsPipeReader *reader );
 
-      Overlapped(const Overlapped &) = delete;
-      Overlapped &operator=(const Overlapped &) = delete;
+        Overlapped( const Overlapped & ) = delete;
+        Overlapped &operator=( const Overlapped & ) = delete;
 
-      void clear();
-      QWindowsPipeReader *pipeReader;
-   };
+        void clear();
+        QWindowsPipeReader *pipeReader;
+    };
 
-   HANDLE handle;
-   Overlapped overlapped;
-   qint64 readBufferMaxSize;
-   QRingBuffer readBuffer;
-   qint64 actualReadBufferSize;
-   bool stopped;
-   bool readSequenceStarted;
-   bool notifiedCalled;
-   bool pipeBroken;
-   bool readyReadPending;
-   bool inReadyRead;
+    HANDLE handle;
+    Overlapped overlapped;
+    qint64 readBufferMaxSize;
+    QRingBuffer readBuffer;
+    qint64 actualReadBufferSize;
+    bool stopped;
+    bool readSequenceStarted;
+    bool notifiedCalled;
+    bool pipeBroken;
+    bool readyReadPending;
+    bool inReadyRead;
 };
 
 #endif

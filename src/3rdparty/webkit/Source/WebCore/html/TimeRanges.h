@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef TimeRanges_h
@@ -33,40 +33,46 @@
 #include <wtf/RefCounted.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class TimeRanges : public RefCounted<TimeRanges> {
+class TimeRanges : public RefCounted<TimeRanges>
+{
 public:
-    static PassRefPtr<TimeRanges> create() 
+    static PassRefPtr<TimeRanges> create()
     {
-        return adoptRef(new TimeRanges);
+        return adoptRef( new TimeRanges );
     }
-    static PassRefPtr<TimeRanges> create(float start, float end)
+    static PassRefPtr<TimeRanges> create( float start, float end )
     {
-        return adoptRef(new TimeRanges(start, end));
+        return adoptRef( new TimeRanges( start, end ) );
     }
 
     PassRefPtr<TimeRanges> copy();
 
-    unsigned length() const { return m_ranges.size(); }
-    float start(unsigned index, ExceptionCode&) const;
-    float end(unsigned index, ExceptionCode&) const;
-    
-    void add(float start, float end);
-    
-    bool contain(float time) const;
-    
-    float nearest(float time) const;
+    unsigned length() const
+    {
+        return m_ranges.size();
+    }
+    float start( unsigned index, ExceptionCode & ) const;
+    float end( unsigned index, ExceptionCode & ) const;
+
+    void add( float start, float end );
+
+    bool contain( float time ) const;
+
+    float nearest( float time ) const;
 
 private:
     TimeRanges() { }
-    TimeRanges(float start, float end);
-    TimeRanges(const TimeRanges&);
+    TimeRanges( float start, float end );
+    TimeRanges( const TimeRanges & );
 
     // We consider all the Ranges to be semi-bounded as follow: [start, end[
-    struct Range {
+    struct Range
+    {
         Range() { }
-        Range(float start, float end)
+        Range( float start, float end )
         {
             m_start = start;
             m_end = end;
@@ -74,37 +80,37 @@ private:
         float m_start;
         float m_end;
 
-        inline bool isPointInRange(float point) const
+        inline bool isPointInRange( float point ) const
         {
             return m_start <= point && point < m_end;
         }
-        
-        inline bool isOverlappingRange(const Range& range) const
+
+        inline bool isOverlappingRange( const Range &range ) const
         {
-            return isPointInRange(range.m_start) || isPointInRange(range.m_end) || range.isPointInRange(m_start);
+            return isPointInRange( range.m_start ) || isPointInRange( range.m_end ) || range.isPointInRange( m_start );
         }
 
-        inline bool isContiguousWithRange(const Range& range) const
+        inline bool isContiguousWithRange( const Range &range ) const
         {
             return range.m_start == m_end || range.m_end == m_start;
         }
-        
-        inline Range unionWithOverlappingOrContiguousRange(const Range& range) const
+
+        inline Range unionWithOverlappingOrContiguousRange( const Range &range ) const
         {
             Range ret;
 
-            ret.m_start = std::min(m_start, range.m_start);
-            ret.m_end = std::max(m_end, range.m_end);
+            ret.m_start = std::min( m_start, range.m_start );
+            ret.m_end = std::max( m_end, range.m_end );
 
             return ret;
         }
 
-        inline bool isBeforeRange(const Range& range) const
+        inline bool isBeforeRange( const Range &range ) const
         {
             return range.m_start >= m_end;
         }
     };
-    
+
     Vector<Range> m_ranges;
 };
 

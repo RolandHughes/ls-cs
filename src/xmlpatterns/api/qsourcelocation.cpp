@@ -24,23 +24,23 @@
 #include <qxmlpatterns_debug_p.h>
 #include <qsourcelocation.h>
 
-QSourceLocation::QSourceLocation() : m_line(-1), m_column(-1)
+QSourceLocation::QSourceLocation() : m_line( -1 ), m_column( -1 )
 {
 }
 
 /*!
   Constructs a QSourceLocation that is a copy of \a other.
  */
-QSourceLocation::QSourceLocation(const QSourceLocation &other)
-   : m_line(other.m_line), m_column(other.m_column), m_uri(other.m_uri)
+QSourceLocation::QSourceLocation( const QSourceLocation &other )
+    : m_line( other.m_line ), m_column( other.m_column ), m_uri( other.m_uri )
 {
 }
 
 /*!
  Constructs a QSourceLocation with URI \a u, line \a l and column \a c.
  */
-QSourceLocation::QSourceLocation(const QUrl &u, int l, int c)
-   : m_line(l), m_column(c), m_uri(u)
+QSourceLocation::QSourceLocation( const QUrl &u, int l, int c )
+    : m_line( l ), m_column( c ), m_uri( u )
 {
 }
 
@@ -60,34 +60,35 @@ QSourceLocation::~QSourceLocation()
   QSourceLocation instances for which isNull() returns true are
   considered equal.
  */
-bool QSourceLocation::operator==(const QSourceLocation &other) const
+bool QSourceLocation::operator==( const QSourceLocation &other ) const
 {
-   return    m_line == other.m_line
-             && m_column == other.m_column
-             && m_uri == other.m_uri;
+    return    m_line == other.m_line
+              && m_column == other.m_column
+              && m_uri == other.m_uri;
 }
 
 /*!
   Returns the opposite of applying operator==() for this QXmlName
   and \a other.
  */
-bool QSourceLocation::operator!=(const QSourceLocation &other) const
+bool QSourceLocation::operator!=( const QSourceLocation &other ) const
 {
-   return operator==(other);
+    return operator==( other );
 }
 
 /*!
   Assigns this QSourceLocation instance to \a other.
  */
-QSourceLocation &QSourceLocation::operator=(const QSourceLocation &other)
+QSourceLocation &QSourceLocation::operator=( const QSourceLocation &other )
 {
-   if (this != &other) {
-      m_line = other.m_line;
-      m_column = other.m_column;
-      m_uri = other.m_uri;
-   }
+    if ( this != &other )
+    {
+        m_line = other.m_line;
+        m_column = other.m_column;
+        m_uri = other.m_uri;
+    }
 
-   return *this;
+    return *this;
 }
 
 /*!
@@ -97,18 +98,18 @@ QSourceLocation &QSourceLocation::operator=(const QSourceLocation &other)
  */
 qint64 QSourceLocation::column() const
 {
-   return m_column;
+    return m_column;
 }
 
 /*!
   Sets the column number to \a newColumn. 0 is an invalid column
   number. The first column number is 1.
  */
-void QSourceLocation::setColumn(qint64 newColumn)
+void QSourceLocation::setColumn( qint64 newColumn )
 {
-   Q_ASSERT_X(newColumn != 0, Q_FUNC_INFO,
-              "0 is an invalid column number. The first column number is 1.");
-   m_column = newColumn;
+    Q_ASSERT_X( newColumn != 0, Q_FUNC_INFO,
+                "0 is an invalid column number. The first column number is 1." );
+    m_column = newColumn;
 }
 
 /*!
@@ -117,16 +118,16 @@ void QSourceLocation::setColumn(qint64 newColumn)
  */
 qint64 QSourceLocation::line() const
 {
-   return m_line;
+    return m_line;
 }
 
 /*!
   Sets the line number to \a newLine. 0 is an invalid line
   number. The first line number is 1.
  */
-void QSourceLocation::setLine(qint64 newLine)
+void QSourceLocation::setLine( qint64 newLine )
 {
-   m_line = newLine;
+    m_line = newLine;
 }
 
 /*!
@@ -136,37 +137,37 @@ void QSourceLocation::setLine(qint64 newLine)
  */
 QUrl QSourceLocation::uri() const
 {
-   return m_uri;
+    return m_uri;
 }
 
 /*!
   Sets the URI to \a newUri.
  */
-void QSourceLocation::setUri(const QUrl &newUri)
+void QSourceLocation::setUri( const QUrl &newUri )
 {
-   m_uri = newUri;
+    m_uri = newUri;
 }
 
-QDebug operator<<(QDebug debug, const QSourceLocation &sourceLocation)
+QDebug operator<<( QDebug debug, const QSourceLocation &sourceLocation )
 {
-   debug << "QSourceLocation("
-         << sourceLocation.uri().toString()
-         << ", line:"
-         << sourceLocation.line()
-         << ", column:"
-         << sourceLocation.column()
-         << ')';
-   return debug;
+    debug << "QSourceLocation("
+          << sourceLocation.uri().toString()
+          << ", line:"
+          << sourceLocation.line()
+          << ", column:"
+          << sourceLocation.column()
+          << ')';
+    return debug;
 }
 
 bool QSourceLocation::isNull() const
 {
-   return ! m_uri.isValid();
+    return ! m_uri.isValid();
 }
 
-uint qHash(const QSourceLocation &location)
+uint qHash( const QSourceLocation &location )
 {
-   /* Not the world's best hash function exactly. */
-   return qHash(location.uri().toString()) + location.line() + location.column();
+    /* Not the world's best hash function exactly. */
+    return qHash( location.uri().toString() ) + location.line() + location.column();
 }
 

@@ -29,11 +29,13 @@
 #include <CoreGraphics/CGEventSource.h>
 #include <CoreFoundation/CFDate.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 float userIdleTime()
 {
-    return static_cast<float>(CGEventSourceSecondsSinceLastEventType(kCGEventSourceStateCombinedSessionState, kCGAnyInputEventType));
+    return static_cast<float>( CGEventSourceSecondsSinceLastEventType( kCGEventSourceStateCombinedSessionState,
+                               kCGAnyInputEventType ) );
 }
 
 }

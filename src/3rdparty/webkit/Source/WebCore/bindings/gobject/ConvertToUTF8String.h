@@ -23,13 +23,14 @@
 
 #include <wtf/Forward.h>
 
-namespace WebCore {
+namespace WebCore
+{
 class KURL;
 }
 
 typedef char gchar;
 
-gchar* convertToUTF8String(WTF::String const& s);
-gchar* convertToUTF8String(WebCore::KURL const& s);
+gchar *convertToUTF8String( WTF::String const &s );
+gchar *convertToUTF8String( WebCore::KURL const &s );
 
 #endif /* ConvertToUTF8String_h */

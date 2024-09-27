@@ -29,43 +29,43 @@
 
 class QDirPrivate : public QSharedData
 {
- public:
-   QDirPrivate(const QString &path, const QStringList &nameFilters_ = QStringList(),
-         QDir::SortFlags sort_ = QDir::SortFlags(QDir::Name | QDir::IgnoreCase),
-         QDir::Filters filters_ = QDir::AllEntries);
+public:
+    QDirPrivate( const QString &path, const QStringList &nameFilters_ = QStringList(),
+                 QDir::SortFlags sort_ = QDir::SortFlags( QDir::Name | QDir::IgnoreCase ),
+                 QDir::Filters filters_ = QDir::AllEntries );
 
-   QDirPrivate(const QDirPrivate &copy);
+    QDirPrivate( const QDirPrivate &copy );
 
-   bool exists() const;
+    bool exists() const;
 
-   void initFileEngine();
-   void initFileLists(const QDir &dir) const;
+    void initFileEngine();
+    void initFileLists( const QDir &dir ) const;
 
-   static void sortFileList(QDir::SortFlags, QFileInfoList &, QStringList *, QFileInfoList *);
+    static void sortFileList( QDir::SortFlags, QFileInfoList &, QStringList *, QFileInfoList * );
 
-   static inline QChar getFilterSepChar(const QString &nameFilter);
+    static inline QChar getFilterSepChar( const QString &nameFilter );
 
-   static inline QStringList splitFilters(const QString &nameFilter, QChar sep = QChar());
+    static inline QStringList splitFilters( const QString &nameFilter, QChar sep = QChar() );
 
-   void setPath(const QString &path);
+    void setPath( const QString &path );
 
-   void clearFileLists();
+    void clearFileLists();
 
-   void resolveAbsoluteEntry() const;
+    void resolveAbsoluteEntry() const;
 
-   QStringList nameFilters;
-   QDir::SortFlags sort;
-   QDir::Filters filters;
+    QStringList nameFilters;
+    QDir::SortFlags sort;
+    QDir::Filters filters;
 
-   QScopedPointer<QAbstractFileEngine> fileEngine;
+    QScopedPointer<QAbstractFileEngine> fileEngine;
 
-   mutable bool fileListsInitialized;
-   mutable QStringList files;
-   mutable QFileInfoList fileInfos;
+    mutable bool fileListsInitialized;
+    mutable QStringList files;
+    mutable QFileInfoList fileInfos;
 
-   QFileSystemEntry dirEntry;
-   mutable QFileSystemEntry absoluteDirEntry;
-   mutable QFileSystemMetaData metaData;
+    QFileSystemEntry dirEntry;
+    mutable QFileSystemEntry absoluteDirEntry;
+    mutable QFileSystemMetaData metaData;
 };
 
 #endif

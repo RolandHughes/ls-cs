@@ -27,35 +27,37 @@
 #include <qsinglecontainer_p.h>
 #include <qcastingplatform_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class CastableAs : public SingleContainer, public CastingPlatform<CastableAs, false>
 {
- public:
-   CastableAs(const Expression::Ptr &operand, const SequenceType::Ptr &targetType);
+public:
+    CastableAs( const Expression::Ptr &operand, const SequenceType::Ptr &targetType );
 
-   bool evaluateEBV(const DynamicContext::Ptr &) const override;
+    bool evaluateEBV( const DynamicContext::Ptr & ) const override;
 
-   /**
-    * Overridden to const fold to @c true when the target type
-    * is a type which casting to always succeeds. This is
-    * the type identical to the target type, <tt>xs:string</tt>,
-    * and <tt>xs:untypedAtomic</tt>.
-    */
-   Expression::Ptr compress(const StaticContext::Ptr &context) override;
-   Expression::Ptr typeCheck(const StaticContext::Ptr &context, const SequenceType::Ptr &reqType) override;
+    /**
+     * Overridden to const fold to @c true when the target type
+     * is a type which casting to always succeeds. This is
+     * the type identical to the target type, <tt>xs:string</tt>,
+     * and <tt>xs:untypedAtomic</tt>.
+     */
+    Expression::Ptr compress( const StaticContext::Ptr &context ) override;
+    Expression::Ptr typeCheck( const StaticContext::Ptr &context, const SequenceType::Ptr &reqType ) override;
 
-   SequenceType::List expectedOperandTypes() const override;
-   SequenceType::Ptr staticType() const override;
+    SequenceType::List expectedOperandTypes() const override;
+    SequenceType::Ptr staticType() const override;
 
-   ExpressionVisitorResult::Ptr accept(const ExpressionVisitor::Ptr &visitor) const override;
+    ExpressionVisitorResult::Ptr accept( const ExpressionVisitor::Ptr &visitor ) const override;
 
-   ItemType::Ptr targetType() const {
-      return m_targetType->itemType();
-   }
+    ItemType::Ptr targetType() const
+    {
+        return m_targetType->itemType();
+    }
 
- private:
-   const SequenceType::Ptr m_targetType;
+private:
+    const SequenceType::Ptr m_targetType;
 };
 
 }

@@ -24,29 +24,30 @@
 
 #include <WebCore/NotImplemented.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
-WebFullScreenManagerGtk::WebFullScreenManagerGtk(WebPage* page)
-    : WebFullScreenManager(page)
+WebFullScreenManagerGtk::WebFullScreenManagerGtk( WebPage *page )
+    : WebFullScreenManager( page )
 {
 }
 
-PassRefPtr<WebFullScreenManager> WebFullScreenManager::create(WebPage* page)
+PassRefPtr<WebFullScreenManager> WebFullScreenManager::create( WebPage *page )
 {
-    return adoptRef(new WebFullScreenManagerGtk(page));
+    return adoptRef( new WebFullScreenManagerGtk( page ) );
 }
 
-void WebFullScreenManagerGtk::setRootFullScreenLayer(WebCore::GraphicsLayer* layer)
-{
-    notImplemented();
-}
-
-void WebFullScreenManagerGtk::beginEnterFullScreenAnimation(float duration)
+void WebFullScreenManagerGtk::setRootFullScreenLayer( WebCore::GraphicsLayer *layer )
 {
     notImplemented();
 }
 
-void WebFullScreenManagerGtk::beginExitFullScreenAnimation(float duration)
+void WebFullScreenManagerGtk::beginEnterFullScreenAnimation( float duration )
+{
+    notImplemented();
+}
+
+void WebFullScreenManagerGtk::beginExitFullScreenAnimation( float duration )
 {
     notImplemented();
 }

@@ -36,14 +36,15 @@
 #include "HTMLInputElement.h"
 #include <wtf/PassOwnPtr.h>
 
-namespace WebCore {
-
-PassOwnPtr<InputType> IsIndexInputType::create(HTMLInputElement* element)
+namespace WebCore
 {
-    return adoptPtr(new IsIndexInputType(element));
+
+PassOwnPtr<InputType> IsIndexInputType::create( HTMLInputElement *element )
+{
+    return adoptPtr( new IsIndexInputType( element ) );
 }
 
-const AtomicString& IsIndexInputType::formControlType() const
+const AtomicString &IsIndexInputType::formControlType() const
 {
     return emptyAtom;
 }
@@ -56,18 +57,25 @@ bool IsIndexInputType::supportsRequired() const
 PassRefPtr<HTMLFormElement> IsIndexInputType::formForSubmission() const
 {
     RefPtr<HTMLFormElement> form = InputType::formForSubmission();
-    if (form)
+
+    if ( form )
+    {
         return form.release();
+    }
+
     // If there is no form, then create a temporary form just to be used for submission.
-    Document* document = element()->document();
-    form = HTMLFormElement::create(document);
-    form->registerFormElement(element());
-    form->setMethod("GET");
-    if (!document->baseURL().isEmpty()) {
+    Document *document = element()->document();
+    form = HTMLFormElement::create( document );
+    form->registerFormElement( element() );
+    form->setMethod( "GET" );
+
+    if ( !document->baseURL().isEmpty() )
+    {
         // We treat the href property of the <base> element as the form action, as per section 7.5
         // "Queries and Indexes" of the HTML 2.0 spec. <http://www.w3.org/MarkUp/html-spec/html-spec_7.html#SEC7.5>.
-        form->setAction(document->baseURL().string());
+        form->setAction( document->baseURL().string() );
     }
+
     return form.release();
 }
 

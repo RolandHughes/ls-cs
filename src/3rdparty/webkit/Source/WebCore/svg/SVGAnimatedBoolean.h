@@ -23,7 +23,8 @@
 #if ENABLE(SVG)
 #include "SVGAnimatedStaticPropertyTearOff.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 typedef SVGAnimatedStaticPropertyTearOff<bool> SVGAnimatedBoolean;
 

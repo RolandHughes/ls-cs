@@ -26,12 +26,14 @@
 #ifndef GeolocationClient_h
 #define GeolocationClient_h
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Geolocation;
 class GeolocationPosition;
 
-class GeolocationClient {
+class GeolocationClient
+{
 public:
     virtual void geolocationDestroyed() = 0;
 
@@ -41,11 +43,11 @@ public:
     // renamed. See http://www.w3.org/2008/geolocation/track/issues/6
     // We should update WebKit to reflect this if and when the V2 specification
     // is published.
-    virtual void setEnableHighAccuracy(bool) = 0;
-    virtual GeolocationPosition* lastPosition() = 0;
+    virtual void setEnableHighAccuracy( bool ) = 0;
+    virtual GeolocationPosition *lastPosition() = 0;
 
-    virtual void requestPermission(Geolocation*) = 0;
-    virtual void cancelPermissionRequest(Geolocation*) = 0;
+    virtual void requestPermission( Geolocation * ) = 0;
+    virtual void cancelPermissionRequest( Geolocation * ) = 0;
 
 protected:
     virtual ~GeolocationClient() { }

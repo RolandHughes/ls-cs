@@ -32,80 +32,83 @@ class QSignalTransitionPrivate;
 
 class Q_CORE_EXPORT QSignalTransition : public QAbstractTransition
 {
-   CORE_CS_OBJECT(QSignalTransition)
+    CORE_CS_OBJECT( QSignalTransition )
 
-   CORE_CS_PROPERTY_READ(senderObject,   senderObject)
-   CORE_CS_PROPERTY_WRITE(senderObject,  setSenderObject)
-   CORE_CS_PROPERTY_NOTIFY(senderObject, senderObjectChanged)
+    CORE_CS_PROPERTY_READ( senderObject,   senderObject )
+    CORE_CS_PROPERTY_WRITE( senderObject,  setSenderObject )
+    CORE_CS_PROPERTY_NOTIFY( senderObject, senderObjectChanged )
 
- public:
-   QSignalTransition(QState *sourceState = nullptr);
+public:
+    QSignalTransition( QState *sourceState = nullptr );
 
-   template <class SignalClass, class ...SignalArgs>
-   QSignalTransition(QObject *sender, void (SignalClass::*signal)(SignalArgs...), QState *sourceState = nullptr);
+    template <class SignalClass, class ...SignalArgs>
+    QSignalTransition( QObject *sender, void ( SignalClass::*signal )( SignalArgs... ), QState *sourceState = nullptr );
 
-   QSignalTransition(const QSignalTransition &) = delete;
-   QSignalTransition &operator=(const QSignalTransition &) = delete;
+    QSignalTransition( const QSignalTransition & ) = delete;
+    QSignalTransition &operator=( const QSignalTransition & ) = delete;
 
-   ~QSignalTransition();
+    ~QSignalTransition();
 
-   const QObject *senderObject() const;
-   void setSenderObject(const QObject *sender);
+    const QObject *senderObject() const;
+    void setSenderObject( const QObject *sender );
 
-   LsCsSignal::Internal::BentoAbstract *get_signalBento() const;
+    LsCsSignal::Internal::BentoAbstract *get_signalBento() const;
 
-   void unregister();
-   void maybeRegister();
+    void unregister();
+    void maybeRegister();
 
-   CORE_CS_SIGNAL_1(Public, void senderObjectChanged())
-   CORE_CS_SIGNAL_2(senderObjectChanged)
+    CORE_CS_SIGNAL_1( Public, void senderObjectChanged() )
+    CORE_CS_SIGNAL_2( senderObjectChanged )
 
- protected:
-   bool eventTest(QEvent *event) override;
-   void onTransition(QEvent *event) override;
-   bool event(QEvent *event) override;
+protected:
+    bool eventTest( QEvent *event ) override;
+    void onTransition( QEvent *event ) override;
+    bool event( QEvent *event ) override;
 
- private:
-   Q_DECLARE_PRIVATE(QSignalTransition)
+private:
+    Q_DECLARE_PRIVATE( QSignalTransition )
 
-   const QObject *m_sender;
-   QScopedPointer<LsCsSignal::Internal::BentoAbstract> m_signalBento;
+    const QObject *m_sender;
+    QScopedPointer<LsCsSignal::Internal::BentoAbstract> m_signalBento;
 };
 
-template <class SignalClass, class ...SignalArgs>
-QSignalTransition::QSignalTransition(QObject *sender, void (SignalClass::*signal)(SignalArgs...), QState *sourceState)
-   : QAbstractTransition(sourceState)
+template <class SignalClass, class ...SignalArgs> QSignalTransition::QSignalTransition( QObject *sender,
+        void ( SignalClass::*signal )( SignalArgs... ), QState *sourceState )
+    : QAbstractTransition( sourceState )
 {
-   m_sender = sender;
+    m_sender = sender;
 
-   // store the signal method pointer in a CSBento
-   m_signalBento.reset(new CSBento<void (SignalClass::*)(SignalArgs...)> {signal});
+    // store the signal method pointer in a CSBento
+    m_signalBento.reset( new CSBento<void ( SignalClass::* )( SignalArgs... )> {signal} );
 }
 
 template <class SignalClass, class ...SignalArgs>
-QSignalTransition *QState::addTransition(QObject *sender, void (SignalClass::*signal)(SignalArgs...),
-      QAbstractState *target)
+QSignalTransition *QState::addTransition( QObject *sender, void ( SignalClass::*signal )( SignalArgs... ),
+        QAbstractState *target )
 {
-   if (! sender) {
-      qWarning("QState::addTransition() No sender was specified");
-      return nullptr;
-   }
+    if ( ! sender )
+    {
+        qWarning( "QState::addTransition() No sender was specified" );
+        return nullptr;
+    }
 
-   if (! signal) {
-      qWarning("QState::addTransition() No signal was specified");
-      return nullptr;
-   }
+    if ( ! signal )
+    {
+        qWarning( "QState::addTransition() No signal was specified" );
+        return nullptr;
+    }
 
-   if (! target) {
-      qWarning("QState::addTransition() No target was specified");
-      return nullptr;
-   }
+    if ( ! target )
+    {
+        qWarning( "QState::addTransition() No target was specified" );
+        return nullptr;
+    }
 
-   QSignalTransition *trans = new QSignalTransition(sender, signal);
-   trans->setTargetState(target);
-   addTransition(trans);
+    QSignalTransition *trans = new QSignalTransition( sender, signal );
+    trans->setTargetState( target );
+    addTransition( trans );
 
-   return trans;
+    return trans;
 }
 
 #endif // QT_NO_STATEMACHINE

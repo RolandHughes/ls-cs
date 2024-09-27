@@ -33,43 +33,43 @@ class AVFVideoWidget;
 
 class AVFVideoWidgetControl : public QVideoWidgetControl, public AVFVideoOutput
 {
-   CS_OBJECT_MULTIPLE(AVFVideoWidgetControl, QVideoWidgetControl)
-   CS_INTERFACES(AVFVideoOutput)
+    CS_OBJECT_MULTIPLE( AVFVideoWidgetControl, QVideoWidgetControl )
+    CS_INTERFACES( AVFVideoOutput )
 
- public:
-   AVFVideoWidgetControl(QObject *parent = nullptr);
-   virtual ~AVFVideoWidgetControl();
+public:
+    AVFVideoWidgetControl( QObject *parent = nullptr );
+    virtual ~AVFVideoWidgetControl();
 
-   void setLayer(void *playerLayer) override;
+    void setLayer( void *playerLayer ) override;
 
-   QWidget *videoWidget() override;
+    QWidget *videoWidget() override;
 
-   bool isFullScreen() const override;
-   void setFullScreen(bool fullScreen) override;
+    bool isFullScreen() const override;
+    void setFullScreen( bool fullScreen ) override;
 
-   Qt::AspectRatioMode aspectRatioMode() const override;
-   void setAspectRatioMode(Qt::AspectRatioMode mode) override;
+    Qt::AspectRatioMode aspectRatioMode() const override;
+    void setAspectRatioMode( Qt::AspectRatioMode mode ) override;
 
-   int brightness() const override;
-   void setBrightness(int brightness) override;
+    int brightness() const override;
+    void setBrightness( int brightness ) override;
 
-   int contrast() const override;
-   void setContrast(int contrast) override;
+    int contrast() const override;
+    void setContrast( int contrast ) override;
 
-   int hue() const override;
-   void setHue(int hue) override;
+    int hue() const override;
+    void setHue( int hue ) override;
 
-   int saturation() const override;
-   void setSaturation(int saturation) override;
+    int saturation() const override;
+    void setSaturation( int saturation ) override;
 
- private:
-   AVFVideoWidget *m_videoWidget;
+private:
+    AVFVideoWidget *m_videoWidget;
 
-   bool m_fullscreen;
-   int m_brightness;
-   int m_contrast;
-   int m_hue;
-   int m_saturation;
+    bool m_fullscreen;
+    int m_brightness;
+    int m_contrast;
+    int m_hue;
+    int m_saturation;
 };
 
 #endif

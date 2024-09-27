@@ -31,21 +31,21 @@ class CameraFormatConverter;
 
 class DSVideoRendererControl : public QVideoRendererControl
 {
-   CS_OBJECT(DSVideoRendererControl)
+    CS_OBJECT( DSVideoRendererControl )
 
- public:
-   DSVideoRendererControl(DSCameraSession *session, QObject *parent = nullptr);
-   ~DSVideoRendererControl();
+public:
+    DSVideoRendererControl( DSCameraSession *session, QObject *parent = nullptr );
+    ~DSVideoRendererControl();
 
-   QAbstractVideoSurface *surface() const override;
-   void setSurface(QAbstractVideoSurface *surface) override;
+    QAbstractVideoSurface *surface() const override;
+    void setSurface( QAbstractVideoSurface *surface ) override;
 
-   void setSession(DSCameraSession *session);
+    void setSession( DSCameraSession *session );
 
- private:
-   QAbstractVideoSurface *m_surface;
-   DSCameraSession *m_session;
-   CameraFormatConverter *converter;
+private:
+    QAbstractVideoSurface *m_surface;
+    DSCameraSession *m_session;
+    CameraFormatConverter *converter;
 };
 
 #endif

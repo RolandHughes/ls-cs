@@ -33,7 +33,8 @@
 #include <wtf/Noncopyable.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 #ifndef NDEBUG
 template<class T>
@@ -43,9 +44,10 @@ struct ValueToString;
 // An interval tree, which is a form of augmented red-black tree. It
 // supports efficient (O(lg n)) insertion, removal and querying of
 // intervals in the tree.
-template<class T, class UserData = void*>
-class PODIntervalTree : public PODRedBlackTree<PODInterval<T, UserData> > {
-    WTF_MAKE_NONCOPYABLE(PODIntervalTree);
+template<class T, class UserData = void *>
+class PODIntervalTree : public PODRedBlackTree<PODInterval<T, UserData> >
+{
+    WTF_MAKE_NONCOPYABLE( PODIntervalTree );
 public:
     // Typedef to reduce typing when declaring intervals to be stored in
     // this tree.
@@ -57,8 +59,8 @@ public:
         init();
     }
 
-    explicit PODIntervalTree(PassRefPtr<PODArena> arena)
-        : PODRedBlackTree<IntervalType>(arena)
+    explicit PODIntervalTree( PassRefPtr<PODArena> arena )
+        : PODRedBlackTree<IntervalType>( arena )
     {
         init();
     }
@@ -66,36 +68,42 @@ public:
     // Returns all intervals in the tree which overlap the given query
     // interval. The returned intervals are sorted by increasing low
     // endpoint.
-    Vector<IntervalType> allOverlaps(const IntervalType& interval) const
+    Vector<IntervalType> allOverlaps( const IntervalType &interval ) const
     {
         Vector<IntervalType> result;
-        allOverlaps(interval, result);
+        allOverlaps( interval, result );
         return result;
     }
 
     // Returns all intervals in the tree which overlap the given query
     // interval. The returned intervals are sorted by increasing low
     // endpoint.
-    void allOverlaps(const IntervalType& interval, Vector<IntervalType>& result) const
+    void allOverlaps( const IntervalType &interval, Vector<IntervalType> &result ) const
     {
         // Explicit dereference of "this" required because of
         // inheritance rules in template classes.
-        searchForOverlapsFrom(this->root(), interval, result);
+        searchForOverlapsFrom( this->root(), interval, result );
     }
 
     // Helper to create interval objects.
-    static IntervalType createInterval(const T& low, const T& high, const UserData data = 0)
+    static IntervalType createInterval( const T &low, const T &high, const UserData data = 0 )
     {
-        return IntervalType(low, high, data);
+        return IntervalType( low, high, data );
     }
 
     virtual bool checkInvariants() const
     {
-        if (!PODRedBlackTree<IntervalType>::checkInvariants())
+        if ( !PODRedBlackTree<IntervalType>::checkInvariants() )
+        {
             return false;
-        if (!this->root())
+        }
+
+        if ( !this->root() )
+        {
             return true;
-        return checkInvariantsFromNode(this->root(), 0);
+        }
+
+        return checkInvariantsFromNode( this->root(), 0 );
     }
 
 private:
@@ -106,104 +114,157 @@ private:
     {
         // Explicit dereference of "this" required because of
         // inheritance rules in template classes.
-        this->setNeedsFullOrderingComparisons(true);
+        this->setNeedsFullOrderingComparisons( true );
     }
 
     // Starting from the given node, adds all overlaps with the given
     // interval to the result vector. The intervals are sorted by
     // increasing low endpoint.
-    void searchForOverlapsFrom(IntervalNode* node, const IntervalType& interval, Vector<IntervalType>& res) const
+    void searchForOverlapsFrom( IntervalNode *node, const IntervalType &interval, Vector<IntervalType> &res ) const
     {
-        if (!node)
+        if ( !node )
+        {
             return;
+        }
 
         // Because the intervals are sorted by left endpoint, inorder
         // traversal produces results sorted as desired.
 
         // See whether we need to traverse the left subtree.
-        IntervalNode* left = node->left();
-        if (left
-            // This is phrased this way to avoid the need for operator
-            // <= on type T.
-            && !(left->data().maxHigh() < interval.low()))
-            searchForOverlapsFrom(left, interval, res);
+        IntervalNode *left = node->left();
+
+        if ( left
+                // This is phrased this way to avoid the need for operator
+                // <= on type T.
+                && !( left->data().maxHigh() < interval.low() ) )
+        {
+            searchForOverlapsFrom( left, interval, res );
+        }
 
         // Check for overlap with current node.
-        if (node->data().overlaps(interval))
-            res.append(node->data());
+        if ( node->data().overlaps( interval ) )
+        {
+            res.append( node->data() );
+        }
 
         // See whether we need to traverse the right subtree.
         // This is phrased this way to avoid the need for operator <=
         // on type T.
-        if (!(interval.high() < node->data().low()))
-            searchForOverlapsFrom(node->right(), interval, res);
+        if ( !( interval.high() < node->data().low() ) )
+        {
+            searchForOverlapsFrom( node->right(), interval, res );
+        }
     }
 
-    virtual bool updateNode(IntervalNode* node)
+    virtual bool updateNode( IntervalNode *node )
     {
         // Would use const T&, but need to reassign this reference in this
         // function.
-        const T* curMax = &node->data().high();
-        IntervalNode* left = node->left();
-        if (left) {
-            if (*curMax < left->data().maxHigh())
+        const T *curMax = &node->data().high();
+        IntervalNode *left = node->left();
+
+        if ( left )
+        {
+            if ( *curMax < left->data().maxHigh() )
+            {
                 curMax = &left->data().maxHigh();
+            }
         }
-        IntervalNode* right = node->right();
-        if (right) {
-            if (*curMax < right->data().maxHigh())
+
+        IntervalNode *right = node->right();
+
+        if ( right )
+        {
+            if ( *curMax < right->data().maxHigh() )
+            {
                 curMax = &right->data().maxHigh();
+            }
         }
+
         // This is phrased like this to avoid needing operator!= on type T.
-        if (!(*curMax == node->data().maxHigh())) {
-            node->data().setMaxHigh(*curMax);
+        if ( !( *curMax == node->data().maxHigh() ) )
+        {
+            node->data().setMaxHigh( *curMax );
             return true;
         }
+
         return false;
     }
 
-    bool checkInvariantsFromNode(IntervalNode* node, T* currentMaxValue) const
+    bool checkInvariantsFromNode( IntervalNode *node, T *currentMaxValue ) const
     {
         // These assignments are only done in order to avoid requiring
         // a default constructor on type T.
-        T leftMaxValue(node->data().maxHigh());
-        T rightMaxValue(node->data().maxHigh());
-        IntervalNode* left = node->left();
-        IntervalNode* right = node->right();
-        if (left) {
-            if (!checkInvariantsFromNode(left, &leftMaxValue))
+        T leftMaxValue( node->data().maxHigh() );
+        T rightMaxValue( node->data().maxHigh() );
+        IntervalNode *left = node->left();
+        IntervalNode *right = node->right();
+
+        if ( left )
+        {
+            if ( !checkInvariantsFromNode( left, &leftMaxValue ) )
+            {
                 return false;
+            }
         }
-        if (right) {
-            if (!checkInvariantsFromNode(right, &rightMaxValue))
+
+        if ( right )
+        {
+            if ( !checkInvariantsFromNode( right, &rightMaxValue ) )
+            {
                 return false;
+            }
         }
-        if (!left && !right) {
+
+        if ( !left && !right )
+        {
             // Base case.
-            if (currentMaxValue)
+            if ( currentMaxValue )
+            {
                 *currentMaxValue = node->data().high();
-            return (node->data().high() == node->data().maxHigh());
+            }
+
+            return ( node->data().high() == node->data().maxHigh() );
         }
-        T localMaxValue(node->data().maxHigh());
-        if (!left || !right) {
-            if (left)
+
+        T localMaxValue( node->data().maxHigh() );
+
+        if ( !left || !right )
+        {
+            if ( left )
+            {
                 localMaxValue = leftMaxValue;
+            }
             else
+            {
                 localMaxValue = rightMaxValue;
-        } else
-            localMaxValue = (leftMaxValue < rightMaxValue) ? rightMaxValue : leftMaxValue;
-        if (localMaxValue < node->data().high())
+            }
+        }
+        else
+        {
+            localMaxValue = ( leftMaxValue < rightMaxValue ) ? rightMaxValue : leftMaxValue;
+        }
+
+        if ( localMaxValue < node->data().high() )
+        {
             localMaxValue = node->data().high();
-        if (!(localMaxValue == node->data().maxHigh())) {
+        }
+
+        if ( !( localMaxValue == node->data().maxHigh() ) )
+        {
 #ifndef NDEBUG
-            String localMaxValueString = ValueToString<T>::string(localMaxValue);
-            LOG_ERROR("PODIntervalTree verification failed at node 0x%p: localMaxValue=%s and data=%s",
-                      node, localMaxValueString.utf8().data(), node->data().toString().utf8().data());
+            String localMaxValueString = ValueToString<T>::string( localMaxValue );
+            LOG_ERROR( "PODIntervalTree verification failed at node 0x%p: localMaxValue=%s and data=%s",
+                       node, localMaxValueString.utf8().data(), node->data().toString().utf8().data() );
 #endif
             return false;
         }
-        if (currentMaxValue)
+
+        if ( currentMaxValue )
+        {
             *currentMaxValue = localMaxValue;
+        }
+
         return true;
     }
 };
@@ -211,8 +272,9 @@ private:
 #ifndef NDEBUG
 // Support for printing PODIntervals at the PODRedBlackTree level.
 template<class T, class UserData>
-struct ValueToString<PODInterval<T, UserData> > {
-    static String string(const PODInterval<T, UserData>& interval)
+struct ValueToString<PODInterval<T, UserData> >
+{
+    static String string( const PODInterval<T, UserData> &interval )
     {
         return interval.toString();
     }

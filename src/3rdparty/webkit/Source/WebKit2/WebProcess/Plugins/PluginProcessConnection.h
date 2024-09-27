@@ -35,47 +35,61 @@
 
 // A CoreIPC connection to a plug-in process.
 
-namespace WebKit {
+namespace WebKit
+{
 
 class NPRemoteObjectMap;
 class PluginProcessConnectionManager;
 class PluginProxy;
-    
-class PluginProcessConnection : public RefCounted<PluginProcessConnection>, CoreIPC::Connection::Client {
+
+class PluginProcessConnection : public RefCounted<PluginProcessConnection>, CoreIPC::Connection::Client
+{
 public:
-    static PassRefPtr<PluginProcessConnection> create(PluginProcessConnectionManager* pluginProcessConnectionManager, const String& pluginPath, CoreIPC::Connection::Identifier connectionIdentifier)
+    static PassRefPtr<PluginProcessConnection> create( PluginProcessConnectionManager *pluginProcessConnectionManager,
+            const String &pluginPath, CoreIPC::Connection::Identifier connectionIdentifier )
     {
-        return adoptRef(new PluginProcessConnection(pluginProcessConnectionManager, pluginPath, connectionIdentifier));
+        return adoptRef( new PluginProcessConnection( pluginProcessConnectionManager, pluginPath, connectionIdentifier ) );
     }
     ~PluginProcessConnection();
 
-    const String& pluginPath() const { return m_pluginPath; }
+    const String &pluginPath() const
+    {
+        return m_pluginPath;
+    }
 
-    CoreIPC::Connection* connection() const { return m_connection.get(); }
+    CoreIPC::Connection *connection() const
+    {
+        return m_connection.get();
+    }
 
-    void addPluginProxy(PluginProxy*);
-    void removePluginProxy(PluginProxy*);
+    void addPluginProxy( PluginProxy * );
+    void removePluginProxy( PluginProxy * );
 
-    NPRemoteObjectMap* npRemoteObjectMap() const { return m_npRemoteObjectMap.get(); }
+    NPRemoteObjectMap *npRemoteObjectMap() const
+    {
+        return m_npRemoteObjectMap.get();
+    }
 
 private:
-    PluginProcessConnection(PluginProcessConnectionManager* pluginProcessConnectionManager, const String& pluginPath, CoreIPC::Connection::Identifier connectionIdentifier);
+    PluginProcessConnection( PluginProcessConnectionManager *pluginProcessConnectionManager, const String &pluginPath,
+                             CoreIPC::Connection::Identifier connectionIdentifier );
 
     // CoreIPC::Connection::Client
-    virtual void didReceiveMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*);
-    virtual CoreIPC::SyncReplyMode didReceiveSyncMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*, CoreIPC::ArgumentEncoder*);
-    virtual void didClose(CoreIPC::Connection*);
-    virtual void didReceiveInvalidMessage(CoreIPC::Connection*, CoreIPC::MessageID);
-    virtual void syncMessageSendTimedOut(CoreIPC::Connection*);
+    virtual void didReceiveMessage( CoreIPC::Connection *, CoreIPC::MessageID, CoreIPC::ArgumentDecoder * );
+    virtual CoreIPC::SyncReplyMode didReceiveSyncMessage( CoreIPC::Connection *, CoreIPC::MessageID, CoreIPC::ArgumentDecoder *,
+            CoreIPC::ArgumentEncoder * );
+    virtual void didClose( CoreIPC::Connection * );
+    virtual void didReceiveInvalidMessage( CoreIPC::Connection *, CoreIPC::MessageID );
+    virtual void syncMessageSendTimedOut( CoreIPC::Connection * );
 
-    PluginProcessConnectionManager* m_pluginProcessConnectionManager;
+    PluginProcessConnectionManager *m_pluginProcessConnectionManager;
     String m_pluginPath;
 
     // The connection from the web process to the plug-in process.
     RefPtr<CoreIPC::Connection> m_connection;
 
     // The plug-ins. We use a weak reference to the plug-in proxies because the plug-in view holds the strong reference.
-    HashMap<uint64_t, PluginProxy*> m_plugins;
+    HashMap<uint64_t, PluginProxy *> m_plugins;
 
     RefPtr<NPRemoteObjectMap> m_npRemoteObjectMap;
 };

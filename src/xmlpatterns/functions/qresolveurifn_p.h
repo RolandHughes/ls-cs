@@ -26,13 +26,14 @@
 
 #include <qfunctioncall_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class ResolveURIFN : public FunctionCall
 {
- public:
-   Item evaluateSingleton(const DynamicContext::Ptr &context) const override;
-   Expression::Ptr typeCheck(const StaticContext::Ptr &context, const SequenceType::Ptr &reqType) override;
+public:
+    Item evaluateSingleton( const DynamicContext::Ptr &context ) const override;
+    Expression::Ptr typeCheck( const StaticContext::Ptr &context, const SequenceType::Ptr &reqType ) override;
 };
 
 }

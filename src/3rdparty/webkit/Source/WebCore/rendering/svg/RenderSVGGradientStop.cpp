@@ -28,12 +28,13 @@
 #include "SVGResourcesCache.h"
 #include "SVGStopElement.h"
 
-namespace WebCore {
-    
+namespace WebCore
+{
+
 using namespace SVGNames;
 
-RenderSVGGradientStop::RenderSVGGradientStop(SVGStopElement* element)
-    : RenderObject(element)
+RenderSVGGradientStop::RenderSVGGradientStop( SVGStopElement *element )
+    : RenderObject( element )
 {
 }
 
@@ -41,37 +42,50 @@ RenderSVGGradientStop::~RenderSVGGradientStop()
 {
 }
 
-void RenderSVGGradientStop::styleDidChange(StyleDifference diff, const RenderStyle* oldStyle)
+void RenderSVGGradientStop::styleDidChange( StyleDifference diff, const RenderStyle *oldStyle )
 {
-    RenderObject::styleDidChange(diff, oldStyle);
-    if (diff == StyleDifferenceEqual)
+    RenderObject::styleDidChange( diff, oldStyle );
+
+    if ( diff == StyleDifferenceEqual )
+    {
         return;
+    }
 
     // <stop> elements should only be allowed to make renderers under gradient elements
     // but I can imagine a few cases we might not be catching, so let's not crash if our parent isn't a gradient.
-    SVGGradientElement* gradient = gradientElement();
-    if (!gradient)
-        return;
+    SVGGradientElement *gradient = gradientElement();
 
-    RenderObject* renderer = gradient->renderer();
-    if (!renderer)
+    if ( !gradient )
+    {
         return;
+    }
 
-    ASSERT(renderer->isSVGResourceContainer());
-    RenderSVGResourceContainer* container = renderer->toRenderSVGResourceContainer();
+    RenderObject *renderer = gradient->renderer();
+
+    if ( !renderer )
+    {
+        return;
+    }
+
+    ASSERT( renderer->isSVGResourceContainer() );
+    RenderSVGResourceContainer *container = renderer->toRenderSVGResourceContainer();
     container->removeAllClientsFromCache();
 }
 
 void RenderSVGGradientStop::layout()
 {
-    setNeedsLayout(false);
+    setNeedsLayout( false );
 }
 
-SVGGradientElement* RenderSVGGradientStop::gradientElement() const
+SVGGradientElement *RenderSVGGradientStop::gradientElement() const
 {
-    ContainerNode* parentNode = node()->parentNode();
-    if (parentNode->hasTagName(linearGradientTag) || parentNode->hasTagName(radialGradientTag))
-        return static_cast<SVGGradientElement*>(parentNode);
+    ContainerNode *parentNode = node()->parentNode();
+
+    if ( parentNode->hasTagName( linearGradientTag ) || parentNode->hasTagName( radialGradientTag ) )
+    {
+        return static_cast<SVGGradientElement *>( parentNode );
+    }
+
     return 0;
 }
 

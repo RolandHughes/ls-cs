@@ -37,14 +37,14 @@ QT_BEGIN_NAMESPACE
 
 class QDeclarativeBindPrivate
 {
- public:
-   QDeclarativeBindPrivate() : when(true), componentComplete(true), obj(0) {}
+public:
+    QDeclarativeBindPrivate() : when( true ), componentComplete( true ), obj( 0 ) {}
 
-   bool when : 1;
-   bool componentComplete : 1;
-   QDeclarativeGuard<QObject> obj;
-   QString prop;
-   QDeclarativeNullableValue<QVariant> value;
+    bool when : 1;
+    bool componentComplete : 1;
+    QDeclarativeGuard<QObject> obj;
+    QString prop;
+    QDeclarativeNullableValue<QVariant> value;
 };
 
 
@@ -74,8 +74,8 @@ class QDeclarativeBindPrivate
 
     \sa QtDeclarative
 */
-QDeclarativeBind::QDeclarativeBind(QObject *parent)
-   : QObject(*(new QDeclarativeBindPrivate), parent)
+QDeclarativeBind::QDeclarativeBind( QObject *parent )
+    : QObject( *( new QDeclarativeBindPrivate ), parent )
 {
 }
 
@@ -98,15 +98,15 @@ QDeclarativeBind::~QDeclarativeBind()
 */
 bool QDeclarativeBind::when() const
 {
-   Q_D(const QDeclarativeBind);
-   return d->when;
+    Q_D( const QDeclarativeBind );
+    return d->when;
 }
 
-void QDeclarativeBind::setWhen(bool v)
+void QDeclarativeBind::setWhen( bool v )
 {
-   Q_D(QDeclarativeBind);
-   d->when = v;
-   eval();
+    Q_D( QDeclarativeBind );
+    d->when = v;
+    eval();
 }
 
 /*!
@@ -116,15 +116,15 @@ void QDeclarativeBind::setWhen(bool v)
 */
 QObject *QDeclarativeBind::object()
 {
-   Q_D(const QDeclarativeBind);
-   return d->obj;
+    Q_D( const QDeclarativeBind );
+    return d->obj;
 }
 
-void QDeclarativeBind::setObject(QObject *obj)
+void QDeclarativeBind::setObject( QObject *obj )
 {
-   Q_D(QDeclarativeBind);
-   d->obj = obj;
-   eval();
+    Q_D( QDeclarativeBind );
+    d->obj = obj;
+    eval();
 }
 
 /*!
@@ -134,15 +134,15 @@ void QDeclarativeBind::setObject(QObject *obj)
 */
 QString QDeclarativeBind::property() const
 {
-   Q_D(const QDeclarativeBind);
-   return d->prop;
+    Q_D( const QDeclarativeBind );
+    return d->prop;
 }
 
-void QDeclarativeBind::setProperty(const QString &p)
+void QDeclarativeBind::setProperty( const QString &p )
 {
-   Q_D(QDeclarativeBind);
-   d->prop = p;
-   eval();
+    Q_D( QDeclarativeBind );
+    d->prop = p;
+    eval();
 }
 
 /*!
@@ -153,40 +153,42 @@ void QDeclarativeBind::setProperty(const QString &p)
 */
 QVariant QDeclarativeBind::value() const
 {
-   Q_D(const QDeclarativeBind);
-   return d->value.value;
+    Q_D( const QDeclarativeBind );
+    return d->value.value;
 }
 
-void QDeclarativeBind::setValue(const QVariant &v)
+void QDeclarativeBind::setValue( const QVariant &v )
 {
-   Q_D(QDeclarativeBind);
-   d->value.value = v;
-   d->value.isNull = false;
-   eval();
+    Q_D( QDeclarativeBind );
+    d->value.value = v;
+    d->value.isNull = false;
+    eval();
 }
 
 void QDeclarativeBind::classBegin()
 {
-   Q_D(QDeclarativeBind);
-   d->componentComplete = false;
+    Q_D( QDeclarativeBind );
+    d->componentComplete = false;
 }
 
 void QDeclarativeBind::componentComplete()
 {
-   Q_D(QDeclarativeBind);
-   d->componentComplete = true;
-   eval();
+    Q_D( QDeclarativeBind );
+    d->componentComplete = true;
+    eval();
 }
 
 void QDeclarativeBind::eval()
 {
-   Q_D(QDeclarativeBind);
-   if (!d->obj || d->value.isNull || !d->when || !d->componentComplete) {
-      return;
-   }
+    Q_D( QDeclarativeBind );
 
-   QDeclarativeProperty prop(d->obj, d->prop);
-   prop.write(d->value.value);
+    if ( !d->obj || d->value.isNull || !d->when || !d->componentComplete )
+    {
+        return;
+    }
+
+    QDeclarativeProperty prop( d->obj, d->prop );
+    prop.write( d->value.value );
 }
 
 QT_END_NAMESPACE

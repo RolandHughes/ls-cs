@@ -29,9 +29,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSHTMLModElement);
+ASSERT_CLASS_FITS_IN_CELL( JSHTMLModElement );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -42,10 +43,10 @@ ASSERT_CLASS_FITS_IN_CELL(JSHTMLModElement);
 
 static const HashTableValue JSHTMLModElementTableValues[4] =
 {
-    { "cite", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLModElementCite), (intptr_t)setJSHTMLModElementCite THUNK_GENERATOR(0) },
-    { "dateTime", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLModElementDateTime), (intptr_t)setJSHTMLModElementDateTime THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLModElementConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "cite", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLModElementCite ), ( intptr_t )setJSHTMLModElementCite THUNK_GENERATOR( 0 ) },
+    { "dateTime", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLModElementDateTime ), ( intptr_t )setJSHTMLModElementDateTime THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLModElementConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -59,43 +60,50 @@ static JSC_CONST_HASHTABLE HashTable JSHTMLModElementTable = { 10, 7, JSHTMLModE
 
 static const HashTableValue JSHTMLModElementConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSHTMLModElementConstructorTable = { 1, 0, JSHTMLModElementConstructorTableValues, 0 };
-class JSHTMLModElementConstructor : public DOMConstructorObject {
+class JSHTMLModElementConstructor : public DOMConstructorObject
+{
 public:
-    JSHTMLModElementConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSHTMLModElementConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSHTMLModElementConstructor::s_info = { "HTMLModElementConstructor", &DOMConstructorObject::s_info, &JSHTMLModElementConstructorTable, 0 };
 
-JSHTMLModElementConstructor::JSHTMLModElementConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSHTMLModElementConstructor::JSHTMLModElementConstructor( ExecState *exec, Structure *structure, JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSHTMLModElementPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSHTMLModElementPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSHTMLModElementConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSHTMLModElementConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSHTMLModElementConstructor, JSDOMWrapper>(exec, &JSHTMLModElementConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSHTMLModElementConstructor, JSDOMWrapper>( exec, &JSHTMLModElementConstructorTable, this, propertyName,
+            slot );
 }
 
-bool JSHTMLModElementConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSHTMLModElementConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSHTMLModElementConstructor, JSDOMWrapper>(exec, &JSHTMLModElementConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSHTMLModElementConstructor, JSDOMWrapper>( exec, &JSHTMLModElementConstructorTable, this,
+            propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -107,91 +115,92 @@ bool JSHTMLModElementConstructor::getOwnPropertyDescriptor(ExecState* exec, cons
 
 static const HashTableValue JSHTMLModElementPrototypeTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSHTMLModElementPrototypeTable = { 1, 0, JSHTMLModElementPrototypeTableValues, 0 };
 const ClassInfo JSHTMLModElementPrototype::s_info = { "HTMLModElementPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSHTMLModElementPrototypeTable, 0 };
 
-JSObject* JSHTMLModElementPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSHTMLModElementPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSHTMLModElement>(exec, globalObject);
+    return getDOMPrototype<JSHTMLModElement>( exec, globalObject );
 }
 
 const ClassInfo JSHTMLModElement::s_info = { "HTMLModElement", &JSHTMLElement::s_info, &JSHTMLModElementTable, 0 };
 
-JSHTMLModElement::JSHTMLModElement(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<HTMLModElement> impl)
-    : JSHTMLElement(structure, globalObject, impl)
+JSHTMLModElement::JSHTMLModElement( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<HTMLModElement> impl )
+    : JSHTMLElement( structure, globalObject, impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSHTMLModElement::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSHTMLModElement::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSHTMLModElementPrototype(exec->globalData(), globalObject, JSHTMLModElementPrototype::createStructure(exec->globalData(), JSHTMLElementPrototype::self(exec, globalObject)));
+    return new ( exec ) JSHTMLModElementPrototype( exec->globalData(), globalObject,
+            JSHTMLModElementPrototype::createStructure( exec->globalData(), JSHTMLElementPrototype::self( exec, globalObject ) ) );
 }
 
-bool JSHTMLModElement::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSHTMLModElement::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSHTMLModElement, Base>(exec, &JSHTMLModElementTable, this, propertyName, slot);
+    return getStaticValueSlot<JSHTMLModElement, Base>( exec, &JSHTMLModElementTable, this, propertyName, slot );
 }
 
-bool JSHTMLModElement::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSHTMLModElement::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSHTMLModElement, Base>(exec, &JSHTMLModElementTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSHTMLModElement, Base>( exec, &JSHTMLModElementTable, this, propertyName, descriptor );
 }
 
-JSValue jsHTMLModElementCite(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLModElementCite( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLModElement* castedThis = static_cast<JSHTMLModElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    HTMLModElement* imp = static_cast<HTMLModElement*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->getURLAttribute(WebCore::HTMLNames::citeAttr));
+    JSHTMLModElement *castedThis = static_cast<JSHTMLModElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    HTMLModElement *imp = static_cast<HTMLModElement *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->getURLAttribute( WebCore::HTMLNames::citeAttr ) );
     return result;
 }
 
 
-JSValue jsHTMLModElementDateTime(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLModElementDateTime( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLModElement* castedThis = static_cast<JSHTMLModElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    HTMLModElement* imp = static_cast<HTMLModElement*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->getAttribute(WebCore::HTMLNames::datetimeAttr));
+    JSHTMLModElement *castedThis = static_cast<JSHTMLModElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    HTMLModElement *imp = static_cast<HTMLModElement *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->getAttribute( WebCore::HTMLNames::datetimeAttr ) );
     return result;
 }
 
 
-JSValue jsHTMLModElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLModElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLModElement* domObject = static_cast<JSHTMLModElement*>(asObject(slotBase));
-    return JSHTMLModElement::getConstructor(exec, domObject->globalObject());
+    JSHTMLModElement *domObject = static_cast<JSHTMLModElement *>( asObject( slotBase ) );
+    return JSHTMLModElement::getConstructor( exec, domObject->globalObject() );
 }
 
-void JSHTMLModElement::put(ExecState* exec, const Identifier& propertyName, JSValue value, PutPropertySlot& slot)
+void JSHTMLModElement::put( ExecState *exec, const Identifier &propertyName, JSValue value, PutPropertySlot &slot )
 {
-    lookupPut<JSHTMLModElement, Base>(exec, propertyName, value, &JSHTMLModElementTable, this, slot);
+    lookupPut<JSHTMLModElement, Base>( exec, propertyName, value, &JSHTMLModElementTable, this, slot );
 }
 
-void setJSHTMLModElementCite(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSHTMLModElementCite( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSHTMLModElement* castedThis = static_cast<JSHTMLModElement*>(thisObject);
-    HTMLModElement* imp = static_cast<HTMLModElement*>(castedThis->impl());
-    imp->setAttribute(WebCore::HTMLNames::citeAttr, valueToStringWithNullCheck(exec, value));
-}
-
-
-void setJSHTMLModElementDateTime(ExecState* exec, JSObject* thisObject, JSValue value)
-{
-    JSHTMLModElement* castedThis = static_cast<JSHTMLModElement*>(thisObject);
-    HTMLModElement* imp = static_cast<HTMLModElement*>(castedThis->impl());
-    imp->setAttribute(WebCore::HTMLNames::datetimeAttr, valueToStringWithNullCheck(exec, value));
+    JSHTMLModElement *castedThis = static_cast<JSHTMLModElement *>( thisObject );
+    HTMLModElement *imp = static_cast<HTMLModElement *>( castedThis->impl() );
+    imp->setAttribute( WebCore::HTMLNames::citeAttr, valueToStringWithNullCheck( exec, value ) );
 }
 
 
-JSValue JSHTMLModElement::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+void setJSHTMLModElementDateTime( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    return getDOMConstructor<JSHTMLModElementConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    JSHTMLModElement *castedThis = static_cast<JSHTMLModElement *>( thisObject );
+    HTMLModElement *imp = static_cast<HTMLModElement *>( castedThis->impl() );
+    imp->setAttribute( WebCore::HTMLNames::datetimeAttr, valueToStringWithNullCheck( exec, value ) );
+}
+
+
+JSValue JSHTMLModElement::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
+{
+    return getDOMConstructor<JSHTMLModElementConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
 

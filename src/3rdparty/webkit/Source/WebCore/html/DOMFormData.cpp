@@ -37,36 +37,47 @@
 #include "PlatformString.h"
 #include "TextEncoding.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-DOMFormData::DOMFormData(const TextEncoding& encoding)
-    : FormDataList(encoding)
+DOMFormData::DOMFormData( const TextEncoding &encoding )
+    : FormDataList( encoding )
 {
 }
 
-DOMFormData::DOMFormData(HTMLFormElement* form)
-    : FormDataList(UTF8Encoding())
+DOMFormData::DOMFormData( HTMLFormElement *form )
+    : FormDataList( UTF8Encoding() )
 {
-    if (!form)
+    if ( !form )
+    {
         return;
+    }
 
-    for (unsigned i = 0; i < form->associatedElements().size(); ++i) {
-        FormAssociatedElement* element = form->associatedElements()[i];
-        if (!toHTMLElement(element)->disabled())
-            element->appendFormData(*this, true);
+    for ( unsigned i = 0; i < form->associatedElements().size(); ++i )
+    {
+        FormAssociatedElement *element = form->associatedElements()[i];
+
+        if ( !toHTMLElement( element )->disabled() )
+        {
+            element->appendFormData( *this, true );
+        }
     }
 }
 
-void DOMFormData::append(const String& name, const String& value)
+void DOMFormData::append( const String &name, const String &value )
 {
-    if (!name.isEmpty())
-        appendData(name, value);
+    if ( !name.isEmpty() )
+    {
+        appendData( name, value );
+    }
 }
 
-void DOMFormData::append(const String& name, Blob* blob)
+void DOMFormData::append( const String &name, Blob *blob )
 {
-    if (!name.isEmpty())
-        appendBlob(name, blob);
+    if ( !name.isEmpty() )
+    {
+        appendBlob( name, blob );
+    }
 }
 
 } // namespace WebCore

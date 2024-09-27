@@ -31,48 +31,78 @@
 #include "Image.h"
 #include "StyleImage.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class RenderObject;
 
-class RenderImageResource {
-    WTF_MAKE_NONCOPYABLE(RenderImageResource); WTF_MAKE_FAST_ALLOCATED;
+class RenderImageResource
+{
+    WTF_MAKE_NONCOPYABLE( RenderImageResource );
+    WTF_MAKE_FAST_ALLOCATED;
 public:
     virtual ~RenderImageResource();
 
     static PassOwnPtr<RenderImageResource> create()
     {
-        return adoptPtr(new RenderImageResource);
+        return adoptPtr( new RenderImageResource );
     }
 
-    virtual void initialize(RenderObject*);
+    virtual void initialize( RenderObject * );
     virtual void shutdown();
 
-    void setCachedImage(CachedImage*);
-    CachedImage* cachedImage() const { return m_cachedImage.get(); }
-    virtual bool hasImage() const { return m_cachedImage; }
+    void setCachedImage( CachedImage * );
+    CachedImage *cachedImage() const
+    {
+        return m_cachedImage.get();
+    }
+    virtual bool hasImage() const
+    {
+        return m_cachedImage;
+    }
 
     void resetAnimation();
 
-    virtual PassRefPtr<Image> image(int /* width */ = 0, int /* height */ = 0) const { return m_cachedImage ? m_cachedImage->image() : nullImage(); }
-    virtual bool errorOccurred() const { return m_cachedImage && m_cachedImage->errorOccurred(); }
+    virtual PassRefPtr<Image> image( int /* width */ = 0, int /* height */ = 0 ) const
+    {
+        return m_cachedImage ? m_cachedImage->image() : nullImage();
+    }
+    virtual bool errorOccurred() const
+    {
+        return m_cachedImage && m_cachedImage->errorOccurred();
+    }
 
-    virtual void setImageContainerSize(const IntSize& size) const;
-    virtual bool usesImageContainerSize() const { return m_cachedImage ? m_cachedImage->usesImageContainerSize() : false; }
-    virtual bool imageHasRelativeWidth() const { return m_cachedImage ? m_cachedImage->imageHasRelativeWidth() : false; }
-    virtual bool imageHasRelativeHeight() const { return m_cachedImage ? m_cachedImage->imageHasRelativeHeight() : false; }
+    virtual void setImageContainerSize( const IntSize &size ) const;
+    virtual bool usesImageContainerSize() const
+    {
+        return m_cachedImage ? m_cachedImage->usesImageContainerSize() : false;
+    }
+    virtual bool imageHasRelativeWidth() const
+    {
+        return m_cachedImage ? m_cachedImage->imageHasRelativeWidth() : false;
+    }
+    virtual bool imageHasRelativeHeight() const
+    {
+        return m_cachedImage ? m_cachedImage->imageHasRelativeHeight() : false;
+    }
 
-    virtual IntSize imageSize(float multiplier) const { return m_cachedImage ? m_cachedImage->imageSize(multiplier) : IntSize(); }
+    virtual IntSize imageSize( float multiplier ) const
+    {
+        return m_cachedImage ? m_cachedImage->imageSize( multiplier ) : IntSize();
+    }
 
-    virtual WrappedImagePtr imagePtr() const { return m_cachedImage.get(); }
+    virtual WrappedImagePtr imagePtr() const
+    {
+        return m_cachedImage.get();
+    }
 
 protected:
     RenderImageResource();
-    RenderObject* m_renderer;
+    RenderObject *m_renderer;
     CachedResourceHandle<CachedImage> m_cachedImage;
 
 private:
-    static Image* nullImage();
+    static Image *nullImage();
 };
 
 } // namespace WebCore

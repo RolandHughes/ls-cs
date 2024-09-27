@@ -31,20 +31,29 @@
 #include "SVGPathSource.h"
 #include <wtf/PassOwnPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class SVGPathParser {
-    WTF_MAKE_NONCOPYABLE(SVGPathParser); WTF_MAKE_FAST_ALLOCATED;
+class SVGPathParser
+{
+    WTF_MAKE_NONCOPYABLE( SVGPathParser );
+    WTF_MAKE_FAST_ALLOCATED;
 public:
     SVGPathParser();
 
-    bool parsePathDataFromSource(PathParsingMode pathParsingMode);
-    void setCurrentConsumer(SVGPathConsumer* consumer) { m_consumer = consumer; }
-    void setCurrentSource(SVGPathSource* source) { m_source = source; }
+    bool parsePathDataFromSource( PathParsingMode pathParsingMode );
+    void setCurrentConsumer( SVGPathConsumer *consumer )
+    {
+        m_consumer = consumer;
+    }
+    void setCurrentSource( SVGPathSource *source )
+    {
+        m_source = source;
+    }
     void cleanup();
 
 private:
-    bool decomposeArcToCubic(float, float, float, FloatPoint&, FloatPoint&, bool largeArcFlag, bool sweepFlag);
+    bool decomposeArcToCubic( float, float, float, FloatPoint &, FloatPoint &, bool largeArcFlag, bool sweepFlag );
     void parseClosePathSegment();
     bool parseMoveToSegment();
     bool parseLineToSegment();
@@ -56,8 +65,8 @@ private:
     bool parseCurveToQuadraticSmoothSegment();
     bool parseArcToSegment();
 
-    SVGPathSource* m_source;
-    SVGPathConsumer* m_consumer;
+    SVGPathSource *m_source;
+    SVGPathConsumer *m_consumer;
     PathCoordinateMode m_mode;
     PathParsingMode m_pathParsingMode;
     SVGPathSegType m_lastCommand;

@@ -20,41 +20,46 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
 
 #include "JSStaticScopeObject.h"
 
-namespace JSC {
-
-ASSERT_CLASS_FITS_IN_CELL(JSStaticScopeObject);
-
-void JSStaticScopeObject::markChildren(MarkStack& markStack)
+namespace JSC
 {
-    JSVariableObject::markChildren(markStack);
-    markStack.append(d()->registerStore.jsValue());
+
+ASSERT_CLASS_FITS_IN_CELL( JSStaticScopeObject );
+
+void JSStaticScopeObject::markChildren( MarkStack &markStack )
+{
+    JSVariableObject::markChildren( markStack );
+    markStack.append( d()->registerStore.jsValue() );
 }
 
-JSObject* JSStaticScopeObject::toThisObject(ExecState* exec) const
+JSObject *JSStaticScopeObject::toThisObject( ExecState *exec ) const
 {
     return exec->globalThisValue();
 }
 
-void JSStaticScopeObject::put(ExecState*, const Identifier& propertyName, JSValue value, PutPropertySlot&)
+void JSStaticScopeObject::put( ExecState *, const Identifier &propertyName, JSValue value, PutPropertySlot & )
 {
-    if (symbolTablePut(propertyName, value))
+    if ( symbolTablePut( propertyName, value ) )
+    {
         return;
-    
+    }
+
     ASSERT_NOT_REACHED();
 }
 
-void JSStaticScopeObject::putWithAttributes(ExecState*, const Identifier& propertyName, JSValue value, unsigned attributes)
+void JSStaticScopeObject::putWithAttributes( ExecState *, const Identifier &propertyName, JSValue value, unsigned attributes )
 {
-    if (symbolTablePutWithAttributes(propertyName, value, attributes))
+    if ( symbolTablePutWithAttributes( propertyName, value, attributes ) )
+    {
         return;
-    
+    }
+
     ASSERT_NOT_REACHED();
 }
 
@@ -65,13 +70,13 @@ bool JSStaticScopeObject::isDynamicScope() const
 
 JSStaticScopeObject::~JSStaticScopeObject()
 {
-    ASSERT(d());
+    ASSERT( d() );
     delete d();
 }
 
-inline bool JSStaticScopeObject::getOwnPropertySlot(ExecState*, const Identifier& propertyName, PropertySlot& slot)
+inline bool JSStaticScopeObject::getOwnPropertySlot( ExecState *, const Identifier &propertyName, PropertySlot &slot )
 {
-    return symbolTableGet(propertyName, slot);
+    return symbolTableGet( propertyName, slot );
 }
 
 }

@@ -30,91 +30,99 @@
 #include "SVGTests.h"
 #include "SVGURIReference.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class SVGElementInstance;
 class SVGShadowTreeRootElement;
 
 class SVGUseElement : public SVGStyledTransformableElement,
-                      public SVGTests,
-                      public SVGLangSpace,
-                      public SVGExternalResourcesRequired,
-                      public SVGURIReference {
+    public SVGTests,
+    public SVGLangSpace,
+    public SVGExternalResourcesRequired,
+    public SVGURIReference
+{
 public:
-    static PassRefPtr<SVGUseElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<SVGUseElement> create( const QualifiedName &, Document * );
 
-    SVGElementInstance* instanceRoot() const;
-    SVGElementInstance* animatedInstanceRoot() const;
-    SVGElementInstance* instanceForShadowTreeElement(Node*) const;
+    SVGElementInstance *instanceRoot() const;
+    SVGElementInstance *animatedInstanceRoot() const;
+    SVGElementInstance *instanceForShadowTreeElement( Node * ) const;
     void invalidateShadowTree();
 
-    RenderObject* rendererClipChild() const;
+    RenderObject *rendererClipChild() const;
 
 private:
-    SVGUseElement(const QualifiedName&, Document*);
+    SVGUseElement( const QualifiedName &, Document * );
 
-    virtual bool isValid() const { return SVGTests::isValid(); }
+    virtual bool isValid() const
+    {
+        return SVGTests::isValid();
+    }
 
     virtual void insertedIntoDocument();
     virtual void removedFromDocument();
     virtual void buildPendingResource();
 
-    virtual void parseMappedAttribute(Attribute*);
-    virtual void svgAttributeChanged(const QualifiedName&);
-    virtual void synchronizeProperty(const QualifiedName&);
+    virtual void parseMappedAttribute( Attribute * );
+    virtual void svgAttributeChanged( const QualifiedName & );
+    virtual void synchronizeProperty( const QualifiedName & );
     virtual void fillAttributeToPropertyTypeMap();
-    virtual AttributeToPropertyTypeMap& attributeToPropertyTypeMap();
+    virtual AttributeToPropertyTypeMap &attributeToPropertyTypeMap();
 
-    virtual void recalcStyle(StyleChange = NoChange);
-    virtual RenderObject* createRenderer(RenderArena*, RenderStyle*);
+    virtual void recalcStyle( StyleChange = NoChange );
+    virtual RenderObject *createRenderer( RenderArena *, RenderStyle * );
     virtual void attach();
     virtual void detach();
 
-    virtual void toClipPath(Path&) const;
+    virtual void toClipPath( Path & ) const;
 
-    static void removeDisallowedElementsFromSubtree(Node* element);
+    static void removeDisallowedElementsFromSubtree( Node *element );
 
-    void setUpdatesBlocked(bool blocked) { m_updatesBlocked = blocked; }
+    void setUpdatesBlocked( bool blocked )
+    {
+        m_updatesBlocked = blocked;
+    }
 
     friend class RenderSVGShadowTreeRootContainer;
-    void buildShadowAndInstanceTree(SVGShadowTreeRootElement*);
+    void buildShadowAndInstanceTree( SVGShadowTreeRootElement * );
     void detachInstance();
 
     virtual bool selfHasRelativeLengths() const;
 
     // Instance tree handling
-    void buildInstanceTree(SVGElement* target, SVGElementInstance* targetInstance, bool& foundCycle);
-    bool hasCycleUseReferencing(SVGUseElement*, SVGElementInstance* targetInstance, SVGElement*& newTarget);
+    void buildInstanceTree( SVGElement *target, SVGElementInstance *targetInstance, bool &foundCycle );
+    bool hasCycleUseReferencing( SVGUseElement *, SVGElementInstance *targetInstance, SVGElement *&newTarget );
 
     // Shadow tree handling
-    void buildShadowTree(SVGShadowTreeRootElement*, SVGElement* target, SVGElementInstance* targetInstance);
+    void buildShadowTree( SVGShadowTreeRootElement *, SVGElement *target, SVGElementInstance *targetInstance );
 
 #if ENABLE(SVG) && ENABLE(SVG_USE)
-    void expandUseElementsInShadowTree(Node* element);
-    void expandSymbolElementsInShadowTree(Node* element);
+    void expandUseElementsInShadowTree( Node *element );
+    void expandSymbolElementsInShadowTree( Node *element );
 #endif
 
-    // "Tree connector" 
-    void associateInstancesWithShadowTreeElements(Node* target, SVGElementInstance* targetInstance);
-    SVGElementInstance* instanceForShadowTreeElement(Node* element, SVGElementInstance* instance) const;
+    // "Tree connector"
+    void associateInstancesWithShadowTreeElements( Node *target, SVGElementInstance *targetInstance );
+    SVGElementInstance *instanceForShadowTreeElement( Node *element, SVGElementInstance *instance ) const;
 
-    void transferUseAttributesToReplacedElement(SVGElement* from, SVGElement* to) const;
-    void transferEventListenersToShadowTree(SVGElementInstance* target);
+    void transferUseAttributesToReplacedElement( SVGElement *from, SVGElement *to ) const;
+    void transferEventListenersToShadowTree( SVGElementInstance *target );
 
     void updateContainerOffsets();
     void updateContainerSizes();
 
     // Animated property declarations
-    DECLARE_ANIMATED_LENGTH(X, x)
-    DECLARE_ANIMATED_LENGTH(Y, y)
-    DECLARE_ANIMATED_LENGTH(Width, width)
-    DECLARE_ANIMATED_LENGTH(Height, height)
+    DECLARE_ANIMATED_LENGTH( X, x )
+    DECLARE_ANIMATED_LENGTH( Y, y )
+    DECLARE_ANIMATED_LENGTH( Width, width )
+    DECLARE_ANIMATED_LENGTH( Height, height )
 
     // SVGURIReference
-    DECLARE_ANIMATED_STRING(Href, href)
+    DECLARE_ANIMATED_STRING( Href, href )
 
     // SVGExternalResourcesRequired
-    DECLARE_ANIMATED_BOOLEAN(ExternalResourcesRequired, externalResourcesRequired)
+    DECLARE_ANIMATED_BOOLEAN( ExternalResourcesRequired, externalResourcesRequired )
 
     bool m_updatesBlocked;
     bool m_needsShadowTreeRecreation;

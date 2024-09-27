@@ -24,8 +24,8 @@
 #include <qimageencodercontrol.h>
 #include <qstringlist.h>
 
-QImageEncoderControl::QImageEncoderControl(QObject *parent)
-    : QMediaControl(parent)
+QImageEncoderControl::QImageEncoderControl( QObject *parent )
+    : QMediaControl( parent )
 {
 }
 

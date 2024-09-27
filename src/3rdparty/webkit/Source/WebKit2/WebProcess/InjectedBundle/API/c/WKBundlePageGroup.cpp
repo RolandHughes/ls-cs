@@ -34,10 +34,10 @@ using namespace WebKit;
 
 WKTypeID WKBundlePageGroupGetTypeID()
 {
-    return toAPI(WebPageGroupProxy::APIType);
+    return toAPI( WebPageGroupProxy::APIType );
 }
 
-WKStringRef WKBundlePageGroupCopyIdentifier(WKBundlePageGroupRef bundlePageGroup)
+WKStringRef WKBundlePageGroupCopyIdentifier( WKBundlePageGroupRef bundlePageGroup )
 {
-    return toCopiedAPI(toImpl(bundlePageGroup)->identifier());
+    return toCopiedAPI( toImpl( bundlePageGroup )->identifier() );
 }

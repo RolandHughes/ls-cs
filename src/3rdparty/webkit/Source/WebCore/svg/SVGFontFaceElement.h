@@ -25,15 +25,17 @@
 #if ENABLE(SVG_FONTS)
 #include "SVGElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class CSSFontFaceRule;
 class CSSMutableStyleDeclaration;
 class SVGFontElement;
 
-class SVGFontFaceElement : public SVGElement {
+class SVGFontFaceElement : public SVGElement
+{
 public:
-    static PassRefPtr<SVGFontFaceElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<SVGFontFaceElement> create( const QualifiedName &, Document * );
 
     unsigned unitsPerEm() const;
     int xHeight() const;
@@ -47,16 +49,17 @@ public:
     int descent() const;
     String fontFamily() const;
 
-    SVGFontElement* associatedFontElement() const;
+    SVGFontElement *associatedFontElement() const;
     void rebuildFontFace();
     void removeFromMappedElementSheet();
 
 private:
-    SVGFontFaceElement(const QualifiedName&, Document*);
+    SVGFontFaceElement( const QualifiedName &, Document * );
 
-    virtual void parseMappedAttribute(Attribute*);
+    virtual void parseMappedAttribute( Attribute * );
 
-    virtual void childrenChanged(bool changedByParser = false, Node* beforeChange = 0, Node* afterChange = 0, int childCountDelta = 0);
+    virtual void childrenChanged( bool changedByParser = false, Node *beforeChange = 0, Node *afterChange = 0,
+                                  int childCountDelta = 0 );
     virtual void insertedIntoDocument();
     virtual void removedFromDocument();
 

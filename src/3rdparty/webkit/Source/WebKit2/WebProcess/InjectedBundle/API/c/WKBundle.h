@@ -34,14 +34,17 @@ extern "C" {
 #endif
 
 // Client
-typedef void (*WKBundleDidCreatePageCallback)(WKBundleRef bundle, WKBundlePageRef page, const void* clientInfo);
-typedef void (*WKBundleWillDestroyPageCallback)(WKBundleRef bundle, WKBundlePageRef page, const void* clientInfo);
-typedef void (*WKBundleDidInitializePageGroupCallback)(WKBundleRef bundle, WKBundlePageGroupRef pageGroup, const void* clientInfo);
-typedef void (*WKBundleDidReceiveMessageCallback)(WKBundleRef bundle, WKStringRef name, WKTypeRef messageBody, const void* clientInfo);
+typedef void ( *WKBundleDidCreatePageCallback )( WKBundleRef bundle, WKBundlePageRef page, const void *clientInfo );
+typedef void ( *WKBundleWillDestroyPageCallback )( WKBundleRef bundle, WKBundlePageRef page, const void *clientInfo );
+typedef void ( *WKBundleDidInitializePageGroupCallback )( WKBundleRef bundle, WKBundlePageGroupRef pageGroup,
+        const void *clientInfo );
+typedef void ( *WKBundleDidReceiveMessageCallback )( WKBundleRef bundle, WKStringRef name, WKTypeRef messageBody,
+        const void *clientInfo );
 
-struct WKBundleClient {
+struct WKBundleClient
+{
     int                                                                 version;
-    const void *                                                        clientInfo;
+    const void                                                         *clientInfo;
     WKBundleDidCreatePageCallback                                       didCreatePage;
     WKBundleWillDestroyPageCallback                                     willDestroyPage;
     WKBundleDidInitializePageGroupCallback                              didInitializePageGroup;
@@ -51,12 +54,13 @@ typedef struct WKBundleClient WKBundleClient;
 
 WK_EXPORT WKTypeID WKBundleGetTypeID();
 
-WK_EXPORT void WKBundleSetClient(WKBundleRef bundle, WKBundleClient * client);
+WK_EXPORT void WKBundleSetClient( WKBundleRef bundle, WKBundleClient *client );
 
-WK_EXPORT void WKBundlePostMessage(WKBundleRef bundle, WKStringRef messageName, WKTypeRef messageBody);
-WK_EXPORT void WKBundlePostSynchronousMessage(WKBundleRef bundle, WKStringRef messageName, WKTypeRef messageBody, WKTypeRef* returnData);
+WK_EXPORT void WKBundlePostMessage( WKBundleRef bundle, WKStringRef messageName, WKTypeRef messageBody );
+WK_EXPORT void WKBundlePostSynchronousMessage( WKBundleRef bundle, WKStringRef messageName, WKTypeRef messageBody,
+        WKTypeRef *returnData );
 
-WK_EXPORT void WKBundleReportException(JSContextRef, JSValueRef exception);
+WK_EXPORT void WKBundleReportException( JSContextRef, JSValueRef exception );
 
 #ifdef __cplusplus
 }

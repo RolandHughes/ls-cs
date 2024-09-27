@@ -28,15 +28,16 @@
 
 #include "WebPageGroup.h"
 
-namespace WebKit {
+namespace WebKit
+{
 
 WebPreferences::WebPreferences()
 {
     platformInitializeStore();
 }
 
-WebPreferences::WebPreferences(const String& identifier)
-    : m_identifier(identifier)
+WebPreferences::WebPreferences( const String &identifier )
+    : m_identifier( identifier )
 {
     platformInitializeStore();
 }
@@ -45,43 +46,45 @@ WebPreferences::~WebPreferences()
 {
 }
 
-void WebPreferences::addPageGroup(WebPageGroup* pageGroup)
+void WebPreferences::addPageGroup( WebPageGroup *pageGroup )
 {
-    m_pageGroups.add(pageGroup);
+    m_pageGroups.add( pageGroup );
 }
 
-void WebPreferences::removePageGroup(WebPageGroup* pageGroup)
+void WebPreferences::removePageGroup( WebPageGroup *pageGroup )
 {
-    m_pageGroups.remove(pageGroup);
+    m_pageGroups.remove( pageGroup );
 }
 
 void WebPreferences::update()
 {
-    for (HashSet<WebPageGroup*>::iterator it = m_pageGroups.begin(), end = m_pageGroups.end(); it != end; ++it)
-        (*it)->preferencesDidChange();
+    for ( HashSet<WebPageGroup *>::iterator it = m_pageGroups.begin(), end = m_pageGroups.end(); it != end; ++it )
+    {
+        ( *it )->preferencesDidChange();
+    }
 }
 
-void WebPreferences::updateStringValueForKey(const String& key, const String& value)
+void WebPreferences::updateStringValueForKey( const String &key, const String &value )
 {
-    platformUpdateStringValueForKey(key, value);
+    platformUpdateStringValueForKey( key, value );
     update(); // FIXME: Only send over the changed key and value.
 }
 
-void WebPreferences::updateBoolValueForKey(const String& key, bool value)
+void WebPreferences::updateBoolValueForKey( const String &key, bool value )
 {
-    platformUpdateBoolValueForKey(key, value);
+    platformUpdateBoolValueForKey( key, value );
     update(); // FIXME: Only send over the changed key and value.
 }
 
-void WebPreferences::updateUInt32ValueForKey(const String& key, uint32_t value)
+void WebPreferences::updateUInt32ValueForKey( const String &key, uint32_t value )
 {
-    platformUpdateUInt32ValueForKey(key, value);
+    platformUpdateUInt32ValueForKey( key, value );
     update(); // FIXME: Only send over the changed key and value.
 }
 
-void WebPreferences::updateDoubleValueForKey(const String& key, double value)
+void WebPreferences::updateDoubleValueForKey( const String &key, double value )
 {
-    platformUpdateDoubleValueForKey(key, value);
+    platformUpdateDoubleValueForKey( key, value );
     update(); // FIXME: Only send over the changed key and value.
 }
 
@@ -99,7 +102,7 @@ void WebPreferences::updateDoubleValueForKey(const String& key, double value)
         return m_store.get##TypeName##ValueForKey(WebPreferencesKey::KeyLower##Key()); \
     } \
 
-FOR_EACH_WEBKIT_PREFERENCE(DEFINE_PREFERENCE_GETTER_AND_SETTERS)
+FOR_EACH_WEBKIT_PREFERENCE( DEFINE_PREFERENCE_GETTER_AND_SETTERS )
 
 #undef DEFINE_PREFERENCE_GETTER_AND_SETTERS
 

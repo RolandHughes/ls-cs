@@ -29,8 +29,8 @@
 
 #include <OpenGL/OpenGL.h>
 
-void (*qcgl_getProcAddress(const QByteArray &procName))();
+void ( *qcgl_getProcAddress( const QByteArray &procName ) )();
 QSurfaceFormat qcgl_surfaceFormat();
-void *qcgl_createNSOpenGLPixelFormat(const QSurfaceFormat &format);
+void *qcgl_createNSOpenGLPixelFormat( const QSurfaceFormat &format );
 
 #endif

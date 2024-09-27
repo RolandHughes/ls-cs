@@ -29,37 +29,56 @@
 
 #include "DocumentMarker.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class RenderedDocumentMarker : public DocumentMarker {
+class RenderedDocumentMarker : public DocumentMarker
+{
 public:
 
-    explicit RenderedDocumentMarker(const DocumentMarker& marker)
-        : DocumentMarker(marker), m_renderedRect(invalidMarkerRect())
+    explicit RenderedDocumentMarker( const DocumentMarker &marker )
+        : DocumentMarker( marker ), m_renderedRect( invalidMarkerRect() )
     {
     }
 
-    bool isRendered() const { return invalidMarkerRect() != m_renderedRect; }
-    bool contains(const IntPoint& point) const { return isRendered() && m_renderedRect.contains(point); }
-    void setRenderedRect(const IntRect& r) { m_renderedRect = r; }
-    const IntRect& renderedRect() const { return m_renderedRect; }
-    void invalidate(const IntRect&);
-    void invalidate() { m_renderedRect = invalidMarkerRect(); }
+    bool isRendered() const
+    {
+        return invalidMarkerRect() != m_renderedRect;
+    }
+    bool contains( const IntPoint &point ) const
+    {
+        return isRendered() && m_renderedRect.contains( point );
+    }
+    void setRenderedRect( const IntRect &r )
+    {
+        m_renderedRect = r;
+    }
+    const IntRect &renderedRect() const
+    {
+        return m_renderedRect;
+    }
+    void invalidate( const IntRect & );
+    void invalidate()
+    {
+        m_renderedRect = invalidMarkerRect();
+    }
 
 private:
-    static const IntRect& invalidMarkerRect()
+    static const IntRect &invalidMarkerRect()
     {
-        static const IntRect rect = IntRect(-1, -1, -1, -1);
+        static const IntRect rect = IntRect( -1, -1, -1, -1 );
         return rect;
     }
 
     IntRect m_renderedRect;
 };
 
-inline void RenderedDocumentMarker::invalidate(const IntRect& r)
+inline void RenderedDocumentMarker::invalidate( const IntRect &r )
 {
-    if (m_renderedRect.intersects(r))
+    if ( m_renderedRect.intersects( r ) )
+    {
         invalidate();
+    }
 }
 
 } // namespace

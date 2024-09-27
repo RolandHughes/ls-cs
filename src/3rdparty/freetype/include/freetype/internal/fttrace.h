@@ -16,17 +16,17 @@
  */
 
 
-  /* definitions of trace levels for FreeType 2 */
+/* definitions of trace levels for FreeType 2 */
 
-  /* the maximum string length (if the argument to `FT_TRACE_DEF` */
-  /* gets used as a string) plus one charachter for ':' plus      */
-  /* another one for the trace level                              */
+/* the maximum string length (if the argument to `FT_TRACE_DEF` */
+/* gets used as a string) plus one charachter for ':' plus      */
+/* another one for the trace level                              */
 #define FT_MAX_TRACE_LEVEL_LENGTH  (9 + 1 + 1)
 
-  /* the first level must always be `trace_any' */
+/* the first level must always be `trace_any' */
 FT_TRACE_DEF( any )
 
-  /* base components */
+/* base components */
 FT_TRACE_DEF( calc )      /* calculations            (ftcalc.c)   */
 FT_TRACE_DEF( gloader )   /* glyph loader            (ftgloadr.c) */
 FT_TRACE_DEF( glyph )     /* glyph management        (ftglyph.c)  */
@@ -45,14 +45,14 @@ FT_TRACE_DEF( psprops )   /* PS driver properties    (ftpsprop.c) */
 FT_TRACE_DEF( raccess )   /* resource fork accessor  (ftrfork.c)  */
 FT_TRACE_DEF( synth )     /* bold/slant synthesizer  (ftsynth.c)  */
 
-  /* rasterizers */
+/* rasterizers */
 FT_TRACE_DEF( raster )    /* monochrome rasterizer   (ftraster.c) */
 FT_TRACE_DEF( smooth )    /* anti-aliasing raster    (ftgrays.c)  */
 
-  /* cache sub-system */
+/* cache sub-system */
 FT_TRACE_DEF( cache )     /* cache sub-system   (ftcache.c, etc.) */
 
-  /* SFNT driver components */
+/* SFNT driver components */
 FT_TRACE_DEF( sfdriver )  /* SFNT font driver        (sfdriver.c) */
 FT_TRACE_DEF( sfobjs )    /* SFNT object handler     (sfobjs.c)   */
 FT_TRACE_DEF( sfwoff )    /* WOFF format handler     (sfwoff.c)   */
@@ -67,7 +67,7 @@ FT_TRACE_DEF( ttmtx )     /* metrics-related tables  (ttmtx.c)    */
 FT_TRACE_DEF( ttpost )    /* PS table processing     (ttpost.c)   */
 FT_TRACE_DEF( ttsbit )    /* TrueType sbit handling  (ttsbit.c)   */
 
-  /* TrueType driver components */
+/* TrueType driver components */
 FT_TRACE_DEF( ttdriver )  /* TT font driver          (ttdriver.c) */
 FT_TRACE_DEF( ttgload )   /* TT glyph loader         (ttgload.c)  */
 FT_TRACE_DEF( ttgxvar )   /* TrueType GX var handler (ttgxvar.c)  */
@@ -75,7 +75,7 @@ FT_TRACE_DEF( ttinterp )  /* bytecode interpreter    (ttinterp.c) */
 FT_TRACE_DEF( ttobjs )    /* TT objects manager      (ttobjs.c)   */
 FT_TRACE_DEF( ttpload )   /* TT data/program loader  (ttpload.c)  */
 
-  /* Type 1 driver components */
+/* Type 1 driver components */
 FT_TRACE_DEF( t1afm )
 FT_TRACE_DEF( t1driver )
 FT_TRACE_DEF( t1gload )
@@ -83,18 +83,18 @@ FT_TRACE_DEF( t1load )
 FT_TRACE_DEF( t1objs )
 FT_TRACE_DEF( t1parse )
 
-  /* PostScript helper module `psaux' */
+/* PostScript helper module `psaux' */
 FT_TRACE_DEF( afmparse )
 FT_TRACE_DEF( cffdecode )
 FT_TRACE_DEF( psconv )
 FT_TRACE_DEF( psobjs )
 FT_TRACE_DEF( t1decode )
 
-  /* PostScript hinting module `pshinter' */
+/* PostScript hinting module `pshinter' */
 FT_TRACE_DEF( pshalgo )
 FT_TRACE_DEF( pshrec )
 
-  /* Type 2 driver components */
+/* Type 2 driver components */
 FT_TRACE_DEF( cffdriver )
 FT_TRACE_DEF( cffgload )
 FT_TRACE_DEF( cffload )
@@ -105,31 +105,31 @@ FT_TRACE_DEF( cf2blues )
 FT_TRACE_DEF( cf2hints )
 FT_TRACE_DEF( cf2interp )
 
-  /* Type 42 driver component */
+/* Type 42 driver component */
 FT_TRACE_DEF( t42 )
 
-  /* CID driver components */
+/* CID driver components */
 FT_TRACE_DEF( ciddriver )
 FT_TRACE_DEF( cidgload )
 FT_TRACE_DEF( cidload )
 FT_TRACE_DEF( cidobjs )
 FT_TRACE_DEF( cidparse )
 
-  /* Windows font component */
+/* Windows font component */
 FT_TRACE_DEF( winfnt )
 
-  /* PCF font components */
+/* PCF font components */
 FT_TRACE_DEF( pcfdriver )
 FT_TRACE_DEF( pcfread )
 
-  /* BDF font components */
+/* BDF font components */
 FT_TRACE_DEF( bdfdriver )
 FT_TRACE_DEF( bdflib )
 
-  /* PFR font component */
+/* PFR font component */
 FT_TRACE_DEF( pfr )
 
-  /* OpenType validation components */
+/* OpenType validation components */
 FT_TRACE_DEF( otvcommon )
 FT_TRACE_DEF( otvbase )
 FT_TRACE_DEF( otvgdef )
@@ -139,7 +139,7 @@ FT_TRACE_DEF( otvjstf )
 FT_TRACE_DEF( otvmath )
 FT_TRACE_DEF( otvmodule )
 
-  /* TrueTypeGX/AAT validation components */
+/* TrueTypeGX/AAT validation components */
 FT_TRACE_DEF( gxvbsln )
 FT_TRACE_DEF( gxvcommon )
 FT_TRACE_DEF( gxvfeat )
@@ -153,7 +153,7 @@ FT_TRACE_DEF( gxvopbd )
 FT_TRACE_DEF( gxvprop )
 FT_TRACE_DEF( gxvtrak )
 
-  /* autofit components */
+/* autofit components */
 FT_TRACE_DEF( afcjk )
 FT_TRACE_DEF( afglobal )
 FT_TRACE_DEF( afhints )
@@ -161,7 +161,7 @@ FT_TRACE_DEF( afmodule )
 FT_TRACE_DEF( aflatin )
 FT_TRACE_DEF( afshaper )
 
-  /* SDF components */
+/* SDF components */
 FT_TRACE_DEF( sdf )       /* signed distance raster for outlines (ftsdf.c) */
 FT_TRACE_DEF( bsdf )      /* signed distance raster for bitmaps (ftbsdf.c) */
 

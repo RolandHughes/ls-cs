@@ -20,9 +20,9 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 #ifndef UserScript_h
 #define UserScript_h
 
@@ -33,29 +33,50 @@
 #include <wtf/PassOwnPtr.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class UserScript {
-    WTF_MAKE_NONCOPYABLE(UserScript); WTF_MAKE_FAST_ALLOCATED;
+class UserScript
+{
+    WTF_MAKE_NONCOPYABLE( UserScript );
+    WTF_MAKE_FAST_ALLOCATED;
 public:
-    UserScript(const String& source, const KURL& url,
-               PassOwnPtr<Vector<String> > whitelist, PassOwnPtr<Vector<String> > blacklist,
-               UserScriptInjectionTime injectionTime, UserContentInjectedFrames injectedFrames)
-        : m_source(source)
-        , m_url(url)
-        , m_whitelist(whitelist)
-        , m_blacklist(blacklist)
-        , m_injectionTime(injectionTime)
-        , m_injectedFrames(injectedFrames)
+    UserScript( const String &source, const KURL &url,
+                PassOwnPtr<Vector<String> > whitelist, PassOwnPtr<Vector<String> > blacklist,
+                UserScriptInjectionTime injectionTime, UserContentInjectedFrames injectedFrames )
+        : m_source( source )
+        , m_url( url )
+        , m_whitelist( whitelist )
+        , m_blacklist( blacklist )
+        , m_injectionTime( injectionTime )
+        , m_injectedFrames( injectedFrames )
     {
     }
 
-    const String& source() const { return m_source; }
-    const KURL& url() const { return m_url; }
-    const Vector<String>* whitelist() const { return m_whitelist.get(); }
-    const Vector<String>* blacklist() const { return m_blacklist.get(); }
-    UserScriptInjectionTime injectionTime() const { return m_injectionTime; }
-    UserContentInjectedFrames injectedFrames() const { return m_injectedFrames; }
+    const String &source() const
+    {
+        return m_source;
+    }
+    const KURL &url() const
+    {
+        return m_url;
+    }
+    const Vector<String> *whitelist() const
+    {
+        return m_whitelist.get();
+    }
+    const Vector<String> *blacklist() const
+    {
+        return m_blacklist.get();
+    }
+    UserScriptInjectionTime injectionTime() const
+    {
+        return m_injectionTime;
+    }
+    UserContentInjectedFrames injectedFrames() const
+    {
+        return m_injectedFrames;
+    }
 
 private:
     String m_source;

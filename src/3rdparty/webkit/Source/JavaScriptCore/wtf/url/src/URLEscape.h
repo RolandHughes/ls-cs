@@ -32,16 +32,17 @@
 
 #include "URLBuffer.h"
 
-namespace WTF {
+namespace WTF
+{
 
 extern const char hexCharacterTable[16];
 
 template<typename InChar, typename OutChar>
-inline void appendURLEscapedCharacter(InChar ch, URLBuffer<OutChar>& buffer)
+inline void appendURLEscapedCharacter( InChar ch, URLBuffer<OutChar> &buffer )
 {
-    buffer.append('%');
-    buffer.append(hexCharacterTable[ch >> 4]);
-    buffer.append(hexCharacterTable[ch & 0xf]);
+    buffer.append( '%' );
+    buffer.append( hexCharacterTable[ch >> 4] );
+    buffer.append( hexCharacterTable[ch & 0xf] );
 }
 
 }

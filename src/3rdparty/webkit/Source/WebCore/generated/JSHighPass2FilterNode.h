@@ -26,50 +26,56 @@
 #include "JSAudioNode.h"
 #include <runtime/JSObjectWithGlobalObject.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class HighPass2FilterNode;
 
-class JSHighPass2FilterNode : public JSAudioNode {
+class JSHighPass2FilterNode : public JSAudioNode
+{
     typedef JSAudioNode Base;
 public:
-    JSHighPass2FilterNode(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<HighPass2FilterNode>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
+    JSHighPass2FilterNode( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<HighPass2FilterNode> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
-JSC::JSValue toJS(JSC::ExecState*, JSDOMGlobalObject*, HighPass2FilterNode*);
+JSC::JSValue toJS( JSC::ExecState *, JSDOMGlobalObject *, HighPass2FilterNode * );
 
-class JSHighPass2FilterNodePrototype : public JSC::JSObjectWithGlobalObject {
+class JSHighPass2FilterNodePrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSHighPass2FilterNodePrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSHighPass2FilterNodePrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                                    JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = Base::StructureFlags;
 };
 
 // Attributes
 
-JSC::JSValue jsHighPass2FilterNodeCutoff(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsHighPass2FilterNodeResonance(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsHighPass2FilterNodeConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsHighPass2FilterNodeCutoff( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsHighPass2FilterNodeResonance( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsHighPass2FilterNodeConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

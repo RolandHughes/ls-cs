@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -28,29 +28,33 @@
 
 #include "DeviceMotionData.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 DeviceMotionEvent::~DeviceMotionEvent()
 {
 }
 
 DeviceMotionEvent::DeviceMotionEvent()
-    : m_deviceMotionData(DeviceMotionData::create())
+    : m_deviceMotionData( DeviceMotionData::create() )
 {
 }
 
-DeviceMotionEvent::DeviceMotionEvent(const AtomicString& eventType, DeviceMotionData* deviceMotionData)
-    : Event(eventType, false, false) // Can't bubble, not cancelable
-    , m_deviceMotionData(deviceMotionData)
+DeviceMotionEvent::DeviceMotionEvent( const AtomicString &eventType, DeviceMotionData *deviceMotionData )
+    : Event( eventType, false, false ) // Can't bubble, not cancelable
+    , m_deviceMotionData( deviceMotionData )
 {
 }
 
-void DeviceMotionEvent::initDeviceMotionEvent(const AtomicString& type, bool bubbles, bool cancelable, DeviceMotionData* deviceMotionData)
+void DeviceMotionEvent::initDeviceMotionEvent( const AtomicString &type, bool bubbles, bool cancelable,
+        DeviceMotionData *deviceMotionData )
 {
-    if (dispatched())
+    if ( dispatched() )
+    {
         return;
+    }
 
-    initEvent(type, bubbles, cancelable);
+    initEvent( type, bubbles, cancelable );
     m_deviceMotionData = deviceMotionData;
 }
 

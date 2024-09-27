@@ -32,24 +32,24 @@
 
 class QSvgWidgetPrivate : public QWidgetPrivate
 {
-   Q_DECLARE_PUBLIC(QSvgWidget)
+    Q_DECLARE_PUBLIC( QSvgWidget )
 
- public:
-   QSvgRenderer *renderer;
+public:
+    QSvgRenderer *renderer;
 };
 
-QSvgWidget::QSvgWidget(QWidget *parent)
-   : QWidget(*new QSvgWidgetPrivate, parent, Qt::EmptyFlag)
+QSvgWidget::QSvgWidget( QWidget *parent )
+    : QWidget( *new QSvgWidgetPrivate, parent, Qt::EmptyFlag )
 {
-   d_func()->renderer = new QSvgRenderer(this);
-   QObject::connect(d_func()->renderer, SIGNAL(repaintNeeded()), this, SLOT(update()));
+    d_func()->renderer = new QSvgRenderer( this );
+    QObject::connect( d_func()->renderer, SIGNAL( repaintNeeded() ), this, SLOT( update() ) );
 }
 
-QSvgWidget::QSvgWidget(const QString &file, QWidget *parent)
-   : QWidget(*new QSvgWidgetPrivate, parent, Qt::EmptyFlag)
+QSvgWidget::QSvgWidget( const QString &file, QWidget *parent )
+    : QWidget( *new QSvgWidgetPrivate, parent, Qt::EmptyFlag )
 {
-   d_func()->renderer = new QSvgRenderer(file, this);
-   QObject::connect(d_func()->renderer, SIGNAL(repaintNeeded()), this, SLOT(update()));
+    d_func()->renderer = new QSvgRenderer( file, this );
+    QObject::connect( d_func()->renderer, SIGNAL( repaintNeeded() ), this, SLOT( update() ) );
 }
 
 QSvgWidget::~QSvgWidget()
@@ -58,38 +58,41 @@ QSvgWidget::~QSvgWidget()
 
 QSvgRenderer *QSvgWidget::renderer() const
 {
-   Q_D(const QSvgWidget);
-   return d->renderer;
+    Q_D( const QSvgWidget );
+    return d->renderer;
 }
 
 QSize QSvgWidget::sizeHint() const
 {
-   Q_D(const QSvgWidget);
+    Q_D( const QSvgWidget );
 
-   if (d->renderer->isValid()) {
-      return d->renderer->defaultSize();
-   } else {
-      return QSize(128, 64);
-   }
+    if ( d->renderer->isValid() )
+    {
+        return d->renderer->defaultSize();
+    }
+    else
+    {
+        return QSize( 128, 64 );
+    }
 }
 
-void QSvgWidget::paintEvent(QPaintEvent *)
+void QSvgWidget::paintEvent( QPaintEvent * )
 {
-   Q_D(QSvgWidget);
-   QPainter p(this);
-   d->renderer->render(&p);
+    Q_D( QSvgWidget );
+    QPainter p( this );
+    d->renderer->render( &p );
 }
 
-void QSvgWidget::load(const QString &file)
+void QSvgWidget::load( const QString &file )
 {
-   Q_D(const QSvgWidget);
-   d->renderer->load(file);
+    Q_D( const QSvgWidget );
+    d->renderer->load( file );
 }
 
-void QSvgWidget::load(const QByteArray &contents)
+void QSvgWidget::load( const QByteArray &contents )
 {
-   Q_D(const QSvgWidget);
-   d->renderer->load(contents);
+    Q_D( const QSvgWidget );
+    d->renderer->load( contents );
 }
 
 #endif // QT_NO_SVGWIDGET

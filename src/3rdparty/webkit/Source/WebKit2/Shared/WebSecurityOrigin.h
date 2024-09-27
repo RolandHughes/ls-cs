@@ -30,41 +30,66 @@
 #include <WebCore/SecurityOrigin.h>
 #include <wtf/PassRefPtr.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
-class WebSecurityOrigin : public APIObject {
+class WebSecurityOrigin : public APIObject
+{
 public:
     static const Type APIType = TypeSecurityOrigin;
 
-    static PassRefPtr<WebSecurityOrigin> create(const String& identifier)
+    static PassRefPtr<WebSecurityOrigin> create( const String &identifier )
     {
-        RefPtr<WebCore::SecurityOrigin> securityOrigin = WebCore::SecurityOrigin::createFromDatabaseIdentifier(identifier);
-        if (!securityOrigin)
+        RefPtr<WebCore::SecurityOrigin> securityOrigin = WebCore::SecurityOrigin::createFromDatabaseIdentifier( identifier );
+
+        if ( !securityOrigin )
+        {
             return 0;
-        return adoptRef(new WebSecurityOrigin(securityOrigin.release()));
+        }
+
+        return adoptRef( new WebSecurityOrigin( securityOrigin.release() ) );
     }
 
-    static PassRefPtr<WebSecurityOrigin> create(const String& protocol, const String& host, int port)
+    static PassRefPtr<WebSecurityOrigin> create( const String &protocol, const String &host, int port )
     {
-        RefPtr<WebCore::SecurityOrigin> securityOrigin = WebCore::SecurityOrigin::create(protocol, host, port);
-        if (!securityOrigin)
+        RefPtr<WebCore::SecurityOrigin> securityOrigin = WebCore::SecurityOrigin::create( protocol, host, port );
+
+        if ( !securityOrigin )
+        {
             return 0;
-        return adoptRef(new WebSecurityOrigin(securityOrigin.release()));
+        }
+
+        return adoptRef( new WebSecurityOrigin( securityOrigin.release() ) );
     }
 
-    const String protocol() const { return m_securityOrigin->protocol(); }
-    const String host() const { return m_securityOrigin->host(); }
-    unsigned short port() const { return m_securityOrigin->port(); }
+    const String protocol() const
+    {
+        return m_securityOrigin->protocol();
+    }
+    const String host() const
+    {
+        return m_securityOrigin->host();
+    }
+    unsigned short port() const
+    {
+        return m_securityOrigin->port();
+    }
 
-    const String databaseIdentifier() const { return m_securityOrigin->databaseIdentifier(); }
+    const String databaseIdentifier() const
+    {
+        return m_securityOrigin->databaseIdentifier();
+    }
 
 private:
-    WebSecurityOrigin(PassRefPtr<WebCore::SecurityOrigin> securityOrigin)
-        : m_securityOrigin(securityOrigin)
+    WebSecurityOrigin( PassRefPtr<WebCore::SecurityOrigin> securityOrigin )
+        : m_securityOrigin( securityOrigin )
     {
     }
 
-    virtual Type type() const { return APIType; }
+    virtual Type type() const
+    {
+        return APIType;
+    }
 
     RefPtr<WebCore::SecurityOrigin> m_securityOrigin;
 };

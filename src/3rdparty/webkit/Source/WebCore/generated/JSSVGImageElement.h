@@ -27,77 +27,83 @@
 #include "SVGElement.h"
 #include <runtime/JSObjectWithGlobalObject.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class SVGImageElement;
 
-class JSSVGImageElement : public JSSVGElement {
+class JSSVGImageElement : public JSSVGElement
+{
     typedef JSSVGElement Base;
 public:
-    JSSVGImageElement(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<SVGImageElement>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
-    virtual void put(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::JSValue, JSC::PutPropertySlot&);
+    JSSVGImageElement( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<SVGImageElement> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
+    virtual void put( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::JSValue, JSC::PutPropertySlot & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 
-class JSSVGImageElementPrototype : public JSC::JSObjectWithGlobalObject {
+class JSSVGImageElementPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSSVGImageElementPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSSVGImageElementPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                                JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 // Functions
 
-JSC::EncodedJSValue JSC_HOST_CALL jsSVGImageElementPrototypeFunctionHasExtension(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsSVGImageElementPrototypeFunctionGetPresentationAttribute(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsSVGImageElementPrototypeFunctionGetBBox(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsSVGImageElementPrototypeFunctionGetCTM(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsSVGImageElementPrototypeFunctionGetScreenCTM(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsSVGImageElementPrototypeFunctionGetTransformToElement(JSC::ExecState*);
+JSC::EncodedJSValue JSC_HOST_CALL jsSVGImageElementPrototypeFunctionHasExtension( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsSVGImageElementPrototypeFunctionGetPresentationAttribute( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsSVGImageElementPrototypeFunctionGetBBox( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsSVGImageElementPrototypeFunctionGetCTM( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsSVGImageElementPrototypeFunctionGetScreenCTM( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsSVGImageElementPrototypeFunctionGetTransformToElement( JSC::ExecState * );
 // Attributes
 
-JSC::JSValue jsSVGImageElementX(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsSVGImageElementY(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsSVGImageElementWidth(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsSVGImageElementHeight(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsSVGImageElementPreserveAspectRatio(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsSVGImageElementHref(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsSVGImageElementRequiredFeatures(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsSVGImageElementRequiredExtensions(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsSVGImageElementSystemLanguage(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsSVGImageElementXmllang(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSSVGImageElementXmllang(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsSVGImageElementXmlspace(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSSVGImageElementXmlspace(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsSVGImageElementExternalResourcesRequired(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsSVGImageElementClassName(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsSVGImageElementStyle(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsSVGImageElementTransform(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsSVGImageElementNearestViewportElement(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsSVGImageElementFarthestViewportElement(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsSVGImageElementConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsSVGImageElementX( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsSVGImageElementY( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsSVGImageElementWidth( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsSVGImageElementHeight( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsSVGImageElementPreserveAspectRatio( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsSVGImageElementHref( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsSVGImageElementRequiredFeatures( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsSVGImageElementRequiredExtensions( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsSVGImageElementSystemLanguage( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsSVGImageElementXmllang( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSSVGImageElementXmllang( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsSVGImageElementXmlspace( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSSVGImageElementXmlspace( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsSVGImageElementExternalResourcesRequired( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsSVGImageElementClassName( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsSVGImageElementStyle( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsSVGImageElementTransform( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsSVGImageElementNearestViewportElement( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsSVGImageElementFarthestViewportElement( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsSVGImageElementConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

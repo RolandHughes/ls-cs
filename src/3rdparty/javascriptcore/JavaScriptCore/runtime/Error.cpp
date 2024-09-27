@@ -32,41 +32,51 @@
 #include "JSString.h"
 #include "NativeErrorConstructor.h"
 
-namespace JSC {
-
-const char* expressionBeginOffsetPropertyName = "expressionBeginOffset";
-const char* expressionCaretOffsetPropertyName = "expressionCaretOffset";
-const char* expressionEndOffsetPropertyName = "expressionEndOffset";
-
-JSObject* Error::create(ExecState* exec, ErrorType type, const UString& message, int lineNumber, intptr_t sourceID, const UString& sourceURL)
+namespace JSC
 {
-    JSObject* constructor;
-    const char* name;
-    switch (type) {
+
+const char *expressionBeginOffsetPropertyName = "expressionBeginOffset";
+const char *expressionCaretOffsetPropertyName = "expressionCaretOffset";
+const char *expressionEndOffsetPropertyName = "expressionEndOffset";
+
+JSObject *Error::create( ExecState *exec, ErrorType type, const UString &message, int lineNumber, intptr_t sourceID,
+                         const UString &sourceURL )
+{
+    JSObject *constructor;
+    const char *name;
+
+    switch ( type )
+    {
         case EvalError:
             constructor = exec->lexicalGlobalObject()->evalErrorConstructor();
             name = "Evaluation error";
             break;
+
         case RangeError:
             constructor = exec->lexicalGlobalObject()->rangeErrorConstructor();
             name = "Range error";
             break;
+
         case ReferenceError:
             constructor = exec->lexicalGlobalObject()->referenceErrorConstructor();
             name = "Reference error";
             break;
+
         case SyntaxError:
             constructor = exec->lexicalGlobalObject()->syntaxErrorConstructor();
             name = "Syntax error";
             break;
+
         case TypeError:
             constructor = exec->lexicalGlobalObject()->typeErrorConstructor();
             name = "Type error";
             break;
+
         case URIError:
             constructor = exec->lexicalGlobalObject()->URIErrorConstructor();
             name = "URI error";
             break;
+
         default:
             constructor = exec->lexicalGlobalObject()->errorConstructor();
             name = "Error";
@@ -74,60 +84,77 @@ JSObject* Error::create(ExecState* exec, ErrorType type, const UString& message,
     }
 
     MarkedArgumentBuffer args;
-    if (message.isEmpty())
-        args.append(jsString(exec, name));
+
+    if ( message.isEmpty() )
+    {
+        args.append( jsString( exec, name ) );
+    }
     else
-        args.append(jsString(exec, message));
+    {
+        args.append( jsString( exec, message ) );
+    }
+
     ConstructData constructData;
-    ConstructType constructType = constructor->getConstructData(constructData);
-    JSObject* error = construct(exec, constructor, constructType, constructData, args);
+    ConstructType constructType = constructor->getConstructData( constructData );
+    JSObject *error = construct( exec, constructor, constructType, constructData, args );
 
-    if (lineNumber != -1)
-        error->putWithAttributes(exec, Identifier(exec, JSC_ERROR_LINENUMBER_PROPERTYNAME), jsNumber(exec, lineNumber), ReadOnly | DontDelete);
-    if (sourceID != -1)
-        error->putWithAttributes(exec, Identifier(exec, "sourceId"), jsNumber(exec, sourceID), ReadOnly | DontDelete);
-    if (!sourceURL.isNull())
-        error->putWithAttributes(exec, Identifier(exec, JSC_ERROR_FILENAME_PROPERTYNAME), jsString(exec, sourceURL), ReadOnly | DontDelete);
+    if ( lineNumber != -1 )
+    {
+        error->putWithAttributes( exec, Identifier( exec, JSC_ERROR_LINENUMBER_PROPERTYNAME ), jsNumber( exec, lineNumber ),
+                                  ReadOnly | DontDelete );
+    }
+
+    if ( sourceID != -1 )
+    {
+        error->putWithAttributes( exec, Identifier( exec, "sourceId" ), jsNumber( exec, sourceID ), ReadOnly | DontDelete );
+    }
+
+    if ( !sourceURL.isNull() )
+    {
+        error->putWithAttributes( exec, Identifier( exec, JSC_ERROR_FILENAME_PROPERTYNAME ), jsString( exec, sourceURL ),
+                                  ReadOnly | DontDelete );
+    }
 
     return error;
 }
 
-JSObject* Error::create(ExecState* exec, ErrorType type, const char* message)
+JSObject *Error::create( ExecState *exec, ErrorType type, const char *message )
 {
-    return create(exec, type, message, -1, -1, NULL);
+    return create( exec, type, message, -1, -1, NULL );
 }
 
-JSObject* throwError(ExecState* exec, JSObject* error)
+JSObject *throwError( ExecState *exec, JSObject *error )
 {
-    exec->setException(error);
+    exec->setException( error );
     return error;
 }
 
-JSObject* throwError(ExecState* exec, ErrorType type)
+JSObject *throwError( ExecState *exec, ErrorType type )
 {
-    JSObject* error = Error::create(exec, type, UString(), -1, -1, NULL);
-    exec->setException(error);
+    JSObject *error = Error::create( exec, type, UString(), -1, -1, NULL );
+    exec->setException( error );
     return error;
 }
 
-JSObject* throwError(ExecState* exec, ErrorType type, const UString& message)
+JSObject *throwError( ExecState *exec, ErrorType type, const UString &message )
 {
-    JSObject* error = Error::create(exec, type, message, -1, -1, NULL);
-    exec->setException(error);
+    JSObject *error = Error::create( exec, type, message, -1, -1, NULL );
+    exec->setException( error );
     return error;
 }
 
-JSObject* throwError(ExecState* exec, ErrorType type, const char* message)
+JSObject *throwError( ExecState *exec, ErrorType type, const char *message )
 {
-    JSObject* error = Error::create(exec, type, message, -1, -1, NULL);
-    exec->setException(error);
+    JSObject *error = Error::create( exec, type, message, -1, -1, NULL );
+    exec->setException( error );
     return error;
 }
 
-JSObject* throwError(ExecState* exec, ErrorType type, const UString& message, int line, intptr_t sourceID, const UString& sourceURL)
+JSObject *throwError( ExecState *exec, ErrorType type, const UString &message, int line, intptr_t sourceID,
+                      const UString &sourceURL )
 {
-    JSObject* error = Error::create(exec, type, message, line, sourceID, sourceURL);
-    exec->setException(error);
+    JSObject *error = Error::create( exec, type, message, line, sourceID, sourceURL );
+    exec->setException( error );
     return error;
 }
 

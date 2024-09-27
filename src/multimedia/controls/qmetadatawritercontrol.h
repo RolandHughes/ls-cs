@@ -33,7 +33,7 @@
 
 class Q_MULTIMEDIA_EXPORT QMetaDataWriterControl : public QMediaControl
 {
-    MULTI_CS_OBJECT(QMetaDataWriterControl)
+    MULTI_CS_OBJECT( QMetaDataWriterControl )
 
 public:
     ~QMetaDataWriterControl();
@@ -41,27 +41,27 @@ public:
     virtual bool isWritable() const = 0;
     virtual bool isMetaDataAvailable() const = 0;
 
-    virtual QVariant metaData(const QString &key) const = 0;
-    virtual void setMetaData(const QString &key, const QVariant &value) = 0;
+    virtual QVariant metaData( const QString &key ) const = 0;
+    virtual void setMetaData( const QString &key, const QVariant &value ) = 0;
     virtual QStringList availableMetaData() const = 0;
 
-    MULTI_CS_SIGNAL_1(Public, void metaDataChanged())
-    MULTI_CS_SIGNAL_OVERLOAD(metaDataChanged, ())
+    MULTI_CS_SIGNAL_1( Public, void metaDataChanged() )
+    MULTI_CS_SIGNAL_OVERLOAD( metaDataChanged, () )
 
-    MULTI_CS_SIGNAL_1(Public, void metaDataChanged(const QString & key,const QVariant & value))
-    MULTI_CS_SIGNAL_OVERLOAD(metaDataChanged, (const QString &,const QVariant &), key, value)
+    MULTI_CS_SIGNAL_1( Public, void metaDataChanged( const QString &key,const QVariant &value ) )
+    MULTI_CS_SIGNAL_OVERLOAD( metaDataChanged, ( const QString &,const QVariant & ), key, value )
 
-    MULTI_CS_SIGNAL_1(Public, void writableChanged(bool writable))
-    MULTI_CS_SIGNAL_2(writableChanged, writable)
+    MULTI_CS_SIGNAL_1( Public, void writableChanged( bool writable ) )
+    MULTI_CS_SIGNAL_2( writableChanged, writable )
 
-    MULTI_CS_SIGNAL_1(Public, void metaDataAvailableChanged(bool available))
-    MULTI_CS_SIGNAL_2(metaDataAvailableChanged, available)
+    MULTI_CS_SIGNAL_1( Public, void metaDataAvailableChanged( bool available ) )
+    MULTI_CS_SIGNAL_2( metaDataAvailableChanged, available )
 
 protected:
-    explicit QMetaDataWriterControl(QObject *parent = nullptr);
+    explicit QMetaDataWriterControl( QObject *parent = nullptr );
 };
 
 #define QMetaDataWriterControl_iid "com.copperspice.CS.metaDataWriterControl/1.0"
-CS_DECLARE_INTERFACE(QMetaDataWriterControl, QMetaDataWriterControl_iid)
+CS_DECLARE_INTERFACE( QMetaDataWriterControl, QMetaDataWriterControl_iid )
 
 #endif

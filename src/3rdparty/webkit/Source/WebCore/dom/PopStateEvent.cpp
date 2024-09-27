@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
 
@@ -29,11 +29,12 @@
 
 #include "EventNames.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-PopStateEvent::PopStateEvent(PassRefPtr<SerializedScriptValue> stateObject)
-    : Event(eventNames().popstateEvent, false, true)
-    , m_stateObject(stateObject)
+PopStateEvent::PopStateEvent( PassRefPtr<SerializedScriptValue> stateObject )
+    : Event( eventNames().popstateEvent, false, true )
+    , m_stateObject( stateObject )
 {
 }
 
@@ -41,12 +42,15 @@ PopStateEvent::~PopStateEvent()
 {
 }
 
-void PopStateEvent::initPopStateEvent(const AtomicString& type, bool canBubble, bool cancelable, PassRefPtr<SerializedScriptValue> stateObject)
+void PopStateEvent::initPopStateEvent( const AtomicString &type, bool canBubble, bool cancelable,
+                                       PassRefPtr<SerializedScriptValue> stateObject )
 {
-    if (dispatched())
+    if ( dispatched() )
+    {
         return;
-    
-    initEvent(type, canBubble, cancelable);
+    }
+
+    initEvent( type, canBubble, cancelable );
 
     m_stateObject = stateObject;
 }

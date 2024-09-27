@@ -39,177 +39,198 @@ class QTextDocumentFragmentPrivate;
 
 class QTextCopyHelper
 {
- public:
-   QTextCopyHelper(const QTextCursor &_source, const QTextCursor &_destination, bool forceCharFormat = false,
-      const QTextCharFormat &fmt = QTextCharFormat());
+public:
+    QTextCopyHelper( const QTextCursor &_source, const QTextCursor &_destination, bool forceCharFormat = false,
+                     const QTextCharFormat &fmt = QTextCharFormat() );
 
-   void copy();
+    void copy();
 
- private:
-   void appendFragments(int pos, int endPos);
-   int appendFragment(int pos, int endPos, int objectIndex = -1);
-   int convertFormatIndex(const QTextFormat &oldFormat, int objectIndexToSet = -1);
+private:
+    void appendFragments( int pos, int endPos );
+    int appendFragment( int pos, int endPos, int objectIndex = -1 );
+    int convertFormatIndex( const QTextFormat &oldFormat, int objectIndexToSet = -1 );
 
-   inline int convertFormatIndex(int oldFormatIndex, int objectIndexToSet = -1) {
-      return convertFormatIndex(src->formatCollection()->format(oldFormatIndex), objectIndexToSet);
-   }
+    inline int convertFormatIndex( int oldFormatIndex, int objectIndexToSet = -1 )
+    {
+        return convertFormatIndex( src->formatCollection()->format( oldFormatIndex ), objectIndexToSet );
+    }
 
-   inline QTextFormat convertFormat(const QTextFormat &fmt) {
-      return dst->formatCollection()->format(convertFormatIndex(fmt));
-   }
+    inline QTextFormat convertFormat( const QTextFormat &fmt )
+    {
+        return dst->formatCollection()->format( convertFormatIndex( fmt ) );
+    }
 
-   int insertPos;
+    int insertPos;
 
-   bool forceCharFormat;
-   int primaryCharFormatIndex;
+    bool forceCharFormat;
+    int primaryCharFormatIndex;
 
-   QTextCursor cursor;
-   QTextDocumentPrivate *dst;
-   QTextDocumentPrivate *src;
-   QTextFormatCollection &formatCollection;
-   const QString originalText;
+    QTextCursor cursor;
+    QTextDocumentPrivate *dst;
+    QTextDocumentPrivate *src;
+    QTextFormatCollection &formatCollection;
+    const QString originalText;
 
-   QMap<int, int> objectIndexMap;
+    QMap<int, int> objectIndexMap;
 };
 
 class QTextDocumentFragmentPrivate
 {
- public:
-   QTextDocumentFragmentPrivate(const QTextCursor &cursor = QTextCursor());
+public:
+    QTextDocumentFragmentPrivate( const QTextCursor &cursor = QTextCursor() );
 
-   QTextDocumentFragmentPrivate(const QTextDocumentFragmentPrivate &) = delete;
-   QTextDocumentFragmentPrivate &operator=(const QTextDocumentFragmentPrivate &) = delete;
+    QTextDocumentFragmentPrivate( const QTextDocumentFragmentPrivate & ) = delete;
+    QTextDocumentFragmentPrivate &operator=( const QTextDocumentFragmentPrivate & ) = delete;
 
-   ~QTextDocumentFragmentPrivate() {
-      delete doc;
-   }
+    ~QTextDocumentFragmentPrivate()
+    {
+        delete doc;
+    }
 
-   void insert(QTextCursor &cursor) const;
+    void insert( QTextCursor &cursor ) const;
 
-   QAtomicInt ref;
-   QTextDocument *doc;
+    QAtomicInt ref;
+    QTextDocument *doc;
 
-   uint importedFromPlainText : 1;
+    uint importedFromPlainText : 1;
 };
 
 #ifndef QT_NO_TEXTHTMLPARSER
 
 class QTextHtmlImporter : public QTextHtmlParser
 {
-   struct Table;
+    struct Table;
 
- public:
-   enum ImportMode {
-      ImportToFragment,
-      ImportToDocument
-   };
+public:
+    enum ImportMode
+    {
+        ImportToFragment,
+        ImportToDocument
+    };
 
-   QTextHtmlImporter(QTextDocument *_doc, const QString &html,
-      ImportMode mode,
-      const QTextDocument *resourceProvider = nullptr);
+    QTextHtmlImporter( QTextDocument *_doc, const QString &html,
+                       ImportMode mode,
+                       const QTextDocument *resourceProvider = nullptr );
 
-   void import();
+    void import();
 
- private:
-   bool closeTag();
+private:
+    bool closeTag();
 
-   Table scanTable(int tableNodeIdx);
+    Table scanTable( int tableNodeIdx );
 
-   enum ProcessNodeResult { ContinueWithNextNode, ContinueWithCurrentNode, ContinueWithNextSibling };
+    enum ProcessNodeResult { ContinueWithNextNode, ContinueWithCurrentNode, ContinueWithNextSibling };
 
-   void appendBlock(const QTextBlockFormat &format, QTextCharFormat charFmt = QTextCharFormat());
-   bool appendNodeText();
+    void appendBlock( const QTextBlockFormat &format, QTextCharFormat charFmt = QTextCharFormat() );
+    bool appendNodeText();
 
-   ProcessNodeResult processBlockNode();
-   ProcessNodeResult processSpecialNodes();
+    ProcessNodeResult processBlockNode();
+    ProcessNodeResult processSpecialNodes();
 
-   struct List {
-      inline List() : listNode(0) {}
-      QTextListFormat format;
-      int listNode;
-      QPointer<QTextList> list;
-   };
+    struct List
+    {
+        inline List() : listNode( 0 ) {}
+        QTextListFormat format;
+        int listNode;
+        QPointer<QTextList> list;
+    };
 
-   QVector<List> lists;
-   int indent;
+    QVector<List> lists;
+    int indent;
 
-   // insert a named anchor the next time we emit a char format,
-   // either in a block or in regular text
-   QStringList namedAnchors;
+    // insert a named anchor the next time we emit a char format,
+    // either in a block or in regular text
+    QStringList namedAnchors;
 
-   struct TableCellIterator {
-      inline TableCellIterator(QTextTable *t = nullptr)
-         : table(t), row(0), column(0)
-      {
-      }
+    struct TableCellIterator
+    {
+        inline TableCellIterator( QTextTable *t = nullptr )
+            : table( t ), row( 0 ), column( 0 )
+        {
+        }
 
-      inline TableCellIterator &operator++() {
-         if (atEnd()) {
+        inline TableCellIterator &operator++()
+        {
+            if ( atEnd() )
+            {
+                return *this;
+            }
+
+            do
+            {
+                const QTextTableCell cell = table->cellAt( row, column );
+
+                if ( !cell.isValid() )
+                {
+                    break;
+                }
+
+                column += cell.columnSpan();
+
+                if ( column >= table->columns() )
+                {
+                    column = 0;
+                    ++row;
+                }
+            }
+            while ( row < table->rows() && table->cellAt( row, column ).row() != row );
+
             return *this;
-         }
-         do {
-            const QTextTableCell cell = table->cellAt(row, column);
-            if (!cell.isValid()) {
-               break;
-            }
-            column += cell.columnSpan();
-            if (column >= table->columns()) {
-               column = 0;
-               ++row;
-            }
-         } while (row < table->rows() && table->cellAt(row, column).row() != row);
+        }
 
-         return *this;
-      }
+        inline bool atEnd() const
+        {
+            return table == nullptr || row >= table->rows();
+        }
 
-      inline bool atEnd() const {
-         return table == nullptr || row >= table->rows();
-      }
+        QTextTableCell cell() const
+        {
+            return table->cellAt( row, column );
+        }
 
-      QTextTableCell cell() const {
-         return table->cellAt(row, column);
-      }
+        QTextTable *table;
+        int row;
+        int column;
+    };
 
-      QTextTable *table;
-      int row;
-      int column;
-   };
+    friend struct Table;
+    struct Table
+    {
+        Table() : isTextFrame( false ), rows( 0 ), columns( 0 ), currentRow( 0 ), lastIndent( 0 ) {}
+        QPointer<QTextFrame> frame;
+        bool isTextFrame;
+        int rows;
+        int columns;
+        int currentRow; // ... for buggy html (see html_skipCell testcase)
+        TableCellIterator currentCell;
+        int lastIndent;
+    };
+    QVector<Table> tables;
 
-   friend struct Table;
-   struct Table {
-      Table() : isTextFrame(false), rows(0), columns(0), currentRow(0), lastIndent(0) {}
-      QPointer<QTextFrame> frame;
-      bool isTextFrame;
-      int rows;
-      int columns;
-      int currentRow; // ... for buggy html (see html_skipCell testcase)
-      TableCellIterator currentCell;
-      int lastIndent;
-   };
-   QVector<Table> tables;
+    struct RowColSpanInfo
+    {
+        int row, col;
+        int rowSpan, colSpan;
+    };
 
-   struct RowColSpanInfo {
-      int row, col;
-      int rowSpan, colSpan;
-   };
+    enum WhiteSpace
+    {
+        RemoveWhiteSpace,
+        CollapseWhiteSpace,
+        PreserveWhiteSpace
+    };
 
-   enum WhiteSpace {
-      RemoveWhiteSpace,
-      CollapseWhiteSpace,
-      PreserveWhiteSpace
-   };
+    WhiteSpace compressNextWhitespace;
 
-   WhiteSpace compressNextWhitespace;
-
-   QTextDocument *doc;
-   QTextCursor cursor;
-   QTextHtmlParserNode::WhiteSpaceMode wsm;
-   ImportMode importMode;
-   bool hasBlock;
-   bool forceBlockMerging;
-   bool blockTagClosed;
-   int currentNodeIdx;
-   const QTextHtmlParserNode *currentNode;
+    QTextDocument *doc;
+    QTextCursor cursor;
+    QTextHtmlParserNode::WhiteSpaceMode wsm;
+    ImportMode importMode;
+    bool hasBlock;
+    bool forceBlockMerging;
+    bool blockTagClosed;
+    int currentNodeIdx;
+    const QTextHtmlParserNode *currentNode;
 };
 
 #endif // QT_NO_TEXTHTMLPARSER

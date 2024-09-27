@@ -23,21 +23,26 @@
 #include <wtf/RefCounted.h>
 #include "PlatformString.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-    typedef int ExceptionCode;
+typedef int ExceptionCode;
 
-    class Node;
+class Node;
 
-    class XMLSerializer : public RefCounted<XMLSerializer> {
-    public:
-        static PassRefPtr<XMLSerializer> create() { return adoptRef(new XMLSerializer); }
-        
-        String serializeToString(Node*, ExceptionCode&);
-        
-    private:
-        XMLSerializer()  { }        
-    };
+class XMLSerializer : public RefCounted<XMLSerializer>
+{
+public:
+    static PassRefPtr<XMLSerializer> create()
+    {
+        return adoptRef( new XMLSerializer );
+    }
+
+    String serializeToString( Node *, ExceptionCode & );
+
+private:
+    XMLSerializer()  { }
+};
 
 } // namespace WebCore
 

@@ -30,28 +30,31 @@
 
 class DatabaseInfo : public TreeWalker
 {
- public:
-   DatabaseInfo();
+public:
+    DatabaseInfo();
 
-   void acceptUI(DomUI *node) override;
-   void acceptWidget(DomWidget *node) override;
+    void acceptUI( DomUI *node ) override;
+    void acceptWidget( DomWidget *node ) override;
 
-   QStringList connections() const {
-      return m_connections;
-   }
+    QStringList connections() const
+    {
+        return m_connections;
+    }
 
-   QStringList cursors(const QString &connection) const {
-      return m_cursors.value(connection);
-   }
+    QStringList cursors( const QString &connection ) const
+    {
+        return m_cursors.value( connection );
+    }
 
-   QStringList fields(const QString &connection) const {
-      return m_fields.value(connection);
-   }
+    QStringList fields( const QString &connection ) const
+    {
+        return m_fields.value( connection );
+    }
 
- private:
-   QStringList m_connections;
-   QMap<QString, QStringList> m_cursors;
-   QMap<QString, QStringList> m_fields;
+private:
+    QStringList m_connections;
+    QMap<QString, QStringList> m_cursors;
+    QMap<QString, QStringList> m_fields;
 };
 
 #endif

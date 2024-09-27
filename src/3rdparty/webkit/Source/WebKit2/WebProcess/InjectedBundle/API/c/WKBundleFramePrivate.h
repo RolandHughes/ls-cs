@@ -37,17 +37,18 @@
 extern "C" {
 #endif
 
-WK_EXPORT WKStringRef WKBundleFrameCopyInnerText(WKBundleFrameRef frame);
-WK_EXPORT WKStringRef WKBundleFrameCopyCounterValue(WKBundleFrameRef frame, JSObjectRef element);
-WK_EXPORT WKStringRef WKBundleFrameCopyMarkerText(WKBundleFrameRef frame, JSObjectRef element);
-WK_EXPORT JSValueRef WKBundleFrameGetComputedStyleIncludingVisitedInfo(WKBundleFrameRef frame, JSObjectRef element);
-WK_EXPORT unsigned WKBundleFrameGetNumberOfActiveAnimations(WKBundleFrameRef frame);
-WK_EXPORT bool WKBundleFramePauseAnimationOnElementWithId(WKBundleFrameRef frame, WKStringRef name, WKStringRef elementID, double time);
-WK_EXPORT void WKBundleFrameSuspendAnimations(WKBundleFrameRef frame);
-WK_EXPORT void WKBundleFrameResumeAnimations(WKBundleFrameRef frame);
-WK_EXPORT unsigned WKBundleFrameGetPendingUnloadCount(WKBundleFrameRef frame);
-WK_EXPORT WKStringRef WKBundleFrameCopyLayerTreeAsText(WKBundleFrameRef frame);
-WK_EXPORT void WKBundleFrameClearOpener(WKBundleFrameRef frame);
+WK_EXPORT WKStringRef WKBundleFrameCopyInnerText( WKBundleFrameRef frame );
+WK_EXPORT WKStringRef WKBundleFrameCopyCounterValue( WKBundleFrameRef frame, JSObjectRef element );
+WK_EXPORT WKStringRef WKBundleFrameCopyMarkerText( WKBundleFrameRef frame, JSObjectRef element );
+WK_EXPORT JSValueRef WKBundleFrameGetComputedStyleIncludingVisitedInfo( WKBundleFrameRef frame, JSObjectRef element );
+WK_EXPORT unsigned WKBundleFrameGetNumberOfActiveAnimations( WKBundleFrameRef frame );
+WK_EXPORT bool WKBundleFramePauseAnimationOnElementWithId( WKBundleFrameRef frame, WKStringRef name, WKStringRef elementID,
+        double time );
+WK_EXPORT void WKBundleFrameSuspendAnimations( WKBundleFrameRef frame );
+WK_EXPORT void WKBundleFrameResumeAnimations( WKBundleFrameRef frame );
+WK_EXPORT unsigned WKBundleFrameGetPendingUnloadCount( WKBundleFrameRef frame );
+WK_EXPORT WKStringRef WKBundleFrameCopyLayerTreeAsText( WKBundleFrameRef frame );
+WK_EXPORT void WKBundleFrameClearOpener( WKBundleFrameRef frame );
 
 #ifdef __cplusplus
 }

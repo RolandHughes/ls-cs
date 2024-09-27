@@ -32,18 +32,18 @@ class AVFCameraService;
 
 class AVFMediaContainerControl : public QMediaContainerControl
 {
- public:
-   explicit AVFMediaContainerControl(AVFCameraService *service);
+public:
+    explicit AVFMediaContainerControl( AVFCameraService *service );
 
-   QStringList supportedContainers() const override;
-   QString containerFormat() const override;
-   void setContainerFormat(const QString &format) override;
-   QString containerDescription(const QString &formatMimeType) const override;
+    QStringList supportedContainers() const override;
+    QString containerFormat() const override;
+    void setContainerFormat( const QString &format ) override;
+    QString containerDescription( const QString &formatMimeType ) const override;
 
-   NSString *fileType() const;
+    NSString *fileType() const;
 
- private:
-   QString m_format;
+private:
+    QString m_format;
 };
 
 #endif

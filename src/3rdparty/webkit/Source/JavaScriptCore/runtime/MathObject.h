@@ -23,25 +23,27 @@
 
 #include "JSObjectWithGlobalObject.h"
 
-namespace JSC {
+namespace JSC
+{
 
-    class MathObject : public JSObjectWithGlobalObject {
-    public:
-        MathObject(ExecState*, JSGlobalObject*, Structure*);
+class MathObject : public JSObjectWithGlobalObject
+{
+public:
+    MathObject( ExecState *, JSGlobalObject *, Structure * );
 
-        virtual bool getOwnPropertySlot(ExecState*, const Identifier&, PropertySlot&);
-        virtual bool getOwnPropertyDescriptor(ExecState*, const Identifier&, PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( ExecState *, const Identifier &, PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( ExecState *, const Identifier &, PropertyDescriptor & );
 
-        static const ClassInfo s_info;
+    static const ClassInfo s_info;
 
-        static Structure* createStructure(JSGlobalData& globalData, JSValue prototype)
-        {
-            return Structure::create(globalData, prototype, TypeInfo(ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
-        }
+    static Structure *createStructure( JSGlobalData &globalData, JSValue prototype )
+    {
+        return Structure::create( globalData, prototype, TypeInfo( ObjectType, StructureFlags ), AnonymousSlotCount, &s_info );
+    }
 
-    protected:
-        static const unsigned StructureFlags = OverridesGetOwnPropertySlot | JSObject::StructureFlags;
-    };
+protected:
+    static const unsigned StructureFlags = OverridesGetOwnPropertySlot | JSObject::StructureFlags;
+};
 
 } // namespace JSC
 

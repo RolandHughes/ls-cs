@@ -33,14 +33,14 @@ class QPlatformIntegration;
 
 class Q_GUI_EXPORT QPlatformIntegrationPlugin : public QObject
 {
-    GUI_CS_OBJECT(QPlatformIntegrationPlugin)
+    GUI_CS_OBJECT( QPlatformIntegrationPlugin )
 
 public:
-    explicit QPlatformIntegrationPlugin(QObject *parent = nullptr);
+    explicit QPlatformIntegrationPlugin( QObject *parent = nullptr );
     ~QPlatformIntegrationPlugin();
 
-    virtual QPlatformIntegration *create(const QString &key, const QStringList &paramList);
-    virtual QPlatformIntegration *create(const QString &key, const QStringList &paramList, int &argc, char **argv);
+    virtual QPlatformIntegration *create( const QString &key, const QStringList &paramList );
+    virtual QPlatformIntegration *create( const QString &key, const QStringList &paramList, int &argc, char **argv );
 };
 
 

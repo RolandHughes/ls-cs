@@ -34,65 +34,77 @@
 
 #include "VectorMath.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace VectorMath;
-    
-FFTConvolver::FFTConvolver(size_t fftSize)
-    : m_frame(fftSize)
-    , m_readWriteIndex(0)
-    , m_inputBuffer(fftSize) // 2nd half of buffer is always zeroed
-    , m_outputBuffer(fftSize)
-    , m_lastOverlapBuffer(fftSize / 2)
+
+FFTConvolver::FFTConvolver( size_t fftSize )
+    : m_frame( fftSize )
+    , m_readWriteIndex( 0 )
+    , m_inputBuffer( fftSize ) // 2nd half of buffer is always zeroed
+    , m_outputBuffer( fftSize )
+    , m_lastOverlapBuffer( fftSize / 2 )
 {
 }
 
-void FFTConvolver::process(FFTFrame* fftKernel, float* sourceP, float* destP, size_t framesToProcess)
+void FFTConvolver::process( FFTFrame *fftKernel, float *sourceP, float *destP, size_t framesToProcess )
 {
     // FIXME: make so framesToProcess is not required to fit evenly into fftSize/2
 
     // Copy samples to input buffer (note contraint above!)
-    float* inputP = m_inputBuffer.data();
+    float *inputP = m_inputBuffer.data();
 
     // Sanity check
     bool isCopyGood1 = sourceP && inputP && m_readWriteIndex + framesToProcess <= m_inputBuffer.size();
-    ASSERT(isCopyGood1);
-    if (!isCopyGood1)
+    ASSERT( isCopyGood1 );
+
+    if ( !isCopyGood1 )
+    {
         return;
-    
-    memcpy(inputP + m_readWriteIndex, sourceP, sizeof(float) * framesToProcess);
+    }
+
+    memcpy( inputP + m_readWriteIndex, sourceP, sizeof( float ) * framesToProcess );
 
     // Copy samples from output buffer
-    float* outputP = m_outputBuffer.data();
+    float *outputP = m_outputBuffer.data();
 
     // Sanity check
     bool isCopyGood2 = destP && outputP && m_readWriteIndex + framesToProcess <= m_outputBuffer.size();
-    ASSERT(isCopyGood2);
-    if (!isCopyGood2)
-        return;
+    ASSERT( isCopyGood2 );
 
-    memcpy(destP, outputP + m_readWriteIndex, sizeof(float) * framesToProcess);
+    if ( !isCopyGood2 )
+    {
+        return;
+    }
+
+    memcpy( destP, outputP + m_readWriteIndex, sizeof( float ) * framesToProcess );
     m_readWriteIndex += framesToProcess;
 
 
     // Check if it's time to perform the next FFT
     size_t halfSize = fftSize() / 2;
-    if (m_readWriteIndex == halfSize) {
+
+    if ( m_readWriteIndex == halfSize )
+    {
         // The input buffer is now filled (get frequency-domain version)
-        m_frame.doFFT(m_inputBuffer.data());
-        m_frame.multiply(*fftKernel);
-        m_frame.doInverseFFT(m_outputBuffer.data());
+        m_frame.doFFT( m_inputBuffer.data() );
+        m_frame.multiply( *fftKernel );
+        m_frame.doInverseFFT( m_outputBuffer.data() );
 
         // Overlap-add 1st half from previous time
-        vadd(m_outputBuffer.data(), 1, m_lastOverlapBuffer.data(), 1, m_outputBuffer.data(), 1, halfSize);
+        vadd( m_outputBuffer.data(), 1, m_lastOverlapBuffer.data(), 1, m_outputBuffer.data(), 1, halfSize );
 
         // Finally, save 2nd half of result
         bool isCopyGood3 = m_outputBuffer.size() == 2 * halfSize && m_lastOverlapBuffer.size() == halfSize;
-        ASSERT(isCopyGood3);
-        if (!isCopyGood3)
+        ASSERT( isCopyGood3 );
+
+        if ( !isCopyGood3 )
+        {
             return;
-        
-        memcpy(m_lastOverlapBuffer.data(), m_outputBuffer.data() + halfSize, sizeof(float) * halfSize);
+        }
+
+        memcpy( m_lastOverlapBuffer.data(), m_outputBuffer.data() + halfSize, sizeof( float ) * halfSize );
 
         // Reset index back to start for next time
         m_readWriteIndex = 0;

@@ -30,36 +30,65 @@
 #include "StyleImage.h"
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class RenderObject;
 
-class RenderImageResourceStyleImage : public RenderImageResource {
+class RenderImageResourceStyleImage : public RenderImageResource
+{
 public:
     virtual ~RenderImageResourceStyleImage();
 
-    static PassOwnPtr<RenderImageResource> create(StyleImage* styleImage)
+    static PassOwnPtr<RenderImageResource> create( StyleImage *styleImage )
     {
-        return adoptPtr(new RenderImageResourceStyleImage(styleImage));
+        return adoptPtr( new RenderImageResourceStyleImage( styleImage ) );
     }
-    virtual void initialize(RenderObject*);
+    virtual void initialize( RenderObject * );
     virtual void shutdown();
 
-    virtual bool hasImage() const { return true; }
-    virtual PassRefPtr<Image> image(int width = 0, int height = 0) const { return m_styleImage->image(m_renderer, IntSize(width, height)); }
-    virtual bool errorOccurred() const { return m_styleImage->errorOccurred(); }
+    virtual bool hasImage() const
+    {
+        return true;
+    }
+    virtual PassRefPtr<Image> image( int width = 0, int height = 0 ) const
+    {
+        return m_styleImage->image( m_renderer, IntSize( width, height ) );
+    }
+    virtual bool errorOccurred() const
+    {
+        return m_styleImage->errorOccurred();
+    }
 
-    virtual void setImageContainerSize(const IntSize& size) const { m_styleImage->setImageContainerSize(size); }
-    virtual bool usesImageContainerSize() const { return m_styleImage->usesImageContainerSize(); }
-    virtual bool imageHasRelativeWidth() const { return m_styleImage->imageHasRelativeWidth(); }
-    virtual bool imageHasRelativeHeight() const { return m_styleImage->imageHasRelativeHeight(); }
+    virtual void setImageContainerSize( const IntSize &size ) const
+    {
+        m_styleImage->setImageContainerSize( size );
+    }
+    virtual bool usesImageContainerSize() const
+    {
+        return m_styleImage->usesImageContainerSize();
+    }
+    virtual bool imageHasRelativeWidth() const
+    {
+        return m_styleImage->imageHasRelativeWidth();
+    }
+    virtual bool imageHasRelativeHeight() const
+    {
+        return m_styleImage->imageHasRelativeHeight();
+    }
 
-    virtual IntSize imageSize(float multiplier) const { return m_styleImage->imageSize(m_renderer, multiplier); }
+    virtual IntSize imageSize( float multiplier ) const
+    {
+        return m_styleImage->imageSize( m_renderer, multiplier );
+    }
 
-    virtual WrappedImagePtr imagePtr() const { return m_styleImage->data(); }
+    virtual WrappedImagePtr imagePtr() const
+    {
+        return m_styleImage->data();
+    }
 
 private:
-    RenderImageResourceStyleImage(StyleImage*);
+    RenderImageResourceStyleImage( StyleImage * );
     RefPtr<StyleImage> m_styleImage;
 };
 

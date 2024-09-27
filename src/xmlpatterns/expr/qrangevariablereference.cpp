@@ -28,43 +28,42 @@
 
 using namespace QPatternist;
 
-RangeVariableReference::RangeVariableReference(const Expression::Ptr &source,
-      const VariableSlotID slotP) : VariableReference(slotP),
-   m_sourceExpression(source)
+RangeVariableReference::RangeVariableReference( const Expression::Ptr &source,
+        const VariableSlotID slotP ) : VariableReference( slotP ),
+    m_sourceExpression( source )
 {
-   Q_ASSERT(source);
+    Q_ASSERT( source );
 }
 
-bool RangeVariableReference::evaluateEBV(const DynamicContext::Ptr &context) const
+bool RangeVariableReference::evaluateEBV( const DynamicContext::Ptr &context ) const
 {
-   Q_ASSERT_X(context->rangeVariable(slot()), Q_FUNC_INFO, "The range variable must be set.");
-   return Boolean::evaluateEBV(context->rangeVariable(slot()), context);
+    Q_ASSERT_X( context->rangeVariable( slot() ), Q_FUNC_INFO, "The range variable must be set." );
+    return Boolean::evaluateEBV( context->rangeVariable( slot() ), context );
 }
 
-Item RangeVariableReference::evaluateSingleton(const DynamicContext::Ptr &context) const
+Item RangeVariableReference::evaluateSingleton( const DynamicContext::Ptr &context ) const
 {
-   Q_ASSERT_X(context->rangeVariable(slot()), Q_FUNC_INFO, "The range variable must be set.");
-   return context->rangeVariable(slot());
+    Q_ASSERT_X( context->rangeVariable( slot() ), Q_FUNC_INFO, "The range variable must be set." );
+    return context->rangeVariable( slot() );
 }
 
 SequenceType::Ptr RangeVariableReference::staticType() const
 {
-   return makeGenericSequenceType(m_sourceExpression->staticType()->itemType(),
-                                  Cardinality::exactlyOne());
+    return makeGenericSequenceType( m_sourceExpression->staticType()->itemType(),
+                                    Cardinality::exactlyOne() );
 }
 
 Expression::ID RangeVariableReference::id() const
 {
-   return IDRangeVariableReference;
+    return IDRangeVariableReference;
 }
 
-ExpressionVisitorResult::Ptr
-RangeVariableReference::accept(const ExpressionVisitor::Ptr &visitor) const
+ExpressionVisitorResult::Ptr RangeVariableReference::accept( const ExpressionVisitor::Ptr &visitor ) const
 {
-   return visitor->visit(this);
+    return visitor->visit( this );
 }
 
 Expression::Properties RangeVariableReference::properties() const
 {
-   return DependsOnLocalVariable;
+    return DependsOnLocalVariable;
 }

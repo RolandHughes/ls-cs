@@ -26,12 +26,13 @@
 
 #include <qfunctioncall_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class DocumentFN : public FunctionCall
 {
- public:
-   Expression::Ptr typeCheck(const StaticContext::Ptr &context, const SequenceType::Ptr &reqType) override;
+public:
+    Expression::Ptr typeCheck( const StaticContext::Ptr &context, const SequenceType::Ptr &reqType ) override;
 };
 
 }

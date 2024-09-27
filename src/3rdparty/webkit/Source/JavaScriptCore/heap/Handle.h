@@ -29,7 +29,8 @@
 #include "WriteBarrier.h"
 #include <wtf/Assertions.h>
 
-namespace JSC {
+namespace JSC
+{
 
 /*
     A Handle is a smart pointer that updates automatically when the garbage
@@ -45,30 +46,45 @@ template <class T> class Handle;
 template <> class Handle<JSValue>;
 
 // Forward declare WeakGCMap
-template<typename KeyType, typename MappedType, typename FinalizerCallback, typename HashArg, typename KeyTraitsArg> class WeakGCMap;
+template<typename KeyType, typename MappedType, typename FinalizerCallback, typename HashArg, typename KeyTraitsArg> class
+    WeakGCMap;
 
-class HandleBase {
+class HandleBase
+{
     friend class HandleHeap;
     friend struct JSCallbackObjectData;
-    template <typename KeyType, typename MappedType, typename FinalizerCallback, typename HashArg, typename KeyTraitsArg> friend class WeakGCMap;
+    template <typename KeyType, typename MappedType, typename FinalizerCallback, typename HashArg, typename KeyTraitsArg> friend class
+        WeakGCMap;
 
 public:
-    bool operator!() const { return !m_slot || !*m_slot; }
+    bool operator!() const
+    {
+        return !m_slot || !*m_slot;
+    }
 
     // This conversion operator allows implicit conversion to bool but not to other integer types.
-    typedef JSValue (HandleBase::*UnspecifiedBoolType);
-    operator UnspecifiedBoolType*() const { return (m_slot && *m_slot) ? reinterpret_cast<UnspecifiedBoolType*>(1) : nullptr; }
+    typedef JSValue ( HandleBase::*UnspecifiedBoolType );
+    operator UnspecifiedBoolType *() const
+    {
+        return ( m_slot && *m_slot ) ? reinterpret_cast<UnspecifiedBoolType *>( 1 ) : nullptr;
+    }
 
 protected:
-    HandleBase(HandleSlot slot)
-        : m_slot(slot)
+    HandleBase( HandleSlot slot )
+        : m_slot( slot )
     {
     }
 
-    void swap(HandleBase& other) { std::swap(m_slot, other.m_slot); }
+    void swap( HandleBase &other )
+    {
+        std::swap( m_slot, other.m_slot );
+    }
 
-    HandleSlot slot() const { return m_slot; }
-    void setSlot(HandleSlot slot)
+    HandleSlot slot() const
+    {
+        return m_slot;
+    }
+    void setSlot( HandleSlot slot )
     {
         m_slot = slot;
     }
@@ -77,139 +93,175 @@ private:
     HandleSlot m_slot;
 };
 
-template <typename T> struct HandleTypes {
-    typedef T* ExternalType;
-    static ExternalType getFromSlot(HandleSlot slot) { return (slot && *slot) ? reinterpret_cast<ExternalType>(slot->asCell()) : nullptr; }
-    static JSValue toJSValue(T* cell) { return reinterpret_cast<JSCell*>(cell); }
-    template <typename U> static void validateUpcast() { T* temp; temp = (U*)0; }
+template <typename T> struct HandleTypes
+{
+    typedef T *ExternalType;
+    static ExternalType getFromSlot( HandleSlot slot )
+    {
+        return ( slot && *slot ) ? reinterpret_cast<ExternalType>( slot->asCell() ) : nullptr;
+    }
+    static JSValue toJSValue( T *cell )
+    {
+        return reinterpret_cast<JSCell *>( cell );
+    }
+    template <typename U> static void validateUpcast()
+    {
+        T *temp;
+        temp = ( U * )0;
+    }
 };
 
-template <> struct HandleTypes<Unknown> {
+template <> struct HandleTypes<Unknown>
+{
     typedef JSValue ExternalType;
-    static ExternalType getFromSlot(HandleSlot slot) { return slot ? *slot : JSValue(); }
-    static JSValue toJSValue(const JSValue& v) { return v; }
+    static ExternalType getFromSlot( HandleSlot slot )
+    {
+        return slot ? *slot : JSValue();
+    }
+    static JSValue toJSValue( const JSValue &v )
+    {
+        return v;
+    }
     template <typename U> static void validateUpcast() {}
 };
 
-template <typename Base, typename T> struct HandleConverter {
-    T* operator->()
+template <typename Base, typename T> struct HandleConverter
+{
+    T *operator->()
     {
 #if ENABLE(JSC_ZOMBIES)
-        ASSERT(!static_cast<const Base*>(this)->get() || !static_cast<const Base*>(this)->get()->isZombie());
+        ASSERT( !static_cast<const Base *>( this )->get() || !static_cast<const Base *>( this )->get()->isZombie() );
 #endif
-        return static_cast<Base*>(this)->get();
+        return static_cast<Base *>( this )->get();
     }
-    const T* operator->() const
+    const T *operator->() const
     {
 #if ENABLE(JSC_ZOMBIES)
-        ASSERT(!static_cast<const Base*>(this)->get() || !static_cast<const Base*>(this)->get()->isZombie());
+        ASSERT( !static_cast<const Base *>( this )->get() || !static_cast<const Base *>( this )->get()->isZombie() );
 #endif
-        return static_cast<const Base*>(this)->get();
+        return static_cast<const Base *>( this )->get();
     }
 
-    T* operator*()
+    T *operator*()
     {
 #if ENABLE(JSC_ZOMBIES)
-        ASSERT(!static_cast<const Base*>(this)->get() || !static_cast<const Base*>(this)->get()->isZombie());
+        ASSERT( !static_cast<const Base *>( this )->get() || !static_cast<const Base *>( this )->get()->isZombie() );
 #endif
-        return static_cast<Base*>(this)->get();
+        return static_cast<Base *>( this )->get();
     }
-    const T* operator*() const
+    const T *operator*() const
     {
 #if ENABLE(JSC_ZOMBIES)
-        ASSERT(!static_cast<const Base*>(this)->get() || !static_cast<const Base*>(this)->get()->isZombie());
+        ASSERT( !static_cast<const Base *>( this )->get() || !static_cast<const Base *>( this )->get()->isZombie() );
 #endif
-        return static_cast<const Base*>(this)->get();
+        return static_cast<const Base *>( this )->get();
     }
 };
 
-template <typename Base> struct HandleConverter<Base, Unknown> {
+template <typename Base> struct HandleConverter<Base, Unknown>
+{
     Handle<JSObject> asObject() const;
-    bool isObject() const { return jsValue().isObject(); }
-    bool getNumber(double number) const { return jsValue().getNumber(number); }
-    UString getString(ExecState*) const;
-    bool isUndefinedOrNull() const { return jsValue().isUndefinedOrNull(); }
+    bool isObject() const
+    {
+        return jsValue().isObject();
+    }
+    bool getNumber( double number ) const
+    {
+        return jsValue().getNumber( number );
+    }
+    UString getString( ExecState * ) const;
+    bool isUndefinedOrNull() const
+    {
+        return jsValue().isUndefinedOrNull();
+    }
 
 private:
     JSValue jsValue() const
     {
 #if ENABLE(JSC_ZOMBIES)
-        ASSERT(!static_cast<const Base*>(this)->get() || !static_cast<const Base*>(this)->get().isZombie());
+        ASSERT( !static_cast<const Base *>( this )->get() || !static_cast<const Base *>( this )->get().isZombie() );
 #endif
-        return static_cast<const Base*>(this)->get();
+        return static_cast<const Base *>( this )->get();
     }
 };
 
-template <typename T> class Handle : public HandleBase, public HandleConverter<Handle<T>, T> {
+template <typename T> class Handle : public HandleBase, public HandleConverter<Handle<T>, T>
+{
 public:
     template <typename A, typename B> friend struct HandleConverter;
     typedef typename HandleTypes<T>::ExternalType ExternalType;
-    template <typename U> Handle(Handle<U> o)
+    template <typename U> Handle( Handle<U> o )
     {
         typename HandleTypes<T>::template validateUpcast<U>();
-        setSlot(o.slot());
+        setSlot( o.slot() );
     }
 
-    void swap(Handle& other) { HandleBase::swap(other); }
+    void swap( Handle &other )
+    {
+        HandleBase::swap( other );
+    }
 
-    ExternalType get() const { return HandleTypes<T>::getFromSlot(this->slot()); }
+    ExternalType get() const
+    {
+        return HandleTypes<T>::getFromSlot( this->slot() );
+    }
 
 protected:
-    Handle(HandleSlot slot = nullptr)
-        : HandleBase(slot)
+    Handle( HandleSlot slot = nullptr )
+        : HandleBase( slot )
     {
     }
 
 private:
     friend class HandleHeap;
 
-    static Handle<T> wrapSlot(HandleSlot slot)
+    static Handle<T> wrapSlot( HandleSlot slot )
     {
-        return Handle<T>(slot);
+        return Handle<T>( slot );
     }
 };
 
 template <typename Base> Handle<JSObject> HandleConverter<Base, Unknown>::asObject() const
 {
-    return Handle<JSObject>::wrapSlot(static_cast<const Base*>(this)->slot());
+    return Handle<JSObject>::wrapSlot( static_cast<const Base *>( this )->slot() );
 }
 
-template <typename T, typename U> inline bool operator==(const Handle<T>& a, const Handle<U>& b)
+template <typename T, typename U> inline bool operator==( const Handle<T> &a, const Handle<U> &b )
 {
     return a.get() == b.get();
 }
 
-template <typename T, typename U> inline bool operator==(const Handle<T>& a, U* b)
+template <typename T, typename U> inline bool operator==( const Handle<T> &a, U *b )
 {
     return a.get() == b;
 }
 
-template <typename T, typename U> inline bool operator==(T* a, const Handle<U>& b)
+template <typename T, typename U> inline bool operator==( T *a, const Handle<U> &b )
 {
     return a == b.get();
 }
 
-template <typename T, typename U> inline bool operator!=(const Handle<T>& a, const Handle<U>& b)
+template <typename T, typename U> inline bool operator!=( const Handle<T> &a, const Handle<U> &b )
 {
     return a.get() != b.get();
 }
 
-template <typename T, typename U> inline bool operator!=(const Handle<T>& a, U* b)
+template <typename T, typename U> inline bool operator!=( const Handle<T> &a, U *b )
 {
     return a.get() != b;
 }
 
-template <typename T, typename U> inline bool operator!=(T* a, const Handle<U>& b)
+template <typename T, typename U> inline bool operator!=( T *a, const Handle<U> &b )
 {
     return a != b.get();
 }
 
-template <typename T, typename U> inline bool operator!=(const Handle<T>& a, JSValue b)
+template <typename T, typename U> inline bool operator!=( const Handle<T> &a, JSValue b )
 {
     return a.get() != b;
 }
 
-template <typename T, typename U> inline bool operator!=(JSValue a, const Handle<U>& b)
+template <typename T, typename U> inline bool operator!=( JSValue a, const Handle<U> &b )
 {
     return a != b.get();
 }

@@ -26,32 +26,38 @@
 #include <runtime/JSObjectWithGlobalObject.h>
 #include <runtime/ObjectPrototype.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Console;
 
-class JSConsole : public JSDOMWrapper {
+class JSConsole : public JSDOMWrapper
+{
     typedef JSDOMWrapper Base;
 public:
-    JSConsole(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<Console>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
+    JSConsole( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<Console> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
 
     // Custom attributes
-    JSC::JSValue profiles(JSC::ExecState*) const;
+    JSC::JSValue profiles( JSC::ExecState * ) const;
 
     // Custom functions
-    JSC::JSValue profile(JSC::ExecState*);
-    JSC::JSValue profileEnd(JSC::ExecState*);
-    Console* impl() const { return m_impl.get(); }
+    JSC::JSValue profile( JSC::ExecState * );
+    JSC::JSValue profileEnd( JSC::ExecState * );
+    Console *impl() const
+    {
+        return m_impl.get();
+    }
 
 private:
     RefPtr<Console> m_impl;
@@ -59,65 +65,69 @@ protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
-class JSConsoleOwner : public JSC::WeakHandleOwner {
-    virtual bool isReachableFromOpaqueRoots(JSC::Handle<JSC::Unknown>, void* context, JSC::SlotVisitor&);
-    virtual void finalize(JSC::Handle<JSC::Unknown>, void* context);
+class JSConsoleOwner : public JSC::WeakHandleOwner
+{
+    virtual bool isReachableFromOpaqueRoots( JSC::Handle<JSC::Unknown>, void *context, JSC::SlotVisitor & );
+    virtual void finalize( JSC::Handle<JSC::Unknown>, void *context );
 };
 
-inline JSC::WeakHandleOwner* wrapperOwner(DOMWrapperWorld*, Console*)
+inline JSC::WeakHandleOwner *wrapperOwner( DOMWrapperWorld *, Console * )
 {
-    DEFINE_STATIC_LOCAL(JSConsoleOwner, jsConsoleOwner, ());
+    DEFINE_STATIC_LOCAL( JSConsoleOwner, jsConsoleOwner, () );
     return &jsConsoleOwner;
 }
 
-inline void* wrapperContext(DOMWrapperWorld* world, Console*)
+inline void *wrapperContext( DOMWrapperWorld *world, Console * )
 {
     return world;
 }
 
-JSC::JSValue toJS(JSC::ExecState*, JSDOMGlobalObject*, Console*);
-Console* toConsole(JSC::JSValue);
+JSC::JSValue toJS( JSC::ExecState *, JSDOMGlobalObject *, Console * );
+Console *toConsole( JSC::JSValue );
 
-class JSConsolePrototype : public JSC::JSObjectWithGlobalObject {
+class JSConsolePrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSConsolePrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSConsolePrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                        JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 // Functions
 
-JSC::EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionDebug(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionError(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionInfo(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionLog(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionWarn(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionDir(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionDirxml(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionTrace(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionAssert(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionCount(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionMarkTimeline(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionProfile(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionProfileEnd(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionTime(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionTimeEnd(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionGroup(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionGroupCollapsed(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionGroupEnd(JSC::ExecState*);
+JSC::EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionDebug( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionError( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionInfo( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionLog( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionWarn( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionDir( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionDirxml( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionTrace( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionAssert( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionCount( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionMarkTimeline( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionProfile( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionProfileEnd( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionTime( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionTimeEnd( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionGroup( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionGroupCollapsed( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionGroupEnd( JSC::ExecState * );
 // Attributes
 
-JSC::JSValue jsConsoleProfiles(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsConsoleMemory(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsConsoleProfiles( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsConsoleMemory( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

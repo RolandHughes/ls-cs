@@ -34,20 +34,20 @@ using namespace WebKit;
 
 WKTypeID WKFramePolicyListenerGetTypeID()
 {
-    return toAPI(WebFramePolicyListenerProxy::APIType);
+    return toAPI( WebFramePolicyListenerProxy::APIType );
 }
 
-void WKFramePolicyListenerUse(WKFramePolicyListenerRef policyListenerRef)
+void WKFramePolicyListenerUse( WKFramePolicyListenerRef policyListenerRef )
 {
-    toImpl(policyListenerRef)->use();
+    toImpl( policyListenerRef )->use();
 }
 
-void WKFramePolicyListenerDownload(WKFramePolicyListenerRef policyListenerRef)
+void WKFramePolicyListenerDownload( WKFramePolicyListenerRef policyListenerRef )
 {
-    toImpl(policyListenerRef)->download();
+    toImpl( policyListenerRef )->download();
 }
 
-void WKFramePolicyListenerIgnore(WKFramePolicyListenerRef policyListenerRef)
+void WKFramePolicyListenerIgnore( WKFramePolicyListenerRef policyListenerRef )
 {
-    toImpl(policyListenerRef)->ignore();
+    toImpl( policyListenerRef )->ignore();
 }

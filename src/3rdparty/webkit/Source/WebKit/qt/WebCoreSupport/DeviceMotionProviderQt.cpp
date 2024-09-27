@@ -22,11 +22,12 @@
 
 #include "DeviceOrientationProviderQt.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 DeviceMotionProviderQt::DeviceMotionProviderQt()
 {
-    m_acceleration.addFilter(this);
+    m_acceleration.addFilter( this );
     m_motion = DeviceMotionData::create();
     m_deviceOrientation = new DeviceOrientationProviderQt();
 }
@@ -48,22 +49,22 @@ void DeviceMotionProviderQt::stop()
     m_deviceOrientation->stop();
 }
 
-bool DeviceMotionProviderQt::filter(QAccelerometerReading* reading)
+bool DeviceMotionProviderQt::filter( QAccelerometerReading *reading )
 {
     RefPtr<DeviceMotionData::Acceleration> accel = DeviceMotionData::Acceleration::create(
-            /* x available */ true, reading->x(),
-            /* y available */ true, reading->y(),
-            /* z available */ true, reading->z());
+                /* x available */ true, reading->x(),
+                /* y available */ true, reading->y(),
+                /* z available */ true, reading->z() );
 
     RefPtr<DeviceMotionData::RotationRate> rotation = DeviceMotionData::RotationRate::create(
-            m_deviceOrientation->hasAlpha(), m_deviceOrientation->orientation()->alpha(),
-            /* beta available */ true, m_deviceOrientation->orientation()->beta(),
-            /* gamma available */ true, m_deviceOrientation->orientation()->gamma());
+                m_deviceOrientation->hasAlpha(), m_deviceOrientation->orientation()->alpha(),
+                /* beta available */ true, m_deviceOrientation->orientation()->beta(),
+                /* gamma available */ true, m_deviceOrientation->orientation()->gamma() );
 
-    m_motion = DeviceMotionData::create(accel,
-            accel, /* FIXME: Needs to provide acceleration include gravity. */
-            rotation,
-            false, 0 /* The interval is treated internally by Qt mobility */);
+    m_motion = DeviceMotionData::create( accel,
+                                         accel, /* FIXME: Needs to provide acceleration include gravity. */
+                                         rotation,
+                                         false, 0 /* The interval is treated internally by Qt mobility */ );
 
     emit deviceMotionChanged();
 

@@ -41,27 +41,29 @@
 #endif
 
 
-namespace WebCore {
-    class FrameLoaderClientQt;
-    class FrameView;
-    class HTMLFrameOwnerElement;
-    class Scrollbar;
-    class TextureMapperContentLayer;
+namespace WebCore
+{
+class FrameLoaderClientQt;
+class FrameView;
+class HTMLFrameOwnerElement;
+class Scrollbar;
+class TextureMapperContentLayer;
 }
 class QWebPage;
 
-class QWebFrameData {
+class QWebFrameData
+{
 public:
-    QWebFrameData(WebCore::Page*, WebCore::Frame* parentFrame = 0,
-                  WebCore::HTMLFrameOwnerElement* = 0,
-                  const WTF::String& frameName = WTF::String());
+    QWebFrameData( WebCore::Page *, WebCore::Frame *parentFrame = 0,
+                   WebCore::HTMLFrameOwnerElement * = 0,
+                   const WTF::String &frameName = WTF::String() );
 
     WebCore::KURL url;
     WTF::String name;
-    WebCore::HTMLFrameOwnerElement* ownerElement;
-    WebCore::Page* page;
+    WebCore::HTMLFrameOwnerElement *ownerElement;
+    WebCore::Page *page;
     RefPtr<WebCore::Frame> frame;
-    WebCore::FrameLoaderClientQt* frameLoaderClient;
+    WebCore::FrameLoaderClientQt *frameLoaderClient;
 
     WTF::String referrer;
     bool allowsScrolling;
@@ -69,42 +71,46 @@ public:
     int marginHeight;
 };
 
-class QWebFramePrivate {
+class QWebFramePrivate
+{
 public:
     QWebFramePrivate()
-        : q(0)
-        , horizontalScrollBarPolicy(Qt::ScrollBarAsNeeded)
-        , verticalScrollBarPolicy(Qt::ScrollBarAsNeeded)
-        , frameLoaderClient(0)
-        , frame(0)
-        , page(0)
-        , allowsScrolling(true)
-        , marginWidth(-1)
-        , marginHeight(-1)
+        : q( 0 )
+        , horizontalScrollBarPolicy( Qt::ScrollBarAsNeeded )
+        , verticalScrollBarPolicy( Qt::ScrollBarAsNeeded )
+        , frameLoaderClient( 0 )
+        , frame( 0 )
+        , page( 0 )
+        , allowsScrolling( true )
+        , marginWidth( -1 )
+        , marginHeight( -1 )
 #if USE(ACCELERATED_COMPOSITING) && USE(TEXTURE_MAPPER)
-        , rootGraphicsLayer(0)
+        , rootGraphicsLayer( 0 )
 #endif
-        {}
-    void init(QWebFrame* qframe, QWebFrameData* frameData);
-    void setPage(QWebPage*);
+    {}
+    void init( QWebFrame *qframe, QWebFrameData *frameData );
+    void setPage( QWebPage * );
 
-    inline QWebFrame *parentFrame() { return qobject_cast<QWebFrame*>(q->parent()); }
+    inline QWebFrame *parentFrame()
+    {
+        return qobject_cast<QWebFrame *>( q->parent() );
+    }
 
-    WebCore::Scrollbar* horizontalScrollBar() const;
-    WebCore::Scrollbar* verticalScrollBar() const;
+    WebCore::Scrollbar *horizontalScrollBar() const;
+    WebCore::Scrollbar *verticalScrollBar() const;
 
-    static WebCore::Frame* core(const QWebFrame*);
-    static QWebFrame* kit(const WebCore::Frame*);
+    static WebCore::Frame *core( const QWebFrame * );
+    static QWebFrame *kit( const WebCore::Frame * );
 
-    void renderRelativeCoords(WebCore::GraphicsContext*, QFlags<QWebFrame::RenderLayer>, const QRegion& clip);
+    void renderRelativeCoords( WebCore::GraphicsContext *, QFlags<QWebFrame::RenderLayer>, const QRegion &clip );
 #if ENABLE(TILED_BACKING_STORE)
-    void renderFromTiledBackingStore(WebCore::GraphicsContext*, const QRegion& clip);
+    void renderFromTiledBackingStore( WebCore::GraphicsContext *, const QRegion &clip );
 #endif
 
 #if USE(ACCELERATED_COMPOSITING) && USE(TEXTURE_MAPPER)
-    void renderCompositedLayers(WebCore::GraphicsContext*, const WebCore::IntRect& clip);
+    void renderCompositedLayers( WebCore::GraphicsContext *, const WebCore::IntRect &clip );
 #endif
-    void renderFrameExtras(WebCore::GraphicsContext*, QFlags<QWebFrame::RenderLayer>, const QRegion& clip);
+    void renderFrameExtras( WebCore::GraphicsContext *, QFlags<QWebFrame::RenderLayer>, const QRegion &clip );
     void emitUrlChanged();
     void _q_orientationChanged();
 
@@ -120,7 +126,7 @@ public:
     int marginWidth;
     int marginHeight;
 #if USE(ACCELERATED_COMPOSITING) && USE(TEXTURE_MAPPER)
-    WebCore::TextureMapperContentLayer* rootGraphicsLayer;
+    WebCore::TextureMapperContentLayer *rootGraphicsLayer;
     OwnPtr<WebCore::TextureMapper> textureMapper;
 #endif
 
@@ -129,10 +135,11 @@ public:
 #endif
 };
 
-class QWebHitTestResultPrivate {
+class QWebHitTestResultPrivate
+{
 public:
-    QWebHitTestResultPrivate() : isContentEditable(false), isContentSelected(false), isScrollBar(false) {}
-    QWebHitTestResultPrivate(const WebCore::HitTestResult &hitTest);
+    QWebHitTestResultPrivate() : isContentEditable( false ), isContentSelected( false ), isScrollBar( false ) {}
+    QWebHitTestResultPrivate( const WebCore::HitTestResult &hitTest );
 
     QPoint pos;
     QRect boundingRect;

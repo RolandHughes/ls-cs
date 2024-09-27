@@ -30,243 +30,288 @@
 
 class TranslatorMessage
 {
- public:
-   enum class Type {
-      Unfinished,
-      Finished,
-      Vanished,
-      Obsolete
-   };
+public:
+    enum class Type
+    {
+        Unfinished,
+        Finished,
+        Vanished,
+        Obsolete
+    };
 
-   enum class SaveMode {
-      Everything,
-      Stripped
-   };
+    enum class SaveMode
+    {
+        Everything,
+        Stripped
+    };
 
-   class Reference
-   {
+    class Reference
+    {
 
     public:
-      Reference(const QString &fname, int l)
-         : m_fileName(fname), m_lineNumber(l) {
-      }
+        Reference( const QString &fname, int l )
+            : m_fileName( fname ), m_lineNumber( l )
+        {
+        }
 
-      bool operator==(const Reference &other) const {
-         return fileName() == other.fileName() && lineNumber() == other.lineNumber();
-      }
+        bool operator==( const Reference &other ) const
+        {
+            return fileName() == other.fileName() && lineNumber() == other.lineNumber();
+        }
 
-      QString fileName() const {
-         return m_fileName;
-      }
+        QString fileName() const
+        {
+            return m_fileName;
+        }
 
-      int lineNumber() const {
-         return m_lineNumber;
-      }
+        int lineNumber() const
+        {
+            return m_lineNumber;
+        }
 
     private:
-      QString m_fileName;
-      int m_lineNumber;
-   };
+        QString m_fileName;
+        int m_lineNumber;
+    };
 
-   TranslatorMessage();
+    TranslatorMessage();
 
-   TranslatorMessage(const QString &context, const QString &sourceText, const QString &comment,
-            const QString &userData, const QString &fileName, int lineNumber,
-            const QStringList &translations = QStringList(),
-            Type type = TranslatorMessage::Type::Unfinished, bool plural = false);
+    TranslatorMessage( const QString &context, const QString &sourceText, const QString &comment,
+                       const QString &userData, const QString &fileName, int lineNumber,
+                       const QStringList &translations = QStringList(),
+                       Type type = TranslatorMessage::Type::Unfinished, bool plural = false );
 
-   uint hash() const;
+    uint hash() const;
 
-   QString id() const {
-      return m_id;
-   }
+    QString id() const
+    {
+        return m_id;
+    }
 
-   void setId(const QString &id) {
-      m_id = id;
-   }
+    void setId( const QString &id )
+    {
+        m_id = id;
+    }
 
-   QString context() const {
-      return m_context;
-   }
+    QString context() const
+    {
+        return m_context;
+    }
 
-   void setContext(const QString &context) {
-      m_context = context;
-   }
+    void setContext( const QString &context )
+    {
+        m_context = context;
+    }
 
-   QString sourceText() const {
-      return m_sourcetext;
-   }
+    QString sourceText() const
+    {
+        return m_sourcetext;
+    }
 
-   void setSourceText(const QString &sourcetext) {
-      m_sourcetext = sourcetext;
-   }
+    void setSourceText( const QString &sourcetext )
+    {
+        m_sourcetext = sourcetext;
+    }
 
-   QString oldSourceText() const {
-      return m_oldsourcetext;
-   }
+    QString oldSourceText() const
+    {
+        return m_oldsourcetext;
+    }
 
-   void setOldSourceText(const QString &oldsourcetext) {
-      m_oldsourcetext = oldsourcetext;
-   }
+    void setOldSourceText( const QString &oldsourcetext )
+    {
+        m_oldsourcetext = oldsourcetext;
+    }
 
-   QString comment() const {
-      return m_comment;
-   }
+    QString comment() const
+    {
+        return m_comment;
+    }
 
-   void setComment(const QString &comment) {
-      m_comment = comment;
-   }
+    void setComment( const QString &comment )
+    {
+        m_comment = comment;
+    }
 
-   QString oldComment() const {
-      return m_oldcomment;
-   }
+    QString oldComment() const
+    {
+        return m_oldcomment;
+    }
 
-   void setOldComment(const QString &oldcomment) {
-      m_oldcomment = oldcomment;
-   }
+    void setOldComment( const QString &oldcomment )
+    {
+        m_oldcomment = oldcomment;
+    }
 
-   QStringList translations() const {
-      return m_translations;
-   }
+    QStringList translations() const
+    {
+        return m_translations;
+    }
 
-   void setTranslations(const QStringList &translations) {
-      m_translations = translations;
-   }
+    void setTranslations( const QStringList &translations )
+    {
+        m_translations = translations;
+    }
 
-   QString translation() const {
-      return m_translations.value(0);
-   }
+    QString translation() const
+    {
+        return m_translations.value( 0 );
+    }
 
-   void setTranslation(const QString &translation) {
-      m_translations = QStringList(translation);
-   }
+    void setTranslation( const QString &translation )
+    {
+        m_translations = QStringList( translation );
+    }
 
-   void appendTranslation(const QString &translation) {
-      m_translations.append(translation);
-   }
+    void appendTranslation( const QString &translation )
+    {
+        m_translations.append( translation );
+    }
 
-   bool isTranslated() const {
-      for (const QString &trans : m_translations) {
-         if (! trans.isEmpty()) {
-            return true;
-         }
-      }
+    bool isTranslated() const
+    {
+        for ( const QString &trans : m_translations )
+        {
+            if ( ! trans.isEmpty() )
+            {
+                return true;
+            }
+        }
 
-      return false;
-   }
+        return false;
+    }
 
-   QString fileName() const {
-      return m_fileName;
-   }
+    QString fileName() const
+    {
+        return m_fileName;
+    }
 
-   void setFileName(const QString &fileName) {
-      m_fileName = fileName;
-   }
+    void setFileName( const QString &fileName )
+    {
+        m_fileName = fileName;
+    }
 
-   int lineNumber() const {
-      return m_lineNumber;
-   }
+    int lineNumber() const
+    {
+        return m_lineNumber;
+    }
 
-   void setLineNumber(int lineNumber) {
-      m_lineNumber = lineNumber;
-   }
+    void setLineNumber( int lineNumber )
+    {
+        m_lineNumber = lineNumber;
+    }
 
-   void clearReferences();
-   void setReferences(const QList<Reference> &refs);
-   void addReference(const QString &fileName, int lineNumber);
+    void clearReferences();
+    void setReferences( const QList<Reference> &refs );
+    void addReference( const QString &fileName, int lineNumber );
 
-   void addReference(const Reference &ref) {
-      addReference(ref.fileName(), ref.lineNumber());
-   }
+    void addReference( const Reference &ref )
+    {
+        addReference( ref.fileName(), ref.lineNumber() );
+    }
 
-   void addReferenceUniq(const QString &fileName, int lineNumber);
+    void addReferenceUniq( const QString &fileName, int lineNumber );
 
-   QList<Reference> extraReferences() const {
-      return m_extraRefs;
-   }
+    QList<Reference> extraReferences() const
+    {
+        return m_extraRefs;
+    }
 
-   QList<Reference> allReferences() const;
-   QString userData() const {
-      return m_userData;
-   }
+    QList<Reference> allReferences() const;
+    QString userData() const
+    {
+        return m_userData;
+    }
 
-   void setUserData(const QString &userData) {
-      m_userData = userData;
-   }
+    void setUserData( const QString &userData )
+    {
+        m_userData = userData;
+    }
 
-   QString extraComment() const {
-      return m_extraComment;
-   }
+    QString extraComment() const
+    {
+        return m_extraComment;
+    }
 
-   void setExtraComment(const QString &extraComment) {
-      m_extraComment = extraComment;
-   }
+    void setExtraComment( const QString &extraComment )
+    {
+        m_extraComment = extraComment;
+    }
 
-   QString translatorComment() const {
-      return m_translatorComment;
-   }
+    QString translatorComment() const
+    {
+        return m_translatorComment;
+    }
 
-   void setTranslatorComment(const QString &translatorComment) {
-      m_translatorComment = translatorComment;
-   }
+    void setTranslatorComment( const QString &translatorComment )
+    {
+        m_translatorComment = translatorComment;
+    }
 
-   bool isNull() const {
-      return m_sourcetext.isEmpty() && m_lineNumber == -1 && m_translations.isEmpty();
-   }
+    bool isNull() const
+    {
+        return m_sourcetext.isEmpty() && m_lineNumber == -1 && m_translations.isEmpty();
+    }
 
-   Type type() const {
-      return m_type;
-   }
+    Type type() const
+    {
+        return m_type;
+    }
 
-   void setType(Type t) {
-      m_type = t;
-   }
+    void setType( Type t )
+    {
+        m_type = t;
+    }
 
-   bool isPlural() const {
-      return m_plural;
-   }
+    bool isPlural() const
+    {
+        return m_plural;
+    }
 
-   void setPlural(bool isplural) {
-      m_plural = isplural;
-   }
+    void setPlural( bool isplural )
+    {
+        m_plural = isplural;
+    }
 
-   // use '<fileformat>:' as prefix for file format specific members,
-   // e.g. "po-msgid_plural"
+    // use '<fileformat>:' as prefix for file format specific members,
+    // e.g. "po-msgid_plural"
 
-   QString extra(const QString &ba) const;
-   void setExtra(const QString &ba, const QString &var);
-   bool hasExtra(const QString &ba) const;
+    QString extra( const QString &ba ) const;
+    void setExtra( const QString &ba, const QString &var );
+    bool hasExtra( const QString &ba ) const;
 
-   const QHash<QString, QString> &extras() const {
-      return m_extra;
-   }
+    const QHash<QString, QString> &extras() const
+    {
+        return m_extra;
+    }
 
-   void setExtras(const QHash<QString, QString> &extras) {
-      m_extra = extras;
-   }
+    void setExtras( const QHash<QString, QString> &extras )
+    {
+        m_extra = extras;
+    }
 
-   void unsetExtra(const QString &key);
-   void dump() const;
+    void unsetExtra( const QString &key );
+    void dump() const;
 
- private:
-   QString     m_id;
-   QString     m_context;
-   QString     m_sourcetext;
-   QString     m_oldsourcetext;
-   QString     m_comment;
-   QString     m_oldcomment;
-   QString     m_userData;
-   QString     m_extraComment;
-   QString     m_translatorComment;
-   QStringList m_translations;
-   QString     m_fileName;
-   int         m_lineNumber;
+private:
+    QString     m_id;
+    QString     m_context;
+    QString     m_sourcetext;
+    QString     m_oldsourcetext;
+    QString     m_comment;
+    QString     m_oldcomment;
+    QString     m_userData;
+    QString     m_extraComment;
+    QString     m_translatorComment;
+    QStringList m_translations;
+    QString     m_fileName;
+    int         m_lineNumber;
 
-   QHash<QString, QString>   m_extra;       // PO flags, PO plurals
-   QList<Reference>  m_extraRefs;
+    QHash<QString, QString>   m_extra;       // PO flags, PO plurals
+    QList<Reference>  m_extraRefs;
 
-   TranslatorMessage::Type m_type;
-   bool m_plural;
+    TranslatorMessage::Type m_type;
+    bool m_plural;
 };
 
 #endif

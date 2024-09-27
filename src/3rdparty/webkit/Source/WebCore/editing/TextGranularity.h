@@ -20,17 +20,19 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef TextGranularity_h
 #define TextGranularity_h
 
-namespace WebCore {
+namespace WebCore
+{
 
 // FIXME: This really should be broken up into more than one concept.
 // Frame doesn't need the 3 boundaries in this enum.
-enum TextGranularity {
+enum TextGranularity
+{
     CharacterGranularity,
     WordGranularity,
     SentenceGranularity,

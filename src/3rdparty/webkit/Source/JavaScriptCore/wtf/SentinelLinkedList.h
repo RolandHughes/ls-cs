@@ -26,7 +26,7 @@
 //    A SentinelLinkedList is a linked list with dummy head and tail sentinels,
 //    which allow for branch-less insertion and removal, and removal without a
 //    pointer to the list.
-//    
+//
 //    Requires: Node is a concrete class with:
 //        Node(SentinelTag);
 //        void setPrev(Node*);
@@ -37,18 +37,20 @@
 #ifndef SentinelLinkedList_h
 #define SentinelLinkedList_h
 
-namespace WTF {
+namespace WTF
+{
 
 enum SentinelTag { Sentinel };
 
-template <typename Node> class SentinelLinkedList {
+template <typename Node> class SentinelLinkedList
+{
 public:
-    typedef Node* iterator;
+    typedef Node *iterator;
 
     SentinelLinkedList();
 
-    void push(Node*);
-    static void remove(Node*);
+    void push( Node * );
+    static void remove( Node * );
 
     iterator begin();
     iterator end();
@@ -59,14 +61,14 @@ private:
 };
 
 template <typename Node> inline SentinelLinkedList<Node>::SentinelLinkedList()
-    : m_headSentinel(Sentinel)
-    , m_tailSentinel(Sentinel)
+    : m_headSentinel( Sentinel )
+    , m_tailSentinel( Sentinel )
 {
-    m_headSentinel.setNext(&m_tailSentinel);
-    m_headSentinel.setPrev(0);
+    m_headSentinel.setNext( &m_tailSentinel );
+    m_headSentinel.setPrev( 0 );
 
-    m_tailSentinel.setPrev(&m_headSentinel);
-    m_tailSentinel.setNext(0);
+    m_tailSentinel.setPrev( &m_headSentinel );
+    m_tailSentinel.setNext( 0 );
 }
 
 template <typename Node> inline typename SentinelLinkedList<Node>::iterator SentinelLinkedList<Node>::begin()
@@ -79,26 +81,26 @@ template <typename Node> inline typename SentinelLinkedList<Node>::iterator Sent
     return &m_tailSentinel;
 }
 
-template <typename Node> inline void SentinelLinkedList<Node>::push(Node* node)
+template <typename Node> inline void SentinelLinkedList<Node>::push( Node *node )
 {
-    ASSERT(node);
-    Node* prev = &m_headSentinel;
-    Node* next = m_headSentinel.next();
+    ASSERT( node );
+    Node *prev = &m_headSentinel;
+    Node *next = m_headSentinel.next();
 
-    node->setPrev(prev);
-    node->setNext(next);
+    node->setPrev( prev );
+    node->setNext( next );
 
-    prev->setNext(node);
-    next->setPrev(node);
+    prev->setNext( node );
+    next->setPrev( node );
 }
 
-template <typename Node> inline void SentinelLinkedList<Node>::remove(Node* node)
+template <typename Node> inline void SentinelLinkedList<Node>::remove( Node *node )
 {
-    Node* prev = node->prev();
-    Node* next = node->next();
+    Node *prev = node->prev();
+    Node *next = node->next();
 
-    prev->setNext(next);
-    next->setPrev(prev);
+    prev->setNext( next );
+    next->setPrev( prev );
 }
 
 }

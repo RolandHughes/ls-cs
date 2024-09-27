@@ -21,16 +21,16 @@
 
 #include <cs_catch2.h>
 
-TEST_CASE("QDnsLookup traits", "[qdnslookup]")
+TEST_CASE( "QDnsLookup traits", "[qdnslookup]" )
 {
-   REQUIRE(std::is_copy_constructible_v<QDnsLookup> == false);
-   REQUIRE(std::is_move_constructible_v<QDnsLookup> == false);
+    REQUIRE( std::is_copy_constructible_v<QDnsLookup> == false );
+    REQUIRE( std::is_move_constructible_v<QDnsLookup> == false );
 
-   REQUIRE(std::is_copy_assignable_v<QDnsLookup> == false);
-   REQUIRE(std::is_move_assignable_v<QDnsLookup> == false);
+    REQUIRE( std::is_copy_assignable_v<QDnsLookup> == false );
+    REQUIRE( std::is_move_assignable_v<QDnsLookup> == false );
 
-   REQUIRE(std::is_nothrow_move_constructible_v<QDnsLookup> == false);
-   REQUIRE(std::is_nothrow_move_assignable_v<QDnsLookup> == false);
+    REQUIRE( std::is_nothrow_move_constructible_v<QDnsLookup> == false );
+    REQUIRE( std::is_nothrow_move_assignable_v<QDnsLookup> == false );
 
-   REQUIRE(std::has_virtual_destructor_v<QDnsLookup> == true);
+    REQUIRE( std::has_virtual_destructor_v<QDnsLookup> == true );
 }

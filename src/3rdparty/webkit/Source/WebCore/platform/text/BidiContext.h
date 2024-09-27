@@ -28,36 +28,57 @@
 #include <wtf/RefPtr.h>
 #include <wtf/unicode/Unicode.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-enum BidiEmbeddingSource {
+enum BidiEmbeddingSource
+{
     FromStyleOrDOM,
     FromUnicode
 };
 
 // Used to keep track of explicit embeddings.
-class BidiContext : public RefCounted<BidiContext> {
+class BidiContext : public RefCounted<BidiContext>
+{
 public:
-    static PassRefPtr<BidiContext> create(unsigned char level, WTF::Unicode::Direction, bool override = false, BidiEmbeddingSource = FromStyleOrDOM, BidiContext* parent = 0);
+    static PassRefPtr<BidiContext> create( unsigned char level, WTF::Unicode::Direction, bool override = false,
+                                           BidiEmbeddingSource = FromStyleOrDOM, BidiContext *parent = 0 );
 
-    BidiContext* parent() const { return m_parent.get(); }
-    unsigned char level() const { return m_level; }
-    WTF::Unicode::Direction dir() const { return static_cast<WTF::Unicode::Direction>(m_direction); }
-    bool override() const { return m_override; }
-    BidiEmbeddingSource source() const { return static_cast<BidiEmbeddingSource>(m_source); }
+    BidiContext *parent() const
+    {
+        return m_parent.get();
+    }
+    unsigned char level() const
+    {
+        return m_level;
+    }
+    WTF::Unicode::Direction dir() const
+    {
+        return static_cast<WTF::Unicode::Direction>( m_direction );
+    }
+    bool override() const
+    {
+        return m_override;
+    }
+    BidiEmbeddingSource source() const
+    {
+        return static_cast<BidiEmbeddingSource>( m_source );
+    }
 
     PassRefPtr<BidiContext> copyStackRemovingUnicodeEmbeddingContexts();
 private:
-    BidiContext(unsigned char level, WTF::Unicode::Direction direction, bool override, BidiEmbeddingSource source, BidiContext* parent)
-        : m_level(level)
-        , m_direction(direction)
-        , m_override(override)
-        , m_source(source)
-        , m_parent(parent)
+    BidiContext( unsigned char level, WTF::Unicode::Direction direction, bool override, BidiEmbeddingSource source,
+                 BidiContext *parent )
+        : m_level( level )
+        , m_direction( direction )
+        , m_override( override )
+        , m_source( source )
+        , m_parent( parent )
     {
     }
 
-    static PassRefPtr<BidiContext> createUncached(unsigned char level, WTF::Unicode::Direction, bool override, BidiEmbeddingSource, BidiContext* parent);
+    static PassRefPtr<BidiContext> createUncached( unsigned char level, WTF::Unicode::Direction, bool override, BidiEmbeddingSource,
+            BidiContext *parent );
 
     unsigned char m_level;
     unsigned m_direction : 5; // Direction
@@ -66,17 +87,17 @@ private:
     RefPtr<BidiContext> m_parent;
 };
 
-inline unsigned char nextGreaterOddLevel(unsigned char level)
+inline unsigned char nextGreaterOddLevel( unsigned char level )
 {
-    return (level + 1) | 1;
+    return ( level + 1 ) | 1;
 }
 
-inline unsigned char nextGreaterEvenLevel(unsigned char level)
+inline unsigned char nextGreaterEvenLevel( unsigned char level )
 {
-    return (level + 2) & ~1;
+    return ( level + 2 ) & ~1;
 }
 
-bool operator==(const BidiContext&, const BidiContext&);
+bool operator==( const BidiContext &, const BidiContext & );
 
 } // namespace WebCore
 

@@ -32,9 +32,11 @@
 
 #include "QualifiedName.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
- namespace HTMLNames {
+namespace HTMLNames
+{
 
 #ifndef DOM_HTMLNAMES_HIDE_GLOBALS
 // Namespace
@@ -473,12 +475,13 @@ extern const WebCore::QualifiedName widthAttr;
 extern const WebCore::QualifiedName wrapAttr;
 #endif
 
-WebCore::QualifiedName** getHTMLTags(size_t* size);
-WebCore::QualifiedName** getHTMLAttrs(size_t* size);
+WebCore::QualifiedName **getHTMLTags( size_t *size );
+WebCore::QualifiedName **getHTMLAttrs( size_t *size );
 
 void init();
 
-} }
+}
+}
 
 #endif
 

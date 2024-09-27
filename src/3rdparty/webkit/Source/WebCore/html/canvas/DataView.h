@@ -30,58 +30,111 @@
 #include "ExceptionCode.h"
 #include <wtf/PassRefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class DataView : public ArrayBufferView {
+class DataView : public ArrayBufferView
+{
 public:
-    static PassRefPtr<DataView> create(PassRefPtr<ArrayBuffer>, unsigned byteOffset, unsigned byteLength);
+    static PassRefPtr<DataView> create( PassRefPtr<ArrayBuffer>, unsigned byteOffset, unsigned byteLength );
 
-    virtual bool isDataView() const { return true; }
-    virtual unsigned length() const { return m_byteLength; }
-    virtual unsigned byteLength() const { return m_byteLength; }
-    virtual PassRefPtr<ArrayBufferView> slice(int, int) const { return 0; }
+    virtual bool isDataView() const
+    {
+        return true;
+    }
+    virtual unsigned length() const
+    {
+        return m_byteLength;
+    }
+    virtual unsigned byteLength() const
+    {
+        return m_byteLength;
+    }
+    virtual PassRefPtr<ArrayBufferView> slice( int, int ) const
+    {
+        return 0;
+    }
 
-    int8_t getInt8(unsigned byteOffset, ExceptionCode&);
-    uint8_t getUint8(unsigned byteOffset, ExceptionCode&);
-    int16_t getInt16(unsigned byteOffset, ExceptionCode& ec) { return getInt16(byteOffset, false, ec); }
-    int16_t getInt16(unsigned byteOffset, bool littleEndian, ExceptionCode&);
-    uint16_t getUint16(unsigned byteOffset, ExceptionCode& ec) { return getUint16(byteOffset, false, ec); }
-    uint16_t getUint16(unsigned byteOffset, bool littleEndian, ExceptionCode&);
-    int32_t getInt32(unsigned byteOffset, ExceptionCode& ec) { return getInt32(byteOffset, false, ec); }
-    int32_t getInt32(unsigned byteOffset, bool littleEndian, ExceptionCode&);
-    uint32_t getUint32(unsigned byteOffset, ExceptionCode& ec) { return getUint32(byteOffset, false, ec); }
-    uint32_t getUint32(unsigned byteOffset, bool littleEndian, ExceptionCode&);
-    float getFloat32(unsigned byteOffset, ExceptionCode& ec) { return getFloat32(byteOffset, false, ec); }
-    float getFloat32(unsigned byteOffset, bool littleEndian, ExceptionCode&);
-    double getFloat64(unsigned byteOffset, ExceptionCode& ec) { return getFloat64(byteOffset, false, ec); }
-    double getFloat64(unsigned byteOffset, bool littleEndian, ExceptionCode&);
+    int8_t getInt8( unsigned byteOffset, ExceptionCode & );
+    uint8_t getUint8( unsigned byteOffset, ExceptionCode & );
+    int16_t getInt16( unsigned byteOffset, ExceptionCode &ec )
+    {
+        return getInt16( byteOffset, false, ec );
+    }
+    int16_t getInt16( unsigned byteOffset, bool littleEndian, ExceptionCode & );
+    uint16_t getUint16( unsigned byteOffset, ExceptionCode &ec )
+    {
+        return getUint16( byteOffset, false, ec );
+    }
+    uint16_t getUint16( unsigned byteOffset, bool littleEndian, ExceptionCode & );
+    int32_t getInt32( unsigned byteOffset, ExceptionCode &ec )
+    {
+        return getInt32( byteOffset, false, ec );
+    }
+    int32_t getInt32( unsigned byteOffset, bool littleEndian, ExceptionCode & );
+    uint32_t getUint32( unsigned byteOffset, ExceptionCode &ec )
+    {
+        return getUint32( byteOffset, false, ec );
+    }
+    uint32_t getUint32( unsigned byteOffset, bool littleEndian, ExceptionCode & );
+    float getFloat32( unsigned byteOffset, ExceptionCode &ec )
+    {
+        return getFloat32( byteOffset, false, ec );
+    }
+    float getFloat32( unsigned byteOffset, bool littleEndian, ExceptionCode & );
+    double getFloat64( unsigned byteOffset, ExceptionCode &ec )
+    {
+        return getFloat64( byteOffset, false, ec );
+    }
+    double getFloat64( unsigned byteOffset, bool littleEndian, ExceptionCode & );
 
-    void setInt8(unsigned byteOffset, int8_t value, ExceptionCode&);
-    void setUint8(unsigned byteOffset, uint8_t value, ExceptionCode&);
-    void setInt16(unsigned byteOffset, int16_t value, ExceptionCode& ec) { setInt16(byteOffset, value, false, ec); }
-    void setInt16(unsigned byteOffset, int16_t value, bool littleEndian, ExceptionCode&);
-    void setUint16(unsigned byteOffset, uint16_t value, ExceptionCode& ec) { setUint16(byteOffset, value, false, ec); }
-    void setUint16(unsigned byteOffset, uint16_t value, bool littleEndian, ExceptionCode&);
-    void setInt32(unsigned byteOffset, int32_t value, ExceptionCode& ec) { setInt32(byteOffset, value, false, ec); } 
-    void setInt32(unsigned byteOffset, int32_t value, bool littleEndian, ExceptionCode&);
-    void setUint32(unsigned byteOffset, uint32_t value, ExceptionCode& ec) { setUint32(byteOffset, value, false, ec); }
-    void setUint32(unsigned byteOffset, uint32_t value, bool littleEndian, ExceptionCode&);
-    void setFloat32(unsigned byteOffset, float value, ExceptionCode& ec) { setFloat32(byteOffset, value, false, ec); }
-    void setFloat32(unsigned byteOffset, float value, bool littleEndian, ExceptionCode&);
-    void setFloat64(unsigned byteOffset, double value, ExceptionCode& ec) { setFloat64(byteOffset, value, false, ec); }
-    void setFloat64(unsigned byteOffset, double value, bool littleEndian, ExceptionCode&);
+    void setInt8( unsigned byteOffset, int8_t value, ExceptionCode & );
+    void setUint8( unsigned byteOffset, uint8_t value, ExceptionCode & );
+    void setInt16( unsigned byteOffset, int16_t value, ExceptionCode &ec )
+    {
+        setInt16( byteOffset, value, false, ec );
+    }
+    void setInt16( unsigned byteOffset, int16_t value, bool littleEndian, ExceptionCode & );
+    void setUint16( unsigned byteOffset, uint16_t value, ExceptionCode &ec )
+    {
+        setUint16( byteOffset, value, false, ec );
+    }
+    void setUint16( unsigned byteOffset, uint16_t value, bool littleEndian, ExceptionCode & );
+    void setInt32( unsigned byteOffset, int32_t value, ExceptionCode &ec )
+    {
+        setInt32( byteOffset, value, false, ec );
+    }
+    void setInt32( unsigned byteOffset, int32_t value, bool littleEndian, ExceptionCode & );
+    void setUint32( unsigned byteOffset, uint32_t value, ExceptionCode &ec )
+    {
+        setUint32( byteOffset, value, false, ec );
+    }
+    void setUint32( unsigned byteOffset, uint32_t value, bool littleEndian, ExceptionCode & );
+    void setFloat32( unsigned byteOffset, float value, ExceptionCode &ec )
+    {
+        setFloat32( byteOffset, value, false, ec );
+    }
+    void setFloat32( unsigned byteOffset, float value, bool littleEndian, ExceptionCode & );
+    void setFloat64( unsigned byteOffset, double value, ExceptionCode &ec )
+    {
+        setFloat64( byteOffset, value, false, ec );
+    }
+    void setFloat64( unsigned byteOffset, double value, bool littleEndian, ExceptionCode & );
 
 private:
-    DataView(PassRefPtr<ArrayBuffer>, unsigned byteOffset, unsigned byteLength);
+    DataView( PassRefPtr<ArrayBuffer>, unsigned byteOffset, unsigned byteLength );
 
     template<typename T>
-    inline bool beyondRange(unsigned byteOffset) const { return byteOffset >= m_byteLength || byteOffset + sizeof(T) > m_byteLength; }
+    inline bool beyondRange( unsigned byteOffset ) const
+    {
+        return byteOffset >= m_byteLength || byteOffset + sizeof( T ) > m_byteLength;
+    }
 
     template<typename T>
-    T getData(unsigned byteOffset, bool littleEndian, ExceptionCode&) const;
+    T getData( unsigned byteOffset, bool littleEndian, ExceptionCode & ) const;
 
     template<typename T>
-    void setData(unsigned byteOffset, T value, bool littleEndian, ExceptionCode&);
+    void setData( unsigned byteOffset, T value, bool littleEndian, ExceptionCode & );
 
     unsigned m_byteLength;
 };

@@ -24,15 +24,16 @@
 #include <glib-object.h>
 #include <webkit/WebKitDOMObject.h>
 #include "TestCallback.h"
-namespace WebKit {
-    WebKitDOMTestCallback *
-    wrapTestCallback(WebCore::TestCallback *coreObject);
+namespace WebKit
+{
+WebKitDOMTestCallback *
+wrapTestCallback( WebCore::TestCallback *coreObject );
 
-    WebCore::TestCallback *
-    core(WebKitDOMTestCallback *request);
+WebCore::TestCallback *
+core( WebKitDOMTestCallback *request );
 
-    WebKitDOMTestCallback*
-    kit(WebCore::TestCallback* node);
+WebKitDOMTestCallback *
+kit( WebCore::TestCallback *node );
 
 } // namespace WebKit
 

@@ -36,50 +36,68 @@
 
 using namespace WebCore;
 
-namespace WebKit {
+namespace WebKit
+{
 
 PlatformCertificateInfo::PlatformCertificateInfo()
 {
 }
 
-PlatformCertificateInfo::PlatformCertificateInfo(const ResourceResponse& response)
+PlatformCertificateInfo::PlatformCertificateInfo( const ResourceResponse &response )
 {
     CFURLResponseRef cfResponse = response.cfURLResponse();
-    if (!cfResponse)
+
+    if ( !cfResponse )
+    {
         return;
+    }
 
 #if USE(CG)
-    CFDictionaryRef certificateInfo = wkGetSSLCertificateInfo(cfResponse);
-    if (!certificateInfo)
-        return;
+    CFDictionaryRef certificateInfo = wkGetSSLCertificateInfo( cfResponse );
 
-    void* data = wkGetSSLCertificateChainContext(certificateInfo);
-    if (!data)
+    if ( !certificateInfo )
+    {
         return;
+    }
 
-    PCCERT_CHAIN_CONTEXT chainContext = static_cast<PCCERT_CHAIN_CONTEXT>(data);
-    if (chainContext->cChain < 1)
+    void *data = wkGetSSLCertificateChainContext( certificateInfo );
+
+    if ( !data )
+    {
         return;
+    }
+
+    PCCERT_CHAIN_CONTEXT chainContext = static_cast<PCCERT_CHAIN_CONTEXT>( data );
+
+    if ( chainContext->cChain < 1 )
+    {
+        return;
+    }
 
     // The first simple chain starts with the leaf certificate and ends with a trusted root or self-signed certificate.
     PCERT_SIMPLE_CHAIN firstSimpleChain = chainContext->rgpChain[0];
-    for (unsigned i = 0; i < firstSimpleChain->cElement; ++i) {
+
+    for ( unsigned i = 0; i < firstSimpleChain->cElement; ++i )
+    {
         PCCERT_CONTEXT certificateContext = firstSimpleChain->rgpElement[i]->pCertContext;
-        PCCERT_CONTEXT certificateContextCopy = ::CertDuplicateCertificateContext(certificateContext);
-        m_certificateChain.append(certificateContextCopy);
+        PCCERT_CONTEXT certificateContextCopy = ::CertDuplicateCertificateContext( certificateContext );
+        m_certificateChain.append( certificateContextCopy );
     }
+
 #else
     // FIXME: WinCairo implementation
 #endif
 }
 
-PlatformCertificateInfo::PlatformCertificateInfo(PCCERT_CONTEXT certificateContext)
+PlatformCertificateInfo::PlatformCertificateInfo( PCCERT_CONTEXT certificateContext )
 {
-    if (!certificateContext)
+    if ( !certificateContext )
+    {
         return;
-    
-    PCCERT_CONTEXT certificateContextCopy = ::CertDuplicateCertificateContext(certificateContext);
-    m_certificateChain.append(certificateContextCopy);    
+    }
+
+    PCCERT_CONTEXT certificateContextCopy = ::CertDuplicateCertificateContext( certificateContext );
+    m_certificateChain.append( certificateContextCopy );
 }
 
 PlatformCertificateInfo::~PlatformCertificateInfo()
@@ -87,64 +105,81 @@ PlatformCertificateInfo::~PlatformCertificateInfo()
     clearCertificateChain();
 }
 
-PlatformCertificateInfo::PlatformCertificateInfo(const PlatformCertificateInfo& other)
+PlatformCertificateInfo::PlatformCertificateInfo( const PlatformCertificateInfo &other )
 {
-    for (size_t i = 0; i < other.m_certificateChain.size(); ++i) {
-        PCCERT_CONTEXT certificateContextCopy = ::CertDuplicateCertificateContext(other.m_certificateChain[i]);
-        m_certificateChain.append(certificateContextCopy);
+    for ( size_t i = 0; i < other.m_certificateChain.size(); ++i )
+    {
+        PCCERT_CONTEXT certificateContextCopy = ::CertDuplicateCertificateContext( other.m_certificateChain[i] );
+        m_certificateChain.append( certificateContextCopy );
     }
 }
 
-PlatformCertificateInfo& PlatformCertificateInfo::operator=(const PlatformCertificateInfo& other)
+PlatformCertificateInfo &PlatformCertificateInfo::operator=( const PlatformCertificateInfo &other )
 {
     clearCertificateChain();
-    for (size_t i = 0; i < other.m_certificateChain.size(); ++i) {
-        PCCERT_CONTEXT certificateContextCopy = ::CertDuplicateCertificateContext(other.m_certificateChain[i]);
-        m_certificateChain.append(certificateContextCopy);
+
+    for ( size_t i = 0; i < other.m_certificateChain.size(); ++i )
+    {
+        PCCERT_CONTEXT certificateContextCopy = ::CertDuplicateCertificateContext( other.m_certificateChain[i] );
+        m_certificateChain.append( certificateContextCopy );
     }
+
     return *this;
 }
 
-void PlatformCertificateInfo::encode(CoreIPC::ArgumentEncoder* encoder) const
+void PlatformCertificateInfo::encode( CoreIPC::ArgumentEncoder *encoder ) const
 {
     // Special case no certificates
-    if (m_certificateChain.isEmpty()) {
-        encoder->encodeUInt64(std::numeric_limits<uint64_t>::max());
+    if ( m_certificateChain.isEmpty() )
+    {
+        encoder->encodeUInt64( std::numeric_limits<uint64_t>::max() );
         return;
     }
 
     uint64_t length = m_certificateChain.size();
-    encoder->encodeUInt64(length);
+    encoder->encodeUInt64( length );
 
-    for (size_t i = 0; i < length; ++i)
-        encoder->encodeBytes(static_cast<uint8_t*>(m_certificateChain[i]->pbCertEncoded), m_certificateChain[i]->cbCertEncoded);
+    for ( size_t i = 0; i < length; ++i )
+    {
+        encoder->encodeBytes( static_cast<uint8_t *>( m_certificateChain[i]->pbCertEncoded ), m_certificateChain[i]->cbCertEncoded );
+    }
 }
 
-bool PlatformCertificateInfo::decode(CoreIPC::ArgumentDecoder* decoder, PlatformCertificateInfo& c)
+bool PlatformCertificateInfo::decode( CoreIPC::ArgumentDecoder *decoder, PlatformCertificateInfo &c )
 {
     uint64_t length;
-    if (!decoder->decode(length))
-        return false;
 
-    if (length == std::numeric_limits<uint64_t>::max()) {
+    if ( !decoder->decode( length ) )
+    {
+        return false;
+    }
+
+    if ( length == std::numeric_limits<uint64_t>::max() )
+    {
         // This is the no certificates case.
         return true;
     }
 
-    for (size_t i = 0; i < length; ++i) {
+    for ( size_t i = 0; i < length; ++i )
+    {
         Vector<uint8_t> bytes;
-        if (!decoder->decodeBytes(bytes)) {
+
+        if ( !decoder->decodeBytes( bytes ) )
+        {
             c.clearCertificateChain();
             return false;
         }
 
-        PCCERT_CONTEXT certificateContext = ::CertCreateCertificateContext(PKCS_7_ASN_ENCODING | X509_ASN_ENCODING, bytes.data(), bytes.size());
-        if (!certificateContext) {
+        PCCERT_CONTEXT certificateContext = ::CertCreateCertificateContext( PKCS_7_ASN_ENCODING | X509_ASN_ENCODING, bytes.data(),
+                                            bytes.size() );
+
+        if ( !certificateContext )
+        {
             c.clearCertificateChain();
             return false;
         }
-        
-        c.m_certificateChain.append(certificateContext);
+
+        c.m_certificateChain.append( certificateContext );
     }
 
     return true;
@@ -152,8 +187,11 @@ bool PlatformCertificateInfo::decode(CoreIPC::ArgumentDecoder* decoder, Platform
 
 void PlatformCertificateInfo::clearCertificateChain()
 {
-    for (size_t i = 0; i < m_certificateChain.size(); ++i)
-        ::CertFreeCertificateContext(m_certificateChain[i]);
+    for ( size_t i = 0; i < m_certificateChain.size(); ++i )
+    {
+        ::CertFreeCertificateContext( m_certificateChain[i] );
+    }
+
     m_certificateChain.clear();
 }
 

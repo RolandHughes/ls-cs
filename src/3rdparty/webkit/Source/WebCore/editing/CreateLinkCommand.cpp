@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -30,29 +30,36 @@
 
 #include "HTMLAnchorElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-CreateLinkCommand::CreateLinkCommand(Document* document, const String& url) 
-    : CompositeEditCommand(document)
+CreateLinkCommand::CreateLinkCommand( Document *document, const String &url )
+    : CompositeEditCommand( document )
 {
     m_url = url;
 }
 
 void CreateLinkCommand::doApply()
 {
-    if (endingSelection().isNone())
+    if ( endingSelection().isNone() )
+    {
         return;
-        
-    RefPtr<HTMLAnchorElement> anchorElement = HTMLAnchorElement::create(document());
-    anchorElement->setHref(m_url);
-    
-    if (endingSelection().isRange())
-        applyStyledElement(anchorElement.get());
-    else {
-        insertNodeAt(anchorElement.get(), endingSelection().start());
-        RefPtr<Text> textNode = Text::create(document(), m_url);
-        appendNode(textNode.get(), anchorElement.get());
-        setEndingSelection(VisibleSelection(positionInParentBeforeNode(anchorElement.get()), positionInParentAfterNode(anchorElement.get()), DOWNSTREAM));
+    }
+
+    RefPtr<HTMLAnchorElement> anchorElement = HTMLAnchorElement::create( document() );
+    anchorElement->setHref( m_url );
+
+    if ( endingSelection().isRange() )
+    {
+        applyStyledElement( anchorElement.get() );
+    }
+    else
+    {
+        insertNodeAt( anchorElement.get(), endingSelection().start() );
+        RefPtr<Text> textNode = Text::create( document(), m_url );
+        appendNode( textNode.get(), anchorElement.get() );
+        setEndingSelection( VisibleSelection( positionInParentBeforeNode( anchorElement.get() ),
+                                              positionInParentAfterNode( anchorElement.get() ), DOWNSTREAM ) );
     }
 }
 

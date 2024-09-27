@@ -36,7 +36,8 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 struct DocumentLoadTiming;
 class DocumentLoader;
@@ -44,11 +45,15 @@ struct DocumentTiming;
 class Frame;
 class ResourceLoadTiming;
 
-class PerformanceTiming : public RefCounted<PerformanceTiming> {
+class PerformanceTiming : public RefCounted<PerformanceTiming>
+{
 public:
-    static PassRefPtr<PerformanceTiming> create(Frame* frame) { return adoptRef(new PerformanceTiming(frame)); }
+    static PassRefPtr<PerformanceTiming> create( Frame *frame )
+    {
+        return adoptRef( new PerformanceTiming( frame ) );
+    }
 
-    Frame* frame() const;
+    Frame *frame() const;
     void disconnectFrame();
 
     unsigned long long navigationStart() const;
@@ -74,15 +79,15 @@ public:
     unsigned long long loadEventEnd() const;
 
 private:
-    PerformanceTiming(Frame*);
+    PerformanceTiming( Frame * );
 
-    const DocumentTiming* documentTiming() const;
-    DocumentLoader* documentLoader() const;
-    DocumentLoadTiming* documentLoadTiming() const;
-    ResourceLoadTiming* resourceLoadTiming() const;
-    unsigned long long resourceLoadTimeRelativeToAbsolute(int) const;
+    const DocumentTiming *documentTiming() const;
+    DocumentLoader *documentLoader() const;
+    DocumentLoadTiming *documentLoadTiming() const;
+    ResourceLoadTiming *resourceLoadTiming() const;
+    unsigned long long resourceLoadTimeRelativeToAbsolute( int ) const;
 
-    Frame* m_frame;
+    Frame *m_frame;
 };
 
 }

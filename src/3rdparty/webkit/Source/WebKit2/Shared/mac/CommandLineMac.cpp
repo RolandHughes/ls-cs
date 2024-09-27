@@ -26,30 +26,44 @@
 #include "config.h"
 #include "CommandLine.h"
 
-namespace WebKit {
+namespace WebKit
+{
 
 // FIXME: There's nothing Mac specific about this command line parser.
 // Maybe we should move it to CommandLinePosix.cpp instead.
 
-bool CommandLine::parse(int argc, char** argv)
+bool CommandLine::parse( int argc, char **argv )
 {
-    if ((argc % 2))
+    if ( ( argc % 2 ) )
+    {
         return false;
+    }
 
-    for (int i = 2; i < argc; i += 2) {
-        if (!argv[i] || *argv[i] != '-')
+    for ( int i = 2; i < argc; i += 2 )
+    {
+        if ( !argv[i] || *argv[i] != '-' )
+        {
             return false;
+        }
 
-        String key = String::fromUTF8(argv[i] + 1);
-        if (key.isEmpty())
-            return false;
+        String key = String::fromUTF8( argv[i] + 1 );
 
-        String value = String::fromUTF8(argv[i + 1]);
-        if (value.isEmpty())
+        if ( key.isEmpty() )
+        {
             return false;
-        
-        if (!m_args.add(key, value).second)
+        }
+
+        String value = String::fromUTF8( argv[i + 1] );
+
+        if ( value.isEmpty() )
+        {
             return false;
+        }
+
+        if ( !m_args.add( key, value ).second )
+        {
+            return false;
+        }
     }
 
     return true;

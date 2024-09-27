@@ -25,8 +25,8 @@
 
 #include <qmediacontrol_p.h>
 
-QCameraFlashControl::QCameraFlashControl(QObject *parent)
-   : QMediaControl(*new QMediaControlPrivate, parent)
+QCameraFlashControl::QCameraFlashControl( QObject *parent )
+    : QMediaControl( *new QMediaControlPrivate, parent )
 {
 }
 

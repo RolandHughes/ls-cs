@@ -33,28 +33,43 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/Threading.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class IDBKeyRange : public ThreadSafeRefCounted<IDBKeyRange> {
+class IDBKeyRange : public ThreadSafeRefCounted<IDBKeyRange>
+{
 public:
-    static PassRefPtr<IDBKeyRange> create(PassRefPtr<IDBKey> lower, PassRefPtr<IDBKey> upper, bool lowerOpen, bool upperOpen)
+    static PassRefPtr<IDBKeyRange> create( PassRefPtr<IDBKey> lower, PassRefPtr<IDBKey> upper, bool lowerOpen, bool upperOpen )
     {
-        return adoptRef(new IDBKeyRange(lower, upper, lowerOpen, upperOpen));
+        return adoptRef( new IDBKeyRange( lower, upper, lowerOpen, upperOpen ) );
     }
     ~IDBKeyRange() { }
 
-    PassRefPtr<IDBKey> lower() const { return m_lower; }
-    PassRefPtr<IDBKey> upper() const { return m_upper; }
-    bool lowerOpen() const { return m_lowerOpen; }
-    bool upperOpen() const { return m_upperOpen; }
+    PassRefPtr<IDBKey> lower() const
+    {
+        return m_lower;
+    }
+    PassRefPtr<IDBKey> upper() const
+    {
+        return m_upper;
+    }
+    bool lowerOpen() const
+    {
+        return m_lowerOpen;
+    }
+    bool upperOpen() const
+    {
+        return m_upperOpen;
+    }
 
-    static PassRefPtr<IDBKeyRange> only(PassRefPtr<IDBKey> value);
-    static PassRefPtr<IDBKeyRange> lowerBound(PassRefPtr<IDBKey> bound, bool open = false);
-    static PassRefPtr<IDBKeyRange> upperBound(PassRefPtr<IDBKey> bound, bool open = false);
-    static PassRefPtr<IDBKeyRange> bound(PassRefPtr<IDBKey> lower, PassRefPtr<IDBKey> upper, bool lowerOpen = false, bool upperOpen = false);
+    static PassRefPtr<IDBKeyRange> only( PassRefPtr<IDBKey> value );
+    static PassRefPtr<IDBKeyRange> lowerBound( PassRefPtr<IDBKey> bound, bool open = false );
+    static PassRefPtr<IDBKeyRange> upperBound( PassRefPtr<IDBKey> bound, bool open = false );
+    static PassRefPtr<IDBKeyRange> bound( PassRefPtr<IDBKey> lower, PassRefPtr<IDBKey> upper, bool lowerOpen = false,
+                                          bool upperOpen = false );
 
 private:
-    IDBKeyRange(PassRefPtr<IDBKey> lower, PassRefPtr<IDBKey> upper, bool lowerOpen, bool upperOpen);
+    IDBKeyRange( PassRefPtr<IDBKey> lower, PassRefPtr<IDBKey> upper, bool lowerOpen, bool upperOpen );
 
     RefPtr<IDBKey> m_lower;
     RefPtr<IDBKey> m_upper;

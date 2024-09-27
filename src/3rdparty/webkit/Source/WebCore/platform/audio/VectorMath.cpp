@@ -32,52 +32,60 @@
 #include <Accelerate/Accelerate.h>
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
-namespace VectorMath {
+namespace VectorMath
+{
 
 #if OS(DARWIN)
 // On the Mac we use the highly optimized versions in Accelerate.framework
 // In 32-bit mode (__ppc__ or __i386__) <Accelerate/Accelerate.h> includes <vecLib/vDSP_translate.h> which defines macros of the same name as
 // our namespaced function names, so we must handle this case differently.  Other architectures (64bit, ARM, etc.) do not include this header file.
 
-void vsmul(const float* sourceP, int sourceStride, const float* scale, float* destP, int destStride, size_t framesToProcess)
+void vsmul( const float *sourceP, int sourceStride, const float *scale, float *destP, int destStride, size_t framesToProcess )
 {
 #if defined(__ppc__) || defined(__i386__)
-    ::vsmul(sourceP, sourceStride, scale, destP, destStride, framesToProcess);
+    ::vsmul( sourceP, sourceStride, scale, destP, destStride, framesToProcess );
 #else
-    vDSP_vsmul(sourceP, sourceStride, scale, destP, destStride, framesToProcess);
+    vDSP_vsmul( sourceP, sourceStride, scale, destP, destStride, framesToProcess );
 #endif
 }
 
-void vadd(const float* source1P, int sourceStride1, const float* source2P, int sourceStride2, float* destP, int destStride, size_t framesToProcess)
+void vadd( const float *source1P, int sourceStride1, const float *source2P, int sourceStride2, float *destP, int destStride,
+           size_t framesToProcess )
 {
 #if defined(__ppc__) || defined(__i386__)
-    ::vadd(source1P, sourceStride1, source2P, sourceStride2, destP, destStride, framesToProcess);
+    ::vadd( source1P, sourceStride1, source2P, sourceStride2, destP, destStride, framesToProcess );
 #else
-    vDSP_vadd(source1P, sourceStride1, source2P, sourceStride2, destP, destStride, framesToProcess);
+    vDSP_vadd( source1P, sourceStride1, source2P, sourceStride2, destP, destStride, framesToProcess );
 #endif
 }
 
 #else
 
-void vsmul(const float* sourceP, int sourceStride, const float* scale, float* destP, int destStride, size_t framesToProcess)
+void vsmul( const float *sourceP, int sourceStride, const float *scale, float *destP, int destStride, size_t framesToProcess )
 {
     // FIXME: optimize for SSE
     int n = framesToProcess;
     float k = *scale;
-    while (n--) {
+
+    while ( n-- )
+    {
         *destP = k * *sourceP;
         sourceP += sourceStride;
         destP += destStride;
     }
 }
 
-void vadd(const float* source1P, int sourceStride1, const float* source2P, int sourceStride2, float* destP, int destStride, size_t framesToProcess)
+void vadd( const float *source1P, int sourceStride1, const float *source2P, int sourceStride2, float *destP, int destStride,
+           size_t framesToProcess )
 {
     // FIXME: optimize for SSE
     int n = framesToProcess;
-    while (n--) {
+
+    while ( n-- )
+    {
         *destP = *source1P + *source2P;
         source1P += sourceStride1;
         source2P += sourceStride2;

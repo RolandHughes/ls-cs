@@ -41,43 +41,48 @@ using namespace JSC;
 extern "C" {
 #endif
 
-JSWeakObjectMapRef JSWeakObjectMapCreate(JSContextRef context, void* privateData, JSWeakMapDestroyedCallback callback)
+JSWeakObjectMapRef JSWeakObjectMapCreate( JSContextRef context, void *privateData, JSWeakMapDestroyedCallback callback )
 {
-    ExecState* exec = toJS(context);
-    APIEntryShim entryShim(exec);
-    RefPtr<OpaqueJSWeakObjectMap> map = OpaqueJSWeakObjectMap::create(privateData, callback);
-    exec->lexicalGlobalObject()->registerWeakMap(map.get());
+    ExecState *exec = toJS( context );
+    APIEntryShim entryShim( exec );
+    RefPtr<OpaqueJSWeakObjectMap> map = OpaqueJSWeakObjectMap::create( privateData, callback );
+    exec->lexicalGlobalObject()->registerWeakMap( map.get() );
     return map.get();
 }
 
-void JSWeakObjectMapSet(JSContextRef ctx, JSWeakObjectMapRef map, void* key, JSObjectRef object)
+void JSWeakObjectMapSet( JSContextRef ctx, JSWeakObjectMapRef map, void *key, JSObjectRef object )
 {
-    ExecState* exec = toJS(ctx);
-    APIEntryShim entryShim(exec);
-    JSObject* obj = toJS(object);
-    if (!obj)
+    ExecState *exec = toJS( ctx );
+    APIEntryShim entryShim( exec );
+    JSObject *obj = toJS( object );
+
+    if ( !obj )
+    {
         return;
-    ASSERT(obj->inherits(&JSCallbackObject<JSGlobalObject>::s_info) || obj->inherits(&JSCallbackObject<JSObjectWithGlobalObject>::s_info));
-    map->map().set(exec->globalData(), key, obj);
+    }
+
+    ASSERT( obj->inherits( &JSCallbackObject<JSGlobalObject>::s_info )
+            || obj->inherits( &JSCallbackObject<JSObjectWithGlobalObject>::s_info ) );
+    map->map().set( exec->globalData(), key, obj );
 }
 
-JSObjectRef JSWeakObjectMapGet(JSContextRef ctx, JSWeakObjectMapRef map, void* key)
+JSObjectRef JSWeakObjectMapGet( JSContextRef ctx, JSWeakObjectMapRef map, void *key )
 {
-    ExecState* exec = toJS(ctx);
-    APIEntryShim entryShim(exec);
-    return toRef(static_cast<JSObject*>(map->map().get(key)));
+    ExecState *exec = toJS( ctx );
+    APIEntryShim entryShim( exec );
+    return toRef( static_cast<JSObject *>( map->map().get( key ) ) );
 }
 
-void JSWeakObjectMapRemove(JSContextRef ctx, JSWeakObjectMapRef map, void* key)
+void JSWeakObjectMapRemove( JSContextRef ctx, JSWeakObjectMapRef map, void *key )
 {
-    ExecState* exec = toJS(ctx);
-    APIEntryShim entryShim(exec);
-    map->map().take(key);
+    ExecState *exec = toJS( ctx );
+    APIEntryShim entryShim( exec );
+    map->map().take( key );
 }
 
 // We need to keep this function in the build to keep the nightlies running.
-JS_EXPORT bool JSWeakObjectMapClear(JSContextRef, JSWeakObjectMapRef, void*, JSObjectRef);
-bool JSWeakObjectMapClear(JSContextRef, JSWeakObjectMapRef, void*, JSObjectRef)
+JS_EXPORT bool JSWeakObjectMapClear( JSContextRef, JSWeakObjectMapRef, void *, JSObjectRef );
+bool JSWeakObjectMapClear( JSContextRef, JSWeakObjectMapRef, void *, JSObjectRef )
 {
     return true;
 }

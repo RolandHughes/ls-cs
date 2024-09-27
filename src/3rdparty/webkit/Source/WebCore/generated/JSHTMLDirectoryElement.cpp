@@ -27,9 +27,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSHTMLDirectoryElement);
+ASSERT_CLASS_FITS_IN_CELL( JSHTMLDirectoryElement );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -40,9 +41,9 @@ ASSERT_CLASS_FITS_IN_CELL(JSHTMLDirectoryElement);
 
 static const HashTableValue JSHTMLDirectoryElementTableValues[3] =
 {
-    { "compact", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLDirectoryElementCompact), (intptr_t)setJSHTMLDirectoryElementCompact THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLDirectoryElementConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "compact", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLDirectoryElementCompact ), ( intptr_t )setJSHTMLDirectoryElementCompact THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLDirectoryElementConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -56,43 +57,51 @@ static JSC_CONST_HASHTABLE HashTable JSHTMLDirectoryElementTable = { 4, 3, JSHTM
 
 static const HashTableValue JSHTMLDirectoryElementConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSHTMLDirectoryElementConstructorTable = { 1, 0, JSHTMLDirectoryElementConstructorTableValues, 0 };
-class JSHTMLDirectoryElementConstructor : public DOMConstructorObject {
+class JSHTMLDirectoryElementConstructor : public DOMConstructorObject
+{
 public:
-    JSHTMLDirectoryElementConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSHTMLDirectoryElementConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSHTMLDirectoryElementConstructor::s_info = { "HTMLDirectoryElementConstructor", &DOMConstructorObject::s_info, &JSHTMLDirectoryElementConstructorTable, 0 };
 
-JSHTMLDirectoryElementConstructor::JSHTMLDirectoryElementConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSHTMLDirectoryElementConstructor::JSHTMLDirectoryElementConstructor( ExecState *exec, Structure *structure,
+        JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSHTMLDirectoryElementPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSHTMLDirectoryElementPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSHTMLDirectoryElementConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSHTMLDirectoryElementConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSHTMLDirectoryElementConstructor, JSDOMWrapper>(exec, &JSHTMLDirectoryElementConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSHTMLDirectoryElementConstructor, JSDOMWrapper>( exec, &JSHTMLDirectoryElementConstructorTable, this,
+            propertyName, slot );
 }
 
-bool JSHTMLDirectoryElementConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSHTMLDirectoryElementConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSHTMLDirectoryElementConstructor, JSDOMWrapper>(exec, &JSHTMLDirectoryElementConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSHTMLDirectoryElementConstructor, JSDOMWrapper>( exec, &JSHTMLDirectoryElementConstructorTable,
+            this, propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -104,73 +113,77 @@ bool JSHTMLDirectoryElementConstructor::getOwnPropertyDescriptor(ExecState* exec
 
 static const HashTableValue JSHTMLDirectoryElementPrototypeTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSHTMLDirectoryElementPrototypeTable = { 1, 0, JSHTMLDirectoryElementPrototypeTableValues, 0 };
 const ClassInfo JSHTMLDirectoryElementPrototype::s_info = { "HTMLDirectoryElementPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSHTMLDirectoryElementPrototypeTable, 0 };
 
-JSObject* JSHTMLDirectoryElementPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSHTMLDirectoryElementPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSHTMLDirectoryElement>(exec, globalObject);
+    return getDOMPrototype<JSHTMLDirectoryElement>( exec, globalObject );
 }
 
 const ClassInfo JSHTMLDirectoryElement::s_info = { "HTMLDirectoryElement", &JSHTMLElement::s_info, &JSHTMLDirectoryElementTable, 0 };
 
-JSHTMLDirectoryElement::JSHTMLDirectoryElement(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<HTMLDirectoryElement> impl)
-    : JSHTMLElement(structure, globalObject, impl)
+JSHTMLDirectoryElement::JSHTMLDirectoryElement( Structure *structure, JSDOMGlobalObject *globalObject,
+        PassRefPtr<HTMLDirectoryElement> impl )
+    : JSHTMLElement( structure, globalObject, impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSHTMLDirectoryElement::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSHTMLDirectoryElement::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSHTMLDirectoryElementPrototype(exec->globalData(), globalObject, JSHTMLDirectoryElementPrototype::createStructure(exec->globalData(), JSHTMLElementPrototype::self(exec, globalObject)));
+    return new ( exec ) JSHTMLDirectoryElementPrototype( exec->globalData(), globalObject,
+            JSHTMLDirectoryElementPrototype::createStructure( exec->globalData(), JSHTMLElementPrototype::self( exec, globalObject ) ) );
 }
 
-bool JSHTMLDirectoryElement::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSHTMLDirectoryElement::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSHTMLDirectoryElement, Base>(exec, &JSHTMLDirectoryElementTable, this, propertyName, slot);
+    return getStaticValueSlot<JSHTMLDirectoryElement, Base>( exec, &JSHTMLDirectoryElementTable, this, propertyName, slot );
 }
 
-bool JSHTMLDirectoryElement::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSHTMLDirectoryElement::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSHTMLDirectoryElement, Base>(exec, &JSHTMLDirectoryElementTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSHTMLDirectoryElement, Base>( exec, &JSHTMLDirectoryElementTable, this, propertyName,
+            descriptor );
 }
 
-JSValue jsHTMLDirectoryElementCompact(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLDirectoryElementCompact( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLDirectoryElement* castedThis = static_cast<JSHTMLDirectoryElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    HTMLDirectoryElement* imp = static_cast<HTMLDirectoryElement*>(castedThis->impl());
-    JSValue result = jsBoolean(imp->hasAttribute(WebCore::HTMLNames::compactAttr));
+    JSHTMLDirectoryElement *castedThis = static_cast<JSHTMLDirectoryElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    HTMLDirectoryElement *imp = static_cast<HTMLDirectoryElement *>( castedThis->impl() );
+    JSValue result = jsBoolean( imp->hasAttribute( WebCore::HTMLNames::compactAttr ) );
     return result;
 }
 
 
-JSValue jsHTMLDirectoryElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLDirectoryElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLDirectoryElement* domObject = static_cast<JSHTMLDirectoryElement*>(asObject(slotBase));
-    return JSHTMLDirectoryElement::getConstructor(exec, domObject->globalObject());
+    JSHTMLDirectoryElement *domObject = static_cast<JSHTMLDirectoryElement *>( asObject( slotBase ) );
+    return JSHTMLDirectoryElement::getConstructor( exec, domObject->globalObject() );
 }
 
-void JSHTMLDirectoryElement::put(ExecState* exec, const Identifier& propertyName, JSValue value, PutPropertySlot& slot)
+void JSHTMLDirectoryElement::put( ExecState *exec, const Identifier &propertyName, JSValue value, PutPropertySlot &slot )
 {
-    lookupPut<JSHTMLDirectoryElement, Base>(exec, propertyName, value, &JSHTMLDirectoryElementTable, this, slot);
+    lookupPut<JSHTMLDirectoryElement, Base>( exec, propertyName, value, &JSHTMLDirectoryElementTable, this, slot );
 }
 
-void setJSHTMLDirectoryElementCompact(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSHTMLDirectoryElementCompact( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSHTMLDirectoryElement* castedThis = static_cast<JSHTMLDirectoryElement*>(thisObject);
-    HTMLDirectoryElement* imp = static_cast<HTMLDirectoryElement*>(castedThis->impl());
-    imp->setBooleanAttribute(WebCore::HTMLNames::compactAttr, value.toBoolean(exec));
+    JSHTMLDirectoryElement *castedThis = static_cast<JSHTMLDirectoryElement *>( thisObject );
+    HTMLDirectoryElement *imp = static_cast<HTMLDirectoryElement *>( castedThis->impl() );
+    imp->setBooleanAttribute( WebCore::HTMLNames::compactAttr, value.toBoolean( exec ) );
 }
 
 
-JSValue JSHTMLDirectoryElement::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSHTMLDirectoryElement::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSHTMLDirectoryElementConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSHTMLDirectoryElementConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
 

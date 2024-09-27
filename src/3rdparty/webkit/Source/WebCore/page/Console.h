@@ -38,7 +38,8 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class ScriptArguments;
 
@@ -50,7 +51,8 @@ class Frame;
 class Page;
 class ScriptCallStack;
 
-enum MessageSource {
+enum MessageSource
+{
     HTMLMessageSource,
     XMLMessageSource,
     JSMessageSource,
@@ -58,7 +60,8 @@ enum MessageSource {
     OtherMessageSource
 };
 
-enum MessageType {
+enum MessageType
+{
     LogMessageType,
     ObjectMessageType,
     TraceMessageType,
@@ -70,7 +73,8 @@ enum MessageType {
     NetworkErrorMessageType
 };
 
-enum MessageLevel {
+enum MessageLevel
+{
     TipMessageLevel,
     LogMessageLevel,
     WarningMessageLevel,
@@ -78,52 +82,61 @@ enum MessageLevel {
     DebugMessageLevel
 };
 
-class Console : public RefCounted<Console> {
+class Console : public RefCounted<Console>
+{
 public:
-    static PassRefPtr<Console> create(Frame* frame) { return adoptRef(new Console(frame)); }
+    static PassRefPtr<Console> create( Frame *frame )
+    {
+        return adoptRef( new Console( frame ) );
+    }
 
-    Frame* frame() const;
+    Frame *frame() const;
     void disconnectFrame();
 
-    void addMessage(MessageSource, MessageType, MessageLevel, const String& message, unsigned lineNumber, const String& sourceURL);
-    void addMessage(MessageSource, MessageType, MessageLevel, const String& message, unsigned lineNumber, const String& sourceURL, PassRefPtr<ScriptCallStack> callStack);
+    void addMessage( MessageSource, MessageType, MessageLevel, const String &message, unsigned lineNumber, const String &sourceURL );
+    void addMessage( MessageSource, MessageType, MessageLevel, const String &message, unsigned lineNumber, const String &sourceURL,
+                     PassRefPtr<ScriptCallStack> callStack );
 
-    void debug(PassRefPtr<ScriptArguments>, PassRefPtr<ScriptCallStack>);
-    void error(PassRefPtr<ScriptArguments>, PassRefPtr<ScriptCallStack>);
-    void info(PassRefPtr<ScriptArguments>, PassRefPtr<ScriptCallStack>);
-    void log(PassRefPtr<ScriptArguments>, PassRefPtr<ScriptCallStack>);
-    void warn(PassRefPtr<ScriptArguments>, PassRefPtr<ScriptCallStack>);
-    void dir(PassRefPtr<ScriptArguments>, PassRefPtr<ScriptCallStack>);
-    void dirxml(PassRefPtr<ScriptArguments>, PassRefPtr<ScriptCallStack>);
-    void trace(PassRefPtr<ScriptArguments>, PassRefPtr<ScriptCallStack>);
-    void assertCondition(bool condition, PassRefPtr<ScriptArguments>, PassRefPtr<ScriptCallStack>);
-    void count(PassRefPtr<ScriptArguments>, PassRefPtr<ScriptCallStack>);
-    void markTimeline(PassRefPtr<ScriptArguments>, PassRefPtr<ScriptCallStack>);
+    void debug( PassRefPtr<ScriptArguments>, PassRefPtr<ScriptCallStack> );
+    void error( PassRefPtr<ScriptArguments>, PassRefPtr<ScriptCallStack> );
+    void info( PassRefPtr<ScriptArguments>, PassRefPtr<ScriptCallStack> );
+    void log( PassRefPtr<ScriptArguments>, PassRefPtr<ScriptCallStack> );
+    void warn( PassRefPtr<ScriptArguments>, PassRefPtr<ScriptCallStack> );
+    void dir( PassRefPtr<ScriptArguments>, PassRefPtr<ScriptCallStack> );
+    void dirxml( PassRefPtr<ScriptArguments>, PassRefPtr<ScriptCallStack> );
+    void trace( PassRefPtr<ScriptArguments>, PassRefPtr<ScriptCallStack> );
+    void assertCondition( bool condition, PassRefPtr<ScriptArguments>, PassRefPtr<ScriptCallStack> );
+    void count( PassRefPtr<ScriptArguments>, PassRefPtr<ScriptCallStack> );
+    void markTimeline( PassRefPtr<ScriptArguments>, PassRefPtr<ScriptCallStack> );
 #if ENABLE(JAVASCRIPT_DEBUGGER)
-    const ProfilesArray& profiles() const { return m_profiles; }
-    void profile(const String&, ScriptState*, PassRefPtr<ScriptCallStack>);
-    void profileEnd(const String&, ScriptState*, PassRefPtr<ScriptCallStack>);
+    const ProfilesArray &profiles() const
+    {
+        return m_profiles;
+    }
+    void profile( const String &, ScriptState *, PassRefPtr<ScriptCallStack> );
+    void profileEnd( const String &, ScriptState *, PassRefPtr<ScriptCallStack> );
 #endif
-    void time(const String&);
-    void timeEnd(const String&, PassRefPtr<ScriptArguments>, PassRefPtr<ScriptCallStack>);
-    void group(PassRefPtr<ScriptArguments>, PassRefPtr<ScriptCallStack>);
-    void groupCollapsed(PassRefPtr<ScriptArguments>, PassRefPtr<ScriptCallStack>);
+    void time( const String & );
+    void timeEnd( const String &, PassRefPtr<ScriptArguments>, PassRefPtr<ScriptCallStack> );
+    void group( PassRefPtr<ScriptArguments>, PassRefPtr<ScriptCallStack> );
+    void groupCollapsed( PassRefPtr<ScriptArguments>, PassRefPtr<ScriptCallStack> );
     void groupEnd();
 
     bool shouldCaptureFullStackTrace() const;
 
     static bool shouldPrintExceptions();
-    static void setShouldPrintExceptions(bool);
+    static void setShouldPrintExceptions( bool );
 
-    MemoryInfo* memory() const;
+    MemoryInfo *memory() const;
 
 private:
-    inline Page* page() const;
-    void addMessage(MessageType, MessageLevel, PassRefPtr<ScriptArguments>, PassRefPtr<ScriptCallStack>, bool acceptNoArguments = false);
+    inline Page *page() const;
+    void addMessage( MessageType, MessageLevel, PassRefPtr<ScriptArguments>, PassRefPtr<ScriptCallStack>,
+                     bool acceptNoArguments = false );
 
-    Console(Frame*);
+    Console( Frame * );
 
-    Frame* m_frame;
+    Frame *m_frame;
 #if ENABLE(JAVASCRIPT_DEBUGGER)
     ProfilesArray m_profiles;
 #endif

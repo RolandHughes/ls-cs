@@ -34,178 +34,228 @@
 
 using namespace WebCore;
 
-namespace WebKit {
-
-void InjectedBundlePageLoaderClient::didStartProvisionalLoadForFrame(WebPage* page, WebFrame* frame, RefPtr<APIObject>& userData)
+namespace WebKit
 {
-    if (!m_client.didStartProvisionalLoadForFrame)
+
+void InjectedBundlePageLoaderClient::didStartProvisionalLoadForFrame( WebPage *page, WebFrame *frame,
+        RefPtr<APIObject> &userData )
+{
+    if ( !m_client.didStartProvisionalLoadForFrame )
+    {
         return;
+    }
 
     WKTypeRef userDataToPass = 0;
-    m_client.didStartProvisionalLoadForFrame(toAPI(page), toAPI(frame), &userDataToPass, m_client.clientInfo);
-    userData = adoptRef(toImpl(userDataToPass));
+    m_client.didStartProvisionalLoadForFrame( toAPI( page ), toAPI( frame ), &userDataToPass, m_client.clientInfo );
+    userData = adoptRef( toImpl( userDataToPass ) );
 }
 
-void InjectedBundlePageLoaderClient::didReceiveServerRedirectForProvisionalLoadForFrame(WebPage* page, WebFrame* frame, RefPtr<APIObject>& userData)
+void InjectedBundlePageLoaderClient::didReceiveServerRedirectForProvisionalLoadForFrame( WebPage *page, WebFrame *frame,
+        RefPtr<APIObject> &userData )
 {
-    if (!m_client.didReceiveServerRedirectForProvisionalLoadForFrame)
+    if ( !m_client.didReceiveServerRedirectForProvisionalLoadForFrame )
+    {
         return;
+    }
 
     WKTypeRef userDataToPass = 0;
-    m_client.didReceiveServerRedirectForProvisionalLoadForFrame(toAPI(page), toAPI(frame), &userDataToPass, m_client.clientInfo);
-    userData = adoptRef(toImpl(userDataToPass));
+    m_client.didReceiveServerRedirectForProvisionalLoadForFrame( toAPI( page ), toAPI( frame ), &userDataToPass,
+            m_client.clientInfo );
+    userData = adoptRef( toImpl( userDataToPass ) );
 }
 
-void InjectedBundlePageLoaderClient::didFailProvisionalLoadWithErrorForFrame(WebPage* page, WebFrame* frame, const ResourceError& error, RefPtr<APIObject>& userData)
+void InjectedBundlePageLoaderClient::didFailProvisionalLoadWithErrorForFrame( WebPage *page, WebFrame *frame,
+        const ResourceError &error, RefPtr<APIObject> &userData )
 {
-    if (!m_client.didFailProvisionalLoadWithErrorForFrame)
+    if ( !m_client.didFailProvisionalLoadWithErrorForFrame )
+    {
         return;
+    }
 
     WKTypeRef userDataToPass = 0;
-    m_client.didFailProvisionalLoadWithErrorForFrame(toAPI(page), toAPI(frame), toAPI(error), &userDataToPass, m_client.clientInfo);
-    userData = adoptRef(toImpl(userDataToPass));
+    m_client.didFailProvisionalLoadWithErrorForFrame( toAPI( page ), toAPI( frame ), toAPI( error ), &userDataToPass,
+            m_client.clientInfo );
+    userData = adoptRef( toImpl( userDataToPass ) );
 }
 
-void InjectedBundlePageLoaderClient::didCommitLoadForFrame(WebPage* page, WebFrame* frame, RefPtr<APIObject>& userData)
+void InjectedBundlePageLoaderClient::didCommitLoadForFrame( WebPage *page, WebFrame *frame, RefPtr<APIObject> &userData )
 {
-    if (!m_client.didCommitLoadForFrame)
+    if ( !m_client.didCommitLoadForFrame )
+    {
         return;
+    }
 
     WKTypeRef userDataToPass = 0;
-    m_client.didCommitLoadForFrame(toAPI(page), toAPI(frame), &userDataToPass, m_client.clientInfo);
-    userData = adoptRef(toImpl(userDataToPass));
+    m_client.didCommitLoadForFrame( toAPI( page ), toAPI( frame ), &userDataToPass, m_client.clientInfo );
+    userData = adoptRef( toImpl( userDataToPass ) );
 }
 
-void InjectedBundlePageLoaderClient::didFinishDocumentLoadForFrame(WebPage* page, WebFrame* frame, RefPtr<APIObject>& userData)
+void InjectedBundlePageLoaderClient::didFinishDocumentLoadForFrame( WebPage *page, WebFrame *frame, RefPtr<APIObject> &userData )
 {
-    if (!m_client.didFinishDocumentLoadForFrame)
+    if ( !m_client.didFinishDocumentLoadForFrame )
+    {
         return;
+    }
 
     WKTypeRef userDataToPass = 0;
-    m_client.didFinishDocumentLoadForFrame(toAPI(page), toAPI(frame), &userDataToPass, m_client.clientInfo);
-    userData = adoptRef(toImpl(userDataToPass));
+    m_client.didFinishDocumentLoadForFrame( toAPI( page ), toAPI( frame ), &userDataToPass, m_client.clientInfo );
+    userData = adoptRef( toImpl( userDataToPass ) );
 }
 
-void InjectedBundlePageLoaderClient::didFinishLoadForFrame(WebPage* page, WebFrame* frame, RefPtr<APIObject>& userData)
+void InjectedBundlePageLoaderClient::didFinishLoadForFrame( WebPage *page, WebFrame *frame, RefPtr<APIObject> &userData )
 {
-    if (!m_client.didFinishLoadForFrame)
+    if ( !m_client.didFinishLoadForFrame )
+    {
         return;
+    }
 
     WKTypeRef userDataToPass = 0;
-    m_client.didFinishLoadForFrame(toAPI(page), toAPI(frame), &userDataToPass, m_client.clientInfo);
-    userData = adoptRef(toImpl(userDataToPass));
+    m_client.didFinishLoadForFrame( toAPI( page ), toAPI( frame ), &userDataToPass, m_client.clientInfo );
+    userData = adoptRef( toImpl( userDataToPass ) );
 }
 
-void InjectedBundlePageLoaderClient::didFailLoadWithErrorForFrame(WebPage* page, WebFrame* frame, const ResourceError& error, RefPtr<APIObject>& userData)
+void InjectedBundlePageLoaderClient::didFailLoadWithErrorForFrame( WebPage *page, WebFrame *frame, const ResourceError &error,
+        RefPtr<APIObject> &userData )
 {
-    if (!m_client.didFailLoadWithErrorForFrame)
+    if ( !m_client.didFailLoadWithErrorForFrame )
+    {
         return;
+    }
 
     WKTypeRef userDataToPass = 0;
-    m_client.didFailLoadWithErrorForFrame(toAPI(page), toAPI(frame), toAPI(error), &userDataToPass, m_client.clientInfo);
-    userData = adoptRef(toImpl(userDataToPass));
+    m_client.didFailLoadWithErrorForFrame( toAPI( page ), toAPI( frame ), toAPI( error ), &userDataToPass, m_client.clientInfo );
+    userData = adoptRef( toImpl( userDataToPass ) );
 }
 
-void InjectedBundlePageLoaderClient::didSameDocumentNavigationForFrame(WebPage* page, WebFrame* frame, SameDocumentNavigationType type, RefPtr<APIObject>& userData)
+void InjectedBundlePageLoaderClient::didSameDocumentNavigationForFrame( WebPage *page, WebFrame *frame,
+        SameDocumentNavigationType type, RefPtr<APIObject> &userData )
 {
-    if (!m_client.didSameDocumentNavigationForFrame)
+    if ( !m_client.didSameDocumentNavigationForFrame )
+    {
         return;
+    }
 
     WKTypeRef userDataToPass = 0;
-    m_client.didSameDocumentNavigationForFrame(toAPI(page), toAPI(frame), toAPI(type), &userDataToPass, m_client.clientInfo);
-    userData = adoptRef(toImpl(userDataToPass));
+    m_client.didSameDocumentNavigationForFrame( toAPI( page ), toAPI( frame ), toAPI( type ), &userDataToPass, m_client.clientInfo );
+    userData = adoptRef( toImpl( userDataToPass ) );
 }
 
-void InjectedBundlePageLoaderClient::didReceiveTitleForFrame(WebPage* page, const String& title, WebFrame* frame, RefPtr<APIObject>& userData)
+void InjectedBundlePageLoaderClient::didReceiveTitleForFrame( WebPage *page, const String &title, WebFrame *frame,
+        RefPtr<APIObject> &userData )
 {
-    if (!m_client.didReceiveTitleForFrame)
+    if ( !m_client.didReceiveTitleForFrame )
+    {
         return;
+    }
 
     WKTypeRef userDataToPass = 0;
-    m_client.didReceiveTitleForFrame(toAPI(page), toAPI(title.impl()), toAPI(frame), &userDataToPass, m_client.clientInfo);
-    userData = adoptRef(toImpl(userDataToPass));
+    m_client.didReceiveTitleForFrame( toAPI( page ), toAPI( title.impl() ), toAPI( frame ), &userDataToPass, m_client.clientInfo );
+    userData = adoptRef( toImpl( userDataToPass ) );
 }
 
-void InjectedBundlePageLoaderClient::didFirstLayoutForFrame(WebPage* page, WebFrame* frame, RefPtr<APIObject>& userData)
+void InjectedBundlePageLoaderClient::didFirstLayoutForFrame( WebPage *page, WebFrame *frame, RefPtr<APIObject> &userData )
 {
-    if (!m_client.didFirstLayoutForFrame)
+    if ( !m_client.didFirstLayoutForFrame )
+    {
         return;
+    }
 
     WKTypeRef userDataToPass = 0;
-    m_client.didFirstLayoutForFrame(toAPI(page), toAPI(frame), &userDataToPass, m_client.clientInfo);
-    userData = adoptRef(toImpl(userDataToPass));
+    m_client.didFirstLayoutForFrame( toAPI( page ), toAPI( frame ), &userDataToPass, m_client.clientInfo );
+    userData = adoptRef( toImpl( userDataToPass ) );
 }
 
-void InjectedBundlePageLoaderClient::didFirstVisuallyNonEmptyLayoutForFrame(WebPage* page, WebFrame* frame, RefPtr<APIObject>& userData)
+void InjectedBundlePageLoaderClient::didFirstVisuallyNonEmptyLayoutForFrame( WebPage *page, WebFrame *frame,
+        RefPtr<APIObject> &userData )
 {
-    if (!m_client.didFirstVisuallyNonEmptyLayoutForFrame)
+    if ( !m_client.didFirstVisuallyNonEmptyLayoutForFrame )
+    {
         return;
+    }
 
     WKTypeRef userDataToPass = 0;
-    m_client.didFirstVisuallyNonEmptyLayoutForFrame(toAPI(page), toAPI(frame), &userDataToPass, m_client.clientInfo);
-    userData = adoptRef(toImpl(userDataToPass));
+    m_client.didFirstVisuallyNonEmptyLayoutForFrame( toAPI( page ), toAPI( frame ), &userDataToPass, m_client.clientInfo );
+    userData = adoptRef( toImpl( userDataToPass ) );
 }
 
-void InjectedBundlePageLoaderClient::didRemoveFrameFromHierarchy(WebPage* page , WebFrame* frame, RefPtr<APIObject>& userData)
+void InjectedBundlePageLoaderClient::didRemoveFrameFromHierarchy( WebPage *page, WebFrame *frame, RefPtr<APIObject> &userData )
 {
-    if (!m_client.didRemoveFrameFromHierarchy)
+    if ( !m_client.didRemoveFrameFromHierarchy )
+    {
         return;
+    }
 
     WKTypeRef userDataToPass = 0;
-    m_client.didRemoveFrameFromHierarchy(toAPI(page), toAPI(frame), &userDataToPass, m_client.clientInfo);
-    userData = adoptRef(toImpl(userDataToPass));
+    m_client.didRemoveFrameFromHierarchy( toAPI( page ), toAPI( frame ), &userDataToPass, m_client.clientInfo );
+    userData = adoptRef( toImpl( userDataToPass ) );
 }
 
-void InjectedBundlePageLoaderClient::didDisplayInsecureContentForFrame(WebPage* page, WebFrame* frame, RefPtr<APIObject>& userData)
+void InjectedBundlePageLoaderClient::didDisplayInsecureContentForFrame( WebPage *page, WebFrame *frame,
+        RefPtr<APIObject> &userData )
 {
-    if (!m_client.didDisplayInsecureContentForFrame)
+    if ( !m_client.didDisplayInsecureContentForFrame )
+    {
         return;
+    }
 
     WKTypeRef userDataToPass = 0;
-    m_client.didDisplayInsecureContentForFrame(toAPI(page), toAPI(frame), &userDataToPass, m_client.clientInfo);
-    userData = adoptRef(toImpl(userDataToPass));
+    m_client.didDisplayInsecureContentForFrame( toAPI( page ), toAPI( frame ), &userDataToPass, m_client.clientInfo );
+    userData = adoptRef( toImpl( userDataToPass ) );
 }
 
-void InjectedBundlePageLoaderClient::didRunInsecureContentForFrame(WebPage* page, WebFrame* frame, RefPtr<APIObject>& userData)
+void InjectedBundlePageLoaderClient::didRunInsecureContentForFrame( WebPage *page, WebFrame *frame, RefPtr<APIObject> &userData )
 {
-    if (!m_client.didRunInsecureContentForFrame)
+    if ( !m_client.didRunInsecureContentForFrame )
+    {
         return;
+    }
 
     WKTypeRef userDataToPass = 0;
-    m_client.didRunInsecureContentForFrame(toAPI(page), toAPI(frame), &userDataToPass, m_client.clientInfo);
-    userData = adoptRef(toImpl(userDataToPass));
+    m_client.didRunInsecureContentForFrame( toAPI( page ), toAPI( frame ), &userDataToPass, m_client.clientInfo );
+    userData = adoptRef( toImpl( userDataToPass ) );
 }
 
-void InjectedBundlePageLoaderClient::didClearWindowObjectForFrame(WebPage* page, WebFrame* frame, DOMWrapperWorld* world)
+void InjectedBundlePageLoaderClient::didClearWindowObjectForFrame( WebPage *page, WebFrame *frame, DOMWrapperWorld *world )
 {
-    if (!m_client.didClearWindowObjectForFrame)
+    if ( !m_client.didClearWindowObjectForFrame )
+    {
         return;
+    }
 
-    m_client.didClearWindowObjectForFrame(toAPI(page), toAPI(frame), toAPI(InjectedBundleScriptWorld::getOrCreate(world).get()), m_client.clientInfo);
+    m_client.didClearWindowObjectForFrame( toAPI( page ), toAPI( frame ),
+                                           toAPI( InjectedBundleScriptWorld::getOrCreate( world ).get() ), m_client.clientInfo );
 }
 
-void InjectedBundlePageLoaderClient::didCancelClientRedirectForFrame(WebPage* page, WebFrame* frame)
+void InjectedBundlePageLoaderClient::didCancelClientRedirectForFrame( WebPage *page, WebFrame *frame )
 {
-    if (!m_client.didCancelClientRedirectForFrame)
+    if ( !m_client.didCancelClientRedirectForFrame )
+    {
         return;
+    }
 
-    m_client.didCancelClientRedirectForFrame(toAPI(page), toAPI(frame), m_client.clientInfo);
+    m_client.didCancelClientRedirectForFrame( toAPI( page ), toAPI( frame ), m_client.clientInfo );
 }
 
-void InjectedBundlePageLoaderClient::willPerformClientRedirectForFrame(WebPage* page, WebFrame* frame, const String& url, double delay, double date)
+void InjectedBundlePageLoaderClient::willPerformClientRedirectForFrame( WebPage *page, WebFrame *frame, const String &url,
+        double delay, double date )
 {
-    if (!m_client.willPerformClientRedirectForFrame)
+    if ( !m_client.willPerformClientRedirectForFrame )
+    {
         return;
+    }
 
-    m_client.willPerformClientRedirectForFrame(toAPI(page), toAPI(frame), toURLRef(url.impl()), delay, date, m_client.clientInfo);
+    m_client.willPerformClientRedirectForFrame( toAPI( page ), toAPI( frame ), toURLRef( url.impl() ), delay, date,
+            m_client.clientInfo );
 }
 
-void InjectedBundlePageLoaderClient::didHandleOnloadEventsForFrame(WebPage* page, WebFrame* frame)
+void InjectedBundlePageLoaderClient::didHandleOnloadEventsForFrame( WebPage *page, WebFrame *frame )
 {
-    if (!m_client.didHandleOnloadEventsForFrame)
+    if ( !m_client.didHandleOnloadEventsForFrame )
+    {
         return;
+    }
 
-    m_client.didHandleOnloadEventsForFrame(toAPI(page), toAPI(frame), m_client.clientInfo);
+    m_client.didHandleOnloadEventsForFrame( toAPI( page ), toAPI( frame ), m_client.clientInfo );
 }
 
 } // namespace WebKit

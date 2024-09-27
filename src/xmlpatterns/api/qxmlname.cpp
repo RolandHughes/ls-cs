@@ -38,80 +38,89 @@
 #include <qxpathhelper_p.h>
 #include <qxmlutils_p.h>
 
-QXmlName::QXmlName(QXmlNamePool &namePool, const QString &localName, const QString &namespaceURI,
-      const QString &prefix)
+QXmlName::QXmlName( QXmlNamePool &namePool, const QString &localName, const QString &namespaceURI,
+                    const QString &prefix )
 {
-   Q_ASSERT_X(prefix.isEmpty() || QXmlUtils::isNCName(prefix), Q_FUNC_INFO,
-              "The prefix is invalid, maybe the arguments were mixed up?");
+    Q_ASSERT_X( prefix.isEmpty() || QXmlUtils::isNCName( prefix ), Q_FUNC_INFO,
+                "The prefix is invalid, maybe the arguments were mixed up?" );
 
-   Q_ASSERT_X(QXmlUtils::isNCName(localName), Q_FUNC_INFO,
-              "The local name is invalid, maybe the arguments were mixed up?");
+    Q_ASSERT_X( QXmlUtils::isNCName( localName ), Q_FUNC_INFO,
+                "The local name is invalid, maybe the arguments were mixed up?" );
 
-   m_qNameCode = namePool.d->allocateQName(namespaceURI, localName, prefix).code();
+    m_qNameCode = namePool.d->allocateQName( namespaceURI, localName, prefix ).code();
 }
 
 bool QXmlName::isNull() const
 {
-   return m_qNameCode == InvalidCode;
+    return m_qNameCode == InvalidCode;
 }
 
-QXmlName::QXmlName() : m_qNameCode(InvalidCode)
+QXmlName::QXmlName() : m_qNameCode( InvalidCode )
 {
 }
 
-bool QXmlName::operator==(const QXmlName &other) const
+bool QXmlName::operator==( const QXmlName &other ) const
 {
-   return (m_qNameCode & ExpandedNameMask) == (other.m_qNameCode & ExpandedNameMask);
+    return ( m_qNameCode & ExpandedNameMask ) == ( other.m_qNameCode & ExpandedNameMask );
 }
 
-bool QXmlName::operator!=(const QXmlName &other) const
+bool QXmlName::operator!=( const QXmlName &other ) const
 {
-   return !operator==(other);
+    return !operator==( other );
 }
 
-uint qHash(const QXmlName &name)
+uint qHash( const QXmlName &name )
 {
-   return name.m_qNameCode & QXmlName::ExpandedNameMask;
+    return name.m_qNameCode & QXmlName::ExpandedNameMask;
 }
 
-QString QXmlName::namespaceUri(const QXmlNamePool &namePool) const
+QString QXmlName::namespaceUri( const QXmlNamePool &namePool ) const
 {
-   if (isNull()) {
-      return QString();
-   } else {
-      return namePool.d->stringForNamespace(namespaceURI());
-   }
+    if ( isNull() )
+    {
+        return QString();
+    }
+    else
+    {
+        return namePool.d->stringForNamespace( namespaceURI() );
+    }
 }
 
-QString QXmlName::prefix(const QXmlNamePool &namePool) const
+QString QXmlName::prefix( const QXmlNamePool &namePool ) const
 {
-   if (isNull()) {
-      return QString();
-   } else {
-      return namePool.d->stringForPrefix(prefix());
-   }
+    if ( isNull() )
+    {
+        return QString();
+    }
+    else
+    {
+        return namePool.d->stringForPrefix( prefix() );
+    }
 }
 
-QString QXmlName::localName(const QXmlNamePool &namePool) const
+QString QXmlName::localName( const QXmlNamePool &namePool ) const
 {
-   if (isNull()) {
-      return QString();
-   } else {
-      return namePool.d->stringForLocalName(localName());
-   }
+    if ( isNull() )
+    {
+        return QString();
+    }
+    else
+    {
+        return namePool.d->stringForLocalName( localName() );
+    }
 }
 
-QString QXmlName::toClarkName(const QXmlNamePool &namePool) const
+QString QXmlName::toClarkName( const QXmlNamePool &namePool ) const
 {
-   return namePool.d->toClarkName(*this);
+    return namePool.d->toClarkName( *this );
 }
 
-bool QXmlName::isNCName(const QString &candidate)
+bool QXmlName::isNCName( const QString &candidate )
 {
-   return QXmlUtils::isNCName(candidate);
+    return QXmlUtils::isNCName( candidate );
 }
 
-QXmlName QXmlName::fromClarkName(const QString &clarkName, const QXmlNamePool &namePool)
+QXmlName QXmlName::fromClarkName( const QString &clarkName, const QXmlNamePool &namePool )
 {
-   return namePool.d->fromClarkName(clarkName);
+    return namePool.d->fromClarkName( clarkName );
 }

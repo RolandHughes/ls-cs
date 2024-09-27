@@ -23,13 +23,16 @@
 
 #include "ScopeChain.h"
 
-namespace JSC {
+namespace JSC
+{
 
-    inline void ScopeChain::markAggregate(MarkStack& markStack) const
+inline void ScopeChain::markAggregate( MarkStack &markStack ) const
+{
+    for ( ScopeChainNode *n = m_node; n; n = n->next )
     {
-        for (ScopeChainNode* n = m_node; n; n = n->next)
-            markStack.append(n->object);
+        markStack.append( n->object );
     }
+}
 
 } // namespace JSC
 

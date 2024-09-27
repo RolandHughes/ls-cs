@@ -30,9 +30,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSHTMLAppletElement);
+ASSERT_CLASS_FITS_IN_CELL( JSHTMLAppletElement );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -43,19 +44,19 @@ ASSERT_CLASS_FITS_IN_CELL(JSHTMLAppletElement);
 
 static const HashTableValue JSHTMLAppletElementTableValues[13] =
 {
-    { "align", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLAppletElementAlign), (intptr_t)setJSHTMLAppletElementAlign THUNK_GENERATOR(0) },
-    { "alt", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLAppletElementAlt), (intptr_t)setJSHTMLAppletElementAlt THUNK_GENERATOR(0) },
-    { "archive", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLAppletElementArchive), (intptr_t)setJSHTMLAppletElementArchive THUNK_GENERATOR(0) },
-    { "code", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLAppletElementCode), (intptr_t)setJSHTMLAppletElementCode THUNK_GENERATOR(0) },
-    { "codeBase", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLAppletElementCodeBase), (intptr_t)setJSHTMLAppletElementCodeBase THUNK_GENERATOR(0) },
-    { "height", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLAppletElementHeight), (intptr_t)setJSHTMLAppletElementHeight THUNK_GENERATOR(0) },
-    { "hspace", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLAppletElementHspace), (intptr_t)setJSHTMLAppletElementHspace THUNK_GENERATOR(0) },
-    { "name", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLAppletElementName), (intptr_t)setJSHTMLAppletElementName THUNK_GENERATOR(0) },
-    { "object", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLAppletElementObject), (intptr_t)setJSHTMLAppletElementObject THUNK_GENERATOR(0) },
-    { "vspace", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLAppletElementVspace), (intptr_t)setJSHTMLAppletElementVspace THUNK_GENERATOR(0) },
-    { "width", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLAppletElementWidth), (intptr_t)setJSHTMLAppletElementWidth THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLAppletElementConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "align", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLAppletElementAlign ), ( intptr_t )setJSHTMLAppletElementAlign THUNK_GENERATOR( 0 ) },
+    { "alt", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLAppletElementAlt ), ( intptr_t )setJSHTMLAppletElementAlt THUNK_GENERATOR( 0 ) },
+    { "archive", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLAppletElementArchive ), ( intptr_t )setJSHTMLAppletElementArchive THUNK_GENERATOR( 0 ) },
+    { "code", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLAppletElementCode ), ( intptr_t )setJSHTMLAppletElementCode THUNK_GENERATOR( 0 ) },
+    { "codeBase", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLAppletElementCodeBase ), ( intptr_t )setJSHTMLAppletElementCodeBase THUNK_GENERATOR( 0 ) },
+    { "height", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLAppletElementHeight ), ( intptr_t )setJSHTMLAppletElementHeight THUNK_GENERATOR( 0 ) },
+    { "hspace", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLAppletElementHspace ), ( intptr_t )setJSHTMLAppletElementHspace THUNK_GENERATOR( 0 ) },
+    { "name", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLAppletElementName ), ( intptr_t )setJSHTMLAppletElementName THUNK_GENERATOR( 0 ) },
+    { "object", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLAppletElementObject ), ( intptr_t )setJSHTMLAppletElementObject THUNK_GENERATOR( 0 ) },
+    { "vspace", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLAppletElementVspace ), ( intptr_t )setJSHTMLAppletElementVspace THUNK_GENERATOR( 0 ) },
+    { "width", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLAppletElementWidth ), ( intptr_t )setJSHTMLAppletElementWidth THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLAppletElementConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -69,43 +70,51 @@ static JSC_CONST_HASHTABLE HashTable JSHTMLAppletElementTable = { 35, 31, JSHTML
 
 static const HashTableValue JSHTMLAppletElementConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSHTMLAppletElementConstructorTable = { 1, 0, JSHTMLAppletElementConstructorTableValues, 0 };
-class JSHTMLAppletElementConstructor : public DOMConstructorObject {
+class JSHTMLAppletElementConstructor : public DOMConstructorObject
+{
 public:
-    JSHTMLAppletElementConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSHTMLAppletElementConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSHTMLAppletElementConstructor::s_info = { "HTMLAppletElementConstructor", &DOMConstructorObject::s_info, &JSHTMLAppletElementConstructorTable, 0 };
 
-JSHTMLAppletElementConstructor::JSHTMLAppletElementConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSHTMLAppletElementConstructor::JSHTMLAppletElementConstructor( ExecState *exec, Structure *structure,
+        JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSHTMLAppletElementPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSHTMLAppletElementPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSHTMLAppletElementConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSHTMLAppletElementConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSHTMLAppletElementConstructor, JSDOMWrapper>(exec, &JSHTMLAppletElementConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSHTMLAppletElementConstructor, JSDOMWrapper>( exec, &JSHTMLAppletElementConstructorTable, this,
+            propertyName, slot );
 }
 
-bool JSHTMLAppletElementConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSHTMLAppletElementConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSHTMLAppletElementConstructor, JSDOMWrapper>(exec, &JSHTMLAppletElementConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSHTMLAppletElementConstructor, JSDOMWrapper>( exec, &JSHTMLAppletElementConstructorTable, this,
+            propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -117,259 +126,271 @@ bool JSHTMLAppletElementConstructor::getOwnPropertyDescriptor(ExecState* exec, c
 
 static const HashTableValue JSHTMLAppletElementPrototypeTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSHTMLAppletElementPrototypeTable = { 1, 0, JSHTMLAppletElementPrototypeTableValues, 0 };
 const ClassInfo JSHTMLAppletElementPrototype::s_info = { "HTMLAppletElementPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSHTMLAppletElementPrototypeTable, 0 };
 
-JSObject* JSHTMLAppletElementPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSHTMLAppletElementPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSHTMLAppletElement>(exec, globalObject);
+    return getDOMPrototype<JSHTMLAppletElement>( exec, globalObject );
 }
 
 const ClassInfo JSHTMLAppletElement::s_info = { "HTMLAppletElement", &JSHTMLElement::s_info, &JSHTMLAppletElementTable, 0 };
 
-JSHTMLAppletElement::JSHTMLAppletElement(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<HTMLAppletElement> impl)
-    : JSHTMLElement(structure, globalObject, impl)
+JSHTMLAppletElement::JSHTMLAppletElement( Structure *structure, JSDOMGlobalObject *globalObject,
+        PassRefPtr<HTMLAppletElement> impl )
+    : JSHTMLElement( structure, globalObject, impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSHTMLAppletElement::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSHTMLAppletElement::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSHTMLAppletElementPrototype(exec->globalData(), globalObject, JSHTMLAppletElementPrototype::createStructure(exec->globalData(), JSHTMLElementPrototype::self(exec, globalObject)));
+    return new ( exec ) JSHTMLAppletElementPrototype( exec->globalData(), globalObject,
+            JSHTMLAppletElementPrototype::createStructure( exec->globalData(), JSHTMLElementPrototype::self( exec, globalObject ) ) );
 }
 
-bool JSHTMLAppletElement::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSHTMLAppletElement::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    if (getOwnPropertySlotDelegate(exec, propertyName, slot))
+    if ( getOwnPropertySlotDelegate( exec, propertyName, slot ) )
+    {
         return true;
-    return getStaticValueSlot<JSHTMLAppletElement, Base>(exec, &JSHTMLAppletElementTable, this, propertyName, slot);
+    }
+
+    return getStaticValueSlot<JSHTMLAppletElement, Base>( exec, &JSHTMLAppletElementTable, this, propertyName, slot );
 }
 
-bool JSHTMLAppletElement::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSHTMLAppletElement::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    if (getOwnPropertyDescriptorDelegate(exec, propertyName, descriptor))
+    if ( getOwnPropertyDescriptorDelegate( exec, propertyName, descriptor ) )
+    {
         return true;
-    return getStaticValueDescriptor<JSHTMLAppletElement, Base>(exec, &JSHTMLAppletElementTable, this, propertyName, descriptor);
+    }
+
+    return getStaticValueDescriptor<JSHTMLAppletElement, Base>( exec, &JSHTMLAppletElementTable, this, propertyName, descriptor );
 }
 
-JSValue jsHTMLAppletElementAlign(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLAppletElementAlign( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLAppletElement* castedThis = static_cast<JSHTMLAppletElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    HTMLAppletElement* imp = static_cast<HTMLAppletElement*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->getAttribute(WebCore::HTMLNames::alignAttr));
+    JSHTMLAppletElement *castedThis = static_cast<JSHTMLAppletElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    HTMLAppletElement *imp = static_cast<HTMLAppletElement *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->getAttribute( WebCore::HTMLNames::alignAttr ) );
     return result;
 }
 
 
-JSValue jsHTMLAppletElementAlt(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLAppletElementAlt( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLAppletElement* castedThis = static_cast<JSHTMLAppletElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    HTMLAppletElement* imp = static_cast<HTMLAppletElement*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->getAttribute(WebCore::HTMLNames::altAttr));
+    JSHTMLAppletElement *castedThis = static_cast<JSHTMLAppletElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    HTMLAppletElement *imp = static_cast<HTMLAppletElement *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->getAttribute( WebCore::HTMLNames::altAttr ) );
     return result;
 }
 
 
-JSValue jsHTMLAppletElementArchive(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLAppletElementArchive( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLAppletElement* castedThis = static_cast<JSHTMLAppletElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    HTMLAppletElement* imp = static_cast<HTMLAppletElement*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->getAttribute(WebCore::HTMLNames::archiveAttr));
+    JSHTMLAppletElement *castedThis = static_cast<JSHTMLAppletElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    HTMLAppletElement *imp = static_cast<HTMLAppletElement *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->getAttribute( WebCore::HTMLNames::archiveAttr ) );
     return result;
 }
 
 
-JSValue jsHTMLAppletElementCode(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLAppletElementCode( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLAppletElement* castedThis = static_cast<JSHTMLAppletElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    HTMLAppletElement* imp = static_cast<HTMLAppletElement*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->getAttribute(WebCore::HTMLNames::codeAttr));
+    JSHTMLAppletElement *castedThis = static_cast<JSHTMLAppletElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    HTMLAppletElement *imp = static_cast<HTMLAppletElement *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->getAttribute( WebCore::HTMLNames::codeAttr ) );
     return result;
 }
 
 
-JSValue jsHTMLAppletElementCodeBase(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLAppletElementCodeBase( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLAppletElement* castedThis = static_cast<JSHTMLAppletElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    HTMLAppletElement* imp = static_cast<HTMLAppletElement*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->getAttribute(WebCore::HTMLNames::codebaseAttr));
+    JSHTMLAppletElement *castedThis = static_cast<JSHTMLAppletElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    HTMLAppletElement *imp = static_cast<HTMLAppletElement *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->getAttribute( WebCore::HTMLNames::codebaseAttr ) );
     return result;
 }
 
 
-JSValue jsHTMLAppletElementHeight(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLAppletElementHeight( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLAppletElement* castedThis = static_cast<JSHTMLAppletElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    HTMLAppletElement* imp = static_cast<HTMLAppletElement*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->getAttribute(WebCore::HTMLNames::heightAttr));
+    JSHTMLAppletElement *castedThis = static_cast<JSHTMLAppletElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    HTMLAppletElement *imp = static_cast<HTMLAppletElement *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->getAttribute( WebCore::HTMLNames::heightAttr ) );
     return result;
 }
 
 
-JSValue jsHTMLAppletElementHspace(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLAppletElementHspace( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLAppletElement* castedThis = static_cast<JSHTMLAppletElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    HTMLAppletElement* imp = static_cast<HTMLAppletElement*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->getAttribute(WebCore::HTMLNames::hspaceAttr));
+    JSHTMLAppletElement *castedThis = static_cast<JSHTMLAppletElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    HTMLAppletElement *imp = static_cast<HTMLAppletElement *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->getAttribute( WebCore::HTMLNames::hspaceAttr ) );
     return result;
 }
 
 
-JSValue jsHTMLAppletElementName(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLAppletElementName( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLAppletElement* castedThis = static_cast<JSHTMLAppletElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    HTMLAppletElement* imp = static_cast<HTMLAppletElement*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->getAttribute(WebCore::HTMLNames::nameAttr));
+    JSHTMLAppletElement *castedThis = static_cast<JSHTMLAppletElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    HTMLAppletElement *imp = static_cast<HTMLAppletElement *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->getAttribute( WebCore::HTMLNames::nameAttr ) );
     return result;
 }
 
 
-JSValue jsHTMLAppletElementObject(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLAppletElementObject( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLAppletElement* castedThis = static_cast<JSHTMLAppletElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    HTMLAppletElement* imp = static_cast<HTMLAppletElement*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->getAttribute(WebCore::HTMLNames::objectAttr));
+    JSHTMLAppletElement *castedThis = static_cast<JSHTMLAppletElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    HTMLAppletElement *imp = static_cast<HTMLAppletElement *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->getAttribute( WebCore::HTMLNames::objectAttr ) );
     return result;
 }
 
 
-JSValue jsHTMLAppletElementVspace(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLAppletElementVspace( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLAppletElement* castedThis = static_cast<JSHTMLAppletElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    HTMLAppletElement* imp = static_cast<HTMLAppletElement*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->getAttribute(WebCore::HTMLNames::vspaceAttr));
+    JSHTMLAppletElement *castedThis = static_cast<JSHTMLAppletElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    HTMLAppletElement *imp = static_cast<HTMLAppletElement *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->getAttribute( WebCore::HTMLNames::vspaceAttr ) );
     return result;
 }
 
 
-JSValue jsHTMLAppletElementWidth(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLAppletElementWidth( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLAppletElement* castedThis = static_cast<JSHTMLAppletElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    HTMLAppletElement* imp = static_cast<HTMLAppletElement*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->getAttribute(WebCore::HTMLNames::widthAttr));
+    JSHTMLAppletElement *castedThis = static_cast<JSHTMLAppletElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    HTMLAppletElement *imp = static_cast<HTMLAppletElement *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->getAttribute( WebCore::HTMLNames::widthAttr ) );
     return result;
 }
 
 
-JSValue jsHTMLAppletElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLAppletElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLAppletElement* domObject = static_cast<JSHTMLAppletElement*>(asObject(slotBase));
-    return JSHTMLAppletElement::getConstructor(exec, domObject->globalObject());
+    JSHTMLAppletElement *domObject = static_cast<JSHTMLAppletElement *>( asObject( slotBase ) );
+    return JSHTMLAppletElement::getConstructor( exec, domObject->globalObject() );
 }
 
-void JSHTMLAppletElement::put(ExecState* exec, const Identifier& propertyName, JSValue value, PutPropertySlot& slot)
+void JSHTMLAppletElement::put( ExecState *exec, const Identifier &propertyName, JSValue value, PutPropertySlot &slot )
 {
-    if (putDelegate(exec, propertyName, value, slot))
+    if ( putDelegate( exec, propertyName, value, slot ) )
+    {
         return;
-    lookupPut<JSHTMLAppletElement, Base>(exec, propertyName, value, &JSHTMLAppletElementTable, this, slot);
+    }
+
+    lookupPut<JSHTMLAppletElement, Base>( exec, propertyName, value, &JSHTMLAppletElementTable, this, slot );
 }
 
-void setJSHTMLAppletElementAlign(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSHTMLAppletElementAlign( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSHTMLAppletElement* castedThis = static_cast<JSHTMLAppletElement*>(thisObject);
-    HTMLAppletElement* imp = static_cast<HTMLAppletElement*>(castedThis->impl());
-    imp->setAttribute(WebCore::HTMLNames::alignAttr, valueToStringWithNullCheck(exec, value));
-}
-
-
-void setJSHTMLAppletElementAlt(ExecState* exec, JSObject* thisObject, JSValue value)
-{
-    JSHTMLAppletElement* castedThis = static_cast<JSHTMLAppletElement*>(thisObject);
-    HTMLAppletElement* imp = static_cast<HTMLAppletElement*>(castedThis->impl());
-    imp->setAttribute(WebCore::HTMLNames::altAttr, valueToStringWithNullCheck(exec, value));
+    JSHTMLAppletElement *castedThis = static_cast<JSHTMLAppletElement *>( thisObject );
+    HTMLAppletElement *imp = static_cast<HTMLAppletElement *>( castedThis->impl() );
+    imp->setAttribute( WebCore::HTMLNames::alignAttr, valueToStringWithNullCheck( exec, value ) );
 }
 
 
-void setJSHTMLAppletElementArchive(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSHTMLAppletElementAlt( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSHTMLAppletElement* castedThis = static_cast<JSHTMLAppletElement*>(thisObject);
-    HTMLAppletElement* imp = static_cast<HTMLAppletElement*>(castedThis->impl());
-    imp->setAttribute(WebCore::HTMLNames::archiveAttr, valueToStringWithNullCheck(exec, value));
+    JSHTMLAppletElement *castedThis = static_cast<JSHTMLAppletElement *>( thisObject );
+    HTMLAppletElement *imp = static_cast<HTMLAppletElement *>( castedThis->impl() );
+    imp->setAttribute( WebCore::HTMLNames::altAttr, valueToStringWithNullCheck( exec, value ) );
 }
 
 
-void setJSHTMLAppletElementCode(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSHTMLAppletElementArchive( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSHTMLAppletElement* castedThis = static_cast<JSHTMLAppletElement*>(thisObject);
-    HTMLAppletElement* imp = static_cast<HTMLAppletElement*>(castedThis->impl());
-    imp->setAttribute(WebCore::HTMLNames::codeAttr, valueToStringWithNullCheck(exec, value));
+    JSHTMLAppletElement *castedThis = static_cast<JSHTMLAppletElement *>( thisObject );
+    HTMLAppletElement *imp = static_cast<HTMLAppletElement *>( castedThis->impl() );
+    imp->setAttribute( WebCore::HTMLNames::archiveAttr, valueToStringWithNullCheck( exec, value ) );
 }
 
 
-void setJSHTMLAppletElementCodeBase(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSHTMLAppletElementCode( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSHTMLAppletElement* castedThis = static_cast<JSHTMLAppletElement*>(thisObject);
-    HTMLAppletElement* imp = static_cast<HTMLAppletElement*>(castedThis->impl());
-    imp->setAttribute(WebCore::HTMLNames::codebaseAttr, valueToStringWithNullCheck(exec, value));
+    JSHTMLAppletElement *castedThis = static_cast<JSHTMLAppletElement *>( thisObject );
+    HTMLAppletElement *imp = static_cast<HTMLAppletElement *>( castedThis->impl() );
+    imp->setAttribute( WebCore::HTMLNames::codeAttr, valueToStringWithNullCheck( exec, value ) );
 }
 
 
-void setJSHTMLAppletElementHeight(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSHTMLAppletElementCodeBase( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSHTMLAppletElement* castedThis = static_cast<JSHTMLAppletElement*>(thisObject);
-    HTMLAppletElement* imp = static_cast<HTMLAppletElement*>(castedThis->impl());
-    imp->setAttribute(WebCore::HTMLNames::heightAttr, valueToStringWithNullCheck(exec, value));
+    JSHTMLAppletElement *castedThis = static_cast<JSHTMLAppletElement *>( thisObject );
+    HTMLAppletElement *imp = static_cast<HTMLAppletElement *>( castedThis->impl() );
+    imp->setAttribute( WebCore::HTMLNames::codebaseAttr, valueToStringWithNullCheck( exec, value ) );
 }
 
 
-void setJSHTMLAppletElementHspace(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSHTMLAppletElementHeight( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSHTMLAppletElement* castedThis = static_cast<JSHTMLAppletElement*>(thisObject);
-    HTMLAppletElement* imp = static_cast<HTMLAppletElement*>(castedThis->impl());
-    imp->setAttribute(WebCore::HTMLNames::hspaceAttr, valueToStringWithNullCheck(exec, value));
+    JSHTMLAppletElement *castedThis = static_cast<JSHTMLAppletElement *>( thisObject );
+    HTMLAppletElement *imp = static_cast<HTMLAppletElement *>( castedThis->impl() );
+    imp->setAttribute( WebCore::HTMLNames::heightAttr, valueToStringWithNullCheck( exec, value ) );
 }
 
 
-void setJSHTMLAppletElementName(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSHTMLAppletElementHspace( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSHTMLAppletElement* castedThis = static_cast<JSHTMLAppletElement*>(thisObject);
-    HTMLAppletElement* imp = static_cast<HTMLAppletElement*>(castedThis->impl());
-    imp->setAttribute(WebCore::HTMLNames::nameAttr, valueToStringWithNullCheck(exec, value));
+    JSHTMLAppletElement *castedThis = static_cast<JSHTMLAppletElement *>( thisObject );
+    HTMLAppletElement *imp = static_cast<HTMLAppletElement *>( castedThis->impl() );
+    imp->setAttribute( WebCore::HTMLNames::hspaceAttr, valueToStringWithNullCheck( exec, value ) );
 }
 
 
-void setJSHTMLAppletElementObject(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSHTMLAppletElementName( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSHTMLAppletElement* castedThis = static_cast<JSHTMLAppletElement*>(thisObject);
-    HTMLAppletElement* imp = static_cast<HTMLAppletElement*>(castedThis->impl());
-    imp->setAttribute(WebCore::HTMLNames::objectAttr, valueToStringWithNullCheck(exec, value));
+    JSHTMLAppletElement *castedThis = static_cast<JSHTMLAppletElement *>( thisObject );
+    HTMLAppletElement *imp = static_cast<HTMLAppletElement *>( castedThis->impl() );
+    imp->setAttribute( WebCore::HTMLNames::nameAttr, valueToStringWithNullCheck( exec, value ) );
 }
 
 
-void setJSHTMLAppletElementVspace(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSHTMLAppletElementObject( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSHTMLAppletElement* castedThis = static_cast<JSHTMLAppletElement*>(thisObject);
-    HTMLAppletElement* imp = static_cast<HTMLAppletElement*>(castedThis->impl());
-    imp->setAttribute(WebCore::HTMLNames::vspaceAttr, valueToStringWithNullCheck(exec, value));
+    JSHTMLAppletElement *castedThis = static_cast<JSHTMLAppletElement *>( thisObject );
+    HTMLAppletElement *imp = static_cast<HTMLAppletElement *>( castedThis->impl() );
+    imp->setAttribute( WebCore::HTMLNames::objectAttr, valueToStringWithNullCheck( exec, value ) );
 }
 
 
-void setJSHTMLAppletElementWidth(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSHTMLAppletElementVspace( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSHTMLAppletElement* castedThis = static_cast<JSHTMLAppletElement*>(thisObject);
-    HTMLAppletElement* imp = static_cast<HTMLAppletElement*>(castedThis->impl());
-    imp->setAttribute(WebCore::HTMLNames::widthAttr, valueToStringWithNullCheck(exec, value));
+    JSHTMLAppletElement *castedThis = static_cast<JSHTMLAppletElement *>( thisObject );
+    HTMLAppletElement *imp = static_cast<HTMLAppletElement *>( castedThis->impl() );
+    imp->setAttribute( WebCore::HTMLNames::vspaceAttr, valueToStringWithNullCheck( exec, value ) );
 }
 
 
-JSValue JSHTMLAppletElement::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+void setJSHTMLAppletElementWidth( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    return getDOMConstructor<JSHTMLAppletElementConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    JSHTMLAppletElement *castedThis = static_cast<JSHTMLAppletElement *>( thisObject );
+    HTMLAppletElement *imp = static_cast<HTMLAppletElement *>( castedThis->impl() );
+    imp->setAttribute( WebCore::HTMLNames::widthAttr, valueToStringWithNullCheck( exec, value ) );
+}
+
+
+JSValue JSHTMLAppletElement::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
+{
+    return getDOMConstructor<JSHTMLAppletElementConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
 

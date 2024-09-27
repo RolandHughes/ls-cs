@@ -29,21 +29,22 @@
 
 #include "FastMalloc.h"
 
-namespace JSC {
+namespace JSC
+{
 
 void MarkStack::initializePagesize()
 {
     MarkStack::s_pageSize = 4096;
 }
 
-void* MarkStack::allocateStack(size_t size)
+void *MarkStack::allocateStack( size_t size )
 {
-    return fastMalloc(size);
+    return fastMalloc( size );
 }
 
-void MarkStack::releaseStack(void* addr, size_t)
+void MarkStack::releaseStack( void *addr, size_t )
 {
-    return fastFree(addr);
+    return fastFree( addr );
 }
 
 }

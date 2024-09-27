@@ -23,20 +23,22 @@
 
 #include "InternalFunction.h"
 
-namespace JSC {
+namespace JSC
+{
 
-    class DatePrototype;
+class DatePrototype;
 
-    class DateConstructor : public InternalFunction {
-    public:
-        DateConstructor(ExecState*, JSGlobalObject*, Structure*, Structure* functionStructure, DatePrototype*);
+class DateConstructor : public InternalFunction
+{
+public:
+    DateConstructor( ExecState *, JSGlobalObject *, Structure *, Structure *functionStructure, DatePrototype * );
 
-    private:
-        virtual ConstructType getConstructData(ConstructData&);
-        virtual CallType getCallData(CallData&);
-    };
+private:
+    virtual ConstructType getConstructData( ConstructData & );
+    virtual CallType getCallData( CallData & );
+};
 
-    JSObject* constructDate(ExecState*, JSGlobalObject*, const ArgList&);
+JSObject *constructDate( ExecState *, JSGlobalObject *, const ArgList & );
 
 } // namespace JSC
 

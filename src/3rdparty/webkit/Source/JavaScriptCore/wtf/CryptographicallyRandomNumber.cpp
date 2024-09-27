@@ -35,13 +35,16 @@
 #include "StdLibExtras.h"
 #include "ThreadingPrimitives.h"
 
-namespace WTF {
+namespace WTF
+{
 
 #if USE(OS_RANDOMNESS)
 
-namespace {
+namespace
+{
 
-class ARC4Stream {
+class ARC4Stream
+{
 public:
     ARC4Stream();
 
@@ -50,15 +53,16 @@ public:
     uint8_t s[256];
 };
 
-class ARC4RandomNumberGenerator {
+class ARC4RandomNumberGenerator
+{
 public:
     ARC4RandomNumberGenerator();
 
     uint32_t randomNumber();
-    void randomValues(void* buffer, size_t length);
+    void randomValues( void *buffer, size_t length );
 
 private:
-    inline void addRandomData(unsigned char *data, int length);
+    inline void addRandomData( unsigned char *data, int length );
     void stir();
     void stirIfNeeded();
     inline uint8_t getByte();
@@ -73,48 +77,59 @@ private:
 
 ARC4Stream::ARC4Stream()
 {
-    for (int n = 0; n < 256; n++)
+    for ( int n = 0; n < 256; n++ )
+    {
         s[n] = n;
+    }
+
     i = 0;
     j = 0;
 }
 
 ARC4RandomNumberGenerator::ARC4RandomNumberGenerator()
-    : m_count(0)
+    : m_count( 0 )
 {
 }
 
-void ARC4RandomNumberGenerator::addRandomData(unsigned char* data, int length)
+void ARC4RandomNumberGenerator::addRandomData( unsigned char *data, int length )
 {
     m_stream.i--;
-    for (int n = 0; n < 256; n++) {
+
+    for ( int n = 0; n < 256; n++ )
+    {
         m_stream.i++;
         uint8_t si = m_stream.s[m_stream.i];
         m_stream.j += si + data[n % length];
         m_stream.s[m_stream.i] = m_stream.s[m_stream.j];
         m_stream.s[m_stream.j] = si;
     }
+
     m_stream.j = m_stream.i;
 }
 
 void ARC4RandomNumberGenerator::stir()
 {
     unsigned char randomness[128];
-    size_t length = sizeof(randomness);
-    cryptographicallyRandomValuesFromOS(randomness, length);
-    addRandomData(randomness, length);
+    size_t length = sizeof( randomness );
+    cryptographicallyRandomValuesFromOS( randomness, length );
+    addRandomData( randomness, length );
 
     // Discard early keystream, as per recommendations in:
     // http://www.wisdom.weizmann.ac.il/~itsik/RC4/Papers/Rc4_ksa.ps
-    for (int i = 0; i < 256; i++)
+    for ( int i = 0; i < 256; i++ )
+    {
         getByte();
+    }
+
     m_count = 1600000;
 }
 
 void ARC4RandomNumberGenerator::stirIfNeeded()
 {
-    if (m_count <= 0)
+    if ( m_count <= 0 )
+    {
         stir();
+    }
 }
 
 uint8_t ARC4RandomNumberGenerator::getByte()
@@ -125,7 +140,7 @@ uint8_t ARC4RandomNumberGenerator::getByte()
     uint8_t sj = m_stream.s[m_stream.j];
     m_stream.s[m_stream.i] = sj;
     m_stream.s[m_stream.j] = si;
-    return (m_stream.s[(si + sj) & 0xff]);
+    return ( m_stream.s[( si + sj ) & 0xff] );
 }
 
 uint32_t ARC4RandomNumberGenerator::getWord()
@@ -141,7 +156,7 @@ uint32_t ARC4RandomNumberGenerator::getWord()
 uint32_t ARC4RandomNumberGenerator::randomNumber()
 {
 #if ENABLE(WTF_MULTIPLE_THREADS)
-    MutexLocker locker(m_mutex);
+    MutexLocker locker( m_mutex );
 #endif
 
     m_count -= 4;
@@ -149,24 +164,26 @@ uint32_t ARC4RandomNumberGenerator::randomNumber()
     return getWord();
 }
 
-void ARC4RandomNumberGenerator::randomValues(void* buffer, size_t length)
+void ARC4RandomNumberGenerator::randomValues( void *buffer, size_t length )
 {
 #if ENABLE(WTF_MULTIPLE_THREADS)
-    MutexLocker locker(m_mutex);
+    MutexLocker locker( m_mutex );
 #endif
 
-    unsigned char* result = reinterpret_cast<unsigned char*>(buffer);
+    unsigned char *result = reinterpret_cast<unsigned char *>( buffer );
     stirIfNeeded();
-    while (length--) {
+
+    while ( length-- )
+    {
         m_count--;
         stirIfNeeded();
         result[length] = getByte();
     }
 }
 
-ARC4RandomNumberGenerator& sharedRandomNumberGenerator()
+ARC4RandomNumberGenerator &sharedRandomNumberGenerator()
 {
-    DEFINE_STATIC_LOCAL(ARC4RandomNumberGenerator, randomNumberGenerator, ());
+    DEFINE_STATIC_LOCAL( ARC4RandomNumberGenerator, randomNumberGenerator, () );
     return randomNumberGenerator;
 }
 
@@ -177,9 +194,9 @@ uint32_t cryptographicallyRandomNumber()
     return sharedRandomNumberGenerator().randomNumber();
 }
 
-void cryptographicallyRandomValues(void* buffer, size_t length)
+void cryptographicallyRandomValues( void *buffer, size_t length )
 {
-    sharedRandomNumberGenerator().randomValues(buffer, length);
+    sharedRandomNumberGenerator().randomValues( buffer, length );
 }
 
 #endif

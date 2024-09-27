@@ -33,13 +33,15 @@ typedef union _GdkEvent GdkEvent;
 typedef struct _GdkEventScroll GdkEventScroll;
 typedef struct _GdkEventKey GdkEventKey;
 
-namespace WebKit {
+namespace WebKit
+{
 
-class WebEventFactory {
+class WebEventFactory
+{
 public:
-    static WebMouseEvent createWebMouseEvent(GdkEvent*, int);
-    static WebWheelEvent createWebWheelEvent(GdkEventScroll*);
-    static WebKeyboardEvent createWebKeyboardEvent(const GdkEventKey*);
+    static WebMouseEvent createWebMouseEvent( GdkEvent *, int );
+    static WebWheelEvent createWebWheelEvent( GdkEventScroll * );
+    static WebKeyboardEvent createWebKeyboardEvent( const GdkEventKey * );
 };
 
 } // namespace WebKit

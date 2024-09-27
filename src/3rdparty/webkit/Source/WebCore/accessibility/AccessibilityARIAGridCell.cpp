@@ -35,10 +35,11 @@
 
 using namespace std;
 
-namespace WebCore {
-    
-AccessibilityARIAGridCell::AccessibilityARIAGridCell(RenderObject* renderer)
-    : AccessibilityTableCell(renderer)
+namespace WebCore
+{
+
+AccessibilityARIAGridCell::AccessibilityARIAGridCell( RenderObject *renderer )
+    : AccessibilityTableCell( renderer )
 {
 }
 
@@ -46,50 +47,70 @@ AccessibilityARIAGridCell::~AccessibilityARIAGridCell()
 {
 }
 
-PassRefPtr<AccessibilityARIAGridCell> AccessibilityARIAGridCell::create(RenderObject* renderer)
+PassRefPtr<AccessibilityARIAGridCell> AccessibilityARIAGridCell::create( RenderObject *renderer )
 {
-    return adoptRef(new AccessibilityARIAGridCell(renderer));
+    return adoptRef( new AccessibilityARIAGridCell( renderer ) );
 }
 
-AccessibilityObject* AccessibilityARIAGridCell::parentTable() const
+AccessibilityObject *AccessibilityARIAGridCell::parentTable() const
 {
-    AccessibilityObject* parent = parentObjectUnignored();
-    if (!parent)
+    AccessibilityObject *parent = parentObjectUnignored();
+
+    if ( !parent )
+    {
         return 0;
-    
-    if (parent->isAccessibilityTable())
+    }
+
+    if ( parent->isAccessibilityTable() )
+    {
         return parent;
+    }
 
     // It could happen that we hadn't reached the parent table yet (in
     // case objects for rows were not ignoring accessibility) so for
     // that reason we need to run parentObjectUnignored once again.
     parent = parent->parentObjectUnignored();
-    if (!parent || !parent->isAccessibilityTable())
+
+    if ( !parent || !parent->isAccessibilityTable() )
+    {
         return 0;
-    
+    }
+
     return parent;
 }
-    
-void AccessibilityARIAGridCell::rowIndexRange(pair<int, int>& rowRange)
-{
-    AccessibilityObject* parent = parentObjectUnignored();
-    if (!parent)
-        return;
 
-    if (parent->isTableRow()) {
+void AccessibilityARIAGridCell::rowIndexRange( pair<int, int> &rowRange )
+{
+    AccessibilityObject *parent = parentObjectUnignored();
+
+    if ( !parent )
+    {
+        return;
+    }
+
+    if ( parent->isTableRow() )
+    {
         // We already got a table row, use its API.
-        rowRange.first = static_cast<AccessibilityTableRow*>(parent)->rowIndex();
-    } else if (parent->isAccessibilityTable()) {
+        rowRange.first = static_cast<AccessibilityTableRow *>( parent )->rowIndex();
+    }
+    else if ( parent->isAccessibilityTable() )
+    {
         // We reached the parent table, so we need to inspect its
         // children to determine the row index for the cell in it.
-        unsigned columnCount = static_cast<AccessibilityTable*>(parent)->columnCount();
-        if (!columnCount)
+        unsigned columnCount = static_cast<AccessibilityTable *>( parent )->columnCount();
+
+        if ( !columnCount )
+        {
             return;
+        }
 
         AccessibilityChildrenVector siblings = parent->children();
         unsigned childrenSize = siblings.size();
-        for (unsigned k = 0; k < childrenSize; ++k) {
-            if (siblings[k].get() == this) {
+
+        for ( unsigned k = 0; k < childrenSize; ++k )
+        {
+            if ( siblings[k].get() == this )
+            {
                 rowRange.first = k / columnCount;
                 break;
             }
@@ -100,26 +121,34 @@ void AccessibilityARIAGridCell::rowIndexRange(pair<int, int>& rowRange)
     rowRange.second = 1;
 }
 
-void AccessibilityARIAGridCell::columnIndexRange(pair<int, int>& columnRange)
+void AccessibilityARIAGridCell::columnIndexRange( pair<int, int> &columnRange )
 {
-    AccessibilityObject* parent = parentObjectUnignored();
-    if (!parent)
-        return;
+    AccessibilityObject *parent = parentObjectUnignored();
 
-    if (!parent->isTableRow() && !parent->isAccessibilityTable())
+    if ( !parent )
+    {
         return;
+    }
+
+    if ( !parent->isTableRow() && !parent->isAccessibilityTable() )
+    {
+        return;
+    }
 
     AccessibilityChildrenVector siblings = parent->children();
     unsigned childrenSize = siblings.size();
-    for (unsigned k = 0; k < childrenSize; ++k) {
-        if (siblings[k].get() == this) {
+
+    for ( unsigned k = 0; k < childrenSize; ++k )
+    {
+        if ( siblings[k].get() == this )
+        {
             columnRange.first = k;
             break;
         }
     }
-    
+
     // as far as I can tell, grid cells cannot span columns
-    columnRange.second = 1;    
+    columnRange.second = 1;
 }
-  
+
 } // namespace WebCore

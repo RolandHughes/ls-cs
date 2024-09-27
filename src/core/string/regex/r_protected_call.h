@@ -27,41 +27,43 @@
 #ifndef CS_PROTECTED_CALL_H
 #define CS_PROTECTED_CALL_H
 
-namespace cs_regex_ns {
+namespace cs_regex_ns
+{
 
-namespace cs_regex_detail_ns {
+namespace cs_regex_detail_ns
+{
 
 class LIB_CS_STRING_EXPORT abstract_protected_call
 {
- public:
-   bool execute() const;
+public:
+    bool execute() const;
 
-   virtual ~abstract_protected_call() {}
+    virtual ~abstract_protected_call() {}
 
- private:
-   virtual bool call()const = 0;
+private:
+    virtual bool call()const = 0;
 };
 
 template <class T>
 class concrete_protected_call : public abstract_protected_call
 {
- public:
-   using  proc_type = bool (T::*)();
+public:
+    using  proc_type = bool ( T::* )();
 
-   concrete_protected_call(T *o, proc_type p)
-      : obj(o), proc(p) {}
+    concrete_protected_call( T *o, proc_type p )
+        : obj( o ), proc( p ) {}
 
- private:
-   virtual bool call()const;
+private:
+    virtual bool call()const;
 
-   T *obj;
-   proc_type proc;
+    T *obj;
+    proc_type proc;
 };
 
 template <class T>
 bool concrete_protected_call<T>::call()const
 {
-   return (obj->*proc)();
+    return ( obj->*proc )();
 }
 
 }   // end namespace

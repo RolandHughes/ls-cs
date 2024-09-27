@@ -34,25 +34,27 @@
 #include <wtf/RefCounted.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 // Metadata retrieved from the embedding application's cache.
 //
 // Serialized data is NOT portable across architectures. However, reading the
 // data type ID will reject data generated with a different byte-order.
-class CachedMetadata : public RefCounted<CachedMetadata> {
+class CachedMetadata : public RefCounted<CachedMetadata>
+{
 public:
-    static PassRefPtr<CachedMetadata> create(unsigned dataTypeID, const char* data, size_t size)
+    static PassRefPtr<CachedMetadata> create( unsigned dataTypeID, const char *data, size_t size )
     {
-        return adoptRef(new CachedMetadata(dataTypeID, data, size));
+        return adoptRef( new CachedMetadata( dataTypeID, data, size ) );
     }
 
-    static PassRefPtr<CachedMetadata> deserialize(const char* data, size_t size)
+    static PassRefPtr<CachedMetadata> deserialize( const char *data, size_t size )
     {
-        return adoptRef(new CachedMetadata(data, size));
+        return adoptRef( new CachedMetadata( data, size ) );
     }
 
-    const Vector<char>& serialize() const
+    const Vector<char> &serialize() const
     {
         return m_serializedData;
     }
@@ -61,59 +63,68 @@ public:
 
     unsigned dataTypeID() const
     {
-        return readUnsigned(dataTypeIDStart);
+        return readUnsigned( dataTypeIDStart );
     }
 
-    const char* data() const
+    const char *data() const
     {
-        if (m_serializedData.size() < dataStart)
+        if ( m_serializedData.size() < dataStart )
+        {
             return 0;
+        }
+
         return m_serializedData.data() + dataStart;
     }
 
     size_t size() const
     {
-        if (m_serializedData.size() < dataStart)
+        if ( m_serializedData.size() < dataStart )
+        {
             return 0;
+        }
+
         return m_serializedData.size() - dataStart;
     }
 
 private:
     // Reads an unsigned value at position. Returns 0 on error.
-    unsigned readUnsigned(size_t position) const
+    unsigned readUnsigned( size_t position ) const
     {
-        if (m_serializedData.size() < position + sizeof(unsigned))
+        if ( m_serializedData.size() < position + sizeof( unsigned ) )
+        {
             return 0;
-        return *reinterpret_cast_ptr<unsigned*>(const_cast<char*>(m_serializedData.data() + position));
+        }
+
+        return *reinterpret_cast_ptr<unsigned *>( const_cast<char *>( m_serializedData.data() + position ) );
     }
 
     // Appends an unsigned value to the end of the serialized data.
-    void appendUnsigned(unsigned value)
+    void appendUnsigned( unsigned value )
     {
-        m_serializedData.append(reinterpret_cast<const char*>(&value), sizeof(unsigned));
+        m_serializedData.append( reinterpret_cast<const char *>( &value ), sizeof( unsigned ) );
     }
 
-    CachedMetadata(const char* data, size_t size)
+    CachedMetadata( const char *data, size_t size )
     {
         // Serialized metadata should have non-empty data.
-        ASSERT(size > dataStart);
+        ASSERT( size > dataStart );
 
-        m_serializedData.append(data, size);
+        m_serializedData.append( data, size );
     }
 
-    CachedMetadata(unsigned dataTypeID, const char* data, size_t size)
+    CachedMetadata( unsigned dataTypeID, const char *data, size_t size )
     {
         // Don't allow an ID of 0, it is used internally to indicate errors.
-        ASSERT(dataTypeID);
-        ASSERT(data);
+        ASSERT( dataTypeID );
+        ASSERT( data );
 
-        appendUnsigned(dataTypeID);
-        m_serializedData.append(data, size);
+        appendUnsigned( dataTypeID );
+        m_serializedData.append( data, size );
     }
 
     // Serialization offsets. Format: [DATA_TYPE_ID][DATA].
     static const size_t dataTypeIDStart = 0;
-    static const size_t dataStart = sizeof(unsigned);
+    static const size_t dataStart = sizeof( unsigned );
 
     // Since the serialization format supports random access, storing it in
     // serialized form avoids need for a copy during serialization.

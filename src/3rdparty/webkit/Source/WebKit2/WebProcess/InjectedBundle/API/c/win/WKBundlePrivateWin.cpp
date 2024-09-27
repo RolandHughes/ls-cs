@@ -32,12 +32,14 @@
 
 using namespace WebKit;
 
-void WKBundleSetHostAllowsAnyHTTPSCertificate(WKBundleRef bundleRef, WKStringRef host)
+void WKBundleSetHostAllowsAnyHTTPSCertificate( WKBundleRef bundleRef, WKStringRef host )
 {
-    toImpl(bundleRef)->setHostAllowsAnyHTTPSCertificate(toWTFString(host));
+    toImpl( bundleRef )->setHostAllowsAnyHTTPSCertificate( toWTFString( host ) );
 }
 
-void WKBundleSetClientCertificate(WKBundleRef bundleRef, WKStringRef host, WKStringRef certificateSystemStoreName, WKCertificateInfoRef certificateInfoRef)
+void WKBundleSetClientCertificate( WKBundleRef bundleRef, WKStringRef host, WKStringRef certificateSystemStoreName,
+                                   WKCertificateInfoRef certificateInfoRef )
 {
-    toImpl(bundleRef)->setClientCertificate(toWTFString(host), toWTFString(certificateSystemStoreName), toImpl(certificateInfoRef));
+    toImpl( bundleRef )->setClientCertificate( toWTFString( host ), toWTFString( certificateSystemStoreName ),
+            toImpl( certificateInfoRef ) );
 }

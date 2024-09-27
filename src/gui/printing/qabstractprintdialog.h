@@ -33,71 +33,73 @@ class QPrinter;
 
 class Q_GUI_EXPORT QAbstractPrintDialog : public QDialog
 {
-   GUI_CS_OBJECT(QAbstractPrintDialog)
+    GUI_CS_OBJECT( QAbstractPrintDialog )
 
- public:
-   // Keep in sync with QPrinter::PrintRange
-   enum PrintRange {
-      AllPages,
-      Selection,
-      PageRange,
-      CurrentPage
-   };
+public:
+    // Keep in sync with QPrinter::PrintRange
+    enum PrintRange
+    {
+        AllPages,
+        Selection,
+        PageRange,
+        CurrentPage
+    };
 
-   enum PrintDialogOption {
-      None                    = 0x0000, // obsolete
-      PrintToFile             = 0x0001,
-      PrintSelection          = 0x0002,
-      PrintPageRange          = 0x0004,
-      PrintShowPageSize       = 0x0008,
-      PrintCollateCopies      = 0x0010,
-      DontUseSheet            = 0x0020,
-      PrintCurrentPage        = 0x0040
-   };
+    enum PrintDialogOption
+    {
+        None                    = 0x0000, // obsolete
+        PrintToFile             = 0x0001,
+        PrintSelection          = 0x0002,
+        PrintPageRange          = 0x0004,
+        PrintShowPageSize       = 0x0008,
+        PrintCollateCopies      = 0x0010,
+        DontUseSheet            = 0x0020,
+        PrintCurrentPage        = 0x0040
+    };
 
-   using PrintDialogOptions = QFlags<PrintDialogOption>;
+    using PrintDialogOptions = QFlags<PrintDialogOption>;
 
 #ifndef QT_NO_PRINTDIALOG
-   explicit QAbstractPrintDialog(QPrinter *printer, QWidget *parent = nullptr);
+    explicit QAbstractPrintDialog( QPrinter *printer, QWidget *parent = nullptr );
 
-   QAbstractPrintDialog(const QAbstractPrintDialog &) = delete;
-   QAbstractPrintDialog &operator=(const QAbstractPrintDialog &) = delete;
+    QAbstractPrintDialog( const QAbstractPrintDialog & ) = delete;
+    QAbstractPrintDialog &operator=( const QAbstractPrintDialog & ) = delete;
 
-   ~QAbstractPrintDialog();
+    ~QAbstractPrintDialog();
 
-   int exec() override = 0;
+    int exec() override = 0;
 
-   // obsolete
-   void addEnabledOption(PrintDialogOption option);
-   void setEnabledOptions(PrintDialogOptions options);
-   PrintDialogOptions enabledOptions() const;
-   bool isOptionEnabled(PrintDialogOption option) const;
+    // obsolete
+    void addEnabledOption( PrintDialogOption option );
+    void setEnabledOptions( PrintDialogOptions options );
+    PrintDialogOptions enabledOptions() const;
+    bool isOptionEnabled( PrintDialogOption option ) const;
 
-   void setOptionTabs(const QList<QWidget *> &tabs);
+    void setOptionTabs( const QList<QWidget *> &tabs );
 
-   void setPrintRange(PrintRange range);
-   PrintRange printRange() const;
+    void setPrintRange( PrintRange range );
+    PrintRange printRange() const;
 
-   void setMinMax(int min, int max);
-   int minPage() const;
-   int maxPage() const;
+    void setMinMax( int min, int max );
+    int minPage() const;
+    int maxPage() const;
 
-   void setFromTo(int fromPage, int toPage);
-   int fromPage() const;
-   int toPage() const;
+    void setFromTo( int fromPage, int toPage );
+    int fromPage() const;
+    int toPage() const;
 
-   QPrinter *printer() const;
+    QPrinter *printer() const;
 
- protected:
-   QAbstractPrintDialog(QAbstractPrintDialogPrivate &ptr, QPrinter *printer, QWidget *parent = nullptr);
+protected:
+    QAbstractPrintDialog( QAbstractPrintDialogPrivate &ptr, QPrinter *printer, QWidget *parent = nullptr );
 
- private:
-   Q_DECLARE_PRIVATE(QAbstractPrintDialog)
+private:
+    Q_DECLARE_PRIVATE( QAbstractPrintDialog )
 
 #endif // QT_NO_PRINTDIALOG
 };
 
-Q_DECLARE_OPERATORS_FOR_FLAGS(QAbstractPrintDialog::PrintDialogOptions)
+Q_DECLARE_OPERATORS_FOR_FLAGS( QAbstractPrintDialog::PrintDialogOptions )
 
 #endif // QT_NO_PRINTER
 

@@ -24,40 +24,55 @@
 #if ENABLE(SVG)
 #include "SVGPathSegWithContext.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class SVGPathSegMovetoAbs : public SVGPathSegSingleCoordinate { 
+class SVGPathSegMovetoAbs : public SVGPathSegSingleCoordinate
+{
 public:
-    static PassRefPtr<SVGPathSegMovetoAbs> create(SVGPathElement* element, SVGPathSegRole role, float x, float y)
+    static PassRefPtr<SVGPathSegMovetoAbs> create( SVGPathElement *element, SVGPathSegRole role, float x, float y )
     {
-        return adoptRef(new SVGPathSegMovetoAbs(element, role, x, y));
+        return adoptRef( new SVGPathSegMovetoAbs( element, role, x, y ) );
     }
 
 private:
-    SVGPathSegMovetoAbs(SVGPathElement* element, SVGPathSegRole role, float x, float y)
-        : SVGPathSegSingleCoordinate(element, role, x, y)
+    SVGPathSegMovetoAbs( SVGPathElement *element, SVGPathSegRole role, float x, float y )
+        : SVGPathSegSingleCoordinate( element, role, x, y )
     {
     }
 
-    virtual unsigned short pathSegType() const { return PATHSEG_MOVETO_ABS; }
-    virtual String pathSegTypeAsLetter() const { return "M"; }
+    virtual unsigned short pathSegType() const
+    {
+        return PATHSEG_MOVETO_ABS;
+    }
+    virtual String pathSegTypeAsLetter() const
+    {
+        return "M";
+    }
 };
 
-class SVGPathSegMovetoRel : public SVGPathSegSingleCoordinate { 
+class SVGPathSegMovetoRel : public SVGPathSegSingleCoordinate
+{
 public:
-    static PassRefPtr<SVGPathSegMovetoRel> create(SVGPathElement* element, SVGPathSegRole role, float x, float y)
+    static PassRefPtr<SVGPathSegMovetoRel> create( SVGPathElement *element, SVGPathSegRole role, float x, float y )
     {
-        return adoptRef(new SVGPathSegMovetoRel(element, role, x, y));
+        return adoptRef( new SVGPathSegMovetoRel( element, role, x, y ) );
     }
 
 private:
-    SVGPathSegMovetoRel(SVGPathElement* element, SVGPathSegRole role, float x, float y)
-        : SVGPathSegSingleCoordinate(element, role, x, y)
+    SVGPathSegMovetoRel( SVGPathElement *element, SVGPathSegRole role, float x, float y )
+        : SVGPathSegSingleCoordinate( element, role, x, y )
     {
     }
 
-    virtual unsigned short pathSegType() const { return PATHSEG_MOVETO_REL; }
-    virtual String pathSegTypeAsLetter() const { return "m"; }
+    virtual unsigned short pathSegType() const
+    {
+        return PATHSEG_MOVETO_REL;
+    }
+    virtual String pathSegTypeAsLetter() const
+    {
+        return "m";
+    }
 };
 
 } // namespace WebCore

@@ -27,56 +27,62 @@
 #include "SVGElement.h"
 #include <runtime/JSObjectWithGlobalObject.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class SVGPathSegCurvetoCubicSmoothAbs;
 
-class JSSVGPathSegCurvetoCubicSmoothAbs : public JSSVGPathSeg {
+class JSSVGPathSegCurvetoCubicSmoothAbs : public JSSVGPathSeg
+{
     typedef JSSVGPathSeg Base;
 public:
-    JSSVGPathSegCurvetoCubicSmoothAbs(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<SVGPathSegCurvetoCubicSmoothAbs>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
-    virtual void put(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::JSValue, JSC::PutPropertySlot&);
+    JSSVGPathSegCurvetoCubicSmoothAbs( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<SVGPathSegCurvetoCubicSmoothAbs> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
+    virtual void put( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::JSValue, JSC::PutPropertySlot & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 
-class JSSVGPathSegCurvetoCubicSmoothAbsPrototype : public JSC::JSObjectWithGlobalObject {
+class JSSVGPathSegCurvetoCubicSmoothAbsPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSSVGPathSegCurvetoCubicSmoothAbsPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSSVGPathSegCurvetoCubicSmoothAbsPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+            JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = Base::StructureFlags;
 };
 
 // Attributes
 
-JSC::JSValue jsSVGPathSegCurvetoCubicSmoothAbsX(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSSVGPathSegCurvetoCubicSmoothAbsX(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsSVGPathSegCurvetoCubicSmoothAbsY(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSSVGPathSegCurvetoCubicSmoothAbsY(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsSVGPathSegCurvetoCubicSmoothAbsX2(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSSVGPathSegCurvetoCubicSmoothAbsX2(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsSVGPathSegCurvetoCubicSmoothAbsY2(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSSVGPathSegCurvetoCubicSmoothAbsY2(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsSVGPathSegCurvetoCubicSmoothAbsConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsSVGPathSegCurvetoCubicSmoothAbsX( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSSVGPathSegCurvetoCubicSmoothAbsX( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsSVGPathSegCurvetoCubicSmoothAbsY( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSSVGPathSegCurvetoCubicSmoothAbsY( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsSVGPathSegCurvetoCubicSmoothAbsX2( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSSVGPathSegCurvetoCubicSmoothAbsX2( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsSVGPathSegCurvetoCubicSmoothAbsY2( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSSVGPathSegCurvetoCubicSmoothAbsY2( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsSVGPathSegCurvetoCubicSmoothAbsConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

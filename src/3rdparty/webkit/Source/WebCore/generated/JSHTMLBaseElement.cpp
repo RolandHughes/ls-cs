@@ -29,9 +29,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSHTMLBaseElement);
+ASSERT_CLASS_FITS_IN_CELL( JSHTMLBaseElement );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -42,10 +43,10 @@ ASSERT_CLASS_FITS_IN_CELL(JSHTMLBaseElement);
 
 static const HashTableValue JSHTMLBaseElementTableValues[4] =
 {
-    { "href", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLBaseElementHref), (intptr_t)setJSHTMLBaseElementHref THUNK_GENERATOR(0) },
-    { "target", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLBaseElementTarget), (intptr_t)setJSHTMLBaseElementTarget THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLBaseElementConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "href", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLBaseElementHref ), ( intptr_t )setJSHTMLBaseElementHref THUNK_GENERATOR( 0 ) },
+    { "target", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLBaseElementTarget ), ( intptr_t )setJSHTMLBaseElementTarget THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLBaseElementConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -59,43 +60,51 @@ static JSC_CONST_HASHTABLE HashTable JSHTMLBaseElementTable = { 8, 7, JSHTMLBase
 
 static const HashTableValue JSHTMLBaseElementConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSHTMLBaseElementConstructorTable = { 1, 0, JSHTMLBaseElementConstructorTableValues, 0 };
-class JSHTMLBaseElementConstructor : public DOMConstructorObject {
+class JSHTMLBaseElementConstructor : public DOMConstructorObject
+{
 public:
-    JSHTMLBaseElementConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSHTMLBaseElementConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSHTMLBaseElementConstructor::s_info = { "HTMLBaseElementConstructor", &DOMConstructorObject::s_info, &JSHTMLBaseElementConstructorTable, 0 };
 
-JSHTMLBaseElementConstructor::JSHTMLBaseElementConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSHTMLBaseElementConstructor::JSHTMLBaseElementConstructor( ExecState *exec, Structure *structure,
+        JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSHTMLBaseElementPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSHTMLBaseElementPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSHTMLBaseElementConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSHTMLBaseElementConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSHTMLBaseElementConstructor, JSDOMWrapper>(exec, &JSHTMLBaseElementConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSHTMLBaseElementConstructor, JSDOMWrapper>( exec, &JSHTMLBaseElementConstructorTable, this,
+            propertyName, slot );
 }
 
-bool JSHTMLBaseElementConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSHTMLBaseElementConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSHTMLBaseElementConstructor, JSDOMWrapper>(exec, &JSHTMLBaseElementConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSHTMLBaseElementConstructor, JSDOMWrapper>( exec, &JSHTMLBaseElementConstructorTable, this,
+            propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -107,91 +116,93 @@ bool JSHTMLBaseElementConstructor::getOwnPropertyDescriptor(ExecState* exec, con
 
 static const HashTableValue JSHTMLBaseElementPrototypeTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSHTMLBaseElementPrototypeTable = { 1, 0, JSHTMLBaseElementPrototypeTableValues, 0 };
 const ClassInfo JSHTMLBaseElementPrototype::s_info = { "HTMLBaseElementPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSHTMLBaseElementPrototypeTable, 0 };
 
-JSObject* JSHTMLBaseElementPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSHTMLBaseElementPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSHTMLBaseElement>(exec, globalObject);
+    return getDOMPrototype<JSHTMLBaseElement>( exec, globalObject );
 }
 
 const ClassInfo JSHTMLBaseElement::s_info = { "HTMLBaseElement", &JSHTMLElement::s_info, &JSHTMLBaseElementTable, 0 };
 
-JSHTMLBaseElement::JSHTMLBaseElement(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<HTMLBaseElement> impl)
-    : JSHTMLElement(structure, globalObject, impl)
+JSHTMLBaseElement::JSHTMLBaseElement( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<HTMLBaseElement> impl )
+    : JSHTMLElement( structure, globalObject, impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSHTMLBaseElement::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSHTMLBaseElement::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSHTMLBaseElementPrototype(exec->globalData(), globalObject, JSHTMLBaseElementPrototype::createStructure(exec->globalData(), JSHTMLElementPrototype::self(exec, globalObject)));
+    return new ( exec ) JSHTMLBaseElementPrototype( exec->globalData(), globalObject,
+            JSHTMLBaseElementPrototype::createStructure( exec->globalData(), JSHTMLElementPrototype::self( exec, globalObject ) ) );
 }
 
-bool JSHTMLBaseElement::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSHTMLBaseElement::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSHTMLBaseElement, Base>(exec, &JSHTMLBaseElementTable, this, propertyName, slot);
+    return getStaticValueSlot<JSHTMLBaseElement, Base>( exec, &JSHTMLBaseElementTable, this, propertyName, slot );
 }
 
-bool JSHTMLBaseElement::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSHTMLBaseElement::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSHTMLBaseElement, Base>(exec, &JSHTMLBaseElementTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSHTMLBaseElement, Base>( exec, &JSHTMLBaseElementTable, this, propertyName, descriptor );
 }
 
-JSValue jsHTMLBaseElementHref(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLBaseElementHref( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLBaseElement* castedThis = static_cast<JSHTMLBaseElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    HTMLBaseElement* imp = static_cast<HTMLBaseElement*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->getURLAttribute(WebCore::HTMLNames::hrefAttr));
+    JSHTMLBaseElement *castedThis = static_cast<JSHTMLBaseElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    HTMLBaseElement *imp = static_cast<HTMLBaseElement *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->getURLAttribute( WebCore::HTMLNames::hrefAttr ) );
     return result;
 }
 
 
-JSValue jsHTMLBaseElementTarget(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLBaseElementTarget( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLBaseElement* castedThis = static_cast<JSHTMLBaseElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    HTMLBaseElement* imp = static_cast<HTMLBaseElement*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->getAttribute(WebCore::HTMLNames::targetAttr));
+    JSHTMLBaseElement *castedThis = static_cast<JSHTMLBaseElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    HTMLBaseElement *imp = static_cast<HTMLBaseElement *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->getAttribute( WebCore::HTMLNames::targetAttr ) );
     return result;
 }
 
 
-JSValue jsHTMLBaseElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLBaseElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLBaseElement* domObject = static_cast<JSHTMLBaseElement*>(asObject(slotBase));
-    return JSHTMLBaseElement::getConstructor(exec, domObject->globalObject());
+    JSHTMLBaseElement *domObject = static_cast<JSHTMLBaseElement *>( asObject( slotBase ) );
+    return JSHTMLBaseElement::getConstructor( exec, domObject->globalObject() );
 }
 
-void JSHTMLBaseElement::put(ExecState* exec, const Identifier& propertyName, JSValue value, PutPropertySlot& slot)
+void JSHTMLBaseElement::put( ExecState *exec, const Identifier &propertyName, JSValue value, PutPropertySlot &slot )
 {
-    lookupPut<JSHTMLBaseElement, Base>(exec, propertyName, value, &JSHTMLBaseElementTable, this, slot);
+    lookupPut<JSHTMLBaseElement, Base>( exec, propertyName, value, &JSHTMLBaseElementTable, this, slot );
 }
 
-void setJSHTMLBaseElementHref(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSHTMLBaseElementHref( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSHTMLBaseElement* castedThis = static_cast<JSHTMLBaseElement*>(thisObject);
-    HTMLBaseElement* imp = static_cast<HTMLBaseElement*>(castedThis->impl());
-    imp->setAttribute(WebCore::HTMLNames::hrefAttr, valueToStringWithNullCheck(exec, value));
-}
-
-
-void setJSHTMLBaseElementTarget(ExecState* exec, JSObject* thisObject, JSValue value)
-{
-    JSHTMLBaseElement* castedThis = static_cast<JSHTMLBaseElement*>(thisObject);
-    HTMLBaseElement* imp = static_cast<HTMLBaseElement*>(castedThis->impl());
-    imp->setAttribute(WebCore::HTMLNames::targetAttr, valueToStringWithNullCheck(exec, value));
+    JSHTMLBaseElement *castedThis = static_cast<JSHTMLBaseElement *>( thisObject );
+    HTMLBaseElement *imp = static_cast<HTMLBaseElement *>( castedThis->impl() );
+    imp->setAttribute( WebCore::HTMLNames::hrefAttr, valueToStringWithNullCheck( exec, value ) );
 }
 
 
-JSValue JSHTMLBaseElement::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+void setJSHTMLBaseElementTarget( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    return getDOMConstructor<JSHTMLBaseElementConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    JSHTMLBaseElement *castedThis = static_cast<JSHTMLBaseElement *>( thisObject );
+    HTMLBaseElement *imp = static_cast<HTMLBaseElement *>( castedThis->impl() );
+    imp->setAttribute( WebCore::HTMLNames::targetAttr, valueToStringWithNullCheck( exec, value ) );
+}
+
+
+JSValue JSHTMLBaseElement::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
+{
+    return getDOMConstructor<JSHTMLBaseElementConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
 

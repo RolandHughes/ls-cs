@@ -30,23 +30,31 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class AudioBuffer;
-    
-class AudioProcessingEvent : public Event {
+
+class AudioProcessingEvent : public Event
+{
 public:
-    static PassRefPtr<AudioProcessingEvent> create(PassRefPtr<AudioBuffer> inputBuffer, PassRefPtr<AudioBuffer> outputBuffer);
-    
+    static PassRefPtr<AudioProcessingEvent> create( PassRefPtr<AudioBuffer> inputBuffer, PassRefPtr<AudioBuffer> outputBuffer );
+
     virtual ~AudioProcessingEvent();
 
     virtual bool isAudioProcessingEvent() const;
 
-    AudioBuffer* inputBuffer() { return m_inputBuffer.get(); }
-    AudioBuffer* outputBuffer() { return m_outputBuffer.get(); }
+    AudioBuffer *inputBuffer()
+    {
+        return m_inputBuffer.get();
+    }
+    AudioBuffer *outputBuffer()
+    {
+        return m_outputBuffer.get();
+    }
 
 private:
-    AudioProcessingEvent(PassRefPtr<AudioBuffer> inputBuffer, PassRefPtr<AudioBuffer> outputBuffer);
+    AudioProcessingEvent( PassRefPtr<AudioBuffer> inputBuffer, PassRefPtr<AudioBuffer> outputBuffer );
 
     RefPtr<AudioBuffer> m_inputBuffer;
     RefPtr<AudioBuffer> m_outputBuffer;

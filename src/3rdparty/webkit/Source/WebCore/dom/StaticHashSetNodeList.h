@@ -35,32 +35,34 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Node;
 
-class StaticHashSetNodeList : public NodeList {
+class StaticHashSetNodeList : public NodeList
+{
 public:
     StaticHashSetNodeList();
     ~StaticHashSetNodeList();
 
     // Adopts the contents of the nodes ListHashSet.
-    static PassRefPtr<StaticHashSetNodeList> adopt(const ListHashSet<RefPtr<Node> >& nodes)
+    static PassRefPtr<StaticHashSetNodeList> adopt( const ListHashSet<RefPtr<Node> > &nodes )
     {
-        return adopt(const_cast<ListHashSet<RefPtr<Node> >&>(nodes));
+        return adopt( const_cast<ListHashSet<RefPtr<Node> >&>( nodes ) );
     }
 
-    static PassRefPtr<StaticHashSetNodeList> adopt(ListHashSet<RefPtr<Node> >& nodes)
+    static PassRefPtr<StaticHashSetNodeList> adopt( ListHashSet<RefPtr<Node> > &nodes )
     {
-        return adoptRef(new StaticHashSetNodeList(nodes));
+        return adoptRef( new StaticHashSetNodeList( nodes ) );
     }
 
     virtual unsigned length() const;
-    virtual Node* item(unsigned index) const;
-    virtual Node* itemWithName(const AtomicString&) const;
+    virtual Node *item( unsigned index ) const;
+    virtual Node *itemWithName( const AtomicString & ) const;
 
 private:
-    StaticHashSetNodeList(ListHashSet<RefPtr<Node> >& nodes);
+    StaticHashSetNodeList( ListHashSet<RefPtr<Node> > &nodes );
 
     ListHashSet<RefPtr<Node> > m_nodes;
 };

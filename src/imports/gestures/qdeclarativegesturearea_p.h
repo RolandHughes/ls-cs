@@ -43,37 +43,37 @@ class QDeclarativeGestureArea : public QDeclarativeItem
 {
     Q_OBJECT
 
-    Q_PROPERTY(QGesture *gesture READ gesture)
+    Q_PROPERTY( QGesture *gesture READ gesture )
 
 public:
-    QDeclarativeGestureArea(QDeclarativeItem *parent=0);
+    QDeclarativeGestureArea( QDeclarativeItem *parent=0 );
     ~QDeclarativeGestureArea();
 
     QGesture *gesture() const;
 
 protected:
-    bool sceneEvent(QEvent *event);
+    bool sceneEvent( QEvent *event );
 
 private:
     void connectSignals();
     void componentComplete();
     friend class QDeclarativeGestureAreaParser;
 
-    Q_DISABLE_COPY(QDeclarativeGestureArea)
-    Q_DECLARE_PRIVATE_D(QGraphicsItem::d_ptr.data(), QDeclarativeGestureArea)
+    Q_DISABLE_COPY( QDeclarativeGestureArea )
+    Q_DECLARE_PRIVATE_D( QGraphicsItem::d_ptr.data(), QDeclarativeGestureArea )
 };
 
 class QDeclarativeGestureAreaParser : public QDeclarativeCustomParser
 {
 public:
-    virtual QByteArray compile(const QList<QDeclarativeCustomParserProperty> &);
-    virtual void setCustomData(QObject *, const QByteArray &);
+    virtual QByteArray compile( const QList<QDeclarativeCustomParserProperty> & );
+    virtual void setCustomData( QObject *, const QByteArray & );
 };
 
 
 QT_END_NAMESPACE
 
-QML_DECLARE_TYPE(QDeclarativeGestureArea)
+QML_DECLARE_TYPE( QDeclarativeGestureArea )
 
 #endif // QT_NO_GESTURES
 

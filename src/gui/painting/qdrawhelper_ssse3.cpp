@@ -27,13 +27,16 @@
 
 #include <qdrawingprimitive_sse2_p.h>
 
-static inline void blend_pixel(quint32 &dst, const quint32 src)
+static inline void blend_pixel( quint32 &dst, const quint32 src )
 {
-   if (src >= 0xff000000) {
-      dst = src;
-   } else if (src != 0) {
-      dst = src + BYTE_MUL(dst, qAlpha(~src));
-   }
+    if ( src >= 0xff000000 )
+    {
+        dst = src;
+    }
+    else if ( src != 0 )
+    {
+        dst = src + BYTE_MUL( dst, qAlpha( ~src ) );
+    }
 }
 
 
@@ -122,41 +125,48 @@ static inline void blend_pixel(quint32 &dst, const quint32 src)
         blend_pixel(dst[x], src[x]); \
 }
 
-void qt_blend_argb32_on_argb32_ssse3(uchar *destPixels, int dbpl,
-   const uchar *srcPixels, int sbpl,
-   int w, int h,
-   int const_alpha)
+void qt_blend_argb32_on_argb32_ssse3( uchar *destPixels, int dbpl,
+                                      const uchar *srcPixels, int sbpl,
+                                      int w, int h,
+                                      int const_alpha )
 {
-   const quint32 *src = (const quint32 *) srcPixels;
-   quint32 *dst = (quint32 *) destPixels;
-   if (const_alpha == 256) {
-      const __m128i alphaMask = _mm_set1_epi32(0xff000000);
-      const __m128i nullVector = _mm_setzero_si128();
-      const __m128i half = _mm_set1_epi16(0x80);
-      const __m128i one = _mm_set1_epi16(0xff);
-      const __m128i colorMask = _mm_set1_epi32(0x00ff00ff);
+    const quint32 *src = ( const quint32 * ) srcPixels;
+    quint32 *dst = ( quint32 * ) destPixels;
 
-      for (int y = 0; y < h; ++y) {
-         BLEND_SOURCE_OVER_ARGB32_SSSE3(dst, src, w, nullVector, half, one, colorMask, alphaMask);
-         dst = (quint32 *)(((uchar *) dst) + dbpl);
-         src = (const quint32 *)(((const uchar *) src) + sbpl);
-      }
-   } else if (const_alpha != 0) {
-      // dest = (s + d * sia) * ca + d * cia
-      //      = s * ca + d * (sia * ca + cia)
-      //      = s * ca + d * (1 - sa*ca)
-      const_alpha = (const_alpha * 255) >> 8;
-      const __m128i nullVector = _mm_setzero_si128();
-      const __m128i half = _mm_set1_epi16(0x80);
-      const __m128i one = _mm_set1_epi16(0xff);
-      const __m128i colorMask = _mm_set1_epi32(0x00ff00ff);
-      const __m128i constAlphaVector = _mm_set1_epi16(const_alpha);
-      for (int y = 0; y < h; ++y) {
-         BLEND_SOURCE_OVER_ARGB32_WITH_CONST_ALPHA_SSE2(dst, src, w, nullVector, half, one, colorMask, constAlphaVector)
-         dst = (quint32 *)(((uchar *) dst) + dbpl);
-         src = (const quint32 *)(((const uchar *) src) + sbpl);
-      }
-   }
+    if ( const_alpha == 256 )
+    {
+        const __m128i alphaMask = _mm_set1_epi32( 0xff000000 );
+        const __m128i nullVector = _mm_setzero_si128();
+        const __m128i half = _mm_set1_epi16( 0x80 );
+        const __m128i one = _mm_set1_epi16( 0xff );
+        const __m128i colorMask = _mm_set1_epi32( 0x00ff00ff );
+
+        for ( int y = 0; y < h; ++y )
+        {
+            BLEND_SOURCE_OVER_ARGB32_SSSE3( dst, src, w, nullVector, half, one, colorMask, alphaMask );
+            dst = ( quint32 * )( ( ( uchar * ) dst ) + dbpl );
+            src = ( const quint32 * )( ( ( const uchar * ) src ) + sbpl );
+        }
+    }
+    else if ( const_alpha != 0 )
+    {
+        // dest = (s + d * sia) * ca + d * cia
+        //      = s * ca + d * (sia * ca + cia)
+        //      = s * ca + d * (1 - sa*ca)
+        const_alpha = ( const_alpha * 255 ) >> 8;
+        const __m128i nullVector = _mm_setzero_si128();
+        const __m128i half = _mm_set1_epi16( 0x80 );
+        const __m128i one = _mm_set1_epi16( 0xff );
+        const __m128i colorMask = _mm_set1_epi32( 0x00ff00ff );
+        const __m128i constAlphaVector = _mm_set1_epi16( const_alpha );
+
+        for ( int y = 0; y < h; ++y )
+        {
+            BLEND_SOURCE_OVER_ARGB32_WITH_CONST_ALPHA_SSE2( dst, src, w, nullVector, half, one, colorMask, constAlphaVector )
+            dst = ( quint32 * )( ( ( uchar * ) dst ) + dbpl );
+            src = ( const quint32 * )( ( ( const uchar * ) src ) + sbpl );
+        }
+    }
 }
 
 #endif

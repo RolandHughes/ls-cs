@@ -26,32 +26,38 @@
 #include <runtime/JSObjectWithGlobalObject.h>
 #include <runtime/ObjectPrototype.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class MessagePort;
 
-class JSMessagePort : public JSDOMWrapper {
+class JSMessagePort : public JSDOMWrapper
+{
     typedef JSDOMWrapper Base;
 public:
-    JSMessagePort(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<MessagePort>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
-    virtual void put(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::JSValue, JSC::PutPropertySlot&);
+    JSMessagePort( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<MessagePort> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
+    virtual void put( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::JSValue, JSC::PutPropertySlot & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    virtual void visitChildren(JSC::SlotVisitor&);
+    virtual void visitChildren( JSC::SlotVisitor & );
 
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
 
     // Custom functions
-    JSC::JSValue postMessage(JSC::ExecState*);
-    MessagePort* impl() const { return m_impl.get(); }
+    JSC::JSValue postMessage( JSC::ExecState * );
+    MessagePort *impl() const
+    {
+        return m_impl.get();
+    }
 
 private:
     RefPtr<MessagePort> m_impl;
@@ -59,54 +65,58 @@ protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::OverridesVisitChildren | Base::StructureFlags;
 };
 
-class JSMessagePortOwner : public JSC::WeakHandleOwner {
-    virtual bool isReachableFromOpaqueRoots(JSC::Handle<JSC::Unknown>, void* context, JSC::SlotVisitor&);
-    virtual void finalize(JSC::Handle<JSC::Unknown>, void* context);
+class JSMessagePortOwner : public JSC::WeakHandleOwner
+{
+    virtual bool isReachableFromOpaqueRoots( JSC::Handle<JSC::Unknown>, void *context, JSC::SlotVisitor & );
+    virtual void finalize( JSC::Handle<JSC::Unknown>, void *context );
 };
 
-inline JSC::WeakHandleOwner* wrapperOwner(DOMWrapperWorld*, MessagePort*)
+inline JSC::WeakHandleOwner *wrapperOwner( DOMWrapperWorld *, MessagePort * )
 {
-    DEFINE_STATIC_LOCAL(JSMessagePortOwner, jsMessagePortOwner, ());
+    DEFINE_STATIC_LOCAL( JSMessagePortOwner, jsMessagePortOwner, () );
     return &jsMessagePortOwner;
 }
 
-inline void* wrapperContext(DOMWrapperWorld* world, MessagePort*)
+inline void *wrapperContext( DOMWrapperWorld *world, MessagePort * )
 {
     return world;
 }
 
-JSC::JSValue toJS(JSC::ExecState*, JSDOMGlobalObject*, MessagePort*);
-MessagePort* toMessagePort(JSC::JSValue);
+JSC::JSValue toJS( JSC::ExecState *, JSDOMGlobalObject *, MessagePort * );
+MessagePort *toMessagePort( JSC::JSValue );
 
-class JSMessagePortPrototype : public JSC::JSObjectWithGlobalObject {
+class JSMessagePortPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSMessagePortPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSMessagePortPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                            JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::OverridesVisitChildren | Base::StructureFlags;
 };
 
 // Functions
 
-JSC::EncodedJSValue JSC_HOST_CALL jsMessagePortPrototypeFunctionPostMessage(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsMessagePortPrototypeFunctionStart(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsMessagePortPrototypeFunctionClose(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsMessagePortPrototypeFunctionAddEventListener(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsMessagePortPrototypeFunctionRemoveEventListener(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsMessagePortPrototypeFunctionDispatchEvent(JSC::ExecState*);
+JSC::EncodedJSValue JSC_HOST_CALL jsMessagePortPrototypeFunctionPostMessage( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsMessagePortPrototypeFunctionStart( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsMessagePortPrototypeFunctionClose( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsMessagePortPrototypeFunctionAddEventListener( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsMessagePortPrototypeFunctionRemoveEventListener( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsMessagePortPrototypeFunctionDispatchEvent( JSC::ExecState * );
 // Attributes
 
-JSC::JSValue jsMessagePortOnmessage(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSMessagePortOnmessage(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsMessagePortConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsMessagePortOnmessage( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSMessagePortOnmessage( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsMessagePortConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

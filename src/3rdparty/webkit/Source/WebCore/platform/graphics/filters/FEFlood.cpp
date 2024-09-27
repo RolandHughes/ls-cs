@@ -30,18 +30,19 @@
 #include "RenderTreeAsText.h"
 #include "TextStream.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-FEFlood::FEFlood(Filter* filter, const Color& floodColor, float floodOpacity)
-    : FilterEffect(filter)
-    , m_floodColor(floodColor)
-    , m_floodOpacity(floodOpacity)
+FEFlood::FEFlood( Filter *filter, const Color &floodColor, float floodOpacity )
+    : FilterEffect( filter )
+    , m_floodColor( floodColor )
+    , m_floodOpacity( floodOpacity )
 {
 }
 
-PassRefPtr<FEFlood> FEFlood::create(Filter* filter, const Color& floodColor, float floodOpacity)
+PassRefPtr<FEFlood> FEFlood::create( Filter *filter, const Color &floodColor, float floodOpacity )
 {
-    return adoptRef(new FEFlood(filter, floodColor, floodOpacity));
+    return adoptRef( new FEFlood( filter, floodColor, floodOpacity ) );
 }
 
 Color FEFlood::floodColor() const
@@ -49,10 +50,13 @@ Color FEFlood::floodColor() const
     return m_floodColor;
 }
 
-bool FEFlood::setFloodColor(const Color& color)
+bool FEFlood::setFloodColor( const Color &color )
 {
-    if (m_floodColor == color)
+    if ( m_floodColor == color )
+    {
         return false;
+    }
+
     m_floodColor = color;
     return true;
 }
@@ -62,35 +66,44 @@ float FEFlood::floodOpacity() const
     return m_floodOpacity;
 }
 
-bool FEFlood::setFloodOpacity(float floodOpacity)
+bool FEFlood::setFloodOpacity( float floodOpacity )
 {
-    if (m_floodOpacity == floodOpacity)
+    if ( m_floodOpacity == floodOpacity )
+    {
         return false;
+    }
+
     m_floodOpacity = floodOpacity;
     return true;
 }
 
 void FEFlood::apply()
 {
-    if (hasResult())
+    if ( hasResult() )
+    {
         return;
-    ImageBuffer* resultImage = createImageBufferResult();
-    if (!resultImage)
-        return;
+    }
 
-    Color color = colorWithOverrideAlpha(floodColor().rgb(), floodOpacity());
-    resultImage->context()->fillRect(FloatRect(FloatPoint(), absolutePaintRect().size()), color, ColorSpaceDeviceRGB);
+    ImageBuffer *resultImage = createImageBufferResult();
+
+    if ( !resultImage )
+    {
+        return;
+    }
+
+    Color color = colorWithOverrideAlpha( floodColor().rgb(), floodOpacity() );
+    resultImage->context()->fillRect( FloatRect( FloatPoint(), absolutePaintRect().size() ), color, ColorSpaceDeviceRGB );
 }
 
 void FEFlood::dump()
 {
 }
 
-TextStream& FEFlood::externalRepresentation(TextStream& ts, int indent) const
+TextStream &FEFlood::externalRepresentation( TextStream &ts, int indent ) const
 {
-    writeIndent(ts, indent);
+    writeIndent( ts, indent );
     ts << "[feFlood";
-    FilterEffect::externalRepresentation(ts);
+    FilterEffect::externalRepresentation( ts );
     ts << " flood-color=\"" << floodColor().nameForRenderTreeAsText() << "\" "
        << "flood-opacity=\"" << floodOpacity() << "\"]\n";
     return ts;

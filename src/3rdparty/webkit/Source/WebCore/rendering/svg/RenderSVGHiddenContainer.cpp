@@ -25,31 +25,32 @@
 #include "RenderSVGPath.h"
 #include "SVGStyledElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-RenderSVGHiddenContainer::RenderSVGHiddenContainer(SVGStyledElement* element)
-    : RenderSVGContainer(element)
+RenderSVGHiddenContainer::RenderSVGHiddenContainer( SVGStyledElement *element )
+    : RenderSVGContainer( element )
 {
 }
 
 void RenderSVGHiddenContainer::layout()
 {
-    ASSERT(needsLayout());
-    SVGRenderSupport::layoutChildren(this, selfNeedsLayout()); 
-    setNeedsLayout(false);    
+    ASSERT( needsLayout() );
+    SVGRenderSupport::layoutChildren( this, selfNeedsLayout() );
+    setNeedsLayout( false );
 }
 
-void RenderSVGHiddenContainer::paint(PaintInfo&, int, int)
+void RenderSVGHiddenContainer::paint( PaintInfo &, int, int )
 {
     // This subtree does not paint.
 }
 
-void RenderSVGHiddenContainer::absoluteQuads(Vector<FloatQuad>&)
+void RenderSVGHiddenContainer::absoluteQuads( Vector<FloatQuad> & )
 {
     // This subtree does not take up space or paint
 }
 
-bool RenderSVGHiddenContainer::nodeAtFloatPoint(const HitTestRequest&, HitTestResult&, const FloatPoint&, HitTestAction)
+bool RenderSVGHiddenContainer::nodeAtFloatPoint( const HitTestRequest &, HitTestResult &, const FloatPoint &, HitTestAction )
 {
     return false;
 }

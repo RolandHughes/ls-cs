@@ -24,40 +24,55 @@
 #if ENABLE(SVG)
 #include "SVGPathSegWithContext.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class SVGPathSegCurvetoQuadraticSmoothAbs : public SVGPathSegSingleCoordinate {
+class SVGPathSegCurvetoQuadraticSmoothAbs : public SVGPathSegSingleCoordinate
+{
 public:
-    static PassRefPtr<SVGPathSegCurvetoQuadraticSmoothAbs> create(SVGPathElement* element, SVGPathSegRole role, float x, float y)
+    static PassRefPtr<SVGPathSegCurvetoQuadraticSmoothAbs> create( SVGPathElement *element, SVGPathSegRole role, float x, float y )
     {
-        return adoptRef(new SVGPathSegCurvetoQuadraticSmoothAbs(element, role, x, y));
+        return adoptRef( new SVGPathSegCurvetoQuadraticSmoothAbs( element, role, x, y ) );
     }
 
 private:
-    SVGPathSegCurvetoQuadraticSmoothAbs(SVGPathElement* element, SVGPathSegRole role, float x, float y)
-        : SVGPathSegSingleCoordinate(element, role, x, y)
+    SVGPathSegCurvetoQuadraticSmoothAbs( SVGPathElement *element, SVGPathSegRole role, float x, float y )
+        : SVGPathSegSingleCoordinate( element, role, x, y )
     {
     }
 
-    virtual unsigned short pathSegType() const { return PATHSEG_CURVETO_QUADRATIC_SMOOTH_ABS; }
-    virtual String pathSegTypeAsLetter() const { return "T"; }
+    virtual unsigned short pathSegType() const
+    {
+        return PATHSEG_CURVETO_QUADRATIC_SMOOTH_ABS;
+    }
+    virtual String pathSegTypeAsLetter() const
+    {
+        return "T";
+    }
 };
 
-class SVGPathSegCurvetoQuadraticSmoothRel : public SVGPathSegSingleCoordinate {
+class SVGPathSegCurvetoQuadraticSmoothRel : public SVGPathSegSingleCoordinate
+{
 public:
-    static PassRefPtr<SVGPathSegCurvetoQuadraticSmoothRel> create(SVGPathElement* element, SVGPathSegRole role, float x, float y)
+    static PassRefPtr<SVGPathSegCurvetoQuadraticSmoothRel> create( SVGPathElement *element, SVGPathSegRole role, float x, float y )
     {
-        return adoptRef(new SVGPathSegCurvetoQuadraticSmoothRel(element, role, x, y));
+        return adoptRef( new SVGPathSegCurvetoQuadraticSmoothRel( element, role, x, y ) );
     }
 
 private:
-    SVGPathSegCurvetoQuadraticSmoothRel(SVGPathElement* element, SVGPathSegRole role, float x, float y)
-        : SVGPathSegSingleCoordinate(element, role, x, y)
+    SVGPathSegCurvetoQuadraticSmoothRel( SVGPathElement *element, SVGPathSegRole role, float x, float y )
+        : SVGPathSegSingleCoordinate( element, role, x, y )
     {
     }
 
-    virtual unsigned short pathSegType() const { return PATHSEG_CURVETO_QUADRATIC_SMOOTH_REL; }
-    virtual String pathSegTypeAsLetter() const { return "t"; }
+    virtual unsigned short pathSegType() const
+    {
+        return PATHSEG_CURVETO_QUADRATIC_SMOOTH_REL;
+    }
+    virtual String pathSegTypeAsLetter() const
+    {
+        return "t";
+    }
 };
 
 } // namespace WebCore

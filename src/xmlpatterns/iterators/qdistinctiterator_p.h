@@ -32,42 +32,44 @@
 #include <qcomparisonplatform_p.h>
 #include <qsourcelocationreflection_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class DistinctIterator : public Item::Iterator, public ComparisonPlatform<DistinctIterator, false>,
-      public SourceLocationReflection
+    public SourceLocationReflection
 {
- public:
-   /**
-    * Creates a DistinctIterator.
-    * @param comp the AtomicComparator to be used for comparing values. This may be @c null,
-    * meaning the IndexOfIterator iterator will dynamically determine what comparator to use
-    * @param seq the sequence whose duplicates should be filtered out
-    * @param context the usual context, used for error reporting and by AtomicComparators.
-    * @param expression the Expression that this DistinctIterator is
-    * evaluating for. It is used for error reporting, via
-    * actualReflection().
-    */
-   DistinctIterator(const Item::Iterator::Ptr &seq, const AtomicComparator::Ptr &comp,
-                    const Expression::ConstPtr &expression, const DynamicContext::Ptr &context);
+public:
+    /**
+     * Creates a DistinctIterator.
+     * @param comp the AtomicComparator to be used for comparing values. This may be @c null,
+     * meaning the IndexOfIterator iterator will dynamically determine what comparator to use
+     * @param seq the sequence whose duplicates should be filtered out
+     * @param context the usual context, used for error reporting and by AtomicComparators.
+     * @param expression the Expression that this DistinctIterator is
+     * evaluating for. It is used for error reporting, via
+     * actualReflection().
+     */
+    DistinctIterator( const Item::Iterator::Ptr &seq, const AtomicComparator::Ptr &comp,
+                      const Expression::ConstPtr &expression, const DynamicContext::Ptr &context );
 
-   Item next() override;
-   Item current() const override;
-   xsInteger position() const override;
-   Item::Iterator::Ptr copy() const override;
-   const SourceLocationReflection *actualReflection() const override;
+    Item next() override;
+    Item current() const override;
+    xsInteger position() const override;
+    Item::Iterator::Ptr copy() const override;
+    const SourceLocationReflection *actualReflection() const override;
 
-   AtomicComparator::Operator operatorID() const {
-      return AtomicComparator::OperatorEqual;
-   }
+    AtomicComparator::Operator operatorID() const
+    {
+        return AtomicComparator::OperatorEqual;
+    }
 
- private:
-   const Item::Iterator::Ptr   m_seq;
-   const DynamicContext::Ptr   m_context;
-   const Expression::ConstPtr  m_expr;
-   Item                        m_current;
-   xsInteger                   m_position;
-   Item::List                  m_processed;
+private:
+    const Item::Iterator::Ptr   m_seq;
+    const DynamicContext::Ptr   m_context;
+    const Expression::ConstPtr  m_expr;
+    Item                        m_current;
+    xsInteger                   m_position;
+    Item::List                  m_processed;
 };
 }
 

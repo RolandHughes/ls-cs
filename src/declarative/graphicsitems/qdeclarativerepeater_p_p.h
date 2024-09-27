@@ -34,17 +34,17 @@ class QDeclarativeContext;
 class QDeclarativeVisualModel;
 class QDeclarativeRepeaterPrivate : public QDeclarativeItemPrivate
 {
-   Q_DECLARE_PUBLIC(QDeclarativeRepeater)
+    Q_DECLARE_PUBLIC( QDeclarativeRepeater )
 
- public:
-   QDeclarativeRepeaterPrivate();
-   ~QDeclarativeRepeaterPrivate();
+public:
+    QDeclarativeRepeaterPrivate();
+    ~QDeclarativeRepeaterPrivate();
 
-   QDeclarativeVisualModel *model;
-   QVariant dataSource;
-   bool ownModel;
+    QDeclarativeVisualModel *model;
+    QVariant dataSource;
+    bool ownModel;
 
-   QList<QPointer<QDeclarativeItem> > deletables;
+    QList<QPointer<QDeclarativeItem> > deletables;
 };
 
 QT_END_NAMESPACE

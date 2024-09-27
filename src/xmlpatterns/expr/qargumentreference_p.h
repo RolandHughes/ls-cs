@@ -26,22 +26,23 @@
 
 #include <qvariablereference_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class ArgumentReference : public VariableReference
 {
- public:
-   ArgumentReference(const SequenceType::Ptr &sourceType, const VariableSlotID slot);
+public:
+    ArgumentReference( const SequenceType::Ptr &sourceType, const VariableSlotID slot );
 
-   bool evaluateEBV(const DynamicContext::Ptr &context) const override;
-   Item evaluateSingleton(const DynamicContext::Ptr &context) const override;
-   Item::Iterator::Ptr evaluateSequence(const DynamicContext::Ptr &context) const override;
-   SequenceType::Ptr staticType() const override;
-   ExpressionVisitorResult::Ptr accept(const ExpressionVisitor::Ptr &visitor) const override;
-   ID id() const override;
+    bool evaluateEBV( const DynamicContext::Ptr &context ) const override;
+    Item evaluateSingleton( const DynamicContext::Ptr &context ) const override;
+    Item::Iterator::Ptr evaluateSequence( const DynamicContext::Ptr &context ) const override;
+    SequenceType::Ptr staticType() const override;
+    ExpressionVisitorResult::Ptr accept( const ExpressionVisitor::Ptr &visitor ) const override;
+    ID id() const override;
 
- private:
-   const SequenceType::Ptr m_type;
+private:
+    const SequenceType::Ptr m_type;
 };
 
 }

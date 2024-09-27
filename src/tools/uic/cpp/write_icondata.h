@@ -35,24 +35,25 @@ class Uic;
 
 struct Option;
 
-namespace CPP {
+namespace CPP
+{
 
 class WriteIconData : public TreeWalker
 {
- public:
-   WriteIconData(Uic *uic);
+public:
+    WriteIconData( Uic *uic );
 
-   void acceptUI(DomUI *node) override;
-   void acceptImages(DomImages *images) override;
-   void acceptImage(DomImage *image) override;
+    void acceptUI( DomUI *node ) override;
+    void acceptImages( DomImages *images ) override;
+    void acceptImage( DomImage *image ) override;
 
-   static void writeImage(QTextStream &output, const QString &indent, bool limitXPM_LineLength, const DomImage *image);
-   static void writeImage(QIODevice &output, DomImage *image);
+    static void writeImage( QTextStream &output, const QString &indent, bool limitXPM_LineLength, const DomImage *image );
+    static void writeImage( QIODevice &output, DomImage *image );
 
- private:
-   Driver *driver;
-   QTextStream &output;
-   const Option &option;
+private:
+    Driver *driver;
+    QTextStream &output;
+    const Option &option;
 };
 
 } // namespace CPP

@@ -27,52 +27,72 @@
 #include "HTMLFrameOwnerElement.h"
 #include "ScrollTypes.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class HTMLFrameElementBase : public HTMLFrameOwnerElement {
+class HTMLFrameElementBase : public HTMLFrameOwnerElement
+{
 public:
     KURL location() const;
-    void setLocation(const String&);
+    void setLocation( const String & );
 
-    virtual ScrollbarMode scrollingMode() const { return m_scrolling; }
-    
-    int marginWidth() const { return m_marginWidth; }
-    int marginHeight() const { return m_marginHeight; }
+    virtual ScrollbarMode scrollingMode() const
+    {
+        return m_scrolling;
+    }
+
+    int marginWidth() const
+    {
+        return m_marginWidth;
+    }
+    int marginHeight() const
+    {
+        return m_marginHeight;
+    }
 
     int width() const;
     int height() const;
 
-    void setRemainsAliveOnRemovalFromTree(bool);
+    void setRemainsAliveOnRemovalFromTree( bool );
 #if ENABLE(FULLSCREEN_API)
     virtual bool allowFullScreen() const;
-    virtual void setContainsFullScreenElement(bool);
-    virtual bool containsFullScreenElement() const { return m_containsFullScreenElement; };
+    virtual void setContainsFullScreenElement( bool );
+    virtual bool containsFullScreenElement() const
+    {
+        return m_containsFullScreenElement;
+    };
 #endif
 
 protected:
-    HTMLFrameElementBase(const QualifiedName&, Document*);
+    HTMLFrameElementBase( const QualifiedName &, Document * );
 
     bool isURLAllowed() const;
 
-    virtual void parseMappedAttribute(Attribute*);
+    virtual void parseMappedAttribute( Attribute * );
     virtual void insertedIntoDocument();
     virtual void attach();
 
 private:
     virtual bool supportsFocus() const;
-    virtual void setFocus(bool);
-    
-    virtual bool isURLAttribute(Attribute*) const;
-    virtual bool isFrameElementBase() const { return true; }
+    virtual void setFocus( bool );
+
+    virtual bool isURLAttribute( Attribute * ) const;
+    virtual bool isFrameElementBase() const
+    {
+        return true;
+    }
 
     virtual void willRemove();
-    void checkInDocumentTimerFired(Timer<HTMLFrameElementBase>*);
+    void checkInDocumentTimerFired( Timer<HTMLFrameElementBase> * );
     void updateOnReparenting();
 
-    bool viewSourceMode() const { return m_viewSource; }
+    bool viewSourceMode() const
+    {
+        return m_viewSource;
+    }
 
     void setNameAndOpenURL();
-    void openURL(bool lockHistory = true, bool lockBackForwardList = true);
+    void openURL( bool lockHistory = true, bool lockBackForwardList = true );
 
     AtomicString m_URL;
     AtomicString m_frameName;

@@ -33,43 +33,44 @@ class QAbstractVideoFilterPrivate;
 class Q_MULTIMEDIA_EXPORT QVideoFilterRunnable
 {
 public:
-    enum RunFlag {
+    enum RunFlag
+    {
         LastInChain = 0x01
     };
     using RunFlags = QFlags<RunFlag>;
 
     virtual ~QVideoFilterRunnable();
-    virtual QVideoFrame run(QVideoFrame *input, const QVideoSurfaceFormat &surfaceFormat, RunFlags flags) = 0;
+    virtual QVideoFrame run( QVideoFrame *input, const QVideoSurfaceFormat &surfaceFormat, RunFlags flags ) = 0;
 };
 
-Q_DECLARE_OPERATORS_FOR_FLAGS(QVideoFilterRunnable::RunFlags)
+Q_DECLARE_OPERATORS_FOR_FLAGS( QVideoFilterRunnable::RunFlags )
 
 class Q_MULTIMEDIA_EXPORT QAbstractVideoFilter : public QObject
 {
-    MULTI_CS_OBJECT(QAbstractVideoFilter)
+    MULTI_CS_OBJECT( QAbstractVideoFilter )
 
-    MULTI_CS_PROPERTY_READ(active, isActive)
-    MULTI_CS_PROPERTY_WRITE(active, setActive)
-    MULTI_CS_PROPERTY_NOTIFY(active, activeChanged)
+    MULTI_CS_PROPERTY_READ( active, isActive )
+    MULTI_CS_PROPERTY_WRITE( active, setActive )
+    MULTI_CS_PROPERTY_NOTIFY( active, activeChanged )
 
- public:
-    explicit QAbstractVideoFilter(QObject *parent = nullptr);
+public:
+    explicit QAbstractVideoFilter( QObject *parent = nullptr );
 
-   QAbstractVideoFilter(const QAbstractVideoFilter &) = delete;
-   QAbstractVideoFilter &operator=(const QAbstractVideoFilter &) = delete;
+    QAbstractVideoFilter( const QAbstractVideoFilter & ) = delete;
+    QAbstractVideoFilter &operator=( const QAbstractVideoFilter & ) = delete;
 
     ~QAbstractVideoFilter();
 
     bool isActive() const;
-    void setActive(bool value);
+    void setActive( bool value );
 
     virtual QVideoFilterRunnable *createFilterRunnable() = 0;
 
-    MULTI_CS_SIGNAL_1(Public, void activeChanged())
-    MULTI_CS_SIGNAL_2(activeChanged)
+    MULTI_CS_SIGNAL_1( Public, void activeChanged() )
+    MULTI_CS_SIGNAL_2( activeChanged )
 
- private:
-    Q_DECLARE_PRIVATE(QAbstractVideoFilter)
+private:
+    Q_DECLARE_PRIVATE( QAbstractVideoFilter )
 
     QAbstractVideoFilterPrivate *d_ptr;
 };

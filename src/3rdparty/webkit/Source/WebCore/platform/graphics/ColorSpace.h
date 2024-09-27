@@ -20,20 +20,22 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef ColorSpace_h
 #define ColorSpace_h
 
-namespace WebCore {
+namespace WebCore
+{
 
-enum ColorSpace {
+enum ColorSpace
+{
     ColorSpaceDeviceRGB,
     ColorSpaceSRGB,
     ColorSpaceLinearRGB
 };
-    
+
 } // namespace WebCore
 
 #endif // ColorSpace_h

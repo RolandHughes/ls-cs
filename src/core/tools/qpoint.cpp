@@ -26,62 +26,62 @@
 #include <qdatastream.h>
 #include <qdebug.h>
 
-QDataStream &operator<<(QDataStream &stream, const QPoint &point)
+QDataStream &operator<<( QDataStream &stream, const QPoint &point )
 {
-   stream << (qint32)point.x() << (qint32)point.y();
+    stream << ( qint32 )point.x() << ( qint32 )point.y();
 
-   return stream;
+    return stream;
 }
 
-QDataStream &operator>>(QDataStream &stream, QPoint &point)
+QDataStream &operator>>( QDataStream &stream, QPoint &point )
 {
-   qint32 x, y;
-   stream >> x;
+    qint32 x, y;
+    stream >> x;
 
-   point.rx() = x;
-   stream >> y;
-   point.ry() = y;
+    point.rx() = x;
+    stream >> y;
+    point.ry() = y;
 
-   return stream;
+    return stream;
 }
 
 int QPoint::manhattanLength() const
 {
-   return qAbs(x()) + qAbs(y());
+    return qAbs( x() ) + qAbs( y() );
 }
 
-QDebug operator<<(QDebug dbg, const QPoint &p)
+QDebug operator<<( QDebug dbg, const QPoint &p )
 {
-   dbg.nospace() << "QPoint(" << p.x() << ',' << p.y() << ')';
-   return dbg.space();
+    dbg.nospace() << "QPoint(" << p.x() << ',' << p.y() << ')';
+    return dbg.space();
 }
 
-QDebug operator<<(QDebug d, const QPointF &p)
+QDebug operator<<( QDebug d, const QPointF &p )
 {
-   d.nospace() << "QPointF(" << p.x() << ", " << p.y() << ')';
-   return d.space();
+    d.nospace() << "QPointF(" << p.x() << ", " << p.y() << ')';
+    return d.space();
 }
 
 qreal QPointF::manhattanLength() const
 {
-   return qAbs(x()) + qAbs(y());
+    return qAbs( x() ) + qAbs( y() );
 }
 
-QDataStream &operator<<(QDataStream &stream, const QPointF &pointF)
+QDataStream &operator<<( QDataStream &stream, const QPointF &pointF )
 {
-   stream << double(pointF.x()) << double(pointF.y());
+    stream << double( pointF.x() ) << double( pointF.y() );
 
-   return stream;
+    return stream;
 }
 
-QDataStream &operator>>(QDataStream &stream, QPointF &pointF)
+QDataStream &operator>>( QDataStream &stream, QPointF &pointF )
 {
-   double x, y;
-   stream >> x;
-   stream >> y;
+    double x, y;
+    stream >> x;
+    stream >> y;
 
-   pointF.setX(qreal(x));
-   pointF.setY(qreal(y));
+    pointF.setX( qreal( x ) );
+    pointF.setY( qreal( y ) );
 
-   return stream;
+    return stream;
 }

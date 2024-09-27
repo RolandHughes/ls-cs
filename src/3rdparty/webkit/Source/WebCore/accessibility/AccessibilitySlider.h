@@ -31,51 +31,75 @@
 
 #include "AccessibilityRenderObject.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class HTMLInputElement;
 
-class AccessibilitySlider : public AccessibilityRenderObject {
-    
+class AccessibilitySlider : public AccessibilityRenderObject
+{
+
 public:
-    static PassRefPtr<AccessibilitySlider> create(RenderObject*);
+    static PassRefPtr<AccessibilitySlider> create( RenderObject * );
     virtual ~AccessibilitySlider() { }
 
 protected:
-    AccessibilitySlider(RenderObject*);
+    AccessibilitySlider( RenderObject * );
 
 private:
-    HTMLInputElement* element() const;
+    HTMLInputElement *element() const;
     virtual bool accessibilityIsIgnored() const;
-    virtual AccessibilityObject* elementAccessibilityHitTest(const IntPoint&) const;
+    virtual AccessibilityObject *elementAccessibilityHitTest( const IntPoint & ) const;
 
-    virtual AccessibilityRole roleValue() const { return SliderRole; }    
-    virtual bool isSlider() const { return true; }
-    virtual bool isInputSlider() const { return true; }
-    
-    virtual const AccessibilityChildrenVector& children();
+    virtual AccessibilityRole roleValue() const
+    {
+        return SliderRole;
+    }
+    virtual bool isSlider() const
+    {
+        return true;
+    }
+    virtual bool isInputSlider() const
+    {
+        return true;
+    }
+
+    virtual const AccessibilityChildrenVector &children();
     virtual void addChildren();
-    
-    virtual bool canSetValueAttribute() const { return true; }
-    const AtomicString& getAttribute(const QualifiedName& attribute) const;
-    
-    virtual void setValue(const String&);
+
+    virtual bool canSetValueAttribute() const
+    {
+        return true;
+    }
+    const AtomicString &getAttribute( const QualifiedName &attribute ) const;
+
+    virtual void setValue( const String & );
     virtual float valueForRange() const;
     virtual float maxValueForRange() const;
     virtual float minValueForRange() const;
-    virtual AccessibilityOrientation orientation() const;    
+    virtual AccessibilityOrientation orientation() const;
 };
 
-class AccessibilitySliderThumb : public AccessibilityObject {
-    
+class AccessibilitySliderThumb : public AccessibilityObject
+{
+
 public:
     static PassRefPtr<AccessibilitySliderThumb> create();
     virtual ~AccessibilitySliderThumb() { }
 
-    virtual AccessibilityRole roleValue() const { return SliderThumbRole; }
+    virtual AccessibilityRole roleValue() const
+    {
+        return SliderThumbRole;
+    }
 
-    void setParentObject(AccessibilitySlider* slider) { m_parentSlider = slider; }
-    virtual AccessibilityObject* parentObject() const { return m_parentSlider; }
+    void setParentObject( AccessibilitySlider *slider )
+    {
+        m_parentSlider = slider;
+    }
+    virtual AccessibilityObject *parentObject() const
+    {
+        return m_parentSlider;
+    }
 
     virtual IntSize size() const;
     virtual IntRect elementRect() const;
@@ -85,7 +109,7 @@ public:
 private:
     AccessibilitySliderThumb();
 
-    AccessibilitySlider* m_parentSlider;
+    AccessibilitySlider *m_parentSlider;
 };
 
 

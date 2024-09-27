@@ -31,36 +31,39 @@
 #include "DataTransferItem.h"
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Clipboard;
 class ScriptExecutionContext;
 
-class DataTransferItemQt : public DataTransferItem {
+class DataTransferItemQt : public DataTransferItem
+{
 public:
-    static PassRefPtr<DataTransferItemQt> createFromPasteboard(PassRefPtr<Clipboard> owner,
-                                                               ScriptExecutionContext*,
-                                                               const String&);
-    static PassRefPtr<DataTransferItemQt> create(PassRefPtr<Clipboard> owner,
-                                                 ScriptExecutionContext*,
-                                                 const String&,
-                                                 const String&);
+    static PassRefPtr<DataTransferItemQt> createFromPasteboard( PassRefPtr<Clipboard> owner,
+            ScriptExecutionContext *,
+            const String & );
+    static PassRefPtr<DataTransferItemQt> create( PassRefPtr<Clipboard> owner,
+            ScriptExecutionContext *,
+            const String &,
+            const String & );
 
-    virtual void getAsString(PassRefPtr<StringCallback>);
+    virtual void getAsString( PassRefPtr<StringCallback> );
     virtual PassRefPtr<Blob> getAsFile();
 
 private:
-    enum DataSource {
+    enum DataSource
+    {
         PasteboardSource,
         InternalSource
     };
 
-    DataTransferItemQt(PassRefPtr<Clipboard> owner,
-                       ScriptExecutionContext*,
-                       DataSource,
-                       const String&, const String&, const String&);
+    DataTransferItemQt( PassRefPtr<Clipboard> owner,
+                        ScriptExecutionContext *,
+                        DataSource,
+                        const String &, const String &, const String & );
 
-    ScriptExecutionContext* m_context;
+    ScriptExecutionContext *m_context;
     const DataSource m_dataSource;
     const String m_data;
 };

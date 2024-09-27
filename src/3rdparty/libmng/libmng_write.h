@@ -36,9 +36,9 @@
 
 /* ************************************************************************** */
 
-mng_retcode mng_drop_chunks   (mng_datap pData);
+mng_retcode mng_drop_chunks   ( mng_datap pData );
 
-mng_retcode mng_write_graphic (mng_datap pData);
+mng_retcode mng_write_graphic ( mng_datap pData );
 
 /* ************************************************************************** */
 

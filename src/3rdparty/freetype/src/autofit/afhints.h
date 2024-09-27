@@ -25,207 +25,207 @@
 
 FT_BEGIN_HEADER
 
-  /*
-   * The definition of outline glyph hints.  These are shared by all
-   * writing system analysis routines (until now).
-   */
+/*
+ * The definition of outline glyph hints.  These are shared by all
+ * writing system analysis routines (until now).
+ */
 
-  typedef enum  AF_Dimension_
-  {
+typedef enum  AF_Dimension_
+{
     AF_DIMENSION_HORZ = 0,  /* x coordinates,                    */
-                            /* i.e., vertical segments & edges   */
+    /* i.e., vertical segments & edges   */
     AF_DIMENSION_VERT = 1,  /* y coordinates,                    */
-                            /* i.e., horizontal segments & edges */
+    /* i.e., horizontal segments & edges */
 
     AF_DIMENSION_MAX  /* do not remove */
 
-  } AF_Dimension;
+} AF_Dimension;
 
 
-  /* hint directions -- the values are computed so that two vectors are */
-  /* in opposite directions iff `dir1 + dir2 == 0'                      */
-  typedef enum  AF_Direction_
-  {
+/* hint directions -- the values are computed so that two vectors are */
+/* in opposite directions iff `dir1 + dir2 == 0'                      */
+typedef enum  AF_Direction_
+{
     AF_DIR_NONE  =  4,
     AF_DIR_RIGHT =  1,
     AF_DIR_LEFT  = -1,
     AF_DIR_UP    =  2,
     AF_DIR_DOWN  = -2
 
-  } AF_Direction;
+} AF_Direction;
 
 
-  /*
-   * The following explanations are mostly taken from the article
-   *
-   *   Real-Time Grid Fitting of Typographic Outlines
-   *
-   * by David Turner and Werner Lemberg
-   *
-   *   https://www.tug.org/TUGboat/Articles/tb24-3/lemberg.pdf
-   *
-   * with appropriate updates.
-   *
-   *
-   * Segments
-   *
-   *   `af_{cjk,latin,...}_hints_compute_segments' are the functions to
-   *   find segments in an outline.
-   *
-   *   A segment is a series of at least two consecutive points that are
-   *   approximately aligned along a coordinate axis.  The analysis to do
-   *   so is specific to a writing system.
-   *
-   *
-   * Edges
-   *
-   *   `af_{cjk,latin,...}_hints_compute_edges' are the functions to find
-   *   edges.
-   *
-   *   As soon as segments are defined, the auto-hinter groups them into
-   *   edges.  An edge corresponds to a single position on the main
-   *   dimension that collects one or more segments (allowing for a small
-   *   threshold).
-   *
-   *   As an example, the `latin' writing system first tries to grid-fit
-   *   edges, then to align segments on the edges unless it detects that
-   *   they form a serif.
-   *
-   *
-   *                     A          H
-   *                      |        |
-   *                      |        |
-   *                      |        |
-   *                      |        |
-   *        C             |        |             F
-   *         +------<-----+        +-----<------+
-   *         |             B      G             |
-   *         |                                  |
-   *         |                                  |
-   *         +--------------->------------------+
-   *        D                                    E
-   *
-   *
-   * Stems
-   *
-   *   Stems are detected by `af_{cjk,latin,...}_hint_edges'.
-   *
-   *   Segments need to be `linked' to other ones in order to detect stems.
-   *   A stem is made of two segments that face each other in opposite
-   *   directions and that are sufficiently close to each other.  Using
-   *   vocabulary from the TrueType specification, stem segments form a
-   *   `black distance'.
-   *
-   *   In the above ASCII drawing, the horizontal segments are BC, DE, and
-   *   FG; the vertical segments are AB, CD, EF, and GH.
-   *
-   *   Each segment has at most one `best' candidate to form a black
-   *   distance, or no candidate at all.  Notice that two distinct segments
-   *   can have the same candidate, which frequently means a serif.
-   *
-   *   A stem is recognized by the following condition:
-   *
-   *     best segment_1 = segment_2 && best segment_2 = segment_1
-   *
-   *   The best candidate is stored in field `link' in structure
-   *   `AF_Segment'.
-   *
-   *   In the above ASCII drawing, the best candidate for both AB and CD is
-   *   GH, while the best candidate for GH is AB.  Similarly, the best
-   *   candidate for EF and GH is AB, while the best candidate for AB is
-   *   GH.
-   *
-   *   The detection and handling of stems is dependent on the writing
-   *   system.
-   *
-   *
-   * Serifs
-   *
-   *   Serifs are detected by `af_{cjk,latin,...}_hint_edges'.
-   *
-   *   In comparison to a stem, a serif (as handled by the auto-hinter
-   *   module that takes care of the `latin' writing system) has
-   *
-   *     best segment_1 = segment_2 && best segment_2 != segment_1
-   *
-   *   where segment_1 corresponds to the serif segment (CD and EF in the
-   *   above ASCII drawing).
-   *
-   *   The best candidate is stored in field `serif' in structure
-   *   `AF_Segment' (and `link' is set to NULL).
-   *
-   *
-   * Touched points
-   *
-   *   A point is called `touched' if it has been processed somehow by the
-   *   auto-hinter.  It basically means that it shouldn't be moved again
-   *   (or moved only under certain constraints to preserve the already
-   *   applied processing).
-   *
-   *
-   * Flat and round segments
-   *
-   *   Segments are `round' or `flat', depending on the series of points
-   *   that define them.  A segment is round if the next and previous point
-   *   of an extremum (which can be either a single point or sequence of
-   *   points) are both conic or cubic control points.  Otherwise, a
-   *   segment with an extremum is flat.
-   *
-   *
-   * Strong Points
-   *
-   *   Experience has shown that points not part of an edge need to be
-   *   interpolated linearly between their two closest edges, even if these
-   *   are not part of the contour of those particular points.  Typical
-   *   candidates for this are
-   *
-   *   - angle points (i.e., points where the `in' and `out' direction
-   *     differ greatly)
-   *
-   *   - inflection points (i.e., where the `in' and `out' angles are the
-   *     same, but the curvature changes sign) [currently, such points
-   *     aren't handled specially in the auto-hinter]
-   *
-   *   `af_glyph_hints_align_strong_points' is the function that takes
-   *   care of such situations; it is equivalent to the TrueType `IP'
-   *   hinting instruction.
-   *
-   *
-   * Weak Points
-   *
-   *   Other points in the outline must be interpolated using the
-   *   coordinates of their previous and next unfitted contour neighbours.
-   *   These are called `weak points' and are touched by the function
-   *   `af_glyph_hints_align_weak_points', equivalent to the TrueType `IUP'
-   *   hinting instruction.  Typical candidates are control points and
-   *   points on the contour without a major direction.
-   *
-   *   The major effect is to reduce possible distortion caused by
-   *   alignment of edges and strong points, thus weak points are processed
-   *   after strong points.
-   */
+/*
+ * The following explanations are mostly taken from the article
+ *
+ *   Real-Time Grid Fitting of Typographic Outlines
+ *
+ * by David Turner and Werner Lemberg
+ *
+ *   https://www.tug.org/TUGboat/Articles/tb24-3/lemberg.pdf
+ *
+ * with appropriate updates.
+ *
+ *
+ * Segments
+ *
+ *   `af_{cjk,latin,...}_hints_compute_segments' are the functions to
+ *   find segments in an outline.
+ *
+ *   A segment is a series of at least two consecutive points that are
+ *   approximately aligned along a coordinate axis.  The analysis to do
+ *   so is specific to a writing system.
+ *
+ *
+ * Edges
+ *
+ *   `af_{cjk,latin,...}_hints_compute_edges' are the functions to find
+ *   edges.
+ *
+ *   As soon as segments are defined, the auto-hinter groups them into
+ *   edges.  An edge corresponds to a single position on the main
+ *   dimension that collects one or more segments (allowing for a small
+ *   threshold).
+ *
+ *   As an example, the `latin' writing system first tries to grid-fit
+ *   edges, then to align segments on the edges unless it detects that
+ *   they form a serif.
+ *
+ *
+ *                     A          H
+ *                      |        |
+ *                      |        |
+ *                      |        |
+ *                      |        |
+ *        C             |        |             F
+ *         +------<-----+        +-----<------+
+ *         |             B      G             |
+ *         |                                  |
+ *         |                                  |
+ *         +--------------->------------------+
+ *        D                                    E
+ *
+ *
+ * Stems
+ *
+ *   Stems are detected by `af_{cjk,latin,...}_hint_edges'.
+ *
+ *   Segments need to be `linked' to other ones in order to detect stems.
+ *   A stem is made of two segments that face each other in opposite
+ *   directions and that are sufficiently close to each other.  Using
+ *   vocabulary from the TrueType specification, stem segments form a
+ *   `black distance'.
+ *
+ *   In the above ASCII drawing, the horizontal segments are BC, DE, and
+ *   FG; the vertical segments are AB, CD, EF, and GH.
+ *
+ *   Each segment has at most one `best' candidate to form a black
+ *   distance, or no candidate at all.  Notice that two distinct segments
+ *   can have the same candidate, which frequently means a serif.
+ *
+ *   A stem is recognized by the following condition:
+ *
+ *     best segment_1 = segment_2 && best segment_2 = segment_1
+ *
+ *   The best candidate is stored in field `link' in structure
+ *   `AF_Segment'.
+ *
+ *   In the above ASCII drawing, the best candidate for both AB and CD is
+ *   GH, while the best candidate for GH is AB.  Similarly, the best
+ *   candidate for EF and GH is AB, while the best candidate for AB is
+ *   GH.
+ *
+ *   The detection and handling of stems is dependent on the writing
+ *   system.
+ *
+ *
+ * Serifs
+ *
+ *   Serifs are detected by `af_{cjk,latin,...}_hint_edges'.
+ *
+ *   In comparison to a stem, a serif (as handled by the auto-hinter
+ *   module that takes care of the `latin' writing system) has
+ *
+ *     best segment_1 = segment_2 && best segment_2 != segment_1
+ *
+ *   where segment_1 corresponds to the serif segment (CD and EF in the
+ *   above ASCII drawing).
+ *
+ *   The best candidate is stored in field `serif' in structure
+ *   `AF_Segment' (and `link' is set to NULL).
+ *
+ *
+ * Touched points
+ *
+ *   A point is called `touched' if it has been processed somehow by the
+ *   auto-hinter.  It basically means that it shouldn't be moved again
+ *   (or moved only under certain constraints to preserve the already
+ *   applied processing).
+ *
+ *
+ * Flat and round segments
+ *
+ *   Segments are `round' or `flat', depending on the series of points
+ *   that define them.  A segment is round if the next and previous point
+ *   of an extremum (which can be either a single point or sequence of
+ *   points) are both conic or cubic control points.  Otherwise, a
+ *   segment with an extremum is flat.
+ *
+ *
+ * Strong Points
+ *
+ *   Experience has shown that points not part of an edge need to be
+ *   interpolated linearly between their two closest edges, even if these
+ *   are not part of the contour of those particular points.  Typical
+ *   candidates for this are
+ *
+ *   - angle points (i.e., points where the `in' and `out' direction
+ *     differ greatly)
+ *
+ *   - inflection points (i.e., where the `in' and `out' angles are the
+ *     same, but the curvature changes sign) [currently, such points
+ *     aren't handled specially in the auto-hinter]
+ *
+ *   `af_glyph_hints_align_strong_points' is the function that takes
+ *   care of such situations; it is equivalent to the TrueType `IP'
+ *   hinting instruction.
+ *
+ *
+ * Weak Points
+ *
+ *   Other points in the outline must be interpolated using the
+ *   coordinates of their previous and next unfitted contour neighbours.
+ *   These are called `weak points' and are touched by the function
+ *   `af_glyph_hints_align_weak_points', equivalent to the TrueType `IUP'
+ *   hinting instruction.  Typical candidates are control points and
+ *   points on the contour without a major direction.
+ *
+ *   The major effect is to reduce possible distortion caused by
+ *   alignment of edges and strong points, thus weak points are processed
+ *   after strong points.
+ */
 
 
-  /* point hint flags */
+/* point hint flags */
 #define AF_FLAG_NONE  0
 
-  /* point type flags */
+/* point type flags */
 #define AF_FLAG_CONIC    ( 1U << 0 )
 #define AF_FLAG_CUBIC    ( 1U << 1 )
 #define AF_FLAG_CONTROL  ( AF_FLAG_CONIC | AF_FLAG_CUBIC )
 
-  /* point touch flags */
+/* point touch flags */
 #define AF_FLAG_TOUCH_X  ( 1U << 2 )
 #define AF_FLAG_TOUCH_Y  ( 1U << 3 )
 
-  /* candidates for weak interpolation have this flag set */
+/* candidates for weak interpolation have this flag set */
 #define AF_FLAG_WEAK_INTERPOLATION  ( 1U << 4 )
 
-  /* the distance to the next point is very small */
+/* the distance to the next point is very small */
 #define AF_FLAG_NEAR  ( 1U << 5 )
 
 
-  /* edge hint flags */
+/* edge hint flags */
 #define AF_EDGE_NORMAL  0
 #define AF_EDGE_ROUND    ( 1U << 0 )
 #define AF_EDGE_SERIF    ( 1U << 1 )
@@ -233,13 +233,13 @@ FT_BEGIN_HEADER
 #define AF_EDGE_NEUTRAL  ( 1U << 3 ) /* edge aligns to a neutral blue zone */
 
 
-  typedef struct AF_PointRec_*    AF_Point;
-  typedef struct AF_SegmentRec_*  AF_Segment;
-  typedef struct AF_EdgeRec_*     AF_Edge;
+typedef struct AF_PointRec_    *AF_Point;
+typedef struct AF_SegmentRec_  *AF_Segment;
+typedef struct AF_EdgeRec_     *AF_Edge;
 
 
-  typedef struct  AF_PointRec_
-  {
+typedef struct  AF_PointRec_
+{
     FT_UShort  flags;    /* point flags used by hinter   */
     FT_Char    in_dir;   /* direction of inwards vector  */
     FT_Char    out_dir;  /* direction of outwards vector */
@@ -258,11 +258,11 @@ FT_BEGIN_HEADER
     AF_Edge    after[2];
 #endif
 
-  } AF_PointRec;
+} AF_PointRec;
 
 
-  typedef struct  AF_SegmentRec_
-  {
+typedef struct  AF_SegmentRec_
+{
     FT_Byte     flags;       /* edge/segment flags for this segment */
     FT_Char     dir;         /* segment direction                   */
     FT_Short    pos;         /* position of segment                 */
@@ -282,11 +282,11 @@ FT_BEGIN_HEADER
     AF_Point    first;       /* first point in edge segment */
     AF_Point    last;        /* last point in edge segment  */
 
-  } AF_SegmentRec;
+} AF_SegmentRec;
 
 
-  typedef struct  AF_EdgeRec_
-  {
+typedef struct  AF_EdgeRec_
+{
     FT_Short    fpos;       /* original, unscaled position (in font units) */
     FT_Pos      opos;       /* original, scaled position                   */
     FT_Pos      pos;        /* current position                            */
@@ -303,13 +303,13 @@ FT_BEGIN_HEADER
     AF_Segment  first;      /* first segment in edge */
     AF_Segment  last;       /* last segment in edge  */
 
-  } AF_EdgeRec;
+} AF_EdgeRec;
 
 #define AF_SEGMENTS_EMBEDDED  18   /* number of embedded segments   */
 #define AF_EDGES_EMBEDDED     12   /* number of embedded edges      */
 
-  typedef struct  AF_AxisHintsRec_
-  {
+typedef struct  AF_AxisHintsRec_
+{
     FT_Int        num_segments; /* number of used segments      */
     FT_Int        max_segments; /* number of allocated segments */
     AF_Segment    segments;     /* segments array               */
@@ -326,19 +326,19 @@ FT_BEGIN_HEADER
     /* two arrays to avoid allocation penalty */
     struct
     {
-      AF_SegmentRec  segments[AF_SEGMENTS_EMBEDDED];
-      AF_EdgeRec     edges[AF_EDGES_EMBEDDED];
+        AF_SegmentRec  segments[AF_SEGMENTS_EMBEDDED];
+        AF_EdgeRec     edges[AF_EDGES_EMBEDDED];
     } embedded;
 
 
-  } AF_AxisHintsRec, *AF_AxisHints;
+} AF_AxisHintsRec, *AF_AxisHints;
 
 
 #define AF_POINTS_EMBEDDED     96   /* number of embedded points   */
 #define AF_CONTOURS_EMBEDDED    8   /* number of embedded contours */
 
-  typedef struct  AF_GlyphHintsRec_
-  {
+typedef struct  AF_GlyphHintsRec_
+{
     FT_Memory        memory;
 
     FT_Fixed         x_scale;
@@ -353,24 +353,24 @@ FT_BEGIN_HEADER
 
     FT_Int           max_contours;  /* number of allocated contours */
     FT_Int           num_contours;  /* number of used contours      */
-    AF_Point*        contours;      /* contours array               */
+    AF_Point        *contours;      /* contours array               */
 
     AF_AxisHintsRec  axis[AF_DIMENSION_MAX];
 
     FT_UInt32        scaler_flags;  /* copy of scaler flags    */
     FT_UInt32        other_flags;   /* free for style-specific */
-                                    /* implementations         */
+    /* implementations         */
     AF_StyleMetrics  metrics;
 
     /* Two arrays to avoid allocation penalty.            */
     /* The `embedded' structure must be the last element! */
     struct
     {
-      AF_Point       contours[AF_CONTOURS_EMBEDDED];
-      AF_PointRec    points[AF_POINTS_EMBEDDED];
+        AF_Point       contours[AF_CONTOURS_EMBEDDED];
+        AF_PointRec    points[AF_POINTS_EMBEDDED];
     } embedded;
 
-  } AF_GlyphHintsRec;
+} AF_GlyphHintsRec;
 
 
 #define AF_HINTS_TEST_SCALER( h, f )  ( (h)->scaler_flags & (f) )
@@ -406,54 +406,54 @@ FT_BEGIN_HEADER
           !AF_HINTS_TEST_SCALER( h, AF_SCALER_FLAG_NO_ADVANCE )
 
 
-  FT_LOCAL( AF_Direction )
-  af_direction_compute( FT_Pos  dx,
-                        FT_Pos  dy );
+FT_LOCAL( AF_Direction )
+af_direction_compute( FT_Pos  dx,
+                      FT_Pos  dy );
 
 
-  FT_LOCAL( FT_Error )
-  af_axis_hints_new_segment( AF_AxisHints  axis,
-                             FT_Memory     memory,
-                             AF_Segment   *asegment );
+FT_LOCAL( FT_Error )
+af_axis_hints_new_segment( AF_AxisHints  axis,
+                           FT_Memory     memory,
+                           AF_Segment   *asegment );
 
-  FT_LOCAL( FT_Error)
-  af_axis_hints_new_edge( AF_AxisHints  axis,
-                          FT_Int        fpos,
-                          AF_Direction  dir,
-                          FT_Bool       top_to_bottom_hinting,
-                          FT_Memory     memory,
-                          AF_Edge      *edge );
+FT_LOCAL( FT_Error )
+af_axis_hints_new_edge( AF_AxisHints  axis,
+                        FT_Int        fpos,
+                        AF_Direction  dir,
+                        FT_Bool       top_to_bottom_hinting,
+                        FT_Memory     memory,
+                        AF_Edge      *edge );
 
-  FT_LOCAL( void )
-  af_glyph_hints_init( AF_GlyphHints  hints,
-                       FT_Memory      memory );
+FT_LOCAL( void )
+af_glyph_hints_init( AF_GlyphHints  hints,
+                     FT_Memory      memory );
 
-  FT_LOCAL( void )
-  af_glyph_hints_rescale( AF_GlyphHints    hints,
-                          AF_StyleMetrics  metrics );
+FT_LOCAL( void )
+af_glyph_hints_rescale( AF_GlyphHints    hints,
+                        AF_StyleMetrics  metrics );
 
-  FT_LOCAL( FT_Error )
-  af_glyph_hints_reload( AF_GlyphHints  hints,
-                         FT_Outline*    outline );
+FT_LOCAL( FT_Error )
+af_glyph_hints_reload( AF_GlyphHints  hints,
+                       FT_Outline    *outline );
 
-  FT_LOCAL( void )
-  af_glyph_hints_save( AF_GlyphHints  hints,
-                       FT_Outline*    outline );
+FT_LOCAL( void )
+af_glyph_hints_save( AF_GlyphHints  hints,
+                     FT_Outline    *outline );
 
-  FT_LOCAL( void )
-  af_glyph_hints_align_edge_points( AF_GlyphHints  hints,
+FT_LOCAL( void )
+af_glyph_hints_align_edge_points( AF_GlyphHints  hints,
+                                  AF_Dimension   dim );
+
+FT_LOCAL( void )
+af_glyph_hints_align_strong_points( AF_GlyphHints  hints,
                                     AF_Dimension   dim );
 
-  FT_LOCAL( void )
-  af_glyph_hints_align_strong_points( AF_GlyphHints  hints,
-                                      AF_Dimension   dim );
+FT_LOCAL( void )
+af_glyph_hints_align_weak_points( AF_GlyphHints  hints,
+                                  AF_Dimension   dim );
 
-  FT_LOCAL( void )
-  af_glyph_hints_align_weak_points( AF_GlyphHints  hints,
-                                    AF_Dimension   dim );
-
-  FT_LOCAL( void )
-  af_glyph_hints_done( AF_GlyphHints  hints );
+FT_LOCAL( void )
+af_glyph_hints_done( AF_GlyphHints  hints );
 
 /* */
 

@@ -23,8 +23,8 @@
 
 #include <qcamerainfocontrol.h>
 
-QCameraInfoControl::QCameraInfoControl(QObject *parent)
-   : QMediaControl(parent)
+QCameraInfoControl::QCameraInfoControl( QObject *parent )
+    : QMediaControl( parent )
 {
 }
 

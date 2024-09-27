@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -30,23 +30,35 @@
 #include "ExceptionCode.h"
 #include <runtime/Error.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace JSC;
 
-EncodedJSValue JSC_HOST_CALL JSArrayBufferConstructor::constructJSArrayBuffer(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL JSArrayBufferConstructor::constructJSArrayBuffer( ExecState *exec )
 {
-    JSArrayBufferConstructor* jsConstructor = static_cast<JSArrayBufferConstructor*>(exec->callee());
+    JSArrayBufferConstructor *jsConstructor = static_cast<JSArrayBufferConstructor *>( exec->callee() );
 
     int length = 0;
-    if (exec->argumentCount() > 0)
-        length = exec->argument(0).toInt32(exec); // NaN/+inf/-inf returns 0, this is intended by WebIDL
+
+    if ( exec->argumentCount() > 0 )
+    {
+        length = exec->argument( 0 ).toInt32( exec );    // NaN/+inf/-inf returns 0, this is intended by WebIDL
+    }
+
     RefPtr<ArrayBuffer> buffer;
-    if (length >= 0)
-        buffer = ArrayBuffer::create(static_cast<unsigned>(length), 1);
-    if (!buffer.get())
-        return throwVMError(exec, createRangeError(exec, "ArrayBuffer size is not a small enough positive integer."));
-    return JSValue::encode(asObject(toJS(exec, jsConstructor->globalObject(), buffer.get())));
+
+    if ( length >= 0 )
+    {
+        buffer = ArrayBuffer::create( static_cast<unsigned>( length ), 1 );
+    }
+
+    if ( !buffer.get() )
+    {
+        return throwVMError( exec, createRangeError( exec, "ArrayBuffer size is not a small enough positive integer." ) );
+    }
+
+    return JSValue::encode( asObject( toJS( exec, jsConstructor->globalObject(), buffer.get() ) ) );
 }
 
 } // namespace WebCore

@@ -27,23 +27,25 @@
 #include "ContainerNode.h"
 #include "FragmentScriptingPermission.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class DocumentFragment : public ContainerNode {
+class DocumentFragment : public ContainerNode
+{
 public:
-    static PassRefPtr<DocumentFragment> create(Document*);
+    static PassRefPtr<DocumentFragment> create( Document * );
 
-    void parseHTML(const String&, Element* contextElement, FragmentScriptingPermission = FragmentScriptingAllowed);
-    bool parseXML(const String&, Element* contextElement, FragmentScriptingPermission = FragmentScriptingAllowed);
+    void parseHTML( const String &, Element *contextElement, FragmentScriptingPermission = FragmentScriptingAllowed );
+    bool parseXML( const String &, Element *contextElement, FragmentScriptingPermission = FragmentScriptingAllowed );
 
 protected:
-    DocumentFragment(Document*);
+    DocumentFragment( Document * );
     virtual String nodeName() const;
 
 private:
     virtual NodeType nodeType() const;
-    virtual PassRefPtr<Node> cloneNode(bool deep);
-    virtual bool childTypeAllowed(NodeType) const;
+    virtual PassRefPtr<Node> cloneNode( bool deep );
+    virtual bool childTypeAllowed( NodeType ) const;
 };
 
 } //namespace

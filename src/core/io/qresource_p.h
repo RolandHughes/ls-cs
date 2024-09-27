@@ -30,57 +30,57 @@ class QResourceFileEnginePrivate;
 
 class QResourceFileEngine : public QAbstractFileEngine
 {
-   Q_DECLARE_PRIVATE(QResourceFileEngine)
+    Q_DECLARE_PRIVATE( QResourceFileEngine )
 
- public:
-   explicit QResourceFileEngine(const QString &path);
-   ~QResourceFileEngine();
+public:
+    explicit QResourceFileEngine( const QString &path );
+    ~QResourceFileEngine();
 
-   void setFileName(const QString &file) override;
+    void setFileName( const QString &file ) override;
 
-   bool open(QIODevice::OpenMode flags) override;
-   bool close() override;
-   bool flush() override;
-   qint64 size() const override;
-   qint64 pos() const override;
-   bool atEnd() const;
-   bool seek(qint64) override;
-   qint64 read(char *data, qint64 maxlen) override;
-   qint64 write(const char *data, qint64 len) override;
+    bool open( QIODevice::OpenMode flags ) override;
+    bool close() override;
+    bool flush() override;
+    qint64 size() const override;
+    qint64 pos() const override;
+    bool atEnd() const;
+    bool seek( qint64 ) override;
+    qint64 read( char *data, qint64 maxlen ) override;
+    qint64 write( const char *data, qint64 len ) override;
 
-   bool remove() override;
-   bool copy(const QString &newName) override;
-   bool rename(const QString &newName) override;
-   bool link(const QString &newName) override;
+    bool remove() override;
+    bool copy( const QString &newName ) override;
+    bool rename( const QString &newName ) override;
+    bool link( const QString &newName ) override;
 
-   bool isSequential() const override;
-   bool isRelativePath() const override;
+    bool isSequential() const override;
+    bool isRelativePath() const override;
 
-   bool mkdir(const QString &dirName, bool createParentDirectories) const override;
-   bool rmdir(const QString &dirName, bool recurseParentDirectories) const override;
+    bool mkdir( const QString &dirName, bool createParentDirectories ) const override;
+    bool rmdir( const QString &dirName, bool recurseParentDirectories ) const override;
 
-   bool setSize(qint64 size) override;
+    bool setSize( qint64 size ) override;
 
-   QStringList entryList(QDir::Filters filters, const QStringList &filterNames) const override;
+    QStringList entryList( QDir::Filters filters, const QStringList &filterNames ) const override;
 
-   bool caseSensitive() const override;
+    bool caseSensitive() const override;
 
-   FileFlags fileFlags(FileFlags type) const override;
+    FileFlags fileFlags( FileFlags type ) const override;
 
-   bool setPermissions(uint perms) override;
+    bool setPermissions( uint perms ) override;
 
-   QString fileName(QAbstractFileEngine::FileName file) const override;
+    QString fileName( QAbstractFileEngine::FileName file ) const override;
 
-   uint ownerId(FileOwner) const override;
-   QString owner(FileOwner) const override;
+    uint ownerId( FileOwner ) const override;
+    QString owner( FileOwner ) const override;
 
-   QDateTime fileTime(FileTime time) const override;
+    QDateTime fileTime( FileTime time ) const override;
 
-   QAbstractFileEngineIterator *beginEntryList(QDir::Filters filters, const QStringList &filterNames) override;
-   QAbstractFileEngineIterator *endEntryList() override;
+    QAbstractFileEngineIterator *beginEntryList( QDir::Filters filters, const QStringList &filterNames ) override;
+    QAbstractFileEngineIterator *endEntryList() override;
 
-   bool extension(Extension extension, const ExtensionOption *option = nullptr, ExtensionReturn *output = nullptr) override;
-   bool supportsExtension(Extension extension) const override;
+    bool extension( Extension extension, const ExtensionOption *option = nullptr, ExtensionReturn *output = nullptr ) override;
+    bool supportsExtension( Extension extension ) const override;
 };
 
 #endif

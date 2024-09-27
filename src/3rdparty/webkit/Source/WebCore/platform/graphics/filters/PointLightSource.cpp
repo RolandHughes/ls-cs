@@ -25,7 +25,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -35,51 +35,61 @@
 
 #include "TextStream.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-void PointLightSource::initPaintingData(PaintingData&)
+void PointLightSource::initPaintingData( PaintingData & )
 {
 }
 
-void PointLightSource::updatePaintingData(PaintingData& paintingData, int x, int y, float z)
+void PointLightSource::updatePaintingData( PaintingData &paintingData, int x, int y, float z )
 {
-    paintingData.lightVector.setX(m_position.x() - x);
-    paintingData.lightVector.setY(m_position.y() - y);
-    paintingData.lightVector.setZ(m_position.z() - z);
+    paintingData.lightVector.setX( m_position.x() - x );
+    paintingData.lightVector.setY( m_position.y() - y );
+    paintingData.lightVector.setZ( m_position.z() - z );
     paintingData.lightVectorLength = paintingData.lightVector.length();
 }
 
-bool PointLightSource::setX(float x)
+bool PointLightSource::setX( float x )
 {
-    if (m_position.x() == x)
+    if ( m_position.x() == x )
+    {
         return false;
-    m_position.setX(x);
+    }
+
+    m_position.setX( x );
     return true;
 }
 
-bool PointLightSource::setY(float y)
+bool PointLightSource::setY( float y )
 {
-    if (m_position.y() == y)
+    if ( m_position.y() == y )
+    {
         return false;
-    m_position.setY(y);
+    }
+
+    m_position.setY( y );
     return true;
 }
 
-bool PointLightSource::setZ(float z)
+bool PointLightSource::setZ( float z )
 {
-    if (m_position.z() == z)
+    if ( m_position.z() == z )
+    {
         return false;
-    m_position.setZ(z);
+    }
+
+    m_position.setZ( z );
     return true;
 }
 
-static TextStream& operator<<(TextStream& ts, const FloatPoint3D& p)
+static TextStream &operator<<( TextStream &ts, const FloatPoint3D &p )
 {
     ts << "x=" << p.x() << " y=" << p.y() << " z=" << p.z();
     return ts;
 }
 
-TextStream& PointLightSource::externalRepresentation(TextStream& ts) const
+TextStream &PointLightSource::externalRepresentation( TextStream &ts ) const
 {
     ts << "[type=POINT-LIGHT] ";
     ts << "[position=\"" << position() << "\"]";

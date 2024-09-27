@@ -23,104 +23,106 @@
 
 #include <cs_catch2.h>
 
-TEST_CASE("QThread traits", "[qthread]")
+TEST_CASE( "QThread traits", "[qthread]" )
 {
-   REQUIRE(std::is_copy_constructible_v<QThread> == false);
-   REQUIRE(std::is_move_constructible_v<QThread> == false);
+    REQUIRE( std::is_copy_constructible_v<QThread> == false );
+    REQUIRE( std::is_move_constructible_v<QThread> == false );
 
-   REQUIRE(std::is_copy_assignable_v<QThread> == false);
-   REQUIRE(std::is_move_assignable_v<QThread> == false);
+    REQUIRE( std::is_copy_assignable_v<QThread> == false );
+    REQUIRE( std::is_move_assignable_v<QThread> == false );
 
-   REQUIRE(std::has_virtual_destructor_v<QThread> == true);
+    REQUIRE( std::has_virtual_destructor_v<QThread> == true );
 }
 
 class Current_Thread : public QThread
 {
-   public:
-      Qt::HANDLE id;
-      QThread *thread;
+public:
+    Qt::HANDLE id;
+    QThread *thread;
 
-      void run() override {
-         id = QThread::currentThreadId();
-         thread = QThread::currentThread();
-      }
+    void run() override
+    {
+        id = QThread::currentThreadId();
+        thread = QThread::currentThread();
+    }
 };
 
 class Mutex_Thread : public QThread
 {
-   public:
-      QMutex mutex;
-      QWaitCondition cond;
+public:
+    QMutex mutex;
+    QWaitCondition cond;
 
-      void run() override {
-        QMutexLocker locker(&mutex);
+    void run() override
+    {
+        QMutexLocker locker( &mutex );
         cond.wakeOne();
-      }
+    }
 };
 
-TEST_CASE("QThread finished_running", "[qthread]")
+TEST_CASE( "QThread finished_running", "[qthread]" )
 {
-   Mutex_Thread thread;
+    Mutex_Thread thread;
 
-   REQUIRE(thread.isRunning() == false);
-   REQUIRE(thread.isFinished() == false);
+    REQUIRE( thread.isRunning() == false );
+    REQUIRE( thread.isFinished() == false );
 
-   QMutexLocker locker(&thread.mutex);
-   thread.start();
+    QMutexLocker locker( &thread.mutex );
+    thread.start();
 
-   REQUIRE(thread.isRunning() == true);
-   REQUIRE(thread.isFinished() == false);
+    REQUIRE( thread.isRunning() == true );
+    REQUIRE( thread.isFinished() == false );
 
-   thread.cond.wait(locker.mutex());
-   bool result = thread.wait(30000);
+    thread.cond.wait( locker.mutex() );
+    bool result = thread.wait( 30000 );
 
-   REQUIRE(result == true);
+    REQUIRE( result == true );
 
-   REQUIRE(thread.isRunning() ==  false );
-   REQUIRE(thread.isFinished() == true);
+    REQUIRE( thread.isRunning() ==  false );
+    REQUIRE( thread.isFinished() == true );
 }
 
-TEST_CASE("QThread set_priority", "[qthread]")
+TEST_CASE( "QThread set_priority", "[qthread]" )
 {
-   Mutex_Thread thread;
+    Mutex_Thread thread;
 
-   REQUIRE(thread.priority() == QThread::InheritPriority);
+    REQUIRE( thread.priority() == QThread::InheritPriority );
 
-   QMutexLocker locker(&thread.mutex);
-   thread.start();
+    QMutexLocker locker( &thread.mutex );
+    thread.start();
 
-   // change the priority of a running thread
-   thread.setPriority(QThread::IdlePriority);
-   REQUIRE(thread.priority() == QThread::IdlePriority);
+    // change the priority of a running thread
+    thread.setPriority( QThread::IdlePriority );
+    REQUIRE( thread.priority() == QThread::IdlePriority );
 
-   thread.setPriority(QThread::NormalPriority);
-   REQUIRE(thread.priority() == QThread::NormalPriority);
+    thread.setPriority( QThread::NormalPriority );
+    REQUIRE( thread.priority() == QThread::NormalPriority );
 
-   thread.setPriority(QThread::HighPriority);
-   REQUIRE(thread.priority() == QThread::HighPriority);
+    thread.setPriority( QThread::HighPriority );
+    REQUIRE( thread.priority() == QThread::HighPriority );
 
-   thread.cond.wait(locker.mutex());
-   REQUIRE(thread.wait(30000) == true);
+    thread.cond.wait( locker.mutex() );
+    REQUIRE( thread.wait( 30000 ) == true );
 }
 
-TEST_CASE("QThread thread_count", "[qthread]")
+TEST_CASE( "QThread thread_count", "[qthread]" )
 {
-   REQUIRE(QThread::idealThreadCount() > 0);
+    REQUIRE( QThread::idealThreadCount() > 0 );
 }
 
-TEST_CASE("QThread thread_id", "[qthread]")
+TEST_CASE( "QThread thread_id", "[qthread]" )
 {
-   Current_Thread thread;
+    Current_Thread thread;
 
-   thread.id     = nullptr;
-   thread.thread = nullptr;
-   thread.start();
+    thread.id     = nullptr;
+    thread.thread = nullptr;
+    thread.start();
 
-   REQUIRE(thread.wait(30000) == true);
+    REQUIRE( thread.wait( 30000 ) == true );
 
-   REQUIRE(thread.id != nullptr);
-   REQUIRE(thread.id != QThread::currentThreadId());
+    REQUIRE( thread.id != nullptr );
+    REQUIRE( thread.id != QThread::currentThreadId() );
 
-   REQUIRE(thread.thread == static_cast<QThread *>(&thread));
+    REQUIRE( thread.thread == static_cast<QThread *>( &thread ) );
 }
 

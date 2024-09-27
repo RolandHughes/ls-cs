@@ -29,45 +29,53 @@
 #include "UString.h"
 #include <wtf/OwnPtr.h>
 
-namespace JSC {
+namespace JSC
+{
 
-    class JSGlobalData;
-    class JSString;
-    class MarkStack;
-    class SmallStringsStorage;
+class JSGlobalData;
+class JSString;
+class MarkStack;
+class SmallStringsStorage;
 
-    class SmallStrings : public Noncopyable {
-    public:
-        SmallStrings();
-        ~SmallStrings();
+class SmallStrings : public Noncopyable
+{
+public:
+    SmallStrings();
+    ~SmallStrings();
 
-        JSString* emptyString(JSGlobalData* globalData)
+    JSString *emptyString( JSGlobalData *globalData )
+    {
+        if ( !m_emptyString )
         {
-            if (!m_emptyString)
-                createEmptyString(globalData);
-            return m_emptyString;
-        }
-        JSString* singleCharacterString(JSGlobalData* globalData, unsigned char character)
-        {
-            if (!m_singleCharacterStrings[character])
-                createSingleCharacterString(globalData, character);
-            return m_singleCharacterStrings[character];
+            createEmptyString( globalData );
         }
 
-        UString::Rep* singleCharacterStringRep(unsigned char character);
+        return m_emptyString;
+    }
+    JSString *singleCharacterString( JSGlobalData *globalData, unsigned char character )
+    {
+        if ( !m_singleCharacterStrings[character] )
+        {
+            createSingleCharacterString( globalData, character );
+        }
 
-        void markChildren(MarkStack&);
+        return m_singleCharacterStrings[character];
+    }
 
-        unsigned count() const;
+    UString::Rep *singleCharacterStringRep( unsigned char character );
 
-    private:
-        void createEmptyString(JSGlobalData*);
-        void createSingleCharacterString(JSGlobalData*, unsigned char);
+    void markChildren( MarkStack & );
 
-        JSString* m_emptyString;
-        JSString* m_singleCharacterStrings[0x100];
-        OwnPtr<SmallStringsStorage> m_storage;
-    };
+    unsigned count() const;
+
+private:
+    void createEmptyString( JSGlobalData * );
+    void createSingleCharacterString( JSGlobalData *, unsigned char );
+
+    JSString *m_emptyString;
+    JSString *m_singleCharacterStrings[0x100];
+    OwnPtr<SmallStringsStorage> m_storage;
+};
 
 } // namespace JSC
 

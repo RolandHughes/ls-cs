@@ -32,32 +32,40 @@
 #include "AccessibilityTable.h"
 #include <wtf/Forward.h>
 
-namespace WebCore {
-    
+namespace WebCore
+{
+
 class AccessibilityTableCell;
 class AccessibilityTableHeaderContainer;
 
-class AccessibilityARIAGrid : public AccessibilityTable {
-    
+class AccessibilityARIAGrid : public AccessibilityTable
+{
+
 private:
-    AccessibilityARIAGrid(RenderObject*);
+    AccessibilityARIAGrid( RenderObject * );
 public:
-    static PassRefPtr<AccessibilityARIAGrid> create(RenderObject*);
+    static PassRefPtr<AccessibilityARIAGrid> create( RenderObject * );
     virtual ~AccessibilityARIAGrid();
-    
-    virtual bool isAriaTable() const { return true; }    
-    
+
+    virtual bool isAriaTable() const
+    {
+        return true;
+    }
+
     virtual void addChildren();
-    
-    virtual AccessibilityTableCell* cellForColumnAndRow(unsigned column, unsigned row);
+
+    virtual AccessibilityTableCell *cellForColumnAndRow( unsigned column, unsigned row );
 
 private:
     // ARIA treegrids and grids support selected rows.
-    virtual bool supportsSelectedRows() { return true; }    
+    virtual bool supportsSelectedRows()
+    {
+        return true;
+    }
 
-    void addChild(AccessibilityObject*, HashSet<AccessibilityObject*>& appendedRows, unsigned& columnCount);
+    void addChild( AccessibilityObject *, HashSet<AccessibilityObject *> &appendedRows, unsigned &columnCount );
 };
 
-} // namespace WebCore 
+} // namespace WebCore
 
 #endif // AccessibilityARIAGrid_h

@@ -33,13 +33,13 @@ class QPlatformPrinterSupport;
 
 class Q_GUI_EXPORT QPlatformPrinterSupportPlugin : public QObject
 {
-    GUI_CS_OBJECT(QPlatformPrinterSupportPlugin)
+    GUI_CS_OBJECT( QPlatformPrinterSupportPlugin )
 
 public:
-    explicit QPlatformPrinterSupportPlugin(QObject *parent = nullptr);
+    explicit QPlatformPrinterSupportPlugin( QObject *parent = nullptr );
     ~QPlatformPrinterSupportPlugin();
 
-    virtual QPlatformPrinterSupport *create(const QString &key) = 0;
+    virtual QPlatformPrinterSupport *create( const QString &key ) = 0;
 
     static QPlatformPrinterSupport *get();
 };

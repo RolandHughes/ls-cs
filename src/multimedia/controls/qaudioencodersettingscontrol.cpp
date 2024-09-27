@@ -25,8 +25,8 @@
 
 #include <qstringlist.h>
 
-QAudioEncoderSettingsControl::QAudioEncoderSettingsControl(QObject *parent)
-    : QMediaControl(parent)
+QAudioEncoderSettingsControl::QAudioEncoderSettingsControl( QObject *parent )
+    : QMediaControl( parent )
 {
 }
 

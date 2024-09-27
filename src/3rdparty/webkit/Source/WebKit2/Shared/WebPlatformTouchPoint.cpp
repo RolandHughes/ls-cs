@@ -33,24 +33,26 @@
 
 using namespace WebCore;
 
-namespace WebKit {
+namespace WebKit
+{
 
-WebPlatformTouchPoint::WebPlatformTouchPoint(unsigned id, TouchPointState state, const IntPoint& screenPosition, const IntPoint& position)
-    : m_id(id)
-    , m_state(state)
-    , m_screenPosition(screenPosition)
-    , m_position(position)
+WebPlatformTouchPoint::WebPlatformTouchPoint( unsigned id, TouchPointState state, const IntPoint &screenPosition,
+        const IntPoint &position )
+    : m_id( id )
+    , m_state( state )
+    , m_screenPosition( screenPosition )
+    , m_position( position )
 {
 }
 
-void WebPlatformTouchPoint::encode(CoreIPC::ArgumentEncoder* encoder) const
+void WebPlatformTouchPoint::encode( CoreIPC::ArgumentEncoder *encoder ) const
 {
-    encoder->encode(CoreIPC::In(m_id, m_state, m_screenPosition, m_position));
+    encoder->encode( CoreIPC::In( m_id, m_state, m_screenPosition, m_position ) );
 }
 
-bool WebPlatformTouchPoint::decode(CoreIPC::ArgumentDecoder* decoder, WebPlatformTouchPoint& t)
+bool WebPlatformTouchPoint::decode( CoreIPC::ArgumentDecoder *decoder, WebPlatformTouchPoint &t )
 {
-    return decoder->decode(CoreIPC::Out(t.m_id, t.m_state, t.m_screenPosition, t.m_position));
+    return decoder->decode( CoreIPC::Out( t.m_id, t.m_state, t.m_screenPosition, t.m_position ) );
 }
 
 } // namespace WebKit

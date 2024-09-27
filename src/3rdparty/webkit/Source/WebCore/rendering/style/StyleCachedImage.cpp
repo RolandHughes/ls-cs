@@ -27,16 +27,17 @@
 #include "CachedImage.h"
 #include "RenderObject.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 PassRefPtr<CSSValue> StyleCachedImage::cssValue() const
 {
-    return CSSPrimitiveValue::create(m_image->url(), CSSPrimitiveValue::CSS_URI);
+    return CSSPrimitiveValue::create( m_image->url(), CSSPrimitiveValue::CSS_URI );
 }
 
-bool StyleCachedImage::canRender(float multiplier) const
+bool StyleCachedImage::canRender( float multiplier ) const
 {
-    return m_image->canRender(multiplier);
+    return m_image->canRender( multiplier );
 }
 
 bool StyleCachedImage::isLoaded() const
@@ -49,9 +50,9 @@ bool StyleCachedImage::errorOccurred() const
     return m_image->errorOccurred();
 }
 
-IntSize StyleCachedImage::imageSize(const RenderObject* /*renderer*/, float multiplier) const
+IntSize StyleCachedImage::imageSize( const RenderObject * /*renderer*/, float multiplier ) const
 {
-    return m_image->imageSize(multiplier);
+    return m_image->imageSize( multiplier );
 }
 
 bool StyleCachedImage::imageHasRelativeWidth() const
@@ -69,22 +70,22 @@ bool StyleCachedImage::usesImageContainerSize() const
     return m_image->usesImageContainerSize();
 }
 
-void StyleCachedImage::setImageContainerSize(const IntSize& size)
+void StyleCachedImage::setImageContainerSize( const IntSize &size )
 {
-    return m_image->setImageContainerSize(size);
+    return m_image->setImageContainerSize( size );
 }
 
-void StyleCachedImage::addClient(RenderObject* renderer)
+void StyleCachedImage::addClient( RenderObject *renderer )
 {
-    return m_image->addClient(renderer);
+    return m_image->addClient( renderer );
 }
 
-void StyleCachedImage::removeClient(RenderObject* renderer)
+void StyleCachedImage::removeClient( RenderObject *renderer )
 {
-    return m_image->removeClient(renderer);
+    return m_image->removeClient( renderer );
 }
 
-PassRefPtr<Image> StyleCachedImage::image(RenderObject*, const IntSize&) const
+PassRefPtr<Image> StyleCachedImage::image( RenderObject *, const IntSize & ) const
 {
     return m_image->image();
 }

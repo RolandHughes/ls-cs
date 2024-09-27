@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -29,17 +29,22 @@
 
 #if ENABLE(JSC_ZOMBIES)
 
-namespace JSC {
+namespace JSC
+{
 
 const ClassInfo JSZombie::s_info = { "Zombie", 0, 0, 0 };
 
-Structure* JSZombie::leakedZombieStructure() {
-    static Structure* structure = 0;
-    if (!structure) {
+Structure *JSZombie::leakedZombieStructure()
+{
+    static Structure *structure = 0;
+
+    if ( !structure )
+    {
         Structure::startIgnoringLeaks();
-        structure = Structure::create(jsNull(), TypeInfo(UnspecifiedType)).releaseRef();
+        structure = Structure::create( jsNull(), TypeInfo( UnspecifiedType ) ).releaseRef();
         Structure::stopIgnoringLeaks();
     }
+
     return structure;
 }
 

@@ -39,25 +39,28 @@ class Q_DBUS_EXPORT QDBusUnixFileDescriptor
 {
 public:
     QDBusUnixFileDescriptor();
-    explicit QDBusUnixFileDescriptor(int fileDescriptor);
-    QDBusUnixFileDescriptor(const QDBusUnixFileDescriptor &other);
-    QDBusUnixFileDescriptor &operator=(const QDBusUnixFileDescriptor &other);
+    explicit QDBusUnixFileDescriptor( int fileDescriptor );
+    QDBusUnixFileDescriptor( const QDBusUnixFileDescriptor &other );
+    QDBusUnixFileDescriptor &operator=( const QDBusUnixFileDescriptor &other );
     ~QDBusUnixFileDescriptor();
 
     bool isValid() const;
 
     int fileDescriptor() const;
-    void setFileDescriptor(int fileDescriptor);
+    void setFileDescriptor( int fileDescriptor );
 
-    void giveFileDescriptor(int fileDescriptor);
+    void giveFileDescriptor( int fileDescriptor );
     int takeFileDescriptor();
 
     static bool isSupported();
 
-    QDBusUnixFileDescriptor(QDBusUnixFileDescriptor &&other) : d(static_cast<Data &&>(other.d))
+    QDBusUnixFileDescriptor( QDBusUnixFileDescriptor &&other ) : d( static_cast<Data &&>( other.d ) )
     { }
-    inline QDBusUnixFileDescriptor &operator=(QDBusUnixFileDescriptor &&other)
-    { d.swap(other.d); return *this; }
+    inline QDBusUnixFileDescriptor &operator=( QDBusUnixFileDescriptor &&other )
+    {
+        d.swap( other.d );
+        return *this;
+    }
 
 protected:
     typedef QExplicitlySharedDataPointer<QDBusUnixFileDescriptorPrivate>  Data;
@@ -66,8 +69,8 @@ protected:
 
 QT_END_NAMESPACE
 
-Q_DECLARE_METATYPE(QDBusUnixFileDescriptor)
-Q_DECLARE_METATYPE(QList<QDBusUnixFileDescriptor>)
+Q_DECLARE_METATYPE( QDBusUnixFileDescriptor )
+Q_DECLARE_METATYPE( QList<QDBusUnixFileDescriptor> )
 
 #endif // QT_NO_DBUS
 #endif // QDBUSUNIXFILEDESCRIPTOR_H

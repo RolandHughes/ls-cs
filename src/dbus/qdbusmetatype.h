@@ -34,36 +34,40 @@ QT_BEGIN_NAMESPACE
 class Q_DBUS_EXPORT QDBusMetaType
 {
 public:
-    typedef void (*MarshallFunction)(QDBusArgument &, const void *);
-    typedef void (*DemarshallFunction)(const QDBusArgument &, void *);
+    typedef void ( *MarshallFunction )( QDBusArgument &, const void * );
+    typedef void ( *DemarshallFunction )( const QDBusArgument &, void * );
 
-    static void registerMarshallOperators(int typeId, MarshallFunction, DemarshallFunction);
-    static bool marshall(QDBusArgument &, int id, const void *data);
-    static bool demarshall(const QDBusArgument &, int id, void *data);
+    static void registerMarshallOperators( int typeId, MarshallFunction, DemarshallFunction );
+    static bool marshall( QDBusArgument &, int id, const void *data );
+    static bool demarshall( const QDBusArgument &, int id, void *data );
 
-    static int signatureToType(const char *signature);
-    static const char *typeToSignature(int type);
+    static int signatureToType( const char *signature );
+    static const char *typeToSignature( int type );
 };
 
 template<typename T>
-void qDBusMarshallHelper(QDBusArgument &arg, const T *t)
-{ arg << *t; }
-
-template<typename T>
-void qDBusDemarshallHelper(const QDBusArgument &arg, T *t)
-{ arg >> *t; }
-
-template<typename T>
-int qDBusRegisterMetaType(T * /* dummy */ = 0
-)
+void qDBusMarshallHelper( QDBusArgument &arg, const T *t )
 {
-    void (*mf)(QDBusArgument &, const T *) = qDBusMarshallHelper<T>;
-    void (*df)(const QDBusArgument &, T *) = qDBusDemarshallHelper<T>;
+    arg << *t;
+}
+
+template<typename T>
+void qDBusDemarshallHelper( const QDBusArgument &arg, T *t )
+{
+    arg >> *t;
+}
+
+template<typename T>
+int qDBusRegisterMetaType( T * /* dummy */ = 0
+                         )
+{
+    void ( *mf )( QDBusArgument &, const T * ) = qDBusMarshallHelper<T>;
+    void ( *df )( const QDBusArgument &, T * ) = qDBusDemarshallHelper<T>;
 
     int id = qRegisterMetaType<T>(); // make sure it's registered
-    QDBusMetaType::registerMarshallOperators(id,
-        reinterpret_cast<QDBusMetaType::MarshallFunction>(mf),
-        reinterpret_cast<QDBusMetaType::DemarshallFunction>(df));
+    QDBusMetaType::registerMarshallOperators( id,
+            reinterpret_cast<QDBusMetaType::MarshallFunction>( mf ),
+            reinterpret_cast<QDBusMetaType::DemarshallFunction>( df ) );
     return id;
 }
 

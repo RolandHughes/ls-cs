@@ -26,33 +26,34 @@
 
 #include <qsinglecontainer_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class ItemVerifier : public SingleContainer
 {
- public:
+public:
 
-   ItemVerifier(const Expression::Ptr &operand,
-                const ItemType::Ptr &reqType,
-                const ReportContext::ErrorCode errorCode);
+    ItemVerifier( const Expression::Ptr &operand,
+                  const ItemType::Ptr &reqType,
+                  const ReportContext::ErrorCode errorCode );
 
-   Item evaluateSingleton(const DynamicContext::Ptr &) const override;
-   Item::Iterator::Ptr evaluateSequence(const DynamicContext::Ptr &) const override;
+    Item evaluateSingleton( const DynamicContext::Ptr & ) const override;
+    Item::Iterator::Ptr evaluateSequence( const DynamicContext::Ptr & ) const override;
 
-   SequenceType::List expectedOperandTypes() const override;
-   SequenceType::Ptr staticType() const override;
+    SequenceType::List expectedOperandTypes() const override;
+    SequenceType::Ptr staticType() const override;
 
-   inline Item mapToItem(const Item &, const DynamicContext::Ptr &) const;
+    inline Item mapToItem( const Item &, const DynamicContext::Ptr & ) const;
 
-   ExpressionVisitorResult::Ptr accept(const ExpressionVisitor::Ptr &visitor) const override;
-   const SourceLocationReflection *actualReflection() const override;
+    ExpressionVisitorResult::Ptr accept( const ExpressionVisitor::Ptr &visitor ) const override;
+    const SourceLocationReflection *actualReflection() const override;
 
- private:
-   typedef QExplicitlySharedDataPointer<const ItemVerifier> ConstPtr;
-   inline void verifyItem(const Item &item, const DynamicContext::Ptr &context) const;
+private:
+    typedef QExplicitlySharedDataPointer<const ItemVerifier> ConstPtr;
+    inline void verifyItem( const Item &item, const DynamicContext::Ptr &context ) const;
 
-   const ItemType::Ptr             m_reqType;
-   const ReportContext::ErrorCode  m_errorCode;
+    const ItemType::Ptr             m_reqType;
+    const ReportContext::ErrorCode  m_errorCode;
 };
 
 }

@@ -43,16 +43,17 @@
 #include <fontconfig/fcfreetype.h>
 #include <wtf/MathExtras.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 void SimpleFontData::platformInit()
 {
     cairo_font_extents_t font_extents;
     cairo_text_extents_t text_extents;
-    cairo_scaled_font_extents(m_platformData.scaledFont(), &font_extents);
+    cairo_scaled_font_extents( m_platformData.scaledFont(), &font_extents );
 
-    m_fontMetrics.setAscent(font_extents.ascent);
-    m_fontMetrics.setDescent(font_extents.descent);
+    m_fontMetrics.setAscent( font_extents.ascent );
+    m_fontMetrics.setDescent( font_extents.descent );
 
     // There seems to be some rounding error in cairo (or in how we
     // use cairo) with some fonts, like DejaVu Sans Mono, which makes
@@ -60,18 +61,21 @@ void SimpleFontData::platformInit()
     // wrong and confuses WebCore's layout system. Workaround this
     // while we figure out what's going on.
     float lineSpacing = font_extents.height;
-    if (lineSpacing < font_extents.ascent + font_extents.descent)
+
+    if ( lineSpacing < font_extents.ascent + font_extents.descent )
+    {
         lineSpacing = font_extents.ascent + font_extents.descent;
+    }
 
-    m_fontMetrics.setLineSpacing(lroundf(lineSpacing));
-    m_fontMetrics.setLineGap(lineSpacing - font_extents.ascent - font_extents.descent);
+    m_fontMetrics.setLineSpacing( lroundf( lineSpacing ) );
+    m_fontMetrics.setLineGap( lineSpacing - font_extents.ascent - font_extents.descent );
 
-    cairo_scaled_font_text_extents(m_platformData.scaledFont(), "x", &text_extents);
-    m_fontMetrics.setXHeight(text_extents.height);
+    cairo_scaled_font_text_extents( m_platformData.scaledFont(), "x", &text_extents );
+    m_fontMetrics.setXHeight( text_extents.height );
 
-    cairo_scaled_font_text_extents(m_platformData.scaledFont(), " ", &text_extents);
-    m_spaceWidth = static_cast<float>(text_extents.x_advance);
-    
+    cairo_scaled_font_text_extents( m_platformData.scaledFont(), " ", &text_extents );
+    m_spaceWidth = static_cast<float>( text_extents.x_advance );
+
     m_syntheticBoldOffset = m_platformData.syntheticBold() ? 1.0f : 0.f;
 }
 
@@ -86,49 +90,63 @@ void SimpleFontData::platformDestroy()
 {
 }
 
-SimpleFontData* SimpleFontData::scaledFontData(const FontDescription& fontDescription, float scaleFactor) const
+SimpleFontData *SimpleFontData::scaledFontData( const FontDescription &fontDescription, float scaleFactor ) const
 {
-    return new SimpleFontData(FontPlatformData(cairo_scaled_font_get_font_face(m_platformData.scaledFont()),
-        scaleFactor * fontDescription.computedSize(), m_platformData.syntheticBold(), m_platformData.syntheticOblique()),
-        isCustomFont(), false);
+    return new SimpleFontData( FontPlatformData( cairo_scaled_font_get_font_face( m_platformData.scaledFont() ),
+                               scaleFactor * fontDescription.computedSize(), m_platformData.syntheticBold(), m_platformData.syntheticOblique() ),
+                               isCustomFont(), false );
 }
 
-SimpleFontData* SimpleFontData::smallCapsFontData(const FontDescription& fontDescription) const
+SimpleFontData *SimpleFontData::smallCapsFontData( const FontDescription &fontDescription ) const
 {
-    if (!m_derivedFontData)
-        m_derivedFontData = DerivedFontData::create(isCustomFont());
+    if ( !m_derivedFontData )
+    {
+        m_derivedFontData = DerivedFontData::create( isCustomFont() );
+    }
+
     // FIXME: I think we want to ask FontConfig for the right font again.
-    if (!m_derivedFontData->smallCaps)
-        m_derivedFontData->smallCaps = scaledFontData(fontDescription, .7);
+    if ( !m_derivedFontData->smallCaps )
+    {
+        m_derivedFontData->smallCaps = scaledFontData( fontDescription, .7 );
+    }
 
     return m_derivedFontData->smallCaps.get();
 }
 
-SimpleFontData* SimpleFontData::emphasisMarkFontData(const FontDescription& fontDescription) const
+SimpleFontData *SimpleFontData::emphasisMarkFontData( const FontDescription &fontDescription ) const
 {
-    if (!m_derivedFontData)
-        m_derivedFontData = DerivedFontData::create(isCustomFont());
-    if (!m_derivedFontData->emphasisMark)
-        m_derivedFontData->emphasisMark = scaledFontData(fontDescription, .5);
+    if ( !m_derivedFontData )
+    {
+        m_derivedFontData = DerivedFontData::create( isCustomFont() );
+    }
+
+    if ( !m_derivedFontData->emphasisMark )
+    {
+        m_derivedFontData->emphasisMark = scaledFontData( fontDescription, .5 );
+    }
 
     return m_derivedFontData->emphasisMark.get();
 }
 
-bool SimpleFontData::containsCharacters(const UChar* characters, int length) const
+bool SimpleFontData::containsCharacters( const UChar *characters, int length ) const
 {
-    FT_Face face = cairo_ft_scaled_font_lock_face(m_platformData.scaledFont());
+    FT_Face face = cairo_ft_scaled_font_lock_face( m_platformData.scaledFont() );
 
-    if (!face)
+    if ( !face )
+    {
         return false;
+    }
 
-    for (int i = 0; i < length; i++) {
-        if (FcFreeTypeCharIndex(face, characters[i]) == 0) {
-            cairo_ft_scaled_font_unlock_face(m_platformData.scaledFont());
+    for ( int i = 0; i < length; i++ )
+    {
+        if ( FcFreeTypeCharIndex( face, characters[i] ) == 0 )
+        {
+            cairo_ft_scaled_font_unlock_face( m_platformData.scaledFont() );
             return false;
         }
     }
 
-    cairo_ft_scaled_font_unlock_face(m_platformData.scaledFont());
+    cairo_ft_scaled_font_unlock_face( m_platformData.scaledFont() );
 
     return true;
 }
@@ -138,24 +156,27 @@ void SimpleFontData::determinePitch()
     m_treatAsFixedPitch = m_platformData.isFixedPitch();
 }
 
-FloatRect SimpleFontData::platformBoundsForGlyph(Glyph) const
+FloatRect SimpleFontData::platformBoundsForGlyph( Glyph ) const
 {
     return FloatRect();
 }
 
-float SimpleFontData::platformWidthForGlyph(Glyph glyph) const
+float SimpleFontData::platformWidthForGlyph( Glyph glyph ) const
 {
-    ASSERT(m_platformData.scaledFont());
+    ASSERT( m_platformData.scaledFont() );
 
     cairo_glyph_t cglyph = { glyph, 0, 0 };
     cairo_text_extents_t extents;
-    cairo_scaled_font_glyph_extents(m_platformData.scaledFont(), &cglyph, 1, &extents);
+    cairo_scaled_font_glyph_extents( m_platformData.scaledFont(), &cglyph, 1, &extents );
 
-    float w = (float)m_spaceWidth;
-    if (cairo_scaled_font_status(m_platformData.scaledFont()) == CAIRO_STATUS_SUCCESS && extents.x_advance)
-        w = (float)extents.x_advance;
+    float w = ( float )m_spaceWidth;
 
-    return w;    
+    if ( cairo_scaled_font_status( m_platformData.scaledFont() ) == CAIRO_STATUS_SUCCESS && extents.x_advance )
+    {
+        w = ( float )extents.x_advance;
+    }
+
+    return w;
 }
 
 }

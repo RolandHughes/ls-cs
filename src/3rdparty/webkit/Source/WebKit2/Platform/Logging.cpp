@@ -28,7 +28,8 @@
 
 #if !LOG_DISABLED
 
-namespace WebKit {
+namespace WebKit
+{
 
 WTFLogChannel LogSessionState = { 0x00000001, "WebKit2LogLevel", WTFLogChannelOff };
 WTFLogChannel LogContextMenu  = { 0x00000002, "WebKit2LogLevel", WTFLogChannelOff };
@@ -37,7 +38,7 @@ WTFLogChannel LogView         = { 0x00000008, "WebKit2LogLevel", WTFLogChannelOf
 WTFLogChannel LogIconDatabase = { 0x00000010, "WebKit2LogLevel", WTFLogChannelOff };
 
 #if !PLATFORM(MAC)
-void initializeLogChannel(WTFLogChannel* channel)
+void initializeLogChannel( WTFLogChannel *channel )
 {
     // FIXME: Each platform will need to define their own initializeLogChannel().
 }
@@ -46,15 +47,19 @@ void initializeLogChannel(WTFLogChannel* channel)
 void initializeLogChannelsIfNecessary()
 {
     static bool haveInitializedLogChannels = false;
-    if (haveInitializedLogChannels)
+
+    if ( haveInitializedLogChannels )
+    {
         return;
+    }
+
     haveInitializedLogChannels = true;
 
-    initializeLogChannel(&LogContextMenu);
-    initializeLogChannel(&LogIconDatabase);
-    initializeLogChannel(&LogSessionState);
-    initializeLogChannel(&LogTextInput);
-    initializeLogChannel(&LogView);
+    initializeLogChannel( &LogContextMenu );
+    initializeLogChannel( &LogIconDatabase );
+    initializeLogChannel( &LogSessionState );
+    initializeLogChannel( &LogTextInput );
+    initializeLogChannel( &LogView );
 }
 
 } // namespace WebKit

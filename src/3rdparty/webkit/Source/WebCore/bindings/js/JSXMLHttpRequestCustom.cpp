@@ -52,162 +52,222 @@
 
 using namespace JSC;
 
-namespace WebCore {
-
-void JSXMLHttpRequest::visitChildren(SlotVisitor& visitor)
+namespace WebCore
 {
-    Base::visitChildren(visitor);
 
-    if (XMLHttpRequestUpload* upload = m_impl->optionalUpload())
-        visitor.addOpaqueRoot(upload);
+void JSXMLHttpRequest::visitChildren( SlotVisitor &visitor )
+{
+    Base::visitChildren( visitor );
 
-    if (Document* responseDocument = m_impl->optionalResponseXML())
-        visitor.addOpaqueRoot(responseDocument);
+    if ( XMLHttpRequestUpload *upload = m_impl->optionalUpload() )
+    {
+        visitor.addOpaqueRoot( upload );
+    }
 
-    if (ArrayBuffer* responseArrayBuffer = m_impl->optionalResponseArrayBuffer())
-        visitor.addOpaqueRoot(responseArrayBuffer);
+    if ( Document *responseDocument = m_impl->optionalResponseXML() )
+    {
+        visitor.addOpaqueRoot( responseDocument );
+    }
+
+    if ( ArrayBuffer *responseArrayBuffer = m_impl->optionalResponseArrayBuffer() )
+    {
+        visitor.addOpaqueRoot( responseArrayBuffer );
+    }
 
 #if ENABLE(XHR_RESPONSE_BLOB)
-    if (Blob* responseBlob = m_impl->optionalResponseBlob())
-        visitor.addOpaqueRoot(responseBlob);
+
+    if ( Blob *responseBlob = m_impl->optionalResponseBlob() )
+    {
+        visitor.addOpaqueRoot( responseBlob );
+    }
+
 #endif
 
-    m_impl->visitJSEventListeners(visitor);
+    m_impl->visitJSEventListeners( visitor );
 }
 
 // Custom functions
-JSValue JSXMLHttpRequest::open(ExecState* exec)
+JSValue JSXMLHttpRequest::open( ExecState *exec )
 {
-    if (exec->argumentCount() < 2)
-        return throwError(exec, createSyntaxError(exec, "Not enough arguments"));
+    if ( exec->argumentCount() < 2 )
+    {
+        return throwError( exec, createSyntaxError( exec, "Not enough arguments" ) );
+    }
 
-    const KURL& url = impl()->scriptExecutionContext()->completeURL(ustringToString(exec->argument(1).toString(exec)));
-    String method = ustringToString(exec->argument(0).toString(exec));
+    const KURL &url = impl()->scriptExecutionContext()->completeURL( ustringToString( exec->argument( 1 ).toString( exec ) ) );
+    String method = ustringToString( exec->argument( 0 ).toString( exec ) );
 
     ExceptionCode ec = 0;
-    if (exec->argumentCount() >= 3) {
-        bool async = exec->argument(2).toBoolean(exec);
 
-        if (exec->argumentCount() >= 4 && !exec->argument(3).isUndefined()) {
-            String user = valueToStringWithNullCheck(exec, exec->argument(3));
+    if ( exec->argumentCount() >= 3 )
+    {
+        bool async = exec->argument( 2 ).toBoolean( exec );
 
-            if (exec->argumentCount() >= 5 && !exec->argument(4).isUndefined()) {
-                String password = valueToStringWithNullCheck(exec, exec->argument(4));
-                impl()->open(method, url, async, user, password, ec);
-            } else
-                impl()->open(method, url, async, user, ec);
-        } else
-            impl()->open(method, url, async, ec);
-    } else
-        impl()->open(method, url, ec);
+        if ( exec->argumentCount() >= 4 && !exec->argument( 3 ).isUndefined() )
+        {
+            String user = valueToStringWithNullCheck( exec, exec->argument( 3 ) );
 
-    setDOMException(exec, ec);
+            if ( exec->argumentCount() >= 5 && !exec->argument( 4 ).isUndefined() )
+            {
+                String password = valueToStringWithNullCheck( exec, exec->argument( 4 ) );
+                impl()->open( method, url, async, user, password, ec );
+            }
+            else
+            {
+                impl()->open( method, url, async, user, ec );
+            }
+        }
+        else
+        {
+            impl()->open( method, url, async, ec );
+        }
+    }
+    else
+    {
+        impl()->open( method, url, ec );
+    }
+
+    setDOMException( exec, ec );
     return jsUndefined();
 }
 
-JSValue JSXMLHttpRequest::send(ExecState* exec)
+JSValue JSXMLHttpRequest::send( ExecState *exec )
 {
-    InspectorInstrumentation::willSendXMLHttpRequest(impl()->scriptExecutionContext(), impl()->url());
+    InspectorInstrumentation::willSendXMLHttpRequest( impl()->scriptExecutionContext(), impl()->url() );
 
     ExceptionCode ec = 0;
-    if (!exec->argumentCount())
-        impl()->send(ec);
-    else {
-        JSValue val = exec->argument(0);
-        if (val.isUndefinedOrNull())
-            impl()->send(ec);
-        else if (val.inherits(&JSDocument::s_info))
-            impl()->send(toDocument(val), ec);
-        else if (val.inherits(&JSBlob::s_info))
-            impl()->send(toBlob(val), ec);
-        else if (val.inherits(&JSDOMFormData::s_info))
-            impl()->send(toDOMFormData(val), ec);
-        else if (val.inherits(&JSArrayBuffer::s_info))
-            impl()->send(toArrayBuffer(val), ec);
+
+    if ( !exec->argumentCount() )
+    {
+        impl()->send( ec );
+    }
+    else
+    {
+        JSValue val = exec->argument( 0 );
+
+        if ( val.isUndefinedOrNull() )
+        {
+            impl()->send( ec );
+        }
+        else if ( val.inherits( &JSDocument::s_info ) )
+        {
+            impl()->send( toDocument( val ), ec );
+        }
+        else if ( val.inherits( &JSBlob::s_info ) )
+        {
+            impl()->send( toBlob( val ), ec );
+        }
+        else if ( val.inherits( &JSDOMFormData::s_info ) )
+        {
+            impl()->send( toDOMFormData( val ), ec );
+        }
+        else if ( val.inherits( &JSArrayBuffer::s_info ) )
+        {
+            impl()->send( toArrayBuffer( val ), ec );
+        }
         else
-            impl()->send(ustringToString(val.toString(exec)), ec);
+        {
+            impl()->send( ustringToString( val.toString( exec ) ), ec );
+        }
     }
 
     int signedLineNumber;
     intptr_t sourceID;
     UString sourceURL;
     JSValue function;
-    exec->interpreter()->retrieveLastCaller(exec, signedLineNumber, sourceID, sourceURL, function);
-    impl()->setLastSendLineNumber(signedLineNumber >= 0 ? signedLineNumber : 0);
-    impl()->setLastSendURL(ustringToString(sourceURL));
+    exec->interpreter()->retrieveLastCaller( exec, signedLineNumber, sourceID, sourceURL, function );
+    impl()->setLastSendLineNumber( signedLineNumber >= 0 ? signedLineNumber : 0 );
+    impl()->setLastSendURL( ustringToString( sourceURL ) );
 
-    setDOMException(exec, ec);
+    setDOMException( exec, ec );
     return jsUndefined();
 }
 
-JSValue JSXMLHttpRequest::responseText(ExecState* exec) const
+JSValue JSXMLHttpRequest::responseText( ExecState *exec ) const
 {
     ExceptionCode ec = 0;
-    String text = impl()->responseText(ec);
-    if (ec) {
-        setDOMException(exec, ec);
+    String text = impl()->responseText( ec );
+
+    if ( ec )
+    {
+        setDOMException( exec, ec );
         return jsUndefined();
     }
-    return jsOwnedStringOrNull(exec, text);
+
+    return jsOwnedStringOrNull( exec, text );
 }
 
-JSValue JSXMLHttpRequest::response(ExecState* exec) const
+JSValue JSXMLHttpRequest::response( ExecState *exec ) const
 {
-    switch (impl()->responseTypeCode()) {
-    case XMLHttpRequest::ResponseTypeDefault:
-    case XMLHttpRequest::ResponseTypeText:
-        return responseText(exec);
+    switch ( impl()->responseTypeCode() )
+    {
+        case XMLHttpRequest::ResponseTypeDefault:
+        case XMLHttpRequest::ResponseTypeText:
+            return responseText( exec );
 
-    case XMLHttpRequest::ResponseTypeDocument:
+        case XMLHttpRequest::ResponseTypeDocument:
         {
             ExceptionCode ec = 0;
-            Document* document = impl()->responseXML(ec);
-            if (ec) {
-                setDOMException(exec, ec);
+            Document *document = impl()->responseXML( ec );
+
+            if ( ec )
+            {
+                setDOMException( exec, ec );
                 return jsUndefined();
             }
-            return toJS(exec, globalObject(), document);
+
+            return toJS( exec, globalObject(), document );
         }
 
-    case XMLHttpRequest::ResponseTypeBlob:
+        case XMLHttpRequest::ResponseTypeBlob:
 #if ENABLE(XHR_RESPONSE_BLOB)
         {
             ExceptionCode ec = 0;
-            Blob* blob = impl()->responseBlob(ec);
-            if (ec) {
-                setDOMException(exec, ec);
+            Blob *blob = impl()->responseBlob( ec );
+
+            if ( ec )
+            {
+                setDOMException( exec, ec );
                 return jsUndefined();
             }
-            return toJS(exec, globalObject(), blob);
+
+            return toJS( exec, globalObject(), blob );
         }
+
 #else
         return jsUndefined();
 #endif
 
-    case XMLHttpRequest::ResponseTypeArrayBuffer:
+        case XMLHttpRequest::ResponseTypeArrayBuffer:
         {
             ExceptionCode ec = 0;
-            ArrayBuffer* arrayBuffer = impl()->responseArrayBuffer(ec);
-            if (ec) {
-                setDOMException(exec, ec);
+            ArrayBuffer *arrayBuffer = impl()->responseArrayBuffer( ec );
+
+            if ( ec )
+            {
+                setDOMException( exec, ec );
                 return jsUndefined();
             }
-            return toJS(exec, globalObject(), arrayBuffer);
+
+            return toJS( exec, globalObject(), arrayBuffer );
         }
     }
 
     return jsUndefined();
 }
 
-EncodedJSValue JSC_HOST_CALL JSXMLHttpRequestConstructor::constructJSXMLHttpRequest(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL JSXMLHttpRequestConstructor::constructJSXMLHttpRequest( ExecState *exec )
 {
-    JSXMLHttpRequestConstructor* jsConstructor = static_cast<JSXMLHttpRequestConstructor*>(exec->callee());
-    ScriptExecutionContext* context = jsConstructor->scriptExecutionContext();
-    if (!context)
-        return throwVMError(exec, createReferenceError(exec, "XMLHttpRequest constructor associated document is unavailable"));
+    JSXMLHttpRequestConstructor *jsConstructor = static_cast<JSXMLHttpRequestConstructor *>( exec->callee() );
+    ScriptExecutionContext *context = jsConstructor->scriptExecutionContext();
 
-    RefPtr<XMLHttpRequest> xmlHttpRequest = XMLHttpRequest::create(context);
-    return JSValue::encode(CREATE_DOM_WRAPPER(exec, jsConstructor->globalObject(), XMLHttpRequest, xmlHttpRequest.get()));
+    if ( !context )
+    {
+        return throwVMError( exec, createReferenceError( exec, "XMLHttpRequest constructor associated document is unavailable" ) );
+    }
+
+    RefPtr<XMLHttpRequest> xmlHttpRequest = XMLHttpRequest::create( context );
+    return JSValue::encode( CREATE_DOM_WRAPPER( exec, jsConstructor->globalObject(), XMLHttpRequest, xmlHttpRequest.get() ) );
 }
 
 } // namespace WebCore

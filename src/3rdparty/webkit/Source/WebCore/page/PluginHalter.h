@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef PluginHalter_h
@@ -31,29 +31,35 @@
 #include <wtf/HashMap.h>
 #include <wtf/OwnPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class HaltablePlugin;
 
-class PluginHalter {
-    WTF_MAKE_NONCOPYABLE(PluginHalter); WTF_MAKE_FAST_ALLOCATED;
+class PluginHalter
+{
+    WTF_MAKE_NONCOPYABLE( PluginHalter );
+    WTF_MAKE_FAST_ALLOCATED;
 public:
-    PluginHalter(PassOwnPtr<PluginHalterClient>);
+    PluginHalter( PassOwnPtr<PluginHalterClient> );
 
-    void didStartPlugin(HaltablePlugin*);
-    void didStopPlugin(HaltablePlugin*);
+    void didStartPlugin( HaltablePlugin * );
+    void didStopPlugin( HaltablePlugin * );
 
-    void setPluginAllowedRunTime(unsigned runTime) { m_pluginAllowedRunTime = runTime; }
+    void setPluginAllowedRunTime( unsigned runTime )
+    {
+        m_pluginAllowedRunTime = runTime;
+    }
 
 private:
-    void timerFired(Timer<PluginHalter>*);
+    void timerFired( Timer<PluginHalter> * );
     void startTimerIfNecessary();
 
     OwnPtr<PluginHalterClient> m_client;
     Timer<PluginHalter> m_timer;
     unsigned m_pluginAllowedRunTime;
     double m_oldestStartTime;
-    HashMap<HaltablePlugin*, double> m_plugins;
+    HashMap<HaltablePlugin *, double> m_plugins;
 };
 
 } // namespace WebCore

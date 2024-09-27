@@ -35,58 +35,61 @@ class QStaticTextPrivate;
 class Q_GUI_EXPORT QStaticText
 {
 
- public:
-   enum PerformanceHint {
-      ModerateCaching,
-      AggressiveCaching
-   };
+public:
+    enum PerformanceHint
+    {
+        ModerateCaching,
+        AggressiveCaching
+    };
 
-   QStaticText();
-   QStaticText(const QString &text);
-   QStaticText(const QStaticText &other);
+    QStaticText();
+    QStaticText( const QString &text );
+    QStaticText( const QStaticText &other );
 
-   ~QStaticText();
+    ~QStaticText();
 
 
 
-   void setText(const QString &text);
-   QString text() const;
+    void setText( const QString &text );
+    QString text() const;
 
-   void setTextFormat(Qt::TextFormat textFormat);
-   Qt::TextFormat textFormat() const;
+    void setTextFormat( Qt::TextFormat textFormat );
+    Qt::TextFormat textFormat() const;
 
-   void setTextWidth(qreal textWidth);
-   qreal textWidth() const;
+    void setTextWidth( qreal textWidth );
+    qreal textWidth() const;
 
-   void setTextOption(const QTextOption &textOption);
-   QTextOption textOption() const;
+    void setTextOption( const QTextOption &textOption );
+    QTextOption textOption() const;
 
-   QSizeF size() const;
+    QSizeF size() const;
 
-   void swap(QStaticText &other) {
-      qSwap(data, other.data);
-   }
+    void swap( QStaticText &other )
+    {
+        qSwap( data, other.data );
+    }
 
-   void prepare(const QTransform &matrix = QTransform(), const QFont &font = QFont());
+    void prepare( const QTransform &matrix = QTransform(), const QFont &font = QFont() );
 
-   void setPerformanceHint(PerformanceHint performanceHint);
-   PerformanceHint performanceHint() const;
+    void setPerformanceHint( PerformanceHint performanceHint );
+    PerformanceHint performanceHint() const;
 
-   bool operator==(const QStaticText &other) const;
-   bool operator!=(const QStaticText &other) const;
+    bool operator==( const QStaticText &other ) const;
+    bool operator!=( const QStaticText &other ) const;
 
-   QStaticText &operator=(const QStaticText &other);
+    QStaticText &operator=( const QStaticText &other );
 
-   QStaticText &operator=(QStaticText &&other) {
-      swap(other);
-      return *this;
-   }
+    QStaticText &operator=( QStaticText &&other )
+    {
+        swap( other );
+        return *this;
+    }
 
- private:
-   void detach();
+private:
+    void detach();
 
-   QExplicitlySharedDataPointer<QStaticTextPrivate> data;
-   friend class QStaticTextPrivate;
+    QExplicitlySharedDataPointer<QStaticTextPrivate> data;
+    friend class QStaticTextPrivate;
 };
 
 #endif // QSTATICTEXT_H

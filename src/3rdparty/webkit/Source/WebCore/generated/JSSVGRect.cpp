@@ -30,9 +30,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSSVGRect);
+ASSERT_CLASS_FITS_IN_CELL( JSSVGRect );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -43,12 +44,12 @@ ASSERT_CLASS_FITS_IN_CELL(JSSVGRect);
 
 static const HashTableValue JSSVGRectTableValues[6] =
 {
-    { "x", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGRectX), (intptr_t)setJSSVGRectX THUNK_GENERATOR(0) },
-    { "y", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGRectY), (intptr_t)setJSSVGRectY THUNK_GENERATOR(0) },
-    { "width", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGRectWidth), (intptr_t)setJSSVGRectWidth THUNK_GENERATOR(0) },
-    { "height", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGRectHeight), (intptr_t)setJSSVGRectHeight THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGRectConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "x", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGRectX ), ( intptr_t )setJSSVGRectX THUNK_GENERATOR( 0 ) },
+    { "y", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGRectY ), ( intptr_t )setJSSVGRectY THUNK_GENERATOR( 0 ) },
+    { "width", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGRectWidth ), ( intptr_t )setJSSVGRectWidth THUNK_GENERATOR( 0 ) },
+    { "height", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGRectHeight ), ( intptr_t )setJSSVGRectHeight THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGRectConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -62,43 +63,49 @@ static JSC_CONST_HASHTABLE HashTable JSSVGRectTable = { 17, 15, JSSVGRectTableVa
 
 static const HashTableValue JSSVGRectConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSSVGRectConstructorTable = { 1, 0, JSSVGRectConstructorTableValues, 0 };
-class JSSVGRectConstructor : public DOMConstructorObject {
+class JSSVGRectConstructor : public DOMConstructorObject
+{
 public:
-    JSSVGRectConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSSVGRectConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSSVGRectConstructor::s_info = { "SVGRectConstructor", &DOMConstructorObject::s_info, &JSSVGRectConstructorTable, 0 };
 
-JSSVGRectConstructor::JSSVGRectConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSSVGRectConstructor::JSSVGRectConstructor( ExecState *exec, Structure *structure, JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSSVGRectPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSSVGRectPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSSVGRectConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGRectConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSVGRectConstructor, JSDOMWrapper>(exec, &JSSVGRectConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSSVGRectConstructor, JSDOMWrapper>( exec, &JSSVGRectConstructorTable, this, propertyName, slot );
 }
 
-bool JSSVGRectConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGRectConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSVGRectConstructor, JSDOMWrapper>(exec, &JSSVGRectConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSVGRectConstructor, JSDOMWrapper>( exec, &JSSVGRectConstructorTable, this, propertyName,
+            descriptor );
 }
 
 /* Hash table for prototype */
@@ -110,162 +117,175 @@ bool JSSVGRectConstructor::getOwnPropertyDescriptor(ExecState* exec, const Ident
 
 static const HashTableValue JSSVGRectPrototypeTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSSVGRectPrototypeTable = { 1, 0, JSSVGRectPrototypeTableValues, 0 };
 const ClassInfo JSSVGRectPrototype::s_info = { "SVGRectPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSSVGRectPrototypeTable, 0 };
 
-JSObject* JSSVGRectPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSVGRectPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSSVGRect>(exec, globalObject);
+    return getDOMPrototype<JSSVGRect>( exec, globalObject );
 }
 
 const ClassInfo JSSVGRect::s_info = { "SVGRect", &JSDOMWrapper::s_info, &JSSVGRectTable, 0 };
 
-JSSVGRect::JSSVGRect(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<SVGPropertyTearOff<FloatRect> > impl)
-    : JSDOMWrapper(structure, globalObject)
-    , m_impl(impl)
+JSSVGRect::JSSVGRect( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<SVGPropertyTearOff<FloatRect> > impl )
+    : JSDOMWrapper( structure, globalObject )
+    , m_impl( impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSSVGRect::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSVGRect::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSSVGRectPrototype(exec->globalData(), globalObject, JSSVGRectPrototype::createStructure(globalObject->globalData(), globalObject->objectPrototype()));
+    return new ( exec ) JSSVGRectPrototype( exec->globalData(), globalObject,
+                                            JSSVGRectPrototype::createStructure( globalObject->globalData(), globalObject->objectPrototype() ) );
 }
 
-bool JSSVGRect::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGRect::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSVGRect, Base>(exec, &JSSVGRectTable, this, propertyName, slot);
+    return getStaticValueSlot<JSSVGRect, Base>( exec, &JSSVGRectTable, this, propertyName, slot );
 }
 
-bool JSSVGRect::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGRect::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSVGRect, Base>(exec, &JSSVGRectTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSVGRect, Base>( exec, &JSSVGRectTable, this, propertyName, descriptor );
 }
 
-JSValue jsSVGRectX(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGRectX( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGRect* castedThis = static_cast<JSSVGRect*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    FloatRect& imp = castedThis->impl()->propertyReference();
-    JSValue result =  jsNumber(imp.x());
+    JSSVGRect *castedThis = static_cast<JSSVGRect *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    FloatRect &imp = castedThis->impl()->propertyReference();
+    JSValue result =  jsNumber( imp.x() );
     return result;
 }
 
 
-JSValue jsSVGRectY(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGRectY( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGRect* castedThis = static_cast<JSSVGRect*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    FloatRect& imp = castedThis->impl()->propertyReference();
-    JSValue result =  jsNumber(imp.y());
+    JSSVGRect *castedThis = static_cast<JSSVGRect *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    FloatRect &imp = castedThis->impl()->propertyReference();
+    JSValue result =  jsNumber( imp.y() );
     return result;
 }
 
 
-JSValue jsSVGRectWidth(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGRectWidth( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGRect* castedThis = static_cast<JSSVGRect*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    FloatRect& imp = castedThis->impl()->propertyReference();
-    JSValue result =  jsNumber(imp.width());
+    JSSVGRect *castedThis = static_cast<JSSVGRect *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    FloatRect &imp = castedThis->impl()->propertyReference();
+    JSValue result =  jsNumber( imp.width() );
     return result;
 }
 
 
-JSValue jsSVGRectHeight(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGRectHeight( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGRect* castedThis = static_cast<JSSVGRect*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    FloatRect& imp = castedThis->impl()->propertyReference();
-    JSValue result =  jsNumber(imp.height());
+    JSSVGRect *castedThis = static_cast<JSSVGRect *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    FloatRect &imp = castedThis->impl()->propertyReference();
+    JSValue result =  jsNumber( imp.height() );
     return result;
 }
 
 
-JSValue jsSVGRectConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGRectConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGRect* domObject = static_cast<JSSVGRect*>(asObject(slotBase));
-    return JSSVGRect::getConstructor(exec, domObject->globalObject());
+    JSSVGRect *domObject = static_cast<JSSVGRect *>( asObject( slotBase ) );
+    return JSSVGRect::getConstructor( exec, domObject->globalObject() );
 }
 
-void JSSVGRect::put(ExecState* exec, const Identifier& propertyName, JSValue value, PutPropertySlot& slot)
+void JSSVGRect::put( ExecState *exec, const Identifier &propertyName, JSValue value, PutPropertySlot &slot )
 {
-    lookupPut<JSSVGRect, Base>(exec, propertyName, value, &JSSVGRectTable, this, slot);
+    lookupPut<JSSVGRect, Base>( exec, propertyName, value, &JSSVGRectTable, this, slot );
 }
 
-void setJSSVGRectX(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSSVGRectX( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSSVGRect* castedThis = static_cast<JSSVGRect*>(thisObject);
-    SVGPropertyTearOff<FloatRect> * imp = static_cast<SVGPropertyTearOff<FloatRect> *>(castedThis->impl());
-    if (imp->role() == AnimValRole) {
-        setDOMException(exec, NO_MODIFICATION_ALLOWED_ERR);
+    JSSVGRect *castedThis = static_cast<JSSVGRect *>( thisObject );
+    SVGPropertyTearOff<FloatRect> *imp = static_cast<SVGPropertyTearOff<FloatRect> *>( castedThis->impl() );
+
+    if ( imp->role() == AnimValRole )
+    {
+        setDOMException( exec, NO_MODIFICATION_ALLOWED_ERR );
         return;
     }
-    FloatRect& podImp = imp->propertyReference();
-    podImp.setX(value.toFloat(exec));
+
+    FloatRect &podImp = imp->propertyReference();
+    podImp.setX( value.toFloat( exec ) );
     imp->commitChange();
 }
 
 
-void setJSSVGRectY(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSSVGRectY( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSSVGRect* castedThis = static_cast<JSSVGRect*>(thisObject);
-    SVGPropertyTearOff<FloatRect> * imp = static_cast<SVGPropertyTearOff<FloatRect> *>(castedThis->impl());
-    if (imp->role() == AnimValRole) {
-        setDOMException(exec, NO_MODIFICATION_ALLOWED_ERR);
+    JSSVGRect *castedThis = static_cast<JSSVGRect *>( thisObject );
+    SVGPropertyTearOff<FloatRect> *imp = static_cast<SVGPropertyTearOff<FloatRect> *>( castedThis->impl() );
+
+    if ( imp->role() == AnimValRole )
+    {
+        setDOMException( exec, NO_MODIFICATION_ALLOWED_ERR );
         return;
     }
-    FloatRect& podImp = imp->propertyReference();
-    podImp.setY(value.toFloat(exec));
+
+    FloatRect &podImp = imp->propertyReference();
+    podImp.setY( value.toFloat( exec ) );
     imp->commitChange();
 }
 
 
-void setJSSVGRectWidth(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSSVGRectWidth( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSSVGRect* castedThis = static_cast<JSSVGRect*>(thisObject);
-    SVGPropertyTearOff<FloatRect> * imp = static_cast<SVGPropertyTearOff<FloatRect> *>(castedThis->impl());
-    if (imp->role() == AnimValRole) {
-        setDOMException(exec, NO_MODIFICATION_ALLOWED_ERR);
+    JSSVGRect *castedThis = static_cast<JSSVGRect *>( thisObject );
+    SVGPropertyTearOff<FloatRect> *imp = static_cast<SVGPropertyTearOff<FloatRect> *>( castedThis->impl() );
+
+    if ( imp->role() == AnimValRole )
+    {
+        setDOMException( exec, NO_MODIFICATION_ALLOWED_ERR );
         return;
     }
-    FloatRect& podImp = imp->propertyReference();
-    podImp.setWidth(value.toFloat(exec));
+
+    FloatRect &podImp = imp->propertyReference();
+    podImp.setWidth( value.toFloat( exec ) );
     imp->commitChange();
 }
 
 
-void setJSSVGRectHeight(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSSVGRectHeight( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSSVGRect* castedThis = static_cast<JSSVGRect*>(thisObject);
-    SVGPropertyTearOff<FloatRect> * imp = static_cast<SVGPropertyTearOff<FloatRect> *>(castedThis->impl());
-    if (imp->role() == AnimValRole) {
-        setDOMException(exec, NO_MODIFICATION_ALLOWED_ERR);
+    JSSVGRect *castedThis = static_cast<JSSVGRect *>( thisObject );
+    SVGPropertyTearOff<FloatRect> *imp = static_cast<SVGPropertyTearOff<FloatRect> *>( castedThis->impl() );
+
+    if ( imp->role() == AnimValRole )
+    {
+        setDOMException( exec, NO_MODIFICATION_ALLOWED_ERR );
         return;
     }
-    FloatRect& podImp = imp->propertyReference();
-    podImp.setHeight(value.toFloat(exec));
+
+    FloatRect &podImp = imp->propertyReference();
+    podImp.setHeight( value.toFloat( exec ) );
     imp->commitChange();
 }
 
 
-JSValue JSSVGRect::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSSVGRect::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSSVGRectConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSSVGRectConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, SVGPropertyTearOff<FloatRect> * impl)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, SVGPropertyTearOff<FloatRect> *impl )
 {
-    return wrap<JSSVGRect, SVGPropertyTearOff<FloatRect> >(exec, globalObject, impl);
+    return wrap<JSSVGRect, SVGPropertyTearOff<FloatRect> >( exec, globalObject, impl );
 }
 
-SVGPropertyTearOff<FloatRect> * toSVGRect(JSC::JSValue value)
+SVGPropertyTearOff<FloatRect> *toSVGRect( JSC::JSValue value )
 {
-    return value.inherits(&JSSVGRect::s_info) ? static_cast<JSSVGRect*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSSVGRect::s_info ) ? static_cast<JSSVGRect *>( asObject( value ) )->impl() : 0;
 }
 
 }

@@ -37,66 +37,80 @@
 
 #if ENABLE(DATA_TRANSFER_ITEMS)
 
-namespace WebCore {
+namespace WebCore
+{
 
-DataTransferItems::DataTransferItems(RefPtr<Clipboard> clipboard, ScriptExecutionContext* context)
-    : m_owner(clipboard)
-    , m_context(context)
+DataTransferItems::DataTransferItems( RefPtr<Clipboard> clipboard, ScriptExecutionContext *context )
+    : m_owner( clipboard )
+    , m_context( context )
 {
 }
 
 size_t DataTransferItems::length() const
 {
-    if (m_owner->policy() == ClipboardNumb)
+    if ( m_owner->policy() == ClipboardNumb )
+    {
         return 0;
+    }
 
     return m_items.size();
 }
 
-PassRefPtr<DataTransferItem> DataTransferItems::item(unsigned long index)
+PassRefPtr<DataTransferItem> DataTransferItems::item( unsigned long index )
 {
-    if (m_owner->policy() == ClipboardNumb || index >= length())
+    if ( m_owner->policy() == ClipboardNumb || index >= length() )
+    {
         return 0;
+    }
 
     return m_items[index];
 }
 
-void DataTransferItems::deleteItem(unsigned long index, ExceptionCode& ec)
+void DataTransferItems::deleteItem( unsigned long index, ExceptionCode &ec )
 {
-    if (m_owner->policy() != ClipboardWritable) {
+    if ( m_owner->policy() != ClipboardWritable )
+    {
         ec = INVALID_STATE_ERR;
         return;
     }
 
-    if (index >= length())
+    if ( index >= length() )
+    {
         return;
+    }
 
-    m_items.remove(index);
+    m_items.remove( index );
 }
 
 void DataTransferItems::clear()
 {
-    if (m_owner->policy() != ClipboardWritable)
+    if ( m_owner->policy() != ClipboardWritable )
+    {
         return;
+    }
 
     m_items.clear();
 
 }
 
-void DataTransferItems::add(const String& data, const String& type, ExceptionCode& ec)
+void DataTransferItems::add( const String &data, const String &type, ExceptionCode &ec )
 {
-    if (m_owner->policy() != ClipboardWritable)
+    if ( m_owner->policy() != ClipboardWritable )
+    {
         return;
+    }
 
     // Only one 'string' item with a given type is allowed in the collection.
-    for (size_t i = 0; i < m_items.size(); ++i) {
-        if (m_items[i]->type() == type && m_items[i]->kind() == DataTransferItem::kindString) {
+    for ( size_t i = 0; i < m_items.size(); ++i )
+    {
+        if ( m_items[i]->type() == type && m_items[i]->kind() == DataTransferItem::kindString )
+        {
             ec = INVALID_STATE_ERR;
             return;
         }
     }
 
-    m_items.append(DataTransferItem::create(m_owner, m_context, data, type));
+    m_items.append( DataTransferItem::create( m_owner, m_context, data, type ) );
 }
 
 }

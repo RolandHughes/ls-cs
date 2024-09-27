@@ -32,9 +32,10 @@
 #include <WebCore/NotImplemented.h>
 #include <wtf/text/WTFString.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
-WebPageProxy* WebInspectorProxy::platformCreateInspectorPage()
+WebPageProxy *WebInspectorProxy::platformCreateInspectorPage()
 {
     notImplemented();
     return 0;
@@ -55,7 +56,7 @@ void WebInspectorProxy::platformBringToFront()
     notImplemented();
 }
 
-void WebInspectorProxy::platformInspectedURLChanged(const String&)
+void WebInspectorProxy::platformInspectedURLChanged( const String & )
 {
     notImplemented();
 }
@@ -76,7 +77,7 @@ void WebInspectorProxy::platformDetach()
     notImplemented();
 }
 
-void WebInspectorProxy::platformSetAttachedWindowHeight(unsigned)
+void WebInspectorProxy::platformSetAttachedWindowHeight( unsigned )
 {
     notImplemented();
 }

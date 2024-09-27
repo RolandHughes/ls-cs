@@ -32,15 +32,19 @@
 #include "IconDatabaseBase.h"
 #include <wtf/text/CString.h>
 
-namespace WebCore {
-
-IconDatabaseClientQt* IconDatabaseClientQt::instance()
+namespace WebCore
 {
-    static IconDatabaseClientQt* client = 0;
-    if (!client) {
+
+IconDatabaseClientQt *IconDatabaseClientQt::instance()
+{
+    static IconDatabaseClientQt *client = 0;
+
+    if ( !client )
+    {
         client = new IconDatabaseClientQt;
-        iconDatabase().setClient(client);
+        iconDatabase().setClient( client );
     }
+
     return client;
 }
 
@@ -61,16 +65,16 @@ void IconDatabaseClientQt::didRemoveAllIcons()
 {
 }
 
-void IconDatabaseClientQt::didImportIconURLForPageURL(const String& url)
+void IconDatabaseClientQt::didImportIconURLForPageURL( const String &url )
 {
 }
 
-void IconDatabaseClientQt::didImportIconDataForPageURL(const String& url)
+void IconDatabaseClientQt::didImportIconDataForPageURL( const String &url )
 {
-    emit iconLoadedForPageURL(url);
+    emit iconLoadedForPageURL( url );
 }
 
-void IconDatabaseClientQt::didChangeIconForPageURL(const String& url)
+void IconDatabaseClientQt::didChangeIconForPageURL( const String &url )
 {
 }
 

@@ -26,30 +26,32 @@
 #include <WebDOMObject.h>
 #include <WebDOMString.h>
 
-namespace WebCore {
+namespace WebCore
+{
 class TestMediaQueryListListener;
 };
 
 class WebDOMMediaQueryListListener;
 
-class WebDOMTestMediaQueryListListener : public WebDOMObject {
+class WebDOMTestMediaQueryListListener : public WebDOMObject
+{
 public:
     WebDOMTestMediaQueryListListener();
-    explicit WebDOMTestMediaQueryListListener(WebCore::TestMediaQueryListListener*);
-    WebDOMTestMediaQueryListListener(const WebDOMTestMediaQueryListListener&);
-    WebDOMTestMediaQueryListListener& operator=(const WebDOMTestMediaQueryListListener&);
+    explicit WebDOMTestMediaQueryListListener( WebCore::TestMediaQueryListListener * );
+    WebDOMTestMediaQueryListListener( const WebDOMTestMediaQueryListListener & );
+    WebDOMTestMediaQueryListListener &operator=( const WebDOMTestMediaQueryListListener & );
     virtual ~WebDOMTestMediaQueryListListener();
 
-    void method(const WebDOMMediaQueryListListener& listener);
+    void method( const WebDOMMediaQueryListListener &listener );
 
-    WebCore::TestMediaQueryListListener* impl() const;
+    WebCore::TestMediaQueryListListener *impl() const;
 
 protected:
     struct WebDOMTestMediaQueryListListenerPrivate;
-    WebDOMTestMediaQueryListListenerPrivate* m_impl;
+    WebDOMTestMediaQueryListListenerPrivate *m_impl;
 };
 
-WebCore::TestMediaQueryListListener* toWebCore(const WebDOMTestMediaQueryListListener&);
-WebDOMTestMediaQueryListListener toWebKit(WebCore::TestMediaQueryListListener*);
+WebCore::TestMediaQueryListListener *toWebCore( const WebDOMTestMediaQueryListListener & );
+WebDOMTestMediaQueryListListener toWebKit( WebCore::TestMediaQueryListListener * );
 
 #endif

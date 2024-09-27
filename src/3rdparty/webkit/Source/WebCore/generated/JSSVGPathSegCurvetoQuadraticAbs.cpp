@@ -30,9 +30,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSSVGPathSegCurvetoQuadraticAbs);
+ASSERT_CLASS_FITS_IN_CELL( JSSVGPathSegCurvetoQuadraticAbs );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -43,12 +44,12 @@ ASSERT_CLASS_FITS_IN_CELL(JSSVGPathSegCurvetoQuadraticAbs);
 
 static const HashTableValue JSSVGPathSegCurvetoQuadraticAbsTableValues[6] =
 {
-    { "x", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGPathSegCurvetoQuadraticAbsX), (intptr_t)setJSSVGPathSegCurvetoQuadraticAbsX THUNK_GENERATOR(0) },
-    { "y", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGPathSegCurvetoQuadraticAbsY), (intptr_t)setJSSVGPathSegCurvetoQuadraticAbsY THUNK_GENERATOR(0) },
-    { "x1", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGPathSegCurvetoQuadraticAbsX1), (intptr_t)setJSSVGPathSegCurvetoQuadraticAbsX1 THUNK_GENERATOR(0) },
-    { "y1", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGPathSegCurvetoQuadraticAbsY1), (intptr_t)setJSSVGPathSegCurvetoQuadraticAbsY1 THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGPathSegCurvetoQuadraticAbsConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "x", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGPathSegCurvetoQuadraticAbsX ), ( intptr_t )setJSSVGPathSegCurvetoQuadraticAbsX THUNK_GENERATOR( 0 ) },
+    { "y", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGPathSegCurvetoQuadraticAbsY ), ( intptr_t )setJSSVGPathSegCurvetoQuadraticAbsY THUNK_GENERATOR( 0 ) },
+    { "x1", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGPathSegCurvetoQuadraticAbsX1 ), ( intptr_t )setJSSVGPathSegCurvetoQuadraticAbsX1 THUNK_GENERATOR( 0 ) },
+    { "y1", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGPathSegCurvetoQuadraticAbsY1 ), ( intptr_t )setJSSVGPathSegCurvetoQuadraticAbsY1 THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGPathSegCurvetoQuadraticAbsConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -62,43 +63,52 @@ static JSC_CONST_HASHTABLE HashTable JSSVGPathSegCurvetoQuadraticAbsTable = { 16
 
 static const HashTableValue JSSVGPathSegCurvetoQuadraticAbsConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSSVGPathSegCurvetoQuadraticAbsConstructorTable = { 1, 0, JSSVGPathSegCurvetoQuadraticAbsConstructorTableValues, 0 };
-class JSSVGPathSegCurvetoQuadraticAbsConstructor : public DOMConstructorObject {
+class JSSVGPathSegCurvetoQuadraticAbsConstructor : public DOMConstructorObject
+{
 public:
-    JSSVGPathSegCurvetoQuadraticAbsConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSSVGPathSegCurvetoQuadraticAbsConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSSVGPathSegCurvetoQuadraticAbsConstructor::s_info = { "SVGPathSegCurvetoQuadraticAbsConstructor", &DOMConstructorObject::s_info, &JSSVGPathSegCurvetoQuadraticAbsConstructorTable, 0 };
 
-JSSVGPathSegCurvetoQuadraticAbsConstructor::JSSVGPathSegCurvetoQuadraticAbsConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSSVGPathSegCurvetoQuadraticAbsConstructor::JSSVGPathSegCurvetoQuadraticAbsConstructor( ExecState *exec, Structure *structure,
+        JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSSVGPathSegCurvetoQuadraticAbsPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSSVGPathSegCurvetoQuadraticAbsPrototype::self( exec,
+               globalObject ), DontDelete | ReadOnly );
 }
 
-bool JSSVGPathSegCurvetoQuadraticAbsConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGPathSegCurvetoQuadraticAbsConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName,
+        PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSVGPathSegCurvetoQuadraticAbsConstructor, JSDOMWrapper>(exec, &JSSVGPathSegCurvetoQuadraticAbsConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSSVGPathSegCurvetoQuadraticAbsConstructor, JSDOMWrapper>( exec,
+            &JSSVGPathSegCurvetoQuadraticAbsConstructorTable, this, propertyName, slot );
 }
 
-bool JSSVGPathSegCurvetoQuadraticAbsConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGPathSegCurvetoQuadraticAbsConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSVGPathSegCurvetoQuadraticAbsConstructor, JSDOMWrapper>(exec, &JSSVGPathSegCurvetoQuadraticAbsConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSVGPathSegCurvetoQuadraticAbsConstructor, JSDOMWrapper>( exec,
+            &JSSVGPathSegCurvetoQuadraticAbsConstructorTable, this, propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -110,127 +120,133 @@ bool JSSVGPathSegCurvetoQuadraticAbsConstructor::getOwnPropertyDescriptor(ExecSt
 
 static const HashTableValue JSSVGPathSegCurvetoQuadraticAbsPrototypeTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSSVGPathSegCurvetoQuadraticAbsPrototypeTable = { 1, 0, JSSVGPathSegCurvetoQuadraticAbsPrototypeTableValues, 0 };
 const ClassInfo JSSVGPathSegCurvetoQuadraticAbsPrototype::s_info = { "SVGPathSegCurvetoQuadraticAbsPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSSVGPathSegCurvetoQuadraticAbsPrototypeTable, 0 };
 
-JSObject* JSSVGPathSegCurvetoQuadraticAbsPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSVGPathSegCurvetoQuadraticAbsPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSSVGPathSegCurvetoQuadraticAbs>(exec, globalObject);
+    return getDOMPrototype<JSSVGPathSegCurvetoQuadraticAbs>( exec, globalObject );
 }
 
 const ClassInfo JSSVGPathSegCurvetoQuadraticAbs::s_info = { "SVGPathSegCurvetoQuadraticAbs", &JSSVGPathSeg::s_info, &JSSVGPathSegCurvetoQuadraticAbsTable, 0 };
 
-JSSVGPathSegCurvetoQuadraticAbs::JSSVGPathSegCurvetoQuadraticAbs(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<SVGPathSegCurvetoQuadraticAbs> impl)
-    : JSSVGPathSeg(structure, globalObject, impl)
+JSSVGPathSegCurvetoQuadraticAbs::JSSVGPathSegCurvetoQuadraticAbs( Structure *structure, JSDOMGlobalObject *globalObject,
+        PassRefPtr<SVGPathSegCurvetoQuadraticAbs> impl )
+    : JSSVGPathSeg( structure, globalObject, impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSSVGPathSegCurvetoQuadraticAbs::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSVGPathSegCurvetoQuadraticAbs::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSSVGPathSegCurvetoQuadraticAbsPrototype(exec->globalData(), globalObject, JSSVGPathSegCurvetoQuadraticAbsPrototype::createStructure(exec->globalData(), JSSVGPathSegPrototype::self(exec, globalObject)));
+    return new ( exec ) JSSVGPathSegCurvetoQuadraticAbsPrototype( exec->globalData(), globalObject,
+            JSSVGPathSegCurvetoQuadraticAbsPrototype::createStructure( exec->globalData(), JSSVGPathSegPrototype::self( exec,
+                    globalObject ) ) );
 }
 
-bool JSSVGPathSegCurvetoQuadraticAbs::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGPathSegCurvetoQuadraticAbs::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSVGPathSegCurvetoQuadraticAbs, Base>(exec, &JSSVGPathSegCurvetoQuadraticAbsTable, this, propertyName, slot);
+    return getStaticValueSlot<JSSVGPathSegCurvetoQuadraticAbs, Base>( exec, &JSSVGPathSegCurvetoQuadraticAbsTable, this, propertyName,
+            slot );
 }
 
-bool JSSVGPathSegCurvetoQuadraticAbs::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGPathSegCurvetoQuadraticAbs::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSVGPathSegCurvetoQuadraticAbs, Base>(exec, &JSSVGPathSegCurvetoQuadraticAbsTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSVGPathSegCurvetoQuadraticAbs, Base>( exec, &JSSVGPathSegCurvetoQuadraticAbsTable, this,
+            propertyName, descriptor );
 }
 
-JSValue jsSVGPathSegCurvetoQuadraticAbsX(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGPathSegCurvetoQuadraticAbsX( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGPathSegCurvetoQuadraticAbs* castedThis = static_cast<JSSVGPathSegCurvetoQuadraticAbs*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGPathSegCurvetoQuadraticAbs* imp = static_cast<SVGPathSegCurvetoQuadraticAbs*>(castedThis->impl());
-    JSValue result = jsNumber(imp->x());
+    JSSVGPathSegCurvetoQuadraticAbs *castedThis = static_cast<JSSVGPathSegCurvetoQuadraticAbs *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGPathSegCurvetoQuadraticAbs *imp = static_cast<SVGPathSegCurvetoQuadraticAbs *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->x() );
     return result;
 }
 
 
-JSValue jsSVGPathSegCurvetoQuadraticAbsY(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGPathSegCurvetoQuadraticAbsY( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGPathSegCurvetoQuadraticAbs* castedThis = static_cast<JSSVGPathSegCurvetoQuadraticAbs*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGPathSegCurvetoQuadraticAbs* imp = static_cast<SVGPathSegCurvetoQuadraticAbs*>(castedThis->impl());
-    JSValue result = jsNumber(imp->y());
+    JSSVGPathSegCurvetoQuadraticAbs *castedThis = static_cast<JSSVGPathSegCurvetoQuadraticAbs *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGPathSegCurvetoQuadraticAbs *imp = static_cast<SVGPathSegCurvetoQuadraticAbs *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->y() );
     return result;
 }
 
 
-JSValue jsSVGPathSegCurvetoQuadraticAbsX1(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGPathSegCurvetoQuadraticAbsX1( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGPathSegCurvetoQuadraticAbs* castedThis = static_cast<JSSVGPathSegCurvetoQuadraticAbs*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGPathSegCurvetoQuadraticAbs* imp = static_cast<SVGPathSegCurvetoQuadraticAbs*>(castedThis->impl());
-    JSValue result = jsNumber(imp->x1());
+    JSSVGPathSegCurvetoQuadraticAbs *castedThis = static_cast<JSSVGPathSegCurvetoQuadraticAbs *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGPathSegCurvetoQuadraticAbs *imp = static_cast<SVGPathSegCurvetoQuadraticAbs *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->x1() );
     return result;
 }
 
 
-JSValue jsSVGPathSegCurvetoQuadraticAbsY1(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGPathSegCurvetoQuadraticAbsY1( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGPathSegCurvetoQuadraticAbs* castedThis = static_cast<JSSVGPathSegCurvetoQuadraticAbs*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGPathSegCurvetoQuadraticAbs* imp = static_cast<SVGPathSegCurvetoQuadraticAbs*>(castedThis->impl());
-    JSValue result = jsNumber(imp->y1());
+    JSSVGPathSegCurvetoQuadraticAbs *castedThis = static_cast<JSSVGPathSegCurvetoQuadraticAbs *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGPathSegCurvetoQuadraticAbs *imp = static_cast<SVGPathSegCurvetoQuadraticAbs *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->y1() );
     return result;
 }
 
 
-JSValue jsSVGPathSegCurvetoQuadraticAbsConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGPathSegCurvetoQuadraticAbsConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGPathSegCurvetoQuadraticAbs* domObject = static_cast<JSSVGPathSegCurvetoQuadraticAbs*>(asObject(slotBase));
-    return JSSVGPathSegCurvetoQuadraticAbs::getConstructor(exec, domObject->globalObject());
+    JSSVGPathSegCurvetoQuadraticAbs *domObject = static_cast<JSSVGPathSegCurvetoQuadraticAbs *>( asObject( slotBase ) );
+    return JSSVGPathSegCurvetoQuadraticAbs::getConstructor( exec, domObject->globalObject() );
 }
 
-void JSSVGPathSegCurvetoQuadraticAbs::put(ExecState* exec, const Identifier& propertyName, JSValue value, PutPropertySlot& slot)
+void JSSVGPathSegCurvetoQuadraticAbs::put( ExecState *exec, const Identifier &propertyName, JSValue value, PutPropertySlot &slot )
 {
-    lookupPut<JSSVGPathSegCurvetoQuadraticAbs, Base>(exec, propertyName, value, &JSSVGPathSegCurvetoQuadraticAbsTable, this, slot);
+    lookupPut<JSSVGPathSegCurvetoQuadraticAbs, Base>( exec, propertyName, value, &JSSVGPathSegCurvetoQuadraticAbsTable, this, slot );
 }
 
-void setJSSVGPathSegCurvetoQuadraticAbsX(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSSVGPathSegCurvetoQuadraticAbsX( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSSVGPathSegCurvetoQuadraticAbs* castedThis = static_cast<JSSVGPathSegCurvetoQuadraticAbs*>(thisObject);
-    SVGPathSegCurvetoQuadraticAbs* imp = static_cast<SVGPathSegCurvetoQuadraticAbs*>(castedThis->impl());
-    imp->setX(value.toFloat(exec));
-}
-
-
-void setJSSVGPathSegCurvetoQuadraticAbsY(ExecState* exec, JSObject* thisObject, JSValue value)
-{
-    JSSVGPathSegCurvetoQuadraticAbs* castedThis = static_cast<JSSVGPathSegCurvetoQuadraticAbs*>(thisObject);
-    SVGPathSegCurvetoQuadraticAbs* imp = static_cast<SVGPathSegCurvetoQuadraticAbs*>(castedThis->impl());
-    imp->setY(value.toFloat(exec));
+    JSSVGPathSegCurvetoQuadraticAbs *castedThis = static_cast<JSSVGPathSegCurvetoQuadraticAbs *>( thisObject );
+    SVGPathSegCurvetoQuadraticAbs *imp = static_cast<SVGPathSegCurvetoQuadraticAbs *>( castedThis->impl() );
+    imp->setX( value.toFloat( exec ) );
 }
 
 
-void setJSSVGPathSegCurvetoQuadraticAbsX1(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSSVGPathSegCurvetoQuadraticAbsY( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSSVGPathSegCurvetoQuadraticAbs* castedThis = static_cast<JSSVGPathSegCurvetoQuadraticAbs*>(thisObject);
-    SVGPathSegCurvetoQuadraticAbs* imp = static_cast<SVGPathSegCurvetoQuadraticAbs*>(castedThis->impl());
-    imp->setX1(value.toFloat(exec));
+    JSSVGPathSegCurvetoQuadraticAbs *castedThis = static_cast<JSSVGPathSegCurvetoQuadraticAbs *>( thisObject );
+    SVGPathSegCurvetoQuadraticAbs *imp = static_cast<SVGPathSegCurvetoQuadraticAbs *>( castedThis->impl() );
+    imp->setY( value.toFloat( exec ) );
 }
 
 
-void setJSSVGPathSegCurvetoQuadraticAbsY1(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSSVGPathSegCurvetoQuadraticAbsX1( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSSVGPathSegCurvetoQuadraticAbs* castedThis = static_cast<JSSVGPathSegCurvetoQuadraticAbs*>(thisObject);
-    SVGPathSegCurvetoQuadraticAbs* imp = static_cast<SVGPathSegCurvetoQuadraticAbs*>(castedThis->impl());
-    imp->setY1(value.toFloat(exec));
+    JSSVGPathSegCurvetoQuadraticAbs *castedThis = static_cast<JSSVGPathSegCurvetoQuadraticAbs *>( thisObject );
+    SVGPathSegCurvetoQuadraticAbs *imp = static_cast<SVGPathSegCurvetoQuadraticAbs *>( castedThis->impl() );
+    imp->setX1( value.toFloat( exec ) );
 }
 
 
-JSValue JSSVGPathSegCurvetoQuadraticAbs::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+void setJSSVGPathSegCurvetoQuadraticAbsY1( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    return getDOMConstructor<JSSVGPathSegCurvetoQuadraticAbsConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    JSSVGPathSegCurvetoQuadraticAbs *castedThis = static_cast<JSSVGPathSegCurvetoQuadraticAbs *>( thisObject );
+    SVGPathSegCurvetoQuadraticAbs *imp = static_cast<SVGPathSegCurvetoQuadraticAbs *>( castedThis->impl() );
+    imp->setY1( value.toFloat( exec ) );
+}
+
+
+JSValue JSSVGPathSegCurvetoQuadraticAbs::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
+{
+    return getDOMConstructor<JSSVGPathSegCurvetoQuadraticAbsConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
 

@@ -30,20 +30,24 @@
 #include "WKBundlePage.h"
 #include <wtf/Vector.h>
 
-namespace WebCore {
-    class ContextMenu;
+namespace WebCore
+{
+class ContextMenu;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
 class APIObject;
 class InjectedBundleHitTestResult;
 class WebContextMenuItemData;
 class WebPage;
 
-class InjectedBundlePageContextMenuClient : public APIClient<WKBundlePageContextMenuClient> {
+class InjectedBundlePageContextMenuClient : public APIClient<WKBundlePageContextMenuClient>
+{
 public:
-    bool getCustomMenuFromDefaultItems(WebPage*, InjectedBundleHitTestResult*, const Vector<WebContextMenuItemData>& defaultMenu, Vector<WebContextMenuItemData>& newMenu, RefPtr<APIObject>& userData);
+    bool getCustomMenuFromDefaultItems( WebPage *, InjectedBundleHitTestResult *, const Vector<WebContextMenuItemData> &defaultMenu,
+                                        Vector<WebContextMenuItemData> &newMenu, RefPtr<APIObject> &userData );
 };
 
 } // namespace WebKit

@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef WebGLShader_h
@@ -31,25 +31,42 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class WebGLShader : public WebGLObject {
+class WebGLShader : public WebGLObject
+{
 public:
-    virtual ~WebGLShader() { deleteObject(); }
+    virtual ~WebGLShader()
+    {
+        deleteObject();
+    }
 
-    static PassRefPtr<WebGLShader> create(WebGLRenderingContext*, GC3Denum);
+    static PassRefPtr<WebGLShader> create( WebGLRenderingContext *, GC3Denum );
 
-    GC3Denum getType() const { return m_type; }
-    const String& getSource() const { return m_source; }
+    GC3Denum getType() const
+    {
+        return m_type;
+    }
+    const String &getSource() const
+    {
+        return m_source;
+    }
 
-    void setSource(const String& source) { m_source = source; }
+    void setSource( const String &source )
+    {
+        m_source = source;
+    }
 
 private:
-    WebGLShader(WebGLRenderingContext*, GC3Denum);
+    WebGLShader( WebGLRenderingContext *, GC3Denum );
 
-    virtual void deleteObjectImpl(Platform3DObject);
+    virtual void deleteObjectImpl( Platform3DObject );
 
-    virtual bool isShader() const { return true; }
+    virtual bool isShader() const
+    {
+        return true;
+    }
 
     GC3Denum m_type;
     String m_source;

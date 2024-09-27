@@ -37,45 +37,47 @@
 
 using namespace WebCore;
 
-namespace WebKit {
+namespace WebKit
+{
 
-ResourceError cancelledError(const ResourceRequest& request)
+ResourceError cancelledError( const ResourceRequest &request )
 {
 #if USE(CFNETWORK)
-    return ResourceError(kCFErrorDomainCFNetwork, kCFURLErrorCancelled, request.url().string(), String());
+    return ResourceError( kCFErrorDomainCFNetwork, kCFURLErrorCancelled, request.url().string(), String() );
 #else
     return ResourceError(); // FIXME
 #endif
 }
 
-ResourceError blockedError(const ResourceRequest& request)
+ResourceError blockedError( const ResourceRequest &request )
 {
-    return ResourceError(WebError::webKitErrorDomain(), kWKErrorCodeCannotUseRestrictedPort, request.url().string(), String());
+    return ResourceError( WebError::webKitErrorDomain(), kWKErrorCodeCannotUseRestrictedPort, request.url().string(), String() );
 }
 
-ResourceError cannotShowURLError(const ResourceRequest& request)
+ResourceError cannotShowURLError( const ResourceRequest &request )
 {
-    return ResourceError(WebError::webKitErrorDomain(), kWKErrorCodeCannotShowURL, request.url().string(), String());
+    return ResourceError( WebError::webKitErrorDomain(), kWKErrorCodeCannotShowURL, request.url().string(), String() );
 }
 
-ResourceError interruptForPolicyChangeError(const ResourceRequest& request)
+ResourceError interruptForPolicyChangeError( const ResourceRequest &request )
 {
-    return ResourceError(WebError::webKitErrorDomain(), kWKErrorCodeFrameLoadInterruptedByPolicyChange, request.url().string(), String());
+    return ResourceError( WebError::webKitErrorDomain(), kWKErrorCodeFrameLoadInterruptedByPolicyChange, request.url().string(),
+                          String() );
 }
 
-ResourceError cannotShowMIMETypeError(const ResourceResponse& response)
+ResourceError cannotShowMIMETypeError( const ResourceResponse &response )
 {
     return ResourceError();
 }
 
-ResourceError fileDoesNotExistError(const ResourceResponse& response)
+ResourceError fileDoesNotExistError( const ResourceResponse &response )
 {
     return ResourceError();
 }
 
-ResourceError pluginWillHandleLoadError(const ResourceResponse& response)
+ResourceError pluginWillHandleLoadError( const ResourceResponse &response )
 {
-    return ResourceError(WebError::webKitErrorDomain(), kWKErrorCodePlugInWillHandleLoad, response.url().string(), String());
+    return ResourceError( WebError::webKitErrorDomain(), kWKErrorCodePlugInWillHandleLoad, response.url().string(), String() );
 }
 
 } // namespace WebKit

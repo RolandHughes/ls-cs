@@ -29,48 +29,63 @@
 
 #include "RegExpCache.h"
 
-namespace JSC {
-
-PassRefPtr<RegExp> RegExpCache::lookupOrCreate(const UString& patternString, RegExpFlags flags)
+namespace JSC
 {
-    if (patternString.length() < maxCacheablePatternLength) {
-        pair<RegExpCacheMap::iterator, bool> result = m_cacheMap.add(RegExpKey(flags, patternString), 0);
-        if (!result.second)
+
+PassRefPtr<RegExp> RegExpCache::lookupOrCreate( const UString &patternString, RegExpFlags flags )
+{
+    if ( patternString.length() < maxCacheablePatternLength )
+    {
+        pair<RegExpCacheMap::iterator, bool> result = m_cacheMap.add( RegExpKey( flags, patternString ), 0 );
+
+        if ( !result.second )
+        {
             return result.first->second;
+        }
         else
-            return create(patternString, flags, result.first);
+        {
+            return create( patternString, flags, result.first );
+        }
     }
-    return create(patternString, flags, m_cacheMap.end());
+
+    return create( patternString, flags, m_cacheMap.end() );
 }
 
-PassRefPtr<RegExp> RegExpCache::create(const UString& patternString, RegExpFlags flags, RegExpCacheMap::iterator iterator) 
+PassRefPtr<RegExp> RegExpCache::create( const UString &patternString, RegExpFlags flags, RegExpCacheMap::iterator iterator )
 {
-    RefPtr<RegExp> regExp = RegExp::create(m_globalData, patternString, flags);
+    RefPtr<RegExp> regExp = RegExp::create( m_globalData, patternString, flags );
 
-    if (patternString.length() >= maxCacheablePatternLength)
+    if ( patternString.length() >= maxCacheablePatternLength )
+    {
         return regExp;
+    }
 
-    RegExpKey key = RegExpKey(flags, patternString);
+    RegExpKey key = RegExpKey( flags, patternString );
     iterator->first = key;
     iterator->second = regExp;
 
     ++m_nextKeyToEvict;
-    if (m_nextKeyToEvict == maxCacheableEntries) {
+
+    if ( m_nextKeyToEvict == maxCacheableEntries )
+    {
         m_nextKeyToEvict = 0;
         m_isFull = true;
     }
-    if (m_isFull)
-        m_cacheMap.remove(RegExpKey(patternKeyArray[m_nextKeyToEvict].flagsValue, patternKeyArray[m_nextKeyToEvict].pattern));
+
+    if ( m_isFull )
+    {
+        m_cacheMap.remove( RegExpKey( patternKeyArray[m_nextKeyToEvict].flagsValue, patternKeyArray[m_nextKeyToEvict].pattern ) );
+    }
 
     patternKeyArray[m_nextKeyToEvict].flagsValue = key.flagsValue;
     patternKeyArray[m_nextKeyToEvict].pattern = patternString.impl();
     return regExp;
 }
 
-RegExpCache::RegExpCache(JSGlobalData* globalData)
-    : m_globalData(globalData)
-    , m_nextKeyToEvict(-1)
-    , m_isFull(false)
+RegExpCache::RegExpCache( JSGlobalData *globalData )
+    : m_globalData( globalData )
+    , m_nextKeyToEvict( -1 )
+    , m_isFull( false )
 {
 }
 

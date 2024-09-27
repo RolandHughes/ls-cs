@@ -43,39 +43,48 @@ typedef int gboolean;
 
 class WorkItem;
 
-namespace CoreIPC {
-    class BinarySemaphore;
+namespace CoreIPC
+{
+class BinarySemaphore;
 }
 
-class RunLoop {
+class RunLoop
+{
 public:
     // Must be called from the main thread.
     static void initializeMainRunLoop();
 
-    static RunLoop* current();
-    static RunLoop* main();
+    static RunLoop *current();
+    static RunLoop *main();
 
-    void scheduleWork(PassOwnPtr<WorkItem>);
+    void scheduleWork( PassOwnPtr<WorkItem> );
 
 #if PLATFORM(WIN)
     // The absoluteTime is in seconds, starting on January 1, 1970. The time is assumed to use the
     // same time zone as WTF::currentTime(). Dispatches sent (not posted) messages to the passed-in
     // set of HWNDs until the semaphore is signaled or absoluteTime is reached. Returns true if the
     // semaphore is signaled, false otherwise.
-    static bool dispatchSentMessagesUntil(const Vector<HWND>& windows, CoreIPC::BinarySemaphore&, double absoluteTime);
+    static bool dispatchSentMessagesUntil( const Vector<HWND> &windows, CoreIPC::BinarySemaphore &, double absoluteTime );
 #endif
 
     static void run();
     void stop();
 
-    class TimerBase {
+    class TimerBase
+    {
         friend class RunLoop;
     public:
-        TimerBase(RunLoop*);
+        TimerBase( RunLoop * );
         virtual ~TimerBase();
 
-        void startRepeating(double repeatInterval) { start(repeatInterval, true); }
-        void startOneShot(double interval) { start(interval, false); }
+        void startRepeating( double repeatInterval )
+        {
+            start( repeatInterval, true );
+        }
+        void startOneShot( double interval )
+        {
+            start( interval, false );
+        }
 
         void stop();
         bool isActive() const;
@@ -83,25 +92,28 @@ public:
         virtual void fired() = 0;
 
     private:
-        void start(double nextFireInterval, bool repeat);
+        void start( double nextFireInterval, bool repeat );
 
-        RunLoop* m_runLoop;
+        RunLoop *m_runLoop;
 
 #if PLATFORM(WIN)
-        static void timerFired(RunLoop*, uint64_t ID);
+        static void timerFired( RunLoop *, uint64_t ID );
         uint64_t m_ID;
         bool m_isRepeating;
 #elif PLATFORM(MAC)
-        static void timerFired(CFRunLoopTimerRef, void*);
+        static void timerFired( CFRunLoopTimerRef, void * );
         CFRunLoopTimerRef m_timer;
 #elif PLATFORM(QT)
-        static void timerFired(RunLoop*, int ID);
+        static void timerFired( RunLoop *, int ID );
         int m_ID;
         bool m_isRepeating;
 #elif PLATFORM(GTK)
-        static gboolean timerFiredCallback(RunLoop::TimerBase*);
-        static void destroyNotifyCallback(RunLoop::TimerBase*);
-        gboolean isRepeating() const { return m_isRepeating; }
+        static gboolean timerFiredCallback( RunLoop::TimerBase * );
+        static void destroyNotifyCallback( RunLoop::TimerBase * );
+        gboolean isRepeating() const
+        {
+            return m_isRepeating;
+        }
         void clearTimerSource();
         GRefPtr<GSource> m_timerSource;
         gboolean m_isRepeating;
@@ -109,21 +121,25 @@ public:
     };
 
     template <typename TimerFiredClass>
-    class Timer : public TimerBase {
+    class Timer : public TimerBase
+    {
     public:
-        typedef void (TimerFiredClass::*TimerFiredFunction)();
+        typedef void ( TimerFiredClass::*TimerFiredFunction )();
 
-        Timer(RunLoop* runLoop, TimerFiredClass* o, TimerFiredFunction f)
-            : TimerBase(runLoop)
-            , m_object(o)
-            , m_function(f)
+        Timer( RunLoop *runLoop, TimerFiredClass *o, TimerFiredFunction f )
+            : TimerBase( runLoop )
+            , m_object( o )
+            , m_function( f )
         {
         }
 
     private:
-        virtual void fired() { (m_object->*m_function)(); }
+        virtual void fired()
+        {
+            ( m_object->*m_function )();
+        }
 
-        TimerFiredClass* m_object;
+        TimerFiredClass *m_object;
         TimerFiredFunction m_function;
     };
 
@@ -141,28 +157,28 @@ private:
 
 #if PLATFORM(WIN)
     static bool registerRunLoopMessageWindowClass();
-    static LRESULT CALLBACK RunLoopWndProc(HWND, UINT, WPARAM, LPARAM);
-    LRESULT wndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+    static LRESULT CALLBACK RunLoopWndProc( HWND, UINT, WPARAM, LPARAM );
+    LRESULT wndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam );
     HWND m_runLoopMessageWindow;
 
-    typedef HashMap<uint64_t, TimerBase*> TimerMap;
+    typedef HashMap<uint64_t, TimerBase *> TimerMap;
     TimerMap m_activeTimers;
 #elif PLATFORM(MAC)
-    static void performWork(void*);
+    static void performWork( void * );
     CFRunLoopRef m_runLoop;
     CFRunLoopSourceRef m_runLoopSource;
 #elif PLATFORM(QT)
-    typedef HashMap<int, TimerBase*> TimerMap;
+    typedef HashMap<int, TimerBase *> TimerMap;
     TimerMap m_activeTimers;
     class TimerObject;
-    TimerObject* m_timerObject;
+    TimerObject *m_timerObject;
 #elif PLATFORM(GTK)
 public:
-    static gboolean queueWork(RunLoop*);
-    GMainLoop* mainLoop();
+    static gboolean queueWork( RunLoop * );
+    GMainLoop *mainLoop();
 private:
-    GMainContext* m_runLoopContext;
-    GMainLoop* m_runLoopMain;
+    GMainContext *m_runLoopContext;
+    GMainLoop *m_runLoopMain;
 #endif
 };
 

@@ -35,33 +35,33 @@ class QColormapPrivate;
 
 class Q_GUI_EXPORT QColormap
 {
- public:
-   enum Mode { Direct, Indexed, Gray };
+public:
+    enum Mode { Direct, Indexed, Gray };
 
-   static void initialize();
-   static void cleanup();
+    static void initialize();
+    static void cleanup();
 
-   static QColormap instance(int screen = -1);
+    static QColormap instance( int screen = -1 );
 
-   QColormap(const QColormap &colormap);
-   ~QColormap();
+    QColormap( const QColormap &colormap );
+    ~QColormap();
 
-   QColormap &operator=(const QColormap &colormap);
+    QColormap &operator=( const QColormap &colormap );
 
-   Mode mode() const;
+    Mode mode() const;
 
-   int depth() const;
-   int size() const;
+    int depth() const;
+    int size() const;
 
-   uint pixel(const QColor &color) const;
-   const QColor colorAt(uint pixel) const;
+    uint pixel( const QColor &color ) const;
+    const QColor colorAt( uint pixel ) const;
 
-   const QVector<QColor> colormap() const;
+    const QVector<QColor> colormap() const;
 
 
- private:
-   QColormap();
-   QColormapPrivate *d;
+private:
+    QColormap();
+    QColormapPrivate *d;
 };
 
 #endif

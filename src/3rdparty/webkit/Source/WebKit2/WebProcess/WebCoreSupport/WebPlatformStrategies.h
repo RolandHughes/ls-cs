@@ -33,31 +33,34 @@
 #include <WebCore/PluginStrategy.h>
 #include <WebCore/VisitedLinkStrategy.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
-class WebPlatformStrategies : public WebCore::PlatformStrategies, private WebCore::CookiesStrategy, private WebCore::PluginStrategy, private WebCore::VisitedLinkStrategy {
+class WebPlatformStrategies : public WebCore::PlatformStrategies, private WebCore::CookiesStrategy,
+    private WebCore::PluginStrategy, private WebCore::VisitedLinkStrategy
+{
 public:
     static void initialize();
-    
+
 private:
     WebPlatformStrategies();
-    
+
     // WebCore::PlatformStrategies
-    virtual WebCore::CookiesStrategy* createCookiesStrategy();
-    virtual WebCore::PluginStrategy* createPluginStrategy();
-    virtual WebCore::VisitedLinkStrategy* createVisitedLinkStrategy();
+    virtual WebCore::CookiesStrategy *createCookiesStrategy();
+    virtual WebCore::PluginStrategy *createPluginStrategy();
+    virtual WebCore::VisitedLinkStrategy *createVisitedLinkStrategy();
 
     // WebCore::CookiesStrategy
     virtual void notifyCookiesChanged();
 
     // WebCore::PluginStrategy
     virtual void refreshPlugins();
-    virtual void getPluginInfo(const WebCore::Page*, Vector<WebCore::PluginInfo>&);
+    virtual void getPluginInfo( const WebCore::Page *, Vector<WebCore::PluginInfo> & );
     void populatePluginCache();
 
     // WebCore::VisitedLinkStrategy
-    virtual bool isLinkVisited(WebCore::Page*, WebCore::LinkHash);
-    virtual void addVisitedLink(WebCore::Page*, WebCore::LinkHash);
+    virtual bool isLinkVisited( WebCore::Page *, WebCore::LinkHash );
+    virtual void addVisitedLink( WebCore::Page *, WebCore::LinkHash );
 
     bool m_pluginCacheIsPopulated;
     bool m_shouldRefreshPlugins;

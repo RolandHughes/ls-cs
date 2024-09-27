@@ -23,36 +23,41 @@
 
 #include "CSSStyleSheet.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Document;
 class Element;
 
-class StyleElement {
+class StyleElement
+{
 public:
-    StyleElement(Document*, bool createdByParser);
+    StyleElement( Document *, bool createdByParser );
     virtual ~StyleElement();
 
 protected:
-    virtual const AtomicString& type() const = 0;
-    virtual const AtomicString& media() const = 0;
+    virtual const AtomicString &type() const = 0;
+    virtual const AtomicString &media() const = 0;
 
-    StyleSheet* sheet() const { return m_sheet.get(); }
+    StyleSheet *sheet() const
+    {
+        return m_sheet.get();
+    }
 
     bool isLoading() const;
-    bool sheetLoaded(Document*);
+    bool sheetLoaded( Document * );
 
-    void insertedIntoDocument(Document*, Element*);
-    void removedFromDocument(Document*, Element*);
-    void clearDocumentData(Document*, Element*);
-    void childrenChanged(Element*);
-    void finishParsingChildren(Element*);
+    void insertedIntoDocument( Document *, Element * );
+    void removedFromDocument( Document *, Element * );
+    void clearDocumentData( Document *, Element * );
+    void childrenChanged( Element * );
+    void finishParsingChildren( Element * );
 
     RefPtr<CSSStyleSheet> m_sheet;
 
 private:
-    void createSheet(Element*, int startLineNumber, const String& text = String());
-    void process(Element*);
+    void createSheet( Element *, int startLineNumber, const String &text = String() );
+    void process( Element * );
 
     bool m_createdByParser;
     bool m_loading;

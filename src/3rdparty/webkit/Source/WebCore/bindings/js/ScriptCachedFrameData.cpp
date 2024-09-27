@@ -1,11 +1,11 @@
 /*
  * Copyright (c) 2008, Google Inc. All rights reserved.
  * Copyright (C) 2008 Apple Inc. All Rights Reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  *     * Redistributions of source code must retain the above copyright
  * notice, this list of conditions and the following disclaimer.
  *     * Redistributions in binary form must reproduce the above
@@ -15,7 +15,7 @@
  *     * Neither the name of Google Inc. nor the names of its
  * contributors may be used to endorse or promote products derived from
  * this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -41,27 +41,30 @@
 
 using namespace JSC;
 
-namespace WebCore {
-
-ScriptCachedFrameData::ScriptCachedFrameData(Frame* frame)
-    : m_domWindow(0)
+namespace WebCore
 {
-    JSLock lock(SilenceAssertionsOnly);
 
-    ScriptController* scriptController = frame->script();
-    ScriptController::ShellMap& windowShells = scriptController->m_windowShells;
+ScriptCachedFrameData::ScriptCachedFrameData( Frame *frame )
+    : m_domWindow( 0 )
+{
+    JSLock lock( SilenceAssertionsOnly );
+
+    ScriptController *scriptController = frame->script();
+    ScriptController::ShellMap &windowShells = scriptController->m_windowShells;
 
     ScriptController::ShellMap::iterator windowShellsEnd = windowShells.end();
-    for (ScriptController::ShellMap::iterator iter = windowShells.begin(); iter != windowShellsEnd; ++iter) {
-        JSDOMWindow* window = iter->second->window();
-        m_windows.add(iter->first.get(), Strong<JSDOMWindow>(window->globalData(), window));
+
+    for ( ScriptController::ShellMap::iterator iter = windowShells.begin(); iter != windowShellsEnd; ++iter )
+    {
+        JSDOMWindow *window = iter->second->window();
+        m_windows.add( iter->first.get(), Strong<JSDOMWindow>( window->globalData(), window ) );
         m_domWindow = window->impl();
     }
 
-    scriptController->attachDebugger(0);
+    scriptController->attachDebugger( 0 );
 }
 
-DOMWindow* ScriptCachedFrameData::domWindow() const
+DOMWindow *ScriptCachedFrameData::domWindow() const
 {
     return m_domWindow;
 }
@@ -71,26 +74,32 @@ ScriptCachedFrameData::~ScriptCachedFrameData()
     clear();
 }
 
-void ScriptCachedFrameData::restore(Frame* frame)
+void ScriptCachedFrameData::restore( Frame *frame )
 {
-    JSLock lock(SilenceAssertionsOnly);
+    JSLock lock( SilenceAssertionsOnly );
 
-    ScriptController* scriptController = frame->script();
-    ScriptController::ShellMap& windowShells = scriptController->m_windowShells;
+    ScriptController *scriptController = frame->script();
+    ScriptController::ShellMap &windowShells = scriptController->m_windowShells;
 
     ScriptController::ShellMap::iterator windowShellsEnd = windowShells.end();
-    for (ScriptController::ShellMap::iterator iter = windowShells.begin(); iter != windowShellsEnd; ++iter) {
-        DOMWrapperWorld* world = iter->first.get();
-        JSDOMWindowShell* windowShell = iter->second.get();
 
-        if (JSDOMWindow* window = m_windows.get(world).get())
-            windowShell->setWindow(window->globalData(), window);
-        else {
-            windowShell->setWindow(frame->domWindow());
+    for ( ScriptController::ShellMap::iterator iter = windowShells.begin(); iter != windowShellsEnd; ++iter )
+    {
+        DOMWrapperWorld *world = iter->first.get();
+        JSDOMWindowShell *windowShell = iter->second.get();
 
-            if (Page* page = frame->page()) {
-                scriptController->attachDebugger(windowShell, page->debugger());
-                windowShell->window()->setProfileGroup(page->group().identifier());
+        if ( JSDOMWindow *window = m_windows.get( world ).get() )
+        {
+            windowShell->setWindow( window->globalData(), window );
+        }
+        else
+        {
+            windowShell->setWindow( frame->domWindow() );
+
+            if ( Page *page = frame->page() )
+            {
+                scriptController->attachDebugger( windowShell, page->debugger() );
+                windowShell->window()->setProfileGroup( page->group().identifier() );
             }
         }
     }
@@ -98,10 +107,12 @@ void ScriptCachedFrameData::restore(Frame* frame)
 
 void ScriptCachedFrameData::clear()
 {
-    if (m_windows.isEmpty())
+    if ( m_windows.isEmpty() )
+    {
         return;
+    }
 
-    JSLock lock(SilenceAssertionsOnly);
+    JSLock lock( SilenceAssertionsOnly );
     m_windows.clear();
     gcController().garbageCollectSoon();
 }

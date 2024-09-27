@@ -60,9 +60,9 @@
 
 /* ************************************************************************** */
 
-mng_uint32 mng_crc (mng_datap  pData,
-                    mng_uint8p buf,
-                    mng_int32  len);
+mng_uint32 mng_crc ( mng_datap  pData,
+                     mng_uint8p buf,
+                     mng_int32  len );
 
 /* ************************************************************************** */
 
@@ -70,12 +70,12 @@ mng_uint32 mng_crc (mng_datap  pData,
 
 /* ************************************************************************** */
 
-mng_retcode mng_inflate_buffer (mng_datap  pData,
-                                mng_uint8p pInbuf,
-                                mng_uint32 iInsize,
-                                mng_uint8p *pOutbuf,
-                                mng_uint32 *iOutsize,
-                                mng_uint32 *iRealsize);
+mng_retcode mng_inflate_buffer ( mng_datap  pData,
+                                 mng_uint8p pInbuf,
+                                 mng_uint32 iInsize,
+                                 mng_uint8p *pOutbuf,
+                                 mng_uint32 *iOutsize,
+                                 mng_uint32 *iRealsize );
 
 /* ************************************************************************** */
 
@@ -86,104 +86,104 @@ mng_retcode mng_inflate_buffer (mng_datap  pData,
                                      mng_chunkp* ppChunk)
 
 #ifdef MNG_OPTIMIZE_CHUNKREADER
-READ_CHUNK (mng_read_general) ;
+READ_CHUNK ( mng_read_general ) ;
 #endif
 
-READ_CHUNK (mng_read_ihdr) ;
-READ_CHUNK (mng_read_plte) ;
-READ_CHUNK (mng_read_idat) ;
-READ_CHUNK (mng_read_iend) ;
-READ_CHUNK (mng_read_trns) ;
-READ_CHUNK (mng_read_gama) ;
-READ_CHUNK (mng_read_chrm) ;
-READ_CHUNK (mng_read_srgb) ;
+READ_CHUNK ( mng_read_ihdr ) ;
+READ_CHUNK ( mng_read_plte ) ;
+READ_CHUNK ( mng_read_idat ) ;
+READ_CHUNK ( mng_read_iend ) ;
+READ_CHUNK ( mng_read_trns ) ;
+READ_CHUNK ( mng_read_gama ) ;
+READ_CHUNK ( mng_read_chrm ) ;
+READ_CHUNK ( mng_read_srgb ) ;
 #ifndef MNG_SKIPCHUNK_iCCP
-READ_CHUNK (mng_read_iccp) ;
+READ_CHUNK ( mng_read_iccp ) ;
 #endif
 #ifndef MNG_SKIPCHUNK_tEXt
-READ_CHUNK (mng_read_text) ;
+READ_CHUNK ( mng_read_text ) ;
 #endif
 #ifndef MNG_SKIPCHUNK_zTXt
-READ_CHUNK (mng_read_ztxt) ;
+READ_CHUNK ( mng_read_ztxt ) ;
 #endif
 #ifndef MNG_SKIPCHUNK_iTXt
-READ_CHUNK (mng_read_itxt) ;
+READ_CHUNK ( mng_read_itxt ) ;
 #endif
 #ifndef MNG_SKIPCHUNK_bKGD
-READ_CHUNK (mng_read_bkgd) ;
+READ_CHUNK ( mng_read_bkgd ) ;
 #endif
 #ifndef MNG_SKIPCHUNK_pHYs
-READ_CHUNK (mng_read_phys) ;
+READ_CHUNK ( mng_read_phys ) ;
 #endif
 #ifndef MNG_SKIPCHUNK_sBIT
-READ_CHUNK (mng_read_sbit) ;
+READ_CHUNK ( mng_read_sbit ) ;
 #endif
 #ifndef MNG_SKIPCHUNK_sPLT
-READ_CHUNK (mng_read_splt) ;
+READ_CHUNK ( mng_read_splt ) ;
 #endif
 #ifndef MNG_SKIPCHUNK_hIST
-READ_CHUNK (mng_read_hist) ;
+READ_CHUNK ( mng_read_hist ) ;
 #endif
 #ifndef MNG_SKIPCHUNK_tIME
-READ_CHUNK (mng_read_time) ;
+READ_CHUNK ( mng_read_time ) ;
 #endif
-READ_CHUNK (mng_read_mhdr) ;
-READ_CHUNK (mng_read_mend) ;
-READ_CHUNK (mng_read_loop) ;
-READ_CHUNK (mng_read_endl) ;
-READ_CHUNK (mng_read_defi) ;
-READ_CHUNK (mng_read_basi) ;
-READ_CHUNK (mng_read_clon) ;
+READ_CHUNK ( mng_read_mhdr ) ;
+READ_CHUNK ( mng_read_mend ) ;
+READ_CHUNK ( mng_read_loop ) ;
+READ_CHUNK ( mng_read_endl ) ;
+READ_CHUNK ( mng_read_defi ) ;
+READ_CHUNK ( mng_read_basi ) ;
+READ_CHUNK ( mng_read_clon ) ;
 #ifndef MNG_SKIPCHUNK_PAST
-READ_CHUNK (mng_read_past) ;
+READ_CHUNK ( mng_read_past ) ;
 #endif
-READ_CHUNK (mng_read_disc) ;
-READ_CHUNK (mng_read_back) ;
-READ_CHUNK (mng_read_fram) ;
-READ_CHUNK (mng_read_move) ;
-READ_CHUNK (mng_read_clip) ;
-READ_CHUNK (mng_read_show) ;
-READ_CHUNK (mng_read_term) ;
-READ_CHUNK (mng_read_save) ;
-READ_CHUNK (mng_read_seek) ;
+READ_CHUNK ( mng_read_disc ) ;
+READ_CHUNK ( mng_read_back ) ;
+READ_CHUNK ( mng_read_fram ) ;
+READ_CHUNK ( mng_read_move ) ;
+READ_CHUNK ( mng_read_clip ) ;
+READ_CHUNK ( mng_read_show ) ;
+READ_CHUNK ( mng_read_term ) ;
+READ_CHUNK ( mng_read_save ) ;
+READ_CHUNK ( mng_read_seek ) ;
 #ifndef MNG_SKIPCHUNK_eXPI
-READ_CHUNK (mng_read_expi) ;
+READ_CHUNK ( mng_read_expi ) ;
 #endif
 #ifndef MNG_SKIPCHUNK_fPRI
-READ_CHUNK (mng_read_fpri) ;
+READ_CHUNK ( mng_read_fpri ) ;
 #endif
 #ifndef MNG_SKIPCHUNK_pHYg
-READ_CHUNK (mng_read_phyg) ;
+READ_CHUNK ( mng_read_phyg ) ;
 #endif
 #ifdef MNG_INCLUDE_JNG
-READ_CHUNK (mng_read_jhdr) ;
-READ_CHUNK (mng_read_jdaa) ;
-READ_CHUNK (mng_read_jdat) ;
-READ_CHUNK (mng_read_jsep) ;
+READ_CHUNK ( mng_read_jhdr ) ;
+READ_CHUNK ( mng_read_jdaa ) ;
+READ_CHUNK ( mng_read_jdat ) ;
+READ_CHUNK ( mng_read_jsep ) ;
 #endif
 #ifndef MNG_NO_DELTA_PNG
-READ_CHUNK (mng_read_dhdr) ;
-READ_CHUNK (mng_read_prom) ;
-READ_CHUNK (mng_read_ipng) ;
-READ_CHUNK (mng_read_pplt) ;
+READ_CHUNK ( mng_read_dhdr ) ;
+READ_CHUNK ( mng_read_prom ) ;
+READ_CHUNK ( mng_read_ipng ) ;
+READ_CHUNK ( mng_read_pplt ) ;
 #ifdef MNG_INCLUDE_JNG
-READ_CHUNK (mng_read_ijng) ;
+READ_CHUNK ( mng_read_ijng ) ;
 #endif
-READ_CHUNK (mng_read_drop) ;
-READ_CHUNK (mng_read_dbyk) ;
-READ_CHUNK (mng_read_ordr) ;
+READ_CHUNK ( mng_read_drop ) ;
+READ_CHUNK ( mng_read_dbyk ) ;
+READ_CHUNK ( mng_read_ordr ) ;
 #endif
-READ_CHUNK (mng_read_magn) ;
+READ_CHUNK ( mng_read_magn ) ;
 #ifndef MNG_SKIPCHUNK_nEED
-READ_CHUNK (mng_read_need) ;
+READ_CHUNK ( mng_read_need ) ;
 #endif
 #ifdef MNG_INCLUDE_MPNG_PROPOSAL
-READ_CHUNK (mng_read_mpng) ;
+READ_CHUNK ( mng_read_mpng ) ;
 #endif
 #ifndef MNG_SKIPCHUNK_evNT
-READ_CHUNK (mng_read_evnt) ;
+READ_CHUNK ( mng_read_evnt ) ;
 #endif
-READ_CHUNK (mng_read_unknown) ;
+READ_CHUNK ( mng_read_unknown ) ;
 
 /* ************************************************************************** */
 
@@ -262,75 +262,75 @@ READ_CHUNK (mng_read_unknown) ;
 #define WRITE_CHUNK(n) mng_retcode n (mng_datap  pData,   \
                                       mng_chunkp pChunk)
 
-WRITE_CHUNK (mng_write_ihdr) ;
-WRITE_CHUNK (mng_write_plte) ;
-WRITE_CHUNK (mng_write_idat) ;
-WRITE_CHUNK (mng_write_iend) ;
-WRITE_CHUNK (mng_write_trns) ;
-WRITE_CHUNK (mng_write_gama) ;
-WRITE_CHUNK (mng_write_chrm) ;
-WRITE_CHUNK (mng_write_srgb) ;
-WRITE_CHUNK (mng_write_iccp) ;
-WRITE_CHUNK (mng_write_text) ;
-WRITE_CHUNK (mng_write_ztxt) ;
-WRITE_CHUNK (mng_write_itxt) ;
-WRITE_CHUNK (mng_write_bkgd) ;
-WRITE_CHUNK (mng_write_phys) ;
-WRITE_CHUNK (mng_write_sbit) ;
-WRITE_CHUNK (mng_write_splt) ;
-WRITE_CHUNK (mng_write_hist) ;
-WRITE_CHUNK (mng_write_time) ;
-WRITE_CHUNK (mng_write_mhdr) ;
-WRITE_CHUNK (mng_write_mend) ;
-WRITE_CHUNK (mng_write_loop) ;
-WRITE_CHUNK (mng_write_endl) ;
-WRITE_CHUNK (mng_write_defi) ;
-WRITE_CHUNK (mng_write_basi) ;
-WRITE_CHUNK (mng_write_clon) ;
+WRITE_CHUNK ( mng_write_ihdr ) ;
+WRITE_CHUNK ( mng_write_plte ) ;
+WRITE_CHUNK ( mng_write_idat ) ;
+WRITE_CHUNK ( mng_write_iend ) ;
+WRITE_CHUNK ( mng_write_trns ) ;
+WRITE_CHUNK ( mng_write_gama ) ;
+WRITE_CHUNK ( mng_write_chrm ) ;
+WRITE_CHUNK ( mng_write_srgb ) ;
+WRITE_CHUNK ( mng_write_iccp ) ;
+WRITE_CHUNK ( mng_write_text ) ;
+WRITE_CHUNK ( mng_write_ztxt ) ;
+WRITE_CHUNK ( mng_write_itxt ) ;
+WRITE_CHUNK ( mng_write_bkgd ) ;
+WRITE_CHUNK ( mng_write_phys ) ;
+WRITE_CHUNK ( mng_write_sbit ) ;
+WRITE_CHUNK ( mng_write_splt ) ;
+WRITE_CHUNK ( mng_write_hist ) ;
+WRITE_CHUNK ( mng_write_time ) ;
+WRITE_CHUNK ( mng_write_mhdr ) ;
+WRITE_CHUNK ( mng_write_mend ) ;
+WRITE_CHUNK ( mng_write_loop ) ;
+WRITE_CHUNK ( mng_write_endl ) ;
+WRITE_CHUNK ( mng_write_defi ) ;
+WRITE_CHUNK ( mng_write_basi ) ;
+WRITE_CHUNK ( mng_write_clon ) ;
 #ifndef MNG_SKIPCHUNK_PAST
-WRITE_CHUNK (mng_write_past) ;
+WRITE_CHUNK ( mng_write_past ) ;
 #endif
-WRITE_CHUNK (mng_write_disc) ;
-WRITE_CHUNK (mng_write_back) ;
-WRITE_CHUNK (mng_write_fram) ;
-WRITE_CHUNK (mng_write_move) ;
-WRITE_CHUNK (mng_write_clip) ;
-WRITE_CHUNK (mng_write_show) ;
-WRITE_CHUNK (mng_write_term) ;
-WRITE_CHUNK (mng_write_save) ;
-WRITE_CHUNK (mng_write_seek) ;
-WRITE_CHUNK (mng_write_expi) ;
-WRITE_CHUNK (mng_write_fpri) ;
-WRITE_CHUNK (mng_write_phyg) ;
+WRITE_CHUNK ( mng_write_disc ) ;
+WRITE_CHUNK ( mng_write_back ) ;
+WRITE_CHUNK ( mng_write_fram ) ;
+WRITE_CHUNK ( mng_write_move ) ;
+WRITE_CHUNK ( mng_write_clip ) ;
+WRITE_CHUNK ( mng_write_show ) ;
+WRITE_CHUNK ( mng_write_term ) ;
+WRITE_CHUNK ( mng_write_save ) ;
+WRITE_CHUNK ( mng_write_seek ) ;
+WRITE_CHUNK ( mng_write_expi ) ;
+WRITE_CHUNK ( mng_write_fpri ) ;
+WRITE_CHUNK ( mng_write_phyg ) ;
 #ifdef MNG_INCLUDE_JNG
-WRITE_CHUNK (mng_write_jhdr) ;
-WRITE_CHUNK (mng_write_jdaa) ;
-WRITE_CHUNK (mng_write_jdat) ;
-WRITE_CHUNK (mng_write_jsep) ;
+WRITE_CHUNK ( mng_write_jhdr ) ;
+WRITE_CHUNK ( mng_write_jdaa ) ;
+WRITE_CHUNK ( mng_write_jdat ) ;
+WRITE_CHUNK ( mng_write_jsep ) ;
 #endif
 #ifndef MNG_NO_DELTA_PNG
-WRITE_CHUNK (mng_write_dhdr) ;
-WRITE_CHUNK (mng_write_prom) ;
-WRITE_CHUNK (mng_write_ipng) ;
-WRITE_CHUNK (mng_write_pplt) ;
+WRITE_CHUNK ( mng_write_dhdr ) ;
+WRITE_CHUNK ( mng_write_prom ) ;
+WRITE_CHUNK ( mng_write_ipng ) ;
+WRITE_CHUNK ( mng_write_pplt ) ;
 #ifdef MNG_INCLUDE_JNG
-WRITE_CHUNK (mng_write_ijng) ;
+WRITE_CHUNK ( mng_write_ijng ) ;
 #endif
-WRITE_CHUNK (mng_write_drop) ;
-WRITE_CHUNK (mng_write_dbyk) ;
-WRITE_CHUNK (mng_write_ordr) ;
+WRITE_CHUNK ( mng_write_drop ) ;
+WRITE_CHUNK ( mng_write_dbyk ) ;
+WRITE_CHUNK ( mng_write_ordr ) ;
 #endif
-WRITE_CHUNK (mng_write_magn) ;
-WRITE_CHUNK (mng_write_need) ;
+WRITE_CHUNK ( mng_write_magn ) ;
+WRITE_CHUNK ( mng_write_need ) ;
 #ifdef MNG_INCLUDE_MPNG_PROPOSAL
-WRITE_CHUNK (mng_write_mpng) ;
+WRITE_CHUNK ( mng_write_mpng ) ;
 #endif
 #ifdef MNG_INCLUDE_ANG_PROPOSAL
-WRITE_CHUNK (mng_write_ahdr) ;
-WRITE_CHUNK (mng_write_adat) ;
+WRITE_CHUNK ( mng_write_ahdr ) ;
+WRITE_CHUNK ( mng_write_adat ) ;
 #endif
-WRITE_CHUNK (mng_write_evnt) ;
-WRITE_CHUNK (mng_write_unknown) ;
+WRITE_CHUNK ( mng_write_evnt ) ;
+WRITE_CHUNK ( mng_write_unknown ) ;
 
 /* ************************************************************************** */
 

@@ -21,7 +21,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef BatchedTransitionOptimizer_h
@@ -29,27 +29,31 @@
 
 #include "JSObject.h"
 
-namespace JSC {
+namespace JSC
+{
 
-    class BatchedTransitionOptimizer {
-        WTF_MAKE_NONCOPYABLE(BatchedTransitionOptimizer);
-    public:
-        BatchedTransitionOptimizer(JSGlobalData& globalData, JSObject* object)
-            : m_globalData(&globalData)
-            , m_object(object)
+class BatchedTransitionOptimizer
+{
+    WTF_MAKE_NONCOPYABLE( BatchedTransitionOptimizer );
+public:
+    BatchedTransitionOptimizer( JSGlobalData &globalData, JSObject *object )
+        : m_globalData( &globalData )
+        , m_object( object )
+    {
+    }
+
+    ~BatchedTransitionOptimizer()
+    {
+        if ( m_object->structure()->isDictionary() )
         {
+            m_object->flattenDictionaryObject( *m_globalData );
         }
+    }
 
-        ~BatchedTransitionOptimizer()
-        {
-            if (m_object->structure()->isDictionary())
-                m_object->flattenDictionaryObject(*m_globalData);
-        }
-
-    private:
-        JSGlobalData* m_globalData;
-        JSObject* m_object;
-    };
+private:
+    JSGlobalData *m_globalData;
+    JSObject *m_object;
+};
 
 } // namespace JSC
 

@@ -39,7 +39,8 @@
 #include <wtf/text/CString.h>
 #include <wtf/text/StringHash.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class KURL;
 class ResourceError;
@@ -49,22 +50,23 @@ class ResourceRequest;
 class ResourceResponse;
 
 // BlobRegistryImpl is not thread-safe. It should only be called from main thread.
-class BlobRegistryImpl : public BlobRegistry {
+class BlobRegistryImpl : public BlobRegistry
+{
 public:
     virtual ~BlobRegistryImpl() { }
 
-    virtual void registerBlobURL(const KURL&, PassOwnPtr<BlobData>);
-    virtual void registerBlobURL(const KURL&, const KURL& srcURL);
-    virtual void unregisterBlobURL(const KURL&);
-    virtual PassRefPtr<ResourceHandle> createResourceHandle(const ResourceRequest&, ResourceHandleClient*);
-    virtual bool loadResourceSynchronously(const ResourceRequest&, ResourceError&, ResourceResponse&, Vector<char>& data);
+    virtual void registerBlobURL( const KURL &, PassOwnPtr<BlobData> );
+    virtual void registerBlobURL( const KURL &, const KURL &srcURL );
+    virtual void unregisterBlobURL( const KURL & );
+    virtual PassRefPtr<ResourceHandle> createResourceHandle( const ResourceRequest &, ResourceHandleClient * );
+    virtual bool loadResourceSynchronously( const ResourceRequest &, ResourceError &, ResourceResponse &, Vector<char> &data );
 
-    PassRefPtr<BlobStorageData> getBlobDataFromURL(const KURL&) const;
+    PassRefPtr<BlobStorageData> getBlobDataFromURL( const KURL & ) const;
 
 private:
-    bool shouldLoadResource(const ResourceRequest& request) const;
-    void appendStorageItems(BlobStorageData*, const BlobDataItemList&);
-    void appendStorageItems(BlobStorageData*, const BlobDataItemList&, long long offset, long long length);
+    bool shouldLoadResource( const ResourceRequest &request ) const;
+    void appendStorageItems( BlobStorageData *, const BlobDataItemList & );
+    void appendStorageItems( BlobStorageData *, const BlobDataItemList &, long long offset, long long length );
 
     HashMap<String, RefPtr<BlobStorageData> > m_blobs;
 };

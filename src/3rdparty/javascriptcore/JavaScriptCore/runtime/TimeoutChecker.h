@@ -31,46 +31,63 @@
 
 #include <wtf/Assertions.h>
 
-namespace JSC {
+namespace JSC
+{
 
-    class ExecState;
+class ExecState;
 
-    class TimeoutChecker {
-    public:
-        TimeoutChecker();
-        virtual ~TimeoutChecker();
+class TimeoutChecker
+{
+public:
+    TimeoutChecker();
+    virtual ~TimeoutChecker();
 
-        void setTimeoutInterval(unsigned timeoutInterval) { m_timeoutInterval = timeoutInterval; }
-        void setCheckInterval(unsigned checkInterval) { if (checkInterval) m_intervalBetweenChecks = checkInterval; }
-        
-        unsigned ticksUntilNextCheck() { return m_ticksUntilNextCheck; }
-        
-        void start()
+    void setTimeoutInterval( unsigned timeoutInterval )
+    {
+        m_timeoutInterval = timeoutInterval;
+    }
+    void setCheckInterval( unsigned checkInterval )
+    {
+        if ( checkInterval )
         {
-            if (!m_startCount)
-                reset();
-            ++m_startCount;
+            m_intervalBetweenChecks = checkInterval;
+        }
+    }
+
+    unsigned ticksUntilNextCheck()
+    {
+        return m_ticksUntilNextCheck;
+    }
+
+    void start()
+    {
+        if ( !m_startCount )
+        {
+            reset();
         }
 
-        void stop()
-        {
-            ASSERT(m_startCount);
-            --m_startCount;
-        }
+        ++m_startCount;
+    }
 
-        void reset();
-        void copyTimeoutValues(TimeoutChecker* other);
+    void stop()
+    {
+        ASSERT( m_startCount );
+        --m_startCount;
+    }
 
-        virtual bool didTimeOut(ExecState*);
+    void reset();
+    void copyTimeoutValues( TimeoutChecker *other );
 
-    private:
-        unsigned m_timeoutInterval;
-        unsigned m_timeAtLastCheck;
-        unsigned m_timeExecuting;
-        unsigned m_startCount;
-        unsigned m_ticksUntilNextCheck;
-        unsigned m_intervalBetweenChecks;
-    };
+    virtual bool didTimeOut( ExecState * );
+
+private:
+    unsigned m_timeoutInterval;
+    unsigned m_timeAtLastCheck;
+    unsigned m_timeExecuting;
+    unsigned m_startCount;
+    unsigned m_ticksUntilNextCheck;
+    unsigned m_intervalBetweenChecks;
+};
 
 } // namespace JSC
 

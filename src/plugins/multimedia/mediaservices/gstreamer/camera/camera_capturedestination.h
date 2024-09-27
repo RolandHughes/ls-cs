@@ -31,19 +31,19 @@ class CameraBinSession;
 
 class Q_MULTIMEDIA_EXPORT CameraBinCaptureDestination : public QCameraCaptureDestinationControl
 {
-   CS_OBJECT(CameraBinCaptureDestination)
+    CS_OBJECT( CameraBinCaptureDestination )
 
- public:
-   CameraBinCaptureDestination(CameraBinSession *session);
-   virtual ~CameraBinCaptureDestination();
+public:
+    CameraBinCaptureDestination( CameraBinSession *session );
+    virtual ~CameraBinCaptureDestination();
 
-   bool isCaptureDestinationSupported(QCameraImageCapture::CaptureDestinations destination) const override;
-   QCameraImageCapture::CaptureDestinations captureDestination() const override;
-   void setCaptureDestination(QCameraImageCapture::CaptureDestinations destination) override;
+    bool isCaptureDestinationSupported( QCameraImageCapture::CaptureDestinations destination ) const override;
+    QCameraImageCapture::CaptureDestinations captureDestination() const override;
+    void setCaptureDestination( QCameraImageCapture::CaptureDestinations destination ) override;
 
- private:
-   CameraBinSession *m_session;
-   QCameraImageCapture::CaptureDestinations m_destination;
+private:
+    CameraBinSession *m_session;
+    QCameraImageCapture::CaptureDestinations m_destination;
 };
 
 #endif

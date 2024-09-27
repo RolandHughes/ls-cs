@@ -32,26 +32,31 @@
 #include <JavaScriptCore/JSBase.h>
 #include <wtf/Forward.h>
 
-namespace WebCore {
+namespace WebCore
+{
 class ResourceError;
 class ResourceRequest;
 class ResourceResponse;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
 class APIObject;
 class WebPage;
 class WebFrame;
 
-class InjectedBundlePageResourceLoadClient : public APIClient<WKBundlePageResourceLoadClient> {
+class InjectedBundlePageResourceLoadClient : public APIClient<WKBundlePageResourceLoadClient>
+{
 public:
-    void didInitiateLoadForResource(WebPage*, WebFrame*, uint64_t identifier, const WebCore::ResourceRequest&, bool pageIsProvisionallyLoading);
-    void willSendRequestForFrame(WebPage*, WebFrame*, uint64_t identifier, WebCore::ResourceRequest&, const WebCore::ResourceResponse&);
-    void didReceiveResponseForResource(WebPage*, WebFrame*, uint64_t identifier, const WebCore::ResourceResponse&);
-    void didReceiveContentLengthForResource(WebPage*, WebFrame*, uint64_t identifier, uint64_t contentLength);
-    void didFinishLoadForResource(WebPage*, WebFrame*, uint64_t identifier);
-    void didFailLoadForResource(WebPage*, WebFrame*, uint64_t identifier, const WebCore::ResourceError&);
+    void didInitiateLoadForResource( WebPage *, WebFrame *, uint64_t identifier, const WebCore::ResourceRequest &,
+                                     bool pageIsProvisionallyLoading );
+    void willSendRequestForFrame( WebPage *, WebFrame *, uint64_t identifier, WebCore::ResourceRequest &,
+                                  const WebCore::ResourceResponse & );
+    void didReceiveResponseForResource( WebPage *, WebFrame *, uint64_t identifier, const WebCore::ResourceResponse & );
+    void didReceiveContentLengthForResource( WebPage *, WebFrame *, uint64_t identifier, uint64_t contentLength );
+    void didFinishLoadForResource( WebPage *, WebFrame *, uint64_t identifier );
+    void didFailLoadForResource( WebPage *, WebFrame *, uint64_t identifier, const WebCore::ResourceError & );
 };
 
 } // namespace WebKit

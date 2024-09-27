@@ -30,40 +30,78 @@
 #include <wtf/RefCounted.h>
 #include <wtf/PassRefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class StyleBoxData : public RefCounted<StyleBoxData> {
+class StyleBoxData : public RefCounted<StyleBoxData>
+{
 public:
-    static PassRefPtr<StyleBoxData> create() { return adoptRef(new StyleBoxData); }
-    PassRefPtr<StyleBoxData> copy() const { return adoptRef(new StyleBoxData(*this)); }
-
-    bool operator==(const StyleBoxData& o) const;
-    bool operator!=(const StyleBoxData& o) const
+    static PassRefPtr<StyleBoxData> create()
     {
-        return !(*this == o);
+        return adoptRef( new StyleBoxData );
+    }
+    PassRefPtr<StyleBoxData> copy() const
+    {
+        return adoptRef( new StyleBoxData( *this ) );
     }
 
-    Length width() const { return m_width; }
-    Length height() const { return m_height; }
-    
-    Length minWidth() const { return m_minWidth; }
-    Length minHeight() const { return m_minHeight; }
-    
-    Length maxWidth() const { return m_maxWidth; }
-    Length maxHeight() const { return m_maxHeight; }
-    
-    Length verticalAlign() const { return m_verticalAlign; }
-    
-    int zIndex() const { return m_zIndex; }
-    bool hasAutoZIndex() const { return m_hasAutoZIndex; }
-    
-    EBoxSizing boxSizing() const { return static_cast<EBoxSizing>(m_boxSizing); }
+    bool operator==( const StyleBoxData &o ) const;
+    bool operator!=( const StyleBoxData &o ) const
+    {
+        return !( *this == o );
+    }
+
+    Length width() const
+    {
+        return m_width;
+    }
+    Length height() const
+    {
+        return m_height;
+    }
+
+    Length minWidth() const
+    {
+        return m_minWidth;
+    }
+    Length minHeight() const
+    {
+        return m_minHeight;
+    }
+
+    Length maxWidth() const
+    {
+        return m_maxWidth;
+    }
+    Length maxHeight() const
+    {
+        return m_maxHeight;
+    }
+
+    Length verticalAlign() const
+    {
+        return m_verticalAlign;
+    }
+
+    int zIndex() const
+    {
+        return m_zIndex;
+    }
+    bool hasAutoZIndex() const
+    {
+        return m_hasAutoZIndex;
+    }
+
+    EBoxSizing boxSizing() const
+    {
+        return static_cast<EBoxSizing>( m_boxSizing );
+    }
 
 private:
     friend class RenderStyle;
 
     StyleBoxData();
-    StyleBoxData(const StyleBoxData&);
+    StyleBoxData( const StyleBoxData & );
 
     Length m_width;
     Length m_height;

@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 #ifndef RenderMathMLSquareRoot_h
 #define RenderMathMLSquareRoot_h
 
@@ -30,16 +30,18 @@
 
 #include "RenderMathMLBlock.h"
 
-namespace WebCore {
-    
-class RenderMathMLSquareRoot : public RenderMathMLBlock {
+namespace WebCore
+{
+
+class RenderMathMLSquareRoot : public RenderMathMLBlock
+{
 public:
-    RenderMathMLSquareRoot(Node* fraction);
-    virtual void paint(PaintInfo&, int tx, int ty);
+    RenderMathMLSquareRoot( Node *fraction );
+    virtual void paint( PaintInfo &, int tx, int ty );
 protected:
     virtual void layout();
 };
-    
+
 }
 
 #endif // ENABLE(MATHML)

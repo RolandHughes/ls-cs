@@ -35,8 +35,8 @@
 extern "C" {
 #endif
 
-WK_EXPORT CGImageRef WKIconDatabaseTryGetCGImageForURL(WKIconDatabaseRef iconDatabase, WKURLRef url, WKSize size);
-WK_EXPORT CFArrayRef WKIconDatabaseTryCopyCGImageArrayForURL(WKIconDatabaseRef iconDatabase, WKURLRef url);
+WK_EXPORT CGImageRef WKIconDatabaseTryGetCGImageForURL( WKIconDatabaseRef iconDatabase, WKURLRef url, WKSize size );
+WK_EXPORT CFArrayRef WKIconDatabaseTryCopyCGImageArrayForURL( WKIconDatabaseRef iconDatabase, WKURLRef url );
 
 #ifdef __cplusplus
 }

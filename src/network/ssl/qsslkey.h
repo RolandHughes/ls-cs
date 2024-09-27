@@ -38,56 +38,59 @@ class QSslKeyPrivate;
 
 class Q_NETWORK_EXPORT QSslKey
 {
- public:
-   QSslKey();
-   QSslKey(const QByteArray &encoded, QSsl::KeyAlgorithm algorithm, QSsl::EncodingFormat format = QSsl::Pem,
-           QSsl::KeyType type = QSsl::PrivateKey, const QByteArray &passPhrase = QByteArray());
+public:
+    QSslKey();
+    QSslKey( const QByteArray &encoded, QSsl::KeyAlgorithm algorithm, QSsl::EncodingFormat format = QSsl::Pem,
+             QSsl::KeyType type = QSsl::PrivateKey, const QByteArray &passPhrase = QByteArray() );
 
-   QSslKey(QIODevice *device, QSsl::KeyAlgorithm algorithm, QSsl::EncodingFormat format = QSsl::Pem,
-           QSsl::KeyType type = QSsl::PrivateKey, const QByteArray &passPhrase = QByteArray());
+    QSslKey( QIODevice *device, QSsl::KeyAlgorithm algorithm, QSsl::EncodingFormat format = QSsl::Pem,
+             QSsl::KeyType type = QSsl::PrivateKey, const QByteArray &passPhrase = QByteArray() );
 
-   explicit QSslKey(Qt::HANDLE handle, QSsl::KeyType type = QSsl::PrivateKey);
-   QSslKey(const QSslKey &other);
+    explicit QSslKey( Qt::HANDLE handle, QSsl::KeyType type = QSsl::PrivateKey );
+    QSslKey( const QSslKey &other );
 
-   ~QSslKey();
+    ~QSslKey();
 
-   QSslKey &operator=(QSslKey &&other) {
-      swap(other);
-      return *this;
-   }
+    QSslKey &operator=( QSslKey &&other )
+    {
+        swap( other );
+        return *this;
+    }
 
-   QSslKey &operator=(const QSslKey &other);
+    QSslKey &operator=( const QSslKey &other );
 
-   bool isNull() const;
-   void clear();
+    bool isNull() const;
+    void clear();
 
-   int length() const;
-   QSsl::KeyType type() const;
-   QSsl::KeyAlgorithm algorithm() const;
+    int length() const;
+    QSsl::KeyType type() const;
+    QSsl::KeyAlgorithm algorithm() const;
 
-   QByteArray toPem(const QByteArray &passPhrase = QByteArray()) const;
-   QByteArray toDer(const QByteArray &passPhrase = QByteArray()) const;
+    QByteArray toPem( const QByteArray &passPhrase = QByteArray() ) const;
+    QByteArray toDer( const QByteArray &passPhrase = QByteArray() ) const;
 
-   Qt::HANDLE handle() const;
+    Qt::HANDLE handle() const;
 
-   void swap(QSslKey &other) {
-      qSwap(d, other.d);
-   }
+    void swap( QSslKey &other )
+    {
+        qSwap( d, other.d );
+    }
 
-   bool operator==(const QSslKey &other) const;
+    bool operator==( const QSslKey &other ) const;
 
-   bool operator!=(const QSslKey &other) const {
-      return ! operator==(other);
-   }
+    bool operator!=( const QSslKey &other ) const
+    {
+        return ! operator==( other );
+    }
 
- private:
-   QExplicitlySharedDataPointer<QSslKeyPrivate> d;
+private:
+    QExplicitlySharedDataPointer<QSslKeyPrivate> d;
 
-   friend class QSslCertificate;
-   friend class QSslSocketBackendPrivate;
+    friend class QSslCertificate;
+    friend class QSslSocketBackendPrivate;
 };
 
-Q_NETWORK_EXPORT QDebug operator<<(QDebug debug, const QSslKey &key);
+Q_NETWORK_EXPORT QDebug operator<<( QDebug debug, const QSslKey &key );
 
 #endif
 

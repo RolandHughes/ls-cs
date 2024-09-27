@@ -45,7 +45,8 @@
 #include <wtf/MathExtras.h>
 #include <wtf/PassOwnPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 using namespace std;
@@ -53,57 +54,61 @@ using namespace std;
 static const double numberDefaultStep = 1.0;
 static const double numberStepScaleFactor = 1.0;
 
-PassOwnPtr<InputType> NumberInputType::create(HTMLInputElement* element)
+PassOwnPtr<InputType> NumberInputType::create( HTMLInputElement *element )
 {
-    return adoptPtr(new NumberInputType(element));
+    return adoptPtr( new NumberInputType( element ) );
 }
 
-const AtomicString& NumberInputType::formControlType() const
+const AtomicString &NumberInputType::formControlType() const
 {
     return InputTypeNames::number();
 }
 
 double NumberInputType::valueAsNumber() const
 {
-    return parseToDouble(element()->value(), numeric_limits<double>::quiet_NaN());
+    return parseToDouble( element()->value(), numeric_limits<double>::quiet_NaN() );
 }
 
-void NumberInputType::setValueAsNumber(double newValue, ExceptionCode& ec) const
+void NumberInputType::setValueAsNumber( double newValue, ExceptionCode &ec ) const
 {
-    if (newValue < -numeric_limits<float>::max()) {
+    if ( newValue < -numeric_limits<float>::max() )
+    {
         ec = INVALID_STATE_ERR;
         return;
     }
-    if (newValue > numeric_limits<float>::max()) {
+
+    if ( newValue > numeric_limits<float>::max() )
+    {
         ec = INVALID_STATE_ERR;
         return;
     }
-    element()->setValue(serialize(newValue));
+
+    element()->setValue( serialize( newValue ) );
 }
 
-bool NumberInputType::typeMismatchFor(const String& value) const
+bool NumberInputType::typeMismatchFor( const String &value ) const
 {
-    return !value.isEmpty() && !parseToDoubleForNumberType(value, 0);
+    return !value.isEmpty() && !parseToDoubleForNumberType( value, 0 );
 }
 
 bool NumberInputType::typeMismatch() const
 {
-    ASSERT(!typeMismatchFor(element()->value()));
+    ASSERT( !typeMismatchFor( element()->value() ) );
     return false;
 }
 
-bool NumberInputType::rangeUnderflow(const String& value) const
+bool NumberInputType::rangeUnderflow( const String &value ) const
 {
     const double nan = numeric_limits<double>::quiet_NaN();
-    double doubleValue = parseToDouble(value, nan);
-    return isfinite(doubleValue) && doubleValue < minimum();
+    double doubleValue = parseToDouble( value, nan );
+    return isfinite( doubleValue ) && doubleValue < minimum();
 }
 
-bool NumberInputType::rangeOverflow(const String& value) const
+bool NumberInputType::rangeOverflow( const String &value ) const
 {
     const double nan = numeric_limits<double>::quiet_NaN();
-    double doubleValue = parseToDouble(value, nan);
-    return isfinite(doubleValue) && doubleValue > maximum();
+    double doubleValue = parseToDouble( value, nan );
+    return isfinite( doubleValue ) && doubleValue > maximum();
 }
 
 bool NumberInputType::supportsRangeLimitation() const
@@ -113,12 +118,12 @@ bool NumberInputType::supportsRangeLimitation() const
 
 double NumberInputType::minimum() const
 {
-    return parseToDouble(element()->fastGetAttribute(minAttr), -numeric_limits<float>::max());
+    return parseToDouble( element()->fastGetAttribute( minAttr ), -numeric_limits<float>::max() );
 }
 
 double NumberInputType::maximum() const
 {
-    return parseToDouble(element()->fastGetAttribute(maxAttr), numeric_limits<float>::max());
+    return parseToDouble( element()->fastGetAttribute( maxAttr ), numeric_limits<float>::max() );
 }
 
 bool NumberInputType::isSteppable() const
@@ -126,37 +131,48 @@ bool NumberInputType::isSteppable() const
     return true;
 }
 
-bool NumberInputType::stepMismatch(const String& value, double step) const
+bool NumberInputType::stepMismatch( const String &value, double step ) const
 {
     double doubleValue;
-    if (!parseToDoubleForNumberType(value, &doubleValue))
+
+    if ( !parseToDoubleForNumberType( value, &doubleValue ) )
+    {
         return false;
-    doubleValue = fabs(doubleValue - stepBase());
-    if (std::isinf(doubleValue))
+    }
+
+    doubleValue = fabs( doubleValue - stepBase() );
+
+    if ( std::isinf( doubleValue ) )
+    {
         return false;
+    }
+
     // double's fractional part size is DBL_MAN_DIG-bit. If the current value
     // is greater than step*2^DBL_MANT_DIG, the following computation for
     // remainder makes no sense.
-    if (doubleValue / pow(2.0, DBL_MANT_DIG) > step)
+    if ( doubleValue / pow( 2.0, DBL_MANT_DIG ) > step )
+    {
         return false;
+    }
+
     // The computation follows HTML5 4.10.7.2.10 `The step attribute' :
     // ... that number subtracted from the step base is not an integral multiple
     // of the allowed value step, the element is suffering from a step mismatch.
-    double remainder = fabs(doubleValue - step * round(doubleValue / step));
+    double remainder = fabs( doubleValue - step * round( doubleValue / step ) );
     // Accepts erros in lower fractional part which IEEE 754 single-precision
     // can't represent.
-    double computedAcceptableError = acceptableError(step);
-    return computedAcceptableError < remainder && remainder < (step - computedAcceptableError);
+    double computedAcceptableError = acceptableError( step );
+    return computedAcceptableError < remainder && remainder < ( step - computedAcceptableError );
 }
 
 double NumberInputType::stepBase() const
 {
-    return parseToDouble(element()->fastGetAttribute(minAttr), defaultStepBase());
+    return parseToDouble( element()->fastGetAttribute( minAttr ), defaultStepBase() );
 }
 
-double NumberInputType::stepBaseWithDecimalPlaces(unsigned* decimalPlaces) const
+double NumberInputType::stepBaseWithDecimalPlaces( unsigned *decimalPlaces ) const
 {
-    return parseToDoubleWithDecimalPlaces(element()->fastGetAttribute(minAttr), defaultStepBase(), decimalPlaces);
+    return parseToDoubleWithDecimalPlaces( element()->fastGetAttribute( minAttr ), defaultStepBase(), decimalPlaces );
 }
 
 double NumberInputType::defaultStep() const
@@ -169,94 +185,121 @@ double NumberInputType::stepScaleFactor() const
     return numberStepScaleFactor;
 }
 
-void NumberInputType::handleKeydownEvent(KeyboardEvent* event)
+void NumberInputType::handleKeydownEvent( KeyboardEvent *event )
 {
-    handleKeydownEventForSpinButton(event);
-    if (!event->defaultHandled())
-        TextFieldInputType::handleKeydownEvent(event);
+    handleKeydownEventForSpinButton( event );
+
+    if ( !event->defaultHandled() )
+    {
+        TextFieldInputType::handleKeydownEvent( event );
+    }
 }
 
-void NumberInputType::handleWheelEvent(WheelEvent* event)
+void NumberInputType::handleWheelEvent( WheelEvent *event )
 {
-    handleWheelEventForSpinButton(event);
+    handleWheelEventForSpinButton( event );
 }
 
-double NumberInputType::parseToDouble(const String& src, double defaultValue) const
+double NumberInputType::parseToDouble( const String &src, double defaultValue ) const
 {
     double numberValue;
-    if (!parseToDoubleForNumberType(src, &numberValue))
+
+    if ( !parseToDoubleForNumberType( src, &numberValue ) )
+    {
         return defaultValue;
-    ASSERT(isfinite(numberValue));
+    }
+
+    ASSERT( isfinite( numberValue ) );
     return numberValue;
 }
 
-double NumberInputType::parseToDoubleWithDecimalPlaces(const String& src, double defaultValue, unsigned *decimalPlaces) const
+double NumberInputType::parseToDoubleWithDecimalPlaces( const String &src, double defaultValue, unsigned *decimalPlaces ) const
 {
     double numberValue;
-    if (!parseToDoubleForNumberTypeWithDecimalPlaces(src, &numberValue, decimalPlaces))
+
+    if ( !parseToDoubleForNumberTypeWithDecimalPlaces( src, &numberValue, decimalPlaces ) )
+    {
         return defaultValue;
-    ASSERT(isfinite(numberValue));
+    }
+
+    ASSERT( isfinite( numberValue ) );
     return numberValue;
 }
 
-String NumberInputType::serialize(double value) const
+String NumberInputType::serialize( double value ) const
 {
-    if (!isfinite(value))
+    if ( !isfinite( value ) )
+    {
         return String();
-    return serializeForNumberType(value);
+    }
+
+    return serializeForNumberType( value );
 }
 
-double NumberInputType::acceptableError(double step) const
+double NumberInputType::acceptableError( double step ) const
 {
-    return step / pow(2.0, FLT_MANT_DIG);
+    return step / pow( 2.0, FLT_MANT_DIG );
 }
 
 void NumberInputType::handleBlurEvent()
 {
     // Reset the renderer value, which might be unmatched with the element value.
-    element()->setFormControlValueMatchesRenderer(false);
+    element()->setFormControlValueMatchesRenderer( false );
 
     // We need to reset the renderer value explicitly because an unacceptable
     // renderer value should be purged before style calculation.
-    if (element()->renderer())
+    if ( element()->renderer() )
+    {
         element()->renderer()->updateFromElement();
+    }
 }
 
 String NumberInputType::visibleValue() const
 {
     String currentValue = element()->value();
-    if (currentValue.isEmpty())
+
+    if ( currentValue.isEmpty() )
+    {
         return currentValue;
+    }
+
     double doubleValue = numeric_limits<double>::quiet_NaN();
     unsigned decimalPlace;
-    parseToDoubleForNumberTypeWithDecimalPlaces(currentValue, &doubleValue, &decimalPlace);
-    String localized = formatLocalizedNumber(doubleValue, decimalPlace);
+    parseToDoubleForNumberTypeWithDecimalPlaces( currentValue, &doubleValue, &decimalPlace );
+    String localized = formatLocalizedNumber( doubleValue, decimalPlace );
     return localized.isEmpty() ? currentValue : localized;
 }
 
-String NumberInputType::convertFromVisibleValue(const String& visibleValue) const
+String NumberInputType::convertFromVisibleValue( const String &visibleValue ) const
 {
-    if (visibleValue.isEmpty())
+    if ( visibleValue.isEmpty() )
+    {
         return visibleValue;
-    double parsedNumber = parseLocalizedNumber(visibleValue);
-    return isfinite(parsedNumber) ? serializeForNumberType(parsedNumber) : visibleValue;
+    }
+
+    double parsedNumber = parseLocalizedNumber( visibleValue );
+    return isfinite( parsedNumber ) ? serializeForNumberType( parsedNumber ) : visibleValue;
 }
 
-bool NumberInputType::isAcceptableValue(const String& proposedValue)
+bool NumberInputType::isAcceptableValue( const String &proposedValue )
 {
-    return proposedValue.isEmpty() || isfinite(parseLocalizedNumber(proposedValue)) || parseToDoubleForNumberType(proposedValue, 0);
+    return proposedValue.isEmpty() || isfinite( parseLocalizedNumber( proposedValue ) )
+           || parseToDoubleForNumberType( proposedValue, 0 );
 }
 
-String NumberInputType::sanitizeValue(const String& proposedValue)
+String NumberInputType::sanitizeValue( const String &proposedValue )
 {
-    if (proposedValue.isEmpty())
+    if ( proposedValue.isEmpty() )
+    {
         return proposedValue;
-    return parseToDoubleForNumberType(proposedValue, 0) ? proposedValue : emptyAtom.string();
+    }
+
+    return parseToDoubleForNumberType( proposedValue, 0 ) ? proposedValue : emptyAtom.string();
 }
 
 bool NumberInputType::hasUnacceptableValue()
 {
-    return element()->renderer() && !isAcceptableValue(toRenderTextControl(element()->renderer())->text());
+    return element()->renderer() && !isAcceptableValue( toRenderTextControl( element()->renderer() )->text() );
 }
 
 bool NumberInputType::shouldRespectSpeechAttribute()

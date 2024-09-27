@@ -23,34 +23,36 @@
 
 #include <qinputdevicemanager_p.h>
 
-QInputDeviceManager::QInputDeviceManager(QObject *parent)
-   : QObject(parent), d_ptr(new QInputDeviceManagerPrivate)
+QInputDeviceManager::QInputDeviceManager( QObject *parent )
+    : QObject( parent ), d_ptr( new QInputDeviceManagerPrivate )
 {
-   d_ptr->q_ptr = this;
+    d_ptr->q_ptr = this;
 }
 
-int QInputDeviceManager::deviceCount(DeviceType type) const
+int QInputDeviceManager::deviceCount( DeviceType type ) const
 {
-   Q_D(const QInputDeviceManager);
-   return d->deviceCount(type);
+    Q_D( const QInputDeviceManager );
+    return d->deviceCount( type );
 }
 
-int QInputDeviceManagerPrivate::deviceCount(QInputDeviceManager::DeviceType type) const
+int QInputDeviceManagerPrivate::deviceCount( QInputDeviceManager::DeviceType type ) const
 {
-   return m_deviceCount.value(type);
+    return m_deviceCount.value( type );
 }
 
-void QInputDeviceManagerPrivate::setDeviceCount(QInputDeviceManager::DeviceType type, int count)
+void QInputDeviceManagerPrivate::setDeviceCount( QInputDeviceManager::DeviceType type, int count )
 {
-   Q_Q(QInputDeviceManager);
-   if (m_deviceCount.value(type) != count) {
-      m_deviceCount[type] = count;
-      emit q->deviceListChanged(type);
-   }
+    Q_Q( QInputDeviceManager );
+
+    if ( m_deviceCount.value( type ) != count )
+    {
+        m_deviceCount[type] = count;
+        emit q->deviceListChanged( type );
+    }
 }
 
-void QInputDeviceManager::setCursorPos(const QPoint &pos)
+void QInputDeviceManager::setCursorPos( const QPoint &pos )
 {
-   emit cursorPositionChangeRequested(pos);
+    emit cursorPositionChangeRequested( pos );
 }
 

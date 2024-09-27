@@ -28,18 +28,23 @@
 #include "HTMLParserIdioms.h"
 #include <wtf/text/StringBuilder.h>
 
-namespace WebCore {
-
-bool DOMTokenList::validateToken(const AtomicString& token, ExceptionCode& ec)
+namespace WebCore
 {
-    if (token.isEmpty()) {
+
+bool DOMTokenList::validateToken( const AtomicString &token, ExceptionCode &ec )
+{
+    if ( token.isEmpty() )
+    {
         ec = SYNTAX_ERR;
         return false;
     }
 
     unsigned length = token.length();
-    for (unsigned i = 0; i < length; ++i) {
-        if (isHTMLSpace(token[i])) {
+
+    for ( unsigned i = 0; i < length; ++i )
+    {
+        if ( isHTMLSpace( token[i] ) )
+        {
             ec = INVALID_CHARACTER_ERR;
             return false;
         }
@@ -48,61 +53,84 @@ bool DOMTokenList::validateToken(const AtomicString& token, ExceptionCode& ec)
     return true;
 }
 
-String DOMTokenList::addToken(const AtomicString& input, const AtomicString& token)
+String DOMTokenList::addToken( const AtomicString &input, const AtomicString &token )
 {
-    if (input.isEmpty())
+    if ( input.isEmpty() )
+    {
         return token;
+    }
 
     StringBuilder builder;
-    builder.append(input);
-    if (input[input.length()-1] != ' ')
-        builder.append(' ');
-    builder.append(token);
+    builder.append( input );
+
+    if ( input[input.length()-1] != ' ' )
+    {
+        builder.append( ' ' );
+    }
+
+    builder.append( token );
     return builder.toString();
 }
 
-String DOMTokenList::removeToken(const AtomicString& input, const AtomicString& token)
+String DOMTokenList::removeToken( const AtomicString &input, const AtomicString &token )
 {
     // Algorithm defined at http://www.whatwg.org/specs/web-apps/current-work/multipage/common-microsyntaxes.html#remove-a-token-from-a-string
 
     unsigned inputLength = input.length();
     Vector<UChar> output; // 3
-    output.reserveCapacity(inputLength);
+    output.reserveCapacity( inputLength );
     unsigned position = 0; // 4
 
     // Step 5
-    while (position < inputLength) {
-        if (isHTMLSpace(input[position])) { // 6
-            output.append(input[position++]); // 6.1, 6.2
+    while ( position < inputLength )
+    {
+        if ( isHTMLSpace( input[position] ) ) // 6
+        {
+            output.append( input[position++] ); // 6.1, 6.2
             continue; // 6.3
         }
 
         // Step 7
         Vector<UChar> s;
-        while (position < inputLength && isNotHTMLSpace(input[position]))
-            s.append(input[position++]);
+
+        while ( position < inputLength && isNotHTMLSpace( input[position] ) )
+        {
+            s.append( input[position++] );
+        }
 
         // Step 8
-        if (s == token) {
+        if ( s == token )
+        {
             // Step 8.1
-            while (position < inputLength && isHTMLSpace(input[position]))
+            while ( position < inputLength && isHTMLSpace( input[position] ) )
+            {
                 ++position;
+            }
 
             // Step 8.2
             size_t j = output.size();
-            while (j > 0 && isHTMLSpace(output[j - 1]))
+
+            while ( j > 0 && isHTMLSpace( output[j - 1] ) )
+            {
                 --j;
-            output.resize(j);
+            }
+
+            output.resize( j );
 
             // Step 8.3
-            if (position < inputLength && !output.isEmpty())
-                output.append(' ');
-        } else
-            output.append(s); // Step 9
+            if ( position < inputLength && !output.isEmpty() )
+            {
+                output.append( ' ' );
+            }
+        }
+        else
+        {
+            output.append( s );    // Step 9
+        }
     }
 
     output.shrinkToFit();
-    return String::adopt(output);
+    return String::adopt( output );
 }
 
 } // namespace WebCore

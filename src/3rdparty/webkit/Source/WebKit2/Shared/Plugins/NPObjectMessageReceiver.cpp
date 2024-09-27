@@ -33,27 +33,30 @@
 #include "NPRuntimeUtilities.h"
 #include "NPVariantData.h"
 
-namespace WebKit {
-
-PassOwnPtr<NPObjectMessageReceiver> NPObjectMessageReceiver::create(NPRemoteObjectMap* npRemoteObjectMap, Plugin* plugin, uint64_t npObjectID, NPObject* npObject)
+namespace WebKit
 {
-    return adoptPtr(new NPObjectMessageReceiver(npRemoteObjectMap, plugin, npObjectID, npObject));
+
+PassOwnPtr<NPObjectMessageReceiver> NPObjectMessageReceiver::create( NPRemoteObjectMap *npRemoteObjectMap, Plugin *plugin,
+        uint64_t npObjectID, NPObject *npObject )
+{
+    return adoptPtr( new NPObjectMessageReceiver( npRemoteObjectMap, plugin, npObjectID, npObject ) );
 }
 
-NPObjectMessageReceiver::NPObjectMessageReceiver(NPRemoteObjectMap* npRemoteObjectMap, Plugin* plugin, uint64_t npObjectID, NPObject* npObject)
-    : m_npRemoteObjectMap(npRemoteObjectMap)
-    , m_plugin(plugin)
-    , m_npObjectID(npObjectID)
-    , m_npObject(npObject)
+NPObjectMessageReceiver::NPObjectMessageReceiver( NPRemoteObjectMap *npRemoteObjectMap, Plugin *plugin, uint64_t npObjectID,
+        NPObject *npObject )
+    : m_npRemoteObjectMap( npRemoteObjectMap )
+    , m_plugin( plugin )
+    , m_npObjectID( npObjectID )
+    , m_npObject( npObject )
 {
-    retainNPObject(m_npObject);
+    retainNPObject( m_npObject );
 }
 
 NPObjectMessageReceiver::~NPObjectMessageReceiver()
 {
-    m_npRemoteObjectMap->unregisterNPObject(m_npObjectID);
+    m_npRemoteObjectMap->unregisterNPObject( m_npObjectID );
 
-    releaseNPObject(m_npObject);
+    releaseNPObject( m_npObject );
 }
 
 void NPObjectMessageReceiver::deallocate()
@@ -61,173 +64,217 @@ void NPObjectMessageReceiver::deallocate()
     delete this;
 }
 
-void NPObjectMessageReceiver::hasMethod(const NPIdentifierData& methodNameData, bool& returnValue)
+void NPObjectMessageReceiver::hasMethod( const NPIdentifierData &methodNameData, bool &returnValue )
 {
-    if (!m_npObject->_class->hasMethod) {
+    if ( !m_npObject->_class->hasMethod )
+    {
         returnValue = false;
         return;
     }
-    
-    returnValue = m_npObject->_class->hasMethod(m_npObject, methodNameData.createNPIdentifier());
+
+    returnValue = m_npObject->_class->hasMethod( m_npObject, methodNameData.createNPIdentifier() );
 }
 
-void NPObjectMessageReceiver::invoke(const NPIdentifierData& methodNameData, const Vector<NPVariantData>& argumentsData, bool& returnValue, NPVariantData& resultData)
+void NPObjectMessageReceiver::invoke( const NPIdentifierData &methodNameData, const Vector<NPVariantData> &argumentsData,
+                                      bool &returnValue, NPVariantData &resultData )
 {
-    if (!m_npObject->_class->invoke) {
+    if ( !m_npObject->_class->invoke )
+    {
         returnValue = false;
         return;
     }
 
     Vector<NPVariant> arguments;
-    for (size_t i = 0; i < argumentsData.size(); ++i)
-        arguments.append(m_npRemoteObjectMap->npVariantDataToNPVariant(argumentsData[i], m_plugin));
+
+    for ( size_t i = 0; i < argumentsData.size(); ++i )
+    {
+        arguments.append( m_npRemoteObjectMap->npVariantDataToNPVariant( argumentsData[i], m_plugin ) );
+    }
 
     NPVariant result;
-    VOID_TO_NPVARIANT(result);
+    VOID_TO_NPVARIANT( result );
 
-    returnValue = m_npObject->_class->invoke(m_npObject, methodNameData.createNPIdentifier(), arguments.data(), arguments.size(), &result);
-    if (returnValue) {
+    returnValue = m_npObject->_class->invoke( m_npObject, methodNameData.createNPIdentifier(), arguments.data(), arguments.size(),
+                  &result );
+
+    if ( returnValue )
+    {
         // Convert the NPVariant to an NPVariantData.
-        resultData = m_npRemoteObjectMap->npVariantToNPVariantData(result, m_plugin);
+        resultData = m_npRemoteObjectMap->npVariantToNPVariantData( result, m_plugin );
     }
 
     // Release all arguments.
-    for (size_t i = 0; i < argumentsData.size(); ++i)
-        releaseNPVariantValue(&arguments[i]);
-    
+    for ( size_t i = 0; i < argumentsData.size(); ++i )
+    {
+        releaseNPVariantValue( &arguments[i] );
+    }
+
     // And release the result.
-    releaseNPVariantValue(&result);
+    releaseNPVariantValue( &result );
 }
 
-void NPObjectMessageReceiver::invokeDefault(const Vector<NPVariantData>& argumentsData, bool& returnValue, NPVariantData& resultData)
+void NPObjectMessageReceiver::invokeDefault( const Vector<NPVariantData> &argumentsData, bool &returnValue,
+        NPVariantData &resultData )
 {
-    if (!m_npObject->_class->invokeDefault) {
+    if ( !m_npObject->_class->invokeDefault )
+    {
         returnValue = false;
         return;
     }
 
     Vector<NPVariant> arguments;
-    for (size_t i = 0; i < argumentsData.size(); ++i)
-        arguments.append(m_npRemoteObjectMap->npVariantDataToNPVariant(argumentsData[i], m_plugin));
+
+    for ( size_t i = 0; i < argumentsData.size(); ++i )
+    {
+        arguments.append( m_npRemoteObjectMap->npVariantDataToNPVariant( argumentsData[i], m_plugin ) );
+    }
 
     NPVariant result;
-    VOID_TO_NPVARIANT(result);
+    VOID_TO_NPVARIANT( result );
 
-    returnValue = m_npObject->_class->invokeDefault(m_npObject, arguments.data(), arguments.size(), &result);
-    if (returnValue) {
+    returnValue = m_npObject->_class->invokeDefault( m_npObject, arguments.data(), arguments.size(), &result );
+
+    if ( returnValue )
+    {
         // Convert the NPVariant to an NPVariantData.
-        resultData = m_npRemoteObjectMap->npVariantToNPVariantData(result, m_plugin);
+        resultData = m_npRemoteObjectMap->npVariantToNPVariantData( result, m_plugin );
     }
 
     // Release all arguments.
-    for (size_t i = 0; i < argumentsData.size(); ++i)
-        releaseNPVariantValue(&arguments[i]);
-    
+    for ( size_t i = 0; i < argumentsData.size(); ++i )
+    {
+        releaseNPVariantValue( &arguments[i] );
+    }
+
     // And release the result.
-    releaseNPVariantValue(&result);
+    releaseNPVariantValue( &result );
 }
 
-void NPObjectMessageReceiver::hasProperty(const NPIdentifierData& propertyNameData, bool& returnValue)
+void NPObjectMessageReceiver::hasProperty( const NPIdentifierData &propertyNameData, bool &returnValue )
 {
-    if (!m_npObject->_class->hasProperty) {
+    if ( !m_npObject->_class->hasProperty )
+    {
         returnValue = false;
         return;
     }
 
-    returnValue = m_npObject->_class->hasProperty(m_npObject, propertyNameData.createNPIdentifier());
+    returnValue = m_npObject->_class->hasProperty( m_npObject, propertyNameData.createNPIdentifier() );
 }
 
-void NPObjectMessageReceiver::getProperty(const NPIdentifierData& propertyNameData, bool& returnValue, NPVariantData& resultData)
+void NPObjectMessageReceiver::getProperty( const NPIdentifierData &propertyNameData, bool &returnValue,
+        NPVariantData &resultData )
 {
-    if (!m_npObject->_class->getProperty) {
+    if ( !m_npObject->_class->getProperty )
+    {
         returnValue = false;
         return;
     }
 
     NPVariant result;
-    returnValue = m_npObject->_class->getProperty(m_npObject, propertyNameData.createNPIdentifier(), &result);
-    if (!returnValue)
+    returnValue = m_npObject->_class->getProperty( m_npObject, propertyNameData.createNPIdentifier(), &result );
+
+    if ( !returnValue )
+    {
         return;
+    }
 
     // Convert the NPVariant to an NPVariantData.
-    resultData = m_npRemoteObjectMap->npVariantToNPVariantData(result, m_plugin);
+    resultData = m_npRemoteObjectMap->npVariantToNPVariantData( result, m_plugin );
 
     // And release the result.
-    releaseNPVariantValue(&result);
+    releaseNPVariantValue( &result );
 }
 
-void NPObjectMessageReceiver::setProperty(const NPIdentifierData& propertyNameData, const NPVariantData& propertyValueData, bool& returnValue)
+void NPObjectMessageReceiver::setProperty( const NPIdentifierData &propertyNameData, const NPVariantData &propertyValueData,
+        bool &returnValue )
 {
-    if (!m_npObject->_class->setProperty) {
+    if ( !m_npObject->_class->setProperty )
+    {
         returnValue = false;
         return;
     }
 
-    NPVariant propertyValue = m_npRemoteObjectMap->npVariantDataToNPVariant(propertyValueData, m_plugin);
+    NPVariant propertyValue = m_npRemoteObjectMap->npVariantDataToNPVariant( propertyValueData, m_plugin );
 
     // Set the property.
-    returnValue = m_npObject->_class->setProperty(m_npObject, propertyNameData.createNPIdentifier(), &propertyValue);
+    returnValue = m_npObject->_class->setProperty( m_npObject, propertyNameData.createNPIdentifier(), &propertyValue );
 
     // And release the value.
-    releaseNPVariantValue(&propertyValue);
+    releaseNPVariantValue( &propertyValue );
 }
 
-void NPObjectMessageReceiver::removeProperty(const NPIdentifierData& propertyNameData, bool& returnValue)
+void NPObjectMessageReceiver::removeProperty( const NPIdentifierData &propertyNameData, bool &returnValue )
 {
-    if (!m_npObject->_class->removeProperty) {
+    if ( !m_npObject->_class->removeProperty )
+    {
         returnValue = false;
         return;
     }
 
-    returnValue = m_npObject->_class->removeProperty(m_npObject, propertyNameData.createNPIdentifier());
+    returnValue = m_npObject->_class->removeProperty( m_npObject, propertyNameData.createNPIdentifier() );
 }
 
-void NPObjectMessageReceiver::enumerate(bool& returnValue, Vector<NPIdentifierData>& identifiersData)
+void NPObjectMessageReceiver::enumerate( bool &returnValue, Vector<NPIdentifierData> &identifiersData )
 {
-    if (!NP_CLASS_STRUCT_VERSION_HAS_ENUM(m_npObject->_class) || !m_npObject->_class->enumerate) {
+    if ( !NP_CLASS_STRUCT_VERSION_HAS_ENUM( m_npObject->_class ) || !m_npObject->_class->enumerate )
+    {
         returnValue = false;
         return;
     }
 
-    NPIdentifier* identifiers = 0;
+    NPIdentifier *identifiers = 0;
     uint32_t identifierCount = 0;
 
-    returnValue = m_npObject->_class->enumerate(m_npObject, &identifiers, &identifierCount);
-    if (!returnValue)
+    returnValue = m_npObject->_class->enumerate( m_npObject, &identifiers, &identifierCount );
+
+    if ( !returnValue )
+    {
         return;
+    }
 
-    for (uint32_t i = 0; i < identifierCount; ++i)
-        identifiersData.append(NPIdentifierData::fromNPIdentifier(identifiers[i]));
+    for ( uint32_t i = 0; i < identifierCount; ++i )
+    {
+        identifiersData.append( NPIdentifierData::fromNPIdentifier( identifiers[i] ) );
+    }
 
-    npnMemFree(identifiers);
+    npnMemFree( identifiers );
 }
 
-void NPObjectMessageReceiver::construct(const Vector<NPVariantData>& argumentsData, bool& returnValue, NPVariantData& resultData)
+void NPObjectMessageReceiver::construct( const Vector<NPVariantData> &argumentsData, bool &returnValue,
+        NPVariantData &resultData )
 {
-    if (!NP_CLASS_STRUCT_VERSION_HAS_CTOR(m_npObject->_class) || !m_npObject->_class->construct) {
+    if ( !NP_CLASS_STRUCT_VERSION_HAS_CTOR( m_npObject->_class ) || !m_npObject->_class->construct )
+    {
         returnValue = false;
         return;
     }
 
     Vector<NPVariant> arguments;
-    for (size_t i = 0; i < argumentsData.size(); ++i)
-        arguments.append(m_npRemoteObjectMap->npVariantDataToNPVariant(argumentsData[i], m_plugin));
+
+    for ( size_t i = 0; i < argumentsData.size(); ++i )
+    {
+        arguments.append( m_npRemoteObjectMap->npVariantDataToNPVariant( argumentsData[i], m_plugin ) );
+    }
 
     NPVariant result;
-    VOID_TO_NPVARIANT(result);
+    VOID_TO_NPVARIANT( result );
 
-    returnValue = m_npObject->_class->construct(m_npObject, arguments.data(), arguments.size(), &result);
-    if (returnValue) {
+    returnValue = m_npObject->_class->construct( m_npObject, arguments.data(), arguments.size(), &result );
+
+    if ( returnValue )
+    {
         // Convert the NPVariant to an NPVariantData.
-        resultData = m_npRemoteObjectMap->npVariantToNPVariantData(result, m_plugin);
+        resultData = m_npRemoteObjectMap->npVariantToNPVariantData( result, m_plugin );
     }
 
     // Release all arguments.
-    for (size_t i = 0; i < argumentsData.size(); ++i)
-        releaseNPVariantValue(&arguments[i]);
-    
+    for ( size_t i = 0; i < argumentsData.size(); ++i )
+    {
+        releaseNPVariantValue( &arguments[i] );
+    }
+
     // And release the result.
-    releaseNPVariantValue(&result);
+    releaseNPVariantValue( &result );
 }
 
 } // namespace WebKit

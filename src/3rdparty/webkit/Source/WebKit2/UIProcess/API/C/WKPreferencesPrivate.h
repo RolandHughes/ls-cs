@@ -32,7 +32,8 @@
 extern "C" {
 #endif
 
-enum WKFontSmoothingLevel {
+enum WKFontSmoothingLevel
+{
     kWKFontSmoothingLevelNoSubpixelAntiAliasing = 0,
     kWKFontSmoothingLevelLight = 1,
     kWKFontSmoothingLevelMedium = 2,
@@ -43,7 +44,8 @@ enum WKFontSmoothingLevel {
 };
 typedef enum WKFontSmoothingLevel WKFontSmoothingLevel;
 
-enum WKEditableLinkBehavior {
+enum WKEditableLinkBehavior
+{
     kWKEditableLinkBehaviorDefault,
     kWKEditableLinkBehaviorAlwaysLive,
     kWKEditableLinkBehaviorOnlyLiveWithShiftKey,
@@ -53,80 +55,80 @@ enum WKEditableLinkBehavior {
 typedef enum WKEditableLinkBehavior WKEditableLinkBehavior;
 
 // Defaults to kWKFontSmoothingLevelMedium.
-WK_EXPORT void WKPreferencesSetFontSmoothingLevel(WKPreferencesRef, WKFontSmoothingLevel);
-WK_EXPORT WKFontSmoothingLevel WKPreferencesGetFontSmoothingLevel(WKPreferencesRef);
+WK_EXPORT void WKPreferencesSetFontSmoothingLevel( WKPreferencesRef, WKFontSmoothingLevel );
+WK_EXPORT WKFontSmoothingLevel WKPreferencesGetFontSmoothingLevel( WKPreferencesRef );
 
 // Defaults to EditableLinkNeverLive.
-WK_EXPORT void WKPreferencesSetEditableLinkBehavior(WKPreferencesRef preferencesRef, WKEditableLinkBehavior);
-WK_EXPORT WKEditableLinkBehavior WKPreferencesGetEditableLinkBehavior(WKPreferencesRef preferencesRef);   
-    
+WK_EXPORT void WKPreferencesSetEditableLinkBehavior( WKPreferencesRef preferencesRef, WKEditableLinkBehavior );
+WK_EXPORT WKEditableLinkBehavior WKPreferencesGetEditableLinkBehavior( WKPreferencesRef preferencesRef );
+
 // Defaults to false.
-WK_EXPORT void WKPreferencesSetAcceleratedDrawingEnabled(WKPreferencesRef, bool);
-WK_EXPORT bool WKPreferencesGetAcceleratedDrawingEnabled(WKPreferencesRef);
+WK_EXPORT void WKPreferencesSetAcceleratedDrawingEnabled( WKPreferencesRef, bool );
+WK_EXPORT bool WKPreferencesGetAcceleratedDrawingEnabled( WKPreferencesRef );
 
 // Defaults to true.
-WK_EXPORT void WKPreferencesSetCanvasUsesAcceleratedDrawing(WKPreferencesRef, bool);
-WK_EXPORT bool WKPreferencesGetCanvasUsesAcceleratedDrawing(WKPreferencesRef);
+WK_EXPORT void WKPreferencesSetCanvasUsesAcceleratedDrawing( WKPreferencesRef, bool );
+WK_EXPORT bool WKPreferencesGetCanvasUsesAcceleratedDrawing( WKPreferencesRef );
 
 // Defaults to true.
-WK_EXPORT void WKPreferencesSetAcceleratedCompositingEnabled(WKPreferencesRef, bool);
-WK_EXPORT bool WKPreferencesGetAcceleratedCompositingEnabled(WKPreferencesRef);
+WK_EXPORT void WKPreferencesSetAcceleratedCompositingEnabled( WKPreferencesRef, bool );
+WK_EXPORT bool WKPreferencesGetAcceleratedCompositingEnabled( WKPreferencesRef );
 
 // Defaults to false.
-WK_EXPORT void WKPreferencesSetCompositingBordersVisible(WKPreferencesRef, bool);
-WK_EXPORT bool WKPreferencesGetCompositingBordersVisible(WKPreferencesRef);
+WK_EXPORT void WKPreferencesSetCompositingBordersVisible( WKPreferencesRef, bool );
+WK_EXPORT bool WKPreferencesGetCompositingBordersVisible( WKPreferencesRef );
 
 // Defaults to false.
-WK_EXPORT void WKPreferencesSetCompositingRepaintCountersVisible(WKPreferencesRef, bool);
-WK_EXPORT bool WKPreferencesGetCompositingRepaintCountersVisible(WKPreferencesRef);
+WK_EXPORT void WKPreferencesSetCompositingRepaintCountersVisible( WKPreferencesRef, bool );
+WK_EXPORT bool WKPreferencesGetCompositingRepaintCountersVisible( WKPreferencesRef );
 
 // Defaults to false.
-WK_EXPORT void WKPreferencesSetWebGLEnabled(WKPreferencesRef, bool);
-WK_EXPORT bool WKPreferencesGetWebGLEnabled(WKPreferencesRef);
+WK_EXPORT void WKPreferencesSetWebGLEnabled( WKPreferencesRef, bool );
+WK_EXPORT bool WKPreferencesGetWebGLEnabled( WKPreferencesRef );
 
 // Defaults to false.
-WK_EXPORT void WKPreferencesSetNeedsSiteSpecificQuirks(WKPreferencesRef, bool);
-WK_EXPORT bool WKPreferencesGetNeedsSiteSpecificQuirks(WKPreferencesRef);
+WK_EXPORT void WKPreferencesSetNeedsSiteSpecificQuirks( WKPreferencesRef, bool );
+WK_EXPORT bool WKPreferencesGetNeedsSiteSpecificQuirks( WKPreferencesRef );
 
 // Defaults to false.
-WK_EXPORT void WKPreferencesSetForceFTPDirectoryListings(WKPreferencesRef preferences, bool force);
-WK_EXPORT bool WKPreferencesGetForceFTPDirectoryListings(WKPreferencesRef preferences);
+WK_EXPORT void WKPreferencesSetForceFTPDirectoryListings( WKPreferencesRef preferences, bool force );
+WK_EXPORT bool WKPreferencesGetForceFTPDirectoryListings( WKPreferencesRef preferences );
 
 // Defaults to the empty string.
-WK_EXPORT void WKPreferencesSetFTPDirectoryTemplatePath(WKPreferencesRef preferences, WKStringRef path);
-WK_EXPORT WKStringRef WKPreferencesCopyFTPDirectoryTemplatePath(WKPreferencesRef preferences);
+WK_EXPORT void WKPreferencesSetFTPDirectoryTemplatePath( WKPreferencesRef preferences, WKStringRef path );
+WK_EXPORT WKStringRef WKPreferencesCopyFTPDirectoryTemplatePath( WKPreferencesRef preferences );
 
 // Defaults to false.
-WK_EXPORT void WKPreferencesSetWebArchiveDebugModeEnabled(WKPreferencesRef preferences, bool enabled);
-WK_EXPORT bool WKPreferencesGetWebArchiveDebugModeEnabled(WKPreferencesRef preferences);
+WK_EXPORT void WKPreferencesSetWebArchiveDebugModeEnabled( WKPreferencesRef preferences, bool enabled );
+WK_EXPORT bool WKPreferencesGetWebArchiveDebugModeEnabled( WKPreferencesRef preferences );
 
 // Defaults to false.
-WK_EXPORT void WKPreferencesSetLocalFileContentSniffingEnabled(WKPreferencesRef preferences, bool enabled);
-WK_EXPORT bool WKPreferencesGetLocalFileContentSniffingEnabled(WKPreferencesRef preferences);
+WK_EXPORT void WKPreferencesSetLocalFileContentSniffingEnabled( WKPreferencesRef preferences, bool enabled );
+WK_EXPORT bool WKPreferencesGetLocalFileContentSniffingEnabled( WKPreferencesRef preferences );
 
 // Defaults to true.
-WK_EXPORT void WKPreferencesSetPageCacheEnabled(WKPreferencesRef preferences, bool enabled);
-WK_EXPORT bool WKPreferencesGetPageCacheEnabled(WKPreferencesRef preferences);
+WK_EXPORT void WKPreferencesSetPageCacheEnabled( WKPreferencesRef preferences, bool enabled );
+WK_EXPORT bool WKPreferencesGetPageCacheEnabled( WKPreferencesRef preferences );
 
 // Defaults to false.
-WK_EXPORT void WKPreferencesSetPaginateDuringLayoutEnabled(WKPreferencesRef preferences, bool enabled);
-WK_EXPORT bool WKPreferencesGetPaginateDuringLayoutEnabled(WKPreferencesRef preferences);
+WK_EXPORT void WKPreferencesSetPaginateDuringLayoutEnabled( WKPreferencesRef preferences, bool enabled );
+WK_EXPORT bool WKPreferencesGetPaginateDuringLayoutEnabled( WKPreferencesRef preferences );
 
 // Defaults to false.
-WK_EXPORT void WKPreferencesSetDOMPasteAllowed(WKPreferencesRef preferences, bool enabled);
-WK_EXPORT bool WKPreferencesGetDOMPasteAllowed(WKPreferencesRef preferences);
+WK_EXPORT void WKPreferencesSetDOMPasteAllowed( WKPreferencesRef preferences, bool enabled );
+WK_EXPORT bool WKPreferencesGetDOMPasteAllowed( WKPreferencesRef preferences );
 
 // Defaults to true.
-WK_EXPORT void WKPreferencesSetWebSecurityEnabled(WKPreferencesRef preferences, bool enabled);
-WK_EXPORT bool WKPreferencesGetWebSecurityEnabled(WKPreferencesRef preferences);
+WK_EXPORT void WKPreferencesSetWebSecurityEnabled( WKPreferencesRef preferences, bool enabled );
+WK_EXPORT bool WKPreferencesGetWebSecurityEnabled( WKPreferencesRef preferences );
 
 // Defaults to false.
-WK_EXPORT void WKPreferencesSetUniversalAccessFromFileURLsAllowed(WKPreferencesRef preferences, bool allowed);
-WK_EXPORT bool WKPreferencesGetUniversalAccessFromFileURLsAllowed(WKPreferencesRef preferences);
+WK_EXPORT void WKPreferencesSetUniversalAccessFromFileURLsAllowed( WKPreferencesRef preferences, bool allowed );
+WK_EXPORT bool WKPreferencesGetUniversalAccessFromFileURLsAllowed( WKPreferencesRef preferences );
 
 // Defaults to false.
-WK_EXPORT void WKPreferencesSetFileAccessFromFileURLsAllowed(WKPreferencesRef preferences, bool allowed);
-WK_EXPORT bool WKPreferencesGetFileAccessFromFileURLsAllowed(WKPreferencesRef preferences);
+WK_EXPORT void WKPreferencesSetFileAccessFromFileURLsAllowed( WKPreferencesRef preferences, bool allowed );
+WK_EXPORT bool WKPreferencesGetFileAccessFromFileURLsAllowed( WKPreferencesRef preferences );
 
 #ifdef __cplusplus
 }

@@ -25,6 +25,7 @@
 
 #include "EventListener.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 } // namespace WebCore

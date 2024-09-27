@@ -23,8 +23,8 @@
 
 #include <qplatform_inputcontextplugin_p.h>
 
-QPlatformInputContextPlugin::QPlatformInputContextPlugin(QObject *parent)
-    : QObject(parent)
+QPlatformInputContextPlugin::QPlatformInputContextPlugin( QObject *parent )
+    : QObject( parent )
 {
 }
 

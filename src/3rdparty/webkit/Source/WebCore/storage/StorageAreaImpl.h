@@ -33,54 +33,57 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class SecurityOrigin;
-    class StorageMap;
-    class StorageAreaSync;
+class SecurityOrigin;
+class StorageMap;
+class StorageAreaSync;
 
-    class StorageAreaImpl : public StorageArea {
-    public:
-        static PassRefPtr<StorageAreaImpl> create(StorageType, PassRefPtr<SecurityOrigin>, PassRefPtr<StorageSyncManager>, unsigned quota);
-        virtual ~StorageAreaImpl();
+class StorageAreaImpl : public StorageArea
+{
+public:
+    static PassRefPtr<StorageAreaImpl> create( StorageType, PassRefPtr<SecurityOrigin>, PassRefPtr<StorageSyncManager>,
+            unsigned quota );
+    virtual ~StorageAreaImpl();
 
-        // The HTML5 DOM Storage API (and contains)
-        virtual unsigned length() const;
-        virtual String key(unsigned index) const;
-        virtual String getItem(const String& key) const;
-        virtual String setItem(const String& key, const String& value, ExceptionCode& ec, Frame* sourceFrame);
-        virtual String removeItem(const String& key, Frame* sourceFrame);
-        virtual bool clear(Frame* sourceFrame);
-        virtual bool contains(const String& key) const;
+    // The HTML5 DOM Storage API (and contains)
+    virtual unsigned length() const;
+    virtual String key( unsigned index ) const;
+    virtual String getItem( const String &key ) const;
+    virtual String setItem( const String &key, const String &value, ExceptionCode &ec, Frame *sourceFrame );
+    virtual String removeItem( const String &key, Frame *sourceFrame );
+    virtual bool clear( Frame *sourceFrame );
+    virtual bool contains( const String &key ) const;
 
-        PassRefPtr<StorageAreaImpl> copy();
-        void close();
+    PassRefPtr<StorageAreaImpl> copy();
+    void close();
 
-        // Only called from a background thread.
-        void importItem(const String& key, const String& value);
+    // Only called from a background thread.
+    void importItem( const String &key, const String &value );
 
-        // Used to clear a StorageArea and close db before backing db file is deleted.
-        void clearForOriginDeletion();
+    // Used to clear a StorageArea and close db before backing db file is deleted.
+    void clearForOriginDeletion();
 
-        void sync();
+    void sync();
 
-    private:
-        StorageAreaImpl(StorageType, PassRefPtr<SecurityOrigin>, PassRefPtr<StorageSyncManager>, unsigned quota);
-        StorageAreaImpl(StorageAreaImpl*);
+private:
+    StorageAreaImpl( StorageType, PassRefPtr<SecurityOrigin>, PassRefPtr<StorageSyncManager>, unsigned quota );
+    StorageAreaImpl( StorageAreaImpl * );
 
-        void blockUntilImportComplete() const;
+    void blockUntilImportComplete() const;
 
-        StorageType m_storageType;
-        RefPtr<SecurityOrigin> m_securityOrigin;
-        RefPtr<StorageMap> m_storageMap;
+    StorageType m_storageType;
+    RefPtr<SecurityOrigin> m_securityOrigin;
+    RefPtr<StorageMap> m_storageMap;
 
-        RefPtr<StorageAreaSync> m_storageAreaSync;
-        RefPtr<StorageSyncManager> m_storageSyncManager;
+    RefPtr<StorageAreaSync> m_storageAreaSync;
+    RefPtr<StorageSyncManager> m_storageSyncManager;
 
 #ifndef NDEBUG
-        bool m_isShutdown;
+    bool m_isShutdown;
 #endif
-    };
+};
 
 } // namespace WebCore
 

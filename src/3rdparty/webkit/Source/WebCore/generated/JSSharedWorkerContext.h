@@ -27,53 +27,59 @@
 #include "SharedWorkerContext.h"
 #include <runtime/JSObjectWithGlobalObject.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class SharedWorkerContext;
 
-class JSSharedWorkerContext : public JSWorkerContext {
+class JSSharedWorkerContext : public JSWorkerContext
+{
     typedef JSWorkerContext Base;
 public:
-    JSSharedWorkerContext(JSC::JSGlobalData&, JSC::Structure*, PassRefPtr<SharedWorkerContext>);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
-    virtual void put(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::JSValue, JSC::PutPropertySlot&);
+    JSSharedWorkerContext( JSC::JSGlobalData &, JSC::Structure *, PassRefPtr<SharedWorkerContext> );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
+    virtual void put( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::JSValue, JSC::PutPropertySlot & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    SharedWorkerContext* impl() const
+    SharedWorkerContext *impl() const
     {
-        return static_cast<SharedWorkerContext*>(Base::impl());
+        return static_cast<SharedWorkerContext *>( Base::impl() );
     }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
-SharedWorkerContext* toSharedWorkerContext(JSC::JSValue);
+SharedWorkerContext *toSharedWorkerContext( JSC::JSValue );
 
-class JSSharedWorkerContextPrototype : public JSC::JSObjectWithGlobalObject {
+class JSSharedWorkerContextPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    void* operator new(size_t, JSC::JSGlobalData*);
+    void *operator new ( size_t, JSC::JSGlobalData * );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSSharedWorkerContextPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSSharedWorkerContextPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                                    JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = Base::StructureFlags;
 };
 
 // Attributes
 
-JSC::JSValue jsSharedWorkerContextName(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsSharedWorkerContextOnconnect(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSSharedWorkerContextOnconnect(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
+JSC::JSValue jsSharedWorkerContextName( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsSharedWorkerContextOnconnect( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSSharedWorkerContextOnconnect( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
 
 } // namespace WebCore
 

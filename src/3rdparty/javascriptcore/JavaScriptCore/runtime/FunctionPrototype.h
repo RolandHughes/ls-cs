@@ -23,23 +23,26 @@
 
 #include "InternalFunction.h"
 
-namespace JSC {
+namespace JSC
+{
 
-    class PrototypeFunction;
+class PrototypeFunction;
 
-    class FunctionPrototype : public InternalFunction {
-    public:
-        FunctionPrototype(ExecState*, NonNullPassRefPtr<Structure>);
-        void addFunctionProperties(ExecState*, Structure* prototypeFunctionStructure, NativeFunctionWrapper** callFunction, NativeFunctionWrapper** applyFunction);
+class FunctionPrototype : public InternalFunction
+{
+public:
+    FunctionPrototype( ExecState *, NonNullPassRefPtr<Structure> );
+    void addFunctionProperties( ExecState *, Structure *prototypeFunctionStructure, NativeFunctionWrapper **callFunction,
+                                NativeFunctionWrapper **applyFunction );
 
-        static PassRefPtr<Structure> createStructure(JSValue proto)
-        {
-            return Structure::create(proto, TypeInfo(ObjectType, StructureFlags));
-        }
+    static PassRefPtr<Structure> createStructure( JSValue proto )
+    {
+        return Structure::create( proto, TypeInfo( ObjectType, StructureFlags ) );
+    }
 
-    private:
-        virtual CallType getCallData(CallData&);
-    };
+private:
+    virtual CallType getCallData( CallData & );
+};
 
 } // namespace JSC
 

@@ -30,53 +30,54 @@
 
 class Q_OPENGL_EXPORT QGLPaintDevice : public QPaintDevice
 {
- public:
-   QGLPaintDevice();
-   virtual ~QGLPaintDevice();
+public:
+    QGLPaintDevice();
+    virtual ~QGLPaintDevice();
 
-   int devType() const override {
-      return QInternal::OpenGL;
-   }
+    int devType() const override
+    {
+        return QInternal::OpenGL;
+    }
 
-   virtual void beginPaint();
-   virtual void ensureActiveTarget();
-   virtual void endPaint();
+    virtual void beginPaint();
+    virtual void ensureActiveTarget();
+    virtual void endPaint();
 
-   virtual QGLContext *context() const = 0;
-   virtual QGLFormat format() const;
-   virtual QSize size() const = 0;
-   virtual bool alphaRequested() const;
-   virtual bool isFlipped() const;
+    virtual QGLContext *context() const = 0;
+    virtual QGLFormat format() const;
+    virtual QSize size() const = 0;
+    virtual bool alphaRequested() const;
+    virtual bool isFlipped() const;
 
-   // returns the QGLPaintDevice for the given QPaintDevice
-   static QGLPaintDevice *getDevice(QPaintDevice *);
+    // returns the QGLPaintDevice for the given QPaintDevice
+    static QGLPaintDevice *getDevice( QPaintDevice * );
 
- protected:
-   int metric(QPaintDevice::PaintDeviceMetric metric) const override;
-   GLuint m_previousFBO;
-   GLuint m_thisFBO;
+protected:
+    int metric( QPaintDevice::PaintDeviceMetric metric ) const override;
+    GLuint m_previousFBO;
+    GLuint m_thisFBO;
 };
 
 // Wraps a QGLWidget
 class QGLWidget;
 class QGLWidgetGLPaintDevice : public QGLPaintDevice
 {
- public:
-   QGLWidgetGLPaintDevice();
+public:
+    QGLWidgetGLPaintDevice();
 
-   QPaintEngine *paintEngine() const override;
+    QPaintEngine *paintEngine() const override;
 
-   // QGLWidgets need to do swapBufers in endPaint:
-   void beginPaint() override;
-   void endPaint() override;
-   QSize size() const override;
-   QGLContext *context() const override;
+    // QGLWidgets need to do swapBufers in endPaint:
+    void beginPaint() override;
+    void endPaint() override;
+    QSize size() const override;
+    QGLContext *context() const override;
 
-   void setWidget(QGLWidget *);
+    void setWidget( QGLWidget * );
 
- private:
-   friend class QGLWidget;
-   QGLWidget *glWidget;
+private:
+    friend class QGLWidget;
+    QGLWidget *glWidget;
 };
 
 

@@ -26,231 +26,255 @@
 
 #include <qthread_p.h>
 
-void CSInternalChildren::deleteChildren(QObject *object)
+void CSInternalChildren::deleteChildren( QObject *object )
 {
-   if (! object) {
-      return;
-   }
+    if ( ! object )
+    {
+        return;
+    }
 
-   object->deleteChildren();
+    object->deleteChildren();
 }
 
-void CSInternalChildren::moveChildren(QObject *object, int from, int to)
+void CSInternalChildren::moveChildren( QObject *object, int from, int to )
 {
-   if (! object) {
-      return;
-   }
+    if ( ! object )
+    {
+        return;
+    }
 
-   object->m_children.move(from, to);
+    object->m_children.move( from, to );
 }
 
-void CSInternalChildren::removeOne(QObject *object, QObject *value)
+void CSInternalChildren::removeOne( QObject *object, QObject *value )
 {
-   if (! object) {
-      return;
-   }
+    if ( ! object )
+    {
+        return;
+    }
 
-   object->m_children.removeOne(value);
+    object->m_children.removeOne( value );
 }
 
-void CSInternalChildren::set_mParent(QObject *object, QObject *value)
+void CSInternalChildren::set_mParent( QObject *object, QObject *value )
 {
-   if (! object) {
-      return;
-   }
+    if ( ! object )
+    {
+        return;
+    }
 
-   // hard setting this member!
-   object->m_parent = value;
-}
-
-// **
-CSAbstractDeclarativeData *CSInternalDeclarativeData::get_m_declarativeData(const QObject *object)
-{
-   if (! object) {
-      return nullptr;
-   }
-
-   return object->m_declarativeData;
-}
-
-void CSInternalDeclarativeData::set_m_declarativeData(QObject *object, CSAbstractDeclarativeData *value)
-{
-   if (! object) {
-      return;
-   }
-
-   object->m_declarativeData = value;
+    // hard setting this member!
+    object->m_parent = value;
 }
 
 // **
-bool CSInternalEvents::get_m_sendChildEvents(const QObject *object)
+CSAbstractDeclarativeData *CSInternalDeclarativeData::get_m_declarativeData( const QObject *object )
 {
-   if (! object) {
-      return false;
-   }
+    if ( ! object )
+    {
+        return nullptr;
+    }
 
-   return object->m_sendChildEvents;
+    return object->m_declarativeData;
 }
 
-bool CSInternalEvents::get_m_receiveChildEvents(const QObject *object)
+void CSInternalDeclarativeData::set_m_declarativeData( QObject *object, CSAbstractDeclarativeData *value )
 {
-   if (! object) {
-      return false;
-   }
+    if ( ! object )
+    {
+        return;
+    }
 
-   return object->m_receiveChildEvents;
-}
-
-int CSInternalEvents::get_m_PostedEvents(const QObject *object)
-{
-   if (! object) {
-      return 0;
-   }
-
-   return object->m_postedEvents;
-}
-
-QList<QPointer<QObject>> &CSInternalEvents::get_m_EventFilters(QObject *object)
-{
-   if (! object) {
-      static QList<QPointer<QObject>> emptyList;
-      return emptyList;
-   }
-
-   return object->m_eventFilters;
-}
-
-std::atomic<bool> &CSInternalEvents::get_m_inThreadChangeEvent(QObject *object)
-{
-   if (! object) {
-      static std::atomic<bool> emptyAtomic;
-      return emptyAtomic;
-   }
-
-   return object->m_inThreadChangeEvent;
-}
-
-void CSInternalEvents::set_m_sendChildEvents(QObject *object, bool data)
-{
-   if (! object) {
-      return;
-   }
-
-   object->m_sendChildEvents = data;
-}
-
-void CSInternalEvents::set_m_receiveChildEvents(QObject *object, bool data)
-{
-   if (! object) {
-      return;
-   }
-
-   object->m_receiveChildEvents = data;
+    object->m_declarativeData = value;
 }
 
 // **
-bool CSInternalRefCount::get_m_wasDeleted(const QObject *object)
+bool CSInternalEvents::get_m_sendChildEvents( const QObject *object )
 {
-   if (! object) {
-      return false;
-   }
+    if ( ! object )
+    {
+        return false;
+    }
 
-   return object->m_wasDeleted;
+    return object->m_sendChildEvents;
 }
 
-void CSInternalRefCount::set_m_wasDeleted(QObject *object, bool data)
+bool CSInternalEvents::get_m_receiveChildEvents( const QObject *object )
 {
-   if (! object) {
-      return;
-   }
+    if ( ! object )
+    {
+        return false;
+    }
 
-   object->m_wasDeleted = data;
+    return object->m_receiveChildEvents;
 }
 
-std::atomic<QtSharedPointer::ExternalRefCountData *> &CSInternalRefCount::get_m_SharedRefCount(const QObject *object)
+int CSInternalEvents::get_m_PostedEvents( const QObject *object )
 {
-   if (object == nullptr) {
-      static std::atomic<QtSharedPointer::ExternalRefCountData *> emptyAtomic;
-      return emptyAtomic;
-   }
+    if ( ! object )
+    {
+        return 0;
+    }
 
-   return object->m_sharedRefCount;
+    return object->m_postedEvents;
+}
+
+QList<QPointer<QObject>> &CSInternalEvents::get_m_EventFilters( QObject *object )
+{
+    if ( ! object )
+    {
+        static QList<QPointer<QObject>> emptyList;
+        return emptyList;
+    }
+
+    return object->m_eventFilters;
+}
+
+std::atomic<bool> &CSInternalEvents::get_m_inThreadChangeEvent( QObject *object )
+{
+    if ( ! object )
+    {
+        static std::atomic<bool> emptyAtomic;
+        return emptyAtomic;
+    }
+
+    return object->m_inThreadChangeEvent;
+}
+
+void CSInternalEvents::set_m_sendChildEvents( QObject *object, bool data )
+{
+    if ( ! object )
+    {
+        return;
+    }
+
+    object->m_sendChildEvents = data;
+}
+
+void CSInternalEvents::set_m_receiveChildEvents( QObject *object, bool data )
+{
+    if ( ! object )
+    {
+        return;
+    }
+
+    object->m_receiveChildEvents = data;
 }
 
 // **
-bool CSInternalSender::isSender(const QObject *object, const QObject *receiver, const QString &signal)
+bool CSInternalRefCount::get_m_wasDeleted( const QObject *object )
 {
-   if (! object) {
-      return false;
-   }
+    if ( ! object )
+    {
+        return false;
+    }
 
-   return object->isSender(receiver, signal);
+    return object->m_wasDeleted;
 }
 
-QList<QObject *> CSInternalSender::receiverList(const QObject *object, const QMetaMethod &signalMetaMethod)
+void CSInternalRefCount::set_m_wasDeleted( QObject *object, bool data )
 {
-   if (object == nullptr) {
-      return QList<QObject *>{};
-   }
+    if ( ! object )
+    {
+        return;
+    }
 
-   return object->receiverList(signalMetaMethod);
+    object->m_wasDeleted = data;
 }
 
-QList<QObject *> CSInternalSender::senderList(const QObject *object)
+std::atomic<QtSharedPointer::ExternalRefCountData *> &CSInternalRefCount::get_m_SharedRefCount( const QObject *object )
 {
-   if (object == nullptr) {
-      return QList<QObject *>{};
-   }
+    if ( object == nullptr )
+    {
+        static std::atomic<QtSharedPointer::ExternalRefCountData *> emptyAtomic;
+        return emptyAtomic;
+    }
 
-   return object->senderList();
+    return object->m_sharedRefCount;
 }
 
 // **
-QThreadData *CSInternalThreadData::get_m_ThreadData(const QObject *object)
+bool CSInternalSender::isSender( const QObject *object, const QObject *receiver, const QString &signal )
 {
-   if (! object) {
-      return nullptr;
-   }
+    if ( ! object )
+    {
+        return false;
+    }
 
-   // returns a pointer to the threadData
-   return object->m_threadData.load();
+    return object->isSender( receiver, signal );
 }
 
-std::atomic<QThreadData *> &CSInternalThreadData::get_AtomicThreadData(QObject *object)
+QList<QObject *> CSInternalSender::receiverList( const QObject *object, const QMetaMethod &signalMetaMethod )
 {
-   if (! object) {
-      static std::atomic<QThreadData *> emptyAtomic;
-      return emptyAtomic;
-   }
+    if ( object == nullptr )
+    {
+        return QList<QObject *> {};
+    }
 
-   // returns a reference to the atomic var whichs contains a pointer to the thread data
-   return object->m_threadData;
+    return object->receiverList( signalMetaMethod );
 }
 
-void CSInternalEvents::incr_PostedEvents(QObject *object)
+QList<QObject *> CSInternalSender::senderList( const QObject *object )
 {
-   if (! object) {
-      return;
-   }
+    if ( object == nullptr )
+    {
+        return QList<QObject *> {};
+    }
 
-   ++(object->m_postedEvents);
+    return object->senderList();
 }
 
-void CSInternalEvents::decr_PostedEvents(QObject *object)
+// **
+QThreadData *CSInternalThreadData::get_m_ThreadData( const QObject *object )
 {
-   if (! object) {
-      return;
-   }
+    if ( ! object )
+    {
+        return nullptr;
+    }
 
-   --(object->m_postedEvents);
+    // returns a pointer to the threadData
+    return object->m_threadData.load();
+}
+
+std::atomic<QThreadData *> &CSInternalThreadData::get_AtomicThreadData( QObject *object )
+{
+    if ( ! object )
+    {
+        static std::atomic<QThreadData *> emptyAtomic;
+        return emptyAtomic;
+    }
+
+    // returns a reference to the atomic var whichs contains a pointer to the thread data
+    return object->m_threadData;
+}
+
+void CSInternalEvents::incr_PostedEvents( QObject *object )
+{
+    if ( ! object )
+    {
+        return;
+    }
+
+    ++( object->m_postedEvents );
+}
+
+void CSInternalEvents::decr_PostedEvents( QObject *object )
+{
+    if ( ! object )
+    {
+        return;
+    }
+
+    --( object->m_postedEvents );
 }
 
 // private slot
-void QObject::internal_reregisterTimers(QList<QTimerInfo> timerList)
+void QObject::internal_reregisterTimers( QList<QTimerInfo> timerList )
 {
-   QAbstractEventDispatcher *eventDispatcher = m_threadData.load()->eventDispatcher.load();
+    QAbstractEventDispatcher *eventDispatcher = m_threadData.load()->eventDispatcher.load();
 
-   for (auto &item : timerList) {
-      eventDispatcher->registerTimer(item.interval, item.timerType, this);
-   }
+    for ( auto &item : timerList )
+    {
+        eventDispatcher->registerTimer( item.interval, item.timerType, this );
+    }
 }

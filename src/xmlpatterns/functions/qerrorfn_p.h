@@ -26,13 +26,14 @@
 
 #include <qfunctioncall_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class ErrorFN : public FunctionCall
 {
- public:
-   Item evaluateSingleton(const DynamicContext::Ptr &context) const override;
-   FunctionSignature::Ptr signature() const override;
+public:
+    Item evaluateSingleton( const DynamicContext::Ptr &context ) const override;
+    FunctionSignature::Ptr signature() const override;
 };
 
 }

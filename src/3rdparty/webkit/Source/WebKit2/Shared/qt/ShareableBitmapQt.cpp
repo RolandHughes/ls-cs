@@ -32,26 +32,27 @@
 
 using namespace WebCore;
 
-namespace WebKit {
-
-static inline QImage createQImage(void* data, int width, int height)
+namespace WebKit
 {
-    return QImage(reinterpret_cast<uchar*>(data), width, height, width * 4, QImage::Format_RGB32);
+
+static inline QImage createQImage( void *data, int width, int height )
+{
+    return QImage( reinterpret_cast<uchar *>( data ), width, height, width * 4, QImage::Format_RGB32 );
 }
 
 PassOwnPtr<GraphicsContext> ShareableBitmap::createGraphicsContext()
 {
-    QImage* image = new QImage(createQImage(data(), m_size.width(), m_size.height()));
-    GraphicsContext* context = new GraphicsContext(new QPainter(image));
+    QImage *image = new QImage( createQImage( data(), m_size.width(), m_size.height() ) );
+    GraphicsContext *context = new GraphicsContext( new QPainter( image ) );
     context->takeOwnershipOfPlatformContext();
     return context;
 }
 
-void ShareableBitmap::paint(GraphicsContext& context, const IntPoint& dstPoint, const IntRect& srcRect)
+void ShareableBitmap::paint( GraphicsContext &context, const IntPoint &dstPoint, const IntRect &srcRect )
 {
-    QImage image = createQImage(data(), m_size.width(), m_size.height());
-    QPainter* painter = context.platformContext();
-    painter->drawImage(dstPoint, image, QRect(srcRect));
+    QImage image = createQImage( data(), m_size.width(), m_size.height() );
+    QPainter *painter = context.platformContext();
+    painter->drawImage( dstPoint, image, QRect( srcRect ) );
 }
 
 } // namespace WebKit

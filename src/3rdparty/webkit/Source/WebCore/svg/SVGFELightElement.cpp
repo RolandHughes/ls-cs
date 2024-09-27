@@ -33,112 +33,154 @@
 #include "SVGFilterPrimitiveStandardAttributes.h"
 #include "SVGNames.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 // Animated property definitions
-DEFINE_ANIMATED_NUMBER(SVGFELightElement, SVGNames::azimuthAttr, Azimuth, azimuth)
-DEFINE_ANIMATED_NUMBER(SVGFELightElement, SVGNames::elevationAttr, Elevation, elevation)
-DEFINE_ANIMATED_NUMBER(SVGFELightElement, SVGNames::xAttr, X, x)
-DEFINE_ANIMATED_NUMBER(SVGFELightElement, SVGNames::yAttr, Y, y)
-DEFINE_ANIMATED_NUMBER(SVGFELightElement, SVGNames::zAttr, Z, z)
-DEFINE_ANIMATED_NUMBER(SVGFELightElement, SVGNames::pointsAtXAttr, PointsAtX, pointsAtX)
-DEFINE_ANIMATED_NUMBER(SVGFELightElement, SVGNames::pointsAtYAttr, PointsAtY, pointsAtY)
-DEFINE_ANIMATED_NUMBER(SVGFELightElement, SVGNames::pointsAtZAttr, PointsAtZ, pointsAtZ)
-DEFINE_ANIMATED_NUMBER(SVGFELightElement, SVGNames::specularExponentAttr, SpecularExponent, specularExponent)
-DEFINE_ANIMATED_NUMBER(SVGFELightElement, SVGNames::limitingConeAngleAttr, LimitingConeAngle, limitingConeAngle)
+DEFINE_ANIMATED_NUMBER( SVGFELightElement, SVGNames::azimuthAttr, Azimuth, azimuth )
+DEFINE_ANIMATED_NUMBER( SVGFELightElement, SVGNames::elevationAttr, Elevation, elevation )
+DEFINE_ANIMATED_NUMBER( SVGFELightElement, SVGNames::xAttr, X, x )
+DEFINE_ANIMATED_NUMBER( SVGFELightElement, SVGNames::yAttr, Y, y )
+DEFINE_ANIMATED_NUMBER( SVGFELightElement, SVGNames::zAttr, Z, z )
+DEFINE_ANIMATED_NUMBER( SVGFELightElement, SVGNames::pointsAtXAttr, PointsAtX, pointsAtX )
+DEFINE_ANIMATED_NUMBER( SVGFELightElement, SVGNames::pointsAtYAttr, PointsAtY, pointsAtY )
+DEFINE_ANIMATED_NUMBER( SVGFELightElement, SVGNames::pointsAtZAttr, PointsAtZ, pointsAtZ )
+DEFINE_ANIMATED_NUMBER( SVGFELightElement, SVGNames::specularExponentAttr, SpecularExponent, specularExponent )
+DEFINE_ANIMATED_NUMBER( SVGFELightElement, SVGNames::limitingConeAngleAttr, LimitingConeAngle, limitingConeAngle )
 
-SVGFELightElement::SVGFELightElement(const QualifiedName& tagName, Document* document)
-    : SVGElement(tagName, document)
-    , m_specularExponent(1)
+SVGFELightElement::SVGFELightElement( const QualifiedName &tagName, Document *document )
+    : SVGElement( tagName, document )
+    , m_specularExponent( 1 )
 {
 }
 
-SVGFELightElement* SVGFELightElement::findLightElement(const SVGElement* svgElement)
+SVGFELightElement *SVGFELightElement::findLightElement( const SVGElement *svgElement )
 {
-    for (Node* node = svgElement->firstChild(); node; node = node->nextSibling()) {
-        if (node->hasTagName(SVGNames::feDistantLightTag)
-            || node->hasTagName(SVGNames::fePointLightTag)
-            || node->hasTagName(SVGNames::feSpotLightTag)) {
-            return static_cast<SVGFELightElement*>(node);
+    for ( Node *node = svgElement->firstChild(); node; node = node->nextSibling() )
+    {
+        if ( node->hasTagName( SVGNames::feDistantLightTag )
+                || node->hasTagName( SVGNames::fePointLightTag )
+                || node->hasTagName( SVGNames::feSpotLightTag ) )
+        {
+            return static_cast<SVGFELightElement *>( node );
         }
     }
+
     return 0;
 }
 
-PassRefPtr<LightSource> SVGFELightElement::findLightSource(const SVGElement* svgElement)
+PassRefPtr<LightSource> SVGFELightElement::findLightSource( const SVGElement *svgElement )
 {
-    SVGFELightElement* lightNode = findLightElement(svgElement);
-    if (!lightNode)
+    SVGFELightElement *lightNode = findLightElement( svgElement );
+
+    if ( !lightNode )
+    {
         return 0;
+    }
+
     return lightNode->lightSource();
 }
 
-void SVGFELightElement::parseMappedAttribute(Attribute* attr)
+void SVGFELightElement::parseMappedAttribute( Attribute *attr )
 {
-    const String& value = attr->value();
-    if (attr->name() == SVGNames::azimuthAttr)
-        setAzimuthBaseValue(value.toFloat());
-    else if (attr->name() == SVGNames::elevationAttr)
-        setElevationBaseValue(value.toFloat());
-    else if (attr->name() == SVGNames::xAttr)
-        setXBaseValue(value.toFloat());
-    else if (attr->name() == SVGNames::yAttr)
-        setYBaseValue(value.toFloat());
-    else if (attr->name() == SVGNames::zAttr)
-        setZBaseValue(value.toFloat());
-    else if (attr->name() == SVGNames::pointsAtXAttr)
-        setPointsAtXBaseValue(value.toFloat());
-    else if (attr->name() == SVGNames::pointsAtYAttr)
-        setPointsAtYBaseValue(value.toFloat());
-    else if (attr->name() == SVGNames::pointsAtZAttr)
-        setPointsAtZBaseValue(value.toFloat());
-    else if (attr->name() == SVGNames::specularExponentAttr)
-        setSpecularExponentBaseValue(value.toFloat());
-    else if (attr->name() == SVGNames::limitingConeAngleAttr)
-        setLimitingConeAngleBaseValue(value.toFloat());
+    const String &value = attr->value();
+
+    if ( attr->name() == SVGNames::azimuthAttr )
+    {
+        setAzimuthBaseValue( value.toFloat() );
+    }
+    else if ( attr->name() == SVGNames::elevationAttr )
+    {
+        setElevationBaseValue( value.toFloat() );
+    }
+    else if ( attr->name() == SVGNames::xAttr )
+    {
+        setXBaseValue( value.toFloat() );
+    }
+    else if ( attr->name() == SVGNames::yAttr )
+    {
+        setYBaseValue( value.toFloat() );
+    }
+    else if ( attr->name() == SVGNames::zAttr )
+    {
+        setZBaseValue( value.toFloat() );
+    }
+    else if ( attr->name() == SVGNames::pointsAtXAttr )
+    {
+        setPointsAtXBaseValue( value.toFloat() );
+    }
+    else if ( attr->name() == SVGNames::pointsAtYAttr )
+    {
+        setPointsAtYBaseValue( value.toFloat() );
+    }
+    else if ( attr->name() == SVGNames::pointsAtZAttr )
+    {
+        setPointsAtZBaseValue( value.toFloat() );
+    }
+    else if ( attr->name() == SVGNames::specularExponentAttr )
+    {
+        setSpecularExponentBaseValue( value.toFloat() );
+    }
+    else if ( attr->name() == SVGNames::limitingConeAngleAttr )
+    {
+        setLimitingConeAngleBaseValue( value.toFloat() );
+    }
     else
-        SVGElement::parseMappedAttribute(attr);
+    {
+        SVGElement::parseMappedAttribute( attr );
+    }
 }
 
-void SVGFELightElement::svgAttributeChanged(const QualifiedName& attrName)
+void SVGFELightElement::svgAttributeChanged( const QualifiedName &attrName )
 {
-    SVGElement::svgAttributeChanged(attrName);
+    SVGElement::svgAttributeChanged( attrName );
 
-    if (attrName == SVGNames::azimuthAttr
-        || attrName == SVGNames::elevationAttr
-        || attrName == SVGNames::xAttr
-        || attrName == SVGNames::yAttr
-        || attrName == SVGNames::zAttr
-        || attrName == SVGNames::pointsAtXAttr
-        || attrName == SVGNames::pointsAtYAttr
-        || attrName == SVGNames::pointsAtZAttr
-        || attrName == SVGNames::specularExponentAttr
-        || attrName == SVGNames::limitingConeAngleAttr) {
-        ContainerNode* parent = parentNode();
-        if (!parent)
-            return;
+    if ( attrName == SVGNames::azimuthAttr
+            || attrName == SVGNames::elevationAttr
+            || attrName == SVGNames::xAttr
+            || attrName == SVGNames::yAttr
+            || attrName == SVGNames::zAttr
+            || attrName == SVGNames::pointsAtXAttr
+            || attrName == SVGNames::pointsAtYAttr
+            || attrName == SVGNames::pointsAtZAttr
+            || attrName == SVGNames::specularExponentAttr
+            || attrName == SVGNames::limitingConeAngleAttr )
+    {
+        ContainerNode *parent = parentNode();
 
-        RenderObject* renderer = parent->renderer();
-        if (!renderer || !renderer->isSVGResourceFilterPrimitive())
+        if ( !parent )
+        {
             return;
+        }
 
-        if (parent->hasTagName(SVGNames::feDiffuseLightingTag)) {
-            SVGFEDiffuseLightingElement* diffuseLighting = static_cast<SVGFEDiffuseLightingElement*>(parent);
-            diffuseLighting->lightElementAttributeChanged(this, attrName);
+        RenderObject *renderer = parent->renderer();
+
+        if ( !renderer || !renderer->isSVGResourceFilterPrimitive() )
+        {
             return;
-        } else if (parent->hasTagName(SVGNames::feSpecularLightingTag)) {
-            SVGFESpecularLightingElement* specularLighting = static_cast<SVGFESpecularLightingElement*>(parent);
-            specularLighting->lightElementAttributeChanged(this, attrName);
+        }
+
+        if ( parent->hasTagName( SVGNames::feDiffuseLightingTag ) )
+        {
+            SVGFEDiffuseLightingElement *diffuseLighting = static_cast<SVGFEDiffuseLightingElement *>( parent );
+            diffuseLighting->lightElementAttributeChanged( this, attrName );
+            return;
+        }
+        else if ( parent->hasTagName( SVGNames::feSpecularLightingTag ) )
+        {
+            SVGFESpecularLightingElement *specularLighting = static_cast<SVGFESpecularLightingElement *>( parent );
+            specularLighting->lightElementAttributeChanged( this, attrName );
             return;
         }
     }
 }
 
-void SVGFELightElement::synchronizeProperty(const QualifiedName& attrName)
+void SVGFELightElement::synchronizeProperty( const QualifiedName &attrName )
 {
-    SVGElement::synchronizeProperty(attrName);
+    SVGElement::synchronizeProperty( attrName );
 
-    if (attrName == anyQName()) {
+    if ( attrName == anyQName() )
+    {
         synchronizeAzimuth();
         synchronizeElevation();
         synchronizeX();
@@ -152,58 +194,83 @@ void SVGFELightElement::synchronizeProperty(const QualifiedName& attrName)
         return;
     }
 
-    if (attrName == SVGNames::azimuthAttr)
+    if ( attrName == SVGNames::azimuthAttr )
+    {
         synchronizeAzimuth();
-    else if (attrName == SVGNames::elevationAttr)
+    }
+    else if ( attrName == SVGNames::elevationAttr )
+    {
         synchronizeElevation();
-    else if (attrName == SVGNames::xAttr)
+    }
+    else if ( attrName == SVGNames::xAttr )
+    {
         synchronizeX();
-    else if (attrName == SVGNames::yAttr)
+    }
+    else if ( attrName == SVGNames::yAttr )
+    {
         synchronizeY();
-    else if (attrName == SVGNames::zAttr)
+    }
+    else if ( attrName == SVGNames::zAttr )
+    {
         synchronizeZ();
-    else if (attrName == SVGNames::pointsAtXAttr)
+    }
+    else if ( attrName == SVGNames::pointsAtXAttr )
+    {
         synchronizePointsAtX();
-    else if (attrName == SVGNames::pointsAtYAttr)
+    }
+    else if ( attrName == SVGNames::pointsAtYAttr )
+    {
         synchronizePointsAtY();
-    else if (attrName == SVGNames::pointsAtZAttr)
+    }
+    else if ( attrName == SVGNames::pointsAtZAttr )
+    {
         synchronizePointsAtZ();
-    else if (attrName == SVGNames::specularExponentAttr)
+    }
+    else if ( attrName == SVGNames::specularExponentAttr )
+    {
         synchronizeSpecularExponent();
-    else if (attrName == SVGNames::limitingConeAngleAttr)
+    }
+    else if ( attrName == SVGNames::limitingConeAngleAttr )
+    {
         synchronizeLimitingConeAngle();
+    }
 }
 
-AttributeToPropertyTypeMap& SVGFELightElement::attributeToPropertyTypeMap()
+AttributeToPropertyTypeMap &SVGFELightElement::attributeToPropertyTypeMap()
 {
-    DEFINE_STATIC_LOCAL(AttributeToPropertyTypeMap, s_attributeToPropertyTypeMap, ());
+    DEFINE_STATIC_LOCAL( AttributeToPropertyTypeMap, s_attributeToPropertyTypeMap, () );
     return s_attributeToPropertyTypeMap;
 }
 
 void SVGFELightElement::fillAttributeToPropertyTypeMap()
 {
-    AttributeToPropertyTypeMap& attributeToPropertyTypeMap = this->attributeToPropertyTypeMap();
-    attributeToPropertyTypeMap.set(SVGNames::azimuthAttr, AnimatedNumber);
-    attributeToPropertyTypeMap.set(SVGNames::elevationAttr, AnimatedNumber);
-    attributeToPropertyTypeMap.set(SVGNames::xAttr, AnimatedNumber);
-    attributeToPropertyTypeMap.set(SVGNames::yAttr, AnimatedNumber);
-    attributeToPropertyTypeMap.set(SVGNames::zAttr, AnimatedNumber);
-    attributeToPropertyTypeMap.set(SVGNames::pointsAtXAttr, AnimatedNumber);
-    attributeToPropertyTypeMap.set(SVGNames::pointsAtYAttr, AnimatedNumber);
-    attributeToPropertyTypeMap.set(SVGNames::pointsAtZAttr, AnimatedNumber);
-    attributeToPropertyTypeMap.set(SVGNames::specularExponentAttr, AnimatedNumber);
-    attributeToPropertyTypeMap.set(SVGNames::limitingConeAngleAttr, AnimatedNumber);
+    AttributeToPropertyTypeMap &attributeToPropertyTypeMap = this->attributeToPropertyTypeMap();
+    attributeToPropertyTypeMap.set( SVGNames::azimuthAttr, AnimatedNumber );
+    attributeToPropertyTypeMap.set( SVGNames::elevationAttr, AnimatedNumber );
+    attributeToPropertyTypeMap.set( SVGNames::xAttr, AnimatedNumber );
+    attributeToPropertyTypeMap.set( SVGNames::yAttr, AnimatedNumber );
+    attributeToPropertyTypeMap.set( SVGNames::zAttr, AnimatedNumber );
+    attributeToPropertyTypeMap.set( SVGNames::pointsAtXAttr, AnimatedNumber );
+    attributeToPropertyTypeMap.set( SVGNames::pointsAtYAttr, AnimatedNumber );
+    attributeToPropertyTypeMap.set( SVGNames::pointsAtZAttr, AnimatedNumber );
+    attributeToPropertyTypeMap.set( SVGNames::specularExponentAttr, AnimatedNumber );
+    attributeToPropertyTypeMap.set( SVGNames::limitingConeAngleAttr, AnimatedNumber );
 }
 
-void SVGFELightElement::childrenChanged(bool changedByParser, Node* beforeChange, Node* afterChange, int childCountDelta)
+void SVGFELightElement::childrenChanged( bool changedByParser, Node *beforeChange, Node *afterChange, int childCountDelta )
 {
-    SVGElement::childrenChanged(changedByParser, beforeChange, afterChange, childCountDelta);
+    SVGElement::childrenChanged( changedByParser, beforeChange, afterChange, childCountDelta );
 
-    if (!changedByParser) {
-        if (ContainerNode* parent = parentNode()) {
-            RenderObject* renderer = parent->renderer();
-            if (renderer && renderer->isSVGResourceFilterPrimitive())
-                RenderSVGResource::markForLayoutAndParentResourceInvalidation(renderer);
+    if ( !changedByParser )
+    {
+        if ( ContainerNode *parent = parentNode() )
+        {
+            RenderObject *renderer = parent->renderer();
+
+            if ( renderer && renderer->isSVGResourceFilterPrimitive() )
+            {
+                RenderSVGResource::markForLayoutAndParentResourceInvalidation( renderer );
+            }
         }
     }
 }

@@ -34,30 +34,30 @@
 // this is the common part between QNetworkRequestPrivate, QNetworkReplyPrivate and QHttpPartPrivate
 class QNetworkHeadersPrivate
 {
- public:
-   typedef QPair<QByteArray, QByteArray> RawHeaderPair;
-   typedef QList<RawHeaderPair> RawHeadersList;
-   typedef QHash<QNetworkRequest::KnownHeaders, QVariant> CookedHeadersMap;
-   typedef QHash<QNetworkRequest::Attribute, QVariant> AttributesMap;
+public:
+    typedef QPair<QByteArray, QByteArray> RawHeaderPair;
+    typedef QList<RawHeaderPair> RawHeadersList;
+    typedef QHash<QNetworkRequest::KnownHeaders, QVariant> CookedHeadersMap;
+    typedef QHash<QNetworkRequest::Attribute, QVariant> AttributesMap;
 
-   RawHeadersList rawHeaders;
-   CookedHeadersMap cookedHeaders;
-   AttributesMap attributes;
-   QPointer<QObject> originatingObject;
+    RawHeadersList rawHeaders;
+    CookedHeadersMap cookedHeaders;
+    AttributesMap attributes;
+    QPointer<QObject> originatingObject;
 
-   RawHeadersList::const_iterator findRawHeader(const QByteArray &key) const;
-   RawHeadersList allRawHeaders() const;
-   QList<QByteArray> rawHeadersKeys() const;
-   void setRawHeader(const QByteArray &key, const QByteArray &value);
-   void setAllRawHeaders(const RawHeadersList &list);
-   void setCookedHeader(QNetworkRequest::KnownHeaders header, const QVariant &value);
+    RawHeadersList::const_iterator findRawHeader( const QByteArray &key ) const;
+    RawHeadersList allRawHeaders() const;
+    QList<QByteArray> rawHeadersKeys() const;
+    void setRawHeader( const QByteArray &key, const QByteArray &value );
+    void setAllRawHeaders( const RawHeadersList &list );
+    void setCookedHeader( QNetworkRequest::KnownHeaders header, const QVariant &value );
 
-   static QDateTime fromHttpDate(const QByteArray &value);
-   static QByteArray toHttpDate(const QDateTime &dt);
+    static QDateTime fromHttpDate( const QByteArray &value );
+    static QByteArray toHttpDate( const QDateTime &dt );
 
- private:
-   void setRawHeaderInternal(const QByteArray &key, const QByteArray &value);
-   void parseAndSetHeader(const QByteArray &key, const QByteArray &value);
+private:
+    void setRawHeaderInternal( const QByteArray &key, const QByteArray &value );
+    void parseAndSetHeader( const QByteArray &key, const QByteArray &value );
 };
 
 #endif

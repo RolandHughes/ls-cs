@@ -25,36 +25,39 @@
 #include "SVGAnimatedLength.h"
 #include "SVGGradientElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 struct RadialGradientAttributes;
 
-class SVGRadialGradientElement : public SVGGradientElement {
+class SVGRadialGradientElement : public SVGGradientElement
+{
 public:
-    static PassRefPtr<SVGRadialGradientElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<SVGRadialGradientElement> create( const QualifiedName &, Document * );
 
-    void collectGradientAttributes(RadialGradientAttributes&);
-    void calculateFocalCenterPointsAndRadius(const RadialGradientAttributes&, FloatPoint& focalPoint, FloatPoint& centerPoint, float& radius);
+    void collectGradientAttributes( RadialGradientAttributes & );
+    void calculateFocalCenterPointsAndRadius( const RadialGradientAttributes &, FloatPoint &focalPoint, FloatPoint &centerPoint,
+            float &radius );
 
 private:
-    SVGRadialGradientElement(const QualifiedName&, Document*);
+    SVGRadialGradientElement( const QualifiedName &, Document * );
 
-    virtual void parseMappedAttribute(Attribute*);
-    virtual void svgAttributeChanged(const QualifiedName&);
-    virtual void synchronizeProperty(const QualifiedName&);
+    virtual void parseMappedAttribute( Attribute * );
+    virtual void svgAttributeChanged( const QualifiedName & );
+    virtual void synchronizeProperty( const QualifiedName & );
     virtual void fillAttributeToPropertyTypeMap();
-    virtual AttributeToPropertyTypeMap& attributeToPropertyTypeMap();
+    virtual AttributeToPropertyTypeMap &attributeToPropertyTypeMap();
 
-    virtual RenderObject* createRenderer(RenderArena*, RenderStyle*);
+    virtual RenderObject *createRenderer( RenderArena *, RenderStyle * );
 
     virtual bool selfHasRelativeLengths() const;
 
     // Animated property declarations
-    DECLARE_ANIMATED_LENGTH(Cx, cx)
-    DECLARE_ANIMATED_LENGTH(Cy, cy)
-    DECLARE_ANIMATED_LENGTH(R, r)
-    DECLARE_ANIMATED_LENGTH(Fx, fx)
-    DECLARE_ANIMATED_LENGTH(Fy, fy)
+    DECLARE_ANIMATED_LENGTH( Cx, cx )
+    DECLARE_ANIMATED_LENGTH( Cy, cy )
+    DECLARE_ANIMATED_LENGTH( R, r )
+    DECLARE_ANIMATED_LENGTH( Fx, fx )
+    DECLARE_ANIMATED_LENGTH( Fy, fy )
 };
 
 } // namespace WebCore

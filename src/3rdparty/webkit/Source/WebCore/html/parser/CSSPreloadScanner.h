@@ -21,7 +21,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef CSSPreloadScanner_h
@@ -30,21 +30,24 @@
 #include "PlatformString.h"
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Document;
 class HTMLToken;
 
-class CSSPreloadScanner {
-    WTF_MAKE_NONCOPYABLE(CSSPreloadScanner);
+class CSSPreloadScanner
+{
+    WTF_MAKE_NONCOPYABLE( CSSPreloadScanner );
 public:
-    CSSPreloadScanner(Document*);
+    CSSPreloadScanner( Document * );
 
     void reset();
-    void scan(const HTMLToken&, bool scanningBody);
+    void scan( const HTMLToken &, bool scanningBody );
 
 private:
-    enum State {
+    enum State
+    {
         Initial,
         MaybeComment,
         Comment,
@@ -57,7 +60,7 @@ private:
         DoneParsingImportRules,
     };
 
-    inline void tokenize(UChar c);
+    inline void tokenize( UChar c );
     void emitRule();
 
     State m_state;
@@ -65,7 +68,7 @@ private:
     Vector<UChar> m_ruleValue;
 
     bool m_scanningBody;
-    Document* m_document;
+    Document *m_document;
 };
 
 }

@@ -33,15 +33,16 @@
 
 #if ENABLE(INSPECTOR)
 
-namespace WebCore {
+namespace WebCore
+{
 
 class ScriptGCEventListener
 {
 public:
-    virtual void didGC(double startTime, double endTime, size_t collectedBytes) = 0;
-    virtual ~ScriptGCEventListener(){}
+    virtual void didGC( double startTime, double endTime, size_t collectedBytes ) = 0;
+    virtual ~ScriptGCEventListener() {}
 };
-    
+
 } // namespace WebCore
 
 #endif // !ENABLE(INSPECTOR)

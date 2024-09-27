@@ -25,24 +25,27 @@
 #include "CachedResourceHandle.h"
 #include "SVGElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class CSSFontFaceSrcValue;
 class CachedFont;
 
-class SVGFontFaceUriElement : public SVGElement, public CachedResourceClient {
+class SVGFontFaceUriElement : public SVGElement, public CachedResourceClient
+{
 public:
-    static PassRefPtr<SVGFontFaceUriElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<SVGFontFaceUriElement> create( const QualifiedName &, Document * );
 
     virtual ~SVGFontFaceUriElement();
 
     PassRefPtr<CSSFontFaceSrcValue> srcValue() const;
 
 private:
-    SVGFontFaceUriElement(const QualifiedName&, Document*);
-    
-    virtual void parseMappedAttribute(Attribute*);
-    virtual void childrenChanged(bool changedByParser = false, Node* beforeChange = 0, Node* afterChange = 0, int childCountDelta = 0);
+    SVGFontFaceUriElement( const QualifiedName &, Document * );
+
+    virtual void parseMappedAttribute( Attribute * );
+    virtual void childrenChanged( bool changedByParser = false, Node *beforeChange = 0, Node *afterChange = 0,
+                                  int childCountDelta = 0 );
     virtual void insertedIntoDocument();
 
     void loadFont();

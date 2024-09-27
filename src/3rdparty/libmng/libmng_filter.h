@@ -36,28 +36,28 @@
 
 /* ************************************************************************** */
 
-mng_retcode mng_filter_a_row         (mng_datap pData);
+mng_retcode mng_filter_a_row         ( mng_datap pData );
 
 /* ************************************************************************** */
 
 #ifdef FILTER192
-mng_retcode mng_init_rowdiffering    (mng_datap pData);
+mng_retcode mng_init_rowdiffering    ( mng_datap pData );
 
-mng_retcode mng_differ_g1            (mng_datap pData);
-mng_retcode mng_differ_g2            (mng_datap pData);
-mng_retcode mng_differ_g4            (mng_datap pData);
-mng_retcode mng_differ_g8            (mng_datap pData);
-mng_retcode mng_differ_g16           (mng_datap pData);
-mng_retcode mng_differ_rgb8          (mng_datap pData);
-mng_retcode mng_differ_rgb16         (mng_datap pData);
-mng_retcode mng_differ_idx1          (mng_datap pData);
-mng_retcode mng_differ_idx2          (mng_datap pData);
-mng_retcode mng_differ_idx4          (mng_datap pData);
-mng_retcode mng_differ_idx8          (mng_datap pData);
-mng_retcode mng_differ_ga8           (mng_datap pData);
-mng_retcode mng_differ_ga16          (mng_datap pData);
-mng_retcode mng_differ_rgba8         (mng_datap pData);
-mng_retcode mng_differ_rgba16        (mng_datap pData);
+mng_retcode mng_differ_g1            ( mng_datap pData );
+mng_retcode mng_differ_g2            ( mng_datap pData );
+mng_retcode mng_differ_g4            ( mng_datap pData );
+mng_retcode mng_differ_g8            ( mng_datap pData );
+mng_retcode mng_differ_g16           ( mng_datap pData );
+mng_retcode mng_differ_rgb8          ( mng_datap pData );
+mng_retcode mng_differ_rgb16         ( mng_datap pData );
+mng_retcode mng_differ_idx1          ( mng_datap pData );
+mng_retcode mng_differ_idx2          ( mng_datap pData );
+mng_retcode mng_differ_idx4          ( mng_datap pData );
+mng_retcode mng_differ_idx8          ( mng_datap pData );
+mng_retcode mng_differ_ga8           ( mng_datap pData );
+mng_retcode mng_differ_ga16          ( mng_datap pData );
+mng_retcode mng_differ_rgba8         ( mng_datap pData );
+mng_retcode mng_differ_rgba16        ( mng_datap pData );
 #endif
 
 /* ************************************************************************** */

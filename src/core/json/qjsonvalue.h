@@ -34,90 +34,98 @@ class QJsonObject;
 
 class Q_CORE_EXPORT QJsonValue
 {
- public:
-   enum Type {
-      Null      = 0x0,
-      Bool      = 0x1,
-      Double    = 0x2,
-      String    = 0x3,
-      Array     = 0x4,
-      Object    = 0x5,
-      Undefined = 0x80
-   };
+public:
+    enum Type
+    {
+        Null      = 0x0,
+        Bool      = 0x1,
+        Double    = 0x2,
+        String    = 0x3,
+        Array     = 0x4,
+        Object    = 0x5,
+        Undefined = 0x80
+    };
 
-   QJsonValue(Type type = Null);
+    QJsonValue( Type type = Null );
 
-   QJsonValue(bool b);
-   QJsonValue(double n);
-   QJsonValue(int n);
-   QJsonValue(qint64 n);
+    QJsonValue( bool b );
+    QJsonValue( double n );
+    QJsonValue( int n );
+    QJsonValue( qint64 n );
 
-   QJsonValue(QString str);
-   QJsonValue(QJsonArray array);
-   QJsonValue(QJsonObject object);
+    QJsonValue( QString str );
+    QJsonValue( QJsonArray array );
+    QJsonValue( QJsonObject object );
 
-   QJsonValue(const QJsonValue &other);
+    QJsonValue( const QJsonValue &other );
 
-   ~QJsonValue();
+    ~QJsonValue();
 
-   // methods
-   static QJsonValue fromVariant(const QVariant &variant);
+    // methods
+    static QJsonValue fromVariant( const QVariant &variant );
 
-   bool isNull() const {
-      return type() == Type::Null;
-   }
+    bool isNull() const
+    {
+        return type() == Type::Null;
+    }
 
-   bool isBool() const {
-      return type() == Type::Bool;
-   }
+    bool isBool() const
+    {
+        return type() == Type::Bool;
+    }
 
-   bool isDouble() const {
-      return type() == Type::Double;
-   }
+    bool isDouble() const
+    {
+        return type() == Type::Double;
+    }
 
-   bool isString() const {
-      return type() == Type::String;
-   }
+    bool isString() const
+    {
+        return type() == Type::String;
+    }
 
-   bool isArray() const {
-      return type() == Type::Array;
-   }
+    bool isArray() const
+    {
+        return type() == Type::Array;
+    }
 
-   bool isObject() const {
-      return type() == Type::Object;
-   }
+    bool isObject() const
+    {
+        return type() == Type::Object;
+    }
 
-   bool isUndefined() const {
-      return type() == Type::Undefined;
-   }
+    bool isUndefined() const
+    {
+        return type() == Type::Undefined;
+    }
 
-   bool toBool(bool defaultValue = false) const;
-   int toInt(int defaultValue = 0) const;
-   double toDouble(double defaultValue = 0) const;
-   QString toString(const QString &defaultValue = QString()) const;
+    bool toBool( bool defaultValue = false ) const;
+    int toInt( int defaultValue = 0 ) const;
+    double toDouble( double defaultValue = 0 ) const;
+    QString toString( const QString &defaultValue = QString() ) const;
 
-   QJsonArray toArray() const;
-   QJsonArray toArray(const QJsonArray &defaultValue) const;
+    QJsonArray toArray() const;
+    QJsonArray toArray( const QJsonArray &defaultValue ) const;
 
-   QJsonObject toObject() const;
-   QJsonObject toObject(const QJsonObject &defaultValue) const;
+    QJsonObject toObject() const;
+    QJsonObject toObject( const QJsonObject &defaultValue ) const;
 
-   QVariant toVariant() const;
+    QVariant toVariant() const;
 
-   Type type() const;
+    Type type() const;
 
-   // operators
-   QJsonValue &operator =(const QJsonValue &other);
+    // operators
+    QJsonValue &operator =( const QJsonValue &other );
 
-   bool operator==(const QJsonValue &other) const;
-   bool operator!=(const QJsonValue &other) const;
+    bool operator==( const QJsonValue &other ) const;
+    bool operator!=( const QJsonValue &other ) const;
 
- private:
-   // avoid implicit conversions from char * to bool
-   inline QJsonValue(const void *)
-   {}
+private:
+    // avoid implicit conversions from char * to bool
+    inline QJsonValue( const void * )
+    {}
 
-   std::shared_ptr<QJsonData> m_data;
+    std::shared_ptr<QJsonData> m_data;
 };
 
 #endif

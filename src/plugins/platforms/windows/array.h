@@ -32,71 +32,83 @@
 template <class T>
 class Array
 {
- public:
-   static constexpr const int initialSize = 5;
+public:
+    static constexpr const int initialSize = 5;
 
-   using const_iterator = T*;
+    using const_iterator = T*;
 
-   explicit Array(size_t size = 0)
-      : data(nullptr), m_capacity(0), m_size(0) {
+    explicit Array( size_t size = 0 )
+        : data( nullptr ), m_capacity( 0 ), m_size( 0 )
+    {
 
-      if (size) {
-         resize(size);
-      }
-   }
+        if ( size )
+        {
+            resize( size );
+        }
+    }
 
-   Array(const Array &) = delete;
-   Array &operator=(const Array &) = delete;
+    Array( const Array & ) = delete;
+    Array &operator=( const Array & ) = delete;
 
-   ~Array() {
-      delete [] data;
-   }
+    ~Array()
+    {
+        delete [] data;
+    }
 
-   size_t size() const {
-      return m_size;
-   }
+    size_t size() const
+    {
+        return m_size;
+    }
 
-   const_iterator begin() const {
-      return data;
-   }
+    const_iterator begin() const
+    {
+        return data;
+    }
 
-   const_iterator end() const   {
-      return data + m_size;
-   }
+    const_iterator end() const
+    {
+        return data + m_size;
+    }
 
-   void append(const T &value) {
-      const size_t oldSize = m_size;
-      resize(m_size + 1);
-      data[oldSize] = value;
-   }
+    void append( const T &value )
+    {
+        const size_t oldSize = m_size;
+        resize( m_size + 1 );
+        data[oldSize] = value;
+    }
 
-   void resize(size_t size) {
-      if (size > m_size) {
-         reserve(size > 1 ? size + size / 2 : size_t(initialSize));
-      }
+    void resize( size_t size )
+    {
+        if ( size > m_size )
+        {
+            reserve( size > 1 ? size + size / 2 : size_t( initialSize ) );
+        }
 
-      m_size = size;
-   }
+        m_size = size;
+    }
 
-   void reserve(size_t capacity) {
-      if (capacity > m_capacity) {
-         const T *oldData = data;
-         data = new T[capacity];
+    void reserve( size_t capacity )
+    {
+        if ( capacity > m_capacity )
+        {
+            const T *oldData = data;
+            data = new T[capacity];
 
-         if (oldData) {
-            std::copy(oldData, oldData + m_size, data);
-            delete [] oldData;
-         }
+            if ( oldData )
+            {
+                std::copy( oldData, oldData + m_size, data );
+                delete [] oldData;
+            }
 
-         m_capacity = capacity;
-      }
-   }
+            m_capacity = capacity;
+        }
+    }
 
-   T *data;
+    T *data;
 
- private:
-   size_t m_capacity;
-   size_t m_size;
+private:
+    size_t m_capacity;
+    size_t m_size;
 };
 
 #endif

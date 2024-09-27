@@ -29,47 +29,47 @@
 
 using namespace QPatternist;
 
-DynamicContextStore::DynamicContextStore(const Expression::Ptr &operand,
-      const DynamicContext::Ptr &context) : SingleContainer(operand),
-   m_context(context.data())
+DynamicContextStore::DynamicContextStore( const Expression::Ptr &operand,
+        const DynamicContext::Ptr &context ) : SingleContainer( operand ),
+    m_context( context.data() )
 {
-   Q_ASSERT(context);
+    Q_ASSERT( context );
 }
 
-bool DynamicContextStore::evaluateEBV(const DynamicContext::Ptr &) const
+bool DynamicContextStore::evaluateEBV( const DynamicContext::Ptr & ) const
 {
-   return m_operand->evaluateEBV(DynamicContext::Ptr(m_context));
+    return m_operand->evaluateEBV( DynamicContext::Ptr( m_context ) );
 }
 
-Item::Iterator::Ptr DynamicContextStore::evaluateSequence(const DynamicContext::Ptr &) const
+Item::Iterator::Ptr DynamicContextStore::evaluateSequence( const DynamicContext::Ptr & ) const
 {
-   return m_operand->evaluateSequence(DynamicContext::Ptr(m_context));
+    return m_operand->evaluateSequence( DynamicContext::Ptr( m_context ) );
 }
 
-Item DynamicContextStore::evaluateSingleton(const DynamicContext::Ptr &) const
+Item DynamicContextStore::evaluateSingleton( const DynamicContext::Ptr & ) const
 {
-   return m_operand->evaluateSingleton(DynamicContext::Ptr(m_context));
+    return m_operand->evaluateSingleton( DynamicContext::Ptr( m_context ) );
 }
 
 SequenceType::Ptr DynamicContextStore::staticType() const
 {
-   return m_operand->staticType();
+    return m_operand->staticType();
 }
 
 SequenceType::List DynamicContextStore::expectedOperandTypes() const
 {
-   SequenceType::List result;
-   result.append(CommonSequenceTypes::ZeroOrMoreItems);
-   return result;
+    SequenceType::List result;
+    result.append( CommonSequenceTypes::ZeroOrMoreItems );
+    return result;
 }
 
-ExpressionVisitorResult::Ptr DynamicContextStore::accept(const ExpressionVisitor::Ptr &visitor) const
+ExpressionVisitorResult::Ptr DynamicContextStore::accept( const ExpressionVisitor::Ptr &visitor ) const
 {
-   return visitor->visit(this);
+    return visitor->visit( this );
 }
 
 const SourceLocationReflection *DynamicContextStore::actualReflection() const
 {
-   return m_operand->actualReflection();
+    return m_operand->actualReflection();
 }
 

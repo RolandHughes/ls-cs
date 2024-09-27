@@ -32,37 +32,38 @@ class QUrl;
 
 class Q_NETWORK_EXPORT QAuthenticator
 {
- public:
-   QAuthenticator();
-   ~QAuthenticator();
+public:
+    QAuthenticator();
+    ~QAuthenticator();
 
-   QAuthenticator(const QAuthenticator &other);
-   QAuthenticator &operator=(const QAuthenticator &other);
+    QAuthenticator( const QAuthenticator &other );
+    QAuthenticator &operator=( const QAuthenticator &other );
 
-   bool operator==(const QAuthenticator &other) const;
-   bool operator!=(const QAuthenticator &other) const {
-      return !operator==(other);
-   }
+    bool operator==( const QAuthenticator &other ) const;
+    bool operator!=( const QAuthenticator &other ) const
+    {
+        return !operator==( other );
+    }
 
-   QString user() const;
-   void setUser(const QString &user);
+    QString user() const;
+    void setUser( const QString &user );
 
-   QString password() const;
-   void setPassword(const QString &password);
+    QString password() const;
+    void setPassword( const QString &password );
 
-   QString realm() const;
-   void setRealm(const QString &realm);
+    QString realm() const;
+    void setRealm( const QString &realm );
 
-   QVariant option(const QString &opt) const;
-   QVariantHash options() const;
-   void setOption(const QString &opt, const QVariant &value);
+    QVariant option( const QString &opt ) const;
+    QVariantHash options() const;
+    void setOption( const QString &opt, const QVariant &value );
 
-   bool isNull() const;
-   void detach();
+    bool isNull() const;
+    void detach();
 
- private:
-   friend class QAuthenticatorPrivate;
-   QAuthenticatorPrivate *d;
+private:
+    friend class QAuthenticatorPrivate;
+    QAuthenticatorPrivate *d;
 };
 
 #endif

@@ -31,37 +31,45 @@
 #include <wtf/Forward.h>
 
 #if PLATFORM(MAC)
-typedef NSURLResponse* PlatformResponse;
+typedef NSURLResponse *PlatformResponse;
 #elif PLATFORM(WIN)
 typedef CFURLResponseRef PlatformResponse;
 #else
-typedef void* PlatformResponse;
+typedef void *PlatformResponse;
 #endif
 
-namespace WebKit {
+namespace WebKit
+{
 
-class WebURLResponse : public APIObject {
+class WebURLResponse : public APIObject
+{
 public:
     static const Type APIType = TypeURLResponse;
 
-    static PassRefPtr<WebURLResponse> create(const WebCore::ResourceResponse& response)
+    static PassRefPtr<WebURLResponse> create( const WebCore::ResourceResponse &response )
     {
-        return adoptRef(new WebURLResponse(response));
+        return adoptRef( new WebURLResponse( response ) );
     }
 
-    static PassRefPtr<WebURLResponse> create(PlatformResponse platformResponse)
+    static PassRefPtr<WebURLResponse> create( PlatformResponse platformResponse )
     {
-        return adoptRef(new WebURLResponse(platformResponse));
+        return adoptRef( new WebURLResponse( platformResponse ) );
     }
 
     PlatformResponse platformResponse() const;
-    const WebCore::ResourceResponse& resourceResponse() const { return m_response; }
+    const WebCore::ResourceResponse &resourceResponse() const
+    {
+        return m_response;
+    }
 
 private:
-    explicit WebURLResponse(const WebCore::ResourceResponse&);
-    explicit WebURLResponse(PlatformResponse);
+    explicit WebURLResponse( const WebCore::ResourceResponse & );
+    explicit WebURLResponse( PlatformResponse );
 
-    virtual Type type() const { return APIType; }
+    virtual Type type() const
+    {
+        return APIType;
+    }
 
     WebCore::ResourceResponse m_response;
 };

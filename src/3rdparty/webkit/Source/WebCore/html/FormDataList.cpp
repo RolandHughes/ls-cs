@@ -23,27 +23,28 @@
 
 #include "LineEnding.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-FormDataList::FormDataList(const TextEncoding& c)
-    : m_encoding(c)
+FormDataList::FormDataList( const TextEncoding &c )
+    : m_encoding( c )
 {
 }
 
-void FormDataList::appendString(const String& s)
+void FormDataList::appendString( const String &s )
 {
-    CString cstr = m_encoding.encode(s.characters(), s.length(), EntitiesForUnencodables);
-    m_items.append(normalizeLineEndingsToCRLF(cstr));
+    CString cstr = m_encoding.encode( s.characters(), s.length(), EntitiesForUnencodables );
+    m_items.append( normalizeLineEndingsToCRLF( cstr ) );
 }
 
-void FormDataList::appendString(const CString& s)
+void FormDataList::appendString( const CString &s )
 {
-    m_items.append(s);
+    m_items.append( s );
 }
 
-void FormDataList::appendBlob(PassRefPtr<Blob> blob)
+void FormDataList::appendBlob( PassRefPtr<Blob> blob )
 {
-    m_items.append(blob);
+    m_items.append( blob );
 }
 
 } // namespace

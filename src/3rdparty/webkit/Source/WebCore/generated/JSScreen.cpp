@@ -26,9 +26,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSScreen);
+ASSERT_CLASS_FITS_IN_CELL( JSScreen );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -39,15 +40,15 @@ ASSERT_CLASS_FITS_IN_CELL(JSScreen);
 
 static const HashTableValue JSScreenTableValues[9] =
 {
-    { "height", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsScreenHeight), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "width", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsScreenWidth), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "colorDepth", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsScreenColorDepth), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "pixelDepth", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsScreenPixelDepth), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "availLeft", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsScreenAvailLeft), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "availTop", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsScreenAvailTop), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "availHeight", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsScreenAvailHeight), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "availWidth", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsScreenAvailWidth), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "height", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsScreenHeight ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "width", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsScreenWidth ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "colorDepth", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsScreenColorDepth ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "pixelDepth", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsScreenPixelDepth ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "availLeft", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsScreenAvailLeft ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "availTop", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsScreenAvailTop ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "availHeight", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsScreenAvailHeight ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "availWidth", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsScreenAvailWidth ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -61,155 +62,167 @@ static JSC_CONST_HASHTABLE HashTable JSScreenTable = { 18, 15, JSScreenTableValu
 
 static const HashTableValue JSScreenPrototypeTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSScreenPrototypeTable = { 1, 0, JSScreenPrototypeTableValues, 0 };
 const ClassInfo JSScreenPrototype::s_info = { "ScreenPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSScreenPrototypeTable, 0 };
 
-JSObject* JSScreenPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSScreenPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSScreen>(exec, globalObject);
+    return getDOMPrototype<JSScreen>( exec, globalObject );
 }
 
 const ClassInfo JSScreen::s_info = { "Screen", &JSDOMWrapper::s_info, &JSScreenTable, 0 };
 
-JSScreen::JSScreen(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<Screen> impl)
-    : JSDOMWrapper(structure, globalObject)
-    , m_impl(impl)
+JSScreen::JSScreen( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<Screen> impl )
+    : JSDOMWrapper( structure, globalObject )
+    , m_impl( impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSScreen::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSScreen::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSScreenPrototype(exec->globalData(), globalObject, JSScreenPrototype::createStructure(globalObject->globalData(), globalObject->objectPrototype()));
+    return new ( exec ) JSScreenPrototype( exec->globalData(), globalObject,
+                                           JSScreenPrototype::createStructure( globalObject->globalData(), globalObject->objectPrototype() ) );
 }
 
-bool JSScreen::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSScreen::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSScreen, Base>(exec, &JSScreenTable, this, propertyName, slot);
+    return getStaticValueSlot<JSScreen, Base>( exec, &JSScreenTable, this, propertyName, slot );
 }
 
-bool JSScreen::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSScreen::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSScreen, Base>(exec, &JSScreenTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSScreen, Base>( exec, &JSScreenTable, this, propertyName, descriptor );
 }
 
-JSValue jsScreenHeight(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsScreenHeight( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSScreen* castedThis = static_cast<JSScreen*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    Screen* imp = static_cast<Screen*>(castedThis->impl());
-    JSValue result = jsNumber(imp->height());
+    JSScreen *castedThis = static_cast<JSScreen *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    Screen *imp = static_cast<Screen *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->height() );
     return result;
 }
 
 
-JSValue jsScreenWidth(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsScreenWidth( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSScreen* castedThis = static_cast<JSScreen*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    Screen* imp = static_cast<Screen*>(castedThis->impl());
-    JSValue result = jsNumber(imp->width());
+    JSScreen *castedThis = static_cast<JSScreen *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    Screen *imp = static_cast<Screen *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->width() );
     return result;
 }
 
 
-JSValue jsScreenColorDepth(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsScreenColorDepth( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSScreen* castedThis = static_cast<JSScreen*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    Screen* imp = static_cast<Screen*>(castedThis->impl());
-    JSValue result = jsNumber(imp->colorDepth());
+    JSScreen *castedThis = static_cast<JSScreen *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    Screen *imp = static_cast<Screen *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->colorDepth() );
     return result;
 }
 
 
-JSValue jsScreenPixelDepth(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsScreenPixelDepth( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSScreen* castedThis = static_cast<JSScreen*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    Screen* imp = static_cast<Screen*>(castedThis->impl());
-    JSValue result = jsNumber(imp->pixelDepth());
+    JSScreen *castedThis = static_cast<JSScreen *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    Screen *imp = static_cast<Screen *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->pixelDepth() );
     return result;
 }
 
 
-JSValue jsScreenAvailLeft(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsScreenAvailLeft( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSScreen* castedThis = static_cast<JSScreen*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    Screen* imp = static_cast<Screen*>(castedThis->impl());
-    JSValue result = jsNumber(imp->availLeft());
+    JSScreen *castedThis = static_cast<JSScreen *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    Screen *imp = static_cast<Screen *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->availLeft() );
     return result;
 }
 
 
-JSValue jsScreenAvailTop(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsScreenAvailTop( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSScreen* castedThis = static_cast<JSScreen*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    Screen* imp = static_cast<Screen*>(castedThis->impl());
-    JSValue result = jsNumber(imp->availTop());
+    JSScreen *castedThis = static_cast<JSScreen *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    Screen *imp = static_cast<Screen *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->availTop() );
     return result;
 }
 
 
-JSValue jsScreenAvailHeight(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsScreenAvailHeight( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSScreen* castedThis = static_cast<JSScreen*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    Screen* imp = static_cast<Screen*>(castedThis->impl());
-    JSValue result = jsNumber(imp->availHeight());
+    JSScreen *castedThis = static_cast<JSScreen *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    Screen *imp = static_cast<Screen *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->availHeight() );
     return result;
 }
 
 
-JSValue jsScreenAvailWidth(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsScreenAvailWidth( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSScreen* castedThis = static_cast<JSScreen*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    Screen* imp = static_cast<Screen*>(castedThis->impl());
-    JSValue result = jsNumber(imp->availWidth());
+    JSScreen *castedThis = static_cast<JSScreen *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    Screen *imp = static_cast<Screen *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->availWidth() );
     return result;
 }
 
 
-static inline bool isObservable(JSScreen* jsScreen)
+static inline bool isObservable( JSScreen *jsScreen )
 {
-    if (jsScreen->hasCustomProperties())
+    if ( jsScreen->hasCustomProperties() )
+    {
         return true;
+    }
+
     return false;
 }
 
-bool JSScreenOwner::isReachableFromOpaqueRoots(JSC::Handle<JSC::Unknown> handle, void*, SlotVisitor& visitor)
+bool JSScreenOwner::isReachableFromOpaqueRoots( JSC::Handle<JSC::Unknown> handle, void *, SlotVisitor &visitor )
 {
-    JSScreen* jsScreen = static_cast<JSScreen*>(handle.get().asCell());
-    if (!isObservable(jsScreen))
+    JSScreen *jsScreen = static_cast<JSScreen *>( handle.get().asCell() );
+
+    if ( !isObservable( jsScreen ) )
+    {
         return false;
-    Frame* root = jsScreen->impl()->frame();
-    if (!root)
+    }
+
+    Frame *root = jsScreen->impl()->frame();
+
+    if ( !root )
+    {
         return false;
-    return visitor.containsOpaqueRoot(root);
+    }
+
+    return visitor.containsOpaqueRoot( root );
 }
 
-void JSScreenOwner::finalize(JSC::Handle<JSC::Unknown> handle, void* context)
+void JSScreenOwner::finalize( JSC::Handle<JSC::Unknown> handle, void *context )
 {
-    JSScreen* jsScreen = static_cast<JSScreen*>(handle.get().asCell());
-    DOMWrapperWorld* world = static_cast<DOMWrapperWorld*>(context);
-    uncacheWrapper(world, jsScreen->impl(), jsScreen);
+    JSScreen *jsScreen = static_cast<JSScreen *>( handle.get().asCell() );
+    DOMWrapperWorld *world = static_cast<DOMWrapperWorld *>( context );
+    uncacheWrapper( world, jsScreen->impl(), jsScreen );
 }
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, Screen* impl)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, Screen *impl )
 {
-    return wrap<JSScreen>(exec, globalObject, impl);
+    return wrap<JSScreen>( exec, globalObject, impl );
 }
 
-Screen* toScreen(JSC::JSValue value)
+Screen *toScreen( JSC::JSValue value )
 {
-    return value.inherits(&JSScreen::s_info) ? static_cast<JSScreen*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSScreen::s_info ) ? static_cast<JSScreen *>( asObject( value ) )->impl() : 0;
 }
 
 }

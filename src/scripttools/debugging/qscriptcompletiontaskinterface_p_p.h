@@ -33,17 +33,17 @@ class QScriptCompletionTaskInterface;
 
 class QScriptCompletionTaskInterfacePrivate
 {
-   Q_DECLARE_PUBLIC(QScriptCompletionTaskInterface)
+    Q_DECLARE_PUBLIC( QScriptCompletionTaskInterface )
 
- public:
-   QScriptCompletionTaskInterfacePrivate();
-   virtual ~QScriptCompletionTaskInterfacePrivate();
+public:
+    QScriptCompletionTaskInterfacePrivate();
+    virtual ~QScriptCompletionTaskInterfacePrivate();
 
-   int type;
-   QStringList results;
-   int position;
-   int length;
-   QString appendix;
+    int type;
+    QStringList results;
+    int position;
+    int length;
+    QString appendix;
 };
 
 QT_END_NAMESPACE

@@ -24,14 +24,14 @@
 #include <qdebug.h>
 #include <dsimage_capturecontrol.h>
 
-DSImageCaptureControl::DSImageCaptureControl(DSCameraSession *session)
-   : QCameraImageCaptureControl(session), m_session(session)
+DSImageCaptureControl::DSImageCaptureControl( DSCameraSession *session )
+    : QCameraImageCaptureControl( session ), m_session( session )
 {
-   connect(m_session, &DSCameraSession::imageExposed,           this, &DSImageCaptureControl::imageExposed);
-   connect(m_session, &DSCameraSession::imageCaptured,          this, &DSImageCaptureControl::imageCaptured);
-   connect(m_session, &DSCameraSession::imageSaved,             this, &DSImageCaptureControl::imageSaved);
-   connect(m_session, &DSCameraSession::readyForCaptureChanged, this, &DSImageCaptureControl::readyForCaptureChanged);
-   connect(m_session, &DSCameraSession::captureError,           this, &DSImageCaptureControl::error);
+    connect( m_session, &DSCameraSession::imageExposed,           this, &DSImageCaptureControl::imageExposed );
+    connect( m_session, &DSCameraSession::imageCaptured,          this, &DSImageCaptureControl::imageCaptured );
+    connect( m_session, &DSCameraSession::imageSaved,             this, &DSImageCaptureControl::imageSaved );
+    connect( m_session, &DSCameraSession::readyForCaptureChanged, this, &DSImageCaptureControl::readyForCaptureChanged );
+    connect( m_session, &DSCameraSession::captureError,           this, &DSImageCaptureControl::error );
 }
 
 DSImageCaptureControl::~DSImageCaptureControl()
@@ -40,24 +40,25 @@ DSImageCaptureControl::~DSImageCaptureControl()
 
 bool DSImageCaptureControl::isReadyForCapture() const
 {
-   return m_session->isReadyForCapture();
+    return m_session->isReadyForCapture();
 }
 
-int DSImageCaptureControl::capture(const QString &fileName)
+int DSImageCaptureControl::capture( const QString &fileName )
 {
-   return m_session->captureImage(fileName);
+    return m_session->captureImage( fileName );
 }
 
 QCameraImageCapture::DriveMode DSImageCaptureControl::driveMode() const
 {
-   return QCameraImageCapture::SingleImageCapture;
+    return QCameraImageCapture::SingleImageCapture;
 }
 
-void DSImageCaptureControl::setDriveMode(QCameraImageCapture::DriveMode mode)
+void DSImageCaptureControl::setDriveMode( QCameraImageCapture::DriveMode mode )
 {
-   if (mode != QCameraImageCapture::SingleImageCapture) {
-      qWarning("Drive mode not supported.");
-   }
+    if ( mode != QCameraImageCapture::SingleImageCapture )
+    {
+        qWarning( "Drive mode not supported." );
+    }
 }
 
 

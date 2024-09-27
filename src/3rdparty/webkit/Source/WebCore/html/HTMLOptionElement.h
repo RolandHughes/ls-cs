@@ -27,66 +27,75 @@
 #include "HTMLFormControlElement.h"
 #include "OptionElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class HTMLSelectElement;
 
-class HTMLOptionElement : public HTMLFormControlElement, public OptionElement {
+class HTMLOptionElement : public HTMLFormControlElement, public OptionElement
+{
     friend class HTMLSelectElement;
     friend class RenderMenuList;
 
 public:
-    static PassRefPtr<HTMLOptionElement> create(Document*, HTMLFormElement*);
-    static PassRefPtr<HTMLOptionElement> create(const QualifiedName&, Document*, HTMLFormElement*);
-    static PassRefPtr<HTMLOptionElement> createForJSConstructor(Document*, const String& data, const String& value,
-       bool defaultSelected, bool selected, ExceptionCode&);
+    static PassRefPtr<HTMLOptionElement> create( Document *, HTMLFormElement * );
+    static PassRefPtr<HTMLOptionElement> create( const QualifiedName &, Document *, HTMLFormElement * );
+    static PassRefPtr<HTMLOptionElement> createForJSConstructor( Document *, const String &data, const String &value,
+            bool defaultSelected, bool selected, ExceptionCode & );
 
     virtual String text() const;
-    void setText(const String&, ExceptionCode&);
+    void setText( const String &, ExceptionCode & );
 
     int index() const;
 
     virtual String value() const;
-    void setValue(const String&);
+    void setValue( const String & );
 
     virtual bool selected() const;
-    void setSelected(bool);
+    void setSelected( bool );
 
-    HTMLSelectElement* ownerSelectElement() const;
+    HTMLSelectElement *ownerSelectElement() const;
 
     bool defaultSelected() const;
-    void setDefaultSelected(bool);
+    void setDefaultSelected( bool );
 
     String label() const;
 
-    bool ownElementDisabled() const { return HTMLFormControlElement::disabled(); }
+    bool ownElementDisabled() const
+    {
+        return HTMLFormControlElement::disabled();
+    }
 
     virtual bool disabled() const;
 
 private:
-    HTMLOptionElement(const QualifiedName&, Document*, HTMLFormElement* = 0);
+    HTMLOptionElement( const QualifiedName &, Document *, HTMLFormElement * = 0 );
 
     virtual bool supportsFocus() const;
     virtual bool isFocusable() const;
-    virtual bool rendererIsNeeded(RenderStyle*) { return false; }
+    virtual bool rendererIsNeeded( RenderStyle * )
+    {
+        return false;
+    }
     virtual void attach();
     virtual void detach();
-    virtual void setRenderStyle(PassRefPtr<RenderStyle>);
+    virtual void setRenderStyle( PassRefPtr<RenderStyle> );
 
-    virtual const AtomicString& formControlType() const;
+    virtual const AtomicString &formControlType() const;
 
-    virtual void parseMappedAttribute(Attribute*);
+    virtual void parseMappedAttribute( Attribute * );
 
-    virtual void setSelectedState(bool);
+    virtual void setSelectedState( bool );
 
     virtual String textIndentedToRespectGroupLabel() const;
 
-    virtual void insertedIntoTree(bool);
-    virtual void accessKeyAction(bool);
+    virtual void insertedIntoTree( bool );
+    virtual void accessKeyAction( bool );
 
-    virtual void childrenChanged(bool changedByParser = false, Node* beforeChange = 0, Node* afterChange = 0, int childCountDelta = 0);
+    virtual void childrenChanged( bool changedByParser = false, Node *beforeChange = 0, Node *afterChange = 0,
+                                  int childCountDelta = 0 );
 
-    virtual RenderStyle* nonRendererRenderStyle() const;
+    virtual RenderStyle *nonRendererRenderStyle() const;
 
     OptionElementData m_data;
     RefPtr<RenderStyle> m_style;

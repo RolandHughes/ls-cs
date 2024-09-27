@@ -29,24 +29,26 @@
 #include <wtf/Noncopyable.h>
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Frame;
 class Node;
 
-class UserTypingGestureIndicator {
-    WTF_MAKE_NONCOPYABLE(UserTypingGestureIndicator);
+class UserTypingGestureIndicator
+{
+    WTF_MAKE_NONCOPYABLE( UserTypingGestureIndicator );
 public:
     static bool processingUserTypingGesture();
-    static Node* focusedElementAtGestureStart();
+    static Node *focusedElementAtGestureStart();
 
-    explicit UserTypingGestureIndicator(Frame*);
+    explicit UserTypingGestureIndicator( Frame * );
     ~UserTypingGestureIndicator();
 
 private:
     bool m_previousProcessingUserTypingGesture;
     RefPtr<Node> m_previousFocusedNode;
-};    
+};
 
 } // namespace WebCore
 

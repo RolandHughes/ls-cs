@@ -30,47 +30,79 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/text/WTFString.h>
 
-namespace CoreIPC {
-    class ArgumentDecoder;
-    class ArgumentEncoder;
+namespace CoreIPC
+{
+class ArgumentDecoder;
+class ArgumentEncoder;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
-class WebBackForwardListItem : public APIObject {
+class WebBackForwardListItem : public APIObject
+{
 public:
     static const Type APIType = TypeBackForwardListItem;
 
-    static PassRefPtr<WebBackForwardListItem> create(const String& originalURL, const String& url, const String& title, const uint8_t* backForwardData, size_t backForwardDataSize, uint64_t itemID)
+    static PassRefPtr<WebBackForwardListItem> create( const String &originalURL, const String &url, const String &title,
+            const uint8_t *backForwardData, size_t backForwardDataSize, uint64_t itemID )
     {
-        return adoptRef(new WebBackForwardListItem(originalURL, url, title, backForwardData, backForwardDataSize, itemID));
+        return adoptRef( new WebBackForwardListItem( originalURL, url, title, backForwardData, backForwardDataSize, itemID ) );
     }
 
     virtual ~WebBackForwardListItem();
 
-    uint64_t itemID() const { return m_itemID; }
+    uint64_t itemID() const
+    {
+        return m_itemID;
+    }
 
-    void setOriginalURL(const String& originalURL) { m_originalURL = originalURL; }
-    const String& originalURL() const { return m_originalURL; }
+    void setOriginalURL( const String &originalURL )
+    {
+        m_originalURL = originalURL;
+    }
+    const String &originalURL() const
+    {
+        return m_originalURL;
+    }
 
-    void setURL(const String& url) { m_url = url; }
-    const String& url() const { return m_url; }
+    void setURL( const String &url )
+    {
+        m_url = url;
+    }
+    const String &url() const
+    {
+        return m_url;
+    }
 
-    void setTitle(const String& title) { m_title = title; }
-    const String& title() const { return m_title; }
-    
-    void setBackForwardData(const uint8_t* buffer, size_t size);
-    const Vector<uint8_t>& backForwardData() const { return m_backForwardData; }
+    void setTitle( const String &title )
+    {
+        m_title = title;
+    }
+    const String &title() const
+    {
+        return m_title;
+    }
 
-    void encode(CoreIPC::ArgumentEncoder&) const;
-    static PassRefPtr<WebBackForwardListItem> decode(CoreIPC::ArgumentDecoder&);
+    void setBackForwardData( const uint8_t *buffer, size_t size );
+    const Vector<uint8_t> &backForwardData() const
+    {
+        return m_backForwardData;
+    }
+
+    void encode( CoreIPC::ArgumentEncoder & ) const;
+    static PassRefPtr<WebBackForwardListItem> decode( CoreIPC::ArgumentDecoder & );
 
     static uint64_t highedUsedItemID();
 
 private:
-    WebBackForwardListItem(const String& originalURL, const String& url, const String& title, const uint8_t* backForwardData, size_t backForwardDataSize, uint64_t itemID);
+    WebBackForwardListItem( const String &originalURL, const String &url, const String &title, const uint8_t *backForwardData,
+                            size_t backForwardDataSize, uint64_t itemID );
 
-    virtual Type type() const { return APIType; }
+    virtual Type type() const
+    {
+        return APIType;
+    }
 
     String m_originalURL;
     String m_url;

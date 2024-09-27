@@ -31,53 +31,57 @@
 #include <wtf/RefCounted.h>
 #include <wtf/RefPtr.h>
 
-namespace CoreIPC {
+namespace CoreIPC
+{
 class ArgumentDecoder;
 class Connection;
 class MessageID;
 }
 
-namespace WebCore {
+namespace WebCore
+{
 class IntRect;
 class Element;
 class GraphicsLayer;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
 class WebPage;
 
-class WebFullScreenManager : public RefCounted<WebFullScreenManager> {
+class WebFullScreenManager : public RefCounted<WebFullScreenManager>
+{
 public:
-    static PassRefPtr<WebFullScreenManager> create(WebPage*);
+    static PassRefPtr<WebFullScreenManager> create( WebPage * );
     virtual ~WebFullScreenManager();
 
-    void didReceiveMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*);
+    void didReceiveMessage( CoreIPC::Connection *, CoreIPC::MessageID, CoreIPC::ArgumentDecoder * );
 
-    bool supportsFullScreen(bool withKeyboard);
-    void enterFullScreenForElement(WebCore::Element*);
-    void exitFullScreenForElement(WebCore::Element*);
+    bool supportsFullScreen( bool withKeyboard );
+    void enterFullScreenForElement( WebCore::Element * );
+    void exitFullScreenForElement( WebCore::Element * );
     void beganEnterFullScreenAnimation();
-    void finishedEnterFullScreenAnimation(bool completed);
+    void finishedEnterFullScreenAnimation( bool completed );
     void beganExitFullScreenAnimation();
-    void finishedExitFullScreenAnimation(bool completed);
-    virtual void setRootFullScreenLayer(WebCore::GraphicsLayer*) = 0;
+    void finishedExitFullScreenAnimation( bool completed );
+    virtual void setRootFullScreenLayer( WebCore::GraphicsLayer * ) = 0;
 
     void willEnterFullScreen();
     void didEnterFullScreen();
     void willExitFullScreen();
     void didExitFullScreen();
 
-    WebCore::Element* element();
+    WebCore::Element *element();
 
 protected:
-    WebFullScreenManager(WebPage*);
+    WebFullScreenManager( WebPage * );
 
-    virtual void beginEnterFullScreenAnimation(float duration) = 0;
-    virtual void beginExitFullScreenAnimation(float duration) = 0;
+    virtual void beginEnterFullScreenAnimation( float duration ) = 0;
+    virtual void beginExitFullScreenAnimation( float duration ) = 0;
     WebCore::IntRect getFullScreenRect();
 
-    void didReceiveWebFullScreenManagerMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*);
+    void didReceiveWebFullScreenManagerMessage( CoreIPC::Connection *, CoreIPC::MessageID, CoreIPC::ArgumentDecoder * );
 
     WebCore::IntRect m_initialFrame;
     RefPtr<WebPage> m_page;

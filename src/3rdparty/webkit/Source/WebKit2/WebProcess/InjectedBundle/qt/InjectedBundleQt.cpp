@@ -32,25 +32,29 @@
 
 using namespace WebCore;
 
-namespace WebKit {
-
-bool InjectedBundle::load(APIObject* initializationUserData)
+namespace WebKit
 {
-    m_platformBundle.setFileName(static_cast<QString>(m_path));
-    if (!m_platformBundle.load()) {
-        qWarning("Error loading the injected bundle: %s", qPrintable(m_platformBundle.errorString()));
+
+bool InjectedBundle::load( APIObject *initializationUserData )
+{
+    m_platformBundle.setFileName( static_cast<QString>( m_path ) );
+
+    if ( !m_platformBundle.load() )
+    {
+        qWarning( "Error loading the injected bundle: %s", qPrintable( m_platformBundle.errorString() ) );
         return false;
     }
 
     WKBundleInitializeFunctionPtr initializeFunction =
-            reinterpret_cast<WKBundleInitializeFunctionPtr>(m_platformBundle.resolve("WKBundleInitialize"));
+        reinterpret_cast<WKBundleInitializeFunctionPtr>( m_platformBundle.resolve( "WKBundleInitialize" ) );
 
-    if (!initializeFunction) {
-        qWarning("Error resolving WKBundleInitialize: %s", qPrintable(m_platformBundle.errorString()));
+    if ( !initializeFunction )
+    {
+        qWarning( "Error resolving WKBundleInitialize: %s", qPrintable( m_platformBundle.errorString() ) );
         return false;
     }
 
-    initializeFunction(toAPI(this), toAPI(initializationUserData));
+    initializeFunction( toAPI( this ), toAPI( initializationUserData ) );
     return true;
 }
 

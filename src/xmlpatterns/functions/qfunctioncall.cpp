@@ -35,100 +35,116 @@ using namespace QPatternist;
 
 SequenceType::List FunctionCall::expectedOperandTypes() const
 {
-   const FunctionArgument::List args(signature()->arguments());
-   FunctionArgument::List::const_iterator it(args.constBegin());
-   const FunctionArgument::List::const_iterator end(args.constEnd());
-   // TODO reserve/resize()
-   SequenceType::List result;
+    const FunctionArgument::List args( signature()->arguments() );
+    FunctionArgument::List::const_iterator it( args.constBegin() );
+    const FunctionArgument::List::const_iterator end( args.constEnd() );
+    // TODO reserve/resize()
+    SequenceType::List result;
 
-   for (; it != end; ++it) {
-      result.append((*it)->type());
-   }
+    for ( ; it != end; ++it )
+    {
+        result.append( ( *it )->type() );
+    }
 
-   return result;
+    return result;
 }
 
-Expression::Ptr FunctionCall::typeCheck(const StaticContext::Ptr &context,
-                                        const SequenceType::Ptr &reqType)
+Expression::Ptr FunctionCall::typeCheck( const StaticContext::Ptr &context,
+        const SequenceType::Ptr &reqType )
 {
-   /* We don't cache properties() at some stages because it can be invalidated
-    * by the typeCheck(). */
+    /* We don't cache properties() at some stages because it can be invalidated
+     * by the typeCheck(). */
 
-   const FunctionSignature::Arity maxArgs = signature()->maximumArguments();
-   /* We do this before the typeCheck() such that the appropriate conversions
-    * are applied to the ContextItem. */
-   if (m_operands.count() < maxArgs &&
-         has(UseContextItem)) {
-      m_operands.append(Expression::Ptr(new ContextItem()));
-      context->wrapExpressionWith(this, m_operands.last());
-   }
+    const FunctionSignature::Arity maxArgs = signature()->maximumArguments();
 
-   const Expression::Ptr me(UnlimitedContainer::typeCheck(context, reqType));
-   if (me != this) {
-      return me;
-   }
+    /* We do this before the typeCheck() such that the appropriate conversions
+     * are applied to the ContextItem. */
+    if ( m_operands.count() < maxArgs &&
+            has( UseContextItem ) )
+    {
+        m_operands.append( Expression::Ptr( new ContextItem() ) );
+        context->wrapExpressionWith( this, m_operands.last() );
+    }
 
-   const Properties props(properties());
+    const Expression::Ptr me( UnlimitedContainer::typeCheck( context, reqType ) );
 
-   if (props.testFlag(RewriteToEmptyOnEmpty) &&
-         *CommonSequenceTypes::Empty == *m_operands.first()->staticType()->itemType()) {
-      return EmptySequence::create(this, context);
-   }
+    if ( me != this )
+    {
+        return me;
+    }
 
-   if (props.testFlag(LastOperandIsCollation) &&
-         m_operands.count() == maxArgs) {
-      m_operands.last() = Expression::Ptr(new CollationChecker(m_operands.last()));
-      context->wrapExpressionWith(this, m_operands.last());
-   }
+    const Properties props( properties() );
 
-   return me;
+    if ( props.testFlag( RewriteToEmptyOnEmpty ) &&
+            *CommonSequenceTypes::Empty == *m_operands.first()->staticType()->itemType() )
+    {
+        return EmptySequence::create( this, context );
+    }
+
+    if ( props.testFlag( LastOperandIsCollation ) &&
+            m_operands.count() == maxArgs )
+    {
+        m_operands.last() = Expression::Ptr( new CollationChecker( m_operands.last() ) );
+        context->wrapExpressionWith( this, m_operands.last() );
+    }
+
+    return me;
 }
 
-void FunctionCall::setSignature(const FunctionSignature::Ptr &sign)
+void FunctionCall::setSignature( const FunctionSignature::Ptr &sign )
 {
-   m_signature = sign;
+    m_signature = sign;
 }
 
 FunctionSignature::Ptr FunctionCall::signature() const
 {
-   Q_ASSERT(m_signature); /* It really should be set. */
-   return m_signature;
+    Q_ASSERT( m_signature ); /* It really should be set. */
+    return m_signature;
 }
 
 SequenceType::Ptr FunctionCall::staticType() const
 {
-   Q_ASSERT(m_signature);
-   if (has(EmptynessFollowsChild)) {
-      if (m_operands.isEmpty()) {
-         /* This is a function which uses the context item when having no arguments. */
-         return signature()->returnType();
-      }
-      const Cardinality card(m_operands.first()->staticType()->cardinality());
-      if (card.allowsEmpty()) {
-         return signature()->returnType();
-      } else {
-         /* Remove empty. */
-         return makeGenericSequenceType(signature()->returnType()->itemType(),
-                                        card & Cardinality::oneOrMore());
-      }
-   }
-   return signature()->returnType();
+    Q_ASSERT( m_signature );
+
+    if ( has( EmptynessFollowsChild ) )
+    {
+        if ( m_operands.isEmpty() )
+        {
+            /* This is a function which uses the context item when having no arguments. */
+            return signature()->returnType();
+        }
+
+        const Cardinality card( m_operands.first()->staticType()->cardinality() );
+
+        if ( card.allowsEmpty() )
+        {
+            return signature()->returnType();
+        }
+        else
+        {
+            /* Remove empty. */
+            return makeGenericSequenceType( signature()->returnType()->itemType(),
+                                            card & Cardinality::oneOrMore() );
+        }
+    }
+
+    return signature()->returnType();
 }
 
 Expression::Properties FunctionCall::properties() const
 {
-   Q_ASSERT(m_signature);
-   return signature()->properties();
+    Q_ASSERT( m_signature );
+    return signature()->properties();
 }
 
-ExpressionVisitorResult::Ptr FunctionCall::accept(const ExpressionVisitor::Ptr &visitor) const
+ExpressionVisitorResult::Ptr FunctionCall::accept( const ExpressionVisitor::Ptr &visitor ) const
 {
-   return visitor->visit(this);
+    return visitor->visit( this );
 }
 
 Expression::ID FunctionCall::id() const
 {
-   Q_ASSERT(m_signature);
-   return m_signature->id();
+    Q_ASSERT( m_signature );
+    return m_signature->id();
 }
 

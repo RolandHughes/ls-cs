@@ -30,18 +30,18 @@
 
 class QGstreamerMessage
 {
- public:
-   QGstreamerMessage();
-   QGstreamerMessage(GstMessage *message);
-   QGstreamerMessage(QGstreamerMessage const &m);
-   ~QGstreamerMessage();
+public:
+    QGstreamerMessage();
+    QGstreamerMessage( GstMessage *message );
+    QGstreamerMessage( QGstreamerMessage const &m );
+    ~QGstreamerMessage();
 
-   GstMessage *rawMessage() const;
+    GstMessage *rawMessage() const;
 
-   QGstreamerMessage &operator=(QGstreamerMessage const &rhs);
+    QGstreamerMessage &operator=( QGstreamerMessage const &rhs );
 
- private:
-   GstMessage *m_message;
+private:
+    GstMessage *m_message;
 };
 
 #endif

@@ -26,9 +26,10 @@
 #ifndef NotFound_h
 #define NotFound_h
 
-namespace WTF {
+namespace WTF
+{
 
-    const size_t notFound = static_cast<size_t>(-1);
+const size_t notFound = static_cast<size_t>( -1 );
 
 } // namespace WTF
 

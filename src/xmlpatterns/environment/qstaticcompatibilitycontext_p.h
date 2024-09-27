@@ -26,16 +26,17 @@
 
 #include <qdelegatingstaticcontext_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 class StaticCompatibilityContext : public DelegatingStaticContext
 {
- public:
-   StaticCompatibilityContext(const StaticContext::Ptr &context);
+public:
+    StaticCompatibilityContext( const StaticContext::Ptr &context );
 
-   /**
-    * Returns always @c true.
-    */
-   bool compatModeEnabled() const override;
+    /**
+     * Returns always @c true.
+     */
+    bool compatModeEnabled() const override;
 };
 }
 

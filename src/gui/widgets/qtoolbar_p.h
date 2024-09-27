@@ -36,65 +36,66 @@ class QTimer;
 
 class QToolBarPrivate : public QWidgetPrivate
 {
-   Q_DECLARE_PUBLIC(QToolBar)
+    Q_DECLARE_PUBLIC( QToolBar )
 
- public:
-   inline QToolBarPrivate()
-      : explicitIconSize(false), explicitToolButtonStyle(false), movable(true), floatable(true),
-        allowedAreas(Qt::AllToolBarAreas), orientation(Qt::Horizontal),
-        toolButtonStyle(Qt::ToolButtonIconOnly), layout(nullptr), state(nullptr)
+public:
+    inline QToolBarPrivate()
+        : explicitIconSize( false ), explicitToolButtonStyle( false ), movable( true ), floatable( true ),
+          allowedAreas( Qt::AllToolBarAreas ), orientation( Qt::Horizontal ),
+          toolButtonStyle( Qt::ToolButtonIconOnly ), layout( nullptr ), state( nullptr )
 #ifdef Q_OS_DARWIN
-      , macWindowDragging(false)
+        , macWindowDragging( false )
 #endif
-   {
-   }
+    {
+    }
 
-   void init();
-   void actionTriggered();
-   void _q_toggleView(bool b);
-   void _q_updateIconSize(const QSize &sz);
-   void _q_updateToolButtonStyle(Qt::ToolButtonStyle style);
+    void init();
+    void actionTriggered();
+    void _q_toggleView( bool b );
+    void _q_updateIconSize( const QSize &sz );
+    void _q_updateToolButtonStyle( Qt::ToolButtonStyle style );
 
-   bool explicitIconSize;
-   bool explicitToolButtonStyle;
-   bool movable;
-   bool floatable;
-   Qt::ToolBarAreas allowedAreas;
-   Qt::Orientation orientation;
-   Qt::ToolButtonStyle toolButtonStyle;
-   QSize iconSize;
+    bool explicitIconSize;
+    bool explicitToolButtonStyle;
+    bool movable;
+    bool floatable;
+    Qt::ToolBarAreas allowedAreas;
+    Qt::Orientation orientation;
+    Qt::ToolButtonStyle toolButtonStyle;
+    QSize iconSize;
 
-   QAction *toggleViewAction;
+    QAction *toggleViewAction;
 
-   QToolBarLayout *layout;
+    QToolBarLayout *layout;
 
-   struct DragState {
-      QPoint pressPos;
-      bool dragging;
-      bool moving;
-      QLayoutItem *widgetItem;
-   };
-   DragState *state;
+    struct DragState
+    {
+        QPoint pressPos;
+        bool dragging;
+        bool moving;
+        QLayoutItem *widgetItem;
+    };
+    DragState *state;
 
 #ifdef Q_OS_DARWIN
-   bool macWindowDragging;
-   QPoint macWindowDragPressPosition;
+    bool macWindowDragging;
+    QPoint macWindowDragPressPosition;
 #endif
 
-   bool mousePressEvent(QMouseEvent *e);
-   bool mouseReleaseEvent(QMouseEvent *e);
-   bool mouseMoveEvent(QMouseEvent *e);
+    bool mousePressEvent( QMouseEvent *e );
+    bool mouseReleaseEvent( QMouseEvent *e );
+    bool mouseMoveEvent( QMouseEvent *e );
 
-   void updateWindowFlags(bool floating, bool unplug = false);
-   void setWindowState(bool floating, bool unplug = false, const QRect &rect = QRect());
-   void initDrag(const QPoint &pos);
-   void startDrag(bool moving = false);
-   void endDrag();
+    void updateWindowFlags( bool floating, bool unplug = false );
+    void setWindowState( bool floating, bool unplug = false, const QRect &rect = QRect() );
+    void initDrag( const QPoint &pos );
+    void startDrag( bool moving = false );
+    void endDrag();
 
-   void unplug(const QRect &r);
-   void plug(const QRect &r);
+    void unplug( const QRect &r );
+    void plug( const QRect &r );
 
-   QBasicTimer waitForPopupTimer;
+    QBasicTimer waitForPopupTimer;
 };
 
 #endif // QT_NO_TOOLBAR

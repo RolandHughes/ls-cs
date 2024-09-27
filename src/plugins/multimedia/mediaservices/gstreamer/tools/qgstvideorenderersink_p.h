@@ -42,111 +42,111 @@ class QAbstractVideoSurface;
 
 class QGstDefaultVideoRenderer : public QGstVideoRenderer
 {
- public:
-   QGstDefaultVideoRenderer();
-   ~QGstDefaultVideoRenderer();
+public:
+    QGstDefaultVideoRenderer();
+    ~QGstDefaultVideoRenderer();
 
-   GstCaps *getCaps(QAbstractVideoSurface *surface) override;
-   bool start(QAbstractVideoSurface *surface, GstCaps *caps) override;
-   void stop(QAbstractVideoSurface *surface) override;
+    GstCaps *getCaps( QAbstractVideoSurface *surface ) override;
+    bool start( QAbstractVideoSurface *surface, GstCaps *caps ) override;
+    void stop( QAbstractVideoSurface *surface ) override;
 
-   bool proposeAllocation(GstQuery *query) override;
+    bool proposeAllocation( GstQuery *query ) override;
 
-   bool present(QAbstractVideoSurface *surface, GstBuffer *buffer) override;
-   void flush(QAbstractVideoSurface *surface) override;
+    bool present( QAbstractVideoSurface *surface, GstBuffer *buffer ) override;
+    void flush( QAbstractVideoSurface *surface ) override;
 
- private:
-   QVideoSurfaceFormat m_format;
-   GstVideoInfo m_videoInfo;
-   bool m_flushed;
+private:
+    QVideoSurfaceFormat m_format;
+    GstVideoInfo m_videoInfo;
+    bool m_flushed;
 };
 
 class QVideoSurfaceGstDelegate : public QObject
 {
-   CS_OBJECT(QVideoSurfaceGstDelegate)
+    CS_OBJECT( QVideoSurfaceGstDelegate )
 
- public:
-   QVideoSurfaceGstDelegate(QAbstractVideoSurface *surface);
-   ~QVideoSurfaceGstDelegate();
+public:
+    QVideoSurfaceGstDelegate( QAbstractVideoSurface *surface );
+    ~QVideoSurfaceGstDelegate();
 
-   GstCaps *caps();
+    GstCaps *caps();
 
-   bool start(GstCaps *caps);
-   void stop();
-   void unlock();
-   bool proposeAllocation(GstQuery *query);
+    bool start( GstCaps *caps );
+    void stop();
+    void unlock();
+    bool proposeAllocation( GstQuery *query );
 
-   void flush();
+    void flush();
 
-   GstFlowReturn render(GstBuffer *buffer);
+    GstFlowReturn render( GstBuffer *buffer );
 
-   bool event(QEvent *event) override;
+    bool event( QEvent *event ) override;
 
- private:
-   CS_SLOT_1(Private, bool handleEvent(QMutexLocker *locker))
-   CS_SLOT_2(handleEvent)
+private:
+    CS_SLOT_1( Private, bool handleEvent( QMutexLocker *locker ) )
+    CS_SLOT_2( handleEvent )
 
-   CS_SLOT_1(Private, void updateSupportedFormats())
-   CS_SLOT_2(updateSupportedFormats)
+    CS_SLOT_1( Private, void updateSupportedFormats() )
+    CS_SLOT_2( updateSupportedFormats )
 
-   void notify();
-   bool waitForAsyncEvent(QMutexLocker *locker, QWaitCondition *condition, unsigned long time);
+    void notify();
+    bool waitForAsyncEvent( QMutexLocker *locker, QWaitCondition *condition, unsigned long time );
 
-   QPointer<QAbstractVideoSurface> m_surface;
+    QPointer<QAbstractVideoSurface> m_surface;
 
-   QMutex m_mutex;
-   QWaitCondition m_setupCondition;
-   QWaitCondition m_renderCondition;
-   GstFlowReturn m_renderReturn;
-   QList<QGstVideoRenderer *> m_renderers;
-   QGstVideoRenderer *m_renderer;
-   QGstVideoRenderer *m_activeRenderer;
+    QMutex m_mutex;
+    QWaitCondition m_setupCondition;
+    QWaitCondition m_renderCondition;
+    GstFlowReturn m_renderReturn;
+    QList<QGstVideoRenderer *> m_renderers;
+    QGstVideoRenderer *m_renderer;
+    QGstVideoRenderer *m_activeRenderer;
 
-   GstCaps *m_surfaceCaps;
-   GstCaps *m_startCaps;
-   GstBuffer *m_renderBuffer;
+    GstCaps *m_surfaceCaps;
+    GstCaps *m_startCaps;
+    GstBuffer *m_renderBuffer;
 
-   bool m_notified;
-   bool m_stop;
-   bool m_flush;
+    bool m_notified;
+    bool m_stop;
+    bool m_flush;
 };
 
 class QGstVideoRendererSink
 {
- public:
-   GstVideoSink parent;
+public:
+    GstVideoSink parent;
 
-   static QGstVideoRendererSink *createSink(QAbstractVideoSurface *surface);
+    static QGstVideoRendererSink *createSink( QAbstractVideoSurface *surface );
 
- private:
-   static GType get_type();
-   static void class_init(gpointer g_class, gpointer class_data);
-   static void base_init(gpointer g_class);
-   static void instance_init(GTypeInstance *instance, gpointer g_class);
+private:
+    static GType get_type();
+    static void class_init( gpointer g_class, gpointer class_data );
+    static void base_init( gpointer g_class );
+    static void instance_init( GTypeInstance *instance, gpointer g_class );
 
-   static void finalize(GObject *object);
+    static void finalize( GObject *object );
 
-   static void handleShowPrerollChange(GObject *o, GParamSpec *p, gpointer d);
+    static void handleShowPrerollChange( GObject *o, GParamSpec *p, gpointer d );
 
-   static GstStateChangeReturn change_state(GstElement *element, GstStateChange transition);
+    static GstStateChangeReturn change_state( GstElement *element, GstStateChange transition );
 
-   static GstCaps *get_caps(GstBaseSink *sink, GstCaps *filter);
+    static GstCaps *get_caps( GstBaseSink *sink, GstCaps *filter );
 
-   static gboolean set_caps(GstBaseSink *sink, GstCaps *caps);
-   static gboolean propose_allocation(GstBaseSink *sink, GstQuery *query);
-   static gboolean stop(GstBaseSink *sink);
-   static gboolean unlock(GstBaseSink *sink);
+    static gboolean set_caps( GstBaseSink *sink, GstCaps *caps );
+    static gboolean propose_allocation( GstBaseSink *sink, GstQuery *query );
+    static gboolean stop( GstBaseSink *sink );
+    static gboolean unlock( GstBaseSink *sink );
 
-   static GstFlowReturn show_frame(GstVideoSink *sink, GstBuffer *buffer);
+    static GstFlowReturn show_frame( GstVideoSink *sink, GstBuffer *buffer );
 
-   QVideoSurfaceGstDelegate *delegate;
+    QVideoSurfaceGstDelegate *delegate;
 };
 
 
 class QGstVideoRendererSinkClass
 {
- public:
-   GstVideoSinkClass parent_class;
+public:
+    GstVideoSinkClass parent_class;
 };
 
 #endif

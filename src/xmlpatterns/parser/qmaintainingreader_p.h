@@ -35,57 +35,58 @@
 
 class QUrl;
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 template<typename TokenLookupClass, typename LookupKey = typename TokenLookupClass::NodeName>
 class ElementDescription
 {
- public:
-   typedef QHash<LookupKey, ElementDescription<TokenLookupClass, LookupKey> > Hash;
-   QSet<typename TokenLookupClass::NodeName> requiredAttributes;
-   QSet<typename TokenLookupClass::NodeName> optionalAttributes;
+public:
+    typedef QHash<LookupKey, ElementDescription<TokenLookupClass, LookupKey> > Hash;
+    QSet<typename TokenLookupClass::NodeName> requiredAttributes;
+    QSet<typename TokenLookupClass::NodeName> optionalAttributes;
 };
 
 
 template<typename TokenLookupClass, typename LookupKey = typename TokenLookupClass::NodeName>
 class MaintainingReader : public QXmlStreamReader, protected TokenLookupClass
 {
- protected:
-   MaintainingReader(const typename ElementDescription<TokenLookupClass, LookupKey>::Hash &elementDescriptions,
-                     const QSet<typename TokenLookupClass::NodeName> &standardAttributes,
-                     const ReportContext::Ptr &context, QIODevice *const queryDevice);
+protected:
+    MaintainingReader( const typename ElementDescription<TokenLookupClass, LookupKey>::Hash &elementDescriptions,
+                       const QSet<typename TokenLookupClass::NodeName> &standardAttributes,
+                       const ReportContext::Ptr &context, QIODevice *const queryDevice );
 
-   virtual ~MaintainingReader();
+    virtual ~MaintainingReader();
 
-   QXmlStreamReader::TokenType readNext();
+    QXmlStreamReader::TokenType readNext();
 
-   inline typename TokenLookupClass::NodeName currentElementName() const;
-   void error(const QString &message, const ReportContext::ErrorCode code) const;
-   void warning(const QString &message) const;
+    inline typename TokenLookupClass::NodeName currentElementName() const;
+    void error( const QString &message, const ReportContext::ErrorCode code ) const;
+    void warning( const QString &message ) const;
 
-   virtual QUrl documentURI() const = 0;
-   virtual bool isAnyAttributeAllowed() const = 0;
+    virtual QUrl documentURI() const = 0;
+    virtual bool isAnyAttributeAllowed() const = 0;
 
-   bool isWhitespace() const;
-   void validateElement(const LookupKey name) const;
-   QString readAttribute(const QString &localName, const QString &namespaceURI = QString()) const;
-   bool hasAttribute(const QString &namespaceURI, const QString &localName) const;
-   inline bool hasAttribute(const QString &localName) const;
+    bool isWhitespace() const;
+    void validateElement( const LookupKey name ) const;
+    QString readAttribute( const QString &localName, const QString &namespaceURI = QString() ) const;
+    bool hasAttribute( const QString &namespaceURI, const QString &localName ) const;
+    inline bool hasAttribute( const QString &localName ) const;
 
-   QXmlStreamAttributes m_currentAttributes;
-   bool m_hasHandledStandardAttributes;
-   QStack<bool> m_stripWhitespace;
+    QXmlStreamAttributes m_currentAttributes;
+    bool m_hasHandledStandardAttributes;
+    QStack<bool> m_stripWhitespace;
 
- private:
-   MaintainingReader(const MaintainingReader &) = delete;
-   MaintainingReader &operator=(const MaintainingReader &) = delete;
+private:
+    MaintainingReader( const MaintainingReader & ) = delete;
+    MaintainingReader &operator=( const MaintainingReader & ) = delete;
 
-   inline QSourceLocation currentLocation() const;
+    inline QSourceLocation currentLocation() const;
 
-   typename TokenLookupClass::NodeName m_currentElementName;
-   const ReportContext::Ptr m_context;
-   const typename ElementDescription<TokenLookupClass, LookupKey>::Hash m_elementDescriptions;
-   const QSet<typename TokenLookupClass::NodeName> m_standardAttributes;
+    typename TokenLookupClass::NodeName m_currentElementName;
+    const ReportContext::Ptr m_context;
+    const typename ElementDescription<TokenLookupClass, LookupKey>::Hash m_elementDescriptions;
+    const QSet<typename TokenLookupClass::NodeName> m_standardAttributes;
 };
 
 #include "qmaintainingreader.cpp"

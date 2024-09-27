@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef MacroAssemblerX86_h
@@ -30,12 +30,14 @@
 
 #include "MacroAssemblerX86Common.h"
 
-namespace JSC {
+namespace JSC
+{
 
-class MacroAssemblerX86 : public MacroAssemblerX86Common {
+class MacroAssemblerX86 : public MacroAssemblerX86Common
+{
 public:
     MacroAssemblerX86()
-        : m_isSSE2Present(isSSE2Present())
+        : m_isSSE2Present( isSSE2Present() )
     {
     }
 
@@ -52,120 +54,131 @@ public:
     using MacroAssemblerX86Common::loadDouble;
     using MacroAssemblerX86Common::convertInt32ToDouble;
 
-    void add32(TrustedImm32 imm, RegisterID src, RegisterID dest)
+    void add32( TrustedImm32 imm, RegisterID src, RegisterID dest )
     {
-        m_assembler.leal_mr(imm.m_value, src, dest);
+        m_assembler.leal_mr( imm.m_value, src, dest );
     }
 
-    void add32(TrustedImm32 imm, AbsoluteAddress address)
+    void add32( TrustedImm32 imm, AbsoluteAddress address )
     {
-        m_assembler.addl_im(imm.m_value, address.m_ptr);
-    }
-    
-    void addWithCarry32(TrustedImm32 imm, AbsoluteAddress address)
-    {
-        m_assembler.adcl_im(imm.m_value, address.m_ptr);
-    }
-    
-    void and32(TrustedImm32 imm, AbsoluteAddress address)
-    {
-        m_assembler.andl_im(imm.m_value, address.m_ptr);
-    }
-    
-    void or32(TrustedImm32 imm, AbsoluteAddress address)
-    {
-        m_assembler.orl_im(imm.m_value, address.m_ptr);
+        m_assembler.addl_im( imm.m_value, address.m_ptr );
     }
 
-    void sub32(TrustedImm32 imm, AbsoluteAddress address)
+    void addWithCarry32( TrustedImm32 imm, AbsoluteAddress address )
     {
-        m_assembler.subl_im(imm.m_value, address.m_ptr);
+        m_assembler.adcl_im( imm.m_value, address.m_ptr );
     }
 
-    void load32(void* address, RegisterID dest)
+    void and32( TrustedImm32 imm, AbsoluteAddress address )
     {
-        m_assembler.movl_mr(address, dest);
+        m_assembler.andl_im( imm.m_value, address.m_ptr );
     }
 
-    void loadDouble(const void* address, FPRegisterID dest)
+    void or32( TrustedImm32 imm, AbsoluteAddress address )
     {
-        ASSERT(isSSE2Present());
-        m_assembler.movsd_mr(address, dest);
+        m_assembler.orl_im( imm.m_value, address.m_ptr );
     }
 
-    void convertInt32ToDouble(AbsoluteAddress src, FPRegisterID dest)
+    void sub32( TrustedImm32 imm, AbsoluteAddress address )
     {
-        m_assembler.cvtsi2sd_mr(src.m_ptr, dest);
+        m_assembler.subl_im( imm.m_value, address.m_ptr );
     }
 
-    void store32(TrustedImm32 imm, void* address)
+    void load32( void *address, RegisterID dest )
     {
-        m_assembler.movl_i32m(imm.m_value, address);
+        m_assembler.movl_mr( address, dest );
     }
 
-    void store32(RegisterID src, void* address)
+    void loadDouble( const void *address, FPRegisterID dest )
     {
-        m_assembler.movl_rm(src, address);
+        ASSERT( isSSE2Present() );
+        m_assembler.movsd_mr( address, dest );
     }
 
-    Jump branch32(RelationalCondition cond, AbsoluteAddress left, RegisterID right)
+    void convertInt32ToDouble( AbsoluteAddress src, FPRegisterID dest )
     {
-        m_assembler.cmpl_rm(right, left.m_ptr);
-        return Jump(m_assembler.jCC(x86Condition(cond)));
+        m_assembler.cvtsi2sd_mr( src.m_ptr, dest );
     }
 
-    Jump branch32(RelationalCondition cond, AbsoluteAddress left, TrustedImm32 right)
+    void store32( TrustedImm32 imm, void *address )
     {
-        m_assembler.cmpl_im(right.m_value, left.m_ptr);
-        return Jump(m_assembler.jCC(x86Condition(cond)));
+        m_assembler.movl_i32m( imm.m_value, address );
+    }
+
+    void store32( RegisterID src, void *address )
+    {
+        m_assembler.movl_rm( src, address );
+    }
+
+    Jump branch32( RelationalCondition cond, AbsoluteAddress left, RegisterID right )
+    {
+        m_assembler.cmpl_rm( right, left.m_ptr );
+        return Jump( m_assembler.jCC( x86Condition( cond ) ) );
+    }
+
+    Jump branch32( RelationalCondition cond, AbsoluteAddress left, TrustedImm32 right )
+    {
+        m_assembler.cmpl_im( right.m_value, left.m_ptr );
+        return Jump( m_assembler.jCC( x86Condition( cond ) ) );
     }
 
     Call call()
     {
-        return Call(m_assembler.call(), Call::Linkable);
+        return Call( m_assembler.call(), Call::Linkable );
     }
 
     Call tailRecursiveCall()
     {
-        return Call::fromTailJump(jump());
+        return Call::fromTailJump( jump() );
     }
 
-    Call makeTailRecursiveCall(Jump oldJump)
+    Call makeTailRecursiveCall( Jump oldJump )
     {
-        return Call::fromTailJump(oldJump);
+        return Call::fromTailJump( oldJump );
     }
 
 
-    DataLabelPtr moveWithPatch(TrustedImmPtr initialValue, RegisterID dest)
+    DataLabelPtr moveWithPatch( TrustedImmPtr initialValue, RegisterID dest )
     {
-        m_assembler.movl_i32r(initialValue.asIntptr(), dest);
-        return DataLabelPtr(this);
+        m_assembler.movl_i32r( initialValue.asIntptr(), dest );
+        return DataLabelPtr( this );
     }
 
-    Jump branchPtrWithPatch(RelationalCondition cond, RegisterID left, DataLabelPtr& dataLabel, TrustedImmPtr initialRightValue = TrustedImmPtr(0))
+    Jump branchPtrWithPatch( RelationalCondition cond, RegisterID left, DataLabelPtr &dataLabel,
+                             TrustedImmPtr initialRightValue = TrustedImmPtr( 0 ) )
     {
-        m_assembler.cmpl_ir_force32(initialRightValue.asIntptr(), left);
-        dataLabel = DataLabelPtr(this);
-        return Jump(m_assembler.jCC(x86Condition(cond)));
+        m_assembler.cmpl_ir_force32( initialRightValue.asIntptr(), left );
+        dataLabel = DataLabelPtr( this );
+        return Jump( m_assembler.jCC( x86Condition( cond ) ) );
     }
 
-    Jump branchPtrWithPatch(RelationalCondition cond, Address left, DataLabelPtr& dataLabel, TrustedImmPtr initialRightValue = TrustedImmPtr(0))
+    Jump branchPtrWithPatch( RelationalCondition cond, Address left, DataLabelPtr &dataLabel,
+                             TrustedImmPtr initialRightValue = TrustedImmPtr( 0 ) )
     {
-        m_assembler.cmpl_im_force32(initialRightValue.asIntptr(), left.offset, left.base);
-        dataLabel = DataLabelPtr(this);
-        return Jump(m_assembler.jCC(x86Condition(cond)));
+        m_assembler.cmpl_im_force32( initialRightValue.asIntptr(), left.offset, left.base );
+        dataLabel = DataLabelPtr( this );
+        return Jump( m_assembler.jCC( x86Condition( cond ) ) );
     }
 
-    DataLabelPtr storePtrWithPatch(TrustedImmPtr initialValue, ImplicitAddress address)
+    DataLabelPtr storePtrWithPatch( TrustedImmPtr initialValue, ImplicitAddress address )
     {
-        m_assembler.movl_i32m(initialValue.asIntptr(), address.offset, address.base);
-        return DataLabelPtr(this);
+        m_assembler.movl_i32m( initialValue.asIntptr(), address.offset, address.base );
+        return DataLabelPtr( this );
     }
 
-    bool supportsFloatingPoint() const { return m_isSSE2Present; }
+    bool supportsFloatingPoint() const
+    {
+        return m_isSSE2Present;
+    }
     // See comment on MacroAssemblerARMv7::supportsFloatingPointTruncate()
-    bool supportsFloatingPointTruncate() const { return m_isSSE2Present; }
-    bool supportsFloatingPointSqrt() const { return m_isSSE2Present; }
+    bool supportsFloatingPointTruncate() const
+    {
+        return m_isSSE2Present;
+    }
+    bool supportsFloatingPointSqrt() const
+    {
+        return m_isSSE2Present;
+    }
 
 private:
     const bool m_isSSE2Present;
@@ -173,19 +186,19 @@ private:
     friend class LinkBuffer;
     friend class RepatchBuffer;
 
-    static void linkCall(void* code, Call call, FunctionPtr function)
+    static void linkCall( void *code, Call call, FunctionPtr function )
     {
-        X86Assembler::linkCall(code, call.m_jmp, function.value());
+        X86Assembler::linkCall( code, call.m_jmp, function.value() );
     }
 
-    static void repatchCall(CodeLocationCall call, CodeLocationLabel destination)
+    static void repatchCall( CodeLocationCall call, CodeLocationLabel destination )
     {
-        X86Assembler::relinkCall(call.dataLocation(), destination.executableAddress());
+        X86Assembler::relinkCall( call.dataLocation(), destination.executableAddress() );
     }
 
-    static void repatchCall(CodeLocationCall call, FunctionPtr destination)
+    static void repatchCall( CodeLocationCall call, FunctionPtr destination )
     {
-        X86Assembler::relinkCall(call.dataLocation(), destination.executableAddress());
+        X86Assembler::relinkCall( call.dataLocation(), destination.executableAddress() );
     }
 };
 

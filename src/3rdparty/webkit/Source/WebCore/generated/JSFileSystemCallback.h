@@ -28,24 +28,26 @@
 #include "JSCallbackData.h"
 #include <wtf/Forward.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class JSFileSystemCallback : public FileSystemCallback, public ActiveDOMCallback {
+class JSFileSystemCallback : public FileSystemCallback, public ActiveDOMCallback
+{
 public:
-    static PassRefPtr<JSFileSystemCallback> create(JSC::JSObject* callback, JSDOMGlobalObject* globalObject)
+    static PassRefPtr<JSFileSystemCallback> create( JSC::JSObject *callback, JSDOMGlobalObject *globalObject )
     {
-        return adoptRef(new JSFileSystemCallback(callback, globalObject));
+        return adoptRef( new JSFileSystemCallback( callback, globalObject ) );
     }
 
     virtual ~JSFileSystemCallback();
 
     // Functions
-    virtual bool handleEvent(DOMFileSystem* fileSystem);
+    virtual bool handleEvent( DOMFileSystem *fileSystem );
 
 private:
-    JSFileSystemCallback(JSC::JSObject* callback, JSDOMGlobalObject*);
+    JSFileSystemCallback( JSC::JSObject *callback, JSDOMGlobalObject * );
 
-    JSCallbackData* m_data;
+    JSCallbackData *m_data;
 };
 
 } // namespace WebCore

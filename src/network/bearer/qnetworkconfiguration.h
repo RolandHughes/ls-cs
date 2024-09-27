@@ -33,88 +33,95 @@ class QNetworkConfigurationPrivate;
 
 class Q_NETWORK_EXPORT QNetworkConfiguration
 {
- public:
-  enum Type {
-      InternetAccessPoint = 0,
-      ServiceNetwork,
-      UserChoice,
-      Invalid
-   };
+public:
+    enum Type
+    {
+        InternetAccessPoint = 0,
+        ServiceNetwork,
+        UserChoice,
+        Invalid
+    };
 
-   enum Purpose {
-      UnknownPurpose = 0,
-      PublicPurpose,
-      PrivatePurpose,
-      ServiceSpecificPurpose
-   };
+    enum Purpose
+    {
+        UnknownPurpose = 0,
+        PublicPurpose,
+        PrivatePurpose,
+        ServiceSpecificPurpose
+    };
 
-   enum StateFlag {
-      Undefined        = 0x0000001,
-      Defined          = 0x0000002,
-      Discovered       = 0x0000006,
-      Active           = 0x000000e
-   };
-   using StateFlags = QFlags<StateFlag>;
+    enum StateFlag
+    {
+        Undefined        = 0x0000001,
+        Defined          = 0x0000002,
+        Discovered       = 0x0000006,
+        Active           = 0x000000e
+    };
+    using StateFlags = QFlags<StateFlag>;
 
-   enum BearerType {
-      BearerUnknown,
-      BearerEthernet,
-      BearerWLAN,
-      Bearer2G,
-      BearerCDMA2000,
-      BearerWCDMA,
-      BearerHSPA,
-      BearerBluetooth,
-      BearerWiMAX,
-      BearerEVDO,
-      BearerLTE,
-      Bearer3G,
-      Bearer4G
-   };
+    enum BearerType
+    {
+        BearerUnknown,
+        BearerEthernet,
+        BearerWLAN,
+        Bearer2G,
+        BearerCDMA2000,
+        BearerWCDMA,
+        BearerHSPA,
+        BearerBluetooth,
+        BearerWiMAX,
+        BearerEVDO,
+        BearerLTE,
+        Bearer3G,
+        Bearer4G
+    };
 
-   QNetworkConfiguration();
-   QNetworkConfiguration(const QNetworkConfiguration &other);
-   ~QNetworkConfiguration();
+    QNetworkConfiguration();
+    QNetworkConfiguration( const QNetworkConfiguration &other );
+    ~QNetworkConfiguration();
 
-   QNetworkConfiguration &operator=(QNetworkConfiguration &&other)  {
-      swap(other);
-      return *this;
-   }
+    QNetworkConfiguration &operator=( QNetworkConfiguration &&other )
+    {
+        swap( other );
+        return *this;
+    }
 
-   QNetworkConfiguration &operator=(const QNetworkConfiguration &other);
+    QNetworkConfiguration &operator=( const QNetworkConfiguration &other );
 
-   bool operator==(const QNetworkConfiguration &other) const;
+    bool operator==( const QNetworkConfiguration &other ) const;
 
-   bool operator!=(const QNetworkConfiguration &other) const {
-      return !operator==(other);
-   }
+    bool operator!=( const QNetworkConfiguration &other ) const
+    {
+        return !operator==( other );
+    }
 
-   void swap(QNetworkConfiguration &other) {
-      qSwap(d, other.d);
-   }
+    void swap( QNetworkConfiguration &other )
+    {
+        qSwap( d, other.d );
+    }
 
-   StateFlags state() const;
-   Type type() const;
-   Purpose purpose() const;
+    StateFlags state() const;
+    Type type() const;
+    Purpose purpose() const;
 
-   BearerType bearerType() const;
-   BearerType bearerTypeFamily() const;
-   QString bearerTypeName() const;
+    BearerType bearerType() const;
+    BearerType bearerTypeFamily() const;
+    QString bearerTypeName() const;
 
-   QString identifier() const;
-   bool isRoamingAvailable() const;
-   QList<QNetworkConfiguration> children() const;
+    QString identifier() const;
+    bool isRoamingAvailable() const;
+    QList<QNetworkConfiguration> children() const;
 
-   QString name() const;
-   bool isValid() const;
+    QString name() const;
+    bool isValid() const;
 
- private:
-   friend class QNetworkConfigurationPrivate;
-   friend class QNetworkConfigurationManager;
-   friend class QNetworkConfigurationManagerPrivate;
-   friend class QNetworkSessionPrivate;
+private:
+    friend class QNetworkConfigurationPrivate;
+    friend class QNetworkConfigurationManager;
+    friend class QNetworkConfigurationManagerPrivate;
+    friend class QNetworkSessionPrivate;
 
-   QExplicitlySharedDataPointer<QNetworkConfigurationPrivate> d;
+    QExplicitlySharedDataPointer<QNetworkConfigurationPrivate> d;
 };
 
 #endif

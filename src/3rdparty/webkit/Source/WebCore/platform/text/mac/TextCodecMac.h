@@ -21,7 +21,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef TextCodecMac_h
@@ -30,43 +30,52 @@
 #include "TextCodec.h"
 #include <CoreServices/CoreServices.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-    typedef ::TextEncoding TECTextEncodingID;
-    const TECTextEncodingID invalidEncoding = kCFStringEncodingInvalidId;
+typedef ::TextEncoding TECTextEncodingID;
+const TECTextEncodingID invalidEncoding = kCFStringEncodingInvalidId;
 
-    class TextCodecMac : public TextCodec {
-    public:
-        static void registerEncodingNames(EncodingNameRegistrar);
-        static void registerCodecs(TextCodecRegistrar);
+class TextCodecMac : public TextCodec
+{
+public:
+    static void registerEncodingNames( EncodingNameRegistrar );
+    static void registerCodecs( TextCodecRegistrar );
 
-        explicit TextCodecMac(TECTextEncodingID);
-        virtual ~TextCodecMac();
+    explicit TextCodecMac( TECTextEncodingID );
+    virtual ~TextCodecMac();
 
-        virtual String decode(const char*, size_t length, bool flush, bool stopOnError, bool& sawError);
-        virtual CString encode(const UChar*, size_t length, UnencodableHandling);
+    virtual String decode( const char *, size_t length, bool flush, bool stopOnError, bool &sawError );
+    virtual CString encode( const UChar *, size_t length, UnencodableHandling );
 
-    private:
-        OSStatus decode(const unsigned char* inputBuffer, int inputBufferLength, int& inputLength,
-            void* outputBuffer, int outputBufferLength, int& outputLength);
+private:
+    OSStatus decode( const unsigned char *inputBuffer, int inputBufferLength, int &inputLength,
+                     void *outputBuffer, int outputBufferLength, int &outputLength );
 
-        OSStatus createTECConverter() const;
-        void releaseTECConverter() const;
+    OSStatus createTECConverter() const;
+    void releaseTECConverter() const;
 
-        TECTextEncodingID m_encoding;
-        UChar m_backslashAsCurrencySymbol;
-        unsigned m_numBufferedBytes;
-        unsigned char m_bufferedBytes[16]; // bigger than any single multi-byte character
-        mutable TECObjectRef m_converterTEC;
-    };
+    TECTextEncodingID m_encoding;
+    UChar m_backslashAsCurrencySymbol;
+    unsigned m_numBufferedBytes;
+    unsigned char m_bufferedBytes[16]; // bigger than any single multi-byte character
+    mutable TECObjectRef m_converterTEC;
+};
 
-    struct TECConverterWrapper {
-        TECConverterWrapper() : converter(0), encoding(invalidEncoding) { }
-        ~TECConverterWrapper() { if (converter) TECDisposeConverter(converter); }
+struct TECConverterWrapper
+{
+    TECConverterWrapper() : converter( 0 ), encoding( invalidEncoding ) { }
+    ~TECConverterWrapper()
+    {
+        if ( converter )
+        {
+            TECDisposeConverter( converter );
+        }
+    }
 
-        TECObjectRef converter;
-        TECTextEncodingID encoding;
-    };
+    TECObjectRef converter;
+    TECTextEncodingID encoding;
+};
 
 } // namespace WebCore
 

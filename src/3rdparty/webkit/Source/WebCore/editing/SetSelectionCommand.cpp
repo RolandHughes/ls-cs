@@ -28,33 +28,37 @@
 
 #include "Frame.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-SetSelectionCommand::SetSelectionCommand(const VisibleSelection& selection, SelectionController::SetSelectionOptions options)
-    : SimpleEditCommand(selection.base().anchorNode()->document())
-    , m_options(options)
-    , m_selectionToSet(selection)
+SetSelectionCommand::SetSelectionCommand( const VisibleSelection &selection, SelectionController::SetSelectionOptions options )
+    : SimpleEditCommand( selection.base().anchorNode()->document() )
+    , m_options( options )
+    , m_selectionToSet( selection )
 {
 }
 
 void SetSelectionCommand::doApply()
 {
-    SelectionController* selectionController = document()->frame()->selection();
-    ASSERT(selectionController);
+    SelectionController *selectionController = document()->frame()->selection();
+    ASSERT( selectionController );
 
-    if (selectionController->shouldChangeSelection(m_selectionToSet) && m_selectionToSet.isNonOrphanedCaretOrRange()) {
-        selectionController->setSelection(m_selectionToSet, m_options);
-        setEndingSelection(m_selectionToSet);
+    if ( selectionController->shouldChangeSelection( m_selectionToSet ) && m_selectionToSet.isNonOrphanedCaretOrRange() )
+    {
+        selectionController->setSelection( m_selectionToSet, m_options );
+        setEndingSelection( m_selectionToSet );
     }
 }
 
 void SetSelectionCommand::doUnapply()
 {
-    SelectionController* selectionController = document()->frame()->selection();
-    ASSERT(selectionController);
+    SelectionController *selectionController = document()->frame()->selection();
+    ASSERT( selectionController );
 
-    if (selectionController->shouldChangeSelection(startingSelection()) && startingSelection().isNonOrphanedCaretOrRange())
-        selectionController->setSelection(startingSelection(), m_options);
+    if ( selectionController->shouldChangeSelection( startingSelection() ) && startingSelection().isNonOrphanedCaretOrRange() )
+    {
+        selectionController->setSelection( startingSelection(), m_options );
+    }
 }
 
 } // namespace WebCore

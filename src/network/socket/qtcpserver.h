@@ -35,61 +35,61 @@ class QTcpSocket;
 
 class Q_NETWORK_EXPORT QTcpServer : public QObject
 {
-   NET_CS_OBJECT(QTcpServer)
+    NET_CS_OBJECT( QTcpServer )
 
- public:
-   explicit QTcpServer(QObject *parent = nullptr);
+public:
+    explicit QTcpServer( QObject *parent = nullptr );
 
-   QTcpServer(const QTcpServer &) = delete;
-   QTcpServer &operator=(const QTcpServer &) = delete;
+    QTcpServer( const QTcpServer & ) = delete;
+    QTcpServer &operator=( const QTcpServer & ) = delete;
 
-   virtual ~QTcpServer();
+    virtual ~QTcpServer();
 
-   bool listen(const QHostAddress &address = QHostAddress::Any, quint16 port = 0);
-   void close();
+    bool listen( const QHostAddress &address = QHostAddress::Any, quint16 port = 0 );
+    void close();
 
-   bool isListening() const;
+    bool isListening() const;
 
-   void setMaxPendingConnections(int numConnections);
-   int maxPendingConnections() const;
+    void setMaxPendingConnections( int numConnections );
+    int maxPendingConnections() const;
 
-   quint16 serverPort() const;
-   QHostAddress serverAddress() const;
+    quint16 serverPort() const;
+    QHostAddress serverAddress() const;
 
-   qintptr socketDescriptor() const;
-   bool setSocketDescriptor(qintptr socketDescriptor);
+    qintptr socketDescriptor() const;
+    bool setSocketDescriptor( qintptr socketDescriptor );
 
-   bool waitForNewConnection(int msec = 0, bool *timedOut = nullptr);
-   virtual bool hasPendingConnections() const;
-   virtual QTcpSocket *nextPendingConnection();
+    bool waitForNewConnection( int msec = 0, bool *timedOut = nullptr );
+    virtual bool hasPendingConnections() const;
+    virtual QTcpSocket *nextPendingConnection();
 
-   QAbstractSocket::SocketError serverError() const;
-   QString errorString() const;
+    QAbstractSocket::SocketError serverError() const;
+    QString errorString() const;
 
-   void pauseAccepting();
-   void resumeAccepting();
+    void pauseAccepting();
+    void resumeAccepting();
 
-   NET_CS_SIGNAL_1(Public, void newConnection())
-   NET_CS_SIGNAL_2(newConnection)
+    NET_CS_SIGNAL_1( Public, void newConnection() )
+    NET_CS_SIGNAL_2( newConnection )
 
-   NET_CS_SIGNAL_1(Public, void acceptError(QAbstractSocket::SocketError socketError))
-   NET_CS_SIGNAL_2(acceptError, socketError)
+    NET_CS_SIGNAL_1( Public, void acceptError( QAbstractSocket::SocketError socketError ) )
+    NET_CS_SIGNAL_2( acceptError, socketError )
 
 #ifndef QT_NO_NETWORKPROXY
-   void setProxy(const QNetworkProxy &networkProxy);
-   QNetworkProxy proxy() const;
+    void setProxy( const QNetworkProxy &networkProxy );
+    QNetworkProxy proxy() const;
 #endif
 
- protected:
-   QTcpServer(QTcpServerPrivate &dd, QObject *parent = nullptr);
+protected:
+    QTcpServer( QTcpServerPrivate &dd, QObject *parent = nullptr );
 
-   virtual void incomingConnection(qintptr socketDescriptor);
-   void addPendingConnection(QTcpSocket *socket);
+    virtual void incomingConnection( qintptr socketDescriptor );
+    void addPendingConnection( QTcpSocket *socket );
 
-   QScopedPointer<QTcpServerPrivate> d_ptr;
+    QScopedPointer<QTcpServerPrivate> d_ptr;
 
- private:
-   Q_DECLARE_PRIVATE(QTcpServer)
+private:
+    Q_DECLARE_PRIVATE( QTcpServer )
 };
 
 #endif

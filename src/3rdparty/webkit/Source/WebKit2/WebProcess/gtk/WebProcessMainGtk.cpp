@@ -36,34 +36,39 @@
 #include <unistd.h>
 #include <wtf/Threading.h>
 
-namespace WebKit {
-
-WK_EXPORT int WebProcessMainGtk(int argc, char* argv[])
+namespace WebKit
 {
-    ASSERT(argc == 2);
+
+WK_EXPORT int WebProcessMainGtk( int argc, char *argv[] )
+{
+    ASSERT( argc == 2 );
 
 #ifndef NDEBUG
-    if (g_getenv("WEBKIT2_PAUSE_WEB_PROCESS_ON_LAUNCH"))
-        sleep(30);
+
+    if ( g_getenv( "WEBKIT2_PAUSE_WEB_PROCESS_ON_LAUNCH" ) )
+    {
+        sleep( 30 );
+    }
+
 #endif
 
-    gtk_init(&argc, &argv);
+    gtk_init( &argc, &argv );
     g_type_init();
 
     JSC::initializeThreading();
     WTF::initializeMainThread();
 
     RunLoop::initializeMainRunLoop();
-    SoupSession* session = WebCore::ResourceHandle::defaultSession();
+    SoupSession *session = WebCore::ResourceHandle::defaultSession();
 
-    SoupSessionFeature* sniffer = static_cast<SoupSessionFeature*>(g_object_new(SOUP_TYPE_CONTENT_SNIFFER, NULL));
-    soup_session_add_feature(session, sniffer);
-    g_object_unref(sniffer);
+    SoupSessionFeature *sniffer = static_cast<SoupSessionFeature *>( g_object_new( SOUP_TYPE_CONTENT_SNIFFER, NULL ) );
+    soup_session_add_feature( session, sniffer );
+    g_object_unref( sniffer );
 
-    soup_session_add_feature_by_type(session, SOUP_TYPE_CONTENT_DECODER);
+    soup_session_add_feature_by_type( session, SOUP_TYPE_CONTENT_DECODER );
 
-    int socket = atoi(argv[1]);
-    WebProcess::shared().initialize(socket, RunLoop::main());
+    int socket = atoi( argv[1] );
+    WebProcess::shared().initialize( socket, RunLoop::main() );
     RunLoop::run();
 
     return 0;

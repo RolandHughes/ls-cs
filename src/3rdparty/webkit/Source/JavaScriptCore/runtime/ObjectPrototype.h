@@ -23,20 +23,22 @@
 
 #include "JSObject.h"
 
-namespace JSC {
+namespace JSC
+{
 
-    class ObjectPrototype : public JSNonFinalObject {
-    public:
-        ObjectPrototype(ExecState*, JSGlobalObject*, Structure*, Structure* functionStructure);
+class ObjectPrototype : public JSNonFinalObject
+{
+public:
+    ObjectPrototype( ExecState *, JSGlobalObject *, Structure *, Structure *functionStructure );
 
-    private:
-        virtual void put(ExecState*, const Identifier&, JSValue, PutPropertySlot&);
-        virtual bool getOwnPropertySlot(ExecState*, unsigned propertyName, PropertySlot&);
+private:
+    virtual void put( ExecState *, const Identifier &, JSValue, PutPropertySlot & );
+    virtual bool getOwnPropertySlot( ExecState *, unsigned propertyName, PropertySlot & );
 
-        bool m_hasNoPropertiesWithUInt32Names;
-    };
+    bool m_hasNoPropertiesWithUInt32Names;
+};
 
-    EncodedJSValue JSC_HOST_CALL objectProtoFuncToString(ExecState*);
+EncodedJSValue JSC_HOST_CALL objectProtoFuncToString( ExecState * );
 
 } // namespace JSC
 

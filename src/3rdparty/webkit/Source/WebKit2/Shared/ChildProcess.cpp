@@ -30,7 +30,8 @@
 #include <unistd.h>
 #endif
 
-namespace WebKit {
+namespace WebKit
+{
 
 void ChildProcess::disableTermination()
 {
@@ -40,24 +41,27 @@ void ChildProcess::disableTermination()
 
 void ChildProcess::enableTermination()
 {
-    ASSERT(m_terminationCounter > 0);
+    ASSERT( m_terminationCounter > 0 );
     m_terminationCounter--;
 
-    if (m_terminationCounter)
+    if ( m_terminationCounter )
+    {
         return;
+    }
 
-    if (!m_terminationTimeout) {
+    if ( !m_terminationTimeout )
+    {
         terminationTimerFired();
         return;
     }
 
-    m_terminationTimer.startOneShot(m_terminationTimeout);
+    m_terminationTimer.startOneShot( m_terminationTimeout );
 }
 
-ChildProcess::ChildProcess(double terminationTimeout)
-    : m_terminationTimeout(terminationTimeout)
-    , m_terminationCounter(0)
-    , m_terminationTimer(RunLoop::main(), this, &ChildProcess::terminationTimerFired)
+ChildProcess::ChildProcess( double terminationTimeout )
+    : m_terminationTimeout( terminationTimeout )
+    , m_terminationCounter( 0 )
+    , m_terminationTimer( RunLoop::main(), this, &ChildProcess::terminationTimerFired )
 {
     // FIXME: The termination timer should not be scheduled on the main run loop.
     // It won't work with the threaded mode, but it's not really useful anyway as is.
@@ -69,8 +73,10 @@ ChildProcess::~ChildProcess()
 
 void ChildProcess::terminationTimerFired()
 {
-    if (!shouldTerminate())
+    if ( !shouldTerminate() )
+    {
         return;
+    }
 
     terminate();
 }
@@ -82,19 +88,19 @@ void ChildProcess::terminate()
 
 NO_RETURN static void watchdogCallback()
 {
-    // We use _exit here since the watchdog callback is called from another thread and we don't want 
+    // We use _exit here since the watchdog callback is called from another thread and we don't want
     // global destructors or atexit handlers to be called from this thread while the main thread is busy
     // doing its thing.
-    _exit(EXIT_FAILURE);
+    _exit( EXIT_FAILURE );
 }
 
-void ChildProcess::didCloseOnConnectionWorkQueue(WorkQueue& workQueue, CoreIPC::Connection*)
+void ChildProcess::didCloseOnConnectionWorkQueue( WorkQueue &workQueue, CoreIPC::Connection * )
 {
     // If the connection has been closed and we haven't responded in the main thread for 10 seconds
     // the process will exit forcibly.
     static const double watchdogDelay = 10.0;
-    
-    workQueue.scheduleWorkAfterDelay(WorkItem::create(watchdogCallback), watchdogDelay);
+
+    workQueue.scheduleWorkAfterDelay( WorkItem::create( watchdogCallback ), watchdogDelay );
 }
-    
+
 } // namespace WebKit

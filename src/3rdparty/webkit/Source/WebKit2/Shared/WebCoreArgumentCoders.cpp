@@ -29,37 +29,49 @@
 using namespace WebCore;
 using namespace WebKit;
 
-namespace CoreIPC {
+namespace CoreIPC
+{
 
 // For now, these are CG-only. Once other platforms have createImage functions,
 // we can compile these for non-CG builds.
 #if USE(CG)
 
-void encodeImage(ArgumentEncoder* encoder, Image* image)
+void encodeImage( ArgumentEncoder *encoder, Image *image )
 {
-    RefPtr<ShareableBitmap> bitmap = ShareableBitmap::createShareable(image->size(), ShareableBitmap::SupportsAlpha);
-    bitmap->createGraphicsContext()->drawImage(image, ColorSpaceDeviceRGB, IntPoint());
+    RefPtr<ShareableBitmap> bitmap = ShareableBitmap::createShareable( image->size(), ShareableBitmap::SupportsAlpha );
+    bitmap->createGraphicsContext()->drawImage( image, ColorSpaceDeviceRGB, IntPoint() );
     ShareableBitmap::Handle handle;
-    bitmap->createHandle(handle);
+    bitmap->createHandle( handle );
 
-    encoder->encode(handle);
+    encoder->encode( handle );
 }
 
-bool decodeImage(ArgumentDecoder* decoder, RefPtr<Image>& image)
+bool decodeImage( ArgumentDecoder *decoder, RefPtr<Image> &image )
 {
     ShareableBitmap::Handle handle;
-    if (!decoder->decode(handle))
+
+    if ( !decoder->decode( handle ) )
+    {
         return false;
-    
-    RefPtr<ShareableBitmap> bitmap = ShareableBitmap::create(handle);
-    if (!bitmap)
+    }
+
+    RefPtr<ShareableBitmap> bitmap = ShareableBitmap::create( handle );
+
+    if ( !bitmap )
+    {
         return false;
-    image = createImage(bitmap.get());
-    if (!image)
+    }
+
+    image = createImage( bitmap.get() );
+
+    if ( !image )
+    {
         return false;
+    }
+
     return true;
 }
-    
+
 #endif
 
 }

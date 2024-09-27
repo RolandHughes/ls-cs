@@ -32,18 +32,18 @@
 
 class QProxyStylePrivate : public QCommonStylePrivate
 {
-   Q_DECLARE_PUBLIC(QProxyStyle)
+    Q_DECLARE_PUBLIC( QProxyStyle )
 
- public:
-   void ensureBaseStyle() const;
+public:
+    void ensureBaseStyle() const;
 
- private:
-   QProxyStylePrivate()
-      :QCommonStylePrivate(), baseStyle(nullptr)
-   {
-   }
+private:
+    QProxyStylePrivate()
+        :QCommonStylePrivate(), baseStyle( nullptr )
+    {
+    }
 
-   mutable QPointer <QStyle> baseStyle;
+    mutable QPointer <QStyle> baseStyle;
 };
 
 #endif // QT_NO_STYLE_PROXY

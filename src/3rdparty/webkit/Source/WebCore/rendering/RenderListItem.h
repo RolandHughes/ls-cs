@@ -25,48 +25,79 @@
 
 #include "RenderBlock.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class RenderListMarker;
 
-class RenderListItem : public RenderBlock {
+class RenderListItem : public RenderBlock
+{
 public:
-    explicit RenderListItem(Node*);
+    explicit RenderListItem( Node * );
 
-    int value() const { if (!m_isValueUpToDate) updateValueNow(); return m_value; }
+    int value() const
+    {
+        if ( !m_isValueUpToDate )
+        {
+            updateValueNow();
+        }
+
+        return m_value;
+    }
     void updateValue();
 
-    bool hasExplicitValue() const { return m_hasExplicitValue; }
-    int explicitValue() const { return m_explicitValue; }
-    void setExplicitValue(int value);
+    bool hasExplicitValue() const
+    {
+        return m_hasExplicitValue;
+    }
+    int explicitValue() const
+    {
+        return m_explicitValue;
+    }
+    void setExplicitValue( int value );
     void clearExplicitValue();
 
-    void setNotInList(bool notInList) { m_notInList = notInList; }
-    bool notInList() const { return m_notInList; }
+    void setNotInList( bool notInList )
+    {
+        m_notInList = notInList;
+    }
+    bool notInList() const
+    {
+        return m_notInList;
+    }
 
-    const String& markerText() const;
+    const String &markerText() const;
     String markerTextWithSuffix() const;
 
     void updateListMarkerNumbers();
 
 private:
-    virtual const char* renderName() const { return "RenderListItem"; }
+    virtual const char *renderName() const
+    {
+        return "RenderListItem";
+    }
 
-    virtual bool isListItem() const { return true; }
-    
+    virtual bool isListItem() const
+    {
+        return true;
+    }
+
     virtual void destroy();
 
     virtual bool isEmpty() const;
-    virtual void paint(PaintInfo&, int tx, int ty);
+    virtual void paint( PaintInfo &, int tx, int ty );
 
     virtual void layout();
     virtual void computePreferredLogicalWidths();
 
     void positionListMarker();
 
-    virtual void styleDidChange(StyleDifference, const RenderStyle* oldStyle);
+    virtual void styleDidChange( StyleDifference, const RenderStyle *oldStyle );
 
-    virtual bool requiresForcedStyleRecalcPropagation() const { return true; }
+    virtual bool requiresForcedStyleRecalcPropagation() const
+    {
+        return true;
+    }
 
     virtual void addOverflowFromChildren();
 
@@ -75,7 +106,7 @@ private:
     void updateValueNow() const;
     void explicitValueChanged();
 
-    RenderListMarker* m_marker;
+    RenderListMarker *m_marker;
     int m_explicitValue;
     mutable int m_value;
 
@@ -84,14 +115,14 @@ private:
     bool m_notInList : 1;
 };
 
-inline RenderListItem* toRenderListItem(RenderObject* object)
+inline RenderListItem *toRenderListItem( RenderObject *object )
 {
-    ASSERT(!object || object->isListItem());
-    return static_cast<RenderListItem*>(object);
+    ASSERT( !object || object->isListItem() );
+    return static_cast<RenderListItem *>( object );
 }
 
 // This will catch anyone doing an unnecessary cast.
-void toRenderListItem(const RenderListItem*);
+void toRenderListItem( const RenderListItem * );
 
 } // namespace WebCore
 

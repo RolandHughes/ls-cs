@@ -28,14 +28,15 @@
 
 #include <wtf/Assertions.h>
 
-namespace WebCore {
-
-DocumentParser::DocumentParser(Document* document)
-    : m_state(ParsingState)
-    , m_documentWasLoadedAsPartOfNavigation(false)
-    , m_document(document)
+namespace WebCore
 {
-    ASSERT(document);
+
+DocumentParser::DocumentParser( Document *document )
+    : m_state( ParsingState )
+    , m_documentWasLoadedAsPartOfNavigation( false )
+    , m_document( document )
+{
+    ASSERT( document );
 }
 
 DocumentParser::~DocumentParser()
@@ -43,7 +44,7 @@ DocumentParser::~DocumentParser()
     // Document is expected to call detach() before releasing its ref.
     // This ASSERT is slightly awkward for parsers with a fragment case
     // as there is no Document to release the ref.
-    ASSERT(!m_document);
+    ASSERT( !m_document );
 }
 
 void DocumentParser::startParsing()
@@ -53,7 +54,7 @@ void DocumentParser::startParsing()
 
 void DocumentParser::prepareToStopParsing()
 {
-    ASSERT(m_state == ParsingState);
+    ASSERT( m_state == ParsingState );
     m_state = StoppingState;
 }
 

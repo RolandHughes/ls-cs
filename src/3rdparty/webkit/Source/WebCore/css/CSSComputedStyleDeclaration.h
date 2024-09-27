@@ -26,7 +26,8 @@
 #include <wtf/RefPtr.h>
 #include <wtf/text/WTFString.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Color;
 class CSSMutableStyleDeclaration;
@@ -38,47 +39,55 @@ class SVGPaint;
 
 enum EUpdateLayout { DoNotUpdateLayout = false, UpdateLayout = true };
 
-class CSSComputedStyleDeclaration : public CSSStyleDeclaration {
+class CSSComputedStyleDeclaration : public CSSStyleDeclaration
+{
 public:
-    friend PassRefPtr<CSSComputedStyleDeclaration> computedStyle(PassRefPtr<Node>, bool allowVisitedStyle, const String& pseudoElementName);
+    friend PassRefPtr<CSSComputedStyleDeclaration> computedStyle( PassRefPtr<Node>, bool allowVisitedStyle,
+            const String &pseudoElementName );
     virtual ~CSSComputedStyleDeclaration();
 
     virtual String cssText() const;
 
     virtual unsigned virtualLength() const;
-    virtual String item(unsigned index) const;
+    virtual String item( unsigned index ) const;
 
-    virtual PassRefPtr<CSSValue> getPropertyCSSValue(int propertyID) const;
-    virtual String getPropertyValue(int propertyID) const;
-    virtual bool getPropertyPriority(int propertyID) const;
-    virtual int getPropertyShorthand(int /*propertyID*/) const { return -1; }
-    virtual bool isPropertyImplicit(int /*propertyID*/) const { return false; }
+    virtual PassRefPtr<CSSValue> getPropertyCSSValue( int propertyID ) const;
+    virtual String getPropertyValue( int propertyID ) const;
+    virtual bool getPropertyPriority( int propertyID ) const;
+    virtual int getPropertyShorthand( int /*propertyID*/ ) const
+    {
+        return -1;
+    }
+    virtual bool isPropertyImplicit( int /*propertyID*/ ) const
+    {
+        return false;
+    }
 
     virtual PassRefPtr<CSSMutableStyleDeclaration> copy() const;
     virtual PassRefPtr<CSSMutableStyleDeclaration> makeMutable();
 
-    PassRefPtr<CSSValue> getPropertyCSSValue(int propertyID, EUpdateLayout) const;
+    PassRefPtr<CSSValue> getPropertyCSSValue( int propertyID, EUpdateLayout ) const;
     PassRefPtr<CSSValue> getFontSizeCSSValuePreferringKeyword() const;
     bool useFixedFontDefaultSize() const;
 #if ENABLE(SVG)
-    PassRefPtr<CSSValue> getSVGPropertyCSSValue(int propertyID, EUpdateLayout) const;
+    PassRefPtr<CSSValue> getSVGPropertyCSSValue( int propertyID, EUpdateLayout ) const;
 #endif
 
 protected:
-    virtual bool cssPropertyMatches(const CSSProperty*) const;
+    virtual bool cssPropertyMatches( const CSSProperty * ) const;
 
 private:
-    CSSComputedStyleDeclaration(PassRefPtr<Node>, bool allowVisitedStyle, const String&);
+    CSSComputedStyleDeclaration( PassRefPtr<Node>, bool allowVisitedStyle, const String & );
 
-    virtual void setCssText(const String&, ExceptionCode&);
+    virtual void setCssText( const String &, ExceptionCode & );
 
-    virtual String removeProperty(int propertyID, ExceptionCode&);
-    virtual void setProperty(int propertyId, const String& value, bool important, ExceptionCode&);
+    virtual String removeProperty( int propertyID, ExceptionCode & );
+    virtual void setProperty( int propertyId, const String &value, bool important, ExceptionCode & );
 
-    PassRefPtr<CSSValue> valueForShadow(const ShadowData*, int, RenderStyle*) const;
-    PassRefPtr<CSSPrimitiveValue> currentColorOrValidColor(RenderStyle*, const Color&) const;
+    PassRefPtr<CSSValue> valueForShadow( const ShadowData *, int, RenderStyle * ) const;
+    PassRefPtr<CSSPrimitiveValue> currentColorOrValidColor( RenderStyle *, const Color & ) const;
 #if ENABLE(SVG)
-    PassRefPtr<SVGPaint> adjustSVGPaintForCurrentColor(PassRefPtr<SVGPaint>, RenderStyle*) const;
+    PassRefPtr<SVGPaint> adjustSVGPaintForCurrentColor( PassRefPtr<SVGPaint>, RenderStyle * ) const;
 #endif
 
     RefPtr<Node> m_node;
@@ -86,9 +95,10 @@ private:
     bool m_allowVisitedStyle;
 };
 
-inline PassRefPtr<CSSComputedStyleDeclaration> computedStyle(PassRefPtr<Node> node,  bool allowVisitedStyle = false, const String& pseudoElementName = String())
+inline PassRefPtr<CSSComputedStyleDeclaration> computedStyle( PassRefPtr<Node> node,  bool allowVisitedStyle = false,
+        const String &pseudoElementName = String() )
 {
-    return adoptRef(new CSSComputedStyleDeclaration(node, allowVisitedStyle, pseudoElementName));
+    return adoptRef( new CSSComputedStyleDeclaration( node, allowVisitedStyle, pseudoElementName ) );
 }
 
 } // namespace WebCore

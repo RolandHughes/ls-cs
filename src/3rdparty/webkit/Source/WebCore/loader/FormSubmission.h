@@ -34,7 +34,8 @@
 #include "FormState.h"
 #include "KURL.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Document;
 class Event;
@@ -43,37 +44,63 @@ struct FrameLoadRequest;
 class HTMLFormElement;
 class TextEncoding;
 
-class FormSubmission : public RefCounted<FormSubmission> {
+class FormSubmission : public RefCounted<FormSubmission>
+{
 public:
     enum Method { GetMethod, PostMethod };
 
-    class Attributes {
-        WTF_MAKE_NONCOPYABLE(Attributes);
+    class Attributes
+    {
+        WTF_MAKE_NONCOPYABLE( Attributes );
     public:
         Attributes()
-            : m_method(GetMethod)
-            , m_isMultiPartForm(false)
-            , m_encodingType("application/x-www-form-urlencoded")
+            : m_method( GetMethod )
+            , m_isMultiPartForm( false )
+            , m_encodingType( "application/x-www-form-urlencoded" )
         {
         }
 
-        Method method() const { return m_method; }
-        void parseMethodType(const String&);
+        Method method() const
+        {
+            return m_method;
+        }
+        void parseMethodType( const String & );
 
-        const String& action() const { return m_action; }
-        void parseAction(const String&);
+        const String &action() const
+        {
+            return m_action;
+        }
+        void parseAction( const String & );
 
-        const String& target() const { return m_target; }
-        void setTarget(const String& target) { m_target = target; }
+        const String &target() const
+        {
+            return m_target;
+        }
+        void setTarget( const String &target )
+        {
+            m_target = target;
+        }
 
-        const String& encodingType() const { return m_encodingType; }
-        void parseEncodingType(const String&);
-        bool isMultiPartForm() const { return m_isMultiPartForm; }
+        const String &encodingType() const
+        {
+            return m_encodingType;
+        }
+        void parseEncodingType( const String & );
+        bool isMultiPartForm() const
+        {
+            return m_isMultiPartForm;
+        }
 
-        const String& acceptCharset() const { return m_acceptCharset; }
-        void setAcceptCharset(const String& value) { m_acceptCharset = value; }
+        const String &acceptCharset() const
+        {
+            return m_acceptCharset;
+        }
+        void setAcceptCharset( const String &value )
+        {
+            m_acceptCharset = value;
+        }
 
-        void copyFrom(const Attributes&);
+        void copyFrom( const Attributes & );
 
     private:
         Method m_method;
@@ -85,30 +112,74 @@ public:
         String m_acceptCharset;
     };
 
-    static PassRefPtr<FormSubmission> create(HTMLFormElement*, const Attributes&, PassRefPtr<Event> event, bool lockHistory, FormSubmissionTrigger);
+    static PassRefPtr<FormSubmission> create( HTMLFormElement *, const Attributes &, PassRefPtr<Event> event, bool lockHistory,
+            FormSubmissionTrigger );
 
-    void populateFrameLoadRequest(FrameLoadRequest&);
-    
+    void populateFrameLoadRequest( FrameLoadRequest & );
+
     KURL requestURL() const;
 
-    Method method() const { return m_method; }
-    const KURL& action() const { return m_action; }
-    const String& target() const { return m_target; }
-    void clearTarget() { m_target = String(); }
-    const String& contentType() const { return m_contentType; }
-    FormState* state() const { return m_formState.get(); }
-    FormData* data() const { return m_formData.get(); }
-    const String boundary() const { return m_boundary; }
-    bool lockHistory() const { return m_lockHistory; }
-    Event* event() const { return m_event.get(); }
+    Method method() const
+    {
+        return m_method;
+    }
+    const KURL &action() const
+    {
+        return m_action;
+    }
+    const String &target() const
+    {
+        return m_target;
+    }
+    void clearTarget()
+    {
+        m_target = String();
+    }
+    const String &contentType() const
+    {
+        return m_contentType;
+    }
+    FormState *state() const
+    {
+        return m_formState.get();
+    }
+    FormData *data() const
+    {
+        return m_formData.get();
+    }
+    const String boundary() const
+    {
+        return m_boundary;
+    }
+    bool lockHistory() const
+    {
+        return m_lockHistory;
+    }
+    Event *event() const
+    {
+        return m_event.get();
+    }
 
-    const String& referrer() const { return m_referrer; }
-    void setReferrer(const String& referrer) { m_referrer = referrer; }
-    const String& origin() const { return m_origin; }
-    void setOrigin(const String& origin) { m_origin = origin; }
+    const String &referrer() const
+    {
+        return m_referrer;
+    }
+    void setReferrer( const String &referrer )
+    {
+        m_referrer = referrer;
+    }
+    const String &origin() const
+    {
+        return m_origin;
+    }
+    void setOrigin( const String &origin )
+    {
+        m_origin = origin;
+    }
 
 private:
-    FormSubmission(Method, const KURL& action, const String& target, const String& contentType, PassRefPtr<FormState>, PassRefPtr<FormData>, const String& boundary, bool lockHistory, PassRefPtr<Event>);
+    FormSubmission( Method, const KURL &action, const String &target, const String &contentType, PassRefPtr<FormState>,
+                    PassRefPtr<FormData>, const String &boundary, bool lockHistory, PassRefPtr<Event> );
 
     // FIXME: Hold an instance of Attributes instead of individual members.
     Method m_method;

@@ -24,12 +24,14 @@
 #include "RegExpObject.h"
 #include "JSObject.h"
 
-namespace JSC {
+namespace JSC
+{
 
-    class RegExpPrototype : public RegExpObject {
-    public:
-        RegExpPrototype(ExecState*, JSGlobalObject*, Structure*, Structure* functionStructure);
-    };
+class RegExpPrototype : public RegExpObject
+{
+public:
+    RegExpPrototype( ExecState *, JSGlobalObject *, Structure *, Structure *functionStructure );
+};
 
 } // namespace JSC
 

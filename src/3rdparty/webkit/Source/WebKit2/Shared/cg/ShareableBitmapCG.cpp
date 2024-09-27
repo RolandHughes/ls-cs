@@ -32,46 +32,52 @@
 
 using namespace WebCore;
 
-namespace WebKit {
+namespace WebKit
+{
 
-static CGBitmapInfo bitmapInfo(ShareableBitmap::Flags flags)
+static CGBitmapInfo bitmapInfo( ShareableBitmap::Flags flags )
 {
     CGBitmapInfo info = kCGBitmapByteOrder32Host;
-    if (flags & ShareableBitmap::SupportsAlpha)
+
+    if ( flags & ShareableBitmap::SupportsAlpha )
+    {
         info |= kCGImageAlphaPremultipliedFirst;
+    }
     else
+    {
         info |= kCGImageAlphaNoneSkipFirst;
+    }
 
     return info;
 }
 
 PassOwnPtr<GraphicsContext> ShareableBitmap::createGraphicsContext()
 {
-    RetainPtr<CGColorSpaceRef> colorSpace(AdoptCF, CGColorSpaceCreateDeviceRGB());
+    RetainPtr<CGColorSpaceRef> colorSpace( AdoptCF, CGColorSpaceCreateDeviceRGB() );
 
 
     ref(); // Balanced by deref in releaseBitmapContextData.
-    RetainPtr<CGContextRef> bitmapContext(AdoptCF, CGBitmapContextCreateWithData(data(),
-        m_size.width(), m_size.height(), 8, m_size.width() * 4, colorSpace.get(),
-        bitmapInfo(m_flags), releaseBitmapContextData, this));
+    RetainPtr<CGContextRef> bitmapContext( AdoptCF, CGBitmapContextCreateWithData( data(),
+                                           m_size.width(), m_size.height(), 8, m_size.width() * 4, colorSpace.get(),
+                                           bitmapInfo( m_flags ), releaseBitmapContextData, this ) );
 
     // We want the origin to be in the top left corner so we flip the backing store context.
-    CGContextTranslateCTM(bitmapContext.get(), 0, m_size.height());
-    CGContextScaleCTM(bitmapContext.get(), 1, -1);
+    CGContextTranslateCTM( bitmapContext.get(), 0, m_size.height() );
+    CGContextScaleCTM( bitmapContext.get(), 1, -1 );
 
-    return adoptPtr(new GraphicsContext(bitmapContext.get()));
+    return adoptPtr( new GraphicsContext( bitmapContext.get() ) );
 }
 
-void ShareableBitmap::paint(WebCore::GraphicsContext& context, const IntPoint& dstPoint, const IntRect& srcRect)
+void ShareableBitmap::paint( WebCore::GraphicsContext &context, const IntPoint &dstPoint, const IntRect &srcRect )
 {
-    paintImage(context.platformContext(), makeCGImageCopy().get(), dstPoint, srcRect);
+    paintImage( context.platformContext(), makeCGImageCopy().get(), dstPoint, srcRect );
 }
 
 #if !PLATFORM(WIN)
 RetainPtr<CGImageRef> ShareableBitmap::makeCGImageCopy()
 {
     OwnPtr<GraphicsContext> graphicsContext = createGraphicsContext();
-    RetainPtr<CGImageRef> image(AdoptCF, CGBitmapContextCreateImage(graphicsContext->platformContext()));
+    RetainPtr<CGImageRef> image( AdoptCF, CGBitmapContextCreateImage( graphicsContext->platformContext() ) );
     return image;
 }
 #endif
@@ -79,30 +85,32 @@ RetainPtr<CGImageRef> ShareableBitmap::makeCGImageCopy()
 RetainPtr<CGImageRef> ShareableBitmap::makeCGImage()
 {
     ref(); // Balanced by deref in releaseDataProviderData.
-    RetainPtr<CGDataProvider> dataProvider(AdoptCF, CGDataProviderCreateWithData(this, data(), sizeInBytes(), releaseDataProviderData));
-    return createCGImage(dataProvider.get());
+    RetainPtr<CGDataProvider> dataProvider( AdoptCF, CGDataProviderCreateWithData( this, data(), sizeInBytes(),
+                                            releaseDataProviderData ) );
+    return createCGImage( dataProvider.get() );
 }
 
-RetainPtr<CGImageRef> ShareableBitmap::createCGImage(CGDataProviderRef dataProvider) const
+RetainPtr<CGImageRef> ShareableBitmap::createCGImage( CGDataProviderRef dataProvider ) const
 {
-    ASSERT_ARG(dataProvider, dataProvider);
+    ASSERT_ARG( dataProvider, dataProvider );
 
-    RetainPtr<CGColorSpaceRef> colorSpace(AdoptCF, CGColorSpaceCreateDeviceRGB());
-    RetainPtr<CGImageRef> image(AdoptCF, CGImageCreate(m_size.width(), m_size.height(), 8, 32, m_size.width() * 4, colorSpace.get(), bitmapInfo(m_flags), dataProvider, 0, false, kCGRenderingIntentDefault));
+    RetainPtr<CGColorSpaceRef> colorSpace( AdoptCF, CGColorSpaceCreateDeviceRGB() );
+    RetainPtr<CGImageRef> image( AdoptCF, CGImageCreate( m_size.width(), m_size.height(), 8, 32, m_size.width() * 4, colorSpace.get(),
+                                 bitmapInfo( m_flags ), dataProvider, 0, false, kCGRenderingIntentDefault ) );
     return image;
 }
 
-void ShareableBitmap::releaseBitmapContextData(void* typelessBitmap, void* typelessData)
+void ShareableBitmap::releaseBitmapContextData( void *typelessBitmap, void *typelessData )
 {
-    ShareableBitmap* bitmap = static_cast<ShareableBitmap*>(typelessBitmap);
-    ASSERT_UNUSED(typelessData, bitmap->data() == typelessData);
+    ShareableBitmap *bitmap = static_cast<ShareableBitmap *>( typelessBitmap );
+    ASSERT_UNUSED( typelessData, bitmap->data() == typelessData );
     bitmap->deref(); // Balanced by ref in createGraphicsContext.
 }
 
-void ShareableBitmap::releaseDataProviderData(void* typelessBitmap, const void* typelessData, size_t)
+void ShareableBitmap::releaseDataProviderData( void *typelessBitmap, const void *typelessData, size_t )
 {
-    ShareableBitmap* bitmap = static_cast<ShareableBitmap*>(typelessBitmap);
-    ASSERT_UNUSED(typelessData, bitmap->data() == typelessData);
+    ShareableBitmap *bitmap = static_cast<ShareableBitmap *>( typelessBitmap );
+    ASSERT_UNUSED( typelessData, bitmap->data() == typelessData );
     bitmap->deref(); // Balanced by ref in createCGImage.
 }
 

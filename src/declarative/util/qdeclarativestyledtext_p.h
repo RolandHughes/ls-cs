@@ -36,14 +36,14 @@ class QTextLayout;
 
 class QDeclarativeStyledText
 {
- public:
-   static void parse(const QString &string, QTextLayout &layout);
+public:
+    static void parse( const QString &string, QTextLayout &layout );
 
- private:
-   QDeclarativeStyledText(const QString &string, QTextLayout &layout);
-   ~QDeclarativeStyledText();
+private:
+    QDeclarativeStyledText( const QString &string, QTextLayout &layout );
+    ~QDeclarativeStyledText();
 
-   QDeclarativeStyledTextPrivate *d;
+    QDeclarativeStyledTextPrivate *d;
 };
 
 QT_END_NAMESPACE

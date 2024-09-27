@@ -32,9 +32,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSWebKitLoseContext);
+ASSERT_CLASS_FITS_IN_CELL( JSWebKitLoseContext );
 
 /* Hash table for prototype */
 #if ENABLE(JIT)
@@ -45,86 +46,100 @@ ASSERT_CLASS_FITS_IN_CELL(JSWebKitLoseContext);
 
 static const HashTableValue JSWebKitLoseContextPrototypeTableValues[2] =
 {
-    { "loseContext", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsWebKitLoseContextPrototypeFunctionLoseContext), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "loseContext", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsWebKitLoseContextPrototypeFunctionLoseContext ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSWebKitLoseContextPrototypeTable = { 2, 1, JSWebKitLoseContextPrototypeTableValues, 0 };
 const ClassInfo JSWebKitLoseContextPrototype::s_info = { "WebKitLoseContextPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSWebKitLoseContextPrototypeTable, 0 };
 
-JSObject* JSWebKitLoseContextPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSWebKitLoseContextPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSWebKitLoseContext>(exec, globalObject);
+    return getDOMPrototype<JSWebKitLoseContext>( exec, globalObject );
 }
 
-bool JSWebKitLoseContextPrototype::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSWebKitLoseContextPrototype::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticFunctionSlot<JSObject>(exec, &JSWebKitLoseContextPrototypeTable, this, propertyName, slot);
+    return getStaticFunctionSlot<JSObject>( exec, &JSWebKitLoseContextPrototypeTable, this, propertyName, slot );
 }
 
-bool JSWebKitLoseContextPrototype::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSWebKitLoseContextPrototype::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticFunctionDescriptor<JSObject>(exec, &JSWebKitLoseContextPrototypeTable, this, propertyName, descriptor);
+    return getStaticFunctionDescriptor<JSObject>( exec, &JSWebKitLoseContextPrototypeTable, this, propertyName, descriptor );
 }
 
 const ClassInfo JSWebKitLoseContext::s_info = { "WebKitLoseContext", &JSDOMWrapper::s_info, 0, 0 };
 
-JSWebKitLoseContext::JSWebKitLoseContext(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<WebKitLoseContext> impl)
-    : JSDOMWrapper(structure, globalObject)
-    , m_impl(impl)
+JSWebKitLoseContext::JSWebKitLoseContext( Structure *structure, JSDOMGlobalObject *globalObject,
+        PassRefPtr<WebKitLoseContext> impl )
+    : JSDOMWrapper( structure, globalObject )
+    , m_impl( impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSWebKitLoseContext::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSWebKitLoseContext::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSWebKitLoseContextPrototype(exec->globalData(), globalObject, JSWebKitLoseContextPrototype::createStructure(globalObject->globalData(), globalObject->objectPrototype()));
+    return new ( exec ) JSWebKitLoseContextPrototype( exec->globalData(), globalObject,
+            JSWebKitLoseContextPrototype::createStructure( globalObject->globalData(), globalObject->objectPrototype() ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsWebKitLoseContextPrototypeFunctionLoseContext(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsWebKitLoseContextPrototypeFunctionLoseContext( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSWebKitLoseContext::s_info))
-        return throwVMTypeError(exec);
-    JSWebKitLoseContext* castedThis = static_cast<JSWebKitLoseContext*>(asObject(thisValue));
-    WebKitLoseContext* imp = static_cast<WebKitLoseContext*>(castedThis->impl());
+
+    if ( !thisValue.inherits( &JSWebKitLoseContext::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSWebKitLoseContext *castedThis = static_cast<JSWebKitLoseContext *>( asObject( thisValue ) );
+    WebKitLoseContext *imp = static_cast<WebKitLoseContext *>( castedThis->impl() );
 
     imp->loseContext();
-    return JSValue::encode(jsUndefined());
+    return JSValue::encode( jsUndefined() );
 }
 
-static inline bool isObservable(JSWebKitLoseContext* jsWebKitLoseContext)
+static inline bool isObservable( JSWebKitLoseContext *jsWebKitLoseContext )
 {
-    if (jsWebKitLoseContext->hasCustomProperties())
+    if ( jsWebKitLoseContext->hasCustomProperties() )
+    {
         return true;
+    }
+
     return false;
 }
 
-bool JSWebKitLoseContextOwner::isReachableFromOpaqueRoots(JSC::Handle<JSC::Unknown> handle, void*, SlotVisitor& visitor)
+bool JSWebKitLoseContextOwner::isReachableFromOpaqueRoots( JSC::Handle<JSC::Unknown> handle, void *, SlotVisitor &visitor )
 {
-    JSWebKitLoseContext* jsWebKitLoseContext = static_cast<JSWebKitLoseContext*>(handle.get().asCell());
-    if (!isObservable(jsWebKitLoseContext))
+    JSWebKitLoseContext *jsWebKitLoseContext = static_cast<JSWebKitLoseContext *>( handle.get().asCell() );
+
+    if ( !isObservable( jsWebKitLoseContext ) )
+    {
         return false;
-    WebGLRenderingContext* root = jsWebKitLoseContext->impl()->context();
-    return visitor.containsOpaqueRoot(root);
+    }
+
+    WebGLRenderingContext *root = jsWebKitLoseContext->impl()->context();
+    return visitor.containsOpaqueRoot( root );
 }
 
-void JSWebKitLoseContextOwner::finalize(JSC::Handle<JSC::Unknown> handle, void* context)
+void JSWebKitLoseContextOwner::finalize( JSC::Handle<JSC::Unknown> handle, void *context )
 {
-    JSWebKitLoseContext* jsWebKitLoseContext = static_cast<JSWebKitLoseContext*>(handle.get().asCell());
-    DOMWrapperWorld* world = static_cast<DOMWrapperWorld*>(context);
-    uncacheWrapper(world, jsWebKitLoseContext->impl(), jsWebKitLoseContext);
+    JSWebKitLoseContext *jsWebKitLoseContext = static_cast<JSWebKitLoseContext *>( handle.get().asCell() );
+    DOMWrapperWorld *world = static_cast<DOMWrapperWorld *>( context );
+    uncacheWrapper( world, jsWebKitLoseContext->impl(), jsWebKitLoseContext );
 }
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, WebKitLoseContext* impl)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, WebKitLoseContext *impl )
 {
-    return wrap<JSWebKitLoseContext>(exec, globalObject, impl);
+    return wrap<JSWebKitLoseContext>( exec, globalObject, impl );
 }
 
-WebKitLoseContext* toWebKitLoseContext(JSC::JSValue value)
+WebKitLoseContext *toWebKitLoseContext( JSC::JSValue value )
 {
-    return value.inherits(&JSWebKitLoseContext::s_info) ? static_cast<JSWebKitLoseContext*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSWebKitLoseContext::s_info ) ? static_cast<JSWebKitLoseContext *>( asObject( value ) )->impl() : 0;
 }
 
 }

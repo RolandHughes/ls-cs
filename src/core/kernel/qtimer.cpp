@@ -28,189 +28,207 @@
 
 static constexpr const int INV_TIMER = -1;                // invalid timer id
 
-QTimer::QTimer(QObject *parent)
-   : QObject(parent), id(INV_TIMER), inter(0), del(0), single(0), nulltimer(0), type(Qt::CoarseTimer)
+QTimer::QTimer( QObject *parent )
+    : QObject( parent ), id( INV_TIMER ), inter( 0 ), del( 0 ), single( 0 ), nulltimer( 0 ), type( Qt::CoarseTimer )
 {
 }
 
 QTimer::~QTimer()
 {
-   if (id != INV_TIMER) {                      // stop running timer
-      stop();
-   }
+    if ( id != INV_TIMER )                      // stop running timer
+    {
+        stop();
+    }
 }
 
 void QTimer::start()
 {
-   if (id != INV_TIMER) {                      // stop running timer
-      stop();
-   }
+    if ( id != INV_TIMER )                      // stop running timer
+    {
+        stop();
+    }
 
-   nulltimer = (!inter && single);
-   id = QObject::startTimer(inter, Qt::TimerType(type));
+    nulltimer = ( !inter && single );
+    id = QObject::startTimer( inter, Qt::TimerType( type ) );
 }
 
-void QTimer::start(int msec)
+void QTimer::start( int msec )
 {
-   inter = msec;
-   start();
+    inter = msec;
+    start();
 }
 
 void QTimer::stop()
 {
-   if (id != INV_TIMER) {
-      QObject::killTimer(id);
-      id = INV_TIMER;
-   }
+    if ( id != INV_TIMER )
+    {
+        QObject::killTimer( id );
+        id = INV_TIMER;
+    }
 }
 
-void QTimer::timerEvent(QTimerEvent *e)
+void QTimer::timerEvent( QTimerEvent *e )
 {
-   if (e->timerId() == id) {
-      if (single) {
-         stop();
-      }
+    if ( e->timerId() == id )
+    {
+        if ( single )
+        {
+            stop();
+        }
 
-      emit timeout();
-   }
+        emit timeout();
+    }
 }
 
 class QSingleShotTimer : public QObject
 {
-   CORE_CS_OBJECT(QSingleShotTimer)
+    CORE_CS_OBJECT( QSingleShotTimer )
 
- public:
-   QSingleShotTimer(int msec, Qt::TimerType timerType, const QObject *receiver, const QString &slotMethod);
-   QSingleShotTimer(int msec, Qt::TimerType timerType, const QObject *receiver, std::unique_ptr<CSBentoAbstract> slotBento);
+public:
+    QSingleShotTimer( int msec, Qt::TimerType timerType, const QObject *receiver, const QString &slotMethod );
+    QSingleShotTimer( int msec, Qt::TimerType timerType, const QObject *receiver, std::unique_ptr<CSBentoAbstract> slotBento );
 
-   ~QSingleShotTimer();
+    ~QSingleShotTimer();
 
-   CORE_CS_SIGNAL_1(Public, void timeout())
-   CORE_CS_SIGNAL_2(timeout)
+    CORE_CS_SIGNAL_1( Public, void timeout() )
+    CORE_CS_SIGNAL_2( timeout )
 
- protected:
-   void timerEvent(QTimerEvent *) override;
+protected:
+    void timerEvent( QTimerEvent * ) override;
 
- private:
-   int timerId;
-   bool hasValidReceiver;
+private:
+    int timerId;
+    bool hasValidReceiver;
 
-   QPointer<const QObject> m_receiver;
-   std::unique_ptr<CSBentoAbstract> m_slotBento;
+    QPointer<const QObject> m_receiver;
+    std::unique_ptr<CSBentoAbstract> m_slotBento;
 };
 
-QSingleShotTimer::QSingleShotTimer(int msec, Qt::TimerType timerType, const QObject *receiver, const QString &slotMethod)
-   : QObject(QAbstractEventDispatcher::instance()), hasValidReceiver(true)
+QSingleShotTimer::QSingleShotTimer( int msec, Qt::TimerType timerType, const QObject *receiver, const QString &slotMethod )
+    : QObject( QAbstractEventDispatcher::instance() ), hasValidReceiver( true )
 {
-   timerId = startTimer(msec, timerType);
-   connect(this, SIGNAL(timeout()), receiver, slotMethod);
+    timerId = startTimer( msec, timerType );
+    connect( this, SIGNAL( timeout() ), receiver, slotMethod );
 }
 
-QSingleShotTimer::QSingleShotTimer(int msec, Qt::TimerType timerType, const QObject *receiver,
-      std::unique_ptr<CSBentoAbstract> slotBento)
-   : QObject(QAbstractEventDispatcher::instance()), hasValidReceiver(receiver != nullptr),
-     m_receiver(receiver), m_slotBento(std::move(slotBento))
+QSingleShotTimer::QSingleShotTimer( int msec, Qt::TimerType timerType, const QObject *receiver,
+                                    std::unique_ptr<CSBentoAbstract> slotBento )
+    : QObject( QAbstractEventDispatcher::instance() ), hasValidReceiver( receiver != nullptr ),
+      m_receiver( receiver ), m_slotBento( std::move( slotBento ) )
 {
-   timerId = startTimer(msec, timerType);
+    timerId = startTimer( msec, timerType );
 
-   if (m_receiver && thread() != m_receiver->thread()) {
-      // Avoid leaking the QSingleShotTimer instance in case the application exits before the timer fires
-      connect(QCoreApplication::instance(), &QCoreApplication::aboutToQuit, this, &QObject::deleteLater);
-      setParent(nullptr);
-      moveToThread(m_receiver->thread());
-   }
+    if ( m_receiver && thread() != m_receiver->thread() )
+    {
+        // Avoid leaking the QSingleShotTimer instance in case the application exits before the timer fires
+        connect( QCoreApplication::instance(), &QCoreApplication::aboutToQuit, this, &QObject::deleteLater );
+        setParent( nullptr );
+        moveToThread( m_receiver->thread() );
+    }
 }
 
 QSingleShotTimer::~QSingleShotTimer()
 {
-   if (timerId > 0) {
-      killTimer(timerId);
-   }
+    if ( timerId > 0 )
+    {
+        killTimer( timerId );
+    }
 }
 
-void QSingleShotTimer::timerEvent(QTimerEvent *)
+void QSingleShotTimer::timerEvent( QTimerEvent * )
 {
-   // need to kill the timer _before_ we emit timeout() in case the
-   // slot connected to timeout calls processEvents()
-   if (timerId > 0) {
-      killTimer(timerId);
-   }
+    // need to kill the timer _before_ we emit timeout() in case the
+    // slot connected to timeout calls processEvents()
+    if ( timerId > 0 )
+    {
+        killTimer( timerId );
+    }
 
-   if (m_slotBento) {
-      // if the receiver was destroyed, skip this part
+    if ( m_slotBento )
+    {
+        // if the receiver was destroyed, skip this part
 
-      if ( ! m_receiver.isNull() || ! hasValidReceiver) {
-         // allocate only the return type, previously checked the function had no arguments
+        if ( ! m_receiver.isNull() || ! hasValidReceiver )
+        {
+            // allocate only the return type, previously checked the function had no arguments
 
-         auto args = LsCsSignal::Internal::TeaCup_Data<>(false);
+            auto args = LsCsSignal::Internal::TeaCup_Data<>( false );
 
-         m_slotBento->invoke(const_cast<QObject *>(m_receiver.data()), &args);
-      }
+            m_slotBento->invoke( const_cast<QObject *>( m_receiver.data() ), &args );
+        }
 
-   } else {
-      emit timeout();
-   }
+    }
+    else
+    {
+        emit timeout();
+    }
 
-   delete this;
+    delete this;
 }
 
-void QTimer::singleShot_internal(int msec, Qt::TimerType timerType, const QObject *receiver,
-      std::unique_ptr<CSBentoAbstract> slotBento)
+void QTimer::singleShot_internal( int msec, Qt::TimerType timerType, const QObject *receiver,
+                                  std::unique_ptr<CSBentoAbstract> slotBento )
 {
-   new QSingleShotTimer(msec, timerType, receiver, std::move(slotBento));
+    new QSingleShotTimer( msec, timerType, receiver, std::move( slotBento ) );
 }
 
-void QTimer::singleShot(int msec, const QObject *receiver, const QString &slotMethod)
+void QTimer::singleShot( int msec, const QObject *receiver, const QString &slotMethod )
 {
-   singleShot(msec, msec >= 2000 ? Qt::CoarseTimer : Qt::PreciseTimer, receiver, slotMethod);
+    singleShot( msec, msec >= 2000 ? Qt::CoarseTimer : Qt::PreciseTimer, receiver, slotMethod );
 }
 
-void QTimer::singleShot(int msec, Qt::TimerType timerType, const QObject *receiver, const QString &slotMethod)
+void QTimer::singleShot( int msec, Qt::TimerType timerType, const QObject *receiver, const QString &slotMethod )
 {
-   if (msec < 0) {
-      qWarning("QTimer::singleShot() Timer duration can not be negative");
-      return;
-   }
+    if ( msec < 0 )
+    {
+        qWarning( "QTimer::singleShot() Timer duration can not be negative" );
+        return;
+    }
 
-   if (receiver != nullptr && ! slotMethod.isEmpty()) {
-      if (msec == 0) {
-         // special code shortpath for 0 timers
-         int bracketPosition = slotMethod.indexOf('(');
+    if ( receiver != nullptr && ! slotMethod.isEmpty() )
+    {
+        if ( msec == 0 )
+        {
+            // special code shortpath for 0 timers
+            int bracketPosition = slotMethod.indexOf( '(' );
 
-         if (bracketPosition == -1) {
-            qWarning("QTimer::singleShot() Invalid slot specification");
+            if ( bracketPosition == -1 )
+            {
+                qWarning( "QTimer::singleShot() Invalid slot specification" );
+                return;
+            }
+
+            // extract method name
+            QString methodName = slotMethod.left( bracketPosition );
+            QMetaObject::invokeMethod( const_cast<QObject *>( receiver ), methodName, Qt::QueuedConnection );
+
             return;
-         }
+        }
 
-         // extract method name
-         QString methodName = slotMethod.left(bracketPosition);
-         QMetaObject::invokeMethod(const_cast<QObject *>(receiver), methodName, Qt::QueuedConnection);
-
-         return;
-      }
-
-      (void) new QSingleShotTimer(msec, timerType, receiver, slotMethod);
-   }
+        ( void ) new QSingleShotTimer( msec, timerType, receiver, slotMethod );
+    }
 }
 
-void QTimer::setInterval(int msec)
+void QTimer::setInterval( int msec )
 {
-   inter = msec;
+    inter = msec;
 
-   // create new timer
-   if (id != INV_TIMER) {
-      QObject::killTimer(id);
+    // create new timer
+    if ( id != INV_TIMER )
+    {
+        QObject::killTimer( id );
 
-      // restart timer
-      id = QObject::startTimer(msec, Qt::TimerType(type));
-   }
+        // restart timer
+        id = QObject::startTimer( msec, Qt::TimerType( type ) );
+    }
 }
 
 int QTimer::remainingTime() const
 {
-   if (id != INV_TIMER) {
-      return QAbstractEventDispatcher::instance()->remainingTime(id);
-   }
+    if ( id != INV_TIMER )
+    {
+        return QAbstractEventDispatcher::instance()->remainingTime( id );
+    }
 
-   return -1;
+    return -1;
 }

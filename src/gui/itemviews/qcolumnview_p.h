@@ -41,122 +41,136 @@
 
 class QColumnViewPreviewColumn : public QAbstractItemView
 {
- public:
-   QColumnViewPreviewColumn(QWidget *parent)
-      : QAbstractItemView(parent), previewWidget(nullptr)
-   {
-   }
+public:
+    QColumnViewPreviewColumn( QWidget *parent )
+        : QAbstractItemView( parent ), previewWidget( nullptr )
+    {
+    }
 
-   void setPreviewWidget(QWidget *widget) {
-      previewWidget = widget;
-      setMinimumWidth(previewWidget->minimumWidth());
-   }
+    void setPreviewWidget( QWidget *widget )
+    {
+        previewWidget = widget;
+        setMinimumWidth( previewWidget->minimumWidth() );
+    }
 
-   void resizeEvent(QResizeEvent *event) override {
-      if (! previewWidget) {
-         return;
-      }
+    void resizeEvent( QResizeEvent *event ) override
+    {
+        if ( ! previewWidget )
+        {
+            return;
+        }
 
-      previewWidget->resize( qMax(previewWidget->minimumWidth(), event->size().width()),
-         previewWidget->height());
+        previewWidget->resize( qMax( previewWidget->minimumWidth(), event->size().width() ),
+                               previewWidget->height() );
 
-      QSize p = viewport()->size();
-      QSize v = previewWidget->size();
-      horizontalScrollBar()->setRange(0, v.width() - p.width());
-      horizontalScrollBar()->setPageStep(p.width());
-      verticalScrollBar()->setRange(0, v.height() - p.height());
-      verticalScrollBar()->setPageStep(p.height());
+        QSize p = viewport()->size();
+        QSize v = previewWidget->size();
+        horizontalScrollBar()->setRange( 0, v.width() - p.width() );
+        horizontalScrollBar()->setPageStep( p.width() );
+        verticalScrollBar()->setRange( 0, v.height() - p.height() );
+        verticalScrollBar()->setPageStep( p.height() );
 
-      QAbstractScrollArea::resizeEvent(event);
-   }
+        QAbstractScrollArea::resizeEvent( event );
+    }
 
-   void scrollContentsBy(int dx, int dy) override {
-      if (!previewWidget) {
-         return;
-      }
-      scrollDirtyRegion(dx, dy);
-      viewport()->scroll(dx, dy);
-      QAbstractItemView::scrollContentsBy(dx, dy);
-   }
-   QRect visualRect(const QModelIndex &) const override {
-      return QRect();
-   }
+    void scrollContentsBy( int dx, int dy ) override
+    {
+        if ( !previewWidget )
+        {
+            return;
+        }
 
-   void scrollTo(const QModelIndex &, ScrollHint)  override {
-   }
+        scrollDirtyRegion( dx, dy );
+        viewport()->scroll( dx, dy );
+        QAbstractItemView::scrollContentsBy( dx, dy );
+    }
+    QRect visualRect( const QModelIndex & ) const override
+    {
+        return QRect();
+    }
 
-   QModelIndex indexAt(const QPoint &) const override {
-      return QModelIndex();
-   }
+    void scrollTo( const QModelIndex &, ScrollHint )  override
+    {
+    }
 
-   QModelIndex moveCursor(CursorAction, Qt::KeyboardModifiers) override {
-      return QModelIndex();
-   }
+    QModelIndex indexAt( const QPoint & ) const override
+    {
+        return QModelIndex();
+    }
 
-   int horizontalOffset () const override {
-      return 0;
-   }
-   int verticalOffset () const override {
-      return 0;
-   }
+    QModelIndex moveCursor( CursorAction, Qt::KeyboardModifiers ) override
+    {
+        return QModelIndex();
+    }
 
-   QRegion visualRegionForSelection(const QItemSelection &) const override {
-      return QRegion();
-   }
+    int horizontalOffset () const override
+    {
+        return 0;
+    }
+    int verticalOffset () const override
+    {
+        return 0;
+    }
 
-   bool isIndexHidden(const QModelIndex &) const override {
-      return false;
-   }
+    QRegion visualRegionForSelection( const QItemSelection & ) const override
+    {
+        return QRegion();
+    }
 
-   void setSelection(const QRect &, QItemSelectionModel::SelectionFlags) override { }
+    bool isIndexHidden( const QModelIndex & ) const override
+    {
+        return false;
+    }
 
- private:
-   QWidget *previewWidget;
+    void setSelection( const QRect &, QItemSelectionModel::SelectionFlags ) override { }
+
+private:
+    QWidget *previewWidget;
 };
 
 class QColumnViewPrivate : public QAbstractItemViewPrivate
 {
-   Q_DECLARE_PUBLIC(QColumnView)
+    Q_DECLARE_PUBLIC( QColumnView )
 
- public:
-   QColumnViewPrivate();
-   ~QColumnViewPrivate();
+public:
+    QColumnViewPrivate();
+    ~QColumnViewPrivate();
 
-   void initialize();
+    void initialize();
 
-   QAbstractItemView *createColumn(const QModelIndex &index, bool show);
+    QAbstractItemView *createColumn( const QModelIndex &index, bool show );
 
-   void updateScrollbars();
-   void closeColumns(const QModelIndex &parent = QModelIndex(), bool build = false);
-   void doLayout();
-   void setPreviewWidget(QWidget *widget);
-   void checkColumnCreation(const QModelIndex &parent);
+    void updateScrollbars();
+    void closeColumns( const QModelIndex &parent = QModelIndex(), bool build = false );
+    void doLayout();
+    void setPreviewWidget( QWidget *widget );
+    void checkColumnCreation( const QModelIndex &parent );
 
-   void _q_gripMoved(int offset);
-   void _q_changeCurrentColumn();
-   void _q_clicked(const QModelIndex &index);
-   void _q_columnsInserted(const QModelIndex &parent, int start, int end) override;
+    void _q_gripMoved( int offset );
+    void _q_changeCurrentColumn();
+    void _q_clicked( const QModelIndex &index );
+    void _q_columnsInserted( const QModelIndex &parent, int start, int end ) override;
 
-   QList<QAbstractItemView *> columns;
-   QVector<int> columnSizes; // used during init and corner moving
-   bool showResizeGrips;
-   int offset;
+    QList<QAbstractItemView *> columns;
+    QVector<int> columnSizes; // used during init and corner moving
+    bool showResizeGrips;
+    int offset;
 
 #ifndef QT_NO_ANIMATION
-   QPropertyAnimation currentAnimation;
+    QPropertyAnimation currentAnimation;
 #endif
 
-   QWidget *previewWidget;
-   QAbstractItemView *previewColumn;
+    QWidget *previewWidget;
+    QAbstractItemView *previewColumn;
 };
 
 class QColumnViewDelegate : public QItemDelegate
 {
- public:
-   explicit QColumnViewDelegate(QObject *parent = nullptr) : QItemDelegate(parent) {}
-   ~QColumnViewDelegate() {}
+public:
+    explicit QColumnViewDelegate( QObject *parent = nullptr ) : QItemDelegate( parent ) {}
+    ~QColumnViewDelegate() {}
 
-   void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
+    void paint( QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index ) const override;
 };
 #endif // QT_NO_QCOLUMNVIEW
 

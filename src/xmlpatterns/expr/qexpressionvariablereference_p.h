@@ -27,37 +27,38 @@
 #include <qvariabledeclaration_p.h>
 #include <qvariablereference_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class ExpressionVariableReference : public VariableReference
 {
- public:
-   ExpressionVariableReference(const VariableSlotID slot, const VariableDeclaration *varDecl);
+public:
+    ExpressionVariableReference( const VariableSlotID slot, const VariableDeclaration *varDecl );
 
-   bool evaluateEBV(const DynamicContext::Ptr &context) const override;
-   Item evaluateSingleton(const DynamicContext::Ptr &context) const override;
-   Item::Iterator::Ptr evaluateSequence(const DynamicContext::Ptr &context) const override;
+    bool evaluateEBV( const DynamicContext::Ptr &context ) const override;
+    Item evaluateSingleton( const DynamicContext::Ptr &context ) const override;
+    Item::Iterator::Ptr evaluateSequence( const DynamicContext::Ptr &context ) const override;
 
-   Expression::Ptr typeCheck(const StaticContext::Ptr &context, const SequenceType::Ptr &reqType) override;
-   SequenceType::Ptr staticType() const override;
-   ID id() const override;
-   ExpressionVisitorResult::Ptr accept(const ExpressionVisitor::Ptr &visitor) const override;
+    Expression::Ptr typeCheck( const StaticContext::Ptr &context, const SequenceType::Ptr &reqType ) override;
+    SequenceType::Ptr staticType() const override;
+    ID id() const override;
+    ExpressionVisitorResult::Ptr accept( const ExpressionVisitor::Ptr &visitor ) const override;
 
-   inline const Expression::Ptr &sourceExpression() const;
-   inline const VariableDeclaration *variableDeclaration() const;
+    inline const Expression::Ptr &sourceExpression() const;
+    inline const VariableDeclaration *variableDeclaration() const;
 
- private:
-   const VariableDeclaration *m_varDecl;
+private:
+    const VariableDeclaration *m_varDecl;
 };
 
 inline const Expression::Ptr &ExpressionVariableReference::sourceExpression() const
 {
-   return m_varDecl->expression();
+    return m_varDecl->expression();
 }
 
 inline const VariableDeclaration *ExpressionVariableReference::variableDeclaration() const
 {
-   return m_varDecl;
+    return m_varDecl;
 }
 
 }

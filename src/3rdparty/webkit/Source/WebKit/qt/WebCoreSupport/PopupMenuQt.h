@@ -26,34 +26,36 @@
 class QWebSelectData;
 class QWebSelectMethod;
 
-namespace WebCore {
+namespace WebCore
+{
 
 class ChromeClientQt;
 class FrameView;
 class PopupMenuClient;
 
-class PopupMenuQt : public QObject, public PopupMenu {
-    WEB_CS_OBJECT(PopupMenuQt)
+class PopupMenuQt : public QObject, public PopupMenu
+{
+    WEB_CS_OBJECT( PopupMenuQt )
 public:
-    PopupMenuQt(PopupMenuClient*, const ChromeClientQt*);
+    PopupMenuQt( PopupMenuClient *, const ChromeClientQt * );
     ~PopupMenuQt();
 
-    virtual void show(const IntRect&, FrameView*, int index);
+    virtual void show( const IntRect &, FrameView *, int index );
     virtual void hide();
     virtual void updateFromElement();
     virtual void disconnectClient();
 
 private :
-    WEB_CS_SLOT_1(Private, void didHide())
-    WEB_CS_SLOT_2(didHide) 
-    WEB_CS_SLOT_1(Private, void selectItem(int index,bool ctrl,bool shift))
-    WEB_CS_SLOT_2(selectItem) 
+    WEB_CS_SLOT_1( Private, void didHide() )
+    WEB_CS_SLOT_2( didHide )
+    WEB_CS_SLOT_1( Private, void selectItem( int index,bool ctrl,bool shift ) )
+    WEB_CS_SLOT_2( selectItem )
 
 private:
-    PopupMenuClient* m_popupClient;
-    QWebSelectMethod* m_popup;
-    QWebSelectData* m_selectData;
-    const ChromeClientQt* m_chromeClient;
+    PopupMenuClient *m_popupClient;
+    QWebSelectMethod *m_popup;
+    QWebSelectData *m_selectData;
+    const ChromeClientQt *m_chromeClient;
 };
 
 }

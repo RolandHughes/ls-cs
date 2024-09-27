@@ -36,93 +36,117 @@ using namespace std;
 static const UINT PerformWorkMessage = WM_USER + 1;
 static const LPWSTR kRunLoopMessageWindowClassName = L"RunLoopMessageWindow";
 
-LRESULT CALLBACK RunLoop::RunLoopWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK RunLoop::RunLoopWndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam )
 {
-    LONG_PTR longPtr = ::GetWindowLongPtr(hWnd, 0);
-    
-    if (RunLoop* runLoop = reinterpret_cast<RunLoop*>(longPtr))
-        return runLoop->wndProc(hWnd, message, wParam, lParam);
+    LONG_PTR longPtr = ::GetWindowLongPtr( hWnd, 0 );
 
-    if (message == WM_CREATE) {
-        LPCREATESTRUCT createStruct = reinterpret_cast<LPCREATESTRUCT>(lParam);
+    if ( RunLoop *runLoop = reinterpret_cast<RunLoop *>( longPtr ) )
+    {
+        return runLoop->wndProc( hWnd, message, wParam, lParam );
+    }
+
+    if ( message == WM_CREATE )
+    {
+        LPCREATESTRUCT createStruct = reinterpret_cast<LPCREATESTRUCT>( lParam );
 
         // Associate the RunLoop with the window.
-        ::SetWindowLongPtr(hWnd, 0, (LONG_PTR)createStruct->lpCreateParams);
+        ::SetWindowLongPtr( hWnd, 0, ( LONG_PTR )createStruct->lpCreateParams );
         return 0;
     }
 
-    return ::DefWindowProc(hWnd, message, wParam, lParam);
+    return ::DefWindowProc( hWnd, message, wParam, lParam );
 }
 
-LRESULT RunLoop::wndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+LRESULT RunLoop::wndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam )
 {
-    switch (message) {
-    case PerformWorkMessage:
-        performWork();
-        return 0;
-    case WM_TIMER:
-        RunLoop::TimerBase::timerFired(this, wParam);
-        return 0;
+    switch ( message )
+    {
+        case PerformWorkMessage:
+            performWork();
+            return 0;
+
+        case WM_TIMER:
+            RunLoop::TimerBase::timerFired( this, wParam );
+            return 0;
     }
 
-    return ::DefWindowProc(hWnd, message, wParam, lParam);
+    return ::DefWindowProc( hWnd, message, wParam, lParam );
 }
 
 void RunLoop::run()
 {
     MSG message;
-    while (BOOL result = ::GetMessage(&message, 0, 0, 0)) {
-        if (result == -1)
+
+    while ( BOOL result = ::GetMessage( &message, 0, 0, 0 ) )
+    {
+        if ( result == -1 )
+        {
             break;
-        ::TranslateMessage(&message);
-        ::DispatchMessage(&message);
+        }
+
+        ::TranslateMessage( &message );
+        ::DispatchMessage( &message );
     }
 }
 
-bool RunLoop::dispatchSentMessagesUntil(const Vector<HWND>& windows, CoreIPC::BinarySemaphore& semaphore, double absoluteTime)
+bool RunLoop::dispatchSentMessagesUntil( const Vector<HWND> &windows, CoreIPC::BinarySemaphore &semaphore, double absoluteTime )
 {
-    if (windows.isEmpty())
-        return semaphore.wait(absoluteTime);
+    if ( windows.isEmpty() )
+    {
+        return semaphore.wait( absoluteTime );
+    }
 
     HANDLE handle = semaphore.event();
     DWORD handleCount = 1;
 
-    while (true) {
-        DWORD interval = absoluteTimeToWaitTimeoutInterval(absoluteTime);
-        if (!interval) {
+    while ( true )
+    {
+        DWORD interval = absoluteTimeToWaitTimeoutInterval( absoluteTime );
+
+        if ( !interval )
+        {
             // Consider the wait to have timed out, even if the semaphore is currently signaled.
             // This matches the WTF::ThreadCondition implementation of BinarySemaphore::wait.
             return false;
         }
 
-        DWORD result = ::MsgWaitForMultipleObjectsEx(handleCount, &handle, interval, QS_SENDMESSAGE, 0);
-        if (result == WAIT_OBJECT_0) {
+        DWORD result = ::MsgWaitForMultipleObjectsEx( handleCount, &handle, interval, QS_SENDMESSAGE, 0 );
+
+        if ( result == WAIT_OBJECT_0 )
+        {
             // The semaphore was signaled.
             return true;
         }
-        if (result == WAIT_TIMEOUT) {
+
+        if ( result == WAIT_TIMEOUT )
+        {
             // absoluteTime was reached.
             return false;
         }
-        if (result == WAIT_OBJECT_0 + handleCount) {
+
+        if ( result == WAIT_OBJECT_0 + handleCount )
+        {
             // One or more sent messages are available. Process sent messages for all the windows
             // we were given, since we don't have a way of knowing which window has available sent
             // messages.
-            for (size_t i = 0; i < windows.size(); ++i) {
+            for ( size_t i = 0; i < windows.size(); ++i )
+            {
                 MSG message;
-                ::PeekMessageW(&message, windows[i], 0, 0, PM_NOREMOVE | PM_QS_SENDMESSAGE);
+                ::PeekMessageW( &message, windows[i], 0, 0, PM_NOREMOVE | PM_QS_SENDMESSAGE );
             }
+
             continue;
         }
-        ASSERT_WITH_MESSAGE(result != WAIT_FAILED, "::MsgWaitForMultipleObjectsEx failed with error %lu", ::GetLastError());
-        ASSERT_WITH_MESSAGE(false, "::MsgWaitForMultipleObjectsEx returned unexpected result %lu", result);
+
+        ASSERT_WITH_MESSAGE( result != WAIT_FAILED, "::MsgWaitForMultipleObjectsEx failed with error %lu", ::GetLastError() );
+        ASSERT_WITH_MESSAGE( false, "::MsgWaitForMultipleObjectsEx returned unexpected result %lu", result );
         return false;
     }
 }
 
 void RunLoop::stop()
 {
-    ::PostQuitMessage(0);
+    ::PostQuitMessage( 0 );
 }
 
 bool RunLoop::registerRunLoopMessageWindowClass()
@@ -130,22 +154,22 @@ bool RunLoop::registerRunLoopMessageWindowClass()
     // FIXME: This really only needs to be called once.
 
     WNDCLASSEX windowClass = { 0 };
-    windowClass.cbSize          = sizeof(windowClass);
+    windowClass.cbSize          = sizeof( windowClass );
     windowClass.lpfnWndProc     = RunLoop::RunLoopWndProc;
-    windowClass.cbWndExtra      = sizeof(RunLoop*);
+    windowClass.cbWndExtra      = sizeof( RunLoop * );
     windowClass.lpszClassName   = kRunLoopMessageWindowClassName;
 
-    return !!::RegisterClassEx(&windowClass);
+    return !!::RegisterClassEx( &windowClass );
 }
 
 RunLoop::RunLoop()
 {
     registerRunLoopMessageWindowClass();
 
-    m_runLoopMessageWindow = ::CreateWindow(kRunLoopMessageWindowClassName, 0, 0,
-                                            CW_USEDEFAULT, 0, CW_USEDEFAULT, 0,
-                                            HWND_MESSAGE, 0, 0, this);
-    ASSERT(::IsWindow(m_runLoopMessageWindow));
+    m_runLoopMessageWindow = ::CreateWindow( kRunLoopMessageWindowClassName, 0, 0,
+                             CW_USEDEFAULT, 0, CW_USEDEFAULT, 0,
+                             HWND_MESSAGE, 0, 0, this );
+    ASSERT( ::IsWindow( m_runLoopMessageWindow ) );
 }
 
 RunLoop::~RunLoop()
@@ -157,24 +181,27 @@ void RunLoop::wakeUp()
 {
     // FIXME: No need to wake up the run loop if we've already called scheduleWork
     // before the run loop has had the time to respond.
-    ::PostMessage(m_runLoopMessageWindow, PerformWorkMessage, reinterpret_cast<WPARAM>(this), 0);
+    ::PostMessage( m_runLoopMessageWindow, PerformWorkMessage, reinterpret_cast<WPARAM>( this ), 0 );
 }
 
 // RunLoop::Timer
 
-void RunLoop::TimerBase::timerFired(RunLoop* runLoop, uint64_t ID)
+void RunLoop::TimerBase::timerFired( RunLoop *runLoop, uint64_t ID )
 {
-    TimerMap::iterator it = runLoop->m_activeTimers.find(ID);
-    if (it == runLoop->m_activeTimers.end()) {
+    TimerMap::iterator it = runLoop->m_activeTimers.find( ID );
+
+    if ( it == runLoop->m_activeTimers.end() )
+    {
         // The timer must have been stopped after the WM_TIMER message was posted to the message queue.
         return;
     }
 
-    TimerBase* timer = it->second;
+    TimerBase *timer = it->second;
 
-    if (!timer->m_isRepeating) {
-        runLoop->m_activeTimers.remove(it);
-        ::KillTimer(runLoop->m_runLoopMessageWindow, ID);
+    if ( !timer->m_isRepeating )
+    {
+        runLoop->m_activeTimers.remove( it );
+        ::KillTimer( runLoop->m_runLoopMessageWindow, ID );
     }
 
     timer->fired();
@@ -186,10 +213,10 @@ static uint64_t generateTimerID()
     return uniqueTimerID++;
 }
 
-RunLoop::TimerBase::TimerBase(RunLoop* runLoop)
-    : m_runLoop(runLoop)
-    , m_ID(generateTimerID())
-    , m_isRepeating(false)
+RunLoop::TimerBase::TimerBase( RunLoop *runLoop )
+    : m_runLoop( runLoop )
+    , m_ID( generateTimerID() )
+    , m_isRepeating( false )
 {
 }
 
@@ -198,24 +225,27 @@ RunLoop::TimerBase::~TimerBase()
     stop();
 }
 
-void RunLoop::TimerBase::start(double nextFireInterval, bool repeat)
+void RunLoop::TimerBase::start( double nextFireInterval, bool repeat )
 {
     m_isRepeating = repeat;
-    m_runLoop->m_activeTimers.set(m_ID, this);
-    ::SetTimer(m_runLoop->m_runLoopMessageWindow, m_ID, nextFireInterval * 1000, 0);
+    m_runLoop->m_activeTimers.set( m_ID, this );
+    ::SetTimer( m_runLoop->m_runLoopMessageWindow, m_ID, nextFireInterval * 1000, 0 );
 }
 
 void RunLoop::TimerBase::stop()
 {
-    TimerMap::iterator it = m_runLoop->m_activeTimers.find(m_ID);
-    if (it == m_runLoop->m_activeTimers.end())
-        return;
+    TimerMap::iterator it = m_runLoop->m_activeTimers.find( m_ID );
 
-    m_runLoop->m_activeTimers.remove(it);
-    ::KillTimer(m_runLoop->m_runLoopMessageWindow, m_ID);
+    if ( it == m_runLoop->m_activeTimers.end() )
+    {
+        return;
+    }
+
+    m_runLoop->m_activeTimers.remove( it );
+    ::KillTimer( m_runLoop->m_runLoopMessageWindow, m_ID );
 }
 
 bool RunLoop::TimerBase::isActive() const
 {
-    return m_runLoop->m_activeTimers.contains(m_ID);
+    return m_runLoop->m_activeTimers.contains( m_ID );
 }

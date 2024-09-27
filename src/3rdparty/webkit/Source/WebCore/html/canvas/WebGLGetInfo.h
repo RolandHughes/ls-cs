@@ -41,16 +41,19 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 // A tagged union representing the result of get queries like
 // getParameter (encompassing getBooleanv, getIntegerv, getFloatv) and
 // similar variants. For reference counted types, increments and
 // decrements the reference count of the target object.
 
-class WebGLGetInfo {
+class WebGLGetInfo
+{
 public:
-    enum Type {
+    enum Type
+    {
         kTypeBool,
         kTypeBoolArray,
         kTypeFloat,
@@ -70,35 +73,35 @@ public:
         kTypeWebGLVertexArrayObjectOES,
     };
 
-    WebGLGetInfo(bool value);
-    WebGLGetInfo(const bool* value, int size);
-    WebGLGetInfo(float value);
-    WebGLGetInfo(int value);
+    WebGLGetInfo( bool value );
+    WebGLGetInfo( const bool *value, int size );
+    WebGLGetInfo( float value );
+    WebGLGetInfo( int value );
     // Represents the null value and type.
     WebGLGetInfo();
-    WebGLGetInfo(const String& value);
-    WebGLGetInfo(unsigned int value);
-    WebGLGetInfo(PassRefPtr<WebGLBuffer> value);
-    WebGLGetInfo(PassRefPtr<Float32Array> value);
-    WebGLGetInfo(PassRefPtr<WebGLFramebuffer> value);
-    WebGLGetInfo(PassRefPtr<Int32Array> value);
+    WebGLGetInfo( const String &value );
+    WebGLGetInfo( unsigned int value );
+    WebGLGetInfo( PassRefPtr<WebGLBuffer> value );
+    WebGLGetInfo( PassRefPtr<Float32Array> value );
+    WebGLGetInfo( PassRefPtr<WebGLFramebuffer> value );
+    WebGLGetInfo( PassRefPtr<Int32Array> value );
     // FIXME: implement WebGLObjectArray
     // WebGLGetInfo(PassRefPtr<WebGLObjectArray> value);
-    WebGLGetInfo(PassRefPtr<WebGLProgram> value);
-    WebGLGetInfo(PassRefPtr<WebGLRenderbuffer> value);
-    WebGLGetInfo(PassRefPtr<WebGLTexture> value);
-    WebGLGetInfo(PassRefPtr<Uint8Array> value);
-    WebGLGetInfo(PassRefPtr<WebGLVertexArrayObjectOES> value);
+    WebGLGetInfo( PassRefPtr<WebGLProgram> value );
+    WebGLGetInfo( PassRefPtr<WebGLRenderbuffer> value );
+    WebGLGetInfo( PassRefPtr<WebGLTexture> value );
+    WebGLGetInfo( PassRefPtr<Uint8Array> value );
+    WebGLGetInfo( PassRefPtr<WebGLVertexArrayObjectOES> value );
 
     virtual ~WebGLGetInfo();
 
     Type getType() const;
 
     bool getBool() const;
-    const Vector<bool>& getBoolArray() const;
+    const Vector<bool> &getBoolArray() const;
     float getFloat() const;
     int getInt() const;
-    const String& getString() const;
+    const String &getString() const;
     unsigned int getUnsignedInt() const;
     PassRefPtr<WebGLBuffer> getWebGLBuffer() const;
     PassRefPtr<Float32Array> getWebGLFloatArray() const;

@@ -34,114 +34,132 @@
 
 using namespace QPatternist;
 
-Item AdjustTimezone::evaluateSingleton(const DynamicContext::Ptr &context) const
+Item AdjustTimezone::evaluateSingleton( const DynamicContext::Ptr &context ) const
 {
-   enum {
-      /**
-       * The maximum zone offset, @c PT14H, in milli seconds.
-       */
-      MSecLimit = 14 * 60/*M*/ * 60/*S*/ * 1000/*ms*/
-   };
+    enum
+    {
+        /**
+         * The maximum zone offset, @c PT14H, in milli seconds.
+         */
+        MSecLimit = 14 * 60/*M*/ * 60/*S*/ * 1000/*ms*/
+    };
 
 
-   const Item arg(m_operands.first()->evaluateSingleton(context));
-   if (!arg) {
-      return Item();
-   }
+    const Item arg( m_operands.first()->evaluateSingleton( context ) );
 
-   QDateTime dt(arg.as<AbstractDateTime>()->toDateTime());
-   // TODO DT dt.setDateOnly(false);
-   Q_ASSERT(dt.isValid());
-   DayTimeDuration::Ptr tz;
+    if ( !arg )
+    {
+        return Item();
+    }
 
-   if (m_operands.count() == 2) {
-      tz = DayTimeDuration::Ptr(m_operands.at(1)->evaluateSingleton(context).as<DayTimeDuration>());
-   } else {
-      tz = context->implicitTimezone();
-   }
+    QDateTime dt( arg.as<AbstractDateTime>()->toDateTime() );
+    // TODO DT dt.setDateOnly(false);
+    Q_ASSERT( dt.isValid() );
+    DayTimeDuration::Ptr tz;
 
-   if (tz) {
-      const MSecondCountProperty tzMSecs = tz->value();
+    if ( m_operands.count() == 2 )
+    {
+        tz = DayTimeDuration::Ptr( m_operands.at( 1 )->evaluateSingleton( context ).as<DayTimeDuration>() );
+    }
+    else
+    {
+        tz = context->implicitTimezone();
+    }
 
-      if (tzMSecs % (1000 * 60) != 0) {
-         context->error(QtXmlPatterns::tr("A zone offset must be in the "
-                                          "range %1..%2 inclusive. %3 is "
-                                          "out of range.")
-                        .formatArg(formatData("-PT14H"))
-                        .formatArg(formatData("PT14H"))
-                        .formatArg(formatData(tz->stringValue())),
-                        ReportContext::FODT0003, this);
-         return Item();
+    if ( tz )
+    {
+        const MSecondCountProperty tzMSecs = tz->value();
 
-      } else if (tzMSecs > MSecLimit ||
-                 tzMSecs < -MSecLimit) {
-         context->error(QtXmlPatterns::tr("%1 is not a whole number of minutes.")
-                        .formatArg(formatData(tz->stringValue())),
-                        ReportContext::FODT0003, this);
-         return Item();
-      }
+        if ( tzMSecs % ( 1000 * 60 ) != 0 )
+        {
+            context->error( QtXmlPatterns::tr( "A zone offset must be in the "
+                                               "range %1..%2 inclusive. %3 is "
+                                               "out of range." )
+                            .formatArg( formatData( "-PT14H" ) )
+                            .formatArg( formatData( "PT14H" ) )
+                            .formatArg( formatData( tz->stringValue() ) ),
+                            ReportContext::FODT0003, this );
+            return Item();
 
-      const SecondCountProperty tzSecs = tzMSecs / 1000;
+        }
+        else if ( tzMSecs > MSecLimit ||
+                  tzMSecs < -MSecLimit )
+        {
+            context->error( QtXmlPatterns::tr( "%1 is not a whole number of minutes." )
+                            .formatArg( formatData( tz->stringValue() ) ),
+                            ReportContext::FODT0003, this );
+            return Item();
+        }
 
-      if (dt.timeZone() == QTimeZone::systemTimeZone()) {
-         /* $arg has no time zone. */
-         /* "If $arg does not have a timezone component and $timezone is not
-          * the empty sequence, then the result is $arg with $timezone as
-          * the timezone component." */
+        const SecondCountProperty tzSecs = tzMSecs / 1000;
 
-         dt.setTimeZone(QTimeZone(tzSecs));
+        if ( dt.timeZone() == QTimeZone::systemTimeZone() )
+        {
+            /* $arg has no time zone. */
+            /* "If $arg does not have a timezone component and $timezone is not
+             * the empty sequence, then the result is $arg with $timezone as
+             * the timezone component." */
 
-         Q_ASSERT(dt.isValid());
-         return createValue(dt);
+            dt.setTimeZone( QTimeZone( tzSecs ) );
 
-      } else {
-         /* "If $arg has a timezone component and $timezone is not the empty sequence,
-          * then the result is an xs:dateTime value with a timezone component of
-          * $timezone that is equal to $arg." */
+            Q_ASSERT( dt.isValid() );
+            return createValue( dt );
 
-         dt = dt.toUTC();
-         dt = dt.addSecs(tzSecs);
+        }
+        else
+        {
+            /* "If $arg has a timezone component and $timezone is not the empty sequence,
+             * then the result is an xs:dateTime value with a timezone component of
+             * $timezone that is equal to $arg." */
 
-         dt.setTimeZone(QTimeZone(tzSecs));
+            dt = dt.toUTC();
+            dt = dt.addSecs( tzSecs );
 
-         Q_ASSERT(dt.isValid());
-         return createValue(dt);
-      }
+            dt.setTimeZone( QTimeZone( tzSecs ) );
 
-   } else {
-      /* $timezone is the empty sequence. */
+            Q_ASSERT( dt.isValid() );
+            return createValue( dt );
+        }
 
-      if (dt.timeZone() == QTimeZone::systemTimeZone()) {
-         /* $arg has no time zone. */
-         /* "If $arg does not have a timezone component and $timezone is
-          * the empty sequence, then the result is $arg." */
-         return arg;
+    }
+    else
+    {
+        /* $timezone is the empty sequence. */
 
-      } else {
-         /* "If $arg has a timezone component and $timezone is the empty sequence,
-          * then the result is the localized value of $arg without its timezone component." */
+        if ( dt.timeZone() == QTimeZone::systemTimeZone() )
+        {
+            /* $arg has no time zone. */
+            /* "If $arg does not have a timezone component and $timezone is
+             * the empty sequence, then the result is $arg." */
+            return arg;
 
-         dt.setTimeZone(QTimeZone::systemTimeZone());
+        }
+        else
+        {
+            /* "If $arg has a timezone component and $timezone is the empty sequence,
+             * then the result is the localized value of $arg without its timezone component." */
 
-         return createValue(dt);
-      }
-   }
+            dt.setTimeZone( QTimeZone::systemTimeZone() );
+
+            return createValue( dt );
+        }
+    }
 }
 
-Item AdjustDateTimeToTimezoneFN::createValue(const QDateTime &dt) const
+Item AdjustDateTimeToTimezoneFN::createValue( const QDateTime &dt ) const
 {
-   Q_ASSERT(dt.isValid());
-   return DateTime::fromDateTime(dt);
+    Q_ASSERT( dt.isValid() );
+    return DateTime::fromDateTime( dt );
 }
 
-Item AdjustDateToTimezoneFN::createValue(const QDateTime &dt) const
+Item AdjustDateToTimezoneFN::createValue( const QDateTime &dt ) const
 {
-   Q_ASSERT(dt.isValid());
-   return Date::fromDateTime(dt);
+    Q_ASSERT( dt.isValid() );
+    return Date::fromDateTime( dt );
 }
 
-Item AdjustTimeToTimezoneFN::createValue(const QDateTime &dt) const
+Item AdjustTimeToTimezoneFN::createValue( const QDateTime &dt ) const
 {
-   Q_ASSERT(dt.isValid());
-   return SchemaTime::fromDateTime(dt);
+    Q_ASSERT( dt.isValid() );
+    return SchemaTime::fromDateTime( dt );
 }

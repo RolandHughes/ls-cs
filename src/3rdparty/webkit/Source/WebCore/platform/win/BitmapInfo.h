@@ -32,10 +32,13 @@
 #include "IntSize.h"
 #include <windows.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-struct BitmapInfo : public BITMAPINFO {
-    enum BitCount {
+struct BitmapInfo : public BITMAPINFO
+{
+    enum BitCount
+    {
         BitCount1 = 1,
         BitCount4 = 4,
         BitCount8 = 8,
@@ -45,18 +48,45 @@ struct BitmapInfo : public BITMAPINFO {
     };
 
     BitmapInfo();
-    static BitmapInfo create(const IntSize&, BitCount bitCount = BitCount32);
-    static BitmapInfo createBottomUp(const IntSize&, BitCount bitCount = BitCount32);
+    static BitmapInfo create( const IntSize &, BitCount bitCount = BitCount32 );
+    static BitmapInfo createBottomUp( const IntSize &, BitCount bitCount = BitCount32 );
 
-    bool is16bit() const { return bmiHeader.biBitCount == 16; }
-    bool is32bit() const { return bmiHeader.biBitCount == 32; }
-    unsigned width() const { return abs(bmiHeader.biWidth); }
-    unsigned height() const { return abs(bmiHeader.biHeight); }
-    IntSize size() const { return IntSize(width(), height()); }
-    unsigned bytesPerLine() const { return (width() * bmiHeader.biBitCount + 7) / 8; }
-    unsigned paddedBytesPerLine() const { return (bytesPerLine() + 3) & ~0x3; }
-    unsigned paddedWidth() const { return paddedBytesPerLine() * 8 / bmiHeader.biBitCount; }
-    unsigned numPixels() const { return paddedWidth() * height(); }
+    bool is16bit() const
+    {
+        return bmiHeader.biBitCount == 16;
+    }
+    bool is32bit() const
+    {
+        return bmiHeader.biBitCount == 32;
+    }
+    unsigned width() const
+    {
+        return abs( bmiHeader.biWidth );
+    }
+    unsigned height() const
+    {
+        return abs( bmiHeader.biHeight );
+    }
+    IntSize size() const
+    {
+        return IntSize( width(), height() );
+    }
+    unsigned bytesPerLine() const
+    {
+        return ( width() * bmiHeader.biBitCount + 7 ) / 8;
+    }
+    unsigned paddedBytesPerLine() const
+    {
+        return ( bytesPerLine() + 3 ) & ~0x3;
+    }
+    unsigned paddedWidth() const
+    {
+        return paddedBytesPerLine() * 8 / bmiHeader.biBitCount;
+    }
+    unsigned numPixels() const
+    {
+        return paddedWidth() * height();
+    }
 };
 
 } // namespace WebCore

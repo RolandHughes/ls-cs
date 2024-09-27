@@ -27,22 +27,27 @@
 #include <wtf/Forward.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class Node;
+class Node;
 
-    class NodeList : public RefCounted<NodeList> {
-    public:
-        virtual ~NodeList() { }
+class NodeList : public RefCounted<NodeList>
+{
+public:
+    virtual ~NodeList() { }
 
-        // DOM methods & attributes for NodeList
-        virtual unsigned length() const = 0;
-        virtual Node* item(unsigned index) const = 0;
-        virtual Node* itemWithName(const AtomicString&) const = 0;
-        
-        // Other methods (not part of DOM)
-        virtual bool isDynamicNodeList() const { return false; }
-    };
+    // DOM methods & attributes for NodeList
+    virtual unsigned length() const = 0;
+    virtual Node *item( unsigned index ) const = 0;
+    virtual Node *itemWithName( const AtomicString & ) const = 0;
+
+    // Other methods (not part of DOM)
+    virtual bool isDynamicNodeList() const
+    {
+        return false;
+    }
+};
 
 } // namespace WebCore
 

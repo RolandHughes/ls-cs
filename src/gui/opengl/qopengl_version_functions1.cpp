@@ -47,66 +47,104 @@
 
 #endif
 
-QAbstractOpenGLFunctions *QOpenGLVersionFunctionsFactory::create(const QOpenGLVersionProfile &versionProfile)
+QAbstractOpenGLFunctions *QOpenGLVersionFunctionsFactory::create( const QOpenGLVersionProfile &versionProfile )
 {
 #if !defined(QT_OPENGL_ES_2)
-   const int major = versionProfile.version().first;
-   const int minor = versionProfile.version().second;
+    const int major = versionProfile.version().first;
+    const int minor = versionProfile.version().second;
 
-   if (versionProfile.hasProfiles()) {
+    if ( versionProfile.hasProfiles() )
+    {
 
-      switch (versionProfile.profile()) {
+        switch ( versionProfile.profile() )
+        {
 
-        case QSurfaceFormat::CoreProfile:
-            if (major == 4 && minor == 5)
-                return new QOpenGLFunctions_4_5_Core;
-            else if (major == 4 && minor == 4)
-                return new QOpenGLFunctions_4_4_Core;
-            else if (major == 4 && minor == 3)
-                return new QOpenGLFunctions_4_3_Core;
-            else if (major == 4 && minor == 2)
-                return new QOpenGLFunctions_4_2_Core;
-            else if (major == 4 && minor == 1)
-                return new QOpenGLFunctions_4_1_Core;
-            else if (major == 4 && minor == 0)
-                return new QOpenGLFunctions_4_0_Core;
-            else if (major == 3 && minor == 3)
-                return new QOpenGLFunctions_3_3_Core;
-            else if (major == 3 && minor == 2)
-                return new QOpenGLFunctions_3_2_Core;
-            break;
+            case QSurfaceFormat::CoreProfile:
+                if ( major == 4 && minor == 5 )
+                {
+                    return new QOpenGLFunctions_4_5_Core;
+                }
+                else if ( major == 4 && minor == 4 )
+                {
+                    return new QOpenGLFunctions_4_4_Core;
+                }
+                else if ( major == 4 && minor == 3 )
+                {
+                    return new QOpenGLFunctions_4_3_Core;
+                }
+                else if ( major == 4 && minor == 2 )
+                {
+                    return new QOpenGLFunctions_4_2_Core;
+                }
+                else if ( major == 4 && minor == 1 )
+                {
+                    return new QOpenGLFunctions_4_1_Core;
+                }
+                else if ( major == 4 && minor == 0 )
+                {
+                    return new QOpenGLFunctions_4_0_Core;
+                }
+                else if ( major == 3 && minor == 3 )
+                {
+                    return new QOpenGLFunctions_3_3_Core;
+                }
+                else if ( major == 3 && minor == 2 )
+                {
+                    return new QOpenGLFunctions_3_2_Core;
+                }
 
-        case QSurfaceFormat::CompatibilityProfile:
-            if (major == 4 && minor == 5)
-                return new QOpenGLFunctions_4_5_Compatibility;
-            else if (major == 4 && minor == 4)
-                return new QOpenGLFunctions_4_4_Compatibility;
-            else if (major == 4 && minor == 3)
-                return new QOpenGLFunctions_4_3_Compatibility;
-            else if (major == 4 && minor == 2)
-                return new QOpenGLFunctions_4_2_Compatibility;
-            else if (major == 4 && minor == 1)
-                return new QOpenGLFunctions_4_1_Compatibility;
-            else if (major == 4 && minor == 0)
-                return new QOpenGLFunctions_4_0_Compatibility;
-            else if (major == 3 && minor == 3)
-                return new QOpenGLFunctions_3_3_Compatibility;
-            else if (major == 3 && minor == 2)
-                return new QOpenGLFunctions_3_2_Compatibility;
-            break;
+                break;
 
-        case QSurfaceFormat::NoProfile:
+            case QSurfaceFormat::CompatibilityProfile:
+                if ( major == 4 && minor == 5 )
+                {
+                    return new QOpenGLFunctions_4_5_Compatibility;
+                }
+                else if ( major == 4 && minor == 4 )
+                {
+                    return new QOpenGLFunctions_4_4_Compatibility;
+                }
+                else if ( major == 4 && minor == 3 )
+                {
+                    return new QOpenGLFunctions_4_3_Compatibility;
+                }
+                else if ( major == 4 && minor == 2 )
+                {
+                    return new QOpenGLFunctions_4_2_Compatibility;
+                }
+                else if ( major == 4 && minor == 1 )
+                {
+                    return new QOpenGLFunctions_4_1_Compatibility;
+                }
+                else if ( major == 4 && minor == 0 )
+                {
+                    return new QOpenGLFunctions_4_0_Compatibility;
+                }
+                else if ( major == 3 && minor == 3 )
+                {
+                    return new QOpenGLFunctions_3_3_Compatibility;
+                }
+                else if ( major == 3 && minor == 2 )
+                {
+                    return new QOpenGLFunctions_3_2_Compatibility;
+                }
 
-        default:
-            break;
+                break;
+
+            case QSurfaceFormat::NoProfile:
+
+            default:
+                break;
         };
 
-   } else {
-      return createNoProfile(major, minor);
+    }
+    else
+    {
+        return createNoProfile( major, minor );
 
-   }
+    }
 
-   return nullptr;
+    return nullptr;
 
 #else
     return new QOpenGLFunctions_ES2;

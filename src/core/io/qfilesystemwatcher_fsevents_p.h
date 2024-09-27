@@ -46,14 +46,15 @@ using FSEventStreamEventId    = uint64_t;
 
 #if ! defined(Q_OS_IOS)
 
-struct PathInfo {
-   PathInfo(const QString &path, const QByteArray &absPath)
-      : originalPath(path), absolutePath(absPath)
-   { }
+struct PathInfo
+{
+    PathInfo( const QString &path, const QByteArray &absPath )
+        : originalPath( path ), absolutePath( absPath )
+    { }
 
-   QString originalPath;       // The path we need to emit
-   QByteArray absolutePath;    // The path we need to stat.
-   struct ::stat savedInfo;    // All the info for the path so we can compare it.
+    QString originalPath;       // The path we need to emit
+    QByteArray absolutePath;    // The path we need to stat.
+    struct ::stat savedInfo;    // All the info for the path so we can compare it.
 };
 
 using PathInfoList = QLinkedList<PathInfo>;
@@ -63,39 +64,39 @@ using PathHash     = QHash<QString, PathInfoList>;
 
 class QFSEventsFileSystemWatcherEngine : public QFileSystemWatcherEngine
 {
-   CORE_CS_OBJECT(QFSEventsFileSystemWatcherEngine)
+    CORE_CS_OBJECT( QFSEventsFileSystemWatcherEngine )
 
- public:
-   ~QFSEventsFileSystemWatcherEngine();
+public:
+    ~QFSEventsFileSystemWatcherEngine();
 
-   static QFSEventsFileSystemWatcherEngine *create();
+    static QFSEventsFileSystemWatcherEngine *create();
 
-   QStringList addPaths(const QStringList &paths, QStringList *files, QStringList *directories) override;
-   QStringList removePaths(const QStringList &paths, QStringList *files, QStringList *directories) override;
+    QStringList addPaths( const QStringList &paths, QStringList *files, QStringList *directories ) override;
+    QStringList removePaths( const QStringList &paths, QStringList *files, QStringList *directories ) override;
 
-   void stop() override;
+    void stop() override;
 
- private:
-   QFSEventsFileSystemWatcherEngine();
-   void warmUpFSEvents();
-   void updateFiles();
+private:
+    QFSEventsFileSystemWatcherEngine();
+    void warmUpFSEvents();
+    void updateFiles();
 
-   static void fseventsCallback(ConstFSEventStreamRef streamRef, void *clientCallBackInfo, size_t numEvents,
-         void *eventPaths, const FSEventStreamEventFlags eventFlags[], const FSEventStreamEventId eventIds[]);
+    static void fseventsCallback( ConstFSEventStreamRef streamRef, void *clientCallBackInfo, size_t numEvents,
+                                  void *eventPaths, const FSEventStreamEventFlags eventFlags[], const FSEventStreamEventId eventIds[] );
 
-   void run() override;
-   FSEventStreamRef fsStream;
-   CFArrayRef pathsToWatch;
-   CFRunLoopRef threadsRunLoop;
-   QMutex mutex;
-   QWaitCondition waitCondition;
-   QWaitCondition waitForStop;
+    void run() override;
+    FSEventStreamRef fsStream;
+    CFArrayRef pathsToWatch;
+    CFRunLoopRef threadsRunLoop;
+    QMutex mutex;
+    QWaitCondition waitCondition;
+    QWaitCondition waitForStop;
 
 #if ! defined(Q_OS_IOS)
-   PathHash filePathInfoHash;
-   PathHash dirPathInfoHash;
-   void updateHash(PathHash &pathHash);
-   void updateList(PathInfoList &list, bool directory, bool emitSignals);
+    PathHash filePathInfoHash;
+    PathHash dirPathInfoHash;
+    void updateHash( PathHash &pathHash );
+    void updateList( PathInfoList &list, bool directory, bool emitSignals );
 #endif
 
 };

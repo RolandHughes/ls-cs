@@ -41,22 +41,25 @@
 #include <wtf/Vector.h>
 #include <wtf/text/StringHash.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class InspectorArray;
 class InspectorObject;
 
-class InspectorValue : public RefCounted<InspectorValue> {
+class InspectorValue : public RefCounted<InspectorValue>
+{
 public:
-    InspectorValue() : m_type(TypeNull) { }
+    InspectorValue() : m_type( TypeNull ) { }
     virtual ~InspectorValue() { }
 
     static PassRefPtr<InspectorValue> null()
     {
-        return adoptRef(new InspectorValue());
+        return adoptRef( new InspectorValue() );
     }
 
-    typedef enum {
+    typedef enum
+    {
         TypeNull = 0,
         TypeBoolean,
         TypeNumber,
@@ -65,97 +68,107 @@ public:
         TypeArray
     } Type;
 
-    Type type() const { return m_type; }
+    Type type() const
+    {
+        return m_type;
+    }
 
-    bool isNull() const { return m_type == TypeNull; }
+    bool isNull() const
+    {
+        return m_type == TypeNull;
+    }
 
-    virtual bool asBoolean(bool* output) const;
-    virtual bool asNumber(double* output) const;
-    virtual bool asNumber(long* output) const;
-    virtual bool asNumber(int* output) const;
-    virtual bool asNumber(unsigned long* output) const;
-    virtual bool asNumber(unsigned int* output) const;
-    virtual bool asString(String* output) const;
-    virtual bool asValue(RefPtr<InspectorValue>* output);
-    virtual bool asObject(RefPtr<InspectorObject>* output);
-    virtual bool asArray(RefPtr<InspectorArray>* output);
+    virtual bool asBoolean( bool *output ) const;
+    virtual bool asNumber( double *output ) const;
+    virtual bool asNumber( long *output ) const;
+    virtual bool asNumber( int *output ) const;
+    virtual bool asNumber( unsigned long *output ) const;
+    virtual bool asNumber( unsigned int *output ) const;
+    virtual bool asString( String *output ) const;
+    virtual bool asValue( RefPtr<InspectorValue> *output );
+    virtual bool asObject( RefPtr<InspectorObject> *output );
+    virtual bool asArray( RefPtr<InspectorArray> *output );
     virtual PassRefPtr<InspectorObject> asObject();
     virtual PassRefPtr<InspectorArray> asArray();
 
-    static PassRefPtr<InspectorValue> parseJSON(const String& json);
+    static PassRefPtr<InspectorValue> parseJSON( const String &json );
 
     String toJSONString() const;
-    virtual void writeJSON(Vector<UChar>* output) const;
+    virtual void writeJSON( Vector<UChar> *output ) const;
 
 protected:
-    explicit InspectorValue(Type type) : m_type(type) { }
+    explicit InspectorValue( Type type ) : m_type( type ) { }
 
 private:
     Type m_type;
 };
 
-class InspectorBasicValue : public InspectorValue {
+class InspectorBasicValue : public InspectorValue
+{
 public:
 
-    static PassRefPtr<InspectorBasicValue> create(bool value)
+    static PassRefPtr<InspectorBasicValue> create( bool value )
     {
-        return adoptRef(new InspectorBasicValue(value));
+        return adoptRef( new InspectorBasicValue( value ) );
     }
 
-    static PassRefPtr<InspectorBasicValue> create(int value)
+    static PassRefPtr<InspectorBasicValue> create( int value )
     {
-        return adoptRef(new InspectorBasicValue(value));
+        return adoptRef( new InspectorBasicValue( value ) );
     }
 
-    static PassRefPtr<InspectorBasicValue> create(double value)
+    static PassRefPtr<InspectorBasicValue> create( double value )
     {
-        return adoptRef(new InspectorBasicValue(value));
+        return adoptRef( new InspectorBasicValue( value ) );
     }
 
-    virtual bool asBoolean(bool* output) const;
-    virtual bool asNumber(double* output) const;
-    virtual bool asNumber(long* output) const;
-    virtual bool asNumber(int* output) const;
-    virtual bool asNumber(unsigned long* output) const;
-    virtual bool asNumber(unsigned int* output) const;
+    virtual bool asBoolean( bool *output ) const;
+    virtual bool asNumber( double *output ) const;
+    virtual bool asNumber( long *output ) const;
+    virtual bool asNumber( int *output ) const;
+    virtual bool asNumber( unsigned long *output ) const;
+    virtual bool asNumber( unsigned int *output ) const;
 
-    virtual void writeJSON(Vector<UChar>* output) const;
+    virtual void writeJSON( Vector<UChar> *output ) const;
 
 private:
-    explicit InspectorBasicValue(bool value) : InspectorValue(TypeBoolean), m_boolValue(value) { }
-    explicit InspectorBasicValue(int value) : InspectorValue(TypeNumber), m_doubleValue((double)value) { }
-    explicit InspectorBasicValue(double value) : InspectorValue(TypeNumber), m_doubleValue(value) { }
+    explicit InspectorBasicValue( bool value ) : InspectorValue( TypeBoolean ), m_boolValue( value ) { }
+    explicit InspectorBasicValue( int value ) : InspectorValue( TypeNumber ), m_doubleValue( ( double )value ) { }
+    explicit InspectorBasicValue( double value ) : InspectorValue( TypeNumber ), m_doubleValue( value ) { }
 
-    union {
+    union
+    {
         bool m_boolValue;
         double m_doubleValue;
     };
 };
 
-class InspectorString : public InspectorValue {
+class InspectorString : public InspectorValue
+{
 public:
-    static PassRefPtr<InspectorString> create(const String& value)
+    static PassRefPtr<InspectorString> create( const String &value )
     {
-        return adoptRef(new InspectorString(value));
+        return adoptRef( new InspectorString( value ) );
     }
 
-    static PassRefPtr<InspectorString> create(const char* value)
+    static PassRefPtr<InspectorString> create( const char *value )
     {
-        return adoptRef(new InspectorString(value));
+        return adoptRef( new InspectorString( value ) );
     }
 
-    virtual bool asString(String* output) const;    
+    virtual bool asString( String *output ) const;
 
-    virtual void writeJSON(Vector<UChar>* output) const;
+    virtual void writeJSON( Vector<UChar> *output ) const;
 
 private:
-    explicit InspectorString(const String& value) : InspectorValue(TypeString), m_stringValue(value) { }
-    explicit InspectorString(const char* value) : InspectorValue(TypeString), m_stringValue(value) { }
+    explicit InspectorString( const String &value ) : InspectorValue( TypeString ), m_stringValue( value ) { }
+    explicit InspectorString( const char *value ) : InspectorValue( TypeString ), m_stringValue( value ) { }
 
     String m_stringValue;
 };
 
-class InspectorObject : public InspectorValue {
+class InspectorObject : public InspectorValue
+{
 private:
     typedef HashMap<String, RefPtr<InspectorValue> > Dictionary;
 
@@ -166,43 +179,59 @@ public:
 public:
     static PassRefPtr<InspectorObject> create()
     {
-        return adoptRef(new InspectorObject());
+        return adoptRef( new InspectorObject() );
     }
     ~InspectorObject();
 
-    virtual bool asObject(RefPtr<InspectorObject>* output);
+    virtual bool asObject( RefPtr<InspectorObject> *output );
     virtual PassRefPtr<InspectorObject> asObject();
 
-    void setBoolean(const String& name, bool);
-    void setNumber(const String& name, double);
-    void setString(const String& name, const String&);
-    void setValue(const String& name, PassRefPtr<InspectorValue>);
-    void setObject(const String& name, PassRefPtr<InspectorObject>);
-    void setArray(const String& name, PassRefPtr<InspectorArray>);
+    void setBoolean( const String &name, bool );
+    void setNumber( const String &name, double );
+    void setString( const String &name, const String & );
+    void setValue( const String &name, PassRefPtr<InspectorValue> );
+    void setObject( const String &name, PassRefPtr<InspectorObject> );
+    void setArray( const String &name, PassRefPtr<InspectorArray> );
 
-    iterator find(const String& name);
-    const_iterator find(const String& name) const;
-    bool getBoolean(const String& name, bool* output) const;
-    template<class T> bool getNumber(const String& name, T* output) const
+    iterator find( const String &name );
+    const_iterator find( const String &name ) const;
+    bool getBoolean( const String &name, bool *output ) const;
+    template<class T> bool getNumber( const String &name, T *output ) const
     {
-        RefPtr<InspectorValue> value = get(name);
-        if (!value)
+        RefPtr<InspectorValue> value = get( name );
+
+        if ( !value )
+        {
             return false;
-        return value->asNumber(output);
+        }
+
+        return value->asNumber( output );
     }
-    bool getString(const String& name, String* output) const;
-    PassRefPtr<InspectorObject> getObject(const String& name) const;
-    PassRefPtr<InspectorArray> getArray(const String& name) const;
-    PassRefPtr<InspectorValue> get(const String& name) const;
+    bool getString( const String &name, String *output ) const;
+    PassRefPtr<InspectorObject> getObject( const String &name ) const;
+    PassRefPtr<InspectorArray> getArray( const String &name ) const;
+    PassRefPtr<InspectorValue> get( const String &name ) const;
 
-    void remove(const String& name);
+    void remove( const String &name );
 
-    virtual void writeJSON(Vector<UChar>* output) const;
+    virtual void writeJSON( Vector<UChar> *output ) const;
 
-    iterator begin() { return m_data.begin(); }
-    iterator end() { return m_data.end(); }
-    const_iterator begin() const { return m_data.begin(); }
-    const_iterator end() const { return m_data.end(); }
+    iterator begin()
+    {
+        return m_data.begin();
+    }
+    iterator end()
+    {
+        return m_data.end();
+    }
+    const_iterator begin() const
+    {
+        return m_data.begin();
+    }
+    const_iterator end() const
+    {
+        return m_data.end();
+    }
 
 private:
     InspectorObject();
@@ -210,105 +239,115 @@ private:
     Vector<String> m_order;
 };
 
-class InspectorArray : public InspectorValue {
+class InspectorArray : public InspectorValue
+{
 public:
     static PassRefPtr<InspectorArray> create()
     {
-        return adoptRef(new InspectorArray());
+        return adoptRef( new InspectorArray() );
     }
     ~InspectorArray();
 
-    virtual bool asArray(RefPtr<InspectorArray>* output);
+    virtual bool asArray( RefPtr<InspectorArray> *output );
     virtual PassRefPtr<InspectorArray> asArray();
 
-    void pushBoolean(bool);
-    void pushNumber(double);
-    void pushString(const String&);
-    void pushValue(PassRefPtr<InspectorValue>);
-    void pushObject(PassRefPtr<InspectorObject>);
-    void pushArray(PassRefPtr<InspectorArray>);
-    unsigned length() const { return m_data.size(); }
+    void pushBoolean( bool );
+    void pushNumber( double );
+    void pushString( const String & );
+    void pushValue( PassRefPtr<InspectorValue> );
+    void pushObject( PassRefPtr<InspectorObject> );
+    void pushArray( PassRefPtr<InspectorArray> );
+    unsigned length() const
+    {
+        return m_data.size();
+    }
 
-    PassRefPtr<InspectorValue> get(size_t index);
+    PassRefPtr<InspectorValue> get( size_t index );
 
-    virtual void writeJSON(Vector<UChar>* output) const;
+    virtual void writeJSON( Vector<UChar> *output ) const;
 
 private:
     InspectorArray();
     Vector<RefPtr<InspectorValue> > m_data;
 };
 
-inline InspectorObject::iterator InspectorObject::find(const String& name)
+inline InspectorObject::iterator InspectorObject::find( const String &name )
 {
-    return m_data.find(name);
+    return m_data.find( name );
 }
 
-inline InspectorObject::const_iterator InspectorObject::find(const String& name) const
+inline InspectorObject::const_iterator InspectorObject::find( const String &name ) const
 {
-    return m_data.find(name);
+    return m_data.find( name );
 }
 
-inline void InspectorObject::setBoolean(const String& name, bool value)
+inline void InspectorObject::setBoolean( const String &name, bool value )
 {
-    setValue(name, InspectorBasicValue::create(value));
+    setValue( name, InspectorBasicValue::create( value ) );
 }
 
-inline void InspectorObject::setNumber(const String& name, double value)
+inline void InspectorObject::setNumber( const String &name, double value )
 {
-    setValue(name, InspectorBasicValue::create(value));
+    setValue( name, InspectorBasicValue::create( value ) );
 }
 
-inline void InspectorObject::setString(const String& name, const String& value)
+inline void InspectorObject::setString( const String &name, const String &value )
 {
-    setValue(name, InspectorString::create(value));
+    setValue( name, InspectorString::create( value ) );
 }
 
-inline void InspectorObject::setValue(const String& name, PassRefPtr<InspectorValue> value)
+inline void InspectorObject::setValue( const String &name, PassRefPtr<InspectorValue> value )
 {
-    if (m_data.set(name, value).second)
-        m_order.append(name);
+    if ( m_data.set( name, value ).second )
+    {
+        m_order.append( name );
+    }
 }
 
-inline void InspectorObject::setObject(const String& name, PassRefPtr<InspectorObject> value)
+inline void InspectorObject::setObject( const String &name, PassRefPtr<InspectorObject> value )
 {
-    if (m_data.set(name, value).second)
-        m_order.append(name);
+    if ( m_data.set( name, value ).second )
+    {
+        m_order.append( name );
+    }
 }
 
-inline void InspectorObject::setArray(const String& name, PassRefPtr<InspectorArray> value)
+inline void InspectorObject::setArray( const String &name, PassRefPtr<InspectorArray> value )
 {
-    if (m_data.set(name, value).second)
-        m_order.append(name);
+    if ( m_data.set( name, value ).second )
+    {
+        m_order.append( name );
+    }
 }
 
-inline void InspectorArray::pushBoolean(bool value)
+inline void InspectorArray::pushBoolean( bool value )
 {
-    m_data.append(InspectorBasicValue::create(value));
+    m_data.append( InspectorBasicValue::create( value ) );
 }
 
-inline void InspectorArray::pushNumber(double value)
+inline void InspectorArray::pushNumber( double value )
 {
-    m_data.append(InspectorBasicValue::create(value));
+    m_data.append( InspectorBasicValue::create( value ) );
 }
 
-inline void InspectorArray::pushString(const String& value)
+inline void InspectorArray::pushString( const String &value )
 {
-    m_data.append(InspectorString::create(value));
+    m_data.append( InspectorString::create( value ) );
 }
 
-inline void InspectorArray::pushValue(PassRefPtr<InspectorValue> value)
+inline void InspectorArray::pushValue( PassRefPtr<InspectorValue> value )
 {
-    m_data.append(value);
+    m_data.append( value );
 }
 
-inline void InspectorArray::pushObject(PassRefPtr<InspectorObject> value)
+inline void InspectorArray::pushObject( PassRefPtr<InspectorObject> value )
 {
-    m_data.append(value);
+    m_data.append( value );
 }
 
-inline void InspectorArray::pushArray(PassRefPtr<InspectorArray> value)
+inline void InspectorArray::pushArray( PassRefPtr<InspectorArray> value )
 {
-    m_data.append(value);
+    m_data.append( value );
 }
 
 } // namespace WebCore

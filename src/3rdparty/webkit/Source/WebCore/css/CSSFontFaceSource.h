@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef CSSFontFaceSource_h
@@ -31,7 +31,8 @@
 #include <wtf/HashMap.h>
 #include <wtf/text/AtomicString.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class CachedFont;
 class CSSFontFace;
@@ -44,36 +45,46 @@ class SVGFontFaceElement;
 #endif
 
 
-class CSSFontFaceSource : public CachedResourceClient {
+class CSSFontFaceSource : public CachedResourceClient
+{
 public:
-    CSSFontFaceSource(const String&, CachedFont* = 0);
+    CSSFontFaceSource( const String &, CachedFont * = 0 );
     virtual ~CSSFontFaceSource();
 
     bool isLoaded() const;
     bool isValid() const;
 
-    const AtomicString& string() const { return m_string; }
+    const AtomicString &string() const
+    {
+        return m_string;
+    }
 
-    void setFontFace(CSSFontFace* face) { m_face = face; }
+    void setFontFace( CSSFontFace *face )
+    {
+        m_face = face;
+    }
 
-    virtual void fontLoaded(CachedFont*);
-    
-    SimpleFontData* getFontData(const FontDescription&, bool syntheticBold, bool syntheticItalic, CSSFontSelector*);
-    
+    virtual void fontLoaded( CachedFont * );
+
+    SimpleFontData *getFontData( const FontDescription &, bool syntheticBold, bool syntheticItalic, CSSFontSelector * );
+
     void pruneTable();
 
 #if ENABLE(SVG_FONTS)
-    SVGFontFaceElement* svgFontFaceElement() const;
-    void setSVGFontFaceElement(PassRefPtr<SVGFontFaceElement>);
+    SVGFontFaceElement *svgFontFaceElement() const;
+    void setSVGFontFaceElement( PassRefPtr<SVGFontFaceElement> );
     bool isSVGFontFaceSource() const;
-    void setHasExternalSVGFont(bool value) { m_hasExternalSVGFont = value; }
+    void setHasExternalSVGFont( bool value )
+    {
+        m_hasExternalSVGFont = value;
+    }
 #endif
 
 private:
     AtomicString m_string; // URI for remote, built-in font name for local.
     CachedResourceHandle<CachedFont> m_font; // For remote fonts, a pointer to our cached resource.
-    CSSFontFace* m_face; // Our owning font face.
-    HashMap<unsigned, SimpleFontData*> m_fontDataTable; // The hash key is composed of size synthetic styles.
+    CSSFontFace *m_face; // Our owning font face.
+    HashMap<unsigned, SimpleFontData *> m_fontDataTable; // The hash key is composed of size synthetic styles.
 
 #if ENABLE(SVG_FONTS)
     RefPtr<SVGFontFaceElement> m_svgFontFaceElement;

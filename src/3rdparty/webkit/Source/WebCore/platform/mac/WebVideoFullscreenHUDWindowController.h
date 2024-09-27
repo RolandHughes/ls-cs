@@ -27,8 +27,9 @@
 
 #import <Cocoa/Cocoa.h>
 
-namespace WebCore {
-    class HTMLMediaElement;
+namespace WebCore
+{
+class HTMLMediaElement;
 }
 
 @protocol WebVideoFullscreenHUDWindowControllerDelegate;
@@ -49,18 +50,18 @@ namespace WebCore {
     NSButton *_playButton;
 }
 
-- (id <WebVideoFullscreenHUDWindowControllerDelegate>)delegate;
-- (void)setDelegate:(id <WebVideoFullscreenHUDWindowControllerDelegate>)delegate;
-- (void)fadeWindowIn;
-- (void)fadeWindowOut;
-- (void)closeWindow;
-- (void)updateRate;
+- ( id <WebVideoFullscreenHUDWindowControllerDelegate> )delegate;
+- ( void )setDelegate:( id <WebVideoFullscreenHUDWindowControllerDelegate> )delegate;
+- ( void )fadeWindowIn;
+- ( void )fadeWindowOut;
+- ( void )closeWindow;
+- ( void )updateRate;
 
 @end
 
 @protocol WebVideoFullscreenHUDWindowControllerDelegate <NSObject>
-- (void)requestExitFullscreen;
-- (WebCore::HTMLMediaElement*)mediaElement;
+- ( void )requestExitFullscreen;
+- ( WebCore::HTMLMediaElement * )mediaElement;
 @end
 
 #endif

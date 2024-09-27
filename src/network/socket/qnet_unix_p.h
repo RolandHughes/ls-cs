@@ -39,84 +39,94 @@
 #endif
 
 // UnixWare 7 redefines socket -> _socket
-static inline int qt_safe_socket(int domain, int type, int protocol, int flags = 0)
+static inline int qt_safe_socket( int domain, int type, int protocol, int flags = 0 )
 {
-   Q_ASSERT((flags & ~O_NONBLOCK) == 0);
+    Q_ASSERT( ( flags & ~O_NONBLOCK ) == 0 );
 
-   int fd;
+    int fd;
 
 #ifdef QT_THREADSAFE_CLOEXEC
-   int newtype = type | SOCK_CLOEXEC;
-   if (flags & O_NONBLOCK) {
-      newtype |= SOCK_NONBLOCK;
-   }
+    int newtype = type | SOCK_CLOEXEC;
 
-   fd = ::socket(domain, newtype, protocol);
-   return fd;
+    if ( flags & O_NONBLOCK )
+    {
+        newtype |= SOCK_NONBLOCK;
+    }
+
+    fd = ::socket( domain, newtype, protocol );
+    return fd;
 #else
 
-   fd = ::socket(domain, type, protocol);
-   if (fd == -1) {
-      return -1;
-   }
+    fd = ::socket( domain, type, protocol );
 
-   ::fcntl(fd, F_SETFD, FD_CLOEXEC);
+    if ( fd == -1 )
+    {
+        return -1;
+    }
 
-   // set non-block too?
-   if (flags & O_NONBLOCK) {
-      ::fcntl(fd, F_SETFL, ::fcntl(fd, F_GETFL) | O_NONBLOCK);
-   }
+    ::fcntl( fd, F_SETFD, FD_CLOEXEC );
 
-   return fd;
+    // set non-block too?
+    if ( flags & O_NONBLOCK )
+    {
+        ::fcntl( fd, F_SETFL, ::fcntl( fd, F_GETFL ) | O_NONBLOCK );
+    }
+
+    return fd;
 #endif
 }
 
 // Tru64 redefines accept -> _accept with _XOPEN_SOURCE_EXTENDED
-static inline int qt_safe_accept(int s, struct sockaddr *addr, QT_SOCKLEN_T *addrlen, int flags = 0)
+static inline int qt_safe_accept( int s, struct sockaddr *addr, QT_SOCKLEN_T *addrlen, int flags = 0 )
 {
-   Q_ASSERT((flags & ~O_NONBLOCK) == 0);
+    Q_ASSERT( ( flags & ~O_NONBLOCK ) == 0 );
 
-   int fd;
+    int fd;
 #ifdef QT_THREADSAFE_CLOEXEC
-   // use accept4
-   int sockflags = SOCK_CLOEXEC;
-   if (flags & O_NONBLOCK) {
-      sockflags |= SOCK_NONBLOCK;
-   }
+    // use accept4
+    int sockflags = SOCK_CLOEXEC;
 
-   fd = ::accept4(s, addr, static_cast<QT_SOCKLEN_T *>(addrlen), sockflags);
+    if ( flags & O_NONBLOCK )
+    {
+        sockflags |= SOCK_NONBLOCK;
+    }
+
+    fd = ::accept4( s, addr, static_cast<QT_SOCKLEN_T *>( addrlen ), sockflags );
     return fd;
 #else
 
-   fd = ::accept(s, addr, static_cast<QT_SOCKLEN_T *>(addrlen));
-   if (fd == -1) {
-      return -1;
-   }
+    fd = ::accept( s, addr, static_cast<QT_SOCKLEN_T *>( addrlen ) );
 
-   ::fcntl(fd, F_SETFD, FD_CLOEXEC);
+    if ( fd == -1 )
+    {
+        return -1;
+    }
 
-   // set non-block too?
-   if (flags & O_NONBLOCK) {
-      ::fcntl(fd, F_SETFL, ::fcntl(fd, F_GETFL) | O_NONBLOCK);
-   }
+    ::fcntl( fd, F_SETFD, FD_CLOEXEC );
 
-   return fd;
+    // set non-block too?
+    if ( flags & O_NONBLOCK )
+    {
+        ::fcntl( fd, F_SETFL, ::fcntl( fd, F_GETFL ) | O_NONBLOCK );
+    }
+
+    return fd;
 #endif
 }
 
 // UnixWare 7 redefines listen -> _listen
-static inline int qt_safe_listen(int s, int backlog)
+static inline int qt_safe_listen( int s, int backlog )
 {
-   return ::listen(s, backlog);
+    return ::listen( s, backlog );
 }
 
-static inline int qt_safe_connect(int sockfd, const struct sockaddr *addr, QT_SOCKLEN_T addrlen)
+static inline int qt_safe_connect( int sockfd, const struct sockaddr *addr, QT_SOCKLEN_T addrlen )
 {
-   int ret;
+    int ret;
 
-   // Solaris e.g. expects a non-const 2nd parameter
-   EINTR_LOOP(ret, QT_SOCKET_CONNECT(sockfd, const_cast<struct sockaddr *>(addr), addrlen));
-   return ret;
+    // Solaris e.g. expects a non-const 2nd parameter
+    EINTR_LOOP( ret, QT_SOCKET_CONNECT( sockfd, const_cast<struct sockaddr *>( addr ), addrlen ) );
+    return ret;
 }
 #undef QT_SOCKET_CONNECT
 #define QT_SOCKET_CONNECT qt_safe_connect
@@ -132,34 +142,34 @@ static inline int qt_safe_connect(int sockfd, const struct sockaddr *addr, QT_SO
 #endif
 
 template <typename T>
-static inline int qt_safe_ioctl(int sockfd, int request, T arg)
+static inline int qt_safe_ioctl( int sockfd, int request, T arg )
 {
-   return ::ioctl(sockfd, request, arg);
+    return ::ioctl( sockfd, request, arg );
 }
 
-static inline in_addr_t qt_safe_inet_addr(const char *cp)
+static inline in_addr_t qt_safe_inet_addr( const char *cp )
 {
-   return ::inet_addr(cp);
+    return ::inet_addr( cp );
 }
 
-static inline ssize_t qt_safe_sendmsg(int sockfd, const struct msghdr *msg, int flags)
+static inline ssize_t qt_safe_sendmsg( int sockfd, const struct msghdr *msg, int flags )
 {
 #ifdef MSG_NOSIGNAL
-   flags |= MSG_NOSIGNAL;
+    flags |= MSG_NOSIGNAL;
 #else
-   qt_ignore_sigpipe();
+    qt_ignore_sigpipe();
 #endif
 
-   int ret;
-   EINTR_LOOP(ret, ::sendmsg(sockfd, msg, flags));
+    int ret;
+    EINTR_LOOP( ret, ::sendmsg( sockfd, msg, flags ) );
 
-   return ret;
+    return ret;
 }
-static inline int qt_safe_recvmsg(int sockfd, struct msghdr *msg, int flags)
+static inline int qt_safe_recvmsg( int sockfd, struct msghdr *msg, int flags )
 {
     int ret;
 
-    EINTR_LOOP(ret, ::recvmsg(sockfd, msg, flags));
+    EINTR_LOOP( ret, ::recvmsg( sockfd, msg, flags ) );
     return ret;
 }
 

@@ -44,13 +44,15 @@
 #include <WebCore/FullScreenControllerClient.h>
 #endif
 
-namespace WebCore {
-    class FullScreenController;
+namespace WebCore
+{
+class FullScreenController;
 }
 
 interface IDropTargetHelper;
 
-namespace WebKit {
+namespace WebKit
+{
 
 class DrawingAreaProxy;
 
@@ -58,93 +60,105 @@ class WebView
     : public APIObject
     , public PageClient
     , WebCore::WindowMessageListener
-    , public IDropTarget 
+    , public IDropTarget
 #if ENABLE(FULLSCREEN_API)
     , WebCore::FullScreenControllerClient
 #endif
 {
 public:
-    static PassRefPtr<WebView> create(RECT rect, WebContext* context, WebPageGroup* pageGroup, HWND parentWindow)
+    static PassRefPtr<WebView> create( RECT rect, WebContext *context, WebPageGroup *pageGroup, HWND parentWindow )
     {
-        RefPtr<WebView> webView = adoptRef(new WebView(rect, context, pageGroup, parentWindow));
+        RefPtr<WebView> webView = adoptRef( new WebView( rect, context, pageGroup, parentWindow ) );
         webView->initialize();
         return webView;
     }
     ~WebView();
 
-    HWND window() const { return m_window; }
-    void setParentWindow(HWND);
+    HWND window() const
+    {
+        return m_window;
+    }
+    void setParentWindow( HWND );
     void windowAncestryDidChange();
-    void setIsInWindow(bool);
-    void setIsVisible(bool);
-    void setOverrideCursor(HCURSOR);
-    void setInitialFocus(bool forward);
-    void setScrollOffsetOnNextResize(const WebCore::IntSize&);
-    void setFindIndicatorCallback(WKViewFindIndicatorCallback, void*);
-    WKViewFindIndicatorCallback getFindIndicatorCallback(void**);
+    void setIsInWindow( bool );
+    void setIsVisible( bool );
+    void setOverrideCursor( HCURSOR );
+    void setInitialFocus( bool forward );
+    void setScrollOffsetOnNextResize( const WebCore::IntSize & );
+    void setFindIndicatorCallback( WKViewFindIndicatorCallback, void * );
+    WKViewFindIndicatorCallback getFindIndicatorCallback( void ** );
     void initialize();
-    
-    void initializeUndoClient(const WKViewUndoClient*);
-    void reapplyEditCommand(WebEditCommandProxy*);
-    void unapplyEditCommand(WebEditCommandProxy*);
+
+    void initializeUndoClient( const WKViewUndoClient * );
+    void reapplyEditCommand( WebEditCommandProxy * );
+    void unapplyEditCommand( WebEditCommandProxy * );
 
     // IUnknown
-    virtual HRESULT STDMETHODCALLTYPE QueryInterface(REFIID riid, void** ppvObject);
-    virtual ULONG STDMETHODCALLTYPE AddRef(void);
-    virtual ULONG STDMETHODCALLTYPE Release(void);
+    virtual HRESULT STDMETHODCALLTYPE QueryInterface( REFIID riid, void **ppvObject );
+    virtual ULONG STDMETHODCALLTYPE AddRef( void );
+    virtual ULONG STDMETHODCALLTYPE Release( void );
 
     // IDropTarget
-    virtual HRESULT STDMETHODCALLTYPE DragEnter(IDataObject* pDataObject, DWORD grfKeyState, POINTL pt, DWORD* pdwEffect);
-    virtual HRESULT STDMETHODCALLTYPE DragOver(DWORD grfKeyState, POINTL pt, DWORD* pdwEffect);
+    virtual HRESULT STDMETHODCALLTYPE DragEnter( IDataObject *pDataObject, DWORD grfKeyState, POINTL pt, DWORD *pdwEffect );
+    virtual HRESULT STDMETHODCALLTYPE DragOver( DWORD grfKeyState, POINTL pt, DWORD *pdwEffect );
     virtual HRESULT STDMETHODCALLTYPE DragLeave();
-    virtual HRESULT STDMETHODCALLTYPE Drop(IDataObject* pDataObject, DWORD grfKeyState, POINTL pt, DWORD* pdwEffect);
+    virtual HRESULT STDMETHODCALLTYPE Drop( IDataObject *pDataObject, DWORD grfKeyState, POINTL pt, DWORD *pdwEffect );
 
-    WebPageProxy* page() const { return m_page.get(); }
+    WebPageProxy *page() const
+    {
+        return m_page.get();
+    }
 
 #if ENABLE(FULLSCREEN_API)
-    WebCore::FullScreenController* fullScreenController();
+    WebCore::FullScreenController *fullScreenController();
 #endif
 
 private:
-    WebView(RECT, WebContext*, WebPageGroup*, HWND parentWindow);
+    WebView( RECT, WebContext *, WebPageGroup *, HWND parentWindow );
 
-    virtual Type type() const { return TypeView; }
+    virtual Type type() const
+    {
+        return TypeView;
+    }
 
     static bool registerWebViewWindowClass();
-    static LRESULT CALLBACK WebViewWndProc(HWND, UINT, WPARAM, LPARAM);
-    LRESULT wndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+    static LRESULT CALLBACK WebViewWndProc( HWND, UINT, WPARAM, LPARAM );
+    LRESULT wndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam );
 
-    LRESULT onMouseEvent(HWND hWnd, UINT message, WPARAM, LPARAM, bool& handled);
-    LRESULT onWheelEvent(HWND hWnd, UINT message, WPARAM, LPARAM, bool& handled);
-    LRESULT onHorizontalScroll(HWND hWnd, UINT message, WPARAM, LPARAM, bool& handled);
-    LRESULT onVerticalScroll(HWND hWnd, UINT message, WPARAM, LPARAM, bool& handled);
-    LRESULT onGestureNotify(HWND hWnd, UINT message, WPARAM, LPARAM, bool& handled);
-    LRESULT onGesture(HWND hWnd, UINT message, WPARAM, LPARAM, bool& handled);
-    LRESULT onKeyEvent(HWND hWnd, UINT message, WPARAM, LPARAM, bool& handled);
-    LRESULT onPaintEvent(HWND hWnd, UINT message, WPARAM, LPARAM, bool& handled);
-    LRESULT onPrintClientEvent(HWND hWnd, UINT message, WPARAM, LPARAM, bool& handled);
-    LRESULT onSizeEvent(HWND hWnd, UINT message, WPARAM, LPARAM, bool& handled);
-    LRESULT onWindowPositionChangedEvent(HWND hWnd, UINT message, WPARAM, LPARAM, bool& handled);
-    LRESULT onSetFocusEvent(HWND hWnd, UINT message, WPARAM, LPARAM, bool& handled);
-    LRESULT onKillFocusEvent(HWND hWnd, UINT message, WPARAM, LPARAM, bool& handled);
-    LRESULT onTimerEvent(HWND hWnd, UINT message, WPARAM, LPARAM, bool& handled);
-    LRESULT onShowWindowEvent(HWND hWnd, UINT message, WPARAM, LPARAM, bool& handled);
-    LRESULT onSetCursor(HWND hWnd, UINT message, WPARAM, LPARAM, bool& handled);
+    LRESULT onMouseEvent( HWND hWnd, UINT message, WPARAM, LPARAM, bool &handled );
+    LRESULT onWheelEvent( HWND hWnd, UINT message, WPARAM, LPARAM, bool &handled );
+    LRESULT onHorizontalScroll( HWND hWnd, UINT message, WPARAM, LPARAM, bool &handled );
+    LRESULT onVerticalScroll( HWND hWnd, UINT message, WPARAM, LPARAM, bool &handled );
+    LRESULT onGestureNotify( HWND hWnd, UINT message, WPARAM, LPARAM, bool &handled );
+    LRESULT onGesture( HWND hWnd, UINT message, WPARAM, LPARAM, bool &handled );
+    LRESULT onKeyEvent( HWND hWnd, UINT message, WPARAM, LPARAM, bool &handled );
+    LRESULT onPaintEvent( HWND hWnd, UINT message, WPARAM, LPARAM, bool &handled );
+    LRESULT onPrintClientEvent( HWND hWnd, UINT message, WPARAM, LPARAM, bool &handled );
+    LRESULT onSizeEvent( HWND hWnd, UINT message, WPARAM, LPARAM, bool &handled );
+    LRESULT onWindowPositionChangedEvent( HWND hWnd, UINT message, WPARAM, LPARAM, bool &handled );
+    LRESULT onSetFocusEvent( HWND hWnd, UINT message, WPARAM, LPARAM, bool &handled );
+    LRESULT onKillFocusEvent( HWND hWnd, UINT message, WPARAM, LPARAM, bool &handled );
+    LRESULT onTimerEvent( HWND hWnd, UINT message, WPARAM, LPARAM, bool &handled );
+    LRESULT onShowWindowEvent( HWND hWnd, UINT message, WPARAM, LPARAM, bool &handled );
+    LRESULT onSetCursor( HWND hWnd, UINT message, WPARAM, LPARAM, bool &handled );
 
-    void paint(HDC, const WebCore::IntRect& dirtyRect);
-    void setWasActivatedByMouseEvent(bool flag) { m_wasActivatedByMouseEvent = flag; }
+    void paint( HDC, const WebCore::IntRect &dirtyRect );
+    void setWasActivatedByMouseEvent( bool flag )
+    {
+        m_wasActivatedByMouseEvent = flag;
+    }
     bool onIMEStartComposition();
-    bool onIMEComposition(LPARAM);
+    bool onIMEComposition( LPARAM );
     bool onIMEEndComposition();
-    LRESULT onIMERequest(WPARAM, LPARAM);
-    bool onIMESelect(WPARAM, LPARAM);
-    bool onIMESetContext(WPARAM, LPARAM);
+    LRESULT onIMERequest( WPARAM, LPARAM );
+    bool onIMESelect( WPARAM, LPARAM );
+    bool onIMESetContext( WPARAM, LPARAM );
     void resetIME();
-    void setInputMethodState(bool);
+    void setInputMethodState( bool );
     HIMC getIMMContext();
-    void prepareCandidateWindow(HIMC);
-    LRESULT onIMERequestCharPosition(IMECHARPOSITION*);
-    LRESULT onIMERequestReconvertString(RECONVERTSTRING*);
+    void prepareCandidateWindow( HIMC );
+    LRESULT onIMERequestCharPosition( IMECHARPOSITION * );
+    LRESULT onIMERequestReconvertString( RECONVERTSTRING * );
 
     void updateActiveState();
     void updateActiveStateSoon();
@@ -165,12 +179,15 @@ private:
 
     // PageClient
     virtual PassOwnPtr<DrawingAreaProxy> createDrawingAreaProxy();
-    virtual void setViewNeedsDisplay(const WebCore::IntRect&);
+    virtual void setViewNeedsDisplay( const WebCore::IntRect & );
     virtual void displayView();
-    virtual void scrollView(const WebCore::IntRect& scrollRect, const WebCore::IntSize& scrollOffset);
-    virtual void flashBackingStoreUpdates(const Vector<WebCore::IntRect>& updateRects);
-    virtual float userSpaceScaleFactor() const { return 1; }
-    
+    virtual void scrollView( const WebCore::IntRect &scrollRect, const WebCore::IntSize &scrollOffset );
+    virtual void flashBackingStoreUpdates( const Vector<WebCore::IntRect> &updateRects );
+    virtual float userSpaceScaleFactor() const
+    {
+        return 1;
+    }
+
     virtual WebCore::IntSize viewSize();
     virtual bool isViewWindowActive();
     virtual bool isViewFocused();
@@ -179,49 +196,53 @@ private:
     virtual void processDidCrash();
     virtual void didRelaunchProcess();
     virtual void pageClosed();
-    virtual void toolTipChanged(const WTF::String&, const WTF::String&);
-    virtual void setCursor(const WebCore::Cursor&);
-    virtual void setViewportArguments(const WebCore::ViewportArguments&);
-    virtual void registerEditCommand(PassRefPtr<WebEditCommandProxy>, WebPageProxy::UndoOrRedo);
+    virtual void toolTipChanged( const WTF::String &, const WTF::String & );
+    virtual void setCursor( const WebCore::Cursor & );
+    virtual void setViewportArguments( const WebCore::ViewportArguments & );
+    virtual void registerEditCommand( PassRefPtr<WebEditCommandProxy>, WebPageProxy::UndoOrRedo );
     virtual void clearAllEditCommands();
-    virtual bool canUndoRedo(WebPageProxy::UndoOrRedo);
-    virtual void executeUndoRedo(WebPageProxy::UndoOrRedo);
-    virtual WebCore::FloatRect convertToDeviceSpace(const WebCore::FloatRect&);
-    virtual WebCore::FloatRect convertToUserSpace(const WebCore::FloatRect&);
-    virtual WebCore::IntRect windowToScreen(const WebCore::IntRect&);
-    virtual void doneWithKeyEvent(const NativeWebKeyboardEvent&, bool wasEventHandled);
-    virtual void compositionSelectionChanged(bool);
-    virtual PassRefPtr<WebPopupMenuProxy> createPopupMenuProxy(WebPageProxy*);
-    virtual PassRefPtr<WebContextMenuProxy> createContextMenuProxy(WebPageProxy*);
-    virtual void setFindIndicator(PassRefPtr<FindIndicator>, bool fadeOut);
+    virtual bool canUndoRedo( WebPageProxy::UndoOrRedo );
+    virtual void executeUndoRedo( WebPageProxy::UndoOrRedo );
+    virtual WebCore::FloatRect convertToDeviceSpace( const WebCore::FloatRect & );
+    virtual WebCore::FloatRect convertToUserSpace( const WebCore::FloatRect & );
+    virtual WebCore::IntRect windowToScreen( const WebCore::IntRect & );
+    virtual void doneWithKeyEvent( const NativeWebKeyboardEvent &, bool wasEventHandled );
+    virtual void compositionSelectionChanged( bool );
+    virtual PassRefPtr<WebPopupMenuProxy> createPopupMenuProxy( WebPageProxy * );
+    virtual PassRefPtr<WebContextMenuProxy> createContextMenuProxy( WebPageProxy * );
+    virtual void setFindIndicator( PassRefPtr<FindIndicator>, bool fadeOut );
 
 #if USE(ACCELERATED_COMPOSITING)
-    virtual void enterAcceleratedCompositingMode(const LayerTreeContext&);
+    virtual void enterAcceleratedCompositingMode( const LayerTreeContext & );
     virtual void exitAcceleratedCompositingMode();
 #endif
 
-    void didCommitLoadForMainFrame(bool useCustomRepresentation);
-    void didFinishLoadingDataForCustomRepresentation(const String& suggestedFilename, const CoreIPC::DataReference&);
+    void didCommitLoadForMainFrame( bool useCustomRepresentation );
+    void didFinishLoadingDataForCustomRepresentation( const String &suggestedFilename, const CoreIPC::DataReference & );
     virtual double customRepresentationZoomFactor();
-    virtual void setCustomRepresentationZoomFactor(double);
-    WebCore::DragOperation keyStateToDragOperation(DWORD grfKeyState) const;
+    virtual void setCustomRepresentationZoomFactor( double );
+    WebCore::DragOperation keyStateToDragOperation( DWORD grfKeyState ) const;
     virtual void didChangeScrollbarsForMainFrame() const;
 
-    virtual void findStringInCustomRepresentation(const String&, FindOptions, unsigned maxMatchCount);
-    virtual void countStringMatchesInCustomRepresentation(const String&, FindOptions, unsigned maxMatchCount);
+    virtual void findStringInCustomRepresentation( const String &, FindOptions, unsigned maxMatchCount );
+    virtual void countStringMatchesInCustomRepresentation( const String &, FindOptions, unsigned maxMatchCount );
 
     virtual HWND nativeWindow();
-    virtual void scheduleChildWindowGeometryUpdate(HWND, const WebCore::IntRect& rectInParentClientCoordinates, const WebCore::IntRect& clipRectInChildClientCoordinates);
+    virtual void scheduleChildWindowGeometryUpdate( HWND, const WebCore::IntRect &rectInParentClientCoordinates,
+            const WebCore::IntRect &clipRectInChildClientCoordinates );
 
-    virtual void setGestureReachedScrollingLimit(bool limitReached) { m_gestureReachedScrollingLimit = limitReached; }
+    virtual void setGestureReachedScrollingLimit( bool limitReached )
+    {
+        m_gestureReachedScrollingLimit = limitReached;
+    }
 
     // WebCore::WindowMessageListener
-    virtual void windowReceivedMessage(HWND, UINT message, WPARAM, LPARAM);
+    virtual void windowReceivedMessage( HWND, UINT message, WPARAM, LPARAM );
 
 #if ENABLE(FULLSCREEN_API)
     virtual HWND fullScreenClientWindow() const;
     virtual HWND fullScreenClientParentWindow() const;
-    virtual void fullScreenClientSetParentWindow(HWND);
+    virtual void fullScreenClientSetParentWindow( HWND );
     virtual void fullScreenClientWillEnterFullScreen();
     virtual void fullScreenClientDidEnterFullScreen();
     virtual void fullScreenClientWillExitFullScreen();
@@ -231,7 +252,7 @@ private:
     HWND m_window;
     HWND m_topLevelParentWindow;
     HWND m_toolTipWindow;
-    
+
     WebCore::IntSize m_nextResizeScrollOffset;
 
     HCURSOR m_lastCursorSet;
@@ -251,12 +272,12 @@ private:
     WebUndoClient m_undoClient;
 
     WKViewFindIndicatorCallback m_findIndicatorCallback;
-    void* m_findIndicatorCallbackContext;
+    void *m_findIndicatorCallbackContext;
 
     COMPtr<IDataObject> m_dragData;
     COMPtr<IDropTargetHelper> m_dropTargetHelper;
-    // FIXME: This variable is part of a workaround. The drop effect (pdwEffect) passed to Drop is incorrect. 
-    // We set this variable in DragEnter and DragOver so that it can be used in Drop to set the correct drop effect. 
+    // FIXME: This variable is part of a workaround. The drop effect (pdwEffect) passed to Drop is incorrect.
+    // We set this variable in DragEnter and DragOver so that it can be used in Drop to set the correct drop effect.
     // Thus, on return from DoDragDrop we have the correct pdwEffect for the drag-and-drop operation.
     // (see https://bugs.webkit.org/show_bug.cgi?id=29264)
     DWORD m_lastDropEffect;
@@ -268,7 +289,8 @@ private:
 
     bool m_gestureReachedScrollingLimit;
 
-    struct ChildWindowGeometry {
+    struct ChildWindowGeometry
+    {
         WebCore::IntRect rectInParentClientCoordinates;
         WebCore::IntRect clipRectInChildClientCoordinates;
     };

@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef JSStringBuilder_h
@@ -31,52 +31,63 @@
 #include "UStringConcatenate.h"
 #include "Vector.h"
 
-namespace JSC {
+namespace JSC
+{
 
-class JSStringBuilder {
+class JSStringBuilder
+{
 public:
     JSStringBuilder()
-        : m_okay(true)
+        : m_okay( true )
     {
     }
 
-    void append(const UChar u)
+    void append( const UChar u )
     {
-        m_okay &= buffer.tryAppend(&u, 1);
+        m_okay &= buffer.tryAppend( &u, 1 );
     }
 
-    void append(const char* str)
+    void append( const char *str )
     {
-        append(str, strlen(str));
+        append( str, strlen( str ) );
     }
 
-    void append(const char* str, size_t len)
+    void append( const char *str, size_t len )
     {
-        m_okay &= buffer.tryReserveCapacity(buffer.size() + len);
-        for (size_t i = 0; i < len; i++) {
-            UChar u = static_cast<unsigned char>(str[i]);
-            m_okay &= buffer.tryAppend(&u, 1);
+        m_okay &= buffer.tryReserveCapacity( buffer.size() + len );
+
+        for ( size_t i = 0; i < len; i++ )
+        {
+            UChar u = static_cast<unsigned char>( str[i] );
+            m_okay &= buffer.tryAppend( &u, 1 );
         }
     }
 
-    void append(const UChar* str, size_t len)
+    void append( const UChar *str, size_t len )
     {
-        m_okay &= buffer.tryAppend(str, len);
+        m_okay &= buffer.tryAppend( str, len );
     }
 
-    void append(const UString& str)
+    void append( const UString &str )
     {
-        m_okay &= buffer.tryAppend(str.characters(), str.length());
+        m_okay &= buffer.tryAppend( str.characters(), str.length() );
     }
 
-    JSValue build(ExecState* exec)
+    JSValue build( ExecState *exec )
     {
-        if (!m_okay)
-            return throwOutOfMemoryError(exec);
+        if ( !m_okay )
+        {
+            return throwOutOfMemoryError( exec );
+        }
+
         buffer.shrinkToFit();
-        if (!buffer.data())
-            return throwOutOfMemoryError(exec);
-        return jsString(exec, UString::adopt(buffer));
+
+        if ( !buffer.data() )
+        {
+            return throwOutOfMemoryError( exec );
+        }
+
+        return jsString( exec, UString::adopt( buffer ) );
     }
 
 protected:
@@ -85,48 +96,71 @@ protected:
 };
 
 template<typename StringType1, typename StringType2>
-inline JSValue jsMakeNontrivialString(ExecState* exec, StringType1 string1, StringType2 string2)
+inline JSValue jsMakeNontrivialString( ExecState *exec, StringType1 string1, StringType2 string2 )
 {
-    PassRefPtr<StringImpl> result = WTF::tryMakeString(string1, string2);
-    if (!result)
-        return throwOutOfMemoryError(exec);
-    return jsNontrivialString(exec, result);
+    PassRefPtr<StringImpl> result = WTF::tryMakeString( string1, string2 );
+
+    if ( !result )
+    {
+        return throwOutOfMemoryError( exec );
+    }
+
+    return jsNontrivialString( exec, result );
 }
 
 template<typename StringType1, typename StringType2, typename StringType3>
-inline JSValue jsMakeNontrivialString(ExecState* exec, StringType1 string1, StringType2 string2, StringType3 string3)
+inline JSValue jsMakeNontrivialString( ExecState *exec, StringType1 string1, StringType2 string2, StringType3 string3 )
 {
-    PassRefPtr<StringImpl> result = WTF::tryMakeString(string1, string2, string3);
-    if (!result)
-        return throwOutOfMemoryError(exec);
-    return jsNontrivialString(exec, result);
+    PassRefPtr<StringImpl> result = WTF::tryMakeString( string1, string2, string3 );
+
+    if ( !result )
+    {
+        return throwOutOfMemoryError( exec );
+    }
+
+    return jsNontrivialString( exec, result );
 }
 
 template<typename StringType1, typename StringType2, typename StringType3, typename StringType4>
-inline JSValue jsMakeNontrivialString(ExecState* exec, StringType1 string1, StringType2 string2, StringType3 string3, StringType4 string4)
+inline JSValue jsMakeNontrivialString( ExecState *exec, StringType1 string1, StringType2 string2, StringType3 string3,
+                                       StringType4 string4 )
 {
-    PassRefPtr<StringImpl> result = WTF::tryMakeString(string1, string2, string3, string4);
-    if (!result)
-        return throwOutOfMemoryError(exec);
-    return jsNontrivialString(exec, result);
+    PassRefPtr<StringImpl> result = WTF::tryMakeString( string1, string2, string3, string4 );
+
+    if ( !result )
+    {
+        return throwOutOfMemoryError( exec );
+    }
+
+    return jsNontrivialString( exec, result );
 }
 
 template<typename StringType1, typename StringType2, typename StringType3, typename StringType4, typename StringType5>
-inline JSValue jsMakeNontrivialString(ExecState* exec, StringType1 string1, StringType2 string2, StringType3 string3, StringType4 string4, StringType5 string5)
+inline JSValue jsMakeNontrivialString( ExecState *exec, StringType1 string1, StringType2 string2, StringType3 string3,
+                                       StringType4 string4, StringType5 string5 )
 {
-    PassRefPtr<StringImpl> result = WTF::tryMakeString(string1, string2, string3, string4, string5);
-    if (!result)
-        return throwOutOfMemoryError(exec);
-    return jsNontrivialString(exec, result);
+    PassRefPtr<StringImpl> result = WTF::tryMakeString( string1, string2, string3, string4, string5 );
+
+    if ( !result )
+    {
+        return throwOutOfMemoryError( exec );
+    }
+
+    return jsNontrivialString( exec, result );
 }
 
 template<typename StringType1, typename StringType2, typename StringType3, typename StringType4, typename StringType5, typename StringType6>
-inline JSValue jsMakeNontrivialString(ExecState* exec, StringType1 string1, StringType2 string2, StringType3 string3, StringType4 string4, StringType5 string5, StringType6 string6)
+inline JSValue jsMakeNontrivialString( ExecState *exec, StringType1 string1, StringType2 string2, StringType3 string3,
+                                       StringType4 string4, StringType5 string5, StringType6 string6 )
 {
-    PassRefPtr<StringImpl> result = WTF::tryMakeString(string1, string2, string3, string4, string5, string6);
-    if (!result)
-        return throwOutOfMemoryError(exec);
-    return jsNontrivialString(exec, result);
+    PassRefPtr<StringImpl> result = WTF::tryMakeString( string1, string2, string3, string4, string5, string6 );
+
+    if ( !result )
+    {
+        return throwOutOfMemoryError( exec );
+    }
+
+    return jsNontrivialString( exec, result );
 }
 
 }

@@ -30,18 +30,18 @@
 
 class QIsciiCodec : public QTextCodec
 {
- public:
-   explicit QIsciiCodec(int i) : idx(i) {}
-   ~QIsciiCodec();
+public:
+    explicit QIsciiCodec( int i ) : idx( i ) {}
+    ~QIsciiCodec();
 
-   QString convertToUnicode(const char *, int, ConverterState *) const override;
-   QByteArray convertFromUnicode(QStringView str, ConverterState *) const override;
+    QString convertToUnicode( const char *, int, ConverterState * ) const override;
+    QByteArray convertFromUnicode( QStringView str, ConverterState * ) const override;
 
-   QString name() const override;
-   int mibEnum() const override;
+    QString name() const override;
+    int mibEnum() const override;
 
- private:
-   int idx;
+private:
+    int idx;
 };
 
 #endif

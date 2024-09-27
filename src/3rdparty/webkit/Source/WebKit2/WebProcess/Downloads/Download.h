@@ -42,73 +42,87 @@ OBJC_CLASS WKDownloadAsDelegate;
 #include <CFNetwork/CFURLDownloadPriv.h>
 #endif
 
-namespace CoreIPC {
-    class DataReference;
+namespace CoreIPC
+{
+class DataReference;
 }
 
-namespace WebCore {
-    class AuthenticationChallenge;
-    class Credential;
-    class ResourceError;
-    class ResourceHandle;
-    class ResourceResponse;
+namespace WebCore
+{
+class AuthenticationChallenge;
+class Credential;
+class ResourceError;
+class ResourceHandle;
+class ResourceResponse;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
 class DownloadAuthenticationClient;
 class SandboxExtension;
 class WebPage;
 
-class Download : public CoreIPC::MessageSender<Download> {
-    WTF_MAKE_NONCOPYABLE(Download);
+class Download : public CoreIPC::MessageSender<Download>
+{
+    WTF_MAKE_NONCOPYABLE( Download );
 public:
-    static PassOwnPtr<Download> create(uint64_t downloadID, const WebCore::ResourceRequest&);
+    static PassOwnPtr<Download> create( uint64_t downloadID, const WebCore::ResourceRequest & );
     ~Download();
 
     // Used by MessageSender.
-    CoreIPC::Connection* connection() const;
-    uint64_t destinationID() const { return downloadID(); }
+    CoreIPC::Connection *connection() const;
+    uint64_t destinationID() const
+    {
+        return downloadID();
+    }
 
-    void start(WebPage* initiatingWebPage);
-    void startWithHandle(WebPage* initiatingPage, WebCore::ResourceHandle*, const WebCore::ResourceRequest& initialRequest, const WebCore::ResourceResponse&);
+    void start( WebPage *initiatingWebPage );
+    void startWithHandle( WebPage *initiatingPage, WebCore::ResourceHandle *, const WebCore::ResourceRequest &initialRequest,
+                          const WebCore::ResourceResponse & );
     void cancel();
 
-    uint64_t downloadID() const { return m_downloadID; }
+    uint64_t downloadID() const
+    {
+        return m_downloadID;
+    }
 
     void didStart();
-    void didReceiveAuthenticationChallenge(const WebCore::AuthenticationChallenge&);
-    void didReceiveResponse(const WebCore::ResourceResponse&);
-    void didReceiveData(uint64_t length);
-    bool shouldDecodeSourceDataOfMIMEType(const String& mimeType);
-    String decideDestinationWithSuggestedFilename(const String& filename, bool& allowOverwrite);
-    void didCreateDestination(const String& path);
+    void didReceiveAuthenticationChallenge( const WebCore::AuthenticationChallenge & );
+    void didReceiveResponse( const WebCore::ResourceResponse & );
+    void didReceiveData( uint64_t length );
+    bool shouldDecodeSourceDataOfMIMEType( const String &mimeType );
+    String decideDestinationWithSuggestedFilename( const String &filename, bool &allowOverwrite );
+    void didCreateDestination( const String &path );
     void didFinish();
     void platformDidFinish();
-    void didFail(const WebCore::ResourceError&, const CoreIPC::DataReference& resumeData);
-    void didCancel(const CoreIPC::DataReference& resumeData);
-    void didDecideDestination(const String&, bool allowOverwrite);
+    void didFail( const WebCore::ResourceError &, const CoreIPC::DataReference &resumeData );
+    void didCancel( const CoreIPC::DataReference &resumeData );
+    void didDecideDestination( const String &, bool allowOverwrite );
 
 #if USE(CFNETWORK)
-    const String& destination() const { return m_destination; }
-    DownloadAuthenticationClient* authenticationClient();
+    const String &destination() const
+    {
+        return m_destination;
+    }
+    DownloadAuthenticationClient *authenticationClient();
 #endif
 
     // Authentication
-    static void receivedCredential(const WebCore::AuthenticationChallenge&, const WebCore::Credential&);
-    static void receivedRequestToContinueWithoutCredential(const WebCore::AuthenticationChallenge&);
-    static void receivedCancellation(const WebCore::AuthenticationChallenge&);
+    static void receivedCredential( const WebCore::AuthenticationChallenge &, const WebCore::Credential & );
+    static void receivedRequestToContinueWithoutCredential( const WebCore::AuthenticationChallenge & );
+    static void receivedCancellation( const WebCore::AuthenticationChallenge & );
 
-    void useCredential(const WebCore::AuthenticationChallenge&, const WebCore::Credential&);
-    void continueWithoutCredential(const WebCore::AuthenticationChallenge&);
-    void cancelAuthenticationChallenge(const WebCore::AuthenticationChallenge&);
+    void useCredential( const WebCore::AuthenticationChallenge &, const WebCore::Credential & );
+    void continueWithoutCredential( const WebCore::AuthenticationChallenge & );
+    void cancelAuthenticationChallenge( const WebCore::AuthenticationChallenge & );
 
 private:
-    Download(uint64_t downloadID, const WebCore::ResourceRequest&);
+    Download( uint64_t downloadID, const WebCore::ResourceRequest & );
 
     void platformInvalidate();
 
-    String retrieveDestinationWithSuggestedFilename(const String& filename, bool& allowOverwrite);
+    String retrieveDestinationWithSuggestedFilename( const String &filename, bool &allowOverwrite );
 
     uint64_t m_downloadID;
     WebCore::ResourceRequest m_request;

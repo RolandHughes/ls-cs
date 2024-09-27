@@ -34,18 +34,18 @@ extern "C" {
 
 /* WKBoolean */
 WK_EXPORT WKTypeID WKBooleanGetTypeID();
-WK_EXPORT WKBooleanRef WKBooleanCreate(bool value);
-WK_EXPORT bool WKBooleanGetValue(WKBooleanRef booleanRef);
+WK_EXPORT WKBooleanRef WKBooleanCreate( bool value );
+WK_EXPORT bool WKBooleanGetValue( WKBooleanRef booleanRef );
 
 /* WKDouble */
 WK_EXPORT WKTypeID WKDoubleGetTypeID();
-WK_EXPORT WKDoubleRef WKDoubleCreate(double value);
-WK_EXPORT double WKDoubleGetValue(WKDoubleRef doubleRef);
+WK_EXPORT WKDoubleRef WKDoubleCreate( double value );
+WK_EXPORT double WKDoubleGetValue( WKDoubleRef doubleRef );
 
 /* WKUInt64 */
 WK_EXPORT WKTypeID WKUInt64GetTypeID();
-WK_EXPORT WKUInt64Ref WKUInt64Create(uint64_t value);
-WK_EXPORT uint64_t WKUInt64GetValue(WKUInt64Ref doubleRef);
+WK_EXPORT WKUInt64Ref WKUInt64Create( uint64_t value );
+WK_EXPORT uint64_t WKUInt64GetValue( WKUInt64Ref doubleRef );
 
 #ifdef __cplusplus
 }

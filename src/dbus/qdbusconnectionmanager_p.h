@@ -47,14 +47,14 @@ class QDBusConnectionManager
 public:
     QDBusConnectionManager() {}
     ~QDBusConnectionManager();
-    static QDBusConnectionManager* instance();
+    static QDBusConnectionManager *instance();
 
-    QDBusConnectionPrivate *connection(const QString &name) const;
-    void removeConnection(const QString &name);
-    void setConnection(const QString &name, QDBusConnectionPrivate *c);
+    QDBusConnectionPrivate *connection( const QString &name ) const;
+    void removeConnection( const QString &name );
+    void setConnection( const QString &name, QDBusConnectionPrivate *c );
 
     QDBusConnectionPrivate *sender() const;
-    void setSender(const QDBusConnectionPrivate *s);
+    void setSender( const QDBusConnectionPrivate *s );
 
     mutable QMutex mutex;
 private:

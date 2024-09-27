@@ -27,7 +27,7 @@ class QAbstractVideoFilterPrivate
 {
 public:
     QAbstractVideoFilterPrivate() :
-        active(true)
+        active( true )
     { }
 
     bool active;
@@ -43,9 +43,9 @@ QVideoFilterRunnable::~QVideoFilterRunnable()
 /*!
   Constructs a new QAbstractVideoFilter instance with parent object \a parent.
  */
-QAbstractVideoFilter::QAbstractVideoFilter(QObject *parent) :
-    QObject(parent),
-    d_ptr(new QAbstractVideoFilterPrivate)
+QAbstractVideoFilter::QAbstractVideoFilter( QObject *parent ) :
+    QObject( parent ),
+    d_ptr( new QAbstractVideoFilterPrivate )
 {
 }
 
@@ -59,14 +59,16 @@ QAbstractVideoFilter::~QAbstractVideoFilter()
 
 bool QAbstractVideoFilter::isActive() const
 {
-    Q_D(const QAbstractVideoFilter);
+    Q_D( const QAbstractVideoFilter );
     return d->active;
 }
 
-void QAbstractVideoFilter::setActive(bool v)
+void QAbstractVideoFilter::setActive( bool v )
 {
-    Q_D(QAbstractVideoFilter);
-    if (d->active != v) {
+    Q_D( QAbstractVideoFilter );
+
+    if ( d->active != v )
+    {
         d->active = v;
         emit activeChanged();
     }

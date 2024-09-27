@@ -20,23 +20,33 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
 #include "CachedResourceHandle.h"
 
-namespace WebCore {
-
-void CachedResourceHandleBase::setResource(CachedResource* resource) 
+namespace WebCore
 {
-    if (resource == m_resource)
+
+void CachedResourceHandleBase::setResource( CachedResource *resource )
+{
+    if ( resource == m_resource )
+    {
         return;
-    if (m_resource)
-        m_resource->unregisterHandle(this);
+    }
+
+    if ( m_resource )
+    {
+        m_resource->unregisterHandle( this );
+    }
+
     m_resource = resource;
-    if (m_resource)
-        m_resource->registerHandle(this);
+
+    if ( m_resource )
+    {
+        m_resource->registerHandle( this );
+    }
 }
 
 }

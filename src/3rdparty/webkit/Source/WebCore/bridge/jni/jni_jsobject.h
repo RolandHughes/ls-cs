@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef JAVASCRIPTCORE_BINDINGS_JNI_JSOBJECT_H
@@ -38,18 +38,21 @@
 
 #if PLATFORM(MAC)
 
-namespace JSC {
+namespace JSC
+{
 
 class ArgList;
 class ExecState;
 class JSObject;
 class MarkedArgumentBuffer;
 
-namespace Bindings {
+namespace Bindings
+{
 
 class RootObject;
 
-enum JSObjectCallType {
+enum JSObjectCallType
+{
     CreateNative,
     Call,
     Eval,
@@ -77,32 +80,32 @@ struct JSObjectCallContext
 class JavaJSObject
 {
 public:
-    JavaJSObject(jlong nativeHandle);
-    
-    static jlong createNative(jlong nativeHandle);
-    jobject call(jstring methodName, jobjectArray args) const;
-    jobject eval(jstring script) const;
-    jobject getMember(jstring memberName) const;
-    void setMember(jstring memberName, jobject value) const;
-    void removeMember(jstring memberName) const;
-    jobject getSlot(jint index) const;
-    void setSlot(jint index, jobject value) const;
+    JavaJSObject( jlong nativeHandle );
+
+    static jlong createNative( jlong nativeHandle );
+    jobject call( jstring methodName, jobjectArray args ) const;
+    jobject eval( jstring script ) const;
+    jobject getMember( jstring memberName ) const;
+    void setMember( jstring memberName, jobject value ) const;
+    void removeMember( jstring memberName ) const;
+    jobject getSlot( jint index ) const;
+    void setSlot( jint index, jobject value ) const;
     jstring toString() const;
     void finalize() const;
-    
-    static jvalue invoke(JSObjectCallContext*);
 
-    jobject convertValueToJObject(JSValue) const;
-    JSValue convertJObjectToValue(ExecState*, jobject) const;
-    void getListFromJArray(ExecState*, jobjectArray, MarkedArgumentBuffer&) const;
-    
-    RootObject* rootObject() const;
-    
+    static jvalue invoke( JSObjectCallContext * );
+
+    jobject convertValueToJObject( JSValue ) const;
+    JSValue convertJObjectToValue( ExecState *, jobject ) const;
+    void getListFromJArray( ExecState *, jobjectArray, MarkedArgumentBuffer & ) const;
+
+    RootObject *rootObject() const;
+
     // Must be called from the thread that will be used to access JavaScript.
     static void initializeJNIThreading();
 private:
     RefPtr<RootObject> _rootObject;
-    JSObject* _imp;
+    JSObject *_imp;
 };
 
 
@@ -113,16 +116,19 @@ private:
 extern "C" {
 
 // The Java VM calls these functions to handle calls to methods in Java's JSObject class.
-jlong KJS_JSCreateNativeJSObject(JNIEnv*, jclass, jstring jurl, jlong nativeHandle, jboolean ctx);
-void KJS_JSObject_JSFinalize(JNIEnv*, jclass, jlong nativeJSObject);
-jobject KJS_JSObject_JSObjectCall(JNIEnv*, jclass, jlong nativeJSObject, jstring jurl, jstring methodName, jobjectArray args, jboolean ctx);
-jobject KJS_JSObject_JSObjectEval(JNIEnv*, jclass, jlong nativeJSObject, jstring jurl, jstring jscript, jboolean ctx);
-jobject KJS_JSObject_JSObjectGetMember(JNIEnv*, jclass, jlong nativeJSObject, jstring jurl, jstring jname, jboolean ctx);
-void KJS_JSObject_JSObjectSetMember(JNIEnv*, jclass, jlong nativeJSObject, jstring jurl, jstring jname, jobject value, jboolean ctx);
-void KJS_JSObject_JSObjectRemoveMember(JNIEnv*, jclass, jlong nativeJSObject, jstring jurl, jstring jname, jboolean ctx);
-jobject KJS_JSObject_JSObjectGetSlot(JNIEnv*, jclass, jlong nativeJSObject, jstring jurl, jint jindex, jboolean ctx);
-void KJS_JSObject_JSObjectSetSlot(JNIEnv*, jclass, jlong nativeJSObject, jstring jurl, jint jindex, jobject value, jboolean ctx);
-jstring KJS_JSObject_JSObjectToString(JNIEnv*, jclass, jlong nativeJSObject);
+    jlong KJS_JSCreateNativeJSObject( JNIEnv *, jclass, jstring jurl, jlong nativeHandle, jboolean ctx );
+    void KJS_JSObject_JSFinalize( JNIEnv *, jclass, jlong nativeJSObject );
+    jobject KJS_JSObject_JSObjectCall( JNIEnv *, jclass, jlong nativeJSObject, jstring jurl, jstring methodName, jobjectArray args,
+                                       jboolean ctx );
+    jobject KJS_JSObject_JSObjectEval( JNIEnv *, jclass, jlong nativeJSObject, jstring jurl, jstring jscript, jboolean ctx );
+    jobject KJS_JSObject_JSObjectGetMember( JNIEnv *, jclass, jlong nativeJSObject, jstring jurl, jstring jname, jboolean ctx );
+    void KJS_JSObject_JSObjectSetMember( JNIEnv *, jclass, jlong nativeJSObject, jstring jurl, jstring jname, jobject value,
+                                         jboolean ctx );
+    void KJS_JSObject_JSObjectRemoveMember( JNIEnv *, jclass, jlong nativeJSObject, jstring jurl, jstring jname, jboolean ctx );
+    jobject KJS_JSObject_JSObjectGetSlot( JNIEnv *, jclass, jlong nativeJSObject, jstring jurl, jint jindex, jboolean ctx );
+    void KJS_JSObject_JSObjectSetSlot( JNIEnv *, jclass, jlong nativeJSObject, jstring jurl, jint jindex, jobject value,
+                                       jboolean ctx );
+    jstring KJS_JSObject_JSObjectToString( JNIEnv *, jclass, jlong nativeJSObject );
 
 }
 

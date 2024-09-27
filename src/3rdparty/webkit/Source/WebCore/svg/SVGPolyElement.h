@@ -29,34 +29,45 @@
 #include "SVGStyledTransformableElement.h"
 #include "SVGTests.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class SVGPolyElement : public SVGStyledTransformableElement
-                     , public SVGTests
-                     , public SVGLangSpace
-                     , public SVGExternalResourcesRequired {
+    , public SVGTests
+    , public SVGLangSpace
+    , public SVGExternalResourcesRequired
+{
 public:
-    SVGListPropertyTearOff<SVGPointList>* points();
-    SVGListPropertyTearOff<SVGPointList>* animatedPoints();
+    SVGListPropertyTearOff<SVGPointList> *points();
+    SVGListPropertyTearOff<SVGPointList> *animatedPoints();
 
-    SVGPointList& pointList() const { return m_points.value; }
+    SVGPointList &pointList() const
+    {
+        return m_points.value;
+    }
 
 protected:
-    SVGPolyElement(const QualifiedName&, Document*);
+    SVGPolyElement( const QualifiedName &, Document * );
 
 private:
-    virtual bool isValid() const { return SVGTests::isValid(); }
+    virtual bool isValid() const
+    {
+        return SVGTests::isValid();
+    }
 
-    virtual void parseMappedAttribute(Attribute*); 
-    virtual void svgAttributeChanged(const QualifiedName&);
-    virtual void synchronizeProperty(const QualifiedName&);
+    virtual void parseMappedAttribute( Attribute * );
+    virtual void svgAttributeChanged( const QualifiedName & );
+    virtual void synchronizeProperty( const QualifiedName & );
     virtual void fillAttributeToPropertyTypeMap();
-    virtual AttributeToPropertyTypeMap& attributeToPropertyTypeMap();
+    virtual AttributeToPropertyTypeMap &attributeToPropertyTypeMap();
 
-    virtual bool supportsMarkers() const { return true; }
+    virtual bool supportsMarkers() const
+    {
+        return true;
+    }
 
     // SVGExternalResourcesRequired
-    DECLARE_ANIMATED_BOOLEAN(ExternalResourcesRequired, externalResourcesRequired)
+    DECLARE_ANIMATED_BOOLEAN( ExternalResourcesRequired, externalResourcesRequired )
 
     void synchronizePoints();
 

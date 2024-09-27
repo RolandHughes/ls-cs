@@ -26,19 +26,20 @@
 
 #include <qpaircontainer_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class AndExpression : public PairContainer
 {
- public:
-   AndExpression(const Expression::Ptr &operand1, const Expression::Ptr &operand2);
+public:
+    AndExpression( const Expression::Ptr &operand1, const Expression::Ptr &operand2 );
 
-   bool evaluateEBV(const DynamicContext::Ptr &context) const override;
-   SequenceType::List expectedOperandTypes() const override;
-   Expression::Ptr compress(const StaticContext::Ptr &context) override;
-   SequenceType::Ptr staticType() const override;
+    bool evaluateEBV( const DynamicContext::Ptr &context ) const override;
+    SequenceType::List expectedOperandTypes() const override;
+    Expression::Ptr compress( const StaticContext::Ptr &context ) override;
+    SequenceType::Ptr staticType() const override;
 
-   ExpressionVisitorResult::Ptr accept(const ExpressionVisitor::Ptr &visitor) const override;
+    ExpressionVisitorResult::Ptr accept( const ExpressionVisitor::Ptr &visitor ) const override;
 };
 }
 

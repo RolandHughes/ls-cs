@@ -33,25 +33,27 @@
 #include <wtf/ListHashSet.h>
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class IDBTransactionBackendImpl;
 class IDBTransactionCallbacks;
 class IDBDatabaseBackendImpl;
 
 // Transactions are executed in the order the were created.
-class IDBTransactionCoordinator : public RefCounted<IDBTransactionCoordinator> {
+class IDBTransactionCoordinator : public RefCounted<IDBTransactionCoordinator>
+{
 public:
     static PassRefPtr<IDBTransactionCoordinator> create();
     virtual ~IDBTransactionCoordinator();
 
     // Called by transactions as they start and finish.
-    void didCreateTransaction(IDBTransactionBackendImpl*);
-    void didStartTransaction(IDBTransactionBackendImpl*);
-    void didFinishTransaction(IDBTransactionBackendImpl*);
+    void didCreateTransaction( IDBTransactionBackendImpl * );
+    void didStartTransaction( IDBTransactionBackendImpl * );
+    void didFinishTransaction( IDBTransactionBackendImpl * );
 
 #ifndef NDEBUG
-    bool isActive(IDBTransactionBackendImpl*);
+    bool isActive( IDBTransactionBackendImpl * );
 #endif
 
 private:
@@ -60,10 +62,10 @@ private:
     void processStartedTransactions();
 
     // This is just an efficient way to keep references to all transactions.
-    HashMap<IDBTransactionBackendImpl*, RefPtr<IDBTransactionBackendImpl> > m_transactions;
+    HashMap<IDBTransactionBackendImpl *, RefPtr<IDBTransactionBackendImpl> > m_transactions;
     // Transactions in different states are grouped below.
-    ListHashSet<IDBTransactionBackendImpl*> m_startedTransactions;
-    HashSet<IDBTransactionBackendImpl*> m_runningTransactions;
+    ListHashSet<IDBTransactionBackendImpl *> m_startedTransactions;
+    HashSet<IDBTransactionBackendImpl *> m_runningTransactions;
 };
 
 } // namespace WebCore

@@ -23,27 +23,29 @@
 #if ENABLE(SVG)
 #include <wtf/HashSet.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class RenderObject;
 class RenderSVGResourceContainer;
 class SVGResources;
 
-class SVGResourcesCycleSolver {
-    WTF_MAKE_NONCOPYABLE(SVGResourcesCycleSolver);
+class SVGResourcesCycleSolver
+{
+    WTF_MAKE_NONCOPYABLE( SVGResourcesCycleSolver );
 public:
-    SVGResourcesCycleSolver(RenderObject*, SVGResources*);
+    SVGResourcesCycleSolver( RenderObject *, SVGResources * );
     ~SVGResourcesCycleSolver();
 
     void resolveCycles();
 
 private:
-    bool resourceContainsCycles(RenderObject*) const;
-    void breakCycle(RenderSVGResourceContainer*);
+    bool resourceContainsCycles( RenderObject * ) const;
+    void breakCycle( RenderSVGResourceContainer * );
 
-    RenderObject* m_renderer;
-    SVGResources* m_resources;
-    HashSet<RenderSVGResourceContainer*> m_allResources; 
+    RenderObject *m_renderer;
+    SVGResources *m_resources;
+    HashSet<RenderSVGResourceContainer *> m_allResources;
 };
 
 }

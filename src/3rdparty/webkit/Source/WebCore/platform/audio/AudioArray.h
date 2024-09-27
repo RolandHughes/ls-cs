@@ -32,34 +32,45 @@
 #include <string.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 template<typename T>
-class AudioArray : public Vector<T> {
+class AudioArray : public Vector<T>
+{
 public:
-    AudioArray() : Vector<T>(0) { }
-    explicit AudioArray(size_t n) : Vector<T>(n, 0) { }
+    AudioArray() : Vector<T>( 0 ) { }
+    explicit AudioArray( size_t n ) : Vector<T>( n, 0 ) { }
 
-    void zero() { memset(this->data(), 0, sizeof(T) * this->size()); }
-
-    void zeroRange(unsigned start, unsigned end)
+    void zero()
     {
-        bool isSafe = (start <= end) && (end <= this->size());
-        ASSERT(isSafe);
-        if (!isSafe)
-            return;
-
-        memset(this->data() + start, 0, sizeof(T) * (end - start));
+        memset( this->data(), 0, sizeof( T ) * this->size() );
     }
 
-    void copyToRange(T* sourceData, unsigned start, unsigned end)
+    void zeroRange( unsigned start, unsigned end )
     {
-        bool isSafe = (start <= end) && (end <= this->size());
-        ASSERT(isSafe);
-        if (!isSafe)
-            return;
+        bool isSafe = ( start <= end ) && ( end <= this->size() );
+        ASSERT( isSafe );
 
-        memcpy(this->data() + start, sourceData, sizeof(T) * (end - start));
+        if ( !isSafe )
+        {
+            return;
+        }
+
+        memset( this->data() + start, 0, sizeof( T ) * ( end - start ) );
+    }
+
+    void copyToRange( T *sourceData, unsigned start, unsigned end )
+    {
+        bool isSafe = ( start <= end ) && ( end <= this->size() );
+        ASSERT( isSafe );
+
+        if ( !isSafe )
+        {
+            return;
+        }
+
+        memcpy( this->data() + start, sourceData, sizeof( T ) * ( end - start ) );
     }
 };
 

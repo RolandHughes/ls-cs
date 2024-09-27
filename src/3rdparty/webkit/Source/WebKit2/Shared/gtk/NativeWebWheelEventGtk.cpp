@@ -28,11 +28,12 @@
 
 #include "WebEventFactory.h"
 
-namespace WebKit {
+namespace WebKit
+{
 
-NativeWebWheelEvent::NativeWebWheelEvent(GdkEventScroll* event)
-    : WebWheelEvent(WebEventFactory::createWebWheelEvent(event))
-    , m_nativeEvent(event)
+NativeWebWheelEvent::NativeWebWheelEvent( GdkEventScroll *event )
+    : WebWheelEvent( WebEventFactory::createWebWheelEvent( event ) )
+    , m_nativeEvent( event )
 {
 }
 

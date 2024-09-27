@@ -34,27 +34,27 @@
 
 class QCocoaTouch
 {
- public:
-   static QList<QWindowSystemInterface::TouchPoint> getCurrentTouchPointList(NSEvent *event, bool acceptSingleTouch);
-   static void setMouseInDraggingState(bool inDraggingState);
+public:
+    static QList<QWindowSystemInterface::TouchPoint> getCurrentTouchPointList( NSEvent *event, bool acceptSingleTouch );
+    static void setMouseInDraggingState( bool inDraggingState );
 
- private:
-   static QHash<qint64, QCocoaTouch *> _currentTouches;
-   static QPointF _screenReferencePos;
-   static QPointF _trackpadReferencePos;
-   static int _idAssignmentCount;
-   static int _touchCount;
-   static bool _updateInternalStateOnly;
+private:
+    static QHash<qint64, QCocoaTouch *> _currentTouches;
+    static QPointF _screenReferencePos;
+    static QPointF _trackpadReferencePos;
+    static int _idAssignmentCount;
+    static int _touchCount;
+    static bool _updateInternalStateOnly;
 
-   QWindowSystemInterface::TouchPoint _touchPoint;
-   qint64 _identity;
+    QWindowSystemInterface::TouchPoint _touchPoint;
+    qint64 _identity;
 
-   QCocoaTouch(NSTouch *nstouch);
-   ~QCocoaTouch();
+    QCocoaTouch( NSTouch *nstouch );
+    ~QCocoaTouch();
 
-   void updateTouchData(NSTouch *nstouch, NSTouchPhase phase);
-   static QCocoaTouch *findQCocoaTouch(NSTouch *nstouch);
-   static Qt::TouchPointState toTouchPointState(NSTouchPhase nsState);
+    void updateTouchData( NSTouch *nstouch, NSTouchPhase phase );
+    static QCocoaTouch *findQCocoaTouch( NSTouch *nstouch );
+    static Qt::TouchPointState toTouchPointState( NSTouchPhase nsState );
 };
 
 

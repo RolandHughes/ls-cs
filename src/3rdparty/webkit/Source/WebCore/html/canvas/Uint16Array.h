@@ -21,7 +21,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef Uint16Array_h
@@ -29,32 +29,43 @@
 
 #include "IntegralTypedArrayBase.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class ArrayBuffer;
 
-class Uint16Array : public IntegralTypedArrayBase<unsigned short> {
+class Uint16Array : public IntegralTypedArrayBase<unsigned short>
+{
 public:
-    static PassRefPtr<Uint16Array> create(unsigned length);
-    static PassRefPtr<Uint16Array> create(unsigned short* array, unsigned length);
-    static PassRefPtr<Uint16Array> create(PassRefPtr<ArrayBuffer> buffer, unsigned byteOffset, unsigned length);
+    static PassRefPtr<Uint16Array> create( unsigned length );
+    static PassRefPtr<Uint16Array> create( unsigned short *array, unsigned length );
+    static PassRefPtr<Uint16Array> create( PassRefPtr<ArrayBuffer> buffer, unsigned byteOffset, unsigned length );
 
     // Can’t use "using" here due to a bug in the RVCT compiler.
-    void set(TypedArrayBase<unsigned short>* array, unsigned offset, ExceptionCode& ec) { TypedArrayBase<unsigned short>::set(array, offset, ec); }
-    void set(unsigned index, double value) { IntegralTypedArrayBase<unsigned short>::set(index, value); }
+    void set( TypedArrayBase<unsigned short> *array, unsigned offset, ExceptionCode &ec )
+    {
+        TypedArrayBase<unsigned short>::set( array, offset, ec );
+    }
+    void set( unsigned index, double value )
+    {
+        IntegralTypedArrayBase<unsigned short>::set( index, value );
+    }
 
-    PassRefPtr<Uint16Array> subarray(int start) const;
-    PassRefPtr<Uint16Array> subarray(int start, int end) const;
+    PassRefPtr<Uint16Array> subarray( int start ) const;
+    PassRefPtr<Uint16Array> subarray( int start, int end ) const;
 
 private:
-    Uint16Array(PassRefPtr<ArrayBuffer> buffer,
-                            unsigned byteOffset,
-                            unsigned length);
+    Uint16Array( PassRefPtr<ArrayBuffer> buffer,
+                 unsigned byteOffset,
+                 unsigned length );
     // Make constructor visible to superclass.
     friend class TypedArrayBase<unsigned short>;
 
     // Overridden from ArrayBufferView.
-    virtual bool isUnsignedShortArray() const { return true; }
+    virtual bool isUnsignedShortArray() const
+    {
+        return true;
+    }
 };
 
 } // namespace WebCore

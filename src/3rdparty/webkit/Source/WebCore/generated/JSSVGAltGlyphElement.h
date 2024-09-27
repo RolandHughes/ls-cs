@@ -27,53 +27,59 @@
 #include "SVGElement.h"
 #include <runtime/JSObjectWithGlobalObject.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class SVGAltGlyphElement;
 
-class JSSVGAltGlyphElement : public JSSVGTextPositioningElement {
+class JSSVGAltGlyphElement : public JSSVGTextPositioningElement
+{
     typedef JSSVGTextPositioningElement Base;
 public:
-    JSSVGAltGlyphElement(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<SVGAltGlyphElement>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
-    virtual void put(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::JSValue, JSC::PutPropertySlot&);
+    JSSVGAltGlyphElement( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<SVGAltGlyphElement> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
+    virtual void put( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::JSValue, JSC::PutPropertySlot & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 
-class JSSVGAltGlyphElementPrototype : public JSC::JSObjectWithGlobalObject {
+class JSSVGAltGlyphElementPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSSVGAltGlyphElementPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSSVGAltGlyphElementPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                                   JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = Base::StructureFlags;
 };
 
 // Attributes
 
-JSC::JSValue jsSVGAltGlyphElementGlyphRef(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSSVGAltGlyphElementGlyphRef(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsSVGAltGlyphElementFormat(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSSVGAltGlyphElementFormat(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsSVGAltGlyphElementHref(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsSVGAltGlyphElementConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsSVGAltGlyphElementGlyphRef( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSSVGAltGlyphElementGlyphRef( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsSVGAltGlyphElementFormat( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSSVGAltGlyphElementFormat( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsSVGAltGlyphElementHref( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsSVGAltGlyphElementConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

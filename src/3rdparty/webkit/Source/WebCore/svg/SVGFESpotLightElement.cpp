@@ -24,24 +24,25 @@
 
 #include "SpotLightSource.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-inline SVGFESpotLightElement::SVGFESpotLightElement(const QualifiedName& tagName, Document* document)
-    : SVGFELightElement(tagName, document)
+inline SVGFESpotLightElement::SVGFESpotLightElement( const QualifiedName &tagName, Document *document )
+    : SVGFELightElement( tagName, document )
 {
 }
 
-PassRefPtr<SVGFESpotLightElement> SVGFESpotLightElement::create(const QualifiedName& tagName, Document* document)
+PassRefPtr<SVGFESpotLightElement> SVGFESpotLightElement::create( const QualifiedName &tagName, Document *document )
 {
-    return adoptRef(new SVGFESpotLightElement(tagName, document));
+    return adoptRef( new SVGFESpotLightElement( tagName, document ) );
 }
 
 PassRefPtr<LightSource> SVGFESpotLightElement::lightSource() const
 {
-    FloatPoint3D pos(x(), y(), z());
-    FloatPoint3D direction(pointsAtX(), pointsAtY(), pointsAtZ());
+    FloatPoint3D pos( x(), y(), z() );
+    FloatPoint3D direction( pointsAtX(), pointsAtY(), pointsAtZ() );
 
-    return SpotLightSource::create(pos, direction, specularExponent(), limitingConeAngle());
+    return SpotLightSource::create( pos, direction, specularExponent(), limitingConeAngle() );
 }
 
 }

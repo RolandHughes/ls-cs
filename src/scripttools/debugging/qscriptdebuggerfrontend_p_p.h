@@ -39,24 +39,24 @@ class QScriptDebuggerFrontend;
 
 class QScriptDebuggerFrontendPrivate
 {
-   Q_DECLARE_PUBLIC(QScriptDebuggerFrontend)
+    Q_DECLARE_PUBLIC( QScriptDebuggerFrontend )
 
- public:
-   QScriptDebuggerFrontendPrivate();
-   virtual ~QScriptDebuggerFrontendPrivate();
+public:
+    QScriptDebuggerFrontendPrivate();
+    virtual ~QScriptDebuggerFrontendPrivate();
 
-   void postEvent(QEvent *e);
-   virtual bool event(QEvent *);
-   void processCommands();
+    void postEvent( QEvent *e );
+    virtual bool event( QEvent * );
+    void processCommands();
 
-   QScriptDebuggerEventHandlerInterface *eventHandler;
-   QList<QScriptDebuggerCommand> pendingCommands;
-   QList<int> pendingCommandIds;
-   QHash<int, QScriptDebuggerResponseHandlerInterface *> responseHandlers;
-   int nextCommandId;
-   QObject *eventReceiver;
+    QScriptDebuggerEventHandlerInterface *eventHandler;
+    QList<QScriptDebuggerCommand> pendingCommands;
+    QList<int> pendingCommandIds;
+    QHash<int, QScriptDebuggerResponseHandlerInterface *> responseHandlers;
+    int nextCommandId;
+    QObject *eventReceiver;
 
-   QScriptDebuggerFrontend *q_ptr;
+    QScriptDebuggerFrontend *q_ptr;
 };
 
 QT_END_NAMESPACE

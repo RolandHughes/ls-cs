@@ -39,188 +39,259 @@
 
 using namespace WebCore;
 
-namespace WebKit {
+namespace WebKit
+{
 
-DEFINE_STATIC_GETTER(CFStringRef, SessionHistoryKey, (CFSTR("SessionHistory")));
-DEFINE_STATIC_GETTER(CFStringRef, ProvisionalURLKey, (CFSTR("ProvisionalURL")));
+DEFINE_STATIC_GETTER( CFStringRef, SessionHistoryKey, ( CFSTR( "SessionHistory" ) ) );
+DEFINE_STATIC_GETTER( CFStringRef, ProvisionalURLKey, ( CFSTR( "ProvisionalURL" ) ) );
 
 static const UInt32 CurrentSessionStateDataVersion = 2;
 
-PassRefPtr<WebData> WebPageProxy::sessionStateData(WebPageProxySessionStateFilterCallback filter, void* context) const
+PassRefPtr<WebData> WebPageProxy::sessionStateData( WebPageProxySessionStateFilterCallback filter, void *context ) const
 {
-    const void* keys[2];
-    const void* values[2];
+    const void *keys[2];
+    const void *values[2];
     CFIndex numValues = 0;
 
-    RetainPtr<CFDictionaryRef> sessionHistoryDictionary(AdoptCF, m_backForwardList->createCFDictionaryRepresentation(filter, context));
-    if (sessionHistoryDictionary) {
+    RetainPtr<CFDictionaryRef> sessionHistoryDictionary( AdoptCF, m_backForwardList->createCFDictionaryRepresentation( filter,
+            context ) );
+
+    if ( sessionHistoryDictionary )
+    {
         keys[numValues] = SessionHistoryKey();
         values[numValues] = sessionHistoryDictionary.get();
         ++numValues;
     }
 
     RetainPtr<CFStringRef> provisionalURLString;
-    if (m_mainFrame) {
+
+    if ( m_mainFrame )
+    {
         String provisionalURL = pendingAPIRequestURL();
-        if (provisionalURL.isEmpty())
+
+        if ( provisionalURL.isEmpty() )
+        {
             provisionalURL = m_mainFrame->provisionalURL();
-        if (!provisionalURL.isEmpty()) {
-            provisionalURLString.adoptCF(provisionalURL.createCFString());
+        }
+
+        if ( !provisionalURL.isEmpty() )
+        {
+            provisionalURLString.adoptCF( provisionalURL.createCFString() );
             keys[numValues] = ProvisionalURLKey();
             values[numValues] = provisionalURLString.get();
             ++numValues;
         }
     }
 
-    if (!numValues)
+    if ( !numValues )
+    {
         return 0;
+    }
 
-    RetainPtr<CFDictionaryRef> stateDictionary(AdoptCF, CFDictionaryCreate(0, keys, values, numValues, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks));
+    RetainPtr<CFDictionaryRef> stateDictionary( AdoptCF, CFDictionaryCreate( 0, keys, values, numValues,
+            &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks ) );
 
-    RetainPtr<CFWriteStreamRef> writeStream(AdoptCF, CFWriteStreamCreateWithAllocatedBuffers(0, 0));
-    if (!writeStream)
-        return 0;
-    
-    if (!CFWriteStreamOpen(writeStream.get()))
-        return 0;
-        
-    if (!CFPropertyListWriteToStream(stateDictionary.get(), writeStream.get(), kCFPropertyListBinaryFormat_v1_0, 0))
-        return 0;
-        
-    RetainPtr<CFDataRef> stateCFData(AdoptCF, (CFDataRef)CFWriteStreamCopyProperty(writeStream.get(), kCFStreamPropertyDataWritten));
+    RetainPtr<CFWriteStreamRef> writeStream( AdoptCF, CFWriteStreamCreateWithAllocatedBuffers( 0, 0 ) );
 
-    CFIndex length = CFDataGetLength(stateCFData.get());
-    Vector<unsigned char> stateVector(length + sizeof(UInt32));
-    
+    if ( !writeStream )
+    {
+        return 0;
+    }
+
+    if ( !CFWriteStreamOpen( writeStream.get() ) )
+    {
+        return 0;
+    }
+
+    if ( !CFPropertyListWriteToStream( stateDictionary.get(), writeStream.get(), kCFPropertyListBinaryFormat_v1_0, 0 ) )
+    {
+        return 0;
+    }
+
+    RetainPtr<CFDataRef> stateCFData( AdoptCF, ( CFDataRef )CFWriteStreamCopyProperty( writeStream.get(),
+                                      kCFStreamPropertyDataWritten ) );
+
+    CFIndex length = CFDataGetLength( stateCFData.get() );
+    Vector<unsigned char> stateVector( length + sizeof( UInt32 ) );
+
     // Put the session state version number at the start of the buffer
-    stateVector.data()[0] = (CurrentSessionStateDataVersion & 0xFF000000) >> 24;
-    stateVector.data()[1] = (CurrentSessionStateDataVersion & 0x00FF0000) >> 16;
-    stateVector.data()[2] = (CurrentSessionStateDataVersion & 0x0000FF00) >> 8;
-    stateVector.data()[3] = (CurrentSessionStateDataVersion & 0x000000FF);
-    
+    stateVector.data()[0] = ( CurrentSessionStateDataVersion & 0xFF000000 ) >> 24;
+    stateVector.data()[1] = ( CurrentSessionStateDataVersion & 0x00FF0000 ) >> 16;
+    stateVector.data()[2] = ( CurrentSessionStateDataVersion & 0x0000FF00 ) >> 8;
+    stateVector.data()[3] = ( CurrentSessionStateDataVersion & 0x000000FF );
+
     // Copy in the actual session state data
-    CFDataGetBytes(stateCFData.get(), CFRangeMake(0, length), stateVector.data() + sizeof(UInt32));
-    
-    return WebData::create(stateVector);
+    CFDataGetBytes( stateCFData.get(), CFRangeMake( 0, length ), stateVector.data() + sizeof( UInt32 ) );
+
+    return WebData::create( stateVector );
 }
 
-void WebPageProxy::restoreFromSessionStateData(WebData* webData)
+void WebPageProxy::restoreFromSessionStateData( WebData *webData )
 {
-    if (!webData || webData->size() < sizeof(UInt32))
-        return;
-
-    const unsigned char* buffer = webData->bytes();
-    UInt32 versionHeader = (buffer[0] << 24) + (buffer[1] << 16) + (buffer[2] << 8) + buffer[3];
-    
-    if (versionHeader != CurrentSessionStateDataVersion) {
-        LOG(SessionState, "Unrecognized version header for session state data - cannot restore");
+    if ( !webData || webData->size() < sizeof( UInt32 ) )
+    {
         return;
     }
-    
-    RetainPtr<CFDataRef> data(AdoptCF, CFDataCreate(0, webData->bytes() + sizeof(UInt32), webData->size() - sizeof(UInt32)));
+
+    const unsigned char *buffer = webData->bytes();
+    UInt32 versionHeader = ( buffer[0] << 24 ) + ( buffer[1] << 16 ) + ( buffer[2] << 8 ) + buffer[3];
+
+    if ( versionHeader != CurrentSessionStateDataVersion )
+    {
+        LOG( SessionState, "Unrecognized version header for session state data - cannot restore" );
+        return;
+    }
+
+    RetainPtr<CFDataRef> data( AdoptCF, CFDataCreate( 0, webData->bytes() + sizeof( UInt32 ), webData->size() - sizeof( UInt32 ) ) );
 
     CFStringRef propertyListError = 0;
-    RetainPtr<CFPropertyListRef> propertyList(AdoptCF, CFPropertyListCreateFromXMLData(0, data.get(), kCFPropertyListImmutable, &propertyListError));
-    if (propertyListError) {
-        CFRelease(propertyListError);
-        LOG(SessionState, "Could not read session state property list");
+    RetainPtr<CFPropertyListRef> propertyList( AdoptCF, CFPropertyListCreateFromXMLData( 0, data.get(), kCFPropertyListImmutable,
+            &propertyListError ) );
+
+    if ( propertyListError )
+    {
+        CFRelease( propertyListError );
+        LOG( SessionState, "Could not read session state property list" );
         return;
     }
 
-    if (!propertyList)
+    if ( !propertyList )
+    {
         return;
-        
-    if (CFGetTypeID(propertyList.get()) != CFDictionaryGetTypeID()) {
-        LOG(SessionState, "SessionState property list is not a CFDictionaryRef (%i) - its CFTypeID is %i", (int)CFDictionaryGetTypeID(), (int)CFGetTypeID(propertyList.get()));
+    }
+
+    if ( CFGetTypeID( propertyList.get() ) != CFDictionaryGetTypeID() )
+    {
+        LOG( SessionState, "SessionState property list is not a CFDictionaryRef (%i) - its CFTypeID is %i",
+             ( int )CFDictionaryGetTypeID(), ( int )CFGetTypeID( propertyList.get() ) );
         return;
     }
 
     CFDictionaryRef backForwardListDictionary = 0;
-    if (CFTypeRef value = CFDictionaryGetValue(static_cast<CFDictionaryRef>(propertyList.get()), SessionHistoryKey())) {
-        if (CFGetTypeID(value) != CFDictionaryGetTypeID())
-            LOG(SessionState, "SessionState dictionary has a SessionHistory key, but the value is not a dictionary");
+
+    if ( CFTypeRef value = CFDictionaryGetValue( static_cast<CFDictionaryRef>( propertyList.get() ), SessionHistoryKey() ) )
+    {
+        if ( CFGetTypeID( value ) != CFDictionaryGetTypeID() )
+        {
+            LOG( SessionState, "SessionState dictionary has a SessionHistory key, but the value is not a dictionary" );
+        }
         else
-            backForwardListDictionary = static_cast<CFDictionaryRef>(value);
+        {
+            backForwardListDictionary = static_cast<CFDictionaryRef>( value );
+        }
     }
 
     CFStringRef provisionalURL = 0;
-    if (CFTypeRef value = CFDictionaryGetValue(static_cast<CFDictionaryRef>(propertyList.get()), ProvisionalURLKey())) {
-        if (CFGetTypeID(value) != CFStringGetTypeID())
-            LOG(SessionState, "SessionState dictionary has a ProvisionalValue key, but the value is not a string");
+
+    if ( CFTypeRef value = CFDictionaryGetValue( static_cast<CFDictionaryRef>( propertyList.get() ), ProvisionalURLKey() ) )
+    {
+        if ( CFGetTypeID( value ) != CFStringGetTypeID() )
+        {
+            LOG( SessionState, "SessionState dictionary has a ProvisionalValue key, but the value is not a string" );
+        }
         else
-            provisionalURL = static_cast<CFStringRef>(value);
+        {
+            provisionalURL = static_cast<CFStringRef>( value );
+        }
     }
 
-    if (backForwardListDictionary) {
-        if (!m_backForwardList->restoreFromCFDictionaryRepresentation(backForwardListDictionary))
-            LOG(SessionState, "Failed to restore back/forward list from SessionHistory dictionary");
-        else {
-            const BackForwardListItemVector& entries = m_backForwardList->entries();
-            if (size_t size = entries.size()) {
-                for (size_t i = 0; i < size; ++i)
-                    process()->registerNewWebBackForwardListItem(entries[i].get());
+    if ( backForwardListDictionary )
+    {
+        if ( !m_backForwardList->restoreFromCFDictionaryRepresentation( backForwardListDictionary ) )
+        {
+            LOG( SessionState, "Failed to restore back/forward list from SessionHistory dictionary" );
+        }
+        else
+        {
+            const BackForwardListItemVector &entries = m_backForwardList->entries();
 
-                SessionState state(m_backForwardList->entries(), m_backForwardList->currentIndex());
-                if (provisionalURL)
-                    process()->send(Messages::WebPage::RestoreSession(state), m_pageID);
-                else {
+            if ( size_t size = entries.size() )
+            {
+                for ( size_t i = 0; i < size; ++i )
+                {
+                    process()->registerNewWebBackForwardListItem( entries[i].get() );
+                }
+
+                SessionState state( m_backForwardList->entries(), m_backForwardList->currentIndex() );
+
+                if ( provisionalURL )
+                {
+                    process()->send( Messages::WebPage::RestoreSession( state ), m_pageID );
+                }
+                else
+                {
                     SandboxExtension::Handle sandboxExtensionHandle;
-                    if (WebBackForwardListItem* item = m_backForwardList->currentItem()) {
-                        initializeSandboxExtensionHandle(KURL(KURL(), item->url()), sandboxExtensionHandle);
-                        setPendingAPIRequestURL(item->url());
+
+                    if ( WebBackForwardListItem *item = m_backForwardList->currentItem() )
+                    {
+                        initializeSandboxExtensionHandle( KURL( KURL(), item->url() ), sandboxExtensionHandle );
+                        setPendingAPIRequestURL( item->url() );
                     }
 
-                    process()->send(Messages::WebPage::RestoreSessionAndNavigateToCurrentItem(state, sandboxExtensionHandle), m_pageID);
+                    process()->send( Messages::WebPage::RestoreSessionAndNavigateToCurrentItem( state, sandboxExtensionHandle ), m_pageID );
                 }
             }
         }
     }
 
-    if (provisionalURL)
-        loadURL(provisionalURL);
+    if ( provisionalURL )
+    {
+        loadURL( provisionalURL );
+    }
 }
 
-static RetainPtr<CFStringRef> autosaveKey(const String& name)
+static RetainPtr<CFStringRef> autosaveKey( const String &name )
 {
     String key = "com.apple.WebKit.searchField:" + name;
-    return RetainPtr<CFStringRef>(AdoptCF, key.createCFString());
+    return RetainPtr<CFStringRef>( AdoptCF, key.createCFString() );
 }
 
-void WebPageProxy::saveRecentSearches(const String& name, const Vector<String>& searchItems)
+void WebPageProxy::saveRecentSearches( const String &name, const Vector<String> &searchItems )
 {
     // The WebProcess shouldn't have bothered to send this message if the name was empty.
-    ASSERT(!name.isEmpty());
+    ASSERT( !name.isEmpty() );
 
     RetainPtr<CFMutableArrayRef> items;
 
-    if (size_t size = searchItems.size()) {
-        items.adoptCF(CFArrayCreateMutable(0, size, &kCFTypeArrayCallBacks));
-        for (size_t i = 0; i < size; ++i) {
-            RetainPtr<CFStringRef> item(AdoptCF, searchItems[i].createCFString());
-            CFArrayAppendValue(items.get(), item.get());
+    if ( size_t size = searchItems.size() )
+    {
+        items.adoptCF( CFArrayCreateMutable( 0, size, &kCFTypeArrayCallBacks ) );
+
+        for ( size_t i = 0; i < size; ++i )
+        {
+            RetainPtr<CFStringRef> item( AdoptCF, searchItems[i].createCFString() );
+            CFArrayAppendValue( items.get(), item.get() );
         }
     }
 
-    CFPreferencesSetAppValue(autosaveKey(name).get(), items.get(), kCFPreferencesCurrentApplication);
-    CFPreferencesAppSynchronize(kCFPreferencesCurrentApplication);
+    CFPreferencesSetAppValue( autosaveKey( name ).get(), items.get(), kCFPreferencesCurrentApplication );
+    CFPreferencesAppSynchronize( kCFPreferencesCurrentApplication );
 }
 
-void WebPageProxy::loadRecentSearches(const String& name, Vector<String>& searchItems)
+void WebPageProxy::loadRecentSearches( const String &name, Vector<String> &searchItems )
 {
     // The WebProcess shouldn't have bothered to send this message if the name was empty.
-    ASSERT(!name.isEmpty());
+    ASSERT( !name.isEmpty() );
 
     searchItems.clear();
-    RetainPtr<CFArrayRef> items(AdoptCF, reinterpret_cast<CFArrayRef>(CFPreferencesCopyAppValue(autosaveKey(name).get(), kCFPreferencesCurrentApplication)));
+    RetainPtr<CFArrayRef> items( AdoptCF, reinterpret_cast<CFArrayRef>( CFPreferencesCopyAppValue( autosaveKey( name ).get(),
+                                 kCFPreferencesCurrentApplication ) ) );
 
-    if (!items || CFGetTypeID(items.get()) != CFArrayGetTypeID())
+    if ( !items || CFGetTypeID( items.get() ) != CFArrayGetTypeID() )
+    {
         return;
+    }
 
-    size_t size = CFArrayGetCount(items.get());
-    for (size_t i = 0; i < size; ++i) {
-        CFStringRef item = (CFStringRef)CFArrayGetValueAtIndex(items.get(), i);
-        if (CFGetTypeID(item) == CFStringGetTypeID())
-            searchItems.append(item);
+    size_t size = CFArrayGetCount( items.get() );
+
+    for ( size_t i = 0; i < size; ++i )
+    {
+        CFStringRef item = ( CFStringRef )CFArrayGetValueAtIndex( items.get(), i );
+
+        if ( CFGetTypeID( item ) == CFStringGetTypeID() )
+        {
+            searchItems.append( item );
+        }
     }
 }
 

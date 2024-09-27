@@ -33,33 +33,34 @@
 
 class QTextCodec;
 
-struct Q_CORE_EXPORT QTextCodecFactoryInterface : public QFactoryInterface {
-   virtual QTextCodec *create(const QString &key) = 0;
+struct Q_CORE_EXPORT QTextCodecFactoryInterface : public QFactoryInterface
+{
+    virtual QTextCodec *create( const QString &key ) = 0;
 };
 
 #define QTextCodecInterface_ID "com.copperspice.CS.QTextCodecInterface"
-CS_DECLARE_INTERFACE(QTextCodecFactoryInterface, QTextCodecInterface_ID)
+CS_DECLARE_INTERFACE( QTextCodecFactoryInterface, QTextCodecInterface_ID )
 
 class Q_CORE_EXPORT QTextCodecPlugin : public QObject, public QTextCodecFactoryInterface
 {
-   CORE_CS_OBJECT_MULTIPLE(QTextCodecPlugin, QObject)
+    CORE_CS_OBJECT_MULTIPLE( QTextCodecPlugin, QObject )
 
-   CS_INTERFACES(QTextCodecFactoryInterface, QFactoryInterface)
+    CS_INTERFACES( QTextCodecFactoryInterface, QFactoryInterface )
 
- public:
-   explicit QTextCodecPlugin(QObject *parent = nullptr);
-   ~QTextCodecPlugin();
+public:
+    explicit QTextCodecPlugin( QObject *parent = nullptr );
+    ~QTextCodecPlugin();
 
-   virtual QStringList names() const = 0;
-   virtual QStringList aliases() const = 0;
-   virtual QTextCodec *createForName(const QString &name) = 0;
+    virtual QStringList names() const = 0;
+    virtual QStringList aliases() const = 0;
+    virtual QTextCodec *createForName( const QString &name ) = 0;
 
-   virtual QList<int> mibEnums() const = 0;
-   virtual QTextCodec *createForMib(int mib) = 0;
+    virtual QList<int> mibEnums() const = 0;
+    virtual QTextCodec *createForMib( int mib ) = 0;
 
- private:
-   QStringList keys() const override;
-   QTextCodec *create(const QString &name) override;
+private:
+    QStringList keys() const override;
+    QTextCodec *create( const QString &name ) override;
 };
 
 #endif // QT_NO_TEXTCODECPLUGIN

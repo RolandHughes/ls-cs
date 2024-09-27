@@ -24,36 +24,41 @@
 #if ENABLE(PROGRESS_TAG)
 #include "HTMLFormControlElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class ProgressValueElement;
 
-class HTMLProgressElement : public HTMLFormControlElement {
+class HTMLProgressElement : public HTMLFormControlElement
+{
 public:
     static const double IndeterminatePosition;
     static const double InvalidPosition;
 
-    static PassRefPtr<HTMLProgressElement> create(const QualifiedName&, Document*, HTMLFormElement*);
+    static PassRefPtr<HTMLProgressElement> create( const QualifiedName &, Document *, HTMLFormElement * );
 
     double value() const;
-    void setValue(double, ExceptionCode&);
+    void setValue( double, ExceptionCode & );
 
     double max() const;
-    void setMax(double, ExceptionCode&);
+    void setMax( double, ExceptionCode & );
 
     double position() const;
 
 private:
-    HTMLProgressElement(const QualifiedName&, Document*, HTMLFormElement*);
+    HTMLProgressElement( const QualifiedName &, Document *, HTMLFormElement * );
     virtual ~HTMLProgressElement();
 
-    virtual bool recalcWillValidate() const { return false; }
+    virtual bool recalcWillValidate() const
+    {
+        return false;
+    }
 
-    virtual const AtomicString& formControlType() const;
+    virtual const AtomicString &formControlType() const;
 
-    virtual RenderObject* createRenderer(RenderArena*, RenderStyle*);
+    virtual RenderObject *createRenderer( RenderArena *, RenderStyle * );
 
-    virtual void parseMappedAttribute(Attribute*);
+    virtual void parseMappedAttribute( Attribute * );
 
     virtual void attach();
 

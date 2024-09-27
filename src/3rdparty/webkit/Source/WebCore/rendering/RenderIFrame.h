@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef RenderIFrame_h
@@ -28,11 +28,13 @@
 
 #include "RenderFrameBase.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class RenderIFrame : public RenderFrameBase {
+class RenderIFrame : public RenderFrameBase
+{
 public:
-    explicit RenderIFrame(Element*);
+    explicit RenderIFrame( Element * );
 
 private:
     virtual void computeLogicalHeight();
@@ -40,28 +42,34 @@ private:
 
     virtual void layout();
 
-    virtual bool isRenderIFrame() const { return true; }
+    virtual bool isRenderIFrame() const
+    {
+        return true;
+    }
 
-    virtual const char* renderName() const { return "RenderPartObject"; } // Lying for now to avoid breaking tests
+    virtual const char *renderName() const
+    {
+        return "RenderPartObject";    // Lying for now to avoid breaking tests
+    }
 
     bool flattenFrame();
 
 };
 
-inline RenderIFrame* toRenderIFrame(RenderObject* object)
+inline RenderIFrame *toRenderIFrame( RenderObject *object )
 {
-    ASSERT(!object || object->isRenderIFrame());
-    return static_cast<RenderIFrame*>(object);
+    ASSERT( !object || object->isRenderIFrame() );
+    return static_cast<RenderIFrame *>( object );
 }
 
-inline const RenderIFrame* toRenderIFrame(const RenderObject* object)
+inline const RenderIFrame *toRenderIFrame( const RenderObject *object )
 {
-    ASSERT(!object || object->isRenderIFrame());
-    return static_cast<const RenderIFrame*>(object);
+    ASSERT( !object || object->isRenderIFrame() );
+    return static_cast<const RenderIFrame *>( object );
 }
 
 // This will catch anyone doing an unnecessary cast.
-void toRenderIFrame(const RenderIFrame*);
+void toRenderIFrame( const RenderIFrame * );
 
 
 } // namespace WebCore

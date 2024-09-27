@@ -24,7 +24,8 @@
 #if ENABLE(SVG)
 #include <wtf/text/WTFString.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class AffineTransform;
 class Attribute;
@@ -33,21 +34,23 @@ class FloatRect;
 class QualifiedName;
 class SVGPreserveAspectRatio;
 
-class SVGFitToViewBox {
+class SVGFitToViewBox
+{
 public:
     virtual ~SVGFitToViewBox() { }
 
-    bool parseViewBox(Document*, const UChar*& start, const UChar* end, FloatRect& viewBox, bool validate = true);
-    static AffineTransform viewBoxToViewTransform(const FloatRect& viewBoxRect, const SVGPreserveAspectRatio&, float viewWidth, float viewHeight);
+    bool parseViewBox( Document *, const UChar *&start, const UChar *end, FloatRect &viewBox, bool validate = true );
+    static AffineTransform viewBoxToViewTransform( const FloatRect &viewBoxRect, const SVGPreserveAspectRatio &, float viewWidth,
+            float viewHeight );
 
-    bool parseMappedAttribute(Document*, Attribute*);
-    bool isKnownAttribute(const QualifiedName&);
+    bool parseMappedAttribute( Document *, Attribute * );
+    bool isKnownAttribute( const QualifiedName & );
 
-    virtual void setViewBoxBaseValue(const FloatRect&) = 0;
-    virtual void setPreserveAspectRatioBaseValue(const SVGPreserveAspectRatio&) = 0;
+    virtual void setViewBoxBaseValue( const FloatRect & ) = 0;
+    virtual void setPreserveAspectRatioBaseValue( const SVGPreserveAspectRatio & ) = 0;
 
 private:
-    bool parseViewBox(Document*, const String&, FloatRect&);
+    bool parseViewBox( Document *, const String &, FloatRect & );
 };
 
 } // namespace WebCore

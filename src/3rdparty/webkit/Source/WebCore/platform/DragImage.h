@@ -40,7 +40,7 @@ class NSImage;
 #elif PLATFORM(QT)
 class QPixmap;
 #elif PLATFORM(WIN)
-typedef struct HBITMAP__* HBITMAP;
+typedef struct HBITMAP__ *HBITMAP;
 #elif PLATFORM(WX)
 class wxDragImage;
 #elif PLATFORM(CHROMIUM)
@@ -56,46 +56,47 @@ typedef struct IImage IImage;
 //We need to #define YOffset as it needs to be shared with WebKit
 #define DragLabelBorderYOffset 2
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class CachedImage;
-    class Frame;
-    class Image;
-    class KURL;
-    class Range;
+class CachedImage;
+class Frame;
+class Image;
+class KURL;
+class Range;
 
 #if PLATFORM(MAC)
-    typedef RetainPtr<NSImage> DragImageRef;
+typedef RetainPtr<NSImage> DragImageRef;
 #elif PLATFORM(QT)
-    typedef QPixmap* DragImageRef;
+typedef QPixmap *DragImageRef;
 #elif PLATFORM(WIN)
-    typedef HBITMAP DragImageRef;
+typedef HBITMAP DragImageRef;
 #elif PLATFORM(WX)
-    typedef wxDragImage* DragImageRef;
+typedef wxDragImage *DragImageRef;
 #elif PLATFORM(GTK)
-    typedef cairo_surface_t* DragImageRef;
+typedef cairo_surface_t *DragImageRef;
 #elif PLATFORM(HAIKU)
-    typedef BBitmap* DragImageRef;
+typedef BBitmap *DragImageRef;
 #elif PLATFORM(BREWMP)
-    typedef IImage* DragImageRef;
+typedef IImage *DragImageRef;
 #elif PLATFORM(EFL)
-    typedef void* DragImageRef;
+typedef void *DragImageRef;
 #endif
 
-    IntSize dragImageSize(DragImageRef);
+IntSize dragImageSize( DragImageRef );
 
-    //These functions should be memory neutral, eg. if they return a newly allocated image,
-    //they should release the input image.  As a corollary these methods don't guarantee
-    //the input image ref will still be valid after they have been called
-    DragImageRef fitDragImageToMaxSize(DragImageRef image, const IntSize& srcSize, const IntSize& size);
-    DragImageRef scaleDragImage(DragImageRef, FloatSize scale);
-    DragImageRef dissolveDragImageToFraction(DragImageRef image, float delta);
+//These functions should be memory neutral, eg. if they return a newly allocated image,
+//they should release the input image.  As a corollary these methods don't guarantee
+//the input image ref will still be valid after they have been called
+DragImageRef fitDragImageToMaxSize( DragImageRef image, const IntSize &srcSize, const IntSize &size );
+DragImageRef scaleDragImage( DragImageRef, FloatSize scale );
+DragImageRef dissolveDragImageToFraction( DragImageRef image, float delta );
 
-    DragImageRef createDragImageFromImage(Image*);
-    DragImageRef createDragImageForSelection(Frame*);
-    DragImageRef createDragImageIconForCachedImage(CachedImage*);
-    DragImageRef createDragImageForLink(KURL&, const String& label, Frame*);
-    void deleteDragImage(DragImageRef);
+DragImageRef createDragImageFromImage( Image * );
+DragImageRef createDragImageForSelection( Frame * );
+DragImageRef createDragImageIconForCachedImage( CachedImage * );
+DragImageRef createDragImageForLink( KURL &, const String &label, Frame * );
+void deleteDragImage( DragImageRef );
 }
 
 

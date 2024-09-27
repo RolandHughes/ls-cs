@@ -32,24 +32,24 @@ class QScriptDebuggerStackWidgetPrivate;
 
 class QScriptDebuggerStackWidget: public QScriptDebuggerStackWidgetInterface
 {
-   SCRIPT_T_CS_OBJECT(QScriptDebuggerStackWidget)
+    SCRIPT_T_CS_OBJECT( QScriptDebuggerStackWidget )
 
- public:
-   QScriptDebuggerStackWidget(QWidget *parent = nullptr);
-   ~QScriptDebuggerStackWidget();
+public:
+    QScriptDebuggerStackWidget( QWidget *parent = nullptr );
+    ~QScriptDebuggerStackWidget();
 
-   QAbstractItemModel *stackModel() const;
-   void setStackModel(QAbstractItemModel *model);
+    QAbstractItemModel *stackModel() const;
+    void setStackModel( QAbstractItemModel *model );
 
-   int currentFrameIndex() const;
-   void setCurrentFrameIndex(int frameIndex);
+    int currentFrameIndex() const;
+    void setCurrentFrameIndex( int frameIndex );
 
- private:
-   Q_DECLARE_PRIVATE(QScriptDebuggerStackWidget)
-   Q_DISABLE_COPY(QScriptDebuggerStackWidget)
+private:
+    Q_DECLARE_PRIVATE( QScriptDebuggerStackWidget )
+    Q_DISABLE_COPY( QScriptDebuggerStackWidget )
 
-   CS_SLOT_1(Private, void _q_onCurrentChanged(const QModelIndex &un_named_arg1))
-   CS_SLOT_2(_q_onCurrentChanged)    
+    CS_SLOT_1( Private, void _q_onCurrentChanged( const QModelIndex &un_named_arg1 ) )
+    CS_SLOT_2( _q_onCurrentChanged )
 };
 
 QT_END_NAMESPACE

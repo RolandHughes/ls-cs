@@ -32,34 +32,34 @@ class QScriptClassPropertyIteratorPrivate;
 
 class Q_SCRIPT_EXPORT QScriptClassPropertyIterator
 {
- public:
-   QScriptClassPropertyIterator(const QScriptClassPropertyIterator &) = delete;
-   QScriptClassPropertyIterator &operator=(const QScriptClassPropertyIterator &) = delete;
+public:
+    QScriptClassPropertyIterator( const QScriptClassPropertyIterator & ) = delete;
+    QScriptClassPropertyIterator &operator=( const QScriptClassPropertyIterator & ) = delete;
 
-   virtual ~QScriptClassPropertyIterator();
+    virtual ~QScriptClassPropertyIterator();
 
-   QScriptValue object() const;
+    QScriptValue object() const;
 
-   virtual bool hasNext() const = 0;
-   virtual void next() = 0;
+    virtual bool hasNext() const = 0;
+    virtual void next() = 0;
 
-   virtual bool hasPrevious() const = 0;
-   virtual void previous() = 0;
+    virtual bool hasPrevious() const = 0;
+    virtual void previous() = 0;
 
-   virtual void toFront() = 0;
-   virtual void toBack() = 0;
+    virtual void toFront() = 0;
+    virtual void toBack() = 0;
 
-   virtual QScriptString name() const = 0;
-   virtual uint id() const;
-   virtual QScriptValue::PropertyFlags flags() const;
+    virtual QScriptString name() const = 0;
+    virtual uint id() const;
+    virtual QScriptValue::PropertyFlags flags() const;
 
- protected:
-   QScriptClassPropertyIterator(const QScriptValue &object);
-   QScriptClassPropertyIterator(const QScriptValue &object, QScriptClassPropertyIteratorPrivate &dd);
-   QScopedPointer<QScriptClassPropertyIteratorPrivate> d_ptr;
+protected:
+    QScriptClassPropertyIterator( const QScriptValue &object );
+    QScriptClassPropertyIterator( const QScriptValue &object, QScriptClassPropertyIteratorPrivate &dd );
+    QScopedPointer<QScriptClassPropertyIteratorPrivate> d_ptr;
 
- private:
-   Q_DECLARE_PRIVATE(QScriptClassPropertyIterator)
+private:
+    Q_DECLARE_PRIVATE( QScriptClassPropertyIterator )
 };
 
 #endif

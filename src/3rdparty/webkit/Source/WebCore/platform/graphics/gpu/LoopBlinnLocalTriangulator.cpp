@@ -32,37 +32,53 @@
 #include "LoopBlinnMathUtils.h"
 #include <algorithm>
 
-namespace WebCore {
+namespace WebCore
+{
 
 using LoopBlinnMathUtils::approxEqual;
 using LoopBlinnMathUtils::linesIntersect;
 using LoopBlinnMathUtils::pointInTriangle;
 
-bool LoopBlinnLocalTriangulator::Triangle::contains(LoopBlinnLocalTriangulator::Vertex* v)
+bool LoopBlinnLocalTriangulator::Triangle::contains( LoopBlinnLocalTriangulator::Vertex *v )
 {
-    return indexForVertex(v) >= 0;
+    return indexForVertex( v ) >= 0;
 }
 
-LoopBlinnLocalTriangulator::Vertex* LoopBlinnLocalTriangulator::Triangle::nextVertex(LoopBlinnLocalTriangulator::Vertex* current, bool traverseCounterClockwise)
+LoopBlinnLocalTriangulator::Vertex *LoopBlinnLocalTriangulator::Triangle::nextVertex( LoopBlinnLocalTriangulator::Vertex *current,
+        bool traverseCounterClockwise )
 {
-    int index = indexForVertex(current);
-    ASSERT(index >= 0);
-    if (traverseCounterClockwise)
+    int index = indexForVertex( current );
+    ASSERT( index >= 0 );
+
+    if ( traverseCounterClockwise )
+    {
         ++index;
+    }
     else
+    {
         --index;
-    if (index < 0)
+    }
+
+    if ( index < 0 )
+    {
         index += 3;
+    }
     else
+    {
         index = index % 3;
+    }
+
     return m_vertices[index];
 }
 
-int LoopBlinnLocalTriangulator::Triangle::indexForVertex(LoopBlinnLocalTriangulator::Vertex* vertex)
+int LoopBlinnLocalTriangulator::Triangle::indexForVertex( LoopBlinnLocalTriangulator::Vertex *vertex )
 {
-    for (int i = 0; i < 3; ++i)
-        if (m_vertices[i] == vertex)
+    for ( int i = 0; i < 3; ++i )
+        if ( m_vertices[i] == vertex )
+        {
             return i;
+        }
+
     return -1;
 }
 
@@ -72,12 +88,15 @@ void LoopBlinnLocalTriangulator::Triangle::makeCounterClockwise()
     // always specified in counterclockwise order. This orders the
     // vertices canonically when walking the interior edges from the
     // start to the end vertex.
-    FloatPoint3D point0(m_vertices[0]->xyCoordinates());
-    FloatPoint3D point1(m_vertices[1]->xyCoordinates());
-    FloatPoint3D point2(m_vertices[2]->xyCoordinates());
-    FloatPoint3D crossProduct = (point1 - point0).cross(point2 - point0);
-    if (crossProduct.z() < 0)
-        std::swap(m_vertices[1], m_vertices[2]);
+    FloatPoint3D point0( m_vertices[0]->xyCoordinates() );
+    FloatPoint3D point1( m_vertices[1]->xyCoordinates() );
+    FloatPoint3D point2( m_vertices[2]->xyCoordinates() );
+    FloatPoint3D crossProduct = ( point1 - point0 ).cross( point2 - point0 );
+
+    if ( crossProduct.z() < 0 )
+    {
+        std::swap( m_vertices[1], m_vertices[2] );
+    }
 }
 
 LoopBlinnLocalTriangulator::LoopBlinnLocalTriangulator()
@@ -89,17 +108,20 @@ void LoopBlinnLocalTriangulator::reset()
 {
     m_numberOfTriangles = 0;
     m_numberOfInteriorVertices = 0;
-    for (int i = 0; i < 4; ++i) {
+
+    for ( int i = 0; i < 4; ++i )
+    {
         m_interiorVertices[i] = 0;
         m_vertices[i].resetFlags();
     }
 }
 
-void LoopBlinnLocalTriangulator::triangulate(InsideEdgeComputation computeInsideEdges, LoopBlinnConstants::FillSide sideToFill)
+void LoopBlinnLocalTriangulator::triangulate( InsideEdgeComputation computeInsideEdges, LoopBlinnConstants::FillSide sideToFill )
 {
-    triangulateHelper(sideToFill);
+    triangulateHelper( sideToFill );
 
-    if (computeInsideEdges == ComputeInsideEdges) {
+    if ( computeInsideEdges == ComputeInsideEdges )
+    {
         // We need to compute which vertices describe the path along the
         // interior portion of the shape, to feed these vertices to the
         // more general tessellation algorithm. It is possible that we
@@ -110,57 +132,75 @@ void LoopBlinnLocalTriangulator::triangulate(InsideEdgeComputation computeInside
         // being filled. We ignore the interior vertex unless it is also
         // the ending vertex, and skip the edges shared between two
         // triangles.
-        Vertex* v = &m_vertices[0];
-        addInteriorVertex(v);
+        Vertex *v = &m_vertices[0];
+        addInteriorVertex( v );
         int numSteps = 0;
-        while (!v->end() && numSteps < 4) {
+
+        while ( !v->end() && numSteps < 4 )
+        {
             // Find the next vertex according to the above rules
             bool gotNext = false;
-            for (int i = 0; i < numberOfTriangles() && !gotNext; ++i) {
-                Triangle* tri = getTriangle(i);
-                if (tri->contains(v)) {
-                    Vertex* next = tri->nextVertex(v, sideToFill == LoopBlinnConstants::RightSide);
-                    if (!next->marked() && !isSharedEdge(v, next) && (!next->interior() || next->end())) {
-                        addInteriorVertex(next);
+
+            for ( int i = 0; i < numberOfTriangles() && !gotNext; ++i )
+            {
+                Triangle *tri = getTriangle( i );
+
+                if ( tri->contains( v ) )
+                {
+                    Vertex *next = tri->nextVertex( v, sideToFill == LoopBlinnConstants::RightSide );
+
+                    if ( !next->marked() && !isSharedEdge( v, next ) && ( !next->interior() || next->end() ) )
+                    {
+                        addInteriorVertex( next );
                         v = next;
                         // Break out of for loop
                         gotNext = true;
                     }
                 }
             }
+
             ++numSteps;
         }
-        if (!v->end()) {
+
+        if ( !v->end() )
+        {
             // Something went wrong with the above algorithm; add the last
             // vertex to the interior vertices anyway. (FIXME: should we
             // add an assert here and do more extensive testing?)
-            addInteriorVertex(&m_vertices[3]);
+            addInteriorVertex( &m_vertices[3] );
         }
     }
 }
 
-void LoopBlinnLocalTriangulator::triangulateHelper(LoopBlinnConstants::FillSide sideToFill)
+void LoopBlinnLocalTriangulator::triangulateHelper( LoopBlinnConstants::FillSide sideToFill )
 {
     reset();
 
-    m_vertices[3].setEnd(true);
+    m_vertices[3].setEnd( true );
 
     // First test for degenerate cases.
-    for (int i = 0; i < 4; ++i) {
-        for (int j = i + 1; j < 4; ++j) {
-            if (approxEqual(m_vertices[i].xyCoordinates(), m_vertices[j].xyCoordinates())) {
+    for ( int i = 0; i < 4; ++i )
+    {
+        for ( int j = i + 1; j < 4; ++j )
+        {
+            if ( approxEqual( m_vertices[i].xyCoordinates(), m_vertices[j].xyCoordinates() ) )
+            {
                 // Two of the vertices are coincident, so we can eliminate at
                 // least one triangle. We might be able to eliminate the other
                 // as well, but this seems sufficient to avoid degenerate
                 // triangulations.
                 int indices[3] = { 0 };
                 int index = 0;
-                for (int k = 0; k < 4; ++k)
-                    if (k != j)
+
+                for ( int k = 0; k < 4; ++k )
+                    if ( k != j )
+                    {
                         indices[index++] = k;
-                addTriangle(&m_vertices[indices[0]],
-                            &m_vertices[indices[1]],
-                            &m_vertices[indices[2]]);
+                    }
+
+                addTriangle( &m_vertices[indices[0]],
+                             &m_vertices[indices[1]],
+                             &m_vertices[indices[2]] );
                 return;
             }
         }
@@ -168,24 +208,31 @@ void LoopBlinnLocalTriangulator::triangulateHelper(LoopBlinnConstants::FillSide 
 
     // See whether any of the points are fully contained in the
     // triangle defined by the other three.
-    for (int i = 0; i < 4; ++i) {
+    for ( int i = 0; i < 4; ++i )
+    {
         int indices[3] = { 0 };
         int index = 0;
-        for (int j = 0; j < 4; ++j)
-            if (i != j)
+
+        for ( int j = 0; j < 4; ++j )
+            if ( i != j )
+            {
                 indices[index++] = j;
-        if (pointInTriangle(m_vertices[i].xyCoordinates(),
-                            m_vertices[indices[0]].xyCoordinates(),
-                            m_vertices[indices[1]].xyCoordinates(),
-                            m_vertices[indices[2]].xyCoordinates())) {
+            }
+
+        if ( pointInTriangle( m_vertices[i].xyCoordinates(),
+                              m_vertices[indices[0]].xyCoordinates(),
+                              m_vertices[indices[1]].xyCoordinates(),
+                              m_vertices[indices[2]].xyCoordinates() ) )
+        {
             // Produce three triangles surrounding this interior vertex.
-            for (int j = 0; j < 3; ++j)
-                addTriangle(&m_vertices[indices[j % 3]],
-                            &m_vertices[indices[(j + 1) % 3]],
-                            &m_vertices[i]);
+            for ( int j = 0; j < 3; ++j )
+                addTriangle( &m_vertices[indices[j % 3]],
+                             &m_vertices[indices[( j + 1 ) % 3]],
+                             &m_vertices[i] );
+
             // Mark the interior vertex so we ignore it if trying to trace
             // the interior edge.
-            m_vertices[i].setInterior(true);
+            m_vertices[i].setInterior( true );
             return;
         }
     }
@@ -209,68 +256,91 @@ void LoopBlinnLocalTriangulator::triangulateHelper(LoopBlinnConstants::FillSide 
     // From which we can choose by seeing which of the potential
     // diagonals intersect. Note that we choose the shortest diagonal
     // to split the quad.
-    if (linesIntersect(m_vertices[0].xyCoordinates(),
-                       m_vertices[2].xyCoordinates(),
-                       m_vertices[1].xyCoordinates(),
-                       m_vertices[3].xyCoordinates())) {
-        if ((m_vertices[2].xyCoordinates() - m_vertices[0].xyCoordinates()).diagonalLengthSquared() <
-            (m_vertices[3].xyCoordinates() - m_vertices[1].xyCoordinates()).diagonalLengthSquared()) {
-            addTriangle(&m_vertices[0], &m_vertices[1], &m_vertices[2]);
-            addTriangle(&m_vertices[0], &m_vertices[2], &m_vertices[3]);
-        } else {
-            addTriangle(&m_vertices[0], &m_vertices[1], &m_vertices[3]);
-            addTriangle(&m_vertices[1], &m_vertices[2], &m_vertices[3]);
+    if ( linesIntersect( m_vertices[0].xyCoordinates(),
+                         m_vertices[2].xyCoordinates(),
+                         m_vertices[1].xyCoordinates(),
+                         m_vertices[3].xyCoordinates() ) )
+    {
+        if ( ( m_vertices[2].xyCoordinates() - m_vertices[0].xyCoordinates() ).diagonalLengthSquared() <
+                ( m_vertices[3].xyCoordinates() - m_vertices[1].xyCoordinates() ).diagonalLengthSquared() )
+        {
+            addTriangle( &m_vertices[0], &m_vertices[1], &m_vertices[2] );
+            addTriangle( &m_vertices[0], &m_vertices[2], &m_vertices[3] );
         }
-    } else if (linesIntersect(m_vertices[0].xyCoordinates(),
+        else
+        {
+            addTriangle( &m_vertices[0], &m_vertices[1], &m_vertices[3] );
+            addTriangle( &m_vertices[1], &m_vertices[2], &m_vertices[3] );
+        }
+    }
+    else if ( linesIntersect( m_vertices[0].xyCoordinates(),
                               m_vertices[3].xyCoordinates(),
                               m_vertices[1].xyCoordinates(),
-                              m_vertices[2].xyCoordinates())) {
-        if ((m_vertices[3].xyCoordinates() - m_vertices[0].xyCoordinates()).diagonalLengthSquared() <
-            (m_vertices[2].xyCoordinates() - m_vertices[1].xyCoordinates()).diagonalLengthSquared()) {
-            addTriangle(&m_vertices[0], &m_vertices[1], &m_vertices[3]);
-            addTriangle(&m_vertices[0], &m_vertices[3], &m_vertices[2]);
-        } else {
-            addTriangle(&m_vertices[0], &m_vertices[1], &m_vertices[2]);
-            addTriangle(&m_vertices[2], &m_vertices[1], &m_vertices[3]);
+                              m_vertices[2].xyCoordinates() ) )
+    {
+        if ( ( m_vertices[3].xyCoordinates() - m_vertices[0].xyCoordinates() ).diagonalLengthSquared() <
+                ( m_vertices[2].xyCoordinates() - m_vertices[1].xyCoordinates() ).diagonalLengthSquared() )
+        {
+            addTriangle( &m_vertices[0], &m_vertices[1], &m_vertices[3] );
+            addTriangle( &m_vertices[0], &m_vertices[3], &m_vertices[2] );
         }
-    } else {
+        else
+        {
+            addTriangle( &m_vertices[0], &m_vertices[1], &m_vertices[2] );
+            addTriangle( &m_vertices[2], &m_vertices[1], &m_vertices[3] );
+        }
+    }
+    else
+    {
         // Lines (0->1), (2->3) intersect -- or should, modulo numerical
         // precision issues
-        if ((m_vertices[1].xyCoordinates() - m_vertices[0].xyCoordinates()).diagonalLengthSquared() <
-            (m_vertices[3].xyCoordinates() - m_vertices[2].xyCoordinates()).diagonalLengthSquared()) {
-            addTriangle(&m_vertices[0], &m_vertices[2], &m_vertices[1]);
-            addTriangle(&m_vertices[0], &m_vertices[1], &m_vertices[3]);
-        } else {
-            addTriangle(&m_vertices[0], &m_vertices[2], &m_vertices[3]);
-            addTriangle(&m_vertices[3], &m_vertices[2], &m_vertices[1]);
+        if ( ( m_vertices[1].xyCoordinates() - m_vertices[0].xyCoordinates() ).diagonalLengthSquared() <
+                ( m_vertices[3].xyCoordinates() - m_vertices[2].xyCoordinates() ).diagonalLengthSquared() )
+        {
+            addTriangle( &m_vertices[0], &m_vertices[2], &m_vertices[1] );
+            addTriangle( &m_vertices[0], &m_vertices[1], &m_vertices[3] );
+        }
+        else
+        {
+            addTriangle( &m_vertices[0], &m_vertices[2], &m_vertices[3] );
+            addTriangle( &m_vertices[3], &m_vertices[2], &m_vertices[1] );
         }
     }
 }
 
-void LoopBlinnLocalTriangulator::addTriangle(Vertex* v0, Vertex* v1, Vertex* v2)
+void LoopBlinnLocalTriangulator::addTriangle( Vertex *v0, Vertex *v1, Vertex *v2 )
 {
-    ASSERT(m_numberOfTriangles < 3);
-    m_triangles[m_numberOfTriangles++].setVertices(v0, v1, v2);
+    ASSERT( m_numberOfTriangles < 3 );
+    m_triangles[m_numberOfTriangles++].setVertices( v0, v1, v2 );
 }
 
-void LoopBlinnLocalTriangulator::addInteriorVertex(Vertex* v)
+void LoopBlinnLocalTriangulator::addInteriorVertex( Vertex *v )
 {
-    ASSERT(m_numberOfInteriorVertices < 4);
+    ASSERT( m_numberOfInteriorVertices < 4 );
     m_interiorVertices[m_numberOfInteriorVertices++] = v;
-    v->setMarked(true);
+    v->setMarked( true );
 }
 
-bool LoopBlinnLocalTriangulator::isSharedEdge(Vertex* v0, Vertex* v1)
+bool LoopBlinnLocalTriangulator::isSharedEdge( Vertex *v0, Vertex *v1 )
 {
     bool haveEdge01 = false;
     bool haveEdge10 = false;
-    for (int i = 0; i < numberOfTriangles(); ++i) {
-        Triangle* tri = getTriangle(i);
-        if (tri->contains(v0) && tri->nextVertex(v0, true) == v1)
+
+    for ( int i = 0; i < numberOfTriangles(); ++i )
+    {
+        Triangle *tri = getTriangle( i );
+
+        if ( tri->contains( v0 ) && tri->nextVertex( v0, true ) == v1 )
+        {
             haveEdge01 = true;
-        if (tri->contains(v1) && tri->nextVertex(v1, true) == v0)
+        }
+
+        if ( tri->contains( v1 ) && tri->nextVertex( v1, true ) == v0 )
+        {
             haveEdge10 = true;
+        }
     }
+
     return haveEdge01 && haveEdge10;
 }
 

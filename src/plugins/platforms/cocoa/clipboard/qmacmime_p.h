@@ -34,40 +34,41 @@
 // Duplicate of QMacPasteboardMime in QtMacExtras. Keep in sync!
 class QMacInternalPasteboardMime
 {
-   char type;
+    char type;
 
- public:
-   enum QMacPasteboardMimeType {
-      MIME_DND             = 0x01,
-      MIME_CLIP            = 0x02,
-      MIME_QT_CONVERTOR    = 0x04,
-      MIME_QT3_CONVERTOR   = 0x08,
-      MIME_ALL             = MIME_DND | MIME_CLIP
-   };
+public:
+    enum QMacPasteboardMimeType
+    {
+        MIME_DND             = 0x01,
+        MIME_CLIP            = 0x02,
+        MIME_QT_CONVERTOR    = 0x04,
+        MIME_QT3_CONVERTOR   = 0x08,
+        MIME_ALL             = MIME_DND | MIME_CLIP
+    };
 
-   explicit QMacInternalPasteboardMime(char);
-   virtual ~QMacInternalPasteboardMime();
+    explicit QMacInternalPasteboardMime( char );
+    virtual ~QMacInternalPasteboardMime();
 
-   static void initializeMimeTypes();
-   static void destroyMimeTypes();
+    static void initializeMimeTypes();
+    static void destroyMimeTypes();
 
-   static QList<QMacInternalPasteboardMime *> all(uchar);
-   static QMacInternalPasteboardMime *convertor(uchar, const QString &mime, QString flav);
-   static QString flavorToMime(uchar, QString flav);
+    static QList<QMacInternalPasteboardMime *> all( uchar );
+    static QMacInternalPasteboardMime *convertor( uchar, const QString &mime, QString flav );
+    static QString flavorToMime( uchar, QString flav );
 
-   virtual QString convertorName() = 0;
+    virtual QString convertorName() = 0;
 
-   virtual bool canConvert(const QString &mime, QString flav) = 0;
-   virtual QString mimeFor(QString flav) = 0;
-   virtual QString flavorFor(const QString &mime) = 0;
-   virtual QVariant convertToMime(const QString &mime, QList<QByteArray> data, QString flav) = 0;
-   virtual QList<QByteArray> convertFromMime(const QString &mime, QVariant data, QString flav) = 0;
-   virtual int count(QMimeData *mimeData);
+    virtual bool canConvert( const QString &mime, QString flav ) = 0;
+    virtual QString mimeFor( QString flav ) = 0;
+    virtual QString flavorFor( const QString &mime ) = 0;
+    virtual QVariant convertToMime( const QString &mime, QList<QByteArray> data, QString flav ) = 0;
+    virtual QList<QByteArray> convertFromMime( const QString &mime, QVariant data, QString flav ) = 0;
+    virtual int count( QMimeData *mimeData );
 };
 
-void qt_mac_addToGlobalMimeList(QMacInternalPasteboardMime *macMime);
-void qt_mac_removeFromGlobalMimeList(QMacInternalPasteboardMime *macMime);
-void qt_mac_registerDraggedTypes(const QStringList &types);
+void qt_mac_addToGlobalMimeList( QMacInternalPasteboardMime *macMime );
+void qt_mac_removeFromGlobalMimeList( QMacInternalPasteboardMime *macMime );
+void qt_mac_registerDraggedTypes( const QStringList &types );
 const QStringList &qt_mac_enabledDraggedTypes();
 
 #endif

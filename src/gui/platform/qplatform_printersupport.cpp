@@ -40,34 +40,34 @@ QPlatformPrinterSupport::~QPlatformPrinterSupport()
 {
 }
 
-QPrintEngine *QPlatformPrinterSupport::createNativePrintEngine(QPrinter::PrinterMode mode)
+QPrintEngine *QPlatformPrinterSupport::createNativePrintEngine( QPrinter::PrinterMode mode )
 {
-   (void) mode;
-   return nullptr;
+    ( void ) mode;
+    return nullptr;
 }
 
-QPaintEngine *QPlatformPrinterSupport::createPaintEngine(QPrintEngine *engine, QPrinter::PrinterMode mode)
+QPaintEngine *QPlatformPrinterSupport::createPaintEngine( QPrintEngine *engine, QPrinter::PrinterMode mode )
 {
-   (void) engine;
-   (void) mode;
-   return nullptr;
+    ( void ) engine;
+    ( void ) mode;
+    return nullptr;
 }
 
-QPrintDevice QPlatformPrinterSupport::createPrintDevice(QPlatformPrintDevice *device)
+QPrintDevice QPlatformPrinterSupport::createPrintDevice( QPlatformPrintDevice *device )
 {
-   (void) device;
-   return QPrintDevice(device);
+    ( void ) device;
+    return QPrintDevice( device );
 }
 
-QPrintDevice QPlatformPrinterSupport::createPrintDevice(const QString &id)
+QPrintDevice QPlatformPrinterSupport::createPrintDevice( const QString &id )
 {
-   (void) id;
-   return QPrintDevice();
+    ( void ) id;
+    return QPrintDevice();
 }
 
 QPrintDevice QPlatformPrinterSupport::createDefaultPrintDevice()
 {
-    return createPrintDevice(defaultPrintDeviceId());
+    return createPrintDevice( defaultPrintDeviceId() );
 }
 
 QStringList QPlatformPrinterSupport::availablePrintDeviceIds() const
@@ -80,12 +80,12 @@ QString QPlatformPrinterSupport::defaultPrintDeviceId() const
     return QString();
 }
 
-QPageSize QPlatformPrinterSupport::createPageSize(const QString &id, QSize size, const QString &localizedName)
+QPageSize QPlatformPrinterSupport::createPageSize( const QString &id, QSize size, const QString &localizedName )
 {
-   (void) id;
-   (void) size;
-   (void) localizedName;
-   return QPageSize();
+    ( void ) id;
+    ( void ) size;
+    ( void ) localizedName;
+    return QPageSize();
 }
 
 #endif // QT_NO_PRINTER

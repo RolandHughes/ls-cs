@@ -38,100 +38,120 @@
 #include "Blob.h"
 #include "FileException.h"
 
-namespace WebCore {
-
-void FileWriterSync::write(Blob* data, ExceptionCode& ec)
+namespace WebCore
 {
-    ASSERT(writer());
-    ASSERT(m_complete);
+
+void FileWriterSync::write( Blob *data, ExceptionCode &ec )
+{
+    ASSERT( writer() );
+    ASSERT( m_complete );
     ec = 0;
-    if (!data) {
+
+    if ( !data )
+    {
         ec = FileException::TYPE_MISMATCH_ERR;
         return;
     }
 
     prepareForWrite();
-    writer()->write(position(), data);
+    writer()->write( position(), data );
     writer()->waitForOperationToComplete();
-    ASSERT(m_complete);
-    ec = FileException::ErrorCodeToExceptionCode(m_error);
-    if (ec)
+    ASSERT( m_complete );
+    ec = FileException::ErrorCodeToExceptionCode( m_error );
+
+    if ( ec )
+    {
         return;
-    setPosition(position() + data->size());
-    if (position() > length())
-        setLength(position());
+    }
+
+    setPosition( position() + data->size() );
+
+    if ( position() > length() )
+    {
+        setLength( position() );
+    }
 }
 
-void FileWriterSync::seek(long long position, ExceptionCode& ec)
+void FileWriterSync::seek( long long position, ExceptionCode &ec )
 {
-    ASSERT(writer());
-    ASSERT(m_complete);
+    ASSERT( writer() );
+    ASSERT( m_complete );
     ec = 0;
-    seekInternal(position);
+    seekInternal( position );
 }
 
-void FileWriterSync::truncate(long long offset, ExceptionCode& ec)
+void FileWriterSync::truncate( long long offset, ExceptionCode &ec )
 {
-    ASSERT(writer());
-    ASSERT(m_complete);
+    ASSERT( writer() );
+    ASSERT( m_complete );
     ec = 0;
-    if (offset < 0) {
+
+    if ( offset < 0 )
+    {
         ec = FileException::INVALID_STATE_ERR;
         return;
     }
+
     prepareForWrite();
-    writer()->truncate(offset);
+    writer()->truncate( offset );
     writer()->waitForOperationToComplete();
-    ASSERT(m_complete);
-    ec = FileException::ErrorCodeToExceptionCode(m_error);
-    if (ec)
+    ASSERT( m_complete );
+    ec = FileException::ErrorCodeToExceptionCode( m_error );
+
+    if ( ec )
+    {
         return;
-    if (offset < position())
-        setPosition(offset);
-    setLength(offset);
+    }
+
+    if ( offset < position() )
+    {
+        setPosition( offset );
+    }
+
+    setLength( offset );
 }
 
-void FileWriterSync::didWrite(long long bytes, bool complete)
+void FileWriterSync::didWrite( long long bytes, bool complete )
 {
-    ASSERT(m_error == FileError::OK);
-    ASSERT(!m_complete);
+    ASSERT( m_error == FileError::OK );
+    ASSERT( !m_complete );
 #ifndef NDEBUG
     m_complete = complete;
 #else
-    ASSERT_UNUSED(complete, complete);
+    ASSERT_UNUSED( complete, complete );
 #endif
 }
 
 void FileWriterSync::didTruncate()
 {
-    ASSERT(m_error == FileError::OK);
-    ASSERT(!m_complete);
+    ASSERT( m_error == FileError::OK );
+    ASSERT( !m_complete );
 #ifndef NDEBUG
     m_complete = true;
 #endif
 }
 
-void FileWriterSync::didFail(FileError::ErrorCode error)
+void FileWriterSync::didFail( FileError::ErrorCode error )
 {
-    ASSERT(m_error == FileError::OK);
+    ASSERT( m_error == FileError::OK );
     m_error = error;
-    ASSERT(!m_complete);
+    ASSERT( !m_complete );
 #ifndef NDEBUG
     m_complete = true;
 #endif
 }
 
 FileWriterSync::FileWriterSync()
-    : m_error(FileError::OK)
+    : m_error( FileError::OK )
 #ifndef NDEBUG
-    , m_complete(true)
+    , m_complete( true )
 #endif
 {
 }
 
 void FileWriterSync::prepareForWrite()
 {
-    ASSERT(m_complete);
+    ASSERT( m_complete );
     m_error = FileError::OK;
 #ifndef NDEBUG
     m_complete = false;

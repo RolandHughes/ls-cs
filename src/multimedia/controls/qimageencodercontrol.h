@@ -35,25 +35,25 @@ class QByteArray;
 
 class Q_MULTIMEDIA_EXPORT QImageEncoderControl : public QMediaControl
 {
-    MULTI_CS_OBJECT(QImageEncoderControl)
+    MULTI_CS_OBJECT( QImageEncoderControl )
 
 public:
     virtual ~QImageEncoderControl();
 
     virtual QStringList supportedImageCodecs() const = 0;
-    virtual QString imageCodecDescription(const QString &codecName) const = 0;
+    virtual QString imageCodecDescription( const QString &codecName ) const = 0;
 
-    virtual QList<QSize> supportedResolutions(const QImageEncoderSettings &settings,
-                                              bool *continuous = nullptr) const = 0;
+    virtual QList<QSize> supportedResolutions( const QImageEncoderSettings &settings,
+            bool *continuous = nullptr ) const = 0;
 
     virtual QImageEncoderSettings imageSettings() const = 0;
-    virtual void setImageSettings(const QImageEncoderSettings &settings) = 0;
+    virtual void setImageSettings( const QImageEncoderSettings &settings ) = 0;
 
 protected:
-    explicit QImageEncoderControl(QObject *parent = nullptr);
+    explicit QImageEncoderControl( QObject *parent = nullptr );
 };
 
 #define QImageEncoderControl_iid "com.copperspice.CS.imageEncoderControl/1.0"
-CS_DECLARE_INTERFACE(QImageEncoderControl, QImageEncoderControl_iid)
+CS_DECLARE_INTERFACE( QImageEncoderControl, QImageEncoderControl_iid )
 
 #endif

@@ -21,14 +21,14 @@
 
 #include <cs_catch2.h>
 
-TEST_CASE("QResource traits", "[qresource]")
+TEST_CASE( "QResource traits", "[qresource]" )
 {
-   REQUIRE(std::is_copy_constructible_v<QResource> == false);
-   REQUIRE(std::is_move_constructible_v<QResource> == false);
+    REQUIRE( std::is_copy_constructible_v<QResource> == false );
+    REQUIRE( std::is_move_constructible_v<QResource> == false );
 
-   REQUIRE(std::is_copy_assignable_v<QResource> == false);
-   REQUIRE(std::is_move_assignable_v<QResource> == false);
+    REQUIRE( std::is_copy_assignable_v<QResource> == false );
+    REQUIRE( std::is_move_assignable_v<QResource> == false );
 
-   REQUIRE(std::has_virtual_destructor_v<QResource> == false);
+    REQUIRE( std::has_virtual_destructor_v<QResource> == false );
 }
 

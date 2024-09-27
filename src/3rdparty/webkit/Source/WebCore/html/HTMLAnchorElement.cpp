@@ -41,40 +41,48 @@
 #include "Settings.h"
 #include "UserGestureIndicator.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
-HTMLAnchorElement::HTMLAnchorElement(const QualifiedName& tagName, Document* document)
-    : HTMLElement(tagName, document)
-    , m_wasShiftKeyDownOnMouseDown(false)
-    , m_linkRelations(0)
+HTMLAnchorElement::HTMLAnchorElement( const QualifiedName &tagName, Document *document )
+    : HTMLElement( tagName, document )
+    , m_wasShiftKeyDownOnMouseDown( false )
+    , m_linkRelations( 0 )
 {
 }
 
-PassRefPtr<HTMLAnchorElement> HTMLAnchorElement::create(Document* document)
+PassRefPtr<HTMLAnchorElement> HTMLAnchorElement::create( Document *document )
 {
-    return adoptRef(new HTMLAnchorElement(aTag, document));
+    return adoptRef( new HTMLAnchorElement( aTag, document ) );
 }
 
-PassRefPtr<HTMLAnchorElement> HTMLAnchorElement::create(const QualifiedName& tagName, Document* document)
+PassRefPtr<HTMLAnchorElement> HTMLAnchorElement::create( const QualifiedName &tagName, Document *document )
 {
-    return adoptRef(new HTMLAnchorElement(tagName, document));
+    return adoptRef( new HTMLAnchorElement( tagName, document ) );
 }
 
 // This function does not allow leading spaces before the port number.
-static unsigned parsePortFromStringPosition(const String& value, unsigned portStart, unsigned& portEnd)
+static unsigned parsePortFromStringPosition( const String &value, unsigned portStart, unsigned &portEnd )
 {
     portEnd = portStart;
-    while (isASCIIDigit(value[portEnd]))
+
+    while ( isASCIIDigit( value[portEnd] ) )
+    {
         ++portEnd;
-    return value.substring(portStart, portEnd - portStart).toUInt();
+    }
+
+    return value.substring( portStart, portEnd - portStart ).toUInt();
 }
 
 bool HTMLAnchorElement::supportsFocus() const
 {
-    if (rendererIsEditable())
+    if ( rendererIsEditable() )
+    {
         return HTMLElement::supportsFocus();
+    }
+
     // If not a link we should still be able to focus the element if it has tabIndex.
     return isLink() || HTMLElement::supportsFocus();
 }
@@ -83,85 +91,116 @@ bool HTMLAnchorElement::isMouseFocusable() const
 {
     // Anchor elements should be mouse focusable, https://bugs.webkit.org/show_bug.cgi?id=26856
 #if !PLATFORM(GTK) && !PLATFORM(QT) && !PLATFORM(EFL)
-    if (isLink())
+    if ( isLink() )
         // Only allow links with tabIndex or contentEditable to be mouse focusable.
+    {
         return HTMLElement::supportsFocus();
+    }
+
 #endif
 
     // Allow tab index etc to control focus.
     return HTMLElement::isMouseFocusable();
 }
 
-bool HTMLAnchorElement::isKeyboardFocusable(KeyboardEvent* event) const
+bool HTMLAnchorElement::isKeyboardFocusable( KeyboardEvent *event ) const
 {
-    if (!isLink())
-        return HTMLElement::isKeyboardFocusable(event);
+    if ( !isLink() )
+    {
+        return HTMLElement::isKeyboardFocusable( event );
+    }
 
-    if (!isFocusable())
+    if ( !isFocusable() )
+    {
         return false;
-    
-    if (!document()->frame())
-        return false;
+    }
 
-    if (!document()->frame()->eventHandler()->tabsToLinks(event))
+    if ( !document()->frame() )
+    {
         return false;
+    }
+
+    if ( !document()->frame()->eventHandler()->tabsToLinks( event ) )
+    {
+        return false;
+    }
 
     return hasNonEmptyBoundingBox();
 }
 
-static void appendServerMapMousePosition(String& url, Event* event)
+static void appendServerMapMousePosition( String &url, Event *event )
 {
-    if (!event->isMouseEvent())
+    if ( !event->isMouseEvent() )
+    {
         return;
+    }
 
-    ASSERT(event->target());
-    Node* target = event->target()->toNode();
-    ASSERT(target);
-    if (!target->hasTagName(imgTag))
-        return;
+    ASSERT( event->target() );
+    Node *target = event->target()->toNode();
+    ASSERT( target );
 
-    HTMLImageElement* imageElement = static_cast<HTMLImageElement*>(event->target()->toNode());
-    if (!imageElement || !imageElement->isServerMap())
+    if ( !target->hasTagName( imgTag ) )
+    {
         return;
+    }
 
-    RenderImage* renderer = toRenderImage(imageElement->renderer());
-    if (!renderer)
+    HTMLImageElement *imageElement = static_cast<HTMLImageElement *>( event->target()->toNode() );
+
+    if ( !imageElement || !imageElement->isServerMap() )
+    {
         return;
+    }
+
+    RenderImage *renderer = toRenderImage( imageElement->renderer() );
+
+    if ( !renderer )
+    {
+        return;
+    }
 
     // FIXME: This should probably pass true for useTransforms.
-    FloatPoint absolutePosition = renderer->absoluteToLocal(FloatPoint(static_cast<MouseEvent*>(event)->pageX(), static_cast<MouseEvent*>(event)->pageY()));
+    FloatPoint absolutePosition = renderer->absoluteToLocal( FloatPoint( static_cast<MouseEvent *>( event )->pageX(),
+                                  static_cast<MouseEvent *>( event )->pageY() ) );
     int x = absolutePosition.x();
     int y = absolutePosition.y();
     url += "?";
-    url += String::number(x);
+    url += String::number( x );
     url += ",";
-    url += String::number(y);
+    url += String::number( y );
 }
 
-void HTMLAnchorElement::defaultEventHandler(Event* event)
+void HTMLAnchorElement::defaultEventHandler( Event *event )
 {
-    if (isLink()) {
-        if (focused() && isEnterKeyKeydownEvent(event) && treatLinkAsLiveForEventType(NonMouseEvent)) {
+    if ( isLink() )
+    {
+        if ( focused() && isEnterKeyKeydownEvent( event ) && treatLinkAsLiveForEventType( NonMouseEvent ) )
+        {
             event->setDefaultHandled();
-            dispatchSimulatedClick(event);
+            dispatchSimulatedClick( event );
             return;
         }
 
-        if (isLinkClick(event) && treatLinkAsLiveForEventType(eventType(event))) {
-            String url = stripLeadingAndTrailingHTMLSpaces(getAttribute(hrefAttr));
-            appendServerMapMousePosition(url, event);
-            handleLinkClick(event, document(), url, getAttribute(targetAttr), hasRel(RelationNoReferrer));
-            sendPings(document()->completeURL(url));
+        if ( isLinkClick( event ) && treatLinkAsLiveForEventType( eventType( event ) ) )
+        {
+            String url = stripLeadingAndTrailingHTMLSpaces( getAttribute( hrefAttr ) );
+            appendServerMapMousePosition( url, event );
+            handleLinkClick( event, document(), url, getAttribute( targetAttr ), hasRel( RelationNoReferrer ) );
+            sendPings( document()->completeURL( url ) );
             return;
         }
 
-        if (rendererIsEditable()) {
+        if ( rendererIsEditable() )
+        {
             // This keeps track of the editable block that the selection was in (if it was in one) just before the link was clicked
             // for the LiveWhenNotFocused editable link behavior
-            if (event->type() == eventNames().mousedownEvent && event->isMouseEvent() && static_cast<MouseEvent*>(event)->button() != RightButton && document()->frame() && document()->frame()->selection()) {
+            if ( event->type() == eventNames().mousedownEvent && event->isMouseEvent()
+                    && static_cast<MouseEvent *>( event )->button() != RightButton && document()->frame() && document()->frame()->selection() )
+            {
                 m_rootEditableElementForSelectionOnMouseDown = document()->frame()->selection()->rootEditableElement();
-                m_wasShiftKeyDownOnMouseDown = static_cast<MouseEvent*>(event)->shiftKey();
-            } else if (event->type() == eventNames().mouseoverEvent) {
+                m_wasShiftKeyDownOnMouseDown = static_cast<MouseEvent *>( event )->shiftKey();
+            }
+            else if ( event->type() == eventNames().mouseoverEvent )
+            {
                 // These are cleared on mouseover and not mouseout because their values are needed for drag events,
                 // but drag events happen after mouse out events.
                 m_rootEditableElementForSelectionOnMouseDown = 0;
@@ -170,17 +209,22 @@ void HTMLAnchorElement::defaultEventHandler(Event* event)
         }
     }
 
-    HTMLElement::defaultEventHandler(event);
+    HTMLElement::defaultEventHandler( event );
 }
 
-void HTMLAnchorElement::setActive(bool down, bool pause)
+void HTMLAnchorElement::setActive( bool down, bool pause )
 {
-    if (rendererIsEditable()) {
+    if ( rendererIsEditable() )
+    {
         EditableLinkBehavior editableLinkBehavior = EditableLinkDefaultBehavior;
-        if (Settings* settings = document()->settings())
+
+        if ( Settings *settings = document()->settings() )
+        {
             editableLinkBehavior = settings->editableLinkBehavior();
-            
-        switch (editableLinkBehavior) {
+        }
+
+        switch ( editableLinkBehavior )
+        {
             default:
             case EditableLinkDefaultBehavior:
             case EditableLinkAlwaysLive:
@@ -192,53 +236,75 @@ void HTMLAnchorElement::setActive(bool down, bool pause)
             // Don't set the link to be active if the current selection is in the same editable block as
             // this link
             case EditableLinkLiveWhenNotFocused:
-                if (down && document()->frame() && document()->frame()->selection()->rootEditableElement() == rootEditableElement())
+                if ( down && document()->frame() && document()->frame()->selection()->rootEditableElement() == rootEditableElement() )
+                {
                     return;
+                }
+
                 break;
-            
+
             case EditableLinkOnlyLiveWithShiftKey:
                 return;
         }
 
     }
-    
-    ContainerNode::setActive(down, pause);
+
+    ContainerNode::setActive( down, pause );
 }
 
-void HTMLAnchorElement::parseMappedAttribute(Attribute* attr)
+void HTMLAnchorElement::parseMappedAttribute( Attribute *attr )
 {
-    if (attr->name() == hrefAttr) {
+    if ( attr->name() == hrefAttr )
+    {
         bool wasLink = isLink();
-        setIsLink(!attr->isNull());
-        if (wasLink != isLink())
+        setIsLink( !attr->isNull() );
+
+        if ( wasLink != isLink() )
+        {
             setNeedsStyleRecalc();
-        if (isLink()) {
-            String parsedURL = stripLeadingAndTrailingHTMLSpaces(attr->value());
-            if (document()->isDNSPrefetchEnabled()) {
-                if (protocolIs(parsedURL, "http") || protocolIs(parsedURL, "https") || parsedURL.startsWith("//"))
-                    ResourceHandle::prepareForURL(document()->completeURL(parsedURL));
+        }
+
+        if ( isLink() )
+        {
+            String parsedURL = stripLeadingAndTrailingHTMLSpaces( attr->value() );
+
+            if ( document()->isDNSPrefetchEnabled() )
+            {
+                if ( protocolIs( parsedURL, "http" ) || protocolIs( parsedURL, "https" ) || parsedURL.startsWith( "//" ) )
+                {
+                    ResourceHandle::prepareForURL( document()->completeURL( parsedURL ) );
+                }
             }
-            if (document()->page() && !document()->page()->javaScriptURLsAreAllowed() && protocolIsJavaScript(parsedURL)) {
+
+            if ( document()->page() && !document()->page()->javaScriptURLsAreAllowed() && protocolIsJavaScript( parsedURL ) )
+            {
                 clearIsLink();
-                attr->setValue(nullAtom);
+                attr->setValue( nullAtom );
             }
         }
-    } else if (attr->name() == nameAttr ||
-             attr->name() == titleAttr) {
+    }
+    else if ( attr->name() == nameAttr ||
+              attr->name() == titleAttr )
+    {
         // Do nothing.
-    } else if (attr->name() == relAttr)
-        setRel(attr->value());
+    }
+    else if ( attr->name() == relAttr )
+    {
+        setRel( attr->value() );
+    }
     else
-        HTMLElement::parseMappedAttribute(attr);
+    {
+        HTMLElement::parseMappedAttribute( attr );
+    }
 }
 
-void HTMLAnchorElement::accessKeyAction(bool sendToAnyElement)
+void HTMLAnchorElement::accessKeyAction( bool sendToAnyElement )
 {
     // send the mouse button events if the caller specified sendToAnyElement
-    dispatchSimulatedClick(0, sendToAnyElement);
+    dispatchSimulatedClick( 0, sendToAnyElement );
 }
 
-bool HTMLAnchorElement::isURLAttribute(Attribute *attr) const
+bool HTMLAnchorElement::isURLAttribute( Attribute *attr ) const
 {
     return attr->name() == hrefAttr;
 }
@@ -246,49 +312,62 @@ bool HTMLAnchorElement::isURLAttribute(Attribute *attr) const
 bool HTMLAnchorElement::canStartSelection() const
 {
     // FIXME: We probably want this same behavior in SVGAElement too
-    if (!isLink())
+    if ( !isLink() )
+    {
         return HTMLElement::canStartSelection();
+    }
+
     return rendererIsEditable();
 }
 
 bool HTMLAnchorElement::draggable() const
 {
     // Should be draggable if we have an href attribute.
-    const AtomicString& value = getAttribute(draggableAttr);
-    if (equalIgnoringCase(value, "true"))
+    const AtomicString &value = getAttribute( draggableAttr );
+
+    if ( equalIgnoringCase( value, "true" ) )
+    {
         return true;
-    if (equalIgnoringCase(value, "false"))
+    }
+
+    if ( equalIgnoringCase( value, "false" ) )
+    {
         return false;
-    return hasAttribute(hrefAttr);
+    }
+
+    return hasAttribute( hrefAttr );
 }
 
 KURL HTMLAnchorElement::href() const
 {
-    return document()->completeURL(stripLeadingAndTrailingHTMLSpaces(getAttribute(hrefAttr)));
+    return document()->completeURL( stripLeadingAndTrailingHTMLSpaces( getAttribute( hrefAttr ) ) );
 }
 
-void HTMLAnchorElement::setHref(const AtomicString& value)
+void HTMLAnchorElement::setHref( const AtomicString &value )
 {
-    setAttribute(hrefAttr, value);
+    setAttribute( hrefAttr, value );
 }
 
-bool HTMLAnchorElement::hasRel(uint32_t relation) const
+bool HTMLAnchorElement::hasRel( uint32_t relation ) const
 {
     return m_linkRelations & relation;
 }
 
-void HTMLAnchorElement::setRel(const String& value)
+void HTMLAnchorElement::setRel( const String &value )
 {
     m_linkRelations = 0;
-    SpaceSplitString newLinkRelations(value, true);
+    SpaceSplitString newLinkRelations( value, true );
+
     // FIXME: Add link relations as they are implemented
-    if (newLinkRelations.contains("noreferrer"))
+    if ( newLinkRelations.contains( "noreferrer" ) )
+    {
         m_linkRelations |= RelationNoReferrer;
+    }
 }
 
-const AtomicString& HTMLAnchorElement::name() const
+const AtomicString &HTMLAnchorElement::name() const
 {
-    return getAttribute(nameAttr);
+    return getAttribute( nameAttr );
 }
 
 short HTMLAnchorElement::tabIndex() const
@@ -299,7 +378,7 @@ short HTMLAnchorElement::tabIndex() const
 
 String HTMLAnchorElement::target() const
 {
-    return getAttribute(targetAttr);
+    return getAttribute( targetAttr );
 }
 
 String HTMLAnchorElement::hash() const
@@ -308,56 +387,90 @@ String HTMLAnchorElement::hash() const
     return fragmentIdentifier.isEmpty() ? "" : "#" + fragmentIdentifier;
 }
 
-void HTMLAnchorElement::setHash(const String& value)
+void HTMLAnchorElement::setHash( const String &value )
 {
     KURL url = href();
-    if (value[0] == '#')
-        url.setFragmentIdentifier(value.substring(1));
+
+    if ( value[0] == '#' )
+    {
+        url.setFragmentIdentifier( value.substring( 1 ) );
+    }
     else
-        url.setFragmentIdentifier(value);
-    setHref(url.string());
+    {
+        url.setFragmentIdentifier( value );
+    }
+
+    setHref( url.string() );
 }
 
 String HTMLAnchorElement::host() const
 {
-    const KURL& url = href();
-    if (url.hostEnd() == url.pathStart())
+    const KURL &url = href();
+
+    if ( url.hostEnd() == url.pathStart() )
+    {
         return url.host();
-    if (isDefaultPortForProtocol(url.port(), url.protocol()))
+    }
+
+    if ( isDefaultPortForProtocol( url.port(), url.protocol() ) )
+    {
         return url.host();
-    return url.host() + ":" + String::number(url.port());
+    }
+
+    return url.host() + ":" + String::number( url.port() );
 }
 
-void HTMLAnchorElement::setHost(const String& value)
+void HTMLAnchorElement::setHost( const String &value )
 {
-    if (value.isEmpty())
+    if ( value.isEmpty() )
+    {
         return;
+    }
+
     KURL url = href();
-    if (!url.canSetHostOrPort())
-        return;
 
-    size_t separator = value.find(':');
-    if (!separator)
+    if ( !url.canSetHostOrPort() )
+    {
         return;
+    }
 
-    if (separator == notFound)
-        url.setHostAndPort(value);
-    else {
+    size_t separator = value.find( ':' );
+
+    if ( !separator )
+    {
+        return;
+    }
+
+    if ( separator == notFound )
+    {
+        url.setHostAndPort( value );
+    }
+    else
+    {
         unsigned portEnd;
-        unsigned port = parsePortFromStringPosition(value, separator + 1, portEnd);
-        if (!port) {
+        unsigned port = parsePortFromStringPosition( value, separator + 1, portEnd );
+
+        if ( !port )
+        {
             // http://dev.w3.org/html5/spec/infrastructure.html#url-decomposition-idl-attributes
             // specifically goes against RFC 3986 (p3.2) and
             // requires setting the port to "0" if it is set to empty string.
-            url.setHostAndPort(value.substring(0, separator + 1) + "0");
-        } else {
-            if (isDefaultPortForProtocol(port, url.protocol()))
-                url.setHostAndPort(value.substring(0, separator));
+            url.setHostAndPort( value.substring( 0, separator + 1 ) + "0" );
+        }
+        else
+        {
+            if ( isDefaultPortForProtocol( port, url.protocol() ) )
+            {
+                url.setHostAndPort( value.substring( 0, separator ) );
+            }
             else
-                url.setHostAndPort(value.substring(0, portEnd));
+            {
+                url.setHostAndPort( value.substring( 0, portEnd ) );
+            }
         }
     }
-    setHref(url.string());
+
+    setHref( url.string() );
 }
 
 String HTMLAnchorElement::hostname() const
@@ -365,24 +478,32 @@ String HTMLAnchorElement::hostname() const
     return href().host();
 }
 
-void HTMLAnchorElement::setHostname(const String& value)
+void HTMLAnchorElement::setHostname( const String &value )
 {
     // Before setting new value:
     // Remove all leading U+002F SOLIDUS ("/") characters.
     unsigned i = 0;
     unsigned hostLength = value.length();
-    while (value[i] == '/')
-        i++;
 
-    if (i == hostLength)
+    while ( value[i] == '/' )
+    {
+        i++;
+    }
+
+    if ( i == hostLength )
+    {
         return;
+    }
 
     KURL url = href();
-    if (!url.canSetHostOrPort())
-        return;
 
-    url.setHost(value.substring(i));
-    setHref(url.string());
+    if ( !url.canSetHostOrPort() )
+    {
+        return;
+    }
+
+    url.setHost( value.substring( i ) );
+    setHref( url.string() );
 }
 
 String HTMLAnchorElement::pathname() const
@@ -390,41 +511,56 @@ String HTMLAnchorElement::pathname() const
     return href().path();
 }
 
-void HTMLAnchorElement::setPathname(const String& value)
+void HTMLAnchorElement::setPathname( const String &value )
 {
     KURL url = href();
-    if (!url.canSetPathname())
+
+    if ( !url.canSetPathname() )
+    {
         return;
+    }
 
-    if (value[0] == '/')
-        url.setPath(value);
+    if ( value[0] == '/' )
+    {
+        url.setPath( value );
+    }
     else
-        url.setPath("/" + value);
+    {
+        url.setPath( "/" + value );
+    }
 
-    setHref(url.string());
+    setHref( url.string() );
 }
 
 String HTMLAnchorElement::port() const
 {
-    return String::number(href().port());
+    return String::number( href().port() );
 }
 
-void HTMLAnchorElement::setPort(const String& value)
+void HTMLAnchorElement::setPort( const String &value )
 {
     KURL url = href();
-    if (!url.canSetHostOrPort())
+
+    if ( !url.canSetHostOrPort() )
+    {
         return;
+    }
 
     // http://dev.w3.org/html5/spec/infrastructure.html#url-decomposition-idl-attributes
     // specifically goes against RFC 3986 (p3.2) and
     // requires setting the port to "0" if it is set to empty string.
     unsigned port = value.toUInt();
-    if (isDefaultPortForProtocol(port, url.protocol()))
-        url.removePort();
-    else
-        url.setPort(port);
 
-    setHref(url.string());
+    if ( isDefaultPortForProtocol( port, url.protocol() ) )
+    {
+        url.removePort();
+    }
+    else
+    {
+        url.setPort( port );
+    }
+
+    setHref( url.string() );
 }
 
 String HTMLAnchorElement::protocol() const
@@ -432,11 +568,11 @@ String HTMLAnchorElement::protocol() const
     return href().protocol() + ":";
 }
 
-void HTMLAnchorElement::setProtocol(const String& value)
+void HTMLAnchorElement::setProtocol( const String &value )
 {
     KURL url = href();
-    url.setProtocol(value);
-    setHref(url.string());
+    url.setProtocol( value );
+    setHref( url.string() );
 }
 
 String HTMLAnchorElement::search() const
@@ -447,25 +583,25 @@ String HTMLAnchorElement::search() const
 
 String HTMLAnchorElement::origin() const
 {
-    RefPtr<SecurityOrigin> origin = SecurityOrigin::create(href());
+    RefPtr<SecurityOrigin> origin = SecurityOrigin::create( href() );
     return origin->toString();
 }
 
-String HTMLAnchorElement::getParameter(const String& name) const
+String HTMLAnchorElement::getParameter( const String &name ) const
 {
     ParsedURLParameters parameters;
-    href().copyParsedQueryTo(parameters);
-    return parameters.get(name);
+    href().copyParsedQueryTo( parameters );
+    return parameters.get( name );
 }
 
-void HTMLAnchorElement::setSearch(const String& value)
+void HTMLAnchorElement::setSearch( const String &value )
 {
     KURL url = href();
-    String newSearch = (value[0] == '?') ? value.substring(1) : value;
+    String newSearch = ( value[0] == '?' ) ? value.substring( 1 ) : value;
     // Make sure that '#' in the query does not leak to the hash.
-    url.setQuery(newSearch.replace('#', "%23"));
+    url.setQuery( newSearch.replace( '#', "%23" ) );
 
-    setHref(url.string());
+    setHref( url.string() );
 }
 
 String HTMLAnchorElement::text() const
@@ -480,79 +616,102 @@ String HTMLAnchorElement::toString() const
 
 bool HTMLAnchorElement::isLiveLink() const
 {
-    return isLink() && treatLinkAsLiveForEventType(m_wasShiftKeyDownOnMouseDown ? MouseEventWithShiftKey : MouseEventWithoutShiftKey);
+    return isLink()
+           && treatLinkAsLiveForEventType( m_wasShiftKeyDownOnMouseDown ? MouseEventWithShiftKey : MouseEventWithoutShiftKey );
 }
 
-void HTMLAnchorElement::sendPings(const KURL& destinationURL)
+void HTMLAnchorElement::sendPings( const KURL &destinationURL )
 {
-    if (!hasAttribute(pingAttr) || !document()->settings()->hyperlinkAuditingEnabled())
+    if ( !hasAttribute( pingAttr ) || !document()->settings()->hyperlinkAuditingEnabled() )
+    {
         return;
+    }
 
-    SpaceSplitString pingURLs(getAttribute(pingAttr), true);
-    for (unsigned i = 0; i < pingURLs.size(); i++)
-        PingLoader::sendPing(document()->frame(), document()->completeURL(pingURLs[i]), destinationURL);
+    SpaceSplitString pingURLs( getAttribute( pingAttr ), true );
+
+    for ( unsigned i = 0; i < pingURLs.size(); i++ )
+    {
+        PingLoader::sendPing( document()->frame(), document()->completeURL( pingURLs[i] ), destinationURL );
+    }
 }
 
-HTMLAnchorElement::EventType HTMLAnchorElement::eventType(Event* event)
+HTMLAnchorElement::EventType HTMLAnchorElement::eventType( Event *event )
 {
-    if (!event->isMouseEvent())
+    if ( !event->isMouseEvent() )
+    {
         return NonMouseEvent;
-    return static_cast<MouseEvent*>(event)->shiftKey() ? MouseEventWithShiftKey : MouseEventWithoutShiftKey;
+    }
+
+    return static_cast<MouseEvent *>( event )->shiftKey() ? MouseEventWithShiftKey : MouseEventWithoutShiftKey;
 }
 
-bool HTMLAnchorElement::treatLinkAsLiveForEventType(EventType eventType) const
+bool HTMLAnchorElement::treatLinkAsLiveForEventType( EventType eventType ) const
 {
-    if (!rendererIsEditable())
+    if ( !rendererIsEditable() )
+    {
         return true;
+    }
 
-    Settings* settings = document()->settings();
-    if (!settings)
+    Settings *settings = document()->settings();
+
+    if ( !settings )
+    {
         return true;
+    }
 
-    switch (settings->editableLinkBehavior()) {
-    case EditableLinkDefaultBehavior:
-    case EditableLinkAlwaysLive:
-        return true;
+    switch ( settings->editableLinkBehavior() )
+    {
+        case EditableLinkDefaultBehavior:
+        case EditableLinkAlwaysLive:
+            return true;
 
-    case EditableLinkNeverLive:
-        return false;
+        case EditableLinkNeverLive:
+            return false;
 
-    // If the selection prior to clicking on this link resided in the same editable block as this link,
-    // and the shift key isn't pressed, we don't want to follow the link.
-    case EditableLinkLiveWhenNotFocused:
-        return eventType == MouseEventWithShiftKey || (eventType == MouseEventWithoutShiftKey && m_rootEditableElementForSelectionOnMouseDown != rootEditableElement());
+        // If the selection prior to clicking on this link resided in the same editable block as this link,
+        // and the shift key isn't pressed, we don't want to follow the link.
+        case EditableLinkLiveWhenNotFocused:
+            return eventType == MouseEventWithShiftKey || ( eventType == MouseEventWithoutShiftKey
+                    && m_rootEditableElementForSelectionOnMouseDown != rootEditableElement() );
 
-    case EditableLinkOnlyLiveWithShiftKey:
-        return eventType == MouseEventWithShiftKey;
+        case EditableLinkOnlyLiveWithShiftKey:
+            return eventType == MouseEventWithShiftKey;
     }
 
     ASSERT_NOT_REACHED();
     return false;
 }
 
-bool isEnterKeyKeydownEvent(Event* event)
+bool isEnterKeyKeydownEvent( Event *event )
 {
-    return event->type() == eventNames().keydownEvent && event->isKeyboardEvent() && static_cast<KeyboardEvent*>(event)->keyIdentifier() == "Enter";
+    return event->type() == eventNames().keydownEvent && event->isKeyboardEvent()
+           && static_cast<KeyboardEvent *>( event )->keyIdentifier() == "Enter";
 }
 
-bool isMiddleMouseButtonEvent(Event* event)
+bool isMiddleMouseButtonEvent( Event *event )
 {
-    return event->isMouseEvent() && static_cast<MouseEvent*>(event)->button() == MiddleButton;
+    return event->isMouseEvent() && static_cast<MouseEvent *>( event )->button() == MiddleButton;
 }
 
-bool isLinkClick(Event* event)
+bool isLinkClick( Event *event )
 {
-    return event->type() == eventNames().clickEvent && (!event->isMouseEvent() || static_cast<MouseEvent*>(event)->button() != RightButton);
+    return event->type() == eventNames().clickEvent && ( !event->isMouseEvent()
+            || static_cast<MouseEvent *>( event )->button() != RightButton );
 }
 
-void handleLinkClick(Event* event, Document* document, const String& url, const String& target, bool hideReferrer)
+void handleLinkClick( Event *event, Document *document, const String &url, const String &target, bool hideReferrer )
 {
     event->setDefaultHandled();
 
-    Frame* frame = document->frame();
-    if (!frame)
+    Frame *frame = document->frame();
+
+    if ( !frame )
+    {
         return;
-    frame->loader()->urlSelected(document->completeURL(url), target, event, false, false, hideReferrer ? NoReferrer : SendReferrer);
+    }
+
+    frame->loader()->urlSelected( document->completeURL( url ), target, event, false, false,
+                                  hideReferrer ? NoReferrer : SendReferrer );
 }
 
 }

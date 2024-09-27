@@ -31,21 +31,28 @@
 #include <wtf/Assertions.h>
 #include <wtf/UnusedParam.h>
 
-namespace WTF {
+namespace WTF
+{
 
-void* OSAllocator::reserveUncommitted(size_t bytes, Usage usage, bool writable, bool executable)
+void *OSAllocator::reserveUncommitted( size_t bytes, Usage usage, bool writable, bool executable )
 {
 #if OS(QNX)
     // Reserve memory with PROT_NONE and MAP_LAZY so it isn't committed now.
-    void* result = mmap(0, bytes, PROT_NONE, MAP_LAZY | MAP_PRIVATE | MAP_ANON, -1, 0);
-    if (result == MAP_FAILED)
-       CRASH();
+    void *result = mmap( 0, bytes, PROT_NONE, MAP_LAZY | MAP_PRIVATE | MAP_ANON, -1, 0 );
+
+    if ( result == MAP_FAILED )
+    {
+        CRASH();
+    }
+
 #else // OS(QNX)
 
-    void* result = reserveAndCommit(bytes, usage, writable, executable);
+    void *result = reserveAndCommit( bytes, usage, writable, executable );
 #if HAVE(MADV_FREE_REUSE)
+
     // To support the "reserve then commit" model, we have to initially decommit.
-    while (madvise(result, bytes, MADV_FREE_REUSABLE) == -1 && errno == EAGAIN) { }
+    while ( madvise( result, bytes, MADV_FREE_REUSABLE ) == -1 && errno == EAGAIN ) { }
+
 #endif
 
 #endif // OS(QNX)
@@ -53,14 +60,20 @@ void* OSAllocator::reserveUncommitted(size_t bytes, Usage usage, bool writable, 
     return result;
 }
 
-void* OSAllocator::reserveAndCommit(size_t bytes, Usage usage, bool writable, bool executable)
+void *OSAllocator::reserveAndCommit( size_t bytes, Usage usage, bool writable, bool executable )
 {
     // All POSIX reservations start out logically committed.
     int protection = PROT_READ;
-    if (writable)
+
+    if ( writable )
+    {
         protection |= PROT_WRITE;
-    if (executable)
+    }
+
+    if ( executable )
+    {
         protection |= PROT_EXEC;
+    }
 
     int flags = MAP_PRIVATE | MAP_ANON;
 
@@ -82,9 +95,11 @@ void* OSAllocator::reserveAndCommit(size_t bytes, Usage usage, bool writable, bo
     int fd = -1;
 #endif
 
-    void* result = 0;
+    void *result = 0;
 #if (OS(DARWIN) && CPU(X86_64))
-    if (executable) {
+
+    if ( executable )
+    {
         // Cook up an address to allocate at, using the following recipe:
         //   17 bits of zero, stay in userspace kids.
         //   26 bits of randomness for ASLR.
@@ -95,64 +110,90 @@ void* OSAllocator::reserveAndCommit(size_t bytes, Usage usage, bool writable, bo
         // 2^24, which should put up somewhere in the middle of userspace (in the address range
         // 0x200000000000 .. 0x5fffffffffff).
         intptr_t randomLocation = 0;
-        randomLocation = arc4random() & ((1 << 25) - 1);
-        randomLocation += (1 << 24);
+        randomLocation = arc4random() & ( ( 1 << 25 ) - 1 );
+        randomLocation += ( 1 << 24 );
         randomLocation <<= 21;
-        result = reinterpret_cast<void*>(randomLocation);
+        result = reinterpret_cast<void *>( randomLocation );
     }
+
 #endif
 
-    result = mmap(result, bytes, protection, flags, fd, 0);
-    if (result == MAP_FAILED)
+    result = mmap( result, bytes, protection, flags, fd, 0 );
+
+    if ( result == MAP_FAILED )
+    {
         CRASH();
+    }
+
     return result;
 }
 
-void OSAllocator::commit(void* address, size_t bytes, bool writable, bool executable)
+void OSAllocator::commit( void *address, size_t bytes, bool writable, bool executable )
 {
 #if OS(QNX)
     int protection = PROT_READ;
-    if (writable)
+
+    if ( writable )
+    {
         protection |= PROT_WRITE;
-    if (executable)
+    }
+
+    if ( executable )
+    {
         protection |= PROT_EXEC;
-    if (MAP_FAILED == mmap(address, bytes, protection, MAP_FIXED | MAP_PRIVATE | MAP_ANON, -1, 0))
+    }
+
+    if ( MAP_FAILED == mmap( address, bytes, protection, MAP_FIXED | MAP_PRIVATE | MAP_ANON, -1, 0 ) )
+    {
         CRASH();
+    }
+
 #elif HAVE(MADV_FREE_REUSE)
-    UNUSED_PARAM(writable);
-    UNUSED_PARAM(executable);
-    while (madvise(address, bytes, MADV_FREE_REUSE) == -1 && errno == EAGAIN) { }
+    UNUSED_PARAM( writable );
+    UNUSED_PARAM( executable );
+
+    while ( madvise( address, bytes, MADV_FREE_REUSE ) == -1 && errno == EAGAIN ) { }
+
 #else
     // Non-MADV_FREE_REUSE reservations automatically commit on demand.
-    UNUSED_PARAM(address);
-    UNUSED_PARAM(bytes);
-    UNUSED_PARAM(writable);
-    UNUSED_PARAM(executable);
+    UNUSED_PARAM( address );
+    UNUSED_PARAM( bytes );
+    UNUSED_PARAM( writable );
+    UNUSED_PARAM( executable );
 #endif
 }
 
-void OSAllocator::decommit(void* address, size_t bytes)
+void OSAllocator::decommit( void *address, size_t bytes )
 {
 #if OS(QNX)
     // Use PROT_NONE and MAP_LAZY to decommit the pages.
-    mmap(address, bytes, PROT_NONE, MAP_FIXED | MAP_LAZY | MAP_PRIVATE | MAP_ANON, -1, 0);
+    mmap( address, bytes, PROT_NONE, MAP_FIXED | MAP_LAZY | MAP_PRIVATE | MAP_ANON, -1, 0 );
 #elif HAVE(MADV_FREE_REUSE)
-    while (madvise(address, bytes, MADV_FREE_REUSABLE) == -1 && errno == EAGAIN) { }
+
+    while ( madvise( address, bytes, MADV_FREE_REUSABLE ) == -1 && errno == EAGAIN ) { }
+
 #elif HAVE(MADV_FREE)
-    while (madvise(address, bytes, MADV_FREE) == -1 && errno == EAGAIN) { }
+
+    while ( madvise( address, bytes, MADV_FREE ) == -1 && errno == EAGAIN ) { }
+
 #elif HAVE(MADV_DONTNEED)
-    while (madvise(address, bytes, MADV_DONTNEED) == -1 && errno == EAGAIN) { }
+
+    while ( madvise( address, bytes, MADV_DONTNEED ) == -1 && errno == EAGAIN ) { }
+
 #else
-    UNUSED_PARAM(address);
-    UNUSED_PARAM(bytes);
+    UNUSED_PARAM( address );
+    UNUSED_PARAM( bytes );
 #endif
 }
 
-void OSAllocator::releaseDecommitted(void* address, size_t bytes)
+void OSAllocator::releaseDecommitted( void *address, size_t bytes )
 {
-    int result = munmap(address, bytes);
-    if (result == -1)
+    int result = munmap( address, bytes );
+
+    if ( result == -1 )
+    {
         CRASH();
+    }
 }
 
 } // namespace WTF

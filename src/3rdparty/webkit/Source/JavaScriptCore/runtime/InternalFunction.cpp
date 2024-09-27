@@ -27,50 +27,57 @@
 #include "JSGlobalObject.h"
 #include "JSString.h"
 
-namespace JSC {
+namespace JSC
+{
 
 // Ensure the compiler generates a vtable for InternalFunction!
 void InternalFunction::vtableAnchor() {}
 
-ASSERT_CLASS_FITS_IN_CELL(InternalFunction);
+ASSERT_CLASS_FITS_IN_CELL( InternalFunction );
 
 const ClassInfo InternalFunction::s_info = { "Function", &JSObjectWithGlobalObject::s_info, 0, 0 };
 
-InternalFunction::InternalFunction(VPtrStealingHackType)
-    : JSObjectWithGlobalObject(VPtrStealingHack)
+InternalFunction::InternalFunction( VPtrStealingHackType )
+    : JSObjectWithGlobalObject( VPtrStealingHack )
 {
 }
 
-InternalFunction::InternalFunction(JSGlobalData* globalData, JSGlobalObject* globalObject, Structure* structure, const Identifier& name)
-    : JSObjectWithGlobalObject(globalObject, structure)
+InternalFunction::InternalFunction( JSGlobalData *globalData, JSGlobalObject *globalObject, Structure *structure,
+                                    const Identifier &name )
+    : JSObjectWithGlobalObject( globalObject, structure )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(*globalData, globalData->propertyNames->name, jsString(globalData, name.isNull() ? "" : name.ustring()), DontDelete | ReadOnly | DontEnum);
+    ASSERT( inherits( &s_info ) );
+    putDirect( *globalData, globalData->propertyNames->name, jsString( globalData, name.isNull() ? "" : name.ustring() ),
+               DontDelete | ReadOnly | DontEnum );
 }
 
-const UString& InternalFunction::name(ExecState* exec)
+const UString &InternalFunction::name( ExecState *exec )
 {
-    return asString(getDirect(exec->globalData(), exec->globalData().propertyNames->name))->tryGetValue();
+    return asString( getDirect( exec->globalData(), exec->globalData().propertyNames->name ) )->tryGetValue();
 }
 
-const UString InternalFunction::displayName(ExecState* exec)
+const UString InternalFunction::displayName( ExecState *exec )
 {
-    JSValue displayName = getDirect(exec->globalData(), exec->globalData().propertyNames->displayName);
-    
-    if (displayName && isJSString(&exec->globalData(), displayName))
-        return asString(displayName)->tryGetValue();
-    
+    JSValue displayName = getDirect( exec->globalData(), exec->globalData().propertyNames->displayName );
+
+    if ( displayName && isJSString( &exec->globalData(), displayName ) )
+    {
+        return asString( displayName )->tryGetValue();
+    }
+
     return UString();
 }
 
-const UString InternalFunction::calculatedDisplayName(ExecState* exec)
+const UString InternalFunction::calculatedDisplayName( ExecState *exec )
 {
-    const UString explicitName = displayName(exec);
-    
-    if (!explicitName.isEmpty())
+    const UString explicitName = displayName( exec );
+
+    if ( !explicitName.isEmpty() )
+    {
         return explicitName;
-    
-    return name(exec);
+    }
+
+    return name( exec );
 }
 
 } // namespace JSC

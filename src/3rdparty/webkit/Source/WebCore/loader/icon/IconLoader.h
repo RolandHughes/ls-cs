@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef IconLoader_h
@@ -31,35 +31,38 @@
 #include <wtf/Noncopyable.h>
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Frame;
 class KURL;
 class SharedBuffer;
 
-class IconLoader : private SubresourceLoaderClient {
-    WTF_MAKE_NONCOPYABLE(IconLoader); WTF_MAKE_FAST_ALLOCATED;
+class IconLoader : private SubresourceLoaderClient
+{
+    WTF_MAKE_NONCOPYABLE( IconLoader );
+    WTF_MAKE_FAST_ALLOCATED;
 public:
-    static PassOwnPtr<IconLoader> create(Frame*);
+    static PassOwnPtr<IconLoader> create( Frame * );
     ~IconLoader();
-    
+
     void startLoading();
     void stopLoading();
 
 private:
-    IconLoader(Frame*);
+    IconLoader( Frame * );
 
-    virtual void didReceiveResponse(SubresourceLoader*, const ResourceResponse&);
-    virtual void didReceiveData(SubresourceLoader*, const char*, int);
-    virtual void didFinishLoading(SubresourceLoader*, double);
-    virtual void didFail(SubresourceLoader*, const ResourceError&);
+    virtual void didReceiveResponse( SubresourceLoader *, const ResourceResponse & );
+    virtual void didReceiveData( SubresourceLoader *, const char *, int );
+    virtual void didFinishLoading( SubresourceLoader *, double );
+    virtual void didFail( SubresourceLoader *, const ResourceError & );
 
-    virtual void didReceiveAuthenticationChallenge(SubresourceLoader*, const AuthenticationChallenge&);
-    
-    void finishLoading(const KURL&, PassRefPtr<SharedBuffer> data);
+    virtual void didReceiveAuthenticationChallenge( SubresourceLoader *, const AuthenticationChallenge & );
+
+    void finishLoading( const KURL &, PassRefPtr<SharedBuffer> data );
     void clearLoadingState();
 
-    Frame* m_frame;
+    Frame *m_frame;
 
     RefPtr<SubresourceLoader> m_resourceLoader;
     bool m_loadIsInProgress;

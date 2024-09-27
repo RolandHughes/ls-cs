@@ -40,45 +40,46 @@ class QNetworkAccessManager;
 class QNetworkReply;
 class QDeclarativeInclude : public QObject
 {
-   DECL_CS_OBJECT(QDeclarativeInclude)
- public:
-   enum Status {
-      Ok = 0,
-      Loading = 1,
-      NetworkError = 2,
-      Exception = 3
-   };
+    DECL_CS_OBJECT( QDeclarativeInclude )
+public:
+    enum Status
+    {
+        Ok = 0,
+        Loading = 1,
+        NetworkError = 2,
+        Exception = 3
+    };
 
-   QDeclarativeInclude(const QUrl &, QDeclarativeEngine *, QScriptContext *ctxt);
-   ~QDeclarativeInclude();
+    QDeclarativeInclude( const QUrl &, QDeclarativeEngine *, QScriptContext *ctxt );
+    ~QDeclarativeInclude();
 
-   void setCallback(const QScriptValue &);
-   QScriptValue callback() const;
+    void setCallback( const QScriptValue & );
+    QScriptValue callback() const;
 
-   QScriptValue result() const;
+    QScriptValue result() const;
 
-   static QScriptValue resultValue(QScriptEngine *, Status status = Loading);
-   static void callback(QScriptEngine *, QScriptValue &callback, QScriptValue &status);
+    static QScriptValue resultValue( QScriptEngine *, Status status = Loading );
+    static void callback( QScriptEngine *, QScriptValue &callback, QScriptValue &status );
 
-   static QScriptValue include(QScriptContext *ctxt, QScriptEngine *engine);
-   static QScriptValue worker_include(QScriptContext *ctxt, QScriptEngine *engine);
+    static QScriptValue include( QScriptContext *ctxt, QScriptEngine *engine );
+    static QScriptValue worker_include( QScriptContext *ctxt, QScriptEngine *engine );
 
- public :
-   DECL_CS_SLOT_1(Public, void finished())
-   DECL_CS_SLOT_2(finished)
+public :
+    DECL_CS_SLOT_1( Public, void finished() )
+    DECL_CS_SLOT_2( finished )
 
- private:
-   QDeclarativeEngine *m_engine;
-   QScriptEngine *m_scriptEngine;
-   QNetworkAccessManager *m_network;
-   QDeclarativeGuard<QNetworkReply> m_reply;
+private:
+    QDeclarativeEngine *m_engine;
+    QScriptEngine *m_scriptEngine;
+    QNetworkAccessManager *m_network;
+    QDeclarativeGuard<QNetworkReply> m_reply;
 
-   QUrl m_url;
-   int m_redirectCount;
-   QScriptValue m_callback;
-   QScriptValue m_result;
-   QDeclarativeGuardedContextData m_context;
-   QScriptValue m_scope[2];
+    QUrl m_url;
+    int m_redirectCount;
+    QScriptValue m_callback;
+    QScriptValue m_result;
+    QDeclarativeGuardedContextData m_context;
+    QScriptValue m_scope[2];
 };
 
 QT_END_NAMESPACE

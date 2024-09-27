@@ -27,24 +27,25 @@
 #include "HTMLNames.h"
 #include <wtf/Assertions.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
-NameNodeList::NameNodeList(PassRefPtr<Node> rootNode, const String& name)
-    : DynamicNodeList(rootNode)
-    , m_nodeName(name)
+NameNodeList::NameNodeList( PassRefPtr<Node> rootNode, const String &name )
+    : DynamicNodeList( rootNode )
+    , m_nodeName( name )
 {
 }
 
 NameNodeList::~NameNodeList()
 {
-    m_rootNode->removeCachedNameNodeList(this, m_nodeName);
-} 
+    m_rootNode->removeCachedNameNodeList( this, m_nodeName );
+}
 
-bool NameNodeList::nodeMatches(Element* testNode) const
+bool NameNodeList::nodeMatches( Element *testNode ) const
 {
-    return testNode->getAttribute(nameAttr) == m_nodeName;
+    return testNode->getAttribute( nameAttr ) == m_nodeName;
 }
 
 } // namespace WebCore

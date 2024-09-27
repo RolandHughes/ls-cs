@@ -33,7 +33,8 @@
 
 #if ENABLE(INDEXED_DATABASE)
 
-namespace WebCore {
+namespace WebCore
+{
 
 class DOMStringList;
 class Frame;
@@ -46,7 +47,8 @@ class IDBTransactionBackendInterface;
 // This is implemented by IDBDatabaseBackendImpl and optionally others (in order to proxy
 // calls across process barriers). All calls to these classes should be non-blocking and
 // trigger work on a background thread if necessary.
-class IDBDatabaseBackendInterface : public ThreadSafeRefCounted<IDBDatabaseBackendInterface> {
+class IDBDatabaseBackendInterface : public ThreadSafeRefCounted<IDBDatabaseBackendInterface>
+{
 public:
     virtual ~IDBDatabaseBackendInterface() { }
 
@@ -54,13 +56,15 @@ public:
     virtual String version() const = 0;
     virtual PassRefPtr<DOMStringList> objectStoreNames() const = 0;
 
-    virtual PassRefPtr<IDBObjectStoreBackendInterface> createObjectStore(const String& name, const String& keyPath, bool autoIncrement, IDBTransactionBackendInterface*, ExceptionCode&) = 0;
-    virtual void deleteObjectStore(const String& name, IDBTransactionBackendInterface*, ExceptionCode&) = 0;
-    virtual void setVersion(const String& version, PassRefPtr<IDBCallbacks>, PassRefPtr<IDBDatabaseCallbacks>, ExceptionCode&) = 0;
-    virtual PassRefPtr<IDBTransactionBackendInterface> transaction(DOMStringList* storeNames, unsigned short mode, ExceptionCode&) = 0;
-    virtual void close(PassRefPtr<IDBDatabaseCallbacks>) = 0;
+    virtual PassRefPtr<IDBObjectStoreBackendInterface> createObjectStore( const String &name, const String &keyPath,
+            bool autoIncrement, IDBTransactionBackendInterface *, ExceptionCode & ) = 0;
+    virtual void deleteObjectStore( const String &name, IDBTransactionBackendInterface *, ExceptionCode & ) = 0;
+    virtual void setVersion( const String &version, PassRefPtr<IDBCallbacks>, PassRefPtr<IDBDatabaseCallbacks>, ExceptionCode & ) = 0;
+    virtual PassRefPtr<IDBTransactionBackendInterface> transaction( DOMStringList *storeNames, unsigned short mode,
+            ExceptionCode & ) = 0;
+    virtual void close( PassRefPtr<IDBDatabaseCallbacks> ) = 0;
 
-    virtual void open(PassRefPtr<IDBDatabaseCallbacks>) = 0;
+    virtual void open( PassRefPtr<IDBDatabaseCallbacks> ) = 0;
 };
 
 } // namespace WebCore

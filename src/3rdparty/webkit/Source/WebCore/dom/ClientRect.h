@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
 
@@ -31,30 +31,59 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class IntRect; 
+class IntRect;
 
-    class ClientRect : public RefCounted<ClientRect> {
-    public:
-        static PassRefPtr<ClientRect> create() { return adoptRef(new ClientRect); }
-        static PassRefPtr<ClientRect> create(const IntRect& rect) { return adoptRef(new ClientRect(rect)); }
-        static PassRefPtr<ClientRect> create(const FloatRect& rect) { return adoptRef(new ClientRect(rect)); }
+class ClientRect : public RefCounted<ClientRect>
+{
+public:
+    static PassRefPtr<ClientRect> create()
+    {
+        return adoptRef( new ClientRect );
+    }
+    static PassRefPtr<ClientRect> create( const IntRect &rect )
+    {
+        return adoptRef( new ClientRect( rect ) );
+    }
+    static PassRefPtr<ClientRect> create( const FloatRect &rect )
+    {
+        return adoptRef( new ClientRect( rect ) );
+    }
 
-        float top() const { return m_rect.y(); }
-        float right() const { return m_rect.maxX(); }
-        float bottom() const { return m_rect.maxY(); }
-        float left() const { return m_rect.x(); }
-        float width() const { return m_rect.width(); }
-        float height() const { return m_rect.height(); }
+    float top() const
+    {
+        return m_rect.y();
+    }
+    float right() const
+    {
+        return m_rect.maxX();
+    }
+    float bottom() const
+    {
+        return m_rect.maxY();
+    }
+    float left() const
+    {
+        return m_rect.x();
+    }
+    float width() const
+    {
+        return m_rect.width();
+    }
+    float height() const
+    {
+        return m_rect.height();
+    }
 
-    private:
-        ClientRect();
-        ClientRect(const IntRect&);
-        ClientRect(const FloatRect&);
+private:
+    ClientRect();
+    ClientRect( const IntRect & );
+    ClientRect( const FloatRect & );
 
-        FloatRect m_rect;
-    }; 
+    FloatRect m_rect;
+};
 
 } // namespace WebCore
 

@@ -35,23 +35,28 @@
 class QLocalSocket;
 #endif
 
-namespace WebKit {
+namespace WebKit
+{
 
-class ProcessLauncher : public ThreadSafeRefCounted<ProcessLauncher> {
+class ProcessLauncher : public ThreadSafeRefCounted<ProcessLauncher>
+{
 public:
-    class Client {
+    class Client
+    {
     public:
         virtual ~Client() { }
-        
-        virtual void didFinishLaunching(ProcessLauncher*, CoreIPC::Connection::Identifier) = 0;
+
+        virtual void didFinishLaunching( ProcessLauncher *, CoreIPC::Connection::Identifier ) = 0;
     };
-    
-    enum ProcessType {
+
+    enum ProcessType
+    {
         WebProcess,
         PluginProcess
     };
 
-    struct LaunchOptions {
+    struct LaunchOptions
+    {
         ProcessType processType;
 #if PLATFORM(MAC)
         static const cpu_type_t MatchCurrentArchitecture = 0;
@@ -60,30 +65,36 @@ public:
 #endif
     };
 
-    static PassRefPtr<ProcessLauncher> create(Client* client, const LaunchOptions& launchOptions)
+    static PassRefPtr<ProcessLauncher> create( Client *client, const LaunchOptions &launchOptions )
     {
-        return adoptRef(new ProcessLauncher(client, launchOptions));
+        return adoptRef( new ProcessLauncher( client, launchOptions ) );
     }
 
-    bool isLaunching() const { return m_isLaunching; }
-    PlatformProcessIdentifier processIdentifier() const { return m_processIdentifier; }
+    bool isLaunching() const
+    {
+        return m_isLaunching;
+    }
+    PlatformProcessIdentifier processIdentifier() const
+    {
+        return m_processIdentifier;
+    }
 
     void terminateProcess();
     void invalidate();
 
-    static bool getProcessTypeFromString(const char*, ProcessType&);
+    static bool getProcessTypeFromString( const char *, ProcessType & );
 
 private:
-    ProcessLauncher(Client*, const LaunchOptions& launchOptions);
+    ProcessLauncher( Client *, const LaunchOptions &launchOptions );
 
-    static const char* processTypeAsString(ProcessType);
+    static const char *processTypeAsString( ProcessType );
 
     void launchProcess();
-    void didFinishLaunchingProcess(PlatformProcessIdentifier, CoreIPC::Connection::Identifier);
+    void didFinishLaunchingProcess( PlatformProcessIdentifier, CoreIPC::Connection::Identifier );
 
     void platformInvalidate();
 
-    Client* m_client;
+    Client *m_client;
 
     const LaunchOptions m_launchOptions;
     bool m_isLaunching;

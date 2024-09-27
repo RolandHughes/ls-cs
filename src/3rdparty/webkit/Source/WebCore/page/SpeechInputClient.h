@@ -35,31 +35,34 @@
 
 #if ENABLE(INPUT_SPEECH)
 
-namespace WebCore {
+namespace WebCore
+{
 
 class IntRect;
 class SecurityOrigin;
 class SpeechInputListener;
 
 // Provides an interface for SpeechInput to call into the embedder.
-class SpeechInputClient {
+class SpeechInputClient
+{
 public:
     // This is the first call made by a listener, registering itself for future callbacks.
     // When the listener no longer needs speech input (for e.g. when it gets destroyed),
     // it should set a null listener to stop receiving callbacks.
     // The client does not take ownership of the pointer.
-    virtual void setListener(SpeechInputListener*) = 0;
+    virtual void setListener( SpeechInputListener * ) = 0;
 
     // Starts speech recognition and audio recording.
-    virtual bool startRecognition(int requestId, const IntRect& elementRect, const AtomicString& language, const String& grammar, SecurityOrigin*) = 0;
+    virtual bool startRecognition( int requestId, const IntRect &elementRect, const AtomicString &language, const String &grammar,
+                                   SecurityOrigin * ) = 0;
 
     // Stops audio recording and performs recognition with the audio recorded until now
     // (does not discard audio).
-    virtual void stopRecording(int requestId) = 0;
+    virtual void stopRecording( int requestId ) = 0;
 
     // Cancels an ongoing recognition and discards any audio recorded so far. No partial
     // recognition results are returned to the listener.
-    virtual void cancelRecognition(int requestId) = 0;
+    virtual void cancelRecognition( int requestId ) = 0;
 
 protected:
     virtual ~SpeechInputClient() { }

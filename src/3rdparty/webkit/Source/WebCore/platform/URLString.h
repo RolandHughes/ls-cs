@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef URLString_h
@@ -28,22 +28,27 @@
 
 #include <wtf/text/WTFString.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class KURL;
 
-class URLString {
+class URLString
+{
 public:
-    const String& string() const { return m_string; }
+    const String &string() const
+    {
+        return m_string;
+    }
 
 private:
     friend class KURL;
 
-    explicit URLString(const String& string)
-        : m_string(string)
+    explicit URLString( const String &string )
+        : m_string( string )
     {
     }
-    
+
     String m_string;
 };
 

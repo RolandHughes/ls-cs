@@ -32,9 +32,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSCompositionEvent);
+ASSERT_CLASS_FITS_IN_CELL( JSCompositionEvent );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -45,9 +46,9 @@ ASSERT_CLASS_FITS_IN_CELL(JSCompositionEvent);
 
 static const HashTableValue JSCompositionEventTableValues[3] =
 {
-    { "data", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsCompositionEventData), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsCompositionEventConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "data", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsCompositionEventData ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsCompositionEventConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -61,43 +62,51 @@ static JSC_CONST_HASHTABLE HashTable JSCompositionEventTable = { 4, 3, JSComposi
 
 static const HashTableValue JSCompositionEventConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSCompositionEventConstructorTable = { 1, 0, JSCompositionEventConstructorTableValues, 0 };
-class JSCompositionEventConstructor : public DOMConstructorObject {
+class JSCompositionEventConstructor : public DOMConstructorObject
+{
 public:
-    JSCompositionEventConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSCompositionEventConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSCompositionEventConstructor::s_info = { "CompositionEventConstructor", &DOMConstructorObject::s_info, &JSCompositionEventConstructorTable, 0 };
 
-JSCompositionEventConstructor::JSCompositionEventConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSCompositionEventConstructor::JSCompositionEventConstructor( ExecState *exec, Structure *structure,
+        JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSCompositionEventPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSCompositionEventPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSCompositionEventConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSCompositionEventConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSCompositionEventConstructor, JSDOMWrapper>(exec, &JSCompositionEventConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSCompositionEventConstructor, JSDOMWrapper>( exec, &JSCompositionEventConstructorTable, this,
+            propertyName, slot );
 }
 
-bool JSCompositionEventConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSCompositionEventConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSCompositionEventConstructor, JSDOMWrapper>(exec, &JSCompositionEventConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSCompositionEventConstructor, JSDOMWrapper>( exec, &JSCompositionEventConstructorTable, this,
+            propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -109,98 +118,124 @@ bool JSCompositionEventConstructor::getOwnPropertyDescriptor(ExecState* exec, co
 
 static const HashTableValue JSCompositionEventPrototypeTableValues[2] =
 {
-    { "initCompositionEvent", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsCompositionEventPrototypeFunctionInitCompositionEvent), (intptr_t)5 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "initCompositionEvent", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsCompositionEventPrototypeFunctionInitCompositionEvent ), ( intptr_t )5 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSCompositionEventPrototypeTable = { 2, 1, JSCompositionEventPrototypeTableValues, 0 };
 const ClassInfo JSCompositionEventPrototype::s_info = { "CompositionEventPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSCompositionEventPrototypeTable, 0 };
 
-JSObject* JSCompositionEventPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSCompositionEventPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSCompositionEvent>(exec, globalObject);
+    return getDOMPrototype<JSCompositionEvent>( exec, globalObject );
 }
 
-bool JSCompositionEventPrototype::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSCompositionEventPrototype::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticFunctionSlot<JSObject>(exec, &JSCompositionEventPrototypeTable, this, propertyName, slot);
+    return getStaticFunctionSlot<JSObject>( exec, &JSCompositionEventPrototypeTable, this, propertyName, slot );
 }
 
-bool JSCompositionEventPrototype::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSCompositionEventPrototype::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticFunctionDescriptor<JSObject>(exec, &JSCompositionEventPrototypeTable, this, propertyName, descriptor);
+    return getStaticFunctionDescriptor<JSObject>( exec, &JSCompositionEventPrototypeTable, this, propertyName, descriptor );
 }
 
 const ClassInfo JSCompositionEvent::s_info = { "CompositionEvent", &JSUIEvent::s_info, &JSCompositionEventTable, 0 };
 
-JSCompositionEvent::JSCompositionEvent(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<CompositionEvent> impl)
-    : JSUIEvent(structure, globalObject, impl)
+JSCompositionEvent::JSCompositionEvent( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<CompositionEvent> impl )
+    : JSUIEvent( structure, globalObject, impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSCompositionEvent::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSCompositionEvent::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSCompositionEventPrototype(exec->globalData(), globalObject, JSCompositionEventPrototype::createStructure(exec->globalData(), JSUIEventPrototype::self(exec, globalObject)));
+    return new ( exec ) JSCompositionEventPrototype( exec->globalData(), globalObject,
+            JSCompositionEventPrototype::createStructure( exec->globalData(), JSUIEventPrototype::self( exec, globalObject ) ) );
 }
 
-bool JSCompositionEvent::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSCompositionEvent::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSCompositionEvent, Base>(exec, &JSCompositionEventTable, this, propertyName, slot);
+    return getStaticValueSlot<JSCompositionEvent, Base>( exec, &JSCompositionEventTable, this, propertyName, slot );
 }
 
-bool JSCompositionEvent::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSCompositionEvent::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSCompositionEvent, Base>(exec, &JSCompositionEventTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSCompositionEvent, Base>( exec, &JSCompositionEventTable, this, propertyName, descriptor );
 }
 
-JSValue jsCompositionEventData(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsCompositionEventData( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSCompositionEvent* castedThis = static_cast<JSCompositionEvent*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    CompositionEvent* imp = static_cast<CompositionEvent*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->data());
+    JSCompositionEvent *castedThis = static_cast<JSCompositionEvent *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    CompositionEvent *imp = static_cast<CompositionEvent *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->data() );
     return result;
 }
 
 
-JSValue jsCompositionEventConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsCompositionEventConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSCompositionEvent* domObject = static_cast<JSCompositionEvent*>(asObject(slotBase));
-    return JSCompositionEvent::getConstructor(exec, domObject->globalObject());
+    JSCompositionEvent *domObject = static_cast<JSCompositionEvent *>( asObject( slotBase ) );
+    return JSCompositionEvent::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSCompositionEvent::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSCompositionEvent::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSCompositionEventConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSCompositionEventConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsCompositionEventPrototypeFunctionInitCompositionEvent(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsCompositionEventPrototypeFunctionInitCompositionEvent( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSCompositionEvent::s_info))
-        return throwVMTypeError(exec);
-    JSCompositionEvent* castedThis = static_cast<JSCompositionEvent*>(asObject(thisValue));
-    CompositionEvent* imp = static_cast<CompositionEvent*>(castedThis->impl());
-    const String& typeArg(ustringToString(exec->argument(0).toString(exec)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    bool canBubbleArg(exec->argument(1).toBoolean(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    bool cancelableArg(exec->argument(2).toBoolean(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    DOMWindow* viewArg(toDOMWindow(exec->argument(3)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    const String& dataArg(ustringToString(exec->argument(4).toString(exec)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
 
-    imp->initCompositionEvent(typeArg, canBubbleArg, cancelableArg, viewArg, dataArg);
-    return JSValue::encode(jsUndefined());
+    if ( !thisValue.inherits( &JSCompositionEvent::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSCompositionEvent *castedThis = static_cast<JSCompositionEvent *>( asObject( thisValue ) );
+    CompositionEvent *imp = static_cast<CompositionEvent *>( castedThis->impl() );
+    const String &typeArg( ustringToString( exec->argument( 0 ).toString( exec ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    bool canBubbleArg( exec->argument( 1 ).toBoolean( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    bool cancelableArg( exec->argument( 2 ).toBoolean( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    DOMWindow *viewArg( toDOMWindow( exec->argument( 3 ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    const String &dataArg( ustringToString( exec->argument( 4 ).toString( exec ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    imp->initCompositionEvent( typeArg, canBubbleArg, cancelableArg, viewArg, dataArg );
+    return JSValue::encode( jsUndefined() );
 }
 
 

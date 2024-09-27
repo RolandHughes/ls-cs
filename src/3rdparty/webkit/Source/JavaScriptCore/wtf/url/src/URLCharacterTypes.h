@@ -29,16 +29,28 @@
 #ifndef URLCharacterTypes_h
 #define URLCharacterTypes_h
 
-namespace WTF {
+namespace WTF
+{
 
-class URLCharacterTypes {
+class URLCharacterTypes
+{
 public:
-    static inline bool isQueryChar(unsigned char c) { return isCharOfType(c, QueryCharacter); }
-    static inline bool isIPv4Char(unsigned char c) { return isCharOfType(c, IPv4Character); }
-    static inline bool isHexChar(unsigned char c) { return isCharOfType(c, HexCharacter); }
+    static inline bool isQueryChar( unsigned char c )
+    {
+        return isCharOfType( c, QueryCharacter );
+    }
+    static inline bool isIPv4Char( unsigned char c )
+    {
+        return isCharOfType( c, IPv4Character );
+    }
+    static inline bool isHexChar( unsigned char c )
+    {
+        return isCharOfType( c, HexCharacter );
+    }
 
 private:
-    enum CharTypes {
+    enum CharTypes
+    {
         InvalidCharacter = 0,
         QueryCharacter = 1 << 0,
         UserInfoCharacter = 1 << 1,
@@ -50,9 +62,9 @@ private:
 
     static const unsigned char characterTypeTable[0x100];
 
-    static inline bool isCharOfType(unsigned char c, CharTypes type)
+    static inline bool isCharOfType( unsigned char c, CharTypes type )
     {
-        return !!(characterTypeTable[c] & type);
+        return !!( characterTypeTable[c] & type );
     }
 };
 

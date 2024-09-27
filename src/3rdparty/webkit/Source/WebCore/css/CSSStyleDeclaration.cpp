@@ -33,154 +33,220 @@
 
 using namespace WTF;
 
-namespace WebCore {
+namespace WebCore
+{
 
-CSSStyleDeclaration::CSSStyleDeclaration(CSSRule* parent)
-    : StyleBase(parent)
+CSSStyleDeclaration::CSSStyleDeclaration( CSSRule *parent )
+    : StyleBase( parent )
 {
 }
 
-PassRefPtr<CSSValue> CSSStyleDeclaration::getPropertyCSSValue(const String& propertyName)
+PassRefPtr<CSSValue> CSSStyleDeclaration::getPropertyCSSValue( const String &propertyName )
 {
-    int propID = cssPropertyID(propertyName);
-    if (!propID)
+    int propID = cssPropertyID( propertyName );
+
+    if ( !propID )
+    {
         return 0;
+    }
 
     // Short-cut, not involving any change to the refcount.
-    if (!isMutableStyleDeclaration())
-        return getPropertyCSSValue(propID);
+    if ( !isMutableStyleDeclaration() )
+    {
+        return getPropertyCSSValue( propID );
+    }
 
     // Slow path.
-    RefPtr<CSSValue> value = getPropertyCSSValue(propID);
-    if (!value || !value->isMutableValue())
-        return value.release();
+    RefPtr<CSSValue> value = getPropertyCSSValue( propID );
 
-    Node* node = static_cast<CSSMutableStyleDeclaration*>(this)->node();
-    if (!node || !node->isStyledElement())
-        return value.release();
-
-    Node* associatedNode = static_cast<CSSMutableValue*>(value.get())->node();
-    if (associatedNode) {
-        ASSERT(associatedNode == node);
+    if ( !value || !value->isMutableValue() )
+    {
         return value.release();
     }
 
-    static_cast<CSSMutableValue*>(value.get())->setNode(node);
+    Node *node = static_cast<CSSMutableStyleDeclaration *>( this )->node();
+
+    if ( !node || !node->isStyledElement() )
+    {
+        return value.release();
+    }
+
+    Node *associatedNode = static_cast<CSSMutableValue *>( value.get() )->node();
+
+    if ( associatedNode )
+    {
+        ASSERT( associatedNode == node );
+        return value.release();
+    }
+
+    static_cast<CSSMutableValue *>( value.get() )->setNode( node );
+
     return value.release();
 }
 
-String CSSStyleDeclaration::getPropertyValue(const String &propertyName)
+String CSSStyleDeclaration::getPropertyValue( const String &propertyName )
 {
-    int propID = cssPropertyID(propertyName);
-    if (!propID)
+    int propID = cssPropertyID( propertyName );
+
+    if ( !propID )
+    {
         return String();
-    return getPropertyValue(propID);
+    }
+
+    return getPropertyValue( propID );
 }
 
-String CSSStyleDeclaration::getPropertyPriority(const String& propertyName)
+String CSSStyleDeclaration::getPropertyPriority( const String &propertyName )
 {
-    int propID = cssPropertyID(propertyName);
-    if (!propID)
+    int propID = cssPropertyID( propertyName );
+
+    if ( !propID )
+    {
         return String();
-    return getPropertyPriority(propID) ? "important" : "";
+    }
+
+    return getPropertyPriority( propID ) ? "important" : "";
 }
 
-String CSSStyleDeclaration::getPropertyShorthand(const String& propertyName)
+String CSSStyleDeclaration::getPropertyShorthand( const String &propertyName )
 {
-    int propID = cssPropertyID(propertyName);
-    if (!propID)
+    int propID = cssPropertyID( propertyName );
+
+    if ( !propID )
+    {
         return String();
-    int shorthandID = getPropertyShorthand(propID);
-    if (!shorthandID)
+    }
+
+    int shorthandID = getPropertyShorthand( propID );
+
+    if ( !shorthandID )
+    {
         return String();
-    return getPropertyName(static_cast<CSSPropertyID>(shorthandID));
+    }
+
+    return getPropertyName( static_cast<CSSPropertyID>( shorthandID ) );
 }
 
-bool CSSStyleDeclaration::isPropertyImplicit(const String& propertyName)
+bool CSSStyleDeclaration::isPropertyImplicit( const String &propertyName )
 {
-    int propID = cssPropertyID(propertyName);
-    if (!propID)
+    int propID = cssPropertyID( propertyName );
+
+    if ( !propID )
+    {
         return false;
-    return isPropertyImplicit(propID);
+    }
+
+    return isPropertyImplicit( propID );
 }
 
-void CSSStyleDeclaration::setProperty(const String& propertyName, const String& value, ExceptionCode& ec)
+void CSSStyleDeclaration::setProperty( const String &propertyName, const String &value, ExceptionCode &ec )
 {
-    size_t important = value.find("!important", 0, false);
-    int propertyID = cssPropertyID(propertyName);
-    if (!propertyID)
+    size_t important = value.find( "!important", 0, false );
+    int propertyID = cssPropertyID( propertyName );
+
+    if ( !propertyID )
+    {
         return;
-    if (important == notFound)
-        setProperty(propertyID, value, false, ec);
+    }
+
+    if ( important == notFound )
+    {
+        setProperty( propertyID, value, false, ec );
+    }
     else
-        setProperty(propertyID, value.left(important - 1), true, ec);
+    {
+        setProperty( propertyID, value.left( important - 1 ), true, ec );
+    }
 }
 
-void CSSStyleDeclaration::setProperty(const String& propertyName, const String& value, const String& priority, ExceptionCode& ec)
+void CSSStyleDeclaration::setProperty( const String &propertyName, const String &value, const String &priority,
+                                       ExceptionCode &ec )
 {
-    int propID = cssPropertyID(propertyName);
-    if (!propID) {
+    int propID = cssPropertyID( propertyName );
+
+    if ( !propID )
+    {
         // FIXME: Should we raise an exception here?
         return;
     }
-    bool important = priority.find("important", 0, false) != notFound;
-    setProperty(propID, value, important, ec);
+
+    bool important = priority.find( "important", 0, false ) != notFound;
+    setProperty( propID, value, important, ec );
 }
 
-String CSSStyleDeclaration::removeProperty(const String& propertyName, ExceptionCode& ec)
+String CSSStyleDeclaration::removeProperty( const String &propertyName, ExceptionCode &ec )
 {
-    int propID = cssPropertyID(propertyName);
-    if (!propID)
+    int propID = cssPropertyID( propertyName );
+
+    if ( !propID )
+    {
         return String();
-    return removeProperty(propID, ec);
+    }
+
+    return removeProperty( propID, ec );
 }
 
-bool CSSStyleDeclaration::isPropertyName(const String& propertyName)
+bool CSSStyleDeclaration::isPropertyName( const String &propertyName )
 {
-    return cssPropertyID(propertyName);
+    return cssPropertyID( propertyName );
 }
 
-CSSRule* CSSStyleDeclaration::parentRule() const
+CSSRule *CSSStyleDeclaration::parentRule() const
 {
-    return (parent() && parent()->isRule()) ? static_cast<CSSRule*>(parent()) : 0;
+    return ( parent() && parent()->isRule() ) ? static_cast<CSSRule *>( parent() ) : 0;
 }
 
-bool CSSStyleDeclaration::cssPropertyMatches(const CSSProperty* property) const
+bool CSSStyleDeclaration::cssPropertyMatches( const CSSProperty *property ) const
 {
-    RefPtr<CSSValue> value = getPropertyCSSValue(property->id());
+    RefPtr<CSSValue> value = getPropertyCSSValue( property->id() );
     return value && value->cssText() == property->value()->cssText();
 }
 
-void CSSStyleDeclaration::diff(CSSMutableStyleDeclaration* style) const
+void CSSStyleDeclaration::diff( CSSMutableStyleDeclaration *style ) const
 {
-    if (!style)
+    if ( !style )
+    {
         return;
+    }
 
     Vector<int> propertiesToRemove;
     {
         CSSMutableStyleDeclaration::const_iterator end = style->end();
-        for (CSSMutableStyleDeclaration::const_iterator it = style->begin(); it != end; ++it) {
-            const CSSProperty& property = *it;
-            if (cssPropertyMatches(&property))
-                propertiesToRemove.append(property.id());
+
+        for ( CSSMutableStyleDeclaration::const_iterator it = style->begin(); it != end; ++it )
+        {
+            const CSSProperty &property = *it;
+
+            if ( cssPropertyMatches( &property ) )
+            {
+                propertiesToRemove.append( property.id() );
+            }
         }
     }
 
     // FIXME: This should use mass removal.
-    for (unsigned i = 0; i < propertiesToRemove.size(); i++)
-        style->removeProperty(propertiesToRemove[i]);
+    for ( unsigned i = 0; i < propertiesToRemove.size(); i++ )
+    {
+        style->removeProperty( propertiesToRemove[i] );
+    }
 }
 
-PassRefPtr<CSSMutableStyleDeclaration> CSSStyleDeclaration::copyPropertiesInSet(const int* set, unsigned length) const
+PassRefPtr<CSSMutableStyleDeclaration> CSSStyleDeclaration::copyPropertiesInSet( const int *set, unsigned length ) const
 {
     Vector<CSSProperty> list;
-    list.reserveInitialCapacity(length);
-    for (unsigned i = 0; i < length; i++) {
-        RefPtr<CSSValue> value = getPropertyCSSValue(set[i]);
-        if (value)
-            list.append(CSSProperty(set[i], value.release(), false));
+    list.reserveInitialCapacity( length );
+
+    for ( unsigned i = 0; i < length; i++ )
+    {
+        RefPtr<CSSValue> value = getPropertyCSSValue( set[i] );
+
+        if ( value )
+        {
+            list.append( CSSProperty( set[i], value.release(), false ) );
+        }
     }
-    return CSSMutableStyleDeclaration::create(list);
+
+    return CSSMutableStyleDeclaration::create( list );
 }
 
 } // namespace WebCore

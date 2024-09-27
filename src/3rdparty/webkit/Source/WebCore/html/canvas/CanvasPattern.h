@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef CanvasPattern_h
@@ -31,31 +31,39 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class Image;
+class Image;
 
-    typedef int ExceptionCode;
+typedef int ExceptionCode;
 
-    class CanvasPattern : public RefCounted<CanvasPattern> {
-    public:
-        static void parseRepetitionType(const String&, bool& repeatX, bool& repeatY, ExceptionCode&);
+class CanvasPattern : public RefCounted<CanvasPattern>
+{
+public:
+    static void parseRepetitionType( const String &, bool &repeatX, bool &repeatY, ExceptionCode & );
 
-        static PassRefPtr<CanvasPattern> create(PassRefPtr<Image> image, bool repeatX, bool repeatY, bool originClean)
-        {
-            return adoptRef(new CanvasPattern(image, repeatX, repeatY, originClean));
-        }
+    static PassRefPtr<CanvasPattern> create( PassRefPtr<Image> image, bool repeatX, bool repeatY, bool originClean )
+    {
+        return adoptRef( new CanvasPattern( image, repeatX, repeatY, originClean ) );
+    }
 
-        Pattern* pattern() const { return m_pattern.get(); }
+    Pattern *pattern() const
+    {
+        return m_pattern.get();
+    }
 
-        bool originClean() const { return m_originClean; }
+    bool originClean() const
+    {
+        return m_originClean;
+    }
 
-    private:
-        CanvasPattern(PassRefPtr<Image>, bool repeatX, bool repeatY, bool originClean);
+private:
+    CanvasPattern( PassRefPtr<Image>, bool repeatX, bool repeatY, bool originClean );
 
-        RefPtr<Pattern> m_pattern;
-        bool m_originClean;
-    };
+    RefPtr<Pattern> m_pattern;
+    bool m_originClean;
+};
 
 } // namespace WebCore
 

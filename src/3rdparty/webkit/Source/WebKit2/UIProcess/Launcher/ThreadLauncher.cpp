@@ -28,10 +28,11 @@
 
 #include "RunLoop.h"
 
-namespace WebKit {
+namespace WebKit
+{
 
-ThreadLauncher::ThreadLauncher(Client* client)
-    : m_client(client)
+ThreadLauncher::ThreadLauncher( Client *client )
+    : m_client( client )
 {
     launchThread();
 }
@@ -43,19 +44,20 @@ void ThreadLauncher::launchThread()
     CoreIPC::Connection::Identifier connectionIdentifier = createWebThread();
 
     // We've finished launching the thread, message back to the main run loop.
-    RunLoop::main()->scheduleWork(WorkItem::create(this, &ThreadLauncher::didFinishLaunchingThread, connectionIdentifier));
+    RunLoop::main()->scheduleWork( WorkItem::create( this, &ThreadLauncher::didFinishLaunchingThread, connectionIdentifier ) );
 }
 
-void ThreadLauncher::didFinishLaunchingThread(CoreIPC::Connection::Identifier identifier)
+void ThreadLauncher::didFinishLaunchingThread( CoreIPC::Connection::Identifier identifier )
 {
     m_isLaunching = false;
-    
-    if (!m_client) {
+
+    if ( !m_client )
+    {
         // FIXME: Dispose of the connection identifier.
         return;
     }
 
-    m_client->didFinishLaunching(this, identifier);
+    m_client->didFinishLaunching( this, identifier );
 }
 
 void ThreadLauncher::invalidate()

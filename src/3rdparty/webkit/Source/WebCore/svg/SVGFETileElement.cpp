@@ -29,69 +29,81 @@
 #include "SVGNames.h"
 #include "SVGRenderStyle.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 // Animated property definitions
-DEFINE_ANIMATED_STRING(SVGFETileElement, SVGNames::inAttr, In1, in1)
+DEFINE_ANIMATED_STRING( SVGFETileElement, SVGNames::inAttr, In1, in1 )
 
-inline SVGFETileElement::SVGFETileElement(const QualifiedName& tagName, Document* document)
-    : SVGFilterPrimitiveStandardAttributes(tagName, document)
+inline SVGFETileElement::SVGFETileElement( const QualifiedName &tagName, Document *document )
+    : SVGFilterPrimitiveStandardAttributes( tagName, document )
 {
 }
 
-PassRefPtr<SVGFETileElement> SVGFETileElement::create(const QualifiedName& tagName, Document* document)
+PassRefPtr<SVGFETileElement> SVGFETileElement::create( const QualifiedName &tagName, Document *document )
 {
-    return adoptRef(new SVGFETileElement(tagName, document));
+    return adoptRef( new SVGFETileElement( tagName, document ) );
 }
 
-void SVGFETileElement::parseMappedAttribute(Attribute* attr)
+void SVGFETileElement::parseMappedAttribute( Attribute *attr )
 {
-    const String& value = attr->value();
-    if (attr->name() == SVGNames::inAttr)
-        setIn1BaseValue(value);
+    const String &value = attr->value();
+
+    if ( attr->name() == SVGNames::inAttr )
+    {
+        setIn1BaseValue( value );
+    }
     else
-        SVGFilterPrimitiveStandardAttributes::parseMappedAttribute(attr);
+    {
+        SVGFilterPrimitiveStandardAttributes::parseMappedAttribute( attr );
+    }
 }
 
-void SVGFETileElement::svgAttributeChanged(const QualifiedName& attrName)
+void SVGFETileElement::svgAttributeChanged( const QualifiedName &attrName )
 {
-    SVGFilterPrimitiveStandardAttributes::svgAttributeChanged(attrName);
-    
-    if (attrName == SVGNames::inAttr)
+    SVGFilterPrimitiveStandardAttributes::svgAttributeChanged( attrName );
+
+    if ( attrName == SVGNames::inAttr )
+    {
         invalidate();
+    }
 }
 
-void SVGFETileElement::synchronizeProperty(const QualifiedName& attrName)
+void SVGFETileElement::synchronizeProperty( const QualifiedName &attrName )
 {
-    SVGFilterPrimitiveStandardAttributes::synchronizeProperty(attrName);
+    SVGFilterPrimitiveStandardAttributes::synchronizeProperty( attrName );
 
-    if (attrName == anyQName() || attrName == SVGNames::inAttr)
+    if ( attrName == anyQName() || attrName == SVGNames::inAttr )
+    {
         synchronizeIn1();
+    }
 }
 
-AttributeToPropertyTypeMap& SVGFETileElement::attributeToPropertyTypeMap()
+AttributeToPropertyTypeMap &SVGFETileElement::attributeToPropertyTypeMap()
 {
-    DEFINE_STATIC_LOCAL(AttributeToPropertyTypeMap, s_attributeToPropertyTypeMap, ());
+    DEFINE_STATIC_LOCAL( AttributeToPropertyTypeMap, s_attributeToPropertyTypeMap, () );
     return s_attributeToPropertyTypeMap;
 }
 
 void SVGFETileElement::fillAttributeToPropertyTypeMap()
 {
-    AttributeToPropertyTypeMap& attributeToPropertyTypeMap = this->attributeToPropertyTypeMap();
+    AttributeToPropertyTypeMap &attributeToPropertyTypeMap = this->attributeToPropertyTypeMap();
 
-    SVGFilterPrimitiveStandardAttributes::fillPassedAttributeToPropertyTypeMap(attributeToPropertyTypeMap);
-    attributeToPropertyTypeMap.set(SVGNames::inAttr, AnimatedString);
+    SVGFilterPrimitiveStandardAttributes::fillPassedAttributeToPropertyTypeMap( attributeToPropertyTypeMap );
+    attributeToPropertyTypeMap.set( SVGNames::inAttr, AnimatedString );
 }
 
-PassRefPtr<FilterEffect> SVGFETileElement::build(SVGFilterBuilder* filterBuilder, Filter* filter)
+PassRefPtr<FilterEffect> SVGFETileElement::build( SVGFilterBuilder *filterBuilder, Filter *filter )
 {
-    FilterEffect* input1 = filterBuilder->getEffectById(in1());
+    FilterEffect *input1 = filterBuilder->getEffectById( in1() );
 
-    if (!input1)
+    if ( !input1 )
+    {
         return 0;
+    }
 
-    RefPtr<FilterEffect> effect = FETile::create(filter);
-    effect->inputEffects().append(input1);
+    RefPtr<FilterEffect> effect = FETile::create( filter );
+    effect->inputEffects().append( input1 );
     return effect.release();
 }
 

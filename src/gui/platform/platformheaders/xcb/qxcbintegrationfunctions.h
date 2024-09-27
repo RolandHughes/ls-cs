@@ -29,11 +29,15 @@
 class QXcbIntegrationFunctions
 {
 public:
-    typedef bool (*XEmbedSystemTrayVisualHasAlphaChannel)();
-    static const QByteArray xEmbedSystemTrayVisualHasAlphaChannelIdentifier() { return QByteArray("XcbXEmbedSystemTrayVisualHasAlphaChannel"); }
+    typedef bool ( *XEmbedSystemTrayVisualHasAlphaChannel )();
+    static const QByteArray xEmbedSystemTrayVisualHasAlphaChannelIdentifier()
+    {
+        return QByteArray( "XcbXEmbedSystemTrayVisualHasAlphaChannel" );
+    }
     static bool xEmbedSystemTrayVisualHasAlphaChannel()
     {
-        return QPlatformHeaderHelper::callPlatformFunction<bool, XEmbedSystemTrayVisualHasAlphaChannel>(xEmbedSystemTrayVisualHasAlphaChannelIdentifier());
+        return QPlatformHeaderHelper::callPlatformFunction<bool, XEmbedSystemTrayVisualHasAlphaChannel>
+               ( xEmbedSystemTrayVisualHasAlphaChannelIdentifier() );
     }
 };
 

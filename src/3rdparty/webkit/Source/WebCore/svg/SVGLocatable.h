@@ -26,39 +26,45 @@
 #include "AffineTransform.h"
 #include "ExceptionCode.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class FloatRect;
 class SVGElement;
 
-class SVGLocatable {
+class SVGLocatable
+{
 public:
     virtual ~SVGLocatable() { }
 
     // 'SVGLocatable' functions
-    virtual SVGElement* nearestViewportElement() const = 0;
-    virtual SVGElement* farthestViewportElement() const = 0;
+    virtual SVGElement *nearestViewportElement() const = 0;
+    virtual SVGElement *farthestViewportElement() const = 0;
 
     enum StyleUpdateStrategy { AllowStyleUpdate, DisallowStyleUpdate };
-    
-    virtual FloatRect getBBox(StyleUpdateStrategy) const = 0;
-    virtual AffineTransform getCTM(StyleUpdateStrategy) const = 0;
-    virtual AffineTransform getScreenCTM(StyleUpdateStrategy) const = 0;
-    AffineTransform getTransformToElement(SVGElement*, ExceptionCode&, StyleUpdateStrategy = AllowStyleUpdate) const;
 
-    static SVGElement* nearestViewportElement(const SVGElement*);
-    static SVGElement* farthestViewportElement(const SVGElement*);
+    virtual FloatRect getBBox( StyleUpdateStrategy ) const = 0;
+    virtual AffineTransform getCTM( StyleUpdateStrategy ) const = 0;
+    virtual AffineTransform getScreenCTM( StyleUpdateStrategy ) const = 0;
+    AffineTransform getTransformToElement( SVGElement *, ExceptionCode &, StyleUpdateStrategy = AllowStyleUpdate ) const;
 
-    enum CTMScope {
+    static SVGElement *nearestViewportElement( const SVGElement * );
+    static SVGElement *farthestViewportElement( const SVGElement * );
+
+    enum CTMScope
+    {
         NearestViewportScope, // Used for getCTM()
         ScreenScope // Used for getScreenCTM()
     };
 
 protected:
-    virtual AffineTransform localCoordinateSpaceTransform(SVGLocatable::CTMScope) const { return AffineTransform(); }
+    virtual AffineTransform localCoordinateSpaceTransform( SVGLocatable::CTMScope ) const
+    {
+        return AffineTransform();
+    }
 
-    static FloatRect getBBox(const SVGElement*, StyleUpdateStrategy);
-    static AffineTransform computeCTM(const SVGElement*, CTMScope, StyleUpdateStrategy);
+    static FloatRect getBBox( const SVGElement *, StyleUpdateStrategy );
+    static AffineTransform computeCTM( const SVGElement *, CTMScope, StyleUpdateStrategy );
 };
 
 } // namespace WebCore

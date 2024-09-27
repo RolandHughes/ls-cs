@@ -35,14 +35,16 @@
 
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Metadata;
 
-class MetadataCallback : public RefCounted<MetadataCallback> {
+class MetadataCallback : public RefCounted<MetadataCallback>
+{
 public:
     virtual ~MetadataCallback() { }
-    virtual bool handleEvent(Metadata*) = 0;
+    virtual bool handleEvent( Metadata * ) = 0;
 };
 
 } // namespace

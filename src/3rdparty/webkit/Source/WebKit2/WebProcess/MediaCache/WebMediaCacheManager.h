@@ -29,30 +29,33 @@
 #include <wtf/Noncopyable.h>
 #include <wtf/text/WTFString.h>
 
-namespace CoreIPC {
-    class ArgumentDecoder;
-    class Connection;
-    class MessageID;
+namespace CoreIPC
+{
+class ArgumentDecoder;
+class Connection;
+class MessageID;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
-class WebMediaCacheManager {
-    WTF_MAKE_NONCOPYABLE(WebMediaCacheManager);
+class WebMediaCacheManager
+{
+    WTF_MAKE_NONCOPYABLE( WebMediaCacheManager );
 
 public:
-    static WebMediaCacheManager& shared();
+    static WebMediaCacheManager &shared();
 
-    void didReceiveMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*);
+    void didReceiveMessage( CoreIPC::Connection *, CoreIPC::MessageID, CoreIPC::ArgumentDecoder * );
 
 private:
     WebMediaCacheManager();
-    
-    void getHostnamesWithMediaCache(uint64_t callbackID);
-    void clearCacheForHostname(const String&);
+
+    void getHostnamesWithMediaCache( uint64_t callbackID );
+    void clearCacheForHostname( const String & );
     void clearCacheForAllHostnames();
 
-    void didReceiveWebMediaCacheManagerMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*);
+    void didReceiveWebMediaCacheManagerMessage( CoreIPC::Connection *, CoreIPC::MessageID, CoreIPC::ArgumentDecoder * );
 };
 
 } // namespace WebKit

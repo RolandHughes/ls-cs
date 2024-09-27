@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef CSSSelectorList_h
@@ -28,22 +28,31 @@
 
 #include "CSSSelector.h"
 
-namespace WebCore {
-    
+namespace WebCore
+{
+
 class CSSParserSelector;
-    
-class CSSSelectorList {
-    WTF_MAKE_NONCOPYABLE(CSSSelectorList); WTF_MAKE_FAST_ALLOCATED;
+
+class CSSSelectorList
+{
+    WTF_MAKE_NONCOPYABLE( CSSSelectorList );
+    WTF_MAKE_FAST_ALLOCATED;
 public:
-    CSSSelectorList() : m_selectorArray(0) { }
+    CSSSelectorList() : m_selectorArray( 0 ) { }
     ~CSSSelectorList();
 
-    void adopt(CSSSelectorList& list);
-    void adoptSelectorVector(Vector<OwnPtr<CSSParserSelector> >& selectorVector);
-    
-    CSSSelector* first() const { return m_selectorArray ? m_selectorArray : 0; }
-    static CSSSelector* next(CSSSelector*);
-    bool hasOneSelector() const { return m_selectorArray && !next(m_selectorArray); }
+    void adopt( CSSSelectorList &list );
+    void adoptSelectorVector( Vector<OwnPtr<CSSParserSelector> > &selectorVector );
+
+    CSSSelector *first() const
+    {
+        return m_selectorArray ? m_selectorArray : 0;
+    }
+    static CSSSelector *next( CSSSelector * );
+    bool hasOneSelector() const
+    {
+        return m_selectorArray && !next( m_selectorArray );
+    }
 
     bool selectorsNeedNamespaceResolution();
     bool hasUnknownPseudoElements() const;
@@ -53,14 +62,17 @@ private:
 
     // End of a multipart selector is indicated by m_isLastInTagHistory bit in the last item.
     // End of the array is indicated by m_isLastInSelectorList bit in the last item.
-    CSSSelector* m_selectorArray;
+    CSSSelector *m_selectorArray;
 };
 
-inline CSSSelector* CSSSelectorList::next(CSSSelector* current)
+inline CSSSelector *CSSSelectorList::next( CSSSelector *current )
 {
     // Skip subparts of compound selectors.
-    while (!current->isLastInTagHistory())
+    while ( !current->isLastInTagHistory() )
+    {
         current++;
+    }
+
     return current->isLastInSelectorList() ? 0 : current + 1;
 }
 

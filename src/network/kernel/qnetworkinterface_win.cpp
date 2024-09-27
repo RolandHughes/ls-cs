@@ -44,230 +44,278 @@
 #define NETIO_STATUS DWORD
 #endif
 
-static QHostAddress addressFromSockaddr(sockaddr *sa)
+static QHostAddress addressFromSockaddr( sockaddr *sa )
 {
-   QHostAddress address;
-   if (! sa) {
-      return address;
-   }
+    QHostAddress address;
 
-   if (sa->sa_family == AF_INET) {
-      address.setAddress(htonl(((sockaddr_in *)sa)->sin_addr.s_addr));
+    if ( ! sa )
+    {
+        return address;
+    }
 
-   } else if (sa->sa_family == AF_INET6) {
-      address.setAddress(((sockaddr_in6 *)sa)->sin6_addr.s6_addr);
-      int scope = ((sockaddr_in6 *)sa)->sin6_scope_id;
+    if ( sa->sa_family == AF_INET )
+    {
+        address.setAddress( htonl( ( ( sockaddr_in * )sa )->sin_addr.s_addr ) );
 
-      if (scope) {
-         address.setScopeId(QString::number(scope));
-      }
+    }
+    else if ( sa->sa_family == AF_INET6 )
+    {
+        address.setAddress( ( ( sockaddr_in6 * )sa )->sin6_addr.s6_addr );
+        int scope = ( ( sockaddr_in6 * )sa )->sin6_scope_id;
 
-   } else {
-      qWarning("QHostAddress::addressFromSockaddr() Unknown socket family %d", sa->sa_family);
-   }
+        if ( scope )
+        {
+            address.setScopeId( QString::number( scope ) );
+        }
 
-   return address;
+    }
+    else
+    {
+        qWarning( "QHostAddress::addressFromSockaddr() Unknown socket family %d", sa->sa_family );
+    }
+
+    return address;
 }
 
 static QHash<QHostAddress, QHostAddress> ipv4Netmasks()
 {
-   //Retrieve all the IPV4 addresses & netmasks
-   IP_ADAPTER_INFO staticBuf[2]; // 2 is arbitrary
-   PIP_ADAPTER_INFO pAdapter = staticBuf;
-   ULONG bufSize = sizeof staticBuf;
-   QHash<QHostAddress, QHostAddress> ipv4netmasks;
+    //Retrieve all the IPV4 addresses & netmasks
+    IP_ADAPTER_INFO staticBuf[2]; // 2 is arbitrary
+    PIP_ADAPTER_INFO pAdapter = staticBuf;
+    ULONG bufSize = sizeof staticBuf;
+    QHash<QHostAddress, QHostAddress> ipv4netmasks;
 
-   DWORD retval = GetAdaptersInfo(pAdapter, &bufSize);
+    DWORD retval = GetAdaptersInfo( pAdapter, &bufSize );
 
-   if (retval == ERROR_BUFFER_OVERFLOW) {
-      // need more memory
-      pAdapter = (IP_ADAPTER_INFO *)malloc(bufSize);
+    if ( retval == ERROR_BUFFER_OVERFLOW )
+    {
+        // need more memory
+        pAdapter = ( IP_ADAPTER_INFO * )malloc( bufSize );
 
-      if (! pAdapter) {
-         return ipv4netmasks;
-      }
+        if ( ! pAdapter )
+        {
+            return ipv4netmasks;
+        }
 
-      // try again
-      if (GetAdaptersInfo(pAdapter, &bufSize) != ERROR_SUCCESS) {
-         free(pAdapter);
-         return ipv4netmasks;
-      }
+        // try again
+        if ( GetAdaptersInfo( pAdapter, &bufSize ) != ERROR_SUCCESS )
+        {
+            free( pAdapter );
+            return ipv4netmasks;
+        }
 
-   } else if (retval != ERROR_SUCCESS) {
-      // error
-      return ipv4netmasks;
-   }
+    }
+    else if ( retval != ERROR_SUCCESS )
+    {
+        // error
+        return ipv4netmasks;
+    }
 
-   // iterate over the list and add the entries to our listing
-   for (PIP_ADAPTER_INFO ptr = pAdapter; ptr; ptr = ptr->Next) {
-      for (PIP_ADDR_STRING addr = &ptr->IpAddressList; addr; addr = addr->Next) {
-         QHostAddress address(QLatin1String(addr->IpAddress.String));
-         QHostAddress mask(QLatin1String(addr->IpMask.String));
-         ipv4netmasks[address] = mask;
-      }
-   }
-   if (pAdapter != staticBuf) {
-      free(pAdapter);
-   }
+    // iterate over the list and add the entries to our listing
+    for ( PIP_ADAPTER_INFO ptr = pAdapter; ptr; ptr = ptr->Next )
+    {
+        for ( PIP_ADDR_STRING addr = &ptr->IpAddressList; addr; addr = addr->Next )
+        {
+            QHostAddress address( QLatin1String( addr->IpAddress.String ) );
+            QHostAddress mask( QLatin1String( addr->IpMask.String ) );
+            ipv4netmasks[address] = mask;
+        }
+    }
 
-   return ipv4netmasks;
+    if ( pAdapter != staticBuf )
+    {
+        free( pAdapter );
+    }
+
+    return ipv4netmasks;
 }
 
 static QList<QNetworkInterfacePrivate *> interfaceListingWinXP()
 {
-   QList<QNetworkInterfacePrivate *> interfaces;
+    QList<QNetworkInterfacePrivate *> interfaces;
 
-   IP_ADAPTER_ADDRESSES staticBuf[2];             // 2 is arbitrary
-   PIP_ADAPTER_ADDRESSES pAdapter = staticBuf;
+    IP_ADAPTER_ADDRESSES staticBuf[2];             // 2 is arbitrary
+    PIP_ADAPTER_ADDRESSES pAdapter = staticBuf;
 
-   ULONG bufSize = sizeof staticBuf;
+    ULONG bufSize = sizeof staticBuf;
 
-   const QHash<QHostAddress, QHostAddress> &ipv4netmasks = ipv4Netmasks();
-   ULONG flags = GAA_FLAG_INCLUDE_PREFIX | GAA_FLAG_SKIP_DNS_SERVER | GAA_FLAG_SKIP_MULTICAST;
+    const QHash<QHostAddress, QHostAddress> &ipv4netmasks = ipv4Netmasks();
+    ULONG flags = GAA_FLAG_INCLUDE_PREFIX | GAA_FLAG_SKIP_DNS_SERVER | GAA_FLAG_SKIP_MULTICAST;
 
-   ULONG retval = GetAdaptersAddresses(AF_UNSPEC, flags, nullptr, pAdapter, &bufSize);
+    ULONG retval = GetAdaptersAddresses( AF_UNSPEC, flags, nullptr, pAdapter, &bufSize );
 
-   if (retval == ERROR_BUFFER_OVERFLOW) {
-      // need more memory
-      pAdapter = (IP_ADAPTER_ADDRESSES *)malloc(bufSize);
+    if ( retval == ERROR_BUFFER_OVERFLOW )
+    {
+        // need more memory
+        pAdapter = ( IP_ADAPTER_ADDRESSES * )malloc( bufSize );
 
-      if (! pAdapter) {
-         return interfaces;
-      }
+        if ( ! pAdapter )
+        {
+            return interfaces;
+        }
 
-      // try again
-      if (GetAdaptersAddresses(AF_UNSPEC, flags, nullptr, pAdapter, &bufSize) != ERROR_SUCCESS) {
-         free(pAdapter);
-         return interfaces;
-      }
+        // try again
+        if ( GetAdaptersAddresses( AF_UNSPEC, flags, nullptr, pAdapter, &bufSize ) != ERROR_SUCCESS )
+        {
+            free( pAdapter );
+            return interfaces;
+        }
 
-   } else if (retval != ERROR_SUCCESS) {
-      // error
-      return interfaces;
-   }
+    }
+    else if ( retval != ERROR_SUCCESS )
+    {
+        // error
+        return interfaces;
+    }
 
-   // iterate over the list and add the entries to our listing
-   for (PIP_ADAPTER_ADDRESSES ptr = pAdapter; ptr; ptr = ptr->Next) {
-      QNetworkInterfacePrivate *iface = new QNetworkInterfacePrivate;
-      interfaces << iface;
+    // iterate over the list and add the entries to our listing
+    for ( PIP_ADAPTER_ADDRESSES ptr = pAdapter; ptr; ptr = ptr->Next )
+    {
+        QNetworkInterfacePrivate *iface = new QNetworkInterfacePrivate;
+        interfaces << iface;
 
-      iface->index = 0;
+        iface->index = 0;
 
-      if (ptr->Length >= offsetof(IP_ADAPTER_ADDRESSES, Ipv6IfIndex) && ptr->Ipv6IfIndex != 0) {
-         iface->index = ptr->Ipv6IfIndex;
-      } else if (ptr->IfIndex != 0) {
-         iface->index = ptr->IfIndex;
-      }
+        if ( ptr->Length >= offsetof( IP_ADAPTER_ADDRESSES, Ipv6IfIndex ) && ptr->Ipv6IfIndex != 0 )
+        {
+            iface->index = ptr->Ipv6IfIndex;
+        }
+        else if ( ptr->IfIndex != 0 )
+        {
+            iface->index = ptr->IfIndex;
+        }
 
-      iface->flags = QNetworkInterface::CanBroadcast;
-      if (ptr->OperStatus == IfOperStatusUp) {
-         iface->flags |= QNetworkInterface::IsUp | QNetworkInterface::IsRunning;
-      }
+        iface->flags = QNetworkInterface::CanBroadcast;
 
-      if ((ptr->Flags & IP_ADAPTER_NO_MULTICAST) == 0) {
-         iface->flags |= QNetworkInterface::CanMulticast;
-      }
+        if ( ptr->OperStatus == IfOperStatusUp )
+        {
+            iface->flags |= QNetworkInterface::IsUp | QNetworkInterface::IsRunning;
+        }
 
-      if (ptr->IfType == IF_TYPE_PPP) {
-         iface->flags |= QNetworkInterface::IsPointToPoint;
-      }
+        if ( ( ptr->Flags & IP_ADAPTER_NO_MULTICAST ) == 0 )
+        {
+            iface->flags |= QNetworkInterface::CanMulticast;
+        }
 
-      if (ptr->Length >= offsetof(IP_ADAPTER_ADDRESSES_LH, Luid)) {
-         IP_ADAPTER_ADDRESSES_LH tmp;
-         memcpy(&tmp, ptr, sizeof(IP_ADAPTER_ADDRESSES_LH));
+        if ( ptr->IfType == IF_TYPE_PPP )
+        {
+            iface->flags |= QNetworkInterface::IsPointToPoint;
+        }
 
-         std::wstring buffer(IF_MAX_STRING_SIZE + 1, L'\0');
+        if ( ptr->Length >= offsetof( IP_ADAPTER_ADDRESSES_LH, Luid ) )
+        {
+            IP_ADAPTER_ADDRESSES_LH tmp;
+            memcpy( &tmp, ptr, sizeof( IP_ADAPTER_ADDRESSES_LH ) );
 
-         if (ConvertInterfaceLuidToNameW(&tmp.Luid, &buffer[0], buffer.size()) == NO_ERROR) {
-            iface->name = QString::fromStdWString(buffer);
-         }
-      }
+            std::wstring buffer( IF_MAX_STRING_SIZE + 1, L'\0' );
 
-      if (iface->name.isEmpty()) {
-         iface->name = QString::fromUtf8(ptr->AdapterName);
-      }
+            if ( ConvertInterfaceLuidToNameW( &tmp.Luid, &buffer[0], buffer.size() ) == NO_ERROR )
+            {
+                iface->name = QString::fromStdWString( buffer );
+            }
+        }
 
-      iface->friendlyName = QString::fromStdWString(std::wstring(ptr->FriendlyName));
+        if ( iface->name.isEmpty() )
+        {
+            iface->name = QString::fromUtf8( ptr->AdapterName );
+        }
 
-      if (ptr->PhysicalAddressLength)
-         iface->hardwareAddress = iface->makeHwAddress(ptr->PhysicalAddressLength, ptr->PhysicalAddress);
+        iface->friendlyName = QString::fromStdWString( std::wstring( ptr->FriendlyName ) );
 
-      else {
-         // loopback if it has no address
-         iface->flags |= QNetworkInterface::IsLoopBack;
-      }
+        if ( ptr->PhysicalAddressLength )
+        {
+            iface->hardwareAddress = iface->makeHwAddress( ptr->PhysicalAddressLength, ptr->PhysicalAddress );
+        }
 
-      // The GetAdaptersAddresses call has an interesting semantic:
-      // It can return a number N of addresses and a number M of prefixes.
-      // But if you have IPv6 addresses, generally N > M.
-      // I cannot find a way to relate the Address to the Prefix, aside from stopping
-      // the iteration at the last Prefix entry and assume that it applies to all addresses from that point on.
-      PIP_ADAPTER_PREFIX pprefix = nullptr;
+        else
+        {
+            // loopback if it has no address
+            iface->flags |= QNetworkInterface::IsLoopBack;
+        }
 
-      if (ptr->Length >= offsetof(IP_ADAPTER_ADDRESSES_LH, FirstPrefix)) {
-         pprefix = ptr->FirstPrefix;
-      }
+        // The GetAdaptersAddresses call has an interesting semantic:
+        // It can return a number N of addresses and a number M of prefixes.
+        // But if you have IPv6 addresses, generally N > M.
+        // I cannot find a way to relate the Address to the Prefix, aside from stopping
+        // the iteration at the last Prefix entry and assume that it applies to all addresses from that point on.
+        PIP_ADAPTER_PREFIX pprefix = nullptr;
 
-      for (PIP_ADAPTER_UNICAST_ADDRESS addr = ptr->FirstUnicastAddress; addr; addr = addr->Next) {
-         QNetworkAddressEntry entry;
-         entry.setIp(addressFromSockaddr(addr->Address.lpSockaddr));
+        if ( ptr->Length >= offsetof( IP_ADAPTER_ADDRESSES_LH, FirstPrefix ) )
+        {
+            pprefix = ptr->FirstPrefix;
+        }
 
-         if (pprefix) {
-            if (entry.ip().protocol() == QAbstractSocket::IPv4Protocol) {
-               entry.setNetmask(ipv4netmasks[entry.ip()]);
+        for ( PIP_ADAPTER_UNICAST_ADDRESS addr = ptr->FirstUnicastAddress; addr; addr = addr->Next )
+        {
+            QNetworkAddressEntry entry;
+            entry.setIp( addressFromSockaddr( addr->Address.lpSockaddr ) );
 
-               // broadcast address is set on postProcess()
+            if ( pprefix )
+            {
+                if ( entry.ip().protocol() == QAbstractSocket::IPv4Protocol )
+                {
+                    entry.setNetmask( ipv4netmasks[entry.ip()] );
 
-            } else {
-               //IPV6
-               entry.setPrefixLength(pprefix->PrefixLength);
+                    // broadcast address is set on postProcess()
+
+                }
+                else
+                {
+                    //IPV6
+                    entry.setPrefixLength( pprefix->PrefixLength );
+                }
+
+                pprefix = pprefix->Next ? pprefix->Next : pprefix;
             }
 
-            pprefix = pprefix->Next ? pprefix->Next : pprefix;
-         }
-         iface->addressEntries << entry;
-      }
-   }
+            iface->addressEntries << entry;
+        }
+    }
 
-   if (pAdapter != staticBuf) {
-      free(pAdapter);
-   }
+    if ( pAdapter != staticBuf )
+    {
+        free( pAdapter );
+    }
 
-   return interfaces;
+    return interfaces;
 }
 
 QList<QNetworkInterfacePrivate *> QNetworkInterfaceManager::scan()
 {
-   return interfaceListingWinXP();
+    return interfaceListingWinXP();
 }
 
 QString QHostInfo::localDomainName()
 {
-   FIXED_INFO info, *pinfo;
-   ULONG bufSize = sizeof info;
-   pinfo = &info;
+    FIXED_INFO info, *pinfo;
+    ULONG bufSize = sizeof info;
+    pinfo = &info;
 
-   if (GetNetworkParams(pinfo, &bufSize) == ERROR_BUFFER_OVERFLOW) {
-      pinfo = (FIXED_INFO *)malloc(bufSize);
+    if ( GetNetworkParams( pinfo, &bufSize ) == ERROR_BUFFER_OVERFLOW )
+    {
+        pinfo = ( FIXED_INFO * )malloc( bufSize );
 
-      if (! pinfo) {
-         return QString();
-      }
+        if ( ! pinfo )
+        {
+            return QString();
+        }
 
-      // try again
-      if (GetNetworkParams(pinfo, &bufSize) != ERROR_SUCCESS) {
-         free(pinfo);
-         return QString();   // error
-      }
-   }
+        // try again
+        if ( GetNetworkParams( pinfo, &bufSize ) != ERROR_SUCCESS )
+        {
+            free( pinfo );
+            return QString();   // error
+        }
+    }
 
-   QString domainName = QUrl::fromAce(QByteArray(pinfo->DomainName));
+    QString domainName = QUrl::fromAce( QByteArray( pinfo->DomainName ) );
 
-   if (pinfo != &info) {
-      free(pinfo);
-   }
+    if ( pinfo != &info )
+    {
+        free( pinfo );
+    }
 
-   return domainName;
+    return domainName;
 }
 
 #endif // QT_NO_NETWORKINTERFACE

@@ -32,58 +32,79 @@
 #include "UString.h"
 #include <wtf/RefCounted.h>
 
-namespace JSC {
+namespace JSC
+{
 
-    enum SourceBOMPresence { SourceHasNoBOMs, SourceCouldHaveBOMs };
+enum SourceBOMPresence { SourceHasNoBOMs, SourceCouldHaveBOMs };
 
-    class SourceProvider : public RefCounted<SourceProvider> {
-    public:
-        SourceProvider(const UString& url, SourceBOMPresence hasBOMs = SourceCouldHaveBOMs)
-            : m_url(url)
-            , m_hasBOMs(hasBOMs)
-        {
-        }
-        virtual ~SourceProvider() { }
+class SourceProvider : public RefCounted<SourceProvider>
+{
+public:
+    SourceProvider( const UString &url, SourceBOMPresence hasBOMs = SourceCouldHaveBOMs )
+        : m_url( url )
+        , m_hasBOMs( hasBOMs )
+    {
+    }
+    virtual ~SourceProvider() { }
 
-        virtual UString getRange(int start, int end) const = 0;
-        virtual const UChar* data() const = 0;
-        virtual int length() const = 0;
-        
-        const UString& url() { return m_url; }
-        intptr_t asID() { return reinterpret_cast<intptr_t>(this); }
+    virtual UString getRange( int start, int end ) const = 0;
+    virtual const UChar *data() const = 0;
+    virtual int length() const = 0;
 
-        SourceBOMPresence hasBOMs() const { return m_hasBOMs; }
+    const UString &url()
+    {
+        return m_url;
+    }
+    intptr_t asID()
+    {
+        return reinterpret_cast<intptr_t>( this );
+    }
 
-    private:
-        UString m_url;
-        SourceBOMPresence m_hasBOMs;
-    };
+    SourceBOMPresence hasBOMs() const
+    {
+        return m_hasBOMs;
+    }
 
-    class UStringSourceProvider : public SourceProvider {
-    public:
-        static PassRefPtr<UStringSourceProvider> create(const UString& source, const UString& url)
-        {
-            return adoptRef(new UStringSourceProvider(source, url));
-        }
+private:
+    UString m_url;
+    SourceBOMPresence m_hasBOMs;
+};
 
-        UString getRange(int start, int end) const { return m_source.substr(start, end - start); }
-        const UChar* data() const { return m_source.data(); }
-        int length() const { return m_source.size(); }
+class UStringSourceProvider : public SourceProvider
+{
+public:
+    static PassRefPtr<UStringSourceProvider> create( const UString &source, const UString &url )
+    {
+        return adoptRef( new UStringSourceProvider( source, url ) );
+    }
+
+    UString getRange( int start, int end ) const
+    {
+        return m_source.substr( start, end - start );
+    }
+    const UChar *data() const
+    {
+        return m_source.data();
+    }
+    int length() const
+    {
+        return m_source.size();
+    }
 
 #ifdef QT_BUILD_SCRIPT_LIB
-    protected:
+protected:
 #else
-    private:
+private:
 #endif
-        UStringSourceProvider(const UString& source, const UString& url)
-            : SourceProvider(url)
-            , m_source(source)
-        {
-        }
+    UStringSourceProvider( const UString &source, const UString &url )
+        : SourceProvider( url )
+        , m_source( source )
+    {
+    }
 
-        UString m_source;
-    };
-    
+    UString m_source;
+};
+
 } // namespace JSC
 
 #endif // SourceProvider_h

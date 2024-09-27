@@ -26,9 +26,11 @@
 #ifndef DragControllerAction_h
 #define DragControllerAction_h
 
-namespace WebKit {
+namespace WebKit
+{
 
-enum DragControllerAction {
+enum DragControllerAction
+{
     DragControllerActionEntered,
     DragControllerActionUpdated,
     DragControllerActionExited,

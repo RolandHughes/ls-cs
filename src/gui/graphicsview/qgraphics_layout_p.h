@@ -40,89 +40,99 @@ class QGraphicsWidget;
 
 class QLayoutStyleInfo
 {
- public:
-   QLayoutStyleInfo()
-   {
-      invalidate();
-   }
+public:
+    QLayoutStyleInfo()
+    {
+        invalidate();
+    }
 
-   QLayoutStyleInfo(QStyle *style, QWidget *widget)
-      : m_valid(true), m_style(style), m_widget(widget)
-   {
-      Q_ASSERT(style);
+    QLayoutStyleInfo( QStyle *style, QWidget *widget )
+        : m_valid( true ), m_style( style ), m_widget( widget )
+    {
+        Q_ASSERT( style );
 
-      if (widget) {
-         m_styleOption.initFrom(widget);
-      }
+        if ( widget )
+        {
+            m_styleOption.initFrom( widget );
+        }
 
-      m_defaultSpacing[0] = style->pixelMetric(QStyle::PM_LayoutHorizontalSpacing);
-      m_defaultSpacing[1] = style->pixelMetric(QStyle::PM_LayoutVerticalSpacing);
-   }
+        m_defaultSpacing[0] = style->pixelMetric( QStyle::PM_LayoutHorizontalSpacing );
+        m_defaultSpacing[1] = style->pixelMetric( QStyle::PM_LayoutVerticalSpacing );
+    }
 
-   void invalidate() {
-      m_valid  = false;
-      m_style  = nullptr;
-      m_widget = nullptr;
-   }
+    void invalidate()
+    {
+        m_valid  = false;
+        m_style  = nullptr;
+        m_widget = nullptr;
+    }
 
-   QStyle *style() const {
-      return m_style;
-   }
+    QStyle *style() const
+    {
+        return m_style;
+    }
 
-   QWidget *widget() const {
-      return m_widget;
-   }
+    QWidget *widget() const
+    {
+        return m_widget;
+    }
 
-   bool operator==(const QLayoutStyleInfo &other) const {
-      return m_style == other.m_style && m_widget == other.m_widget;
-   }
+    bool operator==( const QLayoutStyleInfo &other ) const
+    {
+        return m_style == other.m_style && m_widget == other.m_widget;
+    }
 
-   bool operator!=(const QLayoutStyleInfo &other) const {
-      return !(*this == other);
-   }
+    bool operator!=( const QLayoutStyleInfo &other ) const
+    {
+        return !( *this == other );
+    }
 
-   void setDefaultSpacing(Qt::Orientation o, qreal spacing) {
-      if (spacing >= 0) {
-         m_defaultSpacing[o - 1] = spacing;
-      }
-   }
+    void setDefaultSpacing( Qt::Orientation o, qreal spacing )
+    {
+        if ( spacing >= 0 )
+        {
+            m_defaultSpacing[o - 1] = spacing;
+        }
+    }
 
-   qreal defaultSpacing(Qt::Orientation o) const {
-      return m_defaultSpacing[o - 1];
-   }
+    qreal defaultSpacing( Qt::Orientation o ) const
+    {
+        return m_defaultSpacing[o - 1];
+    }
 
-   qreal perItemSpacing(QSizePolicy::ControlType control1, QSizePolicy::ControlType control2,
-         Qt::Orientation orientation) const {
-      Q_ASSERT(style());
-      return style()->layoutSpacing(control1, control2, orientation, &m_styleOption, widget());
-   }
+    qreal perItemSpacing( QSizePolicy::ControlType control1, QSizePolicy::ControlType control2,
+                          Qt::Orientation orientation ) const
+    {
+        Q_ASSERT( style() );
+        return style()->layoutSpacing( control1, control2, orientation, &m_styleOption, widget() );
+    }
 
- private:
-   bool m_valid;
-   QStyle *m_style;
-   QWidget *m_widget;
-   QStyleOption m_styleOption;
-   qreal m_defaultSpacing[2];
+private:
+    bool m_valid;
+    QStyle *m_style;
+    QWidget *m_widget;
+    QStyleOption m_styleOption;
+    qreal m_defaultSpacing[2];
 };
 
 class QGraphicsLayoutPrivate : public QGraphicsLayoutItemPrivate
 {
-   Q_DECLARE_PUBLIC(QGraphicsLayout)
+    Q_DECLARE_PUBLIC( QGraphicsLayout )
 
- public:
-   QGraphicsLayoutPrivate()
-      : QGraphicsLayoutItemPrivate(nullptr, true), left(-1.0), top(-1.0), right(-1.0), bottom(-1.0), activated(true)
-   { }
+public:
+    QGraphicsLayoutPrivate()
+        : QGraphicsLayoutItemPrivate( nullptr, true ), left( -1.0 ), top( -1.0 ), right( -1.0 ), bottom( -1.0 ), activated( true )
+    { }
 
-   void reparentChildItems(QGraphicsItem *newParent);
-   void getMargin(qreal *result, qreal userMargin, QStyle::PixelMetric pm) const;
-   Qt::LayoutDirection visualDirection() const;
+    void reparentChildItems( QGraphicsItem *newParent );
+    void getMargin( qreal *result, qreal userMargin, QStyle::PixelMetric pm ) const;
+    Qt::LayoutDirection visualDirection() const;
 
-   void addChildLayoutItem(QGraphicsLayoutItem *item);
-   void activateRecursive(QGraphicsLayoutItem *item);
+    void addChildLayoutItem( QGraphicsLayoutItem *item );
+    void activateRecursive( QGraphicsLayoutItem *item );
 
-   qreal left, top, right, bottom;
-   bool activated;
+    qreal left, top, right, bottom;
+    bool activated;
 };
 
 #endif //QT_NO_GRAPHICSVIEW

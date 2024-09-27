@@ -26,24 +26,25 @@
 #include "config.h"
 #include "StrictEvalActivation.h"
 
-namespace JSC {
+namespace JSC
+{
 
-StrictEvalActivation::StrictEvalActivation(ExecState* exec)
-    : JSNonFinalObject(exec->globalData(), exec->globalData().strictEvalActivationStructure.get())
+StrictEvalActivation::StrictEvalActivation( ExecState *exec )
+    : JSNonFinalObject( exec->globalData(), exec->globalData().strictEvalActivationStructure.get() )
 {
 }
 
-bool StrictEvalActivation::deleteProperty(ExecState*, const Identifier&)
+bool StrictEvalActivation::deleteProperty( ExecState *, const Identifier & )
 {
     return false;
 }
 
-JSObject* StrictEvalActivation::toThisObject(ExecState* exec) const
+JSObject *StrictEvalActivation::toThisObject( ExecState *exec ) const
 {
     return exec->globalThisValue();
 }
 
-JSValue StrictEvalActivation::toStrictThisObject(ExecState*) const
+JSValue StrictEvalActivation::toStrictThisObject( ExecState * ) const
 {
     return jsNull();
 }

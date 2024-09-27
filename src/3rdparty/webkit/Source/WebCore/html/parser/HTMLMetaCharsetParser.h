@@ -31,35 +31,44 @@
 #include "TextEncoding.h"
 #include <wtf/Noncopyable.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class HTMLTokenizer;
 class TextCodec;
 
-class HTMLMetaCharsetParser {
-    WTF_MAKE_NONCOPYABLE(HTMLMetaCharsetParser);
+class HTMLMetaCharsetParser
+{
+    WTF_MAKE_NONCOPYABLE( HTMLMetaCharsetParser );
 public:
-    static PassOwnPtr<HTMLMetaCharsetParser> create() { return adoptPtr(new HTMLMetaCharsetParser()); }
+    static PassOwnPtr<HTMLMetaCharsetParser> create()
+    {
+        return adoptPtr( new HTMLMetaCharsetParser() );
+    }
 
     ~HTMLMetaCharsetParser();
 
     // Returns true if done checking, regardless whether an encoding is found.
-    bool checkForMetaCharset(const char*, size_t);
+    bool checkForMetaCharset( const char *, size_t );
 
-    const TextEncoding& encoding() { return m_encoding; }
+    const TextEncoding &encoding()
+    {
+        return m_encoding;
+    }
 
     typedef Vector<pair<String, String> > AttributeList;
     // The returned encoding might not be valid.
-    static TextEncoding encodingFromMetaAttributes(const AttributeList&
-);
+    static TextEncoding encodingFromMetaAttributes( const AttributeList &
+                                                  );
 
 private:
     HTMLMetaCharsetParser();
 
     bool processMeta();
-    static String extractCharset(const String&);
+    static String extractCharset( const String & );
 
-    enum Mode {
+    enum Mode
+    {
         None,
         Charset,
         Pragma,

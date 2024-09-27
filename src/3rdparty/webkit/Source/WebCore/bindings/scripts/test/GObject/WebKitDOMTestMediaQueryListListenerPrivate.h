@@ -24,15 +24,16 @@
 #include <glib-object.h>
 #include <webkit/WebKitDOMObject.h>
 #include "TestMediaQueryListListener.h"
-namespace WebKit {
-    WebKitDOMTestMediaQueryListListener *
-    wrapTestMediaQueryListListener(WebCore::TestMediaQueryListListener *coreObject);
+namespace WebKit
+{
+WebKitDOMTestMediaQueryListListener *
+wrapTestMediaQueryListListener( WebCore::TestMediaQueryListListener *coreObject );
 
-    WebCore::TestMediaQueryListListener *
-    core(WebKitDOMTestMediaQueryListListener *request);
+WebCore::TestMediaQueryListListener *
+core( WebKitDOMTestMediaQueryListListener *request );
 
-    WebKitDOMTestMediaQueryListListener*
-    kit(WebCore::TestMediaQueryListListener* node);
+WebKitDOMTestMediaQueryListListener *
+kit( WebCore::TestMediaQueryListListener *node );
 
 } // namespace WebKit
 

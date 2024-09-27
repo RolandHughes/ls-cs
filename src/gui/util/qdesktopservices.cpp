@@ -40,141 +40,155 @@
 
 class QOpenUrlHandlerRegistry : public QObject
 {
-   GUI_CS_OBJECT(QOpenUrlHandlerRegistry)
+    GUI_CS_OBJECT( QOpenUrlHandlerRegistry )
 
- public:
-   QOpenUrlHandlerRegistry()
-   {
-   }
+public:
+    QOpenUrlHandlerRegistry()
+    {
+    }
 
-   QRecursiveMutex mutex;
+    QRecursiveMutex mutex;
 
-   struct Handler {
-      QObject *receiver;
-      QByteArray name;
-   };
+    struct Handler
+    {
+        QObject *receiver;
+        QByteArray name;
+    };
 
-   typedef QHash<QString, Handler> HandlerHash;
-   HandlerHash handlers;
+    typedef QHash<QString, Handler> HandlerHash;
+    HandlerHash handlers;
 
-   GUI_CS_SLOT_1(Public, void handlerDestroyed(QObject *handler))
-   GUI_CS_SLOT_2(handlerDestroyed)
+    GUI_CS_SLOT_1( Public, void handlerDestroyed( QObject *handler ) )
+    GUI_CS_SLOT_2( handlerDestroyed )
 };
 
 static QOpenUrlHandlerRegistry *handlerRegistry()
 {
-   static QOpenUrlHandlerRegistry retval;
-   return &retval;
+    static QOpenUrlHandlerRegistry retval;
+    return &retval;
 }
 
-void QOpenUrlHandlerRegistry::handlerDestroyed(QObject *handler)
+void QOpenUrlHandlerRegistry::handlerDestroyed( QObject *handler )
 {
-   HandlerHash::iterator it = handlers.begin();
+    HandlerHash::iterator it = handlers.begin();
 
-   while (it != handlers.end()) {
-      if (it->receiver == handler) {
-         it = handlers.erase(it);
-      } else {
-         ++it;
-      }
-   }
+    while ( it != handlers.end() )
+    {
+        if ( it->receiver == handler )
+        {
+            it = handlers.erase( it );
+        }
+        else
+        {
+            ++it;
+        }
+    }
 }
 
-bool QDesktopServices::openUrl(const QUrl &url)
+bool QDesktopServices::openUrl( const QUrl &url )
 {
-   QOpenUrlHandlerRegistry *registry = handlerRegistry();
-   QRecursiveMutexLocker locker(&registry->mutex);
+    QOpenUrlHandlerRegistry *registry = handlerRegistry();
+    QRecursiveMutexLocker locker( &registry->mutex );
 
-   static bool insideOpenUrlHandler = false;
+    static bool insideOpenUrlHandler = false;
 
-   if (! insideOpenUrlHandler) {
-      QOpenUrlHandlerRegistry::HandlerHash::const_iterator handler = registry->handlers.constFind(url.scheme());
+    if ( ! insideOpenUrlHandler )
+    {
+        QOpenUrlHandlerRegistry::HandlerHash::const_iterator handler = registry->handlers.constFind( url.scheme() );
 
-      if (handler != registry->handlers.constEnd()) {
-         insideOpenUrlHandler = true;
+        if ( handler != registry->handlers.constEnd() )
+        {
+            insideOpenUrlHandler = true;
 
-         bool result = QMetaObject::invokeMethod(handler->receiver, handler->name,
-                     Qt::DirectConnection, Q_ARG(const QUrl &, url));
+            bool result = QMetaObject::invokeMethod( handler->receiver, handler->name,
+                          Qt::DirectConnection, Q_ARG( const QUrl &, url ) );
 
-         insideOpenUrlHandler = false;
-         return result;
-      }
-   }
+            insideOpenUrlHandler = false;
+            return result;
+        }
+    }
 
-   if (! url.isValid()) {
-      return false;
-   }
+    if ( ! url.isValid() )
+    {
+        return false;
+    }
 
-   QPlatformIntegration *platformIntegration = QGuiApplicationPrivate::platformIntegration();
+    QPlatformIntegration *platformIntegration = QGuiApplicationPrivate::platformIntegration();
 
-   if (! platformIntegration) {
-      return false;
-   }
+    if ( ! platformIntegration )
+    {
+        return false;
+    }
 
-   QPlatformServices *platformServices = platformIntegration->services();
+    QPlatformServices *platformServices = platformIntegration->services();
 
-   if (! platformServices) {
-      qWarning("QDesktopServices::openUrl() Platform plugin does not support services");
-      return false;
-   }
+    if ( ! platformServices )
+    {
+        qWarning( "QDesktopServices::openUrl() Platform plugin does not support services" );
+        return false;
+    }
 
-   return url.scheme() == "file" ?
-         platformServices->openDocument(url) : platformServices->openUrl(url);
+    return url.scheme() == "file" ?
+           platformServices->openDocument( url ) : platformServices->openUrl( url );
 }
 
-void QDesktopServices::setUrlHandler(const QString &scheme, QObject *receiver, const char *method)
+void QDesktopServices::setUrlHandler( const QString &scheme, QObject *receiver, const char *method )
 {
-   QOpenUrlHandlerRegistry *registry = handlerRegistry();
-   QRecursiveMutexLocker locker(&registry->mutex);
+    QOpenUrlHandlerRegistry *registry = handlerRegistry();
+    QRecursiveMutexLocker locker( &registry->mutex );
 
-   if (! receiver) {
-      registry->handlers.remove(scheme.toLower());
-      return;
-   }
+    if ( ! receiver )
+    {
+        registry->handlers.remove( scheme.toLower() );
+        return;
+    }
 
-   QOpenUrlHandlerRegistry::Handler h;
-   h.receiver = receiver;
-   h.name = method;
-   registry->handlers.insert(scheme.toLower(), h);
+    QOpenUrlHandlerRegistry::Handler h;
+    h.receiver = receiver;
+    h.name = method;
+    registry->handlers.insert( scheme.toLower(), h );
 
-   QObject::connect(receiver, &QObject::destroyed, registry, &QOpenUrlHandlerRegistry::handlerDestroyed);
+    QObject::connect( receiver, &QObject::destroyed, registry, &QOpenUrlHandlerRegistry::handlerDestroyed );
 }
 
-void QDesktopServices::unsetUrlHandler(const QString &scheme)
+void QDesktopServices::unsetUrlHandler( const QString &scheme )
 {
-   setUrlHandler(scheme, nullptr, nullptr);
+    setUrlHandler( scheme, nullptr, nullptr );
 }
 
 extern Q_CORE_EXPORT QString qt_applicationName_noFallback();
 
-QString QDesktopServices::storageLocationImpl(QStandardPaths::StandardLocation type)
+QString QDesktopServices::storageLocationImpl( QStandardPaths::StandardLocation type )
 {
-   if (type == QStandardPaths::AppLocalDataLocation) {
+    if ( type == QStandardPaths::AppLocalDataLocation )
+    {
 
-      // QCoreApplication::applicationName() must default to empty
-      // Unix data location is under the "data/" subdirectory
+        // QCoreApplication::applicationName() must default to empty
+        // Unix data location is under the "data/" subdirectory
 
-      const QString compatAppName = qt_applicationName_noFallback();
-      const QString baseDir       = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation);
+        const QString compatAppName = qt_applicationName_noFallback();
+        const QString baseDir       = QStandardPaths::writableLocation( QStandardPaths::GenericDataLocation );
 
 #if defined(Q_OS_WIN) || defined(Q_OS_DARWIN)
-      QString result = baseDir;
+        QString result = baseDir;
 
-      if (! QCoreApplication::organizationName().isEmpty()) {
-         result += '/' + QCoreApplication::organizationName();
-      }
+        if ( ! QCoreApplication::organizationName().isEmpty() )
+        {
+            result += '/' + QCoreApplication::organizationName();
+        }
 
-      if (! compatAppName.isEmpty()) {
-         result += '/' + compatAppName;
-      }
+        if ( ! compatAppName.isEmpty() )
+        {
+            result += '/' + compatAppName;
+        }
 
-      return result;
+        return result;
 
 #elif defined(Q_OS_UNIX)
-      return baseDir + "/data/" + QCoreApplication::organizationName() + '/' + compatAppName;
+        return baseDir + "/data/" + QCoreApplication::organizationName() + '/' + compatAppName;
 #endif
-   }
+    }
 
-   return QStandardPaths::writableLocation(type);
+    return QStandardPaths::writableLocation( type );
 }
 #endif

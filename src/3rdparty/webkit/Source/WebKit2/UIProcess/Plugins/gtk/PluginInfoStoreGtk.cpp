@@ -33,7 +33,8 @@
 
 using namespace WebCore;
 
-namespace WebKit {
+namespace WebKit
+{
 
 Vector<String> PluginInfoStore::pluginsDirectories()
 {
@@ -41,7 +42,7 @@ Vector<String> PluginInfoStore::pluginsDirectories()
     return Vector<String>();
 }
 
-Vector<String> PluginInfoStore::pluginPathsInDirectory(const String& directory)
+Vector<String> PluginInfoStore::pluginPathsInDirectory( const String &directory )
 {
     notImplemented();
     return Vector<String>();
@@ -52,13 +53,13 @@ Vector<String> PluginInfoStore::individualPluginPaths()
     return Vector<String>();
 }
 
-bool PluginInfoStore::getPluginInfo(const String& pluginPath, Plugin& plugin)
+bool PluginInfoStore::getPluginInfo( const String &pluginPath, Plugin &plugin )
 {
     notImplemented();
     return false;
 }
 
-bool PluginInfoStore::shouldUsePlugin(const Plugin& plugin)
+bool PluginInfoStore::shouldUsePlugin( const Plugin &plugin )
 {
     notImplemented();
     return false;

@@ -35,76 +35,103 @@
 #include "File.h"
 #include "ThreadableBlobRegistry.h"
 
-namespace WebCore {
-
-Blob::Blob(PassOwnPtr<BlobData> blobData, long long size)
-    : m_type(blobData->contentType())
-    , m_size(size)
+namespace WebCore
 {
-    ASSERT(blobData);
+
+Blob::Blob( PassOwnPtr<BlobData> blobData, long long size )
+    : m_type( blobData->contentType() )
+    , m_size( size )
+{
+    ASSERT( blobData );
 
     // Create a new internal URL and register it with the provided blob data.
     m_internalURL = BlobURL::createInternalURL();
-    ThreadableBlobRegistry::registerBlobURL(m_internalURL, blobData);
+    ThreadableBlobRegistry::registerBlobURL( m_internalURL, blobData );
 }
 
-Blob::Blob(const KURL& srcURL, const String& type, long long size)
-    : m_type(type)
-    , m_size(size)
+Blob::Blob( const KURL &srcURL, const String &type, long long size )
+    : m_type( type )
+    , m_size( size )
 {
     // Create a new internal URL and register it with the same blob data as the source URL.
     m_internalURL = BlobURL::createInternalURL();
-    ThreadableBlobRegistry::registerBlobURL(m_internalURL, srcURL);
+    ThreadableBlobRegistry::registerBlobURL( m_internalURL, srcURL );
 }
 
 Blob::~Blob()
 {
-    ThreadableBlobRegistry::unregisterBlobURL(m_internalURL);
+    ThreadableBlobRegistry::unregisterBlobURL( m_internalURL );
 }
 
 #if ENABLE(BLOB)
-PassRefPtr<Blob> Blob::webkitSlice(long long start, long long end, const String& contentType) const
+PassRefPtr<Blob> Blob::webkitSlice( long long start, long long end, const String &contentType ) const
 {
     // When we slice a file for the first time, we obtain a snapshot of the file by capturing its current size and modification time.
     // The modification time will be used to verify if the file has been changed or not, when the underlying data are accessed.
     long long size;
     double modificationTime;
-    if (isFile())
+
+    if ( isFile() )
         // FIXME: This involves synchronous file operation. We need to figure out how to make it asynchronous.
-        static_cast<const File*>(this)->captureSnapshot(size, modificationTime);
-    else {
-        ASSERT(m_size != -1);
+    {
+        static_cast<const File *>( this )->captureSnapshot( size, modificationTime );
+    }
+    else
+    {
+        ASSERT( m_size != -1 );
         size = m_size;
     }
 
     // Convert the negative value that is used to select from the end.
-    if (start < 0)
+    if ( start < 0 )
+    {
         start = start + size;
-    if (end < 0)
+    }
+
+    if ( end < 0 )
+    {
         end = end + size;
+    }
 
     // Clamp the range if it exceeds the size limit.
-    if (start < 0)
+    if ( start < 0 )
+    {
         start = 0;
-    if (end < 0)
+    }
+
+    if ( end < 0 )
+    {
         end = 0;
-    if (start >= size) {
+    }
+
+    if ( start >= size )
+    {
         start = 0;
         end = 0;
-    } else if (end < start)
+    }
+    else if ( end < start )
+    {
         end = start;
-    else if (end > size)
+    }
+    else if ( end > size )
+    {
         end = size;
+    }
 
     long long length = end - start;
     OwnPtr<BlobData> blobData = BlobData::create();
-    blobData->setContentType(contentType);
-    if (isFile())
-        blobData->appendFile(static_cast<const File*>(this)->path(), start, length, modificationTime);
-    else
-        blobData->appendBlob(m_internalURL, start, length);
+    blobData->setContentType( contentType );
 
-    return Blob::create(blobData.release(), length);
+    if ( isFile() )
+    {
+        blobData->appendFile( static_cast<const File *>( this )->path(), start, length, modificationTime );
+    }
+    else
+    {
+        blobData->appendBlob( m_internalURL, start, length );
+    }
+
+    return Blob::create( blobData.release(), length );
 }
 #endif
 

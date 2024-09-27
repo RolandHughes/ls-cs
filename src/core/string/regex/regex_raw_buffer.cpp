@@ -31,52 +31,57 @@
 #include <cstring>
 #include <memory>
 
-namespace cs_regex_ns {
-
-namespace cs_regex_detail_ns {
-
-void raw_storage::resize(size_type n)
+namespace cs_regex_ns
 {
-   size_type newsize = start ? last - start : 1024;
 
-   while (newsize < n) {
-      newsize *= 2;
-   }
+namespace cs_regex_detail_ns
+{
 
-   size_type datasize = end - start;
+void raw_storage::resize( size_type n )
+{
+    size_type newsize = start ? last - start : 1024;
 
-   // extend newsize to WORD/DWORD boundary
-   newsize = (newsize + padding_mask) & ~(padding_mask);
+    while ( newsize < n )
+    {
+        newsize *= 2;
+    }
 
-   // allocate and copy data
-   pointer ptr = static_cast<pointer>(operator new (newsize));
+    size_type datasize = end - start;
 
-   if (start) {
-      std::memcpy(ptr, start, datasize);
-   }
+    // extend newsize to WORD/DWORD boundary
+    newsize = ( newsize + padding_mask ) & ~( padding_mask );
 
-   // get rid of old buffer
-   operator delete (start);
+    // allocate and copy data
+    pointer ptr = static_cast<pointer>( operator new ( newsize ) );
 
-   // set up pointers
-   start = ptr;
-   end   = ptr + datasize;
-   last  = ptr + newsize;
+    if ( start )
+    {
+        std::memcpy( ptr, start, datasize );
+    }
+
+    // get rid of old buffer
+    operator delete ( start );
+
+    // set up pointers
+    start = ptr;
+    end   = ptr + datasize;
+    last  = ptr + newsize;
 }
 
-void *raw_storage::insert(size_type pos, size_type n)
+void *raw_storage::insert( size_type pos, size_type n )
 {
-   assert(pos <= size_type(end - start));
+    assert( pos <= size_type( end - start ) );
 
-   if (size_type(last - end) < n) {
-      resize(n + (end - start));
-   }
+    if ( size_type( last - end ) < n )
+    {
+        resize( n + ( end - start ) );
+    }
 
-   void *result = start + pos;
-   std::memmove(start + pos + n, start + pos, (end - start) - pos);
-   end += n;
+    void *result = start + pos;
+    std::memmove( start + pos + n, start + pos, ( end - start ) - pos );
+    end += n;
 
-   return result;
+    return result;
 }
 
 } // namespace

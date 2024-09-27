@@ -32,19 +32,19 @@ class QMediaControlPrivate;
 
 class Q_MULTIMEDIA_EXPORT QMediaControl : public QObject
 {
-   MULTI_CS_OBJECT(QMediaControl)
+    MULTI_CS_OBJECT( QMediaControl )
 
- public:
-   ~QMediaControl();
+public:
+    ~QMediaControl();
 
- protected:
-   explicit QMediaControl(QObject *parent = nullptr);
-   explicit QMediaControl(QMediaControlPrivate &dd, QObject *parent = nullptr);
+protected:
+    explicit QMediaControl( QObject *parent = nullptr );
+    explicit QMediaControl( QMediaControlPrivate &dd, QObject *parent = nullptr );
 
-   QMediaControlPrivate *d_ptr;
+    QMediaControlPrivate *d_ptr;
 
- private:
-   Q_DECLARE_PRIVATE(QMediaControl)
+private:
+    Q_DECLARE_PRIVATE( QMediaControl )
 };
 
 #endif

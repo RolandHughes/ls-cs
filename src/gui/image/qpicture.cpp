@@ -49,39 +49,43 @@
 
 #include <algorithm>
 
-void qt_format_text(const QFont &fnt, const QRectF &_r, int tf, const QTextOption *opt,
-      const QString &str, QRectF *brect, int tabstops, int *, int tabarraylen, QPainter *painter);
+void qt_format_text( const QFont &fnt, const QRectF &_r, int tf, const QTextOption *opt,
+                     const QString &str, QRectF *brect, int tabstops, int *, int tabarraylen, QPainter *painter );
 
 const char *qt_mfhdr_tag = "QPIC";               // header tag
 
 static constexpr const quint16 mfhdr_maj = 11;   // major version #
 static constexpr const quint16 mfhdr_min = 0;    // minor version #
 
-QPicture::QPicture(int formatVersion)
-   : QPaintDevice(), d_ptr(new QPicturePrivate)
+QPicture::QPicture( int formatVersion )
+    : QPaintDevice(), d_ptr( new QPicturePrivate )
 {
-   Q_D(QPicture);
+    Q_D( QPicture );
 
-   if (formatVersion == 0) {
-      qWarning("QPicture::QPicture() Invalid format version");
-   }
+    if ( formatVersion == 0 )
+    {
+        qWarning( "QPicture::QPicture() Invalid format version" );
+    }
 
-   if (formatVersion > 0 && formatVersion != (int)mfhdr_maj) {
-      d->formatMajor = formatVersion;
-      d->formatMinor = 0;
-      d->formatOk = false;
-   } else {
-      d->resetFormat();
-   }
+    if ( formatVersion > 0 && formatVersion != ( int )mfhdr_maj )
+    {
+        d->formatMajor = formatVersion;
+        d->formatMinor = 0;
+        d->formatOk = false;
+    }
+    else
+    {
+        d->resetFormat();
+    }
 }
 
-QPicture::QPicture(const QPicture &pic)
-   : QPaintDevice(), d_ptr(pic.d_ptr)
+QPicture::QPicture( const QPicture &pic )
+    : QPaintDevice(), d_ptr( pic.d_ptr )
 {
 }
 
-QPicture::QPicture(QPicturePrivate &dptr)
-   : QPaintDevice(), d_ptr(&dptr)
+QPicture::QPicture( QPicturePrivate &dptr )
+    : QPaintDevice(), d_ptr( &dptr )
 {
 }
 
@@ -91,1456 +95,1684 @@ QPicture::~QPicture()
 
 int QPicture::devType() const
 {
-   return QInternal::Picture;
+    return QInternal::Picture;
 }
 
 bool QPicture::isNull() const
 {
-   return d_func()->pictb.buffer().isNull();
+    return d_func()->pictb.buffer().isNull();
 }
 
 uint QPicture::size() const
 {
-   return d_func()->pictb.buffer().size();
+    return d_func()->pictb.buffer().size();
 }
 
 const char *QPicture::data() const
 {
-   return d_func()->pictb.buffer().constData();
+    return d_func()->pictb.buffer().constData();
 }
 
 void QPicture::detach()
 {
-   d_ptr.detach();
+    d_ptr.detach();
 }
 
 bool QPicture::isDetached() const
 {
-   return d_func()->ref.load() == 1;
+    return d_func()->ref.load() == 1;
 }
 
-void QPicture::setData(const char *data, uint size)
+void QPicture::setData( const char *data, uint size )
 {
-   detach();
-   d_func()->pictb.setData(data, size);
-   d_func()->resetFormat();
+    detach();
+    d_func()->pictb.setData( data, size );
+    d_func()->resetFormat();
 }
 
-bool QPicture::load(const QString &fileName, const QString &format)
+bool QPicture::load( const QString &fileName, const QString &format )
 {
-   QFile f(fileName);
+    QFile f( fileName );
 
-   if (! f.open(QIODevice::ReadOnly)) {
-      operator=(QPicture());
+    if ( ! f.open( QIODevice::ReadOnly ) )
+    {
+        operator=( QPicture() );
 
-      return false;
-   }
+        return false;
+    }
 
-   return load(&f, format);
+    return load( &f, format );
 }
 
-bool QPicture::load(QIODevice *dev, const QString &format)
+bool QPicture::load( QIODevice *dev, const QString &format )
 {
-   if (! format.isEmpty()) {
+    if ( ! format.isEmpty() )
+    {
 
 #ifndef QT_NO_PICTUREIO
-      QPictureIO io(dev, format);
-      if (io.read()) {
-         operator=(io.picture());
-         return true;
-      }
+        QPictureIO io( dev, format );
+
+        if ( io.read() )
+        {
+            operator=( io.picture() );
+            return true;
+        }
+
 #endif
 
-      qWarning("QPicture::load() No picture format with the name %s", csPrintable(format));
-      operator=(QPicture());
-      return false;
-   }
+        qWarning( "QPicture::load() No picture format with the name %s", csPrintable( format ) );
+        operator=( QPicture() );
+        return false;
+    }
 
-   detach();
-   QByteArray a = dev->readAll();
+    detach();
+    QByteArray a = dev->readAll();
 
-   d_func()->pictb.setData(a);                        // set byte array in buffer
-   return d_func()->checkFormat();
+    d_func()->pictb.setData( a );                      // set byte array in buffer
+    return d_func()->checkFormat();
 }
 
-bool QPicture::save(const QString &fileName, const QString &format)
+bool QPicture::save( const QString &fileName, const QString &format )
 {
-   if (paintingActive()) {
-      qWarning("QPicture::save() Painting in progress, QPainter::end() required before saving");
-      return false;
-   }
+    if ( paintingActive() )
+    {
+        qWarning( "QPicture::save() Painting in progress, QPainter::end() required before saving" );
+        return false;
+    }
 
-   if (! format.isEmpty()) {
+    if ( ! format.isEmpty() )
+    {
 
 #ifndef QT_NO_PICTUREIO
-      QPictureIO io(fileName, format);
-      bool result = io.write();
+        QPictureIO io( fileName, format );
+        bool result = io.write();
 
-      if (result) {
-         operator=(io.picture());
+        if ( result )
+        {
+            operator=( io.picture() );
 
-      } else if (! format.isEmpty())
+        }
+        else if ( ! format.isEmpty() )
 
 #else
-      bool result = false;
+        bool result = false;
+
 #endif
 
-      {
-         qWarning("QPicture::save() Picture format was not found, %s", csPrintable(format));
-      }
+        {
+            qWarning( "QPicture::save() Picture format was not found, %s", csPrintable( format ) );
+        }
 
-      return result;
-   }
+        return result;
+    }
 
-   QFile f(fileName);
+    QFile f( fileName );
 
-   if (! f.open(QIODevice::WriteOnly)) {
-      return false;
-   }
+    if ( ! f.open( QIODevice::WriteOnly ) )
+    {
+        return false;
+    }
 
-   return save(&f, format);
+    return save( &f, format );
 }
 
-bool QPicture::save(QIODevice *dev, const QString &format)
+bool QPicture::save( QIODevice *dev, const QString &format )
 {
-   if (paintingActive()) {
-      qWarning("QPicture::save() Painting in progress, QPainter::end() required before saving");
-      return false;
-   }
+    if ( paintingActive() )
+    {
+        qWarning( "QPicture::save() Painting in progress, QPainter::end() required before saving" );
+        return false;
+    }
 
-   if (! format.isEmpty()) {
+    if ( ! format.isEmpty() )
+    {
 
 #ifndef QT_NO_PICTUREIO
-      QPictureIO io(dev, format);
-      bool result = io.write();
+        QPictureIO io( dev, format );
+        bool result = io.write();
 
-      if (result) {
-         operator=(io.picture());
+        if ( result )
+        {
+            operator=( io.picture() );
 
-      } else if (! format.isEmpty())
+        }
+        else if ( ! format.isEmpty() )
 
 #else
-      bool result = false;
+        bool result = false;
+
 #endif
 
-      {
-         qWarning("QPicture::save() Picture format was not found, %s", csPrintable(format));
-      }
-      return result;
-   }
+        {
+            qWarning( "QPicture::save() Picture format was not found, %s", csPrintable( format ) );
+        }
+        return result;
+    }
 
-   dev->write(d_func()->pictb.buffer().constData(), d_func()->pictb.buffer().size());
-   return true;
+    dev->write( d_func()->pictb.buffer().constData(), d_func()->pictb.buffer().size() );
+    return true;
 }
 
 QRect QPicture::boundingRect() const
 {
-   Q_D(const QPicture);
+    Q_D( const QPicture );
 
-   // Use override rect where possible.
-   if (!d->override_rect.isEmpty()) {
-      return d->override_rect;
-   }
+    // Use override rect where possible.
+    if ( !d->override_rect.isEmpty() )
+    {
+        return d->override_rect;
+    }
 
-   if (! d->formatOk) {
-      d_ptr->checkFormat();
-   }
+    if ( ! d->formatOk )
+    {
+        d_ptr->checkFormat();
+    }
 
-   return d->brect;
+    return d->brect;
 }
 
-void QPicture::setBoundingRect(const QRect &r)
+void QPicture::setBoundingRect( const QRect &r )
 {
-   d_func()->override_rect = r;
+    d_func()->override_rect = r;
 }
 
-bool QPicture::play(QPainter *painter)
+bool QPicture::play( QPainter *painter )
 {
-   Q_D(QPicture);
+    Q_D( QPicture );
 
-   if (d->pictb.size() == 0) {                       // nothing recorded
-      return true;
-   }
+    if ( d->pictb.size() == 0 )                       // nothing recorded
+    {
+        return true;
+    }
 
-   if (! d->formatOk && !d->checkFormat()) {
-      return false;
-   }
+    if ( ! d->formatOk && !d->checkFormat() )
+    {
+        return false;
+    }
 
-   d->pictb.open(QIODevice::ReadOnly);               // open buffer device
-   QDataStream s;
-   s.setDevice(&d->pictb);                           // attach data stream to buffer
-   s.device()->seek(10);                             // go directly to the data
-   s.setVersion(d->formatMajor == 4 ? 3 : d->formatMajor);
+    d->pictb.open( QIODevice::ReadOnly );             // open buffer device
+    QDataStream s;
+    s.setDevice( &d->pictb );                         // attach data stream to buffer
+    s.device()->seek( 10 );                           // go directly to the data
+    s.setVersion( d->formatMajor == 4 ? 3 : d->formatMajor );
 
-   quint8  c, clen;
-   quint32 nrecords;
-   s >> c >> clen;
-   Q_ASSERT(c == QPicturePrivate::PdcBegin);
+    quint8  c, clen;
+    quint32 nrecords;
+    s >> c >> clen;
+    Q_ASSERT( c == QPicturePrivate::PdcBegin );
 
-   // bounding rect was introduced in ver 4. Read in checkFormat().
-   if (d->formatMajor >= 4) {
-      qint32 dummy;
-      s >> dummy >> dummy >> dummy >> dummy;
-   }
+    // bounding rect was introduced in ver 4. Read in checkFormat().
+    if ( d->formatMajor >= 4 )
+    {
+        qint32 dummy;
+        s >> dummy >> dummy >> dummy >> dummy;
+    }
 
-   s >> nrecords;
-   if (!exec(painter, s, nrecords)) {
-      qWarning("QPicture::play() Format error");
-      d->pictb.close();
-      return false;
-   }
+    s >> nrecords;
 
-   d->pictb.close();
-   return true;                                // no end-command
+    if ( !exec( painter, s, nrecords ) )
+    {
+        qWarning( "QPicture::play() Format error" );
+        d->pictb.close();
+        return false;
+    }
+
+    d->pictb.close();
+    return true;                                // no end-command
 }
 
 // QFakeDevice is used to create fonts with a custom DPI
 class QFakeDevice : public QPaintDevice
 {
- public:
-   QFakeDevice() {
-      dpi_x = qt_defaultDpiX();
-      dpi_y = qt_defaultDpiY();
-   }
+public:
+    QFakeDevice()
+    {
+        dpi_x = qt_defaultDpiX();
+        dpi_y = qt_defaultDpiY();
+    }
 
-   void setDpiX(int dpi) {
-      dpi_x = dpi;
-   }
+    void setDpiX( int dpi )
+    {
+        dpi_x = dpi;
+    }
 
-   void setDpiY(int dpi) {
-      dpi_y = dpi;
-   }
+    void setDpiY( int dpi )
+    {
+        dpi_y = dpi;
+    }
 
-   QPaintEngine *paintEngine() const override {
-      return nullptr;
-   }
+    QPaintEngine *paintEngine() const override
+    {
+        return nullptr;
+    }
 
-   int metric(PaintDeviceMetric m) const override {
-      switch (m) {
-         case PdmPhysicalDpiX:
-         case PdmDpiX:
-            return dpi_x;
-         case PdmPhysicalDpiY:
-         case PdmDpiY:
-            return dpi_y;
-         default:
-            return QPaintDevice::metric(m);
-      }
-   }
+    int metric( PaintDeviceMetric m ) const override
+    {
+        switch ( m )
+        {
+            case PdmPhysicalDpiX:
+            case PdmDpiX:
+                return dpi_x;
 
- private:
-   int dpi_x;
-   int dpi_y;
+            case PdmPhysicalDpiY:
+            case PdmDpiY:
+                return dpi_y;
+
+            default:
+                return QPaintDevice::metric( m );
+        }
+    }
+
+private:
+    int dpi_x;
+    int dpi_y;
 };
 
-bool QPicture::exec(QPainter *painter, QDataStream &s, int nrecords)
+bool QPicture::exec( QPainter *painter, QDataStream &s, int nrecords )
 {
-   Q_D(QPicture);
+    Q_D( QPicture );
 
 #if defined(CS_SHOW_DEBUG_GUI_IMAGE)
-   int        strm_pos;
+    int        strm_pos;
 #endif
 
-   quint8     c;                      // command id
-   quint8     tiny_len;               // 8-bit length descriptor
-   qint32     len;                    // 32-bit length descriptor
-   qint16     i_16, i1_16, i2_16;     // parameters...
-   qint8      i_8;
-   quint32    ul;
-   double     dbl;
-   bool       bl;
+    quint8     c;                      // command id
+    quint8     tiny_len;               // 8-bit length descriptor
+    qint32     len;                    // 32-bit length descriptor
+    qint16     i_16, i1_16, i2_16;     // parameters...
+    qint8      i_8;
+    quint32    ul;
+    double     dbl;
+    bool       bl;
 
-   QByteArray  str1;
-   QString     str;
-   QPointF     p, p1, p2;
-   QPoint      ip, ip1, ip2;
-   QRect       ir;
-   QRectF      r;
-   QPolygonF   a;
-   QPolygon    ia;
-   QColor      color;
-   QFont       font;
-   QPen        pen;
-   QBrush      brush;
-   QRegion     rgn;
-   QMatrix     wmatrix;
-   QTransform  matrix;
+    QByteArray  str1;
+    QString     str;
+    QPointF     p, p1, p2;
+    QPoint      ip, ip1, ip2;
+    QRect       ir;
+    QRectF      r;
+    QPolygonF   a;
+    QPolygon    ia;
+    QColor      color;
+    QFont       font;
+    QPen        pen;
+    QBrush      brush;
+    QRegion     rgn;
+    QMatrix     wmatrix;
+    QTransform  matrix;
 
-   QTransform worldMatrix = painter->transform();
-   worldMatrix.scale(qreal(painter->device()->logicalDpiX()) / qreal(qt_defaultDpiX()),
-      qreal(painter->device()->logicalDpiY()) / qreal(qt_defaultDpiY()));
-   painter->setTransform(worldMatrix);
+    QTransform worldMatrix = painter->transform();
+    worldMatrix.scale( qreal( painter->device()->logicalDpiX() ) / qreal( qt_defaultDpiX() ),
+                       qreal( painter->device()->logicalDpiY() ) / qreal( qt_defaultDpiY() ) );
+    painter->setTransform( worldMatrix );
 
-   while (nrecords-- && !s.atEnd()) {
-      s >> c;                 // read cmd
-      s >> tiny_len;          // read param length
+    while ( nrecords-- && !s.atEnd() )
+    {
+        s >> c;                 // read cmd
+        s >> tiny_len;          // read param length
 
-      if (tiny_len == 255) {  // longer than 254 bytes
-         s >> len;
-      } else {
-         len = tiny_len;
-      }
+        if ( tiny_len == 255 )  // longer than 254 bytes
+        {
+            s >> len;
+        }
+        else
+        {
+            len = tiny_len;
+        }
 
 #if defined(CS_SHOW_DEBUG_GUI_IMAGE)
-      strm_pos = s.device()->pos();
+        strm_pos = s.device()->pos();
 #endif
 
-      switch (c) {            // exec cmd
-         case QPicturePrivate::PdcNOP:
-            break;
+        switch ( c )            // exec cmd
+        {
+            case QPicturePrivate::PdcNOP:
+                break;
 
-         case QPicturePrivate::PdcDrawPoint:
-            if (d->formatMajor <= 5) {
-               s >> ip;
-               painter->drawPoint(ip);
-            } else {
-               s >> p;
-               painter->drawPoint(p);
+            case QPicturePrivate::PdcDrawPoint:
+                if ( d->formatMajor <= 5 )
+                {
+                    s >> ip;
+                    painter->drawPoint( ip );
+                }
+                else
+                {
+                    s >> p;
+                    painter->drawPoint( p );
+                }
+
+                break;
+
+            case QPicturePrivate::PdcDrawPoints:
+                // ## implement in the picture paint engine
+                // s >> a >> i1_32 >> i2_32;
+                // painter->drawPoints(a.mid(i1_32, i2_32));
+                break;
+
+            case QPicturePrivate::PdcDrawPath:
+            {
+                QPainterPath path;
+                s >> path;
+                painter->drawPath( path );
+                break;
+            }
+
+            case QPicturePrivate::PdcDrawLine:
+                if ( d->formatMajor <= 5 )
+                {
+                    s >> ip1 >> ip2;
+                    painter->drawLine( ip1, ip2 );
+                }
+                else
+                {
+                    s >> p1 >> p2;
+                    painter->drawLine( p1, p2 );
+                }
+
+                break;
+
+            case QPicturePrivate::PdcDrawRect:
+                if ( d->formatMajor <= 5 )
+                {
+                    s >> ir;
+                    painter->drawRect( ir );
+                }
+                else
+                {
+                    s >> r;
+                    painter->drawRect( r );
+                }
+
+                break;
+
+            case QPicturePrivate::PdcDrawRoundRect:
+                if ( d->formatMajor <= 5 )
+                {
+                    s >> ir >> i1_16 >> i2_16;
+                    painter->drawRoundedRect( ir, i1_16, i2_16, Qt::RelativeSize );
+                }
+                else
+                {
+                    s >> r >> i1_16 >> i2_16;
+                    painter->drawRoundedRect( r, i1_16, i2_16, Qt::RelativeSize );
+                }
+
+                break;
+
+            case QPicturePrivate::PdcDrawEllipse:
+                if ( d->formatMajor <= 5 )
+                {
+                    s >> ir;
+                    painter->drawEllipse( ir );
+                }
+                else
+                {
+                    s >> r;
+                    painter->drawEllipse( r );
+                }
+
+                break;
+
+            case QPicturePrivate::PdcDrawArc:
+                if ( d->formatMajor <= 5 )
+                {
+                    s >> ir;
+                    r = ir;
+                }
+                else
+                {
+                    s >> r;
+                }
+
+                s >> i1_16 >> i2_16;
+                painter->drawArc( r, i1_16, i2_16 );
+                break;
+
+            case QPicturePrivate::PdcDrawPie:
+                if ( d->formatMajor <= 5 )
+                {
+                    s >> ir;
+                    r = ir;
+                }
+                else
+                {
+                    s >> r;
+                }
+
+                s >> i1_16 >> i2_16;
+                painter->drawPie( r, i1_16, i2_16 );
+                break;
+
+            case QPicturePrivate::PdcDrawChord:
+                if ( d->formatMajor <= 5 )
+                {
+                    s >> ir;
+                    r = ir;
+                }
+                else
+                {
+                    s >> r;
+                }
+
+                s >> i1_16 >> i2_16;
+                painter->drawChord( r, i1_16, i2_16 );
+                break;
+
+            case QPicturePrivate::PdcDrawLineSegments:
+                s >> ia;
+                painter->drawLines( ia );
+                ia.clear();
+                break;
+
+            case QPicturePrivate::PdcDrawPolyline:
+                if ( d->formatMajor <= 5 )
+                {
+                    s >> ia;
+                    painter->drawPolyline( ia );
+                    ia.clear();
+                }
+                else
+                {
+                    s >> a;
+                    painter->drawPolyline( a );
+                    a.clear();
+                }
+
+                break;
+
+            case QPicturePrivate::PdcDrawPolygon:
+                if ( d->formatMajor <= 5 )
+                {
+                    s >> ia >> i_8;
+                    painter->drawPolygon( ia, i_8 ? Qt::WindingFill : Qt::OddEvenFill );
+                    a.clear();
+                }
+                else
+                {
+                    s >> a >> i_8;
+                    painter->drawPolygon( a, i_8 ? Qt::WindingFill : Qt::OddEvenFill );
+                    a.clear();
+                }
+
+                break;
+
+            case QPicturePrivate::PdcDrawCubicBezier:
+            {
+                s >> ia;
+                QPainterPath path;
+                Q_ASSERT( ia.size() == 4 );
+                path.moveTo( ia.at( 0 ) );
+                path.cubicTo( ia.at( 1 ), ia.at( 2 ), ia.at( 3 ) );
+                painter->strokePath( path, painter->pen() );
+                a.clear();
             }
             break;
 
-         case QPicturePrivate::PdcDrawPoints:
-            // ## implement in the picture paint engine
-            // s >> a >> i1_32 >> i2_32;
-            // painter->drawPoints(a.mid(i1_32, i2_32));
-            break;
+            case QPicturePrivate::PdcDrawText:
+                s >> ip >> str1;
+                painter->drawText( ip, QString::fromLatin1( str1 ) );
+                break;
 
-         case QPicturePrivate::PdcDrawPath: {
-            QPainterPath path;
-            s >> path;
-            painter->drawPath(path);
-            break;
-         }
+            case QPicturePrivate::PdcDrawTextFormatted:
+                s >> ir >> i_16 >> str1;
+                painter->drawText( ir, i_16, QString::fromLatin1( str1 ) );
+                break;
 
-         case QPicturePrivate::PdcDrawLine:
-            if (d->formatMajor <= 5) {
-               s >> ip1 >> ip2;
-               painter->drawLine(ip1, ip2);
-            } else {
-               s >> p1 >> p2;
-               painter->drawLine(p1, p2);
+            case QPicturePrivate::PdcDrawText2:
+                if ( d->formatMajor <= 5 )
+                {
+                    s >> ip >> str;
+                    painter->drawText( ip, str );
+                }
+                else
+                {
+                    s >> p >> str;
+                    painter->drawText( p, str );
+                }
+
+                break;
+
+            case QPicturePrivate::PdcDrawText2Formatted:
+                s >> ir;
+                s >> i_16;
+                s >> str;
+                painter->drawText( ir, i_16, str );
+                break;
+
+            case QPicturePrivate::PdcDrawTextItem:
+            {
+                s >> p >> str >> font >> ul;
+
+                // the text layout direction is not used here because it's already
+                // aligned when QPicturePaintEngine::drawTextItem() serializes the
+                // drawText() call, therefore ul is unsed in this context
+
+                if ( d->formatMajor >= 9 )
+                {
+                    s >> dbl;
+                    QFont fnt( font );
+
+                    if ( dbl != 1.0 )
+                    {
+                        QFakeDevice fake;
+                        fake.setDpiX( qRound( dbl * qt_defaultDpiX() ) );
+                        fake.setDpiY( qRound( dbl * qt_defaultDpiY() ) );
+                        fnt = QFont( font, &fake );
+                    }
+
+                    qreal justificationWidth;
+                    s >> justificationWidth;
+
+                    int flags = Qt::TextSingleLine | Qt::TextDontClip | Qt::TextForceLeftToRight;
+
+                    QSizeF size( 1, 1 );
+
+                    if ( justificationWidth > 0 )
+                    {
+                        size.setWidth( justificationWidth );
+                        flags |= Qt::TextJustificationForced;
+                        flags |= Qt::AlignJustify;
+                    }
+
+                    QFontMetrics fm( fnt );
+                    QPointF pt( p.x(), p.y() - fm.ascent() );
+                    qt_format_text( fnt, QRectF( pt, size ), flags, nullptr,
+                                    str, nullptr, 0, nullptr, 0, painter );
+
+                }
+                else
+                {
+                    qt_format_text( font, QRectF( p, QSizeF( 1, 1 ) ), Qt::TextSingleLine | Qt::TextDontClip, nullptr,
+                                    str, nullptr, 0, nullptr, 0, painter );
+                }
+
+                break;
+            }
+
+            case QPicturePrivate::PdcDrawPixmap:
+            {
+                QPixmap pixmap;
+
+                if ( d->formatMajor < 4 )
+                {
+                    s >> ip >> pixmap;
+                    painter->drawPixmap( ip, pixmap );
+
+                }
+                else if ( d->formatMajor <= 5 )
+                {
+                    s >> ir >> pixmap;
+                    painter->drawPixmap( ir, pixmap );
+
+                }
+                else
+                {
+                    QRectF sr;
+
+                    if ( d->in_memory_only )
+                    {
+                        int index;
+                        s >> r >> index >> sr;
+                        Q_ASSERT( index < d->pixmap_list.size() );
+                        pixmap = d->pixmap_list.at( index );
+                    }
+                    else
+                    {
+                        s >> r >> pixmap >> sr;
+                    }
+
+                    painter->drawPixmap( r, pixmap, sr );
+                }
             }
             break;
 
-         case QPicturePrivate::PdcDrawRect:
-            if (d->formatMajor <= 5) {
-               s >> ir;
-               painter->drawRect(ir);
-            } else {
-               s >> r;
-               painter->drawRect(r);
+            case QPicturePrivate::PdcDrawTiledPixmap:
+            {
+                QPixmap pixmap;
+
+                if ( d->in_memory_only )
+                {
+                    int index;
+                    s >> r >> index >> p;
+                    Q_ASSERT( index < d->pixmap_list.size() );
+                    pixmap = d->pixmap_list.at( index );
+                }
+                else
+                {
+                    s >> r >> pixmap >> p;
+                }
+
+                painter->drawTiledPixmap( r, pixmap, p );
             }
             break;
 
-         case QPicturePrivate::PdcDrawRoundRect:
-            if (d->formatMajor <= 5) {
-               s >> ir >> i1_16 >> i2_16;
-               painter->drawRoundedRect(ir, i1_16, i2_16, Qt::RelativeSize);
-            } else {
-               s >> r >> i1_16 >> i2_16;
-               painter->drawRoundedRect(r, i1_16, i2_16, Qt::RelativeSize);
+            case QPicturePrivate::PdcDrawImage:
+            {
+                QImage image;
+
+                if ( d->formatMajor < 4 )
+                {
+                    s >> p >> image;
+                    painter->drawImage( p, image );
+                }
+                else if ( d->formatMajor <= 5 )
+                {
+                    s >> ir >> image;
+                    painter->drawImage( ir, image, QRect( 0, 0, ir.width(), ir.height() ) );
+                }
+                else
+                {
+                    QRectF sr;
+
+                    if ( d->in_memory_only )
+                    {
+                        int index;
+                        s >> r >> index >> sr >> ul;
+                        Q_ASSERT( index < d->image_list.size() );
+                        image = d->image_list.at( index );
+                    }
+                    else
+                    {
+                        s >> r >> image >> sr >> ul;
+                    }
+
+                    painter->drawImage( r, image, sr, Qt::ImageConversionFlags( ul ) );
+                }
             }
             break;
 
-         case QPicturePrivate::PdcDrawEllipse:
-            if (d->formatMajor <= 5) {
-               s >> ir;
-               painter->drawEllipse(ir);
-            } else {
-               s >> r;
-               painter->drawEllipse(r);
-            }
-            break;
+            case QPicturePrivate::PdcBegin:
+                s >> ul;                        // number of records
 
-         case QPicturePrivate::PdcDrawArc:
-            if (d->formatMajor <= 5) {
-               s >> ir;
-               r = ir;
-            } else {
-               s >> r;
-            }
-            s >> i1_16 >> i2_16;
-            painter->drawArc(r, i1_16, i2_16);
-            break;
+                if ( !exec( painter, s, ul ) )
+                {
+                    return false;
+                }
 
-         case QPicturePrivate::PdcDrawPie:
-            if (d->formatMajor <= 5) {
-               s >> ir;
-               r = ir;
-            } else {
-               s >> r;
-            }
-            s >> i1_16 >> i2_16;
-            painter->drawPie(r, i1_16, i2_16);
-            break;
+                break;
 
-         case QPicturePrivate::PdcDrawChord:
-            if (d->formatMajor <= 5) {
-               s >> ir;
-               r = ir;
-            } else {
-               s >> r;
-            }
-            s >> i1_16 >> i2_16;
-            painter->drawChord(r, i1_16, i2_16);
-            break;
+            case QPicturePrivate::PdcEnd:
+                if ( nrecords == 0 )
+                {
+                    return true;
+                }
 
-         case QPicturePrivate::PdcDrawLineSegments:
-            s >> ia;
-            painter->drawLines(ia);
-            ia.clear();
-            break;
+                break;
 
-         case QPicturePrivate::PdcDrawPolyline:
-            if (d->formatMajor <= 5) {
-               s >> ia;
-               painter->drawPolyline(ia);
-               ia.clear();
-            } else {
-               s >> a;
-               painter->drawPolyline(a);
-               a.clear();
-            }
-            break;
+            case QPicturePrivate::PdcSave:
+                painter->save();
+                break;
 
-         case QPicturePrivate::PdcDrawPolygon:
-            if (d->formatMajor <= 5) {
-               s >> ia >> i_8;
-               painter->drawPolygon(ia, i_8 ? Qt::WindingFill : Qt::OddEvenFill);
-               a.clear();
-            } else {
-               s >> a >> i_8;
-               painter->drawPolygon(a, i_8 ? Qt::WindingFill : Qt::OddEvenFill);
-               a.clear();
-            }
-            break;
+            case QPicturePrivate::PdcRestore:
+                painter->restore();
+                break;
 
-         case QPicturePrivate::PdcDrawCubicBezier: {
-            s >> ia;
-            QPainterPath path;
-            Q_ASSERT(ia.size() == 4);
-            path.moveTo(ia.at(0));
-            path.cubicTo(ia.at(1), ia.at(2), ia.at(3));
-            painter->strokePath(path, painter->pen());
-            a.clear();
-         }
-         break;
+            case QPicturePrivate::PdcSetBkColor:
+                s >> color;
+                painter->setBackground( color );
+                break;
 
-         case QPicturePrivate::PdcDrawText:
-            s >> ip >> str1;
-            painter->drawText(ip, QString::fromLatin1(str1));
-            break;
+            case QPicturePrivate::PdcSetBkMode:
+                s >> i_8;
+                painter->setBackgroundMode( ( Qt::BGMode )i_8 );
+                break;
 
-         case QPicturePrivate::PdcDrawTextFormatted:
-            s >> ir >> i_16 >> str1;
-            painter->drawText(ir, i_16, QString::fromLatin1(str1));
-            break;
+            case QPicturePrivate::PdcSetROP: // NOP
+                s >> i_8;
+                break;
 
-         case QPicturePrivate::PdcDrawText2:
-            if (d->formatMajor <= 5) {
-               s >> ip >> str;
-               painter->drawText(ip, str);
-            } else {
-               s >> p >> str;
-               painter->drawText(p, str);
-            }
-            break;
+            case QPicturePrivate::PdcSetBrushOrigin:
+                if ( d->formatMajor <= 5 )
+                {
+                    s >> ip;
+                    painter->setBrushOrigin( ip );
+                }
+                else
+                {
+                    s >> p;
+                    painter->setBrushOrigin( p );
+                }
 
-         case QPicturePrivate::PdcDrawText2Formatted:
-            s >> ir;
-            s >> i_16;
-            s >> str;
-            painter->drawText(ir, i_16, str);
-            break;
+                break;
 
-         case QPicturePrivate::PdcDrawTextItem: {
-            s >> p >> str >> font >> ul;
+            case QPicturePrivate::PdcSetFont:
+                s >> font;
+                painter->setFont( font );
+                break;
 
-            // the text layout direction is not used here because it's already
-            // aligned when QPicturePaintEngine::drawTextItem() serializes the
-            // drawText() call, therefore ul is unsed in this context
+            case QPicturePrivate::PdcSetPen:
+                if ( d->in_memory_only )
+                {
+                    int index;
+                    s >> index;
+                    Q_ASSERT( index < d->pen_list.size() );
+                    pen = d->pen_list.at( index );
+                }
+                else
+                {
+                    s >> pen;
+                }
 
-            if (d->formatMajor >= 9) {
-               s >> dbl;
-               QFont fnt(font);
-               if (dbl != 1.0) {
-                  QFakeDevice fake;
-                  fake.setDpiX(qRound(dbl * qt_defaultDpiX()));
-                  fake.setDpiY(qRound(dbl * qt_defaultDpiY()));
-                  fnt = QFont(font, &fake);
-               }
+                painter->setPen( pen );
+                break;
 
-               qreal justificationWidth;
-               s >> justificationWidth;
+            case QPicturePrivate::PdcSetBrush:
+                if ( d->in_memory_only )
+                {
+                    int index;
+                    s >> index;
+                    Q_ASSERT( index < d->brush_list.size() );
+                    brush = d->brush_list.at( index );
+                }
+                else
+                {
+                    s >> brush;
+                }
 
-               int flags = Qt::TextSingleLine | Qt::TextDontClip | Qt::TextForceLeftToRight;
+                painter->setBrush( brush );
+                break;
 
-               QSizeF size(1, 1);
-               if (justificationWidth > 0) {
-                  size.setWidth(justificationWidth);
-                  flags |= Qt::TextJustificationForced;
-                  flags |= Qt::AlignJustify;
-               }
+            case QPicturePrivate::PdcSetVXform:
+                s >> i_8;
+                painter->setViewTransformEnabled( i_8 );
+                break;
 
-               QFontMetrics fm(fnt);
-               QPointF pt(p.x(), p.y() - fm.ascent());
-               qt_format_text(fnt, QRectF(pt, size), flags, nullptr,
-                     str, nullptr, 0, nullptr, 0, painter);
+            case QPicturePrivate::PdcSetWindow:
+                if ( d->formatMajor <= 5 )
+                {
+                    s >> ir;
+                    painter->setWindow( ir );
+                }
+                else
+                {
+                    s >> r;
+                    painter->setWindow( r.toRect() );
+                }
 
-            } else {
-               qt_format_text(font, QRectF(p, QSizeF(1, 1)), Qt::TextSingleLine | Qt::TextDontClip, nullptr,
-                     str, nullptr, 0, nullptr, 0, painter);
-            }
+                break;
 
-            break;
-         }
+            case QPicturePrivate::PdcSetViewport:
+                if ( d->formatMajor <= 5 )
+                {
+                    s >> ir;
+                    painter->setViewport( ir );
+                }
+                else
+                {
+                    s >> r;
+                    painter->setViewport( r.toRect() );
+                }
 
-         case QPicturePrivate::PdcDrawPixmap: {
-            QPixmap pixmap;
-            if (d->formatMajor < 4) {
-               s >> ip >> pixmap;
-               painter->drawPixmap(ip, pixmap);
+                break;
 
-            } else if (d->formatMajor <= 5) {
-               s >> ir >> pixmap;
-               painter->drawPixmap(ir, pixmap);
+            case QPicturePrivate::PdcSetWXform:
+                s >> i_8;
+                painter->setMatrixEnabled( i_8 );
+                break;
 
-            } else {
-               QRectF sr;
-               if (d->in_memory_only) {
-                  int index;
-                  s >> r >> index >> sr;
-                  Q_ASSERT(index < d->pixmap_list.size());
-                  pixmap = d->pixmap_list.at(index);
-               } else {
-                  s >> r >> pixmap >> sr;
-               }
-               painter->drawPixmap(r, pixmap, sr);
-            }
-         }
-         break;
+            case QPicturePrivate::PdcSetWMatrix:
+                if ( d->formatMajor >= 8 )
+                {
+                    s >> matrix >> i_8;
+                }
+                else
+                {
+                    s >> wmatrix >> i_8;
+                    matrix = QTransform( wmatrix );
+                }
 
-         case QPicturePrivate::PdcDrawTiledPixmap: {
-            QPixmap pixmap;
-            if (d->in_memory_only) {
-               int index;
-               s >> r >> index >> p;
-               Q_ASSERT(index < d->pixmap_list.size());
-               pixmap = d->pixmap_list.at(index);
-            } else {
-               s >> r >> pixmap >> p;
-            }
-            painter->drawTiledPixmap(r, pixmap, p);
-         }
-         break;
+                // i_8 is always false due to updateXForm() in qpaintengine_pic.cpp
+                painter->setTransform( matrix * worldMatrix, i_8 );
+                break;
 
-         case QPicturePrivate::PdcDrawImage: {
-            QImage image;
+            case QPicturePrivate::PdcSetClip:
+                s >> i_8;
+                painter->setClipping( i_8 );
+                break;
 
-            if (d->formatMajor < 4) {
-               s >> p >> image;
-               painter->drawImage(p, image);
-            } else if (d->formatMajor <= 5) {
-               s >> ir >> image;
-               painter->drawImage(ir, image, QRect(0, 0, ir.width(), ir.height()));
-            } else {
-               QRectF sr;
-               if (d->in_memory_only) {
-                  int index;
-                  s >> r >> index >> sr >> ul;
-                  Q_ASSERT(index < d->image_list.size());
-                  image = d->image_list.at(index);
-               } else {
-                  s >> r >> image >> sr >> ul;
-               }
-               painter->drawImage(r, image, sr, Qt::ImageConversionFlags(ul));
-            }
-         }
-         break;
+            case QPicturePrivate::PdcSetClipRegion:
+                s >> rgn >> i_8;
 
-         case QPicturePrivate::PdcBegin:
-            s >> ul;                        // number of records
-            if (!exec(painter, s, ul)) {
-               return false;
-            }
-            break;
+                if ( d->formatMajor >= 9 )
+                {
+                    painter->setClipRegion( rgn, Qt::ClipOperation( i_8 ) );
+                }
+                else
+                {
+                    painter->setClipRegion( rgn );
+                }
 
-         case QPicturePrivate::PdcEnd:
-            if (nrecords == 0) {
-               return true;
-            }
-            break;
+                break;
 
-         case QPicturePrivate::PdcSave:
-            painter->save();
-            break;
-
-         case QPicturePrivate::PdcRestore:
-            painter->restore();
-            break;
-
-         case QPicturePrivate::PdcSetBkColor:
-            s >> color;
-            painter->setBackground(color);
-            break;
-
-         case QPicturePrivate::PdcSetBkMode:
-            s >> i_8;
-            painter->setBackgroundMode((Qt::BGMode)i_8);
-            break;
-
-         case QPicturePrivate::PdcSetROP: // NOP
-            s >> i_8;
-            break;
-
-         case QPicturePrivate::PdcSetBrushOrigin:
-            if (d->formatMajor <= 5) {
-               s >> ip;
-               painter->setBrushOrigin(ip);
-            } else {
-               s >> p;
-               painter->setBrushOrigin(p);
-            }
-            break;
-
-         case QPicturePrivate::PdcSetFont:
-            s >> font;
-            painter->setFont(font);
-            break;
-
-         case QPicturePrivate::PdcSetPen:
-            if (d->in_memory_only) {
-               int index;
-               s >> index;
-               Q_ASSERT(index < d->pen_list.size());
-               pen = d->pen_list.at(index);
-            } else {
-               s >> pen;
-            }
-            painter->setPen(pen);
-            break;
-
-         case QPicturePrivate::PdcSetBrush:
-            if (d->in_memory_only) {
-               int index;
-               s >> index;
-               Q_ASSERT(index < d->brush_list.size());
-               brush = d->brush_list.at(index);
-            } else {
-               s >> brush;
-            }
-            painter->setBrush(brush);
-            break;
-
-         case QPicturePrivate::PdcSetVXform:
-            s >> i_8;
-            painter->setViewTransformEnabled(i_8);
-            break;
-
-         case QPicturePrivate::PdcSetWindow:
-            if (d->formatMajor <= 5) {
-               s >> ir;
-               painter->setWindow(ir);
-            } else {
-               s >> r;
-               painter->setWindow(r.toRect());
-            }
-            break;
-
-         case QPicturePrivate::PdcSetViewport:
-            if (d->formatMajor <= 5) {
-               s >> ir;
-               painter->setViewport(ir);
-            } else {
-               s >> r;
-               painter->setViewport(r.toRect());
-            }
-            break;
-
-        case QPicturePrivate::PdcSetWXform:
-            s >> i_8;
-            painter->setMatrixEnabled(i_8);
-            break;
-
-        case QPicturePrivate::PdcSetWMatrix:
-            if (d->formatMajor >= 8) {
-               s >> matrix >> i_8;
-            } else {
-               s >> wmatrix >> i_8;
-               matrix = QTransform(wmatrix);
-            }
-            // i_8 is always false due to updateXForm() in qpaintengine_pic.cpp
-            painter->setTransform(matrix * worldMatrix, i_8);
-            break;
-
-         case QPicturePrivate::PdcSetClip:
-            s >> i_8;
-            painter->setClipping(i_8);
-            break;
-
-        case QPicturePrivate::PdcSetClipRegion:
-            s >> rgn >> i_8;
-            if (d->formatMajor >= 9) {
-               painter->setClipRegion(rgn, Qt::ClipOperation(i_8));
-            } else {
-               painter->setClipRegion(rgn);
-            }
-            break;
-
-         case QPicturePrivate::PdcSetClipPath: {
-            QPainterPath path;
-            s >> path >> i_8;
-            painter->setClipPath(path, Qt::ClipOperation(i_8));
-            break;
-         }
-
-         case QPicturePrivate::PdcSetRenderHint:
-            s >> ul;
-            painter->setRenderHint(QPainter::Antialiasing,
-               bool(ul & QPainter::Antialiasing));
-
-            painter->setRenderHint(QPainter::SmoothPixmapTransform,
-               bool(ul & QPainter::SmoothPixmapTransform));
-
-            break;
-
-         case QPicturePrivate::PdcSetCompositionMode:
-            s >> ul;
-            painter->setCompositionMode((QPainter::CompositionMode)ul);
-            break;
-
-         case QPicturePrivate::PdcSetClipEnabled:
-            s >> bl;
-            painter->setClipping(bl);
-            break;
-
-         case QPicturePrivate::PdcSetOpacity:
-            s >> dbl;
-            painter->setOpacity(qreal(dbl));
-            break;
-
-         default:
-            qWarning("QPicture::play() Invalid command %d", c);
-
-            if (len) {
-               // skip unknown command
-               s.device()->seek(s.device()->pos() + len);
+            case QPicturePrivate::PdcSetClipPath:
+            {
+                QPainterPath path;
+                s >> path >> i_8;
+                painter->setClipPath( path, Qt::ClipOperation( i_8 ) );
+                break;
             }
 
-      }
+            case QPicturePrivate::PdcSetRenderHint:
+                s >> ul;
+                painter->setRenderHint( QPainter::Antialiasing,
+                                        bool( ul & QPainter::Antialiasing ) );
+
+                painter->setRenderHint( QPainter::SmoothPixmapTransform,
+                                        bool( ul & QPainter::SmoothPixmapTransform ) );
+
+                break;
+
+            case QPicturePrivate::PdcSetCompositionMode:
+                s >> ul;
+                painter->setCompositionMode( ( QPainter::CompositionMode )ul );
+                break;
+
+            case QPicturePrivate::PdcSetClipEnabled:
+                s >> bl;
+                painter->setClipping( bl );
+                break;
+
+            case QPicturePrivate::PdcSetOpacity:
+                s >> dbl;
+                painter->setOpacity( qreal( dbl ) );
+                break;
+
+            default:
+                qWarning( "QPicture::play() Invalid command %d", c );
+
+                if ( len )
+                {
+                    // skip unknown command
+                    s.device()->seek( s.device()->pos() + len );
+                }
+
+        }
 
 #if defined(CS_SHOW_DEBUG_GUI_IMAGE)
-      qDebug("device->at(): %i, strm_pos: %i len: %i", (int)s.device()->pos(), strm_pos, len);
-      Q_ASSERT(qint32(s.device()->pos() - strm_pos) == len);
+        qDebug( "device->at(): %i, strm_pos: %i len: %i", ( int )s.device()->pos(), strm_pos, len );
+        Q_ASSERT( qint32( s.device()->pos() - strm_pos ) == len );
 #endif
 
-   }
+    }
 
-   return false;
+    return false;
 }
 
-int QPicture::metric(PaintDeviceMetric m) const
+int QPicture::metric( PaintDeviceMetric m ) const
 {
-   int val;
-   QRect brect = boundingRect();
+    int val;
+    QRect brect = boundingRect();
 
-   switch (m) {
-      case PdmWidth:
-         val = brect.width();
-         break;
+    switch ( m )
+    {
+        case PdmWidth:
+            val = brect.width();
+            break;
 
-      case PdmHeight:
-         val = brect.height();
-         break;
+        case PdmHeight:
+            val = brect.height();
+            break;
 
-      case PdmWidthMM:
-         val = int(25.4 / qt_defaultDpiX() * brect.width());
-         break;
+        case PdmWidthMM:
+            val = int( 25.4 / qt_defaultDpiX() * brect.width() );
+            break;
 
-      case PdmHeightMM:
-         val = int(25.4 / qt_defaultDpiY() * brect.height());
-         break;
+        case PdmHeightMM:
+            val = int( 25.4 / qt_defaultDpiY() * brect.height() );
+            break;
 
-      case PdmDpiX:
-      case PdmPhysicalDpiX:
-         val = qt_defaultDpiX();
-         break;
+        case PdmDpiX:
+        case PdmPhysicalDpiX:
+            val = qt_defaultDpiX();
+            break;
 
-      case PdmDpiY:
-      case PdmPhysicalDpiY:
-         val = qt_defaultDpiY();
-         break;
+        case PdmDpiY:
+        case PdmPhysicalDpiY:
+            val = qt_defaultDpiY();
+            break;
 
-      case PdmNumColors:
-         val = 16777216;
-         break;
+        case PdmNumColors:
+            val = 16777216;
+            break;
 
-      case PdmDepth:
-         val = 24;
-         break;
+        case PdmDepth:
+            val = 24;
+            break;
 
-      case PdmDevicePixelRatio:
-         val = 1;
-         break;
+        case PdmDevicePixelRatio:
+            val = 1;
+            break;
 
-      case PdmDevicePixelRatioScaled:
-         val = 1 * QPaintDevice::devicePixelRatioFScale();
-         break;
+        case PdmDevicePixelRatioScaled:
+            val = 1 * QPaintDevice::devicePixelRatioFScale();
+            break;
 
-      default:
-         val = 0;
-         qWarning("QPicture::metric() Invalid metric command");
-   }
-   return val;
+        default:
+            val = 0;
+            qWarning( "QPicture::metric() Invalid metric command" );
+    }
+
+    return val;
 }
 
-QPicture &QPicture::operator=(const QPicture &p)
+QPicture &QPicture::operator=( const QPicture &p )
 {
-   d_ptr = p.d_ptr;
-   return *this;
+    d_ptr = p.d_ptr;
+    return *this;
 }
 
 QPicturePrivate::QPicturePrivate()
-   : in_memory_only(false)
+    : in_memory_only( false )
 {
 }
 
-QPicturePrivate::QPicturePrivate(const QPicturePrivate &other)
-   : trecs(other.trecs), formatOk(other.formatOk), formatMinor(other.formatMinor), brect(other.brect),
-     override_rect(other.override_rect), in_memory_only(false)
+QPicturePrivate::QPicturePrivate( const QPicturePrivate &other )
+    : trecs( other.trecs ), formatOk( other.formatOk ), formatMinor( other.formatMinor ), brect( other.brect ),
+      override_rect( other.override_rect ), in_memory_only( false )
 {
-   pictb.setData(other.pictb.data().constData(), other.pictb.size());
+    pictb.setData( other.pictb.data().constData(), other.pictb.size() );
 
-   if (other.pictb.isOpen()) {
-      pictb.open(other.pictb.openMode());
-      pictb.seek(other.pictb.pos());
-   }
+    if ( other.pictb.isOpen() )
+    {
+        pictb.open( other.pictb.openMode() );
+        pictb.seek( other.pictb.pos() );
+    }
 }
 
 void QPicturePrivate::resetFormat()
 {
-   formatOk = false;
-   formatMajor = mfhdr_maj;
-   formatMinor = mfhdr_min;
+    formatOk = false;
+    formatMajor = mfhdr_maj;
+    formatMinor = mfhdr_min;
 }
 
 bool QPicturePrivate::checkFormat()
 {
-   resetFormat();
+    resetFormat();
 
-   // can not check anything in an empty buffer
-   if (pictb.size() == 0 || pictb.isOpen()) {
-      return false;
-   }
+    // can not check anything in an empty buffer
+    if ( pictb.size() == 0 || pictb.isOpen() )
+    {
+        return false;
+    }
 
-   pictb.open(QIODevice::ReadOnly);              // open buffer device
-   QDataStream s;
-   s.setDevice(&pictb);                          // attach data stream to buffer
+    pictb.open( QIODevice::ReadOnly );            // open buffer device
+    QDataStream s;
+    s.setDevice( &pictb );                        // attach data stream to buffer
 
-   char mf_id[4];                                // picture header tag
-   s.readRawData(mf_id, 4);                      // read actual tag
+    char mf_id[4];                                // picture header tag
+    s.readRawData( mf_id, 4 );                    // read actual tag
 
-   if (memcmp(mf_id, qt_mfhdr_tag, 4) != 0) {
-      // wrong header id
-      qWarning("QPicturePaintEngine::checkFormat() Incorrect header");
-      pictb.close();
+    if ( memcmp( mf_id, qt_mfhdr_tag, 4 ) != 0 )
+    {
+        // wrong header id
+        qWarning( "QPicturePaintEngine::checkFormat() Incorrect header" );
+        pictb.close();
 
-      return false;
-   }
+        return false;
+    }
 
-   int cs_start = sizeof(quint32);               // pos of checksum word
-   int data_start = cs_start + sizeof(quint16);
-   quint16 cs, ccs;
-   QByteArray buf = pictb.buffer();              // pointer to data
+    int cs_start = sizeof( quint32 );             // pos of checksum word
+    int data_start = cs_start + sizeof( quint16 );
+    quint16 cs, ccs;
+    QByteArray buf = pictb.buffer();              // pointer to data
 
-   s >> cs;                                      // read checksum
-   ccs = (quint16) qChecksum(buf.constData() + data_start, buf.size() - data_start);
+    s >> cs;                                      // read checksum
+    ccs = ( quint16 ) qChecksum( buf.constData() + data_start, buf.size() - data_start );
 
-   if (ccs != cs) {
-      qWarning("QPicturePaintEngine::checkFormat() Invalid checksum %x, expected %x", ccs, cs);
-      pictb.close();
+    if ( ccs != cs )
+    {
+        qWarning( "QPicturePaintEngine::checkFormat() Invalid checksum %x, expected %x", ccs, cs );
+        pictb.close();
 
-      return false;
-   }
+        return false;
+    }
 
-   quint16 major, minor;
-   s >> major >> minor;                          // read version number
+    quint16 major, minor;
+    s >> major >> minor;                          // read version number
 
-   if (major > mfhdr_maj) {
-      // new, incompatible version
-      qWarning("QPicturePaintEngine::checkFormat() Incompatible version %d.%d", major, minor);
-      pictb.close();
+    if ( major > mfhdr_maj )
+    {
+        // new, incompatible version
+        qWarning( "QPicturePaintEngine::checkFormat() Incompatible version %d.%d", major, minor );
+        pictb.close();
 
-      return false;
-   }
-   s.setVersion(major != 4 ? major : 3);
+        return false;
+    }
 
-   quint8 c, clen;
-   s >> c >> clen;
+    s.setVersion( major != 4 ? major : 3 );
 
-   if (c == QPicturePrivate::PdcBegin) {
-      if (! (major >= 1 && major <= 3)) {
-         qint32 l, t, w, h;
-         s >> l >> t >> w >> h;
-         brect = QRect(l, t, w, h);
-      }
+    quint8 c, clen;
+    s >> c >> clen;
 
-   } else {
-      qWarning("QPicturePaintEngine::checkFormat() Format error");
-      pictb.close();
-      return false;
-   }
-   pictb.close();
+    if ( c == QPicturePrivate::PdcBegin )
+    {
+        if ( ! ( major >= 1 && major <= 3 ) )
+        {
+            qint32 l, t, w, h;
+            s >> l >> t >> w >> h;
+            brect = QRect( l, t, w, h );
+        }
 
-   formatOk    = true;
-   formatMajor = major;
-   formatMinor = minor;
+    }
+    else
+    {
+        qWarning( "QPicturePaintEngine::checkFormat() Format error" );
+        pictb.close();
+        return false;
+    }
 
-   return true;
+    pictb.close();
+
+    formatOk    = true;
+    formatMajor = major;
+    formatMinor = minor;
+
+    return true;
 }
 
 QPaintEngine *QPicture::paintEngine() const
 {
-   if (!d_func()->paintEngine) {
-      const_cast<QPicture *>(this)->d_func()->paintEngine.reset(new QPicturePaintEngine);
-   }
-   return d_func()->paintEngine.data();
+    if ( !d_func()->paintEngine )
+    {
+        const_cast<QPicture *>( this )->d_func()->paintEngine.reset( new QPicturePaintEngine );
+    }
+
+    return d_func()->paintEngine.data();
 }
 
 #ifndef QT_NO_DATASTREAM
 
-QDataStream &operator<<(QDataStream &s, const QPicture &r)
+QDataStream &operator<<( QDataStream &s, const QPicture &r )
 {
-   quint32 size = r.d_func()->pictb.buffer().size();
-   s << size;
+    quint32 size = r.d_func()->pictb.buffer().size();
+    s << size;
 
-   // null picture ?
-   if (size == 0) {
-      return s;
-   }
+    // null picture ?
+    if ( size == 0 )
+    {
+        return s;
+    }
 
-   // just write the whole buffer to the stream
-   s.writeRawData (r.d_func()->pictb.buffer().constData(), r.d_func()->pictb.buffer().size());
-   return s;
+    // just write the whole buffer to the stream
+    s.writeRawData ( r.d_func()->pictb.buffer().constData(), r.d_func()->pictb.buffer().size() );
+    return s;
 }
 
-QDataStream &operator>>(QDataStream &s, QPicture &r)
+QDataStream &operator>>( QDataStream &s, QPicture &r )
 {
-   QDataStream sr;
+    QDataStream sr;
 
-   // "init"; this code is similar to the beginning of QPicture::cmd()
-   sr.setDevice(&r.d_func()->pictb);
-   sr.setVersion(r.d_func()->formatMajor);
+    // "init"; this code is similar to the beginning of QPicture::cmd()
+    sr.setDevice( &r.d_func()->pictb );
+    sr.setVersion( r.d_func()->formatMajor );
 
-   quint32 len;
-   s >> len;
+    quint32 len;
+    s >> len;
 
-   QByteArray data;
-   if (len > 0) {
-      data.resize(len);
-      s.readRawData(data.data(), len);
-   }
+    QByteArray data;
 
-   r.d_func()->pictb.setData(data);
-   r.d_func()->resetFormat();
-   return s;
+    if ( len > 0 )
+    {
+        data.resize( len );
+        s.readRawData( data.data(), len );
+    }
+
+    r.d_func()->pictb.setData( data );
+    r.d_func()->resetFormat();
+    return s;
 }
 #endif
 
 
 #ifndef QT_NO_PICTUREIO
 
-QString QPicture::pictureFormat(const QString &fileName)
+QString QPicture::pictureFormat( const QString &fileName )
 {
-   return QPictureIO::pictureFormat(fileName);
+    return QPictureIO::pictureFormat( fileName );
 }
 
 QStringList QPicture::inputFormats()
 {
-   return QPictureIO::inputFormats();
+    return QPictureIO::inputFormats();
 }
 
 QStringList QPicture::inputFormatList()
 {
-   return QPictureIO::inputFormats();
+    return QPictureIO::inputFormats();
 }
 
 QStringList QPicture::outputFormatList()
 {
-   return QPictureIO::outputFormats();
+    return QPictureIO::outputFormats();
 }
 
 QStringList QPicture::outputFormats()
 {
-   return QPictureIO::outputFormats();
+    return QPictureIO::outputFormats();
 }
 
-struct QPictureIOData {
-   QPicture        pi;                                // picture
-   int             iostat;                            // IO status
-   QString         frmt;                              // picture format
-   QIODevice      *iodev;                             // IO device
-   QString         fname;                             // file name
-   QString         descr;                             // picture description
-   const char     *parameters;
-   int             quality;
-   float           gamma;
+struct QPictureIOData
+{
+    QPicture        pi;                                // picture
+    int             iostat;                            // IO status
+    QString         frmt;                              // picture format
+    QIODevice      *iodev;                             // IO device
+    QString         fname;                             // file name
+    QString         descr;                             // picture description
+    const char     *parameters;
+    int             quality;
+    float           gamma;
 };
 
 QPictureIO::QPictureIO()
 {
-   init();
+    init();
 }
 
-QPictureIO::QPictureIO(QIODevice *ioDevice, const QString &format)
+QPictureIO::QPictureIO( QIODevice *ioDevice, const QString &format )
 {
-   init();
-   d->iodev = ioDevice;
-   d->frmt  = format;
+    init();
+    d->iodev = ioDevice;
+    d->frmt  = format;
 }
 
-QPictureIO::QPictureIO(const QString &fileName, const QString &format)
+QPictureIO::QPictureIO( const QString &fileName, const QString &format )
 {
-   init();
-   d->fname = fileName;
-   d->frmt  = format;
+    init();
+    d->fname = fileName;
+    d->frmt  = format;
 }
 
 void QPictureIO::init()
 {
-   d = new QPictureIOData();
-   d->parameters = nullptr;
-   d->quality    = -1; // default quality of the current format
-   d->gamma      = 0.0f;
-   d->iostat     = 0;
-   d->iodev      = nullptr;
+    d = new QPictureIOData();
+    d->parameters = nullptr;
+    d->quality    = -1; // default quality of the current format
+    d->gamma      = 0.0f;
+    d->iostat     = 0;
+    d->iodev      = nullptr;
 }
 
 QPictureIO::~QPictureIO()
 {
-   if (d->parameters) {
-      delete [] d->parameters;
-   }
+    if ( d->parameters )
+    {
+        delete [] d->parameters;
+    }
 
-   delete d;
+    delete d;
 }
 
 class QPictureHandler
 {
- public:
-   enum TMode {
-      Untranslated = 0,
-      TranslateIn,
-      TranslateInOut
-   };
+public:
+    enum TMode
+    {
+        Untranslated = 0,
+        TranslateIn,
+        TranslateInOut
+    };
 
-   QPictureHandler(const QString &f, const QString &h, const QString &fl,
-      picture_io_handler r, picture_io_handler w);
+    QPictureHandler( const QString &f, const QString &h, const QString &fl,
+                     picture_io_handler r, picture_io_handler w );
 
-   QString  format;                           // picture format
-   QRegularExpression  header;                           // picture header pattern
+    QString  format;                           // picture format
+    QRegularExpression  header;                           // picture header pattern
 
-   picture_io_handler  read_picture;          // picture read function
-   picture_io_handler  write_picture;         // picture write function
-   bool                obsolete;              // support not "published"
+    picture_io_handler  read_picture;          // picture read function
+    picture_io_handler  write_picture;         // picture write function
+    bool                obsolete;              // support not "published"
 
-   TMode text_mode;
+    TMode text_mode;
 };
 
-QPictureHandler::QPictureHandler(const QString &f, const QString &h, const QString &fl,
-   picture_io_handler r, picture_io_handler w)
-   : format(f), header(h)
+QPictureHandler::QPictureHandler( const QString &f, const QString &h, const QString &fl,
+                                  picture_io_handler r, picture_io_handler w )
+    : format( f ), header( h )
 {
-   text_mode = Untranslated;
+    text_mode = Untranslated;
 
-   if (fl.contains('t')) {
-      text_mode = TranslateIn;
+    if ( fl.contains( 't' ) )
+    {
+        text_mode = TranslateIn;
 
-   } else if (fl.contains('T')) {
-      text_mode = TranslateInOut;
+    }
+    else if ( fl.contains( 'T' ) )
+    {
+        text_mode = TranslateInOut;
 
-   }
+    }
 
-   obsolete      = fl.contains('O');
-   read_picture  = r;
-   write_picture = w;
+    obsolete      = fl.contains( 'O' );
+    read_picture  = r;
+    write_picture = w;
 }
 
 using QPHList  = QList<QPictureHandler *>;
 
 static QPHList *pictureHandlers()
 {
-   static QPHList retval;
-   return &retval;
+    static QPHList retval;
+    return &retval;
 }
 
 void qt_init_picture_plugins()
 {
-   static QMutex mutex;
-   QMutexLocker locker(&mutex);
+    static QMutex mutex;
+    QMutexLocker locker( &mutex );
 
-   static QFactoryLoader loader(QPictureFormatInterface_ID, "/pictureformats");
-   auto keySet = loader.keySet();
+    static QFactoryLoader loader( QPictureFormatInterface_ID, "/pictureformats" );
+    auto keySet = loader.keySet();
 
-   for (auto item : keySet) {
-      if (QPictureFormatPlugin *format = qobject_cast<QPictureFormatPlugin *>(loader.instance(item))) {
-         format->installIOHandler(item);
-      }
-   }
+    for ( auto item : keySet )
+    {
+        if ( QPictureFormatPlugin *format = qobject_cast<QPictureFormatPlugin *>( loader.instance( item ) ) )
+        {
+            format->installIOHandler( item );
+        }
+    }
 }
 
 static void cleanup()
 {
-   // make sure that picture handlers are delete before plugin manager
-   if (QPHList *list = pictureHandlers()) {
-      qDeleteAll(*list);
-      list->clear();
-   }
+    // make sure that picture handlers are delete before plugin manager
+    if ( QPHList *list = pictureHandlers() )
+    {
+        qDeleteAll( *list );
+        list->clear();
+    }
 }
 
 void qt_init_picture_handlers()
 {
-   // initialize picture handlers
-   static QAtomicInt done = 0;
+    // initialize picture handlers
+    static QAtomicInt done = 0;
 
-   int expected = 0;
+    int expected = 0;
 
-   if (done.compareExchange(expected, 1, std::memory_order_relaxed)) {
-      qAddPostRoutine(cleanup);
-   }
+    if ( done.compareExchange( expected, 1, std::memory_order_relaxed ) )
+    {
+        qAddPostRoutine( cleanup );
+    }
 }
 
-static QPictureHandler *get_picture_handler(const QString &format)
+static QPictureHandler *get_picture_handler( const QString &format )
 {
-   // get pointer to handler
-   qt_init_picture_handlers();
-   qt_init_picture_plugins();
+    // get pointer to handler
+    qt_init_picture_handlers();
+    qt_init_picture_plugins();
 
-   if (QPHList *list = pictureHandlers()) {
-      for (int i = 0; i < list->size(); ++i) {
-         if (list->at(i)->format == format) {
-            return list->at(i);
-         }
-      }
-   }
+    if ( QPHList *list = pictureHandlers() )
+    {
+        for ( int i = 0; i < list->size(); ++i )
+        {
+            if ( list->at( i )->format == format )
+            {
+                return list->at( i );
+            }
+        }
+    }
 
-   return nullptr;         // no such handler
+    return nullptr;         // no such handler
 }
 
-void QPictureIO::defineIOHandler(const QString &format, const QString &header, const char *flags,
-   picture_io_handler readPicture, picture_io_handler writePicture)
+void QPictureIO::defineIOHandler( const QString &format, const QString &header, const char *flags,
+                                  picture_io_handler readPicture, picture_io_handler writePicture )
 {
-   qt_init_picture_handlers();
+    qt_init_picture_handlers();
 
-   if (QPHList *list = pictureHandlers()) {
-      QPictureHandler *p;
-      p = new QPictureHandler(format, header, QByteArray(flags), readPicture, writePicture);
-      list->prepend(p);
-   }
+    if ( QPHList *list = pictureHandlers() )
+    {
+        QPictureHandler *p;
+        p = new QPictureHandler( format, header, QByteArray( flags ), readPicture, writePicture );
+        list->prepend( p );
+    }
 }
 
 const QPicture &QPictureIO::picture() const
 {
-   return d->pi;
+    return d->pi;
 }
 
 int QPictureIO::status() const
 {
-   return d->iostat;
+    return d->iostat;
 }
 
 QString QPictureIO::format() const
 {
-   return d->frmt;
+    return d->frmt;
 }
 
 QIODevice *QPictureIO::ioDevice() const
 {
-   return d->iodev;
+    return d->iodev;
 }
 
 QString QPictureIO::fileName() const
 {
-   return d->fname;
+    return d->fname;
 }
 
 QString QPictureIO::description() const
 {
-   return d->descr;
+    return d->descr;
 }
 
-void QPictureIO::setPicture(const QPicture &picture)
+void QPictureIO::setPicture( const QPicture &picture )
 {
-   d->pi = picture;
+    d->pi = picture;
 }
 
-void QPictureIO::setStatus(int status)
+void QPictureIO::setStatus( int status )
 {
-   d->iostat = status;
+    d->iostat = status;
 }
 
-void QPictureIO::setFormat(const QString &format)
+void QPictureIO::setFormat( const QString &format )
 {
-   d->frmt = format;
+    d->frmt = format;
 }
 
-void QPictureIO::setIODevice(QIODevice *ioDevice)
+void QPictureIO::setIODevice( QIODevice *ioDevice )
 {
-   d->iodev = ioDevice;
+    d->iodev = ioDevice;
 }
 
-void QPictureIO::setFileName(const QString &fileName)
+void QPictureIO::setFileName( const QString &fileName )
 {
-   d->fname = fileName;
+    d->fname = fileName;
 }
 
 int QPictureIO::quality() const
 {
-   return d->quality;
+    return d->quality;
 }
 
-void QPictureIO::setQuality(int q)
+void QPictureIO::setQuality( int q )
 {
-   d->quality = q;
+    d->quality = q;
 }
 
 const char *QPictureIO::parameters() const
 {
-   return d->parameters;
+    return d->parameters;
 }
 
-void QPictureIO::setParameters(const char *parameters)
+void QPictureIO::setParameters( const char *parameters )
 {
-   if (d->parameters) {
-      delete [] d->parameters;
-   }
-   d->parameters = qstrdup(parameters);
+    if ( d->parameters )
+    {
+        delete [] d->parameters;
+    }
+
+    d->parameters = qstrdup( parameters );
 }
 
-void QPictureIO::setGamma(float gamma)
+void QPictureIO::setGamma( float gamma )
 {
-   d->gamma = gamma;
+    d->gamma = gamma;
 }
 
 float QPictureIO::gamma() const
 {
-   return d->gamma;
+    return d->gamma;
 }
 
-void QPictureIO::setDescription(const QString &description)
+void QPictureIO::setDescription( const QString &description )
 {
-   d->descr = description;
+    d->descr = description;
 }
 
-QString QPictureIO::pictureFormat(const QString &fileName)
+QString QPictureIO::pictureFormat( const QString &fileName )
 {
-   QFile file(fileName);
-   QString format;
+    QFile file( fileName );
+    QString format;
 
-   if (! file.open(QIODevice::ReadOnly)) {
-      return format;
-   }
+    if ( ! file.open( QIODevice::ReadOnly ) )
+    {
+        return format;
+    }
 
-   format = pictureFormat(&file);
-   file.close();
+    format = pictureFormat( &file );
+    file.close();
 
-   return format;
+    return format;
 }
 
-QString QPictureIO::pictureFormat(QIODevice *d)
+QString QPictureIO::pictureFormat( QIODevice *d )
 {
-   // if you change this change the documentation for defineIOHandler()
-   const int buflen = 14;
+    // if you change this change the documentation for defineIOHandler()
+    const int buflen = 14;
 
-   char buf[buflen];
-   char buf2[buflen];
-   qt_init_picture_handlers();
-   qt_init_picture_plugins();
-   int pos = d->pos();                      // save position
-   int rdlen = d->read(buf, buflen);        // read a few bytes
+    char buf[buflen];
+    char buf2[buflen];
+    qt_init_picture_handlers();
+    qt_init_picture_plugins();
+    int pos = d->pos();                      // save position
+    int rdlen = d->read( buf, buflen );      // read a few bytes
 
-   QString format;
+    QString format;
 
-   if (rdlen != buflen) {
-      return format;
-   }
+    if ( rdlen != buflen )
+    {
+        return format;
+    }
 
-   memcpy(buf2, buf, buflen);
+    memcpy( buf2, buf, buflen );
 
-   for (int n = 0; n < rdlen; n++) {
-      if (buf[n] == '\0') {
-         buf[n] = '\001';
-      }
-   }
+    for ( int n = 0; n < rdlen; n++ )
+    {
+        if ( buf[n] == '\0' )
+        {
+            buf[n] = '\001';
+        }
+    }
 
-   if (rdlen > 0) {
-      buf[rdlen - 1] = '\0';
+    if ( rdlen > 0 )
+    {
+        buf[rdlen - 1] = '\0';
 
-      QString bufStr = QString::fromLatin1(buf);
+        QString bufStr = QString::fromLatin1( buf );
 
-      if (QPHList *list = pictureHandlers()) {
-         for (int i = 0; i < list->size(); ++i) {
+        if ( QPHList *list = pictureHandlers() )
+        {
+            for ( int i = 0; i < list->size(); ++i )
+            {
 
-            if (list->at(i)->header.match(bufStr).hasMatch()) {
-               // try match with headers
-               format = list->at(i)->format;
-               break;
+                if ( list->at( i )->header.match( bufStr ).hasMatch() )
+                {
+                    // try match with headers
+                    format = list->at( i )->format;
+                    break;
+                }
             }
-         }
 
-      }
-   }
+        }
+    }
 
-   d->seek(pos);                                // restore position
-   return format;
+    d->seek( pos );                              // restore position
+    return format;
 }
 
 QStringList QPictureIO::inputFormats()
 {
-   QStringList result;
+    QStringList result;
 
-   qt_init_picture_handlers();
-   qt_init_picture_plugins();
+    qt_init_picture_handlers();
+    qt_init_picture_plugins();
 
-   if (QPHList *list = pictureHandlers()) {
-      for (int i = 0; i < list->size(); ++i) {
-         QPictureHandler *p = list->at(i);
+    if ( QPHList *list = pictureHandlers() )
+    {
+        for ( int i = 0; i < list->size(); ++i )
+        {
+            QPictureHandler *p = list->at( i );
 
-         if (p->read_picture && !p->obsolete  && !result.contains(p->format)) {
-            result.append(p->format);
-         }
-      }
-   }
+            if ( p->read_picture && !p->obsolete  && !result.contains( p->format ) )
+            {
+                result.append( p->format );
+            }
+        }
+    }
 
-   std::sort(result.begin(), result.end());
+    std::sort( result.begin(), result.end() );
 
-   return result;
+    return result;
 }
 
 QStringList QPictureIO::outputFormats()
 {
-   qt_init_picture_handlers();
-   qt_init_picture_plugins();
+    qt_init_picture_handlers();
+    qt_init_picture_plugins();
 
-   QStringList result;
+    QStringList result;
 
-   if (QPHList *list = pictureHandlers()) {
-      for (int i = 0; i < list->size(); ++i) {
-         QPictureHandler *p = list->at(i);
+    if ( QPHList *list = pictureHandlers() )
+    {
+        for ( int i = 0; i < list->size(); ++i )
+        {
+            QPictureHandler *p = list->at( i );
 
-         if (p->write_picture && !p->obsolete && !result.contains(p->format)) {
-            result.append(p->format);
-         }
-      }
-   }
+            if ( p->write_picture && !p->obsolete && !result.contains( p->format ) )
+            {
+                result.append( p->format );
+            }
+        }
+    }
 
-   return result;
+    return result;
 }
 
 bool QPictureIO::read()
 {
-   QFile            file;
-   QString          picture_format;
-   QPictureHandler  *h;
+    QFile            file;
+    QString          picture_format;
+    QPictureHandler  *h;
 
-   if (d->iodev) {                                     // read from io device
-      // ok, already open
+    if ( d->iodev )                                     // read from io device
+    {
+        // ok, already open
 
-   } else if (!d->fname.isEmpty()) {                   // read from file
-      file.setFileName(d->fname);
+    }
+    else if ( !d->fname.isEmpty() )                     // read from file
+    {
+        file.setFileName( d->fname );
 
-      if (! file.open(QIODevice::ReadOnly)) {
-         return false;   // cannot open file
-      }
-      d->iodev = &file;
+        if ( ! file.open( QIODevice::ReadOnly ) )
+        {
+            return false;   // cannot open file
+        }
 
-   } else {                                            // no file name or io device
-      return false;
-   }
+        d->iodev = &file;
 
-   if (d->frmt.isEmpty()) {
-      // try to guess format
-      picture_format = pictureFormat(d->iodev);        // get picture format
+    }
+    else                                                // no file name or io device
+    {
+        return false;
+    }
 
-      if (picture_format.isEmpty()) {
-         if (file.isOpen()) {                          // unknown format
-            file.close();
-            d->iodev = nullptr;
-         }
+    if ( d->frmt.isEmpty() )
+    {
+        // try to guess format
+        picture_format = pictureFormat( d->iodev );      // get picture format
 
-         return false;
-      }
+        if ( picture_format.isEmpty() )
+        {
+            if ( file.isOpen() )                          // unknown format
+            {
+                file.close();
+                d->iodev = nullptr;
+            }
 
-   } else {
-      picture_format = d->frmt;
-   }
+            return false;
+        }
 
-   h = get_picture_handler(picture_format);
+    }
+    else
+    {
+        picture_format = d->frmt;
+    }
 
-   if (file.isOpen()) {
+    h = get_picture_handler( picture_format );
+
+    if ( file.isOpen() )
+    {
 
 #if ! defined(Q_OS_UNIX)
-      if (h && h->text_mode) {                         // reopen in translated mode
-         file.close();
-         file.open(QIODevice::ReadOnly | QIODevice::Text);
-      } else
+
+        if ( h && h->text_mode )                         // reopen in translated mode
+        {
+            file.close();
+            file.open( QIODevice::ReadOnly | QIODevice::Text );
+        }
+        else
 #endif
 
-         file.seek(0);                                 // position to start
-   }
+            file.seek( 0 );                               // position to start
+    }
 
-   d->iostat = 1;                                      // assume error
+    d->iostat = 1;                                      // assume error
 
-   if (h && h->read_picture) {
-      (*h->read_picture)(this);
-   }
+    if ( h && h->read_picture )
+    {
+        ( *h->read_picture )( this );
+    }
 
-   if (file.isOpen()) {                                // picture was read using file
-      file.close();
-      d->iodev = nullptr;
-   }
+    if ( file.isOpen() )                                // picture was read using file
+    {
+        file.close();
+        d->iodev = nullptr;
+    }
 
-   return d->iostat == 0;                              // picture successfully read?
+    return d->iostat == 0;                              // picture successfully read?
 }
 
 bool QPictureIO::write()
 {
-   if (d->frmt.isEmpty()) {
-      return false;
-   }
+    if ( d->frmt.isEmpty() )
+    {
+        return false;
+    }
 
-   QPictureHandler *h = get_picture_handler(d->frmt);
-   if (! h || ! h->write_picture) {
-      qWarning("QPictureIO::write() No picture format handler for %s", csPrintable(format()) );
-      return false;
-   }
+    QPictureHandler *h = get_picture_handler( d->frmt );
 
-   QFile file;
-   if (! d->iodev && ! d->fname.isEmpty()) {
-      file.setFileName(d->fname);
-      bool translate = h->text_mode == QPictureHandler::TranslateInOut;
+    if ( ! h || ! h->write_picture )
+    {
+        qWarning( "QPictureIO::write() No picture format handler for %s", csPrintable( format() ) );
+        return false;
+    }
 
-      QIODevice::OpenMode fmode = translate ? QIODevice::WriteOnly | QIODevice::Text : QIODevice::OpenMode(
-            QIODevice::WriteOnly);
+    QFile file;
 
-      if (! file.open(fmode)) {
-         // could not create file
-         return false;
-      }
+    if ( ! d->iodev && ! d->fname.isEmpty() )
+    {
+        file.setFileName( d->fname );
+        bool translate = h->text_mode == QPictureHandler::TranslateInOut;
 
-      d->iodev = &file;
-   }
+        QIODevice::OpenMode fmode = translate ? QIODevice::WriteOnly | QIODevice::Text : QIODevice::OpenMode(
+                                        QIODevice::WriteOnly );
 
-   d->iostat = 1;
-   (*h->write_picture)(this);
+        if ( ! file.open( fmode ) )
+        {
+            // could not create file
+            return false;
+        }
 
-   if (file.isOpen()) {
-      // picture was written using file
-      file.close();
-      d->iodev = nullptr;
-   }
+        d->iodev = &file;
+    }
 
-   return d->iostat == 0;                   // picture successfully written?
+    d->iostat = 1;
+    ( *h->write_picture )( this );
+
+    if ( file.isOpen() )
+    {
+        // picture was written using file
+        file.close();
+        d->iodev = nullptr;
+    }
+
+    return d->iostat == 0;                   // picture successfully written?
 }
 #endif // QT_NO_PICTUREIO
 

@@ -25,21 +25,23 @@
 
 class QKeyEvent;
 
-namespace WebCore {
+namespace WebCore
+{
 
 class HTMLVideoElement;
 
-class FullScreenVideoWindow: public QWidget {
-Q_OBJECT
+class FullScreenVideoWindow: public QWidget
+{
+    Q_OBJECT
 public:
     FullScreenVideoWindow();
-    void setVideoElement(HTMLVideoElement*);
+    void setVideoElement( HTMLVideoElement * );
 signals:
     void closed();
 protected:
-    void closeEvent(QCloseEvent*);
-    void keyPressEvent(QKeyEvent*);
-    bool event(QEvent*);
+    void closeEvent( QCloseEvent * );
+    void keyPressEvent( QKeyEvent * );
+    bool event( QEvent * );
 
 public slots:
     void showFullScreen();
@@ -50,7 +52,7 @@ private slots:
 private:
     void showCursor();
     QTimer m_cursorTimer;
-    HTMLVideoElement* m_mediaElement;
+    HTMLVideoElement *m_mediaElement;
 };
 
 

@@ -6,13 +6,13 @@
  * are met:
  *
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Apple Computer, Inc. ("Apple") nor the names of
  *     its contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
+ *     from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY APPLE AND ITS CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -33,7 +33,8 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class DOMWindow;
 class Frame;
@@ -41,46 +42,53 @@ class KURL;
 
 typedef int ExceptionCode;
 
-class Location : public RefCounted<Location> {
+class Location : public RefCounted<Location>
+{
 public:
-    static PassRefPtr<Location> create(Frame* frame) { return adoptRef(new Location(frame)); }
+    static PassRefPtr<Location> create( Frame *frame )
+    {
+        return adoptRef( new Location( frame ) );
+    }
 
-    Frame* frame() const { return m_frame; }
+    Frame *frame() const
+    {
+        return m_frame;
+    }
     void disconnectFrame();
 
-    void setHref(const String&, DOMWindow* activeWindow, DOMWindow* firstWindow);
+    void setHref( const String &, DOMWindow *activeWindow, DOMWindow *firstWindow );
     String href() const;
 
-    void assign(const String&, DOMWindow* activeWindow, DOMWindow* firstWindow);
-    void replace(const String&, DOMWindow* activeWindow, DOMWindow* firstWindow);
-    void reload(DOMWindow* activeWindow);
+    void assign( const String &, DOMWindow *activeWindow, DOMWindow *firstWindow );
+    void replace( const String &, DOMWindow *activeWindow, DOMWindow *firstWindow );
+    void reload( DOMWindow *activeWindow );
 
-    void setProtocol(const String&, DOMWindow* activeWindow, DOMWindow* firstWindow, ExceptionCode&);
+    void setProtocol( const String &, DOMWindow *activeWindow, DOMWindow *firstWindow, ExceptionCode & );
     String protocol() const;
-    void setHost(const String&, DOMWindow* activeWindow, DOMWindow* firstWindow); 
+    void setHost( const String &, DOMWindow *activeWindow, DOMWindow *firstWindow );
     String host() const;
-    void setHostname(const String&, DOMWindow* activeWindow, DOMWindow* firstWindow); 
+    void setHostname( const String &, DOMWindow *activeWindow, DOMWindow *firstWindow );
     String hostname() const;
-    void setPort(const String&, DOMWindow* activeWindow, DOMWindow* firstWindow); 
+    void setPort( const String &, DOMWindow *activeWindow, DOMWindow *firstWindow );
     String port() const;
-    void setPathname(const String&, DOMWindow* activeWindow, DOMWindow* firstWindow); 
+    void setPathname( const String &, DOMWindow *activeWindow, DOMWindow *firstWindow );
     String pathname() const;
-    void setSearch(const String&, DOMWindow* activeWindow, DOMWindow* firstWindow); 
+    void setSearch( const String &, DOMWindow *activeWindow, DOMWindow *firstWindow );
     String search() const;
-    void setHash(const String&, DOMWindow* activeWindow, DOMWindow* firstWindow); 
+    void setHash( const String &, DOMWindow *activeWindow, DOMWindow *firstWindow );
     String hash() const;
     String origin() const;
 
     String toString() const;
 
-    String getParameter(const String&) const;
+    String getParameter( const String & ) const;
 
 private:
-    Location(Frame*);
+    Location( Frame * );
 
-    const KURL& url() const;
+    const KURL &url() const;
 
-    Frame* m_frame;
+    Frame *m_frame;
 };
 
 } // namespace WebCore

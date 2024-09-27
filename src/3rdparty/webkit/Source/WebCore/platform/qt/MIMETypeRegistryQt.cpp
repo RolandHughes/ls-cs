@@ -32,14 +32,17 @@
 #include <wtf/Assertions.h>
 #include <wtf/MainThread.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-struct ExtensionMap {
-    const char* extension;
-    const char* mimeType;
+struct ExtensionMap
+{
+    const char *extension;
+    const char *mimeType;
 };
 
-static const ExtensionMap extensionMap[] = {
+static const ExtensionMap extensionMap[] =
+{
     { "bmp", "image/bmp" },
     { "css", "text/css" },
     { "gif", "image/gif" },
@@ -71,26 +74,31 @@ static const ExtensionMap extensionMap[] = {
     { 0, 0 }
 };
 
-String MIMETypeRegistry::getMIMETypeForExtension(const String &ext)
+String MIMETypeRegistry::getMIMETypeForExtension( const String &ext )
 {
-    ASSERT(isMainThread());
+    ASSERT( isMainThread() );
 
     String s = ext.lower();
 
     const ExtensionMap *e = extensionMap;
-    while (e->extension) {
-        if (s == e->extension)
+
+    while ( e->extension )
+    {
+        if ( s == e->extension )
+        {
             return e->mimeType;
+        }
+
         ++e;
     }
 
     return String();
 }
 
-bool MIMETypeRegistry::isApplicationPluginMIMEType(const String& mimeType)
+bool MIMETypeRegistry::isApplicationPluginMIMEType( const String &mimeType )
 {
-    return mimeType.startsWith("application/x-qt-plugin", false)
-        || mimeType.startsWith("application/x-qt-styled-widget", false);
+    return mimeType.startsWith( "application/x-qt-plugin", false )
+           || mimeType.startsWith( "application/x-qt-styled-widget", false );
 }
 
 }

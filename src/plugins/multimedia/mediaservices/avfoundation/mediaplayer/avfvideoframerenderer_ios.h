@@ -71,27 +71,27 @@ typedef CVOpenGLTextureRef CVOGLTextureRef;
 
 class AVFVideoFrameRenderer : public QObject
 {
- public:
-   AVFVideoFrameRenderer(QAbstractVideoSurface *surface, QObject *parent = nullptr);
+public:
+    AVFVideoFrameRenderer( QAbstractVideoSurface *surface, QObject *parent = nullptr );
 
-   virtual ~AVFVideoFrameRenderer();
+    virtual ~AVFVideoFrameRenderer();
 
-   void setPlayerLayer(AVPlayerLayer *layer);
+    void setPlayerLayer( AVPlayerLayer *layer );
 
-   CVOGLTextureRef renderLayerToTexture(AVPlayerLayer *layer);
-   QImage renderLayerToImage(AVPlayerLayer *layer);
+    CVOGLTextureRef renderLayerToTexture( AVPlayerLayer *layer );
+    QImage renderLayerToImage( AVPlayerLayer *layer );
 
- private:
-   void initRenderer();
-   CVPixelBufferRef copyPixelBufferFromLayer(AVPlayerLayer *layer, size_t &width, size_t &height);
-   CVOGLTextureRef createCacheTextureFromLayer(AVPlayerLayer *layer, size_t &width, size_t &height);
+private:
+    void initRenderer();
+    CVPixelBufferRef copyPixelBufferFromLayer( AVPlayerLayer *layer, size_t &width, size_t &height );
+    CVOGLTextureRef createCacheTextureFromLayer( AVPlayerLayer *layer, size_t &width, size_t &height );
 
-   QOpenGLContext *m_glContext;
-   QOffscreenSurface *m_offscreenSurface;
-   QAbstractVideoSurface *m_surface;
-   CVOGLTextureCacheRef m_textureCache;
-   AVPlayerItemVideoOutput *m_videoOutput;
-   bool m_isContextShared;
+    QOpenGLContext *m_glContext;
+    QOffscreenSurface *m_offscreenSurface;
+    QAbstractVideoSurface *m_surface;
+    CVOGLTextureCacheRef m_textureCache;
+    AVPlayerItemVideoOutput *m_videoOutput;
+    bool m_isContextShared;
 };
 
 #endif

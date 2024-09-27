@@ -26,16 +26,17 @@
 
 #include <qdelegatingdynamiccontext_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 class CurrentItemContext : public DelegatingDynamicContext
 {
- public:
-   CurrentItemContext(const Item &item, const DynamicContext::Ptr &prevContext);
+public:
+    CurrentItemContext( const Item &item, const DynamicContext::Ptr &prevContext );
 
-   Item currentItem() const override;
+    Item currentItem() const override;
 
- private:
-   const Item m_currentItem;
+private:
+    const Item m_currentItem;
 };
 }
 

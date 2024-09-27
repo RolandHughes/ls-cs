@@ -31,12 +31,13 @@
 
 using namespace std;
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
-RenderMeter::RenderMeter(HTMLMeterElement* element)
-    : RenderBlock(element)
+RenderMeter::RenderMeter( HTMLMeterElement *element )
+    : RenderBlock( element )
 {
 }
 
@@ -47,18 +48,18 @@ RenderMeter::~RenderMeter()
 void RenderMeter::computeLogicalWidth()
 {
     RenderBox::computeLogicalWidth();
-    setWidth(theme()->meterSizeForBounds(this, frameRect()).width());
+    setWidth( theme()->meterSizeForBounds( this, frameRect() ).width() );
 }
 
 void RenderMeter::computeLogicalHeight()
 {
     RenderBox::computeLogicalHeight();
-    setHeight(theme()->meterSizeForBounds(this, frameRect()).height());
+    setHeight( theme()->meterSizeForBounds( this, frameRect() ).height() );
 }
 
 double RenderMeter::valueRatio() const
 {
-    return static_cast<HTMLMeterElement*>(node())->valueRatio();
+    return static_cast<HTMLMeterElement *>( node() )->valueRatio();
 }
 
 } // namespace WebCore

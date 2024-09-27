@@ -36,7 +36,8 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class AnimationList;
 class CSSStyleSelector;
@@ -55,9 +56,10 @@ struct StyleDashboardRegion;
 #endif
 
 // Page size type.
-// StyleRareNonInheritedData::m_pageSize is meaningful only when 
+// StyleRareNonInheritedData::m_pageSize is meaningful only when
 // StyleRareNonInheritedData::m_pageSizeType is PAGE_SIZE_RESOLVED.
-enum PageSizeType {
+enum PageSizeType
+{
     PAGE_SIZE_AUTO, // size: auto
     PAGE_SIZE_AUTO_LANDSCAPE, // size: landscape
     PAGE_SIZE_AUTO_PORTRAIT, // size: portrait
@@ -67,20 +69,30 @@ enum PageSizeType {
 // This struct is for rarely used non-inherited CSS3, CSS2, and WebKit-specific properties.
 // By grouping them together, we save space, and only allocate this object when someone
 // actually uses one of these properties.
-class StyleRareNonInheritedData : public RefCounted<StyleRareNonInheritedData> {
+class StyleRareNonInheritedData : public RefCounted<StyleRareNonInheritedData>
+{
 public:
-    static PassRefPtr<StyleRareNonInheritedData> create() { return adoptRef(new StyleRareNonInheritedData); }
-    PassRefPtr<StyleRareNonInheritedData> copy() const { return adoptRef(new StyleRareNonInheritedData(*this)); }
+    static PassRefPtr<StyleRareNonInheritedData> create()
+    {
+        return adoptRef( new StyleRareNonInheritedData );
+    }
+    PassRefPtr<StyleRareNonInheritedData> copy() const
+    {
+        return adoptRef( new StyleRareNonInheritedData( *this ) );
+    }
     ~StyleRareNonInheritedData();
-    
-    bool operator==(const StyleRareNonInheritedData&) const;
-    bool operator!=(const StyleRareNonInheritedData& o) const { return !(*this == o); }
 
-    bool contentDataEquivalent(const StyleRareNonInheritedData& o) const;
-    bool shadowDataEquivalent(const StyleRareNonInheritedData& o) const;
-    bool reflectionDataEquivalent(const StyleRareNonInheritedData& o) const;
-    bool animationDataEquivalent(const StyleRareNonInheritedData&) const;
-    bool transitionDataEquivalent(const StyleRareNonInheritedData&) const;
+    bool operator==( const StyleRareNonInheritedData & ) const;
+    bool operator!=( const StyleRareNonInheritedData &o ) const
+    {
+        return !( *this == o );
+    }
+
+    bool contentDataEquivalent( const StyleRareNonInheritedData &o ) const;
+    bool shadowDataEquivalent( const StyleRareNonInheritedData &o ) const;
+    bool reflectionDataEquivalent( const StyleRareNonInheritedData &o ) const;
+    bool animationDataEquivalent( const StyleRareNonInheritedData & ) const;
+    bool transitionDataEquivalent( const StyleRareNonInheritedData & ) const;
 
     LineClampValue lineClamp; // An Apple extension.
 #if ENABLE(DASHBOARD_SUPPORT)
@@ -88,7 +100,7 @@ public:
 #endif
     float opacity; // Whether or not we're transparent.
 
-    DataRef<StyleFlexibleBoxData> flexibleBox; // Flexible box properties 
+    DataRef<StyleFlexibleBoxData> flexibleBox; // Flexible box properties
     DataRef<StyleMarqueeData> marquee; // Marquee properties
     DataRef<StyleMultiColData> m_multiCol; //  CSS3 multicol properties
     DataRef<StyleTransformData> m_transform; // Transform properties (rotate, scale, skew, etc.)
@@ -100,11 +112,12 @@ public:
     bool textOverflow : 1; // Whether or not lines that spill out should be truncated with "..."
     unsigned marginBeforeCollapse : 2; // EMarginCollapse
     unsigned marginAfterCollapse : 2; // EMarginCollapse
-    unsigned matchNearestMailBlockquoteColor : 1; // EMatchNearestMailBlockquoteColor, FIXME: This property needs to be eliminated. It should never have been added.
+unsigned matchNearestMailBlockquoteColor :
+    1; // EMatchNearestMailBlockquoteColor, FIXME: This property needs to be eliminated. It should never have been added.
     unsigned m_appearance : 6; // EAppearance
     unsigned m_borderFit : 1; // EBorderFit
     unsigned m_textCombine : 1; // CSS3 text-combine properties
-    
+
     short m_counterIncrement;
     short m_counterReset;
 
@@ -112,7 +125,7 @@ public:
     bool m_runningAcceleratedAnimation : 1;
 #endif
     OwnPtr<ShadowData> m_boxShadow;  // For box-shadow decorations.
-    
+
     RefPtr<StyleReflection> m_boxReflect;
 
     OwnPtr<AnimationList> m_animations;
@@ -132,7 +145,7 @@ public:
 
 private:
     StyleRareNonInheritedData();
-    StyleRareNonInheritedData(const StyleRareNonInheritedData&);
+    StyleRareNonInheritedData( const StyleRareNonInheritedData & );
 };
 
 } // namespace WebCore

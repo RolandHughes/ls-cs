@@ -39,45 +39,55 @@
 #include "MessageEvent.h"
 #include "WorkerObjectProxy.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-DedicatedWorkerContext::DedicatedWorkerContext(const KURL& url, const String& userAgent, DedicatedWorkerThread* thread)
-    : WorkerContext(url, userAgent, thread)
+DedicatedWorkerContext::DedicatedWorkerContext( const KURL &url, const String &userAgent, DedicatedWorkerThread *thread )
+    : WorkerContext( url, userAgent, thread )
 {
 }
 
 // FIXME: remove this when we update the ObjC bindings (bug #28774).
-void DedicatedWorkerContext::postMessage(PassRefPtr<SerializedScriptValue> message, MessagePort* port, ExceptionCode& ec)
+void DedicatedWorkerContext::postMessage( PassRefPtr<SerializedScriptValue> message, MessagePort *port, ExceptionCode &ec )
 {
     MessagePortArray ports;
-    if (port)
-        ports.append(port);
-    postMessage(message, &ports, ec);
+
+    if ( port )
+    {
+        ports.append( port );
+    }
+
+    postMessage( message, &ports, ec );
 }
 
-void DedicatedWorkerContext::postMessage(PassRefPtr<SerializedScriptValue> message, ExceptionCode& ec)
+void DedicatedWorkerContext::postMessage( PassRefPtr<SerializedScriptValue> message, ExceptionCode &ec )
 {
-    postMessage(message, static_cast<MessagePortArray*>(0), ec);
+    postMessage( message, static_cast<MessagePortArray *>( 0 ), ec );
 }
 
-void DedicatedWorkerContext::postMessage(PassRefPtr<SerializedScriptValue> message, const MessagePortArray* ports, ExceptionCode& ec)
+void DedicatedWorkerContext::postMessage( PassRefPtr<SerializedScriptValue> message, const MessagePortArray *ports,
+        ExceptionCode &ec )
 {
     // Disentangle the port in preparation for sending it to the remote context.
-    OwnPtr<MessagePortChannelArray> channels = MessagePort::disentanglePorts(ports, ec);
-    if (ec)
+    OwnPtr<MessagePortChannelArray> channels = MessagePort::disentanglePorts( ports, ec );
+
+    if ( ec )
+    {
         return;
-    thread()->workerObjectProxy().postMessageToWorkerObject(message, channels.release());
+    }
+
+    thread()->workerObjectProxy().postMessageToWorkerObject( message, channels.release() );
 }
 
-void DedicatedWorkerContext::importScripts(const Vector<String>& urls, ExceptionCode& ec)
+void DedicatedWorkerContext::importScripts( const Vector<String> &urls, ExceptionCode &ec )
 {
-    Base::importScripts(urls, ec);
-    thread()->workerObjectProxy().reportPendingActivity(hasPendingActivity());
+    Base::importScripts( urls, ec );
+    thread()->workerObjectProxy().reportPendingActivity( hasPendingActivity() );
 }
 
-DedicatedWorkerThread* DedicatedWorkerContext::thread()
+DedicatedWorkerThread *DedicatedWorkerContext::thread()
 {
-    return static_cast<DedicatedWorkerThread*>(Base::thread());
+    return static_cast<DedicatedWorkerThread *>( Base::thread() );
 }
 
 } // namespace WebCore

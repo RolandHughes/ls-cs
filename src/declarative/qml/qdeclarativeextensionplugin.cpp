@@ -23,10 +23,8 @@
 
 #include "qdeclarativeextensionplugin.h"
 
-QT_BEGIN_NAMESPACE
-
-QDeclarativeExtensionPlugin::QDeclarativeExtensionPlugin(QObject *parent)
-   : QObject(parent)
+QT_BEGIN_NAMESPACE QDeclarativeExtensionPlugin::QDeclarativeExtensionPlugin( QObject *parent )
+    : QObject( parent )
 {
 }
 
@@ -45,10 +43,10 @@ QDeclarativeExtensionPlugin::~QDeclarativeExtensionPlugin()
     as context properties on the engine's root context.
 */
 
-void QDeclarativeExtensionPlugin::initializeEngine(QDeclarativeEngine *engine, const char *uri)
+void QDeclarativeExtensionPlugin::initializeEngine( QDeclarativeEngine *engine, const char *uri )
 {
-   Q_UNUSED(engine);
-   Q_UNUSED(uri);
+    Q_UNUSED( engine );
+    Q_UNUSED( uri );
 }
 
 QT_END_NAMESPACE

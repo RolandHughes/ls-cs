@@ -41,29 +41,54 @@
 #include "JSXPathException.h"
 #endif
 
-namespace WebCore {
-
-ExceptionBase* toExceptionBase(JSC::JSValue value)
+namespace WebCore
 {
-    if (DOMCoreException* domException = toDOMCoreException(value))
-        return reinterpret_cast<ExceptionBase*>(domException);
-    if (RangeException* rangeException = toRangeException(value))
-        return reinterpret_cast<ExceptionBase*>(rangeException);
-    if (EventException* eventException = toEventException(value))
-        return reinterpret_cast<ExceptionBase*>(eventException);
-    if (XMLHttpRequestException* xmlHttpException = toXMLHttpRequestException(value))
-        return reinterpret_cast<ExceptionBase*>(xmlHttpException);
+
+ExceptionBase *toExceptionBase( JSC::JSValue value )
+{
+    if ( DOMCoreException *domException = toDOMCoreException( value ) )
+    {
+        return reinterpret_cast<ExceptionBase *>( domException );
+    }
+
+    if ( RangeException *rangeException = toRangeException( value ) )
+    {
+        return reinterpret_cast<ExceptionBase *>( rangeException );
+    }
+
+    if ( EventException *eventException = toEventException( value ) )
+    {
+        return reinterpret_cast<ExceptionBase *>( eventException );
+    }
+
+    if ( XMLHttpRequestException *xmlHttpException = toXMLHttpRequestException( value ) )
+    {
+        return reinterpret_cast<ExceptionBase *>( xmlHttpException );
+    }
+
 #if ENABLE(SVG)
-    if (SVGException* svgException = toSVGException(value))
-        return reinterpret_cast<ExceptionBase*>(svgException);
+
+    if ( SVGException *svgException = toSVGException( value ) )
+    {
+        return reinterpret_cast<ExceptionBase *>( svgException );
+    }
+
 #endif
 #if ENABLE(XPATH)
-    if (XPathException* pathException = toXPathException(value))
-        return reinterpret_cast<ExceptionBase*>(pathException);
+
+    if ( XPathException *pathException = toXPathException( value ) )
+    {
+        return reinterpret_cast<ExceptionBase *>( pathException );
+    }
+
 #endif
 #if ENABLE(DATABASE)
-    if (SQLException* pathException = toSQLException(value))
-        return reinterpret_cast<ExceptionBase*>(pathException);
+
+    if ( SQLException *pathException = toSQLException( value ) )
+    {
+        return reinterpret_cast<ExceptionBase *>( pathException );
+    }
+
 #endif
 
     return 0;

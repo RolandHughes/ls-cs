@@ -34,9 +34,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSWorker);
+ASSERT_CLASS_FITS_IN_CELL( JSWorker );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -47,9 +48,9 @@ ASSERT_CLASS_FITS_IN_CELL(JSWorker);
 
 static const HashTableValue JSWorkerTableValues[3] =
 {
-    { "onmessage", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsWorkerOnmessage), (intptr_t)setJSWorkerOnmessage THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsWorkerConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "onmessage", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsWorkerOnmessage ), ( intptr_t )setJSWorkerOnmessage THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsWorkerConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -63,32 +64,35 @@ static JSC_CONST_HASHTABLE HashTable JSWorkerTable = { 4, 3, JSWorkerTableValues
 
 static const HashTableValue JSWorkerConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSWorkerConstructorTable = { 1, 0, JSWorkerConstructorTableValues, 0 };
 const ClassInfo JSWorkerConstructor::s_info = { "WorkerConstructor", &DOMConstructorObject::s_info, &JSWorkerConstructorTable, 0 };
 
-JSWorkerConstructor::JSWorkerConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSWorkerConstructor::JSWorkerConstructor( ExecState *exec, Structure *structure, JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSWorkerPrototype::self(exec, globalObject), DontDelete | ReadOnly);
-    putDirect(exec->globalData(), exec->propertyNames().length, jsNumber(1), ReadOnly | DontDelete | DontEnum);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSWorkerPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
+    putDirect( exec->globalData(), exec->propertyNames().length, jsNumber( 1 ), ReadOnly | DontDelete | DontEnum );
 }
 
-bool JSWorkerConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSWorkerConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSWorkerConstructor, JSDOMWrapper>(exec, &JSWorkerConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSWorkerConstructor, JSDOMWrapper>( exec, &JSWorkerConstructorTable, this, propertyName, slot );
 }
 
-bool JSWorkerConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSWorkerConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSWorkerConstructor, JSDOMWrapper>(exec, &JSWorkerConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSWorkerConstructor, JSDOMWrapper>( exec, &JSWorkerConstructorTable, this, propertyName,
+            descriptor );
 }
 
-ConstructType JSWorkerConstructor::getConstructData(ConstructData& constructData)
+ConstructType JSWorkerConstructor::getConstructData( ConstructData &constructData )
 {
     constructData.native.function = constructJSWorker;
     return ConstructTypeHost;
@@ -103,147 +107,173 @@ ConstructType JSWorkerConstructor::getConstructData(ConstructData& constructData
 
 static const HashTableValue JSWorkerPrototypeTableValues[3] =
 {
-    { "postMessage", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsWorkerPrototypeFunctionPostMessage), (intptr_t)2 THUNK_GENERATOR(0) },
-    { "terminate", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsWorkerPrototypeFunctionTerminate), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "postMessage", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsWorkerPrototypeFunctionPostMessage ), ( intptr_t )2 THUNK_GENERATOR( 0 ) },
+    { "terminate", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsWorkerPrototypeFunctionTerminate ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSWorkerPrototypeTable = { 5, 3, JSWorkerPrototypeTableValues, 0 };
 const ClassInfo JSWorkerPrototype::s_info = { "WorkerPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSWorkerPrototypeTable, 0 };
 
-JSObject* JSWorkerPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSWorkerPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSWorker>(exec, globalObject);
+    return getDOMPrototype<JSWorker>( exec, globalObject );
 }
 
-bool JSWorkerPrototype::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSWorkerPrototype::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticFunctionSlot<JSObject>(exec, &JSWorkerPrototypeTable, this, propertyName, slot);
+    return getStaticFunctionSlot<JSObject>( exec, &JSWorkerPrototypeTable, this, propertyName, slot );
 }
 
-bool JSWorkerPrototype::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSWorkerPrototype::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticFunctionDescriptor<JSObject>(exec, &JSWorkerPrototypeTable, this, propertyName, descriptor);
+    return getStaticFunctionDescriptor<JSObject>( exec, &JSWorkerPrototypeTable, this, propertyName, descriptor );
 }
 
 const ClassInfo JSWorker::s_info = { "Worker", &JSAbstractWorker::s_info, &JSWorkerTable, 0 };
 
-JSWorker::JSWorker(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<Worker> impl)
-    : JSAbstractWorker(structure, globalObject, impl)
+JSWorker::JSWorker( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<Worker> impl )
+    : JSAbstractWorker( structure, globalObject, impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSWorker::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSWorker::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSWorkerPrototype(exec->globalData(), globalObject, JSWorkerPrototype::createStructure(exec->globalData(), JSAbstractWorkerPrototype::self(exec, globalObject)));
+    return new ( exec ) JSWorkerPrototype( exec->globalData(), globalObject, JSWorkerPrototype::createStructure( exec->globalData(),
+                                           JSAbstractWorkerPrototype::self( exec, globalObject ) ) );
 }
 
-bool JSWorker::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSWorker::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSWorker, Base>(exec, &JSWorkerTable, this, propertyName, slot);
+    return getStaticValueSlot<JSWorker, Base>( exec, &JSWorkerTable, this, propertyName, slot );
 }
 
-bool JSWorker::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSWorker::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSWorker, Base>(exec, &JSWorkerTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSWorker, Base>( exec, &JSWorkerTable, this, propertyName, descriptor );
 }
 
-JSValue jsWorkerOnmessage(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsWorkerOnmessage( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSWorker* castedThis = static_cast<JSWorker*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    Worker* imp = static_cast<Worker*>(castedThis->impl());
-    if (EventListener* listener = imp->onmessage()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    JSWorker *castedThis = static_cast<JSWorker *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    Worker *imp = static_cast<Worker *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->onmessage() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsWorkerConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsWorkerConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSWorker* domObject = static_cast<JSWorker*>(asObject(slotBase));
-    return JSWorker::getConstructor(exec, domObject->globalObject());
+    JSWorker *domObject = static_cast<JSWorker *>( asObject( slotBase ) );
+    return JSWorker::getConstructor( exec, domObject->globalObject() );
 }
 
-void JSWorker::put(ExecState* exec, const Identifier& propertyName, JSValue value, PutPropertySlot& slot)
+void JSWorker::put( ExecState *exec, const Identifier &propertyName, JSValue value, PutPropertySlot &slot )
 {
-    lookupPut<JSWorker, Base>(exec, propertyName, value, &JSWorkerTable, this, slot);
+    lookupPut<JSWorker, Base>( exec, propertyName, value, &JSWorkerTable, this, slot );
 }
 
-void setJSWorkerOnmessage(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSWorkerOnmessage( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    UNUSED_PARAM(exec);
-    JSWorker* castedThis = static_cast<JSWorker*>(thisObject);
-    Worker* imp = static_cast<Worker*>(castedThis->impl());
-    imp->setOnmessage(createJSAttributeEventListener(exec, value, thisObject));
+    UNUSED_PARAM( exec );
+    JSWorker *castedThis = static_cast<JSWorker *>( thisObject );
+    Worker *imp = static_cast<Worker *>( castedThis->impl() );
+    imp->setOnmessage( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-JSValue JSWorker::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSWorker::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSWorkerConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSWorkerConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsWorkerPrototypeFunctionPostMessage(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsWorkerPrototypeFunctionPostMessage( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSWorker::s_info))
-        return throwVMTypeError(exec);
-    JSWorker* castedThis = static_cast<JSWorker*>(asObject(thisValue));
-    return JSValue::encode(castedThis->postMessage(exec));
+
+    if ( !thisValue.inherits( &JSWorker::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSWorker *castedThis = static_cast<JSWorker *>( asObject( thisValue ) );
+    return JSValue::encode( castedThis->postMessage( exec ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsWorkerPrototypeFunctionTerminate(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsWorkerPrototypeFunctionTerminate( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSWorker::s_info))
-        return throwVMTypeError(exec);
-    JSWorker* castedThis = static_cast<JSWorker*>(asObject(thisValue));
-    Worker* imp = static_cast<Worker*>(castedThis->impl());
+
+    if ( !thisValue.inherits( &JSWorker::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSWorker *castedThis = static_cast<JSWorker *>( asObject( thisValue ) );
+    Worker *imp = static_cast<Worker *>( castedThis->impl() );
 
     imp->terminate();
-    return JSValue::encode(jsUndefined());
+    return JSValue::encode( jsUndefined() );
 }
 
-static inline bool isObservable(JSWorker* jsWorker)
+static inline bool isObservable( JSWorker *jsWorker )
 {
-    if (jsWorker->hasCustomProperties())
+    if ( jsWorker->hasCustomProperties() )
+    {
         return true;
+    }
+
     return false;
 }
 
-bool JSWorkerOwner::isReachableFromOpaqueRoots(JSC::Handle<JSC::Unknown> handle, void*, SlotVisitor& visitor)
+bool JSWorkerOwner::isReachableFromOpaqueRoots( JSC::Handle<JSC::Unknown> handle, void *, SlotVisitor &visitor )
 {
-    JSWorker* jsWorker = static_cast<JSWorker*>(handle.get().asCell());
-    if (jsWorker->impl()->hasPendingActivity())
+    JSWorker *jsWorker = static_cast<JSWorker *>( handle.get().asCell() );
+
+    if ( jsWorker->impl()->hasPendingActivity() )
+    {
         return true;
-    if (!isObservable(jsWorker))
+    }
+
+    if ( !isObservable( jsWorker ) )
+    {
         return false;
-    UNUSED_PARAM(visitor);
+    }
+
+    UNUSED_PARAM( visitor );
     return false;
 }
 
-void JSWorkerOwner::finalize(JSC::Handle<JSC::Unknown> handle, void* context)
+void JSWorkerOwner::finalize( JSC::Handle<JSC::Unknown> handle, void *context )
 {
-    JSWorker* jsWorker = static_cast<JSWorker*>(handle.get().asCell());
-    DOMWrapperWorld* world = static_cast<DOMWrapperWorld*>(context);
-    uncacheWrapper(world, jsWorker->impl(), jsWorker);
+    JSWorker *jsWorker = static_cast<JSWorker *>( handle.get().asCell() );
+    DOMWrapperWorld *world = static_cast<DOMWrapperWorld *>( context );
+    uncacheWrapper( world, jsWorker->impl(), jsWorker );
 }
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, Worker* impl)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, Worker *impl )
 {
-    return wrap<JSWorker>(exec, globalObject, impl);
+    return wrap<JSWorker>( exec, globalObject, impl );
 }
 
-Worker* toWorker(JSC::JSValue value)
+Worker *toWorker( JSC::JSValue value )
 {
-    return value.inherits(&JSWorker::s_info) ? static_cast<JSWorker*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSWorker::s_info ) ? static_cast<JSWorker *>( asObject( value ) )->impl() : 0;
 }
 
 }

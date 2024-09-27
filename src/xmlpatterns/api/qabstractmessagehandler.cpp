@@ -27,12 +27,12 @@
 
 class QAbstractMessageHandlerPrivate
 {
- public:
-   QMutex mutex;
+public:
+    QMutex mutex;
 };
 
-QAbstractMessageHandler::QAbstractMessageHandler(QObject *parent)
-   : QObject(parent), d_ptr(new QAbstractMessageHandlerPrivate)
+QAbstractMessageHandler::QAbstractMessageHandler( QObject *parent )
+    : QObject( parent ), d_ptr( new QAbstractMessageHandlerPrivate )
 {
 }
 
@@ -40,11 +40,11 @@ QAbstractMessageHandler::~QAbstractMessageHandler()
 {
 }
 
-void QAbstractMessageHandler::message(QtMsgType type, const QString &description,
-            const QUrl &identifier, const QSourceLocation &sourceLocation)
+void QAbstractMessageHandler::message( QtMsgType type, const QString &description,
+                                       const QUrl &identifier, const QSourceLocation &sourceLocation )
 {
-   Q_D(QAbstractMessageHandler);
-   QMutexLocker(&d->mutex);
-   handleMessage(type, description, identifier, sourceLocation);
+    Q_D( QAbstractMessageHandler );
+    QMutexLocker( &d->mutex );
+    handleMessage( type, description, identifier, sourceLocation );
 }
 

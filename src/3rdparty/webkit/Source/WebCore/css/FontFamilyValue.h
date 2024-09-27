@@ -24,24 +24,32 @@
 #include "CSSPrimitiveValue.h"
 #include "PlatformString.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class FontFamilyValue : public CSSPrimitiveValue {
+class FontFamilyValue : public CSSPrimitiveValue
+{
 public:
-    static PassRefPtr<FontFamilyValue> create(const String& familyName)
+    static PassRefPtr<FontFamilyValue> create( const String &familyName )
     {
-        return adoptRef(new FontFamilyValue(familyName));
+        return adoptRef( new FontFamilyValue( familyName ) );
     }
 
-    void appendSpaceSeparated(const UChar* characters, unsigned length);
+    void appendSpaceSeparated( const UChar *characters, unsigned length );
 
-    const String& familyName() const { return m_familyName; }
+    const String &familyName() const
+    {
+        return m_familyName;
+    }
 
     virtual String cssText() const;
 
 private:
-    FontFamilyValue(const String& familyName);
-    virtual bool isFontFamilyValue() const { return true; }
+    FontFamilyValue( const String &familyName );
+    virtual bool isFontFamilyValue() const
+    {
+        return true;
+    }
 
     String m_familyName;
 };

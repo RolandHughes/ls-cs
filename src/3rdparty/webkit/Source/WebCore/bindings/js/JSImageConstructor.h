@@ -23,22 +23,25 @@
 #include "JSDOMBinding.h"
 #include "JSDocument.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class JSImageConstructor : public DOMConstructorWithDocument {
-    public:
-        JSImageConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+class JSImageConstructor : public DOMConstructorWithDocument
+{
+public:
+    JSImageConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-        static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
-        {
-            return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
-        }
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
+    {
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
+    }
 
-        static const JSC::ClassInfo s_info;
+    static const JSC::ClassInfo s_info;
 
-    private:
-        virtual JSC::ConstructType getConstructData(JSC::ConstructData&);
-    };
+private:
+    virtual JSC::ConstructType getConstructData( JSC::ConstructData & );
+};
 
 } // namespace WebCore
 

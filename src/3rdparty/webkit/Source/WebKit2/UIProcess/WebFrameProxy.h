@@ -35,13 +35,15 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/text/WTFString.h>
 
-namespace CoreIPC {
-    class ArgumentDecoder;
-    class Connection;
-    class MessageID;
+namespace CoreIPC
+{
+class ArgumentDecoder;
+class Connection;
+class MessageID;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
 class ImmutableArray;
 class PlatformCertificateInfo;
@@ -52,98 +54,151 @@ class WebPageProxy;
 
 typedef GenericCallback<WKDataRef> DataCallback;
 
-class WebFrameProxy : public APIObject {
+class WebFrameProxy : public APIObject
+{
 public:
     static const Type APIType = TypeFrame;
 
-    static PassRefPtr<WebFrameProxy> create(WebPageProxy* page, uint64_t frameID)
+    static PassRefPtr<WebFrameProxy> create( WebPageProxy *page, uint64_t frameID )
     {
-        return adoptRef(new WebFrameProxy(page, frameID));
+        return adoptRef( new WebFrameProxy( page, frameID ) );
     }
 
     virtual ~WebFrameProxy();
 
-    enum LoadState {
+    enum LoadState
+    {
         LoadStateProvisional,
         LoadStateCommitted,
         LoadStateFinished
     };
 
-    uint64_t frameID() const { return m_frameID; }
-    WebPageProxy* page() { return m_page; }
+    uint64_t frameID() const
+    {
+        return m_frameID;
+    }
+    WebPageProxy *page()
+    {
+        return m_page;
+    }
 
-    WebFrameProxy* parentFrame() { return m_parentFrame; }
-    WebFrameProxy* nextSibling() { return m_nextSibling; }
-    WebFrameProxy* previousSibling() { return m_previousSibling; }
-    WebFrameProxy* firstChild() { return m_firstChild; }
-    WebFrameProxy* lastChild() { return m_lastChild; }
+    WebFrameProxy *parentFrame()
+    {
+        return m_parentFrame;
+    }
+    WebFrameProxy *nextSibling()
+    {
+        return m_nextSibling;
+    }
+    WebFrameProxy *previousSibling()
+    {
+        return m_previousSibling;
+    }
+    WebFrameProxy *firstChild()
+    {
+        return m_firstChild;
+    }
+    WebFrameProxy *lastChild()
+    {
+        return m_lastChild;
+    }
 
     void disconnect();
 
     bool isMainFrame() const;
 
-    void setIsFrameSet(bool value) { m_isFrameSet = value; }
-    bool isFrameSet() const { return m_isFrameSet; }
+    void setIsFrameSet( bool value )
+    {
+        m_isFrameSet = value;
+    }
+    bool isFrameSet() const
+    {
+        return m_isFrameSet;
+    }
 
-    LoadState loadState() const { return m_loadState; }
-    
+    LoadState loadState() const
+    {
+        return m_loadState;
+    }
+
     void stopLoading() const;
 
-    const String& url() const { return m_url; }
-    const String& provisionalURL() const { return m_provisionalURL; }
+    const String &url() const
+    {
+        return m_url;
+    }
+    const String &provisionalURL() const
+    {
+        return m_provisionalURL;
+    }
 
-    void setUnreachableURL(const String&);
-    const String& unreachableURL() const { return m_unreachableURL; }
+    void setUnreachableURL( const String & );
+    const String &unreachableURL() const
+    {
+        return m_unreachableURL;
+    }
 
-    const String& mimeType() const { return m_MIMEType; }
+    const String &mimeType() const
+    {
+        return m_MIMEType;
+    }
 
-    const String& title() const { return m_title; }
+    const String &title() const
+    {
+        return m_title;
+    }
 
-    WebCertificateInfo* certificateInfo() const { return m_certificateInfo.get(); }
+    WebCertificateInfo *certificateInfo() const
+    {
+        return m_certificateInfo.get();
+    }
 
     bool canProvideSource() const;
-    bool canShowMIMEType(const String& mimeType) const;
+    bool canShowMIMEType( const String &mimeType ) const;
 
     bool isDisplayingStandaloneImageDocument() const;
     bool isDisplayingMarkupDocument() const;
 
-    void getWebArchive(PassRefPtr<DataCallback>);
-    void getMainResourceData(PassRefPtr<DataCallback>);
-    void getResourceData(WebURL*, PassRefPtr<DataCallback>);
+    void getWebArchive( PassRefPtr<DataCallback> );
+    void getMainResourceData( PassRefPtr<DataCallback> );
+    void getResourceData( WebURL *, PassRefPtr<DataCallback> );
 
-    void didStartProvisionalLoad(const String& url);
-    void didReceiveServerRedirectForProvisionalLoad(const String& url);
+    void didStartProvisionalLoad( const String &url );
+    void didReceiveServerRedirectForProvisionalLoad( const String &url );
     void didFailProvisionalLoad();
-    void didCommitLoad(const String& contentType, const PlatformCertificateInfo&);
+    void didCommitLoad( const String &contentType, const PlatformCertificateInfo & );
     void didFinishLoad();
     void didFailLoad();
-    void didSameDocumentNavigation(const String&); // eg. anchor navigation, session state change.
-    void didChangeTitle(const String&);
+    void didSameDocumentNavigation( const String & ); // eg. anchor navigation, session state change.
+    void didChangeTitle( const String & );
 
     // Frame tree operations.
-    void appendChild(WebFrameProxy*);
-    void removeChild(WebFrameProxy*);
+    void appendChild( WebFrameProxy * );
+    void removeChild( WebFrameProxy * );
     void didRemoveFromHierarchy();
     PassRefPtr<ImmutableArray> childFrames();
-    bool isDescendantOf(const WebFrameProxy* ancestor) const;
-    void dumpFrameTreeToSTDOUT(unsigned indent = 0);
+    bool isDescendantOf( const WebFrameProxy *ancestor ) const;
+    void dumpFrameTreeToSTDOUT( unsigned indent = 0 );
 
     // Policy operations.
-    void receivedPolicyDecision(WebCore::PolicyAction, uint64_t listenerID);
-    WebFramePolicyListenerProxy* setUpPolicyListenerProxy(uint64_t listenerID);
-    WebFormSubmissionListenerProxy* setUpFormSubmissionListenerProxy(uint64_t listenerID);
+    void receivedPolicyDecision( WebCore::PolicyAction, uint64_t listenerID );
+    WebFramePolicyListenerProxy *setUpPolicyListenerProxy( uint64_t listenerID );
+    WebFormSubmissionListenerProxy *setUpFormSubmissionListenerProxy( uint64_t listenerID );
 
 private:
-    WebFrameProxy(WebPageProxy* page, uint64_t frameID);
+    WebFrameProxy( WebPageProxy *page, uint64_t frameID );
 
-    virtual Type type() const { return APIType; }
+    virtual Type type() const
+    {
+        return APIType;
+    }
 
-    WebPageProxy* m_page;
-    WebFrameProxy* m_parentFrame;
-    WebFrameProxy* m_nextSibling;
-    WebFrameProxy* m_previousSibling;
-    WebFrameProxy* m_firstChild;
-    WebFrameProxy* m_lastChild;
+    WebPageProxy *m_page;
+    WebFrameProxy *m_parentFrame;
+    WebFrameProxy *m_nextSibling;
+    WebFrameProxy *m_previousSibling;
+    WebFrameProxy *m_firstChild;
+    WebFrameProxy *m_lastChild;
 
     LoadState m_loadState;
     String m_url;

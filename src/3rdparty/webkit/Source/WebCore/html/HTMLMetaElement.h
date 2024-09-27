@@ -25,20 +25,22 @@
 
 #include "HTMLElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class HTMLMetaElement : public HTMLElement {
+class HTMLMetaElement : public HTMLElement
+{
 public:
-    static PassRefPtr<HTMLMetaElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<HTMLMetaElement> create( const QualifiedName &, Document * );
 
     String content() const;
     String httpEquiv() const;
     String name() const;
 
 private:
-    HTMLMetaElement(const QualifiedName&, Document*);
+    HTMLMetaElement( const QualifiedName &, Document * );
 
-    virtual void parseMappedAttribute(Attribute*);
+    virtual void parseMappedAttribute( Attribute * );
     virtual void insertedIntoDocument();
 
     void process();

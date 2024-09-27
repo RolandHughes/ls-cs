@@ -26,33 +26,34 @@
 
 #include <qbase64binary_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 class HexBinary : public Base64Binary
 {
- public:
-   friend class CommonValues;
+public:
+    friend class CommonValues;
 
-   typedef AtomicValue::Ptr Ptr;
+    typedef AtomicValue::Ptr Ptr;
 
-   QString stringValue() const override;
-   ItemType::Ptr type() const override;
+    QString stringValue() const override;
+    ItemType::Ptr type() const override;
 
-   /**
-    * Creates a @c xs:hexBinary from the lexical representation @p value.
-    */
-   static AtomicValue::Ptr fromLexical(const NamePool::Ptr &np, const QString &value);
+    /**
+     * Creates a @c xs:hexBinary from the lexical representation @p value.
+     */
+    static AtomicValue::Ptr fromLexical( const NamePool::Ptr &np, const QString &value );
 
-   /**
-    * Creates an instance representing @p value.
-    */
-   static HexBinary::Ptr fromValue(const QByteArray &data);
+    /**
+     * Creates an instance representing @p value.
+     */
+    static HexBinary::Ptr fromValue( const QByteArray &data );
 
- protected:
-   HexBinary(const QByteArray &val);
+protected:
+    HexBinary( const QByteArray &val );
 
- private:
+private:
 
-   static inline qint8 fromHex(const QChar &c);
+    static inline qint8 fromHex( const QChar &c );
 };
 }
 

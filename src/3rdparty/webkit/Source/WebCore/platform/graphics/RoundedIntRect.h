@@ -29,41 +29,77 @@
 
 #include "IntRect.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 
-class RoundedIntRect {
+class RoundedIntRect
+{
 public:
-    class Radii {
+    class Radii
+    {
     public:
         Radii() {}
-        Radii(const IntSize& topLeft, const IntSize& topRight, const IntSize& bottomLeft, const IntSize& bottomRight)
-            : m_topLeft(topLeft)
-            , m_topRight(topRight)
-            , m_bottomLeft(bottomLeft)
-            , m_bottomRight(bottomRight)
+        Radii( const IntSize &topLeft, const IntSize &topRight, const IntSize &bottomLeft, const IntSize &bottomRight )
+            : m_topLeft( topLeft )
+            , m_topRight( topRight )
+            , m_bottomLeft( bottomLeft )
+            , m_bottomRight( bottomRight )
         {
         }
 
-        void setTopLeft(const IntSize& size) { m_topLeft = size; }
-        void setTopRight(const IntSize& size) { m_topRight = size; }
-        void setBottomLeft(const IntSize& size) { m_bottomLeft = size; }
-        void setBottomRight(const IntSize& size) { m_bottomRight = size; }
-        const IntSize& topLeft() const { return m_topLeft; }
-        const IntSize& topRight() const { return m_topRight; }
-        const IntSize& bottomLeft() const { return m_bottomLeft; }
-        const IntSize& bottomRight() const { return m_bottomRight; }
+        void setTopLeft( const IntSize &size )
+        {
+            m_topLeft = size;
+        }
+        void setTopRight( const IntSize &size )
+        {
+            m_topRight = size;
+        }
+        void setBottomLeft( const IntSize &size )
+        {
+            m_bottomLeft = size;
+        }
+        void setBottomRight( const IntSize &size )
+        {
+            m_bottomRight = size;
+        }
+        const IntSize &topLeft() const
+        {
+            return m_topLeft;
+        }
+        const IntSize &topRight() const
+        {
+            return m_topRight;
+        }
+        const IntSize &bottomLeft() const
+        {
+            return m_bottomLeft;
+        }
+        const IntSize &bottomRight() const
+        {
+            return m_bottomRight;
+        }
 
         bool isZero() const;
 
-        void includeLogicalEdges(const Radii& edges, bool isHorizontal, bool includeLogicalLeftEdge, bool includeLogicalRightEdge);
-        void excludeLogicalEdges(bool isHorizontal, bool excludeLogicalLeftEdge, bool excludeLogicalRightEdge);
+        void includeLogicalEdges( const Radii &edges, bool isHorizontal, bool includeLogicalLeftEdge, bool includeLogicalRightEdge );
+        void excludeLogicalEdges( bool isHorizontal, bool excludeLogicalLeftEdge, bool excludeLogicalRightEdge );
 
-        void scale(float factor);
-        void expand(int topWidth, int bottomWidth, int leftWidth, int rightWidth);
-        void expand(int size) { expand(size, size, size, size); }
-        void shrink(int topWidth, int bottomWidth, int leftWidth, int rightWidth) { expand(-topWidth, -bottomWidth, -leftWidth, -rightWidth); }
-        void shrink(int size) { shrink(size, size, size, size); }
+        void scale( float factor );
+        void expand( int topWidth, int bottomWidth, int leftWidth, int rightWidth );
+        void expand( int size )
+        {
+            expand( size, size, size, size );
+        }
+        void shrink( int topWidth, int bottomWidth, int leftWidth, int rightWidth )
+        {
+            expand( -topWidth, -bottomWidth, -leftWidth, -rightWidth );
+        }
+        void shrink( int size )
+        {
+            shrink( size, size, size, size );
+        }
 
     private:
         IntSize m_topLeft;
@@ -72,26 +108,61 @@ public:
         IntSize m_bottomRight;
     };
 
-    explicit RoundedIntRect(const IntRect&, const Radii& = Radii());
-    RoundedIntRect(int x, int y, int width, int height);
-    RoundedIntRect(const IntRect&, const IntSize& topLeft, const IntSize& topRight, const IntSize& bottomLeft, const IntSize& bottomRight);
+    explicit RoundedIntRect( const IntRect &, const Radii & = Radii() );
+    RoundedIntRect( int x, int y, int width, int height );
+    RoundedIntRect( const IntRect &, const IntSize &topLeft, const IntSize &topRight, const IntSize &bottomLeft,
+                    const IntSize &bottomRight );
 
-    const IntRect& rect() const { return m_rect; }
-    const Radii& radii() const { return m_radii; }
-    bool isRounded() const { return !m_radii.isZero(); }
-    bool isEmpty() const { return m_rect.isEmpty(); }
+    const IntRect &rect() const
+    {
+        return m_rect;
+    }
+    const Radii &radii() const
+    {
+        return m_radii;
+    }
+    bool isRounded() const
+    {
+        return !m_radii.isZero();
+    }
+    bool isEmpty() const
+    {
+        return m_rect.isEmpty();
+    }
 
-    void setRect(const IntRect& rect) { m_rect = rect; }
-    void setRadii(const Radii& radii) { m_radii = radii; }
+    void setRect( const IntRect &rect )
+    {
+        m_rect = rect;
+    }
+    void setRadii( const Radii &radii )
+    {
+        m_radii = radii;
+    }
 
-    void move(const IntSize& size) { m_rect.move(size); }
-    void inflate(int size) { m_rect.inflate(size);  }
-    void inflateWithRadii(int size) { m_rect.inflate(size); m_radii.expand(size); }
-    void expandRadii(int size) { m_radii.expand(size); }
-    void shrinkRadii(int size) { m_radii.shrink(size); }
+    void move( const IntSize &size )
+    {
+        m_rect.move( size );
+    }
+    void inflate( int size )
+    {
+        m_rect.inflate( size );
+    }
+    void inflateWithRadii( int size )
+    {
+        m_rect.inflate( size );
+        m_radii.expand( size );
+    }
+    void expandRadii( int size )
+    {
+        m_radii.expand( size );
+    }
+    void shrinkRadii( int size )
+    {
+        m_radii.shrink( size );
+    }
 
-    void includeLogicalEdges(const Radii& edges, bool isHorizontal, bool includeLogicalLeftEdge, bool includeLogicalRightEdge);
-    void excludeLogicalEdges(bool isHorizontal, bool excludeLogicalLeftEdge, bool excludeLogicalRightEdge);
+    void includeLogicalEdges( const Radii &edges, bool isHorizontal, bool includeLogicalLeftEdge, bool includeLogicalRightEdge );
+    void excludeLogicalEdges( bool isHorizontal, bool excludeLogicalLeftEdge, bool excludeLogicalRightEdge );
 
     bool isRenderable() const;
 
@@ -100,12 +171,13 @@ private:
     Radii m_radii;
 };
 
-inline bool operator==(const RoundedIntRect::Radii& a, const RoundedIntRect::Radii& b)
+inline bool operator==( const RoundedIntRect::Radii &a, const RoundedIntRect::Radii &b )
 {
-    return a.topLeft() == b.topLeft() && a.topRight() == b.topRight() && a.bottomLeft() == b.bottomLeft() && a.bottomRight() == b.bottomRight();
+    return a.topLeft() == b.topLeft() && a.topRight() == b.topRight() && a.bottomLeft() == b.bottomLeft()
+           && a.bottomRight() == b.bottomRight();
 }
 
-inline bool operator==(const RoundedIntRect& a, const RoundedIntRect& b)
+inline bool operator==( const RoundedIntRect &a, const RoundedIntRect &b )
 {
     return a.rect() == b.rect() && a.radii() == b.radii();
 }

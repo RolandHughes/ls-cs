@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -40,46 +40,59 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
 #if ENABLE(APPLICATION_CACHE_DYNAMIC_ENTRIES)
 
-JSValue JSDOMApplicationCache::hasItem(ExecState* exec)
+JSValue JSDOMApplicationCache::hasItem( ExecState *exec )
 {
-    Frame* frame = asJSDOMWindow(exec->dynamicGlobalObject())->impl()->frame();
-    if (!frame)
+    Frame *frame = asJSDOMWindow( exec->dynamicGlobalObject() )->impl()->frame();
+
+    if ( !frame )
+    {
         return jsUndefined();
-    const KURL& url = frame->loader()->completeURL(exec->argument(0).toString(exec));
+    }
+
+    const KURL &url = frame->loader()->completeURL( exec->argument( 0 ).toString( exec ) );
 
     ExceptionCode ec = 0;
-    bool result = impl()->hasItem(url, ec);
-    setDOMException(exec, ec);
-    return jsBoolean(result);
+    bool result = impl()->hasItem( url, ec );
+    setDOMException( exec, ec );
+    return jsBoolean( result );
 }
 
-JSValue JSDOMApplicationCache::add(ExecState* exec)
+JSValue JSDOMApplicationCache::add( ExecState *exec )
 {
-    Frame* frame = asJSDOMWindow(exec->dynamicGlobalObject())->impl()->frame();
-    if (!frame)
+    Frame *frame = asJSDOMWindow( exec->dynamicGlobalObject() )->impl()->frame();
+
+    if ( !frame )
+    {
         return jsUndefined();
-    const KURL& url = frame->loader()->completeURL(exec->argument(0).toString(exec));
-    
+    }
+
+    const KURL &url = frame->loader()->completeURL( exec->argument( 0 ).toString( exec ) );
+
     ExceptionCode ec = 0;
-    impl()->add(url, ec);
-    setDOMException(exec, ec);
+    impl()->add( url, ec );
+    setDOMException( exec, ec );
     return jsUndefined();
 }
 
-JSValue JSDOMApplicationCache::remove(ExecState* exec)
+JSValue JSDOMApplicationCache::remove( ExecState *exec )
 {
-    Frame* frame = asJSDOMWindow(exec->dynamicGlobalObject())->impl()->frame();
-    if (!frame)
+    Frame *frame = asJSDOMWindow( exec->dynamicGlobalObject() )->impl()->frame();
+
+    if ( !frame )
+    {
         return jsUndefined();
-    const KURL& url = frame->loader()->completeURL(exec->argument(0).toString(exec));
-    
+    }
+
+    const KURL &url = frame->loader()->completeURL( exec->argument( 0 ).toString( exec ) );
+
     ExceptionCode ec = 0;
-    impl()->remove(url, ec);
-    setDOMException(exec, ec);
+    impl()->remove( url, ec );
+    setDOMException( exec, ec );
     return jsUndefined();
 }
 

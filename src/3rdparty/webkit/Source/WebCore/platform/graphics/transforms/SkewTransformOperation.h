@@ -27,46 +27,66 @@
 
 #include "TransformOperation.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class SkewTransformOperation : public TransformOperation {
+class SkewTransformOperation : public TransformOperation
+{
 public:
-    static PassRefPtr<SkewTransformOperation> create(double angleX, double angleY, OperationType type)
+    static PassRefPtr<SkewTransformOperation> create( double angleX, double angleY, OperationType type )
     {
-        return adoptRef(new SkewTransformOperation(angleX, angleY, type));
+        return adoptRef( new SkewTransformOperation( angleX, angleY, type ) );
     }
 
-    double angleX() const { return m_angleX; }
-    double angleY() const { return m_angleY; }
+    double angleX() const
+    {
+        return m_angleX;
+    }
+    double angleY() const
+    {
+        return m_angleY;
+    }
 
 private:
-    virtual bool isIdentity() const { return m_angleX == 0 && m_angleY == 0; }
-    virtual OperationType getOperationType() const { return m_type; }
-    virtual bool isSameType(const TransformOperation& o) const { return o.getOperationType() == m_type; }
-
-    virtual bool operator==(const TransformOperation& o) const
+    virtual bool isIdentity() const
     {
-        if (!isSameType(o))
+        return m_angleX == 0 && m_angleY == 0;
+    }
+    virtual OperationType getOperationType() const
+    {
+        return m_type;
+    }
+    virtual bool isSameType( const TransformOperation &o ) const
+    {
+        return o.getOperationType() == m_type;
+    }
+
+    virtual bool operator==( const TransformOperation &o ) const
+    {
+        if ( !isSameType( o ) )
+        {
             return false;
-        const SkewTransformOperation* s = static_cast<const SkewTransformOperation*>(&o);
+        }
+
+        const SkewTransformOperation *s = static_cast<const SkewTransformOperation *>( &o );
         return m_angleX == s->m_angleX && m_angleY == s->m_angleY;
     }
 
-    virtual bool apply(TransformationMatrix& transform, const IntSize&) const
+    virtual bool apply( TransformationMatrix &transform, const IntSize & ) const
     {
-        transform.skew(m_angleX, m_angleY);
+        transform.skew( m_angleX, m_angleY );
         return false;
     }
 
-    virtual PassRefPtr<TransformOperation> blend(const TransformOperation* from, double progress, bool blendToIdentity = false);
-    
-    SkewTransformOperation(double angleX, double angleY, OperationType type)
-        : m_angleX(angleX)
-        , m_angleY(angleY)
-        , m_type(type)
+    virtual PassRefPtr<TransformOperation> blend( const TransformOperation *from, double progress, bool blendToIdentity = false );
+
+    SkewTransformOperation( double angleX, double angleY, OperationType type )
+        : m_angleX( angleX )
+        , m_angleY( angleY )
+        , m_type( type )
     {
     }
-    
+
     double m_angleX;
     double m_angleY;
     OperationType m_type;

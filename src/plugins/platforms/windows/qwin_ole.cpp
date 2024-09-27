@@ -34,10 +34,10 @@
 
 #include <shlobj.h>
 
-QWindowsOleDataObject::QWindowsOleDataObject(QMimeData *mimeData)
-   : m_refs(1), data(mimeData),
-     CF_PERFORMEDDROPEFFECT(RegisterClipboardFormat(CFSTR_PERFORMEDDROPEFFECT)),
-     performedEffect(DROPEFFECT_NONE)
+QWindowsOleDataObject::QWindowsOleDataObject( QMimeData *mimeData )
+    : m_refs( 1 ), data( mimeData ),
+      CF_PERFORMEDDROPEFFECT( RegisterClipboardFormat( CFSTR_PERFORMEDDROPEFFECT ) ),
+      performedEffect( DROPEFFECT_NONE )
 {
 }
 
@@ -47,351 +47,406 @@ QWindowsOleDataObject::~QWindowsOleDataObject()
 
 void QWindowsOleDataObject::releaseData()
 {
-   data = nullptr;
+    data = nullptr;
 }
 
 QMimeData *QWindowsOleDataObject::mimeData() const
 {
-   return data.data();
+    return data.data();
 }
 
 DWORD QWindowsOleDataObject::reportedPerformedEffect() const
 {
-   return performedEffect;
+    return performedEffect;
 }
 
 //---------------------------------------------------------------------
 //                    IUnknown Methods
 //---------------------------------------------------------------------
 
-STDMETHODIMP QWindowsOleDataObject::QueryInterface(REFIID iid, void FAR *FAR *ppv)
+STDMETHODIMP QWindowsOleDataObject::QueryInterface( REFIID iid, void FAR *FAR *ppv )
 {
-   if (iid == IID_IUnknown || iid == IID_IDataObject) {
-      *ppv = this;
-      AddRef();
-      return NOERROR;
-   }
+    if ( iid == IID_IUnknown || iid == IID_IDataObject )
+    {
+        *ppv = this;
+        AddRef();
+        return NOERROR;
+    }
 
-   *ppv = nullptr;
+    *ppv = nullptr;
 
-   return ResultFromScode(E_NOINTERFACE);
+    return ResultFromScode( E_NOINTERFACE );
 }
 
-STDMETHODIMP_(ULONG) QWindowsOleDataObject::AddRef(void)
+STDMETHODIMP_( ULONG ) QWindowsOleDataObject::AddRef( void )
 {
-   return ++m_refs;
+    return ++m_refs;
 }
 
-STDMETHODIMP_(ULONG) QWindowsOleDataObject::Release(void)
+STDMETHODIMP_( ULONG ) QWindowsOleDataObject::Release( void )
 {
-   if (--m_refs == 0) {
-      releaseData();
-      delete this;
+    if ( --m_refs == 0 )
+    {
+        releaseData();
+        delete this;
 
-      return 0;
-   }
+        return 0;
+    }
 
-   return m_refs;
+    return m_refs;
 }
 
-STDMETHODIMP QWindowsOleDataObject::GetData(LPFORMATETC pformatetc, LPSTGMEDIUM pmedium)
+STDMETHODIMP QWindowsOleDataObject::GetData( LPFORMATETC pformatetc, LPSTGMEDIUM pmedium )
 {
-   HRESULT hr = ResultFromScode(DATA_E_FORMATETC);
+    HRESULT hr = ResultFromScode( DATA_E_FORMATETC );
 
-   if (data) {
-      const QWindowsMimeConverter &mc = QWindowsContext::instance()->mimeConverter();
+    if ( data )
+    {
+        const QWindowsMimeConverter &mc = QWindowsContext::instance()->mimeConverter();
 
-      if (QWindowsMime *converter = mc.converterFromMime(*pformatetc, data)) {
-         if (converter->convertFromMime(*pformatetc, data, pmedium)) {
-            hr = ResultFromScode(S_OK);
-         }
-      }
-   }
+        if ( QWindowsMime *converter = mc.converterFromMime( *pformatetc, data ) )
+        {
+            if ( converter->convertFromMime( *pformatetc, data, pmedium ) )
+            {
+                hr = ResultFromScode( S_OK );
+            }
+        }
+    }
 
-   return hr;
+    return hr;
 }
 
-STDMETHODIMP QWindowsOleDataObject::GetDataHere(LPFORMATETC, LPSTGMEDIUM)
+STDMETHODIMP QWindowsOleDataObject::GetDataHere( LPFORMATETC, LPSTGMEDIUM )
 {
-   return ResultFromScode(DATA_E_FORMATETC);
+    return ResultFromScode( DATA_E_FORMATETC );
 }
 
-STDMETHODIMP QWindowsOleDataObject::QueryGetData(LPFORMATETC pformatetc)
+STDMETHODIMP QWindowsOleDataObject::QueryGetData( LPFORMATETC pformatetc )
 {
-   HRESULT hr = ResultFromScode(DATA_E_FORMATETC);
+    HRESULT hr = ResultFromScode( DATA_E_FORMATETC );
 
-   if (data) {
-      const QWindowsMimeConverter &mc = QWindowsContext::instance()->mimeConverter();
-      hr = mc.converterFromMime(*pformatetc, data) ?
-         ResultFromScode(S_OK) : ResultFromScode(S_FALSE);
-   }
+    if ( data )
+    {
+        const QWindowsMimeConverter &mc = QWindowsContext::instance()->mimeConverter();
+        hr = mc.converterFromMime( *pformatetc, data ) ?
+             ResultFromScode( S_OK ) : ResultFromScode( S_FALSE );
+    }
 
-   return hr;
+    return hr;
 }
 
-STDMETHODIMP QWindowsOleDataObject::GetCanonicalFormatEtc(LPFORMATETC, LPFORMATETC pformatetcOut)
+STDMETHODIMP QWindowsOleDataObject::GetCanonicalFormatEtc( LPFORMATETC, LPFORMATETC pformatetcOut )
 {
-   pformatetcOut->ptd = nullptr;
-   return ResultFromScode(E_NOTIMPL);
+    pformatetcOut->ptd = nullptr;
+    return ResultFromScode( E_NOTIMPL );
 }
 
-STDMETHODIMP QWindowsOleDataObject::SetData(LPFORMATETC pFormatetc, STGMEDIUM *pMedium, BOOL fRelease)
+STDMETHODIMP QWindowsOleDataObject::SetData( LPFORMATETC pFormatetc, STGMEDIUM *pMedium, BOOL fRelease )
 {
-   HRESULT hr = ResultFromScode(E_NOTIMPL);
+    HRESULT hr = ResultFromScode( E_NOTIMPL );
 
-   if (pFormatetc->cfFormat == CF_PERFORMEDDROPEFFECT && pMedium->tymed == TYMED_HGLOBAL) {
-      DWORD *val = (DWORD *)GlobalLock(pMedium->hGlobal);
-      performedEffect = *val;
-      GlobalUnlock(pMedium->hGlobal);
-      if (fRelease) {
-         ReleaseStgMedium(pMedium);
-      }
-      hr = ResultFromScode(S_OK);
-   }
+    if ( pFormatetc->cfFormat == CF_PERFORMEDDROPEFFECT && pMedium->tymed == TYMED_HGLOBAL )
+    {
+        DWORD *val = ( DWORD * )GlobalLock( pMedium->hGlobal );
+        performedEffect = *val;
+        GlobalUnlock( pMedium->hGlobal );
 
-   return hr;
+        if ( fRelease )
+        {
+            ReleaseStgMedium( pMedium );
+        }
+
+        hr = ResultFromScode( S_OK );
+    }
+
+    return hr;
 }
 
-STDMETHODIMP QWindowsOleDataObject::EnumFormatEtc(DWORD dwDirection, LPENUMFORMATETC FAR *ppenumFormatEtc)
+STDMETHODIMP QWindowsOleDataObject::EnumFormatEtc( DWORD dwDirection, LPENUMFORMATETC FAR *ppenumFormatEtc )
 {
-   if (!data) {
-      return ResultFromScode(DATA_E_FORMATETC);
-   }
+    if ( !data )
+    {
+        return ResultFromScode( DATA_E_FORMATETC );
+    }
 
-   SCODE sc = S_OK;
+    SCODE sc = S_OK;
 
-   QVector<FORMATETC> fmtetcs;
-   if (dwDirection == DATADIR_GET) {
-      QWindowsMimeConverter &mc = QWindowsContext::instance()->mimeConverter();
-      fmtetcs = mc.allFormatsForMime(data);
-   } else {
-      FORMATETC formatetc;
-      formatetc.cfFormat = CLIPFORMAT(CF_PERFORMEDDROPEFFECT);
-      formatetc.dwAspect = DVASPECT_CONTENT;
-      formatetc.lindex = -1;
-      formatetc.ptd = nullptr;
-      formatetc.tymed = TYMED_HGLOBAL;
-      fmtetcs.append(formatetc);
-   }
+    QVector<FORMATETC> fmtetcs;
 
-   QWindowsOleEnumFmtEtc *enumFmtEtc = new QWindowsOleEnumFmtEtc(fmtetcs);
-   *ppenumFormatEtc = enumFmtEtc;
-   if (enumFmtEtc->isNull()) {
-      delete enumFmtEtc;
-      *ppenumFormatEtc = nullptr;
-      sc = E_OUTOFMEMORY;
-   }
+    if ( dwDirection == DATADIR_GET )
+    {
+        QWindowsMimeConverter &mc = QWindowsContext::instance()->mimeConverter();
+        fmtetcs = mc.allFormatsForMime( data );
+    }
+    else
+    {
+        FORMATETC formatetc;
+        formatetc.cfFormat = CLIPFORMAT( CF_PERFORMEDDROPEFFECT );
+        formatetc.dwAspect = DVASPECT_CONTENT;
+        formatetc.lindex = -1;
+        formatetc.ptd = nullptr;
+        formatetc.tymed = TYMED_HGLOBAL;
+        fmtetcs.append( formatetc );
+    }
 
-   return ResultFromScode(sc);
+    QWindowsOleEnumFmtEtc *enumFmtEtc = new QWindowsOleEnumFmtEtc( fmtetcs );
+    *ppenumFormatEtc = enumFmtEtc;
+
+    if ( enumFmtEtc->isNull() )
+    {
+        delete enumFmtEtc;
+        *ppenumFormatEtc = nullptr;
+        sc = E_OUTOFMEMORY;
+    }
+
+    return ResultFromScode( sc );
 }
 
-STDMETHODIMP QWindowsOleDataObject::DAdvise(FORMATETC FAR *, DWORD,
-   LPADVISESINK, DWORD FAR *)
+STDMETHODIMP QWindowsOleDataObject::DAdvise( FORMATETC FAR *, DWORD,
+        LPADVISESINK, DWORD FAR * )
 {
-   return ResultFromScode(OLE_E_ADVISENOTSUPPORTED);
+    return ResultFromScode( OLE_E_ADVISENOTSUPPORTED );
 }
 
 
-STDMETHODIMP QWindowsOleDataObject::DUnadvise(DWORD)
+STDMETHODIMP QWindowsOleDataObject::DUnadvise( DWORD )
 {
-   return ResultFromScode(OLE_E_ADVISENOTSUPPORTED);
+    return ResultFromScode( OLE_E_ADVISENOTSUPPORTED );
 }
 
-STDMETHODIMP QWindowsOleDataObject::EnumDAdvise(LPENUMSTATDATA FAR *)
+STDMETHODIMP QWindowsOleDataObject::EnumDAdvise( LPENUMSTATDATA FAR * )
 {
-   return ResultFromScode(OLE_E_ADVISENOTSUPPORTED);
+    return ResultFromScode( OLE_E_ADVISENOTSUPPORTED );
 }
 
-QWindowsOleEnumFmtEtc::QWindowsOleEnumFmtEtc(const QVector<FORMATETC> &fmtetcs) :
-      m_dwRefs(1), m_nIndex(0), m_isNull(false)
+QWindowsOleEnumFmtEtc::QWindowsOleEnumFmtEtc( const QVector<FORMATETC> &fmtetcs ) :
+    m_dwRefs( 1 ), m_nIndex( 0 ), m_isNull( false )
 {
-   m_lpfmtetcs.reserve(fmtetcs.count());
+    m_lpfmtetcs.reserve( fmtetcs.count() );
 
-   for (int idx = 0; idx < fmtetcs.count(); ++idx) {
-      LPFORMATETC destetc = new FORMATETC();
+    for ( int idx = 0; idx < fmtetcs.count(); ++idx )
+    {
+        LPFORMATETC destetc = new FORMATETC();
 
-      if (copyFormatEtc(destetc, &(fmtetcs.at(idx)))) {
-         m_lpfmtetcs.append(destetc);
-      } else {
-         m_isNull = true;
-         delete destetc;
-         break;
-      }
-   }
+        if ( copyFormatEtc( destetc, &( fmtetcs.at( idx ) ) ) )
+        {
+            m_lpfmtetcs.append( destetc );
+        }
+        else
+        {
+            m_isNull = true;
+            delete destetc;
+            break;
+        }
+    }
 }
 
-QWindowsOleEnumFmtEtc::QWindowsOleEnumFmtEtc(const QVector<LPFORMATETC> &lpfmtetcs) :
-   m_dwRefs(1), m_nIndex(0), m_isNull(false)
+QWindowsOleEnumFmtEtc::QWindowsOleEnumFmtEtc( const QVector<LPFORMATETC> &lpfmtetcs ) :
+    m_dwRefs( 1 ), m_nIndex( 0 ), m_isNull( false )
 {
-   m_lpfmtetcs.reserve(lpfmtetcs.count());
+    m_lpfmtetcs.reserve( lpfmtetcs.count() );
 
-   for (int idx = 0; idx < lpfmtetcs.count(); ++idx) {
-      LPFORMATETC srcetc = lpfmtetcs.at(idx);
-      LPFORMATETC destetc = new FORMATETC();
-      if (copyFormatEtc(destetc, srcetc)) {
-         m_lpfmtetcs.append(destetc);
-      } else {
-         m_isNull = true;
-         delete destetc;
-         break;
-      }
-   }
+    for ( int idx = 0; idx < lpfmtetcs.count(); ++idx )
+    {
+        LPFORMATETC srcetc = lpfmtetcs.at( idx );
+        LPFORMATETC destetc = new FORMATETC();
+
+        if ( copyFormatEtc( destetc, srcetc ) )
+        {
+            m_lpfmtetcs.append( destetc );
+        }
+        else
+        {
+            m_isNull = true;
+            delete destetc;
+            break;
+        }
+    }
 }
 
 QWindowsOleEnumFmtEtc::~QWindowsOleEnumFmtEtc()
 {
-   LPMALLOC pmalloc;
+    LPMALLOC pmalloc;
 
-   if (CoGetMalloc(MEMCTX_TASK, &pmalloc) == NOERROR) {
-      for (int idx = 0; idx < m_lpfmtetcs.count(); ++idx) {
-         LPFORMATETC tmpetc = m_lpfmtetcs.at(idx);
-         if (tmpetc->ptd) {
-            pmalloc->Free(tmpetc->ptd);
-         }
-         delete tmpetc;
-      }
+    if ( CoGetMalloc( MEMCTX_TASK, &pmalloc ) == NOERROR )
+    {
+        for ( int idx = 0; idx < m_lpfmtetcs.count(); ++idx )
+        {
+            LPFORMATETC tmpetc = m_lpfmtetcs.at( idx );
 
-      pmalloc->Release();
-   }
-   m_lpfmtetcs.clear();
+            if ( tmpetc->ptd )
+            {
+                pmalloc->Free( tmpetc->ptd );
+            }
+
+            delete tmpetc;
+        }
+
+        pmalloc->Release();
+    }
+
+    m_lpfmtetcs.clear();
 }
 
 bool QWindowsOleEnumFmtEtc::isNull() const
 {
-   return m_isNull;
+    return m_isNull;
 }
 
 // IUnknown methods
-STDMETHODIMP QWindowsOleEnumFmtEtc::QueryInterface(REFIID riid, void FAR *FAR *ppvObj)
+STDMETHODIMP QWindowsOleEnumFmtEtc::QueryInterface( REFIID riid, void FAR *FAR *ppvObj )
 {
-   if (riid == IID_IUnknown || riid == IID_IEnumFORMATETC) {
-      *ppvObj = this;
-      AddRef();
-      return NOERROR;
-   }
-   *ppvObj = nullptr;
-   return ResultFromScode(E_NOINTERFACE);
+    if ( riid == IID_IUnknown || riid == IID_IEnumFORMATETC )
+    {
+        *ppvObj = this;
+        AddRef();
+        return NOERROR;
+    }
+
+    *ppvObj = nullptr;
+    return ResultFromScode( E_NOINTERFACE );
 }
 
-STDMETHODIMP_(ULONG)
-QWindowsOleEnumFmtEtc::AddRef(void)
+STDMETHODIMP_( ULONG )
+QWindowsOleEnumFmtEtc::AddRef( void )
 {
-   return ++m_dwRefs;
+    return ++m_dwRefs;
 }
 
-STDMETHODIMP_(ULONG)
-QWindowsOleEnumFmtEtc::Release(void)
+STDMETHODIMP_( ULONG )
+QWindowsOleEnumFmtEtc::Release( void )
 {
-   if (--m_dwRefs == 0) {
-      delete this;
-      return 0;
-   }
-   return m_dwRefs;
+    if ( --m_dwRefs == 0 )
+    {
+        delete this;
+        return 0;
+    }
+
+    return m_dwRefs;
 }
 
 // IEnumFORMATETC methods
-STDMETHODIMP QWindowsOleEnumFmtEtc::Next(ULONG celt, LPFORMATETC rgelt, ULONG FAR *pceltFetched)
+STDMETHODIMP QWindowsOleEnumFmtEtc::Next( ULONG celt, LPFORMATETC rgelt, ULONG FAR *pceltFetched )
 {
-   ULONG i = 0;
-   ULONG nOffset;
+    ULONG i = 0;
+    ULONG nOffset;
 
-   if (rgelt == nullptr) {
-      return ResultFromScode(E_INVALIDARG);
-   }
+    if ( rgelt == nullptr )
+    {
+        return ResultFromScode( E_INVALIDARG );
+    }
 
-   while (i < celt) {
-      nOffset = m_nIndex + i;
+    while ( i < celt )
+    {
+        nOffset = m_nIndex + i;
 
-      if (nOffset < ULONG(m_lpfmtetcs.count())) {
-         copyFormatEtc(rgelt + i, m_lpfmtetcs.at(int(nOffset)));
-         i++;
-      } else {
-         break;
-      }
-   }
+        if ( nOffset < ULONG( m_lpfmtetcs.count() ) )
+        {
+            copyFormatEtc( rgelt + i, m_lpfmtetcs.at( int( nOffset ) ) );
+            i++;
+        }
+        else
+        {
+            break;
+        }
+    }
 
-   m_nIndex += i;
+    m_nIndex += i;
 
-   if (pceltFetched != nullptr) {
-      *pceltFetched = i;
-   }
+    if ( pceltFetched != nullptr )
+    {
+        *pceltFetched = i;
+    }
 
-   if (i != celt) {
-      return ResultFromScode(S_FALSE);
-   }
+    if ( i != celt )
+    {
+        return ResultFromScode( S_FALSE );
+    }
 
-   return NOERROR;
+    return NOERROR;
 }
 
-STDMETHODIMP QWindowsOleEnumFmtEtc::Skip(ULONG celt)
+STDMETHODIMP QWindowsOleEnumFmtEtc::Skip( ULONG celt )
 {
-   ULONG i = 0;
-   ULONG nOffset;
+    ULONG i = 0;
+    ULONG nOffset;
 
-   while (i < celt) {
-      nOffset = m_nIndex + i;
+    while ( i < celt )
+    {
+        nOffset = m_nIndex + i;
 
-      if (nOffset < ULONG(m_lpfmtetcs.count())) {
-         i++;
-      } else {
-         break;
-      }
-   }
+        if ( nOffset < ULONG( m_lpfmtetcs.count() ) )
+        {
+            i++;
+        }
+        else
+        {
+            break;
+        }
+    }
 
-   m_nIndex += i;
+    m_nIndex += i;
 
-   if (i != celt) {
-      return ResultFromScode(S_FALSE);
-   }
+    if ( i != celt )
+    {
+        return ResultFromScode( S_FALSE );
+    }
 
-   return NOERROR;
+    return NOERROR;
 }
 
 STDMETHODIMP QWindowsOleEnumFmtEtc::Reset()
 {
-   m_nIndex = 0;
-   return NOERROR;
+    m_nIndex = 0;
+    return NOERROR;
 }
 
-STDMETHODIMP QWindowsOleEnumFmtEtc::Clone(LPENUMFORMATETC FAR *newEnum)
+STDMETHODIMP QWindowsOleEnumFmtEtc::Clone( LPENUMFORMATETC FAR *newEnum )
 {
-   if (newEnum == nullptr) {
-      return ResultFromScode(E_INVALIDARG);
-   }
+    if ( newEnum == nullptr )
+    {
+        return ResultFromScode( E_INVALIDARG );
+    }
 
-   QWindowsOleEnumFmtEtc *result = new QWindowsOleEnumFmtEtc(m_lpfmtetcs);
-   result->m_nIndex = m_nIndex;
+    QWindowsOleEnumFmtEtc *result = new QWindowsOleEnumFmtEtc( m_lpfmtetcs );
+    result->m_nIndex = m_nIndex;
 
-   if (result->isNull()) {
-      delete result;
-      return ResultFromScode(E_OUTOFMEMORY);
-   } else {
-      *newEnum = result;
-   }
+    if ( result->isNull() )
+    {
+        delete result;
+        return ResultFromScode( E_OUTOFMEMORY );
+    }
+    else
+    {
+        *newEnum = result;
+    }
 
-   return NOERROR;
+    return NOERROR;
 }
 
-bool QWindowsOleEnumFmtEtc::copyFormatEtc(LPFORMATETC dest, const FORMATETC *src) const
+bool QWindowsOleEnumFmtEtc::copyFormatEtc( LPFORMATETC dest, const FORMATETC *src ) const
 {
-   if (dest == nullptr || src == nullptr) {
-      return false;
-   }
+    if ( dest == nullptr || src == nullptr )
+    {
+        return false;
+    }
 
-   *dest = *src;
+    *dest = *src;
 
-   if (src->ptd) {
-      LPMALLOC pmalloc;
+    if ( src->ptd )
+    {
+        LPMALLOC pmalloc;
 
-      if (CoGetMalloc(MEMCTX_TASK, &pmalloc) != NOERROR) {
-         return false;
-      }
+        if ( CoGetMalloc( MEMCTX_TASK, &pmalloc ) != NOERROR )
+        {
+            return false;
+        }
 
-      pmalloc->Alloc(src->ptd->tdSize);
-      memcpy(dest->ptd, src->ptd, size_t(src->ptd->tdSize));
+        pmalloc->Alloc( src->ptd->tdSize );
+        memcpy( dest->ptd, src->ptd, size_t( src->ptd->tdSize ) );
 
-      pmalloc->Release();
-   }
+        pmalloc->Release();
+    }
 
-   return true;
+    return true;
 }

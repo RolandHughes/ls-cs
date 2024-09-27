@@ -32,51 +32,67 @@
 
 using namespace QPatternist;
 
-Item CodepointEqualFN::evaluateSingleton(const DynamicContext::Ptr &context) const
+Item CodepointEqualFN::evaluateSingleton( const DynamicContext::Ptr &context ) const
 {
-   const Item op1(m_operands.first()->evaluateSingleton(context));
-   if (!op1) {
-      return Item();
-   }
+    const Item op1( m_operands.first()->evaluateSingleton( context ) );
 
-   const Item op2(m_operands.last()->evaluateSingleton(context));
-   if (!op2) {
-      return Item();
-   }
+    if ( !op1 )
+    {
+        return Item();
+    }
 
-   if (caseSensitivity() == Qt::CaseSensitive) {
-      return Boolean::fromValue(op1.stringValue() == op2.stringValue());
-   } else {
-      const QString s1(op1.stringValue());
-      const QString s2(op2.stringValue());
+    const Item op2( m_operands.last()->evaluateSingleton( context ) );
 
-      return Boolean::fromValue(s1.length() == s2.length() &&
-                                s1.startsWith(s2, Qt::CaseInsensitive));
-   }
+    if ( !op2 )
+    {
+        return Item();
+    }
+
+    if ( caseSensitivity() == Qt::CaseSensitive )
+    {
+        return Boolean::fromValue( op1.stringValue() == op2.stringValue() );
+    }
+    else
+    {
+        const QString s1( op1.stringValue() );
+        const QString s2( op2.stringValue() );
+
+        return Boolean::fromValue( s1.length() == s2.length() &&
+                                   s1.startsWith( s2, Qt::CaseInsensitive ) );
+    }
 }
 
-Item CompareFN::evaluateSingleton(const DynamicContext::Ptr &context) const
+Item CompareFN::evaluateSingleton( const DynamicContext::Ptr &context ) const
 {
-   const Item op1(m_operands.first()->evaluateSingleton(context));
-   if (!op1) {
-      return Item();
-   }
+    const Item op1( m_operands.first()->evaluateSingleton( context ) );
 
-   const Item op2(m_operands.at(1)->evaluateSingleton(context));
-   if (!op2) {
-      return Item();
-   }
+    if ( !op1 )
+    {
+        return Item();
+    }
 
-   const int retval = caseSensitivity() == Qt::CaseSensitive
-                      ? op1.stringValue().compare(op2.stringValue())
-                      : op1.stringValue().toLower().compare(op2.stringValue().toLower());
+    const Item op2( m_operands.at( 1 )->evaluateSingleton( context ) );
 
-   if (retval > 0) {
-      return CommonValues::IntegerOne;
-   } else if (retval < 0) {
-      return CommonValues::IntegerOneNegative;
-   } else {
-      Q_ASSERT(retval == 0);
-      return CommonValues::IntegerZero;
-   }
+    if ( !op2 )
+    {
+        return Item();
+    }
+
+    const int retval = caseSensitivity() == Qt::CaseSensitive
+                       ? op1.stringValue().compare( op2.stringValue() )
+                       : op1.stringValue().toLower().compare( op2.stringValue().toLower() );
+
+    if ( retval > 0 )
+    {
+        return CommonValues::IntegerOne;
+    }
+    else if ( retval < 0 )
+    {
+        return CommonValues::IntegerOneNegative;
+    }
+    else
+    {
+        Q_ASSERT( retval == 0 );
+        return CommonValues::IntegerZero;
+    }
 }

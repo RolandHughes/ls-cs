@@ -28,45 +28,60 @@
 #include "CallFrame.h"
 #include "Structure.h"
 
-namespace JSC {
+namespace JSC
+{
 
-    class JSObject;
+class JSObject;
 
-    // This is an internal value object which stores getter and setter functions
-    // for a property.
-    class GetterSetter : public JSCell {
-        friend class JIT;
-    public:
-        GetterSetter(ExecState* exec)
-            : JSCell(exec->globalData(), exec->globalData().getterSetterStructure.get())
-        {
-        }
-
-        virtual void visitChildren(SlotVisitor&);
-
-        JSObject* getter() const { return m_getter.get(); }
-        void setGetter(JSGlobalData& globalData, JSObject* getter) { m_getter.set(globalData, this, getter); }
-        JSObject* setter() const { return m_setter.get(); }
-        void setSetter(JSGlobalData& globalData, JSObject* setter) { m_setter.set(globalData, this, setter); }
-        static Structure* createStructure(JSGlobalData& globalData, JSValue prototype)
-        {
-            return Structure::create(globalData, prototype, TypeInfo(GetterSetterType, OverridesVisitChildren), AnonymousSlotCount, &s_info);
-        }
-    private:
-        virtual bool isGetterSetter() const;
-        static const ClassInfo s_info;
-
-        WriteBarrier<JSObject> m_getter;
-        WriteBarrier<JSObject> m_setter;  
-    };
-
-    GetterSetter* asGetterSetter(JSValue);
-
-    inline GetterSetter* asGetterSetter(JSValue value)
+// This is an internal value object which stores getter and setter functions
+// for a property.
+class GetterSetter : public JSCell
+{
+    friend class JIT;
+public:
+    GetterSetter( ExecState *exec )
+        : JSCell( exec->globalData(), exec->globalData().getterSetterStructure.get() )
     {
-        ASSERT(value.asCell()->isGetterSetter());
-        return static_cast<GetterSetter*>(value.asCell());
     }
+
+    virtual void visitChildren( SlotVisitor & );
+
+    JSObject *getter() const
+    {
+        return m_getter.get();
+    }
+    void setGetter( JSGlobalData &globalData, JSObject *getter )
+    {
+        m_getter.set( globalData, this, getter );
+    }
+    JSObject *setter() const
+    {
+        return m_setter.get();
+    }
+    void setSetter( JSGlobalData &globalData, JSObject *setter )
+    {
+        m_setter.set( globalData, this, setter );
+    }
+    static Structure *createStructure( JSGlobalData &globalData, JSValue prototype )
+    {
+        return Structure::create( globalData, prototype, TypeInfo( GetterSetterType, OverridesVisitChildren ), AnonymousSlotCount,
+                                  &s_info );
+    }
+private:
+    virtual bool isGetterSetter() const;
+    static const ClassInfo s_info;
+
+    WriteBarrier<JSObject> m_getter;
+    WriteBarrier<JSObject> m_setter;
+};
+
+GetterSetter *asGetterSetter( JSValue );
+
+inline GetterSetter *asGetterSetter( JSValue value )
+{
+    ASSERT( value.asCell()->isGetterSetter() );
+    return static_cast<GetterSetter *>( value.asCell() );
+}
 
 
 } // namespace JSC

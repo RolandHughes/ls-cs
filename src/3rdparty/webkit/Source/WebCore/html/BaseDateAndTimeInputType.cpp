@@ -42,7 +42,8 @@
 #include <wtf/PassOwnPtr.h>
 #include <wtf/text/WTFString.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 using namespace std;
@@ -52,46 +53,46 @@ static const double msecPerSecond = 1000;
 
 double BaseDateAndTimeInputType::valueAsDate() const
 {
-    return parseToDouble(element()->value(), DateComponents::invalidMilliseconds());
+    return parseToDouble( element()->value(), DateComponents::invalidMilliseconds() );
 }
 
-void BaseDateAndTimeInputType::setValueAsDate(double value, ExceptionCode&) const
+void BaseDateAndTimeInputType::setValueAsDate( double value, ExceptionCode & ) const
 {
-    element()->setValue(serializeWithMilliseconds(value));
+    element()->setValue( serializeWithMilliseconds( value ) );
 }
 
 double BaseDateAndTimeInputType::valueAsNumber() const
 {
-    return parseToDouble(element()->value(), numeric_limits<double>::quiet_NaN());
+    return parseToDouble( element()->value(), numeric_limits<double>::quiet_NaN() );
 }
 
-void BaseDateAndTimeInputType::setValueAsNumber(double newValue, ExceptionCode&) const
+void BaseDateAndTimeInputType::setValueAsNumber( double newValue, ExceptionCode & ) const
 {
-    element()->setValue(serialize(newValue));
+    element()->setValue( serialize( newValue ) );
 }
 
-bool BaseDateAndTimeInputType::typeMismatchFor(const String& value) const
+bool BaseDateAndTimeInputType::typeMismatchFor( const String &value ) const
 {
-    return !value.isEmpty() && !parseToDateComponents(value, 0);
+    return !value.isEmpty() && !parseToDateComponents( value, 0 );
 }
 
 bool BaseDateAndTimeInputType::typeMismatch() const
 {
-    return typeMismatchFor(element()->value());
+    return typeMismatchFor( element()->value() );
 }
 
-bool BaseDateAndTimeInputType::rangeUnderflow(const String& value) const
+bool BaseDateAndTimeInputType::rangeUnderflow( const String &value ) const
 {
     const double nan = numeric_limits<double>::quiet_NaN();
-    double doubleValue = parseToDouble(value, nan);
-    return isfinite(doubleValue) && doubleValue < minimum();
+    double doubleValue = parseToDouble( value, nan );
+    return isfinite( doubleValue ) && doubleValue < minimum();
 }
 
-bool BaseDateAndTimeInputType::rangeOverflow(const String& value) const
+bool BaseDateAndTimeInputType::rangeOverflow( const String &value ) const
 {
     const double nan = numeric_limits<double>::quiet_NaN();
-    double doubleValue = parseToDouble(value, nan);
-    return isfinite(doubleValue) && doubleValue > maximum();
+    double doubleValue = parseToDouble( value, nan );
+    return isfinite( doubleValue ) && doubleValue > maximum();
 }
 
 bool BaseDateAndTimeInputType::supportsRangeLimitation() const
@@ -102,8 +103,8 @@ bool BaseDateAndTimeInputType::supportsRangeLimitation() const
 double BaseDateAndTimeInputType::defaultValueForStepUp() const
 {
     double ms = currentTimeMS();
-    int offset = calculateLocalTimeOffset(ms).offset / msPerMinute;
-    return ms + (offset * msPerMinute);
+    int offset = calculateLocalTimeOffset( ms ).offset / msPerMinute;
+    return ms + ( offset * msPerMinute );
 }
 
 bool BaseDateAndTimeInputType::isSteppable() const
@@ -111,103 +112,146 @@ bool BaseDateAndTimeInputType::isSteppable() const
     return true;
 }
 
-bool BaseDateAndTimeInputType::stepMismatch(const String& value, double step) const
+bool BaseDateAndTimeInputType::stepMismatch( const String &value, double step ) const
 {
     const double nan = numeric_limits<double>::quiet_NaN();
-    double doubleValue = parseToDouble(value, nan);
-    doubleValue = fabs(doubleValue - stepBase());
-    if (!isfinite(doubleValue))
+    double doubleValue = parseToDouble( value, nan );
+    doubleValue = fabs( doubleValue - stepBase() );
+
+    if ( !isfinite( doubleValue ) )
+    {
         return false;
-    ASSERT(round(doubleValue) == doubleValue);
-    ASSERT(round(step) == step);
-    return fmod(doubleValue, step);
+    }
+
+    ASSERT( round( doubleValue ) == doubleValue );
+    ASSERT( round( step ) == step );
+    return fmod( doubleValue, step );
 }
 
 double BaseDateAndTimeInputType::stepBase() const
 {
-    return parseToDouble(element()->fastGetAttribute(minAttr), defaultStepBase());
+    return parseToDouble( element()->fastGetAttribute( minAttr ), defaultStepBase() );
 }
 
-void BaseDateAndTimeInputType::handleKeydownEvent(KeyboardEvent* event)
+void BaseDateAndTimeInputType::handleKeydownEvent( KeyboardEvent *event )
 {
-    handleKeydownEventForSpinButton(event);
-    if (!event->defaultHandled())
-        TextFieldInputType::handleKeydownEvent(event);
+    handleKeydownEventForSpinButton( event );
+
+    if ( !event->defaultHandled() )
+    {
+        TextFieldInputType::handleKeydownEvent( event );
+    }
 }
 
-void BaseDateAndTimeInputType::handleWheelEvent(WheelEvent* event)
+void BaseDateAndTimeInputType::handleWheelEvent( WheelEvent *event )
 {
-    handleWheelEventForSpinButton(event);
+    handleWheelEventForSpinButton( event );
 }
 
-double BaseDateAndTimeInputType::parseToDouble(const String& src, double defaultValue) const
+double BaseDateAndTimeInputType::parseToDouble( const String &src, double defaultValue ) const
 {
     DateComponents date;
-    if (!parseToDateComponents(src, &date))
+
+    if ( !parseToDateComponents( src, &date ) )
+    {
         return defaultValue;
+    }
+
     double msec = date.millisecondsSinceEpoch();
-    ASSERT(isfinite(msec));
+    ASSERT( isfinite( msec ) );
     return msec;
 }
 
-bool BaseDateAndTimeInputType::parseToDateComponents(const String& source, DateComponents* out) const
+bool BaseDateAndTimeInputType::parseToDateComponents( const String &source, DateComponents *out ) const
 {
-    if (source.isEmpty())
+    if ( source.isEmpty() )
+    {
         return false;
+    }
+
     DateComponents ignoredResult;
-    if (!out)
+
+    if ( !out )
+    {
         out = &ignoredResult;
-    return parseToDateComponentsInternal(source.characters(), source.length(), out);
+    }
+
+    return parseToDateComponentsInternal( source.characters(), source.length(), out );
 }
 
-String BaseDateAndTimeInputType::serialize(double value) const
+String BaseDateAndTimeInputType::serialize( double value ) const
 {
-    if (!isfinite(value))
+    if ( !isfinite( value ) )
+    {
         return String();
+    }
+
     DateComponents date;
-    if (!setMillisecondToDateComponents(value, &date))
+
+    if ( !setMillisecondToDateComponents( value, &date ) )
+    {
         return String();
-    return serializeWithComponents(date);
+    }
+
+    return serializeWithComponents( date );
 }
 
-String BaseDateAndTimeInputType::serializeWithComponents(const DateComponents& date) const
+String BaseDateAndTimeInputType::serializeWithComponents( const DateComponents &date ) const
 {
     double step;
-    if (!element()->getAllowedValueStep(&step))
+
+    if ( !element()->getAllowedValueStep( &step ) )
+    {
         return date.toString();
-    if (!fmod(step, msecPerMinute))
-        return date.toString(DateComponents::None);
-    if (!fmod(step, msecPerSecond))
-        return date.toString(DateComponents::Second);
-    return date.toString(DateComponents::Millisecond);
+    }
+
+    if ( !fmod( step, msecPerMinute ) )
+    {
+        return date.toString( DateComponents::None );
+    }
+
+    if ( !fmod( step, msecPerSecond ) )
+    {
+        return date.toString( DateComponents::Second );
+    }
+
+    return date.toString( DateComponents::Millisecond );
 }
 
-String BaseDateAndTimeInputType::serializeWithMilliseconds(double value) const
+String BaseDateAndTimeInputType::serializeWithMilliseconds( double value ) const
 {
-    return serialize(value);
+    return serialize( value );
 }
 
 String BaseDateAndTimeInputType::visibleValue() const
 {
     String currentValue = element()->value();
     DateComponents date;
-    if (!parseToDateComponents(currentValue, &date))
-        return currentValue;
 
-    String localized = formatLocalizedDate(date);
+    if ( !parseToDateComponents( currentValue, &date ) )
+    {
+        return currentValue;
+    }
+
+    String localized = formatLocalizedDate( date );
     return localized.isEmpty() ? currentValue : localized;
 }
 
-String BaseDateAndTimeInputType::convertFromVisibleValue(const String& visibleValue) const
+String BaseDateAndTimeInputType::convertFromVisibleValue( const String &visibleValue ) const
 {
-    if (visibleValue.isEmpty())
+    if ( visibleValue.isEmpty() )
+    {
         return visibleValue;
+    }
 
-    double parsedValue = parseLocalizedDate(visibleValue, dateType());
-    if (!isfinite(parsedValue))
+    double parsedValue = parseLocalizedDate( visibleValue, dateType() );
+
+    if ( !isfinite( parsedValue ) )
+    {
         return visibleValue;
+    }
 
-    return serializeWithMilliseconds(parsedValue);
+    return serializeWithMilliseconds( parsedValue );
 }
 
 } // namespace WebCore

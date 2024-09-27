@@ -37,92 +37,123 @@
 
 using namespace JSC;
 
-namespace WebCore {
-
-void JSAudioContext::visitChildren(SlotVisitor& visitor)
+namespace WebCore
 {
-    Base::visitChildren(visitor);
-    m_impl->visitJSEventListeners(visitor);
+
+void JSAudioContext::visitChildren( SlotVisitor &visitor )
+{
+    Base::visitChildren( visitor );
+    m_impl->visitJSEventListeners( visitor );
 }
 
-EncodedJSValue JSC_HOST_CALL JSAudioContextConstructor::constructJSAudioContext(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL JSAudioContextConstructor::constructJSAudioContext( ExecState *exec )
 {
-    JSAudioContextConstructor* jsConstructor = static_cast<JSAudioContextConstructor*>(exec->callee());
-    if (!jsConstructor)
-      return throwError(exec, createReferenceError(exec, "AudioContext constructor callee is unavailable"));
+    JSAudioContextConstructor *jsConstructor = static_cast<JSAudioContextConstructor *>( exec->callee() );
 
-    ScriptExecutionContext* scriptExecutionContext = jsConstructor->scriptExecutionContext();
-    if (!scriptExecutionContext)
-      return throwError(exec, createReferenceError(exec, "AudioContext constructor script execution context is unavailable"));
-        
-    if (!scriptExecutionContext->isDocument())
-      return throwError(exec, createReferenceError(exec, "AudioContext constructor called in a script execution context which is not a document"));
-
-    Document* document = static_cast<Document*>(scriptExecutionContext);
-
-    RefPtr<AudioContext> audioContext;
-    
-    if (!exec->argumentCount()) {
-        // Constructor for default AudioContext which talks to audio hardware.
-        audioContext = AudioContext::create(document);
-    } else {
-        // Constructor for offline (render-target) AudioContext which renders into an AudioBuffer.
-        // new AudioContext(in unsigned long numberOfChannels, in unsigned long numberOfFrames, in float sampleRate);
-        if (exec->argumentCount() < 3)
-            return throwError(exec, createSyntaxError(exec, "Not enough arguments"));
-
-        unsigned numberOfChannels = exec->argument(0).toInt32(exec);
-        unsigned numberOfFrames = exec->argument(1).toInt32(exec);
-        float sampleRate = exec->argument(2).toFloat(exec);
-
-        audioContext = AudioContext::createOfflineContext(document, numberOfChannels, numberOfFrames, sampleRate);
+    if ( !jsConstructor )
+    {
+        return throwError( exec, createReferenceError( exec, "AudioContext constructor callee is unavailable" ) );
     }
 
-    if (!audioContext.get())
-        return throwError(exec, createReferenceError(exec, "Error creating AudioContext"));
+    ScriptExecutionContext *scriptExecutionContext = jsConstructor->scriptExecutionContext();
 
-    return JSValue::encode(asObject(toJS(exec, jsConstructor->globalObject(), audioContext.get())));
+    if ( !scriptExecutionContext )
+    {
+        return throwError( exec, createReferenceError( exec, "AudioContext constructor script execution context is unavailable" ) );
+    }
+
+    if ( !scriptExecutionContext->isDocument() )
+    {
+        return throwError( exec, createReferenceError( exec,
+                           "AudioContext constructor called in a script execution context which is not a document" ) );
+    }
+
+    Document *document = static_cast<Document *>( scriptExecutionContext );
+
+    RefPtr<AudioContext> audioContext;
+
+    if ( !exec->argumentCount() )
+    {
+        // Constructor for default AudioContext which talks to audio hardware.
+        audioContext = AudioContext::create( document );
+    }
+    else
+    {
+        // Constructor for offline (render-target) AudioContext which renders into an AudioBuffer.
+        // new AudioContext(in unsigned long numberOfChannels, in unsigned long numberOfFrames, in float sampleRate);
+        if ( exec->argumentCount() < 3 )
+        {
+            return throwError( exec, createSyntaxError( exec, "Not enough arguments" ) );
+        }
+
+        unsigned numberOfChannels = exec->argument( 0 ).toInt32( exec );
+        unsigned numberOfFrames = exec->argument( 1 ).toInt32( exec );
+        float sampleRate = exec->argument( 2 ).toFloat( exec );
+
+        audioContext = AudioContext::createOfflineContext( document, numberOfChannels, numberOfFrames, sampleRate );
+    }
+
+    if ( !audioContext.get() )
+    {
+        return throwError( exec, createReferenceError( exec, "Error creating AudioContext" ) );
+    }
+
+    return JSValue::encode( asObject( toJS( exec, jsConstructor->globalObject(), audioContext.get() ) ) );
 }
 
-JSValue JSAudioContext::createBuffer(ExecState* exec)
+JSValue JSAudioContext::createBuffer( ExecState *exec )
 {
-    if (exec->argumentCount() < 2)
-        return throwError(exec, createSyntaxError(exec, "Not enough arguments"));
+    if ( exec->argumentCount() < 2 )
+    {
+        return throwError( exec, createSyntaxError( exec, "Not enough arguments" ) );
+    }
 
-    AudioContext* audioContext = static_cast<AudioContext*>(impl());
-    ASSERT(audioContext);
+    AudioContext *audioContext = static_cast<AudioContext *>( impl() );
+    ASSERT( audioContext );
 
     // AudioBuffer createBuffer(in ArrayBuffer buffer, in boolean mixToMono);
-    JSValue val = exec->argument(0);
-    if (val.inherits(&JSArrayBuffer::s_info)) {
-        ArrayBuffer* arrayBuffer = toArrayBuffer(val);
-        ASSERT(arrayBuffer);
-        if (arrayBuffer) {
-            bool mixToMono = exec->argument(1).toBoolean(exec);
+    JSValue val = exec->argument( 0 );
 
-            RefPtr<AudioBuffer> audioBuffer = audioContext->createBuffer(arrayBuffer, mixToMono);
-            if (!audioBuffer.get())
-                return throwError(exec, createSyntaxError(exec, "Error decoding audio file data"));
+    if ( val.inherits( &JSArrayBuffer::s_info ) )
+    {
+        ArrayBuffer *arrayBuffer = toArrayBuffer( val );
+        ASSERT( arrayBuffer );
 
-            return toJS(exec, globalObject(), audioBuffer.get());
+        if ( arrayBuffer )
+        {
+            bool mixToMono = exec->argument( 1 ).toBoolean( exec );
+
+            RefPtr<AudioBuffer> audioBuffer = audioContext->createBuffer( arrayBuffer, mixToMono );
+
+            if ( !audioBuffer.get() )
+            {
+                return throwError( exec, createSyntaxError( exec, "Error decoding audio file data" ) );
+            }
+
+            return toJS( exec, globalObject(), audioBuffer.get() );
         }
 
         return jsUndefined();
     }
-    
+
     // AudioBuffer createBuffer(in unsigned long numberOfChannels, in unsigned long numberOfFrames, in float sampleRate);
-    if (exec->argumentCount() < 3)
-        return throwError(exec, createSyntaxError(exec, "Not enough arguments"));
-    
-    unsigned numberOfChannels = exec->argument(0).toInt32(exec);
-    unsigned numberOfFrames = exec->argument(1).toInt32(exec);
-    float sampleRate = exec->argument(2).toFloat(exec);
+    if ( exec->argumentCount() < 3 )
+    {
+        return throwError( exec, createSyntaxError( exec, "Not enough arguments" ) );
+    }
 
-    RefPtr<AudioBuffer> audioBuffer = audioContext->createBuffer(numberOfChannels, numberOfFrames, sampleRate);
-    if (!audioBuffer.get())
-        return throwError(exec, createSyntaxError(exec, "Error creating AudioBuffer"));
+    unsigned numberOfChannels = exec->argument( 0 ).toInt32( exec );
+    unsigned numberOfFrames = exec->argument( 1 ).toInt32( exec );
+    float sampleRate = exec->argument( 2 ).toFloat( exec );
 
-    return toJS(exec, globalObject(), audioBuffer.get());
+    RefPtr<AudioBuffer> audioBuffer = audioContext->createBuffer( numberOfChannels, numberOfFrames, sampleRate );
+
+    if ( !audioBuffer.get() )
+    {
+        return throwError( exec, createSyntaxError( exec, "Error creating AudioBuffer" ) );
+    }
+
+    return toJS( exec, globalObject(), audioBuffer.get() );
 }
 
 } // namespace WebCore

@@ -34,38 +34,39 @@ class QGnomeThemePrivate;
 
 class ResourceHelper
 {
- public:
-   ResourceHelper();
-   ~ResourceHelper() {
-      clear();
-   }
+public:
+    ResourceHelper();
+    ~ResourceHelper()
+    {
+        clear();
+    }
 
-   void clear();
+    void clear();
 
-   QPalette *palettes[QPlatformTheme::NPalettes];
-   QFont *fonts[QPlatformTheme::NFonts];
+    QPalette *palettes[QPlatformTheme::NPalettes];
+    QFont *fonts[QPlatformTheme::NFonts];
 };
 
 class QGenericUnixTheme : public QPlatformTheme
 {
-   Q_DECLARE_PRIVATE(QGenericUnixTheme)
+    Q_DECLARE_PRIVATE( QGenericUnixTheme )
 
- public:
-   QGenericUnixTheme();
+public:
+    QGenericUnixTheme();
 
-   static QPlatformTheme *createUnixTheme(const QString &name);
-   static QStringList themeNames();
+    static QPlatformTheme *createUnixTheme( const QString &name );
+    static QStringList themeNames();
 
-   const QFont *font(Font type) const override;
-   QVariant themeHint(ThemeHint hint) const override;
+    const QFont *font( Font type ) const override;
+    QVariant themeHint( ThemeHint hint ) const override;
 
-   static QStringList xdgIconThemePaths();
+    static QStringList xdgIconThemePaths();
 
 #if ! defined(QT_NO_DBUS) && ! defined(QT_NO_SYSTEMTRAYICON)
-   QPlatformSystemTrayIcon *createPlatformSystemTrayIcon() const override;
+    QPlatformSystemTrayIcon *createPlatformSystemTrayIcon() const override;
 #endif
 
-   static QString m_name;
+    static QString m_name;
 };
 
 #ifndef QT_NO_SETTINGS
@@ -73,43 +74,43 @@ class QKdeThemePrivate;
 
 class QKdeTheme : public QPlatformTheme
 {
-   Q_DECLARE_PRIVATE(QKdeTheme)
+    Q_DECLARE_PRIVATE( QKdeTheme )
 
- public:
-   QKdeTheme(const QStringList &kdeDirs, int kdeVersion);
+public:
+    QKdeTheme( const QStringList &kdeDirs, int kdeVersion );
 
-   static QPlatformTheme *createKdeTheme();
-   QVariant themeHint(ThemeHint hint) const override;
+    static QPlatformTheme *createKdeTheme();
+    QVariant themeHint( ThemeHint hint ) const override;
 
-   const QPalette *palette(Palette type = SystemPalette) const override;
+    const QPalette *palette( Palette type = SystemPalette ) const override;
 
-   const QFont *font(Font type) const override;
+    const QFont *font( Font type ) const override;
 
 #if ! defined(QT_NO_DBUS) && !defined(QT_NO_SYSTEMTRAYICON)
-   QPlatformSystemTrayIcon *createPlatformSystemTrayIcon() const override;
+    QPlatformSystemTrayIcon *createPlatformSystemTrayIcon() const override;
 #endif
 
-   static QString m_name;
+    static QString m_name;
 };
 #endif // QT_NO_SETTINGS
 
 class QGnomeTheme : public QPlatformTheme
 {
-   Q_DECLARE_PRIVATE(QGnomeTheme)
+    Q_DECLARE_PRIVATE( QGnomeTheme )
 
- public:
-   QGnomeTheme();
-   QVariant themeHint(ThemeHint hint) const override;
-   const QFont *font(Font type) const override;
-   QString standardButtonText(int button) const override;
+public:
+    QGnomeTheme();
+    QVariant themeHint( ThemeHint hint ) const override;
+    const QFont *font( Font type ) const override;
+    QString standardButtonText( int button ) const override;
 
-   virtual QString gtkFontName() const;
+    virtual QString gtkFontName() const;
 
 #if ! defined(QT_NO_DBUS) && !defined(QT_NO_SYSTEMTRAYICON)
-   QPlatformSystemTrayIcon *createPlatformSystemTrayIcon() const override;
+    QPlatformSystemTrayIcon *createPlatformSystemTrayIcon() const override;
 #endif
 
-   static QString m_name;
+    static QString m_name;
 };
 
 QPlatformTheme *qt_createUnixTheme();

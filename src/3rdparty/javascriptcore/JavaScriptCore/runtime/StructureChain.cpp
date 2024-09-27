@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -30,26 +30,36 @@
 #include "Structure.h"
 #include <wtf/RefPtr.h>
 
-namespace JSC {
+namespace JSC
+{
 
-StructureChain::StructureChain(Structure* head)
+StructureChain::StructureChain( Structure *head )
 {
     size_t size = 0;
-    for (Structure* current = head; current; current = current->storedPrototype().isNull() ? 0 : asObject(current->storedPrototype())->structure())
+
+    for ( Structure *current = head; current;
+            current = current->storedPrototype().isNull() ? 0 : asObject( current->storedPrototype() )->structure() )
+    {
         ++size;
-    
-    m_vector.set(new RefPtr<Structure>[size + 1]);
+    }
+
+    m_vector.set( new RefPtr<Structure>[size + 1] );
 
     size_t i = 0;
-    for (Structure* current = head; current; current = current->storedPrototype().isNull() ? 0 : asObject(current->storedPrototype())->structure())
+
+    for ( Structure *current = head; current;
+            current = current->storedPrototype().isNull() ? 0 : asObject( current->storedPrototype() )->structure() )
+    {
         m_vector[i++] = current;
+    }
+
     m_vector[i] = 0;
 }
 
 #if OS(HPUX)
-PassRefPtr<StructureChain> StructureChain::create(Structure* head)
+PassRefPtr<StructureChain> StructureChain::create( Structure *head )
 {
-    return adoptRef(new StructureChain(head));
+    return adoptRef( new StructureChain( head ) );
 }
 #endif
 

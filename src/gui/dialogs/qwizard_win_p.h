@@ -39,139 +39,153 @@ class QWizard;
 
 class QVistaBackButton : public QAbstractButton
 {
- public:
-   QVistaBackButton(QWidget *widget);
+public:
+    QVistaBackButton( QWidget *widget );
 
-   QSize sizeHint() const override;
+    QSize sizeHint() const override;
 
-   QSize minimumSizeHint() const override {
-      return sizeHint();
-   }
+    QSize minimumSizeHint() const override
+    {
+        return sizeHint();
+    }
 
-   void enterEvent(QEvent *event) override;
-   void leaveEvent(QEvent *event) override;
-   void paintEvent(QPaintEvent *event) override;
+    void enterEvent( QEvent *event ) override;
+    void leaveEvent( QEvent *event ) override;
+    void paintEvent( QPaintEvent *event ) override;
 };
 
 class QVistaHelper : public QObject
 {
- public:
-   enum TitleBarChangeType {
-      NormalTitleBar,
-      ExtendedTitleBar
-   };
+public:
+    enum TitleBarChangeType
+    {
+        NormalTitleBar,
+        ExtendedTitleBar
+    };
 
-   enum VistaState {
-      VistaAero,
-      VistaBasic,
-      Classic,
-      Dirty
-   };
+    enum VistaState
+    {
+        VistaAero,
+        VistaBasic,
+        Classic,
+        Dirty
+    };
 
-   QVistaHelper(QWizard *wizard);
-   ~QVistaHelper();
+    QVistaHelper( QWizard *wizard );
+    ~QVistaHelper();
 
-   void updateCustomMargins(bool vistaMargins);
-   bool setDWMTitleBar(TitleBarChangeType type);
-   void setTitleBarIconAndCaptionVisible(bool visible);
-   void mouseEvent(QEvent *event);
-   bool handleWinEvent(MSG *message, long *result);
-   void resizeEvent(QResizeEvent *event);
-   void paintEvent(QPaintEvent *event);
+    void updateCustomMargins( bool vistaMargins );
+    bool setDWMTitleBar( TitleBarChangeType type );
+    void setTitleBarIconAndCaptionVisible( bool visible );
+    void mouseEvent( QEvent *event );
+    bool handleWinEvent( MSG *message, long *result );
+    void resizeEvent( QResizeEvent *event );
+    void paintEvent( QPaintEvent *event );
 
-   QVistaBackButton *backButton() const {
-      return backButton_;
-   }
+    QVistaBackButton *backButton() const
+    {
+        return backButton_;
+    }
 
-   void disconnectBackButton();
-   void hideBackButton() {
-      if (backButton_) {
-         backButton_->hide();
-      }
-   }
+    void disconnectBackButton();
+    void hideBackButton()
+    {
+        if ( backButton_ )
+        {
+            backButton_->hide();
+        }
+    }
 
-   QColor basicWindowFrameColor();
+    QColor basicWindowFrameColor();
 
-   static VistaState vistaState();
+    static VistaState vistaState();
 
-   static int titleBarSize() {
-      return QVistaHelper::titleBarSizeDp() / QVistaHelper::m_devicePixelRatio;
-   }
+    static int titleBarSize()
+    {
+        return QVistaHelper::titleBarSizeDp() / QVistaHelper::m_devicePixelRatio;
+    }
 
-   static int titleBarSizeDp() {
-      return QVistaHelper::frameSizeDp() + QVistaHelper::captionSizeDp();
-   }
+    static int titleBarSizeDp()
+    {
+        return QVistaHelper::frameSizeDp() + QVistaHelper::captionSizeDp();
+    }
 
-   static int topPadding() {
-      // padding under text
-      return int(QStyleHelper::dpiScaled(QSysInfo::WindowsVersion >= QSysInfo::WV_WINDOWS7 ? 4 : 6));
-   }
+    static int topPadding()
+    {
+        // padding under text
+        return int( QStyleHelper::dpiScaled( QSysInfo::WindowsVersion >= QSysInfo::WV_WINDOWS7 ? 4 : 6 ) );
+    }
 
-   static int topOffset();
-   static HDC backingStoreDC(const QWidget *wizard, QPoint *offset);
+    static int topOffset();
+    static HDC backingStoreDC( const QWidget *wizard, QPoint *offset );
 
- private:
-   enum Changes {
-      resizeTop,
-      movePosition,
-      noChange
-   };
+private:
+    enum Changes
+    {
+        resizeTop,
+        movePosition,
+        noChange
+    };
 
-   HWND wizardHWND() const;
-   bool drawTitleText(QPainter *painter, const QString &text, const QRect &rect, HDC hdc);
-   static bool drawBlackRect(const QRect &rect, HDC hdc);
+    HWND wizardHWND() const;
+    bool drawTitleText( QPainter *painter, const QString &text, const QRect &rect, HDC hdc );
+    static bool drawBlackRect( const QRect &rect, HDC hdc );
 
-   static int frameSize() {
-      return QVistaHelper::frameSizeDp() / QVistaHelper::m_devicePixelRatio;
-   }
+    static int frameSize()
+    {
+        return QVistaHelper::frameSizeDp() / QVistaHelper::m_devicePixelRatio;
+    }
 
-   static int frameSizeDp();
-   static int captionSizeDp();
+    static int frameSizeDp();
+    static int captionSizeDp();
 
-   static int captionSize() {
-      return QVistaHelper::captionSizeDp() / QVistaHelper::m_devicePixelRatio;
-   }
+    static int captionSize()
+    {
+        return QVistaHelper::captionSizeDp() / QVistaHelper::m_devicePixelRatio;
+    }
 
-   static int backButtonSize() {
-      return int(QStyleHelper::dpiScaled(30));
-   }
+    static int backButtonSize()
+    {
+        return int( QStyleHelper::dpiScaled( 30 ) );
+    }
 
-   static int iconSize();
-   static int glowSize();
+    static int iconSize();
+    static int glowSize();
 
-   int leftMargin() {
-      return backButton_->isVisible() ? backButtonSize() + iconSpacing : 0;
-   }
+    int leftMargin()
+    {
+        return backButton_->isVisible() ? backButtonSize() + iconSpacing : 0;
+    }
 
-   int titleOffset();
-   bool resolveSymbols();
-   void drawTitleBar(QPainter *painter);
-   void setMouseCursor(QPoint pos);
-   void collapseTopFrameStrut();
-   bool winEvent(MSG *message, long *result);
-   void mouseMoveEvent(QMouseEvent *event);
-   void mousePressEvent(QMouseEvent *event);
-   void mouseReleaseEvent(QMouseEvent *event);
-   bool eventFilter(QObject *obj, QEvent *event) override;
+    int titleOffset();
+    bool resolveSymbols();
+    void drawTitleBar( QPainter *painter );
+    void setMouseCursor( QPoint pos );
+    void collapseTopFrameStrut();
+    bool winEvent( MSG *message, long *result );
+    void mouseMoveEvent( QMouseEvent *event );
+    void mousePressEvent( QMouseEvent *event );
+    void mouseReleaseEvent( QMouseEvent *event );
+    bool eventFilter( QObject *obj, QEvent *event ) override;
 
-   static int instanceCount;
-   static bool is_vista;
-   static VistaState cachedVistaState;
-   static bool isCompositionEnabled();
-   static bool isThemeActive();
+    static int instanceCount;
+    static bool is_vista;
+    static VistaState cachedVistaState;
+    static bool isCompositionEnabled();
+    static bool isThemeActive();
 
-   Changes change;
-   QPoint pressedPos;
-   bool pressed;
-   QRect rtTop;
-   QRect rtTitle;
-   QWizard *wizard;
-   QVistaBackButton *backButton_;
+    Changes change;
+    QPoint pressedPos;
+    bool pressed;
+    QRect rtTop;
+    QRect rtTitle;
+    QWizard *wizard;
+    QVistaBackButton *backButton_;
 
-   int titleBarOffset;  // Extra spacing above the text
-   int iconSpacing;    // Space between button and icon
-   int textSpacing;    // Space between icon and text
-   static int m_devicePixelRatio;
+    int titleBarOffset;  // Extra spacing above the text
+    int iconSpacing;    // Space between button and icon
+    int textSpacing;    // Space between icon and text
+    static int m_devicePixelRatio;
 };
 
 #endif // QT_NO_STYLE_WINDOWSVISTA

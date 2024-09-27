@@ -38,35 +38,35 @@ class QXmlSchemaPrivate;
 
 class Q_XMLPATTERNS_EXPORT QXmlSchema
 {
-   friend class QXmlSchemaValidatorPrivate;
+    friend class QXmlSchemaValidatorPrivate;
 
- public:
-   QXmlSchema();
-   ~QXmlSchema();
+public:
+    QXmlSchema();
+    ~QXmlSchema();
 
-   QXmlSchema(const QXmlSchema &other) = default;
-   QXmlSchema &operator=(const QXmlSchema &other) = default;
+    QXmlSchema( const QXmlSchema &other ) = default;
+    QXmlSchema &operator=( const QXmlSchema &other ) = default;
 
-   bool load(const QUrl &source);
-   bool load(QIODevice *source, const QUrl &documentUri = QUrl());
-   bool load(const QByteArray &data, const QUrl &documentUri = QUrl());
+    bool load( const QUrl &source );
+    bool load( QIODevice *source, const QUrl &documentUri = QUrl() );
+    bool load( const QByteArray &data, const QUrl &documentUri = QUrl() );
 
-   bool isValid() const;
+    bool isValid() const;
 
-   QXmlNamePool namePool() const;
-   QUrl documentUri() const;
+    QXmlNamePool namePool() const;
+    QUrl documentUri() const;
 
-   void setMessageHandler(QAbstractMessageHandler *handler);
-   QAbstractMessageHandler *messageHandler() const;
+    void setMessageHandler( QAbstractMessageHandler *handler );
+    QAbstractMessageHandler *messageHandler() const;
 
-   void setUriResolver(const QAbstractUriResolver *resolver);
-   const QAbstractUriResolver *uriResolver() const;
+    void setUriResolver( const QAbstractUriResolver *resolver );
+    const QAbstractUriResolver *uriResolver() const;
 
-   void setNetworkAccessManager(QNetworkAccessManager *manager);
-   QNetworkAccessManager *networkAccessManager() const;
+    void setNetworkAccessManager( QNetworkAccessManager *manager );
+    QNetworkAccessManager *networkAccessManager() const;
 
- private:
-   QSharedDataPointer<QXmlSchemaPrivate> d;
+private:
+    QSharedDataPointer<QXmlSchemaPrivate> d;
 };
 
 #endif

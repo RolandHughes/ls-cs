@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef Matrix3DTransformOperation_h
@@ -28,40 +28,57 @@
 
 #include "TransformOperation.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class Matrix3DTransformOperation : public TransformOperation {
+class Matrix3DTransformOperation : public TransformOperation
+{
 public:
-    static PassRefPtr<Matrix3DTransformOperation> create(const TransformationMatrix& matrix)
+    static PassRefPtr<Matrix3DTransformOperation> create( const TransformationMatrix &matrix )
     {
-        return adoptRef(new Matrix3DTransformOperation(matrix));
+        return adoptRef( new Matrix3DTransformOperation( matrix ) );
     }
 
-    TransformationMatrix matrix() const {return m_matrix; }
-
-private:    
-    virtual bool isIdentity() const { return m_matrix.isIdentity(); }
-
-    virtual OperationType getOperationType() const { return MATRIX_3D; }
-    virtual bool isSameType(const TransformOperation& o) const { return o.getOperationType() == MATRIX_3D; }
-
-    virtual bool operator==(const TransformOperation& o) const
+    TransformationMatrix matrix() const
     {
-        if (!isSameType(o))
+        return m_matrix;
+    }
+
+private:
+    virtual bool isIdentity() const
+    {
+        return m_matrix.isIdentity();
+    }
+
+    virtual OperationType getOperationType() const
+    {
+        return MATRIX_3D;
+    }
+    virtual bool isSameType( const TransformOperation &o ) const
+    {
+        return o.getOperationType() == MATRIX_3D;
+    }
+
+    virtual bool operator==( const TransformOperation &o ) const
+    {
+        if ( !isSameType( o ) )
+        {
             return false;
-        const Matrix3DTransformOperation* m = static_cast<const Matrix3DTransformOperation*>(&o);
+        }
+
+        const Matrix3DTransformOperation *m = static_cast<const Matrix3DTransformOperation *>( &o );
         return m_matrix == m->m_matrix;
     }
 
-    virtual bool apply(TransformationMatrix& transform, const IntSize&) const
+    virtual bool apply( TransformationMatrix &transform, const IntSize & ) const
     {
-        transform.multiply(TransformationMatrix(m_matrix));
+        transform.multiply( TransformationMatrix( m_matrix ) );
         return false;
     }
 
-    virtual PassRefPtr<TransformOperation> blend(const TransformOperation* from, double progress, bool blendToIdentity = false);
-    
-    Matrix3DTransformOperation(const TransformationMatrix& mat)
+    virtual PassRefPtr<TransformOperation> blend( const TransformOperation *from, double progress, bool blendToIdentity = false );
+
+    Matrix3DTransformOperation( const TransformationMatrix &mat )
     {
         m_matrix = mat;
     }

@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -28,17 +28,18 @@
 
 #include "EventNames.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 WebKitAnimationEvent::WebKitAnimationEvent()
-    : m_elapsedTime(0.0)
+    : m_elapsedTime( 0.0 )
 {
 }
 
-WebKitAnimationEvent::WebKitAnimationEvent(const AtomicString& type, const String& animationName, double elapsedTime)
-    : Event(type, true, true)
-    , m_animationName(animationName)
-    , m_elapsedTime(elapsedTime)
+WebKitAnimationEvent::WebKitAnimationEvent( const AtomicString &type, const String &animationName, double elapsedTime )
+    : Event( type, true, true )
+    , m_animationName( animationName )
+    , m_elapsedTime( elapsedTime )
 {
 }
 
@@ -46,22 +47,24 @@ WebKitAnimationEvent::~WebKitAnimationEvent()
 {
 }
 
-void WebKitAnimationEvent::initWebKitAnimationEvent(const AtomicString& type, 
-                                        bool canBubbleArg,
-                                        bool cancelableArg,
-                                        const String& animationName,
-                                        double elapsedTime)
+void WebKitAnimationEvent::initWebKitAnimationEvent( const AtomicString &type,
+        bool canBubbleArg,
+        bool cancelableArg,
+        const String &animationName,
+        double elapsedTime )
 {
-    if (dispatched())
+    if ( dispatched() )
+    {
         return;
-    
-    initEvent(type, canBubbleArg, cancelableArg);
-    
+    }
+
+    initEvent( type, canBubbleArg, cancelableArg );
+
     m_animationName = animationName;
     m_elapsedTime = elapsedTime;
 }
 
-const String& WebKitAnimationEvent::animationName() const
+const String &WebKitAnimationEvent::animationName() const
 {
     return m_animationName;
 }

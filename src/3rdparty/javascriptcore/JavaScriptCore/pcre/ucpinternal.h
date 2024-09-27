@@ -47,9 +47,10 @@ words that form a data item in the table. */
 #ifndef UCPINTERNAL_H
 #define UCPINTERNAL_H
 
-typedef struct cnode {
-  unsigned f0;
-  unsigned f1;
+typedef struct cnode
+{
+    unsigned f0;
+    unsigned f1;
 } cnode;
 
 /* Things for the f0 field */

@@ -28,32 +28,50 @@
 
 #include "WebCoreArgumentCoders.h"
 
-namespace WebKit {
-
-void UpdateInfo::encode(CoreIPC::ArgumentEncoder* encoder) const
+namespace WebKit
 {
-    encoder->encode(viewSize);
-    encoder->encode(scrollRect);
-    encoder->encode(scrollOffset);
-    encoder->encode(updateRectBounds);
-    encoder->encode(updateRects);
-    encoder->encode(bitmapHandle);
+
+void UpdateInfo::encode( CoreIPC::ArgumentEncoder *encoder ) const
+{
+    encoder->encode( viewSize );
+    encoder->encode( scrollRect );
+    encoder->encode( scrollOffset );
+    encoder->encode( updateRectBounds );
+    encoder->encode( updateRects );
+    encoder->encode( bitmapHandle );
 }
 
-bool UpdateInfo::decode(CoreIPC::ArgumentDecoder* decoder, UpdateInfo& result)
+bool UpdateInfo::decode( CoreIPC::ArgumentDecoder *decoder, UpdateInfo &result )
 {
-    if (!decoder->decode(result.viewSize))
+    if ( !decoder->decode( result.viewSize ) )
+    {
         return false;
-    if (!decoder->decode(result.scrollRect))
+    }
+
+    if ( !decoder->decode( result.scrollRect ) )
+    {
         return false;
-    if (!decoder->decode(result.scrollOffset))
+    }
+
+    if ( !decoder->decode( result.scrollOffset ) )
+    {
         return false;
-    if (!decoder->decode(result.updateRectBounds))
+    }
+
+    if ( !decoder->decode( result.updateRectBounds ) )
+    {
         return false;
-    if (!decoder->decode(result.updateRects))
+    }
+
+    if ( !decoder->decode( result.updateRects ) )
+    {
         return false;
-    if (!decoder->decode(result.bitmapHandle))
+    }
+
+    if ( !decoder->decode( result.bitmapHandle ) )
+    {
         return false;
+    }
 
     return true;
 }

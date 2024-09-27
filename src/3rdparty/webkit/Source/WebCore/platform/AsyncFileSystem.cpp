@@ -37,7 +37,8 @@
 #include "FileSystem.h"
 #include "NotImplemented.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 #if !PLATFORM(CHROMIUM)
 bool AsyncFileSystem::isAvailable()
@@ -46,38 +47,39 @@ bool AsyncFileSystem::isAvailable()
     return false;
 }
 
-PassOwnPtr<AsyncFileSystem> AsyncFileSystem::create(Type, const String&)
+PassOwnPtr<AsyncFileSystem> AsyncFileSystem::create( Type, const String & )
 {
     notImplemented();
     return 0;
 }
 
 // Default implementation.
-void AsyncFileSystem::openFileSystem(const String& basePath, const String& storageIdentifier, Type type, bool, PassOwnPtr<AsyncFileSystemCallbacks> callbacks)
+void AsyncFileSystem::openFileSystem( const String &basePath, const String &storageIdentifier, Type type, bool,
+                                      PassOwnPtr<AsyncFileSystemCallbacks> callbacks )
 {
-    String typeString = (type == Persistent) ? "Persistent" : "Temporary";
+    String typeString = ( type == Persistent ) ? "Persistent" : "Temporary";
 
     String name = storageIdentifier;
     name += ":";
     name += typeString;
 
     String rootPath = basePath;
-    rootPath.append(PlatformFilePathSeparator);
+    rootPath.append( PlatformFilePathSeparator );
     rootPath += storageIdentifier;
-    rootPath.append(PlatformFilePathSeparator);
+    rootPath.append( PlatformFilePathSeparator );
     rootPath += typeString;
-    rootPath.append(PlatformFilePathSeparator);
+    rootPath.append( PlatformFilePathSeparator );
 
-    callbacks->didOpenFileSystem(name, AsyncFileSystem::create(type, rootPath));
+    callbacks->didOpenFileSystem( name, AsyncFileSystem::create( type, rootPath ) );
 }
 #endif
 
 // Default implementation.
-String AsyncFileSystem::virtualToPlatformPath(const String& path) const
+String AsyncFileSystem::virtualToPlatformPath( const String &path ) const
 {
-    ASSERT(!m_platformRootPath.isEmpty());
+    ASSERT( !m_platformRootPath.isEmpty() );
     String virtualPath = path;
-    return m_platformRootPath + virtualPath.replace('/', PlatformFilePathSeparator);
+    return m_platformRootPath + virtualPath.replace( '/', PlatformFilePathSeparator );
 }
 
 } // namespace

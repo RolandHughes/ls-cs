@@ -31,53 +31,63 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Filter;
 class FilterEffect;
 class SVGFilterBuilder;
 
-class SVGFilterPrimitiveStandardAttributes : public SVGStyledElement {
+class SVGFilterPrimitiveStandardAttributes : public SVGStyledElement
+{
 public:
-    void setStandardAttributes(bool, FilterEffect*) const;
+    void setStandardAttributes( bool, FilterEffect * ) const;
 
-    virtual PassRefPtr<FilterEffect> build(SVGFilterBuilder*, Filter* filter) = 0;
+    virtual PassRefPtr<FilterEffect> build( SVGFilterBuilder *, Filter *filter ) = 0;
     // Returns true, if the new value is different from the old one.
-    virtual bool setFilterEffectAttribute(FilterEffect*, const QualifiedName&);
+    virtual bool setFilterEffectAttribute( FilterEffect *, const QualifiedName & );
 
 protected:
-    SVGFilterPrimitiveStandardAttributes(const QualifiedName&, Document*);
+    SVGFilterPrimitiveStandardAttributes( const QualifiedName &, Document * );
 
-    virtual void parseMappedAttribute(Attribute*);
-    virtual void svgAttributeChanged(const QualifiedName&);
-    virtual void synchronizeProperty(const QualifiedName&);
-    void fillPassedAttributeToPropertyTypeMap(AttributeToPropertyTypeMap&);
-    virtual void childrenChanged(bool changedByParser = false, Node* beforeChange = 0, Node* afterChange = 0, int childCountDelta = 0);
+    virtual void parseMappedAttribute( Attribute * );
+    virtual void svgAttributeChanged( const QualifiedName & );
+    virtual void synchronizeProperty( const QualifiedName & );
+    void fillPassedAttributeToPropertyTypeMap( AttributeToPropertyTypeMap & );
+    virtual void childrenChanged( bool changedByParser = false, Node *beforeChange = 0, Node *afterChange = 0,
+                                  int childCountDelta = 0 );
 
     inline void invalidate()
     {
-        if (RenderObject* primitiveRenderer = renderer())
-            RenderSVGResource::markForLayoutAndParentResourceInvalidation(primitiveRenderer);
+        if ( RenderObject *primitiveRenderer = renderer() )
+        {
+            RenderSVGResource::markForLayoutAndParentResourceInvalidation( primitiveRenderer );
+        }
     }
 
-    inline void primitiveAttributeChanged(const QualifiedName& attribute)
+    inline void primitiveAttributeChanged( const QualifiedName &attribute )
     {
-        if (RenderObject* primitiveRenderer = renderer())
-            static_cast<RenderSVGResourceFilterPrimitive*>(primitiveRenderer)->primitiveAttributeChanged(attribute);
+        if ( RenderObject *primitiveRenderer = renderer() )
+        {
+            static_cast<RenderSVGResourceFilterPrimitive *>( primitiveRenderer )->primitiveAttributeChanged( attribute );
+        }
     }
 
 private:
-    virtual bool isFilterEffect() const { return true; }
+    virtual bool isFilterEffect() const
+    {
+        return true;
+    }
 
-    virtual RenderObject* createRenderer(RenderArena*, RenderStyle*);
-    virtual bool rendererIsNeeded(RenderStyle*);
+    virtual RenderObject *createRenderer( RenderArena *, RenderStyle * );
+    virtual bool rendererIsNeeded( RenderStyle * );
 
     // Animated property declarations
-    DECLARE_ANIMATED_LENGTH(X, x)
-    DECLARE_ANIMATED_LENGTH(Y, y)
-    DECLARE_ANIMATED_LENGTH(Width, width)
-    DECLARE_ANIMATED_LENGTH(Height, height)
-    DECLARE_ANIMATED_STRING(Result, result)
+    DECLARE_ANIMATED_LENGTH( X, x )
+    DECLARE_ANIMATED_LENGTH( Y, y )
+    DECLARE_ANIMATED_LENGTH( Width, width )
+    DECLARE_ANIMATED_LENGTH( Height, height )
+    DECLARE_ANIMATED_STRING( Result, result )
 };
 
 } // namespace WebCore

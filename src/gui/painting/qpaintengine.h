@@ -44,297 +44,312 @@ struct QGlyphLayout;
 class Q_GUI_EXPORT QTextItem
 {
 
- public:
-   enum RenderFlag {
-      RightToLeft = 0x1,
-      Overline    = 0x10,
-      Underline   = 0x20,
-      StrikeOut   = 0x40,
+public:
+    enum RenderFlag
+    {
+        RightToLeft = 0x1,
+        Overline    = 0x10,
+        Underline   = 0x20,
+        StrikeOut   = 0x40,
 
-      Dummy       = 0xffffffff
-   };
-   using RenderFlags = QFlags<RenderFlag>;
+        Dummy       = 0xffffffff
+    };
+    using RenderFlags = QFlags<RenderFlag>;
 
-   qreal descent() const;
-   qreal ascent() const;
-   qreal width() const;
+    qreal descent() const;
+    qreal ascent() const;
+    qreal width() const;
 
-   RenderFlags renderFlags() const;
-   QString text() const;
-   QFont font() const;
+    RenderFlags renderFlags() const;
+    QString text() const;
+    QFont font() const;
 };
 
 class Q_GUI_EXPORT QPaintEngine
 {
-   Q_DECLARE_PRIVATE(QPaintEngine)
+    Q_DECLARE_PRIVATE( QPaintEngine )
 
- public:
-   enum PaintEngineFeature {
-      PrimitiveTransform          = 0x00000001, // Can transform primitives brushes
-      PatternTransform            = 0x00000002, // Can transform pattern brushes
-      PixmapTransform             = 0x00000004, // Can transform pixmaps
-      PatternBrush                = 0x00000008, // Can fill with pixmaps and standard patterns
-      LinearGradientFill          = 0x00000010, // Can fill gradient areas
-      RadialGradientFill          = 0x00000020, // Can render radial gradients
-      ConicalGradientFill         = 0x00000040, // Can render conical gradients
-      AlphaBlend                  = 0x00000080, // Can do source over alpha blend
-      PorterDuff                  = 0x00000100, // Can do general porter duff compositions
-      PainterPaths                = 0x00000200, // Can fill, outline and clip paths
-      Antialiasing                = 0x00000400, // Can antialias lines
-      BrushStroke                 = 0x00000800, // Can render brush based pens
-      ConstantOpacity             = 0x00001000, // Can render at constant opacity
-      MaskedBrush                 = 0x00002000, // Can fill with textures that has an alpha channel or mask
-      PerspectiveTransform        = 0x00004000, // Can do perspective transformations
-      BlendModes                  = 0x00008000, // Can do extended Porter&Duff composition
-      ObjectBoundingModeGradients = 0x00010000, // Can do object bounding mode gradients
-      RasterOpModes               = 0x00020000, // Can do logical raster operations
-      PaintOutsidePaintEvent      = 0x20000000, // Engine is capable of painting outside paint events
-      /*                          0x10000000, // Used for emulating
-                                  QGradient::StretchToDevice,
-                                  defined in qpainter.cpp
+public:
+    enum PaintEngineFeature
+    {
+        PrimitiveTransform          = 0x00000001, // Can transform primitives brushes
+        PatternTransform            = 0x00000002, // Can transform pattern brushes
+        PixmapTransform             = 0x00000004, // Can transform pixmaps
+        PatternBrush                = 0x00000008, // Can fill with pixmaps and standard patterns
+        LinearGradientFill          = 0x00000010, // Can fill gradient areas
+        RadialGradientFill          = 0x00000020, // Can render radial gradients
+        ConicalGradientFill         = 0x00000040, // Can render conical gradients
+        AlphaBlend                  = 0x00000080, // Can do source over alpha blend
+        PorterDuff                  = 0x00000100, // Can do general porter duff compositions
+        PainterPaths                = 0x00000200, // Can fill, outline and clip paths
+        Antialiasing                = 0x00000400, // Can antialias lines
+        BrushStroke                 = 0x00000800, // Can render brush based pens
+        ConstantOpacity             = 0x00001000, // Can render at constant opacity
+        MaskedBrush                 = 0x00002000, // Can fill with textures that has an alpha channel or mask
+        PerspectiveTransform        = 0x00004000, // Can do perspective transformations
+        BlendModes                  = 0x00008000, // Can do extended Porter&Duff composition
+        ObjectBoundingModeGradients = 0x00010000, // Can do object bounding mode gradients
+        RasterOpModes               = 0x00020000, // Can do logical raster operations
+        PaintOutsidePaintEvent      = 0x20000000, // Engine is capable of painting outside paint events
+        /*                          0x10000000, // Used for emulating
+                                    QGradient::StretchToDevice,
+                                    defined in qpainter.cpp
 
-                                  0x40000000, // Used internally for emulating opaque backgrounds
-      */
+                                    0x40000000, // Used internally for emulating opaque backgrounds
+        */
 
-      AllFeatures               = 0xffffffff  // For convenience
-   };
-   using PaintEngineFeatures = QFlags<PaintEngineFeature>;
+        AllFeatures               = 0xffffffff  // For convenience
+    };
+    using PaintEngineFeatures = QFlags<PaintEngineFeature>;
 
-   enum DirtyFlag {
-      DirtyPen                = 0x0001,
-      DirtyBrush              = 0x0002,
-      DirtyBrushOrigin        = 0x0004,
-      DirtyFont               = 0x0008,
-      DirtyBackground         = 0x0010,
-      DirtyBackgroundMode     = 0x0020,
-      DirtyTransform          = 0x0040,
-      DirtyClipRegion         = 0x0080,
-      DirtyClipPath           = 0x0100,
-      DirtyHints              = 0x0200,
-      DirtyCompositionMode    = 0x0400,
-      DirtyClipEnabled        = 0x0800,
-      DirtyOpacity            = 0x1000,
+    enum DirtyFlag
+    {
+        DirtyPen                = 0x0001,
+        DirtyBrush              = 0x0002,
+        DirtyBrushOrigin        = 0x0004,
+        DirtyFont               = 0x0008,
+        DirtyBackground         = 0x0010,
+        DirtyBackgroundMode     = 0x0020,
+        DirtyTransform          = 0x0040,
+        DirtyClipRegion         = 0x0080,
+        DirtyClipPath           = 0x0100,
+        DirtyHints              = 0x0200,
+        DirtyCompositionMode    = 0x0400,
+        DirtyClipEnabled        = 0x0800,
+        DirtyOpacity            = 0x1000,
 
-      AllDirty                = 0xffff
-   };
-   using DirtyFlags = QFlags<DirtyFlag>;
+        AllDirty                = 0xffff
+    };
+    using DirtyFlags = QFlags<DirtyFlag>;
 
-   enum PolygonDrawMode {
-      OddEvenMode,
-      WindingMode,
-      ConvexMode,
-      PolylineMode
-   };
+    enum PolygonDrawMode
+    {
+        OddEvenMode,
+        WindingMode,
+        ConvexMode,
+        PolylineMode
+    };
 
-   enum Type {
-      X11,
-      Windows,
-      QuickDraw, CoreGraphics, MacPrinter,
-      QWindowSystem,
-      PostScript,
-      OpenGL,
-      Picture,
-      SVG,
-      Raster,
-      Direct3D,
-      Pdf,
-      OpenVG,
-      OpenGL2,
-      PaintBuffer,
-      Blitter,
-      Direct2D,
+    enum Type
+    {
+        X11,
+        Windows,
+        QuickDraw, CoreGraphics, MacPrinter,
+        QWindowSystem,
+        PostScript,
+        OpenGL,
+        Picture,
+        SVG,
+        Raster,
+        Direct3D,
+        Pdf,
+        OpenVG,
+        OpenGL2,
+        PaintBuffer,
+        Blitter,
+        Direct2D,
 
-      User = 50,    // first user type id
-      MaxUser = 100 // last user type id
-   };
+        User = 50,    // first user type id
+        MaxUser = 100 // last user type id
+    };
 
-   explicit QPaintEngine(PaintEngineFeatures options = PaintEngineFeatures());
+    explicit QPaintEngine( PaintEngineFeatures options = PaintEngineFeatures() );
 
-   QPaintEngine(const QPaintEngine &) = delete;
-   QPaintEngine &operator=(const QPaintEngine &) = delete;
+    QPaintEngine( const QPaintEngine & ) = delete;
+    QPaintEngine &operator=( const QPaintEngine & ) = delete;
 
-   virtual ~QPaintEngine();
+    virtual ~QPaintEngine();
 
-   bool isActive() const {
-      return active;
-   }
+    bool isActive() const
+    {
+        return active;
+    }
 
-   void setActive(bool newState) {
-      active =  newState;
-   }
+    void setActive( bool newState )
+    {
+        active =  newState;
+    }
 
-   virtual bool begin(QPaintDevice *pdev) = 0;
-   virtual bool end() = 0;
+    virtual bool begin( QPaintDevice *pdev ) = 0;
+    virtual bool end() = 0;
 
-   virtual void updateState(const QPaintEngineState &state) = 0;
+    virtual void updateState( const QPaintEngineState &state ) = 0;
 
-   virtual void drawRects(const QRect *rects, int rectCount);
-   virtual void drawRects(const QRectF *rects, int rectCount);
+    virtual void drawRects( const QRect *rects, int rectCount );
+    virtual void drawRects( const QRectF *rects, int rectCount );
 
-   virtual void drawLines(const QLine *lines, int lineCount);
-   virtual void drawLines(const QLineF *lines, int lineCount);
+    virtual void drawLines( const QLine *lines, int lineCount );
+    virtual void drawLines( const QLineF *lines, int lineCount );
 
-   virtual void drawEllipse(const QRectF &rect);
-   virtual void drawEllipse(const QRect &rect);
+    virtual void drawEllipse( const QRectF &rect );
+    virtual void drawEllipse( const QRect &rect );
 
-   virtual void drawPath(const QPainterPath &path);
+    virtual void drawPath( const QPainterPath &path );
 
-   virtual void drawPoints(const QPointF *points, int pointCount);
-   virtual void drawPoints(const QPoint *points, int pointCount);
+    virtual void drawPoints( const QPointF *points, int pointCount );
+    virtual void drawPoints( const QPoint *points, int pointCount );
 
-   virtual void drawPolygon(const QPointF *points, int pointCount, PolygonDrawMode mode);
-   virtual void drawPolygon(const QPoint *points, int pointCount, PolygonDrawMode mode);
+    virtual void drawPolygon( const QPointF *points, int pointCount, PolygonDrawMode mode );
+    virtual void drawPolygon( const QPoint *points, int pointCount, PolygonDrawMode mode );
 
-   virtual void drawPixmap(const QRectF &rect, const QPixmap &pixmap, const QRectF &srcRect) = 0;
-   virtual void drawTextItem(const QPointF &point, const QTextItem &textItem);
-   virtual void drawTiledPixmap(const QRectF &rect, const QPixmap &pixmap, const QPointF &point);
-   virtual void drawImage(const QRectF &rect, const QImage &image, const QRectF &srcRect,
-         Qt::ImageConversionFlags flags = Qt::AutoColor);
+    virtual void drawPixmap( const QRectF &rect, const QPixmap &pixmap, const QRectF &srcRect ) = 0;
+    virtual void drawTextItem( const QPointF &point, const QTextItem &textItem );
+    virtual void drawTiledPixmap( const QRectF &rect, const QPixmap &pixmap, const QPointF &point );
+    virtual void drawImage( const QRectF &rect, const QImage &image, const QRectF &srcRect,
+                            Qt::ImageConversionFlags flags = Qt::AutoColor );
 
-   void setPaintDevice(QPaintDevice *device);
-   QPaintDevice *paintDevice() const;
+    void setPaintDevice( QPaintDevice *device );
+    QPaintDevice *paintDevice() const;
 
-   void setSystemClip(const QRegion &baseClip);
-   QRegion systemClip() const;
+    void setSystemClip( const QRegion &baseClip );
+    QRegion systemClip() const;
 
-   void setSystemRect(const QRect &rect);
-   QRect systemRect() const;
+    void setSystemRect( const QRect &rect );
+    QRect systemRect() const;
 
-   virtual QPoint coordinateOffset() const;
-   virtual Type type() const = 0;
+    virtual QPoint coordinateOffset() const;
+    virtual Type type() const = 0;
 
-   inline void fix_neg_rect(int *x, int *y, int *w, int *h);
+    inline void fix_neg_rect( int *x, int *y, int *w, int *h );
 
-   inline bool testDirty(DirtyFlags df);
-   inline void setDirty(DirtyFlags df);
-   inline void clearDirty(DirtyFlags df);
+    inline bool testDirty( DirtyFlags df );
+    inline void setDirty( DirtyFlags df );
+    inline void clearDirty( DirtyFlags df );
 
-   bool hasFeature(PaintEngineFeatures feature) const {
-      return (gccaps & feature) != 0;
-   }
+    bool hasFeature( PaintEngineFeatures feature ) const
+    {
+        return ( gccaps & feature ) != 0;
+    }
 
-   QPainter *painter() const;
+    QPainter *painter() const;
 
-   void syncState();
-   inline bool isExtended() const {
-      return extended;
-   }
+    void syncState();
+    inline bool isExtended() const
+    {
+        return extended;
+    }
 
- protected:
-   QPaintEngine(QPaintEnginePrivate &data, PaintEngineFeatures devcaps = PaintEngineFeatures());
+protected:
+    QPaintEngine( QPaintEnginePrivate &data, PaintEngineFeatures devcaps = PaintEngineFeatures() );
 
-   QPaintEngineState *state;
-   PaintEngineFeatures gccaps;
+    QPaintEngineState *state;
+    PaintEngineFeatures gccaps;
 
-   uint active : 1;
-   uint selfDestruct : 1;
-   uint extended : 1;
+    uint active : 1;
+    uint selfDestruct : 1;
+    uint extended : 1;
 
-   QScopedPointer<QPaintEnginePrivate> d_ptr;
+    QScopedPointer<QPaintEnginePrivate> d_ptr;
 
- private:
-   void setAutoDestruct(bool autoDestr) {
-      selfDestruct = autoDestr;
-   }
+private:
+    void setAutoDestruct( bool autoDestr )
+    {
+        selfDestruct = autoDestr;
+    }
 
-   bool autoDestruct() const {
-      return selfDestruct;
-   }
+    bool autoDestruct() const
+    {
+        return selfDestruct;
+    }
 
-   friend class QPainterReplayer;
-   friend class QFontEngineBox;
-   friend class QFontEngineMac;
-   friend class QFontEngineWin;
-   friend class QMacPrintEngine;
-   friend class QMacPrintEnginePrivate;
+    friend class QPainterReplayer;
+    friend class QFontEngineBox;
+    friend class QFontEngineMac;
+    friend class QFontEngineWin;
+    friend class QMacPrintEngine;
+    friend class QMacPrintEnginePrivate;
 
-   friend class QFontEngineQPF2;
+    friend class QFontEngineQPF2;
 
-   friend class QPainter;
-   friend class QPainterPrivate;
-   friend class QWidget;
-   friend class QWidgetPrivate;
-   friend class QWin32PaintEngine;
-   friend class QWin32PaintEnginePrivate;
-   friend class QMacCGContext;
-   friend class QPreviewPaintEngine;
-   friend class QX11GLPlatformPixmap;
+    friend class QPainter;
+    friend class QPainterPrivate;
+    friend class QWidget;
+    friend class QWidgetPrivate;
+    friend class QWin32PaintEngine;
+    friend class QWin32PaintEnginePrivate;
+    friend class QMacCGContext;
+    friend class QPreviewPaintEngine;
+    friend class QX11GLPlatformPixmap;
 };
 
 class Q_GUI_EXPORT QPaintEngineState
 {
- public:
-   QPaintEngine::DirtyFlags state() const {
-      return dirtyFlags;
-   }
+public:
+    QPaintEngine::DirtyFlags state() const
+    {
+        return dirtyFlags;
+    }
 
-   QPen pen() const;
-   QBrush brush() const;
-   QPointF brushOrigin() const;
-   QBrush backgroundBrush() const;
-   Qt::BGMode backgroundMode() const;
-   QFont font() const;
-   QMatrix matrix() const;
-   QTransform transform() const;
+    QPen pen() const;
+    QBrush brush() const;
+    QPointF brushOrigin() const;
+    QBrush backgroundBrush() const;
+    Qt::BGMode backgroundMode() const;
+    QFont font() const;
+    QMatrix matrix() const;
+    QTransform transform() const;
 
-   Qt::ClipOperation clipOperation() const;
-   QRegion clipRegion() const;
-   QPainterPath clipPath() const;
-   bool isClipEnabled() const;
+    Qt::ClipOperation clipOperation() const;
+    QRegion clipRegion() const;
+    QPainterPath clipPath() const;
+    bool isClipEnabled() const;
 
-   QPainter::RenderHints renderHints() const;
-   QPainter::CompositionMode compositionMode() const;
-   qreal opacity() const;
+    QPainter::RenderHints renderHints() const;
+    QPainter::CompositionMode compositionMode() const;
+    qreal opacity() const;
 
-   QPainter *painter() const;
+    QPainter *painter() const;
 
-   bool brushNeedsResolving() const;
-   bool penNeedsResolving() const;
+    bool brushNeedsResolving() const;
+    bool penNeedsResolving() const;
 
- protected:
-   friend class QPaintEngine;
-   friend class QRasterPaintEngine;
-   friend class QWidget;
-   friend class QPainter;
-   friend class QPainterPrivate;
-   friend class QMacPrintEnginePrivate;
+protected:
+    friend class QPaintEngine;
+    friend class QRasterPaintEngine;
+    friend class QWidget;
+    friend class QPainter;
+    friend class QPainterPrivate;
+    friend class QMacPrintEnginePrivate;
 
-   QPaintEngine::DirtyFlags dirtyFlags;
+    QPaintEngine::DirtyFlags dirtyFlags;
 };
 
-inline void QPaintEngine::fix_neg_rect(int *x, int *y, int *w, int *h)
+inline void QPaintEngine::fix_neg_rect( int *x, int *y, int *w, int *h )
 {
-   if (*w < 0) {
-      *w = -*w;
-      *x -= *w - 1;
-   }
-   if (*h < 0) {
-      *h = -*h;
-      *y -= *h - 1;
-   }
+    if ( *w < 0 )
+    {
+        *w = -*w;
+        *x -= *w - 1;
+    }
+
+    if ( *h < 0 )
+    {
+        *h = -*h;
+        *y -= *h - 1;
+    }
 }
 
-inline bool QPaintEngine::testDirty(DirtyFlags df)
+inline bool QPaintEngine::testDirty( DirtyFlags df )
 {
-   Q_ASSERT(state);
-   return ((state->dirtyFlags & df) != 0);
+    Q_ASSERT( state );
+    return ( ( state->dirtyFlags & df ) != 0 );
 }
 
-inline void QPaintEngine::setDirty(DirtyFlags df)
+inline void QPaintEngine::setDirty( DirtyFlags df )
 {
-   Q_ASSERT(state);
-   state->dirtyFlags |= df;
+    Q_ASSERT( state );
+    state->dirtyFlags |= df;
 }
 
-inline void QPaintEngine::clearDirty(DirtyFlags df)
+inline void QPaintEngine::clearDirty( DirtyFlags df )
 {
-   Q_ASSERT(state);
-   state->dirtyFlags &= ~static_cast<uint>(df);
+    Q_ASSERT( state );
+    state->dirtyFlags &= ~static_cast<uint>( df );
 }
 
-Q_DECLARE_OPERATORS_FOR_FLAGS(QTextItem::RenderFlags)
-Q_DECLARE_OPERATORS_FOR_FLAGS(QPaintEngine::PaintEngineFeatures)
-Q_DECLARE_OPERATORS_FOR_FLAGS(QPaintEngine::DirtyFlags)
+Q_DECLARE_OPERATORS_FOR_FLAGS( QTextItem::RenderFlags )
+Q_DECLARE_OPERATORS_FOR_FLAGS( QPaintEngine::PaintEngineFeatures )
+Q_DECLARE_OPERATORS_FOR_FLAGS( QPaintEngine::DirtyFlags )
 
 
 

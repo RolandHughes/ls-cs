@@ -37,16 +37,18 @@
 #include "HTMLCollection.h"
 #include "HTMLElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class HTMLDataListElement : public HTMLElement {
+class HTMLDataListElement : public HTMLElement
+{
 public:
-    static PassRefPtr<HTMLDataListElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<HTMLDataListElement> create( const QualifiedName &, Document * );
 
     PassRefPtr<HTMLCollection> options();
 
 private:
-    HTMLDataListElement(const QualifiedName&, Document*);
+    HTMLDataListElement( const QualifiedName &, Document * );
 };
 
 }  // namespace WebCore

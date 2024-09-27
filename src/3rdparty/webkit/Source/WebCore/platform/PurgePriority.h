@@ -25,9 +25,11 @@
 #ifndef PurgePriority_h
 #define PurgePriority_h
 
-namespace WebCore {
+namespace WebCore
+{
 
-enum PurgePriority {
+enum PurgePriority
+{
     PurgeLast,
     PurgeMiddle,
     PurgeFirst,

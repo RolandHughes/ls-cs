@@ -36,62 +36,63 @@ class QSizeGrip;
 
 class QDialogPrivate : public QWidgetPrivate
 {
-   Q_DECLARE_PUBLIC(QDialog)
+    Q_DECLARE_PUBLIC( QDialog )
 
- public:
+public:
 
-   QDialogPrivate()
-      : mainDef(nullptr), orientation(Qt::Horizontal), extension(nullptr), doShowExtension(false),
+    QDialogPrivate()
+        : mainDef( nullptr ), orientation( Qt::Horizontal ), extension( nullptr ), doShowExtension( false ),
 #ifndef QT_NO_SIZEGRIP
-        resizer(nullptr), sizeGripEnabled(false),
+          resizer( nullptr ), sizeGripEnabled( false ),
 #endif
-        rescode(0), resetModalityTo(-1), wasModalitySet(true), eventLoop(nullptr),
-        nativeDialogInUse(false), m_platformHelper(nullptr), m_platformHelperCreated(false)
-   {}
+          rescode( 0 ), resetModalityTo( -1 ), wasModalitySet( true ), eventLoop( nullptr ),
+          nativeDialogInUse( false ), m_platformHelper( nullptr ), m_platformHelperCreated( false )
+    {}
 
-   ~QDialogPrivate() {
-      delete m_platformHelper;
-   }
+    ~QDialogPrivate()
+    {
+        delete m_platformHelper;
+    }
 
-   QWindow *parentWindow() const;
-   bool setNativeDialogVisible(bool visible);
-   QVariant styleHint(QPlatformDialogHelper::StyleHint hint) const;
-   void deletePlatformHelper();
+    QWindow *parentWindow() const;
+    bool setNativeDialogVisible( bool visible );
+    QVariant styleHint( QPlatformDialogHelper::StyleHint hint ) const;
+    void deletePlatformHelper();
 
-   QPointer<QPushButton> mainDef;
-   Qt::Orientation orientation;
-   QWidget *extension;
-   bool doShowExtension;
-   QSize size, min, max;
+    QPointer<QPushButton> mainDef;
+    Qt::Orientation orientation;
+    QWidget *extension;
+    bool doShowExtension;
+    QSize size, min, max;
 
 #ifndef QT_NO_SIZEGRIP
-   QSizeGrip *resizer;
-   bool sizeGripEnabled;
+    QSizeGrip *resizer;
+    bool sizeGripEnabled;
 #endif
 
-   QPoint lastRMBPress;
+    QPoint lastRMBPress;
 
-   void setDefault(QPushButton *);
-   void setMainDefault(QPushButton *);
-   void hideDefault();
-   void resetModalitySetByOpen();
+    void setDefault( QPushButton * );
+    void setMainDefault( QPushButton * );
+    void hideDefault();
+    void resetModalitySetByOpen();
 
-   int rescode;
-   int resetModalityTo;
-   bool wasModalitySet;
+    int rescode;
+    int resetModalityTo;
+    bool wasModalitySet;
 
-   QPointer<QEventLoop> eventLoop;
-   bool nativeDialogInUse;
-   QPlatformDialogHelper *platformHelper() const;
-   virtual bool canBeNativeDialog() const;
+    QPointer<QEventLoop> eventLoop;
+    bool nativeDialogInUse;
+    QPlatformDialogHelper *platformHelper() const;
+    virtual bool canBeNativeDialog() const;
 
- private:
-   virtual void initHelper(QPlatformDialogHelper *) {}
-   virtual void helperPrepareShow(QPlatformDialogHelper *) {}
-   virtual void helperDone(QDialog::DialogCode, QPlatformDialogHelper *) {}
+private:
+    virtual void initHelper( QPlatformDialogHelper * ) {}
+    virtual void helperPrepareShow( QPlatformDialogHelper * ) {}
+    virtual void helperDone( QDialog::DialogCode, QPlatformDialogHelper * ) {}
 
-   mutable QPlatformDialogHelper *m_platformHelper;
-   mutable bool m_platformHelperCreated;
+    mutable QPlatformDialogHelper *m_platformHelper;
+    mutable bool m_platformHelperCreated;
 };
 
 #endif

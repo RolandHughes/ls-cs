@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef CachedFont_h
@@ -38,7 +38,8 @@
 #include "SVGDocument.h"
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
 class CachedResourceLoader;
 class MemoryCache;
@@ -47,33 +48,35 @@ class SVGFontElement;
 
 struct FontCustomPlatformData;
 
-class CachedFont : public CachedResource {
+class CachedFont : public CachedResource
+{
 public:
-    CachedFont(const String& url);
+    CachedFont( const String &url );
     virtual ~CachedFont();
-    
-    virtual void load(CachedResourceLoader* cachedResourceLoader);
 
-    virtual void didAddClient(CachedResourceClient*);
-    virtual void data(PassRefPtr<SharedBuffer> data, bool allDataReceived);
-    virtual void error(CachedResource::Status);
+    virtual void load( CachedResourceLoader *cachedResourceLoader );
+
+    virtual void didAddClient( CachedResourceClient * );
+    virtual void data( PassRefPtr<SharedBuffer> data, bool allDataReceived );
+    virtual void error( CachedResource::Status );
 
     virtual void allClientsRemoved();
 
     void checkNotify();
 
-    void beginLoadIfNeeded(CachedResourceLoader* dl);
+    void beginLoadIfNeeded( CachedResourceLoader *dl );
 
     bool ensureCustomFontData();
-    FontPlatformData platformDataFromCustomData(float size, bool bold, bool italic, FontOrientation = Horizontal, TextOrientation = TextOrientationVerticalRight, FontWidthVariant = RegularWidth, FontRenderingMode = NormalRenderingMode);
+    FontPlatformData platformDataFromCustomData( float size, bool bold, bool italic, FontOrientation = Horizontal,
+            TextOrientation = TextOrientationVerticalRight, FontWidthVariant = RegularWidth, FontRenderingMode = NormalRenderingMode );
 
 #if ENABLE(SVG_FONTS)
     bool ensureSVGFontData();
-    SVGFontElement* getSVGFontById(const String&) const;
+    SVGFontElement *getSVGFontById( const String & ) const;
 #endif
 
 private:
-    FontCustomPlatformData* m_fontData;
+    FontCustomPlatformData *m_fontData;
     bool m_loadInitiated;
 
 #if ENABLE(SVG_FONTS)

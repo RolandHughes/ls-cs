@@ -6,13 +6,13 @@
  * are met:
  *
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Apple Computer, Inc. ("Apple") nor the names of
  *     its contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
+ *     from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY APPLE AND ITS CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -34,7 +34,8 @@
 #include <wtf/HashSet.h>
 #include <wtf/text/AtomicString.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Animation;
 class AnimationBase;
@@ -46,19 +47,23 @@ class RenderObject;
 class RenderStyle;
 class TimingFunction;
 
-class AnimationBase : public RefCounted<AnimationBase> {
+class AnimationBase : public RefCounted<AnimationBase>
+{
     friend class CompositeAnimation;
 
 public:
-    AnimationBase(const Animation* transition, RenderObject* renderer, CompositeAnimation* compAnim);
+    AnimationBase( const Animation *transition, RenderObject *renderer, CompositeAnimation *compAnim );
     virtual ~AnimationBase() { }
 
-    RenderObject* renderer() const { return m_object; }
+    RenderObject *renderer() const
+    {
+        return m_object;
+    }
     void clear()
     {
-      endAnimation();
-      m_object = 0;
-      m_compAnim = 0;
+        endAnimation();
+        m_object = 0;
+        m_compAnim = 0;
     }
 
     double duration() const;
@@ -68,7 +73,8 @@ public:
     // If so, we stay in this state until that response is received (and it returns the start time).
     // Otherwise, we use the current time as the start time and go immediately to AnimationStateLooping
     // or AnimationStateEnding.
-    enum AnimState { 
+    enum AnimState
+    {
         AnimationStateNew,                  // animation just created, animation not running yet
         AnimationStateStartWaitTimer,       // start timer running, waiting for fire
         AnimationStateStartWaitStyleAvailable,   // waiting for style setup so we can start animations
@@ -83,7 +89,8 @@ public:
         AnimationStateFillingForwards       // animation has ended and is retaining its final value
     };
 
-    enum AnimStateInput {
+    enum AnimStateInput
+    {
         AnimationStateInputMakeNew,           // reset back to new from any state
         AnimationStateInputStartAnimation,    // animation requests a start
         AnimationStateInputRestartAnimation,  // force a restart from any state
@@ -100,131 +107,192 @@ public:
     };
 
     // Called when animation is in AnimationStateNew to start animation
-    void updateStateMachine(AnimStateInput, double param);
+    void updateStateMachine( AnimStateInput, double param );
 
     // Animation has actually started, at passed time
-    void onAnimationStartResponse(double startTime)
+    void onAnimationStartResponse( double startTime )
     {
-        updateStateMachine(AnimationBase::AnimationStateInputStartTimeSet, startTime);
+        updateStateMachine( AnimationBase::AnimationStateInputStartTimeSet, startTime );
     }
 
     // Called to change to or from paused state
-    void updatePlayState(EAnimPlayState);
+    void updatePlayState( EAnimPlayState );
     bool playStatePlaying() const;
 
-    bool waitingToStart() const { return m_animState == AnimationStateNew || m_animState == AnimationStateStartWaitTimer; }
+    bool waitingToStart() const
+    {
+        return m_animState == AnimationStateNew || m_animState == AnimationStateStartWaitTimer;
+    }
     bool preActive() const
     {
-        return m_animState == AnimationStateNew || m_animState == AnimationStateStartWaitTimer || m_animState == AnimationStateStartWaitStyleAvailable || m_animState == AnimationStateStartWaitResponse;
+        return m_animState == AnimationStateNew || m_animState == AnimationStateStartWaitTimer
+               || m_animState == AnimationStateStartWaitStyleAvailable || m_animState == AnimationStateStartWaitResponse;
     }
 
-    bool postActive() const { return m_animState == AnimationStateDone; }
-    bool active() const { return !postActive() && !preActive(); }
-    bool running() const { return !isNew() && !postActive(); }
-    bool paused() const { return m_pauseTime >= 0; }
-    bool isNew() const { return m_animState == AnimationStateNew; }
-    bool waitingForStartTime() const { return m_animState == AnimationStateStartWaitResponse; }
-    bool waitingForStyleAvailable() const { return m_animState == AnimationStateStartWaitStyleAvailable; }
+    bool postActive() const
+    {
+        return m_animState == AnimationStateDone;
+    }
+    bool active() const
+    {
+        return !postActive() && !preActive();
+    }
+    bool running() const
+    {
+        return !isNew() && !postActive();
+    }
+    bool paused() const
+    {
+        return m_pauseTime >= 0;
+    }
+    bool isNew() const
+    {
+        return m_animState == AnimationStateNew;
+    }
+    bool waitingForStartTime() const
+    {
+        return m_animState == AnimationStateStartWaitResponse;
+    }
+    bool waitingForStyleAvailable() const
+    {
+        return m_animState == AnimationStateStartWaitStyleAvailable;
+    }
 
     // "animating" means that something is running that requires a timer to keep firing
     // (e.g. a software animation)
-    void setAnimating(bool inAnimating = true) { m_isAnimating = inAnimating; }
+    void setAnimating( bool inAnimating = true )
+    {
+        m_isAnimating = inAnimating;
+    }
     virtual double timeToNextService();
 
-    double progress(double scale, double offset, const TimingFunction*) const;
+    double progress( double scale, double offset, const TimingFunction * ) const;
 
-    virtual void animate(CompositeAnimation*, RenderObject*, const RenderStyle* /*currentStyle*/, RenderStyle* /*targetStyle*/, RefPtr<RenderStyle>& /*animatedStyle*/) = 0;
-    virtual void getAnimatedStyle(RefPtr<RenderStyle>& /*animatedStyle*/) = 0;
+    virtual void animate( CompositeAnimation *, RenderObject *, const RenderStyle * /*currentStyle*/, RenderStyle * /*targetStyle*/,
+                          RefPtr<RenderStyle> & /*animatedStyle*/ ) = 0;
+    virtual void getAnimatedStyle( RefPtr<RenderStyle> & /*animatedStyle*/ ) = 0;
 
-    virtual bool shouldFireEvents() const { return false; }
+    virtual bool shouldFireEvents() const
+    {
+        return false;
+    }
 
     void fireAnimationEventsIfNeeded();
 
-    bool animationsMatch(const Animation*) const;
+    bool animationsMatch( const Animation * ) const;
 
-    void setAnimation(const Animation* anim) { m_animation = const_cast<Animation*>(anim); }
+    void setAnimation( const Animation *anim )
+    {
+        m_animation = const_cast<Animation *>( anim );
+    }
 
     // Return true if this animation is overridden. This will only be the case for
     // ImplicitAnimations and is used to determine whether or not we should force
     // set the start time. If an animation is overridden, it will probably not get
     // back the AnimationStateInputStartTimeSet input.
-    virtual bool overridden() const { return false; }
-
-    // Does this animation/transition involve the given property?
-    virtual bool affectsProperty(int /*property*/) const { return false; }
-
-    bool isAnimatingProperty(int property, bool acceleratedOnly, bool isRunningNow) const
+    virtual bool overridden() const
     {
-        if (acceleratedOnly && !m_isAccelerated)
-            return false;
-            
-        if (isRunningNow)
-            return (!waitingToStart() && !postActive()) && affectsProperty(property);
-
-        return !postActive() && affectsProperty(property);
+        return false;
     }
 
-    bool isTransformFunctionListValid() const { return m_transformFunctionListValid; }
-    
+    // Does this animation/transition involve the given property?
+    virtual bool affectsProperty( int /*property*/ ) const
+    {
+        return false;
+    }
+
+    bool isAnimatingProperty( int property, bool acceleratedOnly, bool isRunningNow ) const
+    {
+        if ( acceleratedOnly && !m_isAccelerated )
+        {
+            return false;
+        }
+
+        if ( isRunningNow )
+        {
+            return ( !waitingToStart() && !postActive() ) && affectsProperty( property );
+        }
+
+        return !postActive() && affectsProperty( property );
+    }
+
+    bool isTransformFunctionListValid() const
+    {
+        return m_transformFunctionListValid;
+    }
+
     // Freeze the animation; used by DumpRenderTree.
-    void freezeAtTime(double t);
+    void freezeAtTime( double t );
 
     // Play and pause API
     void play();
     void pause();
-    
+
     double beginAnimationUpdateTime() const;
-    
+
     double getElapsedTime() const;
     // Setting the elapsed time will adjust the start time and possibly pause time.
-    void setElapsedTime(double);
-    
-    void styleAvailable() 
+    void setElapsedTime( double );
+
+    void styleAvailable()
     {
-        ASSERT(waitingForStyleAvailable());
-        updateStateMachine(AnimationBase::AnimationStateInputStyleAvailable, -1);
+        ASSERT( waitingForStyleAvailable() );
+        updateStateMachine( AnimationBase::AnimationStateInputStyleAvailable, -1 );
     }
 
 #if USE(ACCELERATED_COMPOSITING)
-    static bool animationOfPropertyIsAccelerated(int prop);
+    static bool animationOfPropertyIsAccelerated( int prop );
 #endif
 
-    static HashSet<int> animatableShorthandsAffectingProperty(int property);
+    static HashSet<int> animatableShorthandsAffectingProperty( int property );
 
-    const Animation* animation() const { return m_animation.get(); }
+    const Animation *animation() const
+    {
+        return m_animation.get();
+    }
 
 protected:
     virtual void overrideAnimations() { }
     virtual void resumeOverriddenAnimations() { }
 
-    CompositeAnimation* compositeAnimation() { return m_compAnim; }
+    CompositeAnimation *compositeAnimation()
+    {
+        return m_compAnim;
+    }
 
     // These are called when the corresponding timer fires so subclasses can do any extra work
-    virtual void onAnimationStart(double /*elapsedTime*/) { }
-    virtual void onAnimationIteration(double /*elapsedTime*/) { }
-    virtual void onAnimationEnd(double /*elapsedTime*/) { }
-    
+    virtual void onAnimationStart( double /*elapsedTime*/ ) { }
+    virtual void onAnimationIteration( double /*elapsedTime*/ ) { }
+    virtual void onAnimationEnd( double /*elapsedTime*/ ) { }
+
     // timeOffset is an offset from the current time when the animation should start. Negative values are OK.
     // Return value indicates whether to expect an asynchronous notifyAnimationStarted() callback.
-    virtual bool startAnimation(double /*timeOffset*/) { return false; }
+    virtual bool startAnimation( double /*timeOffset*/ )
+    {
+        return false;
+    }
     // timeOffset is the time at which the animation is being paused.
-    virtual void pauseAnimation(double /*timeOffset*/) { }
+    virtual void pauseAnimation( double /*timeOffset*/ ) { }
     virtual void endAnimation() { }
 
     void goIntoEndingOrLoopingState();
 
-    bool isAccelerated() const { return m_isAccelerated; }
+    bool isAccelerated() const
+    {
+        return m_isAccelerated;
+    }
 
-    static bool propertiesEqual(int prop, const RenderStyle* a, const RenderStyle* b);
-    static int getPropertyAtIndex(int, bool& isShorthand);
+    static bool propertiesEqual( int prop, const RenderStyle *a, const RenderStyle *b );
+    static int getPropertyAtIndex( int, bool &isShorthand );
     static int getNumProperties();
 
     // Return true if we need to start software animation timers
-    static bool blendProperties(const AnimationBase* anim, int prop, RenderStyle* dst, const RenderStyle* a, const RenderStyle* b, double progress);
+    static bool blendProperties( const AnimationBase *anim, int prop, RenderStyle *dst, const RenderStyle *a, const RenderStyle *b,
+                                 double progress );
 
-    static void setNeedsStyleRecalc(Node*);
-    
-    void getTimeToNextEvent(double& time, bool& isLooping) const;
+    static void setNeedsStyleRecalc( Node * );
+
+    void getTimeToNextEvent( double &time, bool &isLooping ) const;
 
     AnimState m_animState;
 
@@ -232,14 +300,14 @@ protected:
     double m_startTime;
     double m_pauseTime;
     double m_requestedStartTime;
-    RenderObject* m_object;
+    RenderObject *m_object;
 
     RefPtr<Animation> m_animation;
-    CompositeAnimation* m_compAnim;
+    CompositeAnimation *m_compAnim;
     bool m_isAccelerated;
     bool m_transformFunctionListValid;
     double m_totalDuration, m_nextIterationDuration;
-    
+
 private:
     static void ensurePropertyMap();
 };

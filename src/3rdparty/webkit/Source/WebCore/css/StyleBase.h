@@ -26,63 +26,113 @@
 #include <wtf/Forward.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class KURL;
-    class Node;
-    class StyleSheet;
+class KURL;
+class Node;
+class StyleSheet;
 
-    // Base class for most CSS DOM objects.
+// Base class for most CSS DOM objects.
 
-    // FIXME: We don't need these to all share one base class.
-    // Refactor so they don't any more.
+// FIXME: We don't need these to all share one base class.
+// Refactor so they don't any more.
 
-    class StyleBase : public RefCounted<StyleBase> {
-    public:
-        virtual ~StyleBase() { }
+class StyleBase : public RefCounted<StyleBase>
+{
+public:
+    virtual ~StyleBase() { }
 
-        StyleBase* parent() const { return m_parent; }
-        void setParent(StyleBase* parent) { m_parent = parent; }
+    StyleBase *parent() const
+    {
+        return m_parent;
+    }
+    void setParent( StyleBase *parent )
+    {
+        m_parent = parent;
+    }
 
-        // returns the url of the style sheet this object belongs to
-        KURL baseURL() const;
+    // returns the url of the style sheet this object belongs to
+    KURL baseURL() const;
 
-        virtual bool isCSSStyleSheet() const { return false; }
-        virtual bool isCharsetRule() { return false; }
-        virtual bool isFontFaceRule() { return false; }
-        virtual bool isImportRule() { return false; }
-        virtual bool isKeyframeRule() { return false; }
-        virtual bool isKeyframesRule() { return false; }
-        virtual bool isMediaRule() { return false; }
-        virtual bool isPageRule() { return false; }
-        
-        virtual bool isRule() { return false; }
-        virtual bool isStyleRule() { return false; }
-        virtual bool isStyleSheet() const { return false; }
-        virtual bool isXSLStyleSheet() const { return false; }
+    virtual bool isCSSStyleSheet() const
+    {
+        return false;
+    }
+    virtual bool isCharsetRule()
+    {
+        return false;
+    }
+    virtual bool isFontFaceRule()
+    {
+        return false;
+    }
+    virtual bool isImportRule()
+    {
+        return false;
+    }
+    virtual bool isKeyframeRule()
+    {
+        return false;
+    }
+    virtual bool isKeyframesRule()
+    {
+        return false;
+    }
+    virtual bool isMediaRule()
+    {
+        return false;
+    }
+    virtual bool isPageRule()
+    {
+        return false;
+    }
 
-        virtual bool isMutableStyleDeclaration() const { return false; }
+    virtual bool isRule()
+    {
+        return false;
+    }
+    virtual bool isStyleRule()
+    {
+        return false;
+    }
+    virtual bool isStyleSheet() const
+    {
+        return false;
+    }
+    virtual bool isXSLStyleSheet() const
+    {
+        return false;
+    }
 
-        virtual String cssText() const;
+    virtual bool isMutableStyleDeclaration() const
+    {
+        return false;
+    }
 
-        virtual void checkLoaded();
+    virtual String cssText() const;
 
-        bool useStrictParsing() const { return !m_parent || m_parent->useStrictParsing(); }
+    virtual void checkLoaded();
 
-        virtual void insertedIntoParent() { }
+    bool useStrictParsing() const
+    {
+        return !m_parent || m_parent->useStrictParsing();
+    }
 
-        StyleSheet* stylesheet();
-        Node* node();
+    virtual void insertedIntoParent() { }
 
-    protected:
-        StyleBase(StyleBase* parent)
-            : m_parent(parent)
-        {
-        }
+    StyleSheet *stylesheet();
+    Node *node();
 
-    private:
-        StyleBase* m_parent;
-    };
+protected:
+    StyleBase( StyleBase *parent )
+        : m_parent( parent )
+    {
+    }
+
+private:
+    StyleBase *m_parent;
+};
 }
 
 #endif

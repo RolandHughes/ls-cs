@@ -35,17 +35,17 @@ using glyph_t  = uint32_t;
 using HB_Bool  = hb_bool_t;
 using HB_Glyph = hb_codepoint_t;
 
-using cs_fontTable_func_ptr = bool (*)(void *, uint, uchar *, uint *);
+using cs_fontTable_func_ptr = bool ( * )( void *, uint, uchar *, uint * );
 
 // script
-hb_script_t cs_script_to_hb_script(QChar::Script script);
+hb_script_t cs_script_to_hb_script( QChar::Script script );
 hb_unicode_funcs_t *cs_get_unicode_funcs();
 
 // font
-Q_GUI_EXPORT std::shared_ptr<hb_face_t> cs_face_get_for_engine(QFontEngine *fe);
-Q_GUI_EXPORT std::shared_ptr<hb_font_t> cs_font_get_for_engine(QFontEngine *fe);
+Q_GUI_EXPORT std::shared_ptr<hb_face_t> cs_face_get_for_engine( QFontEngine *fe );
+Q_GUI_EXPORT std::shared_ptr<hb_font_t> cs_font_get_for_engine( QFontEngine *fe );
 
-Q_GUI_EXPORT void cs_font_set_use_design_metrics(hb_font_t *font, uint value);
-Q_GUI_EXPORT uint cs_font_get_use_design_metrics(hb_font_t *font);
+Q_GUI_EXPORT void cs_font_set_use_design_metrics( hb_font_t *font, uint value );
+Q_GUI_EXPORT uint cs_font_get_use_design_metrics( hb_font_t *font );
 
 #endif

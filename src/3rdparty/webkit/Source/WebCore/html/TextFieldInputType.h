@@ -33,26 +33,28 @@
 
 #include "InputType.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 // The class represents types of which UI contain text fields.
 // It supports not only the types for BaseTextInputType but also type=number.
-class TextFieldInputType : public InputType {
+class TextFieldInputType : public InputType
+{
 protected:
-    TextFieldInputType(HTMLInputElement* element) : InputType(element) { }
+    TextFieldInputType( HTMLInputElement *element ) : InputType( element ) { }
     virtual bool canSetSuggestedValue();
-    virtual void handleKeydownEvent(KeyboardEvent*);
-    void handleKeydownEventForSpinButton(KeyboardEvent*);
-    void handleWheelEventForSpinButton(WheelEvent*);
+    virtual void handleKeydownEvent( KeyboardEvent * );
+    void handleKeydownEventForSpinButton( KeyboardEvent * );
+    void handleWheelEventForSpinButton( WheelEvent * );
 
 private:
     virtual bool isTextField() const;
-    virtual bool valueMissing(const String&) const;
-    virtual void forwardEvent(Event*);
-    virtual bool shouldSubmitImplicitly(Event*);
-    virtual RenderObject* createRenderer(RenderArena*, RenderStyle*) const;
+    virtual bool valueMissing( const String & ) const;
+    virtual void forwardEvent( Event * );
+    virtual bool shouldSubmitImplicitly( Event * );
+    virtual RenderObject *createRenderer( RenderArena *, RenderStyle * ) const;
     virtual bool shouldUseInputMethod() const;
-    virtual String sanitizeValue(const String& proposedValue);
+    virtual String sanitizeValue( const String &proposedValue );
     virtual bool shouldRespectListAttribute();
 };
 

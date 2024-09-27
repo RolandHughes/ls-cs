@@ -21,7 +21,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef HTMLEntityParser_h
@@ -29,12 +29,14 @@
 
 #include "SegmentedString.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-bool consumeHTMLEntity(SegmentedString&, Vector<UChar, 16>& decodedEntity, bool& notEnoughCharacters, UChar additionalAllowedCharacter = '\0');
+bool consumeHTMLEntity( SegmentedString &, Vector<UChar, 16> &decodedEntity, bool &notEnoughCharacters,
+                        UChar additionalAllowedCharacter = '\0' );
 
 // Used by the XML parser.  Not suitable for use in HTML parsing.  Use consumeHTMLEntity instead.
-UChar decodeNamedEntity(const char*);
+UChar decodeNamedEntity( const char * );
 
 }
 

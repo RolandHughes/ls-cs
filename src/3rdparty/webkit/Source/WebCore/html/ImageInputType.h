@@ -36,22 +36,24 @@
 #include "IntPoint.h"
 #include <wtf/OwnPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class HTMLImageLoader;
 
-class ImageInputType : public BaseButtonInputType {
+class ImageInputType : public BaseButtonInputType
+{
 public:
-    static PassOwnPtr<InputType> create(HTMLInputElement*);
+    static PassOwnPtr<InputType> create( HTMLInputElement * );
 
 private:
-    ImageInputType(HTMLInputElement*);
-    virtual const AtomicString& formControlType() const;
+    ImageInputType( HTMLInputElement * );
+    virtual const AtomicString &formControlType() const;
     virtual bool isFormDataAppendable() const;
-    virtual bool appendFormData(FormDataList&, bool) const;
+    virtual bool appendFormData( FormDataList &, bool ) const;
     virtual bool supportsValidation() const;
-    virtual RenderObject* createRenderer(RenderArena*, RenderStyle*) const;
-    virtual void handleDOMActivateEvent(Event*);
+    virtual RenderObject *createRenderer( RenderArena *, RenderStyle * ) const;
+    virtual void handleDOMActivateEvent( Event * );
     virtual void altAttributeChanged();
     virtual void srcAttributeChanged();
     virtual void attach();

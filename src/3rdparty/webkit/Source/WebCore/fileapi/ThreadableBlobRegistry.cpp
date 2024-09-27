@@ -36,24 +36,26 @@
 #include "BlobRegistry.h"
 #include <wtf/MainThread.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-struct BlobRegistryContext {
-    BlobRegistryContext(const KURL& url, PassOwnPtr<BlobData> blobData)
-        : url(url.copy())
-        , blobData(blobData)
+struct BlobRegistryContext
+{
+    BlobRegistryContext( const KURL &url, PassOwnPtr<BlobData> blobData )
+        : url( url.copy() )
+        , blobData( blobData )
     {
         this->blobData->detachFromCurrentThread();
     }
 
-    BlobRegistryContext(const KURL& url, const KURL& srcURL)
-        : url(url.copy())
-        , srcURL(srcURL.copy())
+    BlobRegistryContext( const KURL &url, const KURL &srcURL )
+        : url( url.copy() )
+        , srcURL( srcURL.copy() )
     {
     }
 
-    BlobRegistryContext(const KURL& url)
-        : url(url.copy())
+    BlobRegistryContext( const KURL &url )
+        : url( url.copy() )
     {
     }
 
@@ -64,65 +66,74 @@ struct BlobRegistryContext {
 
 #if ENABLE(BLOB)
 
-static void registerBlobURLTask(void* context)
+static void registerBlobURLTask( void *context )
 {
-    OwnPtr<BlobRegistryContext> blobRegistryContext = adoptPtr(static_cast<BlobRegistryContext*>(context));
-    blobRegistry().registerBlobURL(blobRegistryContext->url, blobRegistryContext->blobData.release());
+    OwnPtr<BlobRegistryContext> blobRegistryContext = adoptPtr( static_cast<BlobRegistryContext *>( context ) );
+    blobRegistry().registerBlobURL( blobRegistryContext->url, blobRegistryContext->blobData.release() );
 }
 
-void ThreadableBlobRegistry::registerBlobURL(const KURL& url, PassOwnPtr<BlobData> blobData)
+void ThreadableBlobRegistry::registerBlobURL( const KURL &url, PassOwnPtr<BlobData> blobData )
 {
-    if (isMainThread())
-        blobRegistry().registerBlobURL(url, blobData);
-    else {
-        OwnPtr<BlobRegistryContext> context = adoptPtr(new BlobRegistryContext(url, blobData));
-        callOnMainThread(&registerBlobURLTask, context.leakPtr());
+    if ( isMainThread() )
+    {
+        blobRegistry().registerBlobURL( url, blobData );
+    }
+    else
+    {
+        OwnPtr<BlobRegistryContext> context = adoptPtr( new BlobRegistryContext( url, blobData ) );
+        callOnMainThread( &registerBlobURLTask, context.leakPtr() );
     }
 }
 
-static void registerBlobURLFromTask(void* context)
+static void registerBlobURLFromTask( void *context )
 {
-    OwnPtr<BlobRegistryContext> blobRegistryContext = adoptPtr(static_cast<BlobRegistryContext*>(context));
-    blobRegistry().registerBlobURL(blobRegistryContext->url, blobRegistryContext->srcURL);
+    OwnPtr<BlobRegistryContext> blobRegistryContext = adoptPtr( static_cast<BlobRegistryContext *>( context ) );
+    blobRegistry().registerBlobURL( blobRegistryContext->url, blobRegistryContext->srcURL );
 }
 
-void ThreadableBlobRegistry::registerBlobURL(const KURL& url, const KURL& srcURL)
+void ThreadableBlobRegistry::registerBlobURL( const KURL &url, const KURL &srcURL )
 {
-    if (isMainThread())
-        blobRegistry().registerBlobURL(url, srcURL);
-    else {
-        OwnPtr<BlobRegistryContext> context = adoptPtr(new BlobRegistryContext(url, srcURL));
-        callOnMainThread(&registerBlobURLFromTask, context.leakPtr());
+    if ( isMainThread() )
+    {
+        blobRegistry().registerBlobURL( url, srcURL );
+    }
+    else
+    {
+        OwnPtr<BlobRegistryContext> context = adoptPtr( new BlobRegistryContext( url, srcURL ) );
+        callOnMainThread( &registerBlobURLFromTask, context.leakPtr() );
     }
 }
 
-static void unregisterBlobURLTask(void* context)
+static void unregisterBlobURLTask( void *context )
 {
-    OwnPtr<BlobRegistryContext> blobRegistryContext = adoptPtr(static_cast<BlobRegistryContext*>(context));
-    blobRegistry().unregisterBlobURL(blobRegistryContext->url);
+    OwnPtr<BlobRegistryContext> blobRegistryContext = adoptPtr( static_cast<BlobRegistryContext *>( context ) );
+    blobRegistry().unregisterBlobURL( blobRegistryContext->url );
 }
 
-void ThreadableBlobRegistry::unregisterBlobURL(const KURL& url)
+void ThreadableBlobRegistry::unregisterBlobURL( const KURL &url )
 {
-    if (isMainThread())
-        blobRegistry().unregisterBlobURL(url);
-    else {
-        OwnPtr<BlobRegistryContext> context = adoptPtr(new BlobRegistryContext(url));
-        callOnMainThread(&unregisterBlobURLTask, context.leakPtr());
+    if ( isMainThread() )
+    {
+        blobRegistry().unregisterBlobURL( url );
+    }
+    else
+    {
+        OwnPtr<BlobRegistryContext> context = adoptPtr( new BlobRegistryContext( url ) );
+        callOnMainThread( &unregisterBlobURLTask, context.leakPtr() );
     }
 }
 
 #else
 
-void ThreadableBlobRegistry::registerBlobURL(const KURL&, PassOwnPtr<BlobData>)
+void ThreadableBlobRegistry::registerBlobURL( const KURL &, PassOwnPtr<BlobData> )
 {
 }
 
-void ThreadableBlobRegistry::registerBlobURL(const KURL&, const KURL&)
+void ThreadableBlobRegistry::registerBlobURL( const KURL &, const KURL & )
 {
 }
 
-void ThreadableBlobRegistry::unregisterBlobURL(const KURL&)
+void ThreadableBlobRegistry::unregisterBlobURL( const KURL & )
 {
 }
 #endif // ENABL(BLOB)

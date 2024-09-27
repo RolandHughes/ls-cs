@@ -28,7 +28,7 @@
 
 namespace QAudioHelperInternal
 {
-   Q_MULTIMEDIA_EXPORT void qMultiplySamples(qreal factor, const QAudioFormat& format, const void *src, void* dest, int len);
+Q_MULTIMEDIA_EXPORT void qMultiplySamples( qreal factor, const QAudioFormat &format, const void *src, void *dest, int len );
 }
 
 #endif

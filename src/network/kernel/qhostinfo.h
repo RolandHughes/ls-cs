@@ -33,47 +33,48 @@ class QObject;
 
 class Q_NETWORK_EXPORT QHostInfo
 {
- public:
-   enum HostInfoError {
-      NoError,
-      HostNotFound,
-      UnknownError
-   };
+public:
+    enum HostInfoError
+    {
+        NoError,
+        HostNotFound,
+        UnknownError
+    };
 
-   explicit QHostInfo(int id = -1);
+    explicit QHostInfo( int id = -1 );
 
-   QHostInfo(const QHostInfo &other);
-   QHostInfo(QHostInfo &&other);
+    QHostInfo( const QHostInfo &other );
+    QHostInfo( QHostInfo &&other );
 
-   ~QHostInfo();
+    ~QHostInfo();
 
-   QHostInfo &operator=(const QHostInfo &other);
-   QHostInfo &operator=(QHostInfo &&other);
+    QHostInfo &operator=( const QHostInfo &other );
+    QHostInfo &operator=( QHostInfo &&other );
 
-   QString hostName() const;
-   void setHostName(const QString &hostName);
+    QString hostName() const;
+    void setHostName( const QString &hostName );
 
-   QList<QHostAddress> addresses() const;
-   void setAddresses(const QList<QHostAddress> &addresses);
+    QList<QHostAddress> addresses() const;
+    void setAddresses( const QList<QHostAddress> &addresses );
 
-   HostInfoError error() const;
-   void setError(HostInfoError error);
+    HostInfoError error() const;
+    void setError( HostInfoError error );
 
-   QString errorString() const;
-   void setErrorString(const QString &errorStr);
+    QString errorString() const;
+    void setErrorString( const QString &errorStr );
 
-   void setLookupId(int id);
-   int lookupId() const;
+    void setLookupId( int id );
+    int lookupId() const;
 
-   static int lookupHost(const QString &name, QObject *receiver, const  QString &member);
-   static void abortHostLookup(int id);
+    static int lookupHost( const QString &name, QObject *receiver, const  QString &member );
+    static void abortHostLookup( int id );
 
-   static QHostInfo fromName(const QString &name);
-   static QString localHostName();
-   static QString localDomainName();
+    static QHostInfo fromName( const QString &name );
+    static QString localHostName();
+    static QString localDomainName();
 
- private:
-   QScopedPointer<QHostInfoPrivate> d;
+private:
+    QScopedPointer<QHostInfoPrivate> d;
 };
 
 #endif

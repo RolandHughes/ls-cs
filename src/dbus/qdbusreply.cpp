@@ -166,62 +166,77 @@ QT_BEGIN_NAMESPACE
     \internal
     Fills in the QDBusReply data \a error and \a data from the reply message \a reply.
 */
-void qDBusReplyFill(const QDBusMessage &reply, QDBusError &error, QVariant &data)
+void qDBusReplyFill( const QDBusMessage &reply, QDBusError &error, QVariant &data )
 {
     error = reply;
 
-    if (error.isValid()) {
+    if ( error.isValid() )
+    {
         data = QVariant();      // clear it
         return;
     }
 
-    if (reply.arguments().count() >= 1 && reply.arguments().at(0).userType() == data.userType()) {
-        data = reply.arguments().at(0);
+    if ( reply.arguments().count() >= 1 && reply.arguments().at( 0 ).userType() == data.userType() )
+    {
+        data = reply.arguments().at( 0 );
         return;
     }
 
-    const char *expectedSignature = QDBusMetaType::typeToSignature(data.userType());
+    const char *expectedSignature = QDBusMetaType::typeToSignature( data.userType() );
     const char *receivedType = 0;
     QByteArray receivedSignature;
 
-    if (reply.arguments().count() >= 1) {
-        if (reply.arguments().at(0).userType() == QDBusMetaTypeId::argument) {
+    if ( reply.arguments().count() >= 1 )
+    {
+        if ( reply.arguments().at( 0 ).userType() == QDBusMetaTypeId::argument )
+        {
             // compare signatures instead
-            QDBusArgument arg = qvariant_cast<QDBusArgument>(reply.arguments().at(0));
+            QDBusArgument arg = qvariant_cast<QDBusArgument>( reply.arguments().at( 0 ) );
             receivedSignature = arg.currentSignature().toLatin1();
-            if (receivedSignature == expectedSignature) {
+
+            if ( receivedSignature == expectedSignature )
+            {
                 // matched. Demarshall it
-                QDBusMetaType::demarshall(arg, data.userType(), data.data());
+                QDBusMetaType::demarshall( arg, data.userType(), data.data() );
                 return;
             }
-        } else {
+        }
+        else
+        {
             // not an argument and doesn't match?
-            int type = reply.arguments().at(0).userType();
-            receivedType = QVariant::typeToName(QVariant::Type(type));
-            receivedSignature = QDBusMetaType::typeToSignature(type);
+            int type = reply.arguments().at( 0 ).userType();
+            receivedType = QVariant::typeToName( QVariant::Type( type ) );
+            receivedSignature = QDBusMetaType::typeToSignature( type );
         }
     }
 
     // error
-    if (receivedSignature.isEmpty())
+    if ( receivedSignature.isEmpty() )
+    {
         receivedSignature = "no signature";
-    QString errorMsg;
-    if (receivedType) {
-        errorMsg = QString::fromLatin1("Unexpected reply signature: got \"%1\" (%4), "
-                                         "expected \"%2\" (%3)")
-                   .arg(QLatin1String(receivedSignature),
-                        QLatin1String(expectedSignature),
-                        QLatin1String(data.typeName()),
-                        QLatin1String(receivedType));
-    } else {
-        errorMsg = QString::fromLatin1("Unexpected reply signature: got \"%1\", "
-                                         "expected \"%2\" (%3)")
-                   .arg(QLatin1String(receivedSignature),
-                        QLatin1String(expectedSignature),
-                        QLatin1String(data.typeName()));
     }
 
-    error = QDBusError(QDBusError::InvalidSignature, errorMsg);
+    QString errorMsg;
+
+    if ( receivedType )
+    {
+        errorMsg = QString::fromLatin1( "Unexpected reply signature: got \"%1\" (%4), "
+                                        "expected \"%2\" (%3)" )
+                   .arg( QLatin1String( receivedSignature ),
+                         QLatin1String( expectedSignature ),
+                         QLatin1String( data.typeName() ),
+                         QLatin1String( receivedType ) );
+    }
+    else
+    {
+        errorMsg = QString::fromLatin1( "Unexpected reply signature: got \"%1\", "
+                                        "expected \"%2\" (%3)" )
+                   .arg( QLatin1String( receivedSignature ),
+                         QLatin1String( expectedSignature ),
+                         QLatin1String( data.typeName() ) );
+    }
+
+    error = QDBusError( QDBusError::InvalidSignature, errorMsg );
     data = QVariant();      // clear it
 }
 

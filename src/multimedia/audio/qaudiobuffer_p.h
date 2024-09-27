@@ -30,32 +30,32 @@
 
 class Q_MULTIMEDIA_EXPORT QAbstractAudioBuffer
 {
- public:
-   virtual ~QAbstractAudioBuffer() {}
+public:
+    virtual ~QAbstractAudioBuffer() {}
 
-   // Lifetime management
-   virtual void release() = 0;
+    // Lifetime management
+    virtual void release() = 0;
 
-   // Format related
-   virtual QAudioFormat format() const = 0;
-   virtual qint64 startTime() const = 0;
-   virtual int frameCount() const = 0;
+    // Format related
+    virtual QAudioFormat format() const = 0;
+    virtual qint64 startTime() const = 0;
+    virtual int frameCount() const = 0;
 
-   // R/O Data
-   virtual void *constData() const = 0;
+    // R/O Data
+    virtual void *constData() const = 0;
 
-   // For writable data we do this:
-   // If we only have one reference to the provider,
-   // call writableData().  If that does not return 0,
-   // then we're finished.  If it does return 0, then we call
-   // writableClone() to get a new buffer and then release
-   // the old clone if that succeeds.  If it fails, we create
-   // a memory clone from the constData and release the old buffer.
-   // If writableClone() succeeds, we then call writableData() on it
-   // and that should be good.
+    // For writable data we do this:
+    // If we only have one reference to the provider,
+    // call writableData().  If that does not return 0,
+    // then we're finished.  If it does return 0, then we call
+    // writableClone() to get a new buffer and then release
+    // the old clone if that succeeds.  If it fails, we create
+    // a memory clone from the constData and release the old buffer.
+    // If writableClone() succeeds, we then call writableData() on it
+    // and that should be good.
 
-   virtual void *writableData() = 0;
-   virtual QAbstractAudioBuffer *clone() const = 0;
+    virtual void *writableData() = 0;
+    virtual QAbstractAudioBuffer *clone() const = 0;
 };
 
 #endif

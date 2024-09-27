@@ -17,17 +17,17 @@
 #ifndef FREETYPE_CONFIG_MAC_SUPPORT_H_
 #define FREETYPE_CONFIG_MAC_SUPPORT_H_
 
-  /**************************************************************************
-   *
-   * Mac support
-   *
-   *   This is the only necessary change, so it is defined here instead
-   *   providing a new configuration file.
-   */
+/**************************************************************************
+ *
+ * Mac support
+ *
+ *   This is the only necessary change, so it is defined here instead
+ *   providing a new configuration file.
+ */
 #if defined( __APPLE__ ) || ( defined( __MWERKS__ ) && defined( macintosh ) )
-  /* No Carbon frameworks for 64bit 10.4.x.                         */
-  /* `AvailabilityMacros.h` is available since Mac OS X 10.2,       */
-  /* so guess the system version by maximum errno before inclusion. */
+/* No Carbon frameworks for 64bit 10.4.x.                         */
+/* `AvailabilityMacros.h` is available since Mac OS X 10.2,       */
+/* so guess the system version by maximum errno before inclusion. */
 #include <errno.h>
 #ifdef ECANCELED /* defined since 10.2 */
 #include "AvailabilityMacros.h"
@@ -38,7 +38,7 @@
 #endif
 
 #elif defined( __SC__ ) || defined( __MRC__ )
-  /* Classic MacOS compilers */
+/* Classic MacOS compilers */
 #include "ConditionalMacros.h"
 #if TARGET_OS_MAC
 #define FT_MACINTOSH 1

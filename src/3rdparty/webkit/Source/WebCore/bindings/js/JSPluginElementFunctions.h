@@ -22,27 +22,31 @@
 
 #include "JSDOMBinding.h"
 
-namespace JSC {
-namespace Bindings {
+namespace JSC
+{
+namespace Bindings
+{
 class Instance;
 }
 }
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class HTMLElement;
-    class JSHTMLElement;
-    class Node;
+class HTMLElement;
+class JSHTMLElement;
+class Node;
 
-    // Runtime object support code for JSHTMLAppletElement, JSHTMLEmbedElement and JSHTMLObjectElement.
-    JSC::Bindings::Instance* pluginInstance(Node*);
-    JSC::JSObject* pluginScriptObject(JSC::ExecState* exec, JSHTMLElement* jsHTMLElement);
+// Runtime object support code for JSHTMLAppletElement, JSHTMLEmbedElement and JSHTMLObjectElement.
+JSC::Bindings::Instance *pluginInstance( Node * );
+JSC::JSObject *pluginScriptObject( JSC::ExecState *exec, JSHTMLElement *jsHTMLElement );
 
-    JSC::JSValue runtimeObjectPropertyGetter(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-    bool runtimeObjectCustomGetOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&, JSHTMLElement*);
-    bool runtimeObjectCustomGetOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&, JSHTMLElement*);
-    bool runtimeObjectCustomPut(JSC::ExecState*, const JSC::Identifier&, JSC::JSValue, JSHTMLElement*, JSC::PutPropertySlot&);
-    JSC::CallType runtimeObjectGetCallData(JSHTMLElement*, JSC::CallData&);
+JSC::JSValue runtimeObjectPropertyGetter( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+bool runtimeObjectCustomGetOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot &, JSHTMLElement * );
+bool runtimeObjectCustomGetOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor &,
+        JSHTMLElement * );
+bool runtimeObjectCustomPut( JSC::ExecState *, const JSC::Identifier &, JSC::JSValue, JSHTMLElement *, JSC::PutPropertySlot & );
+JSC::CallType runtimeObjectGetCallData( JSHTMLElement *, JSC::CallData & );
 
 } // namespace WebCore
 

@@ -23,28 +23,33 @@
 
 #include "InternalFunction.h"
 
-namespace JSC {
+namespace JSC
+{
 
-    class ErrorInstance;
-    class FunctionPrototype;
-    class NativeErrorPrototype;
+class ErrorInstance;
+class FunctionPrototype;
+class NativeErrorPrototype;
 
-    class NativeErrorConstructor : public InternalFunction {
-    public:
-        NativeErrorConstructor(ExecState*, NonNullPassRefPtr<Structure>, NativeErrorPrototype*);
+class NativeErrorConstructor : public InternalFunction
+{
+public:
+    NativeErrorConstructor( ExecState *, NonNullPassRefPtr<Structure>, NativeErrorPrototype * );
 
-        static const ClassInfo info;
+    static const ClassInfo info;
 
-        ErrorInstance* construct(ExecState*, const ArgList&);
+    ErrorInstance *construct( ExecState *, const ArgList & );
 
-    private:
-        virtual ConstructType getConstructData(ConstructData&);
-        virtual CallType getCallData(CallData&);
+private:
+    virtual ConstructType getConstructData( ConstructData & );
+    virtual CallType getCallData( CallData & );
 
-        virtual const ClassInfo* classInfo() const { return &info; }
+    virtual const ClassInfo *classInfo() const
+    {
+        return &info;
+    }
 
-        RefPtr<Structure> m_errorStructure;
-    };
+    RefPtr<Structure> m_errorStructure;
+};
 
 } // namespace JSC
 

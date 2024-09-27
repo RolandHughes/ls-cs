@@ -26,67 +26,68 @@
 
 #include <qschemanumeric_p.h>
 
-Q_CORE_EXPORT char *qdtoa(double d, int mode, int ndigits, int *decpt, int *sign, char **rve, char **resultp);
+Q_CORE_EXPORT char *qdtoa( double d, int mode, int ndigits, int *decpt, int *sign, char **rve, char **resultp );
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class Decimal : public Numeric
 {
- public:
+public:
 
-   static Decimal::Ptr fromValue(const xsDecimal num);
+    static Decimal::Ptr fromValue( const xsDecimal num );
 
-   static AtomicValue::Ptr fromLexical(const QString &strNumeric);
+    static AtomicValue::Ptr fromLexical( const QString &strNumeric );
 
-   bool evaluateEBV(const QExplicitlySharedDataPointer<DynamicContext> &) const override;
+    bool evaluateEBV( const QExplicitlySharedDataPointer<DynamicContext> & ) const override;
 
-   QString stringValue() const override;
+    QString stringValue() const override;
 
-   /**
-    * @returns always BuiltinTypes::xsDecimal
-    */
-   ItemType::Ptr type() const override;
+    /**
+     * @returns always BuiltinTypes::xsDecimal
+     */
+    ItemType::Ptr type() const override;
 
-   xsDouble toDouble() const override;
-   xsInteger toInteger() const override;
-   xsFloat toFloat() const override;
-   xsDecimal toDecimal() const override;
-   quint64 toUnsignedInteger() const override;
+    xsDouble toDouble() const override;
+    xsInteger toInteger() const override;
+    xsFloat toFloat() const override;
+    xsDecimal toDecimal() const override;
+    quint64 toUnsignedInteger() const override;
 
-   Numeric::Ptr round() const override;
-   Numeric::Ptr roundHalfToEven(const xsInteger scale) const override;
-   Numeric::Ptr floor() const override;
-   Numeric::Ptr ceiling() const override;
-   Numeric::Ptr abs() const override;
+    Numeric::Ptr round() const override;
+    Numeric::Ptr roundHalfToEven( const xsInteger scale ) const override;
+    Numeric::Ptr floor() const override;
+    Numeric::Ptr ceiling() const override;
+    Numeric::Ptr abs() const override;
 
-   /**
-    * @returns always @c false, xs:decimal doesn't have
-    * not-a-number in its value space.
-    */
-   bool isNaN() const override;
+    /**
+     * @returns always @c false, xs:decimal doesn't have
+     * not-a-number in its value space.
+     */
+    bool isNaN() const override;
 
-   /**
-    * @returns always @c false, xs:decimal doesn't have
-    * infinity in its value space.
-    */
-   bool isInf() const override;
+    /**
+     * @returns always @c false, xs:decimal doesn't have
+     * infinity in its value space.
+     */
+    bool isInf() const override;
 
-   Item toNegated() const override;
+    Item toNegated() const override;
 
-   /**
-    * Converts @p value into a canonical string representation for @c xs:decimal. This
-    * function is used internally by various classes. Users probably wants to call
-    * stringValue() which in turn calls this function.
-    */
-   static QString toString(const xsDecimal value);
+    /**
+     * Converts @p value into a canonical string representation for @c xs:decimal. This
+     * function is used internally by various classes. Users probably wants to call
+     * stringValue() which in turn calls this function.
+     */
+    static QString toString( const xsDecimal value );
 
-   bool isSigned() const override;
+    bool isSigned() const override;
 
- protected:
-   Decimal(const xsDecimal num);
+protected:
+    Decimal( const xsDecimal num );
 
- private:
-   const xsDecimal m_value;
+private:
+    const xsDecimal m_value;
 };
 }
 

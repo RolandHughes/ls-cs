@@ -33,37 +33,40 @@
 OBJC_CLASS CALayer;
 OBJC_CLASS CARenderer;
 
-typedef struct _CGLContextObject* CGLContextObj;
+typedef struct _CGLContextObject *CGLContextObj;
 
-namespace WebKit {
+namespace WebKit
+{
 
-class CoreAnimationRenderer : public RefCounted<CoreAnimationRenderer> {
+class CoreAnimationRenderer : public RefCounted<CoreAnimationRenderer>
+{
 public:
-    class Client {
+    class Client
+    {
     public:
         virtual ~Client() { }
-        virtual void rendererDidChange(CoreAnimationRenderer*) = 0;
+        virtual void rendererDidChange( CoreAnimationRenderer * ) = 0;
     };
 
-    static PassRefPtr<CoreAnimationRenderer> create(Client*, CGLContextObj, CALayer *);
+    static PassRefPtr<CoreAnimationRenderer> create( Client *, CGLContextObj, CALayer * );
     ~CoreAnimationRenderer();
 
     void invalidate();
 
-    void setBounds(CGRect);
-    void render(CFTimeInterval frameTime, CVTimeStamp*, CFTimeInterval& nextFrameTime);
+    void setBounds( CGRect );
+    void render( CFTimeInterval frameTime, CVTimeStamp *, CFTimeInterval &nextFrameTime );
 
 private:
-    CoreAnimationRenderer(Client*, CGLContextObj, CALayer *);
+    CoreAnimationRenderer( Client *, CGLContextObj, CALayer * );
 
-    static void rendererDidChange(void*);
+    static void rendererDidChange( void * );
     void rendererDidChange();
 
-    Client* m_client;
+    Client *m_client;
     CGLContextObj m_cglContext;
     RetainPtr<CARenderer> m_renderer;
-};    
-    
+};
+
 } // namespace WebKit
 
 #endif // CoreAnimationRenderer_h

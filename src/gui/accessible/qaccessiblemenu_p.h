@@ -36,76 +36,76 @@ class QAction;
 
 class QAccessibleMenu : public QAccessibleWidget
 {
- public:
-   explicit QAccessibleMenu(QWidget *w);
+public:
+    explicit QAccessibleMenu( QWidget *w );
 
-   int childCount() const override;
-   QAccessibleInterface *childAt(int x, int y) const override;
+    int childCount() const override;
+    QAccessibleInterface *childAt( int x, int y ) const override;
 
-   QString text(QAccessible::Text t) const override;
-   QAccessible::Role role() const override;
-   QAccessibleInterface *child(int index) const override;
-   QAccessibleInterface *parent() const override;
-   int indexOfChild( const QAccessibleInterface *child ) const override;
+    QString text( QAccessible::Text t ) const override;
+    QAccessible::Role role() const override;
+    QAccessibleInterface *child( int index ) const override;
+    QAccessibleInterface *parent() const override;
+    int indexOfChild( const QAccessibleInterface *child ) const override;
 
- protected:
-   QMenu *menu() const;
+protected:
+    QMenu *menu() const;
 };
 
 #ifndef QT_NO_MENUBAR
 class QAccessibleMenuBar : public QAccessibleWidget
 {
- public:
-   explicit QAccessibleMenuBar(QWidget *w);
+public:
+    explicit QAccessibleMenuBar( QWidget *w );
 
-   QAccessibleInterface *child(int index) const override;
-   int childCount() const override;
+    QAccessibleInterface *child( int index ) const override;
+    int childCount() const override;
 
-   int indexOfChild(const QAccessibleInterface *child) const override;
+    int indexOfChild( const QAccessibleInterface *child ) const override;
 
- protected:
-   QMenuBar *menuBar() const;
+protected:
+    QMenuBar *menuBar() const;
 };
 #endif // QT_NO_MENUBAR
 
 
 class QAccessibleMenuItem : public QAccessibleInterface, public QAccessibleActionInterface
 {
- public:
-   explicit QAccessibleMenuItem(QWidget *owner, QAction *w);
+public:
+    explicit QAccessibleMenuItem( QWidget *owner, QAction *w );
 
-   ~QAccessibleMenuItem();
-   void *interface_cast(QAccessible::InterfaceType t) override;
+    ~QAccessibleMenuItem();
+    void *interface_cast( QAccessible::InterfaceType t ) override;
 
-   int childCount() const override;
-   QAccessibleInterface *childAt(int x, int y) const override;
-   bool isValid() const override;
-   int indexOfChild(const QAccessibleInterface *child) const override;
+    int childCount() const override;
+    QAccessibleInterface *childAt( int x, int y ) const override;
+    bool isValid() const override;
+    int indexOfChild( const QAccessibleInterface *child ) const override;
 
-   QAccessibleInterface *parent() const override;
-   QAccessibleInterface *child(int index) const override;
-   QObject *object() const override;
-   QWindow *window() const override;
+    QAccessibleInterface *parent() const override;
+    QAccessibleInterface *child( int index ) const override;
+    QObject *object() const override;
+    QWindow *window() const override;
 
-   QRect rect() const override;
-   QAccessible::Role role() const override;
-   void setText(QAccessible::Text t, const QString &text) override;
-   QAccessible::State state() const override;
-   QString text(QAccessible::Text t) const override;
+    QRect rect() const override;
+    QAccessible::Role role() const override;
+    void setText( QAccessible::Text t, const QString &text ) override;
+    QAccessible::State state() const override;
+    QString text( QAccessible::Text t ) const override;
 
-   // QAccessibleActionInterface
-   QStringList actionNames() const override;
-   void doAction(const QString &actionName) override;
-   QStringList keyBindingsForAction(const QString &actionName) const override;
+    // QAccessibleActionInterface
+    QStringList actionNames() const override;
+    void doAction( const QString &actionName ) override;
+    QStringList keyBindingsForAction( const QString &actionName ) const override;
 
-   QWidget *owner() const;
+    QWidget *owner() const;
 
- protected:
-   QAction *action() const;
+protected:
+    QAction *action() const;
 
- private:
-   QAction *m_action;
-   QPointer<QWidget> m_owner; // can hold either QMenu or the QMenuBar that contains the action
+private:
+    QAction *m_action;
+    QPointer<QWidget> m_owner; // can hold either QMenu or the QMenuBar that contains the action
 };
 
 #endif // QT_NO_MENU

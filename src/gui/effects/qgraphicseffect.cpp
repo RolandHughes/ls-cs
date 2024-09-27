@@ -35,245 +35,283 @@
 
 #ifndef QT_NO_GRAPHICSEFFECT
 
-QGraphicsEffectSource::QGraphicsEffectSource(QGraphicsEffectSourcePrivate &dd, QObject *parent)
-   : QObject(parent), d_ptr(&dd)
+QGraphicsEffectSource::QGraphicsEffectSource( QGraphicsEffectSourcePrivate &dd, QObject *parent )
+    : QObject( parent ), d_ptr( &dd )
 {
-   d_ptr->q_ptr = this;
+    d_ptr->q_ptr = this;
 }
 
 QGraphicsEffectSource::~QGraphicsEffectSource()
 { }
 
-QRectF QGraphicsEffectSource::boundingRect(Qt::CoordinateSystem system) const
+QRectF QGraphicsEffectSource::boundingRect( Qt::CoordinateSystem system ) const
 {
-   return d_func()->boundingRect(system);
+    return d_func()->boundingRect( system );
 }
 
-QRectF QGraphicsEffect::sourceBoundingRect(Qt::CoordinateSystem system) const
+QRectF QGraphicsEffect::sourceBoundingRect( Qt::CoordinateSystem system ) const
 {
-   Q_D(const QGraphicsEffect);
-   if (d->source) {
-      return d->source->boundingRect(system);
-   }
-   return QRectF();
+    Q_D( const QGraphicsEffect );
+
+    if ( d->source )
+    {
+        return d->source->boundingRect( system );
+    }
+
+    return QRectF();
 }
 
 const QGraphicsItem *QGraphicsEffectSource::graphicsItem() const
 {
-   return d_func()->graphicsItem();
+    return d_func()->graphicsItem();
 }
 
 const QWidget *QGraphicsEffectSource::widget() const
 {
-   return d_func()->widget();
+    return d_func()->widget();
 }
 
 const QStyleOption *QGraphicsEffectSource::styleOption() const
 {
-   return d_func()->styleOption();
+    return d_func()->styleOption();
 }
 
-void QGraphicsEffectSource::draw(QPainter *painter)
+void QGraphicsEffectSource::draw( QPainter *painter )
 {
-   Q_D(const QGraphicsEffectSource);
+    Q_D( const QGraphicsEffectSource );
 
-   QPixmap pm;
-   if (QPixmapCache::find(d->m_cacheKey, &pm)) {
-      QTransform restoreTransform;
-      if (d->m_cachedSystem == Qt::DeviceCoordinates) {
-         restoreTransform = painter->worldTransform();
-         painter->setWorldTransform(QTransform());
-      }
+    QPixmap pm;
 
-      painter->drawPixmap(d->m_cachedOffset, pm);
+    if ( QPixmapCache::find( d->m_cacheKey, &pm ) )
+    {
+        QTransform restoreTransform;
 
-      if (d->m_cachedSystem == Qt::DeviceCoordinates) {
-         painter->setWorldTransform(restoreTransform);
-      }
-   } else {
-      d_func()->draw(painter);
-   }
+        if ( d->m_cachedSystem == Qt::DeviceCoordinates )
+        {
+            restoreTransform = painter->worldTransform();
+            painter->setWorldTransform( QTransform() );
+        }
+
+        painter->drawPixmap( d->m_cachedOffset, pm );
+
+        if ( d->m_cachedSystem == Qt::DeviceCoordinates )
+        {
+            painter->setWorldTransform( restoreTransform );
+        }
+    }
+    else
+    {
+        d_func()->draw( painter );
+    }
 }
 
-void QGraphicsEffect::drawSource(QPainter *painter)
+void QGraphicsEffect::drawSource( QPainter *painter )
 {
-   Q_D(const QGraphicsEffect);
-   if (d->source) {
-      d->source->draw(painter);
-   }
+    Q_D( const QGraphicsEffect );
+
+    if ( d->source )
+    {
+        d->source->draw( painter );
+    }
 }
 
 void QGraphicsEffectSource::update()
 {
-   d_func()->update();
+    d_func()->update();
 }
 
 bool QGraphicsEffectSource::isPixmap() const
 {
-   return d_func()->isPixmap();
+    return d_func()->isPixmap();
 }
 
 bool QGraphicsEffect::sourceIsPixmap() const
 {
-   return source() ? source()->isPixmap() : false;
+    return source() ? source()->isPixmap() : false;
 }
 
-QPixmap QGraphicsEffectSource::pixmap(Qt::CoordinateSystem system, QPoint *offset,
-                                      QGraphicsEffect::PixmapPadMode mode) const
+QPixmap QGraphicsEffectSource::pixmap( Qt::CoordinateSystem system, QPoint *offset,
+                                       QGraphicsEffect::PixmapPadMode mode ) const
 {
-   Q_D(const QGraphicsEffectSource);
+    Q_D( const QGraphicsEffectSource );
 
-   // Shortcut, no cache for childless pixmap items...
-   const QGraphicsItem *item = graphicsItem();
-   if (system == Qt::LogicalCoordinates && mode == QGraphicsEffect::NoPad && item && isPixmap()) {
-      const QGraphicsPixmapItem *pixmapItem = static_cast<const QGraphicsPixmapItem *>(item);
-      if (offset) {
-         *offset = pixmapItem->offset().toPoint();
-      }
-      return pixmapItem->pixmap();
-   }
+    // Shortcut, no cache for childless pixmap items...
+    const QGraphicsItem *item = graphicsItem();
 
-   if (system == Qt::DeviceCoordinates && item
-         && !static_cast<const QGraphicsItemEffectSourcePrivate *>(d_func())->info) {
-      qWarning("QGraphicsEffectSource::pixmap() Device context is missing, unable to create the pixmap");
-      return QPixmap();
-   }
+    if ( system == Qt::LogicalCoordinates && mode == QGraphicsEffect::NoPad && item && isPixmap() )
+    {
+        const QGraphicsPixmapItem *pixmapItem = static_cast<const QGraphicsPixmapItem *>( item );
 
-   QPixmap pm;
-   if (item && d->m_cachedSystem == system && d->m_cachedMode == mode) {
-      QPixmapCache::find(d->m_cacheKey, &pm);
-   }
+        if ( offset )
+        {
+            *offset = pixmapItem->offset().toPoint();
+        }
 
-   if (pm.isNull()) {
-      pm = d->pixmap(system, &d->m_cachedOffset, mode);
-      d->m_cachedSystem = system;
-      d->m_cachedMode = mode;
+        return pixmapItem->pixmap();
+    }
 
-      d->invalidateCache();
-      d->m_cacheKey = QPixmapCache::insert(pm);
-   }
+    if ( system == Qt::DeviceCoordinates && item
+            && !static_cast<const QGraphicsItemEffectSourcePrivate *>( d_func() )->info )
+    {
+        qWarning( "QGraphicsEffectSource::pixmap() Device context is missing, unable to create the pixmap" );
+        return QPixmap();
+    }
 
-   if (offset) {
-      *offset = d->m_cachedOffset;
-   }
+    QPixmap pm;
 
-   return pm;
+    if ( item && d->m_cachedSystem == system && d->m_cachedMode == mode )
+    {
+        QPixmapCache::find( d->m_cacheKey, &pm );
+    }
+
+    if ( pm.isNull() )
+    {
+        pm = d->pixmap( system, &d->m_cachedOffset, mode );
+        d->m_cachedSystem = system;
+        d->m_cachedMode = mode;
+
+        d->invalidateCache();
+        d->m_cacheKey = QPixmapCache::insert( pm );
+    }
+
+    if ( offset )
+    {
+        *offset = d->m_cachedOffset;
+    }
+
+    return pm;
 }
 
-QPixmap QGraphicsEffect::sourcePixmap(Qt::CoordinateSystem system, QPoint *offset,
-                                      QGraphicsEffect::PixmapPadMode mode) const
+QPixmap QGraphicsEffect::sourcePixmap( Qt::CoordinateSystem system, QPoint *offset,
+                                       QGraphicsEffect::PixmapPadMode mode ) const
 {
-   Q_D(const QGraphicsEffect);
-   if (d->source) {
-      return d->source->pixmap(system, offset, mode);
-   }
-   return QPixmap();
+    Q_D( const QGraphicsEffect );
+
+    if ( d->source )
+    {
+        return d->source->pixmap( system, offset, mode );
+    }
+
+    return QPixmap();
 }
 
 QGraphicsEffectSourcePrivate::~QGraphicsEffectSourcePrivate()
 {
-   invalidateCache();
+    invalidateCache();
 }
 
-void QGraphicsEffectSourcePrivate::setCachedOffset(const QPoint &offset)
+void QGraphicsEffectSourcePrivate::setCachedOffset( const QPoint &offset )
 {
-   m_cachedOffset = offset;
+    m_cachedOffset = offset;
 }
 
-void QGraphicsEffectSourcePrivate::invalidateCache(InvalidateReason reason) const
+void QGraphicsEffectSourcePrivate::invalidateCache( InvalidateReason reason ) const
 {
-   if (m_cachedMode != QGraphicsEffect::PadToEffectiveBoundingRect
-         && (reason == EffectRectChanged
-             || (reason == TransformChanged && m_cachedSystem == Qt::LogicalCoordinates))) {
-      return;
-   }
+    if ( m_cachedMode != QGraphicsEffect::PadToEffectiveBoundingRect
+            && ( reason == EffectRectChanged
+                 || ( reason == TransformChanged && m_cachedSystem == Qt::LogicalCoordinates ) ) )
+    {
+        return;
+    }
 
-   QPixmapCache::remove(m_cacheKey);
+    QPixmapCache::remove( m_cacheKey );
 }
 
-QGraphicsEffect::QGraphicsEffect(QObject *parent)
-   : QObject(parent), d_ptr(new QGraphicsEffectPrivate)
+QGraphicsEffect::QGraphicsEffect( QObject *parent )
+    : QObject( parent ), d_ptr( new QGraphicsEffectPrivate )
 {
-   d_ptr->q_ptr = this;
+    d_ptr->q_ptr = this;
 }
 
-QGraphicsEffect::QGraphicsEffect(QGraphicsEffectPrivate &dd, QObject *parent)
-   : QObject(parent), d_ptr(&dd)
+QGraphicsEffect::QGraphicsEffect( QGraphicsEffectPrivate &dd, QObject *parent )
+    : QObject( parent ), d_ptr( &dd )
 {
-   d_ptr->q_ptr = this;
+    d_ptr->q_ptr = this;
 }
 
 QGraphicsEffect::~QGraphicsEffect()
 {
-   Q_D(QGraphicsEffect);
-   d->setGraphicsEffectSource(nullptr);
+    Q_D( QGraphicsEffect );
+    d->setGraphicsEffectSource( nullptr );
 }
 
 QRectF QGraphicsEffect::boundingRect() const
 {
-   Q_D(const QGraphicsEffect);
-   if (d->source) {
-      return boundingRectFor(d->source->boundingRect());
-   }
-   return QRectF();
+    Q_D( const QGraphicsEffect );
+
+    if ( d->source )
+    {
+        return boundingRectFor( d->source->boundingRect() );
+    }
+
+    return QRectF();
 }
 
-QRectF QGraphicsEffect::boundingRectFor(const QRectF &rect) const
+QRectF QGraphicsEffect::boundingRectFor( const QRectF &rect ) const
 {
-   return rect;
+    return rect;
 }
 
 bool QGraphicsEffect::isEnabled() const
 {
-   Q_D(const QGraphicsEffect);
-   return d->isEnabled;
+    Q_D( const QGraphicsEffect );
+    return d->isEnabled;
 }
 
-void QGraphicsEffect::setEnabled(bool enable)
+void QGraphicsEffect::setEnabled( bool enable )
 {
-   Q_D(QGraphicsEffect);
-   if (d->isEnabled == enable) {
-      return;
-   }
+    Q_D( QGraphicsEffect );
 
-   d->isEnabled = enable;
-   if (d->source) {
-      d->source->d_func()->effectBoundingRectChanged();
-      d->source->d_func()->invalidateCache();
-   }
-   emit enabledChanged(enable);
+    if ( d->isEnabled == enable )
+    {
+        return;
+    }
+
+    d->isEnabled = enable;
+
+    if ( d->source )
+    {
+        d->source->d_func()->effectBoundingRectChanged();
+        d->source->d_func()->invalidateCache();
+    }
+
+    emit enabledChanged( enable );
 }
 
 void QGraphicsEffect::update()
 {
-   Q_D(QGraphicsEffect);
-   if (d->source) {
-      d->source->update();
-   }
+    Q_D( QGraphicsEffect );
+
+    if ( d->source )
+    {
+        d->source->update();
+    }
 }
 
 QGraphicsEffectSource *QGraphicsEffect::source() const
 {
-   Q_D(const QGraphicsEffect);
-   return d->source;
+    Q_D( const QGraphicsEffect );
+    return d->source;
 }
 
 void QGraphicsEffect::updateBoundingRect()
 {
-   Q_D(QGraphicsEffect);
-   if (d->source) {
-      d->source->d_func()->effectBoundingRectChanged();
-      d->source->d_func()->invalidateCache(QGraphicsEffectSourcePrivate::EffectRectChanged);
-   }
+    Q_D( QGraphicsEffect );
+
+    if ( d->source )
+    {
+        d->source->d_func()->effectBoundingRectChanged();
+        d->source->d_func()->invalidateCache( QGraphicsEffectSourcePrivate::EffectRectChanged );
+    }
 }
 
-void QGraphicsEffect::sourceChanged(ChangeFlags flags)
+void QGraphicsEffect::sourceChanged( ChangeFlags flags )
 {
-   (void) flags;
+    ( void ) flags;
 }
 
-QGraphicsColorizeEffect::QGraphicsColorizeEffect(QObject *parent)
-   : QGraphicsEffect(*new QGraphicsColorizeEffectPrivate, parent)
+QGraphicsColorizeEffect::QGraphicsColorizeEffect( QObject *parent )
+    : QGraphicsEffect( *new QGraphicsColorizeEffectPrivate, parent )
 {
 }
 
@@ -283,78 +321,89 @@ QGraphicsColorizeEffect::~QGraphicsColorizeEffect()
 
 QColor QGraphicsColorizeEffect::color() const
 {
-   Q_D(const QGraphicsColorizeEffect);
-   return d->filter->color();
+    Q_D( const QGraphicsColorizeEffect );
+    return d->filter->color();
 }
 
-void QGraphicsColorizeEffect::setColor(const QColor &color)
+void QGraphicsColorizeEffect::setColor( const QColor &color )
 {
-   Q_D(QGraphicsColorizeEffect);
-   if (d->filter->color() == color) {
-      return;
-   }
+    Q_D( QGraphicsColorizeEffect );
 
-   d->filter->setColor(color);
-   update();
-   emit colorChanged(color);
+    if ( d->filter->color() == color )
+    {
+        return;
+    }
+
+    d->filter->setColor( color );
+    update();
+    emit colorChanged( color );
 }
 
 qreal QGraphicsColorizeEffect::strength() const
 {
-   Q_D(const QGraphicsColorizeEffect);
-   return d->filter->strength();
+    Q_D( const QGraphicsColorizeEffect );
+    return d->filter->strength();
 }
 
-void QGraphicsColorizeEffect::setStrength(qreal strength)
+void QGraphicsColorizeEffect::setStrength( qreal strength )
 {
-   Q_D(QGraphicsColorizeEffect);
-   if (qFuzzyCompare(d->filter->strength(), strength)) {
-      return;
-   }
+    Q_D( QGraphicsColorizeEffect );
 
-   d->filter->setStrength(strength);
-   d->opaque = !qFuzzyIsNull(strength);
-   update();
-   emit strengthChanged(strength);
+    if ( qFuzzyCompare( d->filter->strength(), strength ) )
+    {
+        return;
+    }
+
+    d->filter->setStrength( strength );
+    d->opaque = !qFuzzyIsNull( strength );
+    update();
+    emit strengthChanged( strength );
 }
 
-void QGraphicsColorizeEffect::draw(QPainter *painter)
+void QGraphicsColorizeEffect::draw( QPainter *painter )
 {
-   Q_D(QGraphicsColorizeEffect);
+    Q_D( QGraphicsColorizeEffect );
 
-   if (!d->opaque) {
-      drawSource(painter);
-      return;
-   }
+    if ( !d->opaque )
+    {
+        drawSource( painter );
+        return;
+    }
 
-   QPoint offset;
-   if (sourceIsPixmap()) {
-      // No point in drawing in device coordinates (pixmap will be scaled anyways).
-      const QPixmap pixmap = sourcePixmap(Qt::LogicalCoordinates, &offset, NoPad);
-      if (!pixmap.isNull()) {
-         d->filter->draw(painter, offset, pixmap);
-      }
+    QPoint offset;
 
-      return;
-   }
+    if ( sourceIsPixmap() )
+    {
+        // No point in drawing in device coordinates (pixmap will be scaled anyways).
+        const QPixmap pixmap = sourcePixmap( Qt::LogicalCoordinates, &offset, NoPad );
 
-   // Draw pixmap in deviceCoordinates to avoid pixmap scaling.
-   const QPixmap pixmap = sourcePixmap(Qt::DeviceCoordinates, &offset);
-   if (pixmap.isNull()) {
-      return;
-   }
+        if ( !pixmap.isNull() )
+        {
+            d->filter->draw( painter, offset, pixmap );
+        }
 
-   QTransform restoreTransform = painter->worldTransform();
-   painter->setWorldTransform(QTransform());
-   d->filter->draw(painter, offset, pixmap);
-   painter->setWorldTransform(restoreTransform);
+        return;
+    }
+
+    // Draw pixmap in deviceCoordinates to avoid pixmap scaling.
+    const QPixmap pixmap = sourcePixmap( Qt::DeviceCoordinates, &offset );
+
+    if ( pixmap.isNull() )
+    {
+        return;
+    }
+
+    QTransform restoreTransform = painter->worldTransform();
+    painter->setWorldTransform( QTransform() );
+    d->filter->draw( painter, offset, pixmap );
+    painter->setWorldTransform( restoreTransform );
 }
 
-QGraphicsBlurEffect::QGraphicsBlurEffect(QObject *parent)
-   : QGraphicsEffect(*new QGraphicsBlurEffectPrivate, parent)
+QGraphicsBlurEffect::QGraphicsBlurEffect( QObject *parent )
+    : QGraphicsEffect( *new QGraphicsBlurEffectPrivate, parent )
 {
-   Q_D(QGraphicsBlurEffect);
-   d->filter->setBlurHints(QGraphicsBlurEffect::PerformanceHint);
+    Q_D( QGraphicsBlurEffect );
+    d->filter->setBlurHints( QGraphicsBlurEffect::PerformanceHint );
 }
 
 QGraphicsBlurEffect::~QGraphicsBlurEffect()
@@ -363,69 +412,79 @@ QGraphicsBlurEffect::~QGraphicsBlurEffect()
 
 qreal QGraphicsBlurEffect::blurRadius() const
 {
-   Q_D(const QGraphicsBlurEffect);
-   return d->filter->radius();
+    Q_D( const QGraphicsBlurEffect );
+    return d->filter->radius();
 }
 
-void QGraphicsBlurEffect::setBlurRadius(qreal radius)
+void QGraphicsBlurEffect::setBlurRadius( qreal radius )
 {
-   Q_D(QGraphicsBlurEffect);
-   if (qFuzzyCompare(d->filter->radius(), radius)) {
-      return;
-   }
+    Q_D( QGraphicsBlurEffect );
 
-   d->filter->setRadius(radius);
-   updateBoundingRect();
-   emit blurRadiusChanged(radius);
+    if ( qFuzzyCompare( d->filter->radius(), radius ) )
+    {
+        return;
+    }
+
+    d->filter->setRadius( radius );
+    updateBoundingRect();
+    emit blurRadiusChanged( radius );
 }
 
 QGraphicsBlurEffect::BlurHints QGraphicsBlurEffect::blurHints() const
 {
-   Q_D(const QGraphicsBlurEffect);
-   return d->filter->blurHints();
+    Q_D( const QGraphicsBlurEffect );
+    return d->filter->blurHints();
 }
 
-void QGraphicsBlurEffect::setBlurHints(QGraphicsBlurEffect::BlurHints hints)
+void QGraphicsBlurEffect::setBlurHints( QGraphicsBlurEffect::BlurHints hints )
 {
-   Q_D(QGraphicsBlurEffect);
-   if (d->filter->blurHints() == hints) {
-      return;
-   }
+    Q_D( QGraphicsBlurEffect );
 
-   d->filter->setBlurHints(hints);
-   emit blurHintsChanged(hints);
+    if ( d->filter->blurHints() == hints )
+    {
+        return;
+    }
+
+    d->filter->setBlurHints( hints );
+    emit blurHintsChanged( hints );
 }
 
-QRectF QGraphicsBlurEffect::boundingRectFor(const QRectF &rect) const
+QRectF QGraphicsBlurEffect::boundingRectFor( const QRectF &rect ) const
 {
-   Q_D(const QGraphicsBlurEffect);
-   return d->filter->boundingRectFor(rect);
+    Q_D( const QGraphicsBlurEffect );
+    return d->filter->boundingRectFor( rect );
 }
 
-void QGraphicsBlurEffect::draw(QPainter *painter)
+void QGraphicsBlurEffect::draw( QPainter *painter )
 {
-   Q_D(QGraphicsBlurEffect);
-   if (d->filter->radius() < 1) {
-      drawSource(painter);
-      return;
-   }
+    Q_D( QGraphicsBlurEffect );
 
-   PixmapPadMode mode = PadToEffectiveBoundingRect;
-   if (painter->paintEngine()->type() == QPaintEngine::OpenGL2) {
-      mode = NoPad;
-   }
+    if ( d->filter->radius() < 1 )
+    {
+        drawSource( painter );
+        return;
+    }
 
-   QPoint offset;
-   QPixmap pixmap = sourcePixmap(Qt::LogicalCoordinates, &offset, mode);
-   if (pixmap.isNull()) {
-      return;
-   }
+    PixmapPadMode mode = PadToEffectiveBoundingRect;
 
-   d->filter->draw(painter, offset, pixmap);
+    if ( painter->paintEngine()->type() == QPaintEngine::OpenGL2 )
+    {
+        mode = NoPad;
+    }
+
+    QPoint offset;
+    QPixmap pixmap = sourcePixmap( Qt::LogicalCoordinates, &offset, mode );
+
+    if ( pixmap.isNull() )
+    {
+        return;
+    }
+
+    d->filter->draw( painter, offset, pixmap );
 }
 
-QGraphicsDropShadowEffect::QGraphicsDropShadowEffect(QObject *parent)
-   : QGraphicsEffect(*new QGraphicsDropShadowEffectPrivate, parent)
+QGraphicsDropShadowEffect::QGraphicsDropShadowEffect( QObject *parent )
+    : QGraphicsEffect( *new QGraphicsDropShadowEffectPrivate, parent )
 {
 }
 
@@ -435,92 +494,104 @@ QGraphicsDropShadowEffect::~QGraphicsDropShadowEffect()
 
 QPointF QGraphicsDropShadowEffect::offset() const
 {
-   Q_D(const QGraphicsDropShadowEffect);
-   return d->filter->offset();
+    Q_D( const QGraphicsDropShadowEffect );
+    return d->filter->offset();
 }
 
-void QGraphicsDropShadowEffect::setOffset(const QPointF &offset)
+void QGraphicsDropShadowEffect::setOffset( const QPointF &offset )
 {
-   Q_D(QGraphicsDropShadowEffect);
-   if (d->filter->offset() == offset) {
-      return;
-   }
+    Q_D( QGraphicsDropShadowEffect );
 
-   d->filter->setOffset(offset);
-   updateBoundingRect();
-   emit offsetChanged(offset);
+    if ( d->filter->offset() == offset )
+    {
+        return;
+    }
+
+    d->filter->setOffset( offset );
+    updateBoundingRect();
+    emit offsetChanged( offset );
 }
 
 qreal QGraphicsDropShadowEffect::blurRadius() const
 {
-   Q_D(const QGraphicsDropShadowEffect);
-   return d->filter->blurRadius();
+    Q_D( const QGraphicsDropShadowEffect );
+    return d->filter->blurRadius();
 }
 
-void QGraphicsDropShadowEffect::setBlurRadius(qreal blurRadius)
+void QGraphicsDropShadowEffect::setBlurRadius( qreal blurRadius )
 {
-   Q_D(QGraphicsDropShadowEffect);
-   if (qFuzzyCompare(d->filter->blurRadius(), blurRadius)) {
-      return;
-   }
+    Q_D( QGraphicsDropShadowEffect );
 
-   d->filter->setBlurRadius(blurRadius);
-   updateBoundingRect();
-   emit blurRadiusChanged(blurRadius);
+    if ( qFuzzyCompare( d->filter->blurRadius(), blurRadius ) )
+    {
+        return;
+    }
+
+    d->filter->setBlurRadius( blurRadius );
+    updateBoundingRect();
+    emit blurRadiusChanged( blurRadius );
 }
 
 QColor QGraphicsDropShadowEffect::color() const
 {
-   Q_D(const QGraphicsDropShadowEffect);
-   return d->filter->color();
+    Q_D( const QGraphicsDropShadowEffect );
+    return d->filter->color();
 }
 
-void QGraphicsDropShadowEffect::setColor(const QColor &color)
+void QGraphicsDropShadowEffect::setColor( const QColor &color )
 {
-   Q_D(QGraphicsDropShadowEffect);
-   if (d->filter->color() == color) {
-      return;
-   }
+    Q_D( QGraphicsDropShadowEffect );
 
-   d->filter->setColor(color);
-   update();
-   emit colorChanged(color);
+    if ( d->filter->color() == color )
+    {
+        return;
+    }
+
+    d->filter->setColor( color );
+    update();
+    emit colorChanged( color );
 }
 
-QRectF QGraphicsDropShadowEffect::boundingRectFor(const QRectF &rect) const
+QRectF QGraphicsDropShadowEffect::boundingRectFor( const QRectF &rect ) const
 {
-   Q_D(const QGraphicsDropShadowEffect);
-   return d->filter->boundingRectFor(rect);
+    Q_D( const QGraphicsDropShadowEffect );
+    return d->filter->boundingRectFor( rect );
 }
 
-void QGraphicsDropShadowEffect::draw(QPainter *painter)
+void QGraphicsDropShadowEffect::draw( QPainter *painter )
 {
-   Q_D(QGraphicsDropShadowEffect);
-   if (d->filter->blurRadius() <= 0 && d->filter->offset().isNull()) {
-      drawSource(painter);
-      return;
-   }
+    Q_D( QGraphicsDropShadowEffect );
 
-   PixmapPadMode mode = PadToEffectiveBoundingRect;
-   if (painter->paintEngine()->type() == QPaintEngine::OpenGL2) {
-      mode = NoPad;
-   }
+    if ( d->filter->blurRadius() <= 0 && d->filter->offset().isNull() )
+    {
+        drawSource( painter );
+        return;
+    }
 
-   // Draw pixmap in device coordinates to avoid pixmap scaling.
-   QPoint offset;
-   const QPixmap pixmap = sourcePixmap(Qt::DeviceCoordinates, &offset, mode);
-   if (pixmap.isNull()) {
-      return;
-   }
+    PixmapPadMode mode = PadToEffectiveBoundingRect;
 
-   QTransform restoreTransform = painter->worldTransform();
-   painter->setWorldTransform(QTransform());
-   d->filter->draw(painter, offset, pixmap);
-   painter->setWorldTransform(restoreTransform);
+    if ( painter->paintEngine()->type() == QPaintEngine::OpenGL2 )
+    {
+        mode = NoPad;
+    }
+
+    // Draw pixmap in device coordinates to avoid pixmap scaling.
+    QPoint offset;
+    const QPixmap pixmap = sourcePixmap( Qt::DeviceCoordinates, &offset, mode );
+
+    if ( pixmap.isNull() )
+    {
+        return;
+    }
+
+    QTransform restoreTransform = painter->worldTransform();
+    painter->setWorldTransform( QTransform() );
+    d->filter->draw( painter, offset, pixmap );
+    painter->setWorldTransform( restoreTransform );
 }
 
-QGraphicsOpacityEffect::QGraphicsOpacityEffect(QObject *parent)
-   : QGraphicsEffect(*new QGraphicsOpacityEffectPrivate, parent)
+QGraphicsOpacityEffect::QGraphicsOpacityEffect( QObject *parent )
+    : QGraphicsEffect( *new QGraphicsOpacityEffectPrivate, parent )
 {
 }
 
@@ -530,123 +601,145 @@ QGraphicsOpacityEffect::~QGraphicsOpacityEffect()
 
 qreal QGraphicsOpacityEffect::opacity() const
 {
-   Q_D(const QGraphicsOpacityEffect);
-   return d->opacity;
+    Q_D( const QGraphicsOpacityEffect );
+    return d->opacity;
 }
 
-void QGraphicsOpacityEffect::setOpacity(qreal opacity)
+void QGraphicsOpacityEffect::setOpacity( qreal opacity )
 {
-   Q_D(QGraphicsOpacityEffect);
-   opacity = qBound(qreal(0.0), opacity, qreal(1.0));
+    Q_D( QGraphicsOpacityEffect );
+    opacity = qBound( qreal( 0.0 ), opacity, qreal( 1.0 ) );
 
-   if (qFuzzyCompare(d->opacity, opacity)) {
-      return;
-   }
+    if ( qFuzzyCompare( d->opacity, opacity ) )
+    {
+        return;
+    }
 
-   d->opacity = opacity;
-   if ((d->isFullyTransparent = qFuzzyIsNull(d->opacity))) {
-      d->isFullyOpaque = 0;
-   } else {
-      d->isFullyOpaque = qFuzzyIsNull(d->opacity - 1);
-   }
-   update();
-   emit opacityChanged(opacity);
+    d->opacity = opacity;
+
+    if ( ( d->isFullyTransparent = qFuzzyIsNull( d->opacity ) ) )
+    {
+        d->isFullyOpaque = 0;
+    }
+    else
+    {
+        d->isFullyOpaque = qFuzzyIsNull( d->opacity - 1 );
+    }
+
+    update();
+    emit opacityChanged( opacity );
 }
 
 QBrush QGraphicsOpacityEffect::opacityMask() const
 {
-   Q_D(const QGraphicsOpacityEffect);
-   return d->opacityMask;
+    Q_D( const QGraphicsOpacityEffect );
+    return d->opacityMask;
 }
 
-void QGraphicsOpacityEffect::setOpacityMask(const QBrush &mask)
+void QGraphicsOpacityEffect::setOpacityMask( const QBrush &mask )
 {
-   Q_D(QGraphicsOpacityEffect);
-   if (d->opacityMask == mask) {
-      return;
-   }
+    Q_D( QGraphicsOpacityEffect );
 
-   d->opacityMask = mask;
-   d->hasOpacityMask = (mask.style() != Qt::NoBrush);
-   update();
+    if ( d->opacityMask == mask )
+    {
+        return;
+    }
 
-   emit opacityMaskChanged(mask);
+    d->opacityMask = mask;
+    d->hasOpacityMask = ( mask.style() != Qt::NoBrush );
+    update();
+
+    emit opacityMaskChanged( mask );
 }
 
-void QGraphicsOpacityEffect::draw(QPainter *painter)
+void QGraphicsOpacityEffect::draw( QPainter *painter )
 {
-   Q_D(QGraphicsOpacityEffect);
+    Q_D( QGraphicsOpacityEffect );
 
-   // Transparent; nothing to draw.
-   if (d->isFullyTransparent) {
-      return;
-   }
+    // Transparent; nothing to draw.
+    if ( d->isFullyTransparent )
+    {
+        return;
+    }
 
-   // Opaque; draw directly without going through a pixmap.
-   if (d->isFullyOpaque && !d->hasOpacityMask) {
-      drawSource(painter);
-      return;
-   }
+    // Opaque; draw directly without going through a pixmap.
+    if ( d->isFullyOpaque && !d->hasOpacityMask )
+    {
+        drawSource( painter );
+        return;
+    }
 
-   QPoint offset;
-   Qt::CoordinateSystem system = sourceIsPixmap() ? Qt::LogicalCoordinates : Qt::DeviceCoordinates;
-   QPixmap pixmap = sourcePixmap(system, &offset, QGraphicsEffect::NoPad);
-   if (pixmap.isNull()) {
-      return;
-   }
+    QPoint offset;
+    Qt::CoordinateSystem system = sourceIsPixmap() ? Qt::LogicalCoordinates : Qt::DeviceCoordinates;
+    QPixmap pixmap = sourcePixmap( system, &offset, QGraphicsEffect::NoPad );
 
-   painter->save();
-   painter->setOpacity(d->opacity);
+    if ( pixmap.isNull() )
+    {
+        return;
+    }
 
-   if (d->hasOpacityMask) {
-      QPainter pixmapPainter(&pixmap);
-      pixmapPainter.setRenderHints(painter->renderHints());
-      pixmapPainter.setCompositionMode(QPainter::CompositionMode_DestinationIn);
-      if (system == Qt::DeviceCoordinates) {
-         QTransform worldTransform = painter->worldTransform();
-         worldTransform *= QTransform::fromTranslate(-offset.x(), -offset.y());
-         pixmapPainter.setWorldTransform(worldTransform);
-         pixmapPainter.fillRect(sourceBoundingRect(), d->opacityMask);
-      } else {
-         pixmapPainter.translate(-offset);
-         pixmapPainter.fillRect(pixmap.rect(), d->opacityMask);
-      }
-   }
+    painter->save();
+    painter->setOpacity( d->opacity );
 
-   if (system == Qt::DeviceCoordinates) {
-      painter->setWorldTransform(QTransform());
-   }
+    if ( d->hasOpacityMask )
+    {
+        QPainter pixmapPainter( &pixmap );
+        pixmapPainter.setRenderHints( painter->renderHints() );
+        pixmapPainter.setCompositionMode( QPainter::CompositionMode_DestinationIn );
 
-   painter->drawPixmap(offset, pixmap);
-   painter->restore();
+        if ( system == Qt::DeviceCoordinates )
+        {
+            QTransform worldTransform = painter->worldTransform();
+            worldTransform *= QTransform::fromTranslate( -offset.x(), -offset.y() );
+            pixmapPainter.setWorldTransform( worldTransform );
+            pixmapPainter.fillRect( sourceBoundingRect(), d->opacityMask );
+        }
+        else
+        {
+            pixmapPainter.translate( -offset );
+            pixmapPainter.fillRect( pixmap.rect(), d->opacityMask );
+        }
+    }
+
+    if ( system == Qt::DeviceCoordinates )
+    {
+        painter->setWorldTransform( QTransform() );
+    }
+
+    painter->drawPixmap( offset, pixmap );
+    painter->restore();
 }
 
-void QGraphicsEffectPrivate::setGraphicsEffectSource(QGraphicsEffectSource *newSource)
+void QGraphicsEffectPrivate::setGraphicsEffectSource( QGraphicsEffectSource *newSource )
 {
-   QGraphicsEffect::ChangeFlags flags;
-   if (source) {
-      flags |= QGraphicsEffect::SourceDetached;
-      source->d_func()->invalidateCache();
-      source->d_func()->detach();
-      delete source;
-   }
+    QGraphicsEffect::ChangeFlags flags;
 
-   source = newSource;
-   if (newSource) {
-      flags |= QGraphicsEffect::SourceAttached;
-   }
+    if ( source )
+    {
+        flags |= QGraphicsEffect::SourceDetached;
+        source->d_func()->invalidateCache();
+        source->d_func()->detach();
+        delete source;
+    }
 
-   q_func()->sourceChanged(flags);
+    source = newSource;
+
+    if ( newSource )
+    {
+        flags |= QGraphicsEffect::SourceAttached;
+    }
+
+    q_func()->sourceChanged( flags );
 }
 
-void  QGraphicsDropShadowEffect::setOffset(qreal dx, qreal dy)
+void  QGraphicsDropShadowEffect::setOffset( qreal dx, qreal dy )
 {
-   setOffset(QPointF(dx, dy));
+    setOffset( QPointF( dx, dy ) );
 }
 
-void  QGraphicsDropShadowEffect::setOffset(qreal d)
+void  QGraphicsDropShadowEffect::setOffset( qreal d )
 {
-   setOffset(QPointF(d, d));
+    setOffset( QPointF( d, d ) );
 }
 
 #endif //QT_NO_GRAPHICSEFFECT

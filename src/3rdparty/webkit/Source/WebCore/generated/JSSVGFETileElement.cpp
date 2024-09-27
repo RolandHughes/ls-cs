@@ -39,9 +39,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSSVGFETileElement);
+ASSERT_CLASS_FITS_IN_CELL( JSSVGFETileElement );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -52,16 +53,16 @@ ASSERT_CLASS_FITS_IN_CELL(JSSVGFETileElement);
 
 static const HashTableValue JSSVGFETileElementTableValues[10] =
 {
-    { "in1", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGFETileElementIn1), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "x", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGFETileElementX), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "y", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGFETileElementY), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "width", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGFETileElementWidth), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "height", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGFETileElementHeight), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "result", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGFETileElementResult), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "className", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGFETileElementClassName), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "style", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGFETileElementStyle), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGFETileElementConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "in1", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGFETileElementIn1 ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "x", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGFETileElementX ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "y", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGFETileElementY ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "width", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGFETileElementWidth ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "height", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGFETileElementHeight ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "result", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGFETileElementResult ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "className", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGFETileElementClassName ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "style", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGFETileElementStyle ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGFETileElementConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -75,43 +76,51 @@ static JSC_CONST_HASHTABLE HashTable JSSVGFETileElementTable = { 34, 31, JSSVGFE
 
 static const HashTableValue JSSVGFETileElementConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSSVGFETileElementConstructorTable = { 1, 0, JSSVGFETileElementConstructorTableValues, 0 };
-class JSSVGFETileElementConstructor : public DOMConstructorObject {
+class JSSVGFETileElementConstructor : public DOMConstructorObject
+{
 public:
-    JSSVGFETileElementConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSSVGFETileElementConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSSVGFETileElementConstructor::s_info = { "SVGFETileElementConstructor", &DOMConstructorObject::s_info, &JSSVGFETileElementConstructorTable, 0 };
 
-JSSVGFETileElementConstructor::JSSVGFETileElementConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSSVGFETileElementConstructor::JSSVGFETileElementConstructor( ExecState *exec, Structure *structure,
+        JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSSVGFETileElementPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSSVGFETileElementPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSSVGFETileElementConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGFETileElementConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSVGFETileElementConstructor, JSDOMWrapper>(exec, &JSSVGFETileElementConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSSVGFETileElementConstructor, JSDOMWrapper>( exec, &JSSVGFETileElementConstructorTable, this,
+            propertyName, slot );
 }
 
-bool JSSVGFETileElementConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGFETileElementConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSVGFETileElementConstructor, JSDOMWrapper>(exec, &JSSVGFETileElementConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSVGFETileElementConstructor, JSDOMWrapper>( exec, &JSSVGFETileElementConstructorTable, this,
+            propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -123,164 +132,174 @@ bool JSSVGFETileElementConstructor::getOwnPropertyDescriptor(ExecState* exec, co
 
 static const HashTableValue JSSVGFETileElementPrototypeTableValues[2] =
 {
-    { "getPresentationAttribute", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsSVGFETileElementPrototypeFunctionGetPresentationAttribute), (intptr_t)1 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "getPresentationAttribute", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsSVGFETileElementPrototypeFunctionGetPresentationAttribute ), ( intptr_t )1 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSSVGFETileElementPrototypeTable = { 2, 1, JSSVGFETileElementPrototypeTableValues, 0 };
 const ClassInfo JSSVGFETileElementPrototype::s_info = { "SVGFETileElementPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSSVGFETileElementPrototypeTable, 0 };
 
-JSObject* JSSVGFETileElementPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSVGFETileElementPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSSVGFETileElement>(exec, globalObject);
+    return getDOMPrototype<JSSVGFETileElement>( exec, globalObject );
 }
 
-bool JSSVGFETileElementPrototype::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGFETileElementPrototype::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticFunctionSlot<JSObject>(exec, &JSSVGFETileElementPrototypeTable, this, propertyName, slot);
+    return getStaticFunctionSlot<JSObject>( exec, &JSSVGFETileElementPrototypeTable, this, propertyName, slot );
 }
 
-bool JSSVGFETileElementPrototype::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGFETileElementPrototype::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticFunctionDescriptor<JSObject>(exec, &JSSVGFETileElementPrototypeTable, this, propertyName, descriptor);
+    return getStaticFunctionDescriptor<JSObject>( exec, &JSSVGFETileElementPrototypeTable, this, propertyName, descriptor );
 }
 
 const ClassInfo JSSVGFETileElement::s_info = { "SVGFETileElement", &JSSVGElement::s_info, &JSSVGFETileElementTable, 0 };
 
-JSSVGFETileElement::JSSVGFETileElement(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<SVGFETileElement> impl)
-    : JSSVGElement(structure, globalObject, impl)
+JSSVGFETileElement::JSSVGFETileElement( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<SVGFETileElement> impl )
+    : JSSVGElement( structure, globalObject, impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSSVGFETileElement::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSVGFETileElement::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSSVGFETileElementPrototype(exec->globalData(), globalObject, JSSVGFETileElementPrototype::createStructure(exec->globalData(), JSSVGElementPrototype::self(exec, globalObject)));
+    return new ( exec ) JSSVGFETileElementPrototype( exec->globalData(), globalObject,
+            JSSVGFETileElementPrototype::createStructure( exec->globalData(), JSSVGElementPrototype::self( exec, globalObject ) ) );
 }
 
-bool JSSVGFETileElement::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGFETileElement::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSVGFETileElement, Base>(exec, &JSSVGFETileElementTable, this, propertyName, slot);
+    return getStaticValueSlot<JSSVGFETileElement, Base>( exec, &JSSVGFETileElementTable, this, propertyName, slot );
 }
 
-bool JSSVGFETileElement::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGFETileElement::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSVGFETileElement, Base>(exec, &JSSVGFETileElementTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSVGFETileElement, Base>( exec, &JSSVGFETileElementTable, this, propertyName, descriptor );
 }
 
-JSValue jsSVGFETileElementIn1(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGFETileElementIn1( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGFETileElement* castedThis = static_cast<JSSVGFETileElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGFETileElement* imp = static_cast<SVGFETileElement*>(castedThis->impl());
+    JSSVGFETileElement *castedThis = static_cast<JSSVGFETileElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGFETileElement *imp = static_cast<SVGFETileElement *>( castedThis->impl() );
     RefPtr<SVGAnimatedString> obj = imp->in1Animated();
-    JSValue result =  toJS(exec, castedThis->globalObject(), obj.get());
+    JSValue result =  toJS( exec, castedThis->globalObject(), obj.get() );
     return result;
 }
 
 
-JSValue jsSVGFETileElementX(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGFETileElementX( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGFETileElement* castedThis = static_cast<JSSVGFETileElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGFETileElement* imp = static_cast<SVGFETileElement*>(castedThis->impl());
+    JSSVGFETileElement *castedThis = static_cast<JSSVGFETileElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGFETileElement *imp = static_cast<SVGFETileElement *>( castedThis->impl() );
     RefPtr<SVGAnimatedLength> obj = imp->xAnimated();
-    JSValue result =  toJS(exec, castedThis->globalObject(), obj.get());
+    JSValue result =  toJS( exec, castedThis->globalObject(), obj.get() );
     return result;
 }
 
 
-JSValue jsSVGFETileElementY(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGFETileElementY( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGFETileElement* castedThis = static_cast<JSSVGFETileElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGFETileElement* imp = static_cast<SVGFETileElement*>(castedThis->impl());
+    JSSVGFETileElement *castedThis = static_cast<JSSVGFETileElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGFETileElement *imp = static_cast<SVGFETileElement *>( castedThis->impl() );
     RefPtr<SVGAnimatedLength> obj = imp->yAnimated();
-    JSValue result =  toJS(exec, castedThis->globalObject(), obj.get());
+    JSValue result =  toJS( exec, castedThis->globalObject(), obj.get() );
     return result;
 }
 
 
-JSValue jsSVGFETileElementWidth(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGFETileElementWidth( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGFETileElement* castedThis = static_cast<JSSVGFETileElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGFETileElement* imp = static_cast<SVGFETileElement*>(castedThis->impl());
+    JSSVGFETileElement *castedThis = static_cast<JSSVGFETileElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGFETileElement *imp = static_cast<SVGFETileElement *>( castedThis->impl() );
     RefPtr<SVGAnimatedLength> obj = imp->widthAnimated();
-    JSValue result =  toJS(exec, castedThis->globalObject(), obj.get());
+    JSValue result =  toJS( exec, castedThis->globalObject(), obj.get() );
     return result;
 }
 
 
-JSValue jsSVGFETileElementHeight(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGFETileElementHeight( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGFETileElement* castedThis = static_cast<JSSVGFETileElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGFETileElement* imp = static_cast<SVGFETileElement*>(castedThis->impl());
+    JSSVGFETileElement *castedThis = static_cast<JSSVGFETileElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGFETileElement *imp = static_cast<SVGFETileElement *>( castedThis->impl() );
     RefPtr<SVGAnimatedLength> obj = imp->heightAnimated();
-    JSValue result =  toJS(exec, castedThis->globalObject(), obj.get());
+    JSValue result =  toJS( exec, castedThis->globalObject(), obj.get() );
     return result;
 }
 
 
-JSValue jsSVGFETileElementResult(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGFETileElementResult( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGFETileElement* castedThis = static_cast<JSSVGFETileElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGFETileElement* imp = static_cast<SVGFETileElement*>(castedThis->impl());
+    JSSVGFETileElement *castedThis = static_cast<JSSVGFETileElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGFETileElement *imp = static_cast<SVGFETileElement *>( castedThis->impl() );
     RefPtr<SVGAnimatedString> obj = imp->resultAnimated();
-    JSValue result =  toJS(exec, castedThis->globalObject(), obj.get());
+    JSValue result =  toJS( exec, castedThis->globalObject(), obj.get() );
     return result;
 }
 
 
-JSValue jsSVGFETileElementClassName(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGFETileElementClassName( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGFETileElement* castedThis = static_cast<JSSVGFETileElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGFETileElement* imp = static_cast<SVGFETileElement*>(castedThis->impl());
+    JSSVGFETileElement *castedThis = static_cast<JSSVGFETileElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGFETileElement *imp = static_cast<SVGFETileElement *>( castedThis->impl() );
     RefPtr<SVGAnimatedString> obj = imp->classNameAnimated();
-    JSValue result =  toJS(exec, castedThis->globalObject(), obj.get());
+    JSValue result =  toJS( exec, castedThis->globalObject(), obj.get() );
     return result;
 }
 
 
-JSValue jsSVGFETileElementStyle(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGFETileElementStyle( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGFETileElement* castedThis = static_cast<JSSVGFETileElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGFETileElement* imp = static_cast<SVGFETileElement*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->style()));
+    JSSVGFETileElement *castedThis = static_cast<JSSVGFETileElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGFETileElement *imp = static_cast<SVGFETileElement *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->style() ) );
     return result;
 }
 
 
-JSValue jsSVGFETileElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGFETileElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGFETileElement* domObject = static_cast<JSSVGFETileElement*>(asObject(slotBase));
-    return JSSVGFETileElement::getConstructor(exec, domObject->globalObject());
+    JSSVGFETileElement *domObject = static_cast<JSSVGFETileElement *>( asObject( slotBase ) );
+    return JSSVGFETileElement::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSSVGFETileElement::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSSVGFETileElement::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSSVGFETileElementConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSSVGFETileElementConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsSVGFETileElementPrototypeFunctionGetPresentationAttribute(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsSVGFETileElementPrototypeFunctionGetPresentationAttribute( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSSVGFETileElement::s_info))
-        return throwVMTypeError(exec);
-    JSSVGFETileElement* castedThis = static_cast<JSSVGFETileElement*>(asObject(thisValue));
-    SVGFETileElement* imp = static_cast<SVGFETileElement*>(castedThis->impl());
-    const String& name(ustringToString(exec->argument(0).toString(exec)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
+
+    if ( !thisValue.inherits( &JSSVGFETileElement::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSSVGFETileElement *castedThis = static_cast<JSSVGFETileElement *>( asObject( thisValue ) );
+    SVGFETileElement *imp = static_cast<SVGFETileElement *>( castedThis->impl() );
+    const String &name( ustringToString( exec->argument( 0 ).toString( exec ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
 
 
-    JSC::JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->getPresentationAttribute(name)));
-    return JSValue::encode(result);
+    JSC::JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->getPresentationAttribute( name ) ) );
+    return JSValue::encode( result );
 }
 
 

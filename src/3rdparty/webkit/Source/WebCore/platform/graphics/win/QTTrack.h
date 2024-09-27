@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef QTTrack_h
@@ -42,24 +42,25 @@
 
 class QTTrack;
 class QTTrackPrivate;
-typedef struct TrackType** Track;
+typedef struct TrackType **Track;
 
-class QTMOVIEWIN_API QTTrack : public RefCounted<QTTrack> {
+class QTMOVIEWIN_API QTTrack : public RefCounted<QTTrack>
+{
 public:
-    static PassRefPtr<QTTrack> create(Track);
+    static PassRefPtr<QTTrack> create( Track );
     ~QTTrack();
 
     CGAffineTransform getTransform() const;
-    void setTransform(CGAffineTransform);
+    void setTransform( CGAffineTransform );
     void resetTransform();
 
     bool isEnabled() const;
-    void setEnabled(bool);
+    void setEnabled( bool );
 
     Track getTrackHandle() const;
 private:
-    QTTrack(Track);
-    QTTrackPrivate* m_private;
+    QTTrack( Track );
+    QTTrackPrivate *m_private;
     friend class QTTrackPrivate;
 };
 

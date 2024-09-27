@@ -35,39 +35,40 @@ class QLockFilePrivate;
 
 class Q_CORE_EXPORT QLockFile
 {
- public:
-   enum LockError {
-      NoError         = 0,
-      LockFailedError = 1,
-      PermissionError = 2,
-      UnknownError    = 3
-   };
+public:
+    enum LockError
+    {
+        NoError         = 0,
+        LockFailedError = 1,
+        PermissionError = 2,
+        UnknownError    = 3
+    };
 
-   QLockFile(const QString &fileName);
+    QLockFile( const QString &fileName );
 
-   QLockFile(const QLockFile &) = delete;
-   QLockFile &operator=(const QLockFile &) = delete;
+    QLockFile( const QLockFile & ) = delete;
+    QLockFile &operator=( const QLockFile & ) = delete;
 
-   ~QLockFile();
+    ~QLockFile();
 
-   bool lock();
-   bool tryLock(int timeout = 0);
-   void unlock();
+    bool lock();
+    bool tryLock( int timeout = 0 );
+    void unlock();
 
-   void setStaleLockTime(int staleLockTime);
-   int staleLockTime() const;
+    void setStaleLockTime( int staleLockTime );
+    int staleLockTime() const;
 
-   bool isLocked() const;
-   bool getLockInfo(qint64 *pid, QString *hostname, QString *appname) const;
-   bool removeStaleLockFile();
+    bool isLocked() const;
+    bool getLockInfo( qint64 *pid, QString *hostname, QString *appname ) const;
+    bool removeStaleLockFile();
 
-   LockError error() const;
+    LockError error() const;
 
- protected:
-   QScopedPointer<QLockFilePrivate> d_ptr;
+protected:
+    QScopedPointer<QLockFilePrivate> d_ptr;
 
- private:
-   Q_DECLARE_PRIVATE(QLockFile)
+private:
+    Q_DECLARE_PRIVATE( QLockFile )
 
 };
 

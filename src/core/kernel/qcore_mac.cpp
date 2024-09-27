@@ -24,33 +24,35 @@
 #include <qcore_mac_p.h>
 #include <new>
 
-QString QCFString::toQString(CFStringRef str)
+QString QCFString::toQString( CFStringRef str )
 {
-   return QString::fromCFString(str);
+    return QString::fromCFString( str );
 }
 
-CFStringRef QCFString::toCFStringRef(const QString &str)
+CFStringRef QCFString::toCFStringRef( const QString &str )
 {
-   return str.toCFString();
+    return str.toCFString();
 }
 
 QString QCFString::toQString() const
 {
-   if (m_string.isEmpty() && m_type) {
-      const_cast<QCFString *>(this)->m_string = toQString(m_type);
-   }
+    if ( m_string.isEmpty() && m_type )
+    {
+        const_cast<QCFString *>( this )->m_string = toQString( m_type );
+    }
 
-   return m_string;
+    return m_string;
 }
 
 CFStringRef QCFString::toCFStringRef() const
 {
-   if (! m_type) {
-      const_cast<QCFString *>(this)->m_type = CFStringCreateWithBytesNoCopy(kCFAllocatorDefault,
-                  reinterpret_cast<const UInt8 *>(m_string.constData()), m_string.size_storage(),
-                  kCFStringEncodingUTF8, false, kCFAllocatorNull);
-   }
+    if ( ! m_type )
+    {
+        const_cast<QCFString *>( this )->m_type = CFStringCreateWithBytesNoCopy( kCFAllocatorDefault,
+                reinterpret_cast<const UInt8 *>( m_string.constData() ), m_string.size_storage(),
+                kCFStringEncodingUTF8, false, kCFAllocatorNull );
+    }
 
-   return m_type;
+    return m_type;
 }
 

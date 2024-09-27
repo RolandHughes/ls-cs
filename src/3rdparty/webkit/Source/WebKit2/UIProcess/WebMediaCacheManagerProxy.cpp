@@ -30,15 +30,16 @@
 #include "WebMediaCacheManagerMessages.h"
 #include "WebSecurityOrigin.h"
 
-namespace WebKit {
-
-PassRefPtr<WebMediaCacheManagerProxy> WebMediaCacheManagerProxy::create(WebContext* context)
+namespace WebKit
 {
-    return adoptRef(new WebMediaCacheManagerProxy(context));
+
+PassRefPtr<WebMediaCacheManagerProxy> WebMediaCacheManagerProxy::create( WebContext *context )
+{
+    return adoptRef( new WebMediaCacheManagerProxy( context ) );
 }
 
-WebMediaCacheManagerProxy::WebMediaCacheManagerProxy(WebContext* context)
-    : m_webContext(context)
+WebMediaCacheManagerProxy::WebMediaCacheManagerProxy( WebContext *context )
+    : m_webContext( context )
 {
 }
 
@@ -48,55 +49,61 @@ WebMediaCacheManagerProxy::~WebMediaCacheManagerProxy()
 
 void WebMediaCacheManagerProxy::invalidate()
 {
-    invalidateCallbackMap(m_arrayCallbacks);
+    invalidateCallbackMap( m_arrayCallbacks );
 }
 
-bool WebMediaCacheManagerProxy::shouldTerminate(WebProcessProxy*) const
+bool WebMediaCacheManagerProxy::shouldTerminate( WebProcessProxy * ) const
 {
     return m_arrayCallbacks.isEmpty();
 }
 
-void WebMediaCacheManagerProxy::didReceiveMessage(CoreIPC::Connection* connection, CoreIPC::MessageID messageID, CoreIPC::ArgumentDecoder* arguments)
+void WebMediaCacheManagerProxy::didReceiveMessage( CoreIPC::Connection *connection, CoreIPC::MessageID messageID,
+        CoreIPC::ArgumentDecoder *arguments )
 {
-    didReceiveWebMediaCacheManagerProxyMessage(connection, messageID, arguments);
+    didReceiveWebMediaCacheManagerProxyMessage( connection, messageID, arguments );
 }
 
-void WebMediaCacheManagerProxy::getHostnamesWithMediaCache(PassRefPtr<ArrayCallback> prpCallback)
+void WebMediaCacheManagerProxy::getHostnamesWithMediaCache( PassRefPtr<ArrayCallback> prpCallback )
 {
     RefPtr<ArrayCallback> callback = prpCallback;
     uint64_t callbackID = callback->callbackID();
-    m_arrayCallbacks.set(callbackID, callback.release());
+    m_arrayCallbacks.set( callbackID, callback.release() );
 
     // FIXME (Multi-WebProcess): When we're sending this to multiple processes, we need to aggregate the
     // callback data when it comes back.
-    m_webContext->sendToAllProcessesRelaunchingThemIfNecessary(Messages::WebMediaCacheManager::GetHostnamesWithMediaCache(callbackID));
+    m_webContext->sendToAllProcessesRelaunchingThemIfNecessary( Messages::WebMediaCacheManager::GetHostnamesWithMediaCache(
+                callbackID ) );
 }
-    
-void WebMediaCacheManagerProxy::didGetHostnamesWithMediaCache(const Vector<String>& hostnameList, uint64_t callbackID)
+
+void WebMediaCacheManagerProxy::didGetHostnamesWithMediaCache( const Vector<String> &hostnameList, uint64_t callbackID )
 {
-    RefPtr<ArrayCallback> callback = m_arrayCallbacks.take(callbackID);
-    if (!callback) {
+    RefPtr<ArrayCallback> callback = m_arrayCallbacks.take( callbackID );
+
+    if ( !callback )
+    {
         // FIXME: Log error or assert.
         return;
     }
 
     size_t hostnameCount = hostnameList.size();
-    Vector<RefPtr<APIObject> > hostnames(hostnameCount);
+    Vector<RefPtr<APIObject> > hostnames( hostnameCount );
 
-    for (size_t i = 0; i < hostnameCount; ++i)
-        hostnames[i] = WebString::create(hostnameList[i]);
+    for ( size_t i = 0; i < hostnameCount; ++i )
+    {
+        hostnames[i] = WebString::create( hostnameList[i] );
+    }
 
-    callback->performCallbackWithReturnValue(ImmutableArray::adopt(hostnames).get());
+    callback->performCallbackWithReturnValue( ImmutableArray::adopt( hostnames ).get() );
 }
 
-void WebMediaCacheManagerProxy::clearCacheForHostname(const String& hostname)
+void WebMediaCacheManagerProxy::clearCacheForHostname( const String &hostname )
 {
-    m_webContext->sendToAllProcessesRelaunchingThemIfNecessary(Messages::WebMediaCacheManager::ClearCacheForHostname(hostname));
+    m_webContext->sendToAllProcessesRelaunchingThemIfNecessary( Messages::WebMediaCacheManager::ClearCacheForHostname( hostname ) );
 }
 
 void WebMediaCacheManagerProxy::clearCacheForAllHostnames()
 {
-    m_webContext->sendToAllProcessesRelaunchingThemIfNecessary(Messages::WebMediaCacheManager::ClearCacheForAllHostnames());
+    m_webContext->sendToAllProcessesRelaunchingThemIfNecessary( Messages::WebMediaCacheManager::ClearCacheForAllHostnames() );
 }
 
 } // namespace WebKit

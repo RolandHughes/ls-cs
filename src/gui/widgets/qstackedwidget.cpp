@@ -32,92 +32,93 @@
 
 class QStackedWidgetPrivate : public QFramePrivate
 {
-   Q_DECLARE_PUBLIC(QStackedWidget)
+    Q_DECLARE_PUBLIC( QStackedWidget )
 
- public:
-   QStackedWidgetPrivate()
-      : layout(nullptr)
-   {
-   }
+public:
+    QStackedWidgetPrivate()
+        : layout( nullptr )
+    {
+    }
 
-   QStackedLayout *layout;
-   bool blockChildAdd;
+    QStackedLayout *layout;
+    bool blockChildAdd;
 };
 
-QStackedWidget::QStackedWidget(QWidget *parent)
-   : QFrame(*new QStackedWidgetPrivate, parent)
+QStackedWidget::QStackedWidget( QWidget *parent )
+    : QFrame( *new QStackedWidgetPrivate, parent )
 {
-   Q_D(QStackedWidget);
-   d->layout = new QStackedLayout(this);
+    Q_D( QStackedWidget );
+    d->layout = new QStackedLayout( this );
 
-   connect(d->layout, &QStackedLayout::widgetRemoved,  this, &QStackedWidget::widgetRemoved);
-   connect(d->layout, &QStackedLayout::currentChanged, this, &QStackedWidget::currentChanged);
+    connect( d->layout, &QStackedLayout::widgetRemoved,  this, &QStackedWidget::widgetRemoved );
+    connect( d->layout, &QStackedLayout::currentChanged, this, &QStackedWidget::currentChanged );
 }
 
 QStackedWidget::~QStackedWidget()
 {
 }
 
-int QStackedWidget::addWidget(QWidget *widget)
+int QStackedWidget::addWidget( QWidget *widget )
 {
-   return d_func()->layout->addWidget(widget);
+    return d_func()->layout->addWidget( widget );
 }
 
-int QStackedWidget::insertWidget(int index, QWidget *widget)
+int QStackedWidget::insertWidget( int index, QWidget *widget )
 {
-   return d_func()->layout->insertWidget(index, widget);
+    return d_func()->layout->insertWidget( index, widget );
 }
 
-void QStackedWidget::removeWidget(QWidget *widget)
+void QStackedWidget::removeWidget( QWidget *widget )
 {
-   d_func()->layout->removeWidget(widget);
+    d_func()->layout->removeWidget( widget );
 }
 
-void QStackedWidget::setCurrentIndex(int index)
+void QStackedWidget::setCurrentIndex( int index )
 {
-   d_func()->layout->setCurrentIndex(index);
+    d_func()->layout->setCurrentIndex( index );
 }
 
 int QStackedWidget::currentIndex() const
 {
-   return d_func()->layout->currentIndex();
+    return d_func()->layout->currentIndex();
 }
 
 QWidget *QStackedWidget::currentWidget() const
 {
-   return d_func()->layout->currentWidget();
+    return d_func()->layout->currentWidget();
 }
 
-void QStackedWidget::setCurrentWidget(QWidget *widget)
+void QStackedWidget::setCurrentWidget( QWidget *widget )
 {
-   Q_D(QStackedWidget);
+    Q_D( QStackedWidget );
 
-   if (d->layout->indexOf(widget) == -1) {
-      qWarning("QStackedWidget::setCurrentWidget() Current widget (%p) is not in this stack", static_cast<void *>(widget));
-      return;
-   }
+    if ( d->layout->indexOf( widget ) == -1 )
+    {
+        qWarning( "QStackedWidget::setCurrentWidget() Current widget (%p) is not in this stack", static_cast<void *>( widget ) );
+        return;
+    }
 
-   d->layout->setCurrentWidget(widget);
+    d->layout->setCurrentWidget( widget );
 }
 
-int QStackedWidget::indexOf(QWidget *widget) const
+int QStackedWidget::indexOf( QWidget *widget ) const
 {
-   return d_func()->layout->indexOf(widget);
+    return d_func()->layout->indexOf( widget );
 }
 
-QWidget *QStackedWidget::widget(int index) const
+QWidget *QStackedWidget::widget( int index ) const
 {
-   return d_func()->layout->widget(index);
+    return d_func()->layout->widget( index );
 }
 
 int QStackedWidget::count() const
 {
-   return d_func()->layout->count();
+    return d_func()->layout->count();
 }
 
-bool QStackedWidget::event(QEvent *e)
+bool QStackedWidget::event( QEvent *e )
 {
-   return QFrame::event(e);
+    return QFrame::event( e );
 }
 
 #endif // QT_NO_STACKEDWIDGET

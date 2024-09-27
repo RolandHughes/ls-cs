@@ -33,9 +33,10 @@
 
 using namespace WebCore;
 
-namespace WebKit {
+namespace WebKit
+{
 
-bool InjectedBundle::load(APIObject*)
+bool InjectedBundle::load( APIObject * )
 {
     return false;
 }

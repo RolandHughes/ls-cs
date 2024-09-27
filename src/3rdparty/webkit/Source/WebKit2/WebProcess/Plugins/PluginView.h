@@ -40,35 +40,42 @@
 
 // FIXME: Eventually this should move to WebCore.
 
-namespace WebCore {
-    class Frame;
-    class HTMLPlugInElement;
+namespace WebCore
+{
+class Frame;
+class HTMLPlugInElement;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
-class PluginView : public WebCore::PluginViewBase, WebCore::MediaCanStartListener, PluginController, WebFrame::LoadListener {
+class PluginView : public WebCore::PluginViewBase, WebCore::MediaCanStartListener, PluginController, WebFrame::LoadListener
+{
 public:
-    static PassRefPtr<PluginView> create(PassRefPtr<WebCore::HTMLPlugInElement>, PassRefPtr<Plugin>, const Plugin::Parameters&);
+    static PassRefPtr<PluginView> create( PassRefPtr<WebCore::HTMLPlugInElement>, PassRefPtr<Plugin>, const Plugin::Parameters & );
 
-    WebCore::Frame* frame();
+    WebCore::Frame *frame();
 
-    bool isBeingDestroyed() const { return m_isBeingDestroyed; }
+    bool isBeingDestroyed() const
+    {
+        return m_isBeingDestroyed;
+    }
 
-    void manualLoadDidReceiveResponse(const WebCore::ResourceResponse&);
-    void manualLoadDidReceiveData(const char* bytes, int length);
+    void manualLoadDidReceiveResponse( const WebCore::ResourceResponse & );
+    void manualLoadDidReceiveData( const char *bytes, int length );
     void manualLoadDidFinishLoading();
-    void manualLoadDidFail(const WebCore::ResourceError&);
+    void manualLoadDidFail( const WebCore::ResourceError & );
 
 #if PLATFORM(MAC)
-    void setWindowIsVisible(bool);
-    void setWindowIsFocused(bool);
-    void windowAndViewFramesChanged(const WebCore::IntRect& windowFrameInScreenCoordinates, const WebCore::IntRect& viewFrameInWindowCoordinates);
-    bool sendComplexTextInput(uint64_t pluginComplexTextInputIdentifier, const String& textInput);
+    void setWindowIsVisible( bool );
+    void setWindowIsFocused( bool );
+    void windowAndViewFramesChanged( const WebCore::IntRect &windowFrameInScreenCoordinates,
+                                     const WebCore::IntRect &viewFrameInWindowCoordinates );
+    bool sendComplexTextInput( uint64_t pluginComplexTextInputIdentifier, const String &textInput );
 #endif
 
 private:
-    PluginView(PassRefPtr<WebCore::HTMLPlugInElement>, PassRefPtr<Plugin>, const Plugin::Parameters& parameters);
+    PluginView( PassRefPtr<WebCore::HTMLPlugInElement>, PassRefPtr<Plugin>, const Plugin::Parameters &parameters );
     virtual ~PluginView();
 
     void initializePlugin();
@@ -77,83 +84,84 @@ private:
     void viewGeometryDidChange();
     WebCore::IntRect clipRectInWindowCoordinates() const;
     void focusPluginElement();
-    
+
     void pendingURLRequestsTimerFired();
     class URLRequest;
-    void performURLRequest(URLRequest*);
+    void performURLRequest( URLRequest * );
 
     // Perform a URL request where the frame target is not null.
-    void performFrameLoadURLRequest(URLRequest*);
+    void performFrameLoadURLRequest( URLRequest * );
 
     // Perform a URL request where the URL protocol is "javascript:".
-    void performJavaScriptURLRequest(URLRequest*);
+    void performJavaScriptURLRequest( URLRequest * );
 
     class Stream;
-    void addStream(Stream*);
-    void removeStream(Stream*);
+    void addStream( Stream * );
+    void removeStream( Stream * );
     void cancelAllStreams();
 
     void redeliverManualStream();
 
     // WebCore::PluginViewBase
 #if PLATFORM(MAC)
-    virtual PlatformLayer* platformLayer() const;
+    virtual PlatformLayer *platformLayer() const;
 #endif
-    virtual JSC::JSObject* scriptObject(JSC::JSGlobalObject*);
-    virtual void privateBrowsingStateChanged(bool);
-    
+    virtual JSC::JSObject *scriptObject( JSC::JSGlobalObject * );
+    virtual void privateBrowsingStateChanged( bool );
+
     // WebCore::Widget
-    virtual void setFrameRect(const WebCore::IntRect&);
-    virtual void setBoundsSize(const WebCore::IntSize&);
-    virtual void paint(WebCore::GraphicsContext*, const WebCore::IntRect&);
-    virtual void invalidateRect(const WebCore::IntRect&);
-    virtual void setFocus(bool);
+    virtual void setFrameRect( const WebCore::IntRect & );
+    virtual void setBoundsSize( const WebCore::IntSize & );
+    virtual void paint( WebCore::GraphicsContext *, const WebCore::IntRect & );
+    virtual void invalidateRect( const WebCore::IntRect & );
+    virtual void setFocus( bool );
     virtual void frameRectsChanged();
-    virtual void setParent(WebCore::ScrollView*);
-    virtual void handleEvent(WebCore::Event*);
-    virtual void notifyWidget(WebCore::WidgetNotification);
+    virtual void setParent( WebCore::ScrollView * );
+    virtual void handleEvent( WebCore::Event * );
+    virtual void notifyWidget( WebCore::WidgetNotification );
 
     // WebCore::MediaCanStartListener
     virtual void mediaCanStart();
 
     // PluginController
-    virtual void invalidate(const WebCore::IntRect&);
+    virtual void invalidate( const WebCore::IntRect & );
     virtual String userAgent();
-    virtual void loadURL(uint64_t requestID, const String& method, const String& urlString, const String& target, 
-                         const WebCore::HTTPHeaderMap& headerFields, const Vector<uint8_t>& httpBody, bool allowPopups);
-    virtual void cancelStreamLoad(uint64_t streamID);
+    virtual void loadURL( uint64_t requestID, const String &method, const String &urlString, const String &target,
+                          const WebCore::HTTPHeaderMap &headerFields, const Vector<uint8_t> &httpBody, bool allowPopups );
+    virtual void cancelStreamLoad( uint64_t streamID );
     virtual void cancelManualStreamLoad();
-    virtual NPObject* windowScriptNPObject();
-    virtual NPObject* pluginElementNPObject();
-    virtual bool evaluate(NPObject*, const String&scriptString, NPVariant* result, bool allowPopups);
-    virtual void setStatusbarText(const String&);
+    virtual NPObject *windowScriptNPObject();
+    virtual NPObject *pluginElementNPObject();
+    virtual bool evaluate( NPObject *, const String &scriptString, NPVariant *result, bool allowPopups );
+    virtual void setStatusbarText( const String & );
     virtual bool isAcceleratedCompositingEnabled();
     virtual void pluginProcessCrashed();
     virtual void willSendEventToPlugin();
 #if PLATFORM(WIN)
     virtual HWND nativeParentWindow();
-    virtual void scheduleWindowedPluginGeometryUpdate(HWND, const WebCore::IntRect& rectInClientCoordinates, const WebCore::IntRect& clipRectInPluginWindowCoordinates);
+    virtual void scheduleWindowedPluginGeometryUpdate( HWND, const WebCore::IntRect &rectInClientCoordinates,
+            const WebCore::IntRect &clipRectInPluginWindowCoordinates );
 #endif
 #if PLATFORM(MAC)
-    virtual void setComplexTextInputEnabled(bool);
+    virtual void setComplexTextInputEnabled( bool );
     virtual mach_port_t compositingRenderServerPort();
 #endif
-    virtual String proxiesForURL(const String&);
-    virtual String cookiesForURL(const String&);
-    virtual void setCookiesForURL(const String& urlString, const String& cookieString);
+    virtual String proxiesForURL( const String & );
+    virtual String cookiesForURL( const String & );
+    virtual void setCookiesForURL( const String &urlString, const String &cookieString );
     virtual bool isPrivateBrowsingEnabled();
     virtual void protectPluginFromDestruction();
     virtual void unprotectPluginFromDestruction();
 
     // WebFrame::LoadListener
-    virtual void didFinishLoad(WebFrame*);
-    virtual void didFailLoad(WebFrame*, bool wasCancelled);
+    virtual void didFinishLoad( WebFrame * );
+    virtual void didFailLoad( WebFrame *, bool wasCancelled );
 
     RefPtr<WebCore::HTMLPlugInElement> m_pluginElement;
     RefPtr<Plugin> m_plugin;
-    WebPage* m_webPage;
+    WebPage *m_webPage;
     Plugin::Parameters m_parameters;
-    
+
     bool m_isInitialized;
     bool m_isWaitingUntilMediaCanStart;
     bool m_isBeingDestroyed;
@@ -166,7 +174,7 @@ private:
     typedef HashMap<RefPtr<WebFrame>, RefPtr<URLRequest> > FrameLoadMap;
     FrameLoadMap m_pendingFrameLoads;
 
-    // Streams that the plug-in has requested to load. 
+    // Streams that the plug-in has requested to load.
     HashMap<uint64_t, RefPtr<Stream> > m_streams;
 
     // A map of all related NPObjects for this plug-in view.
@@ -174,7 +182,8 @@ private:
 
     // The manual stream state. This is used so we can deliver a manual stream to a plug-in
     // when it is initialized.
-    enum ManualStreamState {
+    enum ManualStreamState
+    {
         StreamStateInitial,
         StreamStateHasReceivedResponse,
         StreamStateFinished,
@@ -185,7 +194,7 @@ private:
     WebCore::ResourceResponse m_manualStreamResponse;
     WebCore::ResourceError m_manualStreamError;
     RefPtr<WebCore::SharedBuffer> m_manualStreamData;
-    
+
     RefPtr<ShareableBitmap> m_snapshot;
     WebCore::IntSize m_boundsSize;
 };

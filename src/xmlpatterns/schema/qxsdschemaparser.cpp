@@ -79,7 +79,8 @@
 
 using namespace QPatternist;
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 /**
  * @short A helper class for automatically handling namespace scopes of elements.
@@ -88,35 +89,37 @@ namespace QPatternist {
  */
 class ElementNamespaceHandler
 {
- public:
-   /**
-    * Creates a new element namespace handler object.
-    *
-    * It checks whether the @p parser is on the right @p tag and it creates a new namespace
-    * context that contains the inherited and local namespace declarations.
-    */
-   ElementNamespaceHandler(const XsdSchemaToken::NodeName &tag, XsdSchemaParser *parser)
-      : m_parser(parser) {
-      Q_ASSERT(m_parser->isStartElement() && (XsdSchemaToken::toToken(m_parser->name()) == tag) &&
-               (XsdSchemaToken::toToken(m_parser->namespaceUri()) == XsdSchemaToken::XML_NS_SCHEMA_URI));
+public:
+    /**
+     * Creates a new element namespace handler object.
+     *
+     * It checks whether the @p parser is on the right @p tag and it creates a new namespace
+     * context that contains the inherited and local namespace declarations.
+     */
+    ElementNamespaceHandler( const XsdSchemaToken::NodeName &tag, XsdSchemaParser *parser )
+        : m_parser( parser )
+    {
+        Q_ASSERT( m_parser->isStartElement() && ( XsdSchemaToken::toToken( m_parser->name() ) == tag ) &&
+                  ( XsdSchemaToken::toToken( m_parser->namespaceUri() ) == XsdSchemaToken::XML_NS_SCHEMA_URI ) );
 
-      (void) tag;
+        ( void ) tag;
 
-      m_parser->m_namespaceSupport.pushContext();
-      m_parser->m_namespaceSupport.setPrefixes(m_parser->namespaceDeclarations());
-   }
+        m_parser->m_namespaceSupport.pushContext();
+        m_parser->m_namespaceSupport.setPrefixes( m_parser->namespaceDeclarations() );
+    }
 
-   /**
-    * Destroys the element namespace handler object.
-    *
-    * It destroys the local namespace context.
-    */
-   ~ElementNamespaceHandler() {
-      m_parser->m_namespaceSupport.popContext();
-   }
+    /**
+     * Destroys the element namespace handler object.
+     *
+     * It destroys the local namespace context.
+     */
+    ~ElementNamespaceHandler()
+    {
+        m_parser->m_namespaceSupport.popContext();
+    }
 
- private:
-   XsdSchemaParser *m_parser;
+private:
+    XsdSchemaParser *m_parser;
 };
 
 /**
@@ -125,62 +128,74 @@ class ElementNamespaceHandler
  */
 class TagValidationHandler
 {
- public:
-   TagValidationHandler(XsdTagScope::Type tag, XsdSchemaParser *parser, const NamePool::Ptr &namePool)
-      : m_parser(parser), m_machine(namePool) {
-      Q_ASSERT(m_parser->m_stateMachines.contains(tag));
+public:
+    TagValidationHandler( XsdTagScope::Type tag, XsdSchemaParser *parser, const NamePool::Ptr &namePool )
+        : m_parser( parser ), m_machine( namePool )
+    {
+        Q_ASSERT( m_parser->m_stateMachines.contains( tag ) );
 
-      m_machine = m_parser->m_stateMachines.value(tag);
-      m_machine.reset();
-   }
+        m_machine = m_parser->m_stateMachines.value( tag );
+        m_machine.reset();
+    }
 
-   void validate(XsdSchemaToken::NodeName token) {
-      if (token == XsdSchemaToken::NoKeyword) {
-         const QList<XsdSchemaToken::NodeName> tokens = m_machine.possibleTransitions();
+    void validate( XsdSchemaToken::NodeName token )
+    {
+        if ( token == XsdSchemaToken::NoKeyword )
+        {
+            const QList<XsdSchemaToken::NodeName> tokens = m_machine.possibleTransitions();
 
-         QStringList elementNames;
-         for (int i = 0; i < tokens.count(); ++i) {
-            elementNames.append(formatElement(XsdSchemaToken::toString(tokens.at(i))));
-         }
+            QStringList elementNames;
 
-         m_parser->error(QtXmlPatterns::tr("Can not process unknown element %1, expected elements are: %2.")
-                         .formatArg(formatElement(m_parser->name().toString()))
-                         .formatArg(elementNames.join(QLatin1String(", "))));
-         return;
-      }
+            for ( int i = 0; i < tokens.count(); ++i )
+            {
+                elementNames.append( formatElement( XsdSchemaToken::toString( tokens.at( i ) ) ) );
+            }
 
-      if (!m_machine.proceed(token)) {
-         const QList<XsdSchemaToken::NodeName> tokens = m_machine.possibleTransitions();
+            m_parser->error( QtXmlPatterns::tr( "Can not process unknown element %1, expected elements are: %2." )
+                             .formatArg( formatElement( m_parser->name().toString() ) )
+                             .formatArg( elementNames.join( QLatin1String( ", " ) ) ) );
+            return;
+        }
 
-         QStringList elementNames;
-         for (int i = 0; i < tokens.count(); ++i) {
-            elementNames.append(formatElement(XsdSchemaToken::toString(tokens.at(i))));
-         }
+        if ( !m_machine.proceed( token ) )
+        {
+            const QList<XsdSchemaToken::NodeName> tokens = m_machine.possibleTransitions();
 
-         m_parser->error(QtXmlPatterns::tr("Element %1 is not allowed in this scope, possible elements are: %2.")
-                         .formatArg(formatElement(XsdSchemaToken::toString(token)))
-                         .formatArg(elementNames.join(QLatin1String(", "))));
-         return;
-      }
-   }
+            QStringList elementNames;
 
-   void finalize() const {
-      if (!m_machine.inEndState()) {
-         const QList<XsdSchemaToken::NodeName> tokens = m_machine.possibleTransitions();
+            for ( int i = 0; i < tokens.count(); ++i )
+            {
+                elementNames.append( formatElement( XsdSchemaToken::toString( tokens.at( i ) ) ) );
+            }
 
-         QStringList elementNames;
-         for (int i = 0; i < tokens.count(); ++i) {
-            elementNames.append(formatElement(XsdSchemaToken::toString(tokens.at(i))));
-         }
+            m_parser->error( QtXmlPatterns::tr( "Element %1 is not allowed in this scope, possible elements are: %2." )
+                             .formatArg( formatElement( XsdSchemaToken::toString( token ) ) )
+                             .formatArg( elementNames.join( QLatin1String( ", " ) ) ) );
+            return;
+        }
+    }
 
-         m_parser->error(QtXmlPatterns::tr("Child element is missing in that scope, possible child elements are: %1.")
-                         .formatArg(elementNames.join(QLatin1String(", "))));
-      }
-   }
+    void finalize() const
+    {
+        if ( !m_machine.inEndState() )
+        {
+            const QList<XsdSchemaToken::NodeName> tokens = m_machine.possibleTransitions();
 
- private:
-   XsdSchemaParser *m_parser;
-   XsdStateMachine<XsdSchemaToken::NodeName> m_machine;
+            QStringList elementNames;
+
+            for ( int i = 0; i < tokens.count(); ++i )
+            {
+                elementNames.append( formatElement( XsdSchemaToken::toString( tokens.at( i ) ) ) );
+            }
+
+            m_parser->error( QtXmlPatterns::tr( "Child element is missing in that scope, possible child elements are: %1." )
+                             .formatArg( elementNames.join( QLatin1String( ", " ) ) ) );
+        }
+    }
+
+private:
+    XsdSchemaParser *m_parser;
+    XsdStateMachine<XsdSchemaToken::NodeName> m_machine;
 };
 
 }
@@ -189,6143 +204,7592 @@ class TagValidationHandler
  * Returns a list of all particles with group references that appear at any level of
  * the given unresolved @p group.
  */
-static XsdParticle::List collectGroupRef(const XsdModelGroup::Ptr &group)
+static XsdParticle::List collectGroupRef( const XsdModelGroup::Ptr &group )
 {
-   XsdParticle::List refParticles;
+    XsdParticle::List refParticles;
 
-   XsdParticle::List particles = group->particles();
-   for (int i = 0; i < particles.count(); ++i) {
-      if (particles.at(i)->term()->isReference()) {
-         const XsdReference::Ptr reference(particles.at(i)->term());
-         if (reference->type() == XsdReference::ModelGroup) {
-            refParticles.append(particles.at(i));
-         }
-      }
-      if (particles.at(i)->term()->isModelGroup()) {
-         refParticles << collectGroupRef(XsdModelGroup::Ptr(particles.at(i)->term()));
-      }
-   }
+    XsdParticle::List particles = group->particles();
 
-   return refParticles;
+    for ( int i = 0; i < particles.count(); ++i )
+    {
+        if ( particles.at( i )->term()->isReference() )
+        {
+            const XsdReference::Ptr reference( particles.at( i )->term() );
+
+            if ( reference->type() == XsdReference::ModelGroup )
+            {
+                refParticles.append( particles.at( i ) );
+            }
+        }
+
+        if ( particles.at( i )->term()->isModelGroup() )
+        {
+            refParticles << collectGroupRef( XsdModelGroup::Ptr( particles.at( i )->term() ) );
+        }
+    }
+
+    return refParticles;
 }
 
 /**
  * Helper function that works around the limited facilities of
  * QUrl/AnyURI::fromLexical to detect invalid URIs
  */
-static inline bool isValidUri(const QString &string)
+static inline bool isValidUri( const QString &string )
 {
-   // an empty URI points to the current document as defined in RFC 2396 (4.2)
-   if (string.isEmpty()) {
-      return true;
-   }
+    // an empty URI points to the current document as defined in RFC 2396 (4.2)
+    if ( string.isEmpty() )
+    {
+        return true;
+    }
 
-   // explicit check as that is not checked by the code below
-   if (string.startsWith(QLatin1String("##"))) {
-      return false;
-   }
+    // explicit check as that is not checked by the code below
+    if ( string.startsWith( QLatin1String( "##" ) ) )
+    {
+        return false;
+    }
 
-   const AnyURI::Ptr uri = AnyURI::fromLexical(string);
-   return (!(uri->hasError()));
+    const AnyURI::Ptr uri = AnyURI::fromLexical( string );
+    return ( !( uri->hasError() ) );
 }
 
-XsdSchemaParser::XsdSchemaParser(const XsdSchemaContext::Ptr &context, const XsdSchemaParserContext::Ptr &parserContext,
-                                 QIODevice *device)
-   : MaintainingReader<XsdSchemaToken, XsdTagScope::Type>(parserContext->elementDescriptions(),
-         QSet<XsdSchemaToken::NodeName>(), context, device)
-   , m_context(context.data())
-   , m_parserContext(parserContext.data())
-   , m_namePool(m_parserContext->namePool().data())
-   , m_namespaceSupport(*m_namePool)
+XsdSchemaParser::XsdSchemaParser( const XsdSchemaContext::Ptr &context, const XsdSchemaParserContext::Ptr &parserContext,
+                                  QIODevice *device )
+    : MaintainingReader<XsdSchemaToken, XsdTagScope::Type>( parserContext->elementDescriptions(),
+            QSet<XsdSchemaToken::NodeName>(), context, device )
+    , m_context( context.data() )
+    , m_parserContext( parserContext.data() )
+    , m_namePool( m_parserContext->namePool().data() )
+    , m_namespaceSupport( *m_namePool )
 {
-   m_schema = m_parserContext->schema().data();
-   m_schemaResolver = m_parserContext->resolver().data();
-   m_idCache = XsdIdCache::Ptr(new XsdIdCache());
+    m_schema = m_parserContext->schema().data();
+    m_schemaResolver = m_parserContext->resolver().data();
+    m_idCache = XsdIdCache::Ptr( new XsdIdCache() );
 
-   setupStateMachines();
-   setupBuiltinTypeNames();
+    setupStateMachines();
+    setupBuiltinTypeNames();
 }
 
-void XsdSchemaParser::addIncludedSchemas(const NamespaceSet &schemas)
+void XsdSchemaParser::addIncludedSchemas( const NamespaceSet &schemas )
 {
-   m_includedSchemas += schemas;
+    m_includedSchemas += schemas;
 }
 
-void XsdSchemaParser::setIncludedSchemas(const NamespaceSet &schemas)
+void XsdSchemaParser::setIncludedSchemas( const NamespaceSet &schemas )
 {
-   m_includedSchemas = schemas;
+    m_includedSchemas = schemas;
 }
 
-void XsdSchemaParser::addImportedSchemas(const NamespaceSet &schemas)
+void XsdSchemaParser::addImportedSchemas( const NamespaceSet &schemas )
 {
-   m_importedSchemas += schemas;
+    m_importedSchemas += schemas;
 }
 
-void XsdSchemaParser::setImportedSchemas(const NamespaceSet &schemas)
+void XsdSchemaParser::setImportedSchemas( const NamespaceSet &schemas )
 {
-   m_importedSchemas = schemas;
+    m_importedSchemas = schemas;
 }
 
-void XsdSchemaParser::addRedefinedSchemas(const NamespaceSet &schemas)
+void XsdSchemaParser::addRedefinedSchemas( const NamespaceSet &schemas )
 {
-   m_redefinedSchemas += schemas;
+    m_redefinedSchemas += schemas;
 }
 
-void XsdSchemaParser::setRedefinedSchemas(const NamespaceSet &schemas)
+void XsdSchemaParser::setRedefinedSchemas( const NamespaceSet &schemas )
 {
-   m_redefinedSchemas = schemas;
+    m_redefinedSchemas = schemas;
 }
 
-void XsdSchemaParser::setTargetNamespace(const QString &targetNamespace)
+void XsdSchemaParser::setTargetNamespace( const QString &targetNamespace )
 {
-   m_targetNamespace = targetNamespace;
+    m_targetNamespace = targetNamespace;
 }
 
-void XsdSchemaParser::setTargetNamespaceExtended(const QString &targetNamespace)
+void XsdSchemaParser::setTargetNamespaceExtended( const QString &targetNamespace )
 {
-   m_targetNamespace = targetNamespace;
-   m_namespaceSupport.setTargetNamespace(m_namePool->allocateNamespace(m_targetNamespace));
+    m_targetNamespace = targetNamespace;
+    m_namespaceSupport.setTargetNamespace( m_namePool->allocateNamespace( m_targetNamespace ) );
 }
 
-void XsdSchemaParser::setDocumentURI(const QUrl &uri)
+void XsdSchemaParser::setDocumentURI( const QUrl &uri )
 {
-   m_documentURI = uri;
+    m_documentURI = uri;
 
-   // prevent to get included/imported/redefined twice
-   m_includedSchemas.insert(uri);
-   m_importedSchemas.insert(uri);
-   m_redefinedSchemas.insert(uri);
+    // prevent to get included/imported/redefined twice
+    m_includedSchemas.insert( uri );
+    m_importedSchemas.insert( uri );
+    m_redefinedSchemas.insert( uri );
 }
 
 QUrl XsdSchemaParser::documentURI() const
 {
-   return m_documentURI;
+    return m_documentURI;
 }
 
 bool XsdSchemaParser::isAnyAttributeAllowed() const
 {
-   return false;
+    return false;
 }
 
-bool XsdSchemaParser::parse(ParserType parserType)
+bool XsdSchemaParser::parse( ParserType parserType )
 {
-   m_componentLocationHash.clear();
+    m_componentLocationHash.clear();
 
-   while (!atEnd()) {
-      readNext();
+    while ( !atEnd() )
+    {
+        readNext();
 
-      if (isStartElement()) {
-         const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken(name());
-         const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken(namespaceUri());
+        if ( isStartElement() )
+        {
+            const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken( name() );
+            const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken( namespaceUri() );
 
-         if (isSchemaTag(XsdSchemaToken::Schema, token, namespaceToken)) {
-            parseSchema(parserType);
-         } else {
-            error(QtXmlPatterns::tr("Document is not a XML schema."));
-         }
-      }
-   }
+            if ( isSchemaTag( XsdSchemaToken::Schema, token, namespaceToken ) )
+            {
+                parseSchema( parserType );
+            }
+            else
+            {
+                error( QtXmlPatterns::tr( "Document is not a XML schema." ) );
+            }
+        }
+    }
 
-   m_schemaResolver->addComponentLocationHash(m_componentLocationHash);
-   m_schemaResolver->setDefaultOpenContent(m_defaultOpenContent, m_defaultOpenContentAppliesToEmpty);
+    m_schemaResolver->addComponentLocationHash( m_componentLocationHash );
+    m_schemaResolver->setDefaultOpenContent( m_defaultOpenContent, m_defaultOpenContentAppliesToEmpty );
 
-   if (QXmlStreamReader::error() != QXmlStreamReader::NoError) {
-      error(errorString());
-   }
+    if ( QXmlStreamReader::error() != QXmlStreamReader::NoError )
+    {
+        error( errorString() );
+    }
 
-   return true;
+    return true;
 }
 
-void XsdSchemaParser::error(const QString &msg)
+void XsdSchemaParser::error( const QString &msg )
 {
-   MaintainingReader<XsdSchemaToken, XsdTagScope::Type>::error(msg, XsdSchemaContext::XSDError);
+    MaintainingReader<XsdSchemaToken, XsdTagScope::Type>::error( msg, XsdSchemaContext::XSDError );
 }
 
-void XsdSchemaParser::attributeContentError(const char *attributeName, const char *elementName, const QString &value,
-      const SchemaType::Ptr &type)
+void XsdSchemaParser::attributeContentError( const char *attributeName, const char *elementName, const QString &value,
+        const SchemaType::Ptr &type )
 {
-   if (type) {
-      error(QtXmlPatterns::tr("%1 attribute of %2 element contains invalid content: {%3} is not a value of type %4.")
-            .formatArg(formatAttribute(attributeName))
-            .formatArg(formatElement(elementName))
-            .formatArg(formatData(value))
-            .formatArg(formatType(NamePool::Ptr(m_namePool), type)));
-   } else {
-      error(QtXmlPatterns::tr("%1 attribute of %2 element contains invalid content: {%3}.")
-            .formatArg(formatAttribute(attributeName))
-            .formatArg(formatElement(elementName))
-            .formatArg(formatData(value)));
-   }
+    if ( type )
+    {
+        error( QtXmlPatterns::tr( "%1 attribute of %2 element contains invalid content: {%3} is not a value of type %4." )
+               .formatArg( formatAttribute( attributeName ) )
+               .formatArg( formatElement( elementName ) )
+               .formatArg( formatData( value ) )
+               .formatArg( formatType( NamePool::Ptr( m_namePool ), type ) ) );
+    }
+    else
+    {
+        error( QtXmlPatterns::tr( "%1 attribute of %2 element contains invalid content: {%3}." )
+               .formatArg( formatAttribute( attributeName ) )
+               .formatArg( formatElement( elementName ) )
+               .formatArg( formatData( value ) ) );
+    }
 }
 
-void XsdSchemaParser::parseSchema(ParserType parserType)
+void XsdSchemaParser::parseSchema( ParserType parserType )
 {
-   const ElementNamespaceHandler namespaceHandler(XsdSchemaToken::Schema, this);
+    const ElementNamespaceHandler namespaceHandler( XsdSchemaToken::Schema, this );
 
-   validateElement(XsdTagScope::Schema);
+    validateElement( XsdTagScope::Schema );
 
-   // parse attributes
+    // parse attributes
 
-   if (parserType == TopLevelParser) {
-      if (hasAttribute("targetNamespace")) {
-         m_targetNamespace = readNamespaceAttribute(QString::fromLatin1("targetNamespace"), "schema");
-      }
+    if ( parserType == TopLevelParser )
+    {
+        if ( hasAttribute( "targetNamespace" ) )
+        {
+            m_targetNamespace = readNamespaceAttribute( QString::fromLatin1( "targetNamespace" ), "schema" );
+        }
 
-   } else if (parserType == IncludeParser) {
-      // m_targetNamespace is set to the target namespace of the including schema at this point
+    }
+    else if ( parserType == IncludeParser )
+    {
+        // m_targetNamespace is set to the target namespace of the including schema at this point
 
-      if (hasAttribute("targetNamespace")) {
-         const QString targetNamespace = readNamespaceAttribute(QString::fromLatin1("targetNamespace"), "schema");
+        if ( hasAttribute( "targetNamespace" ) )
+        {
+            const QString targetNamespace = readNamespaceAttribute( QString::fromLatin1( "targetNamespace" ), "schema" );
 
-         if (m_targetNamespace != targetNamespace) {
-            error(QtXmlPatterns::tr("Target namespace %1 of included schema is different from the target "
-                  "namespace %2 as defined by the including schema.")
-                  .formatArg(formatURI(targetNamespace)).formatArg(formatURI(m_targetNamespace)));
+            if ( m_targetNamespace != targetNamespace )
+            {
+                error( QtXmlPatterns::tr( "Target namespace %1 of included schema is different from the target "
+                                          "namespace %2 as defined by the including schema." )
+                       .formatArg( formatURI( targetNamespace ) ).formatArg( formatURI( m_targetNamespace ) ) );
+                return;
+            }
+        }
+    }
+    else if ( parserType == ImportParser )
+    {
+        // m_targetNamespace is set to the target namespace from the namespace attribute of the <import> tag at this point
+
+        QString targetNamespace;
+
+        if ( hasAttribute( "targetNamespace" ) )
+        {
+            targetNamespace = readNamespaceAttribute( QString::fromLatin1( "targetNamespace" ), "schema" );
+        }
+
+        if ( m_targetNamespace != targetNamespace )
+        {
+            error( QtXmlPatterns::tr( "Target namespace %1 of imported schema is different from the target namespace %2 as defined by the importing schema." )
+                   .formatArg( formatURI( targetNamespace ) ).formatArg( formatURI( m_targetNamespace ) ) );
             return;
-         }
-      }
-   } else if (parserType == ImportParser) {
-      // m_targetNamespace is set to the target namespace from the namespace attribute of the <import> tag at this point
+        }
+    }
+    else if ( parserType == RedefineParser )
+    {
+        // m_targetNamespace is set to the target namespace of the redefining schema at this point
 
-      QString targetNamespace;
-      if (hasAttribute("targetNamespace")) {
-         targetNamespace = readNamespaceAttribute(QString::fromLatin1("targetNamespace"), "schema");
-      }
+        if ( hasAttribute( "targetNamespace" ) )
+        {
+            const QString targetNamespace = readNamespaceAttribute( QString::fromLatin1( "targetNamespace" ), "schema" );
 
-      if (m_targetNamespace != targetNamespace) {
-         error(QtXmlPatterns::tr("Target namespace %1 of imported schema is different from the target namespace %2 as defined by the importing schema.")
-               .formatArg(formatURI(targetNamespace)).formatArg(formatURI(m_targetNamespace)));
-         return;
-      }
-   } else if (parserType == RedefineParser) {
-      // m_targetNamespace is set to the target namespace of the redefining schema at this point
+            if ( m_targetNamespace != targetNamespace )
+            {
+                error( QtXmlPatterns::tr( "Target namespace %1 of imported schema is different from the target namespace %2 as defined by the importing schema." )
+                       .formatArg( formatURI( targetNamespace ) ).formatArg( formatURI( m_targetNamespace ) ) );
+                return;
+            }
+        }
+    }
 
-      if (hasAttribute("targetNamespace")) {
-         const QString targetNamespace = readNamespaceAttribute(QString::fromLatin1("targetNamespace"), "schema");
+    if ( hasAttribute( "attributeFormDefault" ) )
+    {
+        const QString value = readAttribute( QString::fromLatin1( "attributeFormDefault" ) );
 
-         if (m_targetNamespace != targetNamespace) {
-            error(QtXmlPatterns::tr("Target namespace %1 of imported schema is different from the target namespace %2 as defined by the importing schema.")
-                  .formatArg(formatURI(targetNamespace)).formatArg(formatURI(m_targetNamespace)));
+        if ( value != "qualified" && value != "unqualified" )
+        {
+            attributeContentError( "attributeFormDefault", "schema", value );
             return;
-         }
-      }
-   }
+        }
 
-   if (hasAttribute("attributeFormDefault")) {
-      const QString value = readAttribute(QString::fromLatin1("attributeFormDefault"));
+        m_attributeFormDefault = value;
 
-      if (value != "qualified" && value != "unqualified") {
-         attributeContentError("attributeFormDefault", "schema", value);
-         return;
-      }
+    }
+    else
+    {
+        m_attributeFormDefault = QString::fromLatin1( "unqualified" );
+    }
 
-      m_attributeFormDefault = value;
+    if ( hasAttribute( "elementFormDefault" ) )
+    {
+        const QString value = readAttribute( QString::fromLatin1( "elementFormDefault" ) );
 
-   } else {
-      m_attributeFormDefault = QString::fromLatin1("unqualified");
-   }
-
-   if (hasAttribute("elementFormDefault")) {
-      const QString value = readAttribute(QString::fromLatin1("elementFormDefault"));
-      if (value != QString::fromLatin1("qualified") && value != QString::fromLatin1("unqualified")) {
-         attributeContentError("elementFormDefault", "schema", value);
-         return;
-      }
-
-      m_elementFormDefault = value;
-   } else {
-      m_elementFormDefault = QString::fromLatin1("unqualified");
-   }
-
-   if (hasAttribute("blockDefault")) {
-      const QString blockDefault = readAttribute(QString::fromLatin1("blockDefault"));
-      const QStringList blockDefaultList = blockDefault.split(QLatin1Char(' '), QStringParser::SkipEmptyParts);
-
-      for (int i = 0; i < blockDefaultList.count(); ++i) {
-         const QString value = blockDefaultList.at(i);
-         if (value != QString::fromLatin1("#all") &&
-               value != QString::fromLatin1("extension") &&
-               value != QString::fromLatin1("restriction") &&
-               value != QString::fromLatin1("substitution")) {
-            attributeContentError("blockDefault", "schema", value);
+        if ( value != QString::fromLatin1( "qualified" ) && value != QString::fromLatin1( "unqualified" ) )
+        {
+            attributeContentError( "elementFormDefault", "schema", value );
             return;
-         }
-      }
+        }
 
-      m_blockDefault = blockDefault;
-   }
+        m_elementFormDefault = value;
+    }
+    else
+    {
+        m_elementFormDefault = QString::fromLatin1( "unqualified" );
+    }
 
-   if (hasAttribute("finalDefault")) {
-      const QString finalDefault = readAttribute(QString::fromLatin1("finalDefault"));
-      const QStringList finalDefaultList = finalDefault.split(QLatin1Char(' '), QStringParser::SkipEmptyParts);
+    if ( hasAttribute( "blockDefault" ) )
+    {
+        const QString blockDefault = readAttribute( QString::fromLatin1( "blockDefault" ) );
+        const QStringList blockDefaultList = blockDefault.split( QLatin1Char( ' ' ), QStringParser::SkipEmptyParts );
 
-      for (int i = 0; i < finalDefaultList.count(); ++i) {
-         const QString value = finalDefaultList.at(i);
+        for ( int i = 0; i < blockDefaultList.count(); ++i )
+        {
+            const QString value = blockDefaultList.at( i );
 
-         if (value != QString::fromLatin1("#all") &&
-               value != QString::fromLatin1("extension") &&
-               value != QString::fromLatin1("restriction") &&
-               value != QString::fromLatin1("list") &&
-               value != QString::fromLatin1("union")) {
-            attributeContentError("finalDefault", "schema", value);
+            if ( value != QString::fromLatin1( "#all" ) &&
+                    value != QString::fromLatin1( "extension" ) &&
+                    value != QString::fromLatin1( "restriction" ) &&
+                    value != QString::fromLatin1( "substitution" ) )
+            {
+                attributeContentError( "blockDefault", "schema", value );
+                return;
+            }
+        }
+
+        m_blockDefault = blockDefault;
+    }
+
+    if ( hasAttribute( "finalDefault" ) )
+    {
+        const QString finalDefault = readAttribute( QString::fromLatin1( "finalDefault" ) );
+        const QStringList finalDefaultList = finalDefault.split( QLatin1Char( ' ' ), QStringParser::SkipEmptyParts );
+
+        for ( int i = 0; i < finalDefaultList.count(); ++i )
+        {
+            const QString value = finalDefaultList.at( i );
+
+            if ( value != QString::fromLatin1( "#all" ) &&
+                    value != QString::fromLatin1( "extension" ) &&
+                    value != QString::fromLatin1( "restriction" ) &&
+                    value != QString::fromLatin1( "list" ) &&
+                    value != QString::fromLatin1( "union" ) )
+            {
+                attributeContentError( "finalDefault", "schema", value );
+                return;
+            }
+        }
+
+        m_finalDefault = finalDefault;
+    }
+
+    if ( hasAttribute( "xpathDefaultNamespace" ) )
+    {
+        const QString xpathDefaultNamespace = readAttribute( QString::fromLatin1( "xpathDefaultNamespace" ) );
+
+        if ( xpathDefaultNamespace != QString::fromLatin1( "##defaultNamespace" ) &&
+                xpathDefaultNamespace != QString::fromLatin1( "##targetNamespace" ) &&
+                xpathDefaultNamespace != QString::fromLatin1( "##local" ) )
+        {
+            if ( !isValidUri( xpathDefaultNamespace ) )
+            {
+                attributeContentError( "xpathDefaultNamespace", "schema", xpathDefaultNamespace );
+                return;
+            }
+        }
+
+        m_xpathDefaultNamespace = xpathDefaultNamespace;
+    }
+    else
+    {
+        m_xpathDefaultNamespace = QString( "##local" );
+    }
+
+    if ( hasAttribute( "defaultAttributes" ) )
+    {
+        const QString attrGroupName = readQNameAttribute( QString( "defaultAttributes" ), "schema" );
+        convertName( attrGroupName, NamespaceSupport::ElementName, m_defaultAttributes ); // translate qualified name into QXmlName
+    }
+
+    if ( hasAttribute( "version" ) )
+    {
+        const QString version = readAttribute( QString::fromLatin1( "version" ) );
+    }
+
+    if ( hasAttribute( CommonNamespaces::XML, "lang" ) )
+    {
+        const QString value = readAttribute( QString( "lang" ), CommonNamespaces::XML );
+        const QRegularExpression exp( QString::fromLatin1( "[a-zA-Z]{1,8}(-[a-zA-Z0-9]{1,8})*" ), QPatternOption::ExactMatchOption );
+
+        if ( ! exp.match( value ).hasMatch() )
+        {
+            attributeContentError( "xml:lang", "schema", value );
             return;
-         }
-      }
+        }
+    }
 
-      m_finalDefault = finalDefault;
-   }
+    validateIdAttribute( "schema" );
 
-   if (hasAttribute("xpathDefaultNamespace")) {
-      const QString xpathDefaultNamespace = readAttribute(QString::fromLatin1("xpathDefaultNamespace"));
+    TagValidationHandler tagValidator( XsdTagScope::Schema, this, NamePool::Ptr( m_namePool ) );
 
-      if (xpathDefaultNamespace != QString::fromLatin1("##defaultNamespace") &&
-            xpathDefaultNamespace != QString::fromLatin1("##targetNamespace") &&
-            xpathDefaultNamespace != QString::fromLatin1("##local")) {
-         if (!isValidUri(xpathDefaultNamespace)) {
-            attributeContentError("xpathDefaultNamespace", "schema", xpathDefaultNamespace);
-            return;
-         }
-      }
-      m_xpathDefaultNamespace = xpathDefaultNamespace;
-   } else {
-      m_xpathDefaultNamespace = QString("##local");
-   }
+    while ( !atEnd() )
+    {
+        readNext();
 
-   if (hasAttribute("defaultAttributes")) {
-      const QString attrGroupName = readQNameAttribute(QString("defaultAttributes"), "schema");
-      convertName(attrGroupName, NamespaceSupport::ElementName, m_defaultAttributes); // translate qualified name into QXmlName
-   }
+        if ( isEndElement() )
+        {
+            break;
+        }
 
-   if (hasAttribute("version")) {
-      const QString version = readAttribute(QString::fromLatin1("version"));
-   }
+        if ( isStartElement() )
+        {
+            const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken( name() );
+            const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken( namespaceUri() );
 
-   if (hasAttribute(CommonNamespaces::XML, "lang")) {
-      const QString value = readAttribute(QString("lang"), CommonNamespaces::XML);
-      const QRegularExpression exp(QString::fromLatin1("[a-zA-Z]{1,8}(-[a-zA-Z0-9]{1,8})*"), QPatternOption::ExactMatchOption);
+            tagValidator.validate( token );
 
-      if (! exp.match(value).hasMatch()) {
-         attributeContentError("xml:lang", "schema", value);
-         return;
-      }
-   }
+            if ( isSchemaTag( XsdSchemaToken::Include, token, namespaceToken ) )
+            {
+                parseInclude();
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Import, token, namespaceToken ) )
+            {
+                parseImport();
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Redefine, token, namespaceToken ) )
+            {
+                parseRedefine();
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Annotation, token, namespaceToken ) )
+            {
+                const XsdAnnotation::Ptr annotation = parseAnnotation();
+                m_schema->addAnnotation( annotation );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::DefaultOpenContent, token, namespaceToken ) )
+            {
+                parseDefaultOpenContent();
+            }
+            else if ( isSchemaTag( XsdSchemaToken::SimpleType, token, namespaceToken ) )
+            {
+                const XsdSimpleType::Ptr type = parseGlobalSimpleType();
+                addType( type );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::ComplexType, token, namespaceToken ) )
+            {
+                const XsdComplexType::Ptr type = parseGlobalComplexType();
+                addType( type );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Group, token, namespaceToken ) )
+            {
+                const XsdModelGroup::Ptr group = parseNamedGroup();
+                addElementGroup( group );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::AttributeGroup, token, namespaceToken ) )
+            {
+                XsdAttributeGroup::Ptr attributeGroup = parseNamedAttributeGroup();
+                addAttributeGroup( attributeGroup );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Element, token, namespaceToken ) )
+            {
+                const XsdElement::Ptr element = parseGlobalElement();
+                addElement( element );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Attribute, token, namespaceToken ) )
+            {
+                const XsdAttribute::Ptr attribute = parseGlobalAttribute();
+                addAttribute( attribute );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Notation, token, namespaceToken ) )
+            {
+                const XsdNotation::Ptr notation = parseNotation();
+                addNotation( notation );
+            }
+            else
+            {
+                parseUnknown();
+            }
+        }
+    }
 
-   validateIdAttribute("schema");
+    tagValidator.finalize();
 
-   TagValidationHandler tagValidator(XsdTagScope::Schema, this, NamePool::Ptr(m_namePool));
-
-   while (!atEnd()) {
-      readNext();
-
-      if (isEndElement()) {
-         break;
-      }
-
-      if (isStartElement()) {
-         const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken(name());
-         const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken(namespaceUri());
-
-         tagValidator.validate(token);
-
-         if (isSchemaTag(XsdSchemaToken::Include, token, namespaceToken)) {
-            parseInclude();
-         } else if (isSchemaTag(XsdSchemaToken::Import, token, namespaceToken)) {
-            parseImport();
-         } else if (isSchemaTag(XsdSchemaToken::Redefine, token, namespaceToken)) {
-            parseRedefine();
-         } else if (isSchemaTag(XsdSchemaToken::Annotation, token, namespaceToken)) {
-            const XsdAnnotation::Ptr annotation = parseAnnotation();
-            m_schema->addAnnotation(annotation);
-         } else if (isSchemaTag(XsdSchemaToken::DefaultOpenContent, token, namespaceToken)) {
-            parseDefaultOpenContent();
-         } else if (isSchemaTag(XsdSchemaToken::SimpleType, token, namespaceToken)) {
-            const XsdSimpleType::Ptr type = parseGlobalSimpleType();
-            addType(type);
-         } else if (isSchemaTag(XsdSchemaToken::ComplexType, token, namespaceToken)) {
-            const XsdComplexType::Ptr type = parseGlobalComplexType();
-            addType(type);
-         } else if (isSchemaTag(XsdSchemaToken::Group, token, namespaceToken)) {
-            const XsdModelGroup::Ptr group = parseNamedGroup();
-            addElementGroup(group);
-         } else if (isSchemaTag(XsdSchemaToken::AttributeGroup, token, namespaceToken)) {
-            XsdAttributeGroup::Ptr attributeGroup = parseNamedAttributeGroup();
-            addAttributeGroup(attributeGroup);
-         } else if (isSchemaTag(XsdSchemaToken::Element, token, namespaceToken)) {
-            const XsdElement::Ptr element = parseGlobalElement();
-            addElement(element);
-         } else if (isSchemaTag(XsdSchemaToken::Attribute, token, namespaceToken)) {
-            const XsdAttribute::Ptr attribute = parseGlobalAttribute();
-            addAttribute(attribute);
-         } else if (isSchemaTag(XsdSchemaToken::Notation, token, namespaceToken)) {
-            const XsdNotation::Ptr notation = parseNotation();
-            addNotation(notation);
-         } else {
-            parseUnknown();
-         }
-      }
-   }
-
-   tagValidator.finalize();
-
-   m_schema->setTargetNamespace(m_targetNamespace);
+    m_schema->setTargetNamespace( m_targetNamespace );
 }
 
 void XsdSchemaParser::parseInclude()
 {
-   Q_ASSERT(isStartElement() && XsdSchemaToken::toToken(name()) == XsdSchemaToken::Include &&
-            XsdSchemaToken::toToken(namespaceUri()) == XsdSchemaToken::XML_NS_SCHEMA_URI);
+    Q_ASSERT( isStartElement() && XsdSchemaToken::toToken( name() ) == XsdSchemaToken::Include &&
+              XsdSchemaToken::toToken( namespaceUri() ) == XsdSchemaToken::XML_NS_SCHEMA_URI );
 
-   validateElement(XsdTagScope::Include);
+    validateElement( XsdTagScope::Include );
 
-   // parse attributes
-   const QString schemaLocation = readAttribute(QString::fromLatin1("schemaLocation"));
+    // parse attributes
+    const QString schemaLocation = readAttribute( QString::fromLatin1( "schemaLocation" ) );
 
-   QUrl url(schemaLocation);
-   if (url.isRelative()) {
-      Q_ASSERT(m_documentURI.isValid());
+    QUrl url( schemaLocation );
 
-      url = m_documentURI.resolved(url);
-   }
+    if ( url.isRelative() )
+    {
+        Q_ASSERT( m_documentURI.isValid() );
 
-   if (m_includedSchemas.contains(url)) {
-      // we have included that file already, according to the schema spec we are
-      // allowed to silently skip it.
-   } else {
-      m_includedSchemas.insert(url);
+        url = m_documentURI.resolved( url );
+    }
 
-      const std::unique_ptr<QNetworkReply> reply(AccelTreeResourceLoader::load(url, m_context->networkAccessManager(),
-                                         XsdSchemaContext::Ptr(m_context), AccelTreeResourceLoader::ContinueOnError));
-      if (reply) {
-         // parse the included schema by a different parser but with the same context
-         XsdSchemaParser parser(XsdSchemaContext::Ptr(m_context), XsdSchemaParserContext::Ptr(m_parserContext), reply.get());
-         parser.setDocumentURI(url);
-         parser.setTargetNamespaceExtended(m_targetNamespace);
-         parser.setIncludedSchemas(m_includedSchemas);
-         parser.setImportedSchemas(m_importedSchemas);
-         parser.setRedefinedSchemas(m_redefinedSchemas);
-         if (!parser.parse(XsdSchemaParser::IncludeParser)) {
-            return;
-         } else {
-            // add indirectly loaded schemas to the list of already loaded ones
-            addIncludedSchemas(parser.m_includedSchemas);
-            addImportedSchemas(parser.m_importedSchemas);
-            addRedefinedSchemas(parser.m_redefinedSchemas);
-         }
-      }
-   }
+    if ( m_includedSchemas.contains( url ) )
+    {
+        // we have included that file already, according to the schema spec we are
+        // allowed to silently skip it.
+    }
+    else
+    {
+        m_includedSchemas.insert( url );
 
-   validateIdAttribute("include");
+        const std::unique_ptr<QNetworkReply> reply( AccelTreeResourceLoader::load( url, m_context->networkAccessManager(),
+                XsdSchemaContext::Ptr( m_context ), AccelTreeResourceLoader::ContinueOnError ) );
 
-   TagValidationHandler tagValidator(XsdTagScope::Include, this, NamePool::Ptr(m_namePool));
+        if ( reply )
+        {
+            // parse the included schema by a different parser but with the same context
+            XsdSchemaParser parser( XsdSchemaContext::Ptr( m_context ), XsdSchemaParserContext::Ptr( m_parserContext ), reply.get() );
+            parser.setDocumentURI( url );
+            parser.setTargetNamespaceExtended( m_targetNamespace );
+            parser.setIncludedSchemas( m_includedSchemas );
+            parser.setImportedSchemas( m_importedSchemas );
+            parser.setRedefinedSchemas( m_redefinedSchemas );
 
-   while (!atEnd()) {
-      readNext();
+            if ( !parser.parse( XsdSchemaParser::IncludeParser ) )
+            {
+                return;
+            }
+            else
+            {
+                // add indirectly loaded schemas to the list of already loaded ones
+                addIncludedSchemas( parser.m_includedSchemas );
+                addImportedSchemas( parser.m_importedSchemas );
+                addRedefinedSchemas( parser.m_redefinedSchemas );
+            }
+        }
+    }
 
-      if (isEndElement()) {
-         break;
-      }
+    validateIdAttribute( "include" );
 
-      if (isStartElement()) {
-         const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken(name());
-         const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken(namespaceUri());
+    TagValidationHandler tagValidator( XsdTagScope::Include, this, NamePool::Ptr( m_namePool ) );
 
-         tagValidator.validate(token);
+    while ( !atEnd() )
+    {
+        readNext();
 
-         if (isSchemaTag(XsdSchemaToken::Annotation, token, namespaceToken)) {
-            const XsdAnnotation::Ptr annotation = parseAnnotation();
-            m_schema->addAnnotation(annotation);
-         } else {
-            parseUnknown();
-         }
-      }
-   }
+        if ( isEndElement() )
+        {
+            break;
+        }
 
-   tagValidator.finalize();
+        if ( isStartElement() )
+        {
+            const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken( name() );
+            const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken( namespaceUri() );
+
+            tagValidator.validate( token );
+
+            if ( isSchemaTag( XsdSchemaToken::Annotation, token, namespaceToken ) )
+            {
+                const XsdAnnotation::Ptr annotation = parseAnnotation();
+                m_schema->addAnnotation( annotation );
+            }
+            else
+            {
+                parseUnknown();
+            }
+        }
+    }
+
+    tagValidator.finalize();
 }
 
 void XsdSchemaParser::parseImport()
 {
-   Q_ASSERT(isStartElement() && XsdSchemaToken::toToken(name()) == XsdSchemaToken::Import &&
-            XsdSchemaToken::toToken(namespaceUri()) == XsdSchemaToken::XML_NS_SCHEMA_URI);
+    Q_ASSERT( isStartElement() && XsdSchemaToken::toToken( name() ) == XsdSchemaToken::Import &&
+              XsdSchemaToken::toToken( namespaceUri() ) == XsdSchemaToken::XML_NS_SCHEMA_URI );
 
-   validateElement(XsdTagScope::Import);
+    validateElement( XsdTagScope::Import );
 
-   // parse attributes
-   QString importNamespace;
+    // parse attributes
+    QString importNamespace;
 
-   if (hasAttribute("namespace")) {
-      importNamespace = readAttribute(QString::fromLatin1("namespace"));
+    if ( hasAttribute( "namespace" ) )
+    {
+        importNamespace = readAttribute( QString::fromLatin1( "namespace" ) );
 
-      if (importNamespace == m_targetNamespace) {
-         error(QtXmlPatterns::tr("%1 element is not allowed to have the same %2 attribute value as the target namespace %3.")
-               .formatArg(formatElement("import"))
-               .formatArg(formatAttribute("namespace"))
-               .formatArg(formatURI(m_targetNamespace)));
-         return;
-      }
-   } else {
-      if (m_targetNamespace.isEmpty()) {
-         error(QtXmlPatterns::tr("%1 element without %2 attribute is not allowed inside schema without target namespace.")
-               .formatArg(formatElement("import"))
-               .formatArg(formatAttribute("namespace")));
-         return;
-      }
-   }
+        if ( importNamespace == m_targetNamespace )
+        {
+            error( QtXmlPatterns::tr( "%1 element is not allowed to have the same %2 attribute value as the target namespace %3." )
+                   .formatArg( formatElement( "import" ) )
+                   .formatArg( formatAttribute( "namespace" ) )
+                   .formatArg( formatURI( m_targetNamespace ) ) );
+            return;
+        }
+    }
+    else
+    {
+        if ( m_targetNamespace.isEmpty() )
+        {
+            error( QtXmlPatterns::tr( "%1 element without %2 attribute is not allowed inside schema without target namespace." )
+                   .formatArg( formatElement( "import" ) )
+                   .formatArg( formatAttribute( "namespace" ) ) );
+            return;
+        }
+    }
 
-   if (hasAttribute("schemaLocation")) {
-      const QString schemaLocation = readAttribute(QString::fromLatin1("schemaLocation"));
+    if ( hasAttribute( "schemaLocation" ) )
+    {
+        const QString schemaLocation = readAttribute( QString::fromLatin1( "schemaLocation" ) );
 
-      QUrl url(schemaLocation);
+        QUrl url( schemaLocation );
 
-      if (url.isRelative()) {
-         Q_ASSERT(m_documentURI.isValid());
+        if ( url.isRelative() )
+        {
+            Q_ASSERT( m_documentURI.isValid() );
 
-         url = m_documentURI.resolved(url);
-      }
+            url = m_documentURI.resolved( url );
+        }
 
-      if (m_importedSchemas.contains(url)) {
-         // we have imported that file already, according to the schema spec we are
-         // allowed to silently skip it.
+        if ( m_importedSchemas.contains( url ) )
+        {
+            // we have imported that file already, according to the schema spec we are
+            // allowed to silently skip it.
 
-      } else {
-         m_importedSchemas.insert(url);
+        }
+        else
+        {
+            m_importedSchemas.insert( url );
 
-         // as it is possible that well known schemas (e.g. XSD for XML) are only referenced by
-         // namespace we should add it as well
-         m_importedSchemas.insert(QUrl(importNamespace));
+            // as it is possible that well known schemas (e.g. XSD for XML) are only referenced by
+            // namespace we should add it as well
+            m_importedSchemas.insert( QUrl( importNamespace ) );
 
-         std::unique_ptr<QNetworkReply> reply(AccelTreeResourceLoader::load(url, m_context->networkAccessManager(),
-                                      XsdSchemaContext::Ptr(m_context), AccelTreeResourceLoader::ContinueOnError));
-         if (reply) {
-            // parse the included schema by a different parser but with the same context
-            XsdSchemaParser parser(XsdSchemaContext::Ptr(m_context),
-                  XsdSchemaParserContext::Ptr(m_parserContext), reply.get());
+            std::unique_ptr<QNetworkReply> reply( AccelTreeResourceLoader::load( url, m_context->networkAccessManager(),
+                                                  XsdSchemaContext::Ptr( m_context ), AccelTreeResourceLoader::ContinueOnError ) );
 
-            parser.setDocumentURI(url);
-            parser.setTargetNamespace(importNamespace);
-            parser.setIncludedSchemas(m_includedSchemas);
-            parser.setImportedSchemas(m_importedSchemas);
-            parser.setRedefinedSchemas(m_redefinedSchemas);
+            if ( reply )
+            {
+                // parse the included schema by a different parser but with the same context
+                XsdSchemaParser parser( XsdSchemaContext::Ptr( m_context ),
+                                        XsdSchemaParserContext::Ptr( m_parserContext ), reply.get() );
 
-            if (!parser.parse(XsdSchemaParser::ImportParser)) {
-               return;
+                parser.setDocumentURI( url );
+                parser.setTargetNamespace( importNamespace );
+                parser.setIncludedSchemas( m_includedSchemas );
+                parser.setImportedSchemas( m_importedSchemas );
+                parser.setRedefinedSchemas( m_redefinedSchemas );
 
-            } else {
-               // add indirectly loaded schemas to the list of already loaded ones
-               addIncludedSchemas(parser.m_includedSchemas);
-               addImportedSchemas(parser.m_importedSchemas);
-               addRedefinedSchemas(parser.m_redefinedSchemas);
+                if ( !parser.parse( XsdSchemaParser::ImportParser ) )
+                {
+                    return;
+
+                }
+                else
+                {
+                    // add indirectly loaded schemas to the list of already loaded ones
+                    addIncludedSchemas( parser.m_includedSchemas );
+                    addImportedSchemas( parser.m_importedSchemas );
+                    addRedefinedSchemas( parser.m_redefinedSchemas );
+                }
             }
-         }
-      }
+        }
 
-   } else {
-      // check whether it is a known namespace we have a builtin schema for
-      if (! importNamespace.isEmpty()) {
-         QUrl tmp(importNamespace);
+    }
+    else
+    {
+        // check whether it is a known namespace we have a builtin schema for
+        if ( ! importNamespace.isEmpty() )
+        {
+            QUrl tmp( importNamespace );
 
-         if (! m_importedSchemas.contains(tmp)) {
-            m_importedSchemas.insert(tmp);
+            if ( ! m_importedSchemas.contains( tmp ) )
+            {
+                m_importedSchemas.insert( tmp );
 
-            QFile file(":" + importNamespace);
+                QFile file( ":" + importNamespace );
 
-            if (file.open(QIODevice::ReadOnly)) {
-               XsdSchemaParser parser(XsdSchemaContext::Ptr(m_context), XsdSchemaParserContext::Ptr(m_parserContext), &file);
-               parser.setDocumentURI(tmp);
-               parser.setTargetNamespace(importNamespace);
-               parser.setIncludedSchemas(m_includedSchemas);
-               parser.setImportedSchemas(m_importedSchemas);
-               parser.setRedefinedSchemas(m_redefinedSchemas);
+                if ( file.open( QIODevice::ReadOnly ) )
+                {
+                    XsdSchemaParser parser( XsdSchemaContext::Ptr( m_context ), XsdSchemaParserContext::Ptr( m_parserContext ), &file );
+                    parser.setDocumentURI( tmp );
+                    parser.setTargetNamespace( importNamespace );
+                    parser.setIncludedSchemas( m_includedSchemas );
+                    parser.setImportedSchemas( m_importedSchemas );
+                    parser.setRedefinedSchemas( m_redefinedSchemas );
 
-               if (!parser.parse(XsdSchemaParser::ImportParser)) {
-                  return;
+                    if ( !parser.parse( XsdSchemaParser::ImportParser ) )
+                    {
+                        return;
 
-               } else {
-                  // add indirectly loaded schemas to the list of already loaded ones
-                  addIncludedSchemas(parser.m_includedSchemas);
-                  addImportedSchemas(parser.m_importedSchemas);
-                  addRedefinedSchemas(parser.m_redefinedSchemas);
-               }
+                    }
+                    else
+                    {
+                        // add indirectly loaded schemas to the list of already loaded ones
+                        addIncludedSchemas( parser.m_includedSchemas );
+                        addImportedSchemas( parser.m_importedSchemas );
+                        addRedefinedSchemas( parser.m_redefinedSchemas );
+                    }
+                }
             }
-         }
 
-      } else {
-         // we do not import anything... that is valid according to the schema
-      }
-   }
+        }
+        else
+        {
+            // we do not import anything... that is valid according to the schema
+        }
+    }
 
-   validateIdAttribute("import");
+    validateIdAttribute( "import" );
 
-   TagValidationHandler tagValidator(XsdTagScope::Import, this, NamePool::Ptr(m_namePool));
+    TagValidationHandler tagValidator( XsdTagScope::Import, this, NamePool::Ptr( m_namePool ) );
 
-   while (! atEnd()) {
-      readNext();
+    while ( ! atEnd() )
+    {
+        readNext();
 
-      if (isEndElement()) {
-         break;
-      }
+        if ( isEndElement() )
+        {
+            break;
+        }
 
-      if (isStartElement()) {
-         const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken(name());
-         const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken(namespaceUri());
+        if ( isStartElement() )
+        {
+            const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken( name() );
+            const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken( namespaceUri() );
 
-         tagValidator.validate(token);
+            tagValidator.validate( token );
 
-         if (isSchemaTag(XsdSchemaToken::Annotation, token, namespaceToken)) {
-            const XsdAnnotation::Ptr annotation = parseAnnotation();
-            m_schema->addAnnotation(annotation);
-         } else {
-            parseUnknown();
-         }
-      }
-   }
+            if ( isSchemaTag( XsdSchemaToken::Annotation, token, namespaceToken ) )
+            {
+                const XsdAnnotation::Ptr annotation = parseAnnotation();
+                m_schema->addAnnotation( annotation );
+            }
+            else
+            {
+                parseUnknown();
+            }
+        }
+    }
 
-   tagValidator.finalize();
+    tagValidator.finalize();
 }
 
 void XsdSchemaParser::parseRedefine()
 {
-   Q_ASSERT(isStartElement() && XsdSchemaToken::toToken(name()) == XsdSchemaToken::Redefine &&
-            XsdSchemaToken::toToken(namespaceUri()) == XsdSchemaToken::XML_NS_SCHEMA_URI);
+    Q_ASSERT( isStartElement() && XsdSchemaToken::toToken( name() ) == XsdSchemaToken::Redefine &&
+              XsdSchemaToken::toToken( namespaceUri() ) == XsdSchemaToken::XML_NS_SCHEMA_URI );
 
-   validateElement(XsdTagScope::Redefine);
+    validateElement( XsdTagScope::Redefine );
 
-   // parse attributes
-   validateIdAttribute("redefine");
+    // parse attributes
+    validateIdAttribute( "redefine" );
 
-   const QString schemaLocation = readAttribute(QString::fromLatin1("schemaLocation"));
+    const QString schemaLocation = readAttribute( QString::fromLatin1( "schemaLocation" ) );
 
-   TagValidationHandler tagValidator(XsdTagScope::Redefine, this, NamePool::Ptr(m_namePool));
+    TagValidationHandler tagValidator( XsdTagScope::Redefine, this, NamePool::Ptr( m_namePool ) );
 
-   XsdSimpleType::List redefinedSimpleTypes;
-   XsdComplexType::List redefinedComplexTypes;
-   XsdModelGroup::List redefinedGroups;
-   XsdAttributeGroup::List redefinedAttributeGroups;
+    XsdSimpleType::List redefinedSimpleTypes;
+    XsdComplexType::List redefinedComplexTypes;
+    XsdModelGroup::List redefinedGroups;
+    XsdAttributeGroup::List redefinedAttributeGroups;
 
-   while (!atEnd()) {
-      readNext();
+    while ( !atEnd() )
+    {
+        readNext();
 
-      if (isEndElement()) {
-         break;
-      }
+        if ( isEndElement() )
+        {
+            break;
+        }
 
-      if (isStartElement()) {
-         const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken(name());
-         const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken(namespaceUri());
+        if ( isStartElement() )
+        {
+            const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken( name() );
+            const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken( namespaceUri() );
 
-         tagValidator.validate(token);
+            tagValidator.validate( token );
 
-         if (isSchemaTag(XsdSchemaToken::Annotation, token, namespaceToken)) {
-            const XsdAnnotation::Ptr annotation = parseAnnotation();
-            m_schema->addAnnotation(annotation);
-         } else if (isSchemaTag(XsdSchemaToken::SimpleType, token, namespaceToken)) {
-            const XsdSimpleType::Ptr type = parseGlobalSimpleType();
-            redefinedSimpleTypes.append(type);
-
-            const QXmlName baseTypeName = m_parserContext->resolver()->baseTypeNameOfType(type);
-            if (baseTypeName != type->name(NamePool::Ptr(m_namePool))) {
-               error(QString::fromLatin1("redefined simple type %1 must have itself as base type").formatArg(formatType(NamePool::Ptr(
-                        m_namePool), type)));
-               return;
+            if ( isSchemaTag( XsdSchemaToken::Annotation, token, namespaceToken ) )
+            {
+                const XsdAnnotation::Ptr annotation = parseAnnotation();
+                m_schema->addAnnotation( annotation );
             }
-         } else if (isSchemaTag(XsdSchemaToken::ComplexType, token, namespaceToken)) {
-            const XsdComplexType::Ptr type = parseGlobalComplexType();
-            redefinedComplexTypes.append(type);
+            else if ( isSchemaTag( XsdSchemaToken::SimpleType, token, namespaceToken ) )
+            {
+                const XsdSimpleType::Ptr type = parseGlobalSimpleType();
+                redefinedSimpleTypes.append( type );
 
-            // @see http://www.w3.org/TR/xmlschema11-1/#src-redefine
+                const QXmlName baseTypeName = m_parserContext->resolver()->baseTypeNameOfType( type );
 
-            // 5
-            const QXmlName baseTypeName = m_parserContext->resolver()->baseTypeNameOfType(type);
-            if (baseTypeName != type->name(NamePool::Ptr(m_namePool))) {
-               error(QString::fromLatin1("redefined complex type %1 must have itself as base type").formatArg(formatType(NamePool::Ptr(
-                        m_namePool), type)));
-               return;
+                if ( baseTypeName != type->name( NamePool::Ptr( m_namePool ) ) )
+                {
+                    error( QString::fromLatin1( "redefined simple type %1 must have itself as base type" ).formatArg( formatType( NamePool::Ptr(
+                                m_namePool ), type ) ) );
+                    return;
+                }
             }
-         } else if (isSchemaTag(XsdSchemaToken::Group, token, namespaceToken)) {
-            const XsdModelGroup::Ptr group = parseNamedGroup();
-            redefinedGroups.append(group);
-         } else if (isSchemaTag(XsdSchemaToken::AttributeGroup, token, namespaceToken)) {
-            const XsdAttributeGroup::Ptr group = parseNamedAttributeGroup();
-            redefinedAttributeGroups.append(group);
+            else if ( isSchemaTag( XsdSchemaToken::ComplexType, token, namespaceToken ) )
+            {
+                const XsdComplexType::Ptr type = parseGlobalComplexType();
+                redefinedComplexTypes.append( type );
 
-         } else {
-            parseUnknown();
-         }
-      }
-   }
+                // @see http://www.w3.org/TR/xmlschema11-1/#src-redefine
 
-   bool locationMustResolve = false;
-   if (!redefinedSimpleTypes.isEmpty() || !redefinedComplexTypes.isEmpty() ||
-         !redefinedGroups.isEmpty() || !redefinedAttributeGroups.isEmpty()) {
-      locationMustResolve = true;
-   }
+                // 5
+                const QXmlName baseTypeName = m_parserContext->resolver()->baseTypeNameOfType( type );
 
-   QUrl url(schemaLocation);
-   if (url.isRelative()) {
-      Q_ASSERT(m_documentURI.isValid());
+                if ( baseTypeName != type->name( NamePool::Ptr( m_namePool ) ) )
+                {
+                    error( QString::fromLatin1( "redefined complex type %1 must have itself as base type" ).formatArg( formatType( NamePool::Ptr(
+                                m_namePool ), type ) ) );
+                    return;
+                }
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Group, token, namespaceToken ) )
+            {
+                const XsdModelGroup::Ptr group = parseNamedGroup();
+                redefinedGroups.append( group );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::AttributeGroup, token, namespaceToken ) )
+            {
+                const XsdAttributeGroup::Ptr group = parseNamedAttributeGroup();
+                redefinedAttributeGroups.append( group );
 
-      url = m_documentURI.resolved(url);
-   }
+            }
+            else
+            {
+                parseUnknown();
+            }
+        }
+    }
 
-   // we parse the schema given in the redefine tag into its own context
-   const XsdSchemaParserContext::Ptr redefinedContext(new XsdSchemaParserContext(NamePool::Ptr(m_namePool),
-         XsdSchemaContext::Ptr(m_context)));
+    bool locationMustResolve = false;
 
-   if (m_redefinedSchemas.contains(url)) {
-      // we have redefined that file already, according to the schema spec we are
-      // allowed to silently skip it.
-   } else {
-      m_redefinedSchemas.insert(url);
-      QNetworkReply *reply = AccelTreeResourceLoader::load(url, m_context->networkAccessManager(),
-                             XsdSchemaContext::Ptr(m_context),
-                             (locationMustResolve ? AccelTreeResourceLoader::FailOnError : AccelTreeResourceLoader::ContinueOnError));
-      if (reply) {
-         // parse the included schema by a different parser but with the same context
-         XsdSchemaParser parser(XsdSchemaContext::Ptr(m_context), redefinedContext, reply);
-         parser.setDocumentURI(url);
-         parser.setTargetNamespaceExtended(m_targetNamespace);
-         parser.setIncludedSchemas(m_includedSchemas);
-         parser.setImportedSchemas(m_importedSchemas);
-         parser.setRedefinedSchemas(m_redefinedSchemas);
-         if (!parser.parse(XsdSchemaParser::RedefineParser)) {
+    if ( !redefinedSimpleTypes.isEmpty() || !redefinedComplexTypes.isEmpty() ||
+            !redefinedGroups.isEmpty() || !redefinedAttributeGroups.isEmpty() )
+    {
+        locationMustResolve = true;
+    }
+
+    QUrl url( schemaLocation );
+
+    if ( url.isRelative() )
+    {
+        Q_ASSERT( m_documentURI.isValid() );
+
+        url = m_documentURI.resolved( url );
+    }
+
+    // we parse the schema given in the redefine tag into its own context
+    const XsdSchemaParserContext::Ptr redefinedContext( new XsdSchemaParserContext( NamePool::Ptr( m_namePool ),
+            XsdSchemaContext::Ptr( m_context ) ) );
+
+    if ( m_redefinedSchemas.contains( url ) )
+    {
+        // we have redefined that file already, according to the schema spec we are
+        // allowed to silently skip it.
+    }
+    else
+    {
+        m_redefinedSchemas.insert( url );
+        QNetworkReply *reply = AccelTreeResourceLoader::load( url, m_context->networkAccessManager(),
+                               XsdSchemaContext::Ptr( m_context ),
+                               ( locationMustResolve ? AccelTreeResourceLoader::FailOnError : AccelTreeResourceLoader::ContinueOnError ) );
+
+        if ( reply )
+        {
+            // parse the included schema by a different parser but with the same context
+            XsdSchemaParser parser( XsdSchemaContext::Ptr( m_context ), redefinedContext, reply );
+            parser.setDocumentURI( url );
+            parser.setTargetNamespaceExtended( m_targetNamespace );
+            parser.setIncludedSchemas( m_includedSchemas );
+            parser.setImportedSchemas( m_importedSchemas );
+            parser.setRedefinedSchemas( m_redefinedSchemas );
+
+            if ( !parser.parse( XsdSchemaParser::RedefineParser ) )
+            {
+                return;
+            }
+            else
+            {
+                // add indirectly loaded schemas to the list of already loaded ones
+                addIncludedSchemas( parser.m_includedSchemas );
+                addImportedSchemas( parser.m_importedSchemas );
+                addRedefinedSchemas( parser.m_redefinedSchemas );
+            }
+
+            delete reply;
+        }
+    }
+
+    XsdSimpleType::List contextSimpleTypes = redefinedContext->schema()->simpleTypes();
+    XsdComplexType::List contextComplexTypes = redefinedContext->schema()->complexTypes();
+    XsdModelGroup::List contextGroups = redefinedContext->schema()->elementGroups();
+    XsdAttributeGroup::List contextAttributeGroups = redefinedContext->schema()->attributeGroups();
+
+    // now we do the actual redefinition:
+
+    // iterate over all redefined simple types
+    for ( int i = 0; i < redefinedSimpleTypes.count(); ++i )
+    {
+        XsdSimpleType::Ptr redefinedType = redefinedSimpleTypes.at( i );
+
+        //TODONEXT: validation
+
+        // search the definition they override in the context types
+        bool found = false;
+
+        for ( int j = 0; j < contextSimpleTypes.count(); ++j )
+        {
+            XsdSimpleType::Ptr contextType = contextSimpleTypes.at( j );
+
+            if ( redefinedType->name( NamePool::Ptr( m_namePool ) ) == contextType->name( NamePool::Ptr(
+                        m_namePool ) ) ) // we found the right type
+            {
+                found = true;
+
+                // 1) set name of context type to empty name
+                contextType->setName( m_parserContext->createAnonymousName( QString() ) );
+
+                // 2) set the context type as base type for the redefined type
+                redefinedType->setWxsSuperType( contextType );
+
+                // 3) remove the base type resolving job from the resolver as
+                //    we have set the base type here explicitly
+                m_parserContext->resolver()->removeSimpleRestrictionBase( redefinedType );
+
+                // 4) add the redefined type to the schema
+                addType( redefinedType );
+
+                // 5) add the context type as anonymous type, so the resolver
+                //    can resolve it further.
+                addAnonymousType( contextType );
+
+                // 6) remove the context type from the list
+                contextSimpleTypes.removeAt( j );
+
+                break;
+            }
+        }
+
+        if ( !found )
+        {
+            error( QString::fromLatin1( "no matching type found to redefine simple type %1" ).formatArg( formatType( NamePool::Ptr(
+                        m_namePool ),
+                    redefinedType ) ) );
             return;
-         } else {
-            // add indirectly loaded schemas to the list of already loaded ones
-            addIncludedSchemas(parser.m_includedSchemas);
-            addImportedSchemas(parser.m_importedSchemas);
-            addRedefinedSchemas(parser.m_redefinedSchemas);
-         }
+        }
+    }
 
-         delete reply;
-      }
-   }
+    // add all remaining context simple types to the schema
+    for ( int i = 0; i < contextSimpleTypes.count(); ++i )
+    {
+        addType( contextSimpleTypes.at( i ) );
+    }
 
-   XsdSimpleType::List contextSimpleTypes = redefinedContext->schema()->simpleTypes();
-   XsdComplexType::List contextComplexTypes = redefinedContext->schema()->complexTypes();
-   XsdModelGroup::List contextGroups = redefinedContext->schema()->elementGroups();
-   XsdAttributeGroup::List contextAttributeGroups = redefinedContext->schema()->attributeGroups();
+    // iterate over all redefined complex types
+    for ( int i = 0; i < redefinedComplexTypes.count(); ++i )
+    {
+        XsdComplexType::Ptr redefinedType = redefinedComplexTypes.at( i );
 
-   // now we do the actual redefinition:
+        //TODONEXT: validation
 
-   // iterate over all redefined simple types
-   for (int i = 0; i < redefinedSimpleTypes.count(); ++i) {
-      XsdSimpleType::Ptr redefinedType = redefinedSimpleTypes.at(i);
+        // search the definition they override in the context types
+        bool found = false;
 
-      //TODONEXT: validation
+        for ( int j = 0; j < contextComplexTypes.count(); ++j )
+        {
+            XsdComplexType::Ptr contextType = contextComplexTypes.at( j );
 
-      // search the definition they override in the context types
-      bool found = false;
-      for (int j = 0; j < contextSimpleTypes.count(); ++j) {
-         XsdSimpleType::Ptr contextType = contextSimpleTypes.at(j);
+            if ( redefinedType->name( NamePool::Ptr( m_namePool ) ) == contextType->name( NamePool::Ptr(
+                        m_namePool ) ) ) // we found the right type
+            {
+                found = true;
 
-         if (redefinedType->name(NamePool::Ptr(m_namePool)) == contextType->name(NamePool::Ptr(
-                  m_namePool))) { // we found the right type
-            found = true;
+                // 1) set name of context type to empty name
+                contextType->setName( m_parserContext->createAnonymousName( QString() ) );
 
-            // 1) set name of context type to empty name
-            contextType->setName(m_parserContext->createAnonymousName(QString()));
+                // 2) set the context type as base type for the redefined type
+                redefinedType->setWxsSuperType( contextType );
 
-            // 2) set the context type as base type for the redefined type
-            redefinedType->setWxsSuperType(contextType);
+                // 3) remove the base type resolving job from the resolver as
+                //    we have set the base type here explicitly
+                m_parserContext->resolver()->removeComplexBaseType( redefinedType );
 
-            // 3) remove the base type resolving job from the resolver as
-            //    we have set the base type here explicitly
-            m_parserContext->resolver()->removeSimpleRestrictionBase(redefinedType);
+                // 4) add the redefined type to the schema
+                addType( redefinedType );
 
-            // 4) add the redefined type to the schema
-            addType(redefinedType);
+                // 5) add the context type as anonymous type, so the resolver
+                //    can resolve its attribute uses etc.
+                addAnonymousType( contextType );
 
-            // 5) add the context type as anonymous type, so the resolver
-            //    can resolve it further.
-            addAnonymousType(contextType);
+                // 6) remove the context type from the list
+                contextComplexTypes.removeAt( j );
 
-            // 6) remove the context type from the list
-            contextSimpleTypes.removeAt(j);
-
-            break;
-         }
-      }
-
-      if (!found) {
-         error(QString::fromLatin1("no matching type found to redefine simple type %1").formatArg(formatType(NamePool::Ptr(m_namePool),
-               redefinedType)));
-         return;
-      }
-   }
-
-   // add all remaining context simple types to the schema
-   for (int i = 0; i < contextSimpleTypes.count(); ++i) {
-      addType(contextSimpleTypes.at(i));
-   }
-
-   // iterate over all redefined complex types
-   for (int i = 0; i < redefinedComplexTypes.count(); ++i) {
-      XsdComplexType::Ptr redefinedType = redefinedComplexTypes.at(i);
-
-      //TODONEXT: validation
-
-      // search the definition they override in the context types
-      bool found = false;
-      for (int j = 0; j < contextComplexTypes.count(); ++j) {
-         XsdComplexType::Ptr contextType = contextComplexTypes.at(j);
-
-         if (redefinedType->name(NamePool::Ptr(m_namePool)) == contextType->name(NamePool::Ptr(
-                  m_namePool))) { // we found the right type
-            found = true;
-
-            // 1) set name of context type to empty name
-            contextType->setName(m_parserContext->createAnonymousName(QString()));
-
-            // 2) set the context type as base type for the redefined type
-            redefinedType->setWxsSuperType(contextType);
-
-            // 3) remove the base type resolving job from the resolver as
-            //    we have set the base type here explicitly
-            m_parserContext->resolver()->removeComplexBaseType(redefinedType);
-
-            // 4) add the redefined type to the schema
-            addType(redefinedType);
-
-            // 5) add the context type as anonymous type, so the resolver
-            //    can resolve its attribute uses etc.
-            addAnonymousType(contextType);
-
-            // 6) remove the context type from the list
-            contextComplexTypes.removeAt(j);
-
-            break;
-         }
-      }
-
-      if (!found) {
-         error(QString::fromLatin1("no matching type found to redefine complex type %1").formatArg(formatType(NamePool::Ptr(
-                  m_namePool), redefinedType)));
-         return;
-      }
-   }
-
-   // iterate over all redefined element groups
-   for (int i = 0; i < redefinedGroups.count(); ++i) {
-      const XsdModelGroup::Ptr group(redefinedGroups.at(i));
-
-      // @see http://www.w3.org/TR/xmlschema11-1/#src-redefine
-
-      // 6
-      const XsdParticle::List particles = collectGroupRef(group);
-      XsdParticle::Ptr referencedParticle;
-      int sameNameCounter = 0;
-      for (int i = 0; i < particles.count(); ++i) {
-         const XsdReference::Ptr ref(particles.at(i)->term());
-         if (ref->referenceName() == group->name(NamePool::Ptr(m_namePool))) {
-            referencedParticle = particles.at(i);
-
-            if (referencedParticle->minimumOccurs() != 1 || referencedParticle->maximumOccurs() != 1 ||
-                  referencedParticle->maximumOccursUnbounded()) { // 6.1.2
-               error(QString::fromLatin1("redefined group %1 can not contain reference to itself with minOccurs or maxOccurs != 1").formatArg(
-                        formatKeyword(group->displayName(NamePool::Ptr(m_namePool)))));
-               return;
+                break;
             }
-            sameNameCounter++;
-         }
-      }
+        }
 
-      // 6.1.1
-      if (sameNameCounter > 1) {
-         error(QString::fromLatin1("redefined group %1 can not contain multiple references to itself").formatArg(formatKeyword(
-                  group->displayName(NamePool::Ptr(m_namePool)))));
-         return;
-      }
+        if ( !found )
+        {
+            error( QString::fromLatin1( "no matching type found to redefine complex type %1" ).formatArg( formatType( NamePool::Ptr(
+                        m_namePool ), redefinedType ) ) );
+            return;
+        }
+    }
 
-      // search the group definition in the included schema (S2)
-      XsdModelGroup::Ptr contextGroup;
-      for (int j = 0; j < contextGroups.count(); ++j) {
-         if (group->name(NamePool::Ptr(m_namePool)) == contextGroups.at(j)->name(NamePool::Ptr(m_namePool))) {
-            contextGroup = contextGroups.at(j);
-            break;
-         }
-      }
+    // iterate over all redefined element groups
+    for ( int i = 0; i < redefinedGroups.count(); ++i )
+    {
+        const XsdModelGroup::Ptr group( redefinedGroups.at( i ) );
 
-      if (!contextGroup) { // 6.2.1
-         error(QString::fromLatin1("redefined group %1 has no occurrence in included schema").formatArg(formatKeyword(
-                  group->displayName(NamePool::Ptr(m_namePool)))));
-         return;
-      }
+        // @see http://www.w3.org/TR/xmlschema11-1/#src-redefine
 
-      if (sameNameCounter == 1) {
-         // there was a self reference in the redefined group, so use the
-         // group from the included schema
+        // 6
+        const XsdParticle::List particles = collectGroupRef( group );
+        XsdParticle::Ptr referencedParticle;
+        int sameNameCounter = 0;
 
-         // set a anonymous name to the group of the included schema
-         contextGroup->setName(m_parserContext->createAnonymousName(m_namePool->stringForNamespace(contextGroup->name(
-                                  NamePool::Ptr(m_namePool)).namespaceURI())));
+        for ( int i = 0; i < particles.count(); ++i )
+        {
+            const XsdReference::Ptr ref( particles.at( i )->term() );
 
-         // replace the self-reference with the group from the included schema
-         referencedParticle->setTerm(contextGroup);
+            if ( ref->referenceName() == group->name( NamePool::Ptr( m_namePool ) ) )
+            {
+                referencedParticle = particles.at( i );
 
-         addElementGroup(group);
+                if ( referencedParticle->minimumOccurs() != 1 || referencedParticle->maximumOccurs() != 1 ||
+                        referencedParticle->maximumOccursUnbounded() )  // 6.1.2
+                {
+                    error( QString::fromLatin1( "redefined group %1 can not contain reference to itself with minOccurs or maxOccurs != 1" ).formatArg(
+                               formatKeyword( group->displayName( NamePool::Ptr( m_namePool ) ) ) ) );
+                    return;
+                }
 
-         addElementGroup(contextGroup);
-         contextGroups.removeAll(contextGroup);
-      } else {
-         // there was no self reference in the redefined group
-
-         // just add the redefined group...
-         addElementGroup(group);
-
-         // we have to add them, otherwise it is not resolved and we can't validate it later
-         contextGroup->setName(m_parserContext->createAnonymousName(m_namePool->stringForNamespace(contextGroup->name(
-                                  NamePool::Ptr(m_namePool)).namespaceURI())));
-         addElementGroup(contextGroup);
-
-         m_schemaResolver->addRedefinedGroups(group, contextGroup);
-
-         // ...and forget about the group from the included schema
-         contextGroups.removeAll(contextGroup);
-      }
-   }
-
-   // iterate over all redefined attribute groups
-   for (int i = 0; i < redefinedAttributeGroups.count(); ++i) {
-      const XsdAttributeGroup::Ptr group(redefinedAttributeGroups.at(i));
-
-      // @see http://www.w3.org/TR/xmlschema11-1/#src-redefine
-
-      // 7
-
-      // 7.1
-      int sameNameCounter = 0;
-      for (int j = 0; j < group->attributeUses().count(); ++j) {
-         const XsdAttributeUse::Ptr attributeUse(group->attributeUses().at(j));
-         if (attributeUse->isReference()) {
-            const XsdAttributeReference::Ptr reference(attributeUse);
-            if (reference->type() == XsdAttributeReference::AttributeGroup) {
-               if (group->name(NamePool::Ptr(m_namePool)) == reference->referenceName()) {
-                  sameNameCounter++;
-               }
+                sameNameCounter++;
             }
-         }
-      }
-      if (sameNameCounter > 1) {
-         error(QString::fromLatin1("redefined attribute group %1 can not contain multiple references to itself").formatArg(
-                  formatKeyword(group->displayName(NamePool::Ptr(m_namePool)))));
-         return;
-      }
+        }
 
-      // search the attribute group definition in the included schema (S2)
-      XsdAttributeGroup::Ptr baseGroup;
-      for (int j = 0; j < contextAttributeGroups.count(); ++j) {
-         const XsdAttributeGroup::Ptr contextGroup(contextAttributeGroups.at(j));
-         if (group->name(NamePool::Ptr(m_namePool)) == contextGroup->name(NamePool::Ptr(m_namePool))) {
-            baseGroup = contextGroup;
-            break;
-         }
-      }
+        // 6.1.1
+        if ( sameNameCounter > 1 )
+        {
+            error( QString::fromLatin1( "redefined group %1 can not contain multiple references to itself" ).formatArg( formatKeyword(
+                        group->displayName( NamePool::Ptr( m_namePool ) ) ) ) );
+            return;
+        }
 
-      if (!baseGroup) { // 7.2.1
-         error(QString::fromLatin1("redefined attribute group %1 has no occurrence in included schema").formatArg(formatKeyword(
-                  group->displayName(NamePool::Ptr(m_namePool)))));
-         return;
-      }
+        // search the group definition in the included schema (S2)
+        XsdModelGroup::Ptr contextGroup;
 
-      if (sameNameCounter == 1) {
-
-         // first set an anonymous name to the attribute group from the included
-         // schema
-         baseGroup->setName(m_parserContext->createAnonymousName(m_namePool->stringForNamespace(baseGroup->name(NamePool::Ptr(
-                               m_namePool)).namespaceURI())));
-
-         // iterate over the attribute uses of the redefined attribute group
-         // and replace the self-reference with the attribute group from the
-         // included schema
-         for (int j = 0; j < group->attributeUses().count(); ++j) {
-            const XsdAttributeUse::Ptr attributeUse(group->attributeUses().at(j));
-            if (attributeUse->isReference()) {
-               const XsdAttributeReference::Ptr reference(attributeUse);
-               if (reference->type() == XsdAttributeReference::AttributeGroup) {
-                  if (group->name(NamePool::Ptr(m_namePool)) == reference->referenceName()) {
-                     reference->setReferenceName(baseGroup->name(NamePool::Ptr(m_namePool)));
-                     break;
-                  }
-               }
+        for ( int j = 0; j < contextGroups.count(); ++j )
+        {
+            if ( group->name( NamePool::Ptr( m_namePool ) ) == contextGroups.at( j )->name( NamePool::Ptr( m_namePool ) ) )
+            {
+                contextGroup = contextGroups.at( j );
+                break;
             }
-         }
+        }
 
-         // add both groups to the target schema
-         addAttributeGroup(baseGroup);
-         addAttributeGroup(group);
+        if ( !contextGroup ) // 6.2.1
+        {
+            error( QString::fromLatin1( "redefined group %1 has no occurrence in included schema" ).formatArg( formatKeyword(
+                        group->displayName( NamePool::Ptr( m_namePool ) ) ) ) );
+            return;
+        }
 
-         contextAttributeGroups.removeAll(baseGroup);
-      }
+        if ( sameNameCounter == 1 )
+        {
+            // there was a self reference in the redefined group, so use the
+            // group from the included schema
 
-      if (sameNameCounter == 0) { // 7.2
+            // set a anonymous name to the group of the included schema
+            contextGroup->setName( m_parserContext->createAnonymousName( m_namePool->stringForNamespace( contextGroup->name(
+                                       NamePool::Ptr( m_namePool ) ).namespaceURI() ) ) );
 
-         // we have to add them, otherwise it is not resolved and we can't validate it later
-         baseGroup->setName(m_parserContext->createAnonymousName(m_namePool->stringForNamespace(baseGroup->name(NamePool::Ptr(
-                               m_namePool)).namespaceURI())));
-         addAttributeGroup(baseGroup);
+            // replace the self-reference with the group from the included schema
+            referencedParticle->setTerm( contextGroup );
 
-         m_schemaResolver->addRedefinedAttributeGroups(group, baseGroup);
+            addElementGroup( group );
 
-         // just add the redefined attribute group to the target schema...
-         addAttributeGroup(group);
+            addElementGroup( contextGroup );
+            contextGroups.removeAll( contextGroup );
+        }
+        else
+        {
+            // there was no self reference in the redefined group
 
-         // ... and forget about the one from the included schema
-         contextAttributeGroups.removeAll(baseGroup);
-      }
-   }
+            // just add the redefined group...
+            addElementGroup( group );
 
-   // add all remaining context complex types to the schema
-   for (int i = 0; i < contextComplexTypes.count(); ++i) {
-      addType(contextComplexTypes.at(i));
-   }
+            // we have to add them, otherwise it is not resolved and we can't validate it later
+            contextGroup->setName( m_parserContext->createAnonymousName( m_namePool->stringForNamespace( contextGroup->name(
+                                       NamePool::Ptr( m_namePool ) ).namespaceURI() ) ) );
+            addElementGroup( contextGroup );
 
-   // add all remaining context element groups to the schema
-   for (int i = 0; i < contextGroups.count(); ++i) {
-      addElementGroup(contextGroups.at(i));
-   }
+            m_schemaResolver->addRedefinedGroups( group, contextGroup );
 
-   // add all remaining context attribute groups to the schema
-   for (int i = 0; i < contextAttributeGroups.count(); ++i) {
-      addAttributeGroup(contextAttributeGroups.at(i));
-   }
+            // ...and forget about the group from the included schema
+            contextGroups.removeAll( contextGroup );
+        }
+    }
 
-   // copy all elements, attributes and notations
-   const XsdElement::List contextElements = redefinedContext->schema()->elements();
-   for (int i = 0; i < contextElements.count(); ++i) {
-      addElement(contextElements.at(i));
-   }
+    // iterate over all redefined attribute groups
+    for ( int i = 0; i < redefinedAttributeGroups.count(); ++i )
+    {
+        const XsdAttributeGroup::Ptr group( redefinedAttributeGroups.at( i ) );
 
-   const XsdAttribute::List contextAttributes = redefinedContext->schema()->attributes();
-   for (int i = 0; i < contextAttributes.count(); ++i) {
-      addAttribute(contextAttributes.at(i));
-   }
+        // @see http://www.w3.org/TR/xmlschema11-1/#src-redefine
 
-   const XsdNotation::List contextNotations = redefinedContext->schema()->notations();
-   for (int i = 0; i < contextNotations.count(); ++i) {
-      addNotation(contextNotations.at(i));
-   }
+        // 7
 
-   // push all data to resolve from the context resolver to our resolver
-   redefinedContext->resolver()->copyDataTo(m_parserContext->resolver());
+        // 7.1
+        int sameNameCounter = 0;
 
-   tagValidator.finalize();
+        for ( int j = 0; j < group->attributeUses().count(); ++j )
+        {
+            const XsdAttributeUse::Ptr attributeUse( group->attributeUses().at( j ) );
+
+            if ( attributeUse->isReference() )
+            {
+                const XsdAttributeReference::Ptr reference( attributeUse );
+
+                if ( reference->type() == XsdAttributeReference::AttributeGroup )
+                {
+                    if ( group->name( NamePool::Ptr( m_namePool ) ) == reference->referenceName() )
+                    {
+                        sameNameCounter++;
+                    }
+                }
+            }
+        }
+
+        if ( sameNameCounter > 1 )
+        {
+            error( QString::fromLatin1( "redefined attribute group %1 can not contain multiple references to itself" ).formatArg(
+                       formatKeyword( group->displayName( NamePool::Ptr( m_namePool ) ) ) ) );
+            return;
+        }
+
+        // search the attribute group definition in the included schema (S2)
+        XsdAttributeGroup::Ptr baseGroup;
+
+        for ( int j = 0; j < contextAttributeGroups.count(); ++j )
+        {
+            const XsdAttributeGroup::Ptr contextGroup( contextAttributeGroups.at( j ) );
+
+            if ( group->name( NamePool::Ptr( m_namePool ) ) == contextGroup->name( NamePool::Ptr( m_namePool ) ) )
+            {
+                baseGroup = contextGroup;
+                break;
+            }
+        }
+
+        if ( !baseGroup ) // 7.2.1
+        {
+            error( QString::fromLatin1( "redefined attribute group %1 has no occurrence in included schema" ).formatArg( formatKeyword(
+                        group->displayName( NamePool::Ptr( m_namePool ) ) ) ) );
+            return;
+        }
+
+        if ( sameNameCounter == 1 )
+        {
+
+            // first set an anonymous name to the attribute group from the included
+            // schema
+            baseGroup->setName( m_parserContext->createAnonymousName( m_namePool->stringForNamespace( baseGroup->name( NamePool::Ptr(
+                                    m_namePool ) ).namespaceURI() ) ) );
+
+            // iterate over the attribute uses of the redefined attribute group
+            // and replace the self-reference with the attribute group from the
+            // included schema
+            for ( int j = 0; j < group->attributeUses().count(); ++j )
+            {
+                const XsdAttributeUse::Ptr attributeUse( group->attributeUses().at( j ) );
+
+                if ( attributeUse->isReference() )
+                {
+                    const XsdAttributeReference::Ptr reference( attributeUse );
+
+                    if ( reference->type() == XsdAttributeReference::AttributeGroup )
+                    {
+                        if ( group->name( NamePool::Ptr( m_namePool ) ) == reference->referenceName() )
+                        {
+                            reference->setReferenceName( baseGroup->name( NamePool::Ptr( m_namePool ) ) );
+                            break;
+                        }
+                    }
+                }
+            }
+
+            // add both groups to the target schema
+            addAttributeGroup( baseGroup );
+            addAttributeGroup( group );
+
+            contextAttributeGroups.removeAll( baseGroup );
+        }
+
+        if ( sameNameCounter == 0 ) // 7.2
+        {
+
+            // we have to add them, otherwise it is not resolved and we can't validate it later
+            baseGroup->setName( m_parserContext->createAnonymousName( m_namePool->stringForNamespace( baseGroup->name( NamePool::Ptr(
+                                    m_namePool ) ).namespaceURI() ) ) );
+            addAttributeGroup( baseGroup );
+
+            m_schemaResolver->addRedefinedAttributeGroups( group, baseGroup );
+
+            // just add the redefined attribute group to the target schema...
+            addAttributeGroup( group );
+
+            // ... and forget about the one from the included schema
+            contextAttributeGroups.removeAll( baseGroup );
+        }
+    }
+
+    // add all remaining context complex types to the schema
+    for ( int i = 0; i < contextComplexTypes.count(); ++i )
+    {
+        addType( contextComplexTypes.at( i ) );
+    }
+
+    // add all remaining context element groups to the schema
+    for ( int i = 0; i < contextGroups.count(); ++i )
+    {
+        addElementGroup( contextGroups.at( i ) );
+    }
+
+    // add all remaining context attribute groups to the schema
+    for ( int i = 0; i < contextAttributeGroups.count(); ++i )
+    {
+        addAttributeGroup( contextAttributeGroups.at( i ) );
+    }
+
+    // copy all elements, attributes and notations
+    const XsdElement::List contextElements = redefinedContext->schema()->elements();
+
+    for ( int i = 0; i < contextElements.count(); ++i )
+    {
+        addElement( contextElements.at( i ) );
+    }
+
+    const XsdAttribute::List contextAttributes = redefinedContext->schema()->attributes();
+
+    for ( int i = 0; i < contextAttributes.count(); ++i )
+    {
+        addAttribute( contextAttributes.at( i ) );
+    }
+
+    const XsdNotation::List contextNotations = redefinedContext->schema()->notations();
+
+    for ( int i = 0; i < contextNotations.count(); ++i )
+    {
+        addNotation( contextNotations.at( i ) );
+    }
+
+    // push all data to resolve from the context resolver to our resolver
+    redefinedContext->resolver()->copyDataTo( m_parserContext->resolver() );
+
+    tagValidator.finalize();
 }
 
 XsdAnnotation::Ptr XsdSchemaParser::parseAnnotation()
 {
-   const ElementNamespaceHandler namespaceHandler(XsdSchemaToken::Annotation, this);
+    const ElementNamespaceHandler namespaceHandler( XsdSchemaToken::Annotation, this );
 
-   validateElement(XsdTagScope::Annotation);
+    validateElement( XsdTagScope::Annotation );
 
-   // parse attributes
-   validateIdAttribute("annotation");
+    // parse attributes
+    validateIdAttribute( "annotation" );
 
-   TagValidationHandler tagValidator(XsdTagScope::Annotation, this, NamePool::Ptr(m_namePool));
+    TagValidationHandler tagValidator( XsdTagScope::Annotation, this, NamePool::Ptr( m_namePool ) );
 
-   const XsdAnnotation::Ptr annotation(new XsdAnnotation());
+    const XsdAnnotation::Ptr annotation( new XsdAnnotation() );
 
-   while (!atEnd()) {
-      readNext();
+    while ( !atEnd() )
+    {
+        readNext();
 
-      if (isEndElement()) {
-         break;
-      }
+        if ( isEndElement() )
+        {
+            break;
+        }
 
-      if (isStartElement()) {
-         const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken(name());
-         const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken(namespaceUri());
+        if ( isStartElement() )
+        {
+            const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken( name() );
+            const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken( namespaceUri() );
 
-         tagValidator.validate(token);
+            tagValidator.validate( token );
 
-         if (isSchemaTag(XsdSchemaToken::Appinfo, token, namespaceToken)) {
-            const XsdApplicationInformation::Ptr info = parseAppInfo();
-            annotation->addApplicationInformation(info);
-         } else if (isSchemaTag(XsdSchemaToken::Documentation, token, namespaceToken)) {
-            const XsdDocumentation::Ptr documentation = parseDocumentation();
-            annotation->addDocumentation(documentation);
-         } else {
-            parseUnknown();
-         }
-      }
-   }
+            if ( isSchemaTag( XsdSchemaToken::Appinfo, token, namespaceToken ) )
+            {
+                const XsdApplicationInformation::Ptr info = parseAppInfo();
+                annotation->addApplicationInformation( info );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Documentation, token, namespaceToken ) )
+            {
+                const XsdDocumentation::Ptr documentation = parseDocumentation();
+                annotation->addDocumentation( documentation );
+            }
+            else
+            {
+                parseUnknown();
+            }
+        }
+    }
 
-   tagValidator.finalize();
+    tagValidator.finalize();
 
-   return annotation;
+    return annotation;
 }
 
 XsdApplicationInformation::Ptr XsdSchemaParser::parseAppInfo()
 {
-   const ElementNamespaceHandler namespaceHandler(XsdSchemaToken::Appinfo, this);
+    const ElementNamespaceHandler namespaceHandler( XsdSchemaToken::Appinfo, this );
 
-   validateElement(XsdTagScope::AppInfo);
+    validateElement( XsdTagScope::AppInfo );
 
-   const XsdApplicationInformation::Ptr info(new XsdApplicationInformation());
+    const XsdApplicationInformation::Ptr info( new XsdApplicationInformation() );
 
-   // parse attributes
-   if (hasAttribute("source")) {
-      const QString value = readAttribute(QString::fromLatin1("source"));
+    // parse attributes
+    if ( hasAttribute( "source" ) )
+    {
+        const QString value = readAttribute( QString::fromLatin1( "source" ) );
 
-      if (!isValidUri(value)) {
-         attributeContentError("source", "appinfo", value, BuiltinTypes::xsAnyURI);
-         return info;
-      }
+        if ( !isValidUri( value ) )
+        {
+            attributeContentError( "source", "appinfo", value, BuiltinTypes::xsAnyURI );
+            return info;
+        }
 
-      if (!value.isEmpty()) {
-         const AnyURI::Ptr source = AnyURI::fromLexical(value);
-         info->setSource(source);
-      }
-   }
+        if ( !value.isEmpty() )
+        {
+            const AnyURI::Ptr source = AnyURI::fromLexical( value );
+            info->setSource( source );
+        }
+    }
 
-   while (!atEnd()) { //EVAL: can be anything... what to do?
-      readNext();
+    while ( !atEnd() ) //EVAL: can be anything... what to do?
+    {
+        readNext();
 
-      if (isEndElement()) {
-         break;
-      }
+        if ( isEndElement() )
+        {
+            break;
+        }
 
-      if (isStartElement()) {
-         parseUnknownDocumentation();
-      }
-   }
+        if ( isStartElement() )
+        {
+            parseUnknownDocumentation();
+        }
+    }
 
-   return info;
+    return info;
 }
 
 XsdDocumentation::Ptr XsdSchemaParser::parseDocumentation()
 {
-   const ElementNamespaceHandler namespaceHandler(XsdSchemaToken::Documentation, this);
+    const ElementNamespaceHandler namespaceHandler( XsdSchemaToken::Documentation, this );
 
-   validateElement(XsdTagScope::Documentation);
+    validateElement( XsdTagScope::Documentation );
 
-   const XsdDocumentation::Ptr documentation(new XsdDocumentation());
+    const XsdDocumentation::Ptr documentation( new XsdDocumentation() );
 
-   // parse attributes
-   if (hasAttribute("source")) {
-      const QString value = readAttribute(QString::fromLatin1("source"));
+    // parse attributes
+    if ( hasAttribute( "source" ) )
+    {
+        const QString value = readAttribute( QString::fromLatin1( "source" ) );
 
-      if (! isValidUri(value)) {
-         attributeContentError("source", "documentation", value, BuiltinTypes::xsAnyURI);
-         return documentation;
-      }
+        if ( ! isValidUri( value ) )
+        {
+            attributeContentError( "source", "documentation", value, BuiltinTypes::xsAnyURI );
+            return documentation;
+        }
 
-      if (!value.isEmpty()) {
-         const AnyURI::Ptr source = AnyURI::fromLexical(value);
-         documentation->setSource(source);
-      }
-   }
+        if ( !value.isEmpty() )
+        {
+            const AnyURI::Ptr source = AnyURI::fromLexical( value );
+            documentation->setSource( source );
+        }
+    }
 
-   if (hasAttribute(CommonNamespaces::XML,"lang")) {
-      const QString value = readAttribute(QString::fromLatin1("lang"), CommonNamespaces::XML);
+    if ( hasAttribute( CommonNamespaces::XML,"lang" ) )
+    {
+        const QString value = readAttribute( QString::fromLatin1( "lang" ), CommonNamespaces::XML );
 
-      static const QRegularExpression exp("[a-zA-Z]{1,8}(-[a-zA-Z0-9]{1,8})*", QPatternOption::ExactMatchOption);
+        static const QRegularExpression exp( "[a-zA-Z]{1,8}(-[a-zA-Z0-9]{1,8})*", QPatternOption::ExactMatchOption );
 
-      if (! exp.match(value).hasMatch()) {
-         attributeContentError("xml:lang", "documentation", value);
-         return documentation;
-      }
-   }
+        if ( ! exp.match( value ).hasMatch() )
+        {
+            attributeContentError( "xml:lang", "documentation", value );
+            return documentation;
+        }
+    }
 
-   while (!atEnd()) {
-      //EVAL: can by any... what to do?
-      readNext();
+    while ( !atEnd() )
+    {
+        //EVAL: can by any... what to do?
+        readNext();
 
-      if (isEndElement()) {
-         break;
-      }
+        if ( isEndElement() )
+        {
+            break;
+        }
 
-      if (isStartElement()) {
-         parseUnknownDocumentation();
-      }
-   }
+        if ( isStartElement() )
+        {
+            parseUnknownDocumentation();
+        }
+    }
 
-   return documentation;
+    return documentation;
 }
 
 void XsdSchemaParser::parseDefaultOpenContent()
 {
-   const ElementNamespaceHandler namespaceHandler(XsdSchemaToken::DefaultOpenContent, this);
+    const ElementNamespaceHandler namespaceHandler( XsdSchemaToken::DefaultOpenContent, this );
 
-   validateElement(XsdTagScope::DefaultOpenContent);
+    validateElement( XsdTagScope::DefaultOpenContent );
 
-   m_defaultOpenContent = XsdComplexType::OpenContent::Ptr(new XsdComplexType::OpenContent());
+    m_defaultOpenContent = XsdComplexType::OpenContent::Ptr( new XsdComplexType::OpenContent() );
 
-   if (hasAttribute("appliesToEmpty")) {
-      const QString value = readAttribute(QString::fromLatin1("appliesToEmpty"));
-      const Boolean::Ptr appliesToEmpty = Boolean::fromLexical(value);
+    if ( hasAttribute( "appliesToEmpty" ) )
+    {
+        const QString value = readAttribute( QString::fromLatin1( "appliesToEmpty" ) );
+        const Boolean::Ptr appliesToEmpty = Boolean::fromLexical( value );
 
-      if (appliesToEmpty->hasError()) {
-         attributeContentError("appliesToEmpty", "defaultOpenContent", value, BuiltinTypes::xsBoolean);
-         return;
-      }
+        if ( appliesToEmpty->hasError() )
+        {
+            attributeContentError( "appliesToEmpty", "defaultOpenContent", value, BuiltinTypes::xsBoolean );
+            return;
+        }
 
-      m_defaultOpenContentAppliesToEmpty = appliesToEmpty->as<Boolean>()->value();
-   } else {
-      m_defaultOpenContentAppliesToEmpty = false;
-   }
+        m_defaultOpenContentAppliesToEmpty = appliesToEmpty->as<Boolean>()->value();
+    }
+    else
+    {
+        m_defaultOpenContentAppliesToEmpty = false;
+    }
 
-   if (hasAttribute("mode")) {
-      const QString mode = readAttribute(QString::fromLatin1("mode"));
+    if ( hasAttribute( "mode" ) )
+    {
+        const QString mode = readAttribute( QString::fromLatin1( "mode" ) );
 
-      if (mode == QString::fromLatin1("interleave")) {
-         m_defaultOpenContent->setMode(XsdComplexType::OpenContent::Interleave);
-      } else if (mode == QString::fromLatin1("suffix")) {
-         m_defaultOpenContent->setMode(XsdComplexType::OpenContent::Suffix);
-      } else {
-         attributeContentError("mode", "defaultOpenContent", mode);
-         return;
-      }
-   } else {
-      m_defaultOpenContent->setMode(XsdComplexType::OpenContent::Interleave);
-   }
+        if ( mode == QString::fromLatin1( "interleave" ) )
+        {
+            m_defaultOpenContent->setMode( XsdComplexType::OpenContent::Interleave );
+        }
+        else if ( mode == QString::fromLatin1( "suffix" ) )
+        {
+            m_defaultOpenContent->setMode( XsdComplexType::OpenContent::Suffix );
+        }
+        else
+        {
+            attributeContentError( "mode", "defaultOpenContent", mode );
+            return;
+        }
+    }
+    else
+    {
+        m_defaultOpenContent->setMode( XsdComplexType::OpenContent::Interleave );
+    }
 
-   validateIdAttribute("defaultOpenContent");
+    validateIdAttribute( "defaultOpenContent" );
 
-   TagValidationHandler tagValidator(XsdTagScope::DefaultOpenContent, this, NamePool::Ptr(m_namePool));
+    TagValidationHandler tagValidator( XsdTagScope::DefaultOpenContent, this, NamePool::Ptr( m_namePool ) );
 
-   while (!atEnd()) {
-      readNext();
+    while ( !atEnd() )
+    {
+        readNext();
 
-      if (isEndElement()) {
-         break;
-      }
+        if ( isEndElement() )
+        {
+            break;
+        }
 
-      if (isStartElement()) {
-         const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken(name());
-         const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken(namespaceUri());
+        if ( isStartElement() )
+        {
+            const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken( name() );
+            const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken( namespaceUri() );
 
-         tagValidator.validate(token);
+            tagValidator.validate( token );
 
-         if (isSchemaTag(XsdSchemaToken::Annotation, token, namespaceToken)) {
-            const XsdAnnotation::Ptr annotation = parseAnnotation();
-            m_defaultOpenContent->addAnnotation(annotation);
-         } else if (isSchemaTag(XsdSchemaToken::Any, token, namespaceToken)) {
-            const XsdParticle::Ptr particle;
-            const XsdWildcard::Ptr wildcard = parseAny(particle);
-            m_defaultOpenContent->setWildcard(wildcard);
-         } else {
-            parseUnknown();
-         }
-      }
-   }
+            if ( isSchemaTag( XsdSchemaToken::Annotation, token, namespaceToken ) )
+            {
+                const XsdAnnotation::Ptr annotation = parseAnnotation();
+                m_defaultOpenContent->addAnnotation( annotation );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Any, token, namespaceToken ) )
+            {
+                const XsdParticle::Ptr particle;
+                const XsdWildcard::Ptr wildcard = parseAny( particle );
+                m_defaultOpenContent->setWildcard( wildcard );
+            }
+            else
+            {
+                parseUnknown();
+            }
+        }
+    }
 
-   tagValidator.finalize();
+    tagValidator.finalize();
 }
 
 XsdSimpleType::Ptr XsdSchemaParser::parseGlobalSimpleType()
 {
-   const ElementNamespaceHandler namespaceHandler(XsdSchemaToken::SimpleType, this);
+    const ElementNamespaceHandler namespaceHandler( XsdSchemaToken::SimpleType, this );
 
-   validateElement(XsdTagScope::GlobalSimpleType);
+    validateElement( XsdTagScope::GlobalSimpleType );
 
-   const XsdSimpleType::Ptr simpleType(new XsdSimpleType());
-   simpleType->setCategory(XsdSimpleType::SimpleTypeAtomic); // just to make sure it's not invalid
+    const XsdSimpleType::Ptr simpleType( new XsdSimpleType() );
+    simpleType->setCategory( XsdSimpleType::SimpleTypeAtomic ); // just to make sure it's not invalid
 
-   // parse attributes
-   const SchemaType::DerivationConstraints allowedConstraints(SchemaType::ExtensionConstraint |
-         SchemaType::RestrictionConstraint | SchemaType::ListConstraint | SchemaType::UnionConstraint);
-   simpleType->setDerivationConstraints(readDerivationConstraintAttribute(allowedConstraints, "simpleType"));
+    // parse attributes
+    const SchemaType::DerivationConstraints allowedConstraints( SchemaType::ExtensionConstraint |
+            SchemaType::RestrictionConstraint | SchemaType::ListConstraint | SchemaType::UnionConstraint );
+    simpleType->setDerivationConstraints( readDerivationConstraintAttribute( allowedConstraints, "simpleType" ) );
 
-   const QXmlName objectName = m_namePool->allocateQName(m_targetNamespace, readNameAttribute("simpleType"));
-   simpleType->setName(objectName);
+    const QXmlName objectName = m_namePool->allocateQName( m_targetNamespace, readNameAttribute( "simpleType" ) );
+    simpleType->setName( objectName );
 
-   validateIdAttribute("simpleType");
+    validateIdAttribute( "simpleType" );
 
-   TagValidationHandler tagValidator(XsdTagScope::GlobalSimpleType, this, NamePool::Ptr(m_namePool));
+    TagValidationHandler tagValidator( XsdTagScope::GlobalSimpleType, this, NamePool::Ptr( m_namePool ) );
 
-   while (!atEnd()) {
-      readNext();
+    while ( !atEnd() )
+    {
+        readNext();
 
-      if (isEndElement()) {
-         break;
-      }
+        if ( isEndElement() )
+        {
+            break;
+        }
 
-      if (isStartElement()) {
-         const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken(name());
-         const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken(namespaceUri());
+        if ( isStartElement() )
+        {
+            const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken( name() );
+            const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken( namespaceUri() );
 
-         tagValidator.validate(token);
+            tagValidator.validate( token );
 
-         if (isSchemaTag(XsdSchemaToken::Annotation, token, namespaceToken)) {
-            const XsdAnnotation::Ptr annotation = parseAnnotation();
-            simpleType->addAnnotation(annotation);
-         } else if (isSchemaTag(XsdSchemaToken::Restriction, token, namespaceToken)) {
-            parseSimpleRestriction(simpleType);
-         } else if (isSchemaTag(XsdSchemaToken::List, token, namespaceToken)) {
-            parseList(simpleType);
-         } else if (isSchemaTag(XsdSchemaToken::Union, token, namespaceToken)) {
-            parseUnion(simpleType);
-         } else {
-            parseUnknown();
-         }
-      }
-   }
+            if ( isSchemaTag( XsdSchemaToken::Annotation, token, namespaceToken ) )
+            {
+                const XsdAnnotation::Ptr annotation = parseAnnotation();
+                simpleType->addAnnotation( annotation );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Restriction, token, namespaceToken ) )
+            {
+                parseSimpleRestriction( simpleType );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::List, token, namespaceToken ) )
+            {
+                parseList( simpleType );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Union, token, namespaceToken ) )
+            {
+                parseUnion( simpleType );
+            }
+            else
+            {
+                parseUnknown();
+            }
+        }
+    }
 
-   tagValidator.finalize();
+    tagValidator.finalize();
 
-   return simpleType;
+    return simpleType;
 }
 
 XsdSimpleType::Ptr XsdSchemaParser::parseLocalSimpleType()
 {
-   const ElementNamespaceHandler namespaceHandler(XsdSchemaToken::SimpleType, this);
+    const ElementNamespaceHandler namespaceHandler( XsdSchemaToken::SimpleType, this );
 
-   validateElement(XsdTagScope::LocalSimpleType);
+    validateElement( XsdTagScope::LocalSimpleType );
 
-   const XsdSimpleType::Ptr simpleType(new XsdSimpleType());
-   simpleType->setCategory(XsdSimpleType::SimpleTypeAtomic); // just to make sure it's not invalid
-   simpleType->setName(m_parserContext->createAnonymousName(m_targetNamespace));
+    const XsdSimpleType::Ptr simpleType( new XsdSimpleType() );
+    simpleType->setCategory( XsdSimpleType::SimpleTypeAtomic ); // just to make sure it's not invalid
+    simpleType->setName( m_parserContext->createAnonymousName( m_targetNamespace ) );
 
-   validateIdAttribute("simpleType");
+    validateIdAttribute( "simpleType" );
 
-   TagValidationHandler tagValidator(XsdTagScope::LocalSimpleType, this, NamePool::Ptr(m_namePool));
+    TagValidationHandler tagValidator( XsdTagScope::LocalSimpleType, this, NamePool::Ptr( m_namePool ) );
 
-   while (!atEnd()) {
-      readNext();
+    while ( !atEnd() )
+    {
+        readNext();
 
-      if (isEndElement()) {
-         break;
-      }
+        if ( isEndElement() )
+        {
+            break;
+        }
 
-      if (isStartElement()) {
-         const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken(name());
-         const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken(namespaceUri());
+        if ( isStartElement() )
+        {
+            const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken( name() );
+            const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken( namespaceUri() );
 
-         tagValidator.validate(token);
+            tagValidator.validate( token );
 
-         if (isSchemaTag(XsdSchemaToken::Annotation, token, namespaceToken)) {
-            const XsdAnnotation::Ptr annotation = parseAnnotation();
-            simpleType->addAnnotation(annotation);
-         } else if (isSchemaTag(XsdSchemaToken::Restriction, token, namespaceToken)) {
-            parseSimpleRestriction(simpleType);
-         } else if (isSchemaTag(XsdSchemaToken::List, token, namespaceToken)) {
-            parseList(simpleType);
-         } else if (isSchemaTag(XsdSchemaToken::Union, token, namespaceToken)) {
-            parseUnion(simpleType);
-         } else {
-            parseUnknown();
-         }
-      }
-   }
-
-   tagValidator.finalize();
-
-   return simpleType;
-}
-
-void XsdSchemaParser::parseSimpleRestriction(const XsdSimpleType::Ptr &ptr)
-{
-   const ElementNamespaceHandler namespaceHandler(XsdSchemaToken::Restriction, this);
-
-   validateElement(XsdTagScope::SimpleRestriction);
-
-   ptr->setDerivationMethod(XsdSimpleType::DerivationRestriction);
-
-   // The base attribute and simpleType member are mutually exclusive,
-   // so we keep track of that
-   bool hasBaseAttribute = false;
-   bool hasBaseTypeSpecified = false;
-
-   QXmlName baseName;
-   if (hasAttribute("base")) {
-      const QString base = readQNameAttribute(QString::fromLatin1("base"), "restriction");
-      convertName(base, NamespaceSupport::ElementName, baseName); // translate qualified name into QXmlName
-      m_schemaResolver->addSimpleRestrictionBase(ptr, baseName, currentSourceLocation()); // add to resolver
-
-      hasBaseAttribute = true;
-      hasBaseTypeSpecified = true;
-   }
-   validateIdAttribute("restriction");
-
-   XsdFacet::Hash facets;
-   QList<XsdFacet::Ptr> patternFacets;
-   QList<XsdFacet::Ptr> enumerationFacets;
-   QList<XsdFacet::Ptr> assertionFacets;
-
-   TagValidationHandler tagValidator(XsdTagScope::SimpleRestriction, this, NamePool::Ptr(m_namePool));
-
-   while (!atEnd()) {
-      readNext();
-
-      if (isEndElement()) {
-         break;
-      }
-
-      if (isStartElement()) {
-         const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken(name());
-         const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken(namespaceUri());
-
-         tagValidator.validate(token);
-
-         if (isSchemaTag(XsdSchemaToken::Annotation, token, namespaceToken)) {
-            const XsdAnnotation::Ptr annotation = parseAnnotation();
-            ptr->addAnnotation(annotation);
-         } else if (isSchemaTag(XsdSchemaToken::SimpleType, token, namespaceToken)) {
-            if (hasBaseAttribute) {
-               error(QtXmlPatterns::tr("%1 element is not allowed inside %2 element if %3 attribute is present.")
-                     .formatArg(formatElement("simpleType"))
-                     .formatArg(formatElement("restriction"))
-                     .formatArg(formatAttribute("base")));
-               return;
+            if ( isSchemaTag( XsdSchemaToken::Annotation, token, namespaceToken ) )
+            {
+                const XsdAnnotation::Ptr annotation = parseAnnotation();
+                simpleType->addAnnotation( annotation );
             }
-
-            const XsdSimpleType::Ptr type = parseLocalSimpleType();
-            type->setContext(ptr);
-            ptr->setWxsSuperType(type);
-            ptr->setCategory(type->category());
-            hasBaseTypeSpecified = true;
-
-            // add it to list of anonymous types as well
-            addAnonymousType(type);
-         } else if (isSchemaTag(XsdSchemaToken::MinExclusive, token, namespaceToken)) {
-            const XsdFacet::Ptr facet = parseMinExclusiveFacet();
-            addFacet(facet, facets, ptr);
-         } else if (isSchemaTag(XsdSchemaToken::MinInclusive, token, namespaceToken)) {
-            const XsdFacet::Ptr facet = parseMinInclusiveFacet();
-            addFacet(facet, facets, ptr);
-         } else if (isSchemaTag(XsdSchemaToken::MaxExclusive, token, namespaceToken)) {
-            const XsdFacet::Ptr facet = parseMaxExclusiveFacet();
-            addFacet(facet, facets, ptr);
-         } else if (isSchemaTag(XsdSchemaToken::MaxInclusive, token, namespaceToken)) {
-            const XsdFacet::Ptr facet = parseMaxInclusiveFacet();
-            addFacet(facet, facets, ptr);
-         } else if (isSchemaTag(XsdSchemaToken::TotalDigits, token, namespaceToken)) {
-            const XsdFacet::Ptr facet = parseTotalDigitsFacet();
-            addFacet(facet, facets, ptr);
-         } else if (isSchemaTag(XsdSchemaToken::FractionDigits, token, namespaceToken)) {
-            const XsdFacet::Ptr facet = parseFractionDigitsFacet();
-            addFacet(facet, facets, ptr);
-         } else if (isSchemaTag(XsdSchemaToken::Length, token, namespaceToken)) {
-            const XsdFacet::Ptr facet = parseLengthFacet();
-            addFacet(facet, facets, ptr);
-         } else if (isSchemaTag(XsdSchemaToken::MinLength, token, namespaceToken)) {
-            const XsdFacet::Ptr facet = parseMinLengthFacet();
-            addFacet(facet, facets, ptr);
-         } else if (isSchemaTag(XsdSchemaToken::MaxLength, token, namespaceToken)) {
-            const XsdFacet::Ptr facet = parseMaxLengthFacet();
-            addFacet(facet, facets, ptr);
-         } else if (isSchemaTag(XsdSchemaToken::Enumeration, token, namespaceToken)) {
-            const XsdFacet::Ptr facet = parseEnumerationFacet();
-            enumerationFacets.append(facet);
-         } else if (isSchemaTag(XsdSchemaToken::WhiteSpace, token, namespaceToken)) {
-            const XsdFacet::Ptr facet = parseWhiteSpaceFacet();
-            addFacet(facet, facets, ptr);
-         } else if (isSchemaTag(XsdSchemaToken::Pattern, token, namespaceToken)) {
-            const XsdFacet::Ptr facet = parsePatternFacet();
-            patternFacets.append(facet);
-         } else if (isSchemaTag(XsdSchemaToken::Assertion, token, namespaceToken)) {
-            const XsdFacet::Ptr facet = parseAssertionFacet();
-            assertionFacets.append(facet);
-         } else {
-            parseUnknown();
-         }
-      }
-   }
-
-   if (!hasBaseTypeSpecified) {
-      error(QtXmlPatterns::tr("%1 element has neither %2 attribute nor %3 child element.")
-            .formatArg(formatElement("restriction"))
-            .formatArg(formatAttribute("base"))
-            .formatArg(formatElement("simpleType")));
-      return;
-   }
-
-   // merge all pattern facets into one multi value facet
-   if (!patternFacets.isEmpty()) {
-      const XsdFacet::Ptr patternFacet(new XsdFacet());
-      patternFacet->setType(XsdFacet::Pattern);
-
-      AtomicValue::List multiValue;
-      for (int i = 0; i < patternFacets.count(); ++i) {
-         multiValue << patternFacets.at(i)->multiValue();
-      }
-
-      patternFacet->setMultiValue(multiValue);
-      addFacet(patternFacet, facets, ptr);
-   }
-
-   // merge all enumeration facets into one multi value facet
-   if (!enumerationFacets.isEmpty()) {
-      const XsdFacet::Ptr enumerationFacet(new XsdFacet());
-      enumerationFacet->setType(XsdFacet::Enumeration);
-
-      AtomicValue::List multiValue;
-      for (int i = 0; i < enumerationFacets.count(); ++i) {
-         multiValue << enumerationFacets.at(i)->multiValue();
-      }
-
-      enumerationFacet->setMultiValue(multiValue);
-      addFacet(enumerationFacet, facets, ptr);
-   }
-
-   // merge all assertion facets into one facet
-   if (!assertionFacets.isEmpty()) {
-      const XsdFacet::Ptr assertionFacet(new XsdFacet());
-      assertionFacet->setType(XsdFacet::Assertion);
-
-      XsdAssertion::List assertions;
-      for (int i = 0; i < assertionFacets.count(); ++i) {
-         assertions << assertionFacets.at(i)->assertions();
-      }
-
-      assertionFacet->setAssertions(assertions);
-      addFacet(assertionFacet, facets, ptr);
-   }
-
-   ptr->setFacets(facets);
-
-   tagValidator.finalize();
-}
-
-void XsdSchemaParser::parseList(const XsdSimpleType::Ptr &ptr)
-{
-   const ElementNamespaceHandler namespaceHandler(XsdSchemaToken::List, this);
-
-   validateElement(XsdTagScope::List);
-
-   ptr->setCategory(XsdSimpleType::SimpleTypeList);
-   ptr->setDerivationMethod(XsdSimpleType::DerivationList);
-   ptr->setWxsSuperType(BuiltinTypes::xsAnySimpleType);
-
-   // The itemType attribute and simpleType member are mutually exclusive,
-   // so we keep track of that
-   bool hasItemTypeAttribute = false;
-   bool hasItemTypeSpecified = false;
-
-   if (hasAttribute("itemType")) {
-      const QString itemType = readQNameAttribute(QString::fromLatin1("itemType"), "list");
-      QXmlName typeName;
-      convertName(itemType, NamespaceSupport::ElementName, typeName); // translate qualified name into QXmlName
-      m_schemaResolver->addSimpleListType(ptr, typeName, currentSourceLocation()); // add to resolver
-
-      hasItemTypeAttribute = true;
-      hasItemTypeSpecified = true;
-   }
-
-   validateIdAttribute("list");
-
-   TagValidationHandler tagValidator(XsdTagScope::List, this, NamePool::Ptr(m_namePool));
-
-   while (!atEnd()) {
-      readNext();
-
-      if (isEndElement()) {
-         break;
-      }
-
-      if (isStartElement()) {
-         const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken(name());
-         const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken(namespaceUri());
-
-         tagValidator.validate(token);
-
-         if (isSchemaTag(XsdSchemaToken::Annotation, token, namespaceToken)) {
-            const XsdAnnotation::Ptr annotation = parseAnnotation();
-            ptr->addAnnotation(annotation);
-         } else if (isSchemaTag(XsdSchemaToken::SimpleType, token, namespaceToken)) {
-            if (hasItemTypeAttribute) {
-               error(QtXmlPatterns::tr("%1 element is not allowed inside %2 element if %3 attribute is present.")
-                     .formatArg(formatElement("simpleType"))
-                     .formatArg(formatElement("list"))
-                     .formatArg(formatAttribute("itemType")));
-               return;
+            else if ( isSchemaTag( XsdSchemaToken::Restriction, token, namespaceToken ) )
+            {
+                parseSimpleRestriction( simpleType );
             }
+            else if ( isSchemaTag( XsdSchemaToken::List, token, namespaceToken ) )
+            {
+                parseList( simpleType );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Union, token, namespaceToken ) )
+            {
+                parseUnion( simpleType );
+            }
+            else
+            {
+                parseUnknown();
+            }
+        }
+    }
 
-            const XsdSimpleType::Ptr type = parseLocalSimpleType();
-            type->setContext(ptr);
-            ptr->setItemType(type);
+    tagValidator.finalize();
 
-            hasItemTypeSpecified = true;
-
-            // add it to list of anonymous types as well
-            addAnonymousType(type);
-         } else {
-            parseUnknown();
-         }
-      }
-   }
-
-   if (!hasItemTypeSpecified) {
-      error(QtXmlPatterns::tr("%1 element has neither %2 attribute nor %3 child element.")
-            .formatArg(formatElement("list"))
-            .formatArg(formatAttribute("itemType"))
-            .formatArg(formatElement("simpleType")));
-      return;
-   }
-
-   tagValidator.finalize();
-
-   // add the default white space facet that every simple type with list derivation has
-   const XsdFacet::Ptr defaultFacet(new XsdFacet());
-   defaultFacet->setType(XsdFacet::WhiteSpace);
-   defaultFacet->setFixed(true);
-   defaultFacet->setValue(DerivedString<TypeString>::fromLexical(NamePool::Ptr(m_namePool),
-                          XsdSchemaToken::toString(XsdSchemaToken::Collapse)));
-   XsdFacet::Hash facets;
-   facets.insert(defaultFacet->type(), defaultFacet);
-   ptr->setFacets(facets);
+    return simpleType;
 }
 
-void XsdSchemaParser::parseUnion(const XsdSimpleType::Ptr &ptr)
+void XsdSchemaParser::parseSimpleRestriction( const XsdSimpleType::Ptr &ptr )
 {
-   const ElementNamespaceHandler namespaceHandler(XsdSchemaToken::Union, this);
+    const ElementNamespaceHandler namespaceHandler( XsdSchemaToken::Restriction, this );
 
-   validateElement(XsdTagScope::Union);
+    validateElement( XsdTagScope::SimpleRestriction );
 
-   ptr->setCategory(XsdSimpleType::SimpleTypeUnion);
-   ptr->setDerivationMethod(XsdSimpleType::DerivationUnion);
-   ptr->setWxsSuperType(BuiltinTypes::xsAnySimpleType);
+    ptr->setDerivationMethod( XsdSimpleType::DerivationRestriction );
 
-   // The memberTypes attribute is not allowed to be empty,
-   // so we keep track of that
-   bool hasMemberTypesSpecified = false;
+    // The base attribute and simpleType member are mutually exclusive,
+    // so we keep track of that
+    bool hasBaseAttribute = false;
+    bool hasBaseTypeSpecified = false;
 
-   if (hasAttribute("memberTypes")) {
-      const QStringList memberTypes = readAttribute(QString::fromLatin1("memberTypes")).
-               split(' ', QStringParser::SkipEmptyParts);
+    QXmlName baseName;
 
-      QList<QXmlName> typeNames;
+    if ( hasAttribute( "base" ) )
+    {
+        const QString base = readQNameAttribute( QString::fromLatin1( "base" ), "restriction" );
+        convertName( base, NamespaceSupport::ElementName, baseName ); // translate qualified name into QXmlName
+        m_schemaResolver->addSimpleRestrictionBase( ptr, baseName, currentSourceLocation() ); // add to resolver
 
-      for (int i = 0; i < memberTypes.count(); ++i) {
-         QXmlName typeName;
-         convertName(memberTypes.at(i), NamespaceSupport::ElementName, typeName); // translate qualified name into QXmlName
-         typeNames.append(typeName);
-      }
+        hasBaseAttribute = true;
+        hasBaseTypeSpecified = true;
+    }
 
-      if (!typeNames.isEmpty()) {
-         m_schemaResolver->addSimpleUnionTypes(ptr, typeNames, currentSourceLocation()); // add to resolver
-         hasMemberTypesSpecified = true;
-      }
-   }
+    validateIdAttribute( "restriction" );
 
-   validateIdAttribute("union");
+    XsdFacet::Hash facets;
+    QList<XsdFacet::Ptr> patternFacets;
+    QList<XsdFacet::Ptr> enumerationFacets;
+    QList<XsdFacet::Ptr> assertionFacets;
 
-   AnySimpleType::List memberTypes;
+    TagValidationHandler tagValidator( XsdTagScope::SimpleRestriction, this, NamePool::Ptr( m_namePool ) );
 
-   TagValidationHandler tagValidator(XsdTagScope::Union, this, NamePool::Ptr(m_namePool));
+    while ( !atEnd() )
+    {
+        readNext();
 
-   while (!atEnd()) {
-      readNext();
+        if ( isEndElement() )
+        {
+            break;
+        }
 
-      if (isEndElement()) {
-         break;
-      }
+        if ( isStartElement() )
+        {
+            const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken( name() );
+            const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken( namespaceUri() );
 
-      if (isStartElement()) {
-         const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken(name());
-         const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken(namespaceUri());
+            tagValidator.validate( token );
 
-         tagValidator.validate(token);
+            if ( isSchemaTag( XsdSchemaToken::Annotation, token, namespaceToken ) )
+            {
+                const XsdAnnotation::Ptr annotation = parseAnnotation();
+                ptr->addAnnotation( annotation );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::SimpleType, token, namespaceToken ) )
+            {
+                if ( hasBaseAttribute )
+                {
+                    error( QtXmlPatterns::tr( "%1 element is not allowed inside %2 element if %3 attribute is present." )
+                           .formatArg( formatElement( "simpleType" ) )
+                           .formatArg( formatElement( "restriction" ) )
+                           .formatArg( formatAttribute( "base" ) ) );
+                    return;
+                }
 
-         if (isSchemaTag(XsdSchemaToken::Annotation, token, namespaceToken)) {
-            const XsdAnnotation::Ptr annotation = parseAnnotation();
-            ptr->addAnnotation(annotation);
-         } else if (isSchemaTag(XsdSchemaToken::SimpleType, token, namespaceToken)) {
-            const XsdSimpleType::Ptr type = parseLocalSimpleType();
-            type->setContext(ptr);
-            memberTypes.append(type);
+                const XsdSimpleType::Ptr type = parseLocalSimpleType();
+                type->setContext( ptr );
+                ptr->setWxsSuperType( type );
+                ptr->setCategory( type->category() );
+                hasBaseTypeSpecified = true;
 
-            // add it to list of anonymous types as well
-            addAnonymousType(type);
-         } else {
-            parseUnknown();
-         }
-      }
-   }
+                // add it to list of anonymous types as well
+                addAnonymousType( type );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::MinExclusive, token, namespaceToken ) )
+            {
+                const XsdFacet::Ptr facet = parseMinExclusiveFacet();
+                addFacet( facet, facets, ptr );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::MinInclusive, token, namespaceToken ) )
+            {
+                const XsdFacet::Ptr facet = parseMinInclusiveFacet();
+                addFacet( facet, facets, ptr );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::MaxExclusive, token, namespaceToken ) )
+            {
+                const XsdFacet::Ptr facet = parseMaxExclusiveFacet();
+                addFacet( facet, facets, ptr );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::MaxInclusive, token, namespaceToken ) )
+            {
+                const XsdFacet::Ptr facet = parseMaxInclusiveFacet();
+                addFacet( facet, facets, ptr );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::TotalDigits, token, namespaceToken ) )
+            {
+                const XsdFacet::Ptr facet = parseTotalDigitsFacet();
+                addFacet( facet, facets, ptr );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::FractionDigits, token, namespaceToken ) )
+            {
+                const XsdFacet::Ptr facet = parseFractionDigitsFacet();
+                addFacet( facet, facets, ptr );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Length, token, namespaceToken ) )
+            {
+                const XsdFacet::Ptr facet = parseLengthFacet();
+                addFacet( facet, facets, ptr );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::MinLength, token, namespaceToken ) )
+            {
+                const XsdFacet::Ptr facet = parseMinLengthFacet();
+                addFacet( facet, facets, ptr );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::MaxLength, token, namespaceToken ) )
+            {
+                const XsdFacet::Ptr facet = parseMaxLengthFacet();
+                addFacet( facet, facets, ptr );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Enumeration, token, namespaceToken ) )
+            {
+                const XsdFacet::Ptr facet = parseEnumerationFacet();
+                enumerationFacets.append( facet );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::WhiteSpace, token, namespaceToken ) )
+            {
+                const XsdFacet::Ptr facet = parseWhiteSpaceFacet();
+                addFacet( facet, facets, ptr );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Pattern, token, namespaceToken ) )
+            {
+                const XsdFacet::Ptr facet = parsePatternFacet();
+                patternFacets.append( facet );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Assertion, token, namespaceToken ) )
+            {
+                const XsdFacet::Ptr facet = parseAssertionFacet();
+                assertionFacets.append( facet );
+            }
+            else
+            {
+                parseUnknown();
+            }
+        }
+    }
 
-   if (!memberTypes.isEmpty()) {
-      ptr->setMemberTypes(memberTypes);
-      hasMemberTypesSpecified = true;
-   }
+    if ( !hasBaseTypeSpecified )
+    {
+        error( QtXmlPatterns::tr( "%1 element has neither %2 attribute nor %3 child element." )
+               .formatArg( formatElement( "restriction" ) )
+               .formatArg( formatAttribute( "base" ) )
+               .formatArg( formatElement( "simpleType" ) ) );
+        return;
+    }
 
-   if (!hasMemberTypesSpecified) {
-      error(QtXmlPatterns::tr("%1 element has neither %2 attribute nor %3 child element.")
-            .formatArg(formatElement("union"))
-            .formatArg(formatAttribute("memberTypes"))
-            .formatArg(formatElement("simpleType")));
-      return;
-   }
+    // merge all pattern facets into one multi value facet
+    if ( !patternFacets.isEmpty() )
+    {
+        const XsdFacet::Ptr patternFacet( new XsdFacet() );
+        patternFacet->setType( XsdFacet::Pattern );
 
-   tagValidator.finalize();
+        AtomicValue::List multiValue;
+
+        for ( int i = 0; i < patternFacets.count(); ++i )
+        {
+            multiValue << patternFacets.at( i )->multiValue();
+        }
+
+        patternFacet->setMultiValue( multiValue );
+        addFacet( patternFacet, facets, ptr );
+    }
+
+    // merge all enumeration facets into one multi value facet
+    if ( !enumerationFacets.isEmpty() )
+    {
+        const XsdFacet::Ptr enumerationFacet( new XsdFacet() );
+        enumerationFacet->setType( XsdFacet::Enumeration );
+
+        AtomicValue::List multiValue;
+
+        for ( int i = 0; i < enumerationFacets.count(); ++i )
+        {
+            multiValue << enumerationFacets.at( i )->multiValue();
+        }
+
+        enumerationFacet->setMultiValue( multiValue );
+        addFacet( enumerationFacet, facets, ptr );
+    }
+
+    // merge all assertion facets into one facet
+    if ( !assertionFacets.isEmpty() )
+    {
+        const XsdFacet::Ptr assertionFacet( new XsdFacet() );
+        assertionFacet->setType( XsdFacet::Assertion );
+
+        XsdAssertion::List assertions;
+
+        for ( int i = 0; i < assertionFacets.count(); ++i )
+        {
+            assertions << assertionFacets.at( i )->assertions();
+        }
+
+        assertionFacet->setAssertions( assertions );
+        addFacet( assertionFacet, facets, ptr );
+    }
+
+    ptr->setFacets( facets );
+
+    tagValidator.finalize();
+}
+
+void XsdSchemaParser::parseList( const XsdSimpleType::Ptr &ptr )
+{
+    const ElementNamespaceHandler namespaceHandler( XsdSchemaToken::List, this );
+
+    validateElement( XsdTagScope::List );
+
+    ptr->setCategory( XsdSimpleType::SimpleTypeList );
+    ptr->setDerivationMethod( XsdSimpleType::DerivationList );
+    ptr->setWxsSuperType( BuiltinTypes::xsAnySimpleType );
+
+    // The itemType attribute and simpleType member are mutually exclusive,
+    // so we keep track of that
+    bool hasItemTypeAttribute = false;
+    bool hasItemTypeSpecified = false;
+
+    if ( hasAttribute( "itemType" ) )
+    {
+        const QString itemType = readQNameAttribute( QString::fromLatin1( "itemType" ), "list" );
+        QXmlName typeName;
+        convertName( itemType, NamespaceSupport::ElementName, typeName ); // translate qualified name into QXmlName
+        m_schemaResolver->addSimpleListType( ptr, typeName, currentSourceLocation() ); // add to resolver
+
+        hasItemTypeAttribute = true;
+        hasItemTypeSpecified = true;
+    }
+
+    validateIdAttribute( "list" );
+
+    TagValidationHandler tagValidator( XsdTagScope::List, this, NamePool::Ptr( m_namePool ) );
+
+    while ( !atEnd() )
+    {
+        readNext();
+
+        if ( isEndElement() )
+        {
+            break;
+        }
+
+        if ( isStartElement() )
+        {
+            const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken( name() );
+            const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken( namespaceUri() );
+
+            tagValidator.validate( token );
+
+            if ( isSchemaTag( XsdSchemaToken::Annotation, token, namespaceToken ) )
+            {
+                const XsdAnnotation::Ptr annotation = parseAnnotation();
+                ptr->addAnnotation( annotation );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::SimpleType, token, namespaceToken ) )
+            {
+                if ( hasItemTypeAttribute )
+                {
+                    error( QtXmlPatterns::tr( "%1 element is not allowed inside %2 element if %3 attribute is present." )
+                           .formatArg( formatElement( "simpleType" ) )
+                           .formatArg( formatElement( "list" ) )
+                           .formatArg( formatAttribute( "itemType" ) ) );
+                    return;
+                }
+
+                const XsdSimpleType::Ptr type = parseLocalSimpleType();
+                type->setContext( ptr );
+                ptr->setItemType( type );
+
+                hasItemTypeSpecified = true;
+
+                // add it to list of anonymous types as well
+                addAnonymousType( type );
+            }
+            else
+            {
+                parseUnknown();
+            }
+        }
+    }
+
+    if ( !hasItemTypeSpecified )
+    {
+        error( QtXmlPatterns::tr( "%1 element has neither %2 attribute nor %3 child element." )
+               .formatArg( formatElement( "list" ) )
+               .formatArg( formatAttribute( "itemType" ) )
+               .formatArg( formatElement( "simpleType" ) ) );
+        return;
+    }
+
+    tagValidator.finalize();
+
+    // add the default white space facet that every simple type with list derivation has
+    const XsdFacet::Ptr defaultFacet( new XsdFacet() );
+    defaultFacet->setType( XsdFacet::WhiteSpace );
+    defaultFacet->setFixed( true );
+    defaultFacet->setValue( DerivedString<TypeString>::fromLexical( NamePool::Ptr( m_namePool ),
+                            XsdSchemaToken::toString( XsdSchemaToken::Collapse ) ) );
+    XsdFacet::Hash facets;
+    facets.insert( defaultFacet->type(), defaultFacet );
+    ptr->setFacets( facets );
+}
+
+void XsdSchemaParser::parseUnion( const XsdSimpleType::Ptr &ptr )
+{
+    const ElementNamespaceHandler namespaceHandler( XsdSchemaToken::Union, this );
+
+    validateElement( XsdTagScope::Union );
+
+    ptr->setCategory( XsdSimpleType::SimpleTypeUnion );
+    ptr->setDerivationMethod( XsdSimpleType::DerivationUnion );
+    ptr->setWxsSuperType( BuiltinTypes::xsAnySimpleType );
+
+    // The memberTypes attribute is not allowed to be empty,
+    // so we keep track of that
+    bool hasMemberTypesSpecified = false;
+
+    if ( hasAttribute( "memberTypes" ) )
+    {
+        const QStringList memberTypes = readAttribute( QString::fromLatin1( "memberTypes" ) ).
+                                        split( ' ', QStringParser::SkipEmptyParts );
+
+        QList<QXmlName> typeNames;
+
+        for ( int i = 0; i < memberTypes.count(); ++i )
+        {
+            QXmlName typeName;
+            convertName( memberTypes.at( i ), NamespaceSupport::ElementName, typeName ); // translate qualified name into QXmlName
+            typeNames.append( typeName );
+        }
+
+        if ( !typeNames.isEmpty() )
+        {
+            m_schemaResolver->addSimpleUnionTypes( ptr, typeNames, currentSourceLocation() ); // add to resolver
+            hasMemberTypesSpecified = true;
+        }
+    }
+
+    validateIdAttribute( "union" );
+
+    AnySimpleType::List memberTypes;
+
+    TagValidationHandler tagValidator( XsdTagScope::Union, this, NamePool::Ptr( m_namePool ) );
+
+    while ( !atEnd() )
+    {
+        readNext();
+
+        if ( isEndElement() )
+        {
+            break;
+        }
+
+        if ( isStartElement() )
+        {
+            const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken( name() );
+            const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken( namespaceUri() );
+
+            tagValidator.validate( token );
+
+            if ( isSchemaTag( XsdSchemaToken::Annotation, token, namespaceToken ) )
+            {
+                const XsdAnnotation::Ptr annotation = parseAnnotation();
+                ptr->addAnnotation( annotation );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::SimpleType, token, namespaceToken ) )
+            {
+                const XsdSimpleType::Ptr type = parseLocalSimpleType();
+                type->setContext( ptr );
+                memberTypes.append( type );
+
+                // add it to list of anonymous types as well
+                addAnonymousType( type );
+            }
+            else
+            {
+                parseUnknown();
+            }
+        }
+    }
+
+    if ( !memberTypes.isEmpty() )
+    {
+        ptr->setMemberTypes( memberTypes );
+        hasMemberTypesSpecified = true;
+    }
+
+    if ( !hasMemberTypesSpecified )
+    {
+        error( QtXmlPatterns::tr( "%1 element has neither %2 attribute nor %3 child element." )
+               .formatArg( formatElement( "union" ) )
+               .formatArg( formatAttribute( "memberTypes" ) )
+               .formatArg( formatElement( "simpleType" ) ) );
+        return;
+    }
+
+    tagValidator.finalize();
 }
 
 XsdFacet::Ptr XsdSchemaParser::parseMinExclusiveFacet()
 {
-   const ElementNamespaceHandler namespaceHandler(XsdSchemaToken::MinExclusive, this);
+    const ElementNamespaceHandler namespaceHandler( XsdSchemaToken::MinExclusive, this );
 
-   validateElement(XsdTagScope::MinExclusiveFacet);
+    validateElement( XsdTagScope::MinExclusiveFacet );
 
-   const XsdFacet::Ptr facet = XsdFacet::Ptr(new XsdFacet());
-   facet->setType(XsdFacet::MinimumExclusive);
+    const XsdFacet::Ptr facet = XsdFacet::Ptr( new XsdFacet() );
+    facet->setType( XsdFacet::MinimumExclusive );
 
-   // parse attributes
-   if (hasAttribute("fixed")) {
-      const QString value = readAttribute(QString::fromLatin1("fixed"));
-      const Boolean::Ptr fixed = Boolean::fromLexical(value);
+    // parse attributes
+    if ( hasAttribute( "fixed" ) )
+    {
+        const QString value = readAttribute( QString::fromLatin1( "fixed" ) );
+        const Boolean::Ptr fixed = Boolean::fromLexical( value );
 
-      if (fixed->hasError()) {
-         attributeContentError("fixed", "minExclusive", value, BuiltinTypes::xsBoolean);
-         return facet;
-      }
+        if ( fixed->hasError() )
+        {
+            attributeContentError( "fixed", "minExclusive", value, BuiltinTypes::xsBoolean );
+            return facet;
+        }
 
-      facet->setFixed(fixed->as<Boolean>()->value());
-   } else {
-      facet->setFixed(false); // the default value
-   }
+        facet->setFixed( fixed->as<Boolean>()->value() );
+    }
+    else
+    {
+        facet->setFixed( false ); // the default value
+    }
 
-   // as minExclusive can have a value of type anySimpleType, we just read
-   // the string here and store it for later intepretation
-   const QString value = readAttribute(QString::fromLatin1("value"));
-   DerivedString<TypeString>::Ptr string = DerivedString<TypeString>::fromLexical(NamePool::Ptr(m_namePool), value);
-   if (string->hasError()) {
-      attributeContentError("value", "minExclusive", value, BuiltinTypes::xsAnySimpleType);
-      return facet;
-   } else {
-      facet->setValue(string);
-   }
+    // as minExclusive can have a value of type anySimpleType, we just read
+    // the string here and store it for later intepretation
+    const QString value = readAttribute( QString::fromLatin1( "value" ) );
+    DerivedString<TypeString>::Ptr string = DerivedString<TypeString>::fromLexical( NamePool::Ptr( m_namePool ), value );
 
-   validateIdAttribute("minExclusive");
+    if ( string->hasError() )
+    {
+        attributeContentError( "value", "minExclusive", value, BuiltinTypes::xsAnySimpleType );
+        return facet;
+    }
+    else
+    {
+        facet->setValue( string );
+    }
 
-   TagValidationHandler tagValidator(XsdTagScope::MinExclusiveFacet, this, NamePool::Ptr(m_namePool));
+    validateIdAttribute( "minExclusive" );
 
-   while (!atEnd()) {
-      readNext();
+    TagValidationHandler tagValidator( XsdTagScope::MinExclusiveFacet, this, NamePool::Ptr( m_namePool ) );
 
-      if (isEndElement()) {
-         break;
-      }
+    while ( !atEnd() )
+    {
+        readNext();
 
-      if (isStartElement()) {
-         const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken(name());
-         const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken(namespaceUri());
+        if ( isEndElement() )
+        {
+            break;
+        }
 
-         tagValidator.validate(token);
+        if ( isStartElement() )
+        {
+            const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken( name() );
+            const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken( namespaceUri() );
 
-         if (isSchemaTag(XsdSchemaToken::Annotation, token, namespaceToken)) {
-            const XsdAnnotation::Ptr annotation = parseAnnotation();
-            facet->addAnnotation(annotation);
-         } else {
-            parseUnknown();
-         }
-      }
-   }
+            tagValidator.validate( token );
 
-   tagValidator.finalize();
+            if ( isSchemaTag( XsdSchemaToken::Annotation, token, namespaceToken ) )
+            {
+                const XsdAnnotation::Ptr annotation = parseAnnotation();
+                facet->addAnnotation( annotation );
+            }
+            else
+            {
+                parseUnknown();
+            }
+        }
+    }
 
-   return facet;
+    tagValidator.finalize();
+
+    return facet;
 }
 
 XsdFacet::Ptr XsdSchemaParser::parseMinInclusiveFacet()
 {
-   const ElementNamespaceHandler namespaceHandler(XsdSchemaToken::MinInclusive, this);
+    const ElementNamespaceHandler namespaceHandler( XsdSchemaToken::MinInclusive, this );
 
-   validateElement(XsdTagScope::MinInclusiveFacet);
+    validateElement( XsdTagScope::MinInclusiveFacet );
 
-   const XsdFacet::Ptr facet = XsdFacet::Ptr(new XsdFacet());
-   facet->setType(XsdFacet::MinimumInclusive);
+    const XsdFacet::Ptr facet = XsdFacet::Ptr( new XsdFacet() );
+    facet->setType( XsdFacet::MinimumInclusive );
 
-   // parse attributes
-   if (hasAttribute("fixed")) {
-      const QString value = readAttribute(QString::fromLatin1("fixed"));
-      const Boolean::Ptr fixed = Boolean::fromLexical(value);
+    // parse attributes
+    if ( hasAttribute( "fixed" ) )
+    {
+        const QString value = readAttribute( QString::fromLatin1( "fixed" ) );
+        const Boolean::Ptr fixed = Boolean::fromLexical( value );
 
-      if (fixed->hasError()) {
-         attributeContentError("fixed", "minInclusive", value, BuiltinTypes::xsBoolean);
-         return facet;
-      }
+        if ( fixed->hasError() )
+        {
+            attributeContentError( "fixed", "minInclusive", value, BuiltinTypes::xsBoolean );
+            return facet;
+        }
 
-      facet->setFixed(fixed->as<Boolean>()->value());
+        facet->setFixed( fixed->as<Boolean>()->value() );
 
-   } else {
-      facet->setFixed(false); // the default value
-   }
+    }
+    else
+    {
+        facet->setFixed( false ); // the default value
+    }
 
-   // as minInclusive can have a value of type anySimpleType, we just read
-   // the string here and store it for later intepretation
-   const QString value = readAttribute(QString::fromLatin1("value"));
-   DerivedString<TypeString>::Ptr string = DerivedString<TypeString>::fromLexical(NamePool::Ptr(m_namePool), value);
-   if (string->hasError()) {
-      attributeContentError("value", "minInclusive", value, BuiltinTypes::xsAnySimpleType);
-      return facet;
-   } else {
-      facet->setValue(string);
-   }
+    // as minInclusive can have a value of type anySimpleType, we just read
+    // the string here and store it for later intepretation
+    const QString value = readAttribute( QString::fromLatin1( "value" ) );
+    DerivedString<TypeString>::Ptr string = DerivedString<TypeString>::fromLexical( NamePool::Ptr( m_namePool ), value );
 
-   validateIdAttribute("minInclusive");
+    if ( string->hasError() )
+    {
+        attributeContentError( "value", "minInclusive", value, BuiltinTypes::xsAnySimpleType );
+        return facet;
+    }
+    else
+    {
+        facet->setValue( string );
+    }
 
-   TagValidationHandler tagValidator(XsdTagScope::MinInclusiveFacet, this, NamePool::Ptr(m_namePool));
+    validateIdAttribute( "minInclusive" );
 
-   while (!atEnd()) {
-      readNext();
+    TagValidationHandler tagValidator( XsdTagScope::MinInclusiveFacet, this, NamePool::Ptr( m_namePool ) );
 
-      if (isEndElement()) {
-         break;
-      }
+    while ( !atEnd() )
+    {
+        readNext();
 
-      if (isStartElement()) {
-         const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken(name());
-         const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken(namespaceUri());
+        if ( isEndElement() )
+        {
+            break;
+        }
 
-         tagValidator.validate(token);
+        if ( isStartElement() )
+        {
+            const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken( name() );
+            const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken( namespaceUri() );
 
-         if (isSchemaTag(XsdSchemaToken::Annotation, token, namespaceToken)) {
-            const XsdAnnotation::Ptr annotation = parseAnnotation();
-            facet->addAnnotation(annotation);
-         } else {
-            parseUnknown();
-         }
-      }
-   }
+            tagValidator.validate( token );
 
-   tagValidator.finalize();
+            if ( isSchemaTag( XsdSchemaToken::Annotation, token, namespaceToken ) )
+            {
+                const XsdAnnotation::Ptr annotation = parseAnnotation();
+                facet->addAnnotation( annotation );
+            }
+            else
+            {
+                parseUnknown();
+            }
+        }
+    }
 
-   return facet;
+    tagValidator.finalize();
+
+    return facet;
 }
 
 XsdFacet::Ptr XsdSchemaParser::parseMaxExclusiveFacet()
 {
-   const ElementNamespaceHandler namespaceHandler(XsdSchemaToken::MaxExclusive, this);
+    const ElementNamespaceHandler namespaceHandler( XsdSchemaToken::MaxExclusive, this );
 
-   validateElement(XsdTagScope::MaxExclusiveFacet);
+    validateElement( XsdTagScope::MaxExclusiveFacet );
 
-   const XsdFacet::Ptr facet = XsdFacet::Ptr(new XsdFacet());
-   facet->setType(XsdFacet::MaximumExclusive);
+    const XsdFacet::Ptr facet = XsdFacet::Ptr( new XsdFacet() );
+    facet->setType( XsdFacet::MaximumExclusive );
 
-   // parse attributes
-   if (hasAttribute("fixed")) {
-      const QString value = readAttribute(QString::fromLatin1("fixed"));
-      const Boolean::Ptr fixed = Boolean::fromLexical(value);
+    // parse attributes
+    if ( hasAttribute( "fixed" ) )
+    {
+        const QString value = readAttribute( QString::fromLatin1( "fixed" ) );
+        const Boolean::Ptr fixed = Boolean::fromLexical( value );
 
-      if (fixed->hasError()) {
-         attributeContentError("fixed", "maxExclusive", value, BuiltinTypes::xsBoolean);
-         return facet;
-      }
+        if ( fixed->hasError() )
+        {
+            attributeContentError( "fixed", "maxExclusive", value, BuiltinTypes::xsBoolean );
+            return facet;
+        }
 
-      facet->setFixed(fixed->as<Boolean>()->value());
+        facet->setFixed( fixed->as<Boolean>()->value() );
 
-   } else {
-      facet->setFixed(false); // the default value
-   }
+    }
+    else
+    {
+        facet->setFixed( false ); // the default value
+    }
 
-   // as maxExclusive can have a value of type anySimpleType, we just read
-   // the string here and store it for later intepretation
-   const QString value = readAttribute(QString::fromLatin1("value"));
-   DerivedString<TypeString>::Ptr string = DerivedString<TypeString>::fromLexical(NamePool::Ptr(m_namePool), value);
-   if (string->hasError()) {
-      attributeContentError("value", "maxExclusive", value, BuiltinTypes::xsAnySimpleType);
-      return facet;
-   } else {
-      facet->setValue(string);
-   }
+    // as maxExclusive can have a value of type anySimpleType, we just read
+    // the string here and store it for later intepretation
+    const QString value = readAttribute( QString::fromLatin1( "value" ) );
+    DerivedString<TypeString>::Ptr string = DerivedString<TypeString>::fromLexical( NamePool::Ptr( m_namePool ), value );
 
-   validateIdAttribute("maxExclusive");
+    if ( string->hasError() )
+    {
+        attributeContentError( "value", "maxExclusive", value, BuiltinTypes::xsAnySimpleType );
+        return facet;
+    }
+    else
+    {
+        facet->setValue( string );
+    }
 
-   TagValidationHandler tagValidator(XsdTagScope::MaxExclusiveFacet, this, NamePool::Ptr(m_namePool));
+    validateIdAttribute( "maxExclusive" );
 
-   while (!atEnd()) {
-      readNext();
+    TagValidationHandler tagValidator( XsdTagScope::MaxExclusiveFacet, this, NamePool::Ptr( m_namePool ) );
 
-      if (isEndElement()) {
-         break;
-      }
+    while ( !atEnd() )
+    {
+        readNext();
 
-      if (isStartElement()) {
-         const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken(name());
-         const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken(namespaceUri());
+        if ( isEndElement() )
+        {
+            break;
+        }
 
-         tagValidator.validate(token);
+        if ( isStartElement() )
+        {
+            const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken( name() );
+            const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken( namespaceUri() );
 
-         if (isSchemaTag(XsdSchemaToken::Annotation, token, namespaceToken)) {
-            const XsdAnnotation::Ptr annotation = parseAnnotation();
-            facet->addAnnotation(annotation);
-         } else {
-            parseUnknown();
-         }
-      }
-   }
+            tagValidator.validate( token );
 
-   tagValidator.finalize();
+            if ( isSchemaTag( XsdSchemaToken::Annotation, token, namespaceToken ) )
+            {
+                const XsdAnnotation::Ptr annotation = parseAnnotation();
+                facet->addAnnotation( annotation );
+            }
+            else
+            {
+                parseUnknown();
+            }
+        }
+    }
 
-   return facet;
+    tagValidator.finalize();
+
+    return facet;
 }
 
 XsdFacet::Ptr XsdSchemaParser::parseMaxInclusiveFacet()
 {
-   const ElementNamespaceHandler namespaceHandler(XsdSchemaToken::MaxInclusive, this);
+    const ElementNamespaceHandler namespaceHandler( XsdSchemaToken::MaxInclusive, this );
 
-   validateElement(XsdTagScope::MaxInclusiveFacet);
+    validateElement( XsdTagScope::MaxInclusiveFacet );
 
-   const XsdFacet::Ptr facet = XsdFacet::Ptr(new XsdFacet());
-   facet->setType(XsdFacet::MaximumInclusive);
+    const XsdFacet::Ptr facet = XsdFacet::Ptr( new XsdFacet() );
+    facet->setType( XsdFacet::MaximumInclusive );
 
-   // parse attributes
-   if (hasAttribute("fixed")) {
-      const QString value = readAttribute(QString::fromLatin1("fixed"));
-      const Boolean::Ptr fixed = Boolean::fromLexical(value);
+    // parse attributes
+    if ( hasAttribute( "fixed" ) )
+    {
+        const QString value = readAttribute( QString::fromLatin1( "fixed" ) );
+        const Boolean::Ptr fixed = Boolean::fromLexical( value );
 
-      if (fixed->hasError()) {
-         attributeContentError("fixed", "maxInclusive", value, BuiltinTypes::xsBoolean);
-         return facet;
-      }
+        if ( fixed->hasError() )
+        {
+            attributeContentError( "fixed", "maxInclusive", value, BuiltinTypes::xsBoolean );
+            return facet;
+        }
 
-      facet->setFixed(fixed->as<Boolean>()->value());
-   } else {
-      facet->setFixed(false); // the default value
-   }
+        facet->setFixed( fixed->as<Boolean>()->value() );
+    }
+    else
+    {
+        facet->setFixed( false ); // the default value
+    }
 
-   // as maxInclusive can have a value of type anySimpleType, we just read
-   // the string here and store it for later intepretation
-   const QString value = readAttribute(QString::fromLatin1("value"));
-   DerivedString<TypeString>::Ptr string = DerivedString<TypeString>::fromLexical(NamePool::Ptr(m_namePool), value);
-   if (string->hasError()) {
-      attributeContentError("value", "maxInclusive", value, BuiltinTypes::xsAnySimpleType);
-      return facet;
-   } else {
-      facet->setValue(string);
-   }
+    // as maxInclusive can have a value of type anySimpleType, we just read
+    // the string here and store it for later intepretation
+    const QString value = readAttribute( QString::fromLatin1( "value" ) );
+    DerivedString<TypeString>::Ptr string = DerivedString<TypeString>::fromLexical( NamePool::Ptr( m_namePool ), value );
 
-   validateIdAttribute("maxInclusive");
+    if ( string->hasError() )
+    {
+        attributeContentError( "value", "maxInclusive", value, BuiltinTypes::xsAnySimpleType );
+        return facet;
+    }
+    else
+    {
+        facet->setValue( string );
+    }
 
-   TagValidationHandler tagValidator(XsdTagScope::MaxInclusiveFacet, this, NamePool::Ptr(m_namePool));
+    validateIdAttribute( "maxInclusive" );
 
-   while (!atEnd()) {
-      readNext();
+    TagValidationHandler tagValidator( XsdTagScope::MaxInclusiveFacet, this, NamePool::Ptr( m_namePool ) );
 
-      if (isEndElement()) {
-         break;
-      }
+    while ( !atEnd() )
+    {
+        readNext();
 
-      if (isStartElement()) {
-         const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken(name());
-         const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken(namespaceUri());
+        if ( isEndElement() )
+        {
+            break;
+        }
 
-         tagValidator.validate(token);
+        if ( isStartElement() )
+        {
+            const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken( name() );
+            const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken( namespaceUri() );
 
-         if (isSchemaTag(XsdSchemaToken::Annotation, token, namespaceToken)) {
-            const XsdAnnotation::Ptr annotation = parseAnnotation();
-            facet->addAnnotation(annotation);
-         } else {
-            parseUnknown();
-         }
-      }
-   }
+            tagValidator.validate( token );
 
-   tagValidator.finalize();
+            if ( isSchemaTag( XsdSchemaToken::Annotation, token, namespaceToken ) )
+            {
+                const XsdAnnotation::Ptr annotation = parseAnnotation();
+                facet->addAnnotation( annotation );
+            }
+            else
+            {
+                parseUnknown();
+            }
+        }
+    }
 
-   return facet;
+    tagValidator.finalize();
+
+    return facet;
 }
 
 XsdFacet::Ptr XsdSchemaParser::parseTotalDigitsFacet()
 {
-   const ElementNamespaceHandler namespaceHandler(XsdSchemaToken::TotalDigits, this);
+    const ElementNamespaceHandler namespaceHandler( XsdSchemaToken::TotalDigits, this );
 
-   validateElement(XsdTagScope::TotalDigitsFacet);
+    validateElement( XsdTagScope::TotalDigitsFacet );
 
-   const XsdFacet::Ptr facet = XsdFacet::Ptr(new XsdFacet());
-   facet->setType(XsdFacet::TotalDigits);
+    const XsdFacet::Ptr facet = XsdFacet::Ptr( new XsdFacet() );
+    facet->setType( XsdFacet::TotalDigits );
 
-   // parse attributes
-   if (hasAttribute("fixed")) {
-      const QString value = readAttribute(QString::fromLatin1("fixed"));
-      const Boolean::Ptr fixed = Boolean::fromLexical(value);
+    // parse attributes
+    if ( hasAttribute( "fixed" ) )
+    {
+        const QString value = readAttribute( QString::fromLatin1( "fixed" ) );
+        const Boolean::Ptr fixed = Boolean::fromLexical( value );
 
-      if (fixed->hasError()) {
-         attributeContentError("fixed", "totalDigits", value, BuiltinTypes::xsBoolean);
-         return facet;
-      }
+        if ( fixed->hasError() )
+        {
+            attributeContentError( "fixed", "totalDigits", value, BuiltinTypes::xsBoolean );
+            return facet;
+        }
 
-      facet->setFixed(fixed->as<Boolean>()->value());
-   } else {
-      facet->setFixed(false); // the default value
-   }
+        facet->setFixed( fixed->as<Boolean>()->value() );
+    }
+    else
+    {
+        facet->setFixed( false ); // the default value
+    }
 
-   const QString value = readAttribute(QString::fromLatin1("value"));
-   DerivedInteger<TypePositiveInteger>::Ptr integer = DerivedInteger<TypePositiveInteger>::fromLexical(NamePool::Ptr(
-            m_namePool), value);
-   if (integer->hasError()) {
-      attributeContentError("value", "totalDigits", value, BuiltinTypes::xsPositiveInteger);
-      return facet;
-   } else {
-      facet->setValue(integer);
-   }
+    const QString value = readAttribute( QString::fromLatin1( "value" ) );
+    DerivedInteger<TypePositiveInteger>::Ptr integer = DerivedInteger<TypePositiveInteger>::fromLexical( NamePool::Ptr(
+                m_namePool ), value );
 
-   validateIdAttribute("totalDigits");
+    if ( integer->hasError() )
+    {
+        attributeContentError( "value", "totalDigits", value, BuiltinTypes::xsPositiveInteger );
+        return facet;
+    }
+    else
+    {
+        facet->setValue( integer );
+    }
 
-   TagValidationHandler tagValidator(XsdTagScope::TotalDigitsFacet, this, NamePool::Ptr(m_namePool));
+    validateIdAttribute( "totalDigits" );
 
-   while (!atEnd()) {
-      readNext();
+    TagValidationHandler tagValidator( XsdTagScope::TotalDigitsFacet, this, NamePool::Ptr( m_namePool ) );
 
-      if (isEndElement()) {
-         break;
-      }
+    while ( !atEnd() )
+    {
+        readNext();
 
-      if (isStartElement()) {
-         const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken(name());
-         const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken(namespaceUri());
+        if ( isEndElement() )
+        {
+            break;
+        }
 
-         tagValidator.validate(token);
+        if ( isStartElement() )
+        {
+            const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken( name() );
+            const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken( namespaceUri() );
 
-         if (isSchemaTag(XsdSchemaToken::Annotation, token, namespaceToken)) {
-            const XsdAnnotation::Ptr annotation = parseAnnotation();
-            facet->addAnnotation(annotation);
-         } else {
-            parseUnknown();
-         }
-      }
-   }
+            tagValidator.validate( token );
 
-   tagValidator.finalize();
+            if ( isSchemaTag( XsdSchemaToken::Annotation, token, namespaceToken ) )
+            {
+                const XsdAnnotation::Ptr annotation = parseAnnotation();
+                facet->addAnnotation( annotation );
+            }
+            else
+            {
+                parseUnknown();
+            }
+        }
+    }
 
-   return facet;
+    tagValidator.finalize();
+
+    return facet;
 }
 
 XsdFacet::Ptr XsdSchemaParser::parseFractionDigitsFacet()
 {
-   const ElementNamespaceHandler namespaceHandler(XsdSchemaToken::FractionDigits, this);
+    const ElementNamespaceHandler namespaceHandler( XsdSchemaToken::FractionDigits, this );
 
-   validateElement(XsdTagScope::FractionDigitsFacet);
+    validateElement( XsdTagScope::FractionDigitsFacet );
 
-   const XsdFacet::Ptr facet = XsdFacet::Ptr(new XsdFacet());
-   facet->setType(XsdFacet::FractionDigits);
+    const XsdFacet::Ptr facet = XsdFacet::Ptr( new XsdFacet() );
+    facet->setType( XsdFacet::FractionDigits );
 
-   // parse attributes
-   if (hasAttribute("fixed")) {
-      const QString value = readAttribute(QString::fromLatin1("fixed"));
-      const Boolean::Ptr fixed = Boolean::fromLexical(value);
+    // parse attributes
+    if ( hasAttribute( "fixed" ) )
+    {
+        const QString value = readAttribute( QString::fromLatin1( "fixed" ) );
+        const Boolean::Ptr fixed = Boolean::fromLexical( value );
 
-      if (fixed->hasError()) {
-         attributeContentError("fixed", "fractionDigits", value, BuiltinTypes::xsBoolean);
-         return facet;
-      }
+        if ( fixed->hasError() )
+        {
+            attributeContentError( "fixed", "fractionDigits", value, BuiltinTypes::xsBoolean );
+            return facet;
+        }
 
-      facet->setFixed(fixed->as<Boolean>()->value());
-   } else {
-      facet->setFixed(false); // the default value
-   }
+        facet->setFixed( fixed->as<Boolean>()->value() );
+    }
+    else
+    {
+        facet->setFixed( false ); // the default value
+    }
 
-   const QString value = readAttribute(QString::fromLatin1("value"));
-   DerivedInteger<TypeNonNegativeInteger>::Ptr integer = DerivedInteger<TypeNonNegativeInteger>::fromLexical(NamePool::Ptr(
-            m_namePool), value);
-   if (integer->hasError()) {
-      attributeContentError("value", "fractionDigits", value, BuiltinTypes::xsNonNegativeInteger);
-      return facet;
-   } else {
-      facet->setValue(integer);
-   }
+    const QString value = readAttribute( QString::fromLatin1( "value" ) );
+    DerivedInteger<TypeNonNegativeInteger>::Ptr integer = DerivedInteger<TypeNonNegativeInteger>::fromLexical( NamePool::Ptr(
+                m_namePool ), value );
 
-   validateIdAttribute("fractionDigits");
+    if ( integer->hasError() )
+    {
+        attributeContentError( "value", "fractionDigits", value, BuiltinTypes::xsNonNegativeInteger );
+        return facet;
+    }
+    else
+    {
+        facet->setValue( integer );
+    }
 
-   TagValidationHandler tagValidator(XsdTagScope::FractionDigitsFacet, this, NamePool::Ptr(m_namePool));
+    validateIdAttribute( "fractionDigits" );
 
-   while (!atEnd()) {
-      readNext();
+    TagValidationHandler tagValidator( XsdTagScope::FractionDigitsFacet, this, NamePool::Ptr( m_namePool ) );
 
-      if (isEndElement()) {
-         break;
-      }
+    while ( !atEnd() )
+    {
+        readNext();
 
-      if (isStartElement()) {
-         const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken(name());
-         const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken(namespaceUri());
+        if ( isEndElement() )
+        {
+            break;
+        }
 
-         tagValidator.validate(token);
+        if ( isStartElement() )
+        {
+            const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken( name() );
+            const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken( namespaceUri() );
 
-         if (isSchemaTag(XsdSchemaToken::Annotation, token, namespaceToken)) {
-            const XsdAnnotation::Ptr annotation = parseAnnotation();
-            facet->addAnnotation(annotation);
-         } else {
-            parseUnknown();
-         }
-      }
-   }
+            tagValidator.validate( token );
 
-   tagValidator.finalize();
+            if ( isSchemaTag( XsdSchemaToken::Annotation, token, namespaceToken ) )
+            {
+                const XsdAnnotation::Ptr annotation = parseAnnotation();
+                facet->addAnnotation( annotation );
+            }
+            else
+            {
+                parseUnknown();
+            }
+        }
+    }
 
-   return facet;
+    tagValidator.finalize();
+
+    return facet;
 }
 
 XsdFacet::Ptr XsdSchemaParser::parseLengthFacet()
 {
-   const ElementNamespaceHandler namespaceHandler(XsdSchemaToken::Length, this);
+    const ElementNamespaceHandler namespaceHandler( XsdSchemaToken::Length, this );
 
-   validateElement(XsdTagScope::LengthFacet);
+    validateElement( XsdTagScope::LengthFacet );
 
-   const XsdFacet::Ptr facet = XsdFacet::Ptr(new XsdFacet());
-   facet->setType(XsdFacet::Length);
+    const XsdFacet::Ptr facet = XsdFacet::Ptr( new XsdFacet() );
+    facet->setType( XsdFacet::Length );
 
-   // parse attributes
-   if (hasAttribute("fixed")) {
-      const QString value = readAttribute(QString::fromLatin1("fixed"));
-      const Boolean::Ptr fixed = Boolean::fromLexical(value);
-      if (fixed->hasError()) {
-         attributeContentError("fixed", "length", value, BuiltinTypes::xsBoolean);
-         return facet;
-      }
+    // parse attributes
+    if ( hasAttribute( "fixed" ) )
+    {
+        const QString value = readAttribute( QString::fromLatin1( "fixed" ) );
+        const Boolean::Ptr fixed = Boolean::fromLexical( value );
 
-      facet->setFixed(fixed->as<Boolean>()->value());
-   } else {
-      facet->setFixed(false); // the default value
-   }
+        if ( fixed->hasError() )
+        {
+            attributeContentError( "fixed", "length", value, BuiltinTypes::xsBoolean );
+            return facet;
+        }
 
-   const QString value = readAttribute(QString::fromLatin1("value"));
-   DerivedInteger<TypeNonNegativeInteger>::Ptr integer = DerivedInteger<TypeNonNegativeInteger>::fromLexical(NamePool::Ptr(
-            m_namePool), value);
-   if (integer->hasError()) {
-      attributeContentError("value", "length", value, BuiltinTypes::xsNonNegativeInteger);
-      return facet;
-   } else {
-      facet->setValue(integer);
-   }
+        facet->setFixed( fixed->as<Boolean>()->value() );
+    }
+    else
+    {
+        facet->setFixed( false ); // the default value
+    }
 
-   validateIdAttribute("length");
+    const QString value = readAttribute( QString::fromLatin1( "value" ) );
+    DerivedInteger<TypeNonNegativeInteger>::Ptr integer = DerivedInteger<TypeNonNegativeInteger>::fromLexical( NamePool::Ptr(
+                m_namePool ), value );
 
-   TagValidationHandler tagValidator(XsdTagScope::LengthFacet, this, NamePool::Ptr(m_namePool));
+    if ( integer->hasError() )
+    {
+        attributeContentError( "value", "length", value, BuiltinTypes::xsNonNegativeInteger );
+        return facet;
+    }
+    else
+    {
+        facet->setValue( integer );
+    }
 
-   while (!atEnd()) {
-      readNext();
+    validateIdAttribute( "length" );
 
-      if (isEndElement()) {
-         break;
-      }
+    TagValidationHandler tagValidator( XsdTagScope::LengthFacet, this, NamePool::Ptr( m_namePool ) );
 
-      if (isStartElement()) {
-         const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken(name());
-         const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken(namespaceUri());
+    while ( !atEnd() )
+    {
+        readNext();
 
-         tagValidator.validate(token);
+        if ( isEndElement() )
+        {
+            break;
+        }
 
-         if (isSchemaTag(XsdSchemaToken::Annotation, token, namespaceToken)) {
-            const XsdAnnotation::Ptr annotation = parseAnnotation();
-            facet->addAnnotation(annotation);
-         } else {
-            parseUnknown();
-         }
-      }
-   }
+        if ( isStartElement() )
+        {
+            const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken( name() );
+            const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken( namespaceUri() );
 
-   tagValidator.finalize();
+            tagValidator.validate( token );
 
-   return facet;
+            if ( isSchemaTag( XsdSchemaToken::Annotation, token, namespaceToken ) )
+            {
+                const XsdAnnotation::Ptr annotation = parseAnnotation();
+                facet->addAnnotation( annotation );
+            }
+            else
+            {
+                parseUnknown();
+            }
+        }
+    }
+
+    tagValidator.finalize();
+
+    return facet;
 }
 
 XsdFacet::Ptr XsdSchemaParser::parseMinLengthFacet()
 {
-   const ElementNamespaceHandler namespaceHandler(XsdSchemaToken::MinLength, this);
+    const ElementNamespaceHandler namespaceHandler( XsdSchemaToken::MinLength, this );
 
-   validateElement(XsdTagScope::MinLengthFacet);
+    validateElement( XsdTagScope::MinLengthFacet );
 
-   const XsdFacet::Ptr facet = XsdFacet::Ptr(new XsdFacet());
-   facet->setType(XsdFacet::MinimumLength);
+    const XsdFacet::Ptr facet = XsdFacet::Ptr( new XsdFacet() );
+    facet->setType( XsdFacet::MinimumLength );
 
-   // parse attributes
-   if (hasAttribute("fixed")) {
-      const QString value = readAttribute(QString::fromLatin1("fixed"));
-      const Boolean::Ptr fixed = Boolean::fromLexical(value);
+    // parse attributes
+    if ( hasAttribute( "fixed" ) )
+    {
+        const QString value = readAttribute( QString::fromLatin1( "fixed" ) );
+        const Boolean::Ptr fixed = Boolean::fromLexical( value );
 
-      if (fixed->hasError()) {
-         attributeContentError("fixed", "minLength", value, BuiltinTypes::xsBoolean);
-         return facet;
-      }
+        if ( fixed->hasError() )
+        {
+            attributeContentError( "fixed", "minLength", value, BuiltinTypes::xsBoolean );
+            return facet;
+        }
 
-      facet->setFixed(fixed->as<Boolean>()->value());
-   } else {
-      facet->setFixed(false); // the default value
-   }
+        facet->setFixed( fixed->as<Boolean>()->value() );
+    }
+    else
+    {
+        facet->setFixed( false ); // the default value
+    }
 
-   const QString value = readAttribute(QString::fromLatin1("value"));
-   DerivedInteger<TypeNonNegativeInteger>::Ptr integer = DerivedInteger<TypeNonNegativeInteger>::fromLexical(NamePool::Ptr(
-            m_namePool), value);
-   if (integer->hasError()) {
-      attributeContentError("value", "minLength", value, BuiltinTypes::xsNonNegativeInteger);
-      return facet;
-   } else {
-      facet->setValue(integer);
-   }
+    const QString value = readAttribute( QString::fromLatin1( "value" ) );
+    DerivedInteger<TypeNonNegativeInteger>::Ptr integer = DerivedInteger<TypeNonNegativeInteger>::fromLexical( NamePool::Ptr(
+                m_namePool ), value );
 
-   validateIdAttribute("minLength");
+    if ( integer->hasError() )
+    {
+        attributeContentError( "value", "minLength", value, BuiltinTypes::xsNonNegativeInteger );
+        return facet;
+    }
+    else
+    {
+        facet->setValue( integer );
+    }
 
-   TagValidationHandler tagValidator(XsdTagScope::MinLengthFacet, this, NamePool::Ptr(m_namePool));
+    validateIdAttribute( "minLength" );
 
-   while (!atEnd()) {
-      readNext();
+    TagValidationHandler tagValidator( XsdTagScope::MinLengthFacet, this, NamePool::Ptr( m_namePool ) );
 
-      if (isEndElement()) {
-         break;
-      }
+    while ( !atEnd() )
+    {
+        readNext();
 
-      if (isStartElement()) {
-         const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken(name());
-         const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken(namespaceUri());
+        if ( isEndElement() )
+        {
+            break;
+        }
 
-         tagValidator.validate(token);
+        if ( isStartElement() )
+        {
+            const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken( name() );
+            const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken( namespaceUri() );
 
-         if (isSchemaTag(XsdSchemaToken::Annotation, token, namespaceToken)) {
-            const XsdAnnotation::Ptr annotation = parseAnnotation();
-            facet->addAnnotation(annotation);
-         } else {
-            parseUnknown();
-         }
-      }
-   }
+            tagValidator.validate( token );
 
-   tagValidator.finalize();
+            if ( isSchemaTag( XsdSchemaToken::Annotation, token, namespaceToken ) )
+            {
+                const XsdAnnotation::Ptr annotation = parseAnnotation();
+                facet->addAnnotation( annotation );
+            }
+            else
+            {
+                parseUnknown();
+            }
+        }
+    }
 
-   return facet;
+    tagValidator.finalize();
+
+    return facet;
 }
 
 XsdFacet::Ptr XsdSchemaParser::parseMaxLengthFacet()
 {
-   const ElementNamespaceHandler namespaceHandler(XsdSchemaToken::MaxLength, this);
+    const ElementNamespaceHandler namespaceHandler( XsdSchemaToken::MaxLength, this );
 
-   validateElement(XsdTagScope::MaxLengthFacet);
+    validateElement( XsdTagScope::MaxLengthFacet );
 
-   const XsdFacet::Ptr facet = XsdFacet::Ptr(new XsdFacet());
-   facet->setType(XsdFacet::MaximumLength);
+    const XsdFacet::Ptr facet = XsdFacet::Ptr( new XsdFacet() );
+    facet->setType( XsdFacet::MaximumLength );
 
-   // parse attributes
-   if (hasAttribute("fixed")) {
-      const QString value = readAttribute(QString::fromLatin1("fixed"));
-      const Boolean::Ptr fixed = Boolean::fromLexical(value);
-      if (fixed->hasError()) {
-         attributeContentError("fixed", "maxLength", value, BuiltinTypes::xsBoolean);
-         return facet;
-      }
+    // parse attributes
+    if ( hasAttribute( "fixed" ) )
+    {
+        const QString value = readAttribute( QString::fromLatin1( "fixed" ) );
+        const Boolean::Ptr fixed = Boolean::fromLexical( value );
 
-      facet->setFixed(fixed->as<Boolean>()->value());
-   } else {
-      facet->setFixed(false); // the default value
-   }
+        if ( fixed->hasError() )
+        {
+            attributeContentError( "fixed", "maxLength", value, BuiltinTypes::xsBoolean );
+            return facet;
+        }
 
-   const QString value = readAttribute(QString::fromLatin1("value"));
-   DerivedInteger<TypeNonNegativeInteger>::Ptr integer = DerivedInteger<TypeNonNegativeInteger>::fromLexical(NamePool::Ptr(
-            m_namePool), value);
-   if (integer->hasError()) {
-      attributeContentError("value", "maxLength", value, BuiltinTypes::xsNonNegativeInteger);
-      return facet;
-   } else {
-      facet->setValue(integer);
-   }
+        facet->setFixed( fixed->as<Boolean>()->value() );
+    }
+    else
+    {
+        facet->setFixed( false ); // the default value
+    }
 
-   validateIdAttribute("maxLength");
+    const QString value = readAttribute( QString::fromLatin1( "value" ) );
+    DerivedInteger<TypeNonNegativeInteger>::Ptr integer = DerivedInteger<TypeNonNegativeInteger>::fromLexical( NamePool::Ptr(
+                m_namePool ), value );
 
-   TagValidationHandler tagValidator(XsdTagScope::MaxLengthFacet, this, NamePool::Ptr(m_namePool));
+    if ( integer->hasError() )
+    {
+        attributeContentError( "value", "maxLength", value, BuiltinTypes::xsNonNegativeInteger );
+        return facet;
+    }
+    else
+    {
+        facet->setValue( integer );
+    }
 
-   while (!atEnd()) {
-      readNext();
+    validateIdAttribute( "maxLength" );
 
-      if (isEndElement()) {
-         break;
-      }
+    TagValidationHandler tagValidator( XsdTagScope::MaxLengthFacet, this, NamePool::Ptr( m_namePool ) );
 
-      if (isStartElement()) {
-         const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken(name());
-         const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken(namespaceUri());
+    while ( !atEnd() )
+    {
+        readNext();
 
-         tagValidator.validate(token);
+        if ( isEndElement() )
+        {
+            break;
+        }
 
-         if (isSchemaTag(XsdSchemaToken::Annotation, token, namespaceToken)) {
-            const XsdAnnotation::Ptr annotation = parseAnnotation();
-            facet->addAnnotation(annotation);
-         } else {
-            parseUnknown();
-         }
-      }
-   }
+        if ( isStartElement() )
+        {
+            const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken( name() );
+            const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken( namespaceUri() );
 
-   tagValidator.finalize();
+            tagValidator.validate( token );
 
-   return facet;
+            if ( isSchemaTag( XsdSchemaToken::Annotation, token, namespaceToken ) )
+            {
+                const XsdAnnotation::Ptr annotation = parseAnnotation();
+                facet->addAnnotation( annotation );
+            }
+            else
+            {
+                parseUnknown();
+            }
+        }
+    }
+
+    tagValidator.finalize();
+
+    return facet;
 }
 
 XsdFacet::Ptr XsdSchemaParser::parseEnumerationFacet()
 {
-   const ElementNamespaceHandler namespaceHandler(XsdSchemaToken::Enumeration, this);
+    const ElementNamespaceHandler namespaceHandler( XsdSchemaToken::Enumeration, this );
 
-   validateElement(XsdTagScope::EnumerationFacet);
+    validateElement( XsdTagScope::EnumerationFacet );
 
-   const XsdFacet::Ptr facet = XsdFacet::Ptr(new XsdFacet());
-   facet->setType(XsdFacet::Enumeration);
+    const XsdFacet::Ptr facet = XsdFacet::Ptr( new XsdFacet() );
+    facet->setType( XsdFacet::Enumeration );
 
-   // parse attributes
-   facet->setFixed(false); // not defined in schema, but can't hurt
+    // parse attributes
+    facet->setFixed( false ); // not defined in schema, but can't hurt
 
-   const QString value = readAttribute(QString::fromLatin1("value"));
+    const QString value = readAttribute( QString::fromLatin1( "value" ) );
 
-   // as enumeration can have a value of type anySimpleType, we just read
-   // the string here and store it for later intepretation
-   DerivedString<TypeString>::Ptr string = DerivedString<TypeString>::fromLexical(NamePool::Ptr(m_namePool), value);
-   if (string->hasError()) {
-      attributeContentError("value", "enumeration", value);
-      return facet;
-   } else {
-      AtomicValue::List multiValue;
-      multiValue << string;
-      facet->setMultiValue(multiValue);
-   }
-   m_schemaResolver->addEnumerationFacetValue(string, m_namespaceSupport);
+    // as enumeration can have a value of type anySimpleType, we just read
+    // the string here and store it for later intepretation
+    DerivedString<TypeString>::Ptr string = DerivedString<TypeString>::fromLexical( NamePool::Ptr( m_namePool ), value );
 
-   validateIdAttribute("enumeration");
+    if ( string->hasError() )
+    {
+        attributeContentError( "value", "enumeration", value );
+        return facet;
+    }
+    else
+    {
+        AtomicValue::List multiValue;
+        multiValue << string;
+        facet->setMultiValue( multiValue );
+    }
 
-   TagValidationHandler tagValidator(XsdTagScope::EnumerationFacet, this, NamePool::Ptr(m_namePool));
+    m_schemaResolver->addEnumerationFacetValue( string, m_namespaceSupport );
 
-   while (!atEnd()) {
-      readNext();
+    validateIdAttribute( "enumeration" );
 
-      if (isEndElement()) {
-         break;
-      }
+    TagValidationHandler tagValidator( XsdTagScope::EnumerationFacet, this, NamePool::Ptr( m_namePool ) );
 
-      if (isStartElement()) {
-         const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken(name());
-         const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken(namespaceUri());
+    while ( !atEnd() )
+    {
+        readNext();
 
-         tagValidator.validate(token);
+        if ( isEndElement() )
+        {
+            break;
+        }
 
-         if (isSchemaTag(XsdSchemaToken::Annotation, token, namespaceToken)) {
-            const XsdAnnotation::Ptr annotation = parseAnnotation();
-            facet->addAnnotation(annotation);
-         } else {
-            parseUnknown();
-         }
-      }
-   }
+        if ( isStartElement() )
+        {
+            const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken( name() );
+            const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken( namespaceUri() );
 
-   tagValidator.finalize();
+            tagValidator.validate( token );
 
-   return facet;
+            if ( isSchemaTag( XsdSchemaToken::Annotation, token, namespaceToken ) )
+            {
+                const XsdAnnotation::Ptr annotation = parseAnnotation();
+                facet->addAnnotation( annotation );
+            }
+            else
+            {
+                parseUnknown();
+            }
+        }
+    }
+
+    tagValidator.finalize();
+
+    return facet;
 }
 
 XsdFacet::Ptr XsdSchemaParser::parseWhiteSpaceFacet()
 {
-   const ElementNamespaceHandler namespaceHandler(XsdSchemaToken::WhiteSpace, this);
+    const ElementNamespaceHandler namespaceHandler( XsdSchemaToken::WhiteSpace, this );
 
-   validateElement(XsdTagScope::WhiteSpaceFacet);
+    validateElement( XsdTagScope::WhiteSpaceFacet );
 
-   const XsdFacet::Ptr facet = XsdFacet::Ptr(new XsdFacet());
-   facet->setType(XsdFacet::WhiteSpace);
+    const XsdFacet::Ptr facet = XsdFacet::Ptr( new XsdFacet() );
+    facet->setType( XsdFacet::WhiteSpace );
 
-   // parse attributes
-   if (hasAttribute("fixed")) {
-      const QString value = readAttribute(QString::fromLatin1("fixed"));
-      const Boolean::Ptr fixed = Boolean::fromLexical(value);
+    // parse attributes
+    if ( hasAttribute( "fixed" ) )
+    {
+        const QString value = readAttribute( QString::fromLatin1( "fixed" ) );
+        const Boolean::Ptr fixed = Boolean::fromLexical( value );
 
-      if (fixed->hasError()) {
-         attributeContentError("fixed", "whiteSpace", value, BuiltinTypes::xsBoolean);
-         return facet;
-      }
+        if ( fixed->hasError() )
+        {
+            attributeContentError( "fixed", "whiteSpace", value, BuiltinTypes::xsBoolean );
+            return facet;
+        }
 
-      facet->setFixed(fixed->as<Boolean>()->value());
-   } else {
-      facet->setFixed(false); // the default value
-   }
+        facet->setFixed( fixed->as<Boolean>()->value() );
+    }
+    else
+    {
+        facet->setFixed( false ); // the default value
+    }
 
-   const QString value = readAttribute(QString::fromLatin1("value"));
-   if (value != XsdSchemaToken::toString(XsdSchemaToken::Collapse) &&
-         value != XsdSchemaToken::toString(XsdSchemaToken::Preserve) &&
-         value != XsdSchemaToken::toString(XsdSchemaToken::Replace)) {
-      attributeContentError("value", "whiteSpace", value);
-      return facet;
-   } else {
-      DerivedString<TypeString>::Ptr string = DerivedString<TypeString>::fromLexical(NamePool::Ptr(m_namePool), value);
-      if (string->hasError()) {
-         attributeContentError("value", "whiteSpace", value);
-         return facet;
-      } else {
-         facet->setValue(string);
-      }
-   }
+    const QString value = readAttribute( QString::fromLatin1( "value" ) );
 
-   validateIdAttribute("whiteSpace");
+    if ( value != XsdSchemaToken::toString( XsdSchemaToken::Collapse ) &&
+            value != XsdSchemaToken::toString( XsdSchemaToken::Preserve ) &&
+            value != XsdSchemaToken::toString( XsdSchemaToken::Replace ) )
+    {
+        attributeContentError( "value", "whiteSpace", value );
+        return facet;
+    }
+    else
+    {
+        DerivedString<TypeString>::Ptr string = DerivedString<TypeString>::fromLexical( NamePool::Ptr( m_namePool ), value );
 
-   TagValidationHandler tagValidator(XsdTagScope::WhiteSpaceFacet, this, NamePool::Ptr(m_namePool));
+        if ( string->hasError() )
+        {
+            attributeContentError( "value", "whiteSpace", value );
+            return facet;
+        }
+        else
+        {
+            facet->setValue( string );
+        }
+    }
 
-   while (!atEnd()) {
-      readNext();
+    validateIdAttribute( "whiteSpace" );
 
-      if (isEndElement()) {
-         break;
-      }
+    TagValidationHandler tagValidator( XsdTagScope::WhiteSpaceFacet, this, NamePool::Ptr( m_namePool ) );
 
-      if (isStartElement()) {
-         const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken(name());
-         const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken(namespaceUri());
+    while ( !atEnd() )
+    {
+        readNext();
 
-         tagValidator.validate(token);
+        if ( isEndElement() )
+        {
+            break;
+        }
 
-         if (isSchemaTag(XsdSchemaToken::Annotation, token, namespaceToken)) {
-            const XsdAnnotation::Ptr annotation = parseAnnotation();
-            facet->addAnnotation(annotation);
-         } else {
-            parseUnknown();
-         }
-      }
-   }
+        if ( isStartElement() )
+        {
+            const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken( name() );
+            const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken( namespaceUri() );
 
-   tagValidator.finalize();
+            tagValidator.validate( token );
 
-   return facet;
+            if ( isSchemaTag( XsdSchemaToken::Annotation, token, namespaceToken ) )
+            {
+                const XsdAnnotation::Ptr annotation = parseAnnotation();
+                facet->addAnnotation( annotation );
+            }
+            else
+            {
+                parseUnknown();
+            }
+        }
+    }
+
+    tagValidator.finalize();
+
+    return facet;
 }
 
 XsdFacet::Ptr XsdSchemaParser::parsePatternFacet()
 {
-   const ElementNamespaceHandler namespaceHandler(XsdSchemaToken::Pattern, this);
+    const ElementNamespaceHandler namespaceHandler( XsdSchemaToken::Pattern, this );
 
-   validateElement(XsdTagScope::PatternFacet);
+    validateElement( XsdTagScope::PatternFacet );
 
-   const XsdFacet::Ptr facet = XsdFacet::Ptr(new XsdFacet());
-   facet->setType(XsdFacet::Pattern);
+    const XsdFacet::Ptr facet = XsdFacet::Ptr( new XsdFacet() );
+    facet->setType( XsdFacet::Pattern );
 
-   // parse attributes
+    // parse attributes
 
-   // as pattern can have a value of type anySimpleType, we just read
-   // the string here and store it for later intepretation
-   const QString value = readAttribute(QString::fromLatin1("value"));
-   DerivedString<TypeString>::Ptr string = DerivedString<TypeString>::fromLexical(NamePool::Ptr(m_namePool), value);
-   if (string->hasError()) {
-      attributeContentError("value", "pattern", value);
-      return facet;
-   } else {
-      AtomicValue::List multiValue;
-      multiValue << string;
-      facet->setMultiValue(multiValue);
-   }
+    // as pattern can have a value of type anySimpleType, we just read
+    // the string here and store it for later intepretation
+    const QString value = readAttribute( QString::fromLatin1( "value" ) );
+    DerivedString<TypeString>::Ptr string = DerivedString<TypeString>::fromLexical( NamePool::Ptr( m_namePool ), value );
 
-   validateIdAttribute("pattern");
+    if ( string->hasError() )
+    {
+        attributeContentError( "value", "pattern", value );
+        return facet;
+    }
+    else
+    {
+        AtomicValue::List multiValue;
+        multiValue << string;
+        facet->setMultiValue( multiValue );
+    }
 
-   TagValidationHandler tagValidator(XsdTagScope::PatternFacet, this, NamePool::Ptr(m_namePool));
+    validateIdAttribute( "pattern" );
 
-   while (!atEnd()) {
-      readNext();
+    TagValidationHandler tagValidator( XsdTagScope::PatternFacet, this, NamePool::Ptr( m_namePool ) );
 
-      if (isEndElement()) {
-         break;
-      }
+    while ( !atEnd() )
+    {
+        readNext();
 
-      if (isStartElement()) {
-         const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken(name());
-         const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken(namespaceUri());
+        if ( isEndElement() )
+        {
+            break;
+        }
 
-         tagValidator.validate(token);
+        if ( isStartElement() )
+        {
+            const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken( name() );
+            const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken( namespaceUri() );
 
-         if (isSchemaTag(XsdSchemaToken::Annotation, token, namespaceToken)) {
-            const XsdAnnotation::Ptr annotation = parseAnnotation();
-            facet->addAnnotation(annotation);
-         } else {
-            parseUnknown();
-         }
-      }
-   }
+            tagValidator.validate( token );
 
-   tagValidator.finalize();
+            if ( isSchemaTag( XsdSchemaToken::Annotation, token, namespaceToken ) )
+            {
+                const XsdAnnotation::Ptr annotation = parseAnnotation();
+                facet->addAnnotation( annotation );
+            }
+            else
+            {
+                parseUnknown();
+            }
+        }
+    }
 
-   return facet;
+    tagValidator.finalize();
+
+    return facet;
 }
 
 XsdFacet::Ptr XsdSchemaParser::parseAssertionFacet()
 {
-   // this is just a wrapper function around the parseAssertion() method
+    // this is just a wrapper function around the parseAssertion() method
 
-   const XsdAssertion::Ptr assertion = parseAssertion(XsdSchemaToken::Assertion, XsdTagScope::Assertion);
+    const XsdAssertion::Ptr assertion = parseAssertion( XsdSchemaToken::Assertion, XsdTagScope::Assertion );
 
-   const XsdFacet::Ptr facet = XsdFacet::Ptr(new XsdFacet());
-   facet->setType(XsdFacet::Assertion);
-   facet->setAssertions(XsdAssertion::List() << assertion);
+    const XsdFacet::Ptr facet = XsdFacet::Ptr( new XsdFacet() );
+    facet->setType( XsdFacet::Assertion );
+    facet->setAssertions( XsdAssertion::List() << assertion );
 
-   return facet;
+    return facet;
 }
 
 XsdComplexType::Ptr XsdSchemaParser::parseGlobalComplexType()
 {
-   const ElementNamespaceHandler namespaceHandler(XsdSchemaToken::ComplexType, this);
+    const ElementNamespaceHandler namespaceHandler( XsdSchemaToken::ComplexType, this );
 
-   validateElement(XsdTagScope::GlobalComplexType);
+    validateElement( XsdTagScope::GlobalComplexType );
 
-   bool hasTypeSpecified = false;
-   bool hasComplexContent = false;
+    bool hasTypeSpecified = false;
+    bool hasComplexContent = false;
 
-   const XsdComplexType::Ptr complexType(new XsdComplexType());
+    const XsdComplexType::Ptr complexType( new XsdComplexType() );
 
-   // parse attributes
-   if (hasAttribute("abstract")) {
-      const QString abstract = readAttribute(QString::fromLatin1("abstract"));
-      const Boolean::Ptr value = Boolean::fromLexical(abstract);
+    // parse attributes
+    if ( hasAttribute( "abstract" ) )
+    {
+        const QString abstract = readAttribute( QString::fromLatin1( "abstract" ) );
+        const Boolean::Ptr value = Boolean::fromLexical( abstract );
 
-      if (value->hasError()) {
-         attributeContentError("abstract", "complexType", abstract, BuiltinTypes::xsBoolean);
-         return complexType;
-      }
+        if ( value->hasError() )
+        {
+            attributeContentError( "abstract", "complexType", abstract, BuiltinTypes::xsBoolean );
+            return complexType;
+        }
 
-      complexType->setIsAbstract(value->as<Boolean>()->value());
-   } else {
-      complexType->setIsAbstract(false);  // default value
-   }
+        complexType->setIsAbstract( value->as<Boolean>()->value() );
+    }
+    else
+    {
+        complexType->setIsAbstract( false ); // default value
+    }
 
-   complexType->setProhibitedSubstitutions(readBlockingConstraintAttribute(NamedSchemaComponent::ExtensionConstraint |
-                                           NamedSchemaComponent::RestrictionConstraint, "complexType"));
-   complexType->setDerivationConstraints(readDerivationConstraintAttribute(SchemaType::ExtensionConstraint |
-                                         SchemaType::RestrictionConstraint, "complexType"));
+    complexType->setProhibitedSubstitutions( readBlockingConstraintAttribute( NamedSchemaComponent::ExtensionConstraint |
+            NamedSchemaComponent::RestrictionConstraint, "complexType" ) );
+    complexType->setDerivationConstraints( readDerivationConstraintAttribute( SchemaType::ExtensionConstraint |
+                                           SchemaType::RestrictionConstraint, "complexType" ) );
 
-   const QXmlName objectName = m_namePool->allocateQName(m_targetNamespace, readNameAttribute("complexType"));
-   complexType->setName(objectName);
+    const QXmlName objectName = m_namePool->allocateQName( m_targetNamespace, readNameAttribute( "complexType" ) );
+    complexType->setName( objectName );
 
-   bool effectiveMixed = false;
-   if (hasAttribute("mixed")) {
-      const QString mixed = readAttribute(QString::fromLatin1("mixed"));
-      const Boolean::Ptr value = Boolean::fromLexical(mixed);
+    bool effectiveMixed = false;
 
-      if (value->hasError()) {
-         attributeContentError("mixed", "complexType", mixed, BuiltinTypes::xsBoolean);
-         return complexType;
-      }
+    if ( hasAttribute( "mixed" ) )
+    {
+        const QString mixed = readAttribute( QString::fromLatin1( "mixed" ) );
+        const Boolean::Ptr value = Boolean::fromLexical( mixed );
 
-      effectiveMixed = value->as<Boolean>()->value();
-   }
+        if ( value->hasError() )
+        {
+            attributeContentError( "mixed", "complexType", mixed, BuiltinTypes::xsBoolean );
+            return complexType;
+        }
 
-   validateIdAttribute("complexType");
+        effectiveMixed = value->as<Boolean>()->value();
+    }
 
-   TagValidationHandler tagValidator(XsdTagScope::GlobalComplexType, this, NamePool::Ptr(m_namePool));
+    validateIdAttribute( "complexType" );
 
-   while (!atEnd()) {
-      readNext();
+    TagValidationHandler tagValidator( XsdTagScope::GlobalComplexType, this, NamePool::Ptr( m_namePool ) );
 
-      if (isEndElement()) {
-         break;
-      }
+    while ( !atEnd() )
+    {
+        readNext();
 
-      if (isStartElement()) {
-         const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken(name());
-         const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken(namespaceUri());
+        if ( isEndElement() )
+        {
+            break;
+        }
 
-         tagValidator.validate(token);
+        if ( isStartElement() )
+        {
+            const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken( name() );
+            const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken( namespaceUri() );
 
-         if (isSchemaTag(XsdSchemaToken::Annotation, token, namespaceToken)) {
-            const XsdAnnotation::Ptr annotation = parseAnnotation();
-            complexType->addAnnotation(annotation);
-         } else if (isSchemaTag(XsdSchemaToken::SimpleContent, token, namespaceToken)) {
-            if (effectiveMixed) {
-               error(QtXmlPatterns::tr("%1 element with %2 child element must not have a %3 attribute.")
-                     .formatArg(formatElement("complexType"))
-                     .formatArg(formatElement("simpleContent"))
-                     .formatArg(formatAttribute("mixed")));
-               return complexType;
+            tagValidator.validate( token );
+
+            if ( isSchemaTag( XsdSchemaToken::Annotation, token, namespaceToken ) )
+            {
+                const XsdAnnotation::Ptr annotation = parseAnnotation();
+                complexType->addAnnotation( annotation );
             }
+            else if ( isSchemaTag( XsdSchemaToken::SimpleContent, token, namespaceToken ) )
+            {
+                if ( effectiveMixed )
+                {
+                    error( QtXmlPatterns::tr( "%1 element with %2 child element must not have a %3 attribute." )
+                           .formatArg( formatElement( "complexType" ) )
+                           .formatArg( formatElement( "simpleContent" ) )
+                           .formatArg( formatAttribute( "mixed" ) ) );
+                    return complexType;
+                }
 
-            parseSimpleContent(complexType);
-            hasTypeSpecified = true;
-         } else if (isSchemaTag(XsdSchemaToken::ComplexContent, token, namespaceToken)) {
-            bool mixed;
-            parseComplexContent(complexType, &mixed);
-            hasTypeSpecified = true;
+                parseSimpleContent( complexType );
+                hasTypeSpecified = true;
+            }
+            else if ( isSchemaTag( XsdSchemaToken::ComplexContent, token, namespaceToken ) )
+            {
+                bool mixed;
+                parseComplexContent( complexType, &mixed );
+                hasTypeSpecified = true;
 
-            effectiveMixed = (effectiveMixed || mixed);
-            hasComplexContent = true;
-         } else if (isSchemaTag(XsdSchemaToken::OpenContent, token, namespaceToken)) {
-            const XsdComplexType::OpenContent::Ptr openContent = parseOpenContent();
-            complexType->contentType()->setOpenContent(openContent);
-            hasComplexContent = true;
-         } else if (isSchemaTag(XsdSchemaToken::Group, token, namespaceToken)) {
-            const XsdParticle::Ptr particle(new XsdParticle());
-            const XsdTerm::Ptr term = parseReferredGroup(particle);
-            particle->setTerm(term);
-            complexType->contentType()->setParticle(particle);
+                effectiveMixed = ( effectiveMixed || mixed );
+                hasComplexContent = true;
+            }
+            else if ( isSchemaTag( XsdSchemaToken::OpenContent, token, namespaceToken ) )
+            {
+                const XsdComplexType::OpenContent::Ptr openContent = parseOpenContent();
+                complexType->contentType()->setOpenContent( openContent );
+                hasComplexContent = true;
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Group, token, namespaceToken ) )
+            {
+                const XsdParticle::Ptr particle( new XsdParticle() );
+                const XsdTerm::Ptr term = parseReferredGroup( particle );
+                particle->setTerm( term );
+                complexType->contentType()->setParticle( particle );
 
-            complexType->setWxsSuperType(BuiltinTypes::xsAnyType);
-            complexType->contentType()->setVariety(XsdComplexType::ContentType::ElementOnly);
-            complexType->setDerivationMethod(XsdComplexType::DerivationRestriction);
-            hasComplexContent = true;
-         } else if (isSchemaTag(XsdSchemaToken::All, token, namespaceToken)) {
-            const XsdParticle::Ptr particle(new XsdParticle());
-            const XsdTerm::Ptr term = parseLocalAll(particle, complexType);
-            particle->setTerm(term);
-            complexType->contentType()->setParticle(particle);
+                complexType->setWxsSuperType( BuiltinTypes::xsAnyType );
+                complexType->contentType()->setVariety( XsdComplexType::ContentType::ElementOnly );
+                complexType->setDerivationMethod( XsdComplexType::DerivationRestriction );
+                hasComplexContent = true;
+            }
+            else if ( isSchemaTag( XsdSchemaToken::All, token, namespaceToken ) )
+            {
+                const XsdParticle::Ptr particle( new XsdParticle() );
+                const XsdTerm::Ptr term = parseLocalAll( particle, complexType );
+                particle->setTerm( term );
+                complexType->contentType()->setParticle( particle );
 
-            complexType->setWxsSuperType(BuiltinTypes::xsAnyType);
-            complexType->contentType()->setVariety(XsdComplexType::ContentType::ElementOnly);
-            complexType->setDerivationMethod(XsdComplexType::DerivationRestriction);
-            hasComplexContent = true;
-         } else if (isSchemaTag(XsdSchemaToken::Choice, token, namespaceToken)) {
-            const XsdParticle::Ptr particle(new XsdParticle());
-            const XsdTerm::Ptr term = parseLocalChoice(particle, complexType);
-            particle->setTerm(term);
-            complexType->contentType()->setParticle(particle);
+                complexType->setWxsSuperType( BuiltinTypes::xsAnyType );
+                complexType->contentType()->setVariety( XsdComplexType::ContentType::ElementOnly );
+                complexType->setDerivationMethod( XsdComplexType::DerivationRestriction );
+                hasComplexContent = true;
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Choice, token, namespaceToken ) )
+            {
+                const XsdParticle::Ptr particle( new XsdParticle() );
+                const XsdTerm::Ptr term = parseLocalChoice( particle, complexType );
+                particle->setTerm( term );
+                complexType->contentType()->setParticle( particle );
 
-            complexType->setWxsSuperType(BuiltinTypes::xsAnyType);
-            complexType->contentType()->setVariety(XsdComplexType::ContentType::ElementOnly);
-            complexType->setDerivationMethod(XsdComplexType::DerivationRestriction);
-            hasComplexContent = true;
-         } else if (isSchemaTag(XsdSchemaToken::Sequence, token, namespaceToken)) {
-            const XsdParticle::Ptr particle(new XsdParticle());
-            const XsdTerm::Ptr term = parseLocalSequence(particle, complexType);
-            particle->setTerm(term);
-            complexType->contentType()->setParticle(particle);
+                complexType->setWxsSuperType( BuiltinTypes::xsAnyType );
+                complexType->contentType()->setVariety( XsdComplexType::ContentType::ElementOnly );
+                complexType->setDerivationMethod( XsdComplexType::DerivationRestriction );
+                hasComplexContent = true;
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Sequence, token, namespaceToken ) )
+            {
+                const XsdParticle::Ptr particle( new XsdParticle() );
+                const XsdTerm::Ptr term = parseLocalSequence( particle, complexType );
+                particle->setTerm( term );
+                complexType->contentType()->setParticle( particle );
 
-            complexType->setWxsSuperType(BuiltinTypes::xsAnyType);
-            complexType->contentType()->setVariety(XsdComplexType::ContentType::ElementOnly);
-            complexType->setDerivationMethod(XsdComplexType::DerivationRestriction);
-            hasComplexContent = true;
-         } else if (isSchemaTag(XsdSchemaToken::Attribute, token, namespaceToken)) {
-            const XsdAttributeUse::Ptr attributeUse = parseLocalAttribute(complexType);
-            complexType->addAttributeUse(attributeUse);
+                complexType->setWxsSuperType( BuiltinTypes::xsAnyType );
+                complexType->contentType()->setVariety( XsdComplexType::ContentType::ElementOnly );
+                complexType->setDerivationMethod( XsdComplexType::DerivationRestriction );
+                hasComplexContent = true;
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Attribute, token, namespaceToken ) )
+            {
+                const XsdAttributeUse::Ptr attributeUse = parseLocalAttribute( complexType );
+                complexType->addAttributeUse( attributeUse );
 
-            complexType->setWxsSuperType(BuiltinTypes::xsAnyType);
-            complexType->contentType()->setVariety(XsdComplexType::ContentType::ElementOnly);
-            complexType->setDerivationMethod(XsdComplexType::DerivationRestriction);
-            hasComplexContent = true;
-         } else if (isSchemaTag(XsdSchemaToken::AttributeGroup, token, namespaceToken)) {
-            const XsdAttributeUse::Ptr attributeUse = parseReferredAttributeGroup();
-            complexType->addAttributeUse(attributeUse);
+                complexType->setWxsSuperType( BuiltinTypes::xsAnyType );
+                complexType->contentType()->setVariety( XsdComplexType::ContentType::ElementOnly );
+                complexType->setDerivationMethod( XsdComplexType::DerivationRestriction );
+                hasComplexContent = true;
+            }
+            else if ( isSchemaTag( XsdSchemaToken::AttributeGroup, token, namespaceToken ) )
+            {
+                const XsdAttributeUse::Ptr attributeUse = parseReferredAttributeGroup();
+                complexType->addAttributeUse( attributeUse );
 
-            complexType->setWxsSuperType(BuiltinTypes::xsAnyType);
-            complexType->contentType()->setVariety(XsdComplexType::ContentType::ElementOnly);
-            complexType->setDerivationMethod(XsdComplexType::DerivationRestriction);
-            hasComplexContent = true;
-         } else if (isSchemaTag(XsdSchemaToken::AnyAttribute, token, namespaceToken)) {
-            const XsdWildcard::Ptr wildcard = parseAnyAttribute();
-            complexType->setAttributeWildcard(wildcard);
+                complexType->setWxsSuperType( BuiltinTypes::xsAnyType );
+                complexType->contentType()->setVariety( XsdComplexType::ContentType::ElementOnly );
+                complexType->setDerivationMethod( XsdComplexType::DerivationRestriction );
+                hasComplexContent = true;
+            }
+            else if ( isSchemaTag( XsdSchemaToken::AnyAttribute, token, namespaceToken ) )
+            {
+                const XsdWildcard::Ptr wildcard = parseAnyAttribute();
+                complexType->setAttributeWildcard( wildcard );
 
-            complexType->setWxsSuperType(BuiltinTypes::xsAnyType);
-            complexType->contentType()->setVariety(XsdComplexType::ContentType::ElementOnly);
-            complexType->setDerivationMethod(XsdComplexType::DerivationRestriction);
-            hasComplexContent = true;
-         } else if (isSchemaTag(XsdSchemaToken::Assert, token, namespaceToken)) {
-            const XsdAssertion::Ptr assertion = parseAssertion(XsdSchemaToken::Assert, XsdTagScope::Assert);
-            complexType->addAssertion(assertion);
-         } else {
-            parseUnknown();
-         }
-      }
-   }
+                complexType->setWxsSuperType( BuiltinTypes::xsAnyType );
+                complexType->contentType()->setVariety( XsdComplexType::ContentType::ElementOnly );
+                complexType->setDerivationMethod( XsdComplexType::DerivationRestriction );
+                hasComplexContent = true;
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Assert, token, namespaceToken ) )
+            {
+                const XsdAssertion::Ptr assertion = parseAssertion( XsdSchemaToken::Assert, XsdTagScope::Assert );
+                complexType->addAssertion( assertion );
+            }
+            else
+            {
+                parseUnknown();
+            }
+        }
+    }
 
-   tagValidator.finalize();
+    tagValidator.finalize();
 
-   if (!hasTypeSpecified) {
-      complexType->setWxsSuperType(BuiltinTypes::xsAnyType);
-      complexType->setDerivationMethod(XsdComplexType::DerivationRestriction);
-      hasComplexContent = true;
-   }
+    if ( !hasTypeSpecified )
+    {
+        complexType->setWxsSuperType( BuiltinTypes::xsAnyType );
+        complexType->setDerivationMethod( XsdComplexType::DerivationRestriction );
+        hasComplexContent = true;
+    }
 
-   if (hasComplexContent == true) {
-      resolveComplexContentType(complexType, effectiveMixed);
-   }
+    if ( hasComplexContent == true )
+    {
+        resolveComplexContentType( complexType, effectiveMixed );
+    }
 
-   return complexType;
+    return complexType;
 }
 
 XsdComplexType::Ptr XsdSchemaParser::parseLocalComplexType()
 {
-   const ElementNamespaceHandler namespaceHandler(XsdSchemaToken::ComplexType, this);
+    const ElementNamespaceHandler namespaceHandler( XsdSchemaToken::ComplexType, this );
 
-   validateElement(XsdTagScope::LocalComplexType);
+    validateElement( XsdTagScope::LocalComplexType );
 
-   bool hasTypeSpecified = false;
-   bool hasComplexContent = true;
+    bool hasTypeSpecified = false;
+    bool hasComplexContent = true;
 
-   const XsdComplexType::Ptr complexType(new XsdComplexType());
-   complexType->setName(m_parserContext->createAnonymousName(m_targetNamespace));
+    const XsdComplexType::Ptr complexType( new XsdComplexType() );
+    complexType->setName( m_parserContext->createAnonymousName( m_targetNamespace ) );
 
-   // parse attributes
-   bool effectiveMixed = false;
-   if (hasAttribute("mixed")) {
-      const QString mixed = readAttribute(QString::fromLatin1("mixed"));
-      const Boolean::Ptr value = Boolean::fromLexical(mixed);
+    // parse attributes
+    bool effectiveMixed = false;
 
-      if (value->hasError()) {
-         attributeContentError("mixed", "complexType", mixed, BuiltinTypes::xsBoolean);
-         return complexType;
-      }
+    if ( hasAttribute( "mixed" ) )
+    {
+        const QString mixed = readAttribute( QString::fromLatin1( "mixed" ) );
+        const Boolean::Ptr value = Boolean::fromLexical( mixed );
 
-      effectiveMixed = value->as<Boolean>()->value();
-   }
+        if ( value->hasError() )
+        {
+            attributeContentError( "mixed", "complexType", mixed, BuiltinTypes::xsBoolean );
+            return complexType;
+        }
 
-   validateIdAttribute("complexType");
+        effectiveMixed = value->as<Boolean>()->value();
+    }
 
-   TagValidationHandler tagValidator(XsdTagScope::LocalComplexType, this, NamePool::Ptr(m_namePool));
+    validateIdAttribute( "complexType" );
 
-   while (!atEnd()) {
-      readNext();
+    TagValidationHandler tagValidator( XsdTagScope::LocalComplexType, this, NamePool::Ptr( m_namePool ) );
 
-      if (isEndElement()) {
-         break;
-      }
+    while ( !atEnd() )
+    {
+        readNext();
 
-      if (isStartElement()) {
-         const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken(name());
-         const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken(namespaceUri());
+        if ( isEndElement() )
+        {
+            break;
+        }
 
-         tagValidator.validate(token);
+        if ( isStartElement() )
+        {
+            const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken( name() );
+            const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken( namespaceUri() );
 
-         if (isSchemaTag(XsdSchemaToken::Annotation, token, namespaceToken)) {
-            const XsdAnnotation::Ptr annotation = parseAnnotation();
-            complexType->addAnnotation(annotation);
-         } else if (isSchemaTag(XsdSchemaToken::SimpleContent, token, namespaceToken)) {
-            parseSimpleContent(complexType);
-            hasTypeSpecified = true;
-         } else if (isSchemaTag(XsdSchemaToken::ComplexContent, token, namespaceToken)) {
-            bool mixed;
-            parseComplexContent(complexType, &mixed);
-            hasTypeSpecified = true;
+            tagValidator.validate( token );
 
-            effectiveMixed = (effectiveMixed || mixed);
-            hasComplexContent = true;
-         } else if (isSchemaTag(XsdSchemaToken::OpenContent, token, namespaceToken)) {
-            const XsdComplexType::OpenContent::Ptr openContent = parseOpenContent();
-            complexType->contentType()->setOpenContent(openContent);
-            hasComplexContent = true;
-         } else if (isSchemaTag(XsdSchemaToken::Group, token, namespaceToken)) {
-            const XsdParticle::Ptr particle(new XsdParticle());
-            const XsdTerm::Ptr term = parseReferredGroup(particle);
-            particle->setTerm(term);
-            complexType->contentType()->setParticle(particle);
-
-            complexType->setWxsSuperType(BuiltinTypes::xsAnyType);
-            complexType->contentType()->setVariety(XsdComplexType::ContentType::ElementOnly);
-            complexType->setDerivationMethod(XsdComplexType::DerivationRestriction);
-            hasComplexContent = true;
-         } else if (isSchemaTag(XsdSchemaToken::All, token, namespaceToken)) {
-            const XsdParticle::Ptr particle(new XsdParticle());
-            const XsdTerm::Ptr term = parseLocalAll(particle, complexType);
-            particle->setTerm(term);
-            complexType->contentType()->setParticle(particle);
-
-            complexType->setWxsSuperType(BuiltinTypes::xsAnyType);
-            complexType->contentType()->setVariety(XsdComplexType::ContentType::ElementOnly);
-            complexType->setDerivationMethod(XsdComplexType::DerivationRestriction);
-            hasComplexContent = true;
-         } else if (isSchemaTag(XsdSchemaToken::Choice, token, namespaceToken)) {
-            const XsdParticle::Ptr particle(new XsdParticle());
-            const XsdTerm::Ptr term = parseLocalChoice(particle, complexType);
-            particle->setTerm(term);
-            complexType->contentType()->setParticle(particle);
-
-            complexType->setWxsSuperType(BuiltinTypes::xsAnyType);
-            complexType->contentType()->setVariety(XsdComplexType::ContentType::ElementOnly);
-            complexType->setDerivationMethod(XsdComplexType::DerivationRestriction);
-            hasComplexContent = true;
-         } else if (isSchemaTag(XsdSchemaToken::Sequence, token, namespaceToken)) {
-            const XsdParticle::Ptr particle(new XsdParticle());
-            const XsdTerm::Ptr term = parseLocalSequence(particle, complexType);
-            particle->setTerm(term);
-            complexType->contentType()->setParticle(particle);
-
-            complexType->setWxsSuperType(BuiltinTypes::xsAnyType);
-            complexType->contentType()->setVariety(XsdComplexType::ContentType::ElementOnly);
-            complexType->setDerivationMethod(XsdComplexType::DerivationRestriction);
-            hasComplexContent = true;
-         } else if (isSchemaTag(XsdSchemaToken::Attribute, token, namespaceToken)) {
-            const XsdAttributeUse::Ptr attributeUse = parseLocalAttribute(complexType);
-            complexType->addAttributeUse(attributeUse);
-
-            complexType->setWxsSuperType(BuiltinTypes::xsAnyType);
-            complexType->contentType()->setVariety(XsdComplexType::ContentType::ElementOnly);
-            complexType->setDerivationMethod(XsdComplexType::DerivationRestriction);
-            hasComplexContent = true;
-         } else if (isSchemaTag(XsdSchemaToken::AttributeGroup, token, namespaceToken)) {
-            const XsdAttributeUse::Ptr attributeUse = parseReferredAttributeGroup();
-            complexType->addAttributeUse(attributeUse);
-
-            complexType->setWxsSuperType(BuiltinTypes::xsAnyType);
-            complexType->contentType()->setVariety(XsdComplexType::ContentType::ElementOnly);
-            complexType->setDerivationMethod(XsdComplexType::DerivationRestriction);
-            hasComplexContent = true;
-         } else if (isSchemaTag(XsdSchemaToken::AnyAttribute, token, namespaceToken)) {
-            const XsdWildcard::Ptr wildcard = parseAnyAttribute();
-            complexType->setAttributeWildcard(wildcard);
-
-            complexType->setWxsSuperType(BuiltinTypes::xsAnyType);
-            complexType->contentType()->setVariety(XsdComplexType::ContentType::ElementOnly);
-            complexType->setDerivationMethod(XsdComplexType::DerivationRestriction);
-            hasComplexContent = true;
-         } else if (isSchemaTag(XsdSchemaToken::Assert, token, namespaceToken)) {
-            const XsdAssertion::Ptr assertion = parseAssertion(XsdSchemaToken::Assert, XsdTagScope::Assert);
-            complexType->addAssertion(assertion);
-         } else {
-            parseUnknown();
-         }
-      }
-   }
-
-   tagValidator.finalize();
-
-   if (!hasTypeSpecified) {
-      complexType->setWxsSuperType(BuiltinTypes::xsAnyType);
-      complexType->setDerivationMethod(XsdComplexType::DerivationRestriction);
-      hasComplexContent = true;
-   }
-
-   if (hasComplexContent == true) {
-      resolveComplexContentType(complexType, effectiveMixed);
-   }
-
-   return complexType;
-}
-
-void XsdSchemaParser::resolveComplexContentType(const XsdComplexType::Ptr &complexType, bool effectiveMixed)
-{
-   // @see http://www.w3.org/TR/xmlschema11-1/#dcl.ctd.ctcc.common
-
-   // 1
-   // the effectiveMixed contains the effective mixed value
-
-   // 2
-   bool hasEmptyContent = false;
-   if (!complexType->contentType()->particle()) {
-      hasEmptyContent = true; // 2.1.1
-   } else {
-      if (complexType->contentType()->particle()->term()->isModelGroup()) {
-         const XsdModelGroup::Ptr group = complexType->contentType()->particle()->term();
-         if (group->compositor() == XsdModelGroup::SequenceCompositor || group->compositor() == XsdModelGroup::AllCompositor) {
-            if (group->particles().isEmpty()) {
-               hasEmptyContent = true;   // 2.1.2
+            if ( isSchemaTag( XsdSchemaToken::Annotation, token, namespaceToken ) )
+            {
+                const XsdAnnotation::Ptr annotation = parseAnnotation();
+                complexType->addAnnotation( annotation );
             }
-         } else if (group->compositor() == XsdModelGroup::ChoiceCompositor) {
-            if ((complexType->contentType()->particle()->minimumOccurs() == 0) && group->particles().isEmpty()) {
-               hasEmptyContent = true;   // 2.1.3
+            else if ( isSchemaTag( XsdSchemaToken::SimpleContent, token, namespaceToken ) )
+            {
+                parseSimpleContent( complexType );
+                hasTypeSpecified = true;
             }
-         }
+            else if ( isSchemaTag( XsdSchemaToken::ComplexContent, token, namespaceToken ) )
+            {
+                bool mixed;
+                parseComplexContent( complexType, &mixed );
+                hasTypeSpecified = true;
 
-         if ((complexType->contentType()->particle()->maximumOccursUnbounded() == false) &&
-               (complexType->contentType()->particle()->maximumOccurs() == 0)) {
-            hasEmptyContent = true;   // 2.1.4
-         }
-      }
-   }
+                effectiveMixed = ( effectiveMixed || mixed );
+                hasComplexContent = true;
+            }
+            else if ( isSchemaTag( XsdSchemaToken::OpenContent, token, namespaceToken ) )
+            {
+                const XsdComplexType::OpenContent::Ptr openContent = parseOpenContent();
+                complexType->contentType()->setOpenContent( openContent );
+                hasComplexContent = true;
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Group, token, namespaceToken ) )
+            {
+                const XsdParticle::Ptr particle( new XsdParticle() );
+                const XsdTerm::Ptr term = parseReferredGroup( particle );
+                particle->setTerm( term );
+                complexType->contentType()->setParticle( particle );
 
-   const XsdParticle::Ptr explicitContent = (hasEmptyContent ? XsdParticle::Ptr() :
-         complexType->contentType()->particle());
+                complexType->setWxsSuperType( BuiltinTypes::xsAnyType );
+                complexType->contentType()->setVariety( XsdComplexType::ContentType::ElementOnly );
+                complexType->setDerivationMethod( XsdComplexType::DerivationRestriction );
+                hasComplexContent = true;
+            }
+            else if ( isSchemaTag( XsdSchemaToken::All, token, namespaceToken ) )
+            {
+                const XsdParticle::Ptr particle( new XsdParticle() );
+                const XsdTerm::Ptr term = parseLocalAll( particle, complexType );
+                particle->setTerm( term );
+                complexType->contentType()->setParticle( particle );
 
-   // do all the other work (3, 4, 5 and 6) in the resolver, as they need access to the base type object
-   m_schemaResolver->addComplexContentType(complexType, explicitContent, effectiveMixed);
+                complexType->setWxsSuperType( BuiltinTypes::xsAnyType );
+                complexType->contentType()->setVariety( XsdComplexType::ContentType::ElementOnly );
+                complexType->setDerivationMethod( XsdComplexType::DerivationRestriction );
+                hasComplexContent = true;
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Choice, token, namespaceToken ) )
+            {
+                const XsdParticle::Ptr particle( new XsdParticle() );
+                const XsdTerm::Ptr term = parseLocalChoice( particle, complexType );
+                particle->setTerm( term );
+                complexType->contentType()->setParticle( particle );
+
+                complexType->setWxsSuperType( BuiltinTypes::xsAnyType );
+                complexType->contentType()->setVariety( XsdComplexType::ContentType::ElementOnly );
+                complexType->setDerivationMethod( XsdComplexType::DerivationRestriction );
+                hasComplexContent = true;
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Sequence, token, namespaceToken ) )
+            {
+                const XsdParticle::Ptr particle( new XsdParticle() );
+                const XsdTerm::Ptr term = parseLocalSequence( particle, complexType );
+                particle->setTerm( term );
+                complexType->contentType()->setParticle( particle );
+
+                complexType->setWxsSuperType( BuiltinTypes::xsAnyType );
+                complexType->contentType()->setVariety( XsdComplexType::ContentType::ElementOnly );
+                complexType->setDerivationMethod( XsdComplexType::DerivationRestriction );
+                hasComplexContent = true;
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Attribute, token, namespaceToken ) )
+            {
+                const XsdAttributeUse::Ptr attributeUse = parseLocalAttribute( complexType );
+                complexType->addAttributeUse( attributeUse );
+
+                complexType->setWxsSuperType( BuiltinTypes::xsAnyType );
+                complexType->contentType()->setVariety( XsdComplexType::ContentType::ElementOnly );
+                complexType->setDerivationMethod( XsdComplexType::DerivationRestriction );
+                hasComplexContent = true;
+            }
+            else if ( isSchemaTag( XsdSchemaToken::AttributeGroup, token, namespaceToken ) )
+            {
+                const XsdAttributeUse::Ptr attributeUse = parseReferredAttributeGroup();
+                complexType->addAttributeUse( attributeUse );
+
+                complexType->setWxsSuperType( BuiltinTypes::xsAnyType );
+                complexType->contentType()->setVariety( XsdComplexType::ContentType::ElementOnly );
+                complexType->setDerivationMethod( XsdComplexType::DerivationRestriction );
+                hasComplexContent = true;
+            }
+            else if ( isSchemaTag( XsdSchemaToken::AnyAttribute, token, namespaceToken ) )
+            {
+                const XsdWildcard::Ptr wildcard = parseAnyAttribute();
+                complexType->setAttributeWildcard( wildcard );
+
+                complexType->setWxsSuperType( BuiltinTypes::xsAnyType );
+                complexType->contentType()->setVariety( XsdComplexType::ContentType::ElementOnly );
+                complexType->setDerivationMethod( XsdComplexType::DerivationRestriction );
+                hasComplexContent = true;
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Assert, token, namespaceToken ) )
+            {
+                const XsdAssertion::Ptr assertion = parseAssertion( XsdSchemaToken::Assert, XsdTagScope::Assert );
+                complexType->addAssertion( assertion );
+            }
+            else
+            {
+                parseUnknown();
+            }
+        }
+    }
+
+    tagValidator.finalize();
+
+    if ( !hasTypeSpecified )
+    {
+        complexType->setWxsSuperType( BuiltinTypes::xsAnyType );
+        complexType->setDerivationMethod( XsdComplexType::DerivationRestriction );
+        hasComplexContent = true;
+    }
+
+    if ( hasComplexContent == true )
+    {
+        resolveComplexContentType( complexType, effectiveMixed );
+    }
+
+    return complexType;
 }
 
-void XsdSchemaParser::parseSimpleContent(const XsdComplexType::Ptr &complexType)
+void XsdSchemaParser::resolveComplexContentType( const XsdComplexType::Ptr &complexType, bool effectiveMixed )
 {
-   const ElementNamespaceHandler namespaceHandler(XsdSchemaToken::SimpleContent, this);
+    // @see http://www.w3.org/TR/xmlschema11-1/#dcl.ctd.ctcc.common
 
-   validateElement(XsdTagScope::SimpleContent);
+    // 1
+    // the effectiveMixed contains the effective mixed value
 
-   complexType->contentType()->setVariety(XsdComplexType::ContentType::Simple);
+    // 2
+    bool hasEmptyContent = false;
 
-   // parse attributes
-   validateIdAttribute("simpleContent");
+    if ( !complexType->contentType()->particle() )
+    {
+        hasEmptyContent = true; // 2.1.1
+    }
+    else
+    {
+        if ( complexType->contentType()->particle()->term()->isModelGroup() )
+        {
+            const XsdModelGroup::Ptr group = complexType->contentType()->particle()->term();
 
-   TagValidationHandler tagValidator(XsdTagScope::SimpleContent, this, NamePool::Ptr(m_namePool));
+            if ( group->compositor() == XsdModelGroup::SequenceCompositor || group->compositor() == XsdModelGroup::AllCompositor )
+            {
+                if ( group->particles().isEmpty() )
+                {
+                    hasEmptyContent = true;   // 2.1.2
+                }
+            }
+            else if ( group->compositor() == XsdModelGroup::ChoiceCompositor )
+            {
+                if ( ( complexType->contentType()->particle()->minimumOccurs() == 0 ) && group->particles().isEmpty() )
+                {
+                    hasEmptyContent = true;   // 2.1.3
+                }
+            }
 
-   while (!atEnd()) {
-      readNext();
+            if ( ( complexType->contentType()->particle()->maximumOccursUnbounded() == false ) &&
+                    ( complexType->contentType()->particle()->maximumOccurs() == 0 ) )
+            {
+                hasEmptyContent = true;   // 2.1.4
+            }
+        }
+    }
 
-      if (isEndElement()) {
-         break;
-      }
+    const XsdParticle::Ptr explicitContent = ( hasEmptyContent ? XsdParticle::Ptr() :
+            complexType->contentType()->particle() );
 
-      if (isStartElement()) {
-         const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken(name());
-         const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken(namespaceUri());
-
-         tagValidator.validate(token);
-
-         if (isSchemaTag(XsdSchemaToken::Annotation, token, namespaceToken)) {
-            const XsdAnnotation::Ptr annotation = parseAnnotation();
-            complexType->addAnnotation(annotation);
-         } else if (isSchemaTag(XsdSchemaToken::Restriction, token, namespaceToken)) {
-            parseSimpleContentRestriction(complexType);
-         } else if (isSchemaTag(XsdSchemaToken::Extension, token, namespaceToken)) {
-            parseSimpleContentExtension(complexType);
-         } else {
-            parseUnknown();
-         }
-      }
-   }
-
-   tagValidator.finalize();
+    // do all the other work (3, 4, 5 and 6) in the resolver, as they need access to the base type object
+    m_schemaResolver->addComplexContentType( complexType, explicitContent, effectiveMixed );
 }
 
-void XsdSchemaParser::parseSimpleContentRestriction(const XsdComplexType::Ptr &complexType)
+void XsdSchemaParser::parseSimpleContent( const XsdComplexType::Ptr &complexType )
 {
-   const ElementNamespaceHandler namespaceHandler(XsdSchemaToken::Restriction, this);
+    const ElementNamespaceHandler namespaceHandler( XsdSchemaToken::SimpleContent, this );
 
-   validateElement(XsdTagScope::SimpleContentRestriction);
+    validateElement( XsdTagScope::SimpleContent );
 
-   complexType->setDerivationMethod(XsdComplexType::DerivationRestriction);
+    complexType->contentType()->setVariety( XsdComplexType::ContentType::Simple );
 
-   // parse attributes
-   const QString baseType = readQNameAttribute(QString::fromLatin1("base"), "restriction");
-   QXmlName typeName;
-   convertName(baseType, NamespaceSupport::ElementName, typeName); // translate qualified name into QXmlName
+    // parse attributes
+    validateIdAttribute( "simpleContent" );
 
-   validateIdAttribute("restriction");
+    TagValidationHandler tagValidator( XsdTagScope::SimpleContent, this, NamePool::Ptr( m_namePool ) );
 
-   XsdFacet::Hash facets;
-   QList<XsdFacet::Ptr> patternFacets;
-   QList<XsdFacet::Ptr> enumerationFacets;
-   QList<XsdFacet::Ptr> assertionFacets;
+    while ( !atEnd() )
+    {
+        readNext();
 
-   TagValidationHandler tagValidator(XsdTagScope::SimpleContentRestriction, this, NamePool::Ptr(m_namePool));
+        if ( isEndElement() )
+        {
+            break;
+        }
 
-   while (!atEnd()) {
-      readNext();
+        if ( isStartElement() )
+        {
+            const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken( name() );
+            const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken( namespaceUri() );
 
-      if (isEndElement()) {
-         break;
-      }
+            tagValidator.validate( token );
 
-      if (isStartElement()) {
-         const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken(name());
-         const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken(namespaceUri());
+            if ( isSchemaTag( XsdSchemaToken::Annotation, token, namespaceToken ) )
+            {
+                const XsdAnnotation::Ptr annotation = parseAnnotation();
+                complexType->addAnnotation( annotation );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Restriction, token, namespaceToken ) )
+            {
+                parseSimpleContentRestriction( complexType );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Extension, token, namespaceToken ) )
+            {
+                parseSimpleContentExtension( complexType );
+            }
+            else
+            {
+                parseUnknown();
+            }
+        }
+    }
 
-         tagValidator.validate(token);
-
-         if (isSchemaTag(XsdSchemaToken::Annotation, token, namespaceToken)) {
-            const XsdAnnotation::Ptr annotation = parseAnnotation();
-            complexType->addAnnotation(annotation);
-         } else if (isSchemaTag(XsdSchemaToken::SimpleType, token, namespaceToken)) {
-            const XsdSimpleType::Ptr type = parseLocalSimpleType();
-            type->setContext(complexType); //TODO: investigate what the schema spec really wants here?!?
-            complexType->contentType()->setSimpleType(type);
-
-            // add it to list of anonymous types as well
-            addAnonymousType(type);
-         } else if (isSchemaTag(XsdSchemaToken::MinExclusive, token, namespaceToken)) {
-            const XsdFacet::Ptr facet = parseMinExclusiveFacet();
-            addFacet(facet, facets, complexType);
-         } else if (isSchemaTag(XsdSchemaToken::MinInclusive, token, namespaceToken)) {
-            const XsdFacet::Ptr facet = parseMinInclusiveFacet();
-            addFacet(facet, facets, complexType);
-         } else if (isSchemaTag(XsdSchemaToken::MaxExclusive, token, namespaceToken)) {
-            const XsdFacet::Ptr facet = parseMaxExclusiveFacet();
-            addFacet(facet, facets, complexType);
-         } else if (isSchemaTag(XsdSchemaToken::MaxInclusive, token, namespaceToken)) {
-            const XsdFacet::Ptr facet = parseMaxInclusiveFacet();
-            addFacet(facet, facets, complexType);
-         } else if (isSchemaTag(XsdSchemaToken::TotalDigits, token, namespaceToken)) {
-            const XsdFacet::Ptr facet = parseTotalDigitsFacet();
-            addFacet(facet, facets, complexType);
-         } else if (isSchemaTag(XsdSchemaToken::FractionDigits, token, namespaceToken)) {
-            const XsdFacet::Ptr facet = parseFractionDigitsFacet();
-            addFacet(facet, facets, complexType);
-         } else if (isSchemaTag(XsdSchemaToken::Length, token, namespaceToken)) {
-            const XsdFacet::Ptr facet = parseLengthFacet();
-            addFacet(facet, facets, complexType);
-         } else if (isSchemaTag(XsdSchemaToken::MinLength, token, namespaceToken)) {
-            const XsdFacet::Ptr facet = parseMinLengthFacet();
-            addFacet(facet, facets, complexType);
-         } else if (isSchemaTag(XsdSchemaToken::MaxLength, token, namespaceToken)) {
-            const XsdFacet::Ptr facet = parseMaxLengthFacet();
-            addFacet(facet, facets, complexType);
-         } else if (isSchemaTag(XsdSchemaToken::Enumeration, token, namespaceToken)) {
-            const XsdFacet::Ptr facet = parseEnumerationFacet();
-            enumerationFacets.append(facet);
-         } else if (isSchemaTag(XsdSchemaToken::WhiteSpace, token, namespaceToken)) {
-            const XsdFacet::Ptr facet = parseWhiteSpaceFacet();
-            addFacet(facet, facets, complexType);
-         } else if (isSchemaTag(XsdSchemaToken::Pattern, token, namespaceToken)) {
-            const XsdFacet::Ptr facet = parsePatternFacet();
-            patternFacets.append(facet);
-         } else if (isSchemaTag(XsdSchemaToken::Assertion, token, namespaceToken)) {
-            const XsdFacet::Ptr facet = parseAssertionFacet();
-            assertionFacets.append(facet);
-         } else if (isSchemaTag(XsdSchemaToken::Attribute, token, namespaceToken)) {
-            const XsdAttributeUse::Ptr attributeUse = parseLocalAttribute(complexType);
-            complexType->addAttributeUse(attributeUse);
-         } else if (isSchemaTag(XsdSchemaToken::AttributeGroup, token, namespaceToken)) {
-            const XsdAttributeUse::Ptr attributeUse = parseReferredAttributeGroup();
-            complexType->addAttributeUse(attributeUse);
-         } else if (isSchemaTag(XsdSchemaToken::AnyAttribute, token, namespaceToken)) {
-            const XsdWildcard::Ptr wildcard = parseAnyAttribute();
-            complexType->setAttributeWildcard(wildcard);
-         } else if (isSchemaTag(XsdSchemaToken::Assert, token, namespaceToken)) {
-            const XsdAssertion::Ptr assertion = parseAssertion(XsdSchemaToken::Assert, XsdTagScope::Assert);
-            complexType->addAssertion(assertion);
-         } else {
-            parseUnknown();
-         }
-      }
-   }
-
-   tagValidator.finalize();
-
-   // merge all pattern facets into one multi value facet
-   if (!patternFacets.isEmpty()) {
-      const XsdFacet::Ptr patternFacet(new XsdFacet());
-      patternFacet->setType(XsdFacet::Pattern);
-
-      AtomicValue::List multiValue;
-      for (int i = 0; i < patternFacets.count(); ++i) {
-         multiValue << patternFacets.at(i)->multiValue();
-      }
-
-      patternFacet->setMultiValue(multiValue);
-      addFacet(patternFacet, facets, complexType);
-   }
-
-   // merge all enumeration facets into one multi value facet
-   if (!enumerationFacets.isEmpty()) {
-      const XsdFacet::Ptr enumerationFacet(new XsdFacet());
-      enumerationFacet->setType(XsdFacet::Enumeration);
-
-      AtomicValue::List multiValue;
-      for (int i = 0; i < enumerationFacets.count(); ++i) {
-         multiValue << enumerationFacets.at(i)->multiValue();
-      }
-
-      enumerationFacet->setMultiValue(multiValue);
-      addFacet(enumerationFacet, facets, complexType);
-   }
-
-   // merge all assertion facets into one facet
-   if (!assertionFacets.isEmpty()) {
-      const XsdFacet::Ptr assertionFacet(new XsdFacet());
-      assertionFacet->setType(XsdFacet::Assertion);
-
-      XsdAssertion::List assertions;
-      for (int i = 0; i < assertionFacets.count(); ++i) {
-         assertions << assertionFacets.at(i)->assertions();
-      }
-
-      assertionFacet->setAssertions(assertions);
-      addFacet(assertionFacet, facets, complexType);
-   }
-
-   m_schemaResolver->addComplexBaseType(complexType, typeName, currentSourceLocation(), facets); // add to resolver
+    tagValidator.finalize();
 }
 
-void XsdSchemaParser::parseSimpleContentExtension(const XsdComplexType::Ptr &complexType)
+void XsdSchemaParser::parseSimpleContentRestriction( const XsdComplexType::Ptr &complexType )
 {
-   const ElementNamespaceHandler namespaceHandler(XsdSchemaToken::Extension, this);
+    const ElementNamespaceHandler namespaceHandler( XsdSchemaToken::Restriction, this );
 
-   validateElement(XsdTagScope::SimpleContentExtension);
+    validateElement( XsdTagScope::SimpleContentRestriction );
 
-   complexType->setDerivationMethod(XsdComplexType::DerivationExtension);
+    complexType->setDerivationMethod( XsdComplexType::DerivationRestriction );
 
-   // parse attributes
-   const QString baseType = readQNameAttribute(QString::fromLatin1("base"), "extension");
-   QXmlName typeName;
-   convertName(baseType, NamespaceSupport::ElementName, typeName); // translate qualified name into QXmlName
-   m_schemaResolver->addComplexBaseType(complexType, typeName, currentSourceLocation()); // add to resolver
+    // parse attributes
+    const QString baseType = readQNameAttribute( QString::fromLatin1( "base" ), "restriction" );
+    QXmlName typeName;
+    convertName( baseType, NamespaceSupport::ElementName, typeName ); // translate qualified name into QXmlName
 
-   validateIdAttribute("extension");
+    validateIdAttribute( "restriction" );
 
-   TagValidationHandler tagValidator(XsdTagScope::SimpleContentExtension, this, NamePool::Ptr(m_namePool));
+    XsdFacet::Hash facets;
+    QList<XsdFacet::Ptr> patternFacets;
+    QList<XsdFacet::Ptr> enumerationFacets;
+    QList<XsdFacet::Ptr> assertionFacets;
 
-   while (!atEnd()) {
-      readNext();
+    TagValidationHandler tagValidator( XsdTagScope::SimpleContentRestriction, this, NamePool::Ptr( m_namePool ) );
 
-      if (isEndElement()) {
-         break;
-      }
+    while ( !atEnd() )
+    {
+        readNext();
 
-      if (isStartElement()) {
-         const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken(name());
-         const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken(namespaceUri());
+        if ( isEndElement() )
+        {
+            break;
+        }
 
-         tagValidator.validate(token);
+        if ( isStartElement() )
+        {
+            const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken( name() );
+            const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken( namespaceUri() );
 
-         if (isSchemaTag(XsdSchemaToken::Annotation, token, namespaceToken)) {
-            const XsdAnnotation::Ptr annotation = parseAnnotation();
-            complexType->addAnnotation(annotation);
-         } else if (isSchemaTag(XsdSchemaToken::Attribute, token, namespaceToken)) {
-            const XsdAttributeUse::Ptr attributeUse = parseLocalAttribute(complexType);
-            complexType->addAttributeUse(attributeUse);
-         } else if (isSchemaTag(XsdSchemaToken::AttributeGroup, token, namespaceToken)) {
-            const XsdAttributeUse::Ptr attributeUse = parseReferredAttributeGroup();
-            complexType->addAttributeUse(attributeUse);
-         } else if (isSchemaTag(XsdSchemaToken::AnyAttribute, token, namespaceToken)) {
-            const XsdWildcard::Ptr wildcard = parseAnyAttribute();
-            complexType->setAttributeWildcard(wildcard);
-         } else if (isSchemaTag(XsdSchemaToken::Assert, token, namespaceToken)) {
-            const XsdAssertion::Ptr assertion = parseAssertion(XsdSchemaToken::Assert, XsdTagScope::Assert);
-            complexType->addAssertion(assertion);
-         } else {
-            parseUnknown();
-         }
-      }
-   }
+            tagValidator.validate( token );
 
-   tagValidator.finalize();
+            if ( isSchemaTag( XsdSchemaToken::Annotation, token, namespaceToken ) )
+            {
+                const XsdAnnotation::Ptr annotation = parseAnnotation();
+                complexType->addAnnotation( annotation );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::SimpleType, token, namespaceToken ) )
+            {
+                const XsdSimpleType::Ptr type = parseLocalSimpleType();
+                type->setContext( complexType ); //TODO: investigate what the schema spec really wants here?!?
+                complexType->contentType()->setSimpleType( type );
+
+                // add it to list of anonymous types as well
+                addAnonymousType( type );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::MinExclusive, token, namespaceToken ) )
+            {
+                const XsdFacet::Ptr facet = parseMinExclusiveFacet();
+                addFacet( facet, facets, complexType );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::MinInclusive, token, namespaceToken ) )
+            {
+                const XsdFacet::Ptr facet = parseMinInclusiveFacet();
+                addFacet( facet, facets, complexType );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::MaxExclusive, token, namespaceToken ) )
+            {
+                const XsdFacet::Ptr facet = parseMaxExclusiveFacet();
+                addFacet( facet, facets, complexType );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::MaxInclusive, token, namespaceToken ) )
+            {
+                const XsdFacet::Ptr facet = parseMaxInclusiveFacet();
+                addFacet( facet, facets, complexType );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::TotalDigits, token, namespaceToken ) )
+            {
+                const XsdFacet::Ptr facet = parseTotalDigitsFacet();
+                addFacet( facet, facets, complexType );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::FractionDigits, token, namespaceToken ) )
+            {
+                const XsdFacet::Ptr facet = parseFractionDigitsFacet();
+                addFacet( facet, facets, complexType );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Length, token, namespaceToken ) )
+            {
+                const XsdFacet::Ptr facet = parseLengthFacet();
+                addFacet( facet, facets, complexType );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::MinLength, token, namespaceToken ) )
+            {
+                const XsdFacet::Ptr facet = parseMinLengthFacet();
+                addFacet( facet, facets, complexType );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::MaxLength, token, namespaceToken ) )
+            {
+                const XsdFacet::Ptr facet = parseMaxLengthFacet();
+                addFacet( facet, facets, complexType );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Enumeration, token, namespaceToken ) )
+            {
+                const XsdFacet::Ptr facet = parseEnumerationFacet();
+                enumerationFacets.append( facet );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::WhiteSpace, token, namespaceToken ) )
+            {
+                const XsdFacet::Ptr facet = parseWhiteSpaceFacet();
+                addFacet( facet, facets, complexType );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Pattern, token, namespaceToken ) )
+            {
+                const XsdFacet::Ptr facet = parsePatternFacet();
+                patternFacets.append( facet );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Assertion, token, namespaceToken ) )
+            {
+                const XsdFacet::Ptr facet = parseAssertionFacet();
+                assertionFacets.append( facet );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Attribute, token, namespaceToken ) )
+            {
+                const XsdAttributeUse::Ptr attributeUse = parseLocalAttribute( complexType );
+                complexType->addAttributeUse( attributeUse );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::AttributeGroup, token, namespaceToken ) )
+            {
+                const XsdAttributeUse::Ptr attributeUse = parseReferredAttributeGroup();
+                complexType->addAttributeUse( attributeUse );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::AnyAttribute, token, namespaceToken ) )
+            {
+                const XsdWildcard::Ptr wildcard = parseAnyAttribute();
+                complexType->setAttributeWildcard( wildcard );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Assert, token, namespaceToken ) )
+            {
+                const XsdAssertion::Ptr assertion = parseAssertion( XsdSchemaToken::Assert, XsdTagScope::Assert );
+                complexType->addAssertion( assertion );
+            }
+            else
+            {
+                parseUnknown();
+            }
+        }
+    }
+
+    tagValidator.finalize();
+
+    // merge all pattern facets into one multi value facet
+    if ( !patternFacets.isEmpty() )
+    {
+        const XsdFacet::Ptr patternFacet( new XsdFacet() );
+        patternFacet->setType( XsdFacet::Pattern );
+
+        AtomicValue::List multiValue;
+
+        for ( int i = 0; i < patternFacets.count(); ++i )
+        {
+            multiValue << patternFacets.at( i )->multiValue();
+        }
+
+        patternFacet->setMultiValue( multiValue );
+        addFacet( patternFacet, facets, complexType );
+    }
+
+    // merge all enumeration facets into one multi value facet
+    if ( !enumerationFacets.isEmpty() )
+    {
+        const XsdFacet::Ptr enumerationFacet( new XsdFacet() );
+        enumerationFacet->setType( XsdFacet::Enumeration );
+
+        AtomicValue::List multiValue;
+
+        for ( int i = 0; i < enumerationFacets.count(); ++i )
+        {
+            multiValue << enumerationFacets.at( i )->multiValue();
+        }
+
+        enumerationFacet->setMultiValue( multiValue );
+        addFacet( enumerationFacet, facets, complexType );
+    }
+
+    // merge all assertion facets into one facet
+    if ( !assertionFacets.isEmpty() )
+    {
+        const XsdFacet::Ptr assertionFacet( new XsdFacet() );
+        assertionFacet->setType( XsdFacet::Assertion );
+
+        XsdAssertion::List assertions;
+
+        for ( int i = 0; i < assertionFacets.count(); ++i )
+        {
+            assertions << assertionFacets.at( i )->assertions();
+        }
+
+        assertionFacet->setAssertions( assertions );
+        addFacet( assertionFacet, facets, complexType );
+    }
+
+    m_schemaResolver->addComplexBaseType( complexType, typeName, currentSourceLocation(), facets ); // add to resolver
 }
 
-void XsdSchemaParser::parseComplexContent(const XsdComplexType::Ptr &complexType, bool *mixed)
+void XsdSchemaParser::parseSimpleContentExtension( const XsdComplexType::Ptr &complexType )
 {
-   const ElementNamespaceHandler namespaceHandler(XsdSchemaToken::ComplexContent, this);
+    const ElementNamespaceHandler namespaceHandler( XsdSchemaToken::Extension, this );
 
-   validateElement(XsdTagScope::ComplexContent);
+    validateElement( XsdTagScope::SimpleContentExtension );
 
-   complexType->contentType()->setVariety(XsdComplexType::ContentType::ElementOnly);
+    complexType->setDerivationMethod( XsdComplexType::DerivationExtension );
 
-   // parse attributes
-   if (hasAttribute("mixed")) {
-      const QString mixedStr = readAttribute(QString::fromLatin1("mixed"));
-      const Boolean::Ptr value = Boolean::fromLexical(mixedStr);
+    // parse attributes
+    const QString baseType = readQNameAttribute( QString::fromLatin1( "base" ), "extension" );
+    QXmlName typeName;
+    convertName( baseType, NamespaceSupport::ElementName, typeName ); // translate qualified name into QXmlName
+    m_schemaResolver->addComplexBaseType( complexType, typeName, currentSourceLocation() ); // add to resolver
 
-      if (value->hasError()) {
-         attributeContentError("mixed", "complexType", mixedStr, BuiltinTypes::xsBoolean);
-         return;
-      }
+    validateIdAttribute( "extension" );
 
-      *mixed = value->as<Boolean>()->value();
-   } else {
-      *mixed = false;
-   }
+    TagValidationHandler tagValidator( XsdTagScope::SimpleContentExtension, this, NamePool::Ptr( m_namePool ) );
 
-   validateIdAttribute("complexContent");
+    while ( !atEnd() )
+    {
+        readNext();
 
-   TagValidationHandler tagValidator(XsdTagScope::ComplexContent, this, NamePool::Ptr(m_namePool));
+        if ( isEndElement() )
+        {
+            break;
+        }
 
-   while (!atEnd()) {
-      readNext();
+        if ( isStartElement() )
+        {
+            const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken( name() );
+            const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken( namespaceUri() );
 
-      if (isEndElement()) {
-         break;
-      }
+            tagValidator.validate( token );
 
-      if (isStartElement()) {
-         const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken(name());
-         const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken(namespaceUri());
+            if ( isSchemaTag( XsdSchemaToken::Annotation, token, namespaceToken ) )
+            {
+                const XsdAnnotation::Ptr annotation = parseAnnotation();
+                complexType->addAnnotation( annotation );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Attribute, token, namespaceToken ) )
+            {
+                const XsdAttributeUse::Ptr attributeUse = parseLocalAttribute( complexType );
+                complexType->addAttributeUse( attributeUse );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::AttributeGroup, token, namespaceToken ) )
+            {
+                const XsdAttributeUse::Ptr attributeUse = parseReferredAttributeGroup();
+                complexType->addAttributeUse( attributeUse );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::AnyAttribute, token, namespaceToken ) )
+            {
+                const XsdWildcard::Ptr wildcard = parseAnyAttribute();
+                complexType->setAttributeWildcard( wildcard );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Assert, token, namespaceToken ) )
+            {
+                const XsdAssertion::Ptr assertion = parseAssertion( XsdSchemaToken::Assert, XsdTagScope::Assert );
+                complexType->addAssertion( assertion );
+            }
+            else
+            {
+                parseUnknown();
+            }
+        }
+    }
 
-         tagValidator.validate(token);
-
-         if (isSchemaTag(XsdSchemaToken::Annotation, token, namespaceToken)) {
-            const XsdAnnotation::Ptr annotation = parseAnnotation();
-            complexType->addAnnotation(annotation);
-         } else if (isSchemaTag(XsdSchemaToken::Restriction, token, namespaceToken)) {
-            parseComplexContentRestriction(complexType);
-         } else if (isSchemaTag(XsdSchemaToken::Extension, token, namespaceToken)) {
-            parseComplexContentExtension(complexType);
-         } else {
-            parseUnknown();
-         }
-      }
-   }
-
-   tagValidator.finalize();
+    tagValidator.finalize();
 }
 
-void XsdSchemaParser::parseComplexContentRestriction(const XsdComplexType::Ptr &complexType)
+void XsdSchemaParser::parseComplexContent( const XsdComplexType::Ptr &complexType, bool *mixed )
 {
-   const ElementNamespaceHandler namespaceHandler(XsdSchemaToken::Restriction, this);
+    const ElementNamespaceHandler namespaceHandler( XsdSchemaToken::ComplexContent, this );
 
-   validateElement(XsdTagScope::ComplexContentRestriction);
+    validateElement( XsdTagScope::ComplexContent );
 
-   complexType->setDerivationMethod(XsdComplexType::DerivationRestriction);
+    complexType->contentType()->setVariety( XsdComplexType::ContentType::ElementOnly );
 
-   // parse attributes
-   const QString baseType = readQNameAttribute(QString::fromLatin1("base"), "restriction");
-   QXmlName typeName;
-   convertName(baseType, NamespaceSupport::ElementName, typeName); // translate qualified name into QXmlName
-   m_schemaResolver->addComplexBaseType(complexType, typeName, currentSourceLocation()); // add to resolver
+    // parse attributes
+    if ( hasAttribute( "mixed" ) )
+    {
+        const QString mixedStr = readAttribute( QString::fromLatin1( "mixed" ) );
+        const Boolean::Ptr value = Boolean::fromLexical( mixedStr );
 
-   validateIdAttribute("restriction");
+        if ( value->hasError() )
+        {
+            attributeContentError( "mixed", "complexType", mixedStr, BuiltinTypes::xsBoolean );
+            return;
+        }
 
-   TagValidationHandler tagValidator(XsdTagScope::ComplexContentRestriction, this, NamePool::Ptr(m_namePool));
+        *mixed = value->as<Boolean>()->value();
+    }
+    else
+    {
+        *mixed = false;
+    }
 
-   bool hasContent = false;
-   while (!atEnd()) {
-      readNext();
+    validateIdAttribute( "complexContent" );
 
-      if (isEndElement()) {
-         break;
-      }
+    TagValidationHandler tagValidator( XsdTagScope::ComplexContent, this, NamePool::Ptr( m_namePool ) );
 
-      if (isStartElement()) {
-         const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken(name());
-         const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken(namespaceUri());
+    while ( !atEnd() )
+    {
+        readNext();
 
-         tagValidator.validate(token);
+        if ( isEndElement() )
+        {
+            break;
+        }
 
-         if (isSchemaTag(XsdSchemaToken::Annotation, token, namespaceToken)) {
-            const XsdAnnotation::Ptr annotation = parseAnnotation();
-            complexType->addAnnotation(annotation);
-         } else if (isSchemaTag(XsdSchemaToken::OpenContent, token, namespaceToken)) {
-            const XsdComplexType::OpenContent::Ptr openContent = parseOpenContent();
-            complexType->contentType()->setOpenContent(openContent);
-            hasContent = true;
-         } else if (isSchemaTag(XsdSchemaToken::Group, token, namespaceToken)) {
-            const XsdParticle::Ptr particle(new XsdParticle());
-            const XsdTerm::Ptr term = parseReferredGroup(particle);
-            particle->setTerm(term);
-            complexType->contentType()->setParticle(particle);
-            hasContent = true;
-         } else if (isSchemaTag(XsdSchemaToken::All, token, namespaceToken)) {
-            const XsdParticle::Ptr particle(new XsdParticle());
-            const XsdTerm::Ptr term = parseLocalAll(particle, complexType);
-            particle->setTerm(term);
-            complexType->contentType()->setParticle(particle);
-            hasContent = true;
-         } else if (isSchemaTag(XsdSchemaToken::Choice, token, namespaceToken)) {
-            const XsdParticle::Ptr particle(new XsdParticle());
-            const XsdTerm::Ptr term = parseLocalChoice(particle, complexType);
-            particle->setTerm(term);
-            complexType->contentType()->setParticle(particle);
-            hasContent = true;
-         } else if (isSchemaTag(XsdSchemaToken::Sequence, token, namespaceToken)) {
-            const XsdParticle::Ptr particle(new XsdParticle());
-            const XsdTerm::Ptr term = parseLocalSequence(particle, complexType);
-            particle->setTerm(term);
-            complexType->contentType()->setParticle(particle);
-            hasContent = true;
-         } else if (isSchemaTag(XsdSchemaToken::Attribute, token, namespaceToken)) {
-            const XsdAttributeUse::Ptr attributeUse = parseLocalAttribute(complexType);
-            complexType->addAttributeUse(attributeUse);
-         } else if (isSchemaTag(XsdSchemaToken::AttributeGroup, token, namespaceToken)) {
-            const XsdAttributeUse::Ptr attributeUse = parseReferredAttributeGroup();
-            complexType->addAttributeUse(attributeUse);
-         } else if (isSchemaTag(XsdSchemaToken::AnyAttribute, token, namespaceToken)) {
-            const XsdWildcard::Ptr wildcard = parseAnyAttribute();
-            complexType->setAttributeWildcard(wildcard);
-         } else if (isSchemaTag(XsdSchemaToken::Assert, token, namespaceToken)) {
-            const XsdAssertion::Ptr assertion = parseAssertion(XsdSchemaToken::Assert, XsdTagScope::Assert);
-            complexType->addAssertion(assertion);
-         } else {
-            parseUnknown();
-         }
-      }
-   }
+        if ( isStartElement() )
+        {
+            const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken( name() );
+            const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken( namespaceUri() );
 
-   if (!hasContent) {
-      complexType->contentType()->setVariety(XsdComplexType::ContentType::Empty);
-   }
+            tagValidator.validate( token );
 
-   tagValidator.finalize();
+            if ( isSchemaTag( XsdSchemaToken::Annotation, token, namespaceToken ) )
+            {
+                const XsdAnnotation::Ptr annotation = parseAnnotation();
+                complexType->addAnnotation( annotation );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Restriction, token, namespaceToken ) )
+            {
+                parseComplexContentRestriction( complexType );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Extension, token, namespaceToken ) )
+            {
+                parseComplexContentExtension( complexType );
+            }
+            else
+            {
+                parseUnknown();
+            }
+        }
+    }
+
+    tagValidator.finalize();
 }
 
-void XsdSchemaParser::parseComplexContentExtension(const XsdComplexType::Ptr &complexType)
+void XsdSchemaParser::parseComplexContentRestriction( const XsdComplexType::Ptr &complexType )
 {
-   const ElementNamespaceHandler namespaceHandler(XsdSchemaToken::Extension, this);
+    const ElementNamespaceHandler namespaceHandler( XsdSchemaToken::Restriction, this );
 
-   validateElement(XsdTagScope::ComplexContentExtension);
+    validateElement( XsdTagScope::ComplexContentRestriction );
 
-   complexType->setDerivationMethod(XsdComplexType::DerivationExtension);
+    complexType->setDerivationMethod( XsdComplexType::DerivationRestriction );
 
-   // parse attributes
-   const QString baseType = readQNameAttribute(QString::fromLatin1("base"), "extension");
-   QXmlName typeName;
-   convertName(baseType, NamespaceSupport::ElementName, typeName); // translate qualified name into QXmlName
-   m_schemaResolver->addComplexBaseType(complexType, typeName, currentSourceLocation()); // add to resolver
+    // parse attributes
+    const QString baseType = readQNameAttribute( QString::fromLatin1( "base" ), "restriction" );
+    QXmlName typeName;
+    convertName( baseType, NamespaceSupport::ElementName, typeName ); // translate qualified name into QXmlName
+    m_schemaResolver->addComplexBaseType( complexType, typeName, currentSourceLocation() ); // add to resolver
 
-   validateIdAttribute("extension");
+    validateIdAttribute( "restriction" );
 
-   TagValidationHandler tagValidator(XsdTagScope::ComplexContentExtension, this, NamePool::Ptr(m_namePool));
+    TagValidationHandler tagValidator( XsdTagScope::ComplexContentRestriction, this, NamePool::Ptr( m_namePool ) );
 
-   bool hasContent = false;
-   while (!atEnd()) {
-      readNext();
+    bool hasContent = false;
 
-      if (isEndElement()) {
-         break;
-      }
+    while ( !atEnd() )
+    {
+        readNext();
 
-      if (isStartElement()) {
-         const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken(name());
-         const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken(namespaceUri());
+        if ( isEndElement() )
+        {
+            break;
+        }
 
-         tagValidator.validate(token);
+        if ( isStartElement() )
+        {
+            const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken( name() );
+            const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken( namespaceUri() );
 
-         if (isSchemaTag(XsdSchemaToken::Annotation, token, namespaceToken)) {
-            const XsdAnnotation::Ptr annotation = parseAnnotation();
-            complexType->addAnnotation(annotation);
-         } else if (isSchemaTag(XsdSchemaToken::OpenContent, token, namespaceToken)) {
-            const XsdComplexType::OpenContent::Ptr openContent = parseOpenContent();
-            complexType->contentType()->setOpenContent(openContent);
-            hasContent = true;
-         } else if (isSchemaTag(XsdSchemaToken::Group, token, namespaceToken)) {
-            const XsdParticle::Ptr particle(new XsdParticle());
-            const XsdTerm::Ptr term = parseReferredGroup(particle);
-            particle->setTerm(term);
-            complexType->contentType()->setParticle(particle);
-            hasContent = true;
-         } else if (isSchemaTag(XsdSchemaToken::All, token, namespaceToken)) {
-            const XsdParticle::Ptr particle(new XsdParticle());
-            const XsdTerm::Ptr term = parseLocalAll(particle, complexType);
-            particle->setTerm(term);
-            complexType->contentType()->setParticle(particle);
-            hasContent = true;
-         } else if (isSchemaTag(XsdSchemaToken::Choice, token, namespaceToken)) {
-            const XsdParticle::Ptr particle(new XsdParticle());
-            const XsdTerm::Ptr term = parseLocalChoice(particle, complexType);
-            particle->setTerm(term);
-            complexType->contentType()->setParticle(particle);
-            hasContent = true;
-         } else if (isSchemaTag(XsdSchemaToken::Sequence, token, namespaceToken)) {
-            const XsdParticle::Ptr particle(new XsdParticle());
-            const XsdTerm::Ptr term = parseLocalSequence(particle, complexType);
-            particle->setTerm(term);
-            complexType->contentType()->setParticle(particle);
-            hasContent = true;
-         } else if (isSchemaTag(XsdSchemaToken::Attribute, token, namespaceToken)) {
-            const XsdAttributeUse::Ptr attributeUse = parseLocalAttribute(complexType);
-            complexType->addAttributeUse(attributeUse);
-         } else if (isSchemaTag(XsdSchemaToken::AttributeGroup, token, namespaceToken)) {
-            const XsdAttributeUse::Ptr attributeUse = parseReferredAttributeGroup();
-            complexType->addAttributeUse(attributeUse);
-         } else if (isSchemaTag(XsdSchemaToken::AnyAttribute, token, namespaceToken)) {
-            const XsdWildcard::Ptr wildcard = parseAnyAttribute();
-            complexType->setAttributeWildcard(wildcard);
-         } else if (isSchemaTag(XsdSchemaToken::Assert, token, namespaceToken)) {
-            const XsdAssertion::Ptr assertion = parseAssertion(XsdSchemaToken::Assert, XsdTagScope::Assert);
-            complexType->addAssertion(assertion);
-         } else {
-            parseUnknown();
-         }
-      }
-   }
+            tagValidator.validate( token );
 
-   if (!hasContent) {
-      complexType->contentType()->setVariety(XsdComplexType::ContentType::Empty);
-   }
+            if ( isSchemaTag( XsdSchemaToken::Annotation, token, namespaceToken ) )
+            {
+                const XsdAnnotation::Ptr annotation = parseAnnotation();
+                complexType->addAnnotation( annotation );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::OpenContent, token, namespaceToken ) )
+            {
+                const XsdComplexType::OpenContent::Ptr openContent = parseOpenContent();
+                complexType->contentType()->setOpenContent( openContent );
+                hasContent = true;
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Group, token, namespaceToken ) )
+            {
+                const XsdParticle::Ptr particle( new XsdParticle() );
+                const XsdTerm::Ptr term = parseReferredGroup( particle );
+                particle->setTerm( term );
+                complexType->contentType()->setParticle( particle );
+                hasContent = true;
+            }
+            else if ( isSchemaTag( XsdSchemaToken::All, token, namespaceToken ) )
+            {
+                const XsdParticle::Ptr particle( new XsdParticle() );
+                const XsdTerm::Ptr term = parseLocalAll( particle, complexType );
+                particle->setTerm( term );
+                complexType->contentType()->setParticle( particle );
+                hasContent = true;
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Choice, token, namespaceToken ) )
+            {
+                const XsdParticle::Ptr particle( new XsdParticle() );
+                const XsdTerm::Ptr term = parseLocalChoice( particle, complexType );
+                particle->setTerm( term );
+                complexType->contentType()->setParticle( particle );
+                hasContent = true;
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Sequence, token, namespaceToken ) )
+            {
+                const XsdParticle::Ptr particle( new XsdParticle() );
+                const XsdTerm::Ptr term = parseLocalSequence( particle, complexType );
+                particle->setTerm( term );
+                complexType->contentType()->setParticle( particle );
+                hasContent = true;
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Attribute, token, namespaceToken ) )
+            {
+                const XsdAttributeUse::Ptr attributeUse = parseLocalAttribute( complexType );
+                complexType->addAttributeUse( attributeUse );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::AttributeGroup, token, namespaceToken ) )
+            {
+                const XsdAttributeUse::Ptr attributeUse = parseReferredAttributeGroup();
+                complexType->addAttributeUse( attributeUse );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::AnyAttribute, token, namespaceToken ) )
+            {
+                const XsdWildcard::Ptr wildcard = parseAnyAttribute();
+                complexType->setAttributeWildcard( wildcard );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Assert, token, namespaceToken ) )
+            {
+                const XsdAssertion::Ptr assertion = parseAssertion( XsdSchemaToken::Assert, XsdTagScope::Assert );
+                complexType->addAssertion( assertion );
+            }
+            else
+            {
+                parseUnknown();
+            }
+        }
+    }
 
-   tagValidator.finalize();
+    if ( !hasContent )
+    {
+        complexType->contentType()->setVariety( XsdComplexType::ContentType::Empty );
+    }
+
+    tagValidator.finalize();
+}
+
+void XsdSchemaParser::parseComplexContentExtension( const XsdComplexType::Ptr &complexType )
+{
+    const ElementNamespaceHandler namespaceHandler( XsdSchemaToken::Extension, this );
+
+    validateElement( XsdTagScope::ComplexContentExtension );
+
+    complexType->setDerivationMethod( XsdComplexType::DerivationExtension );
+
+    // parse attributes
+    const QString baseType = readQNameAttribute( QString::fromLatin1( "base" ), "extension" );
+    QXmlName typeName;
+    convertName( baseType, NamespaceSupport::ElementName, typeName ); // translate qualified name into QXmlName
+    m_schemaResolver->addComplexBaseType( complexType, typeName, currentSourceLocation() ); // add to resolver
+
+    validateIdAttribute( "extension" );
+
+    TagValidationHandler tagValidator( XsdTagScope::ComplexContentExtension, this, NamePool::Ptr( m_namePool ) );
+
+    bool hasContent = false;
+
+    while ( !atEnd() )
+    {
+        readNext();
+
+        if ( isEndElement() )
+        {
+            break;
+        }
+
+        if ( isStartElement() )
+        {
+            const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken( name() );
+            const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken( namespaceUri() );
+
+            tagValidator.validate( token );
+
+            if ( isSchemaTag( XsdSchemaToken::Annotation, token, namespaceToken ) )
+            {
+                const XsdAnnotation::Ptr annotation = parseAnnotation();
+                complexType->addAnnotation( annotation );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::OpenContent, token, namespaceToken ) )
+            {
+                const XsdComplexType::OpenContent::Ptr openContent = parseOpenContent();
+                complexType->contentType()->setOpenContent( openContent );
+                hasContent = true;
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Group, token, namespaceToken ) )
+            {
+                const XsdParticle::Ptr particle( new XsdParticle() );
+                const XsdTerm::Ptr term = parseReferredGroup( particle );
+                particle->setTerm( term );
+                complexType->contentType()->setParticle( particle );
+                hasContent = true;
+            }
+            else if ( isSchemaTag( XsdSchemaToken::All, token, namespaceToken ) )
+            {
+                const XsdParticle::Ptr particle( new XsdParticle() );
+                const XsdTerm::Ptr term = parseLocalAll( particle, complexType );
+                particle->setTerm( term );
+                complexType->contentType()->setParticle( particle );
+                hasContent = true;
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Choice, token, namespaceToken ) )
+            {
+                const XsdParticle::Ptr particle( new XsdParticle() );
+                const XsdTerm::Ptr term = parseLocalChoice( particle, complexType );
+                particle->setTerm( term );
+                complexType->contentType()->setParticle( particle );
+                hasContent = true;
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Sequence, token, namespaceToken ) )
+            {
+                const XsdParticle::Ptr particle( new XsdParticle() );
+                const XsdTerm::Ptr term = parseLocalSequence( particle, complexType );
+                particle->setTerm( term );
+                complexType->contentType()->setParticle( particle );
+                hasContent = true;
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Attribute, token, namespaceToken ) )
+            {
+                const XsdAttributeUse::Ptr attributeUse = parseLocalAttribute( complexType );
+                complexType->addAttributeUse( attributeUse );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::AttributeGroup, token, namespaceToken ) )
+            {
+                const XsdAttributeUse::Ptr attributeUse = parseReferredAttributeGroup();
+                complexType->addAttributeUse( attributeUse );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::AnyAttribute, token, namespaceToken ) )
+            {
+                const XsdWildcard::Ptr wildcard = parseAnyAttribute();
+                complexType->setAttributeWildcard( wildcard );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Assert, token, namespaceToken ) )
+            {
+                const XsdAssertion::Ptr assertion = parseAssertion( XsdSchemaToken::Assert, XsdTagScope::Assert );
+                complexType->addAssertion( assertion );
+            }
+            else
+            {
+                parseUnknown();
+            }
+        }
+    }
+
+    if ( !hasContent )
+    {
+        complexType->contentType()->setVariety( XsdComplexType::ContentType::Empty );
+    }
+
+    tagValidator.finalize();
 }
 
 
-XsdAssertion::Ptr XsdSchemaParser::parseAssertion(const XsdSchemaToken::NodeName &nodeName,
-      const XsdTagScope::Type &tag)
+XsdAssertion::Ptr XsdSchemaParser::parseAssertion( const XsdSchemaToken::NodeName &nodeName,
+        const XsdTagScope::Type &tag )
 {
-   const ElementNamespaceHandler namespaceHandler(nodeName, this);
+    const ElementNamespaceHandler namespaceHandler( nodeName, this );
 
-   validateElement(tag);
+    validateElement( tag );
 
-   const XsdAssertion::Ptr assertion(new XsdAssertion());
+    const XsdAssertion::Ptr assertion( new XsdAssertion() );
 
-   // parse attributes
+    // parse attributes
 
-   const XsdXPathExpression::Ptr expression = readXPathExpression("assertion");
-   assertion->setTest(expression);
+    const XsdXPathExpression::Ptr expression = readXPathExpression( "assertion" );
+    assertion->setTest( expression );
 
-   const QString test = readXPathAttribute(QString::fromLatin1("test"), XPath20, "assertion");
-   expression->setExpression(test);
+    const QString test = readXPathAttribute( QString::fromLatin1( "test" ), XPath20, "assertion" );
+    expression->setExpression( test );
 
-   validateIdAttribute("assertion");
+    validateIdAttribute( "assertion" );
 
-   TagValidationHandler tagValidator(tag, this, NamePool::Ptr(m_namePool));
+    TagValidationHandler tagValidator( tag, this, NamePool::Ptr( m_namePool ) );
 
-   while (!atEnd()) {
-      readNext();
+    while ( !atEnd() )
+    {
+        readNext();
 
-      if (isEndElement()) {
-         break;
-      }
+        if ( isEndElement() )
+        {
+            break;
+        }
 
-      if (isStartElement()) {
-         const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken(name());
-         const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken(namespaceUri());
+        if ( isStartElement() )
+        {
+            const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken( name() );
+            const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken( namespaceUri() );
 
-         tagValidator.validate(token);
+            tagValidator.validate( token );
 
-         if (isSchemaTag(XsdSchemaToken::Annotation, token, namespaceToken)) {
-            const XsdAnnotation::Ptr annotation = parseAnnotation();
-            assertion->addAnnotation(annotation);
-         } else {
-            parseUnknown();
-         }
-      }
-   }
+            if ( isSchemaTag( XsdSchemaToken::Annotation, token, namespaceToken ) )
+            {
+                const XsdAnnotation::Ptr annotation = parseAnnotation();
+                assertion->addAnnotation( annotation );
+            }
+            else
+            {
+                parseUnknown();
+            }
+        }
+    }
 
-   tagValidator.finalize();
+    tagValidator.finalize();
 
-   return assertion;
+    return assertion;
 }
 
 XsdComplexType::OpenContent::Ptr XsdSchemaParser::parseOpenContent()
 {
-   const ElementNamespaceHandler namespaceHandler(XsdSchemaToken::OpenContent, this);
+    const ElementNamespaceHandler namespaceHandler( XsdSchemaToken::OpenContent, this );
 
-   validateElement(XsdTagScope::OpenContent);
+    validateElement( XsdTagScope::OpenContent );
 
-   const XsdComplexType::OpenContent::Ptr openContent(new XsdComplexType::OpenContent());
+    const XsdComplexType::OpenContent::Ptr openContent( new XsdComplexType::OpenContent() );
 
-   if (hasAttribute("mode")) {
-      const QString mode = readAttribute(QString::fromLatin1("mode"));
+    if ( hasAttribute( "mode" ) )
+    {
+        const QString mode = readAttribute( QString::fromLatin1( "mode" ) );
 
-      if (mode == QString::fromLatin1("none")) {
-         m_defaultOpenContent->setMode(XsdComplexType::OpenContent::None);
+        if ( mode == QString::fromLatin1( "none" ) )
+        {
+            m_defaultOpenContent->setMode( XsdComplexType::OpenContent::None );
 
-      } else if (mode == QString::fromLatin1("interleave")) {
-         m_defaultOpenContent->setMode(XsdComplexType::OpenContent::Interleave);
+        }
+        else if ( mode == QString::fromLatin1( "interleave" ) )
+        {
+            m_defaultOpenContent->setMode( XsdComplexType::OpenContent::Interleave );
 
-      } else if (mode == QString::fromLatin1("suffix")) {
-         m_defaultOpenContent->setMode(XsdComplexType::OpenContent::Suffix);
+        }
+        else if ( mode == QString::fromLatin1( "suffix" ) )
+        {
+            m_defaultOpenContent->setMode( XsdComplexType::OpenContent::Suffix );
 
-      } else {
-         attributeContentError("mode", "openContent", mode);
-         return openContent;
-      }
+        }
+        else
+        {
+            attributeContentError( "mode", "openContent", mode );
+            return openContent;
+        }
 
-   } else {
-      openContent->setMode(XsdComplexType::OpenContent::Interleave);
-   }
+    }
+    else
+    {
+        openContent->setMode( XsdComplexType::OpenContent::Interleave );
+    }
 
-   validateIdAttribute("openContent");
+    validateIdAttribute( "openContent" );
 
-   TagValidationHandler tagValidator(XsdTagScope::OpenContent, this, NamePool::Ptr(m_namePool));
+    TagValidationHandler tagValidator( XsdTagScope::OpenContent, this, NamePool::Ptr( m_namePool ) );
 
-   while (!atEnd()) {
-      readNext();
+    while ( !atEnd() )
+    {
+        readNext();
 
-      if (isEndElement()) {
-         break;
-      }
+        if ( isEndElement() )
+        {
+            break;
+        }
 
-      if (isStartElement()) {
-         const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken(name());
-         const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken(namespaceUri());
+        if ( isStartElement() )
+        {
+            const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken( name() );
+            const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken( namespaceUri() );
 
-         tagValidator.validate(token);
+            tagValidator.validate( token );
 
-         if (isSchemaTag(XsdSchemaToken::Annotation, token, namespaceToken)) {
-            const XsdAnnotation::Ptr annotation = parseAnnotation();
-            openContent->addAnnotation(annotation);
-         } else if (isSchemaTag(XsdSchemaToken::Any, token, namespaceToken)) {
-            const XsdParticle::Ptr particle;
-            const XsdWildcard::Ptr wildcard = parseAny(particle);
-            openContent->setWildcard(wildcard);
-         } else {
-            parseUnknown();
-         }
-      }
-   }
+            if ( isSchemaTag( XsdSchemaToken::Annotation, token, namespaceToken ) )
+            {
+                const XsdAnnotation::Ptr annotation = parseAnnotation();
+                openContent->addAnnotation( annotation );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Any, token, namespaceToken ) )
+            {
+                const XsdParticle::Ptr particle;
+                const XsdWildcard::Ptr wildcard = parseAny( particle );
+                openContent->setWildcard( wildcard );
+            }
+            else
+            {
+                parseUnknown();
+            }
+        }
+    }
 
-   tagValidator.finalize();
+    tagValidator.finalize();
 
-   return openContent;
+    return openContent;
 }
 
 XsdModelGroup::Ptr XsdSchemaParser::parseNamedGroup()
 {
-   const ElementNamespaceHandler namespaceHandler(XsdSchemaToken::Group, this);
+    const ElementNamespaceHandler namespaceHandler( XsdSchemaToken::Group, this );
 
-   validateElement(XsdTagScope::NamedGroup);
+    validateElement( XsdTagScope::NamedGroup );
 
-   const XsdModelGroup::Ptr modelGroup(new XsdModelGroup());
-   XsdModelGroup::Ptr group;
+    const XsdModelGroup::Ptr modelGroup( new XsdModelGroup() );
+    XsdModelGroup::Ptr group;
 
-   QXmlName objectName;
-   if (hasAttribute("name")) {
-      objectName = m_namePool->allocateQName(m_targetNamespace, readNameAttribute("group"));
-   }
+    QXmlName objectName;
 
-   validateIdAttribute("group");
+    if ( hasAttribute( "name" ) )
+    {
+        objectName = m_namePool->allocateQName( m_targetNamespace, readNameAttribute( "group" ) );
+    }
 
-   TagValidationHandler tagValidator(XsdTagScope::NamedGroup, this, NamePool::Ptr(m_namePool));
+    validateIdAttribute( "group" );
 
-   XsdAnnotation::Ptr annotation;
+    TagValidationHandler tagValidator( XsdTagScope::NamedGroup, this, NamePool::Ptr( m_namePool ) );
 
-   while (!atEnd()) {
-      readNext();
+    XsdAnnotation::Ptr annotation;
 
-      if (isEndElement()) {
-         break;
-      }
+    while ( !atEnd() )
+    {
+        readNext();
 
-      if (isStartElement()) {
-         const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken(name());
-         const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken(namespaceUri());
+        if ( isEndElement() )
+        {
+            break;
+        }
 
-         tagValidator.validate(token);
+        if ( isStartElement() )
+        {
+            const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken( name() );
+            const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken( namespaceUri() );
 
-         if (isSchemaTag(XsdSchemaToken::Annotation, token, namespaceToken)) {
-            annotation = parseAnnotation();
-         } else if (isSchemaTag(XsdSchemaToken::All, token, namespaceToken)) {
-            group = parseAll(modelGroup);
-         } else if (isSchemaTag(XsdSchemaToken::Choice, token, namespaceToken)) {
-            group = parseChoice(modelGroup);
-         } else if (isSchemaTag(XsdSchemaToken::Sequence, token, namespaceToken)) {
-            group = parseSequence(modelGroup);
-         } else {
-            parseUnknown();
-         }
-      }
-   }
+            tagValidator.validate( token );
 
-   tagValidator.finalize();
-
-   group->setName(objectName);
-
-   if (annotation) {
-      group->addAnnotation(annotation);
-   }
-
-   return group;
-}
-
-XsdTerm::Ptr XsdSchemaParser::parseReferredGroup(const XsdParticle::Ptr &particle)
-{
-   const ElementNamespaceHandler namespaceHandler(XsdSchemaToken::Group, this);
-
-   validateElement(XsdTagScope::ReferredGroup);
-
-   const XsdReference::Ptr reference(new XsdReference());
-   reference->setType(XsdReference::ModelGroup);
-   reference->setSourceLocation(currentSourceLocation());
-
-   // parse attributes
-   if (!parseMinMaxConstraint(particle, "group")) {
-      return reference;
-   }
-
-   const QString value = readQNameAttribute(QString::fromLatin1("ref"), "group");
-   QXmlName referenceName;
-   convertName(value, NamespaceSupport::ElementName, referenceName); // translate qualified name into QXmlName
-   reference->setReferenceName(referenceName);
-
-   validateIdAttribute("group");
-
-   TagValidationHandler tagValidator(XsdTagScope::ReferredGroup, this, NamePool::Ptr(m_namePool));
-
-   while (!atEnd()) {
-      readNext();
-
-      if (isEndElement()) {
-         break;
-      }
-
-      if (isStartElement()) {
-         const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken(name());
-         const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken(namespaceUri());
-
-         tagValidator.validate(token);
-
-         if (isSchemaTag(XsdSchemaToken::Annotation, token, namespaceToken)) {
-            const XsdAnnotation::Ptr annotation = parseAnnotation();
-            reference->addAnnotation(annotation);
-         } else {
-            parseUnknown();
-         }
-      }
-   }
-
-   tagValidator.finalize();
-
-   return reference;
-}
-
-XsdModelGroup::Ptr XsdSchemaParser::parseAll(const NamedSchemaComponent::Ptr &parent)
-{
-   const ElementNamespaceHandler namespaceHandler(XsdSchemaToken::All, this);
-
-   validateElement(XsdTagScope::All);
-
-   const XsdModelGroup::Ptr modelGroup(new XsdModelGroup());
-   modelGroup->setCompositor(XsdModelGroup::AllCompositor);
-
-   validateIdAttribute("all");
-
-   TagValidationHandler tagValidator(XsdTagScope::All, this, NamePool::Ptr(m_namePool));
-
-   XsdParticle::List particles;
-   while (!atEnd()) {
-      readNext();
-
-      if (isEndElement()) {
-         break;
-      }
-
-      if (isStartElement()) {
-         const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken(name());
-         const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken(namespaceUri());
-
-         tagValidator.validate(token);
-
-         if (isSchemaTag(XsdSchemaToken::Annotation, token, namespaceToken)) {
-            const XsdAnnotation::Ptr annotation = parseAnnotation();
-            modelGroup->addAnnotation(annotation);
-         } else if (isSchemaTag(XsdSchemaToken::Element, token, namespaceToken)) {
-            const XsdParticle::Ptr particle(new XsdParticle());
-            const XsdTerm::Ptr term = parseLocalElement(particle, parent);
-            particle->setTerm(term);
-
-            if (particle->maximumOccursUnbounded() || particle->maximumOccurs() > 1) {
-               error(QtXmlPatterns::tr("%1 attribute of %2 element must be %3 or %4.")
-                     .formatArg(formatAttribute("maxOccurs"))
-                     .formatArg(formatElement("all"))
-                     .formatArg(formatData("0"))
-                     .formatArg(formatData("1")));
-               return modelGroup;
+            if ( isSchemaTag( XsdSchemaToken::Annotation, token, namespaceToken ) )
+            {
+                annotation = parseAnnotation();
             }
-
-            particles.append(particle);
-         } else {
-            parseUnknown();
-         }
-      }
-   }
-
-   modelGroup->setParticles(particles);
-
-   tagValidator.finalize();
-
-   return modelGroup;
-}
-
-XsdModelGroup::Ptr XsdSchemaParser::parseLocalAll(const XsdParticle::Ptr &particle,
-      const NamedSchemaComponent::Ptr &parent)
-{
-   const ElementNamespaceHandler namespaceHandler(XsdSchemaToken::All, this);
-
-   validateElement(XsdTagScope::LocalAll);
-
-   const XsdModelGroup::Ptr modelGroup(new XsdModelGroup());
-   modelGroup->setCompositor(XsdModelGroup::AllCompositor);
-
-   // parse attributes
-   if (!parseMinMaxConstraint(particle, "all")) {
-      return modelGroup;
-   }
-   if (particle->maximumOccursUnbounded() || particle->maximumOccurs() != 1) {
-      error(QtXmlPatterns::tr("%1 attribute of %2 element must have a value of %3.")
-            .formatArg(formatAttribute("maxOccurs"))
-            .formatArg(formatElement("all"))
-            .formatArg(formatData("1")));
-      return modelGroup;
-   }
-   if (particle->minimumOccurs() != 0 && particle->minimumOccurs() != 1) {
-      error(QtXmlPatterns::tr("%1 attribute of %2 element must have a value of %3 or %4.")
-            .formatArg(formatAttribute("minOccurs"))
-            .formatArg(formatElement("all"))
-            .formatArg(formatData("0"))
-            .formatArg(formatData("1")));
-      return modelGroup;
-   }
-
-   validateIdAttribute("all");
-
-   TagValidationHandler tagValidator(XsdTagScope::LocalAll, this, NamePool::Ptr(m_namePool));
-
-   XsdParticle::List particles;
-   while (!atEnd()) {
-      readNext();
-
-      if (isEndElement()) {
-         break;
-      }
-
-      if (isStartElement()) {
-         const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken(name());
-         const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken(namespaceUri());
-
-         tagValidator.validate(token);
-
-         if (isSchemaTag(XsdSchemaToken::Annotation, token, namespaceToken)) {
-            const XsdAnnotation::Ptr annotation = parseAnnotation();
-            modelGroup->addAnnotation(annotation);
-         } else if (isSchemaTag(XsdSchemaToken::Element, token, namespaceToken)) {
-            const XsdParticle::Ptr particle(new XsdParticle());
-            const XsdTerm::Ptr term = parseLocalElement(particle, parent);
-            particle->setTerm(term);
-
-            if (particle->maximumOccursUnbounded() || particle->maximumOccurs() > 1) {
-               error(QtXmlPatterns::tr("%1 attribute of %2 element must have a value of %3 or %4.")
-                     .formatArg(formatAttribute("maxOccurs"))
-                     .formatArg(formatElement("all"))
-                     .formatArg(formatData("0"))
-                     .formatArg(formatData("1")));
-               return modelGroup;
+            else if ( isSchemaTag( XsdSchemaToken::All, token, namespaceToken ) )
+            {
+                group = parseAll( modelGroup );
             }
+            else if ( isSchemaTag( XsdSchemaToken::Choice, token, namespaceToken ) )
+            {
+                group = parseChoice( modelGroup );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Sequence, token, namespaceToken ) )
+            {
+                group = parseSequence( modelGroup );
+            }
+            else
+            {
+                parseUnknown();
+            }
+        }
+    }
 
-            particles.append(particle);
-         } else {
-            parseUnknown();
-         }
-      }
-   }
+    tagValidator.finalize();
 
-   modelGroup->setParticles(particles);
+    group->setName( objectName );
 
-   tagValidator.finalize();
+    if ( annotation )
+    {
+        group->addAnnotation( annotation );
+    }
 
-   return modelGroup;
+    return group;
 }
 
-XsdModelGroup::Ptr XsdSchemaParser::parseChoice(const NamedSchemaComponent::Ptr &parent)
+XsdTerm::Ptr XsdSchemaParser::parseReferredGroup( const XsdParticle::Ptr &particle )
 {
-   const ElementNamespaceHandler namespaceHandler(XsdSchemaToken::Choice, this);
+    const ElementNamespaceHandler namespaceHandler( XsdSchemaToken::Group, this );
 
-   validateElement(XsdTagScope::Choice);
+    validateElement( XsdTagScope::ReferredGroup );
 
-   const XsdModelGroup::Ptr modelGroup(new XsdModelGroup());
-   modelGroup->setCompositor(XsdModelGroup::ChoiceCompositor);
+    const XsdReference::Ptr reference( new XsdReference() );
+    reference->setType( XsdReference::ModelGroup );
+    reference->setSourceLocation( currentSourceLocation() );
 
-   validateIdAttribute("choice");
+    // parse attributes
+    if ( !parseMinMaxConstraint( particle, "group" ) )
+    {
+        return reference;
+    }
 
-   XsdParticle::List particles;
+    const QString value = readQNameAttribute( QString::fromLatin1( "ref" ), "group" );
+    QXmlName referenceName;
+    convertName( value, NamespaceSupport::ElementName, referenceName ); // translate qualified name into QXmlName
+    reference->setReferenceName( referenceName );
 
-   TagValidationHandler tagValidator(XsdTagScope::Choice, this, NamePool::Ptr(m_namePool));
+    validateIdAttribute( "group" );
 
-   while (!atEnd()) {
-      readNext();
+    TagValidationHandler tagValidator( XsdTagScope::ReferredGroup, this, NamePool::Ptr( m_namePool ) );
 
-      if (isEndElement()) {
-         break;
-      }
+    while ( !atEnd() )
+    {
+        readNext();
 
-      if (isStartElement()) {
-         const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken(name());
-         const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken(namespaceUri());
+        if ( isEndElement() )
+        {
+            break;
+        }
 
-         tagValidator.validate(token);
+        if ( isStartElement() )
+        {
+            const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken( name() );
+            const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken( namespaceUri() );
 
-         if (isSchemaTag(XsdSchemaToken::Annotation, token, namespaceToken)) {
-            const XsdAnnotation::Ptr annotation = parseAnnotation();
-            modelGroup->addAnnotation(annotation);
-         } else if (isSchemaTag(XsdSchemaToken::Element, token, namespaceToken)) {
-            const XsdParticle::Ptr particle(new XsdParticle());
-            const XsdTerm::Ptr term = parseLocalElement(particle, parent);
-            particle->setTerm(term);
-            particles.append(particle);
-         } else if (isSchemaTag(XsdSchemaToken::Group, token, namespaceToken)) {
-            const XsdParticle::Ptr particle(new XsdParticle());
-            const XsdTerm::Ptr term = parseReferredGroup(particle);
-            m_schemaResolver->addAllGroupCheck(term);
-            particle->setTerm(term);
-            particles.append(particle);
-         } else if (isSchemaTag(XsdSchemaToken::Choice, token, namespaceToken)) {
-            const XsdParticle::Ptr particle(new XsdParticle());
-            const XsdTerm::Ptr term = parseLocalChoice(particle, parent);
-            particle->setTerm(term);
-            particles.append(particle);
-         } else if (isSchemaTag(XsdSchemaToken::Sequence, token, namespaceToken)) {
-            const XsdParticle::Ptr particle(new XsdParticle());
-            const XsdTerm::Ptr term = parseLocalSequence(particle, parent);
-            particle->setTerm(term);
-            particles.append(particle);
-         } else if (isSchemaTag(XsdSchemaToken::Any, token, namespaceToken)) {
-            const XsdParticle::Ptr particle(new XsdParticle());
-            const XsdTerm::Ptr term = parseAny(particle);
-            particle->setTerm(term);
-            particles.append(particle);
-         } else {
-            parseUnknown();
-         }
-      }
-   }
+            tagValidator.validate( token );
 
-   modelGroup->setParticles(particles);
+            if ( isSchemaTag( XsdSchemaToken::Annotation, token, namespaceToken ) )
+            {
+                const XsdAnnotation::Ptr annotation = parseAnnotation();
+                reference->addAnnotation( annotation );
+            }
+            else
+            {
+                parseUnknown();
+            }
+        }
+    }
 
-   tagValidator.finalize();
+    tagValidator.finalize();
 
-   return modelGroup;
+    return reference;
 }
 
-XsdModelGroup::Ptr XsdSchemaParser::parseLocalChoice(const XsdParticle::Ptr &particle,
-      const NamedSchemaComponent::Ptr &parent)
+XsdModelGroup::Ptr XsdSchemaParser::parseAll( const NamedSchemaComponent::Ptr &parent )
 {
-   const ElementNamespaceHandler namespaceHandler(XsdSchemaToken::Choice, this);
+    const ElementNamespaceHandler namespaceHandler( XsdSchemaToken::All, this );
 
-   validateElement(XsdTagScope::LocalChoice);
+    validateElement( XsdTagScope::All );
 
-   const XsdModelGroup::Ptr modelGroup(new XsdModelGroup());
-   modelGroup->setCompositor(XsdModelGroup::ChoiceCompositor);
+    const XsdModelGroup::Ptr modelGroup( new XsdModelGroup() );
+    modelGroup->setCompositor( XsdModelGroup::AllCompositor );
 
-   // parse attributes
-   if (!parseMinMaxConstraint(particle, "choice")) {
-      return modelGroup;
-   }
+    validateIdAttribute( "all" );
 
-   validateIdAttribute("choice");
+    TagValidationHandler tagValidator( XsdTagScope::All, this, NamePool::Ptr( m_namePool ) );
 
-   XsdParticle::List particles;
+    XsdParticle::List particles;
 
-   TagValidationHandler tagValidator(XsdTagScope::LocalChoice, this, NamePool::Ptr(m_namePool));
+    while ( !atEnd() )
+    {
+        readNext();
 
-   while (!atEnd()) {
-      readNext();
+        if ( isEndElement() )
+        {
+            break;
+        }
 
-      if (isEndElement()) {
-         break;
-      }
+        if ( isStartElement() )
+        {
+            const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken( name() );
+            const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken( namespaceUri() );
 
-      if (isStartElement()) {
-         const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken(name());
-         const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken(namespaceUri());
+            tagValidator.validate( token );
 
-         tagValidator.validate(token);
+            if ( isSchemaTag( XsdSchemaToken::Annotation, token, namespaceToken ) )
+            {
+                const XsdAnnotation::Ptr annotation = parseAnnotation();
+                modelGroup->addAnnotation( annotation );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Element, token, namespaceToken ) )
+            {
+                const XsdParticle::Ptr particle( new XsdParticle() );
+                const XsdTerm::Ptr term = parseLocalElement( particle, parent );
+                particle->setTerm( term );
 
-         if (isSchemaTag(XsdSchemaToken::Annotation, token, namespaceToken)) {
-            const XsdAnnotation::Ptr annotation = parseAnnotation();
-            modelGroup->addAnnotation(annotation);
-         } else if (isSchemaTag(XsdSchemaToken::Element, token, namespaceToken)) {
-            const XsdParticle::Ptr particle(new XsdParticle());
-            const XsdTerm::Ptr term = parseLocalElement(particle, parent);
-            particle->setTerm(term);
-            particles.append(particle);
-         } else if (isSchemaTag(XsdSchemaToken::Group, token, namespaceToken)) {
-            const XsdParticle::Ptr particle(new XsdParticle());
-            const XsdTerm::Ptr term = parseReferredGroup(particle);
-            m_schemaResolver->addAllGroupCheck(term);
-            particle->setTerm(term);
-            particles.append(particle);
-         } else if (isSchemaTag(XsdSchemaToken::Choice, token, namespaceToken)) {
-            const XsdParticle::Ptr particle(new XsdParticle());
-            const XsdTerm::Ptr term = parseLocalChoice(particle, parent);
-            particle->setTerm(term);
-            particles.append(particle);
-         } else if (isSchemaTag(XsdSchemaToken::Sequence, token, namespaceToken)) {
-            const XsdParticle::Ptr particle(new XsdParticle());
-            const XsdTerm::Ptr term = parseLocalSequence(particle, parent);
-            particle->setTerm(term);
-            particles.append(particle);
-         } else if (isSchemaTag(XsdSchemaToken::Any, token, namespaceToken)) {
-            const XsdParticle::Ptr particle(new XsdParticle());
-            const XsdTerm::Ptr term = parseAny(particle);
-            particle->setTerm(term);
-            particles.append(particle);
-         } else {
-            parseUnknown();
-         }
-      }
-   }
+                if ( particle->maximumOccursUnbounded() || particle->maximumOccurs() > 1 )
+                {
+                    error( QtXmlPatterns::tr( "%1 attribute of %2 element must be %3 or %4." )
+                           .formatArg( formatAttribute( "maxOccurs" ) )
+                           .formatArg( formatElement( "all" ) )
+                           .formatArg( formatData( "0" ) )
+                           .formatArg( formatData( "1" ) ) );
+                    return modelGroup;
+                }
 
-   modelGroup->setParticles(particles);
+                particles.append( particle );
+            }
+            else
+            {
+                parseUnknown();
+            }
+        }
+    }
 
-   tagValidator.finalize();
+    modelGroup->setParticles( particles );
 
-   return modelGroup;
+    tagValidator.finalize();
+
+    return modelGroup;
 }
 
-XsdModelGroup::Ptr XsdSchemaParser::parseSequence(const NamedSchemaComponent::Ptr &parent)
+XsdModelGroup::Ptr XsdSchemaParser::parseLocalAll( const XsdParticle::Ptr &particle,
+        const NamedSchemaComponent::Ptr &parent )
 {
-   const ElementNamespaceHandler namespaceHandler(XsdSchemaToken::Sequence, this);
+    const ElementNamespaceHandler namespaceHandler( XsdSchemaToken::All, this );
 
-   validateElement(XsdTagScope::Sequence);
+    validateElement( XsdTagScope::LocalAll );
 
-   const XsdModelGroup::Ptr modelGroup(new XsdModelGroup());
-   modelGroup->setCompositor(XsdModelGroup::SequenceCompositor);
+    const XsdModelGroup::Ptr modelGroup( new XsdModelGroup() );
+    modelGroup->setCompositor( XsdModelGroup::AllCompositor );
 
-   validateIdAttribute("sequence");
+    // parse attributes
+    if ( !parseMinMaxConstraint( particle, "all" ) )
+    {
+        return modelGroup;
+    }
 
-   XsdParticle::List particles;
+    if ( particle->maximumOccursUnbounded() || particle->maximumOccurs() != 1 )
+    {
+        error( QtXmlPatterns::tr( "%1 attribute of %2 element must have a value of %3." )
+               .formatArg( formatAttribute( "maxOccurs" ) )
+               .formatArg( formatElement( "all" ) )
+               .formatArg( formatData( "1" ) ) );
+        return modelGroup;
+    }
 
-   TagValidationHandler tagValidator(XsdTagScope::Sequence, this, NamePool::Ptr(m_namePool));
+    if ( particle->minimumOccurs() != 0 && particle->minimumOccurs() != 1 )
+    {
+        error( QtXmlPatterns::tr( "%1 attribute of %2 element must have a value of %3 or %4." )
+               .formatArg( formatAttribute( "minOccurs" ) )
+               .formatArg( formatElement( "all" ) )
+               .formatArg( formatData( "0" ) )
+               .formatArg( formatData( "1" ) ) );
+        return modelGroup;
+    }
 
-   while (!atEnd()) {
-      readNext();
+    validateIdAttribute( "all" );
 
-      if (isEndElement()) {
-         break;
-      }
+    TagValidationHandler tagValidator( XsdTagScope::LocalAll, this, NamePool::Ptr( m_namePool ) );
 
-      if (isStartElement()) {
-         const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken(name());
-         const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken(namespaceUri());
+    XsdParticle::List particles;
 
-         tagValidator.validate(token);
+    while ( !atEnd() )
+    {
+        readNext();
 
-         if (isSchemaTag(XsdSchemaToken::Annotation, token, namespaceToken)) {
-            const XsdAnnotation::Ptr annotation = parseAnnotation();
-            modelGroup->addAnnotation(annotation);
-         } else if (isSchemaTag(XsdSchemaToken::Element, token, namespaceToken)) {
-            const XsdParticle::Ptr particle(new XsdParticle());
-            const XsdTerm::Ptr term = parseLocalElement(particle, parent);
-            particle->setTerm(term);
-            particles.append(particle);
-         } else if (isSchemaTag(XsdSchemaToken::Group, token, namespaceToken)) {
-            const XsdParticle::Ptr particle(new XsdParticle());
-            const XsdTerm::Ptr term = parseReferredGroup(particle);
-            m_schemaResolver->addAllGroupCheck(term);
-            particle->setTerm(term);
-            particles.append(particle);
-         } else if (isSchemaTag(XsdSchemaToken::Choice, token, namespaceToken)) {
-            const XsdParticle::Ptr particle(new XsdParticle());
-            const XsdTerm::Ptr term = parseLocalChoice(particle, parent);
-            particle->setTerm(term);
-            particles.append(particle);
-         } else if (isSchemaTag(XsdSchemaToken::Sequence, token, namespaceToken)) {
-            const XsdParticle::Ptr particle(new XsdParticle());
-            const XsdTerm::Ptr term = parseLocalSequence(particle, parent);
-            particle->setTerm(term);
-            particles.append(particle);
-         } else if (isSchemaTag(XsdSchemaToken::Any, token, namespaceToken)) {
-            const XsdParticle::Ptr particle(new XsdParticle());
-            const XsdTerm::Ptr term = parseAny(particle);
-            particle->setTerm(term);
-            particles.append(particle);
-         } else {
-            parseUnknown();
-         }
-      }
-   }
+        if ( isEndElement() )
+        {
+            break;
+        }
 
-   modelGroup->setParticles(particles);
+        if ( isStartElement() )
+        {
+            const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken( name() );
+            const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken( namespaceUri() );
 
-   tagValidator.finalize();
+            tagValidator.validate( token );
 
-   return modelGroup;
+            if ( isSchemaTag( XsdSchemaToken::Annotation, token, namespaceToken ) )
+            {
+                const XsdAnnotation::Ptr annotation = parseAnnotation();
+                modelGroup->addAnnotation( annotation );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Element, token, namespaceToken ) )
+            {
+                const XsdParticle::Ptr particle( new XsdParticle() );
+                const XsdTerm::Ptr term = parseLocalElement( particle, parent );
+                particle->setTerm( term );
+
+                if ( particle->maximumOccursUnbounded() || particle->maximumOccurs() > 1 )
+                {
+                    error( QtXmlPatterns::tr( "%1 attribute of %2 element must have a value of %3 or %4." )
+                           .formatArg( formatAttribute( "maxOccurs" ) )
+                           .formatArg( formatElement( "all" ) )
+                           .formatArg( formatData( "0" ) )
+                           .formatArg( formatData( "1" ) ) );
+                    return modelGroup;
+                }
+
+                particles.append( particle );
+            }
+            else
+            {
+                parseUnknown();
+            }
+        }
+    }
+
+    modelGroup->setParticles( particles );
+
+    tagValidator.finalize();
+
+    return modelGroup;
 }
 
-XsdModelGroup::Ptr XsdSchemaParser::parseLocalSequence(const XsdParticle::Ptr &particle,
-      const NamedSchemaComponent::Ptr &parent)
+XsdModelGroup::Ptr XsdSchemaParser::parseChoice( const NamedSchemaComponent::Ptr &parent )
 {
-   const ElementNamespaceHandler namespaceHandler(XsdSchemaToken::Sequence, this);
+    const ElementNamespaceHandler namespaceHandler( XsdSchemaToken::Choice, this );
 
-   validateElement(XsdTagScope::LocalSequence);
+    validateElement( XsdTagScope::Choice );
 
-   const XsdModelGroup::Ptr modelGroup(new XsdModelGroup());
-   modelGroup->setCompositor(XsdModelGroup::SequenceCompositor);
+    const XsdModelGroup::Ptr modelGroup( new XsdModelGroup() );
+    modelGroup->setCompositor( XsdModelGroup::ChoiceCompositor );
 
-   // parse attributes
-   if (!parseMinMaxConstraint(particle, "sequence")) {
-      return modelGroup;
-   }
+    validateIdAttribute( "choice" );
 
-   validateIdAttribute("sequence");
+    XsdParticle::List particles;
 
-   XsdParticle::List particles;
+    TagValidationHandler tagValidator( XsdTagScope::Choice, this, NamePool::Ptr( m_namePool ) );
 
-   TagValidationHandler tagValidator(XsdTagScope::LocalSequence, this, NamePool::Ptr(m_namePool));
+    while ( !atEnd() )
+    {
+        readNext();
 
-   while (!atEnd()) {
-      readNext();
+        if ( isEndElement() )
+        {
+            break;
+        }
 
-      if (isEndElement()) {
-         break;
-      }
+        if ( isStartElement() )
+        {
+            const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken( name() );
+            const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken( namespaceUri() );
 
-      if (isStartElement()) {
-         const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken(name());
-         const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken(namespaceUri());
+            tagValidator.validate( token );
 
-         tagValidator.validate(token);
+            if ( isSchemaTag( XsdSchemaToken::Annotation, token, namespaceToken ) )
+            {
+                const XsdAnnotation::Ptr annotation = parseAnnotation();
+                modelGroup->addAnnotation( annotation );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Element, token, namespaceToken ) )
+            {
+                const XsdParticle::Ptr particle( new XsdParticle() );
+                const XsdTerm::Ptr term = parseLocalElement( particle, parent );
+                particle->setTerm( term );
+                particles.append( particle );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Group, token, namespaceToken ) )
+            {
+                const XsdParticle::Ptr particle( new XsdParticle() );
+                const XsdTerm::Ptr term = parseReferredGroup( particle );
+                m_schemaResolver->addAllGroupCheck( term );
+                particle->setTerm( term );
+                particles.append( particle );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Choice, token, namespaceToken ) )
+            {
+                const XsdParticle::Ptr particle( new XsdParticle() );
+                const XsdTerm::Ptr term = parseLocalChoice( particle, parent );
+                particle->setTerm( term );
+                particles.append( particle );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Sequence, token, namespaceToken ) )
+            {
+                const XsdParticle::Ptr particle( new XsdParticle() );
+                const XsdTerm::Ptr term = parseLocalSequence( particle, parent );
+                particle->setTerm( term );
+                particles.append( particle );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Any, token, namespaceToken ) )
+            {
+                const XsdParticle::Ptr particle( new XsdParticle() );
+                const XsdTerm::Ptr term = parseAny( particle );
+                particle->setTerm( term );
+                particles.append( particle );
+            }
+            else
+            {
+                parseUnknown();
+            }
+        }
+    }
 
-         if (isSchemaTag(XsdSchemaToken::Annotation, token, namespaceToken)) {
-            const XsdAnnotation::Ptr annotation = parseAnnotation();
-            modelGroup->addAnnotation(annotation);
-         } else if (isSchemaTag(XsdSchemaToken::Element, token, namespaceToken)) {
-            const XsdParticle::Ptr particle(new XsdParticle());
-            const XsdTerm::Ptr term = parseLocalElement(particle, parent);
-            particle->setTerm(term);
-            particles.append(particle);
-         } else if (isSchemaTag(XsdSchemaToken::Group, token, namespaceToken)) {
-            const XsdParticle::Ptr particle(new XsdParticle());
-            const XsdTerm::Ptr term = parseReferredGroup(particle);
-            m_schemaResolver->addAllGroupCheck(term);
-            particle->setTerm(term);
-            particles.append(particle);
-         } else if (isSchemaTag(XsdSchemaToken::Choice, token, namespaceToken)) {
-            const XsdParticle::Ptr particle(new XsdParticle());
-            const XsdTerm::Ptr term = parseLocalChoice(particle, parent);
-            particle->setTerm(term);
-            particles.append(particle);
-         } else if (isSchemaTag(XsdSchemaToken::Sequence, token, namespaceToken)) {
-            const XsdParticle::Ptr particle(new XsdParticle());
-            const XsdTerm::Ptr term = parseLocalSequence(particle, parent);
-            particle->setTerm(term);
-            particles.append(particle);
-         } else if (isSchemaTag(XsdSchemaToken::Any, token, namespaceToken)) {
-            const XsdParticle::Ptr particle(new XsdParticle());
-            const XsdTerm::Ptr term = parseAny(particle);
-            particle->setTerm(term);
-            particles.append(particle);
-         } else {
-            parseUnknown();
-         }
-      }
-   }
+    modelGroup->setParticles( particles );
 
-   modelGroup->setParticles(particles);
+    tagValidator.finalize();
 
-   tagValidator.finalize();
+    return modelGroup;
+}
 
-   return modelGroup;
+XsdModelGroup::Ptr XsdSchemaParser::parseLocalChoice( const XsdParticle::Ptr &particle,
+        const NamedSchemaComponent::Ptr &parent )
+{
+    const ElementNamespaceHandler namespaceHandler( XsdSchemaToken::Choice, this );
+
+    validateElement( XsdTagScope::LocalChoice );
+
+    const XsdModelGroup::Ptr modelGroup( new XsdModelGroup() );
+    modelGroup->setCompositor( XsdModelGroup::ChoiceCompositor );
+
+    // parse attributes
+    if ( !parseMinMaxConstraint( particle, "choice" ) )
+    {
+        return modelGroup;
+    }
+
+    validateIdAttribute( "choice" );
+
+    XsdParticle::List particles;
+
+    TagValidationHandler tagValidator( XsdTagScope::LocalChoice, this, NamePool::Ptr( m_namePool ) );
+
+    while ( !atEnd() )
+    {
+        readNext();
+
+        if ( isEndElement() )
+        {
+            break;
+        }
+
+        if ( isStartElement() )
+        {
+            const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken( name() );
+            const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken( namespaceUri() );
+
+            tagValidator.validate( token );
+
+            if ( isSchemaTag( XsdSchemaToken::Annotation, token, namespaceToken ) )
+            {
+                const XsdAnnotation::Ptr annotation = parseAnnotation();
+                modelGroup->addAnnotation( annotation );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Element, token, namespaceToken ) )
+            {
+                const XsdParticle::Ptr particle( new XsdParticle() );
+                const XsdTerm::Ptr term = parseLocalElement( particle, parent );
+                particle->setTerm( term );
+                particles.append( particle );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Group, token, namespaceToken ) )
+            {
+                const XsdParticle::Ptr particle( new XsdParticle() );
+                const XsdTerm::Ptr term = parseReferredGroup( particle );
+                m_schemaResolver->addAllGroupCheck( term );
+                particle->setTerm( term );
+                particles.append( particle );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Choice, token, namespaceToken ) )
+            {
+                const XsdParticle::Ptr particle( new XsdParticle() );
+                const XsdTerm::Ptr term = parseLocalChoice( particle, parent );
+                particle->setTerm( term );
+                particles.append( particle );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Sequence, token, namespaceToken ) )
+            {
+                const XsdParticle::Ptr particle( new XsdParticle() );
+                const XsdTerm::Ptr term = parseLocalSequence( particle, parent );
+                particle->setTerm( term );
+                particles.append( particle );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Any, token, namespaceToken ) )
+            {
+                const XsdParticle::Ptr particle( new XsdParticle() );
+                const XsdTerm::Ptr term = parseAny( particle );
+                particle->setTerm( term );
+                particles.append( particle );
+            }
+            else
+            {
+                parseUnknown();
+            }
+        }
+    }
+
+    modelGroup->setParticles( particles );
+
+    tagValidator.finalize();
+
+    return modelGroup;
+}
+
+XsdModelGroup::Ptr XsdSchemaParser::parseSequence( const NamedSchemaComponent::Ptr &parent )
+{
+    const ElementNamespaceHandler namespaceHandler( XsdSchemaToken::Sequence, this );
+
+    validateElement( XsdTagScope::Sequence );
+
+    const XsdModelGroup::Ptr modelGroup( new XsdModelGroup() );
+    modelGroup->setCompositor( XsdModelGroup::SequenceCompositor );
+
+    validateIdAttribute( "sequence" );
+
+    XsdParticle::List particles;
+
+    TagValidationHandler tagValidator( XsdTagScope::Sequence, this, NamePool::Ptr( m_namePool ) );
+
+    while ( !atEnd() )
+    {
+        readNext();
+
+        if ( isEndElement() )
+        {
+            break;
+        }
+
+        if ( isStartElement() )
+        {
+            const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken( name() );
+            const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken( namespaceUri() );
+
+            tagValidator.validate( token );
+
+            if ( isSchemaTag( XsdSchemaToken::Annotation, token, namespaceToken ) )
+            {
+                const XsdAnnotation::Ptr annotation = parseAnnotation();
+                modelGroup->addAnnotation( annotation );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Element, token, namespaceToken ) )
+            {
+                const XsdParticle::Ptr particle( new XsdParticle() );
+                const XsdTerm::Ptr term = parseLocalElement( particle, parent );
+                particle->setTerm( term );
+                particles.append( particle );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Group, token, namespaceToken ) )
+            {
+                const XsdParticle::Ptr particle( new XsdParticle() );
+                const XsdTerm::Ptr term = parseReferredGroup( particle );
+                m_schemaResolver->addAllGroupCheck( term );
+                particle->setTerm( term );
+                particles.append( particle );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Choice, token, namespaceToken ) )
+            {
+                const XsdParticle::Ptr particle( new XsdParticle() );
+                const XsdTerm::Ptr term = parseLocalChoice( particle, parent );
+                particle->setTerm( term );
+                particles.append( particle );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Sequence, token, namespaceToken ) )
+            {
+                const XsdParticle::Ptr particle( new XsdParticle() );
+                const XsdTerm::Ptr term = parseLocalSequence( particle, parent );
+                particle->setTerm( term );
+                particles.append( particle );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Any, token, namespaceToken ) )
+            {
+                const XsdParticle::Ptr particle( new XsdParticle() );
+                const XsdTerm::Ptr term = parseAny( particle );
+                particle->setTerm( term );
+                particles.append( particle );
+            }
+            else
+            {
+                parseUnknown();
+            }
+        }
+    }
+
+    modelGroup->setParticles( particles );
+
+    tagValidator.finalize();
+
+    return modelGroup;
+}
+
+XsdModelGroup::Ptr XsdSchemaParser::parseLocalSequence( const XsdParticle::Ptr &particle,
+        const NamedSchemaComponent::Ptr &parent )
+{
+    const ElementNamespaceHandler namespaceHandler( XsdSchemaToken::Sequence, this );
+
+    validateElement( XsdTagScope::LocalSequence );
+
+    const XsdModelGroup::Ptr modelGroup( new XsdModelGroup() );
+    modelGroup->setCompositor( XsdModelGroup::SequenceCompositor );
+
+    // parse attributes
+    if ( !parseMinMaxConstraint( particle, "sequence" ) )
+    {
+        return modelGroup;
+    }
+
+    validateIdAttribute( "sequence" );
+
+    XsdParticle::List particles;
+
+    TagValidationHandler tagValidator( XsdTagScope::LocalSequence, this, NamePool::Ptr( m_namePool ) );
+
+    while ( !atEnd() )
+    {
+        readNext();
+
+        if ( isEndElement() )
+        {
+            break;
+        }
+
+        if ( isStartElement() )
+        {
+            const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken( name() );
+            const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken( namespaceUri() );
+
+            tagValidator.validate( token );
+
+            if ( isSchemaTag( XsdSchemaToken::Annotation, token, namespaceToken ) )
+            {
+                const XsdAnnotation::Ptr annotation = parseAnnotation();
+                modelGroup->addAnnotation( annotation );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Element, token, namespaceToken ) )
+            {
+                const XsdParticle::Ptr particle( new XsdParticle() );
+                const XsdTerm::Ptr term = parseLocalElement( particle, parent );
+                particle->setTerm( term );
+                particles.append( particle );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Group, token, namespaceToken ) )
+            {
+                const XsdParticle::Ptr particle( new XsdParticle() );
+                const XsdTerm::Ptr term = parseReferredGroup( particle );
+                m_schemaResolver->addAllGroupCheck( term );
+                particle->setTerm( term );
+                particles.append( particle );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Choice, token, namespaceToken ) )
+            {
+                const XsdParticle::Ptr particle( new XsdParticle() );
+                const XsdTerm::Ptr term = parseLocalChoice( particle, parent );
+                particle->setTerm( term );
+                particles.append( particle );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Sequence, token, namespaceToken ) )
+            {
+                const XsdParticle::Ptr particle( new XsdParticle() );
+                const XsdTerm::Ptr term = parseLocalSequence( particle, parent );
+                particle->setTerm( term );
+                particles.append( particle );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Any, token, namespaceToken ) )
+            {
+                const XsdParticle::Ptr particle( new XsdParticle() );
+                const XsdTerm::Ptr term = parseAny( particle );
+                particle->setTerm( term );
+                particles.append( particle );
+            }
+            else
+            {
+                parseUnknown();
+            }
+        }
+    }
+
+    modelGroup->setParticles( particles );
+
+    tagValidator.finalize();
+
+    return modelGroup;
 }
 
 XsdAttribute::Ptr XsdSchemaParser::parseGlobalAttribute()
 {
-   const ElementNamespaceHandler namespaceHandler(XsdSchemaToken::Attribute, this);
+    const ElementNamespaceHandler namespaceHandler( XsdSchemaToken::Attribute, this );
 
-   validateElement(XsdTagScope::GlobalAttribute);
+    validateElement( XsdTagScope::GlobalAttribute );
 
-   const XsdAttribute::Ptr attribute(new XsdAttribute());
-   attribute->setScope(XsdAttribute::Scope::Ptr(new XsdAttribute::Scope()));
-   attribute->scope()->setVariety(XsdAttribute::Scope::Global);
+    const XsdAttribute::Ptr attribute( new XsdAttribute() );
+    attribute->setScope( XsdAttribute::Scope::Ptr( new XsdAttribute::Scope() ) );
+    attribute->scope()->setVariety( XsdAttribute::Scope::Global );
 
-   if (hasAttribute("default") && hasAttribute("fixed")) {
-      error(QtXmlPatterns::tr("%1 element must not have %2 and %3 attribute together.")
-            .formatArg(formatElement("attribute"))
-            .formatArg(formatAttribute("default"))
-            .formatArg(formatAttribute("fixed")));
-      return attribute;
-   }
+    if ( hasAttribute( "default" ) && hasAttribute( "fixed" ) )
+    {
+        error( QtXmlPatterns::tr( "%1 element must not have %2 and %3 attribute together." )
+               .formatArg( formatElement( "attribute" ) )
+               .formatArg( formatAttribute( "default" ) )
+               .formatArg( formatAttribute( "fixed" ) ) );
+        return attribute;
+    }
 
-   // parse attributes
-   if (hasAttribute("default")) {
-      const QString value = readAttribute(QString::fromLatin1("default"));
-      attribute->setValueConstraint(XsdAttribute::ValueConstraint::Ptr(new XsdAttribute::ValueConstraint()));
-      attribute->valueConstraint()->setVariety(XsdAttribute::ValueConstraint::Default);
-      attribute->valueConstraint()->setValue(value);
+    // parse attributes
+    if ( hasAttribute( "default" ) )
+    {
+        const QString value = readAttribute( QString::fromLatin1( "default" ) );
+        attribute->setValueConstraint( XsdAttribute::ValueConstraint::Ptr( new XsdAttribute::ValueConstraint() ) );
+        attribute->valueConstraint()->setVariety( XsdAttribute::ValueConstraint::Default );
+        attribute->valueConstraint()->setValue( value );
 
-   } else if (hasAttribute("fixed")) {
-      const QString value = readAttribute(QString::fromLatin1("fixed"));
-      attribute->setValueConstraint(XsdAttribute::ValueConstraint::Ptr(new XsdAttribute::ValueConstraint()));
-      attribute->valueConstraint()->setVariety(XsdAttribute::ValueConstraint::Fixed);
-      attribute->valueConstraint()->setValue(value);
-   }
+    }
+    else if ( hasAttribute( "fixed" ) )
+    {
+        const QString value = readAttribute( QString::fromLatin1( "fixed" ) );
+        attribute->setValueConstraint( XsdAttribute::ValueConstraint::Ptr( new XsdAttribute::ValueConstraint() ) );
+        attribute->valueConstraint()->setVariety( XsdAttribute::ValueConstraint::Fixed );
+        attribute->valueConstraint()->setValue( value );
+    }
 
-   const QXmlName objectName = m_namePool->allocateQName(m_targetNamespace, readNameAttribute("attribute"));
-   if ((objectName.namespaceURI() == StandardNamespaces::xsi) &&
-         (m_namePool->stringForLocalName(objectName.localName()) != QString::fromLatin1("type")) &&
-         (m_namePool->stringForLocalName(objectName.localName()) != QString::fromLatin1("nil")) &&
-         (m_namePool->stringForLocalName(objectName.localName()) != QString::fromLatin1("schemaLocation")) &&
-         (m_namePool->stringForLocalName(objectName.localName()) != QString::fromLatin1("noNamespaceSchemaLocation"))) {
+    const QXmlName objectName = m_namePool->allocateQName( m_targetNamespace, readNameAttribute( "attribute" ) );
 
-      error(QtXmlPatterns::tr("Content of %1 attribute of %2 element must not be from namespace %3.")
-            .formatArg(formatAttribute("name"))
-            .formatArg(formatElement("attribute"))
-            .formatArg(formatURI(CommonNamespaces::XSI)));
-      return attribute;
-   }
-   if (m_namePool->stringForLocalName(objectName.localName()) == QString::fromLatin1("xmlns")) {
-      error(QtXmlPatterns::tr("%1 attribute of %2 element must not be %3.")
-            .formatArg(formatAttribute("name"))
-            .formatArg(formatElement("attribute"))
-            .formatArg(formatData("xmlns")));
-      return attribute;
-   }
-   attribute->setName(objectName);
+    if ( ( objectName.namespaceURI() == StandardNamespaces::xsi ) &&
+            ( m_namePool->stringForLocalName( objectName.localName() ) != QString::fromLatin1( "type" ) ) &&
+            ( m_namePool->stringForLocalName( objectName.localName() ) != QString::fromLatin1( "nil" ) ) &&
+            ( m_namePool->stringForLocalName( objectName.localName() ) != QString::fromLatin1( "schemaLocation" ) ) &&
+            ( m_namePool->stringForLocalName( objectName.localName() ) != QString::fromLatin1( "noNamespaceSchemaLocation" ) ) )
+    {
 
-   bool hasTypeAttribute = false;
-   bool hasTypeSpecified = false;
+        error( QtXmlPatterns::tr( "Content of %1 attribute of %2 element must not be from namespace %3." )
+               .formatArg( formatAttribute( "name" ) )
+               .formatArg( formatElement( "attribute" ) )
+               .formatArg( formatURI( CommonNamespaces::XSI ) ) );
+        return attribute;
+    }
 
-   if (hasAttribute("type")) {
-      hasTypeAttribute = true;
+    if ( m_namePool->stringForLocalName( objectName.localName() ) == QString::fromLatin1( "xmlns" ) )
+    {
+        error( QtXmlPatterns::tr( "%1 attribute of %2 element must not be %3." )
+               .formatArg( formatAttribute( "name" ) )
+               .formatArg( formatElement( "attribute" ) )
+               .formatArg( formatData( "xmlns" ) ) );
+        return attribute;
+    }
 
-      const QString type = readQNameAttribute(QString::fromLatin1("type"), "attribute");
-      QXmlName typeName;
-      convertName(type, NamespaceSupport::ElementName, typeName); // translate qualified name into QXmlName
-      m_schemaResolver->addAttributeType(attribute, typeName, currentSourceLocation()); // add to resolver
-      hasTypeSpecified = true;
-   }
+    attribute->setName( objectName );
 
-   validateIdAttribute("attribute");
+    bool hasTypeAttribute = false;
+    bool hasTypeSpecified = false;
 
-   TagValidationHandler tagValidator(XsdTagScope::GlobalAttribute, this, NamePool::Ptr(m_namePool));
+    if ( hasAttribute( "type" ) )
+    {
+        hasTypeAttribute = true;
 
-   while (!atEnd()) {
-      readNext();
+        const QString type = readQNameAttribute( QString::fromLatin1( "type" ), "attribute" );
+        QXmlName typeName;
+        convertName( type, NamespaceSupport::ElementName, typeName ); // translate qualified name into QXmlName
+        m_schemaResolver->addAttributeType( attribute, typeName, currentSourceLocation() ); // add to resolver
+        hasTypeSpecified = true;
+    }
 
-      if (isEndElement()) {
-         break;
-      }
+    validateIdAttribute( "attribute" );
 
-      if (isStartElement()) {
-         const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken(name());
-         const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken(namespaceUri());
+    TagValidationHandler tagValidator( XsdTagScope::GlobalAttribute, this, NamePool::Ptr( m_namePool ) );
 
-         tagValidator.validate(token);
+    while ( !atEnd() )
+    {
+        readNext();
 
-         if (isSchemaTag(XsdSchemaToken::Annotation, token, namespaceToken)) {
-            const XsdAnnotation::Ptr annotation = parseAnnotation();
-            attribute->addAnnotation(annotation);
-         } else if (isSchemaTag(XsdSchemaToken::SimpleType, token, namespaceToken)) {
-            if (hasTypeAttribute) {
-               error(QtXmlPatterns::tr("%1 element with %2 child element must not have a %3 attribute.")
-                     .formatArg(formatElement("attribute"))
-                     .formatArg(formatElement("simpleType"))
-                     .formatArg(formatAttribute("type")));
-               break;
+        if ( isEndElement() )
+        {
+            break;
+        }
+
+        if ( isStartElement() )
+        {
+            const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken( name() );
+            const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken( namespaceUri() );
+
+            tagValidator.validate( token );
+
+            if ( isSchemaTag( XsdSchemaToken::Annotation, token, namespaceToken ) )
+            {
+                const XsdAnnotation::Ptr annotation = parseAnnotation();
+                attribute->addAnnotation( annotation );
             }
+            else if ( isSchemaTag( XsdSchemaToken::SimpleType, token, namespaceToken ) )
+            {
+                if ( hasTypeAttribute )
+                {
+                    error( QtXmlPatterns::tr( "%1 element with %2 child element must not have a %3 attribute." )
+                           .formatArg( formatElement( "attribute" ) )
+                           .formatArg( formatElement( "simpleType" ) )
+                           .formatArg( formatAttribute( "type" ) ) );
+                    break;
+                }
 
-            const XsdSimpleType::Ptr type = parseLocalSimpleType();
-            type->setContext(attribute);
-            attribute->setType(type);
-            hasTypeSpecified = true;
+                const XsdSimpleType::Ptr type = parseLocalSimpleType();
+                type->setContext( attribute );
+                attribute->setType( type );
+                hasTypeSpecified = true;
 
-            // add it to list of anonymous types as well
-            addAnonymousType(type);
-         } else {
-            parseUnknown();
-         }
-      }
-   }
+                // add it to list of anonymous types as well
+                addAnonymousType( type );
+            }
+            else
+            {
+                parseUnknown();
+            }
+        }
+    }
 
-   if (!hasTypeSpecified) {
-      attribute->setType(BuiltinTypes::xsAnySimpleType); // default value
-      return attribute;
-   }
+    if ( !hasTypeSpecified )
+    {
+        attribute->setType( BuiltinTypes::xsAnySimpleType ); // default value
+        return attribute;
+    }
 
-   tagValidator.finalize();
+    tagValidator.finalize();
 
-   return attribute;
+    return attribute;
 }
 
-XsdAttributeUse::Ptr XsdSchemaParser::parseLocalAttribute(const NamedSchemaComponent::Ptr &parent)
+XsdAttributeUse::Ptr XsdSchemaParser::parseLocalAttribute( const NamedSchemaComponent::Ptr &parent )
 {
-   const ElementNamespaceHandler namespaceHandler(XsdSchemaToken::Attribute, this);
+    const ElementNamespaceHandler namespaceHandler( XsdSchemaToken::Attribute, this );
 
-   validateElement(XsdTagScope::LocalAttribute);
+    validateElement( XsdTagScope::LocalAttribute );
 
-   bool hasRefAttribute = false;
-   bool hasTypeAttribute = false;
-   bool hasTypeSpecified = false;
+    bool hasRefAttribute = false;
+    bool hasTypeAttribute = false;
+    bool hasTypeSpecified = false;
 
-   XsdAttributeUse::Ptr attributeUse;
-   if (hasAttribute("ref")) {
-      const XsdAttributeReference::Ptr reference = XsdAttributeReference::Ptr(new XsdAttributeReference());
-      reference->setType(XsdAttributeReference::AttributeUse);
-      reference->setSourceLocation(currentSourceLocation());
+    XsdAttributeUse::Ptr attributeUse;
 
-      attributeUse = reference;
-      hasRefAttribute = true;
-   } else {
-      attributeUse = XsdAttributeUse::Ptr(new XsdAttributeUse());
-   }
+    if ( hasAttribute( "ref" ) )
+    {
+        const XsdAttributeReference::Ptr reference = XsdAttributeReference::Ptr( new XsdAttributeReference() );
+        reference->setType( XsdAttributeReference::AttributeUse );
+        reference->setSourceLocation( currentSourceLocation() );
 
-   if (hasAttribute("default") && hasAttribute("fixed")) {
-      error(QtXmlPatterns::tr("%1 element must not have %2 and %3 attribute together.")
-            .formatArg(formatElement("attribute"))
-            .formatArg(formatAttribute("default"))
-            .formatArg(formatAttribute("fixed")));
-      return attributeUse;
-   }
+        attributeUse = reference;
+        hasRefAttribute = true;
+    }
+    else
+    {
+        attributeUse = XsdAttributeUse::Ptr( new XsdAttributeUse() );
+    }
 
-   if (hasRefAttribute) {
-      if (hasAttribute("form")) {
-         error(QtXmlPatterns::tr("%1 element must not have %2 and %3 attribute together.")
-               .formatArg(formatElement("attribute"))
-               .formatArg(formatAttribute("ref"))
-               .formatArg(formatAttribute("form")));
-         return attributeUse;
-      }
+    if ( hasAttribute( "default" ) && hasAttribute( "fixed" ) )
+    {
+        error( QtXmlPatterns::tr( "%1 element must not have %2 and %3 attribute together." )
+               .formatArg( formatElement( "attribute" ) )
+               .formatArg( formatAttribute( "default" ) )
+               .formatArg( formatAttribute( "fixed" ) ) );
+        return attributeUse;
+    }
 
-      if (hasAttribute("name")) {
-         error(QtXmlPatterns::tr("%1 element must not have %2 and %3 attribute together.")
-               .formatArg(formatElement("attribute"))
-               .formatArg(formatAttribute("ref"))
-               .formatArg(formatAttribute("name")));
-         return attributeUse;
-      }
-
-      if (hasAttribute("type")) {
-         error(QtXmlPatterns::tr("%1 element must not have %2 and %3 attribute together.")
-               .formatArg(formatElement("attribute"))
-               .formatArg(formatAttribute("ref"))
-               .formatArg(formatAttribute("type")));
-         return attributeUse;
-      }
-   }
-
-   // parse attributes
-
-   // default, fixed and use are handled by both, attribute use and attribute reference
-   if (hasAttribute("default")) {
-      const QString value = readAttribute(QString::fromLatin1("default"));
-
-      attributeUse->setValueConstraint(XsdAttributeUse::ValueConstraint::Ptr(new XsdAttributeUse::ValueConstraint()));
-      attributeUse->valueConstraint()->setVariety(XsdAttributeUse::ValueConstraint::Default);
-      attributeUse->valueConstraint()->setValue(value);
-
-   } else if (hasAttribute("fixed")) {
-      const QString value = readAttribute(QString::fromLatin1("fixed"));
-
-      attributeUse->setValueConstraint(XsdAttributeUse::ValueConstraint::Ptr(new XsdAttributeUse::ValueConstraint()));
-      attributeUse->valueConstraint()->setVariety(XsdAttributeUse::ValueConstraint::Fixed);
-      attributeUse->valueConstraint()->setValue(value);
-   }
-
-   if (hasAttribute("use")) {
-      const QString value = readAttribute(QString::fromLatin1("use"));
-
-      if (value != QString::fromLatin1("optional") &&
-            value != QString::fromLatin1("prohibited") &&
-            value != QString::fromLatin1("required")) {
-         attributeContentError("use", "attribute", value);
-         return attributeUse;
-      }
-
-      if (value == QString::fromLatin1("optional")) {
-         attributeUse->setUseType(XsdAttributeUse::OptionalUse);
-      } else if (value == QString::fromLatin1("prohibited")) {
-         attributeUse->setUseType(XsdAttributeUse::ProhibitedUse);
-      } else if (value == QString::fromLatin1("required")) {
-         attributeUse->setUseType(XsdAttributeUse::RequiredUse);
-      }
-
-      if (attributeUse->valueConstraint() &&
-            attributeUse->valueConstraint()->variety() == XsdAttributeUse::ValueConstraint::Default &&
-            value != QString::fromLatin1("optional")) {
-         error(QtXmlPatterns::tr("%1 attribute of %2 element must have the value %3 because the %4 attribute is set.")
-               .formatArg(formatAttribute("use"))
-               .formatArg(formatElement("attribute"))
-               .formatArg(formatData("optional"))
-               .formatArg(formatElement("default")));
-         return attributeUse;
-      }
-   }
-
-   const XsdAttribute::Ptr attribute(new XsdAttribute());
-
-   attributeUse->setAttribute(attribute);
-   m_componentLocationHash.insert(attribute, currentSourceLocation());
-
-   attribute->setScope(XsdAttribute::Scope::Ptr(new XsdAttribute::Scope()));
-   attribute->scope()->setVariety(XsdAttribute::Scope::Local);
-   attribute->scope()->setParent(parent);
-
-   // now make a difference between attribute reference and attribute use
-   if (hasRefAttribute) {
-      const QString reference = readQNameAttribute(QString::fromLatin1("ref"), "attribute");
-      QXmlName referenceName;
-      convertName(reference, NamespaceSupport::ElementName, referenceName);   // translate qualified name into QXmlName
-
-      const XsdAttributeReference::Ptr attributeReference = attributeUse;
-      attributeReference->setReferenceName(referenceName);
-   } else {
-      if (hasAttribute("name")) {
-         const QString attributeName = readNameAttribute("attribute");
-
-         QXmlName objectName;
-         if (hasAttribute("form")) {
-            const QString value = readAttribute(QString::fromLatin1("form"));
-            if (value != QString::fromLatin1("qualified") && value != QString::fromLatin1("unqualified")) {
-               attributeContentError("form", "attribute", value);
-               return attributeUse;
-            }
-
-            if (value == QString::fromLatin1("qualified")) {
-               objectName = m_namePool->allocateQName(m_targetNamespace, attributeName);
-            } else {
-               objectName = m_namePool->allocateQName(QString(), attributeName);
-            }
-         } else {
-            if (m_attributeFormDefault == QString::fromLatin1("qualified")) {
-               objectName = m_namePool->allocateQName(m_targetNamespace, attributeName);
-            } else {
-               objectName = m_namePool->allocateQName(QString(), attributeName);
-            }
-         }
-
-         if ((objectName.namespaceURI() == StandardNamespaces::xsi) &&
-               (m_namePool->stringForLocalName(objectName.localName()) != QString::fromLatin1("type")) &&
-               (m_namePool->stringForLocalName(objectName.localName()) != QString::fromLatin1("nil")) &&
-               (m_namePool->stringForLocalName(objectName.localName()) != QString::fromLatin1("schemaLocation")) &&
-               (m_namePool->stringForLocalName(objectName.localName()) != QString::fromLatin1("noNamespaceSchemaLocation"))) {
-
-            error(QtXmlPatterns::tr("Content of %1 attribute of %2 element must not be from namespace %3.")
-                  .formatArg(formatAttribute("name"))
-                  .formatArg(formatElement("attribute"))
-                  .formatArg(formatURI(CommonNamespaces::XSI)));
+    if ( hasRefAttribute )
+    {
+        if ( hasAttribute( "form" ) )
+        {
+            error( QtXmlPatterns::tr( "%1 element must not have %2 and %3 attribute together." )
+                   .formatArg( formatElement( "attribute" ) )
+                   .formatArg( formatAttribute( "ref" ) )
+                   .formatArg( formatAttribute( "form" ) ) );
             return attributeUse;
-         }
-         if (m_namePool->stringForLocalName(objectName.localName()) == QString::fromLatin1("xmlns")) {
-            error(QtXmlPatterns::tr("%1 attribute of %2 element must not be %3.")
-                  .formatArg(formatAttribute("name"))
-                  .formatArg(formatElement("attribute"))
-                  .formatArg(formatData("xmlns")));
+        }
+
+        if ( hasAttribute( "name" ) )
+        {
+            error( QtXmlPatterns::tr( "%1 element must not have %2 and %3 attribute together." )
+                   .formatArg( formatElement( "attribute" ) )
+                   .formatArg( formatAttribute( "ref" ) )
+                   .formatArg( formatAttribute( "name" ) ) );
             return attributeUse;
-         }
+        }
 
-         attribute->setName(objectName);
-      }
+        if ( hasAttribute( "type" ) )
+        {
+            error( QtXmlPatterns::tr( "%1 element must not have %2 and %3 attribute together." )
+                   .formatArg( formatElement( "attribute" ) )
+                   .formatArg( formatAttribute( "ref" ) )
+                   .formatArg( formatAttribute( "type" ) ) );
+            return attributeUse;
+        }
+    }
 
-      if (hasAttribute("type")) {
-         hasTypeAttribute = true;
+    // parse attributes
 
-         const QString type = readQNameAttribute(QString::fromLatin1("type"), "attribute");
-         QXmlName typeName;
-         convertName(type, NamespaceSupport::ElementName, typeName); // translate qualified name into QXmlName
-         m_schemaResolver->addAttributeType(attribute, typeName, currentSourceLocation()); // add to resolver
-         hasTypeSpecified = true;
-      }
+    // default, fixed and use are handled by both, attribute use and attribute reference
+    if ( hasAttribute( "default" ) )
+    {
+        const QString value = readAttribute( QString::fromLatin1( "default" ) );
 
-      if (attributeUse->valueConstraint()) {
-         //TODO: check whether assigning the value constraint of the attribute use to the attribute is correct
-         if (!attribute->valueConstraint()) {
-            attribute->setValueConstraint(XsdAttribute::ValueConstraint::Ptr(new XsdAttribute::ValueConstraint()));
-         }
+        attributeUse->setValueConstraint( XsdAttributeUse::ValueConstraint::Ptr( new XsdAttributeUse::ValueConstraint() ) );
+        attributeUse->valueConstraint()->setVariety( XsdAttributeUse::ValueConstraint::Default );
+        attributeUse->valueConstraint()->setValue( value );
 
-         attribute->valueConstraint()->setVariety((XsdAttribute::ValueConstraint::Variety)
-               attributeUse->valueConstraint()->variety());
-         attribute->valueConstraint()->setValue(attributeUse->valueConstraint()->value());
-         attribute->valueConstraint()->setLexicalForm(attributeUse->valueConstraint()->lexicalForm());
-      }
-   }
+    }
+    else if ( hasAttribute( "fixed" ) )
+    {
+        const QString value = readAttribute( QString::fromLatin1( "fixed" ) );
 
-   validateIdAttribute("attribute");
+        attributeUse->setValueConstraint( XsdAttributeUse::ValueConstraint::Ptr( new XsdAttributeUse::ValueConstraint() ) );
+        attributeUse->valueConstraint()->setVariety( XsdAttributeUse::ValueConstraint::Fixed );
+        attributeUse->valueConstraint()->setValue( value );
+    }
 
-   TagValidationHandler tagValidator(XsdTagScope::LocalAttribute, this, NamePool::Ptr(m_namePool));
+    if ( hasAttribute( "use" ) )
+    {
+        const QString value = readAttribute( QString::fromLatin1( "use" ) );
 
-   while (!atEnd()) {
-      readNext();
+        if ( value != QString::fromLatin1( "optional" ) &&
+                value != QString::fromLatin1( "prohibited" ) &&
+                value != QString::fromLatin1( "required" ) )
+        {
+            attributeContentError( "use", "attribute", value );
+            return attributeUse;
+        }
 
-      if (isEndElement()) {
-         break;
-      }
+        if ( value == QString::fromLatin1( "optional" ) )
+        {
+            attributeUse->setUseType( XsdAttributeUse::OptionalUse );
+        }
+        else if ( value == QString::fromLatin1( "prohibited" ) )
+        {
+            attributeUse->setUseType( XsdAttributeUse::ProhibitedUse );
+        }
+        else if ( value == QString::fromLatin1( "required" ) )
+        {
+            attributeUse->setUseType( XsdAttributeUse::RequiredUse );
+        }
 
-      if (isStartElement()) {
-         const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken(name());
-         const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken(namespaceUri());
+        if ( attributeUse->valueConstraint() &&
+                attributeUse->valueConstraint()->variety() == XsdAttributeUse::ValueConstraint::Default &&
+                value != QString::fromLatin1( "optional" ) )
+        {
+            error( QtXmlPatterns::tr( "%1 attribute of %2 element must have the value %3 because the %4 attribute is set." )
+                   .formatArg( formatAttribute( "use" ) )
+                   .formatArg( formatElement( "attribute" ) )
+                   .formatArg( formatData( "optional" ) )
+                   .formatArg( formatElement( "default" ) ) );
+            return attributeUse;
+        }
+    }
 
-         tagValidator.validate(token);
+    const XsdAttribute::Ptr attribute( new XsdAttribute() );
 
-         if (isSchemaTag(XsdSchemaToken::Annotation, token, namespaceToken)) {
-            const XsdAnnotation::Ptr annotation = parseAnnotation();
-            attribute->addAnnotation(annotation);
-         } else if (isSchemaTag(XsdSchemaToken::SimpleType, token, namespaceToken)) {
-            if (hasTypeAttribute) {
-               error(QtXmlPatterns::tr("%1 element with %2 child element must not have a %3 attribute.")
-                     .formatArg(formatElement("attribute"))
-                     .formatArg(formatElement("simpleType"))
-                     .formatArg(formatAttribute("type")));
-               break;
+    attributeUse->setAttribute( attribute );
+    m_componentLocationHash.insert( attribute, currentSourceLocation() );
+
+    attribute->setScope( XsdAttribute::Scope::Ptr( new XsdAttribute::Scope() ) );
+    attribute->scope()->setVariety( XsdAttribute::Scope::Local );
+    attribute->scope()->setParent( parent );
+
+    // now make a difference between attribute reference and attribute use
+    if ( hasRefAttribute )
+    {
+        const QString reference = readQNameAttribute( QString::fromLatin1( "ref" ), "attribute" );
+        QXmlName referenceName;
+        convertName( reference, NamespaceSupport::ElementName, referenceName ); // translate qualified name into QXmlName
+
+        const XsdAttributeReference::Ptr attributeReference = attributeUse;
+        attributeReference->setReferenceName( referenceName );
+    }
+    else
+    {
+        if ( hasAttribute( "name" ) )
+        {
+            const QString attributeName = readNameAttribute( "attribute" );
+
+            QXmlName objectName;
+
+            if ( hasAttribute( "form" ) )
+            {
+                const QString value = readAttribute( QString::fromLatin1( "form" ) );
+
+                if ( value != QString::fromLatin1( "qualified" ) && value != QString::fromLatin1( "unqualified" ) )
+                {
+                    attributeContentError( "form", "attribute", value );
+                    return attributeUse;
+                }
+
+                if ( value == QString::fromLatin1( "qualified" ) )
+                {
+                    objectName = m_namePool->allocateQName( m_targetNamespace, attributeName );
+                }
+                else
+                {
+                    objectName = m_namePool->allocateQName( QString(), attributeName );
+                }
             }
-            if (hasRefAttribute) {
-               error(QtXmlPatterns::tr("%1 element with %2 child element must not have a %3 attribute.")
-                     .formatArg(formatElement("attribute"))
-                     .formatArg(formatElement("simpleType"))
-                     .formatArg(formatAttribute("ref")));
-               break;
+            else
+            {
+                if ( m_attributeFormDefault == QString::fromLatin1( "qualified" ) )
+                {
+                    objectName = m_namePool->allocateQName( m_targetNamespace, attributeName );
+                }
+                else
+                {
+                    objectName = m_namePool->allocateQName( QString(), attributeName );
+                }
             }
 
-            const XsdSimpleType::Ptr type = parseLocalSimpleType();
-            type->setContext(attribute);
-            attribute->setType(type);
+            if ( ( objectName.namespaceURI() == StandardNamespaces::xsi ) &&
+                    ( m_namePool->stringForLocalName( objectName.localName() ) != QString::fromLatin1( "type" ) ) &&
+                    ( m_namePool->stringForLocalName( objectName.localName() ) != QString::fromLatin1( "nil" ) ) &&
+                    ( m_namePool->stringForLocalName( objectName.localName() ) != QString::fromLatin1( "schemaLocation" ) ) &&
+                    ( m_namePool->stringForLocalName( objectName.localName() ) != QString::fromLatin1( "noNamespaceSchemaLocation" ) ) )
+            {
+
+                error( QtXmlPatterns::tr( "Content of %1 attribute of %2 element must not be from namespace %3." )
+                       .formatArg( formatAttribute( "name" ) )
+                       .formatArg( formatElement( "attribute" ) )
+                       .formatArg( formatURI( CommonNamespaces::XSI ) ) );
+                return attributeUse;
+            }
+
+            if ( m_namePool->stringForLocalName( objectName.localName() ) == QString::fromLatin1( "xmlns" ) )
+            {
+                error( QtXmlPatterns::tr( "%1 attribute of %2 element must not be %3." )
+                       .formatArg( formatAttribute( "name" ) )
+                       .formatArg( formatElement( "attribute" ) )
+                       .formatArg( formatData( "xmlns" ) ) );
+                return attributeUse;
+            }
+
+            attribute->setName( objectName );
+        }
+
+        if ( hasAttribute( "type" ) )
+        {
+            hasTypeAttribute = true;
+
+            const QString type = readQNameAttribute( QString::fromLatin1( "type" ), "attribute" );
+            QXmlName typeName;
+            convertName( type, NamespaceSupport::ElementName, typeName ); // translate qualified name into QXmlName
+            m_schemaResolver->addAttributeType( attribute, typeName, currentSourceLocation() ); // add to resolver
             hasTypeSpecified = true;
+        }
 
-            // add it to list of anonymous types as well
-            addAnonymousType(type);
-         } else {
-            parseUnknown();
-         }
-      }
-   }
+        if ( attributeUse->valueConstraint() )
+        {
+            //TODO: check whether assigning the value constraint of the attribute use to the attribute is correct
+            if ( !attribute->valueConstraint() )
+            {
+                attribute->setValueConstraint( XsdAttribute::ValueConstraint::Ptr( new XsdAttribute::ValueConstraint() ) );
+            }
 
-   if (!hasTypeSpecified) {
-      attribute->setType(BuiltinTypes::xsAnySimpleType); // default value
-   }
+            attribute->valueConstraint()->setVariety( ( XsdAttribute::ValueConstraint::Variety )
+                    attributeUse->valueConstraint()->variety() );
+            attribute->valueConstraint()->setValue( attributeUse->valueConstraint()->value() );
+            attribute->valueConstraint()->setLexicalForm( attributeUse->valueConstraint()->lexicalForm() );
+        }
+    }
 
-   tagValidator.finalize();
+    validateIdAttribute( "attribute" );
 
-   return attributeUse;
+    TagValidationHandler tagValidator( XsdTagScope::LocalAttribute, this, NamePool::Ptr( m_namePool ) );
+
+    while ( !atEnd() )
+    {
+        readNext();
+
+        if ( isEndElement() )
+        {
+            break;
+        }
+
+        if ( isStartElement() )
+        {
+            const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken( name() );
+            const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken( namespaceUri() );
+
+            tagValidator.validate( token );
+
+            if ( isSchemaTag( XsdSchemaToken::Annotation, token, namespaceToken ) )
+            {
+                const XsdAnnotation::Ptr annotation = parseAnnotation();
+                attribute->addAnnotation( annotation );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::SimpleType, token, namespaceToken ) )
+            {
+                if ( hasTypeAttribute )
+                {
+                    error( QtXmlPatterns::tr( "%1 element with %2 child element must not have a %3 attribute." )
+                           .formatArg( formatElement( "attribute" ) )
+                           .formatArg( formatElement( "simpleType" ) )
+                           .formatArg( formatAttribute( "type" ) ) );
+                    break;
+                }
+
+                if ( hasRefAttribute )
+                {
+                    error( QtXmlPatterns::tr( "%1 element with %2 child element must not have a %3 attribute." )
+                           .formatArg( formatElement( "attribute" ) )
+                           .formatArg( formatElement( "simpleType" ) )
+                           .formatArg( formatAttribute( "ref" ) ) );
+                    break;
+                }
+
+                const XsdSimpleType::Ptr type = parseLocalSimpleType();
+                type->setContext( attribute );
+                attribute->setType( type );
+                hasTypeSpecified = true;
+
+                // add it to list of anonymous types as well
+                addAnonymousType( type );
+            }
+            else
+            {
+                parseUnknown();
+            }
+        }
+    }
+
+    if ( !hasTypeSpecified )
+    {
+        attribute->setType( BuiltinTypes::xsAnySimpleType ); // default value
+    }
+
+    tagValidator.finalize();
+
+    return attributeUse;
 }
 
 XsdAttributeGroup::Ptr XsdSchemaParser::parseNamedAttributeGroup()
 {
-   const ElementNamespaceHandler namespaceHandler(XsdSchemaToken::AttributeGroup, this);
+    const ElementNamespaceHandler namespaceHandler( XsdSchemaToken::AttributeGroup, this );
 
-   validateElement(XsdTagScope::NamedAttributeGroup);
+    validateElement( XsdTagScope::NamedAttributeGroup );
 
-   const XsdAttributeGroup::Ptr attributeGroup(new XsdAttributeGroup());
+    const XsdAttributeGroup::Ptr attributeGroup( new XsdAttributeGroup() );
 
-   // parse attributes
-   const QXmlName objectName = m_namePool->allocateQName(m_targetNamespace, readNameAttribute("attributeGroup"));
-   attributeGroup->setName(objectName);
+    // parse attributes
+    const QXmlName objectName = m_namePool->allocateQName( m_targetNamespace, readNameAttribute( "attributeGroup" ) );
+    attributeGroup->setName( objectName );
 
-   validateIdAttribute("attributeGroup");
+    validateIdAttribute( "attributeGroup" );
 
-   TagValidationHandler tagValidator(XsdTagScope::NamedAttributeGroup, this, NamePool::Ptr(m_namePool));
+    TagValidationHandler tagValidator( XsdTagScope::NamedAttributeGroup, this, NamePool::Ptr( m_namePool ) );
 
-   while (!atEnd()) {
-      readNext();
+    while ( !atEnd() )
+    {
+        readNext();
 
-      if (isEndElement()) {
-         break;
-      }
+        if ( isEndElement() )
+        {
+            break;
+        }
 
-      if (isStartElement()) {
-         const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken(name());
-         const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken(namespaceUri());
+        if ( isStartElement() )
+        {
+            const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken( name() );
+            const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken( namespaceUri() );
 
-         tagValidator.validate(token);
+            tagValidator.validate( token );
 
-         if (isSchemaTag(XsdSchemaToken::Annotation, token, namespaceToken)) {
-            const XsdAnnotation::Ptr annotation = parseAnnotation();
-            attributeGroup->addAnnotation(annotation);
-         } else if (isSchemaTag(XsdSchemaToken::Attribute, token, namespaceToken)) {
-            const XsdAttributeUse::Ptr attributeUse = parseLocalAttribute(attributeGroup);
-
-            if (attributeUse->useType() == XsdAttributeUse::ProhibitedUse) {
-               warning(QtXmlPatterns::tr("Specifying use='prohibited' inside an attribute group has no effect."));
-            } else {
-               attributeGroup->addAttributeUse(attributeUse);
+            if ( isSchemaTag( XsdSchemaToken::Annotation, token, namespaceToken ) )
+            {
+                const XsdAnnotation::Ptr annotation = parseAnnotation();
+                attributeGroup->addAnnotation( annotation );
             }
-         } else if (isSchemaTag(XsdSchemaToken::AttributeGroup, token, namespaceToken)) {
-            const XsdAttributeUse::Ptr attributeUse = parseReferredAttributeGroup();
-            attributeGroup->addAttributeUse(attributeUse);
-         } else if (isSchemaTag(XsdSchemaToken::AnyAttribute, token, namespaceToken)) {
-            const XsdWildcard::Ptr wildcard = parseAnyAttribute();
-            attributeGroup->setWildcard(wildcard);
-         } else {
-            parseUnknown();
-         }
-      }
-   }
+            else if ( isSchemaTag( XsdSchemaToken::Attribute, token, namespaceToken ) )
+            {
+                const XsdAttributeUse::Ptr attributeUse = parseLocalAttribute( attributeGroup );
 
-   tagValidator.finalize();
+                if ( attributeUse->useType() == XsdAttributeUse::ProhibitedUse )
+                {
+                    warning( QtXmlPatterns::tr( "Specifying use='prohibited' inside an attribute group has no effect." ) );
+                }
+                else
+                {
+                    attributeGroup->addAttributeUse( attributeUse );
+                }
+            }
+            else if ( isSchemaTag( XsdSchemaToken::AttributeGroup, token, namespaceToken ) )
+            {
+                const XsdAttributeUse::Ptr attributeUse = parseReferredAttributeGroup();
+                attributeGroup->addAttributeUse( attributeUse );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::AnyAttribute, token, namespaceToken ) )
+            {
+                const XsdWildcard::Ptr wildcard = parseAnyAttribute();
+                attributeGroup->setWildcard( wildcard );
+            }
+            else
+            {
+                parseUnknown();
+            }
+        }
+    }
 
-   return attributeGroup;
+    tagValidator.finalize();
+
+    return attributeGroup;
 }
 
 XsdAttributeUse::Ptr XsdSchemaParser::parseReferredAttributeGroup()
 {
-   const ElementNamespaceHandler namespaceHandler(XsdSchemaToken::AttributeGroup, this);
+    const ElementNamespaceHandler namespaceHandler( XsdSchemaToken::AttributeGroup, this );
 
-   validateElement(XsdTagScope::ReferredAttributeGroup);
+    validateElement( XsdTagScope::ReferredAttributeGroup );
 
-   const XsdAttributeReference::Ptr attributeReference(new XsdAttributeReference());
-   attributeReference->setType(XsdAttributeReference::AttributeGroup);
-   attributeReference->setSourceLocation(currentSourceLocation());
+    const XsdAttributeReference::Ptr attributeReference( new XsdAttributeReference() );
+    attributeReference->setType( XsdAttributeReference::AttributeGroup );
+    attributeReference->setSourceLocation( currentSourceLocation() );
 
-   // parse attributes
-   const QString reference = readQNameAttribute(QString::fromLatin1("ref"), "attributeGroup");
-   QXmlName referenceName;
-   convertName(reference, NamespaceSupport::ElementName, referenceName); // translate qualified name into QXmlName
-   attributeReference->setReferenceName(referenceName);
+    // parse attributes
+    const QString reference = readQNameAttribute( QString::fromLatin1( "ref" ), "attributeGroup" );
+    QXmlName referenceName;
+    convertName( reference, NamespaceSupport::ElementName, referenceName ); // translate qualified name into QXmlName
+    attributeReference->setReferenceName( referenceName );
 
-   validateIdAttribute("attributeGroup");
+    validateIdAttribute( "attributeGroup" );
 
-   TagValidationHandler tagValidator(XsdTagScope::ReferredAttributeGroup, this, NamePool::Ptr(m_namePool));
+    TagValidationHandler tagValidator( XsdTagScope::ReferredAttributeGroup, this, NamePool::Ptr( m_namePool ) );
 
-   while (!atEnd()) {
-      readNext();
+    while ( !atEnd() )
+    {
+        readNext();
 
-      if (isEndElement()) {
-         break;
-      }
+        if ( isEndElement() )
+        {
+            break;
+        }
 
-      if (isStartElement()) {
-         const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken(name());
-         const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken(namespaceUri());
+        if ( isStartElement() )
+        {
+            const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken( name() );
+            const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken( namespaceUri() );
 
-         tagValidator.validate(token);
+            tagValidator.validate( token );
 
-         if (isSchemaTag(XsdSchemaToken::Annotation, token, namespaceToken)) {
-            const XsdAnnotation::Ptr annotation = parseAnnotation();
-            attributeReference->addAnnotation(annotation);
-         } else {
-            parseUnknown();
-         }
-      }
-   }
+            if ( isSchemaTag( XsdSchemaToken::Annotation, token, namespaceToken ) )
+            {
+                const XsdAnnotation::Ptr annotation = parseAnnotation();
+                attributeReference->addAnnotation( annotation );
+            }
+            else
+            {
+                parseUnknown();
+            }
+        }
+    }
 
-   tagValidator.finalize();
+    tagValidator.finalize();
 
-   return attributeReference;
+    return attributeReference;
 }
 
 XsdElement::Ptr XsdSchemaParser::parseGlobalElement()
 {
-   const ElementNamespaceHandler namespaceHandler(XsdSchemaToken::Element, this);
+    const ElementNamespaceHandler namespaceHandler( XsdSchemaToken::Element, this );
 
-   validateElement(XsdTagScope::GlobalElement);
+    validateElement( XsdTagScope::GlobalElement );
 
-   const XsdElement::Ptr element(new XsdElement());
-   element->setScope(XsdElement::Scope::Ptr(new XsdElement::Scope()));
-   element->scope()->setVariety(XsdElement::Scope::Global);
+    const XsdElement::Ptr element( new XsdElement() );
+    element->setScope( XsdElement::Scope::Ptr( new XsdElement::Scope() ) );
+    element->scope()->setVariety( XsdElement::Scope::Global );
 
-   bool hasTypeAttribute = false;
-   bool hasTypeSpecified = false;
-   bool hasSubstitutionGroup = false;
+    bool hasTypeAttribute = false;
+    bool hasTypeSpecified = false;
+    bool hasSubstitutionGroup = false;
 
-   // parse attributes
-   const QXmlName objectName = m_namePool->allocateQName(m_targetNamespace, readNameAttribute("element"));
-   element->setName(objectName);
+    // parse attributes
+    const QXmlName objectName = m_namePool->allocateQName( m_targetNamespace, readNameAttribute( "element" ) );
+    element->setName( objectName );
 
-   if (hasAttribute("abstract")) {
-      const QString abstract = readAttribute(QString::fromLatin1("abstract"));
+    if ( hasAttribute( "abstract" ) )
+    {
+        const QString abstract = readAttribute( QString::fromLatin1( "abstract" ) );
 
-      const Boolean::Ptr value = Boolean::fromLexical(abstract);
-      if (value->hasError()) {
-         attributeContentError("abstract", "element", abstract, BuiltinTypes::xsBoolean);
-         return element;
-      }
+        const Boolean::Ptr value = Boolean::fromLexical( abstract );
 
-      element->setIsAbstract(value->as<Boolean>()->value());
-   } else {
-      element->setIsAbstract(false); // the default value
-   }
-
-   if (hasAttribute("default") && hasAttribute("fixed")) {
-      error(QtXmlPatterns::tr("%1 element must not have %2 and %3 attribute together.")
-            .formatArg(formatElement("element"))
-            .formatArg(formatAttribute("default"))
-            .formatArg(formatAttribute("fixed")));
-      return element;
-   }
-
-   if (hasAttribute("default")) {
-      const QString value = readAttribute(QString::fromLatin1("default"));
-      element->setValueConstraint(XsdElement::ValueConstraint::Ptr(new XsdElement::ValueConstraint()));
-      element->valueConstraint()->setVariety(XsdElement::ValueConstraint::Default);
-      element->valueConstraint()->setValue(value);
-
-   } else if (hasAttribute("fixed")) {
-      const QString value = readAttribute(QString::fromLatin1("fixed"));
-      element->setValueConstraint(XsdElement::ValueConstraint::Ptr(new XsdElement::ValueConstraint()));
-      element->valueConstraint()->setVariety(XsdElement::ValueConstraint::Fixed);
-      element->valueConstraint()->setValue(value);
-   }
-
-   element->setDisallowedSubstitutions(readBlockingConstraintAttribute(NamedSchemaComponent::ExtensionConstraint |
-            NamedSchemaComponent::RestrictionConstraint | NamedSchemaComponent::SubstitutionConstraint, "element"));
-   element->setSubstitutionGroupExclusions(readDerivationConstraintAttribute(SchemaType::ExtensionConstraint |
-            SchemaType::RestrictionConstraint, "element"));
-
-   if (hasAttribute("nillable")) {
-      const QString nillable = readAttribute(QString::fromLatin1("nillable"));
-
-      const Boolean::Ptr value = Boolean::fromLexical(nillable);
-      if (value->hasError()) {
-         attributeContentError("nillable", "element", nillable, BuiltinTypes::xsBoolean);
-         return element;
-      }
-
-      element->setIsNillable(value->as<Boolean>()->value());
-   } else {
-      element->setIsNillable(false); // the default value
-   }
-
-   if (hasAttribute("type")) {
-      const QString type = readQNameAttribute(QString::fromLatin1("type"), "element");
-      QXmlName typeName;
-      convertName(type, NamespaceSupport::ElementName, typeName); // translate qualified name into QXmlName
-      m_schemaResolver->addElementType(element, typeName, currentSourceLocation()); // add to resolver
-
-      hasTypeAttribute = true;
-      hasTypeSpecified = true;
-   }
-
-   if (hasAttribute("substitutionGroup")) {
-      QList<QXmlName> elementNames;
-
-      const QString value = readAttribute(QString::fromLatin1("substitutionGroup"));
-      const QStringList substitutionGroups = value.split(QLatin1Char(' '), QStringParser::SkipEmptyParts);
-      if (substitutionGroups.isEmpty()) {
-         attributeContentError("substitutionGroup", "element", value, BuiltinTypes::xsQName);
-         return element;
-      }
-
-      for (int i = 0; i < substitutionGroups.count(); ++i) {
-         const QString value = substitutionGroups.at(i).simplified();
-         if (!XPathHelper::isQName(value)) {
-            attributeContentError("substitutionGroup", "element", value, BuiltinTypes::xsQName);
+        if ( value->hasError() )
+        {
+            attributeContentError( "abstract", "element", abstract, BuiltinTypes::xsBoolean );
             return element;
-         }
+        }
 
-         QXmlName elementName;
-         convertName(value, NamespaceSupport::ElementName, elementName); // translate qualified name into QXmlName
-         elementNames.append(elementName);
-      }
+        element->setIsAbstract( value->as<Boolean>()->value() );
+    }
+    else
+    {
+        element->setIsAbstract( false ); // the default value
+    }
 
-      m_schemaResolver->addSubstitutionGroupAffiliation(element, elementNames, currentSourceLocation()); // add to resolver
+    if ( hasAttribute( "default" ) && hasAttribute( "fixed" ) )
+    {
+        error( QtXmlPatterns::tr( "%1 element must not have %2 and %3 attribute together." )
+               .formatArg( formatElement( "element" ) )
+               .formatArg( formatAttribute( "default" ) )
+               .formatArg( formatAttribute( "fixed" ) ) );
+        return element;
+    }
 
-      hasSubstitutionGroup = true;
-   }
+    if ( hasAttribute( "default" ) )
+    {
+        const QString value = readAttribute( QString::fromLatin1( "default" ) );
+        element->setValueConstraint( XsdElement::ValueConstraint::Ptr( new XsdElement::ValueConstraint() ) );
+        element->valueConstraint()->setVariety( XsdElement::ValueConstraint::Default );
+        element->valueConstraint()->setValue( value );
 
-   validateIdAttribute("element");
+    }
+    else if ( hasAttribute( "fixed" ) )
+    {
+        const QString value = readAttribute( QString::fromLatin1( "fixed" ) );
+        element->setValueConstraint( XsdElement::ValueConstraint::Ptr( new XsdElement::ValueConstraint() ) );
+        element->valueConstraint()->setVariety( XsdElement::ValueConstraint::Fixed );
+        element->valueConstraint()->setValue( value );
+    }
 
-   XsdAlternative::List alternatives;
+    element->setDisallowedSubstitutions( readBlockingConstraintAttribute( NamedSchemaComponent::ExtensionConstraint |
+                                         NamedSchemaComponent::RestrictionConstraint | NamedSchemaComponent::SubstitutionConstraint, "element" ) );
+    element->setSubstitutionGroupExclusions( readDerivationConstraintAttribute( SchemaType::ExtensionConstraint |
+            SchemaType::RestrictionConstraint, "element" ) );
 
-   TagValidationHandler tagValidator(XsdTagScope::GlobalElement, this, NamePool::Ptr(m_namePool));
+    if ( hasAttribute( "nillable" ) )
+    {
+        const QString nillable = readAttribute( QString::fromLatin1( "nillable" ) );
 
-   while (!atEnd()) {
-      readNext();
+        const Boolean::Ptr value = Boolean::fromLexical( nillable );
 
-      if (isEndElement()) {
-         break;
-      }
+        if ( value->hasError() )
+        {
+            attributeContentError( "nillable", "element", nillable, BuiltinTypes::xsBoolean );
+            return element;
+        }
 
-      if (isStartElement()) {
-         const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken(name());
-         const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken(namespaceUri());
+        element->setIsNillable( value->as<Boolean>()->value() );
+    }
+    else
+    {
+        element->setIsNillable( false ); // the default value
+    }
 
-         tagValidator.validate(token);
+    if ( hasAttribute( "type" ) )
+    {
+        const QString type = readQNameAttribute( QString::fromLatin1( "type" ), "element" );
+        QXmlName typeName;
+        convertName( type, NamespaceSupport::ElementName, typeName ); // translate qualified name into QXmlName
+        m_schemaResolver->addElementType( element, typeName, currentSourceLocation() ); // add to resolver
 
-         if (isSchemaTag(XsdSchemaToken::Annotation, token, namespaceToken)) {
-            const XsdAnnotation::Ptr annotation = parseAnnotation();
-            element->addAnnotation(annotation);
-         } else if (isSchemaTag(XsdSchemaToken::SimpleType, token, namespaceToken)) {
-            if (hasTypeAttribute) {
-               error(QtXmlPatterns::tr("%1 element with %2 child element must not have a %3 attribute.")
-                     .formatArg(formatElement("element"))
-                     .formatArg(formatElement("simpleType"))
-                     .formatArg(formatAttribute("type")));
-               return element;
+        hasTypeAttribute = true;
+        hasTypeSpecified = true;
+    }
+
+    if ( hasAttribute( "substitutionGroup" ) )
+    {
+        QList<QXmlName> elementNames;
+
+        const QString value = readAttribute( QString::fromLatin1( "substitutionGroup" ) );
+        const QStringList substitutionGroups = value.split( QLatin1Char( ' ' ), QStringParser::SkipEmptyParts );
+
+        if ( substitutionGroups.isEmpty() )
+        {
+            attributeContentError( "substitutionGroup", "element", value, BuiltinTypes::xsQName );
+            return element;
+        }
+
+        for ( int i = 0; i < substitutionGroups.count(); ++i )
+        {
+            const QString value = substitutionGroups.at( i ).simplified();
+
+            if ( !XPathHelper::isQName( value ) )
+            {
+                attributeContentError( "substitutionGroup", "element", value, BuiltinTypes::xsQName );
+                return element;
             }
 
-            const XsdSimpleType::Ptr type = parseLocalSimpleType();
-            type->setContext(element);
-            element->setType(type);
+            QXmlName elementName;
+            convertName( value, NamespaceSupport::ElementName, elementName ); // translate qualified name into QXmlName
+            elementNames.append( elementName );
+        }
 
-            // add it to list of anonymous types as well
-            addAnonymousType(type);
+        m_schemaResolver->addSubstitutionGroupAffiliation( element, elementNames, currentSourceLocation() ); // add to resolver
 
-            hasTypeSpecified = true;
-         } else if (isSchemaTag(XsdSchemaToken::ComplexType, token, namespaceToken)) {
-            if (hasTypeAttribute) {
-               error(QtXmlPatterns::tr("%1 element with %2 child element must not have a %3 attribute.")
-                     .formatArg(formatElement("element"))
-                     .formatArg(formatElement("complexType"))
-                     .formatArg(formatAttribute("type")));
-               return element;
+        hasSubstitutionGroup = true;
+    }
+
+    validateIdAttribute( "element" );
+
+    XsdAlternative::List alternatives;
+
+    TagValidationHandler tagValidator( XsdTagScope::GlobalElement, this, NamePool::Ptr( m_namePool ) );
+
+    while ( !atEnd() )
+    {
+        readNext();
+
+        if ( isEndElement() )
+        {
+            break;
+        }
+
+        if ( isStartElement() )
+        {
+            const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken( name() );
+            const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken( namespaceUri() );
+
+            tagValidator.validate( token );
+
+            if ( isSchemaTag( XsdSchemaToken::Annotation, token, namespaceToken ) )
+            {
+                const XsdAnnotation::Ptr annotation = parseAnnotation();
+                element->addAnnotation( annotation );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::SimpleType, token, namespaceToken ) )
+            {
+                if ( hasTypeAttribute )
+                {
+                    error( QtXmlPatterns::tr( "%1 element with %2 child element must not have a %3 attribute." )
+                           .formatArg( formatElement( "element" ) )
+                           .formatArg( formatElement( "simpleType" ) )
+                           .formatArg( formatAttribute( "type" ) ) );
+                    return element;
+                }
+
+                const XsdSimpleType::Ptr type = parseLocalSimpleType();
+                type->setContext( element );
+                element->setType( type );
+
+                // add it to list of anonymous types as well
+                addAnonymousType( type );
+
+                hasTypeSpecified = true;
+            }
+            else if ( isSchemaTag( XsdSchemaToken::ComplexType, token, namespaceToken ) )
+            {
+                if ( hasTypeAttribute )
+                {
+                    error( QtXmlPatterns::tr( "%1 element with %2 child element must not have a %3 attribute." )
+                           .formatArg( formatElement( "element" ) )
+                           .formatArg( formatElement( "complexType" ) )
+                           .formatArg( formatAttribute( "type" ) ) );
+                    return element;
+                }
+
+                const XsdComplexType::Ptr type = parseLocalComplexType();
+                type->setContext( element );
+                element->setType( type );
+
+                // add it to list of anonymous types as well
+                addAnonymousType( type );
+
+                hasTypeSpecified = true;
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Alternative, token, namespaceToken ) )
+            {
+                const XsdAlternative::Ptr alternative = parseAlternative();
+                alternatives.append( alternative );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Unique, token, namespaceToken ) )
+            {
+                const XsdIdentityConstraint::Ptr constraint = parseUnique();
+                element->addIdentityConstraint( constraint );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Key, token, namespaceToken ) )
+            {
+                const XsdIdentityConstraint::Ptr constraint = parseKey();
+                element->addIdentityConstraint( constraint );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Keyref, token, namespaceToken ) )
+            {
+                const XsdIdentityConstraint::Ptr constraint = parseKeyRef( element );
+                element->addIdentityConstraint( constraint );
+            }
+            else
+            {
+                parseUnknown();
+            }
+        }
+    }
+
+    tagValidator.finalize();
+
+    if ( !hasTypeSpecified )
+    {
+        if ( hasSubstitutionGroup )
+        {
+            m_schemaResolver->addSubstitutionGroupType( element );
+        }
+        else
+        {
+            element->setType( BuiltinTypes::xsAnyType );
+        }
+    }
+
+    if ( !alternatives.isEmpty() )
+    {
+        element->setTypeTable( XsdElement::TypeTable::Ptr( new XsdElement::TypeTable() ) );
+
+        for ( int i = 0; i < alternatives.count(); ++i )
+        {
+            if ( alternatives.at( i )->test() )
+            {
+                element->typeTable()->addAlternative( alternatives.at( i ) );
             }
 
-            const XsdComplexType::Ptr type = parseLocalComplexType();
-            type->setContext(element);
-            element->setType(type);
+            if ( i == ( alternatives.count() - 1 ) ) // the final one
+            {
+                if ( !alternatives.at( i )->test() )
+                {
+                    element->typeTable()->setDefaultTypeDefinition( alternatives.at( i ) );
+                }
+                else
+                {
+                    const XsdAlternative::Ptr alternative( new XsdAlternative() );
 
-            // add it to list of anonymous types as well
-            addAnonymousType(type);
+                    if ( element->type() )
+                    {
+                        alternative->setType( element->type() );
+                    }
+                    else
+                    {
+                        m_schemaResolver->addAlternativeType( alternative, element ); // add to resolver
+                    }
 
-            hasTypeSpecified = true;
-         } else if (isSchemaTag(XsdSchemaToken::Alternative, token, namespaceToken)) {
-            const XsdAlternative::Ptr alternative = parseAlternative();
-            alternatives.append(alternative);
-         } else if (isSchemaTag(XsdSchemaToken::Unique, token, namespaceToken)) {
-            const XsdIdentityConstraint::Ptr constraint = parseUnique();
-            element->addIdentityConstraint(constraint);
-         } else if (isSchemaTag(XsdSchemaToken::Key, token, namespaceToken)) {
-            const XsdIdentityConstraint::Ptr constraint = parseKey();
-            element->addIdentityConstraint(constraint);
-         } else if (isSchemaTag(XsdSchemaToken::Keyref, token, namespaceToken)) {
-            const XsdIdentityConstraint::Ptr constraint = parseKeyRef(element);
-            element->addIdentityConstraint(constraint);
-         } else {
-            parseUnknown();
-         }
-      }
-   }
-
-   tagValidator.finalize();
-
-   if (!hasTypeSpecified) {
-      if (hasSubstitutionGroup) {
-         m_schemaResolver->addSubstitutionGroupType(element);
-      } else {
-         element->setType(BuiltinTypes::xsAnyType);
-      }
-   }
-
-   if (!alternatives.isEmpty()) {
-      element->setTypeTable(XsdElement::TypeTable::Ptr(new XsdElement::TypeTable()));
-
-      for (int i = 0; i < alternatives.count(); ++i) {
-         if (alternatives.at(i)->test()) {
-            element->typeTable()->addAlternative(alternatives.at(i));
-         }
-
-         if (i == (alternatives.count() - 1)) { // the final one
-            if (!alternatives.at(i)->test()) {
-               element->typeTable()->setDefaultTypeDefinition(alternatives.at(i));
-            } else {
-               const XsdAlternative::Ptr alternative(new XsdAlternative());
-               if (element->type()) {
-                  alternative->setType(element->type());
-               } else {
-                  m_schemaResolver->addAlternativeType(alternative, element);   // add to resolver
-               }
-
-               element->typeTable()->setDefaultTypeDefinition(alternative);
+                    element->typeTable()->setDefaultTypeDefinition( alternative );
+                }
             }
-         }
-      }
-   }
+        }
+    }
 
-   return element;
+    return element;
 }
 
-XsdTerm::Ptr XsdSchemaParser::parseLocalElement(const XsdParticle::Ptr &particle,
-      const NamedSchemaComponent::Ptr &parent)
+XsdTerm::Ptr XsdSchemaParser::parseLocalElement( const XsdParticle::Ptr &particle,
+        const NamedSchemaComponent::Ptr &parent )
 {
-   const ElementNamespaceHandler namespaceHandler(XsdSchemaToken::Element, this);
+    const ElementNamespaceHandler namespaceHandler( XsdSchemaToken::Element, this );
 
-   validateElement(XsdTagScope::LocalElement);
+    validateElement( XsdTagScope::LocalElement );
 
-   bool hasRefAttribute = false;
-   bool hasTypeAttribute = false;
-   bool hasTypeSpecified = false;
+    bool hasRefAttribute = false;
+    bool hasTypeAttribute = false;
+    bool hasTypeSpecified = false;
 
-   XsdTerm::Ptr term;
-   XsdElement::Ptr element;
+    XsdTerm::Ptr term;
+    XsdElement::Ptr element;
 
-   if (hasAttribute("ref")) {
-      term = XsdReference::Ptr(new XsdReference());
-      hasRefAttribute = true;
-   } else {
-      term = XsdElement::Ptr(new XsdElement());
-      element = term;
-   }
+    if ( hasAttribute( "ref" ) )
+    {
+        term = XsdReference::Ptr( new XsdReference() );
+        hasRefAttribute = true;
+    }
+    else
+    {
+        term = XsdElement::Ptr( new XsdElement() );
+        element = term;
+    }
 
-   if (hasRefAttribute) {
-      if (hasAttribute("name")) {
-         error(QtXmlPatterns::tr("%1 element must not have %2 and %3 attribute together.")
-               .formatArg(formatElement("element"))
-               .formatArg(formatAttribute("ref"))
-               .formatArg(formatAttribute("name")));
-         return term;
-
-      } else if (hasAttribute("block")) {
-         error(QtXmlPatterns::tr("%1 element must not have %2 and %3 attribute together.")
-               .formatArg(formatElement("element"))
-               .formatArg(formatAttribute("ref"))
-               .formatArg(formatAttribute("block")));
-         return term;
-
-      } else if (hasAttribute("nillable")) {
-         error(QtXmlPatterns::tr("%1 element must not have %2 and %3 attribute together.")
-               .formatArg(formatElement("element"))
-               .formatArg(formatAttribute("ref"))
-               .formatArg(formatAttribute("nillable")));
-         return term;
-
-      } else if (hasAttribute("default")) {
-         error(QtXmlPatterns::tr("%1 element must not have %2 and %3 attribute together.")
-               .formatArg(formatElement("element"))
-               .formatArg(formatAttribute("ref"))
-               .formatArg(formatAttribute("default")));
-         return term;
-
-      } else if (hasAttribute("fixed")) {
-         error(QtXmlPatterns::tr("%1 element must not have %2 and %3 attribute together.")
-               .formatArg(formatElement("element"))
-               .formatArg(formatAttribute("ref"))
-               .formatArg(formatAttribute("fixed")));
-         return term;
-
-      } else if (hasAttribute("form")) {
-         error(QtXmlPatterns::tr("%1 element must not have %2 and %3 attribute together.")
-               .formatArg(formatElement("element"))
-               .formatArg(formatAttribute("ref"))
-               .formatArg(formatAttribute("form")));
-         return term;
-
-      } else if (hasAttribute("type")) {
-         error(QtXmlPatterns::tr("%1 element must not have %2 and %3 attribute together.")
-               .formatArg(formatElement("element"))
-               .formatArg(formatAttribute("ref"))
-               .formatArg(formatAttribute("type")));
-         return term;
-      }
-   }
-
-   // parse attributes
-   if (!parseMinMaxConstraint(particle, "element")) {
-      return element;
-   }
-
-   if (! hasAttribute("name") && ! hasAttribute("ref")) {
-      error(QtXmlPatterns::tr("%1 element must have either %2 or %3 attribute.")
-            .formatArg(formatElement("element"))
-            .formatArg(formatAttribute("name"))
-            .formatArg(formatAttribute("ref")));
-      return element;
-   }
-
-   if (hasRefAttribute) {
-      const QString ref = readQNameAttribute(QString::fromLatin1("ref"), "element");
-      QXmlName referenceName;
-      convertName(ref, NamespaceSupport::ElementName, referenceName); // translate qualified name into QXmlName
-
-      const XsdReference::Ptr reference = term;
-      reference->setReferenceName(referenceName);
-      reference->setType(XsdReference::Element);
-      reference->setSourceLocation(currentSourceLocation());
-   } else {
-      element->setScope(XsdElement::Scope::Ptr(new XsdElement::Scope()));
-      element->scope()->setVariety(XsdElement::Scope::Local);
-      element->scope()->setParent(parent);
-
-      if (hasAttribute("name")) {
-         const QString elementName = readNameAttribute("element");
-
-         QXmlName objectName;
-         if (hasAttribute("form")) {
-            const QString value = readAttribute(QString::fromLatin1("form"));
-            if (value != QString::fromLatin1("qualified") && value != QString::fromLatin1("unqualified")) {
-               attributeContentError("form", "element", value);
-               return element;
-            }
-
-            if (value == QString::fromLatin1("qualified")) {
-               objectName = m_namePool->allocateQName(m_targetNamespace, elementName);
-            } else {
-               objectName = m_namePool->allocateQName(QString(), elementName);
-            }
-
-         } else {
-            if (m_elementFormDefault == QString::fromLatin1("qualified")) {
-               objectName = m_namePool->allocateQName(m_targetNamespace, elementName);
-            } else {
-               objectName = m_namePool->allocateQName(QString(), elementName);
-            }
-         }
-
-         element->setName(objectName);
-      }
-
-      if (hasAttribute("nillable")) {
-         const QString nillable = readAttribute(QString::fromLatin1("nillable"));
-
-         const Boolean::Ptr value = Boolean::fromLexical(nillable);
-         if (value->hasError()) {
-            attributeContentError("nillable", "element", nillable, BuiltinTypes::xsBoolean);
+    if ( hasRefAttribute )
+    {
+        if ( hasAttribute( "name" ) )
+        {
+            error( QtXmlPatterns::tr( "%1 element must not have %2 and %3 attribute together." )
+                   .formatArg( formatElement( "element" ) )
+                   .formatArg( formatAttribute( "ref" ) )
+                   .formatArg( formatAttribute( "name" ) ) );
             return term;
-         }
 
-         element->setIsNillable(value->as<Boolean>()->value());
-      } else {
-         element->setIsNillable(false); // the default value
-      }
+        }
+        else if ( hasAttribute( "block" ) )
+        {
+            error( QtXmlPatterns::tr( "%1 element must not have %2 and %3 attribute together." )
+                   .formatArg( formatElement( "element" ) )
+                   .formatArg( formatAttribute( "ref" ) )
+                   .formatArg( formatAttribute( "block" ) ) );
+            return term;
 
-      if (hasAttribute("default") && hasAttribute("fixed")) {
-         error(QtXmlPatterns::tr("%1 element must not have %2 and %3 attribute together.")
-               .formatArg(formatElement("element"))
-               .formatArg(formatAttribute("default"))
-               .formatArg(formatAttribute("fixed")));
-         return element;
-      }
+        }
+        else if ( hasAttribute( "nillable" ) )
+        {
+            error( QtXmlPatterns::tr( "%1 element must not have %2 and %3 attribute together." )
+                   .formatArg( formatElement( "element" ) )
+                   .formatArg( formatAttribute( "ref" ) )
+                   .formatArg( formatAttribute( "nillable" ) ) );
+            return term;
 
-      if (hasAttribute("default")) {
-         const QString value = readAttribute(QString::fromLatin1("default"));
-         element->setValueConstraint(XsdElement::ValueConstraint::Ptr(new XsdElement::ValueConstraint()));
-         element->valueConstraint()->setVariety(XsdElement::ValueConstraint::Default);
-         element->valueConstraint()->setValue(value);
+        }
+        else if ( hasAttribute( "default" ) )
+        {
+            error( QtXmlPatterns::tr( "%1 element must not have %2 and %3 attribute together." )
+                   .formatArg( formatElement( "element" ) )
+                   .formatArg( formatAttribute( "ref" ) )
+                   .formatArg( formatAttribute( "default" ) ) );
+            return term;
 
-      } else if (hasAttribute("fixed")) {
-         const QString value = readAttribute(QString::fromLatin1("fixed"));
-         element->setValueConstraint(XsdElement::ValueConstraint::Ptr(new XsdElement::ValueConstraint()));
-         element->valueConstraint()->setVariety(XsdElement::ValueConstraint::Fixed);
-         element->valueConstraint()->setValue(value);
-      }
+        }
+        else if ( hasAttribute( "fixed" ) )
+        {
+            error( QtXmlPatterns::tr( "%1 element must not have %2 and %3 attribute together." )
+                   .formatArg( formatElement( "element" ) )
+                   .formatArg( formatAttribute( "ref" ) )
+                   .formatArg( formatAttribute( "fixed" ) ) );
+            return term;
 
-      if (hasAttribute("type")) {
-         const QString type = readQNameAttribute(QString::fromLatin1("type"), "element");
-         QXmlName typeName;
-         convertName(type, NamespaceSupport::ElementName, typeName); // translate qualified name into QXmlName
-         m_schemaResolver->addElementType(element, typeName, currentSourceLocation()); // add to resolver
+        }
+        else if ( hasAttribute( "form" ) )
+        {
+            error( QtXmlPatterns::tr( "%1 element must not have %2 and %3 attribute together." )
+                   .formatArg( formatElement( "element" ) )
+                   .formatArg( formatAttribute( "ref" ) )
+                   .formatArg( formatAttribute( "form" ) ) );
+            return term;
 
-         hasTypeAttribute = true;
-         hasTypeSpecified = true;
-      }
+        }
+        else if ( hasAttribute( "type" ) )
+        {
+            error( QtXmlPatterns::tr( "%1 element must not have %2 and %3 attribute together." )
+                   .formatArg( formatElement( "element" ) )
+                   .formatArg( formatAttribute( "ref" ) )
+                   .formatArg( formatAttribute( "type" ) ) );
+            return term;
+        }
+    }
 
-      element->setDisallowedSubstitutions(readBlockingConstraintAttribute(NamedSchemaComponent::ExtensionConstraint |
-                                          NamedSchemaComponent::RestrictionConstraint | NamedSchemaComponent::SubstitutionConstraint, "element"));
-   }
+    // parse attributes
+    if ( !parseMinMaxConstraint( particle, "element" ) )
+    {
+        return element;
+    }
 
-   validateIdAttribute("element");
+    if ( ! hasAttribute( "name" ) && ! hasAttribute( "ref" ) )
+    {
+        error( QtXmlPatterns::tr( "%1 element must have either %2 or %3 attribute." )
+               .formatArg( formatElement( "element" ) )
+               .formatArg( formatAttribute( "name" ) )
+               .formatArg( formatAttribute( "ref" ) ) );
+        return element;
+    }
 
-   XsdAlternative::List alternatives;
+    if ( hasRefAttribute )
+    {
+        const QString ref = readQNameAttribute( QString::fromLatin1( "ref" ), "element" );
+        QXmlName referenceName;
+        convertName( ref, NamespaceSupport::ElementName, referenceName ); // translate qualified name into QXmlName
 
-   TagValidationHandler tagValidator(XsdTagScope::LocalElement, this, NamePool::Ptr(m_namePool));
+        const XsdReference::Ptr reference = term;
+        reference->setReferenceName( referenceName );
+        reference->setType( XsdReference::Element );
+        reference->setSourceLocation( currentSourceLocation() );
+    }
+    else
+    {
+        element->setScope( XsdElement::Scope::Ptr( new XsdElement::Scope() ) );
+        element->scope()->setVariety( XsdElement::Scope::Local );
+        element->scope()->setParent( parent );
 
-   while (!atEnd()) {
-      readNext();
+        if ( hasAttribute( "name" ) )
+        {
+            const QString elementName = readNameAttribute( "element" );
 
-      if (isEndElement()) {
-         break;
-      }
+            QXmlName objectName;
 
-      if (isStartElement()) {
-         const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken(name());
-         const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken(namespaceUri());
+            if ( hasAttribute( "form" ) )
+            {
+                const QString value = readAttribute( QString::fromLatin1( "form" ) );
 
-         tagValidator.validate(token);
+                if ( value != QString::fromLatin1( "qualified" ) && value != QString::fromLatin1( "unqualified" ) )
+                {
+                    attributeContentError( "form", "element", value );
+                    return element;
+                }
 
-         if (isSchemaTag(XsdSchemaToken::Annotation, token, namespaceToken)) {
-            const XsdAnnotation::Ptr annotation = parseAnnotation();
-            term->addAnnotation(annotation);
-         } else if (isSchemaTag(XsdSchemaToken::SimpleType, token, namespaceToken)) {
-            if (hasRefAttribute) {
-               error(QtXmlPatterns::tr("%1 element with %2 child element must not have a %3 attribute.")
-                     .formatArg(formatElement("element"))
-                     .formatArg(formatElement("simpleType"))
-                     .formatArg(formatAttribute("ref")));
-               return term;
-            } else if (hasTypeAttribute) {
-               error(QtXmlPatterns::tr("%1 element with %2 child element must not have a %3 attribute.")
-                     .formatArg(formatElement("element"))
-                     .formatArg(formatElement("simpleType"))
-                     .formatArg(formatAttribute("type")));
-               return term;
+                if ( value == QString::fromLatin1( "qualified" ) )
+                {
+                    objectName = m_namePool->allocateQName( m_targetNamespace, elementName );
+                }
+                else
+                {
+                    objectName = m_namePool->allocateQName( QString(), elementName );
+                }
+
+            }
+            else
+            {
+                if ( m_elementFormDefault == QString::fromLatin1( "qualified" ) )
+                {
+                    objectName = m_namePool->allocateQName( m_targetNamespace, elementName );
+                }
+                else
+                {
+                    objectName = m_namePool->allocateQName( QString(), elementName );
+                }
             }
 
-            const XsdSimpleType::Ptr type = parseLocalSimpleType();
-            type->setContext(element);
-            element->setType(type);
+            element->setName( objectName );
+        }
 
-            // add it to list of anonymous types as well
-            addAnonymousType(type);
+        if ( hasAttribute( "nillable" ) )
+        {
+            const QString nillable = readAttribute( QString::fromLatin1( "nillable" ) );
 
+            const Boolean::Ptr value = Boolean::fromLexical( nillable );
+
+            if ( value->hasError() )
+            {
+                attributeContentError( "nillable", "element", nillable, BuiltinTypes::xsBoolean );
+                return term;
+            }
+
+            element->setIsNillable( value->as<Boolean>()->value() );
+        }
+        else
+        {
+            element->setIsNillable( false ); // the default value
+        }
+
+        if ( hasAttribute( "default" ) && hasAttribute( "fixed" ) )
+        {
+            error( QtXmlPatterns::tr( "%1 element must not have %2 and %3 attribute together." )
+                   .formatArg( formatElement( "element" ) )
+                   .formatArg( formatAttribute( "default" ) )
+                   .formatArg( formatAttribute( "fixed" ) ) );
+            return element;
+        }
+
+        if ( hasAttribute( "default" ) )
+        {
+            const QString value = readAttribute( QString::fromLatin1( "default" ) );
+            element->setValueConstraint( XsdElement::ValueConstraint::Ptr( new XsdElement::ValueConstraint() ) );
+            element->valueConstraint()->setVariety( XsdElement::ValueConstraint::Default );
+            element->valueConstraint()->setValue( value );
+
+        }
+        else if ( hasAttribute( "fixed" ) )
+        {
+            const QString value = readAttribute( QString::fromLatin1( "fixed" ) );
+            element->setValueConstraint( XsdElement::ValueConstraint::Ptr( new XsdElement::ValueConstraint() ) );
+            element->valueConstraint()->setVariety( XsdElement::ValueConstraint::Fixed );
+            element->valueConstraint()->setValue( value );
+        }
+
+        if ( hasAttribute( "type" ) )
+        {
+            const QString type = readQNameAttribute( QString::fromLatin1( "type" ), "element" );
+            QXmlName typeName;
+            convertName( type, NamespaceSupport::ElementName, typeName ); // translate qualified name into QXmlName
+            m_schemaResolver->addElementType( element, typeName, currentSourceLocation() ); // add to resolver
+
+            hasTypeAttribute = true;
             hasTypeSpecified = true;
-         } else if (isSchemaTag(XsdSchemaToken::ComplexType, token, namespaceToken)) {
-            if (hasRefAttribute) {
-               error(QtXmlPatterns::tr("%1 element with %2 child element must not have a %3 attribute.")
-                     .formatArg(formatElement("element"))
-                     .formatArg(formatElement("complexType"))
-                     .formatArg(formatAttribute("ref")));
-               return term;
-            } else if (hasTypeAttribute) {
-               error(QtXmlPatterns::tr("%1 element with %2 child element must not have a %3 attribute.")
-                     .formatArg(formatElement("element"))
-                     .formatArg(formatElement("complexType"))
-                     .formatArg(formatAttribute("type")));
-               return term;
+        }
+
+        element->setDisallowedSubstitutions( readBlockingConstraintAttribute( NamedSchemaComponent::ExtensionConstraint |
+                                             NamedSchemaComponent::RestrictionConstraint | NamedSchemaComponent::SubstitutionConstraint, "element" ) );
+    }
+
+    validateIdAttribute( "element" );
+
+    XsdAlternative::List alternatives;
+
+    TagValidationHandler tagValidator( XsdTagScope::LocalElement, this, NamePool::Ptr( m_namePool ) );
+
+    while ( !atEnd() )
+    {
+        readNext();
+
+        if ( isEndElement() )
+        {
+            break;
+        }
+
+        if ( isStartElement() )
+        {
+            const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken( name() );
+            const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken( namespaceUri() );
+
+            tagValidator.validate( token );
+
+            if ( isSchemaTag( XsdSchemaToken::Annotation, token, namespaceToken ) )
+            {
+                const XsdAnnotation::Ptr annotation = parseAnnotation();
+                term->addAnnotation( annotation );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::SimpleType, token, namespaceToken ) )
+            {
+                if ( hasRefAttribute )
+                {
+                    error( QtXmlPatterns::tr( "%1 element with %2 child element must not have a %3 attribute." )
+                           .formatArg( formatElement( "element" ) )
+                           .formatArg( formatElement( "simpleType" ) )
+                           .formatArg( formatAttribute( "ref" ) ) );
+                    return term;
+                }
+                else if ( hasTypeAttribute )
+                {
+                    error( QtXmlPatterns::tr( "%1 element with %2 child element must not have a %3 attribute." )
+                           .formatArg( formatElement( "element" ) )
+                           .formatArg( formatElement( "simpleType" ) )
+                           .formatArg( formatAttribute( "type" ) ) );
+                    return term;
+                }
+
+                const XsdSimpleType::Ptr type = parseLocalSimpleType();
+                type->setContext( element );
+                element->setType( type );
+
+                // add it to list of anonymous types as well
+                addAnonymousType( type );
+
+                hasTypeSpecified = true;
+            }
+            else if ( isSchemaTag( XsdSchemaToken::ComplexType, token, namespaceToken ) )
+            {
+                if ( hasRefAttribute )
+                {
+                    error( QtXmlPatterns::tr( "%1 element with %2 child element must not have a %3 attribute." )
+                           .formatArg( formatElement( "element" ) )
+                           .formatArg( formatElement( "complexType" ) )
+                           .formatArg( formatAttribute( "ref" ) ) );
+                    return term;
+                }
+                else if ( hasTypeAttribute )
+                {
+                    error( QtXmlPatterns::tr( "%1 element with %2 child element must not have a %3 attribute." )
+                           .formatArg( formatElement( "element" ) )
+                           .formatArg( formatElement( "complexType" ) )
+                           .formatArg( formatAttribute( "type" ) ) );
+                    return term;
+                }
+
+                const XsdComplexType::Ptr type = parseLocalComplexType();
+                type->setContext( element );
+                element->setType( type );
+
+                // add it to list of anonymous types as well
+                addAnonymousType( type );
+
+                hasTypeSpecified = true;
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Alternative, token, namespaceToken ) )
+            {
+                if ( hasRefAttribute )
+                {
+                    error( QtXmlPatterns::tr( "%1 element with %2 child element must not have a %3 attribute." )
+                           .formatArg( formatElement( "element" ) )
+                           .formatArg( formatElement( "alternative" ) )
+                           .formatArg( formatAttribute( "ref" ) ) );
+                    return term;
+                }
+
+                const XsdAlternative::Ptr alternative = parseAlternative();
+                alternatives.append( alternative );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Unique, token, namespaceToken ) )
+            {
+                if ( hasRefAttribute )
+                {
+                    error( QtXmlPatterns::tr( "%1 element with %2 child element must not have a %3 attribute." )
+                           .formatArg( formatElement( "element" ) )
+                           .formatArg( formatElement( "unique" ) )
+                           .formatArg( formatAttribute( "ref" ) ) );
+                    return term;
+                }
+
+                const XsdIdentityConstraint::Ptr constraint = parseUnique();
+                element->addIdentityConstraint( constraint );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Key, token, namespaceToken ) )
+            {
+                if ( hasRefAttribute )
+                {
+                    error( QtXmlPatterns::tr( "%1 element with %2 child element must not have a %3 attribute." )
+                           .formatArg( formatElement( "element" ) )
+                           .formatArg( formatElement( "key" ) )
+                           .formatArg( formatAttribute( "ref" ) ) );
+                    return term;
+                }
+
+                const XsdIdentityConstraint::Ptr constraint = parseKey();
+                element->addIdentityConstraint( constraint );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Keyref, token, namespaceToken ) )
+            {
+                if ( hasRefAttribute )
+                {
+                    error( QtXmlPatterns::tr( "%1 element with %2 child element must not have a %3 attribute." )
+                           .formatArg( formatElement( "element" ) )
+                           .formatArg( formatElement( "keyref" ) )
+                           .formatArg( formatAttribute( "ref" ) ) );
+                    return term;
+                }
+
+                const XsdIdentityConstraint::Ptr constraint = parseKeyRef( element );
+                element->addIdentityConstraint( constraint );
+            }
+            else
+            {
+                parseUnknown();
+            }
+        }
+    }
+
+    tagValidator.finalize();
+
+    if ( !hasTypeSpecified && !hasRefAttribute )
+    {
+        element->setType( BuiltinTypes::xsAnyType );
+    }
+
+    if ( !hasRefAttribute && !alternatives.isEmpty() )
+    {
+        element->setTypeTable( XsdElement::TypeTable::Ptr( new XsdElement::TypeTable() ) );
+
+        for ( int i = 0; i < alternatives.count(); ++i )
+        {
+            if ( alternatives.at( i )->test() )
+            {
+                element->typeTable()->addAlternative( alternatives.at( i ) );
             }
 
-            const XsdComplexType::Ptr type = parseLocalComplexType();
-            type->setContext(element);
-            element->setType(type);
+            if ( i == ( alternatives.count() - 1 ) ) // the final one
+            {
+                if ( !alternatives.at( i )->test() )
+                {
+                    element->typeTable()->setDefaultTypeDefinition( alternatives.at( i ) );
+                }
+                else
+                {
+                    const XsdAlternative::Ptr alternative( new XsdAlternative() );
 
-            // add it to list of anonymous types as well
-            addAnonymousType(type);
+                    if ( element->type() )
+                    {
+                        alternative->setType( element->type() );
+                    }
+                    else
+                    {
+                        m_schemaResolver->addAlternativeType( alternative, element ); // add to resolver
+                    }
 
-            hasTypeSpecified = true;
-         } else if (isSchemaTag(XsdSchemaToken::Alternative, token, namespaceToken)) {
-            if (hasRefAttribute) {
-               error(QtXmlPatterns::tr("%1 element with %2 child element must not have a %3 attribute.")
-                     .formatArg(formatElement("element"))
-                     .formatArg(formatElement("alternative"))
-                     .formatArg(formatAttribute("ref")));
-               return term;
+                    element->typeTable()->setDefaultTypeDefinition( alternative );
+                }
             }
+        }
+    }
 
-            const XsdAlternative::Ptr alternative = parseAlternative();
-            alternatives.append(alternative);
-         } else if (isSchemaTag(XsdSchemaToken::Unique, token, namespaceToken)) {
-            if (hasRefAttribute) {
-               error(QtXmlPatterns::tr("%1 element with %2 child element must not have a %3 attribute.")
-                     .formatArg(formatElement("element"))
-                     .formatArg(formatElement("unique"))
-                     .formatArg(formatAttribute("ref")));
-               return term;
-            }
-
-            const XsdIdentityConstraint::Ptr constraint = parseUnique();
-            element->addIdentityConstraint(constraint);
-         } else if (isSchemaTag(XsdSchemaToken::Key, token, namespaceToken)) {
-            if (hasRefAttribute) {
-               error(QtXmlPatterns::tr("%1 element with %2 child element must not have a %3 attribute.")
-                     .formatArg(formatElement("element"))
-                     .formatArg(formatElement("key"))
-                     .formatArg(formatAttribute("ref")));
-               return term;
-            }
-
-            const XsdIdentityConstraint::Ptr constraint = parseKey();
-            element->addIdentityConstraint(constraint);
-         } else if (isSchemaTag(XsdSchemaToken::Keyref, token, namespaceToken)) {
-            if (hasRefAttribute) {
-               error(QtXmlPatterns::tr("%1 element with %2 child element must not have a %3 attribute.")
-                     .formatArg(formatElement("element"))
-                     .formatArg(formatElement("keyref"))
-                     .formatArg(formatAttribute("ref")));
-               return term;
-            }
-
-            const XsdIdentityConstraint::Ptr constraint = parseKeyRef(element);
-            element->addIdentityConstraint(constraint);
-         } else {
-            parseUnknown();
-         }
-      }
-   }
-
-   tagValidator.finalize();
-
-   if (!hasTypeSpecified && !hasRefAttribute) {
-      element->setType(BuiltinTypes::xsAnyType);
-   }
-
-   if (!hasRefAttribute && !alternatives.isEmpty()) {
-      element->setTypeTable(XsdElement::TypeTable::Ptr(new XsdElement::TypeTable()));
-
-      for (int i = 0; i < alternatives.count(); ++i) {
-         if (alternatives.at(i)->test()) {
-            element->typeTable()->addAlternative(alternatives.at(i));
-         }
-
-         if (i == (alternatives.count() - 1)) { // the final one
-            if (!alternatives.at(i)->test()) {
-               element->typeTable()->setDefaultTypeDefinition(alternatives.at(i));
-            } else {
-               const XsdAlternative::Ptr alternative(new XsdAlternative());
-               if (element->type()) {
-                  alternative->setType(element->type());
-               } else {
-                  m_schemaResolver->addAlternativeType(alternative, element);   // add to resolver
-               }
-
-               element->typeTable()->setDefaultTypeDefinition(alternative);
-            }
-         }
-      }
-   }
-
-   return term;
+    return term;
 }
 
 XsdIdentityConstraint::Ptr XsdSchemaParser::parseUnique()
 {
-   const ElementNamespaceHandler namespaceHandler(XsdSchemaToken::Unique, this);
+    const ElementNamespaceHandler namespaceHandler( XsdSchemaToken::Unique, this );
 
-   validateElement(XsdTagScope::Unique);
+    validateElement( XsdTagScope::Unique );
 
-   const XsdIdentityConstraint::Ptr constraint(new XsdIdentityConstraint());
-   constraint->setCategory(XsdIdentityConstraint::Unique);
+    const XsdIdentityConstraint::Ptr constraint( new XsdIdentityConstraint() );
+    constraint->setCategory( XsdIdentityConstraint::Unique );
 
-   // parse attributes
-   const QXmlName objectName = m_namePool->allocateQName(m_targetNamespace, readNameAttribute("unique"));
-   constraint->setName(objectName);
+    // parse attributes
+    const QXmlName objectName = m_namePool->allocateQName( m_targetNamespace, readNameAttribute( "unique" ) );
+    constraint->setName( objectName );
 
-   validateIdAttribute("unique");
+    validateIdAttribute( "unique" );
 
-   TagValidationHandler tagValidator(XsdTagScope::Unique, this, NamePool::Ptr(m_namePool));
+    TagValidationHandler tagValidator( XsdTagScope::Unique, this, NamePool::Ptr( m_namePool ) );
 
-   while (!atEnd()) {
-      readNext();
+    while ( !atEnd() )
+    {
+        readNext();
 
-      if (isEndElement()) {
-         break;
-      }
+        if ( isEndElement() )
+        {
+            break;
+        }
 
-      if (isStartElement()) {
-         const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken(name());
-         const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken(namespaceUri());
+        if ( isStartElement() )
+        {
+            const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken( name() );
+            const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken( namespaceUri() );
 
-         tagValidator.validate(token);
+            tagValidator.validate( token );
 
-         if (isSchemaTag(XsdSchemaToken::Annotation, token, namespaceToken)) {
-            const XsdAnnotation::Ptr annotation = parseAnnotation();
-            constraint->addAnnotation(annotation);
-         } else if (isSchemaTag(XsdSchemaToken::Selector, token, namespaceToken)) {
-            parseSelector(constraint);
-         } else if (isSchemaTag(XsdSchemaToken::Field, token, namespaceToken)) {
-            parseField(constraint);
-         } else {
-            parseUnknown();
-         }
-      }
-   }
+            if ( isSchemaTag( XsdSchemaToken::Annotation, token, namespaceToken ) )
+            {
+                const XsdAnnotation::Ptr annotation = parseAnnotation();
+                constraint->addAnnotation( annotation );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Selector, token, namespaceToken ) )
+            {
+                parseSelector( constraint );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Field, token, namespaceToken ) )
+            {
+                parseField( constraint );
+            }
+            else
+            {
+                parseUnknown();
+            }
+        }
+    }
 
-   // add constraint to schema for further checking
-   addIdentityConstraint(constraint);
+    // add constraint to schema for further checking
+    addIdentityConstraint( constraint );
 
-   tagValidator.finalize();
+    tagValidator.finalize();
 
-   return constraint;
+    return constraint;
 }
 
 XsdIdentityConstraint::Ptr XsdSchemaParser::parseKey()
 {
-   const ElementNamespaceHandler namespaceHandler(XsdSchemaToken::Key, this);
+    const ElementNamespaceHandler namespaceHandler( XsdSchemaToken::Key, this );
 
-   validateElement(XsdTagScope::Key);
+    validateElement( XsdTagScope::Key );
 
-   const XsdIdentityConstraint::Ptr constraint(new XsdIdentityConstraint());
-   constraint->setCategory(XsdIdentityConstraint::Key);
+    const XsdIdentityConstraint::Ptr constraint( new XsdIdentityConstraint() );
+    constraint->setCategory( XsdIdentityConstraint::Key );
 
-   // parse attributes
-   const QXmlName objectName = m_namePool->allocateQName(m_targetNamespace, readNameAttribute("key"));
-   constraint->setName(objectName);
+    // parse attributes
+    const QXmlName objectName = m_namePool->allocateQName( m_targetNamespace, readNameAttribute( "key" ) );
+    constraint->setName( objectName );
 
-   validateIdAttribute("key");
+    validateIdAttribute( "key" );
 
-   TagValidationHandler tagValidator(XsdTagScope::Key, this, NamePool::Ptr(m_namePool));
+    TagValidationHandler tagValidator( XsdTagScope::Key, this, NamePool::Ptr( m_namePool ) );
 
-   while (!atEnd()) {
-      readNext();
+    while ( !atEnd() )
+    {
+        readNext();
 
-      if (isEndElement()) {
-         break;
-      }
+        if ( isEndElement() )
+        {
+            break;
+        }
 
-      if (isStartElement()) {
-         const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken(name());
-         const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken(namespaceUri());
+        if ( isStartElement() )
+        {
+            const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken( name() );
+            const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken( namespaceUri() );
 
-         tagValidator.validate(token);
+            tagValidator.validate( token );
 
-         if (isSchemaTag(XsdSchemaToken::Annotation, token, namespaceToken)) {
-            const XsdAnnotation::Ptr annotation = parseAnnotation();
-            constraint->addAnnotation(annotation);
-         } else if (isSchemaTag(XsdSchemaToken::Selector, token, namespaceToken)) {
-            parseSelector(constraint);
-         } else if (isSchemaTag(XsdSchemaToken::Field, token, namespaceToken)) {
-            parseField(constraint);
-         } else {
-            parseUnknown();
-         }
-      }
-   }
+            if ( isSchemaTag( XsdSchemaToken::Annotation, token, namespaceToken ) )
+            {
+                const XsdAnnotation::Ptr annotation = parseAnnotation();
+                constraint->addAnnotation( annotation );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Selector, token, namespaceToken ) )
+            {
+                parseSelector( constraint );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Field, token, namespaceToken ) )
+            {
+                parseField( constraint );
+            }
+            else
+            {
+                parseUnknown();
+            }
+        }
+    }
 
-   // add constraint to schema for further checking
-   addIdentityConstraint(constraint);
+    // add constraint to schema for further checking
+    addIdentityConstraint( constraint );
 
-   tagValidator.finalize();
+    tagValidator.finalize();
 
-   return constraint;
+    return constraint;
 }
 
-XsdIdentityConstraint::Ptr XsdSchemaParser::parseKeyRef(const XsdElement::Ptr &element)
+XsdIdentityConstraint::Ptr XsdSchemaParser::parseKeyRef( const XsdElement::Ptr &element )
 {
-   const ElementNamespaceHandler namespaceHandler(XsdSchemaToken::Keyref, this);
+    const ElementNamespaceHandler namespaceHandler( XsdSchemaToken::Keyref, this );
 
-   validateElement(XsdTagScope::KeyRef);
+    validateElement( XsdTagScope::KeyRef );
 
-   const XsdIdentityConstraint::Ptr constraint(new XsdIdentityConstraint());
-   constraint->setCategory(XsdIdentityConstraint::KeyReference);
+    const XsdIdentityConstraint::Ptr constraint( new XsdIdentityConstraint() );
+    constraint->setCategory( XsdIdentityConstraint::KeyReference );
 
-   // parse attributes
-   const QXmlName objectName = m_namePool->allocateQName(m_targetNamespace, readNameAttribute("keyref"));
-   constraint->setName(objectName);
+    // parse attributes
+    const QXmlName objectName = m_namePool->allocateQName( m_targetNamespace, readNameAttribute( "keyref" ) );
+    constraint->setName( objectName );
 
-   const QString refer = readQNameAttribute(QString::fromLatin1("refer"), "keyref");
-   QXmlName referenceName;
-   convertName(refer, NamespaceSupport::ElementName, referenceName); // translate qualified name into QXmlName
-   m_schemaResolver->addKeyReference(element, constraint, referenceName, currentSourceLocation()); // add to resolver
+    const QString refer = readQNameAttribute( QString::fromLatin1( "refer" ), "keyref" );
+    QXmlName referenceName;
+    convertName( refer, NamespaceSupport::ElementName, referenceName ); // translate qualified name into QXmlName
+    m_schemaResolver->addKeyReference( element, constraint, referenceName, currentSourceLocation() ); // add to resolver
 
-   validateIdAttribute("keyref");
+    validateIdAttribute( "keyref" );
 
-   TagValidationHandler tagValidator(XsdTagScope::KeyRef, this, NamePool::Ptr(m_namePool));
+    TagValidationHandler tagValidator( XsdTagScope::KeyRef, this, NamePool::Ptr( m_namePool ) );
 
-   while (!atEnd()) {
-      readNext();
+    while ( !atEnd() )
+    {
+        readNext();
 
-      if (isEndElement()) {
-         break;
-      }
+        if ( isEndElement() )
+        {
+            break;
+        }
 
-      if (isStartElement()) {
-         const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken(name());
-         const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken(namespaceUri());
+        if ( isStartElement() )
+        {
+            const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken( name() );
+            const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken( namespaceUri() );
 
-         tagValidator.validate(token);
+            tagValidator.validate( token );
 
-         if (isSchemaTag(XsdSchemaToken::Annotation, token, namespaceToken)) {
-            const XsdAnnotation::Ptr annotation = parseAnnotation();
-            constraint->addAnnotation(annotation);
-         } else if (isSchemaTag(XsdSchemaToken::Selector, token, namespaceToken)) {
-            parseSelector(constraint);
-         } else if (isSchemaTag(XsdSchemaToken::Field, token, namespaceToken)) {
-            parseField(constraint);
-         } else {
-            parseUnknown();
-         }
-      }
-   }
+            if ( isSchemaTag( XsdSchemaToken::Annotation, token, namespaceToken ) )
+            {
+                const XsdAnnotation::Ptr annotation = parseAnnotation();
+                constraint->addAnnotation( annotation );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Selector, token, namespaceToken ) )
+            {
+                parseSelector( constraint );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::Field, token, namespaceToken ) )
+            {
+                parseField( constraint );
+            }
+            else
+            {
+                parseUnknown();
+            }
+        }
+    }
 
-   // add constraint to schema for further checking
-   addIdentityConstraint(constraint);
+    // add constraint to schema for further checking
+    addIdentityConstraint( constraint );
 
-   tagValidator.finalize();
+    tagValidator.finalize();
 
-   return constraint;
+    return constraint;
 }
 
-void XsdSchemaParser::parseSelector(const XsdIdentityConstraint::Ptr &ptr)
+void XsdSchemaParser::parseSelector( const XsdIdentityConstraint::Ptr &ptr )
 {
-   const ElementNamespaceHandler namespaceHandler(XsdSchemaToken::Selector, this);
+    const ElementNamespaceHandler namespaceHandler( XsdSchemaToken::Selector, this );
 
-   validateElement(XsdTagScope::Selector);
+    validateElement( XsdTagScope::Selector );
 
-   // parse attributes
-   const XsdXPathExpression::Ptr expression = readXPathExpression("selector");
+    // parse attributes
+    const XsdXPathExpression::Ptr expression = readXPathExpression( "selector" );
 
-   const QString xpath = readXPathAttribute(QString::fromLatin1("xpath"), XPathSelector, "selector");
-   expression->setExpression(xpath);
+    const QString xpath = readXPathAttribute( QString::fromLatin1( "xpath" ), XPathSelector, "selector" );
+    expression->setExpression( xpath );
 
-   ptr->setSelector(expression);
+    ptr->setSelector( expression );
 
-   validateIdAttribute("selector");
+    validateIdAttribute( "selector" );
 
-   TagValidationHandler tagValidator(XsdTagScope::Selector, this, NamePool::Ptr(m_namePool));
+    TagValidationHandler tagValidator( XsdTagScope::Selector, this, NamePool::Ptr( m_namePool ) );
 
-   while (!atEnd()) {
-      readNext();
+    while ( !atEnd() )
+    {
+        readNext();
 
-      if (isEndElement()) {
-         break;
-      }
+        if ( isEndElement() )
+        {
+            break;
+        }
 
-      if (isStartElement()) {
-         const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken(name());
-         const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken(namespaceUri());
+        if ( isStartElement() )
+        {
+            const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken( name() );
+            const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken( namespaceUri() );
 
-         tagValidator.validate(token);
+            tagValidator.validate( token );
 
-         if (isSchemaTag(XsdSchemaToken::Annotation, token, namespaceToken)) {
-            const XsdAnnotation::Ptr annotation = parseAnnotation();
-            expression->addAnnotation(annotation);
-         } else {
-            parseUnknown();
-         }
-      }
-   }
+            if ( isSchemaTag( XsdSchemaToken::Annotation, token, namespaceToken ) )
+            {
+                const XsdAnnotation::Ptr annotation = parseAnnotation();
+                expression->addAnnotation( annotation );
+            }
+            else
+            {
+                parseUnknown();
+            }
+        }
+    }
 
-   tagValidator.finalize();
+    tagValidator.finalize();
 }
 
-void XsdSchemaParser::parseField(const XsdIdentityConstraint::Ptr &ptr)
+void XsdSchemaParser::parseField( const XsdIdentityConstraint::Ptr &ptr )
 {
-   const ElementNamespaceHandler namespaceHandler(XsdSchemaToken::Field, this);
+    const ElementNamespaceHandler namespaceHandler( XsdSchemaToken::Field, this );
 
-   validateElement(XsdTagScope::Field);
+    validateElement( XsdTagScope::Field );
 
-   // parse attributes
-   const XsdXPathExpression::Ptr expression = readXPathExpression("field");
+    // parse attributes
+    const XsdXPathExpression::Ptr expression = readXPathExpression( "field" );
 
-   const QString xpath = readXPathAttribute(QString::fromLatin1("xpath"), XPathField, "field");
-   expression->setExpression(xpath);
+    const QString xpath = readXPathAttribute( QString::fromLatin1( "xpath" ), XPathField, "field" );
+    expression->setExpression( xpath );
 
-   ptr->addField(expression);
+    ptr->addField( expression );
 
-   validateIdAttribute("field");
+    validateIdAttribute( "field" );
 
-   TagValidationHandler tagValidator(XsdTagScope::Field, this, NamePool::Ptr(m_namePool));
+    TagValidationHandler tagValidator( XsdTagScope::Field, this, NamePool::Ptr( m_namePool ) );
 
-   while (!atEnd()) {
-      readNext();
+    while ( !atEnd() )
+    {
+        readNext();
 
-      if (isEndElement()) {
-         break;
-      }
+        if ( isEndElement() )
+        {
+            break;
+        }
 
-      if (isStartElement()) {
-         const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken(name());
-         const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken(namespaceUri());
+        if ( isStartElement() )
+        {
+            const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken( name() );
+            const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken( namespaceUri() );
 
-         tagValidator.validate(token);
+            tagValidator.validate( token );
 
-         if (isSchemaTag(XsdSchemaToken::Annotation, token, namespaceToken)) {
-            const XsdAnnotation::Ptr annotation = parseAnnotation();
-            expression->addAnnotation(annotation);
-         } else {
-            parseUnknown();
-         }
-      }
-   }
+            if ( isSchemaTag( XsdSchemaToken::Annotation, token, namespaceToken ) )
+            {
+                const XsdAnnotation::Ptr annotation = parseAnnotation();
+                expression->addAnnotation( annotation );
+            }
+            else
+            {
+                parseUnknown();
+            }
+        }
+    }
 
-   tagValidator.finalize();
+    tagValidator.finalize();
 }
 
 XsdAlternative::Ptr XsdSchemaParser::parseAlternative()
 {
-   const ElementNamespaceHandler namespaceHandler(XsdSchemaToken::Alternative, this);
+    const ElementNamespaceHandler namespaceHandler( XsdSchemaToken::Alternative, this );
 
-   validateElement(XsdTagScope::Alternative);
+    validateElement( XsdTagScope::Alternative );
 
-   const XsdAlternative::Ptr alternative(new XsdAlternative());
+    const XsdAlternative::Ptr alternative( new XsdAlternative() );
 
-   bool hasTypeSpecified = false;
+    bool hasTypeSpecified = false;
 
-   if (hasAttribute("test")) {
-      const XsdXPathExpression::Ptr expression = readXPathExpression("alternative");
+    if ( hasAttribute( "test" ) )
+    {
+        const XsdXPathExpression::Ptr expression = readXPathExpression( "alternative" );
 
-      const QString test = readXPathAttribute(QString::fromLatin1("test"), XPath20, "alternative");
-      expression->setExpression(test);
+        const QString test = readXPathAttribute( QString::fromLatin1( "test" ), XPath20, "alternative" );
+        expression->setExpression( test );
 
-      alternative->setTest(expression);
-   }
+        alternative->setTest( expression );
+    }
 
-   if (hasAttribute("type")) {
-      const QString type = readQNameAttribute(QString::fromLatin1("type"), "alternative");
-      QXmlName typeName;
-      convertName(type, NamespaceSupport::ElementName, typeName); // translate qualified name into QXmlName
-      m_schemaResolver->addAlternativeType(alternative, typeName, currentSourceLocation()); // add to resolver
+    if ( hasAttribute( "type" ) )
+    {
+        const QString type = readQNameAttribute( QString::fromLatin1( "type" ), "alternative" );
+        QXmlName typeName;
+        convertName( type, NamespaceSupport::ElementName, typeName ); // translate qualified name into QXmlName
+        m_schemaResolver->addAlternativeType( alternative, typeName, currentSourceLocation() ); // add to resolver
 
-      hasTypeSpecified = true;
-   }
+        hasTypeSpecified = true;
+    }
 
-   validateIdAttribute("alternative");
+    validateIdAttribute( "alternative" );
 
-   TagValidationHandler tagValidator(XsdTagScope::Alternative, this, NamePool::Ptr(m_namePool));
+    TagValidationHandler tagValidator( XsdTagScope::Alternative, this, NamePool::Ptr( m_namePool ) );
 
-   while (!atEnd()) {
-      readNext();
+    while ( !atEnd() )
+    {
+        readNext();
 
-      if (isEndElement()) {
-         break;
-      }
+        if ( isEndElement() )
+        {
+            break;
+        }
 
-      if (isStartElement()) {
-         const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken(name());
-         const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken(namespaceUri());
+        if ( isStartElement() )
+        {
+            const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken( name() );
+            const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken( namespaceUri() );
 
-         tagValidator.validate(token);
+            tagValidator.validate( token );
 
-         if (isSchemaTag(XsdSchemaToken::Annotation, token, namespaceToken)) {
-            const XsdAnnotation::Ptr annotation = parseAnnotation();
-            alternative->addAnnotation(annotation);
-         } else if (isSchemaTag(XsdSchemaToken::SimpleType, token, namespaceToken)) {
-            const XsdSimpleType::Ptr type = parseLocalSimpleType();
-            alternative->setType(type);
+            if ( isSchemaTag( XsdSchemaToken::Annotation, token, namespaceToken ) )
+            {
+                const XsdAnnotation::Ptr annotation = parseAnnotation();
+                alternative->addAnnotation( annotation );
+            }
+            else if ( isSchemaTag( XsdSchemaToken::SimpleType, token, namespaceToken ) )
+            {
+                const XsdSimpleType::Ptr type = parseLocalSimpleType();
+                alternative->setType( type );
 
-            // add it to list of anonymous types as well
-            addAnonymousType(type);
+                // add it to list of anonymous types as well
+                addAnonymousType( type );
 
-            hasTypeSpecified = true;
-         } else if (isSchemaTag(XsdSchemaToken::ComplexType, token, namespaceToken)) {
-            const XsdComplexType::Ptr type = parseLocalComplexType();
-            alternative->setType(type);
+                hasTypeSpecified = true;
+            }
+            else if ( isSchemaTag( XsdSchemaToken::ComplexType, token, namespaceToken ) )
+            {
+                const XsdComplexType::Ptr type = parseLocalComplexType();
+                alternative->setType( type );
 
-            // add it to list of anonymous types as well
-            addAnonymousType(type);
+                // add it to list of anonymous types as well
+                addAnonymousType( type );
 
-            hasTypeSpecified = true;
-         } else {
-            parseUnknown();
-         }
-      }
-   }
+                hasTypeSpecified = true;
+            }
+            else
+            {
+                parseUnknown();
+            }
+        }
+    }
 
-   tagValidator.finalize();
+    tagValidator.finalize();
 
-   if (!hasTypeSpecified) {
-      error(QtXmlPatterns::tr("%1 element must have either %2 attribute or %3 or %4 as child element.")
-            .formatArg(formatElement("alternative"))
-            .formatArg(formatAttribute("type"))
-            .formatArg(formatElement("simpleType"))
-            .formatArg(formatElement("complexType")));
-      return alternative;
-   }
+    if ( !hasTypeSpecified )
+    {
+        error( QtXmlPatterns::tr( "%1 element must have either %2 attribute or %3 or %4 as child element." )
+               .formatArg( formatElement( "alternative" ) )
+               .formatArg( formatAttribute( "type" ) )
+               .formatArg( formatElement( "simpleType" ) )
+               .formatArg( formatElement( "complexType" ) ) );
+        return alternative;
+    }
 
-   return alternative;
+    return alternative;
 }
 
 XsdNotation::Ptr XsdSchemaParser::parseNotation()
 {
-   const ElementNamespaceHandler namespaceHandler(XsdSchemaToken::Notation, this);
+    const ElementNamespaceHandler namespaceHandler( XsdSchemaToken::Notation, this );
 
-   validateElement(XsdTagScope::Notation);
+    validateElement( XsdTagScope::Notation );
 
-   const XsdNotation::Ptr notation(new XsdNotation());
+    const XsdNotation::Ptr notation( new XsdNotation() );
 
-   // parse attributes
-   const QXmlName objectName = m_namePool->allocateQName(m_targetNamespace, readNameAttribute("notation"));
-   notation->setName(objectName);
+    // parse attributes
+    const QXmlName objectName = m_namePool->allocateQName( m_targetNamespace, readNameAttribute( "notation" ) );
+    notation->setName( objectName );
 
-   bool hasOptionalAttribute = false;
+    bool hasOptionalAttribute = false;
 
-   if (hasAttribute("public")) {
-      const QString value = readAttribute(QString::fromLatin1("public"));
+    if ( hasAttribute( "public" ) )
+    {
+        const QString value = readAttribute( QString::fromLatin1( "public" ) );
 
-      if (!value.isEmpty()) {
-         const DerivedString<TypeToken>::Ptr publicId = DerivedString<TypeToken>::fromLexical(NamePool::Ptr(m_namePool), value);
-         if (publicId->hasError()) {
-            attributeContentError("public", "notation", value, BuiltinTypes::xsToken);
+        if ( !value.isEmpty() )
+        {
+            const DerivedString<TypeToken>::Ptr publicId = DerivedString<TypeToken>::fromLexical( NamePool::Ptr( m_namePool ), value );
+
+            if ( publicId->hasError() )
+            {
+                attributeContentError( "public", "notation", value, BuiltinTypes::xsToken );
+                return notation;
+            }
+
+            notation->setPublicId( publicId );
+        }
+
+        hasOptionalAttribute = true;
+    }
+
+    if ( hasAttribute( "system" ) )
+    {
+        const QString value = readAttribute( QString::fromLatin1( "system" ) );
+
+        if ( !isValidUri( value ) )
+        {
+            attributeContentError( "system", "notation", value, BuiltinTypes::xsAnyURI );
             return notation;
-         }
-         notation->setPublicId(publicId);
-      }
+        }
 
-      hasOptionalAttribute = true;
-   }
+        if ( !value.isEmpty() )
+        {
+            const AnyURI::Ptr systemId = AnyURI::fromLexical( value );
+            notation->setSystemId( systemId );
+        }
 
-   if (hasAttribute("system")) {
-      const QString value = readAttribute(QString::fromLatin1("system"));
-      if (!isValidUri(value)) {
-         attributeContentError("system", "notation", value, BuiltinTypes::xsAnyURI);
-         return notation;
-      }
+        hasOptionalAttribute = true;
+    }
 
-      if (!value.isEmpty()) {
-         const AnyURI::Ptr systemId = AnyURI::fromLexical(value);
-         notation->setSystemId(systemId);
-      }
+    if ( !hasOptionalAttribute )
+    {
+        error( QtXmlPatterns::tr( "%1 element requires either %2 or %3 attribute." )
+               .formatArg( formatElement( "notation" ) )
+               .formatArg( formatAttribute( "public" ) )
+               .formatArg( formatAttribute( "system" ) ) );
+        return notation;
+    }
 
-      hasOptionalAttribute = true;
-   }
+    validateIdAttribute( "notation" );
 
-   if (!hasOptionalAttribute) {
-      error(QtXmlPatterns::tr("%1 element requires either %2 or %3 attribute.")
-            .formatArg(formatElement("notation"))
-            .formatArg(formatAttribute("public"))
-            .formatArg(formatAttribute("system")));
-      return notation;
-   }
+    TagValidationHandler tagValidator( XsdTagScope::Notation, this, NamePool::Ptr( m_namePool ) );
 
-   validateIdAttribute("notation");
+    while ( !atEnd() )
+    {
+        readNext();
 
-   TagValidationHandler tagValidator(XsdTagScope::Notation, this, NamePool::Ptr(m_namePool));
+        if ( isEndElement() )
+        {
+            break;
+        }
 
-   while (!atEnd()) {
-      readNext();
+        if ( isCharacters() || isEntityReference() )
+        {
+            if ( !text().toString().trimmed().isEmpty() )
+            {
+                error( QtXmlPatterns::tr( "Text or entity references not allowed inside %1 element" ).formatArg( formatElement( "notation." ) ) );
+                return notation;
+            }
+        }
 
-      if (isEndElement()) {
-         break;
-      }
+        if ( isStartElement() )
+        {
+            const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken( name() );
+            const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken( namespaceUri() );
 
-      if (isCharacters() || isEntityReference()) {
-         if (!text().toString().trimmed().isEmpty()) {
-            error(QtXmlPatterns::tr("Text or entity references not allowed inside %1 element").formatArg(formatElement("notation.")));
-            return notation;
-         }
-      }
+            tagValidator.validate( token );
 
-      if (isStartElement()) {
-         const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken(name());
-         const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken(namespaceUri());
+            if ( isSchemaTag( XsdSchemaToken::Annotation, token, namespaceToken ) )
+            {
+                const XsdAnnotation::Ptr annotation = parseAnnotation();
+                notation->addAnnotation( annotation );
+            }
+            else
+            {
+                parseUnknown();
+            }
+        }
+    }
 
-         tagValidator.validate(token);
+    tagValidator.finalize();
 
-         if (isSchemaTag(XsdSchemaToken::Annotation, token, namespaceToken)) {
-            const XsdAnnotation::Ptr annotation = parseAnnotation();
-            notation->addAnnotation(annotation);
-         } else {
-            parseUnknown();
-         }
-      }
-   }
-
-   tagValidator.finalize();
-
-   return notation;
+    return notation;
 }
 
-XsdWildcard::Ptr XsdSchemaParser::parseAny(const XsdParticle::Ptr &particle)
+XsdWildcard::Ptr XsdSchemaParser::parseAny( const XsdParticle::Ptr &particle )
 {
-   const ElementNamespaceHandler namespaceHandler(XsdSchemaToken::Any, this);
+    const ElementNamespaceHandler namespaceHandler( XsdSchemaToken::Any, this );
 
-   validateElement(XsdTagScope::Any);
+    validateElement( XsdTagScope::Any );
 
-   const XsdWildcard::Ptr wildcard(new XsdWildcard());
+    const XsdWildcard::Ptr wildcard( new XsdWildcard() );
 
-   // parse attributes
-   if (!parseMinMaxConstraint(particle, "any")) {
-      return wildcard;
-   }
+    // parse attributes
+    if ( !parseMinMaxConstraint( particle, "any" ) )
+    {
+        return wildcard;
+    }
 
-   if (hasAttribute("namespace")) {
-      const QSet<QString> values = readAttribute(QString::fromLatin1("namespace")).split(QLatin1Char(' '),
-                                   QStringParser::SkipEmptyParts).toSet();
+    if ( hasAttribute( "namespace" ) )
+    {
+        const QSet<QString> values = readAttribute( QString::fromLatin1( "namespace" ) ).split( QLatin1Char( ' ' ),
+                                     QStringParser::SkipEmptyParts ).toSet();
 
-      if ((values.contains(QString::fromLatin1("##any")) || values.contains(QString::fromLatin1("##other"))) &&
-            values.count() != 1) {
-         error(QtXmlPatterns::tr("%1 attribute of %2 element must contain %3, %4 or a list of URIs.")
-               .formatArg(formatAttribute("namespace"))
-               .formatArg(formatElement("any"))
-               .formatArg(formatData("##any"))
-               .formatArg(formatData("##other")));
-         return wildcard;
-      }
+        if ( ( values.contains( QString::fromLatin1( "##any" ) ) || values.contains( QString::fromLatin1( "##other" ) ) ) &&
+                values.count() != 1 )
+        {
+            error( QtXmlPatterns::tr( "%1 attribute of %2 element must contain %3, %4 or a list of URIs." )
+                   .formatArg( formatAttribute( "namespace" ) )
+                   .formatArg( formatElement( "any" ) )
+                   .formatArg( formatData( "##any" ) )
+                   .formatArg( formatData( "##other" ) ) );
+            return wildcard;
+        }
 
-      if (values.contains(QString::fromLatin1("##any"))) {
-         wildcard->namespaceConstraint()->setVariety(XsdWildcard::NamespaceConstraint::Any);
-      } else if (values.contains(QString::fromLatin1("##other"))) {
-         wildcard->namespaceConstraint()->setVariety(XsdWildcard::NamespaceConstraint::Not);
-         if (!m_targetNamespace.isEmpty()) {
-            wildcard->namespaceConstraint()->setNamespaces(QSet<QString>() << m_targetNamespace);
-         } else {
-            wildcard->namespaceConstraint()->setNamespaces(QSet<QString>() << XsdWildcard::absentNamespace());
-         }
-      } else {
-         wildcard->namespaceConstraint()->setVariety(XsdWildcard::NamespaceConstraint::Enumeration);
-         QStringList newValues = values.toList();
+        if ( values.contains( QString::fromLatin1( "##any" ) ) )
+        {
+            wildcard->namespaceConstraint()->setVariety( XsdWildcard::NamespaceConstraint::Any );
+        }
+        else if ( values.contains( QString::fromLatin1( "##other" ) ) )
+        {
+            wildcard->namespaceConstraint()->setVariety( XsdWildcard::NamespaceConstraint::Not );
 
-         // replace the ##targetNamespace entry
-         for (int i = 0; i < newValues.count(); ++i) {
-            if (newValues.at(i) == QString::fromLatin1("##targetNamespace")) {
-               if (!m_targetNamespace.isEmpty()) {
-                  newValues[i] = m_targetNamespace;
-               } else {
-                  newValues[i] = XsdWildcard::absentNamespace();
-               }
-            } else if (newValues.at(i) == QString::fromLatin1("##local")) {
-               newValues[i] = XsdWildcard::absentNamespace();
+            if ( !m_targetNamespace.isEmpty() )
+            {
+                wildcard->namespaceConstraint()->setNamespaces( QSet<QString>() << m_targetNamespace );
             }
-         }
+            else
+            {
+                wildcard->namespaceConstraint()->setNamespaces( QSet<QString>() << XsdWildcard::absentNamespace() );
+            }
+        }
+        else
+        {
+            wildcard->namespaceConstraint()->setVariety( XsdWildcard::NamespaceConstraint::Enumeration );
+            QStringList newValues = values.toList();
 
-         // check for invalid URIs
-         for (int i = 0; i < newValues.count(); ++i) {
-            const QString stringValue = newValues.at(i);
-            if (stringValue == XsdWildcard::absentNamespace()) {
-               continue;
+            // replace the ##targetNamespace entry
+            for ( int i = 0; i < newValues.count(); ++i )
+            {
+                if ( newValues.at( i ) == QString::fromLatin1( "##targetNamespace" ) )
+                {
+                    if ( !m_targetNamespace.isEmpty() )
+                    {
+                        newValues[i] = m_targetNamespace;
+                    }
+                    else
+                    {
+                        newValues[i] = XsdWildcard::absentNamespace();
+                    }
+                }
+                else if ( newValues.at( i ) == QString::fromLatin1( "##local" ) )
+                {
+                    newValues[i] = XsdWildcard::absentNamespace();
+                }
             }
 
-            if (!isValidUri(stringValue)) {
-               attributeContentError("namespace", "any", stringValue, BuiltinTypes::xsAnyURI);
-               return wildcard;
+            // check for invalid URIs
+            for ( int i = 0; i < newValues.count(); ++i )
+            {
+                const QString stringValue = newValues.at( i );
+
+                if ( stringValue == XsdWildcard::absentNamespace() )
+                {
+                    continue;
+                }
+
+                if ( !isValidUri( stringValue ) )
+                {
+                    attributeContentError( "namespace", "any", stringValue, BuiltinTypes::xsAnyURI );
+                    return wildcard;
+                }
             }
-         }
 
-         wildcard->namespaceConstraint()->setNamespaces(newValues.toSet());
-      }
-   } else {
-      wildcard->namespaceConstraint()->setVariety(XsdWildcard::NamespaceConstraint::Any);
-   }
+            wildcard->namespaceConstraint()->setNamespaces( newValues.toSet() );
+        }
+    }
+    else
+    {
+        wildcard->namespaceConstraint()->setVariety( XsdWildcard::NamespaceConstraint::Any );
+    }
 
-   if (hasAttribute("processContents")) {
-      const QString value = readAttribute(QString::fromLatin1("processContents"));
+    if ( hasAttribute( "processContents" ) )
+    {
+        const QString value = readAttribute( QString::fromLatin1( "processContents" ) );
 
-      if (value != QString::fromLatin1("lax") && value != QString::fromLatin1("skip") &&
-            value != QString::fromLatin1("strict")) {
-         attributeContentError("processContents", "any", value);
-         return wildcard;
-      }
+        if ( value != QString::fromLatin1( "lax" ) && value != QString::fromLatin1( "skip" ) &&
+                value != QString::fromLatin1( "strict" ) )
+        {
+            attributeContentError( "processContents", "any", value );
+            return wildcard;
+        }
 
-      if (value == QString::fromLatin1("lax")) {
-         wildcard->setProcessContents(XsdWildcard::Lax);
-      } else if (value == QString::fromLatin1("skip")) {
-         wildcard->setProcessContents(XsdWildcard::Skip);
-      } else if (value == QString::fromLatin1("strict")) {
-         wildcard->setProcessContents(XsdWildcard::Strict);
-      }
-   } else {
-      wildcard->setProcessContents(XsdWildcard::Strict);
-   }
+        if ( value == QString::fromLatin1( "lax" ) )
+        {
+            wildcard->setProcessContents( XsdWildcard::Lax );
+        }
+        else if ( value == QString::fromLatin1( "skip" ) )
+        {
+            wildcard->setProcessContents( XsdWildcard::Skip );
+        }
+        else if ( value == QString::fromLatin1( "strict" ) )
+        {
+            wildcard->setProcessContents( XsdWildcard::Strict );
+        }
+    }
+    else
+    {
+        wildcard->setProcessContents( XsdWildcard::Strict );
+    }
 
-   validateIdAttribute("any");
+    validateIdAttribute( "any" );
 
-   TagValidationHandler tagValidator(XsdTagScope::Any, this, NamePool::Ptr(m_namePool));
+    TagValidationHandler tagValidator( XsdTagScope::Any, this, NamePool::Ptr( m_namePool ) );
 
-   while (!atEnd()) {
-      readNext();
+    while ( !atEnd() )
+    {
+        readNext();
 
-      if (isEndElement()) {
-         break;
-      }
+        if ( isEndElement() )
+        {
+            break;
+        }
 
-      if (isStartElement()) {
-         const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken(name());
-         const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken(namespaceUri());
+        if ( isStartElement() )
+        {
+            const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken( name() );
+            const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken( namespaceUri() );
 
-         tagValidator.validate(token);
+            tagValidator.validate( token );
 
-         if (isSchemaTag(XsdSchemaToken::Annotation, token, namespaceToken)) {
-            const XsdAnnotation::Ptr annotation = parseAnnotation();
-            wildcard->addAnnotation(annotation);
-         } else {
-            parseUnknown();
-         }
-      }
-   }
+            if ( isSchemaTag( XsdSchemaToken::Annotation, token, namespaceToken ) )
+            {
+                const XsdAnnotation::Ptr annotation = parseAnnotation();
+                wildcard->addAnnotation( annotation );
+            }
+            else
+            {
+                parseUnknown();
+            }
+        }
+    }
 
-   tagValidator.finalize();
+    tagValidator.finalize();
 
-   return wildcard;
+    return wildcard;
 }
 
 XsdWildcard::Ptr XsdSchemaParser::parseAnyAttribute()
 {
-   const ElementNamespaceHandler namespaceHandler(XsdSchemaToken::AnyAttribute, this);
+    const ElementNamespaceHandler namespaceHandler( XsdSchemaToken::AnyAttribute, this );
 
-   validateElement(XsdTagScope::AnyAttribute);
+    validateElement( XsdTagScope::AnyAttribute );
 
-   const XsdWildcard::Ptr wildcard(new XsdWildcard());
+    const XsdWildcard::Ptr wildcard( new XsdWildcard() );
 
-   // parse attributes
-   if (hasAttribute("namespace")) {
-      const QSet<QString> values = readAttribute(QString::fromLatin1("namespace")).
-            split(' ', QStringParser::SkipEmptyParts).toSet();
+    // parse attributes
+    if ( hasAttribute( "namespace" ) )
+    {
+        const QSet<QString> values = readAttribute( QString::fromLatin1( "namespace" ) ).
+                                     split( ' ', QStringParser::SkipEmptyParts ).toSet();
 
-      if ((values.contains(QString::fromLatin1("##any")) || values.contains(QString::fromLatin1("##other"))) &&
-            values.count() != 1) {
-         error(QtXmlPatterns::tr("%1 attribute of %2 element must contain %3, %4 or a list of URIs.")
-               .formatArg(formatAttribute("namespace"))
-               .formatArg(formatElement("anyAttribute"))
-               .formatArg(formatData("##any"))
-               .formatArg(formatData("##other")));
-         return wildcard;
-      }
+        if ( ( values.contains( QString::fromLatin1( "##any" ) ) || values.contains( QString::fromLatin1( "##other" ) ) ) &&
+                values.count() != 1 )
+        {
+            error( QtXmlPatterns::tr( "%1 attribute of %2 element must contain %3, %4 or a list of URIs." )
+                   .formatArg( formatAttribute( "namespace" ) )
+                   .formatArg( formatElement( "anyAttribute" ) )
+                   .formatArg( formatData( "##any" ) )
+                   .formatArg( formatData( "##other" ) ) );
+            return wildcard;
+        }
 
-      if (values.contains(QString::fromLatin1("##any"))) {
-         wildcard->namespaceConstraint()->setVariety(XsdWildcard::NamespaceConstraint::Any);
-      } else if (values.contains(QString::fromLatin1("##other"))) {
-         wildcard->namespaceConstraint()->setVariety(XsdWildcard::NamespaceConstraint::Not);
-         if (!m_targetNamespace.isEmpty()) {
-            wildcard->namespaceConstraint()->setNamespaces(QSet<QString>() << m_targetNamespace);
-         } else {
-            wildcard->namespaceConstraint()->setNamespaces(QSet<QString>() << XsdWildcard::absentNamespace());
-         }
-      } else {
-         wildcard->namespaceConstraint()->setVariety(XsdWildcard::NamespaceConstraint::Enumeration);
-         QStringList newValues = values.toList();
+        if ( values.contains( QString::fromLatin1( "##any" ) ) )
+        {
+            wildcard->namespaceConstraint()->setVariety( XsdWildcard::NamespaceConstraint::Any );
+        }
+        else if ( values.contains( QString::fromLatin1( "##other" ) ) )
+        {
+            wildcard->namespaceConstraint()->setVariety( XsdWildcard::NamespaceConstraint::Not );
 
-         // replace the ##targetNamespace entry
-         for (int i = 0; i < newValues.count(); ++i) {
-            if (newValues.at(i) == QString::fromLatin1("##targetNamespace")) {
-               if (!m_targetNamespace.isEmpty()) {
-                  newValues[i] = m_targetNamespace;
-               } else {
-                  newValues[i] = XsdWildcard::absentNamespace();
-               }
-            } else if (newValues.at(i) == QString::fromLatin1("##local")) {
-               newValues[i] = XsdWildcard::absentNamespace();
+            if ( !m_targetNamespace.isEmpty() )
+            {
+                wildcard->namespaceConstraint()->setNamespaces( QSet<QString>() << m_targetNamespace );
             }
-         }
+            else
+            {
+                wildcard->namespaceConstraint()->setNamespaces( QSet<QString>() << XsdWildcard::absentNamespace() );
+            }
+        }
+        else
+        {
+            wildcard->namespaceConstraint()->setVariety( XsdWildcard::NamespaceConstraint::Enumeration );
+            QStringList newValues = values.toList();
 
-         // check for invalid URIs
-         for (int i = 0; i < newValues.count(); ++i) {
-            const QString stringValue = newValues.at(i);
-            if (stringValue == XsdWildcard::absentNamespace()) {
-               continue;
+            // replace the ##targetNamespace entry
+            for ( int i = 0; i < newValues.count(); ++i )
+            {
+                if ( newValues.at( i ) == QString::fromLatin1( "##targetNamespace" ) )
+                {
+                    if ( !m_targetNamespace.isEmpty() )
+                    {
+                        newValues[i] = m_targetNamespace;
+                    }
+                    else
+                    {
+                        newValues[i] = XsdWildcard::absentNamespace();
+                    }
+                }
+                else if ( newValues.at( i ) == QString::fromLatin1( "##local" ) )
+                {
+                    newValues[i] = XsdWildcard::absentNamespace();
+                }
             }
 
-            if (!isValidUri(stringValue)) {
-               attributeContentError("namespace", "anyAttribute", stringValue, BuiltinTypes::xsAnyURI);
-               return wildcard;
+            // check for invalid URIs
+            for ( int i = 0; i < newValues.count(); ++i )
+            {
+                const QString stringValue = newValues.at( i );
+
+                if ( stringValue == XsdWildcard::absentNamespace() )
+                {
+                    continue;
+                }
+
+                if ( !isValidUri( stringValue ) )
+                {
+                    attributeContentError( "namespace", "anyAttribute", stringValue, BuiltinTypes::xsAnyURI );
+                    return wildcard;
+                }
             }
-         }
 
-         wildcard->namespaceConstraint()->setNamespaces(newValues.toSet());
-      }
-   } else {
-      wildcard->namespaceConstraint()->setVariety(XsdWildcard::NamespaceConstraint::Any);
-   }
+            wildcard->namespaceConstraint()->setNamespaces( newValues.toSet() );
+        }
+    }
+    else
+    {
+        wildcard->namespaceConstraint()->setVariety( XsdWildcard::NamespaceConstraint::Any );
+    }
 
-   if (hasAttribute("processContents")) {
-      const QString value = readAttribute(QString::fromLatin1("processContents"));
-      if (value != QString::fromLatin1("lax") &&
-            value != QString::fromLatin1("skip") &&
-            value != QString::fromLatin1("strict")) {
-         attributeContentError("processContents", "anyAttribute", value);
-         return wildcard;
-      }
+    if ( hasAttribute( "processContents" ) )
+    {
+        const QString value = readAttribute( QString::fromLatin1( "processContents" ) );
 
-      if (value == QString::fromLatin1("lax")) {
-         wildcard->setProcessContents(XsdWildcard::Lax);
-      } else if (value == QString::fromLatin1("skip")) {
-         wildcard->setProcessContents(XsdWildcard::Skip);
-      } else if (value == QString::fromLatin1("strict")) {
-         wildcard->setProcessContents(XsdWildcard::Strict);
-      }
-   } else {
-      wildcard->setProcessContents(XsdWildcard::Strict);
-   }
+        if ( value != QString::fromLatin1( "lax" ) &&
+                value != QString::fromLatin1( "skip" ) &&
+                value != QString::fromLatin1( "strict" ) )
+        {
+            attributeContentError( "processContents", "anyAttribute", value );
+            return wildcard;
+        }
 
-   validateIdAttribute("anyAttribute");
+        if ( value == QString::fromLatin1( "lax" ) )
+        {
+            wildcard->setProcessContents( XsdWildcard::Lax );
+        }
+        else if ( value == QString::fromLatin1( "skip" ) )
+        {
+            wildcard->setProcessContents( XsdWildcard::Skip );
+        }
+        else if ( value == QString::fromLatin1( "strict" ) )
+        {
+            wildcard->setProcessContents( XsdWildcard::Strict );
+        }
+    }
+    else
+    {
+        wildcard->setProcessContents( XsdWildcard::Strict );
+    }
 
-   TagValidationHandler tagValidator(XsdTagScope::AnyAttribute, this, NamePool::Ptr(m_namePool));
+    validateIdAttribute( "anyAttribute" );
 
-   while (!atEnd()) {
-      readNext();
+    TagValidationHandler tagValidator( XsdTagScope::AnyAttribute, this, NamePool::Ptr( m_namePool ) );
 
-      if (isEndElement()) {
-         break;
-      }
+    while ( !atEnd() )
+    {
+        readNext();
 
-      if (isStartElement()) {
-         const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken(name());
-         const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken(namespaceUri());
+        if ( isEndElement() )
+        {
+            break;
+        }
 
-         tagValidator.validate(token);
+        if ( isStartElement() )
+        {
+            const XsdSchemaToken::NodeName token = XsdSchemaToken::toToken( name() );
+            const XsdSchemaToken::NodeName namespaceToken = XsdSchemaToken::toToken( namespaceUri() );
 
-         if (isSchemaTag(XsdSchemaToken::Annotation, token, namespaceToken)) {
-            const XsdAnnotation::Ptr annotation = parseAnnotation();
-            wildcard->addAnnotation(annotation);
-         } else {
-            parseUnknown();
-         }
-      }
-   }
+            tagValidator.validate( token );
 
-   tagValidator.finalize();
+            if ( isSchemaTag( XsdSchemaToken::Annotation, token, namespaceToken ) )
+            {
+                const XsdAnnotation::Ptr annotation = parseAnnotation();
+                wildcard->addAnnotation( annotation );
+            }
+            else
+            {
+                parseUnknown();
+            }
+        }
+    }
 
-   return wildcard;
+    tagValidator.finalize();
+
+    return wildcard;
 }
 
 
 void XsdSchemaParser::parseUnknownDocumentation()
 {
-   Q_ASSERT(isStartElement());
-   m_namespaceSupport.pushContext();
-   m_namespaceSupport.setPrefixes(namespaceDeclarations());
+    Q_ASSERT( isStartElement() );
+    m_namespaceSupport.pushContext();
+    m_namespaceSupport.setPrefixes( namespaceDeclarations() );
 
-   while (!atEnd()) {
-      readNext();
+    while ( !atEnd() )
+    {
+        readNext();
 
-      if (isEndElement()) {
-         break;
-      }
+        if ( isEndElement() )
+        {
+            break;
+        }
 
-      if (isStartElement()) {
-         parseUnknownDocumentation();
-      }
-   }
+        if ( isStartElement() )
+        {
+            parseUnknownDocumentation();
+        }
+    }
 
-   m_namespaceSupport.popContext();
+    m_namespaceSupport.popContext();
 }
 
 void XsdSchemaParser::parseUnknown()
 {
-   Q_ASSERT(isStartElement());
-   m_namespaceSupport.pushContext();
-   m_namespaceSupport.setPrefixes(namespaceDeclarations());
+    Q_ASSERT( isStartElement() );
+    m_namespaceSupport.pushContext();
+    m_namespaceSupport.setPrefixes( namespaceDeclarations() );
 
-   error(QtXmlPatterns::tr("%1 element is not allowed in this context.").formatArg(formatElement(name().toString())));
+    error( QtXmlPatterns::tr( "%1 element is not allowed in this context." ).formatArg( formatElement( name().toString() ) ) );
 
-   while (!atEnd()) {
-      readNext();
+    while ( !atEnd() )
+    {
+        readNext();
 
-      if (isEndElement()) {
-         break;
-      }
+        if ( isEndElement() )
+        {
+            break;
+        }
 
-      if (isStartElement()) {
-         parseUnknown();
-      }
-   }
+        if ( isStartElement() )
+        {
+            parseUnknown();
+        }
+    }
 
-   m_namespaceSupport.popContext();
+    m_namespaceSupport.popContext();
 }
 
-bool XsdSchemaParser::parseMinMaxConstraint(const XsdParticle::Ptr &particle, const char *elementName)
+bool XsdSchemaParser::parseMinMaxConstraint( const XsdParticle::Ptr &particle, const char *elementName )
 {
-   if (hasAttribute("minOccurs")) {
-      const QString value = readAttribute(QString::fromLatin1("minOccurs"));
+    if ( hasAttribute( "minOccurs" ) )
+    {
+        const QString value = readAttribute( QString::fromLatin1( "minOccurs" ) );
 
-      DerivedInteger<TypeNonNegativeInteger>::Ptr integer = DerivedInteger<TypeNonNegativeInteger>::fromLexical(NamePool::Ptr(
-               m_namePool), value);
-      if (integer->hasError()) {
-         attributeContentError("minOccurs", elementName, value, BuiltinTypes::xsNonNegativeInteger);
-         return false;
-      } else {
-         particle->setMinimumOccurs(integer->as< DerivedInteger<TypeNonNegativeInteger> >()->storedValue());
-      }
-   } else {
-      particle->setMinimumOccurs(1);
-   }
+        DerivedInteger<TypeNonNegativeInteger>::Ptr integer = DerivedInteger<TypeNonNegativeInteger>::fromLexical( NamePool::Ptr(
+                    m_namePool ), value );
 
-   if (hasAttribute("maxOccurs")) {
-      const QString value = readAttribute(QString::fromLatin1("maxOccurs"));
-
-      if (value == QString::fromLatin1("unbounded")) {
-         particle->setMaximumOccursUnbounded(true);
-      } else {
-         particle->setMaximumOccursUnbounded(false);
-         DerivedInteger<TypeNonNegativeInteger>::Ptr integer = DerivedInteger<TypeNonNegativeInteger>::fromLexical(NamePool::Ptr(
-                  m_namePool), value);
-         if (integer->hasError()) {
-            attributeContentError("maxOccurs", elementName, value, BuiltinTypes::xsNonNegativeInteger);
+        if ( integer->hasError() )
+        {
+            attributeContentError( "minOccurs", elementName, value, BuiltinTypes::xsNonNegativeInteger );
             return false;
-         } else {
-            particle->setMaximumOccurs(integer->as< DerivedInteger<TypeNonNegativeInteger> >()->storedValue());
-         }
-      }
-   } else {
-      particle->setMaximumOccursUnbounded(false);
-      particle->setMaximumOccurs(1);
-   }
+        }
+        else
+        {
+            particle->setMinimumOccurs( integer->as< DerivedInteger<TypeNonNegativeInteger> >()->storedValue() );
+        }
+    }
+    else
+    {
+        particle->setMinimumOccurs( 1 );
+    }
 
-   if (!particle->maximumOccursUnbounded()) {
-      if (particle->maximumOccurs() < particle->minimumOccurs()) {
-         error(QtXmlPatterns::tr("%1 attribute of %2 element has larger value than %3 attribute.")
-               .formatArg(formatAttribute("minOccurs"))
-               .formatArg(formatElement(elementName))
-               .formatArg(formatAttribute("maxOccurs")));
-         return false;
-      }
-   }
+    if ( hasAttribute( "maxOccurs" ) )
+    {
+        const QString value = readAttribute( QString::fromLatin1( "maxOccurs" ) );
 
-   return true;
+        if ( value == QString::fromLatin1( "unbounded" ) )
+        {
+            particle->setMaximumOccursUnbounded( true );
+        }
+        else
+        {
+            particle->setMaximumOccursUnbounded( false );
+            DerivedInteger<TypeNonNegativeInteger>::Ptr integer = DerivedInteger<TypeNonNegativeInteger>::fromLexical( NamePool::Ptr(
+                        m_namePool ), value );
+
+            if ( integer->hasError() )
+            {
+                attributeContentError( "maxOccurs", elementName, value, BuiltinTypes::xsNonNegativeInteger );
+                return false;
+            }
+            else
+            {
+                particle->setMaximumOccurs( integer->as< DerivedInteger<TypeNonNegativeInteger> >()->storedValue() );
+            }
+        }
+    }
+    else
+    {
+        particle->setMaximumOccursUnbounded( false );
+        particle->setMaximumOccurs( 1 );
+    }
+
+    if ( !particle->maximumOccursUnbounded() )
+    {
+        if ( particle->maximumOccurs() < particle->minimumOccurs() )
+        {
+            error( QtXmlPatterns::tr( "%1 attribute of %2 element has larger value than %3 attribute." )
+                   .formatArg( formatAttribute( "minOccurs" ) )
+                   .formatArg( formatElement( elementName ) )
+                   .formatArg( formatAttribute( "maxOccurs" ) ) );
+            return false;
+        }
+    }
+
+    return true;
 }
 
 QSourceLocation XsdSchemaParser::currentSourceLocation() const
 {
-   QSourceLocation location;
-   location.setLine(lineNumber());
-   location.setColumn(columnNumber());
-   location.setUri(m_documentURI);
+    QSourceLocation location;
+    location.setLine( lineNumber() );
+    location.setColumn( columnNumber() );
+    location.setUri( m_documentURI );
 
-   return location;
+    return location;
 }
 
-void XsdSchemaParser::convertName(const QString &qualifiedName, NamespaceSupport::NameType type, QXmlName &name)
+void XsdSchemaParser::convertName( const QString &qualifiedName, NamespaceSupport::NameType type, QXmlName &name )
 {
-   bool result = m_namespaceSupport.processName(qualifiedName, type, name);
-   if (!result) {
-      error(QtXmlPatterns::tr("Prefix of qualified name %1 is not defined.").formatArg(formatKeyword(qualifiedName)));
-   }
+    bool result = m_namespaceSupport.processName( qualifiedName, type, name );
+
+    if ( !result )
+    {
+        error( QtXmlPatterns::tr( "Prefix of qualified name %1 is not defined." ).formatArg( formatKeyword( qualifiedName ) ) );
+    }
 }
 
-QString XsdSchemaParser::readNameAttribute(const char *elementName)
+QString XsdSchemaParser::readNameAttribute( const char *elementName )
 {
-   const QString value = readAttribute(QString::fromLatin1("name")).simplified();
-   if (!QXmlUtils::isNCName(value)) {
-      attributeContentError("name", elementName, value, BuiltinTypes::xsNCName);
-      return QString();
-   } else {
-      return value;
-   }
+    const QString value = readAttribute( QString::fromLatin1( "name" ) ).simplified();
+
+    if ( !QXmlUtils::isNCName( value ) )
+    {
+        attributeContentError( "name", elementName, value, BuiltinTypes::xsNCName );
+        return QString();
+    }
+    else
+    {
+        return value;
+    }
 }
 
-QString XsdSchemaParser::readQNameAttribute(const QString &typeAttribute, const char *elementName)
+QString XsdSchemaParser::readQNameAttribute( const QString &typeAttribute, const char *elementName )
 {
-   const QString value = readAttribute(typeAttribute).simplified();
-   if (! XPathHelper::isQName(value)) {
-      attributeContentError(csPrintable(typeAttribute), elementName, value, BuiltinTypes::xsQName);
-      return QString();
-   } else {
-      return value;
-   }
+    const QString value = readAttribute( typeAttribute ).simplified();
+
+    if ( ! XPathHelper::isQName( value ) )
+    {
+        attributeContentError( csPrintable( typeAttribute ), elementName, value, BuiltinTypes::xsQName );
+        return QString();
+    }
+    else
+    {
+        return value;
+    }
 }
 
-QString XsdSchemaParser::readNamespaceAttribute(const QString &attributeName, const char *elementName)
+QString XsdSchemaParser::readNamespaceAttribute( const QString &attributeName, const char *elementName )
 {
-   const QString value = readAttribute(attributeName);
-   if (value.isEmpty()) {
-      attributeContentError(csPrintable(attributeName), elementName, value, BuiltinTypes::xsAnyURI);
-      return QString();
-   }
+    const QString value = readAttribute( attributeName );
 
-   return value;
+    if ( value.isEmpty() )
+    {
+        attributeContentError( csPrintable( attributeName ), elementName, value, BuiltinTypes::xsAnyURI );
+        return QString();
+    }
+
+    return value;
 }
 
 SchemaType::DerivationConstraints XsdSchemaParser::readDerivationConstraintAttribute(
-   const SchemaType::DerivationConstraints &allowedConstraints, const char *elementName)
+    const SchemaType::DerivationConstraints &allowedConstraints, const char *elementName )
 {
-   // first convert the flags into strings for easier comparison
-   QSet<QString> allowedContent;
-   if (allowedConstraints & SchemaType::RestrictionConstraint) {
-      allowedContent.insert(QString::fromLatin1("restriction"));
-   }
-   if (allowedConstraints & SchemaType::ExtensionConstraint) {
-      allowedContent.insert(QString::fromLatin1("extension"));
-   }
-   if (allowedConstraints & SchemaType::ListConstraint) {
-      allowedContent.insert(QString::fromLatin1("list"));
-   }
-   if (allowedConstraints & SchemaType::UnionConstraint) {
-      allowedContent.insert(QString::fromLatin1("union"));
-   }
+    // first convert the flags into strings for easier comparison
+    QSet<QString> allowedContent;
 
-   // read content from the attribute if available, otherwise use the default definitions from the schema tag
-   QString content;
-   if (hasAttribute("final")) {
-      content = readAttribute(QString::fromLatin1("final"));
+    if ( allowedConstraints & SchemaType::RestrictionConstraint )
+    {
+        allowedContent.insert( QString::fromLatin1( "restriction" ) );
+    }
 
-      // split string into list to validate the content of the attribute
-      const QStringList values = content.split(QLatin1Char(' '), QStringParser::SkipEmptyParts);
-      for (int i = 0; i < values.count(); i++) {
-         const QString value = values.at(i);
-         if (!allowedContent.contains(value) && (value != QString::fromLatin1("#all"))) {
-            attributeContentError("final", elementName, value);
-            return SchemaType::DerivationConstraints();
-         }
+    if ( allowedConstraints & SchemaType::ExtensionConstraint )
+    {
+        allowedContent.insert( QString::fromLatin1( "extension" ) );
+    }
 
-         if ((value == QString::fromLatin1("#all")) && values.count() != 1) {
-            error(QtXmlPatterns::tr("%1 attribute of %2 element must either contain %3 or the other values.")
-                  .formatArg(formatAttribute("final"))
-                  .formatArg(formatElement(elementName))
-                  .formatArg(formatData("#all")));
-            return SchemaType::DerivationConstraints();
-         }
-      }
-   } else {
-      // content of the default value has been validated in parseSchema already
-      content = m_finalDefault;
-   }
+    if ( allowedConstraints & SchemaType::ListConstraint )
+    {
+        allowedContent.insert( QString::fromLatin1( "list" ) );
+    }
 
-   QSet<QString> contentSet = content.split(QLatin1Char(' '), QStringParser::SkipEmptyParts).toSet();
+    if ( allowedConstraints & SchemaType::UnionConstraint )
+    {
+        allowedContent.insert( QString::fromLatin1( "union" ) );
+    }
 
-   // if the '#all' tag is defined, we return all allowed values
-   if (contentSet.contains(QString::fromLatin1("#all"))) {
-      return allowedConstraints;
-   } else { // return the values from content set that intersects with the allowed values
-      contentSet.intersect(allowedContent);
+    // read content from the attribute if available, otherwise use the default definitions from the schema tag
+    QString content;
 
-      SchemaType::DerivationConstraints constraints;
+    if ( hasAttribute( "final" ) )
+    {
+        content = readAttribute( QString::fromLatin1( "final" ) );
 
-      if (contentSet.contains(QString::fromLatin1("restriction"))) {
-         constraints |= SchemaType::RestrictionConstraint;
-      }
-      if (contentSet.contains(QString::fromLatin1("extension"))) {
-         constraints |= SchemaType::ExtensionConstraint;
-      }
-      if (contentSet.contains(QString::fromLatin1("list"))) {
-         constraints |= SchemaType::ListConstraint;
-      }
-      if (contentSet.contains(QString::fromLatin1("union"))) {
-         constraints |= SchemaType::UnionConstraint;
-      }
+        // split string into list to validate the content of the attribute
+        const QStringList values = content.split( QLatin1Char( ' ' ), QStringParser::SkipEmptyParts );
 
-      return constraints;
-   }
+        for ( int i = 0; i < values.count(); i++ )
+        {
+            const QString value = values.at( i );
+
+            if ( !allowedContent.contains( value ) && ( value != QString::fromLatin1( "#all" ) ) )
+            {
+                attributeContentError( "final", elementName, value );
+                return SchemaType::DerivationConstraints();
+            }
+
+            if ( ( value == QString::fromLatin1( "#all" ) ) && values.count() != 1 )
+            {
+                error( QtXmlPatterns::tr( "%1 attribute of %2 element must either contain %3 or the other values." )
+                       .formatArg( formatAttribute( "final" ) )
+                       .formatArg( formatElement( elementName ) )
+                       .formatArg( formatData( "#all" ) ) );
+                return SchemaType::DerivationConstraints();
+            }
+        }
+    }
+    else
+    {
+        // content of the default value has been validated in parseSchema already
+        content = m_finalDefault;
+    }
+
+    QSet<QString> contentSet = content.split( QLatin1Char( ' ' ), QStringParser::SkipEmptyParts ).toSet();
+
+    // if the '#all' tag is defined, we return all allowed values
+    if ( contentSet.contains( QString::fromLatin1( "#all" ) ) )
+    {
+        return allowedConstraints;
+    }
+    else     // return the values from content set that intersects with the allowed values
+    {
+        contentSet.intersect( allowedContent );
+
+        SchemaType::DerivationConstraints constraints;
+
+        if ( contentSet.contains( QString::fromLatin1( "restriction" ) ) )
+        {
+            constraints |= SchemaType::RestrictionConstraint;
+        }
+
+        if ( contentSet.contains( QString::fromLatin1( "extension" ) ) )
+        {
+            constraints |= SchemaType::ExtensionConstraint;
+        }
+
+        if ( contentSet.contains( QString::fromLatin1( "list" ) ) )
+        {
+            constraints |= SchemaType::ListConstraint;
+        }
+
+        if ( contentSet.contains( QString::fromLatin1( "union" ) ) )
+        {
+            constraints |= SchemaType::UnionConstraint;
+        }
+
+        return constraints;
+    }
 }
 
 NamedSchemaComponent::BlockingConstraints XsdSchemaParser::readBlockingConstraintAttribute(
-   const NamedSchemaComponent::BlockingConstraints &allowedConstraints, const char *elementName)
+    const NamedSchemaComponent::BlockingConstraints &allowedConstraints, const char *elementName )
 {
-   // first convert the flags into strings for easier comparison
-   QSet<QString> allowedContent;
-   if (allowedConstraints & NamedSchemaComponent::RestrictionConstraint) {
-      allowedContent.insert(QString::fromLatin1("restriction"));
-   }
-   if (allowedConstraints & NamedSchemaComponent::ExtensionConstraint) {
-      allowedContent.insert(QString::fromLatin1("extension"));
-   }
-   if (allowedConstraints & NamedSchemaComponent::SubstitutionConstraint) {
-      allowedContent.insert(QString::fromLatin1("substitution"));
-   }
+    // first convert the flags into strings for easier comparison
+    QSet<QString> allowedContent;
 
-   // read content from the attribute if available, otherwise use the default definitions from the schema tag
-   QString content;
-   if (hasAttribute("block")) {
-      content = readAttribute(QString::fromLatin1("block"));
+    if ( allowedConstraints & NamedSchemaComponent::RestrictionConstraint )
+    {
+        allowedContent.insert( QString::fromLatin1( "restriction" ) );
+    }
 
-      // split string into list to validate the content of the attribute
-      const QStringList values = content.split(QLatin1Char(' '), QStringParser::SkipEmptyParts);
-      for (int i = 0; i < values.count(); i++) {
-         const QString value = values.at(i);
-         if (!allowedContent.contains(value) && (value != QString::fromLatin1("#all"))) {
-            attributeContentError("block", elementName, value);
-            return NamedSchemaComponent::BlockingConstraints();
-         }
+    if ( allowedConstraints & NamedSchemaComponent::ExtensionConstraint )
+    {
+        allowedContent.insert( QString::fromLatin1( "extension" ) );
+    }
 
-         if ((value == QString::fromLatin1("#all")) && values.count() != 1) {
-            error(QtXmlPatterns::tr("%1 attribute of %2 element must either contain %3 or the other values.")
-                  .formatArg(formatAttribute("block"))
-                  .formatArg(formatElement(elementName))
-                  .formatArg(formatData("#all")));
-            return NamedSchemaComponent::BlockingConstraints();
-         }
-      }
-   } else {
-      // content of the default value has been validated in parseSchema already
-      content = m_blockDefault;
-   }
+    if ( allowedConstraints & NamedSchemaComponent::SubstitutionConstraint )
+    {
+        allowedContent.insert( QString::fromLatin1( "substitution" ) );
+    }
 
-   QSet<QString> contentSet = content.split(QLatin1Char(' '), QStringParser::SkipEmptyParts).toSet();
+    // read content from the attribute if available, otherwise use the default definitions from the schema tag
+    QString content;
 
-   // if the '#all' tag is defined, we return all allowed values
-   if (contentSet.contains(QString::fromLatin1("#all"))) {
-      return allowedConstraints;
-   } else { // return the values from content set that intersects with the allowed values
-      contentSet.intersect(allowedContent);
+    if ( hasAttribute( "block" ) )
+    {
+        content = readAttribute( QString::fromLatin1( "block" ) );
 
-      NamedSchemaComponent::BlockingConstraints constraints;
+        // split string into list to validate the content of the attribute
+        const QStringList values = content.split( QLatin1Char( ' ' ), QStringParser::SkipEmptyParts );
 
-      if (contentSet.contains(QString::fromLatin1("restriction"))) {
-         constraints |= NamedSchemaComponent::RestrictionConstraint;
-      }
-      if (contentSet.contains(QString::fromLatin1("extension"))) {
-         constraints |= NamedSchemaComponent::ExtensionConstraint;
-      }
-      if (contentSet.contains(QString::fromLatin1("substitution"))) {
-         constraints |= NamedSchemaComponent::SubstitutionConstraint;
-      }
+        for ( int i = 0; i < values.count(); i++ )
+        {
+            const QString value = values.at( i );
 
-      return constraints;
-   }
+            if ( !allowedContent.contains( value ) && ( value != QString::fromLatin1( "#all" ) ) )
+            {
+                attributeContentError( "block", elementName, value );
+                return NamedSchemaComponent::BlockingConstraints();
+            }
+
+            if ( ( value == QString::fromLatin1( "#all" ) ) && values.count() != 1 )
+            {
+                error( QtXmlPatterns::tr( "%1 attribute of %2 element must either contain %3 or the other values." )
+                       .formatArg( formatAttribute( "block" ) )
+                       .formatArg( formatElement( elementName ) )
+                       .formatArg( formatData( "#all" ) ) );
+                return NamedSchemaComponent::BlockingConstraints();
+            }
+        }
+    }
+    else
+    {
+        // content of the default value has been validated in parseSchema already
+        content = m_blockDefault;
+    }
+
+    QSet<QString> contentSet = content.split( QLatin1Char( ' ' ), QStringParser::SkipEmptyParts ).toSet();
+
+    // if the '#all' tag is defined, we return all allowed values
+    if ( contentSet.contains( QString::fromLatin1( "#all" ) ) )
+    {
+        return allowedConstraints;
+    }
+    else     // return the values from content set that intersects with the allowed values
+    {
+        contentSet.intersect( allowedContent );
+
+        NamedSchemaComponent::BlockingConstraints constraints;
+
+        if ( contentSet.contains( QString::fromLatin1( "restriction" ) ) )
+        {
+            constraints |= NamedSchemaComponent::RestrictionConstraint;
+        }
+
+        if ( contentSet.contains( QString::fromLatin1( "extension" ) ) )
+        {
+            constraints |= NamedSchemaComponent::ExtensionConstraint;
+        }
+
+        if ( contentSet.contains( QString::fromLatin1( "substitution" ) ) )
+        {
+            constraints |= NamedSchemaComponent::SubstitutionConstraint;
+        }
+
+        return constraints;
+    }
 }
 
-XsdXPathExpression::Ptr XsdSchemaParser::readXPathExpression(const char *elementName)
+XsdXPathExpression::Ptr XsdSchemaParser::readXPathExpression( const char *elementName )
 {
-   const XsdXPathExpression::Ptr expression(new XsdXPathExpression());
+    const XsdXPathExpression::Ptr expression( new XsdXPathExpression() );
 
-   const QList<QXmlName> namespaceBindings = m_namespaceSupport.namespaceBindings();
-   QXmlName emptyName;
-   for (int i = 0; i < namespaceBindings.count(); ++i) {
-      if (namespaceBindings.at(i).prefix() == StandardPrefixes::empty) {
-         emptyName = namespaceBindings.at(i);
-      }
-   }
+    const QList<QXmlName> namespaceBindings = m_namespaceSupport.namespaceBindings();
+    QXmlName emptyName;
 
-   expression->setNamespaceBindings(namespaceBindings);
+    for ( int i = 0; i < namespaceBindings.count(); ++i )
+    {
+        if ( namespaceBindings.at( i ).prefix() == StandardPrefixes::empty )
+        {
+            emptyName = namespaceBindings.at( i );
+        }
+    }
 
-   QString xpathDefaultNamespace;
-   if (hasAttribute("xpathDefaultNamespace")) {
-      xpathDefaultNamespace = readAttribute(QString::fromLatin1("xpathDefaultNamespace"));
+    expression->setNamespaceBindings( namespaceBindings );
 
-      if (xpathDefaultNamespace != QString::fromLatin1("##defaultNamespace") &&
-            xpathDefaultNamespace != QString::fromLatin1("##targetNamespace") &&
-            xpathDefaultNamespace != QString::fromLatin1("##local")) {
-         if (!isValidUri(xpathDefaultNamespace)) {
-            attributeContentError("xpathDefaultNamespace", elementName, xpathDefaultNamespace, BuiltinTypes::xsAnyURI);
+    QString xpathDefaultNamespace;
+
+    if ( hasAttribute( "xpathDefaultNamespace" ) )
+    {
+        xpathDefaultNamespace = readAttribute( QString::fromLatin1( "xpathDefaultNamespace" ) );
+
+        if ( xpathDefaultNamespace != QString::fromLatin1( "##defaultNamespace" ) &&
+                xpathDefaultNamespace != QString::fromLatin1( "##targetNamespace" ) &&
+                xpathDefaultNamespace != QString::fromLatin1( "##local" ) )
+        {
+            if ( !isValidUri( xpathDefaultNamespace ) )
+            {
+                attributeContentError( "xpathDefaultNamespace", elementName, xpathDefaultNamespace, BuiltinTypes::xsAnyURI );
+                return expression;
+            }
+        }
+    }
+    else
+    {
+        xpathDefaultNamespace = m_xpathDefaultNamespace;
+    }
+
+    AnyURI::Ptr namespaceURI;
+
+    if ( xpathDefaultNamespace == QString::fromLatin1( "##defaultNamespace" ) )
+    {
+        if ( !emptyName.isNull() )
+        {
+            namespaceURI = AnyURI::fromLexical( m_namePool->stringForNamespace( emptyName.namespaceURI() ) );
+        }
+    }
+    else if ( xpathDefaultNamespace == QString::fromLatin1( "##targetNamespace" ) )
+    {
+        if ( !m_targetNamespace.isEmpty() )
+        {
+            namespaceURI = AnyURI::fromLexical( m_targetNamespace );
+        }
+
+    }
+    else if ( xpathDefaultNamespace == QString::fromLatin1( "##local" ) )
+    {
+        // it is absent
+    }
+    else
+    {
+        namespaceURI = AnyURI::fromLexical( xpathDefaultNamespace );
+    }
+
+    if ( namespaceURI )
+    {
+        if ( namespaceURI->hasError() )
+        {
+            attributeContentError( "xpathDefaultNamespace", elementName, xpathDefaultNamespace, BuiltinTypes::xsAnyURI );
             return expression;
-         }
-      }
-   } else {
-      xpathDefaultNamespace = m_xpathDefaultNamespace;
-   }
+        }
 
-   AnyURI::Ptr namespaceURI;
-   if (xpathDefaultNamespace == QString::fromLatin1("##defaultNamespace")) {
-      if (!emptyName.isNull()) {
-         namespaceURI = AnyURI::fromLexical(m_namePool->stringForNamespace(emptyName.namespaceURI()));
-      }
-   } else if (xpathDefaultNamespace == QString::fromLatin1("##targetNamespace")) {
-      if (!m_targetNamespace.isEmpty()) {
-         namespaceURI = AnyURI::fromLexical(m_targetNamespace);
-      }
+        expression->setDefaultNamespace( namespaceURI );
+    }
 
-   } else if (xpathDefaultNamespace == QString::fromLatin1("##local")) {
-      // it is absent
-   } else {
-      namespaceURI = AnyURI::fromLexical(xpathDefaultNamespace);
-   }
-   if (namespaceURI) {
-      if (namespaceURI->hasError()) {
-         attributeContentError("xpathDefaultNamespace", elementName, xpathDefaultNamespace, BuiltinTypes::xsAnyURI);
-         return expression;
-      }
+    //TODO: read the base uri if qmaintaining reader support it
 
-      expression->setDefaultNamespace(namespaceURI);
-   }
-
-   //TODO: read the base uri if qmaintaining reader support it
-
-   return expression;
+    return expression;
 }
 
-QString XsdSchemaParser::readXPathAttribute(const QString &attributeName, XPathType type,  const char *elementName)
+QString XsdSchemaParser::readXPathAttribute( const QString &attributeName, XPathType type,  const char *elementName )
 {
-   const QString value = readAttribute(attributeName);
+    const QString value = readAttribute( attributeName );
 
-   if (value.isEmpty() || value.startsWith('/')) {
-      attributeContentError(csPrintable(attributeName), elementName, value);
-      return QString();
-   }
+    if ( value.isEmpty() || value.startsWith( '/' ) )
+    {
+        attributeContentError( csPrintable( attributeName ), elementName, value );
+        return QString();
+    }
 
-   QXmlNamePool namePool(NamePool::Ptr(m_namePool).data());
+    QXmlNamePool namePool( NamePool::Ptr( m_namePool ).data() );
 
-   QXmlQuery::QueryLanguage language = QXmlQuery::XPath20;
-   switch (type) {
-      case XPath20:
-         language = QXmlQuery::XPath20;
-         break;
-      case XPathSelector:
-         language = QXmlQuery::XmlSchema11IdentityConstraintSelector;
-         break;
-      case XPathField:
-         language = QXmlQuery::XmlSchema11IdentityConstraintField;
-         break;
-   };
+    QXmlQuery::QueryLanguage language = QXmlQuery::XPath20;
 
-   QXmlQuery query(language, namePool);
-   QXmlQueryPrivate *queryPrivate = query.d;
+    switch ( type )
+    {
+        case XPath20:
+            language = QXmlQuery::XPath20;
+            break;
 
-   const QList<QXmlName> namespaceBindings = m_namespaceSupport.namespaceBindings();
-   for (int i = 0; i < namespaceBindings.count(); ++i) {
-      if (namespaceBindings.at(i).prefix() != StandardPrefixes::empty) {
-         queryPrivate->addAdditionalNamespaceBinding(namespaceBindings.at(i));
-      }
-   }
+        case XPathSelector:
+            language = QXmlQuery::XmlSchema11IdentityConstraintSelector;
+            break;
 
-   query.setQuery(value, m_documentURI);
-   if (!query.isValid()) {
-      attributeContentError(csPrintable(attributeName), elementName, value);
-      return QString();
-   }
+        case XPathField:
+            language = QXmlQuery::XmlSchema11IdentityConstraintField;
+            break;
+    };
 
-   return value;
+    QXmlQuery query( language, namePool );
+
+    QXmlQueryPrivate *queryPrivate = query.d;
+
+    const QList<QXmlName> namespaceBindings = m_namespaceSupport.namespaceBindings();
+
+    for ( int i = 0; i < namespaceBindings.count(); ++i )
+    {
+        if ( namespaceBindings.at( i ).prefix() != StandardPrefixes::empty )
+        {
+            queryPrivate->addAdditionalNamespaceBinding( namespaceBindings.at( i ) );
+        }
+    }
+
+    query.setQuery( value, m_documentURI );
+
+    if ( !query.isValid() )
+    {
+        attributeContentError( csPrintable( attributeName ), elementName, value );
+        return QString();
+    }
+
+    return value;
 }
 
-void XsdSchemaParser::validateIdAttribute(const char *elementName)
+void XsdSchemaParser::validateIdAttribute( const char *elementName )
 {
-   if (hasAttribute("id")) {
-      const QString value = readAttribute(QString::fromLatin1("id"));
-      DerivedString<TypeID>::Ptr id = DerivedString<TypeID>::fromLexical(NamePool::Ptr(m_namePool), value);
+    if ( hasAttribute( "id" ) )
+    {
+        const QString value = readAttribute( QString::fromLatin1( "id" ) );
+        DerivedString<TypeID>::Ptr id = DerivedString<TypeID>::fromLexical( NamePool::Ptr( m_namePool ), value );
 
-      if (id->hasError()) {
-         attributeContentError("id", elementName, value, BuiltinTypes::xsID);
-      } else {
-         if (m_idCache->hasId(value)) {
-            error(QtXmlPatterns::tr("Component with ID %1 has been defined previously.").formatArg(formatData(value)));
-         } else {
-            m_idCache->addId(value);
-         }
-      }
-   }
+        if ( id->hasError() )
+        {
+            attributeContentError( "id", elementName, value, BuiltinTypes::xsID );
+        }
+        else
+        {
+            if ( m_idCache->hasId( value ) )
+            {
+                error( QtXmlPatterns::tr( "Component with ID %1 has been defined previously." ).formatArg( formatData( value ) ) );
+            }
+            else
+            {
+                m_idCache->addId( value );
+            }
+        }
+    }
 }
 
-bool XsdSchemaParser::isSchemaTag(XsdSchemaToken::NodeName tag, XsdSchemaToken::NodeName token,
-                                  XsdSchemaToken::NodeName namespaceToken) const
+bool XsdSchemaParser::isSchemaTag( XsdSchemaToken::NodeName tag, XsdSchemaToken::NodeName token,
+                                   XsdSchemaToken::NodeName namespaceToken ) const
 {
-   return ((tag == token) && (namespaceToken == XsdSchemaToken::XML_NS_SCHEMA_URI));
+    return ( ( tag == token ) && ( namespaceToken == XsdSchemaToken::XML_NS_SCHEMA_URI ) );
 }
 
-void XsdSchemaParser::addElement(const XsdElement::Ptr &element)
+void XsdSchemaParser::addElement( const XsdElement::Ptr &element )
 {
-   const QXmlName objectName = element->name(NamePool::Ptr(m_namePool));
-   if (m_schema->element(objectName)) {
-      error(QtXmlPatterns::tr("Element %1 already defined.").formatArg(formatElement(m_namePool->displayName(objectName))));
-   } else {
-      m_schema->addElement(element);
-      m_componentLocationHash.insert(element, currentSourceLocation());
-   }
+    const QXmlName objectName = element->name( NamePool::Ptr( m_namePool ) );
+
+    if ( m_schema->element( objectName ) )
+    {
+        error( QtXmlPatterns::tr( "Element %1 already defined." ).formatArg( formatElement( m_namePool->displayName( objectName ) ) ) );
+    }
+    else
+    {
+        m_schema->addElement( element );
+        m_componentLocationHash.insert( element, currentSourceLocation() );
+    }
 }
 
-void XsdSchemaParser::addAttribute(const XsdAttribute::Ptr &attribute)
+void XsdSchemaParser::addAttribute( const XsdAttribute::Ptr &attribute )
 {
-   const QXmlName objectName = attribute->name(NamePool::Ptr(m_namePool));
-   if (m_schema->attribute(objectName)) {
-      error(QtXmlPatterns::tr("Attribute %1 already defined.").formatArg(formatAttribute(m_namePool->displayName(objectName))));
-   } else {
-      m_schema->addAttribute(attribute);
-      m_componentLocationHash.insert(attribute, currentSourceLocation());
-   }
+    const QXmlName objectName = attribute->name( NamePool::Ptr( m_namePool ) );
+
+    if ( m_schema->attribute( objectName ) )
+    {
+        error( QtXmlPatterns::tr( "Attribute %1 already defined." ).formatArg( formatAttribute( m_namePool->displayName(
+                    objectName ) ) ) );
+    }
+    else
+    {
+        m_schema->addAttribute( attribute );
+        m_componentLocationHash.insert( attribute, currentSourceLocation() );
+    }
 }
 
-void XsdSchemaParser::addType(const SchemaType::Ptr &type)
+void XsdSchemaParser::addType( const SchemaType::Ptr &type )
 {
-   // we don't import redefinitions of builtin types, that just causes problems
-   if (m_builtinTypeNames.contains(type->name(NamePool::Ptr(m_namePool)))) {
-      return;
-   }
+    // we don't import redefinitions of builtin types, that just causes problems
+    if ( m_builtinTypeNames.contains( type->name( NamePool::Ptr( m_namePool ) ) ) )
+    {
+        return;
+    }
 
-   const QXmlName objectName = type->name(NamePool::Ptr(m_namePool));
-   if (m_schema->type(objectName)) {
-      error(QtXmlPatterns::tr("Type %1 already defined.").formatArg(formatType(NamePool::Ptr(m_namePool), objectName)));
-   } else {
-      m_schema->addType(type);
-      if (type->isSimpleType()) {
-         m_componentLocationHash.insert(XsdSimpleType::Ptr(type), currentSourceLocation());
-      } else {
-         m_componentLocationHash.insert(XsdComplexType::Ptr(type), currentSourceLocation());
-      }
-   }
+    const QXmlName objectName = type->name( NamePool::Ptr( m_namePool ) );
+
+    if ( m_schema->type( objectName ) )
+    {
+        error( QtXmlPatterns::tr( "Type %1 already defined." ).formatArg( formatType( NamePool::Ptr( m_namePool ), objectName ) ) );
+    }
+    else
+    {
+        m_schema->addType( type );
+
+        if ( type->isSimpleType() )
+        {
+            m_componentLocationHash.insert( XsdSimpleType::Ptr( type ), currentSourceLocation() );
+        }
+        else
+        {
+            m_componentLocationHash.insert( XsdComplexType::Ptr( type ), currentSourceLocation() );
+        }
+    }
 }
 
-void XsdSchemaParser::addAnonymousType(const SchemaType::Ptr &type)
+void XsdSchemaParser::addAnonymousType( const SchemaType::Ptr &type )
 {
-   m_schema->addAnonymousType(type);
-   if (type->isSimpleType()) {
-      m_componentLocationHash.insert(XsdSimpleType::Ptr(type), currentSourceLocation());
-   } else {
-      m_componentLocationHash.insert(XsdComplexType::Ptr(type), currentSourceLocation());
-   }
+    m_schema->addAnonymousType( type );
+
+    if ( type->isSimpleType() )
+    {
+        m_componentLocationHash.insert( XsdSimpleType::Ptr( type ), currentSourceLocation() );
+    }
+    else
+    {
+        m_componentLocationHash.insert( XsdComplexType::Ptr( type ), currentSourceLocation() );
+    }
 }
 
-void XsdSchemaParser::addAttributeGroup(const XsdAttributeGroup::Ptr &group)
+void XsdSchemaParser::addAttributeGroup( const XsdAttributeGroup::Ptr &group )
 {
-   const QXmlName objectName = group->name(NamePool::Ptr(m_namePool));
-   if (m_schema->attributeGroup(objectName)) {
-      error(QtXmlPatterns::tr("Attribute group %1 already defined.").formatArg(formatKeyword(NamePool::Ptr(m_namePool), objectName)));
-   } else {
-      m_schema->addAttributeGroup(group);
-      m_componentLocationHash.insert(group, currentSourceLocation());
-   }
+    const QXmlName objectName = group->name( NamePool::Ptr( m_namePool ) );
+
+    if ( m_schema->attributeGroup( objectName ) )
+    {
+        error( QtXmlPatterns::tr( "Attribute group %1 already defined." ).formatArg( formatKeyword( NamePool::Ptr( m_namePool ),
+                objectName ) ) );
+    }
+    else
+    {
+        m_schema->addAttributeGroup( group );
+        m_componentLocationHash.insert( group, currentSourceLocation() );
+    }
 }
 
-void XsdSchemaParser::addElementGroup(const XsdModelGroup::Ptr &group)
+void XsdSchemaParser::addElementGroup( const XsdModelGroup::Ptr &group )
 {
-   const QXmlName objectName = group->name(NamePool::Ptr(m_namePool));
-   if (m_schema->elementGroup(objectName)) {
-      error(QtXmlPatterns::tr("Element group %1 already defined.").formatArg(formatKeyword(NamePool::Ptr(m_namePool), objectName)));
-   } else {
-      m_schema->addElementGroup(group);
-      m_componentLocationHash.insert(group, currentSourceLocation());
-   }
+    const QXmlName objectName = group->name( NamePool::Ptr( m_namePool ) );
+
+    if ( m_schema->elementGroup( objectName ) )
+    {
+        error( QtXmlPatterns::tr( "Element group %1 already defined." ).formatArg( formatKeyword( NamePool::Ptr( m_namePool ),
+                objectName ) ) );
+    }
+    else
+    {
+        m_schema->addElementGroup( group );
+        m_componentLocationHash.insert( group, currentSourceLocation() );
+    }
 }
 
-void XsdSchemaParser::addNotation(const XsdNotation::Ptr &notation)
+void XsdSchemaParser::addNotation( const XsdNotation::Ptr &notation )
 {
-   const QXmlName objectName = notation->name(NamePool::Ptr(m_namePool));
-   if (m_schema->notation(objectName)) {
-      error(QtXmlPatterns::tr("Notation %1 already defined.").formatArg(formatKeyword(NamePool::Ptr(m_namePool), objectName)));
-   } else {
-      m_schema->addNotation(notation);
-      m_componentLocationHash.insert(notation, currentSourceLocation());
-   }
+    const QXmlName objectName = notation->name( NamePool::Ptr( m_namePool ) );
+
+    if ( m_schema->notation( objectName ) )
+    {
+        error( QtXmlPatterns::tr( "Notation %1 already defined." ).formatArg( formatKeyword( NamePool::Ptr( m_namePool ),
+                objectName ) ) );
+    }
+    else
+    {
+        m_schema->addNotation( notation );
+        m_componentLocationHash.insert( notation, currentSourceLocation() );
+    }
 }
 
-void XsdSchemaParser::addIdentityConstraint(const XsdIdentityConstraint::Ptr &constraint)
+void XsdSchemaParser::addIdentityConstraint( const XsdIdentityConstraint::Ptr &constraint )
 {
-   const QXmlName objectName = constraint->name(NamePool::Ptr(m_namePool));
-   if (m_schema->identityConstraint(objectName)) {
-      error(QtXmlPatterns::tr("Identity constraint %1 already defined.").formatArg(formatKeyword(NamePool::Ptr(m_namePool),
-            objectName)));
-   } else {
-      m_schema->addIdentityConstraint(constraint);
-      m_componentLocationHash.insert(constraint, currentSourceLocation());
-   }
+    const QXmlName objectName = constraint->name( NamePool::Ptr( m_namePool ) );
+
+    if ( m_schema->identityConstraint( objectName ) )
+    {
+        error( QtXmlPatterns::tr( "Identity constraint %1 already defined." ).formatArg( formatKeyword( NamePool::Ptr( m_namePool ),
+                objectName ) ) );
+    }
+    else
+    {
+        m_schema->addIdentityConstraint( constraint );
+        m_componentLocationHash.insert( constraint, currentSourceLocation() );
+    }
 }
 
-void XsdSchemaParser::addFacet(const XsdFacet::Ptr &facet, XsdFacet::Hash &facets, const SchemaType::Ptr &type)
+void XsdSchemaParser::addFacet( const XsdFacet::Ptr &facet, XsdFacet::Hash &facets, const SchemaType::Ptr &type )
 {
-   // @see http://www.w3.org/TR/xmlschema-2/#src-single-facet-value
-   if (facets.contains(facet->type())) {
-      error(QtXmlPatterns::tr("Duplicated facets in simple type %1.").formatArg(formatType(NamePool::Ptr(m_namePool), type)));
-      return;
-   }
+    // @see http://www.w3.org/TR/xmlschema-2/#src-single-facet-value
+    if ( facets.contains( facet->type() ) )
+    {
+        error( QtXmlPatterns::tr( "Duplicated facets in simple type %1." ).formatArg( formatType( NamePool::Ptr( m_namePool ), type ) ) );
+        return;
+    }
 
-   facets.insert(facet->type(), facet);
+    facets.insert( facet->type(), facet );
 }

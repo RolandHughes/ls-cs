@@ -31,26 +31,46 @@
 
 #include "FloatPoint3D.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 // Cone gain is defined according to the OpenAL specification
 
-class ConeEffect {
+class ConeEffect
+{
 public:
     ConeEffect();
 
     // Returns scalar gain for the given source/listener positions/orientations
-    double gain(FloatPoint3D sourcePosition, FloatPoint3D sourceOrientation, FloatPoint3D listenerPosition);
+    double gain( FloatPoint3D sourcePosition, FloatPoint3D sourceOrientation, FloatPoint3D listenerPosition );
 
     // Angles in degrees
-    void setInnerAngle(double innerAngle) { m_innerAngle = innerAngle; }
-    double innerAngle() const { return m_innerAngle; }
+    void setInnerAngle( double innerAngle )
+    {
+        m_innerAngle = innerAngle;
+    }
+    double innerAngle() const
+    {
+        return m_innerAngle;
+    }
 
-    void setOuterAngle(double outerAngle) { m_outerAngle = outerAngle; }
-    double outerAngle() const { return m_outerAngle; }
+    void setOuterAngle( double outerAngle )
+    {
+        m_outerAngle = outerAngle;
+    }
+    double outerAngle() const
+    {
+        return m_outerAngle;
+    }
 
-    void setOuterGain(double outerGain) { m_outerGain = outerGain; }
-    double outerGain() const { return m_outerGain; }
+    void setOuterGain( double outerGain )
+    {
+        m_outerGain = outerGain;
+    }
+    double outerGain() const
+    {
+        return m_outerGain;
+    }
 
 protected:
     double m_innerAngle;

@@ -35,21 +35,35 @@
 #include <wtf/RefCounted.h>
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class ImageData : public RefCounted<ImageData> {
+class ImageData : public RefCounted<ImageData>
+{
 public:
-    static PassRefPtr<ImageData> create(const IntSize&);
-    static PassRefPtr<ImageData> create(const IntSize&, PassRefPtr<ByteArray>);
+    static PassRefPtr<ImageData> create( const IntSize & );
+    static PassRefPtr<ImageData> create( const IntSize &, PassRefPtr<ByteArray> );
 
-    IntSize size() const { return m_size; }
-    int width() const { return m_size.width(); }
-    int height() const { return m_size.height(); }
-    CanvasPixelArray* data() const { return m_data.get(); }
+    IntSize size() const
+    {
+        return m_size;
+    }
+    int width() const
+    {
+        return m_size.width();
+    }
+    int height() const
+    {
+        return m_size.height();
+    }
+    CanvasPixelArray *data() const
+    {
+        return m_data.get();
+    }
 
 private:
-    ImageData(const IntSize&);
-    ImageData(const IntSize&, PassRefPtr<ByteArray>);
+    ImageData( const IntSize & );
+    ImageData( const IntSize &, PassRefPtr<ByteArray> );
 
     IntSize m_size;
     RefPtr<CanvasPixelArray> m_data;

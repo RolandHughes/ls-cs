@@ -66,8 +66,7 @@ QT_BEGIN_NAMESPACE
 
 /*!
     Destroys the factory. The default implementation does nothing.
- */
-QDeclarativeNetworkAccessManagerFactory::~QDeclarativeNetworkAccessManagerFactory()
+ */ QDeclarativeNetworkAccessManagerFactory::~QDeclarativeNetworkAccessManagerFactory()
 {
 }
 

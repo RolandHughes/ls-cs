@@ -26,62 +26,67 @@
 #include "SVGAnimatedPropertySynchronizer.h"
 #include "SVGPropertyTraits.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 // GetOwnerElementForType implementation
 template<typename OwnerType, bool isDerivedFromSVGElement>
 struct GetOwnerElementForType;
 
 template<typename OwnerType>
-struct GetOwnerElementForType<OwnerType, true> {
-    static SVGElement* ownerElement(OwnerType* type)
+struct GetOwnerElementForType<OwnerType, true>
+{
+    static SVGElement *ownerElement( OwnerType *type )
     {
         return type;
     }
 };
 
 template<typename OwnerType>
-struct GetOwnerElementForType<OwnerType, false> {    
-    static SVGElement* ownerElement(OwnerType* type)
+struct GetOwnerElementForType<OwnerType, false>
+{
+    static SVGElement *ownerElement( OwnerType *type )
     {
-        SVGElement* context = type->contextElement();
-        ASSERT(context);
+        SVGElement *context = type->contextElement();
+        ASSERT( context );
         return context;
     }
 };
 
 // IsDerivedFromSVGElement implementation
 template<typename OwnerType>
-struct IsDerivedFromSVGElement {
+struct IsDerivedFromSVGElement
+{
     static const bool value = true;
 };
 
 class SVGViewSpec;
 template<>
-struct IsDerivedFromSVGElement<SVGViewSpec> {
+struct IsDerivedFromSVGElement<SVGViewSpec>
+{
     static const bool value = false;
 };
 
 // SVGSynchronizableAnimatedProperty implementation
 template<typename PropertyType>
-struct SVGSynchronizableAnimatedProperty {
+struct SVGSynchronizableAnimatedProperty
+{
     SVGSynchronizableAnimatedProperty()
-        : value(SVGPropertyTraits<PropertyType>::initialValue())
-        , shouldSynchronize(false)
+        : value( SVGPropertyTraits<PropertyType>::initialValue() )
+        , shouldSynchronize( false )
     {
     }
 
-    template<typename ConstructorParameter1>
-    SVGSynchronizableAnimatedProperty(const ConstructorParameter1& value1)
-        : value(value1)
-        , shouldSynchronize(false)
+    template<typename ConstructorParameter1> SVGSynchronizableAnimatedProperty( const ConstructorParameter1 &value1 )
+        : value( value1 )
+        , shouldSynchronize( false )
     {
     }
 
-    template<typename ConstructorParameter1, typename ConstructorParameter2>
-    SVGSynchronizableAnimatedProperty(const ConstructorParameter1& value1, const ConstructorParameter2& value2)
-        : value(value1, value2)
-        , shouldSynchronize(false)
+    template<typename ConstructorParameter1, typename ConstructorParameter2> SVGSynchronizableAnimatedProperty(
+        const ConstructorParameter1 &value1, const ConstructorParameter2 &value2 )
+        : value( value1, value2 )
+        , shouldSynchronize( false )
     {
     }
 

@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef WebKitPoint_h
@@ -29,35 +29,49 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class WebKitPoint : public RefCounted<WebKitPoint> {
-    public:
+class WebKitPoint : public RefCounted<WebKitPoint>
+{
+public:
 
-        static PassRefPtr<WebKitPoint> create()
-        {
-            return adoptRef(new WebKitPoint());
-        }
-        static PassRefPtr<WebKitPoint> create(float x, float y)
-        {
-            return adoptRef(new WebKitPoint(x, y));
-        }
+    static PassRefPtr<WebKitPoint> create()
+    {
+        return adoptRef( new WebKitPoint() );
+    }
+    static PassRefPtr<WebKitPoint> create( float x, float y )
+    {
+        return adoptRef( new WebKitPoint( x, y ) );
+    }
 
-        float x() const { return m_x; }
-        float y() const { return m_y; }
-        
-        void setX(float x) { m_x = x; }
-        void setY(float y) { m_y = y; }
+    float x() const
+    {
+        return m_x;
+    }
+    float y() const
+    {
+        return m_y;
+    }
 
-    private:
-        WebKitPoint(float x=0, float y=0)
-            : m_x(x)
-            , m_y(y)
-        {
-        }
+    void setX( float x )
+    {
+        m_x = x;
+    }
+    void setY( float y )
+    {
+        m_y = y;
+    }
 
-        float m_x, m_y;
-    };
+private:
+    WebKitPoint( float x=0, float y=0 )
+        : m_x( x )
+        , m_y( y )
+    {
+    }
+
+    float m_x, m_y;
+};
 
 } // namespace WebCore
 

@@ -33,7 +33,8 @@
 #include "SVGTests.h"
 #include "SVGZoomAndPan.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class SVGAngle;
 class SVGMatrix;
@@ -43,28 +44,42 @@ class SVGViewElement;
 class SMILTimeContainer;
 
 class SVGSVGElement : public SVGStyledLocatableElement,
-                      public SVGTests,
-                      public SVGLangSpace,
-                      public SVGExternalResourcesRequired,
-                      public SVGFitToViewBox,
-                      public SVGZoomAndPan {
+    public SVGTests,
+    public SVGLangSpace,
+    public SVGExternalResourcesRequired,
+    public SVGFitToViewBox,
+    public SVGZoomAndPan
+{
 public:
-    static PassRefPtr<SVGSVGElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<SVGSVGElement> create( const QualifiedName &, Document * );
 
-    virtual bool isValid() const { return SVGTests::isValid(); }
+    virtual bool isValid() const
+    {
+        return SVGTests::isValid();
+    }
 
     // 'SVGSVGElement' functions
-    const AtomicString& contentScriptType() const;
-    void setContentScriptType(const AtomicString& type);
+    const AtomicString &contentScriptType() const;
+    void setContentScriptType( const AtomicString &type );
 
-    const AtomicString& contentStyleType() const;
-    void setContentStyleType(const AtomicString& type);
+    const AtomicString &contentStyleType() const;
+    void setContentStyleType( const AtomicString &type );
 
     FloatRect viewport() const;
 
-    void setContainerSize(const IntSize& containerSize) { m_containerSize = containerSize; m_hasSetContainerSize = true; }
-    IntSize containerSize() const { return m_containerSize; }
-    bool hasSetContainerSize() const { return m_hasSetContainerSize; }
+    void setContainerSize( const IntSize &containerSize )
+    {
+        m_containerSize = containerSize;
+        m_hasSetContainerSize = true;
+    }
+    IntSize containerSize() const
+    {
+        return m_containerSize;
+    }
+    bool hasSetContainerSize() const
+    {
+        return m_hasSetContainerSize;
+    }
     int relativeWidthValue() const;
     int relativeHeightValue() const;
 
@@ -74,37 +89,43 @@ public:
     float screenPixelToMillimeterY() const;
 
     bool useCurrentView() const;
-    void setUseCurrentView(bool currentView);
+    void setUseCurrentView( bool currentView );
 
-    SVGViewSpec* currentView() const;
+    SVGViewSpec *currentView() const;
 
     float currentScale() const;
-    void setCurrentScale(float scale);
+    void setCurrentScale( float scale );
 
-    FloatPoint& currentTranslate() { return m_translation; }
-    void setCurrentTranslate(const FloatPoint&);
+    FloatPoint &currentTranslate()
+    {
+        return m_translation;
+    }
+    void setCurrentTranslate( const FloatPoint & );
 
     // Only used from the bindings.
     void updateCurrentTranslate();
 
-    SMILTimeContainer* timeContainer() const { return m_timeContainer.get(); }
-    
+    SMILTimeContainer *timeContainer() const
+    {
+        return m_timeContainer.get();
+    }
+
     void pauseAnimations();
     void unpauseAnimations();
     bool animationsPaused() const;
 
     float getCurrentTime() const;
-    void setCurrentTime(float seconds);
+    void setCurrentTime( float seconds );
 
-    unsigned suspendRedraw(unsigned maxWaitMilliseconds);
-    void unsuspendRedraw(unsigned suspendHandleId);
+    unsigned suspendRedraw( unsigned maxWaitMilliseconds );
+    void unsuspendRedraw( unsigned suspendHandleId );
     void unsuspendRedrawAll();
     void forceRedraw();
 
-    NodeList* getIntersectionList(const FloatRect&, SVGElement* referenceElement);
-    NodeList* getEnclosureList(const FloatRect&, SVGElement* referenceElement);
-    bool checkIntersection(SVGElement*, const FloatRect&);
-    bool checkEnclosure(SVGElement*, const FloatRect&);
+    NodeList *getIntersectionList( const FloatRect &, SVGElement *referenceElement );
+    NodeList *getEnclosureList( const FloatRect &, SVGElement *referenceElement );
+    bool checkIntersection( SVGElement *, const FloatRect & );
+    bool checkEnclosure( SVGElement *, const FloatRect & );
     void deselectAll();
 
     static float createSVGNumber();
@@ -114,58 +135,64 @@ public:
     static SVGMatrix createSVGMatrix();
     static FloatRect createSVGRect();
     static SVGTransform createSVGTransform();
-    static SVGTransform createSVGTransformFromMatrix(const SVGMatrix&);
+    static SVGTransform createSVGTransformFromMatrix( const SVGMatrix & );
 
-    AffineTransform viewBoxToViewTransform(float viewWidth, float viewHeight) const;
+    AffineTransform viewBoxToViewTransform( float viewWidth, float viewHeight ) const;
 
-    void inheritViewAttributes(SVGViewElement*);
+    void inheritViewAttributes( SVGViewElement * );
 
     bool isOutermostSVG() const;
 
-    Element* getElementById(const AtomicString&) const;
+    Element *getElementById( const AtomicString & ) const;
 
 protected:
     virtual void willMoveToNewOwnerDocument();
     virtual void didMoveToNewOwnerDocument();
 
 private:
-    SVGSVGElement(const QualifiedName&, Document*);
+    SVGSVGElement( const QualifiedName &, Document * );
     virtual ~SVGSVGElement();
 
-    virtual bool isSVG() const { return true; }
-    
-    virtual void parseMappedAttribute(Attribute*);
+    virtual bool isSVG() const
+    {
+        return true;
+    }
 
-    virtual bool rendererIsNeeded(RenderStyle* style) { return StyledElement::rendererIsNeeded(style); }
-    virtual RenderObject* createRenderer(RenderArena*, RenderStyle*);
+    virtual void parseMappedAttribute( Attribute * );
+
+    virtual bool rendererIsNeeded( RenderStyle *style )
+    {
+        return StyledElement::rendererIsNeeded( style );
+    }
+    virtual RenderObject *createRenderer( RenderArena *, RenderStyle * );
 
     virtual void insertedIntoDocument();
     virtual void removedFromDocument();
 
-    virtual void svgAttributeChanged(const QualifiedName&);
-    virtual void synchronizeProperty(const QualifiedName&);
+    virtual void svgAttributeChanged( const QualifiedName & );
+    virtual void synchronizeProperty( const QualifiedName & );
     virtual void fillAttributeToPropertyTypeMap();
-    virtual AttributeToPropertyTypeMap& attributeToPropertyTypeMap();
+    virtual AttributeToPropertyTypeMap &attributeToPropertyTypeMap();
 
     virtual bool selfHasRelativeLengths() const;
 
     // Animated property declarations
-    DECLARE_ANIMATED_LENGTH(X, x)
-    DECLARE_ANIMATED_LENGTH(Y, y)
-    DECLARE_ANIMATED_LENGTH(Width, width)
-    DECLARE_ANIMATED_LENGTH(Height, height)
+    DECLARE_ANIMATED_LENGTH( X, x )
+    DECLARE_ANIMATED_LENGTH( Y, y )
+    DECLARE_ANIMATED_LENGTH( Width, width )
+    DECLARE_ANIMATED_LENGTH( Height, height )
 
     // SVGExternalResourcesRequired
-    DECLARE_ANIMATED_BOOLEAN(ExternalResourcesRequired, externalResourcesRequired)
+    DECLARE_ANIMATED_BOOLEAN( ExternalResourcesRequired, externalResourcesRequired )
 
     // SVGFitToViewBox
-    DECLARE_ANIMATED_RECT(ViewBox, viewBox)
-    DECLARE_ANIMATED_PRESERVEASPECTRATIO(PreserveAspectRatio, preserveAspectRatio)
- 
+    DECLARE_ANIMATED_RECT( ViewBox, viewBox )
+    DECLARE_ANIMATED_PRESERVEASPECTRATIO( PreserveAspectRatio, preserveAspectRatio )
+
     virtual void documentWillBecomeInactive();
     virtual void documentDidBecomeActive();
 
-    virtual AffineTransform localCoordinateSpaceTransform(SVGLocatable::CTMScope) const;
+    virtual AffineTransform localCoordinateSpaceTransform( SVGLocatable::CTMScope ) const;
 
     bool m_useCurrentView;
     RefPtr<SMILTimeContainer> m_timeContainer;

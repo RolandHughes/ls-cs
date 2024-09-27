@@ -34,65 +34,73 @@
 
 void QProxyStylePrivate::ensureBaseStyle() const
 {
-   Q_Q(const QProxyStyle);
+    Q_Q( const QProxyStyle );
 
-   if (baseStyle != nullptr) {
-      return;
-   }
+    if ( baseStyle != nullptr )
+    {
+        return;
+    }
 
-   if (baseStyle == nullptr && ! QApplicationPrivate::styleOverride.isEmpty()) {
-      baseStyle = QStyleFactory::create(QApplicationPrivate::styleOverride);
+    if ( baseStyle == nullptr && ! QApplicationPrivate::styleOverride.isEmpty() )
+    {
+        baseStyle = QStyleFactory::create( QApplicationPrivate::styleOverride );
 
-      if (baseStyle != nullptr) {
-         // If baseStyle is an instance of the same proxyStyle
-         // we destroy it and fall back to the desktop style
+        if ( baseStyle != nullptr )
+        {
+            // If baseStyle is an instance of the same proxyStyle
+            // we destroy it and fall back to the desktop style
 
-         if (baseStyle->metaObject()->className() == q->metaObject()->className()) {
-            delete baseStyle;
-            baseStyle = nullptr;
-         }
-      }
-   }
+            if ( baseStyle->metaObject()->className() == q->metaObject()->className() )
+            {
+                delete baseStyle;
+                baseStyle = nullptr;
+            }
+        }
+    }
 
-   if (baseStyle == nullptr) {
-      // Use application desktop style
-      baseStyle = QStyleFactory::create(QApplicationPrivate::desktopStyleKey());
-   }
+    if ( baseStyle == nullptr )
+    {
+        // Use application desktop style
+        baseStyle = QStyleFactory::create( QApplicationPrivate::desktopStyleKey() );
+    }
 
-   if (baseStyle == nullptr) {
-      // Fallback to windows style
-      baseStyle = QStyleFactory::create("windows");
-   }
+    if ( baseStyle == nullptr )
+    {
+        // Fallback to windows style
+        baseStyle = QStyleFactory::create( "windows" );
+    }
 
-   baseStyle->setProxy(const_cast<QProxyStyle *>(q));
-   baseStyle->setParent(const_cast<QProxyStyle *>(q));   // Take ownership
+    baseStyle->setProxy( const_cast<QProxyStyle *>( q ) );
+    baseStyle->setParent( const_cast<QProxyStyle *>( q ) ); // Take ownership
 }
 
-QProxyStyle::QProxyStyle(QStyle *style)
-   : QCommonStyle(*new QProxyStylePrivate())
+QProxyStyle::QProxyStyle( QStyle *style )
+    : QCommonStyle( *new QProxyStylePrivate() )
 {
-   Q_D(QProxyStyle);
+    Q_D( QProxyStyle );
 
-   if (style != nullptr) {
-      d->baseStyle = style;
+    if ( style != nullptr )
+    {
+        d->baseStyle = style;
 
-      style->setProxy(this);
-      style->setParent(this);      // take ownership
-   }
+        style->setProxy( this );
+        style->setParent( this );    // take ownership
+    }
 }
 
-QProxyStyle::QProxyStyle(const QString &key)
-   : QCommonStyle(*new QProxyStylePrivate())
+QProxyStyle::QProxyStyle( const QString &key )
+    : QCommonStyle( *new QProxyStylePrivate() )
 {
-   Q_D(QProxyStyle);
+    Q_D( QProxyStyle );
 
-   QStyle *style = QStyleFactory::create(key);
+    QStyle *style = QStyleFactory::create( key );
 
-   if (style != nullptr) {
-      d->baseStyle = style;
-      style->setProxy(this);
-      style->setParent(this); // Take ownership
-   }
+    if ( style != nullptr )
+    {
+        d->baseStyle = style;
+        style->setProxy( this );
+        style->setParent( this ); // Take ownership
+    }
 }
 
 QProxyStyle::~QProxyStyle()
@@ -101,224 +109,226 @@ QProxyStyle::~QProxyStyle()
 
 QStyle *QProxyStyle::baseStyle() const
 {
-   Q_D(const QProxyStyle);
+    Q_D( const QProxyStyle );
 
-   d->ensureBaseStyle();
-   return d->baseStyle;
+    d->ensureBaseStyle();
+    return d->baseStyle;
 }
 
-void QProxyStyle::setBaseStyle(QStyle *style)
+void QProxyStyle::setBaseStyle( QStyle *style )
 {
-   Q_D(QProxyStyle);
+    Q_D( QProxyStyle );
 
-   if (d->baseStyle && d->baseStyle->parent() == this) {
-      d->baseStyle->deleteLater();
-   }
+    if ( d->baseStyle && d->baseStyle->parent() == this )
+    {
+        d->baseStyle->deleteLater();
+    }
 
-   d->baseStyle = style;
+    d->baseStyle = style;
 
-   if (d->baseStyle) {
-      d->baseStyle->setProxy(this);
-      d->baseStyle->setParent(this);
-   }
+    if ( d->baseStyle )
+    {
+        d->baseStyle->setProxy( this );
+        d->baseStyle->setParent( this );
+    }
 }
 
-void QProxyStyle::drawPrimitive(PrimitiveElement element, const QStyleOption *option, QPainter *painter,
-      const QWidget *widget) const
+void QProxyStyle::drawPrimitive( PrimitiveElement element, const QStyleOption *option, QPainter *painter,
+                                 const QWidget *widget ) const
 {
-   Q_D(const QProxyStyle);
+    Q_D( const QProxyStyle );
 
-   d->ensureBaseStyle();
-   d->baseStyle->drawPrimitive(element, option, painter, widget);
+    d->ensureBaseStyle();
+    d->baseStyle->drawPrimitive( element, option, painter, widget );
 }
 
-void QProxyStyle::drawControl(ControlElement element, const QStyleOption *option, QPainter *painter,
-      const QWidget *widget) const
+void QProxyStyle::drawControl( ControlElement element, const QStyleOption *option, QPainter *painter,
+                               const QWidget *widget ) const
 {
-   Q_D(const QProxyStyle);
+    Q_D( const QProxyStyle );
 
-   d->ensureBaseStyle();
-   d->baseStyle->drawControl(element, option, painter, widget);
+    d->ensureBaseStyle();
+    d->baseStyle->drawControl( element, option, painter, widget );
 }
 
-void QProxyStyle::drawComplexControl(ComplexControl control, const QStyleOptionComplex *option, QPainter *painter,
-      const QWidget *widget) const
+void QProxyStyle::drawComplexControl( ComplexControl control, const QStyleOptionComplex *option, QPainter *painter,
+                                      const QWidget *widget ) const
 {
-   Q_D(const QProxyStyle);
+    Q_D( const QProxyStyle );
 
-   d->ensureBaseStyle();
-   d->baseStyle->drawComplexControl(control, option, painter, widget);
+    d->ensureBaseStyle();
+    d->baseStyle->drawComplexControl( control, option, painter, widget );
 }
 
-void QProxyStyle::drawItemText(QPainter *painter, const QRect &rect, int flags, const QPalette &pal, bool enabled,
-      const QString &text, QPalette::ColorRole textRole) const
+void QProxyStyle::drawItemText( QPainter *painter, const QRect &rect, int flags, const QPalette &pal, bool enabled,
+                                const QString &text, QPalette::ColorRole textRole ) const
 {
-   Q_D(const QProxyStyle);
+    Q_D( const QProxyStyle );
 
-   d->ensureBaseStyle();
-   d->baseStyle->drawItemText(painter, rect, flags, pal, enabled, text, textRole);
+    d->ensureBaseStyle();
+    d->baseStyle->drawItemText( painter, rect, flags, pal, enabled, text, textRole );
 }
 
-void QProxyStyle::drawItemPixmap(QPainter *painter, const QRect &rect, int alignment, const QPixmap &pixmap) const
+void QProxyStyle::drawItemPixmap( QPainter *painter, const QRect &rect, int alignment, const QPixmap &pixmap ) const
 {
-   Q_D(const QProxyStyle);
+    Q_D( const QProxyStyle );
 
-   d->ensureBaseStyle();
-   d->baseStyle->drawItemPixmap(painter, rect, alignment, pixmap);
+    d->ensureBaseStyle();
+    d->baseStyle->drawItemPixmap( painter, rect, alignment, pixmap );
 }
 
-QSize QProxyStyle::sizeFromContents(ContentsType type, const QStyleOption *option, const QSize &size,
-      const QWidget *widget) const
+QSize QProxyStyle::sizeFromContents( ContentsType type, const QStyleOption *option, const QSize &size,
+                                     const QWidget *widget ) const
 {
-   Q_D(const QProxyStyle);
+    Q_D( const QProxyStyle );
 
-   d->ensureBaseStyle();
-   return d->baseStyle->sizeFromContents(type, option, size, widget);
+    d->ensureBaseStyle();
+    return d->baseStyle->sizeFromContents( type, option, size, widget );
 }
 
-QRect QProxyStyle::subElementRect(SubElement element, const QStyleOption *option, const QWidget *widget) const
+QRect QProxyStyle::subElementRect( SubElement element, const QStyleOption *option, const QWidget *widget ) const
 {
-   Q_D(const QProxyStyle);
+    Q_D( const QProxyStyle );
 
-   d->ensureBaseStyle();
-   return d->baseStyle->subElementRect(element, option, widget);
+    d->ensureBaseStyle();
+    return d->baseStyle->subElementRect( element, option, widget );
 }
 
-QRect QProxyStyle::subControlRect(ComplexControl cc, const QStyleOptionComplex *option, SubControl sc,
-      const QWidget *widget) const
+QRect QProxyStyle::subControlRect( ComplexControl cc, const QStyleOptionComplex *option, SubControl sc,
+                                   const QWidget *widget ) const
 {
-   Q_D(const QProxyStyle);
+    Q_D( const QProxyStyle );
 
-   d->ensureBaseStyle();
-   return d->baseStyle->subControlRect(cc, option, sc, widget);
+    d->ensureBaseStyle();
+    return d->baseStyle->subControlRect( cc, option, sc, widget );
 }
 
-QRect QProxyStyle::itemTextRect(const QFontMetrics &fm, const QRect &r, int flags, bool enabled,
-      const QString &text) const
+QRect QProxyStyle::itemTextRect( const QFontMetrics &fm, const QRect &r, int flags, bool enabled,
+                                 const QString &text ) const
 {
-   Q_D(const QProxyStyle);
+    Q_D( const QProxyStyle );
 
-   d->ensureBaseStyle();
-   return d->baseStyle->itemTextRect(fm, r, flags, enabled, text);
+    d->ensureBaseStyle();
+    return d->baseStyle->itemTextRect( fm, r, flags, enabled, text );
 }
 
-QRect QProxyStyle::itemPixmapRect(const QRect &r, int flags, const QPixmap &pixmap) const
+QRect QProxyStyle::itemPixmapRect( const QRect &r, int flags, const QPixmap &pixmap ) const
 {
-   Q_D(const QProxyStyle);
-   d->ensureBaseStyle();
-   return d->baseStyle->itemPixmapRect(r, flags, pixmap);
+    Q_D( const QProxyStyle );
+    d->ensureBaseStyle();
+    return d->baseStyle->itemPixmapRect( r, flags, pixmap );
 }
 
-QStyle::SubControl QProxyStyle::hitTestComplexControl(ComplexControl control, const QStyleOptionComplex *option,
-   const QPoint &pos, const QWidget *widget) const
+QStyle::SubControl QProxyStyle::hitTestComplexControl( ComplexControl control, const QStyleOptionComplex *option,
+        const QPoint &pos, const QWidget *widget ) const
 {
-   Q_D(const QProxyStyle);
-   d->ensureBaseStyle();
-   return d->baseStyle->hitTestComplexControl(control, option, pos, widget);
+    Q_D( const QProxyStyle );
+    d->ensureBaseStyle();
+    return d->baseStyle->hitTestComplexControl( control, option, pos, widget );
 }
 
-int QProxyStyle::styleHint(StyleHint hint, const QStyleOption *option, const QWidget *widget,
-      QStyleHintReturn *returnData) const
+int QProxyStyle::styleHint( StyleHint hint, const QStyleOption *option, const QWidget *widget,
+                            QStyleHintReturn *returnData ) const
 {
-   Q_D(const QProxyStyle);
+    Q_D( const QProxyStyle );
 
-   d->ensureBaseStyle();
-   return d->baseStyle->styleHint(hint, option, widget, returnData);
+    d->ensureBaseStyle();
+    return d->baseStyle->styleHint( hint, option, widget, returnData );
 }
 
-int QProxyStyle::pixelMetric(PixelMetric metric, const QStyleOption *option, const QWidget *widget) const
+int QProxyStyle::pixelMetric( PixelMetric metric, const QStyleOption *option, const QWidget *widget ) const
 {
-   Q_D(const QProxyStyle);
+    Q_D( const QProxyStyle );
 
-   d->ensureBaseStyle();
-   return d->baseStyle->pixelMetric(metric, option, widget);
+    d->ensureBaseStyle();
+    return d->baseStyle->pixelMetric( metric, option, widget );
 }
 
-QPixmap QProxyStyle::standardPixmap(StandardPixmap standardPixmap, const QStyleOption *opt, const QWidget *widget) const
+QPixmap QProxyStyle::standardPixmap( StandardPixmap standardPixmap, const QStyleOption *opt, const QWidget *widget ) const
 {
-   Q_D(const QProxyStyle);
+    Q_D( const QProxyStyle );
 
-   d->ensureBaseStyle();
-   return d->baseStyle->standardPixmap(standardPixmap, opt, widget);
+    d->ensureBaseStyle();
+    return d->baseStyle->standardPixmap( standardPixmap, opt, widget );
 }
 
-QPixmap QProxyStyle::generatedIconPixmap(QIcon::Mode iconMode, const QPixmap &pixmap, const QStyleOption *opt) const
+QPixmap QProxyStyle::generatedIconPixmap( QIcon::Mode iconMode, const QPixmap &pixmap, const QStyleOption *opt ) const
 {
-   Q_D(const QProxyStyle);
+    Q_D( const QProxyStyle );
 
-   d->ensureBaseStyle();
-   return d->baseStyle->generatedIconPixmap(iconMode, pixmap, opt);
+    d->ensureBaseStyle();
+    return d->baseStyle->generatedIconPixmap( iconMode, pixmap, opt );
 }
 
 QPalette QProxyStyle::standardPalette() const
 {
-   Q_D(const QProxyStyle);
-   d->ensureBaseStyle();
-   return d->baseStyle->standardPalette();
+    Q_D( const QProxyStyle );
+    d->ensureBaseStyle();
+    return d->baseStyle->standardPalette();
 }
 
-void QProxyStyle::polish(QWidget *widget)
+void QProxyStyle::polish( QWidget *widget )
 {
-   Q_D(QProxyStyle);
-   d->ensureBaseStyle();
-   d->baseStyle->polish(widget);
+    Q_D( QProxyStyle );
+    d->ensureBaseStyle();
+    d->baseStyle->polish( widget );
 }
 
-void QProxyStyle::polish(QPalette &pal)
+void QProxyStyle::polish( QPalette &pal )
 {
-   Q_D(QProxyStyle);
-   d->ensureBaseStyle();
-   d->baseStyle->polish(pal);
+    Q_D( QProxyStyle );
+    d->ensureBaseStyle();
+    d->baseStyle->polish( pal );
 }
 
-void QProxyStyle::polish(QApplication *app)
+void QProxyStyle::polish( QApplication *app )
 {
-   Q_D(QProxyStyle);
+    Q_D( QProxyStyle );
 
-   d->ensureBaseStyle();
-   d->baseStyle->polish(app);
+    d->ensureBaseStyle();
+    d->baseStyle->polish( app );
 }
 
-void QProxyStyle::unpolish(QWidget *widget)
+void QProxyStyle::unpolish( QWidget *widget )
 {
-   Q_D(QProxyStyle);
+    Q_D( QProxyStyle );
 
-   d->ensureBaseStyle();
-   d->baseStyle->unpolish(widget);
+    d->ensureBaseStyle();
+    d->baseStyle->unpolish( widget );
 }
 
-void QProxyStyle::unpolish(QApplication *app)
+void QProxyStyle::unpolish( QApplication *app )
 {
-   Q_D(QProxyStyle);
+    Q_D( QProxyStyle );
 
-   d->ensureBaseStyle();
-   d->baseStyle->unpolish(app);
+    d->ensureBaseStyle();
+    d->baseStyle->unpolish( app );
 }
 
-bool QProxyStyle::event(QEvent *e)
+bool QProxyStyle::event( QEvent *e )
 {
-   Q_D(QProxyStyle);
+    Q_D( QProxyStyle );
 
-   d->ensureBaseStyle();
-   return d->baseStyle->event(e);
+    d->ensureBaseStyle();
+    return d->baseStyle->event( e );
 }
 
-QIcon QProxyStyle::standardIcon(StandardPixmap standardIcon,
-   const QStyleOption *option, const QWidget *widget) const
+QIcon QProxyStyle::standardIcon( StandardPixmap standardIcon,
+                                 const QStyleOption *option, const QWidget *widget ) const
 {
-   Q_D(const QProxyStyle);
+    Q_D( const QProxyStyle );
 
-   d->ensureBaseStyle();
-   return d->baseStyle->standardIcon(standardIcon, option, widget);
+    d->ensureBaseStyle();
+    return d->baseStyle->standardIcon( standardIcon, option, widget );
 }
 
-int QProxyStyle::layoutSpacing(QSizePolicy::ControlType control1, QSizePolicy::ControlType control2,
-      Qt::Orientation orientation, const QStyleOption *option, const QWidget *widget) const
+int QProxyStyle::layoutSpacing( QSizePolicy::ControlType control1, QSizePolicy::ControlType control2,
+                                Qt::Orientation orientation, const QStyleOption *option, const QWidget *widget ) const
 {
-   Q_D(const QProxyStyle);
+    Q_D( const QProxyStyle );
 
-   d->ensureBaseStyle();
-   return d->baseStyle->layoutSpacing(control1, control2, orientation, option, widget);
+    d->ensureBaseStyle();
+    return d->baseStyle->layoutSpacing( control1, control2, orientation, option, widget );
 }
 
 #endif // QT_NO_STYLE_PROXY

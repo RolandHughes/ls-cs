@@ -27,98 +27,108 @@
 #include "Worker.h"
 #include <runtime/JSObjectWithGlobalObject.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Worker;
 
-class JSWorker : public JSAbstractWorker {
+class JSWorker : public JSAbstractWorker
+{
     typedef JSAbstractWorker Base;
 public:
-    JSWorker(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<Worker>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
-    virtual void put(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::JSValue, JSC::PutPropertySlot&);
+    JSWorker( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<Worker> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
+    virtual void put( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::JSValue, JSC::PutPropertySlot & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
 
     // Custom functions
-    JSC::JSValue postMessage(JSC::ExecState*);
-    Worker* impl() const
+    JSC::JSValue postMessage( JSC::ExecState * );
+    Worker *impl() const
     {
-        return static_cast<Worker*>(Base::impl());
+        return static_cast<Worker *>( Base::impl() );
     }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
-class JSWorkerOwner : public JSC::WeakHandleOwner {
-    virtual bool isReachableFromOpaqueRoots(JSC::Handle<JSC::Unknown>, void* context, JSC::SlotVisitor&);
-    virtual void finalize(JSC::Handle<JSC::Unknown>, void* context);
+class JSWorkerOwner : public JSC::WeakHandleOwner
+{
+    virtual bool isReachableFromOpaqueRoots( JSC::Handle<JSC::Unknown>, void *context, JSC::SlotVisitor & );
+    virtual void finalize( JSC::Handle<JSC::Unknown>, void *context );
 };
 
-inline JSC::WeakHandleOwner* wrapperOwner(DOMWrapperWorld*, Worker*)
+inline JSC::WeakHandleOwner *wrapperOwner( DOMWrapperWorld *, Worker * )
 {
-    DEFINE_STATIC_LOCAL(JSWorkerOwner, jsWorkerOwner, ());
+    DEFINE_STATIC_LOCAL( JSWorkerOwner, jsWorkerOwner, () );
     return &jsWorkerOwner;
 }
 
-inline void* wrapperContext(DOMWrapperWorld* world, Worker*)
+inline void *wrapperContext( DOMWrapperWorld *world, Worker * )
 {
     return world;
 }
 
-JSC::JSValue toJS(JSC::ExecState*, JSDOMGlobalObject*, Worker*);
-Worker* toWorker(JSC::JSValue);
+JSC::JSValue toJS( JSC::ExecState *, JSDOMGlobalObject *, Worker * );
+Worker *toWorker( JSC::JSValue );
 
-class JSWorkerPrototype : public JSC::JSObjectWithGlobalObject {
+class JSWorkerPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSWorkerPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSWorkerPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                       JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
-class JSWorkerConstructor : public DOMConstructorObject {
+class JSWorkerConstructor : public DOMConstructorObject
+{
 public:
-    JSWorkerConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSWorkerConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
-    static JSC::EncodedJSValue JSC_HOST_CALL constructJSWorker(JSC::ExecState*);
-    virtual JSC::ConstructType getConstructData(JSC::ConstructData&);
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
+    static JSC::EncodedJSValue JSC_HOST_CALL constructJSWorker( JSC::ExecState * );
+    virtual JSC::ConstructType getConstructData( JSC::ConstructData & );
 };
 
 // Functions
 
-JSC::EncodedJSValue JSC_HOST_CALL jsWorkerPrototypeFunctionPostMessage(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsWorkerPrototypeFunctionTerminate(JSC::ExecState*);
+JSC::EncodedJSValue JSC_HOST_CALL jsWorkerPrototypeFunctionPostMessage( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsWorkerPrototypeFunctionTerminate( JSC::ExecState * );
 // Attributes
 
-JSC::JSValue jsWorkerOnmessage(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSWorkerOnmessage(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsWorkerConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsWorkerOnmessage( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSWorkerOnmessage( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsWorkerConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

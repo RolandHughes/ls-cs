@@ -29,25 +29,26 @@
 #include "config.h"
 #include "CanvasPixelArray.h"
 
-namespace WebCore {
-    
-PassRefPtr<CanvasPixelArray> CanvasPixelArray::create(unsigned length)
+namespace WebCore
 {
-    return adoptRef(new CanvasPixelArray(length));
+
+PassRefPtr<CanvasPixelArray> CanvasPixelArray::create( unsigned length )
+{
+    return adoptRef( new CanvasPixelArray( length ) );
 }
 
-PassRefPtr<CanvasPixelArray> CanvasPixelArray::create(PassRefPtr<ByteArray> byteArray)
+PassRefPtr<CanvasPixelArray> CanvasPixelArray::create( PassRefPtr<ByteArray> byteArray )
 {
-    return adoptRef(new CanvasPixelArray(byteArray));
+    return adoptRef( new CanvasPixelArray( byteArray ) );
 }
 
-CanvasPixelArray::CanvasPixelArray(unsigned length)
-    : m_data(ByteArray::create(length))
+CanvasPixelArray::CanvasPixelArray( unsigned length )
+    : m_data( ByteArray::create( length ) )
 {
 }
 
-CanvasPixelArray::CanvasPixelArray(PassRefPtr<ByteArray> byteArray)
-    : m_data(byteArray)
+CanvasPixelArray::CanvasPixelArray( PassRefPtr<ByteArray> byteArray )
+    : m_data( byteArray )
 {
 }
 

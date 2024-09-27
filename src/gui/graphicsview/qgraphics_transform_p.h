@@ -31,23 +31,23 @@ class QGraphicsItem;
 class QGraphicsTransformPrivate
 {
 
- public:
-   Q_DECLARE_PUBLIC(QGraphicsTransform)
+public:
+    Q_DECLARE_PUBLIC( QGraphicsTransform )
 
-   QGraphicsTransformPrivate()
-      : item(nullptr)
-   {
-   }
+    QGraphicsTransformPrivate()
+        : item( nullptr )
+    {
+    }
 
-   virtual ~QGraphicsTransformPrivate();
+    virtual ~QGraphicsTransformPrivate();
 
-   QGraphicsItem *item;
+    QGraphicsItem *item;
 
-   void setItem(QGraphicsItem *item);
-   static void updateItem(QGraphicsItem *item);
+    void setItem( QGraphicsItem *item );
+    static void updateItem( QGraphicsItem *item );
 
- protected:
-   QGraphicsTransform *q_ptr;
+protected:
+    QGraphicsTransform *q_ptr;
 
 };
 

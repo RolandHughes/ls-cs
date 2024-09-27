@@ -27,58 +27,65 @@
 #include <qglobal.h>
 #include <qflags.h>
 
-namespace QSsl {
-enum KeyType {
-   PrivateKey,
-   PublicKey
+namespace QSsl
+{
+enum KeyType
+{
+    PrivateKey,
+    PublicKey
 };
 
-enum EncodingFormat {
-   Pem,
-   Der
+enum EncodingFormat
+{
+    Pem,
+    Der
 };
 
-enum KeyAlgorithm {
-   Opaque,
-   Rsa,
-   Dsa,
-   Ec
+enum KeyAlgorithm
+{
+    Opaque,
+    Rsa,
+    Dsa,
+    Ec
 };
 
-enum AlternativeNameEntryType {
-   EmailEntry,
-   DnsEntry
+enum AlternativeNameEntryType
+{
+    EmailEntry,
+    DnsEntry
 };
 
-enum SslProtocol {
-   SslV3,
-   SslV2,
-   TlsV1_0,
-   TlsV1_1,
-   TlsV1_2,
-   TlsV1SslV3,
-   TlsV1_0_OrLater,
-   TlsV1_1_OrLater,
-   TlsV1_2_OrLater,
-   AnyProtocol,
-   SecureProtocols,
-   UnknownProtocol = -1
+enum SslProtocol
+{
+    SslV3,
+    SslV2,
+    TlsV1_0,
+    TlsV1_1,
+    TlsV1_2,
+    TlsV1SslV3,
+    TlsV1_0_OrLater,
+    TlsV1_1_OrLater,
+    TlsV1_2_OrLater,
+    AnyProtocol,
+    SecureProtocols,
+    UnknownProtocol = -1
 };
 
-enum SslOption {
-   SslOptionDisableEmptyFragments = 0x01,
-   SslOptionDisableSessionTickets = 0x02,
-   SslOptionDisableCompression = 0x04,
-   SslOptionDisableServerNameIndication = 0x08,
-   SslOptionDisableLegacyRenegotiation = 0x10,
-   SslOptionDisableSessionSharing = 0x20,
-   SslOptionDisableSessionPersistence = 0x40,
-   SslOptionDisableServerCipherPreference = 0x80
+enum SslOption
+{
+    SslOptionDisableEmptyFragments = 0x01,
+    SslOptionDisableSessionTickets = 0x02,
+    SslOptionDisableCompression = 0x04,
+    SslOptionDisableServerNameIndication = 0x08,
+    SslOptionDisableLegacyRenegotiation = 0x10,
+    SslOptionDisableSessionSharing = 0x20,
+    SslOptionDisableSessionPersistence = 0x40,
+    SslOptionDisableServerCipherPreference = 0x80
 };
 using SslOptions = QFlags<SslOption>;
 
 }
 
-Q_DECLARE_OPERATORS_FOR_FLAGS(QSsl::SslOptions)
+Q_DECLARE_OPERATORS_FOR_FLAGS( QSsl::SslOptions )
 
 #endif

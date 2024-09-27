@@ -40,7 +40,8 @@
 #include <Accelerate/Accelerate.h>
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
 const int kBufferSize = 1024;
 
@@ -48,8 +49,8 @@ Biquad::Biquad()
 {
 #if OS(DARWIN)
     // Allocate two samples more for filter history
-    m_inputBuffer.resize(kBufferSize + 2);
-    m_outputBuffer.resize(kBufferSize + 2);
+    m_inputBuffer.resize( kBufferSize + 2 );
+    m_outputBuffer.resize( kBufferSize + 2 );
 #endif
 
     // Initialize as pass-thru (straight-wire, no filter effect)
@@ -64,11 +65,11 @@ Biquad::Biquad()
     reset(); // clear filter memory
 }
 
-void Biquad::process(const float* sourceP, float* destP, size_t framesToProcess)
+void Biquad::process( const float *sourceP, float *destP, size_t framesToProcess )
 {
 #if OS(DARWIN)
     // Use vecLib if available
-    processFast(sourceP, destP, framesToProcess);
+    processFast( sourceP, destP, framesToProcess );
 #else
     int n = framesToProcess;
 
@@ -84,7 +85,8 @@ void Biquad::process(const float* sourceP, float* destP, size_t framesToProcess)
     double b1 = m_b1;
     double b2 = m_b2;
 
-    while (n--) {
+    while ( n-- )
+    {
         // FIXME: this can be optimized by pipelining the multiply adds...
         float x = *sourceP++;
         float y = a0*x + a1*x1 + a2*x2 - b1*y1 - b2*y2;
@@ -118,7 +120,7 @@ void Biquad::process(const float* sourceP, float* destP, size_t framesToProcess)
 
 // Here we have optimized version using Accelerate.framework
 
-void Biquad::processFast(const float* sourceP, float* destP, size_t framesToProcess)
+void Biquad::processFast( const float *sourceP, float *destP, size_t framesToProcess )
 {
     // Filter coefficients
     double B[5];
@@ -128,37 +130,42 @@ void Biquad::processFast(const float* sourceP, float* destP, size_t framesToProc
     B[3] = m_b1;
     B[4] = m_b2;
 
-    double* inputP = m_inputBuffer.data();
-    double* outputP = m_outputBuffer.data();
+    double *inputP = m_inputBuffer.data();
+    double *outputP = m_outputBuffer.data();
 
-    double* input2P = inputP + 2;
-    double* output2P = outputP + 2;
+    double *input2P = inputP + 2;
+    double *output2P = outputP + 2;
 
     // Break up processing into smaller slices (kBufferSize) if necessary.
 
     int n = framesToProcess;
 
-    while (n > 0) {
+    while ( n > 0 )
+    {
         int framesThisTime = n < kBufferSize ? n : kBufferSize;
 
         // Copy input to input buffer
-        for (int i = 0; i < framesThisTime; ++i)
+        for ( int i = 0; i < framesThisTime; ++i )
+        {
             input2P[i] = *sourceP++;
+        }
 
-        processSliceFast(inputP, outputP, B, framesThisTime);
+        processSliceFast( inputP, outputP, B, framesThisTime );
 
         // Copy output buffer to output (converts float -> double).
-        for (int i = 0; i < framesThisTime; ++i)
-            *destP++ = static_cast<float>(output2P[i]);
+        for ( int i = 0; i < framesThisTime; ++i )
+        {
+            *destP++ = static_cast<float>( output2P[i] );
+        }
 
         n -= framesThisTime;
     }
 }
 
-void Biquad::processSliceFast(double* sourceP, double* destP, double* coefficientsP, size_t framesToProcess)
+void Biquad::processSliceFast( double *sourceP, double *destP, double *coefficientsP, size_t framesToProcess )
 {
     // Use double-precision for filter stability
-    vDSP_deq22D(sourceP, 1, coefficientsP, destP, 1, framesToProcess);
+    vDSP_deq22D( sourceP, 1, coefficientsP, destP, 1, framesToProcess );
 
     // Save history.  Note that sourceP and destP reference m_inputBuffer and m_outputBuffer respectively.
     // These buffers are allocated (in the constructor) with space for two extra samples so it's OK to access
@@ -178,29 +185,29 @@ void Biquad::reset()
 
 #if OS(DARWIN)
     // Two extra samples for filter history
-    double* inputP = m_inputBuffer.data();
+    double *inputP = m_inputBuffer.data();
     inputP[0] = 0.0;
     inputP[1] = 0.0;
 
-    double* outputP = m_outputBuffer.data();
+    double *outputP = m_outputBuffer.data();
     outputP[0] = 0.0;
     outputP[1] = 0.0;
 #endif
 }
 
-void Biquad::setLowpassParams(double cutoff, double resonance)
+void Biquad::setLowpassParams( double cutoff, double resonance )
 {
-    resonance = std::max(0.0, resonance); // can't go negative
+    resonance = std::max( 0.0, resonance ); // can't go negative
 
-    double g = pow(10.0, 0.05 * resonance);
-    double d = sqrt((4.0 - sqrt(16.0 - 16.0 / (g * g))) / 2.0);
+    double g = pow( 10.0, 0.05 * resonance );
+    double d = sqrt( ( 4.0 - sqrt( 16.0 - 16.0 / ( g * g ) ) ) / 2.0 );
 
     // Compute biquad coefficients for lopass filter
     double theta = piDouble * cutoff;
-    double sn = 0.5 * d * sin(theta);
-    double beta = 0.5 * (1.0 - sn) / (1.0 + sn);
-    double gamma = (0.5 + beta) * cos(theta);
-    double alpha = 0.25 * (0.5 + beta - gamma);
+    double sn = 0.5 * d * sin( theta );
+    double beta = 0.5 * ( 1.0 - sn ) / ( 1.0 + sn );
+    double gamma = ( 0.5 + beta ) * cos( theta );
+    double alpha = 0.25 * ( 0.5 + beta - gamma );
 
     m_a0 = 2.0 * alpha;
     m_a1 = 2.0 * 2.0*alpha;
@@ -209,19 +216,19 @@ void Biquad::setLowpassParams(double cutoff, double resonance)
     m_b2 = 2.0 * beta;
 }
 
-void Biquad::setHighpassParams(double cutoff, double resonance)
+void Biquad::setHighpassParams( double cutoff, double resonance )
 {
-    resonance = std::max(0.0, resonance); // can't go negative
+    resonance = std::max( 0.0, resonance ); // can't go negative
 
-    double g = pow(10.0, 0.05 * resonance);
-    double d = sqrt((4.0 - sqrt(16.0 - 16.0 / (g * g))) / 2.0);
+    double g = pow( 10.0, 0.05 * resonance );
+    double d = sqrt( ( 4.0 - sqrt( 16.0 - 16.0 / ( g * g ) ) ) / 2.0 );
 
     // Compute biquad coefficients for highpass filter
     double theta = piDouble * cutoff;
-    double sn = 0.5 * d * sin(theta);
-    double beta = 0.5 * (1.0 - sn) / (1.0 + sn);
-    double gamma = (0.5 + beta) * cos(theta);
-    double alpha = 0.25 * (0.5 + beta + gamma);
+    double sn = 0.5 * d * sin( theta );
+    double beta = 0.5 * ( 1.0 - sn ) / ( 1.0 + sn );
+    double gamma = ( 0.5 + beta ) * cos( theta );
+    double alpha = 0.25 * ( 0.5 + beta + gamma );
 
     m_a0 = 2.0 * alpha;
     m_a1 = 2.0 * -2.0*alpha;
@@ -230,26 +237,26 @@ void Biquad::setHighpassParams(double cutoff, double resonance)
     m_b2 = 2.0 * beta;
 }
 
-void Biquad::setLowShelfParams(double cutoff, double dbGain)
+void Biquad::setLowShelfParams( double cutoff, double dbGain )
 {
     double theta = piDouble * cutoff;
 
-    double A = pow(10.0, dbGain / 40.0);
+    double A = pow( 10.0, dbGain / 40.0 );
     double S = 1.0; // filter slope (1.0 is max value)
-    double alpha = 0.5 * sin(theta) * sqrt((A + 1.0 / A) * (1.0 / S - 1.0) + 2.0);
+    double alpha = 0.5 * sin( theta ) * sqrt( ( A + 1.0 / A ) * ( 1.0 / S - 1.0 ) + 2.0 );
 
-    double k = cos(theta);
-    double k2 = 2.0 * sqrt(A) * alpha;
+    double k = cos( theta );
+    double k2 = 2.0 * sqrt( A ) * alpha;
 
-    double b0 = A * ((A + 1.0) - (A - 1.0) * k + k2);
-    double b1 = 2.0 * A * ((A - 1.0) - (A + 1.0) * k);
-    double b2 = A * ((A + 1.0) - (A - 1.0) * k - k2);
-    double a0 = (A + 1.0) + (A - 1.0) * k + k2;
-    double a1 = -2.0 * ((A - 1.0) + (A + 1.0) * k);
-    double a2 = (A + 1.0) + (A - 1.0) * k - k2;
+    double b0 = A * ( ( A + 1.0 ) - ( A - 1.0 ) * k + k2 );
+    double b1 = 2.0 * A * ( ( A - 1.0 ) - ( A + 1.0 ) * k );
+    double b2 = A * ( ( A + 1.0 ) - ( A - 1.0 ) * k - k2 );
+    double a0 = ( A + 1.0 ) + ( A - 1.0 ) * k + k2;
+    double a1 = -2.0 * ( ( A - 1.0 ) + ( A + 1.0 ) * k );
+    double a2 = ( A + 1.0 ) + ( A - 1.0 ) * k - k2;
 
     double a0Inverse = 1.0 / a0;
-    
+
     m_a0 = b0 * a0Inverse;
     m_a1 = b1 * a0Inverse;
     m_a2 = b2 * a0Inverse;
@@ -257,24 +264,24 @@ void Biquad::setLowShelfParams(double cutoff, double dbGain)
     m_b2 = a2 * a0Inverse;
 }
 
-void Biquad::setZeroPolePairs(const Complex &zero, const Complex &pole)
+void Biquad::setZeroPolePairs( const Complex &zero, const Complex &pole )
 {
     m_a0 = 1.0;
     m_a1 = -2.0 * zero.real();
 
-    double zeroMag = abs(zero);
+    double zeroMag = abs( zero );
     m_a2 = zeroMag * zeroMag;
 
     m_b1 = -2.0 * pole.real();
 
-    double poleMag = abs(pole);
+    double poleMag = abs( pole );
     m_b2 = poleMag * poleMag;
 }
 
-void Biquad::setAllpassPole(const Complex &pole)
+void Biquad::setAllpassPole( const Complex &pole )
 {
-    Complex zero = Complex(1.0, 0.0) / pole;
-    setZeroPolePairs(zero, pole);
+    Complex zero = Complex( 1.0, 0.0 ) / pole;
+    setZeroPolePairs( zero, pole );
 }
 
 } // namespace WebCore

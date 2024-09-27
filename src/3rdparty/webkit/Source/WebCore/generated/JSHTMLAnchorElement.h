@@ -24,94 +24,100 @@
 #include "JSHTMLElement.h"
 #include <runtime/JSObjectWithGlobalObject.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class HTMLAnchorElement;
 
-class JSHTMLAnchorElement : public JSHTMLElement {
+class JSHTMLAnchorElement : public JSHTMLElement
+{
     typedef JSHTMLElement Base;
 public:
-    JSHTMLAnchorElement(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<HTMLAnchorElement>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
-    virtual void put(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::JSValue, JSC::PutPropertySlot&);
+    JSHTMLAnchorElement( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<HTMLAnchorElement> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
+    virtual void put( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::JSValue, JSC::PutPropertySlot & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 
-class JSHTMLAnchorElementPrototype : public JSC::JSObjectWithGlobalObject {
+class JSHTMLAnchorElementPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSHTMLAnchorElementPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSHTMLAnchorElementPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                                  JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 // Functions
 
-JSC::EncodedJSValue JSC_HOST_CALL jsHTMLAnchorElementPrototypeFunctionGetParameter(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsHTMLAnchorElementPrototypeFunctionToString(JSC::ExecState*);
+JSC::EncodedJSValue JSC_HOST_CALL jsHTMLAnchorElementPrototypeFunctionGetParameter( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsHTMLAnchorElementPrototypeFunctionToString( JSC::ExecState * );
 // Attributes
 
-JSC::JSValue jsHTMLAnchorElementAccessKey(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLAnchorElementAccessKey(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLAnchorElementCharset(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLAnchorElementCharset(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLAnchorElementCoords(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLAnchorElementCoords(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLAnchorElementHref(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLAnchorElementHref(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLAnchorElementHreflang(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLAnchorElementHreflang(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLAnchorElementName(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLAnchorElementName(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLAnchorElementPing(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLAnchorElementPing(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLAnchorElementRel(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLAnchorElementRel(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLAnchorElementRev(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLAnchorElementRev(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLAnchorElementShape(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLAnchorElementShape(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLAnchorElementTarget(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLAnchorElementTarget(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLAnchorElementType(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLAnchorElementType(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLAnchorElementHash(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLAnchorElementHash(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLAnchorElementHost(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLAnchorElementHost(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLAnchorElementHostname(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLAnchorElementHostname(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLAnchorElementPathname(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLAnchorElementPathname(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLAnchorElementPort(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLAnchorElementPort(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLAnchorElementProtocol(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLAnchorElementProtocol(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLAnchorElementSearch(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLAnchorElementSearch(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLAnchorElementOrigin(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsHTMLAnchorElementText(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsHTMLAnchorElementConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsHTMLAnchorElementAccessKey( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLAnchorElementAccessKey( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLAnchorElementCharset( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLAnchorElementCharset( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLAnchorElementCoords( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLAnchorElementCoords( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLAnchorElementHref( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLAnchorElementHref( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLAnchorElementHreflang( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLAnchorElementHreflang( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLAnchorElementName( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLAnchorElementName( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLAnchorElementPing( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLAnchorElementPing( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLAnchorElementRel( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLAnchorElementRel( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLAnchorElementRev( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLAnchorElementRev( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLAnchorElementShape( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLAnchorElementShape( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLAnchorElementTarget( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLAnchorElementTarget( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLAnchorElementType( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLAnchorElementType( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLAnchorElementHash( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLAnchorElementHash( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLAnchorElementHost( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLAnchorElementHost( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLAnchorElementHostname( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLAnchorElementHostname( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLAnchorElementPathname( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLAnchorElementPathname( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLAnchorElementPort( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLAnchorElementPort( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLAnchorElementProtocol( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLAnchorElementProtocol( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLAnchorElementSearch( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLAnchorElementSearch( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLAnchorElementOrigin( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsHTMLAnchorElementText( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsHTMLAnchorElementConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

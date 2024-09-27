@@ -26,32 +26,40 @@
 #include "RenderSVGTransformableContainer.h"
 #include "SVGNames.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 // Animated property definitions
-DEFINE_ANIMATED_BOOLEAN(SVGSwitchElement, SVGNames::externalResourcesRequiredAttr, ExternalResourcesRequired, externalResourcesRequired)
+DEFINE_ANIMATED_BOOLEAN( SVGSwitchElement, SVGNames::externalResourcesRequiredAttr, ExternalResourcesRequired,
+                         externalResourcesRequired )
 
-inline SVGSwitchElement::SVGSwitchElement(const QualifiedName& tagName, Document* document)
-    : SVGStyledTransformableElement(tagName, document)
+inline SVGSwitchElement::SVGSwitchElement( const QualifiedName &tagName, Document *document )
+    : SVGStyledTransformableElement( tagName, document )
 {
 }
 
-PassRefPtr<SVGSwitchElement> SVGSwitchElement::create(const QualifiedName& tagName, Document* document)
+PassRefPtr<SVGSwitchElement> SVGSwitchElement::create( const QualifiedName &tagName, Document *document )
 {
-    return adoptRef(new SVGSwitchElement(tagName, document));
+    return adoptRef( new SVGSwitchElement( tagName, document ) );
 }
 
-bool SVGSwitchElement::childShouldCreateRenderer(Node* child) const
+bool SVGSwitchElement::childShouldCreateRenderer( Node *child ) const
 {
     // FIXME: This function does not do what the comment below implies it does.
     // It will create a renderer for any valid SVG element children, not just the first one.
-    for (Node* node = firstChild(); node; node = node->nextSibling()) {
-        if (!node->isSVGElement())
+    for ( Node *node = firstChild(); node; node = node->nextSibling() )
+    {
+        if ( !node->isSVGElement() )
+        {
             continue;
+        }
 
-        SVGElement* element = static_cast<SVGElement*>(node);
-        if (!element || !element->isValid())
+        SVGElement *element = static_cast<SVGElement *>( node );
+
+        if ( !element || !element->isValid() )
+        {
             continue;
+        }
 
         return node == child; // Only allow this child if it's the first valid child
     }
@@ -59,36 +67,41 @@ bool SVGSwitchElement::childShouldCreateRenderer(Node* child) const
     return false;
 }
 
-RenderObject* SVGSwitchElement::createRenderer(RenderArena* arena, RenderStyle*)
+RenderObject *SVGSwitchElement::createRenderer( RenderArena *arena, RenderStyle * )
 {
-    return new (arena) RenderSVGTransformableContainer(this);
+    return new ( arena ) RenderSVGTransformableContainer( this );
 }
 
-void SVGSwitchElement::synchronizeProperty(const QualifiedName& attrName)
+void SVGSwitchElement::synchronizeProperty( const QualifiedName &attrName )
 {
-    SVGStyledTransformableElement::synchronizeProperty(attrName);
+    SVGStyledTransformableElement::synchronizeProperty( attrName );
 
-    if (attrName == anyQName()) {
+    if ( attrName == anyQName() )
+    {
         synchronizeExternalResourcesRequired();
-        SVGTests::synchronizeProperties(this, attrName);
+        SVGTests::synchronizeProperties( this, attrName );
         return;
     }
 
-    if (SVGExternalResourcesRequired::isKnownAttribute(attrName))
+    if ( SVGExternalResourcesRequired::isKnownAttribute( attrName ) )
+    {
         synchronizeExternalResourcesRequired();
-    else if (SVGTests::isKnownAttribute(attrName))
-        SVGTests::synchronizeProperties(this, attrName);
+    }
+    else if ( SVGTests::isKnownAttribute( attrName ) )
+    {
+        SVGTests::synchronizeProperties( this, attrName );
+    }
 }
 
-AttributeToPropertyTypeMap& SVGSwitchElement::attributeToPropertyTypeMap()
+AttributeToPropertyTypeMap &SVGSwitchElement::attributeToPropertyTypeMap()
 {
-    DEFINE_STATIC_LOCAL(AttributeToPropertyTypeMap, s_attributeToPropertyTypeMap, ());
+    DEFINE_STATIC_LOCAL( AttributeToPropertyTypeMap, s_attributeToPropertyTypeMap, () );
     return s_attributeToPropertyTypeMap;
 }
 
 void SVGSwitchElement::fillAttributeToPropertyTypeMap()
 {
-    SVGStyledTransformableElement::fillPassedAttributeToPropertyTypeMap(attributeToPropertyTypeMap());
+    SVGStyledTransformableElement::fillPassedAttributeToPropertyTypeMap( attributeToPropertyTypeMap() );
 }
 
 }

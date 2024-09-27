@@ -36,25 +36,26 @@ class QOpenGLWidgetPrivate;
 
 class Q_GUI_EXPORT QOpenGLWidget : public QWidget
 {
-    GUI_CS_OBJECT(QOpenGLWidget)
+    GUI_CS_OBJECT( QOpenGLWidget )
 
- public:
-    enum UpdateBehavior {
+public:
+    enum UpdateBehavior
+    {
         NoPartialUpdate,
         PartialUpdate
     };
 
-    explicit QOpenGLWidget(QWidget* parent = nullptr, Qt::WindowFlags flags = Qt::EmptyFlag);
+    explicit QOpenGLWidget( QWidget *parent = nullptr, Qt::WindowFlags flags = Qt::EmptyFlag );
 
-    QOpenGLWidget(const QOpenGLWidget &) = delete;
-    QOpenGLWidget &operator=(const QOpenGLWidget &) = delete;
+    QOpenGLWidget( const QOpenGLWidget & ) = delete;
+    QOpenGLWidget &operator=( const QOpenGLWidget & ) = delete;
 
     ~QOpenGLWidget();
 
-    void setUpdateBehavior(UpdateBehavior updateBehavior);
+    void setUpdateBehavior( UpdateBehavior updateBehavior );
     UpdateBehavior updateBehavior() const;
 
-    void setFormat(const QSurfaceFormat &format);
+    void setFormat( const QSurfaceFormat &format );
     QSurfaceFormat format() const;
 
     bool isValid() const;
@@ -67,33 +68,33 @@ class Q_GUI_EXPORT QOpenGLWidget : public QWidget
 
     QImage grabFramebuffer();
 
-    GUI_CS_SIGNAL_1(Public, void aboutToCompose())
-    GUI_CS_SIGNAL_2(aboutToCompose)
+    GUI_CS_SIGNAL_1( Public, void aboutToCompose() )
+    GUI_CS_SIGNAL_2( aboutToCompose )
 
-    GUI_CS_SIGNAL_1(Public, void frameSwapped())
-    GUI_CS_SIGNAL_2(frameSwapped)
+    GUI_CS_SIGNAL_1( Public, void frameSwapped() )
+    GUI_CS_SIGNAL_2( frameSwapped )
 
-    GUI_CS_SIGNAL_1(Public, void aboutToResize())
-    GUI_CS_SIGNAL_2(aboutToResize)
+    GUI_CS_SIGNAL_1( Public, void aboutToResize() )
+    GUI_CS_SIGNAL_2( aboutToResize )
 
-    GUI_CS_SIGNAL_1(Public, void resized())
-    GUI_CS_SIGNAL_2(resized)
+    GUI_CS_SIGNAL_1( Public, void resized() )
+    GUI_CS_SIGNAL_2( resized )
 
- protected:
+protected:
     virtual void initializeGL();
-    virtual void resizeGL(int w, int h);
+    virtual void resizeGL( int w, int h );
     virtual void paintGL();
 
-    void paintEvent(QPaintEvent *event) override;
-    void resizeEvent(QResizeEvent *event) override;
-    bool event(QEvent *event) override;
+    void paintEvent( QPaintEvent *event ) override;
+    void resizeEvent( QResizeEvent *event ) override;
+    bool event( QEvent *event ) override;
 
-    int metric(QPaintDevice::PaintDeviceMetric metric) const override;
-    QPaintDevice *redirected(QPoint *point) const override;
+    int metric( QPaintDevice::PaintDeviceMetric metric ) const override;
+    QPaintDevice *redirected( QPoint *point ) const override;
     QPaintEngine *paintEngine() const override;
 
- private:
-    Q_DECLARE_PRIVATE(QOpenGLWidget)
+private:
+    Q_DECLARE_PRIVATE( QOpenGLWidget )
 };
 
 #endif // QT_NO_OPENGL

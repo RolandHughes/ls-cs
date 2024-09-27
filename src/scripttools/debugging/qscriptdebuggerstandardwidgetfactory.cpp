@@ -32,10 +32,8 @@
 #include "qscriptdebugoutputwidget_p.h"
 #include "qscripterrorlogwidget_p.h"
 
-QT_BEGIN_NAMESPACE
-
-QScriptDebuggerStandardWidgetFactory::QScriptDebuggerStandardWidgetFactory(QObject *parent)
-   : QObject(parent)
+QT_BEGIN_NAMESPACE QScriptDebuggerStandardWidgetFactory::QScriptDebuggerStandardWidgetFactory( QObject *parent )
+    : QObject( parent )
 {
 }
 
@@ -45,47 +43,47 @@ QScriptDebuggerStandardWidgetFactory::~QScriptDebuggerStandardWidgetFactory()
 
 QScriptDebugOutputWidgetInterface *QScriptDebuggerStandardWidgetFactory::createDebugOutputWidget()
 {
-   return new QScriptDebugOutputWidget();
+    return new QScriptDebugOutputWidget();
 }
 
 QScriptDebuggerConsoleWidgetInterface *QScriptDebuggerStandardWidgetFactory::createConsoleWidget()
 {
-   return new QScriptDebuggerConsoleWidget();
+    return new QScriptDebuggerConsoleWidget();
 }
 
 QScriptErrorLogWidgetInterface *QScriptDebuggerStandardWidgetFactory::createErrorLogWidget()
 {
-   return new QScriptErrorLogWidget();
+    return new QScriptErrorLogWidget();
 }
 
 QScriptDebuggerCodeFinderWidgetInterface *QScriptDebuggerStandardWidgetFactory::createCodeFinderWidget()
 {
-   return new QScriptDebuggerCodeFinderWidget();
+    return new QScriptDebuggerCodeFinderWidget();
 }
 
 QScriptDebuggerStackWidgetInterface *QScriptDebuggerStandardWidgetFactory::createStackWidget()
 {
-   return new QScriptDebuggerStackWidget();
+    return new QScriptDebuggerStackWidget();
 }
 
 QScriptDebuggerScriptsWidgetInterface *QScriptDebuggerStandardWidgetFactory::createScriptsWidget()
 {
-   return new QScriptDebuggerScriptsWidget();
+    return new QScriptDebuggerScriptsWidget();
 }
 
 QScriptDebuggerLocalsWidgetInterface *QScriptDebuggerStandardWidgetFactory::createLocalsWidget()
 {
-   return new QScriptDebuggerLocalsWidget();
+    return new QScriptDebuggerLocalsWidget();
 }
 
 QScriptDebuggerCodeWidgetInterface *QScriptDebuggerStandardWidgetFactory::createCodeWidget()
 {
-   return new QScriptDebuggerCodeWidget();
+    return new QScriptDebuggerCodeWidget();
 }
 
 QScriptBreakpointsWidgetInterface *QScriptDebuggerStandardWidgetFactory::createBreakpointsWidget()
 {
-   return new QScriptBreakpointsWidget();
+    return new QScriptBreakpointsWidget();
 }
 
 QT_END_NAMESPACE

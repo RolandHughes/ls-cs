@@ -26,19 +26,21 @@
 
 #include "HTMLElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class HTMLFontElement : public HTMLElement {
+class HTMLFontElement : public HTMLElement
+{
 public:
-    static PassRefPtr<HTMLFontElement> create(const QualifiedName&, Document*);
-    
-    static bool cssValueFromFontSizeNumber(const String&, int&);
+    static PassRefPtr<HTMLFontElement> create( const QualifiedName &, Document * );
+
+    static bool cssValueFromFontSizeNumber( const String &, int & );
 
 private:
-    HTMLFontElement(const QualifiedName&, Document*);
+    HTMLFontElement( const QualifiedName &, Document * );
 
-    virtual bool mapToEntry(const QualifiedName&, MappedAttributeEntry&) const;
-    virtual void parseMappedAttribute(Attribute*);
+    virtual bool mapToEntry( const QualifiedName &, MappedAttributeEntry & ) const;
+    virtual void parseMappedAttribute( Attribute * );
 };
 
 } // namespace

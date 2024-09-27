@@ -28,43 +28,44 @@
 #include <qcalltargetdescription_p.h>
 #include <qxmlname.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class CallSite : public UnlimitedContainer
 {
- public:
-   QXmlName name() const;
-   bool isRecursive() const;
-   void setIsRecursive(const bool value);
+public:
+    QXmlName name() const;
+    bool isRecursive() const;
+    void setIsRecursive( const bool value );
 
-   /**
-    * Called in the earliest stages of the compilation process. @p sign can
-    * be any function signature for a user declared function. If @p sign
-    * matches this UserFunctionCallsite, it means the UserFunction represented
-    * by @p sign is recursive and that this UserFunctionCallsite should take
-    * appropriate measures.
-    *
-    * @returns @c true if is recursive, otherwise @c false
-    */
-   virtual bool configureRecursion(const CallTargetDescription::Ptr &sign) = 0;
+    /**
+     * Called in the earliest stages of the compilation process. @p sign can
+     * be any function signature for a user declared function. If @p sign
+     * matches this UserFunctionCallsite, it means the UserFunction represented
+     * by @p sign is recursive and that this UserFunctionCallsite should take
+     * appropriate measures.
+     *
+     * @returns @c true if is recursive, otherwise @c false
+     */
+    virtual bool configureRecursion( const CallTargetDescription::Ptr &sign ) = 0;
 
-   /**
-    * @short Returns the body of the function/template/component that is
-    * being called.
-    */
-   virtual Expression::Ptr body() const = 0;
+    /**
+     * @short Returns the body of the function/template/component that is
+     * being called.
+     */
+    virtual Expression::Ptr body() const = 0;
 
-   virtual CallTargetDescription::Ptr callTargetDescription() const = 0;
+    virtual CallTargetDescription::Ptr callTargetDescription() const = 0;
 
- protected:
-   CallSite(const QXmlName &name = QXmlName());
+protected:
+    CallSite( const QXmlName &name = QXmlName() );
 
- private:
-   CallSite(const CallSite &) = delete;
-   CallSite &operator=(const CallSite &) = delete;
+private:
+    CallSite( const CallSite & ) = delete;
+    CallSite &operator=( const CallSite & ) = delete;
 
-   bool            m_isRecursive;
-   const QXmlName  m_name;
+    bool            m_isRecursive;
+    const QXmlName  m_name;
 };
 
 }

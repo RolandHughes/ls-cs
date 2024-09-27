@@ -32,37 +32,39 @@
 #include "AudioArray.h"
 #include <wtf/PassOwnPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 // An AudioChannel represents a buffer of non-interleaved floating-point audio samples.
 // The PCM samples are normally assumed to be in a nominal range -1.0 -> +1.0
-class AudioChannel {
-    WTF_MAKE_NONCOPYABLE(AudioChannel);
+class AudioChannel
+{
+    WTF_MAKE_NONCOPYABLE( AudioChannel );
 public:
     // Memory can be externally referenced, or can be internally allocated with an AudioFloatArray.
 
     // Reference an external buffer.
-    AudioChannel(float* storage, size_t length)
-        : m_length(length), m_rawPointer(storage) { }
+    AudioChannel( float *storage, size_t length )
+        : m_length( length ), m_rawPointer( storage ) { }
 
     // Manage storage for us.
-    explicit AudioChannel(size_t length)
-        : m_length(length)
-        , m_rawPointer(0)
+    explicit AudioChannel( size_t length )
+        : m_length( length )
+        , m_rawPointer( 0 )
     {
-        m_memBuffer = adoptPtr(new AudioFloatArray(length));
+        m_memBuffer = adoptPtr( new AudioFloatArray( length ) );
     }
 
     // A "blank" audio channel -- must call set() before it's useful...
     AudioChannel()
-        : m_length(0)
-        , m_rawPointer(0)
+        : m_length( 0 )
+        , m_rawPointer( 0 )
     {
     }
 
     // Redefine the memory for this channel.
     // storage represents external memory not managed by this object.
-    void set(float* storage, size_t length)
+    void set( float *storage, size_t length )
     {
         m_memBuffer.clear(); // cleanup managed storage
         m_rawPointer = storage;
@@ -70,32 +72,45 @@ public:
     }
 
     // How many sample-frames do we contain?
-    size_t length() const { return m_length; }
+    size_t length() const
+    {
+        return m_length;
+    }
 
     // Direct access to PCM sample data
-    float* data() { return m_rawPointer ? m_rawPointer : m_memBuffer->data(); }
-    const float* data() const { return m_rawPointer ? m_rawPointer : m_memBuffer->data(); }
+    float *data()
+    {
+        return m_rawPointer ? m_rawPointer : m_memBuffer->data();
+    }
+    const float *data() const
+    {
+        return m_rawPointer ? m_rawPointer : m_memBuffer->data();
+    }
 
     // Zeroes out all sample values in buffer.
     void zero()
     {
-        if (m_memBuffer.get())
+        if ( m_memBuffer.get() )
+        {
             m_memBuffer->zero();
+        }
         else
-            memset(m_rawPointer, 0, sizeof(float) * m_length);
+        {
+            memset( m_rawPointer, 0, sizeof( float ) * m_length );
+        }
     }
 
     // Scales all samples by the same amount.
-    void scale(double scale);
+    void scale( double scale );
 
     // A simple memcpy() from the source channel
-    void copyFrom(const AudioChannel* sourceChannel);
+    void copyFrom( const AudioChannel *sourceChannel );
 
     // Copies the given range from the source channel.
-    void copyFromRange(const AudioChannel* sourceChannel, unsigned startFrame, unsigned endFrame);
+    void copyFromRange( const AudioChannel *sourceChannel, unsigned startFrame, unsigned endFrame );
 
     // Sums (with unity gain) from the source channel.
-    void sumFrom(const AudioChannel* sourceChannel);
+    void sumFrom( const AudioChannel *sourceChannel );
 
     // Returns maximum absolute value (useful for normalization).
     float maxAbsValue() const;
@@ -103,7 +118,7 @@ public:
 private:
     size_t m_length;
 
-    float* m_rawPointer;
+    float *m_rawPointer;
     OwnPtr<AudioFloatArray> m_memBuffer;
 };
 

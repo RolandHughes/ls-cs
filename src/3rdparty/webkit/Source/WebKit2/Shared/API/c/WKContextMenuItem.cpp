@@ -37,65 +37,68 @@ using namespace WebKit;
 
 WKTypeID WKContextMenuItemGetTypeID()
 {
-    return toAPI(WebContextMenuItem::APIType);
+    return toAPI( WebContextMenuItem::APIType );
 }
 
-WKContextMenuItemRef WKContextMenuItemCreateAsAction(WKContextMenuItemTag tag, WKStringRef title, bool enabled)
+WKContextMenuItemRef WKContextMenuItemCreateAsAction( WKContextMenuItemTag tag, WKStringRef title, bool enabled )
 {
-    return toAPI(WebContextMenuItem::create(WebContextMenuItemData(ActionType, toImpl(tag), toImpl(title)->string(), enabled, false)).leakRef());
+    return toAPI( WebContextMenuItem::create( WebContextMenuItemData( ActionType, toImpl( tag ), toImpl( title )->string(), enabled,
+                  false ) ).leakRef() );
 }
 
-WKContextMenuItemRef WKContextMenuItemCreateAsCheckableAction(WKContextMenuItemTag tag, WKStringRef title, bool enabled, bool checked)
+WKContextMenuItemRef WKContextMenuItemCreateAsCheckableAction( WKContextMenuItemTag tag, WKStringRef title, bool enabled,
+        bool checked )
 {
-    return toAPI(WebContextMenuItem::create(WebContextMenuItemData(CheckableActionType, toImpl(tag), toImpl(title)->string(), enabled, checked)).leakRef());
+    return toAPI( WebContextMenuItem::create( WebContextMenuItemData( CheckableActionType, toImpl( tag ), toImpl( title )->string(),
+                  enabled, checked ) ).leakRef() );
 }
 
-WKContextMenuItemRef WKContextMenuItemCreateAsSubmenu(WKStringRef title, bool enabled, WKArrayRef submenuItems)
+WKContextMenuItemRef WKContextMenuItemCreateAsSubmenu( WKStringRef title, bool enabled, WKArrayRef submenuItems )
 {
-    return toAPI(WebContextMenuItem::create(toImpl(title)->string(), enabled, toImpl(submenuItems)).leakRef());
+    return toAPI( WebContextMenuItem::create( toImpl( title )->string(), enabled, toImpl( submenuItems ) ).leakRef() );
 }
 
 WKContextMenuItemRef WKContextMenuItemSeparatorItem()
 {
-    return toAPI(WebContextMenuItem::separatorItem());
+    return toAPI( WebContextMenuItem::separatorItem() );
 }
 
-WKContextMenuItemTag WKContextMenuItemGetTag(WKContextMenuItemRef itemRef)
+WKContextMenuItemTag WKContextMenuItemGetTag( WKContextMenuItemRef itemRef )
 {
-    return toAPI(toImpl(itemRef)->data()->action());
+    return toAPI( toImpl( itemRef )->data()->action() );
 }
 
-WKContextMenuItemType WKContextMenuItemGetType(WKContextMenuItemRef itemRef)
+WKContextMenuItemType WKContextMenuItemGetType( WKContextMenuItemRef itemRef )
 {
-    return toAPI(toImpl(itemRef)->data()->type());
+    return toAPI( toImpl( itemRef )->data()->type() );
 }
 
-WKStringRef WKContextMenuItemCopyTitle(WKContextMenuItemRef itemRef)
+WKStringRef WKContextMenuItemCopyTitle( WKContextMenuItemRef itemRef )
 {
-    return toCopiedAPI(toImpl(itemRef)->data()->title().impl());
+    return toCopiedAPI( toImpl( itemRef )->data()->title().impl() );
 }
 
-bool WKContextMenuItemGetEnabled(WKContextMenuItemRef itemRef)
+bool WKContextMenuItemGetEnabled( WKContextMenuItemRef itemRef )
 {
-    return toImpl(itemRef)->data()->enabled();
+    return toImpl( itemRef )->data()->enabled();
 }
 
-bool WKContextMenuItemGetChecked(WKContextMenuItemRef itemRef)
+bool WKContextMenuItemGetChecked( WKContextMenuItemRef itemRef )
 {
-    return toImpl(itemRef)->data()->checked();
+    return toImpl( itemRef )->data()->checked();
 }
 
-WKArrayRef WKContextMenuCopySubmenuItems(WKContextMenuItemRef itemRef)
+WKArrayRef WKContextMenuCopySubmenuItems( WKContextMenuItemRef itemRef )
 {
-    return toAPI(toImpl(itemRef)->submenuItemsAsImmutableArray().leakRef());
+    return toAPI( toImpl( itemRef )->submenuItemsAsImmutableArray().leakRef() );
 }
 
-WKTypeRef WKContextMenuItemGetUserData(WKContextMenuItemRef itemRef)
+WKTypeRef WKContextMenuItemGetUserData( WKContextMenuItemRef itemRef )
 {
-    return toAPI(toImpl(itemRef)->userData());
+    return toAPI( toImpl( itemRef )->userData() );
 }
 
-void WKContextMenuItemSetUserData(WKContextMenuItemRef itemRef, WKTypeRef userDataRef)
+void WKContextMenuItemSetUserData( WKContextMenuItemRef itemRef, WKTypeRef userDataRef )
 {
-    toImpl(itemRef)->setUserData(toImpl(userDataRef));
+    toImpl( itemRef )->setUserData( toImpl( userDataRef ) );
 }

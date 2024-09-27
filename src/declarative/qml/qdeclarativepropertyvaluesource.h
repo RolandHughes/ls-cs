@@ -31,12 +31,12 @@ QT_BEGIN_NAMESPACE
 class QDeclarativeProperty;
 class Q_DECLARATIVE_EXPORT QDeclarativePropertyValueSource
 {
- public:
-   QDeclarativePropertyValueSource();
-   virtual ~QDeclarativePropertyValueSource();
-   virtual void setTarget(const QDeclarativeProperty &) = 0;
+public:
+    QDeclarativePropertyValueSource();
+    virtual ~QDeclarativePropertyValueSource();
+    virtual void setTarget( const QDeclarativeProperty & ) = 0;
 };
-CS_DECLARE_INTERFACE(QDeclarativePropertyValueSource, "com.copperspice.qml.QDeclarativePropertyValueSource")
+CS_DECLARE_INTERFACE( QDeclarativePropertyValueSource, "com.copperspice.qml.QDeclarativePropertyValueSource" )
 
 QT_END_NAMESPACE
 

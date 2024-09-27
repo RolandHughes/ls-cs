@@ -45,17 +45,17 @@ public:
     QPlatformPrinterSupport();
     virtual ~QPlatformPrinterSupport();
 
-    virtual QPrintEngine *createNativePrintEngine(QPrinter::PrinterMode mode);
-    virtual QPaintEngine *createPaintEngine(QPrintEngine *engine, QPrinter::PrinterMode mode);
+    virtual QPrintEngine *createNativePrintEngine( QPrinter::PrinterMode mode );
+    virtual QPaintEngine *createPaintEngine( QPrintEngine *engine, QPrinter::PrinterMode mode );
 
-    virtual QPrintDevice createPrintDevice(const QString &id);
+    virtual QPrintDevice createPrintDevice( const QString &id );
     virtual QPrintDevice createDefaultPrintDevice();
     virtual QStringList availablePrintDeviceIds() const;
     virtual QString defaultPrintDeviceId() const;
 
 protected:
-    static QPrintDevice createPrintDevice(QPlatformPrintDevice *device);
-    static QPageSize createPageSize(const QString &id, QSize size, const QString &localizedName);
+    static QPrintDevice createPrintDevice( QPlatformPrintDevice *device );
+    static QPageSize createPageSize( const QString &id, QSize size, const QString &localizedName );
 };
 
 #endif // QT_NO_PRINTER

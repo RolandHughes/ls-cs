@@ -28,34 +28,39 @@
 #include <wtf/PassOwnPtr.h>
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class SVGPathSegListSource : public SVGPathSource {
+class SVGPathSegListSource : public SVGPathSource
+{
 public:
-    static PassOwnPtr<SVGPathSegListSource> create(const SVGPathSegList& pathSegList)
+    static PassOwnPtr<SVGPathSegListSource> create( const SVGPathSegList &pathSegList )
     {
-        return adoptPtr(new SVGPathSegListSource(pathSegList));
+        return adoptPtr( new SVGPathSegListSource( pathSegList ) );
     }
 
 private:
-    SVGPathSegListSource(const SVGPathSegList&);
+    SVGPathSegListSource( const SVGPathSegList & );
 
     virtual bool hasMoreData() const;
-    virtual bool moveToNextToken() { return true; }
-    virtual bool parseSVGSegmentType(SVGPathSegType&);
-    virtual SVGPathSegType nextCommand(SVGPathSegType);
+    virtual bool moveToNextToken()
+    {
+        return true;
+    }
+    virtual bool parseSVGSegmentType( SVGPathSegType & );
+    virtual SVGPathSegType nextCommand( SVGPathSegType );
 
-    virtual bool parseMoveToSegment(FloatPoint&);
-    virtual bool parseLineToSegment(FloatPoint&);
-    virtual bool parseLineToHorizontalSegment(float&);
-    virtual bool parseLineToVerticalSegment(float&);
-    virtual bool parseCurveToCubicSegment(FloatPoint&, FloatPoint&, FloatPoint&);
-    virtual bool parseCurveToCubicSmoothSegment(FloatPoint&, FloatPoint&);
-    virtual bool parseCurveToQuadraticSegment(FloatPoint&, FloatPoint&);
-    virtual bool parseCurveToQuadraticSmoothSegment(FloatPoint&);
-    virtual bool parseArcToSegment(float&, float&, float&, bool&, bool&, FloatPoint&);
+    virtual bool parseMoveToSegment( FloatPoint & );
+    virtual bool parseLineToSegment( FloatPoint & );
+    virtual bool parseLineToHorizontalSegment( float & );
+    virtual bool parseLineToVerticalSegment( float & );
+    virtual bool parseCurveToCubicSegment( FloatPoint &, FloatPoint &, FloatPoint & );
+    virtual bool parseCurveToCubicSmoothSegment( FloatPoint &, FloatPoint & );
+    virtual bool parseCurveToQuadraticSegment( FloatPoint &, FloatPoint & );
+    virtual bool parseCurveToQuadraticSmoothSegment( FloatPoint & );
+    virtual bool parseArcToSegment( float &, float &, float &, bool &, bool &, FloatPoint & );
 
-    const SVGPathSegList& m_pathSegList;
+    const SVGPathSegList &m_pathSegList;
     RefPtr<SVGPathSeg> m_segment;
     int m_itemCurrent;
     int m_itemEnd;

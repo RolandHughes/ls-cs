@@ -28,22 +28,23 @@
 #include <qsequencetype_p.h>
 #include <qxmlname.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 class DynamicContext;
 
 class ExternalVariableLoader : public QSharedData
 {
- public:
-   typedef QExplicitlySharedDataPointer<ExternalVariableLoader> Ptr;
-   inline ExternalVariableLoader() {}
+public:
+    typedef QExplicitlySharedDataPointer<ExternalVariableLoader> Ptr;
+    inline ExternalVariableLoader() {}
 
-   virtual ~ExternalVariableLoader();
+    virtual ~ExternalVariableLoader();
 
-   virtual SequenceType::Ptr announceExternalVariable(const QXmlName name, const SequenceType::Ptr &declaredType);
-   virtual Item::Iterator::Ptr evaluateSequence(const QXmlName name,
-         const QExplicitlySharedDataPointer<DynamicContext> &context);
-   virtual Item evaluateSingleton(const QXmlName name, const QExplicitlySharedDataPointer<DynamicContext> &context);
-   virtual bool evaluateEBV(const QXmlName name, const QExplicitlySharedDataPointer<DynamicContext> &context);
+    virtual SequenceType::Ptr announceExternalVariable( const QXmlName name, const SequenceType::Ptr &declaredType );
+    virtual Item::Iterator::Ptr evaluateSequence( const QXmlName name,
+            const QExplicitlySharedDataPointer<DynamicContext> &context );
+    virtual Item evaluateSingleton( const QXmlName name, const QExplicitlySharedDataPointer<DynamicContext> &context );
+    virtual bool evaluateEBV( const QXmlName name, const QExplicitlySharedDataPointer<DynamicContext> &context );
 };
 }
 

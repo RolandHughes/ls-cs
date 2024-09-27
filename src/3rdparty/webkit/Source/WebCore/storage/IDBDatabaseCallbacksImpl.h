@@ -32,23 +32,25 @@
 
 #if ENABLE(INDEXED_DATABASE)
 
-namespace WebCore {
+namespace WebCore
+{
 
 class IDBDatabase;
 
-class IDBDatabaseCallbacksImpl : public IDBDatabaseCallbacks {
+class IDBDatabaseCallbacksImpl : public IDBDatabaseCallbacks
+{
 public:
-    static PassRefPtr<IDBDatabaseCallbacksImpl> create(IDBDatabase*);
+    static PassRefPtr<IDBDatabaseCallbacksImpl> create( IDBDatabase * );
     virtual ~IDBDatabaseCallbacksImpl();
 
-    virtual void onVersionChange(const String& version);
-    void unregisterDatabase(IDBDatabase*);
+    virtual void onVersionChange( const String &version );
+    void unregisterDatabase( IDBDatabase * );
 
 private:
-    IDBDatabaseCallbacksImpl(IDBDatabase*);
+    IDBDatabaseCallbacksImpl( IDBDatabase * );
 
     // m_database has a RefPtr to this, so use a weak pointer to avoid a cycle.
-    IDBDatabase* m_database;
+    IDBDatabase *m_database;
 };
 
 } // namespace WebCore

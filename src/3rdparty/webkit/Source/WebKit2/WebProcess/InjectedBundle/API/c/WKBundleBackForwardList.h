@@ -34,12 +34,12 @@ extern "C" {
 
 WK_EXPORT WKTypeID WKBundleBackForwardListGetTypeID();
 
-WK_EXPORT WKBundleBackForwardListItemRef WKBundleBackForwardListCopyItemAtIndex(WKBundleBackForwardListRef list, int index);
+WK_EXPORT WKBundleBackForwardListItemRef WKBundleBackForwardListCopyItemAtIndex( WKBundleBackForwardListRef list, int index );
 
-WK_EXPORT unsigned WKBundleBackForwardListGetBackListCount(WKBundleBackForwardListRef list);
-WK_EXPORT unsigned WKBundleBackForwardListGetForwardListCount(WKBundleBackForwardListRef list);
+WK_EXPORT unsigned WKBundleBackForwardListGetBackListCount( WKBundleBackForwardListRef list );
+WK_EXPORT unsigned WKBundleBackForwardListGetForwardListCount( WKBundleBackForwardListRef list );
 
-WK_EXPORT void WKBundleBackForwardListClear(WKBundleBackForwardListRef list);
+WK_EXPORT void WKBundleBackForwardListClear( WKBundleBackForwardListRef list );
 
 #ifdef __cplusplus
 }

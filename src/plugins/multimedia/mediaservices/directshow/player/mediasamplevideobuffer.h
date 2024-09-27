@@ -30,23 +30,24 @@
 
 class MediaSampleVideoBuffer : public QAbstractVideoBuffer
 {
- public:
-   MediaSampleVideoBuffer(IMediaSample *sample, int bytesPerLine);
-   ~MediaSampleVideoBuffer();
+public:
+    MediaSampleVideoBuffer( IMediaSample *sample, int bytesPerLine );
+    ~MediaSampleVideoBuffer();
 
-   IMediaSample *sample() {
-      return m_sample;
-   }
+    IMediaSample *sample()
+    {
+        return m_sample;
+    }
 
-   uchar *map(MapMode mode, int *numBytes, int *bytesPerLine) override;
-   void unmap() override;
+    uchar *map( MapMode mode, int *numBytes, int *bytesPerLine ) override;
+    void unmap() override;
 
-   MapMode mapMode() const override;
+    MapMode mapMode() const override;
 
- private:
-   IMediaSample *m_sample;
-   int m_bytesPerLine;
-   MapMode m_mapMode;
+private:
+    IMediaSample *m_sample;
+    int m_bytesPerLine;
+    MapMode m_mapMode;
 };
 
 

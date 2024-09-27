@@ -31,65 +31,78 @@ class WebDOMStringPrivate;
 //
 // WARNING: It is not safe to pass a WebDOMString across threads!!!
 //
-class WebDOMString {
+class WebDOMString
+{
 public:
-    ~WebDOMString() { reset(); }
-
-    WebDOMString() : m_private(0) { }
-
-    WebDOMString(const WebUChar* data, size_t len) : m_private(0)
+    ~WebDOMString()
     {
-        assign(data, len);
+        reset();
     }
 
-    WebDOMString(const WebDOMString& s) : m_private(0) { assign(s); }
+    WebDOMString() : m_private( 0 ) { }
 
-    WebDOMString& operator=(const WebDOMString& s)
+    WebDOMString( const WebUChar *data, size_t len ) : m_private( 0 )
     {
-        assign(s);
+        assign( data, len );
+    }
+
+    WebDOMString( const WebDOMString &s ) : m_private( 0 )
+    {
+        assign( s );
+    }
+
+    WebDOMString &operator=( const WebDOMString &s )
+    {
+        assign( s );
         return *this;
     }
 
     void reset();
-    void assign(const WebDOMString&);
-    void assign(const WebUChar* data, size_t len);
+    void assign( const WebDOMString & );
+    void assign( const WebUChar *data, size_t len );
 
     size_t length() const;
-    const WebUChar* data() const;
+    const WebUChar *data() const;
 
-    bool isEmpty() const { return !length(); }
-    bool isNull() const { return !m_private; }
+    bool isEmpty() const
+    {
+        return !length();
+    }
+    bool isNull() const
+    {
+        return !m_private;
+    }
 
     WebDOMCString utf8() const;
 
-    static WebDOMString fromUTF8(const char* data, size_t length);
-    static WebDOMString fromUTF8(const char* data);
+    static WebDOMString fromUTF8( const char *data, size_t length );
+    static WebDOMString fromUTF8( const char *data );
 
-    template <int N> WebDOMString(const char (&data)[N])
-        : m_private(0)
+    template <int N> WebDOMString( const char ( &data )[N] )
+        : m_private( 0 )
     {
-        assign(fromUTF8(data, N - 1));
+        assign( fromUTF8( data, N - 1 ) );
     }
 
-    template <int N> WebDOMString& operator=(const char (&data)[N])
+    template <int N> WebDOMString &operator=( const char ( &data )[N] )
     {
-        assign(fromUTF8(data, N - 1));
+        assign( fromUTF8( data, N - 1 ) );
         return *this;
     }
 
-    WebDOMString(const WTF::String&);
-    WebDOMString& operator=(const WTF::String&);
+    WebDOMString( const WTF::String & );
+    WebDOMString &operator=( const WTF::String & );
     operator WTF::String() const;
 
-    WebDOMString(const WTF::AtomicString&);
-    WebDOMString& operator=(const WTF::AtomicString&);
+    WebDOMString( const WTF::AtomicString & );
+    WebDOMString &operator=( const WTF::AtomicString & );
     operator WTF::AtomicString() const;
 
-    bool equals(const char* string) const;
+    bool equals( const char *string ) const;
 
 private:
-    void assign(WebDOMStringPrivate*);
-    WebDOMStringPrivate* m_private;
+    void assign( WebDOMStringPrivate * );
+    WebDOMStringPrivate *m_private;
 };
 
 #endif

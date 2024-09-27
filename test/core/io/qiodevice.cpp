@@ -21,13 +21,13 @@
 
 #include <cs_catch2.h>
 
-TEST_CASE("QIODevice traits", "[qiodevice]")
+TEST_CASE( "QIODevice traits", "[qiodevice]" )
 {
-   REQUIRE(std::is_copy_constructible_v<QIODevice> == false);
-   REQUIRE(std::is_move_constructible_v<QIODevice> == false);
+    REQUIRE( std::is_copy_constructible_v<QIODevice> == false );
+    REQUIRE( std::is_move_constructible_v<QIODevice> == false );
 
-   REQUIRE(std::is_copy_assignable_v<QIODevice> == false);
-   REQUIRE(std::is_move_assignable_v<QIODevice> == false);
+    REQUIRE( std::is_copy_assignable_v<QIODevice> == false );
+    REQUIRE( std::is_move_assignable_v<QIODevice> == false );
 
-   REQUIRE(std::has_virtual_destructor_v<QIODevice> == true);
+    REQUIRE( std::has_virtual_destructor_v<QIODevice> == true );
 }

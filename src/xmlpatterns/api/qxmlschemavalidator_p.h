@@ -35,57 +35,64 @@
 
 class QXmlSchemaValidatorPrivate
 {
- public:
-   QXmlSchemaValidatorPrivate(const QXmlSchema &schema)
-      : m_namePool(schema.namePool()), m_userMessageHandler(nullptr), m_uriResolver(nullptr),
-        m_userNetworkAccessManager(nullptr)
-   {
-      setSchema(schema);
+public:
+    QXmlSchemaValidatorPrivate( const QXmlSchema &schema )
+        : m_namePool( schema.namePool() ), m_userMessageHandler( nullptr ), m_uriResolver( nullptr ),
+          m_userNetworkAccessManager( nullptr )
+    {
+        setSchema( schema );
 
-      const QXmlSchemaPrivate *p = schema.d;
+        const QXmlSchemaPrivate *p = schema.d;
 
-      // initialize the environment properties with the ones from the schema
+        // initialize the environment properties with the ones from the schema
 
-      if (p->m_userNetworkAccessManager) { // schema has user defined network access manager
-         m_userNetworkAccessManager = p->m_userNetworkAccessManager;
-      } else {
-         m_networkAccessManager = p->m_networkAccessManager;
-      }
+        if ( p->m_userNetworkAccessManager ) // schema has user defined network access manager
+        {
+            m_userNetworkAccessManager = p->m_userNetworkAccessManager;
+        }
+        else
+        {
+            m_networkAccessManager = p->m_networkAccessManager;
+        }
 
-      if (p->m_userMessageHandler) { // schema has user defined message handler
-         m_userMessageHandler = p->m_userMessageHandler;
-      } else {
-         m_messageHandler = p->m_messageHandler;
-      }
+        if ( p->m_userMessageHandler ) // schema has user defined message handler
+        {
+            m_userMessageHandler = p->m_userMessageHandler;
+        }
+        else
+        {
+            m_messageHandler = p->m_messageHandler;
+        }
 
-      m_uriResolver = p->m_uriResolver;
-   }
+        m_uriResolver = p->m_uriResolver;
+    }
 
-   void setSchema(const QXmlSchema &schema) {
-      // use same name pool as the schema
-      m_namePool = schema.namePool();
-      m_schema = schema.d->m_schemaParserContext->schema();
-      m_schemaDocumentUri = schema.documentUri();
+    void setSchema( const QXmlSchema &schema )
+    {
+        // use same name pool as the schema
+        m_namePool = schema.namePool();
+        m_schema = schema.d->m_schemaParserContext->schema();
+        m_schemaDocumentUri = schema.documentUri();
 
-      // create a new schema context
-      m_context = QPatternist::XsdSchemaContext::Ptr(new QPatternist::XsdSchemaContext(m_namePool.d));
-      m_context->m_schemaTypeFactory = schema.d->m_schemaContext->m_schemaTypeFactory;
-      m_context->m_builtinTypesFacetList = schema.d->m_schemaContext->m_builtinTypesFacetList;
+        // create a new schema context
+        m_context = QPatternist::XsdSchemaContext::Ptr( new QPatternist::XsdSchemaContext( m_namePool.d ) );
+        m_context->m_schemaTypeFactory = schema.d->m_schemaContext->m_schemaTypeFactory;
+        m_context->m_builtinTypesFacetList = schema.d->m_schemaContext->m_builtinTypesFacetList;
 
-      m_originalSchema = schema;
-   }
+        m_originalSchema = schema;
+    }
 
-   QXmlNamePool                                                     m_namePool;
-   QAbstractMessageHandler                                         *m_userMessageHandler;
-   const QAbstractUriResolver                                      *m_uriResolver;
-   QNetworkAccessManager                                           *m_userNetworkAccessManager;
-   QPatternist::ReferenceCountedValue<QAbstractMessageHandler>::Ptr m_messageHandler;
-   QPatternist::ReferenceCountedValue<QNetworkAccessManager>::Ptr   m_networkAccessManager;
+    QXmlNamePool                                                     m_namePool;
+    QAbstractMessageHandler                                         *m_userMessageHandler;
+    const QAbstractUriResolver                                      *m_uriResolver;
+    QNetworkAccessManager                                           *m_userNetworkAccessManager;
+    QPatternist::ReferenceCountedValue<QAbstractMessageHandler>::Ptr m_messageHandler;
+    QPatternist::ReferenceCountedValue<QNetworkAccessManager>::Ptr   m_networkAccessManager;
 
-   QXmlSchema                                                       m_originalSchema;
-   QPatternist::XsdSchemaContext::Ptr                               m_context;
-   QPatternist::XsdSchema::Ptr                                      m_schema;
-   QUrl                                                             m_schemaDocumentUri;
+    QXmlSchema                                                       m_originalSchema;
+    QPatternist::XsdSchemaContext::Ptr                               m_context;
+    QPatternist::XsdSchema::Ptr                                      m_schema;
+    QUrl                                                             m_schemaDocumentUri;
 };
 
 #endif

@@ -27,12 +27,12 @@
 
 class QPlatformOffscreenSurfacePrivate
 {
- public:
+public:
 };
 
-QPlatformOffscreenSurface::QPlatformOffscreenSurface(QOffscreenSurface *offscreenSurface)
-   : QPlatformSurface(offscreenSurface)
-   , d_ptr(new QPlatformOffscreenSurfacePrivate)
+QPlatformOffscreenSurface::QPlatformOffscreenSurface( QOffscreenSurface *offscreenSurface )
+    : QPlatformSurface( offscreenSurface )
+    , d_ptr( new QPlatformOffscreenSurfacePrivate )
 {
 }
 
@@ -42,7 +42,7 @@ QPlatformOffscreenSurface::~QPlatformOffscreenSurface()
 
 QOffscreenSurface *QPlatformOffscreenSurface::offscreenSurface() const
 {
-   return static_cast<QOffscreenSurface *>(m_surface);
+    return static_cast<QOffscreenSurface *>( m_surface );
 }
 
 /*!
@@ -50,7 +50,7 @@ QOffscreenSurface *QPlatformOffscreenSurface::offscreenSurface() const
 */
 QPlatformScreen *QPlatformOffscreenSurface::screen() const
 {
-   return offscreenSurface()->screen()->handle();
+    return offscreenSurface()->screen()->handle();
 }
 
 /*!
@@ -58,7 +58,7 @@ QPlatformScreen *QPlatformOffscreenSurface::screen() const
 */
 QSurfaceFormat QPlatformOffscreenSurface::format() const
 {
-   return QSurfaceFormat();
+    return QSurfaceFormat();
 }
 
 /*!
@@ -66,6 +66,6 @@ QSurfaceFormat QPlatformOffscreenSurface::format() const
 */
 bool QPlatformOffscreenSurface::isValid() const
 {
-   return false;
+    return false;
 }
 

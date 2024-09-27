@@ -28,35 +28,44 @@
 #include "HTMLFrameElement.h"
 #include "RenderView.h"
 
-namespace WebCore {
-
-RenderFrame::RenderFrame(HTMLFrameElement* frame)
-    : RenderFrameBase(frame)
+namespace WebCore
 {
-    setInline(false);
+
+RenderFrame::RenderFrame( HTMLFrameElement *frame )
+    : RenderFrameBase( frame )
+{
+    setInline( false );
 }
 
 FrameEdgeInfo RenderFrame::edgeInfo() const
 {
-    HTMLFrameElement* element = static_cast<HTMLFrameElement*>(node());
-    return FrameEdgeInfo(element->noResize(), element->hasFrameBorder());
+    HTMLFrameElement *element = static_cast<HTMLFrameElement *>( node() );
+    return FrameEdgeInfo( element->noResize(), element->hasFrameBorder() );
 }
 
 void RenderFrame::viewCleared()
 {
-    HTMLFrameElement* element = static_cast<HTMLFrameElement*>(node());
-    if (!element || !widget() || !widget()->isFrameView())
-        return;
+    HTMLFrameElement *element = static_cast<HTMLFrameElement *>( node() );
 
-    FrameView* view = static_cast<FrameView*>(widget());
+    if ( !element || !widget() || !widget()->isFrameView() )
+    {
+        return;
+    }
+
+    FrameView *view = static_cast<FrameView *>( widget() );
 
     int marginWidth = element->marginWidth();
     int marginHeight = element->marginHeight();
 
-    if (marginWidth != -1)
-        view->setMarginWidth(marginWidth);
-    if (marginHeight != -1)
-        view->setMarginHeight(marginHeight);
+    if ( marginWidth != -1 )
+    {
+        view->setMarginWidth( marginWidth );
+    }
+
+    if ( marginHeight != -1 )
+    {
+        view->setMarginHeight( marginHeight );
+    }
 }
 
 } // namespace WebCore

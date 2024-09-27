@@ -31,22 +31,25 @@
 #include <wtf/Noncopyable.h>
 #include <wtf/text/WTFString.h>
 
-namespace CoreIPC {
+namespace CoreIPC
+{
 class ArgumentDecoder;
 class Connection;
 class MessageID;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
-class WebDatabaseManager : public WebCore::DatabaseTrackerClient {
-    WTF_MAKE_NONCOPYABLE(WebDatabaseManager);
+class WebDatabaseManager : public WebCore::DatabaseTrackerClient
+{
+    WTF_MAKE_NONCOPYABLE( WebDatabaseManager );
 public:
-    static WebDatabaseManager& shared();
-    static void initialize(const String& databaseDirectory);
+    static WebDatabaseManager &shared();
+    static void initialize( const String &databaseDirectory );
 
-    void didReceiveMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*);
-    void setQuotaForOrigin(const String& originIdentifier, unsigned long long quota) const;
+    void didReceiveMessage( CoreIPC::Connection *, CoreIPC::MessageID, CoreIPC::ArgumentDecoder * );
+    void setQuotaForOrigin( const String &originIdentifier, unsigned long long quota ) const;
 
 public:
     void deleteAllDatabases() const;
@@ -56,16 +59,16 @@ private:
     virtual ~WebDatabaseManager();
 
     // Implemented in generated WebDatabaseManagerMessageReceiver.cpp
-    void didReceiveWebDatabaseManagerMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*);
+    void didReceiveWebDatabaseManagerMessage( CoreIPC::Connection *, CoreIPC::MessageID, CoreIPC::ArgumentDecoder * );
 
-    void getDatabasesByOrigin(uint64_t callbackID) const;
-    void getDatabaseOrigins(uint64_t callbackID) const;
-    void deleteDatabaseWithNameForOrigin(const String& databaseIdentifier, const String& originIdentifier) const;
-    void deleteDatabasesForOrigin(const String& originIdentifier) const;
+    void getDatabasesByOrigin( uint64_t callbackID ) const;
+    void getDatabaseOrigins( uint64_t callbackID ) const;
+    void deleteDatabaseWithNameForOrigin( const String &databaseIdentifier, const String &originIdentifier ) const;
+    void deleteDatabasesForOrigin( const String &originIdentifier ) const;
 
     // WebCore::DatabaseTrackerClient
-    virtual void dispatchDidModifyOrigin(WebCore::SecurityOrigin*);
-    virtual void dispatchDidModifyDatabase(WebCore::SecurityOrigin*, const String& databaseIdentifier);
+    virtual void dispatchDidModifyOrigin( WebCore::SecurityOrigin * );
+    virtual void dispatchDidModifyDatabase( WebCore::SecurityOrigin *, const String &databaseIdentifier );
 };
 
 } // namespace WebKit

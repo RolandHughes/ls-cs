@@ -29,15 +29,18 @@ using namespace WebKit;
 static inline void initializePlatformStrategiesIfNeeded()
 {
     static bool initialized = false;
-    if (initialized)
+
+    if ( initialized )
+    {
         return;
+    }
 
     WebPlatformStrategies::initialize();
     initialized = true;
 }
 
-QWKContextPrivate::QWKContextPrivate(QWKContext* qq)
-    : q(qq)
+QWKContextPrivate::QWKContextPrivate( QWKContext *qq )
+    : q( qq )
 {
     initializePlatformStrategiesIfNeeded();
 }
@@ -46,18 +49,18 @@ QWKContextPrivate::~QWKContextPrivate()
 {
 }
 
-QWKContext::QWKContext(QObject* parent)
-    : QObject(parent)
-    , d(new QWKContextPrivate(this))
+QWKContext::QWKContext( QObject *parent )
+    : QObject( parent )
+    , d( new QWKContextPrivate( this ) )
 {
-    d->context = WebContext::create(String());
+    d->context = WebContext::create( String() );
 }
 
-QWKContext::QWKContext(WKContextRef contextRef, QObject* parent)
-    : QObject(parent)
-    , d(new QWKContextPrivate(this))
+QWKContext::QWKContext( WKContextRef contextRef, QObject *parent )
+    : QObject( parent )
+    , d( new QWKContextPrivate( this ) )
 {
-    d->context = toImpl(contextRef);
+    d->context = toImpl( contextRef );
 }
 
 QWKContext::~QWKContext()

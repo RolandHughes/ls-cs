@@ -34,30 +34,30 @@ class QDeclarativeErrorPrivate;
 
 class Q_DECLARATIVE_EXPORT QDeclarativeError
 {
- public:
-   QDeclarativeError();
-   QDeclarativeError(const QDeclarativeError &);
-   QDeclarativeError &operator=(const QDeclarativeError &);
-   ~QDeclarativeError();
+public:
+    QDeclarativeError();
+    QDeclarativeError( const QDeclarativeError & );
+    QDeclarativeError &operator=( const QDeclarativeError & );
+    ~QDeclarativeError();
 
-   bool isValid() const;
+    bool isValid() const;
 
-   QUrl url() const;
-   void setUrl(const QUrl &);
-   QString description() const;
-   void setDescription(const QString &);
-   int line() const;
-   void setLine(int);
-   int column() const;
-   void setColumn(int);
+    QUrl url() const;
+    void setUrl( const QUrl & );
+    QString description() const;
+    void setDescription( const QString & );
+    int line() const;
+    void setLine( int );
+    int column() const;
+    void setColumn( int );
 
-   QString toString() const;
+    QString toString() const;
 
- private:
-   QDeclarativeErrorPrivate *d;
+private:
+    QDeclarativeErrorPrivate *d;
 };
 
-QDebug Q_DECLARATIVE_EXPORT operator<<(QDebug debug, const QDeclarativeError &error);
+QDebug Q_DECLARATIVE_EXPORT operator<<( QDebug debug, const QDeclarativeError &error );
 
 QT_END_NAMESPACE
 

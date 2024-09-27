@@ -30,28 +30,28 @@
 
 class QLatin1Codec : public QTextCodec
 {
- public:
-   ~QLatin1Codec();
+public:
+    ~QLatin1Codec();
 
-   QString convertToUnicode(const char *, int, ConverterState *) const override;
-   QByteArray convertFromUnicode(QStringView str, ConverterState *) const override;
+    QString convertToUnicode( const char *, int, ConverterState * ) const override;
+    QByteArray convertFromUnicode( QStringView str, ConverterState * ) const override;
 
-   QString name() const override;
-   QStringList aliases() const override;
-   int mibEnum() const override;
+    QString name() const override;
+    QStringList aliases() const override;
+    int mibEnum() const override;
 };
 
 class QLatin15Codec: public QTextCodec
 {
- public:
-   ~QLatin15Codec();
+public:
+    ~QLatin15Codec();
 
-   QString convertToUnicode(const char *, int, ConverterState *) const override;
-   QByteArray convertFromUnicode(QStringView str, ConverterState *) const override;
+    QString convertToUnicode( const char *, int, ConverterState * ) const override;
+    QByteArray convertFromUnicode( QStringView str, ConverterState * ) const override;
 
-   QString name() const override;
-   QStringList aliases() const override;
-   int mibEnum() const override;
+    QString name() const override;
+    QStringList aliases() const override;
+    int mibEnum() const override;
 };
 
 #endif // QT_NO_TEXTCODEC

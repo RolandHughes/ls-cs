@@ -33,26 +33,26 @@ class QVideoRendererControl;
 
 class QVideoSurfaceOutput : public QObject, public QMediaBindableInterface
 {
-   MULTI_CS_OBJECT_MULTIPLE(QVideoSurfaceOutput, QObject)
+    MULTI_CS_OBJECT_MULTIPLE( QVideoSurfaceOutput, QObject )
 
-   CS_INTERFACES(QMediaBindableInterface)
+    CS_INTERFACES( QMediaBindableInterface )
 
- public:
-   QVideoSurfaceOutput(QObject *parent = nullptr);
-   ~QVideoSurfaceOutput();
+public:
+    QVideoSurfaceOutput( QObject *parent = nullptr );
+    ~QVideoSurfaceOutput();
 
-   QMediaObject *mediaObject() const override;
+    QMediaObject *mediaObject() const override;
 
-   void setVideoSurface(QAbstractVideoSurface *surface);
+    void setVideoSurface( QAbstractVideoSurface *surface );
 
- protected:
-   bool setMediaObject(QMediaObject *object) override;
+protected:
+    bool setMediaObject( QMediaObject *object ) override;
 
- private:
-   QPointer<QAbstractVideoSurface> m_surface;
-   QPointer<QVideoRendererControl> m_control;
-   QPointer<QMediaService> m_service;
-   QPointer<QMediaObject> m_object;
+private:
+    QPointer<QAbstractVideoSurface> m_surface;
+    QPointer<QVideoRendererControl> m_control;
+    QPointer<QMediaService> m_service;
+    QPointer<QMediaObject> m_object;
 };
 
 #endif

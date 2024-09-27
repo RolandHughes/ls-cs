@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -79,200 +79,260 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
-static inline bool isObservable(JSNode* jsNode, Node* node)
+static inline bool isObservable( JSNode *jsNode, Node *node )
 {
     // The DOM doesn't know how to keep a tree of nodes alive without the root
     // being explicitly referenced. So, we artificially treat the root of
     // every tree as observable.
     // FIXME: Resolve this lifetime issue in the DOM, and remove this.
-    if (!node->parentNode())
+    if ( !node->parentNode() )
+    {
         return true;
+    }
 
-    if (jsNode->hasCustomProperties())
+    if ( jsNode->hasCustomProperties() )
+    {
         return true;
+    }
 
     // A node's JS wrapper is responsible for marking its JS event listeners.
-    if (node->hasEventListeners())
+    if ( node->hasEventListeners() )
+    {
         return true;
+    }
 
     return false;
 }
 
-static inline bool isReachableFromDOM(JSNode* jsNode, Node* node, SlotVisitor& visitor)
+static inline bool isReachableFromDOM( JSNode *jsNode, Node *node, SlotVisitor &visitor )
 {
-    if (!node->inDocument()) {
+    if ( !node->inDocument() )
+    {
         // If a wrapper is the last reference to an image element
         // that is loading but not in the document, the wrapper is observable
         // because it is the only thing keeping the image element alive, and if
         // the element is destroyed, its load event will not fire.
         // FIXME: The DOM should manage this issue without the help of JavaScript wrappers.
-        if (node->hasTagName(imgTag)) {
-            if (static_cast<HTMLImageElement*>(node)->hasPendingActivity())
+        if ( node->hasTagName( imgTag ) )
+        {
+            if ( static_cast<HTMLImageElement *>( node )->hasPendingActivity() )
+            {
                 return true;
+            }
         }
-    #if ENABLE(VIDEO)
-        else if (node->hasTagName(audioTag)) {
-            if (!static_cast<HTMLAudioElement*>(node)->paused())
+
+#if ENABLE(VIDEO)
+        else if ( node->hasTagName( audioTag ) )
+        {
+            if ( !static_cast<HTMLAudioElement *>( node )->paused() )
+            {
                 return true;
+            }
         }
-    #endif
+
+#endif
 
         // If a node is firing event listeners, its wrapper is observable because
         // its wrapper is responsible for marking those event listeners.
-        if (node->isFiringEventListeners())
+        if ( node->isFiringEventListeners() )
+        {
             return true;
+        }
     }
 
-    return isObservable(jsNode, node) && visitor.containsOpaqueRoot(root(node));
+    return isObservable( jsNode, node ) && visitor.containsOpaqueRoot( root( node ) );
 }
 
-bool JSNodeOwner::isReachableFromOpaqueRoots(JSC::Handle<JSC::Unknown> handle, void*, SlotVisitor& visitor)
+bool JSNodeOwner::isReachableFromOpaqueRoots( JSC::Handle<JSC::Unknown> handle, void *, SlotVisitor &visitor )
 {
-    JSNode* jsNode = static_cast<JSNode*>(handle.get().asCell());
-    return isReachableFromDOM(jsNode, jsNode->impl(), visitor);
+    JSNode *jsNode = static_cast<JSNode *>( handle.get().asCell() );
+    return isReachableFromDOM( jsNode, jsNode->impl(), visitor );
 }
 
-void JSNodeOwner::finalize(JSC::Handle<JSC::Unknown> handle, void* context)
+void JSNodeOwner::finalize( JSC::Handle<JSC::Unknown> handle, void *context )
 {
-    JSNode* jsNode = static_cast<JSNode*>(handle.get().asCell());
-    DOMWrapperWorld* world = static_cast<DOMWrapperWorld*>(context);
-    uncacheWrapper(world, jsNode->impl(), jsNode);
+    JSNode *jsNode = static_cast<JSNode *>( handle.get().asCell() );
+    DOMWrapperWorld *world = static_cast<DOMWrapperWorld *>( context );
+    uncacheWrapper( world, jsNode->impl(), jsNode );
 }
 
-JSValue JSNode::insertBefore(ExecState* exec)
+JSValue JSNode::insertBefore( ExecState *exec )
 {
-    Node* imp = static_cast<Node*>(impl());
+    Node *imp = static_cast<Node *>( impl() );
     ExceptionCode ec = 0;
-    bool ok = imp->insertBefore(toNode(exec->argument(0)), toNode(exec->argument(1)), ec, true);
-    setDOMException(exec, ec);
-    if (ok)
-        return exec->argument(0);
+    bool ok = imp->insertBefore( toNode( exec->argument( 0 ) ), toNode( exec->argument( 1 ) ), ec, true );
+    setDOMException( exec, ec );
+
+    if ( ok )
+    {
+        return exec->argument( 0 );
+    }
+
     return jsNull();
 }
 
-JSValue JSNode::replaceChild(ExecState* exec)
+JSValue JSNode::replaceChild( ExecState *exec )
 {
-    Node* imp = static_cast<Node*>(impl());
+    Node *imp = static_cast<Node *>( impl() );
     ExceptionCode ec = 0;
-    bool ok = imp->replaceChild(toNode(exec->argument(0)), toNode(exec->argument(1)), ec, true);
-    setDOMException(exec, ec);
-    if (ok)
-        return exec->argument(1);
+    bool ok = imp->replaceChild( toNode( exec->argument( 0 ) ), toNode( exec->argument( 1 ) ), ec, true );
+    setDOMException( exec, ec );
+
+    if ( ok )
+    {
+        return exec->argument( 1 );
+    }
+
     return jsNull();
 }
 
-JSValue JSNode::removeChild(ExecState* exec)
+JSValue JSNode::removeChild( ExecState *exec )
 {
-    Node* imp = static_cast<Node*>(impl());
+    Node *imp = static_cast<Node *>( impl() );
     ExceptionCode ec = 0;
-    bool ok = imp->removeChild(toNode(exec->argument(0)), ec);
-    setDOMException(exec, ec);
-    if (ok)
-        return exec->argument(0);
+    bool ok = imp->removeChild( toNode( exec->argument( 0 ) ), ec );
+    setDOMException( exec, ec );
+
+    if ( ok )
+    {
+        return exec->argument( 0 );
+    }
+
     return jsNull();
 }
 
-JSValue JSNode::appendChild(ExecState* exec)
+JSValue JSNode::appendChild( ExecState *exec )
 {
-    Node* imp = static_cast<Node*>(impl());
+    Node *imp = static_cast<Node *>( impl() );
     ExceptionCode ec = 0;
-    bool ok = imp->appendChild(toNode(exec->argument(0)), ec, true);
-    setDOMException(exec, ec);
-    if (ok)
-        return exec->argument(0);
+    bool ok = imp->appendChild( toNode( exec->argument( 0 ) ), ec, true );
+    setDOMException( exec, ec );
+
+    if ( ok )
+    {
+        return exec->argument( 0 );
+    }
+
     return jsNull();
 }
 
-ScopeChainNode* JSNode::pushEventHandlerScope(ExecState*, ScopeChainNode* node) const
+ScopeChainNode *JSNode::pushEventHandlerScope( ExecState *, ScopeChainNode *node ) const
 {
     return node;
 }
 
-void JSNode::visitChildren(SlotVisitor& visitor)
+void JSNode::visitChildren( SlotVisitor &visitor )
 {
-    Base::visitChildren(visitor);
+    Base::visitChildren( visitor );
 
-    Node* node = m_impl.get();
-    node->visitJSEventListeners(visitor);
+    Node *node = m_impl.get();
+    node->visitJSEventListeners( visitor );
 
-    visitor.addOpaqueRoot(root(node));
+    visitor.addOpaqueRoot( root( node ) );
 }
 
-static ALWAYS_INLINE JSValue createWrapperInline(ExecState* exec, JSDOMGlobalObject* globalObject, Node* node)
+static ALWAYS_INLINE JSValue createWrapperInline( ExecState *exec, JSDOMGlobalObject *globalObject, Node *node )
 {
-    ASSERT(node);
-    ASSERT(!getCachedWrapper(currentWorld(exec), node));
-    
-    JSDOMWrapper* wrapper;    
-    switch (node->nodeType()) {
+    ASSERT( node );
+    ASSERT( !getCachedWrapper( currentWorld( exec ), node ) );
+
+    JSDOMWrapper *wrapper;
+
+    switch ( node->nodeType() )
+    {
         case Node::ELEMENT_NODE:
-            if (node->isHTMLElement())
-                wrapper = createJSHTMLWrapper(exec, globalObject, toHTMLElement(node));
+            if ( node->isHTMLElement() )
+            {
+                wrapper = createJSHTMLWrapper( exec, globalObject, toHTMLElement( node ) );
+            }
+
 #if ENABLE(SVG)
-            else if (node->isSVGElement())
-                wrapper = createJSSVGWrapper(exec, globalObject, static_cast<SVGElement*>(node));
+            else if ( node->isSVGElement() )
+            {
+                wrapper = createJSSVGWrapper( exec, globalObject, static_cast<SVGElement *>( node ) );
+            }
+
 #endif
             else
-                wrapper = CREATE_DOM_WRAPPER(exec, globalObject, Element, node);
+            {
+                wrapper = CREATE_DOM_WRAPPER( exec, globalObject, Element, node );
+            }
+
             break;
+
         case Node::ATTRIBUTE_NODE:
-            wrapper = CREATE_DOM_WRAPPER(exec, globalObject, Attr, node);
+            wrapper = CREATE_DOM_WRAPPER( exec, globalObject, Attr, node );
             break;
+
         case Node::TEXT_NODE:
-            wrapper = CREATE_DOM_WRAPPER(exec, globalObject, Text, node);
+            wrapper = CREATE_DOM_WRAPPER( exec, globalObject, Text, node );
             break;
+
         case Node::CDATA_SECTION_NODE:
-            wrapper = CREATE_DOM_WRAPPER(exec, globalObject, CDATASection, node);
+            wrapper = CREATE_DOM_WRAPPER( exec, globalObject, CDATASection, node );
             break;
+
         case Node::ENTITY_NODE:
-            wrapper = CREATE_DOM_WRAPPER(exec, globalObject, Entity, node);
+            wrapper = CREATE_DOM_WRAPPER( exec, globalObject, Entity, node );
             break;
+
         case Node::PROCESSING_INSTRUCTION_NODE:
-            wrapper = CREATE_DOM_WRAPPER(exec, globalObject, ProcessingInstruction, node);
+            wrapper = CREATE_DOM_WRAPPER( exec, globalObject, ProcessingInstruction, node );
             break;
+
         case Node::COMMENT_NODE:
-            wrapper = CREATE_DOM_WRAPPER(exec, globalObject, Comment, node);
+            wrapper = CREATE_DOM_WRAPPER( exec, globalObject, Comment, node );
             break;
+
         case Node::DOCUMENT_NODE:
             // we don't want to cache the document itself in the per-document dictionary
-            return toJS(exec, globalObject, static_cast<Document*>(node));
+            return toJS( exec, globalObject, static_cast<Document *>( node ) );
+
         case Node::DOCUMENT_TYPE_NODE:
-            wrapper = CREATE_DOM_WRAPPER(exec, globalObject, DocumentType, node);
+            wrapper = CREATE_DOM_WRAPPER( exec, globalObject, DocumentType, node );
             break;
+
         case Node::NOTATION_NODE:
-            wrapper = CREATE_DOM_WRAPPER(exec, globalObject, Notation, node);
+            wrapper = CREATE_DOM_WRAPPER( exec, globalObject, Notation, node );
             break;
+
         case Node::DOCUMENT_FRAGMENT_NODE:
-            wrapper = CREATE_DOM_WRAPPER(exec, globalObject, DocumentFragment, node);
+            wrapper = CREATE_DOM_WRAPPER( exec, globalObject, DocumentFragment, node );
             break;
+
         case Node::SHADOW_ROOT_NODE:
-            wrapper = CREATE_DOM_WRAPPER(exec, globalObject, Node, node);
+            wrapper = CREATE_DOM_WRAPPER( exec, globalObject, Node, node );
             break;
+
         case Node::ENTITY_REFERENCE_NODE:
-            wrapper = CREATE_DOM_WRAPPER(exec, globalObject, EntityReference, node);
+            wrapper = CREATE_DOM_WRAPPER( exec, globalObject, EntityReference, node );
             break;
+
         default:
-            wrapper = CREATE_DOM_WRAPPER(exec, globalObject, Node, node);
+            wrapper = CREATE_DOM_WRAPPER( exec, globalObject, Node, node );
     }
 
-    return wrapper;    
+    return wrapper;
 }
 
-JSValue createWrapper(ExecState* exec, JSDOMGlobalObject* globalObject, Node* node)
+JSValue createWrapper( ExecState *exec, JSDOMGlobalObject *globalObject, Node *node )
 {
-    return createWrapperInline(exec, globalObject, node);
+    return createWrapperInline( exec, globalObject, node );
 }
-    
-JSValue toJSNewlyCreated(ExecState* exec, JSDOMGlobalObject* globalObject, Node* node)
+
+JSValue toJSNewlyCreated( ExecState *exec, JSDOMGlobalObject *globalObject, Node *node )
 {
-    if (!node)
+    if ( !node )
+    {
         return jsNull();
-    
-    return createWrapperInline(exec, globalObject, node);
+    }
+
+    return createWrapperInline( exec, globalObject, node );
 }
 
 } // namespace WebCore

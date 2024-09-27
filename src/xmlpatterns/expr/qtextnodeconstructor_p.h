@@ -26,25 +26,26 @@
 
 #include <qsinglecontainer_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class TextNodeConstructor : public SingleContainer
 {
- public:
-   TextNodeConstructor(const Expression::Ptr &operand);
+public:
+    TextNodeConstructor( const Expression::Ptr &operand );
 
-   Item evaluateSingleton(const DynamicContext::Ptr &context) const override;
-   void evaluateToSequenceReceiver(const DynamicContext::Ptr &context) const override;
+    Item evaluateSingleton( const DynamicContext::Ptr &context ) const override;
+    void evaluateToSequenceReceiver( const DynamicContext::Ptr &context ) const override;
 
-   SequenceType::Ptr staticType() const override;
+    SequenceType::Ptr staticType() const override;
 
-   /**
-    * The first operand must be exactly one @c xs:string.
-    */
-   SequenceType::List expectedOperandTypes() const override;
+    /**
+     * The first operand must be exactly one @c xs:string.
+     */
+    SequenceType::List expectedOperandTypes() const override;
 
-   ExpressionVisitorResult::Ptr accept(const ExpressionVisitor::Ptr &visitor) const override;
-   Properties properties() const override;
+    ExpressionVisitorResult::Ptr accept( const ExpressionVisitor::Ptr &visitor ) const override;
+    Properties properties() const override;
 };
 
 }

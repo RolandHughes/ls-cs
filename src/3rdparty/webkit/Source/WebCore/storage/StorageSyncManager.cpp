@@ -40,72 +40,85 @@
 #include <wtf/text/CString.h>
 #include <wtf/StdLibExtras.h>
 
-namespace WebCore {
-
-PassRefPtr<StorageSyncManager> StorageSyncManager::create(const String& path)
+namespace WebCore
 {
-    return adoptRef(new StorageSyncManager(path));
+
+PassRefPtr<StorageSyncManager> StorageSyncManager::create( const String &path )
+{
+    return adoptRef( new StorageSyncManager( path ) );
 }
 
-StorageSyncManager::StorageSyncManager(const String& path)
-    : m_thread(LocalStorageThread::create())
-    , m_path(path.crossThreadString())
+StorageSyncManager::StorageSyncManager( const String &path )
+    : m_thread( LocalStorageThread::create() )
+    , m_path( path.crossThreadString() )
 {
-    ASSERT(isMainThread());
-    ASSERT(!m_path.isEmpty());
+    ASSERT( isMainThread() );
+    ASSERT( !m_path.isEmpty() );
     m_thread->start();
 }
 
 StorageSyncManager::~StorageSyncManager()
 {
-    ASSERT(isMainThread());
-    ASSERT(!m_thread);
+    ASSERT( isMainThread() );
+    ASSERT( !m_thread );
 }
 
 // Called on a background thread.
-String StorageSyncManager::fullDatabaseFilename(const String& databaseIdentifier)
+String StorageSyncManager::fullDatabaseFilename( const String &databaseIdentifier )
 {
-    if (!makeAllDirectories(m_path)) {
-        LOG_ERROR("Unabled to create LocalStorage database path %s", m_path.utf8().data());
+    if ( !makeAllDirectories( m_path ) )
+    {
+        LOG_ERROR( "Unabled to create LocalStorage database path %s", m_path.utf8().data() );
         return String();
     }
 
-    return pathByAppendingComponent(m_path, databaseIdentifier + ".localstorage");
+    return pathByAppendingComponent( m_path, databaseIdentifier + ".localstorage" );
 }
 
 void StorageSyncManager::close()
 {
-    ASSERT(isMainThread());
+    ASSERT( isMainThread() );
 
-    if (m_thread) {
+    if ( m_thread )
+    {
         m_thread->terminate();
         m_thread.clear();
     }
 }
 
-bool StorageSyncManager::scheduleImport(PassRefPtr<StorageAreaSync> area)
+bool StorageSyncManager::scheduleImport( PassRefPtr<StorageAreaSync> area )
 {
-    ASSERT(isMainThread());
-    ASSERT(m_thread);
-    if (m_thread)
-        m_thread->scheduleTask(LocalStorageTask::createImport(area.get()));
+    ASSERT( isMainThread() );
+    ASSERT( m_thread );
+
+    if ( m_thread )
+    {
+        m_thread->scheduleTask( LocalStorageTask::createImport( area.get() ) );
+    }
+
     return m_thread;
 }
 
-void StorageSyncManager::scheduleSync(PassRefPtr<StorageAreaSync> area)
+void StorageSyncManager::scheduleSync( PassRefPtr<StorageAreaSync> area )
 {
-    ASSERT(isMainThread());
-    ASSERT(m_thread);
-    if (m_thread)
-        m_thread->scheduleTask(LocalStorageTask::createSync(area.get()));
+    ASSERT( isMainThread() );
+    ASSERT( m_thread );
+
+    if ( m_thread )
+    {
+        m_thread->scheduleTask( LocalStorageTask::createSync( area.get() ) );
+    }
 }
 
-void StorageSyncManager::scheduleDeleteEmptyDatabase(PassRefPtr<StorageAreaSync> area)
+void StorageSyncManager::scheduleDeleteEmptyDatabase( PassRefPtr<StorageAreaSync> area )
 {
-    ASSERT(isMainThread());
-    ASSERT(m_thread);
-    if (m_thread)
-        m_thread->scheduleTask(LocalStorageTask::createDeleteEmptyDatabase(area.get()));
+    ASSERT( isMainThread() );
+    ASSERT( m_thread );
+
+    if ( m_thread )
+    {
+        m_thread->scheduleTask( LocalStorageTask::createDeleteEmptyDatabase( area.get() ) );
+    }
 }
 } // namespace WebCore
 

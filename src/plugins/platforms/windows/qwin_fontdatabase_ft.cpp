@@ -36,60 +36,75 @@
 
 #include <wchar.h>
 
-static inline QFontDatabase::WritingSystem writingSystemFromCharSet(uchar charSet)
+static inline QFontDatabase::WritingSystem writingSystemFromCharSet( uchar charSet )
 {
-   switch (charSet) {
-      case ANSI_CHARSET:
-      case EASTEUROPE_CHARSET:
-      case BALTIC_CHARSET:
-      case TURKISH_CHARSET:
-         return QFontDatabase::Latin;
-      case GREEK_CHARSET:
-         return QFontDatabase::Greek;
-      case RUSSIAN_CHARSET:
-         return QFontDatabase::Cyrillic;
-      case HEBREW_CHARSET:
-         return QFontDatabase::Hebrew;
-      case ARABIC_CHARSET:
-         return QFontDatabase::Arabic;
-      case THAI_CHARSET:
-         return QFontDatabase::Thai;
-      case GB2312_CHARSET:
-         return QFontDatabase::SimplifiedChinese;
-      case CHINESEBIG5_CHARSET:
-         return QFontDatabase::TraditionalChinese;
-      case SHIFTJIS_CHARSET:
-         return QFontDatabase::Japanese;
-      case HANGUL_CHARSET:
-      case JOHAB_CHARSET:
-         return QFontDatabase::Korean;
-      case VIETNAMESE_CHARSET:
-         return QFontDatabase::Vietnamese;
-      case SYMBOL_CHARSET:
-         return QFontDatabase::Symbol;
-      default:
-         break;
-   }
+    switch ( charSet )
+    {
+        case ANSI_CHARSET:
+        case EASTEUROPE_CHARSET:
+        case BALTIC_CHARSET:
+        case TURKISH_CHARSET:
+            return QFontDatabase::Latin;
 
-   return QFontDatabase::Any;
+        case GREEK_CHARSET:
+            return QFontDatabase::Greek;
+
+        case RUSSIAN_CHARSET:
+            return QFontDatabase::Cyrillic;
+
+        case HEBREW_CHARSET:
+            return QFontDatabase::Hebrew;
+
+        case ARABIC_CHARSET:
+            return QFontDatabase::Arabic;
+
+        case THAI_CHARSET:
+            return QFontDatabase::Thai;
+
+        case GB2312_CHARSET:
+            return QFontDatabase::SimplifiedChinese;
+
+        case CHINESEBIG5_CHARSET:
+            return QFontDatabase::TraditionalChinese;
+
+        case SHIFTJIS_CHARSET:
+            return QFontDatabase::Japanese;
+
+        case HANGUL_CHARSET:
+        case JOHAB_CHARSET:
+            return QFontDatabase::Korean;
+
+        case VIETNAMESE_CHARSET:
+            return QFontDatabase::Vietnamese;
+
+        case SYMBOL_CHARSET:
+            return QFontDatabase::Symbol;
+
+        default:
+            break;
+    }
+
+    return QFontDatabase::Any;
 }
 
-static FontFile *createFontFile(const QString &fileName, int index)
+static FontFile *createFontFile( const QString &fileName, int index )
 {
-   FontFile *fontFile   = new FontFile;
-   fontFile->fileName   = fileName;
-   fontFile->indexValue = index;
+    FontFile *fontFile   = new FontFile;
+    fontFile->fileName   = fileName;
+    fontFile->indexValue = index;
 
-   return fontFile;
+    return fontFile;
 }
 
-extern bool localizedName(const QString &name);
-extern QString getEnglishName(const QString &familyName);
+extern bool localizedName( const QString &name );
+extern QString getEnglishName( const QString &familyName );
 
-namespace {
-struct FontKey {
-   QString fileName;
-   QStringList fontNames;
+namespace
+{
+struct FontKey
+{
+    QString fileName;
+    QStringList fontNames;
 };
 } // namespace
 
@@ -97,368 +112,422 @@ typedef QVector<FontKey> FontKeys;
 
 static FontKeys &fontKeys()
 {
-   static FontKeys result;
-   if (result.isEmpty()) {
-      const QSettings fontRegistry(QString("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts"),
-         QSettings::NativeFormat);
+    static FontKeys result;
 
-      const QStringList allKeys = fontRegistry.allKeys();
-      const QString trueType    = "(TrueType)";
+    if ( result.isEmpty() )
+    {
+        const QSettings fontRegistry( QString( "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts" ),
+                                      QSettings::NativeFormat );
 
-      const QRegularExpression sizeListMatch("\\s(\\d+,)+\\d+");
+        const QStringList allKeys = fontRegistry.allKeys();
+        const QString trueType    = "(TrueType)";
 
-      const int size = allKeys.size();
-      result.reserve(size);
+        const QRegularExpression sizeListMatch( "\\s(\\d+,)+\\d+" );
 
-      for (int i = 0; i < size; ++i) {
-         FontKey fontKey;
-         const QString &registryFontKey = allKeys.at(i);
-         fontKey.fileName = fontRegistry.value(registryFontKey).toString();
+        const int size = allKeys.size();
+        result.reserve( size );
 
-         QString realKey = registryFontKey;
-         realKey.remove(trueType);
-         realKey.remove(sizeListMatch);
+        for ( int i = 0; i < size; ++i )
+        {
+            FontKey fontKey;
+            const QString &registryFontKey = allKeys.at( i );
+            fontKey.fileName = fontRegistry.value( registryFontKey ).toString();
 
-         const QStringList fontNames = realKey.trimmed().split('&');
+            QString realKey = registryFontKey;
+            realKey.remove( trueType );
+            realKey.remove( sizeListMatch );
 
-         for (const QString &fontName : fontNames) {
-            fontKey.fontNames.append(fontName.trimmed());
-         }
+            const QStringList fontNames = realKey.trimmed().split( '&' );
 
-         result.append(fontKey);
-      }
-   }
+            for ( const QString &fontName : fontNames )
+            {
+                fontKey.fontNames.append( fontName.trimmed() );
+            }
 
-   return result;
+            result.append( fontKey );
+        }
+    }
+
+    return result;
 }
 
-static const FontKey *findFontKey(const QString &name, int *indexIn = nullptr)
+static const FontKey *findFontKey( const QString &name, int *indexIn = nullptr )
 {
-   const FontKeys &keys = fontKeys();
+    const FontKeys &keys = fontKeys();
 
-   for (auto it = keys.constBegin(), cend = keys.constEnd(); it != cend; ++it) {
-      const int index = it->fontNames.indexOf(name);
+    for ( auto it = keys.constBegin(), cend = keys.constEnd(); it != cend; ++it )
+    {
+        const int index = it->fontNames.indexOf( name );
 
-      if (index >= 0) {
-         if (indexIn) {
-            *indexIn = index;
-         }
+        if ( index >= 0 )
+        {
+            if ( indexIn )
+            {
+                *indexIn = index;
+            }
 
-         return &(*it);
-      }
-   }
+            return &( *it );
+        }
+    }
 
-   if (indexIn) {
-      *indexIn = -1;
-   }
+    if ( indexIn )
+    {
+        *indexIn = -1;
+    }
 
-   return nullptr;
+    return nullptr;
 }
 
-static bool addFontToDatabase(const QString &faceName, const QString &fullName, uchar charSet, const TEXTMETRIC *textmetric,
-   const FONTSIGNATURE *signature, int type, bool registerAlias)
+static bool addFontToDatabase( const QString &faceName, const QString &fullName, uchar charSet, const TEXTMETRIC *textmetric,
+                               const FONTSIGNATURE *signature, int type, bool registerAlias )
 {
-   // the "@family" fonts are just the same as "family". Ignore them.
-   if (faceName.isEmpty() || faceName.at(0) == QChar('@') || faceName.startsWith("WST_")) {
-      return false;
-   }
+    // the "@family" fonts are just the same as "family". Ignore them.
+    if ( faceName.isEmpty() || faceName.at( 0 ) == QChar( '@' ) || faceName.startsWith( "WST_" ) )
+    {
+        return false;
+    }
 
-   static const int SMOOTH_SCALABLE = 0xffff;
-   const QString foundryName; // No such concept
+    static const int SMOOTH_SCALABLE = 0xffff;
+    const QString foundryName; // No such concept
 
-   const bool fixed = !(textmetric->tmPitchAndFamily & TMPF_FIXED_PITCH);
-   const bool ttf = (textmetric->tmPitchAndFamily & TMPF_TRUETYPE);
-   const bool scalable = textmetric->tmPitchAndFamily & (TMPF_VECTOR | TMPF_TRUETYPE);
-   const int size = scalable ? SMOOTH_SCALABLE : textmetric->tmHeight;
+    const bool fixed = !( textmetric->tmPitchAndFamily & TMPF_FIXED_PITCH );
+    const bool ttf = ( textmetric->tmPitchAndFamily & TMPF_TRUETYPE );
+    const bool scalable = textmetric->tmPitchAndFamily & ( TMPF_VECTOR | TMPF_TRUETYPE );
+    const int size = scalable ? SMOOTH_SCALABLE : textmetric->tmHeight;
 
-   const QFont::Style style = textmetric->tmItalic ? QFont::StyleItalic : QFont::StyleNormal;
-   const bool antialias = false;
-   const QFont::Weight weight = QPlatformFontDatabase::weightFromInteger(textmetric->tmWeight);
-   const QFont::Stretch stretch = QFont::Unstretched;
+    const QFont::Style style = textmetric->tmItalic ? QFont::StyleItalic : QFont::StyleNormal;
+    const bool antialias = false;
+    const QFont::Weight weight = QPlatformFontDatabase::weightFromInteger( textmetric->tmWeight );
+    const QFont::Stretch stretch = QFont::Unstretched;
 
 #if defined(CS_SHOW_DEBUG_PLATFORM)
-   QString message;
-   QTextStream str(&message);
+    QString message;
+    QTextStream str( &message );
 
-   str << "addFontToDatabase() " << faceName << "::" << fullName << ' ' << charSet << " TTF = " << ttf;
+    str << "addFontToDatabase() " << faceName << "::" << fullName << ' ' << charSet << " TTF = " << ttf;
 
-   if (type & DEVICE_FONTTYPE) {
-      str << " DEVICE";
-   }
+    if ( type & DEVICE_FONTTYPE )
+    {
+        str << " DEVICE";
+    }
 
-   if (type & RASTER_FONTTYPE) {
-      str << " RASTER";
-   }
+    if ( type & RASTER_FONTTYPE )
+    {
+        str << " RASTER";
+    }
 
-   if (type & TRUETYPE_FONTTYPE) {
-      str << " TRUETYPE";
-   }
+    if ( type & TRUETYPE_FONTTYPE )
+    {
+        str << " TRUETYPE";
+    }
 
-   str << " scalable = " << scalable << " Size = " << size
-      << " Style = " << style << " Weight = " << weight << " stretch = " << stretch;
+    str << " scalable = " << scalable << " Size = " << size
+        << " Style = " << style << " Weight = " << weight << " stretch = " << stretch;
 
-   qDebug() << message;
+    qDebug() << message;
 #endif
 
-   QString englishName;
-   if (registerAlias & ttf && localizedName(faceName)) {
-      englishName = getEnglishName(faceName);
-   }
+    QString englishName;
 
-   QSupportedWritingSystems writingSystems;
-   if (type & TRUETYPE_FONTTYPE) {
-      Q_ASSERT(signature);
-      quint32 unicodeRange[4] = {
-         signature->fsUsb[0], signature->fsUsb[1],
-         signature->fsUsb[2], signature->fsUsb[3]
-      };
-      quint32 codePageRange[2] = {
-         signature->fsCsb[0], signature->fsCsb[1]
-      };
-      writingSystems = QPlatformFontDatabase::writingSystemsFromTrueTypeBits(unicodeRange, codePageRange);
-      // ### Hack to work around problem with Thai text on Windows 7. Segoe UI contains
-      // the symbol for Baht, and Windows thus reports that it supports the Thai script.
-      // Since it's the default UI font on this platform, most widgets will be unable to
-      // display Thai text by default. As a temporary work around, we special case Segoe UI
-      // and remove the Thai script from its list of supported writing systems.
-      if (writingSystems.supported(QFontDatabase::Thai) &&
-         faceName == QString("Segoe UI")) {
-         writingSystems.setSupported(QFontDatabase::Thai, false);
-      }
+    if ( registerAlias & ttf && localizedName( faceName ) )
+    {
+        englishName = getEnglishName( faceName );
+    }
 
-   } else {
-      const QFontDatabase::WritingSystem ws = writingSystemFromCharSet(charSet);
-      if (ws != QFontDatabase::Any) {
-         writingSystems.setSupported(ws);
-      }
-   }
+    QSupportedWritingSystems writingSystems;
 
-   int index = 0;
+    if ( type & TRUETYPE_FONTTYPE )
+    {
+        Q_ASSERT( signature );
+        quint32 unicodeRange[4] =
+        {
+            signature->fsUsb[0], signature->fsUsb[1],
+            signature->fsUsb[2], signature->fsUsb[3]
+        };
+        quint32 codePageRange[2] =
+        {
+            signature->fsCsb[0], signature->fsCsb[1]
+        };
+        writingSystems = QPlatformFontDatabase::writingSystemsFromTrueTypeBits( unicodeRange, codePageRange );
 
-   const FontKey *key = findFontKey(faceName, &index);
-   if (!key) {
-      key = findFontKey(fullName, &index);
-      if (!key && !registerAlias && englishName.isEmpty() && localizedName(faceName)) {
-         englishName = getEnglishName(faceName);
-      }
-      if (!key && !englishName.isEmpty()) {
-         key = findFontKey(englishName, &index);
-      }
-      if (!key) {
-         return false;
-      }
-   }
-   QString value = key->fileName;
+        // ### Hack to work around problem with Thai text on Windows 7. Segoe UI contains
+        // the symbol for Baht, and Windows thus reports that it supports the Thai script.
+        // Since it's the default UI font on this platform, most widgets will be unable to
+        // display Thai text by default. As a temporary work around, we special case Segoe UI
+        // and remove the Thai script from its list of supported writing systems.
+        if ( writingSystems.supported( QFontDatabase::Thai ) &&
+                faceName == QString( "Segoe UI" ) )
+        {
+            writingSystems.setSupported( QFontDatabase::Thai, false );
+        }
+
+    }
+    else
+    {
+        const QFontDatabase::WritingSystem ws = writingSystemFromCharSet( charSet );
+
+        if ( ws != QFontDatabase::Any )
+        {
+            writingSystems.setSupported( ws );
+        }
+    }
+
+    int index = 0;
+
+    const FontKey *key = findFontKey( faceName, &index );
+
+    if ( !key )
+    {
+        key = findFontKey( fullName, &index );
+
+        if ( !key && !registerAlias && englishName.isEmpty() && localizedName( faceName ) )
+        {
+            englishName = getEnglishName( faceName );
+        }
+
+        if ( !key && !englishName.isEmpty() )
+        {
+            key = findFontKey( englishName, &index );
+        }
+
+        if ( !key )
+        {
+            return false;
+        }
+    }
+
+    QString value = key->fileName;
 
 
-   if (value.isEmpty()) {
-      return false;
-   }
+    if ( value.isEmpty() )
+    {
+        return false;
+    }
 
-   if (!QDir::isAbsolutePath(value))
-      value.prepend(QFile::decodeName(qgetenv("windir") + "\\Fonts\\"));
+    if ( !QDir::isAbsolutePath( value ) )
+    {
+        value.prepend( QFile::decodeName( qgetenv( "windir" ) + "\\Fonts\\" ) );
+    }
 
-   QPlatformFontDatabase::registerFont(faceName, QString(), foundryName, weight, style, stretch,
-      antialias, scalable, size, fixed, writingSystems, createFontFile(value, index));
+    QPlatformFontDatabase::registerFont( faceName, QString(), foundryName, weight, style, stretch,
+                                         antialias, scalable, size, fixed, writingSystems, createFontFile( value, index ) );
 
-   // add fonts windows can generate for us:
-   if (weight <= QFont::DemiBold)
-      QPlatformFontDatabase::registerFont(faceName, QString(), foundryName, QFont::Bold, style, stretch,
-         antialias, scalable, size, fixed, writingSystems, createFontFile(value, index));
+    // add fonts windows can generate for us:
+    if ( weight <= QFont::DemiBold )
+        QPlatformFontDatabase::registerFont( faceName, QString(), foundryName, QFont::Bold, style, stretch,
+                                             antialias, scalable, size, fixed, writingSystems, createFontFile( value, index ) );
 
-   if (style != QFont::StyleItalic)
-      QPlatformFontDatabase::registerFont(faceName, QString(), foundryName, weight, QFont::StyleItalic, stretch,
-         antialias, scalable, size, fixed, writingSystems, createFontFile(value, index));
+    if ( style != QFont::StyleItalic )
+        QPlatformFontDatabase::registerFont( faceName, QString(), foundryName, weight, QFont::StyleItalic, stretch,
+                                             antialias, scalable, size, fixed, writingSystems, createFontFile( value, index ) );
 
-   if (weight <= QFont::DemiBold && style != QFont::StyleItalic)
-      QPlatformFontDatabase::registerFont(faceName, QString(), foundryName, QFont::Bold, QFont::StyleItalic, stretch,
-         antialias, scalable, size, fixed, writingSystems, createFontFile(value, index));
+    if ( weight <= QFont::DemiBold && style != QFont::StyleItalic )
+        QPlatformFontDatabase::registerFont( faceName, QString(), foundryName, QFont::Bold, QFont::StyleItalic, stretch,
+                                             antialias, scalable, size, fixed, writingSystems, createFontFile( value, index ) );
 
-   if (! englishName.isEmpty()) {
-      QPlatformFontDatabase::registerAliasToFontFamily(faceName, englishName);
-   }
+    if ( ! englishName.isEmpty() )
+    {
+        QPlatformFontDatabase::registerAliasToFontFamily( faceName, englishName );
+    }
 
-   return true;
+    return true;
 }
 
-static int QT_WIN_CALLBACK storeFont(const LOGFONT *logFont, const TEXTMETRIC *textmetric,  DWORD type, LPARAM)
+static int QT_WIN_CALLBACK storeFont( const LOGFONT *logFont, const TEXTMETRIC *textmetric,  DWORD type, LPARAM )
 {
-   const ENUMLOGFONTEX *f = reinterpret_cast<const ENUMLOGFONTEX *>(logFont);
+    const ENUMLOGFONTEX *f = reinterpret_cast<const ENUMLOGFONTEX *>( logFont );
 
-   const QString faceName = QString::fromStdWString(std::wstring(f->elfLogFont.lfFaceName));
-   const QString fullName = QString::fromStdWString(std::wstring(f->elfFullName));
+    const QString faceName = QString::fromStdWString( std::wstring( f->elfLogFont.lfFaceName ) );
+    const QString fullName = QString::fromStdWString( std::wstring( f->elfFullName ) );
 
-   const uchar charSet = f->elfLogFont.lfCharSet;
+    const uchar charSet = f->elfLogFont.lfCharSet;
 
-   // NEWTEXTMETRICEX (passed for TT fonts) is a NEWTEXTMETRIC, which according
-   // to the documentation is identical to a TEXTMETRIC except for the last four
-   // members, which we don't use anyway
+    // NEWTEXTMETRICEX (passed for TT fonts) is a NEWTEXTMETRIC, which according
+    // to the documentation is identical to a TEXTMETRIC except for the last four
+    // members, which we don't use anyway
 
-   const FONTSIGNATURE *signature = nullptr;
+    const FONTSIGNATURE *signature = nullptr;
 
-   if (type & TRUETYPE_FONTTYPE) {
-      signature = &reinterpret_cast<const NEWTEXTMETRICEX *>(textmetric)->ntmFontSig;
-   }
+    if ( type & TRUETYPE_FONTTYPE )
+    {
+        signature = &reinterpret_cast<const NEWTEXTMETRICEX *>( textmetric )->ntmFontSig;
+    }
 
-   addFontToDatabase(faceName, fullName, charSet, textmetric, signature, type, false);
+    addFontToDatabase( faceName, fullName, charSet, textmetric, signature, type, false );
 
-   // keep on enumerating
-   return 1;
+    // keep on enumerating
+    return 1;
 }
 
-void QWindowsFontDatabaseFT::populateFamily(const QString &familyName)
+void QWindowsFontDatabaseFT::populateFamily( const QString &familyName )
 {
 #if defined(CS_SHOW_DEBUG_PLATFORM)
-   qDebug() << "QWindowsFontDatabaseFT::populateFamily() Family Name = " << familyName;
+    qDebug() << "QWindowsFontDatabaseFT::populateFamily() Family Name = " << familyName;
 #endif
 
-   if (familyName.size() >= LF_FACESIZE) {
-      qWarning() << "QWindowsFontDatabaseFT::populateFamily() Unable to enumerate family name = " << familyName;
-      return;
-   }
+    if ( familyName.size() >= LF_FACESIZE )
+    {
+        qWarning() << "QWindowsFontDatabaseFT::populateFamily() Unable to enumerate family name = " << familyName;
+        return;
+    }
 
-   HDC dummy = GetDC(nullptr);
-   LOGFONT lf;
-   lf.lfCharSet = DEFAULT_CHARSET;
+    HDC dummy = GetDC( nullptr );
+    LOGFONT lf;
+    lf.lfCharSet = DEFAULT_CHARSET;
 
-   QString16 tmp = familyName.toUtf16();
-   memcpy(lf.lfFaceName, tmp.constData(), tmp.size_storage() * 2);
+    QString16 tmp = familyName.toUtf16();
+    memcpy( lf.lfFaceName, tmp.constData(), tmp.size_storage() * 2 );
 
-   lf.lfFaceName[tmp.size_storage()] = 0;
-   lf.lfPitchAndFamily = 0;
+    lf.lfFaceName[tmp.size_storage()] = 0;
+    lf.lfPitchAndFamily = 0;
 
-   EnumFontFamiliesEx(dummy, &lf, storeFont, 0, 0);
-   ReleaseDC(nullptr, dummy);
+    EnumFontFamiliesEx( dummy, &lf, storeFont, 0, 0 );
+    ReleaseDC( nullptr, dummy );
 }
 
-namespace {
+namespace
+{
 // Context for enumerating system fonts, records whether the default font has been
 // encountered, which is normally not enumerated.
 
-struct PopulateFamiliesContext {
-   PopulateFamiliesContext(const QString &f) : systemDefaultFont(f), seenSystemDefaultFont(false) {}
+struct PopulateFamiliesContext
+{
+    PopulateFamiliesContext( const QString &f ) : systemDefaultFont( f ), seenSystemDefaultFont( false ) {}
 
-   QString systemDefaultFont;
-   bool seenSystemDefaultFont;
+    QString systemDefaultFont;
+    bool seenSystemDefaultFont;
 };
 } // namespace
 
 
 // Delayed population of font families
 
-static int QT_WIN_CALLBACK populateFontFamilies(const LOGFONT *logFont, const TEXTMETRIC *textmetric,
-   DWORD, LPARAM lparam)
+static int QT_WIN_CALLBACK populateFontFamilies( const LOGFONT *logFont, const TEXTMETRIC *textmetric,
+        DWORD, LPARAM lparam )
 {
-   const ENUMLOGFONTEX *f = reinterpret_cast<const ENUMLOGFONTEX *>(logFont);
+    const ENUMLOGFONTEX *f = reinterpret_cast<const ENUMLOGFONTEX *>( logFont );
 
-   // the "@family" fonts are just the same as "family". Ignore them.
-   const wchar_t *faceNameW = f->elfLogFont.lfFaceName;
+    // the "@family" fonts are just the same as "family". Ignore them.
+    const wchar_t *faceNameW = f->elfLogFont.lfFaceName;
 
-   if (faceNameW[0] && faceNameW[0] != L'@' && wcsncmp(faceNameW, L"WST_", 4)) {
-      // Register only font families for which a font file exists for delayed population
+    if ( faceNameW[0] && faceNameW[0] != L'@' && wcsncmp( faceNameW, L"WST_", 4 ) )
+    {
+        // Register only font families for which a font file exists for delayed population
 
-      const bool ttf = textmetric->tmPitchAndFamily & TMPF_TRUETYPE;
-      const QString faceName = QString::fromStdWString(std::wstring(faceNameW));
-      const FontKey *key = findFontKey(faceName);
+        const bool ttf = textmetric->tmPitchAndFamily & TMPF_TRUETYPE;
+        const QString faceName = QString::fromStdWString( std::wstring( faceNameW ) );
+        const FontKey *key = findFontKey( faceName );
 
-      if (! key) {
-         key = findFontKey(QString::fromStdWString(std::wstring(f->elfFullName)));
-         if (!key && ttf && localizedName(faceName)) {
-            key = findFontKey(getEnglishName(faceName));
-         }
-      }
+        if ( ! key )
+        {
+            key = findFontKey( QString::fromStdWString( std::wstring( f->elfFullName ) ) );
 
-      if (key) {
-         QPlatformFontDatabase::registerFontFamily(faceName);
-         PopulateFamiliesContext *context = reinterpret_cast<PopulateFamiliesContext *>(lparam);
-         if (!context->seenSystemDefaultFont && faceName == context->systemDefaultFont) {
-            context->seenSystemDefaultFont = true;
-         }
-
-         // Register current font's english name as alias
-         if (ttf && localizedName(faceName)) {
-            const QString englishName = getEnglishName(faceName);
-
-            if (!englishName.isEmpty()) {
-               QPlatformFontDatabase::registerAliasToFontFamily(faceName, englishName);
-               // Check whether the system default font name is an alias of the current font family name,
-               // as on Chinese Windows, where the system font "SimSun" is an alias to a font registered under a local name
-               if (!context->seenSystemDefaultFont && englishName == context->systemDefaultFont) {
-                  context->seenSystemDefaultFont = true;
-               }
+            if ( !key && ttf && localizedName( faceName ) )
+            {
+                key = findFontKey( getEnglishName( faceName ) );
             }
-         }
-      }
-   }
-   return 1; // continue
+        }
+
+        if ( key )
+        {
+            QPlatformFontDatabase::registerFontFamily( faceName );
+            PopulateFamiliesContext *context = reinterpret_cast<PopulateFamiliesContext *>( lparam );
+
+            if ( !context->seenSystemDefaultFont && faceName == context->systemDefaultFont )
+            {
+                context->seenSystemDefaultFont = true;
+            }
+
+            // Register current font's english name as alias
+            if ( ttf && localizedName( faceName ) )
+            {
+                const QString englishName = getEnglishName( faceName );
+
+                if ( !englishName.isEmpty() )
+                {
+                    QPlatformFontDatabase::registerAliasToFontFamily( faceName, englishName );
+
+                    // Check whether the system default font name is an alias of the current font family name,
+                    // as on Chinese Windows, where the system font "SimSun" is an alias to a font registered under a local name
+                    if ( !context->seenSystemDefaultFont && englishName == context->systemDefaultFont )
+                    {
+                        context->seenSystemDefaultFont = true;
+                    }
+                }
+            }
+        }
+    }
+
+    return 1; // continue
 }
 
 void QWindowsFontDatabaseFT::populateFontDatabase()
 {
-   HDC dummy = GetDC(nullptr);
+    HDC dummy = GetDC( nullptr );
 
-   LOGFONT lf;
-   lf.lfCharSet = DEFAULT_CHARSET;
-   lf.lfFaceName[0] = 0;
-   lf.lfPitchAndFamily = 0;
+    LOGFONT lf;
+    lf.lfCharSet = DEFAULT_CHARSET;
+    lf.lfFaceName[0] = 0;
+    lf.lfPitchAndFamily = 0;
 
-   PopulateFamiliesContext context(QWindowsFontDatabase::systemDefaultFont().family());
-   EnumFontFamiliesEx(dummy, &lf, populateFontFamilies, reinterpret_cast<LPARAM>(&context), 0);
-   ReleaseDC(nullptr, dummy);
+    PopulateFamiliesContext context( QWindowsFontDatabase::systemDefaultFont().family() );
+    EnumFontFamiliesEx( dummy, &lf, populateFontFamilies, reinterpret_cast<LPARAM>( &context ), 0 );
+    ReleaseDC( nullptr, dummy );
 
-   // Work around EnumFontFamiliesEx() not listing the system font
-   if (!context.seenSystemDefaultFont) {
-      QPlatformFontDatabase::registerFontFamily(context.systemDefaultFont);
-   }
+    // Work around EnumFontFamiliesEx() not listing the system font
+    if ( !context.seenSystemDefaultFont )
+    {
+        QPlatformFontDatabase::registerFontFamily( context.systemDefaultFont );
+    }
 }
 
-QFontEngine *QWindowsFontDatabaseFT::fontEngine(const QFontDef &fontDef, void *handle)
+QFontEngine *QWindowsFontDatabaseFT::fontEngine( const QFontDef &fontDef, void *handle )
 {
-   QFontEngine *fe = QBasicFontDatabase::fontEngine(fontDef, handle);
+    QFontEngine *fe = QBasicFontDatabase::fontEngine( fontDef, handle );
 
 #if defined(CS_SHOW_DEBUG_PLATFORM)
-   qDebug() << "QWindowsFontDatabaseFT::fontEngine() Font data = " << fontDef.family << fe << handle;
+    qDebug() << "QWindowsFontDatabaseFT::fontEngine() Font data = " << fontDef.family << fe << handle;
 #endif
 
-   return fe;
+    return fe;
 }
 
-QFontEngine *QWindowsFontDatabaseFT::fontEngine(const QByteArray &fontData, qreal pixelSize,
-      QFont::HintingPreference hintingPreference)
+QFontEngine *QWindowsFontDatabaseFT::fontEngine( const QByteArray &fontData, qreal pixelSize,
+        QFont::HintingPreference hintingPreference )
 {
-   QFontEngine *fe = QBasicFontDatabase::fontEngine(fontData, pixelSize, hintingPreference);
+    QFontEngine *fe = QBasicFontDatabase::fontEngine( fontData, pixelSize, hintingPreference );
 
 #if defined(CS_SHOW_DEBUG_PLATFORM)
-   qDebug() << "QWindowsFontDatabaseFT::fontEngine() Font data = " << fontData << pixelSize << hintingPreference << fe;
+    qDebug() << "QWindowsFontDatabaseFT::fontEngine() Font data = " << fontData << pixelSize << hintingPreference << fe;
 #endif
 
-   return fe;
+    return fe;
 }
 
-QStringList QWindowsFontDatabaseFT::fallbacksForFamily(const QString &family, QFont::Style style, QFont::StyleHint styleHint,
-   QChar::Script script) const
+QStringList QWindowsFontDatabaseFT::fallbacksForFamily( const QString &family, QFont::Style style, QFont::StyleHint styleHint,
+        QChar::Script script ) const
 {
-   QStringList result;
+    QStringList result;
 
-   result.append(QWindowsFontDatabase::familyForStyleHint(styleHint));
-   result.append(QWindowsFontDatabase::extraTryFontsForFamily(family));
-   result.append(QBasicFontDatabase::fallbacksForFamily(family, style, styleHint, script));
+    result.append( QWindowsFontDatabase::familyForStyleHint( styleHint ) );
+    result.append( QWindowsFontDatabase::extraTryFontsForFamily( family ) );
+    result.append( QBasicFontDatabase::fallbacksForFamily( family, style, styleHint, script ) );
 
 #if defined(CS_SHOW_DEBUG_PLATFORM)
-   qDebug() << "QWindowsFontDatabaseFT::fallbacksForFamily() Font = "
-         << family << style << styleHint << script << result;
+    qDebug() << "QWindowsFontDatabaseFT::fallbacksForFamily() Font = "
+             << family << style << styleHint << script << result;
 #endif
 
-   return result;
+    return result;
 }
 
 QString QWindowsFontDatabaseFT::fontDir() const
 {
-   const QString result = qgetenv("windir") + "/Fonts";
-   return result;
+    const QString result = qgetenv( "windir" ) + "/Fonts";
+    return result;
 }
 
 QFont QWindowsFontDatabaseFT::defaultFont() const
 {
-   return QWindowsFontDatabase::systemDefaultFont();
+    return QWindowsFontDatabase::systemDefaultFont();
 }

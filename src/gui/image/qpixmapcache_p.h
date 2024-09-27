@@ -30,49 +30,52 @@
 #include <qpixmap_raster_p.h>
 #include <qcache.h>
 
-uint qHash(const QPixmapCache::Key &k);
+uint qHash( const QPixmapCache::Key &k );
 
 class QPixmapCache::KeyData
 {
- public:
-   KeyData()
-      : isValid(true), key(0), ref(1)
-   {
-   }
+public:
+    KeyData()
+        : isValid( true ), key( 0 ), ref( 1 )
+    {
+    }
 
-   KeyData(const KeyData &other)
-      : isValid(other.isValid), key(other.key), ref(1)
-   {
-   }
+    KeyData( const KeyData &other )
+        : isValid( other.isValid ), key( other.key ), ref( 1 )
+    {
+    }
 
-   ~KeyData()
-   {
-   }
+    ~KeyData()
+    {
+    }
 
-   bool isValid;
-   int key;
-   int ref;
+    bool isValid;
+    int key;
+    int ref;
 };
 
 // XXX: hw: is this a general concept we need to abstract?
 class QPixmapCacheEntry : public QPixmap
 {
- public:
-   QPixmapCacheEntry(const QPixmapCache::Key &key, const QPixmap &pix) : QPixmap(pix), key(key) {
-      QPlatformPixmap *pd = handle();
+public:
+    QPixmapCacheEntry( const QPixmapCache::Key &key, const QPixmap &pix ) : QPixmap( pix ), key( key )
+    {
+        QPlatformPixmap *pd = handle();
 
-      if (pd && pd->classId() == QPlatformPixmap::RasterClass) {
-         QRasterPlatformPixmap *d = static_cast<QRasterPlatformPixmap *>(pd);
+        if ( pd && pd->classId() == QPlatformPixmap::RasterClass )
+        {
+            QRasterPlatformPixmap *d = static_cast<QRasterPlatformPixmap *>( pd );
 
-         if (!d->image.isNull() && d->image.d->paintEngine && ! d->image.d->paintEngine->isActive()) {
-            delete d->image.d->paintEngine;
-            d->image.d->paintEngine = nullptr;
-         }
-      }
-   }
+            if ( !d->image.isNull() && d->image.d->paintEngine && ! d->image.d->paintEngine->isActive() )
+            {
+                delete d->image.d->paintEngine;
+                d->image.d->paintEngine = nullptr;
+            }
+        }
+    }
 
-   ~QPixmapCacheEntry();
-   QPixmapCache::Key key;
+    ~QPixmapCacheEntry();
+    QPixmapCache::Key key;
 };
 
 

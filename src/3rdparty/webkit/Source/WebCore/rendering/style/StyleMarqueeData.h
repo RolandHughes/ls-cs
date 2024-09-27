@@ -30,17 +30,25 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class StyleMarqueeData : public RefCounted<StyleMarqueeData> {
+class StyleMarqueeData : public RefCounted<StyleMarqueeData>
+{
 public:
-    static PassRefPtr<StyleMarqueeData> create() { return adoptRef(new StyleMarqueeData); }
-    PassRefPtr<StyleMarqueeData> copy() const { return adoptRef(new StyleMarqueeData(*this)); }
-
-    bool operator==(const StyleMarqueeData& o) const;
-    bool operator!=(const StyleMarqueeData& o) const
+    static PassRefPtr<StyleMarqueeData> create()
     {
-        return !(*this == o);
+        return adoptRef( new StyleMarqueeData );
+    }
+    PassRefPtr<StyleMarqueeData> copy() const
+    {
+        return adoptRef( new StyleMarqueeData( *this ) );
+    }
+
+    bool operator==( const StyleMarqueeData &o ) const;
+    bool operator!=( const StyleMarqueeData &o ) const
+    {
+        return !( *this == o );
     }
 
     Length increment;
@@ -48,12 +56,12 @@ public:
 
     int loops; // -1 means infinite.
 
-    unsigned behavior : 2; // EMarqueeBehavior 
+    unsigned behavior : 2; // EMarqueeBehavior
     EMarqueeDirection direction : 3; // not unsigned because EMarqueeDirection has negative values
 
 private:
     StyleMarqueeData();
-    StyleMarqueeData(const StyleMarqueeData&);
+    StyleMarqueeData( const StyleMarqueeData & );
 };
 
 } // namespace WebCore

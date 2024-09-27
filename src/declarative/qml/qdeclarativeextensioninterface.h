@@ -30,13 +30,14 @@ QT_BEGIN_NAMESPACE
 
 class QDeclarativeEngine;
 
-struct Q_DECLARATIVE_EXPORT QDeclarativeExtensionInterface {
-   virtual ~QDeclarativeExtensionInterface() {}
-   virtual void registerTypes(const char *uri) = 0;
-   virtual void initializeEngine(QDeclarativeEngine *engine, const char *uri) = 0;
+struct Q_DECLARATIVE_EXPORT QDeclarativeExtensionInterface
+{
+    virtual ~QDeclarativeExtensionInterface() {}
+    virtual void registerTypes( const char *uri ) = 0;
+    virtual void initializeEngine( QDeclarativeEngine *engine, const char *uri ) = 0;
 };
 
-CS_DECLARE_INTERFACE(QDeclarativeExtensionInterface, "com.copperspice.QDeclarativeExtensionInterface/1.0")
+CS_DECLARE_INTERFACE( QDeclarativeExtensionInterface, "com.copperspice.QDeclarativeExtensionInterface/1.0" )
 
 QT_END_NAMESPACE
 

@@ -33,34 +33,45 @@
 #include <wtf/RefCounted.h>
 #include <wtf/Threading.h>
 
-namespace WTF {
+namespace WTF
+{
 
 static const unsigned int maxParallelThreads = 2;
 
-class ParallelEnvironment {
+class ParallelEnvironment
+{
     WTF_MAKE_FAST_ALLOCATED;
 public:
-    typedef void (*ThreadFunction)(void*);
+    typedef void ( *ThreadFunction )( void * );
 
-    ParallelEnvironment(ThreadFunction threadFunction, size_t sizeOfParameter, unsigned int requestedJobNumber) :
-        m_threadFunction(threadFunction),
-        m_sizeOfParameter(sizeOfParameter)
+    ParallelEnvironment( ThreadFunction threadFunction, size_t sizeOfParameter, unsigned int requestedJobNumber ) :
+        m_threadFunction( threadFunction ),
+        m_sizeOfParameter( sizeOfParameter )
     {
-        if (!requestedJobNumber || requestedJobNumber > maxParallelThreads)
+        if ( !requestedJobNumber || requestedJobNumber > maxParallelThreads )
+        {
             requestedJobNumber = maxParallelThreads;
+        }
 
-        if (!s_threadPool)
+        if ( !s_threadPool )
+        {
             s_threadPool = new Vector< RefPtr<ThreadPrivate> >();
+        }
 
         // The main thread should be also a worker.
         unsigned int maxNewThreads = requestedJobNumber - 1;
 
-        for (unsigned int i = 0; i < maxParallelThreads && m_threads.size() < maxNewThreads; ++i) {
-            if (s_threadPool->size() < i + 1)
-                s_threadPool->append(ThreadPrivate::create());
+        for ( unsigned int i = 0; i < maxParallelThreads && m_threads.size() < maxNewThreads; ++i )
+        {
+            if ( s_threadPool->size() < i + 1 )
+            {
+                s_threadPool->append( ThreadPrivate::create() );
+            }
 
-            if ((*s_threadPool)[i]->tryLockFor(this))
-                m_threads.append((*s_threadPool)[i]);
+            if ( ( *s_threadPool )[i]->tryLockFor( this ) )
+            {
+                m_threads.append( ( *s_threadPool )[i] );
+            }
         }
 
         m_numberOfJobs = m_threads.size() + 1;
@@ -71,54 +82,59 @@ public:
         return m_numberOfJobs;
     }
 
-    void execute(unsigned char* parameters)
+    void execute( unsigned char *parameters )
     {
         size_t i;
-        for (i = 0; i < m_threads.size(); ++i) {
-            m_threads[i]->execute(m_threadFunction, parameters);
+
+        for ( i = 0; i < m_threads.size(); ++i )
+        {
+            m_threads[i]->execute( m_threadFunction, parameters );
             parameters += m_sizeOfParameter;
         }
 
         // The work for the main thread
-        (*m_threadFunction)(parameters);
+        ( *m_threadFunction )( parameters );
 
         // Wait until all jobs are done.
-        for (i = 0; i < m_threads.size(); ++i)
+        for ( i = 0; i < m_threads.size(); ++i )
+        {
             m_threads[i]->waitForFinish();
+        }
     }
 
-    class ThreadPrivate : public RefCounted<ThreadPrivate> {
+    class ThreadPrivate : public RefCounted<ThreadPrivate>
+    {
     public:
         ThreadPrivate()
-            : m_threadID(0)
-            , m_running(false)
-            , m_parent(0)
+            : m_threadID( 0 )
+            , m_running( false )
+            , m_parent( 0 )
         {
         }
 
-        bool tryLockFor(ParallelEnvironment*);
+        bool tryLockFor( ParallelEnvironment * );
 
-        void execute(ThreadFunction, void*);
+        void execute( ThreadFunction, void * );
 
         void waitForFinish();
 
         static PassRefPtr<ThreadPrivate> create()
         {
-            return adoptRef(new ThreadPrivate());
+            return adoptRef( new ThreadPrivate() );
         }
 
-        static void* workerThread(void*);
+        static void *workerThread( void * );
 
     private:
         ThreadIdentifier m_threadID;
         bool m_running;
-        ParallelEnvironment* m_parent;
+        ParallelEnvironment *m_parent;
 
         mutable Mutex m_mutex;
         ThreadCondition m_threadCondition;
 
         ThreadFunction m_threadFunction;
-        void* m_parameters;
+        void *m_parameters;
     };
 
 private:
@@ -127,7 +143,7 @@ private:
     int m_numberOfJobs;
 
     Vector< RefPtr<ThreadPrivate> > m_threads;
-    static Vector< RefPtr<ThreadPrivate> >* s_threadPool;
+    static Vector< RefPtr<ThreadPrivate> > *s_threadPool;
 };
 
 } // namespace WTF

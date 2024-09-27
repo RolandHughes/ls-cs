@@ -22,21 +22,24 @@
 
 #include "FrameNetworkingContext.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class FrameNetworkingContextQt : public FrameNetworkingContext {
+class FrameNetworkingContextQt : public FrameNetworkingContext
+{
 public:
-    static PassRefPtr<FrameNetworkingContextQt> create(Frame*, QObject* originatingObject, bool mimeSniffingEnabled, QNetworkAccessManager*);
+    static PassRefPtr<FrameNetworkingContextQt> create( Frame *, QObject *originatingObject, bool mimeSniffingEnabled,
+            QNetworkAccessManager * );
 
 private:
-    FrameNetworkingContextQt(Frame*, QObject* originatingObject, bool mimeSniffingEnabled, QNetworkAccessManager*);
+    FrameNetworkingContextQt( Frame *, QObject *originatingObject, bool mimeSniffingEnabled, QNetworkAccessManager * );
 
-    virtual QObject* originatingObject() const;
-    virtual QNetworkAccessManager* networkAccessManager() const;
+    virtual QObject *originatingObject() const;
+    virtual QNetworkAccessManager *networkAccessManager() const;
     virtual bool mimeSniffingEnabled() const;
 
-    QObject* m_originatingObject;
-    QNetworkAccessManager* m_networkAccessManager;
+    QObject *m_originatingObject;
+    QNetworkAccessManager *m_networkAccessManager;
     bool m_mimeSniffingEnabled;
 };
 

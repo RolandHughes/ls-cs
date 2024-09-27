@@ -29,37 +29,37 @@
 
 class QTextTablePrivate : public QTextFramePrivate
 {
-   Q_DECLARE_PUBLIC(QTextTable)
+    Q_DECLARE_PUBLIC( QTextTable )
 
- public:
-   QTextTablePrivate(QTextDocument *document)
-      : QTextFramePrivate(document), grid(nullptr), nRows(0), nCols(0), dirty(true),
-        blockFragmentUpdates(false)
-   {
-   }
+public:
+    QTextTablePrivate( QTextDocument *document )
+        : QTextFramePrivate( document ), grid( nullptr ), nRows( 0 ), nCols( 0 ), dirty( true ),
+          blockFragmentUpdates( false )
+    {
+    }
 
-   ~QTextTablePrivate();
+    ~QTextTablePrivate();
 
-   static QTextTable *createTable(QTextDocumentPrivate *, int pos, int rows, int cols,
-      const QTextTableFormat &tableFormat);
+    static QTextTable *createTable( QTextDocumentPrivate *, int pos, int rows, int cols,
+                                    const QTextTableFormat &tableFormat );
 
-   void fragmentAdded(QChar type, uint fragment)  override;
-   void fragmentRemoved(QChar type, uint fragment)  override;
+    void fragmentAdded( QChar type, uint fragment )  override;
+    void fragmentRemoved( QChar type, uint fragment )  override;
 
-   void update() const;
+    void update() const;
 
-   int findCellIndex(int fragment) const;
+    int findCellIndex( int fragment ) const;
 
-   QList<int> cells;
+    QList<int> cells;
 
-   // symmetric to cells array and maps to indecs in grid,
-   // used for fast-lookup for row/column by fragment
-   mutable QVector<int> cellIndices;
-   mutable int *grid;
-   mutable int nRows;
-   mutable int nCols;
-   mutable bool dirty;
-   bool blockFragmentUpdates;
+    // symmetric to cells array and maps to indecs in grid,
+    // used for fast-lookup for row/column by fragment
+    mutable QVector<int> cellIndices;
+    mutable int *grid;
+    mutable int nRows;
+    mutable int nCols;
+    mutable bool dirty;
+    bool blockFragmentUpdates;
 };
 
 

@@ -28,97 +28,117 @@
 #include "RenderSVGText.h"
 #include "SVGInlineFlowBox.h"
 
-namespace WebCore {
-    
-RenderSVGInline::RenderSVGInline(Node* n)
-    : RenderInline(n)
+namespace WebCore
+{
+
+RenderSVGInline::RenderSVGInline( Node *n )
+    : RenderInline( n )
 {
     setAlwaysCreateLineBoxes();
 }
 
-InlineFlowBox* RenderSVGInline::createInlineFlowBox()
+InlineFlowBox *RenderSVGInline::createInlineFlowBox()
 {
-    InlineFlowBox* box = new (renderArena()) SVGInlineFlowBox(this);
+    InlineFlowBox *box = new ( renderArena() ) SVGInlineFlowBox( this );
     box->setHasVirtualLogicalHeight();
     return box;
 }
 
 FloatRect RenderSVGInline::objectBoundingBox() const
 {
-    if (const RenderObject* object = RenderSVGText::locateRenderSVGTextAncestor(this))
+    if ( const RenderObject *object = RenderSVGText::locateRenderSVGTextAncestor( this ) )
+    {
         return object->objectBoundingBox();
+    }
 
     return FloatRect();
 }
 
 FloatRect RenderSVGInline::strokeBoundingBox() const
 {
-    if (const RenderObject* object = RenderSVGText::locateRenderSVGTextAncestor(this))
+    if ( const RenderObject *object = RenderSVGText::locateRenderSVGTextAncestor( this ) )
+    {
         return object->strokeBoundingBox();
+    }
 
     return FloatRect();
 }
 
 FloatRect RenderSVGInline::repaintRectInLocalCoordinates() const
 {
-    if (const RenderObject* object = RenderSVGText::locateRenderSVGTextAncestor(this))
+    if ( const RenderObject *object = RenderSVGText::locateRenderSVGTextAncestor( this ) )
+    {
         return object->repaintRectInLocalCoordinates();
+    }
 
     return FloatRect();
 }
 
-IntRect RenderSVGInline::clippedOverflowRectForRepaint(RenderBoxModelObject* repaintContainer)
+IntRect RenderSVGInline::clippedOverflowRectForRepaint( RenderBoxModelObject *repaintContainer )
 {
-    return SVGRenderSupport::clippedOverflowRectForRepaint(this, repaintContainer);
+    return SVGRenderSupport::clippedOverflowRectForRepaint( this, repaintContainer );
 }
 
-void RenderSVGInline::computeRectForRepaint(RenderBoxModelObject* repaintContainer, IntRect& repaintRect, bool fixed)
+void RenderSVGInline::computeRectForRepaint( RenderBoxModelObject *repaintContainer, IntRect &repaintRect, bool fixed )
 {
-    SVGRenderSupport::computeRectForRepaint(this, repaintContainer, repaintRect, fixed);
+    SVGRenderSupport::computeRectForRepaint( this, repaintContainer, repaintRect, fixed );
 }
 
-void RenderSVGInline::mapLocalToContainer(RenderBoxModelObject* repaintContainer, bool useTransforms, bool fixed, TransformState& transformState) const
+void RenderSVGInline::mapLocalToContainer( RenderBoxModelObject *repaintContainer, bool useTransforms, bool fixed,
+        TransformState &transformState ) const
 {
-    SVGRenderSupport::mapLocalToContainer(this, repaintContainer, useTransforms, fixed, transformState);
+    SVGRenderSupport::mapLocalToContainer( this, repaintContainer, useTransforms, fixed, transformState );
 }
 
-void RenderSVGInline::absoluteQuads(Vector<FloatQuad>& quads)
+void RenderSVGInline::absoluteQuads( Vector<FloatQuad> &quads )
 {
-    RenderObject* object = RenderSVGText::locateRenderSVGTextAncestor(this);
-    if (!object)
+    RenderObject *object = RenderSVGText::locateRenderSVGTextAncestor( this );
+
+    if ( !object )
+    {
         return;
+    }
 
     FloatRect textBoundingBox = object->strokeBoundingBox();
-    for (InlineFlowBox* box = firstLineBox(); box; box = box->nextLineBox())
-        quads.append(localToAbsoluteQuad(FloatRect(textBoundingBox.x() + box->x(), textBoundingBox.y() + box->y(), box->logicalWidth(), box->logicalHeight())));
+
+    for ( InlineFlowBox *box = firstLineBox(); box; box = box->nextLineBox() )
+    {
+        quads.append( localToAbsoluteQuad( FloatRect( textBoundingBox.x() + box->x(), textBoundingBox.y() + box->y(), box->logicalWidth(),
+                                           box->logicalHeight() ) ) );
+    }
 }
 
 void RenderSVGInline::destroy()
 {
-    if (RenderSVGText* textRenderer = RenderSVGText::locateRenderSVGTextAncestor(this))
+    if ( RenderSVGText *textRenderer = RenderSVGText::locateRenderSVGTextAncestor( this ) )
+    {
         textRenderer->setNeedsPositioningValuesUpdate();
+    }
 
-    SVGResourcesCache::clientDestroyed(this);
+    SVGResourcesCache::clientDestroyed( this );
     RenderInline::destroy();
 }
 
-void RenderSVGInline::styleWillChange(StyleDifference diff, const RenderStyle* newStyle)
+void RenderSVGInline::styleWillChange( StyleDifference diff, const RenderStyle *newStyle )
 {
-    if (diff == StyleDifferenceLayout)
+    if ( diff == StyleDifferenceLayout )
+    {
         setNeedsBoundariesUpdate();
-    RenderInline::styleWillChange(diff, newStyle);
+    }
+
+    RenderInline::styleWillChange( diff, newStyle );
 }
 
-void RenderSVGInline::styleDidChange(StyleDifference diff, const RenderStyle* oldStyle)
+void RenderSVGInline::styleDidChange( StyleDifference diff, const RenderStyle *oldStyle )
 {
-    RenderInline::styleDidChange(diff, oldStyle);
-    SVGResourcesCache::clientStyleChanged(this, diff, style());
+    RenderInline::styleDidChange( diff, oldStyle );
+    SVGResourcesCache::clientStyleChanged( this, diff, style() );
 }
 
 void RenderSVGInline::updateFromElement()
 {
     RenderInline::updateFromElement();
-    SVGResourcesCache::clientUpdatedFromElement(this, style());
+    SVGResourcesCache::clientUpdatedFromElement( this, style() );
 }
 
 

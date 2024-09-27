@@ -26,78 +26,89 @@
 #include <runtime/JSObjectWithGlobalObject.h>
 #include <runtime/ObjectPrototype.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class CSSRuleList;
 
-class JSCSSRuleList : public JSDOMWrapper {
+class JSCSSRuleList : public JSDOMWrapper
+{
     typedef JSDOMWrapper Base;
 public:
-    JSCSSRuleList(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<CSSRuleList>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, unsigned propertyName, JSC::PropertySlot&);
+    JSCSSRuleList( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<CSSRuleList> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, unsigned propertyName, JSC::PropertySlot & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    virtual void getOwnPropertyNames(JSC::ExecState*, JSC::PropertyNameArray&, JSC::EnumerationMode mode = JSC::ExcludeDontEnumProperties);
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
-    CSSRuleList* impl() const { return m_impl.get(); }
+    virtual void getOwnPropertyNames( JSC::ExecState *, JSC::PropertyNameArray &,
+                                      JSC::EnumerationMode mode = JSC::ExcludeDontEnumProperties );
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
+    CSSRuleList *impl() const
+    {
+        return m_impl.get();
+    }
 
 private:
     RefPtr<CSSRuleList> m_impl;
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetPropertyNames | JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
-    static JSC::JSValue indexGetter(JSC::ExecState*, JSC::JSValue, unsigned);
+    static JSC::JSValue indexGetter( JSC::ExecState *, JSC::JSValue, unsigned );
 };
 
-class JSCSSRuleListOwner : public JSC::WeakHandleOwner {
-    virtual bool isReachableFromOpaqueRoots(JSC::Handle<JSC::Unknown>, void* context, JSC::SlotVisitor&);
-    virtual void finalize(JSC::Handle<JSC::Unknown>, void* context);
-};
-
-inline JSC::WeakHandleOwner* wrapperOwner(DOMWrapperWorld*, CSSRuleList*)
+class JSCSSRuleListOwner : public JSC::WeakHandleOwner
 {
-    DEFINE_STATIC_LOCAL(JSCSSRuleListOwner, jsCSSRuleListOwner, ());
+    virtual bool isReachableFromOpaqueRoots( JSC::Handle<JSC::Unknown>, void *context, JSC::SlotVisitor & );
+    virtual void finalize( JSC::Handle<JSC::Unknown>, void *context );
+};
+
+inline JSC::WeakHandleOwner *wrapperOwner( DOMWrapperWorld *, CSSRuleList * )
+{
+    DEFINE_STATIC_LOCAL( JSCSSRuleListOwner, jsCSSRuleListOwner, () );
     return &jsCSSRuleListOwner;
 }
 
-inline void* wrapperContext(DOMWrapperWorld* world, CSSRuleList*)
+inline void *wrapperContext( DOMWrapperWorld *world, CSSRuleList * )
 {
     return world;
 }
 
-JSC::JSValue toJS(JSC::ExecState*, JSDOMGlobalObject*, CSSRuleList*);
-CSSRuleList* toCSSRuleList(JSC::JSValue);
+JSC::JSValue toJS( JSC::ExecState *, JSDOMGlobalObject *, CSSRuleList * );
+CSSRuleList *toCSSRuleList( JSC::JSValue );
 
-class JSCSSRuleListPrototype : public JSC::JSObjectWithGlobalObject {
+class JSCSSRuleListPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSCSSRuleListPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSCSSRuleListPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                            JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 // Functions
 
-JSC::EncodedJSValue JSC_HOST_CALL jsCSSRuleListPrototypeFunctionItem(JSC::ExecState*);
+JSC::EncodedJSValue JSC_HOST_CALL jsCSSRuleListPrototypeFunctionItem( JSC::ExecState * );
 // Attributes
 
-JSC::JSValue jsCSSRuleListLength(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsCSSRuleListConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsCSSRuleListLength( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsCSSRuleListConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

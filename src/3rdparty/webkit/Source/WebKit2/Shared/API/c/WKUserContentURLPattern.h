@@ -35,9 +35,9 @@ extern "C" {
 
 WK_EXPORT WKTypeID WKUserContentURLPatternGetTypeID();
 
-WK_EXPORT WKUserContentURLPatternRef WKUserContentURLPatternCreate(WKStringRef patternRef);
+WK_EXPORT WKUserContentURLPatternRef WKUserContentURLPatternCreate( WKStringRef patternRef );
 
-WK_EXPORT bool WKUserContentURLPatternMatchesURL(WKUserContentURLPatternRef urlPatternRef, WKURLRef urlRef);
+WK_EXPORT bool WKUserContentURLPatternMatchesURL( WKUserContentURLPatternRef urlPatternRef, WKURLRef urlRef );
 
 #ifdef __cplusplus
 }

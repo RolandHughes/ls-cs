@@ -40,131 +40,131 @@ class QAccessibleLineEdit;
 #ifndef QT_NO_SPINBOX
 
 class QAccessibleAbstractSpinBox : public QAccessibleWidget, public QAccessibleValueInterface,
-            public QAccessibleTextInterface, public QAccessibleEditableTextInterface
+    public QAccessibleTextInterface, public QAccessibleEditableTextInterface
 {
- public:
-   explicit QAccessibleAbstractSpinBox(QWidget *w);
-   virtual ~QAccessibleAbstractSpinBox();
+public:
+    explicit QAccessibleAbstractSpinBox( QWidget *w );
+    virtual ~QAccessibleAbstractSpinBox();
 
-   QString text(QAccessible::Text t) const override;
-   void *interface_cast(QAccessible::InterfaceType t) override;
+    QString text( QAccessible::Text t ) const override;
+    void *interface_cast( QAccessible::InterfaceType t ) override;
 
-   // QAccessibleValueInterface
-   QVariant currentValue() const override;
-   void setCurrentValue(const QVariant &value) override;
-   QVariant maximumValue() const override;
-   QVariant minimumValue() const override;
-   QVariant minimumStepSize() const override;
+    // QAccessibleValueInterface
+    QVariant currentValue() const override;
+    void setCurrentValue( const QVariant &value ) override;
+    QVariant maximumValue() const override;
+    QVariant minimumValue() const override;
+    QVariant minimumStepSize() const override;
 
-   // QAccessibleTextInterface
-   void addSelection(int startOffset, int endOffset) override;
-   QString attributes(int offset, int *startOffset, int *endOffset) const override;
-   int cursorPosition() const override;
-   QRect characterRect(int offset) const override;
-   int selectionCount() const override;
-   int offsetAtPoint(const QPoint &point) const override;
-   void selection(int selectionIndex, int *startOffset, int *endOffset) const override;
+    // QAccessibleTextInterface
+    void addSelection( int startOffset, int endOffset ) override;
+    QString attributes( int offset, int *startOffset, int *endOffset ) const override;
+    int cursorPosition() const override;
+    QRect characterRect( int offset ) const override;
+    int selectionCount() const override;
+    int offsetAtPoint( const QPoint &point ) const override;
+    void selection( int selectionIndex, int *startOffset, int *endOffset ) const override;
 
-   QString text(int startOffset, int endOffset) const override;
-   QString textBeforeOffset (int offset, QAccessible::TextBoundaryType boundaryType,
-      int *endOffset, int *startOffset) const override;
-   QString textAfterOffset(int offset, QAccessible::TextBoundaryType boundaryType,
-      int *startOffset, int *endOffset) const override;
-   QString textAtOffset(int offset, QAccessible::TextBoundaryType boundaryType,
-      int *startOffset, int *endOffset) const override;
-   void removeSelection(int selectionIndex) override;
-   void setCursorPosition(int position) override;
-   void setSelection(int selectionIndex, int startOffset, int endOffset) override;
-   int characterCount() const override;
-   void scrollToSubstring(int startIndex, int endIndex) override;
+    QString text( int startOffset, int endOffset ) const override;
+    QString textBeforeOffset ( int offset, QAccessible::TextBoundaryType boundaryType,
+                               int *endOffset, int *startOffset ) const override;
+    QString textAfterOffset( int offset, QAccessible::TextBoundaryType boundaryType,
+                             int *startOffset, int *endOffset ) const override;
+    QString textAtOffset( int offset, QAccessible::TextBoundaryType boundaryType,
+                          int *startOffset, int *endOffset ) const override;
+    void removeSelection( int selectionIndex ) override;
+    void setCursorPosition( int position ) override;
+    void setSelection( int selectionIndex, int startOffset, int endOffset ) override;
+    int characterCount() const override;
+    void scrollToSubstring( int startIndex, int endIndex ) override;
 
-   // QAccessibleEditableTextInterface
-   void deleteText(int startOffset, int endOffset) override;
-   void insertText(int offset, const QString &text) override;
-   void replaceText(int startOffset, int endOffset, const QString &text) override;
+    // QAccessibleEditableTextInterface
+    void deleteText( int startOffset, int endOffset ) override;
+    void insertText( int offset, const QString &text ) override;
+    void replaceText( int startOffset, int endOffset, const QString &text ) override;
 
- protected:
-   QAbstractSpinBox *abstractSpinBox() const;
-   QAccessibleInterface *lineEditIface() const;
+protected:
+    QAbstractSpinBox *abstractSpinBox() const;
+    QAccessibleInterface *lineEditIface() const;
 
- private:
-   mutable QAccessibleLineEdit *lineEdit;
+private:
+    mutable QAccessibleLineEdit *lineEdit;
 };
 
 class QAccessibleSpinBox : public QAccessibleAbstractSpinBox
 {
- public:
-   explicit QAccessibleSpinBox(QWidget *w);
+public:
+    explicit QAccessibleSpinBox( QWidget *w );
 
- protected:
-   QSpinBox *spinBox() const;
+protected:
+    QSpinBox *spinBox() const;
 };
 
 class QAccessibleDoubleSpinBox : public QAccessibleAbstractSpinBox
 {
- public:
-   explicit QAccessibleDoubleSpinBox(QWidget *widget);
+public:
+    explicit QAccessibleDoubleSpinBox( QWidget *widget );
 
-   QString text(QAccessible::Text t) const override;
+    QString text( QAccessible::Text t ) const override;
 
-   using QAccessibleAbstractSpinBox::text;
+    using QAccessibleAbstractSpinBox::text;
 
- protected:
-   QDoubleSpinBox *doubleSpinBox() const;
+protected:
+    QDoubleSpinBox *doubleSpinBox() const;
 };
 #endif // QT_NO_SPINBOX
 
 class QAccessibleAbstractSlider: public QAccessibleWidget, public QAccessibleValueInterface
 {
- public:
-   explicit QAccessibleAbstractSlider(QWidget *w, QAccessible::Role r = QAccessible::Slider);
-   void *interface_cast(QAccessible::InterfaceType t) override;
+public:
+    explicit QAccessibleAbstractSlider( QWidget *w, QAccessible::Role r = QAccessible::Slider );
+    void *interface_cast( QAccessible::InterfaceType t ) override;
 
-   // QAccessibleValueInterface
-   QVariant currentValue() const override;
-   void setCurrentValue(const QVariant &value) override;
-   QVariant maximumValue() const override;
-   QVariant minimumValue() const override;
-   QVariant minimumStepSize() const override;
+    // QAccessibleValueInterface
+    QVariant currentValue() const override;
+    void setCurrentValue( const QVariant &value ) override;
+    QVariant maximumValue() const override;
+    QVariant minimumValue() const override;
+    QVariant minimumStepSize() const override;
 
- protected:
-   QAbstractSlider *abstractSlider() const;
+protected:
+    QAbstractSlider *abstractSlider() const;
 };
 
 #ifndef QT_NO_SCROLLBAR
 class QAccessibleScrollBar : public QAccessibleAbstractSlider
 {
- public:
-   explicit QAccessibleScrollBar(QWidget *w);
-   QString text(QAccessible::Text t) const override;
+public:
+    explicit QAccessibleScrollBar( QWidget *w );
+    QString text( QAccessible::Text t ) const override;
 
- protected:
-   QScrollBar *scrollBar() const;
+protected:
+    QScrollBar *scrollBar() const;
 };
 #endif
 
 #ifndef QT_NO_SLIDER
 class QAccessibleSlider : public QAccessibleAbstractSlider
 {
- public:
-   explicit QAccessibleSlider(QWidget *w);
-   QString text(QAccessible::Text t) const override;
+public:
+    explicit QAccessibleSlider( QWidget *w );
+    QString text( QAccessible::Text t ) const override;
 
- protected:
-   QSlider *slider() const;
+protected:
+    QSlider *slider() const;
 };
 #endif
 
 #ifndef QT_NO_DIAL
 class QAccessibleDial : public QAccessibleAbstractSlider
 {
- public:
-   explicit QAccessibleDial(QWidget *w);
+public:
+    explicit QAccessibleDial( QWidget *w );
 
-   QString text(QAccessible::Text textType) const override;
+    QString text( QAccessible::Text textType ) const override;
 
- protected:
-   QDial *dial() const;
+protected:
+    QDial *dial() const;
 };
 #endif
 

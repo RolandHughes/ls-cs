@@ -33,10 +33,13 @@ class QPaintEngine;
 class Q_GUI_EXPORT QOpenGLPaintDevicePrivate
 {
 public:
-    QOpenGLPaintDevicePrivate(const QSize &size);
+    QOpenGLPaintDevicePrivate( const QSize &size );
     virtual ~QOpenGLPaintDevicePrivate();
 
-    static QOpenGLPaintDevicePrivate *get(QOpenGLPaintDevice *dev) { return dev->d_func(); }
+    static QOpenGLPaintDevicePrivate *get( QOpenGLPaintDevice *dev )
+    {
+        return dev->d_func();
+    }
 
     virtual void beginPaint() { }
     virtual void endPaint() { }

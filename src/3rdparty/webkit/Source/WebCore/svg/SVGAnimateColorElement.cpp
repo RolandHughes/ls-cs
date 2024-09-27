@@ -23,16 +23,17 @@
 #if ENABLE(SVG_ANIMATION)
 #include "SVGAnimateColorElement.h"
 
-namespace WebCore {
-    
-inline SVGAnimateColorElement::SVGAnimateColorElement(const QualifiedName& tagName, Document* document)
-    : SVGAnimateElement(tagName, document)
+namespace WebCore
+{
+
+inline SVGAnimateColorElement::SVGAnimateColorElement( const QualifiedName &tagName, Document *document )
+    : SVGAnimateElement( tagName, document )
 {
 }
 
-PassRefPtr<SVGAnimateColorElement> SVGAnimateColorElement::create(const QualifiedName& tagName, Document* document)
+PassRefPtr<SVGAnimateColorElement> SVGAnimateColorElement::create( const QualifiedName &tagName, Document *document )
 {
-    return adoptRef(new SVGAnimateColorElement(tagName, document));
+    return adoptRef( new SVGAnimateColorElement( tagName, document ) );
 }
 
 }

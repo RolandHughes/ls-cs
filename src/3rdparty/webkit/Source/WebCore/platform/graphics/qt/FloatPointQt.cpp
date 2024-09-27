@@ -30,17 +30,18 @@
 
 #include <QPointF>
 
-namespace WebCore {
+namespace WebCore
+{
 
-FloatPoint::FloatPoint(const QPointF& p)
-    : m_x(p.x())
-    , m_y(p.y())
+FloatPoint::FloatPoint( const QPointF &p )
+    : m_x( p.x() )
+    , m_y( p.y() )
 {
 }
 
 FloatPoint::operator QPointF() const
 {
-    return QPointF(m_x, m_y);
+    return QPointF( m_x, m_y );
 }
 
 }

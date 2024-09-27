@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
 
@@ -31,43 +31,49 @@
 
 #include "JSDOMGlobalObject.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class JSDedicatedWorkerContext;
-    class JSSharedWorkerContext;
-    class JSWorkerContext;
-    class WorkerContext;
+class JSDedicatedWorkerContext;
+class JSSharedWorkerContext;
+class JSWorkerContext;
+class WorkerContext;
 
-    class JSWorkerContextBase : public JSDOMGlobalObject {
-        typedef JSDOMGlobalObject Base;
-    public:
-        JSWorkerContextBase(JSC::JSGlobalData&, JSC::Structure*, PassRefPtr<WorkerContext>);
-        virtual ~JSWorkerContextBase();
+class JSWorkerContextBase : public JSDOMGlobalObject
+{
+    typedef JSDOMGlobalObject Base;
+public:
+    JSWorkerContextBase( JSC::JSGlobalData &, JSC::Structure *, PassRefPtr<WorkerContext> );
+    virtual ~JSWorkerContextBase();
 
-        static const JSC::ClassInfo s_info;
+    static const JSC::ClassInfo s_info;
 
-        WorkerContext* impl() const { return m_impl.get(); }
-        virtual ScriptExecutionContext* scriptExecutionContext() const;
+    WorkerContext *impl() const
+    {
+        return m_impl.get();
+    }
+    virtual ScriptExecutionContext *scriptExecutionContext() const;
 
-        static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
-        {
-            return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
-        }
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
+    {
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
+    }
 
-    private:
-        RefPtr<WorkerContext> m_impl;
-    };
+private:
+    RefPtr<WorkerContext> m_impl;
+};
 
-    // Returns a JSWorkerContext or jsNull()
-    // Always ignores the execState and passed globalObject, WorkerContext is itself a globalObject and will always use its own prototype chain.
-    JSC::JSValue toJS(JSC::ExecState*, JSDOMGlobalObject*, WorkerContext*);
-    JSC::JSValue toJS(JSC::ExecState*, WorkerContext*);
+// Returns a JSWorkerContext or jsNull()
+// Always ignores the execState and passed globalObject, WorkerContext is itself a globalObject and will always use its own prototype chain.
+JSC::JSValue toJS( JSC::ExecState *, JSDOMGlobalObject *, WorkerContext * );
+JSC::JSValue toJS( JSC::ExecState *, WorkerContext * );
 
-    JSDedicatedWorkerContext* toJSDedicatedWorkerContext(JSC::JSValue);
-    JSWorkerContext* toJSWorkerContext(JSC::JSValue);
+JSDedicatedWorkerContext *toJSDedicatedWorkerContext( JSC::JSValue );
+JSWorkerContext *toJSWorkerContext( JSC::JSValue );
 
 #if ENABLE(SHARED_WORKERS)
-    JSSharedWorkerContext* toJSSharedWorkerContext(JSC::JSValue);
+JSSharedWorkerContext *toJSSharedWorkerContext( JSC::JSValue );
 #endif
 
 } // namespace WebCore

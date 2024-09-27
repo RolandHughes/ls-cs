@@ -28,94 +28,105 @@
 #include <qpen.h>
 #include <qpicture.h>
 
-QSvgGlyph::QSvgGlyph(QChar unicode, const QPainterPath &path, qreal horizAdvX)
-   : m_unicode(unicode), m_path(path), m_horizAdvX(horizAdvX)
+QSvgGlyph::QSvgGlyph( QChar unicode, const QPainterPath &path, qreal horizAdvX )
+    : m_unicode( unicode ), m_path( path ), m_horizAdvX( horizAdvX )
 {
 }
 
-QSvgFont::QSvgFont(qreal horizAdvX)
-   : m_horizAdvX(horizAdvX)
+QSvgFont::QSvgFont( qreal horizAdvX )
+    : m_horizAdvX( horizAdvX )
 {
 }
 
 QString QSvgFont::familyName() const
 {
-   return m_familyName;
+    return m_familyName;
 }
 
-void QSvgFont::addGlyph(QChar unicode, const QPainterPath &path, qreal horizAdvX )
+void QSvgFont::addGlyph( QChar unicode, const QPainterPath &path, qreal horizAdvX )
 {
-   m_glyphs.insert(unicode, QSvgGlyph(unicode, path,
-                                      (horizAdvX == -1) ? m_horizAdvX : horizAdvX));
+    m_glyphs.insert( unicode, QSvgGlyph( unicode, path,
+                                         ( horizAdvX == -1 ) ? m_horizAdvX : horizAdvX ) );
 }
 
 
-void QSvgFont::draw(QPainter *p, const QPointF &point, const QString &str, qreal pixelSize,
-                    Qt::Alignment alignment) const
+void QSvgFont::draw( QPainter *p, const QPointF &point, const QString &str, qreal pixelSize,
+                     Qt::Alignment alignment ) const
 {
-   p->save();
-   p->translate(point);
-   p->scale(pixelSize / m_unitsPerEm, -pixelSize / m_unitsPerEm);
+    p->save();
+    p->translate( point );
+    p->scale( pixelSize / m_unitsPerEm, -pixelSize / m_unitsPerEm );
 
-   // Calculate the text width to be used for alignment
-   int textWidth = 0;
+    // Calculate the text width to be used for alignment
+    int textWidth = 0;
 
-   for (QChar unicode : str) {
+    for ( QChar unicode : str )
+    {
 
-      if (! m_glyphs.contains(unicode)) {
-         unicode = 0;
+        if ( ! m_glyphs.contains( unicode ) )
+        {
+            unicode = 0;
 
-         if (! m_glyphs.contains(unicode)) {
-            continue;
-         }
-      }
+            if ( ! m_glyphs.contains( unicode ) )
+            {
+                continue;
+            }
+        }
 
-      textWidth += static_cast<int>(m_glyphs[unicode].m_horizAdvX);
-   }
+        textWidth += static_cast<int>( m_glyphs[unicode].m_horizAdvX );
+    }
 
-   QPoint alignmentOffset(0, 0);
-   if (alignment == Qt::AlignHCenter) {
-      alignmentOffset.setX(-textWidth / 2);
+    QPoint alignmentOffset( 0, 0 );
 
-   } else if (alignment == Qt::AlignRight) {
-      alignmentOffset.setX(-textWidth);
-   }
+    if ( alignment == Qt::AlignHCenter )
+    {
+        alignmentOffset.setX( -textWidth / 2 );
 
-   p->translate(alignmentOffset);
+    }
+    else if ( alignment == Qt::AlignRight )
+    {
+        alignmentOffset.setX( -textWidth );
+    }
 
-   // since in SVG the embedded font is not really a path
-   // the outline must stay untransformed
+    p->translate( alignmentOffset );
 
-   qreal penWidth = p->pen().widthF();
-   penWidth /= (pixelSize / m_unitsPerEm);
+    // since in SVG the embedded font is not really a path
+    // the outline must stay untransformed
 
-   QPen pen = p->pen();
-   pen.setWidthF(penWidth);
-   p->setPen(pen);
+    qreal penWidth = p->pen().widthF();
+    penWidth /= ( pixelSize / m_unitsPerEm );
 
-   for (QChar unicode : str) {
+    QPen pen = p->pen();
+    pen.setWidthF( penWidth );
+    p->setPen( pen );
 
-      if (! m_glyphs.contains(unicode)) {
-         unicode = 0;
+    for ( QChar unicode : str )
+    {
 
-         if (! m_glyphs.contains(unicode)) {
-            continue;
-         }
-      }
-      p->drawPath(m_glyphs[unicode].m_path);
-      p->translate(m_glyphs[unicode].m_horizAdvX, 0);
-   }
+        if ( ! m_glyphs.contains( unicode ) )
+        {
+            unicode = 0;
 
-   p->restore();
+            if ( ! m_glyphs.contains( unicode ) )
+            {
+                continue;
+            }
+        }
+
+        p->drawPath( m_glyphs[unicode].m_path );
+        p->translate( m_glyphs[unicode].m_horizAdvX, 0 );
+    }
+
+    p->restore();
 }
 
-void QSvgFont::setFamilyName(const QString &name)
+void QSvgFont::setFamilyName( const QString &name )
 {
-   m_familyName = name;
+    m_familyName = name;
 }
 
-void QSvgFont::setUnitsPerEm(qreal upem)
+void QSvgFont::setUnitsPerEm( qreal upem )
 {
-   m_unitsPerEm = upem;
+    m_unitsPerEm = upem;
 }
 

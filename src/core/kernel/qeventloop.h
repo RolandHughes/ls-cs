@@ -33,42 +33,43 @@ class QEventLoopPrivate;
 
 class Q_CORE_EXPORT QEventLoop : public QObject
 {
-   CORE_CS_OBJECT(QEventLoop)
-   Q_DECLARE_PRIVATE(QEventLoop)
+    CORE_CS_OBJECT( QEventLoop )
+    Q_DECLARE_PRIVATE( QEventLoop )
 
- public:
-   explicit QEventLoop(QObject *parent = nullptr);
-   ~QEventLoop();
+public:
+    explicit QEventLoop( QObject *parent = nullptr );
+    ~QEventLoop();
 
-   enum ProcessEventsFlag {
-      AllEvents              = 0x00,
-      ExcludeUserInputEvents = 0x01,
-      ExcludeSocketNotifiers = 0x02,
-      WaitForMoreEvents      = 0x04,
-      X11ExcludeTimers       = 0x08,
-      DeferredDeletion       = 0x10,
-      EventLoopExec          = 0x20,
-      DialogExec             = 0x40
-   };
-   using ProcessEventsFlags = QFlags<ProcessEventsFlag>;
+    enum ProcessEventsFlag
+    {
+        AllEvents              = 0x00,
+        ExcludeUserInputEvents = 0x01,
+        ExcludeSocketNotifiers = 0x02,
+        WaitForMoreEvents      = 0x04,
+        X11ExcludeTimers       = 0x08,
+        DeferredDeletion       = 0x10,
+        EventLoopExec          = 0x20,
+        DialogExec             = 0x40
+    };
+    using ProcessEventsFlags = QFlags<ProcessEventsFlag>;
 
-   bool processEvents(ProcessEventsFlags flags = AllEvents);
-   void processEvents(ProcessEventsFlags flags, int maxTime);
+    bool processEvents( ProcessEventsFlags flags = AllEvents );
+    void processEvents( ProcessEventsFlags flags, int maxTime );
 
-   int exec(ProcessEventsFlags flags = AllEvents);
-   void exit(int returnCode = 0);
-   bool isRunning() const;
+    int exec( ProcessEventsFlags flags = AllEvents );
+    void exit( int returnCode = 0 );
+    bool isRunning() const;
 
-   void wakeUp();
+    void wakeUp();
 
-   CORE_CS_SLOT_1(Public, void quit())
-   CORE_CS_SLOT_2(quit)
+    CORE_CS_SLOT_1( Public, void quit() )
+    CORE_CS_SLOT_2( quit )
 
- protected:
-   QScopedPointer<QEventLoopPrivate> d_ptr;
+protected:
+    QScopedPointer<QEventLoopPrivate> d_ptr;
 
 };
 
-Q_DECLARE_OPERATORS_FOR_FLAGS(QEventLoop::ProcessEventsFlags)
+Q_DECLARE_OPERATORS_FOR_FLAGS( QEventLoop::ProcessEventsFlags )
 
 #endif // QEVENTLOOP_H

@@ -32,136 +32,150 @@ class QStaticText;
 
 class QStaticTextUserData
 {
- public:
-   enum Type {
-      NoUserData,
-      OpenGLUserData
-   };
+public:
+    enum Type
+    {
+        NoUserData,
+        OpenGLUserData
+    };
 
-   QStaticTextUserData(Type t) : type(t) {
-      ref = 0;
-   }
-   virtual ~QStaticTextUserData() {}
+    QStaticTextUserData( Type t ) : type( t )
+    {
+        ref = 0;
+    }
+    virtual ~QStaticTextUserData() {}
 
-   QAtomicInt ref;
-   Type type;
+    QAtomicInt ref;
+    Type type;
 };
 
 class Q_GUI_EXPORT QStaticTextItem
 {
- public:
-   QStaticTextItem()
-      : useBackendOptimizations(false), userDataNeedsUpdate(0), usesRawFont(0), m_fontEngine(nullptr), m_userData(nullptr)
-   { }
+public:
+    QStaticTextItem()
+        : useBackendOptimizations( false ), userDataNeedsUpdate( 0 ), usesRawFont( 0 ), m_fontEngine( nullptr ), m_userData( nullptr )
+    { }
 
-   QStaticTextItem(const QStaticTextItem &other) {
-      operator=(other);
-   }
+    QStaticTextItem( const QStaticTextItem &other )
+    {
+        operator=( other );
+    }
 
-   void operator=(const QStaticTextItem &other) {
-      glyphPositions = other.glyphPositions;
-      glyphs         = other.glyphs;
-      numGlyphs      = other.numGlyphs;
-      font           = other.font;
-      color          = other.color;
-      useBackendOptimizations = other.useBackendOptimizations;
-      userDataNeedsUpdate     = other.userDataNeedsUpdate;
-      usesRawFont             = other.usesRawFont;
+    void operator=( const QStaticTextItem &other )
+    {
+        glyphPositions = other.glyphPositions;
+        glyphs         = other.glyphs;
+        numGlyphs      = other.numGlyphs;
+        font           = other.font;
+        color          = other.color;
+        useBackendOptimizations = other.useBackendOptimizations;
+        userDataNeedsUpdate     = other.userDataNeedsUpdate;
+        usesRawFont             = other.usesRawFont;
 
-      m_fontEngine = nullptr;
-      m_userData   = nullptr;
-      setUserData(other.userData());
-      setFontEngine(other.fontEngine());
-   }
+        m_fontEngine = nullptr;
+        m_userData   = nullptr;
+        setUserData( other.userData() );
+        setFontEngine( other.fontEngine() );
+    }
 
-   ~QStaticTextItem();
+    ~QStaticTextItem();
 
-   void setUserData(QStaticTextUserData *newUserData) {
-      if (m_userData == newUserData) {
-         return;
-      }
+    void setUserData( QStaticTextUserData *newUserData )
+    {
+        if ( m_userData == newUserData )
+        {
+            return;
+        }
 
-      if (m_userData != nullptr && !m_userData->ref.deref()) {
-         delete m_userData;
-      }
+        if ( m_userData != nullptr && !m_userData->ref.deref() )
+        {
+            delete m_userData;
+        }
 
-      m_userData = newUserData;
-      if (m_userData != nullptr) {
-         m_userData->ref.ref();
-      }
-   }
+        m_userData = newUserData;
 
-   QStaticTextUserData *userData() const {
-      return m_userData;
-   }
+        if ( m_userData != nullptr )
+        {
+            m_userData->ref.ref();
+        }
+    }
 
-   void setFontEngine(QFontEngine *fe);
-   QFontEngine *fontEngine() const {
-      return m_fontEngine;
-   }
+    QStaticTextUserData *userData() const
+    {
+        return m_userData;
+    }
 
-   union {
-      QFixedPoint *glyphPositions;             // 8 bytes per glyph
-      int positionOffset;
-   };
+    void setFontEngine( QFontEngine *fe );
+    QFontEngine *fontEngine() const
+    {
+        return m_fontEngine;
+    }
 
-   union {
-      glyph_t *glyphs;                         // 4 bytes per glyph
-      int glyphOffset;
-   };
+    union
+    {
+        QFixedPoint *glyphPositions;             // 8 bytes per glyph
+        int positionOffset;
+    };
 
-   int numGlyphs;                               // 4 bytes per item
-   QFont font;                                  // 8 bytes per item
-   QColor color;                                // 10 bytes per item
+    union
+    {
+        glyph_t *glyphs;                         // 4 bytes per glyph
+        int glyphOffset;
+    };
 
-   uint8_t useBackendOptimizations : 1;         // 1 byte per item
-   uint8_t userDataNeedsUpdate : 1;
-   uint8_t usesRawFont : 1;
+    int numGlyphs;                               // 4 bytes per item
+    QFont font;                                  // 8 bytes per item
+    QColor color;                                // 10 bytes per item
 
- private:
-   // Needs special handling in setters, so private to avoid abuse
-   QFontEngine *m_fontEngine;                     // 4 bytes per item
-   QStaticTextUserData *m_userData;               // 8 bytes per item
+    uint8_t useBackendOptimizations : 1;         // 1 byte per item
+    uint8_t userDataNeedsUpdate : 1;
+    uint8_t usesRawFont : 1;
+
+private:
+    // Needs special handling in setters, so private to avoid abuse
+    QFontEngine *m_fontEngine;                     // 4 bytes per item
+    QStaticTextUserData *m_userData;               // 8 bytes per item
 
 };
 
 class QStaticTextPrivate
 {
- public:
-   QStaticTextPrivate();
-   QStaticTextPrivate(const QStaticTextPrivate &other);
-   ~QStaticTextPrivate();
+public:
+    QStaticTextPrivate();
+    QStaticTextPrivate( const QStaticTextPrivate &other );
+    ~QStaticTextPrivate();
 
-   void init();
-   void paintText(const QPointF &pos, QPainter *p);
+    void init();
+    void paintText( const QPointF &pos, QPainter *p );
 
-   void invalidate() {
-      needsRelayout = true;
-   }
+    void invalidate()
+    {
+        needsRelayout = true;
+    }
 
-   QAtomicInt ref;                      // 4 bytes per text
+    QAtomicInt ref;                      // 4 bytes per text
 
-   QString text;                        // 4 bytes per text
-   QFont font;                          // 8 bytes per text
-   qreal textWidth;                     // 8 bytes per text
-   QSizeF actualSize;                   // 16 bytes per text
-   QPointF position;                    // 16 bytes per text
+    QString text;                        // 4 bytes per text
+    QFont font;                          // 8 bytes per text
+    qreal textWidth;                     // 8 bytes per text
+    QSizeF actualSize;                   // 16 bytes per text
+    QPointF position;                    // 16 bytes per text
 
-   QTransform matrix;                   // 80 bytes per text
-   QStaticTextItem *items;              // 4 bytes per text
-   int itemCount;                       // 4 bytes per text
+    QTransform matrix;                   // 80 bytes per text
+    QStaticTextItem *items;              // 4 bytes per text
+    int itemCount;                       // 4 bytes per text
 
-   glyph_t *glyphPool;                  // 4 bytes per text
-   QFixedPoint *positionPool;           // 4 bytes per text
+    glyph_t *glyphPool;                  // 4 bytes per text
+    QFixedPoint *positionPool;           // 4 bytes per text
 
-   QTextOption textOption;              // 28 bytes per text
+    QTextOption textOption;              // 28 bytes per text
 
-   unsigned char needsRelayout            : 1; // 1 byte per text
-   unsigned char useBackendOptimizations  : 1;
-   unsigned char textFormat               : 2;
-   unsigned char untransformedCoordinates : 1;
+    unsigned char needsRelayout            : 1; // 1 byte per text
+    unsigned char useBackendOptimizations  : 1;
+    unsigned char textFormat               : 2;
+    unsigned char untransformedCoordinates : 1;
 
-   static QStaticTextPrivate *get(const QStaticText *q);
+    static QStaticTextPrivate *get( const QStaticText *q );
 };
 
 

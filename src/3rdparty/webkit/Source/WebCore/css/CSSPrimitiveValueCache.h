@@ -22,7 +22,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 #ifndef CSSPrimitiveValueCache_h
 #define CSSPrimitiveValueCache_h
 
@@ -31,21 +31,32 @@
 #include <wtf/HashMap.h>
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
-    
+namespace WebCore
+{
+
 class CSSPrimitiveValue;
 
-class CSSPrimitiveValueCache : public RefCounted<CSSPrimitiveValueCache> {
+class CSSPrimitiveValueCache : public RefCounted<CSSPrimitiveValueCache>
+{
 public:
-    static PassRefPtr<CSSPrimitiveValueCache> create() { return adoptRef(new CSSPrimitiveValueCache); }
+    static PassRefPtr<CSSPrimitiveValueCache> create()
+    {
+        return adoptRef( new CSSPrimitiveValueCache );
+    }
     ~CSSPrimitiveValueCache();
 
-    PassRefPtr<CSSPrimitiveValue> createIdentifierValue(int identifier);
-    PassRefPtr<CSSPrimitiveValue> createColorValue(unsigned rgbValue);
-    PassRefPtr<CSSPrimitiveValue> createValue(double value, CSSPrimitiveValue::UnitTypes);
-    PassRefPtr<CSSPrimitiveValue> createValue(String value, CSSPrimitiveValue::UnitTypes type) { return CSSPrimitiveValue::create(value, type); }
-    template<typename T> static PassRefPtr<CSSPrimitiveValue> createValue(T value) { return CSSPrimitiveValue::create(value); }
-    
+    PassRefPtr<CSSPrimitiveValue> createIdentifierValue( int identifier );
+    PassRefPtr<CSSPrimitiveValue> createColorValue( unsigned rgbValue );
+    PassRefPtr<CSSPrimitiveValue> createValue( double value, CSSPrimitiveValue::UnitTypes );
+    PassRefPtr<CSSPrimitiveValue> createValue( String value, CSSPrimitiveValue::UnitTypes type )
+    {
+        return CSSPrimitiveValue::create( value, type );
+    }
+    template<typename T> static PassRefPtr<CSSPrimitiveValue> createValue( T value )
+    {
+        return CSSPrimitiveValue::create( value );
+    }
+
 private:
     CSSPrimitiveValueCache();
 
@@ -57,7 +68,7 @@ private:
     RefPtr<CSSPrimitiveValue> m_colorTransparent;
     RefPtr<CSSPrimitiveValue> m_colorWhite;
     RefPtr<CSSPrimitiveValue> m_colorBlack;
-    
+
     typedef HashMap<int, RefPtr<CSSPrimitiveValue> > IntegerValueCache;
     RefPtr<CSSPrimitiveValue> m_pixelZero;
     RefPtr<CSSPrimitiveValue> m_percentZero;

@@ -34,21 +34,29 @@
 #include "SQLTransaction.h"
 #include <wtf/Forward.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class SQLError;
 
-class ChangeVersionWrapper : public SQLTransactionWrapper {
+class ChangeVersionWrapper : public SQLTransactionWrapper
+{
 public:
-    static PassRefPtr<ChangeVersionWrapper> create(const String& oldVersion, const String& newVersion) { return adoptRef(new ChangeVersionWrapper(oldVersion, newVersion)); }
+    static PassRefPtr<ChangeVersionWrapper> create( const String &oldVersion, const String &newVersion )
+    {
+        return adoptRef( new ChangeVersionWrapper( oldVersion, newVersion ) );
+    }
 
-    virtual bool performPreflight(SQLTransaction*);
-    virtual bool performPostflight(SQLTransaction*);
+    virtual bool performPreflight( SQLTransaction * );
+    virtual bool performPostflight( SQLTransaction * );
 
-    virtual SQLError* sqlError() const { return m_sqlError.get(); }
+    virtual SQLError *sqlError() const
+    {
+        return m_sqlError.get();
+    }
 
 private:
-    ChangeVersionWrapper(const String& oldVersion, const String& newVersion);
+    ChangeVersionWrapper( const String &oldVersion, const String &newVersion );
 
     String m_oldVersion;
     String m_newVersion;

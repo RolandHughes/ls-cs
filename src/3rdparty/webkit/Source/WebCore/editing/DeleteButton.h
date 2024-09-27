@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef DeleteButton_h
@@ -28,16 +28,18 @@
 
 #include "HTMLImageElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class DeleteButton : public HTMLImageElement {
+class DeleteButton : public HTMLImageElement
+{
 public:
-    static PassRefPtr<DeleteButton> create(Document*);
+    static PassRefPtr<DeleteButton> create( Document * );
 
 private:
-    DeleteButton(Document*);
+    DeleteButton( Document * );
 
-    virtual void defaultEventHandler(Event*);
+    virtual void defaultEventHandler( Event * );
 };
 
 } // namespace

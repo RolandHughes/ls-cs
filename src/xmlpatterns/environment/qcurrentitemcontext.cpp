@@ -26,15 +26,15 @@
 
 using namespace QPatternist;
 
-CurrentItemContext::CurrentItemContext(const Item &item,
-                                       const DynamicContext::Ptr &prevContext) : DelegatingDynamicContext(prevContext)
-   , m_currentItem(item)
+CurrentItemContext::CurrentItemContext( const Item &item,
+                                        const DynamicContext::Ptr &prevContext ) : DelegatingDynamicContext( prevContext )
+    , m_currentItem( item )
 {
-   Q_ASSERT(prevContext);
+    Q_ASSERT( prevContext );
 }
 
 Item CurrentItemContext::currentItem() const
 {
-   return m_currentItem;
+    return m_currentItem;
 }
 

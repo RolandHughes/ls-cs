@@ -30,14 +30,16 @@
 
 #include <wtf/Forward.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class PlatformCALayer;
 
-class AbstractCACFLayerTreeHost {
+class AbstractCACFLayerTreeHost
+{
 public:
-    virtual PlatformCALayer* rootLayer() const = 0;
-    virtual void addPendingAnimatedLayer(PassRefPtr<PlatformCALayer>) = 0;
+    virtual PlatformCALayer *rootLayer() const = 0;
+    virtual void addPendingAnimatedLayer( PassRefPtr<PlatformCALayer> ) = 0;
     virtual void layerTreeDidChange() = 0;
     virtual void flushPendingLayerChangesNow() = 0;
 

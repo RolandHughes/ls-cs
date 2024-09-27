@@ -35,54 +35,55 @@ class QScriptContextInfoPrivate;
 class Q_SCRIPT_EXPORT QScriptContextInfo
 {
 
- public:
-   friend Q_SCRIPT_EXPORT QDataStream &operator<<(QDataStream &, const QScriptContextInfo &);
-   friend Q_SCRIPT_EXPORT QDataStream &operator>>(QDataStream &, QScriptContextInfo &);
+public:
+    friend Q_SCRIPT_EXPORT QDataStream &operator<<( QDataStream &, const QScriptContextInfo & );
+    friend Q_SCRIPT_EXPORT QDataStream &operator>>( QDataStream &, QScriptContextInfo & );
 
-   enum FunctionType {
-      ScriptFunction,
-      QtFunction,
-      QtPropertyFunction,
-      NativeFunction
-   };
+    enum FunctionType
+    {
+        ScriptFunction,
+        QtFunction,
+        QtPropertyFunction,
+        NativeFunction
+    };
 
-   QScriptContextInfo(const QScriptContext *context);
-   QScriptContextInfo(const QScriptContextInfo &other);
-   QScriptContextInfo();
-   ~QScriptContextInfo();
+    QScriptContextInfo( const QScriptContext *context );
+    QScriptContextInfo( const QScriptContextInfo &other );
+    QScriptContextInfo();
+    ~QScriptContextInfo();
 
-   QScriptContextInfo &operator=(const QScriptContextInfo &other);
+    QScriptContextInfo &operator=( const QScriptContextInfo &other );
 
-   bool isNull() const;
+    bool isNull() const;
 
-   qint64 scriptId() const;
-   QString fileName() const;
+    qint64 scriptId() const;
+    QString fileName() const;
 
-   int lineNumber() const;
-   int columnNumber() const;
+    int lineNumber() const;
+    int columnNumber() const;
 
-   QString functionName() const;
-   FunctionType functionType() const;
+    QString functionName() const;
+    FunctionType functionType() const;
 
-   QStringList functionParameterNames() const;
+    QStringList functionParameterNames() const;
 
-   int functionStartLineNumber() const;
-   int functionEndLineNumber() const;
+    int functionStartLineNumber() const;
+    int functionEndLineNumber() const;
 
-   int functionMetaIndex() const;
+    int functionMetaIndex() const;
 
-   bool operator==(const QScriptContextInfo &other) const;
-   bool operator!=(const QScriptContextInfo &other) const;
+    bool operator==( const QScriptContextInfo &other ) const;
+    bool operator!=( const QScriptContextInfo &other ) const;
 
- private:
-   QExplicitlySharedDataPointer<QScriptContextInfoPrivate> d_ptr;
+private:
+    QExplicitlySharedDataPointer<QScriptContextInfoPrivate> d_ptr;
 
-   Q_DECLARE_PRIVATE(QScriptContextInfo)
+    Q_DECLARE_PRIVATE( QScriptContextInfo )
 };
 
 typedef QList<QScriptContextInfo> QScriptContextInfoList;
 
-Q_SCRIPT_EXPORT QDataStream &operator<<(QDataStream &, const QScriptContextInfo &);
-Q_SCRIPT_EXPORT QDataStream &operator>>(QDataStream &, QScriptContextInfo &);
+Q_SCRIPT_EXPORT QDataStream &operator<<( QDataStream &, const QScriptContextInfo & );
+Q_SCRIPT_EXPORT QDataStream &operator>>( QDataStream &, QScriptContextInfo & );
 
 #endif

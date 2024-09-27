@@ -33,47 +33,59 @@
 #include "WebPageGroupProxy.h"
 #include "WebProcess.h"
 
-namespace WebKit {
+namespace WebKit
+{
 
 // Adds
 // - BundlePage -> Page
 // - BundleFrame -> Frame
 // - BundlePageGroup -> PageGroup
 
-class InjectedBundleUserMessageEncoder : public UserMessageEncoder<InjectedBundleUserMessageEncoder> {
+class InjectedBundleUserMessageEncoder : public UserMessageEncoder<InjectedBundleUserMessageEncoder>
+{
 public:
     typedef UserMessageEncoder<InjectedBundleUserMessageEncoder> Base;
 
-    InjectedBundleUserMessageEncoder(APIObject* root) 
-        : Base(root)
+    InjectedBundleUserMessageEncoder( APIObject *root )
+        : Base( root )
     {
     }
 
-    void encode(CoreIPC::ArgumentEncoder* encoder) const 
+    void encode( CoreIPC::ArgumentEncoder *encoder ) const
     {
         APIObject::Type type = APIObject::TypeNull;
-        if (baseEncode(encoder, type))
-            return;
 
-        switch (type) {
-        case APIObject::TypeBundlePage: {
-            WebPage* page = static_cast<WebPage*>(m_root);
-            encoder->encode(page->pageID());
-            break;
+        if ( baseEncode( encoder, type ) )
+        {
+            return;
         }
-        case APIObject::TypeBundleFrame: {
-            WebFrame* frame = static_cast<WebFrame*>(m_root);
-            encoder->encode(frame->frameID());
-            break;
-        }
-        case APIObject::TypeBundlePageGroup: {
-            WebPageGroupProxy* pageGroup = static_cast<WebPageGroupProxy*>(m_root);
-            encoder->encode(pageGroup->pageGroupID());
-            break;
-        }
-        default:
-            ASSERT_NOT_REACHED();
-            break;
+
+        switch ( type )
+        {
+            case APIObject::TypeBundlePage:
+            {
+                WebPage *page = static_cast<WebPage *>( m_root );
+                encoder->encode( page->pageID() );
+                break;
+            }
+
+            case APIObject::TypeBundleFrame:
+            {
+                WebFrame *frame = static_cast<WebFrame *>( m_root );
+                encoder->encode( frame->frameID() );
+                break;
+            }
+
+            case APIObject::TypeBundlePageGroup:
+            {
+                WebPageGroupProxy *pageGroup = static_cast<WebPageGroupProxy *>( m_root );
+                encoder->encode( pageGroup->pageGroupID() );
+                break;
+            }
+
+            default:
+                ASSERT_NOT_REACHED();
+                break;
         }
     }
 };
@@ -83,53 +95,78 @@ public:
 //   - Frame -> BundleFrame
 //   - PageGroup -> BundlePageGroup
 
-class InjectedBundleUserMessageDecoder : public UserMessageDecoder<InjectedBundleUserMessageDecoder> {
+class InjectedBundleUserMessageDecoder : public UserMessageDecoder<InjectedBundleUserMessageDecoder>
+{
 public:
     typedef UserMessageDecoder<InjectedBundleUserMessageDecoder> Base;
 
-    InjectedBundleUserMessageDecoder(RefPtr<APIObject>& root)
-        : Base(root)
+    InjectedBundleUserMessageDecoder( RefPtr<APIObject> &root )
+        : Base( root )
     {
     }
 
-    InjectedBundleUserMessageDecoder(InjectedBundleUserMessageDecoder&, RefPtr<APIObject>& root)
-        : Base(root)
+    InjectedBundleUserMessageDecoder( InjectedBundleUserMessageDecoder &, RefPtr<APIObject> &root )
+        : Base( root )
     {
     }
 
-    static bool decode(CoreIPC::ArgumentDecoder* decoder, InjectedBundleUserMessageDecoder& coder)
+    static bool decode( CoreIPC::ArgumentDecoder *decoder, InjectedBundleUserMessageDecoder &coder )
     {
         APIObject::Type type = APIObject::TypeNull;
-        if (!Base::baseDecode(decoder, coder, type))
-            return false;
 
-        if (coder.m_root || type == APIObject::TypeNull)
+        if ( !Base::baseDecode( decoder, coder, type ) )
+        {
+            return false;
+        }
+
+        if ( coder.m_root || type == APIObject::TypeNull )
+        {
             return true;
+        }
 
-        switch (type) {
-        case APIObject::TypePage: {
-            uint64_t pageID;
-            if (!decoder->decode(pageID))
+        switch ( type )
+        {
+            case APIObject::TypePage:
+            {
+                uint64_t pageID;
+
+                if ( !decoder->decode( pageID ) )
+                {
+                    return false;
+                }
+
+                coder.m_root = WebProcess::shared().webPage( pageID );
+                break;
+            }
+
+            case APIObject::TypeFrame:
+            {
+                uint64_t frameID;
+
+                if ( !decoder->decode( frameID ) )
+                {
+                    return false;
+                }
+
+                coder.m_root = WebProcess::shared().webFrame( frameID );
+                break;
+            }
+
+            case APIObject::TypePageGroup:
+            {
+                WebPageGroupData pageGroupData;
+
+                if ( !decoder->decode( pageGroupData ) )
+                {
+                    return false;
+                }
+
+                coder.m_root = WebProcess::shared().webPageGroup( pageGroupData );
+                break;
+            }
+
+            default:
                 return false;
-            coder.m_root = WebProcess::shared().webPage(pageID);
-            break;
-        }
-        case APIObject::TypeFrame: {
-            uint64_t frameID;
-            if (!decoder->decode(frameID))
-                return false;
-            coder.m_root = WebProcess::shared().webFrame(frameID);
-            break;
-        }
-        case APIObject::TypePageGroup: {
-            WebPageGroupData pageGroupData;
-            if (!decoder->decode(pageGroupData))
-                return false;
-            coder.m_root = WebProcess::shared().webPageGroup(pageGroupData);
-            break;
-        }
-        default:
-            return false;
         }
 
         return true;

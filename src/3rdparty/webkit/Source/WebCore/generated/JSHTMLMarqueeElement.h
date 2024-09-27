@@ -24,76 +24,82 @@
 #include "JSHTMLElement.h"
 #include <runtime/JSObjectWithGlobalObject.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class HTMLMarqueeElement;
 
-class JSHTMLMarqueeElement : public JSHTMLElement {
+class JSHTMLMarqueeElement : public JSHTMLElement
+{
     typedef JSHTMLElement Base;
 public:
-    JSHTMLMarqueeElement(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<HTMLMarqueeElement>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
-    virtual void put(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::JSValue, JSC::PutPropertySlot&);
+    JSHTMLMarqueeElement( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<HTMLMarqueeElement> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
+    virtual void put( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::JSValue, JSC::PutPropertySlot & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 
-class JSHTMLMarqueeElementPrototype : public JSC::JSObjectWithGlobalObject {
+class JSHTMLMarqueeElementPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSHTMLMarqueeElementPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSHTMLMarqueeElementPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                                   JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 // Functions
 
-JSC::EncodedJSValue JSC_HOST_CALL jsHTMLMarqueeElementPrototypeFunctionStart(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsHTMLMarqueeElementPrototypeFunctionStop(JSC::ExecState*);
+JSC::EncodedJSValue JSC_HOST_CALL jsHTMLMarqueeElementPrototypeFunctionStart( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsHTMLMarqueeElementPrototypeFunctionStop( JSC::ExecState * );
 // Attributes
 
-JSC::JSValue jsHTMLMarqueeElementBehavior(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLMarqueeElementBehavior(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLMarqueeElementBgColor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLMarqueeElementBgColor(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLMarqueeElementDirection(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLMarqueeElementDirection(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLMarqueeElementHeight(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLMarqueeElementHeight(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLMarqueeElementHspace(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLMarqueeElementHspace(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLMarqueeElementLoop(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLMarqueeElementLoop(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLMarqueeElementScrollAmount(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLMarqueeElementScrollAmount(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLMarqueeElementScrollDelay(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLMarqueeElementScrollDelay(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLMarqueeElementTrueSpeed(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLMarqueeElementTrueSpeed(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLMarqueeElementVspace(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLMarqueeElementVspace(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLMarqueeElementWidth(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLMarqueeElementWidth(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLMarqueeElementConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsHTMLMarqueeElementBehavior( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLMarqueeElementBehavior( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLMarqueeElementBgColor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLMarqueeElementBgColor( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLMarqueeElementDirection( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLMarqueeElementDirection( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLMarqueeElementHeight( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLMarqueeElementHeight( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLMarqueeElementHspace( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLMarqueeElementHspace( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLMarqueeElementLoop( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLMarqueeElementLoop( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLMarqueeElementScrollAmount( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLMarqueeElementScrollAmount( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLMarqueeElementScrollDelay( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLMarqueeElementScrollDelay( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLMarqueeElementTrueSpeed( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLMarqueeElementTrueSpeed( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLMarqueeElementVspace( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLMarqueeElementVspace( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLMarqueeElementWidth( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLMarqueeElementWidth( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLMarqueeElementConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

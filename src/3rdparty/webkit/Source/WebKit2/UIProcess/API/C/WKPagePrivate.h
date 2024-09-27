@@ -33,40 +33,46 @@
 extern "C" {
 #endif
 
-typedef void (*WKPageRenderTreeExternalRepresentationFunction)(WKStringRef, WKErrorRef, void*);
-WK_EXPORT void WKPageRenderTreeExternalRepresentation(WKPageRef page, void *context, WKPageRenderTreeExternalRepresentationFunction function);
+typedef void ( *WKPageRenderTreeExternalRepresentationFunction )( WKStringRef, WKErrorRef, void * );
+WK_EXPORT void WKPageRenderTreeExternalRepresentation( WKPageRef page, void *context,
+        WKPageRenderTreeExternalRepresentationFunction function );
 
 #ifdef __BLOCKS__
-typedef void (^WKPageRenderTreeExternalRepresentationBlock)(WKStringRef, WKErrorRef);
-WK_EXPORT void WKPageRenderTreeExternalRepresentation_b(WKPageRef page, WKPageRenderTreeExternalRepresentationBlock block);
+typedef void ( ^WKPageRenderTreeExternalRepresentationBlock )( WKStringRef, WKErrorRef );
+WK_EXPORT void WKPageRenderTreeExternalRepresentation_b( WKPageRef page, WKPageRenderTreeExternalRepresentationBlock block );
 #endif
 
-enum {
+enum
+{
     kWKDebugFlashViewUpdates = 1 << 0,
     kWKDebugFlashBackingStoreUpdates = 1 << 1
 };
 typedef unsigned WKPageDebugPaintFlags;
 
-WK_EXPORT void WKPageSetDebugPaintFlags(WKPageDebugPaintFlags flags);
-WK_EXPORT WKPageDebugPaintFlags WKPageGetDebugPaintFlags(void);
+WK_EXPORT void WKPageSetDebugPaintFlags( WKPageDebugPaintFlags flags );
+WK_EXPORT WKPageDebugPaintFlags WKPageGetDebugPaintFlags( void );
 
-struct WKPrintInfo {
+struct WKPrintInfo
+{
     float pageSetupScaleFactor;
     float availablePaperWidth;
     float availablePaperHeight;
 };
 typedef struct WKPrintInfo WKPrintInfo;
 
-typedef void (*WKPageComputePagesForPrintingFunction)(WKRect* pageRects, uint32_t pageCount, double resultPageScaleFactor, WKErrorRef error, void* functionContext);
-WK_EXPORT void WKPageComputePagesForPrinting(WKPageRef page, WKFrameRef frame, WKPrintInfo, WKPageComputePagesForPrintingFunction, void* context);
+typedef void ( *WKPageComputePagesForPrintingFunction )( WKRect *pageRects, uint32_t pageCount, double resultPageScaleFactor,
+        WKErrorRef error, void *functionContext );
+WK_EXPORT void WKPageComputePagesForPrinting( WKPageRef page, WKFrameRef frame, WKPrintInfo,
+        WKPageComputePagesForPrintingFunction, void *context );
 
-typedef void (*WKPageDrawToPDFFunction)(WKDataRef data, WKErrorRef error, void* functionContext);
-WK_EXPORT void WKPageBeginPrinting(WKPageRef page, WKFrameRef frame, WKPrintInfo);
-WK_EXPORT void WKPageDrawPagesToPDF(WKPageRef page, WKFrameRef frame, uint32_t first, uint32_t count, WKPageDrawToPDFFunction callback, void* context);
+typedef void ( *WKPageDrawToPDFFunction )( WKDataRef data, WKErrorRef error, void *functionContext );
+WK_EXPORT void WKPageBeginPrinting( WKPageRef page, WKFrameRef frame, WKPrintInfo );
+WK_EXPORT void WKPageDrawPagesToPDF( WKPageRef page, WKFrameRef frame, uint32_t first, uint32_t count,
+                                     WKPageDrawToPDFFunction callback, void *context );
 
 // FIXME: This is in violation of the no synchronous messages to the Web Process policy and should
 // be removed as soon as possible.
-WK_EXPORT WKImageRef WKPageCreateSnapshotOfVisibleContent(WKPageRef page);
+WK_EXPORT WKImageRef WKPageCreateSnapshotOfVisibleContent( WKPageRef page );
 
 #ifdef __cplusplus
 }

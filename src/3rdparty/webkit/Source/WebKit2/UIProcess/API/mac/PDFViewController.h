@@ -36,52 +36,58 @@
 @class WKView;
 @class WKPDFView;
 
-namespace CoreIPC {
-    class DataReference;
+namespace CoreIPC
+{
+class DataReference;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
 class WebPageProxy;
 
-class PDFViewController {
-    WTF_MAKE_NONCOPYABLE(PDFViewController);
+class PDFViewController
+{
+    WTF_MAKE_NONCOPYABLE( PDFViewController );
 
 public:
-    static PassOwnPtr<PDFViewController> create(WKView *);
+    static PassOwnPtr<PDFViewController> create( WKView * );
     ~PDFViewController();
 
-    WKView* wkView() const { return m_wkView; }
-    WebPageProxy* page() const;
-    NSView* pdfView() const;
-    
-    void setPDFDocumentData(const String& mimeType, const String& suggestedFilename, const CoreIPC::DataReference&);
+    WKView *wkView() const
+    {
+        return m_wkView;
+    }
+    WebPageProxy *page() const;
+    NSView *pdfView() const;
+
+    void setPDFDocumentData( const String &mimeType, const String &suggestedFilename, const CoreIPC::DataReference & );
 
     double zoomFactor() const;
-    void setZoomFactor(double);
+    void setZoomFactor( double );
 
     static Class pdfPreviewViewClass();
 
-    NSPrintOperation *makePrintOperation(NSPrintInfo *);
+    NSPrintOperation *makePrintOperation( NSPrintInfo * );
     void openPDFInFinder();
     void savePDFToDownloadsFolder();
-    void linkClicked(const String& url);
+    void linkClicked( const String &url );
 
-    void findString(const String&, FindOptions, unsigned maxMatchCount);
-    void countStringMatches(const String&, FindOptions, unsigned maxMatchCount);
+    void findString( const String &, FindOptions, unsigned maxMatchCount );
+    void countStringMatches( const String &, FindOptions, unsigned maxMatchCount );
 
 private:
-    explicit PDFViewController(WKView *wkView);
+    explicit PDFViewController( WKView *wkView );
 
     static Class pdfDocumentClass();
-    static NSBundle* pdfKitBundle();
+    static NSBundle *pdfKitBundle();
 
     NSString *pathToPDFOnDisk();
 
-    WKView* m_wkView;
+    WKView *m_wkView;
 
     RetainPtr<WKPDFView> m_wkPDFView;
-    PDFView* m_pdfView;
+    PDFView *m_pdfView;
 
     RetainPtr<NSString> m_suggestedFilename;
     RetainPtr<CFDataRef> m_pdfData;

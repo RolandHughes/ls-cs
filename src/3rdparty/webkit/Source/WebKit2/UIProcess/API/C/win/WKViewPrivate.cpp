@@ -31,7 +31,7 @@
 
 using namespace WebKit;
 
-void WKViewSetOverrideCursor(WKViewRef viewRef, HCURSOR overrideCursor)
+void WKViewSetOverrideCursor( WKViewRef viewRef, HCURSOR overrideCursor )
 {
-    toImpl(viewRef)->setOverrideCursor(overrideCursor);
+    toImpl( viewRef )->setOverrideCursor( overrideCursor );
 }

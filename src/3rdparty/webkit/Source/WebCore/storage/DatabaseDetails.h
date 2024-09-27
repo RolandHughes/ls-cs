@@ -33,36 +33,54 @@
 
 #include "PlatformString.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class DatabaseDetails {
+class DatabaseDetails
+{
 public:
     DatabaseDetails()
-        : m_expectedUsage(0)
-        , m_currentUsage(0)
+        : m_expectedUsage( 0 )
+        , m_currentUsage( 0 )
     {
 #ifndef NDEBUG
         m_thread = currentThread();
 #endif
     }
 
-    DatabaseDetails(const String& databaseName, const String& displayName, unsigned long long expectedUsage, unsigned long long currentUsage)
-        : m_name(databaseName)
-        , m_displayName(displayName)
-        , m_expectedUsage(expectedUsage)
-        , m_currentUsage(currentUsage)
+    DatabaseDetails( const String &databaseName, const String &displayName, unsigned long long expectedUsage,
+                     unsigned long long currentUsage )
+        : m_name( databaseName )
+        , m_displayName( displayName )
+        , m_expectedUsage( expectedUsage )
+        , m_currentUsage( currentUsage )
     {
 #ifndef NDEBUG
         m_thread = currentThread();
 #endif
     }
 
-    const String& name() const { return m_name; }
-    const String& displayName() const { return m_displayName; }
-    uint64_t expectedUsage() const { return m_expectedUsage; }
-    uint64_t currentUsage() const { return m_currentUsage; }
+    const String &name() const
+    {
+        return m_name;
+    }
+    const String &displayName() const
+    {
+        return m_displayName;
+    }
+    uint64_t expectedUsage() const
+    {
+        return m_expectedUsage;
+    }
+    uint64_t currentUsage() const
+    {
+        return m_currentUsage;
+    }
 #ifndef NDEBUG
-    ThreadIdentifier thread() const { return m_thread; }
+    ThreadIdentifier thread() const
+    {
+        return m_thread;
+    }
 #endif
 
 private:

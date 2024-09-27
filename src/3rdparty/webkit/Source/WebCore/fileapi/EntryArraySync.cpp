@@ -35,15 +35,21 @@
 
 #include "EntryArray.h"
 
-namespace WebCore {
-
-PassRefPtr<EntryArraySync> EntryArraySync::create(EntryArray* entries)
+namespace WebCore
 {
-    RefPtr<EntryArraySync> entriesSync = adoptRef(new EntryArraySync());
-    if (entries) {
-        for (unsigned i = 0; i < entries->length(); ++i)
-            entriesSync->append(EntrySync::create(entries->item(i)));
+
+PassRefPtr<EntryArraySync> EntryArraySync::create( EntryArray *entries )
+{
+    RefPtr<EntryArraySync> entriesSync = adoptRef( new EntryArraySync() );
+
+    if ( entries )
+    {
+        for ( unsigned i = 0; i < entries->length(); ++i )
+        {
+            entriesSync->append( EntrySync::create( entries->item( i ) ) );
+        }
     }
+
     return entriesSync.release();
 }
 
@@ -51,10 +57,13 @@ EntryArraySync::EntryArraySync()
 {
 }
 
-EntrySync* EntryArraySync::item(unsigned index) const
+EntrySync *EntryArraySync::item( unsigned index ) const
 {
-    if (index >= m_entries.size())
+    if ( index >= m_entries.size() )
+    {
         return 0;
+    }
+
     return m_entries[index].get();
 }
 

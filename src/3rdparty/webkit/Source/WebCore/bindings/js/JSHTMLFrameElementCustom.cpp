@@ -6,13 +6,13 @@
  * are met:
  *
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Apple Computer, Inc. ("Apple") nor the names of
  *     its contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
+ *     from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY APPLE AND ITS CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -37,29 +37,37 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
-static inline bool allowSettingJavascriptURL(ExecState* exec, HTMLFrameElement* imp, const String& value)
+static inline bool allowSettingJavascriptURL( ExecState *exec, HTMLFrameElement *imp, const String &value )
 {
-    if (protocolIsJavaScript(stripLeadingAndTrailingHTMLSpaces(value))) {
-        Document* contentDocument = imp->contentDocument();
-        if (contentDocument && !checkNodeSecurity(exec, contentDocument))
+    if ( protocolIsJavaScript( stripLeadingAndTrailingHTMLSpaces( value ) ) )
+    {
+        Document *contentDocument = imp->contentDocument();
+
+        if ( contentDocument && !checkNodeSecurity( exec, contentDocument ) )
+        {
             return false;
+        }
     }
+
     return true;
 }
 
-void JSHTMLFrameElement::setLocation(ExecState* exec, JSValue value)
+void JSHTMLFrameElement::setLocation( ExecState *exec, JSValue value )
 {
-    HTMLFrameElement* imp = static_cast<HTMLFrameElement*>(impl());
-    String locationValue = valueToStringWithNullCheck(exec, value);
+    HTMLFrameElement *imp = static_cast<HTMLFrameElement *>( impl() );
+    String locationValue = valueToStringWithNullCheck( exec, value );
 
-    if (!allowSettingJavascriptURL(exec, imp, locationValue))
+    if ( !allowSettingJavascriptURL( exec, imp, locationValue ) )
+    {
         return;
+    }
 
-    imp->setLocation(locationValue);
+    imp->setLocation( locationValue );
 }
 
 } // namespace WebCore

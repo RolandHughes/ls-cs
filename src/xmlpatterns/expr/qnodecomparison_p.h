@@ -26,53 +26,55 @@
 
 #include <qpaircontainer_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class NodeComparison : public PairContainer
 {
- public:
-   NodeComparison(const Expression::Ptr &operand1, const QXmlNodeModelIndex::DocumentOrder op, const Expression::Ptr &operand2);
+public:
+    NodeComparison( const Expression::Ptr &operand1, const QXmlNodeModelIndex::DocumentOrder op, const Expression::Ptr &operand2 );
 
-   Item evaluateSingleton(const DynamicContext::Ptr &) const override;
-   bool evaluateEBV(const DynamicContext::Ptr &) const override;
+    Item evaluateSingleton( const DynamicContext::Ptr & ) const override;
+    bool evaluateEBV( const DynamicContext::Ptr & ) const override;
 
-   SequenceType::List expectedOperandTypes() const override;
+    SequenceType::List expectedOperandTypes() const override;
 
-   virtual QXmlNodeModelIndex::DocumentOrder operatorID() const;
-   /**
-    * If any operator is the empty sequence, the NodeComparison rewrites
-    * into that, since the empty sequence is always the result in that case.
-    */
-   Expression::Ptr compress(const StaticContext::Ptr &context) override;
+    virtual QXmlNodeModelIndex::DocumentOrder operatorID() const;
+    /**
+     * If any operator is the empty sequence, the NodeComparison rewrites
+     * into that, since the empty sequence is always the result in that case.
+     */
+    Expression::Ptr compress( const StaticContext::Ptr &context ) override;
 
-   /**
-    * @returns either CommonSequenceTypes::ZeroOrOneBoolean or
-    * CommonSequenceTypes::ExactlyOneBoolean depending on the static
-    * cardinality of its operands.
-    */
-   SequenceType::Ptr staticType() const override;
+    /**
+     * @returns either CommonSequenceTypes::ZeroOrOneBoolean or
+     * CommonSequenceTypes::ExactlyOneBoolean depending on the static
+     * cardinality of its operands.
+     */
+    SequenceType::Ptr staticType() const override;
 
-   /**
-    * Determines the string representation for a node comparison operator.
-    *
-    * @returns
-    * - "<<" if @p op is Precedes
-    * - ">>" if @p op is Follows
-    * - "is" if @p op is Is
-    */
-   static QString displayName(const QXmlNodeModelIndex::DocumentOrder op);
+    /**
+     * Determines the string representation for a node comparison operator.
+     *
+     * @returns
+     * - "<<" if @p op is Precedes
+     * - ">>" if @p op is Follows
+     * - "is" if @p op is Is
+     */
+    static QString displayName( const QXmlNodeModelIndex::DocumentOrder op );
 
-   ExpressionVisitorResult::Ptr accept(const ExpressionVisitor::Ptr &visitor) const override;
+    ExpressionVisitorResult::Ptr accept( const ExpressionVisitor::Ptr &visitor ) const override;
 
- private:
-   enum Result {
-      Empty,
-      True,
-      False
-   };
-   inline Result evaluate(const DynamicContext::Ptr &context) const;
+private:
+    enum Result
+    {
+        Empty,
+        True,
+        False
+    };
+    inline Result evaluate( const DynamicContext::Ptr &context ) const;
 
-   const QXmlNodeModelIndex::DocumentOrder m_op;
+    const QXmlNodeModelIndex::DocumentOrder m_op;
 };
 }
 

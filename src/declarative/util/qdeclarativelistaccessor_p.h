@@ -32,26 +32,27 @@ class QDeclarativeEngine;
 
 class QDeclarativeListAccessor
 {
- public:
-   QDeclarativeListAccessor();
-   ~QDeclarativeListAccessor();
+public:
+    QDeclarativeListAccessor();
+    ~QDeclarativeListAccessor();
 
-   QVariant list() const;
-   void setList(const QVariant &, QDeclarativeEngine * = 0);
+    QVariant list() const;
+    void setList( const QVariant &, QDeclarativeEngine * = 0 );
 
-   bool isValid() const;
+    bool isValid() const;
 
-   int count() const;
-   QVariant at(int) const;
+    int count() const;
+    QVariant at( int ) const;
 
-   enum Type { Invalid, StringList, VariantList, ListProperty, Instance, Integer };
-   Type type() const {
-      return m_type;
-   }
+    enum Type { Invalid, StringList, VariantList, ListProperty, Instance, Integer };
+    Type type() const
+    {
+        return m_type;
+    }
 
- private:
-   Type m_type;
-   QVariant d;
+private:
+    Type m_type;
+    QVariant d;
 };
 
 QT_END_NAMESPACE

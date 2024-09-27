@@ -23,30 +23,32 @@
 
 #include "StringObject.h"
 
-namespace JSC {
+namespace JSC
+{
 
-    class ObjectPrototype;
+class ObjectPrototype;
 
-    class StringPrototype : public StringObject {
-    public:
-        StringPrototype(ExecState*, JSGlobalObject*, Structure*);
+class StringPrototype : public StringObject
+{
+public:
+    StringPrototype( ExecState *, JSGlobalObject *, Structure * );
 
-        virtual bool getOwnPropertySlot(ExecState*, const Identifier& propertyName, PropertySlot&);
-        virtual bool getOwnPropertyDescriptor(ExecState*, const Identifier&, PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( ExecState *, const Identifier &propertyName, PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( ExecState *, const Identifier &, PropertyDescriptor & );
 
-        static Structure* createStructure(JSGlobalData& globalData, JSValue prototype)
-        {
-            return Structure::create(globalData, prototype, TypeInfo(ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
-        }
+    static Structure *createStructure( JSGlobalData &globalData, JSValue prototype )
+    {
+        return Structure::create( globalData, prototype, TypeInfo( ObjectType, StructureFlags ), AnonymousSlotCount, &s_info );
+    }
 
-        static const ClassInfo s_info;
-        
-    protected:
-        static const unsigned StructureFlags = OverridesGetOwnPropertySlot | StringObject::StructureFlags;
+    static const ClassInfo s_info;
 
-        COMPILE_ASSERT(!StringObject::AnonymousSlotCount, StringPrototype_stomps_on_your_anonymous_slot);
-        static const unsigned AnonymousSlotCount = 1;
-    };
+protected:
+    static const unsigned StructureFlags = OverridesGetOwnPropertySlot | StringObject::StructureFlags;
+
+    COMPILE_ASSERT( !StringObject::AnonymousSlotCount, StringPrototype_stomps_on_your_anonymous_slot );
+    static const unsigned AnonymousSlotCount = 1;
+};
 
 } // namespace JSC
 

@@ -26,9 +26,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSMemoryInfo);
+ASSERT_CLASS_FITS_IN_CELL( JSMemoryInfo );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -39,10 +40,10 @@ ASSERT_CLASS_FITS_IN_CELL(JSMemoryInfo);
 
 static const HashTableValue JSMemoryInfoTableValues[4] =
 {
-    { "totalJSHeapSize", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsMemoryInfoTotalJSHeapSize), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "usedJSHeapSize", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsMemoryInfoUsedJSHeapSize), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "jsHeapSizeLimit", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsMemoryInfoJsHeapSizeLimit), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "totalJSHeapSize", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsMemoryInfoTotalJSHeapSize ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "usedJSHeapSize", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsMemoryInfoUsedJSHeapSize ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "jsHeapSizeLimit", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsMemoryInfoJsHeapSizeLimit ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -56,77 +57,78 @@ static JSC_CONST_HASHTABLE HashTable JSMemoryInfoTable = { 8, 7, JSMemoryInfoTab
 
 static const HashTableValue JSMemoryInfoPrototypeTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSMemoryInfoPrototypeTable = { 1, 0, JSMemoryInfoPrototypeTableValues, 0 };
 const ClassInfo JSMemoryInfoPrototype::s_info = { "MemoryInfoPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSMemoryInfoPrototypeTable, 0 };
 
-JSObject* JSMemoryInfoPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSMemoryInfoPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSMemoryInfo>(exec, globalObject);
+    return getDOMPrototype<JSMemoryInfo>( exec, globalObject );
 }
 
 const ClassInfo JSMemoryInfo::s_info = { "MemoryInfo", &JSDOMWrapper::s_info, &JSMemoryInfoTable, 0 };
 
-JSMemoryInfo::JSMemoryInfo(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<MemoryInfo> impl)
-    : JSDOMWrapper(structure, globalObject)
-    , m_impl(impl)
+JSMemoryInfo::JSMemoryInfo( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<MemoryInfo> impl )
+    : JSDOMWrapper( structure, globalObject )
+    , m_impl( impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSMemoryInfo::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSMemoryInfo::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSMemoryInfoPrototype(exec->globalData(), globalObject, JSMemoryInfoPrototype::createStructure(globalObject->globalData(), globalObject->objectPrototype()));
+    return new ( exec ) JSMemoryInfoPrototype( exec->globalData(), globalObject,
+            JSMemoryInfoPrototype::createStructure( globalObject->globalData(), globalObject->objectPrototype() ) );
 }
 
-bool JSMemoryInfo::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSMemoryInfo::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSMemoryInfo, Base>(exec, &JSMemoryInfoTable, this, propertyName, slot);
+    return getStaticValueSlot<JSMemoryInfo, Base>( exec, &JSMemoryInfoTable, this, propertyName, slot );
 }
 
-bool JSMemoryInfo::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSMemoryInfo::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSMemoryInfo, Base>(exec, &JSMemoryInfoTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSMemoryInfo, Base>( exec, &JSMemoryInfoTable, this, propertyName, descriptor );
 }
 
-JSValue jsMemoryInfoTotalJSHeapSize(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsMemoryInfoTotalJSHeapSize( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSMemoryInfo* castedThis = static_cast<JSMemoryInfo*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    MemoryInfo* imp = static_cast<MemoryInfo*>(castedThis->impl());
-    JSValue result = jsNumber(imp->totalJSHeapSize());
+    JSMemoryInfo *castedThis = static_cast<JSMemoryInfo *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    MemoryInfo *imp = static_cast<MemoryInfo *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->totalJSHeapSize() );
     return result;
 }
 
 
-JSValue jsMemoryInfoUsedJSHeapSize(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsMemoryInfoUsedJSHeapSize( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSMemoryInfo* castedThis = static_cast<JSMemoryInfo*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    MemoryInfo* imp = static_cast<MemoryInfo*>(castedThis->impl());
-    JSValue result = jsNumber(imp->usedJSHeapSize());
+    JSMemoryInfo *castedThis = static_cast<JSMemoryInfo *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    MemoryInfo *imp = static_cast<MemoryInfo *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->usedJSHeapSize() );
     return result;
 }
 
 
-JSValue jsMemoryInfoJsHeapSizeLimit(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsMemoryInfoJsHeapSizeLimit( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSMemoryInfo* castedThis = static_cast<JSMemoryInfo*>(asObject(slotBase));
-    return castedThis->jsHeapSizeLimit(exec);
+    JSMemoryInfo *castedThis = static_cast<JSMemoryInfo *>( asObject( slotBase ) );
+    return castedThis->jsHeapSizeLimit( exec );
 }
 
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, MemoryInfo* impl)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, MemoryInfo *impl )
 {
-    return wrap<JSMemoryInfo>(exec, globalObject, impl);
+    return wrap<JSMemoryInfo>( exec, globalObject, impl );
 }
 
-MemoryInfo* toMemoryInfo(JSC::JSValue value)
+MemoryInfo *toMemoryInfo( JSC::JSValue value )
 {
-    return value.inherits(&JSMemoryInfo::s_info) ? static_cast<JSMemoryInfo*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSMemoryInfo::s_info ) ? static_cast<JSMemoryInfo *>( asObject( value ) )->impl() : 0;
 }
 
 }

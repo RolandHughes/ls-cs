@@ -42,57 +42,59 @@ class QPicture;
 
 class QPrinterPrivate
 {
-   Q_DECLARE_PUBLIC(QPrinter)
+    Q_DECLARE_PUBLIC( QPrinter )
 
- public:
-   QPrinterPrivate(QPrinter *printer)
-      : printEngine(nullptr), paintEngine(nullptr), realPrintEngine(nullptr), realPaintEngine(nullptr),
+public:
+    QPrinterPrivate( QPrinter *printer )
+        : printEngine( nullptr ), paintEngine( nullptr ), realPrintEngine( nullptr ), realPaintEngine( nullptr ),
 #ifndef QT_NO_PRINTPREVIEWWIDGET
-        previewEngine(nullptr),
+          previewEngine( nullptr ),
 #endif
-        q_ptr(printer), printRange(QPrinter::AllPages), use_default_engine(true),
-        validPrinter(false) {
-   }
+          q_ptr( printer ), printRange( QPrinter::AllPages ), use_default_engine( true ),
+          validPrinter( false )
+    {
+    }
 
-   ~QPrinterPrivate() {
-   }
+    ~QPrinterPrivate()
+    {
+    }
 
-   void init(const QPrinterInfo &printer, QPrinter::PrinterMode mode);
+    void init( const QPrinterInfo &printer, QPrinter::PrinterMode mode );
 
-   QPrinterInfo findValidPrinter(const QPrinterInfo &printer = QPrinterInfo());
-   void initEngines(QPrinter::OutputFormat format, const QPrinterInfo &printer);
-   void changeEngines(QPrinter::OutputFormat format, const QPrinterInfo &printer);
-
-#ifndef QT_NO_PRINTPREVIEWWIDGET
-   QList<const QPicture *> previewPages() const;
-   void setPreviewMode(bool);
-#endif
-
-   void setProperty(QPrintEngine::PrintEnginePropertyKey key, const QVariant &value);
-
-   QPrinter::PrinterMode printerMode;
-   QPrinter::OutputFormat outputFormat;
-
-   QPrintEngine *printEngine;
-   QPaintEngine *paintEngine;
-
-   QPrintEngine *realPrintEngine;
-   QPaintEngine *realPaintEngine;
+    QPrinterInfo findValidPrinter( const QPrinterInfo &printer = QPrinterInfo() );
+    void initEngines( QPrinter::OutputFormat format, const QPrinterInfo &printer );
+    void changeEngines( QPrinter::OutputFormat format, const QPrinterInfo &printer );
 
 #ifndef QT_NO_PRINTPREVIEWWIDGET
-   QPreviewPaintEngine *previewEngine;
+    QList<const QPicture *> previewPages() const;
+    void setPreviewMode( bool );
 #endif
 
-   QPrinter *q_ptr;
-   QPrinter::PrintRange printRange;
+    void setProperty( QPrintEngine::PrintEnginePropertyKey key, const QVariant &value );
 
-   uint use_default_engine : 1;
-   uint had_default_engines : 1;
-   uint validPrinter : 1;
-   uint hasCustomPageMargins : 1;
+    QPrinter::PrinterMode printerMode;
+    QPrinter::OutputFormat outputFormat;
 
-   // Used to remember which properties have been manually set by the user.
-   QSet<QPrintEngine::PrintEnginePropertyKey> m_properties;
+    QPrintEngine *printEngine;
+    QPaintEngine *paintEngine;
+
+    QPrintEngine *realPrintEngine;
+    QPaintEngine *realPaintEngine;
+
+#ifndef QT_NO_PRINTPREVIEWWIDGET
+    QPreviewPaintEngine *previewEngine;
+#endif
+
+    QPrinter *q_ptr;
+    QPrinter::PrintRange printRange;
+
+    uint use_default_engine : 1;
+    uint had_default_engines : 1;
+    uint validPrinter : 1;
+    uint hasCustomPageMargins : 1;
+
+    // Used to remember which properties have been manually set by the user.
+    QSet<QPrintEngine::PrintEnginePropertyKey> m_properties;
 };
 
 #endif // QT_NO_PRINTER

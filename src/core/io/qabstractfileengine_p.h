@@ -29,23 +29,23 @@
 
 class QAbstractFileEnginePrivate
 {
- public:
-   QAbstractFileEnginePrivate()
-      : fileError(QFile::UnspecifiedError)
-   {
-   }
+public:
+    QAbstractFileEnginePrivate()
+        : fileError( QFile::UnspecifiedError )
+    {
+    }
 
-   virtual ~QAbstractFileEnginePrivate()
-   {
-   }
+    virtual ~QAbstractFileEnginePrivate()
+    {
+    }
 
-   QFile::FileError fileError;
-   QString errorString;
+    QFile::FileError fileError;
+    QString errorString;
 
-   QAbstractFileEngine *q_ptr;
-   Q_DECLARE_PUBLIC(QAbstractFileEngine)
+    QAbstractFileEngine *q_ptr;
+    Q_DECLARE_PUBLIC( QAbstractFileEngine )
 };
 
-QAbstractFileEngine *qt_custom_file_engine_handler_create(const QString &path);
+QAbstractFileEngine *qt_custom_file_engine_handler_create( const QString &path );
 
 #endif

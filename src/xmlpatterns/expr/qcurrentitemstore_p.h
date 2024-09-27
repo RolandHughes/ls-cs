@@ -26,33 +26,34 @@
 
 #include <qsinglecontainer_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class CurrentItemStore : public SingleContainer
 {
- public:
-   CurrentItemStore(const Expression::Ptr &operand);
+public:
+    CurrentItemStore( const Expression::Ptr &operand );
 
-   bool evaluateEBV(const DynamicContext::Ptr &) const override;
-   Item::Iterator::Ptr evaluateSequence(const DynamicContext::Ptr &) const override;
-   Item evaluateSingleton(const DynamicContext::Ptr &) const override;
+    bool evaluateEBV( const DynamicContext::Ptr & ) const override;
+    Item::Iterator::Ptr evaluateSequence( const DynamicContext::Ptr & ) const override;
+    Item evaluateSingleton( const DynamicContext::Ptr & ) const override;
 
-   SequenceType::List expectedOperandTypes() const override;
-   Expression::Ptr compress(const StaticContext::Ptr &context) override;
-   Expression::Ptr typeCheck(const StaticContext::Ptr &context, const SequenceType::Ptr &reqType) override;
+    SequenceType::List expectedOperandTypes() const override;
+    Expression::Ptr compress( const StaticContext::Ptr &context ) override;
+    Expression::Ptr typeCheck( const StaticContext::Ptr &context, const SequenceType::Ptr &reqType ) override;
 
-   Properties properties() const override;
+    Properties properties() const override;
 
-   /**
-    * @returns the staticType() of its operand.
-    */
-   SequenceType::Ptr staticType() const override;
-   ExpressionVisitorResult::Ptr accept(const ExpressionVisitor::Ptr &visitor) const override;
-   const SourceLocationReflection *actualReflection() const override;
+    /**
+     * @returns the staticType() of its operand.
+     */
+    SequenceType::Ptr staticType() const override;
+    ExpressionVisitorResult::Ptr accept( const ExpressionVisitor::Ptr &visitor ) const override;
+    const SourceLocationReflection *actualReflection() const override;
 
- private:
-   static inline StaticContext::Ptr newStaticContext(const StaticContext::Ptr &context);
-   inline DynamicContext::Ptr createContext(const DynamicContext::Ptr &old) const;
+private:
+    static inline StaticContext::Ptr newStaticContext( const StaticContext::Ptr &context );
+    inline DynamicContext::Ptr createContext( const DynamicContext::Ptr &old ) const;
 };
 
 }

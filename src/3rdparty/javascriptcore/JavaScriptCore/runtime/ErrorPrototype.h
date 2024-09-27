@@ -23,14 +23,16 @@
 
 #include "ErrorInstance.h"
 
-namespace JSC {
+namespace JSC
+{
 
-    class ObjectPrototype;
+class ObjectPrototype;
 
-    class ErrorPrototype : public ErrorInstance {
-    public:
-        ErrorPrototype(ExecState*, NonNullPassRefPtr<Structure>, Structure* prototypeFunctionStructure);
-    };
+class ErrorPrototype : public ErrorInstance
+{
+public:
+    ErrorPrototype( ExecState *, NonNullPassRefPtr<Structure>, Structure *prototypeFunctionStructure );
+};
 
 } // namespace JSC
 

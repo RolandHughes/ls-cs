@@ -37,7 +37,8 @@
 #include <wtf/Forward.h>
 #include <wtf/HashMap.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class IntRect;
 class SecurityOrigin;
@@ -47,33 +48,35 @@ class SpeechInputListener;
 // This class connects the input elements requiring speech input with the platform specific
 // speech recognition engine. It provides methods for the input elements to activate speech
 // recognition and methods for the speech recognition engine to return back the results.
-class SpeechInput : public SpeechInputListener {
-    WTF_MAKE_NONCOPYABLE(SpeechInput);
+class SpeechInput : public SpeechInputListener
+{
+    WTF_MAKE_NONCOPYABLE( SpeechInput );
 public:
-    SpeechInput(SpeechInputClient*);
+    SpeechInput( SpeechInputClient * );
     virtual ~SpeechInput();
 
     // Generates a unique ID for the given listener to be used for speech requests.
     // This should be the first call made by listeners before anything else.
-    int registerListener(SpeechInputListener*);
+    int registerListener( SpeechInputListener * );
 
     // Invoked when the listener is done with recording or getting destroyed.
     // Failure to unregister may result in crashes if there were any pending speech events.
-    void unregisterListener(int);
+    void unregisterListener( int );
 
     // Methods invoked by the input elements.
-    bool startRecognition(int listenerId, const IntRect& elementRect, const AtomicString& language, const String& grammar, SecurityOrigin*);
-    void stopRecording(int);
-    void cancelRecognition(int);
+    bool startRecognition( int listenerId, const IntRect &elementRect, const AtomicString &language, const String &grammar,
+                           SecurityOrigin * );
+    void stopRecording( int );
+    void cancelRecognition( int );
 
     // SpeechInputListener methods.
-    virtual void didCompleteRecording(int);
-    virtual void didCompleteRecognition(int);
-    virtual void setRecognitionResult(int, const SpeechInputResultArray&);
+    virtual void didCompleteRecording( int );
+    virtual void didCompleteRecognition( int );
+    virtual void setRecognitionResult( int, const SpeechInputResultArray & );
 
 private:
-    SpeechInputClient* m_client;
-    HashMap<int, SpeechInputListener*> m_listeners;
+    SpeechInputClient *m_client;
+    HashMap<int, SpeechInputListener *> m_listeners;
     int m_nextListenerId;
 };
 

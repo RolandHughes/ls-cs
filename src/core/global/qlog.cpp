@@ -33,263 +33,292 @@
 
 #if defined(Q_OS_WIN)
 extern bool usingWinMain;
-extern Q_CORE_EXPORT void qWinMsgHandler(QtMsgType type, QStringView str);
+extern Q_CORE_EXPORT void qWinMsgHandler( QtMsgType type, QStringView str );
 #endif
 
 static QtMsgHandler s_handler = nullptr;          // pointer to debug handler
 
 #if ! defined(Q_OS_WIN) && defined(_POSIX_THREAD_SAFE_FUNCTIONS) && _POSIX_VERSION >= 200112L
-namespace {
-   static inline QString fromstrerror_helper(int, const QByteArray &buf)
-   {
-      return QString::fromUtf8(buf);
-   }
+namespace
+{
+static inline QString fromstrerror_helper( int, const QByteArray &buf )
+{
+    return QString::fromUtf8( buf );
+}
 
-   static inline QString fromstrerror_helper(const char *str, const QByteArray &)
-   {
-      return QString::fromUtf8(str);
-   }
+static inline QString fromstrerror_helper( const char *str, const QByteArray & )
+{
+    return QString::fromUtf8( str );
+}
 }
 #endif
 
-QString qt_error_string(int errorCode)
+QString qt_error_string( int errorCode )
 {
-   if (errorCode == -1) {
+    if ( errorCode == -1 )
+    {
 
 #if defined(Q_OS_WIN)
-      errorCode = GetLastError();
+        errorCode = GetLastError();
 #else
-      errorCode = errno;
+        errorCode = errno;
 #endif
-   }
+    }
 
-   const char *s = nullptr;
-   QString retval;
+    const char *s = nullptr;
+    QString retval;
 
-   switch (errorCode) {
-      case 0:
-         break;
+    switch ( errorCode )
+    {
+        case 0:
+            break;
 
-      case EACCES:
-         s = cs_mark_tr("QIODevice", "Permission denied");
-         break;
+        case EACCES:
+            s = cs_mark_tr( "QIODevice", "Permission denied" );
+            break;
 
-      case EMFILE:
-         s = cs_mark_tr("QIODevice", "Too many open files");
-         break;
+        case EMFILE:
+            s = cs_mark_tr( "QIODevice", "Too many open files" );
+            break;
 
-      case ENOENT:
-         s = cs_mark_tr("QIODevice", "No such file or directory");
-         break;
+        case ENOENT:
+            s = cs_mark_tr( "QIODevice", "No such file or directory" );
+            break;
 
-      case ENOSPC:
-         s = cs_mark_tr("QIODevice", "No space left on device");
-         break;
+        case ENOSPC:
+            s = cs_mark_tr( "QIODevice", "No space left on device" );
+            break;
 
-      default: {
+        default:
+        {
 
 #ifdef Q_OS_WIN
-         char16_t *string = nullptr;
+            char16_t *string = nullptr;
 
-         FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
-             nullptr, errorCode, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPWSTR)&string, 0, nullptr);
+            FormatMessage( FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
+                           nullptr, errorCode, MAKELANGID( LANG_NEUTRAL, SUBLANG_DEFAULT ), ( LPWSTR )&string, 0, nullptr );
 
-         retval = QString::fromUtf16(string);
-         LocalFree((HLOCAL)string);
+            retval = QString::fromUtf16( string );
+            LocalFree( ( HLOCAL )string );
 
-         if (retval.isEmpty() && errorCode == ERROR_MOD_NOT_FOUND) {
-            retval = "Specified module could not be found.";
-         }
-
-#elif defined(_POSIX_THREAD_SAFE_FUNCTIONS) && _POSIX_VERSION >= 200112L
-         QByteArray buf(1024, '\0');
-         retval = fromstrerror_helper(strerror_r(errorCode, buf.data(), buf.size()), buf);
-
-#else
-         retval = QString::fromUtf8(strerror(errorCode));
-
-#endif
-
-         break;
-      }
-   }
-
-   if (s) {
-      retval = QString::fromUtf8(s);
-   }
-
-   return retval.trimmed();
-}
-
-QtMsgHandler qInstallMsgHandler(QtMsgHandler handler)
-{
-   return csInstallMsgHandler(handler);
-}
-
-QtMsgHandler csInstallMsgHandler(QtMsgHandler handler)
-{
-   QtMsgHandler previous = s_handler;
-   s_handler = handler;
-
-#if defined(Q_OS_WIN)
-   if (s_handler == nullptr && usingWinMain) {
-      s_handler = qWinMsgHandler;
-   }
-#endif
-
-   return previous;
-}
-
-// internal
-void qt_message_output(QtMsgType msgType, QStringView msg)
-{
-   if (s_handler != nullptr) {
-      // user app will do something
-      (*s_handler)(msgType, msg);
-
-   } else {
-      fwrite(msg.charData(), msg.size_storage(), 1, stderr);
-      fputc('\n', stderr);
-      fflush(stderr);
-   }
-
-   // always happens
-   if (msgType == QtFatalMsg || (msgType == QtWarningMsg && (! qgetenv("QT_FATAL_WARNINGS").isNull())) ) {
-
-#if (defined(Q_OS_UNIX) || defined(Q_CC_MINGW))
-      abort();
-#else
-      exit(1);
-#endif
-   }
-
-}
-
-// internal
-static void qEmergencyOut(QtMsgType msgType, const char *msg, va_list ap)
-{
-   char emergency_buf[256] = { '\0' };
-   emergency_buf[255]      = '\0';
-
-   if (msg) {
-      std::vsnprintf(emergency_buf, 255, msg, ap);
-   }
-
-   QString str = QString::fromUtf8(emergency_buf);
-   qt_message_output(msgType, str);
-}
-
-// internal
-static void qt_message(QtMsgType msgType, const char *msg, va_list ap)
-{
-   if (std::uncaught_exceptions() != 0) {
-      qEmergencyOut(msgType, msg, ap);
-      return;
-   }
-
-   QByteArray buffer(1024, '\0');
-
-   int maxSize = 0;
-
-   if (msg != nullptr) {
-      try {
-
-         while (true) {
-            maxSize = std::vsnprintf(buffer.data(), buffer.size(), msg, ap);
-
-            if (maxSize < buffer.size()) {
-               break;
+            if ( retval.isEmpty() && errorCode == ERROR_MOD_NOT_FOUND )
+            {
+                retval = "Specified module could not be found.";
             }
 
-            buffer.resize(buffer.size() * 2);
-         }
+#elif defined(_POSIX_THREAD_SAFE_FUNCTIONS) && _POSIX_VERSION >= 200112L
+            QByteArray buf( 1024, '\0' );
+            retval = fromstrerror_helper( strerror_r( errorCode, buf.data(), buf.size() ), buf );
 
-      } catch (const std::bad_alloc &)  {
-         qEmergencyOut(msgType, msg, ap);
+#else
+            retval = QString::fromUtf8( strerror( errorCode ) );
 
-         // do not rethrow, use qWarning and friends in destructors
-         return;
-      }
-   }
+#endif
 
-   buffer.resize(maxSize);
+            break;
+        }
+    }
 
-   QString str = QString::fromUtf8(buffer);
-   qt_message_output(msgType, str);
+    if ( s )
+    {
+        retval = QString::fromUtf8( s );
+    }
+
+    return retval.trimmed();
+}
+
+QtMsgHandler qInstallMsgHandler( QtMsgHandler handler )
+{
+    return csInstallMsgHandler( handler );
+}
+
+QtMsgHandler csInstallMsgHandler( QtMsgHandler handler )
+{
+    QtMsgHandler previous = s_handler;
+    s_handler = handler;
+
+#if defined(Q_OS_WIN)
+
+    if ( s_handler == nullptr && usingWinMain )
+    {
+        s_handler = qWinMsgHandler;
+    }
+
+#endif
+
+    return previous;
+}
+
+// internal
+void qt_message_output( QtMsgType msgType, QStringView msg )
+{
+    if ( s_handler != nullptr )
+    {
+        // user app will do something
+        ( *s_handler )( msgType, msg );
+
+    }
+    else
+    {
+        fwrite( msg.charData(), msg.size_storage(), 1, stderr );
+        fputc( '\n', stderr );
+        fflush( stderr );
+    }
+
+    // always happens
+    if ( msgType == QtFatalMsg || ( msgType == QtWarningMsg && ( ! qgetenv( "QT_FATAL_WARNINGS" ).isNull() ) ) )
+    {
+
+#if (defined(Q_OS_UNIX) || defined(Q_CC_MINGW))
+        abort();
+#else
+        exit( 1 );
+#endif
+    }
+
+}
+
+// internal
+static void qEmergencyOut( QtMsgType msgType, const char *msg, va_list ap )
+{
+    char emergency_buf[256] = { '\0' };
+    emergency_buf[255]      = '\0';
+
+    if ( msg )
+    {
+        std::vsnprintf( emergency_buf, 255, msg, ap );
+    }
+
+    QString str = QString::fromUtf8( emergency_buf );
+    qt_message_output( msgType, str );
+}
+
+// internal
+static void qt_message( QtMsgType msgType, const char *msg, va_list ap )
+{
+    if ( std::uncaught_exceptions() != 0 )
+    {
+        qEmergencyOut( msgType, msg, ap );
+        return;
+    }
+
+    QByteArray buffer( 1024, '\0' );
+
+    int maxSize = 0;
+
+    if ( msg != nullptr )
+    {
+        try
+        {
+
+            while ( true )
+            {
+                maxSize = std::vsnprintf( buffer.data(), buffer.size(), msg, ap );
+
+                if ( maxSize < buffer.size() )
+                {
+                    break;
+                }
+
+                buffer.resize( buffer.size() * 2 );
+            }
+
+        }
+        catch ( const std::bad_alloc & )
+        {
+            qEmergencyOut( msgType, msg, ap );
+
+            // do not rethrow, use qWarning and friends in destructors
+            return;
+        }
+    }
+
+    buffer.resize( maxSize );
+
+    QString str = QString::fromUtf8( buffer );
+    qt_message_output( msgType, str );
 }
 
 //
-void qDebug(const char *msg, ...)
+void qDebug( const char *msg, ... )
 {
-   va_list ap;
-   va_start(ap, msg); // use variable arg list
-   qt_message(QtDebugMsg, msg, ap);
-   va_end(ap);
+    va_list ap;
+    va_start( ap, msg ); // use variable arg list
+    qt_message( QtDebugMsg, msg, ap );
+    va_end( ap );
 }
 
-void qWarning(const char *msg, ...)
+void qWarning( const char *msg, ... )
 {
-   va_list ap;
-   va_start(ap, msg); // use variable arg list
-   qt_message(QtWarningMsg, msg, ap);
-   va_end(ap);
+    va_list ap;
+    va_start( ap, msg ); // use variable arg list
+    qt_message( QtWarningMsg, msg, ap );
+    va_end( ap );
 }
 
-void qCritical(const char *msg, ...)
+void qCritical( const char *msg, ... )
 {
-   va_list ap;
-   va_start(ap, msg); // use variable arg list
-   qt_message(QtCriticalMsg, msg, ap);
-   va_end(ap);
+    va_list ap;
+    va_start( ap, msg ); // use variable arg list
+    qt_message( QtCriticalMsg, msg, ap );
+    va_end( ap );
 }
 
-void qErrnoWarning(const char *msg, ...)
+void qErrnoWarning( const char *msg, ... )
 {
-   QByteArray buffer(1024, '\0');
+    QByteArray buffer( 1024, '\0' );
 
-   va_list ap;
-   va_start(ap, msg);
+    va_list ap;
+    va_start( ap, msg );
 
-   if (msg) {
+    if ( msg )
+    {
 
-      while (true) {
-         if (std::vsnprintf(buffer.data(), buffer.size(), msg, ap) < buffer.size()) {
-            break;
-         }
+        while ( true )
+        {
+            if ( std::vsnprintf( buffer.data(), buffer.size(), msg, ap ) < buffer.size() )
+            {
+                break;
+            }
 
-         buffer.resize(buffer.size() * 2);
-      }
-   }
-   va_end(ap);
+            buffer.resize( buffer.size() * 2 );
+        }
+    }
 
-   qCritical("%s (%s)", buffer.constData(), qt_error_string(-1).toUtf8().constData());
+    va_end( ap );
+
+    qCritical( "%s (%s)", buffer.constData(), qt_error_string( -1 ).toUtf8().constData() );
 }
 
-void qErrnoWarning(int code, const char *msg, ...)
+void qErrnoWarning( int code, const char *msg, ... )
 {
-   QByteArray buffer(1024, '\0');
+    QByteArray buffer( 1024, '\0' );
 
-   va_list ap;
-   va_start(ap, msg);
+    va_list ap;
+    va_start( ap, msg );
 
-   if (msg) {
-      while (true) {
-         if (std::vsnprintf(buffer.data(), buffer.size(), msg, ap) < buffer.size()) {
-            break;
-         }
+    if ( msg )
+    {
+        while ( true )
+        {
+            if ( std::vsnprintf( buffer.data(), buffer.size(), msg, ap ) < buffer.size() )
+            {
+                break;
+            }
 
-         buffer.resize(buffer.size() * 2);
-      }
-   }
-   va_end(ap);
+            buffer.resize( buffer.size() * 2 );
+        }
+    }
 
-   qCritical("%s (%s)", buffer.constData(), qt_error_string(code).toUtf8().constData());
+    va_end( ap );
+
+    qCritical( "%s (%s)", buffer.constData(), qt_error_string( code ).toUtf8().constData() );
 }
 
-void qFatal(const char *msg, ...)
+void qFatal( const char *msg, ... )
 {
-   va_list ap;
-   va_start(ap, msg);                   // use variable arg list
-   qt_message(QtFatalMsg, msg, ap);
-   va_end(ap);
+    va_list ap;
+    va_start( ap, msg );                 // use variable arg list
+    qt_message( QtFatalMsg, msg, ap );
+    va_end( ap );
 }

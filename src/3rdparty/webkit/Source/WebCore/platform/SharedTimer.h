@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef SharedTimer_h
@@ -29,49 +29,53 @@
 #include <wtf/FastAllocBase.h>
 #include <wtf/Noncopyable.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-    // Each thread has its own single instance of shared timer, which implements this interface.
-    // This instance is shared by all timers in the thread.
-    // Not intended to be used directly; use the Timer class instead.
-    class SharedTimer {
-        WTF_MAKE_NONCOPYABLE(SharedTimer); WTF_MAKE_FAST_ALLOCATED;
-    public:
-        SharedTimer() { }
-        virtual ~SharedTimer() {}
-        virtual void setFiredFunction(void (*)()) = 0;
+// Each thread has its own single instance of shared timer, which implements this interface.
+// This instance is shared by all timers in the thread.
+// Not intended to be used directly; use the Timer class instead.
+class SharedTimer
+{
+    WTF_MAKE_NONCOPYABLE( SharedTimer );
+    WTF_MAKE_FAST_ALLOCATED;
+public:
+    SharedTimer() { }
+    virtual ~SharedTimer() {}
+    virtual void setFiredFunction( void ( * )() ) = 0;
 
-        // The fire time is relative to the classic POSIX epoch of January 1, 1970,
-        // as the result of currentTime() is.
-        virtual void setFireTime(double) = 0;
-        virtual void stop() = 0;
-    };
+    // The fire time is relative to the classic POSIX epoch of January 1, 1970,
+    // as the result of currentTime() is.
+    virtual void setFireTime( double ) = 0;
+    virtual void stop() = 0;
+};
 
 
-    // Implemented by port (since it provides the run loop for the main thread).
-    // FIXME: make ports implement MainThreadSharedTimer directly instead.
-    void setSharedTimerFiredFunction(void (*)());
-    void setSharedTimerFireTime(double);
-    void stopSharedTimer();
+// Implemented by port (since it provides the run loop for the main thread).
+// FIXME: make ports implement MainThreadSharedTimer directly instead.
+void setSharedTimerFiredFunction( void ( * )() );
+void setSharedTimerFireTime( double );
+void stopSharedTimer();
 
-    // Implementation of SharedTimer for the main thread.
-    class MainThreadSharedTimer : public SharedTimer {
-    public:
-        virtual void setFiredFunction(void (*function)())
-        {
-            setSharedTimerFiredFunction(function);
-        }
-        
-        virtual void setFireTime(double fireTime)
-        {
-            setSharedTimerFireTime(fireTime);
-        }
-        
-        virtual void stop()
-        {
-            stopSharedTimer();
-        }
-    };
+// Implementation of SharedTimer for the main thread.
+class MainThreadSharedTimer : public SharedTimer
+{
+public:
+    virtual void setFiredFunction( void ( *function )() )
+    {
+        setSharedTimerFiredFunction( function );
+    }
+
+    virtual void setFireTime( double fireTime )
+    {
+        setSharedTimerFireTime( fireTime );
+    }
+
+    virtual void stop()
+    {
+        stopSharedTimer();
+    }
+};
 
 } // namespace WebCore
 

@@ -31,63 +31,74 @@
 
 class Q_GUI_EXPORT QPaintDeviceWindowPrivate : public QWindowPrivate
 {
-   Q_DECLARE_PUBLIC(QPaintDeviceWindow)
+    Q_DECLARE_PUBLIC( QPaintDeviceWindow )
 
- public:
-   virtual void beginPaint(const QRegion &region) {
-      (void) region;
-   }
+public:
+    virtual void beginPaint( const QRegion &region )
+    {
+        ( void ) region;
+    }
 
-   virtual void endPaint() {
-   }
+    virtual void endPaint()
+    {
+    }
 
-   virtual void flush(const QRegion &region) {
-      (void) region;
-   }
+    virtual void flush( const QRegion &region )
+    {
+        ( void ) region;
+    }
 
-   bool paint(const QRegion &region) {
-      Q_Q(QPaintDeviceWindow);
-      QRegion toPaint = region & dirtyRegion;
+    bool paint( const QRegion &region )
+    {
+        Q_Q( QPaintDeviceWindow );
+        QRegion toPaint = region & dirtyRegion;
 
-      if (toPaint.isEmpty()) {
-         return false;
-      }
+        if ( toPaint.isEmpty() )
+        {
+            return false;
+        }
 
-      // Clear the region now. The overridden functions may call update().
-      dirtyRegion -= toPaint;
+        // Clear the region now. The overridden functions may call update().
+        dirtyRegion -= toPaint;
 
-      beginPaint(toPaint);
+        beginPaint( toPaint );
 
-      QPaintEvent paintEvent(toPaint);
-      q->paintEvent(&paintEvent);
+        QPaintEvent paintEvent( toPaint );
+        q->paintEvent( &paintEvent );
 
-      endPaint();
+        endPaint();
 
-      return true;
-   }
+        return true;
+    }
 
-   void doFlush(const QRegion &region) {
-      QRegion toFlush = region;
+    void doFlush( const QRegion &region )
+    {
+        QRegion toFlush = region;
 
-      if (paint(toFlush)) {
-         flush(toFlush);
-      }
-   }
+        if ( paint( toFlush ) )
+        {
+            flush( toFlush );
+        }
+    }
 
-   void handleUpdateEvent() {
-      if (dirtyRegion.isEmpty()) {
-         return;
-      }
-      doFlush(dirtyRegion);
-   }
+    void handleUpdateEvent()
+    {
+        if ( dirtyRegion.isEmpty() )
+        {
+            return;
+        }
 
-   void markWindowAsDirty() {
-      Q_Q(QPaintDeviceWindow);
-      dirtyRegion += QRect(QPoint(0, 0), q->size());
-   }
+        doFlush( dirtyRegion );
+    }
 
- private:
-   QRegion dirtyRegion;
+    void markWindowAsDirty()
+    {
+        Q_Q( QPaintDeviceWindow );
+        dirtyRegion += QRect( QPoint( 0, 0 ), q->size() );
+    }
+
+private:
+    QRegion dirtyRegion;
 };
 
 #endif

@@ -29,11 +29,11 @@
 
 QSizePolicy::ControlType QSizePolicy::controlType() const
 {
-    return QSizePolicy::ControlType(1 << bits.ctype);
+    return QSizePolicy::ControlType( 1 << bits.ctype );
 }
 
 
-void QSizePolicy::setControlType(ControlType type)
+void QSizePolicy::setControlType( ControlType type )
 {
     /*
         The control type is a flag type, with values 0x1, 0x2, 0x4, 0x8, 0x10,
@@ -50,11 +50,15 @@ void QSizePolicy::setControlType(ControlType type)
     */
 
     int i = 0;
-    while (true) {
-        if (type & (0x1 << i)) {
+
+    while ( true )
+    {
+        if ( type & ( 0x1 << i ) )
+        {
             bits.ctype = i;
             return;
         }
+
         ++i;
     }
 }
@@ -62,45 +66,45 @@ void QSizePolicy::setControlType(ControlType type)
 
 QSizePolicy::operator QVariant() const
 {
-    return QVariant(QVariant::SizePolicy, this);
+    return QVariant( QVariant::SizePolicy, this );
 }
 
-QDataStream &operator<<(QDataStream &stream, const QSizePolicy &policy)
+QDataStream &operator<<( QDataStream &stream, const QSizePolicy &policy )
 {
     // order here is for historical reasons
 
-    quint32 data = (policy.bits.horPolicy |         // [0, 3]
-                    policy.bits.verPolicy << 4 |    // [4, 7]
-                    policy.bits.hfw << 8 |          // [8]
-                    policy.bits.ctype << 9 |        // [9, 13]
-                    policy.bits.wfh << 14 |         // [14]
-                    policy.bits.retainSizeWhenHidden << 15 |     // [15]
-                    policy.bits.verStretch << 16 |  // [16, 23]
-                    policy.bits.horStretch << 24);  // [24, 31]
+    quint32 data = ( policy.bits.horPolicy |        // [0, 3]
+                     policy.bits.verPolicy << 4 |    // [4, 7]
+                     policy.bits.hfw << 8 |          // [8]
+                     policy.bits.ctype << 9 |        // [9, 13]
+                     policy.bits.wfh << 14 |         // [14]
+                     policy.bits.retainSizeWhenHidden << 15 |     // [15]
+                     policy.bits.verStretch << 16 |  // [16, 23]
+                     policy.bits.horStretch << 24 ); // [24, 31]
     return stream << data;
 }
 
 #define VALUE_OF_BITS(data, bitstart, bitcount) ((data >> bitstart) & ((1 << bitcount) -1))
 
 
-QDataStream &operator>>(QDataStream &stream, QSizePolicy &policy)
+QDataStream &operator>>( QDataStream &stream, QSizePolicy &policy )
 {
     quint32 data;
     stream >> data;
-    policy.bits.horPolicy =  VALUE_OF_BITS(data, 0, 4);
-    policy.bits.verPolicy =  VALUE_OF_BITS(data, 4, 4);
-    policy.bits.hfw =        VALUE_OF_BITS(data, 8, 1);
-    policy.bits.ctype =      VALUE_OF_BITS(data, 9, 5);
-    policy.bits.wfh =        VALUE_OF_BITS(data, 14, 1);
-    policy.bits.retainSizeWhenHidden =    VALUE_OF_BITS(data, 15, 1);
-    policy.bits.verStretch = VALUE_OF_BITS(data, 16, 8);
-    policy.bits.horStretch = VALUE_OF_BITS(data, 24, 8);
+    policy.bits.horPolicy =  VALUE_OF_BITS( data, 0, 4 );
+    policy.bits.verPolicy =  VALUE_OF_BITS( data, 4, 4 );
+    policy.bits.hfw =        VALUE_OF_BITS( data, 8, 1 );
+    policy.bits.ctype =      VALUE_OF_BITS( data, 9, 5 );
+    policy.bits.wfh =        VALUE_OF_BITS( data, 14, 1 );
+    policy.bits.retainSizeWhenHidden =    VALUE_OF_BITS( data, 15, 1 );
+    policy.bits.verStretch = VALUE_OF_BITS( data, 16, 8 );
+    policy.bits.horStretch = VALUE_OF_BITS( data, 24, 8 );
     return stream;
 }
 
-QDebug operator<<(QDebug dbg, const QSizePolicy &p)
+QDebug operator<<( QDebug dbg, const QSizePolicy &p )
 {
-    QDebugStateSaver saver(dbg);
+    QDebugStateSaver saver( dbg );
     dbg.nospace() << "QSizePolicy(horizontalPolicy = " << p.horizontalPolicy()
                   << ", verticalPolicy = " << p.verticalPolicy() << ')';
     return dbg;

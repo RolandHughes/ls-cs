@@ -23,8 +23,8 @@
 
 #include <qaudiooutputselectorcontrol.h>
 
-QAudioOutputSelectorControl::QAudioOutputSelectorControl(QObject *parent)
-   : QMediaControl(parent)
+QAudioOutputSelectorControl::QAudioOutputSelectorControl( QObject *parent )
+    : QMediaControl( parent )
 {
 }
 

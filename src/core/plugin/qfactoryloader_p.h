@@ -36,75 +36,79 @@ class QFactoryLoaderPrivate;
 
 class Q_CORE_EXPORT QFactoryLoader : public QObject
 {
-   CORE_CS_OBJECT(QFactoryLoader)
-   Q_DECLARE_PRIVATE(QFactoryLoader)
+    CORE_CS_OBJECT( QFactoryLoader )
+    Q_DECLARE_PRIVATE( QFactoryLoader )
 
- public:
-   explicit QFactoryLoader(const QString &iid, const QString &suffix = QString(), Qt::CaseSensitivity = Qt::CaseSensitive);
-   ~QFactoryLoader();
+public:
+    explicit QFactoryLoader( const QString &iid, const QString &suffix = QString(), Qt::CaseSensitivity = Qt::CaseSensitive );
+    ~QFactoryLoader();
 
 #if defined(Q_OS_UNIX) && ! defined (Q_OS_DARWIN)
-   QLibraryHandle *library(const QString &key) const;
+    QLibraryHandle *library( const QString &key ) const;
 #endif
 
-   QObject *instance(QString key) const;
-   QObject *instance(QLibraryHandle *library) const;
+    QObject *instance( QString key ) const;
+    QObject *instance( QLibraryHandle *library ) const;
 
-   QSet<QString> keySet() const;
-   QSet<QLibraryHandle *> librarySet(QString key) const;
+    QSet<QString> keySet() const;
+    QSet<QLibraryHandle *> librarySet( QString key ) const;
 
-   void setup();
-   static void refreshAll();
+    void setup();
+    static void refreshAll();
 
-   struct PluginStatus {
-      QString pathName;
-      QString fileName;
-      QString keyFound;
-   };
+    struct PluginStatus
+    {
+        QString pathName;
+        QString fileName;
+        QString keyFound;
+    };
 
-/*
-   QSet<QString> getPluginLocations() const {
-      QSet<QString> retval;
+    /*
+       QSet<QString> getPluginLocations() const {
+          QSet<QString> retval;
 
-      for (auto &item : mp_pluginsFound) {
-         // duplicates will be tossed
-         retval.insert(item.pathName);
-      }
+          for (auto &item : mp_pluginsFound) {
+             // duplicates will be tossed
+             retval.insert(item.pathName);
+          }
 
-      return retval;
-   }
+          return retval;
+       }
 
-   QVector<PluginStatus> getPluginStatus() const {
-      return mp_pluginsFound;
-   }
-*/
+       QVector<PluginStatus> getPluginStatus() const {
+          return mp_pluginsFound;
+       }
+    */
 
- protected:
-   QScopedPointer<QFactoryLoaderPrivate> d_ptr;
+protected:
+    QScopedPointer<QFactoryLoaderPrivate> d_ptr;
 
- private:
-   mutable QMultiMap<QString, QLibraryHandle *> m_pluginMap;
-   // QVector<PluginStatus> mp_pluginsFound;
+private:
+    mutable QMultiMap<QString, QLibraryHandle *> m_pluginMap;
+    // QVector<PluginStatus> mp_pluginsFound;
 };
 
 template <class PluginInterface, class FactoryInterface, class ...Ts>
-PluginInterface *cs_load_plugin(const QFactoryLoader *loader, const QString &key, const Ts &... Vs)
+PluginInterface *cs_load_plugin( const QFactoryLoader *loader, const QString &key, const Ts &... Vs )
 {
-   QObject *factoryObject = loader->instance(key);
+    QObject *factoryObject = loader->instance( key );
 
-   if (factoryObject != nullptr) {
-      FactoryInterface *factory = dynamic_cast<FactoryInterface *>(factoryObject);
+    if ( factoryObject != nullptr )
+    {
+        FactoryInterface *factory = dynamic_cast<FactoryInterface *>( factoryObject );
 
-      if (factory != nullptr) {
-         PluginInterface *retval = factory->create(key, Vs...);
+        if ( factory != nullptr )
+        {
+            PluginInterface *retval = factory->create( key, Vs... );
 
-         if (retval != nullptr) {
-            return retval;
-         }
-      }
-   }
+            if ( retval != nullptr )
+            {
+                return retval;
+            }
+        }
+    }
 
-   return nullptr;
+    return nullptr;
 }
 
 #endif

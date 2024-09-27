@@ -29,30 +29,33 @@
 #include <qmediaservice.h>
 #include <qmediarecorder.h>
 
-class QVideoProbePrivate {
-  public:
+class QVideoProbePrivate
+{
+public:
     QPointer<QMediaObject> source;
     QPointer<QMediaVideoProbeControl> probee;
 };
 
-QVideoProbe::QVideoProbe(QObject *parent)
-    : QObject(parent), d(new QVideoProbePrivate)
+QVideoProbe::QVideoProbe( QObject *parent )
+    : QObject( parent ), d( new QVideoProbePrivate )
 {
 }
 
 QVideoProbe::~QVideoProbe()
 {
-    if (d->source) {
-        if (d->probee) {
-            disconnect(d->probee.data(), &QMediaVideoProbeControl::videoFrameProbed, this, &QVideoProbe::videoFrameProbed);
-            disconnect(d->probee.data(), &QMediaVideoProbeControl::flush,            this, &QVideoProbe::flush);
+    if ( d->source )
+    {
+        if ( d->probee )
+        {
+            disconnect( d->probee.data(), &QMediaVideoProbeControl::videoFrameProbed, this, &QVideoProbe::videoFrameProbed );
+            disconnect( d->probee.data(), &QMediaVideoProbeControl::flush,            this, &QVideoProbe::flush );
         }
 
-        d->source.data()->service()->releaseControl(d->probee.data());
+        d->source.data()->service()->releaseControl( d->probee.data() );
     }
 }
 
-bool QVideoProbe::setSource(QMediaObject *source)
+bool QVideoProbe::setSource( QMediaObject *source )
 {
     // Need to:
     // 1) disconnect from current source if necessary
@@ -60,51 +63,60 @@ bool QVideoProbe::setSource(QMediaObject *source)
     // 3) connect if so
 
     // in case source was destroyed but probe control is still valid
-    if (! d->source && d->probee) {
-        disconnect(d->probee.data(), &QMediaVideoProbeControl::videoFrameProbed, this, &QVideoProbe::videoFrameProbed);
-        disconnect(d->probee.data(), &QMediaVideoProbeControl::flush,            this, &QVideoProbe::flush);
+    if ( ! d->source && d->probee )
+    {
+        disconnect( d->probee.data(), &QMediaVideoProbeControl::videoFrameProbed, this, &QVideoProbe::videoFrameProbed );
+        disconnect( d->probee.data(), &QMediaVideoProbeControl::flush,            this, &QVideoProbe::flush );
         d->probee.clear();
     }
 
-    if (source != d->source.data()) {
-        if (d->source) {
-            Q_ASSERT(d->probee);
-            disconnect(d->probee.data(), &QMediaVideoProbeControl::videoFrameProbed, this, &QVideoProbe::videoFrameProbed);
-            disconnect(d->probee.data(), &QMediaVideoProbeControl::flush,            this, &QVideoProbe::flush);
+    if ( source != d->source.data() )
+    {
+        if ( d->source )
+        {
+            Q_ASSERT( d->probee );
+            disconnect( d->probee.data(), &QMediaVideoProbeControl::videoFrameProbed, this, &QVideoProbe::videoFrameProbed );
+            disconnect( d->probee.data(), &QMediaVideoProbeControl::flush,            this, &QVideoProbe::flush );
 
-            d->source.data()->service()->releaseControl(d->probee.data());
+            d->source.data()->service()->releaseControl( d->probee.data() );
             d->source.clear();
             d->probee.clear();
         }
 
-        if (source) {
+        if ( source )
+        {
             QMediaService *service = source->service();
-            if (service) {
-                d->probee = service->requestControl<QMediaVideoProbeControl*>();
+
+            if ( service )
+            {
+                d->probee = service->requestControl<QMediaVideoProbeControl *>();
             }
 
-            if (d->probee) {
-               connect(d->probee.data(), &QMediaVideoProbeControl::videoFrameProbed, this, &QVideoProbe::videoFrameProbed);
-               connect(d->probee.data(), &QMediaVideoProbeControl::flush,            this, &QVideoProbe::flush);
-               d->source = source;
+            if ( d->probee )
+            {
+                connect( d->probee.data(), &QMediaVideoProbeControl::videoFrameProbed, this, &QVideoProbe::videoFrameProbed );
+                connect( d->probee.data(), &QMediaVideoProbeControl::flush,            this, &QVideoProbe::flush );
+                d->source = source;
             }
         }
     }
 
-    return (! source || d->probee != nullptr);
+    return ( ! source || d->probee != nullptr );
 }
 
-bool QVideoProbe::setSource(QMediaRecorder *mediaRecorder)
+bool QVideoProbe::setSource( QMediaRecorder *mediaRecorder )
 {
     QMediaObject *source = mediaRecorder ? mediaRecorder->mediaObject() : nullptr;
-    bool result = setSource(source);
+    bool result = setSource( source );
 
-    if (! mediaRecorder) {
-       return true;
+    if ( ! mediaRecorder )
+    {
+        return true;
     }
 
-    if (mediaRecorder && ! source) {
-       return false;
+    if ( mediaRecorder && ! source )
+    {
+        return false;
     }
 
     return result;

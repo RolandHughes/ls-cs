@@ -35,10 +35,11 @@
 
 using namespace std;
 
-namespace WebCore {
+namespace WebCore
+{
 
-RenderRubyText::RenderRubyText(Node* node)
-    : RenderBlock(node)
+RenderRubyText::RenderRubyText( Node *node )
+    : RenderBlock( node )
 {
 }
 
@@ -46,36 +47,49 @@ RenderRubyText::~RenderRubyText()
 {
 }
 
-bool RenderRubyText::isChildAllowed(RenderObject* child, RenderStyle*) const
+bool RenderRubyText::isChildAllowed( RenderObject *child, RenderStyle * ) const
 {
     return child->isInline();
 }
 
-ETextAlign RenderRubyText::textAlignmentForLine(bool endsWithSoftBreak) const
+ETextAlign RenderRubyText::textAlignmentForLine( bool endsWithSoftBreak ) const
 {
     ETextAlign textAlign = style()->textAlign();
-    if (textAlign != TAAUTO)
-        return RenderBlock::textAlignmentForLine(endsWithSoftBreak);
+
+    if ( textAlign != TAAUTO )
+    {
+        return RenderBlock::textAlignmentForLine( endsWithSoftBreak );
+    }
 
     // The default behavior is to allow ruby text to expand if it is shorter than the ruby base.
     return JUSTIFY;
 }
 
-void RenderRubyText::adjustInlineDirectionLineBounds(int expansionOpportunityCount, float& logicalLeft, float& logicalWidth) const
+void RenderRubyText::adjustInlineDirectionLineBounds( int expansionOpportunityCount, float &logicalLeft,
+        float &logicalWidth ) const
 {
     ETextAlign textAlign = style()->textAlign();
-    if (textAlign != TAAUTO)
-        return RenderBlock::adjustInlineDirectionLineBounds(expansionOpportunityCount, logicalLeft, logicalWidth);
+
+    if ( textAlign != TAAUTO )
+    {
+        return RenderBlock::adjustInlineDirectionLineBounds( expansionOpportunityCount, logicalLeft, logicalWidth );
+    }
 
     int maxPreferredLogicalWidth = this->maxPreferredLogicalWidth();
-    if (maxPreferredLogicalWidth >= logicalWidth)
+
+    if ( maxPreferredLogicalWidth >= logicalWidth )
+    {
         return;
+    }
 
     // Inset the ruby text by half the inter-ideograph expansion amount, but no more than a full-width
     // ruby character on each side.
-    float inset = (logicalWidth - maxPreferredLogicalWidth) / (expansionOpportunityCount + 1);
-    if (expansionOpportunityCount)
-        inset = min<float>(2 * style()->fontSize(), inset);
+    float inset = ( logicalWidth - maxPreferredLogicalWidth ) / ( expansionOpportunityCount + 1 );
+
+    if ( expansionOpportunityCount )
+    {
+        inset = min<float>( 2 * style()->fontSize(), inset );
+    }
 
     logicalLeft += inset / 2;
     logicalWidth -= inset;

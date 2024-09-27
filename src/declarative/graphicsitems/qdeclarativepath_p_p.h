@@ -31,20 +31,20 @@ QT_BEGIN_NAMESPACE
 
 class QDeclarativePathPrivate
 {
-   Q_DECLARE_PUBLIC(QDeclarativePath)
+    Q_DECLARE_PUBLIC( QDeclarativePath )
 
- public:
-   QDeclarativePathPrivate() : startX(0), startY(0), closed(false), componentComplete(true) { }
+public:
+    QDeclarativePathPrivate() : startX( 0 ), startY( 0 ), closed( false ), componentComplete( true ) { }
 
-   QPainterPath _path;
-   QList<QDeclarativePathElement *> _pathElements;
-   mutable QVector<QPointF> _pointCache;
-   QList<QDeclarativePath::AttributePoint> _attributePoints;
-   QStringList _attributes;
-   int startX;
-   int startY;
-   bool closed;
-   bool componentComplete;
+    QPainterPath _path;
+    QList<QDeclarativePathElement *> _pathElements;
+    mutable QVector<QPointF> _pointCache;
+    QList<QDeclarativePath::AttributePoint> _attributePoints;
+    QStringList _attributes;
+    int startX;
+    int startY;
+    bool closed;
+    bool componentComplete;
 };
 
 QT_END_NAMESPACE

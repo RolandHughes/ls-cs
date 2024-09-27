@@ -23,27 +23,29 @@
 
 #include "JSWrapperObject.h"
 
-namespace JSC {
+namespace JSC
+{
 
-    class BooleanObject : public JSWrapperObject {
-    public:
-        explicit BooleanObject(JSGlobalData&, Structure*);
+class BooleanObject : public JSWrapperObject
+{
+public:
+    explicit BooleanObject( JSGlobalData &, Structure * );
 
-        static const ClassInfo s_info;
-        
-        static Structure* createStructure(JSGlobalData& globalData, JSValue prototype)
-        {
-            return Structure::create(globalData, prototype, TypeInfo(ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
-        }
-    };
+    static const ClassInfo s_info;
 
-    BooleanObject* asBooleanObject(JSValue);
-
-    inline BooleanObject* asBooleanObject(JSValue value)
+    static Structure *createStructure( JSGlobalData &globalData, JSValue prototype )
     {
-        ASSERT(asObject(value)->inherits(&BooleanObject::s_info));
-        return static_cast<BooleanObject*>(asObject(value));
+        return Structure::create( globalData, prototype, TypeInfo( ObjectType, StructureFlags ), AnonymousSlotCount, &s_info );
     }
+};
+
+BooleanObject *asBooleanObject( JSValue );
+
+inline BooleanObject *asBooleanObject( JSValue value )
+{
+    ASSERT( asObject( value )->inherits( &BooleanObject::s_info ) );
+    return static_cast<BooleanObject *>( asObject( value ) );
+}
 
 } // namespace JSC
 

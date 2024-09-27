@@ -28,10 +28,11 @@
 
 #include <wtf/Forward.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 #if !USE(SOUP)
-    void prefetchDNS(const String& hostname);
+void prefetchDNS( const String &hostname );
 #endif
 }
 

@@ -28,26 +28,32 @@
 #include <runtime/JSObjectWithGlobalObject.h>
 #include <runtime/ObjectPrototype.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class NotificationCenter;
 
-class JSNotificationCenter : public JSDOMWrapper {
+class JSNotificationCenter : public JSDOMWrapper
+{
     typedef JSDOMWrapper Base;
 public:
-    JSNotificationCenter(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<NotificationCenter>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
+    JSNotificationCenter( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<NotificationCenter> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
 
     // Custom functions
-    JSC::JSValue requestPermission(JSC::ExecState*);
-    NotificationCenter* impl() const { return m_impl.get(); }
+    JSC::JSValue requestPermission( JSC::ExecState * );
+    NotificationCenter *impl() const
+    {
+        return m_impl.get();
+    }
 
 private:
     RefPtr<NotificationCenter> m_impl;
@@ -55,47 +61,51 @@ protected:
     static const unsigned StructureFlags = Base::StructureFlags;
 };
 
-class JSNotificationCenterOwner : public JSC::WeakHandleOwner {
-    virtual bool isReachableFromOpaqueRoots(JSC::Handle<JSC::Unknown>, void* context, JSC::SlotVisitor&);
-    virtual void finalize(JSC::Handle<JSC::Unknown>, void* context);
+class JSNotificationCenterOwner : public JSC::WeakHandleOwner
+{
+    virtual bool isReachableFromOpaqueRoots( JSC::Handle<JSC::Unknown>, void *context, JSC::SlotVisitor & );
+    virtual void finalize( JSC::Handle<JSC::Unknown>, void *context );
 };
 
-inline JSC::WeakHandleOwner* wrapperOwner(DOMWrapperWorld*, NotificationCenter*)
+inline JSC::WeakHandleOwner *wrapperOwner( DOMWrapperWorld *, NotificationCenter * )
 {
-    DEFINE_STATIC_LOCAL(JSNotificationCenterOwner, jsNotificationCenterOwner, ());
+    DEFINE_STATIC_LOCAL( JSNotificationCenterOwner, jsNotificationCenterOwner, () );
     return &jsNotificationCenterOwner;
 }
 
-inline void* wrapperContext(DOMWrapperWorld* world, NotificationCenter*)
+inline void *wrapperContext( DOMWrapperWorld *world, NotificationCenter * )
 {
     return world;
 }
 
-JSC::JSValue toJS(JSC::ExecState*, JSDOMGlobalObject*, NotificationCenter*);
-NotificationCenter* toNotificationCenter(JSC::JSValue);
+JSC::JSValue toJS( JSC::ExecState *, JSDOMGlobalObject *, NotificationCenter * );
+NotificationCenter *toNotificationCenter( JSC::JSValue );
 
-class JSNotificationCenterPrototype : public JSC::JSObjectWithGlobalObject {
+class JSNotificationCenterPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSNotificationCenterPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSNotificationCenterPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                                   JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 // Functions
 
-JSC::EncodedJSValue JSC_HOST_CALL jsNotificationCenterPrototypeFunctionCreateHTMLNotification(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsNotificationCenterPrototypeFunctionCreateNotification(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsNotificationCenterPrototypeFunctionCheckPermission(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsNotificationCenterPrototypeFunctionRequestPermission(JSC::ExecState*);
+JSC::EncodedJSValue JSC_HOST_CALL jsNotificationCenterPrototypeFunctionCreateHTMLNotification( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsNotificationCenterPrototypeFunctionCreateNotification( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsNotificationCenterPrototypeFunctionCheckPermission( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsNotificationCenterPrototypeFunctionRequestPermission( JSC::ExecState * );
 
 } // namespace WebCore
 

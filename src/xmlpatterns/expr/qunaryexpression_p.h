@@ -26,19 +26,20 @@
 
 #include <qarithmeticexpression_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class UnaryExpression : public ArithmeticExpression
 {
- public:
-   UnaryExpression(const AtomicMathematician::Operator op, const Expression::Ptr &operand,
-                   const StaticContext::Ptr &context);
+public:
+    UnaryExpression( const AtomicMathematician::Operator op, const Expression::Ptr &operand,
+                     const StaticContext::Ptr &context );
 
-   Item evaluateSingleton(const DynamicContext::Ptr &context) const override;
+    Item evaluateSingleton( const DynamicContext::Ptr &context ) const override;
 
- private:
-   UnaryExpression(const UnaryExpression &) = delete;
-   UnaryExpression &operator=(const UnaryExpression &) = delete;
+private:
+    UnaryExpression( const UnaryExpression & ) = delete;
+    UnaryExpression &operator=( const UnaryExpression & ) = delete;
 };
 
 }

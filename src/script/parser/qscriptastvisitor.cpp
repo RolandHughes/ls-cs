@@ -23,8 +23,10 @@
 
 #include <qscriptastvisitor_p.h>
 
-namespace QScript {
-namespace AST {
+namespace QScript
+{
+namespace AST
+{
 
 Visitor::Visitor()
 {

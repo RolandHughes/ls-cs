@@ -33,15 +33,16 @@ using namespace WebKit;
 
 WKTypeID WKAuthenticationDecisionListenerGetTypeID()
 {
-    return toAPI(AuthenticationDecisionListener::APIType);
+    return toAPI( AuthenticationDecisionListener::APIType );
 }
 
-void WKAuthenticationDecisionListenerUseCredential(WKAuthenticationDecisionListenerRef authenticationListener, WKCredentialRef credential)
+void WKAuthenticationDecisionListenerUseCredential( WKAuthenticationDecisionListenerRef authenticationListener,
+        WKCredentialRef credential )
 {
-    toImpl(authenticationListener)->useCredential(toImpl(credential));
+    toImpl( authenticationListener )->useCredential( toImpl( credential ) );
 }
 
-void WKAuthenticationDecisionListenerCancel(WKAuthenticationDecisionListenerRef authenticationListener)
+void WKAuthenticationDecisionListenerCancel( WKAuthenticationDecisionListenerRef authenticationListener )
 {
-    toImpl(authenticationListener)->cancel();
+    toImpl( authenticationListener )->cancel();
 }

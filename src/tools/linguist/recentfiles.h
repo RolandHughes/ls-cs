@@ -30,41 +30,45 @@
 
 class RecentFiles : public QObject
 {
-   CS_OBJECT(RecentFiles)
+    CS_OBJECT( RecentFiles )
 
- public:
-   explicit RecentFiles(const int maxEntries);
+public:
+    explicit RecentFiles( const int maxEntries );
 
-   bool isEmpty() {
-      return m_strLists.isEmpty();
-   }
+    bool isEmpty()
+    {
+        return m_strLists.isEmpty();
+    }
 
-   void addFiles(const QStringList &names);
+    void addFiles( const QStringList &names );
 
-   QString lastOpenedFile() const {
-      if (m_strLists.isEmpty() || m_strLists.first().isEmpty()) {
-         return QString();
-      }
+    QString lastOpenedFile() const
+    {
+        if ( m_strLists.isEmpty() || m_strLists.first().isEmpty() )
+        {
+            return QString();
+        }
 
-      return m_strLists.at(0).at(0);
-   }
+        return m_strLists.at( 0 ).at( 0 );
+    }
 
-   const QList<QStringList> &filesLists() const {
-      return m_strLists;
-   }
+    const QList<QStringList> &filesLists() const
+    {
+        return m_strLists;
+    }
 
-   void readConfig();
-   void writeConfig() const;
+    void readConfig();
+    void writeConfig() const;
 
-   // slot
-   void closeGroup();
+    // slot
+    void closeGroup();
 
- private:
-   bool m_groupOpen;
-   bool m_clone1st;
-   int m_maxEntries;
-   QList<QStringList> m_strLists;
-   QTimer m_timer;
+private:
+    bool m_groupOpen;
+    bool m_clone1st;
+    int m_maxEntries;
+    QList<QStringList> m_strLists;
+    QTimer m_timer;
 };
 
 #endif

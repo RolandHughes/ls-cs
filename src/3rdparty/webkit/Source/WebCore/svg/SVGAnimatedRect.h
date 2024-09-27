@@ -25,7 +25,8 @@
 #include "SVGAnimatedPropertyTearOff.h"
 #include "SVGRect.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 typedef SVGAnimatedPropertyTearOff<FloatRect> SVGAnimatedRect;
 

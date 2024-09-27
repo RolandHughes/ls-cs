@@ -31,7 +31,8 @@ class QWindow;
 class QXcbWindowFunctions
 {
 public:
-    enum WmWindowType {
+    enum WmWindowType
+    {
         Normal       = 0x000001,
         Desktop      = 0x000002,
         Dock         = 0x000004,
@@ -50,58 +51,88 @@ public:
     };
     using WmWindowTypes = QFlags<WmWindowType>;
 
-    typedef void (*SetWmWindowType)(QWindow *window, QXcbWindowFunctions::WmWindowTypes windowType);
-    static const QByteArray setWmWindowTypeIdentifier() { return QByteArray("XcbSetWmWindowType"); }
-    static void setWmWindowType(QWindow *window, WmWindowType type)
+    typedef void ( *SetWmWindowType )( QWindow *window, QXcbWindowFunctions::WmWindowTypes windowType );
+    static const QByteArray setWmWindowTypeIdentifier()
+    {
+        return QByteArray( "XcbSetWmWindowType" );
+    }
+    static void setWmWindowType( QWindow *window, WmWindowType type )
     {
         return QPlatformHeaderHelper::callPlatformFunction<void, SetWmWindowType, QWindow *,
-            WmWindowType>(setWmWindowTypeIdentifier(), window, type);
+               WmWindowType>( setWmWindowTypeIdentifier(), window, type );
     }
 
-    typedef void (*SetWmWindowRole)(QWindow *window, const QByteArray &role);
-    static const QByteArray setWmWindowRoleIdentifier() { return QByteArray("XcbSetWmWindowRole"); }
-
-    static void setWmWindowRole(QWindow *window, const QByteArray &role)
+    typedef void ( *SetWmWindowRole )( QWindow *window, const QByteArray &role );
+    static const QByteArray setWmWindowRoleIdentifier()
     {
-        return QPlatformHeaderHelper::callPlatformFunction<void, SetWmWindowRole, QWindow *, const QByteArray &>(setWmWindowRoleIdentifier(), window, role);
+        return QByteArray( "XcbSetWmWindowRole" );
     }
 
-    typedef void (*SetWmWindowIconText)(QWindow *window, const QString &text);
-    static const QByteArray setWmWindowIconTextIdentifier() { return QByteArray("XcbSetWmWindowIconText"); }
-    static void setWmWindowIconText(QWindow *window, const QString &text)
+    static void setWmWindowRole( QWindow *window, const QByteArray &role )
     {
-        return QPlatformHeaderHelper::callPlatformFunction<void, SetWmWindowIconText, QWindow *, const QString &>(setWmWindowIconTextIdentifier(), window, text);
+        return QPlatformHeaderHelper::callPlatformFunction<void, SetWmWindowRole, QWindow *, const QByteArray &>
+               ( setWmWindowRoleIdentifier(), window, role );
     }
 
-    typedef void (*SetParentRelativeBackPixmap)(const QWindow *window);
-    static const QByteArray setParentRelativeBackPixmapIdentifier() { return QByteArray("XcbSetParentRelativeBackPixmap"); }
-    static void setParentRelativeBackPixmap(const QWindow *window)
+    typedef void ( *SetWmWindowIconText )( QWindow *window, const QString &text );
+    static const QByteArray setWmWindowIconTextIdentifier()
     {
-        return QPlatformHeaderHelper::callPlatformFunction<void, SetParentRelativeBackPixmap, const QWindow *>(setParentRelativeBackPixmapIdentifier(), window);
+        return QByteArray( "XcbSetWmWindowIconText" );
+    }
+    static void setWmWindowIconText( QWindow *window, const QString &text )
+    {
+        return QPlatformHeaderHelper::callPlatformFunction<void, SetWmWindowIconText, QWindow *, const QString &>
+               ( setWmWindowIconTextIdentifier(), window, text );
     }
 
-    typedef bool (*RequestSystemTrayWindowDock)(const QWindow *window);
-    static const QByteArray requestSystemTrayWindowDockIdentifier() { return QByteArray("XcbRequestSystemTrayWindowDockIdentifier"); }
-    static bool requestSystemTrayWindowDock(const QWindow *window)
+    typedef void ( *SetParentRelativeBackPixmap )( const QWindow *window );
+    static const QByteArray setParentRelativeBackPixmapIdentifier()
     {
-        return QPlatformHeaderHelper::callPlatformFunction<bool, RequestSystemTrayWindowDock, const QWindow *>(requestSystemTrayWindowDockIdentifier(), window);
+        return QByteArray( "XcbSetParentRelativeBackPixmap" );
+    }
+    static void setParentRelativeBackPixmap( const QWindow *window )
+    {
+        return QPlatformHeaderHelper::callPlatformFunction<void, SetParentRelativeBackPixmap, const QWindow *>
+               ( setParentRelativeBackPixmapIdentifier(), window );
     }
 
-    typedef QRect (*SystemTrayWindowGlobalGeometry)(const QWindow *window);
-    static const QByteArray systemTrayWindowGlobalGeometryIdentifier() { return QByteArray("XcbSystemTrayWindowGlobalGeometryIdentifier"); }
-    static QRect systemTrayWindowGlobalGeometry(const QWindow *window)
+    typedef bool ( *RequestSystemTrayWindowDock )( const QWindow *window );
+    static const QByteArray requestSystemTrayWindowDockIdentifier()
     {
-        return QPlatformHeaderHelper::callPlatformFunction<QRect, SystemTrayWindowGlobalGeometry, const QWindow *>(systemTrayWindowGlobalGeometryIdentifier(), window);
+        return QByteArray( "XcbRequestSystemTrayWindowDockIdentifier" );
+    }
+    static bool requestSystemTrayWindowDock( const QWindow *window )
+    {
+        return QPlatformHeaderHelper::callPlatformFunction<bool, RequestSystemTrayWindowDock, const QWindow *>
+               ( requestSystemTrayWindowDockIdentifier(), window );
     }
 
-    typedef uint (*VisualId)(QWindow *window);
-    static const QByteArray visualIdIdentifier() { return QByteArray("XcbVisualId"); }
-
-    static uint visualId(QWindow *window)
+    typedef QRect ( *SystemTrayWindowGlobalGeometry )( const QWindow *window );
+    static const QByteArray systemTrayWindowGlobalGeometryIdentifier()
     {
-        QXcbWindowFunctions::VisualId func = reinterpret_cast<VisualId>(QGuiApplication::platformFunction(visualIdIdentifier()));
-        if (func)
-            return func(window);
+        return QByteArray( "XcbSystemTrayWindowGlobalGeometryIdentifier" );
+    }
+    static QRect systemTrayWindowGlobalGeometry( const QWindow *window )
+    {
+        return QPlatformHeaderHelper::callPlatformFunction<QRect, SystemTrayWindowGlobalGeometry, const QWindow *>
+               ( systemTrayWindowGlobalGeometryIdentifier(), window );
+    }
+
+    typedef uint ( *VisualId )( QWindow *window );
+    static const QByteArray visualIdIdentifier()
+    {
+        return QByteArray( "XcbVisualId" );
+    }
+
+    static uint visualId( QWindow *window )
+    {
+        QXcbWindowFunctions::VisualId func = reinterpret_cast<VisualId>( QGuiApplication::platformFunction( visualIdIdentifier() ) );
+
+        if ( func )
+        {
+            return func( window );
+        }
+
         return UINT_MAX;
     }
 };

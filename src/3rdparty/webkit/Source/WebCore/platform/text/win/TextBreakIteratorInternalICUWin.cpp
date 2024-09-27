@@ -21,15 +21,16 @@
 #include "config.h"
 #include "TextBreakIteratorInternalICU.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-const char* currentSearchLocaleID()
+const char *currentSearchLocaleID()
 {
     // FIXME: Should use system locale.
     return "";
 }
 
-const char* currentTextBreakLocaleID()
+const char *currentTextBreakLocaleID()
 {
     // Using en_US_POSIX now so word selection in address field works as expected as before (double-clicking
     // in a URL selects a word delimited by periods rather than selecting the entire URL).

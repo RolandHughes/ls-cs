@@ -27,13 +27,13 @@
 
 static QAccessibleCache *qAccessibleCache()
 {
-   static QAccessibleCache retval;
-   return &retval;
+    static QAccessibleCache retval;
+    return &retval;
 }
 
 QAccessibleCache *QAccessibleCache::instance()
 {
-   return qAccessibleCache();
+    return qAccessibleCache();
 }
 
 /*
@@ -43,80 +43,91 @@ QAccessibleCache *QAccessibleCache::instance()
 */
 QAccessible::Id QAccessibleCache::acquireId() const
 {
-   static constexpr const QAccessible::Id FirstId = QAccessible::Id(INT_MAX) + 1;
+    static constexpr const QAccessible::Id FirstId = QAccessible::Id( INT_MAX ) + 1;
 
-   static QAccessible::Id lastUsedId = FirstId;
+    static QAccessible::Id lastUsedId = FirstId;
 
-   while (idToInterface.contains(lastUsedId)) {
-      // (wrap back when when we reach UINT_MAX - 1)
-      // -1 because on Android -1 is taken for the "View" so just avoid it completely for consistency
-      if (lastUsedId == UINT_MAX - 1) {
-         lastUsedId = FirstId;
-      } else {
-         ++lastUsedId;
-      }
-   }
+    while ( idToInterface.contains( lastUsedId ) )
+    {
+        // (wrap back when when we reach UINT_MAX - 1)
+        // -1 because on Android -1 is taken for the "View" so just avoid it completely for consistency
+        if ( lastUsedId == UINT_MAX - 1 )
+        {
+            lastUsedId = FirstId;
+        }
+        else
+        {
+            ++lastUsedId;
+        }
+    }
 
-   return lastUsedId;
+    return lastUsedId;
 }
 
-QAccessibleInterface *QAccessibleCache::interfaceForId(QAccessible::Id id) const
+QAccessibleInterface *QAccessibleCache::interfaceForId( QAccessible::Id id ) const
 {
-   return idToInterface.value(id);
+    return idToInterface.value( id );
 }
 
-QAccessible::Id QAccessibleCache::idForInterface(QAccessibleInterface *iface) const
+QAccessible::Id QAccessibleCache::idForInterface( QAccessibleInterface *iface ) const
 {
-   return interfaceToId.value(iface);
+    return interfaceToId.value( iface );
 }
 
-QAccessible::Id QAccessibleCache::insert(QObject *object, QAccessibleInterface *iface) const
+QAccessible::Id QAccessibleCache::insert( QObject *object, QAccessibleInterface *iface ) const
 {
-   Q_ASSERT(iface);
+    Q_ASSERT( iface );
 
-   Q_ASSERT(! objectToId.contains(object));
-   Q_ASSERT_X(! interfaceToId.contains(iface), "", "Accessible interface inserted into cache twice");
+    Q_ASSERT( ! objectToId.contains( object ) );
+    Q_ASSERT_X( ! interfaceToId.contains( iface ), "", "Accessible interface inserted into cache twice" );
 
-   QAccessible::Id id = acquireId();
-   QObject *obj = iface->object();
+    QAccessible::Id id = acquireId();
+    QObject *obj = iface->object();
 
-   Q_ASSERT(object == obj);
+    Q_ASSERT( object == obj );
 
-   if (obj) {
-      objectToId.insert(obj, id);
-      connect(obj, &QObject::destroyed, this, &QAccessibleCache::objectDestroyed);
-   }
+    if ( obj )
+    {
+        objectToId.insert( obj, id );
+        connect( obj, &QObject::destroyed, this, &QAccessibleCache::objectDestroyed );
+    }
 
-   idToInterface.insert(id, iface);
-   interfaceToId.insert(iface, id);
+    idToInterface.insert( id, iface );
+    interfaceToId.insert( iface, id );
 
-   return id;
+    return id;
 }
 
-void QAccessibleCache::objectDestroyed(QObject *obj)
+void QAccessibleCache::objectDestroyed( QObject *obj )
 {
-   QAccessible::Id id = objectToId.value(obj);
+    QAccessible::Id id = objectToId.value( obj );
 
-   if (id) {
-      Q_ASSERT_X(idToInterface.contains(id), "", "QObject with accessible interface deleted");
-      deleteInterface(id, obj);
-   }
+    if ( id )
+    {
+        Q_ASSERT_X( idToInterface.contains( id ), "", "QObject with accessible interface deleted" );
+        deleteInterface( id, obj );
+    }
 }
 
-void QAccessibleCache::deleteInterface(QAccessible::Id id, QObject *obj)
+void QAccessibleCache::deleteInterface( QAccessible::Id id, QObject *obj )
 {
-   QAccessibleInterface *iface = idToInterface.take(id);
-   interfaceToId.take(iface);
-   if (!obj) {
-      obj = iface->object();
-   }
-   if (obj) {
-      objectToId.remove(obj);
-   }
-   delete iface;
+    QAccessibleInterface *iface = idToInterface.take( id );
+    interfaceToId.take( iface );
+
+    if ( !obj )
+    {
+        obj = iface->object();
+    }
+
+    if ( obj )
+    {
+        objectToId.remove( obj );
+    }
+
+    delete iface;
 
 #ifdef Q_OS_DARWIN
-   removeCocoaElement(id);
+    removeCocoaElement( id );
 #endif
 }
 

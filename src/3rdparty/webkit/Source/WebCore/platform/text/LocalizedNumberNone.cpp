@@ -35,14 +35,15 @@
 
 using namespace std;
 
-namespace WebCore {
+namespace WebCore
+{
 
-double parseLocalizedNumber(const String&)
+double parseLocalizedNumber( const String & )
 {
     return numeric_limits<double>::quiet_NaN();
 }
 
-String formatLocalizedNumber(double, unsigned)
+String formatLocalizedNumber( double, unsigned )
 {
     return String();
 }

@@ -83,56 +83,60 @@
 
 using namespace WebCore;
 
-namespace WebKit {
+namespace WebKit
+{
 
 #if OS(WINDOWS)
-static void sleep(unsigned seconds)
+static void sleep( unsigned seconds )
 {
-    ::Sleep(seconds * 1000);
+    ::Sleep( seconds * 1000 );
 }
 #endif
 
-static void* randomCrashThread(void*)
+static void *randomCrashThread( void * )
 {
     // This delay was chosen semi-arbitrarily. We want the crash to happen somewhat quickly to
     // enable useful stress testing, but not so quickly that the web process will always crash soon
     // after launch.
     static const unsigned maximumRandomCrashDelay = 180;
 
-    sleep(randomNumber() * maximumRandomCrashDelay);
+    sleep( randomNumber() * maximumRandomCrashDelay );
     CRASH();
     return 0;
 }
 
 static void startRandomCrashThreadIfRequested()
 {
-    if (!getenv("WEBKIT2_CRASH_WEB_PROCESS_RANDOMLY"))
+    if ( !getenv( "WEBKIT2_CRASH_WEB_PROCESS_RANDOMLY" ) )
+    {
         return;
-    createThread(randomCrashThread, 0, "WebKit2: Random Crash Thread");
+    }
+
+    createThread( randomCrashThread, 0, "WebKit2: Random Crash Thread" );
 }
 
-WebProcess& WebProcess::shared()
+WebProcess &WebProcess::shared()
 {
-    static WebProcess& process = *new WebProcess;
+    static WebProcess &process = *new WebProcess;
     return process;
 }
 
 static const double shutdownTimeout = 60;
 
 WebProcess::WebProcess()
-    : ChildProcess(shutdownTimeout)
-    , m_inDidClose(false)
-    , m_hasSetCacheModel(false)
-    , m_cacheModel(CacheModelDocumentViewer)
+    : ChildProcess( shutdownTimeout )
+    , m_inDidClose( false )
+    , m_hasSetCacheModel( false )
+    , m_cacheModel( CacheModelDocumentViewer )
 #if USE(ACCELERATED_COMPOSITING) && PLATFORM(MAC)
-    , m_compositingRenderServerPort(MACH_PORT_NULL)
+    , m_compositingRenderServerPort( MACH_PORT_NULL )
 #endif
 #if PLATFORM(QT)
-    , m_networkAccessManager(0)
+    , m_networkAccessManager( 0 )
 #endif
     , m_textCheckerState()
-    , m_geolocationManager(this)
-    , m_iconDatabaseProxy(this)
+    , m_geolocationManager( this )
+    , m_iconDatabaseProxy( this )
 {
 #if USE(PLATFORM_STRATEGIES)
     // Initialize our platform strategies.
@@ -142,14 +146,14 @@ WebProcess::WebProcess()
     WebCore::InitializeLoggingChannelsIfNecessary();
 }
 
-void WebProcess::initialize(CoreIPC::Connection::Identifier serverIdentifier, RunLoop* runLoop)
+void WebProcess::initialize( CoreIPC::Connection::Identifier serverIdentifier, RunLoop *runLoop )
 {
-    ASSERT(!m_connection);
+    ASSERT( !m_connection );
 
-    m_connection = CoreIPC::Connection::createClientConnection(serverIdentifier, this, runLoop);
-    m_connection->setDidCloseOnConnectionWorkQueueCallback(didCloseOnConnectionWorkQueue);
-    m_connection->setShouldExitOnSyncMessageSendFailure(true);
-    m_connection->addQueueClient(this);
+    m_connection = CoreIPC::Connection::createClientConnection( serverIdentifier, this, runLoop );
+    m_connection->setDidCloseOnConnectionWorkQueueCallback( didCloseOnConnectionWorkQueue );
+    m_connection->setShouldExitOnSyncMessageSendFailure( true );
+    m_connection->addQueueClient( this );
 
     m_connection->open();
 
@@ -158,22 +162,27 @@ void WebProcess::initialize(CoreIPC::Connection::Identifier serverIdentifier, Ru
     startRandomCrashThreadIfRequested();
 }
 
-void WebProcess::initializeWebProcess(const WebProcessCreationParameters& parameters, CoreIPC::ArgumentDecoder* arguments)
+void WebProcess::initializeWebProcess( const WebProcessCreationParameters &parameters, CoreIPC::ArgumentDecoder *arguments )
 {
-    ASSERT(m_pageMap.isEmpty());
+    ASSERT( m_pageMap.isEmpty() );
 
-    platformInitializeWebProcess(parameters, arguments);
+    platformInitializeWebProcess( parameters, arguments );
 
     RefPtr<APIObject> injectedBundleInitializationUserData;
-    InjectedBundleUserMessageDecoder messageDecoder(injectedBundleInitializationUserData);
-    if (!arguments->decode(messageDecoder))
+    InjectedBundleUserMessageDecoder messageDecoder( injectedBundleInitializationUserData );
+
+    if ( !arguments->decode( messageDecoder ) )
+    {
         return;
+    }
 
-    if (!parameters.injectedBundlePath.isEmpty()) {
-        m_injectedBundle = InjectedBundle::create(parameters.injectedBundlePath);
-        m_injectedBundle->setSandboxExtension(SandboxExtension::create(parameters.injectedBundlePathExtensionHandle));
+    if ( !parameters.injectedBundlePath.isEmpty() )
+    {
+        m_injectedBundle = InjectedBundle::create( parameters.injectedBundlePath );
+        m_injectedBundle->setSandboxExtension( SandboxExtension::create( parameters.injectedBundlePathExtensionHandle ) );
 
-        if (!m_injectedBundle->load(injectedBundleInitializationUserData.get())) {
+        if ( !m_injectedBundle->load( injectedBundleInitializationUserData.get() ) )
+        {
             // Don't keep around the InjectedBundle reference if the load fails.
             m_injectedBundle.clear();
         }
@@ -181,113 +190,135 @@ void WebProcess::initializeWebProcess(const WebProcessCreationParameters& parame
 
 #if ENABLE(DATABASE)
     // Make sure the WebDatabaseManager is initialized so that the Database directory is set.
-    WebDatabaseManager::initialize(parameters.databaseDirectory);
+    WebDatabaseManager::initialize( parameters.databaseDirectory );
 #endif
 
 #if ENABLE(ICONDATABASE)
-    m_iconDatabaseProxy.setEnabled(parameters.iconDatabaseEnabled);
+    m_iconDatabaseProxy.setEnabled( parameters.iconDatabaseEnabled );
 #endif
 
 #if ENABLE(DOM_STORAGE)
-    StorageTracker::initializeTracker(parameters.localStorageDirectory);
+    StorageTracker::initializeTracker( parameters.localStorageDirectory );
     m_localStorageDirectory = parameters.localStorageDirectory;
 #endif
 
 #if ENABLE(OFFLINE_WEB_APPLICATIONS)
-    if (!parameters.applicationCacheDirectory.isEmpty()) {
-        m_applicationCachePathExtension = SandboxExtension::create(parameters.applicationCacheDirectoryExtensionHandle);
+
+    if ( !parameters.applicationCacheDirectory.isEmpty() )
+    {
+        m_applicationCachePathExtension = SandboxExtension::create( parameters.applicationCacheDirectoryExtensionHandle );
         m_applicationCachePathExtension->consume();
 
-        cacheStorage().setCacheDirectory(parameters.applicationCacheDirectory);
+        cacheStorage().setCacheDirectory( parameters.applicationCacheDirectory );
     }
+
 #endif
 
-    setShouldTrackVisitedLinks(parameters.shouldTrackVisitedLinks);
-    setCacheModel(static_cast<uint32_t>(parameters.cacheModel));
+    setShouldTrackVisitedLinks( parameters.shouldTrackVisitedLinks );
+    setCacheModel( static_cast<uint32_t>( parameters.cacheModel ) );
 
-    if (!parameters.languageCode.isEmpty())
-        overrideDefaultLanguage(parameters.languageCode);
+    if ( !parameters.languageCode.isEmpty() )
+    {
+        overrideDefaultLanguage( parameters.languageCode );
+    }
 
     m_textCheckerState = parameters.textCheckerState;
 
-    for (size_t i = 0; i < parameters.urlSchemesRegistererdAsEmptyDocument.size(); ++i)
-        registerURLSchemeAsEmptyDocument(parameters.urlSchemesRegistererdAsEmptyDocument[i]);
+    for ( size_t i = 0; i < parameters.urlSchemesRegistererdAsEmptyDocument.size(); ++i )
+    {
+        registerURLSchemeAsEmptyDocument( parameters.urlSchemesRegistererdAsEmptyDocument[i] );
+    }
 
-    for (size_t i = 0; i < parameters.urlSchemesRegisteredAsSecure.size(); ++i)
-        registerURLSchemeAsSecure(parameters.urlSchemesRegisteredAsSecure[i]);
+    for ( size_t i = 0; i < parameters.urlSchemesRegisteredAsSecure.size(); ++i )
+    {
+        registerURLSchemeAsSecure( parameters.urlSchemesRegisteredAsSecure[i] );
+    }
 
-    for (size_t i = 0; i < parameters.urlSchemesForWhichDomainRelaxationIsForbidden.size(); ++i)
-        setDomainRelaxationForbiddenForURLScheme(parameters.urlSchemesForWhichDomainRelaxationIsForbidden[i]);
+    for ( size_t i = 0; i < parameters.urlSchemesForWhichDomainRelaxationIsForbidden.size(); ++i )
+    {
+        setDomainRelaxationForbiddenForURLScheme( parameters.urlSchemesForWhichDomainRelaxationIsForbidden[i] );
+    }
 
-    setDefaultRequestTimeoutInterval(parameters.defaultRequestTimeoutInterval);
+    setDefaultRequestTimeoutInterval( parameters.defaultRequestTimeoutInterval );
 
-    for (size_t i = 0; i < parameters.mimeTypesWithCustomRepresentation.size(); ++i)
-        m_mimeTypesWithCustomRepresentations.add(parameters.mimeTypesWithCustomRepresentation[i]);
+    for ( size_t i = 0; i < parameters.mimeTypesWithCustomRepresentation.size(); ++i )
+    {
+        m_mimeTypesWithCustomRepresentations.add( parameters.mimeTypesWithCustomRepresentation[i] );
+    }
 
 #if PLATFORM(MAC)
     m_presenterApplicationPid = parameters.presenterApplicationPid;
 #endif
 
-    if (parameters.shouldAlwaysUseComplexTextCodePath)
-        setAlwaysUsesComplexTextCodePath(true);
+    if ( parameters.shouldAlwaysUseComplexTextCodePath )
+    {
+        setAlwaysUsesComplexTextCodePath( true );
+    }
 
 #if USE(CFURLSTORAGESESSIONS)
-    WebCore::ResourceHandle::setPrivateBrowsingStorageSessionIdentifierBase(parameters.uiProcessBundleIdentifier);
+    WebCore::ResourceHandle::setPrivateBrowsingStorageSessionIdentifierBase( parameters.uiProcessBundleIdentifier );
 #endif
 }
 
-void WebProcess::setShouldTrackVisitedLinks(bool shouldTrackVisitedLinks)
+void WebProcess::setShouldTrackVisitedLinks( bool shouldTrackVisitedLinks )
 {
-    PageGroup::setShouldTrackVisitedLinks(shouldTrackVisitedLinks);
+    PageGroup::setShouldTrackVisitedLinks( shouldTrackVisitedLinks );
 }
 
-void WebProcess::registerURLSchemeAsEmptyDocument(const String& urlScheme)
+void WebProcess::registerURLSchemeAsEmptyDocument( const String &urlScheme )
 {
-    SchemeRegistry::registerURLSchemeAsEmptyDocument(urlScheme);
+    SchemeRegistry::registerURLSchemeAsEmptyDocument( urlScheme );
 }
 
-void WebProcess::registerURLSchemeAsSecure(const String& urlScheme) const
+void WebProcess::registerURLSchemeAsSecure( const String &urlScheme ) const
 {
-    SchemeRegistry::registerURLSchemeAsSecure(urlScheme);
+    SchemeRegistry::registerURLSchemeAsSecure( urlScheme );
 }
 
-void WebProcess::setDomainRelaxationForbiddenForURLScheme(const String& urlScheme) const
+void WebProcess::setDomainRelaxationForbiddenForURLScheme( const String &urlScheme ) const
 {
-    SecurityOrigin::setDomainRelaxationForbiddenForURLScheme(true, urlScheme);
+    SecurityOrigin::setDomainRelaxationForbiddenForURLScheme( true, urlScheme );
 }
 
-void WebProcess::setDefaultRequestTimeoutInterval(double timeoutInterval)
+void WebProcess::setDefaultRequestTimeoutInterval( double timeoutInterval )
 {
-    ResourceRequest::setDefaultTimeoutInterval(timeoutInterval);
+    ResourceRequest::setDefaultTimeoutInterval( timeoutInterval );
 }
 
-void WebProcess::setAlwaysUsesComplexTextCodePath(bool alwaysUseComplexText)
+void WebProcess::setAlwaysUsesComplexTextCodePath( bool alwaysUseComplexText )
 {
-    WebCore::Font::setCodePath(alwaysUseComplexText ? WebCore::Font::Complex : WebCore::Font::Auto);
+    WebCore::Font::setCodePath( alwaysUseComplexText ? WebCore::Font::Complex : WebCore::Font::Auto );
 }
 
-void WebProcess::languageChanged(const String& language) const
+void WebProcess::languageChanged( const String &language ) const
 {
-    overrideDefaultLanguage(language);
+    overrideDefaultLanguage( language );
 }
 
-void WebProcess::setVisitedLinkTable(const SharedMemory::Handle& handle)
+void WebProcess::setVisitedLinkTable( const SharedMemory::Handle &handle )
 {
-    RefPtr<SharedMemory> sharedMemory = SharedMemory::create(handle, SharedMemory::ReadOnly);
-    if (!sharedMemory)
+    RefPtr<SharedMemory> sharedMemory = SharedMemory::create( handle, SharedMemory::ReadOnly );
+
+    if ( !sharedMemory )
+    {
         return;
+    }
 
-    m_visitedLinkTable.setSharedMemory(sharedMemory.release());
+    m_visitedLinkTable.setSharedMemory( sharedMemory.release() );
 }
 
-void WebProcess::visitedLinkStateChanged(const Vector<WebCore::LinkHash>& linkHashes)
+void WebProcess::visitedLinkStateChanged( const Vector<WebCore::LinkHash> &linkHashes )
 {
     // FIXME: We may want to track visited links per WebPageGroup rather than per WebContext.
-    for (size_t i = 0; i < linkHashes.size(); ++i) {
+    for ( size_t i = 0; i < linkHashes.size(); ++i )
+    {
         HashMap<uint64_t, RefPtr<WebPageGroupProxy> >::const_iterator it = m_pageGroupMap.begin();
         HashMap<uint64_t, RefPtr<WebPageGroupProxy> >::const_iterator end = m_pageGroupMap.end();
-        for (; it != end; ++it)
-            Page::visitedStateChanged(PageGroup::pageGroup(it->second->identifier()), linkHashes[i]);
+
+        for ( ; it != end; ++it )
+        {
+            Page::visitedStateChanged( PageGroup::pageGroup( it->second->identifier() ), linkHashes[i] );
+        }
     }
 
     pageCache()->markPagesForVistedLinkStyleRecalc();
@@ -298,22 +329,28 @@ void WebProcess::allVisitedLinkStateChanged()
     // FIXME: We may want to track visited links per WebPageGroup rather than per WebContext.
     HashMap<uint64_t, RefPtr<WebPageGroupProxy> >::const_iterator it = m_pageGroupMap.begin();
     HashMap<uint64_t, RefPtr<WebPageGroupProxy> >::const_iterator end = m_pageGroupMap.end();
-    for (; it != end; ++it)
-        Page::allVisitedStateChanged(PageGroup::pageGroup(it->second->identifier()));
+
+    for ( ; it != end; ++it )
+    {
+        Page::allVisitedStateChanged( PageGroup::pageGroup( it->second->identifier() ) );
+    }
 
     pageCache()->markPagesForVistedLinkStyleRecalc();
 }
 
-bool WebProcess::isLinkVisited(LinkHash linkHash) const
+bool WebProcess::isLinkVisited( LinkHash linkHash ) const
 {
-    return m_visitedLinkTable.isLinkVisited(linkHash);
+    return m_visitedLinkTable.isLinkVisited( linkHash );
 }
 
-void WebProcess::addVisitedLink(WebCore::LinkHash linkHash)
+void WebProcess::addVisitedLink( WebCore::LinkHash linkHash )
 {
-    if (isLinkVisited(linkHash))
+    if ( isLinkVisited( linkHash ) )
+    {
         return;
-    m_connection->send(Messages::WebContext::AddVisitedLinkHash(linkHash), 0);
+    }
+
+    m_connection->send( Messages::WebContext::AddVisitedLinkHash( linkHash ), 0 );
 }
 
 #if !PLATFORM(MAC)
@@ -323,198 +360,293 @@ bool WebProcess::fullKeyboardAccessEnabled()
 }
 #endif
 
-void WebProcess::setCacheModel(uint32_t cm)
+void WebProcess::setCacheModel( uint32_t cm )
 {
-    CacheModel cacheModel = static_cast<CacheModel>(cm);
+    CacheModel cacheModel = static_cast<CacheModel>( cm );
 
-    if (!m_hasSetCacheModel || cacheModel != m_cacheModel) {
+    if ( !m_hasSetCacheModel || cacheModel != m_cacheModel )
+    {
         m_hasSetCacheModel = true;
         m_cacheModel = cacheModel;
-        platformSetCacheModel(cacheModel);
+        platformSetCacheModel( cacheModel );
     }
 }
 
-void WebProcess::calculateCacheSizes(CacheModel cacheModel, uint64_t memorySize, uint64_t diskFreeSize,
-    unsigned& cacheTotalCapacity, unsigned& cacheMinDeadCapacity, unsigned& cacheMaxDeadCapacity, double& deadDecodedDataDeletionInterval,
-    unsigned& pageCacheCapacity, unsigned long& urlCacheMemoryCapacity, unsigned long& urlCacheDiskCapacity)
+void WebProcess::calculateCacheSizes( CacheModel cacheModel, uint64_t memorySize, uint64_t diskFreeSize,
+                                      unsigned &cacheTotalCapacity, unsigned &cacheMinDeadCapacity, unsigned &cacheMaxDeadCapacity,
+                                      double &deadDecodedDataDeletionInterval,
+                                      unsigned &pageCacheCapacity, unsigned long &urlCacheMemoryCapacity, unsigned long &urlCacheDiskCapacity )
 {
-    switch (cacheModel) {
-    case CacheModelDocumentViewer: {
-        // Page cache capacity (in pages)
-        pageCacheCapacity = 0;
-
-        // Object cache capacities (in bytes)
-        if (memorySize >= 2048)
-            cacheTotalCapacity = 96 * 1024 * 1024;
-        else if (memorySize >= 1536)
-            cacheTotalCapacity = 64 * 1024 * 1024;
-        else if (memorySize >= 1024)
-            cacheTotalCapacity = 32 * 1024 * 1024;
-        else if (memorySize >= 512)
-            cacheTotalCapacity = 16 * 1024 * 1024;
-
-        cacheMinDeadCapacity = 0;
-        cacheMaxDeadCapacity = 0;
-
-        // Foundation memory cache capacity (in bytes)
-        urlCacheMemoryCapacity = 0;
-
-        // Foundation disk cache capacity (in bytes)
-        urlCacheDiskCapacity = 0;
-
-        break;
-    }
-    case CacheModelDocumentBrowser: {
-        // Page cache capacity (in pages)
-        if (memorySize >= 1024)
-            pageCacheCapacity = 3;
-        else if (memorySize >= 512)
-            pageCacheCapacity = 2;
-        else if (memorySize >= 256)
-            pageCacheCapacity = 1;
-        else
+    switch ( cacheModel )
+    {
+        case CacheModelDocumentViewer:
+        {
+            // Page cache capacity (in pages)
             pageCacheCapacity = 0;
 
-        // Object cache capacities (in bytes)
-        if (memorySize >= 2048)
-            cacheTotalCapacity = 96 * 1024 * 1024;
-        else if (memorySize >= 1536)
-            cacheTotalCapacity = 64 * 1024 * 1024;
-        else if (memorySize >= 1024)
-            cacheTotalCapacity = 32 * 1024 * 1024;
-        else if (memorySize >= 512)
-            cacheTotalCapacity = 16 * 1024 * 1024;
+            // Object cache capacities (in bytes)
+            if ( memorySize >= 2048 )
+            {
+                cacheTotalCapacity = 96 * 1024 * 1024;
+            }
+            else if ( memorySize >= 1536 )
+            {
+                cacheTotalCapacity = 64 * 1024 * 1024;
+            }
+            else if ( memorySize >= 1024 )
+            {
+                cacheTotalCapacity = 32 * 1024 * 1024;
+            }
+            else if ( memorySize >= 512 )
+            {
+                cacheTotalCapacity = 16 * 1024 * 1024;
+            }
 
-        cacheMinDeadCapacity = cacheTotalCapacity / 8;
-        cacheMaxDeadCapacity = cacheTotalCapacity / 4;
+            cacheMinDeadCapacity = 0;
+            cacheMaxDeadCapacity = 0;
 
-        // Foundation memory cache capacity (in bytes)
-        if (memorySize >= 2048)
-            urlCacheMemoryCapacity = 4 * 1024 * 1024;
-        else if (memorySize >= 1024)
-            urlCacheMemoryCapacity = 2 * 1024 * 1024;
-        else if (memorySize >= 512)
-            urlCacheMemoryCapacity = 1 * 1024 * 1024;
-        else
-            urlCacheMemoryCapacity =      512 * 1024;
+            // Foundation memory cache capacity (in bytes)
+            urlCacheMemoryCapacity = 0;
 
-        // Foundation disk cache capacity (in bytes)
-        if (diskFreeSize >= 16384)
-            urlCacheDiskCapacity = 50 * 1024 * 1024;
-        else if (diskFreeSize >= 8192)
-            urlCacheDiskCapacity = 40 * 1024 * 1024;
-        else if (diskFreeSize >= 4096)
-            urlCacheDiskCapacity = 30 * 1024 * 1024;
-        else
-            urlCacheDiskCapacity = 20 * 1024 * 1024;
+            // Foundation disk cache capacity (in bytes)
+            urlCacheDiskCapacity = 0;
 
-        break;
-    }
-    case CacheModelPrimaryWebBrowser: {
-        // Page cache capacity (in pages)
-        // (Research indicates that value / page drops substantially after 3 pages.)
-        if (memorySize >= 2048)
-            pageCacheCapacity = 5;
-        else if (memorySize >= 1024)
-            pageCacheCapacity = 4;
-        else if (memorySize >= 512)
-            pageCacheCapacity = 3;
-        else if (memorySize >= 256)
-            pageCacheCapacity = 2;
-        else
-            pageCacheCapacity = 1;
+            break;
+        }
 
-        // Object cache capacities (in bytes)
-        // (Testing indicates that value / MB depends heavily on content and
-        // browsing pattern. Even growth above 128MB can have substantial
-        // value / MB for some content / browsing patterns.)
-        if (memorySize >= 2048)
-            cacheTotalCapacity = 128 * 1024 * 1024;
-        else if (memorySize >= 1536)
-            cacheTotalCapacity = 96 * 1024 * 1024;
-        else if (memorySize >= 1024)
-            cacheTotalCapacity = 64 * 1024 * 1024;
-        else if (memorySize >= 512)
-            cacheTotalCapacity = 32 * 1024 * 1024;
+        case CacheModelDocumentBrowser:
+        {
+            // Page cache capacity (in pages)
+            if ( memorySize >= 1024 )
+            {
+                pageCacheCapacity = 3;
+            }
+            else if ( memorySize >= 512 )
+            {
+                pageCacheCapacity = 2;
+            }
+            else if ( memorySize >= 256 )
+            {
+                pageCacheCapacity = 1;
+            }
+            else
+            {
+                pageCacheCapacity = 0;
+            }
 
-        cacheMinDeadCapacity = cacheTotalCapacity / 4;
-        cacheMaxDeadCapacity = cacheTotalCapacity / 2;
+            // Object cache capacities (in bytes)
+            if ( memorySize >= 2048 )
+            {
+                cacheTotalCapacity = 96 * 1024 * 1024;
+            }
+            else if ( memorySize >= 1536 )
+            {
+                cacheTotalCapacity = 64 * 1024 * 1024;
+            }
+            else if ( memorySize >= 1024 )
+            {
+                cacheTotalCapacity = 32 * 1024 * 1024;
+            }
+            else if ( memorySize >= 512 )
+            {
+                cacheTotalCapacity = 16 * 1024 * 1024;
+            }
 
-        // This code is here to avoid a PLT regression. We can remove it if we
-        // can prove that the overall system gain would justify the regression.
-        cacheMaxDeadCapacity = (std::max)(24u, cacheMaxDeadCapacity);
+            cacheMinDeadCapacity = cacheTotalCapacity / 8;
+            cacheMaxDeadCapacity = cacheTotalCapacity / 4;
 
-        deadDecodedDataDeletionInterval = 60;
+            // Foundation memory cache capacity (in bytes)
+            if ( memorySize >= 2048 )
+            {
+                urlCacheMemoryCapacity = 4 * 1024 * 1024;
+            }
+            else if ( memorySize >= 1024 )
+            {
+                urlCacheMemoryCapacity = 2 * 1024 * 1024;
+            }
+            else if ( memorySize >= 512 )
+            {
+                urlCacheMemoryCapacity = 1 * 1024 * 1024;
+            }
+            else
+            {
+                urlCacheMemoryCapacity =      512 * 1024;
+            }
 
-        // Foundation memory cache capacity (in bytes)
-        // (These values are small because WebCore does most caching itself.)
-        if (memorySize >= 1024)
-            urlCacheMemoryCapacity = 4 * 1024 * 1024;
-        else if (memorySize >= 512)
-            urlCacheMemoryCapacity = 2 * 1024 * 1024;
-        else if (memorySize >= 256)
-            urlCacheMemoryCapacity = 1 * 1024 * 1024;
-        else
-            urlCacheMemoryCapacity =      512 * 1024;
+            // Foundation disk cache capacity (in bytes)
+            if ( diskFreeSize >= 16384 )
+            {
+                urlCacheDiskCapacity = 50 * 1024 * 1024;
+            }
+            else if ( diskFreeSize >= 8192 )
+            {
+                urlCacheDiskCapacity = 40 * 1024 * 1024;
+            }
+            else if ( diskFreeSize >= 4096 )
+            {
+                urlCacheDiskCapacity = 30 * 1024 * 1024;
+            }
+            else
+            {
+                urlCacheDiskCapacity = 20 * 1024 * 1024;
+            }
 
-        // Foundation disk cache capacity (in bytes)
-        if (diskFreeSize >= 16384)
-            urlCacheDiskCapacity = 175 * 1024 * 1024;
-        else if (diskFreeSize >= 8192)
-            urlCacheDiskCapacity = 150 * 1024 * 1024;
-        else if (diskFreeSize >= 4096)
-            urlCacheDiskCapacity = 125 * 1024 * 1024;
-        else if (diskFreeSize >= 2048)
-            urlCacheDiskCapacity = 100 * 1024 * 1024;
-        else if (diskFreeSize >= 1024)
-            urlCacheDiskCapacity = 75 * 1024 * 1024;
-        else
-            urlCacheDiskCapacity = 50 * 1024 * 1024;
+            break;
+        }
 
-        break;
-    }
-    default:
-        ASSERT_NOT_REACHED();
+        case CacheModelPrimaryWebBrowser:
+        {
+            // Page cache capacity (in pages)
+            // (Research indicates that value / page drops substantially after 3 pages.)
+            if ( memorySize >= 2048 )
+            {
+                pageCacheCapacity = 5;
+            }
+            else if ( memorySize >= 1024 )
+            {
+                pageCacheCapacity = 4;
+            }
+            else if ( memorySize >= 512 )
+            {
+                pageCacheCapacity = 3;
+            }
+            else if ( memorySize >= 256 )
+            {
+                pageCacheCapacity = 2;
+            }
+            else
+            {
+                pageCacheCapacity = 1;
+            }
+
+            // Object cache capacities (in bytes)
+            // (Testing indicates that value / MB depends heavily on content and
+            // browsing pattern. Even growth above 128MB can have substantial
+            // value / MB for some content / browsing patterns.)
+            if ( memorySize >= 2048 )
+            {
+                cacheTotalCapacity = 128 * 1024 * 1024;
+            }
+            else if ( memorySize >= 1536 )
+            {
+                cacheTotalCapacity = 96 * 1024 * 1024;
+            }
+            else if ( memorySize >= 1024 )
+            {
+                cacheTotalCapacity = 64 * 1024 * 1024;
+            }
+            else if ( memorySize >= 512 )
+            {
+                cacheTotalCapacity = 32 * 1024 * 1024;
+            }
+
+            cacheMinDeadCapacity = cacheTotalCapacity / 4;
+            cacheMaxDeadCapacity = cacheTotalCapacity / 2;
+
+            // This code is here to avoid a PLT regression. We can remove it if we
+            // can prove that the overall system gain would justify the regression.
+            cacheMaxDeadCapacity = ( std::max )( 24u, cacheMaxDeadCapacity );
+
+            deadDecodedDataDeletionInterval = 60;
+
+            // Foundation memory cache capacity (in bytes)
+            // (These values are small because WebCore does most caching itself.)
+            if ( memorySize >= 1024 )
+            {
+                urlCacheMemoryCapacity = 4 * 1024 * 1024;
+            }
+            else if ( memorySize >= 512 )
+            {
+                urlCacheMemoryCapacity = 2 * 1024 * 1024;
+            }
+            else if ( memorySize >= 256 )
+            {
+                urlCacheMemoryCapacity = 1 * 1024 * 1024;
+            }
+            else
+            {
+                urlCacheMemoryCapacity =      512 * 1024;
+            }
+
+            // Foundation disk cache capacity (in bytes)
+            if ( diskFreeSize >= 16384 )
+            {
+                urlCacheDiskCapacity = 175 * 1024 * 1024;
+            }
+            else if ( diskFreeSize >= 8192 )
+            {
+                urlCacheDiskCapacity = 150 * 1024 * 1024;
+            }
+            else if ( diskFreeSize >= 4096 )
+            {
+                urlCacheDiskCapacity = 125 * 1024 * 1024;
+            }
+            else if ( diskFreeSize >= 2048 )
+            {
+                urlCacheDiskCapacity = 100 * 1024 * 1024;
+            }
+            else if ( diskFreeSize >= 1024 )
+            {
+                urlCacheDiskCapacity = 75 * 1024 * 1024;
+            }
+            else
+            {
+                urlCacheDiskCapacity = 50 * 1024 * 1024;
+            }
+
+            break;
+        }
+
+        default:
+            ASSERT_NOT_REACHED();
     };
 }
 
-WebPage* WebProcess::focusedWebPage() const
+WebPage *WebProcess::focusedWebPage() const
 {
     HashMap<uint64_t, RefPtr<WebPage> >::const_iterator end = m_pageMap.end();
-    for (HashMap<uint64_t, RefPtr<WebPage> >::const_iterator it = m_pageMap.begin(); it != end; ++it) {
-        WebPage* page = (*it).second.get();
-        if (page->windowIsFocused())
+
+    for ( HashMap<uint64_t, RefPtr<WebPage> >::const_iterator it = m_pageMap.begin(); it != end; ++it )
+    {
+        WebPage *page = ( *it ).second.get();
+
+        if ( page->windowIsFocused() )
+        {
             return page;
+        }
     }
+
     return 0;
 }
 
-WebPage* WebProcess::webPage(uint64_t pageID) const
+WebPage *WebProcess::webPage( uint64_t pageID ) const
 {
-    return m_pageMap.get(pageID).get();
+    return m_pageMap.get( pageID ).get();
 }
 
-void WebProcess::createWebPage(uint64_t pageID, const WebPageCreationParameters& parameters)
+void WebProcess::createWebPage( uint64_t pageID, const WebPageCreationParameters &parameters )
 {
     // It is necessary to check for page existence here since during a window.open() (or targeted
     // link) the WebPage gets created both in the synchronous handler and through the normal way.
-    std::pair<HashMap<uint64_t, RefPtr<WebPage> >::iterator, bool> result = m_pageMap.add(pageID, 0);
-    if (result.second) {
-        ASSERT(!result.first->second);
-        result.first->second = WebPage::create(pageID, parameters);
+    std::pair<HashMap<uint64_t, RefPtr<WebPage> >::iterator, bool> result = m_pageMap.add( pageID, 0 );
+
+    if ( result.second )
+    {
+        ASSERT( !result.first->second );
+        result.first->second = WebPage::create( pageID, parameters );
 
         // Balanced by an enableTermination in removeWebPage.
         disableTermination();
     }
 
-    ASSERT(result.first->second);
+    ASSERT( result.first->second );
 }
 
-void WebProcess::removeWebPage(uint64_t pageID)
+void WebProcess::removeWebPage( uint64_t pageID )
 {
-    ASSERT(m_pageMap.contains(pageID));
+    ASSERT( m_pageMap.contains( pageID ) );
 
-    m_pageMap.remove(pageID);
+    m_pageMap.remove( pageID );
 
     enableTermination();
 }
@@ -528,17 +660,23 @@ bool WebProcess::isSeparateProcess() const
 bool WebProcess::shouldTerminate()
 {
     // Keep running forever if we're running in the same process.
-    if (!isSeparateProcess())
+    if ( !isSeparateProcess() )
+    {
         return false;
+    }
 
-    ASSERT(m_pageMap.isEmpty());
-    ASSERT(!DownloadManager::shared().isDownloading());
+    ASSERT( m_pageMap.isEmpty() );
+    ASSERT( !DownloadManager::shared().isDownloading() );
 
     // FIXME: the ShouldTerminate message should also send termination parameters, such as any session cookies that need to be preserved.
     bool shouldTerminate = false;
-    if (m_connection->sendSync(Messages::WebProcessProxy::ShouldTerminate(), Messages::WebProcessProxy::ShouldTerminate::Reply(shouldTerminate), 0)
-        && !shouldTerminate)
+
+    if ( m_connection->sendSync( Messages::WebProcessProxy::ShouldTerminate(),
+                                 Messages::WebProcessProxy::ShouldTerminate::Reply( shouldTerminate ), 0 )
+            && !shouldTerminate )
+    {
         return false;
+    }
 
     return true;
 }
@@ -547,11 +685,11 @@ void WebProcess::terminate()
 {
 #ifndef NDEBUG
     gcController().garbageCollectNow();
-    memoryCache()->setDisabled(true);
+    memoryCache()->setDisabled( true );
 #endif
 
     // Invalidate our connection.
-    m_connection->removeQueueClient(this);
+    m_connection->removeQueueClient( this );
     m_connection->invalidate();
     m_connection = nullptr;
 
@@ -559,179 +697,219 @@ void WebProcess::terminate()
     m_runLoop->stop();
 }
 
-CoreIPC::SyncReplyMode WebProcess::didReceiveSyncMessage(CoreIPC::Connection* connection, CoreIPC::MessageID messageID, CoreIPC::ArgumentDecoder* arguments, CoreIPC::ArgumentEncoder* reply)
+CoreIPC::SyncReplyMode WebProcess::didReceiveSyncMessage( CoreIPC::Connection *connection, CoreIPC::MessageID messageID,
+        CoreIPC::ArgumentDecoder *arguments, CoreIPC::ArgumentEncoder *reply )
 {
     uint64_t pageID = arguments->destinationID();
-    if (!pageID)
-        return CoreIPC::AutomaticReply;
 
-    WebPage* page = webPage(pageID);
-    if (!page)
+    if ( !pageID )
+    {
         return CoreIPC::AutomaticReply;
+    }
 
-    page->didReceiveSyncMessage(connection, messageID, arguments, reply);
+    WebPage *page = webPage( pageID );
+
+    if ( !page )
+    {
+        return CoreIPC::AutomaticReply;
+    }
+
+    page->didReceiveSyncMessage( connection, messageID, arguments, reply );
     return CoreIPC::AutomaticReply;
 }
 
-void WebProcess::didReceiveMessage(CoreIPC::Connection* connection, CoreIPC::MessageID messageID, CoreIPC::ArgumentDecoder* arguments)
+void WebProcess::didReceiveMessage( CoreIPC::Connection *connection, CoreIPC::MessageID messageID,
+                                    CoreIPC::ArgumentDecoder *arguments )
 {
-    if (messageID.is<CoreIPC::MessageClassWebProcess>()) {
-        didReceiveWebProcessMessage(connection, messageID, arguments);
+    if ( messageID.is<CoreIPC::MessageClassWebProcess>() )
+    {
+        didReceiveWebProcessMessage( connection, messageID, arguments );
         return;
     }
 
-    if (messageID.is<CoreIPC::MessageClassAuthenticationManager>()) {
-        AuthenticationManager::shared().didReceiveMessage(connection, messageID, arguments);
+    if ( messageID.is<CoreIPC::MessageClassAuthenticationManager>() )
+    {
+        AuthenticationManager::shared().didReceiveMessage( connection, messageID, arguments );
         return;
     }
 
-    if (messageID.is<CoreIPC::MessageClassWebApplicationCacheManager>()) {
-        WebApplicationCacheManager::shared().didReceiveMessage(connection, messageID, arguments);
+    if ( messageID.is<CoreIPC::MessageClassWebApplicationCacheManager>() )
+    {
+        WebApplicationCacheManager::shared().didReceiveMessage( connection, messageID, arguments );
         return;
     }
 
-    if (messageID.is<CoreIPC::MessageClassWebCookieManager>()) {
-        WebCookieManager::shared().didReceiveMessage(connection, messageID, arguments);
+    if ( messageID.is<CoreIPC::MessageClassWebCookieManager>() )
+    {
+        WebCookieManager::shared().didReceiveMessage( connection, messageID, arguments );
         return;
     }
 
-    if (messageID.is<CoreIPC::MessageClassWebDatabaseManager>()) {
-        WebDatabaseManager::shared().didReceiveMessage(connection, messageID, arguments);
+    if ( messageID.is<CoreIPC::MessageClassWebDatabaseManager>() )
+    {
+        WebDatabaseManager::shared().didReceiveMessage( connection, messageID, arguments );
         return;
     }
 
-    if (messageID.is<CoreIPC::MessageClassWebGeolocationManager>()) {
-        m_geolocationManager.didReceiveMessage(connection, messageID, arguments);
+    if ( messageID.is<CoreIPC::MessageClassWebGeolocationManager>() )
+    {
+        m_geolocationManager.didReceiveMessage( connection, messageID, arguments );
         return;
     }
 
-    if (messageID.is<CoreIPC::MessageClassWebIconDatabaseProxy>()) {
-        m_iconDatabaseProxy.didReceiveMessage(connection, messageID, arguments);
+    if ( messageID.is<CoreIPC::MessageClassWebIconDatabaseProxy>() )
+    {
+        m_iconDatabaseProxy.didReceiveMessage( connection, messageID, arguments );
         return;
     }
 
-    if (messageID.is<CoreIPC::MessageClassWebKeyValueStorageManager>()) {
-        WebKeyValueStorageManager::shared().didReceiveMessage(connection, messageID, arguments);
+    if ( messageID.is<CoreIPC::MessageClassWebKeyValueStorageManager>() )
+    {
+        WebKeyValueStorageManager::shared().didReceiveMessage( connection, messageID, arguments );
         return;
     }
 
-    if (messageID.is<CoreIPC::MessageClassWebMediaCacheManager>()) {
-        WebMediaCacheManager::shared().didReceiveMessage(connection, messageID, arguments);
+    if ( messageID.is<CoreIPC::MessageClassWebMediaCacheManager>() )
+    {
+        WebMediaCacheManager::shared().didReceiveMessage( connection, messageID, arguments );
         return;
     }
 
-    if (messageID.is<CoreIPC::MessageClassWebResourceCacheManager>()) {
-        WebResourceCacheManager::shared().didReceiveMessage(connection, messageID, arguments);
+    if ( messageID.is<CoreIPC::MessageClassWebResourceCacheManager>() )
+    {
+        WebResourceCacheManager::shared().didReceiveMessage( connection, messageID, arguments );
         return;
     }
 
-    if (messageID.is<CoreIPC::MessageClassInjectedBundle>()) {
-        if (!m_injectedBundle)
+    if ( messageID.is<CoreIPC::MessageClassInjectedBundle>() )
+    {
+        if ( !m_injectedBundle )
+        {
             return;
-        m_injectedBundle->didReceiveMessage(connection, messageID, arguments);
+        }
+
+        m_injectedBundle->didReceiveMessage( connection, messageID, arguments );
         return;
     }
 
     uint64_t pageID = arguments->destinationID();
-    if (!pageID)
-        return;
 
-    WebPage* page = webPage(pageID);
-    if (!page)
+    if ( !pageID )
+    {
         return;
+    }
 
-    page->didReceiveMessage(connection, messageID, arguments);
+    WebPage *page = webPage( pageID );
+
+    if ( !page )
+    {
+        return;
+    }
+
+    page->didReceiveMessage( connection, messageID, arguments );
 }
 
-void WebProcess::didClose(CoreIPC::Connection*)
+void WebProcess::didClose( CoreIPC::Connection * )
 {
     // When running in the same process the connection will never be closed.
-    ASSERT(isSeparateProcess());
+    ASSERT( isSeparateProcess() );
 
 #ifndef NDEBUG
     m_inDidClose = true;
 
     // Close all the live pages.
     Vector<RefPtr<WebPage> > pages;
-    copyValuesToVector(m_pageMap, pages);
-    for (size_t i = 0; i < pages.size(); ++i)
+    copyValuesToVector( m_pageMap, pages );
+
+    for ( size_t i = 0; i < pages.size(); ++i )
+    {
         pages[i]->close();
+    }
+
     pages.clear();
 
     gcController().garbageCollectNow();
-    memoryCache()->setDisabled(true);
+    memoryCache()->setDisabled( true );
 #endif
 
     // The UI process closed this connection, shut down.
     m_runLoop->stop();
 }
 
-void WebProcess::didReceiveInvalidMessage(CoreIPC::Connection*, CoreIPC::MessageID)
+void WebProcess::didReceiveInvalidMessage( CoreIPC::Connection *, CoreIPC::MessageID )
 {
     // We received an invalid message, but since this is from the UI process (which we trust),
     // we'll let it slide.
 }
 
-void WebProcess::syncMessageSendTimedOut(CoreIPC::Connection*)
+void WebProcess::syncMessageSendTimedOut( CoreIPC::Connection * )
 {
 }
 
-bool WebProcess::willProcessMessageOnClientRunLoop(CoreIPC::Connection* connection, CoreIPC::MessageID messageID, CoreIPC::ArgumentDecoder* arguments)
+bool WebProcess::willProcessMessageOnClientRunLoop( CoreIPC::Connection *connection, CoreIPC::MessageID messageID,
+        CoreIPC::ArgumentDecoder *arguments )
 {
-    if (messageID.is<CoreIPC::MessageClassWebProcess>())
-        return willProcessWebProcessMessageOnClientRunLoop(connection, messageID, arguments);
+    if ( messageID.is<CoreIPC::MessageClassWebProcess>() )
+    {
+        return willProcessWebProcessMessageOnClientRunLoop( connection, messageID, arguments );
+    }
 
     return true;
 }
 
-WebFrame* WebProcess::webFrame(uint64_t frameID) const
+WebFrame *WebProcess::webFrame( uint64_t frameID ) const
 {
-    return m_frameMap.get(frameID);
+    return m_frameMap.get( frameID );
 }
 
-void WebProcess::addWebFrame(uint64_t frameID, WebFrame* frame)
+void WebProcess::addWebFrame( uint64_t frameID, WebFrame *frame )
 {
-    m_frameMap.set(frameID, frame);
+    m_frameMap.set( frameID, frame );
 }
 
-void WebProcess::removeWebFrame(uint64_t frameID)
+void WebProcess::removeWebFrame( uint64_t frameID )
 {
-    m_frameMap.remove(frameID);
+    m_frameMap.remove( frameID );
 
     // We can end up here after our connection has closed when WebCore's frame life-support timer
     // fires when the application is shutting down. There's no need (and no way) to update the UI
     // process in this case.
-    if (!m_connection)
+    if ( !m_connection )
+    {
         return;
+    }
 
-    m_connection->send(Messages::WebProcessProxy::DidDestroyFrame(frameID), 0);
+    m_connection->send( Messages::WebProcessProxy::DidDestroyFrame( frameID ), 0 );
 }
 
-WebPageGroupProxy* WebProcess::webPageGroup(uint64_t pageGroupID)
+WebPageGroupProxy *WebProcess::webPageGroup( uint64_t pageGroupID )
 {
-    return m_pageGroupMap.get(pageGroupID).get();
+    return m_pageGroupMap.get( pageGroupID ).get();
 }
 
-WebPageGroupProxy* WebProcess::webPageGroup(const WebPageGroupData& pageGroupData)
+WebPageGroupProxy *WebProcess::webPageGroup( const WebPageGroupData &pageGroupData )
 {
-    std::pair<HashMap<uint64_t, RefPtr<WebPageGroupProxy> >::iterator, bool> result = m_pageGroupMap.add(pageGroupData.pageGroupID, 0);
-    if (result.second) {
-        ASSERT(!result.first->second);
-        result.first->second = WebPageGroupProxy::create(pageGroupData);
+    std::pair<HashMap<uint64_t, RefPtr<WebPageGroupProxy> >::iterator, bool> result = m_pageGroupMap.add( pageGroupData.pageGroupID,
+            0 );
+
+    if ( result.second )
+    {
+        ASSERT( !result.first->second );
+        result.first->second = WebPageGroupProxy::create( pageGroupData );
     }
 
     return result.first->second.get();
 }
 
-void WebProcess::clearResourceCaches(ResourceCachesToClear resourceCachesToClear)
+void WebProcess::clearResourceCaches( ResourceCachesToClear resourceCachesToClear )
 {
-    platformClearResourceCaches(resourceCachesToClear);
+    platformClearResourceCaches( resourceCachesToClear );
 
     // Toggling the cache model like this forces the cache to evict all its in-memory resources.
     // FIXME: We need a better way to do this.
     CacheModel cacheModel = m_cacheModel;
-    setCacheModel(CacheModelDocumentViewer);
-    setCacheModel(cacheModel);
+    setCacheModel( CacheModelDocumentViewer );
+    setCacheModel( cacheModel );
 
     memoryCache()->evictResources();
 
@@ -748,79 +926,95 @@ void WebProcess::clearApplicationCache()
 }
 
 #if !ENABLE(PLUGIN_PROCESS)
-void WebProcess::getSitesWithPluginData(const Vector<String>& pluginPaths, uint64_t callbackID)
+void WebProcess::getSitesWithPluginData( const Vector<String> &pluginPaths, uint64_t callbackID )
 {
-    LocalTerminationDisabler terminationDisabler(*this);
+    LocalTerminationDisabler terminationDisabler( *this );
 
     HashSet<String> sitesSet;
 
-    for (size_t i = 0; i < pluginPaths.size(); ++i) {
-        RefPtr<NetscapePluginModule> netscapePluginModule = NetscapePluginModule::getOrCreate(pluginPaths[i]);
-        if (!netscapePluginModule)
-            continue;
+    for ( size_t i = 0; i < pluginPaths.size(); ++i )
+    {
+        RefPtr<NetscapePluginModule> netscapePluginModule = NetscapePluginModule::getOrCreate( pluginPaths[i] );
 
-        Vector<String> sites = netscapePluginModule->sitesWithData();
-        for (size_t i = 0; i < sites.size(); ++i)
-            sitesSet.add(sites[i]);
-    }
-
-    Vector<String> sites;
-    copyToVector(sitesSet, sites);
-
-    m_connection->send(Messages::WebContext::DidGetSitesWithPluginData(sites, callbackID), 0);
-}
-
-void WebProcess::clearPluginSiteData(const Vector<String>& pluginPaths, const Vector<String>& sites, uint64_t flags, uint64_t maxAgeInSeconds, uint64_t callbackID)
-{
-    LocalTerminationDisabler terminationDisabler(*this);
-
-    for (size_t i = 0; i < pluginPaths.size(); ++i) {
-        RefPtr<NetscapePluginModule> netscapePluginModule = NetscapePluginModule::getOrCreate(pluginPaths[i]);
-        if (!netscapePluginModule)
-            continue;
-
-        if (sites.isEmpty()) {
-            // Clear everything.
-            netscapePluginModule->clearSiteData(String(), flags, maxAgeInSeconds);
+        if ( !netscapePluginModule )
+        {
             continue;
         }
 
-        for (size_t i = 0; i < sites.size(); ++i)
-            netscapePluginModule->clearSiteData(sites[i], flags, maxAgeInSeconds);
+        Vector<String> sites = netscapePluginModule->sitesWithData();
+
+        for ( size_t i = 0; i < sites.size(); ++i )
+        {
+            sitesSet.add( sites[i] );
+        }
     }
 
-    m_connection->send(Messages::WebContext::DidClearPluginSiteData(callbackID), 0);
+    Vector<String> sites;
+    copyToVector( sitesSet, sites );
+
+    m_connection->send( Messages::WebContext::DidGetSitesWithPluginData( sites, callbackID ), 0 );
+}
+
+void WebProcess::clearPluginSiteData( const Vector<String> &pluginPaths, const Vector<String> &sites, uint64_t flags,
+                                      uint64_t maxAgeInSeconds, uint64_t callbackID )
+{
+    LocalTerminationDisabler terminationDisabler( *this );
+
+    for ( size_t i = 0; i < pluginPaths.size(); ++i )
+    {
+        RefPtr<NetscapePluginModule> netscapePluginModule = NetscapePluginModule::getOrCreate( pluginPaths[i] );
+
+        if ( !netscapePluginModule )
+        {
+            continue;
+        }
+
+        if ( sites.isEmpty() )
+        {
+            // Clear everything.
+            netscapePluginModule->clearSiteData( String(), flags, maxAgeInSeconds );
+            continue;
+        }
+
+        for ( size_t i = 0; i < sites.size(); ++i )
+        {
+            netscapePluginModule->clearSiteData( sites[i], flags, maxAgeInSeconds );
+        }
+    }
+
+    m_connection->send( Messages::WebContext::DidClearPluginSiteData( callbackID ), 0 );
 }
 #endif
 
 #if ENABLE(PLUGIN_PROCESS)
-void WebProcess::pluginProcessCrashed(const String& pluginPath)
+void WebProcess::pluginProcessCrashed( const String &pluginPath )
 {
-    m_pluginProcessConnectionManager.pluginProcessCrashed(pluginPath);
+    m_pluginProcessConnectionManager.pluginProcessCrashed( pluginPath );
 }
 #endif
 
-void WebProcess::downloadRequest(uint64_t downloadID, uint64_t initiatingPageID, const ResourceRequest& request)
+void WebProcess::downloadRequest( uint64_t downloadID, uint64_t initiatingPageID, const ResourceRequest &request )
 {
-    WebPage* initiatingPage = initiatingPageID ? webPage(initiatingPageID) : 0;
+    WebPage *initiatingPage = initiatingPageID ? webPage( initiatingPageID ) : 0;
 
-    DownloadManager::shared().startDownload(downloadID, initiatingPage, request);
+    DownloadManager::shared().startDownload( downloadID, initiatingPage, request );
 }
 
-void WebProcess::cancelDownload(uint64_t downloadID)
+void WebProcess::cancelDownload( uint64_t downloadID )
 {
-    DownloadManager::shared().cancelDownload(downloadID);
+    DownloadManager::shared().cancelDownload( downloadID );
 }
 
-void WebProcess::setEnhancedAccessibility(bool flag)
+void WebProcess::setEnhancedAccessibility( bool flag )
 {
-    WebCore::AXObjectCache::setEnhancedUserInterfaceAccessibility(flag);
+    WebCore::AXObjectCache::setEnhancedUserInterfaceAccessibility( flag );
 }
 
-void WebProcess::startMemorySampler(const SandboxExtension::Handle& sampleLogFileHandle, const String& sampleLogFilePath, const double interval)
+void WebProcess::startMemorySampler( const SandboxExtension::Handle &sampleLogFileHandle, const String &sampleLogFilePath,
+                                     const double interval )
 {
 #if ENABLE(MEMORY_SAMPLER)
-    WebMemorySampler::shared()->start(sampleLogFileHandle, sampleLogFilePath, interval);
+    WebMemorySampler::shared()->start( sampleLogFileHandle, sampleLogFilePath, interval );
 #endif
 }
 
@@ -831,23 +1025,34 @@ void WebProcess::stopMemorySampler()
 #endif
 }
 
-void WebProcess::setTextCheckerState(const TextCheckerState& textCheckerState)
+void WebProcess::setTextCheckerState( const TextCheckerState &textCheckerState )
 {
-    bool continuousSpellCheckingTurnedOff = !textCheckerState.isContinuousSpellCheckingEnabled && m_textCheckerState.isContinuousSpellCheckingEnabled;
+    bool continuousSpellCheckingTurnedOff = !textCheckerState.isContinuousSpellCheckingEnabled
+                                            && m_textCheckerState.isContinuousSpellCheckingEnabled;
     bool grammarCheckingTurnedOff = !textCheckerState.isGrammarCheckingEnabled && m_textCheckerState.isGrammarCheckingEnabled;
 
     m_textCheckerState = textCheckerState;
 
-    if (!continuousSpellCheckingTurnedOff && !grammarCheckingTurnedOff)
+    if ( !continuousSpellCheckingTurnedOff && !grammarCheckingTurnedOff )
+    {
         return;
+    }
 
     HashMap<uint64_t, RefPtr<WebPage> >::iterator end = m_pageMap.end();
-    for (HashMap<uint64_t, RefPtr<WebPage> >::iterator it = m_pageMap.begin(); it != end; ++it) {
-        WebPage* page = (*it).second.get();
-        if (continuousSpellCheckingTurnedOff)
+
+    for ( HashMap<uint64_t, RefPtr<WebPage> >::iterator it = m_pageMap.begin(); it != end; ++it )
+    {
+        WebPage *page = ( *it ).second.get();
+
+        if ( continuousSpellCheckingTurnedOff )
+        {
             page->unmarkAllMisspellings();
-        if (grammarCheckingTurnedOff)
+        }
+
+        if ( grammarCheckingTurnedOff )
+        {
             page->unmarkAllBadGrammar();
+        }
     }
 }
 

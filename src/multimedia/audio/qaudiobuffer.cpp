@@ -30,307 +30,368 @@
 
 class QAudioBufferPrivate : public QSharedData
 {
- public:
-   QAudioBufferPrivate(QAbstractAudioBuffer *provider)
-      : mProvider(provider), mCount(1)
-   {
-   }
+public:
+    QAudioBufferPrivate( QAbstractAudioBuffer *provider )
+        : mProvider( provider ), mCount( 1 )
+    {
+    }
 
-   ~QAudioBufferPrivate() {
-      if (mProvider) {
-         mProvider->release();
-      }
-   }
+    ~QAudioBufferPrivate()
+    {
+        if ( mProvider )
+        {
+            mProvider->release();
+        }
+    }
 
-   void ref() {
-      mCount.ref();
-   }
+    void ref()
+    {
+        mCount.ref();
+    }
 
-   void deref() {
-      if (!mCount.deref()) {
-         delete this;
-      }
-   }
+    void deref()
+    {
+        if ( !mCount.deref() )
+        {
+            delete this;
+        }
+    }
 
-   QAudioBufferPrivate *clone();
+    QAudioBufferPrivate *clone();
 
-   static QAudioBufferPrivate *acquire(QAudioBufferPrivate *other) {
-      if (! other) {
-         return nullptr;
-      }
+    static QAudioBufferPrivate *acquire( QAudioBufferPrivate *other )
+    {
+        if ( ! other )
+        {
+            return nullptr;
+        }
 
-      // Ref the other (if there are extant data() pointers, they will
-      // also point here - it's a feature, not a bug, like QByteArray)
-      other->ref();
+        // Ref the other (if there are extant data() pointers, they will
+        // also point here - it's a feature, not a bug, like QByteArray)
+        other->ref();
 
-      return other;
-   }
+        return other;
+    }
 
-   QAbstractAudioBuffer *mProvider;
-   QAtomicInt mCount;
+    QAbstractAudioBuffer *mProvider;
+    QAtomicInt mCount;
 };
 
 // Private class to go in .cpp file
 class QMemoryAudioBufferProvider : public QAbstractAudioBuffer
 {
- public:
-   QMemoryAudioBufferProvider(const void *data, int frameCount, const QAudioFormat &format, qint64 startTime)
-      : mStartTime(startTime), mFrameCount(frameCount), mFormat(format) {
-      int numBytes = format.bytesForFrames(frameCount);
-      if (numBytes > 0) {
-         mBuffer = malloc(numBytes);
+public:
+    QMemoryAudioBufferProvider( const void *data, int frameCount, const QAudioFormat &format, qint64 startTime )
+        : mStartTime( startTime ), mFrameCount( frameCount ), mFormat( format )
+    {
+        int numBytes = format.bytesForFrames( frameCount );
 
-         if (!mBuffer) {
-            // OOM, if that's likely
-            mStartTime = -1;
-            mFrameCount = 0;
-            mFormat = QAudioFormat();
+        if ( numBytes > 0 )
+        {
+            mBuffer = malloc( numBytes );
 
-         } else {
-            // Allocated, see if we have data to copy
-            if (data) {
-               memcpy(mBuffer, data, numBytes);
-            } else {
-               // We have to fill with the zero value..
-               switch (format.sampleType()) {
-                  case QAudioFormat::SignedInt:
-                     // Signed int means 0x80, 0x8000 is zero
-                     // XXX this is not right for > 8 bits(0x8080 vs 0x8000)
-                     memset(mBuffer, 0x80, numBytes);
-                     break;
-                  default:
-                     memset(mBuffer, 0x0, numBytes);
-               }
+            if ( !mBuffer )
+            {
+                // OOM, if that's likely
+                mStartTime = -1;
+                mFrameCount = 0;
+                mFormat = QAudioFormat();
+
             }
-         }
-      } else {
-         mBuffer = nullptr;
-      }
-   }
+            else
+            {
+                // Allocated, see if we have data to copy
+                if ( data )
+                {
+                    memcpy( mBuffer, data, numBytes );
+                }
+                else
+                {
+                    // We have to fill with the zero value..
+                    switch ( format.sampleType() )
+                    {
+                        case QAudioFormat::SignedInt:
+                            // Signed int means 0x80, 0x8000 is zero
+                            // XXX this is not right for > 8 bits(0x8080 vs 0x8000)
+                            memset( mBuffer, 0x80, numBytes );
+                            break;
 
-   ~QMemoryAudioBufferProvider() {
-      if (mBuffer) {
-         free(mBuffer);
-      }
-   }
+                        default:
+                            memset( mBuffer, 0x0, numBytes );
+                    }
+                }
+            }
+        }
+        else
+        {
+            mBuffer = nullptr;
+        }
+    }
 
-   void release() override {
-      delete this;
-   }
+    ~QMemoryAudioBufferProvider()
+    {
+        if ( mBuffer )
+        {
+            free( mBuffer );
+        }
+    }
 
-   QAudioFormat format() const override {
-      return mFormat;
-   }
+    void release() override
+    {
+        delete this;
+    }
 
-   qint64 startTime() const override {
-      return mStartTime;
-   }
+    QAudioFormat format() const override
+    {
+        return mFormat;
+    }
 
-   int frameCount() const override {
-      return mFrameCount;
-   }
+    qint64 startTime() const override
+    {
+        return mStartTime;
+    }
 
-   void *constData() const override {
-      return mBuffer;
-   }
+    int frameCount() const override
+    {
+        return mFrameCount;
+    }
 
-   void *writableData() override {
-      return mBuffer;
-   }
+    void *constData() const override
+    {
+        return mBuffer;
+    }
 
-   QAbstractAudioBuffer *clone() const override {
-      return new QMemoryAudioBufferProvider(mBuffer, mFrameCount, mFormat, mStartTime);
-   }
+    void *writableData() override
+    {
+        return mBuffer;
+    }
 
-   void *mBuffer;
-   qint64 mStartTime;
-   int mFrameCount;
-   QAudioFormat mFormat;
+    QAbstractAudioBuffer *clone() const override
+    {
+        return new QMemoryAudioBufferProvider( mBuffer, mFrameCount, mFormat, mStartTime );
+    }
+
+    void *mBuffer;
+    qint64 mStartTime;
+    int mFrameCount;
+    QAudioFormat mFormat;
 };
 
 QAudioBufferPrivate *QAudioBufferPrivate::clone()
 {
-   // We want to create a single bufferprivate with a
-   // single qaab
-   // This should only be called when the count is > 1
-   Q_ASSERT(mCount.load() > 1);
+    // We want to create a single bufferprivate with a
+    // single qaab
+    // This should only be called when the count is > 1
+    Q_ASSERT( mCount.load() > 1 );
 
-   if (mProvider) {
-      QAbstractAudioBuffer *abuf = mProvider->clone();
+    if ( mProvider )
+    {
+        QAbstractAudioBuffer *abuf = mProvider->clone();
 
-      if (!abuf) {
-         abuf = new QMemoryAudioBufferProvider(mProvider->constData(), mProvider->frameCount(), mProvider->format(), mProvider->startTime());
-      }
+        if ( !abuf )
+        {
+            abuf = new QMemoryAudioBufferProvider( mProvider->constData(), mProvider->frameCount(), mProvider->format(),
+                                                   mProvider->startTime() );
+        }
 
-      if (abuf) {
-         return new QAudioBufferPrivate(abuf);
-      }
-   }
+        if ( abuf )
+        {
+            return new QAudioBufferPrivate( abuf );
+        }
+    }
 
-   return nullptr;
+    return nullptr;
 }
 
 QAudioBuffer::QAudioBuffer()
-   : d(nullptr)
+    : d( nullptr )
 {
 }
 
-QAudioBuffer::QAudioBuffer(QAbstractAudioBuffer *provider)
-   : d(new QAudioBufferPrivate(provider))
+QAudioBuffer::QAudioBuffer( QAbstractAudioBuffer *provider )
+    : d( new QAudioBufferPrivate( provider ) )
 {
 }
 /*!
     Generally this will have copy-on-write semantics - a copy will only be made when it has to be.
  */
-QAudioBuffer::QAudioBuffer(const QAudioBuffer &other)
+QAudioBuffer::QAudioBuffer( const QAudioBuffer &other )
 {
-   d = QAudioBufferPrivate::acquire(other.d);
+    d = QAudioBufferPrivate::acquire( other.d );
 }
 
-QAudioBuffer::QAudioBuffer(const QByteArray &data, const QAudioFormat &format, qint64 startTime)
+QAudioBuffer::QAudioBuffer( const QByteArray &data, const QAudioFormat &format, qint64 startTime )
 {
-   if (format.isValid()) {
-      int frameCount = format.framesForBytes(data.size());
-      d = new QAudioBufferPrivate(new QMemoryAudioBufferProvider(data.constData(), frameCount, format, startTime));
-   } else {
-      d = nullptr;
-   }
+    if ( format.isValid() )
+    {
+        int frameCount = format.framesForBytes( data.size() );
+        d = new QAudioBufferPrivate( new QMemoryAudioBufferProvider( data.constData(), frameCount, format, startTime ) );
+    }
+    else
+    {
+        d = nullptr;
+    }
 }
 
-QAudioBuffer::QAudioBuffer(int numFrames, const QAudioFormat &format, qint64 startTime)
+QAudioBuffer::QAudioBuffer( int numFrames, const QAudioFormat &format, qint64 startTime )
 {
-   if (format.isValid()) {
-      d = new QAudioBufferPrivate(new QMemoryAudioBufferProvider(nullptr, numFrames, format, startTime));
-   } else {
-      d = nullptr;
-   }
+    if ( format.isValid() )
+    {
+        d = new QAudioBufferPrivate( new QMemoryAudioBufferProvider( nullptr, numFrames, format, startTime ) );
+    }
+    else
+    {
+        d = nullptr;
+    }
 }
 
-QAudioBuffer &QAudioBuffer::operator =(const QAudioBuffer &other)
+QAudioBuffer &QAudioBuffer::operator =( const QAudioBuffer &other )
 {
-   if (this->d != other.d) {
-      if (d) {
-         d->deref();
-      }
-      d = QAudioBufferPrivate::acquire(other.d);
-   }
-   return *this;
+    if ( this->d != other.d )
+    {
+        if ( d )
+        {
+            d->deref();
+        }
+
+        d = QAudioBufferPrivate::acquire( other.d );
+    }
+
+    return *this;
 }
 
 QAudioBuffer::~QAudioBuffer()
 {
-   if (d) {
-      d->deref();
-   }
+    if ( d )
+    {
+        d->deref();
+    }
 }
 
 bool QAudioBuffer::isValid() const
 {
-   if (!d || !d->mProvider) {
-      return false;
-   }
-   return d->mProvider->format().isValid() && (d->mProvider->frameCount() > 0);
+    if ( !d || !d->mProvider )
+    {
+        return false;
+    }
+
+    return d->mProvider->format().isValid() && ( d->mProvider->frameCount() > 0 );
 }
 
 QAudioFormat QAudioBuffer::format() const
 {
-   if (!isValid()) {
-      return QAudioFormat();
-   }
-   return d->mProvider->format();
+    if ( !isValid() )
+    {
+        return QAudioFormat();
+    }
+
+    return d->mProvider->format();
 }
 
 int QAudioBuffer::frameCount() const
 {
-   if (!isValid()) {
-      return 0;
-   }
-   return d->mProvider->frameCount();
+    if ( !isValid() )
+    {
+        return 0;
+    }
+
+    return d->mProvider->frameCount();
 }
 
 int QAudioBuffer::sampleCount() const
 {
-   if (!isValid()) {
-      return 0;
-   }
+    if ( !isValid() )
+    {
+        return 0;
+    }
 
-   return frameCount() * format().channelCount();
+    return frameCount() * format().channelCount();
 }
 
 int QAudioBuffer::byteCount() const
 {
-   const QAudioFormat f(format());
-   return format().bytesForFrames(frameCount());
+    const QAudioFormat f( format() );
+    return format().bytesForFrames( frameCount() );
 }
 
 qint64 QAudioBuffer::duration() const
 {
-   return format().durationForFrames(frameCount());
+    return format().durationForFrames( frameCount() );
 }
 
 qint64 QAudioBuffer::startTime() const
 {
-   if (!isValid()) {
-      return -1;
-   }
-   return d->mProvider->startTime();
+    if ( !isValid() )
+    {
+        return -1;
+    }
+
+    return d->mProvider->startTime();
 }
 
 const void *QAudioBuffer::constData() const
 {
-   if (!isValid()) {
-      return nullptr;
-   }
+    if ( !isValid() )
+    {
+        return nullptr;
+    }
 
-   return d->mProvider->constData();
+    return d->mProvider->constData();
 }
 
 const void *QAudioBuffer::data() const
 {
-   if (!isValid()) {
-      return nullptr;
-   }
+    if ( !isValid() )
+    {
+        return nullptr;
+    }
 
-   return d->mProvider->constData();
+    return d->mProvider->constData();
 }
 
 void *QAudioBuffer::data()
 {
-   if (!isValid()) {
-      return nullptr;
-   }
+    if ( !isValid() )
+    {
+        return nullptr;
+    }
 
-   if (d->mCount.load() != 1) {
-      // Can't share a writable buffer
-      // so we need to detach
-      QAudioBufferPrivate *newd = d->clone();
+    if ( d->mCount.load() != 1 )
+    {
+        // Can't share a writable buffer
+        // so we need to detach
+        QAudioBufferPrivate *newd = d->clone();
 
-      // This shouldn't happen
-      if (! newd) {
-         return nullptr;
-      }
+        // This shouldn't happen
+        if ( ! newd )
+        {
+            return nullptr;
+        }
 
-      d->deref();
-      d = newd;
-   }
+        d->deref();
+        d = newd;
+    }
 
-   // We're (now) the only user of this qaab, so
-   // see if it's writable directly
-   void *buffer = d->mProvider->writableData();
-   if (buffer) {
-      return buffer;
-   }
+    // We're (now) the only user of this qaab, so
+    // see if it's writable directly
+    void *buffer = d->mProvider->writableData();
 
-   // Wasn't writable, so turn it into a memory provider
-   QAbstractAudioBuffer *memBuffer = new QMemoryAudioBufferProvider(constData(), frameCount(), format(), startTime());
+    if ( buffer )
+    {
+        return buffer;
+    }
 
-   if (memBuffer) {
-      d->mProvider->release();
-      d->mCount.store(1);
-      d->mProvider = memBuffer;
+    // Wasn't writable, so turn it into a memory provider
+    QAbstractAudioBuffer *memBuffer = new QMemoryAudioBufferProvider( constData(), frameCount(), format(), startTime() );
 
-      return memBuffer->writableData();
-   }
+    if ( memBuffer )
+    {
+        d->mProvider->release();
+        d->mCount.store( 1 );
+        d->mProvider = memBuffer;
 
-   return nullptr;
+        return memBuffer->writableData();
+    }
+
+    return nullptr;
 }

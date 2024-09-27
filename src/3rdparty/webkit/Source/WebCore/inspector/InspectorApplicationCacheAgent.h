@@ -32,7 +32,8 @@
 #include <wtf/Noncopyable.h>
 #include <wtf/PassRefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Frame;
 class InspectorArray;
@@ -46,30 +47,33 @@ class ResourceResponse;
 
 typedef String ErrorString;
 
-class InspectorApplicationCacheAgent {
-    WTF_MAKE_NONCOPYABLE(InspectorApplicationCacheAgent); WTF_MAKE_FAST_ALLOCATED;
+class InspectorApplicationCacheAgent
+{
+    WTF_MAKE_NONCOPYABLE( InspectorApplicationCacheAgent );
+    WTF_MAKE_FAST_ALLOCATED;
 public:
-    InspectorApplicationCacheAgent(InstrumentingAgents*, Page*);
+    InspectorApplicationCacheAgent( InstrumentingAgents *, Page * );
     ~InspectorApplicationCacheAgent() { }
 
-    void setFrontend(InspectorFrontend*);
+    void setFrontend( InspectorFrontend * );
     void clearFrontend();
 
     // Backend to Frontend
-    void updateApplicationCacheStatus(Frame*);
+    void updateApplicationCacheStatus( Frame * );
     void networkStateChanged();
 
     // From Frontend
-    void getApplicationCaches(ErrorString*, RefPtr<InspectorObject>* applicationCaches);
+    void getApplicationCaches( ErrorString *, RefPtr<InspectorObject> *applicationCaches );
 
 private:
-    PassRefPtr<InspectorObject> buildObjectForApplicationCache(const ApplicationCacheHost::ResourceInfoList&, const ApplicationCacheHost::CacheInfo&);
-    PassRefPtr<InspectorArray> buildArrayForApplicationCacheResources(const ApplicationCacheHost::ResourceInfoList&);
-    PassRefPtr<InspectorObject> buildObjectForApplicationCacheResource(const ApplicationCacheHost::ResourceInfo&);
+    PassRefPtr<InspectorObject> buildObjectForApplicationCache( const ApplicationCacheHost::ResourceInfoList &,
+            const ApplicationCacheHost::CacheInfo & );
+    PassRefPtr<InspectorArray> buildArrayForApplicationCacheResources( const ApplicationCacheHost::ResourceInfoList & );
+    PassRefPtr<InspectorObject> buildObjectForApplicationCacheResource( const ApplicationCacheHost::ResourceInfo & );
 
-    InstrumentingAgents* m_instrumentingAgents;
-    Page* m_inspectedPage;
-    InspectorFrontend::ApplicationCache* m_frontend;
+    InstrumentingAgents *m_instrumentingAgents;
+    Page *m_inspectedPage;
+    InspectorFrontend::ApplicationCache *m_frontend;
 };
 
 } // namespace WebCore

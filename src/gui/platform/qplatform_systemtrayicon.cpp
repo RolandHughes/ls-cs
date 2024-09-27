@@ -35,7 +35,7 @@ QPlatformSystemTrayIcon::~QPlatformSystemTrayIcon()
 
 QPlatformMenu *QPlatformSystemTrayIcon::createMenu() const
 {
-   return nullptr;
+    return nullptr;
 }
 
 #endif

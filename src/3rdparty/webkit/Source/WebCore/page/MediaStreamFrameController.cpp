@@ -37,44 +37,56 @@
 #include "SecurityOrigin.h"
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class MediaStreamFrameController::Request : public RefCounted<Request> {
+class MediaStreamFrameController::Request : public RefCounted<Request>
+{
 public:
-    Request(ScriptExecutionContext* scriptExecutionContext)
-        : m_scriptExecutionContext(scriptExecutionContext) { }
+    Request( ScriptExecutionContext *scriptExecutionContext )
+        : m_scriptExecutionContext( scriptExecutionContext ) { }
 
     virtual ~Request() { }
 
-    ScriptExecutionContext* scriptExecutionContext() const { return m_scriptExecutionContext; }
-    virtual bool isGenerateStreamRequest() const { return false; }
-    virtual bool isRecordedDataRequest() const { return false; }
+    ScriptExecutionContext *scriptExecutionContext() const
+    {
+        return m_scriptExecutionContext;
+    }
+    virtual bool isGenerateStreamRequest() const
+    {
+        return false;
+    }
+    virtual bool isRecordedDataRequest() const
+    {
+        return false;
+    }
 
     virtual void abort() = 0;
 
 private:
     // This is guaranteed to have the lifetime of the Frame, and it's only used to make
     // the callback asynchronous. The original callback context is used in the call.
-    ScriptExecutionContext* m_scriptExecutionContext;
+    ScriptExecutionContext *m_scriptExecutionContext;
 };
 
-void MediaStreamFrameController::RequestMap::abort(int requestId)
+void MediaStreamFrameController::RequestMap::abort( int requestId )
 {
-    get(requestId)->abort();
-    remove(requestId);
+    get( requestId )->abort();
+    remove( requestId );
 }
 
 void MediaStreamFrameController::RequestMap::abortAll()
 {
-    while (!isEmpty()) {
+    while ( !isEmpty() )
+    {
         begin()->second->abort();
-        remove(begin());
+        remove( begin() );
     }
 }
 
-MediaStreamFrameController::MediaStreamFrameController(Frame* frame)
-    : m_frame(frame)
-    , m_isInDetachedState(false)
+MediaStreamFrameController::MediaStreamFrameController( Frame *frame )
+    : m_frame( frame )
+    , m_isInDetachedState( false )
 {
 }
 
@@ -82,25 +94,26 @@ MediaStreamFrameController::~MediaStreamFrameController()
 {
 }
 
-SecurityOrigin* MediaStreamFrameController::securityOrigin() const
+SecurityOrigin *MediaStreamFrameController::securityOrigin() const
 {
     return m_frame ? m_frame->existingDOMWindow()->securityOrigin() : 0;
 }
 
-ScriptExecutionContext* MediaStreamFrameController::scriptExecutionContext() const
+ScriptExecutionContext *MediaStreamFrameController::scriptExecutionContext() const
 {
     return m_frame ? m_frame->existingDOMWindow()->scriptExecutionContext() : 0;
 }
 
-MediaStreamController* MediaStreamFrameController::pageController() const
+MediaStreamController *MediaStreamFrameController::pageController() const
 {
     return !m_isInDetachedState && m_frame && m_frame->page() ? m_frame->page()->mediaStreamController() : 0;
 }
 
 void MediaStreamFrameController::enterDetachedState()
 {
-    if (m_isInDetachedState) {
-        ASSERT(m_requests.isEmpty());
+    if ( m_isInDetachedState )
+    {
+        ASSERT( m_requests.isEmpty() );
         return;
     }
 
@@ -111,8 +124,10 @@ void MediaStreamFrameController::enterDetachedState()
 // Called also when the frame is detached from the page, in which case the page controller will remain alive.
 void MediaStreamFrameController::disconnectPage()
 {
-    if (pageController())
-        pageController()->unregisterFrameController(this);
+    if ( pageController() )
+    {
+        pageController()->unregisterFrameController( this );
+    }
 
     enterDetachedState();
 }
@@ -122,12 +137,12 @@ void MediaStreamFrameController::disconnectFrame()
 {
     disconnectPage();
 
-    ASSERT(m_requests.isEmpty());
+    ASSERT( m_requests.isEmpty() );
 
     m_frame = 0;
 }
 
-void MediaStreamFrameController::transferToNewPage(Page*)
+void MediaStreamFrameController::transferToNewPage( Page * )
 {
     // FIXME: In the future we should keep running the media stream services while transfering frames between pages.
     // However, until a proper way to do this is decided, we're shutting down services.

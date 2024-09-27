@@ -32,30 +32,34 @@
 #include <WebCore/TextAffinity.h>
 #include <wtf/Forward.h>
 
-namespace WebCore {
-    class CSSStyleDeclaration;
-    class Node;
-    class Range;
+namespace WebCore
+{
+class CSSStyleDeclaration;
+class Node;
+class Range;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
 class WebFrame;
 class WebPage;
 
-class InjectedBundlePageEditorClient : public APIClient<WKBundlePageEditorClient> {
+class InjectedBundlePageEditorClient : public APIClient<WKBundlePageEditorClient>
+{
 public:
-    bool shouldBeginEditing(WebPage*, WebCore::Range*);
-    bool shouldEndEditing(WebPage*, WebCore::Range*);
-    bool shouldInsertNode(WebPage*, WebCore::Node*, WebCore::Range* rangeToReplace, WebCore::EditorInsertAction);
-    bool shouldInsertText(WebPage*, StringImpl*, WebCore::Range* rangeToReplace, WebCore::EditorInsertAction);
-    bool shouldDeleteRange(WebPage*, WebCore::Range*);
-    bool shouldChangeSelectedRange(WebPage*, WebCore::Range* fromRange, WebCore::Range* toRange, WebCore::EAffinity affinity, bool stillSelecting);
-    bool shouldApplyStyle(WebPage*, WebCore::CSSStyleDeclaration*, WebCore::Range*);
-    void didBeginEditing(WebPage*, StringImpl* notificationName);
-    void didEndEditing(WebPage*, StringImpl* notificationName);
-    void didChange(WebPage*, StringImpl* notificationName);
-    void didChangeSelection(WebPage*, StringImpl* notificationName);
+    bool shouldBeginEditing( WebPage *, WebCore::Range * );
+    bool shouldEndEditing( WebPage *, WebCore::Range * );
+    bool shouldInsertNode( WebPage *, WebCore::Node *, WebCore::Range *rangeToReplace, WebCore::EditorInsertAction );
+    bool shouldInsertText( WebPage *, StringImpl *, WebCore::Range *rangeToReplace, WebCore::EditorInsertAction );
+    bool shouldDeleteRange( WebPage *, WebCore::Range * );
+    bool shouldChangeSelectedRange( WebPage *, WebCore::Range *fromRange, WebCore::Range *toRange, WebCore::EAffinity affinity,
+                                    bool stillSelecting );
+    bool shouldApplyStyle( WebPage *, WebCore::CSSStyleDeclaration *, WebCore::Range * );
+    void didBeginEditing( WebPage *, StringImpl *notificationName );
+    void didEndEditing( WebPage *, StringImpl *notificationName );
+    void didChange( WebPage *, StringImpl *notificationName );
+    void didChangeSelection( WebPage *, StringImpl *notificationName );
 };
 
 } // namespace WebKit

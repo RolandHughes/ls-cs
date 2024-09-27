@@ -40,106 +40,143 @@
 #include <qnetwork_cookiejar.h>
 #include <qstringlist.h>
 
-namespace WebCore {
-
-static QNetworkCookieJar *cookieJar(const Document *document)
+namespace WebCore
 {
-    if (!document)
-        return 0;
 
-    Frame* frame = document->frame();
-    if (!frame)
+static QNetworkCookieJar *cookieJar( const Document *document )
+{
+    if ( !document )
+    {
         return 0;
+    }
 
-    FrameLoader* loader = frame->loader();
-    if (!loader)
+    Frame *frame = document->frame();
+
+    if ( !frame )
+    {
         return 0;
+    }
 
-    QNetworkAccessManager* manager = loader->networkingContext()->networkAccessManager();
-    QNetworkCookieJar* jar = manager->cookieJar();
+    FrameLoader *loader = frame->loader();
+
+    if ( !loader )
+    {
+        return 0;
+    }
+
+    QNetworkAccessManager *manager = loader->networkingContext()->networkAccessManager();
+    QNetworkCookieJar *jar = manager->cookieJar();
     return jar;
 }
 
-void setCookies(Document* document, const KURL& url, const String& value)
+void setCookies( Document *document, const KURL &url, const String &value )
 {
-    QNetworkCookieJar* jar = cookieJar(document);
-    if (! jar) {
+    QNetworkCookieJar *jar = cookieJar( document );
+
+    if ( ! jar )
+    {
         return;
     }
 
-    QList<QNetworkCookie> cookies = QNetworkCookie::parseCookies(QString(value).toLatin1());
+    QList<QNetworkCookie> cookies = QNetworkCookie::parseCookies( QString( value ).toLatin1() );
     QList<QNetworkCookie>::iterator it = cookies.begin();
 
-    while (it != cookies.end()) {
-        if (it->isHttpOnly())
-            it = cookies.erase(it);
+    while ( it != cookies.end() )
+    {
+        if ( it->isHttpOnly() )
+        {
+            it = cookies.erase( it );
+        }
         else
+        {
             ++it;
+        }
     }
-    jar->setCookiesFromUrl(cookies, QUrl(url));
+
+    jar->setCookiesFromUrl( cookies, QUrl( url ) );
 }
 
-String cookies(const Document* document, const KURL& url)
+String cookies( const Document *document, const KURL &url )
 {
-    QNetworkCookieJar* jar = cookieJar(document);
-    if (!jar)
-        return String();
+    QNetworkCookieJar *jar = cookieJar( document );
 
-    QList<QNetworkCookie> cookies = jar->cookiesForUrl(QUrl(url));
-    if (cookies.isEmpty())
+    if ( !jar )
+    {
         return String();
+    }
+
+    QList<QNetworkCookie> cookies = jar->cookiesForUrl( QUrl( url ) );
+
+    if ( cookies.isEmpty() )
+    {
+        return String();
+    }
 
     QStringList resultCookies;
-    for (const QNetworkCookie& networkCookie : cookies) {
-        if (networkCookie.isHttpOnly())
+
+    for ( const QNetworkCookie &networkCookie : cookies )
+    {
+        if ( networkCookie.isHttpOnly() )
+        {
             continue;
-        resultCookies.append(QString::fromLatin1(networkCookie.toRawForm(QNetworkCookie::NameAndValueOnly).constData()));
+        }
+
+        resultCookies.append( QString::fromLatin1( networkCookie.toRawForm( QNetworkCookie::NameAndValueOnly ).constData() ) );
     }
 
-    return resultCookies.join(QLatin1String("; "));
+    return resultCookies.join( QLatin1String( "; " ) );
 }
 
-String cookieRequestHeaderFieldValue(const Document* document, const KURL &url)
+String cookieRequestHeaderFieldValue( const Document *document, const KURL &url )
 {
-    QNetworkCookieJar* jar = cookieJar(document);
-    if (!jar)
-        return String();
+    QNetworkCookieJar *jar = cookieJar( document );
 
-    QList<QNetworkCookie> cookies = jar->cookiesForUrl(QUrl(url));
-    if (cookies.isEmpty())
+    if ( !jar )
+    {
         return String();
+    }
+
+    QList<QNetworkCookie> cookies = jar->cookiesForUrl( QUrl( url ) );
+
+    if ( cookies.isEmpty() )
+    {
+        return String();
+    }
 
     QStringList resultCookies;
-    for (QNetworkCookie networkCookie : cookies)
-        resultCookies.append(QString::fromLatin1(networkCookie.toRawForm(QNetworkCookie::NameAndValueOnly).constData()));
 
-    return resultCookies.join(QLatin1String("; "));
+    for ( QNetworkCookie networkCookie : cookies )
+    {
+        resultCookies.append( QString::fromLatin1( networkCookie.toRawForm( QNetworkCookie::NameAndValueOnly ).constData() ) );
+    }
+
+    return resultCookies.join( QLatin1String( "; " ) );
 }
 
-bool cookiesEnabled(const Document* document)
+bool cookiesEnabled( const Document *document )
 {
-    QNetworkCookieJar* jar = cookieJar(document);
+    QNetworkCookieJar *jar = cookieJar( document );
     return jar;
 }
 
-bool getRawCookies(const Document*, const KURL&, Vector<Cookie>& rawCookies)
+bool getRawCookies( const Document *, const KURL &, Vector<Cookie> &rawCookies )
 {
     // FIXME: Not yet implemented
     rawCookies.clear();
     return false; // return true when implemented
 }
 
-void deleteCookie(const Document*, const KURL&, const String&)
+void deleteCookie( const Document *, const KURL &, const String & )
 {
     // FIXME: Not yet implemented
 }
 
-void getHostnamesWithCookies(HashSet<String>& hostnames)
+void getHostnamesWithCookies( HashSet<String> &hostnames )
 {
     // FIXME: Not yet implemented
 }
 
-void deleteCookiesForHostname(const String& hostname)
+void deleteCookiesForHostname( const String &hostname )
 {
     // FIXME: Not yet implemented
 }

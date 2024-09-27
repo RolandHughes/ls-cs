@@ -20,40 +20,44 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #import <Cocoa/Cocoa.h>
 
-@interface WebWindowScaleAnimation : NSAnimation {
+@interface WebWindowScaleAnimation : NSAnimation
+{
 @private
     NSRect _initialFrame, _finalFrame, _realFrame;
     NSWindow *_window; // (assign)
     NSAnimation *_subAnimation; // (retain)
     NSTimeInterval _hintedDuration;
 }
-- (id)initWithHintedDuration:(NSTimeInterval)duration window:(NSWindow *)window initalFrame:(NSRect)initialFrame finalFrame:(NSRect)finalFrame;
+- ( id )initWithHintedDuration:( NSTimeInterval )duration window:( NSWindow * )window initalFrame:
+    ( NSRect )initialFrame finalFrame:( NSRect )finalFrame;
 
-- (void)setSubAnimation:(NSAnimation *)animation;
+- ( void )setSubAnimation:( NSAnimation * )animation;
 
-- (NSRect)currentFrame;
+- ( NSRect )currentFrame;
 
 // Be sure to call setWindow:nil to clear the weak link _window when appropriate
-- (void)setWindow:(NSWindow *)window;
+- ( void )setWindow:( NSWindow * )window;
 @end
 
 
-@interface WebWindowFadeAnimation : NSAnimation {
+@interface WebWindowFadeAnimation : NSAnimation
+{
 @private
     CGFloat _initialAlpha, _finalAlpha;
     NSWindow *_window; // (assign)
     BOOL _isStopped;
-    
-}
-- (id)initWithDuration:(NSTimeInterval)duration window:(NSWindow *)window initialAlpha:(CGFloat)initialAlpha finalAlpha:(CGFloat)finalAlpha;
 
-- (CGFloat)currentAlpha;
+}
+- ( id )initWithDuration:( NSTimeInterval )duration window:( NSWindow * )window initialAlpha:( CGFloat )initialAlpha finalAlpha:
+    ( CGFloat )finalAlpha;
+
+- ( CGFloat )currentAlpha;
 
 // Be sure to call setWindow:nil to clear the weak link _window when appropriate
-- (void)setWindow:(NSWindow *)window;
+- ( void )setWindow:( NSWindow * )window;
 @end

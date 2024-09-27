@@ -30,11 +30,12 @@
 #include "NotImplemented.h"
 #include "XSLTProcessor.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-XSLStyleSheet::XSLStyleSheet(Node* parentNode, const String& originalURL, const KURL& finalURL,  bool embedded)
-    : StyleSheet(parentNode, originalURL, finalURL)
-    , m_embedded(embedded)
+XSLStyleSheet::XSLStyleSheet( Node *parentNode, const String &originalURL, const KURL &finalURL,  bool embedded )
+    : StyleSheet( parentNode, originalURL, finalURL )
+    , m_embedded( embedded )
 {
 }
 
@@ -50,8 +51,10 @@ bool XSLStyleSheet::isLoading()
 
 void XSLStyleSheet::checkLoaded()
 {
-    if (ownerNode())
+    if ( ownerNode() )
+    {
         ownerNode()->sheetLoaded();
+    }
 }
 
 void XSLStyleSheet::clearDocuments()
@@ -59,15 +62,19 @@ void XSLStyleSheet::clearDocuments()
     notImplemented();
 }
 
-CachedResourceLoader* XSLStyleSheet::cachedResourceLoader()
+CachedResourceLoader *XSLStyleSheet::cachedResourceLoader()
 {
-    Document* document = ownerDocument();
-    if (!document)
+    Document *document = ownerDocument();
+
+    if ( !document )
+    {
         return 0;
+    }
+
     return document->cachedResourceLoader();
 }
 
-bool XSLStyleSheet::parseString(const String& string, bool)
+bool XSLStyleSheet::parseString( const String &string, bool )
 {
     // FIXME: Fix QXmlQuery so that it allows compiling the stylesheet before setting the document
     // to be transformed. This way we could not only check if the stylesheet is correct before using it
@@ -82,18 +89,18 @@ void XSLStyleSheet::loadChildSheets()
     notImplemented();
 }
 
-void XSLStyleSheet::loadChildSheet(const String&)
+void XSLStyleSheet::loadChildSheet( const String & )
 {
     notImplemented();
 }
 
-Document* XSLStyleSheet::ownerDocument()
+Document *XSLStyleSheet::ownerDocument()
 {
-    Node* node = ownerNode();
+    Node *node = ownerNode();
     return node ? node->document() : 0;
 }
 
-void XSLStyleSheet::setParentStyleSheet(XSLStyleSheet*)
+void XSLStyleSheet::setParentStyleSheet( XSLStyleSheet * )
 {
     notImplemented();
 }

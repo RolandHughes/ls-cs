@@ -30,24 +30,25 @@
 
 class Q_GUI_EXPORT QToolTip
 {
-   QToolTip() = delete;
+    QToolTip() = delete;
 
- public:
-   static void showText(const QPoint &pos, const QString &text, QWidget *widget = nullptr);
-   static void showText(const QPoint &pos, const QString &text, QWidget *widget, const QRect &rect);
-   static void showText(const QPoint &pos, const QString &text, QWidget *widget, const QRect &rect, int msecShowTime);
+public:
+    static void showText( const QPoint &pos, const QString &text, QWidget *widget = nullptr );
+    static void showText( const QPoint &pos, const QString &text, QWidget *widget, const QRect &rect );
+    static void showText( const QPoint &pos, const QString &text, QWidget *widget, const QRect &rect, int msecShowTime );
 
-   static inline void hideText() {
-      showText(QPoint(), QString());
-   }
+    static inline void hideText()
+    {
+        showText( QPoint(), QString() );
+    }
 
-   static bool isVisible();
-   static QString text();
+    static bool isVisible();
+    static QString text();
 
-   static QPalette palette();
-   static void setPalette(const QPalette &palette);
-   static QFont font();
-   static void setFont(const QFont &font);
+    static QPalette palette();
+    static void setPalette( const QPalette &palette );
+    static QFont font();
+    static void setFont( const QFont &font );
 };
 
 #endif // QT_NO_TOOLTIP

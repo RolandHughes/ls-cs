@@ -6,13 +6,13 @@
  * are met:
  *
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Apple Computer, Inc. ("Apple") nor the names of
  *     its contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
+ *     from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY APPLE AND ITS CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -35,60 +35,71 @@
 #include <wtf/OwnPtr.h>
 #include <wtf/unicode/Unicode.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 const float cGlyphSizeUnknown = -1;
 
-template<class T> class GlyphMetricsMap {
-    WTF_MAKE_NONCOPYABLE(GlyphMetricsMap);
+template<class T> class GlyphMetricsMap
+{
+    WTF_MAKE_NONCOPYABLE( GlyphMetricsMap );
 public:
-    GlyphMetricsMap() : m_filledPrimaryPage(false) { }
+    GlyphMetricsMap() : m_filledPrimaryPage( false ) { }
     ~GlyphMetricsMap()
-    { 
-        if (m_pages)
-            deleteAllValues(*m_pages);
+    {
+        if ( m_pages )
+        {
+            deleteAllValues( *m_pages );
+        }
     }
 
-    T metricsForGlyph(Glyph glyph)
+    T metricsForGlyph( Glyph glyph )
     {
-        return locatePage(glyph / GlyphMetricsPage::size)->metricsForGlyph(glyph);
+        return locatePage( glyph / GlyphMetricsPage::size )->metricsForGlyph( glyph );
     }
 
-    void setMetricsForGlyph(Glyph glyph, const T& metrics)
+    void setMetricsForGlyph( Glyph glyph, const T &metrics )
     {
-        locatePage(glyph / GlyphMetricsPage::size)->setMetricsForGlyph(glyph, metrics);
+        locatePage( glyph / GlyphMetricsPage::size )->setMetricsForGlyph( glyph, metrics );
     }
 
 private:
-    struct GlyphMetricsPage {
+    struct GlyphMetricsPage
+    {
         static const size_t size = 256; // Usually covers Latin-1 in a single page.
         FixedArray<T, size> m_metrics;
 
-        T metricsForGlyph(Glyph glyph) const { return m_metrics[glyph % size]; }
-        void setMetricsForGlyph(Glyph glyph, const T& metrics)
+        T metricsForGlyph( Glyph glyph ) const
         {
-            setMetricsForIndex(glyph % size, metrics);
+            return m_metrics[glyph % size];
         }
-        void setMetricsForIndex(unsigned index, const T& metrics)
+        void setMetricsForGlyph( Glyph glyph, const T &metrics )
+        {
+            setMetricsForIndex( glyph % size, metrics );
+        }
+        void setMetricsForIndex( unsigned index, const T &metrics )
         {
             m_metrics[index] = metrics;
         }
     };
-    
-    GlyphMetricsPage* locatePage(unsigned pageNumber)
+
+    GlyphMetricsPage *locatePage( unsigned pageNumber )
     {
-        if (!pageNumber && m_filledPrimaryPage)
+        if ( !pageNumber && m_filledPrimaryPage )
+        {
             return &m_primaryPage;
-        return locatePageSlowCase(pageNumber);
+        }
+
+        return locatePageSlowCase( pageNumber );
     }
 
-    GlyphMetricsPage* locatePageSlowCase(unsigned pageNumber);
-    
+    GlyphMetricsPage *locatePageSlowCase( unsigned pageNumber );
+
     static T unknownMetrics();
 
     bool m_filledPrimaryPage;
     GlyphMetricsPage m_primaryPage; // We optimize for the page that contains glyph indices 0-255.
-    OwnPtr<HashMap<int, GlyphMetricsPage*> > m_pages;
+    OwnPtr<HashMap<int, GlyphMetricsPage *> > m_pages;
 };
 
 template<> inline float GlyphMetricsMap<float>::unknownMetrics()
@@ -98,33 +109,46 @@ template<> inline float GlyphMetricsMap<float>::unknownMetrics()
 
 template<> inline FloatRect GlyphMetricsMap<FloatRect>::unknownMetrics()
 {
-    return FloatRect(0, 0, cGlyphSizeUnknown, cGlyphSizeUnknown);
+    return FloatRect( 0, 0, cGlyphSizeUnknown, cGlyphSizeUnknown );
 }
 
-template<class T> typename GlyphMetricsMap<T>::GlyphMetricsPage* GlyphMetricsMap<T>::locatePageSlowCase(unsigned pageNumber)
+template<class T> typename GlyphMetricsMap<T>::GlyphMetricsPage *GlyphMetricsMap<T>::locatePageSlowCase( unsigned pageNumber )
 {
-    GlyphMetricsPage* page;
-    if (!pageNumber) {
-        ASSERT(!m_filledPrimaryPage);
+    GlyphMetricsPage *page;
+
+    if ( !pageNumber )
+    {
+        ASSERT( !m_filledPrimaryPage );
         page = &m_primaryPage;
         m_filledPrimaryPage = true;
-    } else {
-        if (m_pages) {
-            if ((page = m_pages->get(pageNumber)))
+    }
+    else
+    {
+        if ( m_pages )
+        {
+            if ( ( page = m_pages->get( pageNumber ) ) )
+            {
                 return page;
-        } else
-            m_pages = adoptPtr(new HashMap<int, GlyphMetricsPage*>);
+            }
+        }
+        else
+        {
+            m_pages = adoptPtr( new HashMap<int, GlyphMetricsPage *> );
+        }
+
         page = new GlyphMetricsPage;
-        m_pages->set(pageNumber, page);
+        m_pages->set( pageNumber, page );
     }
 
     // Fill in the whole page with the unknown glyph information.
-    for (unsigned i = 0; i < GlyphMetricsPage::size; i++)
-        page->setMetricsForIndex(i, unknownMetrics());
+    for ( unsigned i = 0; i < GlyphMetricsPage::size; i++ )
+    {
+        page->setMetricsForIndex( i, unknownMetrics() );
+    }
 
     return page;
 }
-    
+
 } // namespace WebCore
 
 #endif

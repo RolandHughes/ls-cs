@@ -26,53 +26,60 @@
 #include "JSObject.h"
 #include <stdint.h>
 
-namespace JSC {
+namespace JSC
+{
 
-    class ExecState;
-    class JSGlobalData;
-    class JSGlobalObject;
-    class JSObject;
-    class SourceCode;
-    class Structure;
-    class UString;
+class ExecState;
+class JSGlobalData;
+class JSGlobalObject;
+class JSObject;
+class SourceCode;
+class Structure;
+class UString;
 
-    // Methods to create a range of internal errors.
-    JSObject* createError(JSGlobalObject*, const UString&);
-    JSObject* createEvalError(JSGlobalObject*, const UString&);
-    JSObject* createRangeError(JSGlobalObject*, const UString&);
-    JSObject* createReferenceError(JSGlobalObject*, const UString&);
-    JSObject* createSyntaxError(JSGlobalObject*, const UString&);
-    JSObject* createTypeError(JSGlobalObject*, const UString&);
-    JSObject* createURIError(JSGlobalObject*, const UString&);
-    // ExecState wrappers.
-    JSObject* createError(ExecState*, const UString&);
-    JSObject* createEvalError(ExecState*, const UString&);
-    JSObject* createRangeError(ExecState*, const UString&);
-    JSObject* createReferenceError(ExecState*, const UString&);
-    JSObject* createSyntaxError(ExecState*, const UString&);
-    JSObject* createTypeError(ExecState*, const UString&);
-    JSObject* createURIError(ExecState*, const UString&);
+// Methods to create a range of internal errors.
+JSObject *createError( JSGlobalObject *, const UString & );
+JSObject *createEvalError( JSGlobalObject *, const UString & );
+JSObject *createRangeError( JSGlobalObject *, const UString & );
+JSObject *createReferenceError( JSGlobalObject *, const UString & );
+JSObject *createSyntaxError( JSGlobalObject *, const UString & );
+JSObject *createTypeError( JSGlobalObject *, const UString & );
+JSObject *createURIError( JSGlobalObject *, const UString & );
+// ExecState wrappers.
+JSObject *createError( ExecState *, const UString & );
+JSObject *createEvalError( ExecState *, const UString & );
+JSObject *createRangeError( ExecState *, const UString & );
+JSObject *createReferenceError( ExecState *, const UString & );
+JSObject *createSyntaxError( ExecState *, const UString & );
+JSObject *createTypeError( ExecState *, const UString & );
+JSObject *createURIError( ExecState *, const UString & );
 
-    // Methods to add 
-    bool hasErrorInfo(ExecState*, JSObject* error);
-    JSObject* addErrorInfo(JSGlobalData*, JSObject* error, int line, const SourceCode&);
-    // ExecState wrappers.
-    JSObject* addErrorInfo(ExecState*, JSObject* error, int line, const SourceCode&);
+// Methods to add
+bool hasErrorInfo( ExecState *, JSObject *error );
+JSObject *addErrorInfo( JSGlobalData *, JSObject *error, int line, const SourceCode & );
+// ExecState wrappers.
+JSObject *addErrorInfo( ExecState *, JSObject *error, int line, const SourceCode & );
 
-    // Methods to throw Errors.
-    JSValue throwError(ExecState*, JSValue);
-    JSObject* throwError(ExecState*, JSObject*);
+// Methods to throw Errors.
+JSValue throwError( ExecState *, JSValue );
+JSObject *throwError( ExecState *, JSObject * );
 
-    // Convenience wrappers, create an throw an exception with a default message.
-    JSObject* throwTypeError(ExecState*);
-    JSObject* throwSyntaxError(ExecState*);
+// Convenience wrappers, create an throw an exception with a default message.
+JSObject *throwTypeError( ExecState * );
+JSObject *throwSyntaxError( ExecState * );
 
-    // Convenience wrappers, wrap result as an EncodedJSValue.
-    inline EncodedJSValue throwVMError(ExecState* exec, JSValue error) { return JSValue::encode(throwError(exec, error)); }
-    inline EncodedJSValue throwVMTypeError(ExecState* exec) { return JSValue::encode(throwTypeError(exec)); }
+// Convenience wrappers, wrap result as an EncodedJSValue.
+inline EncodedJSValue throwVMError( ExecState *exec, JSValue error )
+{
+    return JSValue::encode( throwError( exec, error ) );
+}
+inline EncodedJSValue throwVMTypeError( ExecState *exec )
+{
+    return JSValue::encode( throwTypeError( exec ) );
+}
 
-    JSValue createTypeErrorFunction(ExecState* exec, const UString& message);
-    
+JSValue createTypeErrorFunction( ExecState *exec, const UString &message );
+
 } // namespace JSC
 
 #endif // Error_h

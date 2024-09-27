@@ -31,11 +31,11 @@ class QSignalTransition;
 // minimized class
 class QSignalTransitionPrivate : public QAbstractTransitionPrivate
 {
- public:
-   void callOnTransition(QEvent *e) override;
+public:
+    void callOnTransition( QEvent *e ) override;
 
- private:
-   Q_DECLARE_PUBLIC(QSignalTransition)
+private:
+    Q_DECLARE_PUBLIC( QSignalTransition )
 
 };
 

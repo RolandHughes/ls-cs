@@ -39,13 +39,15 @@
 #include <QLibrary>
 #endif
 
-namespace CoreIPC {
-    class ArgumentDecoder;
-    class Connection;
-    class MessageID;
+namespace CoreIPC
+{
+class ArgumentDecoder;
+class Connection;
+class MessageID;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
 #if PLATFORM(MAC)
 typedef CFBundleRef PlatformBundle;
@@ -54,7 +56,7 @@ typedef HMODULE PlatformBundle;
 #elif PLATFORM(QT)
 typedef QLibrary PlatformBundle;
 #elif PLATFORM(GTK)
-typedef void* PlatformBundle;
+typedef void *PlatformBundle;
 #endif
 
 class ImmutableArray;
@@ -64,76 +66,85 @@ class WebFrame;
 class WebPage;
 class WebPageGroupProxy;
 
-class InjectedBundle : public APIObject {
+class InjectedBundle : public APIObject
+{
 public:
     static const Type APIType = TypeBundle;
 
-    static PassRefPtr<InjectedBundle> create(const String& path)
+    static PassRefPtr<InjectedBundle> create( const String &path )
     {
-        return adoptRef(new InjectedBundle(path));
+        return adoptRef( new InjectedBundle( path ) );
     }
     ~InjectedBundle();
 
-    bool load(APIObject* initializationUserData);
-    void setSandboxExtension(PassRefPtr<SandboxExtension> sandboxExtension) { m_sandboxExtension = sandboxExtension; }
+    bool load( APIObject *initializationUserData );
+    void setSandboxExtension( PassRefPtr<SandboxExtension> sandboxExtension )
+    {
+        m_sandboxExtension = sandboxExtension;
+    }
 
     // API
-    void initializeClient(WKBundleClient*);
-    void postMessage(const String&, APIObject*);
-    void postSynchronousMessage(const String&, APIObject*, RefPtr<APIObject>& returnData);
+    void initializeClient( WKBundleClient * );
+    void postMessage( const String &, APIObject * );
+    void postSynchronousMessage( const String &, APIObject *, RefPtr<APIObject> &returnData );
 #if PLATFORM(WIN)
-    void setHostAllowsAnyHTTPSCertificate(const String&);
-    void setClientCertificate(const String& host, const String& certificateSystemStoreName, const WebCertificateInfo*);
+    void setHostAllowsAnyHTTPSCertificate( const String & );
+    void setClientCertificate( const String &host, const String &certificateSystemStoreName, const WebCertificateInfo * );
 #endif
 
     // TestRunner only SPI
-    void setShouldTrackVisitedLinks(bool);
+    void setShouldTrackVisitedLinks( bool );
     void removeAllVisitedLinks();
     void activateMacFontAscentHack();
-    void overrideXSSAuditorEnabledForTestRunner(WebPageGroupProxy* pageGroup, bool enabled);
-    void setAllowUniversalAccessFromFileURLs(WebPageGroupProxy*, bool);
-    void setAllowFileAccessFromFileURLs(WebPageGroupProxy*, bool);
-    void setFrameFlatteningEnabled(WebPageGroupProxy*, bool);
-    void addOriginAccessWhitelistEntry(const String&, const String&, const String&, bool);
-    void removeOriginAccessWhitelistEntry(const String&, const String&, const String&, bool);
+    void overrideXSSAuditorEnabledForTestRunner( WebPageGroupProxy *pageGroup, bool enabled );
+    void setAllowUniversalAccessFromFileURLs( WebPageGroupProxy *, bool );
+    void setAllowFileAccessFromFileURLs( WebPageGroupProxy *, bool );
+    void setFrameFlatteningEnabled( WebPageGroupProxy *, bool );
+    void addOriginAccessWhitelistEntry( const String &, const String &, const String &, bool );
+    void removeOriginAccessWhitelistEntry( const String &, const String &, const String &, bool );
     void resetOriginAccessWhitelists();
-    int numberOfPages(WebFrame*, double, double);
-    int pageNumberForElementById(WebFrame*, const String&, double, double);
-    String pageSizeAndMarginsInPixels(WebFrame*, int, int, int, int, int, int, int);
-    bool isPageBoxVisible(WebFrame*, int);
+    int numberOfPages( WebFrame *, double, double );
+    int pageNumberForElementById( WebFrame *, const String &, double, double );
+    String pageSizeAndMarginsInPixels( WebFrame *, int, int, int, int, int, int, int );
+    bool isPageBoxVisible( WebFrame *, int );
 
     // UserContent API
-    void addUserScript(WebPageGroupProxy*, InjectedBundleScriptWorld*, const String& source, const String& url, ImmutableArray* whitelist, ImmutableArray* blacklist, WebCore::UserScriptInjectionTime, WebCore::UserContentInjectedFrames);
-    void addUserStyleSheet(WebPageGroupProxy*, InjectedBundleScriptWorld*, const String& source, const String& url, ImmutableArray* whitelist, ImmutableArray* blacklist, WebCore::UserContentInjectedFrames);
-    void removeUserScript(WebPageGroupProxy*, InjectedBundleScriptWorld*, const String& url);
-    void removeUserStyleSheet(WebPageGroupProxy*, InjectedBundleScriptWorld*, const String& url);
-    void removeUserScripts(WebPageGroupProxy*, InjectedBundleScriptWorld*);
-    void removeUserStyleSheets(WebPageGroupProxy*, InjectedBundleScriptWorld*);
-    void removeAllUserContent(WebPageGroupProxy*);
+    void addUserScript( WebPageGroupProxy *, InjectedBundleScriptWorld *, const String &source, const String &url,
+                        ImmutableArray *whitelist, ImmutableArray *blacklist, WebCore::UserScriptInjectionTime, WebCore::UserContentInjectedFrames );
+    void addUserStyleSheet( WebPageGroupProxy *, InjectedBundleScriptWorld *, const String &source, const String &url,
+                            ImmutableArray *whitelist, ImmutableArray *blacklist, WebCore::UserContentInjectedFrames );
+    void removeUserScript( WebPageGroupProxy *, InjectedBundleScriptWorld *, const String &url );
+    void removeUserStyleSheet( WebPageGroupProxy *, InjectedBundleScriptWorld *, const String &url );
+    void removeUserScripts( WebPageGroupProxy *, InjectedBundleScriptWorld * );
+    void removeUserStyleSheets( WebPageGroupProxy *, InjectedBundleScriptWorld * );
+    void removeAllUserContent( WebPageGroupProxy * );
 
     // Local storage API
     void clearAllDatabases();
-    void setDatabaseQuota(uint64_t);
+    void setDatabaseQuota( uint64_t );
 
     // Garbage collection API
     void garbageCollectJavaScriptObjects();
-    void garbageCollectJavaScriptObjectsOnAlternateThreadForDebugging(bool waitUntilDone);
+    void garbageCollectJavaScriptObjectsOnAlternateThreadForDebugging( bool waitUntilDone );
     size_t javaScriptObjectsCount();
 
     // Callback hooks
-    void didCreatePage(WebPage*);
-    void willDestroyPage(WebPage*);
-    void didInitializePageGroup(WebPageGroupProxy*);
-    void didReceiveMessage(const String&, APIObject*);
+    void didCreatePage( WebPage * );
+    void willDestroyPage( WebPage * );
+    void didInitializePageGroup( WebPageGroupProxy * );
+    void didReceiveMessage( const String &, APIObject * );
 
-    void didReceiveMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*);
+    void didReceiveMessage( CoreIPC::Connection *, CoreIPC::MessageID, CoreIPC::ArgumentDecoder * );
 
-    static void reportException(JSContextRef, JSValueRef exception);
+    static void reportException( JSContextRef, JSValueRef exception );
 
 private:
-    InjectedBundle(const String&);
+    InjectedBundle( const String & );
 
-    virtual Type type() const { return APIType; }
+    virtual Type type() const
+    {
+        return APIType;
+    }
 
     String m_path;
     PlatformBundle m_platformBundle; // This is leaked right now, since we never unload the bundle/module.

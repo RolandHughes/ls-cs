@@ -26,7 +26,8 @@
 #ifndef PaintPhase_h
 #define PaintPhase_h
 
-namespace WebCore {
+namespace WebCore
+{
 
 /*
  *  The painting of a layer occurs in three distinct phases.  Each phase involves
@@ -37,7 +38,8 @@ namespace WebCore {
  *  three phases invoked on them during this phase.
  */
 
-enum PaintPhase {
+enum PaintPhase
+{
     PaintPhaseBlockBackground,
     PaintPhaseChildBlockBackground,
     PaintPhaseChildBlockBackgrounds,
@@ -52,7 +54,8 @@ enum PaintPhase {
     PaintPhaseMask
 };
 
-enum PaintBehaviorFlags {
+enum PaintBehaviorFlags
+{
     PaintBehaviorNormal = 0,
     PaintBehaviorSelectionOnly = 1 << 0,
     PaintBehaviorForceBlackText = 1 << 1,

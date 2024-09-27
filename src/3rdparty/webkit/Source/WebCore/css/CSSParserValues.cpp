@@ -27,110 +27,156 @@
 #include "CSSSelector.h"
 #include "CSSSelectorList.h"
 
-namespace WebCore {
-        
+namespace WebCore
+{
+
 using namespace WTF;
 
 CSSParserValueList::~CSSParserValueList()
 {
     size_t numValues = m_values.size();
-    for (size_t i = 0; i < numValues; i++) {
-        if (m_values[i].unit == CSSParserValue::Function)
+
+    for ( size_t i = 0; i < numValues; i++ )
+    {
+        if ( m_values[i].unit == CSSParserValue::Function )
+        {
             delete m_values[i].function;
+        }
     }
 }
 
-void CSSParserValueList::addValue(const CSSParserValue& v)
+void CSSParserValueList::addValue( const CSSParserValue &v )
 {
-    m_values.append(v);
+    m_values.append( v );
 }
 
-void CSSParserValueList::insertValueAt(unsigned i, const CSSParserValue& v)
+void CSSParserValueList::insertValueAt( unsigned i, const CSSParserValue &v )
 {
-    m_values.insert(i, v);
+    m_values.insert( i, v );
 }
 
-void CSSParserValueList::deleteValueAt(unsigned i)
-{ 
-    m_values.remove(i);
+void CSSParserValueList::deleteValueAt( unsigned i )
+{
+    m_values.remove( i );
 }
 
-void CSSParserValueList::extend(CSSParserValueList& valueList)
+void CSSParserValueList::extend( CSSParserValueList &valueList )
 {
-    for (unsigned int i = 0; i < valueList.size(); ++i)
-        m_values.append(*(valueList.valueAt(i)));
+    for ( unsigned int i = 0; i < valueList.size(); ++i )
+    {
+        m_values.append( *( valueList.valueAt( i ) ) );
+    }
 }
 
 PassRefPtr<CSSValue> CSSParserValue::createCSSValue()
 {
     RefPtr<CSSValue> parsedValue;
-    if (id)
-        parsedValue = CSSPrimitiveValue::createIdentifier(id);
-    else if (unit == CSSPrimitiveValue::CSS_IDENT)
-        parsedValue = CSSPrimitiveValue::create(string, CSSPrimitiveValue::CSS_PARSER_IDENTIFIER);
-    else if (unit == CSSPrimitiveValue::CSS_NUMBER && isInt)
-        parsedValue = CSSPrimitiveValue::create(fValue, CSSPrimitiveValue::CSS_PARSER_INTEGER);
-    else if (unit == CSSParserValue::Operator) {
-        RefPtr<CSSPrimitiveValue> primitiveValue = CSSPrimitiveValue::createIdentifier(iValue);
-        primitiveValue->setPrimitiveType(CSSPrimitiveValue::CSS_PARSER_OPERATOR);
+
+    if ( id )
+    {
+        parsedValue = CSSPrimitiveValue::createIdentifier( id );
+    }
+    else if ( unit == CSSPrimitiveValue::CSS_IDENT )
+    {
+        parsedValue = CSSPrimitiveValue::create( string, CSSPrimitiveValue::CSS_PARSER_IDENTIFIER );
+    }
+    else if ( unit == CSSPrimitiveValue::CSS_NUMBER && isInt )
+    {
+        parsedValue = CSSPrimitiveValue::create( fValue, CSSPrimitiveValue::CSS_PARSER_INTEGER );
+    }
+    else if ( unit == CSSParserValue::Operator )
+    {
+        RefPtr<CSSPrimitiveValue> primitiveValue = CSSPrimitiveValue::createIdentifier( iValue );
+        primitiveValue->setPrimitiveType( CSSPrimitiveValue::CSS_PARSER_OPERATOR );
         parsedValue = primitiveValue;
-    } else if (unit == CSSParserValue::Function)
-        parsedValue = CSSFunctionValue::create(function);
-    else if (unit == CSSPrimitiveValue::CSS_STRING || unit == CSSPrimitiveValue::CSS_URI || unit == CSSPrimitiveValue::CSS_PARSER_HEXCOLOR)
-        parsedValue = CSSPrimitiveValue::create(string, (CSSPrimitiveValue::UnitTypes)unit);
-    else if (unit >= CSSPrimitiveValue::CSS_NUMBER && unit <= CSSPrimitiveValue::CSS_KHZ)
-        parsedValue = CSSPrimitiveValue::create(fValue, (CSSPrimitiveValue::UnitTypes)unit);
-    else if (unit >= CSSPrimitiveValue::CSS_TURN && unit <= CSSPrimitiveValue::CSS_REMS) // CSS3 Values and Units
-        parsedValue = CSSPrimitiveValue::create(fValue, (CSSPrimitiveValue::UnitTypes)unit);
-    else if (unit >= CSSParserValue::Q_EMS)
-        parsedValue = CSSQuirkPrimitiveValue::create(fValue, CSSPrimitiveValue::CSS_EMS);
+    }
+    else if ( unit == CSSParserValue::Function )
+    {
+        parsedValue = CSSFunctionValue::create( function );
+    }
+    else if ( unit == CSSPrimitiveValue::CSS_STRING || unit == CSSPrimitiveValue::CSS_URI
+              || unit == CSSPrimitiveValue::CSS_PARSER_HEXCOLOR )
+    {
+        parsedValue = CSSPrimitiveValue::create( string, ( CSSPrimitiveValue::UnitTypes )unit );
+    }
+    else if ( unit >= CSSPrimitiveValue::CSS_NUMBER && unit <= CSSPrimitiveValue::CSS_KHZ )
+    {
+        parsedValue = CSSPrimitiveValue::create( fValue, ( CSSPrimitiveValue::UnitTypes )unit );
+    }
+    else if ( unit >= CSSPrimitiveValue::CSS_TURN && unit <= CSSPrimitiveValue::CSS_REMS ) // CSS3 Values and Units
+    {
+        parsedValue = CSSPrimitiveValue::create( fValue, ( CSSPrimitiveValue::UnitTypes )unit );
+    }
+    else if ( unit >= CSSParserValue::Q_EMS )
+    {
+        parsedValue = CSSQuirkPrimitiveValue::create( fValue, CSSPrimitiveValue::CSS_EMS );
+    }
+
     return parsedValue;
 }
-    
+
 CSSParserSelector::CSSParserSelector()
-    : m_selector(adoptPtr(fastNew<CSSSelector>()))
+    : m_selector( adoptPtr( fastNew<CSSSelector>() ) )
 {
 }
 
 CSSParserSelector::~CSSParserSelector()
 {
-    if (!m_tagHistory)
+    if ( !m_tagHistory )
+    {
         return;
-    Vector<CSSParserSelector*, 16> toDelete;
-    CSSParserSelector* selector = m_tagHistory.leakPtr();
-    while (true) {
-        toDelete.append(selector);
-        CSSParserSelector* next = selector->m_tagHistory.leakPtr();
-        if (!next)
+    }
+
+    Vector<CSSParserSelector *, 16> toDelete;
+    CSSParserSelector *selector = m_tagHistory.leakPtr();
+
+    while ( true )
+    {
+        toDelete.append( selector );
+        CSSParserSelector *next = selector->m_tagHistory.leakPtr();
+
+        if ( !next )
+        {
             break;
+        }
+
         selector = next;
     }
-    deleteAllValues(toDelete);
+
+    deleteAllValues( toDelete );
 }
 
-void CSSParserSelector::adoptSelectorVector(Vector<OwnPtr<CSSParserSelector> >& selectorVector)
+void CSSParserSelector::adoptSelectorVector( Vector<OwnPtr<CSSParserSelector> > &selectorVector )
 {
-    CSSSelectorList* selectorList = fastNew<CSSSelectorList>();
-    selectorList->adoptSelectorVector(selectorVector);
-    m_selector->setSelectorList(adoptPtr(selectorList));
+    CSSSelectorList *selectorList = fastNew<CSSSelectorList>();
+    selectorList->adoptSelectorVector( selectorVector );
+    m_selector->setSelectorList( adoptPtr( selectorList ) );
 }
 
-void CSSParserSelector::insertTagHistory(CSSSelector::Relation before, PassOwnPtr<CSSParserSelector> selector, CSSSelector::Relation after)
+void CSSParserSelector::insertTagHistory( CSSSelector::Relation before, PassOwnPtr<CSSParserSelector> selector,
+        CSSSelector::Relation after )
 {
-    if (m_tagHistory)
-        selector->setTagHistory(m_tagHistory.release());
-    setRelation(before);
-    selector->setRelation(after);
+    if ( m_tagHistory )
+    {
+        selector->setTagHistory( m_tagHistory.release() );
+    }
+
+    setRelation( before );
+    selector->setRelation( after );
     m_tagHistory = selector;
 }
 
-void CSSParserSelector::appendTagHistory(CSSSelector::Relation relation, PassOwnPtr<CSSParserSelector> selector)
+void CSSParserSelector::appendTagHistory( CSSSelector::Relation relation, PassOwnPtr<CSSParserSelector> selector )
 {
-    CSSParserSelector* end = this;
-    while (end->tagHistory())
+    CSSParserSelector *end = this;
+
+    while ( end->tagHistory() )
+    {
         end = end->tagHistory();
-    end->setRelation(relation);
-    end->setTagHistory(selector);
+    }
+
+    end->setRelation( relation );
+    end->setTagHistory( selector );
 }
 
 }

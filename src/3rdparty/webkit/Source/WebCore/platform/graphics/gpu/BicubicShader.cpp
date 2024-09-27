@@ -36,23 +36,24 @@
 
 #include "GraphicsContext3D.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-BicubicShader::BicubicShader(GraphicsContext3D* context, unsigned program)
-    : Shader(context, program)
-    , m_matrixLocation(context->getUniformLocation(program, "matrix"))
-    , m_texMatrixLocation(context->getUniformLocation(program, "texMatrix"))
-    , m_coefficientsLocation(context->getUniformLocation(program, "coefficients"))
-    , m_imageIncrementLocation(context->getUniformLocation(program, "imageIncrement"))
-    , m_imageLocation(context->getUniformLocation(program, "image"))
-    , m_alphaLocation(context->getUniformLocation(program, "alpha"))
-    , m_positionLocation(context->getAttribLocation(program, "position"))
+BicubicShader::BicubicShader( GraphicsContext3D *context, unsigned program )
+    : Shader( context, program )
+    , m_matrixLocation( context->getUniformLocation( program, "matrix" ) )
+    , m_texMatrixLocation( context->getUniformLocation( program, "texMatrix" ) )
+    , m_coefficientsLocation( context->getUniformLocation( program, "coefficients" ) )
+    , m_imageIncrementLocation( context->getUniformLocation( program, "imageIncrement" ) )
+    , m_imageLocation( context->getUniformLocation( program, "image" ) )
+    , m_alphaLocation( context->getUniformLocation( program, "alpha" ) )
+    , m_positionLocation( context->getAttribLocation( program, "position" ) )
 {
 }
 
-PassOwnPtr<BicubicShader> BicubicShader::create(GraphicsContext3D* context)
+PassOwnPtr<BicubicShader> BicubicShader::create( GraphicsContext3D *context )
 {
-    static const char* vertexShaderSource =
+    static const char *vertexShaderSource =
         "uniform mat3 matrix;\n"
         "uniform mat3 texMatrix;\n"
         "attribute vec2 position;\n"
@@ -62,7 +63,7 @@ PassOwnPtr<BicubicShader> BicubicShader::create(GraphicsContext3D* context)
         "    texCoord = (texMatrix * pos).xy;\n"
         "    gl_Position = vec4(matrix * pos, 1.0);\n"
         "}\n";
-    static const char* fragmentShaderSource =
+    static const char *fragmentShaderSource =
         "#ifdef GL_ES\n"
         "precision mediump float;\n"
         "#endif\n"
@@ -102,35 +103,39 @@ PassOwnPtr<BicubicShader> BicubicShader::create(GraphicsContext3D* context)
         "    gl_FragColor = cubicBlend(f.y, t0, t1, t2, t3);\n"
         "}\n";
 
-    unsigned program = loadProgram(context, vertexShaderSource, fragmentShaderSource);
-    if (!program)
-        return nullptr;
+    unsigned program = loadProgram( context, vertexShaderSource, fragmentShaderSource );
 
-    return new BicubicShader(context, program);
+    if ( !program )
+    {
+        return nullptr;
+    }
+
+    return new BicubicShader( context, program );
 }
 
-void BicubicShader::use(const AffineTransform& transform, const AffineTransform& texTransform, const float coefficients[16], const float imageIncrement[2], float alpha)
+void BicubicShader::use( const AffineTransform &transform, const AffineTransform &texTransform, const float coefficients[16],
+                         const float imageIncrement[2], float alpha )
 {
-    m_context->useProgram(m_program);
+    m_context->useProgram( m_program );
     float matrix[9];
-    affineTo3x3(transform, matrix);
-    m_context->uniformMatrix3fv(m_matrixLocation, false /*transpose*/, matrix, 1 /*count*/);
+    affineTo3x3( transform, matrix );
+    m_context->uniformMatrix3fv( m_matrixLocation, false /*transpose*/, matrix, 1 /*count*/ );
 
     float texMatrix[9];
-    affineTo3x3(texTransform, texMatrix);
-    m_context->uniformMatrix3fv(m_texMatrixLocation, false /*transpose*/, texMatrix, 1 /*count*/);
-    m_context->uniformMatrix4fv(m_coefficientsLocation, false /*transpose*/, const_cast<float *>(coefficients), 1 /*count*/);
+    affineTo3x3( texTransform, texMatrix );
+    m_context->uniformMatrix3fv( m_texMatrixLocation, false /*transpose*/, texMatrix, 1 /*count*/ );
+    m_context->uniformMatrix4fv( m_coefficientsLocation, false /*transpose*/, const_cast<float *>( coefficients ), 1 /*count*/ );
 
-    m_context->uniform2f(m_imageIncrementLocation, imageIncrement[0], imageIncrement[1]);
+    m_context->uniform2f( m_imageIncrementLocation, imageIncrement[0], imageIncrement[1] );
 
     // For now, we always use texture unit 0. If that ever changes, we should
     // expose this parameter to the caller.
-    m_context->uniform1i(m_imageLocation, 0);
-    m_context->uniform1f(m_alphaLocation, alpha);
+    m_context->uniform1i( m_imageLocation, 0 );
+    m_context->uniform1f( m_alphaLocation, alpha );
 
-    m_context->vertexAttribPointer(m_positionLocation, 2, GraphicsContext3D::FLOAT, false, 0, 0);
+    m_context->vertexAttribPointer( m_positionLocation, 2, GraphicsContext3D::FLOAT, false, 0, 0 );
 
-    m_context->enableVertexAttribArray(m_positionLocation);
+    m_context->enableVertexAttribArray( m_positionLocation );
 }
 
 }

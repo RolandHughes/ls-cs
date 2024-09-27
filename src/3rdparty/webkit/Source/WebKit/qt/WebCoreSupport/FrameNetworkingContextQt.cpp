@@ -26,29 +26,32 @@
 #include <qnetaccess_manager.h>
 #include <qobject.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-FrameNetworkingContextQt::FrameNetworkingContextQt(Frame* frame, QObject* originatingObject, bool mimeSniffingEnabled, QNetworkAccessManager* networkAccessManager)
-    : FrameNetworkingContext(frame)
-    , m_originatingObject(originatingObject)
-    , m_networkAccessManager(networkAccessManager)
-    , m_mimeSniffingEnabled(mimeSniffingEnabled)
+FrameNetworkingContextQt::FrameNetworkingContextQt( Frame *frame, QObject *originatingObject, bool mimeSniffingEnabled,
+        QNetworkAccessManager *networkAccessManager )
+    : FrameNetworkingContext( frame )
+    , m_originatingObject( originatingObject )
+    , m_networkAccessManager( networkAccessManager )
+    , m_mimeSniffingEnabled( mimeSniffingEnabled )
 {
 }
 
-PassRefPtr<FrameNetworkingContextQt> FrameNetworkingContextQt::create(Frame* frame, QObject* originatingObject, bool mimeSniffingEnabled, QNetworkAccessManager* networkAccessManager)
+PassRefPtr<FrameNetworkingContextQt> FrameNetworkingContextQt::create( Frame *frame, QObject *originatingObject,
+        bool mimeSniffingEnabled, QNetworkAccessManager *networkAccessManager )
 {
-    return adoptRef(new FrameNetworkingContextQt(frame, originatingObject, mimeSniffingEnabled, networkAccessManager));
+    return adoptRef( new FrameNetworkingContextQt( frame, originatingObject, mimeSniffingEnabled, networkAccessManager ) );
 }
 
-QObject* FrameNetworkingContextQt::originatingObject() const
+QObject *FrameNetworkingContextQt::originatingObject() const
 {
     return m_originatingObject;
 }
 
-QNetworkAccessManager* FrameNetworkingContextQt::networkAccessManager() const
+QNetworkAccessManager *FrameNetworkingContextQt::networkAccessManager() const
 {
-    return (qobject_cast<QWebFrame*>(m_originatingObject))->page()->networkAccessManager();
+    return ( qobject_cast<QWebFrame *>( m_originatingObject ) )->page()->networkAccessManager();
 }
 
 bool FrameNetworkingContextQt::mimeSniffingEnabled() const

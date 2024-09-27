@@ -35,15 +35,17 @@
 
 #include "FileError.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class AsyncFileWriterClient {
+class AsyncFileWriterClient
+{
 public:
     virtual ~AsyncFileWriterClient() {}
 
-    virtual void didWrite(long long bytes, bool complete) = 0;
+    virtual void didWrite( long long bytes, bool complete ) = 0;
     virtual void didTruncate() = 0;
-    virtual void didFail(FileError::ErrorCode) = 0;
+    virtual void didFail( FileError::ErrorCode ) = 0;
 };
 
 } // namespace

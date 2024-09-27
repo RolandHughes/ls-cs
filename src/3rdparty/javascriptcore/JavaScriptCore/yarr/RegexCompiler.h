@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef RegexCompiler_h
@@ -34,11 +34,15 @@
 #include "RegexParser.h"
 #include "RegexPattern.h"
 
-namespace JSC { namespace Yarr {
+namespace JSC
+{
+namespace Yarr
+{
 
-const char* compileRegex(const UString& patternString, RegexPattern& pattern);
+const char *compileRegex( const UString &patternString, RegexPattern &pattern );
 
-} } // namespace JSC::Yarr
+}
+} // namespace JSC::Yarr
 
 #endif
 

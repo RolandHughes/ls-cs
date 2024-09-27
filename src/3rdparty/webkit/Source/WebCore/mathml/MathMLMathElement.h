@@ -30,19 +30,21 @@
 #if ENABLE(MATHML)
 #include "MathMLInlineContainerElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class MathMLMathElement : public MathMLInlineContainerElement {
+class MathMLMathElement : public MathMLInlineContainerElement
+{
 public:
-    static PassRefPtr<MathMLMathElement> create(const QualifiedName& tagName, Document*);
+    static PassRefPtr<MathMLMathElement> create( const QualifiedName &tagName, Document * );
 
 private:
-    MathMLMathElement(const QualifiedName& tagName, Document*);
+    MathMLMathElement( const QualifiedName &tagName, Document * );
 
     virtual void insertedIntoDocument();
-    virtual RenderObject* createRenderer(RenderArena*, RenderStyle*);
+    virtual RenderObject *createRenderer( RenderArena *, RenderStyle * );
 };
-    
+
 }
 
 #endif // ENABLE(MATHML)

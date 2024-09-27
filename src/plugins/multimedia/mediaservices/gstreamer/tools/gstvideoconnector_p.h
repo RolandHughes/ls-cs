@@ -42,26 +42,28 @@ G_BEGIN_DECLS
 typedef struct _GstVideoConnector GstVideoConnector;
 typedef struct _GstVideoConnectorClass GstVideoConnectorClass;
 
-struct _GstVideoConnector {
-  GstElement element;
+struct _GstVideoConnector
+{
+    GstElement element;
 
-  GstPad *srcpad;
-  GstPad *sinkpad;
+    GstPad *srcpad;
+    GstPad *sinkpad;
 
-  gboolean relinked;
-  gboolean failedSignalEmited;
-  GstSegment segment;
-  GstBuffer *latest_buffer;
+    gboolean relinked;
+    gboolean failedSignalEmited;
+    GstSegment segment;
+    GstBuffer *latest_buffer;
 };
 
-struct _GstVideoConnectorClass {
-  GstElementClass parent_class;
+struct _GstVideoConnectorClass
+{
+    GstElementClass parent_class;
 
-  /* action signal to resend new segment */
-  void (*resend_new_segment) (GstElement * element, gboolean emitFailedSignal);
+    /* action signal to resend new segment */
+    void ( *resend_new_segment ) ( GstElement *element, gboolean emitFailedSignal );
 };
 
-GType gst_video_connector_get_type (void);
+GType gst_video_connector_get_type ( void );
 
 G_END_DECLS
 

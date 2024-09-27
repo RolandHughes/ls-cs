@@ -35,12 +35,12 @@
 
 class Q_GUI_EXPORT QPlatformPrintDevice
 {
- public:
+public:
     QPlatformPrintDevice();
-    explicit QPlatformPrintDevice(const QString &id);
+    explicit QPlatformPrintDevice( const QString &id );
 
-    QPlatformPrintDevice(const QPlatformPrintDevice &) = delete;
-    QPlatformPrintDevice &operator=(const QPlatformPrintDevice &) = delete;
+    QPlatformPrintDevice( const QPlatformPrintDevice & ) = delete;
+    QPlatformPrintDevice &operator=( const QPlatformPrintDevice & ) = delete;
 
     virtual ~QPlatformPrintDevice();
 
@@ -55,7 +55,7 @@ class Q_GUI_EXPORT QPlatformPrintDevice
 
     virtual QPrint::DeviceState state() const;
 
-    virtual bool isValidPageLayout(const QPageLayout &layout, int resolution) const;
+    virtual bool isValidPageLayout( const QPageLayout &layout, int resolution ) const;
 
     virtual bool supportsMultipleCopies() const;
     virtual bool supportsCollateCopies() const;
@@ -63,19 +63,19 @@ class Q_GUI_EXPORT QPlatformPrintDevice
     virtual QPageSize defaultPageSize() const;
     virtual QList<QPageSize> supportedPageSizes() const;
 
-    virtual QPageSize supportedPageSize(const QPageSize &pageSize) const;
-    virtual QPageSize supportedPageSize(QPageSize::PageSizeId pageSizeId) const;
-    virtual QPageSize supportedPageSize(const QString &pageName) const;
-    virtual QPageSize supportedPageSize(const QSize &pointSize) const;
-    virtual QPageSize supportedPageSize(const QSizeF &size, QPageSize::Unit units) const;
+    virtual QPageSize supportedPageSize( const QPageSize &pageSize ) const;
+    virtual QPageSize supportedPageSize( QPageSize::PageSizeId pageSizeId ) const;
+    virtual QPageSize supportedPageSize( const QString &pageName ) const;
+    virtual QPageSize supportedPageSize( const QSize &pointSize ) const;
+    virtual QPageSize supportedPageSize( const QSizeF &size, QPageSize::Unit units ) const;
 
     virtual bool supportsCustomPageSizes() const;
 
     virtual QSize minimumPhysicalPageSize() const;
     virtual QSize maximumPhysicalPageSize() const;
 
-    virtual QMarginsF printableMargins(const QPageSize &pageSize, QPageLayout::Orientation orientation,
-                                       int resolution) const;
+    virtual QMarginsF printableMargins( const QPageSize &pageSize, QPageLayout::Orientation orientation,
+                                        int resolution ) const;
 
     virtual int defaultResolution() const;
     virtual QList<int> supportedResolutions() const;
@@ -93,13 +93,13 @@ class Q_GUI_EXPORT QPlatformPrintDevice
     virtual QList<QPrint::ColorMode> supportedColorModes() const;
 
 #ifndef QT_NO_MIMETYPE
-   // emerald   virtual QList<QMimeType> supportedMimeTypes() const;
+    // emerald   virtual QList<QMimeType> supportedMimeTypes() const;
 #endif
 
-    static QPageSize createPageSize(const QString &key, const QSize &size, const QString &localizedName);
-    static QPageSize createPageSize(int windowsId, const QSize &size, const QString &localizedName);
+    static QPageSize createPageSize( const QString &key, const QSize &size, const QString &localizedName );
+    static QPageSize createPageSize( int windowsId, const QSize &size, const QString &localizedName );
 
- protected:
+protected:
     virtual void loadPageSizes() const;
     virtual void loadResolutions() const;
     virtual void loadInputSlots() const;
@@ -111,7 +111,7 @@ class Q_GUI_EXPORT QPlatformPrintDevice
     // emerald   virtual void loadMimeTypes() const;
 #endif
 
-    QPageSize supportedPageSizeMatch(const QPageSize &pageSize) const;
+    QPageSize supportedPageSizeMatch( const QPageSize &pageSize ) const;
 
     QString m_id;
     QString m_name;
@@ -147,8 +147,8 @@ class Q_GUI_EXPORT QPlatformPrintDevice
     mutable QVector<QPrint::ColorMode> m_colorModes;
 
 #ifndef QT_NO_MIMETYPE
-   // emerald    mutable bool m_haveMimeTypes;
-   // emerald    mutable QVector<QMimeType> m_mimeTypes;
+    // emerald    mutable bool m_haveMimeTypes;
+    // emerald    mutable QVector<QMimeType> m_mimeTypes;
 #endif
 };
 

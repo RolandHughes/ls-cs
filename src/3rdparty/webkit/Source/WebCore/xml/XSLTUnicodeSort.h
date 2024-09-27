@@ -32,9 +32,10 @@
 
 #include <libxslt/xsltInternals.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-    void xsltUnicodeSortFunction(xsltTransformContextPtr ctxt, xmlNodePtr* sorts, int nbsorts);
+void xsltUnicodeSortFunction( xsltTransformContextPtr ctxt, xmlNodePtr *sorts, int nbsorts );
 
 }
 

@@ -30,30 +30,35 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefPtr.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
 class SharedMemory;
 
-class VisitedLinkTable {
+class VisitedLinkTable
+{
 public:
     VisitedLinkTable();
     ~VisitedLinkTable();
 
-    void setSharedMemory(PassRefPtr<SharedMemory>);
+    void setSharedMemory( PassRefPtr<SharedMemory> );
 
     // This should only be called from the UI process.
-    bool addLinkHash(WebCore::LinkHash);
+    bool addLinkHash( WebCore::LinkHash );
 
-    bool isLinkVisited(WebCore::LinkHash) const;
+    bool isLinkVisited( WebCore::LinkHash ) const;
 
-    SharedMemory* sharedMemory() const { return m_sharedMemory.get(); }
+    SharedMemory *sharedMemory() const
+    {
+        return m_sharedMemory.get();
+    }
 
 private:
     RefPtr<SharedMemory> m_sharedMemory;
 
     unsigned m_tableSize;
     unsigned m_tableSizeMask;
-    WebCore::LinkHash* m_table;
+    WebCore::LinkHash *m_table;
 };
 
 }

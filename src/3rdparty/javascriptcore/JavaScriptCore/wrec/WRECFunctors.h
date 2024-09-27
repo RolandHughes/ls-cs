@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include <wtf/Platform.h>
@@ -30,80 +30,89 @@
 #include "WRECGenerator.h"
 #include <wtf/unicode/Unicode.h>
 
-namespace JSC { namespace WREC {
+namespace JSC
+{
+namespace WREC
+{
 
-    struct CharacterClass;
+struct CharacterClass;
 
-    class GenerateAtomFunctor {
-    public:
-        virtual ~GenerateAtomFunctor() {}
+class GenerateAtomFunctor
+{
+public:
+    virtual ~GenerateAtomFunctor() {}
 
-        virtual void generateAtom(Generator*, Generator::JumpList&) = 0;
-        virtual void backtrack(Generator*) = 0;
-    };
+    virtual void generateAtom( Generator *, Generator::JumpList & ) = 0;
+    virtual void backtrack( Generator * ) = 0;
+};
 
-    class GeneratePatternCharacterFunctor : public GenerateAtomFunctor {
-    public:
-        GeneratePatternCharacterFunctor(const UChar ch)
-            : m_ch(ch)
-        {
-        }
+class GeneratePatternCharacterFunctor : public GenerateAtomFunctor
+{
+public:
+    GeneratePatternCharacterFunctor( const UChar ch )
+        : m_ch( ch )
+    {
+    }
 
-        virtual void generateAtom(Generator*, Generator::JumpList&);
-        virtual void backtrack(Generator*);
+    virtual void generateAtom( Generator *, Generator::JumpList & );
+    virtual void backtrack( Generator * );
 
-    private:
-        const UChar m_ch;
-    };
+private:
+    const UChar m_ch;
+};
 
-    class GenerateCharacterClassFunctor : public GenerateAtomFunctor {
-    public:
-        GenerateCharacterClassFunctor(const CharacterClass* charClass, bool invert)
-            : m_charClass(charClass)
-            , m_invert(invert)
-        {
-        }
+class GenerateCharacterClassFunctor : public GenerateAtomFunctor
+{
+public:
+    GenerateCharacterClassFunctor( const CharacterClass *charClass, bool invert )
+        : m_charClass( charClass )
+        , m_invert( invert )
+    {
+    }
 
-        virtual void generateAtom(Generator*, Generator::JumpList&);
-        virtual void backtrack(Generator*);
+    virtual void generateAtom( Generator *, Generator::JumpList & );
+    virtual void backtrack( Generator * );
 
-    private:
-        const CharacterClass* m_charClass;
-        bool m_invert;
-    };
+private:
+    const CharacterClass *m_charClass;
+    bool m_invert;
+};
 
-    class GenerateBackreferenceFunctor : public GenerateAtomFunctor {
-    public:
-        GenerateBackreferenceFunctor(unsigned subpatternId)
-            : m_subpatternId(subpatternId)
-        {
-        }
+class GenerateBackreferenceFunctor : public GenerateAtomFunctor
+{
+public:
+    GenerateBackreferenceFunctor( unsigned subpatternId )
+        : m_subpatternId( subpatternId )
+    {
+    }
 
-        virtual void generateAtom(Generator*, Generator::JumpList&);
-        virtual void backtrack(Generator*);
+    virtual void generateAtom( Generator *, Generator::JumpList & );
+    virtual void backtrack( Generator * );
 
-    private:
-        unsigned m_subpatternId;
-    };
+private:
+    unsigned m_subpatternId;
+};
 
-    class GenerateParenthesesNonGreedyFunctor : public GenerateAtomFunctor {
-    public:
-        GenerateParenthesesNonGreedyFunctor(Generator::Label start, Generator::Jump success, Generator::Jump fail)
-            : m_start(start)
-            , m_success(success)
-            , m_fail(fail)
-        {
-        }
+class GenerateParenthesesNonGreedyFunctor : public GenerateAtomFunctor
+{
+public:
+    GenerateParenthesesNonGreedyFunctor( Generator::Label start, Generator::Jump success, Generator::Jump fail )
+        : m_start( start )
+        , m_success( success )
+        , m_fail( fail )
+    {
+    }
 
-        virtual void generateAtom(Generator*, Generator::JumpList&);
-        virtual void backtrack(Generator*);
+    virtual void generateAtom( Generator *, Generator::JumpList & );
+    virtual void backtrack( Generator * );
 
-    private:
-        Generator::Label m_start;
-        Generator::Jump m_success;
-        Generator::Jump m_fail;
-    };
+private:
+    Generator::Label m_start;
+    Generator::Jump m_success;
+    Generator::Jump m_fail;
+};
 
-} } // namespace JSC::WREC
+}
+} // namespace JSC::WREC
 
 #endif // ENABLE(WREC)

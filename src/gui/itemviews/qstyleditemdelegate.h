@@ -37,42 +37,43 @@ class QItemEditorFactory;
 
 class Q_GUI_EXPORT QStyledItemDelegate : public QAbstractItemDelegate
 {
-   GUI_CS_OBJECT(QStyledItemDelegate)
+    GUI_CS_OBJECT( QStyledItemDelegate )
 
- public:
-   explicit QStyledItemDelegate(QObject *parent = nullptr);
+public:
+    explicit QStyledItemDelegate( QObject *parent = nullptr );
 
-   QStyledItemDelegate(const QStyledItemDelegate &) = delete;
-   QStyledItemDelegate &operator=(const QStyledItemDelegate &) = delete;
+    QStyledItemDelegate( const QStyledItemDelegate & ) = delete;
+    QStyledItemDelegate &operator=( const QStyledItemDelegate & ) = delete;
 
-   ~QStyledItemDelegate() = default;
+    ~QStyledItemDelegate() = default;
 
-   // painting
-   void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
-   QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const override;
+    // painting
+    void paint( QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index ) const override;
+    QSize sizeHint( const QStyleOptionViewItem &option, const QModelIndex &index ) const override;
 
-   // editing
-   QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
+    // editing
+    QWidget *createEditor( QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index ) const override;
 
-   void setEditorData(QWidget *editor, const QModelIndex &index) const override;
-   void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const override;
+    void setEditorData( QWidget *editor, const QModelIndex &index ) const override;
+    void setModelData( QWidget *editor, QAbstractItemModel *model, const QModelIndex &index ) const override;
 
-   void updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
+    void updateEditorGeometry( QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index ) const override;
 
-   // editor factory
-   QItemEditorFactory *itemEditorFactory() const;
-   void setItemEditorFactory(QItemEditorFactory *factory);
+    // editor factory
+    QItemEditorFactory *itemEditorFactory() const;
+    void setItemEditorFactory( QItemEditorFactory *factory );
 
-   virtual QString displayText(const QVariant &value, const QLocale &locale) const;
+    virtual QString displayText( const QVariant &value, const QLocale &locale ) const;
 
- protected:
-   virtual void initStyleOption(QStyleOptionViewItem *option, const QModelIndex &index) const;
+protected:
+    virtual void initStyleOption( QStyleOptionViewItem *option, const QModelIndex &index ) const;
 
-   bool eventFilter(QObject *object, QEvent *event) override;
-   bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index) override;
+    bool eventFilter( QObject *object, QEvent *event ) override;
+    bool editorEvent( QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option,
+                      const QModelIndex &index ) override;
 
- private:
-   Q_DECLARE_PRIVATE(QStyledItemDelegate)
+private:
+    Q_DECLARE_PRIVATE( QStyledItemDelegate )
 };
 
 #endif // QT_NO_ITEMVIEWS

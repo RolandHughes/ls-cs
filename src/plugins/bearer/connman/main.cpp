@@ -35,7 +35,7 @@ public:
     ~QConnmanEnginePlugin();
 
     QStringList keys() const;
-    QBearerEngine *create(const QString &key) const;
+    QBearerEngine *create( const QString &key ) const;
 };
 
 QConnmanEnginePlugin::QConnmanEnginePlugin()
@@ -48,23 +48,30 @@ QConnmanEnginePlugin::~QConnmanEnginePlugin()
 
 QStringList QConnmanEnginePlugin::keys() const
 {
-    return QStringList() << QLatin1String("connman");
+    return QStringList() << QLatin1String( "connman" );
 }
 
-QBearerEngine *QConnmanEnginePlugin::create(const QString &key) const
+QBearerEngine *QConnmanEnginePlugin::create( const QString &key ) const
 {
-    if (key == QLatin1String("connman")) {
+    if ( key == QLatin1String( "connman" ) )
+    {
         QConnmanEngine *engine = new QConnmanEngine;
-        if (engine->connmanAvailable())
+
+        if ( engine->connmanAvailable() )
+        {
             return engine;
+        }
         else
+        {
             delete engine;
+        }
     }
+
     return 0;
 }
 
-Q_EXPORT_STATIC_PLUGIN(QConnmanEnginePlugin)
-Q_EXPORT_PLUGIN2(qconnmanbearer, QConnmanEnginePlugin)
+Q_EXPORT_STATIC_PLUGIN( QConnmanEnginePlugin )
+Q_EXPORT_PLUGIN2( qconnmanbearer, QConnmanEnginePlugin )
 
 #endif
 #endif // QT_NO_BEARERMANAGEMENT

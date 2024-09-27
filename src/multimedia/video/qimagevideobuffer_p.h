@@ -32,15 +32,15 @@ class QImageVideoBufferPrivate;
 
 class Q_MULTIMEDIA_EXPORT QImageVideoBuffer : public QAbstractVideoBuffer
 {
-   Q_DECLARE_PRIVATE(QImageVideoBuffer)
+    Q_DECLARE_PRIVATE( QImageVideoBuffer )
 
- public:
-   QImageVideoBuffer(const QImage &image);
-   ~QImageVideoBuffer();
+public:
+    QImageVideoBuffer( const QImage &image );
+    ~QImageVideoBuffer();
 
-   MapMode mapMode() const override;
-   uchar *map(MapMode mode, int *numBytes, int *bytesPerLine) override;
-   void unmap() override;
+    MapMode mapMode() const override;
+    uchar *map( MapMode mode, int *numBytes, int *bytesPerLine ) override;
+    void unmap() override;
 };
 
 

@@ -28,31 +28,34 @@
 
 #include <WebCore/DragClient.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
 class WebPage;
 
-class WebDragClient : public WebCore::DragClient {
+class WebDragClient : public WebCore::DragClient
+{
 public:
-    WebDragClient(WebPage* page)
-        : m_page(page)
+    WebDragClient( WebPage *page )
+        : m_page( page )
     {
     }
 
 private:
-    virtual void willPerformDragDestinationAction(WebCore::DragDestinationAction, WebCore::DragData*);
-    virtual void willPerformDragSourceAction(WebCore::DragSourceAction, const WebCore::IntPoint&, WebCore::Clipboard*);
-    virtual WebCore::DragDestinationAction actionMaskForDrag(WebCore::DragData*);
-    virtual WebCore::DragSourceAction dragSourceActionMaskForPoint(const WebCore::IntPoint& windowPoint);
+    virtual void willPerformDragDestinationAction( WebCore::DragDestinationAction, WebCore::DragData * );
+    virtual void willPerformDragSourceAction( WebCore::DragSourceAction, const WebCore::IntPoint &, WebCore::Clipboard * );
+    virtual WebCore::DragDestinationAction actionMaskForDrag( WebCore::DragData * );
+    virtual WebCore::DragSourceAction dragSourceActionMaskForPoint( const WebCore::IntPoint &windowPoint );
 
-    virtual void startDrag(WebCore::DragImageRef dragImage, const WebCore::IntPoint& dragImageOrigin, const WebCore::IntPoint& eventPos, WebCore::Clipboard*, WebCore::Frame*, bool linkDrag = false);
+    virtual void startDrag( WebCore::DragImageRef dragImage, const WebCore::IntPoint &dragImageOrigin,
+                            const WebCore::IntPoint &eventPos, WebCore::Clipboard *, WebCore::Frame *, bool linkDrag = false );
 
 #if PLATFORM(MAC)
-    virtual void declareAndWriteDragImage(NSPasteboard*, DOMElement*, NSURL*, NSString*, WebCore::Frame*);
+    virtual void declareAndWriteDragImage( NSPasteboard *, DOMElement *, NSURL *, NSString *, WebCore::Frame * );
 #endif
     virtual void dragControllerDestroyed();
 
-    WebPage* m_page;
+    WebPage *m_page;
 };
 
 } // namespace WebKit

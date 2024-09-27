@@ -23,13 +23,11 @@
 
 #include "private/qdeclarativedebuggerstatus_p.h"
 
-QT_BEGIN_NAMESPACE
-
-QDeclarativeDebuggerStatus::~QDeclarativeDebuggerStatus()
+QT_BEGIN_NAMESPACE QDeclarativeDebuggerStatus::~QDeclarativeDebuggerStatus()
 {
 }
 
-void QDeclarativeDebuggerStatus::setSelectedState(bool)
+void QDeclarativeDebuggerStatus::setSelectedState( bool )
 {
 }
 

@@ -33,20 +33,22 @@ using namespace WebKit;
 
 WKTypeID WKKeyValueStorageManagerGetTypeID()
 {
-    return toAPI(WebKeyValueStorageManagerProxy::APIType);
+    return toAPI( WebKeyValueStorageManagerProxy::APIType );
 }
 
-void WKKeyValueStorageManagerGetKeyValueStorageOrigins(WKKeyValueStorageManagerRef keyValueStorageManagerRef, void* context, WKKeyValueStorageManagerGetKeyValueStorageOriginsFunction callback)
+void WKKeyValueStorageManagerGetKeyValueStorageOrigins( WKKeyValueStorageManagerRef keyValueStorageManagerRef, void *context,
+        WKKeyValueStorageManagerGetKeyValueStorageOriginsFunction callback )
 {
-    toImpl(keyValueStorageManagerRef)->getKeyValueStorageOrigins(ArrayCallback::create(context, callback));
+    toImpl( keyValueStorageManagerRef )->getKeyValueStorageOrigins( ArrayCallback::create( context, callback ) );
 }
 
-void WKKeyValueStorageManagerDeleteEntriesForOrigin(WKKeyValueStorageManagerRef keyValueStorageManagerRef, WKSecurityOriginRef originRef)
+void WKKeyValueStorageManagerDeleteEntriesForOrigin( WKKeyValueStorageManagerRef keyValueStorageManagerRef,
+        WKSecurityOriginRef originRef )
 {
-    toImpl(keyValueStorageManagerRef)->deleteEntriesForOrigin(toImpl(originRef));
+    toImpl( keyValueStorageManagerRef )->deleteEntriesForOrigin( toImpl( originRef ) );
 }
 
-void WKKeyValueStorageManagerDeleteAllEntries(WKKeyValueStorageManagerRef keyValueStorageManagerRef)
+void WKKeyValueStorageManagerDeleteAllEntries( WKKeyValueStorageManagerRef keyValueStorageManagerRef )
 {
-    toImpl(keyValueStorageManagerRef)->deleteAllEntries();
+    toImpl( keyValueStorageManagerRef )->deleteAllEntries();
 }

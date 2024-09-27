@@ -34,9 +34,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSSVGPaint);
+ASSERT_CLASS_FITS_IN_CELL( JSSVGPaint );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -47,10 +48,10 @@ ASSERT_CLASS_FITS_IN_CELL(JSSVGPaint);
 
 static const HashTableValue JSSVGPaintTableValues[4] =
 {
-    { "paintType", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGPaintPaintType), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "uri", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGPaintUri), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGPaintConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "paintType", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGPaintPaintType ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "uri", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGPaintUri ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGPaintConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -64,65 +65,74 @@ static JSC_CONST_HASHTABLE HashTable JSSVGPaintTable = { 9, 7, JSSVGPaintTableVa
 
 static const HashTableValue JSSVGPaintConstructorTableValues[11] =
 {
-    { "SVG_PAINTTYPE_UNKNOWN", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGPaintSVG_PAINTTYPE_UNKNOWN), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "SVG_PAINTTYPE_RGBCOLOR", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGPaintSVG_PAINTTYPE_RGBCOLOR), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "SVG_PAINTTYPE_RGBCOLOR_ICCCOLOR", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGPaintSVG_PAINTTYPE_RGBCOLOR_ICCCOLOR), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "SVG_PAINTTYPE_NONE", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGPaintSVG_PAINTTYPE_NONE), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "SVG_PAINTTYPE_CURRENTCOLOR", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGPaintSVG_PAINTTYPE_CURRENTCOLOR), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "SVG_PAINTTYPE_URI_NONE", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGPaintSVG_PAINTTYPE_URI_NONE), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "SVG_PAINTTYPE_URI_CURRENTCOLOR", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGPaintSVG_PAINTTYPE_URI_CURRENTCOLOR), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "SVG_PAINTTYPE_URI_RGBCOLOR", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGPaintSVG_PAINTTYPE_URI_RGBCOLOR), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "SVG_PAINTTYPE_URI_RGBCOLOR_ICCCOLOR", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGPaintSVG_PAINTTYPE_URI_RGBCOLOR_ICCCOLOR), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "SVG_PAINTTYPE_URI", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGPaintSVG_PAINTTYPE_URI), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "SVG_PAINTTYPE_UNKNOWN", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGPaintSVG_PAINTTYPE_UNKNOWN ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "SVG_PAINTTYPE_RGBCOLOR", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGPaintSVG_PAINTTYPE_RGBCOLOR ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "SVG_PAINTTYPE_RGBCOLOR_ICCCOLOR", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGPaintSVG_PAINTTYPE_RGBCOLOR_ICCCOLOR ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "SVG_PAINTTYPE_NONE", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGPaintSVG_PAINTTYPE_NONE ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "SVG_PAINTTYPE_CURRENTCOLOR", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGPaintSVG_PAINTTYPE_CURRENTCOLOR ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "SVG_PAINTTYPE_URI_NONE", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGPaintSVG_PAINTTYPE_URI_NONE ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "SVG_PAINTTYPE_URI_CURRENTCOLOR", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGPaintSVG_PAINTTYPE_URI_CURRENTCOLOR ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "SVG_PAINTTYPE_URI_RGBCOLOR", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGPaintSVG_PAINTTYPE_URI_RGBCOLOR ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "SVG_PAINTTYPE_URI_RGBCOLOR_ICCCOLOR", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGPaintSVG_PAINTTYPE_URI_RGBCOLOR_ICCCOLOR ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "SVG_PAINTTYPE_URI", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGPaintSVG_PAINTTYPE_URI ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSSVGPaintConstructorTable = { 35, 31, JSSVGPaintConstructorTableValues, 0 };
 
-COMPILE_ASSERT(0 == SVGPaint::SVG_PAINTTYPE_UNKNOWN, SVGPaintEnumSVG_PAINTTYPE_UNKNOWNIsWrongUseDontCheckEnums);
-COMPILE_ASSERT(1 == SVGPaint::SVG_PAINTTYPE_RGBCOLOR, SVGPaintEnumSVG_PAINTTYPE_RGBCOLORIsWrongUseDontCheckEnums);
-COMPILE_ASSERT(2 == SVGPaint::SVG_PAINTTYPE_RGBCOLOR_ICCCOLOR, SVGPaintEnumSVG_PAINTTYPE_RGBCOLOR_ICCCOLORIsWrongUseDontCheckEnums);
-COMPILE_ASSERT(101 == SVGPaint::SVG_PAINTTYPE_NONE, SVGPaintEnumSVG_PAINTTYPE_NONEIsWrongUseDontCheckEnums);
-COMPILE_ASSERT(102 == SVGPaint::SVG_PAINTTYPE_CURRENTCOLOR, SVGPaintEnumSVG_PAINTTYPE_CURRENTCOLORIsWrongUseDontCheckEnums);
-COMPILE_ASSERT(103 == SVGPaint::SVG_PAINTTYPE_URI_NONE, SVGPaintEnumSVG_PAINTTYPE_URI_NONEIsWrongUseDontCheckEnums);
-COMPILE_ASSERT(104 == SVGPaint::SVG_PAINTTYPE_URI_CURRENTCOLOR, SVGPaintEnumSVG_PAINTTYPE_URI_CURRENTCOLORIsWrongUseDontCheckEnums);
-COMPILE_ASSERT(105 == SVGPaint::SVG_PAINTTYPE_URI_RGBCOLOR, SVGPaintEnumSVG_PAINTTYPE_URI_RGBCOLORIsWrongUseDontCheckEnums);
-COMPILE_ASSERT(106 == SVGPaint::SVG_PAINTTYPE_URI_RGBCOLOR_ICCCOLOR, SVGPaintEnumSVG_PAINTTYPE_URI_RGBCOLOR_ICCCOLORIsWrongUseDontCheckEnums);
-COMPILE_ASSERT(107 == SVGPaint::SVG_PAINTTYPE_URI, SVGPaintEnumSVG_PAINTTYPE_URIIsWrongUseDontCheckEnums);
+COMPILE_ASSERT( 0 == SVGPaint::SVG_PAINTTYPE_UNKNOWN, SVGPaintEnumSVG_PAINTTYPE_UNKNOWNIsWrongUseDontCheckEnums );
+COMPILE_ASSERT( 1 == SVGPaint::SVG_PAINTTYPE_RGBCOLOR, SVGPaintEnumSVG_PAINTTYPE_RGBCOLORIsWrongUseDontCheckEnums );
+COMPILE_ASSERT( 2 == SVGPaint::SVG_PAINTTYPE_RGBCOLOR_ICCCOLOR,
+                SVGPaintEnumSVG_PAINTTYPE_RGBCOLOR_ICCCOLORIsWrongUseDontCheckEnums );
+COMPILE_ASSERT( 101 == SVGPaint::SVG_PAINTTYPE_NONE, SVGPaintEnumSVG_PAINTTYPE_NONEIsWrongUseDontCheckEnums );
+COMPILE_ASSERT( 102 == SVGPaint::SVG_PAINTTYPE_CURRENTCOLOR, SVGPaintEnumSVG_PAINTTYPE_CURRENTCOLORIsWrongUseDontCheckEnums );
+COMPILE_ASSERT( 103 == SVGPaint::SVG_PAINTTYPE_URI_NONE, SVGPaintEnumSVG_PAINTTYPE_URI_NONEIsWrongUseDontCheckEnums );
+COMPILE_ASSERT( 104 == SVGPaint::SVG_PAINTTYPE_URI_CURRENTCOLOR,
+                SVGPaintEnumSVG_PAINTTYPE_URI_CURRENTCOLORIsWrongUseDontCheckEnums );
+COMPILE_ASSERT( 105 == SVGPaint::SVG_PAINTTYPE_URI_RGBCOLOR, SVGPaintEnumSVG_PAINTTYPE_URI_RGBCOLORIsWrongUseDontCheckEnums );
+COMPILE_ASSERT( 106 == SVGPaint::SVG_PAINTTYPE_URI_RGBCOLOR_ICCCOLOR,
+                SVGPaintEnumSVG_PAINTTYPE_URI_RGBCOLOR_ICCCOLORIsWrongUseDontCheckEnums );
+COMPILE_ASSERT( 107 == SVGPaint::SVG_PAINTTYPE_URI, SVGPaintEnumSVG_PAINTTYPE_URIIsWrongUseDontCheckEnums );
 
-class JSSVGPaintConstructor : public DOMConstructorObject {
+class JSSVGPaintConstructor : public DOMConstructorObject
+{
 public:
-    JSSVGPaintConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSSVGPaintConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSSVGPaintConstructor::s_info = { "SVGPaintConstructor", &DOMConstructorObject::s_info, &JSSVGPaintConstructorTable, 0 };
 
-JSSVGPaintConstructor::JSSVGPaintConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSSVGPaintConstructor::JSSVGPaintConstructor( ExecState *exec, Structure *structure, JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSSVGPaintPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSSVGPaintPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSSVGPaintConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGPaintConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSVGPaintConstructor, JSDOMWrapper>(exec, &JSSVGPaintConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSSVGPaintConstructor, JSDOMWrapper>( exec, &JSSVGPaintConstructorTable, this, propertyName, slot );
 }
 
-bool JSSVGPaintConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGPaintConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSVGPaintConstructor, JSDOMWrapper>(exec, &JSSVGPaintConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSVGPaintConstructor, JSDOMWrapper>( exec, &JSSVGPaintConstructorTable, this, propertyName,
+            descriptor );
 }
 
 /* Hash table for prototype */
@@ -134,199 +144,236 @@ bool JSSVGPaintConstructor::getOwnPropertyDescriptor(ExecState* exec, const Iden
 
 static const HashTableValue JSSVGPaintPrototypeTableValues[13] =
 {
-    { "SVG_PAINTTYPE_UNKNOWN", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGPaintSVG_PAINTTYPE_UNKNOWN), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "SVG_PAINTTYPE_RGBCOLOR", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGPaintSVG_PAINTTYPE_RGBCOLOR), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "SVG_PAINTTYPE_RGBCOLOR_ICCCOLOR", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGPaintSVG_PAINTTYPE_RGBCOLOR_ICCCOLOR), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "SVG_PAINTTYPE_NONE", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGPaintSVG_PAINTTYPE_NONE), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "SVG_PAINTTYPE_CURRENTCOLOR", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGPaintSVG_PAINTTYPE_CURRENTCOLOR), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "SVG_PAINTTYPE_URI_NONE", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGPaintSVG_PAINTTYPE_URI_NONE), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "SVG_PAINTTYPE_URI_CURRENTCOLOR", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGPaintSVG_PAINTTYPE_URI_CURRENTCOLOR), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "SVG_PAINTTYPE_URI_RGBCOLOR", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGPaintSVG_PAINTTYPE_URI_RGBCOLOR), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "SVG_PAINTTYPE_URI_RGBCOLOR_ICCCOLOR", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGPaintSVG_PAINTTYPE_URI_RGBCOLOR_ICCCOLOR), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "SVG_PAINTTYPE_URI", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGPaintSVG_PAINTTYPE_URI), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "setUri", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsSVGPaintPrototypeFunctionSetUri), (intptr_t)1 THUNK_GENERATOR(0) },
-    { "setPaint", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsSVGPaintPrototypeFunctionSetPaint), (intptr_t)4 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "SVG_PAINTTYPE_UNKNOWN", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGPaintSVG_PAINTTYPE_UNKNOWN ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "SVG_PAINTTYPE_RGBCOLOR", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGPaintSVG_PAINTTYPE_RGBCOLOR ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "SVG_PAINTTYPE_RGBCOLOR_ICCCOLOR", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGPaintSVG_PAINTTYPE_RGBCOLOR_ICCCOLOR ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "SVG_PAINTTYPE_NONE", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGPaintSVG_PAINTTYPE_NONE ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "SVG_PAINTTYPE_CURRENTCOLOR", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGPaintSVG_PAINTTYPE_CURRENTCOLOR ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "SVG_PAINTTYPE_URI_NONE", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGPaintSVG_PAINTTYPE_URI_NONE ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "SVG_PAINTTYPE_URI_CURRENTCOLOR", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGPaintSVG_PAINTTYPE_URI_CURRENTCOLOR ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "SVG_PAINTTYPE_URI_RGBCOLOR", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGPaintSVG_PAINTTYPE_URI_RGBCOLOR ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "SVG_PAINTTYPE_URI_RGBCOLOR_ICCCOLOR", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGPaintSVG_PAINTTYPE_URI_RGBCOLOR_ICCCOLOR ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "SVG_PAINTTYPE_URI", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGPaintSVG_PAINTTYPE_URI ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "setUri", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsSVGPaintPrototypeFunctionSetUri ), ( intptr_t )1 THUNK_GENERATOR( 0 ) },
+    { "setPaint", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsSVGPaintPrototypeFunctionSetPaint ), ( intptr_t )4 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSSVGPaintPrototypeTable = { 35, 31, JSSVGPaintPrototypeTableValues, 0 };
 const ClassInfo JSSVGPaintPrototype::s_info = { "SVGPaintPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSSVGPaintPrototypeTable, 0 };
 
-JSObject* JSSVGPaintPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSVGPaintPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSSVGPaint>(exec, globalObject);
+    return getDOMPrototype<JSSVGPaint>( exec, globalObject );
 }
 
-bool JSSVGPaintPrototype::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGPaintPrototype::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticPropertySlot<JSSVGPaintPrototype, JSObject>(exec, &JSSVGPaintPrototypeTable, this, propertyName, slot);
+    return getStaticPropertySlot<JSSVGPaintPrototype, JSObject>( exec, &JSSVGPaintPrototypeTable, this, propertyName, slot );
 }
 
-bool JSSVGPaintPrototype::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGPaintPrototype::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticPropertyDescriptor<JSSVGPaintPrototype, JSObject>(exec, &JSSVGPaintPrototypeTable, this, propertyName, descriptor);
+    return getStaticPropertyDescriptor<JSSVGPaintPrototype, JSObject>( exec, &JSSVGPaintPrototypeTable, this, propertyName,
+            descriptor );
 }
 
 const ClassInfo JSSVGPaint::s_info = { "SVGPaint", &JSSVGColor::s_info, &JSSVGPaintTable, 0 };
 
-JSSVGPaint::JSSVGPaint(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<SVGPaint> impl)
-    : JSSVGColor(structure, globalObject, impl)
+JSSVGPaint::JSSVGPaint( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<SVGPaint> impl )
+    : JSSVGColor( structure, globalObject, impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSSVGPaint::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSVGPaint::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSSVGPaintPrototype(exec->globalData(), globalObject, JSSVGPaintPrototype::createStructure(exec->globalData(), JSSVGColorPrototype::self(exec, globalObject)));
+    return new ( exec ) JSSVGPaintPrototype( exec->globalData(), globalObject,
+            JSSVGPaintPrototype::createStructure( exec->globalData(), JSSVGColorPrototype::self( exec, globalObject ) ) );
 }
 
-bool JSSVGPaint::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGPaint::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSVGPaint, Base>(exec, &JSSVGPaintTable, this, propertyName, slot);
+    return getStaticValueSlot<JSSVGPaint, Base>( exec, &JSSVGPaintTable, this, propertyName, slot );
 }
 
-bool JSSVGPaint::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGPaint::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSVGPaint, Base>(exec, &JSSVGPaintTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSVGPaint, Base>( exec, &JSSVGPaintTable, this, propertyName, descriptor );
 }
 
-JSValue jsSVGPaintPaintType(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGPaintPaintType( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGPaint* castedThis = static_cast<JSSVGPaint*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGPaint* imp = static_cast<SVGPaint*>(castedThis->impl());
-    JSValue result = jsNumber(imp->paintType());
+    JSSVGPaint *castedThis = static_cast<JSSVGPaint *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGPaint *imp = static_cast<SVGPaint *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->paintType() );
     return result;
 }
 
 
-JSValue jsSVGPaintUri(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGPaintUri( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGPaint* castedThis = static_cast<JSSVGPaint*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGPaint* imp = static_cast<SVGPaint*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->uri());
+    JSSVGPaint *castedThis = static_cast<JSSVGPaint *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGPaint *imp = static_cast<SVGPaint *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->uri() );
     return result;
 }
 
 
-JSValue jsSVGPaintConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGPaintConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGPaint* domObject = static_cast<JSSVGPaint*>(asObject(slotBase));
-    return JSSVGPaint::getConstructor(exec, domObject->globalObject());
+    JSSVGPaint *domObject = static_cast<JSSVGPaint *>( asObject( slotBase ) );
+    return JSSVGPaint::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSSVGPaint::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSSVGPaint::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSSVGPaintConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSSVGPaintConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsSVGPaintPrototypeFunctionSetUri(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsSVGPaintPrototypeFunctionSetUri( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSSVGPaint::s_info))
-        return throwVMTypeError(exec);
-    JSSVGPaint* castedThis = static_cast<JSSVGPaint*>(asObject(thisValue));
-    SVGPaint* imp = static_cast<SVGPaint*>(castedThis->impl());
-    if (exec->argumentCount() < 1)
-        return throwVMError(exec, createSyntaxError(exec, "Not enough arguments"));
-    const String& uri(ustringToString(exec->argument(0).toString(exec)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
 
-    imp->setUri(uri);
-    return JSValue::encode(jsUndefined());
+    if ( !thisValue.inherits( &JSSVGPaint::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSSVGPaint *castedThis = static_cast<JSSVGPaint *>( asObject( thisValue ) );
+    SVGPaint *imp = static_cast<SVGPaint *>( castedThis->impl() );
+
+    if ( exec->argumentCount() < 1 )
+    {
+        return throwVMError( exec, createSyntaxError( exec, "Not enough arguments" ) );
+    }
+
+    const String &uri( ustringToString( exec->argument( 0 ).toString( exec ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    imp->setUri( uri );
+    return JSValue::encode( jsUndefined() );
 }
 
-EncodedJSValue JSC_HOST_CALL jsSVGPaintPrototypeFunctionSetPaint(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsSVGPaintPrototypeFunctionSetPaint( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSSVGPaint::s_info))
-        return throwVMTypeError(exec);
-    JSSVGPaint* castedThis = static_cast<JSSVGPaint*>(asObject(thisValue));
-    SVGPaint* imp = static_cast<SVGPaint*>(castedThis->impl());
-    if (exec->argumentCount() < 4)
-        return throwVMError(exec, createSyntaxError(exec, "Not enough arguments"));
+
+    if ( !thisValue.inherits( &JSSVGPaint::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSSVGPaint *castedThis = static_cast<JSSVGPaint *>( asObject( thisValue ) );
+    SVGPaint *imp = static_cast<SVGPaint *>( castedThis->impl() );
+
+    if ( exec->argumentCount() < 4 )
+    {
+        return throwVMError( exec, createSyntaxError( exec, "Not enough arguments" ) );
+    }
+
     ExceptionCode ec = 0;
-    unsigned short paintType(exec->argument(0).toUInt32(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    const String& uri(ustringToString(exec->argument(1).toString(exec)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    const String& rgbColor(ustringToString(exec->argument(2).toString(exec)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    const String& iccColor(ustringToString(exec->argument(3).toString(exec)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
+    unsigned short paintType( exec->argument( 0 ).toUInt32( exec ) );
 
-    imp->setPaint(paintType, uri, rgbColor, iccColor, ec);
-    setDOMException(exec, ec);
-    return JSValue::encode(jsUndefined());
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    const String &uri( ustringToString( exec->argument( 1 ).toString( exec ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    const String &rgbColor( ustringToString( exec->argument( 2 ).toString( exec ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    const String &iccColor( ustringToString( exec->argument( 3 ).toString( exec ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    imp->setPaint( paintType, uri, rgbColor, iccColor, ec );
+    setDOMException( exec, ec );
+    return JSValue::encode( jsUndefined() );
 }
 
 // Constant getters
 
-JSValue jsSVGPaintSVG_PAINTTYPE_UNKNOWN(ExecState* exec, JSValue, const Identifier&)
+JSValue jsSVGPaintSVG_PAINTTYPE_UNKNOWN( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(0));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 0 ) );
 }
 
-JSValue jsSVGPaintSVG_PAINTTYPE_RGBCOLOR(ExecState* exec, JSValue, const Identifier&)
+JSValue jsSVGPaintSVG_PAINTTYPE_RGBCOLOR( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(1));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 1 ) );
 }
 
-JSValue jsSVGPaintSVG_PAINTTYPE_RGBCOLOR_ICCCOLOR(ExecState* exec, JSValue, const Identifier&)
+JSValue jsSVGPaintSVG_PAINTTYPE_RGBCOLOR_ICCCOLOR( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(2));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 2 ) );
 }
 
-JSValue jsSVGPaintSVG_PAINTTYPE_NONE(ExecState* exec, JSValue, const Identifier&)
+JSValue jsSVGPaintSVG_PAINTTYPE_NONE( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(101));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 101 ) );
 }
 
-JSValue jsSVGPaintSVG_PAINTTYPE_CURRENTCOLOR(ExecState* exec, JSValue, const Identifier&)
+JSValue jsSVGPaintSVG_PAINTTYPE_CURRENTCOLOR( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(102));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 102 ) );
 }
 
-JSValue jsSVGPaintSVG_PAINTTYPE_URI_NONE(ExecState* exec, JSValue, const Identifier&)
+JSValue jsSVGPaintSVG_PAINTTYPE_URI_NONE( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(103));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 103 ) );
 }
 
-JSValue jsSVGPaintSVG_PAINTTYPE_URI_CURRENTCOLOR(ExecState* exec, JSValue, const Identifier&)
+JSValue jsSVGPaintSVG_PAINTTYPE_URI_CURRENTCOLOR( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(104));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 104 ) );
 }
 
-JSValue jsSVGPaintSVG_PAINTTYPE_URI_RGBCOLOR(ExecState* exec, JSValue, const Identifier&)
+JSValue jsSVGPaintSVG_PAINTTYPE_URI_RGBCOLOR( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(105));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 105 ) );
 }
 
-JSValue jsSVGPaintSVG_PAINTTYPE_URI_RGBCOLOR_ICCCOLOR(ExecState* exec, JSValue, const Identifier&)
+JSValue jsSVGPaintSVG_PAINTTYPE_URI_RGBCOLOR_ICCCOLOR( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(106));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 106 ) );
 }
 
-JSValue jsSVGPaintSVG_PAINTTYPE_URI(ExecState* exec, JSValue, const Identifier&)
+JSValue jsSVGPaintSVG_PAINTTYPE_URI( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(107));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 107 ) );
 }
 
 

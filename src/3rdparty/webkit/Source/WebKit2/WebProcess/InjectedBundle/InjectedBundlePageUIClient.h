@@ -31,33 +31,37 @@
 #include "WebEvent.h"
 #include <wtf/Forward.h>
 
-namespace WebCore {
-    class GraphicsContext;
-    class HitTestResult;
-    class IntRect;
+namespace WebCore
+{
+class GraphicsContext;
+class HitTestResult;
+class IntRect;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
 class APIObject;
 class WebFrame;
 class WebPage;
 
-class InjectedBundlePageUIClient : public APIClient<WKBundlePageUIClient> {
+class InjectedBundlePageUIClient : public APIClient<WKBundlePageUIClient>
+{
 public:
-    void willAddMessageToConsole(WebPage*, const String& message, int32_t lineNumber);
-    void willSetStatusbarText(WebPage*, const String&);
-    void willRunJavaScriptAlert(WebPage*, const String&, WebFrame*);
-    void willRunJavaScriptConfirm(WebPage*, const String&, WebFrame*);
-    void willRunJavaScriptPrompt(WebPage*, const String&, const String&, WebFrame*);
-    void mouseDidMoveOverElement(WebPage*, const WebCore::HitTestResult&, WebEvent::Modifiers, RefPtr<APIObject>& userData);
-    void pageDidScroll(WebPage*);
+    void willAddMessageToConsole( WebPage *, const String &message, int32_t lineNumber );
+    void willSetStatusbarText( WebPage *, const String & );
+    void willRunJavaScriptAlert( WebPage *, const String &, WebFrame * );
+    void willRunJavaScriptConfirm( WebPage *, const String &, WebFrame * );
+    void willRunJavaScriptPrompt( WebPage *, const String &, const String &, WebFrame * );
+    void mouseDidMoveOverElement( WebPage *, const WebCore::HitTestResult &, WebEvent::Modifiers, RefPtr<APIObject> &userData );
+    void pageDidScroll( WebPage * );
 
     bool shouldPaintCustomOverhangArea();
-    void paintCustomOverhangArea(WebPage*, WebCore::GraphicsContext*, const WebCore::IntRect&, const WebCore::IntRect&, const WebCore::IntRect&);
+    void paintCustomOverhangArea( WebPage *, WebCore::GraphicsContext *, const WebCore::IntRect &, const WebCore::IntRect &,
+                                  const WebCore::IntRect & );
 
-    String shouldGenerateFileForUpload(WebPage*, const String& originalFilePath);
-    String generateFileForUpload(WebPage*, const String& originalFilePath);
+    String shouldGenerateFileForUpload( WebPage *, const String &originalFilePath );
+    String generateFileForUpload( WebPage *, const String &originalFilePath );
 };
 
 } // namespace WebKit

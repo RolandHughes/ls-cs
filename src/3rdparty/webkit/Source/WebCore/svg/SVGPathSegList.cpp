@@ -29,20 +29,21 @@
 #include "SVGPathElement.h"
 #include "SVGPathParserFactory.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 String SVGPathSegList::valueAsString() const
 {
     String pathString;
-    SVGPathParserFactory::self()->buildStringFromSVGPathSegList(*this, pathString, UnalteredParsing);
+    SVGPathParserFactory::self()->buildStringFromSVGPathSegList( *this, pathString, UnalteredParsing );
     return pathString;
 }
 
-void SVGPathSegList::commitChange(SVGElement* contextElement)
+void SVGPathSegList::commitChange( SVGElement *contextElement )
 {
-    ASSERT(contextElement);
-    ASSERT(contextElement->hasTagName(SVGNames::pathTag));
-    static_cast<SVGPathElement*>(contextElement)->pathSegListChanged(m_role);
+    ASSERT( contextElement );
+    ASSERT( contextElement->hasTagName( SVGNames::pathTag ) );
+    static_cast<SVGPathElement *>( contextElement )->pathSegListChanged( m_role );
 }
 
 }

@@ -26,67 +26,83 @@
 #include "FilterEffect.h"
 #include "Filter.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class FEGaussianBlur : public FilterEffect {
+class FEGaussianBlur : public FilterEffect
+{
 public:
-    static PassRefPtr<FEGaussianBlur> create(Filter*, float, float);
+    static PassRefPtr<FEGaussianBlur> create( Filter *, float, float );
 
     float stdDeviationX() const;
-    void setStdDeviationX(float);
+    void setStdDeviationX( float );
 
     float stdDeviationY() const;
-    void setStdDeviationY(float);
+    void setStdDeviationY( float );
 
-    static float calculateStdDeviation(float);
+    static float calculateStdDeviation( float );
 
     virtual void apply();
     virtual void dump();
-    
+
     virtual void determineAbsolutePaintRect();
 
-    virtual TextStream& externalRepresentation(TextStream&, int indention) const;
+    virtual TextStream &externalRepresentation( TextStream &, int indention ) const;
 
-    static void calculateKernelSize(Filter*, unsigned& kernelSizeX, unsigned& kernelSizeY, float stdX, float stdY);
+    static void calculateKernelSize( Filter *, unsigned &kernelSizeX, unsigned &kernelSizeY, float stdX, float stdY );
 
-    static inline void kernelPosition(int boxBlur, unsigned& std, int& dLeft, int& dRight);
-    inline void platformApply(ByteArray* srcPixelArray, ByteArray* tmpPixelArray, unsigned kernelSizeX, unsigned kernelSizeY, IntSize& paintSize);
+    static inline void kernelPosition( int boxBlur, unsigned &std, int &dLeft, int &dRight );
+    inline void platformApply( ByteArray *srcPixelArray, ByteArray *tmpPixelArray, unsigned kernelSizeX, unsigned kernelSizeY,
+                               IntSize &paintSize );
 
-    inline void platformApplyGeneric(ByteArray* srcPixelArray, ByteArray* tmpPixelArray, unsigned kernelSizeX, unsigned kernelSizeY, IntSize& paintSize);
-    inline void platformApplyNeon(ByteArray* srcPixelArray, ByteArray* tmpPixelArray, unsigned kernelSizeX, unsigned kernelSizeY, IntSize& paintSize);
+    inline void platformApplyGeneric( ByteArray *srcPixelArray, ByteArray *tmpPixelArray, unsigned kernelSizeX, unsigned kernelSizeY,
+                                      IntSize &paintSize );
+    inline void platformApplyNeon( ByteArray *srcPixelArray, ByteArray *tmpPixelArray, unsigned kernelSizeX, unsigned kernelSizeY,
+                                   IntSize &paintSize );
 
 private:
-    FEGaussianBlur(Filter*, float, float);
+    FEGaussianBlur( Filter *, float, float );
 
     float m_stdX;
     float m_stdY;
 };
 
-inline void FEGaussianBlur::kernelPosition(int boxBlur, unsigned& std, int& dLeft, int& dRight)
+inline void FEGaussianBlur::kernelPosition( int boxBlur, unsigned &std, int &dLeft, int &dRight )
 {
     // check http://www.w3.org/TR/SVG/filters.html#feGaussianBlurElement for details
-    switch (boxBlur) {
-    case 0:
-        if (!(std % 2)) {
-            dLeft = std / 2 - 1;
-            dRight = std - dLeft;
-        } else {
-            dLeft = std / 2;
-            dRight = std - dLeft;
-        }
-        break;
-    case 1:
-        if (!(std % 2)) {
-            dLeft++;
-            dRight--;
-        }
-        break;
-    case 2:
-        if (!(std % 2)) {
-            dRight++;
-            std++;
-        }
-        break;
+    switch ( boxBlur )
+    {
+        case 0:
+            if ( !( std % 2 ) )
+            {
+                dLeft = std / 2 - 1;
+                dRight = std - dLeft;
+            }
+            else
+            {
+                dLeft = std / 2;
+                dRight = std - dLeft;
+            }
+
+            break;
+
+        case 1:
+            if ( !( std % 2 ) )
+            {
+                dLeft++;
+                dRight--;
+            }
+
+            break;
+
+        case 2:
+            if ( !( std % 2 ) )
+            {
+                dRight++;
+                std++;
+            }
+
+            break;
     }
 }
 

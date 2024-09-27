@@ -45,132 +45,174 @@
 #include "SVGSMILElement.h"
 #include "XLinkNames.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 // Animated property definitions
-DEFINE_ANIMATED_STRING(SVGAElement, SVGNames::targetAttr, SVGTarget, svgTarget)
-DEFINE_ANIMATED_STRING(SVGAElement, XLinkNames::hrefAttr, Href, href)
-DEFINE_ANIMATED_BOOLEAN(SVGAElement, SVGNames::externalResourcesRequiredAttr, ExternalResourcesRequired, externalResourcesRequired)
+DEFINE_ANIMATED_STRING( SVGAElement, SVGNames::targetAttr, SVGTarget, svgTarget )
+DEFINE_ANIMATED_STRING( SVGAElement, XLinkNames::hrefAttr, Href, href )
+DEFINE_ANIMATED_BOOLEAN( SVGAElement, SVGNames::externalResourcesRequiredAttr, ExternalResourcesRequired,
+                         externalResourcesRequired )
 
-inline SVGAElement::SVGAElement(const QualifiedName& tagName, Document* document)
-    : SVGStyledTransformableElement(tagName, document)
+inline SVGAElement::SVGAElement( const QualifiedName &tagName, Document *document )
+    : SVGStyledTransformableElement( tagName, document )
 {
 }
 
-PassRefPtr<SVGAElement> SVGAElement::create(const QualifiedName& tagName, Document* document)
+PassRefPtr<SVGAElement> SVGAElement::create( const QualifiedName &tagName, Document *document )
 {
-    return adoptRef(new SVGAElement(tagName, document));
+    return adoptRef( new SVGAElement( tagName, document ) );
 }
 
 String SVGAElement::title() const
 {
     // If the xlink:title is set (non-empty string), use it.
-    const AtomicString& title = getAttribute(XLinkNames::titleAttr);
-    if (!title.isEmpty())
+    const AtomicString &title = getAttribute( XLinkNames::titleAttr );
+
+    if ( !title.isEmpty() )
+    {
         return title;
+    }
 
     // Otherwise, use the title of this element.
     return SVGStyledElement::title();
 }
 
-void SVGAElement::parseMappedAttribute(Attribute* attr)
+void SVGAElement::parseMappedAttribute( Attribute *attr )
 {
-    if (attr->name() == SVGNames::targetAttr)
-        setSVGTargetBaseValue(attr->value());
-    else {
-        if (SVGURIReference::parseMappedAttribute(attr))
+    if ( attr->name() == SVGNames::targetAttr )
+    {
+        setSVGTargetBaseValue( attr->value() );
+    }
+    else
+    {
+        if ( SVGURIReference::parseMappedAttribute( attr ) )
+        {
             return;
-        if (SVGTests::parseMappedAttribute(attr))
+        }
+
+        if ( SVGTests::parseMappedAttribute( attr ) )
+        {
             return;
-        if (SVGLangSpace::parseMappedAttribute(attr))
+        }
+
+        if ( SVGLangSpace::parseMappedAttribute( attr ) )
+        {
             return;
-        if (SVGExternalResourcesRequired::parseMappedAttribute(attr))
+        }
+
+        if ( SVGExternalResourcesRequired::parseMappedAttribute( attr ) )
+        {
             return;
-        SVGStyledTransformableElement::parseMappedAttribute(attr);
+        }
+
+        SVGStyledTransformableElement::parseMappedAttribute( attr );
     }
 }
 
-void SVGAElement::svgAttributeChanged(const QualifiedName& attrName)
+void SVGAElement::svgAttributeChanged( const QualifiedName &attrName )
 {
-    SVGStyledTransformableElement::svgAttributeChanged(attrName);
+    SVGStyledTransformableElement::svgAttributeChanged( attrName );
 
     // Unlike other SVG*Element classes, SVGAElement only listens to SVGURIReference changes
     // as none of the other properties changes the linking behaviour for our <a> element.
-    if (SVGURIReference::isKnownAttribute(attrName)) {
+    if ( SVGURIReference::isKnownAttribute( attrName ) )
+    {
         bool wasLink = isLink();
-        setIsLink(!href().isNull());
+        setIsLink( !href().isNull() );
 
-        if (wasLink != isLink())
+        if ( wasLink != isLink() )
+        {
             setNeedsStyleRecalc();
+        }
     }
 }
 
-AttributeToPropertyTypeMap& SVGAElement::attributeToPropertyTypeMap()
+AttributeToPropertyTypeMap &SVGAElement::attributeToPropertyTypeMap()
 {
-    DEFINE_STATIC_LOCAL(AttributeToPropertyTypeMap, s_attributeToPropertyTypeMap, ());
+    DEFINE_STATIC_LOCAL( AttributeToPropertyTypeMap, s_attributeToPropertyTypeMap, () );
     return s_attributeToPropertyTypeMap;
 }
 
 void SVGAElement::fillAttributeToPropertyTypeMap()
 {
-    AttributeToPropertyTypeMap& attributeToPropertyTypeMap = this->attributeToPropertyTypeMap();
+    AttributeToPropertyTypeMap &attributeToPropertyTypeMap = this->attributeToPropertyTypeMap();
 
-    SVGStyledTransformableElement::fillPassedAttributeToPropertyTypeMap(attributeToPropertyTypeMap);
-    attributeToPropertyTypeMap.set(SVGNames::targetAttr, AnimatedString);
-    attributeToPropertyTypeMap.set(XLinkNames::hrefAttr, AnimatedString);
+    SVGStyledTransformableElement::fillPassedAttributeToPropertyTypeMap( attributeToPropertyTypeMap );
+    attributeToPropertyTypeMap.set( SVGNames::targetAttr, AnimatedString );
+    attributeToPropertyTypeMap.set( XLinkNames::hrefAttr, AnimatedString );
 }
 
-void SVGAElement::synchronizeProperty(const QualifiedName& attrName)
+void SVGAElement::synchronizeProperty( const QualifiedName &attrName )
 {
-    SVGStyledTransformableElement::synchronizeProperty(attrName);
+    SVGStyledTransformableElement::synchronizeProperty( attrName );
 
-    if (attrName == anyQName()) {
+    if ( attrName == anyQName() )
+    {
         synchronizeSVGTarget();
         synchronizeHref();
         synchronizeExternalResourcesRequired();
-        SVGTests::synchronizeProperties(this, attrName);
+        SVGTests::synchronizeProperties( this, attrName );
         return;
     }
 
-    if (attrName == SVGNames::targetAttr)
+    if ( attrName == SVGNames::targetAttr )
+    {
         synchronizeSVGTarget();
-    else if (SVGURIReference::isKnownAttribute(attrName))
+    }
+    else if ( SVGURIReference::isKnownAttribute( attrName ) )
+    {
         synchronizeHref();
-    else if (SVGExternalResourcesRequired::isKnownAttribute(attrName))
+    }
+    else if ( SVGExternalResourcesRequired::isKnownAttribute( attrName ) )
+    {
         synchronizeExternalResourcesRequired();
-    else if (SVGTests::isKnownAttribute(attrName))
-        SVGTests::synchronizeProperties(this, attrName);
+    }
+    else if ( SVGTests::isKnownAttribute( attrName ) )
+    {
+        SVGTests::synchronizeProperties( this, attrName );
+    }
 }
 
-RenderObject* SVGAElement::createRenderer(RenderArena* arena, RenderStyle*)
+RenderObject *SVGAElement::createRenderer( RenderArena *arena, RenderStyle * )
 {
-    if (static_cast<SVGElement*>(parentNode())->isTextContent())
-        return new (arena) RenderSVGInline(this);
+    if ( static_cast<SVGElement *>( parentNode() )->isTextContent() )
+    {
+        return new ( arena ) RenderSVGInline( this );
+    }
 
-    return new (arena) RenderSVGTransformableContainer(this);
+    return new ( arena ) RenderSVGTransformableContainer( this );
 }
 
-void SVGAElement::defaultEventHandler(Event* event)
+void SVGAElement::defaultEventHandler( Event *event )
 {
-    if (isLink()) {
-        if (focused() && isEnterKeyKeydownEvent(event)) {
+    if ( isLink() )
+    {
+        if ( focused() && isEnterKeyKeydownEvent( event ) )
+        {
             event->setDefaultHandled();
-            dispatchSimulatedClick(event);
+            dispatchSimulatedClick( event );
             return;
         }
 
-        if (isLinkClick(event)) {
-            String url = stripLeadingAndTrailingHTMLSpaces(href());
+        if ( isLinkClick( event ) )
+        {
+            String url = stripLeadingAndTrailingHTMLSpaces( href() );
 
 #if ENABLE(SVG_ANIMATION)
-            if (url[0] == '#') {
-                Element* targetElement = treeScope()->getElementById(url.substring(1));
-                if (SVGSMILElement::isSMILElement(targetElement)) {
-                    static_cast<SVGSMILElement*>(targetElement)->beginByLinkActivation();
+
+            if ( url[0] == '#' )
+            {
+                Element *targetElement = treeScope()->getElementById( url.substring( 1 ) );
+
+                if ( SVGSMILElement::isSMILElement( targetElement ) )
+                {
+                    static_cast<SVGSMILElement *>( targetElement )->beginByLinkActivation();
                     event->setDefaultHandled();
                     return;
                 }
             }
+
 #endif
 
             // FIXME: Why does the SVG anchor element have this special logic
@@ -178,33 +220,40 @@ void SVGAElement::defaultEventHandler(Event* event)
             // Making a middle click open a link in a new window or tab is
             // properly handled at the client level, not inside WebKit; this
             // code should be deleted.
-            String target = isMiddleMouseButtonEvent(event) ? "_blank" : this->target();
+            String target = isMiddleMouseButtonEvent( event ) ? "_blank" : this->target();
 
             // FIXME: It's not clear why setting target to "_self" is ever
             // helpful.
-            if (target.isEmpty())
-                target = (getAttribute(XLinkNames::showAttr) == "new") ? "_blank" : "_self";
+            if ( target.isEmpty() )
+            {
+                target = ( getAttribute( XLinkNames::showAttr ) == "new" ) ? "_blank" : "_self";
+            }
 
-            handleLinkClick(event, document(), url, target);
+            handleLinkClick( event, document(), url, target );
             return;
         }
     }
 
-    SVGStyledTransformableElement::defaultEventHandler(event);
+    SVGStyledTransformableElement::defaultEventHandler( event );
 }
 
 bool SVGAElement::supportsFocus() const
 {
-    if (rendererIsEditable())
+    if ( rendererIsEditable() )
+    {
         return SVGStyledTransformableElement::supportsFocus();
+    }
+
     return true;
 }
 
 bool SVGAElement::isFocusable() const
 {
-    if (renderer() && renderer()->absoluteClippedOverflowRect().isEmpty())
+    if ( renderer() && renderer()->absoluteClippedOverflowRect().isEmpty() )
+    {
         return false;
-    
+    }
+
     return SVGElement::isFocusable();
 }
 
@@ -213,27 +262,36 @@ bool SVGAElement::isMouseFocusable() const
     return false;
 }
 
-bool SVGAElement::isKeyboardFocusable(KeyboardEvent* event) const
+bool SVGAElement::isKeyboardFocusable( KeyboardEvent *event ) const
 {
-    if (!isFocusable())
+    if ( !isFocusable() )
+    {
         return false;
-    
-    if (!document()->frame())
+    }
+
+    if ( !document()->frame() )
+    {
         return false;
-    
-    return document()->frame()->eventHandler()->tabsToLinks(event);
+    }
+
+    return document()->frame()->eventHandler()->tabsToLinks( event );
 }
 
-bool SVGAElement::childShouldCreateRenderer(Node* child) const
+bool SVGAElement::childShouldCreateRenderer( Node *child ) const
 {
     // http://www.w3.org/2003/01/REC-SVG11-20030114-errata#linking-text-environment
     // The 'a' element may contain any element that its parent may contain, except itself.
-    if (child->hasTagName(SVGNames::aTag))
+    if ( child->hasTagName( SVGNames::aTag ) )
+    {
         return false;
-    if (parentNode() && parentNode()->isSVGElement())
-        return parentNode()->childShouldCreateRenderer(child);
+    }
 
-    return SVGElement::childShouldCreateRenderer(child);
+    if ( parentNode() && parentNode()->isSVGElement() )
+    {
+        return parentNode()->childShouldCreateRenderer( child );
+    }
+
+    return SVGElement::childShouldCreateRenderer( child );
 }
 
 } // namespace WebCore

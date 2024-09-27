@@ -6,13 +6,13 @@
  * are met:
  *
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Apple Computer, Inc. ("Apple") nor the names of
  *     its contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
+ *     from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY APPLE AND ITS CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -32,43 +32,49 @@
 #include "ResourceLoader.h"
 #include <wtf/Forward.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class NetscapePlugInStreamLoader;
+class NetscapePlugInStreamLoader;
 
-    class NetscapePlugInStreamLoaderClient {
-    public:
-        virtual void didReceiveResponse(NetscapePlugInStreamLoader*, const ResourceResponse&) = 0;
-        virtual void didReceiveData(NetscapePlugInStreamLoader*, const char*, int) = 0;
-        virtual void didFail(NetscapePlugInStreamLoader*, const ResourceError&) = 0;
-        virtual void didFinishLoading(NetscapePlugInStreamLoader*) { }
-        virtual bool wantsAllStreams() const { return false; }
+class NetscapePlugInStreamLoaderClient
+{
+public:
+    virtual void didReceiveResponse( NetscapePlugInStreamLoader *, const ResourceResponse & ) = 0;
+    virtual void didReceiveData( NetscapePlugInStreamLoader *, const char *, int ) = 0;
+    virtual void didFail( NetscapePlugInStreamLoader *, const ResourceError & ) = 0;
+    virtual void didFinishLoading( NetscapePlugInStreamLoader * ) { }
+    virtual bool wantsAllStreams() const
+    {
+        return false;
+    }
 
-    protected:
-        virtual ~NetscapePlugInStreamLoaderClient() { }
-    };
+protected:
+    virtual ~NetscapePlugInStreamLoaderClient() { }
+};
 
-    class NetscapePlugInStreamLoader : public ResourceLoader {
-    public:
-        static PassRefPtr<NetscapePlugInStreamLoader> create(Frame*, NetscapePlugInStreamLoaderClient*, const ResourceRequest&);
-        virtual ~NetscapePlugInStreamLoader();
+class NetscapePlugInStreamLoader : public ResourceLoader
+{
+public:
+    static PassRefPtr<NetscapePlugInStreamLoader> create( Frame *, NetscapePlugInStreamLoaderClient *, const ResourceRequest & );
+    virtual ~NetscapePlugInStreamLoader();
 
-        bool isDone() const;
+    bool isDone() const;
 
-    private:
-        virtual void didReceiveResponse(const ResourceResponse&);
-        virtual void didReceiveData(const char*, int, long long encodedDataLength, bool allAtOnce);
-        virtual void didFinishLoading(double finishTime);
-        virtual void didFail(const ResourceError&);
+private:
+    virtual void didReceiveResponse( const ResourceResponse & );
+    virtual void didReceiveData( const char *, int, long long encodedDataLength, bool allAtOnce );
+    virtual void didFinishLoading( double finishTime );
+    virtual void didFail( const ResourceError & );
 
-        virtual void releaseResources();
+    virtual void releaseResources();
 
-        NetscapePlugInStreamLoader(Frame*, NetscapePlugInStreamLoaderClient*);
+    NetscapePlugInStreamLoader( Frame *, NetscapePlugInStreamLoaderClient * );
 
-        virtual void didCancel(const ResourceError& error);
+    virtual void didCancel( const ResourceError &error );
 
-        NetscapePlugInStreamLoaderClient* m_client;
-    };
+    NetscapePlugInStreamLoaderClient *m_client;
+};
 
 }
 

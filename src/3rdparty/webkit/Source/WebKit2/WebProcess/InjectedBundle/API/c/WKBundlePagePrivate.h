@@ -32,26 +32,28 @@
 extern "C" {
 #endif
 
-WK_EXPORT void WKBundlePageStopLoading(WKBundlePageRef page);
-WK_EXPORT void WKBundlePageSetDefersLoading(WKBundlePageRef page, bool defersLoading);
-WK_EXPORT bool WKBundlePageIsEditingCommandEnabled(WKBundlePageRef page, WKStringRef commandName);
-WK_EXPORT void WKBundlePageClearMainFrameName(WKBundlePageRef page);
-WK_EXPORT void WKBundlePageClose(WKBundlePageRef page);
-WK_EXPORT WKStringRef WKBundlePageCopyRenderTreeExternalRepresentation(WKBundlePageRef page);
-WK_EXPORT void WKBundlePageExecuteEditingCommand(WKBundlePageRef page, WKStringRef commandName, WKStringRef argument);
+WK_EXPORT void WKBundlePageStopLoading( WKBundlePageRef page );
+WK_EXPORT void WKBundlePageSetDefersLoading( WKBundlePageRef page, bool defersLoading );
+WK_EXPORT bool WKBundlePageIsEditingCommandEnabled( WKBundlePageRef page, WKStringRef commandName );
+WK_EXPORT void WKBundlePageClearMainFrameName( WKBundlePageRef page );
+WK_EXPORT void WKBundlePageClose( WKBundlePageRef page );
+WK_EXPORT WKStringRef WKBundlePageCopyRenderTreeExternalRepresentation( WKBundlePageRef page );
+WK_EXPORT void WKBundlePageExecuteEditingCommand( WKBundlePageRef page, WKStringRef commandName, WKStringRef argument );
 
-WK_EXPORT double WKBundlePageGetTextZoomFactor(WKBundlePageRef page);
-WK_EXPORT void WKBundlePageSetTextZoomFactor(WKBundlePageRef page, double zoomFactor);
-WK_EXPORT double WKBundlePageGetPageZoomFactor(WKBundlePageRef page);
-WK_EXPORT void WKBundlePageSetPageZoomFactor(WKBundlePageRef page, double zoomFactor);
+WK_EXPORT double WKBundlePageGetTextZoomFactor( WKBundlePageRef page );
+WK_EXPORT void WKBundlePageSetTextZoomFactor( WKBundlePageRef page, double zoomFactor );
+WK_EXPORT double WKBundlePageGetPageZoomFactor( WKBundlePageRef page );
+WK_EXPORT void WKBundlePageSetPageZoomFactor( WKBundlePageRef page, double zoomFactor );
 
-WK_EXPORT void WKBundlePageSetScaleAtOrigin(WKBundlePageRef page, double scale, WKPoint origin);
+WK_EXPORT void WKBundlePageSetScaleAtOrigin( WKBundlePageRef page, double scale, WKPoint origin );
 
-WK_EXPORT void WKBundlePageForceRepaint(WKBundlePageRef page);
+WK_EXPORT void WKBundlePageForceRepaint( WKBundlePageRef page );
 
-WK_EXPORT void WKBundlePageSimulateMouseDown(WKBundlePageRef page, int button, WKPoint position, int clickCount, WKEventModifiers modifiers, double time);
-WK_EXPORT void WKBundlePageSimulateMouseUp(WKBundlePageRef page, int button, WKPoint position, int clickCount, WKEventModifiers modifiers, double time);
-WK_EXPORT void WKBundlePageSimulateMouseMotion(WKBundlePageRef page, WKPoint position, double time);
+WK_EXPORT void WKBundlePageSimulateMouseDown( WKBundlePageRef page, int button, WKPoint position, int clickCount,
+        WKEventModifiers modifiers, double time );
+WK_EXPORT void WKBundlePageSimulateMouseUp( WKBundlePageRef page, int button, WKPoint position, int clickCount,
+        WKEventModifiers modifiers, double time );
+WK_EXPORT void WKBundlePageSimulateMouseMotion( WKBundlePageRef page, WKPoint position, double time );
 
 #ifdef __cplusplus
 }

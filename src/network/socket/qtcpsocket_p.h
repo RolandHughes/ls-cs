@@ -30,7 +30,7 @@
 
 class QTcpSocketPrivate : public QAbstractSocketPrivate
 {
-   Q_DECLARE_PUBLIC(QTcpSocket)
+    Q_DECLARE_PUBLIC( QTcpSocket )
 };
 
 #endif

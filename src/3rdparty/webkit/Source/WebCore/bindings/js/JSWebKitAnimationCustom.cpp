@@ -30,15 +30,20 @@
 
 using namespace JSC;
 
-namespace WebCore {
-
-JSValue JSWebKitAnimation::iterationCount(ExecState*) const
+namespace WebCore
 {
-    WebKitAnimation* imp = impl();
+
+JSValue JSWebKitAnimation::iterationCount( ExecState * ) const
+{
+    WebKitAnimation *imp = impl();
     int count = imp->iterationCount();
-    if (count == Animation::IterationCountInfinite)
-        return jsNumber(std::numeric_limits<float>::infinity());
-    return jsNumber(count);
+
+    if ( count == Animation::IterationCountInfinite )
+    {
+        return jsNumber( std::numeric_limits<float>::infinity() );
+    }
+
+    return jsNumber( count );
 }
 
 }

@@ -27,9 +27,11 @@
 
 #include "Filter.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-enum BlendModeType {
+enum BlendModeType
+{
     FEBLEND_MODE_UNKNOWN = 0,
     FEBLEND_MODE_NORMAL = 1,
     FEBLEND_MODE_MULTIPLY = 2,
@@ -38,20 +40,21 @@ enum BlendModeType {
     FEBLEND_MODE_LIGHTEN = 5
 };
 
-class FEBlend : public FilterEffect {
+class FEBlend : public FilterEffect
+{
 public:
-    static PassRefPtr<FEBlend> create(Filter*, BlendModeType);
+    static PassRefPtr<FEBlend> create( Filter *, BlendModeType );
 
     BlendModeType blendMode() const;
-    bool setBlendMode(BlendModeType);
+    bool setBlendMode( BlendModeType );
 
     virtual void apply();
     virtual void dump();
 
-    virtual TextStream& externalRepresentation(TextStream&, int indention) const;
+    virtual TextStream &externalRepresentation( TextStream &, int indention ) const;
 
 private:
-    FEBlend(Filter*, BlendModeType);
+    FEBlend( Filter *, BlendModeType );
 
     BlendModeType m_mode;
 };

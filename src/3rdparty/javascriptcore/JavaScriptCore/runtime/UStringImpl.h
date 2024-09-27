@@ -34,129 +34,219 @@
 #include <wtf/Vector.h>
 #include <wtf/unicode/Unicode.h>
 
-namespace JSC {
+namespace JSC
+{
 
 class IdentifierTable;
 
 typedef CrossThreadRefCounted<OwnFastMallocPtr<UChar> > SharedUChar;
 
-class UStringImpl : Noncopyable {
+class UStringImpl : Noncopyable
+{
 public:
     template<size_t inlineCapacity>
-    static PassRefPtr<UStringImpl> adopt(Vector<UChar, inlineCapacity>& vector)
+    static PassRefPtr<UStringImpl> adopt( Vector<UChar, inlineCapacity> &vector )
     {
-        if (unsigned length = vector.size())
-            return adoptRef(new UStringImpl(vector.releaseBuffer(), length, BufferOwned));
+        if ( unsigned length = vector.size() )
+        {
+            return adoptRef( new UStringImpl( vector.releaseBuffer(), length, BufferOwned ) );
+        }
+
         return &empty();
     }
 
-    static PassRefPtr<UStringImpl> create(const UChar* buffer, int length)
+    static PassRefPtr<UStringImpl> create( const UChar *buffer, int length )
     {
-        UChar* newBuffer;
-        if (PassRefPtr<UStringImpl> impl = tryCreateUninitialized(length, newBuffer)) {
-            copyChars(newBuffer, buffer, length);
+        UChar *newBuffer;
+
+        if ( PassRefPtr<UStringImpl> impl = tryCreateUninitialized( length, newBuffer ) )
+        {
+            copyChars( newBuffer, buffer, length );
             return impl;
         }
+
         return &null();
     }
 
-    static PassRefPtr<UStringImpl> create(PassRefPtr<UStringImpl> rep, int offset, int length)
+    static PassRefPtr<UStringImpl> create( PassRefPtr<UStringImpl> rep, int offset, int length )
     {
-        ASSERT(rep);
+        ASSERT( rep );
         rep->checkConsistency();
-        return adoptRef(new UStringImpl(rep->m_data + offset, length, rep->bufferOwnerString()));
+        return adoptRef( new UStringImpl( rep->m_data + offset, length, rep->bufferOwnerString() ) );
     }
 
-    static PassRefPtr<UStringImpl> create(PassRefPtr<SharedUChar> sharedBuffer, UChar* buffer, int length)
+    static PassRefPtr<UStringImpl> create( PassRefPtr<SharedUChar> sharedBuffer, UChar *buffer, int length )
     {
-        return adoptRef(new UStringImpl(buffer, length, sharedBuffer));
+        return adoptRef( new UStringImpl( buffer, length, sharedBuffer ) );
     }
 
-    static PassRefPtr<UStringImpl> createUninitialized(unsigned length, UChar*& output)
+    static PassRefPtr<UStringImpl> createUninitialized( unsigned length, UChar *&output )
     {
-        if (!length) {
+        if ( !length )
+        {
             output = nullptr;
             return &empty();
         }
 
-        if (length > (unsigned)((std::numeric_limits<size_t>::max() - sizeof(UStringImpl)) / sizeof(UChar)))
+        if ( length > ( unsigned )( ( std::numeric_limits<size_t>::max() - sizeof( UStringImpl ) ) / sizeof( UChar ) ) )
+        {
             CRASH();
-        UStringImpl* resultImpl = static_cast<UStringImpl*>(fastMalloc(sizeof(UChar) * length + sizeof(UStringImpl)));
-        output = reinterpret_cast<UChar*>(resultImpl + 1);
-        return adoptRef(new(resultImpl) UStringImpl(output, length, BufferInternal));
+        }
+
+        UStringImpl *resultImpl = static_cast<UStringImpl *>( fastMalloc( sizeof( UChar ) * length + sizeof( UStringImpl ) ) );
+        output = reinterpret_cast<UChar *>( resultImpl + 1 );
+        return adoptRef( new ( resultImpl ) UStringImpl( output, length, BufferInternal ) );
     }
 
-    static PassRefPtr<UStringImpl> tryCreateUninitialized(unsigned length, UChar*& output)
+    static PassRefPtr<UStringImpl> tryCreateUninitialized( unsigned length, UChar *&output )
     {
-        if (!length) {
+        if ( !length )
+        {
             output = nullptr;
             return &empty();
         }
 
-        if (length > (unsigned)((std::numeric_limits<size_t>::max() - sizeof(UStringImpl)) / sizeof(UChar)))
+        if ( length > ( unsigned )( ( std::numeric_limits<size_t>::max() - sizeof( UStringImpl ) ) / sizeof( UChar ) ) )
+        {
             return nullptr;
-        UStringImpl* resultImpl;
-        if (!tryFastMalloc(sizeof(UChar) * length + sizeof(UStringImpl)).getValue(resultImpl))
+        }
+
+        UStringImpl *resultImpl;
+
+        if ( !tryFastMalloc( sizeof( UChar ) * length + sizeof( UStringImpl ) ).getValue( resultImpl ) )
+        {
             return nullptr;
-        output = reinterpret_cast<UChar*>(resultImpl + 1);
-        return adoptRef(new(resultImpl) UStringImpl(output, length, BufferInternal));
+        }
+
+        output = reinterpret_cast<UChar *>( resultImpl + 1 );
+        return adoptRef( new ( resultImpl ) UStringImpl( output, length, BufferInternal ) );
     }
 
-    SharedUChar* sharedBuffer();
-    UChar* data() const { return m_data; }
-    int size() const { return m_length; }
+    SharedUChar *sharedBuffer();
+    UChar *data() const
+    {
+        return m_data;
+    }
+    int size() const
+    {
+        return m_length;
+    }
     size_t cost()
     {
         // For substrings, return the cost of the base string.
-        if (bufferOwnership() == BufferSubstring)
+        if ( bufferOwnership() == BufferSubstring )
+        {
             return m_bufferSubstring->cost();
+        }
 
-        if (m_refCountAndFlags & s_refCountFlagHasReportedCost)
+        if ( m_refCountAndFlags & s_refCountFlagHasReportedCost )
+        {
             return 0;
+        }
+
         m_refCountAndFlags |= s_refCountFlagHasReportedCost;
         return m_length;
     }
-    unsigned hash() const { if (!m_hash) m_hash = computeHash(data(), m_length); return m_hash; }
-    unsigned existingHash() const { ASSERT(m_hash); return m_hash; } // fast path for Identifiers
-    void setHash(unsigned hash) { ASSERT(hash == computeHash(data(), m_length)); m_hash = hash; } // fast path for Identifiers
-    bool isIdentifier() const { return m_refCountAndFlags & s_refCountFlagIsIdentifier; }
-    void setIsIdentifier(bool isIdentifier)
+    unsigned hash() const
     {
-        if (isIdentifier)
+        if ( !m_hash )
+        {
+            m_hash = computeHash( data(), m_length );
+        }
+
+        return m_hash;
+    }
+    unsigned existingHash() const
+    {
+        ASSERT( m_hash );    // fast path for Identifiers
+        return m_hash;
+    }
+    void setHash( unsigned hash )
+    {
+        ASSERT( hash == computeHash( data(), m_length ) );    // fast path for Identifiers
+        m_hash = hash;
+    }
+    bool isIdentifier() const
+    {
+        return m_refCountAndFlags & s_refCountFlagIsIdentifier;
+    }
+    void setIsIdentifier( bool isIdentifier )
+    {
+        if ( isIdentifier )
+        {
             m_refCountAndFlags |= s_refCountFlagIsIdentifier;
+        }
         else
+        {
             m_refCountAndFlags &= ~s_refCountFlagIsIdentifier;
+        }
     }
 
-    UStringImpl* ref() { m_refCountAndFlags += s_refCountIncrement; return this; }
-    ALWAYS_INLINE void deref() { m_refCountAndFlags -= s_refCountIncrement; if (!(m_refCountAndFlags & s_refCountMask)) delete this; }
-
-    static void copyChars(UChar* destination, const UChar* source, unsigned numCharacters)
+    UStringImpl *ref()
     {
-        if (numCharacters <= s_copyCharsInlineCutOff) {
-            for (unsigned i = 0; i < numCharacters; ++i)
-                destination[i] = source[i];
-        } else
-            memcpy(destination, source, numCharacters * sizeof(UChar));
+        m_refCountAndFlags += s_refCountIncrement;
+        return this;
+    }
+    ALWAYS_INLINE void deref()
+    {
+        m_refCountAndFlags -= s_refCountIncrement;
+
+        if ( !( m_refCountAndFlags & s_refCountMask ) )
+        {
+            delete this;
+        }
     }
 
-    static unsigned computeHash(const UChar* s, int length) { ASSERT(length >= 0); return WTF::stringHash(s, length); }
-    static unsigned computeHash(const char* s, int length) { ASSERT(length >= 0); return WTF::stringHash(s, length); }
-    static unsigned computeHash(const char* s) { return WTF::stringHash(s); }
+    static void copyChars( UChar *destination, const UChar *source, unsigned numCharacters )
+    {
+        if ( numCharacters <= s_copyCharsInlineCutOff )
+        {
+            for ( unsigned i = 0; i < numCharacters; ++i )
+            {
+                destination[i] = source[i];
+            }
+        }
+        else
+        {
+            memcpy( destination, source, numCharacters * sizeof( UChar ) );
+        }
+    }
 
-    static UStringImpl& null() { return *s_null; }
-    static UStringImpl& empty() { return *s_empty; }
+    static unsigned computeHash( const UChar *s, int length )
+    {
+        ASSERT( length >= 0 );
+        return WTF::stringHash( s, length );
+    }
+    static unsigned computeHash( const char *s, int length )
+    {
+        ASSERT( length >= 0 );
+        return WTF::stringHash( s, length );
+    }
+    static unsigned computeHash( const char *s )
+    {
+        return WTF::stringHash( s );
+    }
+
+    static UStringImpl &null()
+    {
+        return *s_null;
+    }
+    static UStringImpl &empty()
+    {
+        return *s_empty;
+    }
 
     ALWAYS_INLINE void checkConsistency() const
     {
         // There is no recursion of substrings.
-        ASSERT(bufferOwnerString()->bufferOwnership() != BufferSubstring);
+        ASSERT( bufferOwnerString()->bufferOwnership() != BufferSubstring );
         // Static strings cannot be put in identifier tables, because they are globally shared.
-        ASSERT(!isStatic() || !isIdentifier());
+        ASSERT( !isStatic() || !isIdentifier() );
     }
 
 private:
-    enum BufferOwnership {
+    enum BufferOwnership
+    {
         BufferInternal,
         BufferOwned,
         BufferSubstring,
@@ -167,14 +257,14 @@ private:
     UStringImpl() { }
 
     // Used to construct normal strings with an internal or external buffer.
-    UStringImpl(UChar* data, int length, BufferOwnership ownership)
-        : m_data(data)
-        , m_buffer(nullptr)
-        , m_length(length)
-        , m_refCountAndFlags(s_refCountIncrement | ownership)
-        , m_hash(0)
+    UStringImpl( UChar *data, int length, BufferOwnership ownership )
+        : m_data( data )
+        , m_buffer( nullptr )
+        , m_length( length )
+        , m_refCountAndFlags( s_refCountIncrement | ownership )
+        , m_hash( 0 )
     {
-        ASSERT((ownership == BufferInternal) || (ownership == BufferOwned));
+        ASSERT( ( ownership == BufferInternal ) || ( ownership == BufferOwned ) );
         checkConsistency();
     }
 
@@ -182,39 +272,39 @@ private:
     // This means that the static string will never be destroyed, which is important because
     // static strings will be shared across threads & ref-counted in a non-threadsafe manner.
     enum StaticStringConstructType { ConstructStaticString };
-    UStringImpl(UChar* data, int length, StaticStringConstructType)
-        : m_data(data)
-        , m_buffer(nullptr)
-        , m_length(length)
-        , m_refCountAndFlags(s_refCountFlagStatic | BufferOwned)
-        , m_hash(0)
+    UStringImpl( UChar *data, int length, StaticStringConstructType )
+        : m_data( data )
+        , m_buffer( nullptr )
+        , m_length( length )
+        , m_refCountAndFlags( s_refCountFlagStatic | BufferOwned )
+        , m_hash( 0 )
     {
         checkConsistency();
     }
 
     // Used to create new strings that are a substring of an existing string.
-    UStringImpl(UChar* data, int length, PassRefPtr<UStringImpl> base)
-        : m_data(data)
-        , m_bufferSubstring(base.releaseRef())
-        , m_length(length)
-        , m_refCountAndFlags(s_refCountIncrement | BufferSubstring)
-        , m_hash(0)
+    UStringImpl( UChar *data, int length, PassRefPtr<UStringImpl> base )
+        : m_data( data )
+        , m_bufferSubstring( base.releaseRef() )
+        , m_length( length )
+        , m_refCountAndFlags( s_refCountIncrement | BufferSubstring )
+        , m_hash( 0 )
     {
         // Do use static strings as a base for substrings; UntypedPtrAndBitfield assumes
         // that all pointers will be at least 8-byte aligned, we cannot guarantee that of
         // UStringImpls that are not heap allocated.
-        ASSERT(m_bufferSubstring->size());
-        ASSERT(!m_bufferSubstring->isStatic());
+        ASSERT( m_bufferSubstring->size() );
+        ASSERT( !m_bufferSubstring->isStatic() );
         checkConsistency();
     }
 
     // Used to construct new strings sharing an existing shared buffer.
-    UStringImpl(UChar* data, int length, PassRefPtr<SharedUChar> sharedBuffer)
-        : m_data(data)
-        , m_bufferShared(sharedBuffer.releaseRef())
-        , m_length(length)
-        , m_refCountAndFlags(s_refCountIncrement | BufferShared)
-        , m_hash(0)
+    UStringImpl( UChar *data, int length, PassRefPtr<SharedUChar> sharedBuffer )
+        : m_data( data )
+        , m_bufferShared( sharedBuffer.releaseRef() )
+        , m_length( length )
+        , m_refCountAndFlags( s_refCountIncrement | BufferShared )
+        , m_hash( 0 )
     {
         checkConsistency();
     }
@@ -228,7 +318,10 @@ public: // Otherwise the compiler complains about operator new not being accessi
 #if OS(SOLARIS) && COMPILER(SUNCC)
 private:
 #endif
-    void* operator new(size_t, void* p) { return p; }
+    void *operator new ( size_t, void *p )
+    {
+        return p;
+    }
 
     ~UStringImpl();
 
@@ -244,32 +337,45 @@ private:
     static const unsigned s_refCountFlagIsIdentifier = 0x4;
     static const unsigned s_refCountMaskBufferOwnership = 0x3;
 
-    UStringImpl* bufferOwnerString() { return (bufferOwnership() == BufferSubstring) ? m_bufferSubstring :  this; }
-    const UStringImpl* bufferOwnerString() const { return (bufferOwnership() == BufferSubstring) ? m_bufferSubstring :  this; }
-    SharedUChar* baseSharedBuffer();
-    unsigned bufferOwnership() const { return m_refCountAndFlags & s_refCountMaskBufferOwnership; }
-    bool isStatic() const { return m_refCountAndFlags & s_refCountFlagStatic; }
+    UStringImpl *bufferOwnerString()
+    {
+        return ( bufferOwnership() == BufferSubstring ) ? m_bufferSubstring :  this;
+    }
+    const UStringImpl *bufferOwnerString() const
+    {
+        return ( bufferOwnership() == BufferSubstring ) ? m_bufferSubstring :  this;
+    }
+    SharedUChar *baseSharedBuffer();
+    unsigned bufferOwnership() const
+    {
+        return m_refCountAndFlags & s_refCountMaskBufferOwnership;
+    }
+    bool isStatic() const
+    {
+        return m_refCountAndFlags & s_refCountFlagStatic;
+    }
 
     // unshared data
-    UChar* m_data;
-    union {
-        void* m_buffer;
-        UStringImpl* m_bufferSubstring;
-        SharedUChar* m_bufferShared;
+    UChar *m_data;
+    union
+    {
+        void *m_buffer;
+        UStringImpl *m_bufferSubstring;
+        SharedUChar *m_bufferShared;
     };
     int m_length;
     unsigned m_refCountAndFlags;
     mutable unsigned m_hash;
 
-    JS_EXPORTDATA static UStringImpl* s_null;
-    JS_EXPORTDATA static UStringImpl* s_empty;
+    JS_EXPORTDATA static UStringImpl *s_null;
+    JS_EXPORTDATA static UStringImpl *s_empty;
 
     friend class JIT;
     friend class SmallStringsStorage;
     friend void initializeUString();
 };
 
-bool equal(const UStringImpl*, const UStringImpl*);
+bool equal( const UStringImpl *, const UStringImpl * );
 
 }
 

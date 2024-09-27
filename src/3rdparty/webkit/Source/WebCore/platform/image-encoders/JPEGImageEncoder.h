@@ -23,10 +23,11 @@
 
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class IntSize;
-bool compressRGBABigEndianToJPEG(unsigned char* rgbaBigEndianData, const IntSize& size, Vector<char>& jpegData);
+bool compressRGBABigEndianToJPEG( unsigned char *rgbaBigEndianData, const IntSize &size, Vector<char> &jpegData );
 
 }
 

@@ -30,25 +30,27 @@
 
 class QXmlResultItemsPrivate
 {
- public:
-   inline QXmlResultItemsPrivate() : iterator(QPatternist::CommonValues::emptyIterator)
-      , hasError(false) {
-   }
+public:
+    inline QXmlResultItemsPrivate() : iterator( QPatternist::CommonValues::emptyIterator )
+        , hasError( false )
+    {
+    }
 
-   void setDynamicContext(const QPatternist::DynamicContext::Ptr &context) {
-      m_context = context;
-   }
+    void setDynamicContext( const QPatternist::DynamicContext::Ptr &context )
+    {
+        m_context = context;
+    }
 
-   QPatternist::Item::Iterator::Ptr iterator;
-   QXmlItem current;
-   bool hasError;
+    QPatternist::Item::Iterator::Ptr iterator;
+    QXmlItem current;
+    bool hasError;
 
- private:
-   /**
-    * We never use it. We only keep a ref to it such that it doesn't get
-    * de-allocated.
-    */
-   QPatternist::DynamicContext::Ptr    m_context;
+private:
+    /**
+     * We never use it. We only keep a ref to it such that it doesn't get
+     * de-allocated.
+     */
+    QPatternist::DynamicContext::Ptr    m_context;
 };
 
 #endif

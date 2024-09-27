@@ -34,37 +34,54 @@
 typedef unsigned char UInt8;
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
-class DIBPixelData {
-    public:
-        DIBPixelData()
-            : m_bitmapBuffer(0)
-            , m_bitmapBufferLength(0)
-            , m_bytesPerRow(0)
-            , m_bitsPerPixel(0)
-        {
-        }
-        DIBPixelData(HBITMAP);
+class DIBPixelData
+{
+public:
+    DIBPixelData()
+        : m_bitmapBuffer( 0 )
+        , m_bitmapBufferLength( 0 )
+        , m_bytesPerRow( 0 )
+        , m_bitsPerPixel( 0 )
+    {
+    }
+    DIBPixelData( HBITMAP );
 
-        void initialize(HBITMAP);
+    void initialize( HBITMAP );
 
 #ifndef NDEBUG
-        void writeToFile(LPCWSTR);
+    void writeToFile( LPCWSTR );
 #endif
 
-        UInt8* buffer() const { return m_bitmapBuffer; }
-        unsigned bufferLength() const { return m_bitmapBufferLength; }
-        const IntSize& size() const { return m_size; }
-        unsigned bytesPerRow() const { return m_bytesPerRow; }
-        unsigned short bitsPerPixel() const { return m_bitsPerPixel; }
+    UInt8 *buffer() const
+    {
+        return m_bitmapBuffer;
+    }
+    unsigned bufferLength() const
+    {
+        return m_bitmapBufferLength;
+    }
+    const IntSize &size() const
+    {
+        return m_size;
+    }
+    unsigned bytesPerRow() const
+    {
+        return m_bytesPerRow;
+    }
+    unsigned short bitsPerPixel() const
+    {
+        return m_bitsPerPixel;
+    }
 
-    private:
-        UInt8* m_bitmapBuffer;
-        unsigned m_bitmapBufferLength;
-        IntSize m_size;
-        unsigned m_bytesPerRow;
-        unsigned short m_bitsPerPixel;
+private:
+    UInt8 *m_bitmapBuffer;
+    unsigned m_bitmapBufferLength;
+    IntSize m_size;
+    unsigned m_bytesPerRow;
+    unsigned short m_bitsPerPixel;
 };
 
 } // namespace WebCore

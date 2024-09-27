@@ -26,13 +26,16 @@
 #include "ExceptionCode.h"
 #include "SVGPropertyTraits.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class SVGAngle {
+class SVGAngle
+{
 public:
     SVGAngle();
 
-    enum SVGAngleType {
+    enum SVGAngleType
+    {
         SVG_ANGLETYPE_UNKNOWN = 0,
         SVG_ANGLETYPE_UNSPECIFIED = 1,
         SVG_ANGLETYPE_DEG = 2,
@@ -40,19 +43,28 @@ public:
         SVG_ANGLETYPE_GRAD = 4
     };
 
-    SVGAngleType unitType() const { return m_unitType; }
+    SVGAngleType unitType() const
+    {
+        return m_unitType;
+    }
 
-    void setValue(float);
+    void setValue( float );
     float value() const;
 
-    void setValueInSpecifiedUnits(float valueInSpecifiedUnits) { m_valueInSpecifiedUnits = valueInSpecifiedUnits; }
-    float valueInSpecifiedUnits() const { return m_valueInSpecifiedUnits; }
+    void setValueInSpecifiedUnits( float valueInSpecifiedUnits )
+    {
+        m_valueInSpecifiedUnits = valueInSpecifiedUnits;
+    }
+    float valueInSpecifiedUnits() const
+    {
+        return m_valueInSpecifiedUnits;
+    }
 
-    void setValueAsString(const String&, ExceptionCode&);
+    void setValueAsString( const String &, ExceptionCode & );
     String valueAsString() const;
 
-    void newValueSpecifiedUnits(unsigned short unitType, float valueInSpecifiedUnits, ExceptionCode&);
-    void convertToSpecifiedUnits(unsigned short unitType, ExceptionCode&);
+    void newValueSpecifiedUnits( unsigned short unitType, float valueInSpecifiedUnits, ExceptionCode & );
+    void convertToSpecifiedUnits( unsigned short unitType, ExceptionCode & );
 
 private:
     SVGAngleType m_unitType;
@@ -60,9 +72,16 @@ private:
 };
 
 template<>
-struct SVGPropertyTraits<SVGAngle> {
-    static SVGAngle initialValue() { return SVGAngle(); }
-    static String toString(const SVGAngle& type) { return type.valueAsString(); }
+struct SVGPropertyTraits<SVGAngle>
+{
+    static SVGAngle initialValue()
+    {
+        return SVGAngle();
+    }
+    static String toString( const SVGAngle &type )
+    {
+        return type.valueAsString();
+    }
 };
 
 } // namespace WebCore

@@ -28,180 +28,200 @@
 #include <qmessagebox.h>
 #include <qprogressdialog.h>
 
-CheckableListModel::CheckableListModel(QObject *parent)
-   : QStandardItemModel(parent)
+CheckableListModel::CheckableListModel( QObject *parent )
+    : QStandardItemModel( parent )
 {
 }
 
-Qt::ItemFlags CheckableListModel::flags(const QModelIndex &index) const
+Qt::ItemFlags CheckableListModel::flags( const QModelIndex &index ) const
 {
-   (void) index;
-   return Qt::ItemIsUserCheckable | Qt::ItemIsEnabled | Qt::ItemIsSelectable;
+    ( void ) index;
+    return Qt::ItemIsUserCheckable | Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 }
 
-BatchTranslationDialog::BatchTranslationDialog(MultiDataModel *dataModel, QWidget *w)
-   : QDialog(w), m_ui(new Ui::BatchTranslationDialog), m_model(this), m_dataModel(dataModel)
+BatchTranslationDialog::BatchTranslationDialog( MultiDataModel *dataModel, QWidget *w )
+    : QDialog( w ), m_ui( new Ui::BatchTranslationDialog ), m_model( this ), m_dataModel( dataModel )
 {
-   m_ui->setupUi(this);
+    m_ui->setupUi( this );
 
-   m_ui->phrasebookList->setModel(&m_model);
-   m_ui->phrasebookList->setSelectionBehavior(QAbstractItemView::SelectItems);
-   m_ui->phrasebookList->setSelectionMode(QAbstractItemView::SingleSelection);
+    m_ui->phrasebookList->setModel( &m_model );
+    m_ui->phrasebookList->setSelectionBehavior( QAbstractItemView::SelectItems );
+    m_ui->phrasebookList->setSelectionMode( QAbstractItemView::SingleSelection );
 
-   connect(m_ui->runButton,      &QPushButton::clicked, this, &BatchTranslationDialog::startTranslation);
-   connect(m_ui->moveUpButton,   &QPushButton::clicked, this, &BatchTranslationDialog::movePhraseBookUp);
-   connect(m_ui->moveDownButton, &QPushButton::clicked, this, &BatchTranslationDialog::movePhraseBookDown);
+    connect( m_ui->runButton,      &QPushButton::clicked, this, &BatchTranslationDialog::startTranslation );
+    connect( m_ui->moveUpButton,   &QPushButton::clicked, this, &BatchTranslationDialog::movePhraseBookUp );
+    connect( m_ui->moveDownButton, &QPushButton::clicked, this, &BatchTranslationDialog::movePhraseBookDown );
 }
 
 BatchTranslationDialog::~BatchTranslationDialog()
 {
-   delete m_ui;
+    delete m_ui;
 }
 
-void BatchTranslationDialog::setPhraseBooks(const QList<PhraseBook *> &phrasebooks, int modelIndex)
+void BatchTranslationDialog::setPhraseBooks( const QList<PhraseBook *> &phrasebooks, int modelIndex )
 {
-   QString fn = QFileInfo(m_dataModel->srcFileName(modelIndex)).baseName();
-   setWindowTitle(tr("Batch Translation for %1").formatArg(fn));
+    QString fn = QFileInfo( m_dataModel->srcFileName( modelIndex ) ).baseName();
+    setWindowTitle( tr( "Batch Translation for %1" ).formatArg( fn ) );
 
-   m_model.clear();
-   m_model.insertColumn(0);
-   m_phrasebooks = phrasebooks;
-   m_modelIndex = modelIndex;
+    m_model.clear();
+    m_model.insertColumn( 0 );
+    m_phrasebooks = phrasebooks;
+    m_modelIndex = modelIndex;
 
-   int count = phrasebooks.count();
-   m_model.insertRows(0, count);
+    int count = phrasebooks.count();
+    m_model.insertRows( 0, count );
 
-   for (int i = 0; i < count; ++i) {
-      QModelIndex idx(m_model.index(i, 0));
-      m_model.setData(idx, phrasebooks[i]->friendlyPhraseBookName());
-      int sortOrder;
+    for ( int i = 0; i < count; ++i )
+    {
+        QModelIndex idx( m_model.index( i, 0 ) );
+        m_model.setData( idx, phrasebooks[i]->friendlyPhraseBookName() );
+        int sortOrder;
 
-      if (phrasebooks[i]->language() != QLocale::C && m_dataModel->language(m_modelIndex) != QLocale::C) {
+        if ( phrasebooks[i]->language() != QLocale::C && m_dataModel->language( m_modelIndex ) != QLocale::C )
+        {
 
-         if (phrasebooks[i]->language() != m_dataModel->language(m_modelIndex)) {
-            sortOrder = 3;
+            if ( phrasebooks[i]->language() != m_dataModel->language( m_modelIndex ) )
+            {
+                sortOrder = 3;
 
-         } else {
-            sortOrder = (phrasebooks[i]->country() == m_dataModel->model(m_modelIndex)->country()) ? 0 : 1;
-         }
+            }
+            else
+            {
+                sortOrder = ( phrasebooks[i]->country() == m_dataModel->model( m_modelIndex )->country() ) ? 0 : 1;
+            }
 
-      } else {
-         sortOrder = 2;
-      }
+        }
+        else
+        {
+            sortOrder = 2;
+        }
 
-      m_model.setData(idx, sortOrder == 3 ? Qt::Unchecked : Qt::Checked, Qt::CheckStateRole);
-      m_model.setData(idx, sortOrder, Qt::UserRole + 1);
-      m_model.setData(idx, i, Qt::UserRole);
-   }
+        m_model.setData( idx, sortOrder == 3 ? Qt::Unchecked : Qt::Checked, Qt::CheckStateRole );
+        m_model.setData( idx, sortOrder, Qt::UserRole + 1 );
+        m_model.setData( idx, i, Qt::UserRole );
+    }
 
-   m_model.setSortRole(Qt::UserRole + 1);
-   m_model.sort(0);
+    m_model.setSortRole( Qt::UserRole + 1 );
+    m_model.sort( 0 );
 }
 
 void BatchTranslationDialog::startTranslation()
 {
-   int translatedcount = 0;
-   QCursor oldCursor = cursor();
-   setCursor(Qt::BusyCursor);
-   int messageCount = m_dataModel->messageCount();
+    int translatedcount = 0;
+    QCursor oldCursor = cursor();
+    setCursor( Qt::BusyCursor );
+    int messageCount = m_dataModel->messageCount();
 
-   QProgressDialog *dlgProgress;
-   dlgProgress = new QProgressDialog(tr("Searching, please wait..."), tr("&Cancel"), 0, messageCount, this);
-   dlgProgress->show();
+    QProgressDialog *dlgProgress;
+    dlgProgress = new QProgressDialog( tr( "Searching, please wait..." ), tr( "&Cancel" ), 0, messageCount, this );
+    dlgProgress->show();
 
-   int msgidx = 0;
-   const bool translateTranslated = m_ui->ckTranslateTranslated->isChecked();
-   const bool translateFinished = m_ui->ckTranslateFinished->isChecked();
+    int msgidx = 0;
+    const bool translateTranslated = m_ui->ckTranslateTranslated->isChecked();
+    const bool translateFinished = m_ui->ckTranslateFinished->isChecked();
 
-   for (MultiDataModelIterator it(m_dataModel, m_modelIndex); it.isValid(); ++it) {
-      if (MessageItem *m = it.current()) {
-         if (!m->isObsolete()
-               && (translateTranslated || m->translation().isEmpty())
-               && (translateFinished || !m->isFinished())) {
+    for ( MultiDataModelIterator it( m_dataModel, m_modelIndex ); it.isValid(); ++it )
+    {
+        if ( MessageItem *m = it.current() )
+        {
+            if ( !m->isObsolete()
+                    && ( translateTranslated || m->translation().isEmpty() )
+                    && ( translateFinished || !m->isFinished() ) )
+            {
 
-            // Go through them in the order the user specified in the phrasebookList
-            for (int b = 0; b < m_model.rowCount(); ++b) {
-               QModelIndex idx(m_model.index(b, 0));
-               QVariant checkState = m_model.data(idx, Qt::CheckStateRole);
+                // Go through them in the order the user specified in the phrasebookList
+                for ( int b = 0; b < m_model.rowCount(); ++b )
+                {
+                    QModelIndex idx( m_model.index( b, 0 ) );
+                    QVariant checkState = m_model.data( idx, Qt::CheckStateRole );
 
-               if (checkState == Qt::Checked) {
-                  PhraseBook *pb = m_phrasebooks[m_model.data(idx, Qt::UserRole).toInt()];
+                    if ( checkState == Qt::Checked )
+                    {
+                        PhraseBook *pb = m_phrasebooks[m_model.data( idx, Qt::UserRole ).toInt()];
 
-                  for (const Phrase * ph : pb->phrases()) {
-                     if (ph->source() == m->text()) {
-                        m_dataModel->setTranslation(it, ph->target());
-                        m_dataModel->setFinished(it, m_ui->ckMarkFinished->isChecked());
-                        ++translatedcount;
+                        for ( const Phrase *ph : pb->phrases() )
+                        {
+                            if ( ph->source() == m->text() )
+                            {
+                                m_dataModel->setTranslation( it, ph->target() );
+                                m_dataModel->setFinished( it, m_ui->ckMarkFinished->isChecked() );
+                                ++translatedcount;
 
-                        goto done; // break 2;
-                     }
-                  }
-               }
+                                goto done; // break 2;
+                            }
+                        }
+                    }
+                }
             }
-         }
-      }
+        }
 
-   done:
-      ++msgidx;
+done:
+        ++msgidx;
 
-      if (!(msgidx & 15)) {
-         dlgProgress->setValue(msgidx);
-      }
+        if ( !( msgidx & 15 ) )
+        {
+            dlgProgress->setValue( msgidx );
+        }
 
-      qApp->processEvents();
+        qApp->processEvents();
 
-      if (dlgProgress->wasCanceled()) {
-         break;
-      }
-   }
+        if ( dlgProgress->wasCanceled() )
+        {
+            break;
+        }
+    }
 
-   dlgProgress->hide();
+    dlgProgress->hide();
 
-   setCursor(oldCursor);
-   emit finished();
+    setCursor( oldCursor );
+    emit finished();
 
-   QMessageBox::information(this, tr("Linguist Batch Translator"),
-            tr("Batch translated %n entries", "", translatedcount), QMessageBox::Ok);
+    QMessageBox::information( this, tr( "Linguist Batch Translator" ),
+                              tr( "Batch translated %n entries", "", translatedcount ), QMessageBox::Ok );
 }
 
 void BatchTranslationDialog::movePhraseBookUp()
 {
-   QModelIndexList indexes = m_ui->phrasebookList->selectionModel()->selectedIndexes();
+    QModelIndexList indexes = m_ui->phrasebookList->selectionModel()->selectedIndexes();
 
-   if (indexes.count() <= 0) {
-      return;
-   }
+    if ( indexes.count() <= 0 )
+    {
+        return;
+    }
 
-   QModelIndex sel = indexes[0];
-   int row = sel.row();
+    QModelIndex sel = indexes[0];
+    int row = sel.row();
 
-   if (row > 0) {
-      QModelIndex other = m_model.index(row - 1, 0);
-      QMap<int, QVariant> seldata = m_model.itemData(sel);
-      m_model.setItemData(sel, m_model.itemData(other));
-      m_model.setItemData(other, seldata);
+    if ( row > 0 )
+    {
+        QModelIndex other = m_model.index( row - 1, 0 );
+        QMap<int, QVariant> seldata = m_model.itemData( sel );
+        m_model.setItemData( sel, m_model.itemData( other ) );
+        m_model.setItemData( other, seldata );
 
-      m_ui->phrasebookList->selectionModel()->setCurrentIndex(other, QItemSelectionModel::ClearAndSelect);
-   }
+        m_ui->phrasebookList->selectionModel()->setCurrentIndex( other, QItemSelectionModel::ClearAndSelect );
+    }
 }
 
 void BatchTranslationDialog::movePhraseBookDown()
 {
-   QModelIndexList indexes = m_ui->phrasebookList->selectionModel()->selectedIndexes();
+    QModelIndexList indexes = m_ui->phrasebookList->selectionModel()->selectedIndexes();
 
-   if (indexes.count() <= 0) {
-      return;
-   }
+    if ( indexes.count() <= 0 )
+    {
+        return;
+    }
 
-   QModelIndex sel = indexes[0];
-   int row = sel.row();
+    QModelIndex sel = indexes[0];
+    int row = sel.row();
 
-   if (row < m_model.rowCount() - 1) {
-      QModelIndex other = m_model.index(row + 1, 0);
-      QMap<int, QVariant> seldata = m_model.itemData(sel);
-      m_model.setItemData(sel, m_model.itemData(other));
-      m_model.setItemData(other, seldata);
-      m_ui->phrasebookList->selectionModel()->setCurrentIndex(other, QItemSelectionModel::ClearAndSelect);
-   }
+    if ( row < m_model.rowCount() - 1 )
+    {
+        QModelIndex other = m_model.index( row + 1, 0 );
+        QMap<int, QVariant> seldata = m_model.itemData( sel );
+        m_model.setItemData( sel, m_model.itemData( other ) );
+        m_model.setItemData( other, seldata );
+        m_ui->phrasebookList->selectionModel()->setCurrentIndex( other, QItemSelectionModel::ClearAndSelect );
+    }
 }
 

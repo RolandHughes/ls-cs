@@ -126,363 +126,369 @@ using namespace QCss;
 
 StyleSheet QStyleSheetStyle::getDefaultStyleSheet() const
 {
-   StyleSheet sheet;
-   StyleRule styleRule;
-   BasicSelector bSelector;
-   Selector selector;
-   Declaration decl;
-   QCss::Value value;
-   Pseudo pseudo;
-   AttributeSelector attr;
+    StyleSheet sheet;
+    StyleRule styleRule;
+    BasicSelector bSelector;
+    Selector selector;
+    Declaration decl;
+    QCss::Value value;
+    Pseudo pseudo;
+    AttributeSelector attr;
 
-   // pixmap based style does not support any features
-   bool styleIsPixmapBased = baseStyle()->inherits("QMacStyle")
-      || baseStyle()->inherits("QWindowsXPStyle") || baseStyle()->inherits("QGtkStyle");
+    // pixmap based style does not support any features
+    bool styleIsPixmapBased = baseStyle()->inherits( "QMacStyle" )
+                              || baseStyle()->inherits( "QWindowsXPStyle" ) || baseStyle()->inherits( "QGtkStyle" );
 
-   /*QLineEdit {
-       -qt-background-role: base;
-       border: native;
-       -qt-style-features: background-color;
-   }*/
-   {
-      SET_ELEMENT_NAME(QLatin1String("QLineEdit"));
-      ADD_BASIC_SELECTOR;
-      ADD_SELECTOR;
-
-      SET_PROPERTY(QLatin1String("-qt-background-role"), QtBackgroundRole);
-      ADD_VALUE(Value::KnownIdentifier, Value_Base);
-      ADD_DECLARATION;
-
-      SET_PROPERTY(QLatin1String("border"), Border);
-      ADD_VALUE(Value::KnownIdentifier, Value_Native);
-      ADD_DECLARATION;
-
-      SET_PROPERTY(QLatin1String("-qt-style-features"), QtStyleFeatures);
-      ADD_VALUE(Value::Identifier, QString::fromLatin1("background-color"));
-      ADD_DECLARATION;
-
-      ADD_STYLE_RULE;
-   }
-
-   /*QLineEdit:no-frame {
-       border: none;
-   }*/
-   {
-      SET_ELEMENT_NAME(QLatin1String("QLineEdit"));
-      ADD_PSEUDO(QLatin1String("no-frame"), PseudoClass_Frameless);
-      ADD_BASIC_SELECTOR;
-      ADD_SELECTOR;
-
-      SET_PROPERTY(QLatin1String("border"), Border);
-      ADD_VALUE(Value::KnownIdentifier, Value_None);
-      ADD_DECLARATION;
-
-      ADD_STYLE_RULE;
-   }
-
-   /*QFrame {
-       border: native;
-   }*/
-   {
-      SET_ELEMENT_NAME(QLatin1String("QFrame"));
-      ADD_BASIC_SELECTOR;
-      ADD_SELECTOR;
-
-      SET_PROPERTY(QLatin1String("border"), Border);
-      ADD_VALUE(Value::KnownIdentifier, Value_Native);
-      ADD_DECLARATION;
-
-      ADD_STYLE_RULE;
-   }
-
-   /*QLabel, QToolBox {
-       background: none;
-       border-image: none;
-   }*/
-   {
-      SET_ELEMENT_NAME(QLatin1String("QLabel"));
-      ADD_BASIC_SELECTOR;
-      ADD_SELECTOR;
-
-      SET_ELEMENT_NAME(QLatin1String("QToolBox"));
-      ADD_BASIC_SELECTOR;
-      ADD_SELECTOR;
-
-      SET_PROPERTY(QLatin1String("background"), Background);
-      ADD_VALUE(Value::KnownIdentifier, Value_None);
-      ADD_DECLARATION;
-
-      SET_PROPERTY(QLatin1String("border-image"), BorderImage);
-      ADD_VALUE(Value::KnownIdentifier, Value_None);
-      ADD_DECLARATION;
-
-      ADD_STYLE_RULE;
-   }
-
-   /*QGroupBox {
-       border: native;
-   }*/
-   {
-      SET_ELEMENT_NAME(QLatin1String("QGroupBox"));
-      ADD_BASIC_SELECTOR;
-      ADD_SELECTOR;
-
-      SET_PROPERTY(QLatin1String("border"), Border);
-      ADD_VALUE(Value::KnownIdentifier, Value_Native);
-      ADD_DECLARATION;
-
-      ADD_STYLE_RULE;
-   }
-
-
-   /*QToolTip {
-       -qt-background-role: window;
-       border: native;
-   }*/
-   {
-      SET_ELEMENT_NAME(QLatin1String("QToolTip"));
-      ADD_BASIC_SELECTOR;
-      ADD_SELECTOR;
-
-      SET_PROPERTY(QLatin1String("-qt-background-role"), QtBackgroundRole);
-      ADD_VALUE(Value::KnownIdentifier, Value_Window);
-      ADD_DECLARATION;
-
-      SET_PROPERTY(QLatin1String("border"), Border);
-      ADD_VALUE(Value::KnownIdentifier, Value_Native);
-      ADD_DECLARATION;
-
-      ADD_STYLE_RULE;
-   }
-
-   /*QPushButton, QToolButton {
-       border-style: native;
-       -qt-style-features: background-color;  //only for not pixmap based styles
-   }*/
-   {
-      SET_ELEMENT_NAME(QLatin1String("QPushButton"));
-      ADD_BASIC_SELECTOR;
-      ADD_SELECTOR;
-
-      SET_ELEMENT_NAME(QLatin1String("QToolButton"));
-      ADD_BASIC_SELECTOR;
-      ADD_SELECTOR;
-
-      SET_PROPERTY(QLatin1String("border-style"), BorderStyles);
-      ADD_VALUE(Value::KnownIdentifier, Value_Native);
-      ADD_DECLARATION;
-
-      if (!styleIsPixmapBased) {
-         SET_PROPERTY(QLatin1String("-qt-style-features"), QtStyleFeatures);
-         ADD_VALUE(Value::Identifier, QString::fromLatin1("background-color"));
-         ADD_DECLARATION;
-      }
-
-
-      ADD_STYLE_RULE;
-   }
-
-
-   /*QComboBox {
-       border: native;
-       -qt-style-features: background-color background-gradient;   //only for not pixmap based styles
-       -qt-background-role: base;
-   }*/
-
-   {
-      SET_ELEMENT_NAME(QLatin1String("QComboBox"));
-      ADD_BASIC_SELECTOR;
-      ADD_SELECTOR;
-
-      SET_PROPERTY(QLatin1String("border"), Border);
-      ADD_VALUE(Value::KnownIdentifier, Value_Native);
-      ADD_DECLARATION;
-
-      if (!styleIsPixmapBased) {
-         SET_PROPERTY(QLatin1String("-qt-style-features"), QtStyleFeatures);
-         ADD_VALUE(Value::Identifier, QString::fromLatin1("background-color"));
-         ADD_VALUE(Value::Identifier, QString::fromLatin1("background-gradient"));
-         ADD_DECLARATION;
-      }
-
-      SET_PROPERTY(QLatin1String("-qt-background-role"), QtBackgroundRole);
-      ADD_VALUE(Value::KnownIdentifier, Value_Base);
-      ADD_DECLARATION;
-
-      ADD_STYLE_RULE;
-   }
-
-
-   /*
-    QComboBox[style="QFusionStyle"][readOnly="true"],
+    /*QLineEdit {
+        -qt-background-role: base;
+        border: native;
+        -qt-style-features: background-color;
+    }*/
     {
-        -qt-background-role: button;
+        SET_ELEMENT_NAME( QLatin1String( "QLineEdit" ) );
+        ADD_BASIC_SELECTOR;
+        ADD_SELECTOR;
+
+        SET_PROPERTY( QLatin1String( "-qt-background-role" ), QtBackgroundRole );
+        ADD_VALUE( Value::KnownIdentifier, Value_Base );
+        ADD_DECLARATION;
+
+        SET_PROPERTY( QLatin1String( "border" ), Border );
+        ADD_VALUE( Value::KnownIdentifier, Value_Native );
+        ADD_DECLARATION;
+
+        SET_PROPERTY( QLatin1String( "-qt-style-features" ), QtStyleFeatures );
+        ADD_VALUE( Value::Identifier, QString::fromLatin1( "background-color" ) );
+        ADD_DECLARATION;
+
+        ADD_STYLE_RULE;
+    }
+
+    /*QLineEdit:no-frame {
+        border: none;
+    }*/
+    {
+        SET_ELEMENT_NAME( QLatin1String( "QLineEdit" ) );
+        ADD_PSEUDO( QLatin1String( "no-frame" ), PseudoClass_Frameless );
+        ADD_BASIC_SELECTOR;
+        ADD_SELECTOR;
+
+        SET_PROPERTY( QLatin1String( "border" ), Border );
+        ADD_VALUE( Value::KnownIdentifier, Value_None );
+        ADD_DECLARATION;
+
+        ADD_STYLE_RULE;
+    }
+
+    /*QFrame {
+        border: native;
+    }*/
+    {
+        SET_ELEMENT_NAME( QLatin1String( "QFrame" ) );
+        ADD_BASIC_SELECTOR;
+        ADD_SELECTOR;
+
+        SET_PROPERTY( QLatin1String( "border" ), Border );
+        ADD_VALUE( Value::KnownIdentifier, Value_Native );
+        ADD_DECLARATION;
+
+        ADD_STYLE_RULE;
+    }
+
+    /*QLabel, QToolBox {
+        background: none;
+        border-image: none;
+    }*/
+    {
+        SET_ELEMENT_NAME( QLatin1String( "QLabel" ) );
+        ADD_BASIC_SELECTOR;
+        ADD_SELECTOR;
+
+        SET_ELEMENT_NAME( QLatin1String( "QToolBox" ) );
+        ADD_BASIC_SELECTOR;
+        ADD_SELECTOR;
+
+        SET_PROPERTY( QLatin1String( "background" ), Background );
+        ADD_VALUE( Value::KnownIdentifier, Value_None );
+        ADD_DECLARATION;
+
+        SET_PROPERTY( QLatin1String( "border-image" ), BorderImage );
+        ADD_VALUE( Value::KnownIdentifier, Value_None );
+        ADD_DECLARATION;
+
+        ADD_STYLE_RULE;
+    }
+
+    /*QGroupBox {
+        border: native;
+    }*/
+    {
+        SET_ELEMENT_NAME( QLatin1String( "QGroupBox" ) );
+        ADD_BASIC_SELECTOR;
+        ADD_SELECTOR;
+
+        SET_PROPERTY( QLatin1String( "border" ), Border );
+        ADD_VALUE( Value::KnownIdentifier, Value_Native );
+        ADD_DECLARATION;
+
+        ADD_STYLE_RULE;
+    }
+
+
+    /*QToolTip {
+        -qt-background-role: window;
+        border: native;
+    }*/
+    {
+        SET_ELEMENT_NAME( QLatin1String( "QToolTip" ) );
+        ADD_BASIC_SELECTOR;
+        ADD_SELECTOR;
+
+        SET_PROPERTY( QLatin1String( "-qt-background-role" ), QtBackgroundRole );
+        ADD_VALUE( Value::KnownIdentifier, Value_Window );
+        ADD_DECLARATION;
+
+        SET_PROPERTY( QLatin1String( "border" ), Border );
+        ADD_VALUE( Value::KnownIdentifier, Value_Native );
+        ADD_DECLARATION;
+
+        ADD_STYLE_RULE;
+    }
+
+    /*QPushButton, QToolButton {
+        border-style: native;
+        -qt-style-features: background-color;  //only for not pixmap based styles
+    }*/
+    {
+        SET_ELEMENT_NAME( QLatin1String( "QPushButton" ) );
+        ADD_BASIC_SELECTOR;
+        ADD_SELECTOR;
+
+        SET_ELEMENT_NAME( QLatin1String( "QToolButton" ) );
+        ADD_BASIC_SELECTOR;
+        ADD_SELECTOR;
+
+        SET_PROPERTY( QLatin1String( "border-style" ), BorderStyles );
+        ADD_VALUE( Value::KnownIdentifier, Value_Native );
+        ADD_DECLARATION;
+
+        if ( !styleIsPixmapBased )
+        {
+            SET_PROPERTY( QLatin1String( "-qt-style-features" ), QtStyleFeatures );
+            ADD_VALUE( Value::Identifier, QString::fromLatin1( "background-color" ) );
+            ADD_DECLARATION;
+        }
+
+
+        ADD_STYLE_RULE;
+    }
+
+
+    /*QComboBox {
+        border: native;
+        -qt-style-features: background-color background-gradient;   //only for not pixmap based styles
+        -qt-background-role: base;
     }*/
 
-   if ( baseStyle()->inherits("QFusionStyle")) {
-      SET_ELEMENT_NAME(QLatin1String("QComboBox"));
-      ADD_ATTRIBUTE_SELECTOR(QLatin1String("readOnly"), QLatin1String("true"), AttributeSelector::MatchEqual);
-      ADD_BASIC_SELECTOR;
-      ADD_SELECTOR;
+    {
+        SET_ELEMENT_NAME( QLatin1String( "QComboBox" ) );
+        ADD_BASIC_SELECTOR;
+        ADD_SELECTOR;
 
-      SET_PROPERTY(QLatin1String("-qt-background-role"), QtBackgroundRole);
-      ADD_VALUE(Value::KnownIdentifier, Value_Button);
-      ADD_DECLARATION;
+        SET_PROPERTY( QLatin1String( "border" ), Border );
+        ADD_VALUE( Value::KnownIdentifier, Value_Native );
+        ADD_DECLARATION;
 
-      ADD_STYLE_RULE;
-   }
+        if ( !styleIsPixmapBased )
+        {
+            SET_PROPERTY( QLatin1String( "-qt-style-features" ), QtStyleFeatures );
+            ADD_VALUE( Value::Identifier, QString::fromLatin1( "background-color" ) );
+            ADD_VALUE( Value::Identifier, QString::fromLatin1( "background-gradient" ) );
+            ADD_DECLARATION;
+        }
 
-   /*QAbstractSpinBox {
-       border: native;
-       -qt-style-features: background-color;
-       -qt-background-role: base;
-   }*/
-   {
-      SET_ELEMENT_NAME(QLatin1String("QAbstractSpinBox"));
-      ADD_BASIC_SELECTOR;
-      ADD_SELECTOR;
+        SET_PROPERTY( QLatin1String( "-qt-background-role" ), QtBackgroundRole );
+        ADD_VALUE( Value::KnownIdentifier, Value_Base );
+        ADD_DECLARATION;
 
-      SET_PROPERTY(QLatin1String("border"), Border);
-      ADD_VALUE(Value::KnownIdentifier, Value_Native);
-      ADD_DECLARATION;
+        ADD_STYLE_RULE;
+    }
 
-      SET_PROPERTY(QLatin1String("-qt-style-features"), QtStyleFeatures);
-      ADD_VALUE(Value::Identifier, QString::fromLatin1("background-color"));
-      ADD_DECLARATION;
 
-      SET_PROPERTY(QLatin1String("-qt-background-role"), QtBackgroundRole);
-      ADD_VALUE(Value::KnownIdentifier, Value_Base);
-      ADD_DECLARATION;
+    /*
+     QComboBox[style="QFusionStyle"][readOnly="true"],
+     {
+         -qt-background-role: button;
+     }*/
 
-      ADD_STYLE_RULE;
-   }
+    if ( baseStyle()->inherits( "QFusionStyle" ) )
+    {
+        SET_ELEMENT_NAME( QLatin1String( "QComboBox" ) );
+        ADD_ATTRIBUTE_SELECTOR( QLatin1String( "readOnly" ), QLatin1String( "true" ), AttributeSelector::MatchEqual );
+        ADD_BASIC_SELECTOR;
+        ADD_SELECTOR;
 
-   /*QMenu {
-       -qt-background-role: window;
-   }*/
-   {
-      SET_ELEMENT_NAME(QLatin1String("QMenu"));
-      ADD_BASIC_SELECTOR;
-      ADD_SELECTOR;
+        SET_PROPERTY( QLatin1String( "-qt-background-role" ), QtBackgroundRole );
+        ADD_VALUE( Value::KnownIdentifier, Value_Button );
+        ADD_DECLARATION;
 
-      SET_PROPERTY(QLatin1String("-qt-background-role"), QtBackgroundRole);
-      ADD_VALUE(Value::KnownIdentifier, Value_Window);
-      ADD_DECLARATION;
+        ADD_STYLE_RULE;
+    }
 
-      ADD_STYLE_RULE;
-   }
-   /*QMenu::item {
-       -qt-style-features: background-color;
-   }*/
-   if (!styleIsPixmapBased) {
-      SET_ELEMENT_NAME(QLatin1String("QMenu"));
-      ADD_PSEUDO(QLatin1String("item"), PseudoClass_Unknown);
-      ADD_BASIC_SELECTOR;
-      ADD_SELECTOR;
+    /*QAbstractSpinBox {
+        border: native;
+        -qt-style-features: background-color;
+        -qt-background-role: base;
+    }*/
+    {
+        SET_ELEMENT_NAME( QLatin1String( "QAbstractSpinBox" ) );
+        ADD_BASIC_SELECTOR;
+        ADD_SELECTOR;
 
-      SET_PROPERTY(QLatin1String("-qt-style-features"), QtStyleFeatures);
-      ADD_VALUE(Value::Identifier, QString::fromLatin1("background-color"));
-      ADD_DECLARATION;
+        SET_PROPERTY( QLatin1String( "border" ), Border );
+        ADD_VALUE( Value::KnownIdentifier, Value_Native );
+        ADD_DECLARATION;
 
-      ADD_STYLE_RULE;
-   }
+        SET_PROPERTY( QLatin1String( "-qt-style-features" ), QtStyleFeatures );
+        ADD_VALUE( Value::Identifier, QString::fromLatin1( "background-color" ) );
+        ADD_DECLARATION;
 
-   /*QHeaderView {
-       -qt-background-role: window;
-   }*/
-   {
-      SET_ELEMENT_NAME(QLatin1String("QHeaderView"));
-      ADD_BASIC_SELECTOR;
-      ADD_SELECTOR;
+        SET_PROPERTY( QLatin1String( "-qt-background-role" ), QtBackgroundRole );
+        ADD_VALUE( Value::KnownIdentifier, Value_Base );
+        ADD_DECLARATION;
 
-      SET_PROPERTY(QLatin1String("-qt-background-role"), QtBackgroundRole);
-      ADD_VALUE(Value::KnownIdentifier, Value_Window);
-      ADD_DECLARATION;
+        ADD_STYLE_RULE;
+    }
 
-      ADD_STYLE_RULE;
-   }
+    /*QMenu {
+        -qt-background-role: window;
+    }*/
+    {
+        SET_ELEMENT_NAME( QLatin1String( "QMenu" ) );
+        ADD_BASIC_SELECTOR;
+        ADD_SELECTOR;
 
-   /*QTableCornerButton::section, QHeaderView::section {
-       -qt-background-role: button;
-       -qt-style-features: background-color; //if style is not pixmap based
-       border: native;
-   }*/
-   {
-      SET_ELEMENT_NAME(QLatin1String("QTableCornerButton"));
-      ADD_PSEUDO(QLatin1String("section"), PseudoClass_Unknown);
-      ADD_BASIC_SELECTOR;
-      ADD_SELECTOR;
+        SET_PROPERTY( QLatin1String( "-qt-background-role" ), QtBackgroundRole );
+        ADD_VALUE( Value::KnownIdentifier, Value_Window );
+        ADD_DECLARATION;
 
-      SET_ELEMENT_NAME(QLatin1String("QHeaderView"));
-      ADD_PSEUDO(QLatin1String("section"), PseudoClass_Unknown);
-      ADD_BASIC_SELECTOR;
-      ADD_SELECTOR;
+        ADD_STYLE_RULE;
+    }
 
-      SET_PROPERTY(QLatin1String("-qt-background-role"), QtBackgroundRole);
-      ADD_VALUE(Value::KnownIdentifier, Value_Button);
-      ADD_DECLARATION;
+    /*QMenu::item {
+        -qt-style-features: background-color;
+    }*/
+    if ( !styleIsPixmapBased )
+    {
+        SET_ELEMENT_NAME( QLatin1String( "QMenu" ) );
+        ADD_PSEUDO( QLatin1String( "item" ), PseudoClass_Unknown );
+        ADD_BASIC_SELECTOR;
+        ADD_SELECTOR;
 
-      if (!styleIsPixmapBased) {
-         SET_PROPERTY(QLatin1String("-qt-style-features"), QtStyleFeatures);
-         ADD_VALUE(Value::Identifier, QString::fromLatin1("background-color"));
-         ADD_DECLARATION;
-      }
+        SET_PROPERTY( QLatin1String( "-qt-style-features" ), QtStyleFeatures );
+        ADD_VALUE( Value::Identifier, QString::fromLatin1( "background-color" ) );
+        ADD_DECLARATION;
 
-      SET_PROPERTY(QLatin1String("border"), Border);
-      ADD_VALUE(Value::KnownIdentifier, Value_Native);
-      ADD_DECLARATION;
+        ADD_STYLE_RULE;
+    }
 
-      ADD_STYLE_RULE;
-   }
+    /*QHeaderView {
+        -qt-background-role: window;
+    }*/
+    {
+        SET_ELEMENT_NAME( QLatin1String( "QHeaderView" ) );
+        ADD_BASIC_SELECTOR;
+        ADD_SELECTOR;
 
-   /*QProgressBar {
-       -qt-background-role: base;
-   }*/
-   {
-      SET_ELEMENT_NAME(QLatin1String("QProgressBar"));
-      ADD_BASIC_SELECTOR;
-      ADD_SELECTOR;
+        SET_PROPERTY( QLatin1String( "-qt-background-role" ), QtBackgroundRole );
+        ADD_VALUE( Value::KnownIdentifier, Value_Window );
+        ADD_DECLARATION;
 
-      SET_PROPERTY(QLatin1String("-qt-background-role"), QtBackgroundRole);
-      ADD_VALUE(Value::KnownIdentifier, Value_Base);
-      ADD_DECLARATION;
+        ADD_STYLE_RULE;
+    }
 
-      ADD_STYLE_RULE;
-   }
+    /*QTableCornerButton::section, QHeaderView::section {
+        -qt-background-role: button;
+        -qt-style-features: background-color; //if style is not pixmap based
+        border: native;
+    }*/
+    {
+        SET_ELEMENT_NAME( QLatin1String( "QTableCornerButton" ) );
+        ADD_PSEUDO( QLatin1String( "section" ), PseudoClass_Unknown );
+        ADD_BASIC_SELECTOR;
+        ADD_SELECTOR;
 
-   /*QScrollBar {
-       -qt-background-role: window;
-   }*/
-   {
-      SET_ELEMENT_NAME(QLatin1String("QScrollBar"));
-      ADD_BASIC_SELECTOR;
-      ADD_SELECTOR;
+        SET_ELEMENT_NAME( QLatin1String( "QHeaderView" ) );
+        ADD_PSEUDO( QLatin1String( "section" ), PseudoClass_Unknown );
+        ADD_BASIC_SELECTOR;
+        ADD_SELECTOR;
 
-      SET_PROPERTY(QLatin1String("-qt-background-role"), QtBackgroundRole);
-      ADD_VALUE(Value::KnownIdentifier, Value_Window);
-      ADD_DECLARATION;
+        SET_PROPERTY( QLatin1String( "-qt-background-role" ), QtBackgroundRole );
+        ADD_VALUE( Value::KnownIdentifier, Value_Button );
+        ADD_DECLARATION;
 
-      ADD_STYLE_RULE;
-   }
+        if ( !styleIsPixmapBased )
+        {
+            SET_PROPERTY( QLatin1String( "-qt-style-features" ), QtStyleFeatures );
+            ADD_VALUE( Value::Identifier, QString::fromLatin1( "background-color" ) );
+            ADD_DECLARATION;
+        }
 
-   /*QDockWidget {
-       border: native;
-   }*/
-   {
-      SET_ELEMENT_NAME(QLatin1String("QDockWidget"));
-      ADD_BASIC_SELECTOR;
-      ADD_SELECTOR;
+        SET_PROPERTY( QLatin1String( "border" ), Border );
+        ADD_VALUE( Value::KnownIdentifier, Value_Native );
+        ADD_DECLARATION;
 
-      SET_PROPERTY(QLatin1String("border"), Border);
-      ADD_VALUE(Value::KnownIdentifier, Value_Native);
-      ADD_DECLARATION;
+        ADD_STYLE_RULE;
+    }
 
-      ADD_STYLE_RULE;
-   }
+    /*QProgressBar {
+        -qt-background-role: base;
+    }*/
+    {
+        SET_ELEMENT_NAME( QLatin1String( "QProgressBar" ) );
+        ADD_BASIC_SELECTOR;
+        ADD_SELECTOR;
 
-   sheet.origin = StyleSheetOrigin_UserAgent;
-   sheet.buildIndexes();
-   return sheet;
+        SET_PROPERTY( QLatin1String( "-qt-background-role" ), QtBackgroundRole );
+        ADD_VALUE( Value::KnownIdentifier, Value_Base );
+        ADD_DECLARATION;
+
+        ADD_STYLE_RULE;
+    }
+
+    /*QScrollBar {
+        -qt-background-role: window;
+    }*/
+    {
+        SET_ELEMENT_NAME( QLatin1String( "QScrollBar" ) );
+        ADD_BASIC_SELECTOR;
+        ADD_SELECTOR;
+
+        SET_PROPERTY( QLatin1String( "-qt-background-role" ), QtBackgroundRole );
+        ADD_VALUE( Value::KnownIdentifier, Value_Window );
+        ADD_DECLARATION;
+
+        ADD_STYLE_RULE;
+    }
+
+    /*QDockWidget {
+        border: native;
+    }*/
+    {
+        SET_ELEMENT_NAME( QLatin1String( "QDockWidget" ) );
+        ADD_BASIC_SELECTOR;
+        ADD_SELECTOR;
+
+        SET_PROPERTY( QLatin1String( "border" ), Border );
+        ADD_VALUE( Value::KnownIdentifier, Value_Native );
+        ADD_DECLARATION;
+
+        ADD_STYLE_RULE;
+    }
+
+    sheet.origin = StyleSheetOrigin_UserAgent;
+    sheet.buildIndexes();
+    return sheet;
 }
 
 #endif // QT_NO_STYLE_STYLESHEET

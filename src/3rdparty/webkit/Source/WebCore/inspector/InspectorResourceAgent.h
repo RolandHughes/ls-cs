@@ -40,11 +40,13 @@
 
 #if ENABLE(INSPECTOR)
 
-namespace WTF {
+namespace WTF
+{
 class String;
 }
 
-namespace WebCore {
+namespace WebCore
+{
 
 class CachedResource;
 class Document;
@@ -72,58 +74,60 @@ class WebSocketHandshakeResponse;
 
 typedef String ErrorString;
 
-class InspectorResourceAgent : public RefCounted<InspectorResourceAgent> {
+class InspectorResourceAgent : public RefCounted<InspectorResourceAgent>
+{
 public:
-    static PassRefPtr<InspectorResourceAgent> create(InstrumentingAgents* instrumentingAgents, InspectorPageAgent* pageAgent, InspectorState* state)
+    static PassRefPtr<InspectorResourceAgent> create( InstrumentingAgents *instrumentingAgents, InspectorPageAgent *pageAgent,
+            InspectorState *state )
     {
-        return adoptRef(new InspectorResourceAgent(instrumentingAgents, pageAgent, state));
+        return adoptRef( new InspectorResourceAgent( instrumentingAgents, pageAgent, state ) );
     }
 
-    void setFrontend(InspectorFrontend*);
+    void setFrontend( InspectorFrontend * );
     void clearFrontend();
     void restore();
 
-    static PassRefPtr<InspectorResourceAgent> restore(Page*, InspectorState*, InspectorFrontend*);
+    static PassRefPtr<InspectorResourceAgent> restore( Page *, InspectorState *, InspectorFrontend * );
 
     ~InspectorResourceAgent();
 
-    void willSendRequest(unsigned long identifier, DocumentLoader*, ResourceRequest&, const ResourceResponse& redirectResponse);
-    void markResourceAsCached(unsigned long identifier);
-    void didReceiveResponse(unsigned long identifier, DocumentLoader* laoder, const ResourceResponse&);
-    void didReceiveContentLength(unsigned long identifier, int dataLength, int encodedDataLength);
-    void didFinishLoading(unsigned long identifier, double finishTime);
-    void didFailLoading(unsigned long identifier, const ResourceError&);
-    void didLoadResourceFromMemoryCache(DocumentLoader*, const CachedResource*);
-    void setInitialScriptContent(unsigned long identifier, const String& sourceString);
-    void setInitialXHRContent(unsigned long identifier, const String& sourceString);
-    void applyUserAgentOverride(String* userAgent);
+    void willSendRequest( unsigned long identifier, DocumentLoader *, ResourceRequest &, const ResourceResponse &redirectResponse );
+    void markResourceAsCached( unsigned long identifier );
+    void didReceiveResponse( unsigned long identifier, DocumentLoader *laoder, const ResourceResponse & );
+    void didReceiveContentLength( unsigned long identifier, int dataLength, int encodedDataLength );
+    void didFinishLoading( unsigned long identifier, double finishTime );
+    void didFailLoading( unsigned long identifier, const ResourceError & );
+    void didLoadResourceFromMemoryCache( DocumentLoader *, const CachedResource * );
+    void setInitialScriptContent( unsigned long identifier, const String &sourceString );
+    void setInitialXHRContent( unsigned long identifier, const String &sourceString );
+    void applyUserAgentOverride( String *userAgent );
 
 #if ENABLE(WEB_SOCKETS)
-    void didCreateWebSocket(unsigned long identifier, const KURL& requestURL);
-    void willSendWebSocketHandshakeRequest(unsigned long identifier, const WebSocketHandshakeRequest&);
-    void didReceiveWebSocketHandshakeResponse(unsigned long identifier, const WebSocketHandshakeResponse&);
-    void didCloseWebSocket(unsigned long identifier);
+    void didCreateWebSocket( unsigned long identifier, const KURL &requestURL );
+    void willSendWebSocketHandshakeRequest( unsigned long identifier, const WebSocketHandshakeRequest & );
+    void didReceiveWebSocketHandshakeResponse( unsigned long identifier, const WebSocketHandshakeResponse & );
+    void didCloseWebSocket( unsigned long identifier );
 #endif
 
     bool backgroundEventsCollectionEnabled();
 
-    // Called from frontend 
-    void enable(ErrorString*);
-    void disable(ErrorString*);
-    void setUserAgentOverride(ErrorString*, const String& userAgent);
-    void setExtraHeaders(ErrorString*, PassRefPtr<InspectorObject>);
+    // Called from frontend
+    void enable( ErrorString * );
+    void disable( ErrorString * );
+    void setUserAgentOverride( ErrorString *, const String &userAgent );
+    void setExtraHeaders( ErrorString *, PassRefPtr<InspectorObject> );
 
 
 private:
-    InspectorResourceAgent(InstrumentingAgents*, InspectorPageAgent*, InspectorState*);
+    InspectorResourceAgent( InstrumentingAgents *, InspectorPageAgent *, InspectorState * );
 
     void enable();
 
-    InstrumentingAgents* m_instrumentingAgents;
-    InspectorPageAgent* m_pageAgent;
-    InspectorState* m_state;
+    InstrumentingAgents *m_instrumentingAgents;
+    InspectorPageAgent *m_pageAgent;
+    InspectorState *m_state;
     OwnPtr<EventsCollector> m_eventsCollector;
-    InspectorFrontend::Network* m_frontend;
+    InspectorFrontend::Network *m_frontend;
     OwnPtr<InspectorFrontend::Network> m_mockFrontend;
     OwnPtr<InspectorFrontendProxy> m_inspectorFrontendProxy;
     String m_userAgentOverride;

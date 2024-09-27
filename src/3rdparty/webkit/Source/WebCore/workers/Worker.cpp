@@ -21,7 +21,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
 
@@ -48,61 +48,73 @@
 #include "WorkerThread.h"
 #include <wtf/MainThread.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-inline Worker::Worker(ScriptExecutionContext* context)
-    : AbstractWorker(context)
-    , m_contextProxy(WorkerContextProxy::create(this))
+inline Worker::Worker( ScriptExecutionContext *context )
+    : AbstractWorker( context )
+    , m_contextProxy( WorkerContextProxy::create( this ) )
 {
 }
 
-PassRefPtr<Worker> Worker::create(const String& url, ScriptExecutionContext* context, ExceptionCode& ec)
+PassRefPtr<Worker> Worker::create( const String &url, ScriptExecutionContext *context, ExceptionCode &ec )
 {
-    RefPtr<Worker> worker = adoptRef(new Worker(context));
+    RefPtr<Worker> worker = adoptRef( new Worker( context ) );
 
-    KURL scriptURL = worker->resolveURL(url, ec);
-    if (scriptURL.isEmpty())
+    KURL scriptURL = worker->resolveURL( url, ec );
+
+    if ( scriptURL.isEmpty() )
+    {
         return 0;
+    }
 
-    worker->m_scriptLoader = adoptPtr(new WorkerScriptLoader(ResourceRequestBase::TargetIsWorker));
-    worker->m_scriptLoader->loadAsynchronously(context, scriptURL, DenyCrossOriginRequests, worker.get());
+    worker->m_scriptLoader = adoptPtr( new WorkerScriptLoader( ResourceRequestBase::TargetIsWorker ) );
+    worker->m_scriptLoader->loadAsynchronously( context, scriptURL, DenyCrossOriginRequests, worker.get() );
 
     // The worker context does not exist while loading, so we must ensure that the worker object is not collected, nor are its event listeners.
-    worker->setPendingActivity(worker.get());
+    worker->setPendingActivity( worker.get() );
 
-    InspectorInstrumentation::didCreateWorker(context, worker->asID(), scriptURL.string(), false);
+    InspectorInstrumentation::didCreateWorker( context, worker->asID(), scriptURL.string(), false );
 
     return worker.release();
 }
 
 Worker::~Worker()
 {
-    ASSERT(isMainThread());
-    ASSERT(scriptExecutionContext()); // The context is protected by worker context proxy, so it cannot be destroyed while a Worker exists.
+    ASSERT( isMainThread() );
+    ASSERT( scriptExecutionContext() ); // The context is protected by worker context proxy, so it cannot be destroyed while a Worker exists.
     m_contextProxy->workerObjectDestroyed();
 }
 
 // FIXME: remove this when we update the ObjC bindings (bug #28774).
-void Worker::postMessage(PassRefPtr<SerializedScriptValue> message, MessagePort* port, ExceptionCode& ec)
+void Worker::postMessage( PassRefPtr<SerializedScriptValue> message, MessagePort *port, ExceptionCode &ec )
 {
     MessagePortArray ports;
-    if (port)
-        ports.append(port);
-    postMessage(message, &ports, ec);
+
+    if ( port )
+    {
+        ports.append( port );
+    }
+
+    postMessage( message, &ports, ec );
 }
 
-void Worker::postMessage(PassRefPtr<SerializedScriptValue> message, ExceptionCode& ec)
+void Worker::postMessage( PassRefPtr<SerializedScriptValue> message, ExceptionCode &ec )
 {
-    postMessage(message, static_cast<MessagePortArray*>(0), ec);
+    postMessage( message, static_cast<MessagePortArray *>( 0 ), ec );
 }
 
-void Worker::postMessage(PassRefPtr<SerializedScriptValue> message, const MessagePortArray* ports, ExceptionCode& ec)
+void Worker::postMessage( PassRefPtr<SerializedScriptValue> message, const MessagePortArray *ports, ExceptionCode &ec )
 {
     // Disentangle the port in preparation for sending it to the remote context.
-    OwnPtr<MessagePortChannelArray> channels = MessagePort::disentanglePorts(ports, ec);
-    if (ec)
+    OwnPtr<MessagePortChannelArray> channels = MessagePort::disentanglePorts( ports, ec );
+
+    if ( ec )
+    {
         return;
-    m_contextProxy->postMessageToWorkerContext(message, channels.release());
+    }
+
+    m_contextProxy->postMessageToWorkerContext( message, channels.release() );
 }
 
 void Worker::terminate()
@@ -128,17 +140,22 @@ bool Worker::hasPendingActivity() const
 
 void Worker::notifyFinished()
 {
-    if (m_scriptLoader->failed())
-        dispatchEvent(Event::create(eventNames().errorEvent, false, true));
-    else {
-        bool shouldStartPaused = InspectorInstrumentation::willStartWorkerContext(scriptExecutionContext(), m_contextProxy);
-        m_contextProxy->startWorkerContext(m_scriptLoader->url(), scriptExecutionContext()->userAgent(m_scriptLoader->url()), m_scriptLoader->script());
-        InspectorInstrumentation::didStartWorkerContext(scriptExecutionContext(), m_contextProxy, shouldStartPaused);
-        InspectorInstrumentation::scriptImported(scriptExecutionContext(), m_scriptLoader->identifier(), m_scriptLoader->script());
+    if ( m_scriptLoader->failed() )
+    {
+        dispatchEvent( Event::create( eventNames().errorEvent, false, true ) );
     }
+    else
+    {
+        bool shouldStartPaused = InspectorInstrumentation::willStartWorkerContext( scriptExecutionContext(), m_contextProxy );
+        m_contextProxy->startWorkerContext( m_scriptLoader->url(), scriptExecutionContext()->userAgent( m_scriptLoader->url() ),
+                                            m_scriptLoader->script() );
+        InspectorInstrumentation::didStartWorkerContext( scriptExecutionContext(), m_contextProxy, shouldStartPaused );
+        InspectorInstrumentation::scriptImported( scriptExecutionContext(), m_scriptLoader->identifier(), m_scriptLoader->script() );
+    }
+
     m_scriptLoader = nullptr;
 
-    unsetPendingActivity(this);
+    unsetPendingActivity( this );
 }
 
 } // namespace WebCore

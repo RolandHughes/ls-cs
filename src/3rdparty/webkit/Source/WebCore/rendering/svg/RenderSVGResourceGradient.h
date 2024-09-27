@@ -32,41 +32,47 @@
 
 #include <wtf/HashMap.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-struct GradientData {
+struct GradientData
+{
     RefPtr<Gradient> gradient;
     AffineTransform userspaceTransform;
 };
 
 class GraphicsContext;
 
-class RenderSVGResourceGradient : public RenderSVGResourceContainer {
+class RenderSVGResourceGradient : public RenderSVGResourceContainer
+{
 public:
-    RenderSVGResourceGradient(SVGGradientElement*);
+    RenderSVGResourceGradient( SVGGradientElement * );
     virtual ~RenderSVGResourceGradient();
 
-    virtual void removeAllClientsFromCache(bool markForInvalidation = true);
-    virtual void removeClientFromCache(RenderObject*, bool markForInvalidation = true);
+    virtual void removeAllClientsFromCache( bool markForInvalidation = true );
+    virtual void removeClientFromCache( RenderObject *, bool markForInvalidation = true );
 
-    virtual bool applyResource(RenderObject*, RenderStyle*, GraphicsContext*&, unsigned short resourceMode);
-    virtual void postApplyResource(RenderObject*, GraphicsContext*&, unsigned short resourceMode, const Path*);
-    virtual FloatRect resourceBoundingBox(RenderObject*) { return FloatRect(); }
+    virtual bool applyResource( RenderObject *, RenderStyle *, GraphicsContext *&, unsigned short resourceMode );
+    virtual void postApplyResource( RenderObject *, GraphicsContext *&, unsigned short resourceMode, const Path * );
+    virtual FloatRect resourceBoundingBox( RenderObject * )
+    {
+        return FloatRect();
+    }
 
 protected:
-    void addStops(GradientData*, const Vector<Gradient::ColorStop>&) const;
+    void addStops( GradientData *, const Vector<Gradient::ColorStop> & ) const;
 
     virtual bool boundingBoxMode() const = 0;
-    virtual void calculateGradientTransform(AffineTransform&) = 0;
-    virtual void collectGradientAttributes(SVGGradientElement*) = 0;
-    virtual void buildGradient(GradientData*, SVGGradientElement*) const = 0;
+    virtual void calculateGradientTransform( AffineTransform & ) = 0;
+    virtual void collectGradientAttributes( SVGGradientElement * ) = 0;
+    virtual void buildGradient( GradientData *, SVGGradientElement * ) const = 0;
 
 private:
     bool m_shouldCollectGradientAttributes : 1;
-    HashMap<RenderObject*, GradientData*> m_gradient;
+    HashMap<RenderObject *, GradientData *> m_gradient;
 
 #if USE(CG)
-    GraphicsContext* m_savedContext;
+    GraphicsContext *m_savedContext;
     OwnPtr<ImageBuffer> m_imageBuffer;
 #endif
 };

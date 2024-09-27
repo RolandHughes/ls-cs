@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006 Lars Knoll 
+ * Copyright (C) 2006 Lars Knoll
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -30,24 +30,26 @@
 #include "TextEncoding.h"
 #include <QTextCodec>
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class TextCodecQt : public TextCodec {
-    public:
-        static void registerEncodingNames(EncodingNameRegistrar);
-        static void registerCodecs(TextCodecRegistrar);
+class TextCodecQt : public TextCodec
+{
+public:
+    static void registerEncodingNames( EncodingNameRegistrar );
+    static void registerCodecs( TextCodecRegistrar );
 
-        TextCodecQt(const TextEncoding&);
-        virtual ~TextCodecQt();
+    TextCodecQt( const TextEncoding & );
+    virtual ~TextCodecQt();
 
-        virtual String decode(const char*, size_t length, bool flush, bool stopOnError, bool& sawError);
-        virtual CString encode(const UChar*, size_t length, UnencodableHandling);
+    virtual String decode( const char *, size_t length, bool flush, bool stopOnError, bool &sawError );
+    virtual CString encode( const UChar *, size_t length, UnencodableHandling );
 
-    private:
-        TextEncoding m_encoding;
-        QTextCodec *m_codec;
-        QTextCodec::ConverterState m_state;
-    };
+private:
+    TextEncoding m_encoding;
+    QTextCodec *m_codec;
+    QTextCodec::ConverterState m_state;
+};
 
 } // namespace WebCore
 

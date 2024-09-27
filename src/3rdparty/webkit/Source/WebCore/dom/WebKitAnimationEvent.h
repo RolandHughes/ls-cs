@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef WebKitAnimationEvent_h
@@ -28,40 +28,45 @@
 
 #include "Event.h"
 
-namespace WebCore {
-        
-    class WebKitAnimationEvent : public Event {
-    public:
-        static PassRefPtr<WebKitAnimationEvent> create()
-        {
-            return adoptRef(new WebKitAnimationEvent);
-        }
-        static PassRefPtr<WebKitAnimationEvent> create(const AtomicString& type, const String& animationName, double elapsedTime)
-        {
-            return adoptRef(new WebKitAnimationEvent(type, animationName, elapsedTime));
-        }
+namespace WebCore
+{
 
-        virtual ~WebKitAnimationEvent();
-        
-        void initWebKitAnimationEvent(const AtomicString& type, 
-                                bool canBubbleArg,
-                                bool cancelableArg,
-                                const String& animationName,
-                                double elapsedTime);
-                        
-        const String& animationName() const;
-        double elapsedTime() const;
-        
-        virtual bool isWebKitAnimationEvent() const { return true; }
-        
-    private:
-        WebKitAnimationEvent();
-        WebKitAnimationEvent(const AtomicString& type, const String& animationName, double elapsedTime);
+class WebKitAnimationEvent : public Event
+{
+public:
+    static PassRefPtr<WebKitAnimationEvent> create()
+    {
+        return adoptRef( new WebKitAnimationEvent );
+    }
+    static PassRefPtr<WebKitAnimationEvent> create( const AtomicString &type, const String &animationName, double elapsedTime )
+    {
+        return adoptRef( new WebKitAnimationEvent( type, animationName, elapsedTime ) );
+    }
 
-        String m_animationName;
-        double m_elapsedTime;
-    };
-    
+    virtual ~WebKitAnimationEvent();
+
+    void initWebKitAnimationEvent( const AtomicString &type,
+                                   bool canBubbleArg,
+                                   bool cancelableArg,
+                                   const String &animationName,
+                                   double elapsedTime );
+
+    const String &animationName() const;
+    double elapsedTime() const;
+
+    virtual bool isWebKitAnimationEvent() const
+    {
+        return true;
+    }
+
+private:
+    WebKitAnimationEvent();
+    WebKitAnimationEvent( const AtomicString &type, const String &animationName, double elapsedTime );
+
+    String m_animationName;
+    double m_elapsedTime;
+};
+
 } // namespace WebCore
 
 #endif // WebKitAnimationEvent_h

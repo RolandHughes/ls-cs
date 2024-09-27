@@ -28,27 +28,36 @@
 
 #include <wtf/Noncopyable.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-enum ProcessingUserGestureState {
+enum ProcessingUserGestureState
+{
     DefinitelyProcessingUserGesture,
     PossiblyProcessingUserGesture,
     DefinitelyNotProcessingUserGesture
 };
 
-class UserGestureIndicator {
-    WTF_MAKE_NONCOPYABLE(UserGestureIndicator);
+class UserGestureIndicator
+{
+    WTF_MAKE_NONCOPYABLE( UserGestureIndicator );
 public:
-    static bool processingUserGesture() { return s_processingUserGesture == DefinitelyProcessingUserGesture; }
-    static ProcessingUserGestureState getUserGestureState() { return s_processingUserGesture; }
+    static bool processingUserGesture()
+    {
+        return s_processingUserGesture == DefinitelyProcessingUserGesture;
+    }
+    static ProcessingUserGestureState getUserGestureState()
+    {
+        return s_processingUserGesture;
+    }
 
-    explicit UserGestureIndicator(ProcessingUserGestureState);
+    explicit UserGestureIndicator( ProcessingUserGestureState );
     ~UserGestureIndicator();
 
 private:
     static ProcessingUserGestureState s_processingUserGesture;
     ProcessingUserGestureState m_previousValue;
-};    
+};
 
 } // namespace WebCore
 

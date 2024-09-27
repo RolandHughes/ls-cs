@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -32,36 +32,37 @@
 #include <CoreGraphics/CGAffineTransform.h>
 #include "FloatConversion.h"
 
-namespace WebCore {
-
-TransformationMatrix::TransformationMatrix(const CGAffineTransform& t)
+namespace WebCore
 {
-    setA(t.a);
-    setB(t.b);
-    setC(t.c);
-    setD(t.d);
-    setE(t.tx);
-    setF(t.ty);
+
+TransformationMatrix::TransformationMatrix( const CGAffineTransform &t )
+{
+    setA( t.a );
+    setB( t.b );
+    setC( t.c );
+    setD( t.d );
+    setE( t.tx );
+    setF( t.ty );
 }
 
 TransformationMatrix::operator CGAffineTransform() const
 {
-    return CGAffineTransformMake(narrowPrecisionToCGFloat(a()),
-                                 narrowPrecisionToCGFloat(b()),
-                                 narrowPrecisionToCGFloat(c()),
-                                 narrowPrecisionToCGFloat(d()),
-                                 narrowPrecisionToCGFloat(e()),
-                                 narrowPrecisionToCGFloat(f()));
+    return CGAffineTransformMake( narrowPrecisionToCGFloat( a() ),
+                                  narrowPrecisionToCGFloat( b() ),
+                                  narrowPrecisionToCGFloat( c() ),
+                                  narrowPrecisionToCGFloat( d() ),
+                                  narrowPrecisionToCGFloat( e() ),
+                                  narrowPrecisionToCGFloat( f() ) );
 }
 
 AffineTransform::operator CGAffineTransform() const
 {
-    return CGAffineTransformMake(narrowPrecisionToCGFloat(a()),
-                                 narrowPrecisionToCGFloat(b()),
-                                 narrowPrecisionToCGFloat(c()),
-                                 narrowPrecisionToCGFloat(d()),
-                                 narrowPrecisionToCGFloat(e()),
-                                 narrowPrecisionToCGFloat(f()));
+    return CGAffineTransformMake( narrowPrecisionToCGFloat( a() ),
+                                  narrowPrecisionToCGFloat( b() ),
+                                  narrowPrecisionToCGFloat( c() ),
+                                  narrowPrecisionToCGFloat( d() ),
+                                  narrowPrecisionToCGFloat( e() ),
+                                  narrowPrecisionToCGFloat( f() ) );
 }
 
 }

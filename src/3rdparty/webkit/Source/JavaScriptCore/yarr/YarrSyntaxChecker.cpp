@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -28,32 +28,37 @@
 
 #include "YarrParser.h"
 
-namespace JSC { namespace Yarr {
+namespace JSC
+{
+namespace Yarr
+{
 
-class SyntaxChecker {
+class SyntaxChecker
+{
 public:
     void assertionBOL() {}
     void assertionEOL() {}
-    void assertionWordBoundary(bool) {}
-    void atomPatternCharacter(UChar) {}
-    void atomBuiltInCharacterClass(BuiltInCharacterClassID, bool) {}
-    void atomCharacterClassBegin(bool = false) {}
-    void atomCharacterClassAtom(UChar) {}
-    void atomCharacterClassRange(UChar, UChar) {}
-    void atomCharacterClassBuiltIn(BuiltInCharacterClassID, bool) {}
+    void assertionWordBoundary( bool ) {}
+    void atomPatternCharacter( UChar ) {}
+    void atomBuiltInCharacterClass( BuiltInCharacterClassID, bool ) {}
+    void atomCharacterClassBegin( bool = false ) {}
+    void atomCharacterClassAtom( UChar ) {}
+    void atomCharacterClassRange( UChar, UChar ) {}
+    void atomCharacterClassBuiltIn( BuiltInCharacterClassID, bool ) {}
     void atomCharacterClassEnd() {}
-    void atomParenthesesSubpatternBegin(bool = true) {}
-    void atomParentheticalAssertionBegin(bool = false) {}
+    void atomParenthesesSubpatternBegin( bool = true ) {}
+    void atomParentheticalAssertionBegin( bool = false ) {}
     void atomParenthesesEnd() {}
-    void atomBackReference(unsigned) {}
-    void quantifyAtom(unsigned, unsigned, bool) {}
+    void atomBackReference( unsigned ) {}
+    void quantifyAtom( unsigned, unsigned, bool ) {}
     void disjunction() {}
 };
 
-const char* checkSyntax(const UString& pattern)
+const char *checkSyntax( const UString &pattern )
 {
     SyntaxChecker syntaxChecker;
-    return parse(syntaxChecker, pattern);
+    return parse( syntaxChecker, pattern );
 }
 
-}} // JSC::YARR
+}
+} // JSC::YARR

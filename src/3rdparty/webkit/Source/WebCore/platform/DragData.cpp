@@ -20,33 +20,34 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
 #include "DragData.h"
 
 #if ENABLE(DRAG_SUPPORT)
-namespace WebCore {
+namespace WebCore
+{
 
 #if !PLATFORM(MAC)
-DragData::DragData(DragDataRef data, const IntPoint& clientPosition, const IntPoint& globalPosition, 
-    DragOperation sourceOperationMask, DragApplicationFlags flags)
-    : m_clientPosition(clientPosition)
-    , m_globalPosition(globalPosition)
-    , m_platformDragData(data)
-    , m_draggingSourceOperationMask(sourceOperationMask)
-    , m_applicationFlags(flags)
-{  
+DragData::DragData( DragDataRef data, const IntPoint &clientPosition, const IntPoint &globalPosition,
+                    DragOperation sourceOperationMask, DragApplicationFlags flags )
+    : m_clientPosition( clientPosition )
+    , m_globalPosition( globalPosition )
+    , m_platformDragData( data )
+    , m_draggingSourceOperationMask( sourceOperationMask )
+    , m_applicationFlags( flags )
+{
 }
 
-DragData::DragData(const String&, const IntPoint& clientPosition, const IntPoint& globalPosition,
-    DragOperation sourceOperationMask, DragApplicationFlags flags)
-    : m_clientPosition(clientPosition)
-    , m_globalPosition(globalPosition)
-    , m_platformDragData(0)
-    , m_draggingSourceOperationMask(sourceOperationMask)
-    , m_applicationFlags(flags)
+DragData::DragData( const String &, const IntPoint &clientPosition, const IntPoint &globalPosition,
+                    DragOperation sourceOperationMask, DragApplicationFlags flags )
+    : m_clientPosition( clientPosition )
+    , m_globalPosition( globalPosition )
+    , m_platformDragData( 0 )
+    , m_draggingSourceOperationMask( sourceOperationMask )
+    , m_applicationFlags( flags )
 {
 }
 #endif

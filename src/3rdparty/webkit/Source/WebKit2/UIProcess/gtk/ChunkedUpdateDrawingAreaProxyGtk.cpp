@@ -37,58 +37,67 @@
 
 using namespace WebCore;
 
-namespace WebKit {
-
-WebPageProxy* ChunkedUpdateDrawingAreaProxy::page()
+namespace WebKit
 {
-    return webkitWebViewBaseGetPage(m_webView);
+
+WebPageProxy *ChunkedUpdateDrawingAreaProxy::page()
+{
+    return webkitWebViewBaseGetPage( m_webView );
 }
 
 void ChunkedUpdateDrawingAreaProxy::ensureBackingStore()
 {
-    if (m_backingStoreImage)
+    if ( m_backingStoreImage )
+    {
         return;
+    }
 
-    m_backingStoreImage = gdk_window_create_similar_surface(gtk_widget_get_window(GTK_WIDGET(m_webView)),
-                                                            CAIRO_CONTENT_COLOR_ALPHA, size().width(), size().height());
+    m_backingStoreImage = gdk_window_create_similar_surface( gtk_widget_get_window( GTK_WIDGET( m_webView ) ),
+                          CAIRO_CONTENT_COLOR_ALPHA, size().width(), size().height() );
 }
 
 void ChunkedUpdateDrawingAreaProxy::invalidateBackingStore()
 {
-    if (m_backingStoreImage) {
-        cairo_surface_destroy(m_backingStoreImage);
+    if ( m_backingStoreImage )
+    {
+        cairo_surface_destroy( m_backingStoreImage );
         m_backingStoreImage = 0;
     }
 }
 
-bool ChunkedUpdateDrawingAreaProxy::platformPaint(const IntRect& rect, cairo_t* cr)
+bool ChunkedUpdateDrawingAreaProxy::platformPaint( const IntRect &rect, cairo_t *cr )
 {
-    if (!m_backingStoreImage)
+    if ( !m_backingStoreImage )
+    {
         return false;
+    }
 
-    cairo_rectangle(cr, rect.x(), rect.y(), rect.width(), rect.height());
-    cairo_set_source_surface(cr, m_backingStoreImage, 0, 0);
-    cairo_fill(cr);
+    cairo_rectangle( cr, rect.x(), rect.y(), rect.width(), rect.height() );
+    cairo_set_source_surface( cr, m_backingStoreImage, 0, 0 );
+    cairo_fill( cr );
 
     return true;
 }
 
-void ChunkedUpdateDrawingAreaProxy::drawUpdateChunkIntoBackingStore(UpdateChunk* updateChunk)
+void ChunkedUpdateDrawingAreaProxy::drawUpdateChunkIntoBackingStore( UpdateChunk *updateChunk )
 {
     ensureBackingStore();
 
-    RefPtr<cairo_surface_t> pixmap(updateChunk->createImage());
-    if (cairo_surface_status(pixmap.get()) != CAIRO_STATUS_SUCCESS)
+    RefPtr<cairo_surface_t> pixmap( updateChunk->createImage() );
+
+    if ( cairo_surface_status( pixmap.get() ) != CAIRO_STATUS_SUCCESS )
+    {
         return;
+    }
 
-    const IntRect& updateChunkRect = updateChunk->rect();
+    const IntRect &updateChunkRect = updateChunk->rect();
 
-    RefPtr<cairo_t> cr = cairo_create(m_backingStoreImage);
-    cairo_set_source_surface(cr.get(), pixmap.get(), updateChunkRect.x(), updateChunkRect.y());
-    cairo_paint(cr.get());
+    RefPtr<cairo_t> cr = cairo_create( m_backingStoreImage );
+    cairo_set_source_surface( cr.get(), pixmap.get(), updateChunkRect.x(), updateChunkRect.y() );
+    cairo_paint( cr.get() );
 
-    gtk_widget_queue_draw_area(GTK_WIDGET(m_webView), updateChunkRect.x(), updateChunkRect.y(),
-                               updateChunkRect.width(), updateChunkRect.height());
+    gtk_widget_queue_draw_area( GTK_WIDGET( m_webView ), updateChunkRect.x(), updateChunkRect.y(),
+                                updateChunkRect.width(), updateChunkRect.height() );
 }
 
 } // namespace WebKit

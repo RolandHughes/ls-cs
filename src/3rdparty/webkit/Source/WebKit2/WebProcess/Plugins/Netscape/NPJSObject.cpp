@@ -32,7 +32,7 @@
 #include "PluginView.h"
 #include <JavaScriptCore/JSLock.h>
 #include <JavaScriptCore/JSObject.h>
-#include <WebCore/Frame.h>  
+#include <WebCore/Frame.h>
 #include <WebCore/IdentifierRep.h>
 #include <WebCore/NotImplemented.h>
 #include <wtf/text/WTFString.h>
@@ -40,209 +40,262 @@
 using namespace JSC;
 using namespace WebCore;
 
-namespace WebKit {
+namespace WebKit
+{
 
-NPJSObject* NPJSObject::create(JSGlobalData& globalData, NPRuntimeObjectMap* objectMap, JSObject* jsObject)
+NPJSObject *NPJSObject::create( JSGlobalData &globalData, NPRuntimeObjectMap *objectMap, JSObject *jsObject )
 {
     // We should never have a JSNPObject inside an NPJSObject.
-    ASSERT(!jsObject->inherits(&JSNPObject::s_info));
+    ASSERT( !jsObject->inherits( &JSNPObject::s_info ) );
 
-    NPJSObject* npJSObject = toNPJSObject(createNPObject(0, npClass()));
-    npJSObject->initialize(globalData, objectMap, jsObject);
+    NPJSObject *npJSObject = toNPJSObject( createNPObject( 0, npClass() ) );
+    npJSObject->initialize( globalData, objectMap, jsObject );
 
     return npJSObject;
 }
 
 NPJSObject::NPJSObject()
-    : m_objectMap(0)
+    : m_objectMap( 0 )
 {
 }
 
 NPJSObject::~NPJSObject()
 {
-    m_objectMap->npJSObjectDestroyed(this);
+    m_objectMap->npJSObjectDestroyed( this );
 }
 
-bool NPJSObject::isNPJSObject(NPObject* npObject)
+bool NPJSObject::isNPJSObject( NPObject *npObject )
 {
     return npObject->_class == npClass();
 }
 
-void NPJSObject::initialize(JSGlobalData& globalData, NPRuntimeObjectMap* objectMap, JSObject* jsObject)
+void NPJSObject::initialize( JSGlobalData &globalData, NPRuntimeObjectMap *objectMap, JSObject *jsObject )
 {
-    ASSERT(!m_objectMap);
-    ASSERT(!m_jsObject);
+    ASSERT( !m_objectMap );
+    ASSERT( !m_jsObject );
 
     m_objectMap = objectMap;
-    m_jsObject.set(globalData, jsObject);
+    m_jsObject.set( globalData, jsObject );
 }
 
-static Identifier identifierFromIdentifierRep(ExecState* exec, IdentifierRep* identifierRep)
+static Identifier identifierFromIdentifierRep( ExecState *exec, IdentifierRep *identifierRep )
 {
-    ASSERT(identifierRep->isString());
+    ASSERT( identifierRep->isString() );
 
-    const char* string = identifierRep->string();
-    int length = strlen(string);
+    const char *string = identifierRep->string();
+    int length = strlen( string );
 
-    return Identifier(exec, String::fromUTF8WithLatin1Fallback(string, length).impl());
+    return Identifier( exec, String::fromUTF8WithLatin1Fallback( string, length ).impl() );
 }
 
-bool NPJSObject::hasMethod(NPIdentifier methodName)
+bool NPJSObject::hasMethod( NPIdentifier methodName )
 {
-    IdentifierRep* identifierRep = static_cast<IdentifierRep*>(methodName);
+    IdentifierRep *identifierRep = static_cast<IdentifierRep *>( methodName );
 
-    if (!identifierRep->isString())
+    if ( !identifierRep->isString() )
+    {
         return false;
+    }
 
-    ExecState* exec = m_objectMap->globalExec();
-    if (!exec)
+    ExecState *exec = m_objectMap->globalExec();
+
+    if ( !exec )
+    {
         return false;
+    }
 
-    JSLock lock(SilenceAssertionsOnly);
+    JSLock lock( SilenceAssertionsOnly );
 
-    JSValue value = m_jsObject->get(exec, identifierFromIdentifierRep(exec, identifierRep));    
+    JSValue value = m_jsObject->get( exec, identifierFromIdentifierRep( exec, identifierRep ) );
     exec->clearException();
 
     CallData callData;
-    return getCallData(value, callData) != CallTypeNone;
+    return getCallData( value, callData ) != CallTypeNone;
 }
 
-bool NPJSObject::invoke(NPIdentifier methodName, const NPVariant* arguments, uint32_t argumentCount, NPVariant* result)
+bool NPJSObject::invoke( NPIdentifier methodName, const NPVariant *arguments, uint32_t argumentCount, NPVariant *result )
 {
-    IdentifierRep* identifierRep = static_cast<IdentifierRep*>(methodName);
-    
-    if (!identifierRep->isString())
-        return false;
-    
-    ExecState* exec = m_objectMap->globalExec();
-    if (!exec)
-        return false;
-    
-    JSLock lock(SilenceAssertionsOnly);
+    IdentifierRep *identifierRep = static_cast<IdentifierRep *>( methodName );
 
-    JSValue function = m_jsObject->get(exec, identifierFromIdentifierRep(exec, identifierRep));
-    return invoke(exec, m_objectMap->globalObject(), function, arguments, argumentCount, result);
+    if ( !identifierRep->isString() )
+    {
+        return false;
+    }
+
+    ExecState *exec = m_objectMap->globalExec();
+
+    if ( !exec )
+    {
+        return false;
+    }
+
+    JSLock lock( SilenceAssertionsOnly );
+
+    JSValue function = m_jsObject->get( exec, identifierFromIdentifierRep( exec, identifierRep ) );
+    return invoke( exec, m_objectMap->globalObject(), function, arguments, argumentCount, result );
 }
 
-bool NPJSObject::invokeDefault(const NPVariant* arguments, uint32_t argumentCount, NPVariant* result)
+bool NPJSObject::invokeDefault( const NPVariant *arguments, uint32_t argumentCount, NPVariant *result )
 {
-    ExecState* exec = m_objectMap->globalExec();
-    if (!exec)
-        return false;
+    ExecState *exec = m_objectMap->globalExec();
 
-    JSLock lock(SilenceAssertionsOnly);
+    if ( !exec )
+    {
+        return false;
+    }
+
+    JSLock lock( SilenceAssertionsOnly );
 
     JSValue function = m_jsObject.get();
-    return invoke(exec, m_objectMap->globalObject(), function, arguments, argumentCount, result);
+    return invoke( exec, m_objectMap->globalObject(), function, arguments, argumentCount, result );
 }
 
-bool NPJSObject::hasProperty(NPIdentifier identifier)
+bool NPJSObject::hasProperty( NPIdentifier identifier )
 {
-    IdentifierRep* identifierRep = static_cast<IdentifierRep*>(identifier);
-    
-    ExecState* exec = m_objectMap->globalExec();
-    if (!exec)
+    IdentifierRep *identifierRep = static_cast<IdentifierRep *>( identifier );
+
+    ExecState *exec = m_objectMap->globalExec();
+
+    if ( !exec )
+    {
         return false;
-    
-    JSLock lock(SilenceAssertionsOnly);
+    }
+
+    JSLock lock( SilenceAssertionsOnly );
 
     bool result;
-    if (identifierRep->isString())
-        result = m_jsObject->hasProperty(exec, identifierFromIdentifierRep(exec, identifierRep));
+
+    if ( identifierRep->isString() )
+    {
+        result = m_jsObject->hasProperty( exec, identifierFromIdentifierRep( exec, identifierRep ) );
+    }
     else
-        result = m_jsObject->hasProperty(exec, identifierRep->number());
+    {
+        result = m_jsObject->hasProperty( exec, identifierRep->number() );
+    }
 
     exec->clearException();
     return result;
 }
 
-bool NPJSObject::getProperty(NPIdentifier propertyName, NPVariant* result)
+bool NPJSObject::getProperty( NPIdentifier propertyName, NPVariant *result )
 {
-    IdentifierRep* identifierRep = static_cast<IdentifierRep*>(propertyName);
-    
-    ExecState* exec = m_objectMap->globalExec();
-    if (!exec)
-        return false;
+    IdentifierRep *identifierRep = static_cast<IdentifierRep *>( propertyName );
 
-    JSLock lock(SilenceAssertionsOnly);
+    ExecState *exec = m_objectMap->globalExec();
+
+    if ( !exec )
+    {
+        return false;
+    }
+
+    JSLock lock( SilenceAssertionsOnly );
     JSValue jsResult;
-    if (identifierRep->isString())
-        jsResult = m_jsObject->get(exec, identifierFromIdentifierRep(exec, identifierRep));
+
+    if ( identifierRep->isString() )
+    {
+        jsResult = m_jsObject->get( exec, identifierFromIdentifierRep( exec, identifierRep ) );
+    }
     else
-        jsResult = m_jsObject->get(exec, identifierRep->number());
-    
-    m_objectMap->convertJSValueToNPVariant(exec, jsResult, *result);
+    {
+        jsResult = m_jsObject->get( exec, identifierRep->number() );
+    }
+
+    m_objectMap->convertJSValueToNPVariant( exec, jsResult, *result );
     exec->clearException();
     return true;
 }
 
-bool NPJSObject::setProperty(NPIdentifier propertyName, const NPVariant* value)
+bool NPJSObject::setProperty( NPIdentifier propertyName, const NPVariant *value )
 {
-    IdentifierRep* identifierRep = static_cast<IdentifierRep*>(propertyName);
-    
-    ExecState* exec = m_objectMap->globalExec();
-    if (!exec)
-        return false;
-    
-    JSLock lock(SilenceAssertionsOnly);
+    IdentifierRep *identifierRep = static_cast<IdentifierRep *>( propertyName );
 
-    JSValue jsValue = m_objectMap->convertNPVariantToJSValue(exec, m_objectMap->globalObject(), *value);
-    if (identifierRep->isString()) {
+    ExecState *exec = m_objectMap->globalExec();
+
+    if ( !exec )
+    {
+        return false;
+    }
+
+    JSLock lock( SilenceAssertionsOnly );
+
+    JSValue jsValue = m_objectMap->convertNPVariantToJSValue( exec, m_objectMap->globalObject(), *value );
+
+    if ( identifierRep->isString() )
+    {
         PutPropertySlot slot;
-        m_jsObject->put(exec, identifierFromIdentifierRep(exec, identifierRep), jsValue, slot);
-    } else
-        m_jsObject->put(exec, identifierRep->number(), jsValue);
+        m_jsObject->put( exec, identifierFromIdentifierRep( exec, identifierRep ), jsValue, slot );
+    }
+    else
+    {
+        m_jsObject->put( exec, identifierRep->number(), jsValue );
+    }
+
     exec->clearException();
-    
+
     return true;
 }
 
-bool NPJSObject::removeProperty(NPIdentifier propertyName)
+bool NPJSObject::removeProperty( NPIdentifier propertyName )
 {
-    IdentifierRep* identifierRep = static_cast<IdentifierRep*>(propertyName);
-    
-    ExecState* exec = m_objectMap->globalExec();
-    if (!exec)
+    IdentifierRep *identifierRep = static_cast<IdentifierRep *>( propertyName );
+
+    ExecState *exec = m_objectMap->globalExec();
+
+    if ( !exec )
+    {
         return false;
+    }
 
-    JSLock lock(SilenceAssertionsOnly);
-    if (identifierRep->isString()) {
-        Identifier identifier = identifierFromIdentifierRep(exec, identifierRep);
-        
-        if (!m_jsObject->hasProperty(exec, identifier)) {
-            exec->clearException();
-            return false;
-        }
-        
-        m_jsObject->deleteProperty(exec, identifier);
-    } else {
-        if (!m_jsObject->hasProperty(exec, identifierRep->number())) {
+    JSLock lock( SilenceAssertionsOnly );
+
+    if ( identifierRep->isString() )
+    {
+        Identifier identifier = identifierFromIdentifierRep( exec, identifierRep );
+
+        if ( !m_jsObject->hasProperty( exec, identifier ) )
+        {
             exec->clearException();
             return false;
         }
 
-        m_jsObject->deleteProperty(exec, identifierRep->number());
+        m_jsObject->deleteProperty( exec, identifier );
+    }
+    else
+    {
+        if ( !m_jsObject->hasProperty( exec, identifierRep->number() ) )
+        {
+            exec->clearException();
+            return false;
+        }
+
+        m_jsObject->deleteProperty( exec, identifierRep->number() );
     }
 
     exec->clearException();
     return true;
 }
 
-bool NPJSObject::enumerate(NPIdentifier** identifiers, uint32_t* identifierCount)
+bool NPJSObject::enumerate( NPIdentifier **identifiers, uint32_t *identifierCount )
 {
-    ExecState* exec = m_objectMap->globalExec();
-    if (!exec)
+    ExecState *exec = m_objectMap->globalExec();
+
+    if ( !exec )
+    {
         return false;
-    
-    JSLock lock(SilenceAssertionsOnly);
+    }
 
-    PropertyNameArray propertyNames(exec);
-    m_jsObject->getPropertyNames(exec, propertyNames);
+    JSLock lock( SilenceAssertionsOnly );
 
-    NPIdentifier* nameIdentifiers = npnMemNewArray<NPIdentifier>(propertyNames.size());
+    PropertyNameArray propertyNames( exec );
+    m_jsObject->getPropertyNames( exec, propertyNames );
 
-    for (size_t i = 0; i < propertyNames.size(); ++i)
-        nameIdentifiers[i] = static_cast<NPIdentifier>(IdentifierRep::get(propertyNames[i].ustring().utf8().data()));
+    NPIdentifier *nameIdentifiers = npnMemNewArray<NPIdentifier>( propertyNames.size() );
+
+    for ( size_t i = 0; i < propertyNames.size(); ++i )
+    {
+        nameIdentifiers[i] = static_cast<NPIdentifier>( IdentifierRep::get( propertyNames[i].ustring().utf8().data() ) );
+    }
 
     *identifiers = nameIdentifiers;
     *identifierCount = propertyNames.size();
@@ -250,61 +303,78 @@ bool NPJSObject::enumerate(NPIdentifier** identifiers, uint32_t* identifierCount
     return true;
 }
 
-bool NPJSObject::construct(const NPVariant* arguments, uint32_t argumentCount, NPVariant* result)
+bool NPJSObject::construct( const NPVariant *arguments, uint32_t argumentCount, NPVariant *result )
 {
-    ExecState* exec = m_objectMap->globalExec();
-    if (!exec)
-        return false;
+    ExecState *exec = m_objectMap->globalExec();
 
-    JSLock lock(SilenceAssertionsOnly);
+    if ( !exec )
+    {
+        return false;
+    }
+
+    JSLock lock( SilenceAssertionsOnly );
 
     ConstructData constructData;
-    ConstructType constructType = getConstructData(m_jsObject.get(), constructData);
-    if (constructType == ConstructTypeNone)
+    ConstructType constructType = getConstructData( m_jsObject.get(), constructData );
+
+    if ( constructType == ConstructTypeNone )
+    {
         return false;
+    }
 
     // Convert the passed in arguments.
     MarkedArgumentBuffer argumentList;
-    for (uint32_t i = 0; i < argumentCount; ++i)
-        argumentList.append(m_objectMap->convertNPVariantToJSValue(exec, m_objectMap->globalObject(), arguments[i]));
+
+    for ( uint32_t i = 0; i < argumentCount; ++i )
+    {
+        argumentList.append( m_objectMap->convertNPVariantToJSValue( exec, m_objectMap->globalObject(), arguments[i] ) );
+    }
 
     exec->globalData().timeoutChecker.start();
-    JSValue value = JSC::construct(exec, m_jsObject.get(), constructType, constructData, argumentList);
+    JSValue value = JSC::construct( exec, m_jsObject.get(), constructType, constructData, argumentList );
     exec->globalData().timeoutChecker.stop();
-    
+
     // Convert and return the new object.
-    m_objectMap->convertJSValueToNPVariant(exec, value, *result);
+    m_objectMap->convertJSValueToNPVariant( exec, value, *result );
     exec->clearException();
 
     return true;
 }
 
-bool NPJSObject::invoke(ExecState* exec, JSGlobalObject* globalObject, JSValue function, const NPVariant* arguments, uint32_t argumentCount, NPVariant* result)
+bool NPJSObject::invoke( ExecState *exec, JSGlobalObject *globalObject, JSValue function, const NPVariant *arguments,
+                         uint32_t argumentCount, NPVariant *result )
 {
     CallData callData;
-    CallType callType = getCallData(function, callData);
-    if (callType == CallTypeNone)
+    CallType callType = getCallData( function, callData );
+
+    if ( callType == CallTypeNone )
+    {
         return false;
+    }
 
     // Convert the passed in arguments.
     MarkedArgumentBuffer argumentList;
-    for (uint32_t i = 0; i < argumentCount; ++i)
-        argumentList.append(m_objectMap->convertNPVariantToJSValue(exec, globalObject, arguments[i]));
+
+    for ( uint32_t i = 0; i < argumentCount; ++i )
+    {
+        argumentList.append( m_objectMap->convertNPVariantToJSValue( exec, globalObject, arguments[i] ) );
+    }
 
     exec->globalData().timeoutChecker.start();
-    JSValue value = JSC::call(exec, function, callType, callData, m_jsObject.get(), argumentList);
+    JSValue value = JSC::call( exec, function, callType, callData, m_jsObject.get(), argumentList );
     exec->globalData().timeoutChecker.stop();
 
     // Convert and return the result of the function call.
-    m_objectMap->convertJSValueToNPVariant(exec, value, *result);
+    m_objectMap->convertJSValueToNPVariant( exec, value, *result );
     exec->clearException();
-    
+
     return true;
 }
 
-NPClass* NPJSObject::npClass()
+NPClass *NPJSObject::npClass()
 {
-    static NPClass npClass = {
+    static NPClass npClass =
+    {
         NP_CLASS_STRUCT_VERSION,
         NP_Allocate,
         NP_Deallocate,
@@ -322,63 +392,64 @@ NPClass* NPJSObject::npClass()
 
     return &npClass;
 }
-    
-NPObject* NPJSObject::NP_Allocate(NPP npp, NPClass*)
+
+NPObject *NPJSObject::NP_Allocate( NPP npp, NPClass * )
 {
-    ASSERT_UNUSED(npp, !npp);
+    ASSERT_UNUSED( npp, !npp );
 
     return new NPJSObject;
 }
 
-void NPJSObject::NP_Deallocate(NPObject* npObject)
+void NPJSObject::NP_Deallocate( NPObject *npObject )
 {
-    NPJSObject* npJSObject = toNPJSObject(npObject);
+    NPJSObject *npJSObject = toNPJSObject( npObject );
     delete npJSObject;
 }
 
-bool NPJSObject::NP_HasMethod(NPObject* npObject, NPIdentifier methodName)
+bool NPJSObject::NP_HasMethod( NPObject *npObject, NPIdentifier methodName )
 {
-    return toNPJSObject(npObject)->hasMethod(methodName);
-}
-    
-bool NPJSObject::NP_Invoke(NPObject* npObject, NPIdentifier methodName, const NPVariant* arguments, uint32_t argumentCount, NPVariant* result)
-{
-    return toNPJSObject(npObject)->invoke(methodName, arguments, argumentCount, result);
-}
-    
-bool NPJSObject::NP_InvokeDefault(NPObject* npObject, const NPVariant* arguments, uint32_t argumentCount, NPVariant* result)
-{
-    return toNPJSObject(npObject)->invokeDefault(arguments, argumentCount, result);
-}
-    
-bool NPJSObject::NP_HasProperty(NPObject* npObject, NPIdentifier propertyName)
-{
-    return toNPJSObject(npObject)->hasProperty(propertyName);
+    return toNPJSObject( npObject )->hasMethod( methodName );
 }
 
-bool NPJSObject::NP_GetProperty(NPObject* npObject, NPIdentifier propertyName, NPVariant* result)
+bool NPJSObject::NP_Invoke( NPObject *npObject, NPIdentifier methodName, const NPVariant *arguments, uint32_t argumentCount,
+                            NPVariant *result )
 {
-    return toNPJSObject(npObject)->getProperty(propertyName, result);
+    return toNPJSObject( npObject )->invoke( methodName, arguments, argumentCount, result );
 }
 
-bool NPJSObject::NP_SetProperty(NPObject* npObject, NPIdentifier propertyName, const NPVariant* value)
+bool NPJSObject::NP_InvokeDefault( NPObject *npObject, const NPVariant *arguments, uint32_t argumentCount, NPVariant *result )
 {
-    return toNPJSObject(npObject)->setProperty(propertyName, value);
+    return toNPJSObject( npObject )->invokeDefault( arguments, argumentCount, result );
 }
 
-bool NPJSObject::NP_RemoveProperty(NPObject* npObject, NPIdentifier propertyName)
+bool NPJSObject::NP_HasProperty( NPObject *npObject, NPIdentifier propertyName )
 {
-    return toNPJSObject(npObject)->removeProperty(propertyName);
+    return toNPJSObject( npObject )->hasProperty( propertyName );
 }
 
-bool NPJSObject::NP_Enumerate(NPObject* npObject, NPIdentifier** identifiers, uint32_t* identifierCount)
+bool NPJSObject::NP_GetProperty( NPObject *npObject, NPIdentifier propertyName, NPVariant *result )
 {
-    return toNPJSObject(npObject)->enumerate(identifiers, identifierCount);
+    return toNPJSObject( npObject )->getProperty( propertyName, result );
 }
 
-bool NPJSObject::NP_Construct(NPObject* npObject, const NPVariant* arguments, uint32_t argumentCount, NPVariant* result)
+bool NPJSObject::NP_SetProperty( NPObject *npObject, NPIdentifier propertyName, const NPVariant *value )
 {
-    return toNPJSObject(npObject)->construct(arguments, argumentCount, result);
+    return toNPJSObject( npObject )->setProperty( propertyName, value );
 }
-    
+
+bool NPJSObject::NP_RemoveProperty( NPObject *npObject, NPIdentifier propertyName )
+{
+    return toNPJSObject( npObject )->removeProperty( propertyName );
+}
+
+bool NPJSObject::NP_Enumerate( NPObject *npObject, NPIdentifier **identifiers, uint32_t *identifierCount )
+{
+    return toNPJSObject( npObject )->enumerate( identifiers, identifierCount );
+}
+
+bool NPJSObject::NP_Construct( NPObject *npObject, const NPVariant *arguments, uint32_t argumentCount, NPVariant *result )
+{
+    return toNPJSObject( npObject )->construct( arguments, argumentCount, result );
+}
+
 } // namespace WebKit

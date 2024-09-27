@@ -26,9 +26,11 @@
 #ifndef WebFindOptions_h
 #define WebFindOptions_h
 
-namespace WebKit {
+namespace WebKit
+{
 
-enum FindOptions {
+enum FindOptions
+{
     FindOptionsCaseInsensitive = 1 << 0,
     FindOptionsAtWordStarts = 1 << 1,
     FindOptionsTreatMedialCapitalAsWordStart = 1 << 2,

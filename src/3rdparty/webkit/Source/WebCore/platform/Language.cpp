@@ -29,49 +29,56 @@
 #include "PlatformString.h"
 #include <wtf/HashMap.h>
 
-namespace WebCore {
-
-typedef HashMap<void*, LanguageChangeObserverFunction> ObserverMap;
-static ObserverMap& observerMap()
+namespace WebCore
 {
-    DEFINE_STATIC_LOCAL(ObserverMap, map, ());
+
+typedef HashMap<void *, LanguageChangeObserverFunction> ObserverMap;
+static ObserverMap &observerMap()
+{
+    DEFINE_STATIC_LOCAL( ObserverMap, map, () );
     return map;
 }
 
-void addLanguageChangeObserver(void* context, LanguageChangeObserverFunction customObserver)
+void addLanguageChangeObserver( void *context, LanguageChangeObserverFunction customObserver )
 {
-    observerMap().set(context, customObserver);
+    observerMap().set( context, customObserver );
 }
 
-void removeLanguageChangeObserver(void* context)
+void removeLanguageChangeObserver( void *context )
 {
-    ASSERT(observerMap().contains(context));
-    observerMap().remove(context);
+    ASSERT( observerMap().contains( context ) );
+    observerMap().remove( context );
 }
 
 void languageDidChange()
 {
     ObserverMap::iterator end = observerMap().end();
-    for (ObserverMap::iterator iter = observerMap().begin(); iter != end; ++iter)
-        iter->second(iter->first);
+
+    for ( ObserverMap::iterator iter = observerMap().begin(); iter != end; ++iter )
+    {
+        iter->second( iter->first );
+    }
 }
 
-static String& languageOverride()
+static String &languageOverride()
 {
-    DEFINE_STATIC_LOCAL(String, override, ());
+    DEFINE_STATIC_LOCAL( String, override, () );
     return override;
 }
 
 String defaultLanguage()
 {
-    const String& override = languageOverride();
-    if (!override.isNull())
+    const String &override = languageOverride();
+
+    if ( !override.isNull() )
+    {
         return override;
+    }
 
     return platformDefaultLanguage();
 }
 
-void overrideDefaultLanguage(const String& override)
+void overrideDefaultLanguage( const String &override )
 {
     languageOverride() = override;
 }

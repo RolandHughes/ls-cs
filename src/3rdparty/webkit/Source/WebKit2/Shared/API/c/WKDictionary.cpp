@@ -34,21 +34,21 @@ using namespace WebKit;
 
 WKTypeID WKDictionaryGetTypeID()
 {
-    return toAPI(ImmutableDictionary::APIType);
+    return toAPI( ImmutableDictionary::APIType );
 }
 
-WKTypeRef WKDictionaryGetItemForKey(WKDictionaryRef dictionaryRef, WKStringRef key)
+WKTypeRef WKDictionaryGetItemForKey( WKDictionaryRef dictionaryRef, WKStringRef key )
 {
-    return toImpl(dictionaryRef)->get(toImpl(key)->string());
+    return toImpl( dictionaryRef )->get( toImpl( key )->string() );
 }
 
-size_t WKDictionaryGetSize(WKDictionaryRef dictionaryRef)
+size_t WKDictionaryGetSize( WKDictionaryRef dictionaryRef )
 {
-    return toImpl(dictionaryRef)->size();
+    return toImpl( dictionaryRef )->size();
 }
 
-WKArrayRef WKDictionaryCopyKeys(WKDictionaryRef dictionaryRef)
+WKArrayRef WKDictionaryCopyKeys( WKDictionaryRef dictionaryRef )
 {
-    RefPtr<ImmutableArray> keys = toImpl(dictionaryRef)->keys();
-    return toAPI(keys.release().releaseRef());
+    RefPtr<ImmutableArray> keys = toImpl( dictionaryRef )->keys();
+    return toAPI( keys.release().releaseRef() );
 }

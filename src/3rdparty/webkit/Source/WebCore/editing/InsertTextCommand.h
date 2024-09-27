@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef InsertTextCommand_h
@@ -28,35 +28,38 @@
 
 #include "CompositeEditCommand.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class InsertTextCommand : public CompositeEditCommand {
+class InsertTextCommand : public CompositeEditCommand
+{
 public:
-    enum RebalanceType {
+    enum RebalanceType
+    {
         RebalanceLeadingAndTrailingWhitespaces,
         RebalanceAllWhitespaces
     };
 
-    static PassRefPtr<InsertTextCommand> create(Document* document)
+    static PassRefPtr<InsertTextCommand> create( Document *document )
     {
-        return adoptRef(new InsertTextCommand(document));
+        return adoptRef( new InsertTextCommand( document ) );
     }
 
-    void input(const String& text, bool selectInsertedText = false, RebalanceType = RebalanceLeadingAndTrailingWhitespaces);
+    void input( const String &text, bool selectInsertedText = false, RebalanceType = RebalanceLeadingAndTrailingWhitespaces );
 
 private:
 
-    InsertTextCommand(Document*);
+    InsertTextCommand( Document * );
 
     void deleteCharacter();
-    
+
     virtual void doApply();
     virtual bool isInsertTextCommand() const;
 
-    Position positionInsideTextNode(const Position&);
-    Position insertTab(const Position&);
-    
-    bool performTrivialReplace(const String&, bool selectInsertedText);
+    Position positionInsideTextNode( const Position & );
+    Position insertTab( const Position & );
+
+    bool performTrivialReplace( const String &, bool selectInsertedText );
 
     friend class TypingCommand;
 };

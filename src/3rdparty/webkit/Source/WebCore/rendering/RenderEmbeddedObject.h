@@ -25,39 +25,56 @@
 
 #include "RenderPart.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class MouseEvent;
 
 // Renderer for embeds and objects, often, but not always, rendered via plug-ins.
 // For example, <embed src="foo.html"> does not invoke a plug-in.
-class RenderEmbeddedObject : public RenderPart {
+class RenderEmbeddedObject : public RenderPart
+{
 public:
-    RenderEmbeddedObject(Element*);
+    RenderEmbeddedObject( Element * );
     virtual ~RenderEmbeddedObject();
 
     bool pluginCrashedOrWasMissing() const;
-    
+
     void setShowsMissingPluginIndicator();
     void setShowsCrashedPluginIndicator();
-    bool showsMissingPluginIndicator() const { return m_showsMissingPluginIndicator; }
+    bool showsMissingPluginIndicator() const
+    {
+        return m_showsMissingPluginIndicator;
+    }
 
     // FIXME: This belongs on HTMLObjectElement.
-    bool hasFallbackContent() const { return m_hasFallbackContent; }
-    void setHasFallbackContent(bool hasFallbackContent) { m_hasFallbackContent = hasFallbackContent; }
+    bool hasFallbackContent() const
+    {
+        return m_hasFallbackContent;
+    }
+    void setHasFallbackContent( bool hasFallbackContent )
+    {
+        m_hasFallbackContent = hasFallbackContent;
+    }
 
-    void handleMissingPluginIndicatorEvent(Event*);
+    void handleMissingPluginIndicatorEvent( Event * );
 
 #if USE(ACCELERATED_COMPOSITING)
     virtual bool allowsAcceleratedCompositing() const;
 #endif
 
 private:
-    virtual const char* renderName() const { return "RenderEmbeddedObject"; }
-    virtual bool isEmbeddedObject() const { return true; }
+    virtual const char *renderName() const
+    {
+        return "RenderEmbeddedObject";
+    }
+    virtual bool isEmbeddedObject() const
+    {
+        return true;
+    }
 
-    virtual void paintReplaced(PaintInfo&, int, int);
-    virtual void paint(PaintInfo& paintInfo, int, int);
+    virtual void paintReplaced( PaintInfo &, int, int );
+    virtual void paint( PaintInfo &paintInfo, int, int );
 
 #if USE(ACCELERATED_COMPOSITING)
     virtual bool requiresLayer() const;
@@ -65,10 +82,11 @@ private:
 
     virtual void layout();
     virtual void viewCleared();
-    
-    void setMissingPluginIndicatorIsPressed(bool);
-    bool isInMissingPluginIndicator(MouseEvent*);
-    bool getReplacementTextGeometry(int tx, int ty, FloatRect& contentRect, Path&, FloatRect& replacementTextRect, Font&, TextRun&, float& textWidth);
+
+    void setMissingPluginIndicatorIsPressed( bool );
+    bool isInMissingPluginIndicator( MouseEvent * );
+    bool getReplacementTextGeometry( int tx, int ty, FloatRect &contentRect, Path &, FloatRect &replacementTextRect, Font &,
+                                     TextRun &, float &textWidth );
 
     String m_replacementText;
     bool m_hasFallbackContent; // FIXME: This belongs on HTMLObjectElement.
@@ -77,14 +95,14 @@ private:
     bool m_mouseDownWasInMissingPluginIndicator;
 };
 
-inline RenderEmbeddedObject* toRenderEmbeddedObject(RenderObject* object)
+inline RenderEmbeddedObject *toRenderEmbeddedObject( RenderObject *object )
 {
-    ASSERT(!object || !strcmp(object->renderName(), "RenderEmbeddedObject"));
-    return static_cast<RenderEmbeddedObject*>(object);
+    ASSERT( !object || !strcmp( object->renderName(), "RenderEmbeddedObject" ) );
+    return static_cast<RenderEmbeddedObject *>( object );
 }
 
 // This will catch anyone doing an unnecessary cast.
-void toRenderEmbeddedObject(const RenderEmbeddedObject*);
+void toRenderEmbeddedObject( const RenderEmbeddedObject * );
 
 } // namespace WebCore
 

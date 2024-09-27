@@ -34,20 +34,20 @@ using namespace WebKit;
 
 WKTypeID WKDownloadGetTypeID()
 {
-    return toAPI(DownloadProxy::APIType);
+    return toAPI( DownloadProxy::APIType );
 }
 
-WKURLRequestRef WKDownloadCopyRequest(WKDownloadRef download)
+WKURLRequestRef WKDownloadCopyRequest( WKDownloadRef download )
 {
-    return toAPI(WebURLRequest::create(toImpl(download)->request()).leakRef());
+    return toAPI( WebURLRequest::create( toImpl( download )->request() ).leakRef() );
 }
 
-WKDataRef WKDownloadGetResumeData(WKDownloadRef download)
+WKDataRef WKDownloadGetResumeData( WKDownloadRef download )
 {
-    return toAPI(toImpl(download)->resumeData());
+    return toAPI( toImpl( download )->resumeData() );
 }
 
-void WKDownloadCancel(WKDownloadRef download)
+void WKDownloadCancel( WKDownloadRef download )
 {
-    return toImpl(download)->cancel();
+    return toImpl( download )->cancel();
 }

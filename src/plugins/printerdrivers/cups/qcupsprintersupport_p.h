@@ -29,19 +29,19 @@
 
 class QCupsPrinterSupport : public QPlatformPrinterSupport
 {
- public:
-   QCupsPrinterSupport();
-   ~QCupsPrinterSupport();
+public:
+    QCupsPrinterSupport();
+    ~QCupsPrinterSupport();
 
-   QPrintEngine *createNativePrintEngine(QPrinter::PrinterMode printerMode) override;
-   QPaintEngine *createPaintEngine(QPrintEngine *printEngine, QPrinter::PrinterMode) override;
+    QPrintEngine *createNativePrintEngine( QPrinter::PrinterMode printerMode ) override;
+    QPaintEngine *createPaintEngine( QPrintEngine *printEngine, QPrinter::PrinterMode ) override;
 
-   QPrintDevice createPrintDevice(const QString &id) override;
-   QStringList availablePrintDeviceIds() const override;
-   QString defaultPrintDeviceId() const override;
+    QPrintDevice createPrintDevice( const QString &id ) override;
+    QStringList availablePrintDeviceIds() const override;
+    QString defaultPrintDeviceId() const override;
 
- private:
-   QString cupsOption(int i, const QString &key) const;
+private:
+    QString cupsOption( int i, const QString &key ) const;
 };
 
 #endif

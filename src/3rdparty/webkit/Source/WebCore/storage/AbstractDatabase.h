@@ -40,31 +40,42 @@
 #include "SecurityOrigin.h"
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
 class DatabaseAuthorizer;
 class ScriptExecutionContext;
 class SecurityOrigin;
 
-class AbstractDatabase : public ThreadSafeRefCounted<AbstractDatabase> {
+class AbstractDatabase : public ThreadSafeRefCounted<AbstractDatabase>
+{
 public:
     static bool isAvailable();
-    static void setIsAvailable(bool available);
+    static void setIsAvailable( bool available );
 
     virtual ~AbstractDatabase();
 
     virtual String version() const;
 
-    bool opened() const { return m_opened; }
-    bool isNew() const { return m_new; }
+    bool opened() const
+    {
+        return m_opened;
+    }
+    bool isNew() const
+    {
+        return m_new;
+    }
 
-    virtual ScriptExecutionContext* scriptExecutionContext() const;
-    virtual SecurityOrigin* securityOrigin() const;
+    virtual ScriptExecutionContext *scriptExecutionContext() const;
+    virtual SecurityOrigin *securityOrigin() const;
     virtual String stringIdentifier() const;
     virtual String displayName() const;
     virtual unsigned long estimatedSize() const;
     virtual String fileName() const;
-    SQLiteDatabase& sqliteDatabase() { return m_sqliteDatabase; }
+    SQLiteDatabase &sqliteDatabase()
+    {
+        return m_sqliteDatabase;
+    }
 
     unsigned long long maximumSize() const;
     void incrementalVacuumIfNeeded();
@@ -73,14 +84,14 @@ public:
 
     // FIXME: move all version-related methods to a DatabaseVersionTracker class
     bool versionMatchesExpected() const;
-    void setExpectedVersion(const String& version);
-    bool getVersionFromDatabase(String& version);
-    bool setVersionInDatabase(const String& version);
+    void setExpectedVersion( const String &version );
+    bool getVersionFromDatabase( String &version );
+    bool setVersionInDatabase( const String &version );
 
     void disableAuthorizer();
     void enableAuthorizer();
     void setAuthorizerReadOnly();
-    void setAuthorizerPermissions(int permissions);
+    void setAuthorizerPermissions( int permissions );
     bool lastActionChangedDatabase();
     bool lastActionWasInsert();
     void resetDeletes();
@@ -91,14 +102,14 @@ public:
     virtual void closeImmediately() = 0;
 
 protected:
-    AbstractDatabase(ScriptExecutionContext*, const String& name, const String& expectedVersion,
-                     const String& displayName, unsigned long estimatedSize);
+    AbstractDatabase( ScriptExecutionContext *, const String &name, const String &expectedVersion,
+                      const String &displayName, unsigned long estimatedSize );
 
     void closeDatabase();
 
-    virtual bool performOpenAndVerify(bool shouldSetVersionInNewDatabase, ExceptionCode& ec);
+    virtual bool performOpenAndVerify( bool shouldSetVersionInNewDatabase, ExceptionCode &ec );
 
-    static const String& databaseInfoTableName();
+    static const String &databaseInfoTableName();
 
     RefPtr<ScriptExecutionContext> m_scriptExecutionContext;
     RefPtr<SecurityOrigin> m_contextThreadSecurityOrigin;
@@ -110,11 +121,14 @@ protected:
     String m_filename;
 
 #ifndef NDEBUG
-    String databaseDebugName() const { return m_contextThreadSecurityOrigin->toString() + "::" + m_name; }
+    String databaseDebugName() const
+    {
+        return m_contextThreadSecurityOrigin->toString() + "::" + m_name;
+    }
 #endif
 
 private:
-    static const String& databaseVersionKey();
+    static const String &databaseVersionKey();
 
     int m_guid;
     bool m_opened;

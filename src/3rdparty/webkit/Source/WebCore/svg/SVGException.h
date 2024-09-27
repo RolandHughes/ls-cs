@@ -25,27 +25,30 @@
 
 #if ENABLE(SVG)
 
-namespace WebCore {
+namespace WebCore
+{
 
-class SVGException : public ExceptionBase {
+class SVGException : public ExceptionBase
+{
 public:
-    static PassRefPtr<SVGException> create(const ExceptionCodeDescription& description)
+    static PassRefPtr<SVGException> create( const ExceptionCodeDescription &description )
     {
-        return adoptRef(new SVGException(description));
+        return adoptRef( new SVGException( description ) );
     }
 
     static const int SVGExceptionOffset = 300;
     static const int SVGExceptionMax = 399;
 
-    enum SVGExceptionCode {
+    enum SVGExceptionCode
+    {
         SVG_WRONG_TYPE_ERR = SVGExceptionOffset,
         SVG_INVALID_VALUE_ERR = SVGExceptionOffset + 1,
         SVG_MATRIX_NOT_INVERTABLE = SVGExceptionOffset + 2
     };
 
 private:
-    SVGException(const ExceptionCodeDescription& description)
-        : ExceptionBase(description)
+    SVGException( const ExceptionCodeDescription &description )
+        : ExceptionBase( description )
     {
     }
 };

@@ -29,13 +29,16 @@
 #ifndef Distance_h
 #define Distance_h
 
-namespace WebCore {
+namespace WebCore
+{
 
 // Distance models are defined according to the OpenAL specification
 
-class DistanceEffect {
+class DistanceEffect
+{
 public:
-    enum ModelType {
+    enum ModelType
+    {
         ModelLinear = 0,
         ModelInverse = 1,
         ModelExponential = 2
@@ -44,29 +47,50 @@ public:
     DistanceEffect();
 
     // Returns scalar gain for the given distance the current distance model is used
-    double gain(double distance);
+    double gain( double distance );
 
-    ModelType model() { return m_model; }
+    ModelType model()
+    {
+        return m_model;
+    }
 
-    void setModel(ModelType model, bool clamped)
+    void setModel( ModelType model, bool clamped )
     {
         m_model = model;
         m_isClamped = clamped;
     }
 
     // Distance params
-    void setRefDistance(double refDistance) { m_refDistance = refDistance; }
-    void setMaxDistance(double maxDistance) { m_maxDistance = maxDistance; }
-    void setRolloffFactor(double rolloffFactor) { m_rolloffFactor = rolloffFactor; }
+    void setRefDistance( double refDistance )
+    {
+        m_refDistance = refDistance;
+    }
+    void setMaxDistance( double maxDistance )
+    {
+        m_maxDistance = maxDistance;
+    }
+    void setRolloffFactor( double rolloffFactor )
+    {
+        m_rolloffFactor = rolloffFactor;
+    }
 
-    double refDistance() const { return m_refDistance; }
-    double maxDistance() const { return m_maxDistance; }
-    double rolloffFactor() const { return m_rolloffFactor; }
+    double refDistance() const
+    {
+        return m_refDistance;
+    }
+    double maxDistance() const
+    {
+        return m_maxDistance;
+    }
+    double rolloffFactor() const
+    {
+        return m_rolloffFactor;
+    }
 
 protected:
-    double linearGain(double distance);
-    double inverseGain(double distance);
-    double exponentialGain(double distance);
+    double linearGain( double distance );
+    double inverseGain( double distance );
+    double exponentialGain( double distance );
 
     ModelType m_model;
     bool m_isClamped;

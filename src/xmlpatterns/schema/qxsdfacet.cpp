@@ -26,120 +26,122 @@
 using namespace QPatternist;
 
 XsdFacet::XsdFacet()
-   : m_type(None)
+    : m_type( None )
 {
 }
 
-void XsdFacet::setType(Type type)
+void XsdFacet::setType( Type type )
 {
-   m_type = type;
+    m_type = type;
 }
 
 XsdFacet::Type XsdFacet::type() const
 {
-   return m_type;
+    return m_type;
 }
 
-void XsdFacet::setValue(const AtomicValue::Ptr &value)
+void XsdFacet::setValue( const AtomicValue::Ptr &value )
 {
-   m_value = value;
+    m_value = value;
 }
 
 AtomicValue::Ptr XsdFacet::value() const
 {
-   return m_value;
+    return m_value;
 }
 
-void XsdFacet::setMultiValue(const AtomicValue::List &value)
+void XsdFacet::setMultiValue( const AtomicValue::List &value )
 {
-   m_multiValue = value;
+    m_multiValue = value;
 }
 
 AtomicValue::List XsdFacet::multiValue() const
 {
-   return m_multiValue;
+    return m_multiValue;
 }
 
-void XsdFacet::setAssertions(const XsdAssertion::List &assertions)
+void XsdFacet::setAssertions( const XsdAssertion::List &assertions )
 {
-   m_assertions = assertions;
+    m_assertions = assertions;
 }
 
 XsdAssertion::List XsdFacet::assertions() const
 {
-   return m_assertions;
+    return m_assertions;
 }
 
-void XsdFacet::setFixed(bool fixed)
+void XsdFacet::setFixed( bool fixed )
 {
-   m_fixed = fixed;
+    m_fixed = fixed;
 }
 
 bool XsdFacet::fixed() const
 {
-   return m_fixed;
+    return m_fixed;
 }
 
-QString XsdFacet::typeName(Type type)
+QString XsdFacet::typeName( Type type )
 {
-   switch (type) {
-      case Length:
-         return QString("length");
-         break;
+    switch ( type )
+    {
+        case Length:
+            return QString( "length" );
+            break;
 
-      case MinimumLength:
-         return QString("minLength");
-         break;
+        case MinimumLength:
+            return QString( "minLength" );
+            break;
 
-      case MaximumLength:
-         return QString("maxLength");
-         break;
+        case MaximumLength:
+            return QString( "maxLength" );
+            break;
 
-      case Pattern:
-         return QString("pattern");
-         break;
+        case Pattern:
+            return QString( "pattern" );
+            break;
 
-      case WhiteSpace:
-         return QString("whiteSpace");
-         break;
+        case WhiteSpace:
+            return QString( "whiteSpace" );
+            break;
 
-      case MaximumInclusive:
-         return QString("maxInclusive");
-         break;
+        case MaximumInclusive:
+            return QString( "maxInclusive" );
+            break;
 
-      case MaximumExclusive:
-         return QString("maxExclusive");
-         break;
+        case MaximumExclusive:
+            return QString( "maxExclusive" );
+            break;
 
-      case MinimumInclusive:
-         return QString("minInclusive");
-         break;
+        case MinimumInclusive:
+            return QString( "minInclusive" );
+            break;
 
-      case MinimumExclusive:
-         return QString("minExclusive");
-         break;
+        case MinimumExclusive:
+            return QString( "minExclusive" );
+            break;
 
-      case TotalDigits:
-         return QString("totalDigits");
-         break;
+        case TotalDigits:
+            return QString( "totalDigits" );
+            break;
 
-      case FractionDigits:
-         return QString("fractionDigits");
-         break;
+        case FractionDigits:
+            return QString( "fractionDigits" );
+            break;
 
-      case Enumeration:
-         return QString("enumeration");
-         break;
-      case Assertion:
-         return QString("assertion");
-         break;
+        case Enumeration:
+            return QString( "enumeration" );
+            break;
 
-      case None:
-         [[fallthrough]];
+        case Assertion:
+            return QString( "assertion" );
+            break;
 
-      default:
-         return QString("none");
-         break;
-   }
+        case None:
+            [[fallthrough]];
+
+        default:
+            return QString( "none" );
+            break;
+    }
 }
 

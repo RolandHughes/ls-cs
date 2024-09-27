@@ -13,18 +13,19 @@
 
 QT_BEGIN_NAMESPACE
 
-#define	MD4_RESULTLEN (128/8)
+#define MD4_RESULTLEN (128/8)
 
-struct md4_context {
-	quint32 lo, hi;
-	quint32 a, b, c, d;
-	unsigned char buffer[64];
-	quint32 block[MD4_RESULTLEN];
+struct md4_context
+{
+    quint32 lo, hi;
+    quint32 a, b, c, d;
+    unsigned char buffer[64];
+    quint32 block[MD4_RESULTLEN];
 };
 
-static void md4_init(struct md4_context *ctx);
-static void md4_update(struct md4_context *ctx, const unsigned char *data, size_t size);
-static void md4_final(struct md4_context *ctx, unsigned char result[MD4_RESULTLEN]);
+static void md4_init( struct md4_context *ctx );
+static void md4_update( struct md4_context *ctx, const unsigned char *data, size_t size );
+static void md4_final( struct md4_context *ctx, unsigned char result[MD4_RESULTLEN] );
 
 QT_END_NAMESPACE
 

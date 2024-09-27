@@ -26,17 +26,19 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class CSSMutableStyleDeclaration;
 class CSSSelector;
 class CSSSelectorList;
 
-class CSSPageRule : public CSSStyleRule {
+class CSSPageRule : public CSSStyleRule
+{
 public:
-    static PassRefPtr<CSSPageRule> create(CSSStyleSheet* parent, int sourceLine)
+    static PassRefPtr<CSSPageRule> create( CSSStyleSheet *parent, int sourceLine )
     {
-        return adoptRef(new CSSPageRule(parent, sourceLine));
+        return adoptRef( new CSSPageRule( parent, sourceLine ) );
     }
 
     virtual ~CSSPageRule();
@@ -44,12 +46,18 @@ public:
     virtual String selectorText() const;
 
 private:
-    CSSPageRule(CSSStyleSheet* parent, int sourceLine);
+    CSSPageRule( CSSStyleSheet *parent, int sourceLine );
 
-    virtual bool isPageRule() { return true; }
+    virtual bool isPageRule()
+    {
+        return true;
+    }
 
     // Inherited from CSSRule
-    virtual unsigned short type() const { return PAGE_RULE; }
+    virtual unsigned short type() const
+    {
+        return PAGE_RULE;
+    }
 };
 
 } // namespace WebCore

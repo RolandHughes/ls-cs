@@ -25,123 +25,123 @@
 
 #include <cs_catch2.h>
 
-TEST_CASE("QMetaEnum enum_count_a", "[qmetaenum]")
+TEST_CASE( "QMetaEnum enum_count_a", "[qmetaenum]" )
 {
-   const QMetaObject &metaObject = Qt::staticMetaObject();
+    const QMetaObject &metaObject = Qt::staticMetaObject();
 
-   int index = metaObject.indexOfEnumerator("Orientation");
-   QMetaEnum enumObj = metaObject.enumerator(index);
+    int index = metaObject.indexOfEnumerator( "Orientation" );
+    QMetaEnum enumObj = metaObject.enumerator( index );
 
-   REQUIRE(enumObj.isValid() == true);
+    REQUIRE( enumObj.isValid() == true );
 
-   REQUIRE(enumObj.name()   == "Orientation");
-   REQUIRE(enumObj.scope()  == "Qt");
-   REQUIRE(enumObj.isFlag() == false);
+    REQUIRE( enumObj.name()   == "Orientation" );
+    REQUIRE( enumObj.scope()  == "Qt" );
+    REQUIRE( enumObj.isFlag() == false );
 
-   REQUIRE(enumObj.keyCount() == 2);
+    REQUIRE( enumObj.keyCount() == 2 );
 
-   // keys are in a map, in alphabetical order
-   REQUIRE(enumObj.key(0)   == "Horizontal");
-   REQUIRE(enumObj.value(0) == 1);
+    // keys are in a map, in alphabetical order
+    REQUIRE( enumObj.key( 0 )   == "Horizontal" );
+    REQUIRE( enumObj.value( 0 ) == 1 );
 
-   REQUIRE(enumObj.key(1)   == "Vertical");
-   REQUIRE(enumObj.value(1) == 2);
+    REQUIRE( enumObj.key( 1 )   == "Vertical" );
+    REQUIRE( enumObj.value( 1 ) == 2 );
 }
 
-TEST_CASE("QMetaEnum enum_count_b", "[qmetaenum]")
+TEST_CASE( "QMetaEnum enum_count_b", "[qmetaenum]" )
 {
-   const QMetaObject &metaObject = Qt::staticMetaObject();
+    const QMetaObject &metaObject = Qt::staticMetaObject();
 
-   int index = metaObject.indexOfEnumerator("AlignmentFlag");
-   QMetaEnum enumObj = metaObject.enumerator(index);
+    int index = metaObject.indexOfEnumerator( "AlignmentFlag" );
+    QMetaEnum enumObj = metaObject.enumerator( index );
 
-   REQUIRE(enumObj.isValid() == true);
+    REQUIRE( enumObj.isValid() == true );
 
-   REQUIRE(enumObj.name()   == "AlignmentFlag");
-   REQUIRE(enumObj.scope()  == "Qt");
-   REQUIRE(enumObj.isFlag() == false);
+    REQUIRE( enumObj.name()   == "AlignmentFlag" );
+    REQUIRE( enumObj.scope()  == "Qt" );
+    REQUIRE( enumObj.isFlag() == false );
 
-   REQUIRE(enumObj.keyCount() == 14);
+    REQUIRE( enumObj.keyCount() == 14 );
 
-   REQUIRE(enumObj.keyToValue("AlignLeft")    == 1);
-   REQUIRE(enumObj.keyToValue("AlignRight")   == 2);
-   REQUIRE(enumObj.keyToValue("AlignVCenter") == 128);
-   REQUIRE(enumObj.keyToValue("AlignHCenter") == 4);
-   REQUIRE(enumObj.keyToValue("AlignTop")     == 32);
-   REQUIRE(enumObj.keyToValue("AlignBottom")  == 64);
+    REQUIRE( enumObj.keyToValue( "AlignLeft" )    == 1 );
+    REQUIRE( enumObj.keyToValue( "AlignRight" )   == 2 );
+    REQUIRE( enumObj.keyToValue( "AlignVCenter" ) == 128 );
+    REQUIRE( enumObj.keyToValue( "AlignHCenter" ) == 4 );
+    REQUIRE( enumObj.keyToValue( "AlignTop" )     == 32 );
+    REQUIRE( enumObj.keyToValue( "AlignBottom" )  == 64 );
 
-   {
-      // part 2
-      int index = metaObject.indexOfEnumerator("Alignment");
-      QMetaEnum enumObj = metaObject.enumerator(index);
+    {
+        // part 2
+        int index = metaObject.indexOfEnumerator( "Alignment" );
+        QMetaEnum enumObj = metaObject.enumerator( index );
 
-      REQUIRE(enumObj.isValid() == true);
+        REQUIRE( enumObj.isValid() == true );
 
-      REQUIRE(enumObj.name()   == "Alignment");
-      REQUIRE(enumObj.scope()  == "Qt");
-      REQUIRE(enumObj.isFlag() == true);
+        REQUIRE( enumObj.name()   == "Alignment" );
+        REQUIRE( enumObj.scope()  == "Qt" );
+        REQUIRE( enumObj.isFlag() == true );
 
-      REQUIRE(enumObj.keyToValue("AlignTop")    == 32);
-      REQUIRE(enumObj.keyToValue("AlignBottom") == 64);
-   }
+        REQUIRE( enumObj.keyToValue( "AlignTop" )    == 32 );
+        REQUIRE( enumObj.keyToValue( "AlignBottom" ) == 64 );
+    }
 }
 
-TEST_CASE("QMetaEnum enum_count_c", "[qmetaenum]")
+TEST_CASE( "QMetaEnum enum_count_c", "[qmetaenum]" )
 {
-   // disable QWarning() for this test
-   csInstallMsgHandler([](QtMsgType, QStringView){ });
+    // disable QWarning() for this test
+    csInstallMsgHandler( []( QtMsgType, QStringView ) { } );
 
-   const QMetaObject &metaObject = Qt::staticMetaObject();
+    const QMetaObject &metaObject = Qt::staticMetaObject();
 
-   int index = metaObject.indexOfEnumerator("SortOrder");
-   QMetaEnum enumObj = metaObject.enumerator(index);
+    int index = metaObject.indexOfEnumerator( "SortOrder" );
+    QMetaEnum enumObj = metaObject.enumerator( index );
 
-   REQUIRE(enumObj.isValid() == true);
+    REQUIRE( enumObj.isValid() == true );
 
-   REQUIRE(enumObj.name()   == "SortOrder");
-   REQUIRE(enumObj.scope()  == "Qt");
-   REQUIRE(enumObj.isFlag() == false);
+    REQUIRE( enumObj.name()   == "SortOrder" );
+    REQUIRE( enumObj.scope()  == "Qt" );
+    REQUIRE( enumObj.isFlag() == false );
 
-   // enum values are *not* registered
-   REQUIRE(enumObj.keyCount() == 0);
+    // enum values are *not* registered
+    REQUIRE( enumObj.keyCount() == 0 );
 
-   REQUIRE(enumObj.key(0)   == "");
-   REQUIRE(enumObj.value(0) == -1);
+    REQUIRE( enumObj.key( 0 )   == "" );
+    REQUIRE( enumObj.value( 0 ) == -1 );
 
-   csInstallMsgHandler(nullptr);
+    csInstallMsgHandler( nullptr );
 }
 
-TEST_CASE("QMetaEnum enum_count_d", "[qmetaenum]")
+TEST_CASE( "QMetaEnum enum_count_d", "[qmetaenum]" )
 {
-   const QMetaObject &metaObject = Qt::staticMetaObject();
+    const QMetaObject &metaObject = Qt::staticMetaObject();
 
-   int index = metaObject.indexOfEnumerator("FocusPolicy");
-   QMetaEnum enumObj = metaObject.enumerator(index);
+    int index = metaObject.indexOfEnumerator( "FocusPolicy" );
+    QMetaEnum enumObj = metaObject.enumerator( index );
 
-   REQUIRE(enumObj.isValid() == true);
+    REQUIRE( enumObj.isValid() == true );
 
-   REQUIRE(enumObj.name()   == "FocusPolicy");
-   REQUIRE(enumObj.scope()  == "Qt");
-   REQUIRE(enumObj.isFlag() == false);
+    REQUIRE( enumObj.name()   == "FocusPolicy" );
+    REQUIRE( enumObj.scope()  == "Qt" );
+    REQUIRE( enumObj.isFlag() == false );
 
-   REQUIRE(enumObj.keyCount() == 5);
+    REQUIRE( enumObj.keyCount() == 5 );
 
-   REQUIRE(enumObj.keyToValue("NoFocus")    == 0);
-   REQUIRE(enumObj.keyToValue("TabFocus")   == 1);
-   REQUIRE(enumObj.keyToValue("ClickFocus") == 2);
+    REQUIRE( enumObj.keyToValue( "NoFocus" )    == 0 );
+    REQUIRE( enumObj.keyToValue( "TabFocus" )   == 1 );
+    REQUIRE( enumObj.keyToValue( "ClickFocus" ) == 2 );
 }
 
-TEST_CASE("QMetaEnum flag_value", "[qmetaenum]")
+TEST_CASE( "QMetaEnum flag_value", "[qmetaenum]" )
 {
-   const QMetaObject &metaObject = Qt::staticMetaObject();
+    const QMetaObject &metaObject = Qt::staticMetaObject();
 
-   int index = metaObject.indexOfEnumerator("InputMethodHint");
-   QMetaEnum enumObj = metaObject.enumerator(index);
+    int index = metaObject.indexOfEnumerator( "InputMethodHint" );
+    QMetaEnum enumObj = metaObject.enumerator( index );
 
-   REQUIRE(enumObj.keyToValue("ImhNone") == 0);
-   REQUIRE(enumObj.keyToValue("ImhDate") == 0x80);
-   REQUIRE(enumObj.keyToValue("ImhTime") == 0x100);
+    REQUIRE( enumObj.keyToValue( "ImhNone" ) == 0 );
+    REQUIRE( enumObj.keyToValue( "ImhDate" ) == 0x80 );
+    REQUIRE( enumObj.keyToValue( "ImhTime" ) == 0x100 );
 
-   REQUIRE(enumObj.keyToValue("ImhLatinOnly")          == 0x800000);
-   REQUIRE(enumObj.keyToValue("ImhExclusiveInputMask") == static_cast<int>(0xffff0000));
+    REQUIRE( enumObj.keyToValue( "ImhLatinOnly" )          == 0x800000 );
+    REQUIRE( enumObj.keyToValue( "ImhExclusiveInputMask" ) == static_cast<int>( 0xffff0000 ) );
 }

@@ -35,26 +35,28 @@
 
 #include <wtf/RefCountedLeakCounter.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 #ifndef NDEBUG
-static WTF::RefCountedLeakCounter instanceCounter("WebCoreSVGElementInstance");
+static WTF::RefCountedLeakCounter instanceCounter( "WebCoreSVGElementInstance" );
 #endif
 
-SVGElementInstance::SVGElementInstance(SVGUseElement* correspondingUseElement, SVGUseElement* directUseElement, PassRefPtr<SVGElement> originalElement)
-    : m_correspondingUseElement(correspondingUseElement)
-    , m_directUseElement(directUseElement)
-    , m_element(originalElement)
-    , m_previousSibling(0)
-    , m_nextSibling(0)
-    , m_firstChild(0)
-    , m_lastChild(0)
+SVGElementInstance::SVGElementInstance( SVGUseElement *correspondingUseElement, SVGUseElement *directUseElement,
+                                        PassRefPtr<SVGElement> originalElement )
+    : m_correspondingUseElement( correspondingUseElement )
+    , m_directUseElement( directUseElement )
+    , m_element( originalElement )
+    , m_previousSibling( 0 )
+    , m_nextSibling( 0 )
+    , m_firstChild( 0 )
+    , m_lastChild( 0 )
 {
-    ASSERT(m_correspondingUseElement);
-    ASSERT(m_element);
+    ASSERT( m_correspondingUseElement );
+    ASSERT( m_element );
 
     // Register as instance for passed element.
-    m_element->mapInstanceToElement(this);
+    m_element->mapInstanceToElement( this );
 
 #ifndef NDEBUG
     instanceCounter.increment();
@@ -68,50 +70,61 @@ SVGElementInstance::~SVGElementInstance()
 #endif
 
     // Deregister as instance for passed element.
-    m_element->removeInstanceMapping(this);
+    m_element->removeInstanceMapping( this );
 
     clearChildren();
 }
 
 void SVGElementInstance::clearChildren()
 {
-    removeAllChildrenInContainer<SVGElementInstance, SVGElementInstance>(this);
+    removeAllChildrenInContainer<SVGElementInstance, SVGElementInstance>( this );
 }
 
 PassRefPtr<SVGElementInstanceList> SVGElementInstance::childNodes()
 {
-    return SVGElementInstanceList::create(this);
+    return SVGElementInstanceList::create( this );
 }
 
-void SVGElementInstance::setShadowTreeElement(SVGElement* element)
+void SVGElementInstance::setShadowTreeElement( SVGElement *element )
 {
-    ASSERT(element);
+    ASSERT( element );
     m_shadowTreeElement = element;
 }
 
-void SVGElementInstance::appendChild(PassRefPtr<SVGElementInstance> child)
+void SVGElementInstance::appendChild( PassRefPtr<SVGElementInstance> child )
 {
-    appendChildToContainer<SVGElementInstance, SVGElementInstance>(child.get(), this);
+    appendChildToContainer<SVGElementInstance, SVGElementInstance>( child.get(), this );
 }
 
-void SVGElementInstance::invalidateAllInstancesOfElement(SVGElement* element)
+void SVGElementInstance::invalidateAllInstancesOfElement( SVGElement *element )
 {
-    if (!element || !element->inDocument())
+    if ( !element || !element->inDocument() )
+    {
         return;
+    }
 
-    if (element->isStyled() && static_cast<SVGStyledElement*>(element)->instanceUpdatesBlocked())
+    if ( element->isStyled() && static_cast<SVGStyledElement *>( element )->instanceUpdatesBlocked() )
+    {
         return;
+    }
 
-    const HashSet<SVGElementInstance*>& set = element->instancesForElement();
-    if (set.isEmpty())
+    const HashSet<SVGElementInstance *> &set = element->instancesForElement();
+
+    if ( set.isEmpty() )
+    {
         return;
+    }
 
     // Mark all use elements referencing 'element' for rebuilding
-    const HashSet<SVGElementInstance*>::const_iterator end = set.end();
-    for (HashSet<SVGElementInstance*>::const_iterator it = set.begin(); it != end; ++it) {
-        ASSERT((*it)->correspondingElement() == element);
-        if (SVGUseElement* element = (*it)->correspondingUseElement()) {
-            ASSERT(element->inDocument());
+    const HashSet<SVGElementInstance *>::const_iterator end = set.end();
+
+    for ( HashSet<SVGElementInstance *>::const_iterator it = set.begin(); it != end; ++it )
+    {
+        ASSERT( ( *it )->correspondingElement() == element );
+
+        if ( SVGUseElement *element = ( *it )->correspondingUseElement() )
+        {
+            ASSERT( element->inDocument() );
             element->invalidateShadowTree();
         }
     }
@@ -120,19 +133,19 @@ void SVGElementInstance::invalidateAllInstancesOfElement(SVGElement* element)
     element->document()->updateLayoutIgnorePendingStylesheets();
 }
 
-ScriptExecutionContext* SVGElementInstance::scriptExecutionContext() const
+ScriptExecutionContext *SVGElementInstance::scriptExecutionContext() const
 {
     return m_element->document();
 }
 
-bool SVGElementInstance::addEventListener(const AtomicString& eventType, PassRefPtr<EventListener> listener, bool useCapture)
+bool SVGElementInstance::addEventListener( const AtomicString &eventType, PassRefPtr<EventListener> listener, bool useCapture )
 {
-    return m_element->addEventListener(eventType, listener, useCapture);
+    return m_element->addEventListener( eventType, listener, useCapture );
 }
 
-bool SVGElementInstance::removeEventListener(const AtomicString& eventType, EventListener* listener, bool useCapture)
+bool SVGElementInstance::removeEventListener( const AtomicString &eventType, EventListener *listener, bool useCapture )
 {
-    return m_element->removeEventListener(eventType, listener, useCapture);
+    return m_element->removeEventListener( eventType, listener, useCapture );
 }
 
 void SVGElementInstance::removeAllEventListeners()
@@ -140,16 +153,19 @@ void SVGElementInstance::removeAllEventListeners()
     m_element->removeAllEventListeners();
 }
 
-bool SVGElementInstance::dispatchEvent(PassRefPtr<Event> event)
+bool SVGElementInstance::dispatchEvent( PassRefPtr<Event> event )
 {
-    SVGElement* element = shadowTreeElement();
-    if (!element)
-        return false;
+    SVGElement *element = shadowTreeElement();
 
-    return element->dispatchEvent(event);
+    if ( !element )
+    {
+        return false;
+    }
+
+    return element->dispatchEvent( event );
 }
 
-EventTargetData* SVGElementInstance::eventTargetData()
+EventTargetData *SVGElementInstance::eventTargetData()
 {
     // EventTarget would use these methods if we were actually using its add/removeEventListener logic.
     // As we're forwarding those calls to the correspondingElement(), no one should ever call this function.
@@ -157,7 +173,7 @@ EventTargetData* SVGElementInstance::eventTargetData()
     return 0;
 }
 
-EventTargetData* SVGElementInstance::ensureEventTargetData()
+EventTargetData *SVGElementInstance::ensureEventTargetData()
 {
     // EventTarget would use these methods if we were actually using its add/removeEventListener logic.
     // As we're forwarding those calls to the correspondingElement(), no one should ever call this function.

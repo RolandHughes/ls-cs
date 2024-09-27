@@ -29,7 +29,8 @@
 #include <wtf/Noncopyable.h>
 #include <wtf/OwnPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class AudioBus;
 class FFTFrame;
@@ -39,36 +40,61 @@ class Float32Array;
 class Uint8Array;
 #endif
 
-class RealtimeAnalyser {
-    WTF_MAKE_NONCOPYABLE(RealtimeAnalyser);
+class RealtimeAnalyser
+{
+    WTF_MAKE_NONCOPYABLE( RealtimeAnalyser );
 public:
     RealtimeAnalyser();
     virtual ~RealtimeAnalyser();
-    
+
     void reset();
 
-    size_t fftSize() const { return m_fftSize; }
-    void setFftSize(size_t size);
+    size_t fftSize() const
+    {
+        return m_fftSize;
+    }
+    void setFftSize( size_t size );
 
-    unsigned frequencyBinCount() const { return m_fftSize / 2; }
+    unsigned frequencyBinCount() const
+    {
+        return m_fftSize / 2;
+    }
 
-    void setMinDecibels(float k) { m_minDecibels = k; }
-    float minDecibels() const { return static_cast<float>(m_minDecibels); }
+    void setMinDecibels( float k )
+    {
+        m_minDecibels = k;
+    }
+    float minDecibels() const
+    {
+        return static_cast<float>( m_minDecibels );
+    }
 
-    void setMaxDecibels(float k) { m_maxDecibels = k; }
-    float maxDecibels() const { return static_cast<float>(m_maxDecibels); }
+    void setMaxDecibels( float k )
+    {
+        m_maxDecibels = k;
+    }
+    float maxDecibels() const
+    {
+        return static_cast<float>( m_maxDecibels );
+    }
 
-    void setSmoothingTimeConstant(float k) { m_smoothingTimeConstant = k; }
-    float smoothingTimeConstant() const { return static_cast<float>(m_smoothingTimeConstant); }
+    void setSmoothingTimeConstant( float k )
+    {
+        m_smoothingTimeConstant = k;
+    }
+    float smoothingTimeConstant() const
+    {
+        return static_cast<float>( m_smoothingTimeConstant );
+    }
 
 #if ENABLE(WEBGL)
-    void getFloatFrequencyData(Float32Array*);
-    void getByteFrequencyData(Uint8Array*);
-    void getByteTimeDomainData(Uint8Array*);
+    void getFloatFrequencyData( Float32Array * );
+    void getByteFrequencyData( Uint8Array * );
+    void getByteTimeDomainData( Uint8Array * );
 #endif
 
     // The audio thread writes input data here.
-    void writeInput(AudioBus*, size_t framesToProcess);
+    void writeInput( AudioBus *, size_t framesToProcess );
 
     static const double DefaultSmoothingTimeConstant;
     static const double DefaultMinDecibels;
@@ -82,19 +108,22 @@ private:
     // The audio thread writes the input audio here.
     AudioFloatArray m_inputBuffer;
     unsigned m_writeIndex;
-    
+
     size_t m_fftSize;
     OwnPtr<FFTFrame> m_analysisFrame;
     void doFFTAnalysis();
-    
+
     // doFFTAnalysis() stores the floating-point magnitude analysis data here.
     AudioFloatArray m_magnitudeBuffer;
-    AudioFloatArray& magnitudeBuffer() { return m_magnitudeBuffer; }
+    AudioFloatArray &magnitudeBuffer()
+    {
+        return m_magnitudeBuffer;
+    }
 
     // A value between 0 and 1 which averages the previous version of m_magnitudeBuffer with the current analysis magnitude data.
-    double m_smoothingTimeConstant;    
+    double m_smoothingTimeConstant;
 
-    // The range used when converting when using getByteFrequencyData(). 
+    // The range used when converting when using getByteFrequencyData().
     double m_minDecibels;
     double m_maxDecibels;
 };

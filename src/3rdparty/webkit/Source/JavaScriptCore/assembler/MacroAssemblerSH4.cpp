@@ -30,21 +30,22 @@
 
 #include "MacroAssemblerSH4.h"
 
-namespace JSC {
-
-void MacroAssemblerSH4::linkCall(void* code, Call call, FunctionPtr function)
+namespace JSC
 {
-    SH4Assembler::linkCall(code, call.m_jmp, function.value());
+
+void MacroAssemblerSH4::linkCall( void *code, Call call, FunctionPtr function )
+{
+    SH4Assembler::linkCall( code, call.m_jmp, function.value() );
 }
 
-void MacroAssemblerSH4::repatchCall(CodeLocationCall call, CodeLocationLabel destination)
+void MacroAssemblerSH4::repatchCall( CodeLocationCall call, CodeLocationLabel destination )
 {
-    SH4Assembler::relinkCall(call.dataLocation(), destination.executableAddress());
+    SH4Assembler::relinkCall( call.dataLocation(), destination.executableAddress() );
 }
 
-void MacroAssemblerSH4::repatchCall(CodeLocationCall call, FunctionPtr destination)
+void MacroAssemblerSH4::repatchCall( CodeLocationCall call, FunctionPtr destination )
 {
-    SH4Assembler::relinkCall(call.dataLocation(), destination.executableAddress());
+    SH4Assembler::relinkCall( call.dataLocation(), destination.executableAddress() );
 }
 
 } // namespace JSC

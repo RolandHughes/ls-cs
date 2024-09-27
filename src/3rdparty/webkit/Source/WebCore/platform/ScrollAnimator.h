@@ -1,10 +1,10 @@
 /*
  * Copyright (c) 2010, Google Inc. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  *     * Redistributions of source code must retain the above copyright
  * notice, this list of conditions and the following disclaimer.
  *     * Redistributions in binary form must reproduce the above
@@ -14,7 +14,7 @@
  *     * Neither the name of Google Inc. nor the names of its
  * contributors may be used to endorse or promote products derived from
  * this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -34,7 +34,8 @@
 #include "ScrollTypes.h"
 #include <wtf/Forward.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class FloatPoint;
 class PlatformWheelEvent;
@@ -45,9 +46,10 @@ class Scrollbar;
 class PlatformGestureEvent;
 #endif
 
-class ScrollAnimator {
+class ScrollAnimator
+{
 public:
-    static PassOwnPtr<ScrollAnimator> create(ScrollableArea*);
+    static PassOwnPtr<ScrollAnimator> create( ScrollableArea * );
 
     virtual ~ScrollAnimator();
 
@@ -55,15 +57,18 @@ public:
     // already at the destination.  Otherwise, starts scrolling towards the
     // destination and returns true.  Scrolling may be immediate or animated.
     // The base class implementation always scrolls immediately, never animates.
-    virtual bool scroll(ScrollbarOrientation, ScrollGranularity, float step, float multiplier);
+    virtual bool scroll( ScrollbarOrientation, ScrollGranularity, float step, float multiplier );
 
-    virtual void scrollToOffsetWithoutAnimation(const FloatPoint&);
+    virtual void scrollToOffsetWithoutAnimation( const FloatPoint & );
 
-    ScrollableArea* scrollableArea() const { return m_scrollableArea; }
+    ScrollableArea *scrollableArea() const
+    {
+        return m_scrollableArea;
+    }
 
-    virtual void handleWheelEvent(PlatformWheelEvent&);
+    virtual void handleWheelEvent( PlatformWheelEvent & );
 #if ENABLE(GESTURE_EVENTS)
-    virtual void handleGestureEvent(const PlatformGestureEvent&);
+    virtual void handleGestureEvent( const PlatformGestureEvent & );
 #endif
 
     FloatPoint currentPosition() const;
@@ -80,17 +85,17 @@ public:
     virtual void contentAreaDidShow() const { }
     virtual void contentAreaDidHide() const { }
 
-    virtual void didAddVerticalScrollbar(Scrollbar*) { }
-    virtual void willRemoveVerticalScrollbar(Scrollbar*) { }
-    virtual void didAddHorizontalScrollbar(Scrollbar*) { }
-    virtual void willRemoveHorizontalScrollbar(Scrollbar*) { }
+    virtual void didAddVerticalScrollbar( Scrollbar * ) { }
+    virtual void willRemoveVerticalScrollbar( Scrollbar * ) { }
+    virtual void didAddHorizontalScrollbar( Scrollbar * ) { }
+    virtual void willRemoveHorizontalScrollbar( Scrollbar * ) { }
 
 protected:
-    ScrollAnimator(ScrollableArea*);
+    ScrollAnimator( ScrollableArea * );
 
     virtual void notityPositionChanged();
 
-    ScrollableArea* m_scrollableArea;
+    ScrollableArea *m_scrollableArea;
     float m_currentPosX; // We avoid using a FloatPoint in order to reduce
     float m_currentPosY; // subclass code complexity.
 };

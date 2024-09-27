@@ -31,28 +31,52 @@
 #include <wtf/RefCounted.h>
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class SVGFilter : public Filter {
+class SVGFilter : public Filter
+{
 public:
-    static PassRefPtr<SVGFilter> create(const AffineTransform&, const FloatRect&, const FloatRect&, const FloatRect&, bool);
+    static PassRefPtr<SVGFilter> create( const AffineTransform &, const FloatRect &, const FloatRect &, const FloatRect &, bool );
 
-    virtual bool effectBoundingBoxMode() const { return m_effectBBoxMode; }
+    virtual bool effectBoundingBoxMode() const
+    {
+        return m_effectBBoxMode;
+    }
 
-    virtual FloatRect filterRegionInUserSpace() const { return m_filterRegion; }
-    virtual FloatRect filterRegion() const { return m_absoluteFilterRegion; }
+    virtual FloatRect filterRegionInUserSpace() const
+    {
+        return m_filterRegion;
+    }
+    virtual FloatRect filterRegion() const
+    {
+        return m_absoluteFilterRegion;
+    }
 
-    virtual FloatPoint mapAbsolutePointToLocalPoint(const FloatPoint& point) const { return m_absoluteTransform.inverse().mapPoint(point); }
-    FloatRect mapLocalRectToAbsoluteRect(const FloatRect& rect) const { return m_absoluteTransform.mapRect(rect); }
+    virtual FloatPoint mapAbsolutePointToLocalPoint( const FloatPoint &point ) const
+    {
+        return m_absoluteTransform.inverse().mapPoint( point );
+    }
+    FloatRect mapLocalRectToAbsoluteRect( const FloatRect &rect ) const
+    {
+        return m_absoluteTransform.mapRect( rect );
+    }
 
-    virtual float applyHorizontalScale(float value) const;
-    virtual float applyVerticalScale(float value) const;
+    virtual float applyHorizontalScale( float value ) const;
+    virtual float applyVerticalScale( float value ) const;
 
-    virtual FloatRect sourceImageRect() const { return m_absoluteSourceDrawingRegion; }
-    FloatRect targetBoundingBox() const { return m_targetBoundingBox; }
+    virtual FloatRect sourceImageRect() const
+    {
+        return m_absoluteSourceDrawingRegion;
+    }
+    FloatRect targetBoundingBox() const
+    {
+        return m_targetBoundingBox;
+    }
 
 private:
-    SVGFilter(const AffineTransform& absoluteTransform, const FloatRect& absoluteSourceDrawingRegion, const FloatRect& targetBoundingBox, const FloatRect& filterRegion, bool effectBBoxMode);
+    SVGFilter( const AffineTransform &absoluteTransform, const FloatRect &absoluteSourceDrawingRegion,
+               const FloatRect &targetBoundingBox, const FloatRect &filterRegion, bool effectBBoxMode );
 
     AffineTransform m_absoluteTransform;
     FloatRect m_absoluteSourceDrawingRegion;

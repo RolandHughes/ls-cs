@@ -30,39 +30,39 @@
 
 @interface QCocoaMenuLoader : NSResponder
 {
-   IBOutlet NSMenu *theMenu;
-   IBOutlet NSMenu *appMenu;
-   IBOutlet NSMenuItem *quitItem;
-   IBOutlet NSMenuItem *preferencesItem;
-   IBOutlet NSMenuItem *aboutItem;
-   IBOutlet NSMenuItem *aboutCsItem;
-   IBOutlet NSMenuItem *hideItem;
-   NSMenuItem *lastAppSpecificItem;
-   NSMenuItem *servicesItem;
-   NSMenuItem *hideAllOthersItem;
-   NSMenuItem *showAllItem;
+    IBOutlet NSMenu *theMenu;
+    IBOutlet NSMenu *appMenu;
+    IBOutlet NSMenuItem *quitItem;
+    IBOutlet NSMenuItem *preferencesItem;
+    IBOutlet NSMenuItem *aboutItem;
+    IBOutlet NSMenuItem *aboutCsItem;
+    IBOutlet NSMenuItem *hideItem;
+    NSMenuItem *lastAppSpecificItem;
+    NSMenuItem *servicesItem;
+    NSMenuItem *hideAllOthersItem;
+    NSMenuItem *showAllItem;
 }
-- (instancetype)init;
-- (void)ensureAppMenuInMenu: (NSMenu *)menu;
-- (void)removeActionsFromAppMenu;
-- (NSMenu *)applicationMenu;
-- (NSMenu *)menu;
-- (NSMenuItem *)quitMenuItem;
-- (NSMenuItem *)preferencesMenuItem;
-- (NSMenuItem *)aboutMenuItem;
-- (NSMenuItem *)aboutCsMenuItem;
-- (NSMenuItem *)hideMenuItem;
-- (NSMenuItem *)appSpecificMenuItem: (NSInteger)tag;
-- (IBAction)terminate: (id)sender;
-- (IBAction)orderFrontStandardAboutPanel: (id)sender;
-- (IBAction)hideOtherApplications: (id)sender;
-- (IBAction)unhideAllApplications: (id)sender;
-- (IBAction)hide: (id)sender;
-- (IBAction)qtDispatcherToQPAMenuItem: (id)sender;
-- (void)orderFrontCharacterPalette: (id)sender;
-- (BOOL)validateMenuItem: (NSMenuItem *)menuItem;
-- (void)qtTranslateApplicationMenu;
-- (NSArray *)mergeable;
+- ( instancetype )init;
+- ( void )ensureAppMenuInMenu: ( NSMenu * )menu;
+- ( void )removeActionsFromAppMenu;
+- ( NSMenu * )applicationMenu;
+- ( NSMenu * )menu;
+- ( NSMenuItem * )quitMenuItem;
+- ( NSMenuItem * )preferencesMenuItem;
+- ( NSMenuItem * )aboutMenuItem;
+- ( NSMenuItem * )aboutCsMenuItem;
+- ( NSMenuItem * )hideMenuItem;
+- ( NSMenuItem * )appSpecificMenuItem: ( NSInteger )tag;
+- ( IBAction )terminate: ( id )sender;
+- ( IBAction )orderFrontStandardAboutPanel: ( id )sender;
+- ( IBAction )hideOtherApplications: ( id )sender;
+- ( IBAction )unhideAllApplications: ( id )sender;
+- ( IBAction )hide: ( id )sender;
+- ( IBAction )qtDispatcherToQPAMenuItem: ( id )sender;
+- ( void )orderFrontCharacterPalette: ( id )sender;
+- ( BOOL )validateMenuItem: ( NSMenuItem * )menuItem;
+- ( void )qtTranslateApplicationMenu;
+- ( NSArray * )mergeable;
 @end
 
 #endif

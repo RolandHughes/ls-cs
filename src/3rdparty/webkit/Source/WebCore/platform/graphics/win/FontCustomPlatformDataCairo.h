@@ -28,28 +28,31 @@
 
 #include <cairo.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class FontPlatformData;
 class SharedBuffer;
 
-struct FontCustomPlatformData {
-    WTF_MAKE_NONCOPYABLE(FontCustomPlatformData);
+struct FontCustomPlatformData
+{
+    WTF_MAKE_NONCOPYABLE( FontCustomPlatformData );
 public:
-    FontCustomPlatformData(cairo_font_face_t* fontFace)
-        : m_fontFace(fontFace)
+    FontCustomPlatformData( cairo_font_face_t *fontFace )
+        : m_fontFace( fontFace )
     {
     }
     ~FontCustomPlatformData();
 
-    FontPlatformData fontPlatformData(int size, bool bold, bool italic, FontOrientation = Horizontal, TextOrientation = TextOrientationVerticalRight, FontWidthVariant = RegularWidth);
+    FontPlatformData fontPlatformData( int size, bool bold, bool italic, FontOrientation = Horizontal,
+                                       TextOrientation = TextOrientationVerticalRight, FontWidthVariant = RegularWidth );
 
-    static bool supportsFormat(const String&);
+    static bool supportsFormat( const String & );
 
-    cairo_font_face_t* m_fontFace;
+    cairo_font_face_t *m_fontFace;
 };
 
-FontCustomPlatformData* createFontCustomPlatformData(SharedBuffer*);
+FontCustomPlatformData *createFontCustomPlatformData( SharedBuffer * );
 
 }
 

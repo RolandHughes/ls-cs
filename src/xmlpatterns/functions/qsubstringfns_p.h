@@ -26,37 +26,38 @@
 
 #include <qcomparescaseaware_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class ContainsFN : public ComparesCaseAware
 {
- public:
-   Item evaluateSingleton(const DynamicContext::Ptr &context) const override;
+public:
+    Item evaluateSingleton( const DynamicContext::Ptr &context ) const override;
 };
 
 class StartsWithFN : public ComparesCaseAware
 {
- public:
-   Item evaluateSingleton(const DynamicContext::Ptr &context) const override;
+public:
+    Item evaluateSingleton( const DynamicContext::Ptr &context ) const override;
 };
 
 class EndsWithFN : public ComparesCaseAware
 {
- public:
-   Item evaluateSingleton(const DynamicContext::Ptr &context) const override;
+public:
+    Item evaluateSingleton( const DynamicContext::Ptr &context ) const override;
 };
 
 
 class SubstringBeforeFN : public FunctionCall
 {
- public:
-   Item evaluateSingleton(const DynamicContext::Ptr &context) const override;
+public:
+    Item evaluateSingleton( const DynamicContext::Ptr &context ) const override;
 };
 
 class SubstringAfterFN : public FunctionCall
 {
- public:
-   Item evaluateSingleton(const DynamicContext::Ptr &context) const override;
+public:
+    Item evaluateSingleton( const DynamicContext::Ptr &context ) const override;
 };
 
 }

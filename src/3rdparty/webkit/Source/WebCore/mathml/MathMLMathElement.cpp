@@ -32,29 +32,30 @@
 
 #include "RenderMathMLMath.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-inline MathMLMathElement::MathMLMathElement(const QualifiedName& tagName, Document* document)
-    : MathMLInlineContainerElement(tagName, document)
+inline MathMLMathElement::MathMLMathElement( const QualifiedName &tagName, Document *document )
+    : MathMLInlineContainerElement( tagName, document )
 {
 }
 
-PassRefPtr<MathMLMathElement> MathMLMathElement::create(const QualifiedName& tagName, Document* document)
+PassRefPtr<MathMLMathElement> MathMLMathElement::create( const QualifiedName &tagName, Document *document )
 {
-    return adoptRef(new MathMLMathElement(tagName, document));
+    return adoptRef( new MathMLMathElement( tagName, document ) );
 }
 
 void MathMLMathElement::insertedIntoDocument()
 {
     // There are sibling rules in the MathML default style.
-    document()->setUsesSiblingRules(true);
-    
+    document()->setUsesSiblingRules( true );
+
     MathMLInlineContainerElement::insertedIntoDocument();
 }
 
-RenderObject* MathMLMathElement::createRenderer(RenderArena* arena, RenderStyle*)
+RenderObject *MathMLMathElement::createRenderer( RenderArena *arena, RenderStyle * )
 {
-    return new (arena) RenderMathMLMath(this);
+    return new ( arena ) RenderMathMLMath( this );
 }
 
 }

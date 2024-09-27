@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -29,49 +29,54 @@
 
 #include "DrawingBuffer.h"
 
-namespace WebCore {
-
-DrawingBuffer::DrawingBuffer(GraphicsContext3D* context,
-                             const IntSize& size,
-                             bool multisampleExtensionSupported,
-                             bool packedDepthStencilExtensionSupported)
-    : m_context(context)
-    , m_size(-1, -1)
-    , m_multisampleExtensionSupported(multisampleExtensionSupported)
-    , m_packedDepthStencilExtensionSupported(packedDepthStencilExtensionSupported)
-    , m_fbo(context->createFramebuffer())
-    , m_colorBuffer(0)
-    , m_depthStencilBuffer(0)
-    , m_depthBuffer(0)
-    , m_stencilBuffer(0)
-    , m_multisampleFBO(0)
-    , m_multisampleColorBuffer(0)
+namespace WebCore
 {
-    ASSERT(m_fbo);
-    if (!m_fbo) {
+
+DrawingBuffer::DrawingBuffer( GraphicsContext3D *context,
+                              const IntSize &size,
+                              bool multisampleExtensionSupported,
+                              bool packedDepthStencilExtensionSupported )
+    : m_context( context )
+    , m_size( -1, -1 )
+    , m_multisampleExtensionSupported( multisampleExtensionSupported )
+    , m_packedDepthStencilExtensionSupported( packedDepthStencilExtensionSupported )
+    , m_fbo( context->createFramebuffer() )
+    , m_colorBuffer( 0 )
+    , m_depthStencilBuffer( 0 )
+    , m_depthBuffer( 0 )
+    , m_stencilBuffer( 0 )
+    , m_multisampleFBO( 0 )
+    , m_multisampleColorBuffer( 0 )
+{
+    ASSERT( m_fbo );
+
+    if ( !m_fbo )
+    {
         clear();
         return;
     }
 
     // create a texture to render into
     m_colorBuffer = context->createTexture();
-    context->bindTexture(GraphicsContext3D::TEXTURE_2D, m_colorBuffer);
-    context->texParameterf(GraphicsContext3D::TEXTURE_2D, GraphicsContext3D::TEXTURE_MAG_FILTER, GraphicsContext3D::LINEAR);
-    context->texParameterf(GraphicsContext3D::TEXTURE_2D, GraphicsContext3D::TEXTURE_MIN_FILTER, GraphicsContext3D::LINEAR);
-    context->texParameteri(GraphicsContext3D::TEXTURE_2D, GraphicsContext3D::TEXTURE_WRAP_S, GraphicsContext3D::CLAMP_TO_EDGE);
-    context->texParameteri(GraphicsContext3D::TEXTURE_2D, GraphicsContext3D::TEXTURE_WRAP_T, GraphicsContext3D::CLAMP_TO_EDGE);
-    context->bindTexture(GraphicsContext3D::TEXTURE_2D, 0);
+    context->bindTexture( GraphicsContext3D::TEXTURE_2D, m_colorBuffer );
+    context->texParameterf( GraphicsContext3D::TEXTURE_2D, GraphicsContext3D::TEXTURE_MAG_FILTER, GraphicsContext3D::LINEAR );
+    context->texParameterf( GraphicsContext3D::TEXTURE_2D, GraphicsContext3D::TEXTURE_MIN_FILTER, GraphicsContext3D::LINEAR );
+    context->texParameteri( GraphicsContext3D::TEXTURE_2D, GraphicsContext3D::TEXTURE_WRAP_S, GraphicsContext3D::CLAMP_TO_EDGE );
+    context->texParameteri( GraphicsContext3D::TEXTURE_2D, GraphicsContext3D::TEXTURE_WRAP_T, GraphicsContext3D::CLAMP_TO_EDGE );
+    context->bindTexture( GraphicsContext3D::TEXTURE_2D, 0 );
 
     // Create the FBO
     m_fbo = context->createFramebuffer();
-    ASSERT(m_fbo);
-    if (!m_fbo) {
+    ASSERT( m_fbo );
+
+    if ( !m_fbo )
+    {
         clear();
         return;
     }
 
     createSecondaryBuffers();
-    reset(size);
+    reset( size );
 }
 
 DrawingBuffer::~DrawingBuffer()
@@ -84,7 +89,7 @@ void DrawingBuffer::didReset()
 }
 
 #if USE(ACCELERATED_COMPOSITING)
-PlatformLayer* DrawingBuffer::platformLayer()
+PlatformLayer *DrawingBuffer::platformLayer()
 {
     return 0;
 }

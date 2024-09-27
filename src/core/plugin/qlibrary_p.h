@@ -38,76 +38,79 @@ class QLibraryStore;
 
 class QLibraryHandle
 {
- public:
-   enum UnloadFlag {
-      UnloadSys,
-      NoUnloadSys
-   };
+public:
+    enum UnloadFlag
+    {
+        UnloadSys,
+        NoUnloadSys
+    };
 
-   bool tryload();
-   bool loadPlugin();                              // loads and resolves instance
-   bool unload(UnloadFlag flag = UnloadSys);
+    bool tryload();
+    bool loadPlugin();                              // loads and resolves instance
+    bool unload( UnloadFlag flag = UnloadSys );
 
-   void release();
-   void *resolve(const QString &symbol);
+    void release();
+    void *resolve( const QString &symbol );
 
-   QLibrary::LoadHints loadHints() const {
-      return QLibrary::LoadHints(loadHintsInt.load());
-   }
+    QLibrary::LoadHints loadHints() const
+    {
+        return QLibrary::LoadHints( loadHintsInt.load() );
+    }
 
-   void setLoadHints(QLibrary::LoadHints lh);
+    void setLoadHints( QLibrary::LoadHints lh );
 
-   static QLibraryHandle *findOrLoad(const QString &fileName, const QString &version = QString(),
-         QLibrary::LoadHints loadHints = Qt::EmptyFlag);
+    static QLibraryHandle *findOrLoad( const QString &fileName, const QString &version = QString(),
+                                       QLibrary::LoadHints loadHints = Qt::EmptyFlag );
 
-   static QStringList suffixes_sys(const QString &fullVersion);
-   static QStringList prefixes_sys();
+    static QStringList suffixes_sys( const QString &fullVersion );
+    static QStringList prefixes_sys();
 
-   void updatePluginState();
-   bool isPlugin();
+    void updatePluginState();
+    bool isPlugin();
 
 #ifdef Q_OS_WIN
-   HINSTANCE pHnd;
+    HINSTANCE pHnd;
 #else
-   void *pHnd;
+    void *pHnd;
 #endif
 
-   QString fileName;
-   QString qualifiedFileName;
-   QString fullVersion;
+    QString fileName;
+    QString qualifiedFileName;
+    QString fullVersion;
 
-   QString errorString;
-   QMetaObject *m_metaObject;
+    QString errorString;
+    QMetaObject *m_metaObject;
 
-   QPointer<QObject> pluginObj;
+    QPointer<QObject> pluginObj;
 
- private:
-   enum PluginState {
-      IsAPlugin,
-      IsNotAPlugin,
-      MightBeAPlugin
-   };
+private:
+    enum PluginState
+    {
+        IsAPlugin,
+        IsNotAPlugin,
+        MightBeAPlugin
+    };
 
-   explicit QLibraryHandle(const QString &canonicalFileName, const QString &version, QLibrary::LoadHints loadHints);
-   ~QLibraryHandle();
+    explicit QLibraryHandle( const QString &canonicalFileName, const QString &version, QLibrary::LoadHints loadHints );
+    ~QLibraryHandle();
 
-   void mergeLoadHints(QLibrary::LoadHints loadHints);
+    void mergeLoadHints( QLibrary::LoadHints loadHints );
 
-   bool load_sys();
-   bool unload_sys();
-   void *resolve_sys(const QString &symbol);
+    bool load_sys();
+    bool unload_sys();
+    void *resolve_sys( const QString &symbol );
 
-   PluginState pluginState;
+    PluginState pluginState;
 
-   QAtomicInt loadHintsInt;
+    QAtomicInt loadHintsInt;
 
-   // counts how many QLibrary or QPluginLoader are attached to us, plus 1 if it's loaded
-   QAtomicInt libraryRefCount;
+    // counts how many QLibrary or QPluginLoader are attached to us, plus 1 if it's loaded
+    QAtomicInt libraryRefCount;
 
-   // counts how many times load() or loadPlugin() were called
-   QAtomicInt libraryUnloadCount;
+    // counts how many times load() or loadPlugin() were called
+    QAtomicInt libraryUnloadCount;
 
-   friend class QLibraryStore;
+    friend class QLibraryStore;
 };
 
 #endif

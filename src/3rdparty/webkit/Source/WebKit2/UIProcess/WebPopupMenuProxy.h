@@ -31,46 +31,54 @@
 #include <wtf/RefCounted.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
-    class IntRect;
+namespace WebCore
+{
+class IntRect;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
 struct PlatformPopupMenuData;
 struct WebPopupItem;
 class NativeWebMouseEvent;
 
-class WebPopupMenuProxy : public RefCounted<WebPopupMenuProxy> {
+class WebPopupMenuProxy : public RefCounted<WebPopupMenuProxy>
+{
 public:
-    class Client {
+    class Client
+    {
     protected:
         virtual ~Client()
         {
         }
 
     public:
-        virtual void valueChangedForPopupMenu(WebPopupMenuProxy*, int32_t newSelectedIndex) = 0;
-        virtual void setTextFromItemForPopupMenu(WebPopupMenuProxy*, int32_t index) = 0;
-        virtual NativeWebMouseEvent* currentlyProcessedMouseDownEvent() = 0;
+        virtual void valueChangedForPopupMenu( WebPopupMenuProxy *, int32_t newSelectedIndex ) = 0;
+        virtual void setTextFromItemForPopupMenu( WebPopupMenuProxy *, int32_t index ) = 0;
+        virtual NativeWebMouseEvent *currentlyProcessedMouseDownEvent() = 0;
     };
 
     virtual ~WebPopupMenuProxy()
     {
     }
 
-    virtual void showPopupMenu(const WebCore::IntRect& rect, WebCore::TextDirection, double scaleFactor, const Vector<WebPopupItem>& items, const PlatformPopupMenuData&, int32_t selectedIndex) = 0;
+    virtual void showPopupMenu( const WebCore::IntRect &rect, WebCore::TextDirection, double scaleFactor,
+                                const Vector<WebPopupItem> &items, const PlatformPopupMenuData &, int32_t selectedIndex ) = 0;
     virtual void hidePopupMenu() = 0;
 
-    void invalidate() { m_client = 0; }
+    void invalidate()
+    {
+        m_client = 0;
+    }
 
 protected:
-    WebPopupMenuProxy(Client* client)
-        : m_client(client)
+    WebPopupMenuProxy( Client *client )
+        : m_client( client )
     {
     }
 
-    Client* m_client;
+    Client *m_client;
 };
 
 } // namespace WebKit

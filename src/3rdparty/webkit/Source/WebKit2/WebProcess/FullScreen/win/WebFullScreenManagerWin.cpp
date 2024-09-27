@@ -40,70 +40,81 @@
 
 using namespace WebCore;
 
-namespace WebKit {
-
-PassRefPtr<WebFullScreenManager> WebFullScreenManager::create(WebPage* page)
+namespace WebKit
 {
-    return WebFullScreenManagerWin::create(page);
+
+PassRefPtr<WebFullScreenManager> WebFullScreenManager::create( WebPage *page )
+{
+    return WebFullScreenManagerWin::create( page );
 }
 
-PassRefPtr<WebFullScreenManagerWin> WebFullScreenManagerWin::create(WebPage* page)
+PassRefPtr<WebFullScreenManagerWin> WebFullScreenManagerWin::create( WebPage *page )
 {
-    return adoptRef(new WebFullScreenManagerWin(page));
+    return adoptRef( new WebFullScreenManagerWin( page ) );
 }
 
-WebFullScreenManagerWin::WebFullScreenManagerWin(WebPage* page)
-    : WebFullScreenManager(page)
+WebFullScreenManagerWin::WebFullScreenManagerWin( WebPage *page )
+    : WebFullScreenManager( page )
 {
 }
 
 WebFullScreenManagerWin::~WebFullScreenManagerWin()
 {
-    m_page->send(Messages::WebFullScreenManagerProxy::ExitAcceleratedCompositingMode());
+    m_page->send( Messages::WebFullScreenManagerProxy::ExitAcceleratedCompositingMode() );
 }
 
-void WebFullScreenManagerWin::setRootFullScreenLayer(WebCore::GraphicsLayer* layer)
+void WebFullScreenManagerWin::setRootFullScreenLayer( WebCore::GraphicsLayer *layer )
 {
-    // Host the full screen layer if its given to us; otherwise it will be disconnected 
+    // Host the full screen layer if its given to us; otherwise it will be disconnected
     // from the layer heirarchy and cause an ASSERT during resync.
     // FIXME: Disable setting RenderLayer::setAnimating() to make this unnecessary.
-    if (m_fullScreenRootLayer == layer)
-        return;
-    m_fullScreenRootLayer = layer;
-
-    if (!m_fullScreenRootLayer) {
-        m_page->send(Messages::WebFullScreenManagerProxy::ExitAcceleratedCompositingMode());
-        if (m_rootLayer) {
-            m_rootLayer->removeAllChildren();
-            m_rootLayer = 0;
-        }
+    if ( m_fullScreenRootLayer == layer )
+    {
         return;
     }
 
-    if (!m_rootLayer) {
-        m_rootLayer = GraphicsLayer::create(0);
+    m_fullScreenRootLayer = layer;
+
+    if ( !m_fullScreenRootLayer )
+    {
+        m_page->send( Messages::WebFullScreenManagerProxy::ExitAcceleratedCompositingMode() );
+
+        if ( m_rootLayer )
+        {
+            m_rootLayer->removeAllChildren();
+            m_rootLayer = 0;
+        }
+
+        return;
+    }
+
+    if ( !m_rootLayer )
+    {
+        m_rootLayer = GraphicsLayer::create( 0 );
 #ifndef NDEBUG
-        m_rootLayer->setName("Full screen root layer");
+        m_rootLayer->setName( "Full screen root layer" );
 #endif
-        m_rootLayer->setDrawsContent(false);
-        m_rootLayer->setSize(getFullScreenRect().size());
+        m_rootLayer->setDrawsContent( false );
+        m_rootLayer->setSize( getFullScreenRect().size() );
     }
 
     m_rootLayer->removeAllChildren();
 
-    if (m_fullScreenRootLayer)
-        m_rootLayer->addChild(m_fullScreenRootLayer);
+    if ( m_fullScreenRootLayer )
+    {
+        m_rootLayer->addChild( m_fullScreenRootLayer );
+    }
 
     m_rootLayer->syncCompositingStateForThisLayerOnly();
     m_page->corePage()->mainFrame()->view()->syncCompositingStateIncludingSubframes();
 }
 
-void WebFullScreenManagerWin::beginEnterFullScreenAnimation(float)
+void WebFullScreenManagerWin::beginEnterFullScreenAnimation( float )
 {
     // FIXME: Add support for animating the content into full screen.
 }
 
-void WebFullScreenManagerWin::beginExitFullScreenAnimation(float)
+void WebFullScreenManagerWin::beginExitFullScreenAnimation( float )
 {
     // FIXME: Add support for animating the content into full screen.
 }

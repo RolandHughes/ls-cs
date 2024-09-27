@@ -25,59 +25,79 @@
 
 #include "RenderText.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 // Used to represent a text substring of an element, e.g., for text runs that are split because of
 // first letter and that must therefore have different styles (and positions in the render tree).
 // We cache offsets so that text transformations can be applied in such a way that we can recover
 // the original unaltered string from our corresponding DOM node.
-class RenderTextFragment : public RenderText {
+class RenderTextFragment : public RenderText
+{
 public:
-    RenderTextFragment(Node*, StringImpl*, int startOffset, int length);
-    RenderTextFragment(Node*, StringImpl*);
+    RenderTextFragment( Node *, StringImpl *, int startOffset, int length );
+    RenderTextFragment( Node *, StringImpl * );
     virtual ~RenderTextFragment();
 
-    virtual bool isTextFragment() const { return true; }
+    virtual bool isTextFragment() const
+    {
+        return true;
+    }
 
     virtual void destroy();
 
-    unsigned start() const { return m_start; }
-    unsigned end() const { return m_end; }
+    unsigned start() const
+    {
+        return m_start;
+    }
+    unsigned end() const
+    {
+        return m_end;
+    }
 
-    RenderObject* firstLetter() const { return m_firstLetter; }
-    void setFirstLetter(RenderObject* firstLetter) { m_firstLetter = firstLetter; }
+    RenderObject *firstLetter() const
+    {
+        return m_firstLetter;
+    }
+    void setFirstLetter( RenderObject *firstLetter )
+    {
+        m_firstLetter = firstLetter;
+    }
 
-    StringImpl* contentString() const { return m_contentString.get(); }
+    StringImpl *contentString() const
+    {
+        return m_contentString.get();
+    }
     virtual PassRefPtr<StringImpl> originalText() const;
 
 protected:
-    virtual void styleDidChange(StyleDifference, const RenderStyle* oldStyle);
+    virtual void styleDidChange( StyleDifference, const RenderStyle *oldStyle );
 
 private:
-    virtual void setTextInternal(PassRefPtr<StringImpl>);
+    virtual void setTextInternal( PassRefPtr<StringImpl> );
     virtual UChar previousCharacter() const;
-    RenderBlock* blockForAccompanyingFirstLetter() const;
+    RenderBlock *blockForAccompanyingFirstLetter() const;
 
     unsigned m_start;
     unsigned m_end;
     RefPtr<StringImpl> m_contentString;
-    RenderObject* m_firstLetter;
+    RenderObject *m_firstLetter;
 };
 
-inline RenderTextFragment* toRenderTextFragment(RenderObject* object)
-{ 
-    ASSERT(!object || toRenderText(object)->isTextFragment());
-    return static_cast<RenderTextFragment*>(object);
+inline RenderTextFragment *toRenderTextFragment( RenderObject *object )
+{
+    ASSERT( !object || toRenderText( object )->isTextFragment() );
+    return static_cast<RenderTextFragment *>( object );
 }
 
-inline const RenderTextFragment* toRenderTextFragment(const RenderObject* object)
-{ 
-    ASSERT(!object || toRenderText(object)->isTextFragment());
-    return static_cast<const RenderTextFragment*>(object);
+inline const RenderTextFragment *toRenderTextFragment( const RenderObject *object )
+{
+    ASSERT( !object || toRenderText( object )->isTextFragment() );
+    return static_cast<const RenderTextFragment *>( object );
 }
 
 // This will catch anyone doing an unnecessary cast.
-void toRenderTextFragment(const RenderTextFragment*);
+void toRenderTextFragment( const RenderTextFragment * );
 
 } // namespace WebCore
 

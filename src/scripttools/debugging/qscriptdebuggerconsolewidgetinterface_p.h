@@ -35,36 +35,37 @@ class QScriptDebuggerConsoleWidgetInterfacePrivate;
 
 class QScriptDebuggerConsoleWidgetInterface : public QWidget, public QScriptMessageHandlerInterface
 {
-   SCRIPT_T_CS_OBJECT(QScriptDebuggerConsoleWidgetInterface)
+    SCRIPT_T_CS_OBJECT( QScriptDebuggerConsoleWidgetInterface )
 
- public:
-   enum InputMode {
-      NormalInputMode,
-      PartialInputMode
-   };
+public:
+    enum InputMode
+    {
+        NormalInputMode,
+        PartialInputMode
+    };
 
-   ~QScriptDebuggerConsoleWidgetInterface();
+    ~QScriptDebuggerConsoleWidgetInterface();
 
-   QScriptDebuggerConsoleHistorianInterface *commandHistorian() const;
-   void setCommandHistorian(QScriptDebuggerConsoleHistorianInterface *historian);
+    QScriptDebuggerConsoleHistorianInterface *commandHistorian() const;
+    void setCommandHistorian( QScriptDebuggerConsoleHistorianInterface *historian );
 
-   QScriptCompletionProviderInterface *completionProvider() const;
-   void setCompletionProvider(QScriptCompletionProviderInterface *completionProvider);
+    QScriptCompletionProviderInterface *completionProvider() const;
+    void setCompletionProvider( QScriptCompletionProviderInterface *completionProvider );
 
-   virtual void setLineContinuationMode(bool enabled) = 0;
+    virtual void setLineContinuationMode( bool enabled ) = 0;
 
-   virtual void clear() = 0;
- 
-   CS_SIGNAL_1(Public, void lineEntered(const QString &contents))
-   CS_SIGNAL_2(lineEntered, contents)
+    virtual void clear() = 0;
 
- protected:
-   QScriptDebuggerConsoleWidgetInterface(QScriptDebuggerConsoleWidgetInterfacePrivate &dd,
-                                         QWidget *parent, Qt::WindowFlags flags);
+    CS_SIGNAL_1( Public, void lineEntered( const QString &contents ) )
+    CS_SIGNAL_2( lineEntered, contents )
 
- private:
-   Q_DECLARE_PRIVATE(QScriptDebuggerConsoleWidgetInterface)
-   Q_DISABLE_COPY(QScriptDebuggerConsoleWidgetInterface)
+protected:
+    QScriptDebuggerConsoleWidgetInterface( QScriptDebuggerConsoleWidgetInterfacePrivate &dd,
+                                           QWidget *parent, Qt::WindowFlags flags );
+
+private:
+    Q_DECLARE_PRIVATE( QScriptDebuggerConsoleWidgetInterface )
+    Q_DISABLE_COPY( QScriptDebuggerConsoleWidgetInterface )
 };
 
 QT_END_NAMESPACE

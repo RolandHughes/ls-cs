@@ -29,7 +29,8 @@
 #include <qurl.h>
 #include <qstringfwd.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 typedef qreal xsDouble;
 typedef xsDouble xsFloat;
 typedef xsDouble xsDecimal;
@@ -96,7 +97,7 @@ typedef xsDouble PatternPriority;
  */
 typedef int ImportPrecedence;
 
-QString escape(const QString &input);
+QString escape( const QString &input );
 }
 
 #endif

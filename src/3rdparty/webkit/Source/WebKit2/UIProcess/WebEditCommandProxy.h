@@ -32,36 +32,50 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefCounted.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
 class WebPageProxy;
 
-class WebEditCommandProxy : public APIObject {
+class WebEditCommandProxy : public APIObject
+{
 public:
-    static PassRefPtr<WebEditCommandProxy> create(uint64_t commandID, WebCore::EditAction editAction, WebPageProxy* page)
+    static PassRefPtr<WebEditCommandProxy> create( uint64_t commandID, WebCore::EditAction editAction, WebPageProxy *page )
     {
-        return adoptRef(new WebEditCommandProxy(commandID, editAction, page));
+        return adoptRef( new WebEditCommandProxy( commandID, editAction, page ) );
     }
     ~WebEditCommandProxy();
 
-    uint64_t commandID() const { return m_commandID; }
-    WebCore::EditAction editAction() const { return m_editAction; }
+    uint64_t commandID() const
+    {
+        return m_commandID;
+    }
+    WebCore::EditAction editAction() const
+    {
+        return m_editAction;
+    }
 
-    void invalidate() { m_page = 0; }
+    void invalidate()
+    {
+        m_page = 0;
+    }
 
     void unapply();
     void reapply();
 
-    static String nameForEditAction(WebCore::EditAction);
+    static String nameForEditAction( WebCore::EditAction );
 
 private:
-    WebEditCommandProxy(uint64_t commandID, WebCore::EditAction, WebPageProxy*);
+    WebEditCommandProxy( uint64_t commandID, WebCore::EditAction, WebPageProxy * );
 
-    virtual Type type() const { return TypeEditCommandProxy; }
+    virtual Type type() const
+    {
+        return TypeEditCommandProxy;
+    }
 
     uint64_t m_commandID;
     WebCore::EditAction m_editAction;
-    WebPageProxy* m_page;
+    WebPageProxy *m_page;
 };
 
 } // namespace WebKit

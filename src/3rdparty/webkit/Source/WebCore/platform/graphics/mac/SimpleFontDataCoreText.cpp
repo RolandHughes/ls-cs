@@ -7,13 +7,13 @@
  * are met:
  *
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Apple Computer, Inc. ("Apple") nor the names of
  *     its contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
+ *     from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY APPLE AND ITS CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -37,40 +37,50 @@
 
 using namespace std;
 
-namespace WebCore {
+namespace WebCore
+{
 
-CFDictionaryRef SimpleFontData::getCFStringAttributes(TypesettingFeatures typesettingFeatures, FontOrientation orientation) const
+CFDictionaryRef SimpleFontData::getCFStringAttributes( TypesettingFeatures typesettingFeatures,
+        FontOrientation orientation ) const
 {
     unsigned key = typesettingFeatures + 1;
-    pair<HashMap<unsigned, RetainPtr<CFDictionaryRef> >::iterator, bool> addResult = m_CFStringAttributes.add(key, RetainPtr<CFDictionaryRef>());
-    RetainPtr<CFDictionaryRef>& attributesDictionary = addResult.first->second;
-    if (!addResult.second)
+    pair<HashMap<unsigned, RetainPtr<CFDictionaryRef> >::iterator, bool> addResult = m_CFStringAttributes.add( key,
+            RetainPtr<CFDictionaryRef>() );
+    RetainPtr<CFDictionaryRef> &attributesDictionary = addResult.first->second;
+
+    if ( !addResult.second )
+    {
         return attributesDictionary.get();
-    
+    }
+
     bool treatLineAsVertical = orientation == Vertical;
 
-    bool allowLigatures = (!treatLineAsVertical && platformData().allowsLigatures()) || (typesettingFeatures & Ligatures);
+    bool allowLigatures = ( !treatLineAsVertical && platformData().allowsLigatures() ) || ( typesettingFeatures & Ligatures );
 
     static const int ligaturesNotAllowedValue = 0;
-    static CFNumberRef ligaturesNotAllowed = CFNumberCreate(kCFAllocatorDefault, kCFNumberIntType, &ligaturesNotAllowedValue);
+    static CFNumberRef ligaturesNotAllowed = CFNumberCreate( kCFAllocatorDefault, kCFNumberIntType, &ligaturesNotAllowedValue );
 
     static const int ligaturesAllowedValue = 1;
-    static CFNumberRef ligaturesAllowed = CFNumberCreate(kCFAllocatorDefault, kCFNumberIntType, &ligaturesAllowedValue);
+    static CFNumberRef ligaturesAllowed = CFNumberCreate( kCFAllocatorDefault, kCFNumberIntType, &ligaturesAllowedValue );
 
-    if (!(typesettingFeatures & Kerning)) {
+    if ( !( typesettingFeatures & Kerning ) )
+    {
         static const float kerningAdjustmentValue = 0;
-        static CFNumberRef kerningAdjustment = CFNumberCreate(kCFAllocatorDefault, kCFNumberFloatType, &kerningAdjustmentValue);
-        static const void* keysWithKerningDisabled[] = { kCTFontAttributeName, kCTKernAttributeName, kCTLigatureAttributeName, kCTVerticalFormsAttributeName };
-        const void* valuesWithKerningDisabled[] = { platformData().ctFont(), kerningAdjustment, allowLigatures
-            ? ligaturesAllowed : ligaturesNotAllowed, treatLineAsVertical ? kCFBooleanTrue : kCFBooleanFalse };
-        attributesDictionary.adoptCF(CFDictionaryCreate(0, keysWithKerningDisabled, valuesWithKerningDisabled,
-            WTF_ARRAY_LENGTH(keysWithKerningDisabled), &kCFCopyStringDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks));
-    } else {
+        static CFNumberRef kerningAdjustment = CFNumberCreate( kCFAllocatorDefault, kCFNumberFloatType, &kerningAdjustmentValue );
+        static const void *keysWithKerningDisabled[] = { kCTFontAttributeName, kCTKernAttributeName, kCTLigatureAttributeName, kCTVerticalFormsAttributeName };
+        const void *valuesWithKerningDisabled[] = { platformData().ctFont(), kerningAdjustment, allowLigatures
+                                                    ? ligaturesAllowed : ligaturesNotAllowed, treatLineAsVertical ? kCFBooleanTrue : kCFBooleanFalse
+                                                  };
+        attributesDictionary.adoptCF( CFDictionaryCreate( 0, keysWithKerningDisabled, valuesWithKerningDisabled,
+                                      WTF_ARRAY_LENGTH( keysWithKerningDisabled ), &kCFCopyStringDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks ) );
+    }
+    else
+    {
         // By omitting the kCTKernAttributeName attribute, we get Core Text's standard kerning.
-        static const void* keysWithKerningEnabled[] = { kCTFontAttributeName, kCTLigatureAttributeName, kCTVerticalFormsAttributeName };
-        const void* valuesWithKerningEnabled[] = { platformData().ctFont(), allowLigatures ? ligaturesAllowed : ligaturesNotAllowed, treatLineAsVertical ? kCFBooleanTrue : kCFBooleanFalse };
-        attributesDictionary.adoptCF(CFDictionaryCreate(0, keysWithKerningEnabled, valuesWithKerningEnabled,
-            WTF_ARRAY_LENGTH(keysWithKerningEnabled), &kCFCopyStringDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks));
+        static const void *keysWithKerningEnabled[] = { kCTFontAttributeName, kCTLigatureAttributeName, kCTVerticalFormsAttributeName };
+        const void *valuesWithKerningEnabled[] = { platformData().ctFont(), allowLigatures ? ligaturesAllowed : ligaturesNotAllowed, treatLineAsVertical ? kCFBooleanTrue : kCFBooleanFalse };
+        attributesDictionary.adoptCF( CFDictionaryCreate( 0, keysWithKerningEnabled, valuesWithKerningEnabled,
+                                      WTF_ARRAY_LENGTH( keysWithKerningEnabled ), &kCFCopyStringDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks ) );
     }
 
     return attributesDictionary.get();

@@ -25,11 +25,12 @@
 
 // Would TargetedMouseEvent be a better name?
 
-namespace WebCore {
+namespace WebCore
+{
 
-MouseEventWithHitTestResults::MouseEventWithHitTestResults(const PlatformMouseEvent& event, const HitTestResult& hitTestResult)
-    : m_event(event)
-    , m_hitTestResult(hitTestResult)
+MouseEventWithHitTestResults::MouseEventWithHitTestResults( const PlatformMouseEvent &event, const HitTestResult &hitTestResult )
+    : m_event( event )
+    , m_hitTestResult( hitTestResult )
 {
 }
 
@@ -38,7 +39,7 @@ const IntPoint MouseEventWithHitTestResults::localPoint() const
     return m_hitTestResult.localPoint();
 }
 
-Scrollbar* MouseEventWithHitTestResults::scrollbar() const
+Scrollbar *MouseEventWithHitTestResults::scrollbar() const
 {
     return m_hitTestResult.scrollbar();
 }

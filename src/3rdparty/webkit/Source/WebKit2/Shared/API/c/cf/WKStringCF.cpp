@@ -32,17 +32,18 @@
 using namespace WebCore;
 using namespace WebKit;
 
-WKStringRef WKStringCreateWithCFString(CFStringRef cfString)
+WKStringRef WKStringCreateWithCFString( CFStringRef cfString )
 {
-    String string(cfString);
-    return toCopiedAPI(string);
+    String string( cfString );
+    return toCopiedAPI( string );
 }
 
-CFStringRef WKStringCopyCFString(CFAllocatorRef allocatorRef, WKStringRef stringRef)
+CFStringRef WKStringCopyCFString( CFAllocatorRef allocatorRef, WKStringRef stringRef )
 {
-    ASSERT(!toImpl(stringRef)->string().isNull());
+    ASSERT( !toImpl( stringRef )->string().isNull() );
 
     // NOTE: This does not use StringImpl::createCFString() since that function
     // expects to be called on the thread running WebCore.
-    return CFStringCreateWithCharacters(allocatorRef, reinterpret_cast<const UniChar*>(toImpl(stringRef)->string().characters()), toImpl(stringRef)->string().length());
+    return CFStringCreateWithCharacters( allocatorRef,
+                                         reinterpret_cast<const UniChar *>( toImpl( stringRef )->string().characters() ), toImpl( stringRef )->string().length() );
 }

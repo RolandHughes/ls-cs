@@ -31,28 +31,28 @@ class QStyleOption;
 
 class Q_GUI_EXPORT QFocusFrame : public QWidget
 {
-   GUI_CS_OBJECT(QFocusFrame)
+    GUI_CS_OBJECT( QFocusFrame )
 
- public:
-   QFocusFrame(QWidget *parent = nullptr);
+public:
+    QFocusFrame( QWidget *parent = nullptr );
 
-   QFocusFrame(const QFocusFrame &) = delete;
-   QFocusFrame &operator=(const QFocusFrame &) = delete;
+    QFocusFrame( const QFocusFrame & ) = delete;
+    QFocusFrame &operator=( const QFocusFrame & ) = delete;
 
-   ~QFocusFrame();
+    ~QFocusFrame();
 
-   void setWidget(QWidget *widget);
-   QWidget *widget() const;
+    void setWidget( QWidget *widget );
+    QWidget *widget() const;
 
- protected:
-   bool event(QEvent *event) override;
+protected:
+    bool event( QEvent *event ) override;
 
-   bool eventFilter(QObject *object, QEvent *event) override;
-   void paintEvent(QPaintEvent *event) override;
-   void initStyleOption(QStyleOption *option) const;
+    bool eventFilter( QObject *object, QEvent *event ) override;
+    void paintEvent( QPaintEvent *event ) override;
+    void initStyleOption( QStyleOption *option ) const;
 
- private:
-   Q_DECLARE_PRIVATE(QFocusFrame)
+private:
+    Q_DECLARE_PRIVATE( QFocusFrame )
 };
 
 #endif

@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef PlatformCALayerClient_h
@@ -39,25 +39,27 @@
 #include <wtf/Vector.h>
 #include <wtf/text/StringHash.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class PlatformCALayer;
 
-class PlatformCALayerClient {
+class PlatformCALayerClient
+{
 public:
-    virtual void platformCALayerLayoutSublayersOfLayer(PlatformCALayer*) = 0;
+    virtual void platformCALayerLayoutSublayersOfLayer( PlatformCALayer * ) = 0;
     virtual bool platformCALayerRespondsToLayoutChanges() const = 0;
 
-    virtual void platformCALayerAnimationStarted(CFTimeInterval beginTime) = 0;
+    virtual void platformCALayerAnimationStarted( CFTimeInterval beginTime ) = 0;
     virtual GraphicsLayer::CompositingCoordinatesOrientation platformCALayerContentsOrientation() const = 0;
-    virtual void platformCALayerPaintContents(GraphicsContext&, const IntRect& inClip) = 0;
+    virtual void platformCALayerPaintContents( GraphicsContext &, const IntRect &inClip ) = 0;
     virtual bool platformCALayerShowDebugBorders() const = 0;
     virtual bool platformCALayerShowRepaintCounter() const = 0;
     virtual int platformCALayerIncrementRepaintCount() = 0;
-    
+
     virtual bool platformCALayerContentsOpaque() const = 0;
     virtual bool platformCALayerDrawsContent() const = 0;
-    virtual void platformCALayerLayerDidDisplay(PlatformLayer*) = 0;
+    virtual void platformCALayerLayerDidDisplay( PlatformLayer * ) = 0;
 
 protected:
     virtual ~PlatformCALayerClient() {}

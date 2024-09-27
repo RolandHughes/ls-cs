@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -102,139 +102,205 @@
 
 using namespace JSC;
 
-namespace WebCore {
-
-JSValue toJS(ExecState* exec, JSDOMGlobalObject* globalObject, EventTarget* target)
+namespace WebCore
 {
-    if (!target)
+
+JSValue toJS( ExecState *exec, JSDOMGlobalObject *globalObject, EventTarget *target )
+{
+    if ( !target )
+    {
         return jsNull();
-    
+    }
+
 #if ENABLE(EVENTSOURCE)
-    if (EventSource* eventSource = target->toEventSource())
-        return toJS(exec, globalObject, eventSource);
+
+    if ( EventSource *eventSource = target->toEventSource() )
+    {
+        return toJS( exec, globalObject, eventSource );
+    }
+
 #endif
 
 #if ENABLE(SVG)
+
     // SVGElementInstance supports both toSVGElementInstance and toNode since so much mouse handling code depends on toNode returning a valid node.
-    if (SVGElementInstance* instance = target->toSVGElementInstance())
-        return toJS(exec, globalObject, instance);
+    if ( SVGElementInstance *instance = target->toSVGElementInstance() )
+    {
+        return toJS( exec, globalObject, instance );
+    }
+
 #endif
-    
-    if (Node* node = target->toNode())
-        return toJS(exec, globalObject, node);
 
-    if (DOMWindow* domWindow = target->toDOMWindow())
-        return toJS(exec, globalObject, domWindow);
+    if ( Node *node = target->toNode() )
+    {
+        return toJS( exec, globalObject, node );
+    }
 
-    if (XMLHttpRequest* xhr = target->toXMLHttpRequest())
-        return toJS(exec, globalObject, xhr);
+    if ( DOMWindow *domWindow = target->toDOMWindow() )
+    {
+        return toJS( exec, globalObject, domWindow );
+    }
 
-    if (XMLHttpRequestUpload* upload = target->toXMLHttpRequestUpload())
-        return toJS(exec, globalObject, upload);
+    if ( XMLHttpRequest *xhr = target->toXMLHttpRequest() )
+    {
+        return toJS( exec, globalObject, xhr );
+    }
+
+    if ( XMLHttpRequestUpload *upload = target->toXMLHttpRequestUpload() )
+    {
+        return toJS( exec, globalObject, upload );
+    }
 
 #if ENABLE(OFFLINE_WEB_APPLICATIONS)
-    if (DOMApplicationCache* cache = target->toDOMApplicationCache())
-        return toJS(exec, globalObject, cache);
+
+    if ( DOMApplicationCache *cache = target->toDOMApplicationCache() )
+    {
+        return toJS( exec, globalObject, cache );
+    }
+
 #endif
 
-    if (MessagePort* messagePort = target->toMessagePort())
-        return toJS(exec, globalObject, messagePort);
+    if ( MessagePort *messagePort = target->toMessagePort() )
+    {
+        return toJS( exec, globalObject, messagePort );
+    }
 
 #if ENABLE(WORKERS)
-    if (Worker* worker = target->toWorker())
-        return toJS(exec, globalObject, worker);
 
-    if (DedicatedWorkerContext* workerContext = target->toDedicatedWorkerContext())
-        return toJSDOMGlobalObject(workerContext, exec);
+    if ( Worker *worker = target->toWorker() )
+    {
+        return toJS( exec, globalObject, worker );
+    }
+
+    if ( DedicatedWorkerContext *workerContext = target->toDedicatedWorkerContext() )
+    {
+        return toJSDOMGlobalObject( workerContext, exec );
+    }
+
 #endif
 
 #if ENABLE(SHARED_WORKERS)
-    if (SharedWorker* sharedWorker = target->toSharedWorker())
-        return toJS(exec, globalObject, sharedWorker);
 
-    if (SharedWorkerContext* workerContext = target->toSharedWorkerContext())
-        return toJSDOMGlobalObject(workerContext, exec);
+    if ( SharedWorker *sharedWorker = target->toSharedWorker() )
+    {
+        return toJS( exec, globalObject, sharedWorker );
+    }
+
+    if ( SharedWorkerContext *workerContext = target->toSharedWorkerContext() )
+    {
+        return toJSDOMGlobalObject( workerContext, exec );
+    }
+
 #endif
 
 #if ENABLE(NOTIFICATIONS)
-    if (Notification* notification = target->toNotification())
-        return toJS(exec, globalObject, notification);
+
+    if ( Notification *notification = target->toNotification() )
+    {
+        return toJS( exec, globalObject, notification );
+    }
+
 #endif
 
 #if ENABLE(INDEXED_DATABASE)
-    if (IDBDatabase* idbDatabase = target->toIDBDatabase())
-        return toJS(exec, globalObject, idbDatabase);
 
-    if (IDBRequest* idbRequest = target->toIDBRequest())
-        return toJS(exec, globalObject, idbRequest);
+    if ( IDBDatabase *idbDatabase = target->toIDBDatabase() )
+    {
+        return toJS( exec, globalObject, idbDatabase );
+    }
 
-    if (IDBTransaction* idbTransaction = target->toIDBTransaction())
-        return toJS(exec, globalObject, idbTransaction);
+    if ( IDBRequest *idbRequest = target->toIDBRequest() )
+    {
+        return toJS( exec, globalObject, idbRequest );
+    }
+
+    if ( IDBTransaction *idbTransaction = target->toIDBTransaction() )
+    {
+        return toJS( exec, globalObject, idbTransaction );
+    }
+
 #endif
 
 #if ENABLE(WEB_AUDIO)
-    if (JavaScriptAudioNode* jsAudioNode = target->toJavaScriptAudioNode())
-        return toJS(exec, globalObject, jsAudioNode);
-    if (AudioContext* audioContext = target->toAudioContext())
-        return toJS(exec, globalObject, audioContext);
+
+    if ( JavaScriptAudioNode *jsAudioNode = target->toJavaScriptAudioNode() )
+    {
+        return toJS( exec, globalObject, jsAudioNode );
+    }
+
+    if ( AudioContext *audioContext = target->toAudioContext() )
+    {
+        return toJS( exec, globalObject, audioContext );
+    }
+
 #endif
 
 #if ENABLE(WEB_SOCKETS)
-    if (WebSocket* webSocket = target->toWebSocket())
-        return toJS(exec, globalObject, webSocket);
+
+    if ( WebSocket *webSocket = target->toWebSocket() )
+    {
+        return toJS( exec, globalObject, webSocket );
+    }
+
 #endif
 
 #if ENABLE(BLOB)
-    if (FileReader* fileReader = target->toFileReader())
-        return toJS(exec, globalObject, fileReader);
+
+    if ( FileReader *fileReader = target->toFileReader() )
+    {
+        return toJS( exec, globalObject, fileReader );
+    }
+
 #endif
 
     ASSERT_NOT_REACHED();
     return jsNull();
 }
 
-EventTarget* toEventTarget(JSC::JSValue value)
+EventTarget *toEventTarget( JSC::JSValue value )
 {
-    #define CONVERT_TO_EVENT_TARGET(type) \
+#define CONVERT_TO_EVENT_TARGET(type) \
         if (value.inherits(&JS##type::s_info)) \
             return static_cast<JS##type*>(asObject(value))->impl();
 
-    CONVERT_TO_EVENT_TARGET(Node)
-    CONVERT_TO_EVENT_TARGET(XMLHttpRequest)
-    CONVERT_TO_EVENT_TARGET(XMLHttpRequestUpload)
-    CONVERT_TO_EVENT_TARGET(MessagePort)
+    CONVERT_TO_EVENT_TARGET( Node )
+    CONVERT_TO_EVENT_TARGET( XMLHttpRequest )
+    CONVERT_TO_EVENT_TARGET( XMLHttpRequestUpload )
+    CONVERT_TO_EVENT_TARGET( MessagePort )
 
-    if (value.inherits(&JSDOMWindowShell::s_info))
-        return static_cast<JSDOMWindowShell*>(asObject(value))->impl();
+    if ( value.inherits( &JSDOMWindowShell::s_info ) )
+    {
+        return static_cast<JSDOMWindowShell *>( asObject( value ) )->impl();
+    }
 
 #if ENABLE(EVENTSOURCE)
-    CONVERT_TO_EVENT_TARGET(EventSource)
+    CONVERT_TO_EVENT_TARGET( EventSource )
 #endif
 
 #if ENABLE(OFFLINE_WEB_APPLICATIONS)
-    CONVERT_TO_EVENT_TARGET(DOMApplicationCache)
+    CONVERT_TO_EVENT_TARGET( DOMApplicationCache )
 #endif
 
 #if ENABLE(SVG)
-    CONVERT_TO_EVENT_TARGET(SVGElementInstance)
+    CONVERT_TO_EVENT_TARGET( SVGElementInstance )
 #endif
 
 #if ENABLE(WORKERS)
-    CONVERT_TO_EVENT_TARGET(Worker)
-    CONVERT_TO_EVENT_TARGET(DedicatedWorkerContext)
+    CONVERT_TO_EVENT_TARGET( Worker )
+    CONVERT_TO_EVENT_TARGET( DedicatedWorkerContext )
 #endif
 
 #if ENABLE(SHARED_WORKERS)
-    CONVERT_TO_EVENT_TARGET(SharedWorker)
-    CONVERT_TO_EVENT_TARGET(SharedWorkerContext)
+    CONVERT_TO_EVENT_TARGET( SharedWorker )
+    CONVERT_TO_EVENT_TARGET( SharedWorkerContext )
 #endif
 
 #if ENABLE(NOTIFICATIONS)
-    CONVERT_TO_EVENT_TARGET(Notification)
+    CONVERT_TO_EVENT_TARGET( Notification )
 #endif
 
 #if ENABLE(WEB_SOCKETS)
-    CONVERT_TO_EVENT_TARGET(WebSocket)
+    CONVERT_TO_EVENT_TARGET( WebSocket )
 #endif
 
     return 0;

@@ -34,11 +34,13 @@ extern "C" {
 
 WK_EXPORT WKTypeID WKKeyValueStorageManagerGetTypeID();
 
-typedef void (*WKKeyValueStorageManagerGetKeyValueStorageOriginsFunction)(WKArrayRef, WKErrorRef, void*);
-WK_EXPORT void WKKeyValueStorageManagerGetKeyValueStorageOrigins(WKKeyValueStorageManagerRef keyValueStorageManager, void* context, WKKeyValueStorageManagerGetKeyValueStorageOriginsFunction function);
+typedef void ( *WKKeyValueStorageManagerGetKeyValueStorageOriginsFunction )( WKArrayRef, WKErrorRef, void * );
+WK_EXPORT void WKKeyValueStorageManagerGetKeyValueStorageOrigins( WKKeyValueStorageManagerRef keyValueStorageManager,
+        void *context, WKKeyValueStorageManagerGetKeyValueStorageOriginsFunction function );
 
-WK_EXPORT void WKKeyValueStorageManagerDeleteEntriesForOrigin(WKKeyValueStorageManagerRef keyValueStorageManager, WKSecurityOriginRef origin);
-WK_EXPORT void WKKeyValueStorageManagerDeleteAllEntries(WKKeyValueStorageManagerRef keyValueStorageManager);
+WK_EXPORT void WKKeyValueStorageManagerDeleteEntriesForOrigin( WKKeyValueStorageManagerRef keyValueStorageManager,
+        WKSecurityOriginRef origin );
+WK_EXPORT void WKKeyValueStorageManagerDeleteAllEntries( WKKeyValueStorageManagerRef keyValueStorageManager );
 
 #ifdef __cplusplus
 }

@@ -31,17 +31,18 @@
 
 #include "IntSize.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-IntSize::IntSize(const QSize& r)
-    : m_width(r.width())
-    , m_height(r.height())
+IntSize::IntSize( const QSize &r )
+    : m_width( r.width() )
+    , m_height( r.height() )
 {
 }
 
 IntSize::operator QSize() const
 {
-    return QSize(width(), height());
+    return QSize( width(), height() );
 }
 
 }

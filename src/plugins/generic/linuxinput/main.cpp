@@ -32,7 +32,7 @@ public:
     QLinuxInputPlugin();
 
     QStringList keys() const;
-    QObject* create(const QString &key, const QString &specification);
+    QObject *create( const QString &key, const QString &specification );
 };
 
 QLinuxInputPlugin::QLinuxInputPlugin()
@@ -42,21 +42,27 @@ QLinuxInputPlugin::QLinuxInputPlugin()
 
 QStringList QLinuxInputPlugin::keys() const
 {
-    return (QStringList()
-            << QLatin1String("LinuxInputMouse")
-            << QLatin1String("LinuxInputKeyboard"));
+    return ( QStringList()
+             << QLatin1String( "LinuxInputMouse" )
+             << QLatin1String( "LinuxInputKeyboard" ) );
 }
 
-QObject* QLinuxInputPlugin::create(const QString &key,
-                                                 const QString &specification)
+QObject *QLinuxInputPlugin::create( const QString &key,
+                                    const QString &specification )
 {
-    if (!key.compare(QLatin1String("LinuxInputMouse"), Qt::CaseInsensitive))
-        return new QLinuxInputMouseHandler(key, specification);
-    if (!key.compare(QLatin1String("LinuxInputKeyboard"), Qt::CaseInsensitive))
-        return new QLinuxInputKeyboardHandler(key, specification);
-    return 0;
+    if ( !key.compare( QLatin1String( "LinuxInputMouse" ), Qt::CaseInsensitive ) )
+    {
+        return new QLinuxInputMouseHandler( key, specification );
     }
 
-Q_EXPORT_PLUGIN2(qlinuxinputplugin, QLinuxInputPlugin)
+    if ( !key.compare( QLatin1String( "LinuxInputKeyboard" ), Qt::CaseInsensitive ) )
+    {
+        return new QLinuxInputKeyboardHandler( key, specification );
+    }
+
+    return 0;
+}
+
+Q_EXPORT_PLUGIN2( qlinuxinputplugin, QLinuxInputPlugin )
 
 QT_END_NAMESPACE

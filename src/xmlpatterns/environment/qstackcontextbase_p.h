@@ -29,46 +29,47 @@
 #include <qdelegatingdynamiccontext_p.h>
 #include <qexpression_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 template<typename TSuperClass>
 class StackContextBase : public TSuperClass
 {
- public:
-   StackContextBase();
-   /**
-    * Construct a StackContextBase and passes @p prevContext to its super class. This
-    * constructor is typically used when the super class is DelegatingDynamicContext.
-    */
-   StackContextBase(const DynamicContext::Ptr &prevContext);
+public:
+    StackContextBase();
+    /**
+     * Construct a StackContextBase and passes @p prevContext to its super class. This
+     * constructor is typically used when the super class is DelegatingDynamicContext.
+     */
+    StackContextBase( const DynamicContext::Ptr &prevContext );
 
-   void setRangeVariable(const VariableSlotID slotNumber, const Item &newValue) override;
-   Item rangeVariable(const VariableSlotID slotNumber) const override;
+    void setRangeVariable( const VariableSlotID slotNumber, const Item &newValue ) override;
+    Item rangeVariable( const VariableSlotID slotNumber ) const override;
 
-   void setExpressionVariable(const VariableSlotID slotNumber, const Expression::Ptr &newValue) override;
-   Expression::Ptr expressionVariable(const VariableSlotID slotNumber) const override;
+    void setExpressionVariable( const VariableSlotID slotNumber, const Expression::Ptr &newValue ) override;
+    Expression::Ptr expressionVariable( const VariableSlotID slotNumber ) const override;
 
-   Item::Iterator::Ptr positionIterator(const VariableSlotID slot) const override;
-   void setPositionIterator(const VariableSlotID slot, const Item::Iterator::Ptr &newValue) override;
-   ItemCacheCell &itemCacheCell(const VariableSlotID slot) override;
-   ItemSequenceCacheCell::Vector &itemSequenceCacheCells(const VariableSlotID slot) override;
+    Item::Iterator::Ptr positionIterator( const VariableSlotID slot ) const override;
+    void setPositionIterator( const VariableSlotID slot, const Item::Iterator::Ptr &newValue ) override;
+    ItemCacheCell &itemCacheCell( const VariableSlotID slot ) override;
+    ItemSequenceCacheCell::Vector &itemSequenceCacheCells( const VariableSlotID slot ) override;
 
-   DynamicContext::TemplateParameterHash &templateParameterStore() override;
+    DynamicContext::TemplateParameterHash &templateParameterStore() override;
 
- protected:
-   /**
-    * This function is protected, although it only is used in this class. I don't
-    * know why it has to be, but it won't compile when private.
-    */
-   template<typename VectorType, typename UnitType>
-   inline void setSlotVariable(const VariableSlotID slot, const UnitType &newValue, VectorType &container) const;
+protected:
+    /**
+     * This function is protected, although it only is used in this class. I don't
+     * know why it has to be, but it won't compile when private.
+     */
+    template<typename VectorType, typename UnitType>
+    inline void setSlotVariable( const VariableSlotID slot, const UnitType &newValue, VectorType &container ) const;
 
- private:
-   Item::Vector                            m_rangeVariables;
-   Expression::Vector                      m_expressionVariables;
-   Item::Iterator::Vector                  m_positionIterators;
-   ItemCacheCell::Vector                   m_itemCacheCells;
-   ItemSequenceCacheCell::Vector           m_itemSequenceCacheCells;
-   DynamicContext::TemplateParameterHash   m_templateParameterStore;
+private:
+    Item::Vector                            m_rangeVariables;
+    Expression::Vector                      m_expressionVariables;
+    Item::Iterator::Vector                  m_positionIterators;
+    ItemCacheCell::Vector                   m_itemCacheCells;
+    ItemSequenceCacheCell::Vector           m_itemSequenceCacheCells;
+    DynamicContext::TemplateParameterHash   m_templateParameterStore;
 };
 
 #include "qstackcontextbase.cpp"

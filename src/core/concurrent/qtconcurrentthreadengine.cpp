@@ -23,122 +23,149 @@
 
 #include <qtconcurrentthreadengine.h>
 
-namespace QtConcurrent {
+namespace QtConcurrent
+{
 
 ThreadEngineBarrier::ThreadEngineBarrier()
-   : count(0)
+    : count( 0 )
 {
 }
 
 void ThreadEngineBarrier::acquire()
 {
-   while (true) {
-      int localCount = count.load();
+    while ( true )
+    {
+        int localCount = count.load();
 
-      if (localCount < 0) {
-         int expected = localCount;
+        if ( localCount < 0 )
+        {
+            int expected = localCount;
 
-         if (count.compareExchange(expected, localCount - 1)) {
-            return;
-         }
+            if ( count.compareExchange( expected, localCount - 1 ) )
+            {
+                return;
+            }
 
-      } else {
-         int expected = localCount;
+        }
+        else
+        {
+            int expected = localCount;
 
-         if (count.compareExchange(expected, localCount + 1)) {
-            return;
-         }
-      }
-   }
+            if ( count.compareExchange( expected, localCount + 1 ) )
+            {
+                return;
+            }
+        }
+    }
 }
 
 int ThreadEngineBarrier::release()
 {
-   while (true)  {
-      int localCount = count.load();
+    while ( true )
+    {
+        int localCount = count.load();
 
-      if (localCount == -1) {
-         int expected = -1;
+        if ( localCount == -1 )
+        {
+            int expected = -1;
 
-         if (count.compareExchange(expected, 0)) {
-            semaphore.release();
-            return 0;
-         }
+            if ( count.compareExchange( expected, 0 ) )
+            {
+                semaphore.release();
+                return 0;
+            }
 
-      } else if (localCount < 0) {
-         int expected = localCount;
+        }
+        else if ( localCount < 0 )
+        {
+            int expected = localCount;
 
-         if (count.compareExchange(expected, localCount + 1)) {
-            return qAbs(localCount + 1);
-         }
+            if ( count.compareExchange( expected, localCount + 1 ) )
+            {
+                return qAbs( localCount + 1 );
+            }
 
-      } else {
-         int expected = localCount;
+        }
+        else
+        {
+            int expected = localCount;
 
-         if (count.compareExchange(expected, localCount - 1)) {
-            return localCount - 1;
-         }
-      }
-   }
+            if ( count.compareExchange( expected, localCount - 1 ) )
+            {
+                return localCount - 1;
+            }
+        }
+    }
 }
 
 // Wait until all threads have been released
 void ThreadEngineBarrier::wait()
 {
-   while (true)  {
-      int localCount = count.load();
+    while ( true )
+    {
+        int localCount = count.load();
 
-      if (localCount == 0) {
-         return;
-      }
+        if ( localCount == 0 )
+        {
+            return;
+        }
 
-      Q_ASSERT(localCount > 0); // multiple waiters are not allowed
+        Q_ASSERT( localCount > 0 ); // multiple waiters are not allowed
 
-      int expected = localCount;
+        int expected = localCount;
 
-      if (count.compareExchange(expected, -localCount)) {
-         semaphore.acquire();
-         return;
-      }
-   }
+        if ( count.compareExchange( expected, -localCount ) )
+        {
+            semaphore.acquire();
+            return;
+        }
+    }
 }
 
 int ThreadEngineBarrier::currentCount()
 {
-   return count.load();
+    return count.load();
 }
 
 // releases a thread, unless this is the last thread.
 // returns true if the thread was released.
 bool ThreadEngineBarrier::releaseUnlessLast()
 {
-   while (true)  {
-      int localCount = count.load();
+    while ( true )
+    {
+        int localCount = count.load();
 
-      if (qAbs(localCount) == 1) {
-         return false;
+        if ( qAbs( localCount ) == 1 )
+        {
+            return false;
 
-      } else if (localCount < 0) {
-         int expected = localCount;
+        }
+        else if ( localCount < 0 )
+        {
+            int expected = localCount;
 
-         if (count.compareExchange(expected, localCount + 1)) {
-            return true;
-         }
+            if ( count.compareExchange( expected, localCount + 1 ) )
+            {
+                return true;
+            }
 
-      } else {
-         int expected = localCount;
+        }
+        else
+        {
+            int expected = localCount;
 
-         if (count.compareExchange(expected, localCount - 1)) {
-            return true;
-         }
-      }
-   }
+            if ( count.compareExchange( expected, localCount - 1 ) )
+            {
+                return true;
+            }
+        }
+    }
 }
 
 ThreadEngineBase::ThreadEngineBase()
-   : futureInterface(nullptr), threadPool(QThreadPool::globalInstance())
+    : futureInterface( nullptr ), threadPool( QThreadPool::globalInstance() )
 {
-   setAutoDelete(false);
+    setAutoDelete( false );
 }
 
 ThreadEngineBase::~ThreadEngineBase()
@@ -147,123 +174,142 @@ ThreadEngineBase::~ThreadEngineBase()
 
 void ThreadEngineBase::startSingleThreaded()
 {
-   start();
+    start();
 
-   while (threadFunction() != ThreadFinished) {
-      ;
-   }
+    while ( threadFunction() != ThreadFinished )
+    {
+        ;
+    }
 
-   finish();
+    finish();
 }
 
 void ThreadEngineBase::startBlocking()
 {
-   start();
-   barrier.acquire();
-   startThreads();
+    start();
+    barrier.acquire();
+    startThreads();
 
-   bool throttled = false;
+    bool throttled = false;
 
-   try {
-      while (threadFunction() == ThrottleThread) {
-         if (threadThrottleExit()) {
-            throttled = true;
-            break;
-         }
-      }
+    try
+    {
+        while ( threadFunction() == ThrottleThread )
+        {
+            if ( threadThrottleExit() )
+            {
+                throttled = true;
+                break;
+            }
+        }
 
-   } catch (QtConcurrent::Exception &e) {
-      handleException(e);
-   } catch (...) {
-      handleException(QtConcurrent::UnhandledException());
-   }
+    }
+    catch ( QtConcurrent::Exception &e )
+    {
+        handleException( e );
+    }
+    catch ( ... )
+    {
+        handleException( QtConcurrent::UnhandledException() );
+    }
 
-   if (throttled == false) {
-      barrier.release();
-   }
+    if ( throttled == false )
+    {
+        barrier.release();
+    }
 
-   barrier.wait();
-   finish();
-   exceptionStore.throwPossibleException();
+    barrier.wait();
+    finish();
+    exceptionStore.throwPossibleException();
 }
 
 void ThreadEngineBase::startThread()
 {
-   startThreadInternal();
+    startThreadInternal();
 }
 
 void ThreadEngineBase::acquireBarrierSemaphore()
 {
-   barrier.acquire();
+    barrier.acquire();
 }
 
 bool ThreadEngineBase::isCanceled()
 {
-   if (futureInterface) {
-      return futureInterface->isCanceled();
-   } else {
-      return false;
-   }
+    if ( futureInterface )
+    {
+        return futureInterface->isCanceled();
+    }
+    else
+    {
+        return false;
+    }
 }
 
 void ThreadEngineBase::waitForResume()
 {
-   if (futureInterface) {
-      futureInterface->waitForResume();
-   }
+    if ( futureInterface )
+    {
+        futureInterface->waitForResume();
+    }
 }
 
 bool ThreadEngineBase::isProgressReportingEnabled()
 {
-   // if we do not have a QFuture, there is no-one to report the progress to.
-   return (futureInterface != nullptr);
+    // if we do not have a QFuture, there is no-one to report the progress to.
+    return ( futureInterface != nullptr );
 }
 
-void ThreadEngineBase::setProgressValue(int progress)
+void ThreadEngineBase::setProgressValue( int progress )
 {
-   if (futureInterface) {
-      futureInterface->setProgressValue(progress);
-   }
+    if ( futureInterface )
+    {
+        futureInterface->setProgressValue( progress );
+    }
 }
 
-void ThreadEngineBase::setProgressRange(int minimum, int maximum)
+void ThreadEngineBase::setProgressRange( int minimum, int maximum )
 {
-   if (futureInterface) {
-      futureInterface->setProgressRange(minimum, maximum);
-   }
+    if ( futureInterface )
+    {
+        futureInterface->setProgressRange( minimum, maximum );
+    }
 }
 
 bool ThreadEngineBase::startThreadInternal()
 {
-   if (this->isCanceled()) {
-      return false;
-   }
+    if ( this->isCanceled() )
+    {
+        return false;
+    }
 
-   barrier.acquire();
+    barrier.acquire();
 
-   if (!threadPool->tryStart(this)) {
-      barrier.release();
-      return false;
-   }
+    if ( !threadPool->tryStart( this ) )
+    {
+        barrier.release();
+        return false;
+    }
 
-   return true;
+    return true;
 }
 
 void ThreadEngineBase::startThreads()
 {
-   while (shouldStartThread() && startThreadInternal()) {
-      ;
-   }
+    while ( shouldStartThread() && startThreadInternal() )
+    {
+        ;
+    }
 }
 
 void ThreadEngineBase::threadExit()
 {
-   const bool asynchronous = futureInterface != nullptr;
-   const int lastThread    = (barrier.release() == 0);
+    const bool asynchronous = futureInterface != nullptr;
+    const int lastThread    = ( barrier.release() == 0 );
 
-   if (lastThread && asynchronous) {
-      this->asynchronousFinish();
-   }
+    if ( lastThread && asynchronous )
+    {
+        this->asynchronousFinish();
+    }
 }
 
 // Called by a worker thread that wants to be throttled. If the current number
@@ -271,49 +317,60 @@ void ThreadEngineBase::threadExit()
 // this function returns one.
 bool ThreadEngineBase::threadThrottleExit()
 {
-   return barrier.releaseUnlessLast();
+    return barrier.releaseUnlessLast();
 }
 
 void ThreadEngineBase::run()
 {
-   // implements QRunnable
+    // implements QRunnable
 
-   if (this->isCanceled()) {
-      threadExit();
-      return;
-   }
+    if ( this->isCanceled() )
+    {
+        threadExit();
+        return;
+    }
 
-   startThreads();
+    startThreads();
 
-   try {
+    try
+    {
 
-      while (threadFunction() == ThrottleThread) {
-         // threadFunction returning ThrottleThread means it that the user
-         // struct wants to be throttled by making a worker thread exit.
-         // Respect that request unless this is the only worker thread left
-         // running, in which case it has to keep going.
-         if (threadThrottleExit()) {
-            return;
-         }
-      }
+        while ( threadFunction() == ThrottleThread )
+        {
+            // threadFunction returning ThrottleThread means it that the user
+            // struct wants to be throttled by making a worker thread exit.
+            // Respect that request unless this is the only worker thread left
+            // running, in which case it has to keep going.
+            if ( threadThrottleExit() )
+            {
+                return;
+            }
+        }
 
-   } catch (QtConcurrent::Exception &e) {
-      handleException(e);
+    }
+    catch ( QtConcurrent::Exception &e )
+    {
+        handleException( e );
 
-   } catch (...) {
-      handleException(QtConcurrent::UnhandledException());
-   }
+    }
+    catch ( ... )
+    {
+        handleException( QtConcurrent::UnhandledException() );
+    }
 
-   threadExit();
+    threadExit();
 }
 
-void ThreadEngineBase::handleException(const QtConcurrent::Exception &exception)
+void ThreadEngineBase::handleException( const QtConcurrent::Exception &exception )
 {
-   if (futureInterface) {
-      futureInterface->reportException(exception);
-   } else {
-      exceptionStore.setException(exception);
-   }
+    if ( futureInterface )
+    {
+        futureInterface->reportException( exception );
+    }
+    else
+    {
+        exceptionStore.setException( exception );
+    }
 }
 
 } // namespace QtConcurrent

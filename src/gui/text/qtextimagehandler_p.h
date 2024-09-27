@@ -31,17 +31,17 @@ class QTextImageFormat;
 
 class QTextImageHandler : public QObject, public QTextObjectInterface
 {
-   GUI_CS_OBJECT(QTextImageHandler)
-   CS_INTERFACES(QTextObjectInterface)
+    GUI_CS_OBJECT( QTextImageHandler )
+    CS_INTERFACES( QTextObjectInterface )
 
- public:
-   explicit QTextImageHandler(QObject *parent = nullptr);
+public:
+    explicit QTextImageHandler( QObject *parent = nullptr );
 
-   QSizeF intrinsicSize(QTextDocument *doc, int posInDocument, const QTextFormat &format) override;
-   void drawObject(QPainter *p, const QRectF &rect, QTextDocument *doc, int posInDocument,
-      const QTextFormat &format) override;
+    QSizeF intrinsicSize( QTextDocument *doc, int posInDocument, const QTextFormat &format ) override;
+    void drawObject( QPainter *p, const QRectF &rect, QTextDocument *doc, int posInDocument,
+                     const QTextFormat &format ) override;
 
-   QImage image(QTextDocument *doc, const QTextImageFormat &imageFormat);
+    QImage image( QTextDocument *doc, const QTextImageFormat &imageFormat );
 };
 
 #endif

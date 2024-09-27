@@ -32,16 +32,18 @@
 #include <wtf/Forward.h>
 #include <wtf/HashSet.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
 class WebContext;
-    
-class VisitedLinkProvider {
-    WTF_MAKE_NONCOPYABLE(VisitedLinkProvider);
-public:
-    explicit VisitedLinkProvider(WebContext*);
 
-    void addVisitedLink(WebCore::LinkHash);
+class VisitedLinkProvider
+{
+    WTF_MAKE_NONCOPYABLE( VisitedLinkProvider );
+public:
+    explicit VisitedLinkProvider( WebContext * );
+
+    void addVisitedLink( WebCore::LinkHash );
 
     void processDidFinishLaunching();
     void processDidClose();
@@ -49,7 +51,7 @@ public:
 private:
     void pendingVisitedLinksTimerFired();
 
-    WebContext* m_context;
+    WebContext *m_context;
     bool m_visitedLinksPopulated;
     bool m_webProcessHasVisitedLinkState;
 

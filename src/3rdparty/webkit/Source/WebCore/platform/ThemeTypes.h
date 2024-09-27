@@ -20,15 +20,17 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef ThemeTypes_h
 #define ThemeTypes_h
 
-namespace WebCore {
+namespace WebCore
+{
 
-enum ControlState {
+enum ControlState
+{
     HoverState = 1,
     PressedState = 1 << 1,
     FocusState = 1 << 2,
@@ -45,10 +47,11 @@ enum ControlState {
 typedef unsigned ControlStates;
 
 // Must follow CSSValueKeywords.in order
-enum ControlPart {
+enum ControlPart
+{
     NoControlPart, CheckboxPart, RadioPart, PushButtonPart, SquareButtonPart, ButtonPart,
     ButtonBevelPart, DefaultButtonPart, InnerSpinButtonPart, InputSpeechButtonPart, ListButtonPart, ListboxPart, ListItemPart,
-    MediaFullscreenButtonPart, MediaMuteButtonPart, MediaPlayButtonPart, MediaSeekBackButtonPart, 
+    MediaFullscreenButtonPart, MediaMuteButtonPart, MediaPlayButtonPart, MediaSeekBackButtonPart,
     MediaSeekForwardButtonPart, MediaRewindButtonPart, MediaReturnToRealtimeButtonPart, MediaToggleClosedCaptionsButtonPart,
     MediaSliderPart, MediaSliderThumbPart, MediaVolumeSliderContainerPart, MediaVolumeSliderPart, MediaVolumeSliderThumbPart,
     MediaVolumeSliderMuteButtonPart, MediaControlsBackgroundPart, MediaControlsFullscreenBackgroundPart, MediaCurrentTimePart, MediaTimeRemainingPart,
@@ -61,15 +64,18 @@ enum ControlPart {
     TextAreaPart, CapsLockIndicatorPart
 };
 
-enum SelectionPart {
+enum SelectionPart
+{
     SelectionBackground, SelectionForeground
 };
 
-enum ThemeFont {
-    CaptionFont, IconFont, MenuFont, MessageBoxFont, SmallCaptionFont, StatusBarFont, MiniControlFont, SmallControlFont, ControlFont 
+enum ThemeFont
+{
+    CaptionFont, IconFont, MenuFont, MessageBoxFont, SmallCaptionFont, StatusBarFont, MiniControlFont, SmallControlFont, ControlFont
 };
 
-enum ThemeColor {
+enum ThemeColor
+{
     ActiveBorderColor, ActiveCaptionColor, AppWorkspaceColor, BackgroundColor, ButtonFaceColor, ButtonHighlightColor, ButtonShadowColor,
     ButtonTextColor, CaptionTextColor, GrayTextColor, HighlightColor, HighlightTextColor, InactiveBorderColor, InactiveCaptionColor,
     InactiveCaptionTextColor, InfoBackgroundColor, InfoTextColor, MatchColor, MenuTextColor, ScrollbarColor, ThreeDDarkDhasowColor,

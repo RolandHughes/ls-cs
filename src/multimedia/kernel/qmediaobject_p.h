@@ -38,27 +38,27 @@ class QMediaAvailabilityControl;
 
 class QMediaObjectPrivate
 {
-   Q_DECLARE_PUBLIC(QMediaObject)
+    Q_DECLARE_PUBLIC( QMediaObject )
 
- public:
-   QMediaObjectPrivate()
-      : service(nullptr), metaDataControl(nullptr), availabilityControl(nullptr), notifyTimer(nullptr), q_ptr(nullptr)
-   {}
+public:
+    QMediaObjectPrivate()
+        : service( nullptr ), metaDataControl( nullptr ), availabilityControl( nullptr ), notifyTimer( nullptr ), q_ptr( nullptr )
+    {}
 
-   virtual ~QMediaObjectPrivate()
-   {}
+    virtual ~QMediaObjectPrivate()
+    {}
 
-   void _q_notify();
-   void _q_availabilityChanged();
+    void _q_notify();
+    void _q_availabilityChanged();
 
-   QMediaService *service;
-   QMetaDataReaderControl *metaDataControl;
-   QMediaAvailabilityControl *availabilityControl;
+    QMediaService *service;
+    QMetaDataReaderControl *metaDataControl;
+    QMediaAvailabilityControl *availabilityControl;
 
-   QTimer *notifyTimer;
-   QMap<QString, std::function<void ()>  > notifyProperties;
+    QTimer *notifyTimer;
+    QMap<QString, std::function<void ()>  > notifyProperties;
 
-   QMediaObject *q_ptr;
+    QMediaObject *q_ptr;
 };
 
 #endif

@@ -26,27 +26,28 @@
 
 #include <qsinglecontainer_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class DynamicContextStore : public SingleContainer
 {
- public:
-   DynamicContextStore(const Expression::Ptr &operand, const DynamicContext::Ptr &context);
+public:
+    DynamicContextStore( const Expression::Ptr &operand, const DynamicContext::Ptr &context );
 
-   bool evaluateEBV(const DynamicContext::Ptr &) const override;
-   Item::Iterator::Ptr evaluateSequence(const DynamicContext::Ptr &) const override;
-   Item evaluateSingleton(const DynamicContext::Ptr &) const override;
+    bool evaluateEBV( const DynamicContext::Ptr & ) const override;
+    Item::Iterator::Ptr evaluateSequence( const DynamicContext::Ptr & ) const override;
+    Item evaluateSingleton( const DynamicContext::Ptr & ) const override;
 
-   SequenceType::List expectedOperandTypes() const override;
-   /**
-    * @returns the staticType() of its operand.
-    */
-   SequenceType::Ptr staticType() const override;
-   ExpressionVisitorResult::Ptr accept(const ExpressionVisitor::Ptr &visitor) const override;
-   const SourceLocationReflection *actualReflection() const override;
+    SequenceType::List expectedOperandTypes() const override;
+    /**
+     * @returns the staticType() of its operand.
+     */
+    SequenceType::Ptr staticType() const override;
+    ExpressionVisitorResult::Ptr accept( const ExpressionVisitor::Ptr &visitor ) const override;
+    const SourceLocationReflection *actualReflection() const override;
 
- private:
-   DynamicContext *m_context;
+private:
+    DynamicContext *m_context;
 };
 
 }

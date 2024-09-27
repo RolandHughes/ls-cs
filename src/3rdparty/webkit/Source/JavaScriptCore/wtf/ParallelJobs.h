@@ -72,19 +72,21 @@
 
 #endif
 
-namespace WTF {
+namespace WTF
+{
 
 template<typename Type>
-class ParallelJobs {
+class ParallelJobs
+{
     WTF_MAKE_FAST_ALLOCATED;
 public:
-    typedef void (*WorkerFunction)(Type*);
+    typedef void ( *WorkerFunction )( Type * );
 
-    ParallelJobs(WorkerFunction func, int requestedJobNumber = 0) :
-        m_parallelEnvironment(reinterpret_cast<ParallelEnvironment::ThreadFunction>(func), sizeof(Type), requestedJobNumber)
+    ParallelJobs( WorkerFunction func, int requestedJobNumber = 0 ) :
+        m_parallelEnvironment( reinterpret_cast<ParallelEnvironment::ThreadFunction>( func ), sizeof( Type ), requestedJobNumber )
     {
-        m_parameters.grow(m_parallelEnvironment.numberOfJobs());
-        ASSERT(numberOfJobs() == m_parameters.size());
+        m_parameters.grow( m_parallelEnvironment.numberOfJobs() );
+        ASSERT( numberOfJobs() == m_parameters.size() );
     }
 
     size_t numberOfJobs()
@@ -92,14 +94,14 @@ public:
         return m_parameters.size();
     }
 
-    Type& parameter(size_t i)
+    Type &parameter( size_t i )
     {
         return m_parameters[i];
     }
 
     void execute()
     {
-        m_parallelEnvironment.execute(reinterpret_cast<unsigned char*>(m_parameters.data()));
+        m_parallelEnvironment.execute( reinterpret_cast<unsigned char *>( m_parameters.data() ) );
     }
 
 private:

@@ -39,73 +39,78 @@
 
 class Q_GUI_EXPORT QCUPSSupport
 {
- public:
-   // Enum for values of job-hold-until option
-   enum JobHoldUntil {
-      NoHold = 0,  //CUPS Default
-      Indefinite,
-      DayTime,
-      Night,
-      SecondShift,
-      ThirdShift,
-      Weekend,
-      SpecificTime
-   };
+public:
+    // Enum for values of job-hold-until option
+    enum JobHoldUntil
+    {
+        NoHold = 0,  //CUPS Default
+        Indefinite,
+        DayTime,
+        Night,
+        SecondShift,
+        ThirdShift,
+        Weekend,
+        SpecificTime
+    };
 
-   // Enum for valid banner pages
-   enum BannerPage {
-      NoBanner = 0,  //CUPS Default 'none'
-      Standard,
-      Unclassified,
-      Confidential,
-      Classified,
-      Secret,
-      TopSecret
-   };
+    // Enum for valid banner pages
+    enum BannerPage
+    {
+        NoBanner = 0,  //CUPS Default 'none'
+        Standard,
+        Unclassified,
+        Confidential,
+        Classified,
+        Secret,
+        TopSecret
+    };
 
-   // Enum for valid page set
-   enum PageSet {
-      AllPages = 0,  //CUPS Default
-      OddPages,
-      EvenPages
-   };
+    // Enum for valid page set
+    enum PageSet
+    {
+        AllPages = 0,  //CUPS Default
+        OddPages,
+        EvenPages
+    };
 
-   // Enum for valid number of pages per sheet
-   enum PagesPerSheet {
-      OnePagePerSheet = 0,
-      TwoPagesPerSheet,
-      FourPagesPerSheet,
-      SixPagesPerSheet,
-      NinePagesPerSheet,
-      SixteenPagesPerSheet
-   };
+    // Enum for valid number of pages per sheet
+    enum PagesPerSheet
+    {
+        OnePagePerSheet = 0,
+        TwoPagesPerSheet,
+        FourPagesPerSheet,
+        SixPagesPerSheet,
+        NinePagesPerSheet,
+        SixteenPagesPerSheet
+    };
 
-   // Enum for valid layouts of pages per sheet
-   enum PagesPerSheetLayout {
-      LeftToRightTopToBottom = 0,
-      LeftToRightBottomToTop,
-      RightToLeftTopToBottom,
-      RightToLeftBottomToTop,
-      BottomToTopLeftToRight,
-      BottomToTopRightToLeft,
-      TopToBottomLeftToRight,
-      TopToBottomRightToLeft
-   };
+    // Enum for valid layouts of pages per sheet
+    enum PagesPerSheetLayout
+    {
+        LeftToRightTopToBottom = 0,
+        LeftToRightBottomToTop,
+        RightToLeftTopToBottom,
+        RightToLeftBottomToTop,
+        BottomToTopLeftToRight,
+        BottomToTopRightToLeft,
+        TopToBottomLeftToRight,
+        TopToBottomRightToLeft
+    };
 
-   static QStringList cupsOptionsList(QPrinter *printer);
-   static void setCupsOptions(QPrinter *printer, const QStringList &cupsOptions);
-   static void setCupsOption(QStringList &cupsOptions, const QString &option, const QString &value);
-   static void clearCupsOption(QStringList &cupsOptions, const QString &option);
+    static QStringList cupsOptionsList( QPrinter *printer );
+    static void setCupsOptions( QPrinter *printer, const QStringList &cupsOptions );
+    static void setCupsOption( QStringList &cupsOptions, const QString &option, const QString &value );
+    static void clearCupsOption( QStringList &cupsOptions, const QString &option );
 
-   static void setJobHold(QPrinter *printer, const JobHoldUntil jobHold = NoHold, const QTime &holdUntilTime = QTime());
-   static void setJobBilling(QPrinter *printer, const QString &jobBilling = QString());
-   static void setJobPriority(QPrinter *printer, int priority = 50);
-   static void setBannerPages(QPrinter *printer, const BannerPage startBannerPage, const BannerPage endBannerPage);
-   static void setPageSet(QPrinter *printer, const PageSet pageSet);
-   static void setPagesPerSheetLayout(QPrinter *printer, const PagesPerSheet pagesPerSheet,
-      const PagesPerSheetLayout pagesPerSheetLayout);
+    static void setJobHold( QPrinter *printer, const JobHoldUntil jobHold = NoHold, const QTime &holdUntilTime = QTime() );
+    static void setJobBilling( QPrinter *printer, const QString &jobBilling = QString() );
+    static void setJobPriority( QPrinter *printer, int priority = 50 );
+    static void setBannerPages( QPrinter *printer, const BannerPage startBannerPage, const BannerPage endBannerPage );
+    static void setPageSet( QPrinter *printer, const PageSet pageSet );
+    static void setPagesPerSheetLayout( QPrinter *printer, const PagesPerSheet pagesPerSheet,
+                                        const PagesPerSheetLayout pagesPerSheetLayout );
 
-   static void setPageRange(QPrinter *printer, int pageFrom, int pageTo);
+    static void setPageRange( QPrinter *printer, int pageFrom, int pageTo );
 };
 
 #endif // QT_NO_CUPS

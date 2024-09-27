@@ -37,55 +37,72 @@
 #include <wtf/RefPtr.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class AudioChannel;
-    
+
 // HRTF stands for Head-Related Transfer Function.
 // HRTFKernel is a frequency-domain representation of an impulse-response used as part of the spatialized panning system.
 // For a given azimuth / elevation angle there will be one HRTFKernel for the left ear transfer function, and one for the right ear.
 // The leading delay (average group delay) for each impulse response is extracted:
 //      m_fftFrame is the frequency-domain representation of the impulse response with the delay removed
 //      m_frameDelay is the leading delay of the original impulse response.
-class HRTFKernel : public RefCounted<HRTFKernel> {
+class HRTFKernel : public RefCounted<HRTFKernel>
+{
 public:
     // Note: this is destructive on the passed in AudioChannel.
     // The length of channel must be a power of two.
-    static PassRefPtr<HRTFKernel> create(AudioChannel* channel, size_t fftSize, double sampleRate, bool bassBoost)
+    static PassRefPtr<HRTFKernel> create( AudioChannel *channel, size_t fftSize, double sampleRate, bool bassBoost )
     {
-        return adoptRef(new HRTFKernel(channel, fftSize, sampleRate, bassBoost));
+        return adoptRef( new HRTFKernel( channel, fftSize, sampleRate, bassBoost ) );
     }
 
-    static PassRefPtr<HRTFKernel> create(PassOwnPtr<FFTFrame> fftFrame, double frameDelay, double sampleRate)
+    static PassRefPtr<HRTFKernel> create( PassOwnPtr<FFTFrame> fftFrame, double frameDelay, double sampleRate )
     {
-        return adoptRef(new HRTFKernel(fftFrame, frameDelay, sampleRate));
+        return adoptRef( new HRTFKernel( fftFrame, frameDelay, sampleRate ) );
     }
 
     // Given two HRTFKernels, and an interpolation factor x: 0 -> 1, returns an interpolated HRTFKernel.
-    static PassRefPtr<HRTFKernel> createInterpolatedKernel(HRTFKernel* kernel1, HRTFKernel* kernel2, double x);
-  
-    FFTFrame* fftFrame() { return m_fftFrame.get(); }
-    
-    size_t fftSize() const { return m_fftFrame->fftSize(); }
-    double frameDelay() const { return m_frameDelay; }
+    static PassRefPtr<HRTFKernel> createInterpolatedKernel( HRTFKernel *kernel1, HRTFKernel *kernel2, double x );
 
-    double sampleRate() const { return m_sampleRate; }
-    double nyquist() const { return 0.5 * sampleRate(); }
+    FFTFrame *fftFrame()
+    {
+        return m_fftFrame.get();
+    }
+
+    size_t fftSize() const
+    {
+        return m_fftFrame->fftSize();
+    }
+    double frameDelay() const
+    {
+        return m_frameDelay;
+    }
+
+    double sampleRate() const
+    {
+        return m_sampleRate;
+    }
+    double nyquist() const
+    {
+        return 0.5 * sampleRate();
+    }
 
     // Converts back into impulse-response form.
     PassOwnPtr<AudioChannel> createImpulseResponse();
 
 private:
     // Note: this is destructive on the passed in AudioChannel.
-    HRTFKernel(AudioChannel* channel, size_t fftSize, double sampleRate, bool bassBoost);
-    
-    HRTFKernel(PassOwnPtr<FFTFrame> fftFrame, double frameDelay, double sampleRate)
-        : m_fftFrame(fftFrame)
-        , m_frameDelay(frameDelay)
-        , m_sampleRate(sampleRate)
+    HRTFKernel( AudioChannel *channel, size_t fftSize, double sampleRate, bool bassBoost );
+
+    HRTFKernel( PassOwnPtr<FFTFrame> fftFrame, double frameDelay, double sampleRate )
+        : m_fftFrame( fftFrame )
+        , m_frameDelay( frameDelay )
+        , m_sampleRate( sampleRate )
     {
     }
-    
+
     OwnPtr<FFTFrame> m_fftFrame;
     double m_frameDelay;
     double m_sampleRate;

@@ -32,23 +32,23 @@ class QDeclarativeStatePrivate;
 class QDeclarativeTransitionManagerPrivate;
 class QDeclarativeTransitionManager
 {
- public:
-   QDeclarativeTransitionManager();
-   ~QDeclarativeTransitionManager();
+public:
+    QDeclarativeTransitionManager();
+    ~QDeclarativeTransitionManager();
 
-   void transition(const QList<QDeclarativeAction> &, QDeclarativeTransition *transition);
+    void transition( const QList<QDeclarativeAction> &, QDeclarativeTransition *transition );
 
-   void cancel();
+    void cancel();
 
- private:
-   Q_DISABLE_COPY(QDeclarativeTransitionManager)
-   QDeclarativeTransitionManagerPrivate *d;
+private:
+    Q_DISABLE_COPY( QDeclarativeTransitionManager )
+    QDeclarativeTransitionManagerPrivate *d;
 
-   void complete();
-   void setState(QDeclarativeState *);
+    void complete();
+    void setState( QDeclarativeState * );
 
-   friend class QDeclarativeState;
-   friend class QDeclarativeTransitionPrivate;
+    friend class QDeclarativeState;
+    friend class QDeclarativeTransitionPrivate;
 };
 
 QT_END_NAMESPACE

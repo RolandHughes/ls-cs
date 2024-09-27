@@ -41,83 +41,90 @@ OBJC_CLASS WKPlaceholderModalWindow;
 #endif
 
 // FIXME: This is platform specific.
-namespace CoreIPC {
-    class MachPort;
+namespace CoreIPC
+{
+class MachPort;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
 class PluginProcessManager;
 class WebPluginSiteDataManager;
 class WebProcessProxy;
 struct PluginProcessCreationParameters;
 
-class PluginProcessProxy : CoreIPC::Connection::Client, ProcessLauncher::Client {
+class PluginProcessProxy : CoreIPC::Connection::Client, ProcessLauncher::Client
+{
 public:
 #if PLATFORM(MAC)
-    static bool pluginNeedsExecutableHeap(const PluginInfoStore::Plugin&);
+    static bool pluginNeedsExecutableHeap( const PluginInfoStore::Plugin & );
 #endif
-    static PassOwnPtr<PluginProcessProxy> create(PluginProcessManager*, const PluginInfoStore::Plugin&);
+    static PassOwnPtr<PluginProcessProxy> create( PluginProcessManager *, const PluginInfoStore::Plugin & );
     ~PluginProcessProxy();
 
-    const PluginInfoStore::Plugin& pluginInfo() const { return m_pluginInfo; }
+    const PluginInfoStore::Plugin &pluginInfo() const
+    {
+        return m_pluginInfo;
+    }
 
-    // Asks the plug-in process to create a new connection to a web process. The connection identifier will be 
+    // Asks the plug-in process to create a new connection to a web process. The connection identifier will be
     // encoded in the given argument encoder and sent back to the connection of the given web process.
-    void getPluginProcessConnection(PassRefPtr<Messages::WebProcessProxy::GetPluginProcessConnection::DelayedReply>);
-    
+    void getPluginProcessConnection( PassRefPtr<Messages::WebProcessProxy::GetPluginProcessConnection::DelayedReply> );
+
     // Asks the plug-in process to get a list of domains for which the plug-in has data stored.
-    void getSitesWithData(WebPluginSiteDataManager*, uint64_t callbackID);
+    void getSitesWithData( WebPluginSiteDataManager *, uint64_t callbackID );
 
     // Asks the plug-in process to clear the data for the given sites.
-    void clearSiteData(WebPluginSiteDataManager*, const Vector<String>& sites, uint64_t flags, uint64_t maxAgeInSeconds, uint64_t callbackID);
+    void clearSiteData( WebPluginSiteDataManager *, const Vector<String> &sites, uint64_t flags, uint64_t maxAgeInSeconds,
+                        uint64_t callbackID );
 
     // Terminates the plug-in process.
     void terminate();
 
 private:
-    PluginProcessProxy(PluginProcessManager*, const PluginInfoStore::Plugin&);
+    PluginProcessProxy( PluginProcessManager *, const PluginInfoStore::Plugin & );
 
     void pluginProcessCrashedOrFailedToLaunch();
 
     // CoreIPC::Connection::Client
-    virtual void didReceiveMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*);
-    virtual void didClose(CoreIPC::Connection*);
-    virtual void didReceiveInvalidMessage(CoreIPC::Connection*, CoreIPC::MessageID);
-    virtual void syncMessageSendTimedOut(CoreIPC::Connection*);
+    virtual void didReceiveMessage( CoreIPC::Connection *, CoreIPC::MessageID, CoreIPC::ArgumentDecoder * );
+    virtual void didClose( CoreIPC::Connection * );
+    virtual void didReceiveInvalidMessage( CoreIPC::Connection *, CoreIPC::MessageID );
+    virtual void syncMessageSendTimedOut( CoreIPC::Connection * );
 
     // ProcessLauncher::Client
-    virtual void didFinishLaunching(ProcessLauncher*, CoreIPC::Connection::Identifier);
+    virtual void didFinishLaunching( ProcessLauncher *, CoreIPC::Connection::Identifier );
 
     // Message handlers
-    void didReceivePluginProcessProxyMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*);
+    void didReceivePluginProcessProxyMessage( CoreIPC::Connection *, CoreIPC::MessageID, CoreIPC::ArgumentDecoder * );
 #if PLATFORM(MAC)
-    void didCreateWebProcessConnection(const CoreIPC::MachPort&);
+    void didCreateWebProcessConnection( const CoreIPC::MachPort & );
 #endif
-    void didGetSitesWithData(const Vector<String>& sites, uint64_t callbackID);
-    void didClearSiteData(uint64_t callbackID);
+    void didGetSitesWithData( const Vector<String> &sites, uint64_t callbackID );
+    void didClearSiteData( uint64_t callbackID );
 
 #if PLATFORM(MAC)
-    bool getPluginProcessSerialNumber(ProcessSerialNumber&);
+    bool getPluginProcessSerialNumber( ProcessSerialNumber & );
     void makePluginProcessTheFrontProcess();
     void makeUIProcessTheFrontProcess();
 
-    void setFullscreenWindowIsShowing(bool);
+    void setFullscreenWindowIsShowing( bool );
     void enterFullscreen();
     void exitFullscreen();
 
-    void setModalWindowIsShowing(bool);
+    void setModalWindowIsShowing( bool );
     void beginModal();
     void endModal();
 
     void applicationDidBecomeActive();
 #endif
 
-    void platformInitializePluginProcess(PluginProcessCreationParameters& parameters);
+    void platformInitializePluginProcess( PluginProcessCreationParameters &parameters );
 
     // The plug-in host process manager.
-    PluginProcessManager* m_pluginProcessManager;
-    
+    PluginProcessManager *m_pluginProcessManager;
+
     // Information about the plug-in.
     PluginInfoStore::Plugin m_pluginInfo;
 
@@ -132,7 +139,8 @@ private:
     Vector<uint64_t> m_pendingGetSitesRequests;
     HashMap<uint64_t, RefPtr<WebPluginSiteDataManager> > m_pendingGetSitesReplies;
 
-    struct ClearSiteDataRequest {
+    struct ClearSiteDataRequest
+    {
         Vector<String> sites;
         uint64_t flags;
         uint64_t maxAgeInSeconds;

@@ -37,34 +37,37 @@
 #include "XLinkNames.h"
 
 #include <wtf/StaticConstructors.h>
-namespace WebCore {
+namespace WebCore
+{
 
- namespace XLinkNames {
+namespace XLinkNames
+{
 
 using namespace WebCore;
 
-DEFINE_GLOBAL(AtomicString, xlinkNamespaceURI, "http://www.w3.org/1999/xlink")
+DEFINE_GLOBAL( AtomicString, xlinkNamespaceURI, "http://www.w3.org/1999/xlink" )
 
 // Attributes
-DEFINE_GLOBAL(QualifiedName, actuateAttr, nullAtom, "actuate", xlinkNamespaceURI);
-DEFINE_GLOBAL(QualifiedName, arcroleAttr, nullAtom, "arcrole", xlinkNamespaceURI);
-DEFINE_GLOBAL(QualifiedName, hrefAttr, nullAtom, "href", xlinkNamespaceURI);
-DEFINE_GLOBAL(QualifiedName, roleAttr, nullAtom, "role", xlinkNamespaceURI);
-DEFINE_GLOBAL(QualifiedName, showAttr, nullAtom, "show", xlinkNamespaceURI);
-DEFINE_GLOBAL(QualifiedName, titleAttr, nullAtom, "title", xlinkNamespaceURI);
-DEFINE_GLOBAL(QualifiedName, typeAttr, nullAtom, "type", xlinkNamespaceURI);
+DEFINE_GLOBAL( QualifiedName, actuateAttr, nullAtom, "actuate", xlinkNamespaceURI );
+DEFINE_GLOBAL( QualifiedName, arcroleAttr, nullAtom, "arcrole", xlinkNamespaceURI );
+DEFINE_GLOBAL( QualifiedName, hrefAttr, nullAtom, "href", xlinkNamespaceURI );
+DEFINE_GLOBAL( QualifiedName, roleAttr, nullAtom, "role", xlinkNamespaceURI );
+DEFINE_GLOBAL( QualifiedName, showAttr, nullAtom, "show", xlinkNamespaceURI );
+DEFINE_GLOBAL( QualifiedName, titleAttr, nullAtom, "title", xlinkNamespaceURI );
+DEFINE_GLOBAL( QualifiedName, typeAttr, nullAtom, "type", xlinkNamespaceURI );
 
 
-WebCore::QualifiedName** getXLinkAttrs(size_t* size)
+WebCore::QualifiedName **getXLinkAttrs( size_t *size )
 {
-    static WebCore::QualifiedName* XLinkAttr[] = {
-        (WebCore::QualifiedName*)&actuateAttr,
-        (WebCore::QualifiedName*)&arcroleAttr,
-        (WebCore::QualifiedName*)&hrefAttr,
-        (WebCore::QualifiedName*)&roleAttr,
-        (WebCore::QualifiedName*)&showAttr,
-        (WebCore::QualifiedName*)&titleAttr,
-        (WebCore::QualifiedName*)&typeAttr,
+    static WebCore::QualifiedName *XLinkAttr[] =
+    {
+        ( WebCore::QualifiedName * ) &actuateAttr,
+        ( WebCore::QualifiedName * ) &arcroleAttr,
+        ( WebCore::QualifiedName * ) &hrefAttr,
+        ( WebCore::QualifiedName * ) &roleAttr,
+        ( WebCore::QualifiedName * ) &showAttr,
+        ( WebCore::QualifiedName * ) &titleAttr,
+        ( WebCore::QualifiedName * ) &typeAttr,
     };
     *size = 7;
     return XLinkAttr;
@@ -73,27 +76,32 @@ WebCore::QualifiedName** getXLinkAttrs(size_t* size)
 void init()
 {
     static bool initialized = false;
-    if (initialized)
+
+    if ( initialized )
+    {
         return;
+    }
+
     initialized = true;
-    
+
     // Use placement new to initialize the globals.
-    
+
     AtomicString::init();
-    AtomicString xlinkNS("http://www.w3.org/1999/xlink");
+    AtomicString xlinkNS( "http://www.w3.org/1999/xlink" );
 
     // Namespace
-    new ((void*)&xlinkNamespaceURI) AtomicString(xlinkNS);
+    new ( ( void * )&xlinkNamespaceURI ) AtomicString( xlinkNS );
 
     // Attributes
-    new ((void*)&actuateAttr) QualifiedName(nullAtom, "actuate", xlinkNS);
-    new ((void*)&arcroleAttr) QualifiedName(nullAtom, "arcrole", xlinkNS);
-    new ((void*)&hrefAttr) QualifiedName(nullAtom, "href", xlinkNS);
-    new ((void*)&roleAttr) QualifiedName(nullAtom, "role", xlinkNS);
-    new ((void*)&showAttr) QualifiedName(nullAtom, "show", xlinkNS);
-    new ((void*)&titleAttr) QualifiedName(nullAtom, "title", xlinkNS);
-    new ((void*)&typeAttr) QualifiedName(nullAtom, "type", xlinkNS);
+    new ( ( void * )&actuateAttr ) QualifiedName( nullAtom, "actuate", xlinkNS );
+    new ( ( void * )&arcroleAttr ) QualifiedName( nullAtom, "arcrole", xlinkNS );
+    new ( ( void * )&hrefAttr ) QualifiedName( nullAtom, "href", xlinkNS );
+    new ( ( void * )&roleAttr ) QualifiedName( nullAtom, "role", xlinkNS );
+    new ( ( void * )&showAttr ) QualifiedName( nullAtom, "show", xlinkNS );
+    new ( ( void * )&titleAttr ) QualifiedName( nullAtom, "title", xlinkNS );
+    new ( ( void * )&typeAttr ) QualifiedName( nullAtom, "type", xlinkNS );
 }
 
-} }
+}
+}
 

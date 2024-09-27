@@ -23,35 +23,36 @@
 
 #include <qwin_session_manager.h>
 
-QWindowsSessionManager::QWindowsSessionManager(const QString &id, const QString &key)
-   : QPlatformSessionManager(id, key), m_isActive(false)
-   , m_blockUserInput(false)
-   , m_canceled(false)
+QWindowsSessionManager::QWindowsSessionManager( const QString &id, const QString &key )
+    : QPlatformSessionManager( id, key ), m_isActive( false )
+    , m_blockUserInput( false )
+    , m_canceled( false )
 {
 }
 
 bool QWindowsSessionManager::allowsInteraction()
 {
-   m_blockUserInput = false;
-   return true;
+    m_blockUserInput = false;
+    return true;
 }
 
 bool QWindowsSessionManager::allowsErrorInteraction()
 {
-   m_blockUserInput = false;
-   return true;
+    m_blockUserInput = false;
+    return true;
 }
 
 void QWindowsSessionManager::release()
 {
-   if (m_isActive) {
-      m_blockUserInput = true;
-   }
+    if ( m_isActive )
+    {
+        m_blockUserInput = true;
+    }
 }
 
 void QWindowsSessionManager::cancel()
 {
-   m_canceled = true;
+    m_canceled = true;
 }
 
 

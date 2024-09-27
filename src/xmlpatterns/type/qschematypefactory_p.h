@@ -29,31 +29,32 @@
 #include <qitemtype_p.h>
 #include <qschematype_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class SchemaTypeFactory : public QSharedData
 {
- public:
-   typedef QExplicitlySharedDataPointer<SchemaTypeFactory> Ptr;
+public:
+    typedef QExplicitlySharedDataPointer<SchemaTypeFactory> Ptr;
 
-   SchemaTypeFactory();
-   virtual ~SchemaTypeFactory();
+    SchemaTypeFactory();
+    virtual ~SchemaTypeFactory();
 
-   /**
-    * @returns a schema type for name @p name. If no schema type exists for @p name, @c null
-    * is returned
-    */
-   virtual SchemaType::Ptr createSchemaType(const QXmlName name) const = 0;
+    /**
+     * @returns a schema type for name @p name. If no schema type exists for @p name, @c null
+     * is returned
+     */
+    virtual SchemaType::Ptr createSchemaType( const QXmlName name ) const = 0;
 
-   /**
-    * @returns a dictionary containing the types this factory serves. The key
-    * is the type's QName in Clark name syntax.
-    */
-   virtual SchemaType::Hash types() const = 0;
+    /**
+     * @returns a dictionary containing the types this factory serves. The key
+     * is the type's QName in Clark name syntax.
+     */
+    virtual SchemaType::Hash types() const = 0;
 
- private:
-   SchemaTypeFactory(const SchemaTypeFactory &) = delete;
-   SchemaTypeFactory &operator=(const SchemaTypeFactory &) = delete;
+private:
+    SchemaTypeFactory( const SchemaTypeFactory & ) = delete;
+    SchemaTypeFactory &operator=( const SchemaTypeFactory & ) = delete;
 };
 }
 

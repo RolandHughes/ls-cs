@@ -32,56 +32,73 @@
 
 using namespace WebCore;
 
-namespace WebKit {
-
-WKBundlePagePolicyAction InjectedBundlePagePolicyClient::decidePolicyForNavigationAction(WebPage* page, WebFrame* frame, InjectedBundleNavigationAction* action, const ResourceRequest& resourceRequest, RefPtr<APIObject>& userData)
+namespace WebKit
 {
-    if (!m_client.decidePolicyForNavigationAction)
-        return WKBundlePagePolicyActionPassThrough;
 
-    RefPtr<WebURLRequest> request = WebURLRequest::create(resourceRequest);
+WKBundlePagePolicyAction InjectedBundlePagePolicyClient::decidePolicyForNavigationAction( WebPage *page, WebFrame *frame,
+        InjectedBundleNavigationAction *action, const ResourceRequest &resourceRequest, RefPtr<APIObject> &userData )
+{
+    if ( !m_client.decidePolicyForNavigationAction )
+    {
+        return WKBundlePagePolicyActionPassThrough;
+    }
+
+    RefPtr<WebURLRequest> request = WebURLRequest::create( resourceRequest );
 
     WKTypeRef userDataToPass = 0;
-    WKBundlePagePolicyAction policy = m_client.decidePolicyForNavigationAction(toAPI(page), toAPI(frame), toAPI(action), toAPI(request.get()), &userDataToPass, m_client.clientInfo);
-    userData = adoptRef(toImpl(userDataToPass));
+    WKBundlePagePolicyAction policy = m_client.decidePolicyForNavigationAction( toAPI( page ), toAPI( frame ), toAPI( action ),
+                                      toAPI( request.get() ), &userDataToPass, m_client.clientInfo );
+    userData = adoptRef( toImpl( userDataToPass ) );
     return policy;
 }
 
-WKBundlePagePolicyAction InjectedBundlePagePolicyClient::decidePolicyForNewWindowAction(WebPage* page, WebFrame* frame, InjectedBundleNavigationAction* action, const ResourceRequest& resourceRequest, const String& frameName, RefPtr<APIObject>& userData)
+WKBundlePagePolicyAction InjectedBundlePagePolicyClient::decidePolicyForNewWindowAction( WebPage *page, WebFrame *frame,
+        InjectedBundleNavigationAction *action, const ResourceRequest &resourceRequest, const String &frameName,
+        RefPtr<APIObject> &userData )
 {
-    if (!m_client.decidePolicyForNewWindowAction)
+    if ( !m_client.decidePolicyForNewWindowAction )
+    {
         return WKBundlePagePolicyActionPassThrough;
+    }
 
-    RefPtr<WebURLRequest> request = WebURLRequest::create(resourceRequest);
+    RefPtr<WebURLRequest> request = WebURLRequest::create( resourceRequest );
 
     WKTypeRef userDataToPass = 0;
-    WKBundlePagePolicyAction policy = m_client.decidePolicyForNewWindowAction(toAPI(page), toAPI(frame), toAPI(action), toAPI(request.get()), toAPI(frameName.impl()), &userDataToPass, m_client.clientInfo);
-    userData = adoptRef(toImpl(userDataToPass));
+    WKBundlePagePolicyAction policy = m_client.decidePolicyForNewWindowAction( toAPI( page ), toAPI( frame ), toAPI( action ),
+                                      toAPI( request.get() ), toAPI( frameName.impl() ), &userDataToPass, m_client.clientInfo );
+    userData = adoptRef( toImpl( userDataToPass ) );
     return policy;
 }
 
-WKBundlePagePolicyAction InjectedBundlePagePolicyClient::decidePolicyForResponse(WebPage* page, WebFrame* frame, const ResourceResponse& resourceResponse, const ResourceRequest& resourceRequest, RefPtr<APIObject>& userData)
+WKBundlePagePolicyAction InjectedBundlePagePolicyClient::decidePolicyForResponse( WebPage *page, WebFrame *frame,
+        const ResourceResponse &resourceResponse, const ResourceRequest &resourceRequest, RefPtr<APIObject> &userData )
 {
-    if (!m_client.decidePolicyForResponse)
+    if ( !m_client.decidePolicyForResponse )
+    {
         return WKBundlePagePolicyActionPassThrough;
+    }
 
-    RefPtr<WebURLResponse> response = WebURLResponse::create(resourceResponse);
-    RefPtr<WebURLRequest> request = WebURLRequest::create(resourceRequest);
+    RefPtr<WebURLResponse> response = WebURLResponse::create( resourceResponse );
+    RefPtr<WebURLRequest> request = WebURLRequest::create( resourceRequest );
 
     WKTypeRef userDataToPass = 0;
-    WKBundlePagePolicyAction policy = m_client.decidePolicyForResponse(toAPI(page), toAPI(frame), toAPI(response.get()), toAPI(request.get()), &userDataToPass, m_client.clientInfo);
-    userData = adoptRef(toImpl(userDataToPass));
+    WKBundlePagePolicyAction policy = m_client.decidePolicyForResponse( toAPI( page ), toAPI( frame ), toAPI( response.get() ),
+                                      toAPI( request.get() ), &userDataToPass, m_client.clientInfo );
+    userData = adoptRef( toImpl( userDataToPass ) );
     return policy;
 }
 
-void InjectedBundlePagePolicyClient::unableToImplementPolicy(WebPage* page, WebFrame* frame, const WebCore::ResourceError& error, RefPtr<APIObject>& userData)
+void InjectedBundlePagePolicyClient::unableToImplementPolicy( WebPage *page, WebFrame *frame, const WebCore::ResourceError &error,
+        RefPtr<APIObject> &userData )
 {
-    if (!m_client.unableToImplementPolicy)
+    if ( !m_client.unableToImplementPolicy )
+    {
         return;
+    }
 
     WKTypeRef userDataToPass = 0;
-    m_client.unableToImplementPolicy(toAPI(page), toAPI(frame), toAPI(error), &userDataToPass, m_client.clientInfo);
-    userData = adoptRef(toImpl(userDataToPass));
+    m_client.unableToImplementPolicy( toAPI( page ), toAPI( frame ), toAPI( error ), &userDataToPass, m_client.clientInfo );
+    userData = adoptRef( toImpl( userDataToPass ) );
 }
 
 } // namespace WebKit

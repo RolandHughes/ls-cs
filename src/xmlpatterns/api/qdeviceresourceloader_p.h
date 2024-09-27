@@ -29,13 +29,14 @@ class QUrl;
 
 #include <qresourceloader_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 class DeviceResourceLoader : public ResourceLoader
 {
- public:
-   typedef QExplicitlySharedDataPointer<DeviceResourceLoader> Ptr;
+public:
+    typedef QExplicitlySharedDataPointer<DeviceResourceLoader> Ptr;
 
-   virtual QSet<QUrl> deviceURIs() const = 0;
+    virtual QSet<QUrl> deviceURIs() const = 0;
 };
 }
 

@@ -33,165 +33,177 @@
 #include "NativeErrorConstructor.h"
 #include "SourceCode.h"
 
-namespace JSC {
-
-static const char* linePropertyName = "line";
-static const char* sourceIdPropertyName = "sourceId";
-static const char* sourceURLPropertyName = "sourceURL";
-
-JSObject* createError(JSGlobalObject* globalObject, const UString& message)
+namespace JSC
 {
-    ASSERT(!message.isEmpty());
-    return ErrorInstance::create(&globalObject->globalData(), globalObject->errorStructure(), message);
+
+static const char *linePropertyName = "line";
+static const char *sourceIdPropertyName = "sourceId";
+static const char *sourceURLPropertyName = "sourceURL";
+
+JSObject *createError( JSGlobalObject *globalObject, const UString &message )
+{
+    ASSERT( !message.isEmpty() );
+    return ErrorInstance::create( &globalObject->globalData(), globalObject->errorStructure(), message );
 }
 
-JSObject* createEvalError(JSGlobalObject* globalObject, const UString& message)
+JSObject *createEvalError( JSGlobalObject *globalObject, const UString &message )
 {
-    ASSERT(!message.isEmpty());
-    return ErrorInstance::create(&globalObject->globalData(), globalObject->evalErrorConstructor()->errorStructure(), message);
+    ASSERT( !message.isEmpty() );
+    return ErrorInstance::create( &globalObject->globalData(), globalObject->evalErrorConstructor()->errorStructure(), message );
 }
 
-JSObject* createRangeError(JSGlobalObject* globalObject, const UString& message)
+JSObject *createRangeError( JSGlobalObject *globalObject, const UString &message )
 {
-    ASSERT(!message.isEmpty());
-    return ErrorInstance::create(&globalObject->globalData(), globalObject->rangeErrorConstructor()->errorStructure(), message);
+    ASSERT( !message.isEmpty() );
+    return ErrorInstance::create( &globalObject->globalData(), globalObject->rangeErrorConstructor()->errorStructure(), message );
 }
 
-JSObject* createReferenceError(JSGlobalObject* globalObject, const UString& message)
+JSObject *createReferenceError( JSGlobalObject *globalObject, const UString &message )
 {
-    ASSERT(!message.isEmpty());
-    return ErrorInstance::create(&globalObject->globalData(), globalObject->referenceErrorConstructor()->errorStructure(), message);
+    ASSERT( !message.isEmpty() );
+    return ErrorInstance::create( &globalObject->globalData(), globalObject->referenceErrorConstructor()->errorStructure(), message );
 }
 
-JSObject* createSyntaxError(JSGlobalObject* globalObject, const UString& message)
+JSObject *createSyntaxError( JSGlobalObject *globalObject, const UString &message )
 {
-    ASSERT(!message.isEmpty());
-    return ErrorInstance::create(&globalObject->globalData(), globalObject->syntaxErrorConstructor()->errorStructure(), message);
+    ASSERT( !message.isEmpty() );
+    return ErrorInstance::create( &globalObject->globalData(), globalObject->syntaxErrorConstructor()->errorStructure(), message );
 }
 
-JSObject* createTypeError(JSGlobalObject* globalObject, const UString& message)
+JSObject *createTypeError( JSGlobalObject *globalObject, const UString &message )
 {
-    ASSERT(!message.isEmpty());
-    return ErrorInstance::create(&globalObject->globalData(), globalObject->typeErrorConstructor()->errorStructure(), message);
+    ASSERT( !message.isEmpty() );
+    return ErrorInstance::create( &globalObject->globalData(), globalObject->typeErrorConstructor()->errorStructure(), message );
 }
 
-JSObject* createURIError(JSGlobalObject* globalObject, const UString& message)
+JSObject *createURIError( JSGlobalObject *globalObject, const UString &message )
 {
-    ASSERT(!message.isEmpty());
-    return ErrorInstance::create(&globalObject->globalData(), globalObject->URIErrorConstructor()->errorStructure(), message);
+    ASSERT( !message.isEmpty() );
+    return ErrorInstance::create( &globalObject->globalData(), globalObject->URIErrorConstructor()->errorStructure(), message );
 }
 
-JSObject* createError(ExecState* exec, const UString& message)
+JSObject *createError( ExecState *exec, const UString &message )
 {
-    return createError(exec->lexicalGlobalObject(), message);
+    return createError( exec->lexicalGlobalObject(), message );
 }
 
-JSObject* createEvalError(ExecState* exec, const UString& message)
+JSObject *createEvalError( ExecState *exec, const UString &message )
 {
-    return createEvalError(exec->lexicalGlobalObject(), message);
+    return createEvalError( exec->lexicalGlobalObject(), message );
 }
 
-JSObject* createRangeError(ExecState* exec, const UString& message)
+JSObject *createRangeError( ExecState *exec, const UString &message )
 {
-    return createRangeError(exec->lexicalGlobalObject(), message);
+    return createRangeError( exec->lexicalGlobalObject(), message );
 }
 
-JSObject* createReferenceError(ExecState* exec, const UString& message)
+JSObject *createReferenceError( ExecState *exec, const UString &message )
 {
-    return createReferenceError(exec->lexicalGlobalObject(), message);
+    return createReferenceError( exec->lexicalGlobalObject(), message );
 }
 
-JSObject* createSyntaxError(ExecState* exec, const UString& message)
+JSObject *createSyntaxError( ExecState *exec, const UString &message )
 {
-    return createSyntaxError(exec->lexicalGlobalObject(), message);
+    return createSyntaxError( exec->lexicalGlobalObject(), message );
 }
 
-JSObject* createTypeError(ExecState* exec, const UString& message)
+JSObject *createTypeError( ExecState *exec, const UString &message )
 {
-    return createTypeError(exec->lexicalGlobalObject(), message);
+    return createTypeError( exec->lexicalGlobalObject(), message );
 }
 
-JSObject* createURIError(ExecState* exec, const UString& message)
+JSObject *createURIError( ExecState *exec, const UString &message )
 {
-    return createURIError(exec->lexicalGlobalObject(), message);
+    return createURIError( exec->lexicalGlobalObject(), message );
 }
 
-JSObject* addErrorInfo(JSGlobalData* globalData, JSObject* error, int line, const SourceCode& source)
+JSObject *addErrorInfo( JSGlobalData *globalData, JSObject *error, int line, const SourceCode &source )
 {
     intptr_t sourceID = source.provider()->asID();
-    const UString& sourceURL = source.provider()->url();
+    const UString &sourceURL = source.provider()->url();
 
-    if (line != -1)
-        error->putWithAttributes(globalData, Identifier(globalData, linePropertyName), jsNumber(line), ReadOnly | DontDelete);
-    if (sourceID != -1)
-        error->putWithAttributes(globalData, Identifier(globalData, sourceIdPropertyName), jsNumber((double)sourceID), ReadOnly | DontDelete);
-    if (!sourceURL.isNull())
-        error->putWithAttributes(globalData, Identifier(globalData, sourceURLPropertyName), jsString(globalData, sourceURL), ReadOnly | DontDelete);
+    if ( line != -1 )
+    {
+        error->putWithAttributes( globalData, Identifier( globalData, linePropertyName ), jsNumber( line ), ReadOnly | DontDelete );
+    }
+
+    if ( sourceID != -1 )
+    {
+        error->putWithAttributes( globalData, Identifier( globalData, sourceIdPropertyName ), jsNumber( ( double )sourceID ),
+                                  ReadOnly | DontDelete );
+    }
+
+    if ( !sourceURL.isNull() )
+    {
+        error->putWithAttributes( globalData, Identifier( globalData, sourceURLPropertyName ), jsString( globalData, sourceURL ),
+                                  ReadOnly | DontDelete );
+    }
 
     return error;
 }
 
-JSObject* addErrorInfo(ExecState* exec, JSObject* error, int line, const SourceCode& source)
+JSObject *addErrorInfo( ExecState *exec, JSObject *error, int line, const SourceCode &source )
 {
-    return addErrorInfo(&exec->globalData(), error, line, source);
+    return addErrorInfo( &exec->globalData(), error, line, source );
 }
 
-bool hasErrorInfo(ExecState* exec, JSObject* error)
+bool hasErrorInfo( ExecState *exec, JSObject *error )
 {
-    return error->hasProperty(exec, Identifier(exec, linePropertyName))
-        || error->hasProperty(exec, Identifier(exec, sourceIdPropertyName))
-        || error->hasProperty(exec, Identifier(exec, sourceURLPropertyName));
+    return error->hasProperty( exec, Identifier( exec, linePropertyName ) )
+           || error->hasProperty( exec, Identifier( exec, sourceIdPropertyName ) )
+           || error->hasProperty( exec, Identifier( exec, sourceURLPropertyName ) );
 }
 
-JSValue throwError(ExecState* exec, JSValue error)
+JSValue throwError( ExecState *exec, JSValue error )
 {
     exec->globalData().exception = error;
     return error;
 }
 
-JSObject* throwError(ExecState* exec, JSObject* error)
+JSObject *throwError( ExecState *exec, JSObject *error )
 {
     exec->globalData().exception = error;
     return error;
 }
 
-JSObject* throwTypeError(ExecState* exec)
+JSObject *throwTypeError( ExecState *exec )
 {
-    return throwError(exec, createTypeError(exec, "Type error"));
+    return throwError( exec, createTypeError( exec, "Type error" ) );
 }
 
-JSObject* throwSyntaxError(ExecState* exec)
+JSObject *throwSyntaxError( ExecState *exec )
 {
-    return throwError(exec, createSyntaxError(exec, "Syntax error"));
+    return throwError( exec, createSyntaxError( exec, "Syntax error" ) );
 }
 
-class StrictModeTypeErrorFunction : public InternalFunction {
+class StrictModeTypeErrorFunction : public InternalFunction
+{
 public:
-    StrictModeTypeErrorFunction(ExecState* exec, JSGlobalObject* globalObject, Structure* structure, const UString& message)
-        : InternalFunction(&exec->globalData(), globalObject, structure, exec->globalData().propertyNames->emptyIdentifier)
-        , m_message(message)
+    StrictModeTypeErrorFunction( ExecState *exec, JSGlobalObject *globalObject, Structure *structure, const UString &message )
+        : InternalFunction( &exec->globalData(), globalObject, structure, exec->globalData().propertyNames->emptyIdentifier )
+        , m_message( message )
     {
     }
-    
-    static EncodedJSValue JSC_HOST_CALL constructThrowTypeError(ExecState* exec)
+
+    static EncodedJSValue JSC_HOST_CALL constructThrowTypeError( ExecState *exec )
     {
-        throwTypeError(exec, static_cast<StrictModeTypeErrorFunction*>(exec->callee())->m_message);
-        return JSValue::encode(jsNull());
+        throwTypeError( exec, static_cast<StrictModeTypeErrorFunction *>( exec->callee() )->m_message );
+        return JSValue::encode( jsNull() );
     }
-    
-    ConstructType getConstructData(ConstructData& constructData)
+
+    ConstructType getConstructData( ConstructData &constructData )
     {
         constructData.native.function = constructThrowTypeError;
         return ConstructTypeHost;
     }
-    
-    static EncodedJSValue JSC_HOST_CALL callThrowTypeError(ExecState* exec)
+
+    static EncodedJSValue JSC_HOST_CALL callThrowTypeError( ExecState *exec )
     {
-        throwTypeError(exec, static_cast<StrictModeTypeErrorFunction*>(exec->callee())->m_message);
-        return JSValue::encode(jsNull());
+        throwTypeError( exec, static_cast<StrictModeTypeErrorFunction *>( exec->callee() )->m_message );
+        return JSValue::encode( jsNull() );
     }
 
-    CallType getCallData(CallData& callData)
+    CallType getCallData( CallData &callData )
     {
         callData.native.function = callThrowTypeError;
         return CallTypeHost;
@@ -201,11 +213,12 @@ private:
     UString m_message;
 };
 
-ASSERT_CLASS_FITS_IN_CELL(StrictModeTypeErrorFunction);
+ASSERT_CLASS_FITS_IN_CELL( StrictModeTypeErrorFunction );
 
-JSValue createTypeErrorFunction(ExecState* exec, const UString& message)
+JSValue createTypeErrorFunction( ExecState *exec, const UString &message )
 {
-    return new (exec) StrictModeTypeErrorFunction(exec, exec->lexicalGlobalObject(), exec->lexicalGlobalObject()->internalFunctionStructure(), message);
+    return new ( exec ) StrictModeTypeErrorFunction( exec, exec->lexicalGlobalObject(),
+            exec->lexicalGlobalObject()->internalFunctionStructure(), message );
 }
 
 } // namespace JSC

@@ -28,26 +28,32 @@
 #include <runtime/JSObjectWithGlobalObject.h>
 #include <runtime/ObjectPrototype.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class WebGLContextAttributes;
 
-class JSWebGLContextAttributes : public JSDOMWrapper {
+class JSWebGLContextAttributes : public JSDOMWrapper
+{
     typedef JSDOMWrapper Base;
 public:
-    JSWebGLContextAttributes(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<WebGLContextAttributes>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
-    virtual void put(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::JSValue, JSC::PutPropertySlot&);
+    JSWebGLContextAttributes( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<WebGLContextAttributes> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
+    virtual void put( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::JSValue, JSC::PutPropertySlot & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    WebGLContextAttributes* impl() const { return m_impl.get(); }
+    WebGLContextAttributes *impl() const
+    {
+        return m_impl.get();
+    }
 
 private:
     RefPtr<WebGLContextAttributes> m_impl;
@@ -55,37 +61,40 @@ protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
-JSC::JSValue toJS(JSC::ExecState*, JSDOMGlobalObject*, WebGLContextAttributes*);
-WebGLContextAttributes* toWebGLContextAttributes(JSC::JSValue);
+JSC::JSValue toJS( JSC::ExecState *, JSDOMGlobalObject *, WebGLContextAttributes * );
+WebGLContextAttributes *toWebGLContextAttributes( JSC::JSValue );
 
-class JSWebGLContextAttributesPrototype : public JSC::JSObjectWithGlobalObject {
+class JSWebGLContextAttributesPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSWebGLContextAttributesPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSWebGLContextAttributesPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                                       JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = Base::StructureFlags;
 };
 
 // Attributes
 
-JSC::JSValue jsWebGLContextAttributesAlpha(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSWebGLContextAttributesAlpha(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsWebGLContextAttributesDepth(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSWebGLContextAttributesDepth(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsWebGLContextAttributesStencil(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSWebGLContextAttributesStencil(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsWebGLContextAttributesAntialias(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSWebGLContextAttributesAntialias(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsWebGLContextAttributesPremultipliedAlpha(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSWebGLContextAttributesPremultipliedAlpha(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsWebGLContextAttributesPreserveDrawingBuffer(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSWebGLContextAttributesPreserveDrawingBuffer(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
+JSC::JSValue jsWebGLContextAttributesAlpha( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSWebGLContextAttributesAlpha( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsWebGLContextAttributesDepth( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSWebGLContextAttributesDepth( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsWebGLContextAttributesStencil( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSWebGLContextAttributesStencil( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsWebGLContextAttributesAntialias( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSWebGLContextAttributesAntialias( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsWebGLContextAttributesPremultipliedAlpha( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSWebGLContextAttributesPremultipliedAlpha( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsWebGLContextAttributesPreserveDrawingBuffer( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSWebGLContextAttributesPreserveDrawingBuffer( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
 
 } // namespace WebCore
 

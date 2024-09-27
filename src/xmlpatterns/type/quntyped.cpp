@@ -33,25 +33,25 @@ Untyped::Untyped()
 
 SchemaType::Ptr Untyped::wxsSuperType() const
 {
-   return BuiltinTypes::xsAnyType;
+    return BuiltinTypes::xsAnyType;
 }
 
-QXmlName Untyped::name(const NamePool::Ptr &np) const
+QXmlName Untyped::name( const NamePool::Ptr &np ) const
 {
-   return np->allocateQName(StandardNamespaces::xs, QLatin1String("untyped"));
+    return np->allocateQName( StandardNamespaces::xs, QLatin1String( "untyped" ) );
 }
 
 ItemType::Ptr Untyped::atomizedType() const
 {
-   return BuiltinTypes::xsUntypedAtomic;
+    return BuiltinTypes::xsUntypedAtomic;
 }
 
 SchemaType::TypeCategory Untyped::category() const
 {
-   return SchemaType::ComplexType;
+    return SchemaType::ComplexType;
 }
 
 SchemaType::DerivationMethod Untyped::derivationMethod() const
 {
-   return NoDerivation;
+    return NoDerivation;
 }

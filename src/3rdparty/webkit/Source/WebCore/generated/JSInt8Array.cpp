@@ -31,9 +31,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSInt8Array);
+ASSERT_CLASS_FITS_IN_CELL( JSInt8Array );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -44,9 +45,9 @@ ASSERT_CLASS_FITS_IN_CELL(JSInt8Array);
 
 static const HashTableValue JSInt8ArrayTableValues[3] =
 {
-    { "length", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsInt8ArrayLength), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsInt8ArrayConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "length", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsInt8ArrayLength ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsInt8ArrayConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -60,32 +61,35 @@ static JSC_CONST_HASHTABLE HashTable JSInt8ArrayTable = { 5, 3, JSInt8ArrayTable
 
 static const HashTableValue JSInt8ArrayConstructorTableValues[2] =
 {
-    { "BYTES_PER_ELEMENT", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsInt8ArrayBYTES_PER_ELEMENT), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "BYTES_PER_ELEMENT", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsInt8ArrayBYTES_PER_ELEMENT ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSInt8ArrayConstructorTable = { 2, 1, JSInt8ArrayConstructorTableValues, 0 };
 const ClassInfo JSInt8ArrayConstructor::s_info = { "Int8ArrayConstructor", &DOMConstructorObject::s_info, &JSInt8ArrayConstructorTable, 0 };
 
-JSInt8ArrayConstructor::JSInt8ArrayConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSInt8ArrayConstructor::JSInt8ArrayConstructor( ExecState *exec, Structure *structure, JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSInt8ArrayPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSInt8ArrayPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSInt8ArrayConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSInt8ArrayConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSInt8ArrayConstructor, JSDOMWrapper>(exec, &JSInt8ArrayConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSInt8ArrayConstructor, JSDOMWrapper>( exec, &JSInt8ArrayConstructorTable, this, propertyName, slot );
 }
 
-bool JSInt8ArrayConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSInt8ArrayConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSInt8ArrayConstructor, JSDOMWrapper>(exec, &JSInt8ArrayConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSInt8ArrayConstructor, JSDOMWrapper>( exec, &JSInt8ArrayConstructorTable, this, propertyName,
+            descriptor );
 }
 
-ConstructType JSInt8ArrayConstructor::getConstructData(ConstructData& constructData)
+ConstructType JSInt8ArrayConstructor::getConstructData( ConstructData &constructData )
 {
     constructData.native.function = constructJSInt8Array;
     return ConstructTypeHost;
@@ -100,183 +104,217 @@ ConstructType JSInt8ArrayConstructor::getConstructData(ConstructData& constructD
 
 static const HashTableValue JSInt8ArrayPrototypeTableValues[4] =
 {
-    { "BYTES_PER_ELEMENT", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsInt8ArrayBYTES_PER_ELEMENT), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "subarray", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsInt8ArrayPrototypeFunctionSubarray), (intptr_t)2 THUNK_GENERATOR(0) },
-    { "set", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsInt8ArrayPrototypeFunctionSet), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "BYTES_PER_ELEMENT", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsInt8ArrayBYTES_PER_ELEMENT ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "subarray", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsInt8ArrayPrototypeFunctionSubarray ), ( intptr_t )2 THUNK_GENERATOR( 0 ) },
+    { "set", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsInt8ArrayPrototypeFunctionSet ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSInt8ArrayPrototypeTable = { 8, 7, JSInt8ArrayPrototypeTableValues, 0 };
-static const HashTable* getJSInt8ArrayPrototypeTable(ExecState* exec)
+static const HashTable *getJSInt8ArrayPrototypeTable( ExecState *exec )
 {
-    return getHashTableForGlobalData(exec->globalData(), &JSInt8ArrayPrototypeTable);
+    return getHashTableForGlobalData( exec->globalData(), &JSInt8ArrayPrototypeTable );
 }
 
 const ClassInfo JSInt8ArrayPrototype::s_info = { "Int8ArrayPrototype", &JSC::JSObjectWithGlobalObject::s_info, 0, getJSInt8ArrayPrototypeTable };
 
-JSObject* JSInt8ArrayPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSInt8ArrayPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSInt8Array>(exec, globalObject);
+    return getDOMPrototype<JSInt8Array>( exec, globalObject );
 }
 
-bool JSInt8ArrayPrototype::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSInt8ArrayPrototype::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticPropertySlot<JSInt8ArrayPrototype, JSObject>(exec, getJSInt8ArrayPrototypeTable(exec), this, propertyName, slot);
+    return getStaticPropertySlot<JSInt8ArrayPrototype, JSObject>( exec, getJSInt8ArrayPrototypeTable( exec ), this, propertyName,
+            slot );
 }
 
-bool JSInt8ArrayPrototype::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSInt8ArrayPrototype::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticPropertyDescriptor<JSInt8ArrayPrototype, JSObject>(exec, getJSInt8ArrayPrototypeTable(exec), this, propertyName, descriptor);
+    return getStaticPropertyDescriptor<JSInt8ArrayPrototype, JSObject>( exec, getJSInt8ArrayPrototypeTable( exec ), this,
+            propertyName, descriptor );
 }
 
-static const HashTable* getJSInt8ArrayTable(ExecState* exec)
+static const HashTable *getJSInt8ArrayTable( ExecState *exec )
 {
-    return getHashTableForGlobalData(exec->globalData(), &JSInt8ArrayTable);
+    return getHashTableForGlobalData( exec->globalData(), &JSInt8ArrayTable );
 }
 
 const ClassInfo JSInt8Array::s_info = { "Int8Array", &JSArrayBufferView::s_info, 0, getJSInt8ArrayTable };
 
-JSInt8Array::JSInt8Array(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<Int8Array> impl)
-    : JSArrayBufferView(structure, globalObject, impl)
+JSInt8Array::JSInt8Array( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<Int8Array> impl )
+    : JSArrayBufferView( structure, globalObject, impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSInt8Array::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSInt8Array::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSInt8ArrayPrototype(exec->globalData(), globalObject, JSInt8ArrayPrototype::createStructure(exec->globalData(), JSArrayBufferViewPrototype::self(exec, globalObject)));
+    return new ( exec ) JSInt8ArrayPrototype( exec->globalData(), globalObject,
+            JSInt8ArrayPrototype::createStructure( exec->globalData(), JSArrayBufferViewPrototype::self( exec, globalObject ) ) );
 }
 
-bool JSInt8Array::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSInt8Array::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
     bool ok;
-    unsigned index = propertyName.toUInt32(ok);
-    if (ok && index < static_cast<Int8Array*>(impl())->length()) {
-        slot.setValue(getByIndex(exec, index));
+    unsigned index = propertyName.toUInt32( ok );
+
+    if ( ok && index < static_cast<Int8Array *>( impl() )->length() )
+    {
+        slot.setValue( getByIndex( exec, index ) );
         return true;
     }
-    return getStaticValueSlot<JSInt8Array, Base>(exec, getJSInt8ArrayTable(exec), this, propertyName, slot);
+
+    return getStaticValueSlot<JSInt8Array, Base>( exec, getJSInt8ArrayTable( exec ), this, propertyName, slot );
 }
 
-bool JSInt8Array::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSInt8Array::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
     bool ok;
-    unsigned index = propertyName.toUInt32(ok);
-    if (ok && index < static_cast<Int8Array*>(impl())->length()) {
-        descriptor.setDescriptor(getByIndex(exec, index), DontDelete);
+    unsigned index = propertyName.toUInt32( ok );
+
+    if ( ok && index < static_cast<Int8Array *>( impl() )->length() )
+    {
+        descriptor.setDescriptor( getByIndex( exec, index ), DontDelete );
         return true;
     }
-    return getStaticValueDescriptor<JSInt8Array, Base>(exec, getJSInt8ArrayTable(exec), this, propertyName, descriptor);
+
+    return getStaticValueDescriptor<JSInt8Array, Base>( exec, getJSInt8ArrayTable( exec ), this, propertyName, descriptor );
 }
 
-bool JSInt8Array::getOwnPropertySlot(ExecState* exec, unsigned propertyName, PropertySlot& slot)
+bool JSInt8Array::getOwnPropertySlot( ExecState *exec, unsigned propertyName, PropertySlot &slot )
 {
-    if (propertyName < static_cast<Int8Array*>(impl())->length()) {
-        slot.setValue(getByIndex(exec, propertyName));
+    if ( propertyName < static_cast<Int8Array *>( impl() )->length() )
+    {
+        slot.setValue( getByIndex( exec, propertyName ) );
         return true;
     }
-    return getOwnPropertySlot(exec, Identifier::from(exec, propertyName), slot);
+
+    return getOwnPropertySlot( exec, Identifier::from( exec, propertyName ), slot );
 }
 
-JSValue jsInt8ArrayLength(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsInt8ArrayLength( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSInt8Array* castedThis = static_cast<JSInt8Array*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    Int8Array* imp = static_cast<Int8Array*>(castedThis->impl());
-    JSValue result = jsNumber(imp->length());
+    JSInt8Array *castedThis = static_cast<JSInt8Array *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    Int8Array *imp = static_cast<Int8Array *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->length() );
     return result;
 }
 
 
-JSValue jsInt8ArrayConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsInt8ArrayConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSInt8Array* domObject = static_cast<JSInt8Array*>(asObject(slotBase));
-    return JSInt8Array::getConstructor(exec, domObject->globalObject());
+    JSInt8Array *domObject = static_cast<JSInt8Array *>( asObject( slotBase ) );
+    return JSInt8Array::getConstructor( exec, domObject->globalObject() );
 }
 
-void JSInt8Array::put(ExecState* exec, const Identifier& propertyName, JSValue value, PutPropertySlot& slot)
+void JSInt8Array::put( ExecState *exec, const Identifier &propertyName, JSValue value, PutPropertySlot &slot )
 {
     bool ok;
-    unsigned index = propertyName.toUInt32(ok);
-    if (ok) {
-        indexSetter(exec, index, value);
+    unsigned index = propertyName.toUInt32( ok );
+
+    if ( ok )
+    {
+        indexSetter( exec, index, value );
         return;
     }
-    Base::put(exec, propertyName, value, slot);
+
+    Base::put( exec, propertyName, value, slot );
 }
 
-void JSInt8Array::put(ExecState* exec, unsigned propertyName, JSValue value)
+void JSInt8Array::put( ExecState *exec, unsigned propertyName, JSValue value )
 {
-    indexSetter(exec, propertyName, value);
+    indexSetter( exec, propertyName, value );
     return;
 }
 
-void JSInt8Array::getOwnPropertyNames(ExecState* exec, PropertyNameArray& propertyNames, EnumerationMode mode)
+void JSInt8Array::getOwnPropertyNames( ExecState *exec, PropertyNameArray &propertyNames, EnumerationMode mode )
 {
-    for (unsigned i = 0; i < static_cast<Int8Array*>(impl())->length(); ++i)
-        propertyNames.add(Identifier::from(exec, i));
-     Base::getOwnPropertyNames(exec, propertyNames, mode);
-}
-
-JSValue JSInt8Array::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
-{
-    return getDOMConstructor<JSInt8ArrayConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
-}
-
-EncodedJSValue JSC_HOST_CALL jsInt8ArrayPrototypeFunctionSubarray(ExecState* exec)
-{
-    JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSInt8Array::s_info))
-        return throwVMTypeError(exec);
-    JSInt8Array* castedThis = static_cast<JSInt8Array*>(asObject(thisValue));
-    Int8Array* imp = static_cast<Int8Array*>(castedThis->impl());
-    int start(exec->argument(0).toInt32(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-
-    int argsCount = exec->argumentCount();
-    if (argsCount <= 1) {
-
-        JSC::JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->subarray(start)));
-        return JSValue::encode(result);
+    for ( unsigned i = 0; i < static_cast<Int8Array *>( impl() )->length(); ++i )
+    {
+        propertyNames.add( Identifier::from( exec, i ) );
     }
 
-    int end(exec->argument(1).toInt32(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-
-
-    JSC::JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->subarray(start, end)));
-    return JSValue::encode(result);
+    Base::getOwnPropertyNames( exec, propertyNames, mode );
 }
 
-EncodedJSValue JSC_HOST_CALL jsInt8ArrayPrototypeFunctionSet(ExecState* exec)
+JSValue JSInt8Array::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
+{
+    return getDOMConstructor<JSInt8ArrayConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
+}
+
+EncodedJSValue JSC_HOST_CALL jsInt8ArrayPrototypeFunctionSubarray( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSInt8Array::s_info))
-        return throwVMTypeError(exec);
-    JSInt8Array* castedThis = static_cast<JSInt8Array*>(asObject(thisValue));
-    return JSValue::encode(castedThis->set(exec));
+
+    if ( !thisValue.inherits( &JSInt8Array::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSInt8Array *castedThis = static_cast<JSInt8Array *>( asObject( thisValue ) );
+    Int8Array *imp = static_cast<Int8Array *>( castedThis->impl() );
+    int start( exec->argument( 0 ).toInt32( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    int argsCount = exec->argumentCount();
+
+    if ( argsCount <= 1 )
+    {
+
+        JSC::JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->subarray( start ) ) );
+        return JSValue::encode( result );
+    }
+
+    int end( exec->argument( 1 ).toInt32( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+
+    JSC::JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->subarray( start, end ) ) );
+    return JSValue::encode( result );
+}
+
+EncodedJSValue JSC_HOST_CALL jsInt8ArrayPrototypeFunctionSet( ExecState *exec )
+{
+    JSValue thisValue = exec->hostThisValue();
+
+    if ( !thisValue.inherits( &JSInt8Array::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSInt8Array *castedThis = static_cast<JSInt8Array *>( asObject( thisValue ) );
+    return JSValue::encode( castedThis->set( exec ) );
 }
 
 // Constant getters
 
-JSValue jsInt8ArrayBYTES_PER_ELEMENT(ExecState* exec, JSValue, const Identifier&)
+JSValue jsInt8ArrayBYTES_PER_ELEMENT( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(1));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 1 ) );
 }
 
 
-JSValue JSInt8Array::getByIndex(ExecState*, unsigned index)
+JSValue JSInt8Array::getByIndex( ExecState *, unsigned index )
 {
-    return jsNumber(static_cast<Int8Array*>(impl())->item(index));
+    return jsNumber( static_cast<Int8Array *>( impl() )->item( index ) );
 }
 
-Int8Array* toInt8Array(JSC::JSValue value)
+Int8Array *toInt8Array( JSC::JSValue value )
 {
-    return value.inherits(&JSInt8Array::s_info) ? static_cast<JSInt8Array*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSInt8Array::s_info ) ? static_cast<JSInt8Array *>( asObject( value ) )->impl() : 0;
 }
 
 }

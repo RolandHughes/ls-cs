@@ -33,15 +33,15 @@ using namespace WebKit;
 
 WKTypeID WKGeolocationPermissionRequestGetTypeID()
 {
-    return toAPI(GeolocationPermissionRequestProxy::APIType);
+    return toAPI( GeolocationPermissionRequestProxy::APIType );
 }
 
-void WKGeolocationPermissionRequestAllow(WKGeolocationPermissionRequestRef geolocationPermissionRequestRef)
+void WKGeolocationPermissionRequestAllow( WKGeolocationPermissionRequestRef geolocationPermissionRequestRef )
 {
-    return toImpl(geolocationPermissionRequestRef)->allow();
+    return toImpl( geolocationPermissionRequestRef )->allow();
 }
 
-void WKGeolocationPermissionRequestDeny(WKGeolocationPermissionRequestRef geolocationPermissionRequestRef)
+void WKGeolocationPermissionRequestDeny( WKGeolocationPermissionRequestRef geolocationPermissionRequestRef )
 {
-    return toImpl(geolocationPermissionRequestRef)->deny();
+    return toImpl( geolocationPermissionRequestRef )->deny();
 }

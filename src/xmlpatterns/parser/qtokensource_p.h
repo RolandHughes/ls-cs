@@ -37,69 +37,72 @@
 
 template<typename T> class QQueue;
 
-namespace QPatternist {
+namespace QPatternist
+{
 
-union EnumUnion {
-   AtomicComparator::Operator              valueOperator;
-   AtomicMathematician::Operator           mathOperator;
-   CombineNodes::Operator                  combinedNodeOp;
-   QXmlNodeModelIndex::Axis                axis;
-   QXmlNodeModelIndex::DocumentOrder       nodeOperator;
-   StaticContext::BoundarySpacePolicy      boundarySpacePolicy;
-   StaticContext::ConstructionMode         constructionMode;
-   StaticContext::OrderingEmptySequence    orderingEmptySequence;
-   StaticContext::OrderingMode             orderingMode;
-   OrderBy::OrderSpec::Direction           sortDirection;
-   Validate::Mode                          validationMode;
-   VariableSlotID                          slot;
-   int                                     tokenizerPosition;
-   qint16                                  zeroer;
-   bool                                    Bool;
-   xsDouble                                Double;
-   Path::Kind                              pathKind;
+union EnumUnion
+{
+    AtomicComparator::Operator              valueOperator;
+    AtomicMathematician::Operator           mathOperator;
+    CombineNodes::Operator                  combinedNodeOp;
+    QXmlNodeModelIndex::Axis                axis;
+    QXmlNodeModelIndex::DocumentOrder       nodeOperator;
+    StaticContext::BoundarySpacePolicy      boundarySpacePolicy;
+    StaticContext::ConstructionMode         constructionMode;
+    StaticContext::OrderingEmptySequence    orderingEmptySequence;
+    StaticContext::OrderingMode             orderingMode;
+    OrderBy::OrderSpec::Direction           sortDirection;
+    Validate::Mode                          validationMode;
+    VariableSlotID                          slot;
+    int                                     tokenizerPosition;
+    qint16                                  zeroer;
+    bool                                    Bool;
+    xsDouble                                Double;
+    Path::Kind                              pathKind;
 };
 
 class TokenSource : public QSharedData
 {
- public:
-   /**
-    * typedef for the enum Bison generates that contains the token symbols.
-    */
-   typedef yytokentype TokenType;
+public:
+    /**
+     * typedef for the enum Bison generates that contains the token symbols.
+     */
+    typedef yytokentype TokenType;
 
-   /**
-    * Represents a token by carrying its name and value.
-    */
-   class Token
-   {
+    /**
+     * Represents a token by carrying its name and value.
+     */
+    class Token
+    {
     public:
-      /**
-       * Constructs an invalid Token. This default constructor is need in the container classes.
-       */
-      inline Token() {}
-      inline Token(const TokenType t) : type(t) {}
-      inline Token(const TokenType t, const QString &val) : type(t), value(val) {}
+        /**
+         * Constructs an invalid Token. This default constructor is need in the container classes.
+         */
+        inline Token() {}
+        inline Token( const TokenType t ) : type( t ) {}
+        inline Token( const TokenType t, const QString &val ) : type( t ), value( val ) {}
 
-      bool hasError() const {
-         return type == ERROR;
-      }
+        bool hasError() const
+        {
+            return type == ERROR;
+        }
 
-      TokenType type;
-      QString value;
-   };
+        TokenType type;
+        QString value;
+    };
 
-   typedef QExplicitlySharedDataPointer<TokenSource> Ptr;
-   typedef QQueue<Ptr> Queue;
+    typedef QExplicitlySharedDataPointer<TokenSource> Ptr;
+    typedef QQueue<Ptr> Queue;
 
-   TokenSource() = default;
+    TokenSource() = default;
 
-   virtual ~TokenSource();
+    virtual ~TokenSource();
 
-   virtual Token nextToken(YYLTYPE *const sourceLocator) = 0;
+    virtual Token nextToken( YYLTYPE *const sourceLocator ) = 0;
 
- private:
-   TokenSource(const TokenSource &) = delete;
-   TokenSource &operator=(const TokenSource &) = delete;
+private:
+    TokenSource( const TokenSource & ) = delete;
+    TokenSource &operator=( const TokenSource & ) = delete;
 };
 }
 

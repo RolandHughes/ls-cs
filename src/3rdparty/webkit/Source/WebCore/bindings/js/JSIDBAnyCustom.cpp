@@ -49,34 +49,47 @@
 
 using namespace JSC;
 
-namespace WebCore {
-
-JSValue toJS(ExecState* exec, JSDOMGlobalObject* globalObject, IDBAny* idbAny)
+namespace WebCore
 {
-    if (!idbAny)
-        return jsNull();
 
-    switch (idbAny->type()) {
-    case IDBAny::UndefinedType:
-        return jsUndefined();
-    case IDBAny::NullType:
+JSValue toJS( ExecState *exec, JSDOMGlobalObject *globalObject, IDBAny *idbAny )
+{
+    if ( !idbAny )
+    {
         return jsNull();
-    case IDBAny::IDBCursorType:
-        return toJS(exec, globalObject, idbAny->idbCursor());
-    case IDBAny::IDBDatabaseType:
-        return toJS(exec, globalObject, idbAny->idbDatabase());
-    case IDBAny::IDBFactoryType:
-        return toJS(exec, globalObject, idbAny->idbFactory());
-    case IDBAny::IDBIndexType:
-        return toJS(exec, globalObject, idbAny->idbIndex());
-    case IDBAny::IDBKeyType:
-        return toJS(exec, globalObject, idbAny->idbKey());
-    case IDBAny::IDBObjectStoreType:
-        return toJS(exec, globalObject, idbAny->idbObjectStore());
-    case IDBAny::IDBTransactionType:
-        return toJS(exec, globalObject, idbAny->idbTransaction());
-    case IDBAny::SerializedScriptValueType:
-        return idbAny->serializedScriptValue()->deserialize(exec, globalObject);
+    }
+
+    switch ( idbAny->type() )
+    {
+        case IDBAny::UndefinedType:
+            return jsUndefined();
+
+        case IDBAny::NullType:
+            return jsNull();
+
+        case IDBAny::IDBCursorType:
+            return toJS( exec, globalObject, idbAny->idbCursor() );
+
+        case IDBAny::IDBDatabaseType:
+            return toJS( exec, globalObject, idbAny->idbDatabase() );
+
+        case IDBAny::IDBFactoryType:
+            return toJS( exec, globalObject, idbAny->idbFactory() );
+
+        case IDBAny::IDBIndexType:
+            return toJS( exec, globalObject, idbAny->idbIndex() );
+
+        case IDBAny::IDBKeyType:
+            return toJS( exec, globalObject, idbAny->idbKey() );
+
+        case IDBAny::IDBObjectStoreType:
+            return toJS( exec, globalObject, idbAny->idbObjectStore() );
+
+        case IDBAny::IDBTransactionType:
+            return toJS( exec, globalObject, idbAny->idbTransaction() );
+
+        case IDBAny::SerializedScriptValueType:
+            return idbAny->serializedScriptValue()->deserialize( exec, globalObject );
     }
 
     ASSERT_NOT_REACHED();

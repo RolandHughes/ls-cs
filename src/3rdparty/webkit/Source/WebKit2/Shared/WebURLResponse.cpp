@@ -26,10 +26,11 @@
 #include "config.h"
 #include "WebURLResponse.h"
 
-namespace WebKit {
+namespace WebKit
+{
 
-WebURLResponse::WebURLResponse(const WebCore::ResourceResponse& response)
-    : m_response(response)
+WebURLResponse::WebURLResponse( const WebCore::ResourceResponse &response )
+    : m_response( response )
 {
 }
 

@@ -25,18 +25,22 @@
 #include <wtf/GetPtr.h>
 #include <wtf/text/AtomicString.h>
 
-WebDOMNode WebDOMHTMLCollection::item(unsigned index)
+WebDOMNode WebDOMHTMLCollection::item( unsigned index )
 {
-    if (!impl())
+    if ( !impl() )
+    {
         return WebDOMNode();
+    }
 
-    return toWebKit(WTF::getPtr(impl()->item(index)));
+    return toWebKit( WTF::getPtr( impl()->item( index ) ) );
 }
 
-WebDOMNode WebDOMHTMLCollection::namedItem(const WebDOMString& name)
+WebDOMNode WebDOMHTMLCollection::namedItem( const WebDOMString &name )
 {
-    if (!impl())
+    if ( !impl() )
+    {
         return WebDOMNode();
+    }
 
-    return toWebKit(WTF::getPtr(impl()->namedItem(name)));
+    return toWebKit( WTF::getPtr( impl()->namedItem( name ) ) );
 }

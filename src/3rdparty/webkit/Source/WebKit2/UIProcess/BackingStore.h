@@ -41,44 +41,50 @@
 #include <QPixmap>
 #endif
 
-namespace WebCore {
-    class IntRect;
+namespace WebCore
+{
+class IntRect;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
 class ShareableBitmap;
 class UpdateInfo;
 class WebPageProxy;
 
-class BackingStore {
-    WTF_MAKE_NONCOPYABLE(BackingStore);
+class BackingStore
+{
+    WTF_MAKE_NONCOPYABLE( BackingStore );
 
 public:
-    static PassOwnPtr<BackingStore> create(const WebCore::IntSize&, WebPageProxy*);
+    static PassOwnPtr<BackingStore> create( const WebCore::IntSize &, WebPageProxy * );
     ~BackingStore();
 
-    const WebCore::IntSize& size() const { return m_size; }
+    const WebCore::IntSize &size() const
+    {
+        return m_size;
+    }
 
 #if PLATFORM(MAC)
     typedef CGContextRef PlatformGraphicsContext;
 #elif PLATFORM(WIN)
     typedef HDC PlatformGraphicsContext;
 #elif PLATFORM(QT)
-    typedef QPainter* PlatformGraphicsContext;
+    typedef QPainter *PlatformGraphicsContext;
 #endif
 
-    void paint(PlatformGraphicsContext, const WebCore::IntRect&);
-    void incorporateUpdate(const UpdateInfo&);
+    void paint( PlatformGraphicsContext, const WebCore::IntRect & );
+    void incorporateUpdate( const UpdateInfo & );
 
 private:
-    BackingStore(const WebCore::IntSize&, WebPageProxy*);
+    BackingStore( const WebCore::IntSize &, WebPageProxy * );
 
-    void incorporateUpdate(ShareableBitmap*, const UpdateInfo&);
-    void scroll(const WebCore::IntRect& scrollRect, const WebCore::IntSize& scrollOffset);
+    void incorporateUpdate( ShareableBitmap *, const UpdateInfo & );
+    void scroll( const WebCore::IntRect &scrollRect, const WebCore::IntSize &scrollOffset );
 
     WebCore::IntSize m_size;
-    WebPageProxy* m_webPageProxy;
+    WebPageProxy *m_webPageProxy;
 
 #if PLATFORM(MAC)
     CGContextRef backingStoreContext();

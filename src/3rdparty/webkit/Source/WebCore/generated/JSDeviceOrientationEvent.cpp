@@ -30,9 +30,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSDeviceOrientationEvent);
+ASSERT_CLASS_FITS_IN_CELL( JSDeviceOrientationEvent );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -43,11 +44,11 @@ ASSERT_CLASS_FITS_IN_CELL(JSDeviceOrientationEvent);
 
 static const HashTableValue JSDeviceOrientationEventTableValues[5] =
 {
-    { "alpha", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDeviceOrientationEventAlpha), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "beta", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDeviceOrientationEventBeta), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "gamma", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDeviceOrientationEventGamma), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDeviceOrientationEventConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "alpha", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDeviceOrientationEventAlpha ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "beta", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDeviceOrientationEventBeta ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "gamma", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDeviceOrientationEventGamma ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDeviceOrientationEventConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -61,43 +62,52 @@ static JSC_CONST_HASHTABLE HashTable JSDeviceOrientationEventTable = { 9, 7, JSD
 
 static const HashTableValue JSDeviceOrientationEventConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSDeviceOrientationEventConstructorTable = { 1, 0, JSDeviceOrientationEventConstructorTableValues, 0 };
-class JSDeviceOrientationEventConstructor : public DOMConstructorObject {
+class JSDeviceOrientationEventConstructor : public DOMConstructorObject
+{
 public:
-    JSDeviceOrientationEventConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSDeviceOrientationEventConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSDeviceOrientationEventConstructor::s_info = { "DeviceOrientationEventConstructor", &DOMConstructorObject::s_info, &JSDeviceOrientationEventConstructorTable, 0 };
 
-JSDeviceOrientationEventConstructor::JSDeviceOrientationEventConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSDeviceOrientationEventConstructor::JSDeviceOrientationEventConstructor( ExecState *exec, Structure *structure,
+        JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSDeviceOrientationEventPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSDeviceOrientationEventPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSDeviceOrientationEventConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSDeviceOrientationEventConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName,
+        PropertySlot &slot )
 {
-    return getStaticValueSlot<JSDeviceOrientationEventConstructor, JSDOMWrapper>(exec, &JSDeviceOrientationEventConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSDeviceOrientationEventConstructor, JSDOMWrapper>( exec, &JSDeviceOrientationEventConstructorTable,
+            this, propertyName, slot );
 }
 
-bool JSDeviceOrientationEventConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSDeviceOrientationEventConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSDeviceOrientationEventConstructor, JSDOMWrapper>(exec, &JSDeviceOrientationEventConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSDeviceOrientationEventConstructor, JSDOMWrapper>( exec,
+            &JSDeviceOrientationEventConstructorTable, this, propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -109,91 +119,100 @@ bool JSDeviceOrientationEventConstructor::getOwnPropertyDescriptor(ExecState* ex
 
 static const HashTableValue JSDeviceOrientationEventPrototypeTableValues[2] =
 {
-    { "initDeviceOrientationEvent", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsDeviceOrientationEventPrototypeFunctionInitDeviceOrientationEvent), (intptr_t)6 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "initDeviceOrientationEvent", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsDeviceOrientationEventPrototypeFunctionInitDeviceOrientationEvent ), ( intptr_t )6 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSDeviceOrientationEventPrototypeTable = { 2, 1, JSDeviceOrientationEventPrototypeTableValues, 0 };
 const ClassInfo JSDeviceOrientationEventPrototype::s_info = { "DeviceOrientationEventPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSDeviceOrientationEventPrototypeTable, 0 };
 
-JSObject* JSDeviceOrientationEventPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSDeviceOrientationEventPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSDeviceOrientationEvent>(exec, globalObject);
+    return getDOMPrototype<JSDeviceOrientationEvent>( exec, globalObject );
 }
 
-bool JSDeviceOrientationEventPrototype::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSDeviceOrientationEventPrototype::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticFunctionSlot<JSObject>(exec, &JSDeviceOrientationEventPrototypeTable, this, propertyName, slot);
+    return getStaticFunctionSlot<JSObject>( exec, &JSDeviceOrientationEventPrototypeTable, this, propertyName, slot );
 }
 
-bool JSDeviceOrientationEventPrototype::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSDeviceOrientationEventPrototype::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticFunctionDescriptor<JSObject>(exec, &JSDeviceOrientationEventPrototypeTable, this, propertyName, descriptor);
+    return getStaticFunctionDescriptor<JSObject>( exec, &JSDeviceOrientationEventPrototypeTable, this, propertyName, descriptor );
 }
 
 const ClassInfo JSDeviceOrientationEvent::s_info = { "DeviceOrientationEvent", &JSEvent::s_info, &JSDeviceOrientationEventTable, 0 };
 
-JSDeviceOrientationEvent::JSDeviceOrientationEvent(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<DeviceOrientationEvent> impl)
-    : JSEvent(structure, globalObject, impl)
+JSDeviceOrientationEvent::JSDeviceOrientationEvent( Structure *structure, JSDOMGlobalObject *globalObject,
+        PassRefPtr<DeviceOrientationEvent> impl )
+    : JSEvent( structure, globalObject, impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSDeviceOrientationEvent::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSDeviceOrientationEvent::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSDeviceOrientationEventPrototype(exec->globalData(), globalObject, JSDeviceOrientationEventPrototype::createStructure(exec->globalData(), JSEventPrototype::self(exec, globalObject)));
+    return new ( exec ) JSDeviceOrientationEventPrototype( exec->globalData(), globalObject,
+            JSDeviceOrientationEventPrototype::createStructure( exec->globalData(), JSEventPrototype::self( exec, globalObject ) ) );
 }
 
-bool JSDeviceOrientationEvent::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSDeviceOrientationEvent::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSDeviceOrientationEvent, Base>(exec, &JSDeviceOrientationEventTable, this, propertyName, slot);
+    return getStaticValueSlot<JSDeviceOrientationEvent, Base>( exec, &JSDeviceOrientationEventTable, this, propertyName, slot );
 }
 
-bool JSDeviceOrientationEvent::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSDeviceOrientationEvent::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSDeviceOrientationEvent, Base>(exec, &JSDeviceOrientationEventTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSDeviceOrientationEvent, Base>( exec, &JSDeviceOrientationEventTable, this, propertyName,
+            descriptor );
 }
 
-JSValue jsDeviceOrientationEventAlpha(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDeviceOrientationEventAlpha( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDeviceOrientationEvent* castedThis = static_cast<JSDeviceOrientationEvent*>(asObject(slotBase));
-    return castedThis->alpha(exec);
-}
-
-
-JSValue jsDeviceOrientationEventBeta(ExecState* exec, JSValue slotBase, const Identifier&)
-{
-    JSDeviceOrientationEvent* castedThis = static_cast<JSDeviceOrientationEvent*>(asObject(slotBase));
-    return castedThis->beta(exec);
+    JSDeviceOrientationEvent *castedThis = static_cast<JSDeviceOrientationEvent *>( asObject( slotBase ) );
+    return castedThis->alpha( exec );
 }
 
 
-JSValue jsDeviceOrientationEventGamma(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDeviceOrientationEventBeta( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDeviceOrientationEvent* castedThis = static_cast<JSDeviceOrientationEvent*>(asObject(slotBase));
-    return castedThis->gamma(exec);
+    JSDeviceOrientationEvent *castedThis = static_cast<JSDeviceOrientationEvent *>( asObject( slotBase ) );
+    return castedThis->beta( exec );
 }
 
 
-JSValue jsDeviceOrientationEventConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDeviceOrientationEventGamma( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDeviceOrientationEvent* domObject = static_cast<JSDeviceOrientationEvent*>(asObject(slotBase));
-    return JSDeviceOrientationEvent::getConstructor(exec, domObject->globalObject());
+    JSDeviceOrientationEvent *castedThis = static_cast<JSDeviceOrientationEvent *>( asObject( slotBase ) );
+    return castedThis->gamma( exec );
 }
 
-JSValue JSDeviceOrientationEvent::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+
+JSValue jsDeviceOrientationEventConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    return getDOMConstructor<JSDeviceOrientationEventConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    JSDeviceOrientationEvent *domObject = static_cast<JSDeviceOrientationEvent *>( asObject( slotBase ) );
+    return JSDeviceOrientationEvent::getConstructor( exec, domObject->globalObject() );
 }
 
-EncodedJSValue JSC_HOST_CALL jsDeviceOrientationEventPrototypeFunctionInitDeviceOrientationEvent(ExecState* exec)
+JSValue JSDeviceOrientationEvent::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
+{
+    return getDOMConstructor<JSDeviceOrientationEventConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
+}
+
+EncodedJSValue JSC_HOST_CALL jsDeviceOrientationEventPrototypeFunctionInitDeviceOrientationEvent( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSDeviceOrientationEvent::s_info))
-        return throwVMTypeError(exec);
-    JSDeviceOrientationEvent* castedThis = static_cast<JSDeviceOrientationEvent*>(asObject(thisValue));
-    return JSValue::encode(castedThis->initDeviceOrientationEvent(exec));
+
+    if ( !thisValue.inherits( &JSDeviceOrientationEvent::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSDeviceOrientationEvent *castedThis = static_cast<JSDeviceOrientationEvent *>( asObject( thisValue ) );
+    return JSValue::encode( castedThis->initDeviceOrientationEvent( exec ) );
 }
 
 

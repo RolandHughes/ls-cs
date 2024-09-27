@@ -24,20 +24,28 @@
 #include "WebDOMEventListener.h"
 #include "WebNativeEventListener.h"
 
-void WebDOMDOMWindow::addEventListener(const WebDOMString& type, const WebDOMEventListener& listener, bool useCapture)
+void WebDOMDOMWindow::addEventListener( const WebDOMString &type, const WebDOMEventListener &listener, bool useCapture )
 {
-    if (!impl())
+    if ( !impl() )
+    {
         return;
+    }
 
-    if (toWebCore(listener))
-        impl()->addEventListener(type, toWebCore(listener), useCapture);
+    if ( toWebCore( listener ) )
+    {
+        impl()->addEventListener( type, toWebCore( listener ), useCapture );
+    }
 }
 
-void WebDOMDOMWindow::removeEventListener(const WebDOMString& type, const WebDOMEventListener& listener, bool useCapture)
+void WebDOMDOMWindow::removeEventListener( const WebDOMString &type, const WebDOMEventListener &listener, bool useCapture )
 {
-    if (!impl())
+    if ( !impl() )
+    {
         return;
+    }
 
-    if (toWebCore(listener))
-        impl()->removeEventListener(type, toWebCore(listener), useCapture);
+    if ( toWebCore( listener ) )
+    {
+        impl()->removeEventListener( type, toWebCore( listener ), useCapture );
+    }
 }

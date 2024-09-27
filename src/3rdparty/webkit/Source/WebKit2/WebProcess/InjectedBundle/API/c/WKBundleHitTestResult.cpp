@@ -35,56 +35,56 @@ using namespace WebKit;
 
 WKTypeID WKBundleHitTestResultGetTypeID()
 {
-    return toAPI(InjectedBundleHitTestResult::APIType);
+    return toAPI( InjectedBundleHitTestResult::APIType );
 }
 
-WKBundleNodeHandleRef WKBundleHitTestResultCopyNodeHandle(WKBundleHitTestResultRef hitTestResultRef)
+WKBundleNodeHandleRef WKBundleHitTestResultCopyNodeHandle( WKBundleHitTestResultRef hitTestResultRef )
 {
-    RefPtr<InjectedBundleNodeHandle> nodeHandle = toImpl(hitTestResultRef)->nodeHandle();
-    return toAPI(nodeHandle.release().leakRef());
+    RefPtr<InjectedBundleNodeHandle> nodeHandle = toImpl( hitTestResultRef )->nodeHandle();
+    return toAPI( nodeHandle.release().leakRef() );
 }
 
-WKBundleFrameRef WKBundleHitTestResultGetFrame(WKBundleHitTestResultRef hitTestResultRef)
+WKBundleFrameRef WKBundleHitTestResultGetFrame( WKBundleHitTestResultRef hitTestResultRef )
 {
-    return toAPI(toImpl(hitTestResultRef)->frame());
+    return toAPI( toImpl( hitTestResultRef )->frame() );
 }
 
-WKBundleFrameRef WKBundleHitTestResultGetTargetFrame(WKBundleHitTestResultRef hitTestResultRef)
+WKBundleFrameRef WKBundleHitTestResultGetTargetFrame( WKBundleHitTestResultRef hitTestResultRef )
 {
-    return toAPI(toImpl(hitTestResultRef)->targetFrame());
+    return toAPI( toImpl( hitTestResultRef )->targetFrame() );
 }
 
-WKURLRef WKBundleHitTestResultCopyAbsoluteImageURL(WKBundleHitTestResultRef hitTestResultRef)
+WKURLRef WKBundleHitTestResultCopyAbsoluteImageURL( WKBundleHitTestResultRef hitTestResultRef )
 {
-    return toCopiedURLAPI(toImpl(hitTestResultRef)->absoluteImageURL());
+    return toCopiedURLAPI( toImpl( hitTestResultRef )->absoluteImageURL() );
 }
 
-WKURLRef WKBundleHitTestResultCopyAbsoluteLinkURL(WKBundleHitTestResultRef hitTestResultRef)
+WKURLRef WKBundleHitTestResultCopyAbsoluteLinkURL( WKBundleHitTestResultRef hitTestResultRef )
 {
-    return toCopiedURLAPI(toImpl(hitTestResultRef)->absoluteLinkURL());
+    return toCopiedURLAPI( toImpl( hitTestResultRef )->absoluteLinkURL() );
 }
 
-WKURLRef WKBundleHitTestResultCopyAbsoluteMediaURL(WKBundleHitTestResultRef hitTestResultRef)
+WKURLRef WKBundleHitTestResultCopyAbsoluteMediaURL( WKBundleHitTestResultRef hitTestResultRef )
 {
-    return toCopiedURLAPI(toImpl(hitTestResultRef)->absoluteMediaURL());
+    return toCopiedURLAPI( toImpl( hitTestResultRef )->absoluteMediaURL() );
 }
 
-WKRect WKBundleHitTestResultGetImageRect(WKBundleHitTestResultRef hitTestResultRef)
+WKRect WKBundleHitTestResultGetImageRect( WKBundleHitTestResultRef hitTestResultRef )
 {
-    return toAPI(toImpl(hitTestResultRef)->imageRect());
+    return toAPI( toImpl( hitTestResultRef )->imageRect() );
 }
 
-bool WKBundleHitTestResultGetIsSelected(WKBundleHitTestResultRef hitTestResultRef)
+bool WKBundleHitTestResultGetIsSelected( WKBundleHitTestResultRef hitTestResultRef )
 {
-    return toImpl(hitTestResultRef)->isSelected();
+    return toImpl( hitTestResultRef )->isSelected();
 }
 
-WKStringRef WKBundleHitTestResultCopyLinkLabel(WKBundleHitTestResultRef hitTestResultRef)
+WKStringRef WKBundleHitTestResultCopyLinkLabel( WKBundleHitTestResultRef hitTestResultRef )
 {
-    return toCopiedAPI(toImpl(hitTestResultRef)->linkLabel());
+    return toCopiedAPI( toImpl( hitTestResultRef )->linkLabel() );
 }
 
-WKStringRef WKBundleHitTestResultCopyLinkTitle(WKBundleHitTestResultRef hitTestResultRef)
+WKStringRef WKBundleHitTestResultCopyLinkTitle( WKBundleHitTestResultRef hitTestResultRef )
 {
-    return toCopiedAPI(toImpl(hitTestResultRef)->linkTitle());
+    return toCopiedAPI( toImpl( hitTestResultRef )->linkTitle() );
 }

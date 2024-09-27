@@ -41,42 +41,50 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
-
-SQLStatementSync::SQLStatementSync(const String& statement, const Vector<SQLValue>& arguments, int permissions)
-    : m_statement(statement)
-    , m_arguments(arguments)
-    , m_permissions(permissions)
+namespace WebCore
 {
-    ASSERT(!m_statement.isEmpty());
+
+SQLStatementSync::SQLStatementSync( const String &statement, const Vector<SQLValue> &arguments, int permissions )
+    : m_statement( statement )
+    , m_arguments( arguments )
+    , m_permissions( permissions )
+{
+    ASSERT( !m_statement.isEmpty() );
 }
 
-PassRefPtr<SQLResultSet> SQLStatementSync::execute(DatabaseSync* db, ExceptionCode& ec)
+PassRefPtr<SQLResultSet> SQLStatementSync::execute( DatabaseSync *db, ExceptionCode &ec )
 {
-    db->setAuthorizerPermissions(m_permissions);
+    db->setAuthorizerPermissions( m_permissions );
 
-    SQLiteDatabase* database = &db->sqliteDatabase();
+    SQLiteDatabase *database = &db->sqliteDatabase();
 
-    SQLiteStatement statement(*database, m_statement);
+    SQLiteStatement statement( *database, m_statement );
     int result = statement.prepare();
-    if (result != SQLResultOk) {
-        ec = (result == SQLResultInterrupt ? SQLException::DATABASE_ERR : SQLException::SYNTAX_ERR);
+
+    if ( result != SQLResultOk )
+    {
+        ec = ( result == SQLResultInterrupt ? SQLException::DATABASE_ERR : SQLException::SYNTAX_ERR );
         return 0;
     }
 
-    if (statement.bindParameterCount() != m_arguments.size()) {
-        ec = (db->isInterrupted()? SQLException::DATABASE_ERR : SQLException::SYNTAX_ERR);
+    if ( statement.bindParameterCount() != m_arguments.size() )
+    {
+        ec = ( db->isInterrupted()? SQLException::DATABASE_ERR : SQLException::SYNTAX_ERR );
         return 0;
     }
 
-    for (unsigned i = 0; i < m_arguments.size(); ++i) {
-        result = statement.bindValue(i + 1, m_arguments[i]);
-        if (result == SQLResultFull) {
+    for ( unsigned i = 0; i < m_arguments.size(); ++i )
+    {
+        result = statement.bindValue( i + 1, m_arguments[i] );
+
+        if ( result == SQLResultFull )
+        {
             ec = SQLException::QUOTA_ERR;
             return 0;
         }
 
-        if (result != SQLResultOk) {
+        if ( result != SQLResultOk )
+        {
             ec = SQLException::DATABASE_ERR;
             return 0;
         }
@@ -86,38 +94,55 @@ PassRefPtr<SQLResultSet> SQLStatementSync::execute(DatabaseSync* db, ExceptionCo
 
     // Step so we can fetch the column names.
     result = statement.step();
-    if (result == SQLResultRow) {
+
+    if ( result == SQLResultRow )
+    {
         int columnCount = statement.columnCount();
-        SQLResultSetRowList* rows = resultSet->rows();
+        SQLResultSetRowList *rows = resultSet->rows();
 
-        for (int i = 0; i < columnCount; i++)
-            rows->addColumn(statement.getColumnName(i));
+        for ( int i = 0; i < columnCount; i++ )
+        {
+            rows->addColumn( statement.getColumnName( i ) );
+        }
 
-        do {
-            for (int i = 0; i < columnCount; i++)
-                rows->addResult(statement.getColumnValue(i));
+        do
+        {
+            for ( int i = 0; i < columnCount; i++ )
+            {
+                rows->addResult( statement.getColumnValue( i ) );
+            }
 
             result = statement.step();
-        } while (result == SQLResultRow);
+        }
+        while ( result == SQLResultRow );
 
-        if (result != SQLResultDone) {
+        if ( result != SQLResultDone )
+        {
             ec = SQLException::DATABASE_ERR;
             return 0;
         }
-    } else if (result == SQLResultDone) {
+    }
+    else if ( result == SQLResultDone )
+    {
         // Didn't find anything, or was an insert.
-        if (db->lastActionWasInsert())
-            resultSet->setInsertId(database->lastInsertRowID());
-    } else if (result == SQLResultFull) {
+        if ( db->lastActionWasInsert() )
+        {
+            resultSet->setInsertId( database->lastInsertRowID() );
+        }
+    }
+    else if ( result == SQLResultFull )
+    {
         // Quota error, the delegate will be asked for more space and this statement might be re-run.
         ec = SQLException::QUOTA_ERR;
         return 0;
-    } else {
+    }
+    else
+    {
         ec = SQLException::DATABASE_ERR;
         return 0;
     }
 
-    resultSet->setRowsAffected(database->lastChanges());
+    resultSet->setRowsAffected( database->lastChanges() );
     return resultSet.release();
 }
 

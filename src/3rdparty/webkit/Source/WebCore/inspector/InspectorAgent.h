@@ -38,7 +38,8 @@
 #include <wtf/Vector.h>
 #include <wtf/text/StringHash.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class CharacterData;
 class Database;
@@ -92,59 +93,114 @@ class InspectorApplicationCacheAgent;
 
 typedef String ErrorString;
 
-class InspectorAgent {
-    WTF_MAKE_NONCOPYABLE(InspectorAgent);
+class InspectorAgent
+{
+    WTF_MAKE_NONCOPYABLE( InspectorAgent );
     WTF_MAKE_FAST_ALLOCATED;
 public:
-    InspectorAgent(Page*, InspectorClient*, InjectedScriptManager*);
+    InspectorAgent( Page *, InspectorClient *, InjectedScriptManager * );
     virtual ~InspectorAgent();
 
-    InspectorClient* inspectorClient() { return m_client; }
+    InspectorClient *inspectorClient()
+    {
+        return m_client;
+    }
 
     void inspectedPageDestroyed();
 
     bool enabled() const;
 
-    Page* inspectedPage() const { return m_inspectedPage; }
+    Page *inspectedPage() const
+    {
+        return m_inspectedPage;
+    }
     KURL inspectedURL() const;
     KURL inspectedURLWithoutFragment() const;
-    void reloadPage(ErrorString*, bool ignoreCache);
+    void reloadPage( ErrorString *, bool ignoreCache );
     void showConsole();
 
-    void restoreInspectorStateFromCookie(const String& inspectorCookie);
+    void restoreInspectorStateFromCookie( const String &inspectorCookie );
 
-    void setFrontend(InspectorFrontend*);
-    InspectorFrontend* frontend() const { return m_frontend; }
+    void setFrontend( InspectorFrontend * );
+    InspectorFrontend *frontend() const
+    {
+        return m_frontend;
+    }
     void disconnectFrontend();
 
-    InstrumentingAgents* instrumentingAgents() const { return m_instrumentingAgents.get(); }
+    InstrumentingAgents *instrumentingAgents() const
+    {
+        return m_instrumentingAgents.get();
+    }
 
-    InspectorPageAgent* pageAgent() { return m_pageAgent.get(); }
-    InspectorConsoleAgent* consoleAgent() { return m_consoleAgent.get(); }
-    InspectorCSSAgent* cssAgent() { return m_cssAgent.get(); }
-    InspectorDOMAgent* domAgent() { return m_domAgent.get(); }
-    InspectorRuntimeAgent* runtimeAgent() { return m_runtimeAgent.get(); }
-    InspectorTimelineAgent* timelineAgent() { return m_timelineAgent.get(); }
-    InspectorResourceAgent* resourceAgent() { return m_resourceAgent.get(); }
+    InspectorPageAgent *pageAgent()
+    {
+        return m_pageAgent.get();
+    }
+    InspectorConsoleAgent *consoleAgent()
+    {
+        return m_consoleAgent.get();
+    }
+    InspectorCSSAgent *cssAgent()
+    {
+        return m_cssAgent.get();
+    }
+    InspectorDOMAgent *domAgent()
+    {
+        return m_domAgent.get();
+    }
+    InspectorRuntimeAgent *runtimeAgent()
+    {
+        return m_runtimeAgent.get();
+    }
+    InspectorTimelineAgent *timelineAgent()
+    {
+        return m_timelineAgent.get();
+    }
+    InspectorResourceAgent *resourceAgent()
+    {
+        return m_resourceAgent.get();
+    }
 #if ENABLE(DATABASE)
-    InspectorDatabaseAgent* databaseAgent() { return m_databaseAgent.get(); }
+    InspectorDatabaseAgent *databaseAgent()
+    {
+        return m_databaseAgent.get();
+    }
 #endif
 #if ENABLE(DOM_STORAGE)
-    InspectorDOMStorageAgent* domStorageAgent() { return m_domStorageAgent.get(); }
+    InspectorDOMStorageAgent *domStorageAgent()
+    {
+        return m_domStorageAgent.get();
+    }
 #endif
 #if ENABLE(JAVASCRIPT_DEBUGGER)
-    InspectorDOMDebuggerAgent* domDebuggerAgent() const { return m_domDebuggerAgent.get(); }
-    InspectorDebuggerAgent* debuggerAgent() const { return m_debuggerAgent.get(); }
-    InspectorProfilerAgent* profilerAgent() const { return m_profilerAgent.get(); }
+    InspectorDOMDebuggerAgent *domDebuggerAgent() const
+    {
+        return m_domDebuggerAgent.get();
+    }
+    InspectorDebuggerAgent *debuggerAgent() const
+    {
+        return m_debuggerAgent.get();
+    }
+    InspectorProfilerAgent *profilerAgent() const
+    {
+        return m_profilerAgent.get();
+    }
 #endif
 #if ENABLE(OFFLINE_WEB_APPLICATIONS)
-    InspectorApplicationCacheAgent* applicationCacheAgent() { return m_applicationCacheAgent.get(); }
+    InspectorApplicationCacheAgent *applicationCacheAgent()
+    {
+        return m_applicationCacheAgent.get();
+    }
 #endif
 #if ENABLE(WORKERS)
-    InspectorWorkerAgent* workerAgent() { return m_workerAgent.get(); }
+    InspectorWorkerAgent *workerAgent()
+    {
+        return m_workerAgent.get();
+    }
 #endif
 
-    void didClearWindowObjectInWorld(Frame*, DOMWrapperWorld*);
+    void didClearWindowObjectInWorld( Frame *, DOMWrapperWorld * );
 
     void didCommitLoad();
     void domContentLoadedEventFired();
@@ -152,12 +208,15 @@ public:
 #if ENABLE(WORKERS)
     enum WorkerAction { WorkerCreated, WorkerDestroyed };
 
-    void postWorkerNotificationToFrontend(const InspectorWorkerResource&, WorkerAction);
-    void didCreateWorker(intptr_t, const String& url, bool isSharedWorker);
-    void didDestroyWorker(intptr_t);
+    void postWorkerNotificationToFrontend( const InspectorWorkerResource &, WorkerAction );
+    void didCreateWorker( intptr_t, const String &url, bool isSharedWorker );
+    void didDestroyWorker( intptr_t );
 #endif
 
-    bool hasFrontend() const { return m_frontend; }
+    bool hasFrontend() const
+    {
+        return m_frontend;
+    }
 
 
 #if ENABLE(JAVASCRIPT_DEBUGGER)
@@ -165,32 +224,35 @@ public:
 #endif
 
     // Generic code called from custom implementations.
-    void evaluateForTestInFrontend(long testCallId, const String& script);
+    void evaluateForTestInFrontend( long testCallId, const String &script );
 
-    void setInspectorExtensionAPI(const String& source);
+    void setInspectorExtensionAPI( const String &source );
 
-    InspectorState* state() { return m_state.get(); }
+    InspectorState *state()
+    {
+        return m_state.get();
+    }
 
     // InspectorAgent API
-    void getInspectorState(RefPtr<InspectorObject>* state);
-    void setMonitoringXHREnabled(bool enabled, bool* newState);
+    void getInspectorState( RefPtr<InspectorObject> *state );
+    void setMonitoringXHREnabled( bool enabled, bool *newState );
 
 private:
-    void showPanel(const String& panel);
+    void showPanel( const String &panel );
     void unbindAllResources();
 
 #if ENABLE(JAVASCRIPT_DEBUGGER)
-    void toggleRecordButton(bool);
+    void toggleRecordButton( bool );
 #endif
 
-    bool isMainResourceLoader(DocumentLoader*, const KURL& requestUrl);
+    bool isMainResourceLoader( DocumentLoader *, const KURL &requestUrl );
     void issueEvaluateForTestCommands();
 
-    Page* m_inspectedPage;
-    InspectorClient* m_client;
-    InspectorFrontend* m_frontend;
+    Page *m_inspectedPage;
+    InspectorClient *m_client;
+    InspectorFrontend *m_frontend;
     OwnPtr<InstrumentingAgents> m_instrumentingAgents;
-    InjectedScriptManager* m_injectedScriptManager;
+    InjectedScriptManager *m_injectedScriptManager;
     OwnPtr<InspectorState> m_state;
     OwnPtr<InspectorPageAgent> m_pageAgent;
     OwnPtr<InspectorDOMAgent> m_domAgent;

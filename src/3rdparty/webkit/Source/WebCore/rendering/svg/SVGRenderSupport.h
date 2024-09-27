@@ -27,7 +27,8 @@
 #if ENABLE(SVG)
 #include "PaintInfo.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class FloatPoint;
 class FloatRect;
@@ -39,37 +40,41 @@ class RenderSVGRoot;
 class TransformState;
 
 // SVGRendererSupport is a helper class sharing code between all SVG renderers.
-class SVGRenderSupport {
+class SVGRenderSupport
+{
 public:
     // Used by all SVG renderers who apply clip/filter/etc. resources to the renderer content
-    static bool prepareToRenderSVGContent(RenderObject*, PaintInfo&);
-    static void finishRenderSVGContent(RenderObject*, PaintInfo&, GraphicsContext* savedContext);
+    static bool prepareToRenderSVGContent( RenderObject *, PaintInfo & );
+    static void finishRenderSVGContent( RenderObject *, PaintInfo &, GraphicsContext *savedContext );
 
     // Shares child layouting code between RenderSVGRoot/RenderSVG(Hidden)Container
-    static void layoutChildren(RenderObject*, bool selfNeedsLayout);
+    static void layoutChildren( RenderObject *, bool selfNeedsLayout );
 
     // Helper function determining wheter overflow is hidden
-    static bool isOverflowHidden(const RenderObject*);
+    static bool isOverflowHidden( const RenderObject * );
 
     // Calculates the repaintRect in combination with filter, clipper and masker in local coordinates.
-    static void intersectRepaintRectWithResources(const RenderObject*, FloatRect&);
+    static void intersectRepaintRectWithResources( const RenderObject *, FloatRect & );
 
     // Determines whether the passed point lies in a clipping area
-    static bool pointInClippingArea(RenderObject*, const FloatPoint&);
+    static bool pointInClippingArea( RenderObject *, const FloatPoint & );
 
-    static void computeContainerBoundingBoxes(const RenderObject* container, FloatRect& objectBoundingBox, FloatRect& strokeBoundingBox, FloatRect& repaintBoundingBox);
-    static bool paintInfoIntersectsRepaintRect(const FloatRect& localRepaintRect, const AffineTransform& localTransform, const PaintInfo&);
+    static void computeContainerBoundingBoxes( const RenderObject *container, FloatRect &objectBoundingBox,
+            FloatRect &strokeBoundingBox, FloatRect &repaintBoundingBox );
+    static bool paintInfoIntersectsRepaintRect( const FloatRect &localRepaintRect, const AffineTransform &localTransform,
+            const PaintInfo & );
 
     // Important functions used by nearly all SVG renderers centralizing coordinate transformations / repaint rect calculations
-    static IntRect clippedOverflowRectForRepaint(RenderObject*, RenderBoxModelObject* repaintContainer);
-    static void computeRectForRepaint(RenderObject*, RenderBoxModelObject* repaintContainer, IntRect&, bool fixed);
-    static void mapLocalToContainer(const RenderObject*, RenderBoxModelObject* repaintContainer, bool useTransforms, bool fixed, TransformState&);
+    static IntRect clippedOverflowRectForRepaint( RenderObject *, RenderBoxModelObject *repaintContainer );
+    static void computeRectForRepaint( RenderObject *, RenderBoxModelObject *repaintContainer, IntRect &, bool fixed );
+    static void mapLocalToContainer( const RenderObject *, RenderBoxModelObject *repaintContainer, bool useTransforms, bool fixed,
+                                     TransformState & );
 
     // Shared between SVG renderers and resources.
-    static void applyStrokeStyleToContext(GraphicsContext*, const RenderStyle*, const RenderObject*);
+    static void applyStrokeStyleToContext( GraphicsContext *, const RenderStyle *, const RenderObject * );
 
     // FIXME: These methods do not belong here.
-    static const RenderSVGRoot* findTreeRootObject(const RenderObject*);
+    static const RenderSVGRoot *findTreeRootObject( const RenderObject * );
 
 private:
     // This class is not constructable.

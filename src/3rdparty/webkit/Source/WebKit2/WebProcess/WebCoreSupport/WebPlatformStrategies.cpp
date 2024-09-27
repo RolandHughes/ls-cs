@@ -41,31 +41,32 @@
 
 using namespace WebCore;
 
-namespace WebKit {
+namespace WebKit
+{
 
 void WebPlatformStrategies::initialize()
 {
-    DEFINE_STATIC_LOCAL(WebPlatformStrategies, platformStrategies, ());
-    setPlatformStrategies(&platformStrategies);
+    DEFINE_STATIC_LOCAL( WebPlatformStrategies, platformStrategies, () );
+    setPlatformStrategies( &platformStrategies );
 }
 
 WebPlatformStrategies::WebPlatformStrategies()
-    : m_pluginCacheIsPopulated(false)
-    , m_shouldRefreshPlugins(false)
+    : m_pluginCacheIsPopulated( false )
+    , m_shouldRefreshPlugins( false )
 {
 }
 
-CookiesStrategy* WebPlatformStrategies::createCookiesStrategy()
-{
-    return this;
-}
-
-PluginStrategy* WebPlatformStrategies::createPluginStrategy()
+CookiesStrategy *WebPlatformStrategies::createCookiesStrategy()
 {
     return this;
 }
 
-VisitedLinkStrategy* WebPlatformStrategies::createVisitedLinkStrategy()
+PluginStrategy *WebPlatformStrategies::createPluginStrategy()
+{
+    return this;
+}
+
+VisitedLinkStrategy *WebPlatformStrategies::createVisitedLinkStrategy()
 {
     return this;
 }
@@ -88,7 +89,7 @@ void WebPlatformStrategies::refreshPlugins()
     populatePluginCache();
 }
 
-void WebPlatformStrategies::getPluginInfo(const WebCore::Page*, Vector<WebCore::PluginInfo>& plugins)
+void WebPlatformStrategies::getPluginInfo( const WebCore::Page *, Vector<WebCore::PluginInfo> &plugins )
 {
     populatePluginCache();
     plugins = m_cachedPlugins;
@@ -96,33 +97,35 @@ void WebPlatformStrategies::getPluginInfo(const WebCore::Page*, Vector<WebCore::
 
 void WebPlatformStrategies::populatePluginCache()
 {
-    if (m_pluginCacheIsPopulated)
+    if ( m_pluginCacheIsPopulated )
+    {
         return;
+    }
 
-    ASSERT(m_cachedPlugins.isEmpty());
-    
+    ASSERT( m_cachedPlugins.isEmpty() );
+
     Vector<PluginInfo> plugins;
-    
-    // FIXME: Should we do something in case of error here?
-    WebProcess::shared().connection()->sendSync(Messages::WebContext::GetPlugins(m_shouldRefreshPlugins),
-                                                Messages::WebContext::GetPlugins::Reply(plugins), 0);
 
-    m_cachedPlugins.swap(plugins);
-    
+    // FIXME: Should we do something in case of error here?
+    WebProcess::shared().connection()->sendSync( Messages::WebContext::GetPlugins( m_shouldRefreshPlugins ),
+            Messages::WebContext::GetPlugins::Reply( plugins ), 0 );
+
+    m_cachedPlugins.swap( plugins );
+
     m_shouldRefreshPlugins = false;
     m_pluginCacheIsPopulated = true;
 }
 
 // VisitedLinkStrategy
 
-bool WebPlatformStrategies::isLinkVisited(Page* page, LinkHash linkHash)
+bool WebPlatformStrategies::isLinkVisited( Page *page, LinkHash linkHash )
 {
-    return WebProcess::shared().isLinkVisited(linkHash);
+    return WebProcess::shared().isLinkVisited( linkHash );
 }
 
-void WebPlatformStrategies::addVisitedLink(Page* page, LinkHash linkHash)
+void WebPlatformStrategies::addVisitedLink( Page *page, LinkHash linkHash )
 {
-    WebProcess::shared().addVisitedLink(linkHash);
+    WebProcess::shared().addVisitedLink( linkHash );
 }
 
 } // namespace WebKit

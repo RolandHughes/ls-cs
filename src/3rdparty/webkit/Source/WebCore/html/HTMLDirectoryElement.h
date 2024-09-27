@@ -25,14 +25,16 @@
 
 #include "HTMLElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class HTMLDirectoryElement : public HTMLElement {
+class HTMLDirectoryElement : public HTMLElement
+{
 public:
-    static PassRefPtr<HTMLDirectoryElement> create(const QualifiedName& tagName, Document*);
+    static PassRefPtr<HTMLDirectoryElement> create( const QualifiedName &tagName, Document * );
 
 private:
-    HTMLDirectoryElement(const QualifiedName&, Document*);
+    HTMLDirectoryElement( const QualifiedName &, Document * );
 };
 
 } //namespace

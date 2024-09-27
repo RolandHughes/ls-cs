@@ -31,28 +31,30 @@
 #include <wtf/HashMap.h>
 #include <wtf/Noncopyable.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class MediaStreamClient;
 class MediaStreamFrameController;
 
-class MediaStreamController {
-    WTF_MAKE_NONCOPYABLE(MediaStreamController);
+class MediaStreamController
+{
+    WTF_MAKE_NONCOPYABLE( MediaStreamController );
 public:
-    MediaStreamController(MediaStreamClient*);
+    MediaStreamController( MediaStreamClient * );
     virtual ~MediaStreamController();
 
-    void unregisterFrameController(MediaStreamFrameController*);
+    void unregisterFrameController( MediaStreamFrameController * );
 
 private:
-    int registerRequest(int localRequestId, MediaStreamFrameController*);
+    int registerRequest( int localRequestId, MediaStreamFrameController * );
 
     class Request;
     typedef HashMap<int, Request> RequestMap;
 
     RequestMap m_requests;
 
-    MediaStreamClient* m_client;
+    MediaStreamClient *m_client;
     int m_nextGlobalRequestId;
 };
 

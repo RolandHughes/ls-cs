@@ -26,10 +26,12 @@
 #ifndef MappedAttributeEntry_h
 #define MappedAttributeEntry_h
 
-namespace WebCore {
+namespace WebCore
+{
 
-enum MappedAttributeEntry {
-      eNone
+enum MappedAttributeEntry
+{
+    eNone
     , eUniversal
     , ePersistent
     , eReplaced

@@ -29,9 +29,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSSVGAnimatedNumber);
+ASSERT_CLASS_FITS_IN_CELL( JSSVGAnimatedNumber );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -42,10 +43,10 @@ ASSERT_CLASS_FITS_IN_CELL(JSSVGAnimatedNumber);
 
 static const HashTableValue JSSVGAnimatedNumberTableValues[4] =
 {
-    { "baseVal", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGAnimatedNumberBaseVal), (intptr_t)setJSSVGAnimatedNumberBaseVal THUNK_GENERATOR(0) },
-    { "animVal", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGAnimatedNumberAnimVal), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGAnimatedNumberConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "baseVal", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGAnimatedNumberBaseVal ), ( intptr_t )setJSSVGAnimatedNumberBaseVal THUNK_GENERATOR( 0 ) },
+    { "animVal", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGAnimatedNumberAnimVal ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGAnimatedNumberConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -59,43 +60,51 @@ static JSC_CONST_HASHTABLE HashTable JSSVGAnimatedNumberTable = { 8, 7, JSSVGAni
 
 static const HashTableValue JSSVGAnimatedNumberConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSSVGAnimatedNumberConstructorTable = { 1, 0, JSSVGAnimatedNumberConstructorTableValues, 0 };
-class JSSVGAnimatedNumberConstructor : public DOMConstructorObject {
+class JSSVGAnimatedNumberConstructor : public DOMConstructorObject
+{
 public:
-    JSSVGAnimatedNumberConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSSVGAnimatedNumberConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSSVGAnimatedNumberConstructor::s_info = { "SVGAnimatedNumberConstructor", &DOMConstructorObject::s_info, &JSSVGAnimatedNumberConstructorTable, 0 };
 
-JSSVGAnimatedNumberConstructor::JSSVGAnimatedNumberConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSSVGAnimatedNumberConstructor::JSSVGAnimatedNumberConstructor( ExecState *exec, Structure *structure,
+        JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSSVGAnimatedNumberPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSSVGAnimatedNumberPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSSVGAnimatedNumberConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGAnimatedNumberConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSVGAnimatedNumberConstructor, JSDOMWrapper>(exec, &JSSVGAnimatedNumberConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSSVGAnimatedNumberConstructor, JSDOMWrapper>( exec, &JSSVGAnimatedNumberConstructorTable, this,
+            propertyName, slot );
 }
 
-bool JSSVGAnimatedNumberConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGAnimatedNumberConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSVGAnimatedNumberConstructor, JSDOMWrapper>(exec, &JSSVGAnimatedNumberConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSVGAnimatedNumberConstructor, JSDOMWrapper>( exec, &JSSVGAnimatedNumberConstructorTable, this,
+            propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -107,94 +116,97 @@ bool JSSVGAnimatedNumberConstructor::getOwnPropertyDescriptor(ExecState* exec, c
 
 static const HashTableValue JSSVGAnimatedNumberPrototypeTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSSVGAnimatedNumberPrototypeTable = { 1, 0, JSSVGAnimatedNumberPrototypeTableValues, 0 };
 const ClassInfo JSSVGAnimatedNumberPrototype::s_info = { "SVGAnimatedNumberPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSSVGAnimatedNumberPrototypeTable, 0 };
 
-JSObject* JSSVGAnimatedNumberPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSVGAnimatedNumberPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSSVGAnimatedNumber>(exec, globalObject);
+    return getDOMPrototype<JSSVGAnimatedNumber>( exec, globalObject );
 }
 
 const ClassInfo JSSVGAnimatedNumber::s_info = { "SVGAnimatedNumber", &JSDOMWrapper::s_info, &JSSVGAnimatedNumberTable, 0 };
 
-JSSVGAnimatedNumber::JSSVGAnimatedNumber(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<SVGAnimatedNumber> impl)
-    : JSDOMWrapper(structure, globalObject)
-    , m_impl(impl)
+JSSVGAnimatedNumber::JSSVGAnimatedNumber( Structure *structure, JSDOMGlobalObject *globalObject,
+        PassRefPtr<SVGAnimatedNumber> impl )
+    : JSDOMWrapper( structure, globalObject )
+    , m_impl( impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSSVGAnimatedNumber::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSVGAnimatedNumber::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSSVGAnimatedNumberPrototype(exec->globalData(), globalObject, JSSVGAnimatedNumberPrototype::createStructure(globalObject->globalData(), globalObject->objectPrototype()));
+    return new ( exec ) JSSVGAnimatedNumberPrototype( exec->globalData(), globalObject,
+            JSSVGAnimatedNumberPrototype::createStructure( globalObject->globalData(), globalObject->objectPrototype() ) );
 }
 
-bool JSSVGAnimatedNumber::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGAnimatedNumber::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSVGAnimatedNumber, Base>(exec, &JSSVGAnimatedNumberTable, this, propertyName, slot);
+    return getStaticValueSlot<JSSVGAnimatedNumber, Base>( exec, &JSSVGAnimatedNumberTable, this, propertyName, slot );
 }
 
-bool JSSVGAnimatedNumber::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGAnimatedNumber::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSVGAnimatedNumber, Base>(exec, &JSSVGAnimatedNumberTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSVGAnimatedNumber, Base>( exec, &JSSVGAnimatedNumberTable, this, propertyName, descriptor );
 }
 
-JSValue jsSVGAnimatedNumberBaseVal(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGAnimatedNumberBaseVal( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGAnimatedNumber* castedThis = static_cast<JSSVGAnimatedNumber*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGAnimatedNumber* imp = static_cast<SVGAnimatedNumber*>(castedThis->impl());
-    JSValue result = jsNumber(imp->baseVal());
+    JSSVGAnimatedNumber *castedThis = static_cast<JSSVGAnimatedNumber *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGAnimatedNumber *imp = static_cast<SVGAnimatedNumber *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->baseVal() );
     return result;
 }
 
 
-JSValue jsSVGAnimatedNumberAnimVal(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGAnimatedNumberAnimVal( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGAnimatedNumber* castedThis = static_cast<JSSVGAnimatedNumber*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGAnimatedNumber* imp = static_cast<SVGAnimatedNumber*>(castedThis->impl());
-    JSValue result = jsNumber(imp->animVal());
+    JSSVGAnimatedNumber *castedThis = static_cast<JSSVGAnimatedNumber *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGAnimatedNumber *imp = static_cast<SVGAnimatedNumber *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->animVal() );
     return result;
 }
 
 
-JSValue jsSVGAnimatedNumberConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGAnimatedNumberConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGAnimatedNumber* domObject = static_cast<JSSVGAnimatedNumber*>(asObject(slotBase));
-    return JSSVGAnimatedNumber::getConstructor(exec, domObject->globalObject());
+    JSSVGAnimatedNumber *domObject = static_cast<JSSVGAnimatedNumber *>( asObject( slotBase ) );
+    return JSSVGAnimatedNumber::getConstructor( exec, domObject->globalObject() );
 }
 
-void JSSVGAnimatedNumber::put(ExecState* exec, const Identifier& propertyName, JSValue value, PutPropertySlot& slot)
+void JSSVGAnimatedNumber::put( ExecState *exec, const Identifier &propertyName, JSValue value, PutPropertySlot &slot )
 {
-    lookupPut<JSSVGAnimatedNumber, Base>(exec, propertyName, value, &JSSVGAnimatedNumberTable, this, slot);
+    lookupPut<JSSVGAnimatedNumber, Base>( exec, propertyName, value, &JSSVGAnimatedNumberTable, this, slot );
 }
 
-void setJSSVGAnimatedNumberBaseVal(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSSVGAnimatedNumberBaseVal( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSSVGAnimatedNumber* castedThis = static_cast<JSSVGAnimatedNumber*>(thisObject);
-    SVGAnimatedNumber* imp = static_cast<SVGAnimatedNumber*>(castedThis->impl());
-    imp->setBaseVal(value.toFloat(exec));
+    JSSVGAnimatedNumber *castedThis = static_cast<JSSVGAnimatedNumber *>( thisObject );
+    SVGAnimatedNumber *imp = static_cast<SVGAnimatedNumber *>( castedThis->impl() );
+    imp->setBaseVal( value.toFloat( exec ) );
 }
 
 
-JSValue JSSVGAnimatedNumber::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSSVGAnimatedNumber::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSSVGAnimatedNumberConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSSVGAnimatedNumberConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, SVGAnimatedNumber* impl)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, SVGAnimatedNumber *impl )
 {
-    return wrap<JSSVGAnimatedNumber>(exec, globalObject, impl);
+    return wrap<JSSVGAnimatedNumber>( exec, globalObject, impl );
 }
 
-SVGAnimatedNumber* toSVGAnimatedNumber(JSC::JSValue value)
+SVGAnimatedNumber *toSVGAnimatedNumber( JSC::JSValue value )
 {
-    return value.inherits(&JSSVGAnimatedNumber::s_info) ? static_cast<JSSVGAnimatedNumber*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSSVGAnimatedNumber::s_info ) ? static_cast<JSSVGAnimatedNumber *>( asObject( value ) )->impl() : 0;
 }
 
 }

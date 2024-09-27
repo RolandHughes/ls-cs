@@ -30,18 +30,21 @@
 #include "GenericCallback.h"
 #include <wtf/text/WTFString.h>
 
-namespace CoreIPC {
-    class ArgumentDecoder;
-    class ArgumentEncoder;
+namespace CoreIPC
+{
+class ArgumentDecoder;
+class ArgumentEncoder;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
 typedef GenericCallback<WKArrayRef> ArrayCallback;
 
-struct SecurityOriginData {
-    void encode(CoreIPC::ArgumentEncoder*) const;
-    static bool decode(CoreIPC::ArgumentDecoder*, SecurityOriginData&);
+struct SecurityOriginData
+{
+    void encode( CoreIPC::ArgumentEncoder * ) const;
+    static bool decode( CoreIPC::ArgumentDecoder *, SecurityOriginData & );
 
     // FIXME <rdar://9018386>: We should be sending more state across the wire than just the protocol,
     // host, and port.
@@ -51,7 +54,7 @@ struct SecurityOriginData {
     int port;
 };
 
-void performAPICallbackWithSecurityOriginDataVector(const Vector<SecurityOriginData>&, ArrayCallback*);
+void performAPICallbackWithSecurityOriginDataVector( const Vector<SecurityOriginData> &, ArrayCallback * );
 
 } // namespace WebKit
 

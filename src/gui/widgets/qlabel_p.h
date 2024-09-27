@@ -38,97 +38,98 @@
 
 class QLabelPrivate : public QFramePrivate
 {
-   Q_DECLARE_PUBLIC(QLabel)
+    Q_DECLARE_PUBLIC( QLabel )
 
- public:
-   QLabelPrivate();
-   ~QLabelPrivate();
+public:
+    QLabelPrivate();
+    ~QLabelPrivate();
 
-   void init();
-   void clearContents();
-   void updateLabel();
-   QSize sizeForWidth(int w) const;
+    void init();
+    void clearContents();
+    void updateLabel();
+    QSize sizeForWidth( int w ) const;
 
 #ifndef QT_NO_MOVIE
-   void _q_movieUpdated(const QRect &);
-   void _q_movieResized(const QSize &);
+    void _q_movieUpdated( const QRect & );
+    void _q_movieResized( const QSize & );
 #endif
 
 #ifndef QT_NO_SHORTCUT
-   void updateShortcut();
+    void updateShortcut();
 #endif
 
-   inline bool needTextControl() const {
-      return isTextLabel && (isRichText
-            || (!isRichText && (textInteractionFlags & (Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard))));
-   }
+    inline bool needTextControl() const
+    {
+        return isTextLabel && ( isRichText
+                                || ( !isRichText && ( textInteractionFlags & ( Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard ) ) ) );
+    }
 
-   void ensureTextPopulated() const;
-   void ensureTextLayouted() const;
-   void ensureTextControl() const;
-   void sendControlEvent(QEvent *event);
+    void ensureTextPopulated() const;
+    void ensureTextLayouted() const;
+    void ensureTextControl() const;
+    void sendControlEvent( QEvent *event );
 
-   void _q_linkHovered(const QString &link);
+    void _q_linkHovered( const QString &link );
 
-   QRectF layoutRect() const;
-   QRect documentRect() const;
-   QPoint layoutPoint(const QPoint &p) const;
-   Qt::LayoutDirection textDirection() const;
+    QRectF layoutRect() const;
+    QRect documentRect() const;
+    QPoint layoutPoint( const QPoint &p ) const;
+    Qt::LayoutDirection textDirection() const;
 
 #ifndef QT_NO_CONTEXTMENU
-   QMenu *createStandardContextMenu(const QPoint &pos);
+    QMenu *createStandardContextMenu( const QPoint &pos );
 #endif
 
 #ifndef QT_NO_PICTURE
-   QPicture *picture;
+    QPicture *picture;
 #endif
 
 #ifndef QT_NO_MOVIE
-   QPointer<QMovie> movie;
+    QPointer<QMovie> movie;
 #endif
 
 #ifndef QT_NO_CURSOR
-   QCursor cursor;
+    QCursor cursor;
 #endif
 
 #ifndef QT_NO_SHORTCUT
-   QPointer<QWidget> buddy;
-   int shortcutId;
+    QPointer<QWidget> buddy;
+    int shortcutId;
 #endif
 
-   Qt::TextFormat textformat;
-   Qt::TextInteractionFlags textInteractionFlags;
-   mutable QSizePolicy sizePolicy;
-   int margin;
+    Qt::TextFormat textformat;
+    Qt::TextInteractionFlags textInteractionFlags;
+    mutable QSizePolicy sizePolicy;
+    int margin;
 
-   ushort align;
-   short indent;
-   mutable uint valid_hints : 1;
-   uint scaledcontents : 1;
-   mutable uint textLayoutDirty : 1;
-   mutable uint textDirty : 1;
-   mutable uint isRichText : 1;
-   mutable uint isTextLabel : 1;
-   mutable uint hasShortcut : 1;
+    ushort align;
+    short indent;
+    mutable uint valid_hints : 1;
+    uint scaledcontents : 1;
+    mutable uint textLayoutDirty : 1;
+    mutable uint textDirty : 1;
+    mutable uint isRichText : 1;
+    mutable uint isTextLabel : 1;
+    mutable uint hasShortcut : 1;
 
-   mutable QTextControl *control;
-   mutable QTextCursor shortcutCursor;
+    mutable QTextControl *control;
+    mutable QTextCursor shortcutCursor;
 
-   mutable QSize sh;
-   mutable QSize msh;
-   QString text;
-   QPixmap  *pixmap;
-   QPixmap *scaledpixmap;
-   QImage *cachedimage;
+    mutable QSize sh;
+    mutable QSize msh;
+    QString text;
+    QPixmap  *pixmap;
+    QPixmap *scaledpixmap;
+    QImage *cachedimage;
 
 #ifndef QT_NO_CURSOR
-   uint validCursor : 1;
-   uint onAnchor : 1;
+    uint validCursor : 1;
+    uint onAnchor : 1;
 #endif
 
-   uint openExternalLinks : 1;
+    uint openExternalLinks : 1;
 
-   friend class QMessageBoxPrivate;
+    friend class QMessageBoxPrivate;
 };
 
 #endif

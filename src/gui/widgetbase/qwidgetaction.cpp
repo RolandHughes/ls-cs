@@ -28,144 +28,155 @@
 
 #include <qwidgetaction_p.h>
 
-QWidgetAction::QWidgetAction(QObject *parent)
-   : QAction(*(new QWidgetActionPrivate), parent)
+QWidgetAction::QWidgetAction( QObject *parent )
+    : QAction( *( new QWidgetActionPrivate ), parent )
 {
 }
 
 QWidgetAction::~QWidgetAction()
 {
-   Q_D(QWidgetAction);
+    Q_D( QWidgetAction );
 
-   for (auto &item : d->createdWidgets) {
-      disconnect(item, &QObject::destroyed, this, &QWidgetAction::_q_widgetDestroyed);
-   }
+    for ( auto &item : d->createdWidgets )
+    {
+        disconnect( item, &QObject::destroyed, this, &QWidgetAction::_q_widgetDestroyed );
+    }
 
-   QList<QWidget *> widgetsToDelete = d->createdWidgets;
-   d->createdWidgets.clear();
+    QList<QWidget *> widgetsToDelete = d->createdWidgets;
+    d->createdWidgets.clear();
 
-   qDeleteAll(widgetsToDelete);
-   delete d->defaultWidget;
+    qDeleteAll( widgetsToDelete );
+    delete d->defaultWidget;
 }
 
-void QWidgetAction::setDefaultWidget(QWidget *widget)
+void QWidgetAction::setDefaultWidget( QWidget *widget )
 {
-   Q_D(QWidgetAction);
+    Q_D( QWidgetAction );
 
-   if (widget == d->defaultWidget || d->defaultWidgetInUse) {
-      return;
-   }
+    if ( widget == d->defaultWidget || d->defaultWidgetInUse )
+    {
+        return;
+    }
 
-   delete d->defaultWidget;
-   d->defaultWidget = widget;
+    delete d->defaultWidget;
+    d->defaultWidget = widget;
 
-   if (!widget) {
-      return;
-   }
+    if ( !widget )
+    {
+        return;
+    }
 
-   setVisible(!(widget->isHidden() && widget->testAttribute(Qt::WA_WState_ExplicitShowHide)));
-   d->defaultWidget->hide();
-   d->defaultWidget->setParent(nullptr);
-   d->defaultWidgetInUse = false;
+    setVisible( !( widget->isHidden() && widget->testAttribute( Qt::WA_WState_ExplicitShowHide ) ) );
+    d->defaultWidget->hide();
+    d->defaultWidget->setParent( nullptr );
+    d->defaultWidgetInUse = false;
 
-   if (!isEnabled()) {
-      d->defaultWidget->setEnabled(false);
-   }
+    if ( !isEnabled() )
+    {
+        d->defaultWidget->setEnabled( false );
+    }
 }
 
 QWidget *QWidgetAction::defaultWidget() const
 {
-   Q_D(const QWidgetAction);
-   return d->defaultWidget;
+    Q_D( const QWidgetAction );
+    return d->defaultWidget;
 }
 
-QWidget *QWidgetAction::requestWidget(QWidget *parent)
+QWidget *QWidgetAction::requestWidget( QWidget *parent )
 {
-   Q_D(QWidgetAction);
+    Q_D( QWidgetAction );
 
-   QWidget *w = createWidget(parent);
+    QWidget *w = createWidget( parent );
 
-   if (! w) {
-      if (d->defaultWidgetInUse || ! d->defaultWidget) {
-         return nullptr;
-      }
+    if ( ! w )
+    {
+        if ( d->defaultWidgetInUse || ! d->defaultWidget )
+        {
+            return nullptr;
+        }
 
-      d->defaultWidget->setParent(parent);
-      d->defaultWidgetInUse = true;
-      return d->defaultWidget;
-   }
+        d->defaultWidget->setParent( parent );
+        d->defaultWidgetInUse = true;
+        return d->defaultWidget;
+    }
 
-   connect(w, &QWidget::destroyed, this, &QWidgetAction::_q_widgetDestroyed);
-   d->createdWidgets.append(w);
+    connect( w, &QWidget::destroyed, this, &QWidgetAction::_q_widgetDestroyed );
+    d->createdWidgets.append( w );
 
-   return w;
+    return w;
 }
 
-void QWidgetAction::releaseWidget(QWidget *widget)
+void QWidgetAction::releaseWidget( QWidget *widget )
 {
-   Q_D(QWidgetAction);
+    Q_D( QWidgetAction );
 
-   if (widget == d->defaultWidget) {
-      d->defaultWidget->hide();
-      d->defaultWidget->setParent(nullptr);
-      d->defaultWidgetInUse = false;
-      return;
-   }
+    if ( widget == d->defaultWidget )
+    {
+        d->defaultWidget->hide();
+        d->defaultWidget->setParent( nullptr );
+        d->defaultWidgetInUse = false;
+        return;
+    }
 
-   if (! d->createdWidgets.contains(widget)) {
-      return;
-   }
+    if ( ! d->createdWidgets.contains( widget ) )
+    {
+        return;
+    }
 
-   disconnect(widget, &QWidget::destroyed, this, &QWidgetAction::_q_widgetDestroyed);
-   d->createdWidgets.removeAll(widget);
-   deleteWidget(widget);
+    disconnect( widget, &QWidget::destroyed, this, &QWidgetAction::_q_widgetDestroyed );
+    d->createdWidgets.removeAll( widget );
+    deleteWidget( widget );
 }
 
-bool QWidgetAction::event(QEvent *event)
+bool QWidgetAction::event( QEvent *event )
 {
-   Q_D(QWidgetAction);
+    Q_D( QWidgetAction );
 
-   if (event->type() == QEvent::ActionChanged) {
-      if (d->defaultWidget) {
-         d->defaultWidget->setEnabled(isEnabled());
-      }
+    if ( event->type() == QEvent::ActionChanged )
+    {
+        if ( d->defaultWidget )
+        {
+            d->defaultWidget->setEnabled( isEnabled() );
+        }
 
-      for (int i = 0; i < d->createdWidgets.count(); ++i) {
-         d->createdWidgets.at(i)->setEnabled(isEnabled());
-      }
-   }
+        for ( int i = 0; i < d->createdWidgets.count(); ++i )
+        {
+            d->createdWidgets.at( i )->setEnabled( isEnabled() );
+        }
+    }
 
-   return QAction::event(event);
+    return QAction::event( event );
 }
 
-bool QWidgetAction::eventFilter(QObject *obj, QEvent *event)
+bool QWidgetAction::eventFilter( QObject *obj, QEvent *event )
 {
-   return QAction::eventFilter(obj, event);
+    return QAction::eventFilter( obj, event );
 }
 
-QWidget *QWidgetAction::createWidget(QWidget *parent)
+QWidget *QWidgetAction::createWidget( QWidget *parent )
 {
-   (void) parent;
+    ( void ) parent;
 
-   return nullptr;
+    return nullptr;
 }
 
-void QWidgetAction::deleteWidget(QWidget *widget)
+void QWidgetAction::deleteWidget( QWidget *widget )
 {
-   widget->hide();
-   widget->deleteLater();
+    widget->hide();
+    widget->deleteLater();
 }
 
 QList<QWidget *> QWidgetAction::createdWidgets() const
 {
-   Q_D(const QWidgetAction);
-   return d->createdWidgets;
+    Q_D( const QWidgetAction );
+    return d->createdWidgets;
 }
 
-void QWidgetAction::_q_widgetDestroyed(QObject *object)
+void QWidgetAction::_q_widgetDestroyed( QObject *object )
 {
-   Q_D(QWidgetAction);
-   d->_q_widgetDestroyed(object);
+    Q_D( QWidgetAction );
+    d->_q_widgetDestroyed( object );
 }
 
 #endif // QT_NO_ACTION

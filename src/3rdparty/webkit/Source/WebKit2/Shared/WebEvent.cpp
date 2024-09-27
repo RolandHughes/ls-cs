@@ -30,30 +30,31 @@
 #include "ArgumentEncoder.h"
 #include "Arguments.h"
 
-namespace WebKit {
+namespace WebKit
+{
 
 WebEvent::WebEvent()
-    : m_type(static_cast<uint32_t>(NoType))
-    , m_modifiers(0)
-    , m_timestamp(0)
+    : m_type( static_cast<uint32_t>( NoType ) )
+    , m_modifiers( 0 )
+    , m_timestamp( 0 )
 {
 }
 
-WebEvent::WebEvent(Type type, Modifiers modifiers, double timestamp)
-    : m_type(type)
-    , m_modifiers(modifiers)
-    , m_timestamp(timestamp)
+WebEvent::WebEvent( Type type, Modifiers modifiers, double timestamp )
+    : m_type( type )
+    , m_modifiers( modifiers )
+    , m_timestamp( timestamp )
 {
 }
 
-void WebEvent::encode(CoreIPC::ArgumentEncoder* encoder) const
+void WebEvent::encode( CoreIPC::ArgumentEncoder *encoder ) const
 {
-    encoder->encode(CoreIPC::In(m_type, m_modifiers, m_timestamp));
+    encoder->encode( CoreIPC::In( m_type, m_modifiers, m_timestamp ) );
 }
 
-bool WebEvent::decode(CoreIPC::ArgumentDecoder* decoder, WebEvent& t)
+bool WebEvent::decode( CoreIPC::ArgumentDecoder *decoder, WebEvent &t )
 {
-    return decoder->decode(CoreIPC::Out(t.m_type, t.m_modifiers, t.m_timestamp));
+    return decoder->decode( CoreIPC::Out( t.m_type, t.m_modifiers, t.m_timestamp ) );
 }
-    
+
 } // namespace WebKit

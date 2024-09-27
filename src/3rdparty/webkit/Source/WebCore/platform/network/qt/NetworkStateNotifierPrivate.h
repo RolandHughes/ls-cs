@@ -24,26 +24,28 @@
 
 class QNetworkConfigurationManager;
 
-namespace WebCore {
+namespace WebCore
+{
 
 class NetworkStateNotifier;
 
-class NetworkStateNotifierPrivate : public QObject {
-    WEB_CS_OBJECT(NetworkStateNotifierPrivate)
+class NetworkStateNotifierPrivate : public QObject
+{
+    WEB_CS_OBJECT( NetworkStateNotifierPrivate )
 
 public:
-    NetworkStateNotifierPrivate(NetworkStateNotifier* notifier);
+    NetworkStateNotifierPrivate( NetworkStateNotifier *notifier );
     ~NetworkStateNotifierPrivate();
 
-    WEB_CS_SLOT_1(Public, void onlineStateChanged(bool isOnline))
-    WEB_CS_SLOT_2(onlineStateChanged)
-    WEB_CS_SLOT_1(Public, void networkAccessPermissionChanged(bool isAllowed))
-    WEB_CS_SLOT_2(networkAccessPermissionChanged)
+    WEB_CS_SLOT_1( Public, void onlineStateChanged( bool isOnline ) )
+    WEB_CS_SLOT_2( onlineStateChanged )
+    WEB_CS_SLOT_1( Public, void networkAccessPermissionChanged( bool isAllowed ) )
+    WEB_CS_SLOT_2( networkAccessPermissionChanged )
 
-    QNetworkConfigurationManager* m_configurationManager;
+    QNetworkConfigurationManager *m_configurationManager;
     bool m_online;
     bool m_networkAccessAllowed;
-    NetworkStateNotifier* m_notifier;
+    NetworkStateNotifier *m_notifier;
 };
 
 } // namespace WebCore

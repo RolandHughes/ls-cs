@@ -23,95 +23,109 @@
 
 #include "directshowpinenum.h"
 
-DirectShowPinEnum::DirectShowPinEnum(const QList<IPin *> &pins)
-   : m_ref(1), m_pins(pins), m_index(0)
+DirectShowPinEnum::DirectShowPinEnum( const QList<IPin *> &pins )
+    : m_ref( 1 ), m_pins( pins ), m_index( 0 )
 {
-   for (IPin *pin : m_pins) {
-      pin->AddRef();
-   }
+    for ( IPin *pin : m_pins )
+    {
+        pin->AddRef();
+    }
 }
 
 DirectShowPinEnum::~DirectShowPinEnum()
 {
-   for (IPin *pin : m_pins) {
-      pin->Release();
-   }
+    for ( IPin *pin : m_pins )
+    {
+        pin->Release();
+    }
 }
 
-HRESULT DirectShowPinEnum::QueryInterface(REFIID riid, void **ppvObject)
+HRESULT DirectShowPinEnum::QueryInterface( REFIID riid, void **ppvObject )
 {
-   if (riid == IID_IUnknown
-      || riid == IID_IEnumPins) {
-      AddRef();
+    if ( riid == IID_IUnknown
+            || riid == IID_IEnumPins )
+    {
+        AddRef();
 
-      *ppvObject = static_cast<IEnumPins *>(this);
+        *ppvObject = static_cast<IEnumPins *>( this );
 
-      return S_OK;
+        return S_OK;
 
-   } else {
-      *ppvObject = nullptr;
+    }
+    else
+    {
+        *ppvObject = nullptr;
 
-      return E_NOINTERFACE;
-   }
+        return E_NOINTERFACE;
+    }
 }
 
 ULONG DirectShowPinEnum::AddRef()
 {
-   return InterlockedIncrement(&m_ref);
+    return InterlockedIncrement( &m_ref );
 }
 
 ULONG DirectShowPinEnum::Release()
 {
-   ULONG ref = InterlockedDecrement(&m_ref);
+    ULONG ref = InterlockedDecrement( &m_ref );
 
-   if (ref == 0) {
-      delete this;
-   }
+    if ( ref == 0 )
+    {
+        delete this;
+    }
 
-   return ref;
+    return ref;
 }
 
-HRESULT DirectShowPinEnum::Next(ULONG cPins, IPin **ppPins, ULONG *pcFetched)
+HRESULT DirectShowPinEnum::Next( ULONG cPins, IPin **ppPins, ULONG *pcFetched )
 {
-   if (ppPins && (pcFetched || cPins == 1)) {
-      ULONG count = qBound<ULONG>(0, cPins, m_pins.count() - m_index);
+    if ( ppPins && ( pcFetched || cPins == 1 ) )
+    {
+        ULONG count = qBound<ULONG>( 0, cPins, m_pins.count() - m_index );
 
-      for (ULONG i = 0; i < count; ++i, ++m_index) {
-         ppPins[i] = m_pins.at(m_index);
-         ppPins[i]->AddRef();
-      }
+        for ( ULONG i = 0; i < count; ++i, ++m_index )
+        {
+            ppPins[i] = m_pins.at( m_index );
+            ppPins[i]->AddRef();
+        }
 
-      if (pcFetched) {
-         *pcFetched = count;
-      }
+        if ( pcFetched )
+        {
+            *pcFetched = count;
+        }
 
-      return count == cPins ? S_OK : S_FALSE;
-   } else {
-      return E_POINTER;
-   }
+        return count == cPins ? S_OK : S_FALSE;
+    }
+    else
+    {
+        return E_POINTER;
+    }
 }
 
-HRESULT DirectShowPinEnum::Skip(ULONG cPins)
+HRESULT DirectShowPinEnum::Skip( ULONG cPins )
 {
-   m_index = qMin(int(m_index + cPins), m_pins.count());
+    m_index = qMin( int( m_index + cPins ), m_pins.count() );
 
-   return m_index < m_pins.count() ? S_OK : S_FALSE;
+    return m_index < m_pins.count() ? S_OK : S_FALSE;
 }
 
 HRESULT DirectShowPinEnum::Reset()
 {
-   m_index = 0;
+    m_index = 0;
 
-   return S_OK;
+    return S_OK;
 }
 
-HRESULT DirectShowPinEnum::Clone(IEnumPins **ppEnum)
+HRESULT DirectShowPinEnum::Clone( IEnumPins **ppEnum )
 {
-   if (ppEnum) {
-      *ppEnum = new DirectShowPinEnum(m_pins);
+    if ( ppEnum )
+    {
+        *ppEnum = new DirectShowPinEnum( m_pins );
 
-      return S_OK;
-   } else {
-      return E_POINTER;
-   }
+        return S_OK;
+    }
+    else
+    {
+        return E_POINTER;
+    }
 }

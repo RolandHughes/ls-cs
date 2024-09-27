@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -30,15 +30,16 @@
 
 #include <ApplicationServices/ApplicationServices.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-IntPoint::IntPoint(const CGPoint& p) : m_x(static_cast<int>(p.x)), m_y(static_cast<int>(p.y))
+IntPoint::IntPoint( const CGPoint &p ) : m_x( static_cast<int>( p.x ) ), m_y( static_cast<int>( p.y ) )
 {
 }
 
 IntPoint::operator CGPoint() const
 {
-    return CGPointMake(m_x, m_y);
+    return CGPointMake( m_x, m_y );
 }
 
 }

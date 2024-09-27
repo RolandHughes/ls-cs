@@ -28,102 +28,108 @@
 
 class DirectShowMediaTypeEnum : public IEnumMediaTypes
 {
- public:
-   DirectShowMediaTypeEnum(DirectShowMediaTypeList *list, int token, int index = 0);
-   virtual ~DirectShowMediaTypeEnum();
+public:
+    DirectShowMediaTypeEnum( DirectShowMediaTypeList *list, int token, int index = 0 );
+    virtual ~DirectShowMediaTypeEnum();
 
-   // IUnknown
-   HRESULT STDMETHODCALLTYPE QueryInterface(REFIID riid, void **ppvObject) override;
-   ULONG STDMETHODCALLTYPE AddRef() override;
-   ULONG STDMETHODCALLTYPE Release() override;
+    // IUnknown
+    HRESULT STDMETHODCALLTYPE QueryInterface( REFIID riid, void **ppvObject ) override;
+    ULONG STDMETHODCALLTYPE AddRef() override;
+    ULONG STDMETHODCALLTYPE Release() override;
 
-   // IEnumMediaTypes
-   HRESULT STDMETHODCALLTYPE Next(ULONG cMediaTypes, AM_MEDIA_TYPE **ppMediaTypes, ULONG *pcFetched) override;
-   HRESULT STDMETHODCALLTYPE Skip(ULONG cMediaTypes) override;
-   HRESULT STDMETHODCALLTYPE Reset() override;
+    // IEnumMediaTypes
+    HRESULT STDMETHODCALLTYPE Next( ULONG cMediaTypes, AM_MEDIA_TYPE **ppMediaTypes, ULONG *pcFetched ) override;
+    HRESULT STDMETHODCALLTYPE Skip( ULONG cMediaTypes ) override;
+    HRESULT STDMETHODCALLTYPE Reset() override;
 
-   HRESULT STDMETHODCALLTYPE Clone(IEnumMediaTypes **ppEnum) override;
+    HRESULT STDMETHODCALLTYPE Clone( IEnumMediaTypes **ppEnum ) override;
 
- private:
-   LONG m_ref;
-   DirectShowMediaTypeList *m_list;
-   int m_mediaTypeToken;
-   int m_index;
+private:
+    LONG m_ref;
+    DirectShowMediaTypeList *m_list;
+    int m_mediaTypeToken;
+    int m_index;
 };
 
 DirectShowMediaTypeEnum::DirectShowMediaTypeEnum(
-   DirectShowMediaTypeList *list, int token, int index)
-   : m_ref(1), m_list(list), m_mediaTypeToken(token), m_index(index)
+    DirectShowMediaTypeList *list, int token, int index )
+    : m_ref( 1 ), m_list( list ), m_mediaTypeToken( token ), m_index( index )
 {
-   m_list->AddRef();
+    m_list->AddRef();
 }
 
 DirectShowMediaTypeEnum::~DirectShowMediaTypeEnum()
 {
-   m_list->Release();
+    m_list->Release();
 }
 
-HRESULT DirectShowMediaTypeEnum::QueryInterface(REFIID riid, void **ppvObject)
+HRESULT DirectShowMediaTypeEnum::QueryInterface( REFIID riid, void **ppvObject )
 {
-   if (! ppvObject) {
-      return E_POINTER;
+    if ( ! ppvObject )
+    {
+        return E_POINTER;
 
-   } else if (riid == IID_IUnknown || riid == IID_IEnumMediaTypes) {
-      *ppvObject = static_cast<IEnumMediaTypes *>(this);
+    }
+    else if ( riid == IID_IUnknown || riid == IID_IEnumMediaTypes )
+    {
+        *ppvObject = static_cast<IEnumMediaTypes *>( this );
 
-   } else {
-      *ppvObject = nullptr;
+    }
+    else
+    {
+        *ppvObject = nullptr;
 
-      return E_NOINTERFACE;
-   }
+        return E_NOINTERFACE;
+    }
 
-   AddRef();
+    AddRef();
 
-   return S_OK;
+    return S_OK;
 }
 
 ULONG DirectShowMediaTypeEnum::AddRef()
 {
-   return InterlockedIncrement(&m_ref);
+    return InterlockedIncrement( &m_ref );
 }
 
 ULONG DirectShowMediaTypeEnum::Release()
 {
-   ULONG ref = InterlockedDecrement(&m_ref);
+    ULONG ref = InterlockedDecrement( &m_ref );
 
-   if (ref == 0) {
-      delete this;
-   }
+    if ( ref == 0 )
+    {
+        delete this;
+    }
 
-   return ref;
+    return ref;
 }
 
 HRESULT DirectShowMediaTypeEnum::Next(
-   ULONG cMediaTypes, AM_MEDIA_TYPE **ppMediaTypes, ULONG *pcFetched)
+    ULONG cMediaTypes, AM_MEDIA_TYPE **ppMediaTypes, ULONG *pcFetched )
 {
-   return m_list->nextMediaType(m_mediaTypeToken, &m_index, cMediaTypes, ppMediaTypes, pcFetched);
+    return m_list->nextMediaType( m_mediaTypeToken, &m_index, cMediaTypes, ppMediaTypes, pcFetched );
 }
 
-HRESULT DirectShowMediaTypeEnum::Skip(ULONG cMediaTypes)
+HRESULT DirectShowMediaTypeEnum::Skip( ULONG cMediaTypes )
 {
-   return m_list->skipMediaType(m_mediaTypeToken, &m_index, cMediaTypes);
+    return m_list->skipMediaType( m_mediaTypeToken, &m_index, cMediaTypes );
 }
 
 HRESULT DirectShowMediaTypeEnum::Reset()
 {
-   m_mediaTypeToken = m_list->currentMediaTypeToken();
-   m_index = 0;
+    m_mediaTypeToken = m_list->currentMediaTypeToken();
+    m_index = 0;
 
-   return S_OK;
+    return S_OK;
 }
 
-HRESULT DirectShowMediaTypeEnum::Clone(IEnumMediaTypes **ppEnum)
+HRESULT DirectShowMediaTypeEnum::Clone( IEnumMediaTypes **ppEnum )
 {
-   return m_list->cloneMediaType(m_mediaTypeToken, m_index, ppEnum);
+    return m_list->cloneMediaType( m_mediaTypeToken, m_index, ppEnum );
 }
 
 DirectShowMediaTypeList::DirectShowMediaTypeList()
-   : m_mediaTypeToken(0)
+    : m_mediaTypeToken( 0 )
 {
 }
 
@@ -133,75 +139,94 @@ DirectShowMediaTypeList::~DirectShowMediaTypeList()
 
 IEnumMediaTypes *DirectShowMediaTypeList::createMediaTypeEnum()
 {
-   return new DirectShowMediaTypeEnum(this, m_mediaTypeToken, 0);
+    return new DirectShowMediaTypeEnum( this, m_mediaTypeToken, 0 );
 }
 
-void DirectShowMediaTypeList::setMediaTypes(const QVector<AM_MEDIA_TYPE> &types)
+void DirectShowMediaTypeList::setMediaTypes( const QVector<AM_MEDIA_TYPE> &types )
 {
-   ++m_mediaTypeToken;
+    ++m_mediaTypeToken;
 
-   m_mediaTypes = types;
+    m_mediaTypes = types;
 }
 
 int DirectShowMediaTypeList::currentMediaTypeToken()
 {
-   return m_mediaTypeToken;
+    return m_mediaTypeToken;
 }
 
 HRESULT DirectShowMediaTypeList::nextMediaType(
-   int token, int *index, ULONG count, AM_MEDIA_TYPE **types, ULONG *fetchedCount)
+    int token, int *index, ULONG count, AM_MEDIA_TYPE **types, ULONG *fetchedCount )
 {
-   if (!types || (count != 1 && !fetchedCount)) {
-      return E_POINTER;
-   } else if (m_mediaTypeToken != token) {
-      return VFW_E_ENUM_OUT_OF_SYNC;
-   } else {
-      int boundedCount = qBound<int>(0, count, m_mediaTypes.count() - *index);
+    if ( !types || ( count != 1 && !fetchedCount ) )
+    {
+        return E_POINTER;
+    }
+    else if ( m_mediaTypeToken != token )
+    {
+        return VFW_E_ENUM_OUT_OF_SYNC;
+    }
+    else
+    {
+        int boundedCount = qBound<int>( 0, count, m_mediaTypes.count() - *index );
 
-      for (int i = 0; i < boundedCount; ++i, ++(*index)) {
-         types[i] = reinterpret_cast<AM_MEDIA_TYPE *>(CoTaskMemAlloc(sizeof(AM_MEDIA_TYPE)));
+        for ( int i = 0; i < boundedCount; ++i, ++( *index ) )
+        {
+            types[i] = reinterpret_cast<AM_MEDIA_TYPE *>( CoTaskMemAlloc( sizeof( AM_MEDIA_TYPE ) ) );
 
-         if (types[i]) {
-            DirectShowMediaType::copy(types[i], m_mediaTypes.at(*index));
-         } else {
-            for (--i; i >= 0; --i) {
-               CoTaskMemFree(types[i]);
+            if ( types[i] )
+            {
+                DirectShowMediaType::copy( types[i], m_mediaTypes.at( *index ) );
             }
+            else
+            {
+                for ( --i; i >= 0; --i )
+                {
+                    CoTaskMemFree( types[i] );
+                }
 
-            if (fetchedCount) {
-               *fetchedCount = 0;
+                if ( fetchedCount )
+                {
+                    *fetchedCount = 0;
+                }
+
+                return E_OUTOFMEMORY;
             }
+        }
 
-            return E_OUTOFMEMORY;
-         }
-      }
-      if (fetchedCount) {
-         *fetchedCount = boundedCount;
-      }
+        if ( fetchedCount )
+        {
+            *fetchedCount = boundedCount;
+        }
 
-      return boundedCount == int(count) ? S_OK : S_FALSE;
-   }
+        return boundedCount == int( count ) ? S_OK : S_FALSE;
+    }
 }
 
-HRESULT DirectShowMediaTypeList::skipMediaType(int token, int *index, ULONG count)
+HRESULT DirectShowMediaTypeList::skipMediaType( int token, int *index, ULONG count )
 {
-   if (m_mediaTypeToken != token) {
-      return VFW_E_ENUM_OUT_OF_SYNC;
-   } else {
-      *index = qMin<int>(*index + count, m_mediaTypes.size());
+    if ( m_mediaTypeToken != token )
+    {
+        return VFW_E_ENUM_OUT_OF_SYNC;
+    }
+    else
+    {
+        *index = qMin<int>( *index + count, m_mediaTypes.size() );
 
-      return *index < m_mediaTypes.size() ? S_OK : S_FALSE;
-   }
+        return *index < m_mediaTypes.size() ? S_OK : S_FALSE;
+    }
 }
 
-HRESULT DirectShowMediaTypeList::cloneMediaType(int token, int index, IEnumMediaTypes **enumeration)
+HRESULT DirectShowMediaTypeList::cloneMediaType( int token, int index, IEnumMediaTypes **enumeration )
 {
-   if (m_mediaTypeToken != token) {
-      return VFW_E_ENUM_OUT_OF_SYNC;
-   } else {
-      *enumeration = new DirectShowMediaTypeEnum(this, token, index);
+    if ( m_mediaTypeToken != token )
+    {
+        return VFW_E_ENUM_OUT_OF_SYNC;
+    }
+    else
+    {
+        *enumeration = new DirectShowMediaTypeEnum( this, token, index );
 
-      return S_OK;
-   }
+        return S_OK;
+    }
 }
 

@@ -32,9 +32,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSSVGTextPathElement);
+ASSERT_CLASS_FITS_IN_CELL( JSSVGTextPathElement );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -45,12 +46,12 @@ ASSERT_CLASS_FITS_IN_CELL(JSSVGTextPathElement);
 
 static const HashTableValue JSSVGTextPathElementTableValues[6] =
 {
-    { "startOffset", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGTextPathElementStartOffset), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "method", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGTextPathElementMethod), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "spacing", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGTextPathElementSpacing), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "href", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGTextPathElementHref), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGTextPathElementConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "startOffset", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGTextPathElementStartOffset ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "method", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGTextPathElementMethod ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "spacing", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGTextPathElementSpacing ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "href", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGTextPathElementHref ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGTextPathElementConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -64,57 +65,71 @@ static JSC_CONST_HASHTABLE HashTable JSSVGTextPathElementTable = { 16, 15, JSSVG
 
 static const HashTableValue JSSVGTextPathElementConstructorTableValues[7] =
 {
-    { "TEXTPATH_METHODTYPE_UNKNOWN", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGTextPathElementTEXTPATH_METHODTYPE_UNKNOWN), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "TEXTPATH_METHODTYPE_ALIGN", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGTextPathElementTEXTPATH_METHODTYPE_ALIGN), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "TEXTPATH_METHODTYPE_STRETCH", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGTextPathElementTEXTPATH_METHODTYPE_STRETCH), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "TEXTPATH_SPACINGTYPE_UNKNOWN", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGTextPathElementTEXTPATH_SPACINGTYPE_UNKNOWN), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "TEXTPATH_SPACINGTYPE_AUTO", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGTextPathElementTEXTPATH_SPACINGTYPE_AUTO), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "TEXTPATH_SPACINGTYPE_EXACT", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGTextPathElementTEXTPATH_SPACINGTYPE_EXACT), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "TEXTPATH_METHODTYPE_UNKNOWN", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGTextPathElementTEXTPATH_METHODTYPE_UNKNOWN ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "TEXTPATH_METHODTYPE_ALIGN", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGTextPathElementTEXTPATH_METHODTYPE_ALIGN ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "TEXTPATH_METHODTYPE_STRETCH", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGTextPathElementTEXTPATH_METHODTYPE_STRETCH ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "TEXTPATH_SPACINGTYPE_UNKNOWN", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGTextPathElementTEXTPATH_SPACINGTYPE_UNKNOWN ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "TEXTPATH_SPACINGTYPE_AUTO", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGTextPathElementTEXTPATH_SPACINGTYPE_AUTO ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "TEXTPATH_SPACINGTYPE_EXACT", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGTextPathElementTEXTPATH_SPACINGTYPE_EXACT ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSSVGTextPathElementConstructorTable = { 18, 15, JSSVGTextPathElementConstructorTableValues, 0 };
 
-COMPILE_ASSERT(0 == SVGTextPathElement::TEXTPATH_METHODTYPE_UNKNOWN, SVGTextPathElementEnumTEXTPATH_METHODTYPE_UNKNOWNIsWrongUseDontCheckEnums);
-COMPILE_ASSERT(1 == SVGTextPathElement::TEXTPATH_METHODTYPE_ALIGN, SVGTextPathElementEnumTEXTPATH_METHODTYPE_ALIGNIsWrongUseDontCheckEnums);
-COMPILE_ASSERT(2 == SVGTextPathElement::TEXTPATH_METHODTYPE_STRETCH, SVGTextPathElementEnumTEXTPATH_METHODTYPE_STRETCHIsWrongUseDontCheckEnums);
-COMPILE_ASSERT(0 == SVGTextPathElement::TEXTPATH_SPACINGTYPE_UNKNOWN, SVGTextPathElementEnumTEXTPATH_SPACINGTYPE_UNKNOWNIsWrongUseDontCheckEnums);
-COMPILE_ASSERT(1 == SVGTextPathElement::TEXTPATH_SPACINGTYPE_AUTO, SVGTextPathElementEnumTEXTPATH_SPACINGTYPE_AUTOIsWrongUseDontCheckEnums);
-COMPILE_ASSERT(2 == SVGTextPathElement::TEXTPATH_SPACINGTYPE_EXACT, SVGTextPathElementEnumTEXTPATH_SPACINGTYPE_EXACTIsWrongUseDontCheckEnums);
+COMPILE_ASSERT( 0 == SVGTextPathElement::TEXTPATH_METHODTYPE_UNKNOWN,
+                SVGTextPathElementEnumTEXTPATH_METHODTYPE_UNKNOWNIsWrongUseDontCheckEnums );
+COMPILE_ASSERT( 1 == SVGTextPathElement::TEXTPATH_METHODTYPE_ALIGN,
+                SVGTextPathElementEnumTEXTPATH_METHODTYPE_ALIGNIsWrongUseDontCheckEnums );
+COMPILE_ASSERT( 2 == SVGTextPathElement::TEXTPATH_METHODTYPE_STRETCH,
+                SVGTextPathElementEnumTEXTPATH_METHODTYPE_STRETCHIsWrongUseDontCheckEnums );
+COMPILE_ASSERT( 0 == SVGTextPathElement::TEXTPATH_SPACINGTYPE_UNKNOWN,
+                SVGTextPathElementEnumTEXTPATH_SPACINGTYPE_UNKNOWNIsWrongUseDontCheckEnums );
+COMPILE_ASSERT( 1 == SVGTextPathElement::TEXTPATH_SPACINGTYPE_AUTO,
+                SVGTextPathElementEnumTEXTPATH_SPACINGTYPE_AUTOIsWrongUseDontCheckEnums );
+COMPILE_ASSERT( 2 == SVGTextPathElement::TEXTPATH_SPACINGTYPE_EXACT,
+                SVGTextPathElementEnumTEXTPATH_SPACINGTYPE_EXACTIsWrongUseDontCheckEnums );
 
-class JSSVGTextPathElementConstructor : public DOMConstructorObject {
+class JSSVGTextPathElementConstructor : public DOMConstructorObject
+{
 public:
-    JSSVGTextPathElementConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSSVGTextPathElementConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSSVGTextPathElementConstructor::s_info = { "SVGTextPathElementConstructor", &DOMConstructorObject::s_info, &JSSVGTextPathElementConstructorTable, 0 };
 
-JSSVGTextPathElementConstructor::JSSVGTextPathElementConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSSVGTextPathElementConstructor::JSSVGTextPathElementConstructor( ExecState *exec, Structure *structure,
+        JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSSVGTextPathElementPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSSVGTextPathElementPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSSVGTextPathElementConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGTextPathElementConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSVGTextPathElementConstructor, JSDOMWrapper>(exec, &JSSVGTextPathElementConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSSVGTextPathElementConstructor, JSDOMWrapper>( exec, &JSSVGTextPathElementConstructorTable, this,
+            propertyName, slot );
 }
 
-bool JSSVGTextPathElementConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGTextPathElementConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSVGTextPathElementConstructor, JSDOMWrapper>(exec, &JSSVGTextPathElementConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSVGTextPathElementConstructor, JSDOMWrapper>( exec, &JSSVGTextPathElementConstructorTable, this,
+            propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -126,148 +141,155 @@ bool JSSVGTextPathElementConstructor::getOwnPropertyDescriptor(ExecState* exec, 
 
 static const HashTableValue JSSVGTextPathElementPrototypeTableValues[7] =
 {
-    { "TEXTPATH_METHODTYPE_UNKNOWN", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGTextPathElementTEXTPATH_METHODTYPE_UNKNOWN), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "TEXTPATH_METHODTYPE_ALIGN", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGTextPathElementTEXTPATH_METHODTYPE_ALIGN), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "TEXTPATH_METHODTYPE_STRETCH", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGTextPathElementTEXTPATH_METHODTYPE_STRETCH), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "TEXTPATH_SPACINGTYPE_UNKNOWN", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGTextPathElementTEXTPATH_SPACINGTYPE_UNKNOWN), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "TEXTPATH_SPACINGTYPE_AUTO", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGTextPathElementTEXTPATH_SPACINGTYPE_AUTO), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "TEXTPATH_SPACINGTYPE_EXACT", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGTextPathElementTEXTPATH_SPACINGTYPE_EXACT), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "TEXTPATH_METHODTYPE_UNKNOWN", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGTextPathElementTEXTPATH_METHODTYPE_UNKNOWN ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "TEXTPATH_METHODTYPE_ALIGN", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGTextPathElementTEXTPATH_METHODTYPE_ALIGN ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "TEXTPATH_METHODTYPE_STRETCH", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGTextPathElementTEXTPATH_METHODTYPE_STRETCH ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "TEXTPATH_SPACINGTYPE_UNKNOWN", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGTextPathElementTEXTPATH_SPACINGTYPE_UNKNOWN ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "TEXTPATH_SPACINGTYPE_AUTO", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGTextPathElementTEXTPATH_SPACINGTYPE_AUTO ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "TEXTPATH_SPACINGTYPE_EXACT", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGTextPathElementTEXTPATH_SPACINGTYPE_EXACT ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSSVGTextPathElementPrototypeTable = { 18, 15, JSSVGTextPathElementPrototypeTableValues, 0 };
 const ClassInfo JSSVGTextPathElementPrototype::s_info = { "SVGTextPathElementPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSSVGTextPathElementPrototypeTable, 0 };
 
-JSObject* JSSVGTextPathElementPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSVGTextPathElementPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSSVGTextPathElement>(exec, globalObject);
+    return getDOMPrototype<JSSVGTextPathElement>( exec, globalObject );
 }
 
-bool JSSVGTextPathElementPrototype::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGTextPathElementPrototype::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSVGTextPathElementPrototype, JSObject>(exec, &JSSVGTextPathElementPrototypeTable, this, propertyName, slot);
+    return getStaticValueSlot<JSSVGTextPathElementPrototype, JSObject>( exec, &JSSVGTextPathElementPrototypeTable, this, propertyName,
+            slot );
 }
 
-bool JSSVGTextPathElementPrototype::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGTextPathElementPrototype::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSVGTextPathElementPrototype, JSObject>(exec, &JSSVGTextPathElementPrototypeTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSVGTextPathElementPrototype, JSObject>( exec, &JSSVGTextPathElementPrototypeTable, this,
+            propertyName, descriptor );
 }
 
 const ClassInfo JSSVGTextPathElement::s_info = { "SVGTextPathElement", &JSSVGTextContentElement::s_info, &JSSVGTextPathElementTable, 0 };
 
-JSSVGTextPathElement::JSSVGTextPathElement(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<SVGTextPathElement> impl)
-    : JSSVGTextContentElement(structure, globalObject, impl)
+JSSVGTextPathElement::JSSVGTextPathElement( Structure *structure, JSDOMGlobalObject *globalObject,
+        PassRefPtr<SVGTextPathElement> impl )
+    : JSSVGTextContentElement( structure, globalObject, impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSSVGTextPathElement::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSVGTextPathElement::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSSVGTextPathElementPrototype(exec->globalData(), globalObject, JSSVGTextPathElementPrototype::createStructure(exec->globalData(), JSSVGTextContentElementPrototype::self(exec, globalObject)));
+    return new ( exec ) JSSVGTextPathElementPrototype( exec->globalData(), globalObject,
+            JSSVGTextPathElementPrototype::createStructure( exec->globalData(), JSSVGTextContentElementPrototype::self( exec,
+                    globalObject ) ) );
 }
 
-bool JSSVGTextPathElement::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGTextPathElement::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSVGTextPathElement, Base>(exec, &JSSVGTextPathElementTable, this, propertyName, slot);
+    return getStaticValueSlot<JSSVGTextPathElement, Base>( exec, &JSSVGTextPathElementTable, this, propertyName, slot );
 }
 
-bool JSSVGTextPathElement::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGTextPathElement::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSVGTextPathElement, Base>(exec, &JSSVGTextPathElementTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSVGTextPathElement, Base>( exec, &JSSVGTextPathElementTable, this, propertyName, descriptor );
 }
 
-JSValue jsSVGTextPathElementStartOffset(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGTextPathElementStartOffset( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGTextPathElement* castedThis = static_cast<JSSVGTextPathElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGTextPathElement* imp = static_cast<SVGTextPathElement*>(castedThis->impl());
+    JSSVGTextPathElement *castedThis = static_cast<JSSVGTextPathElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGTextPathElement *imp = static_cast<SVGTextPathElement *>( castedThis->impl() );
     RefPtr<SVGAnimatedLength> obj = imp->startOffsetAnimated();
-    JSValue result =  toJS(exec, castedThis->globalObject(), obj.get());
+    JSValue result =  toJS( exec, castedThis->globalObject(), obj.get() );
     return result;
 }
 
 
-JSValue jsSVGTextPathElementMethod(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGTextPathElementMethod( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGTextPathElement* castedThis = static_cast<JSSVGTextPathElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGTextPathElement* imp = static_cast<SVGTextPathElement*>(castedThis->impl());
+    JSSVGTextPathElement *castedThis = static_cast<JSSVGTextPathElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGTextPathElement *imp = static_cast<SVGTextPathElement *>( castedThis->impl() );
     RefPtr<SVGAnimatedEnumeration> obj = imp->methodAnimated();
-    JSValue result =  toJS(exec, castedThis->globalObject(), obj.get());
+    JSValue result =  toJS( exec, castedThis->globalObject(), obj.get() );
     return result;
 }
 
 
-JSValue jsSVGTextPathElementSpacing(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGTextPathElementSpacing( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGTextPathElement* castedThis = static_cast<JSSVGTextPathElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGTextPathElement* imp = static_cast<SVGTextPathElement*>(castedThis->impl());
+    JSSVGTextPathElement *castedThis = static_cast<JSSVGTextPathElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGTextPathElement *imp = static_cast<SVGTextPathElement *>( castedThis->impl() );
     RefPtr<SVGAnimatedEnumeration> obj = imp->spacingAnimated();
-    JSValue result =  toJS(exec, castedThis->globalObject(), obj.get());
+    JSValue result =  toJS( exec, castedThis->globalObject(), obj.get() );
     return result;
 }
 
 
-JSValue jsSVGTextPathElementHref(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGTextPathElementHref( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGTextPathElement* castedThis = static_cast<JSSVGTextPathElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGTextPathElement* imp = static_cast<SVGTextPathElement*>(castedThis->impl());
+    JSSVGTextPathElement *castedThis = static_cast<JSSVGTextPathElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGTextPathElement *imp = static_cast<SVGTextPathElement *>( castedThis->impl() );
     RefPtr<SVGAnimatedString> obj = imp->hrefAnimated();
-    JSValue result =  toJS(exec, castedThis->globalObject(), obj.get());
+    JSValue result =  toJS( exec, castedThis->globalObject(), obj.get() );
     return result;
 }
 
 
-JSValue jsSVGTextPathElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGTextPathElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGTextPathElement* domObject = static_cast<JSSVGTextPathElement*>(asObject(slotBase));
-    return JSSVGTextPathElement::getConstructor(exec, domObject->globalObject());
+    JSSVGTextPathElement *domObject = static_cast<JSSVGTextPathElement *>( asObject( slotBase ) );
+    return JSSVGTextPathElement::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSSVGTextPathElement::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSSVGTextPathElement::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSSVGTextPathElementConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSSVGTextPathElementConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
 // Constant getters
 
-JSValue jsSVGTextPathElementTEXTPATH_METHODTYPE_UNKNOWN(ExecState* exec, JSValue, const Identifier&)
+JSValue jsSVGTextPathElementTEXTPATH_METHODTYPE_UNKNOWN( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(0));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 0 ) );
 }
 
-JSValue jsSVGTextPathElementTEXTPATH_METHODTYPE_ALIGN(ExecState* exec, JSValue, const Identifier&)
+JSValue jsSVGTextPathElementTEXTPATH_METHODTYPE_ALIGN( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(1));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 1 ) );
 }
 
-JSValue jsSVGTextPathElementTEXTPATH_METHODTYPE_STRETCH(ExecState* exec, JSValue, const Identifier&)
+JSValue jsSVGTextPathElementTEXTPATH_METHODTYPE_STRETCH( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(2));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 2 ) );
 }
 
-JSValue jsSVGTextPathElementTEXTPATH_SPACINGTYPE_UNKNOWN(ExecState* exec, JSValue, const Identifier&)
+JSValue jsSVGTextPathElementTEXTPATH_SPACINGTYPE_UNKNOWN( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(0));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 0 ) );
 }
 
-JSValue jsSVGTextPathElementTEXTPATH_SPACINGTYPE_AUTO(ExecState* exec, JSValue, const Identifier&)
+JSValue jsSVGTextPathElementTEXTPATH_SPACINGTYPE_AUTO( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(1));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 1 ) );
 }
 
-JSValue jsSVGTextPathElementTEXTPATH_SPACINGTYPE_EXACT(ExecState* exec, JSValue, const Identifier&)
+JSValue jsSVGTextPathElementTEXTPATH_SPACINGTYPE_EXACT( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(2));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 2 ) );
 }
 
 

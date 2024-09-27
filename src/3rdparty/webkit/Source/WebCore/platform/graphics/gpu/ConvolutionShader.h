@@ -33,16 +33,19 @@
 
 #include "Shader.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class ConvolutionShader : public Shader {
+class ConvolutionShader : public Shader
+{
 public:
-    static PassOwnPtr<ConvolutionShader> create(GraphicsContext3D*, int kernelWidth);
+    static PassOwnPtr<ConvolutionShader> create( GraphicsContext3D *, int kernelWidth );
 
-    void use(const AffineTransform&, const AffineTransform& texTransform, const float* kernel, int kernelWidth, float imageIncrement[2]);
+    void use( const AffineTransform &, const AffineTransform &texTransform, const float *kernel, int kernelWidth,
+              float imageIncrement[2] );
 
 private:
-    ConvolutionShader(GraphicsContext3D*, unsigned program, int kernelWidth);
+    ConvolutionShader( GraphicsContext3D *, unsigned program, int kernelWidth );
 
     int m_kernelWidth;
     int m_matrixLocation;

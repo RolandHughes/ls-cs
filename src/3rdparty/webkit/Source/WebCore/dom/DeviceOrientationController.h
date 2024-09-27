@@ -31,30 +31,35 @@
 
 #include <wtf/HashCountedSet.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class DeviceOrientation;
 class DeviceOrientationClient;
 class Page;
 
-class DeviceOrientationController {
+class DeviceOrientationController
+{
 public:
-    DeviceOrientationController(Page*, DeviceOrientationClient*);
+    DeviceOrientationController( Page *, DeviceOrientationClient * );
     ~DeviceOrientationController();
 
-    void addListener(DOMWindow*);
-    void removeListener(DOMWindow*);
-    void removeAllListeners(DOMWindow*);
+    void addListener( DOMWindow * );
+    void removeListener( DOMWindow * );
+    void removeAllListeners( DOMWindow * );
 
-    void didChangeDeviceOrientation(DeviceOrientation*);
+    void didChangeDeviceOrientation( DeviceOrientation * );
 
-    bool isActive() { return !m_listeners.isEmpty(); }
+    bool isActive()
+    {
+        return !m_listeners.isEmpty();
+    }
 
 private:
-    void timerFired(Timer<DeviceOrientationController>*);
+    void timerFired( Timer<DeviceOrientationController> * );
 
-    Page* m_page;
-    DeviceOrientationClient* m_client;
+    Page *m_page;
+    DeviceOrientationClient *m_client;
     typedef HashCountedSet<RefPtr<DOMWindow> > ListenersCountedSet;
     ListenersCountedSet m_listeners;
     typedef HashSet<RefPtr<DOMWindow> > ListenersSet;

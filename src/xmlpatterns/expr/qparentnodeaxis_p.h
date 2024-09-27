@@ -26,16 +26,17 @@
 
 #include "qemptycontainer_p.h"
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class ParentNodeAxis : public EmptyContainer
 {
- public:
-   Item evaluateSingleton(const DynamicContext::Ptr &context) const override;
-   Expression::Properties properties() const override;
-   ExpressionVisitorResult::Ptr accept(const ExpressionVisitor::Ptr &visitor) const override;
-   SequenceType::Ptr staticType() const override;
-   ItemType::Ptr expectedContextItemType() const override;
+public:
+    Item evaluateSingleton( const DynamicContext::Ptr &context ) const override;
+    Expression::Properties properties() const override;
+    ExpressionVisitorResult::Ptr accept( const ExpressionVisitor::Ptr &visitor ) const override;
+    SequenceType::Ptr staticType() const override;
+    ItemType::Ptr expectedContextItemType() const override;
 };
 
 }

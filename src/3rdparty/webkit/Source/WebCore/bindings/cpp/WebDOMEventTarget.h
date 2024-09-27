@@ -22,7 +22,8 @@
 
 #include <WebDOMObject.h>
 
-namespace WebCore {
+namespace WebCore
+{
 class EventTarget;
 };
 
@@ -40,14 +41,15 @@ class WebDOMWorker;
 class WebDOMXMLHttpRequest;
 class WebDOMXMLHttpRequestUpload;
 
-class WebDOMEventTarget : public WebDOMObject {
+class WebDOMEventTarget : public WebDOMObject
+{
 public:
     WebDOMEventTarget();
-    explicit WebDOMEventTarget(WebCore::EventTarget*);
-    WebDOMEventTarget(const WebDOMEventTarget&);
+    explicit WebDOMEventTarget( WebCore::EventTarget * );
+    WebDOMEventTarget( const WebDOMEventTarget & );
     ~WebDOMEventTarget();
 
-    WebCore::EventTarget* impl() const;
+    WebCore::EventTarget *impl() const;
 
     WebDOMNode toNode();
     WebDOMDOMWindow toDOMWindow();
@@ -64,13 +66,13 @@ public:
     WebDOMNotification toNotification();
     WebDOMWebSocket toWebSocket();
 
-    WebDOMEventTarget& operator=(const WebDOMEventTarget&);
+    WebDOMEventTarget &operator=( const WebDOMEventTarget & );
 protected:
     struct WebDOMEventTargetPrivate;
-    WebDOMEventTargetPrivate* m_impl;
+    WebDOMEventTargetPrivate *m_impl;
 };
 
-WebCore::EventTarget* toWebCore(const WebDOMEventTarget&);
-WebDOMEventTarget toWebKit(WebCore::EventTarget*);
+WebCore::EventTarget *toWebCore( const WebDOMEventTarget & );
+WebDOMEventTarget toWebKit( WebCore::EventTarget * );
 
 #endif

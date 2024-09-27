@@ -32,83 +32,87 @@
 #include <qstate_p.h>
 #include <qstatemachine_p.h>
 
-QAbstractStatePrivate::QAbstractStatePrivate(StateType type)
-   : stateType(type), isMachine(false), active(false), parentState(nullptr)
+QAbstractStatePrivate::QAbstractStatePrivate( StateType type )
+    : stateType( type ), isMachine( false ), active( false ), parentState( nullptr )
 {
 }
 
-QAbstractStatePrivate *QAbstractStatePrivate::get(QAbstractState *q)
+QAbstractStatePrivate *QAbstractStatePrivate::get( QAbstractState *q )
 {
-   return q->d_func();
+    return q->d_func();
 }
 
-const QAbstractStatePrivate *QAbstractStatePrivate::get(const QAbstractState *q)
+const QAbstractStatePrivate *QAbstractStatePrivate::get( const QAbstractState *q )
 {
-   return q->d_func();
+    return q->d_func();
 }
 
 QStateMachine *QAbstractStatePrivate::machine() const
 {
-   Q_Q(const QAbstractState);
+    Q_Q( const QAbstractState );
 
-   QObject *par = q->parent();
+    QObject *par = q->parent();
 
-   while (par != nullptr) {
-      if (QStateMachine *mach = dynamic_cast<QStateMachine *>(par)) {
-         return mach;
-      }
+    while ( par != nullptr )
+    {
+        if ( QStateMachine *mach = dynamic_cast<QStateMachine *>( par ) )
+        {
+            return mach;
+        }
 
-      par = par->parent();
-   }
+        par = par->parent();
+    }
 
-   return nullptr;
+    return nullptr;
 }
 
-void QAbstractStatePrivate::callOnEntry(QEvent *e)
+void QAbstractStatePrivate::callOnEntry( QEvent *e )
 {
-   Q_Q(QAbstractState);
-   q->onEntry(e);
+    Q_Q( QAbstractState );
+    q->onEntry( e );
 }
 
-void QAbstractStatePrivate::callOnExit(QEvent *e)
+void QAbstractStatePrivate::callOnExit( QEvent *e )
 {
-   Q_Q(QAbstractState);
-   q->onExit(e);
+    Q_Q( QAbstractState );
+    q->onExit( e );
 }
 
 void QAbstractStatePrivate::emitEntered()
 {
-   Q_Q(QAbstractState);
-   emit q->entered();
+    Q_Q( QAbstractState );
+    emit q->entered();
 
-   if (! active) {
-      active = true;
-      emit q->activeChanged(true);
-   }
+    if ( ! active )
+    {
+        active = true;
+        emit q->activeChanged( true );
+    }
 }
 
 void QAbstractStatePrivate::emitExited()
 {
-   Q_Q(QAbstractState);
+    Q_Q( QAbstractState );
 
-   if (active) {
-      active = false;
-      emit q->activeChanged(false);
-   }
+    if ( active )
+    {
+        active = false;
+        emit q->activeChanged( false );
+    }
 
-   emit q->exited();
+    emit q->exited();
 }
 
-QAbstractState::QAbstractState(QState *parent)
-   : QObject(parent), d_ptr(new QAbstractStatePrivate(QAbstractStatePrivate::AbstractState))
+QAbstractState::QAbstractState( QState *parent )
+    : QObject( parent ), d_ptr( new QAbstractStatePrivate( QAbstractStatePrivate::AbstractState ) )
 {
-   d_ptr->q_ptr = this;
+    d_ptr->q_ptr = this;
 }
 
-QAbstractState::QAbstractState(QAbstractStatePrivate &dd, QState *parent)
-   : QObject(parent), d_ptr(&dd)
+QAbstractState::QAbstractState( QAbstractStatePrivate &dd, QState *parent )
+    : QObject( parent ), d_ptr( &dd )
 {
-   d_ptr->q_ptr = this;
+    d_ptr->q_ptr = this;
 }
 
 QAbstractState::~QAbstractState()
@@ -117,30 +121,31 @@ QAbstractState::~QAbstractState()
 
 QState *QAbstractState::parentState() const
 {
-   Q_D(const QAbstractState);
+    Q_D( const QAbstractState );
 
-   if (d->parentState != parent()) {
-      d->parentState = qobject_cast<QState *>(parent());
-   }
+    if ( d->parentState != parent() )
+    {
+        d->parentState = qobject_cast<QState *>( parent() );
+    }
 
-   return d->parentState;
+    return d->parentState;
 }
 
 QStateMachine *QAbstractState::machine() const
 {
-   Q_D(const QAbstractState);
-   return d->machine();
+    Q_D( const QAbstractState );
+    return d->machine();
 }
 
 bool QAbstractState::active() const
 {
-   Q_D(const QAbstractState);
-   return d->active;
+    Q_D( const QAbstractState );
+    return d->active;
 }
 
-bool QAbstractState::event(QEvent *e)
+bool QAbstractState::event( QEvent *e )
 {
-   return QObject::event(e);
+    return QObject::event( e );
 }
 
 #endif

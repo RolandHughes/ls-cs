@@ -28,55 +28,61 @@
 #include "SVGNames.h"
 #include "SVGRenderStyle.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-inline SVGFEFloodElement::SVGFEFloodElement(const QualifiedName& tagName, Document* document)
-    : SVGFilterPrimitiveStandardAttributes(tagName, document)
+inline SVGFEFloodElement::SVGFEFloodElement( const QualifiedName &tagName, Document *document )
+    : SVGFilterPrimitiveStandardAttributes( tagName, document )
 {
 }
 
-PassRefPtr<SVGFEFloodElement> SVGFEFloodElement::create(const QualifiedName& tagName, Document* document)
+PassRefPtr<SVGFEFloodElement> SVGFEFloodElement::create( const QualifiedName &tagName, Document *document )
 {
-    return adoptRef(new SVGFEFloodElement(tagName, document));
+    return adoptRef( new SVGFEFloodElement( tagName, document ) );
 }
 
 
-bool SVGFEFloodElement::setFilterEffectAttribute(FilterEffect* effect, const QualifiedName& attrName)
+bool SVGFEFloodElement::setFilterEffectAttribute( FilterEffect *effect, const QualifiedName &attrName )
 {
-    RenderObject* renderer = this->renderer();
-    ASSERT(renderer);
-    RenderStyle* style = renderer->style();
-    ASSERT(style);
-    FEFlood* flood = static_cast<FEFlood*>(effect);
+    RenderObject *renderer = this->renderer();
+    ASSERT( renderer );
+    RenderStyle *style = renderer->style();
+    ASSERT( style );
+    FEFlood *flood = static_cast<FEFlood *>( effect );
 
-    if (attrName == SVGNames::flood_colorAttr)
-        return flood->setFloodColor(style->svgStyle()->floodColor());
-    if (attrName == SVGNames::flood_opacityAttr)
-        return flood->setFloodOpacity(style->svgStyle()->floodOpacity());
+    if ( attrName == SVGNames::flood_colorAttr )
+    {
+        return flood->setFloodColor( style->svgStyle()->floodColor() );
+    }
+
+    if ( attrName == SVGNames::flood_opacityAttr )
+    {
+        return flood->setFloodOpacity( style->svgStyle()->floodOpacity() );
+    }
 
     ASSERT_NOT_REACHED();
     return false;
 }
 
-PassRefPtr<FilterEffect> SVGFEFloodElement::build(SVGFilterBuilder*, Filter* filter)
+PassRefPtr<FilterEffect> SVGFEFloodElement::build( SVGFilterBuilder *, Filter *filter )
 {
     RefPtr<RenderStyle> filterStyle = styleForRenderer();
 
     Color color = filterStyle->svgStyle()->floodColor();
     float opacity = filterStyle->svgStyle()->floodOpacity();
 
-    return FEFlood::create(filter, color, opacity);
+    return FEFlood::create( filter, color, opacity );
 }
 
-AttributeToPropertyTypeMap& SVGFEFloodElement::attributeToPropertyTypeMap()
+AttributeToPropertyTypeMap &SVGFEFloodElement::attributeToPropertyTypeMap()
 {
-    DEFINE_STATIC_LOCAL(AttributeToPropertyTypeMap, s_attributeToPropertyTypeMap, ());
+    DEFINE_STATIC_LOCAL( AttributeToPropertyTypeMap, s_attributeToPropertyTypeMap, () );
     return s_attributeToPropertyTypeMap;
 }
 
 void SVGFEFloodElement::fillAttributeToPropertyTypeMap()
 {
-    SVGFilterPrimitiveStandardAttributes::fillPassedAttributeToPropertyTypeMap(attributeToPropertyTypeMap());
+    SVGFilterPrimitiveStandardAttributes::fillPassedAttributeToPropertyTypeMap( attributeToPropertyTypeMap() );
 }
 
 }

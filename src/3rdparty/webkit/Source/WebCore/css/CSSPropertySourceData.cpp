@@ -40,77 +40,88 @@
 #include <wtf/StaticConstructors.h>
 #include <wtf/text/StringHash.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 SourceRange::SourceRange()
-    : start(0)
-    , end(0)
+    : start( 0 )
+    , end( 0 )
 {
 }
 
-SourceRange::SourceRange(unsigned start, unsigned end)
-    : start(start)
-    , end(end)
+SourceRange::SourceRange( unsigned start, unsigned end )
+    : start( start )
+    , end( end )
 {
 }
 
-CSSPropertySourceData::CSSPropertySourceData(const String& name, const String& value, bool important, bool parsedOk, const SourceRange& range)
-    : name(name)
-    , value(value)
-    , important(important)
-    , parsedOk(parsedOk)
-    , range(range)
+CSSPropertySourceData::CSSPropertySourceData( const String &name, const String &value, bool important, bool parsedOk,
+        const SourceRange &range )
+    : name( name )
+    , value( value )
+    , important( important )
+    , parsedOk( parsedOk )
+    , range( range )
 {
 }
 
-CSSPropertySourceData::CSSPropertySourceData(const CSSPropertySourceData& other)
-    : name(other.name)
-    , value(other.value)
-    , important(other.important)
-    , parsedOk(other.parsedOk)
-    , range(other.range)
+CSSPropertySourceData::CSSPropertySourceData( const CSSPropertySourceData &other )
+    : name( other.name )
+    , value( other.value )
+    , important( other.important )
+    , parsedOk( other.parsedOk )
+    , range( other.range )
 {
 }
 
 CSSPropertySourceData::CSSPropertySourceData()
-    : name("")
-    , value("")
-    , important(false)
-    , parsedOk(false)
-    , range(SourceRange(0, 0))
+    : name( "" )
+    , value( "" )
+    , important( false )
+    , parsedOk( false )
+    , range( SourceRange( 0, 0 ) )
 {
 }
 
 String CSSPropertySourceData::toString() const
 {
-    DEFINE_STATIC_LOCAL(String, emptyValue, ("e"));
-    DEFINE_STATIC_LOCAL(String, importantSuffix, (" !important"));
-    if (!name && value == emptyValue)
+    DEFINE_STATIC_LOCAL( String, emptyValue, ( "e" ) );
+    DEFINE_STATIC_LOCAL( String, importantSuffix, ( " !important" ) );
+
+    if ( !name && value == emptyValue )
+    {
         return String();
+    }
 
     String result = name;
     result += ": ";
     result += value;
-    if (important)
+
+    if ( important )
+    {
         result += importantSuffix;
+    }
+
     result += ";";
     return result;
 }
 
 unsigned CSSPropertySourceData::hash() const
 {
-    return StringHash::hash(name) + 3 * StringHash::hash(value) + 7 * important + 13 * parsedOk + 31;
+    return StringHash::hash( name ) + 3 * StringHash::hash( value ) + 7 * important + 13 * parsedOk + 31;
 }
 
 // Global init routines
-DEFINE_GLOBAL(CSSPropertySourceData, emptyCSSPropertySourceData, "", "e", false, false)
+DEFINE_GLOBAL( CSSPropertySourceData, emptyCSSPropertySourceData, "", "e", false, false )
 
 // static
 void CSSPropertySourceData::init()
 {
     static bool initialized;
-    if (!initialized) {
-        new ((void *) &emptyCSSPropertySourceData) CSSPropertySourceData("", "e", false, false, SourceRange(0, 0));
+
+    if ( !initialized )
+    {
+        new ( ( void * ) &emptyCSSPropertySourceData ) CSSPropertySourceData( "", "e", false, false, SourceRange( 0, 0 ) );
         initialized = true;
     }
 }

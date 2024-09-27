@@ -27,7 +27,8 @@
 #include "MediaQuery.h"
 #include "MediaQueryExp.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 /* MediaList is used to store 3 types of media related entities which mean the same:
  * Media Queries, Media Types and Media Descriptors.
@@ -57,46 +58,52 @@ namespace WebCore {
  * throw SYNTAX_ERR exception.
  */
 
-MediaList::MediaList(CSSStyleSheet* parentSheet, bool fallbackToDescriptor)
-    : StyleBase(parentSheet)
-    , m_fallback(fallbackToDescriptor)
+MediaList::MediaList( CSSStyleSheet *parentSheet, bool fallbackToDescriptor )
+    : StyleBase( parentSheet )
+    , m_fallback( fallbackToDescriptor )
 {
 }
 
-MediaList::MediaList(CSSStyleSheet* parentSheet, const String& media, bool fallbackToDescriptor)
-    : StyleBase(parentSheet)
-    , m_fallback(fallbackToDescriptor)
+MediaList::MediaList( CSSStyleSheet *parentSheet, const String &media, bool fallbackToDescriptor )
+    : StyleBase( parentSheet )
+    , m_fallback( fallbackToDescriptor )
 {
     ExceptionCode ec = 0;
-    setMediaText(media, ec);
+    setMediaText( media, ec );
+
     // FIXME: parsing can fail. The problem with failing constructor is that
     // we would need additional flag saying MediaList is not valid
     // Parse can fail only when fallbackToDescriptor == false, i.e when HTML4 media descriptor
-    // forward-compatible syntax is not in use. 
+    // forward-compatible syntax is not in use.
     // DOMImplementationCSS seems to mandate that media descriptors are used
     // for both html and svg, even though svg:style doesn't use media descriptors
     // Currently the only places where parsing can fail are
     // creating <svg:style>, creating css media / import rules from js
-    if (ec)
-        setMediaText("invalid", ec);
+    if ( ec )
+    {
+        setMediaText( "invalid", ec );
+    }
 }
 
-MediaList::MediaList(CSSImportRule* parentRule, const String& media)
-    : StyleBase(parentRule)
-    , m_fallback(false)
+MediaList::MediaList( CSSImportRule *parentRule, const String &media )
+    : StyleBase( parentRule )
+    , m_fallback( false )
 {
     ExceptionCode ec = 0;
-    setMediaText(media, ec);
-    if (ec)
-        setMediaText("invalid", ec);
+    setMediaText( media, ec );
+
+    if ( ec )
+    {
+        setMediaText( "invalid", ec );
+    }
 }
 
 MediaList::~MediaList()
 {
-    deleteAllValues(m_queries);
+    deleteAllValues( m_queries );
 }
 
-static String parseMediaDescriptor(const String& s)
+static String parseMediaDescriptor( const String &s )
 {
     int len = s.length();
 
@@ -106,32 +113,45 @@ static String parseMediaDescriptor(const String& s)
     // or hyphen (hex 2d)."
     int i;
     unsigned short c;
-    for (i = 0; i < len; ++i) {
+
+    for ( i = 0; i < len; ++i )
+    {
         c = s[i];
-        if (! ((c >= 'a' && c <= 'z')
-            || (c >= 'A' && c <= 'Z')
-            || (c >= '1' && c <= '9')
-            || (c == '-')))
+
+        if ( ! ( ( c >= 'a' && c <= 'z' )
+                 || ( c >= 'A' && c <= 'Z' )
+                 || ( c >= '1' && c <= '9' )
+                 || ( c == '-' ) ) )
+        {
             break;
+        }
     }
-    return s.left(i);
+
+    return s.left( i );
 }
 
-void MediaList::deleteMedium(const String& oldMedium, ExceptionCode& ec)
+void MediaList::deleteMedium( const String &oldMedium, ExceptionCode &ec )
 {
     RefPtr<MediaList> tempMediaList = MediaList::create();
-    CSSParser p(true);
+    CSSParser p( true );
 
-    MediaQuery* oldQuery = 0;
+    MediaQuery *oldQuery = 0;
     OwnPtr<MediaQuery> createdQuery;
 
-    if (p.parseMediaQuery(tempMediaList.get(), oldMedium)) {
-        if (tempMediaList->m_queries.size() > 0)
+    if ( p.parseMediaQuery( tempMediaList.get(), oldMedium ) )
+    {
+        if ( tempMediaList->m_queries.size() > 0 )
+        {
             oldQuery = tempMediaList->m_queries[0];
-    } else if (m_fallback) {
-        String medium = parseMediaDescriptor(oldMedium);
-        if (!medium.isNull()) {
-            createdQuery = adoptPtr(new MediaQuery(MediaQuery::None, medium, nullptr));
+        }
+    }
+    else if ( m_fallback )
+    {
+        String medium = parseMediaDescriptor( oldMedium );
+
+        if ( !medium.isNull() )
+        {
+            createdQuery = adoptPtr( new MediaQuery( MediaQuery::None, medium, nullptr ) );
             oldQuery = createdQuery.get();
         }
     }
@@ -139,118 +159,160 @@ void MediaList::deleteMedium(const String& oldMedium, ExceptionCode& ec)
     // DOM Style Sheets spec doesn't allow SYNTAX_ERR to be thrown in deleteMedium
     ec = NOT_FOUND_ERR;
 
-    if (oldQuery) {
-        for (size_t i = 0; i < m_queries.size(); ++i) {
-            MediaQuery* a = m_queries[i];
-            if (*a == *oldQuery) {
-                m_queries.remove(i);
+    if ( oldQuery )
+    {
+        for ( size_t i = 0; i < m_queries.size(); ++i )
+        {
+            MediaQuery *a = m_queries[i];
+
+            if ( *a == *oldQuery )
+            {
+                m_queries.remove( i );
                 delete a;
                 ec = 0;
                 break;
             }
         }
     }
-    
-    if (!ec)
+
+    if ( !ec )
+    {
         notifyChanged();
+    }
 }
 
 String MediaList::mediaText() const
 {
-    String text("");
+    String text( "" );
 
     bool first = true;
-    for (size_t i = 0; i < m_queries.size(); ++i) {
-        if (!first)
+
+    for ( size_t i = 0; i < m_queries.size(); ++i )
+    {
+        if ( !first )
+        {
             text += ", ";
+        }
         else
+        {
             first = false;
+        }
+
         text += m_queries[i]->cssText();
     }
 
     return text;
 }
 
-void MediaList::setMediaText(const String& value, ExceptionCode& ec)
+void MediaList::setMediaText( const String &value, ExceptionCode &ec )
 {
     RefPtr<MediaList> tempMediaList = MediaList::create();
-    CSSParser p(true);
+    CSSParser p( true );
 
     Vector<String> list;
-    value.split(',', list);
+    value.split( ',', list );
     Vector<String>::const_iterator end = list.end();
-    for (Vector<String>::const_iterator it = list.begin(); it != end; ++it) {
-        String medium = (*it).stripWhiteSpace();
-        if (!medium.isEmpty()) {
-            if (!p.parseMediaQuery(tempMediaList.get(), medium)) {
-                if (m_fallback) {
-                    String mediaDescriptor = parseMediaDescriptor(medium);
-                    if (!mediaDescriptor.isNull())
-                        tempMediaList->m_queries.append(new MediaQuery(MediaQuery::None, mediaDescriptor, nullptr));
-                } else {
+
+    for ( Vector<String>::const_iterator it = list.begin(); it != end; ++it )
+    {
+        String medium = ( *it ).stripWhiteSpace();
+
+        if ( !medium.isEmpty() )
+        {
+            if ( !p.parseMediaQuery( tempMediaList.get(), medium ) )
+            {
+                if ( m_fallback )
+                {
+                    String mediaDescriptor = parseMediaDescriptor( medium );
+
+                    if ( !mediaDescriptor.isNull() )
+                    {
+                        tempMediaList->m_queries.append( new MediaQuery( MediaQuery::None, mediaDescriptor, nullptr ) );
+                    }
+                }
+                else
+                {
                     ec = SYNTAX_ERR;
                     return;
                 }
-            }          
-        } else if (!m_fallback) {
-            ec = SYNTAX_ERR;
-            return;
-        }            
-    }
-    // ",,,," falls straight through, but is not valid unless fallback
-    if (!m_fallback && list.begin() == list.end()) {
-        String s = value.stripWhiteSpace();
-        if (!s.isEmpty()) {
+            }
+        }
+        else if ( !m_fallback )
+        {
             ec = SYNTAX_ERR;
             return;
         }
     }
-    
+
+    // ",,,," falls straight through, but is not valid unless fallback
+    if ( !m_fallback && list.begin() == list.end() )
+    {
+        String s = value.stripWhiteSpace();
+
+        if ( !s.isEmpty() )
+        {
+            ec = SYNTAX_ERR;
+            return;
+        }
+    }
+
     ec = 0;
-    deleteAllValues(m_queries);
+    deleteAllValues( m_queries );
     m_queries = tempMediaList->m_queries;
     tempMediaList->m_queries.clear();
     notifyChanged();
 }
 
-String MediaList::item(unsigned index) const
+String MediaList::item( unsigned index ) const
 {
-    if (index < m_queries.size()) {
-        MediaQuery* query = m_queries[index];
+    if ( index < m_queries.size() )
+    {
+        MediaQuery *query = m_queries[index];
         return query->cssText();
     }
 
     return String();
 }
 
-void MediaList::appendMedium(const String& newMedium, ExceptionCode& ec)
+void MediaList::appendMedium( const String &newMedium, ExceptionCode &ec )
 {
     ec = INVALID_CHARACTER_ERR;
-    CSSParser p(true);
-    if (p.parseMediaQuery(this, newMedium)) {
+    CSSParser p( true );
+
+    if ( p.parseMediaQuery( this, newMedium ) )
+    {
         ec = 0;
-    } else if (m_fallback) {
-        String medium = parseMediaDescriptor(newMedium);
-        if (!medium.isNull()) {
-            m_queries.append(new MediaQuery(MediaQuery::None, medium, nullptr));
+    }
+    else if ( m_fallback )
+    {
+        String medium = parseMediaDescriptor( newMedium );
+
+        if ( !medium.isNull() )
+        {
+            m_queries.append( new MediaQuery( MediaQuery::None, medium, nullptr ) );
             ec = 0;
         }
     }
-    
-    if (!ec)
+
+    if ( !ec )
+    {
         notifyChanged();
+    }
 }
 
-void MediaList::appendMediaQuery(PassOwnPtr<MediaQuery> mediaQuery)
+void MediaList::appendMediaQuery( PassOwnPtr<MediaQuery> mediaQuery )
 {
-    m_queries.append(mediaQuery.leakPtr());
+    m_queries.append( mediaQuery.leakPtr() );
 }
 
 void MediaList::notifyChanged()
 {
-    for (StyleBase* p = parent(); p; p = p->parent()) {
-        if (p->isCSSStyleSheet())
-            return static_cast<CSSStyleSheet*>(p)->styleSheetChanged();
+    for ( StyleBase *p = parent(); p; p = p->parent() )
+    {
+        if ( p->isCSSStyleSheet() )
+        {
+            return static_cast<CSSStyleSheet *>( p )->styleSheetChanged();
+        }
     }
 }
 

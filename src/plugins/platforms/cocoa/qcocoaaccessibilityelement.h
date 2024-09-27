@@ -38,12 +38,12 @@
 
 @interface QMacAccessibilityElement : NSObject
 {
-   NSString *role;
-   QAccessible::Id axid;
+    NSString *role;
+    QAccessible::Id axid;
 }
 
-- (id)initWithId: (QAccessible::Id)anId;
-+ (QMacAccessibilityElement *)elementWithId: (QAccessible::Id)anId;
+- ( id )initWithId: ( QAccessible::Id )anId;
++ ( QMacAccessibilityElement * )elementWithId: ( QAccessible::Id )anId;
 
 @end
 

@@ -34,14 +34,14 @@ class QXcbGlIntegration;
 
 class Q_XCB_EXPORT QXcbGlIntegrationPlugin : public QObject
 {
-   CS_OBJECT(QXcbGlIntegrationPlugin)
+    CS_OBJECT( QXcbGlIntegrationPlugin )
 
- public:
-   explicit QXcbGlIntegrationPlugin(QObject *parent = nullptr)
-      : QObject(parent)
-   { }
+public:
+    explicit QXcbGlIntegrationPlugin( QObject *parent = nullptr )
+        : QObject( parent )
+    { }
 
-   virtual QXcbGlIntegration *create() = 0;
+    virtual QXcbGlIntegration *create() = 0;
 };
 
 #endif

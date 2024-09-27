@@ -30,20 +30,22 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
 #ifndef NDEBUG
-static WTF::RefCountedLeakCounter eventListenerCounter("JSLazyEventListener");
+static WTF::RefCountedLeakCounter eventListenerCounter( "JSLazyEventListener" );
 #endif
 
-JSLazyEventListener::JSLazyEventListener(const String& functionName, const String& eventParameterName, const String& code, Node* node, const String& sourceURL, int lineNumber, JSObject* wrapper, DOMWrapperWorld* isolatedWorld)
-    : JSEventListener(0, wrapper, true, isolatedWorld)
-    , m_functionName(functionName)
-    , m_eventParameterName(eventParameterName)
-    , m_code(code)
-    , m_sourceURL(sourceURL)
-    , m_lineNumber(lineNumber)
-    , m_originalNode(node)
+JSLazyEventListener::JSLazyEventListener( const String &functionName, const String &eventParameterName, const String &code,
+        Node *node, const String &sourceURL, int lineNumber, JSObject *wrapper, DOMWrapperWorld *isolatedWorld )
+    : JSEventListener( 0, wrapper, true, isolatedWorld )
+    , m_functionName( functionName )
+    , m_eventParameterName( eventParameterName )
+    , m_code( code )
+    , m_sourceURL( sourceURL )
+    , m_lineNumber( lineNumber )
+    , m_originalNode( node )
 {
     // We don't retain the original node because we assume it
     // will stay alive as long as this handler object is around
@@ -53,8 +55,10 @@ JSLazyEventListener::JSLazyEventListener(const String& functionName, const Strin
 
     // A JSLazyEventListener can be created with a line number of zero when it is created with
     // a setAttribute call from JavaScript, so make the line number 1 in that case.
-    if (m_lineNumber == 0)
+    if ( m_lineNumber == 0 )
+    {
         m_lineNumber = 1;
+    }
 
 #ifndef NDEBUG
     eventListenerCounter.increment();
@@ -68,53 +72,73 @@ JSLazyEventListener::~JSLazyEventListener()
 #endif
 }
 
-JSObject* JSLazyEventListener::initializeJSFunction(ScriptExecutionContext* executionContext) const
+JSObject *JSLazyEventListener::initializeJSFunction( ScriptExecutionContext *executionContext ) const
 {
-    ASSERT(executionContext);
-    ASSERT(executionContext->isDocument());
-    if (!executionContext)
+    ASSERT( executionContext );
+    ASSERT( executionContext->isDocument() );
+
+    if ( !executionContext )
+    {
         return 0;
+    }
 
-    Document* document = static_cast<Document*>(executionContext);
+    Document *document = static_cast<Document *>( executionContext );
 
-    if (!document->frame())
+    if ( !document->frame() )
+    {
         return 0;
+    }
 
-    if (!document->contentSecurityPolicy()->allowInlineEventHandlers())
+    if ( !document->contentSecurityPolicy()->allowInlineEventHandlers() )
+    {
         return 0;
+    }
 
-    ScriptController* script = document->frame()->script();
-    if (!script->canExecuteScripts(AboutToExecuteScript) || script->isPaused())
+    ScriptController *script = document->frame()->script();
+
+    if ( !script->canExecuteScripts( AboutToExecuteScript ) || script->isPaused() )
+    {
         return 0;
+    }
 
-    JSDOMGlobalObject* globalObject = toJSDOMGlobalObject(executionContext, isolatedWorld());
-    if (!globalObject)
+    JSDOMGlobalObject *globalObject = toJSDOMGlobalObject( executionContext, isolatedWorld() );
+
+    if ( !globalObject )
+    {
         return 0;
+    }
 
-    ExecState* exec = globalObject->globalExec();
+    ExecState *exec = globalObject->globalExec();
 
     MarkedArgumentBuffer args;
-    args.append(jsNontrivialString(exec, stringToUString(m_eventParameterName)));
-    args.append(jsString(exec, m_code));
+    args.append( jsNontrivialString( exec, stringToUString( m_eventParameterName ) ) );
+    args.append( jsString( exec, m_code ) );
 
-    JSObject* jsFunction = constructFunction(exec, exec->lexicalGlobalObject(), args, Identifier(exec, stringToUString(m_functionName)), stringToUString(m_sourceURL), m_lineNumber); // FIXME: is globalExec ok?
-    if (exec->hadException()) {
+    JSObject *jsFunction = constructFunction( exec, exec->lexicalGlobalObject(), args, Identifier( exec,
+                           stringToUString( m_functionName ) ), stringToUString( m_sourceURL ), m_lineNumber ); // FIXME: is globalExec ok?
+
+    if ( exec->hadException() )
+    {
         exec->clearException();
         return 0;
     }
 
-    JSFunction* listenerAsFunction = static_cast<JSFunction*>(jsFunction);
-    if (m_originalNode) {
-        if (!wrapper()) {
+    JSFunction *listenerAsFunction = static_cast<JSFunction *>( jsFunction );
+
+    if ( m_originalNode )
+    {
+        if ( !wrapper() )
+        {
             // Ensure that 'node' has a JavaScript wrapper to mark the event listener we're creating.
-            JSLock lock(SilenceAssertionsOnly);
+            JSLock lock( SilenceAssertionsOnly );
             // FIXME: Should pass the global object associated with the node
-            setWrapper(exec->globalData(), asObject(toJS(exec, globalObject, m_originalNode)));
+            setWrapper( exec->globalData(), asObject( toJS( exec, globalObject, m_originalNode ) ) );
         }
 
         // Add the event's home element to the scope
         // (and the document, and the form - see JSHTMLElement::eventHandlerScope)
-        listenerAsFunction->setScope(exec->globalData(), static_cast<JSNode*>(wrapper())->pushEventHandlerScope(exec, listenerAsFunction->scope()));
+        listenerAsFunction->setScope( exec->globalData(), static_cast<JSNode *>( wrapper() )->pushEventHandlerScope( exec,
+                                      listenerAsFunction->scope() ) );
     }
 
     // Since we only parse once, there's no need to keep data used for parsing around anymore.

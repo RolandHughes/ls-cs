@@ -31,17 +31,17 @@ class QMediaPlayerResourceSetInterface;
 
 class QGStreamerAvailabilityControl : public QMediaAvailabilityControl
 {
-   CS_OBJECT(QGStreamerAvailabilityControl)
+    CS_OBJECT( QGStreamerAvailabilityControl )
 
- public:
-   QGStreamerAvailabilityControl(QMediaPlayerResourceSetInterface *resources, QObject *parent = nullptr);
-   QMultimedia::AvailabilityStatus availability() const override;
+public:
+    QGStreamerAvailabilityControl( QMediaPlayerResourceSetInterface *resources, QObject *parent = nullptr );
+    QMultimedia::AvailabilityStatus availability() const override;
 
- private:
-   QMediaPlayerResourceSetInterface *m_resources;
+private:
+    QMediaPlayerResourceSetInterface *m_resources;
 
-   CS_SLOT_1(Private, void handleAvailabilityChanged())
-   CS_SLOT_2(handleAvailabilityChanged)
+    CS_SLOT_1( Private, void handleAvailabilityChanged() )
+    CS_SLOT_2( handleAvailabilityChanged )
 };
 
 #endif

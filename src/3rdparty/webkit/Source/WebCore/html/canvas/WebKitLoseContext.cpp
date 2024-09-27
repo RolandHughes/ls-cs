@@ -31,10 +31,11 @@
 
 #include "WebGLRenderingContext.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-WebKitLoseContext::WebKitLoseContext(WebGLRenderingContext* context)
-    : WebGLExtension(context)
+WebKitLoseContext::WebKitLoseContext( WebGLRenderingContext *context )
+    : WebGLExtension( context )
 {
 }
 
@@ -47,9 +48,9 @@ WebGLExtension::ExtensionName WebKitLoseContext::getName() const
     return WebKitLoseContextName;
 }
 
-PassOwnPtr<WebKitLoseContext> WebKitLoseContext::create(WebGLRenderingContext* context)
+PassOwnPtr<WebKitLoseContext> WebKitLoseContext::create( WebGLRenderingContext *context )
 {
-    return adoptPtr(new WebKitLoseContext(context));
+    return adoptPtr( new WebKitLoseContext( context ) );
 }
 
 void WebKitLoseContext::loseContext()

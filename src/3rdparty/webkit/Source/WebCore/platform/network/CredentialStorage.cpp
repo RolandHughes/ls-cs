@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -35,128 +35,154 @@
 #include <wtf/HashSet.h>
 #include <wtf/StdLibExtras.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 typedef HashMap<ProtectionSpace, Credential> ProtectionSpaceToCredentialMap;
-static ProtectionSpaceToCredentialMap& protectionSpaceToCredentialMap()
+static ProtectionSpaceToCredentialMap &protectionSpaceToCredentialMap()
 {
-    DEFINE_STATIC_LOCAL(ProtectionSpaceToCredentialMap, map, ());
+    DEFINE_STATIC_LOCAL( ProtectionSpaceToCredentialMap, map, () );
     return map;
 }
 
-static HashSet<String>& originsWithCredentials()
+static HashSet<String> &originsWithCredentials()
 {
-    DEFINE_STATIC_LOCAL(HashSet<String>, set, ());
+    DEFINE_STATIC_LOCAL( HashSet<String>, set, () );
     return set;
 }
 
 typedef HashMap<String, ProtectionSpace> PathToDefaultProtectionSpaceMap;
-static PathToDefaultProtectionSpaceMap& pathToDefaultProtectionSpaceMap()
+static PathToDefaultProtectionSpaceMap &pathToDefaultProtectionSpaceMap()
 {
-    DEFINE_STATIC_LOCAL(PathToDefaultProtectionSpaceMap, map, ());
+    DEFINE_STATIC_LOCAL( PathToDefaultProtectionSpaceMap, map, () );
     return map;
 }
 
-static String originStringFromURL(const KURL& url)
+static String originStringFromURL( const KURL &url )
 {
-    if (url.port())
-        return makeString(url.protocol(), "://", url.host(), ':', String::number(url.port()), '/');
+    if ( url.port() )
+    {
+        return makeString( url.protocol(), "://", url.host(), ':', String::number( url.port() ), '/' );
+    }
 
-    return makeString(url.protocol(), "://", url.host(), '/');
+    return makeString( url.protocol(), "://", url.host(), '/' );
 }
 
-static String protectionSpaceMapKeyFromURL(const KURL& url)
+static String protectionSpaceMapKeyFromURL( const KURL &url )
 {
-    ASSERT(url.isValid());
+    ASSERT( url.isValid() );
 
     // Remove the last path component that is not a directory to determine the subtree for which credentials will apply.
     // We keep a leading slash, but remove a trailing one.
-    String directoryURL = url.string().substring(0, url.pathEnd());
+    String directoryURL = url.string().substring( 0, url.pathEnd() );
     unsigned directoryURLPathStart = url.pathStart();
-    ASSERT(directoryURL[directoryURLPathStart] == '/');
-    if (directoryURL.length() > directoryURLPathStart + 1) {
-        size_t index = directoryURL.reverseFind('/');
-        ASSERT(index != notFound);
-        directoryURL = directoryURL.substring(0, (index != directoryURLPathStart) ? index : directoryURLPathStart + 1);
+    ASSERT( directoryURL[directoryURLPathStart] == '/' );
+
+    if ( directoryURL.length() > directoryURLPathStart + 1 )
+    {
+        size_t index = directoryURL.reverseFind( '/' );
+        ASSERT( index != notFound );
+        directoryURL = directoryURL.substring( 0, ( index != directoryURLPathStart ) ? index : directoryURLPathStart + 1 );
     }
 
     return directoryURL;
 }
 
-void CredentialStorage::set(const Credential& credential, const ProtectionSpace& protectionSpace, const KURL& url)
+void CredentialStorage::set( const Credential &credential, const ProtectionSpace &protectionSpace, const KURL &url )
 {
-    ASSERT(protectionSpace.isProxy() || url.protocolInHTTPFamily());
-    ASSERT(protectionSpace.isProxy() || url.isValid());
+    ASSERT( protectionSpace.isProxy() || url.protocolInHTTPFamily() );
+    ASSERT( protectionSpace.isProxy() || url.isValid() );
 
-    protectionSpaceToCredentialMap().set(protectionSpace, credential);
-    if (!protectionSpace.isProxy()) {
-        originsWithCredentials().add(originStringFromURL(url));
+    protectionSpaceToCredentialMap().set( protectionSpace, credential );
+
+    if ( !protectionSpace.isProxy() )
+    {
+        originsWithCredentials().add( originStringFromURL( url ) );
 
         ProtectionSpaceAuthenticationScheme scheme = protectionSpace.authenticationScheme();
-        if (scheme == ProtectionSpaceAuthenticationSchemeHTTPBasic || scheme == ProtectionSpaceAuthenticationSchemeDefault) {
+
+        if ( scheme == ProtectionSpaceAuthenticationSchemeHTTPBasic || scheme == ProtectionSpaceAuthenticationSchemeDefault )
+        {
             // The map can contain both a path and its subpath - while redundant, this makes lookups faster.
-            pathToDefaultProtectionSpaceMap().set(protectionSpaceMapKeyFromURL(url), protectionSpace);
+            pathToDefaultProtectionSpaceMap().set( protectionSpaceMapKeyFromURL( url ), protectionSpace );
         }
     }
 }
 
-Credential CredentialStorage::get(const ProtectionSpace& protectionSpace)
+Credential CredentialStorage::get( const ProtectionSpace &protectionSpace )
 {
-    return protectionSpaceToCredentialMap().get(protectionSpace);
+    return protectionSpaceToCredentialMap().get( protectionSpace );
 }
 
-void CredentialStorage::remove(const ProtectionSpace& protectionSpace)
+void CredentialStorage::remove( const ProtectionSpace &protectionSpace )
 {
-    protectionSpaceToCredentialMap().remove(protectionSpace);
+    protectionSpaceToCredentialMap().remove( protectionSpace );
 }
 
-static PathToDefaultProtectionSpaceMap::iterator findDefaultProtectionSpaceForURL(const KURL& url)
+static PathToDefaultProtectionSpaceMap::iterator findDefaultProtectionSpaceForURL( const KURL &url )
 {
-    ASSERT(url.protocolInHTTPFamily());
-    ASSERT(url.isValid());
+    ASSERT( url.protocolInHTTPFamily() );
+    ASSERT( url.isValid() );
 
-    PathToDefaultProtectionSpaceMap& map = pathToDefaultProtectionSpaceMap();
+    PathToDefaultProtectionSpaceMap &map = pathToDefaultProtectionSpaceMap();
 
     // Don't spend time iterating the path for origins that don't have any credentials.
-    if (!originsWithCredentials().contains(originStringFromURL(url)))
+    if ( !originsWithCredentials().contains( originStringFromURL( url ) ) )
+    {
         return map.end();
+    }
 
-    String directoryURL = protectionSpaceMapKeyFromURL(url);
+    String directoryURL = protectionSpaceMapKeyFromURL( url );
     unsigned directoryURLPathStart = url.pathStart();
-    while (true) {
-        PathToDefaultProtectionSpaceMap::iterator iter = map.find(directoryURL);
-        if (iter != map.end())
+
+    while ( true )
+    {
+        PathToDefaultProtectionSpaceMap::iterator iter = map.find( directoryURL );
+
+        if ( iter != map.end() )
+        {
             return iter;
+        }
 
-        if (directoryURL.length() == directoryURLPathStart + 1)  // path is "/" already, cannot shorten it any more
+        if ( directoryURL.length() == directoryURLPathStart + 1 ) // path is "/" already, cannot shorten it any more
+        {
             return map.end();
+        }
 
-        size_t index = directoryURL.reverseFind('/', directoryURL.length() - 2);
-        ASSERT(index != notFound);
-        directoryURL = directoryURL.substring(0, (index == directoryURLPathStart) ? index + 1 : index);
-        ASSERT(directoryURL.length() > directoryURLPathStart);
-        ASSERT(directoryURL.length() == directoryURLPathStart + 1 || directoryURL[directoryURL.length() - 1] != '/');
+        size_t index = directoryURL.reverseFind( '/', directoryURL.length() - 2 );
+        ASSERT( index != notFound );
+        directoryURL = directoryURL.substring( 0, ( index == directoryURLPathStart ) ? index + 1 : index );
+        ASSERT( directoryURL.length() > directoryURLPathStart );
+        ASSERT( directoryURL.length() == directoryURLPathStart + 1 || directoryURL[directoryURL.length() - 1] != '/' );
     }
 }
 
-bool CredentialStorage::set(const Credential& credential, const KURL& url)
+bool CredentialStorage::set( const Credential &credential, const KURL &url )
 {
-    ASSERT(url.protocolInHTTPFamily());
-    ASSERT(url.isValid());
-    PathToDefaultProtectionSpaceMap::iterator iter = findDefaultProtectionSpaceForURL(url);
-    if (iter == pathToDefaultProtectionSpaceMap().end())
+    ASSERT( url.protocolInHTTPFamily() );
+    ASSERT( url.isValid() );
+    PathToDefaultProtectionSpaceMap::iterator iter = findDefaultProtectionSpaceForURL( url );
+
+    if ( iter == pathToDefaultProtectionSpaceMap().end() )
+    {
         return false;
-    ASSERT(originsWithCredentials().contains(originStringFromURL(url)));
-    protectionSpaceToCredentialMap().set(iter->second, credential);
+    }
+
+    ASSERT( originsWithCredentials().contains( originStringFromURL( url ) ) );
+    protectionSpaceToCredentialMap().set( iter->second, credential );
     return true;
 }
 
-Credential CredentialStorage::get(const KURL& url)
+Credential CredentialStorage::get( const KURL &url )
 {
-    PathToDefaultProtectionSpaceMap::iterator iter = findDefaultProtectionSpaceForURL(url);
-    if (iter == pathToDefaultProtectionSpaceMap().end())
+    PathToDefaultProtectionSpaceMap::iterator iter = findDefaultProtectionSpaceForURL( url );
+
+    if ( iter == pathToDefaultProtectionSpaceMap().end() )
+    {
         return Credential();
-    return protectionSpaceToCredentialMap().get(iter->second);
+    }
+
+    return protectionSpaceToCredentialMap().get( iter->second );
 }
 
 } // namespace WebCore

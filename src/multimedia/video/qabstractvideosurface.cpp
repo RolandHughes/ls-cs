@@ -28,8 +28,8 @@
 #include <QDebug>
 
 
-QAbstractVideoSurface::QAbstractVideoSurface(QObject *parent)
-   : QObject(parent), d_ptr(new QAbstractVideoSurfacePrivate)
+QAbstractVideoSurface::QAbstractVideoSurface( QObject *parent )
+    : QObject( parent ), d_ptr( new QAbstractVideoSurfacePrivate )
 {
 }
 
@@ -38,9 +38,9 @@ QAbstractVideoSurface::~QAbstractVideoSurface()
 }
 
 
-bool QAbstractVideoSurface::isFormatSupported(const QVideoSurfaceFormat &format) const
+bool QAbstractVideoSurface::isFormatSupported( const QVideoSurfaceFormat &format ) const
 {
-   return supportedPixelFormats(format.handleType()).contains(format.pixelFormat());
+    return supportedPixelFormats( format.handleType() ).contains( format.pixelFormat() );
 }
 
 /*!
@@ -56,11 +56,11 @@ bool QAbstractVideoSurface::isFormatSupported(const QVideoSurfaceFormat &format)
     supported format an invalid format will be returned.
 */
 
-QVideoSurfaceFormat QAbstractVideoSurface::nearestFormat(const QVideoSurfaceFormat &format) const
+QVideoSurfaceFormat QAbstractVideoSurface::nearestFormat( const QVideoSurfaceFormat &format ) const
 {
-   return isFormatSupported(format)
-      ? format
-      : QVideoSurfaceFormat();
+    return isFormatSupported( format )
+           ? format
+           : QVideoSurfaceFormat();
 }
 
 /*!
@@ -77,8 +77,8 @@ QVideoSurfaceFormat QAbstractVideoSurface::nearestFormat(const QVideoSurfaceForm
 
 QVideoSurfaceFormat QAbstractVideoSurface::surfaceFormat() const
 {
-   Q_D(const QAbstractVideoSurface);
-   return d->surfaceFormat;
+    Q_D( const QAbstractVideoSurface );
+    return d->surfaceFormat;
 }
 
 /*!
@@ -97,36 +97,38 @@ QVideoSurfaceFormat QAbstractVideoSurface::surfaceFormat() const
     \sa isActive(), stop()
 */
 
-bool QAbstractVideoSurface::start(const QVideoSurfaceFormat &format)
+bool QAbstractVideoSurface::start( const QVideoSurfaceFormat &format )
 {
-   Q_D(QAbstractVideoSurface);
+    Q_D( QAbstractVideoSurface );
 
-   bool wasActive  = d->active;
+    bool wasActive  = d->active;
 
-   d->active = true;
-   d->surfaceFormat = format;
-   d->error = NoError;
+    d->active = true;
+    d->surfaceFormat = format;
+    d->error = NoError;
 
-   emit surfaceFormatChanged(format);
+    emit surfaceFormatChanged( format );
 
-   if (! wasActive) {
-      emit activeChanged(true);
-   }
+    if ( ! wasActive )
+    {
+        emit activeChanged( true );
+    }
 
-   return true;
+    return true;
 }
 
 void QAbstractVideoSurface::stop()
 {
-   Q_D(QAbstractVideoSurface);
+    Q_D( QAbstractVideoSurface );
 
-   if (d->active) {
-      d->surfaceFormat = QVideoSurfaceFormat();
-      d->active = false;
+    if ( d->active )
+    {
+        d->surfaceFormat = QVideoSurfaceFormat();
+        d->active = false;
 
-      emit activeChanged(false);
-      emit surfaceFormatChanged(surfaceFormat());
-   }
+        emit activeChanged( false );
+        emit surfaceFormatChanged( surfaceFormat() );
+    }
 }
 
 /*!
@@ -137,8 +139,8 @@ void QAbstractVideoSurface::stop()
 
 bool QAbstractVideoSurface::isActive() const
 {
-   Q_D(const QAbstractVideoSurface);
-   return d->active;
+    Q_D( const QAbstractVideoSurface );
+    return d->active;
 }
 
 /*!
@@ -179,55 +181,64 @@ bool QAbstractVideoSurface::isActive() const
 
 QAbstractVideoSurface::Error QAbstractVideoSurface::error() const
 {
-   Q_D(const QAbstractVideoSurface);
-   return d->error;
+    Q_D( const QAbstractVideoSurface );
+    return d->error;
 }
 
 /*!
     Sets the value of error() to \a error.
 */
 
-void QAbstractVideoSurface::setError(Error error)
+void QAbstractVideoSurface::setError( Error error )
 {
-   Q_D(QAbstractVideoSurface);
+    Q_D( QAbstractVideoSurface );
 
-   d->error = error;
+    d->error = error;
 }
 
 QSize QAbstractVideoSurface::nativeResolution() const
 {
-   Q_D(const QAbstractVideoSurface);
-   return d->nativeResolution;
+    Q_D( const QAbstractVideoSurface );
+    return d->nativeResolution;
 }
-void QAbstractVideoSurface::setNativeResolution(const QSize &resolution)
+void QAbstractVideoSurface::setNativeResolution( const QSize &resolution )
 {
-   Q_D(QAbstractVideoSurface);
-   if (d->nativeResolution != resolution) {
-      d->nativeResolution = resolution;
-      emit nativeResolutionChanged(resolution);
-   }
+    Q_D( QAbstractVideoSurface );
+
+    if ( d->nativeResolution != resolution )
+    {
+        d->nativeResolution = resolution;
+        emit nativeResolutionChanged( resolution );
+    }
 }
-QDebug operator<<(QDebug dbg, const QAbstractVideoSurface::Error &error)
+QDebug operator<<( QDebug dbg, const QAbstractVideoSurface::Error &error )
 {
-   QDebugStateSaver saver(dbg);
-   dbg.nospace();
-   switch (error) {
-      case QAbstractVideoSurface::UnsupportedFormatError:
-         dbg << "UnsupportedFormatError";
-         break;
-      case QAbstractVideoSurface::IncorrectFormatError:
-         dbg << "IncorrectFormatError";
-         break;
-      case QAbstractVideoSurface::StoppedError:
-         dbg << "StoppedError";
-         break;
-      case QAbstractVideoSurface::ResourceError:
-         dbg << "ResourceError";
-         break;
-      default:
-         dbg << "NoError";
-         break;
-   }
-   return dbg;
+    QDebugStateSaver saver( dbg );
+    dbg.nospace();
+
+    switch ( error )
+    {
+        case QAbstractVideoSurface::UnsupportedFormatError:
+            dbg << "UnsupportedFormatError";
+            break;
+
+        case QAbstractVideoSurface::IncorrectFormatError:
+            dbg << "IncorrectFormatError";
+            break;
+
+        case QAbstractVideoSurface::StoppedError:
+            dbg << "StoppedError";
+            break;
+
+        case QAbstractVideoSurface::ResourceError:
+            dbg << "ResourceError";
+            break;
+
+        default:
+            dbg << "NoError";
+            break;
+    }
+
+    return dbg;
 }
 

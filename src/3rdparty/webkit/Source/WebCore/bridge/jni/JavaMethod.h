@@ -34,20 +34,23 @@
 
 #include <wtf/text/WTFString.h>
 
-namespace JSC {
+namespace JSC
+{
 
-namespace Bindings {
+namespace Bindings
+{
 
-typedef const char* RuntimeType;
+typedef const char *RuntimeType;
 
-class JavaMethod : public Method {
+class JavaMethod : public Method
+{
 public:
     virtual ~JavaMethod() {}
 
     virtual String name() const = 0;
     virtual RuntimeType returnTypeClassName() const = 0;
-    virtual String parameterAt(int) const = 0;
-    virtual const char* signature() const = 0;
+    virtual String parameterAt( int ) const = 0;
+    virtual const char *signature() const = 0;
     virtual JavaType returnType() const = 0;
     virtual bool isStatic() const = 0;
 };

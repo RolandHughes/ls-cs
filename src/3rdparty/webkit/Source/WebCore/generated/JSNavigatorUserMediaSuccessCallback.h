@@ -28,24 +28,26 @@
 #include "NavigatorUserMediaSuccessCallback.h"
 #include <wtf/Forward.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class JSNavigatorUserMediaSuccessCallback : public NavigatorUserMediaSuccessCallback, public ActiveDOMCallback {
+class JSNavigatorUserMediaSuccessCallback : public NavigatorUserMediaSuccessCallback, public ActiveDOMCallback
+{
 public:
-    static PassRefPtr<JSNavigatorUserMediaSuccessCallback> create(JSC::JSObject* callback, JSDOMGlobalObject* globalObject)
+    static PassRefPtr<JSNavigatorUserMediaSuccessCallback> create( JSC::JSObject *callback, JSDOMGlobalObject *globalObject )
     {
-        return adoptRef(new JSNavigatorUserMediaSuccessCallback(callback, globalObject));
+        return adoptRef( new JSNavigatorUserMediaSuccessCallback( callback, globalObject ) );
     }
 
     virtual ~JSNavigatorUserMediaSuccessCallback();
 
     // Functions
-    virtual bool handleEvent(int* dummy);
+    virtual bool handleEvent( int *dummy );
 
 private:
-    JSNavigatorUserMediaSuccessCallback(JSC::JSObject* callback, JSDOMGlobalObject*);
+    JSNavigatorUserMediaSuccessCallback( JSC::JSObject *callback, JSDOMGlobalObject * );
 
-    JSCallbackData* m_data;
+    JSCallbackData *m_data;
 };
 
 } // namespace WebCore

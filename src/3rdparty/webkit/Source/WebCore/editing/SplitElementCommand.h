@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef SplitElementCommand_h
@@ -28,17 +28,19 @@
 
 #include "EditCommand.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class SplitElementCommand : public SimpleEditCommand {
+class SplitElementCommand : public SimpleEditCommand
+{
 public:
-    static PassRefPtr<SplitElementCommand> create(PassRefPtr<Element> element, PassRefPtr<Node> splitPointChild)
+    static PassRefPtr<SplitElementCommand> create( PassRefPtr<Element> element, PassRefPtr<Node> splitPointChild )
     {
-        return adoptRef(new SplitElementCommand(element, splitPointChild));
+        return adoptRef( new SplitElementCommand( element, splitPointChild ) );
     }
 
 private:
-    SplitElementCommand(PassRefPtr<Element>, PassRefPtr<Node> splitPointChild);
+    SplitElementCommand( PassRefPtr<Element>, PassRefPtr<Node> splitPointChild );
 
     virtual void doApply();
     virtual void doUnapply();

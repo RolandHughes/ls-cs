@@ -27,9 +27,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSHTMLCanvasElement);
+ASSERT_CLASS_FITS_IN_CELL( JSHTMLCanvasElement );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -40,10 +41,10 @@ ASSERT_CLASS_FITS_IN_CELL(JSHTMLCanvasElement);
 
 static const HashTableValue JSHTMLCanvasElementTableValues[4] =
 {
-    { "width", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLCanvasElementWidth), (intptr_t)setJSHTMLCanvasElementWidth THUNK_GENERATOR(0) },
-    { "height", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLCanvasElementHeight), (intptr_t)setJSHTMLCanvasElementHeight THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLCanvasElementConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "width", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLCanvasElementWidth ), ( intptr_t )setJSHTMLCanvasElementWidth THUNK_GENERATOR( 0 ) },
+    { "height", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLCanvasElementHeight ), ( intptr_t )setJSHTMLCanvasElementHeight THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLCanvasElementConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -57,43 +58,51 @@ static JSC_CONST_HASHTABLE HashTable JSHTMLCanvasElementTable = { 9, 7, JSHTMLCa
 
 static const HashTableValue JSHTMLCanvasElementConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSHTMLCanvasElementConstructorTable = { 1, 0, JSHTMLCanvasElementConstructorTableValues, 0 };
-class JSHTMLCanvasElementConstructor : public DOMConstructorObject {
+class JSHTMLCanvasElementConstructor : public DOMConstructorObject
+{
 public:
-    JSHTMLCanvasElementConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSHTMLCanvasElementConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSHTMLCanvasElementConstructor::s_info = { "HTMLCanvasElementConstructor", &DOMConstructorObject::s_info, &JSHTMLCanvasElementConstructorTable, 0 };
 
-JSHTMLCanvasElementConstructor::JSHTMLCanvasElementConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSHTMLCanvasElementConstructor::JSHTMLCanvasElementConstructor( ExecState *exec, Structure *structure,
+        JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSHTMLCanvasElementPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSHTMLCanvasElementPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSHTMLCanvasElementConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSHTMLCanvasElementConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSHTMLCanvasElementConstructor, JSDOMWrapper>(exec, &JSHTMLCanvasElementConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSHTMLCanvasElementConstructor, JSDOMWrapper>( exec, &JSHTMLCanvasElementConstructorTable, this,
+            propertyName, slot );
 }
 
-bool JSHTMLCanvasElementConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSHTMLCanvasElementConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSHTMLCanvasElementConstructor, JSDOMWrapper>(exec, &JSHTMLCanvasElementConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSHTMLCanvasElementConstructor, JSDOMWrapper>( exec, &JSHTMLCanvasElementConstructorTable, this,
+            propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -105,126 +114,138 @@ bool JSHTMLCanvasElementConstructor::getOwnPropertyDescriptor(ExecState* exec, c
 
 static const HashTableValue JSHTMLCanvasElementPrototypeTableValues[3] =
 {
-    { "toDataURL", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsHTMLCanvasElementPrototypeFunctionToDataURL), (intptr_t)1 THUNK_GENERATOR(0) },
-    { "getContext", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsHTMLCanvasElementPrototypeFunctionGetContext), (intptr_t)1 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "toDataURL", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsHTMLCanvasElementPrototypeFunctionToDataURL ), ( intptr_t )1 THUNK_GENERATOR( 0 ) },
+    { "getContext", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsHTMLCanvasElementPrototypeFunctionGetContext ), ( intptr_t )1 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSHTMLCanvasElementPrototypeTable = { 4, 3, JSHTMLCanvasElementPrototypeTableValues, 0 };
 const ClassInfo JSHTMLCanvasElementPrototype::s_info = { "HTMLCanvasElementPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSHTMLCanvasElementPrototypeTable, 0 };
 
-JSObject* JSHTMLCanvasElementPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSHTMLCanvasElementPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSHTMLCanvasElement>(exec, globalObject);
+    return getDOMPrototype<JSHTMLCanvasElement>( exec, globalObject );
 }
 
-bool JSHTMLCanvasElementPrototype::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSHTMLCanvasElementPrototype::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticFunctionSlot<JSObject>(exec, &JSHTMLCanvasElementPrototypeTable, this, propertyName, slot);
+    return getStaticFunctionSlot<JSObject>( exec, &JSHTMLCanvasElementPrototypeTable, this, propertyName, slot );
 }
 
-bool JSHTMLCanvasElementPrototype::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSHTMLCanvasElementPrototype::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticFunctionDescriptor<JSObject>(exec, &JSHTMLCanvasElementPrototypeTable, this, propertyName, descriptor);
+    return getStaticFunctionDescriptor<JSObject>( exec, &JSHTMLCanvasElementPrototypeTable, this, propertyName, descriptor );
 }
 
 const ClassInfo JSHTMLCanvasElement::s_info = { "HTMLCanvasElement", &JSHTMLElement::s_info, &JSHTMLCanvasElementTable, 0 };
 
-JSHTMLCanvasElement::JSHTMLCanvasElement(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<HTMLCanvasElement> impl)
-    : JSHTMLElement(structure, globalObject, impl)
+JSHTMLCanvasElement::JSHTMLCanvasElement( Structure *structure, JSDOMGlobalObject *globalObject,
+        PassRefPtr<HTMLCanvasElement> impl )
+    : JSHTMLElement( structure, globalObject, impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSHTMLCanvasElement::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSHTMLCanvasElement::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSHTMLCanvasElementPrototype(exec->globalData(), globalObject, JSHTMLCanvasElementPrototype::createStructure(exec->globalData(), JSHTMLElementPrototype::self(exec, globalObject)));
+    return new ( exec ) JSHTMLCanvasElementPrototype( exec->globalData(), globalObject,
+            JSHTMLCanvasElementPrototype::createStructure( exec->globalData(), JSHTMLElementPrototype::self( exec, globalObject ) ) );
 }
 
-bool JSHTMLCanvasElement::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSHTMLCanvasElement::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSHTMLCanvasElement, Base>(exec, &JSHTMLCanvasElementTable, this, propertyName, slot);
+    return getStaticValueSlot<JSHTMLCanvasElement, Base>( exec, &JSHTMLCanvasElementTable, this, propertyName, slot );
 }
 
-bool JSHTMLCanvasElement::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSHTMLCanvasElement::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSHTMLCanvasElement, Base>(exec, &JSHTMLCanvasElementTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSHTMLCanvasElement, Base>( exec, &JSHTMLCanvasElementTable, this, propertyName, descriptor );
 }
 
-JSValue jsHTMLCanvasElementWidth(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLCanvasElementWidth( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLCanvasElement* castedThis = static_cast<JSHTMLCanvasElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    HTMLCanvasElement* imp = static_cast<HTMLCanvasElement*>(castedThis->impl());
-    JSValue result = jsNumber(imp->width());
+    JSHTMLCanvasElement *castedThis = static_cast<JSHTMLCanvasElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    HTMLCanvasElement *imp = static_cast<HTMLCanvasElement *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->width() );
     return result;
 }
 
 
-JSValue jsHTMLCanvasElementHeight(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLCanvasElementHeight( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLCanvasElement* castedThis = static_cast<JSHTMLCanvasElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    HTMLCanvasElement* imp = static_cast<HTMLCanvasElement*>(castedThis->impl());
-    JSValue result = jsNumber(imp->height());
+    JSHTMLCanvasElement *castedThis = static_cast<JSHTMLCanvasElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    HTMLCanvasElement *imp = static_cast<HTMLCanvasElement *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->height() );
     return result;
 }
 
 
-JSValue jsHTMLCanvasElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLCanvasElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLCanvasElement* domObject = static_cast<JSHTMLCanvasElement*>(asObject(slotBase));
-    return JSHTMLCanvasElement::getConstructor(exec, domObject->globalObject());
+    JSHTMLCanvasElement *domObject = static_cast<JSHTMLCanvasElement *>( asObject( slotBase ) );
+    return JSHTMLCanvasElement::getConstructor( exec, domObject->globalObject() );
 }
 
-void JSHTMLCanvasElement::put(ExecState* exec, const Identifier& propertyName, JSValue value, PutPropertySlot& slot)
+void JSHTMLCanvasElement::put( ExecState *exec, const Identifier &propertyName, JSValue value, PutPropertySlot &slot )
 {
-    lookupPut<JSHTMLCanvasElement, Base>(exec, propertyName, value, &JSHTMLCanvasElementTable, this, slot);
+    lookupPut<JSHTMLCanvasElement, Base>( exec, propertyName, value, &JSHTMLCanvasElementTable, this, slot );
 }
 
-void setJSHTMLCanvasElementWidth(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSHTMLCanvasElementWidth( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSHTMLCanvasElement* castedThis = static_cast<JSHTMLCanvasElement*>(thisObject);
-    HTMLCanvasElement* imp = static_cast<HTMLCanvasElement*>(castedThis->impl());
-    imp->setWidth(value.toInt32(exec));
-}
-
-
-void setJSHTMLCanvasElementHeight(ExecState* exec, JSObject* thisObject, JSValue value)
-{
-    JSHTMLCanvasElement* castedThis = static_cast<JSHTMLCanvasElement*>(thisObject);
-    HTMLCanvasElement* imp = static_cast<HTMLCanvasElement*>(castedThis->impl());
-    imp->setHeight(value.toInt32(exec));
+    JSHTMLCanvasElement *castedThis = static_cast<JSHTMLCanvasElement *>( thisObject );
+    HTMLCanvasElement *imp = static_cast<HTMLCanvasElement *>( castedThis->impl() );
+    imp->setWidth( value.toInt32( exec ) );
 }
 
 
-JSValue JSHTMLCanvasElement::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+void setJSHTMLCanvasElementHeight( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    return getDOMConstructor<JSHTMLCanvasElementConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    JSHTMLCanvasElement *castedThis = static_cast<JSHTMLCanvasElement *>( thisObject );
+    HTMLCanvasElement *imp = static_cast<HTMLCanvasElement *>( castedThis->impl() );
+    imp->setHeight( value.toInt32( exec ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsHTMLCanvasElementPrototypeFunctionToDataURL(ExecState* exec)
+
+JSValue JSHTMLCanvasElement::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
+{
+    return getDOMConstructor<JSHTMLCanvasElementConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
+}
+
+EncodedJSValue JSC_HOST_CALL jsHTMLCanvasElementPrototypeFunctionToDataURL( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSHTMLCanvasElement::s_info))
-        return throwVMTypeError(exec);
-    JSHTMLCanvasElement* castedThis = static_cast<JSHTMLCanvasElement*>(asObject(thisValue));
-    return JSValue::encode(castedThis->toDataURL(exec));
+
+    if ( !thisValue.inherits( &JSHTMLCanvasElement::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSHTMLCanvasElement *castedThis = static_cast<JSHTMLCanvasElement *>( asObject( thisValue ) );
+    return JSValue::encode( castedThis->toDataURL( exec ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsHTMLCanvasElementPrototypeFunctionGetContext(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsHTMLCanvasElementPrototypeFunctionGetContext( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSHTMLCanvasElement::s_info))
-        return throwVMTypeError(exec);
-    JSHTMLCanvasElement* castedThis = static_cast<JSHTMLCanvasElement*>(asObject(thisValue));
-    return JSValue::encode(castedThis->getContext(exec));
+
+    if ( !thisValue.inherits( &JSHTMLCanvasElement::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSHTMLCanvasElement *castedThis = static_cast<JSHTMLCanvasElement *>( asObject( thisValue ) );
+    return JSValue::encode( castedThis->getContext( exec ) );
 }
 
-HTMLCanvasElement* toHTMLCanvasElement(JSC::JSValue value)
+HTMLCanvasElement *toHTMLCanvasElement( JSC::JSValue value )
 {
-    return value.inherits(&JSHTMLCanvasElement::s_info) ? static_cast<JSHTMLCanvasElement*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSHTMLCanvasElement::s_info ) ? static_cast<JSHTMLCanvasElement *>( asObject( value ) )->impl() : 0;
 }
 
 }

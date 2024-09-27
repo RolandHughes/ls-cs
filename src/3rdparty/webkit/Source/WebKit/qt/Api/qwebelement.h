@@ -27,23 +27,28 @@
 #include <qshareddata.h>
 
 #include "qwebkitglobal.h"
-namespace WebCore {
-    class Element;
-    class Node;
+namespace WebCore
+{
+class Element;
+class Node;
 }
 
 
 #if defined(WTF_USE_V8) && WTF_USE_V8
-namespace V8 {
-    namespace Bindings {
-    class QtWebElementRuntime;
-    }
+namespace V8
+{
+namespace Bindings
+{
+class QtWebElementRuntime;
+}
 }
 #else
-namespace JSC {
-    namespace Bindings {
-    class QtWebElementRuntime;
-    }
+namespace JSC
+{
+namespace Bindings
+{
+class QtWebElementRuntime;
+}
 }
 #endif
 
@@ -52,46 +57,47 @@ class QWebFrame;
 class QWebElementCollection;
 class QWebElementPrivate;
 
-class QWEBKIT_EXPORT QWebElement {
+class QWEBKIT_EXPORT QWebElement
+{
 public:
     QWebElement();
-    QWebElement(const QWebElement &other);
-    QWebElement &operator=(const QWebElement &other);
+    QWebElement( const QWebElement &other );
+    QWebElement &operator=( const QWebElement &other );
     ~QWebElement();
 
-    bool operator==(const QWebElement &other) const;
-    bool operator!=(const QWebElement &other) const;
+    bool operator==( const QWebElement &other ) const;
+    bool operator!=( const QWebElement &other ) const;
 
     bool isNull() const;
 
-    QWebElementCollection findAll(const QString &selectorQuery) const;
-    QWebElement findFirst(const QString &selectorQuery) const;
+    QWebElementCollection findAll( const QString &selectorQuery ) const;
+    QWebElement findFirst( const QString &selectorQuery ) const;
 
-    void setPlainText(const QString& text);
+    void setPlainText( const QString &text );
     QString toPlainText() const;
 
-    void setOuterXml(const QString& markup);
+    void setOuterXml( const QString &markup );
     QString toOuterXml() const;
 
-    void setInnerXml(const QString& markup);
+    void setInnerXml( const QString &markup );
     QString toInnerXml() const;
 
-    void setAttribute(const QString& name, const QString& value);
-    void setAttributeNS(const QString& namespaceUri, const QString& name, const QString& value);
-    QString attribute(const QString& name, const QString& defaultValue = QString()) const;
-    QString attributeNS(const QString& namespaceUri, const QString& name, const QString& defaultValue = QString()) const;
-    bool hasAttribute(const QString& name) const;
-    bool hasAttributeNS(const QString& namespaceUri, const QString& name) const;
-    void removeAttribute(const QString& name);
-    void removeAttributeNS(const QString& namespaceUri, const QString& name);
+    void setAttribute( const QString &name, const QString &value );
+    void setAttributeNS( const QString &namespaceUri, const QString &name, const QString &value );
+    QString attribute( const QString &name, const QString &defaultValue = QString() ) const;
+    QString attributeNS( const QString &namespaceUri, const QString &name, const QString &defaultValue = QString() ) const;
+    bool hasAttribute( const QString &name ) const;
+    bool hasAttributeNS( const QString &namespaceUri, const QString &name ) const;
+    void removeAttribute( const QString &name );
+    void removeAttributeNS( const QString &namespaceUri, const QString &name );
     bool hasAttributes() const;
-    QStringList attributeNames(const QString& namespaceUri = QString()) const;
+    QStringList attributeNames( const QString &namespaceUri = QString() ) const;
 
     QStringList classes() const;
-    bool hasClass(const QString& name) const;
-    void addClass(const QString& name);
-    void removeClass(const QString& name);
-    void toggleClass(const QString& name);
+    bool hasClass( const QString &name ) const;
+    void addClass( const QString &name );
+    void removeClass( const QString &name );
+    void toggleClass( const QString &name );
 
     bool hasFocus() const;
     void setFocus();
@@ -113,53 +119,54 @@ public:
 
     // TODO: Add QWebElementCollection overloads
     // docs need example snippet
-    void appendInside(const QString& markup);
-    void appendInside(const QWebElement& element);
+    void appendInside( const QString &markup );
+    void appendInside( const QWebElement &element );
 
     // docs need example snippet
-    void prependInside(const QString& markup);
-    void prependInside(const QWebElement& element);
+    void prependInside( const QString &markup );
+    void prependInside( const QWebElement &element );
 
     // docs need example snippet
-    void appendOutside(const QString& markup);
-    void appendOutside(const QWebElement& element);
+    void appendOutside( const QString &markup );
+    void appendOutside( const QWebElement &element );
 
     // docs need example snippet
-    void prependOutside(const QString& markup);
-    void prependOutside(const QWebElement& element);
+    void prependOutside( const QString &markup );
+    void prependOutside( const QWebElement &element );
 
     // docs need example snippet
-    void encloseContentsWith(const QWebElement& element);
-    void encloseContentsWith(const QString& markup);
-    void encloseWith(const QString& markup);
-    void encloseWith(const QWebElement& element);
+    void encloseContentsWith( const QWebElement &element );
+    void encloseContentsWith( const QString &markup );
+    void encloseWith( const QString &markup );
+    void encloseWith( const QWebElement &element );
 
-    void replace(const QString& markup);
-    void replace(const QWebElement& element);
+    void replace( const QString &markup );
+    void replace( const QWebElement &element );
 
     QWebElement clone() const;
-    QWebElement& takeFromDocument();
+    QWebElement &takeFromDocument();
     void removeFromDocument();
     void removeAllChildren();
 
-    QVariant evaluateJavaScript(const QString& scriptSource);
+    QVariant evaluateJavaScript( const QString &scriptSource );
 
-    enum StyleResolveStrategy {
-         InlineStyle,
-         CascadedStyle,
-         ComputedStyle,
+    enum StyleResolveStrategy
+    {
+        InlineStyle,
+        CascadedStyle,
+        ComputedStyle,
     };
-    QString styleProperty(const QString& name, StyleResolveStrategy strategy) const;
-    void setStyleProperty(const QString& name, const QString& value);
+    QString styleProperty( const QString &name, StyleResolveStrategy strategy ) const;
+    void setStyleProperty( const QString &name, const QString &value );
 
-    void render(QPainter* painter);
-    void render(QPainter* painter, const QRect& rect);
+    void render( QPainter *painter );
+    void render( QPainter *painter, const QRect &rect );
 
 private:
-    explicit QWebElement(WebCore::Element*);
-    explicit QWebElement(WebCore::Node*);
+    explicit QWebElement( WebCore::Element * );
+    explicit QWebElement( WebCore::Node * );
 
-    static QWebElement enclosingElement(WebCore::Node*);
+    static QWebElement enclosingElement( WebCore::Node * );
 
     friend class DumpRenderTreeSupportQt;
     friend class QWebFrame;
@@ -174,8 +181,8 @@ private:
     friend class JSC::Bindings::QtWebElementRuntime;
 #endif
 
-    QWebElementPrivate* d;
-    WebCore::Element* m_element;
+    QWebElementPrivate *d;
+    WebCore::Element *m_element;
 };
 
 class QWebElementCollectionPrivate;
@@ -186,102 +193,244 @@ public:
     using size_type = int;
 
     QWebElementCollection();
-    QWebElementCollection(const QWebElement &contextElement, const QString &query);
-    QWebElementCollection(const QWebElementCollection &other);
-    QWebElementCollection &operator=(const QWebElementCollection &other);
+    QWebElementCollection( const QWebElement &contextElement, const QString &query );
+    QWebElementCollection( const QWebElementCollection &other );
+    QWebElementCollection &operator=( const QWebElementCollection &other );
     ~QWebElementCollection();
 
-    QWebElementCollection operator+(const QWebElementCollection &other) const;
-    inline QWebElementCollection &operator+=(const QWebElementCollection &other)
+    QWebElementCollection operator+( const QWebElementCollection &other ) const;
+    inline QWebElementCollection &operator+=( const QWebElementCollection &other )
     {
-        append(other); return *this;
+        append( other );
+        return *this;
     }
 
-    void append(const QWebElementCollection &other);
+    void append( const QWebElementCollection &other );
 
     int count() const;
-    QWebElement at(int i) const;
-    inline QWebElement operator[](int i) const { return at(i); }
+    QWebElement at( int i ) const;
+    inline QWebElement operator[]( int i ) const
+    {
+        return at( i );
+    }
 
-    inline QWebElement first() const { return at(0); }
-    inline QWebElement last() const { return at(count() - 1); }
+    inline QWebElement first() const
+    {
+        return at( 0 );
+    }
+    inline QWebElement last() const
+    {
+        return at( count() - 1 );
+    }
 
     QList<QWebElement> toList() const;
 
-    class const_iterator {
-       public:
-           inline const_iterator(const QWebElementCollection* collection, int index) : i(index), collection(collection) {}
-           inline const_iterator(const const_iterator &other) : i(other.i), collection(other.collection) {}
+    class const_iterator
+    {
+    public:
+        inline const_iterator( const QWebElementCollection *collection, int index ) : i( index ), collection( collection ) {}
+        inline const_iterator( const const_iterator &other ) : i( other.i ), collection( other.collection ) {}
 
-           inline const QWebElement operator*() const { return collection->at(i); }
+        inline const QWebElement operator*() const
+        {
+            return collection->at( i );
+        }
 
-           inline bool operator==(const const_iterator &other) const { return i == other.i && collection == other.collection; }
-           inline bool operator!=(const const_iterator &other) const { return i != other.i || collection != other.collection; }
-           inline bool operator<(const const_iterator &other) const { return i < other.i; }
-           inline bool operator<=(const const_iterator &other) const { return i <= other.i; }
-           inline bool operator>(const const_iterator &other) const { return i > other.i; }
-           inline bool operator>=(const const_iterator &other) const { return i >= other.i; }
+        inline bool operator==( const const_iterator &other ) const
+        {
+            return i == other.i && collection == other.collection;
+        }
+        inline bool operator!=( const const_iterator &other ) const
+        {
+            return i != other.i || collection != other.collection;
+        }
+        inline bool operator<( const const_iterator &other ) const
+        {
+            return i < other.i;
+        }
+        inline bool operator<=( const const_iterator &other ) const
+        {
+            return i <= other.i;
+        }
+        inline bool operator>( const const_iterator &other ) const
+        {
+            return i > other.i;
+        }
+        inline bool operator>=( const const_iterator &other ) const
+        {
+            return i >= other.i;
+        }
 
-           inline const_iterator& operator++() { ++i; return *this; }
-           inline const_iterator operator++(int) { const_iterator n(collection, i); ++i; return n; }
-           inline const_iterator& operator--() { i--; return *this; }
-           inline const_iterator operator--(int) { const_iterator n(collection, i); i--; return n; }
-           inline const_iterator& operator+=(size_type n) { i += n; return *this; }
-           inline const_iterator& operator-=(size_type n) { i -= n; return *this; }
-           inline const_iterator operator+(size_type n) const { return const_iterator(collection, i + n); }
-           inline const_iterator operator-(size_type n) const { return const_iterator(collection, i - n); }
-           inline size_type operator-(const_iterator other) const { return i - other.i; }
+        inline const_iterator &operator++()
+        {
+            ++i;
+            return *this;
+        }
+        inline const_iterator operator++( int )
+        {
+            const_iterator n( collection, i );
+            ++i;
+            return n;
+        }
+        inline const_iterator &operator--()
+        {
+            i--;
+            return *this;
+        }
+        inline const_iterator operator--( int )
+        {
+            const_iterator n( collection, i );
+            i--;
+            return n;
+        }
+        inline const_iterator &operator+=( size_type n )
+        {
+            i += n;
+            return *this;
+        }
+        inline const_iterator &operator-=( size_type n )
+        {
+            i -= n;
+            return *this;
+        }
+        inline const_iterator operator+( size_type n ) const
+        {
+            return const_iterator( collection, i + n );
+        }
+        inline const_iterator operator-( size_type n ) const
+        {
+            return const_iterator( collection, i - n );
+        }
+        inline size_type operator-( const_iterator other ) const
+        {
+            return i - other.i;
+        }
 
-       private:
-            int i;
-            const QWebElementCollection* const collection;
+    private:
+        int i;
+        const QWebElementCollection *const collection;
     };
 
     friend class const_iterator;
 
-    inline const_iterator begin() const { return constBegin(); }
-    inline const_iterator end() const { return constEnd(); }
-    inline const_iterator constBegin() const { return const_iterator(this, 0); }
-    inline const_iterator constEnd() const { return const_iterator(this, count()); };
+    inline const_iterator begin() const
+    {
+        return constBegin();
+    }
+    inline const_iterator end() const
+    {
+        return constEnd();
+    }
+    inline const_iterator constBegin() const
+    {
+        return const_iterator( this, 0 );
+    }
+    inline const_iterator constEnd() const
+    {
+        return const_iterator( this, count() );
+    };
 
-    class iterator {
+    class iterator
+    {
     public:
-        inline iterator(const QWebElementCollection* collection, int index) : i(index), collection(collection) {}
-        inline iterator(const iterator &other) : i(other.i), collection(other.collection) {}
+        inline iterator( const QWebElementCollection *collection, int index ) : i( index ), collection( collection ) {}
+        inline iterator( const iterator &other ) : i( other.i ), collection( other.collection ) {}
 
-        inline QWebElement operator*() const { return collection->at(i); }
+        inline QWebElement operator*() const
+        {
+            return collection->at( i );
+        }
 
-        inline bool operator==(const iterator &other) const { return i == other.i && collection == other.collection; }
-        inline bool operator!=(const iterator &other) const { return i != other.i || collection != other.collection; }
-        inline bool operator<(const iterator &other) const { return i < other.i; }
-        inline bool operator<=(const iterator &other) const { return i <= other.i; }
-        inline bool operator>(const iterator &other) const { return i > other.i; }
-        inline bool operator>=(const iterator &other) const { return i >= other.i; }
+        inline bool operator==( const iterator &other ) const
+        {
+            return i == other.i && collection == other.collection;
+        }
+        inline bool operator!=( const iterator &other ) const
+        {
+            return i != other.i || collection != other.collection;
+        }
+        inline bool operator<( const iterator &other ) const
+        {
+            return i < other.i;
+        }
+        inline bool operator<=( const iterator &other ) const
+        {
+            return i <= other.i;
+        }
+        inline bool operator>( const iterator &other ) const
+        {
+            return i > other.i;
+        }
+        inline bool operator>=( const iterator &other ) const
+        {
+            return i >= other.i;
+        }
 
-        inline iterator& operator++() { ++i; return *this; }
-        inline iterator operator++(int) { iterator n(collection, i); ++i; return n; }
-        inline iterator& operator--() { i--; return *this; }
-        inline iterator operator--(int) { iterator n(collection, i); i--; return n; }
-        inline iterator& operator+=(size_type n) { i += n; return *this; }
-        inline iterator& operator-=(size_type n) { i -= n; return *this; }
-        inline iterator operator+(size_type n) const { return iterator(collection, i + n); }
-        inline iterator operator-(size_type n) const { return iterator(collection, i - n); }
-        inline size_type operator-(iterator other) const { return i - other.i; }
+        inline iterator &operator++()
+        {
+            ++i;
+            return *this;
+        }
+        inline iterator operator++( int )
+        {
+            iterator n( collection, i );
+            ++i;
+            return n;
+        }
+        inline iterator &operator--()
+        {
+            i--;
+            return *this;
+        }
+        inline iterator operator--( int )
+        {
+            iterator n( collection, i );
+            i--;
+            return n;
+        }
+        inline iterator &operator+=( size_type n )
+        {
+            i += n;
+            return *this;
+        }
+        inline iterator &operator-=( size_type n )
+        {
+            i -= n;
+            return *this;
+        }
+        inline iterator operator+( size_type n ) const
+        {
+            return iterator( collection, i + n );
+        }
+        inline iterator operator-( size_type n ) const
+        {
+            return iterator( collection, i - n );
+        }
+        inline size_type operator-( iterator other ) const
+        {
+            return i - other.i;
+        }
 
     private:
         int i;
-        const QWebElementCollection* const collection;
+        const QWebElementCollection *const collection;
     };
 
     friend class iterator;
 
-    inline iterator begin() { return iterator(this, 0); }
-    inline iterator end()  { return iterator(this, count()); }
+    inline iterator begin()
+    {
+        return iterator( this, 0 );
+    }
+    inline iterator end()
+    {
+        return iterator( this, count() );
+    }
 
 private:
     QExplicitlySharedDataPointer<QWebElementCollectionPrivate> d;
 };
 
-CS_DECLARE_METATYPE(QWebElement)
+CS_DECLARE_METATYPE( QWebElement )
 
 #endif

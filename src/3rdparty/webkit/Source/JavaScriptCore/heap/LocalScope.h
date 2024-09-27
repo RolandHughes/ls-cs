@@ -29,8 +29,9 @@
 #include "HandleStack.h"
 #include "Local.h"
 
-namespace JSC {
-/*  
+namespace JSC
+{
+/*
     A LocalScope is a temporary scope in which Locals are allocated. When a
     LocalScope goes out of scope, all the Locals created in it are destroyed.
 
@@ -39,38 +40,39 @@ namespace JSC {
 
 class JSGlobalData;
 
-class LocalScope {
+class LocalScope
+{
 public:
-    explicit LocalScope(JSGlobalData&);
+    explicit LocalScope( JSGlobalData & );
     ~LocalScope();
-    
-    template <typename T> Local<T> release(Local<T>); // Destroys all other locals in the scope.
+
+    template <typename T> Local<T> release( Local<T> ); // Destroys all other locals in the scope.
 
 private:
-    HandleStack* m_handleStack;
+    HandleStack *m_handleStack;
     HandleStack::Frame m_lastFrame;
 };
 
-inline LocalScope::LocalScope(JSGlobalData& globalData)
-    : m_handleStack(globalData.heap.handleStack())
+inline LocalScope::LocalScope( JSGlobalData &globalData )
+    : m_handleStack( globalData.heap.handleStack() )
 {
-    m_handleStack->enterScope(m_lastFrame);
+    m_handleStack->enterScope( m_lastFrame );
 }
 
 inline LocalScope::~LocalScope()
 {
-    m_handleStack->leaveScope(m_lastFrame);
+    m_handleStack->leaveScope( m_lastFrame );
 }
 
-template <typename T> Local<T> LocalScope::release(Local<T> local)
+template <typename T> Local<T> LocalScope::release( Local<T> local )
 {
     typename Local<T>::ExternalType ptr = local.get();
 
-    m_handleStack->leaveScope(m_lastFrame);
+    m_handleStack->leaveScope( m_lastFrame );
     HandleSlot slot = m_handleStack->push();
-    m_handleStack->enterScope(m_lastFrame);
+    m_handleStack->enterScope( m_lastFrame );
 
-    return Local<T>(slot, ptr);
+    return Local<T>( slot, ptr );
 }
 
 }

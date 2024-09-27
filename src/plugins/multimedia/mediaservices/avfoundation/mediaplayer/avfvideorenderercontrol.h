@@ -36,36 +36,36 @@ class AVFVideoFrameRenderer;
 
 class AVFVideoRendererControl : public QVideoRendererControl, public AVFVideoOutput
 {
-   CS_OBJECT_MULTIPLE(AVFVideoRendererControl, QVideoRendererControl)
-   CS_INTERFACES(AVFVideoOutput)
+    CS_OBJECT_MULTIPLE( AVFVideoRendererControl, QVideoRendererControl )
+    CS_INTERFACES( AVFVideoOutput )
 
- public:
-   explicit AVFVideoRendererControl(QObject *parent = nullptr);
-   virtual ~AVFVideoRendererControl();
+public:
+    explicit AVFVideoRendererControl( QObject *parent = nullptr );
+    virtual ~AVFVideoRendererControl();
 
-   QAbstractVideoSurface *surface() const override;
-   void setSurface(QAbstractVideoSurface *surface) override;
+    QAbstractVideoSurface *surface() const override;
+    void setSurface( QAbstractVideoSurface *surface ) override;
 
-   void setLayer(void *playerLayer) override;
+    void setLayer( void *playerLayer ) override;
 
-   CS_SIGNAL_1(Public, void surfaceChanged(QAbstractVideoSurface *surface))
-   CS_SIGNAL_2(surfaceChanged, surface)
+    CS_SIGNAL_1( Public, void surfaceChanged( QAbstractVideoSurface *surface ) )
+    CS_SIGNAL_2( surfaceChanged, surface )
 
- private:
-   void setupVideoOutput();
+private:
+    void setupVideoOutput();
 
-   QMutex m_mutex;
-   QAbstractVideoSurface *m_surface;
+    QMutex m_mutex;
+    QAbstractVideoSurface *m_surface;
 
-   void *m_playerLayer;
+    void *m_playerLayer;
 
-   AVFVideoFrameRenderer *m_frameRenderer;
-   AVFDisplayLink *m_displayLink;
-   QSize m_nativeSize;
-   bool m_enableOpenGL;
+    AVFVideoFrameRenderer *m_frameRenderer;
+    AVFDisplayLink *m_displayLink;
+    QSize m_nativeSize;
+    bool m_enableOpenGL;
 
-   CS_SLOT_1(Private, void updateVideoFrame(const CVTimeStamp &ts))
-   CS_SLOT_2(updateVideoFrame)
+    CS_SLOT_1( Private, void updateVideoFrame( const CVTimeStamp &ts ) )
+    CS_SLOT_2( updateVideoFrame )
 };
 
 #endif

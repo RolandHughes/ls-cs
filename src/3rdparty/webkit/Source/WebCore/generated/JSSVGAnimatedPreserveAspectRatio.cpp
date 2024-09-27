@@ -30,9 +30,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSSVGAnimatedPreserveAspectRatio);
+ASSERT_CLASS_FITS_IN_CELL( JSSVGAnimatedPreserveAspectRatio );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -43,10 +44,10 @@ ASSERT_CLASS_FITS_IN_CELL(JSSVGAnimatedPreserveAspectRatio);
 
 static const HashTableValue JSSVGAnimatedPreserveAspectRatioTableValues[4] =
 {
-    { "baseVal", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGAnimatedPreserveAspectRatioBaseVal), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "animVal", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGAnimatedPreserveAspectRatioAnimVal), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGAnimatedPreserveAspectRatioConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "baseVal", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGAnimatedPreserveAspectRatioBaseVal ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "animVal", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGAnimatedPreserveAspectRatioAnimVal ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGAnimatedPreserveAspectRatioConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -60,43 +61,52 @@ static JSC_CONST_HASHTABLE HashTable JSSVGAnimatedPreserveAspectRatioTable = { 8
 
 static const HashTableValue JSSVGAnimatedPreserveAspectRatioConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSSVGAnimatedPreserveAspectRatioConstructorTable = { 1, 0, JSSVGAnimatedPreserveAspectRatioConstructorTableValues, 0 };
-class JSSVGAnimatedPreserveAspectRatioConstructor : public DOMConstructorObject {
+class JSSVGAnimatedPreserveAspectRatioConstructor : public DOMConstructorObject
+{
 public:
-    JSSVGAnimatedPreserveAspectRatioConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSSVGAnimatedPreserveAspectRatioConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSSVGAnimatedPreserveAspectRatioConstructor::s_info = { "SVGAnimatedPreserveAspectRatioConstructor", &DOMConstructorObject::s_info, &JSSVGAnimatedPreserveAspectRatioConstructorTable, 0 };
 
-JSSVGAnimatedPreserveAspectRatioConstructor::JSSVGAnimatedPreserveAspectRatioConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSSVGAnimatedPreserveAspectRatioConstructor::JSSVGAnimatedPreserveAspectRatioConstructor( ExecState *exec, Structure *structure,
+        JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSSVGAnimatedPreserveAspectRatioPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSSVGAnimatedPreserveAspectRatioPrototype::self( exec,
+               globalObject ), DontDelete | ReadOnly );
 }
 
-bool JSSVGAnimatedPreserveAspectRatioConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGAnimatedPreserveAspectRatioConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName,
+        PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSVGAnimatedPreserveAspectRatioConstructor, JSDOMWrapper>(exec, &JSSVGAnimatedPreserveAspectRatioConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSSVGAnimatedPreserveAspectRatioConstructor, JSDOMWrapper>( exec,
+            &JSSVGAnimatedPreserveAspectRatioConstructorTable, this, propertyName, slot );
 }
 
-bool JSSVGAnimatedPreserveAspectRatioConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGAnimatedPreserveAspectRatioConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSVGAnimatedPreserveAspectRatioConstructor, JSDOMWrapper>(exec, &JSSVGAnimatedPreserveAspectRatioConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSVGAnimatedPreserveAspectRatioConstructor, JSDOMWrapper>( exec,
+            &JSSVGAnimatedPreserveAspectRatioConstructorTable, this, propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -108,81 +118,89 @@ bool JSSVGAnimatedPreserveAspectRatioConstructor::getOwnPropertyDescriptor(ExecS
 
 static const HashTableValue JSSVGAnimatedPreserveAspectRatioPrototypeTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSSVGAnimatedPreserveAspectRatioPrototypeTable = { 1, 0, JSSVGAnimatedPreserveAspectRatioPrototypeTableValues, 0 };
 const ClassInfo JSSVGAnimatedPreserveAspectRatioPrototype::s_info = { "SVGAnimatedPreserveAspectRatioPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSSVGAnimatedPreserveAspectRatioPrototypeTable, 0 };
 
-JSObject* JSSVGAnimatedPreserveAspectRatioPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSVGAnimatedPreserveAspectRatioPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSSVGAnimatedPreserveAspectRatio>(exec, globalObject);
+    return getDOMPrototype<JSSVGAnimatedPreserveAspectRatio>( exec, globalObject );
 }
 
 const ClassInfo JSSVGAnimatedPreserveAspectRatio::s_info = { "SVGAnimatedPreserveAspectRatio", &JSDOMWrapper::s_info, &JSSVGAnimatedPreserveAspectRatioTable, 0 };
 
-JSSVGAnimatedPreserveAspectRatio::JSSVGAnimatedPreserveAspectRatio(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<SVGAnimatedPreserveAspectRatio> impl)
-    : JSDOMWrapper(structure, globalObject)
-    , m_impl(impl)
+JSSVGAnimatedPreserveAspectRatio::JSSVGAnimatedPreserveAspectRatio( Structure *structure, JSDOMGlobalObject *globalObject,
+        PassRefPtr<SVGAnimatedPreserveAspectRatio> impl )
+    : JSDOMWrapper( structure, globalObject )
+    , m_impl( impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSSVGAnimatedPreserveAspectRatio::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSVGAnimatedPreserveAspectRatio::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSSVGAnimatedPreserveAspectRatioPrototype(exec->globalData(), globalObject, JSSVGAnimatedPreserveAspectRatioPrototype::createStructure(globalObject->globalData(), globalObject->objectPrototype()));
+    return new ( exec ) JSSVGAnimatedPreserveAspectRatioPrototype( exec->globalData(), globalObject,
+            JSSVGAnimatedPreserveAspectRatioPrototype::createStructure( globalObject->globalData(), globalObject->objectPrototype() ) );
 }
 
-bool JSSVGAnimatedPreserveAspectRatio::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGAnimatedPreserveAspectRatio::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSVGAnimatedPreserveAspectRatio, Base>(exec, &JSSVGAnimatedPreserveAspectRatioTable, this, propertyName, slot);
+    return getStaticValueSlot<JSSVGAnimatedPreserveAspectRatio, Base>( exec, &JSSVGAnimatedPreserveAspectRatioTable, this,
+            propertyName, slot );
 }
 
-bool JSSVGAnimatedPreserveAspectRatio::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGAnimatedPreserveAspectRatio::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSVGAnimatedPreserveAspectRatio, Base>(exec, &JSSVGAnimatedPreserveAspectRatioTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSVGAnimatedPreserveAspectRatio, Base>( exec, &JSSVGAnimatedPreserveAspectRatioTable, this,
+            propertyName, descriptor );
 }
 
-JSValue jsSVGAnimatedPreserveAspectRatioBaseVal(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGAnimatedPreserveAspectRatioBaseVal( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGAnimatedPreserveAspectRatio* castedThis = static_cast<JSSVGAnimatedPreserveAspectRatio*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGAnimatedPreserveAspectRatio* imp = static_cast<SVGAnimatedPreserveAspectRatio*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(static_cast<SVGPropertyTearOff<SVGPreserveAspectRatio>*>(imp->baseVal())));
+    JSSVGAnimatedPreserveAspectRatio *castedThis = static_cast<JSSVGAnimatedPreserveAspectRatio *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGAnimatedPreserveAspectRatio *imp = static_cast<SVGAnimatedPreserveAspectRatio *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(),
+                           WTF::getPtr( static_cast<SVGPropertyTearOff<SVGPreserveAspectRatio>*>( imp->baseVal() ) ) );
     return result;
 }
 
 
-JSValue jsSVGAnimatedPreserveAspectRatioAnimVal(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGAnimatedPreserveAspectRatioAnimVal( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGAnimatedPreserveAspectRatio* castedThis = static_cast<JSSVGAnimatedPreserveAspectRatio*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGAnimatedPreserveAspectRatio* imp = static_cast<SVGAnimatedPreserveAspectRatio*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(static_cast<SVGPropertyTearOff<SVGPreserveAspectRatio>*>(imp->animVal())));
+    JSSVGAnimatedPreserveAspectRatio *castedThis = static_cast<JSSVGAnimatedPreserveAspectRatio *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGAnimatedPreserveAspectRatio *imp = static_cast<SVGAnimatedPreserveAspectRatio *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(),
+                           WTF::getPtr( static_cast<SVGPropertyTearOff<SVGPreserveAspectRatio>*>( imp->animVal() ) ) );
     return result;
 }
 
 
-JSValue jsSVGAnimatedPreserveAspectRatioConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGAnimatedPreserveAspectRatioConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGAnimatedPreserveAspectRatio* domObject = static_cast<JSSVGAnimatedPreserveAspectRatio*>(asObject(slotBase));
-    return JSSVGAnimatedPreserveAspectRatio::getConstructor(exec, domObject->globalObject());
+    JSSVGAnimatedPreserveAspectRatio *domObject = static_cast<JSSVGAnimatedPreserveAspectRatio *>( asObject( slotBase ) );
+    return JSSVGAnimatedPreserveAspectRatio::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSSVGAnimatedPreserveAspectRatio::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSSVGAnimatedPreserveAspectRatio::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSSVGAnimatedPreserveAspectRatioConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSSVGAnimatedPreserveAspectRatioConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, SVGAnimatedPreserveAspectRatio* impl)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, SVGAnimatedPreserveAspectRatio *impl )
 {
-    return wrap<JSSVGAnimatedPreserveAspectRatio>(exec, globalObject, impl);
+    return wrap<JSSVGAnimatedPreserveAspectRatio>( exec, globalObject, impl );
 }
 
-SVGAnimatedPreserveAspectRatio* toSVGAnimatedPreserveAspectRatio(JSC::JSValue value)
+SVGAnimatedPreserveAspectRatio *toSVGAnimatedPreserveAspectRatio( JSC::JSValue value )
 {
-    return value.inherits(&JSSVGAnimatedPreserveAspectRatio::s_info) ? static_cast<JSSVGAnimatedPreserveAspectRatio*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSSVGAnimatedPreserveAspectRatio::s_info ) ? static_cast<JSSVGAnimatedPreserveAspectRatio *>( asObject(
+                value ) )->impl() : 0;
 }
 
 }

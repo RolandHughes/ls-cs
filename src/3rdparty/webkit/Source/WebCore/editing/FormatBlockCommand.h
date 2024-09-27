@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef FormatBlockCommand_h
@@ -29,26 +29,37 @@
 #include "ApplyBlockElementCommand.h"
 #include "CompositeEditCommand.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class FormatBlockCommand : public ApplyBlockElementCommand {
+class FormatBlockCommand : public ApplyBlockElementCommand
+{
 public:
-    static PassRefPtr<FormatBlockCommand> create(Document* document, const QualifiedName& tagName)
+    static PassRefPtr<FormatBlockCommand> create( Document *document, const QualifiedName &tagName )
     {
-        return adoptRef(new FormatBlockCommand(document, tagName));
+        return adoptRef( new FormatBlockCommand( document, tagName ) );
     }
-    
-    virtual bool preservesTypingStyle() const { return true; }
 
-    static Element* elementForFormatBlockCommand(Range*);
-    bool didApply() const { return m_didApply; }
+    virtual bool preservesTypingStyle() const
+    {
+        return true;
+    }
+
+    static Element *elementForFormatBlockCommand( Range * );
+    bool didApply() const
+    {
+        return m_didApply;
+    }
 
 private:
-    FormatBlockCommand(Document*, const QualifiedName& tagName);
+    FormatBlockCommand( Document *, const QualifiedName &tagName );
 
-    void formatSelection(const VisiblePosition& startOfSelection, const VisiblePosition& endOfSelection);
-    void formatRange(const Position& start, const Position& end, const Position& endOfSelection, RefPtr<Element>&);
-    EditAction editingAction() const { return EditActionFormatBlock; }
+    void formatSelection( const VisiblePosition &startOfSelection, const VisiblePosition &endOfSelection );
+    void formatRange( const Position &start, const Position &end, const Position &endOfSelection, RefPtr<Element> & );
+    EditAction editingAction() const
+    {
+        return EditActionFormatBlock;
+    }
 
     bool m_didApply;
 };

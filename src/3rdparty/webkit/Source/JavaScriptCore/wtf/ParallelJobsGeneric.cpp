@@ -31,35 +31,43 @@
 
 #include "ParallelJobs.h"
 
-namespace WTF {
+namespace WTF
+{
 
-Vector< RefPtr<ParallelEnvironment::ThreadPrivate> >* ParallelEnvironment::s_threadPool = 0;
+Vector< RefPtr<ParallelEnvironment::ThreadPrivate> > *ParallelEnvironment::s_threadPool = 0;
 
-bool ParallelEnvironment::ThreadPrivate::tryLockFor(ParallelEnvironment* parent)
+bool ParallelEnvironment::ThreadPrivate::tryLockFor( ParallelEnvironment *parent )
 {
     bool locked = m_mutex.tryLock();
 
-    if (!locked)
+    if ( !locked )
+    {
         return false;
+    }
 
-    if (m_parent) {
+    if ( m_parent )
+    {
         m_mutex.unlock();
         return false;
     }
 
-    if (!m_threadID)
-        m_threadID = createThread(&ParallelEnvironment::ThreadPrivate::workerThread, this, "Parallel worker");
+    if ( !m_threadID )
+    {
+        m_threadID = createThread( &ParallelEnvironment::ThreadPrivate::workerThread, this, "Parallel worker" );
+    }
 
-    if (m_threadID)
+    if ( m_threadID )
+    {
         m_parent = parent;
+    }
 
     m_mutex.unlock();
     return m_threadID;
 }
 
-void ParallelEnvironment::ThreadPrivate::execute(ThreadFunction threadFunction, void* parameters)
+void ParallelEnvironment::ThreadPrivate::execute( ThreadFunction threadFunction, void *parameters )
 {
-    MutexLocker lock(m_mutex);
+    MutexLocker lock( m_mutex );
 
     m_threadFunction = threadFunction;
     m_parameters = parameters;
@@ -69,27 +77,32 @@ void ParallelEnvironment::ThreadPrivate::execute(ThreadFunction threadFunction, 
 
 void ParallelEnvironment::ThreadPrivate::waitForFinish()
 {
-    MutexLocker lock(m_mutex);
+    MutexLocker lock( m_mutex );
 
-    while (m_running)
-        m_threadCondition.wait(m_mutex);
+    while ( m_running )
+    {
+        m_threadCondition.wait( m_mutex );
+    }
 }
 
-void* ParallelEnvironment::ThreadPrivate::workerThread(void* threadData)
+void *ParallelEnvironment::ThreadPrivate::workerThread( void *threadData )
 {
-    ThreadPrivate* sharedThread = reinterpret_cast<ThreadPrivate*>(threadData);
-    MutexLocker lock(sharedThread->m_mutex);
+    ThreadPrivate *sharedThread = reinterpret_cast<ThreadPrivate *>( threadData );
+    MutexLocker lock( sharedThread->m_mutex );
 
-    while (sharedThread->m_threadID) {
-        if (sharedThread->m_running) {
-            (*sharedThread->m_threadFunction)(sharedThread->m_parameters);
+    while ( sharedThread->m_threadID )
+    {
+        if ( sharedThread->m_running )
+        {
+            ( *sharedThread->m_threadFunction )( sharedThread->m_parameters );
             sharedThread->m_running = false;
             sharedThread->m_parent = 0;
             sharedThread->m_threadCondition.signal();
         }
 
-        sharedThread->m_threadCondition.wait(sharedThread->m_mutex);
+        sharedThread->m_threadCondition.wait( sharedThread->m_mutex );
     }
+
     return 0;
 }
 

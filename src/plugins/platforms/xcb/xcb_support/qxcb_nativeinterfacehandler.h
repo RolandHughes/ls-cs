@@ -32,22 +32,22 @@ class QXcbNativeInterface;
 
 class Q_XCB_EXPORT QXcbNativeInterfaceHandler
 {
- public:
-   using FP_Void = void(*)();
+public:
+    using FP_Void = void( * )();
 
-   QXcbNativeInterfaceHandler(QXcbNativeInterface *nativeInterface);
-   virtual ~QXcbNativeInterfaceHandler();
+    QXcbNativeInterfaceHandler( QXcbNativeInterface *nativeInterface );
+    virtual ~QXcbNativeInterfaceHandler();
 
-   virtual QPlatformNativeInterface::FP_Integration nativeResourceFunctionForIntegration(const QByteArray &resource) const;
-   virtual QPlatformNativeInterface::FP_Context nativeResourceFunctionForContext(const QByteArray &resource) const;
-   virtual QPlatformNativeInterface::FP_Screen nativeResourceFunctionForScreen(const QByteArray &resource) const;
-   virtual QPlatformNativeInterface::FP_Window nativeResourceFunctionForWindow(const QByteArray &resource) const;
-   virtual QPlatformNativeInterface::FP_BackingStore nativeResourceFunctionForBackingStore(const QByteArray &resource) const;
+    virtual QPlatformNativeInterface::FP_Integration nativeResourceFunctionForIntegration( const QByteArray &resource ) const;
+    virtual QPlatformNativeInterface::FP_Context nativeResourceFunctionForContext( const QByteArray &resource ) const;
+    virtual QPlatformNativeInterface::FP_Screen nativeResourceFunctionForScreen( const QByteArray &resource ) const;
+    virtual QPlatformNativeInterface::FP_Window nativeResourceFunctionForWindow( const QByteArray &resource ) const;
+    virtual QPlatformNativeInterface::FP_BackingStore nativeResourceFunctionForBackingStore( const QByteArray &resource ) const;
 
-   virtual FP_Void platformFunction(const QByteArray &function) const;
+    virtual FP_Void platformFunction( const QByteArray &function ) const;
 
- protected:
-   QXcbNativeInterface *m_native_interface;
+protected:
+    QXcbNativeInterface *m_native_interface;
 };
 
 #endif //QXCBNATIVEINTERFACEHANDLER_H

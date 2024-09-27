@@ -16,11 +16,11 @@
  */
 
 
-  /**************************************************************************
-   *
-   * This file is used to define the Type 42 error enumeration constants.
-   *
-   */
+/**************************************************************************
+ *
+ * This file is used to define the Type 42 error enumeration constants.
+ *
+ */
 
 #ifndef T42ERROR_H_
 #define T42ERROR_H_

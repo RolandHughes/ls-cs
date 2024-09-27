@@ -23,50 +23,69 @@
 
 #include "CSSParser.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-FontFamilyValue::FontFamilyValue(const String& familyName)
-    : CSSPrimitiveValue(String(), CSS_STRING)
-    , m_familyName(familyName)
+FontFamilyValue::FontFamilyValue( const String &familyName )
+    : CSSPrimitiveValue( String(), CSS_STRING )
+    , m_familyName( familyName )
 {
     // If there is anything in parentheses or square brackets at the end, delete it.
     // FIXME: Do we really need this? The original code mentioned "a language tag in
     // braces at the end" and "[Xft] qualifiers", but it's not clear either of those
     // is in active use on the web.
     unsigned length = m_familyName.length();
-    while (length >= 3) {
+
+    while ( length >= 3 )
+    {
         UChar startCharacter = 0;
-        switch (m_familyName[length - 1]) {
+
+        switch ( m_familyName[length - 1] )
+        {
             case ']':
                 startCharacter = '[';
                 break;
+
             case ')':
                 startCharacter = '(';
                 break;
         }
-        if (!startCharacter)
+
+        if ( !startCharacter )
+        {
             break;
-        unsigned first = 0;
-        for (unsigned i = length - 2; i > 0; --i) {
-            if (m_familyName[i - 1] == ' ' && m_familyName[i] == startCharacter)
-                first = i - 1;
         }
-        if (!first)
+
+        unsigned first = 0;
+
+        for ( unsigned i = length - 2; i > 0; --i )
+        {
+            if ( m_familyName[i - 1] == ' ' && m_familyName[i] == startCharacter )
+            {
+                first = i - 1;
+            }
+        }
+
+        if ( !first )
+        {
             break;
+        }
+
         length = first;
     }
-    m_familyName.truncate(length);
+
+    m_familyName.truncate( length );
 }
 
-void FontFamilyValue::appendSpaceSeparated(const UChar* characters, unsigned length)
+void FontFamilyValue::appendSpaceSeparated( const UChar *characters, unsigned length )
 {
-    m_familyName.append(' ');
-    m_familyName.append(characters, length);
+    m_familyName.append( ' ' );
+    m_familyName.append( characters, length );
 }
 
 String FontFamilyValue::cssText() const
 {
-    return quoteCSSStringIfNeeded(m_familyName);
+    return quoteCSSStringIfNeeded( m_familyName );
 }
 
 }

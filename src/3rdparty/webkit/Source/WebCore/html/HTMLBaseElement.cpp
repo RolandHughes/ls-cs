@@ -27,27 +27,32 @@
 #include "Document.h"
 #include "HTMLNames.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
-inline HTMLBaseElement::HTMLBaseElement(const QualifiedName& tagName, Document* document)
-    : HTMLElement(tagName, document)
+inline HTMLBaseElement::HTMLBaseElement( const QualifiedName &tagName, Document *document )
+    : HTMLElement( tagName, document )
 {
-    ASSERT(hasTagName(baseTag));
+    ASSERT( hasTagName( baseTag ) );
 }
 
-PassRefPtr<HTMLBaseElement> HTMLBaseElement::create(const QualifiedName& tagName, Document* document)
+PassRefPtr<HTMLBaseElement> HTMLBaseElement::create( const QualifiedName &tagName, Document *document )
 {
-    return adoptRef(new HTMLBaseElement(tagName, document));
+    return adoptRef( new HTMLBaseElement( tagName, document ) );
 }
 
-void HTMLBaseElement::parseMappedAttribute(Attribute* attribute)
+void HTMLBaseElement::parseMappedAttribute( Attribute *attribute )
 {
-    if (attribute->name() == hrefAttr || attribute->name() == targetAttr)
+    if ( attribute->name() == hrefAttr || attribute->name() == targetAttr )
+    {
         document()->processBaseElement();
+    }
     else
-        HTMLElement::parseMappedAttribute(attribute);
+    {
+        HTMLElement::parseMappedAttribute( attribute );
+    }
 }
 
 void HTMLBaseElement::insertedIntoDocument()
@@ -62,14 +67,14 @@ void HTMLBaseElement::removedFromDocument()
     document()->processBaseElement();
 }
 
-bool HTMLBaseElement::isURLAttribute(Attribute* attribute) const
+bool HTMLBaseElement::isURLAttribute( Attribute *attribute ) const
 {
     return attribute->name() == hrefAttr;
 }
 
 String HTMLBaseElement::target() const
 {
-    return fastGetAttribute(targetAttr);
+    return fastGetAttribute( targetAttr );
 }
 
 }

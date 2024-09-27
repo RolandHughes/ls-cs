@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -34,32 +34,42 @@
 #include "DebuggerCallFrame.h"
 #endif
 
-namespace JSC {
+namespace JSC
+{
 
 #ifdef QT_BUILD_SCRIPT_LIB
-JSValue JSC::NativeFuncWrapper::operator() (ExecState* exec, JSObject* jsobj, JSValue thisValue, const ArgList& argList) const
+JSValue JSC::NativeFuncWrapper::operator() ( ExecState *exec, JSObject *jsobj, JSValue thisValue, const ArgList &argList ) const
 {
-    Debugger* debugger = exec->lexicalGlobalObject()->debugger();
-    if (debugger)
-        debugger->callEvent(DebuggerCallFrame(exec), -1, -1);
+    Debugger *debugger = exec->lexicalGlobalObject()->debugger();
 
-    JSValue returnValue = ptr(exec, jsobj, thisValue, argList);
+    if ( debugger )
+    {
+        debugger->callEvent( DebuggerCallFrame( exec ), -1, -1 );
+    }
 
-    if (debugger)
-        debugger->functionExit(returnValue, -1);
+    JSValue returnValue = ptr( exec, jsobj, thisValue, argList );
+
+    if ( debugger )
+    {
+        debugger->functionExit( returnValue, -1 );
+    }
 
     return returnValue;
 }
 #endif
 
 
-JSValue call(ExecState* exec, JSValue functionObject, CallType callType, const CallData& callData, JSValue thisValue, const ArgList& args)
+JSValue call( ExecState *exec, JSValue functionObject, CallType callType, const CallData &callData, JSValue thisValue,
+              const ArgList &args )
 {
-    if (callType == CallTypeHost)
-        return callData.native.function(exec, asObject(functionObject), thisValue, args);
-    ASSERT(callType == CallTypeJS);
+    if ( callType == CallTypeHost )
+    {
+        return callData.native.function( exec, asObject( functionObject ), thisValue, args );
+    }
+
+    ASSERT( callType == CallTypeJS );
     // FIXME: Can this be done more efficiently using the callData?
-    return asFunction(functionObject)->call(exec, thisValue, args);
+    return asFunction( functionObject )->call( exec, thisValue, args );
 }
 
 } // namespace JSC

@@ -7,13 +7,13 @@
  * are met:
  *
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Apple Computer, Inc. ("Apple") nor the names of
  *     its contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
+ *     from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY APPLE AND ITS CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -30,13 +30,15 @@
 #include "config.h"
 #include "FontDescription.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-FontWeight FontDescription::lighterWeight(void) const
+FontWeight FontDescription::lighterWeight( void ) const
 {
     // FIXME: Should actually return the CSS weight corresponding to next lightest
     // weight of the currently used font family.
-    switch (m_weight) {
+    switch ( m_weight )
+    {
         case FontWeight100:
         case FontWeight200:
             return FontWeight100;
@@ -58,15 +60,17 @@ FontWeight FontDescription::lighterWeight(void) const
         case FontWeight900:
             return FontWeight700;
     }
+
     ASSERT_NOT_REACHED();
     return FontWeightNormal;
 }
 
-FontWeight FontDescription::bolderWeight(void) const
+FontWeight FontDescription::bolderWeight( void ) const
 {
     // FIXME: Should actually return the CSS weight corresponding to next heaviest
     // weight of the currently used font family.
-    switch (m_weight) {
+    switch ( m_weight )
+    {
         case FontWeight100:
         case FontWeight200:
             return FontWeight300;
@@ -86,16 +90,17 @@ FontWeight FontDescription::bolderWeight(void) const
         case FontWeight900:
             return FontWeight900;
     }
+
     ASSERT_NOT_REACHED();
     return FontWeightNormal;
 }
 
 FontTraitsMask FontDescription::traitsMask() const
 {
-    return static_cast<FontTraitsMask>((m_italic ? FontStyleItalicMask : FontStyleNormalMask)
-            | (m_smallCaps ? FontVariantSmallCapsMask : FontVariantNormalMask)
-            | (FontWeight100Mask << (m_weight - FontWeight100)));
-    
+    return static_cast<FontTraitsMask>( ( m_italic ? FontStyleItalicMask : FontStyleNormalMask )
+                                        | ( m_smallCaps ? FontVariantSmallCapsMask : FontVariantNormalMask )
+                                        | ( FontWeight100Mask << ( m_weight - FontWeight100 ) ) );
+
 }
 
 } // namespace WebCore

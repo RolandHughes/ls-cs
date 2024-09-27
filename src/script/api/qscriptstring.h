@@ -31,30 +31,30 @@ class QScriptStringPrivate;
 
 class Q_SCRIPT_EXPORT QScriptString
 {
- public:
-   QScriptString();
-   QScriptString(const QScriptString &other);
-   ~QScriptString();
+public:
+    QScriptString();
+    QScriptString( const QScriptString &other );
+    ~QScriptString();
 
-   QScriptString &operator=(const QScriptString &other);
+    QScriptString &operator=( const QScriptString &other );
 
-   bool isValid() const;
+    bool isValid() const;
 
-   bool operator==(const QScriptString &other) const;
-   bool operator!=(const QScriptString &other) const;
+    bool operator==( const QScriptString &other ) const;
+    bool operator!=( const QScriptString &other ) const;
 
-   quint32 toArrayIndex(bool *ok = nullptr) const;
+    quint32 toArrayIndex( bool *ok = nullptr ) const;
 
-   QString toString() const;
-   operator QString() const;
+    QString toString() const;
+    operator QString() const;
 
- private:
-   QExplicitlySharedDataPointer<QScriptStringPrivate> d_ptr;
-   friend class QScriptValue;
-   Q_DECLARE_PRIVATE(QScriptString)
+private:
+    QExplicitlySharedDataPointer<QScriptStringPrivate> d_ptr;
+    friend class QScriptValue;
+    Q_DECLARE_PRIVATE( QScriptString )
 };
 
-Q_SCRIPT_EXPORT uint qHash(const QScriptString &key);
+Q_SCRIPT_EXPORT uint qHash( const QScriptString &key );
 
 
 

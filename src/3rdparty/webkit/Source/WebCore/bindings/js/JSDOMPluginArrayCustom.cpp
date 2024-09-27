@@ -24,19 +24,20 @@
 #include "JSDOMPlugin.h"
 #include <wtf/text/AtomicString.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace JSC;
 
-bool JSDOMPluginArray::canGetItemsForName(ExecState*, DOMPluginArray* pluginArray, const Identifier& propertyName)
+bool JSDOMPluginArray::canGetItemsForName( ExecState *, DOMPluginArray *pluginArray, const Identifier &propertyName )
 {
-    return pluginArray->canGetItemsForName(identifierToAtomicString(propertyName));
+    return pluginArray->canGetItemsForName( identifierToAtomicString( propertyName ) );
 }
 
-JSValue JSDOMPluginArray::nameGetter(ExecState* exec, JSValue slotBase, const Identifier& propertyName)
+JSValue JSDOMPluginArray::nameGetter( ExecState *exec, JSValue slotBase, const Identifier &propertyName )
 {
-    JSDOMPluginArray* thisObj = static_cast<JSDOMPluginArray*>(asObject(slotBase));
-    return toJS(exec, thisObj->globalObject(), thisObj->impl()->namedItem(identifierToAtomicString(propertyName)));
+    JSDOMPluginArray *thisObj = static_cast<JSDOMPluginArray *>( asObject( slotBase ) );
+    return toJS( exec, thisObj->globalObject(), thisObj->impl()->namedItem( identifierToAtomicString( propertyName ) ) );
 }
 
 } // namespace WebCore

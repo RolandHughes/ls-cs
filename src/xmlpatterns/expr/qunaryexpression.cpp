@@ -29,29 +29,35 @@
 
 using namespace QPatternist;
 
-UnaryExpression::UnaryExpression(const AtomicMathematician::Operator op,
-                                 const Expression::Ptr &operand,
-                                 const StaticContext::Ptr &context) : ArithmeticExpression(wrapLiteral(CommonValues::IntegerZero, context,
-                                          operand.data()),
-                                          op,
-                                          operand)
+UnaryExpression::UnaryExpression( const AtomicMathematician::Operator op,
+                                  const Expression::Ptr &operand,
+                                  const StaticContext::Ptr &context ) : ArithmeticExpression( wrapLiteral( CommonValues::IntegerZero, context,
+                                              operand.data() ),
+                                              op,
+                                              operand )
 {
-   Q_ASSERT(op == AtomicMathematician::Substract ||
-            op == AtomicMathematician::Add);
-   Q_ASSERT(context);
+    Q_ASSERT( op == AtomicMathematician::Substract ||
+              op == AtomicMathematician::Add );
+    Q_ASSERT( context );
 }
 
-Item UnaryExpression::evaluateSingleton(const DynamicContext::Ptr &context) const
+Item UnaryExpression::evaluateSingleton( const DynamicContext::Ptr &context ) const
 {
-   if (operatorID() == AtomicMathematician::Substract) {
-      const Item item(m_operand2->evaluateSingleton(context));
+    if ( operatorID() == AtomicMathematician::Substract )
+    {
+        const Item item( m_operand2->evaluateSingleton( context ) );
 
-      if (item) {
-         return item.as<Numeric>()->toNegated();
-      } else {
-         return Item();
-      }
-   } else {
-      return m_operand2->evaluateSingleton(context);
-   }
+        if ( item )
+        {
+            return item.as<Numeric>()->toNegated();
+        }
+        else
+        {
+            return Item();
+        }
+    }
+    else
+    {
+        return m_operand2->evaluateSingleton( context );
+    }
 }

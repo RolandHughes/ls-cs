@@ -36,56 +36,72 @@
 
 using namespace WebCore;
 
-namespace WebKit {
+namespace WebKit
+{
 
 NPIdentifierData::NPIdentifierData()
-    : m_isString(false)
-    , m_number(0)
+    : m_isString( false )
+    , m_number( 0 )
 {
 }
 
 
-NPIdentifierData NPIdentifierData::fromNPIdentifier(NPIdentifier npIdentifier)
+NPIdentifierData NPIdentifierData::fromNPIdentifier( NPIdentifier npIdentifier )
 {
     NPIdentifierData npIdentifierData;
 
-    IdentifierRep* identifierRep = static_cast<IdentifierRep*>(npIdentifier);
+    IdentifierRep *identifierRep = static_cast<IdentifierRep *>( npIdentifier );
     npIdentifierData.m_isString = identifierRep->isString();
 
-    if (npIdentifierData.m_isString)
+    if ( npIdentifierData.m_isString )
+    {
         npIdentifierData.m_string = identifierRep->string();
+    }
     else
+    {
         npIdentifierData.m_number = identifierRep->number();
+    }
 
     return npIdentifierData;
 }
 
 NPIdentifier NPIdentifierData::createNPIdentifier() const
 {
-    if (m_isString)
-        return static_cast<NPIdentifier>(IdentifierRep::get(m_string.data()));
-    
-    return static_cast<NPIdentifier>(IdentifierRep::get(m_number));
+    if ( m_isString )
+    {
+        return static_cast<NPIdentifier>( IdentifierRep::get( m_string.data() ) );
+    }
+
+    return static_cast<NPIdentifier>( IdentifierRep::get( m_number ) );
 }
 
-void NPIdentifierData::encode(CoreIPC::ArgumentEncoder* encoder) const
+void NPIdentifierData::encode( CoreIPC::ArgumentEncoder *encoder ) const
 {
-    encoder->encode(m_isString);
-    if (m_isString)
-        encoder->encode(m_string);
+    encoder->encode( m_isString );
+
+    if ( m_isString )
+    {
+        encoder->encode( m_string );
+    }
     else
-        encoder->encodeInt32(m_number);
+    {
+        encoder->encodeInt32( m_number );
+    }
 }
 
-bool NPIdentifierData::decode(CoreIPC::ArgumentDecoder* decoder, NPIdentifierData& result)
+bool NPIdentifierData::decode( CoreIPC::ArgumentDecoder *decoder, NPIdentifierData &result )
 {
-    if (!decoder->decode(result.m_isString))
+    if ( !decoder->decode( result.m_isString ) )
+    {
         return false;
-        
-    if (result.m_isString)
-        return decoder->decode(result.m_string);
+    }
 
-    return decoder->decodeInt32(result.m_number);
+    if ( result.m_isString )
+    {
+        return decoder->decode( result.m_string );
+    }
+
+    return decoder->decodeInt32( result.m_number );
 }
 
 } // namespace WebKit

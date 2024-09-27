@@ -26,11 +26,11 @@
 
 #include <qexport.h>
 
-static constexpr  inline void cs_do_nothing(void)
+static constexpr  inline void cs_do_nothing( void )
 {
 }
 
-Q_CORE_EXPORT void qt_assert(const char *assertion, const char *file, int line);
+Q_CORE_EXPORT void qt_assert( const char *assertion, const char *file, int line );
 
 #if ! defined(Q_ASSERT)
 #  ifdef CS_DISABLE_ASSERT
@@ -40,7 +40,7 @@ Q_CORE_EXPORT void qt_assert(const char *assertion, const char *file, int line);
 #  endif
 #endif
 
-Q_CORE_EXPORT void qt_assert_x(const char *where, const char *what, const char *file, int line);
+Q_CORE_EXPORT void qt_assert_x( const char *where, const char *what, const char *file, int line );
 
 #if ! defined(Q_ASSERT_X)
 #  ifdef CS_DISABLE_ASSERT

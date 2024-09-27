@@ -33,16 +33,19 @@
 
 #include "Shader.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class BicubicShader : public Shader {
+class BicubicShader : public Shader
+{
 public:
-    static PassOwnPtr<BicubicShader> create(GraphicsContext3D*);
+    static PassOwnPtr<BicubicShader> create( GraphicsContext3D * );
 
-    void use(const AffineTransform&, const AffineTransform& texTransform, const float coefficients[16], const float imageIncrement[2], float alpha);
+    void use( const AffineTransform &, const AffineTransform &texTransform, const float coefficients[16],
+              const float imageIncrement[2], float alpha );
 
 private:
-    BicubicShader(GraphicsContext3D*, unsigned program);
+    BicubicShader( GraphicsContext3D *, unsigned program );
 
     int m_matrixLocation;
     int m_texMatrixLocation;

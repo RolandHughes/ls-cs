@@ -33,31 +33,33 @@
 
 class QMediaPlayer;
 
-namespace WebCore {
+namespace WebCore
+{
 
-class FullScreenVideoWidget : public QVideoWidget {
-    WEB_CS_OBJECT(FullScreenVideoWidget)
+class FullScreenVideoWidget : public QVideoWidget
+{
+    WEB_CS_OBJECT( FullScreenVideoWidget )
 public:
     FullScreenVideoWidget();
     virtual ~FullScreenVideoWidget();
-    void show(QMediaPlayer*);
+    void show( QMediaPlayer * );
 
 public:
-    WEB_CS_SIGNAL_1(Public, void didExitFullScreen())
-    WEB_CS_SIGNAL_2(didExitFullScreen)
+    WEB_CS_SIGNAL_1( Public, void didExitFullScreen() )
+    WEB_CS_SIGNAL_2( didExitFullScreen )
 
 protected:
-    virtual void closeEvent(QCloseEvent*);
-    virtual bool event(QEvent*);
-    virtual void keyPressEvent(QKeyEvent*);
+    virtual void closeEvent( QCloseEvent * );
+    virtual bool event( QEvent * );
+    virtual void keyPressEvent( QKeyEvent * );
 
 private :
-    WEB_CS_SLOT_1(Private, void hideCursor())
-    WEB_CS_SLOT_2(hideCursor)
+    WEB_CS_SLOT_1( Private, void hideCursor() )
+    WEB_CS_SLOT_2( hideCursor )
 
 private:
     void showCursor();
-    QMediaPlayer* m_mediaPlayer;
+    QMediaPlayer *m_mediaPlayer;
     QTimer m_cursorTimer;
 };
 

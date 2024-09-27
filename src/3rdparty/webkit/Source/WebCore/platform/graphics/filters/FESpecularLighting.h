@@ -25,41 +25,43 @@
 #if ENABLE(FILTERS)
 #include "FELighting.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class FESpecularLighting : public FELighting {
+class FESpecularLighting : public FELighting
+{
 public:
-    static PassRefPtr<FESpecularLighting> create(Filter*, const Color&, float, float,
-        float, float, float, PassRefPtr<LightSource>);
+    static PassRefPtr<FESpecularLighting> create( Filter *, const Color &, float, float,
+            float, float, float, PassRefPtr<LightSource> );
     virtual ~FESpecularLighting();
 
     Color lightingColor() const;
-    bool setLightingColor(const Color&);
+    bool setLightingColor( const Color & );
 
     float surfaceScale() const;
-    bool setSurfaceScale(float);
+    bool setSurfaceScale( float );
 
     float specularConstant() const;
-    bool setSpecularConstant(float);
+    bool setSpecularConstant( float );
 
     float specularExponent() const;
-    bool setSpecularExponent(float);
+    bool setSpecularExponent( float );
 
     float kernelUnitLengthX() const;
-    bool setKernelUnitLengthX(float);
+    bool setKernelUnitLengthX( float );
 
     float kernelUnitLengthY() const;
-    bool setKernelUnitLengthY(float);
+    bool setKernelUnitLengthY( float );
 
-    const LightSource* lightSource() const;
-    void setLightSource(PassRefPtr<LightSource>);
+    const LightSource *lightSource() const;
+    void setLightSource( PassRefPtr<LightSource> );
 
     virtual void dump();
 
-    virtual TextStream& externalRepresentation(TextStream&, int indention) const;
+    virtual TextStream &externalRepresentation( TextStream &, int indention ) const;
 
 private:
-    FESpecularLighting(Filter*, const Color&, float, float, float, float, float, PassRefPtr<LightSource>);
+    FESpecularLighting( Filter *, const Color &, float, float, float, float, float, PassRefPtr<LightSource> );
 };
 
 } // namespace WebCore

@@ -29,9 +29,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSHTMLAudioElement);
+ASSERT_CLASS_FITS_IN_CELL( JSHTMLAudioElement );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -42,8 +43,8 @@ ASSERT_CLASS_FITS_IN_CELL(JSHTMLAudioElement);
 
 static const HashTableValue JSHTMLAudioElementTableValues[2] =
 {
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsHTMLAudioElementConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsHTMLAudioElementConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -57,43 +58,51 @@ static JSC_CONST_HASHTABLE HashTable JSHTMLAudioElementTable = { 2, 1, JSHTMLAud
 
 static const HashTableValue JSHTMLAudioElementConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSHTMLAudioElementConstructorTable = { 1, 0, JSHTMLAudioElementConstructorTableValues, 0 };
-class JSHTMLAudioElementConstructor : public DOMConstructorObject {
+class JSHTMLAudioElementConstructor : public DOMConstructorObject
+{
 public:
-    JSHTMLAudioElementConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSHTMLAudioElementConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSHTMLAudioElementConstructor::s_info = { "HTMLAudioElementConstructor", &DOMConstructorObject::s_info, &JSHTMLAudioElementConstructorTable, 0 };
 
-JSHTMLAudioElementConstructor::JSHTMLAudioElementConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSHTMLAudioElementConstructor::JSHTMLAudioElementConstructor( ExecState *exec, Structure *structure,
+        JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSHTMLAudioElementPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSHTMLAudioElementPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSHTMLAudioElementConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSHTMLAudioElementConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSHTMLAudioElementConstructor, JSDOMWrapper>(exec, &JSHTMLAudioElementConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSHTMLAudioElementConstructor, JSDOMWrapper>( exec, &JSHTMLAudioElementConstructorTable, this,
+            propertyName, slot );
 }
 
-bool JSHTMLAudioElementConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSHTMLAudioElementConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSHTMLAudioElementConstructor, JSDOMWrapper>(exec, &JSHTMLAudioElementConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSHTMLAudioElementConstructor, JSDOMWrapper>( exec, &JSHTMLAudioElementConstructorTable, this,
+            propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -105,50 +114,52 @@ bool JSHTMLAudioElementConstructor::getOwnPropertyDescriptor(ExecState* exec, co
 
 static const HashTableValue JSHTMLAudioElementPrototypeTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSHTMLAudioElementPrototypeTable = { 1, 0, JSHTMLAudioElementPrototypeTableValues, 0 };
 const ClassInfo JSHTMLAudioElementPrototype::s_info = { "HTMLAudioElementPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSHTMLAudioElementPrototypeTable, 0 };
 
-JSObject* JSHTMLAudioElementPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSHTMLAudioElementPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSHTMLAudioElement>(exec, globalObject);
+    return getDOMPrototype<JSHTMLAudioElement>( exec, globalObject );
 }
 
 const ClassInfo JSHTMLAudioElement::s_info = { "HTMLAudioElement", &JSHTMLMediaElement::s_info, &JSHTMLAudioElementTable, 0 };
 
-JSHTMLAudioElement::JSHTMLAudioElement(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<HTMLAudioElement> impl)
-    : JSHTMLMediaElement(structure, globalObject, impl)
+JSHTMLAudioElement::JSHTMLAudioElement( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<HTMLAudioElement> impl )
+    : JSHTMLMediaElement( structure, globalObject, impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSHTMLAudioElement::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSHTMLAudioElement::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSHTMLAudioElementPrototype(exec->globalData(), globalObject, JSHTMLAudioElementPrototype::createStructure(exec->globalData(), JSHTMLMediaElementPrototype::self(exec, globalObject)));
+    return new ( exec ) JSHTMLAudioElementPrototype( exec->globalData(), globalObject,
+            JSHTMLAudioElementPrototype::createStructure( exec->globalData(), JSHTMLMediaElementPrototype::self( exec, globalObject ) ) );
 }
 
-bool JSHTMLAudioElement::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSHTMLAudioElement::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSHTMLAudioElement, Base>(exec, &JSHTMLAudioElementTable, this, propertyName, slot);
+    return getStaticValueSlot<JSHTMLAudioElement, Base>( exec, &JSHTMLAudioElementTable, this, propertyName, slot );
 }
 
-bool JSHTMLAudioElement::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSHTMLAudioElement::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSHTMLAudioElement, Base>(exec, &JSHTMLAudioElementTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSHTMLAudioElement, Base>( exec, &JSHTMLAudioElementTable, this, propertyName, descriptor );
 }
 
-JSValue jsHTMLAudioElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsHTMLAudioElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSHTMLAudioElement* domObject = static_cast<JSHTMLAudioElement*>(asObject(slotBase));
-    return JSHTMLAudioElement::getConstructor(exec, domObject->globalObject());
+    JSHTMLAudioElement *domObject = static_cast<JSHTMLAudioElement *>( asObject( slotBase ) );
+    return JSHTMLAudioElement::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSHTMLAudioElement::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSHTMLAudioElement::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSHTMLAudioElementConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSHTMLAudioElementConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
 

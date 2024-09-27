@@ -30,30 +30,30 @@ class QWindow;
 
 class QNativeImage
 {
- public:
-   QNativeImage(int width, int height, QImage::Format format, bool isTextBuffer = false, QWindow *window = nullptr);
+public:
+    QNativeImage( int width, int height, QImage::Format format, bool isTextBuffer = false, QWindow *window = nullptr );
 
-   QNativeImage(const QNativeImage &) = delete;
-   QNativeImage &operator=(const QNativeImage &) = delete;
+    QNativeImage( const QNativeImage & ) = delete;
+    QNativeImage &operator=( const QNativeImage & ) = delete;
 
-   ~QNativeImage();
+    ~QNativeImage();
 
-   inline int width() const;
-   inline int height() const;
+    inline int width() const;
+    inline int height() const;
 
-   QImage image;
+    QImage image;
 
-   static QImage::Format systemFormat();
+    static QImage::Format systemFormat();
 };
 
 inline int QNativeImage::width() const
 {
-   return image.width();
+    return image.width();
 }
 
 inline int QNativeImage::height() const
 {
-   return image.height();
+    return image.height();
 }
 
 #endif

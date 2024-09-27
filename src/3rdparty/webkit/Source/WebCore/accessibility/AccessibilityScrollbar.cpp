@@ -34,74 +34,97 @@
 #include "ScrollView.h"
 #include "Scrollbar.h"
 
-namespace WebCore {
-
-AccessibilityScrollbar::AccessibilityScrollbar(Scrollbar* scrollbar)
-    : m_scrollbar(scrollbar)
-    , m_parent(0)
+namespace WebCore
 {
-    ASSERT(scrollbar);
+
+AccessibilityScrollbar::AccessibilityScrollbar( Scrollbar *scrollbar )
+    : m_scrollbar( scrollbar )
+    , m_parent( 0 )
+{
+    ASSERT( scrollbar );
 }
 
-PassRefPtr<AccessibilityScrollbar> AccessibilityScrollbar::create(Scrollbar* scrollbar)
+PassRefPtr<AccessibilityScrollbar> AccessibilityScrollbar::create( Scrollbar *scrollbar )
 {
-    return adoptRef(new AccessibilityScrollbar(scrollbar));
+    return adoptRef( new AccessibilityScrollbar( scrollbar ) );
 }
-    
+
 IntRect AccessibilityScrollbar::elementRect() const
 {
-    if (!m_scrollbar)
+    if ( !m_scrollbar )
+    {
         return IntRect();
-    
+    }
+
     return m_scrollbar->frameRect();
 }
-    
-Document* AccessibilityScrollbar::document() const
+
+Document *AccessibilityScrollbar::document() const
 {
-    AccessibilityObject* parent = parentObject();
-    if (!parent)
+    AccessibilityObject *parent = parentObject();
+
+    if ( !parent )
+    {
         return 0;
+    }
+
     return parent->document();
 }
 
 AccessibilityOrientation AccessibilityScrollbar::orientation() const
 {
-    if (!m_scrollbar)
+    if ( !m_scrollbar )
+    {
         return AccessibilityOrientationHorizontal;
+    }
 
-    if (m_scrollbar->orientation() == HorizontalScrollbar)
+    if ( m_scrollbar->orientation() == HorizontalScrollbar )
+    {
         return AccessibilityOrientationHorizontal;
-    if (m_scrollbar->orientation() == VerticalScrollbar)
+    }
+
+    if ( m_scrollbar->orientation() == VerticalScrollbar )
+    {
         return AccessibilityOrientationVertical;
+    }
 
     return AccessibilityOrientationHorizontal;
 }
 
 bool AccessibilityScrollbar::isEnabled() const
 {
-    if (!m_scrollbar)
+    if ( !m_scrollbar )
+    {
         return false;
+    }
+
     return m_scrollbar->enabled();
 }
-    
+
 float AccessibilityScrollbar::valueForRange() const
 {
-    if (!m_scrollbar)
+    if ( !m_scrollbar )
+    {
         return 0;
+    }
 
     return m_scrollbar->currentPos() / m_scrollbar->maximum();
 }
 
-void AccessibilityScrollbar::setValue(float value)
+void AccessibilityScrollbar::setValue( float value )
 {
-    if (!m_scrollbar)
+    if ( !m_scrollbar )
+    {
         return;
-    
-    if (!m_scrollbar->scrollableArea())
+    }
+
+    if ( !m_scrollbar->scrollableArea() )
+    {
         return;
+    }
 
     float newValue = value * m_scrollbar->maximum();
-    m_scrollbar->scrollableArea()->scrollToOffsetWithoutAnimation(m_scrollbar->orientation(), newValue);
+    m_scrollbar->scrollableArea()->scrollToOffsetWithoutAnimation( m_scrollbar->orientation(), newValue );
 }
-    
+
 } // namespace WebCore

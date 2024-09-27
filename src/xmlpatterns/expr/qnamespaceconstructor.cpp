@@ -27,39 +27,39 @@
 
 using namespace QPatternist;
 
-NamespaceConstructor::NamespaceConstructor(const QXmlName nb) : m_binding(nb)
+NamespaceConstructor::NamespaceConstructor( const QXmlName nb ) : m_binding( nb )
 {
-   Q_ASSERT(!m_binding.isNull());
+    Q_ASSERT( !m_binding.isNull() );
 }
 
-void NamespaceConstructor::evaluateToSequenceReceiver(const DynamicContext::Ptr &context) const
+void NamespaceConstructor::evaluateToSequenceReceiver( const DynamicContext::Ptr &context ) const
 {
-   context->outputReceiver()->namespaceBinding(m_binding);
+    context->outputReceiver()->namespaceBinding( m_binding );
 }
 
 SequenceType::Ptr NamespaceConstructor::staticType() const
 {
-   return CommonSequenceTypes::ExactlyOneAttribute;
+    return CommonSequenceTypes::ExactlyOneAttribute;
 }
 
 SequenceType::List NamespaceConstructor::expectedOperandTypes() const
 {
-   SequenceType::List result;
-   result.append(CommonSequenceTypes::ExactlyOneString);
-   return result;
+    SequenceType::List result;
+    result.append( CommonSequenceTypes::ExactlyOneString );
+    return result;
 }
 
 Expression::Properties NamespaceConstructor::properties() const
 {
-   return DisableElimination | IsNodeConstructor;
+    return DisableElimination | IsNodeConstructor;
 }
 
-ExpressionVisitorResult::Ptr NamespaceConstructor::accept(const ExpressionVisitor::Ptr &visitor) const
+ExpressionVisitorResult::Ptr NamespaceConstructor::accept( const ExpressionVisitor::Ptr &visitor ) const
 {
-   return visitor->visit(this);
+    return visitor->visit( this );
 }
 
 Expression::ID NamespaceConstructor::id() const
 {
-   return IDNamespaceConstructor;
+    return IDNamespaceConstructor;
 }

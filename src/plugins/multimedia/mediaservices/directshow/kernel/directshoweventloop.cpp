@@ -28,102 +28,114 @@
 
 class DirectShowPostedEvent
 {
- public:
-   DirectShowPostedEvent(QObject *receiver, QEvent *event)
-      : receiver(receiver), event(event), next(nullptr)
-   {
-   }
+public:
+    DirectShowPostedEvent( QObject *receiver, QEvent *event )
+        : receiver( receiver ), event( event ), next( nullptr )
+    {
+    }
 
-   ~DirectShowPostedEvent() {
-      delete event;
-   }
+    ~DirectShowPostedEvent()
+    {
+        delete event;
+    }
 
-   QObject *receiver;
-   QEvent *event;
-   DirectShowPostedEvent *next;
+    QObject *receiver;
+    QEvent *event;
+    DirectShowPostedEvent *next;
 };
 
-DirectShowEventLoop::DirectShowEventLoop(QObject *parent)
-   : QObject(parent), m_postsHead(nullptr), m_postsTail(nullptr),
-     m_eventHandle(::CreateEvent(nullptr, 0, 0, nullptr)), m_waitHandle(::CreateEvent(nullptr, 0, 0, nullptr))
+DirectShowEventLoop::DirectShowEventLoop( QObject *parent )
+    : QObject( parent ), m_postsHead( nullptr ), m_postsTail( nullptr ),
+      m_eventHandle( ::CreateEvent( nullptr, 0, 0, nullptr ) ), m_waitHandle( ::CreateEvent( nullptr, 0, 0, nullptr ) )
 {
 }
 
 DirectShowEventLoop::~DirectShowEventLoop()
 {
-   ::CloseHandle(m_eventHandle);
-   ::CloseHandle(m_waitHandle);
+    ::CloseHandle( m_eventHandle );
+    ::CloseHandle( m_waitHandle );
 
-   for (DirectShowPostedEvent *post = m_postsHead; post; post = m_postsHead) {
-      m_postsHead = m_postsHead->next;
+    for ( DirectShowPostedEvent *post = m_postsHead; post; post = m_postsHead )
+    {
+        m_postsHead = m_postsHead->next;
 
-      delete post;
-   }
+        delete post;
+    }
 }
 
-void DirectShowEventLoop::wait(QMutex *mutex)
+void DirectShowEventLoop::wait( QMutex *mutex )
 {
-   ::ResetEvent(m_waitHandle);
+    ::ResetEvent( m_waitHandle );
 
-   mutex->unlock();
+    mutex->unlock();
 
-   HANDLE handles[] = { m_eventHandle, m_waitHandle };
-   while (::WaitForMultipleObjects(2, handles, false, INFINITE) == WAIT_OBJECT_0) {
-      processEvents();
-   }
+    HANDLE handles[] = { m_eventHandle, m_waitHandle };
 
-   mutex->lock();
+    while ( ::WaitForMultipleObjects( 2, handles, false, INFINITE ) == WAIT_OBJECT_0 )
+    {
+        processEvents();
+    }
+
+    mutex->lock();
 }
 
 void DirectShowEventLoop::wake()
 {
-   ::SetEvent(m_waitHandle);
+    ::SetEvent( m_waitHandle );
 }
 
-void DirectShowEventLoop::postEvent(QObject *receiver, QEvent *event)
+void DirectShowEventLoop::postEvent( QObject *receiver, QEvent *event )
 {
-   QMutexLocker locker(&m_mutex);
+    QMutexLocker locker( &m_mutex );
 
-   DirectShowPostedEvent *post = new DirectShowPostedEvent(receiver, event);
+    DirectShowPostedEvent *post = new DirectShowPostedEvent( receiver, event );
 
-   if (m_postsTail) {
-      m_postsTail->next = post;
-   } else {
-      m_postsHead = post;
-   }
+    if ( m_postsTail )
+    {
+        m_postsTail->next = post;
+    }
+    else
+    {
+        m_postsHead = post;
+    }
 
-   m_postsTail = post;
+    m_postsTail = post;
 
-   QCoreApplication::postEvent(this, new QEvent(QEvent::User));
-   ::SetEvent(m_eventHandle);
+    QCoreApplication::postEvent( this, new QEvent( QEvent::User ) );
+    ::SetEvent( m_eventHandle );
 }
 
-void DirectShowEventLoop::customEvent(QEvent *event)
+void DirectShowEventLoop::customEvent( QEvent *event )
 {
-   if (event->type() == QEvent::User) {
-      processEvents();
-   } else {
-      QObject::customEvent(event);
-   }
+    if ( event->type() == QEvent::User )
+    {
+        processEvents();
+    }
+    else
+    {
+        QObject::customEvent( event );
+    }
 }
 
 void DirectShowEventLoop::processEvents()
 {
-   QMutexLocker locker(&m_mutex);
+    QMutexLocker locker( &m_mutex );
 
-   ::ResetEvent(m_eventHandle);
+    ::ResetEvent( m_eventHandle );
 
-   while (m_postsHead) {
-      DirectShowPostedEvent *post = m_postsHead;
-      m_postsHead = m_postsHead->next;
+    while ( m_postsHead )
+    {
+        DirectShowPostedEvent *post = m_postsHead;
+        m_postsHead = m_postsHead->next;
 
-      if (! m_postsHead) {
-         m_postsTail = nullptr;
-      }
+        if ( ! m_postsHead )
+        {
+            m_postsTail = nullptr;
+        }
 
-      locker.unlock();
-      QCoreApplication::sendEvent(post->receiver, post->event);
-      delete post;
-      locker.relock();
-   }
+        locker.unlock();
+        QCoreApplication::sendEvent( post->receiver, post->event );
+        delete post;
+        locker.relock();
+    }
 }

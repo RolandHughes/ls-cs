@@ -29,29 +29,32 @@
 #include "LengthBox.h"
 #include "PlatformString.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 // Dashboard region attributes. Not inherited.
 
-struct StyleDashboardRegion {
+struct StyleDashboardRegion
+{
     String label;
     LengthBox offset;
     int type;
 
-    enum {
+    enum
+    {
         None,
         Circle,
         Rectangle
     };
 
-    bool operator==(const StyleDashboardRegion& o) const
+    bool operator==( const StyleDashboardRegion &o ) const
     {
         return type == o.type && offset == o.offset && label == o.label;
     }
 
-    bool operator!=(const StyleDashboardRegion& o) const
+    bool operator!=( const StyleDashboardRegion &o ) const
     {
-        return !(*this == o);
+        return !( *this == o );
     }
 };
 

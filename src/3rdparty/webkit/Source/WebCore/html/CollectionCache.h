@@ -25,32 +25,34 @@
 #include <wtf/HashMap.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Element;
 
-struct CollectionCache {
+struct CollectionCache
+{
     WTF_MAKE_FAST_ALLOCATED;
 public:
     CollectionCache();
-    CollectionCache(const CollectionCache&);
-    CollectionCache& operator=(const CollectionCache& other)
+    CollectionCache( const CollectionCache & );
+    CollectionCache &operator=( const CollectionCache &other )
     {
-        CollectionCache tmp(other);    
-        swap(tmp);
+        CollectionCache tmp( other );
+        swap( tmp );
         return *this;
     }
     ~CollectionCache();
 
     void reset();
-    void swap(CollectionCache&);
+    void swap( CollectionCache & );
 
     void checkConsistency();
 
-    typedef HashMap<AtomicStringImpl*, Vector<Element*>*> NodeCacheMap;
+    typedef HashMap<AtomicStringImpl *, Vector<Element *>*> NodeCacheMap;
 
     uint64_t version;
-    Element* current;
+    Element *current;
     unsigned position;
     unsigned length;
     int elementsArrayPosition;
@@ -60,11 +62,11 @@ public:
     bool hasNameCache;
 
 private:
-    static void copyCacheMap(NodeCacheMap&, const NodeCacheMap&);
+    static void copyCacheMap( NodeCacheMap &, const NodeCacheMap & );
 };
 
 #if ASSERT_DISABLED
-    inline void CollectionCache::checkConsistency() { }
+inline void CollectionCache::checkConsistency() { }
 #endif
 
 } // namespace

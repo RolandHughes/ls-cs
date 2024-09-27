@@ -25,58 +25,80 @@
 #include "SVGInlineTextBox.h"
 #include "SVGTextFragment.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-SVGTextChunk::SVGTextChunk(unsigned chunkStyle, float desiredTextLength)
-    : m_chunkStyle(chunkStyle)
-    , m_desiredTextLength(desiredTextLength)
+SVGTextChunk::SVGTextChunk( unsigned chunkStyle, float desiredTextLength )
+    : m_chunkStyle( chunkStyle )
+    , m_desiredTextLength( desiredTextLength )
 {
 }
 
-void SVGTextChunk::calculateLength(float& length, unsigned& characters) const
+void SVGTextChunk::calculateLength( float &length, unsigned &characters ) const
 {
-    SVGTextFragment* lastFragment = 0;
+    SVGTextFragment *lastFragment = 0;
 
     unsigned boxCount = m_boxes.size();
-    for (unsigned boxPosition = 0; boxPosition < boxCount; ++boxPosition) {
-        SVGInlineTextBox* textBox = m_boxes.at(boxPosition);
-        Vector<SVGTextFragment>& fragments = textBox->textFragments();
+
+    for ( unsigned boxPosition = 0; boxPosition < boxCount; ++boxPosition )
+    {
+        SVGInlineTextBox *textBox = m_boxes.at( boxPosition );
+        Vector<SVGTextFragment> &fragments = textBox->textFragments();
 
         unsigned size = fragments.size();
-        if (!size)
-            continue;
 
-        for (unsigned i = 0; i < size; ++i) {
-            SVGTextFragment& fragment = fragments.at(i);
+        if ( !size )
+        {
+            continue;
+        }
+
+        for ( unsigned i = 0; i < size; ++i )
+        {
+            SVGTextFragment &fragment = fragments.at( i );
             characters += fragment.length;
 
-            if (m_chunkStyle & VerticalText)
+            if ( m_chunkStyle & VerticalText )
+            {
                 length += fragment.height;
+            }
             else
+            {
                 length += fragment.width;
+            }
 
-            if (!lastFragment) {
+            if ( !lastFragment )
+            {
                 lastFragment = &fragment;
                 continue;
             }
 
             // Resepect gap between chunks.
-            if (m_chunkStyle & VerticalText)
-                 length += fragment.y - (lastFragment->y + lastFragment->height);
+            if ( m_chunkStyle & VerticalText )
+            {
+                length += fragment.y - ( lastFragment->y + lastFragment->height );
+            }
             else
-                 length += fragment.x - (lastFragment->x + lastFragment->width);
+            {
+                length += fragment.x - ( lastFragment->x + lastFragment->width );
+            }
 
             lastFragment = &fragment;
         }
     }
 }
 
-float SVGTextChunk::calculateTextAnchorShift(float length) const
+float SVGTextChunk::calculateTextAnchorShift( float length ) const
 {
-    if (m_chunkStyle & MiddleAnchor)
+    if ( m_chunkStyle & MiddleAnchor )
+    {
         return -length / 2;
-    if (m_chunkStyle & EndAnchor)
+    }
+
+    if ( m_chunkStyle & EndAnchor )
+    {
         return m_chunkStyle & RightToLeftText ? 0 : -length;
+    }
+
     return m_chunkStyle & RightToLeftText ? -length : 0;
 }
 

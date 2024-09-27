@@ -33,60 +33,91 @@ class ShaderEffectBuffer;
 
 class ShaderEffectSource : public QDeclarativeItem
 {
-    Q_OBJECT
-    Q_PROPERTY(QDeclarativeItem *sourceItem READ sourceItem WRITE setSourceItem NOTIFY sourceItemChanged)
-    Q_PROPERTY(QRectF sourceRect READ sourceRect WRITE setSourceRect NOTIFY sourceRectChanged)
-    Q_PROPERTY(QSize textureSize READ textureSize WRITE setTextureSize NOTIFY textureSizeChanged)
-    Q_PROPERTY(bool live READ isLive WRITE setLive NOTIFY liveChanged)
-    Q_PROPERTY(bool hideSource READ hideSource WRITE setHideSource NOTIFY hideSourceChanged)
-    Q_PROPERTY(WrapMode wrapMode READ wrapMode WRITE setWrapMode NOTIFY wrapModeChanged)
-    Q_ENUMS(WrapMode)
-    Q_ENUMS(Format)
+    Q_OBJECT Q_PROPERTY( QDeclarativeItem *sourceItem READ sourceItem WRITE setSourceItem NOTIFY sourceItemChanged )
+    Q_PROPERTY( QRectF sourceRect READ sourceRect WRITE setSourceRect NOTIFY sourceRectChanged )
+    Q_PROPERTY( QSize textureSize READ textureSize WRITE setTextureSize NOTIFY textureSizeChanged )
+    Q_PROPERTY( bool live READ isLive WRITE setLive NOTIFY liveChanged )
+    Q_PROPERTY( bool hideSource READ hideSource WRITE setHideSource NOTIFY hideSourceChanged )
+    Q_PROPERTY( WrapMode wrapMode READ wrapMode WRITE setWrapMode NOTIFY wrapModeChanged )
+    Q_ENUMS( WrapMode )
+    Q_ENUMS( Format )
 
 public:
-    enum WrapMode {
-            ClampToEdge,
-            RepeatHorizontally,
-            RepeatVertically,
-            Repeat
-        };
+    enum WrapMode
+    {
+        ClampToEdge,
+        RepeatHorizontally,
+        RepeatVertically,
+        Repeat
+    };
 
-    enum Format {
+    enum Format
+    {
         Alpha = GL_ALPHA,
         RGB = GL_RGB,
         RGBA = GL_RGBA
     };
 
-    ShaderEffectSource(QDeclarativeItem *parent = 0);
+    ShaderEffectSource( QDeclarativeItem *parent = 0 );
     virtual ~ShaderEffectSource();
 
-    QDeclarativeItem *sourceItem() const { return m_sourceItem.data(); }
-    void setSourceItem(QDeclarativeItem *item);
+    QDeclarativeItem *sourceItem() const
+    {
+        return m_sourceItem.data();
+    }
+    void setSourceItem( QDeclarativeItem *item );
 
-    QRectF sourceRect() const { return m_sourceRect; };
-    void setSourceRect(const QRectF &rect);
+    QRectF sourceRect() const
+    {
+        return m_sourceRect;
+    };
+    void setSourceRect( const QRectF &rect );
 
-    QSize textureSize() const { return m_textureSize; }
-    void setTextureSize(const QSize &size);
+    QSize textureSize() const
+    {
+        return m_textureSize;
+    }
+    void setTextureSize( const QSize &size );
 
-    bool isLive() const { return m_live; }
-    void setLive(bool s);
+    bool isLive() const
+    {
+        return m_live;
+    }
+    void setLive( bool s );
 
-    bool hideSource() const { return m_hideSource; }
-    void setHideSource(bool hide);
+    bool hideSource() const
+    {
+        return m_hideSource;
+    }
+    void setHideSource( bool hide );
 
-    WrapMode wrapMode() const { return m_wrapMode; };
-    void setWrapMode(WrapMode mode);
+    WrapMode wrapMode() const
+    {
+        return m_wrapMode;
+    };
+    void setWrapMode( WrapMode mode );
 
-    bool isActive() const { return m_refs; }
+    bool isActive() const
+    {
+        return m_refs;
+    }
     void bind();
     void refFromEffectItem();
     void derefFromEffectItem();
     void updateBackbuffer();
 
-    ShaderEffectBuffer* fbo() { return m_fbo; }
-    bool isDirtyTexture() { return m_dirtyTexture; }
-    bool isMirrored() { return m_mirrored; }
+    ShaderEffectBuffer *fbo()
+    {
+        return m_fbo;
+    }
+    bool isDirtyTexture()
+    {
+        return m_dirtyTexture;
+    }
+    bool isMirrored()
+    {
+        return m_mirrored;
+    }
 
     Q_INVOKABLE void grab();
 

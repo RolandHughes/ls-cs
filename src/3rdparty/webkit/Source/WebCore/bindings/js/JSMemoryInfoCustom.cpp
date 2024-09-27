@@ -34,9 +34,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-JSValue JSMemoryInfo::jsHeapSizeLimit(ExecState*) const
+JSValue JSMemoryInfo::jsHeapSizeLimit( ExecState * ) const
 {
     return jsUndefined();
 }

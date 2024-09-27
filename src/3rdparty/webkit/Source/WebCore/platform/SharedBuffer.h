@@ -21,7 +21,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #ifndef SharedBuffer_h
 #define SharedBuffer_h
@@ -45,57 +45,74 @@ class NSData;
 
 #endif
 
-namespace WebCore {
-    
+namespace WebCore
+{
+
 class PurgeableBuffer;
 
-class SharedBuffer : public RefCounted<SharedBuffer> {
+class SharedBuffer : public RefCounted<SharedBuffer>
+{
 public:
-    static PassRefPtr<SharedBuffer> create() { return adoptRef(new SharedBuffer); }
-    static PassRefPtr<SharedBuffer> create(const char* c, int i) { return adoptRef(new SharedBuffer(c, i)); }
-    static PassRefPtr<SharedBuffer> create(const unsigned char* c, int i) { return adoptRef(new SharedBuffer(c, i)); }
+    static PassRefPtr<SharedBuffer> create()
+    {
+        return adoptRef( new SharedBuffer );
+    }
+    static PassRefPtr<SharedBuffer> create( const char *c, int i )
+    {
+        return adoptRef( new SharedBuffer( c, i ) );
+    }
+    static PassRefPtr<SharedBuffer> create( const unsigned char *c, int i )
+    {
+        return adoptRef( new SharedBuffer( c, i ) );
+    }
 
-    static PassRefPtr<SharedBuffer> createWithContentsOfFile(const String& filePath);
+    static PassRefPtr<SharedBuffer> createWithContentsOfFile( const String &filePath );
 
-    static PassRefPtr<SharedBuffer> adoptVector(Vector<char>& vector);
-    
-    // The buffer must be in non-purgeable state before adopted to a SharedBuffer. 
+    static PassRefPtr<SharedBuffer> adoptVector( Vector<char> &vector );
+
+    // The buffer must be in non-purgeable state before adopted to a SharedBuffer.
     // It will stay that way until released.
-    static PassRefPtr<SharedBuffer> adoptPurgeableBuffer(PassOwnPtr<PurgeableBuffer>);
-    
+    static PassRefPtr<SharedBuffer> adoptPurgeableBuffer( PassOwnPtr<PurgeableBuffer> );
+
     ~SharedBuffer();
-    
+
 #if PLATFORM(MAC) || (PLATFORM(QT) && USE(QTKIT))
     NSData *createNSData();
-    static PassRefPtr<SharedBuffer> wrapNSData(NSData *data);
+    static PassRefPtr<SharedBuffer> wrapNSData( NSData *data );
 #endif
 #if USE(CF)
     CFDataRef createCFData();
-    static PassRefPtr<SharedBuffer> wrapCFData(CFDataRef);
+    static PassRefPtr<SharedBuffer> wrapCFData( CFDataRef );
 #endif
 
     // Calling this function will force internal segmented buffers
     // to be merged into a flat buffer. Use getSomeData() whenever possible
     // for better performance.
-    const char* data() const;
+    const char *data() const;
 
     unsigned size() const;
 
 
-    bool isEmpty() const { return !size(); }
+    bool isEmpty() const
+    {
+        return !size();
+    }
 
-    void append(const char*, unsigned);
+    void append( const char *, unsigned );
     void clear();
-    const char* platformData() const;
+    const char *platformData() const;
     unsigned platformDataSize() const;
 
 #if HAVE(CFNETWORK_DATA_ARRAY_CALLBACK)
-    void append(CFDataRef);
+    void append( CFDataRef );
 #endif
 
     PassRefPtr<SharedBuffer> copy() const;
-    
-    bool hasPurgeableBuffer() const { return m_purgeableBuffer.get(); }
+
+    bool hasPurgeableBuffer() const
+    {
+        return m_purgeableBuffer.get();
+    }
 
     // Ensure this buffer has no other clients before calling this.
     PassOwnPtr<PurgeableBuffer> releasePurgeableBuffer();
@@ -112,38 +129,38 @@ public:
     //          // Use the data. for example: decoder->decode(segment, length);
     //          pos += length;
     //      }
-    unsigned getSomeData(const char*& data, unsigned position = 0) const;
+    unsigned getSomeData( const char *&data, unsigned position = 0 ) const;
 
 private:
     SharedBuffer();
-    SharedBuffer(const char*, int);
-    SharedBuffer(const unsigned char*, int);
-    
+    SharedBuffer( const char *, int );
+    SharedBuffer( const unsigned char *, int );
+
     // Calling this function will force internal segmented buffers
     // to be merged into a flat buffer. Use getSomeData() whenever possible
     // for better performance.
     // As well, be aware that this method does *not* return any purgeable
     // memory, which can be a source of bugs.
-    const Vector<char>& buffer() const;
+    const Vector<char> &buffer() const;
 
     void clearPlatformData();
     void maybeTransferPlatformData();
     bool hasPlatformData() const;
-    
+
     unsigned m_size;
     mutable Vector<char> m_buffer;
-    mutable Vector<char*> m_segments;
+    mutable Vector<char *> m_segments;
     OwnPtr<PurgeableBuffer> m_purgeableBuffer;
 #if HAVE(CFNETWORK_DATA_ARRAY_CALLBACK)
     mutable Vector<RetainPtr<CFDataRef> > m_dataArray;
-    void copyDataArrayAndClear(char *destination, unsigned bytesToCopy) const;
+    void copyDataArrayAndClear( char *destination, unsigned bytesToCopy ) const;
 #endif
 #if USE(CF)
-    SharedBuffer(CFDataRef);
+    SharedBuffer( CFDataRef );
     RetainPtr<CFDataRef> m_cfData;
 #endif
 };
-    
+
 }
 
 #endif // SharedBuffer_h

@@ -39,85 +39,89 @@ using QVariantMap  = QMap<QString, QVariant>;
 
 class Q_CORE_EXPORT QJsonObject
 {
- public:
-   using iterator       = QFlatMap<QString, QJsonValue>::iterator;
-   using const_iterator = QFlatMap<QString, QJsonValue>::const_iterator;
+public:
+    using iterator       = QFlatMap<QString, QJsonValue>::iterator;
+    using const_iterator = QFlatMap<QString, QJsonValue>::const_iterator;
 
-   using size_type      = QFlatMap<QString, QJsonValue>::size_type;
-   using key_type       = QString;
-   using mapped_type    = QJsonValue;
+    using size_type      = QFlatMap<QString, QJsonValue>::size_type;
+    using key_type       = QString;
+    using mapped_type    = QJsonValue;
 
-   QJsonObject();
-   QJsonObject(const_iterator iter_begin, const_iterator iter_end);
-   QJsonObject(std::initializer_list<QPair<QString, QJsonValue>> list);
-   QJsonObject(const QJsonObject &other);
-   QJsonObject(QJsonObject &&other);
+    QJsonObject();
+    QJsonObject( const_iterator iter_begin, const_iterator iter_end );
+    QJsonObject( std::initializer_list<QPair<QString, QJsonValue>> list );
+    QJsonObject( const QJsonObject &other );
+    QJsonObject( QJsonObject &&other );
 
-   QJsonObject &operator =(const QJsonObject &other);
-   ~QJsonObject();
+    QJsonObject &operator =( const QJsonObject &other );
+    ~QJsonObject();
 
-   // methods
-   bool contains(const QString &key) const;
+    // methods
+    bool contains( const QString &key ) const;
 
-   int count() const {
-      return size();
-   }
+    int count() const
+    {
+        return size();
+    }
 
-   bool empty() const {
-      return isEmpty();
-   }
+    bool empty() const
+    {
+        return isEmpty();
+    }
 
-   iterator erase(const_iterator iter);
-   iterator find(const QString &key);
+    iterator erase( const_iterator iter );
+    iterator find( const QString &key );
 
-   const_iterator find(const QString &key) const {
-      return constFind(key);
-   }
+    const_iterator find( const QString &key ) const
+    {
+        return constFind( key );
+    }
 
-   const_iterator constFind(const QString &key) const;
+    const_iterator constFind( const QString &key ) const;
 
-   static QJsonObject fromVariantHash(const QVariantHash &hash);
-   static QJsonObject fromVariantMap(const QVariantMap &map);
+    static QJsonObject fromVariantHash( const QVariantHash &hash );
+    static QJsonObject fromVariantMap( const QVariantMap &map );
 
-   bool isEmpty() const;
+    bool isEmpty() const;
 
-   iterator insert(const QString &key, QJsonValue value);
-   QStringList keys() const;
+    iterator insert( const QString &key, QJsonValue value );
+    QStringList keys() const;
 
-   int length() const {
-      return size();
-   }
+    int length() const
+    {
+        return size();
+    }
 
-   void remove(const QString &key);
+    void remove( const QString &key );
 
-   size_type size() const;
+    size_type size() const;
 
-   QJsonValue take(const QString &key);
+    QJsonValue take( const QString &key );
 
-   QVariantHash toVariantHash() const;
-   QVariantMap toVariantMap() const;
+    QVariantHash toVariantHash() const;
+    QVariantMap toVariantMap() const;
 
-   const QJsonValue &value(const QString &key) const;
+    const QJsonValue &value( const QString &key ) const;
 
-   // operators
-   bool operator==(const QJsonObject &other) const;
-   bool operator!=(const QJsonObject &other) const;
+    // operators
+    bool operator==( const QJsonObject &other ) const;
+    bool operator!=( const QJsonObject &other ) const;
 
-   const QJsonValue &operator[] (const QString &key) const;
-   QJsonValue &operator[] (const QString &key);
+    const QJsonValue &operator[] ( const QString &key ) const;
+    QJsonValue &operator[] ( const QString &key );
 
-   // iterators
-   iterator begin();
-   const_iterator begin() const;
-   const_iterator constBegin() const;
+    // iterators
+    iterator begin();
+    const_iterator begin() const;
+    const_iterator constBegin() const;
 
-   iterator end();
-   const_iterator end() const;
-   const_iterator constEnd() const;
+    iterator end();
+    const_iterator end() const;
+    const_iterator constEnd() const;
 
- private:
-   friend class QJsonValue;
-   std::shared_ptr<QJsonDataObject> m_object;
+private:
+    friend class QJsonValue;
+    std::shared_ptr<QJsonDataObject> m_object;
 };
 
 #endif

@@ -27,21 +27,23 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class CSSProperty {
+class CSSProperty
+{
     WTF_MAKE_FAST_ALLOCATED;
 public:
-    CSSProperty(int propID, PassRefPtr<CSSValue> value, bool important = false, int shorthandID = 0, bool implicit = false)
-        : m_id(propID)
-        , m_shorthandID(shorthandID)
-        , m_important(important)
-        , m_implicit(implicit)
-        , m_value(value)
+    CSSProperty( int propID, PassRefPtr<CSSValue> value, bool important = false, int shorthandID = 0, bool implicit = false )
+        : m_id( propID )
+        , m_shorthandID( shorthandID )
+        , m_important( important )
+        , m_implicit( implicit )
+        , m_value( value )
     {
     }
 
-    CSSProperty& operator=(const CSSProperty& other)
+    CSSProperty &operator=( const CSSProperty &other )
     {
         m_id = other.m_id;
         m_shorthandID = other.m_shorthandID;
@@ -51,19 +53,34 @@ public:
         return *this;
     }
 
-    int id() const { return m_id; }
-    int shorthandID() const { return m_shorthandID; }
+    int id() const
+    {
+        return m_id;
+    }
+    int shorthandID() const
+    {
+        return m_shorthandID;
+    }
 
-    bool isImportant() const { return m_important; }
-    bool isImplicit() const { return m_implicit; }
+    bool isImportant() const
+    {
+        return m_important;
+    }
+    bool isImplicit() const
+    {
+        return m_implicit;
+    }
 
-    CSSValue* value() const { return m_value.get(); }
-    
+    CSSValue *value() const
+    {
+        return m_value.get();
+    }
+
     String cssText() const;
 
-    static int resolveDirectionAwareProperty(int propertyID, TextDirection, WritingMode);
+    static int resolveDirectionAwareProperty( int propertyID, TextDirection, WritingMode );
 
-    friend bool operator==(const CSSProperty&, const CSSProperty&);
+    friend bool operator==( const CSSProperty &, const CSSProperty & );
 
     // Make sure the following fits in 4 bytes. Really.
     int m_id : 15;
@@ -76,9 +93,10 @@ public:
 
 } // namespace WebCore
 
-namespace WTF {
-    // Properties in Vector can be initialized with memset and moved using memcpy.
-    template<> struct VectorTraits<WebCore::CSSProperty> : SimpleClassVectorTraits { };
+namespace WTF
+{
+// Properties in Vector can be initialized with memset and moved using memcpy.
+template<> struct VectorTraits<WebCore::CSSProperty> : SimpleClassVectorTraits { };
 }
 
 #endif // CSSProperty_h

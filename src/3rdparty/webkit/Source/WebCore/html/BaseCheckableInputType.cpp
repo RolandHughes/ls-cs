@@ -38,40 +38,47 @@
 #include "KeyboardEvent.h"
 #include "RegularExpression.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-bool BaseCheckableInputType::saveFormControlState(String& result) const
+bool BaseCheckableInputType::saveFormControlState( String &result ) const
 {
     result = element()->checked() ? "on" : "off";
     return true;
 }
 
-void BaseCheckableInputType::restoreFormControlState(const String& state) const
+void BaseCheckableInputType::restoreFormControlState( const String &state ) const
 {
-    element()->setChecked(state == "on");
+    element()->setChecked( state == "on" );
 }
 
-bool BaseCheckableInputType::appendFormData(FormDataList& encoding, bool) const
+bool BaseCheckableInputType::appendFormData( FormDataList &encoding, bool ) const
 {
-    if (!element()->checked())
+    if ( !element()->checked() )
+    {
         return false;
-    encoding.appendData(element()->name(), element()->value());
+    }
+
+    encoding.appendData( element()->name(), element()->value() );
     return true;
 }
 
-void BaseCheckableInputType::handleKeydownEvent(KeyboardEvent* event)
+void BaseCheckableInputType::handleKeydownEvent( KeyboardEvent *event )
 {
-    const String& key = event->keyIdentifier();
-    if (key == "U+0020") {
-        element()->setActive(true, true);
+    const String &key = event->keyIdentifier();
+
+    if ( key == "U+0020" )
+    {
+        element()->setActive( true, true );
         // No setDefaultHandled(), because IE dispatches a keypress in this case
         // and the caller will only dispatch a keypress if we don't call setDefaultHandled().
     }
 }
 
-void BaseCheckableInputType::handleKeypressEvent(KeyboardEvent* event)
+void BaseCheckableInputType::handleKeypressEvent( KeyboardEvent *event )
 {
-    if (event->charCode() == ' ') {
+    if ( event->charCode() == ' ' )
+    {
         // Prevent scrolling down the page.
         event->setDefaultHandled();
     }
@@ -83,13 +90,13 @@ bool BaseCheckableInputType::canSetStringValue() const
 }
 
 // FIXME: Could share this with BaseButtonInputType and RangeInputType if we had a common base class.
-void BaseCheckableInputType::accessKeyAction(bool sendToAnyElement)
+void BaseCheckableInputType::accessKeyAction( bool sendToAnyElement )
 {
-    InputType::accessKeyAction(sendToAnyElement);
+    InputType::accessKeyAction( sendToAnyElement );
 
     // Send mouse button events if the caller specified sendToAnyElement.
     // FIXME: The comment above is no good. It says what we do, but not why.
-    element()->dispatchSimulatedClick(0, sendToAnyElement);
+    element()->dispatchSimulatedClick( 0, sendToAnyElement );
 }
 
 String BaseCheckableInputType::fallbackValue()

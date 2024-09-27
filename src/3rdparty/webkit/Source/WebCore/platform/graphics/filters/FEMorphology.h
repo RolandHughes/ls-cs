@@ -26,36 +26,39 @@
 #include "FilterEffect.h"
 #include "Filter.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-enum MorphologyOperatorType {
+enum MorphologyOperatorType
+{
     FEMORPHOLOGY_OPERATOR_UNKNOWN = 0,
     FEMORPHOLOGY_OPERATOR_ERODE = 1,
     FEMORPHOLOGY_OPERATOR_DILATE = 2
 };
 
-class FEMorphology : public FilterEffect {
+class FEMorphology : public FilterEffect
+{
 public:
-    static PassRefPtr<FEMorphology> create(Filter*, MorphologyOperatorType, float radiusX, float radiusY);  
+    static PassRefPtr<FEMorphology> create( Filter *, MorphologyOperatorType, float radiusX, float radiusY );
     MorphologyOperatorType morphologyOperator() const;
-    bool setMorphologyOperator(MorphologyOperatorType);
+    bool setMorphologyOperator( MorphologyOperatorType );
 
     float radiusX() const;
-    bool setRadiusX(float);
+    bool setRadiusX( float );
 
     float radiusY() const;
-    bool setRadiusY(float);
+    bool setRadiusY( float );
 
     virtual void apply();
     virtual void dump();
 
     virtual void determineAbsolutePaintRect();
 
-    virtual TextStream& externalRepresentation(TextStream&, int indention) const;
+    virtual TextStream &externalRepresentation( TextStream &, int indention ) const;
 
 private:
-    FEMorphology(Filter*, MorphologyOperatorType, float radiusX, float radiusY);
-    
+    FEMorphology( Filter *, MorphologyOperatorType, float radiusX, float radiusY );
+
     MorphologyOperatorType m_type;
     float m_radiusX;
     float m_radiusY;

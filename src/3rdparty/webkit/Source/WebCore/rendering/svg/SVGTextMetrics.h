@@ -23,33 +23,45 @@
 #if ENABLE(SVG)
 #include <wtf/text/WTFString.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class RenderSVGInlineText;
 class TextRun;
 
-class SVGTextMetrics {
+class SVGTextMetrics
+{
 public:
     static SVGTextMetrics emptyMetrics();
-    static SVGTextMetrics measureCharacterRange(RenderSVGInlineText*, unsigned position, unsigned length);
+    static SVGTextMetrics measureCharacterRange( RenderSVGInlineText *, unsigned position, unsigned length );
 
-    bool operator==(const SVGTextMetrics&);
+    bool operator==( const SVGTextMetrics & );
 
-    float width() const { return m_width; }
-    float height() const { return m_height; }
-    unsigned length() const { return m_length; }
+    float width() const
+    {
+        return m_width;
+    }
+    float height() const
+    {
+        return m_height;
+    }
+    unsigned length() const
+    {
+        return m_length;
+    }
 
-    struct Glyph {
+    struct Glyph
+    {
         Glyph()
-            : isValid(false)
+            : isValid( false )
         {
         }
 
-        bool operator==(const Glyph& other)
+        bool operator==( const Glyph &other )
         {
             return isValid == other.isValid
-                && name == other.name
-                && unicodeString == other.unicodeString;
+                   && name == other.name
+                   && unicodeString == other.unicodeString;
         }
 
         bool isValid;
@@ -58,15 +70,21 @@ public:
     };
 
     // Only useful when measuring individual characters, to lookup ligatures.
-    const Glyph& glyph() const { return m_glyph; }
+    const Glyph &glyph() const
+    {
+        return m_glyph;
+    }
 
 private:
     friend class SVGTextLayoutAttributesBuilder;
-    void setWidth(float width) { m_width = width; }
+    void setWidth( float width )
+    {
+        m_width = width;
+    }
 
 private:
     SVGTextMetrics();
-    SVGTextMetrics(RenderSVGInlineText*, const TextRun&, unsigned position, unsigned textLength);
+    SVGTextMetrics( RenderSVGInlineText *, const TextRun &, unsigned position, unsigned textLength );
 
     float m_width;
     float m_height;

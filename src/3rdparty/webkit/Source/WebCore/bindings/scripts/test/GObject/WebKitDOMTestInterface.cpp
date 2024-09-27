@@ -37,89 +37,101 @@
 #include "webkitglobalsprivate.h"
 #include "webkitmarshal.h"
 
-namespace WebKit {
-    
-WebKitDOMTestInterface* kit(WebCore::TestInterface* obj)
+namespace WebKit
 {
-    g_return_val_if_fail(obj, 0);
 
-    if (gpointer ret = DOMObjectCache::get(obj))
-        return static_cast<WebKitDOMTestInterface*>(ret);
+WebKitDOMTestInterface *kit( WebCore::TestInterface *obj )
+{
+    g_return_val_if_fail( obj, 0 );
 
-    return static_cast<WebKitDOMTestInterface*>(DOMObjectCache::put(obj, WebKit::wrapTestInterface(obj)));
+    if ( gpointer ret = DOMObjectCache::get( obj ) )
+    {
+        return static_cast<WebKitDOMTestInterface *>( ret );
+    }
+
+    return static_cast<WebKitDOMTestInterface *>( DOMObjectCache::put( obj, WebKit::wrapTestInterface( obj ) ) );
 }
-    
+
 } // namespace WebKit //
 
 
-G_DEFINE_TYPE(WebKitDOMTestInterface, webkit_dom_test_interface, WEBKIT_TYPE_DOM_OBJECT)
+G_DEFINE_TYPE( WebKitDOMTestInterface, webkit_dom_test_interface, WEBKIT_TYPE_DOM_OBJECT )
 
-namespace WebKit {
-
-WebCore::TestInterface* core(WebKitDOMTestInterface* request)
+namespace WebKit
 {
-    g_return_val_if_fail(request, 0);
 
-    WebCore::TestInterface* coreObject = static_cast<WebCore::TestInterface*>(WEBKIT_DOM_OBJECT(request)->coreObject);
-    g_return_val_if_fail(coreObject, 0);
+WebCore::TestInterface *core( WebKitDOMTestInterface *request )
+{
+    g_return_val_if_fail( request, 0 );
+
+    WebCore::TestInterface *coreObject = static_cast<WebCore::TestInterface *>( WEBKIT_DOM_OBJECT( request )->coreObject );
+    g_return_val_if_fail( coreObject, 0 );
 
     return coreObject;
 }
 
 } // namespace WebKit
-enum {
+enum
+{
     PROP_0,
 };
 
 
-static void webkit_dom_test_interface_finalize(GObject* object)
+static void webkit_dom_test_interface_finalize( GObject *object )
 {
-    WebKitDOMObject* dom_object = WEBKIT_DOM_OBJECT(object);
-    
-    if (dom_object->coreObject) {
-        WebCore::TestInterface* coreObject = static_cast<WebCore::TestInterface *>(dom_object->coreObject);
+    WebKitDOMObject *dom_object = WEBKIT_DOM_OBJECT( object );
 
-        WebKit::DOMObjectCache::forget(coreObject);
+    if ( dom_object->coreObject )
+    {
+        WebCore::TestInterface *coreObject = static_cast<WebCore::TestInterface *>( dom_object->coreObject );
+
+        WebKit::DOMObjectCache::forget( coreObject );
         coreObject->deref();
 
         dom_object->coreObject = NULL;
     }
 
-    G_OBJECT_CLASS(webkit_dom_test_interface_parent_class)->finalize(object);
+    G_OBJECT_CLASS( webkit_dom_test_interface_parent_class )->finalize( object );
 }
 
-static void webkit_dom_test_interface_set_property(GObject* object, guint prop_id, const GValue* value, GParamSpec* pspec)
+static void webkit_dom_test_interface_set_property( GObject *object, guint prop_id, const GValue *value, GParamSpec *pspec )
 {
     WebCore::JSMainThreadNullState state;
-    switch (prop_id) {
-    default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID(object, prop_id, pspec);
-        break;
+
+    switch ( prop_id )
+    {
+        default:
+            G_OBJECT_WARN_INVALID_PROPERTY_ID( object, prop_id, pspec );
+            break;
     }
 }
 
 
-static void webkit_dom_test_interface_get_property(GObject* object, guint prop_id, GValue* value, GParamSpec* pspec)
+static void webkit_dom_test_interface_get_property( GObject *object, guint prop_id, GValue *value, GParamSpec *pspec )
 {
     WebCore::JSMainThreadNullState state;
-    switch (prop_id) {
-    default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID(object, prop_id, pspec);
-        break;
+
+    switch ( prop_id )
+    {
+        default:
+            G_OBJECT_WARN_INVALID_PROPERTY_ID( object, prop_id, pspec );
+            break;
     }
 }
 
 
-static void webkit_dom_test_interface_constructed(GObject* object)
+static void webkit_dom_test_interface_constructed( GObject *object )
 {
 
-    if (G_OBJECT_CLASS(webkit_dom_test_interface_parent_class)->constructed)
-        G_OBJECT_CLASS(webkit_dom_test_interface_parent_class)->constructed(object);
+    if ( G_OBJECT_CLASS( webkit_dom_test_interface_parent_class )->constructed )
+    {
+        G_OBJECT_CLASS( webkit_dom_test_interface_parent_class )->constructed( object );
+    }
 }
 
-static void webkit_dom_test_interface_class_init(WebKitDOMTestInterfaceClass* requestClass)
+static void webkit_dom_test_interface_class_init( WebKitDOMTestInterfaceClass *requestClass )
 {
-    GObjectClass *gobjectClass = G_OBJECT_CLASS(requestClass);
+    GObjectClass *gobjectClass = G_OBJECT_CLASS( requestClass );
     gobjectClass->finalize = webkit_dom_test_interface_finalize;
     gobjectClass->set_property = webkit_dom_test_interface_set_property;
     gobjectClass->get_property = webkit_dom_test_interface_get_property;
@@ -129,14 +141,15 @@ static void webkit_dom_test_interface_class_init(WebKitDOMTestInterfaceClass* re
 
 }
 
-static void webkit_dom_test_interface_init(WebKitDOMTestInterface* request)
+static void webkit_dom_test_interface_init( WebKitDOMTestInterface *request )
 {
 }
 
-namespace WebKit {
-WebKitDOMTestInterface* wrapTestInterface(WebCore::TestInterface* coreObject)
+namespace WebKit
 {
-    g_return_val_if_fail(coreObject, 0);
+WebKitDOMTestInterface *wrapTestInterface( WebCore::TestInterface *coreObject )
+{
+    g_return_val_if_fail( coreObject, 0 );
 
     /* We call ref() rather than using a C++ smart pointer because we can't store a C++ object
      * in a C-allocated GObject structure.  See the finalize() code for the
@@ -144,8 +157,8 @@ WebKitDOMTestInterface* wrapTestInterface(WebCore::TestInterface* coreObject)
      */
     coreObject->ref();
 
-    return  WEBKIT_DOM_TEST_INTERFACE(g_object_new(WEBKIT_TYPE_DOM_TEST_INTERFACE,
-                                               "core-object", coreObject, NULL));
+    return  WEBKIT_DOM_TEST_INTERFACE( g_object_new( WEBKIT_TYPE_DOM_TEST_INTERFACE,
+                                       "core-object", coreObject, NULL ) );
 }
 } // namespace WebKit
 #endif /* ENABLE(Condition1) || ENABLE(Condition2) */

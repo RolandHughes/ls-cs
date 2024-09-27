@@ -31,20 +31,22 @@
 
 #if ENABLE(XSLT)
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Document;
 
-class XMLTreeViewer {
+class XMLTreeViewer
+{
 public:
-    explicit XMLTreeViewer(Document*);
+    explicit XMLTreeViewer( Document * );
     virtual ~XMLTreeViewer() {};
 
     bool hasNoStyleInformation() const;
     void transformDocumentToTreeView();
 
 private:
-    Document* m_document;
+    Document *m_document;
 };
 
 } // namespace WebCore

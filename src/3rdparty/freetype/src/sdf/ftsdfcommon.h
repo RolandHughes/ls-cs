@@ -18,12 +18,12 @@
  */
 
 
-  /****************************************************
-   *
-   * This file contains common functions and properties
-   * for both the 'sdf' and 'bsdf' renderers.
-   *
-   */
+/****************************************************
+ *
+ * This file contains common functions and properties
+ * for both the 'sdf' and 'bsdf' renderers.
+ *
+ */
 
 #ifndef FTSDFCOMMON_H_
 #define FTSDFCOMMON_H_
@@ -36,51 +36,51 @@
 FT_BEGIN_HEADER
 
 
-  /**************************************************************************
-   *
-   * default values (cannot be set individually for each renderer)
-   *
-   */
+/**************************************************************************
+ *
+ * default values (cannot be set individually for each renderer)
+ *
+ */
 
-  /* default spread value */
+/* default spread value */
 #define DEFAULT_SPREAD  8
-  /* minimum spread supported by the renderer */
+/* minimum spread supported by the renderer */
 #define MIN_SPREAD      2
-  /* maximum spread supported by the renderer */
+/* maximum spread supported by the renderer */
 #define MAX_SPREAD      32
 
 
-  /**************************************************************************
-   *
-   * common definitions (cannot be set individually for each renderer)
-   *
-   */
+/**************************************************************************
+ *
+ * common definitions (cannot be set individually for each renderer)
+ *
+ */
 
-  /* If this macro is set to 1 the rasterizer uses squared distances for */
-  /* computation.  It can greatly improve the performance but there is a */
-  /* chance of overflow and artifacts.  You can safely use it up to a    */
-  /* pixel size of 128.                                                  */
+/* If this macro is set to 1 the rasterizer uses squared distances for */
+/* computation.  It can greatly improve the performance but there is a */
+/* chance of overflow and artifacts.  You can safely use it up to a    */
+/* pixel size of 128.                                                  */
 #ifndef USE_SQUARED_DISTANCES
 #define USE_SQUARED_DISTANCES  0
 #endif
 
 
-  /**************************************************************************
-   *
-   * common macros
-   *
-   */
+/**************************************************************************
+ *
+ * common macros
+ *
+ */
 
-  /* convert int to 26.6 fixed-point   */
+/* convert int to 26.6 fixed-point   */
 #define FT_INT_26D6( x )   ( x * 64 )
-  /* convert int to 16.16 fixed-point  */
+/* convert int to 16.16 fixed-point  */
 #define FT_INT_16D16( x )  ( x * 65536 )
-  /* convert 26.6 to 16.16 fixed-point */
+/* convert 26.6 to 16.16 fixed-point */
 #define FT_26D6_16D16( x ) ( x * 1024 )
 
 
-  /* Convenience macro to call a function; it  */
-  /* jumps to label `Exit` if an error occurs. */
+/* Convenience macro to call a function; it  */
+/* jumps to label `Exit` if an error occurs. */
 #define FT_CALL( x ) do                          \
                      {                           \
                        error = ( x );            \
@@ -89,13 +89,13 @@ FT_BEGIN_HEADER
                      } while ( 0 )
 
 
-  /*
-   * The macro `VECTOR_LENGTH_16D16` computes either squared distances or
-   * actual distances, depending on the value of `USE_SQUARED_DISTANCES`.
-   *
-   * By using squared distances the performance can be greatly improved but
-   * there is a risk of overflow.
-   */
+/*
+ * The macro `VECTOR_LENGTH_16D16` computes either squared distances or
+ * actual distances, depending on the value of `USE_SQUARED_DISTANCES`.
+ *
+ * By using squared distances the performance can be greatly improved but
+ * there is a risk of overflow.
+ */
 #if USE_SQUARED_DISTANCES
 #define VECTOR_LENGTH_16D16( v )  ( FT_MulFix( v.x, v.x ) + \
                                     FT_MulFix( v.y, v.y ) )
@@ -104,31 +104,31 @@ FT_BEGIN_HEADER
 #endif
 
 
-  /**************************************************************************
-   *
-   * common typedefs
-   *
-   */
+/**************************************************************************
+ *
+ * common typedefs
+ *
+ */
 
-  typedef FT_Vector FT_26D6_Vec;   /* with 26.6 fixed-point components  */
-  typedef FT_Vector FT_16D16_Vec;  /* with 16.16 fixed-point components */
+typedef FT_Vector FT_26D6_Vec;   /* with 26.6 fixed-point components  */
+typedef FT_Vector FT_16D16_Vec;  /* with 16.16 fixed-point components */
 
-  typedef FT_Fixed  FT_16D16;      /* 16.16 fixed-point representation  */
-  typedef FT_Fixed  FT_26D6;       /* 26.6 fixed-point representation   */
-  typedef FT_Byte   FT_SDFFormat;  /* format to represent SDF data      */
+typedef FT_Fixed  FT_16D16;      /* 16.16 fixed-point representation  */
+typedef FT_Fixed  FT_26D6;       /* 26.6 fixed-point representation   */
+typedef FT_Byte   FT_SDFFormat;  /* format to represent SDF data      */
 
-  typedef FT_BBox   FT_CBox;       /* control box of a curve            */
+typedef FT_BBox   FT_CBox;       /* control box of a curve            */
 
 
-  FT_LOCAL( FT_16D16 )
-  square_root( FT_16D16  val );
+FT_LOCAL( FT_16D16 )
+square_root( FT_16D16  val );
 
-  FT_LOCAL( FT_SDFFormat )
-  map_fixed_to_sdf( FT_16D16  dist,
-                    FT_16D16  max_value );
+FT_LOCAL( FT_SDFFormat )
+map_fixed_to_sdf( FT_16D16  dist,
+                  FT_16D16  max_value );
 
-  FT_LOCAL( FT_SDFFormat )
-  invert_sign( FT_SDFFormat  dist );
+FT_LOCAL( FT_SDFFormat )
+invert_sign( FT_SDFFormat  dist );
 
 
 FT_END_HEADER

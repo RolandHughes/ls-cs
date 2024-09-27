@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -32,75 +32,105 @@
 #include "RenderView.h"
 #include "Settings.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
-    
-RenderIFrame::RenderIFrame(Element* element)
-    : RenderFrameBase(element)
+
+RenderIFrame::RenderIFrame( Element *element )
+    : RenderFrameBase( element )
 {
 }
 
 void RenderIFrame::computeLogicalHeight()
 {
     RenderPart::computeLogicalHeight();
-    if (!flattenFrame())
-         return;
 
-    HTMLIFrameElement* frame = static_cast<HTMLIFrameElement*>(node());
+    if ( !flattenFrame() )
+    {
+        return;
+    }
+
+    HTMLIFrameElement *frame = static_cast<HTMLIFrameElement *>( node() );
     bool isScrollable = frame->scrollingMode() != ScrollbarAlwaysOff;
 
-    if (isScrollable || !style()->height().isFixed()) {
-        FrameView* view = static_cast<FrameView*>(widget());
-        if (!view)
+    if ( isScrollable || !style()->height().isFixed() )
+    {
+        FrameView *view = static_cast<FrameView *>( widget() );
+
+        if ( !view )
+        {
             return;
+        }
+
         int border = borderTop() + borderBottom();
-        setHeight(max(height(), view->contentsHeight() + border));
+        setHeight( max( height(), view->contentsHeight() + border ) );
     }
 }
 
 void RenderIFrame::computeLogicalWidth()
 {
     RenderPart::computeLogicalWidth();
-    if (!flattenFrame())
-        return;
 
-    HTMLIFrameElement* frame = static_cast<HTMLIFrameElement*>(node());
+    if ( !flattenFrame() )
+    {
+        return;
+    }
+
+    HTMLIFrameElement *frame = static_cast<HTMLIFrameElement *>( node() );
     bool isScrollable = frame->scrollingMode() != ScrollbarAlwaysOff;
 
-    if (isScrollable || !style()->width().isFixed()) {
-        FrameView* view = static_cast<FrameView*>(widget());
-        if (!view)
+    if ( isScrollable || !style()->width().isFixed() )
+    {
+        FrameView *view = static_cast<FrameView *>( widget() );
+
+        if ( !view )
+        {
             return;
+        }
+
         int border = borderLeft() + borderRight();
-        setWidth(max(width(), view->contentsWidth() + border));
+        setWidth( max( width(), view->contentsWidth() + border ) );
     }
 }
 
 bool RenderIFrame::flattenFrame()
 {
-    if (!node() || !node()->hasTagName(iframeTag))
+    if ( !node() || !node()->hasTagName( iframeTag ) )
+    {
         return false;
-
-    HTMLIFrameElement* element = static_cast<HTMLIFrameElement*>(node());
-    bool isScrollable = element->scrollingMode() != ScrollbarAlwaysOff;
-
-    if (style()->width().isFixed() && style()->height().isFixed()) {
-        if (!isScrollable)
-            return false;
-        if (style()->width().value() <= 0 || style()->height().value() <= 0)
-            return false;
     }
 
-    Frame* frame = element->document()->frame();
+    HTMLIFrameElement *element = static_cast<HTMLIFrameElement *>( node() );
+    bool isScrollable = element->scrollingMode() != ScrollbarAlwaysOff;
+
+    if ( style()->width().isFixed() && style()->height().isFixed() )
+    {
+        if ( !isScrollable )
+        {
+            return false;
+        }
+
+        if ( style()->width().value() <= 0 || style()->height().value() <= 0 )
+        {
+            return false;
+        }
+    }
+
+    Frame *frame = element->document()->frame();
     bool enabled = frame && frame->settings()->frameFlatteningEnabled();
 
-    if (!enabled || !frame->page())
+    if ( !enabled || !frame->page() )
+    {
         return false;
+    }
 
-    FrameView* view = frame->page()->mainFrame()->view();
-    if (!view)
+    FrameView *view = frame->page()->mainFrame()->view();
+
+    if ( !view )
+    {
         return false;
+    }
 
     // Do not flatten offscreen inner frames during frame flattening, as flattening might make them visible.
     IntRect boundingRect = absoluteBoundingBoxRect();
@@ -109,13 +139,14 @@ bool RenderIFrame::flattenFrame()
 
 void RenderIFrame::layout()
 {
-    ASSERT(needsLayout());
+    ASSERT( needsLayout() );
 
     RenderPart::computeLogicalWidth();
     RenderPart::computeLogicalHeight();
 
-    if (flattenFrame()) {
-        layoutWithFlattening(style()->width().isFixed(), style()->height().isFixed());
+    if ( flattenFrame() )
+    {
+        layoutWithFlattening( style()->width().isFixed(), style()->height().isFixed() );
         return;
     }
 
@@ -125,7 +156,7 @@ void RenderIFrame::layout()
     addShadowOverflow();
     updateLayerTransform();
 
-    setNeedsLayout(false);
+    setNeedsLayout( false );
 }
 
 }

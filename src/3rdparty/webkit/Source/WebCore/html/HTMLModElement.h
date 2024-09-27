@@ -26,16 +26,18 @@
 
 #include "HTMLElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class HTMLModElement : public HTMLElement {
+class HTMLModElement : public HTMLElement
+{
 public:
-    static PassRefPtr<HTMLModElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<HTMLModElement> create( const QualifiedName &, Document * );
 
 private:
-    HTMLModElement(const QualifiedName&, Document*);
+    HTMLModElement( const QualifiedName &, Document * );
 
-    virtual bool isURLAttribute(Attribute*) const;
+    virtual bool isURLAttribute( Attribute * ) const;
 };
 
 } //namespace

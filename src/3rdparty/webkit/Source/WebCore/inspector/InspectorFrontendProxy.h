@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef InspectorFrontendProxy_h
@@ -31,23 +31,25 @@
 #include "InspectorFrontendChannel.h"
 #include <wtf/Forward.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class EventsCollector;
 
-class InspectorFrontendProxy : public InspectorFrontendChannel {
+class InspectorFrontendProxy : public InspectorFrontendChannel
+{
 public:
-    explicit InspectorFrontendProxy(EventsCollector*);
-    InspectorFrontendProxy(EventsCollector*, InspectorFrontendChannel* nextChannel);
+    explicit InspectorFrontendProxy( EventsCollector * );
+    InspectorFrontendProxy( EventsCollector *, InspectorFrontendChannel *nextChannel );
     virtual ~InspectorFrontendProxy() { }
 
-    void setInspectorFrontendChannel(InspectorFrontendChannel*);
-    void setEventsCollector(EventsCollector*);
-    virtual bool sendMessageToFrontend(const String& message);
+    void setInspectorFrontendChannel( InspectorFrontendChannel * );
+    void setEventsCollector( EventsCollector * );
+    virtual bool sendMessageToFrontend( const String &message );
 
 private:
-    InspectorFrontendChannel* m_receiver;
-    EventsCollector* m_collector;
+    InspectorFrontendChannel *m_receiver;
+    EventsCollector *m_collector;
 };
 
 } // namespace WebCore

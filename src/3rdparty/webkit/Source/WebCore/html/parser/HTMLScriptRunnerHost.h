@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef HTMLScriptRunnerHost_h
@@ -28,27 +28,29 @@
 
 #include <wtf/Forward.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class CachedResource;
 class Element;
 class HTMLInputStream;
 class ScriptSourceCode;
 
-class HTMLScriptRunnerHost {
+class HTMLScriptRunnerHost
+{
 public:
     virtual ~HTMLScriptRunnerHost() { }
 
     // Implementors should call cachedResource->addClient() here or soon after.
-    virtual void watchForLoad(CachedResource*) = 0;
+    virtual void watchForLoad( CachedResource * ) = 0;
     // Implementors must call cachedResource->removeClient() immediately.
-    virtual void stopWatchingForLoad(CachedResource*) = 0;
+    virtual void stopWatchingForLoad( CachedResource * ) = 0;
 
-    virtual HTMLInputStream& inputStream() = 0;
+    virtual HTMLInputStream &inputStream() = 0;
 
     virtual bool hasPreloadScanner() const = 0;
     virtual void appendCurrentInputStreamToPreloadScannerAndScan() = 0;
-    
+
 };
 
 }

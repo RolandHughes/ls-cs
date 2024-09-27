@@ -36,66 +36,70 @@ class QNtlmWindowsHandles;
 
 class QAuthenticatorPrivate
 {
- public:
-   enum Method {
-      None,
-      Basic,
-      Plain,
-      Login,
-      Ntlm,
-      CramMd5,
-      DigestMd5
-   };
+public:
+    enum Method
+    {
+        None,
+        Basic,
+        Plain,
+        Login,
+        Ntlm,
+        CramMd5,
+        DigestMd5
+    };
 
-   enum Phase {
-      Start,
-      Phase2,
-      Done,
-      Invalid
-   };
+    enum Phase
+    {
+        Start,
+        Phase2,
+        Done,
+        Invalid
+    };
 
-   QAuthenticatorPrivate();
-   ~QAuthenticatorPrivate();
+    QAuthenticatorPrivate();
+    ~QAuthenticatorPrivate();
 
-   QString user;
-   QString extractedUser;
-   QString password;
-   QVariantHash options;
+    QString user;
+    QString extractedUser;
+    QString password;
+    QVariantHash options;
 
-   QString realm;
-   QByteArray challenge;
+    QString realm;
+    QByteArray challenge;
 
-   Method method;
-   Phase phase;
+    Method method;
+    Phase phase;
 
-   bool hasFailed;   // credentials have been tried but rejected by server.
+    bool hasFailed;   // credentials have been tried but rejected by server.
 
-   // digest specific
-   QByteArray cnonce;
-   int nonceCount;
+    // digest specific
+    QByteArray cnonce;
+    int nonceCount;
 
-   // ntlm specific
-   QString workstation;
-   QString userDomain;
+    // ntlm specific
+    QString workstation;
+    QString userDomain;
 
 #ifdef Q_OS_WIN
     QNtlmWindowsHandles *ntlmWindowsHandles;
 #endif
 
-   QByteArray calculateResponse(const QByteArray &method, const QByteArray &path);
+    QByteArray calculateResponse( const QByteArray &method, const QByteArray &path );
 
-   static QAuthenticatorPrivate *getPrivate(QAuthenticator &auth) {
-      return auth.d;
-   }
+    static QAuthenticatorPrivate *getPrivate( QAuthenticator &auth )
+    {
+        return auth.d;
+    }
 
-   static const QAuthenticatorPrivate *getPrivate(const QAuthenticator &auth) {
-      return auth.d;
-   }
+    static const QAuthenticatorPrivate *getPrivate( const QAuthenticator &auth )
+    {
+        return auth.d;
+    }
 
-   QByteArray digestMd5Response(const QByteArray &challenge, const QByteArray &method, const QByteArray &path);
-   static QHash<QByteArray, QByteArray> parseDigestAuthenticationChallenge(const QByteArray &challenge);
-   void parseHttpResponse(const QList<QPair<QByteArray, QByteArray> > &, bool isProxy);
-   void updateCredentials();
+    QByteArray digestMd5Response( const QByteArray &challenge, const QByteArray &method, const QByteArray &path );
+    static QHash<QByteArray, QByteArray> parseDigestAuthenticationChallenge( const QByteArray &challenge );
+    void parseHttpResponse( const QList<QPair<QByteArray, QByteArray> > &, bool isProxy );
+    void updateCredentials();
 };
 
 #endif

@@ -37,11 +37,12 @@
 
 using namespace WebCore;
 
-namespace WebKit {
-
-WebApplicationCacheManager& WebApplicationCacheManager::shared()
+namespace WebKit
 {
-    static WebApplicationCacheManager& shared = *new WebApplicationCacheManager;
+
+WebApplicationCacheManager &WebApplicationCacheManager::shared()
+{
+    static WebApplicationCacheManager &shared = *new WebApplicationCacheManager;
     return shared;
 }
 
@@ -49,56 +50,63 @@ WebApplicationCacheManager::WebApplicationCacheManager()
 {
 }
 
-void WebApplicationCacheManager::didReceiveMessage(CoreIPC::Connection* connection, CoreIPC::MessageID messageID, CoreIPC::ArgumentDecoder* arguments)
+void WebApplicationCacheManager::didReceiveMessage( CoreIPC::Connection *connection, CoreIPC::MessageID messageID,
+        CoreIPC::ArgumentDecoder *arguments )
 {
-    didReceiveWebApplicationCacheManagerMessage(connection, messageID, arguments);
+    didReceiveWebApplicationCacheManagerMessage( connection, messageID, arguments );
 }
 
-void WebApplicationCacheManager::getApplicationCacheOrigins(uint64_t callbackID)
+void WebApplicationCacheManager::getApplicationCacheOrigins( uint64_t callbackID )
 {
-    WebProcess::LocalTerminationDisabler terminationDisabler(WebProcess::shared());
+    WebProcess::LocalTerminationDisabler terminationDisabler( WebProcess::shared() );
 
     HashSet<RefPtr<SecurityOrigin>, SecurityOriginHash> origins;
 
 #if ENABLE(OFFLINE_WEB_APPLICATIONS)
-    cacheStorage().getOriginsWithCache(origins);
+    cacheStorage().getOriginsWithCache( origins );
 #endif
 
     Vector<SecurityOriginData> identifiers;
-    identifiers.reserveCapacity(origins.size());
+    identifiers.reserveCapacity( origins.size() );
 
     HashSet<RefPtr<SecurityOrigin>, SecurityOriginHash>::iterator end = origins.end();
     HashSet<RefPtr<SecurityOrigin>, SecurityOriginHash>::iterator i = origins.begin();
-    for (; i != end; ++i) {
+
+    for ( ; i != end; ++i )
+    {
         RefPtr<SecurityOrigin> origin = *i;
-        
+
         SecurityOriginData originData;
         originData.protocol = origin->protocol();
         originData.host = origin->host();
         originData.port = origin->port();
 
-        identifiers.uncheckedAppend(originData);
+        identifiers.uncheckedAppend( originData );
     }
 
-    WebProcess::shared().connection()->send(Messages::WebApplicationCacheManagerProxy::DidGetApplicationCacheOrigins(identifiers, callbackID), 0);
+    WebProcess::shared().connection()->send( Messages::WebApplicationCacheManagerProxy::DidGetApplicationCacheOrigins( identifiers,
+            callbackID ), 0 );
 }
 
-void WebApplicationCacheManager::deleteEntriesForOrigin(const SecurityOriginData& originData)
+void WebApplicationCacheManager::deleteEntriesForOrigin( const SecurityOriginData &originData )
 {
-    WebProcess::LocalTerminationDisabler terminationDisabler(WebProcess::shared());
+    WebProcess::LocalTerminationDisabler terminationDisabler( WebProcess::shared() );
 
 #if ENABLE(OFFLINE_WEB_APPLICATIONS)
-    RefPtr<SecurityOrigin> origin = SecurityOrigin::create(originData.protocol, originData.host, originData.port);
-    if (!origin)
+    RefPtr<SecurityOrigin> origin = SecurityOrigin::create( originData.protocol, originData.host, originData.port );
+
+    if ( !origin )
+    {
         return;
-    
-    ApplicationCache::deleteCacheForOrigin(origin.get());
+    }
+
+    ApplicationCache::deleteCacheForOrigin( origin.get() );
 #endif
 }
 
 void WebApplicationCacheManager::deleteAllEntries()
 {
-    WebProcess::LocalTerminationDisabler terminationDisabler(WebProcess::shared());
+    WebProcess::LocalTerminationDisabler terminationDisabler( WebProcess::shared() );
 
 #if ENABLE(OFFLINE_WEB_APPLICATIONS)
     cacheStorage().deleteAllEntries();

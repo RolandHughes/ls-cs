@@ -38,20 +38,21 @@
 #include "MachPort.h"
 #endif
 
-namespace WebKit {
+namespace WebKit
+{
 
 static const double shutdownTimeout = 15.0;
 
-PluginProcess& PluginProcess::shared()
+PluginProcess &PluginProcess::shared()
 {
-    DEFINE_STATIC_LOCAL(PluginProcess, pluginProcess, ());
+    DEFINE_STATIC_LOCAL( PluginProcess, pluginProcess, () );
     return pluginProcess;
 }
 
 PluginProcess::PluginProcess()
-    : ChildProcess(shutdownTimeout)
+    : ChildProcess( shutdownTimeout )
 #if PLATFORM(MAC)
-    , m_compositingRenderServerPort(MACH_PORT_NULL)
+    , m_compositingRenderServerPort( MACH_PORT_NULL )
 #endif
 {
 }
@@ -60,41 +61,48 @@ PluginProcess::~PluginProcess()
 {
 }
 
-void PluginProcess::initialize(CoreIPC::Connection::Identifier serverIdentifier, RunLoop* runLoop)
+void PluginProcess::initialize( CoreIPC::Connection::Identifier serverIdentifier, RunLoop *runLoop )
 {
-    ASSERT(!m_connection);
+    ASSERT( !m_connection );
 
-    m_connection = CoreIPC::Connection::createClientConnection(serverIdentifier, this, runLoop);
-    m_connection->setDidCloseOnConnectionWorkQueueCallback(didCloseOnConnectionWorkQueue);
+    m_connection = CoreIPC::Connection::createClientConnection( serverIdentifier, this, runLoop );
+    m_connection->setDidCloseOnConnectionWorkQueueCallback( didCloseOnConnectionWorkQueue );
     m_connection->open();
 }
 
-void PluginProcess::removeWebProcessConnection(WebProcessConnection* webProcessConnection)
+void PluginProcess::removeWebProcessConnection( WebProcessConnection *webProcessConnection )
 {
-    size_t vectorIndex = m_webProcessConnections.find(webProcessConnection);
-    ASSERT(vectorIndex != notFound);
+    size_t vectorIndex = m_webProcessConnections.find( webProcessConnection );
+    ASSERT( vectorIndex != notFound );
 
-    m_webProcessConnections.remove(vectorIndex);
-    
-    if (m_webProcessConnections.isEmpty() && m_pluginModule) {
+    m_webProcessConnections.remove( vectorIndex );
+
+    if ( m_webProcessConnections.isEmpty() && m_pluginModule )
+    {
         // Decrement the load count. This is balanced by a call to incrementLoadCount in createWebProcessConnection.
         m_pluginModule->decrementLoadCount();
-    }        
+    }
 
     enableTermination();
 }
 
-NetscapePluginModule* PluginProcess::netscapePluginModule()
+NetscapePluginModule *PluginProcess::netscapePluginModule()
 {
-    if (!m_pluginModule) {
-        ASSERT(!m_pluginPath.isNull());
-        m_pluginModule = NetscapePluginModule::getOrCreate(m_pluginPath);
+    if ( !m_pluginModule )
+    {
+        ASSERT( !m_pluginPath.isNull() );
+        m_pluginModule = NetscapePluginModule::getOrCreate( m_pluginPath );
 
 #if PLATFORM(MAC)
-        if (m_pluginModule) {
-            if (m_pluginModule->pluginQuirks().contains(PluginQuirks::PrognameShouldBeWebKitPluginHost))
-                setprogname("WebKitPluginHost");
+
+        if ( m_pluginModule )
+        {
+            if ( m_pluginModule->pluginQuirks().contains( PluginQuirks::PrognameShouldBeWebKitPluginHost ) )
+            {
+                setprogname( "WebKitPluginHost" );
+            }
         }
+
 #endif
     }
 
@@ -103,38 +111,39 @@ NetscapePluginModule* PluginProcess::netscapePluginModule()
 
 bool PluginProcess::shouldTerminate()
 {
-    ASSERT(m_webProcessConnections.isEmpty());
+    ASSERT( m_webProcessConnections.isEmpty() );
 
     return true;
 }
 
-void PluginProcess::didReceiveMessage(CoreIPC::Connection* connection, CoreIPC::MessageID messageID, CoreIPC::ArgumentDecoder* arguments)
+void PluginProcess::didReceiveMessage( CoreIPC::Connection *connection, CoreIPC::MessageID messageID,
+                                       CoreIPC::ArgumentDecoder *arguments )
 {
-    didReceivePluginProcessMessage(connection, messageID, arguments);
+    didReceivePluginProcessMessage( connection, messageID, arguments );
 }
 
-void PluginProcess::didClose(CoreIPC::Connection*)
+void PluginProcess::didClose( CoreIPC::Connection * )
 {
     // The UI process has crashed, just go ahead and quit.
     // FIXME: If the plug-in is spinning in the main loop, we'll never get this message.
     RunLoop::current()->stop();
 }
 
-void PluginProcess::didReceiveInvalidMessage(CoreIPC::Connection*, CoreIPC::MessageID)
+void PluginProcess::didReceiveInvalidMessage( CoreIPC::Connection *, CoreIPC::MessageID )
 {
 }
 
-void PluginProcess::syncMessageSendTimedOut(CoreIPC::Connection*)
+void PluginProcess::syncMessageSendTimedOut( CoreIPC::Connection * )
 {
 }
 
-void PluginProcess::initializePluginProcess(const PluginProcessCreationParameters& parameters)
+void PluginProcess::initializePluginProcess( const PluginProcessCreationParameters &parameters )
 {
-    ASSERT(!m_pluginModule);
+    ASSERT( !m_pluginModule );
 
     m_pluginPath = parameters.pluginPath;
 
-    platformInitialize(parameters);
+    platformInitialize( parameters );
 }
 
 void PluginProcess::createWebProcessConnection()
@@ -144,21 +153,23 @@ void PluginProcess::createWebProcessConnection()
 #if PLATFORM(MAC)
     // Create the listening port.
     mach_port_t listeningPort;
-    mach_port_allocate(mach_task_self(), MACH_PORT_RIGHT_RECEIVE, &listeningPort);
+    mach_port_allocate( mach_task_self(), MACH_PORT_RIGHT_RECEIVE, &listeningPort );
 
     // Create a listening connection.
-    RefPtr<WebProcessConnection> connection = WebProcessConnection::create(listeningPort);
-    m_webProcessConnections.append(connection.release());
+    RefPtr<WebProcessConnection> connection = WebProcessConnection::create( listeningPort );
+    m_webProcessConnections.append( connection.release() );
 
-    CoreIPC::MachPort clientPort(listeningPort, MACH_MSG_TYPE_MAKE_SEND);
-    m_connection->send(Messages::PluginProcessProxy::DidCreateWebProcessConnection(clientPort), 0);
+    CoreIPC::MachPort clientPort( listeningPort, MACH_MSG_TYPE_MAKE_SEND );
+    m_connection->send( Messages::PluginProcessProxy::DidCreateWebProcessConnection( clientPort ), 0 );
 #else
     // FIXME: Implement.
     ASSERT_NOT_REACHED();
 #endif
 
-    if (NetscapePluginModule* module = netscapePluginModule()) {
-        if (!didHaveAnyWebProcessConnections) {
+    if ( NetscapePluginModule *module = netscapePluginModule() )
+    {
+        if ( !didHaveAnyWebProcessConnections )
+        {
             // Increment the load count. This is matched by a call to decrementLoadCount in removeWebProcessConnection.
             // We do this so that the plug-in module's NP_Shutdown won't be called until right before exiting.
             module->incrementLoadCount();
@@ -168,32 +179,41 @@ void PluginProcess::createWebProcessConnection()
     disableTermination();
 }
 
-void PluginProcess::getSitesWithData(uint64_t callbackID)
+void PluginProcess::getSitesWithData( uint64_t callbackID )
 {
-    LocalTerminationDisabler terminationDisabler(*this);
+    LocalTerminationDisabler terminationDisabler( *this );
 
     Vector<String> sites;
-    if (NetscapePluginModule* module = netscapePluginModule())
-        sites = module->sitesWithData();
 
-    m_connection->send(Messages::PluginProcessProxy::DidGetSitesWithData(sites, callbackID), 0);
+    if ( NetscapePluginModule *module = netscapePluginModule() )
+    {
+        sites = module->sitesWithData();
+    }
+
+    m_connection->send( Messages::PluginProcessProxy::DidGetSitesWithData( sites, callbackID ), 0 );
 }
 
-void PluginProcess::clearSiteData(const Vector<String>& sites, uint64_t flags, uint64_t maxAgeInSeconds, uint64_t callbackID)
+void PluginProcess::clearSiteData( const Vector<String> &sites, uint64_t flags, uint64_t maxAgeInSeconds, uint64_t callbackID )
 {
-    LocalTerminationDisabler terminationDisabler(*this);
+    LocalTerminationDisabler terminationDisabler( *this );
 
-    if (NetscapePluginModule* module = netscapePluginModule()) {
-        if (sites.isEmpty()) {
+    if ( NetscapePluginModule *module = netscapePluginModule() )
+    {
+        if ( sites.isEmpty() )
+        {
             // Clear everything.
-            module->clearSiteData(String(), flags, maxAgeInSeconds);
-        } else {
-            for (size_t i = 0; i < sites.size(); ++i)
-                module->clearSiteData(sites[i], flags, maxAgeInSeconds);
+            module->clearSiteData( String(), flags, maxAgeInSeconds );
+        }
+        else
+        {
+            for ( size_t i = 0; i < sites.size(); ++i )
+            {
+                module->clearSiteData( sites[i], flags, maxAgeInSeconds );
+            }
         }
     }
 
-    m_connection->send(Messages::PluginProcessProxy::DidClearSiteData(callbackID), 0);
+    m_connection->send( Messages::PluginProcessProxy::DidClearSiteData( callbackID ), 0 );
 }
 
 } // namespace WebKit

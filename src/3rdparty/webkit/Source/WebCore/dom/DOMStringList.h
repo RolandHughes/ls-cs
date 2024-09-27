@@ -31,25 +31,39 @@
 #include <wtf/RefCounted.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 // FIXME: Some consumers of this class may benefit from lazily fetching items rather
 //        than creating the list statically as is currently the only option.
-class DOMStringList : public RefCounted<DOMStringList> {
+class DOMStringList : public RefCounted<DOMStringList>
+{
 public:
     static PassRefPtr<DOMStringList> create()
     {
-        return adoptRef(new DOMStringList());
+        return adoptRef( new DOMStringList() );
     }
 
-    bool isEmpty() const { return m_strings.isEmpty(); }
-    void clear() { m_strings.clear(); }
-    void append(const String& string) { m_strings.append(string); }
+    bool isEmpty() const
+    {
+        return m_strings.isEmpty();
+    }
+    void clear()
+    {
+        m_strings.clear();
+    }
+    void append( const String &string )
+    {
+        m_strings.append( string );
+    }
 
     // Implements the IDL.
-    size_t length() const { return m_strings.size(); }
-    String item(unsigned index) const;
-    bool contains(const String& str) const;
+    size_t length() const
+    {
+        return m_strings.size();
+    }
+    String item( unsigned index ) const;
+    bool contains( const String &str ) const;
 
 private:
     DOMStringList() { }

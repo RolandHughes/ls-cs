@@ -41,18 +41,19 @@
 
 using namespace WebCore;
 
-namespace WebKit {
-
-const char* gWebKitWebProcessName = "WebKitWebProcess";
-
-static void childSetupFunction(gpointer userData)
+namespace WebKit
 {
-    int socket = GPOINTER_TO_INT(userData);
-    close(socket);
+
+const char *gWebKitWebProcessName = "WebKitWebProcess";
+
+static void childSetupFunction( gpointer userData )
+{
+    int socket = GPOINTER_TO_INT( userData );
+    close( socket );
 
 #if OS(LINUX)
     // Kill child process when parent dies.
-    prctl(PR_SET_PDEATHSIG, SIGKILL);
+    prctl( PR_SET_PDEATHSIG, SIGKILL );
 #endif
 }
 
@@ -61,38 +62,46 @@ void ProcessLauncher::launchProcess()
     GPid pid = 0;
 
     int sockets[2];
-    if (socketpair(AF_UNIX, SOCK_DGRAM, 0, sockets) < 0) {
-        g_printerr("Creation of socket failed: %s.\n", g_strerror(errno));
+
+    if ( socketpair( AF_UNIX, SOCK_DGRAM, 0, sockets ) < 0 )
+    {
+        g_printerr( "Creation of socket failed: %s.\n", g_strerror( errno ) );
         ASSERT_NOT_REACHED();
         return;
     }
 
-    GOwnPtr<gchar> binaryPath(g_build_filename(applicationDirectoryPath().data(), gWebKitWebProcessName, NULL));
-    GOwnPtr<gchar> socket(g_strdup_printf("%d", sockets[0]));
-    char* argv[3];
+    GOwnPtr<gchar> binaryPath( g_build_filename( applicationDirectoryPath().data(), gWebKitWebProcessName, NULL ) );
+    GOwnPtr<gchar> socket( g_strdup_printf( "%d", sockets[0] ) );
+    char *argv[3];
     argv[0] = binaryPath.get();
     argv[1] = socket.get();
     argv[2] = 0;
 
     GOwnPtr<GError> error;
     int spawnFlags = G_SPAWN_LEAVE_DESCRIPTORS_OPEN | G_SPAWN_DO_NOT_REAP_CHILD;
-    if (!g_spawn_async(0, argv, 0, static_cast<GSpawnFlags>(spawnFlags), childSetupFunction, GINT_TO_POINTER(sockets[1]), &pid, &error.outPtr())) {
-        g_printerr("Unable to fork a new WebProcess: %s.\n", error->message);
+
+    if ( !g_spawn_async( 0, argv, 0, static_cast<GSpawnFlags>( spawnFlags ), childSetupFunction, GINT_TO_POINTER( sockets[1] ), &pid,
+                         &error.outPtr() ) )
+    {
+        g_printerr( "Unable to fork a new WebProcess: %s.\n", error->message );
         ASSERT_NOT_REACHED();
     }
 
-    close(sockets[0]);
+    close( sockets[0] );
     m_processIdentifier = pid;
     // We've finished launching the process, message back to the main run loop.
-    RunLoop::main()->scheduleWork(WorkItem::create(this, &ProcessLauncher::didFinishLaunchingProcess, m_processIdentifier, sockets[1]));
+    RunLoop::main()->scheduleWork( WorkItem::create( this, &ProcessLauncher::didFinishLaunchingProcess, m_processIdentifier,
+                                   sockets[1] ) );
 }
 
 void ProcessLauncher::terminateProcess()
-{   
-    if (!m_processIdentifier)
+{
+    if ( !m_processIdentifier )
+    {
         return;
+    }
 
-    kill(m_processIdentifier, SIGKILL);
+    kill( m_processIdentifier, SIGKILL );
 }
 
 void ProcessLauncher::platformInvalidate()

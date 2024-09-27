@@ -38,7 +38,8 @@
 #include <wtf/PageReservation.h>
 #include <wtf/VMTags.h>
 
-namespace JSC {
+namespace JSC
+{
 
 /*
     A register file is a stack of register frames. We represent a register
@@ -87,133 +88,170 @@ namespace JSC {
     "base", not "buffer".
 */
 
-    class JSGlobalObject;
+class JSGlobalObject;
 
-    class RegisterFile {
-        WTF_MAKE_NONCOPYABLE(RegisterFile);
-    public:
-        enum CallFrameHeaderEntry {
-            CallFrameHeaderSize = 6,
+class RegisterFile
+{
+    WTF_MAKE_NONCOPYABLE( RegisterFile );
+public:
+    enum CallFrameHeaderEntry
+    {
+        CallFrameHeaderSize = 6,
 
-            ArgumentCount = -6,
-            CallerFrame = -5,
-            Callee = -4,
-            ScopeChain = -3,
-            ReturnPC = -2, // This is either an Instruction* or a pointer into JIT generated code stored as an Instruction*.
-            CodeBlock = -1,
-        };
-
-        enum { ProgramCodeThisRegister = -CallFrameHeaderSize - 1 };
-
-        static const size_t defaultCapacity = 512 * 1024;
-        static const size_t defaultMaxGlobals = 8 * 1024;
-        static const size_t commitSize = 16 * 1024;
-        // Allow 8k of excess registers before we start trying to reap the registerfile
-        static const ptrdiff_t maxExcessCapacity = 8 * 1024;
-
-        RegisterFile(JSGlobalData&, size_t capacity = defaultCapacity, size_t maxGlobals = defaultMaxGlobals);
-        ~RegisterFile();
-        
-        void gatherConservativeRoots(ConservativeRoots&);
-
-        Register* start() const { return m_start; }
-        Register* end() const { return m_end; }
-        size_t size() const { return m_end - m_start; }
-
-        void setGlobalObject(JSGlobalObject*);
-        JSGlobalObject* globalObject();
-
-        bool grow(Register* newEnd);
-        void shrink(Register* newEnd);
-        
-        void setNumGlobals(size_t numGlobals) { m_numGlobals = numGlobals; }
-        int numGlobals() const { return m_numGlobals; }
-        size_t maxGlobals() const { return m_maxGlobals; }
-
-        Register* lastGlobal() const { return m_start - m_numGlobals; }
-        
-        static size_t committedByteCount();
-        static void initializeThreading();
-
-        Register* const * addressOfEnd() const
-        {
-            return &m_end;
-        }
-
-    private:
-        void releaseExcessCapacity();
-        void addToCommittedByteCount(long);
-        size_t m_numGlobals;
-        const size_t m_maxGlobals;
-        Register* m_start;
-        Register* m_end;
-        Register* m_max;
-        Register* m_maxUsed;
-        Register* m_commitEnd;
-        PageReservation m_reservation;
-
-        Weak<JSGlobalObject> m_globalObject; // The global object whose vars are currently stored in the register file.
-        class GlobalObjectOwner : public WeakHandleOwner {
-            virtual void finalize(Handle<Unknown>, void* context)
-            {
-                static_cast<RegisterFile*>(context)->setNumGlobals(0);
-            }
-        } m_globalObjectOwner;
+        ArgumentCount = -6,
+        CallerFrame = -5,
+        Callee = -4,
+        ScopeChain = -3,
+        ReturnPC = -2, // This is either an Instruction* or a pointer into JIT generated code stored as an Instruction*.
+        CodeBlock = -1,
     };
 
-    inline RegisterFile::RegisterFile(JSGlobalData& globalData, size_t capacity, size_t maxGlobals)
-        : m_numGlobals(0)
-        , m_maxGlobals(maxGlobals)
-        , m_start(0)
-        , m_end(0)
-        , m_max(0)
-        , m_globalObject(globalData, 0, &m_globalObjectOwner, this)
+    enum { ProgramCodeThisRegister = -CallFrameHeaderSize - 1 };
+
+    static const size_t defaultCapacity = 512 * 1024;
+    static const size_t defaultMaxGlobals = 8 * 1024;
+    static const size_t commitSize = 16 * 1024;
+    // Allow 8k of excess registers before we start trying to reap the registerfile
+    static const ptrdiff_t maxExcessCapacity = 8 * 1024;
+
+    RegisterFile( JSGlobalData &, size_t capacity = defaultCapacity, size_t maxGlobals = defaultMaxGlobals );
+    ~RegisterFile();
+
+    void gatherConservativeRoots( ConservativeRoots & );
+
+    Register *start() const
     {
-        ASSERT(maxGlobals && isPageAligned(maxGlobals));
-        ASSERT(capacity && isPageAligned(capacity));
-        size_t bufferLength = (capacity + maxGlobals) * sizeof(Register);
-        m_reservation = PageReservation::reserve(roundUpAllocationSize(bufferLength, commitSize), OSAllocator::JSVMStackPages);
-        void* base = m_reservation.base();
-        size_t committedSize = roundUpAllocationSize(maxGlobals * sizeof(Register), commitSize);
-        m_reservation.commit(base, committedSize);
-        addToCommittedByteCount(static_cast<long>(committedSize));
-        m_commitEnd = reinterpret_cast_ptr<Register*>(reinterpret_cast<char*>(base) + committedSize);
-        m_start = static_cast<Register*>(base) + maxGlobals;
-        m_end = m_start;
-        m_maxUsed = m_end;
-        m_max = m_start + capacity;
+        return m_start;
+    }
+    Register *end() const
+    {
+        return m_end;
+    }
+    size_t size() const
+    {
+        return m_end - m_start;
     }
 
-    inline void RegisterFile::shrink(Register* newEnd)
+    void setGlobalObject( JSGlobalObject * );
+    JSGlobalObject *globalObject();
+
+    bool grow( Register *newEnd );
+    void shrink( Register *newEnd );
+
+    void setNumGlobals( size_t numGlobals )
     {
-        if (newEnd >= m_end)
-            return;
-        m_end = newEnd;
-        if (m_end == m_start && (m_maxUsed - m_start) > maxExcessCapacity)
-            releaseExcessCapacity();
+        m_numGlobals = numGlobals;
+    }
+    int numGlobals() const
+    {
+        return m_numGlobals;
+    }
+    size_t maxGlobals() const
+    {
+        return m_maxGlobals;
     }
 
-    inline bool RegisterFile::grow(Register* newEnd)
+    Register *lastGlobal() const
     {
-        if (newEnd < m_end)
-            return true;
+        return m_start - m_numGlobals;
+    }
 
-        if (newEnd > m_max)
-            return false;
+    static size_t committedByteCount();
+    static void initializeThreading();
 
-        if (newEnd > m_commitEnd) {
-            size_t size = roundUpAllocationSize(reinterpret_cast<char*>(newEnd) - reinterpret_cast<char*>(m_commitEnd), commitSize);
-            m_reservation.commit(m_commitEnd, size);
-            addToCommittedByteCount(static_cast<long>(size));
-            m_commitEnd = reinterpret_cast_ptr<Register*>(reinterpret_cast<char*>(m_commitEnd) + size);
+    Register *const *addressOfEnd() const
+    {
+        return &m_end;
+    }
+
+private:
+    void releaseExcessCapacity();
+    void addToCommittedByteCount( long );
+    size_t m_numGlobals;
+    const size_t m_maxGlobals;
+    Register *m_start;
+    Register *m_end;
+    Register *m_max;
+    Register *m_maxUsed;
+    Register *m_commitEnd;
+    PageReservation m_reservation;
+
+    Weak<JSGlobalObject> m_globalObject; // The global object whose vars are currently stored in the register file.
+    class GlobalObjectOwner : public WeakHandleOwner
+    {
+        virtual void finalize( Handle<Unknown>, void *context )
+        {
+            static_cast<RegisterFile *>( context )->setNumGlobals( 0 );
         }
+    } m_globalObjectOwner;
+};
 
-        if (newEnd > m_maxUsed)
-            m_maxUsed = newEnd;
+inline RegisterFile::RegisterFile( JSGlobalData &globalData, size_t capacity, size_t maxGlobals )
+    : m_numGlobals( 0 )
+    , m_maxGlobals( maxGlobals )
+    , m_start( 0 )
+    , m_end( 0 )
+    , m_max( 0 )
+    , m_globalObject( globalData, 0, &m_globalObjectOwner, this )
+{
+    ASSERT( maxGlobals && isPageAligned( maxGlobals ) );
+    ASSERT( capacity && isPageAligned( capacity ) );
+    size_t bufferLength = ( capacity + maxGlobals ) * sizeof( Register );
+    m_reservation = PageReservation::reserve( roundUpAllocationSize( bufferLength, commitSize ), OSAllocator::JSVMStackPages );
+    void *base = m_reservation.base();
+    size_t committedSize = roundUpAllocationSize( maxGlobals * sizeof( Register ), commitSize );
+    m_reservation.commit( base, committedSize );
+    addToCommittedByteCount( static_cast<long>( committedSize ) );
+    m_commitEnd = reinterpret_cast_ptr<Register *>( reinterpret_cast<char *>( base ) + committedSize );
+    m_start = static_cast<Register *>( base ) + maxGlobals;
+    m_end = m_start;
+    m_maxUsed = m_end;
+    m_max = m_start + capacity;
+}
 
-        m_end = newEnd;
+inline void RegisterFile::shrink( Register *newEnd )
+{
+    if ( newEnd >= m_end )
+    {
+        return;
+    }
+
+    m_end = newEnd;
+
+    if ( m_end == m_start && ( m_maxUsed - m_start ) > maxExcessCapacity )
+    {
+        releaseExcessCapacity();
+    }
+}
+
+inline bool RegisterFile::grow( Register *newEnd )
+{
+    if ( newEnd < m_end )
+    {
         return true;
     }
+
+    if ( newEnd > m_max )
+    {
+        return false;
+    }
+
+    if ( newEnd > m_commitEnd )
+    {
+        size_t size = roundUpAllocationSize( reinterpret_cast<char *>( newEnd ) - reinterpret_cast<char *>( m_commitEnd ), commitSize );
+        m_reservation.commit( m_commitEnd, size );
+        addToCommittedByteCount( static_cast<long>( size ) );
+        m_commitEnd = reinterpret_cast_ptr<Register *>( reinterpret_cast<char *>( m_commitEnd ) + size );
+    }
+
+    if ( newEnd > m_maxUsed )
+    {
+        m_maxUsed = newEnd;
+    }
+
+    m_end = newEnd;
+    return true;
+}
 
 } // namespace JSC
 

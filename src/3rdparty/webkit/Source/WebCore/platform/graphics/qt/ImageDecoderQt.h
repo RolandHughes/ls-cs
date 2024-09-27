@@ -36,33 +36,34 @@
 #include <wtf/OwnPtr.h>
 #include <wtf/PassOwnPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 
 class ImageDecoderQt : public ImageDecoder
 {
 public:
-    ImageDecoderQt(ImageSource::AlphaOption, ImageSource::GammaAndColorProfileOption);
+    ImageDecoderQt( ImageSource::AlphaOption, ImageSource::GammaAndColorProfileOption );
     ~ImageDecoderQt();
 
-    virtual void setData(SharedBuffer* data, bool allDataReceived);
+    virtual void setData( SharedBuffer *data, bool allDataReceived );
     virtual bool isSizeAvailable();
     virtual size_t frameCount();
     virtual int repetitionCount() const;
-    virtual ImageFrame* frameBufferAtIndex(size_t index);
+    virtual ImageFrame *frameBufferAtIndex( size_t index );
 
     virtual String filenameExtension() const;
 
-    virtual void clearFrameBufferCache(size_t clearBeforeFrame);
+    virtual void clearFrameBufferCache( size_t clearBeforeFrame );
 
 private:
-    ImageDecoderQt(const ImageDecoderQt&);
-    ImageDecoderQt &operator=(const ImageDecoderQt&);
+    ImageDecoderQt( const ImageDecoderQt & );
+    ImageDecoderQt &operator=( const ImageDecoderQt & );
 
 private:
     void internalDecodeSize();
-    void internalReadImage(size_t);
-    bool internalHandleCurrentImage(size_t);
+    void internalReadImage( size_t );
+    bool internalHandleCurrentImage( size_t );
     void forceLoadEverything();
     void clearPointers();
 

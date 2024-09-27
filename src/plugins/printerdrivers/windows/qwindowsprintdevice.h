@@ -29,42 +29,42 @@
 
 class QWindowsPrintDevice : public QPlatformPrintDevice
 {
- public:
-   QWindowsPrintDevice();
-   explicit QWindowsPrintDevice(const QString &id);
-   virtual ~QWindowsPrintDevice();
+public:
+    QWindowsPrintDevice();
+    explicit QWindowsPrintDevice( const QString &id );
+    virtual ~QWindowsPrintDevice();
 
-   bool isValid() const override;
-   bool isDefault() const override;
+    bool isValid() const override;
+    bool isDefault() const override;
 
-   QPrint::DeviceState state() const override;
+    QPrint::DeviceState state() const override;
 
-   QPageSize defaultPageSize() const override;
+    QPageSize defaultPageSize() const override;
 
-   QMarginsF printableMargins(const QPageSize &pageSize, QPageLayout::Orientation orientation,
-      int resolution) const override;
+    QMarginsF printableMargins( const QPageSize &pageSize, QPageLayout::Orientation orientation,
+                                int resolution ) const override;
 
-   int defaultResolution() const override;
+    int defaultResolution() const override;
 
-   QPrint::InputSlot defaultInputSlot() const override;
+    QPrint::InputSlot defaultInputSlot() const override;
 
-   QPrint::DuplexMode defaultDuplexMode() const override;
+    QPrint::DuplexMode defaultDuplexMode() const override;
 
-   QPrint::ColorMode defaultColorMode() const override;
+    QPrint::ColorMode defaultColorMode() const override;
 
-   static QStringList availablePrintDeviceIds();
-   static QString defaultPrintDeviceId();
+    static QStringList availablePrintDeviceIds();
+    static QString defaultPrintDeviceId();
 
- protected:
-   void loadPageSizes() const override;
-   void loadResolutions() const override;
-   void loadInputSlots() const override;
-   void loadOutputBins() const override;
-   void loadDuplexModes() const override;
-   void loadColorModes() const override;
+protected:
+    void loadPageSizes() const override;
+    void loadResolutions() const override;
+    void loadInputSlots() const override;
+    void loadOutputBins() const override;
+    void loadDuplexModes() const override;
+    void loadColorModes() const override;
 
- private:
-   HANDLE m_hPrinter;
+private:
+    HANDLE m_hPrinter;
 };
 
 #endif

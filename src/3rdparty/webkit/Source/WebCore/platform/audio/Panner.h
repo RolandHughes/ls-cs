@@ -31,34 +31,40 @@
 
 #include <wtf/PassOwnPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class AudioBus;
 
 // Abstract base class for panning a mono or stereo source.
 
-class Panner {
+class Panner
+{
 public:
-    enum {
+    enum
+    {
         PanningModelEqualPower = 0,
         PanningModelHRTF = 1,
         PanningModelSoundField = 2
     };
-    
+
     typedef unsigned PanningModel;
 
-    static PassOwnPtr<Panner> create(PanningModel model, double sampleRate);
+    static PassOwnPtr<Panner> create( PanningModel model, double sampleRate );
 
     virtual ~Panner() { };
 
-    PanningModel panningModel() const { return m_panningModel; }
+    PanningModel panningModel() const
+    {
+        return m_panningModel;
+    }
 
-    virtual void pan(double azimuth, double elevation, AudioBus* inputBus, AudioBus* outputBus, size_t framesToProcess) = 0;
+    virtual void pan( double azimuth, double elevation, AudioBus *inputBus, AudioBus *outputBus, size_t framesToProcess ) = 0;
 
     virtual void reset() = 0;
 
 protected:
-    Panner(PanningModel model) : m_panningModel(model) { }
+    Panner( PanningModel model ) : m_panningModel( model ) { }
 
     PanningModel m_panningModel;
 };

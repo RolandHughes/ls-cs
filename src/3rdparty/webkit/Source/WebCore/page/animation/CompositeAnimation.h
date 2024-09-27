@@ -6,13 +6,13 @@
  * are met:
  *
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Apple Computer, Inc. ("Apple") nor the names of
  *     its contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
+ *     from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY APPLE AND ITS CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -35,7 +35,8 @@
 #include <wtf/Noncopyable.h>
 #include <wtf/text/AtomicString.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class AnimationControllerPrivate;
 class AnimationController;
@@ -45,62 +46,72 @@ class WebKitAnimationList;
 
 // A CompositeAnimation represents a collection of animations that are running
 // on a single RenderObject, such as a number of properties transitioning at once.
-class CompositeAnimation : public RefCounted<CompositeAnimation> {
+class CompositeAnimation : public RefCounted<CompositeAnimation>
+{
 public:
-    static PassRefPtr<CompositeAnimation> create(AnimationControllerPrivate* animationController)
+    static PassRefPtr<CompositeAnimation> create( AnimationControllerPrivate *animationController )
     {
-        return adoptRef(new CompositeAnimation(animationController));
+        return adoptRef( new CompositeAnimation( animationController ) );
     };
 
     ~CompositeAnimation();
-    
+
     void clearRenderer();
 
-    PassRefPtr<RenderStyle> animate(RenderObject*, RenderStyle* currentStyle, RenderStyle* targetStyle);
+    PassRefPtr<RenderStyle> animate( RenderObject *, RenderStyle *currentStyle, RenderStyle *targetStyle );
     PassRefPtr<RenderStyle> getAnimatedStyle() const;
 
     double timeToNextService() const;
-    
-    AnimationControllerPrivate* animationController() const { return m_animationController; }
+
+    AnimationControllerPrivate *animationController() const
+    {
+        return m_animationController;
+    }
 
     void suspendAnimations();
     void resumeAnimations();
-    bool suspended() const { return m_suspended; }
-    
-    bool hasAnimations() const  { return !m_transitions.isEmpty() || !m_keyframeAnimations.isEmpty(); }
+    bool suspended() const
+    {
+        return m_suspended;
+    }
 
-    void setAnimating(bool);
-    bool isAnimatingProperty(int property, bool acceleratedOnly, bool isRunningNow) const;
+    bool hasAnimations() const
+    {
+        return !m_transitions.isEmpty() || !m_keyframeAnimations.isEmpty();
+    }
 
-    PassRefPtr<KeyframeAnimation> getAnimationForProperty(int property) const;
+    void setAnimating( bool );
+    bool isAnimatingProperty( int property, bool acceleratedOnly, bool isRunningNow ) const;
 
-    void overrideImplicitAnimations(int property);
-    void resumeOverriddenImplicitAnimations(int property);
+    PassRefPtr<KeyframeAnimation> getAnimationForProperty( int property ) const;
 
-    bool pauseAnimationAtTime(const AtomicString& name, double t);
-    bool pauseTransitionAtTime(int property, double t);
+    void overrideImplicitAnimations( int property );
+    void resumeOverriddenImplicitAnimations( int property );
+
+    bool pauseAnimationAtTime( const AtomicString &name, double t );
+    bool pauseTransitionAtTime( int property, double t );
     unsigned numberOfActiveAnimations() const;
 
     PassRefPtr<WebKitAnimationList> animations() const;
 
 private:
-    CompositeAnimation(AnimationControllerPrivate* animationController)
-        : m_animationController(animationController)
-        , m_numStyleAvailableWaiters(0)
-        , m_suspended(false)
+    CompositeAnimation( AnimationControllerPrivate *animationController )
+        : m_animationController( animationController )
+        , m_numStyleAvailableWaiters( 0 )
+        , m_suspended( false )
     {
     }
 
-    void updateTransitions(RenderObject*, RenderStyle* currentStyle, RenderStyle* targetStyle);
-    void updateKeyframeAnimations(RenderObject*, RenderStyle* currentStyle, RenderStyle* targetStyle);
-    
-    typedef HashMap<int, RefPtr<ImplicitAnimation> > CSSPropertyTransitionsMap;
-    typedef HashMap<AtomicStringImpl*, RefPtr<KeyframeAnimation> >  AnimationNameMap;
+    void updateTransitions( RenderObject *, RenderStyle *currentStyle, RenderStyle *targetStyle );
+    void updateKeyframeAnimations( RenderObject *, RenderStyle *currentStyle, RenderStyle *targetStyle );
 
-    AnimationControllerPrivate* m_animationController;
+    typedef HashMap<int, RefPtr<ImplicitAnimation> > CSSPropertyTransitionsMap;
+    typedef HashMap<AtomicStringImpl *, RefPtr<KeyframeAnimation> >  AnimationNameMap;
+
+    AnimationControllerPrivate *m_animationController;
     CSSPropertyTransitionsMap m_transitions;
     AnimationNameMap m_keyframeAnimations;
-    Vector<AtomicStringImpl*> m_keyframeAnimationOrderMap;
+    Vector<AtomicStringImpl *> m_keyframeAnimationOrderMap;
     unsigned m_numStyleAvailableWaiters;
     bool m_suspended;
 };

@@ -28,23 +28,29 @@
 #include <runtime/JSObjectWithGlobalObject.h>
 #include <runtime/ObjectPrototype.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class OESStandardDerivatives;
 
-class JSOESStandardDerivatives : public JSDOMWrapper {
+class JSOESStandardDerivatives : public JSDOMWrapper
+{
     typedef JSDOMWrapper Base;
 public:
-    JSOESStandardDerivatives(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<OESStandardDerivatives>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
+    JSOESStandardDerivatives( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<OESStandardDerivatives> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    OESStandardDerivatives* impl() const { return m_impl.get(); }
+    OESStandardDerivatives *impl() const
+    {
+        return m_impl.get();
+    }
 
 private:
     RefPtr<OESStandardDerivatives> m_impl;
@@ -52,44 +58,49 @@ protected:
     static const unsigned StructureFlags = Base::StructureFlags;
 };
 
-class JSOESStandardDerivativesOwner : public JSC::WeakHandleOwner {
-    virtual bool isReachableFromOpaqueRoots(JSC::Handle<JSC::Unknown>, void* context, JSC::SlotVisitor&);
-    virtual void finalize(JSC::Handle<JSC::Unknown>, void* context);
+class JSOESStandardDerivativesOwner : public JSC::WeakHandleOwner
+{
+    virtual bool isReachableFromOpaqueRoots( JSC::Handle<JSC::Unknown>, void *context, JSC::SlotVisitor & );
+    virtual void finalize( JSC::Handle<JSC::Unknown>, void *context );
 };
 
-inline JSC::WeakHandleOwner* wrapperOwner(DOMWrapperWorld*, OESStandardDerivatives*)
+inline JSC::WeakHandleOwner *wrapperOwner( DOMWrapperWorld *, OESStandardDerivatives * )
 {
-    DEFINE_STATIC_LOCAL(JSOESStandardDerivativesOwner, jsOESStandardDerivativesOwner, ());
+    DEFINE_STATIC_LOCAL( JSOESStandardDerivativesOwner, jsOESStandardDerivativesOwner, () );
     return &jsOESStandardDerivativesOwner;
 }
 
-inline void* wrapperContext(DOMWrapperWorld* world, OESStandardDerivatives*)
+inline void *wrapperContext( DOMWrapperWorld *world, OESStandardDerivatives * )
 {
     return world;
 }
 
-JSC::JSValue toJS(JSC::ExecState*, JSDOMGlobalObject*, OESStandardDerivatives*);
-OESStandardDerivatives* toOESStandardDerivatives(JSC::JSValue);
+JSC::JSValue toJS( JSC::ExecState *, JSDOMGlobalObject *, OESStandardDerivatives * );
+OESStandardDerivatives *toOESStandardDerivatives( JSC::JSValue );
 
-class JSOESStandardDerivativesPrototype : public JSC::JSObjectWithGlobalObject {
+class JSOESStandardDerivativesPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSOESStandardDerivativesPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSOESStandardDerivativesPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                                       JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 // Constants
 
-JSC::JSValue jsOESStandardDerivativesFRAGMENT_SHADER_DERIVATIVE_HINT_OES(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsOESStandardDerivativesFRAGMENT_SHADER_DERIVATIVE_HINT_OES( JSC::ExecState *, JSC::JSValue,
+        const JSC::Identifier & );
 
 } // namespace WebCore
 

@@ -53,27 +53,29 @@ typedef struct _WebKitVideoSink        WebKitVideoSink;
 typedef struct _WebKitVideoSinkClass   WebKitVideoSinkClass;
 typedef struct _WebKitVideoSinkPrivate WebKitVideoSinkPrivate;
 
-struct _WebKitVideoSink {
+struct _WebKitVideoSink
+{
     /*< private >*/
     GstVideoSink parent;
     WebKitVideoSinkPrivate *priv;
 };
 
-struct _WebKitVideoSinkClass {
+struct _WebKitVideoSinkClass
+{
     /*< private >*/
     GstVideoSinkClass parent_class;
 
     /* Future padding */
-    void (* _webkit_reserved1)(void);
-    void (* _webkit_reserved2)(void);
-    void (* _webkit_reserved3)(void);
-    void (* _webkit_reserved4)(void);
-    void (* _webkit_reserved5)(void);
-    void (* _webkit_reserved6)(void);
+    void ( * _webkit_reserved1 )( void );
+    void ( * _webkit_reserved2 )( void );
+    void ( * _webkit_reserved3 )( void );
+    void ( * _webkit_reserved4 )( void );
+    void ( * _webkit_reserved5 )( void );
+    void ( * _webkit_reserved6 )( void );
 };
 
-GType       webkit_video_sink_get_type(void) G_GNUC_CONST;
-GstElement *webkit_video_sink_new(void);
+GType       webkit_video_sink_get_type( void ) G_GNUC_CONST;
+GstElement *webkit_video_sink_new( void );
 
 G_END_DECLS
 

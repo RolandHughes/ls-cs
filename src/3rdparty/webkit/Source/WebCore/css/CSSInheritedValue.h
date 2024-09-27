@@ -24,13 +24,15 @@
 #include "CSSValue.h"
 #include <wtf/PassRefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class CSSInheritedValue : public CSSValue {
+class CSSInheritedValue : public CSSValue
+{
 public:
     static PassRefPtr<CSSInheritedValue> create()
     {
-        return adoptRef(new CSSInheritedValue);
+        return adoptRef( new CSSInheritedValue );
     }
 
     virtual String cssText() const;

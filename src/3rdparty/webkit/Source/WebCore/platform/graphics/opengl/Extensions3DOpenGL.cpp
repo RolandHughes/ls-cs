@@ -39,11 +39,12 @@
 #include "OpenGLShims.h"
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
-Extensions3DOpenGL::Extensions3DOpenGL(GraphicsContext3D* context)
-    : m_initializedAvailableExtensions(false)
-    , m_context(context)
+Extensions3DOpenGL::Extensions3DOpenGL( GraphicsContext3D *context )
+    : m_initializedAvailableExtensions( false )
+    , m_context( context )
 {
 }
 
@@ -51,7 +52,7 @@ Extensions3DOpenGL::~Extensions3DOpenGL()
 {
 }
 
-bool Extensions3DOpenGL::supports(const String& name)
+bool Extensions3DOpenGL::supports( const String &name )
 {
     // Note on support for BGRA:
     //
@@ -65,68 +66,94 @@ bool Extensions3DOpenGL::supports(const String& name)
     // checked on each platform. Desktop GL offers neither
     // GL_EXT_texture_format_BGRA8888 or GL_EXT_read_format_bgra, so
     // treat them as unsupported here.
-    if (!m_initializedAvailableExtensions) {
-        String extensionsString(reinterpret_cast<const char*>(::glGetString(GL_EXTENSIONS)));
+    if ( !m_initializedAvailableExtensions )
+    {
+        String extensionsString( reinterpret_cast<const char *>( ::glGetString( GL_EXTENSIONS ) ) );
         Vector<String> availableExtensions;
-        extensionsString.split(" ", availableExtensions);
-        for (size_t i = 0; i < availableExtensions.size(); ++i)
-            m_availableExtensions.add(availableExtensions[i]);
+        extensionsString.split( " ", availableExtensions );
+
+        for ( size_t i = 0; i < availableExtensions.size(); ++i )
+        {
+            m_availableExtensions.add( availableExtensions[i] );
+        }
+
         m_initializedAvailableExtensions = true;
     }
-    
+
     // GL_ANGLE_framebuffer_blit and GL_ANGLE_framebuffer_multisample are "fake". They are implemented using other
     // extensions. In particular GL_EXT_framebuffer_blit and GL_EXT_framebuffer_multisample
-    if (name == "GL_ANGLE_framebuffer_blit")
-        return m_availableExtensions.contains("GL_EXT_framebuffer_blit");
-    if (name == "GL_ANGLE_framebuffer_multisample")
-        return m_availableExtensions.contains("GL_EXT_framebuffer_multisample");
+    if ( name == "GL_ANGLE_framebuffer_blit" )
+    {
+        return m_availableExtensions.contains( "GL_EXT_framebuffer_blit" );
+    }
+
+    if ( name == "GL_ANGLE_framebuffer_multisample" )
+    {
+        return m_availableExtensions.contains( "GL_EXT_framebuffer_multisample" );
+    }
 
     // Desktop GL always supports GL_OES_rgb8_rgba8.
-    if (name == "GL_OES_rgb8_rgba8")
+    if ( name == "GL_OES_rgb8_rgba8" )
+    {
         return true;
+    }
 
     // If GL_ARB_texture_float is available then we report GL_OES_texture_float and
     // GL_OES_texture_half_float as available.
-    if (name == "GL_OES_texture_float" || name == "GL_OES_texture_half_float")
-        return m_availableExtensions.contains("GL_ARB_texture_float");
-    
+    if ( name == "GL_OES_texture_float" || name == "GL_OES_texture_half_float" )
+    {
+        return m_availableExtensions.contains( "GL_ARB_texture_float" );
+    }
+
     // GL_OES_vertex_array_object
-    if (name == "GL_OES_vertex_array_object")
-        return m_availableExtensions.contains("GL_APPLE_vertex_array_object");
+    if ( name == "GL_OES_vertex_array_object" )
+    {
+        return m_availableExtensions.contains( "GL_APPLE_vertex_array_object" );
+    }
 
     // Desktop GL always supports the standard derivative functions
-    if (name == "GL_OES_standard_derivatives")
+    if ( name == "GL_OES_standard_derivatives" )
+    {
         return true;
+    }
 
-    return m_availableExtensions.contains(name);
+    return m_availableExtensions.contains( name );
 }
 
-void Extensions3DOpenGL::ensureEnabled(const String& name)
+void Extensions3DOpenGL::ensureEnabled( const String &name )
 {
 #if PLATFORM(MAC)
-    if (name == "GL_OES_standard_derivatives") {
+
+    if ( name == "GL_OES_standard_derivatives" )
+    {
         // Enable support in ANGLE (if not enabled already)
-        ANGLEWebKitBridge& compiler = m_context->m_compiler;
+        ANGLEWebKitBridge &compiler = m_context->m_compiler;
         ShBuiltInResources ANGLEResources = compiler.getResources();
-        if (!ANGLEResources.OES_standard_derivatives) {
+
+        if ( !ANGLEResources.OES_standard_derivatives )
+        {
             ANGLEResources.OES_standard_derivatives = 1;
-            compiler.setResources(ANGLEResources);
+            compiler.setResources( ANGLEResources );
         }
     }
+
 #else
-    ASSERT_UNUSED(name, supports(name));
+    ASSERT_UNUSED( name, supports( name ) );
 #endif
 }
 
-bool Extensions3DOpenGL::isEnabled(const String& name)
+bool Extensions3DOpenGL::isEnabled( const String &name )
 {
 #if PLATFORM(MAC)
-    if (name == "GL_OES_standard_derivatives") {
-        ANGLEWebKitBridge& compiler = m_context->m_compiler;
+
+    if ( name == "GL_OES_standard_derivatives" )
+    {
+        ANGLEWebKitBridge &compiler = m_context->m_compiler;
         return compiler.getResources().OES_standard_derivatives;
     }
+
 #endif
-    return supports(name);
+    return supports( name );
 }
 
 int Extensions3DOpenGL::getGraphicsResetStatusARB()
@@ -134,14 +161,16 @@ int Extensions3DOpenGL::getGraphicsResetStatusARB()
     return GraphicsContext3D::NO_ERROR;
 }
 
-void Extensions3DOpenGL::blitFramebuffer(long srcX0, long srcY0, long srcX1, long srcY1, long dstX0, long dstY0, long dstX1, long dstY1, unsigned long mask, unsigned long filter)
+void Extensions3DOpenGL::blitFramebuffer( long srcX0, long srcY0, long srcX1, long srcY1, long dstX0, long dstY0, long dstX1,
+        long dstY1, unsigned long mask, unsigned long filter )
 {
-    ::glBlitFramebufferEXT(srcX0, srcY0, srcX1, srcY1, dstX0, dstY0, dstX1, dstY1, mask, filter);
+    ::glBlitFramebufferEXT( srcX0, srcY0, srcX1, srcY1, dstX0, dstY0, dstX1, dstY1, mask, filter );
 }
 
-void Extensions3DOpenGL::renderbufferStorageMultisample(unsigned long target, unsigned long samples, unsigned long internalformat, unsigned long width, unsigned long height)
+void Extensions3DOpenGL::renderbufferStorageMultisample( unsigned long target, unsigned long samples,
+        unsigned long internalformat, unsigned long width, unsigned long height )
 {
-    ::glRenderbufferStorageMultisampleEXT(target, samples, internalformat, width, height);
+    ::glRenderbufferStorageMultisampleEXT( target, samples, internalformat, width, height );
 }
 
 Platform3DObject Extensions3DOpenGL::createVertexArrayOES()
@@ -149,45 +178,51 @@ Platform3DObject Extensions3DOpenGL::createVertexArrayOES()
     m_context->makeContextCurrent();
 #if !PLATFORM(GTK) && defined(GL_APPLE_vertex_array_object) && GL_APPLE_vertex_array_object
     GLuint array = 0;
-    glGenVertexArraysAPPLE(1, &array);
+    glGenVertexArraysAPPLE( 1, &array );
     return array;
 #else
     return 0;
 #endif
 }
 
-void Extensions3DOpenGL::deleteVertexArrayOES(Platform3DObject array)
+void Extensions3DOpenGL::deleteVertexArrayOES( Platform3DObject array )
 {
-    if (!array)
+    if ( !array )
+    {
         return;
-    
+    }
+
     m_context->makeContextCurrent();
 #if !PLATFORM(GTK) && defined(GL_APPLE_vertex_array_object) && GL_APPLE_vertex_array_object
-    glDeleteVertexArraysAPPLE(1, &array);
+    glDeleteVertexArraysAPPLE( 1, &array );
 #endif
 }
 
-GC3Dboolean Extensions3DOpenGL::isVertexArrayOES(Platform3DObject array)
+GC3Dboolean Extensions3DOpenGL::isVertexArrayOES( Platform3DObject array )
 {
-    if (!array)
+    if ( !array )
+    {
         return GL_FALSE;
-    
+    }
+
     m_context->makeContextCurrent();
 #if !PLATFORM(GTK) && defined(GL_APPLE_vertex_array_object) && GL_APPLE_vertex_array_object
-    return glIsVertexArrayAPPLE(array);
+    return glIsVertexArrayAPPLE( array );
 #else
     return GL_FALSE;
 #endif
 }
 
-void Extensions3DOpenGL::bindVertexArrayOES(Platform3DObject array)
+void Extensions3DOpenGL::bindVertexArrayOES( Platform3DObject array )
 {
-    if (!array)
+    if ( !array )
+    {
         return;
+    }
 
     m_context->makeContextCurrent();
 #if !PLATFORM(GTK) && defined(GL_APPLE_vertex_array_object) && GL_APPLE_vertex_array_object
-    glBindVertexArrayAPPLE(array);
+    glBindVertexArrayAPPLE( array );
 #endif
 }
 

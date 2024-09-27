@@ -33,20 +33,21 @@
 #include "WebGrammarDetail.h"
 #include <WebCore/TextCheckerClient.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
 class WebView;
 class WebEditCommandProxy;
 class WebTextChecker;
 
-WK_ADD_API_MAPPING(WKViewRef, WebView)
-WK_ADD_API_MAPPING(WKEditCommandRef, WebEditCommandProxy)
-WK_ADD_API_MAPPING(WKTextCheckerRef, WebTextChecker)
-WK_ADD_API_MAPPING(WKGrammarDetailRef, WebGrammarDetail)
+WK_ADD_API_MAPPING( WKViewRef, WebView )
+WK_ADD_API_MAPPING( WKEditCommandRef, WebEditCommandProxy )
+WK_ADD_API_MAPPING( WKTextCheckerRef, WebTextChecker )
+WK_ADD_API_MAPPING( WKGrammarDetailRef, WebGrammarDetail )
 
-inline ProxyingRefPtr<WebGrammarDetail> toAPI(const WebCore::GrammarDetail& grammarDetail)
+inline ProxyingRefPtr<WebGrammarDetail> toAPI( const WebCore::GrammarDetail &grammarDetail )
 {
-    return ProxyingRefPtr<WebGrammarDetail>(WebGrammarDetail::create(grammarDetail));
+    return ProxyingRefPtr<WebGrammarDetail>( WebGrammarDetail::create( grammarDetail ) );
 }
 
 } // namespace WebKit

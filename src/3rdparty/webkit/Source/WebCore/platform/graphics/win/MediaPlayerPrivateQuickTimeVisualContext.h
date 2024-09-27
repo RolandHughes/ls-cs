@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef MediaPlayerPrivateQuickTimeVisualContext_h
@@ -44,7 +44,8 @@ class QTMovie;
 class QTMovieVisualContext;
 class QTDecompressionSession;
 
-namespace WebCore {
+namespace WebCore
+{
 
 class GraphicsContext;
 class IntSize;
@@ -55,80 +56,87 @@ class PlatformCALayer;
 class WKCAImageQueue;
 #endif
 
-class MediaPlayerPrivateQuickTimeVisualContext : public MediaPlayerPrivateInterface {
+class MediaPlayerPrivateQuickTimeVisualContext : public MediaPlayerPrivateInterface
+{
 public:
-    static void registerMediaEngine(MediaEngineRegistrar);
+    static void registerMediaEngine( MediaEngineRegistrar );
 
     ~MediaPlayerPrivateQuickTimeVisualContext();
 
 private:
-    MediaPlayerPrivateQuickTimeVisualContext(MediaPlayer*);
+    MediaPlayerPrivateQuickTimeVisualContext( MediaPlayer * );
 
     virtual bool supportsFullscreen() const;
     virtual PlatformMedia platformMedia() const;
 #if USE(ACCELERATED_COMPOSITING)
-    virtual PlatformLayer* platformLayer() const;
+    virtual PlatformLayer *platformLayer() const;
 #endif
 
     IntSize naturalSize() const;
     bool hasVideo() const;
     bool hasAudio() const;
 
-    void load(const String& url);
+    void load( const String &url );
     void cancelLoad();
-    void loadInternal(const String& url);
+    void loadInternal( const String &url );
     void resumeLoad();
-    
+
     void play();
-    void pause();    
+    void pause();
     void prepareToPlay();
-    
+
     bool paused() const;
     bool seeking() const;
-    
+
     float duration() const;
     float currentTime() const;
-    void seek(float time);
-    
-    void setRate(float);
-    void setVolume(float);
-    void setPreservesPitch(bool);
-    
-    MediaPlayer::NetworkState networkState() const { return m_networkState; }
-    MediaPlayer::ReadyState readyState() const { return m_readyState; }
-    
+    void seek( float time );
+
+    void setRate( float );
+    void setVolume( float );
+    void setPreservesPitch( bool );
+
+    MediaPlayer::NetworkState networkState() const
+    {
+        return m_networkState;
+    }
+    MediaPlayer::ReadyState readyState() const
+    {
+        return m_readyState;
+    }
+
     PassRefPtr<TimeRanges> buffered() const;
     float maxTimeSeekable() const;
     unsigned bytesLoaded() const;
     unsigned totalBytes() const;
-    
-    void setVisible(bool);
-    void setSize(const IntSize&);
-    
+
+    void setVisible( bool );
+    void setSize( const IntSize & );
+
     void loadStateChanged();
     void didEnd();
-    
-    void paint(GraphicsContext*, const IntRect&);
-    void paintCompleted(GraphicsContext&, const IntRect&);
+
+    void paint( GraphicsContext *, const IntRect & );
+    void paintCompleted( GraphicsContext &, const IntRect & );
 
     bool hasSingleSecurityOrigin() const;
 
     bool hasClosedCaptions() const;
-    void setClosedCaptionsVisible(bool);
+    void setClosedCaptionsVisible( bool );
 
-    void setPreload(MediaPlayer::Preload);
+    void setPreload( MediaPlayer::Preload );
 
     void updateStates();
     void doSeek();
     void cancelSeek();
-    void seekTimerFired(Timer<MediaPlayerPrivateQuickTimeVisualContext>*);
+    void seekTimerFired( Timer<MediaPlayerPrivateQuickTimeVisualContext> * );
     float maxTimeLoaded() const;
     void sawUnsupportedTracks();
 
     // engine support
-    static PassOwnPtr<MediaPlayerPrivateInterface> create(MediaPlayer*);
-    static void getSupportedTypes(HashSet<String>& types);
-    static MediaPlayer::SupportsType supportsType(const String& type, const String& codecs);
+    static PassOwnPtr<MediaPlayerPrivateInterface> create( MediaPlayer * );
+    static void getSupportedTypes( HashSet<String> &types );
+    static MediaPlayer::SupportsType supportsType( const String &type, const String &codecs );
     static bool isAvailable();
 
 #if USE(ACCELERATED_COMPOSITING)
@@ -148,13 +156,13 @@ private:
     void createLayerForMovie();
     void destroyLayerForMovie();
 
-    void setUpCookiesForQuickTime(const String& url);
-    String rfc2616DateStringFromTime(CFAbsoluteTime);
+    void setUpCookiesForQuickTime( const String &url );
+    String rfc2616DateStringFromTime( CFAbsoluteTime );
 
-    void visualContextTimerFired(Timer<MediaPlayerPrivateQuickTimeVisualContext>*);
+    void visualContextTimerFired( Timer<MediaPlayerPrivateQuickTimeVisualContext> * );
     void retrieveCurrentImage();
 
-    virtual void setPrivateBrowsingMode(bool);
+    virtual void setPrivateBrowsingMode( bool );
 
     class MovieClient;
     friend class MovieClient;
@@ -172,16 +180,16 @@ private:
 
     void retrieveAndResetMovieTransform();
 
-    virtual float mediaTimeForTimeValue(float) const;
+    virtual float mediaTimeForTimeValue( float ) const;
 
-    MediaPlayer* m_player;
+    MediaPlayer *m_player;
     RefPtr<QTMovie> m_movie;
 #if USE(ACCELERATED_COMPOSITING)
     RefPtr<PlatformCALayer> m_qtVideoLayer;
     RefPtr<PlatformCALayer> m_transformLayer;
     OwnPtr<WKCAImageQueue> m_imageQueue;
     OwnPtr<QTDecompressionSession> m_decompressionSession;
-    CGAffineTransform m_movieTransform; 
+    CGAffineTransform m_movieTransform;
 #endif
     RefPtr<QTMovieVisualContext> m_visualContext;
     float m_seekTo;

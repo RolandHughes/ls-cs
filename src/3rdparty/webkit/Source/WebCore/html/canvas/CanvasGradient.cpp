@@ -21,7 +21,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -32,35 +32,42 @@
 #include "CSSParser.h"
 #include "ExceptionCode.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-CanvasGradient::CanvasGradient(const FloatPoint& p0, const FloatPoint& p1)
-    : m_gradient(Gradient::create(p0, p1))
-    , m_dashbardCompatibilityMode(false)
+CanvasGradient::CanvasGradient( const FloatPoint &p0, const FloatPoint &p1 )
+    : m_gradient( Gradient::create( p0, p1 ) )
+    , m_dashbardCompatibilityMode( false )
 {
 }
 
-CanvasGradient::CanvasGradient(const FloatPoint& p0, float r0, const FloatPoint& p1, float r1)
-    : m_gradient(Gradient::create(p0, r0, p1, r1))
-    , m_dashbardCompatibilityMode(false)
+CanvasGradient::CanvasGradient( const FloatPoint &p0, float r0, const FloatPoint &p1, float r1 )
+    : m_gradient( Gradient::create( p0, r0, p1, r1 ) )
+    , m_dashbardCompatibilityMode( false )
 {
 }
 
-void CanvasGradient::addColorStop(float value, const String& color, ExceptionCode& ec)
+void CanvasGradient::addColorStop( float value, const String &color, ExceptionCode &ec )
 {
-    if (!(value >= 0 && value <= 1.0f)) {
+    if ( !( value >= 0 && value <= 1.0f ) )
+    {
         ec = INDEX_SIZE_ERR;
         return;
     }
 
     RGBA32 rgba = 0;
-    if (!parseColorOrCurrentColor(rgba, color, 0 /*canvas*/)) {
-        if (!m_dashbardCompatibilityMode)
+
+    if ( !parseColorOrCurrentColor( rgba, color, 0 /*canvas*/ ) )
+    {
+        if ( !m_dashbardCompatibilityMode )
+        {
             ec = SYNTAX_ERR;
+        }
+
         return;
     }
 
-    m_gradient->addColorStop(value, Color(rgba));
+    m_gradient->addColorStop( value, Color( rgba ) );
 }
 
 } // namespace

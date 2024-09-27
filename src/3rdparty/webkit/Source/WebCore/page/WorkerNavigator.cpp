@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
 
@@ -30,10 +30,11 @@
 
 #include "WorkerNavigator.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-WorkerNavigator::WorkerNavigator(const String& userAgent)
-    : m_userAgent(userAgent)
+WorkerNavigator::WorkerNavigator( const String &userAgent )
+    : m_userAgent( userAgent )
 {
 }
 

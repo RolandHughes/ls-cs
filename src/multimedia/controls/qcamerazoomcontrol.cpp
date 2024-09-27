@@ -25,8 +25,8 @@
 
 #include <qmediacontrol_p.h>
 
-QCameraZoomControl::QCameraZoomControl(QObject *parent)
-   : QMediaControl(*new QMediaControlPrivate, parent)
+QCameraZoomControl::QCameraZoomControl( QObject *parent )
+    : QMediaControl( *new QMediaControlPrivate, parent )
 {
 }
 

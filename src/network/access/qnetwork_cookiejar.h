@@ -33,32 +33,32 @@ class QNetworkCookieJarPrivate;
 
 class Q_NETWORK_EXPORT QNetworkCookieJar: public QObject
 {
-   NET_CS_OBJECT(QNetworkCookieJar)
+    NET_CS_OBJECT( QNetworkCookieJar )
 
- public:
-   QNetworkCookieJar(QObject *parent = nullptr);
+public:
+    QNetworkCookieJar( QObject *parent = nullptr );
 
-   QNetworkCookieJar(const QNetworkCookieJar &) = delete;
-   QNetworkCookieJar &operator=(const QNetworkCookieJar &) = delete;
+    QNetworkCookieJar( const QNetworkCookieJar & ) = delete;
+    QNetworkCookieJar &operator=( const QNetworkCookieJar & ) = delete;
 
-   virtual ~QNetworkCookieJar();
+    virtual ~QNetworkCookieJar();
 
-   virtual QList<QNetworkCookie> cookiesForUrl(const QUrl &url) const;
-   virtual bool setCookiesFromUrl(const QList<QNetworkCookie> &cookieList, const QUrl &url);
+    virtual QList<QNetworkCookie> cookiesForUrl( const QUrl &url ) const;
+    virtual bool setCookiesFromUrl( const QList<QNetworkCookie> &cookieList, const QUrl &url );
 
-   virtual bool insertCookie(const QNetworkCookie &cookie);
-   virtual bool updateCookie(const QNetworkCookie &cookie);
-   virtual bool deleteCookie(const QNetworkCookie &cookie);
+    virtual bool insertCookie( const QNetworkCookie &cookie );
+    virtual bool updateCookie( const QNetworkCookie &cookie );
+    virtual bool deleteCookie( const QNetworkCookie &cookie );
 
- protected:
-   QList<QNetworkCookie> allCookies() const;
-   void setAllCookies(const QList<QNetworkCookie> &cookieList);
-   virtual bool validateCookie(const QNetworkCookie &cookie, const QUrl &url) const;
+protected:
+    QList<QNetworkCookie> allCookies() const;
+    void setAllCookies( const QList<QNetworkCookie> &cookieList );
+    virtual bool validateCookie( const QNetworkCookie &cookie, const QUrl &url ) const;
 
-   QScopedPointer<QNetworkCookieJarPrivate> d_ptr;
+    QScopedPointer<QNetworkCookieJarPrivate> d_ptr;
 
- private:
-   Q_DECLARE_PRIVATE(QNetworkCookieJar)
+private:
+    Q_DECLARE_PRIVATE( QNetworkCookieJar )
 };
 
 #endif

@@ -33,52 +33,90 @@
 
 #include <wtf/Noncopyable.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class FloatRect;
 class IntRect;
 class IntPoint;
 
-class TilingData {
-    WTF_MAKE_NONCOPYABLE(TilingData);
+class TilingData
+{
+    WTF_MAKE_NONCOPYABLE( TilingData );
 public:
-    TilingData(int maxTextureSize, int totalSizeX, int totalSizeY, bool hasBorderTexels);
-    void setTotalSize(int totalSizeX, int totalSizeY);
-    void setMaxTextureSize(int);
-    int maxTextureSize() const { return m_maxTextureSize; }
-    int totalSizeX() const { return m_totalSizeX; }
-    int totalSizeY() const { return m_totalSizeY; }
-    int borderTexels() const { return m_borderTexels; }
+    TilingData( int maxTextureSize, int totalSizeX, int totalSizeY, bool hasBorderTexels );
+    void setTotalSize( int totalSizeX, int totalSizeY );
+    void setMaxTextureSize( int );
+    int maxTextureSize() const
+    {
+        return m_maxTextureSize;
+    }
+    int totalSizeX() const
+    {
+        return m_totalSizeX;
+    }
+    int totalSizeY() const
+    {
+        return m_totalSizeY;
+    }
+    int borderTexels() const
+    {
+        return m_borderTexels;
+    }
 
-    int numTiles() const { return numTilesX() * numTilesY(); }
-    int numTilesX() const { return m_numTilesX; }
-    int numTilesY() const { return m_numTilesY; }
-    int tileIndex(int x, int y) const { return x + y * numTilesX(); }
-    int tileXIndex(int tile) const { assertTile(tile); return tile % numTilesX(); }
-    int tileYIndex(int tile) const { assertTile(tile); return tile / numTilesX(); }
-    int tileXIndexFromSrcCoord(int) const;
-    int tileYIndexFromSrcCoord(int) const;
+    int numTiles() const
+    {
+        return numTilesX() * numTilesY();
+    }
+    int numTilesX() const
+    {
+        return m_numTilesX;
+    }
+    int numTilesY() const
+    {
+        return m_numTilesY;
+    }
+    int tileIndex( int x, int y ) const
+    {
+        return x + y * numTilesX();
+    }
+    int tileXIndex( int tile ) const
+    {
+        assertTile( tile );
+        return tile % numTilesX();
+    }
+    int tileYIndex( int tile ) const
+    {
+        assertTile( tile );
+        return tile / numTilesX();
+    }
+    int tileXIndexFromSrcCoord( int ) const;
+    int tileYIndexFromSrcCoord( int ) const;
 
-    IntRect tileBounds(int tile) const;
-    IntRect tileBoundsWithBorder(int tile) const;
-    FloatRect tileBoundsNormalized(int tile) const;
-    int tilePositionX(int xIndex) const;
-    int tilePositionY(int yIndex) const;
-    int tileSizeX(int xIndex) const;
-    int tileSizeY(int yIndex) const;
-    IntRect overlappedTileIndices(const IntRect& srcRect) const;
-    IntRect overlappedTileIndices(const FloatRect& srcRect) const;
+    IntRect tileBounds( int tile ) const;
+    IntRect tileBoundsWithBorder( int tile ) const;
+    FloatRect tileBoundsNormalized( int tile ) const;
+    int tilePositionX( int xIndex ) const;
+    int tilePositionY( int yIndex ) const;
+    int tileSizeX( int xIndex ) const;
+    int tileSizeY( int yIndex ) const;
+    IntRect overlappedTileIndices( const IntRect &srcRect ) const;
+    IntRect overlappedTileIndices( const FloatRect &srcRect ) const;
 
     // Given a set of source and destination coordinates for a drawing quad
     // in texel units, returns adjusted data to render just the one tile.
-    void intersectDrawQuad(const FloatRect& srcRect, const FloatRect& dstRect, int tile, FloatRect* newSrc, FloatRect* newDst) const;
+    void intersectDrawQuad( const FloatRect &srcRect, const FloatRect &dstRect, int tile, FloatRect *newSrc,
+                            FloatRect *newDst ) const;
 
     // Difference between tileBound's and tileBoundWithBorder's location().
-    IntPoint textureOffset(int xIndex, int yIndex) const;
+    IntPoint textureOffset( int xIndex, int yIndex ) const;
 
 private:
-    TilingData() : m_maxTextureSize(0), m_totalSizeX(0), m_totalSizeY(0) {}
-    void assertTile(int tile) const { ASSERT(tile >= 0 && tile < numTiles()); }
+    TilingData() : m_maxTextureSize( 0 ), m_totalSizeX( 0 ), m_totalSizeY( 0 ) {}
+    void assertTile( int tile ) const
+    {
+        ASSERT( tile >= 0 && tile < numTiles() );
+    }
     void recomputeNumTiles();
 
     int m_maxTextureSize;

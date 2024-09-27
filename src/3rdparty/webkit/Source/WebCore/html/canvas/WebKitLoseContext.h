@@ -29,13 +29,15 @@
 #include "WebGLExtension.h"
 #include <wtf/PassOwnPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class WebGLRenderingContext;
 
-class WebKitLoseContext : public WebGLExtension {
+class WebKitLoseContext : public WebGLExtension
+{
 public:
-    static PassOwnPtr<WebKitLoseContext> create(WebGLRenderingContext*);
+    static PassOwnPtr<WebKitLoseContext> create( WebGLRenderingContext * );
 
     virtual ~WebKitLoseContext();
     virtual ExtensionName getName() const;
@@ -43,7 +45,7 @@ public:
     void loseContext();
 
 private:
-    WebKitLoseContext(WebGLRenderingContext*);
+    WebKitLoseContext( WebGLRenderingContext * );
 };
 
 } // namespace WebCore

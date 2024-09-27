@@ -23,80 +23,107 @@
 
 #include "PropertyNameArray.h"
 
-namespace JSC {
+namespace JSC
+{
 
-ASSERT_CLASS_FITS_IN_CELL(StringObject);
+ASSERT_CLASS_FITS_IN_CELL( StringObject );
 
 const ClassInfo StringObject::s_info = { "String", &JSWrapperObject::s_info, 0, 0 };
 
-StringObject::StringObject(ExecState* exec, Structure* structure)
-    : JSWrapperObject(exec->globalData(), structure)
+StringObject::StringObject( ExecState *exec, Structure *structure )
+    : JSWrapperObject( exec->globalData(), structure )
 {
-    ASSERT(inherits(&s_info));
-    setInternalValue(exec->globalData(), jsEmptyString(exec));
+    ASSERT( inherits( &s_info ) );
+    setInternalValue( exec->globalData(), jsEmptyString( exec ) );
 }
 
-StringObject::StringObject(JSGlobalData& globalData, Structure* structure, JSString* string)
-    : JSWrapperObject(globalData, structure)
+StringObject::StringObject( JSGlobalData &globalData, Structure *structure, JSString *string )
+    : JSWrapperObject( globalData, structure )
 {
-    ASSERT(inherits(&s_info));
-    setInternalValue(globalData, string);
+    ASSERT( inherits( &s_info ) );
+    setInternalValue( globalData, string );
 }
 
-StringObject::StringObject(ExecState* exec, Structure* structure, const UString& string)
-    : JSWrapperObject(exec->globalData(), structure)
+StringObject::StringObject( ExecState *exec, Structure *structure, const UString &string )
+    : JSWrapperObject( exec->globalData(), structure )
 {
-    ASSERT(inherits(&s_info));
-    setInternalValue(exec->globalData(), jsString(exec, string));
+    ASSERT( inherits( &s_info ) );
+    setInternalValue( exec->globalData(), jsString( exec, string ) );
 }
 
-bool StringObject::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool StringObject::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    if (internalValue()->getStringPropertySlot(exec, propertyName, slot))
+    if ( internalValue()->getStringPropertySlot( exec, propertyName, slot ) )
+    {
         return true;
-    return JSObject::getOwnPropertySlot(exec, propertyName, slot);
-}
-    
-bool StringObject::getOwnPropertySlot(ExecState* exec, unsigned propertyName, PropertySlot& slot)
-{
-    if (internalValue()->getStringPropertySlot(exec, propertyName, slot))
-        return true;    
-    return JSObject::getOwnPropertySlot(exec, Identifier::from(exec, propertyName), slot);
+    }
+
+    return JSObject::getOwnPropertySlot( exec, propertyName, slot );
 }
 
-bool StringObject::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool StringObject::getOwnPropertySlot( ExecState *exec, unsigned propertyName, PropertySlot &slot )
 {
-    if (internalValue()->getStringPropertyDescriptor(exec, propertyName, descriptor))
-        return true;    
-    return JSObject::getOwnPropertyDescriptor(exec, propertyName, descriptor);
+    if ( internalValue()->getStringPropertySlot( exec, propertyName, slot ) )
+    {
+        return true;
+    }
+
+    return JSObject::getOwnPropertySlot( exec, Identifier::from( exec, propertyName ), slot );
 }
 
-void StringObject::put(ExecState* exec, const Identifier& propertyName, JSValue value, PutPropertySlot& slot)
+bool StringObject::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    if (propertyName == exec->propertyNames().length)
+    if ( internalValue()->getStringPropertyDescriptor( exec, propertyName, descriptor ) )
+    {
+        return true;
+    }
+
+    return JSObject::getOwnPropertyDescriptor( exec, propertyName, descriptor );
+}
+
+void StringObject::put( ExecState *exec, const Identifier &propertyName, JSValue value, PutPropertySlot &slot )
+{
+    if ( propertyName == exec->propertyNames().length )
+    {
         return;
-    JSObject::put(exec, propertyName, value, slot);
+    }
+
+    JSObject::put( exec, propertyName, value, slot );
 }
 
-bool StringObject::deleteProperty(ExecState* exec, const Identifier& propertyName)
+bool StringObject::deleteProperty( ExecState *exec, const Identifier &propertyName )
 {
-    if (propertyName == exec->propertyNames().length)
+    if ( propertyName == exec->propertyNames().length )
+    {
         return false;
+    }
+
     bool isStrictUInt32;
-    unsigned i = propertyName.toUInt32(isStrictUInt32);
-    if (isStrictUInt32 && internalValue()->canGetIndex(i))
+    unsigned i = propertyName.toUInt32( isStrictUInt32 );
+
+    if ( isStrictUInt32 && internalValue()->canGetIndex( i ) )
+    {
         return false;
-    return JSObject::deleteProperty(exec, propertyName);
+    }
+
+    return JSObject::deleteProperty( exec, propertyName );
 }
 
-void StringObject::getOwnPropertyNames(ExecState* exec, PropertyNameArray& propertyNames, EnumerationMode mode)
+void StringObject::getOwnPropertyNames( ExecState *exec, PropertyNameArray &propertyNames, EnumerationMode mode )
 {
     int size = internalValue()->length();
-    for (int i = 0; i < size; ++i)
-        propertyNames.add(Identifier(exec, UString::number(i)));
-    if (mode == IncludeDontEnumProperties)
-        propertyNames.add(exec->propertyNames().length);
-    return JSObject::getOwnPropertyNames(exec, propertyNames, mode);
+
+    for ( int i = 0; i < size; ++i )
+    {
+        propertyNames.add( Identifier( exec, UString::number( i ) ) );
+    }
+
+    if ( mode == IncludeDontEnumProperties )
+    {
+        propertyNames.add( exec->propertyNames().length );
+    }
+
+    return JSObject::getOwnPropertyNames( exec, propertyNames, mode );
 }
 
 } // namespace JSC

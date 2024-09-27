@@ -30,22 +30,27 @@
 #include "ScriptValue.h"
 #include <wtf/text/AtomicString.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class CustomEvent : public Event {
+class CustomEvent : public Event
+{
 public:
     virtual ~CustomEvent();
 
     static PassRefPtr<CustomEvent> create()
     {
-        return adoptRef(new CustomEvent);
+        return adoptRef( new CustomEvent );
     }
 
-    void initCustomEvent(const AtomicString& type, bool canBubble, bool cancelable, ScriptValue detail);
+    void initCustomEvent( const AtomicString &type, bool canBubble, bool cancelable, ScriptValue detail );
 
     virtual bool isCustomEvent() const;
 
-    ScriptValue detail() const { return m_detail; }
+    ScriptValue detail() const
+    {
+        return m_detail;
+    }
 
 private:
     CustomEvent();

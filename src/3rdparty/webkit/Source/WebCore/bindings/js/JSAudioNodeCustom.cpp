@@ -31,42 +31,58 @@
 #include "AudioNode.h"
 #include <runtime/Error.h>
 
-namespace WebCore {
-
-JSC::JSValue JSAudioNode::connect(JSC::ExecState* exec)
+namespace WebCore
 {
-    if (exec->argumentCount() < 1)
-        return throwError(exec, createSyntaxError(exec, "Not enough arguments"));
+
+JSC::JSValue JSAudioNode::connect( JSC::ExecState *exec )
+{
+    if ( exec->argumentCount() < 1 )
+    {
+        return throwError( exec, createSyntaxError( exec, "Not enough arguments" ) );
+    }
 
     unsigned outputIndex = 0;
     unsigned inputIndex = 0;
-    
-    AudioNode* destinationNode = toAudioNode(exec->argument(0));
-    if (!destinationNode)
-        return throwError(exec, createSyntaxError(exec, "Invalid destination node"));
-    
-    if (exec->argumentCount() > 1)
-        outputIndex = exec->argument(1).toInt32(exec);
 
-    if (exec->argumentCount() > 2)
-        inputIndex = exec->argument(2).toInt32(exec);
+    AudioNode *destinationNode = toAudioNode( exec->argument( 0 ) );
 
-    AudioNode* audioNode = static_cast<AudioNode*>(impl());
-    bool success = audioNode->connect(destinationNode, outputIndex, inputIndex);
-    if (!success)
-        return throwError(exec, createSyntaxError(exec, "Invalid index parameter"));
-    
+    if ( !destinationNode )
+    {
+        return throwError( exec, createSyntaxError( exec, "Invalid destination node" ) );
+    }
+
+    if ( exec->argumentCount() > 1 )
+    {
+        outputIndex = exec->argument( 1 ).toInt32( exec );
+    }
+
+    if ( exec->argumentCount() > 2 )
+    {
+        inputIndex = exec->argument( 2 ).toInt32( exec );
+    }
+
+    AudioNode *audioNode = static_cast<AudioNode *>( impl() );
+    bool success = audioNode->connect( destinationNode, outputIndex, inputIndex );
+
+    if ( !success )
+    {
+        return throwError( exec, createSyntaxError( exec, "Invalid index parameter" ) );
+    }
+
     return JSC::jsUndefined();
 }
 
-JSC::JSValue JSAudioNode::disconnect(JSC::ExecState* exec)
-{    
+JSC::JSValue JSAudioNode::disconnect( JSC::ExecState *exec )
+{
     unsigned outputIndex = 0;
-    if (exec->argumentCount() > 0)
-        outputIndex = exec->argument(0).toInt32(exec);
 
-    AudioNode* audioNode = static_cast<AudioNode*>(impl());
-    audioNode->disconnect(outputIndex);
+    if ( exec->argumentCount() > 0 )
+    {
+        outputIndex = exec->argument( 0 ).toInt32( exec );
+    }
+
+    AudioNode *audioNode = static_cast<AudioNode *>( impl() );
+    audioNode->disconnect( outputIndex );
     return JSC::jsUndefined();
 }
 

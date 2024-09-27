@@ -27,26 +27,29 @@
 #if ENABLE(WEB_AUDIO)
 
 #include "DelayProcessor.h"
- 
+
 #include "DelayDSPKernel.h"
 
-namespace WebCore {
-
-DelayProcessor::DelayProcessor(double sampleRate, unsigned numberOfChannels)
-    : AudioDSPKernelProcessor(sampleRate, numberOfChannels)
+namespace WebCore
 {
-    m_delayTime = AudioParam::create("delayTime", 0.0, 0.0, 1.0);
+
+DelayProcessor::DelayProcessor( double sampleRate, unsigned numberOfChannels )
+    : AudioDSPKernelProcessor( sampleRate, numberOfChannels )
+{
+    m_delayTime = AudioParam::create( "delayTime", 0.0, 0.0, 1.0 );
 }
 
 DelayProcessor::~DelayProcessor()
 {
-    if (isInitialized())
+    if ( isInitialized() )
+    {
         uninitialize();
+    }
 }
 
 PassOwnPtr<AudioDSPKernel> DelayProcessor::createKernel()
 {
-    return adoptPtr(new DelayDSPKernel(this));
+    return adoptPtr( new DelayDSPKernel( this ) );
 }
 
 } // namespace WebCore

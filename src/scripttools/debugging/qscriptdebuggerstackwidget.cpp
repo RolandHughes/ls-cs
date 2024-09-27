@@ -32,17 +32,17 @@
 QT_BEGIN_NAMESPACE
 
 class QScriptDebuggerStackWidgetPrivate
-   : public QScriptDebuggerStackWidgetInterfacePrivate
+    : public QScriptDebuggerStackWidgetInterfacePrivate
 {
-   Q_DECLARE_PUBLIC(QScriptDebuggerStackWidget)
- public:
-   QScriptDebuggerStackWidgetPrivate();
-   ~QScriptDebuggerStackWidgetPrivate();
+    Q_DECLARE_PUBLIC( QScriptDebuggerStackWidget )
+public:
+    QScriptDebuggerStackWidgetPrivate();
+    ~QScriptDebuggerStackWidgetPrivate();
 
-   // private slots
-   void _q_onCurrentChanged(const QModelIndex &index);
+    // private slots
+    void _q_onCurrentChanged( const QModelIndex &index );
 
-   QTreeView *view;
+    QTreeView *view;
 };
 
 QScriptDebuggerStackWidgetPrivate::QScriptDebuggerStackWidgetPrivate()
@@ -53,27 +53,27 @@ QScriptDebuggerStackWidgetPrivate::~QScriptDebuggerStackWidgetPrivate()
 {
 }
 
-void QScriptDebuggerStackWidgetPrivate::_q_onCurrentChanged(const QModelIndex &index)
+void QScriptDebuggerStackWidgetPrivate::_q_onCurrentChanged( const QModelIndex &index )
 {
-   Q_Q(QScriptDebuggerStackWidget);
-   emit q->currentFrameChanged(index.row());
+    Q_Q( QScriptDebuggerStackWidget );
+    emit q->currentFrameChanged( index.row() );
 }
 
-QScriptDebuggerStackWidget::QScriptDebuggerStackWidget(QWidget *parent)
-   : QScriptDebuggerStackWidgetInterface(*new QScriptDebuggerStackWidgetPrivate, parent, 0)
+QScriptDebuggerStackWidget::QScriptDebuggerStackWidget( QWidget *parent )
+    : QScriptDebuggerStackWidgetInterface( *new QScriptDebuggerStackWidgetPrivate, parent, 0 )
 {
-   Q_D(QScriptDebuggerStackWidget);
-   d->view = new QTreeView();
-   d->view->setEditTriggers(QAbstractItemView::NoEditTriggers);
-   d->view->setAlternatingRowColors(true);
-   d->view->setRootIsDecorated(false);
-   d->view->setSelectionBehavior(QAbstractItemView::SelectRows);
-   d->view->header()->setDefaultAlignment(Qt::AlignLeft);
-   //  d->view->header()->setResizeMode(QHeaderView::ResizeToContents);
+    Q_D( QScriptDebuggerStackWidget );
+    d->view = new QTreeView();
+    d->view->setEditTriggers( QAbstractItemView::NoEditTriggers );
+    d->view->setAlternatingRowColors( true );
+    d->view->setRootIsDecorated( false );
+    d->view->setSelectionBehavior( QAbstractItemView::SelectRows );
+    d->view->header()->setDefaultAlignment( Qt::AlignLeft );
+    //  d->view->header()->setResizeMode(QHeaderView::ResizeToContents);
 
-   QVBoxLayout *vbox = new QVBoxLayout(this);
-   vbox->setMargin(0);
-   vbox->addWidget(d->view);
+    QVBoxLayout *vbox = new QVBoxLayout( this );
+    vbox->setMargin( 0 );
+    vbox->addWidget( d->view );
 }
 
 QScriptDebuggerStackWidget::~QScriptDebuggerStackWidget()
@@ -85,22 +85,22 @@ QScriptDebuggerStackWidget::~QScriptDebuggerStackWidget()
 */
 QAbstractItemModel *QScriptDebuggerStackWidget::stackModel() const
 {
-   Q_D(const QScriptDebuggerStackWidget);
-   return d->view->model();
+    Q_D( const QScriptDebuggerStackWidget );
+    return d->view->model();
 }
 
 /*!
   \reimp
 */
-void QScriptDebuggerStackWidget::setStackModel(QAbstractItemModel *model)
+void QScriptDebuggerStackWidget::setStackModel( QAbstractItemModel *model )
 {
-   Q_D(QScriptDebuggerStackWidget);
-   d->view->setModel(model);
+    Q_D( QScriptDebuggerStackWidget );
+    d->view->setModel( model );
 
-   QObject::connect(d->view->selectionModel(), SIGNAL(currentChanged(const QModelIndex &, const QModelIndex &)),
-                    this, SLOT(_q_onCurrentChanged(const QModelIndex &)));
+    QObject::connect( d->view->selectionModel(), SIGNAL( currentChanged( const QModelIndex &, const QModelIndex & ) ),
+                      this, SLOT( _q_onCurrentChanged( const QModelIndex & ) ) );
 
-   d->view->header()->resizeSection(0, 50);
+    d->view->header()->resizeSection( 0, 50 );
 }
 
 /*!
@@ -108,23 +108,23 @@ void QScriptDebuggerStackWidget::setStackModel(QAbstractItemModel *model)
 */
 int QScriptDebuggerStackWidget::currentFrameIndex() const
 {
-   Q_D(const QScriptDebuggerStackWidget);
-   return d->view->currentIndex().row();
+    Q_D( const QScriptDebuggerStackWidget );
+    return d->view->currentIndex().row();
 }
 
 /*!
   \reimp
 */
-void QScriptDebuggerStackWidget::setCurrentFrameIndex(int frameIndex)
+void QScriptDebuggerStackWidget::setCurrentFrameIndex( int frameIndex )
 {
-   Q_D(QScriptDebuggerStackWidget);
-   d->view->setCurrentIndex(d->view->model()->index(frameIndex, 0));
+    Q_D( QScriptDebuggerStackWidget );
+    d->view->setCurrentIndex( d->view->model()->index( frameIndex, 0 ) );
 }
 
-void QScriptDebuggerStackWidget::_q_onCurrentChanged(const QModelIndex & un_named_arg1)
+void QScriptDebuggerStackWidget::_q_onCurrentChanged( const QModelIndex &un_named_arg1 )
 {
-  	Q_D(QScriptDebuggerStackWidget);
-  	d->_q_onCurrentChanged();
+    Q_D( QScriptDebuggerStackWidget );
+    d->_q_onCurrentChanged();
 }
 
 QT_END_NAMESPACE

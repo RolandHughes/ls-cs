@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef PluginDebug_h
@@ -35,17 +35,18 @@
 
 #if !LOG_DISABLED
 
-namespace WebCore {
+namespace WebCore
+{
 
-const char* prettyNameForNPError(NPError error);
+const char *prettyNameForNPError( NPError error );
 
-CString prettyNameForNPNVariable(NPNVariable variable);
-CString prettyNameForNPPVariable(NPPVariable variable, void* value);
-CString prettyNameForNPNURLVariable(NPNURLVariable variable);
+CString prettyNameForNPNVariable( NPNVariable variable );
+CString prettyNameForNPPVariable( NPPVariable variable, void *value );
+CString prettyNameForNPNURLVariable( NPNURLVariable variable );
 
 #ifdef XP_MACOSX
-const char* prettyNameForDrawingModel(NPDrawingModel drawingModel);
-const char* prettyNameForEventModel(NPEventModel eventModel);
+const char *prettyNameForDrawingModel( NPDrawingModel drawingModel );
+const char *prettyNameForEventModel( NPEventModel eventModel );
 #endif
 
 } // namespace WebCore

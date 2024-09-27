@@ -43,7 +43,8 @@
 #include <wtf/Vector.h>
 #include <wtf/text/StringHash.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class InjectedScriptManager;
 class InspectorFrontend;
@@ -57,94 +58,113 @@ class ScriptValue;
 
 typedef String ErrorString;
 
-enum DebuggerEventType {
+enum DebuggerEventType
+{
     JavaScriptPauseEventType,
     JavaScriptBreakpointEventType,
     NativeBreakpointDebuggerEventType
 };
 
-class InspectorDebuggerAgent : public ScriptDebugListener {
-    WTF_MAKE_NONCOPYABLE(InspectorDebuggerAgent); WTF_MAKE_FAST_ALLOCATED;
+class InspectorDebuggerAgent : public ScriptDebugListener
+{
+    WTF_MAKE_NONCOPYABLE( InspectorDebuggerAgent );
+    WTF_MAKE_FAST_ALLOCATED;
 public:
     virtual ~InspectorDebuggerAgent();
 
-    void enable(ErrorString*) { enable(false); }
-    void disable(ErrorString*) { disable(); }
+    void enable( ErrorString * )
+    {
+        enable( false );
+    }
+    void disable( ErrorString * )
+    {
+        disable();
+    }
     void disable();
     bool enabled();
     void restore();
-    void setFrontend(InspectorFrontend*);
+    void setFrontend( InspectorFrontend * );
     void clearFrontend();
 
-    void inspectedURLChanged(const String& url);
+    void inspectedURLChanged( const String &url );
 
     // Part of the protocol.
-    void setBreakpointsActive(ErrorString*, bool active);
+    void setBreakpointsActive( ErrorString *, bool active );
 
-    void setBreakpointByUrl(ErrorString*, const String& url, int lineNumber, const int* const optionalColumnNumber, const String* const optionalCondition, String* breakpointId, RefPtr<InspectorArray>* locations);
-    void setBreakpoint(ErrorString*, PassRefPtr<InspectorObject> location, const String* const optionalCondition, String* breakpointId, RefPtr<InspectorObject>* actualLocation);
-    void removeBreakpoint(ErrorString*, const String& breakpointId);
-    void continueToLocation(ErrorString*, PassRefPtr<InspectorObject> location);
+    void setBreakpointByUrl( ErrorString *, const String &url, int lineNumber, const int *const optionalColumnNumber,
+                             const String *const optionalCondition, String *breakpointId, RefPtr<InspectorArray> *locations );
+    void setBreakpoint( ErrorString *, PassRefPtr<InspectorObject> location, const String *const optionalCondition,
+                        String *breakpointId, RefPtr<InspectorObject> *actualLocation );
+    void removeBreakpoint( ErrorString *, const String &breakpointId );
+    void continueToLocation( ErrorString *, PassRefPtr<InspectorObject> location );
 
-    void editScriptSource(ErrorString*, const String& sourceID, const String& newContent, RefPtr<InspectorArray>* newCallFrames);
-    void getScriptSource(ErrorString*, const String& sourceID, String* scriptSource);
-    void schedulePauseOnNextStatement(DebuggerEventType type, PassRefPtr<InspectorValue> data);
+    void editScriptSource( ErrorString *, const String &sourceID, const String &newContent, RefPtr<InspectorArray> *newCallFrames );
+    void getScriptSource( ErrorString *, const String &sourceID, String *scriptSource );
+    void schedulePauseOnNextStatement( DebuggerEventType type, PassRefPtr<InspectorValue> data );
     void cancelPauseOnNextStatement();
-    void breakProgram(DebuggerEventType type, PassRefPtr<InspectorValue> data);
-    void pause(ErrorString*);
-    void resume(ErrorString*);
-    void stepOver(ErrorString*);
-    void stepInto(ErrorString*);
-    void stepOut(ErrorString*);
-    void setPauseOnExceptions(ErrorString*, const String& pauseState);
-    void evaluateOnCallFrame(ErrorString*, const String& callFrameId, const String& expression, const String* const objectGroup, const bool* const includeCommandLineAPI, RefPtr<InspectorObject>* result, bool* wasThrown);
+    void breakProgram( DebuggerEventType type, PassRefPtr<InspectorValue> data );
+    void pause( ErrorString * );
+    void resume( ErrorString * );
+    void stepOver( ErrorString * );
+    void stepInto( ErrorString * );
+    void stepOut( ErrorString * );
+    void setPauseOnExceptions( ErrorString *, const String &pauseState );
+    void evaluateOnCallFrame( ErrorString *, const String &callFrameId, const String &expression, const String *const objectGroup,
+                              const bool *const includeCommandLineAPI, RefPtr<InspectorObject> *result, bool *wasThrown );
 
-    class Listener {
+    class Listener
+    {
     public:
         virtual ~Listener() { }
         virtual void debuggerWasEnabled() = 0;
         virtual void debuggerWasDisabled() = 0;
     };
-    void setListener(Listener* listener) { m_listener = listener; }
+    void setListener( Listener *listener )
+    {
+        m_listener = listener;
+    }
 
-    virtual ScriptDebugServer& scriptDebugServer() = 0;
+    virtual ScriptDebugServer &scriptDebugServer() = 0;
 
 protected:
-    InspectorDebuggerAgent(InstrumentingAgents*, InspectorState*, InjectedScriptManager*);
+    InspectorDebuggerAgent( InstrumentingAgents *, InspectorState *, InjectedScriptManager * );
 
     virtual void startListeningScriptDebugServer() = 0;
     virtual void stopListeningScriptDebugServer() = 0;
 
 private:
-    void enable(bool restoringFromState);
+    void enable( bool restoringFromState );
 
     PassRefPtr<InspectorArray> currentCallFrames();
 
-    virtual void didParseSource(const String& sourceID, const String& url, const String& data, int startLine, int startColumn, int endLine, int endColumn, bool isContentScript);
-    virtual void failedToParseSource(const String& url, const String& data, int firstLine, int errorLine, const String& errorMessage);
-    virtual void didPause(ScriptState*, const ScriptValue& callFrames, const ScriptValue& exception);
+    virtual void didParseSource( const String &sourceID, const String &url, const String &data, int startLine, int startColumn,
+                                 int endLine, int endColumn, bool isContentScript );
+    virtual void failedToParseSource( const String &url, const String &data, int firstLine, int errorLine,
+                                      const String &errorMessage );
+    virtual void didPause( ScriptState *, const ScriptValue &callFrames, const ScriptValue &exception );
     virtual void didContinue();
 
-    PassRefPtr<InspectorObject> resolveBreakpoint(const String& breakpointId, const String& sourceId, const ScriptBreakpoint&);
+    PassRefPtr<InspectorObject> resolveBreakpoint( const String &breakpointId, const String &sourceId, const ScriptBreakpoint & );
     void clear();
 
-    class Script {
+    class Script
+    {
     public:
         Script()
-            : startLine(0)
-            , startColumn(0)
-            , endLine(0)
-            , endColumn(0)
+            : startLine( 0 )
+            , startColumn( 0 )
+            , endLine( 0 )
+            , endColumn( 0 )
         {
         }
 
-        Script(const String& url, const String& data, int startLine, int startColumn, int endLine, int endColumn)
-            : url(url)
-            , data(data)
-            , startLine(startLine)
-            , startColumn(startColumn)
-            , endLine(endLine)
-            , endColumn(endColumn)
+        Script( const String &url, const String &data, int startLine, int startColumn, int endLine, int endColumn )
+            : url( url )
+            , data( data )
+            , startLine( startLine )
+            , startColumn( startColumn )
+            , endLine( endLine )
+            , endColumn( endColumn )
         {
         }
 
@@ -160,18 +180,18 @@ private:
     typedef HashMap<String, Script> ScriptsMap;
     typedef HashMap<String, Vector<String> > BreakpointIdToDebugServerBreakpointIdsMap;
 
-    InstrumentingAgents* m_instrumentingAgents;
-    InspectorState* m_inspectorState;
-    InjectedScriptManager* m_injectedScriptManager;
-    InspectorFrontend::Debugger* m_frontend;
-    ScriptState* m_pausedScriptState;
+    InstrumentingAgents *m_instrumentingAgents;
+    InspectorState *m_inspectorState;
+    InjectedScriptManager *m_injectedScriptManager;
+    InspectorFrontend::Debugger *m_frontend;
+    ScriptState *m_pausedScriptState;
     ScriptValue m_currentCallStack;
     ScriptsMap m_scripts;
     BreakpointIdToDebugServerBreakpointIdsMap m_breakpointIdToDebugServerBreakpointIds;
     String m_continueToLocationBreakpointId;
     RefPtr<InspectorObject> m_breakProgramDetails;
     bool m_javaScriptPauseScheduled;
-    Listener* m_listener;
+    Listener *m_listener;
 };
 
 } // namespace WebCore

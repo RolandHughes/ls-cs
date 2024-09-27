@@ -30,7 +30,7 @@
 
 QT_BEGIN_NAMESPACE
 
-void *qdbus_resolve_me(const char *name);
+void *qdbus_resolve_me( const char *name );
 
 #if !defined QT_LINKED_LIBDBUS
 
@@ -45,23 +45,31 @@ void qdbus_unloadLibDBus()
 bool qdbus_loadLibDBus()
 {
     static volatile bool triedToLoadLibrary = false;
-    QMutexLocker locker(QMutexPool::globalInstanceGet((void *)&qdbus_resolve_me));
+    QMutexLocker locker( QMutexPool::globalInstanceGet( ( void * )&qdbus_resolve_me ) );
 
     QLibrary *&lib = qdbus_libdbus;
-    if (triedToLoadLibrary)
+
+    if ( triedToLoadLibrary )
+    {
         return lib && lib->isLoaded();
+    }
 
     lib = new QLibrary;
     triedToLoadLibrary = true;
 
     static int majorversions[] = { 3, 2, -1 };
     lib->unload();
-    lib->setFileName(QLatin1String("dbus-1"));
-    lib->setLoadHints(QLibrary::ImprovedSearchHeuristics);
-    for (uint i = 0; i < sizeof(majorversions) / sizeof(majorversions[0]); ++i) {
-        lib->setFileNameAndVersion(lib->fileName(), majorversions[i]);
-        if (lib->load() && lib->resolve("dbus_connection_open_private"))
+    lib->setFileName( QLatin1String( "dbus-1" ) );
+    lib->setLoadHints( QLibrary::ImprovedSearchHeuristics );
+
+    for ( uint i = 0; i < sizeof( majorversions ) / sizeof( majorversions[0] ); ++i )
+    {
+        lib->setFileNameAndVersion( lib->fileName(), majorversions[i] );
+
+        if ( lib->load() && lib->resolve( "dbus_connection_open_private" ) )
+        {
             return true;
+        }
 
         lib->unload();
     }
@@ -71,27 +79,36 @@ bool qdbus_loadLibDBus()
     return false;
 }
 
-void *qdbus_resolve_conditionally(const char *name)
+void *qdbus_resolve_conditionally( const char *name )
 {
-    if (qdbus_loadLibDBus())
-        return qdbus_libdbus->resolve(name);
+    if ( qdbus_loadLibDBus() )
+    {
+        return qdbus_libdbus->resolve( name );
+    }
+
     return 0;
 }
 
-void *qdbus_resolve_me(const char *name)
+void *qdbus_resolve_me( const char *name )
 {
     void *ptr = 0;
-    if (!qdbus_loadLibDBus())
-        qFatal("Cannot find libdbus-1 in your system to resolve symbol '%s'.", name);
 
-    ptr = qdbus_libdbus->resolve(name);
-    if (!ptr)
-        qFatal("Cannot resolve '%s' in your libdbus-1.", name);
+    if ( !qdbus_loadLibDBus() )
+    {
+        qFatal( "Cannot find libdbus-1 in your system to resolve symbol '%s'.", name );
+    }
+
+    ptr = qdbus_libdbus->resolve( name );
+
+    if ( !ptr )
+    {
+        qFatal( "Cannot resolve '%s' in your libdbus-1.", name );
+    }
 
     return ptr;
 }
 
-Q_DESTRUCTOR_FUNCTION(qdbus_unloadLibDBus)
+Q_DESTRUCTOR_FUNCTION( qdbus_unloadLibDBus )
 
 #endif // QT_LINKED_LIBDBUS
 

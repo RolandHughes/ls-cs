@@ -77,14 +77,14 @@ using namespace WebCore;
 /*!
     Constructs a security origin from \a other.
 */
-QWebSecurityOrigin::QWebSecurityOrigin(const QWebSecurityOrigin& other) : d(other.d)
+QWebSecurityOrigin::QWebSecurityOrigin( const QWebSecurityOrigin &other ) : d( other.d )
 {
 }
 
 /*!
     Assigns the \a other security origin to this.
 */
-QWebSecurityOrigin& QWebSecurityOrigin::operator=(const QWebSecurityOrigin& other)
+QWebSecurityOrigin &QWebSecurityOrigin::operator=( const QWebSecurityOrigin &other )
 {
     d = other.d;
     return *this;
@@ -121,7 +121,7 @@ int QWebSecurityOrigin::port() const
 qint64 QWebSecurityOrigin::databaseUsage() const
 {
 #if ENABLE(DATABASE)
-    return DatabaseTracker::tracker().usageForOrigin(d->origin.get());
+    return DatabaseTracker::tracker().usageForOrigin( d->origin.get() );
 #else
     return 0;
 #endif
@@ -133,7 +133,7 @@ qint64 QWebSecurityOrigin::databaseUsage() const
 qint64 QWebSecurityOrigin::databaseQuota() const
 {
 #if ENABLE(DATABASE)
-    return DatabaseTracker::tracker().quotaForOrigin(d->origin.get());
+    return DatabaseTracker::tracker().quotaForOrigin( d->origin.get() );
 #else
     return 0;
 #endif
@@ -146,17 +146,17 @@ qint64 QWebSecurityOrigin::databaseQuota() const
     and no data will be purged to meet the new quota. However, no new data can be added
     to databases in this origin.
 */
-void QWebSecurityOrigin::setDatabaseQuota(qint64 quota)
+void QWebSecurityOrigin::setDatabaseQuota( qint64 quota )
 {
 #if ENABLE(DATABASE)
-    DatabaseTracker::tracker().setQuota(d->origin.get(), quota);
+    DatabaseTracker::tracker().setQuota( d->origin.get(), quota );
 #endif
 }
 
-void QWebSecurityOrigin::setApplicationCacheQuota(qint64 quota)
+void QWebSecurityOrigin::setApplicationCacheQuota( qint64 quota )
 {
 #if ENABLE(OFFLINE_WEB_APPLICATIONS)
-    WebCore::cacheStorage().storeUpdatedQuotaForOrigin(d->origin.get(), quota);
+    WebCore::cacheStorage().storeUpdatedQuotaForOrigin( d->origin.get(), quota );
 #endif
 }
 /*!
@@ -169,7 +169,7 @@ QWebSecurityOrigin::~QWebSecurityOrigin()
 /*!
     \internal
 */
-QWebSecurityOrigin::QWebSecurityOrigin(QWebSecurityOriginPrivate* priv)
+QWebSecurityOrigin::QWebSecurityOrigin( QWebSecurityOriginPrivate *priv )
 {
     d = priv;
 }
@@ -183,12 +183,14 @@ QList<QWebSecurityOrigin> QWebSecurityOrigin::allOrigins()
 
 #if ENABLE(DATABASE)
     Vector<RefPtr<SecurityOrigin> > coreOrigins;
-    DatabaseTracker::tracker().origins(coreOrigins);
+    DatabaseTracker::tracker().origins( coreOrigins );
 
-    for (unsigned i = 0; i < coreOrigins.size(); ++i) {
-        QWebSecurityOriginPrivate* priv = new QWebSecurityOriginPrivate(coreOrigins[i].get());
-        webOrigins.append(priv);
+    for ( unsigned i = 0; i < coreOrigins.size(); ++i )
+    {
+        QWebSecurityOriginPrivate *priv = new QWebSecurityOriginPrivate( coreOrigins[i].get() );
+        webOrigins.append( priv );
     }
+
 #endif
 
     return webOrigins;
@@ -204,15 +206,20 @@ QList<QWebDatabase> QWebSecurityOrigin::databases() const
 #if ENABLE(DATABASE)
     Vector<String> nameVector;
 
-    if (!DatabaseTracker::tracker().databaseNamesForOrigin(d->origin.get(), nameVector))
+    if ( !DatabaseTracker::tracker().databaseNamesForOrigin( d->origin.get(), nameVector ) )
+    {
         return databases;
-    for (unsigned i = 0; i < nameVector.size(); ++i) {
-        QWebDatabasePrivate* priv = new QWebDatabasePrivate();
+    }
+
+    for ( unsigned i = 0; i < nameVector.size(); ++i )
+    {
+        QWebDatabasePrivate *priv = new QWebDatabasePrivate();
         priv->name = nameVector[i];
         priv->origin = this->d->origin;
-        QWebDatabase webDatabase(priv);
-        databases.append(webDatabase);
+        QWebDatabase webDatabase( priv );
+        databases.append( webDatabase );
     }
+
 #endif
 
     return databases;
@@ -228,9 +235,9 @@ QList<QWebDatabase> QWebSecurityOrigin::databases() const
     and QWebSettings::LocalContentCanAccessFileUrls. By default all local schemes are concidered to be
     in the same security origin, and local schemes can not access remote content.
 */
-void QWebSecurityOrigin::addLocalScheme(const QString& scheme)
+void QWebSecurityOrigin::addLocalScheme( const QString &scheme )
 {
-    SchemeRegistry::registerURLSchemeAsLocal(scheme);
+    SchemeRegistry::registerURLSchemeAsLocal( scheme );
 }
 
 /*!
@@ -243,9 +250,9 @@ void QWebSecurityOrigin::addLocalScheme(const QString& scheme)
 
     \sa addLocalScheme()
 */
-void QWebSecurityOrigin::removeLocalScheme(const QString& scheme)
+void QWebSecurityOrigin::removeLocalScheme( const QString &scheme )
 {
-    SchemeRegistry::removeURLSchemeRegisteredAsLocal(scheme);
+    SchemeRegistry::removeURLSchemeRegisteredAsLocal( scheme );
 }
 
 /*!
@@ -259,11 +266,14 @@ void QWebSecurityOrigin::removeLocalScheme(const QString& scheme)
 QStringList QWebSecurityOrigin::localSchemes()
 {
     QStringList list;
-    const URLSchemesMap& map = SchemeRegistry::localSchemes();
+    const URLSchemesMap &map = SchemeRegistry::localSchemes();
     URLSchemesMap::const_iterator end = map.end();
-    for (URLSchemesMap::const_iterator i = map.begin(); i != end; ++i) {
+
+    for ( URLSchemesMap::const_iterator i = map.begin(); i != end; ++i )
+    {
         const QString scheme = *i;
-        list.append(scheme);
+        list.append( scheme );
     }
+
     return list;
 }

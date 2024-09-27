@@ -220,61 +220,66 @@ class QByteArray;
     \value Error An error has occurred.  Call errors() to retrieve a list of \{QDeclarativeError}{errors}.
 */
 
-void QDeclarativeComponentPrivate::typeDataReady(QDeclarativeTypeData *)
+void QDeclarativeComponentPrivate::typeDataReady( QDeclarativeTypeData * )
 {
-   Q_Q(QDeclarativeComponent);
+    Q_Q( QDeclarativeComponent );
 
-   Q_ASSERT(typeData);
+    Q_ASSERT( typeData );
 
-   fromTypeData(typeData);
-   typeData = 0;
+    fromTypeData( typeData );
+    typeData = 0;
 
-   emit q->statusChanged(q->status());
+    emit q->statusChanged( q->status() );
 }
 
-void QDeclarativeComponentPrivate::typeDataProgress(QDeclarativeTypeData *, qreal p)
+void QDeclarativeComponentPrivate::typeDataProgress( QDeclarativeTypeData *, qreal p )
 {
-   Q_Q(QDeclarativeComponent);
+    Q_Q( QDeclarativeComponent );
 
-   progress = p;
+    progress = p;
 
-   emit q->progressChanged(p);
+    emit q->progressChanged( p );
 }
 
-void QDeclarativeComponentPrivate::fromTypeData(QDeclarativeTypeData *data)
+void QDeclarativeComponentPrivate::fromTypeData( QDeclarativeTypeData *data )
 {
-   url = data->finalUrl();
-   QDeclarativeCompiledData *c = data->compiledData();
+    url = data->finalUrl();
+    QDeclarativeCompiledData *c = data->compiledData();
 
-   if (!c) {
-      Q_ASSERT(data->isError());
-      state.errors = data->errors();
-   } else {
-      cc = c;
-   }
+    if ( !c )
+    {
+        Q_ASSERT( data->isError() );
+        state.errors = data->errors();
+    }
+    else
+    {
+        cc = c;
+    }
 
-   data->release();
+    data->release();
 }
 
 void QDeclarativeComponentPrivate::clear()
 {
-   if (typeData) {
-      typeData->unregisterCallback(this);
-      typeData->release();
-      typeData = 0;
-   }
+    if ( typeData )
+    {
+        typeData->unregisterCallback( this );
+        typeData->release();
+        typeData = 0;
+    }
 
-   if (cc) {
-      cc->release();
-      cc = 0;
-   }
+    if ( cc )
+    {
+        cc->release();
+        cc = 0;
+    }
 }
 
 /*!
     \internal
 */
-QDeclarativeComponent::QDeclarativeComponent(QObject *parent)
-   : QObject(*(new QDeclarativeComponentPrivate), parent)
+QDeclarativeComponent::QDeclarativeComponent( QObject *parent )
+    : QObject( *( new QDeclarativeComponentPrivate ), parent )
 {
 }
 
@@ -283,20 +288,24 @@ QDeclarativeComponent::QDeclarativeComponent(QObject *parent)
 */
 QDeclarativeComponent::~QDeclarativeComponent()
 {
-   Q_D(QDeclarativeComponent);
+    Q_D( QDeclarativeComponent );
 
-   if (d->state.completePending) {
-      qWarning("QDeclarativeComponent: Component destroyed while completion pending");
-      d->completeCreate();
-   }
+    if ( d->state.completePending )
+    {
+        qWarning( "QDeclarativeComponent: Component destroyed while completion pending" );
+        d->completeCreate();
+    }
 
-   if (d->typeData) {
-      d->typeData->unregisterCallback(d);
-      d->typeData->release();
-   }
-   if (d->cc) {
-      d->cc->release();
-   }
+    if ( d->typeData )
+    {
+        d->typeData->unregisterCallback( d );
+        d->typeData->release();
+    }
+
+    if ( d->cc )
+    {
+        d->cc->release();
+    }
 }
 
 /*!
@@ -317,17 +326,24 @@ QDeclarativeComponent::~QDeclarativeComponent()
  */
 QDeclarativeComponent::Status QDeclarativeComponent::status() const
 {
-   Q_D(const QDeclarativeComponent);
+    Q_D( const QDeclarativeComponent );
 
-   if (d->typeData) {
-      return Loading;
-   } else if (!d->state.errors.isEmpty()) {
-      return Error;
-   } else if (d->engine && d->cc) {
-      return Ready;
-   } else {
-      return Null;
-   }
+    if ( d->typeData )
+    {
+        return Loading;
+    }
+    else if ( !d->state.errors.isEmpty() )
+    {
+        return Error;
+    }
+    else if ( d->engine && d->cc )
+    {
+        return Ready;
+    }
+    else
+    {
+        return Null;
+    }
 }
 
 /*!
@@ -335,7 +351,7 @@ QDeclarativeComponent::Status QDeclarativeComponent::status() const
 */
 bool QDeclarativeComponent::isNull() const
 {
-   return status() == Null;
+    return status() == Null;
 }
 
 /*!
@@ -343,7 +359,7 @@ bool QDeclarativeComponent::isNull() const
 */
 bool QDeclarativeComponent::isReady() const
 {
-   return status() == Ready;
+    return status() == Ready;
 }
 
 /*!
@@ -351,7 +367,7 @@ bool QDeclarativeComponent::isReady() const
 */
 bool QDeclarativeComponent::isError() const
 {
-   return status() == Error;
+    return status() == Error;
 }
 
 /*!
@@ -359,7 +375,7 @@ bool QDeclarativeComponent::isError() const
 */
 bool QDeclarativeComponent::isLoading() const
 {
-   return status() == Loading;
+    return status() == Loading;
 }
 
 /*!
@@ -375,8 +391,8 @@ bool QDeclarativeComponent::isLoading() const
 */
 qreal QDeclarativeComponent::progress() const
 {
-   Q_D(const QDeclarativeComponent);
-   return d->progress;
+    Q_D( const QDeclarativeComponent );
+    return d->progress;
 }
 
 /*!
@@ -397,11 +413,11 @@ qreal QDeclarativeComponent::progress() const
     Create a QDeclarativeComponent with no data and give it the specified
     \a engine and \a parent. Set the data with setData().
 */
-QDeclarativeComponent::QDeclarativeComponent(QDeclarativeEngine *engine, QObject *parent)
-   : QObject(*(new QDeclarativeComponentPrivate), parent)
+QDeclarativeComponent::QDeclarativeComponent( QDeclarativeEngine *engine, QObject *parent )
+    : QObject( *( new QDeclarativeComponentPrivate ), parent )
 {
-   Q_D(QDeclarativeComponent);
-   d->engine = engine;
+    Q_D( QDeclarativeComponent );
+    d->engine = engine;
 }
 
 /*!
@@ -413,12 +429,12 @@ QDeclarativeComponent::QDeclarativeComponent(QDeclarativeEngine *engine, QObject
 
     \sa loadUrl()
 */
-QDeclarativeComponent::QDeclarativeComponent(QDeclarativeEngine *engine, const QUrl &url, QObject *parent)
-   : QObject(*(new QDeclarativeComponentPrivate), parent)
+QDeclarativeComponent::QDeclarativeComponent( QDeclarativeEngine *engine, const QUrl &url, QObject *parent )
+    : QObject( *( new QDeclarativeComponentPrivate ), parent )
 {
-   Q_D(QDeclarativeComponent);
-   d->engine = engine;
-   loadUrl(url);
+    Q_D( QDeclarativeComponent );
+    d->engine = engine;
+    loadUrl( url );
 }
 
 /*!
@@ -427,30 +443,30 @@ QDeclarativeComponent::QDeclarativeComponent(QDeclarativeEngine *engine, const Q
 
     \sa loadUrl()
 */
-QDeclarativeComponent::QDeclarativeComponent(QDeclarativeEngine *engine, const QString &fileName,
-      QObject *parent)
-   : QObject(*(new QDeclarativeComponentPrivate), parent)
+QDeclarativeComponent::QDeclarativeComponent( QDeclarativeEngine *engine, const QString &fileName,
+        QObject *parent )
+    : QObject( *( new QDeclarativeComponentPrivate ), parent )
 {
-   Q_D(QDeclarativeComponent);
-   d->engine = engine;
-   loadUrl(d->engine->baseUrl().resolved(QUrl::fromLocalFile(fileName)));
+    Q_D( QDeclarativeComponent );
+    d->engine = engine;
+    loadUrl( d->engine->baseUrl().resolved( QUrl::fromLocalFile( fileName ) ) );
 }
 
 /*!
     \internal
 */
-QDeclarativeComponent::QDeclarativeComponent(QDeclarativeEngine *engine, QDeclarativeCompiledData *cc, int start,
-      int count, QObject *parent)
-   : QObject(*(new QDeclarativeComponentPrivate), parent)
+QDeclarativeComponent::QDeclarativeComponent( QDeclarativeEngine *engine, QDeclarativeCompiledData *cc, int start,
+        int count, QObject *parent )
+    : QObject( *( new QDeclarativeComponentPrivate ), parent )
 {
-   Q_D(QDeclarativeComponent);
-   d->engine = engine;
-   d->cc = cc;
-   cc->addref();
-   d->start = start;
-   d->count = count;
-   d->url = cc->url;
-   d->progress = 1.0;
+    Q_D( QDeclarativeComponent );
+    d->engine = engine;
+    d->cc = cc;
+    cc->addref();
+    d->start = start;
+    d->count = count;
+    d->url = cc->url;
+    d->progress = 1.0;
 }
 
 /*!
@@ -458,26 +474,29 @@ QDeclarativeComponent::QDeclarativeComponent(QDeclarativeEngine *engine, QDeclar
     is provided, it is used to set the component name and to provide
     a base path for items resolved by this component.
 */
-void QDeclarativeComponent::setData(const QByteArray &data, const QUrl &url)
+void QDeclarativeComponent::setData( const QByteArray &data, const QUrl &url )
 {
-   Q_D(QDeclarativeComponent);
+    Q_D( QDeclarativeComponent );
 
-   d->clear();
+    d->clear();
 
-   d->url = url;
+    d->url = url;
 
-   QDeclarativeTypeData *typeData = QDeclarativeEnginePrivate::get(d->engine)->typeLoader.get(data, url);
+    QDeclarativeTypeData *typeData = QDeclarativeEnginePrivate::get( d->engine )->typeLoader.get( data, url );
 
-   if (typeData->isCompleteOrError()) {
-      d->fromTypeData(typeData);
-   } else {
-      d->typeData = typeData;
-      d->typeData->registerCallback(d);
-   }
+    if ( typeData->isCompleteOrError() )
+    {
+        d->fromTypeData( typeData );
+    }
+    else
+    {
+        d->typeData = typeData;
+        d->typeData->registerCallback( d );
+    }
 
-   d->progress = 1.0;
-   emit statusChanged(status());
-   emit progressChanged(d->progress);
+    d->progress = 1.0;
+    emit statusChanged( status() );
+    emit progressChanged( d->progress );
 }
 
 /*!
@@ -486,12 +505,14 @@ valid for components created directly from QML.
 */
 QDeclarativeContext *QDeclarativeComponent::creationContext() const
 {
-   Q_D(const QDeclarativeComponent);
-   if (d->creationContext) {
-      return d->creationContext->asQDeclarativeContext();
-   }
+    Q_D( const QDeclarativeComponent );
 
-   return qmlContext(this);
+    if ( d->creationContext )
+    {
+        return d->creationContext->asQDeclarativeContext();
+    }
+
+    return qmlContext( this );
 }
 
 /*!
@@ -500,39 +521,46 @@ QDeclarativeContext *QDeclarativeComponent::creationContext() const
     Ensure that the URL provided is full and correct, in particular, use
     \l QUrl::fromLocalFile() when loading a file from the local filesystem.
 */
-void QDeclarativeComponent::loadUrl(const QUrl &url)
+void QDeclarativeComponent::loadUrl( const QUrl &url )
 {
-   Q_D(QDeclarativeComponent);
+    Q_D( QDeclarativeComponent );
 
-   d->clear();
+    d->clear();
 
-   if ((url.isRelative() && !url.isEmpty())
-         || url.scheme() == QLatin1String("file")) { // Workaround QTBUG-11929
-      d->url = d->engine->baseUrl().resolved(url);
-   } else {
-      d->url = url;
-   }
+    if ( ( url.isRelative() && !url.isEmpty() )
+            || url.scheme() == QLatin1String( "file" ) ) // Workaround QTBUG-11929
+    {
+        d->url = d->engine->baseUrl().resolved( url );
+    }
+    else
+    {
+        d->url = url;
+    }
 
-   if (url.isEmpty()) {
-      QDeclarativeError error;
-      error.setDescription(tr("Invalid empty URL"));
-      d->state.errors << error;
-      return;
-   }
+    if ( url.isEmpty() )
+    {
+        QDeclarativeError error;
+        error.setDescription( tr( "Invalid empty URL" ) );
+        d->state.errors << error;
+        return;
+    }
 
-   QDeclarativeTypeData *data = QDeclarativeEnginePrivate::get(d->engine)->typeLoader.get(d->url);
+    QDeclarativeTypeData *data = QDeclarativeEnginePrivate::get( d->engine )->typeLoader.get( d->url );
 
-   if (data->isCompleteOrError()) {
-      d->fromTypeData(data);
-      d->progress = 1.0;
-   } else {
-      d->typeData = data;
-      d->typeData->registerCallback(d);
-      d->progress = data->progress();
-   }
+    if ( data->isCompleteOrError() )
+    {
+        d->fromTypeData( data );
+        d->progress = 1.0;
+    }
+    else
+    {
+        d->typeData = data;
+        d->typeData->registerCallback( d );
+        d->progress = data->progress();
+    }
 
-   emit statusChanged(status());
-   emit progressChanged(d->progress);
+    emit statusChanged( status() );
+    emit progressChanged( d->progress );
 }
 
 /*!
@@ -541,12 +569,16 @@ void QDeclarativeComponent::loadUrl(const QUrl &url)
 */
 QList<QDeclarativeError> QDeclarativeComponent::errors() const
 {
-   Q_D(const QDeclarativeComponent);
-   if (isError()) {
-      return d->state.errors;
-   } else {
-      return QList<QDeclarativeError>();
-   }
+    Q_D( const QDeclarativeComponent );
+
+    if ( isError() )
+    {
+        return d->state.errors;
+    }
+    else
+    {
+        return QList<QDeclarativeError>();
+    }
 }
 
 /*!
@@ -566,17 +598,22 @@ QList<QDeclarativeError> QDeclarativeComponent::errors() const
 */
 QString QDeclarativeComponent::errorString() const
 {
-   Q_D(const QDeclarativeComponent);
-   QString ret;
-   if (!isError()) {
-      return ret;
-   }
-   foreach(const QDeclarativeError & e, d->state.errors) {
-      ret += e.url().toString() + QLatin1Char(':') +
-             QString::number(e.line()) + QLatin1Char(' ') +
-             e.description() + QLatin1Char('\n');
-   }
-   return ret;
+    Q_D( const QDeclarativeComponent );
+    QString ret;
+
+    if ( !isError() )
+    {
+        return ret;
+    }
+
+    foreach ( const QDeclarativeError &e, d->state.errors )
+    {
+        ret += e.url().toString() + QLatin1Char( ':' ) +
+               QString::number( e.line() ) + QLatin1Char( ' ' ) +
+               e.description() + QLatin1Char( '\n' );
+    }
+
+    return ret;
 }
 
 /*!
@@ -591,15 +628,15 @@ QString QDeclarativeComponent::errorString() const
 */
 QUrl QDeclarativeComponent::url() const
 {
-   Q_D(const QDeclarativeComponent);
-   return d->url;
+    Q_D( const QDeclarativeComponent );
+    return d->url;
 }
 
 /*!
     \internal
 */
-QDeclarativeComponent::QDeclarativeComponent(QDeclarativeComponentPrivate &dd, QObject *parent)
-   : QObject(dd, parent)
+QDeclarativeComponent::QDeclarativeComponent( QDeclarativeComponentPrivate &dd, QObject *parent )
+    : QObject( dd, parent )
 {
 }
 
@@ -650,95 +687,121 @@ QDeclarativeComponent::QDeclarativeComponent(QDeclarativeComponentPrivate &dd, Q
     Sets graphics object parent because forgetting to do this is a frequent
     and serious problem.
 */
-QScriptValue QDeclarativeComponent::createObject(QObject *parent)
+QScriptValue QDeclarativeComponent::createObject( QObject *parent )
 {
-   Q_D(QDeclarativeComponent);
-   return d->createObject(parent, QScriptValue(QScriptValue::NullValue));
+    Q_D( QDeclarativeComponent );
+    return d->createObject( parent, QScriptValue( QScriptValue::NullValue ) );
 }
 
 /*!
     \internal
     Overloadable method allows properties to be set during creation
 */
-QScriptValue QDeclarativeComponent::createObject(QObject *parent, const QScriptValue &valuemap)
+QScriptValue QDeclarativeComponent::createObject( QObject *parent, const QScriptValue &valuemap )
 {
-   Q_D(QDeclarativeComponent);
+    Q_D( QDeclarativeComponent );
 
-   if (!valuemap.isObject() || valuemap.isArray()) {
-      qmlInfo(this) << tr("createObject: value is not an object");
-      return QScriptValue(QScriptValue::NullValue);
-   }
-   return d->createObject(parent, valuemap);
+    if ( !valuemap.isObject() || valuemap.isArray() )
+    {
+        qmlInfo( this ) << tr( "createObject: value is not an object" );
+        return QScriptValue( QScriptValue::NullValue );
+    }
+
+    return d->createObject( parent, valuemap );
 }
 
-QScriptValue QDeclarativeComponentPrivate::createObject(QObject *publicParent, const QScriptValue valuemap)
+QScriptValue QDeclarativeComponentPrivate::createObject( QObject *publicParent, const QScriptValue valuemap )
 {
-   Q_Q(QDeclarativeComponent);
-   QDeclarativeContext *ctxt = q->creationContext();
-   if (!ctxt && engine) {
-      ctxt = engine->rootContext();
-   }
-   if (!ctxt) {
-      return QScriptValue(QScriptValue::NullValue);
-   }
-   QObject *ret = q->beginCreate(ctxt);
-   if (!ret) {
-      q->completeCreate();
-      return QScriptValue(QScriptValue::NullValue);
-   }
+    Q_Q( QDeclarativeComponent );
+    QDeclarativeContext *ctxt = q->creationContext();
 
-   if (publicParent) {
-      ret->setParent(publicParent);
-      QList<QDeclarativePrivate::AutoParentFunction> functions = QDeclarativeMetaType::parentFunctions();
+    if ( !ctxt && engine )
+    {
+        ctxt = engine->rootContext();
+    }
 
-      bool needParent = false;
+    if ( !ctxt )
+    {
+        return QScriptValue( QScriptValue::NullValue );
+    }
 
-      for (int ii = 0; ii < functions.count(); ++ii) {
-         QDeclarativePrivate::AutoParentResult res = functions.at(ii)(ret, publicParent);
-         if (res == QDeclarativePrivate::Parented) {
-            needParent = false;
-            break;
-         } else if (res == QDeclarativePrivate::IncompatibleParent) {
-            needParent = true;
-         }
-      }
+    QObject *ret = q->beginCreate( ctxt );
 
-      if (needParent) {
-         qWarning("QDeclarativeComponent: Created graphical object was not placed in the graphics scene.");
-      }
-   }
+    if ( !ret )
+    {
+        q->completeCreate();
+        return QScriptValue( QScriptValue::NullValue );
+    }
 
-   QDeclarativeEnginePrivate *priv = QDeclarativeEnginePrivate::get(engine);
-   QDeclarativeData::get(ret, true)->setImplicitDestructible();
-   QScriptValue newObject = priv->objectClass->newQObject(ret, QMetaType::QObjectStar);
+    if ( publicParent )
+    {
+        ret->setParent( publicParent );
+        QList<QDeclarativePrivate::AutoParentFunction> functions = QDeclarativeMetaType::parentFunctions();
 
-   if (valuemap.isObject() && !valuemap.isArray()) {
-      //Iterate through and assign properties
-      QScriptValueIterator it(valuemap);
-      while (it.hasNext()) {
-         it.next();
-         QScriptValue prop = newObject;
-         QString propName = it.name();
-         int index = propName.indexOf(QLatin1Char('.'));
-         if (index > 0) {
-            QString subProp = propName;
-            int lastIndex = 0;
-            while (index > 0) {
-               subProp = propName.mid(lastIndex, index - lastIndex);
-               prop = prop.property(subProp);
-               lastIndex = index + 1;
-               index = propName.indexOf(QLatin1Char('.'), index + 1);
+        bool needParent = false;
+
+        for ( int ii = 0; ii < functions.count(); ++ii )
+        {
+            QDeclarativePrivate::AutoParentResult res = functions.at( ii )( ret, publicParent );
+
+            if ( res == QDeclarativePrivate::Parented )
+            {
+                needParent = false;
+                break;
             }
-            prop.setProperty(propName.mid(propName.lastIndexOf(QLatin1Char('.')) + 1), it.value());
-         } else {
-            newObject.setProperty(propName, it.value());
-         }
-      }
-   }
+            else if ( res == QDeclarativePrivate::IncompatibleParent )
+            {
+                needParent = true;
+            }
+        }
 
-   q->completeCreate();
+        if ( needParent )
+        {
+            qWarning( "QDeclarativeComponent: Created graphical object was not placed in the graphics scene." );
+        }
+    }
 
-   return newObject;
+    QDeclarativeEnginePrivate *priv = QDeclarativeEnginePrivate::get( engine );
+    QDeclarativeData::get( ret, true )->setImplicitDestructible();
+    QScriptValue newObject = priv->objectClass->newQObject( ret, QMetaType::QObjectStar );
+
+    if ( valuemap.isObject() && !valuemap.isArray() )
+    {
+        //Iterate through and assign properties
+        QScriptValueIterator it( valuemap );
+
+        while ( it.hasNext() )
+        {
+            it.next();
+            QScriptValue prop = newObject;
+            QString propName = it.name();
+            int index = propName.indexOf( QLatin1Char( '.' ) );
+
+            if ( index > 0 )
+            {
+                QString subProp = propName;
+                int lastIndex = 0;
+
+                while ( index > 0 )
+                {
+                    subProp = propName.mid( lastIndex, index - lastIndex );
+                    prop = prop.property( subProp );
+                    lastIndex = index + 1;
+                    index = propName.indexOf( QLatin1Char( '.' ), index + 1 );
+                }
+
+                prop.setProperty( propName.mid( propName.lastIndexOf( QLatin1Char( '.' ) ) + 1 ), it.value() );
+            }
+            else
+            {
+                newObject.setProperty( propName, it.value() );
+            }
+        }
+    }
+
+    q->completeCreate();
+
+    return newObject;
 }
 
 /*!
@@ -749,17 +812,18 @@ QScriptValue QDeclarativeComponentPrivate::createObject(QObject *publicParent, c
     If \a context is 0 (the default), it will create the instance in the
     engine' s \l {QDeclarativeEngine::rootContext()}{root context}.
 */
-QObject *QDeclarativeComponent::create(QDeclarativeContext *context)
+QObject *QDeclarativeComponent::create( QDeclarativeContext *context )
 {
-   Q_D(QDeclarativeComponent);
+    Q_D( QDeclarativeComponent );
 
-   if (!context) {
-      context = d->engine->rootContext();
-   }
+    if ( !context )
+    {
+        context = d->engine->rootContext();
+    }
 
-   QObject *rv = beginCreate(context);
-   completeCreate();
-   return rv;
+    QObject *rv = beginCreate( context );
+    completeCreate();
+    return rv;
 }
 
 /*!
@@ -785,248 +849,292 @@ QObject *QDeclarativeComponent::create(QDeclarativeContext *context)
     communicate information to an instantiated component, as it allows their
     initial values to be configured before property bindings take effect.
 */
-QObject *QDeclarativeComponent::beginCreate(QDeclarativeContext *context)
+QObject *QDeclarativeComponent::beginCreate( QDeclarativeContext *context )
 {
-   Q_D(QDeclarativeComponent);
-   QObject *rv = d->beginCreate(context ? QDeclarativeContextData::get(context) : 0, QBitField());
-   if (rv) {
-      QDeclarativeData *ddata = QDeclarativeData::get(rv);
-      Q_ASSERT(ddata);
-      ddata->indestructible = true;
-   }
-   return rv;
+    Q_D( QDeclarativeComponent );
+    QObject *rv = d->beginCreate( context ? QDeclarativeContextData::get( context ) : 0, QBitField() );
+
+    if ( rv )
+    {
+        QDeclarativeData *ddata = QDeclarativeData::get( rv );
+        Q_ASSERT( ddata );
+        ddata->indestructible = true;
+    }
+
+    return rv;
 }
 
-QObject *
-QDeclarativeComponentPrivate::beginCreate(QDeclarativeContextData *context, const QBitField &bindings)
+QObject *QDeclarativeComponentPrivate::beginCreate( QDeclarativeContextData *context, const QBitField &bindings )
 {
-   Q_Q(QDeclarativeComponent);
-   if (!context) {
-      qWarning("QDeclarativeComponent: Cannot create a component in a null context");
-      return 0;
-   }
+    Q_Q( QDeclarativeComponent );
 
-   if (!context->isValid()) {
-      qWarning("QDeclarativeComponent: Cannot create a component in an invalid context");
-      return 0;
-   }
+    if ( !context )
+    {
+        qWarning( "QDeclarativeComponent: Cannot create a component in a null context" );
+        return 0;
+    }
 
-   if (context->engine != engine) {
-      qWarning("QDeclarativeComponent: Must create component in context from the same QDeclarativeEngine");
-      return 0;
-   }
+    if ( !context->isValid() )
+    {
+        qWarning( "QDeclarativeComponent: Cannot create a component in an invalid context" );
+        return 0;
+    }
 
-   if (state.completePending) {
-      qWarning("QDeclarativeComponent: Cannot create new component instance before completing the previous");
-      return 0;
-   }
+    if ( context->engine != engine )
+    {
+        qWarning( "QDeclarativeComponent: Must create component in context from the same QDeclarativeEngine" );
+        return 0;
+    }
 
-   if (!q->isReady()) {
-      qWarning("QDeclarativeComponent: Component is not ready");
-      return 0;
-   }
+    if ( state.completePending )
+    {
+        qWarning( "QDeclarativeComponent: Cannot create new component instance before completing the previous" );
+        return 0;
+    }
 
-   return begin(context, creationContext, cc, start, count, &state, 0, bindings);
+    if ( !q->isReady() )
+    {
+        qWarning( "QDeclarativeComponent: Component is not ready" );
+        return 0;
+    }
+
+    return begin( context, creationContext, cc, start, count, &state, 0, bindings );
 }
 
-QObject *QDeclarativeComponentPrivate::begin(QDeclarativeContextData *parentContext,
-      QDeclarativeContextData *componentCreationContext,
-      QDeclarativeCompiledData *component, int start, int count,
-      ConstructionState *state, QList<QDeclarativeError> *errors,
-      const QBitField &bindings)
+QObject *QDeclarativeComponentPrivate::begin( QDeclarativeContextData *parentContext,
+        QDeclarativeContextData *componentCreationContext,
+        QDeclarativeCompiledData *component, int start, int count,
+        ConstructionState *state, QList<QDeclarativeError> *errors,
+        const QBitField &bindings )
 {
-   QDeclarativeEnginePrivate *enginePriv = QDeclarativeEnginePrivate::get(parentContext->engine);
-   bool isRoot = !enginePriv->inBeginCreate;
+    QDeclarativeEnginePrivate *enginePriv = QDeclarativeEnginePrivate::get( parentContext->engine );
+    bool isRoot = !enginePriv->inBeginCreate;
 
-   Q_ASSERT(!isRoot || state); // Either this isn't a root component, or a state data must be provided
-   Q_ASSERT((state != 0) ^ (errors != 0)); // One of state or errors (but not both) must be provided
+    Q_ASSERT( !isRoot || state ); // Either this isn't a root component, or a state data must be provided
+    Q_ASSERT( ( state != 0 ) ^ ( errors != 0 ) ); // One of state or errors (but not both) must be provided
 
-   if (isRoot) {
-      QDeclarativeDebugTrace::startRange(QDeclarativeDebugTrace::Creating);
-      QDeclarativeDebugTrace::rangeData(QDeclarativeDebugTrace::Creating, component->url);
-   }
+    if ( isRoot )
+    {
+        QDeclarativeDebugTrace::startRange( QDeclarativeDebugTrace::Creating );
+        QDeclarativeDebugTrace::rangeData( QDeclarativeDebugTrace::Creating, component->url );
+    }
 
-   QDeclarativeContextData *ctxt = new QDeclarativeContextData;
-   ctxt->isInternal = true;
-   ctxt->url = component->url;
-   ctxt->imports = component->importCache;
+    QDeclarativeContextData *ctxt = new QDeclarativeContextData;
+    ctxt->isInternal = true;
+    ctxt->url = component->url;
+    ctxt->imports = component->importCache;
 
-   // Nested global imports
-   if (componentCreationContext && start != -1) {
-      ctxt->importedScripts = componentCreationContext->importedScripts;
-   }
+    // Nested global imports
+    if ( componentCreationContext && start != -1 )
+    {
+        ctxt->importedScripts = componentCreationContext->importedScripts;
+    }
 
-   component->importCache->addref();
-   ctxt->setParent(parentContext);
+    component->importCache->addref();
+    ctxt->setParent( parentContext );
 
-   enginePriv->inBeginCreate = true;
+    enginePriv->inBeginCreate = true;
 
-   QDeclarativeVME vme;
-   QObject *rv = vme.run(ctxt, component, start, count, bindings);
+    QDeclarativeVME vme;
+    QObject *rv = vme.run( ctxt, component, start, count, bindings );
 
-   if (vme.isError()) {
-      if (errors) {
-         *errors = vme.errors();
-      } else {
-         state->errors = vme.errors();
-      }
-   }
+    if ( vme.isError() )
+    {
+        if ( errors )
+        {
+            *errors = vme.errors();
+        }
+        else
+        {
+            state->errors = vme.errors();
+        }
+    }
 
-   if (isRoot) {
-      enginePriv->inBeginCreate = false;
+    if ( isRoot )
+    {
+        enginePriv->inBeginCreate = false;
 
-      state->bindValues = enginePriv->bindValues;
-      state->parserStatus = enginePriv->parserStatus;
-      state->finalizedParserStatus = enginePriv->finalizedParserStatus;
-      state->componentAttached = enginePriv->componentAttached;
-      if (state->componentAttached) {
-         state->componentAttached->prev = &state->componentAttached;
-      }
+        state->bindValues = enginePriv->bindValues;
+        state->parserStatus = enginePriv->parserStatus;
+        state->finalizedParserStatus = enginePriv->finalizedParserStatus;
+        state->componentAttached = enginePriv->componentAttached;
 
-      enginePriv->componentAttached = 0;
-      enginePriv->bindValues.clear();
-      enginePriv->parserStatus.clear();
-      enginePriv->finalizedParserStatus.clear();
-      state->completePending = true;
-      enginePriv->inProgressCreations++;
-   }
+        if ( state->componentAttached )
+        {
+            state->componentAttached->prev = &state->componentAttached;
+        }
 
-   if (enginePriv->isDebugging && rv) {
-      if  (!parentContext->isInternal) {
-         parentContext->asQDeclarativeContextPrivate()->instances.append(rv);
-      }
-      QDeclarativeEngineDebugService::instance()->objectCreated(parentContext->engine, rv);
-   }
+        enginePriv->componentAttached = 0;
+        enginePriv->bindValues.clear();
+        enginePriv->parserStatus.clear();
+        enginePriv->finalizedParserStatus.clear();
+        state->completePending = true;
+        enginePriv->inProgressCreations++;
+    }
 
-   return rv;
+    if ( enginePriv->isDebugging && rv )
+    {
+        if  ( !parentContext->isInternal )
+        {
+            parentContext->asQDeclarativeContextPrivate()->instances.append( rv );
+        }
+
+        QDeclarativeEngineDebugService::instance()->objectCreated( parentContext->engine, rv );
+    }
+
+    return rv;
 }
 
-void QDeclarativeComponentPrivate::beginDeferred(QDeclarativeEnginePrivate *enginePriv,
-      QObject *object, ConstructionState *state)
+void QDeclarativeComponentPrivate::beginDeferred( QDeclarativeEnginePrivate *enginePriv,
+        QObject *object, ConstructionState *state )
 {
-   bool isRoot = !enginePriv->inBeginCreate;
-   enginePriv->inBeginCreate = true;
+    bool isRoot = !enginePriv->inBeginCreate;
+    enginePriv->inBeginCreate = true;
 
-   QDeclarativeVME vme;
-   vme.runDeferred(object);
+    QDeclarativeVME vme;
+    vme.runDeferred( object );
 
-   if (vme.isError()) {
-      state->errors = vme.errors();
-   }
+    if ( vme.isError() )
+    {
+        state->errors = vme.errors();
+    }
 
-   if (isRoot) {
-      enginePriv->inBeginCreate = false;
+    if ( isRoot )
+    {
+        enginePriv->inBeginCreate = false;
 
-      state->bindValues = enginePriv->bindValues;
-      state->parserStatus = enginePriv->parserStatus;
-      state->finalizedParserStatus = enginePriv->finalizedParserStatus;
-      state->componentAttached = enginePriv->componentAttached;
-      if (state->componentAttached) {
-         state->componentAttached->prev = &state->componentAttached;
-      }
+        state->bindValues = enginePriv->bindValues;
+        state->parserStatus = enginePriv->parserStatus;
+        state->finalizedParserStatus = enginePriv->finalizedParserStatus;
+        state->componentAttached = enginePriv->componentAttached;
 
-      enginePriv->componentAttached = 0;
-      enginePriv->bindValues.clear();
-      enginePriv->parserStatus.clear();
-      enginePriv->finalizedParserStatus.clear();
-      state->completePending = true;
-      enginePriv->inProgressCreations++;
-   }
+        if ( state->componentAttached )
+        {
+            state->componentAttached->prev = &state->componentAttached;
+        }
+
+        enginePriv->componentAttached = 0;
+        enginePriv->bindValues.clear();
+        enginePriv->parserStatus.clear();
+        enginePriv->finalizedParserStatus.clear();
+        state->completePending = true;
+        enginePriv->inProgressCreations++;
+    }
 }
 
-void QDeclarativeComponentPrivate::complete(QDeclarativeEnginePrivate *enginePriv, ConstructionState *state)
+void QDeclarativeComponentPrivate::complete( QDeclarativeEnginePrivate *enginePriv, ConstructionState *state )
 {
-   if (state->completePending) {
-      QT_TRY {
-         for (int ii = 0; ii < state->bindValues.count(); ++ii)
-         {
-            QDeclarativeEnginePrivate::SimpleList<QDeclarativeAbstractBinding> bv =
-            state->bindValues.at(ii);
-            for (int jj = 0; jj < bv.count; ++jj) {
-               if (bv.at(jj)) {
-                  // XXX akennedy
-                  bv.at(jj)->m_mePtr = 0;
-                  bv.at(jj)->setEnabled(true, QDeclarativePropertyPrivate::BypassInterceptor |
-                  QDeclarativePropertyPrivate::DontRemoveBinding);
-               }
+    if ( state->completePending )
+    {
+        QT_TRY
+        {
+            for ( int ii = 0; ii < state->bindValues.count(); ++ii )
+            {
+                QDeclarativeEnginePrivate::SimpleList<QDeclarativeAbstractBinding> bv =
+                state->bindValues.at( ii );
+
+                for ( int jj = 0; jj < bv.count; ++jj )
+                {
+                    if ( bv.at( jj ) )
+                    {
+                        // XXX akennedy
+                        bv.at( jj )->m_mePtr = 0;
+                        bv.at( jj )->setEnabled( true, QDeclarativePropertyPrivate::BypassInterceptor |
+                                                 QDeclarativePropertyPrivate::DontRemoveBinding );
+                    }
+                }
+
+                QDeclarativeEnginePrivate::clear( bv );
             }
-            QDeclarativeEnginePrivate::clear(bv);
-         }
 
-         for (int ii = 0; ii < state->parserStatus.count(); ++ii)
-         {
-            QDeclarativeEnginePrivate::SimpleList<QDeclarativeParserStatus> ps =
-               state->parserStatus.at(ii);
+            for ( int ii = 0; ii < state->parserStatus.count(); ++ii )
+            {
+                QDeclarativeEnginePrivate::SimpleList<QDeclarativeParserStatus> ps =
+                    state->parserStatus.at( ii );
 
-            for (int jj = ps.count - 1; jj >= 0; --jj) {
-               QDeclarativeParserStatus *status = ps.at(jj);
-               if (status && status->d) {
-                  status->d = 0;
-                  status->componentComplete();
-               }
+                for ( int jj = ps.count - 1; jj >= 0; --jj )
+                {
+                    QDeclarativeParserStatus *status = ps.at( jj );
+
+                    if ( status && status->d )
+                    {
+                        status->d = 0;
+                        status->componentComplete();
+                    }
+                }
+
+                QDeclarativeEnginePrivate::clear( ps );
             }
-            QDeclarativeEnginePrivate::clear(ps);
-         }
 
-         for (int ii = 0; ii < state->finalizedParserStatus.count(); ++ii)
-         {
-            QPair<QDeclarativeGuard<QObject>, int> status = state->finalizedParserStatus.at(ii);
-            QObject *obj = status.first;
-            if (obj) {
-               void *args[] = { 0 };
-               QMetaObject::metacall(obj, QMetaObject::InvokeMetaMethod,
-                                     status.second, args);
+            for ( int ii = 0; ii < state->finalizedParserStatus.count(); ++ii )
+            {
+                QPair<QDeclarativeGuard<QObject>, int> status = state->finalizedParserStatus.at( ii );
+                QObject *obj = status.first;
+
+                if ( obj )
+                {
+                    void *args[] = { 0 };
+                    QMetaObject::metacall( obj, QMetaObject::InvokeMetaMethod,
+                                           status.second, args );
+                }
             }
-         }
 
-         //componentComplete() can register additional finalization objects
-         //that are then never handled. Handle them manually here.
-         if (1 == enginePriv->inProgressCreations)
-         {
-            for (int ii = 0; ii < enginePriv->finalizedParserStatus.count(); ++ii) {
-               QPair<QDeclarativeGuard<QObject>, int> status = enginePriv->finalizedParserStatus.at(ii);
-               QObject *obj = status.first;
-               if (obj) {
-                  void *args[] = { 0 };
-                  QMetaObject::metacall(obj, QMetaObject::InvokeMetaMethod,
-                                        status.second, args);
-               }
+            //componentComplete() can register additional finalization objects
+            //that are then never handled. Handle them manually here.
+            if ( 1 == enginePriv->inProgressCreations )
+            {
+                for ( int ii = 0; ii < enginePriv->finalizedParserStatus.count(); ++ii )
+                {
+                    QPair<QDeclarativeGuard<QObject>, int> status = enginePriv->finalizedParserStatus.at( ii );
+                    QObject *obj = status.first;
+
+                    if ( obj )
+                    {
+                        void *args[] = { 0 };
+                        QMetaObject::metacall( obj, QMetaObject::InvokeMetaMethod,
+                                               status.second, args );
+                    }
+                }
+
+                enginePriv->finalizedParserStatus.clear();
             }
-            enginePriv->finalizedParserStatus.clear();
-         }
 
-         while (state->componentAttached)
-         {
-            QDeclarativeComponentAttached *a = state->componentAttached;
-            a->rem();
-            QDeclarativeData *d = QDeclarativeData::get(a->parent());
-            Q_ASSERT(d);
-            Q_ASSERT(d->context);
-            a->add(&d->context->componentAttached);
-            emit a->completed();
-         }
-      } QT_CATCH(const std::exception &) {
-         state->bindValues.clear();
-         state->parserStatus.clear();
-         state->finalizedParserStatus.clear();
-         state->completePending = false;
-         enginePriv->inProgressCreations--;
-         QT_RETHROW;
-      }
+            while ( state->componentAttached )
+            {
+                QDeclarativeComponentAttached *a = state->componentAttached;
+                a->rem();
+                QDeclarativeData *d = QDeclarativeData::get( a->parent() );
+                Q_ASSERT( d );
+                Q_ASSERT( d->context );
+                a->add( &d->context->componentAttached );
+                emit a->completed();
+            }
+        } QT_CATCH( const std::exception & )
+        {
+            state->bindValues.clear();
+            state->parserStatus.clear();
+            state->finalizedParserStatus.clear();
+            state->completePending = false;
+            enginePriv->inProgressCreations--;
+            QT_RETHROW;
+        }
 
-      state->bindValues.clear();
-      state->parserStatus.clear();
-      state->finalizedParserStatus.clear();
-      state->completePending = false;
+        state->bindValues.clear();
+        state->parserStatus.clear();
+        state->finalizedParserStatus.clear();
+        state->completePending = false;
 
-      enginePriv->inProgressCreations--;
-      if (0 == enginePriv->inProgressCreations) {
-         while (enginePriv->erroredBindings) {
-            enginePriv->warning(enginePriv->erroredBindings->error);
-            enginePriv->erroredBindings->removeError();
-         }
-      }
-   }
+        enginePriv->inProgressCreations--;
+
+        if ( 0 == enginePriv->inProgressCreations )
+        {
+            while ( enginePriv->erroredBindings )
+            {
+                enginePriv->warning( enginePriv->erroredBindings->error );
+                enginePriv->erroredBindings->removeError();
+            }
+        }
+    }
 }
 
 /*!
@@ -1038,60 +1146,70 @@ void QDeclarativeComponentPrivate::complete(QDeclarativeEnginePrivate *enginePri
 */
 void QDeclarativeComponent::completeCreate()
 {
-   Q_D(QDeclarativeComponent);
-   d->completeCreate();
+    Q_D( QDeclarativeComponent );
+    d->completeCreate();
 }
 
 void QDeclarativeComponentPrivate::completeCreate()
 {
-   if (state.completePending) {
-      QDeclarativeEnginePrivate *ep = QDeclarativeEnginePrivate::get(engine);
-      complete(ep, &state);
+    if ( state.completePending )
+    {
+        QDeclarativeEnginePrivate *ep = QDeclarativeEnginePrivate::get( engine );
+        complete( ep, &state );
 
-      QDeclarativeDebugTrace::endRange(QDeclarativeDebugTrace::Creating);
-   }
+        QDeclarativeDebugTrace::endRange( QDeclarativeDebugTrace::Creating );
+    }
 }
 
-QDeclarativeComponentAttached::QDeclarativeComponentAttached(QObject *parent)
-   : QObject(parent), prev(0), next(0)
+QDeclarativeComponentAttached::QDeclarativeComponentAttached( QObject *parent )
+    : QObject( parent ), prev( 0 ), next( 0 )
 {
 }
 
 QDeclarativeComponentAttached::~QDeclarativeComponentAttached()
 {
-   if (prev) {
-      *prev = next;
-   }
-   if (next) {
-      next->prev = prev;
-   }
-   prev = 0;
-   next = 0;
+    if ( prev )
+    {
+        *prev = next;
+    }
+
+    if ( next )
+    {
+        next->prev = prev;
+    }
+
+    prev = 0;
+    next = 0;
 }
 
 /*!
     \internal
 */
-QDeclarativeComponentAttached *QDeclarativeComponent::qmlAttachedProperties(QObject *obj)
+QDeclarativeComponentAttached *QDeclarativeComponent::qmlAttachedProperties( QObject *obj )
 {
-   QDeclarativeComponentAttached *a = new QDeclarativeComponentAttached(obj);
+    QDeclarativeComponentAttached *a = new QDeclarativeComponentAttached( obj );
 
-   QDeclarativeEngine *engine = qmlEngine(obj);
-   if (!engine) {
-      return a;
-   }
+    QDeclarativeEngine *engine = qmlEngine( obj );
 
-   if (QDeclarativeEnginePrivate::get(engine)->inBeginCreate) {
-      QDeclarativeEnginePrivate *p = QDeclarativeEnginePrivate::get(engine);
-      a->add(&p->componentAttached);
-   } else {
-      QDeclarativeData *d = QDeclarativeData::get(obj);
-      Q_ASSERT(d);
-      Q_ASSERT(d->context);
-      a->add(&d->context->componentAttached);
-   }
+    if ( !engine )
+    {
+        return a;
+    }
 
-   return a;
+    if ( QDeclarativeEnginePrivate::get( engine )->inBeginCreate )
+    {
+        QDeclarativeEnginePrivate *p = QDeclarativeEnginePrivate::get( engine );
+        a->add( &p->componentAttached );
+    }
+    else
+    {
+        QDeclarativeData *d = QDeclarativeData::get( obj );
+        Q_ASSERT( d );
+        Q_ASSERT( d->context );
+        a->add( &d->context->componentAttached );
+    }
+
+    return a;
 }
 
 QT_END_NAMESPACE

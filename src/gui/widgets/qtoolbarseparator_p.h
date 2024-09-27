@@ -33,21 +33,21 @@ class QToolBar;
 
 class QToolBarSeparator : public QWidget
 {
-   GUI_CS_OBJECT(QToolBarSeparator)
-   Qt::Orientation orient;
+    GUI_CS_OBJECT( QToolBarSeparator )
+    Qt::Orientation orient;
 
- public:
-   explicit QToolBarSeparator(QToolBar *parent);
+public:
+    explicit QToolBarSeparator( QToolBar *parent );
 
-   Qt::Orientation orientation() const;
+    Qt::Orientation orientation() const;
 
-   QSize sizeHint() const override;
+    QSize sizeHint() const override;
 
-   void paintEvent(QPaintEvent *) override;
-   void initStyleOption(QStyleOption *option) const;
+    void paintEvent( QPaintEvent * ) override;
+    void initStyleOption( QStyleOption *option ) const;
 
-   GUI_CS_SLOT_1(Public, void setOrientation(Qt::Orientation orientation))
-   GUI_CS_SLOT_2(setOrientation)
+    GUI_CS_SLOT_1( Public, void setOrientation( Qt::Orientation orientation ) )
+    GUI_CS_SLOT_2( setOrientation )
 };
 
 #endif // QT_NO_TOOLBAR

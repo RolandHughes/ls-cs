@@ -39,7 +39,8 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class AsyncFileStream;
 class BlobStorageData;
@@ -48,50 +49,53 @@ class ResourceHandleClient;
 class ResourceRequest;
 struct BlobDataItem;
 
-class BlobResourceHandle : public FileStreamClient, public ResourceHandle  {
+class BlobResourceHandle : public FileStreamClient, public ResourceHandle
+{
 public:
-    static PassRefPtr<BlobResourceHandle> create(PassRefPtr<BlobStorageData> blobData, const ResourceRequest& request, ResourceHandleClient* client, bool async = true)
+    static PassRefPtr<BlobResourceHandle> create( PassRefPtr<BlobStorageData> blobData, const ResourceRequest &request,
+            ResourceHandleClient *client, bool async = true )
     {
-        return adoptRef(new BlobResourceHandle(blobData, request, client, async));
+        return adoptRef( new BlobResourceHandle( blobData, request, client, async ) );
     }
 
-    static void loadResourceSynchronously(PassRefPtr<BlobStorageData> blobData, const ResourceRequest& request, ResourceError& error, ResourceResponse& response, Vector<char>& data);
+    static void loadResourceSynchronously( PassRefPtr<BlobStorageData> blobData, const ResourceRequest &request, ResourceError &error,
+                                           ResourceResponse &response, Vector<char> &data );
 
     // FileStreamClient methods.
-    virtual void didGetSize(long long);
-    virtual void didOpen(bool);
-    virtual void didRead(int);
+    virtual void didGetSize( long long );
+    virtual void didOpen( bool );
+    virtual void didRead( int );
 
     // ResourceHandle methods.
     virtual void cancel();
 
     void start();
-    int readSync(char*, int);
+    int readSync( char *, int );
 
 private:
-    friend void delayedStartBlobResourceHandle(void*);
+    friend void delayedStartBlobResourceHandle( void * );
 
-    BlobResourceHandle(PassRefPtr<BlobStorageData>, const ResourceRequest&, ResourceHandleClient*, bool async);
+    BlobResourceHandle( PassRefPtr<BlobStorageData>, const ResourceRequest &, ResourceHandleClient *, bool async );
     virtual ~BlobResourceHandle();
 
     void doStart();
     void getSizeForNext();
     void seek();
-    void consumeData(const char* data, int bytesRead);
-    void failed(int errorCode);
+    void consumeData( const char *data, int bytesRead );
+    void failed( int errorCode );
 
     void readAsync();
-    void readDataAsync(const BlobDataItem&);
-    void readFileAsync(const BlobDataItem&);
+    void readDataAsync( const BlobDataItem & );
+    void readFileAsync( const BlobDataItem & );
 
-    int readDataSync(const BlobDataItem&, char*, int);
-    int readFileSync(const BlobDataItem&, char*, int);
+    int readDataSync( const BlobDataItem &, char *, int );
+    int readFileSync( const BlobDataItem &, char *, int );
 
     void notifyResponse();
     void notifyResponseOnSuccess();
     void notifyResponseOnError();
-    void notifyReceiveData(const char*, int);
-    void notifyFail(int errorCode);
+    void notifyReceiveData( const char *, int );
+    void notifyFail( int errorCode );
     void notifyFinish();
 
     RefPtr<BlobStorageData> m_blobData;

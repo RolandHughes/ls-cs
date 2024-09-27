@@ -29,19 +29,25 @@
 
 #if ENABLE(MEDIA_STREAM)
 
-namespace WebCore {
+namespace WebCore
+{
 
-class NavigatorUserMediaError : public RefCounted<NavigatorUserMediaError> {
+class NavigatorUserMediaError : public RefCounted<NavigatorUserMediaError>
+{
 public:
     // Should be kept in sync with the values in the idl file.
-    enum ErrorCode {
+    enum ErrorCode
+    {
         PERMISSION_DENIED = 1
     };
 
-    NavigatorUserMediaError(ErrorCode code) : m_code(code) { }
+    NavigatorUserMediaError( ErrorCode code ) : m_code( code ) { }
     virtual ~NavigatorUserMediaError() { }
 
-    ErrorCode code() const { return m_code; }
+    ErrorCode code() const
+    {
+        return m_code;
+    }
 
 private:
     ErrorCode m_code;

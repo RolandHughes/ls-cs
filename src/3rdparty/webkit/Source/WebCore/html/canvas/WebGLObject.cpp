@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -31,37 +31,45 @@
 
 #include "WebGLRenderingContext.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-WebGLObject::WebGLObject(WebGLRenderingContext* context)
-    : m_object(0)
-    , m_context(context)
-    , m_attachmentCount(0)
-    , m_deleted(false)
+WebGLObject::WebGLObject( WebGLRenderingContext *context )
+    : m_object( 0 )
+    , m_context( context )
+    , m_attachmentCount( 0 )
+    , m_deleted( false )
 {
 }
 
 WebGLObject::~WebGLObject()
 {
-    if (m_context)
-        m_context->removeObject(this);
+    if ( m_context )
+    {
+        m_context->removeObject( this );
+    }
 }
 
-void WebGLObject::setObject(Platform3DObject object)
+void WebGLObject::setObject( Platform3DObject object )
 {
     // object==0 && m_deleted==false indicating an uninitialized state;
-    ASSERT(!m_object && !m_deleted);
+    ASSERT( !m_object && !m_deleted );
     m_object = object;
 }
 
 void WebGLObject::deleteObject()
 {
     m_deleted = true;
-    if (!m_context || !m_object)
+
+    if ( !m_context || !m_object )
+    {
         return;
-    if (!m_attachmentCount) {
+    }
+
+    if ( !m_attachmentCount )
+    {
         m_context->graphicsContext3D()->makeContextCurrent();
-        deleteObjectImpl(m_object);
+        deleteObjectImpl( m_object );
         m_object = 0;
     }
 }

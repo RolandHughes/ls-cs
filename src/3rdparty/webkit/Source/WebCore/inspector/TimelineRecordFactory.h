@@ -27,60 +27,62 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 #ifndef TimelineRecordFactory_h
 #define TimelineRecordFactory_h
 
 #include "PlatformString.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class Event;
-    class InspectorFrontend;
-    class InspectorObject;
-    class IntRect;
-    class ResourceRequest;
-    class ResourceResponse;
+class Event;
+class InspectorFrontend;
+class InspectorObject;
+class IntRect;
+class ResourceRequest;
+class ResourceResponse;
 
-    class TimelineRecordFactory {
-    public:
-        static PassRefPtr<InspectorObject> createGenericRecord(double startTime);
+class TimelineRecordFactory
+{
+public:
+    static PassRefPtr<InspectorObject> createGenericRecord( double startTime );
 
-        static PassRefPtr<InspectorObject> createGCEventData(const size_t usedHeapSizeDelta);
+    static PassRefPtr<InspectorObject> createGCEventData( const size_t usedHeapSizeDelta );
 
-        static PassRefPtr<InspectorObject> createFunctionCallData(const String& scriptName, int scriptLine);
+    static PassRefPtr<InspectorObject> createFunctionCallData( const String &scriptName, int scriptLine );
 
-        static PassRefPtr<InspectorObject> createEventDispatchData(const Event&);
+    static PassRefPtr<InspectorObject> createEventDispatchData( const Event & );
 
-        static PassRefPtr<InspectorObject> createGenericTimerData(int timerId);
+    static PassRefPtr<InspectorObject> createGenericTimerData( int timerId );
 
-        static PassRefPtr<InspectorObject> createTimerInstallData(int timerId, int timeout, bool singleShot);
+    static PassRefPtr<InspectorObject> createTimerInstallData( int timerId, int timeout, bool singleShot );
 
-        static PassRefPtr<InspectorObject> createXHRReadyStateChangeData(const String& url, int readyState);
+    static PassRefPtr<InspectorObject> createXHRReadyStateChangeData( const String &url, int readyState );
 
-        static PassRefPtr<InspectorObject> createXHRLoadData(const String& url);
+    static PassRefPtr<InspectorObject> createXHRLoadData( const String &url );
 
-        static PassRefPtr<InspectorObject> createEvaluateScriptData(const String&, double lineNumber);
+    static PassRefPtr<InspectorObject> createEvaluateScriptData( const String &, double lineNumber );
 
-        static PassRefPtr<InspectorObject> createMarkTimelineData(const String&);
+    static PassRefPtr<InspectorObject> createMarkTimelineData( const String & );
 
-        static PassRefPtr<InspectorObject> createResourceSendRequestData(unsigned long identifier, const ResourceRequest&);
+    static PassRefPtr<InspectorObject> createResourceSendRequestData( unsigned long identifier, const ResourceRequest & );
 
-        static PassRefPtr<InspectorObject> createScheduleResourceRequestData(const String&);
+    static PassRefPtr<InspectorObject> createScheduleResourceRequestData( const String & );
 
-        static PassRefPtr<InspectorObject> createResourceReceiveResponseData(unsigned long identifier, const ResourceResponse&);
+    static PassRefPtr<InspectorObject> createResourceReceiveResponseData( unsigned long identifier, const ResourceResponse & );
 
-        static PassRefPtr<InspectorObject> createReceiveResourceData(unsigned long identifier);
+    static PassRefPtr<InspectorObject> createReceiveResourceData( unsigned long identifier );
 
-        static PassRefPtr<InspectorObject> createResourceFinishData(unsigned long identifier, bool didFail, double finishTime);
+    static PassRefPtr<InspectorObject> createResourceFinishData( unsigned long identifier, bool didFail, double finishTime );
 
-        static PassRefPtr<InspectorObject> createPaintData(const IntRect&);
+    static PassRefPtr<InspectorObject> createPaintData( const IntRect & );
 
-        static PassRefPtr<InspectorObject> createParseHTMLData(unsigned int length, unsigned int startLine);
+    static PassRefPtr<InspectorObject> createParseHTMLData( unsigned int length, unsigned int startLine );
 
-    private:
-        TimelineRecordFactory() { }
-    };
+private:
+    TimelineRecordFactory() { }
+};
 
 } // namespace WebCore
 

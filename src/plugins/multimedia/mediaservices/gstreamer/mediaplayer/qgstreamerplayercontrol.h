@@ -42,93 +42,93 @@ class QGstreamerPlayerService;
 
 class QGstreamerPlayerControl : public QMediaPlayerControl
 {
-   CS_OBJECT(QGstreamerPlayerControl)
+    CS_OBJECT( QGstreamerPlayerControl )
 
- public:
-   QGstreamerPlayerControl(QGstreamerPlayerSession *session, QObject *parent = nullptr);
-   ~QGstreamerPlayerControl();
+public:
+    QGstreamerPlayerControl( QGstreamerPlayerSession *session, QObject *parent = nullptr );
+    ~QGstreamerPlayerControl();
 
-   QMediaPlayer::State state() const override;
-   QMediaPlayer::MediaStatus mediaStatus() const override;
+    QMediaPlayer::State state() const override;
+    QMediaPlayer::MediaStatus mediaStatus() const override;
 
-   qint64 position() const override;
-   qint64 duration() const override;
+    qint64 position() const override;
+    qint64 duration() const override;
 
-   int bufferStatus() const override;
+    int bufferStatus() const override;
 
-   int volume() const override;
-   bool isMuted() const override;
+    int volume() const override;
+    bool isMuted() const override;
 
-   bool isAudioAvailable() const override;
-   bool isVideoAvailable() const override;
-   void setVideoOutput(QObject *output);
+    bool isAudioAvailable() const override;
+    bool isVideoAvailable() const override;
+    void setVideoOutput( QObject *output );
 
-   bool isSeekable() const override;
-   QMediaTimeRange availablePlaybackRanges() const override;
+    bool isSeekable() const override;
+    QMediaTimeRange availablePlaybackRanges() const override;
 
-   qreal playbackRate() const override;
-   void setPlaybackRate(qreal rate) override;
+    qreal playbackRate() const override;
+    void setPlaybackRate( qreal rate ) override;
 
-   QMediaContent media() const override;
-   const QIODevice *mediaStream() const override;
-   void setMedia(const QMediaContent &, QIODevice *) override;
+    QMediaContent media() const override;
+    const QIODevice *mediaStream() const override;
+    void setMedia( const QMediaContent &, QIODevice * ) override;
 
-   QMediaPlayerResourceSetInterface *resources() const;
+    QMediaPlayerResourceSetInterface *resources() const;
 
-   CS_SLOT_1(Public, void setPosition(qint64 pos) override)
-   CS_SLOT_2(setPosition)
+    CS_SLOT_1( Public, void setPosition( qint64 pos ) override )
+    CS_SLOT_2( setPosition )
 
-   CS_SLOT_1(Public, void play() override)
-   CS_SLOT_2(play)
-   CS_SLOT_1(Public, void pause() override)
-   CS_SLOT_2(pause)
-   CS_SLOT_1(Public, void stop() override)
-   CS_SLOT_2(stop)
+    CS_SLOT_1( Public, void play() override )
+    CS_SLOT_2( play )
+    CS_SLOT_1( Public, void pause() override )
+    CS_SLOT_2( pause )
+    CS_SLOT_1( Public, void stop() override )
+    CS_SLOT_2( stop )
 
-   CS_SLOT_1(Public, void setVolume(int volume) override)
-   CS_SLOT_2(setVolume)
-   CS_SLOT_1(Public, void setMuted(bool muted) override)
-   CS_SLOT_2(setMuted)
+    CS_SLOT_1( Public, void setVolume( int volume ) override )
+    CS_SLOT_2( setVolume )
+    CS_SLOT_1( Public, void setMuted( bool muted ) override )
+    CS_SLOT_2( setMuted )
 
- private:
-   void playOrPause(QMediaPlayer::State state);
+private:
+    void playOrPause( QMediaPlayer::State state );
 
-   void pushState();
-   void popAndNotifyState();
+    void pushState();
+    void popAndNotifyState();
 
-   QGstreamerPlayerSession *m_session;
-   QMediaPlayer::State m_userRequestedState;
-   QMediaPlayer::State m_currentState;
-   QMediaPlayer::MediaStatus m_mediaStatus;
-   QStack<QMediaPlayer::State> m_stateStack;
-   QStack<QMediaPlayer::MediaStatus> m_mediaStatusStack;
+    QGstreamerPlayerSession *m_session;
+    QMediaPlayer::State m_userRequestedState;
+    QMediaPlayer::State m_currentState;
+    QMediaPlayer::MediaStatus m_mediaStatus;
+    QStack<QMediaPlayer::State> m_stateStack;
+    QStack<QMediaPlayer::MediaStatus> m_mediaStatusStack;
 
-   int m_bufferProgress;
-   qint64 m_pendingSeekPosition;
-   bool m_setMediaPending;
-   QMediaContent m_currentResource;
-   QIODevice *m_stream;
+    int m_bufferProgress;
+    qint64 m_pendingSeekPosition;
+    bool m_setMediaPending;
+    QMediaContent m_currentResource;
+    QIODevice *m_stream;
 
-   QMediaPlayerResourceSetInterface *m_resources;
+    QMediaPlayerResourceSetInterface *m_resources;
 
-   CS_SLOT_1(Private, void updateSessionState(QMediaPlayer::State state))
-   CS_SLOT_2(updateSessionState)
-   CS_SLOT_1(Private, void updateMediaStatus())
-   CS_SLOT_2(updateMediaStatus)
-   CS_SLOT_1(Private, void processEOS())
-   CS_SLOT_2(processEOS)
-   CS_SLOT_1(Private, void setBufferProgress(int progress))
-   CS_SLOT_2(setBufferProgress)
+    CS_SLOT_1( Private, void updateSessionState( QMediaPlayer::State state ) )
+    CS_SLOT_2( updateSessionState )
+    CS_SLOT_1( Private, void updateMediaStatus() )
+    CS_SLOT_2( updateMediaStatus )
+    CS_SLOT_1( Private, void processEOS() )
+    CS_SLOT_2( processEOS )
+    CS_SLOT_1( Private, void setBufferProgress( int progress ) )
+    CS_SLOT_2( setBufferProgress )
 
-   CS_SLOT_1(Private, void handleInvalidMedia())
-   CS_SLOT_2(handleInvalidMedia)
+    CS_SLOT_1( Private, void handleInvalidMedia() )
+    CS_SLOT_2( handleInvalidMedia )
 
-   CS_SLOT_1(Private, void handleResourcesGranted())
-   CS_SLOT_2(handleResourcesGranted)
-   CS_SLOT_1(Private, void handleResourcesLost())
-   CS_SLOT_2(handleResourcesLost)
-   CS_SLOT_1(Private, void handleResourcesDenied())
-   CS_SLOT_2(handleResourcesDenied)
+    CS_SLOT_1( Private, void handleResourcesGranted() )
+    CS_SLOT_2( handleResourcesGranted )
+    CS_SLOT_1( Private, void handleResourcesLost() )
+    CS_SLOT_2( handleResourcesLost )
+    CS_SLOT_1( Private, void handleResourcesDenied() )
+    CS_SLOT_2( handleResourcesDenied )
 };
 
 #endif

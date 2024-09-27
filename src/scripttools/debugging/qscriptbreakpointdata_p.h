@@ -36,64 +36,64 @@ class QVariant;
 class QScriptBreakpointDataPrivate;
 class QScriptBreakpointData
 {
- public:
-   friend QDataStream &operator<<(QDataStream &, const QScriptBreakpointData &);
-   friend QDataStream &operator>>(QDataStream &, QScriptBreakpointData &);
+public:
+    friend QDataStream &operator<<( QDataStream &, const QScriptBreakpointData & );
+    friend QDataStream &operator>>( QDataStream &, QScriptBreakpointData & );
 
-   QScriptBreakpointData();
-   QScriptBreakpointData(qint64 scriptId, int lineNumber);
-   QScriptBreakpointData(const QString &fileName, int lineNumber);
-   QScriptBreakpointData(const QScriptBreakpointData &other);
-   ~QScriptBreakpointData();
-   QScriptBreakpointData &operator=(const QScriptBreakpointData &other);
+    QScriptBreakpointData();
+    QScriptBreakpointData( qint64 scriptId, int lineNumber );
+    QScriptBreakpointData( const QString &fileName, int lineNumber );
+    QScriptBreakpointData( const QScriptBreakpointData &other );
+    ~QScriptBreakpointData();
+    QScriptBreakpointData &operator=( const QScriptBreakpointData &other );
 
-   bool isValid() const;
+    bool isValid() const;
 
-   // location
-   qint64 scriptId() const;
-   void setScriptId(qint64 id);
+    // location
+    qint64 scriptId() const;
+    void setScriptId( qint64 id );
 
-   QString fileName() const;
-   void setFileName(const QString &fileName);
+    QString fileName() const;
+    void setFileName( const QString &fileName );
 
-   int lineNumber() const;
-   void setLineNumber(int lineNumber);
+    int lineNumber() const;
+    void setLineNumber( int lineNumber );
 
-   // data
-   bool isEnabled() const;
-   void setEnabled(bool enabled);
+    // data
+    bool isEnabled() const;
+    void setEnabled( bool enabled );
 
-   bool isSingleShot() const;
-   void setSingleShot(bool singleShot);
+    bool isSingleShot() const;
+    void setSingleShot( bool singleShot );
 
-   int ignoreCount() const;
-   void setIgnoreCount(int count);
+    int ignoreCount() const;
+    void setIgnoreCount( int count );
 
-   QString condition() const;
-   void setCondition(const QString &condition);
+    QString condition() const;
+    void setCondition( const QString &condition );
 
-   QVariant data() const;
-   void setData(const QVariant &data);
+    QVariant data() const;
+    void setData( const QVariant &data );
 
-   bool hit();
+    bool hit();
 
-   // statistics
-   int hitCount() const;
+    // statistics
+    int hitCount() const;
 
 
-   bool operator==(const QScriptBreakpointData &other) const;
-   bool operator!=(const QScriptBreakpointData &other) const;
+    bool operator==( const QScriptBreakpointData &other ) const;
+    bool operator!=( const QScriptBreakpointData &other ) const;
 
- private:
-   QScopedPointer<QScriptBreakpointDataPrivate> d_ptr;
+private:
+    QScopedPointer<QScriptBreakpointDataPrivate> d_ptr;
 
-   Q_DECLARE_PRIVATE(QScriptBreakpointData)
+    Q_DECLARE_PRIVATE( QScriptBreakpointData )
 };
 
 typedef QMap<int, QScriptBreakpointData> QScriptBreakpointMap;
 
-QDataStream &operator<<(QDataStream &, const QScriptBreakpointData &);
-QDataStream &operator>>(QDataStream &, QScriptBreakpointData &);
+QDataStream &operator<<( QDataStream &, const QScriptBreakpointData & );
+QDataStream &operator>>( QDataStream &, QScriptBreakpointData & );
 
 QT_END_NAMESPACE
 

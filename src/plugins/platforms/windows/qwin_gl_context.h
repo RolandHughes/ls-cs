@@ -33,257 +33,275 @@
 
 class QOpenGLStaticContext;
 
-enum QWindowsGLFormatFlags {
-   QWindowsGLDirectRendering = 0x1,
-   QWindowsGLOverlay = 0x2,
-   QWindowsGLRenderToPixmap = 0x4,
-   QWindowsGLAccumBuffer = 0x8
+enum QWindowsGLFormatFlags
+{
+    QWindowsGLDirectRendering = 0x1,
+    QWindowsGLOverlay = 0x2,
+    QWindowsGLRenderToPixmap = 0x4,
+    QWindowsGLAccumBuffer = 0x8
 };
 
 // Additional format information for Windows.
-struct QWindowsOpenGLAdditionalFormat {
-   QWindowsOpenGLAdditionalFormat(unsigned formatFlagsIn = 0, unsigned pixmapDepthIn = 0)
-      : formatFlags(formatFlagsIn), pixmapDepth(pixmapDepthIn)
-   { }
+struct QWindowsOpenGLAdditionalFormat
+{
+    QWindowsOpenGLAdditionalFormat( unsigned formatFlagsIn = 0, unsigned pixmapDepthIn = 0 )
+        : formatFlags( formatFlagsIn ), pixmapDepth( pixmapDepthIn )
+    { }
 
-   unsigned formatFlags;    // QWindowsGLFormatFlags.
-   unsigned pixmapDepth;    // for QWindowsGLRenderToPixmap
+    unsigned formatFlags;    // QWindowsGLFormatFlags.
+    unsigned pixmapDepth;    // for QWindowsGLRenderToPixmap
 };
 
 // Per-window data for active OpenGL contexts.
-struct QOpenGLContextData {
-   QOpenGLContextData(HGLRC r, HWND h, HDC d)
-      : renderingContext(r), hwnd(h), hdc(d)
-   {
-   }
+struct QOpenGLContextData
+{
+    QOpenGLContextData( HGLRC r, HWND h, HDC d )
+        : renderingContext( r ), hwnd( h ), hdc( d )
+    {
+    }
 
-   QOpenGLContextData()
-      : renderingContext(nullptr), hwnd(nullptr), hdc(nullptr)
-   {
-   }
+    QOpenGLContextData()
+        : renderingContext( nullptr ), hwnd( nullptr ), hdc( nullptr )
+    {
+    }
 
-   HGLRC renderingContext;
-   HWND hwnd;
-   HDC hdc;
+    HGLRC renderingContext;
+    HWND hwnd;
+    HDC hdc;
 };
 
-struct QWindowsOpenGLContextFormat {
-   QWindowsOpenGLContextFormat();
+struct QWindowsOpenGLContextFormat
+{
+    QWindowsOpenGLContextFormat();
 
-   static QWindowsOpenGLContextFormat current();
-   void apply(QSurfaceFormat *format) const;
+    static QWindowsOpenGLContextFormat current();
+    void apply( QSurfaceFormat *format ) const;
 
-   QSurfaceFormat::OpenGLContextProfile profile;
-   QSurfaceFormat::FormatOptions options;
+    QSurfaceFormat::OpenGLContextProfile profile;
+    QSurfaceFormat::FormatOptions options;
 
-   int m_version;
+    int m_version;
 };
 
-QDebug operator<<(QDebug debug, const PIXELFORMATDESCRIPTOR &);
-QDebug operator<<(QDebug debug, const QWindowsOpenGLContextFormat &);
-QDebug operator<<(QDebug debug, const QOpenGLStaticContext &s);
+QDebug operator<<( QDebug debug, const PIXELFORMATDESCRIPTOR & );
+QDebug operator<<( QDebug debug, const QWindowsOpenGLContextFormat & );
+QDebug operator<<( QDebug debug, const QOpenGLStaticContext &s );
 
-struct QWindowsOpengl32DLL {
-   bool init(bool softwareRendering);
-   void *moduleHandle() const {
-      return m_lib;
-   }
-   bool moduleIsNotOpengl32() const {
-      return m_nonOpengl32;
-   }
+struct QWindowsOpengl32DLL
+{
+    bool init( bool softwareRendering );
+    void *moduleHandle() const
+    {
+        return m_lib;
+    }
+    bool moduleIsNotOpengl32() const
+    {
+        return m_nonOpengl32;
+    }
 
-   // Wrappers. Always use these instead of SwapBuffers/wglSwapBuffers/etc.
-   BOOL swapBuffers(HDC dc);
-   BOOL setPixelFormat(HDC dc, int pf, const PIXELFORMATDESCRIPTOR *pfd);
+    // Wrappers. Always use these instead of SwapBuffers/wglSwapBuffers/etc.
+    BOOL swapBuffers( HDC dc );
+    BOOL setPixelFormat( HDC dc, int pf, const PIXELFORMATDESCRIPTOR *pfd );
 
-   // WGL
-   HGLRC (WINAPI *wglCreateContext)(HDC dc);
-   BOOL (WINAPI *wglDeleteContext)(HGLRC context);
-   HGLRC (WINAPI *wglGetCurrentContext)();
-   HDC (WINAPI *wglGetCurrentDC)();
-   PROC (WINAPI *wglGetProcAddress)(LPCSTR name);
-   BOOL (WINAPI *wglMakeCurrent)(HDC dc, HGLRC context);
-   BOOL (WINAPI *wglShareLists)(HGLRC context1, HGLRC context2);
+    // WGL
+    HGLRC ( WINAPI *wglCreateContext )( HDC dc );
+    BOOL ( WINAPI *wglDeleteContext )( HGLRC context );
+    HGLRC ( WINAPI *wglGetCurrentContext )();
+    HDC ( WINAPI *wglGetCurrentDC )();
+    PROC ( WINAPI *wglGetProcAddress )( LPCSTR name );
+    BOOL ( WINAPI *wglMakeCurrent )( HDC dc, HGLRC context );
+    BOOL ( WINAPI *wglShareLists )( HGLRC context1, HGLRC context2 );
 
-   // GL1+GLES2 common
-   void (APIENTRY *glBindTexture)(GLenum target, GLuint texture);
-   void (APIENTRY *glBlendFunc)(GLenum sfactor, GLenum dfactor);
-   void (APIENTRY *glClear)(GLbitfield mask);
-   void (APIENTRY *glClearColor)(GLclampf red, GLclampf green, GLclampf blue, GLclampf alpha);
-   void (APIENTRY *glClearStencil)(GLint s);
-   void (APIENTRY *glColorMask)(GLboolean red, GLboolean green, GLboolean blue, GLboolean alpha);
-   void (APIENTRY *glCopyTexImage2D)(GLenum target, GLint level, GLenum internalformat, GLint x, GLint y, GLsizei width, GLsizei height,
-      GLint border);
-   void (APIENTRY *glCopyTexSubImage2D)(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint x, GLint y, GLsizei width,
-      GLsizei height);
-   void (APIENTRY *glCullFace)(GLenum mode);
-   void (APIENTRY *glDeleteTextures)(GLsizei n, const GLuint *textures);
-   void (APIENTRY *glDepthFunc)(GLenum func);
-   void (APIENTRY *glDepthMask)(GLboolean flag);
-   void (APIENTRY *glDisable)(GLenum cap);
-   void (APIENTRY *glDrawArrays)(GLenum mode, GLint first, GLsizei count);
-   void (APIENTRY *glDrawElements)(GLenum mode, GLsizei count, GLenum type, const GLvoid *indices);
-   void (APIENTRY *glEnable)(GLenum cap);
-   void (APIENTRY *glFinish)();
-   void (APIENTRY *glFlush)();
-   void (APIENTRY *glFrontFace)(GLenum mode);
-   void (APIENTRY *glGenTextures)(GLsizei n, GLuint *textures);
-   void (APIENTRY *glGetBooleanv)(GLenum pname, GLboolean *params);
-   GLenum (APIENTRY *glGetError)();
-   void (APIENTRY *glGetFloatv)(GLenum pname, GLfloat *params);
-   void (APIENTRY *glGetIntegerv)(GLenum pname, GLint *params);
-   const GLubyte *(APIENTRY *glGetString)(GLenum name);
-   void (APIENTRY *glGetTexParameterfv)(GLenum target, GLenum pname, GLfloat *params);
-   void (APIENTRY *glGetTexParameteriv)(GLenum target, GLenum pname, GLint *params);
-   void (APIENTRY *glHint)(GLenum target, GLenum mode);
-   GLboolean (APIENTRY *glIsEnabled)(GLenum cap);
-   GLboolean (APIENTRY *glIsTexture)(GLuint texture);
-   void (APIENTRY *glLineWidth)(GLfloat width);
-   void (APIENTRY *glPixelStorei)(GLenum pname, GLint param);
-   void (APIENTRY *glPolygonOffset)(GLfloat factor, GLfloat units);
-   void (APIENTRY *glReadPixels)(GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, GLvoid *pixels);
-   void (APIENTRY *glScissor)(GLint x, GLint y, GLsizei width, GLsizei height);
-   void (APIENTRY *glStencilFunc)(GLenum func, GLint ref, GLuint mask);
-   void (APIENTRY *glStencilMask)(GLuint mask);
-   void (APIENTRY *glStencilOp)(GLenum fail, GLenum zfail, GLenum zpass);
-   void (APIENTRY *glTexImage2D)(GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height, GLint border,
-      GLenum format, GLenum type, const GLvoid *pixels);
-   void (APIENTRY *glTexParameterf)(GLenum target, GLenum pname, GLfloat param);
-   void (APIENTRY *glTexParameterfv)(GLenum target, GLenum pname, const GLfloat *params);
-   void (APIENTRY *glTexParameteri)(GLenum target, GLenum pname, GLint param);
-   void (APIENTRY *glTexParameteriv)(GLenum target, GLenum pname, const GLint *params);
-   void (APIENTRY *glTexSubImage2D)(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height,
-      GLenum format, GLenum type, const GLvoid *pixels);
-   void (APIENTRY *glViewport)(GLint x, GLint y, GLsizei width, GLsizei height);
+    // GL1+GLES2 common
+    void ( APIENTRY *glBindTexture )( GLenum target, GLuint texture );
+    void ( APIENTRY *glBlendFunc )( GLenum sfactor, GLenum dfactor );
+    void ( APIENTRY *glClear )( GLbitfield mask );
+    void ( APIENTRY *glClearColor )( GLclampf red, GLclampf green, GLclampf blue, GLclampf alpha );
+    void ( APIENTRY *glClearStencil )( GLint s );
+    void ( APIENTRY *glColorMask )( GLboolean red, GLboolean green, GLboolean blue, GLboolean alpha );
+    void ( APIENTRY *glCopyTexImage2D )( GLenum target, GLint level, GLenum internalformat, GLint x, GLint y, GLsizei width,
+                                         GLsizei height,
+                                         GLint border );
+    void ( APIENTRY *glCopyTexSubImage2D )( GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint x, GLint y, GLsizei width,
+                                            GLsizei height );
+    void ( APIENTRY *glCullFace )( GLenum mode );
+    void ( APIENTRY *glDeleteTextures )( GLsizei n, const GLuint *textures );
+    void ( APIENTRY *glDepthFunc )( GLenum func );
+    void ( APIENTRY *glDepthMask )( GLboolean flag );
+    void ( APIENTRY *glDisable )( GLenum cap );
+    void ( APIENTRY *glDrawArrays )( GLenum mode, GLint first, GLsizei count );
+    void ( APIENTRY *glDrawElements )( GLenum mode, GLsizei count, GLenum type, const GLvoid *indices );
+    void ( APIENTRY *glEnable )( GLenum cap );
+    void ( APIENTRY *glFinish )();
+    void ( APIENTRY *glFlush )();
+    void ( APIENTRY *glFrontFace )( GLenum mode );
+    void ( APIENTRY *glGenTextures )( GLsizei n, GLuint *textures );
+    void ( APIENTRY *glGetBooleanv )( GLenum pname, GLboolean *params );
+    GLenum ( APIENTRY *glGetError )();
+    void ( APIENTRY *glGetFloatv )( GLenum pname, GLfloat *params );
+    void ( APIENTRY *glGetIntegerv )( GLenum pname, GLint *params );
+    const GLubyte *( APIENTRY *glGetString )( GLenum name );
+    void ( APIENTRY *glGetTexParameterfv )( GLenum target, GLenum pname, GLfloat *params );
+    void ( APIENTRY *glGetTexParameteriv )( GLenum target, GLenum pname, GLint *params );
+    void ( APIENTRY *glHint )( GLenum target, GLenum mode );
+    GLboolean ( APIENTRY *glIsEnabled )( GLenum cap );
+    GLboolean ( APIENTRY *glIsTexture )( GLuint texture );
+    void ( APIENTRY *glLineWidth )( GLfloat width );
+    void ( APIENTRY *glPixelStorei )( GLenum pname, GLint param );
+    void ( APIENTRY *glPolygonOffset )( GLfloat factor, GLfloat units );
+    void ( APIENTRY *glReadPixels )( GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, GLvoid *pixels );
+    void ( APIENTRY *glScissor )( GLint x, GLint y, GLsizei width, GLsizei height );
+    void ( APIENTRY *glStencilFunc )( GLenum func, GLint ref, GLuint mask );
+    void ( APIENTRY *glStencilMask )( GLuint mask );
+    void ( APIENTRY *glStencilOp )( GLenum fail, GLenum zfail, GLenum zpass );
+    void ( APIENTRY *glTexImage2D )( GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height, GLint border,
+                                     GLenum format, GLenum type, const GLvoid *pixels );
+    void ( APIENTRY *glTexParameterf )( GLenum target, GLenum pname, GLfloat param );
+    void ( APIENTRY *glTexParameterfv )( GLenum target, GLenum pname, const GLfloat *params );
+    void ( APIENTRY *glTexParameteri )( GLenum target, GLenum pname, GLint param );
+    void ( APIENTRY *glTexParameteriv )( GLenum target, GLenum pname, const GLint *params );
+    void ( APIENTRY *glTexSubImage2D )( GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height,
+                                        GLenum format, GLenum type, const GLvoid *pixels );
+    void ( APIENTRY *glViewport )( GLint x, GLint y, GLsizei width, GLsizei height );
 
-   // GL only
-   void (APIENTRY *glClearDepth)(GLdouble depth);
-   void (APIENTRY *glDepthRange)(GLdouble zNear, GLdouble zFar);
+    // GL only
+    void ( APIENTRY *glClearDepth )( GLdouble depth );
+    void ( APIENTRY *glDepthRange )( GLdouble zNear, GLdouble zFar );
 
- private:
-   void *resolve(const char *name);
-   HMODULE m_lib;
-   bool m_nonOpengl32;
+private:
+    void *resolve( const char *name );
+    HMODULE m_lib;
+    bool m_nonOpengl32;
 
-   // For Mesa llvmpipe shipped with a name other than opengl32.dll
-   BOOL (WINAPI *wglSwapBuffers)(HDC dc);
-   BOOL (WINAPI *wglSetPixelFormat)(HDC dc, int pf, const PIXELFORMATDESCRIPTOR *pfd);
+    // For Mesa llvmpipe shipped with a name other than opengl32.dll
+    BOOL ( WINAPI *wglSwapBuffers )( HDC dc );
+    BOOL ( WINAPI *wglSetPixelFormat )( HDC dc, int pf, const PIXELFORMATDESCRIPTOR *pfd );
 };
 
 class QOpenGLStaticContext : public QWindowsStaticOpenGLContext
 {
- public:
-   enum Extensions {
-      SampleBuffers = 0x1
-   };
+public:
+    enum Extensions
+    {
+        SampleBuffers = 0x1
+    };
 
-   using WglGetPixelFormatAttribIVARB = bool  (APIENTRY *) (HDC hdc, int iPixelFormat, int iLayerPlane, uint nAttributes,
-         const int *piAttributes, int *piValues);
+    using WglGetPixelFormatAttribIVARB = bool  ( APIENTRY * ) ( HDC hdc, int iPixelFormat, int iLayerPlane, uint nAttributes,
+                                         const int *piAttributes, int *piValues );
 
-   using WglChoosePixelFormatARB      = bool  (APIENTRY *)(HDC hdc, const int *piAttribList, const float *pfAttribFList,
-         uint nMaxFormats, int *piFormats, UINT *nNumFormats);
+    using WglChoosePixelFormatARB      = bool  ( APIENTRY * )( HDC hdc, const int *piAttribList, const float *pfAttribFList,
+                                         uint nMaxFormats, int *piFormats, UINT *nNumFormats );
 
-   using WglCreateContextAttribsARB   = HGLRC (APIENTRY *)(HDC, HGLRC, const int *);
-   using WglSwapInternalExt           = BOOL  (APIENTRY *)(int interval);
-   using WglGetSwapInternalExt        = int   (APIENTRY *)(void);
+    using WglCreateContextAttribsARB   = HGLRC ( APIENTRY * )( HDC, HGLRC, const int * );
+    using WglSwapInternalExt           = BOOL  ( APIENTRY * )( int interval );
+    using WglGetSwapInternalExt        = int   ( APIENTRY * )( void );
 
-   QOpenGLStaticContext(const QOpenGLStaticContext &) = delete;
-   QOpenGLStaticContext &operator=(const QOpenGLStaticContext &) = delete;
+    QOpenGLStaticContext( const QOpenGLStaticContext & ) = delete;
+    QOpenGLStaticContext &operator=( const QOpenGLStaticContext & ) = delete;
 
-   bool hasExtensions() const {
-      return wglGetPixelFormatAttribIVARB && wglChoosePixelFormatARB && wglCreateContextAttribsARB;
-   }
+    bool hasExtensions() const
+    {
+        return wglGetPixelFormatAttribIVARB && wglChoosePixelFormatARB && wglCreateContextAttribsARB;
+    }
 
-   static QOpenGLStaticContext *create(bool softwareRendering = false);
-   static QByteArray getGlString(unsigned int which);
+    static QOpenGLStaticContext *create( bool softwareRendering = false );
+    static QByteArray getGlString( unsigned int which );
 
-   QWindowsOpenGLContext *createContext(QOpenGLContext *context) override;
+    QWindowsOpenGLContext *createContext( QOpenGLContext *context ) override;
 
-   void *moduleHandle() const override {
-      return opengl32.moduleHandle();
-   }
+    void *moduleHandle() const override
+    {
+        return opengl32.moduleHandle();
+    }
 
-   QOpenGLContext::OpenGLModuleType moduleType() const override {
-      return QOpenGLContext::LibGL;
-   }
+    QOpenGLContext::OpenGLModuleType moduleType() const override
+    {
+        return QOpenGLContext::LibGL;
+    }
 
-   // For a regular opengl32.dll report the ThreadedOpenGL capability.
-   // For others, which are likely to be software-only, don't.
-   bool supportsThreadedOpenGL() const override {
-      return ! opengl32.moduleIsNotOpengl32();
-   }
+    // For a regular opengl32.dll report the ThreadedOpenGL capability.
+    // For others, which are likely to be software-only, don't.
+    bool supportsThreadedOpenGL() const override
+    {
+        return ! opengl32.moduleIsNotOpengl32();
+    }
 
-   const QByteArray vendor;
-   const QByteArray renderer;
-   const QByteArray extensionNames;
-   unsigned extensions;
-   const QWindowsOpenGLContextFormat m_defaultFormat;
+    const QByteArray vendor;
+    const QByteArray renderer;
+    const QByteArray extensionNames;
+    unsigned extensions;
+    const QWindowsOpenGLContextFormat m_defaultFormat;
 
-   WglGetPixelFormatAttribIVARB wglGetPixelFormatAttribIVARB;
-   WglChoosePixelFormatARB wglChoosePixelFormatARB;
-   WglCreateContextAttribsARB wglCreateContextAttribsARB;
-   WglSwapInternalExt wglSwapInternalExt;
-   WglGetSwapInternalExt wglGetSwapInternalExt;
+    WglGetPixelFormatAttribIVARB wglGetPixelFormatAttribIVARB;
+    WglChoosePixelFormatARB wglChoosePixelFormatARB;
+    WglCreateContextAttribsARB wglCreateContextAttribsARB;
+    WglSwapInternalExt wglSwapInternalExt;
+    WglGetSwapInternalExt wglGetSwapInternalExt;
 
-   static QWindowsOpengl32DLL opengl32;
+    static QWindowsOpengl32DLL opengl32;
 
- private:
-   QOpenGLStaticContext();
+private:
+    QOpenGLStaticContext();
 };
 
 class QWindowsGLContext : public QWindowsOpenGLContext
 {
- public:
-   explicit QWindowsGLContext(QOpenGLStaticContext *staticContext, QOpenGLContext *context);
-   ~QWindowsGLContext();
+public:
+    explicit QWindowsGLContext( QOpenGLStaticContext *staticContext, QOpenGLContext *context );
+    ~QWindowsGLContext();
 
-   bool isSharing() const override {
-      return m_context->shareHandle();
-   }
+    bool isSharing() const override
+    {
+        return m_context->shareHandle();
+    }
 
-   bool isValid() const override {
-      return m_renderingContext && !m_lost;
-   }
+    bool isValid() const override
+    {
+        return m_renderingContext && !m_lost;
+    }
 
-   QSurfaceFormat format() const override {
-      return m_obtainedFormat;
-   }
+    QSurfaceFormat format() const override
+    {
+        return m_obtainedFormat;
+    }
 
-   void swapBuffers(QPlatformSurface *surface) override;
+    void swapBuffers( QPlatformSurface *surface ) override;
 
-   bool makeCurrent(QPlatformSurface *surface) override;
-   void doneCurrent() override;
+    bool makeCurrent( QPlatformSurface *surface ) override;
+    void doneCurrent() override;
 
-   typedef void (*GL_Proc) ();
+    typedef void ( *GL_Proc ) ();
 
-   FP_Void getProcAddress(const QByteArray &procName) override;
+    FP_Void getProcAddress( const QByteArray &procName ) override;
 
-   HGLRC renderingContext() const {
-      return m_renderingContext;
-   }
+    HGLRC renderingContext() const
+    {
+        return m_renderingContext;
+    }
 
-   void *nativeContext() const override {
-      return m_renderingContext;
-   }
+    void *nativeContext() const override
+    {
+        return m_renderingContext;
+    }
 
- private:
-   inline void releaseDCs();
-   bool updateObtainedParams(HDC hdc, int *obtainedSwapInterval = nullptr);
+private:
+    inline void releaseDCs();
+    bool updateObtainedParams( HDC hdc, int *obtainedSwapInterval = nullptr );
 
-   QOpenGLStaticContext *m_staticContext;
-   QOpenGLContext *m_context;
-   QSurfaceFormat m_obtainedFormat;
-   HGLRC m_renderingContext;
+    QOpenGLStaticContext *m_staticContext;
+    QOpenGLContext *m_context;
+    QSurfaceFormat m_obtainedFormat;
+    HGLRC m_renderingContext;
 
-   Array<QOpenGLContextData> m_windowContexts;
+    Array<QOpenGLContextData> m_windowContexts;
 
-   PIXELFORMATDESCRIPTOR m_obtainedPixelFormatDescriptor;
-   int m_pixelFormat;
-   bool m_extensionsUsed;
-   int m_swapInterval;
-   bool m_ownsContext;
-   GLenum (APIENTRY *m_getGraphicsResetStatus)();
-   bool m_lost;
+    PIXELFORMATDESCRIPTOR m_obtainedPixelFormatDescriptor;
+    int m_pixelFormat;
+    bool m_extensionsUsed;
+    int m_swapInterval;
+    bool m_ownsContext;
+    GLenum ( APIENTRY *m_getGraphicsResetStatus )();
+    bool m_lost;
 };
 
 #endif

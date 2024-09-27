@@ -24,16 +24,18 @@
 #if ENABLE(SVG)
 #include "SVGPolyElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class SVGPolylineElement : public SVGPolyElement {
+class SVGPolylineElement : public SVGPolyElement
+{
 public:
-    static PassRefPtr<SVGPolylineElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<SVGPolylineElement> create( const QualifiedName &, Document * );
 
 private:
-    SVGPolylineElement(const QualifiedName&, Document*);
+    SVGPolylineElement( const QualifiedName &, Document * );
 
-    virtual void toPathData(Path&) const;
+    virtual void toPathData( Path & ) const;
 };
 
 } // namespace WebCore

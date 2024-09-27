@@ -30,14 +30,15 @@
 #include "ApplicationCacheStorage.h"
 #include "NotImplemented.h"
 
-namespace WebKit {
+namespace WebKit
+{
 
 WTF::String WebContext::applicationCacheDirectory()
 {
     return WebCore::cacheStorage().cacheDirectory();
 }
 
-void WebContext::platformInitializeWebProcess(WebProcessCreationParameters&)
+void WebContext::platformInitializeWebProcess( WebProcessCreationParameters & )
 {
 }
 
@@ -47,7 +48,7 @@ void WebContext::platformInvalidateContext()
 
 String WebContext::platformDefaultDatabaseDirectory() const
 {
-    return WTF::String::fromUTF8(g_build_filename(g_get_user_data_dir(), "webkit", "databases", NULL));
+    return WTF::String::fromUTF8( g_build_filename( g_get_user_data_dir(), "webkit", "databases", NULL ) );
 }
 
 String WebContext::platformDefaultIconDatabasePath() const
@@ -58,7 +59,7 @@ String WebContext::platformDefaultIconDatabasePath() const
 
 String WebContext::platformDefaultLocalStorageDirectory() const
 {
-    return WTF::String::fromUTF8(g_build_filename(g_get_user_data_dir(), "webkit", "localstorage", NULL));
+    return WTF::String::fromUTF8( g_build_filename( g_get_user_data_dir(), "webkit", "localstorage", NULL ) );
 }
 
 } // namespace WebKit

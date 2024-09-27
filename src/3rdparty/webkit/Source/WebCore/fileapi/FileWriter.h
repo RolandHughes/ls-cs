@@ -40,34 +40,43 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class ScriptExecutionContext;
 
-class FileWriter : public FileWriterBase, public ActiveDOMObject, public EventTarget, public AsyncFileWriterClient {
+class FileWriter : public FileWriterBase, public ActiveDOMObject, public EventTarget, public AsyncFileWriterClient
+{
 public:
-    static PassRefPtr<FileWriter> create(ScriptExecutionContext* context)
+    static PassRefPtr<FileWriter> create( ScriptExecutionContext *context )
     {
-        return adoptRef(new FileWriter(context));
+        return adoptRef( new FileWriter( context ) );
     }
 
-    enum ReadyState {
+    enum ReadyState
+    {
         INIT = 0,
         WRITING = 1,
         DONE = 2
     };
 
-    void write(Blob*, ExceptionCode&);
-    void seek(long long position, ExceptionCode&);
-    void truncate(long long length, ExceptionCode&);
-    void abort(ExceptionCode&);
-    ReadyState readyState() const { return m_readyState; }
-    FileError* error() const { return m_error.get(); }
+    void write( Blob *, ExceptionCode & );
+    void seek( long long position, ExceptionCode & );
+    void truncate( long long length, ExceptionCode & );
+    void abort( ExceptionCode & );
+    ReadyState readyState() const
+    {
+        return m_readyState;
+    }
+    FileError *error() const
+    {
+        return m_error.get();
+    }
 
     // AsyncFileWriterClient
-    void didWrite(long long bytes, bool complete);
+    void didWrite( long long bytes, bool complete );
     void didTruncate();
-    void didFail(FileError::ErrorCode);
+    void didFail( FileError::ErrorCode );
 
     // ActiveDOMObject
     virtual bool canSuspend() const;
@@ -75,52 +84,71 @@ public:
     virtual void stop();
 
     // EventTarget
-    virtual FileWriter* toFileWriter() { return this; }
-    virtual ScriptExecutionContext* scriptExecutionContext() const { return ActiveDOMObject::scriptExecutionContext(); }
+    virtual FileWriter *toFileWriter()
+    {
+        return this;
+    }
+    virtual ScriptExecutionContext *scriptExecutionContext() const
+    {
+        return ActiveDOMObject::scriptExecutionContext();
+    }
 
     using RefCounted<FileWriterBase>::ref;
     using RefCounted<FileWriterBase>::deref;
 
-    DEFINE_ATTRIBUTE_EVENT_LISTENER(writestart);
-    DEFINE_ATTRIBUTE_EVENT_LISTENER(progress);
-    DEFINE_ATTRIBUTE_EVENT_LISTENER(write);
-    DEFINE_ATTRIBUTE_EVENT_LISTENER(abort);
-    DEFINE_ATTRIBUTE_EVENT_LISTENER(error);
-    DEFINE_ATTRIBUTE_EVENT_LISTENER(writeend);
+    DEFINE_ATTRIBUTE_EVENT_LISTENER( writestart );
+    DEFINE_ATTRIBUTE_EVENT_LISTENER( progress );
+    DEFINE_ATTRIBUTE_EVENT_LISTENER( write );
+    DEFINE_ATTRIBUTE_EVENT_LISTENER( abort );
+    DEFINE_ATTRIBUTE_EVENT_LISTENER( error );
+    DEFINE_ATTRIBUTE_EVENT_LISTENER( writeend );
 
 private:
-    FileWriter(ScriptExecutionContext*);
+    FileWriter( ScriptExecutionContext * );
 
     virtual ~FileWriter();
 
     // EventTarget
-    virtual void refEventTarget() { ref(); }
-    virtual void derefEventTarget() { deref(); }
-    virtual EventTargetData* eventTargetData() { return &m_eventTargetData; }
-    virtual EventTargetData* ensureEventTargetData() { return &m_eventTargetData; }
+    virtual void refEventTarget()
+    {
+        ref();
+    }
+    virtual void derefEventTarget()
+    {
+        deref();
+    }
+    virtual EventTargetData *eventTargetData()
+    {
+        return &m_eventTargetData;
+    }
+    virtual EventTargetData *ensureEventTargetData()
+    {
+        return &m_eventTargetData;
+    }
 
-    void fireEvent(const AtomicString& type);
+    void fireEvent( const AtomicString &type );
 
-    void setError(FileError::ErrorCode, ExceptionCode&);
+    void setError( FileError::ErrorCode, ExceptionCode & );
 
-    void signalCompletion(FileError::ErrorCode);
+    void signalCompletion( FileError::ErrorCode );
 
-    class FileWriterCompletionEventTask : public ScriptExecutionContext::Task {
+    class FileWriterCompletionEventTask : public ScriptExecutionContext::Task
+    {
     public:
-        static PassOwnPtr<FileWriterCompletionEventTask> create(PassRefPtr<FileWriter> fileWriter, FileError::ErrorCode code)
+        static PassOwnPtr<FileWriterCompletionEventTask> create( PassRefPtr<FileWriter> fileWriter, FileError::ErrorCode code )
         {
-            return adoptPtr(new FileWriterCompletionEventTask(fileWriter, code));
+            return adoptPtr( new FileWriterCompletionEventTask( fileWriter, code ) );
         }
 
 
-        virtual void performTask(ScriptExecutionContext*)
+        virtual void performTask( ScriptExecutionContext * )
         {
-            m_fileWriter->signalCompletion(m_code);
+            m_fileWriter->signalCompletion( m_code );
         }
     private:
-        FileWriterCompletionEventTask(PassRefPtr<FileWriter> fileWriter, FileError::ErrorCode code)
-            : m_fileWriter(fileWriter)
-            , m_code(code)
+        FileWriterCompletionEventTask( PassRefPtr<FileWriter> fileWriter, FileError::ErrorCode code )
+            : m_fileWriter( fileWriter )
+            , m_code( code )
         {
         }
 

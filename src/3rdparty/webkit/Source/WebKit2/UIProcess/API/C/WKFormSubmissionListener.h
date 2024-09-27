@@ -34,7 +34,7 @@ extern "C" {
 
 WK_EXPORT WKTypeID WKFormSubmissionListenerGetTypeID();
 
-WK_EXPORT void WKFormSubmissionListenerContinue(WKFormSubmissionListenerRef submissionListener);
+WK_EXPORT void WKFormSubmissionListenerContinue( WKFormSubmissionListenerRef submissionListener );
 
 #ifdef __cplusplus
 }

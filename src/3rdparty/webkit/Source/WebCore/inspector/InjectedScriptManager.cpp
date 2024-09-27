@@ -42,22 +42,23 @@
 
 using namespace std;
 
-namespace WebCore {
+namespace WebCore
+{
 
 PassOwnPtr<InjectedScriptManager> InjectedScriptManager::createForPage()
 {
-    return adoptPtr(new InjectedScriptManager(&InjectedScriptManager::canAccessInspectedWindow));
+    return adoptPtr( new InjectedScriptManager( &InjectedScriptManager::canAccessInspectedWindow ) );
 }
 
 PassOwnPtr<InjectedScriptManager> InjectedScriptManager::createForWorker()
 {
-    return adoptPtr(new InjectedScriptManager(&InjectedScriptManager::canAccessInspectedWorkerContext));
+    return adoptPtr( new InjectedScriptManager( &InjectedScriptManager::canAccessInspectedWorkerContext ) );
 }
 
-InjectedScriptManager::InjectedScriptManager(InspectedStateAccessCheck accessCheck)
-    : m_nextInjectedScriptId(1)
-    , m_injectedScriptHost(InjectedScriptHost::create())
-    , m_inspectedStateAccessCheck(accessCheck)
+InjectedScriptManager::InjectedScriptManager( InspectedStateAccessCheck accessCheck )
+    : m_nextInjectedScriptId( 1 )
+    , m_injectedScriptHost( InjectedScriptHost::create() )
+    , m_inspectedStateAccessCheck( accessCheck )
 {
 }
 
@@ -71,56 +72,68 @@ void InjectedScriptManager::disconnect()
     m_injectedScriptHost.clear();
 }
 
-InjectedScriptHost* InjectedScriptManager::injectedScriptHost()
+InjectedScriptHost *InjectedScriptManager::injectedScriptHost()
 {
     return m_injectedScriptHost.get();
 }
 
-InjectedScript InjectedScriptManager::injectedScriptForId(long id)
+InjectedScript InjectedScriptManager::injectedScriptForId( long id )
 {
-    return m_idToInjectedScript.get(id);
+    return m_idToInjectedScript.get( id );
 }
 
-InjectedScript InjectedScriptManager::injectedScriptForObjectId(const String& objectId)
+InjectedScript InjectedScriptManager::injectedScriptForObjectId( const String &objectId )
 {
-    RefPtr<InspectorValue> parsedObjectId = InspectorValue::parseJSON(objectId);
-    if (parsedObjectId && parsedObjectId->type() == InspectorValue::TypeObject) {
+    RefPtr<InspectorValue> parsedObjectId = InspectorValue::parseJSON( objectId );
+
+    if ( parsedObjectId && parsedObjectId->type() == InspectorValue::TypeObject )
+    {
         long injectedScriptId = 0;
-        bool success = parsedObjectId->asObject()->getNumber("injectedScriptId", &injectedScriptId);
-        if (success)
-            return injectedScriptForId(injectedScriptId);
+        bool success = parsedObjectId->asObject()->getNumber( "injectedScriptId", &injectedScriptId );
+
+        if ( success )
+        {
+            return injectedScriptForId( injectedScriptId );
+        }
     }
+
     return InjectedScript();
 }
 
 void InjectedScriptManager::discardInjectedScripts()
 {
     IdToInjectedScriptMap::iterator end = m_idToInjectedScript.end();
-    for (IdToInjectedScriptMap::iterator it = m_idToInjectedScript.begin(); it != end; ++it)
-        discardInjectedScript(it->second.scriptState());
+
+    for ( IdToInjectedScriptMap::iterator it = m_idToInjectedScript.begin(); it != end; ++it )
+    {
+        discardInjectedScript( it->second.scriptState() );
+    }
+
     m_idToInjectedScript.clear();
 }
 
-bool InjectedScriptManager::canAccessInspectedWorkerContext(ScriptState*)
+bool InjectedScriptManager::canAccessInspectedWorkerContext( ScriptState * )
 {
     return true;
 }
 
-void InjectedScriptManager::releaseObjectGroup(const String& objectGroup)
+void InjectedScriptManager::releaseObjectGroup( const String &objectGroup )
 {
-    for (IdToInjectedScriptMap::iterator it = m_idToInjectedScript.begin(); it != m_idToInjectedScript.end(); ++it)
-        it->second.releaseObjectGroup(objectGroup);
+    for ( IdToInjectedScriptMap::iterator it = m_idToInjectedScript.begin(); it != m_idToInjectedScript.end(); ++it )
+    {
+        it->second.releaseObjectGroup( objectGroup );
+    }
 }
 
 String InjectedScriptManager::injectedScriptSource()
 {
-    return String(reinterpret_cast<const char*>(InjectedScriptSource_js), sizeof(InjectedScriptSource_js));
+    return String( reinterpret_cast<const char *>( InjectedScriptSource_js ), sizeof( InjectedScriptSource_js ) );
 }
 
-pair<long, ScriptObject> InjectedScriptManager::injectScript(const String& source, ScriptState* scriptState)
+pair<long, ScriptObject> InjectedScriptManager::injectScript( const String &source, ScriptState *scriptState )
 {
     long id = m_nextInjectedScriptId++;
-    return std::make_pair(id, createInjectedScript(source, scriptState, id));
+    return std::make_pair( id, createInjectedScript( source, scriptState, id ) );
 }
 
 } // namespace WebCore

@@ -31,22 +31,22 @@ QT_BEGIN_NAMESPACE
 
 class QScriptDebuggerStandardWidgetFactory : public QObject, public QScriptDebuggerWidgetFactoryInterface
 {
- public:
-   QScriptDebuggerStandardWidgetFactory(QObject *parent = nullptr);
-   virtual ~QScriptDebuggerStandardWidgetFactory();
+public:
+    QScriptDebuggerStandardWidgetFactory( QObject *parent = nullptr );
+    virtual ~QScriptDebuggerStandardWidgetFactory();
 
-   QScriptDebugOutputWidgetInterface *createDebugOutputWidget();
-   QScriptDebuggerConsoleWidgetInterface *createConsoleWidget();
-   QScriptErrorLogWidgetInterface *createErrorLogWidget();
-   QScriptDebuggerCodeFinderWidgetInterface *createCodeFinderWidget();
-   QScriptDebuggerStackWidgetInterface *createStackWidget();
-   QScriptDebuggerScriptsWidgetInterface *createScriptsWidget();
-   QScriptDebuggerLocalsWidgetInterface *createLocalsWidget();
-   QScriptDebuggerCodeWidgetInterface *createCodeWidget();
-   QScriptBreakpointsWidgetInterface *createBreakpointsWidget();
+    QScriptDebugOutputWidgetInterface *createDebugOutputWidget();
+    QScriptDebuggerConsoleWidgetInterface *createConsoleWidget();
+    QScriptErrorLogWidgetInterface *createErrorLogWidget();
+    QScriptDebuggerCodeFinderWidgetInterface *createCodeFinderWidget();
+    QScriptDebuggerStackWidgetInterface *createStackWidget();
+    QScriptDebuggerScriptsWidgetInterface *createScriptsWidget();
+    QScriptDebuggerLocalsWidgetInterface *createLocalsWidget();
+    QScriptDebuggerCodeWidgetInterface *createCodeWidget();
+    QScriptBreakpointsWidgetInterface *createBreakpointsWidget();
 
- private:
-   Q_DISABLE_COPY(QScriptDebuggerStandardWidgetFactory)
+private:
+    Q_DISABLE_COPY( QScriptDebuggerStandardWidgetFactory )
 };
 
 QT_END_NAMESPACE

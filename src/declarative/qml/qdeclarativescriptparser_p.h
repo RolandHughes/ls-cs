@@ -36,81 +36,83 @@ class QByteArray;
 class QDeclarativeScriptParserJsASTData;
 class QDeclarativeScriptParser
 {
- public:
-   class Import
-   {
+public:
+    class Import
+    {
     public:
-      Import() : type(Library) {}
+        Import() : type( Library ) {}
 
-      enum Type { Library, File, Script, Implicit }; //Implicit is only used internally
-      Type type;
+        enum Type { Library, File, Script, Implicit }; //Implicit is only used internally
+        Type type;
 
-      QString uri;
-      QString qualifier;
-      QString version;
+        QString uri;
+        QString qualifier;
+        QString version;
 
-      QDeclarativeParser::LocationSpan location;
-   };
+        QDeclarativeParser::LocationSpan location;
+    };
 
-   class TypeReference
-   {
+    class TypeReference
+    {
     public:
-      TypeReference(int typeId, const QString &typeName) : id(typeId), name(typeName) {}
+        TypeReference( int typeId, const QString &typeName ) : id( typeId ), name( typeName ) {}
 
-      int id;
-      // type as it has been referenced in Qml
-      QString name;
-      // objects in parse tree referencing the type
-      QList<QDeclarativeParser::Object *> refObjects;
-   };
+        int id;
+        // type as it has been referenced in Qml
+        QString name;
+        // objects in parse tree referencing the type
+        QList<QDeclarativeParser::Object *> refObjects;
+    };
 
-   QDeclarativeScriptParser();
-   ~QDeclarativeScriptParser();
+    QDeclarativeScriptParser();
+    ~QDeclarativeScriptParser();
 
-   bool parse(const QByteArray &data, const QUrl &url = QUrl());
+    bool parse( const QByteArray &data, const QUrl &url = QUrl() );
 
-   QList<TypeReference *> referencedTypes() const;
+    QList<TypeReference *> referencedTypes() const;
 
-   QDeclarativeParser::Object *tree() const;
-   QList<Import> imports() const;
+    QDeclarativeParser::Object *tree() const;
+    QList<Import> imports() const;
 
-   void clear();
+    void clear();
 
-   QList<QDeclarativeError> errors() const;
+    QList<QDeclarativeError> errors() const;
 
-   class JavaScriptMetaData
-   {
+    class JavaScriptMetaData
+    {
     public:
-      JavaScriptMetaData()
-         : pragmas(QDeclarativeParser::Object::ScriptBlock::None) {}
+        JavaScriptMetaData()
+            : pragmas( QDeclarativeParser::Object::ScriptBlock::None ) {}
 
-      QDeclarativeParser::Object::ScriptBlock::Pragmas pragmas;
-      QList<Import> imports;
-   };
+        QDeclarativeParser::Object::ScriptBlock::Pragmas pragmas;
+        QList<Import> imports;
+    };
 
-   static QDeclarativeParser::Object::ScriptBlock::Pragmas extractPragmas(QString &);
-   static JavaScriptMetaData extractMetaData(QString &);
+    static QDeclarativeParser::Object::ScriptBlock::Pragmas extractPragmas( QString & );
+    static JavaScriptMetaData extractMetaData( QString & );
 
 
-   // ### private:
-   TypeReference *findOrCreateType(const QString &name);
-   void setTree(QDeclarativeParser::Object *tree);
+    // ### private:
+    TypeReference *findOrCreateType( const QString &name );
+    void setTree( QDeclarativeParser::Object *tree );
 
-   void setScriptFile(const QString &filename) {
-      _scriptFile = filename;
-   }
-   QString scriptFile() const {
-      return _scriptFile;
-   }
+    void setScriptFile( const QString &filename )
+    {
+        _scriptFile = filename;
+    }
+    QString scriptFile() const
+    {
+        return _scriptFile;
+    }
 
-   // ### private:
-   QList<QDeclarativeError> _errors;
+    // ### private:
+    QList<QDeclarativeError> _errors;
 
-   QDeclarativeParser::Object *root;
-   QList<Import> _imports;
-   QList<TypeReference *> _refTypes;
-   QString _scriptFile;
-   QDeclarativeScriptParserJsASTData *data;
+    QDeclarativeParser::Object *root;
+    QList<Import> _imports;
+    QList<TypeReference *> _refTypes;
+    QString _scriptFile;
+    QDeclarativeScriptParserJsASTData *data;
 };
 
 QT_END_NAMESPACE

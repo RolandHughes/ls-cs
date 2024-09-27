@@ -23,12 +23,14 @@
 #include "FormData.h"
 #include <wtf/text/CString.h>
 
-bool WebCore::HistoryItem::restoreState(QDataStream& in, int version)
+bool WebCore::HistoryItem::restoreState( QDataStream &in, int version )
 {
     // we only support version 1 for now
 
-    if (version != 1)
+    if ( version != 1 )
+    {
         return false;
+    }
 
     WTF::String url;
     WTF::String title;
@@ -63,44 +65,49 @@ bool WebCore::HistoryItem::restoreState(QDataStream& in, int version)
         m_formData = FormData::create(CString(formData));
     }*/
     // use setters
-    adoptVisitCounts(dailyVisitCounts, weeklyVisitCounts);
-    setScrollPoint(scrollPoint);
-    setDocumentState(documentState);
-    setVisitCount(visitCount);
-    setIsTargetItem(isTargetItem);
-    setLastVisitWasFailure(lastVisitWasFailure);
-    setLastVisitWasHTTPNonGet(lastVisitWasHTTPNonGet);
-    setParent(parent);
-    setTarget(target);
-    setReferrer(referrer);
-    setOriginalURLString(orginalUrl);
-    setURLString(url);
-    setLastVisitedTime(lastVisitedTime);
-    setTitle(title);
-    setAlternateTitle(altTitle);
+    adoptVisitCounts( dailyVisitCounts, weeklyVisitCounts );
+    setScrollPoint( scrollPoint );
+    setDocumentState( documentState );
+    setVisitCount( visitCount );
+    setIsTargetItem( isTargetItem );
+    setLastVisitWasFailure( lastVisitWasFailure );
+    setLastVisitWasHTTPNonGet( lastVisitWasHTTPNonGet );
+    setParent( parent );
+    setTarget( target );
+    setReferrer( referrer );
+    setOriginalURLString( orginalUrl );
+    setURLString( url );
+    setLastVisitedTime( lastVisitedTime );
+    setTitle( title );
+    setAlternateTitle( altTitle );
 
     // at the end load userData
     in >> validUserData;
-    if (validUserData) {
+
+    if ( validUserData )
+    {
         QVariant tmp;
         in >> tmp;
-        setUserData(tmp);
+        setUserData( tmp );
     }
 
     return in.status() == QDataStream::Ok;
 }
 
-QDataStream& WebCore::HistoryItem::saveState(QDataStream& out, int version) const
+QDataStream &WebCore::HistoryItem::saveState( QDataStream &out, int version ) const
 {
     // we only support version 1 for now.
-    if (version != 1)
+    if ( version != 1 )
+    {
         return out;
+    }
 
     out << urlString() << title() << alternateTitle() << lastVisitedTime();
     out << originalURLString() << referrer() << target() << parent();
     out << lastVisitWasHTTPNonGet() << lastVisitWasFailure() << isTargetItem();
     out << visitCount() << documentState() << scrollPoint();
     out << dailyVisitCounts() << weeklyVisitCounts();
+
     /*if (m_formData) {
         out << true;
         out << formContentType();
@@ -109,10 +116,14 @@ QDataStream& WebCore::HistoryItem::saveState(QDataStream& out, int version) cons
         out << false;
     }*/
     // save user data
-    if (userData().isValid())
+    if ( userData().isValid() )
+    {
         out << true << userData();
+    }
     else
+    {
         out << false;
+    }
 
     return out;
 }

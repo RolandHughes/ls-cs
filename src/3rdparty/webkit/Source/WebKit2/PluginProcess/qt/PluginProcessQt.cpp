@@ -32,9 +32,10 @@
 #include "PluginProcessCreationParameters.h"
 #include <WebCore/NotImplemented.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
-void PluginProcess::platformInitialize(const PluginProcessCreationParameters& parameters)
+void PluginProcess::platformInitialize( const PluginProcessCreationParameters &parameters )
 {
     notImplemented();
 }

@@ -26,28 +26,34 @@
 #include <runtime/JSObjectWithGlobalObject.h>
 #include <runtime/ObjectPrototype.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class CanvasRenderingContext;
 
-class JSCanvasRenderingContext : public JSDOMWrapper {
+class JSCanvasRenderingContext : public JSDOMWrapper
+{
     typedef JSDOMWrapper Base;
 public:
-    JSCanvasRenderingContext(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<CanvasRenderingContext>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
+    JSCanvasRenderingContext( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<CanvasRenderingContext> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    virtual void visitChildren(JSC::SlotVisitor&);
+    virtual void visitChildren( JSC::SlotVisitor & );
 
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
-    CanvasRenderingContext* impl() const { return m_impl.get(); }
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
+    CanvasRenderingContext *impl() const
+    {
+        return m_impl.get();
+    }
 
 private:
     RefPtr<CanvasRenderingContext> m_impl;
@@ -55,43 +61,47 @@ protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::OverridesVisitChildren | Base::StructureFlags;
 };
 
-class JSCanvasRenderingContextOwner : public JSC::WeakHandleOwner {
-    virtual bool isReachableFromOpaqueRoots(JSC::Handle<JSC::Unknown>, void* context, JSC::SlotVisitor&);
-    virtual void finalize(JSC::Handle<JSC::Unknown>, void* context);
+class JSCanvasRenderingContextOwner : public JSC::WeakHandleOwner
+{
+    virtual bool isReachableFromOpaqueRoots( JSC::Handle<JSC::Unknown>, void *context, JSC::SlotVisitor & );
+    virtual void finalize( JSC::Handle<JSC::Unknown>, void *context );
 };
 
-inline JSC::WeakHandleOwner* wrapperOwner(DOMWrapperWorld*, CanvasRenderingContext*)
+inline JSC::WeakHandleOwner *wrapperOwner( DOMWrapperWorld *, CanvasRenderingContext * )
 {
-    DEFINE_STATIC_LOCAL(JSCanvasRenderingContextOwner, jsCanvasRenderingContextOwner, ());
+    DEFINE_STATIC_LOCAL( JSCanvasRenderingContextOwner, jsCanvasRenderingContextOwner, () );
     return &jsCanvasRenderingContextOwner;
 }
 
-inline void* wrapperContext(DOMWrapperWorld* world, CanvasRenderingContext*)
+inline void *wrapperContext( DOMWrapperWorld *world, CanvasRenderingContext * )
 {
     return world;
 }
 
-JSC::JSValue toJS(JSC::ExecState*, JSDOMGlobalObject*, CanvasRenderingContext*);
-CanvasRenderingContext* toCanvasRenderingContext(JSC::JSValue);
+JSC::JSValue toJS( JSC::ExecState *, JSDOMGlobalObject *, CanvasRenderingContext * );
+CanvasRenderingContext *toCanvasRenderingContext( JSC::JSValue );
 
-class JSCanvasRenderingContextPrototype : public JSC::JSObjectWithGlobalObject {
+class JSCanvasRenderingContextPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSCanvasRenderingContextPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSCanvasRenderingContextPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                                       JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesVisitChildren | Base::StructureFlags;
 };
 
 // Attributes
 
-JSC::JSValue jsCanvasRenderingContextCanvas(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsCanvasRenderingContextConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsCanvasRenderingContextCanvas( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsCanvasRenderingContextConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

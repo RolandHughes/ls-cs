@@ -30,12 +30,14 @@
 
 #include "CACFLayerTreeHost.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 // FIXME: Currently there is a LegacyCACFLayerTreeHost for each WebView and each
 // has its own WKCACFContext and Direct3DDevice9, which is inefficient.
 // (https://bugs.webkit.org/show_bug.cgi?id=31855)
-class LegacyCACFLayerTreeHost : public CACFLayerTreeHost {
+class LegacyCACFLayerTreeHost : public CACFLayerTreeHost
+{
 public:
     static PassRefPtr<LegacyCACFLayerTreeHost> create();
     virtual ~LegacyCACFLayerTreeHost();
@@ -49,12 +51,12 @@ private:
     // D3DERR_DEVICELOST. Returns true if the device was recovered, false if rendering must be
     // aborted and reattempted soon.
     enum ResetReason { ChangedWindowSize, LostDevice };
-    bool resetDevice(ResetReason);
+    bool resetDevice( ResetReason );
 
     void renderSoon();
-    void renderTimerFired(Timer<LegacyCACFLayerTreeHost>*);
+    void renderTimerFired( Timer<LegacyCACFLayerTreeHost> * );
 
-    virtual void initializeContext(void* userData, PlatformCALayer*);
+    virtual void initializeContext( void *userData, PlatformCALayer * );
     virtual void resize();
     virtual bool createRenderer();
     virtual void destroyRenderer();
@@ -62,11 +64,11 @@ private:
     virtual void flushContext();
     virtual void contextDidChange();
     virtual void paint();
-    virtual void render(const Vector<CGRect>& dirtyRects = Vector<CGRect>());
+    virtual void render( const Vector<CGRect> &dirtyRects = Vector<CGRect>() );
 
     Timer<LegacyCACFLayerTreeHost> m_renderTimer;
     COMPtr<IDirect3DDevice9> m_d3dDevice;
-    WKCACFContext* m_context;
+    WKCACFContext *m_context;
     bool m_mightBeAbleToCreateDeviceLater;
     bool m_mustResetLostDeviceBeforeRendering;
 

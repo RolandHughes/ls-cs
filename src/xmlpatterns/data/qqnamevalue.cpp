@@ -29,25 +29,25 @@
 
 using namespace QPatternist;
 
-QNameValue::QNameValue(const NamePool::Ptr &np, const QXmlName name) : m_qName(name)
-   , m_namePool(np)
+QNameValue::QNameValue( const NamePool::Ptr &np, const QXmlName name ) : m_qName( name )
+    , m_namePool( np )
 {
-   Q_ASSERT(!name.isNull());
-   Q_ASSERT(m_namePool);
+    Q_ASSERT( !name.isNull() );
+    Q_ASSERT( m_namePool );
 }
 
-QNameValue::Ptr QNameValue::fromValue(const NamePool::Ptr &np, const QXmlName name)
+QNameValue::Ptr QNameValue::fromValue( const NamePool::Ptr &np, const QXmlName name )
 {
-   Q_ASSERT(!name.isNull());
-   return QNameValue::Ptr(new QNameValue(np, name));
+    Q_ASSERT( !name.isNull() );
+    return QNameValue::Ptr( new QNameValue( np, name ) );
 }
 
 QString QNameValue::stringValue() const
 {
-   return m_namePool->toLexical(m_qName);
+    return m_namePool->toLexical( m_qName );
 }
 
 ItemType::Ptr QNameValue::type() const
 {
-   return BuiltinTypes::xsQName;
+    return BuiltinTypes::xsQName;
 }

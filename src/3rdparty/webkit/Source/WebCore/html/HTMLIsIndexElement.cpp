@@ -28,37 +28,45 @@
 #include "Attribute.h"
 #include "HTMLNames.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
-HTMLIsIndexElement::HTMLIsIndexElement(const QualifiedName& tagName, Document* document, HTMLFormElement* form)
-    : HTMLInputElement(tagName, document, form, false)
+HTMLIsIndexElement::HTMLIsIndexElement( const QualifiedName &tagName, Document *document, HTMLFormElement *form )
+    : HTMLInputElement( tagName, document, form, false )
 {
-    ASSERT(hasTagName(isindexTag));
-    setDefaultName(isindexTag.localName());
+    ASSERT( hasTagName( isindexTag ) );
+    setDefaultName( isindexTag.localName() );
 }
 
-PassRefPtr<HTMLIsIndexElement> HTMLIsIndexElement::create(Document* document, HTMLFormElement* form)
+PassRefPtr<HTMLIsIndexElement> HTMLIsIndexElement::create( Document *document, HTMLFormElement *form )
 {
-    return adoptRef(new HTMLIsIndexElement(isindexTag, document, form));
+    return adoptRef( new HTMLIsIndexElement( isindexTag, document, form ) );
 }
 
-PassRefPtr<HTMLIsIndexElement> HTMLIsIndexElement::create(const QualifiedName& tagName, Document* document, HTMLFormElement* form)
+PassRefPtr<HTMLIsIndexElement> HTMLIsIndexElement::create( const QualifiedName &tagName, Document *document,
+        HTMLFormElement *form )
 {
-    return adoptRef(new HTMLIsIndexElement(tagName, document, form));
+    return adoptRef( new HTMLIsIndexElement( tagName, document, form ) );
 }
 
-void HTMLIsIndexElement::parseMappedAttribute(Attribute* attr)
+void HTMLIsIndexElement::parseMappedAttribute( Attribute *attr )
 {
-    if (attr->name() == promptAttr)
-        setValue(attr->value());
-    else if (attr->name() == placeholderAttr)
-        updatePlaceholderVisibility(true);
+    if ( attr->name() == promptAttr )
+    {
+        setValue( attr->value() );
+    }
+    else if ( attr->name() == placeholderAttr )
+    {
+        updatePlaceholderVisibility( true );
+    }
     else
         // don't call HTMLInputElement::parseMappedAttribute here, as it would
         // accept attributes this element does not support
-        HTMLFormControlElement::parseMappedAttribute(attr);
+    {
+        HTMLFormControlElement::parseMappedAttribute( attr );
+    }
 }
 
 } // namespace

@@ -35,15 +35,17 @@
 
 #include <wtf/Forward.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class InspectorFrontendChannel;
 
-class WorkerContextInspectorProxy {
+class WorkerContextInspectorProxy
+{
 public:
-    virtual void connectFrontend(InspectorFrontendChannel*) { }
+    virtual void connectFrontend( InspectorFrontendChannel * ) { }
     virtual void disconnectFrontend() { }
-    virtual void sendMessageToWorkerContextInspector(const String&) { }
+    virtual void sendMessageToWorkerContextInspector( const String & ) { }
 protected:
     virtual ~WorkerContextInspectorProxy() { }
 };

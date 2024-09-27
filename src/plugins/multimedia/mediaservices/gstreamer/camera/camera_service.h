@@ -46,37 +46,37 @@ class CameraBinViewfinderSettings2;
 
 class CameraBinService : public QMediaService
 {
-   CS_OBJECT(CameraBinService)
+    CS_OBJECT( CameraBinService )
 
- public:
-   CameraBinService(GstElementFactory *sourceFactory, QObject *parent = nullptr);
-   virtual ~CameraBinService();
+public:
+    CameraBinService( GstElementFactory *sourceFactory, QObject *parent = nullptr );
+    virtual ~CameraBinService();
 
-   QMediaControl *requestControl(const QString &name) override;
-   void releaseControl(QMediaControl *) override;
+    QMediaControl *requestControl( const QString &name ) override;
+    void releaseControl( QMediaControl * ) override;
 
-   static bool isCameraBinAvailable();
+    static bool isCameraBinAvailable();
 
- private:
-   void setAudioPreview(GstElement *);
+private:
+    void setAudioPreview( GstElement * );
 
-   CameraBinSession *m_captureSession;
-   CameraBinMetaData *m_metaDataControl;
+    CameraBinSession *m_captureSession;
+    CameraBinMetaData *m_metaDataControl;
 
-   QAudioInputSelectorControl *m_audioInputSelector;
-   QVideoDeviceSelectorControl *m_videoInputDevice;
+    QAudioInputSelectorControl *m_audioInputSelector;
+    QVideoDeviceSelectorControl *m_videoInputDevice;
 
-   QMediaControl *m_videoOutput;
+    QMediaControl *m_videoOutput;
 
-   QMediaControl *m_videoRenderer;
-   QGstreamerVideoWindow *m_videoWindow;
-   QGstreamerVideoWidgetControl *m_videoWidgetControl;
+    QMediaControl *m_videoRenderer;
+    QGstreamerVideoWindow *m_videoWindow;
+    QGstreamerVideoWidgetControl *m_videoWidgetControl;
 
-   CameraBinImageCapture *m_imageCaptureControl;
-   QMediaControl *m_cameraInfoControl;
+    CameraBinImageCapture *m_imageCaptureControl;
+    QMediaControl *m_cameraInfoControl;
 
-   CameraBinViewfinderSettings *m_viewfinderSettingsControl;
-   CameraBinViewfinderSettings2 *m_viewfinderSettingsControl2;
+    CameraBinViewfinderSettings *m_viewfinderSettingsControl;
+    CameraBinViewfinderSettings2 *m_viewfinderSettingsControl2;
 };
 
 #endif

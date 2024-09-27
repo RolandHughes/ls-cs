@@ -30,32 +30,37 @@
 
 #include <QRectF>
 
-namespace WebCore {
+namespace WebCore
+{
 
-FloatRect::FloatRect(const QRectF& r)
-    : m_location(r.topLeft())
-    , m_size(r.width()
-    , r.height())
+FloatRect::FloatRect( const QRectF &r )
+    : m_location( r.topLeft() )
+    , m_size( r.width()
+              , r.height() )
 {
 }
 
 FloatRect::operator QRectF() const
 {
-    return QRectF(x(), y(), width(), height());
+    return QRectF( x(), y(), width(), height() );
 }
 
 FloatRect FloatRect::normalized() const
 {
     FloatRect normalizedRect = *this;
 
-    if (width() < 0) {
-        normalizedRect.setX(x() + width());
-        normalizedRect.setWidth(-width());
+    if ( width() < 0 )
+    {
+        normalizedRect.setX( x() + width() );
+        normalizedRect.setWidth( -width() );
     }
-    if (height() < 0) {
-        normalizedRect.setY(y() + height());
-        normalizedRect.setHeight(-height());
+
+    if ( height() < 0 )
+    {
+        normalizedRect.setY( y() + height() );
+        normalizedRect.setHeight( -height() );
     }
+
     return normalizedRect;
 }
 

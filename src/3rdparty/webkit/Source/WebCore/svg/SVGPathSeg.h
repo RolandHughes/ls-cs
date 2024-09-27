@@ -24,9 +24,11 @@
 #if ENABLE(SVG)
 #include <wtf/text/WTFString.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-enum SVGPathSegType {
+enum SVGPathSegType
+{
     PathSegUnknown = 0,
     PathSegClosePath = 1,
     PathSegMoveToAbs = 2,
@@ -49,19 +51,22 @@ enum SVGPathSegType {
     PathSegCurveToQuadraticSmoothRel = 19
 };
 
-enum SVGPathSegRole {
+enum SVGPathSegRole
+{
     PathSegUnalteredRole = 0,
     PathSegNormalizedRole = 1,
     PathSegUndefinedRole = 2
 };
 
-class SVGPathSeg : public RefCounted<SVGPathSeg> {
+class SVGPathSeg : public RefCounted<SVGPathSeg>
+{
 public:
     SVGPathSeg() { }
     virtual ~SVGPathSeg() { }
 
     // Forward declare these enums in the w3c naming scheme, for IDL generation
-    enum {
+    enum
+    {
         PATHSEG_UNKNOWN = PathSegUnknown,
         PATHSEG_CLOSEPATH = PathSegClosePath,
         PATHSEG_MOVETO_ABS = PathSegMoveToAbs,

@@ -30,7 +30,8 @@
 extern "C" {
 #endif
 
-enum {
+enum
+{
     kWKFrameNavigationTypeLinkClicked = 0,
     kWKFrameNavigationTypeFormSubmitted = 1,
     kWKFrameNavigationTypeBackForward = 2,
@@ -40,7 +41,8 @@ enum {
 };
 typedef uint32_t WKFrameNavigationType;
 
-enum {
+enum
+{
     kWKSameDocumentNavigationAnchorNavigation,
     kWKSameDocumentNavigationSessionStatePush,
     kWKSameDocumentNavigationSessionStateReplace,

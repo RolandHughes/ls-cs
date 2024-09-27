@@ -31,52 +31,59 @@ QMediaResource::QMediaResource()
 {
 }
 
-QMediaResource::QMediaResource(const QUrl &url, const QString &mimeType)
+QMediaResource::QMediaResource( const QUrl &url, const QString &mimeType )
 {
-   values.insert(Url, url);
-   values.insert(MimeType, mimeType);
+    values.insert( Url, url );
+    values.insert( MimeType, mimeType );
 }
 
-QMediaResource::QMediaResource(const QNetworkRequest &request, const QString &mimeType)
+QMediaResource::QMediaResource( const QNetworkRequest &request, const QString &mimeType )
 {
-   values.insert(Request, QVariant::fromValue(request));
-   values.insert(Url, request.url());
-   values.insert(MimeType, mimeType);
+    values.insert( Request, QVariant::fromValue( request ) );
+    values.insert( Url, request.url() );
+    values.insert( MimeType, mimeType );
 }
 
-QMediaResource::QMediaResource(const QMediaResource &other)
-   : values(other.values)
+QMediaResource::QMediaResource( const QMediaResource &other )
+    : values( other.values )
 {
 }
 
-QMediaResource &QMediaResource::operator =(const QMediaResource &other)
+QMediaResource &QMediaResource::operator =( const QMediaResource &other )
 {
-   values = other.values;
+    values = other.values;
 
-   return *this;
+    return *this;
 }
 
 QMediaResource::~QMediaResource()
 {
 }
 
-bool QMediaResource::operator ==(const QMediaResource &other) const
+bool QMediaResource::operator ==( const QMediaResource &other ) const
 {
-   // Compare requests directly as QNetworkRequests are "custom types".
-   for (int key : values.keys()) {
-      switch (key) {
-         case Request:
-            if (request() != other.request()) {
-               return false;
-            }
-            break;
-         default:
-            if (values.value(key) != other.values.value(key)) {
-               return false;
-            }
-      }
-   }
-   return true;
+    // Compare requests directly as QNetworkRequests are "custom types".
+    for ( int key : values.keys() )
+    {
+        switch ( key )
+        {
+            case Request:
+                if ( request() != other.request() )
+                {
+                    return false;
+                }
+
+                break;
+
+            default:
+                if ( values.value( key ) != other.values.value( key ) )
+                {
+                    return false;
+                }
+        }
+    }
+
+    return true;
 }
 
 /*!
@@ -84,9 +91,9 @@ bool QMediaResource::operator ==(const QMediaResource &other) const
 
     Returns true if they are different, and false otherwise.
 */
-bool QMediaResource::operator !=(const QMediaResource &other) const
+bool QMediaResource::operator !=( const QMediaResource &other ) const
 {
-   return !(*this == other);
+    return !( *this == other );
 }
 
 /*!
@@ -96,7 +103,7 @@ bool QMediaResource::operator !=(const QMediaResource &other) const
 */
 bool QMediaResource::isNull() const
 {
-   return values.isEmpty();
+    return values.isEmpty();
 }
 
 /*!
@@ -104,7 +111,7 @@ bool QMediaResource::isNull() const
 */
 QUrl QMediaResource::url() const
 {
-   return (values.value(Url)).value<QUrl>();
+    return ( values.value( Url ) ).value<QUrl>();
 }
 
 /*!
@@ -112,11 +119,12 @@ QUrl QMediaResource::url() const
 */
 QNetworkRequest QMediaResource::request() const
 {
-   if (values.contains(Request)) {
-      return (values.value(Request)).value<QNetworkRequest>();
-   }
+    if ( values.contains( Request ) )
+    {
+        return ( values.value( Request ) ).value<QNetworkRequest>();
+    }
 
-   return QNetworkRequest(url());
+    return QNetworkRequest( url() );
 }
 
 /*!
@@ -126,7 +134,7 @@ QNetworkRequest QMediaResource::request() const
 */
 QString QMediaResource::mimeType() const
 {
-   return (values.value(MimeType)).value<QString>();
+    return ( values.value( MimeType ) ).value<QString>();
 }
 
 /*!
@@ -136,19 +144,22 @@ QString QMediaResource::mimeType() const
 */
 QString QMediaResource::language() const
 {
-   return (values.value(Language)).value<QString>();
+    return ( values.value( Language ) ).value<QString>();
 }
 
 /*!
     Sets the \a language of a media resource.
 */
-void QMediaResource::setLanguage(const QString &language)
+void QMediaResource::setLanguage( const QString &language )
 {
-   if (! language.isEmpty()) {
-      values.insert(Language, language);
-   } else {
-      values.remove(Language);
-   }
+    if ( ! language.isEmpty() )
+    {
+        values.insert( Language, language );
+    }
+    else
+    {
+        values.remove( Language );
+    }
 }
 
 /*!
@@ -159,19 +170,22 @@ void QMediaResource::setLanguage(const QString &language)
 */
 QString QMediaResource::audioCodec() const
 {
-   return (values.value(AudioCodec)).value<QString>();
+    return ( values.value( AudioCodec ) ).value<QString>();
 }
 
 /*!
     Sets the audio \a codec of a media resource.
 */
-void QMediaResource::setAudioCodec(const QString &codec)
+void QMediaResource::setAudioCodec( const QString &codec )
 {
-   if (! codec.isEmpty()) {
-      values.insert(AudioCodec, codec);
-   } else {
-      values.remove(AudioCodec);
-   }
+    if ( ! codec.isEmpty() )
+    {
+        values.insert( AudioCodec, codec );
+    }
+    else
+    {
+        values.remove( AudioCodec );
+    }
 }
 
 /*!
@@ -182,19 +196,22 @@ void QMediaResource::setAudioCodec(const QString &codec)
 */
 QString QMediaResource::videoCodec() const
 {
-   return (values.value(VideoCodec)).value<QString>();
+    return ( values.value( VideoCodec ) ).value<QString>();
 }
 
 /*!
     Sets the video \a codec of media resource.
 */
-void QMediaResource::setVideoCodec(const QString &codec)
+void QMediaResource::setVideoCodec( const QString &codec )
 {
-   if (! codec.isEmpty()) {
-      values.insert(VideoCodec, codec);
-   } else {
-      values.remove(VideoCodec);
-   }
+    if ( ! codec.isEmpty() )
+    {
+        values.insert( VideoCodec, codec );
+    }
+    else
+    {
+        values.remove( VideoCodec );
+    }
 }
 
 /*!
@@ -204,19 +221,22 @@ void QMediaResource::setVideoCodec(const QString &codec)
 */
 qint64 QMediaResource::dataSize() const
 {
-   return (values.value(DataSize)).value<qint64>();
+    return ( values.value( DataSize ) ).value<qint64>();
 }
 
 /*!
     Sets the \a size in bytes of a media resource.
 */
-void QMediaResource::setDataSize(const qint64 size)
+void QMediaResource::setDataSize( const qint64 size )
 {
-   if (size != 0) {
-      values.insert(DataSize, size);
-   } else {
-      values.remove(DataSize);
-   }
+    if ( size != 0 )
+    {
+        values.insert( DataSize, size );
+    }
+    else
+    {
+        values.remove( DataSize );
+    }
 }
 
 /*!
@@ -226,19 +246,22 @@ void QMediaResource::setDataSize(const qint64 size)
 */
 int QMediaResource::audioBitRate() const
 {
-   return values.value(AudioBitRate).toInt();
+    return values.value( AudioBitRate ).toInt();
 }
 
 /*!
     Sets the bit \a rate in bits per second of a media resource's video stream.
 */
-void QMediaResource::setAudioBitRate(int rate)
+void QMediaResource::setAudioBitRate( int rate )
 {
-   if (rate != 0) {
-      values.insert(AudioBitRate, rate);
-   } else {
-      values.remove(AudioBitRate);
-   }
+    if ( rate != 0 )
+    {
+        values.insert( AudioBitRate, rate );
+    }
+    else
+    {
+        values.remove( AudioBitRate );
+    }
 }
 
 /*!
@@ -248,19 +271,22 @@ void QMediaResource::setAudioBitRate(int rate)
 */
 int QMediaResource::sampleRate() const
 {
-   return (values.value(SampleRate)).value<int>();
+    return ( values.value( SampleRate ) ).value<int>();
 }
 
 /*!
     Sets the audio \a sampleRate of a media resource.
 */
-void QMediaResource::setSampleRate(int sampleRate)
+void QMediaResource::setSampleRate( int sampleRate )
 {
-   if (sampleRate != 0) {
-      values.insert(SampleRate, sampleRate);
-   } else {
-      values.remove(SampleRate);
-   }
+    if ( sampleRate != 0 )
+    {
+        values.insert( SampleRate, sampleRate );
+    }
+    else
+    {
+        values.remove( SampleRate );
+    }
 }
 
 /*!
@@ -270,19 +296,22 @@ void QMediaResource::setSampleRate(int sampleRate)
 */
 int QMediaResource::channelCount() const
 {
-   return (values.value(ChannelCount)).value<int>();
+    return ( values.value( ChannelCount ) ).value<int>();
 }
 
 /*!
     Sets the number of audio \a channels in a media resource.
 */
-void QMediaResource::setChannelCount(int channels)
+void QMediaResource::setChannelCount( int channels )
 {
-   if (channels != 0) {
-      values.insert(ChannelCount, channels);
-   } else {
-      values.remove(ChannelCount);
-   }
+    if ( channels != 0 )
+    {
+        values.insert( ChannelCount, channels );
+    }
+    else
+    {
+        values.remove( ChannelCount );
+    }
 }
 
 /*!
@@ -292,19 +321,22 @@ void QMediaResource::setChannelCount(int channels)
 */
 int QMediaResource::videoBitRate() const
 {
-   return values.value(VideoBitRate).toInt();
+    return values.value( VideoBitRate ).toInt();
 }
 
 /*!
     Sets the bit \a rate in bits per second of a media resource's video stream.
 */
-void QMediaResource::setVideoBitRate(int rate)
+void QMediaResource::setVideoBitRate( int rate )
 {
-   if (rate != 0) {
-      values.insert(VideoBitRate, rate);
-   } else {
-      values.remove(VideoBitRate);
-   }
+    if ( rate != 0 )
+    {
+        values.insert( VideoBitRate, rate );
+    }
+    else
+    {
+        values.remove( VideoBitRate );
+    }
 }
 
 /*!
@@ -315,30 +347,36 @@ void QMediaResource::setVideoBitRate(int rate)
 */
 QSize QMediaResource::resolution() const
 {
-   return (values.value(Resolution)).value<QSize>();
+    return ( values.value( Resolution ) ).value<QSize>();
 }
 
 /*!
     Sets the \a resolution in pixels of a media resource.
 */
-void QMediaResource::setResolution(const QSize &resolution)
+void QMediaResource::setResolution( const QSize &resolution )
 {
-   if (resolution.width() != -1 || resolution.height() != -1) {
-      values.insert(Resolution, resolution);
-   } else {
-      values.remove(Resolution);
-   }
+    if ( resolution.width() != -1 || resolution.height() != -1 )
+    {
+        values.insert( Resolution, resolution );
+    }
+    else
+    {
+        values.remove( Resolution );
+    }
 }
 
 /*!
     Sets the \a width and \a height in pixels of a media resource.
 */
-void QMediaResource::setResolution(int width, int height)
+void QMediaResource::setResolution( int width, int height )
 {
-   if (width != -1 || height != -1) {
-      values.insert(Resolution, QSize(width, height));
-   } else {
-      values.remove(Resolution);
-   }
+    if ( width != -1 || height != -1 )
+    {
+        values.insert( Resolution, QSize( width, height ) );
+    }
+    else
+    {
+        values.remove( Resolution );
+    }
 }
 

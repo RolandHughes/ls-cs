@@ -34,13 +34,15 @@
 #include <wtf/HashMap.h>
 #include <wtf/PassRefPtr.h>
 
-namespace CoreIPC {
+namespace CoreIPC
+{
 class ArgumentDecoder;
 class Connection;
 class MessageID;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
 class WebContext;
 class WebProcessProxy;
@@ -48,25 +50,29 @@ class WebSecurityOrigin;
 
 typedef GenericCallback<WKArrayRef> ArrayCallback;
 
-class WebDatabaseManagerProxy : public APIObject {
+class WebDatabaseManagerProxy : public APIObject
+{
 public:
     static const Type APIType = TypeDatabaseManager;
 
-    static PassRefPtr<WebDatabaseManagerProxy> create(WebContext*);
+    static PassRefPtr<WebDatabaseManagerProxy> create( WebContext * );
     virtual ~WebDatabaseManagerProxy();
 
     void invalidate();
-    void clearContext() { m_webContext = 0; }
+    void clearContext()
+    {
+        m_webContext = 0;
+    }
 
-    void initializeClient(const WKDatabaseManagerClient*);
+    void initializeClient( const WKDatabaseManagerClient * );
 
-    void getDatabasesByOrigin(PassRefPtr<ArrayCallback>);
-    void getDatabaseOrigins(PassRefPtr<ArrayCallback>);
-    void deleteDatabaseWithNameForOrigin(const String& databaseIdentifier, WebSecurityOrigin*);
-    void deleteDatabasesForOrigin(WebSecurityOrigin*);
+    void getDatabasesByOrigin( PassRefPtr<ArrayCallback> );
+    void getDatabaseOrigins( PassRefPtr<ArrayCallback> );
+    void deleteDatabaseWithNameForOrigin( const String &databaseIdentifier, WebSecurityOrigin * );
+    void deleteDatabasesForOrigin( WebSecurityOrigin * );
     void deleteAllDatabases();
-    void setQuotaForOrigin(WebSecurityOrigin*, uint64_t quota);
-    
+    void setQuotaForOrigin( WebSecurityOrigin *, uint64_t quota );
+
     static String originKey();
     static String originQuotaKey();
     static String originUsageKey();
@@ -76,22 +82,25 @@ public:
     static String databaseDetailsExpectedUsageKey();
     static String databaseDetailsCurrentUsageKey();
 
-    void didReceiveWebDatabaseManagerProxyMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*);
+    void didReceiveWebDatabaseManagerProxyMessage( CoreIPC::Connection *, CoreIPC::MessageID, CoreIPC::ArgumentDecoder * );
 
-    bool shouldTerminate(WebProcessProxy*) const;
+    bool shouldTerminate( WebProcessProxy * ) const;
 
 private:
-    explicit WebDatabaseManagerProxy(WebContext*);
+    explicit WebDatabaseManagerProxy( WebContext * );
 
-    virtual Type type() const { return APIType; }
+    virtual Type type() const
+    {
+        return APIType;
+    }
 
     // Message handlers.
-    void didGetDatabasesByOrigin(const Vector<OriginAndDatabases>& originAndDatabases, uint64_t callbackID);
-    void didGetDatabaseOrigins(const Vector<String>& originIdentifiers, uint64_t callbackID);
-    void didModifyOrigin(const String& originIdentifier);
-    void didModifyDatabase(const String& originIdentifier, const String& databaseIdentifier);
+    void didGetDatabasesByOrigin( const Vector<OriginAndDatabases> &originAndDatabases, uint64_t callbackID );
+    void didGetDatabaseOrigins( const Vector<String> &originIdentifiers, uint64_t callbackID );
+    void didModifyOrigin( const String &originIdentifier );
+    void didModifyDatabase( const String &originIdentifier, const String &databaseIdentifier );
 
-    WebContext* m_webContext;
+    WebContext *m_webContext;
     HashMap<uint64_t, RefPtr<ArrayCallback> > m_arrayCallbacks;
 
     WebDatabaseManagerProxyClient m_client;

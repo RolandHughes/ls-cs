@@ -30,16 +30,17 @@
 
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class SharedBuffer;
 
 // Returns whether the buffer is a WOFF file.
-bool isWOFF(SharedBuffer* buffer);
+bool isWOFF( SharedBuffer *buffer );
 
 // Returns false if the WOFF file woff is invalid or could not be converted to sfnt (for example,
 // if conversion ran out of memory). Otherwise returns true and writes the sfnt payload into sfnt.
-bool convertWOFFToSfnt(SharedBuffer* woff, Vector<char>& sfnt);
+bool convertWOFFToSfnt( SharedBuffer *woff, Vector<char> &sfnt );
 
 } // namespace WebCore
 

@@ -25,67 +25,73 @@
 #include "JSHTMLElement.h"
 #include <runtime/JSObjectWithGlobalObject.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class HTMLCanvasElement;
 
-class JSHTMLCanvasElement : public JSHTMLElement {
+class JSHTMLCanvasElement : public JSHTMLElement
+{
     typedef JSHTMLElement Base;
 public:
-    JSHTMLCanvasElement(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<HTMLCanvasElement>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
-    virtual void put(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::JSValue, JSC::PutPropertySlot&);
+    JSHTMLCanvasElement( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<HTMLCanvasElement> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
+    virtual void put( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::JSValue, JSC::PutPropertySlot & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
 
     // Custom functions
-    JSC::JSValue toDataURL(JSC::ExecState*);
-    JSC::JSValue getContext(JSC::ExecState*);
-    HTMLCanvasElement* impl() const
+    JSC::JSValue toDataURL( JSC::ExecState * );
+    JSC::JSValue getContext( JSC::ExecState * );
+    HTMLCanvasElement *impl() const
     {
-        return static_cast<HTMLCanvasElement*>(Base::impl());
+        return static_cast<HTMLCanvasElement *>( Base::impl() );
     }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
-HTMLCanvasElement* toHTMLCanvasElement(JSC::JSValue);
+HTMLCanvasElement *toHTMLCanvasElement( JSC::JSValue );
 
-class JSHTMLCanvasElementPrototype : public JSC::JSObjectWithGlobalObject {
+class JSHTMLCanvasElementPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSHTMLCanvasElementPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSHTMLCanvasElementPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                                  JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 // Functions
 
-JSC::EncodedJSValue JSC_HOST_CALL jsHTMLCanvasElementPrototypeFunctionToDataURL(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsHTMLCanvasElementPrototypeFunctionGetContext(JSC::ExecState*);
+JSC::EncodedJSValue JSC_HOST_CALL jsHTMLCanvasElementPrototypeFunctionToDataURL( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsHTMLCanvasElementPrototypeFunctionGetContext( JSC::ExecState * );
 // Attributes
 
-JSC::JSValue jsHTMLCanvasElementWidth(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLCanvasElementWidth(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLCanvasElementHeight(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLCanvasElementHeight(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLCanvasElementConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsHTMLCanvasElementWidth( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLCanvasElementWidth( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLCanvasElementHeight( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLCanvasElementHeight( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLCanvasElementConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

@@ -6,13 +6,13 @@
  * are met:
  *
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Apple Computer, Inc. ("Apple") nor the names of
  *     its contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
+ *     from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY APPLE AND ITS CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -33,31 +33,36 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class Frame;
+class Frame;
 
-    class Screen : public RefCounted<Screen> {
-    public:
-        static PassRefPtr<Screen> create(Frame *frame) { return adoptRef(new Screen(frame)); }
+class Screen : public RefCounted<Screen>
+{
+public:
+    static PassRefPtr<Screen> create( Frame *frame )
+    {
+        return adoptRef( new Screen( frame ) );
+    }
 
-        Frame* frame() const;
-        void disconnectFrame();
+    Frame *frame() const;
+    void disconnectFrame();
 
-        unsigned height() const;
-        unsigned width() const;
-        unsigned colorDepth() const;
-        unsigned pixelDepth() const;
-        int availLeft() const;
-        int availTop() const;
-        unsigned availHeight() const;
-        unsigned availWidth() const;
+    unsigned height() const;
+    unsigned width() const;
+    unsigned colorDepth() const;
+    unsigned pixelDepth() const;
+    int availLeft() const;
+    int availTop() const;
+    unsigned availHeight() const;
+    unsigned availWidth() const;
 
-    private:
-        Screen(Frame*);
-        
-        Frame* m_frame;
-    };
+private:
+    Screen( Frame * );
+
+    Frame *m_frame;
+};
 
 } // namespace WebCore
 

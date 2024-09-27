@@ -33,33 +33,35 @@
 #include <qthreadpool.h>
 #include <qwaitcondition.h>
 
-namespace QtConcurrent {
+namespace QtConcurrent
+{
 
 // The ThreadEngineBarrier counts worker threads, and allows one
 // thread to wait for all others to finish. Tested for its use in
 // QtConcurrent, requires more testing for use as a general class.
 class ThreadEngineBarrier
 {
- public:
-   ThreadEngineBarrier();
-   void acquire();
-   int release();
-   void wait();
-   int currentCount();
-   bool releaseUnlessLast();
+public:
+    ThreadEngineBarrier();
+    void acquire();
+    int release();
+    void wait();
+    int currentCount();
+    bool releaseUnlessLast();
 
- private:
-   // The thread count is maintained as an integer in the count atomic
-   // variable. The count can be either positive or negative - a negative
-   // count signals that a thread is waiting on the barrier.
+private:
+    // The thread count is maintained as an integer in the count atomic
+    // variable. The count can be either positive or negative - a negative
+    // count signals that a thread is waiting on the barrier.
 
-   QAtomicInt count;
-   QSemaphore semaphore;
+    QAtomicInt count;
+    QSemaphore semaphore;
 };
 
-enum ThreadFunctionResult {
-   ThrottleThread,
-   ThreadFinished
+enum ThreadFunctionResult
+{
+    ThrottleThread,
+    ThreadFinished
 };
 
 // ThreadEngine controls the threads used in the computation.
@@ -68,115 +70,130 @@ enum ThreadFunctionResult {
 
 class Q_CORE_EXPORT ThreadEngineBase: public QRunnable
 {
- public:
-   ThreadEngineBase();
-   virtual ~ThreadEngineBase();
-   void startSingleThreaded();
-   void startBlocking();
-   void startThread();
-   bool isCanceled();
-   void waitForResume();
-   bool isProgressReportingEnabled();
-   void setProgressValue(int progress);
-   void setProgressRange(int minimum, int maximum);
-   void acquireBarrierSemaphore();
+public:
+    ThreadEngineBase();
+    virtual ~ThreadEngineBase();
+    void startSingleThreaded();
+    void startBlocking();
+    void startThread();
+    bool isCanceled();
+    void waitForResume();
+    bool isProgressReportingEnabled();
+    void setProgressValue( int progress );
+    void setProgressRange( int minimum, int maximum );
+    void acquireBarrierSemaphore();
 
- protected:
-   virtual void start() {
-   }
+protected:
+    virtual void start()
+    {
+    }
 
-   virtual void finish() {
-   }
+    virtual void finish()
+    {
+    }
 
-   virtual ThreadFunctionResult threadFunction() {
-      return ThreadFinished;
-   }
+    virtual ThreadFunctionResult threadFunction()
+    {
+        return ThreadFinished;
+    }
 
-   virtual bool shouldStartThread() {
-      return futureInterface ? !futureInterface->isPaused() : true;
-   }
+    virtual bool shouldStartThread()
+    {
+        return futureInterface ? !futureInterface->isPaused() : true;
+    }
 
-   virtual bool shouldThrottleThread() {
-      return futureInterface ? futureInterface->isPaused() : false;
-   }
+    virtual bool shouldThrottleThread()
+    {
+        return futureInterface ? futureInterface->isPaused() : false;
+    }
 
-   QFutureInterfaceBase *futureInterface;
-   QThreadPool *threadPool;
-   ThreadEngineBarrier barrier;
-   QtConcurrent::cs_internal::ExceptionStore exceptionStore;
+    QFutureInterfaceBase *futureInterface;
+    QThreadPool *threadPool;
+    ThreadEngineBarrier barrier;
+    QtConcurrent::cs_internal::ExceptionStore exceptionStore;
 
- private:
-   bool startThreadInternal();
-   void startThreads();
-   void threadExit();
-   bool threadThrottleExit();
-   void run() override;
-   virtual void asynchronousFinish() = 0;
-   void handleException(const QtConcurrent::Exception &exception);
+private:
+    bool startThreadInternal();
+    void startThreads();
+    void threadExit();
+    bool threadThrottleExit();
+    void run() override;
+    virtual void asynchronousFinish() = 0;
+    void handleException( const QtConcurrent::Exception &exception );
 };
 
 template <typename T>
 class ThreadEngine : public virtual ThreadEngineBase
 {
- public:
-   using ResultType = T;
+public:
+    using ResultType = T;
 
-   virtual T *result() {
-      return nullptr;
-   }
+    virtual T *result()
+    {
+        return nullptr;
+    }
 
-   QFutureInterface<T> *futureInterfaceTyped() {
-      return static_cast<QFutureInterface<T> *>(futureInterface);
-   }
+    QFutureInterface<T> *futureInterfaceTyped()
+    {
+        return static_cast<QFutureInterface<T> *>( futureInterface );
+    }
 
-   // Runs the user algorithm using a single thread.
-   T *startSingleThreaded() {
-      ThreadEngineBase::startSingleThreaded();
-      return result();
-   }
+    // Runs the user algorithm using a single thread.
+    T *startSingleThreaded()
+    {
+        ThreadEngineBase::startSingleThreaded();
+        return result();
+    }
 
-   // Runs the user algorithm using multiple threads.
-   // This function blocks until the algorithm is finished,
-   // and then returns the result.
-   T *startBlocking() {
-      ThreadEngineBase::startBlocking();
-      return result();
-   }
+    // Runs the user algorithm using multiple threads.
+    // This function blocks until the algorithm is finished,
+    // and then returns the result.
+    T *startBlocking()
+    {
+        ThreadEngineBase::startBlocking();
+        return result();
+    }
 
-   // Runs the user algorithm using multiple threads.
-   // Does not block, returns a future.
-   QFuture<T> startAsynchronously() {
-      futureInterface = new QFutureInterface<T>();
+    // Runs the user algorithm using multiple threads.
+    // Does not block, returns a future.
+    QFuture<T> startAsynchronously()
+    {
+        futureInterface = new QFutureInterface<T>();
 
-      // reportStart() must be called before starting threads, otherwise the
-      // user algorithm might finish while reportStart() is running, which is very bad.
-      futureInterface->reportStarted();
-      QFuture<T> future = QFuture<T>(futureInterfaceTyped());
-      start();
+        // reportStart() must be called before starting threads, otherwise the
+        // user algorithm might finish while reportStart() is running, which is very bad.
+        futureInterface->reportStarted();
+        QFuture<T> future = QFuture<T>( futureInterfaceTyped() );
+        start();
 
-      acquireBarrierSemaphore();
-      threadPool->start(this);
-      return future;
-   }
+        acquireBarrierSemaphore();
+        threadPool->start( this );
+        return future;
+    }
 
-   void asynchronousFinish() override {
-      finish();
-      futureInterfaceTyped()->reportFinished(result());
-      delete futureInterfaceTyped();
-      delete this;
-   }
+    void asynchronousFinish() override
+    {
+        finish();
+        futureInterfaceTyped()->reportFinished( result() );
+        delete futureInterfaceTyped();
+        delete this;
+    }
 
-   void reportResult(const T *_result, int index = -1) {
-      if (futureInterface) {
-         futureInterfaceTyped()->reportResult(_result, index);
-      }
-   }
+    void reportResult( const T *_result, int index = -1 )
+    {
+        if ( futureInterface )
+        {
+            futureInterfaceTyped()->reportResult( _result, index );
+        }
+    }
 
-   void reportResults(const QVector<T> &_result, int index = -1, int count = -1) {
-      if (futureInterface) {
-         futureInterfaceTyped()->reportResults(_result, index, count);
-      }
-   }
+    void reportResults( const QVector<T> &_result, int index = -1, int count = -1 )
+    {
+        if ( futureInterface )
+        {
+            futureInterfaceTyped()->reportResults( _result, index, count );
+        }
+    }
 };
 
 // The ThreadEngineStarter class ecapsulates the return type fom the thread engine.
@@ -184,25 +201,27 @@ class ThreadEngine : public virtual ThreadEngineBase
 template <typename T>
 class ThreadEngineStarterBase
 {
- public:
-   ThreadEngineStarterBase(ThreadEngine<T> *_threadEngine)
-      : threadEngine(_threadEngine)
-   { }
+public:
+    ThreadEngineStarterBase( ThreadEngine<T> *_threadEngine )
+        : threadEngine( _threadEngine )
+    { }
 
-   ThreadEngineStarterBase(const ThreadEngineStarterBase &other)
-      : threadEngine(other.threadEngine)
-   { }
+    ThreadEngineStarterBase( const ThreadEngineStarterBase &other )
+        : threadEngine( other.threadEngine )
+    { }
 
-   QFuture<T> startAsynchronously() {
-      return threadEngine->startAsynchronously();
-   }
+    QFuture<T> startAsynchronously()
+    {
+        return threadEngine->startAsynchronously();
+    }
 
-   operator QFuture<T>() {
-      return startAsynchronously();
-   }
+    operator QFuture<T>()
+    {
+        return startAsynchronously();
+    }
 
- protected:
-   ThreadEngine<T> *threadEngine;
+protected:
+    ThreadEngine<T> *threadEngine;
 };
 
 // factor out the code that dereferences the T pointer, with a specialization where T is void.
@@ -210,40 +229,42 @@ class ThreadEngineStarterBase
 template <typename T>
 class ThreadEngineStarter : public ThreadEngineStarterBase<T>
 {
-   using Base              = ThreadEngineStarterBase<T>;
-   using TypedThreadEngine = ThreadEngine<T>;
+    using Base              = ThreadEngineStarterBase<T>;
+    using TypedThreadEngine = ThreadEngine<T>;
 
- public:
-   ThreadEngineStarter(TypedThreadEngine *eng)
-      : Base(eng)
-   { }
+public:
+    ThreadEngineStarter( TypedThreadEngine *eng )
+        : Base( eng )
+    { }
 
-   T startBlocking() {
-      T t = *this->threadEngine->startBlocking();
-      delete this->threadEngine;
-      return t;
-   }
+    T startBlocking()
+    {
+        T t = *this->threadEngine->startBlocking();
+        delete this->threadEngine;
+        return t;
+    }
 };
 
 // Full template specialization where T is void.
 template <>
 class ThreadEngineStarter<void> : public ThreadEngineStarterBase<void>
 {
- public:
-   ThreadEngineStarter<void>(ThreadEngine<void> *_threadEngine)
-      : ThreadEngineStarterBase<void>(_threadEngine)
-   { }
+public:
+    ThreadEngineStarter<void>( ThreadEngine<void> *_threadEngine )
+        : ThreadEngineStarterBase<void>( _threadEngine )
+    { }
 
-   void startBlocking() {
-      this->threadEngine->startBlocking();
-      delete this->threadEngine;
-   }
+    void startBlocking()
+    {
+        this->threadEngine->startBlocking();
+        delete this->threadEngine;
+    }
 };
 
 template <typename ThreadEngine>
-inline ThreadEngineStarter<typename ThreadEngine::ResultType> startThreadEngine(ThreadEngine *threadEngine)
+inline ThreadEngineStarter<typename ThreadEngine::ResultType> startThreadEngine( ThreadEngine *threadEngine )
 {
-   return ThreadEngineStarter<typename ThreadEngine::ResultType>(threadEngine);
+    return ThreadEngineStarter<typename ThreadEngine::ResultType>( threadEngine );
 }
 
 } // namespace QtConcurrent

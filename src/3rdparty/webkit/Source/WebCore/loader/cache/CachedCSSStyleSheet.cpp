@@ -35,72 +35,86 @@
 #include "SharedBuffer.h"
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-CachedCSSStyleSheet::CachedCSSStyleSheet(const String& url, const String& charset)
-    : CachedResource(url, CSSStyleSheet)
-    , m_decoder(TextResourceDecoder::create("text/css", charset))
+CachedCSSStyleSheet::CachedCSSStyleSheet( const String &url, const String &charset )
+    : CachedResource( url, CSSStyleSheet )
+    , m_decoder( TextResourceDecoder::create( "text/css", charset ) )
 {
     // Prefer text/css but accept any type (dell.com serves a stylesheet
     // as text/html; see <http://bugs.webkit.org/show_bug.cgi?id=11451>).
-    setAccept("text/css,*/*;q=0.1");
+    setAccept( "text/css,*/*;q=0.1" );
 }
 
 CachedCSSStyleSheet::~CachedCSSStyleSheet()
 {
 }
 
-void CachedCSSStyleSheet::didAddClient(CachedResourceClient *c)
+void CachedCSSStyleSheet::didAddClient( CachedResourceClient *c )
 {
-    if (!isLoading())
-        c->setCSSStyleSheet(m_url, m_response.url(), m_decoder->encoding().name(), this);
+    if ( !isLoading() )
+    {
+        c->setCSSStyleSheet( m_url, m_response.url(), m_decoder->encoding().name(), this );
+    }
 }
 
 void CachedCSSStyleSheet::allClientsRemoved()
 {
-    if (!MemoryCache::shouldMakeResourcePurgeableOnEviction() && isSafeToMakePurgeable())
-        makePurgeable(true);
+    if ( !MemoryCache::shouldMakeResourcePurgeableOnEviction() && isSafeToMakePurgeable() )
+    {
+        makePurgeable( true );
+    }
 }
 
-void CachedCSSStyleSheet::setEncoding(const String& chs)
+void CachedCSSStyleSheet::setEncoding( const String &chs )
 {
-    m_decoder->setEncoding(chs, TextResourceDecoder::EncodingFromHTTPHeader);
+    m_decoder->setEncoding( chs, TextResourceDecoder::EncodingFromHTTPHeader );
 }
 
 String CachedCSSStyleSheet::encoding() const
 {
     return m_decoder->encoding().name();
 }
-    
-const String CachedCSSStyleSheet::sheetText(bool enforceMIMEType, bool* hasValidMIMEType) const 
-{ 
-    ASSERT(!isPurgeable());
 
-    if (!m_data || m_data->isEmpty() || !canUseSheet(enforceMIMEType, hasValidMIMEType))
+const String CachedCSSStyleSheet::sheetText( bool enforceMIMEType, bool *hasValidMIMEType ) const
+{
+    ASSERT( !isPurgeable() );
+
+    if ( !m_data || m_data->isEmpty() || !canUseSheet( enforceMIMEType, hasValidMIMEType ) )
+    {
         return String();
-    
-    if (!m_decodedSheetText.isNull())
+    }
+
+    if ( !m_decodedSheetText.isNull() )
+    {
         return m_decodedSheetText;
-    
+    }
+
     // Don't cache the decoded text, regenerating is cheap and it can use quite a bit of memory
-    String sheetText = m_decoder->decode(m_data->data(), m_data->size());
+    String sheetText = m_decoder->decode( m_data->data(), m_data->size() );
     sheetText += m_decoder->flush();
     return sheetText;
 }
 
-void CachedCSSStyleSheet::data(PassRefPtr<SharedBuffer> data, bool allDataReceived)
+void CachedCSSStyleSheet::data( PassRefPtr<SharedBuffer> data, bool allDataReceived )
 {
-    if (!allDataReceived)
+    if ( !allDataReceived )
+    {
         return;
+    }
 
     m_data = data;
-    setEncodedSize(m_data.get() ? m_data->size() : 0);
+    setEncodedSize( m_data.get() ? m_data->size() : 0 );
+
     // Decode the data to find out the encoding and keep the sheet text around during checkNotify()
-    if (m_data) {
-        m_decodedSheetText = m_decoder->decode(m_data->data(), m_data->size());
+    if ( m_data )
+    {
+        m_decodedSheetText = m_decoder->decode( m_data->data(), m_data->size() );
         m_decodedSheetText += m_decoder->flush();
     }
-    setLoading(false);
+
+    setLoading( false );
     checkNotify();
     // Clear the decoded text as it is unlikely to be needed immediately again and is cheap to regenerate.
     m_decodedSheetText = String();
@@ -108,29 +122,38 @@ void CachedCSSStyleSheet::data(PassRefPtr<SharedBuffer> data, bool allDataReceiv
 
 void CachedCSSStyleSheet::checkNotify()
 {
-    if (isLoading())
+    if ( isLoading() )
+    {
         return;
+    }
 
-    CachedResourceClientWalker w(m_clients);
-    while (CachedResourceClient *c = w.next())
-        c->setCSSStyleSheet(m_url, m_response.url(), m_decoder->encoding().name(), this);
+    CachedResourceClientWalker w( m_clients );
+
+    while ( CachedResourceClient *c = w.next() )
+    {
+        c->setCSSStyleSheet( m_url, m_response.url(), m_decoder->encoding().name(), this );
+    }
 }
 
-void CachedCSSStyleSheet::error(CachedResource::Status status)
+void CachedCSSStyleSheet::error( CachedResource::Status status )
 {
-    setStatus(status);
-    ASSERT(errorOccurred());
-    setLoading(false);
+    setStatus( status );
+    ASSERT( errorOccurred() );
+    setLoading( false );
     checkNotify();
 }
 
-bool CachedCSSStyleSheet::canUseSheet(bool enforceMIMEType, bool* hasValidMIMEType) const
+bool CachedCSSStyleSheet::canUseSheet( bool enforceMIMEType, bool *hasValidMIMEType ) const
 {
-    if (errorOccurred())
+    if ( errorOccurred() )
+    {
         return false;
-        
-    if (!enforceMIMEType && !hasValidMIMEType)
+    }
+
+    if ( !enforceMIMEType && !hasValidMIMEType )
+    {
         return true;
+    }
 
     // This check exactly matches Firefox.  Note that we grab the Content-Type
     // header directly because we want to see what the value is BEFORE content
@@ -139,13 +162,21 @@ bool CachedCSSStyleSheet::canUseSheet(bool enforceMIMEType, bool* hasValidMIMETy
     //
     // This code defaults to allowing the stylesheet for non-HTTP protocols so
     // folks can use standards mode for local HTML documents.
-    String mimeType = extractMIMETypeFromMediaType(response().httpHeaderField("Content-Type"));
-    bool typeOK = mimeType.isEmpty() || equalIgnoringCase(mimeType, "text/css") || equalIgnoringCase(mimeType, "application/x-unknown-content-type");
-    if (hasValidMIMEType)
+    String mimeType = extractMIMETypeFromMediaType( response().httpHeaderField( "Content-Type" ) );
+    bool typeOK = mimeType.isEmpty() || equalIgnoringCase( mimeType, "text/css" )
+                  || equalIgnoringCase( mimeType, "application/x-unknown-content-type" );
+
+    if ( hasValidMIMEType )
+    {
         *hasValidMIMEType = typeOK;
-    if (!enforceMIMEType)
+    }
+
+    if ( !enforceMIMEType )
+    {
         return true;
+    }
+
     return typeOK;
 }
- 
+
 }

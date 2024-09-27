@@ -25,14 +25,19 @@
 #include <wtf/RefPtr.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Plugin;
 class PluginData;
 
-class DOMPlugin : public RefCounted<DOMPlugin>, private FrameDestructionObserver {
+class DOMPlugin : public RefCounted<DOMPlugin>, private FrameDestructionObserver
+{
 public:
-    static PassRefPtr<DOMPlugin> create(PluginData* pluginData, Frame* frame, unsigned index) { return adoptRef(new DOMPlugin(pluginData, frame, index)); }
+    static PassRefPtr<DOMPlugin> create( PluginData *pluginData, Frame *frame, unsigned index )
+    {
+        return adoptRef( new DOMPlugin( pluginData, frame, index ) );
+    }
     ~DOMPlugin();
 
     String name() const;
@@ -41,19 +46,25 @@ public:
 
     unsigned length() const;
 
-    PassRefPtr<DOMMimeType> item(unsigned index);
-    bool canGetItemsForName(const AtomicString& propertyName);
-    PassRefPtr<DOMMimeType> namedItem(const AtomicString& propertyName);
+    PassRefPtr<DOMMimeType> item( unsigned index );
+    bool canGetItemsForName( const AtomicString &propertyName );
+    PassRefPtr<DOMMimeType> namedItem( const AtomicString &propertyName );
 
     // FrameDestructionObserver
-    virtual void frameDestroyed() { m_frame = 0; }
+    virtual void frameDestroyed()
+    {
+        m_frame = 0;
+    }
 
 private:
-    const PluginInfo& pluginInfo() const { return m_pluginData->plugins()[m_index]; }
+    const PluginInfo &pluginInfo() const
+    {
+        return m_pluginData->plugins()[m_index];
+    }
 
-    DOMPlugin(PluginData*, Frame*, unsigned index);
+    DOMPlugin( PluginData *, Frame *, unsigned index );
     RefPtr<PluginData> m_pluginData;
-    Frame* m_frame;
+    Frame *m_frame;
     unsigned m_index;
 };
 

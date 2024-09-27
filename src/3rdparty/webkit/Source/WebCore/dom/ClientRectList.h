@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
 
@@ -32,25 +32,33 @@
 #include <wtf/RefCounted.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class ClientRect;
+class ClientRect;
 
-    class ClientRectList : public RefCounted<ClientRectList> {
-    public:
-        static PassRefPtr<ClientRectList> create() { return adoptRef(new ClientRectList); }
-        static PassRefPtr<ClientRectList> create(const Vector<FloatQuad>& quads) { return adoptRef(new ClientRectList(quads)); }
-        ~ClientRectList();
+class ClientRectList : public RefCounted<ClientRectList>
+{
+public:
+    static PassRefPtr<ClientRectList> create()
+    {
+        return adoptRef( new ClientRectList );
+    }
+    static PassRefPtr<ClientRectList> create( const Vector<FloatQuad> &quads )
+    {
+        return adoptRef( new ClientRectList( quads ) );
+    }
+    ~ClientRectList();
 
-        unsigned length() const;
-        ClientRect* item(unsigned index);
+    unsigned length() const;
+    ClientRect *item( unsigned index );
 
-    private:
-        ClientRectList();
-        ClientRectList(const Vector<FloatQuad>&);
+private:
+    ClientRectList();
+    ClientRectList( const Vector<FloatQuad> & );
 
-        Vector<RefPtr<ClientRect> > m_list;
-    }; 
+    Vector<RefPtr<ClientRect> > m_list;
+};
 
 } // namespace WebCore
 

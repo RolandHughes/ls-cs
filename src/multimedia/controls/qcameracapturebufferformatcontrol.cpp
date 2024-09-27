@@ -24,8 +24,8 @@
 #include <qcameracapturebufferformatcontrol.h>
 
 
-QCameraCaptureBufferFormatControl::QCameraCaptureBufferFormatControl(QObject *parent)
-   : QMediaControl(parent)
+QCameraCaptureBufferFormatControl::QCameraCaptureBufferFormatControl( QObject *parent )
+    : QMediaControl( parent )
 {
 }
 

@@ -34,60 +34,67 @@
 #include "HTMLNames.h"
 #include "SelectionController.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
-RemoveFormatCommand::RemoveFormatCommand(Document* document)
-    : CompositeEditCommand(document)
+RemoveFormatCommand::RemoveFormatCommand( Document *document )
+    : CompositeEditCommand( document )
 {
 }
 
-static bool isElementForRemoveFormatCommand(const Element* element)
+static bool isElementForRemoveFormatCommand( const Element *element )
 {
-    DEFINE_STATIC_LOCAL(HashSet<QualifiedName>, elements, ());
-    if (elements.isEmpty()) {
-        elements.add(acronymTag);
-        elements.add(bTag);
-        elements.add(bdoTag);
-        elements.add(bigTag);
-        elements.add(citeTag);
-        elements.add(codeTag);
-        elements.add(dfnTag);
-        elements.add(emTag);
-        elements.add(fontTag);
-        elements.add(iTag);
-        elements.add(insTag);
-        elements.add(kbdTag);
-        elements.add(nobrTag);
-        elements.add(qTag);
-        elements.add(sTag);
-        elements.add(sampTag);
-        elements.add(smallTag);
-        elements.add(strikeTag);
-        elements.add(strongTag);
-        elements.add(subTag);
-        elements.add(supTag);
-        elements.add(ttTag);
-        elements.add(uTag);
-        elements.add(varTag);
+    DEFINE_STATIC_LOCAL( HashSet<QualifiedName>, elements, () );
+
+    if ( elements.isEmpty() )
+    {
+        elements.add( acronymTag );
+        elements.add( bTag );
+        elements.add( bdoTag );
+        elements.add( bigTag );
+        elements.add( citeTag );
+        elements.add( codeTag );
+        elements.add( dfnTag );
+        elements.add( emTag );
+        elements.add( fontTag );
+        elements.add( iTag );
+        elements.add( insTag );
+        elements.add( kbdTag );
+        elements.add( nobrTag );
+        elements.add( qTag );
+        elements.add( sTag );
+        elements.add( sampTag );
+        elements.add( smallTag );
+        elements.add( strikeTag );
+        elements.add( strongTag );
+        elements.add( subTag );
+        elements.add( supTag );
+        elements.add( ttTag );
+        elements.add( uTag );
+        elements.add( varTag );
     }
-    return elements.contains(element->tagQName());
+
+    return elements.contains( element->tagQName() );
 }
 
 void RemoveFormatCommand::doApply()
 {
-    Frame* frame = document()->frame();
+    Frame *frame = document()->frame();
 
-    if (!frame->selection()->selection().isNonOrphanedCaretOrRange())
+    if ( !frame->selection()->selection().isNonOrphanedCaretOrRange() )
+    {
         return;
+    }
 
     // Get the default style for this editable root, it's the style that we'll give the
     // content that we're operating on.
-    Node* root = frame->selection()->rootEditableElement();
-    RefPtr<EditingStyle> defaultStyle = EditingStyle::create(root);
+    Node *root = frame->selection()->rootEditableElement();
+    RefPtr<EditingStyle> defaultStyle = EditingStyle::create( root );
 
-    applyCommandToComposite(ApplyStyleCommand::create(document(), defaultStyle.get(), isElementForRemoveFormatCommand, editingAction()));
+    applyCommandToComposite( ApplyStyleCommand::create( document(), defaultStyle.get(), isElementForRemoveFormatCommand,
+                             editingAction() ) );
 }
 
 }

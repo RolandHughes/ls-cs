@@ -31,23 +31,24 @@
 class QNetworkAccessManager;
 class QUrl;
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class NetworkAccessDelegator : public QObject, public QSharedData
 {
- public:
-   typedef QExplicitlySharedDataPointer<NetworkAccessDelegator> Ptr;
-   NetworkAccessDelegator(QNetworkAccessManager *const genericManager,
-                          QNetworkAccessManager *const variableURIManager);
+public:
+    typedef QExplicitlySharedDataPointer<NetworkAccessDelegator> Ptr;
+    NetworkAccessDelegator( QNetworkAccessManager *const genericManager,
+                            QNetworkAccessManager *const variableURIManager );
 
-   QNetworkAccessManager *managerFor(const QUrl &uri);
+    QNetworkAccessManager *managerFor( const QUrl &uri );
 
-   QPointer<QNetworkAccessManager> m_genericManager;
-   QPointer<QNetworkAccessManager> m_variableURIManager;
+    QPointer<QNetworkAccessManager> m_genericManager;
+    QPointer<QNetworkAccessManager> m_variableURIManager;
 
- private:
-   NetworkAccessDelegator(const NetworkAccessDelegator &) = delete;
-   NetworkAccessDelegator &operator=(const NetworkAccessDelegator &) = delete;
+private:
+    NetworkAccessDelegator( const NetworkAccessDelegator & ) = delete;
+    NetworkAccessDelegator &operator=( const NetworkAccessDelegator & ) = delete;
 };
 }
 

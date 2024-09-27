@@ -24,9 +24,7 @@
 #include "qscriptdebuggercodefinderwidgetinterface_p.h"
 #include "qscriptdebuggercodefinderwidgetinterface_p_p.h"
 
-QT_BEGIN_NAMESPACE
-
-QScriptDebuggerCodeFinderWidgetInterfacePrivate::QScriptDebuggerCodeFinderWidgetInterfacePrivate()
+QT_BEGIN_NAMESPACE QScriptDebuggerCodeFinderWidgetInterfacePrivate::QScriptDebuggerCodeFinderWidgetInterfacePrivate()
 {
 }
 
@@ -39,9 +37,9 @@ QScriptDebuggerCodeFinderWidgetInterface::~QScriptDebuggerCodeFinderWidgetInterf
 }
 
 QScriptDebuggerCodeFinderWidgetInterface::QScriptDebuggerCodeFinderWidgetInterface(
-   QScriptDebuggerCodeFinderWidgetInterfacePrivate &dd,
-   QWidget *parent, Qt::WindowFlags flags)
-   : QWidget(dd, parent, flags)
+    QScriptDebuggerCodeFinderWidgetInterfacePrivate &dd,
+    QWidget *parent, Qt::WindowFlags flags )
+    : QWidget( dd, parent, flags )
 {
 }
 

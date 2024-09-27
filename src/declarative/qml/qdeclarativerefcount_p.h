@@ -30,14 +30,14 @@ QT_BEGIN_NAMESPACE
 
 class Q_DECLARATIVE_EXPORT QDeclarativeRefCount
 {
- public:
-   QDeclarativeRefCount();
-   virtual ~QDeclarativeRefCount();
-   void addref();
-   void release();
+public:
+    QDeclarativeRefCount();
+    virtual ~QDeclarativeRefCount();
+    void addref();
+    void release();
 
- private:
-   int refCount;
+private:
+    int refCount;
 };
 
 QT_END_NAMESPACE

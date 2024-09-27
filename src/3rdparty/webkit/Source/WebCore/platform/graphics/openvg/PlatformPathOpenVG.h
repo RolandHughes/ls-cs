@@ -25,17 +25,22 @@
 
 #include <openvg.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class PlatformPathOpenVG : public SharedResourceOpenVG {
+class PlatformPathOpenVG : public SharedResourceOpenVG
+{
 public:
     PlatformPathOpenVG();
-    PlatformPathOpenVG(const PlatformPathOpenVG&);
+    PlatformPathOpenVG( const PlatformPathOpenVG & );
     ~PlatformPathOpenVG();
 
-    PlatformPathOpenVG& operator=(const PlatformPathOpenVG&);
+    PlatformPathOpenVG &operator=( const PlatformPathOpenVG & );
 
-    VGPath vgPath() { return m_vgPath; }
+    VGPath vgPath()
+    {
+        return m_vgPath;
+    }
     void clear();
 
 public:

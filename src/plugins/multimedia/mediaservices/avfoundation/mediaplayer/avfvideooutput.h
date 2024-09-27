@@ -28,12 +28,12 @@
 
 class AVFVideoOutput
 {
- public:
-   virtual ~AVFVideoOutput() {}
-   virtual void setLayer(void *playerLayer) = 0;
+public:
+    virtual ~AVFVideoOutput() {}
+    virtual void setLayer( void *playerLayer ) = 0;
 };
 
 #define AVFVideoOutput_iid "com.copperspice.CS.AVFVideoOutput/1.0"
-CS_DECLARE_INTERFACE(AVFVideoOutput, AVFVideoOutput_iid)
+CS_DECLARE_INTERFACE( AVFVideoOutput, AVFVideoOutput_iid )
 
 #endif

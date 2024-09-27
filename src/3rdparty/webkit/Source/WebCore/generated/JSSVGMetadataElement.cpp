@@ -29,9 +29,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSSVGMetadataElement);
+ASSERT_CLASS_FITS_IN_CELL( JSSVGMetadataElement );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -42,8 +43,8 @@ ASSERT_CLASS_FITS_IN_CELL(JSSVGMetadataElement);
 
 static const HashTableValue JSSVGMetadataElementTableValues[2] =
 {
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGMetadataElementConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGMetadataElementConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -57,43 +58,51 @@ static JSC_CONST_HASHTABLE HashTable JSSVGMetadataElementTable = { 2, 1, JSSVGMe
 
 static const HashTableValue JSSVGMetadataElementConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSSVGMetadataElementConstructorTable = { 1, 0, JSSVGMetadataElementConstructorTableValues, 0 };
-class JSSVGMetadataElementConstructor : public DOMConstructorObject {
+class JSSVGMetadataElementConstructor : public DOMConstructorObject
+{
 public:
-    JSSVGMetadataElementConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSSVGMetadataElementConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSSVGMetadataElementConstructor::s_info = { "SVGMetadataElementConstructor", &DOMConstructorObject::s_info, &JSSVGMetadataElementConstructorTable, 0 };
 
-JSSVGMetadataElementConstructor::JSSVGMetadataElementConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSSVGMetadataElementConstructor::JSSVGMetadataElementConstructor( ExecState *exec, Structure *structure,
+        JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSSVGMetadataElementPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSSVGMetadataElementPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSSVGMetadataElementConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGMetadataElementConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSVGMetadataElementConstructor, JSDOMWrapper>(exec, &JSSVGMetadataElementConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSSVGMetadataElementConstructor, JSDOMWrapper>( exec, &JSSVGMetadataElementConstructorTable, this,
+            propertyName, slot );
 }
 
-bool JSSVGMetadataElementConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGMetadataElementConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSVGMetadataElementConstructor, JSDOMWrapper>(exec, &JSSVGMetadataElementConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSVGMetadataElementConstructor, JSDOMWrapper>( exec, &JSSVGMetadataElementConstructorTable, this,
+            propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -105,50 +114,53 @@ bool JSSVGMetadataElementConstructor::getOwnPropertyDescriptor(ExecState* exec, 
 
 static const HashTableValue JSSVGMetadataElementPrototypeTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSSVGMetadataElementPrototypeTable = { 1, 0, JSSVGMetadataElementPrototypeTableValues, 0 };
 const ClassInfo JSSVGMetadataElementPrototype::s_info = { "SVGMetadataElementPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSSVGMetadataElementPrototypeTable, 0 };
 
-JSObject* JSSVGMetadataElementPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSVGMetadataElementPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSSVGMetadataElement>(exec, globalObject);
+    return getDOMPrototype<JSSVGMetadataElement>( exec, globalObject );
 }
 
 const ClassInfo JSSVGMetadataElement::s_info = { "SVGMetadataElement", &JSSVGElement::s_info, &JSSVGMetadataElementTable, 0 };
 
-JSSVGMetadataElement::JSSVGMetadataElement(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<SVGMetadataElement> impl)
-    : JSSVGElement(structure, globalObject, impl)
+JSSVGMetadataElement::JSSVGMetadataElement( Structure *structure, JSDOMGlobalObject *globalObject,
+        PassRefPtr<SVGMetadataElement> impl )
+    : JSSVGElement( structure, globalObject, impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSSVGMetadataElement::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSVGMetadataElement::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSSVGMetadataElementPrototype(exec->globalData(), globalObject, JSSVGMetadataElementPrototype::createStructure(exec->globalData(), JSSVGElementPrototype::self(exec, globalObject)));
+    return new ( exec ) JSSVGMetadataElementPrototype( exec->globalData(), globalObject,
+            JSSVGMetadataElementPrototype::createStructure( exec->globalData(), JSSVGElementPrototype::self( exec, globalObject ) ) );
 }
 
-bool JSSVGMetadataElement::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGMetadataElement::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSVGMetadataElement, Base>(exec, &JSSVGMetadataElementTable, this, propertyName, slot);
+    return getStaticValueSlot<JSSVGMetadataElement, Base>( exec, &JSSVGMetadataElementTable, this, propertyName, slot );
 }
 
-bool JSSVGMetadataElement::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGMetadataElement::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSVGMetadataElement, Base>(exec, &JSSVGMetadataElementTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSVGMetadataElement, Base>( exec, &JSSVGMetadataElementTable, this, propertyName, descriptor );
 }
 
-JSValue jsSVGMetadataElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGMetadataElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGMetadataElement* domObject = static_cast<JSSVGMetadataElement*>(asObject(slotBase));
-    return JSSVGMetadataElement::getConstructor(exec, domObject->globalObject());
+    JSSVGMetadataElement *domObject = static_cast<JSSVGMetadataElement *>( asObject( slotBase ) );
+    return JSSVGMetadataElement::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSSVGMetadataElement::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSSVGMetadataElement::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSSVGMetadataElementConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSSVGMetadataElementConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
 

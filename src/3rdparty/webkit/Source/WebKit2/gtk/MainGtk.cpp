@@ -26,7 +26,7 @@
 
 #include "WebProcessMainGtk.h"
 
-int main(int argc, char** argv)
+int main( int argc, char **argv )
 {
-    return WebKit::WebProcessMainGtk(argc, argv);
+    return WebKit::WebProcessMainGtk( argc, argv );
 }

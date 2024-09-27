@@ -35,20 +35,25 @@
 #include "SQLResultSetRowList.h"
 #include <wtf/ThreadSafeRefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class SQLResultSet : public ThreadSafeRefCounted<SQLResultSet> {
+class SQLResultSet : public ThreadSafeRefCounted<SQLResultSet>
+{
 public:
-    static PassRefPtr<SQLResultSet> create() { return adoptRef(new SQLResultSet); }
+    static PassRefPtr<SQLResultSet> create()
+    {
+        return adoptRef( new SQLResultSet );
+    }
 
-    SQLResultSetRowList* rows() const;
+    SQLResultSetRowList *rows() const;
 
-    int64_t insertId(ExceptionCode&) const;
+    int64_t insertId( ExceptionCode & ) const;
     int rowsAffected() const;
 
 // For internal (non-JS) use
-    void setInsertId(int64_t);
-    void setRowsAffected(int);
+    void setInsertId( int64_t );
+    void setRowsAffected( int );
 
 private:
     SQLResultSet();

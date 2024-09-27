@@ -21,7 +21,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #import <AppKit/NSFontManager.h>
@@ -29,9 +29,10 @@
 
 // This interface exists so that third party products (like Silk) can patch in to an Obj-C method to manipulate WebKit's font caching/substitution.
 @interface WebFontCache : NSObject
-+ (NSFont *)fontWithFamily:(NSString *)desiredFamily traits:(NSFontTraitMask)desiredTraits weight:(int)desiredWeight size:(float)size;
-+ (void)getTraits:(Vector<unsigned>&)traitsMasks inFamily:(NSString *)desiredFamily;
++ ( NSFont * )fontWithFamily:( NSString * )desiredFamily traits:( NSFontTraitMask )desiredTraits weight:
+    ( int )desiredWeight size:( float )size;
++ ( void )getTraits:( Vector<unsigned> & )traitsMasks inFamily:( NSString * )desiredFamily;
 
 // This older version of the interface is relied upon by some clients. WebCore doesn't use it.
-+ (NSFont *)fontWithFamily:(NSString *)desiredFamily traits:(NSFontTraitMask)desiredTraits size:(float)size;
++ ( NSFont * )fontWithFamily:( NSString * )desiredFamily traits:( NSFontTraitMask )desiredTraits size:( float )size;
 @end

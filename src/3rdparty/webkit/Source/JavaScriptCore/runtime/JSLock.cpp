@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Library General Public License
  * along with this library; see the file COPYING.LIB.  If not, write to
  * the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
- * Boston, MA 02110-1301, USA 
+ * Boston, MA 02110-1301, USA
  *
  */
 
@@ -30,7 +30,8 @@
 #include <pthread.h>
 #endif
 
-namespace JSC {
+namespace JSC
+{
 
 // JSLock is only needed to support an obsolete execution model where JavaScriptCore
 // automatically protected against concurrent access from multiple threads.
@@ -45,7 +46,7 @@ pthread_key_t JSLockCount;
 
 static void createJSLockCount()
 {
-    pthread_key_create(&JSLockCount, 0);
+    pthread_key_create( &JSLockCount, 0 );
 }
 
 pthread_once_t createJSLockCountOnce = PTHREAD_ONCE_INIT;
@@ -53,81 +54,94 @@ pthread_once_t createJSLockCountOnce = PTHREAD_ONCE_INIT;
 // Lock nesting count.
 intptr_t JSLock::lockCount()
 {
-    pthread_once(&createJSLockCountOnce, createJSLockCount);
+    pthread_once( &createJSLockCountOnce, createJSLockCount );
 
-    return reinterpret_cast<intptr_t>(pthread_getspecific(JSLockCount));
+    return reinterpret_cast<intptr_t>( pthread_getspecific( JSLockCount ) );
 }
 
-static void setLockCount(intptr_t count)
+static void setLockCount( intptr_t count )
 {
-    ASSERT(count >= 0);
-    pthread_setspecific(JSLockCount, reinterpret_cast<void*>(count));
+    ASSERT( count >= 0 );
+    pthread_setspecific( JSLockCount, reinterpret_cast<void *>( count ) );
 }
 
-JSLock::JSLock(ExecState* exec)
-    : m_lockBehavior(exec->globalData().isSharedInstance() ? LockForReal : SilenceAssertionsOnly)
+JSLock::JSLock( ExecState *exec )
+    : m_lockBehavior( exec->globalData().isSharedInstance() ? LockForReal : SilenceAssertionsOnly )
 {
-    lock(m_lockBehavior);
+    lock( m_lockBehavior );
 }
 
-JSLock::JSLock(JSGlobalData* globalData)
-    : m_lockBehavior(globalData->isSharedInstance() ? LockForReal : SilenceAssertionsOnly)
+JSLock::JSLock( JSGlobalData *globalData )
+    : m_lockBehavior( globalData->isSharedInstance() ? LockForReal : SilenceAssertionsOnly )
 {
-    lock(m_lockBehavior);
+    lock( m_lockBehavior );
 }
 
-void JSLock::lock(JSLockBehavior lockBehavior)
+void JSLock::lock( JSLockBehavior lockBehavior )
 {
 #ifdef NDEBUG
+
     // Locking "not for real" is a debug-only feature.
-    if (lockBehavior == SilenceAssertionsOnly)
+    if ( lockBehavior == SilenceAssertionsOnly )
+    {
         return;
+    }
+
 #endif
 
-    pthread_once(&createJSLockCountOnce, createJSLockCount);
+    pthread_once( &createJSLockCountOnce, createJSLockCount );
 
     intptr_t currentLockCount = lockCount();
-    if (!currentLockCount && lockBehavior == LockForReal) {
+
+    if ( !currentLockCount && lockBehavior == LockForReal )
+    {
         int result;
-        result = pthread_mutex_lock(&JSMutex);
-        ASSERT(!result);
+        result = pthread_mutex_lock( &JSMutex );
+        ASSERT( !result );
     }
-    setLockCount(currentLockCount + 1);
+
+    setLockCount( currentLockCount + 1 );
 }
 
-void JSLock::unlock(JSLockBehavior lockBehavior)
+void JSLock::unlock( JSLockBehavior lockBehavior )
 {
-    ASSERT(lockCount());
+    ASSERT( lockCount() );
 
 #ifdef NDEBUG
+
     // Locking "not for real" is a debug-only feature.
-    if (lockBehavior == SilenceAssertionsOnly)
+    if ( lockBehavior == SilenceAssertionsOnly )
+    {
         return;
+    }
+
 #endif
 
     intptr_t newLockCount = lockCount() - 1;
-    setLockCount(newLockCount);
-    if (!newLockCount && lockBehavior == LockForReal) {
+    setLockCount( newLockCount );
+
+    if ( !newLockCount && lockBehavior == LockForReal )
+    {
         int result;
-        result = pthread_mutex_unlock(&JSMutex);
-        ASSERT(!result);
+        result = pthread_mutex_unlock( &JSMutex );
+        ASSERT( !result );
     }
 }
 
-void JSLock::lock(ExecState* exec)
+void JSLock::lock( ExecState *exec )
 {
-    lock(exec->globalData().isSharedInstance() ? LockForReal : SilenceAssertionsOnly);
+    lock( exec->globalData().isSharedInstance() ? LockForReal : SilenceAssertionsOnly );
 }
 
-void JSLock::unlock(ExecState* exec)
+void JSLock::unlock( ExecState *exec )
 {
-    unlock(exec->globalData().isSharedInstance() ? LockForReal : SilenceAssertionsOnly);
+    unlock( exec->globalData().isSharedInstance() ? LockForReal : SilenceAssertionsOnly );
 }
 
 bool JSLock::currentThreadIsHoldingLock()
 {
-    pthread_once(&createJSLockCountOnce, createJSLockCount);
-    return !!pthread_getspecific(JSLockCount);
+    pthread_once( &createJSLockCountOnce, createJSLockCount );
+    return !!pthread_getspecific( JSLockCount );
 }
 
 // This is fairly nasty.  We allow multiple threads to run on the same
@@ -172,27 +186,32 @@ bool JSLock::currentThreadIsHoldingLock()
 //
 static unsigned lockDropDepth = 0;
 
-JSLock::DropAllLocks::DropAllLocks(ExecState* exec)
-    : m_lockBehavior(exec->globalData().isSharedInstance() ? LockForReal : SilenceAssertionsOnly)
+JSLock::DropAllLocks::DropAllLocks( ExecState *exec )
+    : m_lockBehavior( exec->globalData().isSharedInstance() ? LockForReal : SilenceAssertionsOnly )
 {
-    pthread_once(&createJSLockCountOnce, createJSLockCount);
+    pthread_once( &createJSLockCountOnce, createJSLockCount );
 
-    if (lockDropDepth++) {
+    if ( lockDropDepth++ )
+    {
         m_lockCount = 0;
         return;
     }
 
     m_lockCount = JSLock::lockCount();
-    for (intptr_t i = 0; i < m_lockCount; i++)
-        JSLock::unlock(m_lockBehavior);
+
+    for ( intptr_t i = 0; i < m_lockCount; i++ )
+    {
+        JSLock::unlock( m_lockBehavior );
+    }
 }
 
-JSLock::DropAllLocks::DropAllLocks(JSLockBehavior JSLockBehavior)
-    : m_lockBehavior(JSLockBehavior)
+JSLock::DropAllLocks::DropAllLocks( JSLockBehavior JSLockBehavior )
+    : m_lockBehavior( JSLockBehavior )
 {
-    pthread_once(&createJSLockCountOnce, createJSLockCount);
+    pthread_once( &createJSLockCountOnce, createJSLockCount );
 
-    if (lockDropDepth++) {
+    if ( lockDropDepth++ )
+    {
         m_lockCount = 0;
         return;
     }
@@ -201,22 +220,27 @@ JSLock::DropAllLocks::DropAllLocks(JSLockBehavior JSLockBehavior)
     // will prevent a real lock from being taken.
 
     m_lockCount = JSLock::lockCount();
-    for (intptr_t i = 0; i < m_lockCount; i++)
-        JSLock::unlock(m_lockBehavior);
+
+    for ( intptr_t i = 0; i < m_lockCount; i++ )
+    {
+        JSLock::unlock( m_lockBehavior );
+    }
 }
 
 JSLock::DropAllLocks::~DropAllLocks()
 {
-    for (intptr_t i = 0; i < m_lockCount; i++)
-        JSLock::lock(m_lockBehavior);
+    for ( intptr_t i = 0; i < m_lockCount; i++ )
+    {
+        JSLock::lock( m_lockBehavior );
+    }
 
     --lockDropDepth;
 }
 
 #else // ENABLE(JSC_MULTIPLE_THREADS) && (OS(DARWIN) || USE(PTHREADS))
 
-JSLock::JSLock(ExecState*)
-    : m_lockBehavior(SilenceAssertionsOnly)
+JSLock::JSLock( ExecState * )
+    : m_lockBehavior( SilenceAssertionsOnly )
 {
 }
 
@@ -232,27 +256,27 @@ bool JSLock::currentThreadIsHoldingLock()
     return true;
 }
 
-void JSLock::lock(JSLockBehavior)
+void JSLock::lock( JSLockBehavior )
 {
 }
 
-void JSLock::unlock(JSLockBehavior)
+void JSLock::unlock( JSLockBehavior )
 {
 }
 
-void JSLock::lock(ExecState*)
+void JSLock::lock( ExecState * )
 {
 }
 
-void JSLock::unlock(ExecState*)
+void JSLock::unlock( ExecState * )
 {
 }
 
-JSLock::DropAllLocks::DropAllLocks(ExecState*)
+JSLock::DropAllLocks::DropAllLocks( ExecState * )
 {
 }
 
-JSLock::DropAllLocks::DropAllLocks(JSLockBehavior)
+JSLock::DropAllLocks::DropAllLocks( JSLockBehavior )
 {
 }
 

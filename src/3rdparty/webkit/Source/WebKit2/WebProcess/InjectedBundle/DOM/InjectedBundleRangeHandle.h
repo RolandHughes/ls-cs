@@ -30,29 +30,35 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
-    class Range;
+namespace WebCore
+{
+class Range;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
 class InjectedBundleScriptWorld;
 
-class InjectedBundleRangeHandle : public APIObject {
+class InjectedBundleRangeHandle : public APIObject
+{
 public:
     static const Type APIType = TypeBundleRangeHandle;
 
-    static PassRefPtr<InjectedBundleRangeHandle> getOrCreate(WebCore::Range*);
+    static PassRefPtr<InjectedBundleRangeHandle> getOrCreate( WebCore::Range * );
 
     virtual ~InjectedBundleRangeHandle();
 
-    WebCore::Range* coreRange() const;
+    WebCore::Range *coreRange() const;
 
 private:
-    static PassRefPtr<InjectedBundleRangeHandle> create(WebCore::Range*);
-    InjectedBundleRangeHandle(WebCore::Range*);
+    static PassRefPtr<InjectedBundleRangeHandle> create( WebCore::Range * );
+    InjectedBundleRangeHandle( WebCore::Range * );
 
-    virtual Type type() const { return APIType; }
+    virtual Type type() const
+    {
+        return APIType;
+    }
 
     RefPtr<WebCore::Range> m_range;
 };

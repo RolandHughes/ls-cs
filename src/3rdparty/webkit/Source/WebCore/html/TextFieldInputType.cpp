@@ -40,14 +40,15 @@
 #include "WheelEvent.h"
 #include <wtf/text/WTFString.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 bool TextFieldInputType::isTextField() const
 {
     return true;
 }
 
-bool TextFieldInputType::valueMissing(const String& value) const
+bool TextFieldInputType::valueMissing( const String &value ) const
 {
     return value.isEmpty();
 }
@@ -57,61 +58,94 @@ bool TextFieldInputType::canSetSuggestedValue()
     return true;
 }
 
-void TextFieldInputType::handleKeydownEvent(KeyboardEvent* event)
+void TextFieldInputType::handleKeydownEvent( KeyboardEvent *event )
 {
-    if (!element()->focused())
+    if ( !element()->focused() )
+    {
         return;
-    Frame* frame = element()->document()->frame();
-    if (!frame || !frame->editor()->doTextFieldCommandFromEvent(element(), event))
+    }
+
+    Frame *frame = element()->document()->frame();
+
+    if ( !frame || !frame->editor()->doTextFieldCommandFromEvent( element(), event ) )
+    {
         return;
+    }
+
     event->setDefaultHandled();
 }
 
-void TextFieldInputType::handleKeydownEventForSpinButton(KeyboardEvent* event)
+void TextFieldInputType::handleKeydownEventForSpinButton( KeyboardEvent *event )
 {
-    if (element()->disabled() || element()->readOnly())
+    if ( element()->disabled() || element()->readOnly() )
+    {
         return;
-    const String& key = event->keyIdentifier();
+    }
+
+    const String &key = event->keyIdentifier();
     int step = 0;
-    if (key == "Up")
+
+    if ( key == "Up" )
+    {
         step = 1;
-    else if (key == "Down")
+    }
+    else if ( key == "Down" )
+    {
         step = -1;
+    }
     else
+    {
         return;
-    element()->stepUpFromRenderer(step);
+    }
+
+    element()->stepUpFromRenderer( step );
     event->setDefaultHandled();
 }
 
-void TextFieldInputType::handleWheelEventForSpinButton(WheelEvent* event)
+void TextFieldInputType::handleWheelEventForSpinButton( WheelEvent *event )
 {
-    if (element()->disabled() || element()->readOnly() || !element()->focused())
+    if ( element()->disabled() || element()->readOnly() || !element()->focused() )
+    {
         return;
+    }
+
     int step = 0;
-    if (event->wheelDeltaY() > 0)
+
+    if ( event->wheelDeltaY() > 0 )
+    {
         step = 1;
-    else if (event->wheelDeltaY() < 0)
+    }
+    else if ( event->wheelDeltaY() < 0 )
+    {
         step = -1;
+    }
     else
+    {
         return;
-    element()->stepUpFromRenderer(step);
+    }
+
+    element()->stepUpFromRenderer( step );
     event->setDefaultHandled();
 }
 
-void TextFieldInputType::forwardEvent(Event* event)
+void TextFieldInputType::forwardEvent( Event *event )
 {
-    if (element()->renderer() && (event->isMouseEvent() || event->isDragEvent() || event->isWheelEvent() || event->type() == eventNames().blurEvent || event->type() == eventNames().focusEvent))
-        toRenderTextControlSingleLine(element()->renderer())->forwardEvent(event);
+    if ( element()->renderer() && ( event->isMouseEvent() || event->isDragEvent() || event->isWheelEvent()
+                                    || event->type() == eventNames().blurEvent || event->type() == eventNames().focusEvent ) )
+    {
+        toRenderTextControlSingleLine( element()->renderer() )->forwardEvent( event );
+    }
 }
 
-bool TextFieldInputType::shouldSubmitImplicitly(Event* event)
+bool TextFieldInputType::shouldSubmitImplicitly( Event *event )
 {
-    return (event->type() == eventNames().textInputEvent && event->isTextEvent() && static_cast<TextEvent*>(event)->data() == "\n") || InputType::shouldSubmitImplicitly(event);
+    return ( event->type() == eventNames().textInputEvent && event->isTextEvent()
+             && static_cast<TextEvent *>( event )->data() == "\n" ) || InputType::shouldSubmitImplicitly( event );
 }
 
-RenderObject* TextFieldInputType::createRenderer(RenderArena* arena, RenderStyle*) const
+RenderObject *TextFieldInputType::createRenderer( RenderArena *arena, RenderStyle * ) const
 {
-    return new (arena) RenderTextControlSingleLine(element(), element()->placeholderShouldBeVisible());
+    return new ( arena ) RenderTextControlSingleLine( element(), element()->placeholderShouldBeVisible() );
 }
 
 bool TextFieldInputType::shouldUseInputMethod() const
@@ -119,9 +153,9 @@ bool TextFieldInputType::shouldUseInputMethod() const
     return true;
 }
 
-String TextFieldInputType::sanitizeValue(const String& proposedValue)
+String TextFieldInputType::sanitizeValue( const String &proposedValue )
 {
-    return InputElement::sanitizeValueForTextField(element(), proposedValue);
+    return InputElement::sanitizeValueForTextField( element(), proposedValue );
 }
 
 bool TextFieldInputType::shouldRespectListAttribute()

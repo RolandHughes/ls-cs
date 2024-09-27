@@ -22,25 +22,27 @@
 
 #import <WebCore/FrameNetworkingContext.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
-class WebFrameNetworkingContext : public WebCore::FrameNetworkingContext {
+class WebFrameNetworkingContext : public WebCore::FrameNetworkingContext
+{
 public:
-    static PassRefPtr<WebFrameNetworkingContext> create(WebCore::Frame* frame)
+    static PassRefPtr<WebFrameNetworkingContext> create( WebCore::Frame *frame )
     {
-        return adoptRef(new WebFrameNetworkingContext(frame));
+        return adoptRef( new WebFrameNetworkingContext( frame ) );
     }
 
 private:
-    WebFrameNetworkingContext(WebCore::Frame* frame)
-        : WebCore::FrameNetworkingContext(frame)
+    WebFrameNetworkingContext( WebCore::Frame *frame )
+        : WebCore::FrameNetworkingContext( frame )
     {
     }
 
     virtual bool needsSiteSpecificQuirks() const;
     virtual bool localFileContentSniffingEnabled() const;
-    virtual WebCore::SchedulePairHashSet* scheduledRunLoopPairs() const;
-    virtual WebCore::ResourceError blockedError(const WebCore::ResourceRequest&) const;
+    virtual WebCore::SchedulePairHashSet *scheduledRunLoopPairs() const;
+    virtual WebCore::ResourceError blockedError( const WebCore::ResourceRequest & ) const;
 };
 
 }

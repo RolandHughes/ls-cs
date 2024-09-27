@@ -28,12 +28,14 @@
 
 #include <wtf/text/WTFString.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 // NOTE: Keep these in order so callers can do things like
 // "if (windowsVersion() >= WindowsVista) ...". It's OK to change or add values,
 // though.
-enum WindowsVersion {
+enum WindowsVersion
+{
     // CE-based versions
     WindowsCE1 = 0,
     WindowsCE2,
@@ -61,7 +63,7 @@ enum WindowsVersion {
 
 // If supplied, |major| and |minor| are set to the OSVERSIONINFO::dwMajorVersion
 // and dwMinorVersion field values, respectively.
-WindowsVersion windowsVersion(int* major = 0, int* minor = 0);
+WindowsVersion windowsVersion( int *major = 0, int *minor = 0 );
 
 String windowsVersionForUAString();
 

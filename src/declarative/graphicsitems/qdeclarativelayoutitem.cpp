@@ -63,32 +63,36 @@ QT_BEGIN_NAMESPACE
     \qmlproperty QSizeF LayoutItem::preferredSize
 
     The preferredSize property can be set to specify the preferred size of this LayoutItem
-*/
-
-QDeclarativeLayoutItem::QDeclarativeLayoutItem(QDeclarativeItem *parent)
-   : QDeclarativeItem(parent), m_maximumSize(INT_MAX, INT_MAX), m_minimumSize(0, 0), m_preferredSize(0, 0)
+*/ QDeclarativeLayoutItem::QDeclarativeLayoutItem( QDeclarativeItem *parent )
+    : QDeclarativeItem( parent ), m_maximumSize( INT_MAX, INT_MAX ), m_minimumSize( 0, 0 ), m_preferredSize( 0, 0 )
 {
-   setGraphicsItem(this);
+    setGraphicsItem( this );
 }
 
-void QDeclarativeLayoutItem::setGeometry(const QRectF &rect)
+void QDeclarativeLayoutItem::setGeometry( const QRectF &rect )
 {
-   setX(rect.x());
-   setY(rect.y());
-   setWidth(rect.width());
-   setHeight(rect.height());
+    setX( rect.x() );
+    setY( rect.y() );
+    setWidth( rect.width() );
+    setHeight( rect.height() );
 }
 
-QSizeF QDeclarativeLayoutItem::sizeHint(Qt::SizeHint w, const QSizeF &constraint) const
+QSizeF QDeclarativeLayoutItem::sizeHint( Qt::SizeHint w, const QSizeF &constraint ) const
 {
-   Q_UNUSED(constraint);
-   if (w == Qt::MinimumSize) {
-      return m_minimumSize;
-   } else if (w == Qt::MaximumSize) {
-      return m_maximumSize;
-   } else {
-      return m_preferredSize;
-   }
+    Q_UNUSED( constraint );
+
+    if ( w == Qt::MinimumSize )
+    {
+        return m_minimumSize;
+    }
+    else if ( w == Qt::MaximumSize )
+    {
+        return m_maximumSize;
+    }
+    else
+    {
+        return m_preferredSize;
+    }
 }
 
 QT_END_NAMESPACE

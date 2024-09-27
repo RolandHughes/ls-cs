@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef XMLHttpRequestUpload_h
@@ -38,44 +38,64 @@
 #include <wtf/Vector.h>
 #include <wtf/text/AtomicStringHash.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class ScriptExecutionContext;
-    class XMLHttpRequest;
+class ScriptExecutionContext;
+class XMLHttpRequest;
 
-    class XMLHttpRequestUpload : public EventTarget {
-    public:
-        static PassOwnPtr<XMLHttpRequestUpload> create(XMLHttpRequest* xmlHttpRequest)
-        {
-            return adoptPtr(new XMLHttpRequestUpload(xmlHttpRequest));
-        }
+class XMLHttpRequestUpload : public EventTarget
+{
+public:
+    static PassOwnPtr<XMLHttpRequestUpload> create( XMLHttpRequest *xmlHttpRequest )
+    {
+        return adoptPtr( new XMLHttpRequestUpload( xmlHttpRequest ) );
+    }
 
-        void ref() { m_xmlHttpRequest->ref(); }
-        void deref() { m_xmlHttpRequest->deref(); }
-        XMLHttpRequest* xmlHttpRequest() const { return m_xmlHttpRequest; }
+    void ref()
+    {
+        m_xmlHttpRequest->ref();
+    }
+    void deref()
+    {
+        m_xmlHttpRequest->deref();
+    }
+    XMLHttpRequest *xmlHttpRequest() const
+    {
+        return m_xmlHttpRequest;
+    }
 
-        virtual XMLHttpRequestUpload* toXMLHttpRequestUpload() { return this; }
+    virtual XMLHttpRequestUpload *toXMLHttpRequestUpload()
+    {
+        return this;
+    }
 
-        ScriptExecutionContext* scriptExecutionContext() const;
+    ScriptExecutionContext *scriptExecutionContext() const;
 
-        DEFINE_ATTRIBUTE_EVENT_LISTENER(abort);
-        DEFINE_ATTRIBUTE_EVENT_LISTENER(error);
-        DEFINE_ATTRIBUTE_EVENT_LISTENER(load);
-        DEFINE_ATTRIBUTE_EVENT_LISTENER(loadstart);
-        DEFINE_ATTRIBUTE_EVENT_LISTENER(progress);
+    DEFINE_ATTRIBUTE_EVENT_LISTENER( abort );
+    DEFINE_ATTRIBUTE_EVENT_LISTENER( error );
+    DEFINE_ATTRIBUTE_EVENT_LISTENER( load );
+    DEFINE_ATTRIBUTE_EVENT_LISTENER( loadstart );
+    DEFINE_ATTRIBUTE_EVENT_LISTENER( progress );
 
-    private:
-        XMLHttpRequestUpload(XMLHttpRequest*);
+private:
+    XMLHttpRequestUpload( XMLHttpRequest * );
 
-        virtual void refEventTarget() { ref(); }
-        virtual void derefEventTarget() { deref(); }
-        virtual EventTargetData* eventTargetData();
-        virtual EventTargetData* ensureEventTargetData();
+    virtual void refEventTarget()
+    {
+        ref();
+    }
+    virtual void derefEventTarget()
+    {
+        deref();
+    }
+    virtual EventTargetData *eventTargetData();
+    virtual EventTargetData *ensureEventTargetData();
 
-        XMLHttpRequest* m_xmlHttpRequest;
-        EventTargetData m_eventTargetData;
-    };
-    
+    XMLHttpRequest *m_xmlHttpRequest;
+    EventTargetData m_eventTargetData;
+};
+
 } // namespace WebCore
 
 #endif // XMLHttpRequestUpload_h

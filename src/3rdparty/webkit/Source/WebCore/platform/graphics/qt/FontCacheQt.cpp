@@ -41,72 +41,79 @@
 
 using namespace WTF;
 
-namespace WebCore {
+namespace WebCore
+{
 
 void FontCache::platformInit()
 {
 }
 
 #if HAVE(QRAWFONT)
-static QRawFont rawFontForCharacters(const QString& string, const QFont& requestedFont)
+static QRawFont rawFontForCharacters( const QString &string, const QFont &requestedFont )
 {
-    QFont font(requestedFont);
-    font.setStyleStrategy(QFont::NoFontMerging);
+    QFont font( requestedFont );
+    font.setStyleStrategy( QFont::NoFontMerging );
 
-    QTextLayout layout(string, font);
+    QTextLayout layout( string, font );
     layout.beginLayout();
     layout.createLine();
     layout.endLayout();
 
     QList<QGlyphs> glyphList = layout.glyphs();
 
-    ASSERT(glyphList.size() == 1);
+    ASSERT( glyphList.size() == 1 );
 
-    const QGlyphs& glyphs(glyphList.at(0));
+    const QGlyphs &glyphs( glyphList.at( 0 ) );
     QVector<quint32> glyphIndexes = glyphs.glyphIndexes();
 
-    if (glyphIndexes.isEmpty())
+    if ( glyphIndexes.isEmpty() )
+    {
         return QRawFont();
+    }
 
     return glyphs.font();
 }
 #endif
 
-const SimpleFontData* FontCache::getFontDataForCharacters(const Font& font, const UChar* characters, int length)
+const SimpleFontData *FontCache::getFontDataForCharacters( const Font &font, const UChar *characters, int length )
 {
 #if HAVE(QRAWFONT)
-    QString qstring = QString::fromRawData(reinterpret_cast<const QChar*>(characters), length);
-    QRawFont computedFont = rawFontForCharacters(qstring, font.font());
-    if (!computedFont.isValid())
+    QString qstring = QString::fromRawData( reinterpret_cast<const QChar *>( characters ), length );
+    QRawFont computedFont = rawFontForCharacters( qstring, font.font() );
+
+    if ( !computedFont.isValid() )
+    {
         return 0;
-    FontPlatformData alternateFont(computedFont);
-    return getCachedFontData(&alternateFont);
+    }
+
+    FontPlatformData alternateFont( computedFont );
+    return getCachedFontData( &alternateFont );
 #else
-    Q_UNUSED(font);
-    Q_UNUSED(characters);
-    Q_UNUSED(length);
+    Q_UNUSED( font );
+    Q_UNUSED( characters );
+    Q_UNUSED( length );
     return 0;
 #endif
 }
 
-SimpleFontData* FontCache::getSimilarFontPlatformData(const Font& font)
+SimpleFontData *FontCache::getSimilarFontPlatformData( const Font &font )
 {
     return 0;
 }
 
-SimpleFontData* FontCache::getLastResortFallbackFont(const FontDescription& fontDescription)
+SimpleFontData *FontCache::getLastResortFallbackFont( const FontDescription &fontDescription )
 {
-    const AtomicString fallbackFamily = QFont(fontDescription.family().family()).lastResortFamily();
-    return getCachedFontData(new FontPlatformData(fontDescription, fallbackFamily));
+    const AtomicString fallbackFamily = QFont( fontDescription.family().family() ).lastResortFamily();
+    return getCachedFontData( new FontPlatformData( fontDescription, fallbackFamily ) );
 }
 
-void FontCache::getTraitsInFamily(const AtomicString&, Vector<unsigned>&)
+void FontCache::getTraitsInFamily( const AtomicString &, Vector<unsigned> & )
 {
 }
 
-FontPlatformData* FontCache::createFontPlatformData(const FontDescription& fontDescription, const AtomicString& familyName)
+FontPlatformData *FontCache::createFontPlatformData( const FontDescription &fontDescription, const AtomicString &familyName )
 {
-    return new FontPlatformData(fontDescription, familyName);
+    return new FontPlatformData( fontDescription, familyName );
 }
 
 } // namespace WebCore

@@ -27,53 +27,60 @@
 #include <glib.h>
 #include <wtf/HashMap.h>
 
-namespace WebCore {
-
-typedef void (*GObjectEventListenerCallback)(GObject*, WebKitDOMEvent*, void*);
-
-GObjectEventListener::GObjectEventListener(GObject* object, EventTarget* target, const char* domEventName, GCallback handler, bool capture, void* userData)
-    : EventListener(GObjectEventListenerType)
-    , m_object(object)
-    , m_coreTarget(target)
-    , m_domEventName(domEventName)
-    , m_handler(handler)
-    , m_capture(capture)
-    , m_userData(userData)
+namespace WebCore
 {
-    ASSERT(m_coreTarget);
-    g_object_weak_ref(object, reinterpret_cast<GWeakNotify>(GObjectEventListener::gobjectDestroyedCallback), this);
+
+typedef void ( *GObjectEventListenerCallback )( GObject *, WebKitDOMEvent *, void * );
+
+GObjectEventListener::GObjectEventListener( GObject *object, EventTarget *target, const char *domEventName, GCallback handler,
+        bool capture, void *userData )
+    : EventListener( GObjectEventListenerType )
+    , m_object( object )
+    , m_coreTarget( target )
+    , m_domEventName( domEventName )
+    , m_handler( handler )
+    , m_capture( capture )
+    , m_userData( userData )
+{
+    ASSERT( m_coreTarget );
+    g_object_weak_ref( object, reinterpret_cast<GWeakNotify>( GObjectEventListener::gobjectDestroyedCallback ), this );
 }
 
 GObjectEventListener::~GObjectEventListener()
 {
-    if (!m_coreTarget)
+    if ( !m_coreTarget )
+    {
         return;
-    g_object_weak_unref(m_object, reinterpret_cast<GWeakNotify>(GObjectEventListener::gobjectDestroyedCallback), this);
+    }
+
+    g_object_weak_unref( m_object, reinterpret_cast<GWeakNotify>( GObjectEventListener::gobjectDestroyedCallback ), this );
 }
 
 void GObjectEventListener::gobjectDestroyed()
 {
-    ASSERT(m_coreTarget);
+    ASSERT( m_coreTarget );
 
     // We must set m_coreTarget to null, because removeEventListener
     // may call the destructor as a side effect and we must be in the
     // proper state to prevent g_object_weak_unref.
-    EventTarget* target = m_coreTarget;
+    EventTarget *target = m_coreTarget;
     m_coreTarget = 0;
-    target->removeEventListener(m_domEventName.data(), this, m_capture);
+    target->removeEventListener( m_domEventName.data(), this, m_capture );
 }
 
-void GObjectEventListener::handleEvent(ScriptExecutionContext*, Event* event)
+void GObjectEventListener::handleEvent( ScriptExecutionContext *, Event *event )
 {
-    WebKitDOMEvent* gobjectEvent = WEBKIT_DOM_EVENT(WebKit::kit(event));
-    reinterpret_cast<GObjectEventListenerCallback>(m_handler)(m_object, gobjectEvent, m_userData);
-    g_object_unref(gobjectEvent);
+    WebKitDOMEvent *gobjectEvent = WEBKIT_DOM_EVENT( WebKit::kit( event ) );
+    reinterpret_cast<GObjectEventListenerCallback>( m_handler )( m_object, gobjectEvent, m_userData );
+    g_object_unref( gobjectEvent );
 }
 
-bool GObjectEventListener::operator==(const EventListener& listener)
+bool GObjectEventListener::operator==( const EventListener &listener )
 {
-    if (const GObjectEventListener* gobjectEventListener = GObjectEventListener::cast(&listener))
+    if ( const GObjectEventListener *gobjectEventListener = GObjectEventListener::cast( &listener ) )
+    {
         return m_object == gobjectEventListener->m_object && m_handler == gobjectEventListener->m_handler;
+    }
 
     return false;
 }

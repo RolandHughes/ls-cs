@@ -29,59 +29,86 @@
 #include "Document.h"
 #include "StyleSheet.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-CSSStyleRule::CSSStyleRule(CSSStyleSheet* parent, int sourceLine)
-    : CSSRule(parent)
-    , m_sourceLine(sourceLine)
+CSSStyleRule::CSSStyleRule( CSSStyleSheet *parent, int sourceLine )
+    : CSSRule( parent )
+    , m_sourceLine( sourceLine )
 {
 }
 
 CSSStyleRule::~CSSStyleRule()
 {
-    if (m_style)
-        m_style->setParent(0);
+    if ( m_style )
+    {
+        m_style->setParent( 0 );
+    }
 }
 
 String CSSStyleRule::selectorText() const
 {
     String str;
-    for (CSSSelector* s = selectorList().first(); s; s = CSSSelectorList::next(s)) {
-        if (s != selectorList().first())
+
+    for ( CSSSelector *s = selectorList().first(); s; s = CSSSelectorList::next( s ) )
+    {
+        if ( s != selectorList().first() )
+        {
             str += ", ";
+        }
+
         str += s->selectorText();
     }
+
     return str;
 }
 
-void CSSStyleRule::setSelectorText(const String& selectorText)
+void CSSStyleRule::setSelectorText( const String &selectorText )
 {
-    Document* doc = 0;
-    StyleSheet* ownerStyleSheet = m_style->stylesheet();
-    if (ownerStyleSheet) {
-        if (ownerStyleSheet->isCSSStyleSheet())
-            doc = static_cast<CSSStyleSheet*>(ownerStyleSheet)->document();
-        if (!doc)
-            doc = ownerStyleSheet->ownerNode() ? ownerStyleSheet->ownerNode()->document() : 0;
-    }
-    if (!doc)
-        doc = m_style->node() ? m_style->node()->document() : 0;
+    Document *doc = 0;
+    StyleSheet *ownerStyleSheet = m_style->stylesheet();
 
-    if (!doc)
+    if ( ownerStyleSheet )
+    {
+        if ( ownerStyleSheet->isCSSStyleSheet() )
+        {
+            doc = static_cast<CSSStyleSheet *>( ownerStyleSheet )->document();
+        }
+
+        if ( !doc )
+        {
+            doc = ownerStyleSheet->ownerNode() ? ownerStyleSheet->ownerNode()->document() : 0;
+        }
+    }
+
+    if ( !doc )
+    {
+        doc = m_style->node() ? m_style->node()->document() : 0;
+    }
+
+    if ( !doc )
+    {
         return;
+    }
 
     CSSParser p;
     CSSSelectorList selectorList;
-    p.parseSelector(selectorText, doc, selectorList);
-    if (!selectorList.first())
+    p.parseSelector( selectorText, doc, selectorList );
+
+    if ( !selectorList.first() )
+    {
         return;
+    }
 
     String oldSelectorText = this->selectorText();
-    m_selectorList.adopt(selectorList);
-    if (this->selectorText() == oldSelectorText)
-        return;
+    m_selectorList.adopt( selectorList );
 
-    doc->styleSelectorChanged(DeferRecalcStyle);
+    if ( this->selectorText() == oldSelectorText )
+    {
+        return;
+    }
+
+    doc->styleSelectorChanged( DeferRecalcStyle );
 }
 
 String CSSStyleRule::cssText() const
@@ -95,21 +122,23 @@ String CSSStyleRule::cssText() const
     return result;
 }
 
-bool CSSStyleRule::parseString(const String& /*string*/, bool /*strict*/)
+bool CSSStyleRule::parseString( const String & /*string*/, bool /*strict*/ )
 {
     // FIXME
     return false;
 }
 
-void CSSStyleRule::setDeclaration(PassRefPtr<CSSMutableStyleDeclaration> style)
+void CSSStyleRule::setDeclaration( PassRefPtr<CSSMutableStyleDeclaration> style )
 {
     m_style = style;
 }
 
-void CSSStyleRule::addSubresourceStyleURLs(ListHashSet<KURL>& urls)
+void CSSStyleRule::addSubresourceStyleURLs( ListHashSet<KURL> &urls )
 {
-    if (m_style)
-        m_style->addSubresourceStyleURLs(urls);
+    if ( m_style )
+    {
+        m_style->addSubresourceStyleURLs( urls );
+    }
 }
 
 } // namespace WebCore

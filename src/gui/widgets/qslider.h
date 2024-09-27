@@ -33,58 +33,59 @@ class QStyleOptionSlider;
 
 class Q_GUI_EXPORT QSlider : public QAbstractSlider
 {
-   GUI_CS_OBJECT(QSlider)
+    GUI_CS_OBJECT( QSlider )
 
-   GUI_CS_ENUM(TickPosition)
+    GUI_CS_ENUM( TickPosition )
 
-   GUI_CS_PROPERTY_READ(tickPosition, tickPosition)
-   GUI_CS_PROPERTY_WRITE(tickPosition, setTickPosition)
+    GUI_CS_PROPERTY_READ( tickPosition, tickPosition )
+    GUI_CS_PROPERTY_WRITE( tickPosition, setTickPosition )
 
-   GUI_CS_PROPERTY_READ(tickInterval, tickInterval)
-   GUI_CS_PROPERTY_WRITE(tickInterval, setTickInterval)
+    GUI_CS_PROPERTY_READ( tickInterval, tickInterval )
+    GUI_CS_PROPERTY_WRITE( tickInterval, setTickInterval )
 
- public:
-   GUI_CS_REGISTER_ENUM(
-      enum TickPosition {
-         NoTicks = 0,
-         TicksAbove = 1,
-         TicksLeft = TicksAbove,
-         TicksBelow = 2,
-         TicksRight = TicksBelow,
-         TicksBothSides = 3
-      };
-   )
+public:
+    GUI_CS_REGISTER_ENUM(
+        enum TickPosition
+    {
+        NoTicks = 0,
+        TicksAbove = 1,
+        TicksLeft = TicksAbove,
+        TicksBelow = 2,
+        TicksRight = TicksBelow,
+        TicksBothSides = 3
+    };
+    )
 
-   explicit QSlider(QWidget *parent = nullptr);
-   explicit QSlider(Qt::Orientation orientation, QWidget *parent = nullptr);
+    explicit QSlider( QWidget *parent = nullptr );
+    explicit QSlider( Qt::Orientation orientation, QWidget *parent = nullptr );
 
-   QSlider(const QSlider &) = delete;
-   QSlider &operator=(const QSlider &) = delete;
+    QSlider( const QSlider & ) = delete;
+    QSlider &operator=( const QSlider & ) = delete;
 
-   ~QSlider();
+    ~QSlider();
 
-   QSize sizeHint() const override;
-   QSize minimumSizeHint() const override;
+    QSize sizeHint() const override;
+    QSize minimumSizeHint() const override;
 
-   void setTickPosition(TickPosition position);
-   TickPosition tickPosition() const;
+    void setTickPosition( TickPosition position );
+    TickPosition tickPosition() const;
 
-   void setTickInterval(int ti);
-   int tickInterval() const;
+    void setTickInterval( int ti );
+    int tickInterval() const;
 
-   bool event(QEvent *event) override;
+    bool event( QEvent *event ) override;
 
- protected:
-   void paintEvent(QPaintEvent *event) override;
-   void mousePressEvent(QMouseEvent *event) override;
-   void mouseReleaseEvent(QMouseEvent *event) override;
-   void mouseMoveEvent(QMouseEvent *event) override;
-   void initStyleOption(QStyleOptionSlider *option) const;
+protected:
+    void paintEvent( QPaintEvent *event ) override;
+    void mousePressEvent( QMouseEvent *event ) override;
+    void mouseReleaseEvent( QMouseEvent *event ) override;
+    void mouseMoveEvent( QMouseEvent *event ) override;
+    void initStyleOption( QStyleOptionSlider *option ) const;
 
- private:
-   Q_DECLARE_PRIVATE(QSlider)
+private:
+    Q_DECLARE_PRIVATE( QSlider )
 
-   friend Q_GUI_EXPORT QStyleOptionSlider qt_qsliderStyleOption(QSlider *slider);
+    friend Q_GUI_EXPORT QStyleOptionSlider qt_qsliderStyleOption( QSlider *slider );
 };
 
 #endif // QT_NO_SLIDER

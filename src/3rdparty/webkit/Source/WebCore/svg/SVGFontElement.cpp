@@ -34,45 +34,54 @@
 #include "SVGVKernElement.h"
 #include <wtf/ASCIICType.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 // Animated property declarations
-DEFINE_ANIMATED_BOOLEAN(SVGFontElement, SVGNames::externalResourcesRequiredAttr, ExternalResourcesRequired, externalResourcesRequired)
+DEFINE_ANIMATED_BOOLEAN( SVGFontElement, SVGNames::externalResourcesRequiredAttr, ExternalResourcesRequired,
+                         externalResourcesRequired )
 
-inline SVGFontElement::SVGFontElement(const QualifiedName& tagName, Document* document)
-    : SVGStyledElement(tagName, document) 
-    , m_isGlyphCacheValid(false)
+inline SVGFontElement::SVGFontElement( const QualifiedName &tagName, Document *document )
+    : SVGStyledElement( tagName, document )
+    , m_isGlyphCacheValid( false )
 {
 }
 
-PassRefPtr<SVGFontElement> SVGFontElement::create(const QualifiedName& tagName, Document* document)
+PassRefPtr<SVGFontElement> SVGFontElement::create( const QualifiedName &tagName, Document *document )
 {
-    return adoptRef(new SVGFontElement(tagName, document));
+    return adoptRef( new SVGFontElement( tagName, document ) );
 }
 
-void SVGFontElement::synchronizeProperty(const QualifiedName& attrName)
+void SVGFontElement::synchronizeProperty( const QualifiedName &attrName )
 {
-    SVGStyledElement::synchronizeProperty(attrName);
+    SVGStyledElement::synchronizeProperty( attrName );
 
-    if (attrName == anyQName() || SVGExternalResourcesRequired::isKnownAttribute(attrName))
+    if ( attrName == anyQName() || SVGExternalResourcesRequired::isKnownAttribute( attrName ) )
+    {
         synchronizeExternalResourcesRequired();
+    }
 }
 
 void SVGFontElement::invalidateGlyphCache()
 {
-    if (m_isGlyphCacheValid) {
+    if ( m_isGlyphCacheValid )
+    {
         m_glyphMap.clear();
         m_horizontalKerningPairs.clear();
         m_verticalKerningPairs.clear();
     }
+
     m_isGlyphCacheValid = false;
 }
 
-SVGMissingGlyphElement* SVGFontElement::firstMissingGlyphElement() const
+SVGMissingGlyphElement *SVGFontElement::firstMissingGlyphElement() const
 {
-    for (Node* child = firstChild(); child; child = child->nextSibling()) {
-        if (child->hasTagName(SVGNames::missing_glyphTag))
-            return static_cast<SVGMissingGlyphElement*>(child);
+    for ( Node *child = firstChild(); child; child = child->nextSibling() )
+    {
+        if ( child->hasTagName( SVGNames::missing_glyphTag ) )
+        {
+            return static_cast<SVGMissingGlyphElement *>( child );
+        }
     }
 
     return 0;
@@ -80,114 +89,154 @@ SVGMissingGlyphElement* SVGFontElement::firstMissingGlyphElement() const
 
 void SVGFontElement::ensureGlyphCache() const
 {
-    if (m_isGlyphCacheValid)
+    if ( m_isGlyphCacheValid )
+    {
         return;
+    }
 
-    for (Node* child = firstChild(); child; child = child->nextSibling()) {
-        if (child->hasTagName(SVGNames::glyphTag)) {
-            SVGGlyphElement* glyph = static_cast<SVGGlyphElement*>(child);
-            String unicode = glyph->getAttribute(SVGNames::unicodeAttr);
-            if (unicode.length())
-                m_glyphMap.add(unicode, glyph->buildGlyphIdentifier());
-        } else if (child->hasTagName(SVGNames::hkernTag)) {
-            SVGHKernElement* hkern = static_cast<SVGHKernElement*>(child);
-            hkern->buildHorizontalKerningPair(m_horizontalKerningPairs);
-        } else if (child->hasTagName(SVGNames::vkernTag)) {
-            SVGVKernElement* vkern = static_cast<SVGVKernElement*>(child);
-            vkern->buildVerticalKerningPair(m_verticalKerningPairs);
+    for ( Node *child = firstChild(); child; child = child->nextSibling() )
+    {
+        if ( child->hasTagName( SVGNames::glyphTag ) )
+        {
+            SVGGlyphElement *glyph = static_cast<SVGGlyphElement *>( child );
+            String unicode = glyph->getAttribute( SVGNames::unicodeAttr );
+
+            if ( unicode.length() )
+            {
+                m_glyphMap.add( unicode, glyph->buildGlyphIdentifier() );
+            }
+        }
+        else if ( child->hasTagName( SVGNames::hkernTag ) )
+        {
+            SVGHKernElement *hkern = static_cast<SVGHKernElement *>( child );
+            hkern->buildHorizontalKerningPair( m_horizontalKerningPairs );
+        }
+        else if ( child->hasTagName( SVGNames::vkernTag ) )
+        {
+            SVGVKernElement *vkern = static_cast<SVGVKernElement *>( child );
+            vkern->buildVerticalKerningPair( m_verticalKerningPairs );
         }
     }
-        
+
     m_isGlyphCacheValid = true;
 }
 
-static bool stringMatchesUnicodeRange(const String& unicodeString, const UnicodeRanges& ranges, const HashSet<String>& unicodeValues)
+static bool stringMatchesUnicodeRange( const String &unicodeString, const UnicodeRanges &ranges,
+                                       const HashSet<String> &unicodeValues )
 {
-    if (unicodeString.isEmpty())
+    if ( unicodeString.isEmpty() )
+    {
         return false;
+    }
 
-    if (!ranges.isEmpty()) {
+    if ( !ranges.isEmpty() )
+    {
         UChar firstChar = unicodeString[0];
         const UnicodeRanges::const_iterator end = ranges.end();
-        for (UnicodeRanges::const_iterator it = ranges.begin(); it != end; ++it) {
-            if (firstChar >= it->first && firstChar <= it->second)
+
+        for ( UnicodeRanges::const_iterator it = ranges.begin(); it != end; ++it )
+        {
+            if ( firstChar >= it->first && firstChar <= it->second )
+            {
                 return true;
+            }
         }
     }
 
-    if (!unicodeValues.isEmpty())
-        return unicodeValues.contains(unicodeString);
-    
+    if ( !unicodeValues.isEmpty() )
+    {
+        return unicodeValues.contains( unicodeString );
+    }
+
     return false;
 }
 
-static bool stringMatchesGlyphName(const String& glyphName, const HashSet<String>& glyphValues)
+static bool stringMatchesGlyphName( const String &glyphName, const HashSet<String> &glyphValues )
 {
-    if (glyphName.isEmpty())
+    if ( glyphName.isEmpty() )
+    {
         return false;
+    }
 
-    if (!glyphValues.isEmpty())
-        return glyphValues.contains(glyphName);
-    
+    if ( !glyphValues.isEmpty() )
+    {
+        return glyphValues.contains( glyphName );
+    }
+
     return false;
 }
-    
-static bool matches(const String& u1, const String& g1, const String& u2, const String& g2, const SVGKerningPair& kerningPair)
-{
-    if (!stringMatchesUnicodeRange(u1, kerningPair.unicodeRange1, kerningPair.unicodeName1)
-        && !stringMatchesGlyphName(g1, kerningPair.glyphName1))
-        return false;
 
-    if (!stringMatchesUnicodeRange(u2, kerningPair.unicodeRange2, kerningPair.unicodeName2)
-        && !stringMatchesGlyphName(g2, kerningPair.glyphName2))
+static bool matches( const String &u1, const String &g1, const String &u2, const String &g2, const SVGKerningPair &kerningPair )
+{
+    if ( !stringMatchesUnicodeRange( u1, kerningPair.unicodeRange1, kerningPair.unicodeName1 )
+            && !stringMatchesGlyphName( g1, kerningPair.glyphName1 ) )
+    {
         return false;
+    }
+
+    if ( !stringMatchesUnicodeRange( u2, kerningPair.unicodeRange2, kerningPair.unicodeName2 )
+            && !stringMatchesGlyphName( g2, kerningPair.glyphName2 ) )
+    {
+        return false;
+    }
 
     return true;
 }
 
-static float kerningForPairOfStringsAndGlyphs(KerningPairVector& kerningPairs, const String& u1, const String& g1, const String& u2, const String& g2)
+static float kerningForPairOfStringsAndGlyphs( KerningPairVector &kerningPairs, const String &u1, const String &g1,
+        const String &u2, const String &g2 )
 {
     KerningPairVector::const_iterator it = kerningPairs.end() - 1;
     const KerningPairVector::const_iterator begin = kerningPairs.begin() - 1;
-    for (; it != begin; --it) {
-        if (matches(u1, g1, u2, g2, *it))
+
+    for ( ; it != begin; --it )
+    {
+        if ( matches( u1, g1, u2, g2, *it ) )
+        {
             return it->kerning;
+        }
     }
 
     return 0.0f;
 }
-    
-float SVGFontElement::horizontalKerningForPairOfStringsAndGlyphs(const String& u1, const String& g1, const String& u2, const String& g2) const
-{
-    if (m_horizontalKerningPairs.isEmpty())
-        return 0.0f;
 
-    return kerningForPairOfStringsAndGlyphs(m_horizontalKerningPairs, u1, g1, u2, g2);
+float SVGFontElement::horizontalKerningForPairOfStringsAndGlyphs( const String &u1, const String &g1, const String &u2,
+        const String &g2 ) const
+{
+    if ( m_horizontalKerningPairs.isEmpty() )
+    {
+        return 0.0f;
+    }
+
+    return kerningForPairOfStringsAndGlyphs( m_horizontalKerningPairs, u1, g1, u2, g2 );
 }
 
-float SVGFontElement::verticalKerningForPairOfStringsAndGlyphs(const String& u1, const String& g1, const String& u2, const String& g2) const
+float SVGFontElement::verticalKerningForPairOfStringsAndGlyphs( const String &u1, const String &g1, const String &u2,
+        const String &g2 ) const
 {
-    if (m_verticalKerningPairs.isEmpty())
+    if ( m_verticalKerningPairs.isEmpty() )
+    {
         return 0.0f;
+    }
 
-    return kerningForPairOfStringsAndGlyphs(m_verticalKerningPairs, u1, g1, u2, g2);
+    return kerningForPairOfStringsAndGlyphs( m_verticalKerningPairs, u1, g1, u2, g2 );
 }
 
-void SVGFontElement::getGlyphIdentifiersForString(const String& string, Vector<SVGGlyph>& glyphs) const
+void SVGFontElement::getGlyphIdentifiersForString( const String &string, Vector<SVGGlyph> &glyphs ) const
 {
     ensureGlyphCache();
-    m_glyphMap.get(string, glyphs);
+    m_glyphMap.get( string, glyphs );
 }
 
-AttributeToPropertyTypeMap& SVGFontElement::attributeToPropertyTypeMap()
+AttributeToPropertyTypeMap &SVGFontElement::attributeToPropertyTypeMap()
 {
-    DEFINE_STATIC_LOCAL(AttributeToPropertyTypeMap, s_attributeToPropertyTypeMap, ());
+    DEFINE_STATIC_LOCAL( AttributeToPropertyTypeMap, s_attributeToPropertyTypeMap, () );
     return s_attributeToPropertyTypeMap;
 }
 
 void SVGFontElement::fillAttributeToPropertyTypeMap()
 {
-    SVGStyledElement::fillPassedAttributeToPropertyTypeMap(attributeToPropertyTypeMap());
+    SVGStyledElement::fillPassedAttributeToPropertyTypeMap( attributeToPropertyTypeMap() );
 }
 
 }

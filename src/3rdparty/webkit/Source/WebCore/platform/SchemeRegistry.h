@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
 #ifndef SchemeRegistry_h
@@ -30,39 +30,41 @@
 #include <wtf/HashSet.h>
 #include <wtf/text/StringHash.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 typedef HashSet<String, CaseFoldingHash> URLSchemesMap;
 
-class SchemeRegistry {
+class SchemeRegistry
+{
 public:
-    static void registerURLSchemeAsLocal(const String&);
-    static void removeURLSchemeRegisteredAsLocal(const String&);
-    static const URLSchemesMap& localSchemes();
+    static void registerURLSchemeAsLocal( const String & );
+    static void removeURLSchemeRegisteredAsLocal( const String & );
+    static const URLSchemesMap &localSchemes();
 
-    static bool shouldTreatURLSchemeAsLocal(const String&);
+    static bool shouldTreatURLSchemeAsLocal( const String & );
 
     // Secure schemes do not trigger mixed content warnings. For example,
     // https and data are secure schemes because they cannot be corrupted by
     // active network attackers.
-    static void registerURLSchemeAsSecure(const String&);
-    static bool shouldTreatURLSchemeAsSecure(const String&);
+    static void registerURLSchemeAsSecure( const String & );
+    static bool shouldTreatURLSchemeAsSecure( const String & );
 
-    static void registerURLSchemeAsNoAccess(const String&);
-    static bool shouldTreatURLSchemeAsNoAccess(const String&);
+    static void registerURLSchemeAsNoAccess( const String & );
+    static bool shouldTreatURLSchemeAsNoAccess( const String & );
 
     // Display-isolated schemes can only be displayed (in the sense of
     // SecurityOrigin::canDisplay) by documents from the same scheme.
-    static void registerURLSchemeAsDisplayIsolated(const String&);
-    static bool shouldTreatURLSchemeAsDisplayIsolated(const String&);
+    static void registerURLSchemeAsDisplayIsolated( const String & );
+    static bool shouldTreatURLSchemeAsDisplayIsolated( const String & );
 
-    static void registerURLSchemeAsEmptyDocument(const String&);
-    static bool shouldLoadURLSchemeAsEmptyDocument(const String&);
+    static void registerURLSchemeAsEmptyDocument( const String & );
+    static bool shouldLoadURLSchemeAsEmptyDocument( const String & );
 
     // Such schemes should delegate to SecurityOrigin::canRequest for any URL
     // passed to SecurityOrigin::canDisplay.
-    static bool canDisplayOnlyIfCanRequest(const String& scheme);
-    static void registerAsCanDisplayOnlyIfCanRequest(const String& scheme);
+    static bool canDisplayOnlyIfCanRequest( const String &scheme );
+    static void registerAsCanDisplayOnlyIfCanRequest( const String &scheme );
 };
 
 } // namespace WebCore

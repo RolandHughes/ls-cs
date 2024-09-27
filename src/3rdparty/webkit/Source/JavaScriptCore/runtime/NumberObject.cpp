@@ -25,16 +25,17 @@
 #include "JSGlobalObject.h"
 #include "NumberPrototype.h"
 
-namespace JSC {
+namespace JSC
+{
 
-ASSERT_CLASS_FITS_IN_CELL(NumberObject);
+ASSERT_CLASS_FITS_IN_CELL( NumberObject );
 
 const ClassInfo NumberObject::s_info = { "Number", &JSWrapperObject::s_info, 0, 0 };
 
-NumberObject::NumberObject(JSGlobalData& globalData, Structure* structure)
-    : JSWrapperObject(globalData, structure)
+NumberObject::NumberObject( JSGlobalData &globalData, Structure *structure )
+    : JSWrapperObject( globalData, structure )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
 JSValue NumberObject::getJSNumber()
@@ -42,10 +43,10 @@ JSValue NumberObject::getJSNumber()
     return internalValue();
 }
 
-NumberObject* constructNumber(ExecState* exec, JSGlobalObject* globalObject, JSValue number)
+NumberObject *constructNumber( ExecState *exec, JSGlobalObject *globalObject, JSValue number )
 {
-    NumberObject* object = new (exec) NumberObject(exec->globalData(), globalObject->numberObjectStructure());
-    object->setInternalValue(exec->globalData(), number);
+    NumberObject *object = new ( exec ) NumberObject( exec->globalData(), globalObject->numberObjectStructure() );
+    object->setInternalValue( exec->globalData(), number );
     return object;
 }
 

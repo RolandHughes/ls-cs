@@ -27,12 +27,12 @@ QT_BEGIN_NAMESPACE
 
 class QDeclarativeScriptStringPrivate : public QSharedData
 {
- public:
-   QDeclarativeScriptStringPrivate() : context(0), scope(0) {}
+public:
+    QDeclarativeScriptStringPrivate() : context( 0 ), scope( 0 ) {}
 
-   QDeclarativeContext *context;
-   QObject *scope;
-   QString script;
+    QDeclarativeContext *context;
+    QObject *scope;
+    QString script;
 };
 
 /*!
@@ -68,15 +68,15 @@ expr.value();
 Constructs an empty instance.
 */
 QDeclarativeScriptString::QDeclarativeScriptString()
-   :  d(new QDeclarativeScriptStringPrivate)
+    :  d( new QDeclarativeScriptStringPrivate )
 {
 }
 
 /*!
 Copies \a other.
 */
-QDeclarativeScriptString::QDeclarativeScriptString(const QDeclarativeScriptString &other)
-   : d(other.d)
+QDeclarativeScriptString::QDeclarativeScriptString( const QDeclarativeScriptString &other )
+    : d( other.d )
 {
 }
 
@@ -90,10 +90,10 @@ QDeclarativeScriptString::~QDeclarativeScriptString()
 /*!
 Assigns \a other to this.
 */
-QDeclarativeScriptString &QDeclarativeScriptString::operator=(const QDeclarativeScriptString &other)
+QDeclarativeScriptString &QDeclarativeScriptString::operator=( const QDeclarativeScriptString &other )
 {
-   d = other.d;
-   return *this;
+    d = other.d;
+    return *this;
 }
 
 /*!
@@ -101,15 +101,15 @@ Returns the context for the script.
 */
 QDeclarativeContext *QDeclarativeScriptString::context() const
 {
-   return d->context;
+    return d->context;
 }
 
 /*!
 Sets the \a context for the script.
 */
-void QDeclarativeScriptString::setContext(QDeclarativeContext *context)
+void QDeclarativeScriptString::setContext( QDeclarativeContext *context )
 {
-   d->context = context;
+    d->context = context;
 }
 
 /*!
@@ -117,15 +117,15 @@ Returns the scope object for the script.
 */
 QObject *QDeclarativeScriptString::scopeObject() const
 {
-   return d->scope;
+    return d->scope;
 }
 
 /*!
 Sets the scope \a object for the script.
 */
-void QDeclarativeScriptString::setScopeObject(QObject *object)
+void QDeclarativeScriptString::setScopeObject( QObject *object )
 {
-   d->scope = object;
+    d->scope = object;
 }
 
 /*!
@@ -133,15 +133,15 @@ Returns the script text.
 */
 QString QDeclarativeScriptString::script() const
 {
-   return d->script;
+    return d->script;
 }
 
 /*!
 Sets the \a script text.
 */
-void QDeclarativeScriptString::setScript(const QString &script)
+void QDeclarativeScriptString::setScript( const QString &script )
 {
-   d->script = script;
+    d->script = script;
 }
 
 QT_END_NAMESPACE

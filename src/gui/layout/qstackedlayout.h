@@ -31,72 +31,73 @@ class QStackedLayoutPrivate;
 
 class Q_GUI_EXPORT QStackedLayout : public QLayout
 {
-   GUI_CS_OBJECT(QStackedLayout)
+    GUI_CS_OBJECT( QStackedLayout )
 
-   GUI_CS_ENUM(StackingMode)
+    GUI_CS_ENUM( StackingMode )
 
-   GUI_CS_PROPERTY_READ(currentIndex, currentIndex)
-   GUI_CS_PROPERTY_WRITE(currentIndex, setCurrentIndex)
-   GUI_CS_PROPERTY_NOTIFY(currentIndex, currentChanged)
+    GUI_CS_PROPERTY_READ( currentIndex, currentIndex )
+    GUI_CS_PROPERTY_WRITE( currentIndex, setCurrentIndex )
+    GUI_CS_PROPERTY_NOTIFY( currentIndex, currentChanged )
 
-   GUI_CS_PROPERTY_READ(stackingMode, stackingMode)
-   GUI_CS_PROPERTY_WRITE(stackingMode, setStackingMode)
+    GUI_CS_PROPERTY_READ( stackingMode, stackingMode )
+    GUI_CS_PROPERTY_WRITE( stackingMode, setStackingMode )
 
-   // following is qdoc_property
-   GUI_CS_PROPERTY_READ(count, count)
+    // following is qdoc_property
+    GUI_CS_PROPERTY_READ( count, count )
 
- public:
-   enum StackingMode {
-      StackOne,
-      StackAll
-   };
+public:
+    enum StackingMode
+    {
+        StackOne,
+        StackAll
+    };
 
-   QStackedLayout();
-   explicit QStackedLayout(QWidget *parent);
-   explicit QStackedLayout(QLayout *parentLayout);
+    QStackedLayout();
+    explicit QStackedLayout( QWidget *parent );
+    explicit QStackedLayout( QLayout *parentLayout );
 
-   QStackedLayout(const QStackedLayout &) = delete;
-   QStackedLayout &operator=(const QStackedLayout &) = delete;
+    QStackedLayout( const QStackedLayout & ) = delete;
+    QStackedLayout &operator=( const QStackedLayout & ) = delete;
 
-   ~QStackedLayout();
+    ~QStackedLayout();
 
-   int addWidget(QWidget *widget);
-   int insertWidget(int index, QWidget *widget);
+    int addWidget( QWidget *widget );
+    int insertWidget( int index, QWidget *widget );
 
-   QWidget *currentWidget() const;
-   int currentIndex() const;
+    QWidget *currentWidget() const;
+    int currentIndex() const;
 
-   using QLayout::widget;
-   QWidget *widget(int index) const;
-   int count() const override;
+    using QLayout::widget;
+    QWidget *widget( int index ) const;
+    int count() const override;
 
-   StackingMode stackingMode() const;
-   void setStackingMode(StackingMode stackingMode);
+    StackingMode stackingMode() const;
+    void setStackingMode( StackingMode stackingMode );
 
-   // abstract virtual functions:
-   void addItem(QLayoutItem *item) override;
-   QSize sizeHint() const override;
-   QSize minimumSize() const override;
-   QLayoutItem *itemAt(int index) const override;
-   QLayoutItem *takeAt(int index) override;
-   void setGeometry(const QRect &rect) override;
-   bool hasHeightForWidth() const override;
-   int heightForWidth(int width) const override;
+    // abstract virtual functions:
+    void addItem( QLayoutItem *item ) override;
+    QSize sizeHint() const override;
+    QSize minimumSize() const override;
+    QLayoutItem *itemAt( int index ) const override;
+    QLayoutItem *takeAt( int index ) override;
+    void setGeometry( const QRect &rect ) override;
+    bool hasHeightForWidth() const override;
+    int heightForWidth( int width ) const override;
 
-   GUI_CS_SIGNAL_1(Public, void widgetRemoved(int index))
-   GUI_CS_SIGNAL_2(widgetRemoved, index)
+    GUI_CS_SIGNAL_1( Public, void widgetRemoved( int index ) )
+    GUI_CS_SIGNAL_2( widgetRemoved, index )
 
-   GUI_CS_SIGNAL_1(Public, void currentChanged(int index))
-   GUI_CS_SIGNAL_2(currentChanged, index)
+    GUI_CS_SIGNAL_1( Public, void currentChanged( int index ) )
+    GUI_CS_SIGNAL_2( currentChanged, index )
 
-   GUI_CS_SLOT_1(Public, void setCurrentIndex(int index))
-   GUI_CS_SLOT_2(setCurrentIndex)
+    GUI_CS_SLOT_1( Public, void setCurrentIndex( int index ) )
+    GUI_CS_SLOT_2( setCurrentIndex )
 
-   GUI_CS_SLOT_1(Public, void setCurrentWidget(QWidget *widget))
-   GUI_CS_SLOT_2(setCurrentWidget)
+    GUI_CS_SLOT_1( Public, void setCurrentWidget( QWidget *widget ) )
+    GUI_CS_SLOT_2( setCurrentWidget )
 
- private:
-   Q_DECLARE_PRIVATE(QStackedLayout)
+private:
+    Q_DECLARE_PRIVATE( QStackedLayout )
 };
 
 #endif // QSTACKEDLAYOUT_H

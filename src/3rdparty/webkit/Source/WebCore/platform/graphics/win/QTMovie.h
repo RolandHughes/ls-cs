@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef QTMovie_h
@@ -37,17 +37,19 @@
 
 class QTMovie;
 class QTMoviePrivate;
-typedef struct MovieType** Movie;
+typedef struct MovieType **Movie;
 typedef Vector<RefPtr<QTTrack>> QTTrackArray;
 
-class QTMovieClient {
+class QTMovieClient
+{
 public:
-    virtual void movieEnded(QTMovie*) = 0;
-    virtual void movieLoadStateChanged(QTMovie*) = 0;
-    virtual void movieTimeChanged(QTMovie*) = 0;
+    virtual void movieEnded( QTMovie * ) = 0;
+    virtual void movieLoadStateChanged( QTMovie * ) = 0;
+    virtual void movieTimeChanged( QTMovie * ) = 0;
 };
 
-enum {
+enum
+{
     QTMovieLoadStateError = -1L,
     QTMovieLoadStateLoaded  = 2000L,
     QTMovieLoadStatePlayable = 10000L,
@@ -55,24 +57,25 @@ enum {
     QTMovieLoadStateComplete = 100000L
 };
 
-typedef const struct __CFURL * CFURLRef;
+typedef const struct __CFURL *CFURLRef;
 
-class QTMOVIEWIN_API QTMovie : public RefCounted<QTMovie> {
+class QTMOVIEWIN_API QTMovie : public RefCounted<QTMovie>
+{
 public:
     static bool initializeQuickTime();
     static void taskTimerFired();
 
-    static void disableComponent(uint32_t[5]);
+    static void disableComponent( uint32_t[5] );
 
-    QTMovie(QTMovieClient*);
+    QTMovie( QTMovieClient * );
     ~QTMovie();
 
-    void addClient(QTMovieClient*);
-    void removeClient(QTMovieClient*);
+    void addClient( QTMovieClient * );
+    void removeClient( QTMovieClient * );
 
-    void loadPath(const UChar* url, int len, bool preservesPitch);
-    void load(const UChar* url, int len, bool preservesPitch);
-    void load(CFURLRef, bool preservesPitch);
+    void loadPath( const UChar *url, int len, bool preservesPitch );
+    void load( const UChar *url, int len, bool preservesPitch );
+    void load( CFURLRef, bool preservesPitch );
 
     long loadState() const;
     float maxTimeLoaded() const;
@@ -81,23 +84,23 @@ public:
     void pause();
 
     float rate() const;
-    void setRate(float);
+    void setRate( float );
 
     float duration() const;
     float currentTime() const;
-    void setCurrentTime(float) const;
+    void setCurrentTime( float ) const;
 
-    void setVolume(float);
-    void setPreservesPitch(bool);
+    void setVolume( float );
+    void setPreservesPitch( bool );
 
     unsigned dataSize() const;
 
-    void getNaturalSize(int& width, int& height);
+    void getNaturalSize( int &width, int &height );
 
-    void disableUnsupportedTracks(unsigned& enabledTrackCount, unsigned& totalTrackCount);
+    void disableUnsupportedTracks( unsigned &enabledTrackCount, unsigned &totalTrackCount );
 
     bool isDisabled() const;
-    void setDisabled(bool);
+    void setDisabled( bool );
 
     bool hasVideo() const;
     bool hasAudio() const;
@@ -105,23 +108,23 @@ public:
     QTTrackArray videoTracks() const;
 
     bool hasClosedCaptions() const;
-    void setClosedCaptionsVisible(bool);
+    void setClosedCaptionsVisible( bool );
 
     static unsigned countSupportedTypes();
-    static void getSupportedType(unsigned index, const UChar*& str, unsigned& len);
+    static void getSupportedType( unsigned index, const UChar *&str, unsigned &len );
 
     CGAffineTransform getTransform() const;
-    void setTransform(CGAffineTransform);
+    void setTransform( CGAffineTransform );
     void resetTransform();
 
     Movie getMovieHandle() const;
 
     long timeScale() const;
 
-    void setPrivateBrowsingMode(bool);
+    void setPrivateBrowsingMode( bool );
 
 private:
-    QTMoviePrivate* m_private;
+    QTMoviePrivate *m_private;
     friend class QTMoviePrivate;
 };
 

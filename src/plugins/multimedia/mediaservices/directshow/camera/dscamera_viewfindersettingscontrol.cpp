@@ -24,24 +24,24 @@
 #include <dscamera_viewfindersettingscontrol.h>
 #include <dscamera_session.h>
 
-DSCameraViewfinderSettingsControl::DSCameraViewfinderSettingsControl(DSCameraSession *session)
-   : QCameraViewfinderSettingsControl2(session), m_session(session)
+DSCameraViewfinderSettingsControl::DSCameraViewfinderSettingsControl( DSCameraSession *session )
+    : QCameraViewfinderSettingsControl2( session ), m_session( session )
 {
 }
 
 QList<QCameraViewfinderSettings> DSCameraViewfinderSettingsControl::supportedViewfinderSettings() const
 {
-   return m_session->supportedViewfinderSettings();
+    return m_session->supportedViewfinderSettings();
 }
 
 QCameraViewfinderSettings DSCameraViewfinderSettingsControl::viewfinderSettings() const
 {
-   return m_session->viewfinderSettings();
+    return m_session->viewfinderSettings();
 }
 
-void DSCameraViewfinderSettingsControl::setViewfinderSettings(const QCameraViewfinderSettings &settings)
+void DSCameraViewfinderSettingsControl::setViewfinderSettings( const QCameraViewfinderSettings &settings )
 {
-   m_session->setViewfinderSettings(settings);
+    m_session->setViewfinderSettings( settings );
 }
 
 

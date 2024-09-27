@@ -1,10 +1,10 @@
 // Copyright (c) 2005, 2007, Google Inc.
 // All rights reserved.
-// 
+//
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
 // met:
-// 
+//
 //     * Redistributions of source code must retain the above copyright
 // notice, this list of conditions and the following disclaimer.
 //     * Redistributions in binary form must reproduce the above
@@ -14,7 +14,7 @@
 //     * Neither the name of Google Inc. nor the names of its
 // contributors may be used to endorse or promote products derived from
 // this software without specific prior written permission.
-// 
+//
 // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 // "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 // LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -48,8 +48,8 @@
 // The returned pointer is a multiple of "alignment" if non-zero.
 //
 // Returns NULL when out of memory.
-extern void* TCMalloc_SystemAlloc(size_t bytes, size_t *actual_bytes,
-                                  size_t alignment = 0);
+extern void *TCMalloc_SystemAlloc( size_t bytes, size_t *actual_bytes,
+                                   size_t alignment = 0 );
 
 // This call is a hint to the operating system that the pages
 // contained in the specified range of memory will not be used for a
@@ -60,16 +60,16 @@ extern void* TCMalloc_SystemAlloc(size_t bytes, size_t *actual_bytes,
 // the address space next time they are touched, which can impact
 // performance.  (Only pages fully covered by the memory region will
 // be released, partial pages will not.)
-extern void TCMalloc_SystemRelease(void* start, size_t length);
+extern void TCMalloc_SystemRelease( void *start, size_t length );
 
-extern void TCMalloc_SystemCommit(void* start, size_t length);
+extern void TCMalloc_SystemCommit( void *start, size_t length );
 
 #if !HAVE(MADV_FREE_REUSE) && !HAVE(MADV_DONTNEED) && !HAVE(MMAP) && !HAVE(VIRTUALALLOC)
-inline void TCMalloc_SystemRelease(void*, size_t) { }
+inline void TCMalloc_SystemRelease( void *, size_t ) { }
 #endif
 
 #if !HAVE(VIRTUALALLOC) && !HAVE(MADV_FREE_REUSE)
-inline void TCMalloc_SystemCommit(void*, size_t) { }
+inline void TCMalloc_SystemCommit( void *, size_t ) { }
 #endif
 
 #endif /* TCMALLOC_SYSTEM_ALLOC_H__ */

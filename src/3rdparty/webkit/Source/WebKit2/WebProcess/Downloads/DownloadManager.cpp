@@ -32,11 +32,12 @@
 
 using namespace WebCore;
 
-namespace WebKit {
-
-DownloadManager& DownloadManager::shared()
+namespace WebKit
 {
-    DEFINE_STATIC_LOCAL(DownloadManager, downloadManager, ());
+
+DownloadManager &DownloadManager::shared()
+{
+    DEFINE_STATIC_LOCAL( DownloadManager, downloadManager, () );
     return downloadManager;
 }
 
@@ -44,37 +45,41 @@ DownloadManager::DownloadManager()
 {
 }
 
-void DownloadManager::startDownload(uint64_t downloadID, WebPage* initiatingPage, const ResourceRequest& request)
+void DownloadManager::startDownload( uint64_t downloadID, WebPage *initiatingPage, const ResourceRequest &request )
 {
-    OwnPtr<Download> download = Download::create(downloadID, request);
-    download->start(initiatingPage);
+    OwnPtr<Download> download = Download::create( downloadID, request );
+    download->start( initiatingPage );
 
-    ASSERT(!m_downloads.contains(downloadID));
-    m_downloads.set(downloadID, download.leakPtr());
+    ASSERT( !m_downloads.contains( downloadID ) );
+    m_downloads.set( downloadID, download.leakPtr() );
 }
 
-void DownloadManager::convertHandleToDownload(uint64_t downloadID, WebPage* initiatingPage, ResourceHandle* handle, const ResourceRequest& request, const ResourceRequest& initialRequest, const ResourceResponse& response)
+void DownloadManager::convertHandleToDownload( uint64_t downloadID, WebPage *initiatingPage, ResourceHandle *handle,
+        const ResourceRequest &request, const ResourceRequest &initialRequest, const ResourceResponse &response )
 {
-    OwnPtr<Download> download = Download::create(downloadID, request);
+    OwnPtr<Download> download = Download::create( downloadID, request );
 
-    download->startWithHandle(initiatingPage, handle, initialRequest, response);
-    ASSERT(!m_downloads.contains(downloadID));
-    m_downloads.set(downloadID, download.leakPtr());
+    download->startWithHandle( initiatingPage, handle, initialRequest, response );
+    ASSERT( !m_downloads.contains( downloadID ) );
+    m_downloads.set( downloadID, download.leakPtr() );
 }
 
-void DownloadManager::cancelDownload(uint64_t downloadID)
+void DownloadManager::cancelDownload( uint64_t downloadID )
 {
-    Download* download = m_downloads.get(downloadID);
-    if (!download)
+    Download *download = m_downloads.get( downloadID );
+
+    if ( !download )
+    {
         return;
+    }
 
     download->cancel();
 }
 
-void DownloadManager::downloadFinished(Download* download)
+void DownloadManager::downloadFinished( Download *download )
 {
-    ASSERT(m_downloads.contains(download->downloadID()));
-    m_downloads.remove(download->downloadID());
+    ASSERT( m_downloads.contains( download->downloadID() ) );
+    m_downloads.remove( download->downloadID() );
 
     delete download;
 }

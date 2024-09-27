@@ -30,27 +30,27 @@
 
 using namespace QPatternist;
 
-Expression::Ptr Validate::create(const Expression::Ptr &operandNode,
-                                 const Mode validationMode,
-                                 const StaticContext::Ptr &context)
+Expression::Ptr Validate::create( const Expression::Ptr &operandNode,
+                                  const Mode validationMode,
+                                  const StaticContext::Ptr &context )
 {
-   Q_ASSERT(operandNode);
-   Q_ASSERT(validationMode == Lax || validationMode == Strict);
-   Q_ASSERT(context);
+    Q_ASSERT( operandNode );
+    Q_ASSERT( validationMode == Lax || validationMode == Strict );
+    Q_ASSERT( context );
 
-   (void) validationMode;
-   (void) context;
+    ( void ) validationMode;
+    ( void ) context;
 
-   ItemType::List tList;
-   tList.append(BuiltinTypes::element);
-   tList.append(BuiltinTypes::document);
+    ItemType::List tList;
+    tList.append( BuiltinTypes::element );
+    tList.append( BuiltinTypes::document );
 
-   const SequenceType::Ptr elementOrDocument(makeGenericSequenceType(ItemType::Ptr(new MultiItemType(tList)),
-         Cardinality::exactlyOne()));
+    const SequenceType::Ptr elementOrDocument( makeGenericSequenceType( ItemType::Ptr( new MultiItemType( tList ) ),
+            Cardinality::exactlyOne() ) );
 
 
-   return TypeChecker::applyFunctionConversion(operandNode,
-          elementOrDocument,
-          context,
-          ReportContext::XQTY0030);
+    return TypeChecker::applyFunctionConversion( operandNode,
+            elementOrDocument,
+            context,
+            ReportContext::XQTY0030 );
 }

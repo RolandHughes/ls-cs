@@ -31,24 +31,30 @@
 #include <runtime/JSObjectWithGlobalObject.h>
 #include <runtime/ObjectPrototype.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class JSSVGLengthList : public JSDOMWrapper {
+class JSSVGLengthList : public JSDOMWrapper
+{
     typedef JSDOMWrapper Base;
 public:
-    JSSVGLengthList(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<SVGListPropertyTearOff<SVGLengthList> >);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
+    JSSVGLengthList( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<SVGListPropertyTearOff<SVGLengthList> > );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
-    SVGListPropertyTearOff<SVGLengthList> * impl() const { return m_impl.get(); }
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
+    SVGListPropertyTearOff<SVGLengthList> *impl() const
+    {
+        return m_impl.get();
+    }
 
 private:
     RefPtr<SVGListPropertyTearOff<SVGLengthList> > m_impl;
@@ -56,38 +62,41 @@ protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
-JSC::JSValue toJS(JSC::ExecState*, JSDOMGlobalObject*, SVGListPropertyTearOff<SVGLengthList> *);
-SVGListPropertyTearOff<SVGLengthList> * toSVGLengthList(JSC::JSValue);
+JSC::JSValue toJS( JSC::ExecState *, JSDOMGlobalObject *, SVGListPropertyTearOff<SVGLengthList> * );
+SVGListPropertyTearOff<SVGLengthList> *toSVGLengthList( JSC::JSValue );
 
-class JSSVGLengthListPrototype : public JSC::JSObjectWithGlobalObject {
+class JSSVGLengthListPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSSVGLengthListPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSSVGLengthListPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                              JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 // Functions
 
-JSC::EncodedJSValue JSC_HOST_CALL jsSVGLengthListPrototypeFunctionClear(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsSVGLengthListPrototypeFunctionInitialize(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsSVGLengthListPrototypeFunctionGetItem(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsSVGLengthListPrototypeFunctionInsertItemBefore(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsSVGLengthListPrototypeFunctionReplaceItem(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsSVGLengthListPrototypeFunctionRemoveItem(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsSVGLengthListPrototypeFunctionAppendItem(JSC::ExecState*);
+JSC::EncodedJSValue JSC_HOST_CALL jsSVGLengthListPrototypeFunctionClear( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsSVGLengthListPrototypeFunctionInitialize( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsSVGLengthListPrototypeFunctionGetItem( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsSVGLengthListPrototypeFunctionInsertItemBefore( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsSVGLengthListPrototypeFunctionReplaceItem( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsSVGLengthListPrototypeFunctionRemoveItem( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsSVGLengthListPrototypeFunctionAppendItem( JSC::ExecState * );
 // Attributes
 
-JSC::JSValue jsSVGLengthListNumberOfItems(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsSVGLengthListConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsSVGLengthListNumberOfItems( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsSVGLengthListConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

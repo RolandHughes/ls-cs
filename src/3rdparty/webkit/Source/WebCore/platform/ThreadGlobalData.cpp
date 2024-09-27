@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
 
@@ -47,25 +47,26 @@
 using namespace WTF;
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
 #if ENABLE(WORKERS)
-ThreadSpecific<ThreadGlobalData>* ThreadGlobalData::staticData;
+ThreadSpecific<ThreadGlobalData> *ThreadGlobalData::staticData;
 #else
-ThreadGlobalData* ThreadGlobalData::staticData;
+ThreadGlobalData *ThreadGlobalData::staticData;
 #endif
 
 ThreadGlobalData::ThreadGlobalData()
-    : m_eventNames(new EventNames)
-    , m_threadTimers(new ThreadTimers)
+    : m_eventNames( new EventNames )
+    , m_threadTimers( new ThreadTimers )
 #ifndef NDEBUG
-    , m_isMainThread(isMainThread())
+    , m_isMainThread( isMainThread() )
 #endif
 #if USE(ICU_UNICODE)
-    , m_cachedConverterICU(new ICUConverterWrapper)
+    , m_cachedConverterICU( new ICUConverterWrapper )
 #endif
 #if PLATFORM(MAC)
-    , m_cachedConverterTEC(new TECConverterWrapper)
+    , m_cachedConverterTEC( new TECConverterWrapper )
 #endif
 {
     // This constructor will have been called on the main thread before being called on

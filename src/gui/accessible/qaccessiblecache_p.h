@@ -42,37 +42,37 @@ using QMacAccessibilityElement = struct objc_object;
 
 class Q_GUI_EXPORT QAccessibleCache : public QObject
 {
-   GUI_CS_OBJECT(QAccessibleCache)
+    GUI_CS_OBJECT( QAccessibleCache )
 
- public:
-   static QAccessibleCache *instance();
-   QAccessibleInterface *interfaceForId(QAccessible::Id id) const;
-   QAccessible::Id idForInterface(QAccessibleInterface *iface) const;
-   QAccessible::Id insert(QObject *object, QAccessibleInterface *iface) const;
-   void deleteInterface(QAccessible::Id id, QObject *obj = nullptr);
-
-#ifdef Q_OS_DARWIN
-   QMacAccessibilityElement *elementForId(QAccessible::Id axid) const;
-   void insertElement(QAccessible::Id axid, QMacAccessibilityElement *element) const;
-#endif
-
- private:
-   // slot
-   void objectDestroyed(QObject *obj);
-
-   QAccessible::Id acquireId() const;
-
-   mutable QHash<QAccessible::Id, QAccessibleInterface *> idToInterface;
-   mutable QHash<QAccessibleInterface *, QAccessible::Id> interfaceToId;
-   mutable QHash<QObject *, QAccessible::Id> objectToId;
+public:
+    static QAccessibleCache *instance();
+    QAccessibleInterface *interfaceForId( QAccessible::Id id ) const;
+    QAccessible::Id idForInterface( QAccessibleInterface *iface ) const;
+    QAccessible::Id insert( QObject *object, QAccessibleInterface *iface ) const;
+    void deleteInterface( QAccessible::Id id, QObject *obj = nullptr );
 
 #ifdef Q_OS_DARWIN
-   void removeCocoaElement(QAccessible::Id axid);
-   mutable QHash<QAccessible::Id, QMacAccessibilityElement *> cocoaElements;
+    QMacAccessibilityElement *elementForId( QAccessible::Id axid ) const;
+    void insertElement( QAccessible::Id axid, QMacAccessibilityElement *element ) const;
 #endif
 
-   friend class QAccessible;
-   friend class QAccessibleInterface;
+private:
+    // slot
+    void objectDestroyed( QObject *obj );
+
+    QAccessible::Id acquireId() const;
+
+    mutable QHash<QAccessible::Id, QAccessibleInterface *> idToInterface;
+    mutable QHash<QAccessibleInterface *, QAccessible::Id> interfaceToId;
+    mutable QHash<QObject *, QAccessible::Id> objectToId;
+
+#ifdef Q_OS_DARWIN
+    void removeCocoaElement( QAccessible::Id axid );
+    mutable QHash<QAccessible::Id, QMacAccessibilityElement *> cocoaElements;
+#endif
+
+    friend class QAccessible;
+    friend class QAccessibleInterface;
 };
 
 #endif // QT_NO_ACCESSIBILITY

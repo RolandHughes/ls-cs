@@ -20,9 +20,9 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 #ifndef CachedFrame_h
 #define CachedFrame_h
 
@@ -31,7 +31,8 @@
 #include <wtf/PassOwnPtr.h>
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class CachedFrame;
 class CachedFramePlatformData;
@@ -42,20 +43,36 @@ class Node;
 
 typedef Vector<RefPtr<CachedFrame> > CachedFrameVector;
 
-class CachedFrameBase {
+class CachedFrameBase
+{
 public:
     void restore();
 
-    Document* document() const { return m_document.get(); }
-    FrameView* view() const { return m_view.get(); }
-    const KURL& url() const { return m_url; }
-    DOMWindow* domWindow() const { return m_cachedFrameScriptData->domWindow(); }
-    bool isMainFrame() { return m_isMainFrame; }
+    Document *document() const
+    {
+        return m_document.get();
+    }
+    FrameView *view() const
+    {
+        return m_view.get();
+    }
+    const KURL &url() const
+    {
+        return m_url;
+    }
+    DOMWindow *domWindow() const
+    {
+        return m_cachedFrameScriptData->domWindow();
+    }
+    bool isMainFrame()
+    {
+        return m_isMainFrame;
+    }
 
 protected:
-    CachedFrameBase(Frame*);
+    CachedFrameBase( Frame * );
     ~CachedFrameBase();
-    
+
     RefPtr<Document> m_document;
     RefPtr<DocumentLoader> m_documentLoader;
     RefPtr<FrameView> m_view;
@@ -64,31 +81,41 @@ protected:
     OwnPtr<ScriptCachedFrameData> m_cachedFrameScriptData;
     OwnPtr<CachedFramePlatformData> m_cachedFramePlatformData;
     bool m_isMainFrame;
-    
+
     CachedFrameVector m_childFrames;
 };
 
-class CachedFrame : public RefCounted<CachedFrame>, private CachedFrameBase {
+class CachedFrame : public RefCounted<CachedFrame>, private CachedFrameBase
+{
 public:
-    static PassRefPtr<CachedFrame> create(Frame* frame) { return adoptRef(new CachedFrame(frame)); }
+    static PassRefPtr<CachedFrame> create( Frame *frame )
+    {
+        return adoptRef( new CachedFrame( frame ) );
+    }
 
     void open();
     void clear();
     void destroy();
 
-    void setCachedFramePlatformData(PassOwnPtr<CachedFramePlatformData>);
-    CachedFramePlatformData* cachedFramePlatformData();
+    void setCachedFramePlatformData( PassOwnPtr<CachedFramePlatformData> );
+    CachedFramePlatformData *cachedFramePlatformData();
 
     using CachedFrameBase::document;
     using CachedFrameBase::view;
     using CachedFrameBase::url;
-    DocumentLoader* documentLoader() const { return m_documentLoader.get(); }
-    Node* mousePressNode() const { return m_mousePressNode.get(); }
+    DocumentLoader *documentLoader() const
+    {
+        return m_documentLoader.get();
+    }
+    Node *mousePressNode() const
+    {
+        return m_mousePressNode.get();
+    }
 
     int descendantFrameCount() const;
 
 private:
-    CachedFrame(Frame*);
+    CachedFrame( Frame * );
 };
 
 } // namespace WebCore

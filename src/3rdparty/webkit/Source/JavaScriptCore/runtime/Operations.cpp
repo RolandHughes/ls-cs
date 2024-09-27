@@ -29,82 +29,126 @@
 #include <stdio.h>
 #include <wtf/MathExtras.h>
 
-namespace JSC {
-
-bool JSValue::equalSlowCase(ExecState* exec, JSValue v1, JSValue v2)
+namespace JSC
 {
-    return equalSlowCaseInline(exec, v1, v2);
+
+bool JSValue::equalSlowCase( ExecState *exec, JSValue v1, JSValue v2 )
+{
+    return equalSlowCaseInline( exec, v1, v2 );
 }
 
-bool JSValue::strictEqualSlowCase(ExecState* exec, JSValue v1, JSValue v2)
+bool JSValue::strictEqualSlowCase( ExecState *exec, JSValue v1, JSValue v2 )
 {
-    return strictEqualSlowCaseInline(exec, v1, v2);
+    return strictEqualSlowCaseInline( exec, v1, v2 );
 }
 
-NEVER_INLINE JSValue jsAddSlowCase(CallFrame* callFrame, JSValue v1, JSValue v2)
+NEVER_INLINE JSValue jsAddSlowCase( CallFrame *callFrame, JSValue v1, JSValue v2 )
 {
     // exception for the Date exception in defaultValue()
-    JSValue p1 = v1.toPrimitive(callFrame);
-    JSValue p2 = v2.toPrimitive(callFrame);
+    JSValue p1 = v1.toPrimitive( callFrame );
+    JSValue p2 = v2.toPrimitive( callFrame );
 
-    if (p1.isString()) {
+    if ( p1.isString() )
+    {
         return p2.isString()
-            ? jsString(callFrame, asString(p1), asString(p2))
-            : jsString(callFrame, asString(p1), p2.toString(callFrame));
+               ? jsString( callFrame, asString( p1 ), asString( p2 ) )
+               : jsString( callFrame, asString( p1 ), p2.toString( callFrame ) );
     }
-    if (p2.isString())
-        return jsString(callFrame, p1.toString(callFrame), asString(p2));
 
-    return jsNumber(p1.toNumber(callFrame) + p2.toNumber(callFrame));
+    if ( p2.isString() )
+    {
+        return jsString( callFrame, p1.toString( callFrame ), asString( p2 ) );
+    }
+
+    return jsNumber( p1.toNumber( callFrame ) + p2.toNumber( callFrame ) );
 }
 
-JSValue jsTypeStringForValue(CallFrame* callFrame, JSValue v)
+JSValue jsTypeStringForValue( CallFrame *callFrame, JSValue v )
 {
-    if (v.isUndefined())
-        return jsNontrivialString(callFrame, "undefined");
-    if (v.isBoolean())
-        return jsNontrivialString(callFrame, "boolean");
-    if (v.isNumber())
-        return jsNontrivialString(callFrame, "number");
-    if (v.isString())
-        return jsNontrivialString(callFrame, "string");
-    if (v.isObject()) {
+    if ( v.isUndefined() )
+    {
+        return jsNontrivialString( callFrame, "undefined" );
+    }
+
+    if ( v.isBoolean() )
+    {
+        return jsNontrivialString( callFrame, "boolean" );
+    }
+
+    if ( v.isNumber() )
+    {
+        return jsNontrivialString( callFrame, "number" );
+    }
+
+    if ( v.isString() )
+    {
+        return jsNontrivialString( callFrame, "string" );
+    }
+
+    if ( v.isObject() )
+    {
         // Return "undefined" for objects that should be treated
         // as null when doing comparisons.
-        if (asObject(v)->structure()->typeInfo().masqueradesAsUndefined())
-            return jsNontrivialString(callFrame, "undefined");
+        if ( asObject( v )->structure()->typeInfo().masqueradesAsUndefined() )
+        {
+            return jsNontrivialString( callFrame, "undefined" );
+        }
+
         CallData callData;
-        if (asObject(v)->getCallData(callData) != CallTypeNone)
-            return jsNontrivialString(callFrame, "function");
+
+        if ( asObject( v )->getCallData( callData ) != CallTypeNone )
+        {
+            return jsNontrivialString( callFrame, "function" );
+        }
     }
-    return jsNontrivialString(callFrame, "object");
+
+    return jsNontrivialString( callFrame, "object" );
 }
 
-bool jsIsObjectType(JSValue v)
+bool jsIsObjectType( JSValue v )
 {
-    if (!v.isCell())
+    if ( !v.isCell() )
+    {
         return v.isNull();
+    }
 
     JSType type = v.asCell()->structure()->typeInfo().type();
-    if (type == NumberType || type == StringType)
+
+    if ( type == NumberType || type == StringType )
+    {
         return false;
-    if (type == ObjectType) {
-        if (asObject(v)->structure()->typeInfo().masqueradesAsUndefined())
-            return false;
-        CallData callData;
-        if (asObject(v)->getCallData(callData) != CallTypeNone)
-            return false;
     }
+
+    if ( type == ObjectType )
+    {
+        if ( asObject( v )->structure()->typeInfo().masqueradesAsUndefined() )
+        {
+            return false;
+        }
+
+        CallData callData;
+
+        if ( asObject( v )->getCallData( callData ) != CallTypeNone )
+        {
+            return false;
+        }
+    }
+
     return true;
 }
 
-bool jsIsFunctionType(JSValue v)
+bool jsIsFunctionType( JSValue v )
 {
-    if (v.isObject()) {
+    if ( v.isObject() )
+    {
         CallData callData;
-        if (asObject(v)->getCallData(callData) != CallTypeNone)
+
+        if ( asObject( v )->getCallData( callData ) != CallTypeNone )
+        {
             return true;
+        }
     }
+
     return false;
 }
 

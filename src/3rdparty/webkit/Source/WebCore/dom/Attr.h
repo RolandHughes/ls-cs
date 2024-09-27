@@ -28,7 +28,8 @@
 #include "ContainerNode.h"
 #include "Attribute.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 // Attr can have Text and EntityReference children
 // therefore it has to be a fullblown Node. The plan
@@ -36,58 +37,96 @@ namespace WebCore {
 // resulting nodevalue in the Attribute upon
 // destruction. however, this is not yet implemented.
 
-class Attr : public ContainerNode {
+class Attr : public ContainerNode
+{
     friend class NamedNodeMap;
 public:
-    static PassRefPtr<Attr> create(Element*, Document*, PassRefPtr<Attribute>);
+    static PassRefPtr<Attr> create( Element *, Document *, PassRefPtr<Attribute> );
     virtual ~Attr();
 
-    String name() const { return qualifiedName().toString(); }
-    bool specified() const { return m_specified; }
-    Element* ownerElement() const { return m_element; }
+    String name() const
+    {
+        return qualifiedName().toString();
+    }
+    bool specified() const
+    {
+        return m_specified;
+    }
+    Element *ownerElement() const
+    {
+        return m_element;
+    }
 
-    const AtomicString& value() const { return m_attribute->value(); }
-    void setValue(const AtomicString&, ExceptionCode&);
-    void setValue(const AtomicString&);
+    const AtomicString &value() const
+    {
+        return m_attribute->value();
+    }
+    void setValue( const AtomicString &, ExceptionCode & );
+    void setValue( const AtomicString & );
 
-    Attribute* attr() const { return m_attribute.get(); }
-    const QualifiedName& qualifiedName() const { return m_attribute->name(); }
+    Attribute *attr() const
+    {
+        return m_attribute.get();
+    }
+    const QualifiedName &qualifiedName() const
+    {
+        return m_attribute->name();
+    }
 
     bool isId() const;
 
     // An extension to get presentational information for attributes.
-    CSSStyleDeclaration* style() { return m_attribute->style(); }
+    CSSStyleDeclaration *style()
+    {
+        return m_attribute->style();
+    }
 
-    void setSpecified(bool specified) { m_specified = specified; }
+    void setSpecified( bool specified )
+    {
+        m_specified = specified;
+    }
 
 private:
-    Attr(Element*, Document*, PassRefPtr<Attribute>);
+    Attr( Element *, Document *, PassRefPtr<Attribute> );
 
     void createTextChild();
 
     virtual String nodeName() const;
     virtual NodeType nodeType() const;
 
-    const AtomicString& localName() const;
-    const AtomicString& namespaceURI() const;
-    const AtomicString& prefix() const;
+    const AtomicString &localName() const;
+    const AtomicString &namespaceURI() const;
+    const AtomicString &prefix() const;
 
-    virtual void setPrefix(const AtomicString&, ExceptionCode&);
+    virtual void setPrefix( const AtomicString &, ExceptionCode & );
 
     virtual String nodeValue() const;
-    virtual void setNodeValue(const String&, ExceptionCode&);
-    virtual PassRefPtr<Node> cloneNode(bool deep);
+    virtual void setNodeValue( const String &, ExceptionCode & );
+    virtual PassRefPtr<Node> cloneNode( bool deep );
 
-    virtual bool isAttributeNode() const { return true; }
-    virtual bool childTypeAllowed(NodeType) const;
+    virtual bool isAttributeNode() const
+    {
+        return true;
+    }
+    virtual bool childTypeAllowed( NodeType ) const;
 
-    virtual void childrenChanged(bool changedByParser = false, Node* beforeChange = 0, Node* afterChange = 0, int childCountDelta = 0);
+    virtual void childrenChanged( bool changedByParser = false, Node *beforeChange = 0, Node *afterChange = 0,
+                                  int childCountDelta = 0 );
 
-    virtual const AtomicString& virtualPrefix() const { return prefix(); }
-    virtual const AtomicString& virtualLocalName() const { return localName(); }
-    virtual const AtomicString& virtualNamespaceURI() const { return namespaceURI(); }
+    virtual const AtomicString &virtualPrefix() const
+    {
+        return prefix();
+    }
+    virtual const AtomicString &virtualLocalName() const
+    {
+        return localName();
+    }
+    virtual const AtomicString &virtualNamespaceURI() const
+    {
+        return namespaceURI();
+    }
 
-    Element* m_element;
+    Element *m_element;
     RefPtr<Attribute> m_attribute;
     unsigned m_ignoreChildrenChanged : 31;
     bool m_specified : 1;

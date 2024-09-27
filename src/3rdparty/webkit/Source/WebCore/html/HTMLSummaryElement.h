@@ -23,23 +23,25 @@
 
 #include "HTMLElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class HTMLDetailsElement;
 
-class HTMLSummaryElement : public HTMLElement {
+class HTMLSummaryElement : public HTMLElement
+{
 public:
-    static PassRefPtr<HTMLSummaryElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<HTMLSummaryElement> create( const QualifiedName &, Document * );
     bool isMainSummary() const;
 
 private:
-    HTMLSummaryElement(const QualifiedName&, Document*);
+    HTMLSummaryElement( const QualifiedName &, Document * );
 
-    virtual RenderObject* createRenderer(RenderArena*, RenderStyle*);
-    virtual void defaultEventHandler(Event*);
+    virtual RenderObject *createRenderer( RenderArena *, RenderStyle * );
+    virtual void defaultEventHandler( Event * );
 
     void createShadowSubtree();
-    HTMLDetailsElement* detailsElement() const;
+    HTMLDetailsElement *detailsElement() const;
 };
 
 }

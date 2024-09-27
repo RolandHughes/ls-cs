@@ -35,18 +35,20 @@ typedef struct _WebKitWebSrc        WebKitWebSrc;
 typedef struct _WebKitWebSrcClass   WebKitWebSrcClass;
 typedef struct _WebKitWebSrcPrivate WebKitWebSrcPrivate;
 
-struct _WebKitWebSrc {
+struct _WebKitWebSrc
+{
     GstBin parent;
 
     WebKitWebSrcPrivate *priv;
 };
 
-struct _WebKitWebSrcClass {
+struct _WebKitWebSrcClass
+{
     GstBinClass parentClass;
 };
 
-GType webkit_web_src_get_type(void);
-void  webKitWebSrcSetFrame(WebKitWebSrc* src, WebCore::Frame* frame);
+GType webkit_web_src_get_type( void );
+void  webKitWebSrcSetFrame( WebKitWebSrc *src, WebCore::Frame *frame );
 
 G_END_DECLS
 

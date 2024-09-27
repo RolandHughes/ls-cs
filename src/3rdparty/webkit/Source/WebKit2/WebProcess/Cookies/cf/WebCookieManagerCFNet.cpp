@@ -30,21 +30,26 @@
 #include <WebCore/CookieStorage.h>
 #include <WebCore/CookieStorageCFNet.h>
 
-namespace WebKit {
-
-void WebCookieManager::platformSetHTTPCookieAcceptPolicy(HTTPCookieAcceptPolicy policy)
+namespace WebKit
 {
-    CFHTTPCookieStorageSetCookieAcceptPolicy(WebCore::defaultCookieStorage(), policy);
+
+void WebCookieManager::platformSetHTTPCookieAcceptPolicy( HTTPCookieAcceptPolicy policy )
+{
+    CFHTTPCookieStorageSetCookieAcceptPolicy( WebCore::defaultCookieStorage(), policy );
 
     CFHTTPCookieStorageRef privateBrowsingCookieStorage = WebCore::privateBrowsingCookieStorage().get();
-    if (!privateBrowsingCookieStorage)
+
+    if ( !privateBrowsingCookieStorage )
+    {
         return;
-    CFHTTPCookieStorageSetCookieAcceptPolicy(privateBrowsingCookieStorage, policy);
+    }
+
+    CFHTTPCookieStorageSetCookieAcceptPolicy( privateBrowsingCookieStorage, policy );
 }
 
 HTTPCookieAcceptPolicy WebCookieManager::platformGetHTTPCookieAcceptPolicy()
 {
-    return CFHTTPCookieStorageGetCookieAcceptPolicy(WebCore::currentCookieStorage());
+    return CFHTTPCookieStorageGetCookieAcceptPolicy( WebCore::currentCookieStorage() );
 }
 
 } // namespace WebKit

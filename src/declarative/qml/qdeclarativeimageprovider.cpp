@@ -27,8 +27,8 @@ QT_BEGIN_NAMESPACE
 
 class QDeclarativeImageProviderPrivate
 {
- public:
-   QDeclarativeImageProvider::ImageType type;
+public:
+    QDeclarativeImageProvider::ImageType type;
 };
 
 /*!
@@ -158,10 +158,10 @@ class QDeclarativeImageProviderPrivate
 /*!
     Creates an image provider that will provide images of the given \a type.
 */
-QDeclarativeImageProvider::QDeclarativeImageProvider(ImageType type)
-   : d(new QDeclarativeImageProviderPrivate)
+QDeclarativeImageProvider::QDeclarativeImageProvider( ImageType type )
+    : d( new QDeclarativeImageProviderPrivate )
 {
-   d->type = type;
+    d->type = type;
 }
 
 /*!
@@ -171,7 +171,7 @@ QDeclarativeImageProvider::QDeclarativeImageProvider(ImageType type)
 */
 QDeclarativeImageProvider::~QDeclarativeImageProvider()
 {
-   delete d;
+    delete d;
 }
 
 /*!
@@ -179,7 +179,7 @@ QDeclarativeImageProvider::~QDeclarativeImageProvider()
 */
 QDeclarativeImageProvider::ImageType QDeclarativeImageProvider::imageType() const
 {
-   return d->type;
+    return d->type;
 }
 
 /*!
@@ -201,15 +201,18 @@ QDeclarativeImageProvider::ImageType QDeclarativeImageProvider::imageType() cons
     \note this method may be called by multiple threads, so ensure the
     implementation of this method is reentrant.
 */
-QImage QDeclarativeImageProvider::requestImage(const QString &id, QSize *size, const QSize &requestedSize)
+QImage QDeclarativeImageProvider::requestImage( const QString &id, QSize *size, const QSize &requestedSize )
 {
-   Q_UNUSED(id);
-   Q_UNUSED(size);
-   Q_UNUSED(requestedSize);
-   if (d->type == Image) {
-      qWarning("ImageProvider supports Image type but has not implemented requestImage()");
-   }
-   return QImage();
+    Q_UNUSED( id );
+    Q_UNUSED( size );
+    Q_UNUSED( requestedSize );
+
+    if ( d->type == Image )
+    {
+        qWarning( "ImageProvider supports Image type but has not implemented requestImage()" );
+    }
+
+    return QImage();
 }
 
 /*!
@@ -228,15 +231,18 @@ QImage QDeclarativeImageProvider::requestImage(const QString &id, QSize *size, c
     is used to set the \l {Item::}{width} and \l {Item::}{height} of the
     relevant \l Image if these values have not been set explicitly.
 */
-QPixmap QDeclarativeImageProvider::requestPixmap(const QString &id, QSize *size, const QSize &requestedSize)
+QPixmap QDeclarativeImageProvider::requestPixmap( const QString &id, QSize *size, const QSize &requestedSize )
 {
-   Q_UNUSED(id);
-   Q_UNUSED(size);
-   Q_UNUSED(requestedSize);
-   if (d->type == Pixmap) {
-      qWarning("ImageProvider supports Pixmap type but has not implemented requestPixmap()");
-   }
-   return QPixmap();
+    Q_UNUSED( id );
+    Q_UNUSED( size );
+    Q_UNUSED( requestedSize );
+
+    if ( d->type == Pixmap )
+    {
+        qWarning( "ImageProvider supports Pixmap type but has not implemented requestPixmap()" );
+    }
+
+    return QPixmap();
 }
 
 QT_END_NAMESPACE

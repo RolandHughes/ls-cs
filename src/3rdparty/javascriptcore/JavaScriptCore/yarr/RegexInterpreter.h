@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef RegexInterpreter_h
@@ -34,12 +34,17 @@
 #include "RegexParser.h"
 #include "RegexPattern.h"
 
-namespace JSC { namespace Yarr {
+namespace JSC
+{
+namespace Yarr
+{
 
 class ByteDisjunction;
 
-struct ByteTerm {
-    enum Type {
+struct ByteTerm
+{
+    enum Type
+    {
         TypeBodyAlternativeBegin,
         TypeBodyAlternativeDisjunction,
         TypeBodyAlternativeEnd,
@@ -69,25 +74,31 @@ struct ByteTerm {
         TypeCheckInput,
     } type;
     bool invertOrCapture;
-    union {
-        struct {
-            union {
+    union
+    {
+        struct
+        {
+            union
+            {
                 UChar patternCharacter;
-                struct {
+                struct
+                {
                     UChar lo;
                     UChar hi;
                 } casedCharacter;
-                CharacterClass* characterClass;
+                CharacterClass *characterClass;
                 unsigned subpatternId;
             };
-            union {
-                ByteDisjunction* parenthesesDisjunction;
+            union
+            {
+                ByteDisjunction *parenthesesDisjunction;
                 unsigned parenthesesWidth;
             };
             QuantifierType quantityType;
             unsigned quantityCount;
         } atom;
-        struct {
+        struct
+        {
             int next;
             int end;
         } alternative;
@@ -96,19 +107,22 @@ struct ByteTerm {
     unsigned frameLocation;
     int inputPosition;
 
-    ByteTerm(UChar ch, int inputPos, unsigned frameLocation, unsigned quantityCount, QuantifierType quantityType)
-        : frameLocation(frameLocation)
+    ByteTerm( UChar ch, int inputPos, unsigned frameLocation, unsigned quantityCount, QuantifierType quantityType )
+        : frameLocation( frameLocation )
     {
-        switch (quantityType) {
-        case QuantifierFixedCount:
-            type = (quantityCount == 1) ? ByteTerm::TypePatternCharacterOnce : ByteTerm::TypePatternCharacterFixed;
-            break;
-        case QuantifierGreedy:
-            type = ByteTerm::TypePatternCharacterGreedy;
-            break;
-        case QuantifierNonGreedy:
-            type = ByteTerm::TypePatternCharacterNonGreedy;
-            break;
+        switch ( quantityType )
+        {
+            case QuantifierFixedCount:
+                type = ( quantityCount == 1 ) ? ByteTerm::TypePatternCharacterOnce : ByteTerm::TypePatternCharacterFixed;
+                break;
+
+            case QuantifierGreedy:
+                type = ByteTerm::TypePatternCharacterGreedy;
+                break;
+
+            case QuantifierNonGreedy:
+                type = ByteTerm::TypePatternCharacterNonGreedy;
+                break;
         }
 
         atom.patternCharacter = ch;
@@ -117,19 +131,22 @@ struct ByteTerm {
         inputPosition = inputPos;
     }
 
-    ByteTerm(UChar lo, UChar hi, int inputPos, unsigned frameLocation, unsigned quantityCount, QuantifierType quantityType)
-        : frameLocation(frameLocation)
+    ByteTerm( UChar lo, UChar hi, int inputPos, unsigned frameLocation, unsigned quantityCount, QuantifierType quantityType )
+        : frameLocation( frameLocation )
     {
-        switch (quantityType) {
-        case QuantifierFixedCount:
-            type = (quantityCount == 1) ? ByteTerm::TypePatternCasedCharacterOnce : ByteTerm::TypePatternCasedCharacterFixed;
-            break;
-        case QuantifierGreedy:
-            type = ByteTerm::TypePatternCasedCharacterGreedy;
-            break;
-        case QuantifierNonGreedy:
-            type = ByteTerm::TypePatternCasedCharacterNonGreedy;
-            break;
+        switch ( quantityType )
+        {
+            case QuantifierFixedCount:
+                type = ( quantityCount == 1 ) ? ByteTerm::TypePatternCasedCharacterOnce : ByteTerm::TypePatternCasedCharacterFixed;
+                break;
+
+            case QuantifierGreedy:
+                type = ByteTerm::TypePatternCasedCharacterGreedy;
+                break;
+
+            case QuantifierNonGreedy:
+                type = ByteTerm::TypePatternCasedCharacterNonGreedy;
+                break;
         }
 
         atom.casedCharacter.lo = lo;
@@ -139,9 +156,9 @@ struct ByteTerm {
         inputPosition = inputPos;
     }
 
-    ByteTerm(CharacterClass* characterClass, bool invert, int inputPos)
-        : type(ByteTerm::TypeCharacterClass)
-        , invertOrCapture(invert)
+    ByteTerm( CharacterClass *characterClass, bool invert, int inputPos )
+        : type( ByteTerm::TypeCharacterClass )
+        , invertOrCapture( invert )
     {
         atom.characterClass = characterClass;
         atom.quantityType = QuantifierFixedCount;
@@ -149,9 +166,9 @@ struct ByteTerm {
         inputPosition = inputPos;
     }
 
-    ByteTerm(Type type, unsigned subpatternId, ByteDisjunction* parenthesesInfo, bool invertOrCapture, int inputPos)
-        : type(type)
-        , invertOrCapture(invertOrCapture)
+    ByteTerm( Type type, unsigned subpatternId, ByteDisjunction *parenthesesInfo, bool invertOrCapture, int inputPos )
+        : type( type )
+        , invertOrCapture( invertOrCapture )
     {
         atom.subpatternId = subpatternId;
         atom.parenthesesDisjunction = parenthesesInfo;
@@ -159,18 +176,18 @@ struct ByteTerm {
         atom.quantityCount = 1;
         inputPosition = inputPos;
     }
-    
-    ByteTerm(Type type, bool invert = false)
-        : type(type)
-        , invertOrCapture(invert)
+
+    ByteTerm( Type type, bool invert = false )
+        : type( type )
+        , invertOrCapture( invert )
     {
         atom.quantityType = QuantifierFixedCount;
         atom.quantityCount = 1;
     }
 
-    ByteTerm(Type type, unsigned subpatternId, bool invertOrCapture, int inputPos)
-        : type(type)
-        , invertOrCapture(invertOrCapture)
+    ByteTerm( Type type, unsigned subpatternId, bool invertOrCapture, int inputPos )
+        : type( type )
+        , invertOrCapture( invertOrCapture )
     {
         atom.subpatternId = subpatternId;
         atom.quantityType = QuantifierFixedCount;
@@ -178,42 +195,42 @@ struct ByteTerm {
         inputPosition = inputPos;
     }
 
-    static ByteTerm BOL(int inputPos)
+    static ByteTerm BOL( int inputPos )
     {
-        ByteTerm term(TypeAssertionBOL);
+        ByteTerm term( TypeAssertionBOL );
         term.inputPosition = inputPos;
         return term;
     }
 
-    static ByteTerm CheckInput(unsigned count)
+    static ByteTerm CheckInput( unsigned count )
     {
-        ByteTerm term(TypeCheckInput);
+        ByteTerm term( TypeCheckInput );
         term.checkInputCount = count;
         return term;
     }
 
-    static ByteTerm EOL(int inputPos)
+    static ByteTerm EOL( int inputPos )
     {
-        ByteTerm term(TypeAssertionEOL);
+        ByteTerm term( TypeAssertionEOL );
         term.inputPosition = inputPos;
         return term;
     }
 
-    static ByteTerm WordBoundary(bool invert, int inputPos)
+    static ByteTerm WordBoundary( bool invert, int inputPos )
     {
-        ByteTerm term(TypeAssertionWordBoundary, invert);
+        ByteTerm term( TypeAssertionWordBoundary, invert );
         term.inputPosition = inputPos;
         return term;
     }
-    
-    static ByteTerm BackReference(unsigned subpatternId, int inputPos)
+
+    static ByteTerm BackReference( unsigned subpatternId, int inputPos )
     {
-        return ByteTerm(TypeBackReference, subpatternId, false, inputPos);
+        return ByteTerm( TypeBackReference, subpatternId, false, inputPos );
     }
 
     static ByteTerm BodyAlternativeBegin()
     {
-        ByteTerm term(TypeBodyAlternativeBegin);
+        ByteTerm term( TypeBodyAlternativeBegin );
         term.alternative.next = 0;
         term.alternative.end = 0;
         return term;
@@ -221,7 +238,7 @@ struct ByteTerm {
 
     static ByteTerm BodyAlternativeDisjunction()
     {
-        ByteTerm term(TypeBodyAlternativeDisjunction);
+        ByteTerm term( TypeBodyAlternativeDisjunction );
         term.alternative.next = 0;
         term.alternative.end = 0;
         return term;
@@ -229,7 +246,7 @@ struct ByteTerm {
 
     static ByteTerm BodyAlternativeEnd()
     {
-        ByteTerm term(TypeBodyAlternativeEnd);
+        ByteTerm term( TypeBodyAlternativeEnd );
         term.alternative.next = 0;
         term.alternative.end = 0;
         return term;
@@ -237,7 +254,7 @@ struct ByteTerm {
 
     static ByteTerm AlternativeBegin()
     {
-        ByteTerm term(TypeAlternativeBegin);
+        ByteTerm term( TypeAlternativeBegin );
         term.alternative.next = 0;
         term.alternative.end = 0;
         return term;
@@ -245,7 +262,7 @@ struct ByteTerm {
 
     static ByteTerm AlternativeDisjunction()
     {
-        ByteTerm term(TypeAlternativeDisjunction);
+        ByteTerm term( TypeAlternativeDisjunction );
         term.alternative.next = 0;
         term.alternative.end = 0;
         return term;
@@ -253,7 +270,7 @@ struct ByteTerm {
 
     static ByteTerm AlternativeEnd()
     {
-        ByteTerm term(TypeAlternativeEnd);
+        ByteTerm term( TypeAlternativeEnd );
         term.alternative.next = 0;
         term.alternative.end = 0;
         return term;
@@ -261,12 +278,12 @@ struct ByteTerm {
 
     static ByteTerm SubpatternBegin()
     {
-        return ByteTerm(TypeSubpatternBegin);
+        return ByteTerm( TypeSubpatternBegin );
     }
 
     static ByteTerm SubpatternEnd()
     {
-        return ByteTerm(TypeSubpatternEnd);
+        return ByteTerm( TypeSubpatternEnd );
     }
 
     bool invert()
@@ -280,11 +297,12 @@ struct ByteTerm {
     }
 };
 
-class ByteDisjunction : public FastAllocBase {
+class ByteDisjunction : public FastAllocBase
+{
 public:
-    ByteDisjunction(unsigned numSubpatterns, unsigned frameSize)
-        : m_numSubpatterns(numSubpatterns)
-        , m_frameSize(frameSize)
+    ByteDisjunction( unsigned numSubpatterns, unsigned frameSize )
+        : m_numSubpatterns( numSubpatterns )
+        , m_frameSize( frameSize )
     {
     }
 
@@ -293,17 +311,18 @@ public:
     unsigned m_frameSize;
 };
 
-struct BytecodePattern : FastAllocBase {
-    BytecodePattern(ByteDisjunction* body, Vector<ByteDisjunction*> allParenthesesInfo, RegexPattern& pattern)
-        : m_body(body)
-        , m_ignoreCase(pattern.m_ignoreCase)
-        , m_multiline(pattern.m_multiline)
+struct BytecodePattern : FastAllocBase
+{
+    BytecodePattern( ByteDisjunction *body, Vector<ByteDisjunction *> allParenthesesInfo, RegexPattern &pattern )
+        : m_body( body )
+        , m_ignoreCase( pattern.m_ignoreCase )
+        , m_multiline( pattern.m_multiline )
     {
         newlineCharacterClass = pattern.newlineCharacterClass();
         wordcharCharacterClass = pattern.wordcharCharacterClass();
 
-        m_allParenthesesInfo.append(allParenthesesInfo);
-        m_userCharacterClasses.append(pattern.m_userCharacterClasses);
+        m_allParenthesesInfo.append( allParenthesesInfo );
+        m_userCharacterClasses.append( pattern.m_userCharacterClasses );
         // 'Steal' the RegexPattern's CharacterClasses!  We clear its
         // array, so that it won't delete them on destruction.  We'll
         // take responsibility for that.
@@ -312,25 +331,27 @@ struct BytecodePattern : FastAllocBase {
 
     ~BytecodePattern()
     {
-        deleteAllValues(m_allParenthesesInfo);
-        deleteAllValues(m_userCharacterClasses);
+        deleteAllValues( m_allParenthesesInfo );
+        deleteAllValues( m_userCharacterClasses );
     }
 
     OwnPtr<ByteDisjunction> m_body;
     bool m_ignoreCase;
     bool m_multiline;
-    
-    CharacterClass* newlineCharacterClass;
-    CharacterClass* wordcharCharacterClass;
+
+    CharacterClass *newlineCharacterClass;
+    CharacterClass *wordcharCharacterClass;
 private:
-    Vector<ByteDisjunction*> m_allParenthesesInfo;
-    Vector<CharacterClass*> m_userCharacterClasses;
+    Vector<ByteDisjunction *> m_allParenthesesInfo;
+    Vector<CharacterClass *> m_userCharacterClasses;
 };
 
-BytecodePattern* byteCompileRegex(const UString& pattern, unsigned& numSubpatterns, const char*& error, bool ignoreCase = false, bool multiline = false);
-int interpretRegex(BytecodePattern* v_regex, const UChar* input, unsigned start, unsigned length, int* output);
+BytecodePattern *byteCompileRegex( const UString &pattern, unsigned &numSubpatterns, const char *&error, bool ignoreCase = false,
+                                   bool multiline = false );
+int interpretRegex( BytecodePattern *v_regex, const UChar *input, unsigned start, unsigned length, int *output );
 
-} } // namespace JSC::Yarr
+}
+} // namespace JSC::Yarr
 
 #endif
 

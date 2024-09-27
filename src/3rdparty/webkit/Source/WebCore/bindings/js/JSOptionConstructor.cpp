@@ -29,48 +29,62 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSOptionConstructor);
+ASSERT_CLASS_FITS_IN_CELL( JSOptionConstructor );
 
 const ClassInfo JSOptionConstructor::s_info = { "OptionConstructor", &DOMConstructorWithDocument::s_info, 0, 0 };
 
-JSOptionConstructor::JSOptionConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorWithDocument(structure, globalObject)
+JSOptionConstructor::JSOptionConstructor( ExecState *exec, Structure *structure, JSDOMGlobalObject *globalObject )
+    : DOMConstructorWithDocument( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSHTMLOptionElementPrototype::self(exec, globalObject), None);
-    putDirect(exec->globalData(), exec->propertyNames().length, jsNumber(4), ReadOnly | DontDelete | DontEnum);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSHTMLOptionElementPrototype::self( exec, globalObject ), None );
+    putDirect( exec->globalData(), exec->propertyNames().length, jsNumber( 4 ), ReadOnly | DontDelete | DontEnum );
 }
 
-static EncodedJSValue JSC_HOST_CALL constructHTMLOptionElement(ExecState* exec)
+static EncodedJSValue JSC_HOST_CALL constructHTMLOptionElement( ExecState *exec )
 {
-    JSOptionConstructor* jsConstructor = static_cast<JSOptionConstructor*>(exec->callee());
-    Document* document = jsConstructor->document();
-    if (!document)
-        return throwVMError(exec, createReferenceError(exec, "Option constructor associated document is unavailable"));
+    JSOptionConstructor *jsConstructor = static_cast<JSOptionConstructor *>( exec->callee() );
+    Document *document = jsConstructor->document();
 
-    String data;
-    if ((exec->argumentCount() >= 1) && !exec->argument(0).isUndefined())
-        data = ustringToString(exec->argument(0).toString(exec));
-
-    String value;
-    if ((exec->argumentCount() >= 2)  && !exec->argument(1).isUndefined())
-        value = ustringToString(exec->argument(1).toString(exec));
-    bool defaultSelected = (exec->argumentCount() >= 3) && exec->argument(2).toBoolean(exec);
-    bool selected = (exec->argumentCount() >= 4) && exec->argument(3).toBoolean(exec);
-
-    ExceptionCode ec = 0;
-    RefPtr<HTMLOptionElement> element = HTMLOptionElement::createForJSConstructor(document, data, value, defaultSelected, selected, ec);
-    if (ec) {
-        setDOMException(exec, ec);
-        return JSValue::encode(JSValue());
+    if ( !document )
+    {
+        return throwVMError( exec, createReferenceError( exec, "Option constructor associated document is unavailable" ) );
     }
 
-    return JSValue::encode(asObject(toJS(exec, jsConstructor->globalObject(), element.release())));
+    String data;
+
+    if ( ( exec->argumentCount() >= 1 ) && !exec->argument( 0 ).isUndefined() )
+    {
+        data = ustringToString( exec->argument( 0 ).toString( exec ) );
+    }
+
+    String value;
+
+    if ( ( exec->argumentCount() >= 2 )  && !exec->argument( 1 ).isUndefined() )
+    {
+        value = ustringToString( exec->argument( 1 ).toString( exec ) );
+    }
+
+    bool defaultSelected = ( exec->argumentCount() >= 3 ) && exec->argument( 2 ).toBoolean( exec );
+    bool selected = ( exec->argumentCount() >= 4 ) && exec->argument( 3 ).toBoolean( exec );
+
+    ExceptionCode ec = 0;
+    RefPtr<HTMLOptionElement> element = HTMLOptionElement::createForJSConstructor( document, data, value, defaultSelected, selected,
+                                        ec );
+
+    if ( ec )
+    {
+        setDOMException( exec, ec );
+        return JSValue::encode( JSValue() );
+    }
+
+    return JSValue::encode( asObject( toJS( exec, jsConstructor->globalObject(), element.release() ) ) );
 }
 
-ConstructType JSOptionConstructor::getConstructData(ConstructData& constructData)
+ConstructType JSOptionConstructor::getConstructData( ConstructData &constructData )
 {
     constructData.native.function = constructHTMLOptionElement;
     return ConstructTypeHost;

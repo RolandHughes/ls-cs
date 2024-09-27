@@ -26,65 +26,71 @@
 #include "JSEvent.h"
 #include <runtime/JSObjectWithGlobalObject.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class DeviceMotionEvent;
 
-class JSDeviceMotionEvent : public JSEvent {
+class JSDeviceMotionEvent : public JSEvent
+{
     typedef JSEvent Base;
 public:
-    JSDeviceMotionEvent(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<DeviceMotionEvent>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
+    JSDeviceMotionEvent( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<DeviceMotionEvent> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
 
     // Custom attributes
-    JSC::JSValue acceleration(JSC::ExecState*) const;
-    JSC::JSValue accelerationIncludingGravity(JSC::ExecState*) const;
-    JSC::JSValue rotationRate(JSC::ExecState*) const;
-    JSC::JSValue interval(JSC::ExecState*) const;
+    JSC::JSValue acceleration( JSC::ExecState * ) const;
+    JSC::JSValue accelerationIncludingGravity( JSC::ExecState * ) const;
+    JSC::JSValue rotationRate( JSC::ExecState * ) const;
+    JSC::JSValue interval( JSC::ExecState * ) const;
 
     // Custom functions
-    JSC::JSValue initDeviceMotionEvent(JSC::ExecState*);
+    JSC::JSValue initDeviceMotionEvent( JSC::ExecState * );
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 
-class JSDeviceMotionEventPrototype : public JSC::JSObjectWithGlobalObject {
+class JSDeviceMotionEventPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSDeviceMotionEventPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSDeviceMotionEventPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                                  JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 // Functions
 
-JSC::EncodedJSValue JSC_HOST_CALL jsDeviceMotionEventPrototypeFunctionInitDeviceMotionEvent(JSC::ExecState*);
+JSC::EncodedJSValue JSC_HOST_CALL jsDeviceMotionEventPrototypeFunctionInitDeviceMotionEvent( JSC::ExecState * );
 // Attributes
 
-JSC::JSValue jsDeviceMotionEventAcceleration(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsDeviceMotionEventAccelerationIncludingGravity(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsDeviceMotionEventRotationRate(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsDeviceMotionEventInterval(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsDeviceMotionEventConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsDeviceMotionEventAcceleration( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsDeviceMotionEventAccelerationIncludingGravity( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsDeviceMotionEventRotationRate( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsDeviceMotionEventInterval( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsDeviceMotionEventConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

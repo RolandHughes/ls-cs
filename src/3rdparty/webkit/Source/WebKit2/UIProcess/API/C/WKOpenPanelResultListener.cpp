@@ -33,15 +33,15 @@ using namespace WebKit;
 
 WKTypeID WKOpenPanelResultListenerGetTypeID()
 {
-    return toAPI(WebOpenPanelResultListenerProxy::APIType);
+    return toAPI( WebOpenPanelResultListenerProxy::APIType );
 }
 
-void WKOpenPanelResultListenerChooseFiles(WKOpenPanelResultListenerRef listenerRef, WKArrayRef fileURLsRef)
+void WKOpenPanelResultListenerChooseFiles( WKOpenPanelResultListenerRef listenerRef, WKArrayRef fileURLsRef )
 {
-    toImpl(listenerRef)->chooseFiles(toImpl(fileURLsRef));
+    toImpl( listenerRef )->chooseFiles( toImpl( fileURLsRef ) );
 }
 
-void WKOpenPanelResultListenerCancel(WKOpenPanelResultListenerRef listenerRef)
+void WKOpenPanelResultListenerCancel( WKOpenPanelResultListenerRef listenerRef )
 {
-    toImpl(listenerRef)->cancel();
+    toImpl( listenerRef )->cancel();
 }

@@ -30,45 +30,60 @@
 #include <wtf/Forward.h>
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class BackForwardList;
 class HistoryItem;
 class Page;
 
-class BackForwardController {
-    WTF_MAKE_NONCOPYABLE(BackForwardController); WTF_MAKE_FAST_ALLOCATED;
+class BackForwardController
+{
+    WTF_MAKE_NONCOPYABLE( BackForwardController );
+    WTF_MAKE_FAST_ALLOCATED;
 public:
-    BackForwardController(Page*, PassRefPtr<BackForwardList>);
+    BackForwardController( Page *, PassRefPtr<BackForwardList> );
     ~BackForwardController();
 
-    BackForwardList* client() const { return m_client.get(); }
+    BackForwardList *client() const
+    {
+        return m_client.get();
+    }
 
-    bool canGoBackOrForward(int distance) const;
-    void goBackOrForward(int distance);
+    bool canGoBackOrForward( int distance ) const;
+    void goBackOrForward( int distance );
 
     bool goBack();
     bool goForward();
 
-    void addItem(PassRefPtr<HistoryItem>);
-    void setCurrentItem(HistoryItem*);
-        
+    void addItem( PassRefPtr<HistoryItem> );
+    void setCurrentItem( HistoryItem * );
+
     int count() const;
     int backCount() const;
     int forwardCount() const;
 
-    HistoryItem* itemAtIndex(int);
+    HistoryItem *itemAtIndex( int );
 
     bool isActive();
 
     void close();
 
-    HistoryItem* backItem() { return itemAtIndex(-1); }
-    HistoryItem* currentItem() { return itemAtIndex(0); }
-    HistoryItem* forwardItem() { return itemAtIndex(1); }
+    HistoryItem *backItem()
+    {
+        return itemAtIndex( -1 );
+    }
+    HistoryItem *currentItem()
+    {
+        return itemAtIndex( 0 );
+    }
+    HistoryItem *forwardItem()
+    {
+        return itemAtIndex( 1 );
+    }
 
 private:
-    Page* m_page;
+    Page *m_page;
     RefPtr<BackForwardList> m_client;
 };
 

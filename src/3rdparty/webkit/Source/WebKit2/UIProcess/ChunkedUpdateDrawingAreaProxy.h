@@ -44,7 +44,8 @@ typedef struct _cairo_surface cairo_surface_t;
 typedef struct _WebKitWebViewBase WebKitWebViewBase;
 #endif
 
-namespace WebKit {
+namespace WebKit
+{
 
 class UpdateChunk;
 class WebPageProxy;
@@ -60,29 +61,30 @@ typedef QGraphicsWKView PlatformWebView;
 typedef WebKitWebViewBase PlatformWebView;
 #endif
 
-class ChunkedUpdateDrawingAreaProxy : public DrawingAreaProxy {
+class ChunkedUpdateDrawingAreaProxy : public DrawingAreaProxy
+{
 public:
-    static PassOwnPtr<ChunkedUpdateDrawingAreaProxy> create(PlatformWebView*, WebPageProxy*);
+    static PassOwnPtr<ChunkedUpdateDrawingAreaProxy> create( PlatformWebView *, WebPageProxy * );
 
     virtual ~ChunkedUpdateDrawingAreaProxy();
 
 private:
-    ChunkedUpdateDrawingAreaProxy(PlatformWebView*, WebPageProxy*);
+    ChunkedUpdateDrawingAreaProxy( PlatformWebView *, WebPageProxy * );
 
-    WebPageProxy* page();
+    WebPageProxy *page();
 
     // DrawingAreaProxy
-    virtual void didReceiveMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*);
-    virtual bool paint(const WebCore::IntRect&, PlatformDrawingContext);
+    virtual void didReceiveMessage( CoreIPC::Connection *, CoreIPC::MessageID, CoreIPC::ArgumentDecoder * );
+    virtual bool paint( const WebCore::IntRect &, PlatformDrawingContext );
     virtual void sizeDidChange();
-    virtual void setPageIsVisible(bool isVisible);
-    
+    virtual void setPageIsVisible( bool isVisible );
+
     void ensureBackingStore();
     void invalidateBackingStore();
-    bool platformPaint(const WebCore::IntRect&, PlatformDrawingContext);
-    void drawUpdateChunkIntoBackingStore(UpdateChunk*);
-    void didSetSize(UpdateChunk*);
-    void deprecatedUpdate(UpdateChunk*);
+    bool platformPaint( const WebCore::IntRect &, PlatformDrawingContext );
+    void drawUpdateChunkIntoBackingStore( UpdateChunk * );
+    void didSetSize( UpdateChunk * );
+    void deprecatedUpdate( UpdateChunk * );
 
     void sendSetSize();
 
@@ -100,12 +102,12 @@ private:
 #elif PLATFORM(QT)
     QImage m_backingStoreImage;
 #elif PLATFORM(GTK)
-    cairo_surface_t* m_backingStoreImage;
+    cairo_surface_t *m_backingStoreImage;
 #endif
 
-    PlatformWebView* m_webView;
+    PlatformWebView *m_webView;
 };
-    
+
 } // namespace WebKit
 
 #endif // ChunkedUpdateDrawingAreaProxy_h

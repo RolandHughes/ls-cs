@@ -38,12 +38,12 @@ class QAccessiblePluginPrivate;
 
 class Q_GUI_EXPORT QAccessiblePlugin : public QObject
 {
-   GUI_CS_OBJECT(QAccessiblePlugin)
+    GUI_CS_OBJECT( QAccessiblePlugin )
 
- public:
-   explicit QAccessiblePlugin(QObject *parent = nullptr);
-   ~QAccessiblePlugin();
-   virtual QAccessibleInterface *create(const QString &key, QObject *object) = 0;
+public:
+    explicit QAccessiblePlugin( QObject *parent = nullptr );
+    ~QAccessiblePlugin();
+    virtual QAccessibleInterface *create( const QString &key, QObject *object ) = 0;
 };
 
 #endif // QT_NO_ACCESSIBILITY

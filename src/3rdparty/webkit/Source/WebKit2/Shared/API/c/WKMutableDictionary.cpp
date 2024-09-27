@@ -34,25 +34,25 @@ using namespace WebKit;
 WKMutableDictionaryRef WKMutableDictionaryCreate()
 {
     RefPtr<MutableDictionary> dictionary = MutableDictionary::create();
-    return toAPI(dictionary.release().releaseRef());
+    return toAPI( dictionary.release().releaseRef() );
 }
 
-bool WKDictionaryIsMutable(WKDictionaryRef dictionaryRef)
+bool WKDictionaryIsMutable( WKDictionaryRef dictionaryRef )
 {
-    return toImpl(dictionaryRef)->isMutable();
+    return toImpl( dictionaryRef )->isMutable();
 }
 
-bool WKDictionaryAddItem(WKMutableDictionaryRef dictionaryRef, WKStringRef keyRef, WKTypeRef itemRef)
+bool WKDictionaryAddItem( WKMutableDictionaryRef dictionaryRef, WKStringRef keyRef, WKTypeRef itemRef )
 {
-    return toImpl(dictionaryRef)->add(toImpl(keyRef)->string(), toImpl(itemRef));
+    return toImpl( dictionaryRef )->add( toImpl( keyRef )->string(), toImpl( itemRef ) );
 }
 
-bool WKDictionarySetItem(WKMutableDictionaryRef dictionaryRef, WKStringRef keyRef, WKTypeRef itemRef)
+bool WKDictionarySetItem( WKMutableDictionaryRef dictionaryRef, WKStringRef keyRef, WKTypeRef itemRef )
 {
-    return toImpl(dictionaryRef)->set(toImpl(keyRef)->string(), toImpl(itemRef));
+    return toImpl( dictionaryRef )->set( toImpl( keyRef )->string(), toImpl( itemRef ) );
 }
 
-void WKDictionaryRemoveItem(WKMutableDictionaryRef dictionaryRef, WKStringRef keyRef)
+void WKDictionaryRemoveItem( WKMutableDictionaryRef dictionaryRef, WKStringRef keyRef )
 {
-    toImpl(dictionaryRef)->remove(toImpl(keyRef)->string());
+    toImpl( dictionaryRef )->remove( toImpl( keyRef )->string() );
 }

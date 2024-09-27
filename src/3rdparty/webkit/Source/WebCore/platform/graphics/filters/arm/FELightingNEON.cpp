@@ -31,21 +31,23 @@
 
 #include <wtf/Alignment.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 // These constants are copied to the following SIMD registers:
 //   ALPHAX_Q ALPHAY_Q REMAPX_D REMAPY_D
 
-static WTF_ALIGNED(short, s_FELightingConstantsForNeon[], 16) = {
+static WTF_ALIGNED( short, s_FELightingConstantsForNeon[], 16 ) =
+{
     // Alpha coefficients.
     -2, 1, 0, -1, 2, 1, 0, -1,
-    0, -1, -2, -1, 0, 1, 2, 1,
-    // Remapping indicies.
-    0x0f0e, 0x0302, 0x0504, 0x0706,
-    0x0b0a, 0x1312, 0x1514, 0x1716,
-};
+        0, -1, -2, -1, 0, 1, 2, 1,
+        // Remapping indicies.
+        0x0f0e, 0x0302, 0x0504, 0x0706,
+        0x0b0a, 0x1312, 0x1514, 0x1716,
+    };
 
-short* feLightingConstantsForNeon()
+short *feLightingConstantsForNeon()
 {
     return s_FELightingConstantsForNeon;
 }
@@ -208,8 +210,8 @@ short* feLightingConstantsForNeon()
 // thinking), it is four times faster than its C++ counterpart.
 
 asm ( // NOLINT
-".globl " TOSTRING(neonDrawLighting) NL
-TOSTRING(neonDrawLighting) ":" NL
+    ".globl " TOSTRING( neonDrawLighting ) NL
+    TOSTRING( neonDrawLighting ) ":" NL
     // Because of the clever register allocation, nothing is stored on the stack
     // except the saved registers.
     // Stack must be aligned to 8 bytes.
@@ -242,15 +244,15 @@ TOSTRING(neonDrawLighting) ":" NL
     "mov r0, #0" NL
     "vmov.f32 " CONST_ZERO_S ", r0" NL
     "vmov.f32 " POSITION_Y_S ", " CONST_ONE_S NL
-    "tst " FLAGS_R ", #" TOSTRING(FLAG_SPOT_LIGHT) NL
+    "tst " FLAGS_R ", #" TOSTRING( FLAG_SPOT_LIGHT ) NL
     "vmov.f32 " SPOT_COLOR_Q ", " COLOR_Q NL
     "mov " RESET_WIDTH_R ", " WIDTH_R NL
 
-".mainLoop:" NL
+    ".mainLoop:" NL
     "mov r3, #3" NL
     "vmov.f32 " POSITION_X_S ", " CONST_ONE_S NL
 
-".scanline:" NL
+    ".scanline:" NL
     // The ROW registers are storing the alpha channel of the last three pixels.
     // The alpha channel is stored as signed short (sint16) values. The fourth value
     // is garbage. The following instructions are shifting out the unnecessary alpha
@@ -273,7 +275,7 @@ TOSTRING(neonDrawLighting) ":" NL
 
     // The light vector goes to TMP1_Q. It is constant in case of distant light.
     // The fourth value contains the length of the light vector.
-    "tst " FLAGS_R ", #" TOSTRING(FLAG_POINT_LIGHT | FLAG_SPOT_LIGHT) NL
+    "tst " FLAGS_R ", #" TOSTRING( FLAG_POINT_LIGHT | FLAG_SPOT_LIGHT ) NL
     "beq .distantLight" NL
 
     "vmov.s16 r3, " MIDDLE_ROW_D "[2]" NL
@@ -282,11 +284,11 @@ TOSTRING(neonDrawLighting) ":" NL
     "vmul.f32 " POSITION_Z_S ", " POSITION_Z_S ", " SCALE_S NL
 
     "vsub.f32 " TMP1_Q ", " LIGHT_Q ", " POSITION_Q NL
-    GET_LENGTH(TMP1, TMP2)
+    GET_LENGTH( TMP1, TMP2 )
 
-    "tst " FLAGS_R ", #" TOSTRING(FLAG_SPOT_LIGHT) NL
+    "tst " FLAGS_R ", #" TOSTRING( FLAG_SPOT_LIGHT ) NL
     "bne .cosineOfAngle" NL
-".visiblePixel:" NL
+    ".visiblePixel:" NL
 
     //     | -1  0  1 |      | -1 -2 -1 |
     // X = | -2  0  2 |  Y = |  0  0  0 |
@@ -314,24 +316,24 @@ TOSTRING(neonDrawLighting) ":" NL
     // normal vector, respectively.
 
     // Calculating the spot light strength.
-    "tst " FLAGS_R ", #" TOSTRING(FLAG_SPOT_LIGHT) NL
+    "tst " FLAGS_R ", #" TOSTRING( FLAG_SPOT_LIGHT ) NL
     "beq .endLight" NL
 
     "vneg.f32 " TMP3_S1 ", " COSINE_OF_ANGLE NL
-    "tst " FLAGS_R ", #" TOSTRING(FLAG_CONE_EXPONENT_IS_1) NL
+    "tst " FLAGS_R ", #" TOSTRING( FLAG_CONE_EXPONENT_IS_1 ) NL
     "beq .coneExpPowf" NL
-".coneExpPowfFinished:" NL
+    ".coneExpPowfFinished:" NL
 
     // Smoothing the cone edge if necessary.
     "vcmp.f32 " COSINE_OF_ANGLE ", " CONE_FULL_LIGHT_S NL
     "fmstat" NL
     "bhi .cutOff" NL
-".cutOffFinished:" NL
+    ".cutOffFinished:" NL
 
     "vmin.f32 " TMP3_D0 ", " TMP3_D0 ", " CONST_ONE_HI_D NL
     "vmul.f32 " COLOR_Q ", " SPOT_COLOR_Q ", " TMP3_D0 "[1]" NL
 
-".endLight:" NL
+    ".endLight:" NL
     // Summarize:
     // r0 and r1 contains the normalVector.
     // TMP1_Q contains the light vector and its length.
@@ -341,27 +343,27 @@ TOSTRING(neonDrawLighting) ":" NL
     "orrs r2, r0, r1" NL
     "bne .normalVectorIsNonZero" NL
 
-    "tst " FLAGS_R ", #" TOSTRING(FLAG_SPECULAR_LIGHT) NL
+    "tst " FLAGS_R ", #" TOSTRING( FLAG_SPECULAR_LIGHT ) NL
     "bne .specularLight1" NL
 
     // Calculate diffuse light strength.
-    MULTIPLY_BY_DIFFUSE_CONST(TMP1_S2, TMP1_S3)
+    MULTIPLY_BY_DIFFUSE_CONST( TMP1_S2, TMP1_S3 )
     "b .lightStrengthCalculated" NL
 
-".specularLight1:" NL
+    ".specularLight1:" NL
     // Calculating specular light strength.
     "vadd.f32 " TMP1_S2 ", " TMP1_S2 ", " TMP1_S3 NL
-    GET_LENGTH(TMP1, TMP2)
+    GET_LENGTH( TMP1, TMP2 )
 
     // When the exponent is 1, we don't need to call an expensive powf function.
-    "tst " FLAGS_R ", #" TOSTRING(FLAG_SPECULAR_EXPONENT_IS_1) NL
+    "tst " FLAGS_R ", #" TOSTRING( FLAG_SPECULAR_EXPONENT_IS_1 ) NL
     "vdiveq.f32 " TMP2_S1 ", " TMP1_S2 ", " TMP1_S3 NL
     "beq .specularExpPowf" NL
 
-    MULTIPLY_BY_DIFFUSE_CONST(TMP1_S2, TMP1_S3)
+    MULTIPLY_BY_DIFFUSE_CONST( TMP1_S2, TMP1_S3 )
     "b .lightStrengthCalculated" NL
 
-".normalVectorIsNonZero:" NL
+    ".normalVectorIsNonZero:" NL
     // Normal vector goes to TMP2, and its length is calculated as well.
     "vmov.s32 " TMP2_S0 ", r0" NL
     "vcvt.f32.s32 " TMP2_S0 ", " TMP2_S0 NL
@@ -370,29 +372,29 @@ TOSTRING(neonDrawLighting) ":" NL
     "vcvt.f32.s32 " TMP2_S1 ", " TMP2_S1 NL
     "vmul.f32 " TMP2_S1 ", " TMP2_S1 ", " SCALE_DIV4_S NL
     "vmov.f32 " TMP2_S2 ", " CONST_ONE_S NL
-    GET_LENGTH(TMP2, TMP3)
+    GET_LENGTH( TMP2, TMP3 )
 
-    "tst " FLAGS_R ", #" TOSTRING(FLAG_SPECULAR_LIGHT) NL
+    "tst " FLAGS_R ", #" TOSTRING( FLAG_SPECULAR_LIGHT ) NL
     "bne .specularLight2" NL
 
     // Calculating diffuse light strength.
-    DOT_PRODUCT(TMP3, TMP2, TMP1)
-    MULTIPLY_BY_DIFFUSE_CONST(TMP3_S0, TMP3_S3)
+    DOT_PRODUCT( TMP3, TMP2, TMP1 )
+    MULTIPLY_BY_DIFFUSE_CONST( TMP3_S0, TMP3_S3 )
     "b .lightStrengthCalculated" NL
 
-".specularLight2:" NL
+    ".specularLight2:" NL
     // Calculating specular light strength.
     "vadd.f32 " TMP1_S2 ", " TMP1_S2 ", " TMP1_S3 NL
-    GET_LENGTH(TMP1, TMP3)
-    DOT_PRODUCT(TMP3, TMP2, TMP1)
+    GET_LENGTH( TMP1, TMP3 )
+    DOT_PRODUCT( TMP3, TMP2, TMP1 )
 
     // When the exponent is 1, we don't need to call an expensive powf function.
-    "tst " FLAGS_R ", #" TOSTRING(FLAG_SPECULAR_EXPONENT_IS_1) NL
+    "tst " FLAGS_R ", #" TOSTRING( FLAG_SPECULAR_EXPONENT_IS_1 ) NL
     "vdiveq.f32 " TMP2_S1 ", " TMP3_S0 ", " TMP3_S3 NL
     "beq .specularExpPowf" NL
-    MULTIPLY_BY_DIFFUSE_CONST(TMP3_S0, TMP3_S3)
+    MULTIPLY_BY_DIFFUSE_CONST( TMP3_S0, TMP3_S3 )
 
-".lightStrengthCalculated:" NL
+    ".lightStrengthCalculated:" NL
     // TMP2_S1 contains the light strength. Clamp it to [0, 1]
     "vmax.f32 " TMP2_D0 ", " TMP2_D0 ", " CONST_ZERO_HI_D NL
     "vmin.f32 " TMP2_D0 ", " TMP2_D0 ", " CONST_ONE_HI_D NL
@@ -406,7 +408,7 @@ TOSTRING(neonDrawLighting) ":" NL
     "strb r2, [" PIXELS_R ", #-9]" NL
 
     // Continue to the next pixel.
-".blackPixel:" NL
+    ".blackPixel:" NL
     "vadd.f32 " POSITION_X_S ", " CONST_ONE_S NL
     "mov r3, #1" NL
     "subs " WIDTH_R ", " WIDTH_R ", #1" NL
@@ -423,15 +425,15 @@ TOSTRING(neonDrawLighting) ":" NL
     "vldmia sp!, {d8-d15}" NL
     "ldmia sp!, {r4-r8, r10, r11, pc}" NL
 
-".distantLight:" NL
+    ".distantLight:" NL
     // In case of distant light, the light vector is constant,
     // we simply copy it.
     "vmov.f32 " TMP1_Q ", " LIGHT_Q NL
     "b .visiblePixel" NL
 
-".cosineOfAngle:" NL
+    ".cosineOfAngle:" NL
     // If the pixel is outside of the cone angle, it is simply a black pixel.
-    DOT_PRODUCT(TMP3, TMP1, DIRECTION)
+    DOT_PRODUCT( TMP3, TMP1, DIRECTION )
     "vdiv.f32 " COSINE_OF_ANGLE ", " TMP3_S0 ", " TMP1_S3 NL
     "vcmp.f32 " COSINE_OF_ANGLE ", " CONE_CUT_OFF_S NL
     "fmstat" NL
@@ -441,25 +443,25 @@ TOSTRING(neonDrawLighting) ":" NL
     "strb r0, [" PIXELS_R ", #-9]" NL
     "b .blackPixel" NL
 
-".cutOff:" NL
+    ".cutOff:" NL
     // Smoothing the light strength on the cone edge.
     "vsub.f32 " TMP3_S0 ", " CONE_CUT_OFF_S ", " COSINE_OF_ANGLE NL
     "vdiv.f32 " TMP3_S0 ", " TMP3_S0 ", " CONE_CUT_OFF_RANGE_S NL
     "vmul.f32 " TMP3_S1 ", " TMP3_S1 ", " TMP3_S0 NL
     "b .cutOffFinished" NL
 
-".coneExpPowf:" NL
-    POWF(TMP3_S1, CONE_EXPONENT_R)
+    ".coneExpPowf:" NL
+    POWF( TMP3_S1, CONE_EXPONENT_R )
     "b .coneExpPowfFinished" NL
 
-".specularExpPowf:" NL
-    POWF(TMP2_S1, SPECULAR_EXPONENT_R)
-    "tst " FLAGS_R ", #" TOSTRING(FLAG_DIFFUSE_CONST_IS_1) NL
+    ".specularExpPowf:" NL
+    POWF( TMP2_S1, SPECULAR_EXPONENT_R )
+    "tst " FLAGS_R ", #" TOSTRING( FLAG_DIFFUSE_CONST_IS_1 ) NL
     "vmuleq.f32 " TMP2_S1 ", " TMP2_S1 ", " DIFFUSE_CONST_S NL
     "b .lightStrengthCalculated" NL
 ); // NOLINT
 
-int FELighting::getPowerCoefficients(float exponent)
+int FELighting::getPowerCoefficients( float exponent )
 {
     // Calling a powf function from the assembly code would require to save
     // and reload a lot of NEON registers. Since the base is in range [0..1]
@@ -475,21 +477,30 @@ int FELighting::getPowerCoefficients(float exponent)
     // is estimated by square root assembly instructions.
     int i, result;
 
-    if (exponent < 0)
-        exponent = 1 / (-exponent);
+    if ( exponent < 0 )
+    {
+        exponent = 1 / ( -exponent );
+    }
 
-    if (exponent > 63.99)
+    if ( exponent > 63.99 )
+    {
         exponent = 63.99;
+    }
 
     exponent /= 64;
     result = 0;
-    for (i = 11; i >= 0; --i) {
+
+    for ( i = 11; i >= 0; --i )
+    {
         exponent *= 2;
-        if (exponent >= 1) {
+
+        if ( exponent >= 1 )
+        {
             result |= 1 << i;
             exponent -= 1;
         }
     }
+
     return result;
 }
 

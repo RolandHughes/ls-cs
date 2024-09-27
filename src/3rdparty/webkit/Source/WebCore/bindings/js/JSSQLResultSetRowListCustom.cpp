@@ -37,44 +37,56 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-JSValue JSSQLResultSetRowList::item(ExecState* exec)
+JSValue JSSQLResultSetRowList::item( ExecState *exec )
 {
     bool indexOk;
-    int index = finiteInt32Value(exec->argument(0), exec, indexOk);
-    if (!indexOk) {
-        setDOMException(exec, TYPE_MISMATCH_ERR);
-        return jsUndefined();
-    }
-    if (index < 0 || (unsigned)index >= m_impl->length()) {
-        setDOMException(exec, INDEX_SIZE_ERR);
+    int index = finiteInt32Value( exec->argument( 0 ), exec, indexOk );
+
+    if ( !indexOk )
+    {
+        setDOMException( exec, TYPE_MISMATCH_ERR );
         return jsUndefined();
     }
 
-    JSObject* object = constructEmptyObject(exec);
+    if ( index < 0 || ( unsigned )index >= m_impl->length() )
+    {
+        setDOMException( exec, INDEX_SIZE_ERR );
+        return jsUndefined();
+    }
+
+    JSObject *object = constructEmptyObject( exec );
 
     unsigned numColumns = m_impl->columnNames().size();
     unsigned valuesIndex = index * numColumns;
-    for (unsigned i = 0; i < numColumns; i++) {
-        const SQLValue& value = m_impl->values()[valuesIndex + i];
+
+    for ( unsigned i = 0; i < numColumns; i++ )
+    {
+        const SQLValue &value = m_impl->values()[valuesIndex + i];
         JSValue jsValue;
 
-        switch (value.type()) {
+        switch ( value.type() )
+        {
             case SQLValue::StringValue:
-              jsValue = jsString(exec, value.string());
-              break;
-          case SQLValue::NullValue:
-              jsValue = jsNull();
-              break;
-          case SQLValue::NumberValue:
-              jsValue = jsNumber(value.number());
-              break;
-          default:
-              ASSERT_NOT_REACHED();
+                jsValue = jsString( exec, value.string() );
+                break;
+
+            case SQLValue::NullValue:
+                jsValue = jsNull();
+                break;
+
+            case SQLValue::NumberValue:
+                jsValue = jsNumber( value.number() );
+                break;
+
+            default:
+                ASSERT_NOT_REACHED();
         }
 
-        object->putDirect(exec->globalData(), Identifier(exec, stringToUString(m_impl->columnNames()[i])), jsValue, DontDelete | ReadOnly);
+        object->putDirect( exec->globalData(), Identifier( exec, stringToUString( m_impl->columnNames()[i] ) ), jsValue,
+                           DontDelete | ReadOnly );
     }
 
     return object;

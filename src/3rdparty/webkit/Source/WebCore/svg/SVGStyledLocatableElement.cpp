@@ -27,36 +27,37 @@
 #include "SVGElement.h"
 #include "SVGSVGElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-SVGStyledLocatableElement::SVGStyledLocatableElement(const QualifiedName& tagName, Document* document)
-    : SVGStyledElement(tagName, document)
+SVGStyledLocatableElement::SVGStyledLocatableElement( const QualifiedName &tagName, Document *document )
+    : SVGStyledElement( tagName, document )
 {
 }
 
-SVGElement* SVGStyledLocatableElement::nearestViewportElement() const
+SVGElement *SVGStyledLocatableElement::nearestViewportElement() const
 {
-    return SVGLocatable::nearestViewportElement(this);
+    return SVGLocatable::nearestViewportElement( this );
 }
 
-SVGElement* SVGStyledLocatableElement::farthestViewportElement() const
+SVGElement *SVGStyledLocatableElement::farthestViewportElement() const
 {
-    return SVGLocatable::farthestViewportElement(this);
+    return SVGLocatable::farthestViewportElement( this );
 }
 
-FloatRect SVGStyledLocatableElement::getBBox(StyleUpdateStrategy styleUpdateStrategy) const
+FloatRect SVGStyledLocatableElement::getBBox( StyleUpdateStrategy styleUpdateStrategy ) const
 {
-    return SVGLocatable::getBBox(this, styleUpdateStrategy);
+    return SVGLocatable::getBBox( this, styleUpdateStrategy );
 }
 
-AffineTransform SVGStyledLocatableElement::getCTM(StyleUpdateStrategy styleUpdateStrategy) const
+AffineTransform SVGStyledLocatableElement::getCTM( StyleUpdateStrategy styleUpdateStrategy ) const
 {
-    return SVGLocatable::computeCTM(this, SVGLocatable::NearestViewportScope, styleUpdateStrategy);
+    return SVGLocatable::computeCTM( this, SVGLocatable::NearestViewportScope, styleUpdateStrategy );
 }
 
-AffineTransform SVGStyledLocatableElement::getScreenCTM(StyleUpdateStrategy styleUpdateStrategy) const
+AffineTransform SVGStyledLocatableElement::getScreenCTM( StyleUpdateStrategy styleUpdateStrategy ) const
 {
-    return SVGLocatable::computeCTM(this, SVGLocatable::ScreenScope, styleUpdateStrategy);
+    return SVGLocatable::computeCTM( this, SVGLocatable::ScreenScope, styleUpdateStrategy );
 }
 
 }

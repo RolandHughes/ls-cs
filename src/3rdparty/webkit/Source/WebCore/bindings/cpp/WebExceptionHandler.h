@@ -22,19 +22,21 @@
 #define WebExceptionHandler_h
 
 typedef int WebDOMExceptionCode;
-typedef void (*WebExceptionHandler)(WebDOMExceptionCode);
+typedef void ( *WebExceptionHandler )( WebDOMExceptionCode );
 
 // Used from the outside to register a callback that gets fired whenever an exception is raised
-void webInstallExceptionHandler(WebExceptionHandler);
+void webInstallExceptionHandler( WebExceptionHandler );
 
 // Never used by the bindings, only indirectly by webDOMRaiseError
-void webRaiseDOMException(WebDOMExceptionCode);
+void webRaiseDOMException( WebDOMExceptionCode );
 
 // Used from the bindings
-inline void webDOMRaiseError(WebDOMExceptionCode ec) 
+inline void webDOMRaiseError( WebDOMExceptionCode ec )
 {
-    if (ec)
-        webRaiseDOMException(ec);
+    if ( ec )
+    {
+        webRaiseDOMException( ec );
+    }
 }
 
 #endif

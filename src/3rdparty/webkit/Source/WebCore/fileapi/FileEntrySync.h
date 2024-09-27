@@ -38,26 +38,31 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class File;
 class FileWriterSync;
 
-class FileEntrySync : public EntrySync {
+class FileEntrySync : public EntrySync
+{
 public:
-    static PassRefPtr<FileEntrySync> create(PassRefPtr<DOMFileSystemBase> fileSystem, const String& fullPath)
+    static PassRefPtr<FileEntrySync> create( PassRefPtr<DOMFileSystemBase> fileSystem, const String &fullPath )
     {
-        return adoptRef(new FileEntrySync(fileSystem, fullPath));
+        return adoptRef( new FileEntrySync( fileSystem, fullPath ) );
     }
 
-    virtual bool isFile() const { return true; }
+    virtual bool isFile() const
+    {
+        return true;
+    }
 
-    PassRefPtr<File> file(ExceptionCode&);
-    PassRefPtr<FileWriterSync> createWriter(ExceptionCode&);
+    PassRefPtr<File> file( ExceptionCode & );
+    PassRefPtr<FileWriterSync> createWriter( ExceptionCode & );
 
 private:
     friend class EntrySync;
-    FileEntrySync(PassRefPtr<DOMFileSystemBase>, const String& fullPath);
+    FileEntrySync( PassRefPtr<DOMFileSystemBase>, const String &fullPath );
 };
 
 }

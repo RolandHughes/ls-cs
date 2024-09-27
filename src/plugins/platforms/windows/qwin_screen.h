@@ -31,128 +31,145 @@
 #include <qscopedpointer.h>
 #include <qplatform_screen.h>
 
-struct QWindowsScreenData {
-   enum Flags {
-      PrimaryScreen = 0x1,
-      VirtualDesktop = 0x2,
-      LockScreen = 0x4 // Temporary screen existing during user change, etc.
-   };
+struct QWindowsScreenData
+{
+    enum Flags
+    {
+        PrimaryScreen = 0x1,
+        VirtualDesktop = 0x2,
+        LockScreen = 0x4 // Temporary screen existing during user change, etc.
+    };
 
-   QWindowsScreenData();
+    QWindowsScreenData();
 
-   QRect geometry;
-   QRect availableGeometry;
-   QDpi dpi;
-   QSizeF physicalSizeMM;
-   int depth;
-   QImage::Format format;
-   unsigned flags;
-   QString name;
-   Qt::ScreenOrientation orientation;
-   qreal refreshRateHz;
+    QRect geometry;
+    QRect availableGeometry;
+    QDpi dpi;
+    QSizeF physicalSizeMM;
+    int depth;
+    QImage::Format format;
+    unsigned flags;
+    QString name;
+    Qt::ScreenOrientation orientation;
+    qreal refreshRateHz;
 };
 
 class QWindowsScreen : public QPlatformScreen
 {
- public:
+public:
 #ifndef QT_NO_CURSOR
-   typedef QScopedPointer<QPlatformCursor> CursorPtr;
+    typedef QScopedPointer<QPlatformCursor> CursorPtr;
 #endif
 
-   explicit QWindowsScreen(const QWindowsScreenData &data);
+    explicit QWindowsScreen( const QWindowsScreenData &data );
 
-   QRect geometry() const override {
-      return m_data.geometry;
-   }
-   QRect availableGeometry() const override {
-      return m_data.availableGeometry;
-   }
-   int depth() const override {
-      return m_data.depth;
-   }
-   QImage::Format format() const override {
-      return m_data.format;
-   }
-   QSizeF physicalSize() const override {
-      return m_data.physicalSizeMM;
-   }
-   QDpi logicalDpi() const override {
-      return m_data.dpi;
-   }
-   qreal pixelDensity() const override;
-   qreal devicePixelRatio() const override {
-      return 1.0;
-   }
-   qreal refreshRate() const override {
-      return m_data.refreshRateHz;
-   }
-   QString name() const override {
-      return m_data.name;
-   }
-   Qt::ScreenOrientation orientation() const override {
-      return m_data.orientation;
-   }
-   QList<QPlatformScreen *> virtualSiblings() const override;
-   QWindow *topLevelWindowAt(const QPoint &point) const override;
-   static QWindow *windowAt(const QPoint &point, unsigned flags);
+    QRect geometry() const override
+    {
+        return m_data.geometry;
+    }
+    QRect availableGeometry() const override
+    {
+        return m_data.availableGeometry;
+    }
+    int depth() const override
+    {
+        return m_data.depth;
+    }
+    QImage::Format format() const override
+    {
+        return m_data.format;
+    }
+    QSizeF physicalSize() const override
+    {
+        return m_data.physicalSizeMM;
+    }
+    QDpi logicalDpi() const override
+    {
+        return m_data.dpi;
+    }
+    qreal pixelDensity() const override;
+    qreal devicePixelRatio() const override
+    {
+        return 1.0;
+    }
+    qreal refreshRate() const override
+    {
+        return m_data.refreshRateHz;
+    }
+    QString name() const override
+    {
+        return m_data.name;
+    }
+    Qt::ScreenOrientation orientation() const override
+    {
+        return m_data.orientation;
+    }
+    QList<QPlatformScreen *> virtualSiblings() const override;
+    QWindow *topLevelWindowAt( const QPoint &point ) const override;
+    static QWindow *windowAt( const QPoint &point, unsigned flags );
 
-   QPixmap grabWindow(WId window, int qX, int qY, int qWidth, int qHeight) const override;
-   QPlatformScreen::SubpixelAntialiasingType subpixelAntialiasingTypeHint() const override;
+    QPixmap grabWindow( WId window, int qX, int qY, int qWidth, int qHeight ) const override;
+    QPlatformScreen::SubpixelAntialiasingType subpixelAntialiasingTypeHint() const override;
 
-   static Qt::ScreenOrientation orientationPreference();
-   static bool setOrientationPreference(Qt::ScreenOrientation o);
+    static Qt::ScreenOrientation orientationPreference();
+    static bool setOrientationPreference( Qt::ScreenOrientation o );
 
-   inline void handleChanges(const QWindowsScreenData &newData);
+    inline void handleChanges( const QWindowsScreenData &newData );
 
 #ifndef QT_NO_CURSOR
-   QPlatformCursor *cursor() const override {
-      return m_cursor.data();
-   }
-   const CursorPtr &cursorPtr() const {
-      return m_cursor;
-   }
+    QPlatformCursor *cursor() const override
+    {
+        return m_cursor.data();
+    }
+    const CursorPtr &cursorPtr() const
+    {
+        return m_cursor;
+    }
 #else
-   QPlatformCursor *cursor() const  {
-      return 0;
-   }
+    QPlatformCursor *cursor() const
+    {
+        return 0;
+    }
 #endif
 
-   const QWindowsScreenData &data() const  {
-      return m_data;
-   }
+    const QWindowsScreenData &data() const
+    {
+        return m_data;
+    }
 
- private:
-   QWindowsScreenData m_data;
+private:
+    QWindowsScreenData m_data;
 
 #ifndef QT_NO_CURSOR
-   const CursorPtr m_cursor;
+    const CursorPtr m_cursor;
 #endif
 };
 
 class QWindowsScreenManager
 {
- public:
-   typedef QList<QWindowsScreen *> WindowsScreenList;
+public:
+    typedef QList<QWindowsScreen *> WindowsScreenList;
 
-   QWindowsScreenManager();
+    QWindowsScreenManager();
 
-   void clearScreens();
+    void clearScreens();
 
-   bool handleScreenChanges();
-   bool handleDisplayChange(WPARAM wParam, LPARAM lParam);
-   const WindowsScreenList &screens() const {
-      return m_screens;
-   }
+    bool handleScreenChanges();
+    bool handleDisplayChange( WPARAM wParam, LPARAM lParam );
+    const WindowsScreenList &screens() const
+    {
+        return m_screens;
+    }
 
-   const QWindowsScreen *screenAtDp(const QPoint &p) const;
+    const QWindowsScreen *screenAtDp( const QPoint &p ) const;
 
- private:
-   void removeScreen(int index);
+private:
+    void removeScreen( int index );
 
-   WindowsScreenList m_screens;
-   int m_lastDepth;
-   WORD m_lastHorizontalResolution;
-   WORD m_lastVerticalResolution;
+    WindowsScreenList m_screens;
+    int m_lastDepth;
+    WORD m_lastHorizontalResolution;
+    WORD m_lastVerticalResolution;
 };
 
 #endif

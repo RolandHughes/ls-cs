@@ -30,17 +30,25 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class StyleTransformData : public RefCounted<StyleTransformData> {
+class StyleTransformData : public RefCounted<StyleTransformData>
+{
 public:
-    static PassRefPtr<StyleTransformData> create() { return adoptRef(new StyleTransformData); }
-    PassRefPtr<StyleTransformData> copy() const { return adoptRef(new StyleTransformData(*this)); }
-
-    bool operator==(const StyleTransformData& o) const;
-    bool operator!=(const StyleTransformData& o) const
+    static PassRefPtr<StyleTransformData> create()
     {
-        return !(*this == o);
+        return adoptRef( new StyleTransformData );
+    }
+    PassRefPtr<StyleTransformData> copy() const
+    {
+        return adoptRef( new StyleTransformData( *this ) );
+    }
+
+    bool operator==( const StyleTransformData &o ) const;
+    bool operator!=( const StyleTransformData &o ) const
+    {
+        return !( *this == o );
     }
 
     TransformOperations m_operations;
@@ -50,7 +58,7 @@ public:
 
 private:
     StyleTransformData();
-    StyleTransformData(const StyleTransformData&);
+    StyleTransformData( const StyleTransformData & );
 };
 
 } // namespace WebCore

@@ -31,39 +31,40 @@
 
 class Q_MULTIMEDIA_EXPORT QCameraFeedbackControl : public QMediaControl
 {
-   MULTI_CS_OBJECT(QCameraFeedbackControl)
+    MULTI_CS_OBJECT( QCameraFeedbackControl )
 
- public:
-   enum EventType {
-      ViewfinderStarted = 1,
-      ViewfinderStopped,
-      ImageCaptured,
-      ImageSaved,
-      ImageError,
-      RecordingStarted,
-      RecordingInProgress,
-      RecordingStopped,
-      AutoFocusInProgress,
-      AutoFocusLocked,
-      AutoFocusFailed
-   };
+public:
+    enum EventType
+    {
+        ViewfinderStarted = 1,
+        ViewfinderStopped,
+        ImageCaptured,
+        ImageSaved,
+        ImageError,
+        RecordingStarted,
+        RecordingInProgress,
+        RecordingStopped,
+        AutoFocusInProgress,
+        AutoFocusLocked,
+        AutoFocusFailed
+    };
 
-   ~QCameraFeedbackControl();
+    ~QCameraFeedbackControl();
 
-   virtual bool isEventFeedbackLocked(EventType event) const = 0;
+    virtual bool isEventFeedbackLocked( EventType event ) const = 0;
 
-   virtual bool isEventFeedbackEnabled(EventType event) const = 0;
+    virtual bool isEventFeedbackEnabled( EventType event ) const = 0;
 
-   virtual bool setEventFeedbackEnabled(EventType event, bool enabled) = 0;
-   virtual void resetEventFeedback(EventType event) = 0;
+    virtual bool setEventFeedbackEnabled( EventType event, bool enabled ) = 0;
+    virtual void resetEventFeedback( EventType event ) = 0;
 
-   virtual bool setEventFeedbackSound(EventType event, const QString &filePath) = 0;
+    virtual bool setEventFeedbackSound( EventType event, const QString &filePath ) = 0;
 
- protected:
-   explicit QCameraFeedbackControl(QObject *parent = nullptr);
+protected:
+    explicit QCameraFeedbackControl( QObject *parent = nullptr );
 };
 
 #define QCameraFeedbackControl_iid "com.copperspice.CS.cameraFeedBackControl/1.0"
-CS_DECLARE_INTERFACE(QCameraFeedbackControl, QCameraFeedbackControl_iid)
+CS_DECLARE_INTERFACE( QCameraFeedbackControl, QCameraFeedbackControl_iid )
 
 #endif

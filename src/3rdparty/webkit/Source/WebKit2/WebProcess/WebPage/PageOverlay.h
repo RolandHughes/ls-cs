@@ -30,67 +30,78 @@
 #include "RunLoop.h"
 #include <wtf/PassRefPtr.h>
 
-namespace WebCore {
-    class GraphicsContext;
-    class IntRect;
+namespace WebCore
+{
+class GraphicsContext;
+class IntRect;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
 class WebMouseEvent;
 class WebPage;
 
-class PageOverlay : public APIObject {
+class PageOverlay : public APIObject
+{
 public:
-    class Client {
+    class Client
+    {
     protected:
         virtual ~Client() { }
-    
+
     public:
-        virtual void pageOverlayDestroyed(PageOverlay*) = 0;
-        virtual void willMoveToWebPage(PageOverlay*, WebPage*) = 0;
-        virtual void didMoveToWebPage(PageOverlay*, WebPage*) = 0;
-        virtual void drawRect(PageOverlay*, WebCore::GraphicsContext&, const WebCore::IntRect& dirtyRect) = 0;
-        virtual bool mouseEvent(PageOverlay*, const WebMouseEvent&) = 0;
+        virtual void pageOverlayDestroyed( PageOverlay * ) = 0;
+        virtual void willMoveToWebPage( PageOverlay *, WebPage * ) = 0;
+        virtual void didMoveToWebPage( PageOverlay *, WebPage * ) = 0;
+        virtual void drawRect( PageOverlay *, WebCore::GraphicsContext &, const WebCore::IntRect &dirtyRect ) = 0;
+        virtual bool mouseEvent( PageOverlay *, const WebMouseEvent & ) = 0;
     };
 
     static const Type APIType = TypeBundlePageOverlay;
 
-    static PassRefPtr<PageOverlay> create(Client*);
+    static PassRefPtr<PageOverlay> create( Client * );
     virtual ~PageOverlay();
 
-    void setPage(WebPage*);
-    void setNeedsDisplay(const WebCore::IntRect& dirtyRect);
+    void setPage( WebPage * );
+    void setNeedsDisplay( const WebCore::IntRect &dirtyRect );
     void setNeedsDisplay();
 
-    void drawRect(WebCore::GraphicsContext&, const WebCore::IntRect& dirtyRect);
-    bool mouseEvent(const WebMouseEvent&);
+    void drawRect( WebCore::GraphicsContext &, const WebCore::IntRect &dirtyRect );
+    bool mouseEvent( const WebMouseEvent & );
 
     void startFadeInAnimation();
     void startFadeOutAnimation();
 
-    float fractionFadedIn() const { return m_fractionFadedIn; }
+    float fractionFadedIn() const
+    {
+        return m_fractionFadedIn;
+    }
 
 protected:
-    explicit PageOverlay(Client*);
+    explicit PageOverlay( Client * );
 
 private:
     // APIObject
-    virtual Type type() const { return APIType; }
+    virtual Type type() const
+    {
+        return APIType;
+    }
 
     WebCore::IntRect bounds() const;
 
     void startFadeAnimation();
     void fadeAnimationTimerFired();
 
-    Client* m_client;
-    WebPage* m_webPage;
+    Client *m_client;
+    WebPage *m_webPage;
 
     RunLoop::Timer<PageOverlay> m_fadeAnimationTimer;
     double m_fadeAnimationStartTime;
     double m_fadeAnimationDuration;
 
-    enum FadeAnimationType {
+    enum FadeAnimationType
+    {
         NoAnimation,
         FadeInAnimation,
         FadeOutAnimation,

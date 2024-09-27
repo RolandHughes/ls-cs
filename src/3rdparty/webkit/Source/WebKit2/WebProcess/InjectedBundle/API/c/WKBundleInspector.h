@@ -40,11 +40,11 @@ extern "C" {
 
 WK_EXPORT WKTypeID WKBundleInspectorGetTypeID();
 
-WK_EXPORT void WKBundleInspectorShow(WKBundleInspectorRef inspector);
-WK_EXPORT void WKBundleInspectorClose(WKBundleInspectorRef inspector);
+WK_EXPORT void WKBundleInspectorShow( WKBundleInspectorRef inspector );
+WK_EXPORT void WKBundleInspectorClose( WKBundleInspectorRef inspector );
 
-WK_EXPORT void WKBundleInspectorEvaluateScriptForTest(WKBundleInspectorRef inspector, long callID, WKStringRef script);
-WK_EXPORT void WKBundleInspectorSetPageProfilingEnabled(WKBundleInspectorRef inspector, bool enabled);
+WK_EXPORT void WKBundleInspectorEvaluateScriptForTest( WKBundleInspectorRef inspector, long callID, WKStringRef script );
+WK_EXPORT void WKBundleInspectorSetPageProfilingEnabled( WKBundleInspectorRef inspector, bool enabled );
 
 #ifdef __cplusplus
 }

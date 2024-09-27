@@ -28,24 +28,26 @@
 #include "JSCallbackData.h"
 #include <wtf/Forward.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class JSErrorCallback : public ErrorCallback, public ActiveDOMCallback {
+class JSErrorCallback : public ErrorCallback, public ActiveDOMCallback
+{
 public:
-    static PassRefPtr<JSErrorCallback> create(JSC::JSObject* callback, JSDOMGlobalObject* globalObject)
+    static PassRefPtr<JSErrorCallback> create( JSC::JSObject *callback, JSDOMGlobalObject *globalObject )
     {
-        return adoptRef(new JSErrorCallback(callback, globalObject));
+        return adoptRef( new JSErrorCallback( callback, globalObject ) );
     }
 
     virtual ~JSErrorCallback();
 
     // Functions
-    virtual bool handleEvent(FileError* error);
+    virtual bool handleEvent( FileError *error );
 
 private:
-    JSErrorCallback(JSC::JSObject* callback, JSDOMGlobalObject*);
+    JSErrorCallback( JSC::JSObject *callback, JSDOMGlobalObject * );
 
-    JSCallbackData* m_data;
+    JSCallbackData *m_data;
 };
 
 } // namespace WebCore

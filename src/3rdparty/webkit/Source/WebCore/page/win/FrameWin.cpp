@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -34,21 +34,25 @@
 #include "Settings.h"
 #include "TransformationMatrix.h"
 
-namespace WebCore {
-
-void computePageRectsForFrame(Frame* frame, const IntRect& printRect, float headerHeight, float footerHeight, float userScaleFactor, Vector<IntRect>& outPages, int& outPageHeight)
+namespace WebCore
 {
-    PrintContext printContext(frame);
+
+void computePageRectsForFrame( Frame *frame, const IntRect &printRect, float headerHeight, float footerHeight,
+                               float userScaleFactor, Vector<IntRect> &outPages, int &outPageHeight )
+{
+    PrintContext printContext( frame );
     float pageHeight = 0;
-    printContext.computePageRects(printRect, headerHeight, footerHeight, userScaleFactor, pageHeight);
-    outPageHeight = static_cast<int>(pageHeight);
+    printContext.computePageRects( printRect, headerHeight, footerHeight, userScaleFactor, pageHeight );
+    outPageHeight = static_cast<int>( pageHeight );
     outPages = printContext.pageRects();
 }
 
 DragImageRef Frame::dragImageForSelection()
-{    
-    if (selection()->isRange())
-        return imageFromSelection(this, false);
+{
+    if ( selection()->isRange() )
+    {
+        return imageFromSelection( this, false );
+    }
 
     return 0;
 }

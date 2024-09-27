@@ -28,25 +28,28 @@
 
 class QXcbEglNativeInterfaceHandler : public QXcbNativeInterfaceHandler
 {
- public:
-   enum ResourceType {
-      EglDisplay,
-      EglContext,
-      EglConfig
-   };
+public:
+    enum ResourceType
+    {
+        EglDisplay,
+        EglContext,
+        EglConfig
+    };
 
-   QXcbEglNativeInterfaceHandler(QXcbNativeInterface *nativeInterface);
+    QXcbEglNativeInterfaceHandler( QXcbNativeInterface *nativeInterface );
 
-   QPlatformNativeInterface::NativeResourceForIntegrationFunction nativeResourceFunctionForIntegration(
-      const QByteArray &resource) const override;
-   QPlatformNativeInterface::NativeResourceForContextFunction nativeResourceFunctionForContext(const QByteArray &resource) const override;
-   QPlatformNativeInterface::NativeResourceForWindowFunction nativeResourceFunctionForWindow(const QByteArray &resource) const override;
+    QPlatformNativeInterface::NativeResourceForIntegrationFunction nativeResourceFunctionForIntegration(
+        const QByteArray &resource ) const override;
+    QPlatformNativeInterface::NativeResourceForContextFunction nativeResourceFunctionForContext(
+        const QByteArray &resource ) const override;
+    QPlatformNativeInterface::NativeResourceForWindowFunction nativeResourceFunctionForWindow( const QByteArray &resource ) const
+    override;
 
- private:
-   static void *eglDisplay();
-   static void *eglDisplayForWindow(QWindow *window);
-   static void *eglContextForContext(QOpenGLContext *context);
-   static void *eglConfigForContext(QOpenGLContext *context);
+private:
+    static void *eglDisplay();
+    static void *eglDisplayForWindow( QWindow *window );
+    static void *eglContextForContext( QOpenGLContext *context );
+    static void *eglConfigForContext( QOpenGLContext *context );
 };
 
 #endif //QXCBEGLNATIVEINTERFACEHANDLER_H

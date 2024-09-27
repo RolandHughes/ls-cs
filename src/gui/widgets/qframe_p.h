@@ -29,24 +29,24 @@
 
 class QFramePrivate : public QWidgetPrivate
 {
-   Q_DECLARE_PUBLIC(QFrame)
+    Q_DECLARE_PUBLIC( QFrame )
 
- public:
-   QFramePrivate();
-   ~QFramePrivate();
+public:
+    QFramePrivate();
+    ~QFramePrivate();
 
-   void        updateFrameWidth();
-   void        updateStyledFrameWidths();
+    void        updateFrameWidth();
+    void        updateStyledFrameWidths();
 
-   QRect       frect;
-   int         frameStyle;
-   short       lineWidth;
-   short       midLineWidth;
-   short       frameWidth;
-   short       leftFrameWidth, rightFrameWidth;
-   short       topFrameWidth, bottomFrameWidth;
+    QRect       frect;
+    int         frameStyle;
+    short       lineWidth;
+    short       midLineWidth;
+    short       frameWidth;
+    short       leftFrameWidth, rightFrameWidth;
+    short       topFrameWidth, bottomFrameWidth;
 
-   inline void init();
+    inline void init();
 
 };
 

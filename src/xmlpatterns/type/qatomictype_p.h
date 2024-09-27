@@ -31,81 +31,82 @@
 #include <qatomictypedispatch_p.h>
 #include <qitemtype_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class Item;
 class SourceLocationReflection;
 
 class AtomicType : public ItemType, public AnySimpleType
 {
- public:
+public:
 
-   typedef QExplicitlySharedDataPointer<AtomicType> Ptr;
+    typedef QExplicitlySharedDataPointer<AtomicType> Ptr;
 
-   virtual ~AtomicType();
+    virtual ~AtomicType();
 
-   /**
-    * Implements a generic algorithm which relies on wxsTypeMatches().
-    *
-    * @returns @c true depending on if @p item is an atomic type, and that
-    * AtomicValue::itemType()'s SequenceType::itemType() matches this type.
-    */
-   bool itemMatches(const Item &item) const override;
+    /**
+     * Implements a generic algorithm which relies on wxsTypeMatches().
+     *
+     * @returns @c true depending on if @p item is an atomic type, and that
+     * AtomicValue::itemType()'s SequenceType::itemType() matches this type.
+     */
+    bool itemMatches( const Item &item ) const override;
 
-   /**
-    * @returns the result of SharedQXmlName::displayName(), of the SharedQName
-    * object returned from the name() function.
-    */
-   QString displayName(const NamePool::Ptr &np) const override;
+    /**
+     * @returns the result of SharedQXmlName::displayName(), of the SharedQName
+     * object returned from the name() function.
+     */
+    QString displayName( const NamePool::Ptr &np ) const override;
 
-   /**
-    * returns always @c false
-    */
-   bool isNodeType() const override;
+    /**
+     * returns always @c false
+     */
+    bool isNodeType() const override;
 
-   /**
-    * returns always @c true
-    */
-   bool isAtomicType() const override;
+    /**
+     * returns always @c true
+     */
+    bool isAtomicType() const override;
 
-   /**
-    * Determines whether @p other is equal to this type, or is a
-    * sub-type of this type.
-    *
-    * The implementation is generic, relying on operator==()
-    * and xdtSuperType().
-    */
-   bool xdtTypeMatches(const ItemType::Ptr &other) const override;
+    /**
+     * Determines whether @p other is equal to this type, or is a
+     * sub-type of this type.
+     *
+     * The implementation is generic, relying on operator==()
+     * and xdtSuperType().
+     */
+    bool xdtTypeMatches( const ItemType::Ptr &other ) const override;
 
-   /**
-    * @returns always 'this'
-    */
-   ItemType::Ptr atomizedType() const override;
+    /**
+     * @returns always 'this'
+     */
+    ItemType::Ptr atomizedType() const override;
 
-   /**
-    * @returns always SchemaType::SimpleTypeAtomic
-    */
-   TypeCategory category() const override;
+    /**
+     * @returns always SchemaType::SimpleTypeAtomic
+     */
+    TypeCategory category() const override;
 
-   /**
-    * @returns DerivationRestriction
-    */
-   DerivationMethod derivationMethod() const override;
+    /**
+     * @returns DerivationRestriction
+     */
+    DerivationMethod derivationMethod() const override;
 
-   virtual AtomicTypeVisitorResult::Ptr
-   accept(const QExplicitlySharedDataPointer<AtomicTypeVisitor> &visitor,
-                  const SourceLocationReflection *const) const = 0;
+    virtual AtomicTypeVisitorResult::Ptr
+    accept( const QExplicitlySharedDataPointer<AtomicTypeVisitor> &visitor,
+            const SourceLocationReflection *const ) const = 0;
 
-   virtual AtomicTypeVisitorResult::Ptr
-   accept(const ParameterizedAtomicTypeVisitor::Ptr &visitor, const qint16 param,
-                  const SourceLocationReflection *const) const = 0;
+    virtual AtomicTypeVisitorResult::Ptr
+    accept( const ParameterizedAtomicTypeVisitor::Ptr &visitor, const qint16 param,
+            const SourceLocationReflection *const ) const = 0;
 
-   virtual AtomicComparatorLocator::Ptr comparatorLocator() const = 0;
-   virtual AtomicMathematicianLocator::Ptr mathematicianLocator() const = 0;
-   virtual AtomicCasterLocator::Ptr casterLocator() const = 0;
+    virtual AtomicComparatorLocator::Ptr comparatorLocator() const = 0;
+    virtual AtomicMathematicianLocator::Ptr mathematicianLocator() const = 0;
+    virtual AtomicCasterLocator::Ptr casterLocator() const = 0;
 
- protected:
-   AtomicType();
+protected:
+    AtomicType();
 
 };
 

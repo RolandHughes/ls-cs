@@ -34,35 +34,36 @@
 
 #include <stdio.h>
 
-namespace WebCore {
-    
+namespace WebCore
+{
+
 void ContextMenuClientQt::contextMenuDestroyed()
 {
     delete this;
 }
 
-PlatformMenuDescription ContextMenuClientQt::getCustomMenuFromDefaultItems(ContextMenu* menu)
+PlatformMenuDescription ContextMenuClientQt::getCustomMenuFromDefaultItems( ContextMenu *menu )
 {
     // warning: this transfers the ownership to the caller
     return menu->releasePlatformDescription();
 }
 
-void ContextMenuClientQt::contextMenuItemSelected(ContextMenuItem*, const ContextMenu*)
+void ContextMenuClientQt::contextMenuItemSelected( ContextMenuItem *, const ContextMenu * )
 {
     notImplemented();
 }
 
-void ContextMenuClientQt::downloadURL(const KURL&)
+void ContextMenuClientQt::downloadURL( const KURL & )
 {
     notImplemented();
 }
 
-void ContextMenuClientQt::lookUpInDictionary(Frame*)
+void ContextMenuClientQt::lookUpInDictionary( Frame * )
 {
     notImplemented();
 }
 
-void ContextMenuClientQt::speak(const String&)
+void ContextMenuClientQt::speak( const String & )
 {
     notImplemented();
 }
@@ -78,7 +79,7 @@ void ContextMenuClientQt::stopSpeaking()
     notImplemented();
 }
 
-void ContextMenuClientQt::searchWithGoogle(const Frame*)
+void ContextMenuClientQt::searchWithGoogle( const Frame * )
 {
     notImplemented();
 }

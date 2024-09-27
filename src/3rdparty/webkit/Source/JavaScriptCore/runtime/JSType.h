@@ -21,24 +21,26 @@
 #ifndef JSType_h
 #define JSType_h
 
-namespace JSC {
+namespace JSC
+{
 
-    /**
-     * Primitive types
-     */
-    enum JSType {
-        UnspecifiedType   = 0,
-        UndefinedType     = 1,
-        BooleanType       = 2,
-        NumberType        = 3,
-        NullType          = 4,
-        StringType        = 5,
-        LeafType          = 6,
-        // The CompoundType value must come before any JSType that may have children
-        CompoundType      = 7,
-        ObjectType        = 8,
-        GetterSetterType  = 9
-    };
+/**
+ * Primitive types
+ */
+enum JSType
+{
+    UnspecifiedType   = 0,
+    UndefinedType     = 1,
+    BooleanType       = 2,
+    NumberType        = 3,
+    NullType          = 4,
+    StringType        = 5,
+    LeafType          = 6,
+    // The CompoundType value must come before any JSType that may have children
+    CompoundType      = 7,
+    ObjectType        = 8,
+    GetterSetterType  = 9
+};
 
 } // namespace JSC
 

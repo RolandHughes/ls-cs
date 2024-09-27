@@ -29,9 +29,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSAudioChannelSplitter);
+ASSERT_CLASS_FITS_IN_CELL( JSAudioChannelSplitter );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -42,8 +43,8 @@ ASSERT_CLASS_FITS_IN_CELL(JSAudioChannelSplitter);
 
 static const HashTableValue JSAudioChannelSplitterTableValues[2] =
 {
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsAudioChannelSplitterConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsAudioChannelSplitterConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -57,43 +58,51 @@ static JSC_CONST_HASHTABLE HashTable JSAudioChannelSplitterTable = { 2, 1, JSAud
 
 static const HashTableValue JSAudioChannelSplitterConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSAudioChannelSplitterConstructorTable = { 1, 0, JSAudioChannelSplitterConstructorTableValues, 0 };
-class JSAudioChannelSplitterConstructor : public DOMConstructorObject {
+class JSAudioChannelSplitterConstructor : public DOMConstructorObject
+{
 public:
-    JSAudioChannelSplitterConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSAudioChannelSplitterConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSAudioChannelSplitterConstructor::s_info = { "AudioChannelSplitterConstructor", &DOMConstructorObject::s_info, &JSAudioChannelSplitterConstructorTable, 0 };
 
-JSAudioChannelSplitterConstructor::JSAudioChannelSplitterConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSAudioChannelSplitterConstructor::JSAudioChannelSplitterConstructor( ExecState *exec, Structure *structure,
+        JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSAudioChannelSplitterPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSAudioChannelSplitterPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSAudioChannelSplitterConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSAudioChannelSplitterConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSAudioChannelSplitterConstructor, JSDOMWrapper>(exec, &JSAudioChannelSplitterConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSAudioChannelSplitterConstructor, JSDOMWrapper>( exec, &JSAudioChannelSplitterConstructorTable, this,
+            propertyName, slot );
 }
 
-bool JSAudioChannelSplitterConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSAudioChannelSplitterConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSAudioChannelSplitterConstructor, JSDOMWrapper>(exec, &JSAudioChannelSplitterConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSAudioChannelSplitterConstructor, JSDOMWrapper>( exec, &JSAudioChannelSplitterConstructorTable,
+            this, propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -105,50 +114,54 @@ bool JSAudioChannelSplitterConstructor::getOwnPropertyDescriptor(ExecState* exec
 
 static const HashTableValue JSAudioChannelSplitterPrototypeTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSAudioChannelSplitterPrototypeTable = { 1, 0, JSAudioChannelSplitterPrototypeTableValues, 0 };
 const ClassInfo JSAudioChannelSplitterPrototype::s_info = { "AudioChannelSplitterPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSAudioChannelSplitterPrototypeTable, 0 };
 
-JSObject* JSAudioChannelSplitterPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSAudioChannelSplitterPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSAudioChannelSplitter>(exec, globalObject);
+    return getDOMPrototype<JSAudioChannelSplitter>( exec, globalObject );
 }
 
 const ClassInfo JSAudioChannelSplitter::s_info = { "AudioChannelSplitter", &JSAudioNode::s_info, &JSAudioChannelSplitterTable, 0 };
 
-JSAudioChannelSplitter::JSAudioChannelSplitter(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<AudioChannelSplitter> impl)
-    : JSAudioNode(structure, globalObject, impl)
+JSAudioChannelSplitter::JSAudioChannelSplitter( Structure *structure, JSDOMGlobalObject *globalObject,
+        PassRefPtr<AudioChannelSplitter> impl )
+    : JSAudioNode( structure, globalObject, impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSAudioChannelSplitter::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSAudioChannelSplitter::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSAudioChannelSplitterPrototype(exec->globalData(), globalObject, JSAudioChannelSplitterPrototype::createStructure(exec->globalData(), JSAudioNodePrototype::self(exec, globalObject)));
+    return new ( exec ) JSAudioChannelSplitterPrototype( exec->globalData(), globalObject,
+            JSAudioChannelSplitterPrototype::createStructure( exec->globalData(), JSAudioNodePrototype::self( exec, globalObject ) ) );
 }
 
-bool JSAudioChannelSplitter::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSAudioChannelSplitter::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSAudioChannelSplitter, Base>(exec, &JSAudioChannelSplitterTable, this, propertyName, slot);
+    return getStaticValueSlot<JSAudioChannelSplitter, Base>( exec, &JSAudioChannelSplitterTable, this, propertyName, slot );
 }
 
-bool JSAudioChannelSplitter::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSAudioChannelSplitter::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSAudioChannelSplitter, Base>(exec, &JSAudioChannelSplitterTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSAudioChannelSplitter, Base>( exec, &JSAudioChannelSplitterTable, this, propertyName,
+            descriptor );
 }
 
-JSValue jsAudioChannelSplitterConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsAudioChannelSplitterConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSAudioChannelSplitter* domObject = static_cast<JSAudioChannelSplitter*>(asObject(slotBase));
-    return JSAudioChannelSplitter::getConstructor(exec, domObject->globalObject());
+    JSAudioChannelSplitter *domObject = static_cast<JSAudioChannelSplitter *>( asObject( slotBase ) );
+    return JSAudioChannelSplitter::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSAudioChannelSplitter::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSAudioChannelSplitter::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSAudioChannelSplitterConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSAudioChannelSplitterConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
 

@@ -31,25 +31,31 @@
 #include <runtime/JSObjectWithGlobalObject.h>
 #include <runtime/ObjectPrototype.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class JSSVGPreserveAspectRatio : public JSDOMWrapper {
+class JSSVGPreserveAspectRatio : public JSDOMWrapper
+{
     typedef JSDOMWrapper Base;
 public:
-    JSSVGPreserveAspectRatio(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<SVGPropertyTearOff<SVGPreserveAspectRatio> >);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
-    virtual void put(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::JSValue, JSC::PutPropertySlot&);
+    JSSVGPreserveAspectRatio( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<SVGPropertyTearOff<SVGPreserveAspectRatio> > );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
+    virtual void put( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::JSValue, JSC::PutPropertySlot & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
-    SVGPropertyTearOff<SVGPreserveAspectRatio> * impl() const { return m_impl.get(); }
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
+    SVGPropertyTearOff<SVGPreserveAspectRatio> *impl() const
+    {
+        return m_impl.get();
+    }
 
 private:
     RefPtr<SVGPropertyTearOff<SVGPreserveAspectRatio> > m_impl;
@@ -57,48 +63,51 @@ protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
-JSC::JSValue toJS(JSC::ExecState*, JSDOMGlobalObject*, SVGPropertyTearOff<SVGPreserveAspectRatio> *);
-SVGPropertyTearOff<SVGPreserveAspectRatio> * toSVGPreserveAspectRatio(JSC::JSValue);
+JSC::JSValue toJS( JSC::ExecState *, JSDOMGlobalObject *, SVGPropertyTearOff<SVGPreserveAspectRatio> * );
+SVGPropertyTearOff<SVGPreserveAspectRatio> *toSVGPreserveAspectRatio( JSC::JSValue );
 
-class JSSVGPreserveAspectRatioPrototype : public JSC::JSObjectWithGlobalObject {
+class JSSVGPreserveAspectRatioPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSSVGPreserveAspectRatioPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSSVGPreserveAspectRatioPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                                       JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 // Attributes
 
-JSC::JSValue jsSVGPreserveAspectRatioAlign(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSSVGPreserveAspectRatioAlign(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsSVGPreserveAspectRatioMeetOrSlice(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSSVGPreserveAspectRatioMeetOrSlice(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsSVGPreserveAspectRatioConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsSVGPreserveAspectRatioAlign( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSSVGPreserveAspectRatioAlign( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsSVGPreserveAspectRatioMeetOrSlice( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSSVGPreserveAspectRatioMeetOrSlice( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsSVGPreserveAspectRatioConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 // Constants
 
-JSC::JSValue jsSVGPreserveAspectRatioSVG_PRESERVEASPECTRATIO_UNKNOWN(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsSVGPreserveAspectRatioSVG_PRESERVEASPECTRATIO_NONE(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsSVGPreserveAspectRatioSVG_PRESERVEASPECTRATIO_XMINYMIN(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsSVGPreserveAspectRatioSVG_PRESERVEASPECTRATIO_XMIDYMIN(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsSVGPreserveAspectRatioSVG_PRESERVEASPECTRATIO_XMAXYMIN(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsSVGPreserveAspectRatioSVG_PRESERVEASPECTRATIO_XMINYMID(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsSVGPreserveAspectRatioSVG_PRESERVEASPECTRATIO_XMIDYMID(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsSVGPreserveAspectRatioSVG_PRESERVEASPECTRATIO_XMAXYMID(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsSVGPreserveAspectRatioSVG_PRESERVEASPECTRATIO_XMINYMAX(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsSVGPreserveAspectRatioSVG_PRESERVEASPECTRATIO_XMIDYMAX(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsSVGPreserveAspectRatioSVG_PRESERVEASPECTRATIO_XMAXYMAX(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsSVGPreserveAspectRatioSVG_MEETORSLICE_UNKNOWN(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsSVGPreserveAspectRatioSVG_MEETORSLICE_MEET(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsSVGPreserveAspectRatioSVG_MEETORSLICE_SLICE(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsSVGPreserveAspectRatioSVG_PRESERVEASPECTRATIO_UNKNOWN( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsSVGPreserveAspectRatioSVG_PRESERVEASPECTRATIO_NONE( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsSVGPreserveAspectRatioSVG_PRESERVEASPECTRATIO_XMINYMIN( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsSVGPreserveAspectRatioSVG_PRESERVEASPECTRATIO_XMIDYMIN( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsSVGPreserveAspectRatioSVG_PRESERVEASPECTRATIO_XMAXYMIN( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsSVGPreserveAspectRatioSVG_PRESERVEASPECTRATIO_XMINYMID( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsSVGPreserveAspectRatioSVG_PRESERVEASPECTRATIO_XMIDYMID( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsSVGPreserveAspectRatioSVG_PRESERVEASPECTRATIO_XMAXYMID( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsSVGPreserveAspectRatioSVG_PRESERVEASPECTRATIO_XMINYMAX( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsSVGPreserveAspectRatioSVG_PRESERVEASPECTRATIO_XMIDYMAX( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsSVGPreserveAspectRatioSVG_PRESERVEASPECTRATIO_XMAXYMAX( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsSVGPreserveAspectRatioSVG_MEETORSLICE_UNKNOWN( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsSVGPreserveAspectRatioSVG_MEETORSLICE_MEET( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsSVGPreserveAspectRatioSVG_MEETORSLICE_SLICE( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

@@ -21,113 +21,113 @@
 
 #include <cs_catch2.h>
 
-TEST_CASE("QSharedPointer traits", "[qsharedpointer]")
+TEST_CASE( "QSharedPointer traits", "[qsharedpointer]" )
 {
-   REQUIRE(std::is_copy_constructible_v<QSharedPointer<int>> == true);
-   REQUIRE(std::is_move_constructible_v<QSharedPointer<int>> == true);
+    REQUIRE( std::is_copy_constructible_v<QSharedPointer<int>> == true );
+    REQUIRE( std::is_move_constructible_v<QSharedPointer<int>> == true );
 
-   REQUIRE(std::is_copy_assignable_v<QSharedPointer<int>> == true);
-   REQUIRE(std::is_move_assignable_v<QSharedPointer<int>> == true);
+    REQUIRE( std::is_copy_assignable_v<QSharedPointer<int>> == true );
+    REQUIRE( std::is_move_assignable_v<QSharedPointer<int>> == true );
 
-   REQUIRE(std::has_virtual_destructor_v<QSharedPointer<int>> == false);
+    REQUIRE( std::has_virtual_destructor_v<QSharedPointer<int>> == false );
 }
 
-TEST_CASE("QSharedPointer copy", "[qsharedpointer]")
+TEST_CASE( "QSharedPointer copy", "[qsharedpointer]" )
 {
-   QSharedPointer<int> ptr1;
-   int *rawPointer = nullptr;
+    QSharedPointer<int> ptr1;
+    int *rawPointer = nullptr;
 
-   {
-      QSharedPointer<int> ptr2 = QMakeShared<int>();
-      rawPointer = ptr2.data();
-      ptr1 = ptr2;
-   }
+    {
+        QSharedPointer<int> ptr2 = QMakeShared<int>();
+        rawPointer = ptr2.data();
+        ptr1 = ptr2;
+    }
 
-   REQUIRE(rawPointer == ptr1.data());
+    REQUIRE( rawPointer == ptr1.data() );
 }
 
-TEST_CASE("QSharedPointer custom_deleter", "[qsharedpointer]")
+TEST_CASE( "QSharedPointer custom_deleter", "[qsharedpointer]" )
 {
-   bool deleterExecuted = false;
+    bool deleterExecuted = false;
 
-   {
-      QSharedPointer<int> ptr(new int, [&deleterExecuted] (int *obj)
-         {
+    {
+        QSharedPointer<int> ptr( new int, [&deleterExecuted] ( int *obj )
+        {
             deleterExecuted = true;
             delete obj;
-         }
-      );
+        }
+                               );
 
-      REQUIRE(deleterExecuted == false);
-   }
+        REQUIRE( deleterExecuted == false );
+    }
 
-   REQUIRE(deleterExecuted == true);
+    REQUIRE( deleterExecuted == true );
 }
 
-TEST_CASE("QSharedPointer empty", "[qsharedpointer]")
+TEST_CASE( "QSharedPointer empty", "[qsharedpointer]" )
 {
-   QSharedPointer<int> ptr;
+    QSharedPointer<int> ptr;
 
-   REQUIRE(ptr == nullptr);
-   REQUIRE(ptr.isNull() == true);
+    REQUIRE( ptr == nullptr );
+    REQUIRE( ptr.isNull() == true );
 }
 
-TEST_CASE("QSharedPointer move_a", "[qsharedpointer]")
+TEST_CASE( "QSharedPointer move_a", "[qsharedpointer]" )
 {
-   QSharedPointer<int> ptr1 = QMakeShared<int>();
-   QSharedPointer<int> ptr2(std::move(ptr1));
+    QSharedPointer<int> ptr1 = QMakeShared<int>();
+    QSharedPointer<int> ptr2( std::move( ptr1 ) );
 
-   REQUIRE(ptr2.isNull() == false);
+    REQUIRE( ptr2.isNull() == false );
 }
 
-TEST_CASE("QSharedPointer move_b", "[qsharedpointer]")
+TEST_CASE( "QSharedPointer move_b", "[qsharedpointer]" )
 {
-   QSharedPointer<int> ptr1 = QMakeShared<int>();
-   QSharedPointer<int> ptr2 = QMakeShared<int>();
+    QSharedPointer<int> ptr1 = QMakeShared<int>();
+    QSharedPointer<int> ptr2 = QMakeShared<int>();
 
-   int *rawPointer = ptr2.data();
+    int *rawPointer = ptr2.data();
 
-   ptr1 = std::move(ptr2);
+    ptr1 = std::move( ptr2 );
 
-   REQUIRE(ptr1.data() == rawPointer);
+    REQUIRE( ptr1.data() == rawPointer );
 }
 
-TEST_CASE("QSharedPointer reset", "[qsharedpointer]")
+TEST_CASE( "QSharedPointer reset", "[qsharedpointer]" )
 {
-   QSharedPointer<int> ptr = QMakeShared<int>();
-   ptr.reset();
+    QSharedPointer<int> ptr = QMakeShared<int>();
+    ptr.reset();
 
-   REQUIRE(ptr == nullptr);
-   REQUIRE(ptr.isNull() == true);
+    REQUIRE( ptr == nullptr );
+    REQUIRE( ptr.isNull() == true );
 }
 
-TEST_CASE("QSharedPointer swap", "[qsharedpointer]")
+TEST_CASE( "QSharedPointer swap", "[qsharedpointer]" )
 {
-   QSharedPointer<int> ptr1 = QMakeShared<int>(8);
-   QSharedPointer<int> ptr2 = QMakeShared<int>(17);
+    QSharedPointer<int> ptr1 = QMakeShared<int>( 8 );
+    QSharedPointer<int> ptr2 = QMakeShared<int>( 17 );
 
-   REQUIRE(*ptr1 == 8);
-   REQUIRE(*ptr2 == 17);
+    REQUIRE( *ptr1 == 8 );
+    REQUIRE( *ptr2 == 17 );
 
-   ptr1.swap(ptr2);
+    ptr1.swap( ptr2 );
 
-   REQUIRE(*ptr1 == 17);
-   REQUIRE(*ptr2 == 8);
+    REQUIRE( *ptr1 == 17 );
+    REQUIRE( *ptr2 == 8 );
 
-   ptr1.reset();
-   ptr1.swap(ptr2);
+    ptr1.reset();
+    ptr1.swap( ptr2 );
 
-   REQUIRE(*ptr1 == 8);
-   REQUIRE(ptr2 == nullptr);
+    REQUIRE( *ptr1 == 8 );
+    REQUIRE( ptr2 == nullptr );
 
-   ptr1.swap(ptr1);
+    ptr1.swap( ptr1 );
 
-   REQUIRE(*ptr1 == 8);
-   REQUIRE(ptr2 == nullptr);
+    REQUIRE( *ptr1 == 8 );
+    REQUIRE( ptr2 == nullptr );
 
-   ptr2.swap(ptr2);
+    ptr2.swap( ptr2 );
 
-   REQUIRE(*ptr1 == 8);
-   REQUIRE(ptr2 == nullptr);
+    REQUIRE( *ptr1 == 8 );
+    REQUIRE( ptr2 == nullptr );
 
 }

@@ -28,7 +28,8 @@
 
 #include "CanvasContextAttributes.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 CanvasContextAttributes::CanvasContextAttributes()
 {

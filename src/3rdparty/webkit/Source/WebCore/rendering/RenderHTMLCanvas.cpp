@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -35,56 +35,70 @@
 #include "PaintInfo.h"
 #include "RenderView.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
-RenderHTMLCanvas::RenderHTMLCanvas(HTMLCanvasElement* element)
-    : RenderReplaced(element, element->size())
+RenderHTMLCanvas::RenderHTMLCanvas( HTMLCanvasElement *element )
+    : RenderReplaced( element, element->size() )
 {
     view()->frameView()->setIsVisuallyNonEmpty();
 }
 
 bool RenderHTMLCanvas::requiresLayer() const
 {
-    if (RenderReplaced::requiresLayer())
+    if ( RenderReplaced::requiresLayer() )
+    {
         return true;
-    
-    HTMLCanvasElement* canvas = static_cast<HTMLCanvasElement*>(node());
+    }
+
+    HTMLCanvasElement *canvas = static_cast<HTMLCanvasElement *>( node() );
     return canvas && canvas->renderingContext() && canvas->renderingContext()->isAccelerated();
 }
 
-void RenderHTMLCanvas::paintReplaced(PaintInfo& paintInfo, int tx, int ty)
+void RenderHTMLCanvas::paintReplaced( PaintInfo &paintInfo, int tx, int ty )
 {
     IntRect rect = contentBoxRect();
-    rect.move(tx, ty);
-    static_cast<HTMLCanvasElement*>(node())->paint(paintInfo.context, rect);
+    rect.move( tx, ty );
+    static_cast<HTMLCanvasElement *>( node() )->paint( paintInfo.context, rect );
 }
 
 void RenderHTMLCanvas::canvasSizeChanged()
 {
-    IntSize canvasSize = static_cast<HTMLCanvasElement*>(node())->size();
-    IntSize zoomedSize(canvasSize.width() * style()->effectiveZoom(), canvasSize.height() * style()->effectiveZoom());
+    IntSize canvasSize = static_cast<HTMLCanvasElement *>( node() )->size();
+    IntSize zoomedSize( canvasSize.width() * style()->effectiveZoom(), canvasSize.height() * style()->effectiveZoom() );
 
-    if (zoomedSize == intrinsicSize())
+    if ( zoomedSize == intrinsicSize() )
+    {
         return;
+    }
 
-    setIntrinsicSize(zoomedSize);
+    setIntrinsicSize( zoomedSize );
 
-    if (!parent())
+    if ( !parent() )
+    {
         return;
+    }
 
-    if (!preferredLogicalWidthsDirty())
-        setPreferredLogicalWidthsDirty(true);
+    if ( !preferredLogicalWidthsDirty() )
+    {
+        setPreferredLogicalWidthsDirty( true );
+    }
 
     IntSize oldSize = size();
     computeLogicalWidth();
     computeLogicalHeight();
-    if (oldSize == size())
-        return;
 
-    if (!selfNeedsLayout())
-        setNeedsLayout(true);
+    if ( oldSize == size() )
+    {
+        return;
+    }
+
+    if ( !selfNeedsLayout() )
+    {
+        setNeedsLayout( true );
+    }
 }
 
 } // namespace WebCore

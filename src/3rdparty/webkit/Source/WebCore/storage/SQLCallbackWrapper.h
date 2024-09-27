@@ -34,7 +34,8 @@
 #include "ScriptExecutionContext.h"
 #include <wtf/ThreadingPrimitives.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 // A helper class to safely dereference the callback objects held by
 // SQLStatement and SQLTransaction on the proper thread. The 'wrapped'
@@ -42,13 +43,14 @@ namespace WebCore {
 // - by destructing the enclosing wrapper - on any thread
 // - by calling clear() - on any thread
 // - by unwrapping and then dereferencing normally - on context thread only
-template<typename T> class SQLCallbackWrapper {
+template<typename T> class SQLCallbackWrapper
+{
 public:
-    SQLCallbackWrapper(PassRefPtr<T> callback, ScriptExecutionContext* scriptExecutionContext)
-        : m_callback(callback)
-        , m_scriptExecutionContext(m_callback ? scriptExecutionContext : 0)
+    SQLCallbackWrapper( PassRefPtr<T> callback, ScriptExecutionContext *scriptExecutionContext )
+        : m_callback( callback )
+        , m_scriptExecutionContext( m_callback ? scriptExecutionContext : 0 )
     {
-        ASSERT(!m_callback || (m_scriptExecutionContext.get() && m_scriptExecutionContext->isContextThread()));
+        ASSERT( !m_callback || ( m_scriptExecutionContext.get() && m_scriptExecutionContext->isContextThread() ) );
     }
 
     ~SQLCallbackWrapper()
@@ -58,40 +60,48 @@ public:
 
     void clear()
     {
-        ScriptExecutionContext* context;
-        T* callback;
+        ScriptExecutionContext *context;
+        T *callback;
         {
-            MutexLocker locker(m_mutex);
-            if (!m_callback) {
-                ASSERT(!m_scriptExecutionContext);
+            MutexLocker locker( m_mutex );
+
+            if ( !m_callback )
+            {
+                ASSERT( !m_scriptExecutionContext );
                 return;
             }
-            if (m_scriptExecutionContext->isContextThread()) {
+
+            if ( m_scriptExecutionContext->isContextThread() )
+            {
                 m_callback = 0;
                 m_scriptExecutionContext = 0;
                 return;
             }
+
             context = m_scriptExecutionContext.release().leakRef();
             callback = m_callback.release().leakRef();
         }
-        context->postTask(createCallbackTask(&safeRelease, AllowAccessLater(callback)));
+        context->postTask( createCallbackTask( &safeRelease, AllowAccessLater( callback ) ) );
     }
 
     PassRefPtr<T> unwrap()
     {
-        MutexLocker locker(m_mutex);
-        ASSERT(!m_callback || m_scriptExecutionContext->isContextThread());
+        MutexLocker locker( m_mutex );
+        ASSERT( !m_callback || m_scriptExecutionContext->isContextThread() );
         m_scriptExecutionContext = 0;
         return m_callback.release();
     }
 
     // Useful for optimizations only, please test the return value of unwrap to be sure.
-    bool hasCallback() const { return m_callback; }
+    bool hasCallback() const
+    {
+        return m_callback;
+    }
 
 private:
-    static void safeRelease(ScriptExecutionContext* context, T* callback)
+    static void safeRelease( ScriptExecutionContext *context, T *callback )
     {
-        ASSERT(callback && context && context->isContextThread());
+        ASSERT( callback && context && context->isContextThread() );
         callback->deref();
         context->deref();
     }

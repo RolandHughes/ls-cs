@@ -28,12 +28,12 @@
 
 class QDataStreamPrivate
 {
- public:
-   QDataStreamPrivate()
-      : floatingPointPrecision(QDataStream::DoublePrecision)
-   { }
+public:
+    QDataStreamPrivate()
+        : floatingPointPrecision( QDataStream::DoublePrecision )
+    { }
 
-   QDataStream::FloatingPointPrecision floatingPointPrecision;
+    QDataStream::FloatingPointPrecision floatingPointPrecision;
 };
 
 #endif

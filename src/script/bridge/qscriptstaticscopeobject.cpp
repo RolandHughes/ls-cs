@@ -24,96 +24,103 @@
 #include "config.h"
 #include "qscriptstaticscopeobject_p.h"
 
-namespace JSC {
-   ASSERT_CLASS_FITS_IN_CELL(QT_PREPEND_NAMESPACE(QScriptStaticScopeObject));
+namespace JSC
+{
+ASSERT_CLASS_FITS_IN_CELL( QT_PREPEND_NAMESPACE( QScriptStaticScopeObject ) );
 }
 
 const JSC::ClassInfo QScriptStaticScopeObject::info = { "QScriptStaticScopeObject", nullptr, nullptr, nullptr };
 
 
-QScriptStaticScopeObject::QScriptStaticScopeObject(WTF::NonNullPassRefPtr<JSC::Structure> structure,
-      int propertyCount, const PropertyInfo *props)
-   : JSC::JSVariableObject(structure, new Data(false))
+QScriptStaticScopeObject::QScriptStaticScopeObject( WTF::NonNullPassRefPtr<JSC::Structure> structure,
+        int propertyCount, const PropertyInfo *props )
+    : JSC::JSVariableObject( structure, new Data( false ) )
 {
-   int index = growRegisterArray(propertyCount);
+    int index = growRegisterArray( propertyCount );
 
-   for (int i = 0; i < propertyCount; ++i, --index) {
-      const PropertyInfo &prop = props[i];
-      JSC::SymbolTableEntry entry(index, prop.attributes);
-      symbolTable().add(prop.identifier.ustring().rep(), entry);
-      registerAt(index) = prop.value;
-   }
+    for ( int i = 0; i < propertyCount; ++i, --index )
+    {
+        const PropertyInfo &prop = props[i];
+        JSC::SymbolTableEntry entry( index, prop.attributes );
+        symbolTable().add( prop.identifier.ustring().rep(), entry );
+        registerAt( index ) = prop.value;
+    }
 }
 
-QScriptStaticScopeObject::QScriptStaticScopeObject(WTF::NonNullPassRefPtr<JSC::Structure> structure)
-   : JSC::JSVariableObject(structure, new Data(/*canGrow=*/true))
+QScriptStaticScopeObject::QScriptStaticScopeObject( WTF::NonNullPassRefPtr<JSC::Structure> structure )
+    : JSC::JSVariableObject( structure, new Data( /*canGrow=*/true ) )
 {
 }
 
 QScriptStaticScopeObject::~QScriptStaticScopeObject()
 {
-   delete d_ptr();
+    delete d_ptr();
 }
 
-bool QScriptStaticScopeObject::getOwnPropertySlot(JSC::ExecState *, const JSC::Identifier &propertyName,
-   JSC::PropertySlot &slot)
+bool QScriptStaticScopeObject::getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName,
+        JSC::PropertySlot &slot )
 {
-   return symbolTableGet(propertyName, slot);
+    return symbolTableGet( propertyName, slot );
 }
 
-bool QScriptStaticScopeObject::getOwnPropertyDescriptor(JSC::ExecState *, const JSC::Identifier &propertyName,
-   JSC::PropertyDescriptor &descriptor)
+bool QScriptStaticScopeObject::getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName,
+        JSC::PropertyDescriptor &descriptor )
 {
-   return symbolTableGet(propertyName, descriptor);
+    return symbolTableGet( propertyName, descriptor );
 }
 
-void QScriptStaticScopeObject::putWithAttributes(JSC::ExecState *exec, const JSC::Identifier &propertyName,
-   JSC::JSValue value, unsigned attributes)
+void QScriptStaticScopeObject::putWithAttributes( JSC::ExecState *exec, const JSC::Identifier &propertyName,
+        JSC::JSValue value, unsigned attributes )
 {
-   (void) exec;
+    ( void ) exec;
 
-   if (symbolTablePutWithAttributes(propertyName, value, attributes)) {
-      return;
-   }
+    if ( symbolTablePutWithAttributes( propertyName, value, attributes ) )
+    {
+        return;
+    }
 
-   Q_ASSERT(d_ptr()->canGrow);
-   addSymbolTableProperty(propertyName, value, attributes);
+    Q_ASSERT( d_ptr()->canGrow );
+    addSymbolTableProperty( propertyName, value, attributes );
 }
 
-void QScriptStaticScopeObject::put(JSC::ExecState *exec, const JSC::Identifier &propertyName, JSC::JSValue value,
-   JSC::PutPropertySlot &)
+void QScriptStaticScopeObject::put( JSC::ExecState *exec, const JSC::Identifier &propertyName, JSC::JSValue value,
+                                    JSC::PutPropertySlot & )
 {
-   (void) exec;
+    ( void ) exec;
 
-   if (symbolTablePut(propertyName, value)) {
-      return;
-   }
+    if ( symbolTablePut( propertyName, value ) )
+    {
+        return;
+    }
 
-   Q_ASSERT(d_ptr()->canGrow);
-   addSymbolTableProperty(propertyName, value, /*attributes=*/0);
+    Q_ASSERT( d_ptr()->canGrow );
+    addSymbolTableProperty( propertyName, value, /*attributes=*/0 );
 }
 
-bool QScriptStaticScopeObject::deleteProperty(JSC::ExecState *, const JSC::Identifier &)
+bool QScriptStaticScopeObject::deleteProperty( JSC::ExecState *, const JSC::Identifier & )
 {
-   return false;
+    return false;
 }
 
-void QScriptStaticScopeObject::markChildren(JSC::MarkStack &markStack)
+void QScriptStaticScopeObject::markChildren( JSC::MarkStack &markStack )
 {
-   JSC::Register *registerArray = d_ptr()->registerArray.get();
-   if (!registerArray) {
-      return;
-   }
-   markStack.appendValues(reinterpret_cast<JSC::JSValue *>(registerArray), d_ptr()->registerArraySize);
+    JSC::Register *registerArray = d_ptr()->registerArray.get();
+
+    if ( !registerArray )
+    {
+        return;
+    }
+
+    markStack.appendValues( reinterpret_cast<JSC::JSValue *>( registerArray ), d_ptr()->registerArraySize );
 }
 
-void QScriptStaticScopeObject::addSymbolTableProperty(const JSC::Identifier &name, JSC::JSValue value,
-   unsigned attributes)
+void QScriptStaticScopeObject::addSymbolTableProperty( const JSC::Identifier &name, JSC::JSValue value,
+        unsigned attributes )
 {
-   int index = growRegisterArray(1);
-   JSC::SymbolTableEntry newEntry(index, attributes | JSC::DontDelete);
-   symbolTable().add(name.ustring().rep(), newEntry);
-   registerAt(index) = value;
+    int index = growRegisterArray( 1 );
+    JSC::SymbolTableEntry newEntry( index, attributes | JSC::DontDelete );
+    symbolTable().add( name.ustring().rep(), newEntry );
+    registerAt( index ) = value;
 }
 
 /*!
@@ -121,16 +128,19 @@ void QScriptStaticScopeObject::addSymbolTableProperty(const JSC::Identifier &nam
   the newly added elements (note that the register file grows downwards,
   starting at index -1).
 */
-int QScriptStaticScopeObject::growRegisterArray(int count)
+int QScriptStaticScopeObject::growRegisterArray( int count )
 {
-   size_t oldSize = d_ptr()->registerArraySize;
-   size_t newSize = oldSize + count;
-   JSC::Register *registerArray = new JSC::Register[newSize];
-   if (d_ptr()->registerArray) {
-      memcpy(registerArray + count, d_ptr()->registerArray.get(), oldSize * sizeof(JSC::Register));
-   }
-   setRegisters(registerArray + newSize, registerArray);
-   d_ptr()->registerArraySize = newSize;
-   return -oldSize - 1;
+    size_t oldSize = d_ptr()->registerArraySize;
+    size_t newSize = oldSize + count;
+    JSC::Register *registerArray = new JSC::Register[newSize];
+
+    if ( d_ptr()->registerArray )
+    {
+        memcpy( registerArray + count, d_ptr()->registerArray.get(), oldSize * sizeof( JSC::Register ) );
+    }
+
+    setRegisters( registerArray + newSize, registerArray );
+    d_ptr()->registerArraySize = newSize;
+    return -oldSize - 1;
 }
 

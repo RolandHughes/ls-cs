@@ -34,54 +34,71 @@
 #include "JSMainThreadExecState.h"
 
 using namespace JSC;
-    
-namespace WebCore {
 
-void JSCallbackData::deleteData(void* context)
+namespace WebCore
 {
-    delete static_cast<JSCallbackData*>(context);
+
+void JSCallbackData::deleteData( void *context )
+{
+    delete static_cast<JSCallbackData *>( context );
 }
 
-JSValue JSCallbackData::invokeCallback(MarkedArgumentBuffer& args, bool* raisedException)
+JSValue JSCallbackData::invokeCallback( MarkedArgumentBuffer &args, bool *raisedException )
 {
-    ASSERT(callback());
-    ASSERT(globalObject());
+    ASSERT( callback() );
+    ASSERT( globalObject() );
 
-    ExecState* exec = globalObject()->globalExec();
-    JSValue function = callback()->get(exec, Identifier(exec, "handleEvent"));
+    ExecState *exec = globalObject()->globalExec();
+    JSValue function = callback()->get( exec, Identifier( exec, "handleEvent" ) );
 
     CallData callData;
-    CallType callType = getCallData(function, callData);
-    if (callType == CallTypeNone) {
-        callType = callback()->getCallData(callData);
-        if (callType == CallTypeNone)
+    CallType callType = getCallData( function, callData );
+
+    if ( callType == CallTypeNone )
+    {
+        callType = callback()->getCallData( callData );
+
+        if ( callType == CallTypeNone )
+        {
             return JSValue();
+        }
+
         function = callback();
     }
-    
+
     globalObject()->globalData().timeoutChecker.start();
-    ScriptExecutionContext* context = globalObject()->scriptExecutionContext();
+    ScriptExecutionContext *context = globalObject()->scriptExecutionContext();
+
     // We will fail to get the context if the frame has been detached.
-    if (!context)
+    if ( !context )
+    {
         return JSValue();
+    }
 
     bool contextIsDocument = context->isDocument();
     JSValue result = contextIsDocument
-        ? JSMainThreadExecState::call(exec, function, callType, callData, callback(), args)
-        : JSC::call(exec, function, callType, callData, callback(), args);
+                     ? JSMainThreadExecState::call( exec, function, callType, callData, callback(), args )
+                     : JSC::call( exec, function, callType, callData, callback(), args );
     globalObject()->globalData().timeoutChecker.stop();
 
-    if (contextIsDocument)
+    if ( contextIsDocument )
+    {
         Document::updateStyleForAllDocuments();
+    }
 
-    if (exec->hadException()) {
-        reportCurrentException(exec);
-        if (raisedException)
+    if ( exec->hadException() )
+    {
+        reportCurrentException( exec );
+
+        if ( raisedException )
+        {
             *raisedException = true;
+        }
+
         return result;
     }
-    
+
     return result;
 }
-    
+
 } // namespace WebCore

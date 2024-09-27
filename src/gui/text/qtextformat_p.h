@@ -30,68 +30,77 @@
 
 class Q_GUI_EXPORT QTextFormatCollection
 {
- public:
-   QTextFormatCollection() {}
-   ~QTextFormatCollection();
+public:
+    QTextFormatCollection() {}
+    ~QTextFormatCollection();
 
-   QTextFormatCollection(const QTextFormatCollection &other);
-   QTextFormatCollection &operator=(const QTextFormatCollection &other);
+    QTextFormatCollection( const QTextFormatCollection &other );
+    QTextFormatCollection &operator=( const QTextFormatCollection &other );
 
-   QTextFormat objectFormat(int objectIndex) const {
-      return format(objectFormatIndex(objectIndex));
-   }
+    QTextFormat objectFormat( int objectIndex ) const
+    {
+        return format( objectFormatIndex( objectIndex ) );
+    }
 
-   void setObjectFormat(int objectIndex, const QTextFormat &format) {
-      setObjectFormatIndex(objectIndex, indexForFormat(format));
-   }
+    void setObjectFormat( int objectIndex, const QTextFormat &format )
+    {
+        setObjectFormatIndex( objectIndex, indexForFormat( format ) );
+    }
 
-   int objectFormatIndex(int objectIndex) const;
-   void setObjectFormatIndex(int objectIndex, int formatIndex);
+    int objectFormatIndex( int objectIndex ) const;
+    void setObjectFormatIndex( int objectIndex, int formatIndex );
 
-   int createObjectIndex(const QTextFormat &f);
+    int createObjectIndex( const QTextFormat &f );
 
-   int indexForFormat(const QTextFormat &f);
-   bool hasFormatCached(const QTextFormat &format) const;
+    int indexForFormat( const QTextFormat &f );
+    bool hasFormatCached( const QTextFormat &format ) const;
 
-   QTextFormat format(int idx) const;
+    QTextFormat format( int idx ) const;
 
-   QTextBlockFormat blockFormat(int index) const {
-      return format(index).toBlockFormat();
-   }
+    QTextBlockFormat blockFormat( int index ) const
+    {
+        return format( index ).toBlockFormat();
+    }
 
-   QTextCharFormat charFormat(int index) const {
-      return format(index).toCharFormat();
-   }
+    QTextCharFormat charFormat( int index ) const
+    {
+        return format( index ).toCharFormat();
+    }
 
-   QTextListFormat listFormat(int index) const {
-      return format(index).toListFormat();
-   }
+    QTextListFormat listFormat( int index ) const
+    {
+        return format( index ).toListFormat();
+    }
 
-   QTextTableFormat tableFormat(int index) const {
-      return format(index).toTableFormat();
-   }
+    QTextTableFormat tableFormat( int index ) const
+    {
+        return format( index ).toTableFormat();
+    }
 
-   QTextImageFormat imageFormat(int index) const {
-      return format(index).toImageFormat();
-   }
+    QTextImageFormat imageFormat( int index ) const
+    {
+        return format( index ).toImageFormat();
+    }
 
-   int numFormats() const {
-      return formats.count();
-   }
+    int numFormats() const
+    {
+        return formats.count();
+    }
 
-   typedef QVector<QTextFormat> FormatVector;
+    typedef QVector<QTextFormat> FormatVector;
 
-   FormatVector formats;
-   QVector<qint32> objFormats;
-   QMultiHash<uint, int> hashes;
+    FormatVector formats;
+    QVector<qint32> objFormats;
+    QMultiHash<uint, int> hashes;
 
-   inline QFont defaultFont() const {
-      return defaultFnt;
-   }
-   void setDefaultFont(const QFont &f);
+    inline QFont defaultFont() const
+    {
+        return defaultFnt;
+    }
+    void setDefaultFont( const QFont &f );
 
- private:
-   QFont defaultFnt;
+private:
+    QFont defaultFnt;
 };
 
 #endif // QTEXTFORMAT_P_H

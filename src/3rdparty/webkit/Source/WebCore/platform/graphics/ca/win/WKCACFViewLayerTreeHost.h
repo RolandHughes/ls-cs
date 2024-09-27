@@ -30,11 +30,13 @@
 
 #include "CACFLayerTreeHost.h"
 
-typedef struct _WKCACFView* WKCACFViewRef;
+typedef struct _WKCACFView *WKCACFViewRef;
 
-namespace WebCore {
+namespace WebCore
+{
 
-class WKCACFViewLayerTreeHost : public CACFLayerTreeHost {
+class WKCACFViewLayerTreeHost : public CACFLayerTreeHost
+{
 public:
     static PassRefPtr<WKCACFViewLayerTreeHost> create();
 
@@ -42,16 +44,16 @@ private:
     WKCACFViewLayerTreeHost();
 
     void updateViewIfNeeded();
-    static void contextDidChangeCallback(WKCACFViewRef, void* info);
+    static void contextDidChangeCallback( WKCACFViewRef, void *info );
 
-    virtual void initializeContext(void* userData, PlatformCALayer*);
+    virtual void initializeContext( void *userData, PlatformCALayer * );
     virtual void resize();
     virtual bool createRenderer();
     virtual void destroyRenderer();
     virtual void flushContext();
     virtual void contextDidChange();
     virtual void paint();
-    virtual void render(const Vector<CGRect>& dirtyRects = Vector<CGRect>());
+    virtual void render( const Vector<CGRect> &dirtyRects = Vector<CGRect>() );
     virtual CFTimeInterval lastCommitTime() const;
 
     RetainPtr<WKCACFViewRef> m_view;

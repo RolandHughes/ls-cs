@@ -29,28 +29,32 @@
 
 #include "MarkStack.h"
 
-namespace JSC {
+namespace JSC
+{
 
 HandleStack::HandleStack()
 #ifndef NDEBUG
-    : m_scopeDepth(0)
+    : m_scopeDepth( 0 )
 #endif
 {
     grow();
 }
 
-void HandleStack::mark(HeapRootVisitor& heapRootMarker)
+void HandleStack::mark( HeapRootVisitor &heapRootMarker )
 {
-    const Vector<HandleSlot>& blocks = m_blockStack.blocks();
+    const Vector<HandleSlot> &blocks = m_blockStack.blocks();
     size_t blockLength = m_blockStack.blockLength;
 
     int end = blocks.size() - 1;
-    for (int i = 0; i < end; ++i) {
+
+    for ( int i = 0; i < end; ++i )
+    {
         HandleSlot block = blocks[i];
-        heapRootMarker.mark(block, blockLength);
+        heapRootMarker.mark( block, blockLength );
     }
+
     HandleSlot block = blocks[end];
-    heapRootMarker.mark(block, m_frame.m_next - block);
+    heapRootMarker.mark( block, m_frame.m_next - block );
 }
 
 void HandleStack::grow()

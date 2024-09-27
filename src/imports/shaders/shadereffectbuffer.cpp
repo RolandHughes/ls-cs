@@ -23,8 +23,8 @@
 
 #include "shadereffectbuffer.h"
 
-ShaderEffectBuffer::ShaderEffectBuffer(const QSize & size, const QGLFramebufferObjectFormat & format)
-    : QGLFramebufferObject(size, format)
+ShaderEffectBuffer::ShaderEffectBuffer( const QSize &size, const QGLFramebufferObjectFormat &format )
+    : QGLFramebufferObject( size, format )
 {
 }
 

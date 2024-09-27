@@ -42,40 +42,43 @@
 typedef id <NSDraggingInfo> DragDataRef;
 @class NSPasteboard;
 #else
-typedef void* DragDataRef;
+typedef void *DragDataRef;
 class NSPasteboard;
 #endif
 #elif PLATFORM(QT)
 class QMimeData;
-typedef const QMimeData* DragDataRef;
+typedef const QMimeData *DragDataRef;
 #elif PLATFORM(WIN)
-typedef struct IDataObject* DragDataRef;
+typedef struct IDataObject *DragDataRef;
 #include <wtf/text/WTFString.h>
 #elif PLATFORM(WX)
-typedef class wxDataObject* DragDataRef;
+typedef class wxDataObject *DragDataRef;
 #elif PLATFORM(GTK)
-namespace WebCore {
+namespace WebCore
+{
 class DataObjectGtk;
 }
-typedef WebCore::DataObjectGtk* DragDataRef;
+typedef WebCore::DataObjectGtk *DragDataRef;
 #elif PLATFORM(CHROMIUM)
 #include "DragDataRef.h"
 #elif PLATFORM(HAIKU)
 class BMessage;
-typedef class BMessage* DragDataRef;
+typedef class BMessage *DragDataRef;
 #elif PLATFORM(EFL) || PLATFORM(BREWMP)
-typedef void* DragDataRef;
+typedef void *DragDataRef;
 #endif
 
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Frame;
 class DocumentFragment;
 class KURL;
 class Range;
 
-enum DragApplicationFlags {
+enum DragApplicationFlags
+{
     DragApplicationNone = 0,
     DragApplicationIsModal = 1,
     DragApplicationIsSource = 2,
@@ -87,36 +90,58 @@ enum DragApplicationFlags {
 typedef HashMap<UINT, Vector<String> > DragDataMap;
 #endif
 
-class DragData {
+class DragData
+{
 public:
     enum FilenameConversionPolicy { DoNotConvertFilenames, ConvertFilenames };
 
     // clientPosition is taken to be the position of the drag event within the target window, with (0,0) at the top left
-    DragData(DragDataRef, const IntPoint& clientPosition, const IntPoint& globalPosition, DragOperation, DragApplicationFlags = DragApplicationNone);
-    DragData(const String& dragStorageName, const IntPoint& clientPosition, const IntPoint& globalPosition, DragOperation, DragApplicationFlags = DragApplicationNone);
+    DragData( DragDataRef, const IntPoint &clientPosition, const IntPoint &globalPosition, DragOperation,
+              DragApplicationFlags = DragApplicationNone );
+    DragData( const String &dragStorageName, const IntPoint &clientPosition, const IntPoint &globalPosition, DragOperation,
+              DragApplicationFlags = DragApplicationNone );
 #if PLATFORM(WIN)
-    DragData(const DragDataMap&, const IntPoint& clientPosition, const IntPoint& globalPosition, DragOperation sourceOperationMask, DragApplicationFlags = DragApplicationNone);
-    const DragDataMap& dragDataMap();
+    DragData( const DragDataMap &, const IntPoint &clientPosition, const IntPoint &globalPosition, DragOperation sourceOperationMask,
+              DragApplicationFlags = DragApplicationNone );
+    const DragDataMap &dragDataMap();
 #endif
-    const IntPoint& clientPosition() const { return m_clientPosition; }
-    const IntPoint& globalPosition() const { return m_globalPosition; }
-    DragApplicationFlags flags() { return m_applicationFlags; }
-    DragDataRef platformData() const { return m_platformDragData; }
-    DragOperation draggingSourceOperationMask() const { return m_draggingSourceOperationMask; }
-    bool containsURL(Frame*, FilenameConversionPolicy filenamePolicy = ConvertFilenames) const;
+    const IntPoint &clientPosition() const
+    {
+        return m_clientPosition;
+    }
+    const IntPoint &globalPosition() const
+    {
+        return m_globalPosition;
+    }
+    DragApplicationFlags flags()
+    {
+        return m_applicationFlags;
+    }
+    DragDataRef platformData() const
+    {
+        return m_platformDragData;
+    }
+    DragOperation draggingSourceOperationMask() const
+    {
+        return m_draggingSourceOperationMask;
+    }
+    bool containsURL( Frame *, FilenameConversionPolicy filenamePolicy = ConvertFilenames ) const;
     bool containsPlainText() const;
     bool containsCompatibleContent() const;
-    String asURL(Frame*, FilenameConversionPolicy filenamePolicy = ConvertFilenames, String* title = 0) const;
-    String asPlainText(Frame*) const;
-    void asFilenames(Vector<String>&) const;
+    String asURL( Frame *, FilenameConversionPolicy filenamePolicy = ConvertFilenames, String *title = 0 ) const;
+    String asPlainText( Frame * ) const;
+    void asFilenames( Vector<String> & ) const;
     Color asColor() const;
-    PassRefPtr<DocumentFragment> asFragment(Frame*, PassRefPtr<Range> context,
-                                            bool allowPlainText, bool& chosePlainText) const;
+    PassRefPtr<DocumentFragment> asFragment( Frame *, PassRefPtr<Range> context,
+            bool allowPlainText, bool &chosePlainText ) const;
     bool canSmartReplace() const;
     bool containsColor() const;
     bool containsFiles() const;
 #if PLATFORM(MAC)
-    NSPasteboard *pasteboard() { return m_pasteboard.get(); }
+    NSPasteboard *pasteboard()
+    {
+        return m_pasteboard.get();
+    }
 #endif
 private:
     IntPoint m_clientPosition;

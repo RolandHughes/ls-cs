@@ -21,23 +21,24 @@
 #include "config.h"
 #include "SearchPopupMenuQt.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-SearchPopupMenuQt::SearchPopupMenuQt(PassRefPtr<PopupMenu> popup)
-    : m_popup(popup)
+SearchPopupMenuQt::SearchPopupMenuQt( PassRefPtr<PopupMenu> popup )
+    : m_popup( popup )
 {
 }
 
-PopupMenu* SearchPopupMenuQt::popupMenu()
+PopupMenu *SearchPopupMenuQt::popupMenu()
 {
     return m_popup.get();
 }
 
-void SearchPopupMenuQt::saveRecentSearches(const AtomicString&, const Vector<String>&)
+void SearchPopupMenuQt::saveRecentSearches( const AtomicString &, const Vector<String> & )
 {
 }
 
-void SearchPopupMenuQt::loadRecentSearches(const AtomicString&, Vector<String>&)
+void SearchPopupMenuQt::loadRecentSearches( const AtomicString &, Vector<String> & )
 {
 }
 

@@ -29,29 +29,39 @@
 
 #if ENABLE(INDEXED_DATABASE)
 
-namespace WebCore {
-
-Vector<IDBTransactionBackendInterface*>* IDBPendingTransactionMonitor::m_transactions = 0;
-
-void IDBPendingTransactionMonitor::addPendingTransaction(IDBTransactionBackendInterface* transaction)
+namespace WebCore
 {
-    if (!m_transactions)
-        m_transactions = new Vector<IDBTransactionBackendInterface*>();
-    m_transactions->append(transaction);
+
+Vector<IDBTransactionBackendInterface *> *IDBPendingTransactionMonitor::m_transactions = 0;
+
+void IDBPendingTransactionMonitor::addPendingTransaction( IDBTransactionBackendInterface *transaction )
+{
+    if ( !m_transactions )
+    {
+        m_transactions = new Vector<IDBTransactionBackendInterface *>();
+    }
+
+    m_transactions->append( transaction );
 }
 
-void IDBPendingTransactionMonitor::removePendingTransaction(IDBTransactionBackendInterface* transaction)
+void IDBPendingTransactionMonitor::removePendingTransaction( IDBTransactionBackendInterface *transaction )
 {
-    if (!m_transactions)
+    if ( !m_transactions )
+    {
         return;
+    }
 
-    size_t pos = m_transactions->find(transaction);
-    if (pos == notFound)
+    size_t pos = m_transactions->find( transaction );
+
+    if ( pos == notFound )
+    {
         return;
+    }
 
-    m_transactions->remove(pos);
+    m_transactions->remove( pos );
 
-    if (!m_transactions->size()) {
+    if ( !m_transactions->size() )
+    {
         delete m_transactions;
         m_transactions = 0;
     }
@@ -59,11 +69,15 @@ void IDBPendingTransactionMonitor::removePendingTransaction(IDBTransactionBacken
 
 void IDBPendingTransactionMonitor::abortPendingTransactions()
 {
-    if (!m_transactions)
+    if ( !m_transactions )
+    {
         return;
+    }
 
-    for (size_t i = 0; i < m_transactions->size(); ++i)
-        m_transactions->at(i)->abort();
+    for ( size_t i = 0; i < m_transactions->size(); ++i )
+    {
+        m_transactions->at( i )->abort();
+    }
 
     delete m_transactions;
     m_transactions = 0;

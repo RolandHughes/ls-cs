@@ -6,13 +6,13 @@
  * are met:
  *
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Apple Computer, Inc. ("Apple") nor the names of
  *     its contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
+ *     from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY APPLE AND ITS CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -32,19 +32,22 @@
 #include "Frame.h"
 #include "HTMLFormElement.h"
 
-namespace WebCore {
-
-inline FormState::FormState(PassRefPtr<HTMLFormElement> form, StringPairVector& textFieldValuesToAdopt, PassRefPtr<Frame> sourceFrame, FormSubmissionTrigger formSubmissionTrigger)
-    : m_form(form)
-    , m_sourceFrame(sourceFrame)
-    , m_formSubmissionTrigger(formSubmissionTrigger)
+namespace WebCore
 {
-    m_textFieldValues.swap(textFieldValuesToAdopt);
+
+inline FormState::FormState( PassRefPtr<HTMLFormElement> form, StringPairVector &textFieldValuesToAdopt,
+                             PassRefPtr<Frame> sourceFrame, FormSubmissionTrigger formSubmissionTrigger )
+    : m_form( form )
+    , m_sourceFrame( sourceFrame )
+    , m_formSubmissionTrigger( formSubmissionTrigger )
+{
+    m_textFieldValues.swap( textFieldValuesToAdopt );
 }
 
-PassRefPtr<FormState> FormState::create(PassRefPtr<HTMLFormElement> form, StringPairVector& textFieldValuesToAdopt, PassRefPtr<Frame> sourceFrame, FormSubmissionTrigger formSubmissionTrigger)
+PassRefPtr<FormState> FormState::create( PassRefPtr<HTMLFormElement> form, StringPairVector &textFieldValuesToAdopt,
+        PassRefPtr<Frame> sourceFrame, FormSubmissionTrigger formSubmissionTrigger )
 {
-    return adoptRef(new FormState(form, textFieldValuesToAdopt, sourceFrame, formSubmissionTrigger));
+    return adoptRef( new FormState( form, textFieldValuesToAdopt, sourceFrame, formSubmissionTrigger ) );
 }
 
 }

@@ -34,33 +34,33 @@ class QNetworkReplyDataImplPrivate;
 
 class QNetworkReplyDataImpl: public QNetworkReply
 {
-   NET_CS_OBJECT(QNetworkReplyDataImpl)
+    NET_CS_OBJECT( QNetworkReplyDataImpl )
 
- public:
-   QNetworkReplyDataImpl(QObject *parent, const QNetworkRequest &req, const QNetworkAccessManager::Operation op);
-   ~QNetworkReplyDataImpl();
+public:
+    QNetworkReplyDataImpl( QObject *parent, const QNetworkRequest &req, const QNetworkAccessManager::Operation op );
+    ~QNetworkReplyDataImpl();
 
-   void abort() override;
+    void abort() override;
 
-   void close() override;
-   qint64 bytesAvailable() const override;
-   bool isSequential () const override;
-   qint64 size() const override;
+    void close() override;
+    qint64 bytesAvailable() const override;
+    bool isSequential () const override;
+    qint64 size() const override;
 
-   qint64 readData(char *data, qint64 maxlen) override;
+    qint64 readData( char *data, qint64 maxlen ) override;
 
-   Q_DECLARE_PRIVATE(QNetworkReplyDataImpl)
+    Q_DECLARE_PRIVATE( QNetworkReplyDataImpl )
 };
 
 class QNetworkReplyDataImplPrivate: public QNetworkReplyPrivate
 {
- public:
-   QNetworkReplyDataImplPrivate();
-   ~QNetworkReplyDataImplPrivate();
+public:
+    QNetworkReplyDataImplPrivate();
+    ~QNetworkReplyDataImplPrivate();
 
-   QBuffer decodedData;
+    QBuffer decodedData;
 
-   Q_DECLARE_PUBLIC(QNetworkReplyDataImpl)
+    Q_DECLARE_PUBLIC( QNetworkReplyDataImpl )
 };
 
 #endif

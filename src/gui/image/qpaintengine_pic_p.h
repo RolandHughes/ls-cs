@@ -33,55 +33,56 @@ class QBuffer;
 
 class QPicturePaintEngine : public QPaintEngine
 {
-   Q_DECLARE_PRIVATE(QPicturePaintEngine)
+    Q_DECLARE_PRIVATE( QPicturePaintEngine )
 
- public:
-   QPicturePaintEngine();
+public:
+    QPicturePaintEngine();
 
-   QPicturePaintEngine(const QPicturePaintEngine &) = delete;
-   QPicturePaintEngine &operator=(const QPicturePaintEngine &) = delete;
+    QPicturePaintEngine( const QPicturePaintEngine & ) = delete;
+    QPicturePaintEngine &operator=( const QPicturePaintEngine & ) = delete;
 
-   ~QPicturePaintEngine();
+    ~QPicturePaintEngine();
 
-   bool begin(QPaintDevice *pdev) override;
-   bool end() override;
+    bool begin( QPaintDevice *pdev ) override;
+    bool end() override;
 
-   void updateState(const QPaintEngineState &state) override;
+    void updateState( const QPaintEngineState &state ) override;
 
-   void updatePen(const QPen &pen);
-   void updateBrush(const QBrush &brush);
-   void updateBrushOrigin(const QPointF &origin);
-   void updateFont(const QFont &font);
-   void updateBackground(Qt::BGMode bgmode, const QBrush &bgBrush);
-   void updateMatrix(const QTransform &matrix);
-   void updateClipRegion(const QRegion &region, Qt::ClipOperation op);
-   void updateClipPath(const QPainterPath &path, Qt::ClipOperation op);
-   void updateRenderHints(QPainter::RenderHints hints);
-   void updateCompositionMode(QPainter::CompositionMode cmode);
-   void updateClipEnabled(bool enabled);
-   void updateOpacity(qreal opacity);
+    void updatePen( const QPen &pen );
+    void updateBrush( const QBrush &brush );
+    void updateBrushOrigin( const QPointF &origin );
+    void updateFont( const QFont &font );
+    void updateBackground( Qt::BGMode bgmode, const QBrush &bgBrush );
+    void updateMatrix( const QTransform &matrix );
+    void updateClipRegion( const QRegion &region, Qt::ClipOperation op );
+    void updateClipPath( const QPainterPath &path, Qt::ClipOperation op );
+    void updateRenderHints( QPainter::RenderHints hints );
+    void updateCompositionMode( QPainter::CompositionMode cmode );
+    void updateClipEnabled( bool enabled );
+    void updateOpacity( qreal opacity );
 
-   void drawEllipse(const QRectF &rect) override;
-   void drawPath(const QPainterPath &path) override;
-   void drawPolygon(const QPointF *points, int numPoints, PolygonDrawMode mode) override;
+    void drawEllipse( const QRectF &rect ) override;
+    void drawPath( const QPainterPath &path ) override;
+    void drawPolygon( const QPointF *points, int numPoints, PolygonDrawMode mode ) override;
 
-   using QPaintEngine::drawPolygon;
+    using QPaintEngine::drawPolygon;
 
-   void drawPixmap(const QRectF &r, const QPixmap &pm, const QRectF &sr) override;
-   void drawTiledPixmap(const QRectF &r, const QPixmap &pixmap, const QPointF &s) override;
-   void drawImage(const QRectF &r, const QImage &image, const QRectF &sr,
-      Qt::ImageConversionFlags flags = Qt::AutoColor) override;
-   void drawTextItem(const QPointF &p, const QTextItem &ti) override;
+    void drawPixmap( const QRectF &r, const QPixmap &pm, const QRectF &sr ) override;
+    void drawTiledPixmap( const QRectF &r, const QPixmap &pixmap, const QPointF &s ) override;
+    void drawImage( const QRectF &r, const QImage &image, const QRectF &sr,
+                    Qt::ImageConversionFlags flags = Qt::AutoColor ) override;
+    void drawTextItem( const QPointF &p, const QTextItem &ti ) override;
 
-   Type type() const override {
-      return Picture;
-   }
+    Type type() const override
+    {
+        return Picture;
+    }
 
- protected:
-   QPicturePaintEngine(QPaintEnginePrivate &dptr);
+protected:
+    QPicturePaintEngine( QPaintEnginePrivate &dptr );
 
- private:
-   void writeCmdLength(int pos, const QRectF &r, bool corr);
+private:
+    void writeCmdLength( int pos, const QRectF &r, bool corr );
 };
 
 #endif // QT_NO_PICTURE

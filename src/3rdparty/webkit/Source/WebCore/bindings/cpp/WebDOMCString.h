@@ -40,47 +40,60 @@ class WebDOMString;
 //
 // WARNING: It is not safe to pass a WebDOMCString across threads!!!
 //
-class WebDOMCString {
+class WebDOMCString
+{
 public:
-    ~WebDOMCString() { reset(); }
-
-    WebDOMCString() : m_private(0) { }
-
-    WebDOMCString(const char* data, size_t len) : m_private(0)
+    ~WebDOMCString()
     {
-        assign(data, len);
+        reset();
     }
 
-    WebDOMCString(const WebDOMCString& s) : m_private(0) { assign(s); }
+    WebDOMCString() : m_private( 0 ) { }
 
-    WebDOMCString& operator=(const WebDOMCString& s)
+    WebDOMCString( const char *data, size_t len ) : m_private( 0 )
     {
-        assign(s);
+        assign( data, len );
+    }
+
+    WebDOMCString( const WebDOMCString &s ) : m_private( 0 )
+    {
+        assign( s );
+    }
+
+    WebDOMCString &operator=( const WebDOMCString &s )
+    {
+        assign( s );
         return *this;
     }
 
     void reset();
-    void assign(const WebDOMCString&);
-    void assign(const char* data, size_t len);
+    void assign( const WebDOMCString & );
+    void assign( const char *data, size_t len );
 
     size_t length() const;
-    const char* data() const;
+    const char *data() const;
 
-    bool isEmpty() const { return !length(); }
-    bool isNull() const { return !m_private; }
+    bool isEmpty() const
+    {
+        return !length();
+    }
+    bool isNull() const
+    {
+        return !m_private;
+    }
 
     WebDOMString utf16() const;
 
-    static WebDOMCString fromUTF16(const WebUChar* data, size_t length);
-    static WebDOMCString fromUTF16(const WebUChar* data);
+    static WebDOMCString fromUTF16( const WebUChar *data, size_t length );
+    static WebDOMCString fromUTF16( const WebUChar *data );
 
-    WebDOMCString(const WTF::CString&);
-    WebDOMCString& operator=(const WTF::CString&);
+    WebDOMCString( const WTF::CString & );
+    WebDOMCString &operator=( const WTF::CString & );
     operator WTF::CString() const;
 
 private:
-    void assign(WebDOMCStringPrivate*);
-    WebDOMCStringPrivate* m_private;
+    void assign( WebDOMCStringPrivate * );
+    WebDOMCStringPrivate *m_private;
 };
 
 #endif

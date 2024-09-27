@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef WebGLLayer_h
@@ -30,20 +30,21 @@
 
 #import <QuartzCore/QuartzCore.h>
 
-namespace WebCore {
-    class GraphicsLayer;
-    class GraphicsContext3D;
-}
-
-@interface WebGLLayer : CAOpenGLLayer 
+namespace WebCore
 {
-    WebCore::GraphicsLayer* m_layerOwner;
-    WebCore::GraphicsContext3D* m_context;
+class GraphicsLayer;
+class GraphicsContext3D;
 }
 
-- (id)initWithGraphicsContext3D:(WebCore::GraphicsContext3D*)context;
+@interface WebGLLayer : CAOpenGLLayer
+{
+    WebCore::GraphicsLayer *m_layerOwner;
+    WebCore::GraphicsContext3D *m_context;
+}
 
-- (CGImageRef)copyImageSnapshotWithColorSpace:(CGColorSpaceRef)colorSpace;
+- ( id )initWithGraphicsContext3D:( WebCore::GraphicsContext3D * )context;
+
+- ( CGImageRef )copyImageSnapshotWithColorSpace:( CGColorSpaceRef )colorSpace;
 
 @end
 

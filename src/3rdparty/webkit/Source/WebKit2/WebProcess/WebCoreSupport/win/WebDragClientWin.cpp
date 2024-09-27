@@ -41,49 +41,78 @@
 
 using namespace WebCore;
 
-namespace WebKit {
+namespace WebKit
+{
 
-static DWORD draggingSourceOperationMaskToDragCursors(DragOperation op)
+static DWORD draggingSourceOperationMaskToDragCursors( DragOperation op )
 {
     DWORD result = DROPEFFECT_NONE;
-    if (op == DragOperationEvery)
-        return DROPEFFECT_COPY | DROPEFFECT_LINK | DROPEFFECT_MOVE; 
-    if (op & DragOperationCopy)
-        result |= DROPEFFECT_COPY; 
-    if (op & DragOperationLink)
-        result |= DROPEFFECT_LINK; 
-    if (op & DragOperationMove)
+
+    if ( op == DragOperationEvery )
+    {
+        return DROPEFFECT_COPY | DROPEFFECT_LINK | DROPEFFECT_MOVE;
+    }
+
+    if ( op & DragOperationCopy )
+    {
+        result |= DROPEFFECT_COPY;
+    }
+
+    if ( op & DragOperationLink )
+    {
+        result |= DROPEFFECT_LINK;
+    }
+
+    if ( op & DragOperationMove )
+    {
         result |= DROPEFFECT_MOVE;
-    if (op & DragOperationGeneric)
+    }
+
+    if ( op & DragOperationGeneric )
+    {
         result |= DROPEFFECT_MOVE;
+    }
+
     return result;
 }
 
-void WebDragClient::startDrag(DragImageRef image, const IntPoint& imageOrigin, const IntPoint& dragPoint, Clipboard* clipboard, Frame* frame, bool isLink)
+void WebDragClient::startDrag( DragImageRef image, const IntPoint &imageOrigin, const IntPoint &dragPoint, Clipboard *clipboard,
+                               Frame *frame, bool isLink )
 {
-    COMPtr<IDataObject> dataObject = static_cast<ClipboardWin*>(clipboard)->dataObject();
+    COMPtr<IDataObject> dataObject = static_cast<ClipboardWin *>( clipboard )->dataObject();
 
-    if (!dataObject)
+    if ( !dataObject )
+    {
         return;
+    }
 
-    OwnPtr<HDC> bitmapDC = adoptPtr(CreateCompatibleDC(0));
+    OwnPtr<HDC> bitmapDC = adoptPtr( CreateCompatibleDC( 0 ) );
     BITMAPINFO bitmapInfo = {0};
-    bitmapInfo.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
-    GetDIBits(bitmapDC.get(), image, 0, 0, 0, &bitmapInfo, DIB_RGB_COLORS);
-    if (bitmapInfo.bmiHeader.biSizeImage <= 0)
-        bitmapInfo.bmiHeader.biSizeImage = bitmapInfo.bmiHeader.biWidth * abs(bitmapInfo.bmiHeader.biHeight) * (bitmapInfo.bmiHeader.biBitCount + 7) / 8;
-    
-    RefPtr<SharedMemory> memoryBuffer = SharedMemory::create(bitmapInfo.bmiHeader.biSizeImage);
+    bitmapInfo.bmiHeader.biSize = sizeof( BITMAPINFOHEADER );
+    GetDIBits( bitmapDC.get(), image, 0, 0, 0, &bitmapInfo, DIB_RGB_COLORS );
+
+    if ( bitmapInfo.bmiHeader.biSizeImage <= 0 )
+    {
+        bitmapInfo.bmiHeader.biSizeImage = bitmapInfo.bmiHeader.biWidth * abs( bitmapInfo.bmiHeader.biHeight ) *
+                                           ( bitmapInfo.bmiHeader.biBitCount + 7 ) / 8;
+    }
+
+    RefPtr<SharedMemory> memoryBuffer = SharedMemory::create( bitmapInfo.bmiHeader.biSizeImage );
 
     bitmapInfo.bmiHeader.biCompression = BI_RGB;
-    GetDIBits(bitmapDC.get(), image, 0, bitmapInfo.bmiHeader.biHeight, memoryBuffer->data(), &bitmapInfo, DIB_RGB_COLORS);       
+    GetDIBits( bitmapDC.get(), image, 0, bitmapInfo.bmiHeader.biHeight, memoryBuffer->data(), &bitmapInfo, DIB_RGB_COLORS );
 
     SharedMemory::Handle handle;
-    if (!memoryBuffer->createHandle(handle, SharedMemory::ReadOnly))
+
+    if ( !memoryBuffer->createHandle( handle, SharedMemory::ReadOnly ) )
+    {
         return;
-    DWORD okEffect = draggingSourceOperationMaskToDragCursors(m_page->corePage()->dragController()->sourceDragOperation());
-    DragData dragData(dataObject.get(), IntPoint(), IntPoint(), DragOperationNone);
-    m_page->send(Messages::WebPageProxy::StartDragDrop(imageOrigin, dragPoint, okEffect, dragData.dragDataMap(), IntSize(bitmapInfo.bmiHeader.biWidth, bitmapInfo.bmiHeader.biHeight), handle, isLink), m_page->pageID());
+    }
+
+    DWORD okEffect = draggingSourceOperationMaskToDragCursors( m_page->corePage()->dragController()->sourceDragOperation() );
+    DragData dragData( dataObject.get(), IntPoint(), IntPoint(), DragOperationNone );
+    m_page->send( Messages::WebPageProxy::StartDragDrop( imageOrigin, dragPoint, okEffect, dragData.dragDataMap(),
+                  IntSize( bitmapInfo.bmiHeader.biWidth, bitmapInfo.bmiHeader.biHeight ), handle, isLink ), m_page->pageID() );
 }
 
 } // namespace WebKit

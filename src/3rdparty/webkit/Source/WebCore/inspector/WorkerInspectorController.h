@@ -38,7 +38,8 @@
 #include <wtf/Noncopyable.h>
 #include <wtf/OwnPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class InjectedScriptManager;
 class InspectorDebuggerAgent;
@@ -51,19 +52,20 @@ class InspectorState;
 class InstrumentingAgents;
 class WorkerContext;
 
-class WorkerInspectorController {
-    WTF_MAKE_NONCOPYABLE(WorkerInspectorController);
+class WorkerInspectorController
+{
+    WTF_MAKE_NONCOPYABLE( WorkerInspectorController );
     WTF_MAKE_FAST_ALLOCATED;
 public:
-    WorkerInspectorController(WorkerContext*);
+    WorkerInspectorController( WorkerContext * );
     ~WorkerInspectorController();
 
-    void connectFrontend(InspectorFrontendChannel*);
+    void connectFrontend( InspectorFrontendChannel * );
     void disconnectFrontend();
-    void dispatchMessageFromFrontend(const String&);
+    void dispatchMessageFromFrontend( const String & );
 
 private:
-    WorkerContext* m_workerContext;
+    WorkerContext *m_workerContext;
     OwnPtr<InspectorState> m_state;
     OwnPtr<InstrumentingAgents> m_instrumentingAgents;
     OwnPtr<InjectedScriptManager> m_injectedScriptManager;

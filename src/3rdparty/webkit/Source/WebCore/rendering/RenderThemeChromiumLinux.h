@@ -31,72 +31,74 @@
 
 #include "RenderThemeChromiumSkia.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class RenderThemeChromiumLinux : public RenderThemeChromiumSkia {
-    public:
-        static PassRefPtr<RenderTheme> create();
-        virtual String extraDefaultStyleSheet();
+class RenderThemeChromiumLinux : public RenderThemeChromiumSkia
+{
+public:
+    static PassRefPtr<RenderTheme> create();
+    virtual String extraDefaultStyleSheet();
 
-        virtual Color systemColor(int cssValidId) const;
+    virtual Color systemColor( int cssValidId ) const;
 
-        // A method asking if the control changes its tint when the window has focus or not.
-        virtual bool controlSupportsTints(const RenderObject*) const;
+    // A method asking if the control changes its tint when the window has focus or not.
+    virtual bool controlSupportsTints( const RenderObject * ) const;
 
-        // List Box selection color
-        virtual Color activeListBoxSelectionBackgroundColor() const;
-        virtual Color activeListBoxSelectionForegroundColor() const;
-        virtual Color inactiveListBoxSelectionBackgroundColor() const;
-        virtual Color inactiveListBoxSelectionForegroundColor() const;
+    // List Box selection color
+    virtual Color activeListBoxSelectionBackgroundColor() const;
+    virtual Color activeListBoxSelectionForegroundColor() const;
+    virtual Color inactiveListBoxSelectionBackgroundColor() const;
+    virtual Color inactiveListBoxSelectionForegroundColor() const;
 
-        virtual Color platformActiveSelectionBackgroundColor() const;
-        virtual Color platformInactiveSelectionBackgroundColor() const;
-        virtual Color platformActiveSelectionForegroundColor() const;
-        virtual Color platformInactiveSelectionForegroundColor() const;
+    virtual Color platformActiveSelectionBackgroundColor() const;
+    virtual Color platformInactiveSelectionBackgroundColor() const;
+    virtual Color platformActiveSelectionForegroundColor() const;
+    virtual Color platformInactiveSelectionForegroundColor() const;
 
-        virtual void adjustSliderThumbSize(RenderObject*) const;
+    virtual void adjustSliderThumbSize( RenderObject * ) const;
 
-        static void setCaretBlinkInterval(double interval);
-        virtual double caretBlinkIntervalInternal() const;
+    static void setCaretBlinkInterval( double interval );
+    virtual double caretBlinkIntervalInternal() const;
 
-        virtual bool paintCheckbox(RenderObject*, const PaintInfo&, const IntRect&);
-        virtual void setCheckboxSize(RenderStyle*) const;
+    virtual bool paintCheckbox( RenderObject *, const PaintInfo &, const IntRect & );
+    virtual void setCheckboxSize( RenderStyle * ) const;
 
-        virtual bool paintRadio(RenderObject*, const PaintInfo&, const IntRect&);
-        virtual void setRadioSize(RenderStyle*) const;
+    virtual bool paintRadio( RenderObject *, const PaintInfo &, const IntRect & );
+    virtual void setRadioSize( RenderStyle * ) const;
 
-        virtual bool paintButton(RenderObject*, const PaintInfo&, const IntRect&);
-        virtual bool paintTextField(RenderObject*, const PaintInfo&, const IntRect&);
-        virtual bool paintMenuList(RenderObject*, const PaintInfo&, const IntRect&);
-        virtual bool paintSliderTrack(RenderObject*, const PaintInfo&, const IntRect&);
-        virtual bool paintSliderThumb(RenderObject*, const PaintInfo&, const IntRect&);
+    virtual bool paintButton( RenderObject *, const PaintInfo &, const IntRect & );
+    virtual bool paintTextField( RenderObject *, const PaintInfo &, const IntRect & );
+    virtual bool paintMenuList( RenderObject *, const PaintInfo &, const IntRect & );
+    virtual bool paintSliderTrack( RenderObject *, const PaintInfo &, const IntRect & );
+    virtual bool paintSliderThumb( RenderObject *, const PaintInfo &, const IntRect & );
 
-        virtual void adjustInnerSpinButtonStyle(CSSStyleSelector*, RenderStyle*, Element*) const;
-        virtual bool paintInnerSpinButton(RenderObject*, const PaintInfo&, const IntRect&);
+    virtual void adjustInnerSpinButtonStyle( CSSStyleSelector *, RenderStyle *, Element * ) const;
+    virtual bool paintInnerSpinButton( RenderObject *, const PaintInfo &, const IntRect & );
 
 #if ENABLE(PROGRESS_TAG)
-        virtual bool paintProgressBar(RenderObject*, const PaintInfo&, const IntRect&);
+    virtual bool paintProgressBar( RenderObject *, const PaintInfo &, const IntRect & );
 #endif
 
-        static void setSelectionColors(unsigned activeBackgroundColor,
-                                       unsigned activeForegroundColor,
-                                       unsigned inactiveBackgroundColor,
-                                       unsigned inactiveForegroundColor);
+    static void setSelectionColors( unsigned activeBackgroundColor,
+                                    unsigned activeForegroundColor,
+                                    unsigned inactiveBackgroundColor,
+                                    unsigned inactiveForegroundColor );
 
-    private:
-        RenderThemeChromiumLinux();
-        virtual ~RenderThemeChromiumLinux();
+private:
+    RenderThemeChromiumLinux();
+    virtual ~RenderThemeChromiumLinux();
 
-        // A general method asking if any control tinting is supported at all.
-        virtual bool supportsControlTints() const;
+    // A general method asking if any control tinting is supported at all.
+    virtual bool supportsControlTints() const;
 
-        static double m_caretBlinkInterval;
+    static double m_caretBlinkInterval;
 
-        static unsigned m_activeSelectionBackgroundColor;
-        static unsigned m_activeSelectionForegroundColor;
-        static unsigned m_inactiveSelectionBackgroundColor;
-        static unsigned m_inactiveSelectionForegroundColor;
-    };
+    static unsigned m_activeSelectionBackgroundColor;
+    static unsigned m_activeSelectionForegroundColor;
+    static unsigned m_inactiveSelectionBackgroundColor;
+    static unsigned m_inactiveSelectionForegroundColor;
+};
 
 } // namespace WebCore
 

@@ -31,27 +31,28 @@ class QXmlCharRange;
 // contains helper functions related to XML for validating character classes, productions in the XML specification
 class Q_CORE_EXPORT QXmlUtils
 {
- public:
-   static bool isEncName(const QString &encName);
-   static bool isChar(const QChar c);
-   static bool isNameChar(const QChar c);
-   static bool isLetter(const QChar c);
+public:
+    static bool isEncName( const QString &encName );
+    static bool isChar( const QChar c );
+    static bool isNameChar( const QChar c );
+    static bool isLetter( const QChar c );
 
-   static bool isNCName(QStringView ncName);
+    static bool isNCName( QStringView ncName );
 
-   static bool isNCName(const QString &ncName) {
-      return isNCName(QStringView(ncName));
-   }
+    static bool isNCName( const QString &ncName )
+    {
+        return isNCName( QStringView( ncName ) );
+    }
 
-   static bool isPublicID(const QString &candidate);
+    static bool isPublicID( const QString &candidate );
 
- private:
-   static bool rangeContains(const QXmlCharRange *begin, const QXmlCharRange *end, const QChar c);
-   static bool isBaseChar(const QChar c);
-   static bool isDigit(const QChar c);
-   static bool isExtender(const QChar c);
-   static bool isIdeographic(const QChar c);
-   static bool isCombiningChar(const QChar c);
+private:
+    static bool rangeContains( const QXmlCharRange *begin, const QXmlCharRange *end, const QChar c );
+    static bool isBaseChar( const QChar c );
+    static bool isDigit( const QChar c );
+    static bool isExtender( const QChar c );
+    static bool isIdeographic( const QChar c );
+    static bool isCombiningChar( const QChar c );
 };
 
 #endif

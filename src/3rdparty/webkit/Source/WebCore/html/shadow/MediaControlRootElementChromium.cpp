@@ -35,87 +35,116 @@
 
 using namespace std;
 
-namespace WebCore {
+namespace WebCore
+{
 
-MediaControlRootElementChromium::MediaControlRootElementChromium(HTMLMediaElement* mediaElement)
-    : MediaControls(mediaElement)
-    , m_mediaElement(mediaElement)
-    , m_playButton(0)
-    , m_currentTimeDisplay(0)
-    , m_timeline(0)
-    , m_timelineContainer(0)
-    , m_panelMuteButton(0)
-    , m_volumeSlider(0)
-    , m_volumeSliderContainer(0)
-    , m_panel(0)
-    , m_opaque(true)
+MediaControlRootElementChromium::MediaControlRootElementChromium( HTMLMediaElement *mediaElement )
+    : MediaControls( mediaElement )
+    , m_mediaElement( mediaElement )
+    , m_playButton( 0 )
+    , m_currentTimeDisplay( 0 )
+    , m_timeline( 0 )
+    , m_timelineContainer( 0 )
+    , m_panelMuteButton( 0 )
+    , m_volumeSlider( 0 )
+    , m_volumeSliderContainer( 0 )
+    , m_panel( 0 )
+    , m_opaque( true )
 {
 }
 
-PassRefPtr<MediaControls> MediaControls::create(HTMLMediaElement* mediaElement)
+PassRefPtr<MediaControls> MediaControls::create( HTMLMediaElement *mediaElement )
 {
-    return MediaControlRootElementChromium::create(mediaElement);
+    return MediaControlRootElementChromium::create( mediaElement );
 }
 
-PassRefPtr<MediaControlRootElementChromium> MediaControlRootElementChromium::create(HTMLMediaElement* mediaElement)
+PassRefPtr<MediaControlRootElementChromium> MediaControlRootElementChromium::create( HTMLMediaElement *mediaElement )
 {
-    if (!mediaElement->document()->page())
+    if ( !mediaElement->document()->page() )
+    {
         return 0;
+    }
 
-    RefPtr<MediaControlRootElementChromium> controls = adoptRef(new MediaControlRootElementChromium(mediaElement));
+    RefPtr<MediaControlRootElementChromium> controls = adoptRef( new MediaControlRootElementChromium( mediaElement ) );
 
-    RefPtr<MediaControlPanelElement> panel = MediaControlPanelElement::create(mediaElement);
+    RefPtr<MediaControlPanelElement> panel = MediaControlPanelElement::create( mediaElement );
 
     ExceptionCode ec;
 
-    RefPtr<MediaControlPlayButtonElement> playButton = MediaControlPlayButtonElement::create(mediaElement);
+    RefPtr<MediaControlPlayButtonElement> playButton = MediaControlPlayButtonElement::create( mediaElement );
     controls->m_playButton = playButton.get();
-    panel->appendChild(playButton.release(), ec, true);
-    if (ec)
+    panel->appendChild( playButton.release(), ec, true );
+
+    if ( ec )
+    {
         return 0;
+    }
 
-    RefPtr<MediaControlTimelineContainerElement> timelineContainer = MediaControlTimelineContainerElement::create(mediaElement);
+    RefPtr<MediaControlTimelineContainerElement> timelineContainer = MediaControlTimelineContainerElement::create( mediaElement );
 
-    RefPtr<MediaControlTimelineElement> timeline = MediaControlTimelineElement::create(mediaElement, controls.get());
+    RefPtr<MediaControlTimelineElement> timeline = MediaControlTimelineElement::create( mediaElement, controls.get() );
     controls->m_timeline = timeline.get();
-    timelineContainer->appendChild(timeline.release(), ec, true);
-    if (ec)
-        return 0;
+    timelineContainer->appendChild( timeline.release(), ec, true );
 
-    RefPtr<MediaControlCurrentTimeDisplayElement> currentTimeDisplay = MediaControlCurrentTimeDisplayElement::create(mediaElement);
-    controls->m_currentTimeDisplay = currentTimeDisplay.get();
-    timelineContainer->appendChild(currentTimeDisplay.release(), ec, true);
-    if (ec)
+    if ( ec )
+    {
         return 0;
+    }
+
+    RefPtr<MediaControlCurrentTimeDisplayElement> currentTimeDisplay = MediaControlCurrentTimeDisplayElement::create( mediaElement );
+    controls->m_currentTimeDisplay = currentTimeDisplay.get();
+    timelineContainer->appendChild( currentTimeDisplay.release(), ec, true );
+
+    if ( ec )
+    {
+        return 0;
+    }
 
     controls->m_timelineContainer = timelineContainer.get();
-    panel->appendChild(timelineContainer.release(), ec, true);
-    if (ec)
-        return 0;
+    panel->appendChild( timelineContainer.release(), ec, true );
 
-    RefPtr<MediaControlPanelMuteButtonElement> panelMuteButton = MediaControlPanelMuteButtonElement::create(mediaElement, controls.get());
+    if ( ec )
+    {
+        return 0;
+    }
+
+    RefPtr<MediaControlPanelMuteButtonElement> panelMuteButton = MediaControlPanelMuteButtonElement::create( mediaElement,
+            controls.get() );
     controls->m_panelMuteButton = panelMuteButton.get();
-    panel->appendChild(panelMuteButton.release(), ec, true);
-    if (ec)
+    panel->appendChild( panelMuteButton.release(), ec, true );
+
+    if ( ec )
+    {
         return 0;
+    }
 
-    RefPtr<MediaControlVolumeSliderContainerElement> volumeSliderContainer = MediaControlVolumeSliderContainerElement::create(mediaElement);
+    RefPtr<MediaControlVolumeSliderContainerElement> volumeSliderContainer = MediaControlVolumeSliderContainerElement::create(
+                mediaElement );
 
-    RefPtr<MediaControlVolumeSliderElement> slider = MediaControlVolumeSliderElement::create(mediaElement);
+    RefPtr<MediaControlVolumeSliderElement> slider = MediaControlVolumeSliderElement::create( mediaElement );
     controls->m_volumeSlider = slider.get();
-    volumeSliderContainer->appendChild(slider.release(), ec, true);
-    if (ec)
+    volumeSliderContainer->appendChild( slider.release(), ec, true );
+
+    if ( ec )
+    {
         return 0;
+    }
 
     controls->m_volumeSliderContainer = volumeSliderContainer.get();
-    panel->appendChild(volumeSliderContainer.release(), ec, true);
-    if (ec)
+    panel->appendChild( volumeSliderContainer.release(), ec, true );
+
+    if ( ec )
+    {
         return 0;
+    }
 
     controls->m_panel = panel.get();
-    controls->appendChild(panel.release(), ec, true);
-    if (ec)
+    controls->appendChild( panel.release(), ec, true );
+
+    if ( ec )
+    {
         return 0;
+    }
 
     return controls.release();
 }
@@ -130,70 +159,87 @@ void MediaControlRootElementChromium::hide()
     m_panel->hide();
 }
 
-static const String& webkitTransitionString()
+static const String &webkitTransitionString()
 {
-    DEFINE_STATIC_LOCAL(String, s, ("-webkit-transition"));
+    DEFINE_STATIC_LOCAL( String, s, ( "-webkit-transition" ) );
     return s;
 }
 
-static const String& opacityString()
+static const String &opacityString()
 {
-    DEFINE_STATIC_LOCAL(String, s, ("opacity"));
+    DEFINE_STATIC_LOCAL( String, s, ( "opacity" ) );
     return s;
 }
 
 void MediaControlRootElementChromium::makeOpaque()
 {
-    if (m_opaque)
+    if ( m_opaque )
+    {
         return;
+    }
 
-    DEFINE_STATIC_LOCAL(String, transitionValue, ());
-    if (transitionValue.isNull())
-        transitionValue = String::format("opacity %.1gs", document()->page()->theme()->mediaControlsFadeInDuration());
-    DEFINE_STATIC_LOCAL(String, opacityValue, ("1"));
+    DEFINE_STATIC_LOCAL( String, transitionValue, () );
+
+    if ( transitionValue.isNull() )
+    {
+        transitionValue = String::format( "opacity %.1gs", document()->page()->theme()->mediaControlsFadeInDuration() );
+    }
+
+    DEFINE_STATIC_LOCAL( String, opacityValue, ( "1" ) );
 
     ExceptionCode ec;
     // FIXME: Make more efficient <http://webkit.org/b/58157>
-    m_panel->style()->setProperty(webkitTransitionString(), transitionValue, ec);
-    m_panel->style()->setProperty(opacityString(), opacityValue, ec);
+    m_panel->style()->setProperty( webkitTransitionString(), transitionValue, ec );
+    m_panel->style()->setProperty( opacityString(), opacityValue, ec );
     m_opaque = true;
 }
 
 void MediaControlRootElementChromium::makeTransparent()
 {
-    if (!m_opaque)
+    if ( !m_opaque )
+    {
         return;
+    }
 
-    DEFINE_STATIC_LOCAL(String, transitionValue, ());
-    if (transitionValue.isNull())
-        transitionValue = String::format("opacity %.1gs", document()->page()->theme()->mediaControlsFadeOutDuration());
-    DEFINE_STATIC_LOCAL(String, opacityValue, ("0"));
+    DEFINE_STATIC_LOCAL( String, transitionValue, () );
+
+    if ( transitionValue.isNull() )
+    {
+        transitionValue = String::format( "opacity %.1gs", document()->page()->theme()->mediaControlsFadeOutDuration() );
+    }
+
+    DEFINE_STATIC_LOCAL( String, opacityValue, ( "0" ) );
 
     ExceptionCode ec;
     // FIXME: Make more efficient <http://webkit.org/b/58157>
-    m_panel->style()->setProperty(webkitTransitionString(), transitionValue, ec);
-    m_panel->style()->setProperty(opacityString(), opacityValue, ec);
+    m_panel->style()->setProperty( webkitTransitionString(), transitionValue, ec );
+    m_panel->style()->setProperty( opacityString(), opacityValue, ec );
     m_opaque = false;
 }
 
 void MediaControlRootElementChromium::reset()
 {
-    Page* page = document()->page();
-    if (!page)
+    Page *page = document()->page();
+
+    if ( !page )
+    {
         return;
+    }
 
     updateStatusDisplay();
 
     float duration = m_mediaElement->duration();
-    m_timeline->setDuration(duration);
+    m_timeline->setDuration( duration );
     m_timelineContainer->show();
-    m_timeline->setPosition(m_mediaElement->currentTime());
+    m_timeline->setPosition( m_mediaElement->currentTime() );
     updateTimeDisplay();
 
     m_panelMuteButton->show();
 
-    if (m_volumeSlider)
-        m_volumeSlider->setVolume(m_mediaElement->volume());
+    if ( m_volumeSlider )
+    {
+        m_volumeSlider->setVolume( m_mediaElement->volume() );
+    }
 
     makeOpaque();
 }
@@ -201,20 +247,20 @@ void MediaControlRootElementChromium::reset()
 void MediaControlRootElementChromium::playbackStarted()
 {
     m_playButton->updateDisplayType();
-    m_timeline->setPosition(m_mediaElement->currentTime());
+    m_timeline->setPosition( m_mediaElement->currentTime() );
     updateTimeDisplay();
 }
 
 void MediaControlRootElementChromium::playbackProgressed()
 {
-    m_timeline->setPosition(m_mediaElement->currentTime());
+    m_timeline->setPosition( m_mediaElement->currentTime() );
     updateTimeDisplay();
 }
 
 void MediaControlRootElementChromium::playbackStopped()
 {
     m_playButton->updateDisplayType();
-    m_timeline->setPosition(m_mediaElement->currentTime());
+    m_timeline->setPosition( m_mediaElement->currentTime() );
     updateTimeDisplay();
     makeOpaque();
 }
@@ -224,21 +270,27 @@ void MediaControlRootElementChromium::updateTimeDisplay()
     float now = m_mediaElement->currentTime();
     float duration = m_mediaElement->duration();
 
-    Page* page = document()->page();
-    if (!page)
+    Page *page = document()->page();
+
+    if ( !page )
+    {
         return;
+    }
 
     // Allow the theme to format the time.
     ExceptionCode ec;
-    m_currentTimeDisplay->setInnerText(page->theme()->formatMediaControlsCurrentTime(now, duration), ec);
-    m_currentTimeDisplay->setCurrentValue(now);
+    m_currentTimeDisplay->setInnerText( page->theme()->formatMediaControlsCurrentTime( now, duration ), ec );
+    m_currentTimeDisplay->setCurrentValue( now );
 }
 
 void MediaControlRootElementChromium::reportedError()
 {
-    Page* page = document()->page();
-    if (!page)
+    Page *page = document()->page();
+
+    if ( !page )
+    {
         return;
+    }
 
     m_timelineContainer->hide();
     m_panelMuteButton->hide();
@@ -265,7 +317,7 @@ void MediaControlRootElementChromium::changedMute()
 
 void MediaControlRootElementChromium::changedVolume()
 {
-    m_volumeSlider->setVolume(m_mediaElement->volume());
+    m_volumeSlider->setVolume( m_mediaElement->volume() );
 }
 
 void MediaControlRootElementChromium::enteredFullscreen()
@@ -278,15 +330,17 @@ void MediaControlRootElementChromium::exitedFullscreen()
 
 void MediaControlRootElementChromium::showVolumeSlider()
 {
-    if (!m_mediaElement->hasAudio())
+    if ( !m_mediaElement->hasAudio() )
+    {
         return;
+    }
 
     m_volumeSliderContainer->show();
 }
 
-const AtomicString& MediaControlRootElementChromium::shadowPseudoId() const
+const AtomicString &MediaControlRootElementChromium::shadowPseudoId() const
 {
-    DEFINE_STATIC_LOCAL(AtomicString, id, ("-webkit-media-controls"));
+    DEFINE_STATIC_LOCAL( AtomicString, id, ( "-webkit-media-controls" ) );
     return id;
 }
 

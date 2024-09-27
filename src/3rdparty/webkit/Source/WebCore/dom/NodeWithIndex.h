@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef NodeWithIndex_h
@@ -28,33 +28,40 @@
 
 #include "Node.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 // For use when you want to get the index for a node repeatedly and
 // only want to walk the child list to figure out the index once.
-class NodeWithIndex {
+class NodeWithIndex
+{
 public:
-    NodeWithIndex(Node* node)
-        : m_node(node)
-        , m_haveIndex(false)
+    NodeWithIndex( Node *node )
+        : m_node( node )
+        , m_haveIndex( false )
     {
-        ASSERT(node);
+        ASSERT( node );
     }
 
-    Node* node() const { return m_node; }
+    Node *node() const
+    {
+        return m_node;
+    }
 
     int index() const
     {
-        if (!m_haveIndex) {
+        if ( !m_haveIndex )
+        {
             m_index = m_node->nodeIndex();
             m_haveIndex = true;
         }
-        ASSERT(m_index == static_cast<int>(m_node->nodeIndex()));
+
+        ASSERT( m_index == static_cast<int>( m_node->nodeIndex() ) );
         return m_index;
     }
 
 private:
-    Node* m_node;
+    Node *m_node;
     mutable bool m_haveIndex;
     mutable int m_index;
 };

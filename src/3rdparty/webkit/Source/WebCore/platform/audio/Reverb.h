@@ -32,26 +32,33 @@
 #include "ReverbConvolver.h"
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class AudioBus;
-    
+
 // Multi-channel convolution reverb with channel matrixing - one or more ReverbConvolver objects are used internally.
 
-class Reverb {
+class Reverb
+{
 public:
     enum { MaxFrameSize = 256 };
 
     // renderSliceSize is a rendering hint, so the FFTs can be optimized to not all occur at the same time (very bad when rendering on a real-time thread).
-    Reverb(AudioBus* impulseResponseBuffer, size_t renderSliceSize, size_t maxFFTSize, size_t numberOfChannels, bool useBackgroundThreads);
+    Reverb( AudioBus *impulseResponseBuffer, size_t renderSliceSize, size_t maxFFTSize, size_t numberOfChannels,
+            bool useBackgroundThreads );
 
-    void process(AudioBus* sourceBus, AudioBus* destinationBus, size_t framesToProcess);
+    void process( AudioBus *sourceBus, AudioBus *destinationBus, size_t framesToProcess );
     void reset();
 
-    unsigned impulseResponseLength() const { return m_impulseResponseLength; }
+    unsigned impulseResponseLength() const
+    {
+        return m_impulseResponseLength;
+    }
 
 private:
-    void initialize(AudioBus* impulseResponseBuffer, size_t renderSliceSize, size_t maxFFTSize, size_t numberOfChannels, bool useBackgroundThreads);
+    void initialize( AudioBus *impulseResponseBuffer, size_t renderSliceSize, size_t maxFFTSize, size_t numberOfChannels,
+                     bool useBackgroundThreads );
 
     size_t m_impulseResponseLength;
 

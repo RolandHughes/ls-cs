@@ -21,42 +21,43 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
 #include "Int8Array.h"
 
-namespace WebCore {
-
-PassRefPtr<Int8Array> Int8Array::create(unsigned length)
+namespace WebCore
 {
-    return TypedArrayBase<signed char>::create<Int8Array>(length);
+
+PassRefPtr<Int8Array> Int8Array::create( unsigned length )
+{
+    return TypedArrayBase<signed char>::create<Int8Array>( length );
 }
 
-PassRefPtr<Int8Array> Int8Array::create(signed char* array, unsigned length)
+PassRefPtr<Int8Array> Int8Array::create( signed char *array, unsigned length )
 {
-    return TypedArrayBase<signed char>::create<Int8Array>(array, length);
+    return TypedArrayBase<signed char>::create<Int8Array>( array, length );
 }
 
-PassRefPtr<Int8Array> Int8Array::create(PassRefPtr<ArrayBuffer> buffer, unsigned byteOffset, unsigned length)
+PassRefPtr<Int8Array> Int8Array::create( PassRefPtr<ArrayBuffer> buffer, unsigned byteOffset, unsigned length )
 {
-    return TypedArrayBase<signed char>::create<Int8Array>(buffer, byteOffset, length);
+    return TypedArrayBase<signed char>::create<Int8Array>( buffer, byteOffset, length );
 }
 
-Int8Array::Int8Array(PassRefPtr<ArrayBuffer> buffer, unsigned byteOffset, unsigned length)
-    : IntegralTypedArrayBase<signed char>(buffer, byteOffset, length)
+Int8Array::Int8Array( PassRefPtr<ArrayBuffer> buffer, unsigned byteOffset, unsigned length )
+    : IntegralTypedArrayBase<signed char>( buffer, byteOffset, length )
 {
 }
 
-PassRefPtr<Int8Array> Int8Array::subarray(int start) const
+PassRefPtr<Int8Array> Int8Array::subarray( int start ) const
 {
-    return subarray(start, length());
+    return subarray( start, length() );
 }
 
-PassRefPtr<Int8Array> Int8Array::subarray(int start, int end) const
+PassRefPtr<Int8Array> Int8Array::subarray( int start, int end ) const
 {
-    return subarrayImpl<Int8Array>(start, end);
+    return subarrayImpl<Int8Array>( start, end );
 }
 
 }

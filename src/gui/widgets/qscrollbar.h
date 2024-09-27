@@ -34,43 +34,43 @@ class QStyleOptionSlider;
 
 class Q_GUI_EXPORT QScrollBar : public QAbstractSlider
 {
-   GUI_CS_OBJECT(QScrollBar)
+    GUI_CS_OBJECT( QScrollBar )
 
- public:
-   explicit QScrollBar(QWidget *parent = nullptr);
-   explicit QScrollBar(Qt::Orientation orientation, QWidget *parent = nullptr);
+public:
+    explicit QScrollBar( QWidget *parent = nullptr );
+    explicit QScrollBar( Qt::Orientation orientation, QWidget *parent = nullptr );
 
-   QScrollBar(const QScrollBar &other) = delete;
-   QScrollBar &operator=(const QScrollBar &other) = delete;
+    QScrollBar( const QScrollBar &other ) = delete;
+    QScrollBar &operator=( const QScrollBar &other ) = delete;
 
-   ~QScrollBar();
+    ~QScrollBar();
 
-   QSize sizeHint() const override;
-   bool event(QEvent *event) override;
+    QSize sizeHint() const override;
+    bool event( QEvent *event ) override;
 
- protected:
-   void paintEvent(QPaintEvent *event) override;
-   void mousePressEvent(QMouseEvent *event) override;
-   void mouseReleaseEvent(QMouseEvent *event) override;
-   void mouseMoveEvent(QMouseEvent *event) override;
-   void hideEvent(QHideEvent *event) override;
-   void sliderChange(SliderChange change) override;
+protected:
+    void paintEvent( QPaintEvent *event ) override;
+    void mousePressEvent( QMouseEvent *event ) override;
+    void mouseReleaseEvent( QMouseEvent *event ) override;
+    void mouseMoveEvent( QMouseEvent *event ) override;
+    void hideEvent( QHideEvent *event ) override;
+    void sliderChange( SliderChange change ) override;
 
 #ifndef QT_NO_CONTEXTMENU
-   void contextMenuEvent(QContextMenuEvent *event) override;
+    void contextMenuEvent( QContextMenuEvent *event ) override;
 #endif
 
 #ifndef QT_NO_WHEELEVENT
-   void wheelEvent(QWheelEvent *event) override;
+    void wheelEvent( QWheelEvent *event ) override;
 #endif
 
-   void initStyleOption(QStyleOptionSlider *option) const;
+    void initStyleOption( QStyleOptionSlider *option ) const;
 
- private:
-   Q_DECLARE_PRIVATE(QScrollBar)
+private:
+    Q_DECLARE_PRIVATE( QScrollBar )
 
-   friend class QAbstractScrollAreaPrivate;
-   friend Q_GUI_EXPORT QStyleOptionSlider qt_qscrollbarStyleOption(QScrollBar *scrollBar);
+    friend class QAbstractScrollAreaPrivate;
+    friend Q_GUI_EXPORT QStyleOptionSlider qt_qscrollbarStyleOption( QScrollBar *scrollBar );
 };
 
 #endif // QT_NO_SCROLLBAR

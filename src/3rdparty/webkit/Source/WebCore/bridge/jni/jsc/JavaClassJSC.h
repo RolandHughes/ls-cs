@@ -32,24 +32,27 @@
 #include "JNIUtility.h"
 #include <wtf/HashMap.h>
 
-namespace JSC {
+namespace JSC
+{
 
-namespace Bindings {
+namespace Bindings
+{
 
-class JavaClass : public Class {
+class JavaClass : public Class
+{
 public:
-    JavaClass(jobject);
+    JavaClass( jobject );
     ~JavaClass();
 
-    virtual MethodList methodsNamed(const Identifier&, Instance*) const;
-    virtual Field* fieldNamed(const Identifier&, Instance*) const;
+    virtual MethodList methodsNamed( const Identifier &, Instance * ) const;
+    virtual Field *fieldNamed( const Identifier &, Instance * ) const;
 
     bool isNumberClass() const;
     bool isBooleanClass() const;
     bool isStringClass() const;
 
 private:
-    const char* m_name;
+    const char *m_name;
     FieldMap m_fields;
     MethodListMap m_methods;
 };

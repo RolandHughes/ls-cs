@@ -25,33 +25,35 @@
 
 #include "HTMLPlugInImageElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class HTMLEmbedElement : public HTMLPlugInImageElement {
+class HTMLEmbedElement : public HTMLPlugInImageElement
+{
 public:
-    static PassRefPtr<HTMLEmbedElement> create(const QualifiedName&, Document*, bool createdByParser);
+    static PassRefPtr<HTMLEmbedElement> create( const QualifiedName &, Document *, bool createdByParser );
 
 private:
-    HTMLEmbedElement(const QualifiedName&, Document*, bool createdByParser);
+    HTMLEmbedElement( const QualifiedName &, Document *, bool createdByParser );
 
-    virtual bool mapToEntry(const QualifiedName& attrName, MappedAttributeEntry& result) const;
-    virtual void parseMappedAttribute(Attribute*);
+    virtual bool mapToEntry( const QualifiedName &attrName, MappedAttributeEntry &result ) const;
+    virtual void parseMappedAttribute( Attribute * );
 
-    virtual bool rendererIsNeeded(RenderStyle*);
+    virtual bool rendererIsNeeded( RenderStyle * );
     virtual void insertedIntoDocument();
     virtual void removedFromDocument();
-    virtual void attributeChanged(Attribute*, bool preserveDecls = false);
+    virtual void attributeChanged( Attribute *, bool preserveDecls = false );
 
-    virtual bool isURLAttribute(Attribute*) const;
-    virtual const QualifiedName& imageSourceAttributeName() const;
+    virtual bool isURLAttribute( Attribute * ) const;
+    virtual const QualifiedName &imageSourceAttributeName() const;
 
-    virtual RenderWidget* renderWidgetForJSBindings() const;
+    virtual RenderWidget *renderWidgetForJSBindings() const;
 
-    virtual void updateWidget(PluginCreationOption);
+    virtual void updateWidget( PluginCreationOption );
 
-    virtual void addSubresourceAttributeURLs(ListHashSet<KURL>&) const;
+    virtual void addSubresourceAttributeURLs( ListHashSet<KURL> & ) const;
 
-    void parametersForPlugin(Vector<String>& paramNames, Vector<String>& paramValues);
+    void parametersForPlugin( Vector<String> &paramNames, Vector<String> &paramValues );
 };
 
 }

@@ -26,18 +26,19 @@
 
 #include <qcomparescaseaware_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class CodepointEqualFN : public ComparesCaseAware
 {
- public:
-   Item evaluateSingleton(const DynamicContext::Ptr &context) const override;
+public:
+    Item evaluateSingleton( const DynamicContext::Ptr &context ) const override;
 };
 
 class CompareFN : public ComparesCaseAware
 {
- public:
-   Item evaluateSingleton(const DynamicContext::Ptr &context) const override;
+public:
+    Item evaluateSingleton( const DynamicContext::Ptr &context ) const override;
 };
 
 }

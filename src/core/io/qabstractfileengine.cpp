@@ -39,314 +39,323 @@ static bool qt_file_engine_handlers_in_use = false;
 
 static QReadWriteLock *fileEngineHandlerMutex()
 {
-   static QReadWriteLock retval(QReadWriteLock::Recursive);
-   return &retval;
+    static QReadWriteLock retval( QReadWriteLock::Recursive );
+    return &retval;
 }
 
 static bool qt_abstractfileenginehandlerlist_shutDown = false;
 
 class QAbstractFileEngineHandlerList : public QList<QAbstractFileEngineHandler *>
 {
- public:
-   ~QAbstractFileEngineHandlerList() {
-      QWriteLocker locker(fileEngineHandlerMutex());
-      qt_abstractfileenginehandlerlist_shutDown = true;
-   }
+public:
+    ~QAbstractFileEngineHandlerList()
+    {
+        QWriteLocker locker( fileEngineHandlerMutex() );
+        qt_abstractfileenginehandlerlist_shutDown = true;
+    }
 };
 
 static QAbstractFileEngineHandlerList *fileEngineHandlers()
 {
-   static QAbstractFileEngineHandlerList retval;
-   return &retval;
+    static QAbstractFileEngineHandlerList retval;
+    return &retval;
 }
 
 QAbstractFileEngineHandler::QAbstractFileEngineHandler()
 {
-   QWriteLocker locker(fileEngineHandlerMutex());
-   qt_file_engine_handlers_in_use = true;
-   fileEngineHandlers()->prepend(this);
+    QWriteLocker locker( fileEngineHandlerMutex() );
+    qt_file_engine_handlers_in_use = true;
+    fileEngineHandlers()->prepend( this );
 }
 
 QAbstractFileEngineHandler::~QAbstractFileEngineHandler()
 {
-   QWriteLocker locker(fileEngineHandlerMutex());
+    QWriteLocker locker( fileEngineHandlerMutex() );
 
-   // Remove this handler from the handler list only if the list is valid.
-   if (! qt_abstractfileenginehandlerlist_shutDown) {
-      QAbstractFileEngineHandlerList *handlers = fileEngineHandlers();
-      handlers->removeOne(this);
+    // Remove this handler from the handler list only if the list is valid.
+    if ( ! qt_abstractfileenginehandlerlist_shutDown )
+    {
+        QAbstractFileEngineHandlerList *handlers = fileEngineHandlers();
+        handlers->removeOne( this );
 
-      if (handlers->isEmpty()) {
-         qt_file_engine_handlers_in_use = false;
-      }
-   }
+        if ( handlers->isEmpty() )
+        {
+            qt_file_engine_handlers_in_use = false;
+        }
+    }
 }
 
-QAbstractFileEngine *qt_custom_file_engine_handler_create(const QString &path)
+QAbstractFileEngine *qt_custom_file_engine_handler_create( const QString &path )
 {
-   QAbstractFileEngine *engine = nullptr;
+    QAbstractFileEngine *engine = nullptr;
 
-   if (qt_file_engine_handlers_in_use) {
-      QReadLocker locker(fileEngineHandlerMutex());
+    if ( qt_file_engine_handlers_in_use )
+    {
+        QReadLocker locker( fileEngineHandlerMutex() );
 
-      // check for registered handlers that can load the file
-      QAbstractFileEngineHandlerList *handlers = fileEngineHandlers();
+        // check for registered handlers that can load the file
+        QAbstractFileEngineHandlerList *handlers = fileEngineHandlers();
 
-      for (int i = 0; i < handlers->size(); i++) {
-         if ((engine = handlers->at(i)->create(path))) {
-            break;
-         }
-      }
-   }
+        for ( int i = 0; i < handlers->size(); i++ )
+        {
+            if ( ( engine = handlers->at( i )->create( path ) ) )
+            {
+                break;
+            }
+        }
+    }
 
-   return engine;
+    return engine;
 }
 
-QAbstractFileEngine *QAbstractFileEngine::create(const QString &fileName)
+QAbstractFileEngine *QAbstractFileEngine::create( const QString &fileName )
 {
-   QFileSystemEntry entry(fileName);
-   QFileSystemMetaData metaData;
-   QAbstractFileEngine *engine = QFileSystemEngine::resolveEntryAndCreateLegacyEngine(entry, metaData);
+    QFileSystemEntry entry( fileName );
+    QFileSystemMetaData metaData;
+    QAbstractFileEngine *engine = QFileSystemEngine::resolveEntryAndCreateLegacyEngine( entry, metaData );
 
 #ifndef QT_NO_FSFILEENGINE
 
-   if (! engine) {
-      // fall back to regular file engine
-      return new QFSFileEngine(entry.filePath());
-   }
+    if ( ! engine )
+    {
+        // fall back to regular file engine
+        return new QFSFileEngine( entry.filePath() );
+    }
 
 #endif
 
-   return engine;
+    return engine;
 }
 
-QAbstractFileEngine::QAbstractFileEngine() : d_ptr(new QAbstractFileEnginePrivate)
+QAbstractFileEngine::QAbstractFileEngine() : d_ptr( new QAbstractFileEnginePrivate )
 {
-   d_ptr->q_ptr = this;
+    d_ptr->q_ptr = this;
 }
 
-QAbstractFileEngine::QAbstractFileEngine(QAbstractFileEnginePrivate &dd) : d_ptr(&dd)
+QAbstractFileEngine::QAbstractFileEngine( QAbstractFileEnginePrivate &dd ) : d_ptr( &dd )
 {
-   d_ptr->q_ptr = this;
+    d_ptr->q_ptr = this;
 }
 
 QAbstractFileEngine::~QAbstractFileEngine()
 {
 }
 
-bool QAbstractFileEngine::open(QIODevice::OpenMode openMode)
+bool QAbstractFileEngine::open( QIODevice::OpenMode openMode )
 {
-   (void) openMode;
-   return false;
+    ( void ) openMode;
+    return false;
 }
 
 bool QAbstractFileEngine::close()
 {
-   return false;
+    return false;
 }
 
 bool QAbstractFileEngine::syncToDisk()
 {
-   return false;
+    return false;
 }
 
 bool QAbstractFileEngine::flush()
 {
-   return false;
+    return false;
 }
 
 qint64 QAbstractFileEngine::size() const
 {
-   return 0;
+    return 0;
 }
 
 qint64 QAbstractFileEngine::pos() const
 {
-   return 0;
+    return 0;
 }
 
-bool QAbstractFileEngine::seek(qint64 pos)
+bool QAbstractFileEngine::seek( qint64 pos )
 {
-   (void) pos;
+    ( void ) pos;
 
-   return false;
+    return false;
 }
 
 bool QAbstractFileEngine::isSequential() const
 {
-   return false;
+    return false;
 }
 
 bool QAbstractFileEngine::remove()
 {
-   return false;
+    return false;
 }
 
-bool QAbstractFileEngine::copy(const QString &newName)
+bool QAbstractFileEngine::copy( const QString &newName )
 {
-   (void) newName;
+    ( void ) newName;
 
-   return false;
+    return false;
 }
 
-bool QAbstractFileEngine::rename(const QString &newName)
+bool QAbstractFileEngine::rename( const QString &newName )
 {
-   (void) newName;
+    ( void ) newName;
 
-   return false;
+    return false;
 }
 
-bool QAbstractFileEngine::renameOverwrite(const QString &newName)
+bool QAbstractFileEngine::renameOverwrite( const QString &newName )
 {
-   (void) newName;
+    ( void ) newName;
 
-   return false;
+    return false;
 }
 
-bool QAbstractFileEngine::link(const QString &newName)
+bool QAbstractFileEngine::link( const QString &newName )
 {
-   (void) newName;
+    ( void ) newName;
 
-   return false;
+    return false;
 }
 
-bool QAbstractFileEngine::mkdir(const QString &dirName, bool createParentDirectories) const
+bool QAbstractFileEngine::mkdir( const QString &dirName, bool createParentDirectories ) const
 {
-   (void) dirName;
-   (void) createParentDirectories;
+    ( void ) dirName;
+    ( void ) createParentDirectories;
 
-   return false;
+    return false;
 }
 
-bool QAbstractFileEngine::rmdir(const QString &dirName, bool recurseParentDirectories) const
+bool QAbstractFileEngine::rmdir( const QString &dirName, bool recurseParentDirectories ) const
 {
-   (void) dirName;
-   (void) recurseParentDirectories;
+    ( void ) dirName;
+    ( void ) recurseParentDirectories;
 
-   return false;
+    return false;
 }
 
-bool QAbstractFileEngine::setSize(qint64 size)
+bool QAbstractFileEngine::setSize( qint64 size )
 {
-   (void) size;
+    ( void ) size;
 
-   return false;
+    return false;
 }
 
 bool QAbstractFileEngine::caseSensitive() const
 {
-   return false;
+    return false;
 }
 
 bool QAbstractFileEngine::isRelativePath() const
 {
-   return false;
+    return false;
 }
 
-QStringList QAbstractFileEngine::entryList(QDir::Filters filters, const QStringList &filterNames) const
+QStringList QAbstractFileEngine::entryList( QDir::Filters filters, const QStringList &filterNames ) const
 {
-   QStringList ret;
-   QDirIterator it(fileName(), filterNames, filters);
+    QStringList ret;
+    QDirIterator it( fileName(), filterNames, filters );
 
-   while (it.hasNext()) {
-      it.next();
-      ret << it.fileName();
-   }
+    while ( it.hasNext() )
+    {
+        it.next();
+        ret << it.fileName();
+    }
 
-   return ret;
+    return ret;
 }
 
-QAbstractFileEngine::FileFlags QAbstractFileEngine::fileFlags(FileFlags) const
+QAbstractFileEngine::FileFlags QAbstractFileEngine::fileFlags( FileFlags ) const
 {
-   return Qt::EmptyFlag;
+    return Qt::EmptyFlag;
 }
 
-bool QAbstractFileEngine::setPermissions(uint perms)
+bool QAbstractFileEngine::setPermissions( uint perms )
 {
-   (void) perms;
+    ( void ) perms;
 
-   return false;
+    return false;
 }
 
-QString QAbstractFileEngine::fileName(FileName file) const
+QString QAbstractFileEngine::fileName( FileName file ) const
 {
-   (void) file;
+    ( void ) file;
 
-   return QString();
+    return QString();
 }
 
-uint QAbstractFileEngine::ownerId(FileOwner owner) const
+uint QAbstractFileEngine::ownerId( FileOwner owner ) const
 {
-   (void) owner;
+    ( void ) owner;
 
-   return 0;
+    return 0;
 }
 
-QString QAbstractFileEngine::owner(FileOwner owner) const
+QString QAbstractFileEngine::owner( FileOwner owner ) const
 {
-   (void) owner;
+    ( void ) owner;
 
-   return QString();
+    return QString();
 }
 
-QDateTime QAbstractFileEngine::fileTime(FileTime time) const
+QDateTime QAbstractFileEngine::fileTime( FileTime time ) const
 {
-   (void) time;
+    ( void ) time;
 
-   return QDateTime();
+    return QDateTime();
 }
 
-void QAbstractFileEngine::setFileName(const QString &file)
+void QAbstractFileEngine::setFileName( const QString &file )
 {
-   (void) file;
+    ( void ) file;
 }
 
 int QAbstractFileEngine::handle() const
 {
-   return -1;
+    return -1;
 }
 
 bool QAbstractFileEngine::atEnd() const
 {
-   return const_cast<QAbstractFileEngine *>(this)->extension(AtEndExtension);
+    return const_cast<QAbstractFileEngine *>( this )->extension( AtEndExtension );
 }
 
-uchar *QAbstractFileEngine::map(qint64 offset, qint64 size, QFile::MemoryMapFlags flags)
+uchar *QAbstractFileEngine::map( qint64 offset, qint64 size, QFile::MemoryMapFlags flags )
 {
-   MapExtensionOption option;
-   option.offset = offset;
-   option.size = size;
-   option.flags = flags;
-   MapExtensionReturn r;
+    MapExtensionOption option;
+    option.offset = offset;
+    option.size = size;
+    option.flags = flags;
+    MapExtensionReturn r;
 
-   if (! extension(MapExtension, &option, &r)) {
-      return nullptr;
-   }
+    if ( ! extension( MapExtension, &option, &r ) )
+    {
+        return nullptr;
+    }
 
-   return r.address;
+    return r.address;
 }
 
-bool QAbstractFileEngine::unmap(uchar *address)
+bool QAbstractFileEngine::unmap( uchar *address )
 {
-   UnMapExtensionOption options;
-   options.address = address;
-   return extension(UnMapExtension, &options);
+    UnMapExtensionOption options;
+    options.address = address;
+    return extension( UnMapExtension, &options );
 }
 
 class QAbstractFileEngineIteratorPrivate
 {
- public:
-   QString path;
-   QDir::Filters filters;
-   QStringList nameFilters;
-   QFileInfo fileInfo;
+public:
+    QString path;
+    QDir::Filters filters;
+    QStringList nameFilters;
+    QFileInfo fileInfo;
 };
 
-QAbstractFileEngineIterator::QAbstractFileEngineIterator(QDir::Filters filters, const QStringList &nameFilters)
-   : d(new QAbstractFileEngineIteratorPrivate)
+QAbstractFileEngineIterator::QAbstractFileEngineIterator( QDir::Filters filters, const QStringList &nameFilters )
+    : d( new QAbstractFileEngineIteratorPrivate )
 {
-   d->nameFilters = nameFilters;
-   d->filters = filters;
+    d->nameFilters = nameFilters;
+    d->filters = filters;
 }
 
 QAbstractFileEngineIterator::~QAbstractFileEngineIterator()
@@ -355,143 +364,150 @@ QAbstractFileEngineIterator::~QAbstractFileEngineIterator()
 
 QString QAbstractFileEngineIterator::path() const
 {
-   return d->path;
+    return d->path;
 }
 
 // internal
-void QAbstractFileEngineIterator::setPath(const QString &path)
+void QAbstractFileEngineIterator::setPath( const QString &path )
 {
-   d->path = path;
+    d->path = path;
 }
 
 QStringList QAbstractFileEngineIterator::nameFilters() const
 {
-   return d->nameFilters;
+    return d->nameFilters;
 }
 
 QDir::Filters QAbstractFileEngineIterator::filters() const
 {
-   return d->filters;
+    return d->filters;
 }
 
 QString QAbstractFileEngineIterator::currentFilePath() const
 {
-   QString name = currentFileName();
+    QString name = currentFileName();
 
-   if (! name.isEmpty()) {
-      QString tmp = path();
+    if ( ! name.isEmpty() )
+    {
+        QString tmp = path();
 
-      if (! tmp.isEmpty()) {
-         if (!tmp.endsWith('/')) {
-            tmp.append('/');
-         }
+        if ( ! tmp.isEmpty() )
+        {
+            if ( !tmp.endsWith( '/' ) )
+            {
+                tmp.append( '/' );
+            }
 
-         name.prepend(tmp);
-      }
-   }
+            name.prepend( tmp );
+        }
+    }
 
-   return name;
+    return name;
 }
 
 QFileInfo QAbstractFileEngineIterator::currentFileInfo() const
 {
-   QString path = currentFilePath();
+    QString path = currentFilePath();
 
-   if (d->fileInfo.filePath() != path) {
-      d->fileInfo.setFile(path);
-   }
+    if ( d->fileInfo.filePath() != path )
+    {
+        d->fileInfo.setFile( path );
+    }
 
-   // return a shallow copy
-   return d->fileInfo;
+    // return a shallow copy
+    return d->fileInfo;
 }
 
-QAbstractFileEngineIterator *QAbstractFileEngine::beginEntryList(QDir::Filters filters,
-      const QStringList &filterNames)
+QAbstractFileEngineIterator *QAbstractFileEngine::beginEntryList( QDir::Filters filters,
+        const QStringList &filterNames )
 {
-   (void) filters;
-   (void) filterNames;
+    ( void ) filters;
+    ( void ) filterNames;
 
-   return nullptr;
+    return nullptr;
 }
 
 // internal
 QAbstractFileEngineIterator *QAbstractFileEngine::endEntryList()
 {
-   return nullptr;
+    return nullptr;
 }
 
-qint64 QAbstractFileEngine::read(char *data, qint64 maxlen)
+qint64 QAbstractFileEngine::read( char *data, qint64 maxlen )
 {
-   (void) data;
-   (void) maxlen;
+    ( void ) data;
+    ( void ) maxlen;
 
-   return -1;
+    return -1;
 }
 
-qint64 QAbstractFileEngine::write(const char *data, qint64 len)
+qint64 QAbstractFileEngine::write( const char *data, qint64 len )
 {
-   (void) data;
-   (void) len;
+    ( void ) data;
+    ( void ) len;
 
-   return -1;
+    return -1;
 }
 
-qint64 QAbstractFileEngine::readLine(char *data, qint64 maxlen)
+qint64 QAbstractFileEngine::readLine( char *data, qint64 maxlen )
 {
-   qint64 readSoFar = 0;
+    qint64 readSoFar = 0;
 
-   while (readSoFar < maxlen) {
-      char c;
-      qint64 readResult = read(&c, 1);
+    while ( readSoFar < maxlen )
+    {
+        char c;
+        qint64 readResult = read( &c, 1 );
 
-      if (readResult <= 0) {
-         return (readSoFar > 0) ? readSoFar : -1;
-      }
+        if ( readResult <= 0 )
+        {
+            return ( readSoFar > 0 ) ? readSoFar : -1;
+        }
 
-      ++readSoFar;
-      *data = c;
+        ++readSoFar;
+        *data = c;
 
-      ++data;
+        ++data;
 
-      if (c == '\n') {
-         return readSoFar;
-      }
-   }
+        if ( c == '\n' )
+        {
+            return readSoFar;
+        }
+    }
 
-   return readSoFar;
+    return readSoFar;
 }
 
-bool QAbstractFileEngine::extension(Extension extension, const ExtensionOption *option, ExtensionReturn *output)
+bool QAbstractFileEngine::extension( Extension extension, const ExtensionOption *option, ExtensionReturn *output )
 {
-   (void) extension;
-   (void) option;
-   (void) output;
+    ( void ) extension;
+    ( void ) option;
+    ( void ) output;
 
-   return false;
+    return false;
 }
 
-bool QAbstractFileEngine::supportsExtension(Extension extension) const
+bool QAbstractFileEngine::supportsExtension( Extension extension ) const
 {
-   (void) extension;
+    ( void ) extension;
 
-   return false;
+    return false;
 }
 
 QFile::FileError QAbstractFileEngine::error() const
 {
-   Q_D(const QAbstractFileEngine);
-   return d->fileError;
+    Q_D( const QAbstractFileEngine );
+    return d->fileError;
 }
 
 QString QAbstractFileEngine::errorString() const
 {
-   Q_D(const QAbstractFileEngine);
-   return d->errorString;
+    Q_D( const QAbstractFileEngine );
+    return d->errorString;
 }
 
-void QAbstractFileEngine::setError(QFile::FileError error, const QString &errorString)
+void QAbstractFileEngine::setError( QFile::FileError error, const QString &errorString )
 {
-   Q_D(QAbstractFileEngine);
-   d->fileError = error;
-   d->errorString = errorString;
+    Q_D( QAbstractFileEngine );
+    d->fileError = error;
+    d->errorString = errorString;
 }

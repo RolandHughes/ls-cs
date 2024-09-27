@@ -28,11 +28,12 @@
 
 #include "WebEventFactoryQt.h"
 
-namespace WebKit {
+namespace WebKit
+{
 
-NativeWebMouseEvent::NativeWebMouseEvent(QGraphicsSceneMouseEvent* event, int eventClickCount)
-    : WebMouseEvent(WebEventFactory::createWebMouseEvent(event, eventClickCount))
-    , m_nativeEvent(event)
+NativeWebMouseEvent::NativeWebMouseEvent( QGraphicsSceneMouseEvent *event, int eventClickCount )
+    : WebMouseEvent( WebEventFactory::createWebMouseEvent( event, eventClickCount ) )
+    , m_nativeEvent( event )
 {
 }
 

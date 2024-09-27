@@ -25,8 +25,8 @@
 #include <qstyle.h>
 
 
-QStylePlugin::QStylePlugin(QObject *parent)
-   : QObject(parent)
+QStylePlugin::QStylePlugin( QObject *parent )
+    : QObject( parent )
 {
 }
 

@@ -39,102 +39,114 @@
 
 using namespace std;
 
-namespace WebCore {
+namespace WebCore
+{
 
 // Takes the input AudioChannel as an input impulse response and calculates the average group delay.
 // This represents the initial delay before the most energetic part of the impulse response.
 // The sample-frame delay is removed from the impulseP impulse response, and this value  is returned.
 // the length of the passed in AudioChannel must be a power of 2.
-static double extractAverageGroupDelay(AudioChannel* channel, size_t analysisFFTSize)
+static double extractAverageGroupDelay( AudioChannel *channel, size_t analysisFFTSize )
 {
-    ASSERT(channel);
-        
-    float* impulseP = channel->data();
-    
-    ASSERT(channel->length() >= analysisFFTSize);
-    
-    // Check for power-of-2.
-    ASSERT(1UL << static_cast<unsigned>(log2(analysisFFTSize)) == analysisFFTSize);
+    ASSERT( channel );
 
-    FFTFrame estimationFrame(analysisFFTSize);
-    estimationFrame.doFFT(impulseP);
+    float *impulseP = channel->data();
+
+    ASSERT( channel->length() >= analysisFFTSize );
+
+    // Check for power-of-2.
+    ASSERT( 1UL << static_cast<unsigned>( log2( analysisFFTSize ) ) == analysisFFTSize );
+
+    FFTFrame estimationFrame( analysisFFTSize );
+    estimationFrame.doFFT( impulseP );
 
     double frameDelay = estimationFrame.extractAverageGroupDelay();
-    estimationFrame.doInverseFFT(impulseP);
+    estimationFrame.doInverseFFT( impulseP );
 
     return frameDelay;
 }
 
-HRTFKernel::HRTFKernel(AudioChannel* channel, size_t fftSize, double sampleRate, bool bassBoost)
-    : m_frameDelay(0.0)
-    , m_sampleRate(sampleRate)
+HRTFKernel::HRTFKernel( AudioChannel *channel, size_t fftSize, double sampleRate, bool bassBoost )
+    : m_frameDelay( 0.0 )
+    , m_sampleRate( sampleRate )
 {
-    ASSERT(channel);
+    ASSERT( channel );
 
     // Determine the leading delay (average group delay) for the response.
-    m_frameDelay = extractAverageGroupDelay(channel, fftSize / 2);
+    m_frameDelay = extractAverageGroupDelay( channel, fftSize / 2 );
 
-    float* impulseResponse = channel->data();
+    float *impulseResponse = channel->data();
     size_t responseLength = channel->length();
 
-    if (bassBoost) {
+    if ( bassBoost )
+    {
         // Run through some post-processing to boost the bass a little -- the HRTF's seem to be a little bass-deficient.
         // FIXME: this post-processing should have already been applied to the HRTF file resources.  Once the files are put into this form,
         // then this code path can be removed along with the bassBoost parameter.
         Biquad filter;
-        filter.setLowShelfParams(700.0 / nyquist(), 6.0); // boost 6dB at 700Hz
-        filter.process(impulseResponse, impulseResponse, responseLength);
+        filter.setLowShelfParams( 700.0 / nyquist(), 6.0 ); // boost 6dB at 700Hz
+        filter.process( impulseResponse, impulseResponse, responseLength );
     }
 
     // We need to truncate to fit into 1/2 the FFT size (with zero padding) in order to do proper convolution.
-    size_t truncatedResponseLength = min(responseLength, fftSize / 2); // truncate if necessary to max impulse response length allowed by FFT
+    size_t truncatedResponseLength = min( responseLength,
+                                          fftSize / 2 ); // truncate if necessary to max impulse response length allowed by FFT
 
     // Quick fade-out (apply window) at truncation point
-    unsigned numberOfFadeOutFrames = static_cast<unsigned>(sampleRate / 4410); // 10 sample-frames @44.1KHz sample-rate
-    ASSERT(numberOfFadeOutFrames < truncatedResponseLength);
-    if (numberOfFadeOutFrames < truncatedResponseLength) {
-        for (unsigned i = truncatedResponseLength - numberOfFadeOutFrames; i < truncatedResponseLength; ++i) {
-            float x = 1.0f - static_cast<float>(i - (truncatedResponseLength - numberOfFadeOutFrames)) / numberOfFadeOutFrames;
+    unsigned numberOfFadeOutFrames = static_cast<unsigned>( sampleRate / 4410 ); // 10 sample-frames @44.1KHz sample-rate
+    ASSERT( numberOfFadeOutFrames < truncatedResponseLength );
+
+    if ( numberOfFadeOutFrames < truncatedResponseLength )
+    {
+        for ( unsigned i = truncatedResponseLength - numberOfFadeOutFrames; i < truncatedResponseLength; ++i )
+        {
+            float x = 1.0f - static_cast<float>( i - ( truncatedResponseLength - numberOfFadeOutFrames ) ) / numberOfFadeOutFrames;
             impulseResponse[i] *= x;
         }
     }
 
-    m_fftFrame = adoptPtr(new FFTFrame(fftSize));
-    m_fftFrame->doPaddedFFT(impulseResponse, truncatedResponseLength);
+    m_fftFrame = adoptPtr( new FFTFrame( fftSize ) );
+    m_fftFrame->doPaddedFFT( impulseResponse, truncatedResponseLength );
 }
 
 PassOwnPtr<AudioChannel> HRTFKernel::createImpulseResponse()
 {
-    OwnPtr<AudioChannel> channel = adoptPtr(new AudioChannel(fftSize()));
-    FFTFrame fftFrame(*m_fftFrame);
+    OwnPtr<AudioChannel> channel = adoptPtr( new AudioChannel( fftSize() ) );
+    FFTFrame fftFrame( *m_fftFrame );
 
     // Add leading delay back in.
-    fftFrame.addConstantGroupDelay(m_frameDelay);
-    fftFrame.doInverseFFT(channel->data());
+    fftFrame.addConstantGroupDelay( m_frameDelay );
+    fftFrame.doInverseFFT( channel->data() );
 
     return channel.release();
 }
 
 // Interpolates two kernels with x: 0 -> 1 and returns the result.
-PassRefPtr<HRTFKernel> HRTFKernel::createInterpolatedKernel(HRTFKernel* kernel1, HRTFKernel* kernel2, double x)
+PassRefPtr<HRTFKernel> HRTFKernel::createInterpolatedKernel( HRTFKernel *kernel1, HRTFKernel *kernel2, double x )
 {
-    ASSERT(kernel1 && kernel2);
-    if (!kernel1 || !kernel2)
+    ASSERT( kernel1 && kernel2 );
+
+    if ( !kernel1 || !kernel2 )
+    {
         return 0;
- 
-    ASSERT(x >= 0.0 && x < 1.0);
-    x = min(1.0, max(0.0, x));
-    
+    }
+
+    ASSERT( x >= 0.0 && x < 1.0 );
+    x = min( 1.0, max( 0.0, x ) );
+
     double sampleRate1 = kernel1->sampleRate();
     double sampleRate2 = kernel2->sampleRate();
-    ASSERT(sampleRate1 == sampleRate2);
-    if (sampleRate1 != sampleRate2)
+    ASSERT( sampleRate1 == sampleRate2 );
+
+    if ( sampleRate1 != sampleRate2 )
+    {
         return 0;
-    
-    double frameDelay = (1.0 - x) * kernel1->frameDelay() + x * kernel2->frameDelay();
-    
-    OwnPtr<FFTFrame> interpolatedFrame = FFTFrame::createInterpolatedFrame(*kernel1->fftFrame(), *kernel2->fftFrame(), x);
-    return HRTFKernel::create(interpolatedFrame.release(), frameDelay, sampleRate1);
+    }
+
+    double frameDelay = ( 1.0 - x ) * kernel1->frameDelay() + x * kernel2->frameDelay();
+
+    OwnPtr<FFTFrame> interpolatedFrame = FFTFrame::createInterpolatedFrame( *kernel1->fftFrame(), *kernel2->fftFrame(), x );
+    return HRTFKernel::create( interpolatedFrame.release(), frameDelay, sampleRate1 );
 }
 
 } // namespace WebCore

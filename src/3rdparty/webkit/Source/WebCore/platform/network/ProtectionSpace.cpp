@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #include "config.h"
 #include "ProtectionSpace.h"
@@ -31,92 +31,108 @@
 #include <wtf/RetainPtr.h>
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
 // Need to enforce empty, non-null strings due to the pickiness of the String == String operator
 // combined with the semantics of the String(NSString*) constructor
 ProtectionSpace::ProtectionSpace()
-    : m_host("")
-    , m_port(0)
-    , m_serverType(ProtectionSpaceServerHTTP)
-    , m_realm("")
-    , m_authenticationScheme(ProtectionSpaceAuthenticationSchemeDefault)
-    , m_isHashTableDeletedValue(false)
+    : m_host( "" )
+    , m_port( 0 )
+    , m_serverType( ProtectionSpaceServerHTTP )
+    , m_realm( "" )
+    , m_authenticationScheme( ProtectionSpaceAuthenticationSchemeDefault )
+    , m_isHashTableDeletedValue( false )
 {
 }
- 
+
 // Need to enforce empty, non-null strings due to the pickiness of the String == String operator
 // combined with the semantics of the String(NSString*) constructor
-ProtectionSpace::ProtectionSpace(const String& host, int port, ProtectionSpaceServerType serverType, const String& realm, ProtectionSpaceAuthenticationScheme authenticationScheme)
-    : m_host(host.length() ? host : "")
-    , m_port(port)
-    , m_serverType(serverType)
-    , m_realm(realm.length() ? realm : "")
-    , m_authenticationScheme(authenticationScheme)
-    , m_isHashTableDeletedValue(false)
-{    
-}
-    
-const String& ProtectionSpace::host() const 
-{ 
-    return m_host; 
+ProtectionSpace::ProtectionSpace( const String &host, int port, ProtectionSpaceServerType serverType, const String &realm,
+                                  ProtectionSpaceAuthenticationScheme authenticationScheme )
+    : m_host( host.length() ? host : "" )
+    , m_port( port )
+    , m_serverType( serverType )
+    , m_realm( realm.length() ? realm : "" )
+    , m_authenticationScheme( authenticationScheme )
+    , m_isHashTableDeletedValue( false )
+{
 }
 
-int ProtectionSpace::port() const 
+const String &ProtectionSpace::host() const
 {
-    return m_port; 
+    return m_host;
 }
 
-ProtectionSpaceServerType ProtectionSpace::serverType() const 
+int ProtectionSpace::port() const
 {
-    return m_serverType; 
+    return m_port;
+}
+
+ProtectionSpaceServerType ProtectionSpace::serverType() const
+{
+    return m_serverType;
 }
 
 bool ProtectionSpace::isProxy() const
 {
-    return (m_serverType == ProtectionSpaceProxyHTTP ||
-            m_serverType == ProtectionSpaceProxyHTTPS ||
-            m_serverType == ProtectionSpaceProxyFTP ||
-            m_serverType == ProtectionSpaceProxySOCKS);
+    return ( m_serverType == ProtectionSpaceProxyHTTP ||
+             m_serverType == ProtectionSpaceProxyHTTPS ||
+             m_serverType == ProtectionSpaceProxyFTP ||
+             m_serverType == ProtectionSpaceProxySOCKS );
 }
 
-const String& ProtectionSpace::realm() const 
-{ 
-    return m_realm; 
+const String &ProtectionSpace::realm() const
+{
+    return m_realm;
 }
 
-ProtectionSpaceAuthenticationScheme ProtectionSpace::authenticationScheme() const 
-{ 
-    return m_authenticationScheme; 
+ProtectionSpaceAuthenticationScheme ProtectionSpace::authenticationScheme() const
+{
+    return m_authenticationScheme;
 }
 
 bool ProtectionSpace::receivesCredentialSecurely() const
 {
 #if USE(CFNETWORK) && !PLATFORM(MAC)
-    RetainPtr<CFURLProtectionSpaceRef> cfSpace(AdoptCF, createCF(*this));
-    return cfSpace && CFURLProtectionSpaceReceivesCredentialSecurely(cfSpace.get());
+    RetainPtr<CFURLProtectionSpaceRef> cfSpace( AdoptCF, createCF( *this ) );
+    return cfSpace && CFURLProtectionSpaceReceivesCredentialSecurely( cfSpace.get() );
 #else
-    return (m_serverType == ProtectionSpaceServerHTTPS || 
-            m_serverType == ProtectionSpaceServerFTPS || 
-            m_serverType == ProtectionSpaceProxyHTTPS || 
-            m_authenticationScheme == ProtectionSpaceAuthenticationSchemeHTTPDigest); 
+    return ( m_serverType == ProtectionSpaceServerHTTPS ||
+             m_serverType == ProtectionSpaceServerFTPS ||
+             m_serverType == ProtectionSpaceProxyHTTPS ||
+             m_authenticationScheme == ProtectionSpaceAuthenticationSchemeHTTPDigest );
 #endif
 }
 
-bool operator==(const ProtectionSpace& a, const ProtectionSpace& b)
+bool operator==( const ProtectionSpace &a, const ProtectionSpace &b )
 {
-    if (a.host() != b.host())
+    if ( a.host() != b.host() )
+    {
         return false;
-    if (a.port() != b.port())
+    }
+
+    if ( a.port() != b.port() )
+    {
         return false;
-    if (a.serverType() != b.serverType())
+    }
+
+    if ( a.serverType() != b.serverType() )
+    {
         return false;
+    }
+
     // Ignore realm for proxies
-    if (!a.isProxy() && a.realm() != b.realm())
+    if ( !a.isProxy() && a.realm() != b.realm() )
+    {
         return false;
-    if (a.authenticationScheme() != b.authenticationScheme())
+    }
+
+    if ( a.authenticationScheme() != b.authenticationScheme() )
+    {
         return false;
-    
+    }
+
     return true;
 }
 

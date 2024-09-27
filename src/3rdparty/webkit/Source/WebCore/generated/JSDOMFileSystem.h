@@ -28,26 +28,32 @@
 #include <runtime/JSObjectWithGlobalObject.h>
 #include <runtime/ObjectPrototype.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class DOMFileSystem;
 
-class JSDOMFileSystem : public JSDOMWrapper {
+class JSDOMFileSystem : public JSDOMWrapper
+{
     typedef JSDOMWrapper Base;
 public:
-    JSDOMFileSystem(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<DOMFileSystem>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
+    JSDOMFileSystem( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<DOMFileSystem> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
-    DOMFileSystem* impl() const { return m_impl.get(); }
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
+    DOMFileSystem *impl() const
+    {
+        return m_impl.get();
+    }
 
 private:
     RefPtr<DOMFileSystem> m_impl;
@@ -55,44 +61,48 @@ protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
-class JSDOMFileSystemOwner : public JSC::WeakHandleOwner {
-    virtual bool isReachableFromOpaqueRoots(JSC::Handle<JSC::Unknown>, void* context, JSC::SlotVisitor&);
-    virtual void finalize(JSC::Handle<JSC::Unknown>, void* context);
+class JSDOMFileSystemOwner : public JSC::WeakHandleOwner
+{
+    virtual bool isReachableFromOpaqueRoots( JSC::Handle<JSC::Unknown>, void *context, JSC::SlotVisitor & );
+    virtual void finalize( JSC::Handle<JSC::Unknown>, void *context );
 };
 
-inline JSC::WeakHandleOwner* wrapperOwner(DOMWrapperWorld*, DOMFileSystem*)
+inline JSC::WeakHandleOwner *wrapperOwner( DOMWrapperWorld *, DOMFileSystem * )
 {
-    DEFINE_STATIC_LOCAL(JSDOMFileSystemOwner, jsDOMFileSystemOwner, ());
+    DEFINE_STATIC_LOCAL( JSDOMFileSystemOwner, jsDOMFileSystemOwner, () );
     return &jsDOMFileSystemOwner;
 }
 
-inline void* wrapperContext(DOMWrapperWorld* world, DOMFileSystem*)
+inline void *wrapperContext( DOMWrapperWorld *world, DOMFileSystem * )
 {
     return world;
 }
 
-JSC::JSValue toJS(JSC::ExecState*, JSDOMGlobalObject*, DOMFileSystem*);
-DOMFileSystem* toDOMFileSystem(JSC::JSValue);
+JSC::JSValue toJS( JSC::ExecState *, JSDOMGlobalObject *, DOMFileSystem * );
+DOMFileSystem *toDOMFileSystem( JSC::JSValue );
 
-class JSDOMFileSystemPrototype : public JSC::JSObjectWithGlobalObject {
+class JSDOMFileSystemPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSDOMFileSystemPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSDOMFileSystemPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                              JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = Base::StructureFlags;
 };
 
 // Attributes
 
-JSC::JSValue jsDOMFileSystemName(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsDOMFileSystemRoot(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsDOMFileSystemConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsDOMFileSystemName( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsDOMFileSystemRoot( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsDOMFileSystemConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

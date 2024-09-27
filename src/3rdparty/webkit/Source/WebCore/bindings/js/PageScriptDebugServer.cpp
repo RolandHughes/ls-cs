@@ -49,20 +49,21 @@
 
 using namespace JSC;
 
-namespace WebCore {
-
-static Page* toPage(JSGlobalObject* globalObject)
+namespace WebCore
 {
-    ASSERT_ARG(globalObject, globalObject);
 
-    JSDOMWindow* window = asJSDOMWindow(globalObject);
-    Frame* frame = window->impl()->frame();
+static Page *toPage( JSGlobalObject *globalObject )
+{
+    ASSERT_ARG( globalObject, globalObject );
+
+    JSDOMWindow *window = asJSDOMWindow( globalObject );
+    Frame *frame = window->impl()->frame();
     return frame ? frame->page() : 0;
 }
 
-PageScriptDebugServer& PageScriptDebugServer::shared()
+PageScriptDebugServer &PageScriptDebugServer::shared()
 {
-    DEFINE_STATIC_LOCAL(PageScriptDebugServer, server, ());
+    DEFINE_STATIC_LOCAL( PageScriptDebugServer, server, () );
     return server;
 }
 
@@ -73,140 +74,178 @@ PageScriptDebugServer::PageScriptDebugServer()
 
 PageScriptDebugServer::~PageScriptDebugServer()
 {
-    deleteAllValues(m_pageListenersMap);
+    deleteAllValues( m_pageListenersMap );
 }
 
-void PageScriptDebugServer::addListener(ScriptDebugListener* listener, Page* page)
+void PageScriptDebugServer::addListener( ScriptDebugListener *listener, Page *page )
 {
-    ASSERT_ARG(listener, listener);
-    ASSERT_ARG(page, page);
+    ASSERT_ARG( listener, listener );
+    ASSERT_ARG( page, page );
 
-    pair<PageListenersMap::iterator, bool> result = m_pageListenersMap.add(page, 0);
-    if (result.second)
+    pair<PageListenersMap::iterator, bool> result = m_pageListenersMap.add( page, 0 );
+
+    if ( result.second )
+    {
         result.first->second = new ListenerSet;
+    }
 
-    ListenerSet* listeners = result.first->second;
-    listeners->add(listener);
+    ListenerSet *listeners = result.first->second;
+    listeners->add( listener );
 
     recompileAllJSFunctionsSoon();
-    page->setDebugger(this);
+    page->setDebugger( this );
 }
 
-void PageScriptDebugServer::removeListener(ScriptDebugListener* listener, Page* page)
+void PageScriptDebugServer::removeListener( ScriptDebugListener *listener, Page *page )
 {
-    ASSERT_ARG(listener, listener);
-    ASSERT_ARG(page, page);
+    ASSERT_ARG( listener, listener );
+    ASSERT_ARG( page, page );
 
-    PageListenersMap::iterator it = m_pageListenersMap.find(page);
-    if (it == m_pageListenersMap.end())
+    PageListenersMap::iterator it = m_pageListenersMap.find( page );
+
+    if ( it == m_pageListenersMap.end() )
+    {
         return;
+    }
 
-    ListenerSet* listeners = it->second;
-    listeners->remove(listener);
-    if (listeners->isEmpty()) {
-        m_pageListenersMap.remove(it);
+    ListenerSet *listeners = it->second;
+    listeners->remove( listener );
+
+    if ( listeners->isEmpty() )
+    {
+        m_pageListenersMap.remove( it );
         delete listeners;
-        didRemoveLastListener(page);
+        didRemoveLastListener( page );
     }
 }
 
-void PageScriptDebugServer::recompileAllJSFunctions(Timer<ScriptDebugServer>*)
+void PageScriptDebugServer::recompileAllJSFunctions( Timer<ScriptDebugServer> * )
 {
-    JSLock lock(SilenceAssertionsOnly);
+    JSLock lock( SilenceAssertionsOnly );
+
     // If JavaScript stack is not empty postpone recompilation.
-    if (JSDOMWindow::commonJSGlobalData()->dynamicGlobalObject)
+    if ( JSDOMWindow::commonJSGlobalData()->dynamicGlobalObject )
+    {
         recompileAllJSFunctionsSoon();
+    }
     else
-        Debugger::recompileAllJSFunctions(JSDOMWindow::commonJSGlobalData());
+    {
+        Debugger::recompileAllJSFunctions( JSDOMWindow::commonJSGlobalData() );
+    }
 }
 
-ScriptDebugServer::ListenerSet* PageScriptDebugServer::getListenersForGlobalObject(JSGlobalObject* globalObject)
+ScriptDebugServer::ListenerSet *PageScriptDebugServer::getListenersForGlobalObject( JSGlobalObject *globalObject )
 {
-    Page* page = toPage(globalObject);
-    if (!page)
+    Page *page = toPage( globalObject );
+
+    if ( !page )
+    {
         return 0;
-    return m_pageListenersMap.get(page);
+    }
+
+    return m_pageListenersMap.get( page );
 }
 
-void PageScriptDebugServer::didPause(JSC::JSGlobalObject* globalObject)
+void PageScriptDebugServer::didPause( JSC::JSGlobalObject *globalObject )
 {
-    Page* page = toPage(globalObject);
+    Page *page = toPage( globalObject );
     m_pausedPage = page;
-    setJavaScriptPaused(page->group(), true);
+    setJavaScriptPaused( page->group(), true );
 }
 
-void PageScriptDebugServer::didContinue(JSC::JSGlobalObject* globalObject)
+void PageScriptDebugServer::didContinue( JSC::JSGlobalObject *globalObject )
 {
-    Page* page = toPage(globalObject);
+    Page *page = toPage( globalObject );
     m_pausedPage = 0;
-    setJavaScriptPaused(page->group(), false);
+    setJavaScriptPaused( page->group(), false );
 }
 
-void PageScriptDebugServer::didRemoveLastListener(Page* page)
+void PageScriptDebugServer::didRemoveLastListener( Page *page )
 {
-    if (m_pausedPage == page)
+    if ( m_pausedPage == page )
+    {
         m_doneProcessingDebuggerEvents = true;
+    }
 
     recompileAllJSFunctionsSoon();
-    page->setDebugger(0);
+    page->setDebugger( 0 );
 }
 
-void PageScriptDebugServer::setJavaScriptPaused(const PageGroup& pageGroup, bool paused)
+void PageScriptDebugServer::setJavaScriptPaused( const PageGroup &pageGroup, bool paused )
 {
-    setMainThreadCallbacksPaused(paused);
+    setMainThreadCallbacksPaused( paused );
 
-    const HashSet<Page*>& pages = pageGroup.pages();
+    const HashSet<Page *> &pages = pageGroup.pages();
 
-    HashSet<Page*>::const_iterator end = pages.end();
-    for (HashSet<Page*>::const_iterator it = pages.begin(); it != end; ++it)
-        setJavaScriptPaused(*it, paused);
+    HashSet<Page *>::const_iterator end = pages.end();
+
+    for ( HashSet<Page *>::const_iterator it = pages.begin(); it != end; ++it )
+    {
+        setJavaScriptPaused( *it, paused );
+    }
 }
 
-void PageScriptDebugServer::setJavaScriptPaused(Page* page, bool paused)
+void PageScriptDebugServer::setJavaScriptPaused( Page *page, bool paused )
 {
-    ASSERT_ARG(page, page);
+    ASSERT_ARG( page, page );
 
-    page->setDefersLoading(paused);
+    page->setDefersLoading( paused );
 
-    for (Frame* frame = page->mainFrame(); frame; frame = frame->tree()->traverseNext())
-        setJavaScriptPaused(frame, paused);
+    for ( Frame *frame = page->mainFrame(); frame; frame = frame->tree()->traverseNext() )
+    {
+        setJavaScriptPaused( frame, paused );
+    }
 }
 
-void PageScriptDebugServer::setJavaScriptPaused(Frame* frame, bool paused)
+void PageScriptDebugServer::setJavaScriptPaused( Frame *frame, bool paused )
 {
-    ASSERT_ARG(frame, frame);
+    ASSERT_ARG( frame, frame );
 
-    if (!frame->script()->canExecuteScripts(NotAboutToExecuteScript))
+    if ( !frame->script()->canExecuteScripts( NotAboutToExecuteScript ) )
+    {
         return;
+    }
 
-    frame->script()->setPaused(paused);
+    frame->script()->setPaused( paused );
 
-    Document* document = frame->document();
-    if (paused) {
+    Document *document = frame->document();
+
+    if ( paused )
+    {
         document->suspendScriptedAnimationControllerCallbacks();
-        document->suspendActiveDOMObjects(ActiveDOMObject::JavaScriptDebuggerPaused);
-    } else {
+        document->suspendActiveDOMObjects( ActiveDOMObject::JavaScriptDebuggerPaused );
+    }
+    else
+    {
         document->resumeActiveDOMObjects();
         document->resumeScriptedAnimationControllerCallbacks();
     }
 
-    setJavaScriptPaused(frame->view(), paused);
+    setJavaScriptPaused( frame->view(), paused );
 }
 
-void PageScriptDebugServer::setJavaScriptPaused(FrameView* view, bool paused)
+void PageScriptDebugServer::setJavaScriptPaused( FrameView *view, bool paused )
 {
-    if (!view)
+    if ( !view )
+    {
         return;
+    }
 
-    const HashSet<RefPtr<Widget> >* children = view->children();
-    ASSERT(children);
+    const HashSet<RefPtr<Widget> > *children = view->children();
+    ASSERT( children );
 
     HashSet<RefPtr<Widget> >::const_iterator end = children->end();
-    for (HashSet<RefPtr<Widget> >::const_iterator it = children->begin(); it != end; ++it) {
-        Widget* widget = (*it).get();
-        if (!widget->isPluginView())
+
+    for ( HashSet<RefPtr<Widget> >::const_iterator it = children->begin(); it != end; ++it )
+    {
+        Widget *widget = ( *it ).get();
+
+        if ( !widget->isPluginView() )
+        {
             continue;
-        static_cast<PluginView*>(widget)->setJavaScriptPaused(paused);
+        }
+
+        static_cast<PluginView *>( widget )->setJavaScriptPaused( paused );
     }
 }
 

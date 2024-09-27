@@ -31,10 +31,10 @@
 
 #include <qabstractvideosurface.h>
 
-DirectShowVideoRendererControl::DirectShowVideoRendererControl(DirectShowEventLoop *loop, QObject *parent)
-   : QVideoRendererControl(parent), m_loop(loop), m_surface(nullptr), m_filter(nullptr)
+DirectShowVideoRendererControl::DirectShowVideoRendererControl( DirectShowEventLoop *loop, QObject *parent )
+    : QVideoRendererControl( parent ), m_loop( loop ), m_surface( nullptr ), m_filter( nullptr )
 #ifdef HAVE_EVR
-   , m_evrPresenter(nullptr)
+    , m_evrPresenter( nullptr )
 #endif
 {
 }
@@ -42,68 +42,79 @@ DirectShowVideoRendererControl::DirectShowVideoRendererControl(DirectShowEventLo
 DirectShowVideoRendererControl::~DirectShowVideoRendererControl()
 {
 #ifdef HAVE_EVR
-   if (m_evrPresenter) {
-      m_evrPresenter->setSurface(nullptr);
-      m_evrPresenter->Release();
-   }
+
+    if ( m_evrPresenter )
+    {
+        m_evrPresenter->setSurface( nullptr );
+        m_evrPresenter->Release();
+    }
+
 #endif
 
-   if (m_filter) {
-      m_filter->Release();
-   }
+    if ( m_filter )
+    {
+        m_filter->Release();
+    }
 }
 
 QAbstractVideoSurface *DirectShowVideoRendererControl::surface() const
 {
-   return m_surface;
+    return m_surface;
 }
 
-void DirectShowVideoRendererControl::setSurface(QAbstractVideoSurface *surface)
+void DirectShowVideoRendererControl::setSurface( QAbstractVideoSurface *surface )
 {
-   if (m_surface == surface) {
-      return;
-   }
+    if ( m_surface == surface )
+    {
+        return;
+    }
 
 #ifdef HAVE_EVR
-   if (m_evrPresenter) {
-      m_evrPresenter->setSurface(nullptr);
-      m_evrPresenter->Release();
-      m_evrPresenter = nullptr;
-   }
+
+    if ( m_evrPresenter )
+    {
+        m_evrPresenter->setSurface( nullptr );
+        m_evrPresenter->Release();
+        m_evrPresenter = nullptr;
+    }
+
 #endif
 
-   if (m_filter) {
-      m_filter->Release();
-      m_filter = nullptr;
-   }
+    if ( m_filter )
+    {
+        m_filter->Release();
+        m_filter = nullptr;
+    }
 
-   m_surface = surface;
+    m_surface = surface;
 
-   if (m_surface) {
+    if ( m_surface )
+    {
 
 #ifdef HAVE_EVR
-      m_filter = com_new<IBaseFilter>(clsid_EnhancedVideoRenderer);
-      m_evrPresenter = new EVRCustomPresenter(m_surface);
+        m_filter = com_new<IBaseFilter>( clsid_EnhancedVideoRenderer );
+        m_evrPresenter = new EVRCustomPresenter( m_surface );
 
-      if (! m_evrPresenter->isValid() || !qt_evr_setCustomPresenter(m_filter, m_evrPresenter)) {
-         m_filter->Release();
-         m_filter = nullptr;
+        if ( ! m_evrPresenter->isValid() || !qt_evr_setCustomPresenter( m_filter, m_evrPresenter ) )
+        {
+            m_filter->Release();
+            m_filter = nullptr;
 
-         m_evrPresenter->Release();
-         m_evrPresenter = nullptr;
-      }
+            m_evrPresenter->Release();
+            m_evrPresenter = nullptr;
+        }
 
-      if (! m_filter)
+        if ( ! m_filter )
 #endif
-      {
-         m_filter = new VideoSurfaceFilter(m_surface, m_loop);
-      }
-   }
+        {
+            m_filter = new VideoSurfaceFilter( m_surface, m_loop );
+        }
+    }
 
-   emit filterChanged();
+    emit filterChanged();
 }
 
 IBaseFilter *DirectShowVideoRendererControl::filter()
 {
-   return m_filter;
+    return m_filter;
 }

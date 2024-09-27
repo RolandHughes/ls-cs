@@ -26,9 +26,11 @@
 #ifndef EditingBoundary_h
 #define EditingBoundary_h
 
-namespace WebCore {
+namespace WebCore
+{
 
-enum EditingBoundaryCrossingRule {
+enum EditingBoundaryCrossingRule
+{
     CanCrossEditingBoundary,
     CannotCrossEditingBoundary,
     CanSkipOverEditingBoundary

@@ -37,30 +37,34 @@ using namespace WebKit;
 
 WKTypeID WKBundleInspectorGetTypeID()
 {
-    return toAPI(WebInspector::APIType);
+    return toAPI( WebInspector::APIType );
 }
 
-void WKBundleInspectorShow(WKBundleInspectorRef inspectorRef)
+void WKBundleInspectorShow( WKBundleInspectorRef inspectorRef )
 {
-    return toImpl(inspectorRef)->show();
+    return toImpl( inspectorRef )->show();
 }
 
-void WKBundleInspectorClose(WKBundleInspectorRef inspectorRef)
+void WKBundleInspectorClose( WKBundleInspectorRef inspectorRef )
 {
-    return toImpl(inspectorRef)->close();
+    return toImpl( inspectorRef )->close();
 }
 
-void WKBundleInspectorEvaluateScriptForTest(WKBundleInspectorRef inspectorRef, long callID, WKStringRef script)
+void WKBundleInspectorEvaluateScriptForTest( WKBundleInspectorRef inspectorRef, long callID, WKStringRef script )
 {
-    return toImpl(inspectorRef)->evaluateScriptForTest(callID, toImpl(script)->string());
+    return toImpl( inspectorRef )->evaluateScriptForTest( callID, toImpl( script )->string() );
 }
 
-void WKBundleInspectorSetPageProfilingEnabled(WKBundleInspectorRef inspectorRef, bool enabled)
+void WKBundleInspectorSetPageProfilingEnabled( WKBundleInspectorRef inspectorRef, bool enabled )
 {
-    if (enabled)
-        toImpl(inspectorRef)->startPageProfiling();
+    if ( enabled )
+    {
+        toImpl( inspectorRef )->startPageProfiling();
+    }
     else
-        toImpl(inspectorRef)->stopPageProfiling();
+    {
+        toImpl( inspectorRef )->stopPageProfiling();
+    }
 }
 
 #endif // ENABLE(INSPECTOR)

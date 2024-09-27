@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -31,20 +31,21 @@
 #include <unistd.h>
 #include <sys/mman.h>
 
-namespace JSC {
+namespace JSC
+{
 
 void MarkStack::initializePagesize()
 {
     MarkStack::s_pageSize = getpagesize();
 }
 
-void* MarkStack::allocateStack(size_t size)
+void *MarkStack::allocateStack( size_t size )
 {
-    return mmap(0, size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANON, -1, 0);
+    return mmap( 0, size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANON, -1, 0 );
 }
-void MarkStack::releaseStack(void* addr, size_t size)
+void MarkStack::releaseStack( void *addr, size_t size )
 {
-    munmap(reinterpret_cast<char*>(addr), size);
+    munmap( reinterpret_cast<char *>( addr ), size );
 }
 
 }

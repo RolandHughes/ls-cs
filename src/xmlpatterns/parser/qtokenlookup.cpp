@@ -54,12 +54,14 @@
 
 #line 107 "TokenLookup.gperf"
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 #line 101 "TokenLookup.gperf"
-struct TokenMap {
-   const char *name;
-   const Tokenizer::TokenType token;
+struct TokenMap
+{
+    const char *name;
+    const Tokenizer::TokenType token;
 }
 
 
@@ -70,347 +72,353 @@ struct TokenMap {
 
 class TokenLookup
 {
- public:
-   static const struct TokenMap *value (const char *str, unsigned int len);
+public:
+    static const struct TokenMap *value ( const char *str, unsigned int len );
 
- private:
-   static inline unsigned int hash (const char *str, unsigned int len);
+private:
+    static inline unsigned int hash ( const char *str, unsigned int len );
 };
 
-inline unsigned int
-TokenLookup::hash (const char *str, unsigned int len)
+inline unsigned int TokenLookup::hash ( const char *str, unsigned int len )
 {
-   static const unsigned char asso_values[] = {
-      230, 230, 230, 230, 230, 230, 230, 230, 230, 230,
-      230, 230, 230, 230, 230, 230, 230, 230, 230, 230,
-      230, 230, 230, 230, 230, 230, 230, 230, 230, 230,
-      230, 230, 230, 230, 230, 230, 230, 230, 230, 230,
-      230, 230, 230, 230, 230,  25, 230, 230, 230, 230,
-      230, 230, 230, 230, 230, 230, 230, 230, 230, 230,
-      230, 230, 230, 230, 230, 230, 230, 230, 230, 230,
-      230, 230, 230, 230, 230, 230, 230, 230, 230, 230,
-      230, 230, 230, 230, 230, 230, 230, 230, 230, 230,
-      230, 230, 230, 230, 230, 230, 230,   0,   2,   5,
-      25,   0,  20,  20,  35,  85, 230, 230,  40, 110,
-      25,  65,  80,   0,  60,   5,  10,   0,  55,   5,
-      20,   0, 230, 230, 230, 230, 230, 230, 230, 230,
-      230, 230, 230, 230, 230, 230, 230, 230, 230, 230,
-      230, 230, 230, 230, 230, 230, 230, 230, 230, 230,
-      230, 230, 230, 230, 230, 230, 230, 230, 230, 230,
-      230, 230, 230, 230, 230, 230, 230, 230, 230, 230,
-      230, 230, 230, 230, 230, 230, 230, 230, 230, 230,
-      230, 230, 230, 230, 230, 230, 230, 230, 230, 230,
-      230, 230, 230, 230, 230, 230, 230, 230, 230, 230,
-      230, 230, 230, 230, 230, 230, 230, 230, 230, 230,
-      230, 230, 230, 230, 230, 230, 230, 230, 230, 230,
-      230, 230, 230, 230, 230, 230, 230, 230, 230, 230,
-      230, 230, 230, 230, 230, 230, 230, 230, 230, 230,
-      230, 230, 230, 230, 230, 230, 230, 230, 230, 230,
-      230, 230, 230, 230, 230, 230
-   };
-   int hval = len;
+    static const unsigned char asso_values[] =
+    {
+        230, 230, 230, 230, 230, 230, 230, 230, 230, 230,
+        230, 230, 230, 230, 230, 230, 230, 230, 230, 230,
+        230, 230, 230, 230, 230, 230, 230, 230, 230, 230,
+        230, 230, 230, 230, 230, 230, 230, 230, 230, 230,
+        230, 230, 230, 230, 230,  25, 230, 230, 230, 230,
+        230, 230, 230, 230, 230, 230, 230, 230, 230, 230,
+        230, 230, 230, 230, 230, 230, 230, 230, 230, 230,
+        230, 230, 230, 230, 230, 230, 230, 230, 230, 230,
+        230, 230, 230, 230, 230, 230, 230, 230, 230, 230,
+        230, 230, 230, 230, 230, 230, 230,   0,   2,   5,
+        25,   0,  20,  20,  35,  85, 230, 230,  40, 110,
+        25,  65,  80,   0,  60,   5,  10,   0,  55,   5,
+        20,   0, 230, 230, 230, 230, 230, 230, 230, 230,
+        230, 230, 230, 230, 230, 230, 230, 230, 230, 230,
+        230, 230, 230, 230, 230, 230, 230, 230, 230, 230,
+        230, 230, 230, 230, 230, 230, 230, 230, 230, 230,
+        230, 230, 230, 230, 230, 230, 230, 230, 230, 230,
+        230, 230, 230, 230, 230, 230, 230, 230, 230, 230,
+        230, 230, 230, 230, 230, 230, 230, 230, 230, 230,
+        230, 230, 230, 230, 230, 230, 230, 230, 230, 230,
+        230, 230, 230, 230, 230, 230, 230, 230, 230, 230,
+        230, 230, 230, 230, 230, 230, 230, 230, 230, 230,
+        230, 230, 230, 230, 230, 230, 230, 230, 230, 230,
+        230, 230, 230, 230, 230, 230, 230, 230, 230, 230,
+        230, 230, 230, 230, 230, 230, 230, 230, 230, 230,
+        230, 230, 230, 230, 230, 230
+    };
+    int hval = len;
 
-   switch (hval) {
-      default:
-         hval += asso_values[(unsigned char)str[2]];
-         [[fallthrough]];
+    switch ( hval )
+    {
+        default:
+            hval += asso_values[( unsigned char )str[2]];
+            [[fallthrough]];
 
-      case 2:
-      case 1:
-         hval += asso_values[(unsigned char)str[0]];
-         break;
-   }
+        case 2:
+        case 1:
+            hval += asso_values[( unsigned char )str[0]];
+            break;
+    }
 
-   return hval + asso_values[(unsigned char)str[len - 1]];
+    return hval + asso_values[( unsigned char )str[len - 1]];
 }
 
-const struct TokenMap * TokenLookup::value (const char *str, unsigned int len)
+const struct TokenMap *TokenLookup::value ( const char *str, unsigned int len )
 {
-   enum {
-      TOTAL_KEYWORDS = 99,
-      MIN_WORD_LENGTH = 2,
-      MAX_WORD_LENGTH = 22,
-      MIN_HASH_VALUE = 2,
-      MAX_HASH_VALUE = 229
-   };
+    enum
+    {
+        TOTAL_KEYWORDS = 99,
+        MIN_WORD_LENGTH = 2,
+        MAX_WORD_LENGTH = 22,
+        MIN_HASH_VALUE = 2,
+        MAX_HASH_VALUE = 229
+    };
 
-   static const struct TokenMap wordlist[] = {
-      {"", ERROR}, {"", ERROR},
+    static const struct TokenMap wordlist[] =
+    {
+        {"", ERROR}, {"", ERROR},
 #line 152 "TokenLookup.gperf"
-      {"eq",                       EQ},
-      {"", ERROR},
+        {"eq",                       EQ},
+        {"", ERROR},
 #line 130 "TokenLookup.gperf"
-      {"by",                       BY},
+        {"by",                       BY},
 #line 153 "TokenLookup.gperf"
-      {"every",                    EVERY},
-      {"", ERROR},
+        {"every",                    EVERY},
+        {"", ERROR},
 #line 123 "TokenLookup.gperf"
-      {"as",                       AS},
-      {"", ERROR},
+        {"as",                       AS},
+        {"", ERROR},
 #line 148 "TokenLookup.gperf"
-      {"else",                     ELSE},
+        {"else",                     ELSE},
 #line 217 "TokenLookup.gperf"
-      {"where",                    WHERE},
+        {"where",                    WHERE},
 #line 204 "TokenLookup.gperf"
-      {"stable",                   STABLE},
+        {"stable",                   STABLE},
 #line 126 "TokenLookup.gperf"
-      {"at",                       AT},
-      {"", ERROR},
+        {"at",                       AT},
+        {"", ERROR},
 #line 131 "TokenLookup.gperf"
-      {"case",                     CASE},
-      {"", ERROR},
+        {"case",                     CASE},
+        {"", ERROR},
 #line 129 "TokenLookup.gperf"
-      {"boundary-space",           BOUNDARY_SPACE},
+        {"boundary-space",           BOUNDARY_SPACE},
 #line 147 "TokenLookup.gperf"
-      {"element",                  ELEMENT},
+        {"element",                  ELEMENT},
 #line 132 "TokenLookup.gperf"
-      {"castable",                 CASTABLE},
+        {"castable",                 CASTABLE},
 #line 127 "TokenLookup.gperf"
-      {"attribute",                ATTRIBUTE},
-      {"", ERROR},
+        {"attribute",                ATTRIBUTE},
+        {"", ERROR},
 #line 154 "TokenLookup.gperf"
-      {"except",                   EXCEPT},
+        {"except",                   EXCEPT},
 #line 161 "TokenLookup.gperf"
-      {"ge",                       GE},
-      {"", ERROR},
+        {"ge",                       GE},
+        {"", ERROR},
 #line 133 "TokenLookup.gperf"
-      {"cast",                     CAST},
+        {"cast",                     CAST},
 #line 210 "TokenLookup.gperf"
-      {"treat",                    TREAT},
+        {"treat",                    TREAT},
 #line 218 "TokenLookup.gperf"
-      {"xquery",                   XQUERY},
+        {"xquery",                   XQUERY},
 #line 181 "TokenLookup.gperf"
-      {"ne",                       NE},
-      {"", ERROR},
+        {"ne",                       NE},
+        {"", ERROR},
 #line 198 "TokenLookup.gperf"
-      {"satisfies",                SATISFIES},
-      {"", ERROR}, {"", ERROR},
+        {"satisfies",                SATISFIES},
+        {"", ERROR}, {"", ERROR},
 #line 163 "TokenLookup.gperf"
-      {"gt",                       GT},
+        {"gt",                       GT},
 #line 151 "TokenLookup.gperf"
-      {"encoding",                 ENCODING},
+        {"encoding",                 ENCODING},
 #line 124 "TokenLookup.gperf"
-      {"ascending",                ASCENDING},
-      {"", ERROR},
+        {"ascending",                ASCENDING},
+        {"", ERROR},
 #line 125 "TokenLookup.gperf"
-      {"assign",                   ASSIGN},
+        {"assign",                   ASSIGN},
 #line 139 "TokenLookup.gperf"
-      {"declare",                  DECLARE},
+        {"declare",                  DECLARE},
 #line 162 "TokenLookup.gperf"
-      {"greatest",                 GREATEST},
+        {"greatest",                 GREATEST},
 #line 208 "TokenLookup.gperf"
-      {"then",                     THEN},
-      {"", ERROR},
+        {"then",                     THEN},
+        {"", ERROR},
 #line 121 "TokenLookup.gperf"
-      {"ancestor-or-self",         ANCESTOR_OR_SELF},
+        {"ancestor-or-self",         ANCESTOR_OR_SELF},
 #line 175 "TokenLookup.gperf"
-      {"le",                       LE},
+        {"le",                       LE},
 #line 146 "TokenLookup.gperf"
-      {"document-node",            DOCUMENT_NODE},
+        {"document-node",            DOCUMENT_NODE},
 #line 207 "TokenLookup.gperf"
-      {"text",                     TEXT},
-      {"", ERROR},
+        {"text",                     TEXT},
+        {"", ERROR},
 #line 201 "TokenLookup.gperf"
-      {"schema",                   SCHEMA},
-      {"", ERROR},
+        {"schema",                   SCHEMA},
+        {"", ERROR},
 #line 145 "TokenLookup.gperf"
-      {"document",                 DOCUMENT},
-      {"", ERROR},
+        {"document",                 DOCUMENT},
+        {"", ERROR},
 #line 141 "TokenLookup.gperf"
-      {"descendant",               DESCENDANT},
-      {"", ERROR},
+        {"descendant",               DESCENDANT},
+        {"", ERROR},
 #line 177 "TokenLookup.gperf"
-      {"lt",                       LT},
+        {"lt",                       LT},
 #line 122 "TokenLookup.gperf"
-      {"and",                      AND},
+        {"and",                      AND},
 #line 182 "TokenLookup.gperf"
-      {"node",                     NODE},
+        {"node",                     NODE},
 #line 174 "TokenLookup.gperf"
-      {"least",                    LEAST},
+        {"least",                    LEAST},
 #line 199 "TokenLookup.gperf"
-      {"schema-attribute",         SCHEMA_ATTRIBUTE},
-      {"", ERROR},
+        {"schema-attribute",         SCHEMA_ATTRIBUTE},
+        {"", ERROR},
 #line 155 "TokenLookup.gperf"
-      {"external",                 EXTERNAL},
-      {"", ERROR},
+        {"external",                 EXTERNAL},
+        {"", ERROR},
 #line 143 "TokenLookup.gperf"
-      {"descending",               DESCENDING},
+        {"descending",               DESCENDING},
 #line 184 "TokenLookup.gperf"
-      {"no-preserve",              NO_PRESERVE},
+        {"no-preserve",              NO_PRESERVE},
 #line 140 "TokenLookup.gperf"
-      {"default",                  DEFAULT},
+        {"default",                  DEFAULT},
 #line 176 "TokenLookup.gperf"
-      {"let",                      LET},
+        {"let",                      LET},
 #line 200 "TokenLookup.gperf"
-      {"schema-element",           SCHEMA_ELEMENT},
-      {"", ERROR}, {"", ERROR},
+        {"schema-element",           SCHEMA_ELEMENT},
+        {"", ERROR}, {"", ERROR},
 #line 137 "TokenLookup.gperf"
-      {"construction",             CONSTRUCTION},
+        {"construction",             CONSTRUCTION},
 #line 142 "TokenLookup.gperf"
-      {"descendant-or-self",       DESCENDANT_OR_SELF},
+        {"descendant-or-self",       DESCENDANT_OR_SELF},
 #line 202 "TokenLookup.gperf"
-      {"self",                     SELF},
+        {"self",                     SELF},
 #line 183 "TokenLookup.gperf"
-      {"no-inherit",               NO_INHERIT},
-      {"", ERROR},
+        {"no-inherit",               NO_INHERIT},
+        {"", ERROR},
 #line 158 "TokenLookup.gperf"
-      {"follows",                  FOLLOWS},
+        {"follows",                  FOLLOWS},
 #line 120 "TokenLookup.gperf"
-      {"ancestor",                 ANCESTOR},
-      {"", ERROR}, {"", ERROR}, {"", ERROR},
+        {"ancestor",                 ANCESTOR},
+        {"", ERROR}, {"", ERROR}, {"", ERROR},
 #line 209 "TokenLookup.gperf"
-      {"to",                       TO},
+        {"to",                       TO},
 #line 160 "TokenLookup.gperf"
-      {"function",                 FUNCTION},
+        {"function",                 FUNCTION},
 #line 135 "TokenLookup.gperf"
-      {"collation",                COLLATION},
-      {"", ERROR},
+        {"collation",                COLLATION},
+        {"", ERROR},
 #line 205 "TokenLookup.gperf"
-      {"strict",                   STRICT},
-      {"", ERROR},
+        {"strict",                   STRICT},
+        {"", ERROR},
 #line 173 "TokenLookup.gperf"
-      {"lax",                      LAX},
-      {"", ERROR},
+        {"lax",                      LAX},
+        {"", ERROR},
 #line 149 "TokenLookup.gperf"
-      {"empty",                    EMPTY},
-      {"", ERROR},
+        {"empty",                    EMPTY},
+        {"", ERROR},
 #line 185 "TokenLookup.gperf"
-      {"of",                       OF},
+        {"of",                       OF},
 #line 195 "TokenLookup.gperf"
-      {"preserve",                 PRESERVE},
+        {"preserve",                 PRESERVE},
 #line 156 "TokenLookup.gperf"
-      {"following",                FOLLOWING},
-      {"", ERROR}, {"", ERROR},
+        {"following",                FOLLOWING},
+        {"", ERROR}, {"", ERROR},
 #line 171 "TokenLookup.gperf"
-      {"is",                       IS},
+        {"is",                       IS},
 #line 192 "TokenLookup.gperf"
-      {"precedes",                 PRECEDES},
+        {"precedes",                 PRECEDES},
 #line 150 "TokenLookup.gperf"
-      {"empty-sequence",           EMPTY_SEQUENCE},
-      {"", ERROR}, {"", ERROR},
+        {"empty-sequence",           EMPTY_SEQUENCE},
+        {"", ERROR}, {"", ERROR},
 #line 157 "TokenLookup.gperf"
-      {"following-sibling",        FOLLOWING_SIBLING},
+        {"following-sibling",        FOLLOWING_SIBLING},
 #line 169 "TokenLookup.gperf"
-      {"instance",                 INSTANCE},
+        {"instance",                 INSTANCE},
 #line 213 "TokenLookup.gperf"
-      {"unordered",                UNORDERED},
+        {"unordered",                UNORDERED},
 #line 128 "TokenLookup.gperf"
-      {"base-uri",                 BASEURI},
+        {"base-uri",                 BASEURI},
 #line 197 "TokenLookup.gperf"
-      {"return",                   RETURN},
-      {"", ERROR},
+        {"return",                   RETURN},
+        {"", ERROR},
 #line 214 "TokenLookup.gperf"
-      {"validate",                 VALIDATE},
-      {"", ERROR},
+        {"validate",                 VALIDATE},
+        {"", ERROR},
 #line 138 "TokenLookup.gperf"
-      {"copy-namespaces",          COPY_NAMESPACES},
+        {"copy-namespaces",          COPY_NAMESPACES},
 #line 186 "TokenLookup.gperf"
-      {"option",                   OPTION},
+        {"option",                   OPTION},
 #line 165 "TokenLookup.gperf"
-      {"if",                       IF},
-      {"", ERROR},
+        {"if",                       IF},
+        {"", ERROR},
 #line 193 "TokenLookup.gperf"
-      {"preceding",                PRECEDING},
-      {"", ERROR}, {"", ERROR},
+        {"preceding",                PRECEDING},
+        {"", ERROR}, {"", ERROR},
 #line 168 "TokenLookup.gperf"
-      {"in",                       IN},
-      {"", ERROR},
+        {"in",                       IN},
+        {"", ERROR},
 #line 170 "TokenLookup.gperf"
-      {"intersect",                INTERSECT},
+        {"intersect",                INTERSECT},
 #line 212 "TokenLookup.gperf"
-      {"union",                    UNION},
-      {"", ERROR},
+        {"union",                    UNION},
+        {"", ERROR},
 #line 194 "TokenLookup.gperf"
-      {"preceding-sibling",        PRECEDING_SIBLING},
+        {"preceding-sibling",        PRECEDING_SIBLING},
 #line 188 "TokenLookup.gperf"
-      {"ordering",                 ORDERING},
+        {"ordering",                 ORDERING},
 #line 203 "TokenLookup.gperf"
-      {"some",                     SOME},
+        {"some",                     SOME},
 #line 134 "TokenLookup.gperf"
-      {"child",                    CHILD},
-      {"", ERROR},
+        {"child",                    CHILD},
+        {"", ERROR},
 #line 187 "TokenLookup.gperf"
-      {"ordered",                  ORDERED},
+        {"ordered",                  ORDERED},
 #line 215 "TokenLookup.gperf"
-      {"variable",                 VARIABLE},
-      {"", ERROR}, {"", ERROR}, {"", ERROR},
+        {"variable",                 VARIABLE},
+        {"", ERROR}, {"", ERROR}, {"", ERROR},
 #line 190 "TokenLookup.gperf"
-      {"or",                       OR},
-      {"", ERROR}, {"", ERROR}, {"", ERROR}, {"", ERROR},
+        {"or",                       OR},
+        {"", ERROR}, {"", ERROR}, {"", ERROR}, {"", ERROR},
 #line 136 "TokenLookup.gperf"
-      {"comment",                  COMMENT},
-      {"", ERROR}, {"", ERROR},
+        {"comment",                  COMMENT},
+        {"", ERROR}, {"", ERROR},
 #line 211 "TokenLookup.gperf"
-      {"typeswitch",               TYPESWITCH},
-      {"", ERROR},
+        {"typeswitch",               TYPESWITCH},
+        {"", ERROR},
 #line 167 "TokenLookup.gperf"
-      {"inherit",                  INHERIT},
+        {"inherit",                  INHERIT},
 #line 144 "TokenLookup.gperf"
-      {"div",                      DIV},
-      {"", ERROR}, {"", ERROR},
+        {"div",                      DIV},
+        {"", ERROR}, {"", ERROR},
 #line 179 "TokenLookup.gperf"
-      {"module",                   MODULE},
-      {"", ERROR},
+        {"module",                   MODULE},
+        {"", ERROR},
 #line 159 "TokenLookup.gperf"
-      {"for",                      FOR},
+        {"for",                      FOR},
 #line 180 "TokenLookup.gperf"
-      {"namespace",                NAMESPACE},
-      {"", ERROR}, {"", ERROR},
+        {"namespace",                NAMESPACE},
+        {"", ERROR}, {"", ERROR},
 #line 216 "TokenLookup.gperf"
-      {"version",                  VERSION},
-      {"", ERROR}, {"", ERROR},
+        {"version",                  VERSION},
+        {"", ERROR}, {"", ERROR},
 #line 206 "TokenLookup.gperf"
-      {"strip",                    STRIP},
-      {"", ERROR}, {"", ERROR}, {"", ERROR}, {"", ERROR},
+        {"strip",                    STRIP},
+        {"", ERROR}, {"", ERROR}, {"", ERROR}, {"", ERROR},
 #line 189 "TokenLookup.gperf"
-      {"order",                    ORDER},
+        {"order",                    ORDER},
 #line 191 "TokenLookup.gperf"
-      {"parent",                   PARENT},
-      {"", ERROR}, {"", ERROR}, {"", ERROR}, {"", ERROR},
-      {"", ERROR}, {"", ERROR},
+        {"parent",                   PARENT},
+        {"", ERROR}, {"", ERROR}, {"", ERROR}, {"", ERROR},
+        {"", ERROR}, {"", ERROR},
 #line 178 "TokenLookup.gperf"
-      {"mod",                      MOD},
-      {"", ERROR}, {"", ERROR}, {"", ERROR}, {"", ERROR},
-      {"", ERROR}, {"", ERROR}, {"", ERROR}, {"", ERROR},
-      {"", ERROR}, {"", ERROR}, {"", ERROR}, {"", ERROR},
-      {"", ERROR}, {"", ERROR}, {"", ERROR}, {"", ERROR},
-      {"", ERROR},
+        {"mod",                      MOD},
+        {"", ERROR}, {"", ERROR}, {"", ERROR}, {"", ERROR},
+        {"", ERROR}, {"", ERROR}, {"", ERROR}, {"", ERROR},
+        {"", ERROR}, {"", ERROR}, {"", ERROR}, {"", ERROR},
+        {"", ERROR}, {"", ERROR}, {"", ERROR}, {"", ERROR},
+        {"", ERROR},
 #line 166 "TokenLookup.gperf"
-      {"import",                   IMPORT},
-      {"", ERROR}, {"", ERROR}, {"", ERROR}, {"", ERROR},
-      {"", ERROR}, {"", ERROR}, {"", ERROR}, {"", ERROR},
-      {"", ERROR}, {"", ERROR},
+        {"import",                   IMPORT},
+        {"", ERROR}, {"", ERROR}, {"", ERROR}, {"", ERROR},
+        {"", ERROR}, {"", ERROR}, {"", ERROR}, {"", ERROR},
+        {"", ERROR}, {"", ERROR},
 #line 196 "TokenLookup.gperf"
-      {"processing-instruction",   PROCESSING_INSTRUCTION},
-      {"", ERROR}, {"", ERROR}, {"", ERROR}, {"", ERROR},
-      {"", ERROR}, {"", ERROR},
+        {"processing-instruction",   PROCESSING_INSTRUCTION},
+        {"", ERROR}, {"", ERROR}, {"", ERROR}, {"", ERROR},
+        {"", ERROR}, {"", ERROR},
 #line 172 "TokenLookup.gperf"
-      {"item",                     ITEM},
-      {"", ERROR}, {"", ERROR}, {"", ERROR}, {"", ERROR},
-      {"", ERROR}, {"", ERROR}, {"", ERROR}, {"", ERROR},
-      {"", ERROR}, {"", ERROR}, {"", ERROR}, {"", ERROR},
-      {"", ERROR}, {"", ERROR}, {"", ERROR}, {"", ERROR},
-      {"", ERROR}, {"", ERROR}, {"", ERROR}, {"", ERROR},
-      {"", ERROR}, {"", ERROR}, {"", ERROR}, {"", ERROR},
-      {"", ERROR}, {"", ERROR}, {"", ERROR}, {"", ERROR},
-      {"", ERROR},
+        {"item",                     ITEM},
+        {"", ERROR}, {"", ERROR}, {"", ERROR}, {"", ERROR},
+        {"", ERROR}, {"", ERROR}, {"", ERROR}, {"", ERROR},
+        {"", ERROR}, {"", ERROR}, {"", ERROR}, {"", ERROR},
+        {"", ERROR}, {"", ERROR}, {"", ERROR}, {"", ERROR},
+        {"", ERROR}, {"", ERROR}, {"", ERROR}, {"", ERROR},
+        {"", ERROR}, {"", ERROR}, {"", ERROR}, {"", ERROR},
+        {"", ERROR}, {"", ERROR}, {"", ERROR}, {"", ERROR},
+        {"", ERROR},
 #line 164 "TokenLookup.gperf"
-      {"idiv",                     IDIV}
-   };
+        {"idiv",                     IDIV}
+    };
 
-   if (len <= MAX_WORD_LENGTH && len >= MIN_WORD_LENGTH) {
-      int key = hash (str, len);
+    if ( len <= MAX_WORD_LENGTH && len >= MIN_WORD_LENGTH )
+    {
+        int key = hash ( str, len );
 
-      if (key <= MAX_HASH_VALUE && key >= 0) {
-         const char *s = wordlist[key].name;
+        if ( key <= MAX_HASH_VALUE && key >= 0 )
+        {
+            const char *s = wordlist[key].name;
 
-         if (*str == *s && !strcmp (str + 1, s + 1)) {
-            return &wordlist[key];
-         }
-      }
-   }
+            if ( *str == *s && !strcmp ( str + 1, s + 1 ) )
+            {
+                return &wordlist[key];
+            }
+        }
+    }
 
-   return nullptr;
+    return nullptr;
 }
 #line 219 "TokenLookup.gperf"
 

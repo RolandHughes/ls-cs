@@ -48,42 +48,42 @@ class CameraBinSession;
 
 class CameraBinImageProcessing : public QCameraImageProcessingControl
 {
-   CS_OBJECT(CameraBinImageProcessing)
+    CS_OBJECT( CameraBinImageProcessing )
 
- public:
-   CameraBinImageProcessing(CameraBinSession *session);
-   virtual ~CameraBinImageProcessing();
+public:
+    CameraBinImageProcessing( CameraBinSession *session );
+    virtual ~CameraBinImageProcessing();
 
-   QCameraImageProcessing::WhiteBalanceMode whiteBalanceMode() const;
-   bool setWhiteBalanceMode(QCameraImageProcessing::WhiteBalanceMode mode);
-   bool isWhiteBalanceModeSupported(QCameraImageProcessing::WhiteBalanceMode mode) const;
+    QCameraImageProcessing::WhiteBalanceMode whiteBalanceMode() const;
+    bool setWhiteBalanceMode( QCameraImageProcessing::WhiteBalanceMode mode );
+    bool isWhiteBalanceModeSupported( QCameraImageProcessing::WhiteBalanceMode mode ) const;
 
-   bool isParameterSupported(ProcessingParameter) const override;
-   bool isParameterValueSupported(ProcessingParameter parameter, const QVariant &value) const override;
-   QVariant parameter(ProcessingParameter parameter) const override;
-   void setParameter(ProcessingParameter parameter, const QVariant &value) override;
-
-#ifdef HAVE_GST_PHOTOGRAPHY
-   void lockWhiteBalance();
-   void unlockWhiteBalance();
-#endif
-
- private:
-   bool setColorBalanceValue(const QString &channel, qreal value);
-   void updateColorBalanceValues();
-
-   CameraBinSession *m_session;
-   QMap<QCameraImageProcessingControl::ProcessingParameter, int> m_values;
+    bool isParameterSupported( ProcessingParameter ) const override;
+    bool isParameterValueSupported( ProcessingParameter parameter, const QVariant &value ) const override;
+    QVariant parameter( ProcessingParameter parameter ) const override;
+    void setParameter( ProcessingParameter parameter, const QVariant &value ) override;
 
 #ifdef HAVE_GST_PHOTOGRAPHY
-   QMap<GstPhotographyWhiteBalanceMode, QCameraImageProcessing::WhiteBalanceMode> m_mappedWbValues;
-   QMap<QCameraImageProcessing::ColorFilter, GstPhotographyColorToneMode> m_filterMap;
+    void lockWhiteBalance();
+    void unlockWhiteBalance();
 #endif
 
-   QCameraImageProcessing::WhiteBalanceMode m_whiteBalanceMode;
+private:
+    bool setColorBalanceValue( const QString &channel, qreal value );
+    void updateColorBalanceValues();
+
+    CameraBinSession *m_session;
+    QMap<QCameraImageProcessingControl::ProcessingParameter, int> m_values;
+
+#ifdef HAVE_GST_PHOTOGRAPHY
+    QMap<GstPhotographyWhiteBalanceMode, QCameraImageProcessing::WhiteBalanceMode> m_mappedWbValues;
+    QMap<QCameraImageProcessing::ColorFilter, GstPhotographyColorToneMode> m_filterMap;
+#endif
+
+    QCameraImageProcessing::WhiteBalanceMode m_whiteBalanceMode;
 
 #ifdef USE_V4L
-   CameraBinV4LImageProcessing *m_v4lImageControl;
+    CameraBinV4LImageProcessing *m_v4lImageControl;
 #endif
 };
 

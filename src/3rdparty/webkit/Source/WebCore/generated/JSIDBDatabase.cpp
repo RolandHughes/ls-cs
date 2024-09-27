@@ -47,9 +47,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSIDBDatabase);
+ASSERT_CLASS_FITS_IN_CELL( JSIDBDatabase );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -60,14 +61,14 @@ ASSERT_CLASS_FITS_IN_CELL(JSIDBDatabase);
 
 static const HashTableValue JSIDBDatabaseTableValues[8] =
 {
-    { "name", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsIDBDatabaseName), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "version", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsIDBDatabaseVersion), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "objectStoreNames", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsIDBDatabaseObjectStoreNames), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "onabort", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsIDBDatabaseOnabort), (intptr_t)setJSIDBDatabaseOnabort THUNK_GENERATOR(0) },
-    { "onerror", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsIDBDatabaseOnerror), (intptr_t)setJSIDBDatabaseOnerror THUNK_GENERATOR(0) },
-    { "onversionchange", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsIDBDatabaseOnversionchange), (intptr_t)setJSIDBDatabaseOnversionchange THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsIDBDatabaseConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "name", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsIDBDatabaseName ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "version", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsIDBDatabaseVersion ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "objectStoreNames", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsIDBDatabaseObjectStoreNames ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "onabort", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsIDBDatabaseOnabort ), ( intptr_t )setJSIDBDatabaseOnabort THUNK_GENERATOR( 0 ) },
+    { "onerror", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsIDBDatabaseOnerror ), ( intptr_t )setJSIDBDatabaseOnerror THUNK_GENERATOR( 0 ) },
+    { "onversionchange", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsIDBDatabaseOnversionchange ), ( intptr_t )setJSIDBDatabaseOnversionchange THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsIDBDatabaseConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -81,43 +82,50 @@ static JSC_CONST_HASHTABLE HashTable JSIDBDatabaseTable = { 17, 15, JSIDBDatabas
 
 static const HashTableValue JSIDBDatabaseConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSIDBDatabaseConstructorTable = { 1, 0, JSIDBDatabaseConstructorTableValues, 0 };
-class JSIDBDatabaseConstructor : public DOMConstructorObject {
+class JSIDBDatabaseConstructor : public DOMConstructorObject
+{
 public:
-    JSIDBDatabaseConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSIDBDatabaseConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSIDBDatabaseConstructor::s_info = { "IDBDatabaseConstructor", &DOMConstructorObject::s_info, &JSIDBDatabaseConstructorTable, 0 };
 
-JSIDBDatabaseConstructor::JSIDBDatabaseConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSIDBDatabaseConstructor::JSIDBDatabaseConstructor( ExecState *exec, Structure *structure, JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSIDBDatabasePrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSIDBDatabasePrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSIDBDatabaseConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSIDBDatabaseConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSIDBDatabaseConstructor, JSDOMWrapper>(exec, &JSIDBDatabaseConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSIDBDatabaseConstructor, JSDOMWrapper>( exec, &JSIDBDatabaseConstructorTable, this, propertyName,
+            slot );
 }
 
-bool JSIDBDatabaseConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSIDBDatabaseConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSIDBDatabaseConstructor, JSDOMWrapper>(exec, &JSIDBDatabaseConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSIDBDatabaseConstructor, JSDOMWrapper>( exec, &JSIDBDatabaseConstructorTable, this, propertyName,
+            descriptor );
 }
 
 /* Hash table for prototype */
@@ -129,385 +137,496 @@ bool JSIDBDatabaseConstructor::getOwnPropertyDescriptor(ExecState* exec, const I
 
 static const HashTableValue JSIDBDatabasePrototypeTableValues[9] =
 {
-    { "createObjectStore", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsIDBDatabasePrototypeFunctionCreateObjectStore), (intptr_t)2 THUNK_GENERATOR(0) },
-    { "deleteObjectStore", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsIDBDatabasePrototypeFunctionDeleteObjectStore), (intptr_t)1 THUNK_GENERATOR(0) },
-    { "setVersion", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsIDBDatabasePrototypeFunctionSetVersion), (intptr_t)1 THUNK_GENERATOR(0) },
-    { "transaction", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsIDBDatabasePrototypeFunctionTransaction), (intptr_t)2 THUNK_GENERATOR(0) },
-    { "close", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsIDBDatabasePrototypeFunctionClose), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "addEventListener", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsIDBDatabasePrototypeFunctionAddEventListener), (intptr_t)3 THUNK_GENERATOR(0) },
-    { "removeEventListener", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsIDBDatabasePrototypeFunctionRemoveEventListener), (intptr_t)3 THUNK_GENERATOR(0) },
-    { "dispatchEvent", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsIDBDatabasePrototypeFunctionDispatchEvent), (intptr_t)1 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "createObjectStore", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsIDBDatabasePrototypeFunctionCreateObjectStore ), ( intptr_t )2 THUNK_GENERATOR( 0 ) },
+    { "deleteObjectStore", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsIDBDatabasePrototypeFunctionDeleteObjectStore ), ( intptr_t )1 THUNK_GENERATOR( 0 ) },
+    { "setVersion", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsIDBDatabasePrototypeFunctionSetVersion ), ( intptr_t )1 THUNK_GENERATOR( 0 ) },
+    { "transaction", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsIDBDatabasePrototypeFunctionTransaction ), ( intptr_t )2 THUNK_GENERATOR( 0 ) },
+    { "close", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsIDBDatabasePrototypeFunctionClose ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "addEventListener", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsIDBDatabasePrototypeFunctionAddEventListener ), ( intptr_t )3 THUNK_GENERATOR( 0 ) },
+    { "removeEventListener", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsIDBDatabasePrototypeFunctionRemoveEventListener ), ( intptr_t )3 THUNK_GENERATOR( 0 ) },
+    { "dispatchEvent", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsIDBDatabasePrototypeFunctionDispatchEvent ), ( intptr_t )1 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSIDBDatabasePrototypeTable = { 16, 15, JSIDBDatabasePrototypeTableValues, 0 };
 const ClassInfo JSIDBDatabasePrototype::s_info = { "IDBDatabasePrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSIDBDatabasePrototypeTable, 0 };
 
-JSObject* JSIDBDatabasePrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSIDBDatabasePrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSIDBDatabase>(exec, globalObject);
+    return getDOMPrototype<JSIDBDatabase>( exec, globalObject );
 }
 
-bool JSIDBDatabasePrototype::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSIDBDatabasePrototype::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticFunctionSlot<JSObject>(exec, &JSIDBDatabasePrototypeTable, this, propertyName, slot);
+    return getStaticFunctionSlot<JSObject>( exec, &JSIDBDatabasePrototypeTable, this, propertyName, slot );
 }
 
-bool JSIDBDatabasePrototype::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSIDBDatabasePrototype::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticFunctionDescriptor<JSObject>(exec, &JSIDBDatabasePrototypeTable, this, propertyName, descriptor);
+    return getStaticFunctionDescriptor<JSObject>( exec, &JSIDBDatabasePrototypeTable, this, propertyName, descriptor );
 }
 
 const ClassInfo JSIDBDatabase::s_info = { "IDBDatabase", &JSDOMWrapper::s_info, &JSIDBDatabaseTable, 0 };
 
-JSIDBDatabase::JSIDBDatabase(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<IDBDatabase> impl)
-    : JSDOMWrapper(structure, globalObject)
-    , m_impl(impl)
+JSIDBDatabase::JSIDBDatabase( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<IDBDatabase> impl )
+    : JSDOMWrapper( structure, globalObject )
+    , m_impl( impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-void JSIDBDatabase::visitChildren(SlotVisitor& visitor)
+void JSIDBDatabase::visitChildren( SlotVisitor &visitor )
 {
-    Base::visitChildren(visitor);
-    impl()->visitJSEventListeners(visitor);
+    Base::visitChildren( visitor );
+    impl()->visitJSEventListeners( visitor );
 }
 
-JSObject* JSIDBDatabase::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSIDBDatabase::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSIDBDatabasePrototype(exec->globalData(), globalObject, JSIDBDatabasePrototype::createStructure(globalObject->globalData(), globalObject->objectPrototype()));
+    return new ( exec ) JSIDBDatabasePrototype( exec->globalData(), globalObject,
+            JSIDBDatabasePrototype::createStructure( globalObject->globalData(), globalObject->objectPrototype() ) );
 }
 
-bool JSIDBDatabase::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSIDBDatabase::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSIDBDatabase, Base>(exec, &JSIDBDatabaseTable, this, propertyName, slot);
+    return getStaticValueSlot<JSIDBDatabase, Base>( exec, &JSIDBDatabaseTable, this, propertyName, slot );
 }
 
-bool JSIDBDatabase::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSIDBDatabase::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSIDBDatabase, Base>(exec, &JSIDBDatabaseTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSIDBDatabase, Base>( exec, &JSIDBDatabaseTable, this, propertyName, descriptor );
 }
 
-JSValue jsIDBDatabaseName(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsIDBDatabaseName( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSIDBDatabase* castedThis = static_cast<JSIDBDatabase*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    IDBDatabase* imp = static_cast<IDBDatabase*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->name());
+    JSIDBDatabase *castedThis = static_cast<JSIDBDatabase *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    IDBDatabase *imp = static_cast<IDBDatabase *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->name() );
     return result;
 }
 
 
-JSValue jsIDBDatabaseVersion(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsIDBDatabaseVersion( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSIDBDatabase* castedThis = static_cast<JSIDBDatabase*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    IDBDatabase* imp = static_cast<IDBDatabase*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->version());
+    JSIDBDatabase *castedThis = static_cast<JSIDBDatabase *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    IDBDatabase *imp = static_cast<IDBDatabase *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->version() );
     return result;
 }
 
 
-JSValue jsIDBDatabaseObjectStoreNames(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsIDBDatabaseObjectStoreNames( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSIDBDatabase* castedThis = static_cast<JSIDBDatabase*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    IDBDatabase* imp = static_cast<IDBDatabase*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->objectStoreNames()));
+    JSIDBDatabase *castedThis = static_cast<JSIDBDatabase *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    IDBDatabase *imp = static_cast<IDBDatabase *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->objectStoreNames() ) );
     return result;
 }
 
 
-JSValue jsIDBDatabaseOnabort(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsIDBDatabaseOnabort( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSIDBDatabase* castedThis = static_cast<JSIDBDatabase*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    IDBDatabase* imp = static_cast<IDBDatabase*>(castedThis->impl());
-    if (EventListener* listener = imp->onabort()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    JSIDBDatabase *castedThis = static_cast<JSIDBDatabase *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    IDBDatabase *imp = static_cast<IDBDatabase *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->onabort() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsIDBDatabaseOnerror(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsIDBDatabaseOnerror( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSIDBDatabase* castedThis = static_cast<JSIDBDatabase*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    IDBDatabase* imp = static_cast<IDBDatabase*>(castedThis->impl());
-    if (EventListener* listener = imp->onerror()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    JSIDBDatabase *castedThis = static_cast<JSIDBDatabase *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    IDBDatabase *imp = static_cast<IDBDatabase *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->onerror() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsIDBDatabaseOnversionchange(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsIDBDatabaseOnversionchange( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSIDBDatabase* castedThis = static_cast<JSIDBDatabase*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    IDBDatabase* imp = static_cast<IDBDatabase*>(castedThis->impl());
-    if (EventListener* listener = imp->onversionchange()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    JSIDBDatabase *castedThis = static_cast<JSIDBDatabase *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    IDBDatabase *imp = static_cast<IDBDatabase *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->onversionchange() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsIDBDatabaseConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsIDBDatabaseConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSIDBDatabase* domObject = static_cast<JSIDBDatabase*>(asObject(slotBase));
-    return JSIDBDatabase::getConstructor(exec, domObject->globalObject());
+    JSIDBDatabase *domObject = static_cast<JSIDBDatabase *>( asObject( slotBase ) );
+    return JSIDBDatabase::getConstructor( exec, domObject->globalObject() );
 }
 
-void JSIDBDatabase::put(ExecState* exec, const Identifier& propertyName, JSValue value, PutPropertySlot& slot)
+void JSIDBDatabase::put( ExecState *exec, const Identifier &propertyName, JSValue value, PutPropertySlot &slot )
 {
-    lookupPut<JSIDBDatabase, Base>(exec, propertyName, value, &JSIDBDatabaseTable, this, slot);
+    lookupPut<JSIDBDatabase, Base>( exec, propertyName, value, &JSIDBDatabaseTable, this, slot );
 }
 
-void setJSIDBDatabaseOnabort(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSIDBDatabaseOnabort( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    UNUSED_PARAM(exec);
-    JSIDBDatabase* castedThis = static_cast<JSIDBDatabase*>(thisObject);
-    IDBDatabase* imp = static_cast<IDBDatabase*>(castedThis->impl());
-    imp->setOnabort(createJSAttributeEventListener(exec, value, thisObject));
-}
-
-
-void setJSIDBDatabaseOnerror(ExecState* exec, JSObject* thisObject, JSValue value)
-{
-    UNUSED_PARAM(exec);
-    JSIDBDatabase* castedThis = static_cast<JSIDBDatabase*>(thisObject);
-    IDBDatabase* imp = static_cast<IDBDatabase*>(castedThis->impl());
-    imp->setOnerror(createJSAttributeEventListener(exec, value, thisObject));
+    UNUSED_PARAM( exec );
+    JSIDBDatabase *castedThis = static_cast<JSIDBDatabase *>( thisObject );
+    IDBDatabase *imp = static_cast<IDBDatabase *>( castedThis->impl() );
+    imp->setOnabort( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSIDBDatabaseOnversionchange(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSIDBDatabaseOnerror( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    UNUSED_PARAM(exec);
-    JSIDBDatabase* castedThis = static_cast<JSIDBDatabase*>(thisObject);
-    IDBDatabase* imp = static_cast<IDBDatabase*>(castedThis->impl());
-    imp->setOnversionchange(createJSAttributeEventListener(exec, value, thisObject));
+    UNUSED_PARAM( exec );
+    JSIDBDatabase *castedThis = static_cast<JSIDBDatabase *>( thisObject );
+    IDBDatabase *imp = static_cast<IDBDatabase *>( castedThis->impl() );
+    imp->setOnerror( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-JSValue JSIDBDatabase::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+void setJSIDBDatabaseOnversionchange( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    return getDOMConstructor<JSIDBDatabaseConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    UNUSED_PARAM( exec );
+    JSIDBDatabase *castedThis = static_cast<JSIDBDatabase *>( thisObject );
+    IDBDatabase *imp = static_cast<IDBDatabase *>( castedThis->impl() );
+    imp->setOnversionchange( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsIDBDatabasePrototypeFunctionCreateObjectStore(ExecState* exec)
+
+JSValue JSIDBDatabase::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
+{
+    return getDOMConstructor<JSIDBDatabaseConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
+}
+
+EncodedJSValue JSC_HOST_CALL jsIDBDatabasePrototypeFunctionCreateObjectStore( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSIDBDatabase::s_info))
-        return throwVMTypeError(exec);
-    JSIDBDatabase* castedThis = static_cast<JSIDBDatabase*>(asObject(thisValue));
-    IDBDatabase* imp = static_cast<IDBDatabase*>(castedThis->impl());
+
+    if ( !thisValue.inherits( &JSIDBDatabase::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSIDBDatabase *castedThis = static_cast<JSIDBDatabase *>( asObject( thisValue ) );
+    IDBDatabase *imp = static_cast<IDBDatabase *>( castedThis->impl() );
     ExceptionCode ec = 0;
-    const String& name(ustringToString(exec->argument(0).toString(exec)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
+    const String &name( ustringToString( exec->argument( 0 ).toString( exec ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
 
     int argsCount = exec->argumentCount();
-    if (argsCount <= 1) {
 
-        JSC::JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->createObjectStore(name, ec)));
-        setDOMException(exec, ec);
-        return JSValue::encode(result);
+    if ( argsCount <= 1 )
+    {
+
+        JSC::JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->createObjectStore( name, ec ) ) );
+        setDOMException( exec, ec );
+        return JSValue::encode( result );
     }
 
-    OptionsObject* options(toOptionsObject(exec->argument(1)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
+    OptionsObject *options( toOptionsObject( exec->argument( 1 ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
 
 
-    JSC::JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->createObjectStore(name, options, ec)));
-    setDOMException(exec, ec);
-    return JSValue::encode(result);
+    JSC::JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->createObjectStore( name, options, ec ) ) );
+    setDOMException( exec, ec );
+    return JSValue::encode( result );
 }
 
-EncodedJSValue JSC_HOST_CALL jsIDBDatabasePrototypeFunctionDeleteObjectStore(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsIDBDatabasePrototypeFunctionDeleteObjectStore( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSIDBDatabase::s_info))
-        return throwVMTypeError(exec);
-    JSIDBDatabase* castedThis = static_cast<JSIDBDatabase*>(asObject(thisValue));
-    IDBDatabase* imp = static_cast<IDBDatabase*>(castedThis->impl());
-    ExceptionCode ec = 0;
-    const String& name(ustringToString(exec->argument(0).toString(exec)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
 
-    imp->deleteObjectStore(name, ec);
-    setDOMException(exec, ec);
-    return JSValue::encode(jsUndefined());
+    if ( !thisValue.inherits( &JSIDBDatabase::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSIDBDatabase *castedThis = static_cast<JSIDBDatabase *>( asObject( thisValue ) );
+    IDBDatabase *imp = static_cast<IDBDatabase *>( castedThis->impl() );
+    ExceptionCode ec = 0;
+    const String &name( ustringToString( exec->argument( 0 ).toString( exec ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    imp->deleteObjectStore( name, ec );
+    setDOMException( exec, ec );
+    return JSValue::encode( jsUndefined() );
 }
 
-EncodedJSValue JSC_HOST_CALL jsIDBDatabasePrototypeFunctionSetVersion(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsIDBDatabasePrototypeFunctionSetVersion( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSIDBDatabase::s_info))
-        return throwVMTypeError(exec);
-    JSIDBDatabase* castedThis = static_cast<JSIDBDatabase*>(asObject(thisValue));
-    IDBDatabase* imp = static_cast<IDBDatabase*>(castedThis->impl());
+
+    if ( !thisValue.inherits( &JSIDBDatabase::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSIDBDatabase *castedThis = static_cast<JSIDBDatabase *>( asObject( thisValue ) );
+    IDBDatabase *imp = static_cast<IDBDatabase *>( castedThis->impl() );
     ExceptionCode ec = 0;
-    ScriptExecutionContext* scriptContext = static_cast<JSDOMGlobalObject*>(exec->lexicalGlobalObject())->scriptExecutionContext();
-    if (!scriptContext)
-        return JSValue::encode(jsUndefined());
-    const String& version(ustringToString(exec->argument(0).toString(exec)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
+    ScriptExecutionContext *scriptContext = static_cast<JSDOMGlobalObject *>( exec->lexicalGlobalObject() )->scriptExecutionContext();
+
+    if ( !scriptContext )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    const String &version( ustringToString( exec->argument( 0 ).toString( exec ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
 
 
-    JSC::JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->setVersion(scriptContext, version, ec)));
-    setDOMException(exec, ec);
-    return JSValue::encode(result);
+    JSC::JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->setVersion( scriptContext, version, ec ) ) );
+    setDOMException( exec, ec );
+    return JSValue::encode( result );
 }
 
-EncodedJSValue JSC_HOST_CALL jsIDBDatabasePrototypeFunctionTransaction(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsIDBDatabasePrototypeFunctionTransaction( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSIDBDatabase::s_info))
-        return throwVMTypeError(exec);
-    JSIDBDatabase* castedThis = static_cast<JSIDBDatabase*>(asObject(thisValue));
-    IDBDatabase* imp = static_cast<IDBDatabase*>(castedThis->impl());
+
+    if ( !thisValue.inherits( &JSIDBDatabase::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSIDBDatabase *castedThis = static_cast<JSIDBDatabase *>( asObject( thisValue ) );
+    IDBDatabase *imp = static_cast<IDBDatabase *>( castedThis->impl() );
     ExceptionCode ec = 0;
-    ScriptExecutionContext* scriptContext = static_cast<JSDOMGlobalObject*>(exec->lexicalGlobalObject())->scriptExecutionContext();
-    if (!scriptContext)
-        return JSValue::encode(jsUndefined());
+    ScriptExecutionContext *scriptContext = static_cast<JSDOMGlobalObject *>( exec->lexicalGlobalObject() )->scriptExecutionContext();
+
+    if ( !scriptContext )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
 
     int argsCount = exec->argumentCount();
-    if (argsCount <= 0) {
 
-        JSC::JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->transaction(scriptContext, ec)));
-        setDOMException(exec, ec);
-        return JSValue::encode(result);
+    if ( argsCount <= 0 )
+    {
+
+        JSC::JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->transaction( scriptContext, ec ) ) );
+        setDOMException( exec, ec );
+        return JSValue::encode( result );
     }
 
-    DOMStringList* storeNames(toDOMStringList(exec->argument(0)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    if (argsCount <= 1) {
+    DOMStringList *storeNames( toDOMStringList( exec->argument( 0 ) ) );
 
-        JSC::JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->transaction(scriptContext, storeNames, ec)));
-        setDOMException(exec, ec);
-        return JSValue::encode(result);
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
     }
 
-    unsigned short mode(exec->argument(1).toUInt32(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
+    if ( argsCount <= 1 )
+    {
+
+        JSC::JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->transaction( scriptContext, storeNames, ec ) ) );
+        setDOMException( exec, ec );
+        return JSValue::encode( result );
+    }
+
+    unsigned short mode( exec->argument( 1 ).toUInt32( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
 
 
-    JSC::JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->transaction(scriptContext, storeNames, mode, ec)));
-    setDOMException(exec, ec);
-    return JSValue::encode(result);
+    JSC::JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->transaction( scriptContext, storeNames, mode,
+                                ec ) ) );
+    setDOMException( exec, ec );
+    return JSValue::encode( result );
 }
 
-EncodedJSValue JSC_HOST_CALL jsIDBDatabasePrototypeFunctionClose(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsIDBDatabasePrototypeFunctionClose( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSIDBDatabase::s_info))
-        return throwVMTypeError(exec);
-    JSIDBDatabase* castedThis = static_cast<JSIDBDatabase*>(asObject(thisValue));
-    IDBDatabase* imp = static_cast<IDBDatabase*>(castedThis->impl());
+
+    if ( !thisValue.inherits( &JSIDBDatabase::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSIDBDatabase *castedThis = static_cast<JSIDBDatabase *>( asObject( thisValue ) );
+    IDBDatabase *imp = static_cast<IDBDatabase *>( castedThis->impl() );
 
     imp->close();
-    return JSValue::encode(jsUndefined());
+    return JSValue::encode( jsUndefined() );
 }
 
-EncodedJSValue JSC_HOST_CALL jsIDBDatabasePrototypeFunctionAddEventListener(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsIDBDatabasePrototypeFunctionAddEventListener( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSIDBDatabase::s_info))
-        return throwVMTypeError(exec);
-    JSIDBDatabase* castedThis = static_cast<JSIDBDatabase*>(asObject(thisValue));
-    IDBDatabase* imp = static_cast<IDBDatabase*>(castedThis->impl());
-    JSValue listener = exec->argument(1);
-    if (!listener.isObject())
-        return JSValue::encode(jsUndefined());
-    imp->addEventListener(ustringToAtomicString(exec->argument(0).toString(exec)), JSEventListener::create(asObject(listener), castedThis, false, currentWorld(exec)), exec->argument(2).toBoolean(exec));
-    return JSValue::encode(jsUndefined());
+
+    if ( !thisValue.inherits( &JSIDBDatabase::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSIDBDatabase *castedThis = static_cast<JSIDBDatabase *>( asObject( thisValue ) );
+    IDBDatabase *imp = static_cast<IDBDatabase *>( castedThis->impl() );
+    JSValue listener = exec->argument( 1 );
+
+    if ( !listener.isObject() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    imp->addEventListener( ustringToAtomicString( exec->argument( 0 ).toString( exec ) ),
+                           JSEventListener::create( asObject( listener ), castedThis, false, currentWorld( exec ) ), exec->argument( 2 ).toBoolean( exec ) );
+    return JSValue::encode( jsUndefined() );
 }
 
-EncodedJSValue JSC_HOST_CALL jsIDBDatabasePrototypeFunctionRemoveEventListener(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsIDBDatabasePrototypeFunctionRemoveEventListener( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSIDBDatabase::s_info))
-        return throwVMTypeError(exec);
-    JSIDBDatabase* castedThis = static_cast<JSIDBDatabase*>(asObject(thisValue));
-    IDBDatabase* imp = static_cast<IDBDatabase*>(castedThis->impl());
-    JSValue listener = exec->argument(1);
-    if (!listener.isObject())
-        return JSValue::encode(jsUndefined());
-    imp->removeEventListener(ustringToAtomicString(exec->argument(0).toString(exec)), JSEventListener::create(asObject(listener), castedThis, false, currentWorld(exec)).get(), exec->argument(2).toBoolean(exec));
-    return JSValue::encode(jsUndefined());
+
+    if ( !thisValue.inherits( &JSIDBDatabase::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSIDBDatabase *castedThis = static_cast<JSIDBDatabase *>( asObject( thisValue ) );
+    IDBDatabase *imp = static_cast<IDBDatabase *>( castedThis->impl() );
+    JSValue listener = exec->argument( 1 );
+
+    if ( !listener.isObject() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    imp->removeEventListener( ustringToAtomicString( exec->argument( 0 ).toString( exec ) ),
+                              JSEventListener::create( asObject( listener ), castedThis, false, currentWorld( exec ) ).get(),
+                              exec->argument( 2 ).toBoolean( exec ) );
+    return JSValue::encode( jsUndefined() );
 }
 
-EncodedJSValue JSC_HOST_CALL jsIDBDatabasePrototypeFunctionDispatchEvent(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsIDBDatabasePrototypeFunctionDispatchEvent( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSIDBDatabase::s_info))
-        return throwVMTypeError(exec);
-    JSIDBDatabase* castedThis = static_cast<JSIDBDatabase*>(asObject(thisValue));
-    IDBDatabase* imp = static_cast<IDBDatabase*>(castedThis->impl());
+
+    if ( !thisValue.inherits( &JSIDBDatabase::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSIDBDatabase *castedThis = static_cast<JSIDBDatabase *>( asObject( thisValue ) );
+    IDBDatabase *imp = static_cast<IDBDatabase *>( castedThis->impl() );
     ExceptionCode ec = 0;
-    Event* evt(toEvent(exec->argument(0)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
+    Event *evt( toEvent( exec->argument( 0 ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
 
 
-    JSC::JSValue result = jsBoolean(imp->dispatchEvent(evt, ec));
-    setDOMException(exec, ec);
-    return JSValue::encode(result);
+    JSC::JSValue result = jsBoolean( imp->dispatchEvent( evt, ec ) );
+    setDOMException( exec, ec );
+    return JSValue::encode( result );
 }
 
-static inline bool isObservable(JSIDBDatabase* jsIDBDatabase)
+static inline bool isObservable( JSIDBDatabase *jsIDBDatabase )
 {
-    if (jsIDBDatabase->hasCustomProperties())
+    if ( jsIDBDatabase->hasCustomProperties() )
+    {
         return true;
-    if (jsIDBDatabase->impl()->hasEventListeners())
+    }
+
+    if ( jsIDBDatabase->impl()->hasEventListeners() )
+    {
         return true;
+    }
+
     return false;
 }
 
-bool JSIDBDatabaseOwner::isReachableFromOpaqueRoots(JSC::Handle<JSC::Unknown> handle, void*, SlotVisitor& visitor)
+bool JSIDBDatabaseOwner::isReachableFromOpaqueRoots( JSC::Handle<JSC::Unknown> handle, void *, SlotVisitor &visitor )
 {
-    JSIDBDatabase* jsIDBDatabase = static_cast<JSIDBDatabase*>(handle.get().asCell());
-    if (jsIDBDatabase->impl()->hasPendingActivity())
+    JSIDBDatabase *jsIDBDatabase = static_cast<JSIDBDatabase *>( handle.get().asCell() );
+
+    if ( jsIDBDatabase->impl()->hasPendingActivity() )
+    {
         return true;
-    if (!isObservable(jsIDBDatabase))
+    }
+
+    if ( !isObservable( jsIDBDatabase ) )
+    {
         return false;
-    UNUSED_PARAM(visitor);
+    }
+
+    UNUSED_PARAM( visitor );
     return false;
 }
 
-void JSIDBDatabaseOwner::finalize(JSC::Handle<JSC::Unknown> handle, void* context)
+void JSIDBDatabaseOwner::finalize( JSC::Handle<JSC::Unknown> handle, void *context )
 {
-    JSIDBDatabase* jsIDBDatabase = static_cast<JSIDBDatabase*>(handle.get().asCell());
-    DOMWrapperWorld* world = static_cast<DOMWrapperWorld*>(context);
-    uncacheWrapper(world, jsIDBDatabase->impl(), jsIDBDatabase);
+    JSIDBDatabase *jsIDBDatabase = static_cast<JSIDBDatabase *>( handle.get().asCell() );
+    DOMWrapperWorld *world = static_cast<DOMWrapperWorld *>( context );
+    uncacheWrapper( world, jsIDBDatabase->impl(), jsIDBDatabase );
 }
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, IDBDatabase* impl)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, IDBDatabase *impl )
 {
-    return wrap<JSIDBDatabase>(exec, globalObject, impl);
+    return wrap<JSIDBDatabase>( exec, globalObject, impl );
 }
 
-IDBDatabase* toIDBDatabase(JSC::JSValue value)
+IDBDatabase *toIDBDatabase( JSC::JSValue value )
 {
-    return value.inherits(&JSIDBDatabase::s_info) ? static_cast<JSIDBDatabase*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSIDBDatabase::s_info ) ? static_cast<JSIDBDatabase *>( asObject( value ) )->impl() : 0;
 }
 
 }

@@ -36,9 +36,9 @@ class QDnsLookupRunnable;
 
 class QDnsLookupReply
 {
- public:
+public:
     QDnsLookupReply()
-      : error(QDnsLookup::NoError)
+        : error( QDnsLookup::NoError )
     { }
 
     QDnsLookup::Error error;
@@ -55,14 +55,14 @@ class QDnsLookupReply
 
 class QDnsLookupPrivate
 {
-   Q_DECLARE_PUBLIC(QDnsLookup)
+    Q_DECLARE_PUBLIC( QDnsLookup )
 
- public:
+public:
     QDnsLookupPrivate()
-        : isFinished(false), type(QDnsLookup::A), runnable(nullptr)
+        : isFinished( false ), type( QDnsLookup::A ), runnable( nullptr )
     { }
 
-    void _q_lookupFinished(const QDnsLookupReply &reply);
+    void _q_lookupFinished( const QDnsLookupReply &reply );
 
     static const char *msgNoIpV6NameServerAdresses;
 
@@ -73,27 +73,27 @@ class QDnsLookupPrivate
     QDnsLookupReply reply;
     QDnsLookupRunnable *runnable;
 
- protected:
-   QDnsLookup *q_ptr;
+protected:
+    QDnsLookup *q_ptr;
 };
 
 class QDnsLookupRunnable : public QObject, public QRunnable
 {
-    NET_CS_OBJECT(QDnsLookupRunnable)
+    NET_CS_OBJECT( QDnsLookupRunnable )
 
- public:
-    QDnsLookupRunnable(QDnsLookup::Type type, const QByteArray &name, const QHostAddress &nameserver)
-        : requestType(type), requestName(name) , nameserver(nameserver)
+public:
+    QDnsLookupRunnable( QDnsLookup::Type type, const QByteArray &name, const QHostAddress &nameserver )
+        : requestType( type ), requestName( name ), nameserver( nameserver )
     { }
 
     void run() override;
 
-    NET_CS_SIGNAL_1(Public, void finished(const QDnsLookupReply &reply))
-    NET_CS_SIGNAL_2(finished, reply)
+    NET_CS_SIGNAL_1( Public, void finished( const QDnsLookupReply &reply ) )
+    NET_CS_SIGNAL_2( finished, reply )
 
- private:
-    static void query(const int requestType, const QByteArray &requestName,
-                  const QHostAddress &nameserver, QDnsLookupReply *reply);
+private:
+    static void query( const int requestType, const QByteArray &requestName,
+                       const QHostAddress &nameserver, QDnsLookupReply *reply );
 
     QDnsLookup::Type requestType;
     QByteArray requestName;
@@ -102,25 +102,25 @@ class QDnsLookupRunnable : public QObject, public QRunnable
 
 class QDnsLookupThreadPool : public QThreadPool
 {
-    NET_CS_OBJECT(QDnsLookupThreadPool)
+    NET_CS_OBJECT( QDnsLookupThreadPool )
 
- public:
+public:
     QDnsLookupThreadPool();
-    void start(QRunnable *runnable);
+    void start( QRunnable *runnable );
 
- private:
+private:
     QMutex signalsMutex;
     bool signalsConnected;
 
-    NET_CS_SLOT_1(Private, void _q_applicationDestroyed())
-    NET_CS_SLOT_2(_q_applicationDestroyed)
+    NET_CS_SLOT_1( Private, void _q_applicationDestroyed() )
+    NET_CS_SLOT_2( _q_applicationDestroyed )
 };
 
 class QDnsRecordPrivate : public QSharedData
 {
- public:
+public:
     QDnsRecordPrivate()
-        : timeToLive(0)
+        : timeToLive( 0 )
     { }
 
     QString name;
@@ -129,7 +129,7 @@ class QDnsRecordPrivate : public QSharedData
 
 class QDnsDomainNameRecordPrivate : public QDnsRecordPrivate
 {
- public:
+public:
     QDnsDomainNameRecordPrivate()
     { }
 
@@ -138,7 +138,7 @@ class QDnsDomainNameRecordPrivate : public QDnsRecordPrivate
 
 class QDnsHostAddressRecordPrivate : public QDnsRecordPrivate
 {
- public:
+public:
     QDnsHostAddressRecordPrivate()
     { }
 
@@ -147,9 +147,9 @@ class QDnsHostAddressRecordPrivate : public QDnsRecordPrivate
 
 class QDnsMailExchangeRecordPrivate : public QDnsRecordPrivate
 {
- public:
+public:
     QDnsMailExchangeRecordPrivate()
-        : preference(0)
+        : preference( 0 )
     { }
 
     QString exchange;
@@ -158,9 +158,9 @@ class QDnsMailExchangeRecordPrivate : public QDnsRecordPrivate
 
 class QDnsServiceRecordPrivate : public QDnsRecordPrivate
 {
- public:
+public:
     QDnsServiceRecordPrivate()
-        : port(0), priority(0), weight(0)
+        : port( 0 ), priority( 0 ), weight( 0 )
     { }
 
     QString target;
@@ -171,7 +171,7 @@ class QDnsServiceRecordPrivate : public QDnsRecordPrivate
 
 class QDnsTextRecordPrivate : public QDnsRecordPrivate
 {
- public:
+public:
     QDnsTextRecordPrivate()
     { }
 

@@ -32,15 +32,16 @@ class QOpenGLTextureBlitterPrivate;
 
 class Q_GUI_EXPORT QOpenGLTextureBlitter
 {
- public:
+public:
     QOpenGLTextureBlitter();
 
-    QOpenGLTextureBlitter(const QOpenGLTextureBlitter &) = delete;
-    QOpenGLTextureBlitter &operator=(const QOpenGLTextureBlitter &) = delete;
+    QOpenGLTextureBlitter( const QOpenGLTextureBlitter & ) = delete;
+    QOpenGLTextureBlitter &operator=( const QOpenGLTextureBlitter & ) = delete;
 
     ~QOpenGLTextureBlitter();
 
-    enum Origin {
+    enum Origin
+    {
         OriginBottomLeft,
         OriginTopLeft
     };
@@ -51,20 +52,20 @@ class Q_GUI_EXPORT QOpenGLTextureBlitter
 
     bool supportsExternalOESTarget() const;
 
-    void bind(GLenum target = GL_TEXTURE_2D);
+    void bind( GLenum target = GL_TEXTURE_2D );
     void release();
 
-    void setSwizzleRB(bool swizzle);
-    void setOpacity(float opacity);
+    void setSwizzleRB( bool swizzle );
+    void setOpacity( float opacity );
 
-    void blit(GLuint texture, const QMatrix4x4 &targetTransform, Origin sourceOrigin);
-    void blit(GLuint texture, const QMatrix4x4 &targetTransform, const QMatrix3x3 &sourceTransform);
+    void blit( GLuint texture, const QMatrix4x4 &targetTransform, Origin sourceOrigin );
+    void blit( GLuint texture, const QMatrix4x4 &targetTransform, const QMatrix3x3 &sourceTransform );
 
-    static QMatrix4x4 targetTransform(const QRectF &target, const QRect &viewport);
-    static QMatrix3x3 sourceTransform(const QRectF &subTexture, const QSize &textureSize, Origin origin);
+    static QMatrix4x4 targetTransform( const QRectF &target, const QRect &viewport );
+    static QMatrix3x3 sourceTransform( const QRectF &subTexture, const QSize &textureSize, Origin origin );
 
- private:
-    Q_DECLARE_PRIVATE(QOpenGLTextureBlitter)
+private:
+    Q_DECLARE_PRIVATE( QOpenGLTextureBlitter )
     QScopedPointer<QOpenGLTextureBlitterPrivate> d_ptr;
 };
 

@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef DeleteFromTextNodeCommand_h
@@ -28,19 +28,21 @@
 
 #include "EditCommand.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Text;
 
-class DeleteFromTextNodeCommand : public SimpleEditCommand {
+class DeleteFromTextNodeCommand : public SimpleEditCommand
+{
 public:
-    static PassRefPtr<DeleteFromTextNodeCommand> create(PassRefPtr<Text> node, unsigned offset, unsigned count)
+    static PassRefPtr<DeleteFromTextNodeCommand> create( PassRefPtr<Text> node, unsigned offset, unsigned count )
     {
-        return adoptRef(new DeleteFromTextNodeCommand(node, offset, count));
+        return adoptRef( new DeleteFromTextNodeCommand( node, offset, count ) );
     }
 
 private:
-    DeleteFromTextNodeCommand(PassRefPtr<Text>, unsigned offset, unsigned count);
+    DeleteFromTextNodeCommand( PassRefPtr<Text>, unsigned offset, unsigned count );
 
     virtual void doApply();
     virtual void doUnapply();

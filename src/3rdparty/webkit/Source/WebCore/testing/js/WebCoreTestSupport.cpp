@@ -36,26 +36,33 @@
 using namespace JSC;
 using namespace WebCore;
 
-namespace WebCoreTestSupport {
-
-void injectInternalsObject(JSContextRef context)
+namespace WebCoreTestSupport
 {
-    JSLock lock(SilenceAssertionsOnly);
-    ExecState* exec = toJS(context);
-    JSDOMGlobalObject* globalObject = static_cast<JSDOMGlobalObject*>(exec->lexicalGlobalObject());
-    globalObject->putDirect(exec->globalData(), Identifier(exec, Internals::internalsId), toJS(exec, globalObject, Internals::create()));
+
+void injectInternalsObject( JSContextRef context )
+{
+    JSLock lock( SilenceAssertionsOnly );
+    ExecState *exec = toJS( context );
+    JSDOMGlobalObject *globalObject = static_cast<JSDOMGlobalObject *>( exec->lexicalGlobalObject() );
+    globalObject->putDirect( exec->globalData(), Identifier( exec, Internals::internalsId ), toJS( exec, globalObject,
+                             Internals::create() ) );
 }
 
-void resetInternalsObject(JSContextRef context)
+void resetInternalsObject( JSContextRef context )
 {
-    JSLock lock(SilenceAssertionsOnly);
-    ExecState* exec = toJS(context);
-    JSDOMGlobalObject* globalObject = static_cast<JSDOMGlobalObject*>(exec->lexicalGlobalObject());
-    Internals * internals = toInternals(globalObject->getDirect(exec->globalData(), Identifier(exec, Internals::internalsId)));
-    if (internals) {
-        ScriptExecutionContext* scriptContext = globalObject->scriptExecutionContext();
-        if (scriptContext->isDocument())
-            internals->reset(static_cast<Document*>(scriptContext));
+    JSLock lock( SilenceAssertionsOnly );
+    ExecState *exec = toJS( context );
+    JSDOMGlobalObject *globalObject = static_cast<JSDOMGlobalObject *>( exec->lexicalGlobalObject() );
+    Internals *internals = toInternals( globalObject->getDirect( exec->globalData(), Identifier( exec, Internals::internalsId ) ) );
+
+    if ( internals )
+    {
+        ScriptExecutionContext *scriptContext = globalObject->scriptExecutionContext();
+
+        if ( scriptContext->isDocument() )
+        {
+            internals->reset( static_cast<Document *>( scriptContext ) );
+        }
     }
 }
 

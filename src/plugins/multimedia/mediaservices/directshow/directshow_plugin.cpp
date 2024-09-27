@@ -58,114 +58,136 @@ extern const CLSID CLSID_VideoInputDeviceCategory;
 #include <ocidl.h>
 #endif
 
-CS_PLUGIN_REGISTER(DSServicePlugin)
+CS_PLUGIN_REGISTER( DSServicePlugin )
 
 static int g_refCount = 0;
 
 void addRefCount()
 {
-   if (++g_refCount == 1) {
-      CoInitialize(nullptr);
-   }
+    if ( ++g_refCount == 1 )
+    {
+        CoInitialize( nullptr );
+    }
 }
 
 void releaseRefCount()
 {
-   if (--g_refCount == 0) {
-      CoUninitialize();
-   }
+    if ( --g_refCount == 0 )
+    {
+        CoUninitialize();
+    }
 }
 
-QMediaService *DSServicePlugin::create(QString const &key)
+QMediaService *DSServicePlugin::create( QString const &key )
 {
 
 #ifdef QMEDIA_DIRECTSHOW_CAMERA
 
-   if (key == Q_MEDIASERVICE_CAMERA) {
-      addRefCount();
-      return new DSCameraService;
-   }
+    if ( key == Q_MEDIASERVICE_CAMERA )
+    {
+        addRefCount();
+        return new DSCameraService;
+    }
+
 #endif
 
 #ifdef QMEDIA_DIRECTSHOW_PLAYER
-   if (key == Q_MEDIASERVICE_MEDIAPLAYER) {
-      addRefCount();
-      return new DirectShowPlayerService;
-   }
+
+    if ( key == Q_MEDIASERVICE_MEDIAPLAYER )
+    {
+        addRefCount();
+        return new DirectShowPlayerService;
+    }
+
 #endif
 
-   return nullptr;
+    return nullptr;
 }
 
-void DSServicePlugin::release(QMediaService *service)
+void DSServicePlugin::release( QMediaService *service )
 {
-   delete service;
-   releaseRefCount();
+    delete service;
+    releaseRefCount();
 }
 
-QMediaServiceProviderHint::Features DSServicePlugin::supportedFeatures(const QString &service) const
+QMediaServiceProviderHint::Features DSServicePlugin::supportedFeatures( const QString &service ) const
 {
-   if (service == Q_MEDIASERVICE_MEDIAPLAYER) {
-      return QMediaServiceProviderHint::StreamPlayback | QMediaServiceProviderHint::VideoSurface;
-   } else {
-      return QMediaServiceProviderHint::Features();
-   }
+    if ( service == Q_MEDIASERVICE_MEDIAPLAYER )
+    {
+        return QMediaServiceProviderHint::StreamPlayback | QMediaServiceProviderHint::VideoSurface;
+    }
+    else
+    {
+        return QMediaServiceProviderHint::Features();
+    }
 }
 
-QString DSServicePlugin::defaultDevice(const QString &service) const
+QString DSServicePlugin::defaultDevice( const QString &service ) const
 {
 
 #ifdef QMEDIA_DIRECTSHOW_CAMERA
-   if (service == Q_MEDIASERVICE_CAMERA) {
-      const QList<DSVideoDeviceInfo> &devs = DSVideoDeviceControl::availableDevices();
 
-      if (! devs.isEmpty()) {
-         return devs.first().first;
-      }
-   }
+    if ( service == Q_MEDIASERVICE_CAMERA )
+    {
+        const QList<DSVideoDeviceInfo> &devs = DSVideoDeviceControl::availableDevices();
+
+        if ( ! devs.isEmpty() )
+        {
+            return devs.first().first;
+        }
+    }
+
 #else
-   (void) service;
+    ( void ) service;
 #endif
 
-   return QString ();
+    return QString ();
 }
 
-QList<QString> DSServicePlugin::devices(const QString &service) const
+QList<QString> DSServicePlugin::devices( const QString &service ) const
 {
-   QList<QString > result;
+    QList<QString > result;
 
 #ifdef QMEDIA_DIRECTSHOW_CAMERA
-   if (service == Q_MEDIASERVICE_CAMERA) {
-      const QList<DSVideoDeviceInfo> &devs = DSVideoDeviceControl::availableDevices();
 
-      for (const DSVideoDeviceInfo &item : devs) {
-         result.append(item.first);
-      }
-   }
+    if ( service == Q_MEDIASERVICE_CAMERA )
+    {
+        const QList<DSVideoDeviceInfo> &devs = DSVideoDeviceControl::availableDevices();
+
+        for ( const DSVideoDeviceInfo &item : devs )
+        {
+            result.append( item.first );
+        }
+    }
+
 #else
-   (void) service;
+    ( void ) service;
 #endif
 
-   return result;
+    return result;
 }
 
-QString DSServicePlugin::deviceDescription(const QString &service, const QString  &device)
+QString DSServicePlugin::deviceDescription( const QString &service, const QString  &device )
 {
 #ifdef QMEDIA_DIRECTSHOW_CAMERA
-   if (service == Q_MEDIASERVICE_CAMERA) {
-      const QList<DSVideoDeviceInfo> &devs = DSVideoDeviceControl::availableDevices();
 
-      for (const DSVideoDeviceInfo &item : devs) {
-         if (item.first == device) {
-            return item.second;
-         }
-      }
-   }
+    if ( service == Q_MEDIASERVICE_CAMERA )
+    {
+        const QList<DSVideoDeviceInfo> &devs = DSVideoDeviceControl::availableDevices();
+
+        for ( const DSVideoDeviceInfo &item : devs )
+        {
+            if ( item.first == device )
+            {
+                return item.second;
+            }
+        }
+    }
 
 #else
-   (void) service;
-   (void) device;
+    ( void ) service;
+    ( void ) device;
 #endif
 
-   return QString();
+    return QString();
 }

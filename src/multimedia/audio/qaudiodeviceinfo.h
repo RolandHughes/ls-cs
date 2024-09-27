@@ -38,45 +38,45 @@ class QAudioDeviceInfoPrivate;
 
 class Q_MULTIMEDIA_EXPORT QAudioDeviceInfo
 {
-   friend class QAudioDeviceFactory;
+    friend class QAudioDeviceFactory;
 
- public:
-   QAudioDeviceInfo();
-   QAudioDeviceInfo(const QAudioDeviceInfo &other);
-   ~QAudioDeviceInfo();
+public:
+    QAudioDeviceInfo();
+    QAudioDeviceInfo( const QAudioDeviceInfo &other );
+    ~QAudioDeviceInfo();
 
-   QAudioDeviceInfo &operator=(const QAudioDeviceInfo &other);
+    QAudioDeviceInfo &operator=( const QAudioDeviceInfo &other );
 
-   bool operator==(const QAudioDeviceInfo &other) const;
-   bool operator!=(const QAudioDeviceInfo &other) const;
-   bool isNull() const;
+    bool operator==( const QAudioDeviceInfo &other ) const;
+    bool operator!=( const QAudioDeviceInfo &other ) const;
+    bool isNull() const;
 
-   QString deviceName() const;
+    QString deviceName() const;
 
-   bool isFormatSupported(const QAudioFormat &format) const;
-   QAudioFormat preferredFormat() const;
-   QAudioFormat nearestFormat(const QAudioFormat &format) const;
+    bool isFormatSupported( const QAudioFormat &format ) const;
+    QAudioFormat preferredFormat() const;
+    QAudioFormat nearestFormat( const QAudioFormat &format ) const;
 
-   QStringList supportedCodecs() const;
-   QList<int> supportedSampleRates() const;
+    QStringList supportedCodecs() const;
+    QList<int> supportedSampleRates() const;
 
-   QList<int> supportedChannelCounts() const;
-   QList<int> supportedSampleSizes() const;
-   QList<QAudioFormat::Endian> supportedByteOrders() const;
-   QList<QAudioFormat::SampleType> supportedSampleTypes() const;
+    QList<int> supportedChannelCounts() const;
+    QList<int> supportedSampleSizes() const;
+    QList<QAudioFormat::Endian> supportedByteOrders() const;
+    QList<QAudioFormat::SampleType> supportedSampleTypes() const;
 
-   static QAudioDeviceInfo defaultInputDevice();
-   static QAudioDeviceInfo defaultOutputDevice();
+    static QAudioDeviceInfo defaultInputDevice();
+    static QAudioDeviceInfo defaultOutputDevice();
 
-   static QList<QAudioDeviceInfo> availableDevices(QAudio::Mode mode);
+    static QList<QAudioDeviceInfo> availableDevices( QAudio::Mode mode );
 
- private:
-   QAudioDeviceInfo(const QString &realm, const QString &handle, QAudio::Mode mode);
-   QString realm() const;
-   QString handle() const;
-   QAudio::Mode mode() const;
+private:
+    QAudioDeviceInfo( const QString &realm, const QString &handle, QAudio::Mode mode );
+    QString realm() const;
+    QString handle() const;
+    QAudio::Mode mode() const;
 
-   QSharedDataPointer<QAudioDeviceInfoPrivate> d;
+    QSharedDataPointer<QAudioDeviceInfoPrivate> d;
 };
 
 #endif

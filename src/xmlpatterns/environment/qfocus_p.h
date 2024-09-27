@@ -26,29 +26,30 @@
 
 #include <qdelegatingdynamiccontext_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class Focus : public DelegatingDynamicContext
 {
- public:
-   Focus(const DynamicContext::Ptr &prevContext);
+public:
+    Focus( const DynamicContext::Ptr &prevContext );
 
-   xsInteger contextPosition() const override;
-   Item contextItem() const override;
-   xsInteger contextSize() override;
+    xsInteger contextPosition() const override;
+    Item contextItem() const override;
+    xsInteger contextSize() override;
 
-   void setFocusIterator(const Item::Iterator::Ptr &it) override;
-   Item::Iterator::Ptr focusIterator() const override;
+    void setFocusIterator( const Item::Iterator::Ptr &it ) override;
+    Item::Iterator::Ptr focusIterator() const override;
 
-   /**
-    * If there is no top level expression that sets the current item,
-    * the focus should be used. This implementation ensures that.
-    */
-   Item currentItem() const override;
+    /**
+     * If there is no top level expression that sets the current item,
+     * the focus should be used. This implementation ensures that.
+     */
+    Item currentItem() const override;
 
- private:
-   Item::Iterator::Ptr m_focusIterator;
-   xsInteger           m_contextSizeCached;
+private:
+    Item::Iterator::Ptr m_focusIterator;
+    xsInteger           m_contextSizeCached;
 };
 }
 

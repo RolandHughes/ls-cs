@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef URLString_h
@@ -28,21 +28,26 @@
 
 #include "WTFString.h"
 
-namespace WTF {
+namespace WTF
+{
 
 // URLString represents a string that's a canonicalized URL.
-class URLString {
+class URLString
+{
 public:
     URLString() { }
 
-    const String& string() const { return m_string;}
+    const String &string() const
+    {
+        return m_string;
+    }
 
 private:
     friend class ParsedURL;
 
     // URLString can only be constructed by a ParsedURL.
-    explicit URLString(const String& string)
-        : m_string(string)
+    explicit URLString( const String &string )
+        : m_string( string )
     {
     }
 

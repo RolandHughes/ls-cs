@@ -32,15 +32,20 @@
 using namespace WebCore;
 using namespace WebKit;
 
-namespace CoreIPC {
+namespace CoreIPC
+{
 
-RefPtr<Image> createImage(ShareableBitmap* bitmap)
+RefPtr<Image> createImage( ShareableBitmap *bitmap )
 {
     RetainPtr<CGImageRef> platformImage = bitmap->makeCGImage();
-    if (!platformImage)
+
+    if ( !platformImage )
+    {
         return 0;
+    }
+
     // BitmapImage::create adopts the CGImageRef that's passed in, which is why we need to leakRef here.
-    return BitmapImage::create(platformImage.leakRef());
+    return BitmapImage::create( platformImage.leakRef() );
 }
-    
+
 }

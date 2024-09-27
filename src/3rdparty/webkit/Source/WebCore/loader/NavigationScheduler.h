@@ -8,13 +8,13 @@
  * are met:
  *
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Apple Computer, Inc. ("Apple") nor the names of
  *     its contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
+ *     from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY APPLE AND ITS CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -38,15 +38,17 @@
 #include <wtf/PassOwnPtr.h>
 #include <wtf/PassRefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class FormSubmission;
 class Frame;
 class ScheduledNavigation;
 class SecurityOrigin;
 
-class NavigationDisablerForBeforeUnload {
-    WTF_MAKE_NONCOPYABLE(NavigationDisablerForBeforeUnload);
+class NavigationDisablerForBeforeUnload
+{
+    WTF_MAKE_NONCOPYABLE( NavigationDisablerForBeforeUnload );
 
 public:
     NavigationDisablerForBeforeUnload()
@@ -55,46 +57,51 @@ public:
     }
     ~NavigationDisablerForBeforeUnload()
     {
-        ASSERT(s_navigationDisableCount);
+        ASSERT( s_navigationDisableCount );
         s_navigationDisableCount--;
     }
-    static bool isNavigationAllowed() { return !s_navigationDisableCount; }
+    static bool isNavigationAllowed()
+    {
+        return !s_navigationDisableCount;
+    }
 
 private:
     static unsigned s_navigationDisableCount;
 };
 
-class NavigationScheduler {
-    WTF_MAKE_NONCOPYABLE(NavigationScheduler);
+class NavigationScheduler
+{
+    WTF_MAKE_NONCOPYABLE( NavigationScheduler );
 
 public:
-    NavigationScheduler(Frame*);
+    NavigationScheduler( Frame * );
     ~NavigationScheduler();
 
     bool redirectScheduledDuringLoad();
     bool locationChangePending();
 
-    void scheduleRedirect(double delay, const String& url);
-    void scheduleLocationChange(PassRefPtr<SecurityOrigin>, const String& url, const String& referrer, bool lockHistory = true, bool lockBackForwardList = true);
-    void scheduleFormSubmission(PassRefPtr<FormSubmission>);
+    void scheduleRedirect( double delay, const String &url );
+    void scheduleLocationChange( PassRefPtr<SecurityOrigin>, const String &url, const String &referrer, bool lockHistory = true,
+                                 bool lockBackForwardList = true );
+    void scheduleFormSubmission( PassRefPtr<FormSubmission> );
     void scheduleRefresh();
-    void scheduleHistoryNavigation(int steps);
+    void scheduleHistoryNavigation( int steps );
 
     void startTimer();
 
-    void cancel(bool newLoadInProgress = false);
+    void cancel( bool newLoadInProgress = false );
     void clear();
 
 private:
     bool shouldScheduleNavigation() const;
-    bool shouldScheduleNavigation(const String& url) const;
+    bool shouldScheduleNavigation( const String &url ) const;
 
-    void timerFired(Timer<NavigationScheduler>*);
-    void schedule(PassOwnPtr<ScheduledNavigation>);
+    void timerFired( Timer<NavigationScheduler> * );
+    void schedule( PassOwnPtr<ScheduledNavigation> );
 
-    static bool mustLockBackForwardList(Frame* targetFrame);
+    static bool mustLockBackForwardList( Frame *targetFrame );
 
-    Frame* m_frame;
+    Frame *m_frame;
     Timer<NavigationScheduler> m_timer;
     OwnPtr<ScheduledNavigation> m_redirect;
 };

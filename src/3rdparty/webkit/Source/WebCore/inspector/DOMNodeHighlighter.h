@@ -29,14 +29,17 @@
 #ifndef DOMNodeHighlighter_h
 #define DOMNodeHighlighter_h
 
-namespace WebCore {
+namespace WebCore
+{
 
 class GraphicsContext;
 class Node;
 
-namespace DOMNodeHighlighter {
+namespace DOMNodeHighlighter
+{
 
-enum HighlightMode {
+enum HighlightMode
+{
     HighlightAll,
     HighlightContent,
     HighlightPadding,
@@ -44,7 +47,7 @@ enum HighlightMode {
     HighlightMargin
 };
 
-void DrawNodeHighlight(GraphicsContext&, Node*, HighlightMode);
+void DrawNodeHighlight( GraphicsContext &, Node *, HighlightMode );
 
 } // namespace DOMNodeHighlighter
 

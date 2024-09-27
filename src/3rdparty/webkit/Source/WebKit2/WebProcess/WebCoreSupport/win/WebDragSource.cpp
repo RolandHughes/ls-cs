@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -38,17 +38,19 @@ using namespace WebCore;
 
 PassRefPtr<WebDragSource> WebDragSource::createInstance()
 {
-    return adoptRef(new WebDragSource);
+    return adoptRef( new WebDragSource );
 }
 
 WebDragSource::WebDragSource()
 {
 }
 
-HRESULT WebDragSource::QueryInterface(REFIID riid, void** ppvObject)
+HRESULT WebDragSource::QueryInterface( REFIID riid, void **ppvObject )
 {
     *ppvObject = 0;
-    if (IsEqualIID(riid, IID_IUnknown) || IsEqualIID(riid, IID_IDropSource)) {
+
+    if ( IsEqualIID( riid, IID_IUnknown ) || IsEqualIID( riid, IID_IDropSource ) )
+    {
         *ppvObject = this;
         AddRef();
 
@@ -58,30 +60,34 @@ HRESULT WebDragSource::QueryInterface(REFIID riid, void** ppvObject)
     return E_NOINTERFACE;
 }
 
-ULONG WebDragSource::AddRef(void)
+ULONG WebDragSource::AddRef( void )
 {
     ref();
     return refCount();
 }
 
-ULONG WebDragSource::Release(void)
+ULONG WebDragSource::Release( void )
 {
     deref();
     return refCount();
 }
 
-HRESULT WebDragSource::QueryContinueDrag(BOOL fEscapePressed, DWORD grfState)
+HRESULT WebDragSource::QueryContinueDrag( BOOL fEscapePressed, DWORD grfState )
 {
-    if (fEscapePressed)
+    if ( fEscapePressed )
+    {
         return DRAGDROP_S_CANCEL;
+    }
 
-    if (grfState & (MK_LBUTTON | MK_RBUTTON))
+    if ( grfState & ( MK_LBUTTON | MK_RBUTTON ) )
+    {
         return S_OK;
+    }
 
     return DRAGDROP_S_DROP;
 }
 
-HRESULT WebDragSource::GiveFeedback(DWORD dwEffect)
+HRESULT WebDragSource::GiveFeedback( DWORD dwEffect )
 {
     return DRAGDROP_S_USEDEFAULTCURSORS;
 }

@@ -32,66 +32,78 @@
 #include <wtf/StdLibExtras.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
-
-LayerChangesFlusher& LayerChangesFlusher::shared()
+namespace WebCore
 {
-    DEFINE_STATIC_LOCAL(LayerChangesFlusher, flusher, ());
+
+LayerChangesFlusher &LayerChangesFlusher::shared()
+{
+    DEFINE_STATIC_LOCAL( LayerChangesFlusher, flusher, () );
     return flusher;
 }
 
 LayerChangesFlusher::LayerChangesFlusher()
-    : m_hook(0)
-    , m_isCallingHosts(false)
+    : m_hook( 0 )
+    , m_isCallingHosts( false )
 {
 }
 
-void LayerChangesFlusher::flushPendingLayerChangesSoon(AbstractCACFLayerTreeHost* host)
+void LayerChangesFlusher::flushPendingLayerChangesSoon( AbstractCACFLayerTreeHost *host )
 {
-    if (!m_hostsWithChangesToFlush.add(host).second || m_hook)
+    if ( !m_hostsWithChangesToFlush.add( host ).second || m_hook )
+    {
         return;
+    }
 
     setHook();
 }
 
-void LayerChangesFlusher::cancelPendingFlush(AbstractCACFLayerTreeHost* host)
+void LayerChangesFlusher::cancelPendingFlush( AbstractCACFLayerTreeHost *host )
 {
-    m_hostsWithChangesToFlush.remove(host);
+    m_hostsWithChangesToFlush.remove( host );
 
-    if (!m_hostsWithChangesToFlush.isEmpty() || !m_hook)
+    if ( !m_hostsWithChangesToFlush.isEmpty() || !m_hook )
+    {
         return;
+    }
 
     // We handle removing the hook when we finish calling out to the hosts, so we shouldn't
     // mess with it while we're in the process of calling them.
-    if (m_isCallingHosts)
+    if ( m_isCallingHosts )
+    {
         return;
+    }
 
     removeHook();
 }
 
-LRESULT LayerChangesFlusher::hookCallback(int code, WPARAM wParam, LPARAM lParam)
+LRESULT LayerChangesFlusher::hookCallback( int code, WPARAM wParam, LPARAM lParam )
 {
-    return shared().hookFired(code, wParam, lParam);
+    return shared().hookFired( code, wParam, lParam );
 }
 
-LRESULT LayerChangesFlusher::hookFired(int code, WPARAM wParam, LPARAM lParam)
+LRESULT LayerChangesFlusher::hookFired( int code, WPARAM wParam, LPARAM lParam )
 {
-    ASSERT(m_hook);
+    ASSERT( m_hook );
 
     // Calling out to the hosts can cause m_hostsWithChangesToFlush to be modified, so we copy it
     // into a Vector first.
-    Vector<AbstractCACFLayerTreeHost*> hosts;
-    copyToVector(m_hostsWithChangesToFlush, hosts);
+    Vector<AbstractCACFLayerTreeHost *> hosts;
+    copyToVector( m_hostsWithChangesToFlush, hosts );
     m_hostsWithChangesToFlush.clear();
 
     m_isCallingHosts = true;
-    for (size_t i = 0; i < hosts.size(); ++i)
+
+    for ( size_t i = 0; i < hosts.size(); ++i )
+    {
         hosts[i]->flushPendingLayerChangesNow();
+    }
+
     m_isCallingHosts = false;
 
-    LRESULT result = ::CallNextHookEx(m_hook, code, wParam, lParam);
+    LRESULT result = ::CallNextHookEx( m_hook, code, wParam, lParam );
 
-    if (m_hostsWithChangesToFlush.isEmpty()) {
+    if ( m_hostsWithChangesToFlush.isEmpty() )
+    {
         // We won't have any work to do next time around, so just remove our hook.
         removeHook();
     }
@@ -101,26 +113,28 @@ LRESULT LayerChangesFlusher::hookFired(int code, WPARAM wParam, LPARAM lParam)
 
 void LayerChangesFlusher::setHook()
 {
-    ASSERT(!m_hook);
-    ASSERT(!m_isCallingHosts);
+    ASSERT( !m_hook );
+    ASSERT( !m_isCallingHosts );
 
     DWORD threadID = ::GetCurrentThreadId();
 
-    m_hook = ::SetWindowsHookExW(WH_GETMESSAGE, hookCallback, 0, threadID);
-    ASSERT_WITH_MESSAGE(m_hook, "::SetWindowsHookExW failed with error %lu", ::GetLastError());
+    m_hook = ::SetWindowsHookExW( WH_GETMESSAGE, hookCallback, 0, threadID );
+    ASSERT_WITH_MESSAGE( m_hook, "::SetWindowsHookExW failed with error %lu", ::GetLastError() );
 
     // Post a message to the message queue to prevent ::GetMessage from blocking, which will ensure
     // our hook is called soon.
-    ::PostThreadMessageW(threadID, WM_NULL, 0, 0);
+    ::PostThreadMessageW( threadID, WM_NULL, 0, 0 );
 }
 
 void LayerChangesFlusher::removeHook()
 {
-    ASSERT(m_hook);
-    ASSERT(!m_isCallingHosts);
+    ASSERT( m_hook );
+    ASSERT( !m_isCallingHosts );
 
-    if (!::UnhookWindowsHookEx(m_hook))
-        ASSERT_WITH_MESSAGE(false, "::UnhookWindowsHookEx failed with error %lu", ::GetLastError());
+    if ( !::UnhookWindowsHookEx( m_hook ) )
+    {
+        ASSERT_WITH_MESSAGE( false, "::UnhookWindowsHookEx failed with error %lu", ::GetLastError() );
+    }
 
     m_hook = 0;
 }

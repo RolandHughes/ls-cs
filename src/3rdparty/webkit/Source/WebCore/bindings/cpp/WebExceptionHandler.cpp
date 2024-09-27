@@ -21,21 +21,24 @@
 #include "WebExceptionHandler.h"
 
 // To avoid a global static symbol, we declare it in a function
-static inline WebExceptionHandler& globalExceptionHandler()
+static inline WebExceptionHandler &globalExceptionHandler()
 {
     static WebExceptionHandler s_globalExceptionHandler;
     return s_globalExceptionHandler;
 }
 
-void webInstallExceptionHandler(WebExceptionHandler handler)
+void webInstallExceptionHandler( WebExceptionHandler handler )
 {
-    ASSERT(handler);
+    ASSERT( handler );
     globalExceptionHandler() = handler;
 }
 
-void webRaiseDOMException(WebDOMExceptionCode ec)
+void webRaiseDOMException( WebDOMExceptionCode ec )
 {
-    ASSERT(ec);
-    if (WebExceptionHandler& handler = globalExceptionHandler())
-        (*handler)(ec);
+    ASSERT( ec );
+
+    if ( WebExceptionHandler &handler = globalExceptionHandler() )
+    {
+        ( *handler )( ec );
+    }
 }

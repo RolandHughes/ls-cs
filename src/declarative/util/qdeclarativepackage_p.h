@@ -33,45 +33,45 @@ class QDeclarativePackageAttached;
 
 class QDeclarativePackage : public QObject
 {
-   DECL_CS_OBJECT(QDeclarativePackage)
-   Q_DECLARE_PRIVATE(QDeclarativePackage)
+    DECL_CS_OBJECT( QDeclarativePackage )
+    Q_DECLARE_PRIVATE( QDeclarativePackage )
 
-   DECL_CS_CLASSINFO("DefaultProperty", "data")
-   DECL_CS_PROPERTY_READ(data, data)
-   DECL_CS_PROPERTY_SCRIPTABLE(data, false)
+    DECL_CS_CLASSINFO( "DefaultProperty", "data" )
+    DECL_CS_PROPERTY_READ( data, data )
+    DECL_CS_PROPERTY_SCRIPTABLE( data, false )
 
- public:
-   QDeclarativePackage(QObject *parent = nullptr);
-   virtual ~QDeclarativePackage();
+public:
+    QDeclarativePackage( QObject *parent = nullptr );
+    virtual ~QDeclarativePackage();
 
-   QDeclarativeListProperty<QObject> data();
+    QDeclarativeListProperty<QObject> data();
 
-   QObject *part(const QString & = QString());
-   bool hasPart(const QString &);
+    QObject *part( const QString & = QString() );
+    bool hasPart( const QString & );
 
-   static QDeclarativePackageAttached *qmlAttachedProperties(QObject *);
+    static QDeclarativePackageAttached *qmlAttachedProperties( QObject * );
 };
 
 class QDeclarativePackageAttached : public QObject
 {
-   DECL_CS_OBJECT(QDeclarativePackageAttached)
-   DECL_CS_PROPERTY_READ(name, name)
-   DECL_CS_PROPERTY_WRITE(name, setName)
- public:
-   QDeclarativePackageAttached(QObject *parent);
-   virtual ~QDeclarativePackageAttached();
+    DECL_CS_OBJECT( QDeclarativePackageAttached )
+    DECL_CS_PROPERTY_READ( name, name )
+    DECL_CS_PROPERTY_WRITE( name, setName )
+public:
+    QDeclarativePackageAttached( QObject *parent );
+    virtual ~QDeclarativePackageAttached();
 
-   QString name() const;
-   void setName(const QString &n);
+    QString name() const;
+    void setName( const QString &n );
 
-   static QHash<QObject *, QDeclarativePackageAttached *> attached;
- private:
-   QString _name;
+    static QHash<QObject *, QDeclarativePackageAttached *> attached;
+private:
+    QString _name;
 };
 
 QT_END_NAMESPACE
 
-QML_DECLARE_TYPE(QDeclarativePackage)
-QML_DECLARE_TYPEINFO(QDeclarativePackage, QML_HAS_ATTACHED_PROPERTIES)
+QML_DECLARE_TYPE( QDeclarativePackage )
+QML_DECLARE_TYPEINFO( QDeclarativePackage, QML_HAS_ATTACHED_PROPERTIES )
 
 #endif // QDECLARATIVEPACKAGE_H

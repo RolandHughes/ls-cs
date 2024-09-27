@@ -35,14 +35,16 @@
 
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class FileWriterBase;
 
-class FileWriterBaseCallback : public RefCounted<FileWriterBaseCallback> {
+class FileWriterBaseCallback : public RefCounted<FileWriterBaseCallback>
+{
 public:
     virtual ~FileWriterBaseCallback() { }
-    virtual bool handleEvent(FileWriterBase*) = 0;
+    virtual bool handleEvent( FileWriterBase * ) = 0;
 };
 
 } // namespace

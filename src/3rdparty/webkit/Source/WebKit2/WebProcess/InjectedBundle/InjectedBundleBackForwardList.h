@@ -29,35 +29,43 @@
 #include "APIObject.h"
 #include <wtf/PassRefPtr.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
 class WebPage;
 
 class InjectedBundleBackForwardListItem;
 
-class InjectedBundleBackForwardList : public APIObject {
+class InjectedBundleBackForwardList : public APIObject
+{
 public:
     static const Type APIType = TypeBundleBackForwardList;
 
-    static PassRefPtr<InjectedBundleBackForwardList> create(WebPage* page)
+    static PassRefPtr<InjectedBundleBackForwardList> create( WebPage *page )
     {
-        return adoptRef(new InjectedBundleBackForwardList(page));
+        return adoptRef( new InjectedBundleBackForwardList( page ) );
     }
 
-    void detach() { m_page = 0; }
+    void detach()
+    {
+        m_page = 0;
+    }
 
     void clear();
 
-    PassRefPtr<InjectedBundleBackForwardListItem> itemAtIndex(int) const;
+    PassRefPtr<InjectedBundleBackForwardListItem> itemAtIndex( int ) const;
     int backListCount() const;
     int forwardListCount() const;
 
 private:
-    InjectedBundleBackForwardList(WebPage* page) : m_page(page) { }
+    InjectedBundleBackForwardList( WebPage *page ) : m_page( page ) { }
 
-    virtual Type type() const { return APIType; }
+    virtual Type type() const
+    {
+        return APIType;
+    }
 
-    WebPage* m_page;
+    WebPage *m_page;
 };
 
 } // namespace WebKit

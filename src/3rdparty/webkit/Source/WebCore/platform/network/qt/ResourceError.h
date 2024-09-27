@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef ResourceError_h
@@ -28,7 +28,8 @@
 
 #include "ResourceErrorBase.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class ResourceError : public ResourceErrorBase
 {
@@ -37,8 +38,8 @@ public:
     {
     }
 
-    ResourceError(const String& domain, int errorCode, const String& failingURL, const String& localizedDescription)
-        : ResourceErrorBase(domain, errorCode, failingURL, localizedDescription)
+    ResourceError( const String &domain, int errorCode, const String &failingURL, const String &localizedDescription )
+        : ResourceErrorBase( domain, errorCode, failingURL, localizedDescription )
     {
     }
 };

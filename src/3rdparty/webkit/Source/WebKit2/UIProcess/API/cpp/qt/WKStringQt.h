@@ -24,7 +24,7 @@
 #include <QString>
 #include <WebKit2/WKBase.h>
 
-WK_EXPORT WKStringRef WKStringCreateWithQString(const QString& string);
-WK_EXPORT QString WKStringCopyQString(WKStringRef string);
+WK_EXPORT WKStringRef WKStringCreateWithQString( const QString &string );
+WK_EXPORT QString WKStringCopyQString( WKStringRef string );
 
 #endif /* WKStringQt_h */

@@ -26,7 +26,8 @@
 
 #include <qstring.h>
 
-namespace QMediaMetaData {
+namespace QMediaMetaData
+{
 
 // Common
 static const QString Title               = "Title";

@@ -33,20 +33,21 @@
 
 #if ENABLE(INPUT_SPEECH)
 
-namespace WebCore {
-
-PassRefPtr<SpeechInputResultList> SpeechInputResultList::create(const SpeechInputResultArray& results)
+namespace WebCore
 {
-    return adoptRef(new SpeechInputResultList(results));
+
+PassRefPtr<SpeechInputResultList> SpeechInputResultList::create( const SpeechInputResultArray &results )
+{
+    return adoptRef( new SpeechInputResultList( results ) );
 }
 
-SpeechInputResult* SpeechInputResultList::item(unsigned index)
+SpeechInputResult *SpeechInputResultList::item( unsigned index )
 {
     return index >= m_results.size() ? 0 : m_results[index].get();
 }
 
-SpeechInputResultList::SpeechInputResultList(const SpeechInputResultArray& results)
-    : m_results(results) // Takes a copy of the array of RefPtrs.
+SpeechInputResultList::SpeechInputResultList( const SpeechInputResultArray &results )
+    : m_results( results ) // Takes a copy of the array of RefPtrs.
 {
 }
 

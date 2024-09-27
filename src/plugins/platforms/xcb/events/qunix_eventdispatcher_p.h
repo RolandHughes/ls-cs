@@ -32,19 +32,19 @@ class QUnixEventDispatcherPrivate;
 
 class QUnixEventDispatcher : public QEventDispatcherUNIX
 {
-   CS_OBJECT(QUnixEventDispatcher)
+    CS_OBJECT( QUnixEventDispatcher )
 
- public:
-   explicit QUnixEventDispatcher(QObject *parent = nullptr);
-   ~QUnixEventDispatcher();
+public:
+    explicit QUnixEventDispatcher( QObject *parent = nullptr );
+    ~QUnixEventDispatcher();
 
-   bool processEvents(QEventLoop::ProcessEventsFlags flags) override;
-   bool hasPendingEvents() override;
+    bool processEvents( QEventLoop::ProcessEventsFlags flags ) override;
+    bool hasPendingEvents() override;
 
-   void flush() override;
+    void flush() override;
 
- private:
-   Q_DECLARE_PRIVATE(QUnixEventDispatcher)
+private:
+    Q_DECLARE_PRIVATE( QUnixEventDispatcher )
 };
 
 #endif

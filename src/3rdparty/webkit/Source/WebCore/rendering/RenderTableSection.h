@@ -28,70 +28,92 @@
 #include "RenderTable.h"
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class RenderTableCell;
 class RenderTableRow;
 
-class RenderTableSection : public RenderBox {
+class RenderTableSection : public RenderBox
+{
 public:
-    RenderTableSection(Node*);
+    RenderTableSection( Node * );
     virtual ~RenderTableSection();
 
-    const RenderObjectChildList* children() const { return &m_children; }
-    RenderObjectChildList* children() { return &m_children; }
+    const RenderObjectChildList *children() const
+    {
+        return &m_children;
+    }
+    RenderObjectChildList *children()
+    {
+        return &m_children;
+    }
 
-    virtual void addChild(RenderObject* child, RenderObject* beforeChild = 0);
+    virtual void addChild( RenderObject *child, RenderObject *beforeChild = 0 );
 
     virtual int firstLineBoxBaseline() const;
 
-    void addCell(RenderTableCell*, RenderTableRow* row);
+    void addCell( RenderTableCell *, RenderTableRow *row );
 
     void setCellLogicalWidths();
     int calcRowLogicalHeight();
-    int layoutRows(int logicalHeight);
+    int layoutRows( int logicalHeight );
 
-    RenderTable* table() const { return toRenderTable(parent()); }
+    RenderTable *table() const
+    {
+        return toRenderTable( parent() );
+    }
 
-    struct CellStruct {
-        Vector<RenderTableCell*, 1> cells; 
+    struct CellStruct
+    {
+        Vector<RenderTableCell *, 1> cells;
         bool inColSpan; // true for columns after the first in a colspan
 
         CellStruct():
-          inColSpan(false) {}
-        
-        RenderTableCell* primaryCell()
+            inColSpan( false ) {}
+
+        RenderTableCell *primaryCell()
         {
             return hasCells() ? cells[cells.size() - 1] : 0;
         }
 
-        const RenderTableCell* primaryCell() const
+        const RenderTableCell *primaryCell() const
         {
             return hasCells() ? cells[cells.size() - 1] : 0;
         }
 
-        bool hasCells() const { return cells.size() > 0; }
+        bool hasCells() const
+        {
+            return cells.size() > 0;
+        }
     };
 
     typedef Vector<CellStruct> Row;
 
-    struct RowStruct {
-        Row* row;
-        RenderTableRow* rowRenderer;
+    struct RowStruct
+    {
+        Row *row;
+        RenderTableRow *rowRenderer;
         int baseline;
         Length logicalHeight;
     };
 
-    CellStruct& cellAt(int row,  int col) { return (*m_grid[row].row)[col]; }
-    const CellStruct& cellAt(int row, int col) const { return (*m_grid[row].row)[col]; }
-    RenderTableCell* primaryCellAt(int row, int col)
+    CellStruct &cellAt( int row,  int col )
     {
-        CellStruct& c = (*m_grid[row].row)[col];
+        return ( *m_grid[row].row )[col];
+    }
+    const CellStruct &cellAt( int row, int col ) const
+    {
+        return ( *m_grid[row].row )[col];
+    }
+    RenderTableCell *primaryCellAt( int row, int col )
+    {
+        CellStruct &c = ( *m_grid[row].row )[col];
         return c.primaryCell();
     }
 
-    void appendColumn(int pos);
-    void splitColumn(int pos, int first);
+    void appendColumn( int pos );
+    void splitColumn( int pos, int first );
 
     int calcOuterBorderBefore() const;
     int calcOuterBorderAfter() const;
@@ -99,51 +121,86 @@ public:
     int calcOuterBorderEnd() const;
     void recalcOuterBorder();
 
-    int outerBorderBefore() const { return m_outerBorderBefore; }
-    int outerBorderAfter() const { return m_outerBorderAfter; }
-    int outerBorderStart() const { return m_outerBorderStart; }
-    int outerBorderEnd() const { return m_outerBorderEnd; }
+    int outerBorderBefore() const
+    {
+        return m_outerBorderBefore;
+    }
+    int outerBorderAfter() const
+    {
+        return m_outerBorderAfter;
+    }
+    int outerBorderStart() const
+    {
+        return m_outerBorderStart;
+    }
+    int outerBorderEnd() const
+    {
+        return m_outerBorderEnd;
+    }
 
-    int numRows() const { return m_gridRows; }
+    int numRows() const
+    {
+        return m_gridRows;
+    }
     int numColumns() const;
     void recalcCells();
     void recalcCellsIfNeeded()
     {
-        if (m_needsCellRecalc)
+        if ( m_needsCellRecalc )
+        {
             recalcCells();
+        }
     }
 
-    bool needsCellRecalc() const { return m_needsCellRecalc; }
+    bool needsCellRecalc() const
+    {
+        return m_needsCellRecalc;
+    }
     void setNeedsCellRecalc();
 
-    int getBaseline(int row) { return m_grid[row].baseline; }
+    int getBaseline( int row )
+    {
+        return m_grid[row].baseline;
+    }
 
 protected:
-    virtual void styleDidChange(StyleDifference, const RenderStyle* oldStyle);
+    virtual void styleDidChange( StyleDifference, const RenderStyle *oldStyle );
 
 private:
-    virtual RenderObjectChildList* virtualChildren() { return children(); }
-    virtual const RenderObjectChildList* virtualChildren() const { return children(); }
+    virtual RenderObjectChildList *virtualChildren()
+    {
+        return children();
+    }
+    virtual const RenderObjectChildList *virtualChildren() const
+    {
+        return children();
+    }
 
-    virtual const char* renderName() const { return isAnonymous() ? "RenderTableSection (anonymous)" : "RenderTableSection"; }
+    virtual const char *renderName() const
+    {
+        return isAnonymous() ? "RenderTableSection (anonymous)" : "RenderTableSection";
+    }
 
-    virtual bool isTableSection() const { return true; }
+    virtual bool isTableSection() const
+    {
+        return true;
+    }
 
     virtual void destroy();
 
     virtual void layout();
 
-    virtual void removeChild(RenderObject* oldChild);
+    virtual void removeChild( RenderObject *oldChild );
 
-    virtual void paint(PaintInfo&, int tx, int ty);
-    virtual void paintCell(RenderTableCell*, PaintInfo&, int tx, int ty);
-    virtual void paintObject(PaintInfo&, int tx, int ty);
+    virtual void paint( PaintInfo &, int tx, int ty );
+    virtual void paintCell( RenderTableCell *, PaintInfo &, int tx, int ty );
+    virtual void paintObject( PaintInfo &, int tx, int ty );
 
-    virtual void imageChanged(WrappedImagePtr, const IntRect* = 0);
+    virtual void imageChanged( WrappedImagePtr, const IntRect * = 0 );
 
-    virtual bool nodeAtPoint(const HitTestRequest&, HitTestResult&, int x, int y, int tx, int ty, HitTestAction);
+    virtual bool nodeAtPoint( const HitTestRequest &, HitTestResult &, int x, int y, int tx, int ty, HitTestAction );
 
-    bool ensureRows(int);
+    bool ensureRows( int );
     void clearGrid();
 
     RenderObjectChildList m_children;
@@ -168,20 +225,20 @@ private:
     bool m_hasMultipleCellLevels;
 };
 
-inline RenderTableSection* toRenderTableSection(RenderObject* object)
+inline RenderTableSection *toRenderTableSection( RenderObject *object )
 {
-    ASSERT(!object || object->isTableSection());
-    return static_cast<RenderTableSection*>(object);
+    ASSERT( !object || object->isTableSection() );
+    return static_cast<RenderTableSection *>( object );
 }
 
-inline const RenderTableSection* toRenderTableSection(const RenderObject* object)
+inline const RenderTableSection *toRenderTableSection( const RenderObject *object )
 {
-    ASSERT(!object || object->isTableSection());
-    return static_cast<const RenderTableSection*>(object);
+    ASSERT( !object || object->isTableSection() );
+    return static_cast<const RenderTableSection *>( object );
 }
 
 // This will catch anyone doing an unnecessary cast.
-void toRenderTableSection(const RenderTableSection*);
+void toRenderTableSection( const RenderTableSection * );
 
 } // namespace WebCore
 

@@ -28,7 +28,7 @@
 
 #include "config.h"
 #include "WebDOMCustomVoidCallback.h"
-    
+
 WebDOMCustomVoidCallback::WebDOMCustomVoidCallback()
 {
 }
@@ -36,13 +36,13 @@ WebDOMCustomVoidCallback::WebDOMCustomVoidCallback()
 WebDOMCustomVoidCallback::~WebDOMCustomVoidCallback()
 {
 }
-    
+
 void WebDOMCustomVoidCallback::handleEvent()
 {
 
 }
 
-WebCore::VoidCallback* toWebCore(const WebDOMCustomVoidCallback& callback)
+WebCore::VoidCallback *toWebCore( const WebDOMCustomVoidCallback &callback )
 {
-    return const_cast<WebCore::VoidCallback*>((WebCore::VoidCallback*)&callback);
+    return const_cast<WebCore::VoidCallback *>( ( WebCore::VoidCallback * )&callback );
 }

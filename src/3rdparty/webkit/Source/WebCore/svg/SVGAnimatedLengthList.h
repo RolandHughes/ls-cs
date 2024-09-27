@@ -24,7 +24,8 @@
 #include "SVGAnimatedListPropertyTearOff.h"
 #include "SVGLengthList.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 typedef SVGAnimatedListPropertyTearOff<SVGLengthList> SVGAnimatedLengthList;
 

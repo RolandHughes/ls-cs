@@ -27,13 +27,13 @@
 
 #include <glib.h>
 
-gchar* convertToUTF8String(WTF::String const& s)
+gchar *convertToUTF8String( WTF::String const &s )
 {
-    return g_strdup(s.utf8().data());
+    return g_strdup( s.utf8().data() );
 }
 
-gchar* convertToUTF8String(WebCore::KURL const& s)
+gchar *convertToUTF8String( WebCore::KURL const &s )
 {
-    return g_strdup(s.string().utf8().data());
+    return g_strdup( s.string().utf8().data() );
 }
 

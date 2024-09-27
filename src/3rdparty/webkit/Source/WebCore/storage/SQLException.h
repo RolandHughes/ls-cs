@@ -35,19 +35,22 @@
 
 #include "ExceptionBase.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class SQLException : public ExceptionBase {
+class SQLException : public ExceptionBase
+{
 public:
-    static PassRefPtr<SQLException> create(const ExceptionCodeDescription& description)
+    static PassRefPtr<SQLException> create( const ExceptionCodeDescription &description )
     {
-        return adoptRef(new SQLException(description));
+        return adoptRef( new SQLException( description ) );
     }
 
     static const int SQLExceptionOffset = 1000;
     static const int SQLExceptionMax = 1099;
 
-    enum SQLExceptionCode {
+    enum SQLExceptionCode
+    {
         UNKNOWN_ERR = SQLExceptionOffset,
         DATABASE_ERR = SQLExceptionOffset + 1,
         VERSION_ERR = SQLExceptionOffset + 2,
@@ -59,8 +62,8 @@ public:
     };
 
 private:
-    SQLException(const ExceptionCodeDescription& description)
-        : ExceptionBase(description)
+    SQLException( const ExceptionCodeDescription &description )
+        : ExceptionBase( description )
     {
     }
 };

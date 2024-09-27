@@ -27,24 +27,31 @@
 #include "TextureMapper.h"
 #include "TransformationMatrix.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class TextureMapperGLData;
 
 // An OpenGL-ES2 implementation of TextureMapper.
-class TextureMapperGL : public TextureMapper {
+class TextureMapperGL : public TextureMapper
+{
 public:
     TextureMapperGL();
     virtual ~TextureMapperGL();
 
     // reimps from TextureMapper
-    virtual void drawTexture(const BitmapTexture& texture, const IntRect&, const TransformationMatrix& transform, float opacity, const BitmapTexture* maskTexture);
-    virtual void bindSurface(BitmapTexture* surface);
-    virtual void setClip(const IntRect&);
-    virtual void paintToTarget(const BitmapTexture&, const IntSize&, const TransformationMatrix&, float opacity, const IntRect& visibleRect);
-    virtual bool allowSurfaceForRoot() const { return true; }
+    virtual void drawTexture( const BitmapTexture &texture, const IntRect &, const TransformationMatrix &transform, float opacity,
+                              const BitmapTexture *maskTexture );
+    virtual void bindSurface( BitmapTexture *surface );
+    virtual void setClip( const IntRect & );
+    virtual void paintToTarget( const BitmapTexture &, const IntSize &, const TransformationMatrix &, float opacity,
+                                const IntRect &visibleRect );
+    virtual bool allowSurfaceForRoot() const
+    {
+        return true;
+    }
     virtual PassRefPtr<BitmapTexture> createTexture();
-    virtual const char* type() const;
+    virtual const char *type() const;
     void obtainCurrentContext();
     bool makeContextCurrent();
     static PassOwnPtr<TextureMapperGL> create()
@@ -53,35 +60,46 @@ public:
     }
 
 private:
-    inline TextureMapperGLData& data() { return *m_data; }
-    TextureMapperGLData* m_data;
+    inline TextureMapperGLData &data()
+    {
+        return *m_data;
+    }
+    TextureMapperGLData *m_data;
     friend class BitmapTextureGL;
 };
 
 // An offscreen buffer to be rendered by software.
-class RGBA32PremultimpliedBuffer : public RefCounted<RGBA32PremultimpliedBuffer> {
+class RGBA32PremultimpliedBuffer : public RefCounted<RGBA32PremultimpliedBuffer>
+{
 public:
     virtual ~RGBA32PremultimpliedBuffer() {}
-    virtual PlatformGraphicsContext* beginPaint(const IntRect& dirtyRect, bool opaque) = 0;
+    virtual PlatformGraphicsContext *beginPaint( const IntRect &dirtyRect, bool opaque ) = 0;
     virtual void endPaint() = 0;
-    virtual const void* data() const = 0;
+    virtual const void *data() const = 0;
     static PassRefPtr<RGBA32PremultimpliedBuffer> create();
 };
 
-static inline int nextPowerOfTwo(int num)
+static inline int nextPowerOfTwo( int num )
 {
-    for (int i = 0x10000000; i > 0; i >>= 1) {
-        if (num == i)
+    for ( int i = 0x10000000; i > 0; i >>= 1 )
+    {
+        if ( num == i )
+        {
             return num;
-        if (num & i)
-            return (i << 1);
+        }
+
+        if ( num & i )
+        {
+            return ( i << 1 );
+        }
     }
+
     return 1;
 }
 
-static inline IntSize nextPowerOfTwo(const IntSize& size)
+static inline IntSize nextPowerOfTwo( const IntSize &size )
 {
-    return IntSize(nextPowerOfTwo(size.width()), nextPowerOfTwo(size.height()));
+    return IntSize( nextPowerOfTwo( size.width() ), nextPowerOfTwo( size.height() ) );
 }
 
 };

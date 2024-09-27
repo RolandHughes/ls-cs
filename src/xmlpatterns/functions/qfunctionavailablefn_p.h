@@ -27,17 +27,18 @@
 #include <qstaticnamespacescontainer_p.h>
 #include <qfunctionfactory_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class FunctionAvailableFN : public StaticNamespacesContainer
 {
- public:
-   Item evaluateSingleton(const DynamicContext::Ptr &context) const override;
-   Expression::Ptr typeCheck(const StaticContext::Ptr &context, const SequenceType::Ptr &reqType) override;
+public:
+    Item evaluateSingleton( const DynamicContext::Ptr &context ) const override;
+    Expression::Ptr typeCheck( const StaticContext::Ptr &context, const SequenceType::Ptr &reqType ) override;
 
- private:
-   FunctionFactory::Ptr    m_functionFactory;
-   QXmlName::NamespaceCode m_defFuncNS;
+private:
+    FunctionFactory::Ptr    m_functionFactory;
+    QXmlName::NamespaceCode m_defFuncNS;
 };
 
 }

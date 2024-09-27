@@ -59,15 +59,15 @@ using namespace WebCore;
 /*
     Constructs a web database from \a other.
 */
-QWebDatabase::QWebDatabase(const QWebDatabase& other)
-    : d(other.d)
+QWebDatabase::QWebDatabase( const QWebDatabase &other )
+    : d( other.d )
 {
 }
 
 /*
     Assigns the \a other web database to this.
 */
-QWebDatabase& QWebDatabase::operator=(const QWebDatabase& other)
+QWebDatabase &QWebDatabase::operator=( const QWebDatabase &other )
 {
     d = other.d;
     return *this;
@@ -87,7 +87,7 @@ QString QWebDatabase::name() const
 QString QWebDatabase::displayName() const
 {
 #if ENABLE(DATABASE)
-    DatabaseDetails details = DatabaseTracker::tracker().detailsForNameAndOrigin(d->name, d->origin.get());
+    DatabaseDetails details = DatabaseTracker::tracker().detailsForNameAndOrigin( d->name, d->origin.get() );
     return details.displayName();
 #else
     return QString();
@@ -100,7 +100,7 @@ QString QWebDatabase::displayName() const
 qint64 QWebDatabase::expectedSize() const
 {
 #if ENABLE(DATABASE)
-    DatabaseDetails details = DatabaseTracker::tracker().detailsForNameAndOrigin(d->name, d->origin.get());
+    DatabaseDetails details = DatabaseTracker::tracker().detailsForNameAndOrigin( d->name, d->origin.get() );
     return details.expectedUsage();
 #else
     return 0;
@@ -113,7 +113,7 @@ qint64 QWebDatabase::expectedSize() const
 qint64 QWebDatabase::size() const
 {
 #if ENABLE(DATABASE)
-    DatabaseDetails details = DatabaseTracker::tracker().detailsForNameAndOrigin(d->name, d->origin.get());
+    DatabaseDetails details = DatabaseTracker::tracker().detailsForNameAndOrigin( d->name, d->origin.get() );
     return details.currentUsage();
 #else
     return 0;
@@ -123,7 +123,7 @@ qint64 QWebDatabase::size() const
 /*
     \internal
 */
-QWebDatabase::QWebDatabase(QWebDatabasePrivate* priv)
+QWebDatabase::QWebDatabase( QWebDatabasePrivate *priv )
 {
     d = priv;
 }
@@ -148,7 +148,7 @@ QWebDatabase::QWebDatabase(QWebDatabasePrivate* priv)
 QString QWebDatabase::fileName() const
 {
 #if ENABLE(DATABASE)
-    return DatabaseTracker::tracker().fullPathForDatabase(d->origin.get(), d->name, false);
+    return DatabaseTracker::tracker().fullPathForDatabase( d->origin.get(), d->name, false );
 #else
     return QString();
 #endif
@@ -159,8 +159,8 @@ QString QWebDatabase::fileName() const
 */
 QWebSecurityOrigin QWebDatabase::origin() const
 {
-    QWebSecurityOriginPrivate* priv = new QWebSecurityOriginPrivate(d->origin.get());
-    QWebSecurityOrigin origin(priv);
+    QWebSecurityOriginPrivate *priv = new QWebSecurityOriginPrivate( d->origin.get() );
+    QWebSecurityOrigin origin( priv );
     return origin;
 }
 
@@ -168,10 +168,10 @@ QWebSecurityOrigin QWebDatabase::origin() const
     Removes the database \a db from its security origin. All data stored in the
     database \a db will be destroyed.
 */
-void QWebDatabase::removeDatabase(const QWebDatabase& db)
+void QWebDatabase::removeDatabase( const QWebDatabase &db )
 {
 #if ENABLE(DATABASE)
-    DatabaseTracker::tracker().deleteDatabase(db.d->origin.get(), db.d->name);
+    DatabaseTracker::tracker().deleteDatabase( db.d->origin.get(), db.d->name );
 #endif
 }
 

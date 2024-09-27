@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -31,28 +31,29 @@
 
 #include "WebGLRenderingContext.h"
 
-namespace WebCore {
-
-PassRefPtr<WebGLRenderbuffer> WebGLRenderbuffer::create(WebGLRenderingContext* ctx)
+namespace WebCore
 {
-    return adoptRef(new WebGLRenderbuffer(ctx));
+
+PassRefPtr<WebGLRenderbuffer> WebGLRenderbuffer::create( WebGLRenderingContext *ctx )
+{
+    return adoptRef( new WebGLRenderbuffer( ctx ) );
 }
 
-WebGLRenderbuffer::WebGLRenderbuffer(WebGLRenderingContext* ctx)
-    : WebGLObject(ctx)
-    , m_internalFormat(GraphicsContext3D::RGBA4)
-    , m_initialized(false)
-    , m_width(0)
-    , m_height(0)
-    , m_isValid(true)
-    , m_hasEverBeenBound(false)
+WebGLRenderbuffer::WebGLRenderbuffer( WebGLRenderingContext *ctx )
+    : WebGLObject( ctx )
+    , m_internalFormat( GraphicsContext3D::RGBA4 )
+    , m_initialized( false )
+    , m_width( 0 )
+    , m_height( 0 )
+    , m_isValid( true )
+    , m_hasEverBeenBound( false )
 {
-    setObject(context()->graphicsContext3D()->createRenderbuffer());
+    setObject( context()->graphicsContext3D()->createRenderbuffer() );
 }
 
-void WebGLRenderbuffer::deleteObjectImpl(Platform3DObject object)
+void WebGLRenderbuffer::deleteObjectImpl( Platform3DObject object )
 {
-    context()->graphicsContext3D()->deleteRenderbuffer(object);
+    context()->graphicsContext3D()->deleteRenderbuffer( object );
 }
 
 }

@@ -26,81 +26,92 @@
 #include <runtime/JSObjectWithGlobalObject.h>
 #include <runtime/ObjectPrototype.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class StyleSheetList;
 
-class JSStyleSheetList : public JSDOMWrapper {
+class JSStyleSheetList : public JSDOMWrapper
+{
     typedef JSDOMWrapper Base;
 public:
-    JSStyleSheetList(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<StyleSheetList>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, unsigned propertyName, JSC::PropertySlot&);
+    JSStyleSheetList( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<StyleSheetList> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, unsigned propertyName, JSC::PropertySlot & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    virtual void getOwnPropertyNames(JSC::ExecState*, JSC::PropertyNameArray&, JSC::EnumerationMode mode = JSC::ExcludeDontEnumProperties);
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
-    StyleSheetList* impl() const { return m_impl.get(); }
+    virtual void getOwnPropertyNames( JSC::ExecState *, JSC::PropertyNameArray &,
+                                      JSC::EnumerationMode mode = JSC::ExcludeDontEnumProperties );
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
+    StyleSheetList *impl() const
+    {
+        return m_impl.get();
+    }
 
 private:
     RefPtr<StyleSheetList> m_impl;
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetPropertyNames | JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
-    static JSC::JSValue indexGetter(JSC::ExecState*, JSC::JSValue, unsigned);
+    static JSC::JSValue indexGetter( JSC::ExecState *, JSC::JSValue, unsigned );
 private:
-    static bool canGetItemsForName(JSC::ExecState*, StyleSheetList*, const JSC::Identifier&);
-    static JSC::JSValue nameGetter(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+    static bool canGetItemsForName( JSC::ExecState *, StyleSheetList *, const JSC::Identifier & );
+    static JSC::JSValue nameGetter( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 };
 
-class JSStyleSheetListOwner : public JSC::WeakHandleOwner {
-    virtual bool isReachableFromOpaqueRoots(JSC::Handle<JSC::Unknown>, void* context, JSC::SlotVisitor&);
-    virtual void finalize(JSC::Handle<JSC::Unknown>, void* context);
-};
-
-inline JSC::WeakHandleOwner* wrapperOwner(DOMWrapperWorld*, StyleSheetList*)
+class JSStyleSheetListOwner : public JSC::WeakHandleOwner
 {
-    DEFINE_STATIC_LOCAL(JSStyleSheetListOwner, jsStyleSheetListOwner, ());
+    virtual bool isReachableFromOpaqueRoots( JSC::Handle<JSC::Unknown>, void *context, JSC::SlotVisitor & );
+    virtual void finalize( JSC::Handle<JSC::Unknown>, void *context );
+};
+
+inline JSC::WeakHandleOwner *wrapperOwner( DOMWrapperWorld *, StyleSheetList * )
+{
+    DEFINE_STATIC_LOCAL( JSStyleSheetListOwner, jsStyleSheetListOwner, () );
     return &jsStyleSheetListOwner;
 }
 
-inline void* wrapperContext(DOMWrapperWorld* world, StyleSheetList*)
+inline void *wrapperContext( DOMWrapperWorld *world, StyleSheetList * )
 {
     return world;
 }
 
-JSC::JSValue toJS(JSC::ExecState*, JSDOMGlobalObject*, StyleSheetList*);
-StyleSheetList* toStyleSheetList(JSC::JSValue);
+JSC::JSValue toJS( JSC::ExecState *, JSDOMGlobalObject *, StyleSheetList * );
+StyleSheetList *toStyleSheetList( JSC::JSValue );
 
-class JSStyleSheetListPrototype : public JSC::JSObjectWithGlobalObject {
+class JSStyleSheetListPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSStyleSheetListPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSStyleSheetListPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                               JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 // Functions
 
-JSC::EncodedJSValue JSC_HOST_CALL jsStyleSheetListPrototypeFunctionItem(JSC::ExecState*);
+JSC::EncodedJSValue JSC_HOST_CALL jsStyleSheetListPrototypeFunctionItem( JSC::ExecState * );
 // Attributes
 
-JSC::JSValue jsStyleSheetListLength(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsStyleSheetListConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsStyleSheetListLength( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsStyleSheetListConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

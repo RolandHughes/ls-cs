@@ -24,9 +24,9 @@
 #include <qiconengine.h>
 #include <qpainter.h>
 
-QSize QIconEngine::actualSize(const QSize &size, QIcon::Mode, QIcon::State)
+QSize QIconEngine::actualSize( const QSize &size, QIcon::Mode, QIcon::State )
 {
-   return size;
+    return size;
 }
 
 QIconEngine::QIconEngine()
@@ -37,76 +37,78 @@ QIconEngine::~QIconEngine()
 {
 }
 
-QPixmap QIconEngine::pixmap(const QSize &size, QIcon::Mode mode, QIcon::State state)
+QPixmap QIconEngine::pixmap( const QSize &size, QIcon::Mode mode, QIcon::State state )
 {
-   QPixmap pm(size);
-   {
-      QPainter p(&pm);
-      paint(&p, QRect(QPoint(0, 0), size), mode, state);
-   }
+    QPixmap pm( size );
+    {
+        QPainter p( &pm );
+        paint( &p, QRect( QPoint( 0, 0 ), size ), mode, state );
+    }
 
-   return pm;
+    return pm;
 }
 
-void QIconEngine::addPixmap(const QPixmap &pixmap, QIcon::Mode mode, QIcon::State state)
+void QIconEngine::addPixmap( const QPixmap &pixmap, QIcon::Mode mode, QIcon::State state )
 {
-   (void) pixmap;
-   (void) mode;
-   (void) state;
+    ( void ) pixmap;
+    ( void ) mode;
+    ( void ) state;
 }
 
-void QIconEngine::addFile(const QString &fileName, const QSize &size, QIcon::Mode mode, QIcon::State state)
+void QIconEngine::addFile( const QString &fileName, const QSize &size, QIcon::Mode mode, QIcon::State state )
 {
-   (void) fileName;
-   (void) size;
-   (void) mode;
-   (void) state;
+    ( void ) fileName;
+    ( void ) size;
+    ( void ) mode;
+    ( void ) state;
 }
 
 QString QIconEngine::key() const
 {
-   return QString();
+    return QString();
 }
 
-bool QIconEngine::read(QDataStream &)
+bool QIconEngine::read( QDataStream & )
 {
-   return false;
+    return false;
 }
 
-bool QIconEngine::write(QDataStream &) const
+bool QIconEngine::write( QDataStream & ) const
 {
-   return false;
+    return false;
 }
 
-void QIconEngine::virtual_hook(int id, void *data)
+void QIconEngine::virtual_hook( int id, void *data )
 {
-   switch (id) {
-      case QIconEngine::AvailableSizesHook: {
-         QIconEngine::AvailableSizesArgument &arg =
-            *reinterpret_cast<QIconEngine::AvailableSizesArgument *>(data);
-         arg.sizes.clear();
-         break;
-      }
+    switch ( id )
+    {
+        case QIconEngine::AvailableSizesHook:
+        {
+            QIconEngine::AvailableSizesArgument &arg =
+                *reinterpret_cast<QIconEngine::AvailableSizesArgument *>( data );
+            arg.sizes.clear();
+            break;
+        }
 
-      default:
-         break;
-   }
+        default:
+            break;
+    }
 }
 
-QList<QSize> QIconEngine::availableSizes(QIcon::Mode mode, QIcon::State state) const
+QList<QSize> QIconEngine::availableSizes( QIcon::Mode mode, QIcon::State state ) const
 {
-   AvailableSizesArgument arg;
-   arg.mode = mode;
-   arg.state = state;
-   const_cast<QIconEngine *>(this)->virtual_hook(QIconEngine::AvailableSizesHook, reinterpret_cast<void *>(&arg));
+    AvailableSizesArgument arg;
+    arg.mode = mode;
+    arg.state = state;
+    const_cast<QIconEngine *>( this )->virtual_hook( QIconEngine::AvailableSizesHook, reinterpret_cast<void *>( &arg ) );
 
-   return arg.sizes;
+    return arg.sizes;
 }
 
 QString QIconEngine::iconName() const
 {
-   QString name;
-   const_cast<QIconEngine *>(this)->virtual_hook(QIconEngine::IconNameHook, reinterpret_cast<void *>(&name));
+    QString name;
+    const_cast<QIconEngine *>( this )->virtual_hook( QIconEngine::IconNameHook, reinterpret_cast<void *>( &name ) );
 
-   return name;
+    return name;
 }

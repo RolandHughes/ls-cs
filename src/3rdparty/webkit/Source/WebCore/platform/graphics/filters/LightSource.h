@@ -29,9 +29,11 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-enum LightType {
+enum LightType
+{
     LS_DISTANT,
     LS_POINT,
     LS_SPOT
@@ -39,7 +41,8 @@ enum LightType {
 
 class TextStream;
 
-class LightSource : public RefCounted<LightSource> {
+class LightSource : public RefCounted<LightSource>
+{
 public:
 
     // Light vectors must be calculated for every pixel during
@@ -47,7 +50,8 @@ public:
     // a frequently called function, especially because not all
     // light sources require all of them. Instead, we just pass
     // a reference to the following structure
-    struct PaintingData {
+    struct PaintingData
+    {
         // SVGFELighting also use them
         FloatPoint3D lightVector;
         FloatPoint3D colorVector;
@@ -60,30 +64,33 @@ public:
         int specularExponent;
     };
 
-    LightSource(LightType type)
-        : m_type(type)
+    LightSource( LightType type )
+        : m_type( type )
     { }
 
     virtual ~LightSource() { }
 
-    LightType type() const { return m_type; }
-    virtual TextStream& externalRepresentation(TextStream&) const = 0;
+    LightType type() const
+    {
+        return m_type;
+    }
+    virtual TextStream &externalRepresentation( TextStream & ) const = 0;
 
-    virtual void initPaintingData(PaintingData&) = 0;
+    virtual void initPaintingData( PaintingData & ) = 0;
     // z is a float number, since it is the alpha value scaled by a user
     // specified "surfaceScale" constant, which type is <number> in the SVG standard
-    virtual void updatePaintingData(PaintingData&, int x, int y, float z) = 0;
+    virtual void updatePaintingData( PaintingData &, int x, int y, float z ) = 0;
 
-    bool setAzimuth(float);
-    bool setElevation(float);
-    bool setX(float);
-    bool setY(float);
-    bool setZ(float);
-    bool setPointsAtX(float);
-    bool setPointsAtY(float);
-    bool setPointsAtZ(float);
-    bool setSpecularExponent(float);
-    bool setLimitingConeAngle(float);
+    bool setAzimuth( float );
+    bool setElevation( float );
+    bool setX( float );
+    bool setY( float );
+    bool setZ( float );
+    bool setPointsAtX( float );
+    bool setPointsAtY( float );
+    bool setPointsAtZ( float );
+    bool setSpecularExponent( float );
+    bool setLimitingConeAngle( float );
 
 private:
     LightType m_type;

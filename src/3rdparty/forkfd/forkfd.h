@@ -42,21 +42,22 @@ extern "C" {
 
 #define FFD_CHILD_PROCESS (-2)
 
-struct forkfd_info {
+struct forkfd_info
+{
     int32_t code;
     int32_t status;
 };
 
-int forkfd(int flags, pid_t *ppid);
-int forkfd_wait(int ffd, forkfd_info *info, struct rusage *rusage);
-int forkfd_close(int ffd);
+int forkfd( int flags, pid_t *ppid );
+int forkfd_wait( int ffd, forkfd_info *info, struct rusage *rusage );
+int forkfd_close( int ffd );
 
 #if _POSIX_SPAWN > 0
 /* only for spawnfd: */
 #  define FFD_SPAWN_SEARCH_PATH   O_RDWR
 
-int spawnfd(int flags, pid_t *ppid, const char *path, const posix_spawn_file_actions_t *file_actions,
-            posix_spawnattr_t *attrp, char *const argv[], char *const envp[]);
+int spawnfd( int flags, pid_t *ppid, const char *path, const posix_spawn_file_actions_t *file_actions,
+             posix_spawnattr_t *attrp, char *const argv[], char *const envp[] );
 #endif
 
 #ifdef __cplusplus

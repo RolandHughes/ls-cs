@@ -31,27 +31,35 @@
 #include <WebCore/npruntime_internal.h>
 #include <wtf/Noncopyable.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
 class NPRemoteObjectMap;
 class Plugin;
 
-class NPObjectProxy : public NPObject {
-    WTF_MAKE_NONCOPYABLE(NPObjectProxy);
+class NPObjectProxy : public NPObject
+{
+    WTF_MAKE_NONCOPYABLE( NPObjectProxy );
 
 public:
-    static NPObjectProxy* create(NPRemoteObjectMap*, Plugin*, uint64_t npObjectID);
+    static NPObjectProxy *create( NPRemoteObjectMap *, Plugin *, uint64_t npObjectID );
 
-    static bool isNPObjectProxy(NPObject*);
-    
-    static NPObjectProxy* toNPObjectProxy(NPObject* npObject)
+    static bool isNPObjectProxy( NPObject * );
+
+    static NPObjectProxy *toNPObjectProxy( NPObject *npObject )
     {
-        ASSERT(isNPObjectProxy(npObject));
-        return static_cast<NPObjectProxy*>(npObject);
+        ASSERT( isNPObjectProxy( npObject ) );
+        return static_cast<NPObjectProxy *>( npObject );
     }
 
-    Plugin* plugin() const { return m_plugin; }
-    uint64_t npObjectID() const { return m_npObjectID; }
+    Plugin *plugin() const
+    {
+        return m_plugin;
+    }
+    uint64_t npObjectID() const
+    {
+        return m_npObjectID;
+    }
 
     void invalidate();
 
@@ -59,36 +67,37 @@ private:
     NPObjectProxy();
     ~NPObjectProxy();
 
-    void initialize(NPRemoteObjectMap*, Plugin*, uint64_t npObjectID);
+    void initialize( NPRemoteObjectMap *, Plugin *, uint64_t npObjectID );
 
-    bool hasMethod(NPIdentifier methodName);
-    bool invoke(NPIdentifier methodName, const NPVariant* arguments, uint32_t argumentCount, NPVariant* result);
-    bool invokeDefault(const NPVariant* arguments, uint32_t argumentCount, NPVariant* result);
-    bool hasProperty(NPIdentifier propertyName);
-    bool getProperty(NPIdentifier propertyName, NPVariant* result);
-    bool setProperty(NPIdentifier propertyName, const NPVariant* value);
-    bool removeProperty(NPIdentifier propertyName);
-    bool enumerate(NPIdentifier** identifiers, uint32_t* identifierCount);
-    bool construct(const NPVariant* arguments, uint32_t argumentCount, NPVariant* result);
+    bool hasMethod( NPIdentifier methodName );
+    bool invoke( NPIdentifier methodName, const NPVariant *arguments, uint32_t argumentCount, NPVariant *result );
+    bool invokeDefault( const NPVariant *arguments, uint32_t argumentCount, NPVariant *result );
+    bool hasProperty( NPIdentifier propertyName );
+    bool getProperty( NPIdentifier propertyName, NPVariant *result );
+    bool setProperty( NPIdentifier propertyName, const NPVariant *value );
+    bool removeProperty( NPIdentifier propertyName );
+    bool enumerate( NPIdentifier **identifiers, uint32_t *identifierCount );
+    bool construct( const NPVariant *arguments, uint32_t argumentCount, NPVariant *result );
 
-    static NPClass* npClass();
-    static NPObject* NP_Allocate(NPP, NPClass*);
-    static void NP_Deallocate(NPObject*);
-    static bool NP_HasMethod(NPObject*, NPIdentifier methodName);
-    static bool NP_Invoke(NPObject*, NPIdentifier methodName, const NPVariant* arguments, uint32_t argumentCount, NPVariant* result);
-    static bool NP_InvokeDefault(NPObject*, const NPVariant* arguments, uint32_t argumentCount, NPVariant* result);
-    static bool NP_HasProperty(NPObject*, NPIdentifier propertyName);
-    static bool NP_GetProperty(NPObject*, NPIdentifier propertyName, NPVariant* result);
-    static bool NP_SetProperty(NPObject*, NPIdentifier propertyName, const NPVariant* value);
-    static bool NP_RemoveProperty(NPObject*, NPIdentifier propertyName);
-    static bool NP_Enumerate(NPObject*, NPIdentifier** identifiers, uint32_t* identifierCount);
-    static bool NP_Construct(NPObject*, const NPVariant* arguments, uint32_t argumentCount, NPVariant* result);
+    static NPClass *npClass();
+    static NPObject *NP_Allocate( NPP, NPClass * );
+    static void NP_Deallocate( NPObject * );
+    static bool NP_HasMethod( NPObject *, NPIdentifier methodName );
+    static bool NP_Invoke( NPObject *, NPIdentifier methodName, const NPVariant *arguments, uint32_t argumentCount,
+                           NPVariant *result );
+    static bool NP_InvokeDefault( NPObject *, const NPVariant *arguments, uint32_t argumentCount, NPVariant *result );
+    static bool NP_HasProperty( NPObject *, NPIdentifier propertyName );
+    static bool NP_GetProperty( NPObject *, NPIdentifier propertyName, NPVariant *result );
+    static bool NP_SetProperty( NPObject *, NPIdentifier propertyName, const NPVariant *value );
+    static bool NP_RemoveProperty( NPObject *, NPIdentifier propertyName );
+    static bool NP_Enumerate( NPObject *, NPIdentifier **identifiers, uint32_t *identifierCount );
+    static bool NP_Construct( NPObject *, const NPVariant *arguments, uint32_t argumentCount, NPVariant *result );
 
-    NPRemoteObjectMap* m_npRemoteObjectMap;
-    Plugin* m_plugin;
+    NPRemoteObjectMap *m_npRemoteObjectMap;
+    Plugin *m_plugin;
     uint64_t m_npObjectID;
 };
-    
+
 } // namespace WebKit
 
 #endif // ENABLE(PLUGIN_PROCESS)

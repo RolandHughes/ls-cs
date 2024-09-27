@@ -31,34 +31,34 @@ using namespace QPatternist;
 
 bool SortTuple::isAtomicValue() const
 {
-   Q_ASSERT_X(false, Q_FUNC_INFO, "This function should never be called.");
-   return false;
+    Q_ASSERT_X( false, Q_FUNC_INFO, "This function should never be called." );
+    return false;
 }
 
 QString SortTuple::stringValue() const
 {
-   return QLatin1String("SortTuple");
+    return QLatin1String( "SortTuple" );
 }
 
 bool SortTuple::isNode() const
 {
-   Q_ASSERT_X(false, Q_FUNC_INFO, "This function should never be called.");
-   return false;
+    Q_ASSERT_X( false, Q_FUNC_INFO, "This function should never be called." );
+    return false;
 }
 
 bool SortTuple::hasError() const
 {
-   Q_ASSERT_X(false, Q_FUNC_INFO, "This function should never be called.");
-   return false;
+    Q_ASSERT_X( false, Q_FUNC_INFO, "This function should never be called." );
+    return false;
 }
 
 Item::Iterator::Ptr SortTuple::typedValue() const
 {
-   Q_ASSERT_X(false, Q_FUNC_INFO, "This function should never be called.");
-   return Item::Iterator::Ptr();
+    Q_ASSERT_X( false, Q_FUNC_INFO, "This function should never be called." );
+    return Item::Iterator::Ptr();
 }
 
 ItemType::Ptr SortTuple::type() const
 {
-   return BuiltinTypes::xsAnyAtomicType;
+    return BuiltinTypes::xsAnyAtomicType;
 }

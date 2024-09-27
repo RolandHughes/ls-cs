@@ -37,108 +37,112 @@
 #include "MathMLNames.h"
 
 #include <wtf/StaticConstructors.h>
-namespace WebCore {
+namespace WebCore
+{
 
- namespace MathMLNames {
+namespace MathMLNames
+{
 
 using namespace WebCore;
 
-DEFINE_GLOBAL(AtomicString, mathmlNamespaceURI, "http://www.w3.org/1998/Math/MathML")
+DEFINE_GLOBAL( AtomicString, mathmlNamespaceURI, "http://www.w3.org/1998/Math/MathML" )
 // Tags
-DEFINE_GLOBAL(QualifiedName, annotation_xmlTag, nullAtom, "annotation_xml", mathmlNamespaceURI);
-DEFINE_GLOBAL(QualifiedName, malignmarkTag, nullAtom, "malignmark", mathmlNamespaceURI);
-DEFINE_GLOBAL(QualifiedName, mathTag, nullAtom, "math", mathmlNamespaceURI);
-DEFINE_GLOBAL(QualifiedName, mfencedTag, nullAtom, "mfenced", mathmlNamespaceURI);
-DEFINE_GLOBAL(QualifiedName, mfracTag, nullAtom, "mfrac", mathmlNamespaceURI);
-DEFINE_GLOBAL(QualifiedName, mglyphTag, nullAtom, "mglyph", mathmlNamespaceURI);
-DEFINE_GLOBAL(QualifiedName, miTag, nullAtom, "mi", mathmlNamespaceURI);
-DEFINE_GLOBAL(QualifiedName, mnTag, nullAtom, "mn", mathmlNamespaceURI);
-DEFINE_GLOBAL(QualifiedName, moTag, nullAtom, "mo", mathmlNamespaceURI);
-DEFINE_GLOBAL(QualifiedName, moverTag, nullAtom, "mover", mathmlNamespaceURI);
-DEFINE_GLOBAL(QualifiedName, mrootTag, nullAtom, "mroot", mathmlNamespaceURI);
-DEFINE_GLOBAL(QualifiedName, mrowTag, nullAtom, "mrow", mathmlNamespaceURI);
-DEFINE_GLOBAL(QualifiedName, msTag, nullAtom, "ms", mathmlNamespaceURI);
-DEFINE_GLOBAL(QualifiedName, msqrtTag, nullAtom, "msqrt", mathmlNamespaceURI);
-DEFINE_GLOBAL(QualifiedName, msubTag, nullAtom, "msub", mathmlNamespaceURI);
-DEFINE_GLOBAL(QualifiedName, msubsupTag, nullAtom, "msubsup", mathmlNamespaceURI);
-DEFINE_GLOBAL(QualifiedName, msupTag, nullAtom, "msup", mathmlNamespaceURI);
-DEFINE_GLOBAL(QualifiedName, mtextTag, nullAtom, "mtext", mathmlNamespaceURI);
-DEFINE_GLOBAL(QualifiedName, munderTag, nullAtom, "munder", mathmlNamespaceURI);
-DEFINE_GLOBAL(QualifiedName, munderoverTag, nullAtom, "munderover", mathmlNamespaceURI);
+DEFINE_GLOBAL( QualifiedName, annotation_xmlTag, nullAtom, "annotation_xml", mathmlNamespaceURI );
+DEFINE_GLOBAL( QualifiedName, malignmarkTag, nullAtom, "malignmark", mathmlNamespaceURI );
+DEFINE_GLOBAL( QualifiedName, mathTag, nullAtom, "math", mathmlNamespaceURI );
+DEFINE_GLOBAL( QualifiedName, mfencedTag, nullAtom, "mfenced", mathmlNamespaceURI );
+DEFINE_GLOBAL( QualifiedName, mfracTag, nullAtom, "mfrac", mathmlNamespaceURI );
+DEFINE_GLOBAL( QualifiedName, mglyphTag, nullAtom, "mglyph", mathmlNamespaceURI );
+DEFINE_GLOBAL( QualifiedName, miTag, nullAtom, "mi", mathmlNamespaceURI );
+DEFINE_GLOBAL( QualifiedName, mnTag, nullAtom, "mn", mathmlNamespaceURI );
+DEFINE_GLOBAL( QualifiedName, moTag, nullAtom, "mo", mathmlNamespaceURI );
+DEFINE_GLOBAL( QualifiedName, moverTag, nullAtom, "mover", mathmlNamespaceURI );
+DEFINE_GLOBAL( QualifiedName, mrootTag, nullAtom, "mroot", mathmlNamespaceURI );
+DEFINE_GLOBAL( QualifiedName, mrowTag, nullAtom, "mrow", mathmlNamespaceURI );
+DEFINE_GLOBAL( QualifiedName, msTag, nullAtom, "ms", mathmlNamespaceURI );
+DEFINE_GLOBAL( QualifiedName, msqrtTag, nullAtom, "msqrt", mathmlNamespaceURI );
+DEFINE_GLOBAL( QualifiedName, msubTag, nullAtom, "msub", mathmlNamespaceURI );
+DEFINE_GLOBAL( QualifiedName, msubsupTag, nullAtom, "msubsup", mathmlNamespaceURI );
+DEFINE_GLOBAL( QualifiedName, msupTag, nullAtom, "msup", mathmlNamespaceURI );
+DEFINE_GLOBAL( QualifiedName, mtextTag, nullAtom, "mtext", mathmlNamespaceURI );
+DEFINE_GLOBAL( QualifiedName, munderTag, nullAtom, "munder", mathmlNamespaceURI );
+DEFINE_GLOBAL( QualifiedName, munderoverTag, nullAtom, "munderover", mathmlNamespaceURI );
 
 
-WebCore::QualifiedName** getMathMLTags(size_t* size)
+WebCore::QualifiedName **getMathMLTags( size_t *size )
 {
-    static WebCore::QualifiedName* MathMLTags[] = {
-        (WebCore::QualifiedName*)&annotation_xmlTag,
-        (WebCore::QualifiedName*)&malignmarkTag,
-        (WebCore::QualifiedName*)&mathTag,
-        (WebCore::QualifiedName*)&mfencedTag,
-        (WebCore::QualifiedName*)&mfracTag,
-        (WebCore::QualifiedName*)&mglyphTag,
-        (WebCore::QualifiedName*)&miTag,
-        (WebCore::QualifiedName*)&mnTag,
-        (WebCore::QualifiedName*)&moTag,
-        (WebCore::QualifiedName*)&moverTag,
-        (WebCore::QualifiedName*)&mrootTag,
-        (WebCore::QualifiedName*)&mrowTag,
-        (WebCore::QualifiedName*)&msTag,
-        (WebCore::QualifiedName*)&msqrtTag,
-        (WebCore::QualifiedName*)&msubTag,
-        (WebCore::QualifiedName*)&msubsupTag,
-        (WebCore::QualifiedName*)&msupTag,
-        (WebCore::QualifiedName*)&mtextTag,
-        (WebCore::QualifiedName*)&munderTag,
-        (WebCore::QualifiedName*)&munderoverTag,
+    static WebCore::QualifiedName *MathMLTags[] =
+    {
+        ( WebCore::QualifiedName * ) &annotation_xmlTag,
+        ( WebCore::QualifiedName * ) &malignmarkTag,
+        ( WebCore::QualifiedName * ) &mathTag,
+        ( WebCore::QualifiedName * ) &mfencedTag,
+        ( WebCore::QualifiedName * ) &mfracTag,
+        ( WebCore::QualifiedName * ) &mglyphTag,
+        ( WebCore::QualifiedName * ) &miTag,
+        ( WebCore::QualifiedName * ) &mnTag,
+        ( WebCore::QualifiedName * ) &moTag,
+        ( WebCore::QualifiedName * ) &moverTag,
+        ( WebCore::QualifiedName * ) &mrootTag,
+        ( WebCore::QualifiedName * ) &mrowTag,
+        ( WebCore::QualifiedName * ) &msTag,
+        ( WebCore::QualifiedName * ) &msqrtTag,
+        ( WebCore::QualifiedName * ) &msubTag,
+        ( WebCore::QualifiedName * ) &msubsupTag,
+        ( WebCore::QualifiedName * ) &msupTag,
+        ( WebCore::QualifiedName * ) &mtextTag,
+        ( WebCore::QualifiedName * ) &munderTag,
+        ( WebCore::QualifiedName * ) &munderoverTag,
     };
     *size = 20;
     return MathMLTags;
 }
 
 // Attributes
-DEFINE_GLOBAL(QualifiedName, alttextAttr, nullAtom, "alttext", mathmlNamespaceURI);
-DEFINE_GLOBAL(QualifiedName, backgroundAttr, nullAtom, "background", mathmlNamespaceURI);
-DEFINE_GLOBAL(QualifiedName, closeAttr, nullAtom, "close", mathmlNamespaceURI);
-DEFINE_GLOBAL(QualifiedName, colorAttr, nullAtom, "color", mathmlNamespaceURI);
-DEFINE_GLOBAL(QualifiedName, definitionURLAttr, nullAtom, "definitionURL", mathmlNamespaceURI);
-DEFINE_GLOBAL(QualifiedName, denomalignAttr, nullAtom, "denomalign", mathmlNamespaceURI);
-DEFINE_GLOBAL(QualifiedName, fontfamilyAttr, nullAtom, "fontfamily", mathmlNamespaceURI);
-DEFINE_GLOBAL(QualifiedName, fontsizeAttr, nullAtom, "fontsize", mathmlNamespaceURI);
-DEFINE_GLOBAL(QualifiedName, fontstyleAttr, nullAtom, "fontstyle", mathmlNamespaceURI);
-DEFINE_GLOBAL(QualifiedName, fontweightAttr, nullAtom, "fontweight", mathmlNamespaceURI);
-DEFINE_GLOBAL(QualifiedName, linethicknessAttr, nullAtom, "linethickness", mathmlNamespaceURI);
-DEFINE_GLOBAL(QualifiedName, mathbackgroundAttr, nullAtom, "mathbackground", mathmlNamespaceURI);
-DEFINE_GLOBAL(QualifiedName, mathcolorAttr, nullAtom, "mathcolor", mathmlNamespaceURI);
-DEFINE_GLOBAL(QualifiedName, mathsizeAttr, nullAtom, "mathsize", mathmlNamespaceURI);
-DEFINE_GLOBAL(QualifiedName, mathvariantAttr, nullAtom, "mathvariant", mathmlNamespaceURI);
-DEFINE_GLOBAL(QualifiedName, numalignAttr, nullAtom, "numalign", mathmlNamespaceURI);
-DEFINE_GLOBAL(QualifiedName, openAttr, nullAtom, "open", mathmlNamespaceURI);
-DEFINE_GLOBAL(QualifiedName, separatorsAttr, nullAtom, "separators", mathmlNamespaceURI);
-DEFINE_GLOBAL(QualifiedName, stretchyAttr, nullAtom, "stretchy", mathmlNamespaceURI);
+DEFINE_GLOBAL( QualifiedName, alttextAttr, nullAtom, "alttext", mathmlNamespaceURI );
+DEFINE_GLOBAL( QualifiedName, backgroundAttr, nullAtom, "background", mathmlNamespaceURI );
+DEFINE_GLOBAL( QualifiedName, closeAttr, nullAtom, "close", mathmlNamespaceURI );
+DEFINE_GLOBAL( QualifiedName, colorAttr, nullAtom, "color", mathmlNamespaceURI );
+DEFINE_GLOBAL( QualifiedName, definitionURLAttr, nullAtom, "definitionURL", mathmlNamespaceURI );
+DEFINE_GLOBAL( QualifiedName, denomalignAttr, nullAtom, "denomalign", mathmlNamespaceURI );
+DEFINE_GLOBAL( QualifiedName, fontfamilyAttr, nullAtom, "fontfamily", mathmlNamespaceURI );
+DEFINE_GLOBAL( QualifiedName, fontsizeAttr, nullAtom, "fontsize", mathmlNamespaceURI );
+DEFINE_GLOBAL( QualifiedName, fontstyleAttr, nullAtom, "fontstyle", mathmlNamespaceURI );
+DEFINE_GLOBAL( QualifiedName, fontweightAttr, nullAtom, "fontweight", mathmlNamespaceURI );
+DEFINE_GLOBAL( QualifiedName, linethicknessAttr, nullAtom, "linethickness", mathmlNamespaceURI );
+DEFINE_GLOBAL( QualifiedName, mathbackgroundAttr, nullAtom, "mathbackground", mathmlNamespaceURI );
+DEFINE_GLOBAL( QualifiedName, mathcolorAttr, nullAtom, "mathcolor", mathmlNamespaceURI );
+DEFINE_GLOBAL( QualifiedName, mathsizeAttr, nullAtom, "mathsize", mathmlNamespaceURI );
+DEFINE_GLOBAL( QualifiedName, mathvariantAttr, nullAtom, "mathvariant", mathmlNamespaceURI );
+DEFINE_GLOBAL( QualifiedName, numalignAttr, nullAtom, "numalign", mathmlNamespaceURI );
+DEFINE_GLOBAL( QualifiedName, openAttr, nullAtom, "open", mathmlNamespaceURI );
+DEFINE_GLOBAL( QualifiedName, separatorsAttr, nullAtom, "separators", mathmlNamespaceURI );
+DEFINE_GLOBAL( QualifiedName, stretchyAttr, nullAtom, "stretchy", mathmlNamespaceURI );
 
 
-WebCore::QualifiedName** getMathMLAttrs(size_t* size)
+WebCore::QualifiedName **getMathMLAttrs( size_t *size )
 {
-    static WebCore::QualifiedName* MathMLAttr[] = {
-        (WebCore::QualifiedName*)&alttextAttr,
-        (WebCore::QualifiedName*)&backgroundAttr,
-        (WebCore::QualifiedName*)&closeAttr,
-        (WebCore::QualifiedName*)&colorAttr,
-        (WebCore::QualifiedName*)&definitionURLAttr,
-        (WebCore::QualifiedName*)&denomalignAttr,
-        (WebCore::QualifiedName*)&fontfamilyAttr,
-        (WebCore::QualifiedName*)&fontsizeAttr,
-        (WebCore::QualifiedName*)&fontstyleAttr,
-        (WebCore::QualifiedName*)&fontweightAttr,
-        (WebCore::QualifiedName*)&linethicknessAttr,
-        (WebCore::QualifiedName*)&mathbackgroundAttr,
-        (WebCore::QualifiedName*)&mathcolorAttr,
-        (WebCore::QualifiedName*)&mathsizeAttr,
-        (WebCore::QualifiedName*)&mathvariantAttr,
-        (WebCore::QualifiedName*)&numalignAttr,
-        (WebCore::QualifiedName*)&openAttr,
-        (WebCore::QualifiedName*)&separatorsAttr,
-        (WebCore::QualifiedName*)&stretchyAttr,
+    static WebCore::QualifiedName *MathMLAttr[] =
+    {
+        ( WebCore::QualifiedName * ) &alttextAttr,
+        ( WebCore::QualifiedName * ) &backgroundAttr,
+        ( WebCore::QualifiedName * ) &closeAttr,
+        ( WebCore::QualifiedName * ) &colorAttr,
+        ( WebCore::QualifiedName * ) &definitionURLAttr,
+        ( WebCore::QualifiedName * ) &denomalignAttr,
+        ( WebCore::QualifiedName * ) &fontfamilyAttr,
+        ( WebCore::QualifiedName * ) &fontsizeAttr,
+        ( WebCore::QualifiedName * ) &fontstyleAttr,
+        ( WebCore::QualifiedName * ) &fontweightAttr,
+        ( WebCore::QualifiedName * ) &linethicknessAttr,
+        ( WebCore::QualifiedName * ) &mathbackgroundAttr,
+        ( WebCore::QualifiedName * ) &mathcolorAttr,
+        ( WebCore::QualifiedName * ) &mathsizeAttr,
+        ( WebCore::QualifiedName * ) &mathvariantAttr,
+        ( WebCore::QualifiedName * ) &numalignAttr,
+        ( WebCore::QualifiedName * ) &openAttr,
+        ( WebCore::QualifiedName * ) &separatorsAttr,
+        ( WebCore::QualifiedName * ) &stretchyAttr,
     };
     *size = 19;
     return MathMLAttr;
@@ -147,60 +151,65 @@ WebCore::QualifiedName** getMathMLAttrs(size_t* size)
 void init()
 {
     static bool initialized = false;
-    if (initialized)
+
+    if ( initialized )
+    {
         return;
+    }
+
     initialized = true;
-    
+
     // Use placement new to initialize the globals.
-    
+
     AtomicString::init();
-    AtomicString mathmlNS("http://www.w3.org/1998/Math/MathML");
+    AtomicString mathmlNS( "http://www.w3.org/1998/Math/MathML" );
 
     // Namespace
-    new ((void*)&mathmlNamespaceURI) AtomicString(mathmlNS);
+    new ( ( void * )&mathmlNamespaceURI ) AtomicString( mathmlNS );
 
     // Tags
-    new ((void*)&annotation_xmlTag) QualifiedName(nullAtom, "annotation-xml", mathmlNS);
-    new ((void*)&malignmarkTag) QualifiedName(nullAtom, "malignmark", mathmlNS);
-    new ((void*)&mathTag) QualifiedName(nullAtom, "math", mathmlNS);
-    new ((void*)&mfencedTag) QualifiedName(nullAtom, "mfenced", mathmlNS);
-    new ((void*)&mfracTag) QualifiedName(nullAtom, "mfrac", mathmlNS);
-    new ((void*)&mglyphTag) QualifiedName(nullAtom, "mglyph", mathmlNS);
-    new ((void*)&miTag) QualifiedName(nullAtom, "mi", mathmlNS);
-    new ((void*)&mnTag) QualifiedName(nullAtom, "mn", mathmlNS);
-    new ((void*)&moTag) QualifiedName(nullAtom, "mo", mathmlNS);
-    new ((void*)&moverTag) QualifiedName(nullAtom, "mover", mathmlNS);
-    new ((void*)&mrootTag) QualifiedName(nullAtom, "mroot", mathmlNS);
-    new ((void*)&mrowTag) QualifiedName(nullAtom, "mrow", mathmlNS);
-    new ((void*)&msTag) QualifiedName(nullAtom, "ms", mathmlNS);
-    new ((void*)&msqrtTag) QualifiedName(nullAtom, "msqrt", mathmlNS);
-    new ((void*)&msubTag) QualifiedName(nullAtom, "msub", mathmlNS);
-    new ((void*)&msubsupTag) QualifiedName(nullAtom, "msubsup", mathmlNS);
-    new ((void*)&msupTag) QualifiedName(nullAtom, "msup", mathmlNS);
-    new ((void*)&mtextTag) QualifiedName(nullAtom, "mtext", mathmlNS);
-    new ((void*)&munderTag) QualifiedName(nullAtom, "munder", mathmlNS);
-    new ((void*)&munderoverTag) QualifiedName(nullAtom, "munderover", mathmlNS);
+    new ( ( void * )&annotation_xmlTag ) QualifiedName( nullAtom, "annotation-xml", mathmlNS );
+    new ( ( void * )&malignmarkTag ) QualifiedName( nullAtom, "malignmark", mathmlNS );
+    new ( ( void * )&mathTag ) QualifiedName( nullAtom, "math", mathmlNS );
+    new ( ( void * )&mfencedTag ) QualifiedName( nullAtom, "mfenced", mathmlNS );
+    new ( ( void * )&mfracTag ) QualifiedName( nullAtom, "mfrac", mathmlNS );
+    new ( ( void * )&mglyphTag ) QualifiedName( nullAtom, "mglyph", mathmlNS );
+    new ( ( void * )&miTag ) QualifiedName( nullAtom, "mi", mathmlNS );
+    new ( ( void * )&mnTag ) QualifiedName( nullAtom, "mn", mathmlNS );
+    new ( ( void * )&moTag ) QualifiedName( nullAtom, "mo", mathmlNS );
+    new ( ( void * )&moverTag ) QualifiedName( nullAtom, "mover", mathmlNS );
+    new ( ( void * )&mrootTag ) QualifiedName( nullAtom, "mroot", mathmlNS );
+    new ( ( void * )&mrowTag ) QualifiedName( nullAtom, "mrow", mathmlNS );
+    new ( ( void * )&msTag ) QualifiedName( nullAtom, "ms", mathmlNS );
+    new ( ( void * )&msqrtTag ) QualifiedName( nullAtom, "msqrt", mathmlNS );
+    new ( ( void * )&msubTag ) QualifiedName( nullAtom, "msub", mathmlNS );
+    new ( ( void * )&msubsupTag ) QualifiedName( nullAtom, "msubsup", mathmlNS );
+    new ( ( void * )&msupTag ) QualifiedName( nullAtom, "msup", mathmlNS );
+    new ( ( void * )&mtextTag ) QualifiedName( nullAtom, "mtext", mathmlNS );
+    new ( ( void * )&munderTag ) QualifiedName( nullAtom, "munder", mathmlNS );
+    new ( ( void * )&munderoverTag ) QualifiedName( nullAtom, "munderover", mathmlNS );
     // Attributes
-    new ((void*)&alttextAttr) QualifiedName(nullAtom, "alttext", nullAtom);
-    new ((void*)&backgroundAttr) QualifiedName(nullAtom, "background", nullAtom);
-    new ((void*)&closeAttr) QualifiedName(nullAtom, "close", nullAtom);
-    new ((void*)&colorAttr) QualifiedName(nullAtom, "color", nullAtom);
-    new ((void*)&definitionURLAttr) QualifiedName(nullAtom, "definitionURL", nullAtom);
-    new ((void*)&denomalignAttr) QualifiedName(nullAtom, "denomalign", nullAtom);
-    new ((void*)&fontfamilyAttr) QualifiedName(nullAtom, "fontfamily", nullAtom);
-    new ((void*)&fontsizeAttr) QualifiedName(nullAtom, "fontsize", nullAtom);
-    new ((void*)&fontstyleAttr) QualifiedName(nullAtom, "fontstyle", nullAtom);
-    new ((void*)&fontweightAttr) QualifiedName(nullAtom, "fontweight", nullAtom);
-    new ((void*)&linethicknessAttr) QualifiedName(nullAtom, "linethickness", nullAtom);
-    new ((void*)&mathbackgroundAttr) QualifiedName(nullAtom, "mathbackground", nullAtom);
-    new ((void*)&mathcolorAttr) QualifiedName(nullAtom, "mathcolor", nullAtom);
-    new ((void*)&mathsizeAttr) QualifiedName(nullAtom, "mathsize", nullAtom);
-    new ((void*)&mathvariantAttr) QualifiedName(nullAtom, "mathvariant", nullAtom);
-    new ((void*)&numalignAttr) QualifiedName(nullAtom, "numalign", nullAtom);
-    new ((void*)&openAttr) QualifiedName(nullAtom, "open", nullAtom);
-    new ((void*)&separatorsAttr) QualifiedName(nullAtom, "separators", nullAtom);
-    new ((void*)&stretchyAttr) QualifiedName(nullAtom, "stretchy", nullAtom);
+    new ( ( void * )&alttextAttr ) QualifiedName( nullAtom, "alttext", nullAtom );
+    new ( ( void * )&backgroundAttr ) QualifiedName( nullAtom, "background", nullAtom );
+    new ( ( void * )&closeAttr ) QualifiedName( nullAtom, "close", nullAtom );
+    new ( ( void * )&colorAttr ) QualifiedName( nullAtom, "color", nullAtom );
+    new ( ( void * )&definitionURLAttr ) QualifiedName( nullAtom, "definitionURL", nullAtom );
+    new ( ( void * )&denomalignAttr ) QualifiedName( nullAtom, "denomalign", nullAtom );
+    new ( ( void * )&fontfamilyAttr ) QualifiedName( nullAtom, "fontfamily", nullAtom );
+    new ( ( void * )&fontsizeAttr ) QualifiedName( nullAtom, "fontsize", nullAtom );
+    new ( ( void * )&fontstyleAttr ) QualifiedName( nullAtom, "fontstyle", nullAtom );
+    new ( ( void * )&fontweightAttr ) QualifiedName( nullAtom, "fontweight", nullAtom );
+    new ( ( void * )&linethicknessAttr ) QualifiedName( nullAtom, "linethickness", nullAtom );
+    new ( ( void * )&mathbackgroundAttr ) QualifiedName( nullAtom, "mathbackground", nullAtom );
+    new ( ( void * )&mathcolorAttr ) QualifiedName( nullAtom, "mathcolor", nullAtom );
+    new ( ( void * )&mathsizeAttr ) QualifiedName( nullAtom, "mathsize", nullAtom );
+    new ( ( void * )&mathvariantAttr ) QualifiedName( nullAtom, "mathvariant", nullAtom );
+    new ( ( void * )&numalignAttr ) QualifiedName( nullAtom, "numalign", nullAtom );
+    new ( ( void * )&openAttr ) QualifiedName( nullAtom, "open", nullAtom );
+    new ( ( void * )&separatorsAttr ) QualifiedName( nullAtom, "separators", nullAtom );
+    new ( ( void * )&stretchyAttr ) QualifiedName( nullAtom, "stretchy", nullAtom );
 }
 
-} }
+}
+}
 

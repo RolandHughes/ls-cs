@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef ReplaceSelectionCommand_h
@@ -28,15 +28,18 @@
 
 #include "CompositeEditCommand.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class DocumentFragment;
 class EditingStyle;
 class ReplacementFragment;
 
-class ReplaceSelectionCommand : public CompositeEditCommand {
+class ReplaceSelectionCommand : public CompositeEditCommand
+{
 public:
-    enum CommandOption {
+    enum CommandOption
+    {
         SelectReplacement = 1 << 0,
         SmartReplace = 1 << 1,
         MatchStyle = 1 << 2,
@@ -46,47 +49,48 @@ public:
 
     typedef unsigned CommandOptions;
 
-    static PassRefPtr<ReplaceSelectionCommand> create(Document* document, PassRefPtr<DocumentFragment> fragment, CommandOptions options, EditAction action = EditActionPaste)
+    static PassRefPtr<ReplaceSelectionCommand> create( Document *document, PassRefPtr<DocumentFragment> fragment,
+            CommandOptions options, EditAction action = EditActionPaste )
     {
-        return adoptRef(new ReplaceSelectionCommand(document, fragment, options, action));
+        return adoptRef( new ReplaceSelectionCommand( document, fragment, options, action ) );
     }
 
 private:
-    ReplaceSelectionCommand(Document*, PassRefPtr<DocumentFragment>, CommandOptions, EditAction);
+    ReplaceSelectionCommand( Document *, PassRefPtr<DocumentFragment>, CommandOptions, EditAction );
 
     virtual void doApply();
     virtual EditAction editingAction() const;
 
-    void completeHTMLReplacement(const Position& lastPositionToSelect);
+    void completeHTMLReplacement( const Position &lastPositionToSelect );
 
-    void insertNodeAfterAndUpdateNodesInserted(PassRefPtr<Node> insertChild, Node* refChild);
-    void insertNodeAtAndUpdateNodesInserted(PassRefPtr<Node>, const Position&);
-    void insertNodeBeforeAndUpdateNodesInserted(PassRefPtr<Node> insertChild, Node* refChild);
-    Node* insertAsListItems(PassRefPtr<Node>, Node* insertionNode, const Position&);
+    void insertNodeAfterAndUpdateNodesInserted( PassRefPtr<Node> insertChild, Node *refChild );
+    void insertNodeAtAndUpdateNodesInserted( PassRefPtr<Node>, const Position & );
+    void insertNodeBeforeAndUpdateNodesInserted( PassRefPtr<Node> insertChild, Node *refChild );
+    Node *insertAsListItems( PassRefPtr<Node>, Node *insertionNode, const Position & );
 
-    void updateNodesInserted(Node*);
-    bool shouldRemoveEndBR(Node*, const VisiblePosition&);
-    
-    bool shouldMergeStart(bool, bool, bool);
-    bool shouldMergeEnd(bool selectionEndWasEndOfParagraph);
-    bool shouldMerge(const VisiblePosition&, const VisiblePosition&);
-    
+    void updateNodesInserted( Node * );
+    bool shouldRemoveEndBR( Node *, const VisiblePosition & );
+
+    bool shouldMergeStart( bool, bool, bool );
+    bool shouldMergeEnd( bool selectionEndWasEndOfParagraph );
+    bool shouldMerge( const VisiblePosition &, const VisiblePosition & );
+
     void mergeEndIfNeeded();
-    
+
     void removeUnrenderedTextNodesAtEnds();
-    
+
     void negateStyleRulesThatAffectAppearance();
     void handleStyleSpans();
-    void copyStyleToChildren(Node* parentNode, const CSSMutableStyleDeclaration* parentStyle);
+    void copyStyleToChildren( Node *parentNode, const CSSMutableStyleDeclaration *parentStyle );
     void handlePasteAsQuotationNode();
-    
-    virtual void removeNodePreservingChildren(Node*);
-    virtual void removeNodeAndPruneAncestors(Node*);
-    
+
+    virtual void removeNodePreservingChildren( Node * );
+    virtual void removeNodeAndPruneAncestors( Node * );
+
     VisiblePosition positionAtStartOfInsertedContent();
     VisiblePosition positionAtEndOfInsertedContent();
-    
-    bool performTrivialReplace(const ReplacementFragment&);
+
+    bool performTrivialReplace( const ReplacementFragment & );
 
     RefPtr<Node> m_firstNodeInserted;
     RefPtr<Node> m_lastLeafInserted;

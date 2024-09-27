@@ -33,54 +33,71 @@
 #include <wtf/Forward.h>
 #include <wtf/PassRefPtr.h>
 
-namespace WebCore {
-    class AuthenticationChallenge;
-    class ResourceError;
-    class ResourceResponse;
+namespace WebCore
+{
+class AuthenticationChallenge;
+class ResourceError;
+class ResourceResponse;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
 class WebContext;
 class WebData;
 
-class DownloadProxy : public APIObject {
+class DownloadProxy : public APIObject
+{
 public:
     static const Type APIType = TypeDownload;
 
-    static PassRefPtr<DownloadProxy> create(WebContext*);
+    static PassRefPtr<DownloadProxy> create( WebContext * );
     ~DownloadProxy();
 
-    uint64_t downloadID() const { return m_downloadID; }
-    const WebCore::ResourceRequest& request() const { return m_request; }
-    WebData* resumeData() const { return m_resumeData.get(); }
+    uint64_t downloadID() const
+    {
+        return m_downloadID;
+    }
+    const WebCore::ResourceRequest &request() const
+    {
+        return m_request;
+    }
+    WebData *resumeData() const
+    {
+        return m_resumeData.get();
+    }
 
     void cancel();
 
     void invalidate();
     void processDidClose();
 
-    void didReceiveDownloadProxyMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*);
-    CoreIPC::SyncReplyMode didReceiveSyncDownloadProxyMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*, CoreIPC::ArgumentEncoder*);
+    void didReceiveDownloadProxyMessage( CoreIPC::Connection *, CoreIPC::MessageID, CoreIPC::ArgumentDecoder * );
+    CoreIPC::SyncReplyMode didReceiveSyncDownloadProxyMessage( CoreIPC::Connection *, CoreIPC::MessageID, CoreIPC::ArgumentDecoder *,
+            CoreIPC::ArgumentEncoder * );
 
 private:
-    explicit DownloadProxy(WebContext*);
+    explicit DownloadProxy( WebContext * );
 
-    virtual Type type() const { return APIType; }
+    virtual Type type() const
+    {
+        return APIType;
+    }
 
     // Message handlers.
-    void didStart(const WebCore::ResourceRequest&);
-    void didReceiveAuthenticationChallenge(const WebCore::AuthenticationChallenge&, uint64_t challengeID);
-    void didReceiveResponse(const WebCore::ResourceResponse&);
-    void didReceiveData(uint64_t length);
-    void shouldDecodeSourceDataOfMIMEType(const String& mimeType, bool& result);
-    void decideDestinationWithSuggestedFilename(const String& filename, String& destination, bool& allowOverwrite, SandboxExtension::Handle& sandboxExtensionHandle);
-    void didCreateDestination(const String& path);
+    void didStart( const WebCore::ResourceRequest & );
+    void didReceiveAuthenticationChallenge( const WebCore::AuthenticationChallenge &, uint64_t challengeID );
+    void didReceiveResponse( const WebCore::ResourceResponse & );
+    void didReceiveData( uint64_t length );
+    void shouldDecodeSourceDataOfMIMEType( const String &mimeType, bool &result );
+    void decideDestinationWithSuggestedFilename( const String &filename, String &destination, bool &allowOverwrite,
+            SandboxExtension::Handle &sandboxExtensionHandle );
+    void didCreateDestination( const String &path );
     void didFinish();
-    void didFail(const WebCore::ResourceError&, const CoreIPC::DataReference& resumeData);
-    void didCancel(const CoreIPC::DataReference& resumeData);
+    void didFail( const WebCore::ResourceError &, const CoreIPC::DataReference &resumeData );
+    void didCancel( const CoreIPC::DataReference &resumeData );
 
-    WebContext* m_webContext;
+    WebContext *m_webContext;
     uint64_t m_downloadID;
 
     RefPtr<WebData> m_resumeData;

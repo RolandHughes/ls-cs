@@ -25,30 +25,38 @@
 #include "SVGPathConsumer.h"
 #include <wtf/text/StringBuilder.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class SVGPathStringBuilder : public SVGPathConsumer {
+class SVGPathStringBuilder : public SVGPathConsumer
+{
 public:
     String result();
 
 private:
-    virtual void cleanup() { m_stringBuilder = StringBuilder(); }
+    virtual void cleanup()
+    {
+        m_stringBuilder = StringBuilder();
+    }
     virtual void incrementPathSegmentCount() { }
-    virtual bool continueConsuming() { return true; }
+    virtual bool continueConsuming()
+    {
+        return true;
+    }
 
     // Used in UnalteredParsing/NormalizedParsing modes.
-    virtual void moveTo(const FloatPoint&, bool closed, PathCoordinateMode);
-    virtual void lineTo(const FloatPoint&, PathCoordinateMode);
-    virtual void curveToCubic(const FloatPoint&, const FloatPoint&, const FloatPoint&, PathCoordinateMode);
+    virtual void moveTo( const FloatPoint &, bool closed, PathCoordinateMode );
+    virtual void lineTo( const FloatPoint &, PathCoordinateMode );
+    virtual void curveToCubic( const FloatPoint &, const FloatPoint &, const FloatPoint &, PathCoordinateMode );
     virtual void closePath();
 
     // Only used in UnalteredParsing mode.
-    virtual void lineToHorizontal(float, PathCoordinateMode);
-    virtual void lineToVertical(float, PathCoordinateMode);
-    virtual void curveToCubicSmooth(const FloatPoint&, const FloatPoint&, PathCoordinateMode);
-    virtual void curveToQuadratic(const FloatPoint&, const FloatPoint&, PathCoordinateMode);
-    virtual void curveToQuadraticSmooth(const FloatPoint&, PathCoordinateMode);
-    virtual void arcTo(float, float, float, bool largeArcFlag, bool sweepFlag, const FloatPoint&, PathCoordinateMode);
+    virtual void lineToHorizontal( float, PathCoordinateMode );
+    virtual void lineToVertical( float, PathCoordinateMode );
+    virtual void curveToCubicSmooth( const FloatPoint &, const FloatPoint &, PathCoordinateMode );
+    virtual void curveToQuadratic( const FloatPoint &, const FloatPoint &, PathCoordinateMode );
+    virtual void curveToQuadraticSmooth( const FloatPoint &, PathCoordinateMode );
+    virtual void arcTo( float, float, float, bool largeArcFlag, bool sweepFlag, const FloatPoint &, PathCoordinateMode );
 
     StringBuilder m_stringBuilder;
 };

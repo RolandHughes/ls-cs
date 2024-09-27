@@ -30,40 +30,51 @@
 #include "ArgumentEncoder.h"
 #include "Attachment.h"
 
-namespace CoreIPC {
+namespace CoreIPC
+{
 
-class MachPort {
+class MachPort
+{
 public:
     MachPort()
-        : m_port(MACH_PORT_NULL)
-        , m_disposition(0)
+        : m_port( MACH_PORT_NULL )
+        , m_disposition( 0 )
     {
     }
 
-    MachPort(mach_port_name_t port, mach_msg_type_name_t disposition)
-        : m_port(port)
-        , m_disposition(disposition)
+    MachPort( mach_port_name_t port, mach_msg_type_name_t disposition )
+        : m_port( port )
+        , m_disposition( disposition )
     {
     }
 
-    void encode(ArgumentEncoder* encoder) const
+    void encode( ArgumentEncoder *encoder ) const
     {
-        encoder->encode(Attachment(m_port, m_disposition));
+        encoder->encode( Attachment( m_port, m_disposition ) );
     }
 
-    static bool decode(ArgumentDecoder* decoder, MachPort& p)
+    static bool decode( ArgumentDecoder *decoder, MachPort &p )
     {
         Attachment attachment;
-        if (!decoder->decode(attachment))
+
+        if ( !decoder->decode( attachment ) )
+        {
             return false;
-        
+        }
+
         p.m_port = attachment.port();
         p.m_disposition = attachment.disposition();
         return true;
     }
 
-    mach_port_name_t port() const { return m_port; }
-    mach_msg_type_name_t disposition() const { return m_disposition; }
+    mach_port_name_t port() const
+    {
+        return m_port;
+    }
+    mach_msg_type_name_t disposition() const
+    {
+        return m_disposition;
+    }
 
 private:
     mach_port_name_t m_port;

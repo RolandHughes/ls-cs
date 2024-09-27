@@ -35,121 +35,132 @@ class QIconEngine;
 
 class Q_GUI_EXPORT QIcon
 {
- public:
-   enum Mode {
-      Normal,
-      Disabled,
-      Active,
-      Selected
-   };
+public:
+    enum Mode
+    {
+        Normal,
+        Disabled,
+        Active,
+        Selected
+    };
 
-   enum State {
-      On,
-      Off
-   };
+    enum State
+    {
+        On,
+        Off
+    };
 
-   QIcon();
-   QIcon(const QPixmap &pixmap);
-   QIcon(const QIcon &other);
+    QIcon();
+    QIcon( const QPixmap &pixmap );
+    QIcon( const QIcon &other );
 
-   QIcon(QIcon &&other) : d(other.d) {
-      other.d = nullptr;
-   }
+    QIcon( QIcon &&other ) : d( other.d )
+    {
+        other.d = nullptr;
+    }
 
-   explicit QIcon(const QString &fileName); // file or resource name
-   explicit QIcon(QIconEngine *engine);
+    explicit QIcon( const QString &fileName ); // file or resource name
+    explicit QIcon( QIconEngine *engine );
 
-   ~QIcon();
+    ~QIcon();
 
-   QIcon &operator=(const QIcon &other);
+    QIcon &operator=( const QIcon &other );
 
-   QIcon &operator=(QIcon &&other) {
-      qSwap(d, other.d);
-      return *this;
-   }
+    QIcon &operator=( QIcon &&other )
+    {
+        qSwap( d, other.d );
+        return *this;
+    }
 
-   void swap(QIcon &other) {
-      qSwap(d, other.d);
-   }
+    void swap( QIcon &other )
+    {
+        qSwap( d, other.d );
+    }
 
-   operator QVariant() const;
+    operator QVariant() const;
 
-   QPixmap pixmap(const QSize &size, Mode mode = Normal, State state = Off) const;
-   QPixmap pixmap(int w, int h, Mode mode = Normal, State state = Off) const {
-      return pixmap(QSize(w, h), mode, state);
-   }
+    QPixmap pixmap( const QSize &size, Mode mode = Normal, State state = Off ) const;
+    QPixmap pixmap( int w, int h, Mode mode = Normal, State state = Off ) const
+    {
+        return pixmap( QSize( w, h ), mode, state );
+    }
 
-   QPixmap pixmap(int extent, Mode mode = Normal, State state = Off) const {
-      return pixmap(QSize(extent, extent), mode, state);
-   }
+    QPixmap pixmap( int extent, Mode mode = Normal, State state = Off ) const
+    {
+        return pixmap( QSize( extent, extent ), mode, state );
+    }
 
-   QPixmap pixmap(QWindow *window, const QSize &size, Mode mode = Normal, State state = Off) const;
+    QPixmap pixmap( QWindow *window, const QSize &size, Mode mode = Normal, State state = Off ) const;
 
-   QSize actualSize(const QSize &size, Mode mode = Normal, State state = Off) const;
-   QSize actualSize(QWindow *window, const QSize &size, Mode mode = Normal, State state = Off) const;
+    QSize actualSize( const QSize &size, Mode mode = Normal, State state = Off ) const;
+    QSize actualSize( QWindow *window, const QSize &size, Mode mode = Normal, State state = Off ) const;
 
-   QString name() const;
+    QString name() const;
 
-   void paint(QPainter *painter, const QRect &rect, Qt::Alignment alignment = Qt::AlignCenter, Mode mode = Normal,
-      State state = Off) const;
+    void paint( QPainter *painter, const QRect &rect, Qt::Alignment alignment = Qt::AlignCenter, Mode mode = Normal,
+                State state = Off ) const;
 
-   inline void paint(QPainter *painter, int x, int y, int w, int h,
-      Qt::Alignment alignment = Qt::AlignCenter, Mode mode = Normal, State state = Off) const {
-      paint(painter, QRect(x, y, w, h), alignment, mode, state);
-   }
+    inline void paint( QPainter *painter, int x, int y, int w, int h,
+                       Qt::Alignment alignment = Qt::AlignCenter, Mode mode = Normal, State state = Off ) const
+    {
+        paint( painter, QRect( x, y, w, h ), alignment, mode, state );
+    }
 
-   bool isNull() const;
-   bool isDetached() const;
-   void detach();
+    bool isNull() const;
+    bool isDetached() const;
+    void detach();
 
-   qint64 cacheKey() const;
+    qint64 cacheKey() const;
 
-   void addPixmap(const QPixmap &pixmap, Mode mode = Normal, State state = Off);
-   void addFile(const QString &fileName, const QSize &size = QSize(), Mode mode = Normal, State state = Off);
+    void addPixmap( const QPixmap &pixmap, Mode mode = Normal, State state = Off );
+    void addFile( const QString &fileName, const QSize &size = QSize(), Mode mode = Normal, State state = Off );
 
-   QList<QSize> availableSizes(Mode mode = Normal, State state = Off) const;
+    QList<QSize> availableSizes( Mode mode = Normal, State state = Off ) const;
 
-   void setIsMask(bool isMask);
-   bool isMask() const;
-   static QIcon fromTheme(const QString &name, const QIcon &fallback = QIcon());
-   static bool hasThemeIcon(const QString &name);
+    void setIsMask( bool isMask );
+    bool isMask() const;
+    static QIcon fromTheme( const QString &name, const QIcon &fallback = QIcon() );
+    static bool hasThemeIcon( const QString &name );
 
-   static QStringList themeSearchPaths();
-   static void setThemeSearchPaths(const QStringList &paths);
+    static QStringList themeSearchPaths();
+    static void setThemeSearchPaths( const QStringList &paths );
 
-   static QString themeName();
-   static void setThemeName(const QString &theme);
+    static QString themeName();
+    static void setThemeName( const QString &theme );
 
-   typedef QIconPrivate *DataPtr;
-   DataPtr &data_ptr() {
-      return d;
-   }
+    typedef QIconPrivate *DataPtr;
+    DataPtr &data_ptr()
+    {
+        return d;
+    }
 
- private:
-   QIconPrivate *d;
+private:
+    QIconPrivate *d;
 
-   friend Q_GUI_EXPORT QDataStream &operator<<(QDataStream &stream, const QIcon &icon);
-   friend Q_GUI_EXPORT QDataStream &operator>>(QDataStream &stream, QIcon &icon);
+    friend Q_GUI_EXPORT QDataStream &operator<<( QDataStream &stream, const QIcon &icon );
+    friend Q_GUI_EXPORT QDataStream &operator>>( QDataStream &stream, QIcon &icon );
 };
 
-Q_GUI_EXPORT QDataStream &operator<<(QDataStream &stream, const QIcon &icon);
-Q_GUI_EXPORT QDataStream &operator>>(QDataStream &stream, QIcon &icon);
+Q_GUI_EXPORT QDataStream &operator<<( QDataStream &stream, const QIcon &icon );
+Q_GUI_EXPORT QDataStream &operator>>( QDataStream &stream, QIcon &icon );
 
-Q_GUI_EXPORT QDebug operator<<(QDebug dbg, const QIcon &icon);
+Q_GUI_EXPORT QDebug operator<<( QDebug dbg, const QIcon &icon );
 
-Q_GUI_EXPORT QString qt_findAtNxFile(const QString &baseFileName, qreal targetDevicePixelRatio,
-   qreal *sourceDevicePixelRatio = nullptr);
+Q_GUI_EXPORT QString qt_findAtNxFile( const QString &baseFileName, qreal targetDevicePixelRatio,
+                                      qreal *sourceDevicePixelRatio = nullptr );
 
 template <>
-inline bool CustomType_T<QIcon>::compare(const CustomType &other) const {
+inline bool CustomType_T<QIcon>::compare( const CustomType &other ) const
+{
 
-   auto ptr = dynamic_cast<const CustomType_T<QIcon>*>(&other);
+    auto ptr = dynamic_cast<const CustomType_T<QIcon>*>( &other );
 
-   if (ptr != nullptr) {
-      return m_value.cacheKey() == (ptr->m_value).cacheKey();
-   }
+    if ( ptr != nullptr )
+    {
+        return m_value.cacheKey() == ( ptr->m_value ).cacheKey();
+    }
 
-   return false;
+    return false;
 }
 
 #endif

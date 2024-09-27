@@ -33,18 +33,19 @@
 // FIXME: This dependency might look strange. But it should be sane. See https://bugs.webkit.org/show_bug.cgi?id=59117
 #include "ShadowContentElement.h"
 
-namespace WebCore {
-
-ShadowRoot::ShadowRoot(Document* document)
-    : TreeScope(document)
+namespace WebCore
 {
-    ASSERT(document);
-    
+
+ShadowRoot::ShadowRoot( Document *document )
+    : TreeScope( document )
+{
+    ASSERT( document );
+
     // Assume document as parent scope.
-    setParentTreeScope(document);
+    setParentTreeScope( document );
     // Shadow tree scopes have the scope pointer point to themselves.
     // This way, direct children will receive the correct scope pointer.
-    ensureRareData()->setTreeScope(this);
+    ensureRareData()->setTreeScope( this );
 }
 
 ShadowRoot::~ShadowRoot()
@@ -61,46 +62,53 @@ Node::NodeType ShadowRoot::nodeType() const
     return SHADOW_ROOT_NODE;
 }
 
-PassRefPtr<Node> ShadowRoot::cloneNode(bool)
+PassRefPtr<Node> ShadowRoot::cloneNode( bool )
 {
     // ShadowRoot should not be arbitrarily cloned.
     return 0;
 }
 
-bool ShadowRoot::childTypeAllowed(NodeType type) const
+bool ShadowRoot::childTypeAllowed( NodeType type ) const
 {
-    switch (type) {
-    case ELEMENT_NODE:
-    case PROCESSING_INSTRUCTION_NODE:
-    case COMMENT_NODE:
-    case TEXT_NODE:
-    case CDATA_SECTION_NODE:
-    case ENTITY_REFERENCE_NODE:
-        return true;
-    default:
-        return false;
+    switch ( type )
+    {
+        case ELEMENT_NODE:
+        case PROCESSING_INSTRUCTION_NODE:
+        case COMMENT_NODE:
+        case TEXT_NODE:
+        case CDATA_SECTION_NODE:
+        case ENTITY_REFERENCE_NODE:
+            return true;
+
+        default:
+            return false;
     }
 }
 
-void ShadowRoot::recalcStyle(StyleChange change)
+void ShadowRoot::recalcStyle( StyleChange change )
 {
-    for (Node* n = firstChild(); n; n = n->nextSibling())
-        n->recalcStyle(change);
+    for ( Node *n = firstChild(); n; n = n->nextSibling() )
+    {
+        n->recalcStyle( change );
+    }
 
     clearNeedsStyleRecalc();
     clearChildNeedsStyleRecalc();
 }
 
-ContainerNode* ShadowRoot::contentContainerFor(Node* node)
+ContainerNode *ShadowRoot::contentContainerFor( Node *node )
 {
     // Current limitation:
     // - There is at most one content element for each shadow tree
     // - The shadow tree accepts any light node.
-    for (Node* n = firstChild(); n; n = n->traverseNextNode(this)) {
+    for ( Node *n = firstChild(); n; n = n->traverseNextNode( this ) )
+    {
         // FIXME: This should be replaced with tag-name checking once <content> is ready.
         // See also http://webkit.org/b/56973
-        if (n->isShadowBoundary() && static_cast<ShadowContentElement*>(n)->shouldInclude(node))
-            return toContainerNode(n);
+        if ( n->isShadowBoundary() && static_cast<ShadowContentElement *>( n )->shouldInclude( node ) )
+        {
+            return toContainerNode( n );
+        }
     }
 
     return 0;
@@ -108,22 +116,32 @@ ContainerNode* ShadowRoot::contentContainerFor(Node* node)
 
 void ShadowRoot::hostChildrenChanged()
 {
-    if (!hasContentElement())
+    if ( !hasContentElement() )
+    {
         return;
-    Element* host = shadowHost();
-    if (!host || !host->attached())
+    }
+
+    Element *host = shadowHost();
+
+    if ( !host || !host->attached() )
+    {
         return;
+    }
+
     host->detach();
     host->lazyAttach();
 }
 
 bool ShadowRoot::hasContentElement() const
 {
-    for (Node* n = firstChild(); n; n = n->traverseNextNode(this)) {
+    for ( Node *n = firstChild(); n; n = n->traverseNextNode( this ) )
+    {
         // FIXME: This should be replaced with tag-name checking once <content> is ready.
         // See also http://webkit.org/b/56973
-        if (n->isShadowBoundary())
+        if ( n->isShadowBoundary() )
+        {
             return true;
+        }
     }
 
     return false;

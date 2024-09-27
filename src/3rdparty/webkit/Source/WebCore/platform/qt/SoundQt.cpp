@@ -30,7 +30,8 @@
 
 #include <QApplication>
 
-namespace WebCore {
+namespace WebCore
+{
 
 void systemBeep()
 {

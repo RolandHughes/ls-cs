@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef PageTransitionEvent_h
@@ -28,36 +28,44 @@
 
 #include "Event.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class PageTransitionEvent : public Event {
-    public:
-        static PassRefPtr<PageTransitionEvent> create()
-        {
-            return adoptRef(new PageTransitionEvent);
-        }
-        static PassRefPtr<PageTransitionEvent> create(const AtomicString& type, bool persisted)
-        {
-            return adoptRef(new PageTransitionEvent(type, persisted));
-        }
+class PageTransitionEvent : public Event
+{
+public:
+    static PassRefPtr<PageTransitionEvent> create()
+    {
+        return adoptRef( new PageTransitionEvent );
+    }
+    static PassRefPtr<PageTransitionEvent> create( const AtomicString &type, bool persisted )
+    {
+        return adoptRef( new PageTransitionEvent( type, persisted ) );
+    }
 
-        virtual ~PageTransitionEvent();
+    virtual ~PageTransitionEvent();
 
-        void initPageTransitionEvent(const AtomicString& type, 
-                                bool canBubbleArg,
-                                bool cancelableArg,
-                                bool persisted);
+    void initPageTransitionEvent( const AtomicString &type,
+                                  bool canBubbleArg,
+                                  bool cancelableArg,
+                                  bool persisted );
 
-        virtual bool isPageTransitionEvent() const { return true; }
+    virtual bool isPageTransitionEvent() const
+    {
+        return true;
+    }
 
-        bool persisted() const { return m_persisted; }
+    bool persisted() const
+    {
+        return m_persisted;
+    }
 
-    private:
-        PageTransitionEvent();
-        PageTransitionEvent(const AtomicString& type, bool persisted);
+private:
+    PageTransitionEvent();
+    PageTransitionEvent( const AtomicString &type, bool persisted );
 
-        bool m_persisted;
-    };
+    bool m_persisted;
+};
 
 } // namespace WebCore
 

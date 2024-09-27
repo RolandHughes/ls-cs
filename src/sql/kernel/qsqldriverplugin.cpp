@@ -23,8 +23,8 @@
 
 #include <qsqldriverplugin.h>
 
-QSqlDriverPlugin::QSqlDriverPlugin(QObject *parent)
-   : QObject(parent)
+QSqlDriverPlugin::QSqlDriverPlugin( QObject *parent )
+    : QObject( parent )
 {
 }
 

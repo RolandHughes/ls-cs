@@ -35,77 +35,77 @@ using namespace WebKit;
 
 WKTypeID WKInspectorGetTypeID()
 {
-    return toAPI(WebInspectorProxy::APIType);
+    return toAPI( WebInspectorProxy::APIType );
 }
 
-WKPageRef WKInspectorGetPage(WKInspectorRef inspectorRef)
+WKPageRef WKInspectorGetPage( WKInspectorRef inspectorRef )
 {
-    return toAPI(toImpl(inspectorRef)->page());
+    return toAPI( toImpl( inspectorRef )->page() );
 }
 
-bool WKInspectorIsVisible(WKInspectorRef inspectorRef)
+bool WKInspectorIsVisible( WKInspectorRef inspectorRef )
 {
-    return toImpl(inspectorRef)->isVisible();
+    return toImpl( inspectorRef )->isVisible();
 }
 
-void WKInspectorShow(WKInspectorRef inspectorRef)
+void WKInspectorShow( WKInspectorRef inspectorRef )
 {
-    toImpl(inspectorRef)->show();
+    toImpl( inspectorRef )->show();
 }
 
-void WKInspectorClose(WKInspectorRef inspectorRef)
+void WKInspectorClose( WKInspectorRef inspectorRef )
 {
-    toImpl(inspectorRef)->close();
+    toImpl( inspectorRef )->close();
 }
 
-void WKInspectorShowConsole(WKInspectorRef inspectorRef)
+void WKInspectorShowConsole( WKInspectorRef inspectorRef )
 {
-    toImpl(inspectorRef)->showConsole();
+    toImpl( inspectorRef )->showConsole();
 }
 
-bool WKInspectorIsAttached(WKInspectorRef inspectorRef)
+bool WKInspectorIsAttached( WKInspectorRef inspectorRef )
 {
-    return toImpl(inspectorRef)->isAttached();
+    return toImpl( inspectorRef )->isAttached();
 }
 
-void WKInspectorAttach(WKInspectorRef inspectorRef)
+void WKInspectorAttach( WKInspectorRef inspectorRef )
 {
-    toImpl(inspectorRef)->attach();
+    toImpl( inspectorRef )->attach();
 }
 
-void WKInspectorDetach(WKInspectorRef inspectorRef)
+void WKInspectorDetach( WKInspectorRef inspectorRef )
 {
-    toImpl(inspectorRef)->detach();
+    toImpl( inspectorRef )->detach();
 }
 
-bool WKInspectorIsDebuggingJavaScript(WKInspectorRef inspectorRef)
+bool WKInspectorIsDebuggingJavaScript( WKInspectorRef inspectorRef )
 {
-    return toImpl(inspectorRef)->isDebuggingJavaScript();
+    return toImpl( inspectorRef )->isDebuggingJavaScript();
 }
 
-void WKInspectorToggleJavaScriptDebugging(WKInspectorRef inspectorRef)
+void WKInspectorToggleJavaScriptDebugging( WKInspectorRef inspectorRef )
 {
-    toImpl(inspectorRef)->toggleJavaScriptDebugging();
+    toImpl( inspectorRef )->toggleJavaScriptDebugging();
 }
 
-bool WKInspectorIsProfilingJavaScript(WKInspectorRef inspectorRef)
+bool WKInspectorIsProfilingJavaScript( WKInspectorRef inspectorRef )
 {
-    return toImpl(inspectorRef)->isProfilingJavaScript();
+    return toImpl( inspectorRef )->isProfilingJavaScript();
 }
 
-void WKInspectorToggleJavaScriptProfiling(WKInspectorRef inspectorRef)
+void WKInspectorToggleJavaScriptProfiling( WKInspectorRef inspectorRef )
 {
-    toImpl(inspectorRef)->toggleJavaScriptProfiling();
+    toImpl( inspectorRef )->toggleJavaScriptProfiling();
 }
 
-bool WKInspectorIsProfilingPage(WKInspectorRef inspectorRef)
+bool WKInspectorIsProfilingPage( WKInspectorRef inspectorRef )
 {
-    return toImpl(inspectorRef)->isProfilingPage();
+    return toImpl( inspectorRef )->isProfilingPage();
 }
 
-void WKInspectorTogglePageProfiling(WKInspectorRef inspectorRef)
+void WKInspectorTogglePageProfiling( WKInspectorRef inspectorRef )
 {
-    toImpl(inspectorRef)->togglePageProfiling();
+    toImpl( inspectorRef )->togglePageProfiling();
 }
 
 #endif // ENABLE(INSPECTOR)

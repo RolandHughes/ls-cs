@@ -33,28 +33,31 @@
 #include "TextResourceDecoder.h"
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 #if ENABLE(XSLT)
 
-CachedXSLStyleSheet::CachedXSLStyleSheet(const String &url)
-    : CachedResource(url, XSLStyleSheet)
-    , m_decoder(TextResourceDecoder::create("text/xsl"))
+CachedXSLStyleSheet::CachedXSLStyleSheet( const String &url )
+    : CachedResource( url, XSLStyleSheet )
+    , m_decoder( TextResourceDecoder::create( "text/xsl" ) )
 {
     // It's XML we want.
     // FIXME: This should accept more general xml formats */*+xml, image/svg+xml for example.
-    setAccept("text/xml, application/xml, application/xhtml+xml, text/xsl, application/rss+xml, application/atom+xml");
+    setAccept( "text/xml, application/xml, application/xhtml+xml, text/xsl, application/rss+xml, application/atom+xml" );
 }
 
-void CachedXSLStyleSheet::didAddClient(CachedResourceClient* c)
-{  
-    if (!isLoading())
-        c->setXSLStyleSheet(m_url, m_response.url(), m_sheet);
-}
-
-void CachedXSLStyleSheet::setEncoding(const String& chs)
+void CachedXSLStyleSheet::didAddClient( CachedResourceClient *c )
 {
-    m_decoder->setEncoding(chs, TextResourceDecoder::EncodingFromHTTPHeader);
+    if ( !isLoading() )
+    {
+        c->setXSLStyleSheet( m_url, m_response.url(), m_sheet );
+    }
+}
+
+void CachedXSLStyleSheet::setEncoding( const String &chs )
+{
+    m_decoder->setEncoding( chs, TextResourceDecoder::EncodingFromHTTPHeader );
 }
 
 String CachedXSLStyleSheet::encoding() const
@@ -62,36 +65,46 @@ String CachedXSLStyleSheet::encoding() const
     return m_decoder->encoding().name();
 }
 
-void CachedXSLStyleSheet::data(PassRefPtr<SharedBuffer> data, bool allDataReceived)
+void CachedXSLStyleSheet::data( PassRefPtr<SharedBuffer> data, bool allDataReceived )
 {
-    if (!allDataReceived)
+    if ( !allDataReceived )
+    {
         return;
+    }
 
-    m_data = data;     
-    setEncodedSize(m_data.get() ? m_data->size() : 0);
-    if (m_data.get()) {
-        m_sheet = String(m_decoder->decode(m_data->data(), encodedSize()));
+    m_data = data;
+    setEncodedSize( m_data.get() ? m_data->size() : 0 );
+
+    if ( m_data.get() )
+    {
+        m_sheet = String( m_decoder->decode( m_data->data(), encodedSize() ) );
         m_sheet += m_decoder->flush();
     }
-    setLoading(false);
+
+    setLoading( false );
     checkNotify();
 }
 
 void CachedXSLStyleSheet::checkNotify()
 {
-    if (isLoading())
+    if ( isLoading() )
+    {
         return;
-    
-    CachedResourceClientWalker w(m_clients);
-    while (CachedResourceClient *c = w.next())
-        c->setXSLStyleSheet(m_url, m_response.url(), m_sheet);
+    }
+
+    CachedResourceClientWalker w( m_clients );
+
+    while ( CachedResourceClient *c = w.next() )
+    {
+        c->setXSLStyleSheet( m_url, m_response.url(), m_sheet );
+    }
 }
 
-void CachedXSLStyleSheet::error(CachedResource::Status status)
+void CachedXSLStyleSheet::error( CachedResource::Status status )
 {
-    setStatus(status);
-    ASSERT(errorOccurred());
-    setLoading(false);
+    setStatus( status );
+    ASSERT( errorOccurred() );
+    setLoading( false );
     checkNotify();
 }
 

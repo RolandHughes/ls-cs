@@ -35,15 +35,16 @@
 
 using namespace WebCore;
 
-namespace WebKit {
-
-PassRefPtr<WebResourceCacheManagerProxy> WebResourceCacheManagerProxy::create(WebContext* webContext)
+namespace WebKit
 {
-    return adoptRef(new WebResourceCacheManagerProxy(webContext));
+
+PassRefPtr<WebResourceCacheManagerProxy> WebResourceCacheManagerProxy::create( WebContext *webContext )
+{
+    return adoptRef( new WebResourceCacheManagerProxy( webContext ) );
 }
 
-WebResourceCacheManagerProxy::WebResourceCacheManagerProxy(WebContext* webContext)
-    : m_webContext(webContext)
+WebResourceCacheManagerProxy::WebResourceCacheManagerProxy( WebContext *webContext )
+    : m_webContext( webContext )
 {
 }
 
@@ -53,44 +54,46 @@ WebResourceCacheManagerProxy::~WebResourceCacheManagerProxy()
 
 void WebResourceCacheManagerProxy::invalidate()
 {
-    invalidateCallbackMap(m_arrayCallbacks);
+    invalidateCallbackMap( m_arrayCallbacks );
 }
 
-bool WebResourceCacheManagerProxy::shouldTerminate(WebProcessProxy*) const
+bool WebResourceCacheManagerProxy::shouldTerminate( WebProcessProxy * ) const
 {
     return m_arrayCallbacks.isEmpty();
 }
 
-void WebResourceCacheManagerProxy::getCacheOrigins(PassRefPtr<ArrayCallback> prpCallback)
+void WebResourceCacheManagerProxy::getCacheOrigins( PassRefPtr<ArrayCallback> prpCallback )
 {
     RefPtr<ArrayCallback> callback = prpCallback;
     m_webContext->relaunchProcessIfNecessary();
     uint64_t callbackID = callback->callbackID();
-    m_arrayCallbacks.set(callbackID, callback.release());
+    m_arrayCallbacks.set( callbackID, callback.release() );
 
     // FIXME (Multi-WebProcess): When multi-process is enabled, we need to aggregate the callback data from all processes.
-    m_webContext->sendToAllProcessesRelaunchingThemIfNecessary(Messages::WebResourceCacheManager::GetCacheOrigins(callbackID));
+    m_webContext->sendToAllProcessesRelaunchingThemIfNecessary( Messages::WebResourceCacheManager::GetCacheOrigins( callbackID ) );
 }
 
-void WebResourceCacheManagerProxy::didGetCacheOrigins(const Vector<SecurityOriginData>& origins, uint64_t callbackID)
+void WebResourceCacheManagerProxy::didGetCacheOrigins( const Vector<SecurityOriginData> &origins, uint64_t callbackID )
 {
-    RefPtr<ArrayCallback> callback = m_arrayCallbacks.take(callbackID);
-    performAPICallbackWithSecurityOriginDataVector(origins, callback.get());
+    RefPtr<ArrayCallback> callback = m_arrayCallbacks.take( callbackID );
+    performAPICallbackWithSecurityOriginDataVector( origins, callback.get() );
 }
 
-void WebResourceCacheManagerProxy::clearCacheForOrigin(WebSecurityOrigin* origin, ResourceCachesToClear cachesToClear)
+void WebResourceCacheManagerProxy::clearCacheForOrigin( WebSecurityOrigin *origin, ResourceCachesToClear cachesToClear )
 {
     SecurityOriginData securityOrigin;
     securityOrigin.protocol = origin->protocol();
     securityOrigin.host = origin->host();
     securityOrigin.port = origin->port();
 
-    m_webContext->sendToAllProcessesRelaunchingThemIfNecessary(Messages::WebResourceCacheManager::ClearCacheForOrigin(securityOrigin, cachesToClear));
+    m_webContext->sendToAllProcessesRelaunchingThemIfNecessary( Messages::WebResourceCacheManager::ClearCacheForOrigin(
+                securityOrigin, cachesToClear ) );
 }
 
-void WebResourceCacheManagerProxy::clearCacheForAllOrigins(ResourceCachesToClear cachesToClear)
+void WebResourceCacheManagerProxy::clearCacheForAllOrigins( ResourceCachesToClear cachesToClear )
 {
-    m_webContext->sendToAllProcessesRelaunchingThemIfNecessary(Messages::WebResourceCacheManager::ClearCacheForAllOrigins(cachesToClear));
+    m_webContext->sendToAllProcessesRelaunchingThemIfNecessary( Messages::WebResourceCacheManager::ClearCacheForAllOrigins(
+                cachesToClear ) );
 }
 
 } // namespace WebKit

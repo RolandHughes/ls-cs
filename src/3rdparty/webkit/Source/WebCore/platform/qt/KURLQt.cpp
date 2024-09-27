@@ -25,29 +25,32 @@
 #include "qurl.h"
 #include <wtf/text/CString.h>
 
-namespace WebCore {
-
-KURL::KURL(const QUrl& url)
+namespace WebCore
 {
-    *this = KURL(KURL(), url.toEncoded().constData(), UTF8Encoding());
+
+KURL::KURL( const QUrl &url )
+{
+    *this = KURL( KURL(), url.toEncoded().constData(), UTF8Encoding() );
 }
 
 KURL::operator QUrl() const
 {
-    QString str = QString::fromUtf16(reinterpret_cast<const char16_t *>(m_string.characters()), m_string.length());
+    QString str = QString::fromUtf16( reinterpret_cast<const char16_t *>( m_string.characters() ), m_string.length() );
     QByteArray ba = str.toUtf8();
 
-    QUrl url = QUrl::fromEncoded(ba);
+    QUrl url = QUrl::fromEncoded( ba );
 
     return url;
 }
 
 String KURL::fileSystemPath() const
 {
-    if (! isValid() || ! protocolIs("file"))
+    if ( ! isValid() || ! protocolIs( "file" ) )
+    {
         return String();
+    }
 
-    return static_cast<QUrl>(*this).toLocalFile();
+    return static_cast<QUrl>( *this ).toLocalFile();
 }
 
 }

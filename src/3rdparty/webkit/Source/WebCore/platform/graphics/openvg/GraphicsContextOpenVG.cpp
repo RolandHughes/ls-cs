@@ -37,21 +37,23 @@
 #include <egl.h>
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
 // typedef'ing doesn't work, let's inherit from PainterOpenVG instead
-class GraphicsContextPlatformPrivate : public PainterOpenVG {
+class GraphicsContextPlatformPrivate : public PainterOpenVG
+{
 public:
-    GraphicsContextPlatformPrivate(SurfaceOpenVG* surface)
-        : PainterOpenVG(surface)
+    GraphicsContextPlatformPrivate( SurfaceOpenVG *surface )
+        : PainterOpenVG( surface )
     {
     }
 };
 
-void GraphicsContext::platformInit(SurfaceOpenVG* surface)
+void GraphicsContext::platformInit( SurfaceOpenVG *surface )
 {
-    m_data = surface ? new GraphicsContextPlatformPrivate(surface) : 0;
-    setPaintingDisabled(!surface);
+    m_data = surface ? new GraphicsContextPlatformPrivate( surface ) : 0;
+    setPaintingDisabled( !surface );
 }
 
 void GraphicsContext::platformDestroy()
@@ -59,465 +61,565 @@ void GraphicsContext::platformDestroy()
     delete m_data;
 }
 
-PlatformGraphicsContext* GraphicsContext::platformContext() const
+PlatformGraphicsContext *GraphicsContext::platformContext() const
 {
-    if (paintingDisabled())
+    if ( paintingDisabled() )
+    {
         return 0;
+    }
 
     return m_data->baseSurface();
 }
 
 AffineTransform GraphicsContext::getCTM() const
 {
-    if (paintingDisabled())
+    if ( paintingDisabled() )
+    {
         return AffineTransform();
+    }
 
     return m_data->transformation();
 }
 
 void GraphicsContext::savePlatformState()
 {
-    if (paintingDisabled())
+    if ( paintingDisabled() )
+    {
         return;
+    }
 
     m_data->save();
 }
 
 void GraphicsContext::restorePlatformState()
 {
-    if (paintingDisabled())
+    if ( paintingDisabled() )
+    {
         return;
+    }
 
     m_data->restore();
 }
 
-void GraphicsContext::drawRect(const IntRect& rect)
+void GraphicsContext::drawRect( const IntRect &rect )
 {
-    if (paintingDisabled())
+    if ( paintingDisabled() )
+    {
         return;
+    }
 
-    m_data->drawRect(rect);
+    m_data->drawRect( rect );
 }
 
-void GraphicsContext::drawLine(const IntPoint& from, const IntPoint& to)
+void GraphicsContext::drawLine( const IntPoint &from, const IntPoint &to )
 {
-    if (paintingDisabled())
+    if ( paintingDisabled() )
+    {
         return;
+    }
 
-    m_data->drawLine(from, to);
+    m_data->drawLine( from, to );
 }
 
 /**
  * Draw the largest ellipse that fits into the given rectangle.
  */
-void GraphicsContext::drawEllipse(const IntRect& rect)
+void GraphicsContext::drawEllipse( const IntRect &rect )
 {
-    if (paintingDisabled())
+    if ( paintingDisabled() )
+    {
         return;
+    }
 
-    m_data->drawEllipse(rect);
+    m_data->drawEllipse( rect );
 }
 
-void GraphicsContext::strokeArc(const IntRect& rect, int startAngle, int angleSpan)
+void GraphicsContext::strokeArc( const IntRect &rect, int startAngle, int angleSpan )
 {
-    if (paintingDisabled())
+    if ( paintingDisabled() )
+    {
         return;
+    }
 
-    m_data->drawArc(rect, startAngle, angleSpan, VG_STROKE_PATH);
+    m_data->drawArc( rect, startAngle, angleSpan, VG_STROKE_PATH );
 }
 
-void GraphicsContext::drawConvexPolygon(size_t numPoints, const FloatPoint* points, bool shouldAntialias)
+void GraphicsContext::drawConvexPolygon( size_t numPoints, const FloatPoint *points, bool shouldAntialias )
 {
-    if (paintingDisabled())
+    if ( paintingDisabled() )
+    {
         return;
+    }
 
-    m_data->drawPolygon(numPoints, points);
+    m_data->drawPolygon( numPoints, points );
 
-    UNUSED_PARAM(shouldAntialias); // FIXME
+    UNUSED_PARAM( shouldAntialias ); // FIXME
 }
 
-void GraphicsContext::fillPath(const Path& path)
+void GraphicsContext::fillPath( const Path &path )
 {
-    if (paintingDisabled())
+    if ( paintingDisabled() )
+    {
         return;
+    }
 
-    m_data->drawPath(path, VG_FILL_PATH, m_state.fillRule);
+    m_data->drawPath( path, VG_FILL_PATH, m_state.fillRule );
 }
 
-void GraphicsContext::strokePath(const Path& path)
+void GraphicsContext::strokePath( const Path &path )
 {
-    if (paintingDisabled())
+    if ( paintingDisabled() )
+    {
         return;
+    }
 
-    m_data->drawPath(path, VG_STROKE_PATH, m_state.fillRule);
+    m_data->drawPath( path, VG_STROKE_PATH, m_state.fillRule );
 }
 
-void GraphicsContext::fillRect(const FloatRect& rect)
+void GraphicsContext::fillRect( const FloatRect &rect )
 {
-    if (paintingDisabled())
+    if ( paintingDisabled() )
+    {
         return;
+    }
 
-    m_data->drawRect(rect, VG_FILL_PATH);
+    m_data->drawRect( rect, VG_FILL_PATH );
 }
 
-void GraphicsContext::fillRect(const FloatRect& rect, const Color& color, ColorSpace colorSpace)
+void GraphicsContext::fillRect( const FloatRect &rect, const Color &color, ColorSpace colorSpace )
 {
-    if (paintingDisabled())
+    if ( paintingDisabled() )
+    {
         return;
+    }
 
     Color oldColor = m_data->fillColor();
-    m_data->setFillColor(color);
-    m_data->drawRect(rect, VG_FILL_PATH);
-    m_data->setFillColor(oldColor);
+    m_data->setFillColor( color );
+    m_data->drawRect( rect, VG_FILL_PATH );
+    m_data->setFillColor( oldColor );
 
-    UNUSED_PARAM(colorSpace); // FIXME
+    UNUSED_PARAM( colorSpace ); // FIXME
 }
 
-void GraphicsContext::fillRoundedRect(const IntRect& rect, const IntSize& topLeft, const IntSize& topRight, const IntSize& bottomLeft, const IntSize& bottomRight, const Color& color, ColorSpace colorSpace)
+void GraphicsContext::fillRoundedRect( const IntRect &rect, const IntSize &topLeft, const IntSize &topRight,
+                                       const IntSize &bottomLeft, const IntSize &bottomRight, const Color &color, ColorSpace colorSpace )
 {
-    if (paintingDisabled())
+    if ( paintingDisabled() )
+    {
         return;
+    }
 
     Color oldColor = m_data->fillColor();
-    m_data->setFillColor(color);
-    m_data->drawRoundedRect(rect, topLeft, topRight, bottomLeft, bottomRight, VG_FILL_PATH);
-    m_data->setFillColor(oldColor);
+    m_data->setFillColor( color );
+    m_data->drawRoundedRect( rect, topLeft, topRight, bottomLeft, bottomRight, VG_FILL_PATH );
+    m_data->setFillColor( oldColor );
 
-    UNUSED_PARAM(colorSpace); // FIXME
+    UNUSED_PARAM( colorSpace ); // FIXME
 }
 
-void GraphicsContext::clip(const FloatRect& rect)
+void GraphicsContext::clip( const FloatRect &rect )
 {
-    if (paintingDisabled())
+    if ( paintingDisabled() )
+    {
         return;
+    }
 
-    m_data->intersectClipRect(rect);
+    m_data->intersectClipRect( rect );
 }
 
-void GraphicsContext::clipPath(const Path& path, WindRule clipRule)
+void GraphicsContext::clipPath( const Path &path, WindRule clipRule )
 {
-    if (paintingDisabled())
+    if ( paintingDisabled() )
+    {
         return;
+    }
 
-    m_data->clipPath(path, PainterOpenVG::IntersectClip, clipRule);
+    m_data->clipPath( path, PainterOpenVG::IntersectClip, clipRule );
 }
 
-void GraphicsContext::drawFocusRing(const Vector<IntRect>& rects, int width, int offset, const Color& color)
+void GraphicsContext::drawFocusRing( const Vector<IntRect> &rects, int width, int offset, const Color &color )
 {
-    if (paintingDisabled())
+    if ( paintingDisabled() )
+    {
         return;
+    }
 
-    if (rects.isEmpty())
+    if ( rects.isEmpty() )
+    {
         return;
+    }
 
     // FIXME: We just unite all focus ring rects into one for now.
     // We should outline the edge of the full region.
-    offset += (width - 1) / 2;
+    offset += ( width - 1 ) / 2;
     IntRect finalFocusRect;
 
-    for (unsigned i = 0; i < rects.size(); i++) {
+    for ( unsigned i = 0; i < rects.size(); i++ )
+    {
         IntRect focusRect = rects[i];
-        focusRect.inflate(offset);
-        finalFocusRect.unite(focusRect);
+        focusRect.inflate( offset );
+        finalFocusRect.unite( focusRect );
     }
 
     StrokeStyle oldStyle = m_data->strokeStyle();
     Color oldStrokeColor = m_data->strokeColor();
-    m_data->setStrokeStyle(DashedStroke);
-    m_data->setStrokeColor(color);
-    strokeRect(FloatRect(finalFocusRect), 1.f);
-    m_data->setStrokeStyle(oldStyle);
-    m_data->setStrokeColor(oldStrokeColor);
+    m_data->setStrokeStyle( DashedStroke );
+    m_data->setStrokeColor( color );
+    strokeRect( FloatRect( finalFocusRect ), 1.f );
+    m_data->setStrokeStyle( oldStyle );
+    m_data->setStrokeColor( oldStrokeColor );
 }
 
-void GraphicsContext::drawLineForText(const IntPoint& origin, int width, bool printing)
+void GraphicsContext::drawLineForText( const IntPoint &origin, int width, bool printing )
 {
-    if (paintingDisabled())
+    if ( paintingDisabled() )
+    {
         return;
+    }
 
-    if (width <= 0)
+    if ( width <= 0 )
+    {
         return;
+    }
 
     StrokeStyle oldStyle = m_data->strokeStyle();
-    m_data->setStrokeStyle(SolidStroke);
-    drawLine(origin, origin + IntSize(width, 0));
-    m_data->setStrokeStyle(oldStyle);
+    m_data->setStrokeStyle( SolidStroke );
+    drawLine( origin, origin + IntSize( width, 0 ) );
+    m_data->setStrokeStyle( oldStyle );
 
-    UNUSED_PARAM(printing);
+    UNUSED_PARAM( printing );
 }
 
-void GraphicsContext::drawLineForTextChecking(const IntPoint& origin, int width, TextCheckingLineStyle style)
+void GraphicsContext::drawLineForTextChecking( const IntPoint &origin, int width, TextCheckingLineStyle style )
 {
-    if (paintingDisabled())
+    if ( paintingDisabled() )
+    {
         return;
+    }
 
     notImplemented();
-    UNUSED_PARAM(origin);
-    UNUSED_PARAM(width);
-    UNUSED_PARAM(style);
+    UNUSED_PARAM( origin );
+    UNUSED_PARAM( width );
+    UNUSED_PARAM( style );
 }
 
-FloatRect GraphicsContext::roundToDevicePixels(const FloatRect& rect, RoundingMode)
+FloatRect GraphicsContext::roundToDevicePixels( const FloatRect &rect, RoundingMode )
 {
-    if (paintingDisabled())
+    if ( paintingDisabled() )
+    {
         return FloatRect();
+    }
 
-    return FloatRect(enclosingIntRect(m_data->transformation().mapRect(rect)));
+    return FloatRect( enclosingIntRect( m_data->transformation().mapRect( rect ) ) );
 }
 
-void GraphicsContext::setPlatformShadow(const FloatSize& size, float blur, const Color& color, ColorSpace colorSpace)
+void GraphicsContext::setPlatformShadow( const FloatSize &size, float blur, const Color &color, ColorSpace colorSpace )
 {
-    if (paintingDisabled())
+    if ( paintingDisabled() )
+    {
         return;
+    }
 
     notImplemented();
-    UNUSED_PARAM(size);
-    UNUSED_PARAM(blur);
-    UNUSED_PARAM(color);
-    UNUSED_PARAM(colorSpace);
+    UNUSED_PARAM( size );
+    UNUSED_PARAM( blur );
+    UNUSED_PARAM( color );
+    UNUSED_PARAM( colorSpace );
 }
 
 void GraphicsContext::clearPlatformShadow()
 {
-    if (paintingDisabled())
+    if ( paintingDisabled() )
+    {
         return;
+    }
 
     notImplemented();
 }
 
-void GraphicsContext::beginTransparencyLayer(float opacity)
+void GraphicsContext::beginTransparencyLayer( float opacity )
 {
-    if (paintingDisabled())
+    if ( paintingDisabled() )
+    {
         return;
+    }
 
     notImplemented();
-    UNUSED_PARAM(opacity);
+    UNUSED_PARAM( opacity );
 }
 
 void GraphicsContext::endTransparencyLayer()
 {
-    if (paintingDisabled())
+    if ( paintingDisabled() )
+    {
         return;
+    }
 
     notImplemented();
 }
 
-void GraphicsContext::clearRect(const FloatRect& rect)
+void GraphicsContext::clearRect( const FloatRect &rect )
 {
-    if (paintingDisabled())
+    if ( paintingDisabled() )
+    {
         return;
+    }
 
     CompositeOperator op = m_data->compositeOperation();
-    m_data->setCompositeOperation(CompositeClear);
-    m_data->drawRect(rect, VG_FILL_PATH);
-    m_data->setCompositeOperation(op);
+    m_data->setCompositeOperation( CompositeClear );
+    m_data->drawRect( rect, VG_FILL_PATH );
+    m_data->setCompositeOperation( op );
 }
 
-void GraphicsContext::strokeRect(const FloatRect& rect, float lineWidth)
+void GraphicsContext::strokeRect( const FloatRect &rect, float lineWidth )
 {
-    if (paintingDisabled())
+    if ( paintingDisabled() )
+    {
         return;
+    }
 
     float oldThickness = m_data->strokeThickness();
-    m_data->setStrokeThickness(lineWidth);
-    m_data->drawRect(rect, VG_STROKE_PATH);
-    m_data->setStrokeThickness(oldThickness);
+    m_data->setStrokeThickness( lineWidth );
+    m_data->drawRect( rect, VG_STROKE_PATH );
+    m_data->setStrokeThickness( oldThickness );
 }
 
-void GraphicsContext::setLineCap(LineCap lc)
+void GraphicsContext::setLineCap( LineCap lc )
 {
-    if (paintingDisabled())
+    if ( paintingDisabled() )
+    {
         return;
+    }
 
-    m_data->setLineCap(lc);
+    m_data->setLineCap( lc );
 }
 
-void GraphicsContext::setLineDash(const DashArray& dashes, float dashOffset)
+void GraphicsContext::setLineDash( const DashArray &dashes, float dashOffset )
 {
-    if (paintingDisabled())
+    if ( paintingDisabled() )
+    {
         return;
+    }
 
-    m_data->setLineDash(dashes, dashOffset);
+    m_data->setLineDash( dashes, dashOffset );
 }
 
-void GraphicsContext::setLineJoin(LineJoin lj)
+void GraphicsContext::setLineJoin( LineJoin lj )
 {
-    if (paintingDisabled())
+    if ( paintingDisabled() )
+    {
         return;
+    }
 
-    m_data->setLineJoin(lj);
+    m_data->setLineJoin( lj );
 }
 
-void GraphicsContext::setMiterLimit(float limit)
+void GraphicsContext::setMiterLimit( float limit )
 {
-    if (paintingDisabled())
+    if ( paintingDisabled() )
+    {
         return;
+    }
 
-    m_data->setMiterLimit(limit);
+    m_data->setMiterLimit( limit );
 }
 
-void GraphicsContext::setAlpha(float opacity)
+void GraphicsContext::setAlpha( float opacity )
 {
-    if (paintingDisabled())
+    if ( paintingDisabled() )
+    {
         return;
+    }
 
-    m_data->setOpacity(opacity);
+    m_data->setOpacity( opacity );
 }
 
-void GraphicsContext::setPlatformCompositeOperation(CompositeOperator op)
+void GraphicsContext::setPlatformCompositeOperation( CompositeOperator op )
 {
-    if (paintingDisabled())
+    if ( paintingDisabled() )
+    {
         return;
+    }
 
-    m_data->setCompositeOperation(op);
+    m_data->setCompositeOperation( op );
 }
 
-void GraphicsContext::clip(const Path& path)
+void GraphicsContext::clip( const Path &path )
 {
-    if (paintingDisabled())
+    if ( paintingDisabled() )
+    {
         return;
+    }
 
-    m_data->clipPath(path, PainterOpenVG::IntersectClip, m_state.fillRule);
+    m_data->clipPath( path, PainterOpenVG::IntersectClip, m_state.fillRule );
 }
 
-void GraphicsContext::canvasClip(const Path& path)
+void GraphicsContext::canvasClip( const Path &path )
 {
-    clip(path);
+    clip( path );
 }
 
-void GraphicsContext::clipOut(const Path& path)
+void GraphicsContext::clipOut( const Path &path )
 {
-    if (paintingDisabled())
+    if ( paintingDisabled() )
+    {
         return;
+    }
 
-    m_data->clipPath(path, PainterOpenVG::SubtractClip, m_state.fillRule);
+    m_data->clipPath( path, PainterOpenVG::SubtractClip, m_state.fillRule );
 }
 
-void GraphicsContext::scale(const FloatSize& scaleFactors)
+void GraphicsContext::scale( const FloatSize &scaleFactors )
 {
-    if (paintingDisabled())
+    if ( paintingDisabled() )
+    {
         return;
+    }
 
-    m_data->scale(scaleFactors);
+    m_data->scale( scaleFactors );
 }
 
-void GraphicsContext::rotate(float radians)
+void GraphicsContext::rotate( float radians )
 {
-    if (paintingDisabled())
+    if ( paintingDisabled() )
+    {
         return;
+    }
 
-    m_data->rotate(radians);
+    m_data->rotate( radians );
 }
 
-void GraphicsContext::translate(float dx, float dy)
+void GraphicsContext::translate( float dx, float dy )
 {
-    if (paintingDisabled())
+    if ( paintingDisabled() )
+    {
         return;
+    }
 
-    m_data->translate(dx, dy);
+    m_data->translate( dx, dy );
 }
 
-void GraphicsContext::clipOut(const IntRect& rect)
+void GraphicsContext::clipOut( const IntRect &rect )
 {
-    if (paintingDisabled())
+    if ( paintingDisabled() )
+    {
         return;
+    }
 
     Path path;
-    path.addRect(rect);
-    m_data->clipPath(path, PainterOpenVG::SubtractClip, m_state.fillRule);
+    path.addRect( rect );
+    m_data->clipPath( path, PainterOpenVG::SubtractClip, m_state.fillRule );
 }
 
-void GraphicsContext::clipToImageBuffer(const FloatRect& rect, const ImageBuffer* imageBuffer)
+void GraphicsContext::clipToImageBuffer( const FloatRect &rect, const ImageBuffer *imageBuffer )
 {
-    if (paintingDisabled())
+    if ( paintingDisabled() )
+    {
         return;
+    }
 
     notImplemented();
-    UNUSED_PARAM(rect);
-    UNUSED_PARAM(imageBuffer);
+    UNUSED_PARAM( rect );
+    UNUSED_PARAM( imageBuffer );
 }
 
-void GraphicsContext::addInnerRoundedRectClip(const IntRect& rect, int thickness)
+void GraphicsContext::addInnerRoundedRectClip( const IntRect &rect, int thickness )
 {
-    if (paintingDisabled())
+    if ( paintingDisabled() )
+    {
         return;
+    }
 
     Path path;
-    path.addEllipse(rect);
-    path.addEllipse(FloatRect(rect.x() + thickness, rect.y() + thickness,
-        rect.width() - (thickness * 2), rect.height() - (thickness * 2)));
+    path.addEllipse( rect );
+    path.addEllipse( FloatRect( rect.x() + thickness, rect.y() + thickness,
+                                rect.width() - ( thickness * 2 ), rect.height() - ( thickness * 2 ) ) );
 
-    m_data->clipPath(path, PainterOpenVG::IntersectClip, m_state.fillRule);
+    m_data->clipPath( path, PainterOpenVG::IntersectClip, m_state.fillRule );
 }
 
-void GraphicsContext::concatCTM(const AffineTransform& transformation)
+void GraphicsContext::concatCTM( const AffineTransform &transformation )
 {
-    if (paintingDisabled())
+    if ( paintingDisabled() )
+    {
         return;
+    }
 
-    m_data->concatTransformation(transformation);
+    m_data->concatTransformation( transformation );
 }
 
-void GraphicsContext::setCTM(const AffineTransform& transformation)
+void GraphicsContext::setCTM( const AffineTransform &transformation )
 {
-    if (paintingDisabled())
+    if ( paintingDisabled() )
+    {
         return;
+    }
 
-    m_data->setTransformation(transformation);
+    m_data->setTransformation( transformation );
 }
 
-void GraphicsContext::setURLForRect(const KURL& link, const IntRect& destRect)
+void GraphicsContext::setURLForRect( const KURL &link, const IntRect &destRect )
 {
     notImplemented();
-    UNUSED_PARAM(link);
-    UNUSED_PARAM(destRect);
+    UNUSED_PARAM( link );
+    UNUSED_PARAM( destRect );
 }
 
-void GraphicsContext::setPlatformStrokeColor(const Color& color, ColorSpace colorSpace)
+void GraphicsContext::setPlatformStrokeColor( const Color &color, ColorSpace colorSpace )
 {
-    if (paintingDisabled())
+    if ( paintingDisabled() )
+    {
         return;
+    }
 
-    m_data->setStrokeColor(color);
+    m_data->setStrokeColor( color );
 
-    UNUSED_PARAM(colorSpace); // FIXME
+    UNUSED_PARAM( colorSpace ); // FIXME
 }
 
-void GraphicsContext::setPlatformStrokeStyle(StrokeStyle strokeStyle)
+void GraphicsContext::setPlatformStrokeStyle( StrokeStyle strokeStyle )
 {
-    if (paintingDisabled())
+    if ( paintingDisabled() )
+    {
         return;
+    }
 
-    m_data->setStrokeStyle(strokeStyle);
+    m_data->setStrokeStyle( strokeStyle );
 }
 
-void GraphicsContext::setPlatformStrokeThickness(float thickness)
+void GraphicsContext::setPlatformStrokeThickness( float thickness )
 {
-    if (paintingDisabled())
+    if ( paintingDisabled() )
+    {
         return;
+    }
 
-    m_data->setStrokeThickness(thickness);
+    m_data->setStrokeThickness( thickness );
 }
 
-void GraphicsContext::setPlatformFillColor(const Color& color, ColorSpace colorSpace)
+void GraphicsContext::setPlatformFillColor( const Color &color, ColorSpace colorSpace )
 {
-    if (paintingDisabled())
+    if ( paintingDisabled() )
+    {
         return;
+    }
 
-    m_data->setFillColor(color);
+    m_data->setFillColor( color );
 
-    UNUSED_PARAM(colorSpace); // FIXME
+    UNUSED_PARAM( colorSpace ); // FIXME
 }
 
-void GraphicsContext::setPlatformShouldAntialias(bool enable)
+void GraphicsContext::setPlatformShouldAntialias( bool enable )
 {
-    if (paintingDisabled())
+    if ( paintingDisabled() )
+    {
         return;
+    }
 
-    m_data->setAntialiasingEnabled(enable);
+    m_data->setAntialiasingEnabled( enable );
 }
 
-void GraphicsContext::setImageInterpolationQuality(InterpolationQuality)
+void GraphicsContext::setImageInterpolationQuality( InterpolationQuality )
 {
     notImplemented();
 }

@@ -36,7 +36,8 @@
 
 using namespace WebCore;
 
-namespace WebKit {
+namespace WebKit
+{
 
 static uint64_t generateGeolocationID()
 {
@@ -44,48 +45,55 @@ static uint64_t generateGeolocationID()
     return uniqueGeolocationID++;
 }
 
-GeolocationPermissionRequestManager::GeolocationPermissionRequestManager(WebPage* page)
-    : m_page(page)
+GeolocationPermissionRequestManager::GeolocationPermissionRequestManager( WebPage *page )
+    : m_page( page )
 {
 }
 
-void GeolocationPermissionRequestManager::startRequestForGeolocation(Geolocation* geolocation)
+void GeolocationPermissionRequestManager::startRequestForGeolocation( Geolocation *geolocation )
 {
     uint64_t geolocationID = generateGeolocationID();
 
-    m_geolocationToIDMap.set(geolocation, geolocationID);
-    m_idToGeolocationMap.set(geolocationID, geolocation);
+    m_geolocationToIDMap.set( geolocation, geolocationID );
+    m_idToGeolocationMap.set( geolocationID, geolocation );
 
 
-    Frame* frame = geolocation->frame();
+    Frame *frame = geolocation->frame();
 
-    WebFrame* webFrame = static_cast<WebFrameLoaderClient*>(frame->loader()->client())->webFrame();
-    SecurityOrigin* origin = frame->document()->securityOrigin();
+    WebFrame *webFrame = static_cast<WebFrameLoaderClient *>( frame->loader()->client() )->webFrame();
+    SecurityOrigin *origin = frame->document()->securityOrigin();
 
-    m_page->send(Messages::WebPageProxy::RequestGeolocationPermissionForFrame(geolocationID, webFrame->frameID(), origin->databaseIdentifier()));
+    m_page->send( Messages::WebPageProxy::RequestGeolocationPermissionForFrame( geolocationID, webFrame->frameID(),
+                  origin->databaseIdentifier() ) );
 }
 
-void GeolocationPermissionRequestManager::cancelRequestForGeolocation(Geolocation* geolocation)
+void GeolocationPermissionRequestManager::cancelRequestForGeolocation( Geolocation *geolocation )
 {
-    GeolocationToIDMap::iterator it = m_geolocationToIDMap.find(geolocation);
-    if (it == m_geolocationToIDMap.end())
-        return;
+    GeolocationToIDMap::iterator it = m_geolocationToIDMap.find( geolocation );
 
-    m_geolocationToIDMap.remove(it);
-    m_idToGeolocationMap.remove(it->second);
+    if ( it == m_geolocationToIDMap.end() )
+    {
+        return;
+    }
+
+    m_geolocationToIDMap.remove( it );
+    m_idToGeolocationMap.remove( it->second );
 }
 
-void GeolocationPermissionRequestManager::didReceiveGeolocationPermissionDecision(uint64_t geolocationID, bool allowed)
+void GeolocationPermissionRequestManager::didReceiveGeolocationPermissionDecision( uint64_t geolocationID, bool allowed )
 {
-    IDToGeolocationMap::iterator it = m_idToGeolocationMap.find(geolocationID);
-    if (it == m_idToGeolocationMap.end())
+    IDToGeolocationMap::iterator it = m_idToGeolocationMap.find( geolocationID );
+
+    if ( it == m_idToGeolocationMap.end() )
+    {
         return;
+    }
 
-    Geolocation* geolocation = it->second;
-    geolocation->setIsAllowed(allowed);
+    Geolocation *geolocation = it->second;
+    geolocation->setIsAllowed( allowed );
 
-    m_idToGeolocationMap.remove(it);
-    m_geolocationToIDMap.remove(geolocation);
+    m_idToGeolocationMap.remove( it );
+    m_geolocationToIDMap.remove( geolocation );
 }
 
 } // namespace WebKit

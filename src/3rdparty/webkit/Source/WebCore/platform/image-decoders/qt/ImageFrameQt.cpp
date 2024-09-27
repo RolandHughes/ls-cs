@@ -33,27 +33,30 @@
 #include <QPixmap>
 #include <stdio.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 ImageFrame::ImageFrame()
-    : m_hasAlpha(false) 
+    : m_hasAlpha( false )
     , m_size()
-    , m_status(FrameEmpty)
-    , m_duration(0)
-    , m_disposalMethod(DisposeNotSpecified)
+    , m_status( FrameEmpty )
+    , m_duration( 0 )
+    , m_disposalMethod( DisposeNotSpecified )
 {
 }
 
-ImageFrame& ImageFrame::operator=(const ImageFrame& other)
+ImageFrame &ImageFrame::operator=( const ImageFrame &other )
 {
-    if (this == &other)
+    if ( this == &other )
+    {
         return *this;
+    }
 
-    copyBitmapData(other);
-    setOriginalFrameRect(other.originalFrameRect());
-    setStatus(other.status());
-    setDuration(other.duration());
-    setDisposalMethod(other.disposalMethod());
+    copyBitmapData( other );
+    setOriginalFrameRect( other.originalFrameRect() );
+    setStatus( other.status() );
+    setDuration( other.duration() );
+    setDisposalMethod( other.disposalMethod() );
     return *this;
 }
 
@@ -70,17 +73,21 @@ void ImageFrame::clearPixelData()
 
 void ImageFrame::zeroFillPixelData()
 {
-    if (m_pixmap.isNull() && !m_image.isNull()) {
-        m_pixmap = QPixmap(m_image.width(), m_image.height());
+    if ( m_pixmap.isNull() && !m_image.isNull() )
+    {
+        m_pixmap = QPixmap( m_image.width(), m_image.height() );
         m_image = QImage();
     }
-    m_pixmap.fill(QColor(0, 0, 0, 0));
+
+    m_pixmap.fill( QColor( 0, 0, 0, 0 ) );
 }
 
-bool ImageFrame::copyBitmapData(const ImageFrame& other)
+bool ImageFrame::copyBitmapData( const ImageFrame &other )
 {
-    if (this == &other)
+    if ( this == &other )
+    {
         return true;
+    }
 
     m_image = other.m_image;
     m_pixmap = other.m_pixmap;
@@ -89,30 +96,35 @@ bool ImageFrame::copyBitmapData(const ImageFrame& other)
     return true;
 }
 
-bool ImageFrame::setSize(int newWidth, int newHeight)
+bool ImageFrame::setSize( int newWidth, int newHeight )
 {
     // This function should only be called once, it will leak memory
     // otherwise.
-    ASSERT(width() == 0 && height() == 0);
+    ASSERT( width() == 0 && height() == 0 );
 
-    m_size = IntSize(newWidth, newHeight);
+    m_size = IntSize( newWidth, newHeight );
     m_image = QImage();
-    m_pixmap = QPixmap(newWidth, newHeight);
-    if (m_pixmap.isNull())
+    m_pixmap = QPixmap( newWidth, newHeight );
+
+    if ( m_pixmap.isNull() )
+    {
         return false;
+    }
 
     zeroFillPixelData();
 
     return true;
 }
 
-QPixmap* ImageFrame::asNewNativeImage() const
+QPixmap *ImageFrame::asNewNativeImage() const
 {
-    if (m_pixmap.isNull() && !m_image.isNull()) {
-        m_pixmap = QPixmap::fromImage(m_image);
+    if ( m_pixmap.isNull() && !m_image.isNull() )
+    {
+        m_pixmap = QPixmap::fromImage( m_image );
         m_image = QImage();
     }
-    return new QPixmap(m_pixmap);
+
+    return new QPixmap( m_pixmap );
 }
 
 bool ImageFrame::hasAlpha() const
@@ -120,23 +132,23 @@ bool ImageFrame::hasAlpha() const
     return m_hasAlpha;
 }
 
-void ImageFrame::setHasAlpha(bool alpha)
+void ImageFrame::setHasAlpha( bool alpha )
 {
     m_hasAlpha = alpha;
 }
 
-void ImageFrame::setColorProfile(const ColorProfile& colorProfile)
+void ImageFrame::setColorProfile( const ColorProfile &colorProfile )
 {
     notImplemented();
 }
 
-void ImageFrame::setStatus(FrameStatus status)
+void ImageFrame::setStatus( FrameStatus status )
 {
     m_status = status;
 }
 
 // The image must not have format 8888 pre multiplied...
-void ImageFrame::setPixmap(const QPixmap& pixmap)
+void ImageFrame::setPixmap( const QPixmap &pixmap )
 {
     m_pixmap = pixmap;
     m_image = QImage();

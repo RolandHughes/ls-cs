@@ -39,56 +39,84 @@
 
 using namespace JSC;
 
-namespace WebCore {
-
-JSValue JSSQLTransactionSync::executeSql(ExecState* exec)
+namespace WebCore
 {
-    if (!exec->argumentCount()) {
-        setDOMException(exec, SYNTAX_ERR);
+
+JSValue JSSQLTransactionSync::executeSql( ExecState *exec )
+{
+    if ( !exec->argumentCount() )
+    {
+        setDOMException( exec, SYNTAX_ERR );
         return jsUndefined();
     }
 
-    String sqlStatement = ustringToString(exec->argument(0).toString(exec));
-    if (exec->hadException())
+    String sqlStatement = ustringToString( exec->argument( 0 ).toString( exec ) );
+
+    if ( exec->hadException() )
+    {
         return jsUndefined();
+    }
 
     // Now assemble the list of SQL arguments
     Vector<SQLValue> sqlValues;
-    if (!exec->argument(1).isUndefinedOrNull()) {
-        JSObject* object = exec->argument(1).getObject();
-        if (!object) {
-            setDOMException(exec, TYPE_MISMATCH_ERR);
+
+    if ( !exec->argument( 1 ).isUndefinedOrNull() )
+    {
+        JSObject *object = exec->argument( 1 ).getObject();
+
+        if ( !object )
+        {
+            setDOMException( exec, TYPE_MISMATCH_ERR );
             return jsUndefined();
         }
 
-        JSValue lengthValue = object->get(exec, exec->propertyNames().length);
-        if (exec->hadException())
-            return jsUndefined();
-        unsigned length = lengthValue.toUInt32(exec);
-        if (exec->hadException())
-            return jsUndefined();
+        JSValue lengthValue = object->get( exec, exec->propertyNames().length );
 
-        for (unsigned i = 0 ; i < length; ++i) {
-            JSValue value = object->get(exec, i);
-            if (exec->hadException())
+        if ( exec->hadException() )
+        {
+            return jsUndefined();
+        }
+
+        unsigned length = lengthValue.toUInt32( exec );
+
+        if ( exec->hadException() )
+        {
+            return jsUndefined();
+        }
+
+        for ( unsigned i = 0 ; i < length; ++i )
+        {
+            JSValue value = object->get( exec, i );
+
+            if ( exec->hadException() )
+            {
                 return jsUndefined();
+            }
 
-            if (value.isUndefinedOrNull())
-                sqlValues.append(SQLValue());
-            else if (value.isNumber())
-                sqlValues.append(value.uncheckedGetNumber());
-            else {
+            if ( value.isUndefinedOrNull() )
+            {
+                sqlValues.append( SQLValue() );
+            }
+            else if ( value.isNumber() )
+            {
+                sqlValues.append( value.uncheckedGetNumber() );
+            }
+            else
+            {
                 // Convert the argument to a string and append it
-                sqlValues.append(ustringToString(value.toString(exec)));
-                if (exec->hadException())
+                sqlValues.append( ustringToString( value.toString( exec ) ) );
+
+                if ( exec->hadException() )
+                {
                     return jsUndefined();
+                }
             }
         }
     }
 
     ExceptionCode ec = 0;
-    JSValue result = toJS(exec, globalObject(), WTF::getPtr(m_impl->executeSQL(sqlStatement, sqlValues, ec)));
-    setDOMException(exec, ec);
+    JSValue result = toJS( exec, globalObject(), WTF::getPtr( m_impl->executeSQL( sqlStatement, sqlValues, ec ) ) );
+    setDOMException( exec, ec );
 
     return result;
 }

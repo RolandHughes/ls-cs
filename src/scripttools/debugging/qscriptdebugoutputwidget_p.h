@@ -32,20 +32,20 @@ class QScriptDebugOutputWidgetPrivate;
 
 class QScriptDebugOutputWidget: public QScriptDebugOutputWidgetInterface
 {
-   SCRIPT_T_CS_OBJECT(QScriptDebugOutputWidget)
+    SCRIPT_T_CS_OBJECT( QScriptDebugOutputWidget )
 
- public:
-   QScriptDebugOutputWidget(QWidget *parent = nullptr);
-   ~QScriptDebugOutputWidget();
+public:
+    QScriptDebugOutputWidget( QWidget *parent = nullptr );
+    ~QScriptDebugOutputWidget();
 
-   void message(QtMsgType type, const QString &text, const QString &fileName = QString(), int lineNumber = -1,
-                int columnNumber = -1, const QVariant &data = QVariant());
+    void message( QtMsgType type, const QString &text, const QString &fileName = QString(), int lineNumber = -1,
+                  int columnNumber = -1, const QVariant &data = QVariant() );
 
-   void clear();
+    void clear();
 
- private:
-   Q_DECLARE_PRIVATE(QScriptDebugOutputWidget)
-   Q_DISABLE_COPY(QScriptDebugOutputWidget)
+private:
+    Q_DECLARE_PRIVATE( QScriptDebugOutputWidget )
+    Q_DISABLE_COPY( QScriptDebugOutputWidget )
 };
 
 QT_END_NAMESPACE

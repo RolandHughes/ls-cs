@@ -28,21 +28,24 @@
 #include "ScriptState.h"
 #include <wtf/RefCounted.h>
 
-namespace JSC {
-    class MarkStack;
-    typedef MarkStack SlotVisitor;
+namespace JSC
+{
+class MarkStack;
+typedef MarkStack SlotVisitor;
 }
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class Node;
+class Node;
 
-    class NodeFilterCondition : public RefCounted<NodeFilterCondition> {
-    public:
-        virtual ~NodeFilterCondition() { }
-        virtual short acceptNode(ScriptState*, Node*) const = 0;
-        virtual void visitAggregate(JSC::SlotVisitor&) { }
-    };
+class NodeFilterCondition : public RefCounted<NodeFilterCondition>
+{
+public:
+    virtual ~NodeFilterCondition() { }
+    virtual short acceptNode( ScriptState *, Node * ) const = 0;
+    virtual void visitAggregate( JSC::SlotVisitor & ) { }
+};
 
 } // namespace WebCore
 

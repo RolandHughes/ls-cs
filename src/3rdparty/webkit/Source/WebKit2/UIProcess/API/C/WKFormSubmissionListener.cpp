@@ -33,10 +33,10 @@ using namespace WebKit;
 
 WKTypeID WKFormSubmissionListenerGetTypeID()
 {
-    return toAPI(WebFormSubmissionListenerProxy::APIType);
+    return toAPI( WebFormSubmissionListenerProxy::APIType );
 }
 
-void WKFormSubmissionListenerContinue(WKFormSubmissionListenerRef submissionListener)
+void WKFormSubmissionListenerContinue( WKFormSubmissionListenerRef submissionListener )
 {
-    toImpl(submissionListener)->continueSubmission();
+    toImpl( submissionListener )->continueSubmission();
 }

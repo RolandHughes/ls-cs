@@ -28,24 +28,27 @@
 
 #include "Shader.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class GraphicsContext3D;
 
-class LoopBlinnShader : public Shader {
+class LoopBlinnShader : public Shader
+{
 public:
-    enum Region {
+    enum Region
+    {
         Interior,
         Exterior
     };
 
 protected:
-    LoopBlinnShader(GraphicsContext3D*, unsigned program);
+    LoopBlinnShader( GraphicsContext3D *, unsigned program );
 
     // This assumes the vertices and klm coordinates are stored in the
     // same, currently bound, buffer object, contiguously and at the
     // specified offsets.
-    void use(unsigned vertexOffset, unsigned klmOffset, const AffineTransform&);
+    void use( unsigned vertexOffset, unsigned klmOffset, const AffineTransform & );
 
 private:
     int m_worldViewProjectionLocation;

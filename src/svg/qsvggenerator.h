@@ -36,71 +36,71 @@ class QSvgGeneratorPrivate;
 
 class Q_SVG_EXPORT QSvgGenerator : public QPaintDevice
 {
-   SVG_CS_GADGET(QSvgGenerator)
-   Q_DECLARE_PRIVATE(QSvgGenerator)
+    SVG_CS_GADGET( QSvgGenerator )
+    Q_DECLARE_PRIVATE( QSvgGenerator )
 
-   SVG_CS_PROPERTY_READ(size, size)
-   SVG_CS_PROPERTY_WRITE(size, setSize)
+    SVG_CS_PROPERTY_READ( size, size )
+    SVG_CS_PROPERTY_WRITE( size, setSize )
 
-   SVG_CS_PROPERTY_READ(viewBox, viewBoxF)
-   SVG_CS_PROPERTY_WRITE(viewBox, cs_setViewBox)
+    SVG_CS_PROPERTY_READ( viewBox, viewBoxF )
+    SVG_CS_PROPERTY_WRITE( viewBox, cs_setViewBox )
 
-   SVG_CS_PROPERTY_READ(title, title)
-   SVG_CS_PROPERTY_WRITE(title, setTitle)
+    SVG_CS_PROPERTY_READ( title, title )
+    SVG_CS_PROPERTY_WRITE( title, setTitle )
 
-   SVG_CS_PROPERTY_READ(description, description)
-   SVG_CS_PROPERTY_WRITE(description, setDescription)
+    SVG_CS_PROPERTY_READ( description, description )
+    SVG_CS_PROPERTY_WRITE( description, setDescription )
 
-   SVG_CS_PROPERTY_READ(fileName, fileName)
-   SVG_CS_PROPERTY_WRITE(fileName, setFileName)
+    SVG_CS_PROPERTY_READ( fileName, fileName )
+    SVG_CS_PROPERTY_WRITE( fileName, setFileName )
 
-   SVG_CS_PROPERTY_READ(outputDevice, outputDevice)
-   SVG_CS_PROPERTY_WRITE(outputDevice, setOutputDevice)
+    SVG_CS_PROPERTY_READ( outputDevice, outputDevice )
+    SVG_CS_PROPERTY_WRITE( outputDevice, setOutputDevice )
 
-   SVG_CS_PROPERTY_READ(resolution, resolution)
-   SVG_CS_PROPERTY_WRITE(resolution, setResolution)
+    SVG_CS_PROPERTY_READ( resolution, resolution )
+    SVG_CS_PROPERTY_WRITE( resolution, setResolution )
 
- public:
-   QSvgGenerator();
-   ~QSvgGenerator();
+public:
+    QSvgGenerator();
+    ~QSvgGenerator();
 
-   QString title() const;
-   void setTitle(const QString &title);
+    QString title() const;
+    void setTitle( const QString &title );
 
-   QString description() const;
-   void setDescription(const QString &description);
+    QString description() const;
+    void setDescription( const QString &description );
 
-   QSize size() const;
-   void setSize(const QSize &size);
+    QSize size() const;
+    void setSize( const QSize &size );
 
-   QRect viewBox() const;
-   QRectF viewBoxF() const;
-   void setViewBox(const QRect &viewBox);
-   void setViewBox(const QRectF &viewBox);
+    QRect viewBox() const;
+    QRectF viewBoxF() const;
+    void setViewBox( const QRect &viewBox );
+    void setViewBox( const QRectF &viewBox );
 
-   // wrapper for overloaded method
-   inline void cs_setViewBox(const QRectF &viewBox);
+    // wrapper for overloaded method
+    inline void cs_setViewBox( const QRectF &viewBox );
 
-   QString fileName() const;
-   void setFileName(const QString &fileName);
+    QString fileName() const;
+    void setFileName( const QString &fileName );
 
-   QIODevice *outputDevice() const;
-   void setOutputDevice(QIODevice *outputDevice);
+    QIODevice *outputDevice() const;
+    void setOutputDevice( QIODevice *outputDevice );
 
-   void setResolution(int dpi);
-   int resolution() const;
+    void setResolution( int dpi );
+    int resolution() const;
 
- protected:
-   QPaintEngine *paintEngine() const override;
-   int metric(QPaintDevice::PaintDeviceMetric metric) const override;
+protected:
+    QPaintEngine *paintEngine() const override;
+    int metric( QPaintDevice::PaintDeviceMetric metric ) const override;
 
- private:
-   QScopedPointer<QSvgGeneratorPrivate> d_ptr;
+private:
+    QScopedPointer<QSvgGeneratorPrivate> d_ptr;
 };
 
-void QSvgGenerator::cs_setViewBox(const QRectF &viewBox)
+void QSvgGenerator::cs_setViewBox( const QRectF &viewBox )
 {
-   setViewBox(viewBox);
+    setViewBox( viewBox );
 }
 
 

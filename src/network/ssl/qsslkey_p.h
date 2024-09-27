@@ -34,53 +34,56 @@
 
 class QSslKeyPrivate
 {
- public:
-   enum Cipher {
+public:
+    enum Cipher
+    {
         DesCbc,
         DesEde3Cbc,
         Rc2Cbc
     };
 
-   QSslKeyPrivate()
-      : algorithm(QSsl::Opaque), opaque(nullptr)
-   {
-      clear(false);
-   }
+    QSslKeyPrivate()
+        : algorithm( QSsl::Opaque ), opaque( nullptr )
+    {
+        clear( false );
+    }
 
-   QSslKeyPrivate(const QSslKeyPrivate &) = delete;
-   QSslKeyPrivate &operator=(const QSslKeyPrivate &) = delete;
+    QSslKeyPrivate( const QSslKeyPrivate & ) = delete;
+    QSslKeyPrivate &operator=( const QSslKeyPrivate & ) = delete;
 
-   ~QSslKeyPrivate() {
-      clear();
-   }
+    ~QSslKeyPrivate()
+    {
+        clear();
+    }
 
 #ifdef QT_OPENSSL
-    bool fromEVP_PKEY(EVP_PKEY *pkey);
+    bool fromEVP_PKEY( EVP_PKEY *pkey );
 #endif
 
-   void clear(bool deep = true);
+    void clear( bool deep = true );
 
-   void decodeDer(const QByteArray &der, bool deepClear = true);
-   void decodePem(const QByteArray &pem, const QByteArray &passPhrase, bool deepClear = true);
+    void decodeDer( const QByteArray &der, bool deepClear = true );
+    void decodePem( const QByteArray &pem, const QByteArray &passPhrase, bool deepClear = true );
 
-   QByteArray pemHeader() const;
-   QByteArray pemFooter() const;
-   QByteArray pemFromDer(const QByteArray &der, const QMap<QByteArray, QByteArray> &headers) const;
-   QByteArray derFromPem(const QByteArray &pem, QMap<QByteArray, QByteArray> *headers) const;
+    QByteArray pemHeader() const;
+    QByteArray pemFooter() const;
+    QByteArray pemFromDer( const QByteArray &der, const QMap<QByteArray, QByteArray> &headers ) const;
+    QByteArray derFromPem( const QByteArray &pem, QMap<QByteArray, QByteArray> *headers ) const;
 
-   int length() const;
-   QByteArray toPem(const QByteArray &passPhrase) const;
-   Qt::HANDLE handle() const;
+    int length() const;
+    QByteArray toPem( const QByteArray &passPhrase ) const;
+    Qt::HANDLE handle() const;
 
-   bool isNull;
-   QSsl::KeyType type;
-   QSsl::KeyAlgorithm algorithm;
+    bool isNull;
+    QSsl::KeyType type;
+    QSsl::KeyAlgorithm algorithm;
 
-   static QByteArray decrypt(Cipher cipher, const QByteArray &data, const QByteArray &key, const QByteArray &iv);
-   static QByteArray encrypt(Cipher cipher, const QByteArray &data, const QByteArray &key, const QByteArray &iv);
+    static QByteArray decrypt( Cipher cipher, const QByteArray &data, const QByteArray &key, const QByteArray &iv );
+    static QByteArray encrypt( Cipher cipher, const QByteArray &data, const QByteArray &key, const QByteArray &iv );
 
 #ifdef QT_OPENSSL
-    union {
+    union
+    {
         EVP_PKEY *opaque;
         RSA *rsa;
         DSA *dsa;

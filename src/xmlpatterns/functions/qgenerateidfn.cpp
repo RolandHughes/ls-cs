@@ -27,16 +27,17 @@
 
 using namespace QPatternist;
 
-Item GenerateIDFN::evaluateSingleton(const DynamicContext::Ptr &context) const
+Item GenerateIDFN::evaluateSingleton( const DynamicContext::Ptr &context ) const
 {
-   const QXmlNodeModelIndex &node = m_operands.first()->evaluateSingleton(context).asNode();
+    const QXmlNodeModelIndex &node = m_operands.first()->evaluateSingleton( context ).asNode();
 
-   if (node.isNull()) {
-      return AtomicString::fromValue(QString());
-   }
+    if ( node.isNull() )
+    {
+        return AtomicString::fromValue( QString() );
+    }
 
-   return AtomicString::fromValue(QLatin1Char('T')
-                                  + QString::number(qptrdiff(node.model()))
-                                  + QString::number(qptrdiff(node.internalPointer()))
-                                  + QString::number(node.additionalData()));
+    return AtomicString::fromValue( QLatin1Char( 'T' )
+                                    + QString::number( qptrdiff( node.model() ) )
+                                    + QString::number( qptrdiff( node.internalPointer() ) )
+                                    + QString::number( node.additionalData() ) );
 }

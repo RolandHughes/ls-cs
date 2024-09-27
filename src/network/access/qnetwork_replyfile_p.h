@@ -36,33 +36,33 @@ class QNetworkReplyFileImplPrivate;
 
 class QNetworkReplyFileImpl: public QNetworkReply
 {
-   NET_CS_OBJECT(QNetworkReplyFileImpl)
+    NET_CS_OBJECT( QNetworkReplyFileImpl )
 
- public:
-   QNetworkReplyFileImpl(QObject *parent, const QNetworkRequest &req, const QNetworkAccessManager::Operation op);
-   ~QNetworkReplyFileImpl();
+public:
+    QNetworkReplyFileImpl( QObject *parent, const QNetworkRequest &req, const QNetworkAccessManager::Operation op );
+    ~QNetworkReplyFileImpl();
 
-   void abort() override;
-   void close() override;
+    void abort() override;
+    void close() override;
 
-   qint64 bytesAvailable() const override;
-   bool isSequential () const override;
-   qint64 size() const override;
+    qint64 bytesAvailable() const override;
+    bool isSequential () const override;
+    qint64 size() const override;
 
-   qint64 readData(char *data, qint64 maxlen) override;
+    qint64 readData( char *data, qint64 maxlen ) override;
 
-   Q_DECLARE_PRIVATE(QNetworkReplyFileImpl)
+    Q_DECLARE_PRIVATE( QNetworkReplyFileImpl )
 };
 
 class QNetworkReplyFileImplPrivate: public QNetworkReplyPrivate
 {
- public:
-   QNetworkReplyFileImplPrivate();
+public:
+    QNetworkReplyFileImplPrivate();
 
-   QFile realFile;
-   qint64 realFileSize;
+    QFile realFile;
+    qint64 realFileSize;
 
-   Q_DECLARE_PUBLIC(QNetworkReplyFileImpl)
+    Q_DECLARE_PUBLIC( QNetworkReplyFileImpl )
 };
 
 #endif

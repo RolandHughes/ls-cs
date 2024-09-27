@@ -35,20 +35,21 @@ extern "C" {
 
 WK_EXPORT WKTypeID WKContextMenuItemGetTypeID();
 
-WK_EXPORT WKContextMenuItemRef WKContextMenuItemCreateAsAction(WKContextMenuItemTag, WKStringRef title, bool enabled);
-WK_EXPORT WKContextMenuItemRef WKContextMenuItemCreateAsCheckableAction(WKContextMenuItemTag, WKStringRef title, bool enabled, bool checked);
-WK_EXPORT WKContextMenuItemRef WKContextMenuItemCreateAsSubmenu(WKStringRef title, bool enabled, WKArrayRef submenuItems);
+WK_EXPORT WKContextMenuItemRef WKContextMenuItemCreateAsAction( WKContextMenuItemTag, WKStringRef title, bool enabled );
+WK_EXPORT WKContextMenuItemRef WKContextMenuItemCreateAsCheckableAction( WKContextMenuItemTag, WKStringRef title, bool enabled,
+        bool checked );
+WK_EXPORT WKContextMenuItemRef WKContextMenuItemCreateAsSubmenu( WKStringRef title, bool enabled, WKArrayRef submenuItems );
 WK_EXPORT WKContextMenuItemRef WKContextMenuItemSeparatorItem();
 
-WK_EXPORT WKContextMenuItemTag WKContextMenuItemGetTag(WKContextMenuItemRef);
-WK_EXPORT WKContextMenuItemType WKContextMenuItemGetType(WKContextMenuItemRef);
-WK_EXPORT WKStringRef WKContextMenuItemCopyTitle(WKContextMenuItemRef);
-WK_EXPORT bool WKContextMenuItemGetEnabled(WKContextMenuItemRef);
-WK_EXPORT bool WKContextMenuItemGetChecked(WKContextMenuItemRef);
-WK_EXPORT WKArrayRef WKContextMenuCopySubmenuItems(WKContextMenuItemRef);
+WK_EXPORT WKContextMenuItemTag WKContextMenuItemGetTag( WKContextMenuItemRef );
+WK_EXPORT WKContextMenuItemType WKContextMenuItemGetType( WKContextMenuItemRef );
+WK_EXPORT WKStringRef WKContextMenuItemCopyTitle( WKContextMenuItemRef );
+WK_EXPORT bool WKContextMenuItemGetEnabled( WKContextMenuItemRef );
+WK_EXPORT bool WKContextMenuItemGetChecked( WKContextMenuItemRef );
+WK_EXPORT WKArrayRef WKContextMenuCopySubmenuItems( WKContextMenuItemRef );
 
-WK_EXPORT WKTypeRef WKContextMenuItemGetUserData(WKContextMenuItemRef);
-WK_EXPORT void WKContextMenuItemSetUserData(WKContextMenuItemRef, WKTypeRef);
+WK_EXPORT WKTypeRef WKContextMenuItemGetUserData( WKContextMenuItemRef );
+WK_EXPORT void WKContextMenuItemSetUserData( WKContextMenuItemRef, WKTypeRef );
 
 #ifdef __cplusplus
 }

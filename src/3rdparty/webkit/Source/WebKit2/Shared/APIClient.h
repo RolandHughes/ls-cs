@@ -26,21 +26,27 @@
 #ifndef APIClient_h
 #define APIClient_h
 
-namespace WebKit {
+namespace WebKit
+{
 
-template<typename T> class APIClient {
+template<typename T> class APIClient
+{
 public:
     APIClient()
     {
-        initialize(0);
+        initialize( 0 );
     }
 
-    void initialize(const T* client)
+    void initialize( const T *client )
     {
-        if (client && !client->version)
+        if ( client && !client->version )
+        {
             m_client = *client;
+        }
         else
-            memset(&m_client, 0, sizeof(m_client));
+        {
+            memset( &m_client, 0, sizeof( m_client ) );
+        }
     }
 
 protected:

@@ -27,30 +27,30 @@
 
 using namespace QPatternist;
 
-CollationChecker::CollationChecker(const Expression::Ptr &source) : SingleContainer(source)
+CollationChecker::CollationChecker( const Expression::Ptr &source ) : SingleContainer( source )
 {
 }
 
-Item CollationChecker::evaluateSingleton(const DynamicContext::Ptr &context) const
+Item CollationChecker::evaluateSingleton( const DynamicContext::Ptr &context ) const
 {
-   const Item val(m_operand->evaluateSingleton(context));
-   XPathHelper::checkCollationSupport<ReportContext::FOCH0002>(val.stringValue(), context, this);
-   return val;
+    const Item val( m_operand->evaluateSingleton( context ) );
+    XPathHelper::checkCollationSupport<ReportContext::FOCH0002>( val.stringValue(), context, this );
+    return val;
 }
 
 SequenceType::List CollationChecker::expectedOperandTypes() const
 {
-   SequenceType::List list;
-   list.append(CommonSequenceTypes::ExactlyOneString);
-   return list;
+    SequenceType::List list;
+    list.append( CommonSequenceTypes::ExactlyOneString );
+    return list;
 }
 
 SequenceType::Ptr CollationChecker::staticType() const
 {
-   return m_operand->staticType();
+    return m_operand->staticType();
 }
 
-ExpressionVisitorResult::Ptr CollationChecker::accept(const ExpressionVisitor::Ptr &visitor) const
+ExpressionVisitorResult::Ptr CollationChecker::accept( const ExpressionVisitor::Ptr &visitor ) const
 {
-   return visitor->visit(this);
+    return visitor->visit( this );
 }

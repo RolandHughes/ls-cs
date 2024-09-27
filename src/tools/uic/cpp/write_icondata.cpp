@@ -29,164 +29,187 @@
 
 #include <qtextstream.h>
 
-namespace CPP {
-
-static QByteArray transformImageData(QString data)
+namespace CPP
 {
-   int baSize = data.length() / 2;
-   uchar *ba = new uchar[baSize];
 
-   for (int i = 0; i < baSize; ++i) {
-      char h = data[2 * (i)].toLatin1();
-      char l = data[2 * (i) + 1].toLatin1();
-      uchar r = 0;
+static QByteArray transformImageData( QString data )
+{
+    int baSize = data.length() / 2;
+    uchar *ba = new uchar[baSize];
 
-      if (h <= '9') {
-         r += h - '0';
+    for ( int i = 0; i < baSize; ++i )
+    {
+        char h = data[2 * ( i )].toLatin1();
+        char l = data[2 * ( i ) + 1].toLatin1();
+        uchar r = 0;
 
-      } else {
-         r += h - 'a' + 10;
-      }
+        if ( h <= '9' )
+        {
+            r += h - '0';
 
-      r = r << 4;
+        }
+        else
+        {
+            r += h - 'a' + 10;
+        }
 
-      if (l <= '9') {
-         r += l - '0';
-      } else {
-         r += l - 'a' + 10;
-      }
+        r = r << 4;
 
-      ba[i] = r;
-   }
+        if ( l <= '9' )
+        {
+            r += l - '0';
+        }
+        else
+        {
+            r += l - 'a' + 10;
+        }
 
-   QByteArray retval(reinterpret_cast<const char *>(ba), baSize);
-   delete [] ba;
+        ba[i] = r;
+    }
 
-   return retval;
+    QByteArray retval( reinterpret_cast<const char *>( ba ), baSize );
+    delete [] ba;
+
+    return retval;
 }
 
-static QByteArray unzipXPM(QString data, ulong &length)
+static QByteArray unzipXPM( QString data, ulong &length )
 {
 #ifndef QT_NO_COMPRESS
-   const int lengthOffset = 4;
-   QByteArray ba(lengthOffset, ' ');
+    const int lengthOffset = 4;
+    QByteArray ba( lengthOffset, ' ' );
 
-   // qUncompress() expects the first 4 bytes to be the expected length of the
-   // uncompressed data
-   ba[0] = (length & 0xff000000) >> 24;
-   ba[1] = (length & 0x00ff0000) >> 16;
-   ba[2] = (length & 0x0000ff00) >> 8;
-   ba[3] = (length & 0x000000ff);
-   ba.append(transformImageData(data));
+    // qUncompress() expects the first 4 bytes to be the expected length of the
+    // uncompressed data
+    ba[0] = ( length & 0xff000000 ) >> 24;
+    ba[1] = ( length & 0x00ff0000 ) >> 16;
+    ba[2] = ( length & 0x0000ff00 ) >> 8;
+    ba[3] = ( length & 0x000000ff );
+    ba.append( transformImageData( data ) );
 
-   QByteArray baunzip = qUncompress(ba);
-   return baunzip;
+    QByteArray baunzip = qUncompress( ba );
+    return baunzip;
 
 #else
-   (void) data;
-   (void) length;
+    ( void ) data;
+    ( void ) length;
 
-   return QByteArray();
+    return QByteArray();
 #endif
 
 }
 
-WriteIconData::WriteIconData(Uic *uic)
-   : driver(uic->driver()), output(uic->output()), option(uic->option())
+WriteIconData::WriteIconData( Uic *uic )
+    : driver( uic->driver() ), output( uic->output() ), option( uic->option() )
 {
 }
 
-void WriteIconData::acceptUI(DomUI *node)
+void WriteIconData::acceptUI( DomUI *node )
 {
-   TreeWalker::acceptUI(node);
+    TreeWalker::acceptUI( node );
 }
 
-void WriteIconData::acceptImages(DomImages *images)
+void WriteIconData::acceptImages( DomImages *images )
 {
-   TreeWalker::acceptImages(images);
+    TreeWalker::acceptImages( images );
 }
 
-void WriteIconData::acceptImage(DomImage *image)
+void WriteIconData::acceptImage( DomImage *image )
 {
-   // Limit line length when writing code.
-   writeImage(output, option.indent, true, image);
+    // Limit line length when writing code.
+    writeImage( output, option.indent, true, image );
 }
 
-void WriteIconData::writeImage(QTextStream &output, const QString &indent,
-   bool limitXPM_LineLength, const DomImage *image)
+void WriteIconData::writeImage( QTextStream &output, const QString &indent,
+                                bool limitXPM_LineLength, const DomImage *image )
 {
-   QString img  = image->attributeName() + "_data";
-   QString data = image->elementData()->text();
-   QString fmt  = image->elementData()->attributeFormat();
+    QString img  = image->attributeName() + "_data";
+    QString data = image->elementData()->text();
+    QString fmt  = image->elementData()->attributeFormat();
 
-   int size = image->elementData()->attributeLength();
+    int size = image->elementData()->attributeLength();
 
-   if (fmt == "XPM.GZ") {
-      ulong length = size;
+    if ( fmt == "XPM.GZ" )
+    {
+        ulong length = size;
 
-      QByteArray baunzip = unzipXPM(data, length);
-      length = baunzip.size();
+        QByteArray baunzip = unzipXPM( data, length );
+        length = baunzip.size();
 
-      // shouldn't we test the initial 'length' against the
-      // resulting 'length' to catch corrupt UIC files?
+        // shouldn't we test the initial 'length' against the
+        // resulting 'length' to catch corrupt UIC files?
 
-      int a        = 0;
-      int column   = 0;
-      bool inQuote = false;
+        int a        = 0;
+        int column   = 0;
+        bool inQuote = false;
 
-      output << indent << "/* XPM */\n"
-             << indent << "static const char* const " << img << "[] = { \n";
+        output << indent << "/* XPM */\n"
+               << indent << "static const char* const " << img << "[] = { \n";
 
-      while (baunzip[a] != '\"') {
-         a++;
-      }
+        while ( baunzip[a] != '\"' )
+        {
+            a++;
+        }
 
-      for (; a < (int) length; a++) {
-         output << baunzip[a];
+        for ( ; a < ( int ) length; a++ )
+        {
+            output << baunzip[a];
 
-         if (baunzip[a] == '\n') {
-            column = 0;
-         } else if (baunzip[a] == '"') {
-            inQuote = ! inQuote;
-         }
+            if ( baunzip[a] == '\n' )
+            {
+                column = 0;
+            }
+            else if ( baunzip[a] == '"' )
+            {
+                inQuote = ! inQuote;
+            }
 
-         column++;
-         if (limitXPM_LineLength && column >= 512 && inQuote) {
-            output << "\"\n\""; // be nice with MSVC & Co.
-            column = 1;
-         }
-      }
+            column++;
 
-      if (! baunzip.trimmed ().endsWith ("};")) {
-         output << "};";
-      }
+            if ( limitXPM_LineLength && column >= 512 && inQuote )
+            {
+                output << "\"\n\""; // be nice with MSVC & Co.
+                column = 1;
+            }
+        }
 
-      output << "\n\n";
+        if ( ! baunzip.trimmed ().endsWith ( "};" ) )
+        {
+            output << "};";
+        }
 
-   } else {
-      output << indent << "static const unsigned char " << img << "[] = { \n";
-      output << indent;
-      int a ;
+        output << "\n\n";
 
-      for (a = 0; a < (int) (data.length() / 2) - 1; a++) {
-         output << "0x" << QString(data[2 * a]) << QString(data[2 * a + 1]) << ',';
+    }
+    else
+    {
+        output << indent << "static const unsigned char " << img << "[] = { \n";
+        output << indent;
+        int a ;
 
-         if (a % 12 == 11) {
-            output << '\n' << indent;
-         } else {
-            output << ' ';
-         }
-      }
+        for ( a = 0; a < ( int ) ( data.length() / 2 ) - 1; a++ )
+        {
+            output << "0x" << QString( data[2 * a] ) << QString( data[2 * a + 1] ) << ',';
 
-      output << "0x" << QString(data[2 * a]) << QString(data[2 * a + 1]) << '\n';
-      output << "};\n\n";
-   }
+            if ( a % 12 == 11 )
+            {
+                output << '\n' << indent;
+            }
+            else
+            {
+                output << ' ';
+            }
+        }
+
+        output << "0x" << QString( data[2 * a] ) << QString( data[2 * a + 1] ) << '\n';
+        output << "};\n\n";
+    }
 }
 
-void WriteIconData::writeImage(QIODevice &output, DomImage *image)
+void WriteIconData::writeImage( QIODevice &output, DomImage *image )
 {
-   const QByteArray array = transformImageData(image->elementData()->text());
-   output.write(array.constData(), array.size());
+    const QByteArray array = transformImageData( image->elementData()->text() );
+    output.write( array.constData(), array.size() );
 }
 
 }

@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef WebLayer_h
@@ -30,29 +30,31 @@
 
 #include "WKCACFLayer.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class GraphicsLayer;
 
-class WebLayer : public WKCACFLayer {
+class WebLayer : public WKCACFLayer
+{
 public:
-    static PassRefPtr<WKCACFLayer> create(LayerType layerType, GraphicsLayer* owner)
+    static PassRefPtr<WKCACFLayer> create( LayerType layerType, GraphicsLayer *owner )
     {
-        return adoptRef(new WebLayer(layerType, owner));
+        return adoptRef( new WebLayer( layerType, owner ) );
     }
 
-    virtual void drawInContext(PlatformGraphicsContext*);
+    virtual void drawInContext( PlatformGraphicsContext * );
 
 protected:
-    WebLayer(LayerType layerType, GraphicsLayer* owner)
-     : WKCACFLayer(layerType)
-     , m_owner(owner)
+    WebLayer( LayerType layerType, GraphicsLayer *owner )
+        : WKCACFLayer( layerType )
+        , m_owner( owner )
     {
     }
 
-    virtual void internalSetNeedsDisplay(const CGRect* dirtyRect);
+    virtual void internalSetNeedsDisplay( const CGRect *dirtyRect );
 
-    GraphicsLayer* m_owner;
+    GraphicsLayer *m_owner;
 };
 
 }

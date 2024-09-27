@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -31,8 +31,9 @@
 #include "RenderStyle.h"
 #include "WebKitAnimation.h"
 
-namespace WebCore {
-    
+namespace WebCore
+{
+
 WebKitAnimationList::WebKitAnimationList()
 {
 }
@@ -46,35 +47,44 @@ unsigned WebKitAnimationList::length() const
     return m_animations.size();
 }
 
-WebKitAnimation* WebKitAnimationList::item(unsigned index)
+WebKitAnimation *WebKitAnimationList::item( unsigned index )
 {
-    if (index < m_animations.size())
+    if ( index < m_animations.size() )
+    {
         return m_animations[index].get();
+    }
+
     return 0;
 }
 
-void WebKitAnimationList::deleteAnimation(unsigned index)
+void WebKitAnimationList::deleteAnimation( unsigned index )
 {
-    if (index >= m_animations.size())
+    if ( index >= m_animations.size() )
+    {
         return;
+    }
 
-    m_animations.remove(index);
+    m_animations.remove( index );
 }
 
-void WebKitAnimationList::append(RefPtr<WebKitAnimation> animation)
+void WebKitAnimationList::append( RefPtr<WebKitAnimation> animation )
 {
-    m_animations.append(animation);
+    m_animations.append( animation );
 }
 
-unsigned WebKitAnimationList::insertAnimation(RefPtr<WebKitAnimation> animation, unsigned index)
+unsigned WebKitAnimationList::insertAnimation( RefPtr<WebKitAnimation> animation, unsigned index )
 {
-    if (!animation)
+    if ( !animation )
+    {
         return 0;
+    }
 
-    if (index > m_animations.size())
+    if ( index > m_animations.size() )
+    {
         return 0;
+    }
 
-    m_animations.insert(index, animation);
+    m_animations.insert( index, animation );
     return index;
 }
 

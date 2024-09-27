@@ -28,29 +28,35 @@
 #include <runtime/JSObjectWithGlobalObject.h>
 #include <runtime/ObjectPrototype.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class FileWriter;
 
-class JSFileWriter : public JSDOMWrapper {
+class JSFileWriter : public JSDOMWrapper
+{
     typedef JSDOMWrapper Base;
 public:
-    JSFileWriter(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<FileWriter>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
-    virtual void put(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::JSValue, JSC::PutPropertySlot&);
+    JSFileWriter( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<FileWriter> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
+    virtual void put( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::JSValue, JSC::PutPropertySlot & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    virtual void visitChildren(JSC::SlotVisitor&);
+    virtual void visitChildren( JSC::SlotVisitor & );
 
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
-    FileWriter* impl() const { return m_impl.get(); }
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
+    FileWriter *impl() const
+    {
+        return m_impl.get();
+    }
 
 private:
     RefPtr<FileWriter> m_impl;
@@ -58,71 +64,75 @@ protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::OverridesVisitChildren | Base::StructureFlags;
 };
 
-class JSFileWriterOwner : public JSC::WeakHandleOwner {
-    virtual bool isReachableFromOpaqueRoots(JSC::Handle<JSC::Unknown>, void* context, JSC::SlotVisitor&);
-    virtual void finalize(JSC::Handle<JSC::Unknown>, void* context);
+class JSFileWriterOwner : public JSC::WeakHandleOwner
+{
+    virtual bool isReachableFromOpaqueRoots( JSC::Handle<JSC::Unknown>, void *context, JSC::SlotVisitor & );
+    virtual void finalize( JSC::Handle<JSC::Unknown>, void *context );
 };
 
-inline JSC::WeakHandleOwner* wrapperOwner(DOMWrapperWorld*, FileWriter*)
+inline JSC::WeakHandleOwner *wrapperOwner( DOMWrapperWorld *, FileWriter * )
 {
-    DEFINE_STATIC_LOCAL(JSFileWriterOwner, jsFileWriterOwner, ());
+    DEFINE_STATIC_LOCAL( JSFileWriterOwner, jsFileWriterOwner, () );
     return &jsFileWriterOwner;
 }
 
-inline void* wrapperContext(DOMWrapperWorld* world, FileWriter*)
+inline void *wrapperContext( DOMWrapperWorld *world, FileWriter * )
 {
     return world;
 }
 
-JSC::JSValue toJS(JSC::ExecState*, JSDOMGlobalObject*, FileWriter*);
-FileWriter* toFileWriter(JSC::JSValue);
+JSC::JSValue toJS( JSC::ExecState *, JSDOMGlobalObject *, FileWriter * );
+FileWriter *toFileWriter( JSC::JSValue );
 
-class JSFileWriterPrototype : public JSC::JSObjectWithGlobalObject {
+class JSFileWriterPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSFileWriterPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSFileWriterPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                           JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::OverridesVisitChildren | Base::StructureFlags;
 };
 
 // Functions
 
-JSC::EncodedJSValue JSC_HOST_CALL jsFileWriterPrototypeFunctionWrite(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsFileWriterPrototypeFunctionSeek(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsFileWriterPrototypeFunctionTruncate(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsFileWriterPrototypeFunctionAbort(JSC::ExecState*);
+JSC::EncodedJSValue JSC_HOST_CALL jsFileWriterPrototypeFunctionWrite( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsFileWriterPrototypeFunctionSeek( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsFileWriterPrototypeFunctionTruncate( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsFileWriterPrototypeFunctionAbort( JSC::ExecState * );
 // Attributes
 
-JSC::JSValue jsFileWriterReadyState(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsFileWriterError(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsFileWriterPosition(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsFileWriterLength(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsFileWriterOnwritestart(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSFileWriterOnwritestart(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsFileWriterOnprogress(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSFileWriterOnprogress(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsFileWriterOnwrite(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSFileWriterOnwrite(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsFileWriterOnabort(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSFileWriterOnabort(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsFileWriterOnerror(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSFileWriterOnerror(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsFileWriterOnwriteend(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSFileWriterOnwriteend(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsFileWriterConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsFileWriterReadyState( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsFileWriterError( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsFileWriterPosition( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsFileWriterLength( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsFileWriterOnwritestart( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSFileWriterOnwritestart( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsFileWriterOnprogress( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSFileWriterOnprogress( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsFileWriterOnwrite( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSFileWriterOnwrite( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsFileWriterOnabort( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSFileWriterOnabort( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsFileWriterOnerror( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSFileWriterOnerror( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsFileWriterOnwriteend( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSFileWriterOnwriteend( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsFileWriterConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 // Constants
 
-JSC::JSValue jsFileWriterINIT(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsFileWriterWRITING(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsFileWriterDONE(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsFileWriterINIT( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsFileWriterWRITING( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsFileWriterDONE( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

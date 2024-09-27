@@ -31,13 +31,15 @@
 #include "PlatformString.h"
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class IDBDatabaseCallbacks : public RefCounted<IDBDatabaseCallbacks> {
+class IDBDatabaseCallbacks : public RefCounted<IDBDatabaseCallbacks>
+{
 public:
     virtual ~IDBDatabaseCallbacks() { }
 
-    virtual void onVersionChange(const String& version) = 0;
+    virtual void onVersionChange( const String &version ) = 0;
 };
 
 } // namespace WebCore

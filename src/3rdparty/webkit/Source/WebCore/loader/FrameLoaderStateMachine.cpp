@@ -6,13 +6,13 @@
  * are met:
  *
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Google, Inc. nor the names of
  *     its contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
+ *     from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -31,30 +31,31 @@
 
 #include <wtf/Assertions.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-    
-FrameLoaderStateMachine::FrameLoaderStateMachine() 
-    : m_state(Uninitialized)
-{ 
+
+FrameLoaderStateMachine::FrameLoaderStateMachine()
+    : m_state( Uninitialized )
+{
 }
-    
-bool FrameLoaderStateMachine::committingFirstRealLoad() const 
+
+bool FrameLoaderStateMachine::committingFirstRealLoad() const
 {
     return m_state == DisplayingInitialEmptyDocument;
 }
 
-bool FrameLoaderStateMachine::committedFirstRealDocumentLoad() const 
+bool FrameLoaderStateMachine::committedFirstRealDocumentLoad() const
 {
     return m_state >= DisplayingInitialEmptyDocumentPostCommit;
 }
 
-bool FrameLoaderStateMachine::creatingInitialEmptyDocument() const 
+bool FrameLoaderStateMachine::creatingInitialEmptyDocument() const
 {
     return m_state == CreatingInitialEmptyDocument;
 }
 
-bool FrameLoaderStateMachine::isDisplayingInitialEmptyDocument() const 
+bool FrameLoaderStateMachine::isDisplayingInitialEmptyDocument() const
 {
     return m_state == DisplayingInitialEmptyDocument || m_state == DisplayingInitialEmptyDocumentPostCommit;
 }
@@ -64,9 +65,9 @@ bool FrameLoaderStateMachine::firstLayoutDone() const
     return m_state == FirstLayoutDone;
 }
 
-void FrameLoaderStateMachine::advanceTo(State state)
+void FrameLoaderStateMachine::advanceTo( State state )
 {
-    ASSERT(State(m_state + 1) == state || (firstLayoutDone() && state == CommittedFirstRealLoad));
+    ASSERT( State( m_state + 1 ) == state || ( firstLayoutDone() && state == CommittedFirstRealLoad ) );
     m_state = state;
 }
 

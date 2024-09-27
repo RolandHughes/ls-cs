@@ -31,29 +31,46 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class StyleBackgroundData : public RefCounted<StyleBackgroundData> {
+class StyleBackgroundData : public RefCounted<StyleBackgroundData>
+{
 public:
-    static PassRefPtr<StyleBackgroundData> create() { return adoptRef(new StyleBackgroundData); }
-    PassRefPtr<StyleBackgroundData> copy() const { return adoptRef(new StyleBackgroundData(*this)); }
+    static PassRefPtr<StyleBackgroundData> create()
+    {
+        return adoptRef( new StyleBackgroundData );
+    }
+    PassRefPtr<StyleBackgroundData> copy() const
+    {
+        return adoptRef( new StyleBackgroundData( *this ) );
+    }
     ~StyleBackgroundData() { }
 
-    bool operator==(const StyleBackgroundData& o) const;
-    bool operator!=(const StyleBackgroundData& o) const
+    bool operator==( const StyleBackgroundData &o ) const;
+    bool operator!=( const StyleBackgroundData &o ) const
     {
-        return !(*this == o);
+        return !( *this == o );
     }
 
-    const FillLayer& background() const { return m_background; }
-    const Color& color() const { return m_color; }
-    const OutlineValue& outline() const { return m_outline; }
+    const FillLayer &background() const
+    {
+        return m_background;
+    }
+    const Color &color() const
+    {
+        return m_color;
+    }
+    const OutlineValue &outline() const
+    {
+        return m_outline;
+    }
 
 private:
     friend class RenderStyle;
 
     StyleBackgroundData();
-    StyleBackgroundData(const StyleBackgroundData&); 
+    StyleBackgroundData( const StyleBackgroundData & );
 
     FillLayer m_background;
     Color m_color;
