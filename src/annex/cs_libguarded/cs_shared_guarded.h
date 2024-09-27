@@ -2,12 +2,12 @@
 *
 * Copyright (c) 2016-2024 Ansel Sermersheim
 *
-* This file is part of CsLibGuarded.
+* This file is part of LsCsLibGuarded.
 *
-* CsLibGuarded is free software, released under the BSD 2-Clause license.
+* LsCsLibGuarded is free software, released under the BSD 2-Clause license.
 * For license details refer to LICENSE provided with this project.
 *
-* CsLibGuarded is distributed in the hope that it will be useful,
+* LsCsLibGuarded is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 *
@@ -26,7 +26,7 @@ namespace libguarded
 {
 
 /**
-   \headerfile cs_shared_guarded.h <CsLibGuarded/cs_shared_guarded.h>
+   \headerfile cs_shared_guarded.h <LsCsLibGuarded/cs_shared_guarded.h>
 
    This templated class wraps an object and allows only one thread at
    a time to modify the protected object.

@@ -337,13 +337,13 @@ message("")
 message("Configuring CMake for lscs\n\n")
 message("-- Searching for required packages\n")
 
-find_package(CsLibGuarded QUIET)
+find_package(LsCsLibGuarded QUIET)
 
-if (CsLibGuarded_FOUND)
-   message(STATUS "CsLibGuarded was found \n"
-      " * Path is ${CsLibGuarded_INCLUDES}\n")
+if (LsCsLibGuarded_FOUND)
+   message(STATUS "LsCsLibGuarded was found \n"
+      " * Path is ${LsCsLibGuarded_INCLUDES}\n")
 else()
-   message(STATUS "CsLibGuarded was not found, bundled library will be used\n")
+   message(STATUS "LsCsLibGuarded was not found, bundled library will be used\n")
 endif()
 
 find_package(LsCsString QUIET)

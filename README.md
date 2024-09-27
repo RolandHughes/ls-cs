@@ -35,7 +35,7 @@ pain of trying to flip it to BSD. Oddly enough it included these libraries
 that were BSD.
 
  * CsCrypto
- * CsLibGuarded
+ * LsCsLibGuarded
  * CsPaint
  * CsPointer
  * CsSignal

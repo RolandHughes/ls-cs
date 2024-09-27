@@ -72,16 +72,16 @@ endforeach()
 
 # export variable
 set(LSCS_INSTALL_MODE     "@LSCS_INSTALL_MODE@")
-set(CsLibGuarded_Deploy "@CsLibGuarded_FOUND@")
+set(LsCsLibGuarded_Deploy "@LsCsLibGuarded_FOUND@")
 set(LsCsSignal_Deploy     "@LsCsSignal_FOUND@")
 set(LsCsString_Deploy     "@LsCsString_FOUND@")
 
 # test system dependencies in downstream projects
 if ("${LSCS_INSTALL_MODE}" STREQUAL "Package")
 
-   if (NOT TARGET CsLibGuarded::CsLibGuarded)
+   if (NOT TARGET LsCsLibGuarded::LsCsLibGuarded)
       message("CMake Issue: LsCs was built in Package Mode\n"
-         "  Target library CsLibGuarded::CsLibGuarded was not found. Perhaps a find_package() call is missing?\n\n")
+         "  Target library LsCsLibGuarded::LsCsLibGuarded was not found. Perhaps a find_package() call is missing?\n\n")
 
       message(FATAL_ERROR "Aborting CMake...\n")
    endif()
@@ -103,11 +103,11 @@ endif()
 
 if ("${LSCS_INSTALL_MODE}" STREQUAL "Deploy")
 
-   if (TARGET CsLibGuarded::CsLibGuarded)
+   if (TARGET LsCsLibGuarded::LsCsLibGuarded)
       # CS was built with the system library, downstream project must use the version in CS
 
       message("CMake Issue: LsCs was built in Deploy Mode\n"
-         "  Target library CsLibGuarded::CsLibGuarded was found, system library in CS must be used.\n\n")
+         "  Target library LsCsLibGuarded::LsCsLibGuarded was found, system library in CS must be used.\n\n")
 
       message(FATAL_ERROR "Aborting CMake...\n")
    endif()

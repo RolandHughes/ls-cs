@@ -68,26 +68,26 @@ include(thread/thread.cmake)
 include(tools/tools.cmake)
 include(xml/xml.cmake)
 
-if (CsLibGuarded_FOUND)
+if (LsCsLibGuarded_FOUND)
    # use system headers
 
    if (CS_INSTALL_MODE STREQUAL "Package")
       # package mode, do not copy install headers
       target_link_libraries(LsCsCore
          PUBLIC
-         CsLibGuarded::CsLibGuarded
+         LsCsLibGuarded::LsCsLibGuarded
       )
 
    elseif (CS_INSTALL_MODE STREQUAL "Deploy")
       target_link_libraries(LsCsCore
          PUBLIC
-         $<BUILD_INTERFACE:CsLibGuarded::CsLibGuarded>
+         $<BUILD_INTERFACE:LsCsLibGuarded::LsCsLibGuarded>
       )
 
       list(APPEND CORE_INCLUDES
-         ${CsLibGuarded_INCLUDE_DIR}/cs_rcu_guarded.h
-         ${CsLibGuarded_INCLUDE_DIR}/cs_rcu_list.h
-         ${CsLibGuarded_INCLUDE_DIR}/cs_shared_guarded.h
+         ${LsCsLibGuarded_INCLUDE_DIR}/cs_rcu_guarded.h
+         ${LsCsLibGuarded_INCLUDE_DIR}/cs_rcu_list.h
+         ${LsCsLibGuarded_INCLUDE_DIR}/cs_shared_guarded.h
       )
    endif()
 
