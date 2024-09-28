@@ -1,3 +1,12 @@
+#!/bin/bash
+#
+# LsCs-Deb-build-dependencies.sh
+#
+if [ `whoami` != root ]; then
+    echo Please run this script as root or using sudo
+    exit
+fi
+
 zypper install -t pattern devel_basis   
 
 # executables first
