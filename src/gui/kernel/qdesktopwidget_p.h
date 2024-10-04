@@ -31,7 +31,7 @@
 
 class QDesktopScreenWidget : public QWidget
 {
-    GUI_CS_OBJECT( QDesktopScreenWidget )
+    GUI_LSCS_OBJECT( QDesktopScreenWidget )
 
 public:
     explicit QDesktopScreenWidget( QScreen *screen, const QRect &geometry );

@@ -107,8 +107,8 @@
 #define TDS_CURSOR_SIZE 50
 
 // workaround for FreeTDS
-#ifndef CS_PUBLIC
-#define CS_PUBLIC
+#ifndef LSCS_PUBLIC
+#define LSCS_PUBLIC
 #endif
 
 QSqlError qMakeError( const QString &err, QSqlError::ErrorType type, int errNo = -1 )
@@ -156,7 +156,7 @@ typedef QHash<DBPROCESS *, QTDSResultPrivate *> QTDSErrorHash;
 Q_GLOBAL_STATIC( QTDSErrorHash, errs )
 
 extern "C" {
-    static int CS_PUBLIC qTdsMsgHandler ( DBPROCESS *dbproc,
+    static int LSCS_PUBLIC qTdsMsgHandler ( DBPROCESS *dbproc,
                                           DBINT msgno,
                                           int msgstate,
                                           int severity,
@@ -197,7 +197,7 @@ extern "C" {
         return INT_CANCEL;
     }
 
-    static int CS_PUBLIC qTdsErrHandler( DBPROCESS *dbproc,
+    static int LSCS_PUBLIC qTdsErrHandler( DBPROCESS *dbproc,
                                          int /*severity*/,
                                          int dberr,
                                          int /*oserr*/,

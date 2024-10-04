@@ -35,7 +35,7 @@ class QScriptDebuggerLocalsModelPrivate;
 
 class QScriptDebuggerLocalsModel : public QAbstractItemModel
 {
-    SCRIPT_T_CS_OBJECT( QScriptDebuggerLocalsModel )
+    SCRIPT_T_LSCS_OBJECT( QScriptDebuggerLocalsModel )
 
 public:
     QScriptDebuggerLocalsModel( QScriptDebuggerJobSchedulerInterface *jobScheduler,
@@ -62,8 +62,8 @@ public:
     void fetchMore( const QModelIndex &parent );
 
 public:
-    CS_SIGNAL_1( Public, void scopeObjectAvailable( const QModelIndex &index ) )
-    CS_SIGNAL_2( scopeObjectAvailable, index )
+    LSCS_SIGNAL_1( Public, void scopeObjectAvailable( const QModelIndex &index ) )
+    LSCS_SIGNAL_2( scopeObjectAvailable, index )
 
 private:
     Q_DECLARE_PRIVATE( QScriptDebuggerLocalsModel )

@@ -81,7 +81,7 @@ static void qfswd_sigio_monitor( int signum, siginfo_t *i, void *v )
 
 class QDnotifySignalThread : public QThread
 {
-    CORE_CS_OBJECT( QDnotifySignalThread )
+    CORE_LSCS_OBJECT( QDnotifySignalThread )
 
 public:
     QDnotifySignalThread();
@@ -91,16 +91,16 @@ public:
 
     void run() override;
 
-    CORE_CS_SIGNAL_1( Public, void fdChanged( int data ) )
-    CORE_CS_SIGNAL_2( fdChanged, data )
+    CORE_LSCS_SIGNAL_1( Public, void fdChanged( int data ) )
+    CORE_LSCS_SIGNAL_2( fdChanged, data )
 
 private:
     QMutex mutex;
     QWaitCondition wait;
     bool isExecing;
 
-    CORE_CS_SLOT_1( Private, void readFromDnotify() )
-    CORE_CS_SLOT_2( readFromDnotify )
+    CORE_LSCS_SLOT_1( Private, void readFromDnotify() )
+    CORE_LSCS_SLOT_2( readFromDnotify )
 
 protected:
     bool event( QEvent * ) override;

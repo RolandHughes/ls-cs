@@ -32,7 +32,7 @@ class QScriptDebuggerCodeViewPrivate;
 
 class QScriptDebuggerCodeView : public QScriptDebuggerCodeViewInterface
 {
-    SCRIPT_T_CS_OBJECT( QScriptDebuggerCodeView )
+    SCRIPT_T_LSCS_OBJECT( QScriptDebuggerCodeView )
 
 public:
     QScriptDebuggerCodeView( QWidget *parent = nullptr );

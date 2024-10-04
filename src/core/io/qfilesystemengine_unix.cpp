@@ -1041,7 +1041,7 @@ QFileSystemEntry QFileSystemEngine::currentPath()
         result = QFileSystemEntry( QByteArray( currentName ), QFileSystemEntry::FromNativePath() );
     }
 
-#if defined(CS_SHOW_DEBUG_CORE)
+#if defined(LSCS_SHOW_DEBUG_CORE)
 
     if ( result.isEmpty() )
     {

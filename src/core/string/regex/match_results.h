@@ -24,18 +24,18 @@
  * LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 */
 
-#ifndef CS_MATCH_RESULTS_H
-#define CS_MATCH_RESULTS_H
+#ifndef LSCS_MATCH_RESULTS_H
+#define LSCS_MATCH_RESULTS_H
 
 #include <regex/regex_sub_match.h>
 
 #include <cassert>
 #include <vector>
 
-namespace cs_regex_ns
+namespace lscs_regex_ns
 {
 
-namespace cs_regex_detail_ns
+namespace lscs_regex_detail_ns
 {
 
 template <typename Traits>
@@ -52,7 +52,7 @@ public:
 
     using string_iterator    = typename Traits::string_type::const_iterator;
 
-    using capture_names_type = cs_regex_detail_ns::named_subexpressions<Traits>;
+    using capture_names_type = lscs_regex_detail_ns::named_subexpressions<Traits>;
 
     using vector_type        = std::vector<sub_match<string_iterator>, Allocator>;
     using value_type         = typename vector_type::value_type;
@@ -234,7 +234,7 @@ public:
             raise_logic_error();
         }
 
-        typename cs_regex_detail_ns::named_subexpressions<Traits>::range_type r = m_capture_names->equal_range( i, j );
+        typename lscs_regex_detail_ns::named_subexpressions<Traits>::range_type r = m_capture_names->equal_range( i, j );
 
         while ( ( r.first != r.second ) && ( ( *this )[r.first->index].matched == false ) )
         {
@@ -274,8 +274,8 @@ public:
             raise_logic_error();
         }
 
-        typename cs_regex_detail_ns::named_subexpressions<Traits>::range_type s;
-        typename cs_regex_detail_ns::named_subexpressions<Traits>::range_type r;
+        typename lscs_regex_detail_ns::named_subexpressions<Traits>::range_type s;
+        typename lscs_regex_detail_ns::named_subexpressions<Traits>::range_type r;
 
         r = m_capture_names->equal_range( i, j );
         s = r;
@@ -562,7 +562,7 @@ private:
     // error handler called when an uninitialized match_results is accessed:
     static void raise_logic_error()
     {
-        std::logic_error e( "Attempt to access an uninitialzed cs_regex_ns::::match_results<> class." );
+        std::logic_error e( "Attempt to access an uninitialzed lscs_regex_ns::::match_results<> class." );
         throw ( e );
     }
 

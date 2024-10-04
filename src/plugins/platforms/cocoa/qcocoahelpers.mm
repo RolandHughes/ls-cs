@@ -664,13 +664,13 @@ CGContextRef qt_mac_cg_context(QPaintDevice *pdev)
          image = data->buffer();
 
       } else {
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
          qDebug("qt_mac_cg_context() Unsupported pixmap class");
 #endif
       }
 
    } else if (pdev->devType() == QInternal::Widget) {
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
       qDebug("qt_mac_cg_context() Not implemented for Widget class");
 #endif
 

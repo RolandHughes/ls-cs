@@ -34,27 +34,27 @@ class QInputMethodQueryEvent;
 
 class Q_GUI_EXPORT QInputMethod : public QObject
 {
-    GUI_CS_OBJECT( QInputMethod )
+    GUI_LSCS_OBJECT( QInputMethod )
 
-    GUI_CS_ENUM( Action )
+    GUI_LSCS_ENUM( Action )
 
-    GUI_CS_PROPERTY_READ( cursorRectangle, cursorRectangle )
-    GUI_CS_PROPERTY_NOTIFY( cursorRectangle, cursorRectangleChanged )
+    GUI_LSCS_PROPERTY_READ( cursorRectangle, cursorRectangle )
+    GUI_LSCS_PROPERTY_NOTIFY( cursorRectangle, cursorRectangleChanged )
 
-    GUI_CS_PROPERTY_READ( keyboardRectangle, keyboardRectangle )
-    GUI_CS_PROPERTY_NOTIFY( keyboardRectangle, keyboardRectangleChanged )
+    GUI_LSCS_PROPERTY_READ( keyboardRectangle, keyboardRectangle )
+    GUI_LSCS_PROPERTY_NOTIFY( keyboardRectangle, keyboardRectangleChanged )
 
-    GUI_CS_PROPERTY_READ( visible, isVisible )
-    GUI_CS_PROPERTY_NOTIFY( visible, visibleChanged )
+    GUI_LSCS_PROPERTY_READ( visible, isVisible )
+    GUI_LSCS_PROPERTY_NOTIFY( visible, visibleChanged )
 
-    GUI_CS_PROPERTY_READ( animating, isAnimating )
-    GUI_CS_PROPERTY_NOTIFY( animating, animatingChanged )
+    GUI_LSCS_PROPERTY_READ( animating, isAnimating )
+    GUI_LSCS_PROPERTY_NOTIFY( animating, animatingChanged )
 
-    GUI_CS_PROPERTY_READ( locale, locale )
-    GUI_CS_PROPERTY_NOTIFY( locale, localeChanged )
+    GUI_LSCS_PROPERTY_READ( locale, locale )
+    GUI_LSCS_PROPERTY_NOTIFY( locale, localeChanged )
 
-    GUI_CS_PROPERTY_READ( inputDirection, inputDirection )
-    GUI_CS_PROPERTY_NOTIFY( inputDirection, inputDirectionChanged )
+    GUI_LSCS_PROPERTY_READ( inputDirection, inputDirection )
+    GUI_LSCS_PROPERTY_NOTIFY( inputDirection, inputDirectionChanged )
 
 public:
     enum Action
@@ -85,33 +85,33 @@ public:
 
     static QVariant queryFocusObject( Qt::InputMethodQuery query, QVariant argument ); // TODO: QVariant by const-ref
 
-    GUI_CS_SLOT_1( Public, void show() )
-    GUI_CS_SLOT_2( show )
-    GUI_CS_SLOT_1( Public, void hide() )
-    GUI_CS_SLOT_2( hide )
+    GUI_LSCS_SLOT_1( Public, void show() )
+    GUI_LSCS_SLOT_2( show )
+    GUI_LSCS_SLOT_1( Public, void hide() )
+    GUI_LSCS_SLOT_2( hide )
 
-    GUI_CS_SLOT_1( Public, void update( Qt::InputMethodQueries queries ) )
-    GUI_CS_SLOT_2( update )
-    GUI_CS_SLOT_1( Public, void reset() )
-    GUI_CS_SLOT_2( reset )
-    GUI_CS_SLOT_1( Public, void commit() )
-    GUI_CS_SLOT_2( commit )
+    GUI_LSCS_SLOT_1( Public, void update( Qt::InputMethodQueries queries ) )
+    GUI_LSCS_SLOT_2( update )
+    GUI_LSCS_SLOT_1( Public, void reset() )
+    GUI_LSCS_SLOT_2( reset )
+    GUI_LSCS_SLOT_1( Public, void commit() )
+    GUI_LSCS_SLOT_2( commit )
 
-    GUI_CS_SLOT_1( Public, void invokeAction( Action a, int cursorPosition ) )
-    GUI_CS_SLOT_2( invokeAction )
+    GUI_LSCS_SLOT_1( Public, void invokeAction( Action a, int cursorPosition ) )
+    GUI_LSCS_SLOT_2( invokeAction )
 
-    GUI_CS_SIGNAL_1( Public, void cursorRectangleChanged() )
-    GUI_CS_SIGNAL_2( cursorRectangleChanged )
-    GUI_CS_SIGNAL_1( Public, void keyboardRectangleChanged() )
-    GUI_CS_SIGNAL_2( keyboardRectangleChanged )
-    GUI_CS_SIGNAL_1( Public, void visibleChanged() )
-    GUI_CS_SIGNAL_2( visibleChanged )
-    GUI_CS_SIGNAL_1( Public, void animatingChanged() )
-    GUI_CS_SIGNAL_2( animatingChanged )
-    GUI_CS_SIGNAL_1( Public, void localeChanged() )
-    GUI_CS_SIGNAL_2( localeChanged )
-    GUI_CS_SIGNAL_1( Public, void inputDirectionChanged( Qt::LayoutDirection newDirection ) )
-    GUI_CS_SIGNAL_2( inputDirectionChanged, newDirection )
+    GUI_LSCS_SIGNAL_1( Public, void cursorRectangleChanged() )
+    GUI_LSCS_SIGNAL_2( cursorRectangleChanged )
+    GUI_LSCS_SIGNAL_1( Public, void keyboardRectangleChanged() )
+    GUI_LSCS_SIGNAL_2( keyboardRectangleChanged )
+    GUI_LSCS_SIGNAL_1( Public, void visibleChanged() )
+    GUI_LSCS_SIGNAL_2( visibleChanged )
+    GUI_LSCS_SIGNAL_1( Public, void animatingChanged() )
+    GUI_LSCS_SIGNAL_2( animatingChanged )
+    GUI_LSCS_SIGNAL_1( Public, void localeChanged() )
+    GUI_LSCS_SIGNAL_2( localeChanged )
+    GUI_LSCS_SIGNAL_1( Public, void inputDirectionChanged( Qt::LayoutDirection newDirection ) )
+    GUI_LSCS_SIGNAL_2( inputDirectionChanged, newDirection )
 
 private:
     Q_DECLARE_PRIVATE( QInputMethod )

@@ -36,11 +36,11 @@ class QMediaObjectPrivate;
 
 class Q_MULTIMEDIA_EXPORT QMediaObject : public QObject
 {
-    MULTI_CS_OBJECT( QMediaObject )
+    MULTI_LSCS_OBJECT( QMediaObject )
 
-    MULTI_CS_PROPERTY_READ( notifyInterval,   notifyInterval )
-    MULTI_CS_PROPERTY_WRITE( notifyInterval,  setNotifyInterval )
-    MULTI_CS_PROPERTY_NOTIFY( notifyInterval, notifyIntervalChanged )
+    MULTI_LSCS_PROPERTY_READ( notifyInterval,   notifyInterval )
+    MULTI_LSCS_PROPERTY_WRITE( notifyInterval,  setNotifyInterval )
+    MULTI_LSCS_PROPERTY_NOTIFY( notifyInterval, notifyIntervalChanged )
 
 public:
     ~QMediaObject();
@@ -61,23 +61,23 @@ public:
     QVariant metaData( const QString &key ) const;
     QStringList availableMetaData() const;
 
-    MULTI_CS_SIGNAL_1( Public, void notifyIntervalChanged( int milliSeconds ) )
-    MULTI_CS_SIGNAL_2( notifyIntervalChanged, milliSeconds )
+    MULTI_LSCS_SIGNAL_1( Public, void notifyIntervalChanged( int milliSeconds ) )
+    MULTI_LSCS_SIGNAL_2( notifyIntervalChanged, milliSeconds )
 
-    MULTI_CS_SIGNAL_1( Public, void metaDataAvailableChanged( bool available ) )
-    MULTI_CS_SIGNAL_2( metaDataAvailableChanged, available )
+    MULTI_LSCS_SIGNAL_1( Public, void metaDataAvailableChanged( bool available ) )
+    MULTI_LSCS_SIGNAL_2( metaDataAvailableChanged, available )
 
-    MULTI_CS_SIGNAL_1( Public, void metaDataChanged() )
-    MULTI_CS_SIGNAL_OVERLOAD( metaDataChanged, () )
+    MULTI_LSCS_SIGNAL_1( Public, void metaDataChanged() )
+    MULTI_LSCS_SIGNAL_OVERLOAD( metaDataChanged, () )
 
-    MULTI_CS_SIGNAL_1( Public, void metaDataChanged( const QString &key, const QVariant &value ) )
-    MULTI_CS_SIGNAL_OVERLOAD( metaDataChanged, ( const QString &, const QVariant & ), key, value )
+    MULTI_LSCS_SIGNAL_1( Public, void metaDataChanged( const QString &key, const QVariant &value ) )
+    MULTI_LSCS_SIGNAL_OVERLOAD( metaDataChanged, ( const QString &, const QVariant & ), key, value )
 
-    MULTI_CS_SIGNAL_1( Public, void availabilityChanged( bool available ) )
-    MULTI_CS_SIGNAL_OVERLOAD( availabilityChanged, ( bool ), available )
+    MULTI_LSCS_SIGNAL_1( Public, void availabilityChanged( bool available ) )
+    MULTI_LSCS_SIGNAL_OVERLOAD( availabilityChanged, ( bool ), available )
 
-    MULTI_CS_SIGNAL_1( Public, void availabilityChanged( QMultimedia::AvailabilityStatus availability ) )
-    MULTI_CS_SIGNAL_OVERLOAD( availabilityChanged, ( QMultimedia::AvailabilityStatus ), availability )
+    MULTI_LSCS_SIGNAL_1( Public, void availabilityChanged( QMultimedia::AvailabilityStatus availability ) )
+    MULTI_LSCS_SIGNAL_OVERLOAD( availabilityChanged, ( QMultimedia::AvailabilityStatus ), availability )
 
 protected:
     QMediaObject( QObject *parent, QMediaService *service );
@@ -97,11 +97,11 @@ private:
 
     void cs_internal_addPropertyWatch( const QString &name, std::function<void ()> callBack );
 
-    MULTI_CS_SLOT_1( Private, void _q_notify() )
-    MULTI_CS_SLOT_2( _q_notify )
+    MULTI_LSCS_SLOT_1( Private, void _q_notify() )
+    MULTI_LSCS_SLOT_2( _q_notify )
 
-    MULTI_CS_SLOT_1( Private, void _q_availabilityChanged() )
-    MULTI_CS_SLOT_2( _q_availabilityChanged )
+    MULTI_LSCS_SLOT_1( Private, void _q_availabilityChanged() )
+    MULTI_LSCS_SLOT_2( _q_availabilityChanged )
 };
 
 template <typename T>

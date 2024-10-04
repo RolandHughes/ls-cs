@@ -158,6 +158,6 @@ private:
     friend class QNetworkRequestPrivate;
 };
 
-CS_DECLARE_METATYPE( QNetworkRequest )
+LSCS_DECLARE_METATYPE( QNetworkRequest )
 
 #endif

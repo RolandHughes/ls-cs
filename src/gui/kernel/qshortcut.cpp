@@ -335,7 +335,7 @@ static bool correctActionContext( Qt::ShortcutContext context, QAction *a, QWidg
 {
     const QList<QWidget *> &widgets = static_cast<QActionPrivate *>( QActionPrivate::get( a ) )->widgets;
 
-#if defined(CS_SHOW_DEBUG_GUI)
+#if defined(LSCS_SHOW_DEBUG_GUI)
 
     if ( widgets.isEmpty() )
     {
@@ -391,7 +391,7 @@ static bool correctActionContext( Qt::ShortcutContext context, QAction *a, QWidg
 #ifndef QT_NO_GRAPHICSVIEW
     const QList<QGraphicsWidget *> &graphicsWidgets = static_cast<QActionPrivate *>( QActionPrivate::get( a ) )->graphicsWidgets;
 
-#if defined(CS_SHOW_DEBUG_GUI)
+#if defined(LSCS_SHOW_DEBUG_GUI)
 
     if ( graphicsWidgets.isEmpty() )
     {

@@ -35,7 +35,7 @@
 class QGstreamerAudioProbeControl
     : public QMediaAudioProbeControl, public QGstreamerBufferProbe, public QSharedData
 {
-    CS_OBJECT_MULTIPLE( QGstreamerAudioProbeControl, QMediaAudioProbeControl )
+    LSCS_OBJECT_MULTIPLE( QGstreamerAudioProbeControl, QMediaAudioProbeControl )
 
 public:
     explicit QGstreamerAudioProbeControl( QObject *parent );
@@ -50,8 +50,8 @@ private:
     QAudioFormat m_format;
     QMutex m_bufferMutex;
 
-    CS_SLOT_1( Private, void bufferProbed() )
-    CS_SLOT_2( bufferProbed )
+    LSCS_SLOT_1( Private, void bufferProbed() )
+    LSCS_SLOT_2( bufferProbed )
 };
 
 #endif

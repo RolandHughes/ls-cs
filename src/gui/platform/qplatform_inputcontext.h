@@ -30,7 +30,7 @@ class QPlatformInputContextPrivate;
 
 class Q_GUI_EXPORT QPlatformInputContext : public QObject
 {
-    GUI_CS_OBJECT( QPlatformInputContext )
+    GUI_LSCS_OBJECT( QPlatformInputContext )
     Q_DECLARE_PRIVATE( QPlatformInputContext )
 
 public:

@@ -41,7 +41,7 @@ class QWaveDecoder;
 // lives in application thread
 class Q_MULTIMEDIA_EXPORT QSample : public QObject
 {
-    MULTI_CS_OBJECT( QSample )
+    MULTI_LSCS_OBJECT( QSample )
 
 public:
     enum State
@@ -70,11 +70,11 @@ public:
     }
     void release();
 
-    MULTI_CS_SIGNAL_1( Public, void error() )
-    MULTI_CS_SIGNAL_2( error )
+    MULTI_LSCS_SIGNAL_1( Public, void error() )
+    MULTI_LSCS_SIGNAL_2( error )
 
-    MULTI_CS_SIGNAL_1( Public, void ready() )
-    MULTI_CS_SIGNAL_2( ready )
+    MULTI_LSCS_SIGNAL_1( Public, void ready() )
+    MULTI_LSCS_SIGNAL_2( ready )
 
 protected:
     QSample( const QUrl &url, QSampleCache *parent );
@@ -102,24 +102,24 @@ private:
     State m_state;
     int m_ref;
 
-    MULTI_CS_SLOT_1( Private, void load() )
-    MULTI_CS_SLOT_2( load )
+    MULTI_LSCS_SLOT_1( Private, void load() )
+    MULTI_LSCS_SLOT_2( load )
 
-    MULTI_CS_SLOT_1( Private, void decoderError() )
-    MULTI_CS_SLOT_2( decoderError )
+    MULTI_LSCS_SLOT_1( Private, void decoderError() )
+    MULTI_LSCS_SLOT_2( decoderError )
 
-    MULTI_CS_SLOT_1( Private, void readSample() )
-    MULTI_CS_SLOT_2( readSample )
+    MULTI_LSCS_SLOT_1( Private, void readSample() )
+    MULTI_LSCS_SLOT_2( readSample )
 
-    MULTI_CS_SLOT_1( Private, void decoderReady() )
-    MULTI_CS_SLOT_2( decoderReady )
+    MULTI_LSCS_SLOT_1( Private, void decoderReady() )
+    MULTI_LSCS_SLOT_2( decoderReady )
 
     friend class QSampleCache;
 };
 
 class Q_MULTIMEDIA_EXPORT QSampleCache : public QObject
 {
-    MULTI_CS_OBJECT( QSampleCache )
+    MULTI_LSCS_OBJECT( QSampleCache )
 
 public:
     QSampleCache( QObject *parent = nullptr );
@@ -131,8 +131,8 @@ public:
     bool isLoading() const;
     bool isCached( const QUrl &url ) const;
 
-    MULTI_CS_SIGNAL_1( Public, void isLoadingChanged() )
-    MULTI_CS_SIGNAL_2( isLoadingChanged )
+    MULTI_LSCS_SIGNAL_1( Public, void isLoadingChanged() )
+    MULTI_LSCS_SIGNAL_2( isLoadingChanged )
 
 private:
     QMap<QUrl, QSample *> m_samples;

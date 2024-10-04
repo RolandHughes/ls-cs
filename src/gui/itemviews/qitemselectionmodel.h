@@ -36,7 +36,7 @@ class QItemSelection;
 class QItemSelectionModel;
 class QItemSelectionModelPrivate;
 
-CS_DECLARE_METATYPE( QItemSelection )
+LSCS_DECLARE_METATYPE( QItemSelection )
 
 class Q_GUI_EXPORT QItemSelectionRange
 {
@@ -207,7 +207,7 @@ public:
     bool contains( const QModelIndex &index ) const;
     QModelIndexList indexes() const;
 
-#if defined (CS_DOXYPRESS)
+#if defined (LSCS_DOXYPRESS)
     void merge( const QItemSelection &other, QItemSelectionModel::SelectionFlags command );
 
 #else
@@ -224,33 +224,33 @@ private:
 
 class Q_GUI_EXPORT QItemSelectionModel : public QObject
 {
-    GUI_CS_OBJECT( QItemSelectionModel )
+    GUI_LSCS_OBJECT( QItemSelectionModel )
 
-    GUI_CS_PROPERTY_READ( model, model )
-    GUI_CS_PROPERTY_WRITE( model, setModel )
-    GUI_CS_PROPERTY_NOTIFY( model, modelChanged )
+    GUI_LSCS_PROPERTY_READ( model, model )
+    GUI_LSCS_PROPERTY_WRITE( model, setModel )
+    GUI_LSCS_PROPERTY_NOTIFY( model, modelChanged )
 
-    GUI_CS_PROPERTY_READ( hasSelection, hasSelection )
-    GUI_CS_PROPERTY_NOTIFY( hasSelection, selectionChanged )
-    GUI_CS_PROPERTY_STORED( hasSelection, false )
-    GUI_CS_PROPERTY_DESIGNABLE( hasSelection, false )
+    GUI_LSCS_PROPERTY_READ( hasSelection, hasSelection )
+    GUI_LSCS_PROPERTY_NOTIFY( hasSelection, selectionChanged )
+    GUI_LSCS_PROPERTY_STORED( hasSelection, false )
+    GUI_LSCS_PROPERTY_DESIGNABLE( hasSelection, false )
 
-    GUI_CS_PROPERTY_READ( currentIndex, currentIndex )
-    GUI_CS_PROPERTY_NOTIFY( currentIndex, currentChanged )
-    GUI_CS_PROPERTY_STORED( currentIndex, false )
-    GUI_CS_PROPERTY_DESIGNABLE( currentIndex, false )
+    GUI_LSCS_PROPERTY_READ( currentIndex, currentIndex )
+    GUI_LSCS_PROPERTY_NOTIFY( currentIndex, currentChanged )
+    GUI_LSCS_PROPERTY_STORED( currentIndex, false )
+    GUI_LSCS_PROPERTY_DESIGNABLE( currentIndex, false )
 
-    GUI_CS_PROPERTY_READ( selection, selection )
-    GUI_CS_PROPERTY_NOTIFY( selection, selectionChanged )
-    GUI_CS_PROPERTY_STORED( selection, false )
-    GUI_CS_PROPERTY_DESIGNABLE( selection, false )
+    GUI_LSCS_PROPERTY_READ( selection, selection )
+    GUI_LSCS_PROPERTY_NOTIFY( selection, selectionChanged )
+    GUI_LSCS_PROPERTY_STORED( selection, false )
+    GUI_LSCS_PROPERTY_DESIGNABLE( selection, false )
 
-    GUI_CS_PROPERTY_READ( selectedIndexes, selectedIndexes )
-    GUI_CS_PROPERTY_NOTIFY( selectedIndexes, selectionChanged )
-    GUI_CS_PROPERTY_STORED( selectedIndexes, false )
-    GUI_CS_PROPERTY_DESIGNABLE( selectedIndexes, false )
+    GUI_LSCS_PROPERTY_READ( selectedIndexes, selectedIndexes )
+    GUI_LSCS_PROPERTY_NOTIFY( selectedIndexes, selectionChanged )
+    GUI_LSCS_PROPERTY_STORED( selectedIndexes, false )
+    GUI_LSCS_PROPERTY_DESIGNABLE( selectedIndexes, false )
 
-    GUI_CS_FLAG( SelectionFlag, SelectionFlags )
+    GUI_LSCS_FLAG( SelectionFlag, SelectionFlags )
 
 public:
     enum SelectionFlag : uint
@@ -298,41 +298,41 @@ public:
     const QAbstractItemModel *model() const;
     void setModel( QAbstractItemModel *model );
 
-    GUI_CS_SLOT_1( Public, void setCurrentIndex( const QModelIndex &index, QItemSelectionModel::SelectionFlags command ) )
-    GUI_CS_SLOT_2( setCurrentIndex )
+    GUI_LSCS_SLOT_1( Public, void setCurrentIndex( const QModelIndex &index, QItemSelectionModel::SelectionFlags command ) )
+    GUI_LSCS_SLOT_2( setCurrentIndex )
 
-    GUI_CS_SLOT_1( Public, virtual void select( const QModelIndex &index, QItemSelectionModel::SelectionFlags command ) )
-    GUI_CS_SLOT_OVERLOAD( select, ( const QModelIndex &, QItemSelectionModel::SelectionFlags ) )
+    GUI_LSCS_SLOT_1( Public, virtual void select( const QModelIndex &index, QItemSelectionModel::SelectionFlags command ) )
+    GUI_LSCS_SLOT_OVERLOAD( select, ( const QModelIndex &, QItemSelectionModel::SelectionFlags ) )
 
-    GUI_CS_SLOT_1( Public, virtual void select( const QItemSelection &selection, QItemSelectionModel::SelectionFlags command ) )
-    GUI_CS_SLOT_OVERLOAD( select, ( const QItemSelection &, QItemSelectionModel::SelectionFlags ) )
+    GUI_LSCS_SLOT_1( Public, virtual void select( const QItemSelection &selection, QItemSelectionModel::SelectionFlags command ) )
+    GUI_LSCS_SLOT_OVERLOAD( select, ( const QItemSelection &, QItemSelectionModel::SelectionFlags ) )
 
-    GUI_CS_SLOT_1( Public, virtual void clear() )
-    GUI_CS_SLOT_2( clear )
+    GUI_LSCS_SLOT_1( Public, virtual void clear() )
+    GUI_LSCS_SLOT_2( clear )
 
-    GUI_CS_SLOT_1( Public, virtual void reset() )
-    GUI_CS_SLOT_2( reset )
+    GUI_LSCS_SLOT_1( Public, virtual void reset() )
+    GUI_LSCS_SLOT_2( reset )
 
-    GUI_CS_SLOT_1( Public, void clearSelection() )
-    GUI_CS_SLOT_2( clearSelection )
+    GUI_LSCS_SLOT_1( Public, void clearSelection() )
+    GUI_LSCS_SLOT_2( clearSelection )
 
-    GUI_CS_SLOT_1( Public, void clearCurrentIndex() )
-    GUI_CS_SLOT_2( clearCurrentIndex )
+    GUI_LSCS_SLOT_1( Public, void clearCurrentIndex() )
+    GUI_LSCS_SLOT_2( clearCurrentIndex )
 
-    GUI_CS_SIGNAL_1( Public, void selectionChanged( const QItemSelection &selected, const QItemSelection &deselected ) )
-    GUI_CS_SIGNAL_2( selectionChanged, selected, deselected )
+    GUI_LSCS_SIGNAL_1( Public, void selectionChanged( const QItemSelection &selected, const QItemSelection &deselected ) )
+    GUI_LSCS_SIGNAL_2( selectionChanged, selected, deselected )
 
-    GUI_CS_SIGNAL_1( Public, void currentChanged( const QModelIndex &current, const QModelIndex &previous ) )
-    GUI_CS_SIGNAL_2( currentChanged, current, previous )
+    GUI_LSCS_SIGNAL_1( Public, void currentChanged( const QModelIndex &current, const QModelIndex &previous ) )
+    GUI_LSCS_SIGNAL_2( currentChanged, current, previous )
 
-    GUI_CS_SIGNAL_1( Public, void currentRowChanged( const QModelIndex &current, const QModelIndex &previous ) )
-    GUI_CS_SIGNAL_2( currentRowChanged, current, previous )
+    GUI_LSCS_SIGNAL_1( Public, void currentRowChanged( const QModelIndex &current, const QModelIndex &previous ) )
+    GUI_LSCS_SIGNAL_2( currentRowChanged, current, previous )
 
-    GUI_CS_SIGNAL_1( Public, void currentColumnChanged( const QModelIndex &current, const QModelIndex &previous ) )
-    GUI_CS_SIGNAL_2( currentColumnChanged, current, previous )
+    GUI_LSCS_SIGNAL_1( Public, void currentColumnChanged( const QModelIndex &current, const QModelIndex &previous ) )
+    GUI_LSCS_SIGNAL_2( currentColumnChanged, current, previous )
 
-    GUI_CS_SIGNAL_1( Public, void modelChanged( QAbstractItemModel *model ) )
-    GUI_CS_SIGNAL_2( modelChanged, model )
+    GUI_LSCS_SIGNAL_1( Public, void modelChanged( QAbstractItemModel *model ) )
+    GUI_LSCS_SIGNAL_2( modelChanged, model )
 
 protected:
     QItemSelectionModel( QItemSelectionModelPrivate &dd, QAbstractItemModel *model );
@@ -343,23 +343,23 @@ protected:
 private:
     Q_DECLARE_PRIVATE( QItemSelectionModel )
 
-    GUI_CS_SLOT_1( Private, void _q_columnsAboutToBeRemoved( const QModelIndex &parent, int start, int end ) )
-    GUI_CS_SLOT_2( _q_columnsAboutToBeRemoved )
+    GUI_LSCS_SLOT_1( Private, void _q_columnsAboutToBeRemoved( const QModelIndex &parent, int start, int end ) )
+    GUI_LSCS_SLOT_2( _q_columnsAboutToBeRemoved )
 
-    GUI_CS_SLOT_1( Private, void _q_rowsAboutToBeRemoved( const QModelIndex &parent, int start, int end ) )
-    GUI_CS_SLOT_2( _q_rowsAboutToBeRemoved )
+    GUI_LSCS_SLOT_1( Private, void _q_rowsAboutToBeRemoved( const QModelIndex &parent, int start, int end ) )
+    GUI_LSCS_SLOT_2( _q_rowsAboutToBeRemoved )
 
-    GUI_CS_SLOT_1( Private, void _q_columnsAboutToBeInserted( const QModelIndex &parent, int start, int end ) )
-    GUI_CS_SLOT_2( _q_columnsAboutToBeInserted )
+    GUI_LSCS_SLOT_1( Private, void _q_columnsAboutToBeInserted( const QModelIndex &parent, int start, int end ) )
+    GUI_LSCS_SLOT_2( _q_columnsAboutToBeInserted )
 
-    GUI_CS_SLOT_1( Private, void _q_rowsAboutToBeInserted( const QModelIndex &parent, int start, int end ) )
-    GUI_CS_SLOT_2( _q_rowsAboutToBeInserted )
+    GUI_LSCS_SLOT_1( Private, void _q_rowsAboutToBeInserted( const QModelIndex &parent, int start, int end ) )
+    GUI_LSCS_SLOT_2( _q_rowsAboutToBeInserted )
 
-    GUI_CS_SLOT_1( Private, void _q_layoutAboutToBeChanged() )
-    GUI_CS_SLOT_2( _q_layoutAboutToBeChanged )
+    GUI_LSCS_SLOT_1( Private, void _q_layoutAboutToBeChanged() )
+    GUI_LSCS_SLOT_2( _q_layoutAboutToBeChanged )
 
-    GUI_CS_SLOT_1( Private, void _q_layoutChanged() )
-    GUI_CS_SLOT_2( _q_layoutChanged )
+    GUI_LSCS_SLOT_1( Private, void _q_layoutChanged() )
+    GUI_LSCS_SLOT_2( _q_layoutChanged )
 };
 
 // dummy implentation of qHash() necessary for instantiating QList<QItemSelectionRange>::toSet() with MSVC
@@ -368,7 +368,7 @@ inline uint qHash( const QItemSelectionRange & )
     return 0;
 }
 
-#if ! defined (CS_DOXYPRESS)
+#if ! defined (LSCS_DOXYPRESS)
 
 // must be at the end of the file
 template <typename T>

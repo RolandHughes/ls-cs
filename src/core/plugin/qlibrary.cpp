@@ -250,7 +250,7 @@ bool QLibraryHandle::tryload()
 
     bool retval = load_sys();
 
-#if defined(CS_SHOW_DEBUG_CORE_PLUGIN)
+#if defined(LSCS_SHOW_DEBUG_CORE_PLUGIN)
     qDebug() << "QLibraryHandle::tryload() Loaded library "  << fileName;
 #endif
 
@@ -312,7 +312,7 @@ bool QLibraryHandle::loadPlugin()
         return true;
     }
 
-#if defined(CS_SHOW_DEBUG_CORE_PLUGIN)
+#if defined(LSCS_SHOW_DEBUG_CORE_PLUGIN)
     qDebug() << "QLibraryHandle::loadPlugin() File name = " << fileName << " error = " << errorString;
 #endif
 

@@ -69,7 +69,7 @@ private:
 
 class Q_EXPORT_SQLDRIVER_OCI QOCIDriver : public QSqlDriver
 {
-    SQL_CS_OBJECT( QOCIDriver )
+    SQL_LSCS_OBJECT( QOCIDriver )
 
     friend struct QOCIResultPrivate;
     friend class QOCIPrivate;

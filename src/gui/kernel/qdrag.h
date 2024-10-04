@@ -37,7 +37,7 @@ class QDragManager;
 
 class Q_GUI_EXPORT QDrag : public QObject
 {
-    GUI_CS_OBJECT( QDrag )
+    GUI_LSCS_OBJECT( QDrag )
 
 public:
     explicit QDrag( QObject *dragSource );
@@ -68,11 +68,11 @@ public:
     Qt::DropActions supportedActions() const;
     Qt::DropAction defaultAction() const;
 
-    GUI_CS_SIGNAL_1( Public, void actionChanged( Qt::DropAction action ) )
-    GUI_CS_SIGNAL_2( actionChanged, action )
+    GUI_LSCS_SIGNAL_1( Public, void actionChanged( Qt::DropAction action ) )
+    GUI_LSCS_SIGNAL_2( actionChanged, action )
 
-    GUI_CS_SIGNAL_1( Public, void targetChanged( QObject *newTarget ) )
-    GUI_CS_SIGNAL_2( targetChanged, newTarget )
+    GUI_LSCS_SIGNAL_1( Public, void targetChanged( QObject *newTarget ) )
+    GUI_LSCS_SIGNAL_2( targetChanged, newTarget )
 
 protected:
     QScopedPointer<QDragPrivate> d_ptr;

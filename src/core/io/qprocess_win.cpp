@@ -580,7 +580,7 @@ void QProcessPrivate::startProcess()
         args += nativeArguments;
     }
 
-#if defined(CS_SHOW_DEBUG_CORE_IO)
+#if defined(LSCS_SHOW_DEBUG_CORE_IO)
     qDebug( "Creating process" );
     qDebug( "   program : [%s]", program.toLatin1().constData() );
     qDebug( "   args : %s", args.toLatin1().constData() );
@@ -643,7 +643,7 @@ void QProcessPrivate::startProcess()
         return;
     }
 
-    QThreadData *threadData = CSInternalThreadData::get_m_ThreadData( q );
+    QThreadData *threadData = LSCSInternalThreadData::get_m_ThreadData( q );
 
     if ( threadData->eventDispatcher )
     {
@@ -668,7 +668,7 @@ qint64 QProcessPrivate::bytesAvailableInChannel( const Channel *channel ) const
 
     DWORD bytesAvail = channel->reader->bytesAvailable();
 
-#if defined(CS_SHOW_DEBUG_CORE_IO)
+#if defined(LSCS_SHOW_DEBUG_CORE_IO)
     qDebug( "QProcessPrivate::bytesAvailableInChannel(%lld) == %ld", channel - &stdinChannel, bytesAvail );
 #endif
 
@@ -900,7 +900,7 @@ bool QProcessPrivate::waitForBytesWritten( int msecs )
 
 bool QProcessPrivate::waitForFinished( int msecs )
 {
-#if defined(CS_SHOW_DEBUG_CORE_IO)
+#if defined(LSCS_SHOW_DEBUG_CORE_IO)
     qDebug( "QProcessPrivate::waitForFinished(%d)", msecs );
 #endif
 

@@ -31,28 +31,28 @@ class QStyleOptionFrame;
 
 class Q_GUI_EXPORT QFrame : public QWidget
 {
-    GUI_CS_OBJECT( QFrame )
+    GUI_LSCS_OBJECT( QFrame )
 
-    GUI_CS_ENUM( Shape )
-    GUI_CS_ENUM( Shadow )
+    GUI_LSCS_ENUM( Shape )
+    GUI_LSCS_ENUM( Shadow )
 
-    GUI_CS_PROPERTY_READ( frameShape, frameShape )
-    GUI_CS_PROPERTY_WRITE( frameShape, setFrameShape )
+    GUI_LSCS_PROPERTY_READ( frameShape, frameShape )
+    GUI_LSCS_PROPERTY_WRITE( frameShape, setFrameShape )
 
-    GUI_CS_PROPERTY_READ( frameShadow, frameShadow )
-    GUI_CS_PROPERTY_WRITE( frameShadow, setFrameShadow )
+    GUI_LSCS_PROPERTY_READ( frameShadow, frameShadow )
+    GUI_LSCS_PROPERTY_WRITE( frameShadow, setFrameShadow )
 
-    GUI_CS_PROPERTY_READ( lineWidth, lineWidth )
-    GUI_CS_PROPERTY_WRITE( lineWidth, setLineWidth )
+    GUI_LSCS_PROPERTY_READ( lineWidth, lineWidth )
+    GUI_LSCS_PROPERTY_WRITE( lineWidth, setLineWidth )
 
-    GUI_CS_PROPERTY_READ( midLineWidth, midLineWidth )
-    GUI_CS_PROPERTY_WRITE( midLineWidth, setMidLineWidth )
+    GUI_LSCS_PROPERTY_READ( midLineWidth, midLineWidth )
+    GUI_LSCS_PROPERTY_WRITE( midLineWidth, setMidLineWidth )
 
-    GUI_CS_PROPERTY_READ( frameWidth, frameWidth )
+    GUI_LSCS_PROPERTY_READ( frameWidth, frameWidth )
 
-    GUI_CS_PROPERTY_READ( frameRect, frameRect )
-    GUI_CS_PROPERTY_WRITE( frameRect, setFrameRect )
-    GUI_CS_PROPERTY_DESIGNABLE( frameRect, false )
+    GUI_LSCS_PROPERTY_READ( frameRect, frameRect )
+    GUI_LSCS_PROPERTY_WRITE( frameRect, setFrameRect )
+    GUI_LSCS_PROPERTY_DESIGNABLE( frameRect, false )
 
 public:
     explicit QFrame( QWidget *parent = nullptr, Qt::WindowFlags flags = Qt::EmptyFlag );
@@ -69,7 +69,7 @@ public:
 
     QSize sizeHint() const override;
 
-    GUI_CS_REGISTER_ENUM(
+    GUI_LSCS_REGISTER_ENUM(
         enum Shape
     {
         NoFrame     = 0,
@@ -82,7 +82,7 @@ public:
     };
     )
 
-    GUI_CS_REGISTER_ENUM(
+    GUI_LSCS_REGISTER_ENUM(
         enum Shadow
     {
         Plain  = 0x0010,          // plain line

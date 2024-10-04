@@ -36,9 +36,9 @@ class QGstreamerVideoWidgetControl
     : public QVideoWidgetControl, public QGstreamerVideoRendererInterface
     , public QGstreamerSyncMessageFilter, public QGstreamerBusMessageFilter
 {
-    CS_OBJECT_MULTIPLE( QGstreamerVideoWidgetControl, QVideoWidgetControl )
+    LSCS_OBJECT_MULTIPLE( QGstreamerVideoWidgetControl, QVideoWidgetControl )
 
-    CS_INTERFACES( QGstreamerVideoRendererInterface, QGstreamerSyncMessageFilter, QGstreamerBusMessageFilter )
+    LSCS_INTERFACES( QGstreamerVideoRendererInterface, QGstreamerSyncMessageFilter, QGstreamerBusMessageFilter )
 
 public:
     explicit QGstreamerVideoWidgetControl( QObject *parent = nullptr, const QByteArray &elementName = QByteArray() );
@@ -70,11 +70,11 @@ public:
 
     bool eventFilter( QObject *object, QEvent *event ) override;
 
-    CS_SIGNAL_1( Public, void sinkChanged() )
-    CS_SIGNAL_2( sinkChanged )
+    LSCS_SIGNAL_1( Public, void sinkChanged() )
+    LSCS_SIGNAL_2( sinkChanged )
 
-    CS_SIGNAL_1( Public, void readyChanged( bool isReady ) )
-    CS_SIGNAL_2( readyChanged, isReady )
+    LSCS_SIGNAL_1( Public, void readyChanged( bool isReady ) )
+    LSCS_SIGNAL_2( readyChanged, isReady )
 
 private:
     void createVideoWidget();
@@ -89,11 +89,11 @@ private:
     WId m_windowId;
     bool m_fullScreen;
 
-    CS_SLOT_1( Private, void onOverlayActiveChanged() )
-    CS_SLOT_2( onOverlayActiveChanged )
+    LSCS_SLOT_1( Private, void onOverlayActiveChanged() )
+    LSCS_SLOT_2( onOverlayActiveChanged )
 
-    CS_SLOT_1( Private, void onNativeVideoSizeChanged() )
-    CS_SLOT_2( onNativeVideoSizeChanged )
+    LSCS_SLOT_1( Private, void onNativeVideoSizeChanged() )
+    LSCS_SLOT_2( onNativeVideoSizeChanged )
 };
 
 #endif

@@ -53,7 +53,7 @@ public:
 
 class QListModel : public QAbstractListModel
 {
-    GUI_CS_OBJECT( QListModel )
+    GUI_LSCS_OBJECT( QListModel )
 
 public:
     QListModel( QListWidget *parent );

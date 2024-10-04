@@ -1114,7 +1114,7 @@ void QScriptValue::setProperty( const QString &name, const QScriptValue &value,
 
     if ( valueEngine && ( valueEngine != d->engine ) )
     {
-        qWarning( "QScriptValue::setProperty(%s) failed: can not set value created in a different engine", csPrintable( name ) );
+        qWarning( "QScriptValue::setProperty(%s) failed: can not set value created in a different engine", lscsPrintable( name ) );
         return;
     }
 
@@ -1201,7 +1201,7 @@ void QScriptValue::setProperty( const QScriptString &name, const QScriptValue &v
     if ( valueEngine && ( valueEngine != d->engine ) )
     {
         qWarning( "QScriptValue::setProperty(%s) failed: can not set value created in a different engine",
-                  csPrintable( name.toString() ) );
+                  lscsPrintable( name.toString() ) );
         return;
     }
 

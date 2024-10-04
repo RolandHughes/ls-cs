@@ -32,10 +32,10 @@ class QColumnViewPrivate;
 
 class Q_GUI_EXPORT QColumnView : public QAbstractItemView
 {
-    GUI_CS_OBJECT( QColumnView )
+    GUI_LSCS_OBJECT( QColumnView )
 
-    GUI_CS_PROPERTY_READ( resizeGripsVisible, resizeGripsVisible )
-    GUI_CS_PROPERTY_WRITE( resizeGripsVisible, setResizeGripsVisible )
+    GUI_LSCS_PROPERTY_READ( resizeGripsVisible, resizeGripsVisible )
+    GUI_LSCS_PROPERTY_WRITE( resizeGripsVisible, setResizeGripsVisible )
 
 public:
     explicit QColumnView( QWidget *parent = nullptr );
@@ -65,8 +65,8 @@ public:
     void setColumnWidths( const QList<int> &list );
     QList<int> columnWidths() const;
 
-    GUI_CS_SIGNAL_1( Public, void updatePreviewWidget( const QModelIndex &index ) )
-    GUI_CS_SIGNAL_2( updatePreviewWidget, index )
+    GUI_LSCS_SIGNAL_1( Public, void updatePreviewWidget( const QModelIndex &index ) )
+    GUI_LSCS_SIGNAL_2( updatePreviewWidget, index )
 
 protected:
     QColumnView( QColumnViewPrivate &dd, QWidget *parent = nullptr );
@@ -91,14 +91,14 @@ protected:
 private:
     Q_DECLARE_PRIVATE( QColumnView )
 
-    GUI_CS_SLOT_1( Private, void _q_gripMoved( int offset ) )
-    GUI_CS_SLOT_2( _q_gripMoved )
+    GUI_LSCS_SLOT_1( Private, void _q_gripMoved( int offset ) )
+    GUI_LSCS_SLOT_2( _q_gripMoved )
 
-    GUI_CS_SLOT_1( Private, void _q_changeCurrentColumn() )
-    GUI_CS_SLOT_2( _q_changeCurrentColumn )
+    GUI_LSCS_SLOT_1( Private, void _q_changeCurrentColumn() )
+    GUI_LSCS_SLOT_2( _q_changeCurrentColumn )
 
-    GUI_CS_SLOT_1( Private, void _q_clicked( const QModelIndex &index ) )
-    GUI_CS_SLOT_2( _q_clicked )
+    GUI_LSCS_SLOT_1( Private, void _q_clicked( const QModelIndex &index ) )
+    GUI_LSCS_SLOT_2( _q_clicked )
 };
 
 #endif // QT_NO_COLUMNVIEW

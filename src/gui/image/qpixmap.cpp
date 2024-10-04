@@ -518,7 +518,7 @@ bool QPixmap::load( const QString &fileName, const QString &format, Qt::ImageCon
     {
         if ( ! fileName.isEmpty() )
         {
-            qWarning( "QPixmap::load() Unable to load pixmap file %s", csPrintable( fileName ) );
+            qWarning( "QPixmap::load() Unable to load pixmap file %s", lscsPrintable( fileName ) );
         }
 
     }

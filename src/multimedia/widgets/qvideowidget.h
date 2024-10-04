@@ -32,35 +32,35 @@ class QVideoWidgetPrivate;
 
 class Q_MULTIMEDIA_EXPORT QVideoWidget : public QWidget, public QMediaBindableInterface
 {
-    MULTI_CS_OBJECT_MULTIPLE( QVideoWidget, QWidget )
+    MULTI_LSCS_OBJECT_MULTIPLE( QVideoWidget, QWidget )
 
-    CS_INTERFACES( QMediaBindableInterface )
+    LSCS_INTERFACES( QMediaBindableInterface )
 
-    MULTI_CS_PROPERTY_READ( mediaObject, mediaObject )
-    MULTI_CS_PROPERTY_WRITE( mediaObject, cs_setMediaObject )
+    MULTI_LSCS_PROPERTY_READ( mediaObject, mediaObject )
+    MULTI_LSCS_PROPERTY_WRITE( mediaObject, cs_setMediaObject )
 
-    MULTI_CS_PROPERTY_READ( fullScreen, isFullScreen )
-    MULTI_CS_PROPERTY_WRITE( fullScreen, setFullScreen )
-    MULTI_CS_PROPERTY_NOTIFY( fullScreen, fullScreenChanged )
+    MULTI_LSCS_PROPERTY_READ( fullScreen, isFullScreen )
+    MULTI_LSCS_PROPERTY_WRITE( fullScreen, setFullScreen )
+    MULTI_LSCS_PROPERTY_NOTIFY( fullScreen, fullScreenChanged )
 
-    MULTI_CS_PROPERTY_READ( aspectRatioMode, aspectRatioMode )
-    MULTI_CS_PROPERTY_WRITE( aspectRatioMode, setAspectRatioMode )
+    MULTI_LSCS_PROPERTY_READ( aspectRatioMode, aspectRatioMode )
+    MULTI_LSCS_PROPERTY_WRITE( aspectRatioMode, setAspectRatioMode )
 
-    MULTI_CS_PROPERTY_READ( brightness, brightness )
-    MULTI_CS_PROPERTY_WRITE( brightness, setBrightness )
-    MULTI_CS_PROPERTY_NOTIFY( brightness, brightnessChanged )
+    MULTI_LSCS_PROPERTY_READ( brightness, brightness )
+    MULTI_LSCS_PROPERTY_WRITE( brightness, setBrightness )
+    MULTI_LSCS_PROPERTY_NOTIFY( brightness, brightnessChanged )
 
-    MULTI_CS_PROPERTY_READ( contrast, contrast )
-    MULTI_CS_PROPERTY_WRITE( contrast, setContrast )
-    MULTI_CS_PROPERTY_NOTIFY( contrast, contrastChanged )
+    MULTI_LSCS_PROPERTY_READ( contrast, contrast )
+    MULTI_LSCS_PROPERTY_WRITE( contrast, setContrast )
+    MULTI_LSCS_PROPERTY_NOTIFY( contrast, contrastChanged )
 
-    MULTI_CS_PROPERTY_READ( hue, hue )
-    MULTI_CS_PROPERTY_WRITE( hue, setHue )
-    MULTI_CS_PROPERTY_NOTIFY( hue, hueChanged )
+    MULTI_LSCS_PROPERTY_READ( hue, hue )
+    MULTI_LSCS_PROPERTY_WRITE( hue, setHue )
+    MULTI_LSCS_PROPERTY_NOTIFY( hue, hueChanged )
 
-    MULTI_CS_PROPERTY_READ( saturation, saturation )
-    MULTI_CS_PROPERTY_WRITE( saturation, setSaturation )
-    MULTI_CS_PROPERTY_NOTIFY( saturation, saturationChanged )
+    MULTI_LSCS_PROPERTY_READ( saturation, saturation )
+    MULTI_LSCS_PROPERTY_WRITE( saturation, setSaturation )
+    MULTI_LSCS_PROPERTY_NOTIFY( saturation, saturationChanged )
 
 public:
     explicit QVideoWidget( QWidget *parent = nullptr );
@@ -77,57 +77,57 @@ public:
 
     QSize sizeHint() const override;
 
-    MULTI_CS_SIGNAL_1( Public, void fullScreenChanged( bool fullScreen ) )
-    MULTI_CS_SIGNAL_2( fullScreenChanged, fullScreen )
+    MULTI_LSCS_SIGNAL_1( Public, void fullScreenChanged( bool fullScreen ) )
+    MULTI_LSCS_SIGNAL_2( fullScreenChanged, fullScreen )
 
-    MULTI_CS_SIGNAL_1( Public, void brightnessChanged( int brightness ) )
-    MULTI_CS_SIGNAL_2( brightnessChanged, brightness )
+    MULTI_LSCS_SIGNAL_1( Public, void brightnessChanged( int brightness ) )
+    MULTI_LSCS_SIGNAL_2( brightnessChanged, brightness )
 
-    MULTI_CS_SIGNAL_1( Public, void contrastChanged( int contrast ) )
-    MULTI_CS_SIGNAL_2( contrastChanged, contrast )
+    MULTI_LSCS_SIGNAL_1( Public, void contrastChanged( int contrast ) )
+    MULTI_LSCS_SIGNAL_2( contrastChanged, contrast )
 
-    MULTI_CS_SIGNAL_1( Public, void hueChanged( int hue ) )
-    MULTI_CS_SIGNAL_2( hueChanged, hue )
+    MULTI_LSCS_SIGNAL_1( Public, void hueChanged( int hue ) )
+    MULTI_LSCS_SIGNAL_2( hueChanged, hue )
 
-    MULTI_CS_SIGNAL_1( Public, void saturationChanged( int saturation ) )
-    MULTI_CS_SIGNAL_2( saturationChanged, saturation )
+    MULTI_LSCS_SIGNAL_1( Public, void saturationChanged( int saturation ) )
+    MULTI_LSCS_SIGNAL_2( saturationChanged, saturation )
 
-    MULTI_CS_SLOT_1( Public, void setFullScreen( bool fullScreen ) )
-    MULTI_CS_SLOT_2( setFullScreen )
+    MULTI_LSCS_SLOT_1( Public, void setFullScreen( bool fullScreen ) )
+    MULTI_LSCS_SLOT_2( setFullScreen )
 
-    MULTI_CS_SLOT_1( Public, void setAspectRatioMode( Qt::AspectRatioMode mode ) )
-    MULTI_CS_SLOT_2( setAspectRatioMode )
+    MULTI_LSCS_SLOT_1( Public, void setAspectRatioMode( Qt::AspectRatioMode mode ) )
+    MULTI_LSCS_SLOT_2( setAspectRatioMode )
 
-    MULTI_CS_SLOT_1( Public, void setBrightness( int brightness ) )
-    MULTI_CS_SLOT_2( setBrightness )
+    MULTI_LSCS_SLOT_1( Public, void setBrightness( int brightness ) )
+    MULTI_LSCS_SLOT_2( setBrightness )
 
-    MULTI_CS_SLOT_1( Public, void setContrast( int contrast ) )
-    MULTI_CS_SLOT_2( setContrast )
+    MULTI_LSCS_SLOT_1( Public, void setContrast( int contrast ) )
+    MULTI_LSCS_SLOT_2( setContrast )
 
-    MULTI_CS_SLOT_1( Public, void setHue( int hue ) )
-    MULTI_CS_SLOT_2( setHue )
+    MULTI_LSCS_SLOT_1( Public, void setHue( int hue ) )
+    MULTI_LSCS_SLOT_2( setHue )
 
     // these 6 slots were private
-    MULTI_CS_SLOT_1( Public, void _q_brightnessChanged( int brightness ) )
-    MULTI_CS_SLOT_2( _q_brightnessChanged )
+    MULTI_LSCS_SLOT_1( Public, void _q_brightnessChanged( int brightness ) )
+    MULTI_LSCS_SLOT_2( _q_brightnessChanged )
 
-    MULTI_CS_SLOT_1( Public, void _q_contrastChanged( int contrast ) )
-    MULTI_CS_SLOT_2( _q_contrastChanged )
+    MULTI_LSCS_SLOT_1( Public, void _q_contrastChanged( int contrast ) )
+    MULTI_LSCS_SLOT_2( _q_contrastChanged )
 
-    MULTI_CS_SLOT_1( Public, void _q_hueChanged( int hue ) )
-    MULTI_CS_SLOT_2( _q_hueChanged )
+    MULTI_LSCS_SLOT_1( Public, void _q_hueChanged( int hue ) )
+    MULTI_LSCS_SLOT_2( _q_hueChanged )
 
-    MULTI_CS_SLOT_1( Public, void _q_saturationChanged( int saturation ) )
-    MULTI_CS_SLOT_2( _q_saturationChanged )
+    MULTI_LSCS_SLOT_1( Public, void _q_saturationChanged( int saturation ) )
+    MULTI_LSCS_SLOT_2( _q_saturationChanged )
 
-    MULTI_CS_SLOT_1( Public, void setSaturation( int saturation ) )
-    MULTI_CS_SLOT_2( setSaturation )
+    MULTI_LSCS_SLOT_1( Public, void setSaturation( int saturation ) )
+    MULTI_LSCS_SLOT_2( setSaturation )
 
-    MULTI_CS_SLOT_1( Public, void _q_fullScreenChanged( bool fullScreen ) )
-    MULTI_CS_SLOT_2( _q_fullScreenChanged )
+    MULTI_LSCS_SLOT_1( Public, void _q_fullScreenChanged( bool fullScreen ) )
+    MULTI_LSCS_SLOT_2( _q_fullScreenChanged )
 
-    MULTI_CS_SLOT_1( Public, void _q_dimensionsChanged() )
-    MULTI_CS_SLOT_2( _q_dimensionsChanged )
+    MULTI_LSCS_SLOT_1( Public, void _q_dimensionsChanged() )
+    MULTI_LSCS_SLOT_2( _q_dimensionsChanged )
 
 protected:
     bool event( QEvent *event ) override;
@@ -151,8 +151,8 @@ private:
         setMediaObject( object );
     }
 
-    MULTI_CS_SLOT_1( Private, void _q_serviceDestroyed() )
-    MULTI_CS_SLOT_2( _q_serviceDestroyed )
+    MULTI_LSCS_SLOT_1( Private, void _q_serviceDestroyed() )
+    MULTI_LSCS_SLOT_2( _q_serviceDestroyed )
 };
 
 #endif

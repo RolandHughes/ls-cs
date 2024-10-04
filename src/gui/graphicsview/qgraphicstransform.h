@@ -39,7 +39,7 @@ class QGraphicsRotationPrivate;
 
 class Q_GUI_EXPORT QGraphicsTransform : public QObject
 {
-    GUI_CS_OBJECT( QGraphicsTransform )
+    GUI_LSCS_OBJECT( QGraphicsTransform )
 
 public:
     QGraphicsTransform( QObject *parent = nullptr );
@@ -48,8 +48,8 @@ public:
     virtual void applyTo( QMatrix4x4 *matrix ) const = 0;
 
 protected :
-    GUI_CS_SLOT_1( Protected, void update() )
-    GUI_CS_SLOT_2( update )
+    GUI_LSCS_SLOT_1( Protected, void update() )
+    GUI_LSCS_SLOT_2( update )
 
     QGraphicsTransform( QGraphicsTransformPrivate &p, QObject *parent );
 
@@ -63,20 +63,20 @@ private:
 
 class Q_GUI_EXPORT QGraphicsScale : public QGraphicsTransform
 {
-    GUI_CS_OBJECT( QGraphicsScale )
+    GUI_LSCS_OBJECT( QGraphicsScale )
 
-    GUI_CS_PROPERTY_READ( origin, origin )
-    GUI_CS_PROPERTY_WRITE( origin, setOrigin )
-    GUI_CS_PROPERTY_NOTIFY( origin, originChanged )
-    GUI_CS_PROPERTY_READ( xScale, xScale )
-    GUI_CS_PROPERTY_WRITE( xScale, setXScale )
-    GUI_CS_PROPERTY_NOTIFY( xScale, xScaleChanged )
-    GUI_CS_PROPERTY_READ( yScale, yScale )
-    GUI_CS_PROPERTY_WRITE( yScale, setYScale )
-    GUI_CS_PROPERTY_NOTIFY( yScale, yScaleChanged )
-    GUI_CS_PROPERTY_READ( zScale, zScale )
-    GUI_CS_PROPERTY_WRITE( zScale, setZScale )
-    GUI_CS_PROPERTY_NOTIFY( zScale, zScaleChanged )
+    GUI_LSCS_PROPERTY_READ( origin, origin )
+    GUI_LSCS_PROPERTY_WRITE( origin, setOrigin )
+    GUI_LSCS_PROPERTY_NOTIFY( origin, originChanged )
+    GUI_LSCS_PROPERTY_READ( xScale, xScale )
+    GUI_LSCS_PROPERTY_WRITE( xScale, setXScale )
+    GUI_LSCS_PROPERTY_NOTIFY( xScale, xScaleChanged )
+    GUI_LSCS_PROPERTY_READ( yScale, yScale )
+    GUI_LSCS_PROPERTY_WRITE( yScale, setYScale )
+    GUI_LSCS_PROPERTY_NOTIFY( yScale, yScaleChanged )
+    GUI_LSCS_PROPERTY_READ( zScale, zScale )
+    GUI_LSCS_PROPERTY_WRITE( zScale, setZScale )
+    GUI_LSCS_PROPERTY_NOTIFY( zScale, zScaleChanged )
 
 public:
     QGraphicsScale( QObject *parent = nullptr );
@@ -96,16 +96,16 @@ public:
 
     void applyTo( QMatrix4x4 *matrix ) const override;
 
-    GUI_CS_SIGNAL_1( Public, void originChanged() )
-    GUI_CS_SIGNAL_2( originChanged )
-    GUI_CS_SIGNAL_1( Public, void xScaleChanged() )
-    GUI_CS_SIGNAL_2( xScaleChanged )
-    GUI_CS_SIGNAL_1( Public, void yScaleChanged() )
-    GUI_CS_SIGNAL_2( yScaleChanged )
-    GUI_CS_SIGNAL_1( Public, void zScaleChanged() )
-    GUI_CS_SIGNAL_2( zScaleChanged )
-    GUI_CS_SIGNAL_1( Public, void scaleChanged() )
-    GUI_CS_SIGNAL_2( scaleChanged )
+    GUI_LSCS_SIGNAL_1( Public, void originChanged() )
+    GUI_LSCS_SIGNAL_2( originChanged )
+    GUI_LSCS_SIGNAL_1( Public, void xScaleChanged() )
+    GUI_LSCS_SIGNAL_2( xScaleChanged )
+    GUI_LSCS_SIGNAL_1( Public, void yScaleChanged() )
+    GUI_LSCS_SIGNAL_2( yScaleChanged )
+    GUI_LSCS_SIGNAL_1( Public, void zScaleChanged() )
+    GUI_LSCS_SIGNAL_2( zScaleChanged )
+    GUI_LSCS_SIGNAL_1( Public, void scaleChanged() )
+    GUI_LSCS_SIGNAL_2( scaleChanged )
 
 private:
     Q_DECLARE_PRIVATE( QGraphicsScale )
@@ -113,19 +113,19 @@ private:
 
 class Q_GUI_EXPORT QGraphicsRotation : public QGraphicsTransform
 {
-    GUI_CS_OBJECT( QGraphicsRotation )
+    GUI_LSCS_OBJECT( QGraphicsRotation )
 
-    GUI_CS_PROPERTY_READ( origin, origin )
-    GUI_CS_PROPERTY_WRITE( origin, setOrigin )
-    GUI_CS_PROPERTY_NOTIFY( origin, originChanged )
+    GUI_LSCS_PROPERTY_READ( origin, origin )
+    GUI_LSCS_PROPERTY_WRITE( origin, setOrigin )
+    GUI_LSCS_PROPERTY_NOTIFY( origin, originChanged )
 
-    GUI_CS_PROPERTY_READ( angle, angle )
-    GUI_CS_PROPERTY_WRITE( angle, setAngle )
-    GUI_CS_PROPERTY_NOTIFY( angle, angleChanged )
+    GUI_LSCS_PROPERTY_READ( angle, angle )
+    GUI_LSCS_PROPERTY_WRITE( angle, setAngle )
+    GUI_LSCS_PROPERTY_NOTIFY( angle, angleChanged )
 
-    GUI_CS_PROPERTY_READ( axis, axis )
-    GUI_CS_PROPERTY_WRITE( axis, cs_setAxis )
-    GUI_CS_PROPERTY_NOTIFY( axis, axisChanged )
+    GUI_LSCS_PROPERTY_READ( axis, axis )
+    GUI_LSCS_PROPERTY_WRITE( axis, cs_setAxis )
+    GUI_LSCS_PROPERTY_NOTIFY( axis, axisChanged )
 
 public:
     QGraphicsRotation( QObject *parent = nullptr );
@@ -143,14 +143,14 @@ public:
 
     void applyTo( QMatrix4x4 *matrix ) const override;
 
-    GUI_CS_SIGNAL_1( Public, void originChanged() )
-    GUI_CS_SIGNAL_2( originChanged )
+    GUI_LSCS_SIGNAL_1( Public, void originChanged() )
+    GUI_LSCS_SIGNAL_2( originChanged )
 
-    GUI_CS_SIGNAL_1( Public, void angleChanged() )
-    GUI_CS_SIGNAL_2( angleChanged )
+    GUI_LSCS_SIGNAL_1( Public, void angleChanged() )
+    GUI_LSCS_SIGNAL_2( angleChanged )
 
-    GUI_CS_SIGNAL_1( Public, void axisChanged() )
-    GUI_CS_SIGNAL_2( axisChanged )
+    GUI_LSCS_SIGNAL_1( Public, void axisChanged() )
+    GUI_LSCS_SIGNAL_2( axisChanged )
 
     // wrapper for static method
     inline void cs_setAxis( const QVector3D &axis );

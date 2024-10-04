@@ -35,10 +35,10 @@ class QRect;
 
 class Q_GUI_EXPORT QPlatformSystemTrayIcon : public QObject
 {
-    GUI_CS_OBJECT( QPlatformSystemTrayIcon )
+    GUI_LSCS_OBJECT( QPlatformSystemTrayIcon )
 
-    GUI_CS_ENUM( ActivationReason )
-    GUI_CS_ENUM( MessageIcon )
+    GUI_LSCS_ENUM( ActivationReason )
+    GUI_LSCS_ENUM( MessageIcon )
 
 public:
     enum ActivationReason
@@ -69,11 +69,11 @@ public:
 
     virtual QPlatformMenu *createMenu() const;
 
-    GUI_CS_SIGNAL_1( Public, void activated( QPlatformSystemTrayIcon::ActivationReason reason ) )
-    GUI_CS_SIGNAL_2( activated, reason )
+    GUI_LSCS_SIGNAL_1( Public, void activated( QPlatformSystemTrayIcon::ActivationReason reason ) )
+    GUI_LSCS_SIGNAL_2( activated, reason )
 
-    GUI_CS_SIGNAL_1( Public, void messageClicked() )
-    GUI_CS_SIGNAL_2( messageClicked )
+    GUI_LSCS_SIGNAL_1( Public, void messageClicked() )
+    GUI_LSCS_SIGNAL_2( messageClicked )
 };
 
 

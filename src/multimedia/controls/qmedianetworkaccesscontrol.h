@@ -32,7 +32,7 @@
 
 class Q_MULTIMEDIA_EXPORT QMediaNetworkAccessControl : public QMediaControl
 {
-    MULTI_CS_OBJECT( QMediaNetworkAccessControl )
+    MULTI_LSCS_OBJECT( QMediaNetworkAccessControl )
 
 public:
     virtual ~QMediaNetworkAccessControl();
@@ -40,14 +40,14 @@ public:
     virtual void setConfigurations( const QList<QNetworkConfiguration> &configurations ) = 0;
     virtual QNetworkConfiguration currentConfiguration() const = 0;
 
-    MULTI_CS_SIGNAL_1( Public, void configurationChanged( const QNetworkConfiguration &configuration ) )
-    MULTI_CS_SIGNAL_2( configurationChanged, configuration )
+    MULTI_LSCS_SIGNAL_1( Public, void configurationChanged( const QNetworkConfiguration &configuration ) )
+    MULTI_LSCS_SIGNAL_2( configurationChanged, configuration )
 
 protected:
     explicit QMediaNetworkAccessControl( QObject *parent = nullptr );
 };
 
 #define QMediaNetworkAccessControl_iid "com.copperspice.CS.mediaNetworkAccessControl/1.0"
-CS_DECLARE_INTERFACE( QMediaNetworkAccessControl, QMediaNetworkAccessControl_iid )
+LSCS_DECLARE_INTERFACE( QMediaNetworkAccessControl, QMediaNetworkAccessControl_iid )
 
 #endif

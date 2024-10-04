@@ -42,51 +42,51 @@ struct QFileDialogArgs;
 
 class Q_GUI_EXPORT QFileDialog : public QDialog
 {
-    GUI_CS_OBJECT( QFileDialog )
+    GUI_LSCS_OBJECT( QFileDialog )
 
-    GUI_CS_ENUM( ViewMode )
-    GUI_CS_ENUM( FileMode )
-    GUI_CS_ENUM( AcceptMode )
-    GUI_CS_ENUM( FileDialogOption )
+    GUI_LSCS_ENUM( ViewMode )
+    GUI_LSCS_ENUM( FileMode )
+    GUI_LSCS_ENUM( AcceptMode )
+    GUI_LSCS_ENUM( FileDialogOption )
 
-    GUI_CS_FLAG( FileDialogOption, FileDialogOptions )
+    GUI_LSCS_FLAG( FileDialogOption, FileDialogOptions )
 
-    GUI_CS_PROPERTY_READ( viewMode, viewMode )
-    GUI_CS_PROPERTY_WRITE( viewMode, setViewMode )
+    GUI_LSCS_PROPERTY_READ( viewMode, viewMode )
+    GUI_LSCS_PROPERTY_WRITE( viewMode, setViewMode )
 
-    GUI_CS_PROPERTY_READ( fileMode, fileMode )
-    GUI_CS_PROPERTY_WRITE( fileMode, setFileMode )
+    GUI_LSCS_PROPERTY_READ( fileMode, fileMode )
+    GUI_LSCS_PROPERTY_WRITE( fileMode, setFileMode )
 
-    GUI_CS_PROPERTY_READ( acceptMode, acceptMode )
-    GUI_CS_PROPERTY_WRITE( acceptMode, setAcceptMode )
+    GUI_LSCS_PROPERTY_READ( acceptMode, acceptMode )
+    GUI_LSCS_PROPERTY_WRITE( acceptMode, setAcceptMode )
 
-    GUI_CS_PROPERTY_READ( readOnly, isReadOnly )
-    GUI_CS_PROPERTY_WRITE( readOnly, setReadOnly )
-    GUI_CS_PROPERTY_DESIGNABLE( readOnly, false )
+    GUI_LSCS_PROPERTY_READ( readOnly, isReadOnly )
+    GUI_LSCS_PROPERTY_WRITE( readOnly, setReadOnly )
+    GUI_LSCS_PROPERTY_DESIGNABLE( readOnly, false )
 
-    GUI_CS_PROPERTY_READ( resolveSymlinks, resolveSymlinks )
-    GUI_CS_PROPERTY_WRITE( resolveSymlinks, setResolveSymlinks )
-    GUI_CS_PROPERTY_DESIGNABLE( resolveSymlinks, false )
+    GUI_LSCS_PROPERTY_READ( resolveSymlinks, resolveSymlinks )
+    GUI_LSCS_PROPERTY_WRITE( resolveSymlinks, setResolveSymlinks )
+    GUI_LSCS_PROPERTY_DESIGNABLE( resolveSymlinks, false )
 
-    GUI_CS_PROPERTY_READ( confirmOverwrite, confirmOverwrite )
-    GUI_CS_PROPERTY_WRITE( confirmOverwrite, setConfirmOverwrite )
-    GUI_CS_PROPERTY_DESIGNABLE( confirmOverwrite, false )
+    GUI_LSCS_PROPERTY_READ( confirmOverwrite, confirmOverwrite )
+    GUI_LSCS_PROPERTY_WRITE( confirmOverwrite, setConfirmOverwrite )
+    GUI_LSCS_PROPERTY_DESIGNABLE( confirmOverwrite, false )
 
-    GUI_CS_PROPERTY_READ( defaultSuffix, defaultSuffix )
-    GUI_CS_PROPERTY_WRITE( defaultSuffix, setDefaultSuffix )
+    GUI_LSCS_PROPERTY_READ( defaultSuffix, defaultSuffix )
+    GUI_LSCS_PROPERTY_WRITE( defaultSuffix, setDefaultSuffix )
 
-    GUI_CS_PROPERTY_READ( nameFilterDetailsVisible, isNameFilterDetailsVisible )
-    GUI_CS_PROPERTY_WRITE( nameFilterDetailsVisible, setNameFilterDetailsVisible )
-    GUI_CS_PROPERTY_DESIGNABLE( nameFilterDetailsVisible, false )
+    GUI_LSCS_PROPERTY_READ( nameFilterDetailsVisible, isNameFilterDetailsVisible )
+    GUI_LSCS_PROPERTY_WRITE( nameFilterDetailsVisible, setNameFilterDetailsVisible )
+    GUI_LSCS_PROPERTY_DESIGNABLE( nameFilterDetailsVisible, false )
 
-    GUI_CS_PROPERTY_READ( options, options )
-    GUI_CS_PROPERTY_WRITE( options, setOptions )
+    GUI_LSCS_PROPERTY_READ( options, options )
+    GUI_LSCS_PROPERTY_WRITE( options, setOptions )
 
-    GUI_CS_PROPERTY_READ( supportedSchemes, supportedSchemes )
-    GUI_CS_PROPERTY_WRITE( supportedSchemes, setSupportedSchemes )
+    GUI_LSCS_PROPERTY_READ( supportedSchemes, supportedSchemes )
+    GUI_LSCS_PROPERTY_WRITE( supportedSchemes, setSupportedSchemes )
 
 public:
-    GUI_CS_REGISTER_ENUM(
+    GUI_LSCS_REGISTER_ENUM(
         enum ViewMode
     {
         Detail,
@@ -236,32 +236,32 @@ public:
 
     void setVisible( bool visible ) override;
 
-    GUI_CS_SIGNAL_1( Public, void fileSelected( const QString &file ) )
-    GUI_CS_SIGNAL_2( fileSelected, file )
+    GUI_LSCS_SIGNAL_1( Public, void fileSelected( const QString &file ) )
+    GUI_LSCS_SIGNAL_2( fileSelected, file )
 
-    GUI_CS_SIGNAL_1( Public, void filesSelected( const QStringList &files ) )
-    GUI_CS_SIGNAL_2( filesSelected, files )
+    GUI_LSCS_SIGNAL_1( Public, void filesSelected( const QStringList &files ) )
+    GUI_LSCS_SIGNAL_2( filesSelected, files )
 
-    GUI_CS_SIGNAL_1( Public, void currentChanged( const QString &path ) )
-    GUI_CS_SIGNAL_2( currentChanged, path )
+    GUI_LSCS_SIGNAL_1( Public, void currentChanged( const QString &path ) )
+    GUI_LSCS_SIGNAL_2( currentChanged, path )
 
-    GUI_CS_SIGNAL_1( Public, void directoryEntered( const QString &directory ) )
-    GUI_CS_SIGNAL_2( directoryEntered, directory )
+    GUI_LSCS_SIGNAL_1( Public, void directoryEntered( const QString &directory ) )
+    GUI_LSCS_SIGNAL_2( directoryEntered, directory )
 
-    GUI_CS_SIGNAL_1( Public, void urlSelected( const QUrl &url ) )
-    GUI_CS_SIGNAL_2( urlSelected, url )
+    GUI_LSCS_SIGNAL_1( Public, void urlSelected( const QUrl &url ) )
+    GUI_LSCS_SIGNAL_2( urlSelected, url )
 
-    GUI_CS_SIGNAL_1( Public, void urlsSelected( const QList<QUrl> &urls ) )
-    GUI_CS_SIGNAL_2( urlsSelected, urls )
+    GUI_LSCS_SIGNAL_1( Public, void urlsSelected( const QList<QUrl> &urls ) )
+    GUI_LSCS_SIGNAL_2( urlsSelected, urls )
 
-    GUI_CS_SIGNAL_1( Public, void currentUrlChanged( const QUrl &url ) )
-    GUI_CS_SIGNAL_2( currentUrlChanged, url )
+    GUI_LSCS_SIGNAL_1( Public, void currentUrlChanged( const QUrl &url ) )
+    GUI_LSCS_SIGNAL_2( currentUrlChanged, url )
 
-    GUI_CS_SIGNAL_1( Public, void directoryUrlEntered( const QUrl &directory ) )
-    GUI_CS_SIGNAL_2( directoryUrlEntered, directory )
+    GUI_LSCS_SIGNAL_1( Public, void directoryUrlEntered( const QUrl &directory ) )
+    GUI_LSCS_SIGNAL_2( directoryUrlEntered, directory )
 
-    GUI_CS_SIGNAL_1( Public, void filterSelected( const QString &filter ) )
-    GUI_CS_SIGNAL_2( filterSelected, filter )
+    GUI_LSCS_SIGNAL_1( Public, void filterSelected( const QString &filter ) )
+    GUI_LSCS_SIGNAL_2( filterSelected, filter )
 
     static QString getOpenFileName( QWidget *parent = nullptr, const QString &caption = QString(),
                                     const QString &dir = QString(), const QString &filter = QString(),
@@ -305,86 +305,86 @@ protected:
 private:
     Q_DECLARE_PRIVATE( QFileDialog )
 
-    GUI_CS_SLOT_1( Private, void _q_pathChanged( const QString &path ) )
-    GUI_CS_SLOT_2( _q_pathChanged )
+    GUI_LSCS_SLOT_1( Private, void _q_pathChanged( const QString &path ) )
+    GUI_LSCS_SLOT_2( _q_pathChanged )
 
-    GUI_CS_SLOT_1( Private, void _q_navigateBackward() )
-    GUI_CS_SLOT_2( _q_navigateBackward )
+    GUI_LSCS_SLOT_1( Private, void _q_navigateBackward() )
+    GUI_LSCS_SLOT_2( _q_navigateBackward )
 
-    GUI_CS_SLOT_1( Private, void _q_navigateForward() )
-    GUI_CS_SLOT_2( _q_navigateForward )
+    GUI_LSCS_SLOT_1( Private, void _q_navigateForward() )
+    GUI_LSCS_SLOT_2( _q_navigateForward )
 
-    GUI_CS_SLOT_1( Private, void _q_navigateToParent() )
-    GUI_CS_SLOT_2( _q_navigateToParent )
+    GUI_LSCS_SLOT_1( Private, void _q_navigateToParent() )
+    GUI_LSCS_SLOT_2( _q_navigateToParent )
 
-    GUI_CS_SLOT_1( Private, void _q_createDirectory() )
-    GUI_CS_SLOT_2( _q_createDirectory )
+    GUI_LSCS_SLOT_1( Private, void _q_createDirectory() )
+    GUI_LSCS_SLOT_2( _q_createDirectory )
 
-    GUI_CS_SLOT_1( Private, void _q_showListView() )
-    GUI_CS_SLOT_2( _q_showListView )
+    GUI_LSCS_SLOT_1( Private, void _q_showListView() )
+    GUI_LSCS_SLOT_2( _q_showListView )
 
-    GUI_CS_SLOT_1( Private, void _q_showDetailsView() )
-    GUI_CS_SLOT_2( _q_showDetailsView )
+    GUI_LSCS_SLOT_1( Private, void _q_showDetailsView() )
+    GUI_LSCS_SLOT_2( _q_showDetailsView )
 
-    GUI_CS_SLOT_1( Private, void _q_showContextMenu( const QPoint &point ) )
-    GUI_CS_SLOT_2( _q_showContextMenu )
+    GUI_LSCS_SLOT_1( Private, void _q_showContextMenu( const QPoint &point ) )
+    GUI_LSCS_SLOT_2( _q_showContextMenu )
 
-    GUI_CS_SLOT_1( Private, void _q_renameCurrent() )
-    GUI_CS_SLOT_2( _q_renameCurrent )
+    GUI_LSCS_SLOT_1( Private, void _q_renameCurrent() )
+    GUI_LSCS_SLOT_2( _q_renameCurrent )
 
-    GUI_CS_SLOT_1( Private, void _q_deleteCurrent() )
-    GUI_CS_SLOT_2( _q_deleteCurrent )
+    GUI_LSCS_SLOT_1( Private, void _q_deleteCurrent() )
+    GUI_LSCS_SLOT_2( _q_deleteCurrent )
 
-    GUI_CS_SLOT_1( Private, void _q_showHidden() )
-    GUI_CS_SLOT_2( _q_showHidden )
+    GUI_LSCS_SLOT_1( Private, void _q_showHidden() )
+    GUI_LSCS_SLOT_2( _q_showHidden )
 
-    GUI_CS_SLOT_1( Private, void _q_updateOkButton() )
-    GUI_CS_SLOT_2( _q_updateOkButton )
+    GUI_LSCS_SLOT_1( Private, void _q_updateOkButton() )
+    GUI_LSCS_SLOT_2( _q_updateOkButton )
 
-    GUI_CS_SLOT_1( Private, void _q_currentChanged( const QModelIndex &index ) )
-    GUI_CS_SLOT_2( _q_currentChanged )
+    GUI_LSCS_SLOT_1( Private, void _q_currentChanged( const QModelIndex &index ) )
+    GUI_LSCS_SLOT_2( _q_currentChanged )
 
-    GUI_CS_SLOT_1( Private, void _q_enterDirectory( const QModelIndex &index ) )
-    GUI_CS_SLOT_2( _q_enterDirectory )
+    GUI_LSCS_SLOT_1( Private, void _q_enterDirectory( const QModelIndex &index ) )
+    GUI_LSCS_SLOT_2( _q_enterDirectory )
 
-    GUI_CS_SLOT_1( Private, void _q_emitUrlSelected( const QUrl & ) )
-    GUI_CS_SLOT_2( _q_emitUrlSelected )
+    GUI_LSCS_SLOT_1( Private, void _q_emitUrlSelected( const QUrl & ) )
+    GUI_LSCS_SLOT_2( _q_emitUrlSelected )
 
-    GUI_CS_SLOT_1( Private, void _q_emitUrlsSelected( const QList<QUrl> & ) )
-    GUI_CS_SLOT_2( _q_emitUrlsSelected )
+    GUI_LSCS_SLOT_1( Private, void _q_emitUrlsSelected( const QList<QUrl> & ) )
+    GUI_LSCS_SLOT_2( _q_emitUrlsSelected )
 
-    GUI_CS_SLOT_1( Private, void _q_nativeCurrentChanged( const QUrl & ) )
-    GUI_CS_SLOT_2( _q_nativeCurrentChanged )
+    GUI_LSCS_SLOT_1( Private, void _q_nativeCurrentChanged( const QUrl & ) )
+    GUI_LSCS_SLOT_2( _q_nativeCurrentChanged )
 
-    GUI_CS_SLOT_1( Private, void _q_nativeEnterDirectory( const QUrl & ) )
-    GUI_CS_SLOT_2( _q_nativeEnterDirectory )
+    GUI_LSCS_SLOT_1( Private, void _q_nativeEnterDirectory( const QUrl & ) )
+    GUI_LSCS_SLOT_2( _q_nativeEnterDirectory )
 
-    GUI_CS_SLOT_1( Private, void _q_goToDirectory( const QString &path ) )
-    GUI_CS_SLOT_2( _q_goToDirectory )
+    GUI_LSCS_SLOT_1( Private, void _q_goToDirectory( const QString &path ) )
+    GUI_LSCS_SLOT_2( _q_goToDirectory )
 
-    GUI_CS_SLOT_1( Private, void _q_useNameFilter( int index ) )
-    GUI_CS_SLOT_2( _q_useNameFilter )
+    GUI_LSCS_SLOT_1( Private, void _q_useNameFilter( int index ) )
+    GUI_LSCS_SLOT_2( _q_useNameFilter )
 
-    GUI_CS_SLOT_1( Private, void _q_selectionChanged() )
-    GUI_CS_SLOT_2( _q_selectionChanged )
+    GUI_LSCS_SLOT_1( Private, void _q_selectionChanged() )
+    GUI_LSCS_SLOT_2( _q_selectionChanged )
 
-    GUI_CS_SLOT_1( Private, void _q_goToUrl( const QUrl &url ) )
-    GUI_CS_SLOT_2( _q_goToUrl )
+    GUI_LSCS_SLOT_1( Private, void _q_goToUrl( const QUrl &url ) )
+    GUI_LSCS_SLOT_2( _q_goToUrl )
 
-    GUI_CS_SLOT_1( Private, void _q_goHome() )
-    GUI_CS_SLOT_2( _q_goHome )
+    GUI_LSCS_SLOT_1( Private, void _q_goHome() )
+    GUI_LSCS_SLOT_2( _q_goHome )
 
-    GUI_CS_SLOT_1( Private, void _q_showHeader( QAction *action ) )
-    GUI_CS_SLOT_2( _q_showHeader )
+    GUI_LSCS_SLOT_1( Private, void _q_showHeader( QAction *action ) )
+    GUI_LSCS_SLOT_2( _q_showHeader )
 
-    GUI_CS_SLOT_1( Private, void _q_autoCompleteFileName( const QString &text ) )
-    GUI_CS_SLOT_2( _q_autoCompleteFileName )
+    GUI_LSCS_SLOT_1( Private, void _q_autoCompleteFileName( const QString &text ) )
+    GUI_LSCS_SLOT_2( _q_autoCompleteFileName )
 
-    GUI_CS_SLOT_1( Private, void _q_rowsInserted( const QModelIndex &parent ) )
-    GUI_CS_SLOT_2( _q_rowsInserted )
+    GUI_LSCS_SLOT_1( Private, void _q_rowsInserted( const QModelIndex &parent ) )
+    GUI_LSCS_SLOT_2( _q_rowsInserted )
 
-    GUI_CS_SLOT_1( Private, void _q_fileRenamed( const QString &path, const QString &oldName, const QString &newName ) )
-    GUI_CS_SLOT_2( _q_fileRenamed )
+    GUI_LSCS_SLOT_1( Private, void _q_fileRenamed( const QString &path, const QString &oldName, const QString &newName ) )
+    GUI_LSCS_SLOT_2( _q_fileRenamed )
 
     friend class QPlatformDialogHelper;
 };

@@ -247,7 +247,7 @@ static timespec roundToMillisecond( timespec val )
     return normalizedTimespec( val );
 }
 
-#if defined(CS_SHOW_DEBUG_CORE)
+#if defined(LSCS_SHOW_DEBUG_CORE)
 QDebug operator<<( QDebug s, timeval tv )
 {
     QDebugStateSaver saver( s );
@@ -439,7 +439,7 @@ static void calculateNextTimeout( QTimerInfo_Unix *t, timespec currentTime )
                 t->timeout += t->interval;
             }
 
-#if defined(CS_SHOW_DEBUG_CORE)
+#if defined(LSCS_SHOW_DEBUG_CORE)
             t->expected += t->interval;
 
             if ( t->expected < currentTime )
@@ -467,7 +467,7 @@ static void calculateNextTimeout( QTimerInfo_Unix *t, timespec currentTime )
                 t->timeout.tv_sec = currentTime.tv_sec + t->interval;
             }
 
-#if defined(CS_SHOW_DEBUG_CORE)
+#if defined(LSCS_SHOW_DEBUG_CORE)
             t->expected.tv_sec += t->interval;
 
             if ( t->expected.tv_sec <= currentTime.tv_sec )
@@ -480,7 +480,7 @@ static void calculateNextTimeout( QTimerInfo_Unix *t, timespec currentTime )
             return;
     }
 
-#if defined(CS_SHOW_DEBUG_CORE)
+#if defined(LSCS_SHOW_DEBUG_CORE)
 
     if ( t->timerType != Qt::PreciseTimer )
     {
@@ -560,7 +560,7 @@ int QTimerInfoList::timerRemainingTime( int timerId )
         }
     }
 
-#if defined(CS_SHOW_DEBUG_CORE)
+#if defined(LSCS_SHOW_DEBUG_CORE)
     qDebug( "QTimerInfoList::timerRemainingTime() Timer id %d was not found", timerId );
 #endif
 
@@ -636,7 +636,7 @@ void QTimerInfoList::registerTimer( int timerId, int interval, Qt::TimerType tim
 
     timerInsert( t );
 
-#if defined(CS_SHOW_DEBUG_CORE)
+#if defined(LSCS_SHOW_DEBUG_CORE)
     t->expected.tv_sec  = expected.tv_sec;
     t->expected.tv_usec = expected.tv_nsec / 1000;
     t->cumulativeError = 0;
@@ -796,7 +796,7 @@ int QTimerInfoList::activateTimers()
         // remove from list
         removeFirst();
 
-#if defined(CS_SHOW_DEBUG_CORE)
+#if defined(LSCS_SHOW_DEBUG_CORE)
         float diff;
 
         if ( newTime < currentTimerInfo->expected )

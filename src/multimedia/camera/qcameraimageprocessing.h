@@ -39,10 +39,10 @@ class QCameraImageProcessingPrivate;
 
 class Q_MULTIMEDIA_EXPORT QCameraImageProcessing : public QObject
 {
-    MULTI_CS_OBJECT( QCameraImageProcessing )
+    MULTI_LSCS_OBJECT( QCameraImageProcessing )
 
-    MULTI_CS_ENUM( WhiteBalanceMode )
-    MULTI_CS_ENUM( ColorFilter )
+    MULTI_LSCS_ENUM( WhiteBalanceMode )
+    MULTI_LSCS_ENUM( ColorFilter )
 
 public:
     enum WhiteBalanceMode

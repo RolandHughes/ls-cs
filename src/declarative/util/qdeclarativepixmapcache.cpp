@@ -63,7 +63,7 @@ class QDeclarativePixmapData;
 
 class QDeclarativePixmapReply : public QObject
 {
-    DECL_CS_OBJECT( QDeclarativePixmapReply )
+    DECL_LSCS_OBJECT( QDeclarativePixmapReply )
 
 public:
     enum ReadError { NoError, Loading, Decoding };
@@ -91,11 +91,11 @@ public:
     };
     void postReply( ReadError, const QString &, const QSize &, const QImage & );
 
-    DECL_CS_SIGNAL_1( Public, void finished() )
-    DECL_CS_SIGNAL_2( finished )
+    DECL_LSCS_SIGNAL_1( Public, void finished() )
+    DECL_LSCS_SIGNAL_2( finished )
 
-    DECL_CS_SIGNAL_1( Public, void downloadProgress( qint64 un_named_arg1, qint64 un_named_arg2 ) )
-    DECL_CS_SIGNAL_2( downloadProgress, un_named_arg1, un_named_arg2 )
+    DECL_LSCS_SIGNAL_1( Public, void downloadProgress( qint64 un_named_arg1, qint64 un_named_arg2 ) )
+    DECL_LSCS_SIGNAL_2( downloadProgress, un_named_arg1, un_named_arg2 )
 
 protected:
     bool event( QEvent *event );
@@ -110,7 +110,7 @@ public:
 
 class QDeclarativePixmapReaderThreadObject : public QObject
 {
-    DECL_CS_OBJECT( QDeclarativePixmapReaderThreadObject )
+    DECL_LSCS_OBJECT( QDeclarativePixmapReaderThreadObject )
 
 public:
     QDeclarativePixmapReaderThreadObject( QDeclarativePixmapReader * );
@@ -118,8 +118,8 @@ public:
     virtual bool event( QEvent *e );
 
 private:
-    DECL_CS_SLOT_1( Private, void networkRequestDone() )
-    DECL_CS_SLOT_2( networkRequestDone )
+    DECL_LSCS_SLOT_1( Private, void networkRequestDone() )
+    DECL_LSCS_SLOT_2( networkRequestDone )
 
     QDeclarativePixmapReader *reader;
 };
@@ -128,7 +128,7 @@ class QDeclarativePixmapData;
 
 class QDeclarativePixmapReader : public QThread
 {
-    DECL_CS_OBJECT( QDeclarativePixmapReader )
+    DECL_LSCS_OBJECT( QDeclarativePixmapReader )
 
 public:
     QDeclarativePixmapReader( QDeclarativeEngine *eng );
@@ -705,7 +705,7 @@ inline uint qHash( const QDeclarativePixmapKey &key )
 
 class QDeclarativePixmapStore : public QObject
 {
-    DECL_CS_OBJECT( QDeclarativePixmapStore )
+    DECL_LSCS_OBJECT( QDeclarativePixmapStore )
 
 public:
     QDeclarativePixmapStore();

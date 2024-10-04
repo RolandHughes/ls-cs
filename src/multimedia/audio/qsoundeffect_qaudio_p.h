@@ -34,7 +34,7 @@ class QSoundEffectPrivate;
 
 class PrivateSoundSource : public QIODevice
 {
-    MULTI_CS_OBJECT( PrivateSoundSource )
+    MULTI_LSCS_OBJECT( PrivateSoundSource )
 
 public:
     PrivateSoundSource( QSoundEffectPrivate *s );
@@ -59,21 +59,21 @@ private:
 
     QSoundEffectPrivate *soundeffect;
 
-    MULTI_CS_SLOT_1( Private, void sampleReady() )
-    MULTI_CS_SLOT_2( sampleReady )
+    MULTI_LSCS_SLOT_1( Private, void sampleReady() )
+    MULTI_LSCS_SLOT_2( sampleReady )
 
-    MULTI_CS_SLOT_1( Private, void decoderError() )
-    MULTI_CS_SLOT_2( decoderError )
+    MULTI_LSCS_SLOT_1( Private, void decoderError() )
+    MULTI_LSCS_SLOT_2( decoderError )
 
-    MULTI_CS_SLOT_1( Private, void stateChanged( QAudio::State state ) )
-    MULTI_CS_SLOT_2( stateChanged )
+    MULTI_LSCS_SLOT_1( Private, void stateChanged( QAudio::State state ) )
+    MULTI_LSCS_SLOT_2( stateChanged )
 
     friend class QSoundEffectPrivate;
 };
 
 class QSoundEffectPrivate : public QObject
 {
-    MULTI_CS_OBJECT( QSoundEffectPrivate )
+    MULTI_LSCS_OBJECT( QSoundEffectPrivate )
 
 public:
     explicit QSoundEffectPrivate( QObject *parent );
@@ -99,32 +99,32 @@ public:
     QString category() const;
     void setCategory( const QString & );
 
-    MULTI_CS_SIGNAL_1( Public, void loopsRemainingChanged() )
-    MULTI_CS_SIGNAL_2( loopsRemainingChanged )
+    MULTI_LSCS_SIGNAL_1( Public, void loopsRemainingChanged() )
+    MULTI_LSCS_SIGNAL_2( loopsRemainingChanged )
 
-    MULTI_CS_SIGNAL_1( Public, void volumeChanged() )
-    MULTI_CS_SIGNAL_2( volumeChanged )
+    MULTI_LSCS_SIGNAL_1( Public, void volumeChanged() )
+    MULTI_LSCS_SIGNAL_2( volumeChanged )
 
-    MULTI_CS_SIGNAL_1( Public, void mutedChanged() )
-    MULTI_CS_SIGNAL_2( mutedChanged )
+    MULTI_LSCS_SIGNAL_1( Public, void mutedChanged() )
+    MULTI_LSCS_SIGNAL_2( mutedChanged )
 
-    MULTI_CS_SIGNAL_1( Public, void loadedChanged() )
-    MULTI_CS_SIGNAL_2( loadedChanged )
+    MULTI_LSCS_SIGNAL_1( Public, void loadedChanged() )
+    MULTI_LSCS_SIGNAL_2( loadedChanged )
 
-    MULTI_CS_SIGNAL_1( Public, void playingChanged() )
-    MULTI_CS_SIGNAL_2( playingChanged )
+    MULTI_LSCS_SIGNAL_1( Public, void playingChanged() )
+    MULTI_LSCS_SIGNAL_2( playingChanged )
 
-    MULTI_CS_SIGNAL_1( Public, void statusChanged() )
-    MULTI_CS_SIGNAL_2( statusChanged )
+    MULTI_LSCS_SIGNAL_1( Public, void statusChanged() )
+    MULTI_LSCS_SIGNAL_2( statusChanged )
 
-    MULTI_CS_SIGNAL_1( Public, void categoryChanged() )
-    MULTI_CS_SIGNAL_2( categoryChanged )
+    MULTI_LSCS_SIGNAL_1( Public, void categoryChanged() )
+    MULTI_LSCS_SIGNAL_2( categoryChanged )
 
-    MULTI_CS_SLOT_1( Public, void play() )
-    MULTI_CS_SLOT_2( play )
+    MULTI_LSCS_SLOT_1( Public, void play() )
+    MULTI_LSCS_SLOT_2( play )
 
-    MULTI_CS_SLOT_1( Public, void stop() )
-    MULTI_CS_SLOT_2( stop )
+    MULTI_LSCS_SLOT_1( Public, void stop() )
+    MULTI_LSCS_SLOT_2( stop )
 
 private:
     void setStatus( QSoundEffect::Status status );

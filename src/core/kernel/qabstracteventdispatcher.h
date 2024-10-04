@@ -38,7 +38,7 @@ class QWinEventNotifier;
 
 class Q_CORE_EXPORT QAbstractEventDispatcher : public QObject
 {
-    CORE_CS_OBJECT( QAbstractEventDispatcher )
+    CORE_LSCS_OBJECT( QAbstractEventDispatcher )
     Q_DECLARE_PRIVATE( QAbstractEventDispatcher )
 
 public:
@@ -78,11 +78,11 @@ public:
     void removeNativeEventFilter( QAbstractNativeEventFilter *filterObj );
     bool filterNativeEvent( const QByteArray &eventType, void *message, long *result );
 
-    CORE_CS_SIGNAL_1( Public, void aboutToBlock() )
-    CORE_CS_SIGNAL_2( aboutToBlock )
+    CORE_LSCS_SIGNAL_1( Public, void aboutToBlock() )
+    CORE_LSCS_SIGNAL_2( aboutToBlock )
 
-    CORE_CS_SIGNAL_1( Public, void awake() )
-    CORE_CS_SIGNAL_2( awake )
+    CORE_LSCS_SIGNAL_1( Public, void awake() )
+    CORE_LSCS_SIGNAL_2( awake )
 
 protected:
     QAbstractEventDispatcher( QAbstractEventDispatcherPrivate &, QObject *parent );

@@ -42,7 +42,7 @@ using QMacAccessibilityElement = struct objc_object;
 
 class Q_GUI_EXPORT QAccessibleCache : public QObject
 {
-    GUI_CS_OBJECT( QAccessibleCache )
+    GUI_LSCS_OBJECT( QAccessibleCache )
 
 public:
     static QAccessibleCache *instance();

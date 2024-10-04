@@ -32,7 +32,7 @@ class QScriptBreakpointsWidgetPrivate;
 
 class QScriptBreakpointsWidget : public QScriptBreakpointsWidgetInterface
 {
-    SCRIPT_T_CS_OBJECT( QScriptBreakpointsWidget )
+    SCRIPT_T_LSCS_OBJECT( QScriptBreakpointsWidget )
 
 public:
     QScriptBreakpointsWidget( QWidget *parent = nullptr );
@@ -48,17 +48,17 @@ protected:
     void keyPressEvent( QKeyEvent *e );
 
 private:
-    CS_SLOT_1( Private, void _q_newBreakpoint() )
-    CS_SLOT_2( _q_newBreakpoint )
+    LSCS_SLOT_1( Private, void _q_newBreakpoint() )
+    LSCS_SLOT_2( _q_newBreakpoint )
 
-    CS_SLOT_1( Private, void _q_deleteBreakpoint() )
-    CS_SLOT_2( _q_deleteBreakpoint )
+    LSCS_SLOT_1( Private, void _q_deleteBreakpoint() )
+    LSCS_SLOT_2( _q_deleteBreakpoint )
 
-    CS_SLOT_1( Private, void _q_onCurrentChanged( const QModelIndex &un_named_arg1 ) )
-    CS_SLOT_2( _q_onCurrentChanged )
+    LSCS_SLOT_1( Private, void _q_onCurrentChanged( const QModelIndex &un_named_arg1 ) )
+    LSCS_SLOT_2( _q_onCurrentChanged )
 
-    CS_SLOT_1( Private, void _q_onNewBreakpointRequest( const QString &un_named_arg1, int un_named_arg2 ) )
-    CS_SLOT_2( _q_onNewBreakpointRequest )
+    LSCS_SLOT_1( Private, void _q_onNewBreakpointRequest( const QString &un_named_arg1, int un_named_arg2 ) )
+    LSCS_SLOT_2( _q_onNewBreakpointRequest )
 
     Q_DECLARE_PRIVATE( QScriptBreakpointsWidget )
     Q_DISABLE_COPY( QScriptBreakpointsWidget )

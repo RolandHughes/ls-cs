@@ -48,10 +48,10 @@ class QLineEditPrivate;
 
 class QLineEditIconButton : public QToolButton
 {
-    GUI_CS_OBJECT( QLineEditIconButton )
+    GUI_LSCS_OBJECT( QLineEditIconButton )
 
-    GUI_CS_PROPERTY_READ( opacity, opacity )
-    GUI_CS_PROPERTY_WRITE( opacity, setOpacity )
+    GUI_LSCS_PROPERTY_READ( opacity, opacity )
+    GUI_LSCS_PROPERTY_WRITE( opacity, setOpacity )
 
 public:
     explicit QLineEditIconButton( QWidget *parent = nullptr );
@@ -74,8 +74,8 @@ protected:
     void paintEvent( QPaintEvent *event ) override;
 
 private :
-    GUI_CS_SLOT_1( Private, void updateCursor() )
-    GUI_CS_SLOT_2( updateCursor )
+    GUI_LSCS_SLOT_1( Private, void updateCursor() )
+    GUI_LSCS_SLOT_2( updateCursor )
 
 #ifndef QT_NO_ANIMATION
     void startOpacityAnimation( qreal endValue );

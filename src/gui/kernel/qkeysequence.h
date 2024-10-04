@@ -40,9 +40,9 @@ class QKeySequencePrivate;
 Q_GUI_EXPORT uint qHash( const QKeySequence &key, uint seed = 0 );
 class Q_GUI_EXPORT QKeySequence
 {
-    GUI_CS_GADGET( QKeySequence )
+    GUI_LSCS_GADGET( QKeySequence )
 
-    GUI_CS_ENUM( StandardKey )
+    GUI_LSCS_ENUM( StandardKey )
 
 public:
     enum StandardKey

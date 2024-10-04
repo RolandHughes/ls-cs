@@ -32,7 +32,7 @@ class QGraphicsProxyWidgetPrivate;
 
 class Q_GUI_EXPORT QGraphicsProxyWidget : public QGraphicsWidget
 {
-    GUI_CS_OBJECT( QGraphicsProxyWidget )
+    GUI_LSCS_OBJECT( QGraphicsProxyWidget )
 
 public:
     QGraphicsProxyWidget( QGraphicsItem *parent = nullptr, Qt::WindowFlags flags = Qt::EmptyFlag );
@@ -104,14 +104,14 @@ protected:
     QSizeF sizeHint( Qt::SizeHint which, const QSizeF &constraint = QSizeF() ) const override;
     void resizeEvent( QGraphicsSceneResizeEvent *event ) override;
 
-    GUI_CS_SLOT_1( Protected, QGraphicsProxyWidget *newProxyWidget( const QWidget *child ) )
-    GUI_CS_SLOT_2( newProxyWidget )
+    GUI_LSCS_SLOT_1( Protected, QGraphicsProxyWidget *newProxyWidget( const QWidget *child ) )
+    GUI_LSCS_SLOT_2( newProxyWidget )
 
 private:
     Q_DECLARE_PRIVATE_D( QGraphicsItem::d_ptr.data(), QGraphicsProxyWidget )
 
-    GUI_CS_SLOT_1( Private, void _q_removeWidgetSlot() )
-    GUI_CS_SLOT_2( _q_removeWidgetSlot )
+    GUI_LSCS_SLOT_1( Private, void _q_removeWidgetSlot() )
+    GUI_LSCS_SLOT_2( _q_removeWidgetSlot )
 
     friend class QWidget;
     friend class QWidgetPrivate;

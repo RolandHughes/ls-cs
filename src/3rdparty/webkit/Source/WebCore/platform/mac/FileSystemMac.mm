@@ -46,7 +46,7 @@ String openTemporaryFile(const String& prefix, PlatformFileHandle& platformFileH
     platformFileHandle = invalidPlatformFileHandle;
     
     Vector<char> temporaryFilePath(PATH_MAX);
-    if (!confstr(_CS_DARWIN_USER_TEMP_DIR, temporaryFilePath.data(), temporaryFilePath.size()))
+    if (!confstr(_LSCS_DARWIN_USER_TEMP_DIR, temporaryFilePath.data(), temporaryFilePath.size()))
         return String();
 
     // Shrink the vector.   

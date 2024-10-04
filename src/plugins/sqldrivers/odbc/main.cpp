@@ -27,10 +27,10 @@
 
 class QODBCDriverPlugin : public QSqlDriverPlugin
 {
-    CS_OBJECT( QODBCDriverPlugin )
+    LSCS_OBJECT( QODBCDriverPlugin )
 
-    CS_PLUGIN_IID( QSqlDriverInterface_ID )
-    CS_PLUGIN_KEY( "QODBC" )
+    LSCS_PLUGIN_IID( QSqlDriverInterface_ID )
+    LSCS_PLUGIN_KEY( "QODBC" )
 
 public:
     QODBCDriverPlugin();
@@ -38,7 +38,7 @@ public:
     QSqlDriver *create( const QString & ) override;
 };
 
-CS_PLUGIN_REGISTER( QODBCDriverPlugin )
+LSCS_PLUGIN_REGISTER( QODBCDriverPlugin )
 
 QODBCDriverPlugin::QODBCDriverPlugin()
     : QSqlDriverPlugin()

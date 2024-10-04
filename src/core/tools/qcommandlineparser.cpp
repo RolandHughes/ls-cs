@@ -97,7 +97,7 @@ QStringList QCommandLineParserPrivate::aliases( const QString &optionName ) cons
 
     if ( it == nameHash.end() )
     {
-        qWarning( "QCommandLineParser::aliases() Option was not defined, %s", csPrintable( optionName ) );
+        qWarning( "QCommandLineParser::aliases() Option was not defined, %s", lscsPrintable( optionName ) );
         return QStringList();
     }
 
@@ -232,7 +232,7 @@ void QCommandLineParser::process( const QStringList &arguments )
 {
     if ( ! d->parse( arguments ) )
     {
-        fprintf( stderr, "%s\n", csPrintable( errorText() ) );
+        fprintf( stderr, "%s\n", lscsPrintable( errorText() ) );
         ::exit( EXIT_FAILURE );
     }
 
@@ -532,7 +532,7 @@ QStringList QCommandLineParser::values( const QString &optionName ) const
         return values;
     }
 
-    qWarning( "QCommandLineParser::values() Option not defined, %s", csPrintable( optionName ) );
+    qWarning( "QCommandLineParser::values() Option not defined, %s", lscsPrintable( optionName ) );
     return QStringList();
 }
 
@@ -571,15 +571,15 @@ QStringList QCommandLineParser::unknownOptionNames() const
 
 void QCommandLineParser::showVersion()
 {
-    printf( "%s %s\n", csPrintable( QCoreApplication::applicationName() ),
-            csPrintable( QCoreApplication::applicationVersion() ) );
+    printf( "%s %s\n", lscsPrintable( QCoreApplication::applicationName() ),
+            lscsPrintable( QCoreApplication::applicationVersion() ) );
     ::exit( EXIT_SUCCESS );
 }
 
 
 void QCommandLineParser::showHelp( int exitCode )
 {
-    printf( "%s", csPrintable( d->helpText() ) );
+    printf( "%s", lscsPrintable( d->helpText() ) );
     ::exit( exitCode );
 }
 

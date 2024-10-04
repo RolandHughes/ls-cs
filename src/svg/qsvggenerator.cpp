@@ -803,7 +803,7 @@ bool QSvgPaintEngine::begin( QPaintDevice * )
         if ( !d->outputDevice->open( QIODevice::WriteOnly | QIODevice::Text ) )
         {
             qWarning( "QSvgPaintEngine::begin(), could not open output device: '%s'",
-                      csPrintable( d->outputDevice->errorString() ) );
+                      lscsPrintable( d->outputDevice->errorString() ) );
             return false;
         }
 
@@ -811,7 +811,7 @@ bool QSvgPaintEngine::begin( QPaintDevice * )
     else if ( !d->outputDevice->isWritable() )
     {
         qWarning( "QSvgPaintEngine::begin(), could not write to read-only output device: '%s'",
-                  csPrintable( d->outputDevice->errorString() ) );
+                  lscsPrintable( d->outputDevice->errorString() ) );
         return false;
     }
 

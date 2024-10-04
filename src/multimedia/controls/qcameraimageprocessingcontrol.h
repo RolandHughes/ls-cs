@@ -31,9 +31,9 @@
 
 class Q_MULTIMEDIA_EXPORT QCameraImageProcessingControl : public QMediaControl
 {
-    MULTI_CS_OBJECT( QCameraImageProcessingControl )
+    MULTI_LSCS_OBJECT( QCameraImageProcessingControl )
 
-    MULTI_CS_ENUM( ProcessingParameter )
+    MULTI_LSCS_ENUM( ProcessingParameter )
 
 public:
     ~QCameraImageProcessingControl();
@@ -66,7 +66,7 @@ protected:
 };
 
 #define QCameraImageProcessingControl_iid "com.copperspice.CS.cameraImageProcessingControl/1.0"
-CS_DECLARE_INTERFACE( QCameraImageProcessingControl, QCameraImageProcessingControl_iid )
+LSCS_DECLARE_INTERFACE( QCameraImageProcessingControl, QCameraImageProcessingControl_iid )
 
 #endif
 

@@ -345,9 +345,9 @@ static bool registerPluginView()
     wcex.hIconSm        = 0;
 #endif
 
-    wcex.style          = CS_DBLCLKS;
+    wcex.style          = LSCS_DBLCLKS;
 #if OS(WINCE)
-    wcex.style          |= CS_PARENTDC;
+    wcex.style          |= LSCS_PARENTDC;
 #endif
     wcex.lpfnWndProc    = DefWindowProc;
     wcex.cbClsExtra     = 0;

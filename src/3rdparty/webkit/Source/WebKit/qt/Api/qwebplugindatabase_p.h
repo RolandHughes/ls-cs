@@ -72,7 +72,7 @@ private:
 class QWebPluginDatabasePrivate;
 class QWEBKIT_EXPORT QWebPluginDatabase : public QObject
 {
-    WEB_CS_OBJECT( QWebPluginDatabase )
+    WEB_LSCS_OBJECT( QWebPluginDatabase )
 
 private:
     QWebPluginDatabase( QObject *parent = 0 );

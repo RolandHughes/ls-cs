@@ -24,9 +24,9 @@
 #ifndef QSTRINGVIEW_H
 #define QSTRINGVIEW_H
 
-#define CS_STRING_ALLOW_UNSAFE
+#define LSCS_STRING_ALLOW_UNSAFE
 
-#include <cs_string_view.h>
+#include <lscs_string_view.h>
 
 #include <qbytearray.h>
 #include <qchar32.h>
@@ -37,7 +37,7 @@ class QStringParser;
 
 Q_CORE_EXPORT std::pair<char32_t, const char32_t *> cs_internal_convertCaseTrait( int trait, char32_t value );
 
-#if ! defined (CS_DOXYPRESS)
+#if ! defined (LSCS_DOXYPRESS)
 namespace Cs
 {
 #endif
@@ -1160,7 +1160,7 @@ inline bool operator!=( QStringView<S> str1, QStringView<S> str2 )
 // remaining operator!=() functions are located in qstring8.h and qstring16.h
 
 
-#if ! defined (CS_DOXYPRESS)
+#if ! defined (LSCS_DOXYPRESS)
 }  // cs namespace
 #endif
 

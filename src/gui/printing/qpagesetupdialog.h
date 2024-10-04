@@ -33,7 +33,7 @@ class QPageSetupDialogPrivate;
 
 class Q_GUI_EXPORT QPageSetupDialog : public QDialog
 {
-    GUI_CS_OBJECT( QPageSetupDialog )
+    GUI_LSCS_OBJECT( QPageSetupDialog )
     Q_DECLARE_PRIVATE( QPageSetupDialog )
 
 public:

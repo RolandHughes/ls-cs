@@ -31,10 +31,10 @@
 #include <cstring>
 #include <memory>
 
-namespace cs_regex_ns
+namespace lscs_regex_ns
 {
 
-namespace cs_regex_detail_ns
+namespace lscs_regex_detail_ns
 {
 
 void raw_storage::resize( size_type n )

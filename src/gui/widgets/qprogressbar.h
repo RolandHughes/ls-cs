@@ -33,43 +33,43 @@ class QStyleOptionProgressBar;
 
 class Q_GUI_EXPORT QProgressBar : public QWidget
 {
-    GUI_CS_OBJECT( QProgressBar )
+    GUI_LSCS_OBJECT( QProgressBar )
 
-    GUI_CS_ENUM( Direction )
+    GUI_LSCS_ENUM( Direction )
 
-    GUI_CS_PROPERTY_READ( minimum, minimum )
-    GUI_CS_PROPERTY_WRITE( minimum, setMinimum )
+    GUI_LSCS_PROPERTY_READ( minimum, minimum )
+    GUI_LSCS_PROPERTY_WRITE( minimum, setMinimum )
 
-    GUI_CS_PROPERTY_READ( maximum, maximum )
-    GUI_CS_PROPERTY_WRITE( maximum, setMaximum )
+    GUI_LSCS_PROPERTY_READ( maximum, maximum )
+    GUI_LSCS_PROPERTY_WRITE( maximum, setMaximum )
 
-    GUI_CS_PROPERTY_READ( text, text )
+    GUI_LSCS_PROPERTY_READ( text, text )
 
-    GUI_CS_PROPERTY_READ( value, value )
-    GUI_CS_PROPERTY_WRITE( value, setValue )
-    GUI_CS_PROPERTY_NOTIFY( value, valueChanged )
+    GUI_LSCS_PROPERTY_READ( value, value )
+    GUI_LSCS_PROPERTY_WRITE( value, setValue )
+    GUI_LSCS_PROPERTY_NOTIFY( value, valueChanged )
 
-    GUI_CS_PROPERTY_READ( alignment, alignment )
-    GUI_CS_PROPERTY_WRITE( alignment, setAlignment )
+    GUI_LSCS_PROPERTY_READ( alignment, alignment )
+    GUI_LSCS_PROPERTY_WRITE( alignment, setAlignment )
 
-    GUI_CS_PROPERTY_READ( textVisible, isTextVisible )
-    GUI_CS_PROPERTY_WRITE( textVisible, setTextVisible )
+    GUI_LSCS_PROPERTY_READ( textVisible, isTextVisible )
+    GUI_LSCS_PROPERTY_WRITE( textVisible, setTextVisible )
 
-    GUI_CS_PROPERTY_READ( orientation, orientation )
-    GUI_CS_PROPERTY_WRITE( orientation, setOrientation )
+    GUI_LSCS_PROPERTY_READ( orientation, orientation )
+    GUI_LSCS_PROPERTY_WRITE( orientation, setOrientation )
 
-    GUI_CS_PROPERTY_READ( invertedAppearance, invertedAppearance )
-    GUI_CS_PROPERTY_WRITE( invertedAppearance, setInvertedAppearance )
+    GUI_LSCS_PROPERTY_READ( invertedAppearance, invertedAppearance )
+    GUI_LSCS_PROPERTY_WRITE( invertedAppearance, setInvertedAppearance )
 
-    GUI_CS_PROPERTY_READ( textDirection, textDirection )
-    GUI_CS_PROPERTY_WRITE( textDirection, setTextDirection )
+    GUI_LSCS_PROPERTY_READ( textDirection, textDirection )
+    GUI_LSCS_PROPERTY_WRITE( textDirection, setTextDirection )
 
-    GUI_CS_PROPERTY_READ( format, format )
-    GUI_CS_PROPERTY_WRITE( format, setFormat )
+    GUI_LSCS_PROPERTY_READ( format, format )
+    GUI_LSCS_PROPERTY_WRITE( format, setFormat )
 
 public:
 
-    GUI_CS_REGISTER_ENUM(
+    GUI_LSCS_REGISTER_ENUM(
         enum Direction
     {
         TopToBottom,
@@ -111,26 +111,26 @@ public:
     void resetFormat();
     QString format() const;
 
-    GUI_CS_SLOT_1( Public, void reset() )
-    GUI_CS_SLOT_2( reset )
+    GUI_LSCS_SLOT_1( Public, void reset() )
+    GUI_LSCS_SLOT_2( reset )
 
-    GUI_CS_SLOT_1( Public, void setRange( int minimum, int maximum ) )
-    GUI_CS_SLOT_2( setRange )
+    GUI_LSCS_SLOT_1( Public, void setRange( int minimum, int maximum ) )
+    GUI_LSCS_SLOT_2( setRange )
 
-    GUI_CS_SLOT_1( Public, void setMinimum( int minimum ) )
-    GUI_CS_SLOT_2( setMinimum )
+    GUI_LSCS_SLOT_1( Public, void setMinimum( int minimum ) )
+    GUI_LSCS_SLOT_2( setMinimum )
 
-    GUI_CS_SLOT_1( Public, void setMaximum( int maximum ) )
-    GUI_CS_SLOT_2( setMaximum )
+    GUI_LSCS_SLOT_1( Public, void setMaximum( int maximum ) )
+    GUI_LSCS_SLOT_2( setMaximum )
 
-    GUI_CS_SLOT_1( Public, void setValue( int value ) )
-    GUI_CS_SLOT_2( setValue )
+    GUI_LSCS_SLOT_1( Public, void setValue( int value ) )
+    GUI_LSCS_SLOT_2( setValue )
 
-    GUI_CS_SLOT_1( Public, void setOrientation( Qt::Orientation orientation ) )
-    GUI_CS_SLOT_2( setOrientation )
+    GUI_LSCS_SLOT_1( Public, void setOrientation( Qt::Orientation orientation ) )
+    GUI_LSCS_SLOT_2( setOrientation )
 
-    GUI_CS_SIGNAL_1( Public, void valueChanged( int value ) )
-    GUI_CS_SIGNAL_2( valueChanged, value )
+    GUI_LSCS_SIGNAL_1( Public, void valueChanged( int value ) )
+    GUI_LSCS_SIGNAL_2( valueChanged, value )
 
 protected:
     bool event( QEvent *event ) override;

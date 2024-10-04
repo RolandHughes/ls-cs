@@ -292,7 +292,7 @@ QSysInfo::WinVersion QSysInfo::windowsVersion()
 
     }
 
-#if defined(CS_SHOW_DEBUG_CORE)
+#if defined(LSCS_SHOW_DEBUG_CORE)
     {
         QByteArray forceWinVersion = qgetenv( "QT_WINVER_OVERRIDE" );
 

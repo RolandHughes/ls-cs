@@ -35,13 +35,13 @@ class QPlatformMenuBar;
 
 class Q_GUI_EXPORT QMenuBar : public QWidget
 {
-    GUI_CS_OBJECT( QMenuBar )
+    GUI_LSCS_OBJECT( QMenuBar )
 
-    GUI_CS_PROPERTY_READ( defaultUp, isDefaultUp )
-    GUI_CS_PROPERTY_WRITE( defaultUp, setDefaultUp )
+    GUI_LSCS_PROPERTY_READ( defaultUp, isDefaultUp )
+    GUI_LSCS_PROPERTY_WRITE( defaultUp, setDefaultUp )
 
-    GUI_CS_PROPERTY_READ( nativeMenuBar, isNativeMenuBar )
-    GUI_CS_PROPERTY_WRITE( nativeMenuBar, setNativeMenuBar )
+    GUI_LSCS_PROPERTY_READ( nativeMenuBar, isNativeMenuBar )
+    GUI_LSCS_PROPERTY_WRITE( nativeMenuBar, setNativeMenuBar )
 
 public:
     explicit QMenuBar( QWidget *parent = nullptr );
@@ -90,14 +90,14 @@ public:
     bool isNativeMenuBar() const;
     void setNativeMenuBar( bool nativeMenuBar );
     QPlatformMenuBar *platformMenuBar();
-    GUI_CS_SLOT_1( Public, void setVisible( bool visible ) override )
-    GUI_CS_SLOT_2( setVisible )
+    GUI_LSCS_SLOT_1( Public, void setVisible( bool visible ) override )
+    GUI_LSCS_SLOT_2( setVisible )
 
-    GUI_CS_SIGNAL_1( Public, void triggered( QAction *action ) )
-    GUI_CS_SIGNAL_2( triggered, action )
+    GUI_LSCS_SIGNAL_1( Public, void triggered( QAction *action ) )
+    GUI_LSCS_SIGNAL_2( triggered, action )
 
-    GUI_CS_SIGNAL_1( Public, void hovered( QAction *action ) )
-    GUI_CS_SIGNAL_2( hovered, action )
+    GUI_LSCS_SIGNAL_1( Public, void hovered( QAction *action ) )
+    GUI_LSCS_SIGNAL_2( hovered, action )
 
 protected:
     void changeEvent( QEvent *event ) override;
@@ -119,17 +119,17 @@ protected:
 private:
     Q_DECLARE_PRIVATE( QMenuBar )
 
-    GUI_CS_SLOT_1( Private, void _q_actionTriggered() )
-    GUI_CS_SLOT_2( _q_actionTriggered )
+    GUI_LSCS_SLOT_1( Private, void _q_actionTriggered() )
+    GUI_LSCS_SLOT_2( _q_actionTriggered )
 
-    GUI_CS_SLOT_1( Private, void _q_actionHovered() )
-    GUI_CS_SLOT_2( _q_actionHovered )
+    GUI_LSCS_SLOT_1( Private, void _q_actionHovered() )
+    GUI_LSCS_SLOT_2( _q_actionHovered )
 
-    GUI_CS_SLOT_1( Private, void _q_internalShortcutActivated( int id ) )
-    GUI_CS_SLOT_2( _q_internalShortcutActivated )
+    GUI_LSCS_SLOT_1( Private, void _q_internalShortcutActivated( int id ) )
+    GUI_LSCS_SLOT_2( _q_internalShortcutActivated )
 
-    GUI_CS_SLOT_1( Private, void _q_updateLayout() )
-    GUI_CS_SLOT_2( _q_updateLayout )
+    GUI_LSCS_SLOT_1( Private, void _q_updateLayout() )
+    GUI_LSCS_SLOT_2( _q_updateLayout )
 
     friend class QMenu;
     friend class QMenuPrivate;

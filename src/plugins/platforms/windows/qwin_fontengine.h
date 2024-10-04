@@ -170,7 +170,7 @@ public:
     QFontEngine *loadEngine( int at ) override;
 };
 
-CS_DECLARE_METATYPE( LOGFONT )
+LSCS_DECLARE_METATYPE( LOGFONT )
 
 #endif
 

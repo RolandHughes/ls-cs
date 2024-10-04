@@ -32,12 +32,12 @@
 class QGstreamerPlayerServicePlugin : public QMediaServiceProviderPlugin, public QMediaServiceFeaturesInterface,
     public QMediaServiceSupportedFormatsInterface
 {
-    CS_OBJECT_MULTIPLE( QGstreamerPlayerServicePlugin, QMediaServiceProviderPlugin )
+    LSCS_OBJECT_MULTIPLE( QGstreamerPlayerServicePlugin, QMediaServiceProviderPlugin )
 
-    CS_PLUGIN_IID( QMediaServiceProviderInterface_ID )
-    CS_PLUGIN_KEY( Q_MEDIASERVICE_MEDIAPLAYER )
+    LSCS_PLUGIN_IID( QMediaServiceProviderInterface_ID )
+    LSCS_PLUGIN_KEY( Q_MEDIASERVICE_MEDIAPLAYER )
 
-    CS_INTERFACES( QMediaServiceFeaturesInterface, QMediaServiceSupportedFormatsInterface )
+    LSCS_INTERFACES( QMediaServiceFeaturesInterface, QMediaServiceSupportedFormatsInterface )
 
 public:
     QMediaService *create( QString const &key ) override;

@@ -30,7 +30,7 @@ class QGstreamerPlayerSession;
 
 class QGstreamerStreamsControl : public QMediaStreamsControl
 {
-    CS_OBJECT( QGstreamerStreamsControl )
+    LSCS_OBJECT( QGstreamerStreamsControl )
 
 public:
     QGstreamerStreamsControl( QGstreamerPlayerSession *session, QObject *parent );

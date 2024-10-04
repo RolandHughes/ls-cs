@@ -24,15 +24,15 @@
  * LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 */
 
-#ifndef CS_REGEX_CONSTANTS_H
-#define CS_REGEX_CONSTANTS_H
+#ifndef LSCS_REGEX_CONSTANTS_H
+#define LSCS_REGEX_CONSTANTS_H
 
-namespace cs_regex_ns
+namespace lscs_regex_ns
 {
 
 // handles error codes and flags
 
-class LIB_CS_STRING_EXPORT regbase
+class LIB_LSCS_STRING_EXPORT regbase
 {
 public:
     enum flag_type_
@@ -118,33 +118,33 @@ namespace regex_constants
 enum flag_type_
 {
 
-    no_except = cs_regex_ns::regbase::no_except,
-    failbit = cs_regex_ns::regbase::failbit,
-    literal = cs_regex_ns::regbase::literal,
-    icase = cs_regex_ns::regbase::icase,
-    nocollate = cs_regex_ns::regbase::nocollate,
-    collate = cs_regex_ns::regbase::collate,
-    nosubs = cs_regex_ns::regbase::nosubs,
-    optimize = cs_regex_ns::regbase::optimize,
-    bk_plus_qm = cs_regex_ns::regbase::bk_plus_qm,
-    bk_vbar = cs_regex_ns::regbase::bk_vbar,
-    no_intervals = cs_regex_ns::regbase::no_intervals,
-    no_char_classes = cs_regex_ns::regbase::no_char_classes,
-    no_escape_in_lists = cs_regex_ns::regbase::no_escape_in_lists,
-    no_mod_m = cs_regex_ns::regbase::no_mod_m,
-    mod_x = cs_regex_ns::regbase::mod_x,
-    mod_s = cs_regex_ns::regbase::mod_s,
-    no_mod_s = cs_regex_ns::regbase::no_mod_s,
-    save_subexpression_location = cs_regex_ns::regbase::save_subexpression_location,
-    no_empty_expressions = cs_regex_ns::regbase::no_empty_expressions,
+    no_except = lscs_regex_ns::regbase::no_except,
+    failbit = lscs_regex_ns::regbase::failbit,
+    literal = lscs_regex_ns::regbase::literal,
+    icase = lscs_regex_ns::regbase::icase,
+    nocollate = lscs_regex_ns::regbase::nocollate,
+    collate = lscs_regex_ns::regbase::collate,
+    nosubs = lscs_regex_ns::regbase::nosubs,
+    optimize = lscs_regex_ns::regbase::optimize,
+    bk_plus_qm = lscs_regex_ns::regbase::bk_plus_qm,
+    bk_vbar = lscs_regex_ns::regbase::bk_vbar,
+    no_intervals = lscs_regex_ns::regbase::no_intervals,
+    no_char_classes = lscs_regex_ns::regbase::no_char_classes,
+    no_escape_in_lists = lscs_regex_ns::regbase::no_escape_in_lists,
+    no_mod_m = lscs_regex_ns::regbase::no_mod_m,
+    mod_x = lscs_regex_ns::regbase::mod_x,
+    mod_s = lscs_regex_ns::regbase::mod_s,
+    no_mod_s = lscs_regex_ns::regbase::no_mod_s,
+    save_subexpression_location = lscs_regex_ns::regbase::save_subexpression_location,
+    no_empty_expressions = lscs_regex_ns::regbase::no_empty_expressions,
 
-    basic        = cs_regex_ns::regbase::basic,
-    extended     = cs_regex_ns::regbase::extended,
-    normal       = cs_regex_ns::regbase::normal,
-    emacs        = cs_regex_ns::regbase::emacs,
-    awk          = cs_regex_ns::regbase::awk,
-    grep         = cs_regex_ns::regbase::grep,
-    egrep        = cs_regex_ns::regbase::egrep,
+    basic        = lscs_regex_ns::regbase::basic,
+    extended     = lscs_regex_ns::regbase::extended,
+    normal       = lscs_regex_ns::regbase::normal,
+    emacs        = lscs_regex_ns::regbase::emacs,
+    awk          = lscs_regex_ns::regbase::awk,
+    grep         = lscs_regex_ns::regbase::grep,
+    egrep        = lscs_regex_ns::regbase::egrep,
     sed          = basic,
     perl         = normal,
     ECMAScript   = normal,
@@ -152,7 +152,7 @@ enum flag_type_
     JScript      = normal
 };
 
-using syntax_option_type = cs_regex_ns::regbase::flag_type;
+using syntax_option_type = lscs_regex_ns::regbase::flag_type;
 using syntax_type        = unsigned char;
 using escape_syntax_type = unsigned char;
 

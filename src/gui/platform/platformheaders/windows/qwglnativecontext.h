@@ -53,6 +53,6 @@ private:
     HWND m_window;
 };
 
-CS_DECLARE_METATYPE( QWGLNativeContext )
+LSCS_DECLARE_METATYPE( QWGLNativeContext )
 
 #endif

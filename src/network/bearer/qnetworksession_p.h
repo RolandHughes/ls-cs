@@ -34,7 +34,7 @@
 
 class Q_NETWORK_EXPORT QNetworkSessionPrivate : public QObject
 {
-    NET_CS_OBJECT( QNetworkSessionPrivate )
+    NET_LSCS_OBJECT( QNetworkSessionPrivate )
 
     friend class QNetworkSession;
 
@@ -84,26 +84,26 @@ public:
     static void setUsagePolicies( QNetworkSession &, QNetworkSession::UsagePolicies ); //for unit testing
 
     //releases any pending waitForOpened() calls
-    NET_CS_SIGNAL_1( Public, void quitPendingWaitsForOpened() )
-    NET_CS_SIGNAL_2( quitPendingWaitsForOpened )
+    NET_LSCS_SIGNAL_1( Public, void quitPendingWaitsForOpened() )
+    NET_LSCS_SIGNAL_2( quitPendingWaitsForOpened )
 
-    NET_CS_SIGNAL_1( Public, void error( QNetworkSession::SessionError error ) )
-    NET_CS_SIGNAL_OVERLOAD( error, ( QNetworkSession::SessionError ), error )
+    NET_LSCS_SIGNAL_1( Public, void error( QNetworkSession::SessionError error ) )
+    NET_LSCS_SIGNAL_OVERLOAD( error, ( QNetworkSession::SessionError ), error )
 
-    NET_CS_SIGNAL_1( Public, void stateChanged( QNetworkSession::State state ) )
-    NET_CS_SIGNAL_2( stateChanged, state )
+    NET_LSCS_SIGNAL_1( Public, void stateChanged( QNetworkSession::State state ) )
+    NET_LSCS_SIGNAL_2( stateChanged, state )
 
-    NET_CS_SIGNAL_1( Public, void closed() )
-    NET_CS_SIGNAL_2( closed )
+    NET_LSCS_SIGNAL_1( Public, void closed() )
+    NET_LSCS_SIGNAL_2( closed )
 
-    NET_CS_SIGNAL_1( Public, void newConfigurationActivated() )
-    NET_CS_SIGNAL_2( newConfigurationActivated )
+    NET_LSCS_SIGNAL_1( Public, void newConfigurationActivated() )
+    NET_LSCS_SIGNAL_2( newConfigurationActivated )
 
-    NET_CS_SIGNAL_1( Public, void preferredConfigurationChanged( const QNetworkConfiguration &config, bool isSeamless ) )
-    NET_CS_SIGNAL_2( preferredConfigurationChanged, config, isSeamless )
+    NET_LSCS_SIGNAL_1( Public, void preferredConfigurationChanged( const QNetworkConfiguration &config, bool isSeamless ) )
+    NET_LSCS_SIGNAL_2( preferredConfigurationChanged, config, isSeamless )
 
-    NET_CS_SIGNAL_1( Public, void usagePoliciesChanged( QNetworkSession::UsagePolicies data ) )
-    NET_CS_SIGNAL_2( usagePoliciesChanged, data )
+    NET_LSCS_SIGNAL_1( Public, void usagePoliciesChanged( QNetworkSession::UsagePolicies data ) )
+    NET_LSCS_SIGNAL_2( usagePoliciesChanged, data )
 
 protected:
     QNetworkConfigurationPrivatePointer privateConfiguration( const QNetworkConfiguration &config ) const

@@ -63,6 +63,6 @@ private:
     VisualID m_visualId;
 };
 
-CS_DECLARE_METATYPE( QGLXNativeContext )
+LSCS_DECLARE_METATYPE( QGLXNativeContext )
 
 #endif

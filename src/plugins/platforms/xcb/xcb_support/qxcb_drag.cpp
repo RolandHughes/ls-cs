@@ -424,7 +424,7 @@ void QXcbDrag::move( const QPoint &globalPos )
         while ( target != 0 )
         {
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
             qDebug() << "QXcbDrag::move() Checking target for XdndAware =" << target << lx << ly;
 #endif
 
@@ -454,7 +454,7 @@ void QXcbDrag::move( const QPoint &globalPos )
             if ( aware )
             {
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
                 qDebug() << "QXcbDrag::move() Found XdndAware on =" << target;
 #endif
                 break;
@@ -551,7 +551,7 @@ void QXcbDrag::move( const QPoint &globalPos )
             // provisionally set the rectangle to 5x5 pixels...
             source_sameanswer = QRect( globalPos.x() - 2, globalPos.y() - 2, 5, 5 );
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
             qDebug() << "QXcbDrag::move() Sending Xdnd enter source =" << enter.data.data32[0];
 #endif
 
@@ -589,7 +589,7 @@ void QXcbDrag::move( const QPoint &globalPos )
         move.data.data32[3] = connection()->time();
         move.data.data32[4] = toXdndAction( defaultAction( currentDrag()->supportedActions(), QApplication::keyboardModifiers() ) );
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
         qDebug() << "QXcbDrag::move() Sending Xdnd position source =" << move.data.data32[0] << "target =" << move.window;
 #endif
 
@@ -851,7 +851,7 @@ static bool checkEmbedded( QWidget *w, const XEvent *xe )
 
 void QXcbDrag::handleEnter( QPlatformWindow *window, const xcb_client_message_event_t *event, xcb_window_t proxy )
 {
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
     qDebug() << "QXcbDrag::handleEnter() window =" << window;
 #endif
 
@@ -931,7 +931,7 @@ void QXcbDrag::handle_xdnd_position( QPlatformWindow *w, const xcb_client_messag
     if ( e->data.data32[0] != xdnd_dragsource )
     {
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
         qDebug( "QXcbDrag::handle_xdnd_position() xdnd drag position from unexpected source (%x not %x)",
                 e->data.data32[0], xdnd_dragsource );
 #endif
@@ -1149,7 +1149,7 @@ void QXcbDrag::handleLeave( QPlatformWindow *w, const xcb_client_message_event_t
     //        return;
     //    }
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
 
     if ( event->data.data32[0] != xdnd_dragsource )
     {
@@ -1221,7 +1221,7 @@ void QXcbDrag::handleDrop( QPlatformWindow *, const xcb_client_message_event_t *
     if ( l[0] != xdnd_dragsource )
     {
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
         qDebug( "QXcbDrag::handleDrop() xdnd drop from unexpected source (%x not %x)", l[0], xdnd_dragsource );
 #endif
 
@@ -1583,7 +1583,7 @@ bool QXcbDrag::dndEnable( QXcbWindow *w, bool on )
 
         if ( xdnd_widget )
         {
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
             qDebug() << "QXcbDrag::dndEnable() Setting XdndAware for =" << xdnd_widget << xdnd_widget->xcb_window();
 #endif
 

@@ -80,7 +80,7 @@ QPixmapCache::Key &QPixmapCache::Key::operator =( const Key &other )
 
 class QPMCache : public QObject, public QCache<QPixmapCache::Key, QPixmapCacheEntry>
 {
-    GUI_CS_OBJECT( QPMCache )
+    GUI_LSCS_OBJECT( QPMCache )
 
 public:
     QPMCache();

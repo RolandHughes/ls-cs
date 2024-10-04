@@ -42,25 +42,25 @@
 
 // returns an integer data type for use with an output stream
 template <typename V>
-struct CS_SpecialInt
+struct LSCS_SpecialInt
 {
     using type = V;
 };
 
 template <>
-struct CS_SpecialInt<char>
+struct LSCS_SpecialInt<char>
 {
     using type = typename std::conditional<std::numeric_limits<char>::is_signed, int, uint>::type;
 };
 
 template <>
-struct CS_SpecialInt<uchar>
+struct LSCS_SpecialInt<uchar>
 {
     using type = uint;
 };
 
 template <>
-struct CS_SpecialInt<signed char>
+struct LSCS_SpecialInt<signed char>
 {
     using type = int;
 };
@@ -92,7 +92,7 @@ public:
 
         if ( d.occurrences == 0 )
         {
-            // T must have a toUtf8() method, can not use csPrintable()
+            // T must have a toUtf8() method, can not use lscsPrintable()
 
             qWarning( "QStringParser::formatArg() Missing a place marker \n"
                       "Format string: %s, Argument value: %lld\n", str.toLatin1().constData(), static_cast<long long>( value ) );
@@ -306,7 +306,7 @@ public:
 
         std::basic_ostringstream<char> stream;
         stream << std::setbase( base );
-        stream << typename CS_SpecialInt<V>::type( value );
+        stream << typename LSCS_SpecialInt<V>::type( value );
 
         std::string s1 = stream.str();
         const char *s2 = s1.c_str();
@@ -381,7 +381,7 @@ public:
     static T section( const T &str, const T &separator, int firstSection, int lastSection = -1,
                       SectionFlags flags = SectionDefault );
 
-#if defined (CS_DOXYPRESS)
+#if defined (LSCS_DOXYPRESS)
     template <typename T>
     static T section( const T &str, const QRegularExpression &separator, int firstSection, int lastSection = -1,
                       SectionFlags flags = SectionDefault );
@@ -399,7 +399,7 @@ public:
     static QList<T> split( const T &str, const T &separator, SplitBehavior behavior = KeepEmptyParts,
                            Qt::CaseSensitivity cs = Qt::CaseSensitive );
 
-#if defined (CS_DOXYPRESS)
+#if defined (LSCS_DOXYPRESS)
     template <typename T>
     static QList<T> split( const T &str, const QRegularExpression &regExp, SplitBehavior behavior = KeepEmptyParts );
 #else
@@ -535,7 +535,7 @@ private:
         if ( argCount > cnt )
         {
             qWarning( "QStringParser::toInteger() Format string has %d arguments and %d place holders\n%s",
-                      int( argCount ), cnt, csPrintable( str ) );
+                      int( argCount ), cnt, lscsPrintable( str ) );
 
             argCount = cnt;
         }

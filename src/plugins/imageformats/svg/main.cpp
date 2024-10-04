@@ -34,10 +34,10 @@
 
 class QSvgPlugin : public QImageIOPlugin
 {
-    CS_OBJECT( QSvgPlugin )
+    LSCS_OBJECT( QSvgPlugin )
 
-    CS_PLUGIN_IID( QImageIOHandlerInterface_ID )
-    CS_PLUGIN_KEY( "svg, svgz" )
+    LSCS_PLUGIN_IID( QImageIOHandlerInterface_ID )
+    LSCS_PLUGIN_KEY( "svg, svgz" )
 
 public:
     QStringList keys() const;
@@ -45,7 +45,7 @@ public:
     QImageIOHandler *create( QIODevice *device, const QString &format = QString() ) const override;
 };
 
-CS_PLUGIN_REGISTER( QSvgPlugin )
+LSCS_PLUGIN_REGISTER( QSvgPlugin )
 
 QStringList QSvgPlugin::keys() const
 {

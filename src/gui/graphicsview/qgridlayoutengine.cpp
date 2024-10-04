@@ -129,7 +129,7 @@ void QGridLayoutBox::normalize()
     Q_ASSERT( ( q_minimumDescent < 0.0 ) == ( q_minimumAscent < 0.0 ) );
 }
 
-#if defined(CS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
+#if defined(LSCS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
 void QGridLayoutBox::dump( int indent ) const
 {
     qDebug( "%*sBox (%g <= %g <= %g [%g/%g])", indent, "", q_minimumSize, q_preferredSize,
@@ -543,7 +543,7 @@ void QGridLayoutRowData::stealBox( int start, int end, int which, qreal *positio
     }
 }
 
-#if defined(CS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
+#if defined(LSCS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
 void QGridLayoutRowData::dump( int indent ) const
 {
     qDebug( "%*sData", indent, "" );
@@ -865,7 +865,7 @@ QSizeF QGridLayoutItem::effectiveMaxSize( const QSizeF &constraint ) const
     return size;
 }
 
-#if defined(CS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
+#if defined(LSCS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
 void QGridLayoutItem::dump( int indent ) const
 {
     qDebug( "%*s (%d, %d) %d x %d", indent, "", firstRow(), firstColumn(),
@@ -901,7 +901,7 @@ void QGridLayoutRowInfo::insertOrRemoveRows( int row, int delta )
     insertOrRemoveItems( boxes, row, delta );
 }
 
-#if defined(CS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
+#if defined(LSCS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
 void QGridLayoutRowInfo::dump( int indent ) const
 {
     qDebug( "%*sInfo (count: %d)", indent, "", count );
@@ -927,7 +927,7 @@ void QGridLayoutRowInfo::dump( int indent ) const
 
         if ( !message.isEmpty() || boxes.value( i ) != QGridLayoutBox() )
         {
-            qDebug( "%*s Row %d:%s", indent, "", i, csPrintable( message ) );
+            qDebug( "%*s Row %d:%s", indent, "", i, lscsPrintable( message ) );
 
             if ( boxes.value( i ) != QGridLayoutBox() )
             {
@@ -1438,7 +1438,7 @@ Qt::LayoutDirection QGridLayoutEngine::visualDirection() const
     return m_visualDirection;
 }
 
-#if defined(CS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
+#if defined(LSCS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
 void QGridLayoutEngine::dump( int indent ) const
 {
     qDebug( "%*sEngine", indent, "" );
@@ -1465,7 +1465,7 @@ void QGridLayoutEngine::dump( int indent ) const
 
         message += QChar( ']' );
 
-        qDebug( "%*s  %s", indent, "", csPrintable( message ) );
+        qDebug( "%*s  %s", indent, "", lscsPrintable( message ) );
     }
 
     if ( q_defaultSpacings[GridOrientation_Horizontal].value() >= 0.0 || q_defaultSpacings[GridOrientation_Vertical].value() >= 0.0 )
@@ -1497,7 +1497,7 @@ void QGridLayoutEngine::dump( int indent ) const
 
         message += ']';
 
-        qDebug( "%*s %s %s", indent, "", ( pass == 0 ? "rows:" : "columns:" ), csPrintable( message ) );
+        qDebug( "%*s %s %s", indent, "", ( pass == 0 ? "rows:" : "columns:" ), lscsPrintable( message ) );
         cellPos = &q_xx;
     }
 }

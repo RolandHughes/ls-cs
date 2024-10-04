@@ -27,7 +27,7 @@
 #ifndef QVARIANT_H
 #define QVARIANT_H
 
-#include <csmetafwd.h>
+#include <lscsmetafwd.h>
 
 // can not include qstring.h since it includes qstringparser.h, which then includes qlocale.h (circular dependency)
 #include <qstring8.h>
@@ -730,7 +730,7 @@ std::optional<T> QVariant::getDataOr() const
         {
             // variant is empty or T is not the type in the variant
             // printf("\n QVariant::getDataOr  requested T = %s  variant holds = %s",
-            //    typeid(T).name(), csPrintable(typeName()) );
+            //    typeid(T).name(), lscsPrintable(typeName()) );
 
         }
 
@@ -866,7 +866,7 @@ uint QVariant::registerType()
 
         if ( userId.compare_exchange_strong( oldId, newId, std::memory_order_release, std::memory_order_acquire ) )
         {
-            static QString typeName = cs_typeToName<T>();
+            static QString typeName = lscs_typeToName<T>();
             m_userTypes.append( QVariant::NamesAndTypes{typeName.constData(), newId, typeid( T * )} );
 
         }
@@ -880,14 +880,14 @@ uint QVariant::registerType()
     return userId.load( std::memory_order_acquire );
 }
 
-#define CS_DECLARE_METATYPE(TYPE)                  \
+#define LSCS_DECLARE_METATYPE(TYPE)                  \
    template<>                                      \
-   inline const QString &cs_typeToName<TYPE>() {   \
+   inline const QString &lscs_typeToName<TYPE>() {   \
       static const QString retval = #TYPE;         \
       return retval;                               \
    }
 
 #define Q_DECLARE_METATYPE(TYPE)                   \
-   static_assert(false, "Macro Q_DECLARE_METATYPE(TYPE) is obsolete, use CS_DECLARE_METATYPE(TYPE)");
+   static_assert(false, "Macro Q_DECLARE_METATYPE(TYPE) is obsolete, use LSCS_DECLARE_METATYPE(TYPE)");
 
 #endif

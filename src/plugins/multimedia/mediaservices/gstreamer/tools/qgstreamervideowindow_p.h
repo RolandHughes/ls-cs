@@ -36,9 +36,9 @@ class QAbstractVideoSurface;
 class QGstreamerVideoWindow : public QVideoWindowControl, public QGstreamerVideoRendererInterface,
     public QGstreamerSyncMessageFilter, public QGstreamerBusMessageFilter
 {
-    CS_OBJECT_MULTIPLE( QGstreamerVideoWindow, QVideoWindowControl )
+    LSCS_OBJECT_MULTIPLE( QGstreamerVideoWindow, QVideoWindowControl )
 
-    CS_INTERFACES( QGstreamerVideoRendererInterface, QGstreamerSyncMessageFilter, QGstreamerBusMessageFilter )
+    LSCS_INTERFACES( QGstreamerVideoRendererInterface, QGstreamerSyncMessageFilter, QGstreamerBusMessageFilter )
 
 public:
     explicit QGstreamerVideoWindow( QObject *parent = nullptr, const QByteArray &elementName = QByteArray() );
@@ -84,11 +84,11 @@ public:
         return m_windowId != 0;
     }
 
-    CS_SIGNAL_1( Public, void sinkChanged() )
-    CS_SIGNAL_2( sinkChanged )
+    LSCS_SIGNAL_1( Public, void sinkChanged() )
+    LSCS_SIGNAL_2( sinkChanged )
 
-    CS_SIGNAL_1( Public, void readyChanged( bool isReady ) )
-    CS_SIGNAL_2( readyChanged, isReady )
+    LSCS_SIGNAL_1( Public, void readyChanged( bool isReady ) )
+    LSCS_SIGNAL_2( readyChanged, isReady )
 
 private:
     QGstreamerVideoOverlay m_videoOverlay;

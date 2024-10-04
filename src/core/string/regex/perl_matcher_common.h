@@ -24,16 +24,16 @@
  * LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 */
 
-#ifndef CS_PERL_MATCHER_COMMON_H
-#define CS_PERL_MATCHER_COMMON_H
+#ifndef LSCS_PERL_MATCHER_COMMON_H
+#define LSCS_PERL_MATCHER_COMMON_H
 
 #include <cassert>
 #include <limits>
 
-namespace cs_regex_ns
+namespace lscs_regex_ns
 {
 
-namespace cs_regex_detail_ns
+namespace lscs_regex_detail_ns
 {
 
 template <class BidiIterator, class Allocator, class traits>
@@ -93,7 +93,7 @@ void perl_matcher<BidiIterator, Allocator, traits>::construct_init( const basic_
 
     // find bitmask to use for matching '.':
     match_any_mask = static_cast<unsigned char>( ( f & match_not_dot_newline ) ?
-                     cs_regex_detail_ns::test_not_newline : cs_regex_detail_ns::test_newline );
+                     lscs_regex_detail_ns::test_not_newline : lscs_regex_detail_ns::test_newline );
 
     // Disable match_any if requested in the state machine:
     if ( e.get_data().m_disable_match_any )
@@ -132,7 +132,7 @@ void perl_matcher<BidiIterator, Allocator, traits>::estimate_max_state_count( st
 
     if ( ( std::numeric_limits<std::ptrdiff_t>::max )() / states < states )
     {
-        max_state_count = ( std::min )( ( std::ptrdiff_t )CS_REGEX_MAX_STATE_COUNT, ( std::numeric_limits<std::ptrdiff_t>::max )() - 2 );
+        max_state_count = ( std::min )( ( std::ptrdiff_t )LSCS_REGEX_MAX_STATE_COUNT, ( std::numeric_limits<std::ptrdiff_t>::max )() - 2 );
         return;
     }
 
@@ -140,7 +140,7 @@ void perl_matcher<BidiIterator, Allocator, traits>::estimate_max_state_count( st
 
     if ( ( std::numeric_limits<std::ptrdiff_t>::max )() / dist < states )
     {
-        max_state_count = ( std::min )( ( std::ptrdiff_t )CS_REGEX_MAX_STATE_COUNT, ( std::numeric_limits<std::ptrdiff_t>::max )() - 2 );
+        max_state_count = ( std::min )( ( std::ptrdiff_t )LSCS_REGEX_MAX_STATE_COUNT, ( std::numeric_limits<std::ptrdiff_t>::max )() - 2 );
         return;
     }
 
@@ -148,7 +148,7 @@ void perl_matcher<BidiIterator, Allocator, traits>::estimate_max_state_count( st
 
     if ( ( std::numeric_limits<std::ptrdiff_t>::max )() - k < states )
     {
-        max_state_count = ( std::min )( ( std::ptrdiff_t )CS_REGEX_MAX_STATE_COUNT, ( std::numeric_limits<std::ptrdiff_t>::max )() - 2 );
+        max_state_count = ( std::min )( ( std::ptrdiff_t )LSCS_REGEX_MAX_STATE_COUNT, ( std::numeric_limits<std::ptrdiff_t>::max )() - 2 );
         return;
     }
 
@@ -163,7 +163,7 @@ void perl_matcher<BidiIterator, Allocator, traits>::estimate_max_state_count( st
 
     if ( ( std::numeric_limits<std::ptrdiff_t>::max )() / dist < states )
     {
-        max_state_count = ( std::min )( ( std::ptrdiff_t )CS_REGEX_MAX_STATE_COUNT, ( std::numeric_limits<std::ptrdiff_t>::max )() - 2 );
+        max_state_count = ( std::min )( ( std::ptrdiff_t )LSCS_REGEX_MAX_STATE_COUNT, ( std::numeric_limits<std::ptrdiff_t>::max )() - 2 );
         return;
     }
 
@@ -171,7 +171,7 @@ void perl_matcher<BidiIterator, Allocator, traits>::estimate_max_state_count( st
 
     if ( ( std::numeric_limits<std::ptrdiff_t>::max )() - k < states )
     {
-        max_state_count = ( std::min )( ( std::ptrdiff_t )CS_REGEX_MAX_STATE_COUNT, ( std::numeric_limits<std::ptrdiff_t>::max )() - 2 );
+        max_state_count = ( std::min )( ( std::ptrdiff_t )LSCS_REGEX_MAX_STATE_COUNT, ( std::numeric_limits<std::ptrdiff_t>::max )() - 2 );
         return;
     }
 
@@ -179,9 +179,9 @@ void perl_matcher<BidiIterator, Allocator, traits>::estimate_max_state_count( st
 
     // N^2 can be a very large number indeed, to prevent things getting out of control, cap the max states
 
-    if ( states > CS_REGEX_MAX_STATE_COUNT )
+    if ( states > LSCS_REGEX_MAX_STATE_COUNT )
     {
-        states = CS_REGEX_MAX_STATE_COUNT;
+        states = LSCS_REGEX_MAX_STATE_COUNT;
     }
 
     // if (the possibly capped) N^2 is larger than our first estimate use this instead
@@ -195,7 +195,7 @@ template <class BidiIterator, class Allocator, class traits>
 inline void perl_matcher<BidiIterator, Allocator, traits>::estimate_max_state_count( void * )
 {
     // do not know how long the sequence is
-    max_state_count = CS_REGEX_MAX_STATE_COUNT;
+    max_state_count = LSCS_REGEX_MAX_STATE_COUNT;
 }
 
 template <class BidiIterator, class Allocator, class traits>
@@ -209,7 +209,7 @@ bool perl_matcher<BidiIterator, Allocator, traits>::match_imp()
 {
     // initialise our stack if we are non-recursive:
     save_state_init init( &m_stack_base, &m_backup_state );
-    used_block_count = CS_REGEX_MAX_BLOCKS;
+    used_block_count = LSCS_REGEX_MAX_BLOCKS;
 
     try
     {
@@ -271,7 +271,7 @@ bool perl_matcher<BidiIterator, Allocator, traits>::find_imp()
 
     // initialise our stack
     save_state_init init( &m_stack_base, &m_backup_state );
-    used_block_count = CS_REGEX_MAX_BLOCKS;
+    used_block_count = LSCS_REGEX_MAX_BLOCKS;
 
     try
     {
@@ -844,7 +844,7 @@ bool perl_matcher<BidiIterator, Allocator, traits>::match_restart_continue()
 template <class BidiIterator, class Allocator, class traits>
 bool perl_matcher<BidiIterator, Allocator, traits>::match_backstep()
 {
-    if ( cs_regex_ns::is_random_access_iterator<BidiIterator>::value )
+    if ( lscs_regex_ns::is_random_access_iterator<BidiIterator>::value )
     {
         std::ptrdiff_t maxlen = std::distance( backstop, position );
 

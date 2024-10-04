@@ -27,10 +27,10 @@
 
 class QDB2DriverPlugin : public QSqlDriverPlugin
 {
-    CS_OBJECT( QDB2DriverPlugin )
+    LSCS_OBJECT( QDB2DriverPlugin )
 
-    CS_PLUGIN_IID( QSqlDriverInterface_ID )
-    CS_PLUGIN_KEY( "QDB2" )
+    LSCS_PLUGIN_IID( QSqlDriverInterface_ID )
+    LSCS_PLUGIN_KEY( "QDB2" )
 
 public:
     QDB2DriverPlugin();
@@ -38,7 +38,7 @@ public:
     QSqlDriver *create( const QString & ) override;
 };
 
-CS_PLUGIN_REGISTER( QDB2DriverPlugin )
+LSCS_PLUGIN_REGISTER( QDB2DriverPlugin )
 
 QDB2DriverPlugin::QDB2DriverPlugin()
     : QSqlDriverPlugin()

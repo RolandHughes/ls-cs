@@ -34,7 +34,7 @@ class QXcbGlIntegration;
 
 class Q_XCB_EXPORT QXcbGlIntegrationPlugin : public QObject
 {
-    CS_OBJECT( QXcbGlIntegrationPlugin )
+    LSCS_OBJECT( QXcbGlIntegrationPlugin )
 
 public:
     explicit QXcbGlIntegrationPlugin( QObject *parent = nullptr )

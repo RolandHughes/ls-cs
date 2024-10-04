@@ -87,7 +87,7 @@ private:
 
 class Q_CORE_EXPORT QWindowsPipeWriter : public QObject
 {
-    CORE_CS_OBJECT( QWindowsPipeWriter )
+    CORE_LSCS_OBJECT( QWindowsPipeWriter )
 
 public:
     explicit QWindowsPipeWriter( HANDLE pipeWriteEnd, QObject *parent = nullptr );
@@ -104,14 +104,14 @@ public:
 
     qint64 bytesToWrite() const;
 
-    CORE_CS_SIGNAL_1( Public, void canWrite() )
-    CORE_CS_SIGNAL_2( canWrite )
+    CORE_LSCS_SIGNAL_1( Public, void canWrite() )
+    CORE_LSCS_SIGNAL_2( canWrite )
 
-    CORE_CS_SIGNAL_1( Public, void bytesWritten( qint64 bytes ) )
-    CORE_CS_SIGNAL_2( bytesWritten, bytes )
+    CORE_LSCS_SIGNAL_1( Public, void bytesWritten( qint64 bytes ) )
+    CORE_LSCS_SIGNAL_2( bytesWritten, bytes )
 
-    CORE_CS_SIGNAL_1( Public, void _q_queueBytesWritten() )
-    CORE_CS_SIGNAL_2( _q_queueBytesWritten )
+    CORE_LSCS_SIGNAL_1( Public, void _q_queueBytesWritten() )
+    CORE_LSCS_SIGNAL_2( _q_queueBytesWritten )
 
 private:
     static void CALLBACK writeFileCompleted( DWORD errorCode, DWORD numberOfBytesTransfered,

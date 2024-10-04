@@ -39,7 +39,7 @@
 
 static QString MagicComment( "TRANSLATOR" );
 
-static const QString text_CS_OBJECT        = "CS_OBJECT";
+static const QString text_LSCS_OBJECT        = "LSCS_OBJECT";
 
 static const QString text_class            = "class";
 static const QString text_final            = "final";
@@ -311,7 +311,7 @@ private:
     enum TokenType
     {
         Tok_Eof, Tok_Class, Tok_Friend, Tok_Namespace, Tok_Using, Tok_Return,
-        Tok_CS_OBJECT, Tok_Access, Tok_Cancel,
+        Tok_LSCS_OBJECT, Tok_Access, Tok_Cancel,
         Tok_Identifier, Tok_String, Tok_Arrow, Tok_Colon, Tok_ColonColon,
         Tok_LeftBracket, Tok_RightBracket, Tok_LeftBrace, Tok_RightBrace, Tok_LeftParen, Tok_RightParen,
         Tok_Comma, Tok_Semicolon, Tok_QuestionMark, Tok_Equals,
@@ -470,7 +470,7 @@ CppParser::CppParser( ParseResults *parseResults )
 
 std::ostream &CppParser::yyMsg( int line )
 {
-    return std::cerr << csPrintable( yyFileName ) << ':' << ( line ? line : yyLineNo ) << ": ";
+    return std::cerr << lscsPrintable( yyFileName ) << ':' << ( line ? line : yyLineNo ) << ": ";
 }
 
 void CppParser::setInput( const QString &in )
@@ -932,9 +932,9 @@ restart:
                     break;
 
                 case 'C':
-                    if ( yyWord == text_CS_OBJECT )
+                    if ( yyWord == text_LSCS_OBJECT )
                     {
-                        return Tok_CS_OBJECT;
+                        return Tok_LSCS_OBJECT;
                     }
 
                     break;
@@ -1024,9 +1024,9 @@ restart:
             }
 
             // gui_cs_object, net_cs_object, etc
-            if ( yyWord.contains( text_CS_OBJECT ) )
+            if ( yyWord.contains( text_LSCS_OBJECT ) )
             {
-                return Tok_CS_OBJECT;
+                return Tok_LSCS_OBJECT;
             }
 
             return Tok_Identifier;
@@ -1854,7 +1854,7 @@ void CppParser::processInclude( const QString &file, ConversionData &cd, const Q
 
     if ( ! f.open( QIODevice::ReadOnly ) )
     {
-        yyMsg() << csPrintable( QString( "Unable to open %1: %2\n" ).formatArgs( cleanFile, f.errorString() ) );
+        yyMsg() << lscsPrintable( QString( "Unable to open %1: %2\n" ).formatArgs( cleanFile, f.errorString() ) );
         return;
     }
 
@@ -2257,7 +2257,7 @@ void CppParser::handleCsMarkTr( Group kind, QString prefix )
             {
                 functionContextUnresolved = stringifyNamespace( 0, unresolved );
 
-                yyMsg() << csPrintable( QString( "Trying to use unknown namespace or class %1 %2\n" )
+                yyMsg() << lscsPrintable( QString( "Trying to use unknown namespace or class %1 %2\n" )
                                         .formatArg( stringifyNamespace( functionContext ) ).formatArg( unresolved.first().value() ) );
             }
 
@@ -2290,7 +2290,7 @@ void CppParser::handleCsMarkTr( Group kind, QString prefix )
 
                         if ( ! fctx->complained )
                         {
-                            yyMsg() << csPrintable( QString( "Class %1 is missing a call to the CS_OBJECT macro\n" ).formatArg( context ) );
+                            yyMsg() << lscsPrintable( QString( "Class %1 is missing a call to the LSCS_OBJECT macro\n" ).formatArg( context ) );
                             fctx->complained = true;
                         }
 
@@ -2363,7 +2363,7 @@ void CppParser::handleCsMarkTr( Group kind, QString prefix )
 
                 if ( ! fctx->hasTrFunctions && ! fctx->complained )
                 {
-                    yyMsg() << csPrintable( QString( "Class %1 is missing a call to the CS_OBJECT macro\n" ).formatArg( context ) );
+                    yyMsg() << lscsPrintable( QString( "Class %1 is missing a call to the LSCS_OBJECT macro\n" ).formatArg( context ) );
                     fctx->complained = true;
                 }
 
@@ -2793,7 +2793,7 @@ incOk:
 
                 break;
 
-            case Tok_CS_OBJECT:
+            case Tok_LSCS_OBJECT:
                 modifyNamespace( &namespaces )->hasTrFunctions = true;
                 yyTok = getToken();
                 break;

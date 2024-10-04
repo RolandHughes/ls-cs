@@ -64,7 +64,7 @@ using PathHash     = QHash<QString, PathInfoList>;
 
 class QFSEventsFileSystemWatcherEngine : public QFileSystemWatcherEngine
 {
-    CORE_CS_OBJECT( QFSEventsFileSystemWatcherEngine )
+    CORE_LSCS_OBJECT( QFSEventsFileSystemWatcherEngine )
 
 public:
     ~QFSEventsFileSystemWatcherEngine();

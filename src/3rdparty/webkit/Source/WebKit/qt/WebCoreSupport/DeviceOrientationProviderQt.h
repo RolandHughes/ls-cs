@@ -35,7 +35,7 @@ class DeviceOrientationClientQt;
 
 class DeviceOrientationProviderQt : public QObject, public QRotationFilter
 {
-    WEB_CS_OBJECT( DeviceOrientationProviderQt )
+    WEB_LSCS_OBJECT( DeviceOrientationProviderQt )
 
 public:
     DeviceOrientationProviderQt();
@@ -58,11 +58,11 @@ public:
     }
 
 public:
-    WEB_CS_SIGNAL_1( Public, void deviceOrientationChanged( DeviceOrientation *orientation ) )
-    WEB_CS_SIGNAL_2( deviceOrientationChanged,orientation )
+    WEB_LSCS_SIGNAL_1( Public, void deviceOrientationChanged( DeviceOrientation *orientation ) )
+    WEB_LSCS_SIGNAL_2( deviceOrientationChanged,orientation )
 
-    WEB_CS_SLOT_1( Public, void changeDeviceOrientation( DeviceOrientation *orientation ) )
-    WEB_CS_SLOT_2( changeDeviceOrientation )
+    WEB_LSCS_SLOT_1( Public, void changeDeviceOrientation( DeviceOrientation *orientation ) )
+    WEB_LSCS_SLOT_2( changeDeviceOrientation )
 
 private:
     void activeClientMock();

@@ -561,7 +561,7 @@ QVariant QSystemLocale::query(QueryType type, QVariant in = QVariant()) const
          } else {
             qWarning("QLocale::uiLanguages(): CFPreferencesCopyValue returned unhandled type \"%s\". "
                   "Report to info@copperspice.com",
-                  csPrintable(QCFString::toQString(CFCopyTypeIDDescription(typeId))));
+                  lscsPrintable(QCFString::toQString(CFCopyTypeIDDescription(typeId))));
          }
 
          return QVariant(result);

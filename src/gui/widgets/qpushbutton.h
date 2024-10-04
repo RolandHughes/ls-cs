@@ -32,14 +32,14 @@ class QStyleOptionButton;
 
 class Q_GUI_EXPORT QPushButton : public QAbstractButton
 {
-    GUI_CS_OBJECT( QPushButton )
+    GUI_LSCS_OBJECT( QPushButton )
 
-    GUI_CS_PROPERTY_READ( autoDefault, autoDefault )
-    GUI_CS_PROPERTY_WRITE( autoDefault, setAutoDefault )
-    GUI_CS_PROPERTY_READ( default, isDefault )
-    GUI_CS_PROPERTY_WRITE( default, setDefault )
-    GUI_CS_PROPERTY_READ( flat, isFlat )
-    GUI_CS_PROPERTY_WRITE( flat, setFlat )
+    GUI_LSCS_PROPERTY_READ( autoDefault, autoDefault )
+    GUI_LSCS_PROPERTY_WRITE( autoDefault, setAutoDefault )
+    GUI_LSCS_PROPERTY_READ( default, isDefault )
+    GUI_LSCS_PROPERTY_WRITE( default, setDefault )
+    GUI_LSCS_PROPERTY_READ( flat, isFlat )
+    GUI_LSCS_PROPERTY_WRITE( flat, setFlat )
 
 public:
     explicit QPushButton( QWidget *parent = nullptr );
@@ -66,8 +66,8 @@ public:
     void setMenu( QMenu *menu );
     QMenu *menu() const;
 
-    GUI_CS_SLOT_1( Public, void showMenu() )
-    GUI_CS_SLOT_2( showMenu )
+    GUI_LSCS_SLOT_1( Public, void showMenu() )
+    GUI_LSCS_SLOT_2( showMenu )
 #endif
 
 protected:
@@ -84,8 +84,8 @@ private:
     Q_DECLARE_PRIVATE( QPushButton )
 
 #ifndef QT_NO_MENU
-    GUI_CS_SLOT_1( Private, void _q_popupPressed() )
-    GUI_CS_SLOT_2( _q_popupPressed )
+    GUI_LSCS_SLOT_1( Private, void _q_popupPressed() )
+    GUI_LSCS_SLOT_2( _q_popupPressed )
 #endif
 
 };

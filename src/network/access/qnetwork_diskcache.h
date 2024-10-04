@@ -32,7 +32,7 @@ class QNetworkDiskCachePrivate;
 
 class Q_NETWORK_EXPORT QNetworkDiskCache : public QAbstractNetworkCache
 {
-    NET_CS_OBJECT( QNetworkDiskCache )
+    NET_LSCS_OBJECT( QNetworkDiskCache )
 
 public:
     explicit QNetworkDiskCache( QObject *parent = nullptr );
@@ -58,8 +58,8 @@ public:
 
     QNetworkCacheMetaData fileMetaData( const QString &fileName ) const;
 
-    NET_CS_SLOT_1( Public, void clear() override )
-    NET_CS_SLOT_2( clear )
+    NET_LSCS_SLOT_1( Public, void clear() override )
+    NET_LSCS_SLOT_2( clear )
 
 protected:
     virtual qint64 expire();

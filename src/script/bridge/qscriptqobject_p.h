@@ -120,7 +120,7 @@ protected:
 
 class QObjectPrototypeObject : public QObject
 {
-    SCRIPT_CS_OBJECT( QObjectPrototypeObject )
+    SCRIPT_LSCS_OBJECT( QObjectPrototypeObject )
 
 public:
     QObjectPrototypeObject( QObject *parent = nullptr ) : QObject( parent ) { }

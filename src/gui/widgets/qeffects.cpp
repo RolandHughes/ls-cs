@@ -40,7 +40,7 @@
 
 class QAlphaWidget: public QWidget, private QEffects
 {
-    GUI_CS_OBJECT( QAlphaWidget )
+    GUI_LSCS_OBJECT( QAlphaWidget )
 
 public:
     QAlphaWidget( QWidget *w, Qt::WindowFlags flags = Qt::EmptyFlag );
@@ -54,8 +54,8 @@ protected:
     void alphaBlend();
     bool eventFilter( QObject *, QEvent * )  override;
 
-    GUI_CS_SLOT_1( Protected, void render() )
-    GUI_CS_SLOT_2( render )
+    GUI_LSCS_SLOT_1( Protected, void render() )
+    GUI_LSCS_SLOT_2( render )
 
 private:
     QPixmap pm;
@@ -358,7 +358,7 @@ void QAlphaWidget::alphaBlend()
 
 class QRollEffect : public QWidget, private QEffects
 {
-    GUI_CS_OBJECT( QRollEffect )
+    GUI_LSCS_OBJECT( QRollEffect )
 
 public:
     QRollEffect( QWidget *w, Qt::WindowFlags flags, DirFlags orient );
@@ -370,8 +370,8 @@ protected:
     void closeEvent( QCloseEvent * )  override;
 
 private:
-    GUI_CS_SLOT_1( Private, void scroll() )
-    GUI_CS_SLOT_2( scroll )
+    GUI_LSCS_SLOT_1( Private, void scroll() )
+    GUI_LSCS_SLOT_2( scroll )
 
     QPointer<QWidget> widget;
 

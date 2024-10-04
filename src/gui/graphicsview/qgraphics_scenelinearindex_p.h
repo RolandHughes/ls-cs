@@ -36,7 +36,7 @@
 
 class QGraphicsSceneLinearIndex : public QGraphicsSceneIndex
 {
-    GUI_CS_OBJECT( QGraphicsSceneLinearIndex )
+    GUI_LSCS_OBJECT( QGraphicsSceneLinearIndex )
 
 public:
     QGraphicsSceneLinearIndex( QGraphicsScene *scene = nullptr )

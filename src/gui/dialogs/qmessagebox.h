@@ -36,33 +36,33 @@ class QMessageBoxPrivate;
 
 class Q_GUI_EXPORT QMessageBox : public QDialog
 {
-    GUI_CS_OBJECT( QMessageBox )
+    GUI_LSCS_OBJECT( QMessageBox )
 
-    GUI_CS_ENUM( Icon )
-    GUI_CS_FLAG( StandardButton, StandardButtons )
+    GUI_LSCS_ENUM( Icon )
+    GUI_LSCS_FLAG( StandardButton, StandardButtons )
 
-    GUI_CS_PROPERTY_READ( text, text )
-    GUI_CS_PROPERTY_WRITE( text, setText )
+    GUI_LSCS_PROPERTY_READ( text, text )
+    GUI_LSCS_PROPERTY_WRITE( text, setText )
 
-    GUI_CS_PROPERTY_READ( icon, icon )
-    GUI_CS_PROPERTY_WRITE( icon, setIcon )
+    GUI_LSCS_PROPERTY_READ( icon, icon )
+    GUI_LSCS_PROPERTY_WRITE( icon, setIcon )
 
-    GUI_CS_PROPERTY_READ( iconPixmap, iconPixmap )
-    GUI_CS_PROPERTY_WRITE( iconPixmap, setIconPixmap )
+    GUI_LSCS_PROPERTY_READ( iconPixmap, iconPixmap )
+    GUI_LSCS_PROPERTY_WRITE( iconPixmap, setIconPixmap )
 
-    GUI_CS_PROPERTY_READ( textFormat, textFormat )
-    GUI_CS_PROPERTY_WRITE( textFormat, setTextFormat )
+    GUI_LSCS_PROPERTY_READ( textFormat, textFormat )
+    GUI_LSCS_PROPERTY_WRITE( textFormat, setTextFormat )
 
-    GUI_CS_PROPERTY_READ( standardButtons, standardButtons )
-    GUI_CS_PROPERTY_WRITE( standardButtons, setStandardButtons )
+    GUI_LSCS_PROPERTY_READ( standardButtons, standardButtons )
+    GUI_LSCS_PROPERTY_WRITE( standardButtons, setStandardButtons )
 
 #ifndef QT_NO_TEXTEDIT
-    GUI_CS_PROPERTY_READ( detailedText, detailedText )
-    GUI_CS_PROPERTY_WRITE( detailedText, setDetailedText )
+    GUI_LSCS_PROPERTY_READ( detailedText, detailedText )
+    GUI_LSCS_PROPERTY_WRITE( detailedText, setDetailedText )
 #endif
 
-    GUI_CS_PROPERTY_READ( informativeText, informativeText )
-    GUI_CS_PROPERTY_WRITE( informativeText, setInformativeText )
+    GUI_LSCS_PROPERTY_READ( informativeText, informativeText )
+    GUI_LSCS_PROPERTY_WRITE( informativeText, setInformativeText )
 
 public:
     enum Icon
@@ -271,8 +271,8 @@ public:
     void setWindowModality( Qt::WindowModality windowModality );
 
     static QPixmap standardIcon( Icon icon );
-    GUI_CS_SIGNAL_1( Public, void buttonClicked( QAbstractButton *button ) )
-    GUI_CS_SIGNAL_2( buttonClicked, button )
+    GUI_LSCS_SIGNAL_1( Public, void buttonClicked( QAbstractButton *button ) )
+    GUI_LSCS_SIGNAL_2( buttonClicked, button )
 
 protected:
     bool event( QEvent *event ) override;
@@ -285,11 +285,11 @@ protected:
 private:
     Q_DECLARE_PRIVATE( QMessageBox )
 
-    GUI_CS_SLOT_1( Private, void _q_clicked( QPlatformDialogHelper::StandardButton button, QPlatformDialogHelper::ButtonRole role ) )
-    GUI_CS_SLOT_2( _q_clicked )
+    GUI_LSCS_SLOT_1( Private, void _q_clicked( QPlatformDialogHelper::StandardButton button, QPlatformDialogHelper::ButtonRole role ) )
+    GUI_LSCS_SLOT_2( _q_clicked )
 
-    GUI_CS_SLOT_1( Private, void _q_buttonClicked( QAbstractButton *button ) )
-    GUI_CS_SLOT_2( _q_buttonClicked )
+    GUI_LSCS_SLOT_1( Private, void _q_buttonClicked( QAbstractButton *button ) )
+    GUI_LSCS_SLOT_2( _q_buttonClicked )
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS( QMessageBox::StandardButtons )

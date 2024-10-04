@@ -34,9 +34,9 @@ class QVariant;
 
 class Q_GUI_EXPORT QFont
 {
-    GUI_CS_GADGET( QFont )
+    GUI_LSCS_GADGET( QFont )
 
-    GUI_CS_ENUM( StyleStrategy )
+    GUI_LSCS_ENUM( StyleStrategy )
 
 public:
     enum StyleHint

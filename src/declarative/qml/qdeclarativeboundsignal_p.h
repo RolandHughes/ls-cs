@@ -32,7 +32,7 @@ QT_BEGIN_NAMESPACE
 
 class QDeclarativeAbstractBoundSignal : public QObject
 {
-    DECL_CS_OBJECT( QDeclarativeAbstractBoundSignal )
+    DECL_LSCS_OBJECT( QDeclarativeAbstractBoundSignal )
 
 public:
     QDeclarativeAbstractBoundSignal( QObject *parent = nullptr );
@@ -40,8 +40,8 @@ public:
     virtual void disconnect() = 0;
 
 protected :
-    DECL_CS_SLOT_1( Protected, virtual void unregisterScopeObject() )
-    DECL_CS_SLOT_2( unregisterScopeObject )
+    DECL_LSCS_SLOT_1( Protected, virtual void unregisterScopeObject() )
+    DECL_LSCS_SLOT_2( unregisterScopeObject )
 };
 
 class QDeclarativeBoundSignalParameters;

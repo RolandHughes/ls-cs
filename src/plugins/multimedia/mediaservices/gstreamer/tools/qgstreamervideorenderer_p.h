@@ -32,8 +32,8 @@
 
 class QGstreamerVideoRenderer : public QVideoRendererControl, public QGstreamerVideoRendererInterface
 {
-    CS_OBJECT_MULTIPLE( QGstreamerVideoRenderer, QVideoRendererControl )
-    CS_INTERFACES( QGstreamerVideoRendererInterface )
+    LSCS_OBJECT_MULTIPLE( QGstreamerVideoRenderer, QVideoRendererControl )
+    LSCS_INTERFACES( QGstreamerVideoRendererInterface )
 
 public:
     QGstreamerVideoRenderer( QObject *parent = nullptr );
@@ -50,15 +50,15 @@ public:
         return m_surface != nullptr;
     }
 
-    CS_SIGNAL_1( Public, void sinkChanged() )
-    CS_SIGNAL_2( sinkChanged )
+    LSCS_SIGNAL_1( Public, void sinkChanged() )
+    LSCS_SIGNAL_2( sinkChanged )
 
-    CS_SIGNAL_1( Public, void readyChanged( bool isReady ) )
-    CS_SIGNAL_2( readyChanged, isReady )
+    LSCS_SIGNAL_1( Public, void readyChanged( bool isReady ) )
+    LSCS_SIGNAL_2( readyChanged, isReady )
 
 private:
-    CS_SLOT_1( Private, void handleFormatChange() )
-    CS_SLOT_2( handleFormatChange )
+    LSCS_SLOT_1( Private, void handleFormatChange() )
+    LSCS_SLOT_2( handleFormatChange )
 
     QVideoSurfaceGstSink *m_videoSink;
     QPointer<QAbstractVideoSurface> m_surface;

@@ -24,8 +24,8 @@
  * LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 */
 
-#ifndef CS_REGEX_TRAITS_DEFAULTS_H
-#define CS_REGEX_TRAITS_DEFAULTS_H
+#ifndef LSCS_REGEX_TRAITS_DEFAULTS_H
+#define LSCS_REGEX_TRAITS_DEFAULTS_H
 
 #include <regex/r_config.h>
 
@@ -33,16 +33,16 @@
 #include <type_traits>
 #include <stdint.h>
 
-namespace cs_regex_ns
+namespace lscs_regex_ns
 {
 
-namespace cs_regex_detail_ns
+namespace lscs_regex_detail_ns
 {
 
-LIB_CS_STRING_EXPORT const char                          *get_default_syntax( cs_regex_ns::regex_constants::syntax_type n );
-LIB_CS_STRING_EXPORT regex_constants::syntax_type         get_default_syntax_type( char c );
-LIB_CS_STRING_EXPORT regex_constants::escape_syntax_type  get_default_escape_syntax_type( char c );
-LIB_CS_STRING_EXPORT std::string                          get_default_collate_name( const std::string &name );
+LIB_LSCS_STRING_EXPORT const char                          *get_default_syntax( lscs_regex_ns::regex_constants::syntax_type n );
+LIB_LSCS_STRING_EXPORT regex_constants::syntax_type         get_default_syntax_type( char c );
+LIB_LSCS_STRING_EXPORT regex_constants::escape_syntax_type  get_default_escape_syntax_type( char c );
+LIB_LSCS_STRING_EXPORT std::string                          get_default_collate_name( const std::string &name );
 
 template <class charT>
 inline bool is_extended( charT c )

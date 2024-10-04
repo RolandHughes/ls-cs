@@ -403,7 +403,7 @@ Q_GUI_EXPORT extern bool qt_scaleForTransform( const QTransform &transform, qrea
 
 void QPaintEngineEx::stroke( const QVectorPath &path, const QPen &pen )
 {
-#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+#if defined(LSCS_SHOW_DEBUG_GUI_PAINTING)
     qDebug() << "QPaintEngineEx::stroke()" << pen;
 #endif
 

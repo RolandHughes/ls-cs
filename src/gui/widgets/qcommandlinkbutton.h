@@ -30,13 +30,13 @@ class QCommandLinkButtonPrivate;
 
 class Q_GUI_EXPORT QCommandLinkButton: public QPushButton
 {
-    GUI_CS_OBJECT( QCommandLinkButton )
+    GUI_LSCS_OBJECT( QCommandLinkButton )
 
-    GUI_CS_PROPERTY_READ( description, description )
-    GUI_CS_PROPERTY_WRITE( description, setDescription )
-    GUI_CS_PROPERTY_READ( flat, isFlat )
-    GUI_CS_PROPERTY_WRITE( flat, setFlat )
-    GUI_CS_PROPERTY_DESIGNABLE( flat, false )
+    GUI_LSCS_PROPERTY_READ( description, description )
+    GUI_LSCS_PROPERTY_WRITE( description, setDescription )
+    GUI_LSCS_PROPERTY_READ( flat, isFlat )
+    GUI_LSCS_PROPERTY_WRITE( flat, setFlat )
+    GUI_LSCS_PROPERTY_DESIGNABLE( flat, false )
 
 public:
     explicit QCommandLinkButton( QWidget *parent = nullptr );

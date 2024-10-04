@@ -2321,7 +2321,7 @@ bool QIBaseDriver::subscribeToNotificationImplementation( const QString &name )
     if ( d->eventBuffers.contains( name ) )
     {
         qWarning( "QIBaseDriver::subscribeToNotificationImplementation: already subscribing to '%s'.",
-                  csPrintable( name ) );
+                  lscsPrintable( name ) );
         return false;
     }
 
@@ -2373,7 +2373,7 @@ bool QIBaseDriver::unsubscribeFromNotificationImplementation( const QString &nam
     if ( !d->eventBuffers.contains( name ) )
     {
         qWarning( "QIBaseDriver::QIBaseSubscriptionState not subscribed to '%s'.",
-                  csPrintable( name ) );
+                  lscsPrintable( name ) );
         return false;
     }
 
@@ -2444,7 +2444,7 @@ void QIBaseDriver::qHandleEventNotification( void *updatedResultBuffer )
             if ( status[0] == 1 && status[1] )
             {
                 qCritical( "QIBaseDriver::qHandleEventNotification: could not resubscribe to '%s'",
-                           csPrintable( i.key() ) );
+                           lscsPrintable( i.key() ) );
             }
 
             return;

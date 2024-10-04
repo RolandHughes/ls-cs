@@ -132,19 +132,19 @@ static inline bool launch( const QString &launcher, const QUrl &url )
 {
     const QString command = launcher + QLatin1Char( ' ' ) + url.toEncoded();
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
-    qDebug( "launch() Starting process %s", csPrintable( command ) );
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
+    qDebug( "launch() Starting process %s", lscsPrintable( command ) );
 #endif
 
 #if defined(QT_NO_PROCESS)
-    const bool ok = ::system( csPrintable( command + " &" ) );
+    const bool ok = ::system( lscsPrintable( command + " &" ) );
 #else
     const bool ok = QProcess::startDetached( command );
 #endif
 
     if ( !ok )
     {
-        qWarning( "launch() Failed to start process %s", csPrintable( command ) );
+        qWarning( "launch() Failed to start process %s", lscsPrintable( command ) );
     }
 
     return ok;
@@ -165,7 +165,7 @@ bool QGenericUnixServices::openUrl( const QUrl &url )
 
     if ( m_webBrowser.isEmpty() && ! detectWebBrowser( desktopEnvironment(), true, &m_webBrowser ) )
     {
-        qWarning( "Unable to detect a web browser to launch '%s'", csPrintable( url.toString() ) );
+        qWarning( "Unable to detect a web browser to launch '%s'", lscsPrintable( url.toString() ) );
         return false;
     }
 
@@ -176,7 +176,7 @@ bool QGenericUnixServices::openDocument( const QUrl &url )
 {
     if ( m_documentLauncher.isEmpty() && ! detectWebBrowser( desktopEnvironment(), false, &m_documentLauncher ) )
     {
-        qWarning( "Unable to detect a launcher for '%s'", csPrintable( url.toString() ) );
+        qWarning( "Unable to detect a launcher for '%s'", lscsPrintable( url.toString() ) );
         return false;
     }
 

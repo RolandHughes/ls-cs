@@ -37,7 +37,7 @@ class QItemEditorFactory;
 
 class Q_GUI_EXPORT QStyledItemDelegate : public QAbstractItemDelegate
 {
-    GUI_CS_OBJECT( QStyledItemDelegate )
+    GUI_LSCS_OBJECT( QStyledItemDelegate )
 
 public:
     explicit QStyledItemDelegate( QObject *parent = nullptr );

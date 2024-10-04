@@ -61,7 +61,7 @@ void QSystemSemaphorePrivate::setErrorString( const QString &function )
                           .formatArg( function ).formatArg( windowsError );
             error = QSystemSemaphore::UnknownError;
 
-#if defined(CS_SHOW_DEBUG_CORE)
+#if defined(LSCS_SHOW_DEBUG_CORE)
             qDebug() << errorString << "key" << key;
 #endif
             break;
@@ -95,7 +95,7 @@ void QSystemSemaphorePrivate::cleanHandle()
     if ( semaphore && !CloseHandle( semaphore ) )
     {
 
-#if defined(CS_SHOW_DEBUG_CORE)
+#if defined(LSCS_SHOW_DEBUG_CORE)
         qDebug() << QLatin1String( "QSystemSemaphorePrivate::CloseHandle: sem failed" );
 #endif
 
@@ -117,7 +117,7 @@ bool QSystemSemaphorePrivate::modifySemaphore( int count )
         {
             setErrorString( QLatin1String( "QSystemSemaphore::modifySemaphore" ) );
 
-#if defined(CS_SHOW_DEBUG_CORE)
+#if defined(LSCS_SHOW_DEBUG_CORE)
             qDebug() << QLatin1String( "QSystemSemaphore::modifySemaphore ReleaseSemaphore failed" );
 #endif
             return false;
@@ -130,7 +130,7 @@ bool QSystemSemaphorePrivate::modifySemaphore( int count )
         {
             setErrorString( QLatin1String( "QSystemSemaphore::modifySemaphore" ) );
 
-#if defined(CS_SHOW_DEBUG_CORE)
+#if defined(LSCS_SHOW_DEBUG_CORE)
             qDebug() << QLatin1String( "QSystemSemaphore::modifySemaphore WaitForSingleObject failed" );
 #endif
             return false;

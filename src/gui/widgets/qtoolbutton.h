@@ -34,26 +34,26 @@ class QStyleOptionToolButton;
 
 class Q_GUI_EXPORT QToolButton : public QAbstractButton
 {
-    GUI_CS_OBJECT( QToolButton )
+    GUI_LSCS_OBJECT( QToolButton )
 
-    GUI_CS_ENUM( ToolButtonPopupMode )
+    GUI_LSCS_ENUM( ToolButtonPopupMode )
 
 #ifndef QT_NO_MENU
-    GUI_CS_PROPERTY_READ( popupMode, popupMode )
-    GUI_CS_PROPERTY_WRITE( popupMode, setPopupMode )
+    GUI_LSCS_PROPERTY_READ( popupMode, popupMode )
+    GUI_LSCS_PROPERTY_WRITE( popupMode, setPopupMode )
 #endif
 
-    GUI_CS_PROPERTY_READ( toolButtonStyle, toolButtonStyle )
-    GUI_CS_PROPERTY_WRITE( toolButtonStyle, setToolButtonStyle )
+    GUI_LSCS_PROPERTY_READ( toolButtonStyle, toolButtonStyle )
+    GUI_LSCS_PROPERTY_WRITE( toolButtonStyle, setToolButtonStyle )
 
-    GUI_CS_PROPERTY_READ( autoRaise, autoRaise )
-    GUI_CS_PROPERTY_WRITE( autoRaise, setAutoRaise )
+    GUI_LSCS_PROPERTY_READ( autoRaise, autoRaise )
+    GUI_LSCS_PROPERTY_WRITE( autoRaise, setAutoRaise )
 
-    GUI_CS_PROPERTY_READ( arrowType, arrowType )
-    GUI_CS_PROPERTY_WRITE( arrowType, setArrowType )
+    GUI_LSCS_PROPERTY_READ( arrowType, arrowType )
+    GUI_LSCS_PROPERTY_WRITE( arrowType, setArrowType )
 
 public:
-    GUI_CS_REGISTER_ENUM(
+    GUI_LSCS_REGISTER_ENUM(
         enum ToolButtonPopupMode
     {
         DelayedPopup,
@@ -91,18 +91,18 @@ public:
     bool autoRaise() const;
 
 #ifndef QT_NO_MENU
-    GUI_CS_SLOT_1( Public, void showMenu() )
-    GUI_CS_SLOT_2( showMenu )
+    GUI_LSCS_SLOT_1( Public, void showMenu() )
+    GUI_LSCS_SLOT_2( showMenu )
 #endif
 
-    GUI_CS_SLOT_1( Public, void setToolButtonStyle( Qt::ToolButtonStyle style ) )
-    GUI_CS_SLOT_2( setToolButtonStyle )
+    GUI_LSCS_SLOT_1( Public, void setToolButtonStyle( Qt::ToolButtonStyle style ) )
+    GUI_LSCS_SLOT_2( setToolButtonStyle )
 
-    GUI_CS_SLOT_1( Public, void setDefaultAction( QAction *action ) )
-    GUI_CS_SLOT_2( setDefaultAction )
+    GUI_LSCS_SLOT_1( Public, void setDefaultAction( QAction *action ) )
+    GUI_LSCS_SLOT_2( setDefaultAction )
 
-    GUI_CS_SIGNAL_1( Public, void triggered( QAction *action ) )
-    GUI_CS_SIGNAL_2( triggered, action )
+    GUI_LSCS_SIGNAL_1( Public, void triggered( QAction *action ) )
+    GUI_LSCS_SIGNAL_2( triggered, action )
 
 protected:
     QToolButton( QToolButtonPrivate &, QWidget *parent );
@@ -126,21 +126,21 @@ private:
     Q_DECLARE_PRIVATE( QToolButton )
 
 #ifndef QT_NO_MENU
-    GUI_CS_SLOT_1( Private, void _q_buttonPressed() )
-    GUI_CS_SLOT_2( _q_buttonPressed )
+    GUI_LSCS_SLOT_1( Private, void _q_buttonPressed() )
+    GUI_LSCS_SLOT_2( _q_buttonPressed )
 
-    GUI_CS_SLOT_1( Private, void _q_buttonReleased() )
-    GUI_CS_SLOT_2( _q_buttonReleased )
+    GUI_LSCS_SLOT_1( Private, void _q_buttonReleased() )
+    GUI_LSCS_SLOT_2( _q_buttonReleased )
 
-    GUI_CS_SLOT_1( Private, void _q_updateButtonDown() )
-    GUI_CS_SLOT_2( _q_updateButtonDown )
+    GUI_LSCS_SLOT_1( Private, void _q_updateButtonDown() )
+    GUI_LSCS_SLOT_2( _q_updateButtonDown )
 
-    GUI_CS_SLOT_1( Private, void _q_menuTriggered( QAction *action ) )
-    GUI_CS_SLOT_2( _q_menuTriggered )
+    GUI_LSCS_SLOT_1( Private, void _q_menuTriggered( QAction *action ) )
+    GUI_LSCS_SLOT_2( _q_menuTriggered )
 #endif
 
-    GUI_CS_SLOT_1( Private, void _q_actionTriggered() )
-    GUI_CS_SLOT_2( _q_actionTriggered )
+    GUI_LSCS_SLOT_1( Private, void _q_actionTriggered() )
+    GUI_LSCS_SLOT_2( _q_actionTriggered )
 };
 
 #endif // QT_NO_TOOLBUTTON

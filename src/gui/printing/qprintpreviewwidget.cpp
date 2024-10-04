@@ -123,7 +123,7 @@ void PageItem::paint( QPainter *painter, const QStyleOptionGraphicsItem *option,
 
 class GraphicsView : public QGraphicsView
 {
-    GUI_CS_OBJECT( GraphicsView )
+    GUI_LSCS_OBJECT( GraphicsView )
 
 public:
     GraphicsView( QWidget *parent = nullptr )
@@ -136,8 +136,8 @@ public:
 
     }
 
-    GUI_CS_SIGNAL_1( Public, void resized() )
-    GUI_CS_SIGNAL_2( resized )
+    GUI_LSCS_SIGNAL_1( Public, void resized() )
+    GUI_LSCS_SIGNAL_2( resized )
 
 protected:
     void resizeEvent( QResizeEvent *e ) override

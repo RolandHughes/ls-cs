@@ -31,12 +31,12 @@ class DSServicePlugin
     : public QMediaServiceProviderPlugin, public QMediaServiceSupportedDevicesInterface,
       public QMediaServiceDefaultDeviceInterface, public QMediaServiceFeaturesInterface
 {
-    CS_OBJECT_MULTIPLE( DSServicePlugin, QMediaServiceProviderPlugin )
+    LSCS_OBJECT_MULTIPLE( DSServicePlugin, QMediaServiceProviderPlugin )
 
-    CS_PLUGIN_IID( QMediaServiceProviderInterface_ID )
-    CS_PLUGIN_KEY( QString( Q_MEDIASERVICE_MEDIAPLAYER ) + ", " + Q_MEDIASERVICE_CAMERA )
+    LSCS_PLUGIN_IID( QMediaServiceProviderInterface_ID )
+    LSCS_PLUGIN_KEY( QString( Q_MEDIASERVICE_MEDIAPLAYER ) + ", " + Q_MEDIASERVICE_CAMERA )
 
-    CS_INTERFACES( QMediaServiceSupportedDevicesInterface, QMediaServiceDefaultDeviceInterface, QMediaServiceFeaturesInterface )
+    LSCS_INTERFACES( QMediaServiceSupportedDevicesInterface, QMediaServiceDefaultDeviceInterface, QMediaServiceFeaturesInterface )
 
 public:
     QMediaService *create( const QString  &key ) override;

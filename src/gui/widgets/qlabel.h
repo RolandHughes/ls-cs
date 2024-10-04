@@ -31,40 +31,40 @@ class QLabelPrivate;
 
 class Q_GUI_EXPORT QLabel : public QFrame
 {
-    GUI_CS_OBJECT( QLabel )
+    GUI_LSCS_OBJECT( QLabel )
 
-    GUI_CS_PROPERTY_READ( text, text )
-    GUI_CS_PROPERTY_WRITE( text, setText )
+    GUI_LSCS_PROPERTY_READ( text, text )
+    GUI_LSCS_PROPERTY_WRITE( text, setText )
 
-    GUI_CS_PROPERTY_READ( textFormat, textFormat )
-    GUI_CS_PROPERTY_WRITE( textFormat, setTextFormat )
+    GUI_LSCS_PROPERTY_READ( textFormat, textFormat )
+    GUI_LSCS_PROPERTY_WRITE( textFormat, setTextFormat )
 
-    GUI_CS_PROPERTY_READ( pixmap, pixmap )
-    GUI_CS_PROPERTY_WRITE( pixmap, setPixmap )
+    GUI_LSCS_PROPERTY_READ( pixmap, pixmap )
+    GUI_LSCS_PROPERTY_WRITE( pixmap, setPixmap )
 
-    GUI_CS_PROPERTY_READ( scaledContents, hasScaledContents )
-    GUI_CS_PROPERTY_WRITE( scaledContents, setScaledContents )
+    GUI_LSCS_PROPERTY_READ( scaledContents, hasScaledContents )
+    GUI_LSCS_PROPERTY_WRITE( scaledContents, setScaledContents )
 
-    GUI_CS_PROPERTY_READ( alignment, alignment )
-    GUI_CS_PROPERTY_WRITE( alignment, setAlignment )
+    GUI_LSCS_PROPERTY_READ( alignment, alignment )
+    GUI_LSCS_PROPERTY_WRITE( alignment, setAlignment )
 
-    GUI_CS_PROPERTY_READ( wordWrap, wordWrap )
-    GUI_CS_PROPERTY_WRITE( wordWrap, setWordWrap )
+    GUI_LSCS_PROPERTY_READ( wordWrap, wordWrap )
+    GUI_LSCS_PROPERTY_WRITE( wordWrap, setWordWrap )
 
-    GUI_CS_PROPERTY_READ( margin, margin )
-    GUI_CS_PROPERTY_WRITE( margin, setMargin )
+    GUI_LSCS_PROPERTY_READ( margin, margin )
+    GUI_LSCS_PROPERTY_WRITE( margin, setMargin )
 
-    GUI_CS_PROPERTY_READ( indent, indent )
-    GUI_CS_PROPERTY_WRITE( indent, setIndent )
+    GUI_LSCS_PROPERTY_READ( indent, indent )
+    GUI_LSCS_PROPERTY_WRITE( indent, setIndent )
 
-    GUI_CS_PROPERTY_READ( openExternalLinks, openExternalLinks )
-    GUI_CS_PROPERTY_WRITE( openExternalLinks, setOpenExternalLinks )
+    GUI_LSCS_PROPERTY_READ( openExternalLinks, openExternalLinks )
+    GUI_LSCS_PROPERTY_WRITE( openExternalLinks, setOpenExternalLinks )
 
-    GUI_CS_PROPERTY_READ( textInteractionFlags, textInteractionFlags )
-    GUI_CS_PROPERTY_WRITE( textInteractionFlags, setTextInteractionFlags )
+    GUI_LSCS_PROPERTY_READ( textInteractionFlags, textInteractionFlags )
+    GUI_LSCS_PROPERTY_WRITE( textInteractionFlags, setTextInteractionFlags )
 
-    GUI_CS_PROPERTY_READ( hasSelectedText, hasSelectedText )
-    GUI_CS_PROPERTY_READ( selectedText, selectedText )
+    GUI_LSCS_PROPERTY_READ( hasSelectedText, hasSelectedText )
+    GUI_LSCS_PROPERTY_READ( selectedText, selectedText )
 
 public:
     explicit QLabel( QWidget *parent = nullptr, Qt::WindowFlags flags = Qt::EmptyFlag );
@@ -124,36 +124,36 @@ public:
     QString selectedText() const;
     int selectionStart() const;
 
-    GUI_CS_SLOT_1( Public, void setText( const QString &text ) )
-    GUI_CS_SLOT_2( setText )
+    GUI_LSCS_SLOT_1( Public, void setText( const QString &text ) )
+    GUI_LSCS_SLOT_2( setText )
 
-    GUI_CS_SLOT_1( Public, void setPixmap( const QPixmap &pixmap ) )
-    GUI_CS_SLOT_2( setPixmap )
+    GUI_LSCS_SLOT_1( Public, void setPixmap( const QPixmap &pixmap ) )
+    GUI_LSCS_SLOT_2( setPixmap )
 
 #ifndef QT_NO_PICTURE
-    GUI_CS_SLOT_1( Public, void setPicture( const QPicture &picture ) )
-    GUI_CS_SLOT_2( setPicture )
+    GUI_LSCS_SLOT_1( Public, void setPicture( const QPicture &picture ) )
+    GUI_LSCS_SLOT_2( setPicture )
 #endif
 
 #ifndef QT_NO_MOVIE
-    GUI_CS_SLOT_1( Public, void setMovie( QMovie *movie ) )
-    GUI_CS_SLOT_2( setMovie )
+    GUI_LSCS_SLOT_1( Public, void setMovie( QMovie *movie ) )
+    GUI_LSCS_SLOT_2( setMovie )
 #endif
 
-    GUI_CS_SLOT_1( Public, void setNum( int num ) )
-    GUI_CS_SLOT_OVERLOAD( setNum, ( int ) )
+    GUI_LSCS_SLOT_1( Public, void setNum( int num ) )
+    GUI_LSCS_SLOT_OVERLOAD( setNum, ( int ) )
 
-    GUI_CS_SLOT_1( Public, void setNum( double num ) )
-    GUI_CS_SLOT_OVERLOAD( setNum, ( double ) )
+    GUI_LSCS_SLOT_1( Public, void setNum( double num ) )
+    GUI_LSCS_SLOT_OVERLOAD( setNum, ( double ) )
 
-    GUI_CS_SLOT_1( Public, void clear() )
-    GUI_CS_SLOT_2( clear )
+    GUI_LSCS_SLOT_1( Public, void clear() )
+    GUI_LSCS_SLOT_2( clear )
 
-    GUI_CS_SIGNAL_1( Public, void linkActivated( const QString &link ) )
-    GUI_CS_SIGNAL_2( linkActivated, link )
+    GUI_LSCS_SIGNAL_1( Public, void linkActivated( const QString &link ) )
+    GUI_LSCS_SIGNAL_2( linkActivated, link )
 
-    GUI_CS_SIGNAL_1( Public, void linkHovered( const QString &link ) )
-    GUI_CS_SIGNAL_2( linkHovered, link )
+    GUI_LSCS_SIGNAL_1( Public, void linkHovered( const QString &link ) )
+    GUI_LSCS_SIGNAL_2( linkHovered, link )
 
 protected:
     bool event( QEvent *event ) override;
@@ -172,15 +172,15 @@ private:
     Q_DECLARE_PRIVATE( QLabel )
 
 #ifndef QT_NO_MOVIE
-    GUI_CS_SLOT_1( Private, void _q_movieUpdated( const QRect &rect ) )
-    GUI_CS_SLOT_2( _q_movieUpdated )
+    GUI_LSCS_SLOT_1( Private, void _q_movieUpdated( const QRect &rect ) )
+    GUI_LSCS_SLOT_2( _q_movieUpdated )
 
-    GUI_CS_SLOT_1( Private, void _q_movieResized( const QSize &size ) )
-    GUI_CS_SLOT_2( _q_movieResized )
+    GUI_LSCS_SLOT_1( Private, void _q_movieResized( const QSize &size ) )
+    GUI_LSCS_SLOT_2( _q_movieResized )
 #endif
 
-    GUI_CS_SLOT_1( Private, void _q_linkHovered( const QString &anchor ) )
-    GUI_CS_SLOT_2( _q_linkHovered )
+    GUI_LSCS_SLOT_1( Private, void _q_linkHovered( const QString &anchor ) )
+    GUI_LSCS_SLOT_2( _q_linkHovered )
 
     friend class QTipLabel;
     friend class QMessageBoxPrivate;

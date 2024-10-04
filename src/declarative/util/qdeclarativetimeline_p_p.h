@@ -37,7 +37,7 @@ class QDeclarativeTimeLineObject;
 
 class QDeclarativeTimeLine : public QAbstractAnimation
 {
-    DECL_CS_OBJECT( QDeclarativeTimeLine )
+    DECL_LSCS_OBJECT( QDeclarativeTimeLine )
 
 public:
     QDeclarativeTimeLine( QObject *parent = nullptr );
@@ -77,10 +77,10 @@ public:
 
     virtual int duration() const;
 public:
-    DECL_CS_SIGNAL_1( Public, void updated() )
-    DECL_CS_SIGNAL_2( updated )
-    DECL_CS_SIGNAL_1( Public, void completed() )
-    DECL_CS_SIGNAL_2( completed )
+    DECL_LSCS_SIGNAL_1( Public, void updated() )
+    DECL_LSCS_SIGNAL_2( updated )
+    DECL_LSCS_SIGNAL_1( Public, void completed() )
+    DECL_LSCS_SIGNAL_2( completed )
 
 protected:
     virtual void updateCurrentTime( int );

@@ -37,7 +37,7 @@ class QPagePreview;
 
 class QPageSetupWidget : public QWidget
 {
-    GUI_CS_OBJECT( QPageSetupWidget )
+    GUI_LSCS_OBJECT( QPageSetupWidget )
 
 public:
     explicit QPageSetupWidget( QWidget *parent = nullptr );
@@ -48,29 +48,29 @@ public:
     void setupPrinter() const;
 
 private:
-    GUI_CS_SLOT_1( Private, void pageOrientationChanged() )
-    GUI_CS_SLOT_2( pageOrientationChanged )
+    GUI_LSCS_SLOT_1( Private, void pageOrientationChanged() )
+    GUI_LSCS_SLOT_2( pageOrientationChanged )
 
-    GUI_CS_SLOT_1( Private, void pageSizeChanged() )
-    GUI_CS_SLOT_2( pageSizeChanged )
+    GUI_LSCS_SLOT_1( Private, void pageSizeChanged() )
+    GUI_LSCS_SLOT_2( pageSizeChanged )
 
-    GUI_CS_SLOT_1( Private, void pagesPerSheetChanged() )
-    GUI_CS_SLOT_2( pagesPerSheetChanged )
+    GUI_LSCS_SLOT_1( Private, void pagesPerSheetChanged() )
+    GUI_LSCS_SLOT_2( pagesPerSheetChanged )
 
-    GUI_CS_SLOT_1( Private, void unitChanged() )
-    GUI_CS_SLOT_2( unitChanged )
+    GUI_LSCS_SLOT_1( Private, void unitChanged() )
+    GUI_LSCS_SLOT_2( unitChanged )
 
-    GUI_CS_SLOT_1( Private, void topMarginChanged( double newValue ) )
-    GUI_CS_SLOT_2( topMarginChanged )
+    GUI_LSCS_SLOT_1( Private, void topMarginChanged( double newValue ) )
+    GUI_LSCS_SLOT_2( topMarginChanged )
 
-    GUI_CS_SLOT_1( Private, void bottomMarginChanged( double newValue ) )
-    GUI_CS_SLOT_2( bottomMarginChanged )
+    GUI_LSCS_SLOT_1( Private, void bottomMarginChanged( double newValue ) )
+    GUI_LSCS_SLOT_2( bottomMarginChanged )
 
-    GUI_CS_SLOT_1( Private, void leftMarginChanged( double newValue ) )
-    GUI_CS_SLOT_2( leftMarginChanged )
+    GUI_LSCS_SLOT_1( Private, void leftMarginChanged( double newValue ) )
+    GUI_LSCS_SLOT_2( leftMarginChanged )
 
-    GUI_CS_SLOT_1( Private, void rightMarginChanged( double newValue ) )
-    GUI_CS_SLOT_2( rightMarginChanged )
+    GUI_LSCS_SLOT_1( Private, void rightMarginChanged( double newValue ) )
+    GUI_LSCS_SLOT_2( rightMarginChanged )
 
     friend class QUnixPrintWidgetPrivate;  // Needed by checkFields()
 

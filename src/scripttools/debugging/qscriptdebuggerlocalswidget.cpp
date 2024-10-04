@@ -200,7 +200,7 @@ void QScriptDebuggerLocalsWidgetPrivate::_q_expandIndex( const QModelIndex &inde
 
 class QScriptDebuggerLocalsItemDelegate : public QStyledItemDelegate
 {
-    SCRIPT_T_CS_OBJECT( QScriptDebuggerLocalsItemDelegate )
+    SCRIPT_T_LSCS_OBJECT( QScriptDebuggerLocalsItemDelegate )
 
 public:
     QScriptDebuggerLocalsItemDelegate( QObject *parent = nullptr );

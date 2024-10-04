@@ -37,7 +37,7 @@ class QGraphicsItemAnimationPrivate;
 
 class Q_GUI_EXPORT QGraphicsItemAnimation : public QObject
 {
-    GUI_CS_OBJECT( QGraphicsItemAnimation )
+    GUI_LSCS_OBJECT( QGraphicsItemAnimation )
 
 public:
     QGraphicsItemAnimation( QObject *parent = nullptr );
@@ -80,11 +80,11 @@ public:
 
     void clear();
 
-    GUI_CS_SLOT_1( Public, void setStep( qreal step ) )
-    GUI_CS_SLOT_2( setStep )
+    GUI_LSCS_SLOT_1( Public, void setStep( qreal step ) )
+    GUI_LSCS_SLOT_2( setStep )
 
-    GUI_CS_SLOT_1( Public, void reset() )
-    GUI_CS_SLOT_2( reset )
+    GUI_LSCS_SLOT_1( Public, void reset() )
+    GUI_LSCS_SLOT_2( reset )
 
 protected:
     virtual void beforeAnimationStep( qreal step );

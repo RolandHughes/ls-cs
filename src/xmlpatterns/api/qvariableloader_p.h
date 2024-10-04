@@ -74,6 +74,6 @@ private:
 };
 }
 
-CS_DECLARE_METATYPE( QXmlQuery )
+LSCS_DECLARE_METATYPE( QXmlQuery )
 
 #endif

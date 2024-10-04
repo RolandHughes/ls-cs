@@ -33,11 +33,11 @@ class QItemSelection;
 
 class Q_GUI_EXPORT QAbstractProxyModel : public QAbstractItemModel
 {
-    GUI_CS_OBJECT( QAbstractProxyModel )
+    GUI_LSCS_OBJECT( QAbstractProxyModel )
 
-    GUI_CS_PROPERTY_READ( sourceModel, sourceModel )
-    GUI_CS_PROPERTY_WRITE( sourceModel, setSourceModel )
-    GUI_CS_PROPERTY_NOTIFY( sourceModel, sourceModelChanged )
+    GUI_LSCS_PROPERTY_READ( sourceModel, sourceModel )
+    GUI_LSCS_PROPERTY_WRITE( sourceModel, setSourceModel )
+    GUI_LSCS_PROPERTY_NOTIFY( sourceModel, sourceModelChanged )
 
 public:
     explicit QAbstractProxyModel( QObject *parent = nullptr );
@@ -87,20 +87,20 @@ public:
     Qt::DropActions supportedDragActions() const override;
     Qt::DropActions supportedDropActions() const override;
 
-    GUI_CS_SIGNAL_1( Public, void sourceModelChanged() )
-    GUI_CS_SIGNAL_2( sourceModelChanged )
+    GUI_LSCS_SIGNAL_1( Public, void sourceModelChanged() )
+    GUI_LSCS_SIGNAL_2( sourceModelChanged )
 
 protected:
     QAbstractProxyModel( QAbstractProxyModelPrivate &, QObject *parent );
 
-    GUI_CS_SLOT_1( Protected, void resetInternalData() )
-    GUI_CS_SLOT_2( resetInternalData )
+    GUI_LSCS_SLOT_1( Protected, void resetInternalData() )
+    GUI_LSCS_SLOT_2( resetInternalData )
 
 private:
     Q_DECLARE_PRIVATE( QAbstractProxyModel )
 
-    GUI_CS_SLOT_1( Private, void _q_sourceModelDestroyed() )
-    GUI_CS_SLOT_2( _q_sourceModelDestroyed )
+    GUI_LSCS_SLOT_1( Private, void _q_sourceModelDestroyed() )
+    GUI_LSCS_SLOT_2( _q_sourceModelDestroyed )
 };
 
 #endif // QT_NO_PROXYMODEL

@@ -38,7 +38,7 @@ public:
     virtual void deactivate() = 0;
 };
 
-CS_DECLARE_INTERFACE( QDeclarativeInspectorInterface, "com.copperspice.QDeclarativeInspectorInterface/1.0" )
+LSCS_DECLARE_INTERFACE( QDeclarativeInspectorInterface, "com.copperspice.QDeclarativeInspectorInterface/1.0" )
 
 QT_END_NAMESPACE
 

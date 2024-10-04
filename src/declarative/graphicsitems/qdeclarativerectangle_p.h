@@ -32,14 +32,14 @@ QT_BEGIN_NAMESPACE
 
 class Q_DECLARATIVE_PRIVATE_EXPORT QDeclarativePen : public QObject
 {
-    DECL_CS_OBJECT( QDeclarativePen )
+    DECL_LSCS_OBJECT( QDeclarativePen )
 
-    DECL_CS_PROPERTY_READ( width, width )
-    DECL_CS_PROPERTY_WRITE( width, setWidth )
-    DECL_CS_PROPERTY_NOTIFY( width, penChanged )
-    DECL_CS_PROPERTY_READ( color, color )
-    DECL_CS_PROPERTY_WRITE( color, setColor )
-    DECL_CS_PROPERTY_NOTIFY( color, penChanged )
+    DECL_LSCS_PROPERTY_READ( width, width )
+    DECL_LSCS_PROPERTY_WRITE( width, setWidth )
+    DECL_LSCS_PROPERTY_NOTIFY( width, penChanged )
+    DECL_LSCS_PROPERTY_READ( color, color )
+    DECL_LSCS_PROPERTY_WRITE( color, setColor )
+    DECL_LSCS_PROPERTY_NOTIFY( color, penChanged )
 
 public:
     QDeclarativePen( QObject *parent = nullptr )
@@ -65,8 +65,8 @@ public:
     }
 
 public:
-    DECL_CS_SIGNAL_1( Public, void penChanged() )
-    DECL_CS_SIGNAL_2( penChanged )
+    DECL_LSCS_SIGNAL_1( Public, void penChanged() )
+    DECL_LSCS_SIGNAL_2( penChanged )
 
 private:
     int _width;
@@ -76,12 +76,12 @@ private:
 
 class QDeclarativeGradientStop : public QObject
 {
-    DECL_CS_OBJECT( QDeclarativeGradientStop )
+    DECL_LSCS_OBJECT( QDeclarativeGradientStop )
 
-    DECL_CS_PROPERTY_READ( position, position )
-    DECL_CS_PROPERTY_WRITE( position, setPosition )
-    DECL_CS_PROPERTY_READ( color, color )
-    DECL_CS_PROPERTY_WRITE( color, setColor )
+    DECL_LSCS_PROPERTY_READ( position, position )
+    DECL_LSCS_PROPERTY_WRITE( position, setPosition )
+    DECL_LSCS_PROPERTY_READ( color, color )
+    DECL_LSCS_PROPERTY_WRITE( color, setColor )
 
 public:
     QDeclarativeGradientStop( QObject *parent = nullptr ) : QObject( parent ) {}
@@ -116,10 +116,10 @@ private:
 
 class QDeclarativeGradient : public QObject
 {
-    DECL_CS_OBJECT( QDeclarativeGradient )
+    DECL_LSCS_OBJECT( QDeclarativeGradient )
 
-    DECL_CS_PROPERTY_READ( stops, stops )
-    DECL_CS_CLASSINFO( "DefaultProperty", "stops" )
+    DECL_LSCS_PROPERTY_READ( stops, stops )
+    DECL_LSCS_CLASSINFO( "DefaultProperty", "stops" )
 
 public:
     QDeclarativeGradient( QObject *parent = nullptr ) : QObject( parent ), m_gradient( 0 ) {}
@@ -136,8 +136,8 @@ public:
     const QGradient *gradient() const;
 
 public:
-    DECL_CS_SIGNAL_1( Public, void updated() )
-    DECL_CS_SIGNAL_2( updated )
+    DECL_LSCS_SIGNAL_1( Public, void updated() )
+    DECL_LSCS_SIGNAL_2( updated )
 
 private:
     void doUpdate();
@@ -151,18 +151,18 @@ private:
 class QDeclarativeRectanglePrivate;
 class Q_DECLARATIVE_PRIVATE_EXPORT QDeclarativeRectangle : public QDeclarativeItem
 {
-    DECL_CS_OBJECT( QDeclarativeRectangle )
+    DECL_LSCS_OBJECT( QDeclarativeRectangle )
 
-    DECL_CS_PROPERTY_READ( color, color )
-    DECL_CS_PROPERTY_WRITE( color, setColor )
-    DECL_CS_PROPERTY_NOTIFY( color, colorChanged )
-    DECL_CS_PROPERTY_READ( *gradient, gradient )
-    DECL_CS_PROPERTY_WRITE( *gradient, setGradient )
-    DECL_CS_PROPERTY_READ( *, border )
-    DECL_CS_PROPERTY_CONSTANT( * )
-    DECL_CS_PROPERTY_READ( radius, radius )
-    DECL_CS_PROPERTY_WRITE( radius, setRadius )
-    DECL_CS_PROPERTY_NOTIFY( radius, radiusChanged )
+    DECL_LSCS_PROPERTY_READ( color, color )
+    DECL_LSCS_PROPERTY_WRITE( color, setColor )
+    DECL_LSCS_PROPERTY_NOTIFY( color, colorChanged )
+    DECL_LSCS_PROPERTY_READ( *gradient, gradient )
+    DECL_LSCS_PROPERTY_WRITE( *gradient, setGradient )
+    DECL_LSCS_PROPERTY_READ( *, border )
+    DECL_LSCS_PROPERTY_CONSTANT( * )
+    DECL_LSCS_PROPERTY_READ( radius, radius )
+    DECL_LSCS_PROPERTY_WRITE( radius, setRadius )
+    DECL_LSCS_PROPERTY_NOTIFY( radius, radiusChanged )
 public:
     QDeclarativeRectangle( QDeclarativeItem *parent = 0 );
 
@@ -182,14 +182,14 @@ public:
     void paint( QPainter *, const QStyleOptionGraphicsItem *, QWidget * );
 
 public:
-    DECL_CS_SIGNAL_1( Public, void colorChanged() )
-    DECL_CS_SIGNAL_2( colorChanged )
-    DECL_CS_SIGNAL_1( Public, void radiusChanged() )
-    DECL_CS_SIGNAL_2( radiusChanged )
+    DECL_LSCS_SIGNAL_1( Public, void colorChanged() )
+    DECL_LSCS_SIGNAL_2( colorChanged )
+    DECL_LSCS_SIGNAL_1( Public, void radiusChanged() )
+    DECL_LSCS_SIGNAL_2( radiusChanged )
 
 private :
-    DECL_CS_SLOT_1( Private, void doUpdate() )
-    DECL_CS_SLOT_2( doUpdate )
+    DECL_LSCS_SLOT_1( Private, void doUpdate() )
+    DECL_LSCS_SLOT_2( doUpdate )
 
     void generateRoundedRect();
     void generateBorderedRect();

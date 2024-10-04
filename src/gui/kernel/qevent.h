@@ -383,10 +383,10 @@ protected:
 #ifndef QT_NO_TABLETEVENT
 class Q_GUI_EXPORT QTabletEvent : public QInputEvent
 {
-    GUI_CS_GADGET( QTabletEvent )
+    GUI_LSCS_GADGET( QTabletEvent )
 
-    GUI_CS_ENUM( TabletDevice )
-    GUI_CS_ENUM( PointerType )
+    GUI_LSCS_ENUM( TabletDevice )
+    GUI_LSCS_ENUM( PointerType )
 
 public:
     enum TabletDevice

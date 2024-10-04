@@ -40,13 +40,13 @@ class QMdiSubWindowPrivate;
 
 class Q_GUI_EXPORT QMdiSubWindow : public QWidget
 {
-    GUI_CS_OBJECT( QMdiSubWindow )
+    GUI_LSCS_OBJECT( QMdiSubWindow )
 
-    GUI_CS_PROPERTY_READ( keyboardSingleStep, keyboardSingleStep )
-    GUI_CS_PROPERTY_WRITE( keyboardSingleStep, setKeyboardSingleStep )
+    GUI_LSCS_PROPERTY_READ( keyboardSingleStep, keyboardSingleStep )
+    GUI_LSCS_PROPERTY_WRITE( keyboardSingleStep, setKeyboardSingleStep )
 
-    GUI_CS_PROPERTY_READ( keyboardPageStep, keyboardPageStep )
-    GUI_CS_PROPERTY_WRITE( keyboardPageStep, setKeyboardPageStep )
+    GUI_LSCS_PROPERTY_READ( keyboardPageStep, keyboardPageStep )
+    GUI_LSCS_PROPERTY_WRITE( keyboardPageStep, setKeyboardPageStep )
 
 public:
     enum SubWindowOption
@@ -92,18 +92,18 @@ public:
 
     QMdiArea *mdiArea() const;
 
-    GUI_CS_SIGNAL_1( Public, void windowStateChanged( Qt::WindowStates oldState, Qt::WindowStates newState ) )
-    GUI_CS_SIGNAL_2( windowStateChanged, oldState, newState )
-    GUI_CS_SIGNAL_1( Public, void aboutToActivate() )
-    GUI_CS_SIGNAL_2( aboutToActivate )
+    GUI_LSCS_SIGNAL_1( Public, void windowStateChanged( Qt::WindowStates oldState, Qt::WindowStates newState ) )
+    GUI_LSCS_SIGNAL_2( windowStateChanged, oldState, newState )
+    GUI_LSCS_SIGNAL_1( Public, void aboutToActivate() )
+    GUI_LSCS_SIGNAL_2( aboutToActivate )
 
 #ifndef QT_NO_MENU
-    GUI_CS_SLOT_1( Public, void showSystemMenu() )
-    GUI_CS_SLOT_2( showSystemMenu )
+    GUI_LSCS_SLOT_1( Public, void showSystemMenu() )
+    GUI_LSCS_SLOT_2( showSystemMenu )
 #endif
 
-    GUI_CS_SLOT_1( Public, void showShaded() )
-    GUI_CS_SLOT_2( showShaded )
+    GUI_LSCS_SLOT_1( Public, void showShaded() )
+    GUI_LSCS_SLOT_2( showShaded )
 
 protected:
     bool eventFilter( QObject *object, QEvent *event ) override;
@@ -134,14 +134,14 @@ protected:
 private:
     Q_DECLARE_PRIVATE( QMdiSubWindow )
 
-    GUI_CS_SLOT_1( Private, void _q_updateStaysOnTopHint() )
-    GUI_CS_SLOT_2( _q_updateStaysOnTopHint )
+    GUI_LSCS_SLOT_1( Private, void _q_updateStaysOnTopHint() )
+    GUI_LSCS_SLOT_2( _q_updateStaysOnTopHint )
 
-    GUI_CS_SLOT_1( Private, void _q_enterInteractiveMode() )
-    GUI_CS_SLOT_2( _q_enterInteractiveMode )
+    GUI_LSCS_SLOT_1( Private, void _q_enterInteractiveMode() )
+    GUI_LSCS_SLOT_2( _q_enterInteractiveMode )
 
-    GUI_CS_SLOT_1( Private, void _q_processFocusChanged( QWidget *oldWidget, QWidget *newWidget ) )
-    GUI_CS_SLOT_2( _q_processFocusChanged )
+    GUI_LSCS_SLOT_1( Private, void _q_processFocusChanged( QWidget *oldWidget, QWidget *newWidget ) )
+    GUI_LSCS_SLOT_2( _q_processFocusChanged )
 
     friend class QMdiAreaPrivate;
     friend class QMdi::ControlContainer;

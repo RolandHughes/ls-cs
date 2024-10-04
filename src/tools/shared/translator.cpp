@@ -800,7 +800,7 @@ void Translator::reportDuplicates( const Duplicates &dupes, const QString &fileN
 {
     if ( !dupes.byId.isEmpty() || !dupes.byContents.isEmpty() )
     {
-        std::cerr << "Warning: dropping duplicate messages in '" << csPrintable( fileName );
+        std::cerr << "Warning: dropping duplicate messages in '" << lscsPrintable( fileName );
 
         if ( ! verbose )
         {
@@ -813,18 +813,18 @@ void Translator::reportDuplicates( const Duplicates &dupes, const QString &fileN
 
             for ( int i : dupes.byId )
             {
-                std::cerr << "\n* ID: " << csPrintable( message( i ).id() ) << std::endl;
+                std::cerr << "\n* ID: " << lscsPrintable( message( i ).id() ) << std::endl;
             }
 
             for ( int j : dupes.byContents )
             {
                 const TranslatorMessage &msg = message( j );
-                std::cerr << "\n* Context: " << csPrintable( msg.context() )
-                          << "\n* Source: "  << csPrintable( msg.sourceText() ) << std::endl;
+                std::cerr << "\n* Context: " << lscsPrintable( msg.context() )
+                          << "\n* Source: "  << lscsPrintable( msg.sourceText() ) << std::endl;
 
                 if ( ! msg.comment().isEmpty() )
                 {
-                    std::cerr << "* Comment: " << csPrintable( msg.comment() ) << std::endl;
+                    std::cerr << "* Comment: " << lscsPrintable( msg.comment() ) << std::endl;
                 }
             }
 

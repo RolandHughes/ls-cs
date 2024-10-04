@@ -33,9 +33,9 @@ class QGstreamerVideoOverlay
     : public QObject, public QGstreamerSyncMessageFilter
     , public QGstreamerBusMessageFilter, private QGstreamerBufferProbe
 {
-    CS_OBJECT_MULTIPLE( QGstreamerVideoOverlay, QObject )
+    LSCS_OBJECT_MULTIPLE( QGstreamerVideoOverlay, QObject )
 
-    CS_INTERFACES( QGstreamerSyncMessageFilter, QGstreamerBusMessageFilter )
+    LSCS_INTERFACES( QGstreamerSyncMessageFilter, QGstreamerBusMessageFilter )
 
 public:
     explicit QGstreamerVideoOverlay( QObject *parent = nullptr, const QByteArray &elementName = QByteArray() );
@@ -68,23 +68,23 @@ public:
     bool processSyncMessage( const QGstreamerMessage &message ) override;
     bool processBusMessage( const QGstreamerMessage &message ) override;
 
-    CS_SIGNAL_1( Public, void nativeVideoSizeChanged() )
-    CS_SIGNAL_2( nativeVideoSizeChanged )
+    LSCS_SIGNAL_1( Public, void nativeVideoSizeChanged() )
+    LSCS_SIGNAL_2( nativeVideoSizeChanged )
 
-    CS_SIGNAL_1( Public, void activeChanged() )
-    CS_SIGNAL_2( activeChanged )
+    LSCS_SIGNAL_1( Public, void activeChanged() )
+    LSCS_SIGNAL_2( activeChanged )
 
-    CS_SIGNAL_1( Public, void brightnessChanged( int brightness ) )
-    CS_SIGNAL_2( brightnessChanged, brightness )
+    LSCS_SIGNAL_1( Public, void brightnessChanged( int brightness ) )
+    LSCS_SIGNAL_2( brightnessChanged, brightness )
 
-    CS_SIGNAL_1( Public, void contrastChanged( int contrast ) )
-    CS_SIGNAL_2( contrastChanged, contrast )
+    LSCS_SIGNAL_1( Public, void contrastChanged( int contrast ) )
+    LSCS_SIGNAL_2( contrastChanged, contrast )
 
-    CS_SIGNAL_1( Public, void hueChanged( int hue ) )
-    CS_SIGNAL_2( hueChanged, hue )
+    LSCS_SIGNAL_1( Public, void hueChanged( int hue ) )
+    LSCS_SIGNAL_2( hueChanged, hue )
 
-    CS_SIGNAL_1( Public, void saturationChanged( int saturation ) )
-    CS_SIGNAL_2( saturationChanged, saturation )
+    LSCS_SIGNAL_1( Public, void saturationChanged( int saturation ) )
+    LSCS_SIGNAL_2( saturationChanged, saturation )
 
 private:
     GstElement *findBestVideoSink() const;

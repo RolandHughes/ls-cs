@@ -50,7 +50,7 @@ class QNonContiguousByteDevice;
 // - KIO uses a pull mechanism too (data/dataReq signals)
 class QNetworkAccessBackend : public QObject
 {
-    NET_CS_OBJECT( QNetworkAccessBackend )
+    NET_LSCS_OBJECT( QNetworkAccessBackend )
 
 public:
     QNetworkAccessBackend();
@@ -163,8 +163,8 @@ public:
     }
 
     // for task 251801, needs to be a slot to be called asynchronously
-    NET_CS_SLOT_1( Public, void writeDownstreamData( QIODevice *data ) )
-    NET_CS_SLOT_OVERLOAD( writeDownstreamData, ( QIODevice * ) )
+    NET_LSCS_SLOT_1( Public, void writeDownstreamData( QIODevice *data ) )
+    NET_LSCS_SLOT_OVERLOAD( writeDownstreamData, ( QIODevice * ) )
 
 protected:
     // Create the device used for reading the upload data
@@ -181,34 +181,34 @@ protected:
 
     QSharedPointer<QNonContiguousByteDevice> uploadByteDevice;
 
-    NET_CS_SLOT_1( Protected, void finished() )
-    NET_CS_SLOT_2( finished )
+    NET_LSCS_SLOT_1( Protected, void finished() )
+    NET_LSCS_SLOT_2( finished )
 
-    NET_CS_SLOT_1( Protected, void error( QNetworkReply::NetworkError errorCode, const QString &errorMsg ) )
-    NET_CS_SLOT_2( error )
+    NET_LSCS_SLOT_1( Protected, void error( QNetworkReply::NetworkError errorCode, const QString &errorMsg ) )
+    NET_LSCS_SLOT_2( error )
 
 #ifndef QT_NO_NETWORKPROXY
-    NET_CS_SLOT_1( Protected, void proxyAuthenticationRequired( const QNetworkProxy &proxy, QAuthenticator *auth ) )
-    NET_CS_SLOT_2( proxyAuthenticationRequired )
+    NET_LSCS_SLOT_1( Protected, void proxyAuthenticationRequired( const QNetworkProxy &proxy, QAuthenticator *auth ) )
+    NET_LSCS_SLOT_2( proxyAuthenticationRequired )
 #endif
 
-    NET_CS_SLOT_1( Protected, void authenticationRequired( QAuthenticator *auth ) )
-    NET_CS_SLOT_2( authenticationRequired )
+    NET_LSCS_SLOT_1( Protected, void authenticationRequired( QAuthenticator *auth ) )
+    NET_LSCS_SLOT_2( authenticationRequired )
 
-    NET_CS_SLOT_1( Protected, void metaDataChanged() )
-    NET_CS_SLOT_2( metaDataChanged )
+    NET_LSCS_SLOT_1( Protected, void metaDataChanged() )
+    NET_LSCS_SLOT_2( metaDataChanged )
 
-    NET_CS_SLOT_1( Protected, void redirectionRequested( const QUrl &destination ) )
-    NET_CS_SLOT_2( redirectionRequested )
+    NET_LSCS_SLOT_1( Protected, void redirectionRequested( const QUrl &destination ) )
+    NET_LSCS_SLOT_2( redirectionRequested )
 
-    NET_CS_SLOT_1( Protected, void encrypted() )
-    NET_CS_SLOT_2( encrypted )
+    NET_LSCS_SLOT_1( Protected, void encrypted() )
+    NET_LSCS_SLOT_2( encrypted )
 
-    NET_CS_SLOT_1( Protected, void sslErrors( const QList <QSslError> &errors ) )
-    NET_CS_SLOT_2( sslErrors )
+    NET_LSCS_SLOT_1( Protected, void sslErrors( const QList <QSslError> &errors ) )
+    NET_LSCS_SLOT_2( sslErrors )
 
-    NET_CS_SLOT_1( Protected, void emitReplyUploadProgress( qint64 bytesSent, qint64 bytesTotal ) )
-    NET_CS_SLOT_2( emitReplyUploadProgress )
+    NET_LSCS_SLOT_1( Protected, void emitReplyUploadProgress( qint64 bytesSent, qint64 bytesTotal ) )
+    NET_LSCS_SLOT_2( emitReplyUploadProgress )
 
     // FIXME In the long run we should get rid of our QNAM architecture
     // and scrap this ReplyImpl/Backend distinction.

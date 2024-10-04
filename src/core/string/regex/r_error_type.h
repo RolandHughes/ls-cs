@@ -24,10 +24,10 @@
  * LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 */
 
-#ifndef CS_ERROR_TYPE_H
-#define CS_ERROR_TYPE_H
+#ifndef LSCS_ERROR_TYPE_H
+#define LSCS_ERROR_TYPE_H
 
-namespace cs_regex_ns
+namespace lscs_regex_ns
 {
 
 namespace regex_constants
@@ -62,10 +62,10 @@ enum error_type
 
 } // namespace
 
-namespace cs_regex_detail_ns
+namespace lscs_regex_detail_ns
 {
 
-inline const char *get_default_error_string( cs_regex_ns::regex_constants::error_type n )
+inline const char *get_default_error_string( lscs_regex_ns::regex_constants::error_type n )
 {
     static const char *const s_default_error_messages[] =
     {
@@ -98,8 +98,8 @@ inline const char *get_default_error_string( cs_regex_ns::regex_constants::error
         "Unknown error.",                                                     /* REG_E_UNKNOWN 21 error_unknown */
     };
 
-    return ( n > cs_regex_ns::regex_constants::error_unknown ) ?
-           s_default_error_messages[cs_regex_ns::regex_constants::error_unknown] :
+    return ( n > lscs_regex_ns::regex_constants::error_unknown ) ?
+           s_default_error_messages[lscs_regex_ns::regex_constants::error_unknown] :
            s_default_error_messages[n];
 }
 

@@ -38,13 +38,13 @@ namespace WTF
 
 class MainThreadInvoker : public QObject
 {
-    SCRIPT_CS_OBJECT( MainThreadInvoker )
+    SCRIPT_LSCS_OBJECT( MainThreadInvoker )
 
 public:
     MainThreadInvoker();
 
-    SCRIPT_CS_SLOT_1( Public,void dispatch() )
-    SCRIPT_CS_SLOT_2( dispatch )
+    SCRIPT_LSCS_SLOT_1( Public,void dispatch() )
+    SCRIPT_LSCS_SLOT_2( dispatch )
 };
 
 MainThreadInvoker::MainThreadInvoker()

@@ -38,7 +38,7 @@ class QTcpSocket;
 
 class QHttpSocketEngine : public QAbstractSocketEngine
 {
-    NET_CS_OBJECT( QHttpSocketEngine )
+    NET_LSCS_OBJECT( QHttpSocketEngine )
 
 public:
     enum HttpState
@@ -112,35 +112,35 @@ public:
     bool isExceptionNotificationEnabled() const override;
     void setExceptionNotificationEnabled( bool enable ) override;
 
-    NET_CS_SLOT_1( Public, void slotSocketConnected() )
-    NET_CS_SLOT_2( slotSocketConnected )
+    NET_LSCS_SLOT_1( Public, void slotSocketConnected() )
+    NET_LSCS_SLOT_2( slotSocketConnected )
 
-    NET_CS_SLOT_1( Public, void slotSocketDisconnected() )
-    NET_CS_SLOT_2( slotSocketDisconnected )
+    NET_LSCS_SLOT_1( Public, void slotSocketDisconnected() )
+    NET_LSCS_SLOT_2( slotSocketDisconnected )
 
-    NET_CS_SLOT_1( Public, void slotSocketReadNotification() )
-    NET_CS_SLOT_2( slotSocketReadNotification )
+    NET_LSCS_SLOT_1( Public, void slotSocketReadNotification() )
+    NET_LSCS_SLOT_2( slotSocketReadNotification )
 
-    NET_CS_SLOT_1( Public, void slotSocketBytesWritten() )
-    NET_CS_SLOT_2( slotSocketBytesWritten )
+    NET_LSCS_SLOT_1( Public, void slotSocketBytesWritten() )
+    NET_LSCS_SLOT_2( slotSocketBytesWritten )
 
-    NET_CS_SLOT_1( Public, void slotSocketError( QAbstractSocket::SocketError error ) )
-    NET_CS_SLOT_2( slotSocketError )
+    NET_LSCS_SLOT_1( Public, void slotSocketError( QAbstractSocket::SocketError error ) )
+    NET_LSCS_SLOT_2( slotSocketError )
 
-    NET_CS_SLOT_1( Public, void slotSocketStateChanged( QAbstractSocket::SocketState state ) )
-    NET_CS_SLOT_2( slotSocketStateChanged )
+    NET_LSCS_SLOT_1( Public, void slotSocketStateChanged( QAbstractSocket::SocketState state ) )
+    NET_LSCS_SLOT_2( slotSocketStateChanged )
 
 private:
     Q_DECLARE_PRIVATE( QHttpSocketEngine )
 
-    NET_CS_SLOT_1( Private, void emitPendingReadNotification() )
-    NET_CS_SLOT_2( emitPendingReadNotification )
+    NET_LSCS_SLOT_1( Private, void emitPendingReadNotification() )
+    NET_LSCS_SLOT_2( emitPendingReadNotification )
 
-    NET_CS_SLOT_1( Private, void emitPendingWriteNotification() )
-    NET_CS_SLOT_2( emitPendingWriteNotification )
+    NET_LSCS_SLOT_1( Private, void emitPendingWriteNotification() )
+    NET_LSCS_SLOT_2( emitPendingWriteNotification )
 
-    NET_CS_SLOT_1( Private, void emitPendingConnectionNotification() )
-    NET_CS_SLOT_2( emitPendingConnectionNotification )
+    NET_LSCS_SLOT_1( Private, void emitPendingConnectionNotification() )
+    NET_LSCS_SLOT_2( emitPendingConnectionNotification )
 
     void emitReadNotification();
     void emitWriteNotification();

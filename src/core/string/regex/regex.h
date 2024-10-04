@@ -24,8 +24,8 @@
  * LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 */
 
-#ifndef CS_REGEX_H
-#define CS_REGEX_H
+#ifndef LSCS_REGEX_H
+#define LSCS_REGEX_H
 
 #include <regex/r_config.h>
 #include <regex/r_states.h>

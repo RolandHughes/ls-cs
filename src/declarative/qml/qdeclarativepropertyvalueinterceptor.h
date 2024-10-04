@@ -37,7 +37,7 @@ public:
     virtual void setTarget( const QDeclarativeProperty &property ) = 0;
     virtual void write( const QVariant &value ) = 0;
 };
-CS_DECLARE_INTERFACE( QDeclarativePropertyValueInterceptor, "com.copperspice.qml.QDeclarativePropertyValueInterceptor" )
+LSCS_DECLARE_INTERFACE( QDeclarativePropertyValueInterceptor, "com.copperspice.qml.QDeclarativePropertyValueInterceptor" )
 
 QT_END_NAMESPACE
 

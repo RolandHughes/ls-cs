@@ -127,11 +127,11 @@ Q_GUI_EXPORT QDebug operator<<( QDebug, const QTextFormat & );
 
 class Q_GUI_EXPORT QTextFormat
 {
-    GUI_CS_GADGET( QTextFormat )
+    GUI_LSCS_GADGET( QTextFormat )
 
-    GUI_CS_ENUM( FormatType )
-    GUI_CS_ENUM( Property )
-    GUI_CS_ENUM( ObjectTypes )
+    GUI_LSCS_ENUM( FormatType )
+    GUI_LSCS_ENUM( Property )
+    GUI_LSCS_ENUM( ObjectTypes )
 
 public:
     enum FormatType

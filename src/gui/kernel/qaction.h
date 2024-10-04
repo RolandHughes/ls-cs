@@ -40,83 +40,83 @@ class QGraphicsWidget;
 
 class Q_GUI_EXPORT QAction : public QObject
 {
-    GUI_CS_OBJECT( QAction )
+    GUI_LSCS_OBJECT( QAction )
 
-    GUI_CS_ENUM( MenuRole )
-    GUI_CS_ENUM( Priority )
+    GUI_LSCS_ENUM( MenuRole )
+    GUI_LSCS_ENUM( Priority )
 
-    GUI_CS_PROPERTY_READ( checkable, isCheckable )
-    GUI_CS_PROPERTY_WRITE( checkable, setCheckable )
-    GUI_CS_PROPERTY_NOTIFY( checkable, changed )
+    GUI_LSCS_PROPERTY_READ( checkable, isCheckable )
+    GUI_LSCS_PROPERTY_WRITE( checkable, setCheckable )
+    GUI_LSCS_PROPERTY_NOTIFY( checkable, changed )
 
-    GUI_CS_PROPERTY_READ( checked, isChecked )
-    GUI_CS_PROPERTY_WRITE( checked, setChecked )
-    GUI_CS_PROPERTY_DESIGNABLE_NONSTATIC( checked, isCheckable() )
-    GUI_CS_PROPERTY_NOTIFY( checked, toggled )
+    GUI_LSCS_PROPERTY_READ( checked, isChecked )
+    GUI_LSCS_PROPERTY_WRITE( checked, setChecked )
+    GUI_LSCS_PROPERTY_DESIGNABLE_NONSTATIC( checked, isCheckable() )
+    GUI_LSCS_PROPERTY_NOTIFY( checked, toggled )
 
-    GUI_CS_PROPERTY_READ( enabled, isEnabled )
-    GUI_CS_PROPERTY_WRITE( enabled, setEnabled )
-    GUI_CS_PROPERTY_NOTIFY( enabled, changed )
+    GUI_LSCS_PROPERTY_READ( enabled, isEnabled )
+    GUI_LSCS_PROPERTY_WRITE( enabled, setEnabled )
+    GUI_LSCS_PROPERTY_NOTIFY( enabled, changed )
 
-    GUI_CS_PROPERTY_READ( icon, icon )
-    GUI_CS_PROPERTY_WRITE( icon, setIcon )
-    GUI_CS_PROPERTY_NOTIFY( icon, changed )
+    GUI_LSCS_PROPERTY_READ( icon, icon )
+    GUI_LSCS_PROPERTY_WRITE( icon, setIcon )
+    GUI_LSCS_PROPERTY_NOTIFY( icon, changed )
 
-    GUI_CS_PROPERTY_READ( text, text )
-    GUI_CS_PROPERTY_WRITE( text, setText )
-    GUI_CS_PROPERTY_NOTIFY( text, changed )
+    GUI_LSCS_PROPERTY_READ( text, text )
+    GUI_LSCS_PROPERTY_WRITE( text, setText )
+    GUI_LSCS_PROPERTY_NOTIFY( text, changed )
 
-    GUI_CS_PROPERTY_READ( iconText, iconText )
-    GUI_CS_PROPERTY_WRITE( iconText, setIconText )
-    GUI_CS_PROPERTY_NOTIFY( iconText, changed )
+    GUI_LSCS_PROPERTY_READ( iconText, iconText )
+    GUI_LSCS_PROPERTY_WRITE( iconText, setIconText )
+    GUI_LSCS_PROPERTY_NOTIFY( iconText, changed )
 
-    GUI_CS_PROPERTY_READ( toolTip, toolTip )
-    GUI_CS_PROPERTY_WRITE( toolTip, setToolTip )
-    GUI_CS_PROPERTY_NOTIFY( toolTip, changed )
+    GUI_LSCS_PROPERTY_READ( toolTip, toolTip )
+    GUI_LSCS_PROPERTY_WRITE( toolTip, setToolTip )
+    GUI_LSCS_PROPERTY_NOTIFY( toolTip, changed )
 
-    GUI_CS_PROPERTY_READ( statusTip, statusTip )
-    GUI_CS_PROPERTY_WRITE( statusTip, setStatusTip )
-    GUI_CS_PROPERTY_NOTIFY( statusTip, changed )
+    GUI_LSCS_PROPERTY_READ( statusTip, statusTip )
+    GUI_LSCS_PROPERTY_WRITE( statusTip, setStatusTip )
+    GUI_LSCS_PROPERTY_NOTIFY( statusTip, changed )
 
-    GUI_CS_PROPERTY_READ( whatsThis, whatsThis )
-    GUI_CS_PROPERTY_WRITE( whatsThis, setWhatsThis )
-    GUI_CS_PROPERTY_NOTIFY( whatsThis, changed )
+    GUI_LSCS_PROPERTY_READ( whatsThis, whatsThis )
+    GUI_LSCS_PROPERTY_WRITE( whatsThis, setWhatsThis )
+    GUI_LSCS_PROPERTY_NOTIFY( whatsThis, changed )
 
-    GUI_CS_PROPERTY_READ( font, font )
-    GUI_CS_PROPERTY_WRITE( font, setFont )
-    GUI_CS_PROPERTY_NOTIFY( font, changed )
+    GUI_LSCS_PROPERTY_READ( font, font )
+    GUI_LSCS_PROPERTY_WRITE( font, setFont )
+    GUI_LSCS_PROPERTY_NOTIFY( font, changed )
 
 #ifndef QT_NO_SHORTCUT
-    GUI_CS_PROPERTY_READ( shortcut, shortcut )
-    GUI_CS_PROPERTY_WRITE( shortcut, setShortcut )
-    GUI_CS_PROPERTY_NOTIFY( shortcut, changed )
+    GUI_LSCS_PROPERTY_READ( shortcut, shortcut )
+    GUI_LSCS_PROPERTY_WRITE( shortcut, setShortcut )
+    GUI_LSCS_PROPERTY_NOTIFY( shortcut, changed )
 
-    GUI_CS_PROPERTY_READ( shortcutContext, shortcutContext )
-    GUI_CS_PROPERTY_WRITE( shortcutContext, setShortcutContext )
-    GUI_CS_PROPERTY_NOTIFY( shortcutContext, changed )
+    GUI_LSCS_PROPERTY_READ( shortcutContext, shortcutContext )
+    GUI_LSCS_PROPERTY_WRITE( shortcutContext, setShortcutContext )
+    GUI_LSCS_PROPERTY_NOTIFY( shortcutContext, changed )
 
-    GUI_CS_PROPERTY_READ( autoRepeat, autoRepeat )
-    GUI_CS_PROPERTY_WRITE( autoRepeat, setAutoRepeat )
-    GUI_CS_PROPERTY_NOTIFY( autoRepeat, changed )
+    GUI_LSCS_PROPERTY_READ( autoRepeat, autoRepeat )
+    GUI_LSCS_PROPERTY_WRITE( autoRepeat, setAutoRepeat )
+    GUI_LSCS_PROPERTY_NOTIFY( autoRepeat, changed )
 #endif
 
-    GUI_CS_PROPERTY_READ( visible, isVisible )
-    GUI_CS_PROPERTY_WRITE( visible, setVisible )
-    GUI_CS_PROPERTY_NOTIFY( visible, changed )
+    GUI_LSCS_PROPERTY_READ( visible, isVisible )
+    GUI_LSCS_PROPERTY_WRITE( visible, setVisible )
+    GUI_LSCS_PROPERTY_NOTIFY( visible, changed )
 
-    GUI_CS_PROPERTY_READ( menuRole, menuRole )
-    GUI_CS_PROPERTY_WRITE( menuRole, setMenuRole )
-    GUI_CS_PROPERTY_NOTIFY( menuRole, changed )
+    GUI_LSCS_PROPERTY_READ( menuRole, menuRole )
+    GUI_LSCS_PROPERTY_WRITE( menuRole, setMenuRole )
+    GUI_LSCS_PROPERTY_NOTIFY( menuRole, changed )
 
-    GUI_CS_PROPERTY_READ( iconVisibleInMenu, isIconVisibleInMenu )
-    GUI_CS_PROPERTY_WRITE( iconVisibleInMenu, setIconVisibleInMenu )
-    GUI_CS_PROPERTY_NOTIFY( iconVisibleInMenu, changed )
+    GUI_LSCS_PROPERTY_READ( iconVisibleInMenu, isIconVisibleInMenu )
+    GUI_LSCS_PROPERTY_WRITE( iconVisibleInMenu, setIconVisibleInMenu )
+    GUI_LSCS_PROPERTY_NOTIFY( iconVisibleInMenu, changed )
 
-    GUI_CS_PROPERTY_READ( priority, priority )
-    GUI_CS_PROPERTY_WRITE( priority, setPriority )
+    GUI_LSCS_PROPERTY_READ( priority, priority )
+    GUI_LSCS_PROPERTY_WRITE( priority, setPriority )
 
 public:
-    GUI_CS_REGISTER_ENUM(
+    GUI_LSCS_REGISTER_ENUM(
         enum MenuRole
     {
         NoRole = 0,
@@ -227,38 +227,38 @@ public:
     QList<QGraphicsWidget *> associatedGraphicsWidgets() const; // ### suboptimal
 #endif
 
-    GUI_CS_SLOT_1( Public, void trigger() )
-    GUI_CS_SLOT_2( trigger )
+    GUI_LSCS_SLOT_1( Public, void trigger() )
+    GUI_LSCS_SLOT_2( trigger )
 
-    GUI_CS_SLOT_1( Public, void hover() )
-    GUI_CS_SLOT_2( hover )
+    GUI_LSCS_SLOT_1( Public, void hover() )
+    GUI_LSCS_SLOT_2( hover )
 
-    GUI_CS_SLOT_1( Public, void setChecked( bool isChecked ) )
-    GUI_CS_SLOT_2( setChecked )
+    GUI_LSCS_SLOT_1( Public, void setChecked( bool isChecked ) )
+    GUI_LSCS_SLOT_2( setChecked )
 
-    GUI_CS_SLOT_1( Public, void toggle() )
-    GUI_CS_SLOT_2( toggle )
+    GUI_LSCS_SLOT_1( Public, void toggle() )
+    GUI_LSCS_SLOT_2( toggle )
 
-    GUI_CS_SLOT_1( Public, void setEnabled( bool enabled ) )
-    GUI_CS_SLOT_2( setEnabled )
+    GUI_LSCS_SLOT_1( Public, void setEnabled( bool enabled ) )
+    GUI_LSCS_SLOT_2( setEnabled )
 
-    GUI_CS_SLOT_1( Public, void setDisabled( bool disabled ) )
-    GUI_CS_SLOT_2( setDisabled )
+    GUI_LSCS_SLOT_1( Public, void setDisabled( bool disabled ) )
+    GUI_LSCS_SLOT_2( setDisabled )
 
-    GUI_CS_SLOT_1( Public, void setVisible( bool visible ) )
-    GUI_CS_SLOT_2( setVisible )
+    GUI_LSCS_SLOT_1( Public, void setVisible( bool visible ) )
+    GUI_LSCS_SLOT_2( setVisible )
 
-    GUI_CS_SIGNAL_1( Public, void changed() )
-    GUI_CS_SIGNAL_2( changed )
+    GUI_LSCS_SIGNAL_1( Public, void changed() )
+    GUI_LSCS_SIGNAL_2( changed )
 
-    GUI_CS_SIGNAL_1( Public, void triggered( bool isChecked = false ) )
-    GUI_CS_SIGNAL_2( triggered, isChecked )
+    GUI_LSCS_SIGNAL_1( Public, void triggered( bool isChecked = false ) )
+    GUI_LSCS_SIGNAL_2( triggered, isChecked )
 
-    GUI_CS_SIGNAL_1( Public, void hovered() )
-    GUI_CS_SIGNAL_2( hovered )
+    GUI_LSCS_SIGNAL_1( Public, void hovered() )
+    GUI_LSCS_SIGNAL_2( hovered )
 
-    GUI_CS_SIGNAL_1( Public, void toggled( bool isChecked ) )
-    GUI_CS_SIGNAL_2( toggled, isChecked )
+    GUI_LSCS_SIGNAL_1( Public, void toggled( bool isChecked ) )
+    GUI_LSCS_SIGNAL_2( toggled, isChecked )
 
 protected:
     bool event( QEvent *event ) override;

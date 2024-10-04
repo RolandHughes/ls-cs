@@ -232,11 +232,11 @@ bool QGLShaderPrivate::compile( QGLShader *q )
 
         if ( name.isEmpty() )
         {
-            qWarning( "QGLShader::compile(%s): %s", type, csPrintable( log ) );
+            qWarning( "QGLShader::compile(%s): %s", type, lscsPrintable( log ) );
         }
         else
         {
-            qWarning( "QGLShader::compile(%s)[%s]: %s", type, csPrintable( name ), csPrintable( log ) );
+            qWarning( "QGLShader::compile(%s)[%s]: %s", type, lscsPrintable( name ), lscsPrintable( log ) );
         }
 
         delete[] logbuf;
@@ -267,7 +267,7 @@ QGLShader::QGLShader( QGLShader::ShaderType type, const QGLContext *context, QOb
 {
     Q_D( QGLShader );
 
-#if defined(CS_SHOW_DEBUG_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_OPENGL)
 
     if ( context && ! QGLContext::areSharing( context, QGLContext::currentContext() ) )
     {
@@ -872,7 +872,7 @@ bool QGLShaderProgram::bind()
         return false;
     }
 
-#if defined(CS_SHOW_DEBUG_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_OPENGL)
 
     if ( d->programGuard->group() != QOpenGLContextGroup::currentContextGroup() )
     {
@@ -893,7 +893,7 @@ void QGLShaderProgram::release()
 {
     Q_D( QGLShaderProgram );
 
-#if defined(CS_SHOW_DEBUG_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_OPENGL)
 
     if ( d->programGuard && d->programGuard->group() != QOpenGLContextGroup::currentContextGroup() )
     {
@@ -2046,7 +2046,7 @@ int QGLShaderProgram::maxGeometryOutputVertices() const
 
 void QGLShaderProgram::setGeometryOutputVertexCount( int count )
 {
-#if defined(CS_SHOW_DEBUG_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_OPENGL)
     int max = maxGeometryOutputVertices();
 
     if ( count > max )

@@ -40,42 +40,42 @@ class QVideoEncoderSettings;
 
 class Q_MULTIMEDIA_EXPORT QMediaRecorder : public QObject, public QMediaBindableInterface
 {
-    MULTI_CS_OBJECT_MULTIPLE( QMediaRecorder, QObject )
+    MULTI_LSCS_OBJECT_MULTIPLE( QMediaRecorder, QObject )
 
-    CS_INTERFACES( QMediaBindableInterface )
+    LSCS_INTERFACES( QMediaBindableInterface )
 
-    MULTI_CS_ENUM( State )
-    MULTI_CS_ENUM( Status )
-    MULTI_CS_ENUM( Error )
+    MULTI_LSCS_ENUM( State )
+    MULTI_LSCS_ENUM( Status )
+    MULTI_LSCS_ENUM( Error )
 
-    MULTI_CS_PROPERTY_READ( state, state )
-    MULTI_CS_PROPERTY_NOTIFY( state, stateChanged )
+    MULTI_LSCS_PROPERTY_READ( state, state )
+    MULTI_LSCS_PROPERTY_NOTIFY( state, stateChanged )
 
-    MULTI_CS_PROPERTY_READ( status, status )
-    MULTI_CS_PROPERTY_NOTIFY( status, statusChanged )
+    MULTI_LSCS_PROPERTY_READ( status, status )
+    MULTI_LSCS_PROPERTY_NOTIFY( status, statusChanged )
 
-    MULTI_CS_PROPERTY_READ( duration, duration )
-    MULTI_CS_PROPERTY_NOTIFY( duration, durationChanged )
+    MULTI_LSCS_PROPERTY_READ( duration, duration )
+    MULTI_LSCS_PROPERTY_NOTIFY( duration, durationChanged )
 
-    MULTI_CS_PROPERTY_READ( outputLocation, outputLocation )
-    MULTI_CS_PROPERTY_WRITE( outputLocation, cs_setOutputLocation )
+    MULTI_LSCS_PROPERTY_READ( outputLocation, outputLocation )
+    MULTI_LSCS_PROPERTY_WRITE( outputLocation, cs_setOutputLocation )
 
-    MULTI_CS_PROPERTY_READ( actualLocation, actualLocation )
-    MULTI_CS_PROPERTY_NOTIFY( actualLocation, actualLocationChanged )
+    MULTI_LSCS_PROPERTY_READ( actualLocation, actualLocation )
+    MULTI_LSCS_PROPERTY_NOTIFY( actualLocation, actualLocationChanged )
 
-    MULTI_CS_PROPERTY_READ( muted, isMuted )
-    MULTI_CS_PROPERTY_WRITE( muted, setMuted )
-    MULTI_CS_PROPERTY_NOTIFY( muted, mutedChanged )
+    MULTI_LSCS_PROPERTY_READ( muted, isMuted )
+    MULTI_LSCS_PROPERTY_WRITE( muted, setMuted )
+    MULTI_LSCS_PROPERTY_NOTIFY( muted, mutedChanged )
 
-    MULTI_CS_PROPERTY_READ( volume, volume )
-    MULTI_CS_PROPERTY_WRITE( volume, setVolume )
-    MULTI_CS_PROPERTY_NOTIFY( volume, volumeChanged )
+    MULTI_LSCS_PROPERTY_READ( volume, volume )
+    MULTI_LSCS_PROPERTY_WRITE( volume, setVolume )
+    MULTI_LSCS_PROPERTY_NOTIFY( volume, volumeChanged )
 
-    MULTI_CS_PROPERTY_READ( metaDataAvailable, isMetaDataAvailable )
-    MULTI_CS_PROPERTY_NOTIFY( metaDataAvailable, metaDataAvailableChanged )
+    MULTI_LSCS_PROPERTY_READ( metaDataAvailable, isMetaDataAvailable )
+    MULTI_LSCS_PROPERTY_NOTIFY( metaDataAvailable, metaDataAvailableChanged )
 
-    MULTI_CS_PROPERTY_READ( metaDataWritable, isMetaDataWritable )
-    MULTI_CS_PROPERTY_NOTIFY( metaDataWritable, metaDataWritableChanged )
+    MULTI_LSCS_PROPERTY_READ( metaDataWritable, isMetaDataWritable )
+    MULTI_LSCS_PROPERTY_NOTIFY( metaDataWritable, metaDataWritableChanged )
 
 public:
     enum State
@@ -169,59 +169,59 @@ public:
     void setMetaData( const QString &key, const QVariant &value );
     QStringList availableMetaData() const;
 
-    MULTI_CS_SLOT_1( Public, void record() )
-    MULTI_CS_SLOT_2( record )
+    MULTI_LSCS_SLOT_1( Public, void record() )
+    MULTI_LSCS_SLOT_2( record )
 
-    MULTI_CS_SLOT_1( Public, void pause() )
-    MULTI_CS_SLOT_2( pause )
+    MULTI_LSCS_SLOT_1( Public, void pause() )
+    MULTI_LSCS_SLOT_2( pause )
 
-    MULTI_CS_SLOT_1( Public, void stop() )
-    MULTI_CS_SLOT_2( stop )
+    MULTI_LSCS_SLOT_1( Public, void stop() )
+    MULTI_LSCS_SLOT_2( stop )
 
-    MULTI_CS_SLOT_1( Public, void setMuted( bool muted ) )
-    MULTI_CS_SLOT_2( setMuted )
+    MULTI_LSCS_SLOT_1( Public, void setMuted( bool muted ) )
+    MULTI_LSCS_SLOT_2( setMuted )
 
-    MULTI_CS_SLOT_1( Public, void setVolume( qreal volume ) )
-    MULTI_CS_SLOT_2( setVolume )
+    MULTI_LSCS_SLOT_1( Public, void setVolume( qreal volume ) )
+    MULTI_LSCS_SLOT_2( setVolume )
 
-    MULTI_CS_SIGNAL_1( Public, void stateChanged( QMediaRecorder::State state ) )
-    MULTI_CS_SIGNAL_2( stateChanged, state )
+    MULTI_LSCS_SIGNAL_1( Public, void stateChanged( QMediaRecorder::State state ) )
+    MULTI_LSCS_SIGNAL_2( stateChanged, state )
 
-    MULTI_CS_SIGNAL_1( Public, void statusChanged( QMediaRecorder::Status status ) )
-    MULTI_CS_SIGNAL_2( statusChanged, status )
+    MULTI_LSCS_SIGNAL_1( Public, void statusChanged( QMediaRecorder::Status status ) )
+    MULTI_LSCS_SIGNAL_2( statusChanged, status )
 
-    MULTI_CS_SIGNAL_1( Public, void durationChanged( qint64 duration ) )
-    MULTI_CS_SIGNAL_2( durationChanged, duration )
+    MULTI_LSCS_SIGNAL_1( Public, void durationChanged( qint64 duration ) )
+    MULTI_LSCS_SIGNAL_2( durationChanged, duration )
 
-    MULTI_CS_SIGNAL_1( Public, void mutedChanged( bool muted ) )
-    MULTI_CS_SIGNAL_2( mutedChanged, muted )
+    MULTI_LSCS_SIGNAL_1( Public, void mutedChanged( bool muted ) )
+    MULTI_LSCS_SIGNAL_2( mutedChanged, muted )
 
-    MULTI_CS_SIGNAL_1( Public, void volumeChanged( qreal volume ) )
-    MULTI_CS_SIGNAL_2( volumeChanged, volume )
+    MULTI_LSCS_SIGNAL_1( Public, void volumeChanged( qreal volume ) )
+    MULTI_LSCS_SIGNAL_2( volumeChanged, volume )
 
-    MULTI_CS_SIGNAL_1( Public, void actualLocationChanged( const QUrl &location ) )
-    MULTI_CS_SIGNAL_2( actualLocationChanged, location )
+    MULTI_LSCS_SIGNAL_1( Public, void actualLocationChanged( const QUrl &location ) )
+    MULTI_LSCS_SIGNAL_2( actualLocationChanged, location )
 
-    MULTI_CS_SIGNAL_1( Public, void error( QMediaRecorder::Error error ) )
-    MULTI_CS_SIGNAL_OVERLOAD( error, ( QMediaRecorder::Error ), error )
+    MULTI_LSCS_SIGNAL_1( Public, void error( QMediaRecorder::Error error ) )
+    MULTI_LSCS_SIGNAL_OVERLOAD( error, ( QMediaRecorder::Error ), error )
 
-    MULTI_CS_SIGNAL_1( Public, void metaDataAvailableChanged( bool available ) )
-    MULTI_CS_SIGNAL_2( metaDataAvailableChanged, available )
+    MULTI_LSCS_SIGNAL_1( Public, void metaDataAvailableChanged( bool available ) )
+    MULTI_LSCS_SIGNAL_2( metaDataAvailableChanged, available )
 
-    MULTI_CS_SIGNAL_1( Public, void metaDataWritableChanged( bool writable ) )
-    MULTI_CS_SIGNAL_2( metaDataWritableChanged, writable )
+    MULTI_LSCS_SIGNAL_1( Public, void metaDataWritableChanged( bool writable ) )
+    MULTI_LSCS_SIGNAL_2( metaDataWritableChanged, writable )
 
-    MULTI_CS_SIGNAL_1( Public, void metaDataChanged() )
-    MULTI_CS_SIGNAL_OVERLOAD( metaDataChanged, () )
+    MULTI_LSCS_SIGNAL_1( Public, void metaDataChanged() )
+    MULTI_LSCS_SIGNAL_OVERLOAD( metaDataChanged, () )
 
-    MULTI_CS_SIGNAL_1( Public, void metaDataChanged( const QString &key, const QVariant &value ) )
-    MULTI_CS_SIGNAL_OVERLOAD( metaDataChanged, ( const QString &, const QVariant & ), key, value )
+    MULTI_LSCS_SIGNAL_1( Public, void metaDataChanged( const QString &key, const QVariant &value ) )
+    MULTI_LSCS_SIGNAL_OVERLOAD( metaDataChanged, ( const QString &, const QVariant & ), key, value )
 
-    MULTI_CS_SIGNAL_1( Public, void availabilityChanged( bool available ) )
-    MULTI_CS_SIGNAL_OVERLOAD( availabilityChanged, ( bool ), available )
+    MULTI_LSCS_SIGNAL_1( Public, void availabilityChanged( bool available ) )
+    MULTI_LSCS_SIGNAL_OVERLOAD( availabilityChanged, ( bool ), available )
 
-    MULTI_CS_SIGNAL_1( Public, void availabilityChanged( QMultimedia::AvailabilityStatus availability ) )
-    MULTI_CS_SIGNAL_OVERLOAD( availabilityChanged, ( QMultimedia::AvailabilityStatus ), availability )
+    MULTI_LSCS_SIGNAL_1( Public, void availabilityChanged( QMultimedia::AvailabilityStatus availability ) )
+    MULTI_LSCS_SIGNAL_OVERLOAD( availabilityChanged, ( QMultimedia::AvailabilityStatus ), availability )
 
 protected:
     QMediaRecorder( QMediaRecorderPrivate &dd, QMediaObject *mediaObject, QObject *parent = nullptr );
@@ -238,29 +238,29 @@ private:
         setOutputLocation( location );
     }
 
-    MULTI_CS_SLOT_1( Private, void _q_stateChanged( QMediaRecorder::State state ) )
-    MULTI_CS_SLOT_2( _q_stateChanged )
+    MULTI_LSCS_SLOT_1( Private, void _q_stateChanged( QMediaRecorder::State state ) )
+    MULTI_LSCS_SLOT_2( _q_stateChanged )
 
-    MULTI_CS_SLOT_1( Private, void _q_error( int error, const QString &errorString ) )
-    MULTI_CS_SLOT_2( _q_error )
+    MULTI_LSCS_SLOT_1( Private, void _q_error( int error, const QString &errorString ) )
+    MULTI_LSCS_SLOT_2( _q_error )
 
-    MULTI_CS_SLOT_1( Private, void _q_serviceDestroyed() )
-    MULTI_CS_SLOT_2( _q_serviceDestroyed )
+    MULTI_LSCS_SLOT_1( Private, void _q_serviceDestroyed() )
+    MULTI_LSCS_SLOT_2( _q_serviceDestroyed )
 
-    MULTI_CS_SLOT_1( Private, void _q_notify() )
-    MULTI_CS_SLOT_2( _q_notify )
+    MULTI_LSCS_SLOT_1( Private, void _q_notify() )
+    MULTI_LSCS_SLOT_2( _q_notify )
 
-    MULTI_CS_SLOT_1( Private, void _q_updateActualLocation( const QUrl &url ) )
-    MULTI_CS_SLOT_2( _q_updateActualLocation )
+    MULTI_LSCS_SLOT_1( Private, void _q_updateActualLocation( const QUrl &url ) )
+    MULTI_LSCS_SLOT_2( _q_updateActualLocation )
 
-    MULTI_CS_SLOT_1( Private, void _q_updateNotifyInterval( int interval ) )
-    MULTI_CS_SLOT_2( _q_updateNotifyInterval )
+    MULTI_LSCS_SLOT_1( Private, void _q_updateNotifyInterval( int interval ) )
+    MULTI_LSCS_SLOT_2( _q_updateNotifyInterval )
 
-    MULTI_CS_SLOT_1( Private, void _q_applySettings() )
-    MULTI_CS_SLOT_2( _q_applySettings )
+    MULTI_LSCS_SLOT_1( Private, void _q_applySettings() )
+    MULTI_LSCS_SLOT_2( _q_applySettings )
 
-    MULTI_CS_SLOT_1( Private, void _q_availabilityChanged( QMultimedia::AvailabilityStatus availStatus ) )
-    MULTI_CS_SLOT_2( _q_availabilityChanged )
+    MULTI_LSCS_SLOT_1( Private, void _q_availabilityChanged( QMultimedia::AvailabilityStatus availStatus ) )
+    MULTI_LSCS_SLOT_2( _q_availabilityChanged )
 };
 
 #endif

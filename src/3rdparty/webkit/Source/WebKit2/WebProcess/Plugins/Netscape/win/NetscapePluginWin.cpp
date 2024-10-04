@@ -77,7 +77,7 @@ static void registerPluginView()
     didRegister = true;
 
     WNDCLASSW windowClass = {0};
-    windowClass.style = CS_DBLCLKS;
+    windowClass.style = LSCS_DBLCLKS;
     windowClass.lpfnWndProc = ::DefWindowProcW;
     windowClass.hInstance = instanceHandle();
     windowClass.hCursor = ::LoadCursorW( 0, IDC_ARROW );

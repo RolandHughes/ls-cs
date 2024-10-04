@@ -27,10 +27,10 @@
 
 class QSQLiteDriverPlugin : public QSqlDriverPlugin
 {
-    CS_OBJECT( QSQLiteDriverPlugin )
+    LSCS_OBJECT( QSQLiteDriverPlugin )
 
-    CS_PLUGIN_IID( QSqlDriverInterface_ID )
-    CS_PLUGIN_KEY( "QSQLITE" )
+    LSCS_PLUGIN_IID( QSqlDriverInterface_ID )
+    LSCS_PLUGIN_KEY( "QSQLITE" )
 
 public:
     QSQLiteDriverPlugin();
@@ -38,7 +38,7 @@ public:
     QSqlDriver *create( const QString & ) override;
 };
 
-CS_PLUGIN_REGISTER( QSQLiteDriverPlugin )
+LSCS_PLUGIN_REGISTER( QSQLiteDriverPlugin )
 
 QSQLiteDriverPlugin::QSQLiteDriverPlugin()
     : QSqlDriverPlugin()

@@ -30,7 +30,7 @@ class QAbstractVideoSurface;
 
 class Q_MULTIMEDIA_EXPORT QVideoRendererControl : public QMediaControl
 {
-    MULTI_CS_OBJECT( QVideoRendererControl )
+    MULTI_LSCS_OBJECT( QVideoRendererControl )
 
 public:
     ~QVideoRendererControl();
@@ -43,6 +43,6 @@ protected:
 };
 
 #define QVideoRendererControl_iid "com.copperspice.CS.videoRendererControl/1.0"
-CS_DECLARE_INTERFACE( QVideoRendererControl, QVideoRendererControl_iid )
+LSCS_DECLARE_INTERFACE( QVideoRendererControl, QVideoRendererControl_iid )
 
 #endif

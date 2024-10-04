@@ -358,13 +358,13 @@ void QLCDNumber::setDigitCount( int numDigits )
 
     if ( numDigits > 99 )
     {
-        qWarning( "QLCDNumber::setNumDigits() Max 99 digits allowed (%s)", csPrintable( objectName() ) );
+        qWarning( "QLCDNumber::setNumDigits() Max 99 digits allowed (%s)", lscsPrintable( objectName() ) );
         numDigits = 99;
     }
 
     if ( numDigits < 0 )
     {
-        qWarning( "QLCDNumber::setNumDigits() Min 0 digits allowed (%s)", csPrintable( objectName() ) );
+        qWarning( "QLCDNumber::setNumDigits() Min 0 digits allowed (%s)", lscsPrintable( objectName() ) );
         numDigits = 0;
     }
 
@@ -984,7 +984,7 @@ void QLCDNumberPrivate::drawSegment( const QPoint &pos, char segmentNo, QPainter
                 break;
 
             default :
-                qWarning( "QLCDNumber::drawSegment() Illegal segment id %d (%s)", segmentNo, csPrintable( q->objectName() ) );
+                qWarning( "QLCDNumber::drawSegment() Illegal segment id %d (%s)", segmentNo, lscsPrintable( q->objectName() ) );
         }
 
         // End exact copy
@@ -1142,7 +1142,7 @@ void QLCDNumberPrivate::drawSegment( const QPoint &pos, char segmentNo, QPainter
                 break;
 
             default:
-                qWarning( "QLCDNumber::drawSegment() Illegal segment id %d (%s)", segmentNo, csPrintable( q->objectName() ) );
+                qWarning( "QLCDNumber::drawSegment() Illegal segment id %d (%s)", segmentNo, lscsPrintable( q->objectName() ) );
         }
 
 #undef LINETO

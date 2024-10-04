@@ -32,10 +32,10 @@ class QPauseAnimationPrivate;
 
 class Q_CORE_EXPORT QPauseAnimation : public QAbstractAnimation
 {
-    CORE_CS_OBJECT( QPauseAnimation )
+    CORE_LSCS_OBJECT( QPauseAnimation )
 
-    CORE_CS_PROPERTY_READ( duration, duration )
-    CORE_CS_PROPERTY_WRITE( duration, setDuration )
+    CORE_LSCS_PROPERTY_READ( duration, duration )
+    CORE_LSCS_PROPERTY_WRITE( duration, setDuration )
 
 public:
     QPauseAnimation( QObject *parent = nullptr );

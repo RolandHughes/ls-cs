@@ -33,22 +33,22 @@ class QTableViewPrivate;
 
 class Q_GUI_EXPORT QTableView : public QAbstractItemView
 {
-    GUI_CS_OBJECT( QTableView )
+    GUI_LSCS_OBJECT( QTableView )
 
-    GUI_CS_PROPERTY_READ( showGrid, showGrid )
-    GUI_CS_PROPERTY_WRITE( showGrid, setShowGrid )
+    GUI_LSCS_PROPERTY_READ( showGrid, showGrid )
+    GUI_LSCS_PROPERTY_WRITE( showGrid, setShowGrid )
 
-    GUI_CS_PROPERTY_READ( gridStyle, gridStyle )
-    GUI_CS_PROPERTY_WRITE( gridStyle, setGridStyle )
+    GUI_LSCS_PROPERTY_READ( gridStyle, gridStyle )
+    GUI_LSCS_PROPERTY_WRITE( gridStyle, setGridStyle )
 
-    GUI_CS_PROPERTY_READ( sortingEnabled, isSortingEnabled )
-    GUI_CS_PROPERTY_WRITE( sortingEnabled, setSortingEnabled )
+    GUI_LSCS_PROPERTY_READ( sortingEnabled, isSortingEnabled )
+    GUI_LSCS_PROPERTY_WRITE( sortingEnabled, setSortingEnabled )
 
-    GUI_CS_PROPERTY_READ( wordWrap, wordWrap )
-    GUI_CS_PROPERTY_WRITE( wordWrap, setWordWrap )
+    GUI_LSCS_PROPERTY_READ( wordWrap, wordWrap )
+    GUI_LSCS_PROPERTY_WRITE( wordWrap, setWordWrap )
 
-    GUI_CS_PROPERTY_READ( cornerButtonEnabled, isCornerButtonEnabled )
-    GUI_CS_PROPERTY_WRITE( cornerButtonEnabled, setCornerButtonEnabled )
+    GUI_LSCS_PROPERTY_READ( cornerButtonEnabled, isCornerButtonEnabled )
+    GUI_LSCS_PROPERTY_WRITE( cornerButtonEnabled, setCornerButtonEnabled )
 
 public:
     explicit QTableView( QWidget *parent = nullptr );
@@ -111,55 +111,55 @@ public:
 
     void sortByColumn( int column, Qt::SortOrder order );
 
-    GUI_CS_SLOT_1( Public, void selectRow( int row ) )
-    GUI_CS_SLOT_2( selectRow )
+    GUI_LSCS_SLOT_1( Public, void selectRow( int row ) )
+    GUI_LSCS_SLOT_2( selectRow )
 
-    GUI_CS_SLOT_1( Public, void selectColumn( int column ) )
-    GUI_CS_SLOT_2( selectColumn )
+    GUI_LSCS_SLOT_1( Public, void selectColumn( int column ) )
+    GUI_LSCS_SLOT_2( selectColumn )
 
-    GUI_CS_SLOT_1( Public, void hideRow( int row ) )
-    GUI_CS_SLOT_2( hideRow )
+    GUI_LSCS_SLOT_1( Public, void hideRow( int row ) )
+    GUI_LSCS_SLOT_2( hideRow )
 
-    GUI_CS_SLOT_1( Public, void hideColumn( int column ) )
-    GUI_CS_SLOT_2( hideColumn )
+    GUI_LSCS_SLOT_1( Public, void hideColumn( int column ) )
+    GUI_LSCS_SLOT_2( hideColumn )
 
-    GUI_CS_SLOT_1( Public, void showRow( int row ) )
-    GUI_CS_SLOT_2( showRow )
+    GUI_LSCS_SLOT_1( Public, void showRow( int row ) )
+    GUI_LSCS_SLOT_2( showRow )
 
-    GUI_CS_SLOT_1( Public, void showColumn( int column ) )
-    GUI_CS_SLOT_2( showColumn )
+    GUI_LSCS_SLOT_1( Public, void showColumn( int column ) )
+    GUI_LSCS_SLOT_2( showColumn )
 
-    GUI_CS_SLOT_1( Public, void resizeRowToContents( int row ) )
-    GUI_CS_SLOT_2( resizeRowToContents )
+    GUI_LSCS_SLOT_1( Public, void resizeRowToContents( int row ) )
+    GUI_LSCS_SLOT_2( resizeRowToContents )
 
-    GUI_CS_SLOT_1( Public, void resizeRowsToContents() )
-    GUI_CS_SLOT_2( resizeRowsToContents )
+    GUI_LSCS_SLOT_1( Public, void resizeRowsToContents() )
+    GUI_LSCS_SLOT_2( resizeRowsToContents )
 
-    GUI_CS_SLOT_1( Public, void resizeColumnToContents( int column ) )
-    GUI_CS_SLOT_2( resizeColumnToContents )
+    GUI_LSCS_SLOT_1( Public, void resizeColumnToContents( int column ) )
+    GUI_LSCS_SLOT_2( resizeColumnToContents )
 
-    GUI_CS_SLOT_1( Public, void resizeColumnsToContents() )
-    GUI_CS_SLOT_2( resizeColumnsToContents )
+    GUI_LSCS_SLOT_1( Public, void resizeColumnsToContents() )
+    GUI_LSCS_SLOT_2( resizeColumnsToContents )
 
-    GUI_CS_SLOT_1( Public, void sortByColumn( int column ) )
-    GUI_CS_SLOT_OVERLOAD( sortByColumn, ( int ) )
+    GUI_LSCS_SLOT_1( Public, void sortByColumn( int column ) )
+    GUI_LSCS_SLOT_OVERLOAD( sortByColumn, ( int ) )
 
-    GUI_CS_SLOT_1( Public, void setShowGrid( bool show ) )
-    GUI_CS_SLOT_2( setShowGrid )
+    GUI_LSCS_SLOT_1( Public, void setShowGrid( bool show ) )
+    GUI_LSCS_SLOT_2( setShowGrid )
 
 protected:
-    GUI_CS_SLOT_1( Protected, void rowMoved( int row, int oldIndex, int newIndex ) )
-    GUI_CS_SLOT_2( rowMoved )
-    GUI_CS_SLOT_1( Protected, void columnMoved( int column, int oldIndex, int newIndex ) )
-    GUI_CS_SLOT_2( columnMoved )
-    GUI_CS_SLOT_1( Protected, void rowResized( int row, int oldHeight, int newHeight ) )
-    GUI_CS_SLOT_2( rowResized )
-    GUI_CS_SLOT_1( Protected, void columnResized( int column, int oldWidth, int newWidth ) )
-    GUI_CS_SLOT_2( columnResized )
-    GUI_CS_SLOT_1( Protected, void rowCountChanged( int oldCount, int newCount ) )
-    GUI_CS_SLOT_2( rowCountChanged )
-    GUI_CS_SLOT_1( Protected, void columnCountChanged( int oldCount, int newCount ) )
-    GUI_CS_SLOT_2( columnCountChanged )
+    GUI_LSCS_SLOT_1( Protected, void rowMoved( int row, int oldIndex, int newIndex ) )
+    GUI_LSCS_SLOT_2( rowMoved )
+    GUI_LSCS_SLOT_1( Protected, void columnMoved( int column, int oldIndex, int newIndex ) )
+    GUI_LSCS_SLOT_2( columnMoved )
+    GUI_LSCS_SLOT_1( Protected, void rowResized( int row, int oldHeight, int newHeight ) )
+    GUI_LSCS_SLOT_2( rowResized )
+    GUI_LSCS_SLOT_1( Protected, void columnResized( int column, int oldWidth, int newWidth ) )
+    GUI_LSCS_SLOT_2( columnResized )
+    GUI_LSCS_SLOT_1( Protected, void rowCountChanged( int oldCount, int newCount ) )
+    GUI_LSCS_SLOT_2( rowCountChanged )
+    GUI_LSCS_SLOT_1( Protected, void columnCountChanged( int oldCount, int newCount ) )
+    GUI_LSCS_SLOT_2( columnCountChanged )
 
     QTableView( QTableViewPrivate &, QWidget *parent );
     void scrollContentsBy( int dx, int dy ) override;
@@ -197,23 +197,23 @@ private:
 
     Q_DECLARE_PRIVATE( QTableView )
 
-    GUI_CS_SLOT_1( Private, void _q_selectRow( int row ) )
-    GUI_CS_SLOT_2( _q_selectRow )
+    GUI_LSCS_SLOT_1( Private, void _q_selectRow( int row ) )
+    GUI_LSCS_SLOT_2( _q_selectRow )
 
-    GUI_CS_SLOT_1( Private, void _q_selectColumn( int column ) )
-    GUI_CS_SLOT_2( _q_selectColumn )
+    GUI_LSCS_SLOT_1( Private, void _q_selectColumn( int column ) )
+    GUI_LSCS_SLOT_2( _q_selectColumn )
 
-    GUI_CS_SLOT_1( Private, void _q_updateSpanInsertedRows( const QModelIndex &parent, int start, int end ) )
-    GUI_CS_SLOT_2( _q_updateSpanInsertedRows )
+    GUI_LSCS_SLOT_1( Private, void _q_updateSpanInsertedRows( const QModelIndex &parent, int start, int end ) )
+    GUI_LSCS_SLOT_2( _q_updateSpanInsertedRows )
 
-    GUI_CS_SLOT_1( Private, void _q_updateSpanInsertedColumns( const QModelIndex &parent, int start, int end ) )
-    GUI_CS_SLOT_2( _q_updateSpanInsertedColumns )
+    GUI_LSCS_SLOT_1( Private, void _q_updateSpanInsertedColumns( const QModelIndex &parent, int start, int end ) )
+    GUI_LSCS_SLOT_2( _q_updateSpanInsertedColumns )
 
-    GUI_CS_SLOT_1( Private, void _q_updateSpanRemovedRows( const QModelIndex &parent, int start, int end ) )
-    GUI_CS_SLOT_2( _q_updateSpanRemovedRows )
+    GUI_LSCS_SLOT_1( Private, void _q_updateSpanRemovedRows( const QModelIndex &parent, int start, int end ) )
+    GUI_LSCS_SLOT_2( _q_updateSpanRemovedRows )
 
-    GUI_CS_SLOT_1( Private, void _q_updateSpanRemovedColumns( const QModelIndex &parent, int start, int end ) )
-    GUI_CS_SLOT_2( _q_updateSpanRemovedColumns )
+    GUI_LSCS_SLOT_1( Private, void _q_updateSpanRemovedColumns( const QModelIndex &parent, int start, int end ) )
+    GUI_LSCS_SLOT_2( _q_updateSpanRemovedColumns )
 };
 
 #endif // QT_NO_TABLEVIEW

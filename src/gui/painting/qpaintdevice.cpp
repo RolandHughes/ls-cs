@@ -95,7 +95,7 @@ int QPaintDevice::metric( PaintDeviceMetric m ) const
     else
     {
 
-#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+#if defined(LSCS_SHOW_DEBUG_GUI_PAINTING)
         qDebug( "Unrecognised metric %d", m );
 #endif
         return 0;

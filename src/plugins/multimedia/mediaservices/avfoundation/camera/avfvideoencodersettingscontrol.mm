@@ -206,7 +206,7 @@ NSDictionary *AVFVideoEncoderSettingsControl::applySettings(AVCaptureConnection 
     QString codec = m_requestedSettings.codec().isEmpty() ? supportedCodecs()->first() : m_requestedSettings.codec();
 
     if (! supportedCodecs()->contains(codec)) {
-        qWarning("Unsupported codec: '%s'", csPrintable(codec));
+        qWarning("Unsupported codec: '%s'", lscsPrintable(codec));
         codec = supportedCodecs()->first();
     }
     [videoSettings setObject:codec.toNSString() forKey:AVVideoCodecKey];
@@ -304,7 +304,7 @@ NSDictionary *AVFVideoEncoderSettingsControl::applySettings(AVCaptureConnection 
     if (m_requestedSettings.encodingMode() == QMultimedia::ConstantQualityEncoding) {
         if (m_requestedSettings.quality() != QMultimedia::NormalQuality) {
             if (codec != QLatin1String("jpeg")) {
-                qWarning("ConstantQualityEncoding is not supported for codec: '%s'", csPrintable(codec));
+                qWarning("ConstantQualityEncoding is not supported for codec: '%s'", lscsPrintable(codec));
             } else {
                 switch (m_requestedSettings.quality()) {
                 case QMultimedia::VeryLowQuality:
@@ -327,7 +327,7 @@ NSDictionary *AVFVideoEncoderSettingsControl::applySettings(AVCaptureConnection 
         }
     } else if (m_requestedSettings.encodingMode() == QMultimedia::AverageBitRateEncoding){
         if (codec != QLatin1String("avc1"))
-            qWarning("AverageBitRateEncoding is not supported for codec: '%s'", csPrintable(codec));
+            qWarning("AverageBitRateEncoding is not supported for codec: '%s'", lscsPrintable(codec));
         else
             bitrate = m_requestedSettings.bitRate();
     } else {

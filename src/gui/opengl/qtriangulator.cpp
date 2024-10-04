@@ -254,7 +254,7 @@ static inline qint64 qCross( const QPodPoint &u, const QPodPoint &v )
     return qint64( u.x ) * qint64( v.y ) - qint64( u.y ) * qint64( v.x );
 }
 
-#if defined(CS_SHOW_DEBUG_GUI_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_GUI_OPENGL)
 static inline qint64 qDot( const QPodPoint &u, const QPodPoint &v )
 {
     return qint64( u.x ) * qint64( v.x ) + qint64( u.y ) * qint64( v.y );
@@ -877,7 +877,7 @@ public:
             int edge;
         };
 
-#if defined(CS_SHOW_DEBUG_GUI_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_GUI_OPENGL)
         friend class DebugDialog;
         friend class QTriangulator;
 
@@ -931,7 +931,7 @@ public:
         int m_initialPointCount;
     };
 
-#if defined(CS_SHOW_DEBUG_GUI_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_GUI_OPENGL)
     friend class ComplexToSimple::DebugDialog;
 #endif
 
@@ -1746,7 +1746,7 @@ void QTriangulator<T>::ComplexToSimple::sortEdgeList( const QPodPoint eventPoint
             m_topIntersection.pop();
         }
 
-#if defined(CS_SHOW_DEBUG_GUI_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_GUI_OPENGL)
         DebugDialog dialog( this, intersection.vertex );
         dialog.exec();
 #endif
@@ -1859,7 +1859,7 @@ void QTriangulator<T>::ComplexToSimple::calculateIntersections()
             m_topIntersection.pop();
         }
 
-#if defined(CS_SHOW_DEBUG_GUI_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_GUI_OPENGL)
         DebugDialog dialog( this, vertex );
         dialog.exec();
 #endif
@@ -2211,7 +2211,7 @@ inline bool QTriangulator<T>::ComplexToSimple::Event::operator < ( const Event &
     return other.point < point;
 }
 
-#if defined(CS_SHOW_DEBUG_GUI_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_GUI_OPENGL)
 
 template <typename T> QTriangulator<T>::ComplexToSimple::DebugDialog::DebugDialog( ComplexToSimple *parent, int currentVertex )
     : m_parent( parent ), m_vertex( currentVertex )

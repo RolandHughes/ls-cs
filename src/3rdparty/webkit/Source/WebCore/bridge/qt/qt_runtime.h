@@ -247,7 +247,7 @@ private:
 
 class QtConnectionObject: public QObject
 {
-    WEB_CS_OBJECT( QtConnectionObject )
+    WEB_LSCS_OBJECT( QtConnectionObject )
 
 public:
     QtConnectionObject( JSGlobalData &, PassRefPtr<QtInstance> instance, int signalIndex, JSObject *thisObject,
@@ -256,8 +256,8 @@ public:
 
     bool match( QObject *sender, int signalIndex, JSObject *thisObject, JSObject *funcObject );
 
-    WEB_CS_SLOT_1( Public, void execute( void **argv ) );
-    WEB_CS_SLOT_2( execute );
+    WEB_LSCS_SLOT_1( Public, void execute( void **argv ) );
+    WEB_LSCS_SLOT_2( execute );
 
 private:
     RefPtr<QtInstance> m_instance;

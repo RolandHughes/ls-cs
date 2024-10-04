@@ -606,7 +606,7 @@ private:
         qSwap( this->value, other.value );
     }
 
-#if ! defined (CS_DOXYPRESS)
+#if ! defined (LSCS_DOXYPRESS)
     template <class X>
     friend class QSharedPointer;
 

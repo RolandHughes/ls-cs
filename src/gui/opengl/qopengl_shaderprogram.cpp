@@ -276,18 +276,18 @@ bool QOpenGLShaderPrivate::compile( QOpenGLShader *q )
 
         if ( name.isEmpty() )
         {
-            qWarning( "QOpenGLShader::compile(%s) %s", type, csPrintable( log ) );
+            qWarning( "QOpenGLShader::compile(%s) %s", type, lscsPrintable( log ) );
         }
         else
         {
-            qWarning( "QOpenGLShader::compile(%s)[%s] %s", type, csPrintable( name ), csPrintable( log ) );
+            qWarning( "QOpenGLShader::compile(%s)[%s] %s", type, lscsPrintable( name ), lscsPrintable( log ) );
         }
 
         // Dump the source code if we got it
         if ( sourceCodeBuffer )
         {
             qWarning( "*** Problem %s shader source code ***", type );
-            qWarning() << csPrintable( QString::fromLatin1( sourceCodeBuffer ) );
+            qWarning() << lscsPrintable( QString::fromLatin1( sourceCodeBuffer ) );
             qWarning( "***" );
         }
 
@@ -1025,7 +1025,7 @@ bool QOpenGLShaderProgram::bind()
         return false;
     }
 
-#if defined(CS_SHOW_DEBUG_GUI_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_GUI_OPENGL)
 
     if ( d->programGuard->group() != QOpenGLContextGroup::currentContextGroup() )
     {
@@ -1044,7 +1044,7 @@ void QOpenGLShaderProgram::release()
 {
     Q_D( QOpenGLShaderProgram );
 
-#if defined(CS_SHOW_DEBUG_GUI_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_GUI_OPENGL)
 
     if ( d->programGuard && d->programGuard->group() != QOpenGLContextGroup::currentContextGroup() )
     {

@@ -34,7 +34,7 @@ class DeviceOrientationController;
 
 class DeviceOrientationClientMockQt : public QObject, public DeviceOrientationClient
 {
-    WEB_CS_OBJECT( DeviceOrientationClientMockQt )
+    WEB_LSCS_OBJECT( DeviceOrientationClientMockQt )
 public:
     static DeviceOrientationClientMockQt *client();
     virtual ~DeviceOrientationClientMockQt();
@@ -48,8 +48,8 @@ public:
     static bool mockIsActive;
 
 public:
-    WEB_CS_SIGNAL_1( Public, void mockOrientationChanged( DeviceOrientation *orientation ) )
-    WEB_CS_SIGNAL_2( mockOrientationChanged,orientation )
+    WEB_LSCS_SIGNAL_1( Public, void mockOrientationChanged( DeviceOrientation *orientation ) )
+    WEB_LSCS_SIGNAL_2( mockOrientationChanged,orientation )
 
 private:
     DeviceOrientationClientMockQt();

@@ -31,7 +31,7 @@
 
 class Q_CORE_EXPORT QWindowsPipeReader : public QObject
 {
-    CORE_CS_OBJECT( QWindowsPipeReader )
+    CORE_LSCS_OBJECT( QWindowsPipeReader )
 
 public:
     explicit QWindowsPipeReader( QObject *parent = nullptr );
@@ -67,17 +67,17 @@ public:
         return readSequenceStarted;
     }
 
-    CORE_CS_SIGNAL_1( Public, void winError( ulong errorCode, const QString &text ) )
-    CORE_CS_SIGNAL_2( winError, errorCode, text )
+    CORE_LSCS_SIGNAL_1( Public, void winError( ulong errorCode, const QString &text ) )
+    CORE_LSCS_SIGNAL_2( winError, errorCode, text )
 
-    CORE_CS_SIGNAL_1( Public, void readyRead() )
-    CORE_CS_SIGNAL_2( readyRead )
+    CORE_LSCS_SIGNAL_1( Public, void readyRead() )
+    CORE_LSCS_SIGNAL_2( readyRead )
 
-    CORE_CS_SIGNAL_1( Public, void pipeClosed() )
-    CORE_CS_SIGNAL_2( pipeClosed )
+    CORE_LSCS_SIGNAL_1( Public, void pipeClosed() )
+    CORE_LSCS_SIGNAL_2( pipeClosed )
 
-    CORE_CS_SIGNAL_1( Public, void _q_queueReadyRead() )
-    CORE_CS_SIGNAL_2( _q_queueReadyRead )
+    CORE_LSCS_SIGNAL_1( Public, void _q_queueReadyRead() )
+    CORE_LSCS_SIGNAL_2( _q_queueReadyRead )
 
 private:
     static void CALLBACK readFileCompleted( DWORD errorCode, DWORD numberOfBytesTransfered, OVERLAPPED *overlappedBase );

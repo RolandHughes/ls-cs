@@ -41,7 +41,7 @@ class QTextBlockUserData;
 
 class Q_GUI_EXPORT QSyntaxHighlighter : public QObject
 {
-    GUI_CS_OBJECT( QSyntaxHighlighter )
+    GUI_LSCS_OBJECT( QSyntaxHighlighter )
 
 public:
     explicit QSyntaxHighlighter( QObject *parent );
@@ -55,11 +55,11 @@ public:
     void setDocument( QTextDocument *doc );
     QTextDocument *document() const;
 
-    GUI_CS_SLOT_1( Public, void rehighlight() )
-    GUI_CS_SLOT_2( rehighlight )
+    GUI_LSCS_SLOT_1( Public, void rehighlight() )
+    GUI_LSCS_SLOT_2( rehighlight )
 
-    GUI_CS_SLOT_1( Public, void rehighlightBlock( const QTextBlock &block ) )
-    GUI_CS_SLOT_2( rehighlightBlock )
+    GUI_LSCS_SLOT_1( Public, void rehighlightBlock( const QTextBlock &block ) )
+    GUI_LSCS_SLOT_2( rehighlightBlock )
 
 protected:
     virtual void highlightBlock( const QString &text ) = 0;
@@ -81,11 +81,11 @@ protected:
     QScopedPointer<QSyntaxHighlighterPrivate> d_ptr;
 
 private:
-    GUI_CS_SLOT_1( Private, void _q_reformatBlocks( int from, int charsRemoved, int charsAdded ) )
-    GUI_CS_SLOT_2( _q_reformatBlocks )
+    GUI_LSCS_SLOT_1( Private, void _q_reformatBlocks( int from, int charsRemoved, int charsAdded ) )
+    GUI_LSCS_SLOT_2( _q_reformatBlocks )
 
-    GUI_CS_SLOT_1( Private, void _q_delayedRehighlight() )
-    GUI_CS_SLOT_2( _q_delayedRehighlight )
+    GUI_LSCS_SLOT_1( Private, void _q_delayedRehighlight() )
+    GUI_LSCS_SLOT_2( _q_delayedRehighlight )
 
     Q_DECLARE_PRIVATE( QSyntaxHighlighter )
 };

@@ -32,7 +32,7 @@
 
 class Q_VULKAN_EXPORT QVulkanWindow: public QWindow
 {
-    VULKAN_CS_OBJECT( QVulkanWindow )
+    VULKAN_LSCS_OBJECT( QVulkanWindow )
 
 public:
     enum VulkanOptions : uint32_t

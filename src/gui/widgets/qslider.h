@@ -33,18 +33,18 @@ class QStyleOptionSlider;
 
 class Q_GUI_EXPORT QSlider : public QAbstractSlider
 {
-    GUI_CS_OBJECT( QSlider )
+    GUI_LSCS_OBJECT( QSlider )
 
-    GUI_CS_ENUM( TickPosition )
+    GUI_LSCS_ENUM( TickPosition )
 
-    GUI_CS_PROPERTY_READ( tickPosition, tickPosition )
-    GUI_CS_PROPERTY_WRITE( tickPosition, setTickPosition )
+    GUI_LSCS_PROPERTY_READ( tickPosition, tickPosition )
+    GUI_LSCS_PROPERTY_WRITE( tickPosition, setTickPosition )
 
-    GUI_CS_PROPERTY_READ( tickInterval, tickInterval )
-    GUI_CS_PROPERTY_WRITE( tickInterval, setTickInterval )
+    GUI_LSCS_PROPERTY_READ( tickInterval, tickInterval )
+    GUI_LSCS_PROPERTY_WRITE( tickInterval, setTickInterval )
 
 public:
-    GUI_CS_REGISTER_ENUM(
+    GUI_LSCS_REGISTER_ENUM(
         enum TickPosition
     {
         NoTicks = 0,

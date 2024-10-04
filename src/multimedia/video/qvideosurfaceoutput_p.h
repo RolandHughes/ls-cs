@@ -33,9 +33,9 @@ class QVideoRendererControl;
 
 class QVideoSurfaceOutput : public QObject, public QMediaBindableInterface
 {
-    MULTI_CS_OBJECT_MULTIPLE( QVideoSurfaceOutput, QObject )
+    MULTI_LSCS_OBJECT_MULTIPLE( QVideoSurfaceOutput, QObject )
 
-    CS_INTERFACES( QMediaBindableInterface )
+    LSCS_INTERFACES( QMediaBindableInterface )
 
 public:
     QVideoSurfaceOutput( QObject *parent = nullptr );

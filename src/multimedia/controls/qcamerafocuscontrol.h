@@ -31,7 +31,7 @@
 
 class Q_MULTIMEDIA_EXPORT QCameraFocusControl : public QMediaControl
 {
-    MULTI_CS_OBJECT( QCameraFocusControl )
+    MULTI_LSCS_OBJECT( QCameraFocusControl )
 
 public:
     ~QCameraFocusControl();
@@ -48,24 +48,24 @@ public:
 
     virtual QCameraFocusZoneList focusZones() const = 0;
 
-    MULTI_CS_SIGNAL_1( Public, void focusModeChanged( QCameraFocus::FocusModes mode ) )
-    MULTI_CS_SIGNAL_2( focusModeChanged, mode )
+    MULTI_LSCS_SIGNAL_1( Public, void focusModeChanged( QCameraFocus::FocusModes mode ) )
+    MULTI_LSCS_SIGNAL_2( focusModeChanged, mode )
 
-    MULTI_CS_SIGNAL_1( Public, void focusPointModeChanged( QCameraFocus::FocusPointMode mode ) )
-    MULTI_CS_SIGNAL_2( focusPointModeChanged, mode )
+    MULTI_LSCS_SIGNAL_1( Public, void focusPointModeChanged( QCameraFocus::FocusPointMode mode ) )
+    MULTI_LSCS_SIGNAL_2( focusPointModeChanged, mode )
 
-    MULTI_CS_SIGNAL_1( Public, void customFocusPointChanged( const QPointF &point ) )
-    MULTI_CS_SIGNAL_2( customFocusPointChanged, point )
+    MULTI_LSCS_SIGNAL_1( Public, void customFocusPointChanged( const QPointF &point ) )
+    MULTI_LSCS_SIGNAL_2( customFocusPointChanged, point )
 
-    MULTI_CS_SIGNAL_1( Public, void focusZonesChanged() )
-    MULTI_CS_SIGNAL_2( focusZonesChanged )
+    MULTI_LSCS_SIGNAL_1( Public, void focusZonesChanged() )
+    MULTI_LSCS_SIGNAL_2( focusZonesChanged )
 
 protected:
     explicit QCameraFocusControl( QObject *parent = nullptr );
 };
 
 #define QCameraFocusControl_iid "com.copperspice.CS.cameraFocusControl/1.0"
-CS_DECLARE_INTERFACE( QCameraFocusControl, QCameraFocusControl_iid )
+LSCS_DECLARE_INTERFACE( QCameraFocusControl, QCameraFocusControl_iid )
 
 #endif
 

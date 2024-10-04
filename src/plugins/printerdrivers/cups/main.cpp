@@ -28,17 +28,17 @@
 
 class QCupsPrinterSupportPlugin : public QPlatformPrinterSupportPlugin
 {
-    CS_OBJECT( QCupsPrinterSupportPlugin )
+    LSCS_OBJECT( QCupsPrinterSupportPlugin )
 
-    CS_PLUGIN_IID( QPlatformPrinterSupportPlugin_ID )
-    CS_PLUGIN_KEY( "printerdriver_cups" )
+    LSCS_PLUGIN_IID( QPlatformPrinterSupportPlugin_ID )
+    LSCS_PLUGIN_KEY( "printerdriver_cups" )
 
 public:
     QStringList keys() const;
     QPlatformPrinterSupport *create( const QString & ) override;
 };
 
-CS_PLUGIN_REGISTER( QCupsPrinterSupportPlugin )
+LSCS_PLUGIN_REGISTER( QCupsPrinterSupportPlugin )
 
 QStringList QCupsPrinterSupportPlugin::keys() const
 {

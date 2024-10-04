@@ -38,7 +38,7 @@ class QRegularExpressionValidatorPrivate;
 
 class Q_GUI_EXPORT QValidator : public QObject
 {
-    GUI_CS_OBJECT( QValidator )
+    GUI_LSCS_OBJECT( QValidator )
 
 public:
     explicit QValidator( QObject *parent = nullptr );
@@ -61,8 +61,8 @@ public:
     virtual State validate( QString &input, int &pos ) const = 0;
     virtual void fixup( QString &input ) const;
 
-    GUI_CS_SIGNAL_1( Public, void changed() )
-    GUI_CS_SIGNAL_2( changed )
+    GUI_LSCS_SIGNAL_1( Public, void changed() )
+    GUI_LSCS_SIGNAL_2( changed )
 
 protected:
     QValidator( QValidatorPrivate &d, QObject *parent );
@@ -74,15 +74,15 @@ private:
 
 class Q_GUI_EXPORT QIntValidator : public QValidator
 {
-    GUI_CS_OBJECT( QIntValidator )
+    GUI_LSCS_OBJECT( QIntValidator )
 
-    GUI_CS_PROPERTY_READ( bottom, bottom )
-    GUI_CS_PROPERTY_WRITE( bottom, setBottom )
-    GUI_CS_PROPERTY_NOTIFY( bottom, bottomChanged )
+    GUI_LSCS_PROPERTY_READ( bottom, bottom )
+    GUI_LSCS_PROPERTY_WRITE( bottom, setBottom )
+    GUI_LSCS_PROPERTY_NOTIFY( bottom, bottomChanged )
 
-    GUI_CS_PROPERTY_READ( top, top )
-    GUI_CS_PROPERTY_WRITE( top, setTop )
-    GUI_CS_PROPERTY_NOTIFY( top, topChanged )
+    GUI_LSCS_PROPERTY_READ( top, top )
+    GUI_LSCS_PROPERTY_WRITE( top, setTop )
+    GUI_LSCS_PROPERTY_NOTIFY( top, topChanged )
 
 public:
     explicit QIntValidator( QObject *parent = nullptr );
@@ -103,11 +103,11 @@ public:
     inline int bottom() const;
     inline int top() const;
 
-    GUI_CS_SIGNAL_1( Public, void bottomChanged( int newValue ) )
-    GUI_CS_SIGNAL_2( bottomChanged, newValue )
+    GUI_LSCS_SIGNAL_1( Public, void bottomChanged( int newValue ) )
+    GUI_LSCS_SIGNAL_2( bottomChanged, newValue )
 
-    GUI_CS_SIGNAL_1( Public, void topChanged( int newValue ) )
-    GUI_CS_SIGNAL_2( topChanged, newValue )
+    GUI_LSCS_SIGNAL_1( Public, void topChanged( int newValue ) )
+    GUI_LSCS_SIGNAL_2( topChanged, newValue )
 
 private:
     int b;
@@ -126,24 +126,24 @@ int QIntValidator::top() const
 
 class Q_GUI_EXPORT QDoubleValidator : public QValidator
 {
-    GUI_CS_OBJECT( QDoubleValidator )
+    GUI_LSCS_OBJECT( QDoubleValidator )
 
-    GUI_CS_PROPERTY_READ( bottom, bottom )
-    GUI_CS_PROPERTY_WRITE( bottom, setBottom )
-    GUI_CS_PROPERTY_NOTIFY( bottom, bottomChanged )
+    GUI_LSCS_PROPERTY_READ( bottom, bottom )
+    GUI_LSCS_PROPERTY_WRITE( bottom, setBottom )
+    GUI_LSCS_PROPERTY_NOTIFY( bottom, bottomChanged )
 
-    GUI_CS_PROPERTY_READ( top, top )
-    GUI_CS_PROPERTY_WRITE( top, setTop )
-    GUI_CS_PROPERTY_NOTIFY( top, topChanged )
+    GUI_LSCS_PROPERTY_READ( top, top )
+    GUI_LSCS_PROPERTY_WRITE( top, setTop )
+    GUI_LSCS_PROPERTY_NOTIFY( top, topChanged )
 
-    GUI_CS_PROPERTY_READ( decimals, decimals )
-    GUI_CS_PROPERTY_WRITE( decimals, setDecimals )
-    GUI_CS_PROPERTY_NOTIFY( decimals, decimalsChanged )
+    GUI_LSCS_PROPERTY_READ( decimals, decimals )
+    GUI_LSCS_PROPERTY_WRITE( decimals, setDecimals )
+    GUI_LSCS_PROPERTY_NOTIFY( decimals, decimalsChanged )
 
-    GUI_CS_ENUM( Notation )
-    GUI_CS_PROPERTY_READ( notation, notation )
-    GUI_CS_PROPERTY_WRITE( notation, setNotation )
-    GUI_CS_PROPERTY_NOTIFY( notation, notationChanged )
+    GUI_LSCS_ENUM( Notation )
+    GUI_LSCS_PROPERTY_READ( notation, notation )
+    GUI_LSCS_PROPERTY_WRITE( notation, setNotation )
+    GUI_LSCS_PROPERTY_NOTIFY( notation, notationChanged )
 
 public:
     enum Notation
@@ -173,17 +173,17 @@ public:
     inline int decimals() const;
     Notation notation() const;
 
-    GUI_CS_SIGNAL_1( Public, void bottomChanged( double newValue ) )
-    GUI_CS_SIGNAL_2( bottomChanged, newValue )
+    GUI_LSCS_SIGNAL_1( Public, void bottomChanged( double newValue ) )
+    GUI_LSCS_SIGNAL_2( bottomChanged, newValue )
 
-    GUI_CS_SIGNAL_1( Public, void topChanged( double newValue ) )
-    GUI_CS_SIGNAL_2( topChanged, newValue )
+    GUI_LSCS_SIGNAL_1( Public, void topChanged( double newValue ) )
+    GUI_LSCS_SIGNAL_2( topChanged, newValue )
 
-    GUI_CS_SIGNAL_1( Public, void decimalsChanged( int decimals ) )
-    GUI_CS_SIGNAL_2( decimalsChanged, decimals )
+    GUI_LSCS_SIGNAL_1( Public, void decimalsChanged( int decimals ) )
+    GUI_LSCS_SIGNAL_2( decimalsChanged, decimals )
 
-    GUI_CS_SIGNAL_1( Public, void notationChanged( QDoubleValidator::Notation notation ) )
-    GUI_CS_SIGNAL_2( notationChanged, notation )
+    GUI_LSCS_SIGNAL_1( Public, void notationChanged( QDoubleValidator::Notation notation ) )
+    GUI_LSCS_SIGNAL_2( notationChanged, notation )
 
 private:
     Q_DECLARE_PRIVATE( QDoubleValidator )
@@ -195,11 +195,11 @@ private:
 
 class Q_GUI_EXPORT QRegularExpressionValidator : public QValidator
 {
-    GUI_CS_OBJECT( QRegularExpressionValidator )
+    GUI_LSCS_OBJECT( QRegularExpressionValidator )
 
-    GUI_CS_PROPERTY_READ( regularExpression, regularExpression )
-    GUI_CS_PROPERTY_WRITE( regularExpression, setRegularExpression )
-    GUI_CS_PROPERTY_NOTIFY( regularExpression, regularExpressionChanged )
+    GUI_LSCS_PROPERTY_READ( regularExpression, regularExpression )
+    GUI_LSCS_PROPERTY_WRITE( regularExpression, setRegularExpression )
+    GUI_LSCS_PROPERTY_NOTIFY( regularExpression, regularExpressionChanged )
 
 public:
     explicit QRegularExpressionValidator( QObject *parent = nullptr );
@@ -214,11 +214,11 @@ public:
 
     const QRegularExpression &regularExpression() const;
 
-    GUI_CS_SIGNAL_1( Public, void regularExpressionChanged( const QRegularExpression &regExp ) )
-    GUI_CS_SIGNAL_2( regularExpressionChanged, regExp )
+    GUI_LSCS_SIGNAL_1( Public, void regularExpressionChanged( const QRegularExpression &regExp ) )
+    GUI_LSCS_SIGNAL_2( regularExpressionChanged, regExp )
 
-    GUI_CS_SLOT_1( Public, void setRegularExpression( const QRegularExpression &regExp ) )
-    GUI_CS_SLOT_2( setRegularExpression )
+    GUI_LSCS_SLOT_1( Public, void setRegularExpression( const QRegularExpression &regExp ) )
+    GUI_LSCS_SLOT_2( setRegularExpression )
 
 private:
     Q_DECLARE_PRIVATE( QRegularExpressionValidator )

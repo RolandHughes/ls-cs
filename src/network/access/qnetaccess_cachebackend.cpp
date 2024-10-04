@@ -116,7 +116,7 @@ bool QNetworkAccessCacheBackend::sendCacheContents()
         writeDownstreamData( contents );
     }
 
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
     qDebug() << "Cache successfully sent:" << url();
 #endif
 

@@ -1437,7 +1437,7 @@ int QWingedEdge::addEdge( int fi, int si )
     QPathVertex *vertices[2] = { fp, sp };
     QPathEdge::Direction dirs[2] = { QPathEdge::Backward, QPathEdge::Forward };
 
-#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+#if defined(LSCS_SHOW_DEBUG_GUI_PAINTING)
     qDebug( "QWingedEdge::addEdge() Adding edge %d, vertices = %.07f %.07f, %.07f %.07f",
             ei, fp->x, fp->y, sp->x, sp->y );
 #endif
@@ -2083,7 +2083,7 @@ static void traverse( QWingedEdge &list, int edge, QPathEdge::Traversal traversa
 
         ep->flag |= ( flag | ( flag << 4 ) );
 
-#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+#if defined(LSCS_SHOW_DEBUG_GUI_PAINTING)
         qDebug() << "traverse() adding edge = " << status.edge << ", mask = " << ( flag << 4 ) << ep->flag;
 #endif
 
@@ -2189,7 +2189,7 @@ bool QPathClipper::handleCrossingEdges( QWingedEdge &list, qreal y, ClipperMode 
     int windingB = 0;
     int windingD = 0;
 
-#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+#if defined(LSCS_SHOW_DEBUG_GUI_PAINTING)
     qDebug() << "QPathClipper::handleCrossingEdges() Crossing = " << crossings.size();
 #endif
 

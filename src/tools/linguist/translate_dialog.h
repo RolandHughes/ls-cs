@@ -30,7 +30,7 @@
 
 class TranslateDialog : public QDialog
 {
-    CS_OBJECT( TranslateDialog )
+    LSCS_OBJECT( TranslateDialog )
 
 public:
     enum
@@ -63,11 +63,11 @@ public:
         return m_ui->ledTranslateTo->text();
     }
 
-    CS_SIGNAL_1( Public, void requestMatchUpdate( bool &hit ) )
-    CS_SIGNAL_2( requestMatchUpdate,hit )
+    LSCS_SIGNAL_1( Public, void requestMatchUpdate( bool &hit ) )
+    LSCS_SIGNAL_2( requestMatchUpdate,hit )
 
-    CS_SIGNAL_1( Public, void activated( int mode ) )
-    CS_SIGNAL_2( activated,mode )
+    LSCS_SIGNAL_1( Public, void activated( int mode ) )
+    LSCS_SIGNAL_2( activated,mode )
 
 protected:
     void showEvent( QShowEvent *event ) override;
@@ -75,17 +75,17 @@ protected:
 private:
     Ui::TranslateDialog *m_ui;
 
-    CS_SLOT_1( Private, void emitFindNext() )
-    CS_SLOT_2( emitFindNext )
+    LSCS_SLOT_1( Private, void emitFindNext() )
+    LSCS_SLOT_2( emitFindNext )
 
-    CS_SLOT_1( Private, void emitTranslateAndFindNext() )
-    CS_SLOT_2( emitTranslateAndFindNext )
+    LSCS_SLOT_1( Private, void emitTranslateAndFindNext() )
+    LSCS_SLOT_2( emitTranslateAndFindNext )
 
-    CS_SLOT_1( Private, void emitTranslateAll() )
-    CS_SLOT_2( emitTranslateAll )
+    LSCS_SLOT_1( Private, void emitTranslateAll() )
+    LSCS_SLOT_2( emitTranslateAll )
 
-    CS_SLOT_1( Private, void verifyText() )
-    CS_SLOT_2( verifyText )
+    LSCS_SLOT_1( Private, void verifyText() )
+    LSCS_SLOT_2( verifyText )
 
 };
 

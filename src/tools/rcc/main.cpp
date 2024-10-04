@@ -39,7 +39,7 @@ void showHelp( const QString &argv0, const QString &error )
 
     if ( ! error.isEmpty() )
     {
-        fprintf( stderr, "%s: %s\n", csPrintable( argv0 ), csPrintable( error ) );
+        fprintf( stderr, "%s: %s\n", lscsPrintable( argv0 ), lscsPrintable( error ) );
     }
 
     fprintf( stderr, "Usage: %s  [options] <inputs>\n\n"
@@ -54,7 +54,7 @@ void showHelp( const QString &argv0, const QString &error )
              "  -project             generate resource file containing all files from the current directory\n"
              "  -version             display rcc version\n"
              "  -help                display this information\n",
-             csPrintable( argv0 ) );
+             lscsPrintable( argv0 ) );
 }
 
 void dumpRecursive( const QDir &dir, QTextStream &out )
@@ -103,7 +103,7 @@ int createProject( const QString &outFileName )
     if ( ! isOk )
     {
         fprintf( stderr, "Unable to open %s: %s\n",
-                 outFileName.isEmpty() ? csPrintable( outFileName ) : "standard output", csPrintable( file.errorString() ) );
+                 outFileName.isEmpty() ? lscsPrintable( outFileName ) : "standard output", lscsPrintable( file.errorString() ) );
         return 1;
     }
 
@@ -252,7 +252,7 @@ int runRcc( int argc, char *argv[] )
         {
             if ( ! QFile::exists( args[i] ) )
             {
-                qWarning( "%s: File does not exist '%s'", csPrintable( args[0] ), csPrintable( args[i] ) );
+                qWarning( "%s: File does not exist '%s'", lscsPrintable( args[0] ), lscsPrintable( args[i] ) );
                 return 1;
             }
 

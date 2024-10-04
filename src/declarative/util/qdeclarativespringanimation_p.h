@@ -34,25 +34,25 @@ class QDeclarativeSpringAnimationPrivate;
 
 class QDeclarativeSpringAnimation : public QDeclarativeNumberAnimation
 {
-    DECL_CS_OBJECT( QDeclarativeSpringAnimation )
+    DECL_LSCS_OBJECT( QDeclarativeSpringAnimation )
     Q_DECLARE_PRIVATE( QDeclarativeSpringAnimation )
 
-    CS_INTERFACES( QDeclarativePropertyValueSource )
+    LSCS_INTERFACES( QDeclarativePropertyValueSource )
 
-    DECL_CS_PROPERTY_READ( velocity, velocity )
-    DECL_CS_PROPERTY_WRITE( velocity, setVelocity )
-    DECL_CS_PROPERTY_READ( spring, spring )
-    DECL_CS_PROPERTY_WRITE( spring, setSpring )
-    DECL_CS_PROPERTY_READ( damping, damping )
-    DECL_CS_PROPERTY_WRITE( damping, setDamping )
-    DECL_CS_PROPERTY_READ( epsilon, epsilon )
-    DECL_CS_PROPERTY_WRITE( epsilon, setEpsilon )
-    DECL_CS_PROPERTY_READ( modulus, modulus )
-    DECL_CS_PROPERTY_WRITE( modulus, setModulus )
-    DECL_CS_PROPERTY_NOTIFY( modulus, modulusChanged )
-    DECL_CS_PROPERTY_READ( mass, mass )
-    DECL_CS_PROPERTY_WRITE( mass, setMass )
-    DECL_CS_PROPERTY_NOTIFY( mass, massChanged )
+    DECL_LSCS_PROPERTY_READ( velocity, velocity )
+    DECL_LSCS_PROPERTY_WRITE( velocity, setVelocity )
+    DECL_LSCS_PROPERTY_READ( spring, spring )
+    DECL_LSCS_PROPERTY_WRITE( spring, setSpring )
+    DECL_LSCS_PROPERTY_READ( damping, damping )
+    DECL_LSCS_PROPERTY_WRITE( damping, setDamping )
+    DECL_LSCS_PROPERTY_READ( epsilon, epsilon )
+    DECL_LSCS_PROPERTY_WRITE( epsilon, setEpsilon )
+    DECL_LSCS_PROPERTY_READ( modulus, modulus )
+    DECL_LSCS_PROPERTY_WRITE( modulus, setModulus )
+    DECL_LSCS_PROPERTY_NOTIFY( modulus, modulusChanged )
+    DECL_LSCS_PROPERTY_READ( mass, mass )
+    DECL_LSCS_PROPERTY_WRITE( mass, setMass )
+    DECL_LSCS_PROPERTY_NOTIFY( mass, massChanged )
 
 public:
     QDeclarativeSpringAnimation( QObject *parent = nullptr );
@@ -79,12 +79,12 @@ public:
     virtual void transition( QDeclarativeStateActions &actions, QDeclarativeProperties &modified,
                              TransitionDirection direction );
 
-    DECL_CS_SIGNAL_1( Public, void modulusChanged() )
-    DECL_CS_SIGNAL_2( modulusChanged )
-    DECL_CS_SIGNAL_1( Public, void massChanged() )
-    DECL_CS_SIGNAL_2( massChanged )
-    DECL_CS_SIGNAL_1( Public, void syncChanged() )
-    DECL_CS_SIGNAL_2( syncChanged )
+    DECL_LSCS_SIGNAL_1( Public, void modulusChanged() )
+    DECL_LSCS_SIGNAL_2( modulusChanged )
+    DECL_LSCS_SIGNAL_1( Public, void massChanged() )
+    DECL_LSCS_SIGNAL_2( massChanged )
+    DECL_LSCS_SIGNAL_1( Public, void syncChanged() )
+    DECL_LSCS_SIGNAL_2( syncChanged )
 
 protected:
     virtual QAbstractAnimation *qtAnimation();

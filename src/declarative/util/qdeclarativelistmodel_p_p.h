@@ -180,7 +180,7 @@ private:
 class ModelNodeMetaObject;
 class ModelObject : public QObject
 {
-    DECL_CS_OBJECT( ModelObject )
+    DECL_LSCS_OBJECT( ModelObject )
 public:
     ModelObject( ModelNode *node, NestedListModel *model, QScriptEngine *seng );
     void setValue( const QByteArray &name, const QVariant &val );

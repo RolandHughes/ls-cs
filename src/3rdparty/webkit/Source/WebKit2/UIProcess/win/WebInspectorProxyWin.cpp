@@ -60,7 +60,7 @@ bool WebInspectorProxy::registerInspectorViewWindowClass()
     WNDCLASSEX wcex;
 
     wcex.cbSize = sizeof( WNDCLASSEX );
-    wcex.style          = CS_DBLCLKS;
+    wcex.style          = LSCS_DBLCLKS;
     wcex.lpfnWndProc    = WebInspectorProxy::InspectorViewWndProc;
     wcex.cbClsExtra     = 0;
     wcex.cbWndExtra     = sizeof( WebInspectorProxy * );

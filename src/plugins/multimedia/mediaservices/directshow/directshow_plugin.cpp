@@ -58,7 +58,7 @@ extern const CLSID CLSID_VideoInputDeviceCategory;
 #include <ocidl.h>
 #endif
 
-CS_PLUGIN_REGISTER( DSServicePlugin )
+LSCS_PLUGIN_REGISTER( DSServicePlugin )
 
 static int g_refCount = 0;
 

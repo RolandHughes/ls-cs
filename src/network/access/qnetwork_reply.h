@@ -40,9 +40,9 @@ class QNetworkReplyPrivate;
 
 class Q_NETWORK_EXPORT QNetworkReply : public QIODevice
 {
-    NET_CS_OBJECT( QNetworkReply )
+    NET_LSCS_OBJECT( QNetworkReply )
 
-    NET_CS_ENUM( NetworkError )
+    NET_LSCS_ENUM( NetworkError )
 
 public:
     enum NetworkError
@@ -128,40 +128,40 @@ public:
     void ignoreSslErrors( const QList<QSslError> &errors );
 #endif
 
-    NET_CS_SLOT_1( Public, virtual void abort() = 0 )
-    NET_CS_SLOT_2( abort )
+    NET_LSCS_SLOT_1( Public, virtual void abort() = 0 )
+    NET_LSCS_SLOT_2( abort )
 
-    NET_CS_SLOT_1( Public, virtual void ignoreSslErrors() )
-    NET_CS_SLOT_OVERLOAD( ignoreSslErrors, () )
+    NET_LSCS_SLOT_1( Public, virtual void ignoreSslErrors() )
+    NET_LSCS_SLOT_OVERLOAD( ignoreSslErrors, () )
 
-    NET_CS_SIGNAL_1( Public, void metaDataChanged() )
-    NET_CS_SIGNAL_2( metaDataChanged )
+    NET_LSCS_SIGNAL_1( Public, void metaDataChanged() )
+    NET_LSCS_SIGNAL_2( metaDataChanged )
 
-    NET_CS_SIGNAL_1( Public, void finished() )
-    NET_CS_SIGNAL_2( finished )
+    NET_LSCS_SIGNAL_1( Public, void finished() )
+    NET_LSCS_SIGNAL_2( finished )
 
-    NET_CS_SIGNAL_1( Public, void error( QNetworkReply::NetworkError code ) )
-    NET_CS_SIGNAL_OVERLOAD( error, ( QNetworkReply::NetworkError ), code )
+    NET_LSCS_SIGNAL_1( Public, void error( QNetworkReply::NetworkError code ) )
+    NET_LSCS_SIGNAL_OVERLOAD( error, ( QNetworkReply::NetworkError ), code )
 
 #ifdef QT_SSL
-    NET_CS_SIGNAL_1( Public, void encrypted() )
-    NET_CS_SIGNAL_2( encrypted )
+    NET_LSCS_SIGNAL_1( Public, void encrypted() )
+    NET_LSCS_SIGNAL_2( encrypted )
 
-    NET_CS_SIGNAL_1( Public, void preSharedKeyAuthenticationRequired( QSslPreSharedKeyAuthenticator *authenticator ) )
-    NET_CS_SIGNAL_2( preSharedKeyAuthenticationRequired, authenticator )
+    NET_LSCS_SIGNAL_1( Public, void preSharedKeyAuthenticationRequired( QSslPreSharedKeyAuthenticator *authenticator ) )
+    NET_LSCS_SIGNAL_2( preSharedKeyAuthenticationRequired, authenticator )
 
-    NET_CS_SIGNAL_1( Public, void sslErrors( const QList <QSslError> &errors ) )
-    NET_CS_SIGNAL_2( sslErrors, errors )
+    NET_LSCS_SIGNAL_1( Public, void sslErrors( const QList <QSslError> &errors ) )
+    NET_LSCS_SIGNAL_2( sslErrors, errors )
 #endif
 
-    NET_CS_SIGNAL_1( Public, void redirected( const QUrl &url ) )
-    NET_CS_SIGNAL_2( redirected, url )
+    NET_LSCS_SIGNAL_1( Public, void redirected( const QUrl &url ) )
+    NET_LSCS_SIGNAL_2( redirected, url )
 
-    NET_CS_SIGNAL_1( Public, void uploadProgress( qint64 bytesSent, qint64 bytesTotal ) )
-    NET_CS_SIGNAL_2( uploadProgress, bytesSent, bytesTotal )
+    NET_LSCS_SIGNAL_1( Public, void uploadProgress( qint64 bytesSent, qint64 bytesTotal ) )
+    NET_LSCS_SIGNAL_2( uploadProgress, bytesSent, bytesTotal )
 
-    NET_CS_SIGNAL_1( Public, void downloadProgress( qint64 bytesReceived, qint64 bytesTotal ) )
-    NET_CS_SIGNAL_2( downloadProgress, bytesReceived, bytesTotal )
+    NET_LSCS_SIGNAL_1( Public, void downloadProgress( qint64 bytesReceived, qint64 bytesTotal ) )
+    NET_LSCS_SIGNAL_2( downloadProgress, bytesReceived, bytesTotal )
 
 protected:
     explicit QNetworkReply( QObject *parent = nullptr );

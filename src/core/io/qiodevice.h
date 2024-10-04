@@ -38,7 +38,7 @@ class QIODevicePrivate;
 
 class Q_CORE_EXPORT QIODevice : public QObject
 {
-    CORE_CS_OBJECT( QIODevice )
+    CORE_LSCS_OBJECT( QIODevice )
 
 public:
     enum OpenModeFlag
@@ -54,8 +54,8 @@ public:
     };
     using OpenMode = QFlags<OpenModeFlag>;
 
-    CORE_CS_ENUM( OpenModeFlag )
-    CORE_CS_FLAG( OpenModeFlag, OpenMode )
+    CORE_LSCS_ENUM( OpenModeFlag )
+    CORE_LSCS_FLAG( OpenModeFlag, OpenMode )
 
     QIODevice();
 
@@ -117,14 +117,14 @@ public:
 
     QString errorString() const;
 
-    CORE_CS_SIGNAL_1( Public, void readyRead() )
-    CORE_CS_SIGNAL_2( readyRead )
-    CORE_CS_SIGNAL_1( Public, void bytesWritten( qint64 bytes ) )
-    CORE_CS_SIGNAL_2( bytesWritten, bytes )
-    CORE_CS_SIGNAL_1( Public, void aboutToClose() )
-    CORE_CS_SIGNAL_2( aboutToClose )
-    CORE_CS_SIGNAL_1( Public, void readChannelFinished() )
-    CORE_CS_SIGNAL_2( readChannelFinished )
+    CORE_LSCS_SIGNAL_1( Public, void readyRead() )
+    CORE_LSCS_SIGNAL_2( readyRead )
+    CORE_LSCS_SIGNAL_1( Public, void bytesWritten( qint64 bytes ) )
+    CORE_LSCS_SIGNAL_2( bytesWritten, bytes )
+    CORE_LSCS_SIGNAL_1( Public, void aboutToClose() )
+    CORE_LSCS_SIGNAL_2( aboutToClose )
+    CORE_LSCS_SIGNAL_1( Public, void readChannelFinished() )
+    CORE_LSCS_SIGNAL_2( readChannelFinished )
 
 protected:
     QIODevice( QIODevicePrivate &dd, QObject *parent = nullptr );

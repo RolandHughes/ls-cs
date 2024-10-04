@@ -42,7 +42,7 @@ class QSslSocketPrivate;
 
 class Q_NETWORK_EXPORT QSslSocket : public QTcpSocket
 {
-    NET_CS_OBJECT( QSslSocket )
+    NET_LSCS_OBJECT( QSslSocket )
 
 public:
     enum SslMode
@@ -172,32 +172,32 @@ public:
 
     void ignoreSslErrors( const QList<QSslError> &errors );
 
-    NET_CS_SLOT_1( Public, void startClientEncryption() )
-    NET_CS_SLOT_2( startClientEncryption )
+    NET_LSCS_SLOT_1( Public, void startClientEncryption() )
+    NET_LSCS_SLOT_2( startClientEncryption )
 
-    NET_CS_SLOT_1( Public, void startServerEncryption() )
-    NET_CS_SLOT_2( startServerEncryption )
+    NET_LSCS_SLOT_1( Public, void startServerEncryption() )
+    NET_LSCS_SLOT_2( startServerEncryption )
 
-    NET_CS_SLOT_1( Public, void ignoreSslErrors() )
-    NET_CS_SLOT_OVERLOAD( ignoreSslErrors, () )
+    NET_LSCS_SLOT_1( Public, void ignoreSslErrors() )
+    NET_LSCS_SLOT_OVERLOAD( ignoreSslErrors, () )
 
-    NET_CS_SIGNAL_1( Public, void encrypted() )
-    NET_CS_SIGNAL_2( encrypted )
+    NET_LSCS_SIGNAL_1( Public, void encrypted() )
+    NET_LSCS_SIGNAL_2( encrypted )
 
-    NET_CS_SIGNAL_1( Public, void peerVerifyError( const QSslError &error ) )
-    NET_CS_SIGNAL_2( peerVerifyError, error )
+    NET_LSCS_SIGNAL_1( Public, void peerVerifyError( const QSslError &error ) )
+    NET_LSCS_SIGNAL_2( peerVerifyError, error )
 
-    NET_CS_SIGNAL_1( Public, void sslErrors( const QList <QSslError> &errors ) )
-    NET_CS_SIGNAL_OVERLOAD( sslErrors, ( const QList <QSslError> & ), errors )
+    NET_LSCS_SIGNAL_1( Public, void sslErrors( const QList <QSslError> &errors ) )
+    NET_LSCS_SIGNAL_OVERLOAD( sslErrors, ( const QList <QSslError> & ), errors )
 
-    NET_CS_SIGNAL_1( Public, void modeChanged( QSslSocket::SslMode newMode ) )
-    NET_CS_SIGNAL_2( modeChanged, newMode )
+    NET_LSCS_SIGNAL_1( Public, void modeChanged( QSslSocket::SslMode newMode ) )
+    NET_LSCS_SIGNAL_2( modeChanged, newMode )
 
-    NET_CS_SIGNAL_1( Public, void encryptedBytesWritten( qint64 totalBytes ) )
-    NET_CS_SIGNAL_2( encryptedBytesWritten, totalBytes )
+    NET_LSCS_SIGNAL_1( Public, void encryptedBytesWritten( qint64 totalBytes ) )
+    NET_LSCS_SIGNAL_2( encryptedBytesWritten, totalBytes )
 
-    NET_CS_SIGNAL_1( Public, void preSharedKeyAuthenticationRequired( QSslPreSharedKeyAuthenticator *authenticator ) )
-    NET_CS_SIGNAL_2( preSharedKeyAuthenticationRequired, authenticator )
+    NET_LSCS_SIGNAL_1( Public, void preSharedKeyAuthenticationRequired( QSslPreSharedKeyAuthenticator *authenticator ) )
+    NET_LSCS_SIGNAL_2( preSharedKeyAuthenticationRequired, authenticator )
 
 protected:
     qint64 readData( char *data, qint64 maxlen ) override;
@@ -206,39 +206,39 @@ protected:
 private:
     Q_DECLARE_PRIVATE( QSslSocket )
 
-    NET_CS_SLOT_1( Private, void _q_connectedSlot() )
-    NET_CS_SLOT_2( _q_connectedSlot )
+    NET_LSCS_SLOT_1( Private, void _q_connectedSlot() )
+    NET_LSCS_SLOT_2( _q_connectedSlot )
 
-    NET_CS_SLOT_1( Private, void _q_hostFoundSlot() )
-    NET_CS_SLOT_2( _q_hostFoundSlot )
+    NET_LSCS_SLOT_1( Private, void _q_hostFoundSlot() )
+    NET_LSCS_SLOT_2( _q_hostFoundSlot )
 
-    NET_CS_SLOT_1( Private, void _q_disconnectedSlot() )
-    NET_CS_SLOT_2( _q_disconnectedSlot )
+    NET_LSCS_SLOT_1( Private, void _q_disconnectedSlot() )
+    NET_LSCS_SLOT_2( _q_disconnectedSlot )
 
-    NET_CS_SLOT_1( Private, void _q_stateChangedSlot( QAbstractSocket::SocketState socketState ) )
-    NET_CS_SLOT_2( _q_stateChangedSlot )
+    NET_LSCS_SLOT_1( Private, void _q_stateChangedSlot( QAbstractSocket::SocketState socketState ) )
+    NET_LSCS_SLOT_2( _q_stateChangedSlot )
 
-    NET_CS_SLOT_1( Private, void _q_errorSlot( QAbstractSocket::SocketError socketError ) )
-    NET_CS_SLOT_2( _q_errorSlot )
+    NET_LSCS_SLOT_1( Private, void _q_errorSlot( QAbstractSocket::SocketError socketError ) )
+    NET_LSCS_SLOT_2( _q_errorSlot )
 
-    NET_CS_SLOT_1( Private, void _q_readyReadSlot() )
-    NET_CS_SLOT_2( _q_readyReadSlot )
+    NET_LSCS_SLOT_1( Private, void _q_readyReadSlot() )
+    NET_LSCS_SLOT_2( _q_readyReadSlot )
 
-    NET_CS_SLOT_1( Private, void _q_bytesWrittenSlot( qint64 written ) )
-    NET_CS_SLOT_2( _q_bytesWrittenSlot )
+    NET_LSCS_SLOT_1( Private, void _q_bytesWrittenSlot( qint64 written ) )
+    NET_LSCS_SLOT_2( _q_bytesWrittenSlot )
 
-    NET_CS_SLOT_1( Private, void _q_flushWriteBuffer() )
-    NET_CS_SLOT_2( _q_flushWriteBuffer )
+    NET_LSCS_SLOT_1( Private, void _q_flushWriteBuffer() )
+    NET_LSCS_SLOT_2( _q_flushWriteBuffer )
 
-    NET_CS_SLOT_1( Private, void _q_flushReadBuffer() )
-    NET_CS_SLOT_2( _q_flushReadBuffer )
+    NET_LSCS_SLOT_1( Private, void _q_flushReadBuffer() )
+    NET_LSCS_SLOT_2( _q_flushReadBuffer )
 
-    NET_CS_SLOT_1( Private, void _q_resumeImplementation() )
-    NET_CS_SLOT_2( _q_resumeImplementation )
+    NET_LSCS_SLOT_1( Private, void _q_resumeImplementation() )
+    NET_LSCS_SLOT_2( _q_resumeImplementation )
 
 #if defined(Q_OS_WIN)
-    NET_CS_SLOT_1( Private, void _q_caRootLoaded( QSslCertificate cert, QSslCertificate trustedRoot ) )
-    NET_CS_SLOT_2( _q_caRootLoaded )
+    NET_LSCS_SLOT_1( Private, void _q_caRootLoaded( QSslCertificate cert, QSslCertificate trustedRoot ) )
+    NET_LSCS_SLOT_2( _q_caRootLoaded )
 #endif
 
     friend class QSslSocketBackendPrivate;

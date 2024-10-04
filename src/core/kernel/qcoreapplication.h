@@ -47,22 +47,22 @@ class QAbstractNativeEventFilter;
 
 class Q_CORE_EXPORT QCoreApplication : public QObject
 {
-    CORE_CS_OBJECT( QCoreApplication )
+    CORE_LSCS_OBJECT( QCoreApplication )
 
-    CORE_CS_PROPERTY_READ( applicationName, cs_applicationName )
-    CORE_CS_PROPERTY_WRITE( applicationName, cs_setApplicationName )
+    CORE_LSCS_PROPERTY_READ( applicationName, cs_applicationName )
+    CORE_LSCS_PROPERTY_WRITE( applicationName, cs_setApplicationName )
 
-    CORE_CS_PROPERTY_READ( applicationVersion, cs_applicationVersion )
-    CORE_CS_PROPERTY_WRITE( applicationVersion, cs_setApplicationVersion )
+    CORE_LSCS_PROPERTY_READ( applicationVersion, cs_applicationVersion )
+    CORE_LSCS_PROPERTY_WRITE( applicationVersion, cs_setApplicationVersion )
 
-    CORE_CS_PROPERTY_READ( organizationName, cs_organizationName )
-    CORE_CS_PROPERTY_WRITE( organizationName, cs_setOrganizationName )
+    CORE_LSCS_PROPERTY_READ( organizationName, cs_organizationName )
+    CORE_LSCS_PROPERTY_WRITE( organizationName, cs_setOrganizationName )
 
-    CORE_CS_PROPERTY_READ( organizationDomain, cs_organizationDomain )
-    CORE_CS_PROPERTY_WRITE( organizationDomain, cs_setOrganizationDomain )
+    CORE_LSCS_PROPERTY_READ( organizationDomain, cs_organizationDomain )
+    CORE_LSCS_PROPERTY_WRITE( organizationDomain, cs_setOrganizationDomain )
 
-    CORE_CS_PROPERTY_READ( quitLockEnabled, cs_isQuitLockEnabled )
-    CORE_CS_PROPERTY_WRITE( quitLockEnabled, cs_setQuitLockEnabled )
+    CORE_LSCS_PROPERTY_READ( quitLockEnabled, cs_isQuitLockEnabled )
+    CORE_LSCS_PROPERTY_WRITE( quitLockEnabled, cs_setQuitLockEnabled )
 
     Q_DECLARE_PRIVATE( QCoreApplication )
 
@@ -161,14 +161,14 @@ public:
     inline bool cs_isQuitLockEnabled() const;
     inline void cs_setQuitLockEnabled( bool enabled );
 
-    CORE_CS_SLOT_1( Public, static void quit() )
-    CORE_CS_SLOT_2( quit )
+    CORE_LSCS_SLOT_1( Public, static void quit() )
+    CORE_LSCS_SLOT_2( quit )
 
-    CORE_CS_SIGNAL_1( Public, void aboutToQuit() )
-    CORE_CS_SIGNAL_2( aboutToQuit )
+    CORE_LSCS_SIGNAL_1( Public, void aboutToQuit() )
+    CORE_LSCS_SIGNAL_2( aboutToQuit )
 
-    CORE_CS_SIGNAL_1( Public, void unixSignal( int signalId ) )
-    CORE_CS_SIGNAL_2( unixSignal, signalId )
+    CORE_LSCS_SIGNAL_1( Public, void unixSignal( int signalId ) )
+    CORE_LSCS_SIGNAL_2( unixSignal, signalId )
 
 protected:
     bool event( QEvent * ) override;

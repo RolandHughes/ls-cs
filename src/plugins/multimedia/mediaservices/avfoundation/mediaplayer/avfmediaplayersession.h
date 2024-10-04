@@ -37,7 +37,7 @@ class AVFVideoOutput;
 
 class AVFMediaPlayerSession : public QObject
 {
-    CS_OBJECT( AVFMediaPlayerSession )
+    LSCS_OBJECT( AVFMediaPlayerSession )
 
 public:
     AVFMediaPlayerSession( AVFMediaPlayerService *service, QObject *parent = nullptr );
@@ -74,70 +74,70 @@ public:
         return m_volumeSupported;
     }
 
-    CS_SLOT_1( Public, void setPlaybackRate( qreal rate ) )
-    CS_SLOT_2( setPlaybackRate )
+    LSCS_SLOT_1( Public, void setPlaybackRate( qreal rate ) )
+    LSCS_SLOT_2( setPlaybackRate )
 
-    CS_SLOT_1( Public, void setPosition( qint64 pos ) )
-    CS_SLOT_2( setPosition )
+    LSCS_SLOT_1( Public, void setPosition( qint64 pos ) )
+    LSCS_SLOT_2( setPosition )
 
-    CS_SLOT_1( Public, void play() )
-    CS_SLOT_2( play )
-    CS_SLOT_1( Public, void pause() )
-    CS_SLOT_2( pause )
+    LSCS_SLOT_1( Public, void play() )
+    LSCS_SLOT_2( play )
+    LSCS_SLOT_1( Public, void pause() )
+    LSCS_SLOT_2( pause )
 
-    CS_SLOT_1( Public, void stop() )
-    CS_SLOT_2( stop )
+    LSCS_SLOT_1( Public, void stop() )
+    LSCS_SLOT_2( stop )
 
-    CS_SLOT_1( Public, void setVolume( int volume ) )
-    CS_SLOT_2( setVolume )
+    LSCS_SLOT_1( Public, void setVolume( int volume ) )
+    LSCS_SLOT_2( setVolume )
 
-    CS_SLOT_1( Public, void setMuted( bool muted ) )
-    CS_SLOT_2( setMuted )
+    LSCS_SLOT_1( Public, void setMuted( bool muted ) )
+    LSCS_SLOT_2( setMuted )
 
-    CS_SLOT_1( Public, void processEOS() )
-    CS_SLOT_2( processEOS )
+    LSCS_SLOT_1( Public, void processEOS() )
+    LSCS_SLOT_2( processEOS )
 
-    CS_SLOT_1( Public, void processLoadStateChange() )
-    CS_SLOT_2( processLoadStateChange )
+    LSCS_SLOT_1( Public, void processLoadStateChange() )
+    LSCS_SLOT_2( processLoadStateChange )
 
-    CS_SLOT_1( Public, void processPositionChange() )
-    CS_SLOT_2( processPositionChange )
+    LSCS_SLOT_1( Public, void processPositionChange() )
+    LSCS_SLOT_2( processPositionChange )
 
-    CS_SLOT_1( Public, void processMediaLoadError() )
-    CS_SLOT_2( processMediaLoadError )
+    LSCS_SLOT_1( Public, void processMediaLoadError() )
+    LSCS_SLOT_2( processMediaLoadError )
 
-    CS_SIGNAL_1( Public, void positionChanged( qint64 position ) )
-    CS_SIGNAL_2( positionChanged, position )
+    LSCS_SIGNAL_1( Public, void positionChanged( qint64 position ) )
+    LSCS_SIGNAL_2( positionChanged, position )
 
-    CS_SIGNAL_1( Public, void durationChanged( qint64 duration ) )
-    CS_SIGNAL_2( durationChanged, duration )
+    LSCS_SIGNAL_1( Public, void durationChanged( qint64 duration ) )
+    LSCS_SIGNAL_2( durationChanged, duration )
 
-    CS_SIGNAL_1( Public, void stateChanged( QMediaPlayer::State newState ) )
-    CS_SIGNAL_2( stateChanged, newState )
+    LSCS_SIGNAL_1( Public, void stateChanged( QMediaPlayer::State newState ) )
+    LSCS_SIGNAL_2( stateChanged, newState )
 
-    CS_SIGNAL_1( Public, void mediaStatusChanged( QMediaPlayer::MediaStatus status ) )
-    CS_SIGNAL_2( mediaStatusChanged, status )
+    LSCS_SIGNAL_1( Public, void mediaStatusChanged( QMediaPlayer::MediaStatus status ) )
+    LSCS_SIGNAL_2( mediaStatusChanged, status )
 
-    CS_SIGNAL_1( Public, void volumeChanged( int volume ) )
-    CS_SIGNAL_2( volumeChanged, volume )
+    LSCS_SIGNAL_1( Public, void volumeChanged( int volume ) )
+    LSCS_SIGNAL_2( volumeChanged, volume )
 
-    CS_SIGNAL_1( Public, void mutedChanged( bool muted ) )
-    CS_SIGNAL_2( mutedChanged, muted )
+    LSCS_SIGNAL_1( Public, void mutedChanged( bool muted ) )
+    LSCS_SIGNAL_2( mutedChanged, muted )
 
-    CS_SIGNAL_1( Public, void audioAvailableChanged( bool audioAvailable ) )
-    CS_SIGNAL_2( audioAvailableChanged, audioAvailable )
+    LSCS_SIGNAL_1( Public, void audioAvailableChanged( bool audioAvailable ) )
+    LSCS_SIGNAL_2( audioAvailableChanged, audioAvailable )
 
-    CS_SIGNAL_1( Public, void videoAvailableChanged( bool videoAvailable ) )
-    CS_SIGNAL_2( videoAvailableChanged, videoAvailable )
+    LSCS_SIGNAL_1( Public, void videoAvailableChanged( bool videoAvailable ) )
+    LSCS_SIGNAL_2( videoAvailableChanged, videoAvailable )
 
-    CS_SIGNAL_1( Public, void playbackRateChanged( qreal rate ) )
-    CS_SIGNAL_2( playbackRateChanged, rate )
+    LSCS_SIGNAL_1( Public, void playbackRateChanged( qreal rate ) )
+    LSCS_SIGNAL_2( playbackRateChanged, rate )
 
-    CS_SIGNAL_1( Public, void seekableChanged( bool seekable ) )
-    CS_SIGNAL_2( seekableChanged, seekable )
+    LSCS_SIGNAL_1( Public, void seekableChanged( bool seekable ) )
+    LSCS_SIGNAL_2( seekableChanged, seekable )
 
-    CS_SIGNAL_1( Public, void error( int error, const QString &errorString ) )
-    CS_SIGNAL_2( error, error, errorString )
+    LSCS_SIGNAL_1( Public, void error( int error, const QString &errorString ) )
+    LSCS_SIGNAL_2( error, error, errorString )
 
 private:
     class ResourceHandler

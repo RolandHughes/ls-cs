@@ -44,11 +44,11 @@
 
 class QBooleanComboBox : public QComboBox
 {
-    GUI_CS_OBJECT( QBooleanComboBox )
+    GUI_LSCS_OBJECT( QBooleanComboBox )
 
-    GUI_CS_PROPERTY_READ( value, value )
-    GUI_CS_PROPERTY_WRITE( value, setValue )
-    GUI_CS_PROPERTY_USER( value, true )
+    GUI_LSCS_PROPERTY_READ( value, value )
+    GUI_LSCS_PROPERTY_WRITE( value, setValue )
+    GUI_LSCS_PROPERTY_USER( value, true )
 
 public:
     QBooleanComboBox( QWidget *parent );
@@ -62,12 +62,12 @@ public:
 
 class QUIntSpinBox : public QSpinBox
 {
-    GUI_CS_OBJECT( QUIntSpinBox )
+    GUI_LSCS_OBJECT( QUIntSpinBox )
 
-    GUI_CS_PROPERTY_READ( value, uintValue )
-    GUI_CS_PROPERTY_WRITE( value, setUIntValue )
-    GUI_CS_PROPERTY_NOTIFY( value, uintValueChanged )
-    GUI_CS_PROPERTY_USER( value, true )
+    GUI_LSCS_PROPERTY_READ( value, uintValue )
+    GUI_LSCS_PROPERTY_WRITE( value, setUIntValue )
+    GUI_LSCS_PROPERTY_NOTIFY( value, uintValueChanged )
+    GUI_LSCS_PROPERTY_USER( value, true )
 
 public:
     explicit QUIntSpinBox( QWidget *parent = nullptr )
@@ -86,8 +86,8 @@ public:
         return setValue( data );
     }
 
-    GUI_CS_SIGNAL_1( Public, void uintValueChanged() )
-    GUI_CS_SIGNAL_2( uintValueChanged )
+    GUI_LSCS_SIGNAL_1( Public, void uintValueChanged() )
+    GUI_LSCS_SIGNAL_2( uintValueChanged )
 };
 #endif
 

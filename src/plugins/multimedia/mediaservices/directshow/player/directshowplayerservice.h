@@ -48,7 +48,7 @@ class DirectShowVideoRendererControl;
 
 class DirectShowPlayerService : public QMediaService
 {
-    CS_OBJECT( DirectShowPlayerService )
+    LSCS_OBJECT( DirectShowPlayerService )
 
 public:
     enum StreamType
@@ -83,8 +83,8 @@ protected:
     void customEvent( QEvent *event ) override;
 
 private:
-    CS_SLOT_1( Private, void videoOutputChanged() )
-    CS_SLOT_2( videoOutputChanged )
+    LSCS_SLOT_1( Private, void videoOutputChanged() )
+    LSCS_SLOT_2( videoOutputChanged )
 
     void releaseGraph();
     void updateStatus();

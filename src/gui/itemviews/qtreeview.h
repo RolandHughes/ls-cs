@@ -33,32 +33,32 @@ class QHeaderView;
 
 class Q_GUI_EXPORT QTreeView : public QAbstractItemView
 {
-    GUI_CS_OBJECT( QTreeView )
+    GUI_LSCS_OBJECT( QTreeView )
 
-    GUI_CS_PROPERTY_READ( autoExpandDelay, autoExpandDelay )
-    GUI_CS_PROPERTY_WRITE( autoExpandDelay, setAutoExpandDelay )
+    GUI_LSCS_PROPERTY_READ( autoExpandDelay, autoExpandDelay )
+    GUI_LSCS_PROPERTY_WRITE( autoExpandDelay, setAutoExpandDelay )
 
-    GUI_CS_PROPERTY_READ( indentation, indentation )
-    GUI_CS_PROPERTY_WRITE( indentation, setIndentation )
-    GUI_CS_PROPERTY_READ( rootIsDecorated, rootIsDecorated )
-    GUI_CS_PROPERTY_WRITE( rootIsDecorated, setRootIsDecorated )
-    GUI_CS_PROPERTY_READ( uniformRowHeights, uniformRowHeights )
-    GUI_CS_PROPERTY_WRITE( uniformRowHeights, setUniformRowHeights )
-    GUI_CS_PROPERTY_READ( itemsExpandable, itemsExpandable )
-    GUI_CS_PROPERTY_WRITE( itemsExpandable, setItemsExpandable )
-    GUI_CS_PROPERTY_READ( sortingEnabled, isSortingEnabled )
-    GUI_CS_PROPERTY_WRITE( sortingEnabled, setSortingEnabled )
-    GUI_CS_PROPERTY_READ( animated, isAnimated )
-    GUI_CS_PROPERTY_WRITE( animated, setAnimated )
-    GUI_CS_PROPERTY_READ( allColumnsShowFocus, allColumnsShowFocus )
-    GUI_CS_PROPERTY_WRITE( allColumnsShowFocus, setAllColumnsShowFocus )
-    GUI_CS_PROPERTY_READ( wordWrap, wordWrap )
-    GUI_CS_PROPERTY_WRITE( wordWrap, setWordWrap )
-    GUI_CS_PROPERTY_READ( headerHidden, isHeaderHidden )
-    GUI_CS_PROPERTY_WRITE( headerHidden, setHeaderHidden )
+    GUI_LSCS_PROPERTY_READ( indentation, indentation )
+    GUI_LSCS_PROPERTY_WRITE( indentation, setIndentation )
+    GUI_LSCS_PROPERTY_READ( rootIsDecorated, rootIsDecorated )
+    GUI_LSCS_PROPERTY_WRITE( rootIsDecorated, setRootIsDecorated )
+    GUI_LSCS_PROPERTY_READ( uniformRowHeights, uniformRowHeights )
+    GUI_LSCS_PROPERTY_WRITE( uniformRowHeights, setUniformRowHeights )
+    GUI_LSCS_PROPERTY_READ( itemsExpandable, itemsExpandable )
+    GUI_LSCS_PROPERTY_WRITE( itemsExpandable, setItemsExpandable )
+    GUI_LSCS_PROPERTY_READ( sortingEnabled, isSortingEnabled )
+    GUI_LSCS_PROPERTY_WRITE( sortingEnabled, setSortingEnabled )
+    GUI_LSCS_PROPERTY_READ( animated, isAnimated )
+    GUI_LSCS_PROPERTY_WRITE( animated, setAnimated )
+    GUI_LSCS_PROPERTY_READ( allColumnsShowFocus, allColumnsShowFocus )
+    GUI_LSCS_PROPERTY_WRITE( allColumnsShowFocus, setAllColumnsShowFocus )
+    GUI_LSCS_PROPERTY_READ( wordWrap, wordWrap )
+    GUI_LSCS_PROPERTY_WRITE( wordWrap, setWordWrap )
+    GUI_LSCS_PROPERTY_READ( headerHidden, isHeaderHidden )
+    GUI_LSCS_PROPERTY_WRITE( headerHidden, setHeaderHidden )
 
-    GUI_CS_PROPERTY_READ( expandsOnDoubleClick, expandsOnDoubleClick )
-    GUI_CS_PROPERTY_WRITE( expandsOnDoubleClick, setExpandsOnDoubleClick )
+    GUI_LSCS_PROPERTY_READ( expandsOnDoubleClick, expandsOnDoubleClick )
+    GUI_LSCS_PROPERTY_WRITE( expandsOnDoubleClick, setExpandsOnDoubleClick )
 
 public:
     explicit QTreeView( QWidget *parent = nullptr );
@@ -145,38 +145,38 @@ public:
                       const QVector<int> &roles = QVector<int>() ) override;
     void selectAll() override;
 
-    GUI_CS_SIGNAL_1( Public, void expanded( const QModelIndex &index ) )
-    GUI_CS_SIGNAL_2( expanded, index )
+    GUI_LSCS_SIGNAL_1( Public, void expanded( const QModelIndex &index ) )
+    GUI_LSCS_SIGNAL_2( expanded, index )
 
-    GUI_CS_SIGNAL_1( Public, void collapsed( const QModelIndex &index ) )
-    GUI_CS_SIGNAL_2( collapsed, index )
+    GUI_LSCS_SIGNAL_1( Public, void collapsed( const QModelIndex &index ) )
+    GUI_LSCS_SIGNAL_2( collapsed, index )
 
-    GUI_CS_SLOT_1( Public, void hideColumn( int column ) )
-    GUI_CS_SLOT_2( hideColumn )
+    GUI_LSCS_SLOT_1( Public, void hideColumn( int column ) )
+    GUI_LSCS_SLOT_2( hideColumn )
 
-    GUI_CS_SLOT_1( Public, void showColumn( int column ) )
-    GUI_CS_SLOT_2( showColumn )
+    GUI_LSCS_SLOT_1( Public, void showColumn( int column ) )
+    GUI_LSCS_SLOT_2( showColumn )
 
-    GUI_CS_SLOT_1( Public, void expand( const QModelIndex &index ) )
-    GUI_CS_SLOT_2( expand )
+    GUI_LSCS_SLOT_1( Public, void expand( const QModelIndex &index ) )
+    GUI_LSCS_SLOT_2( expand )
 
-    GUI_CS_SLOT_1( Public, void collapse( const QModelIndex &index ) )
-    GUI_CS_SLOT_2( collapse )
+    GUI_LSCS_SLOT_1( Public, void collapse( const QModelIndex &index ) )
+    GUI_LSCS_SLOT_2( collapse )
 
-    GUI_CS_SLOT_1( Public, void resizeColumnToContents( int column ) )
-    GUI_CS_SLOT_2( resizeColumnToContents )
+    GUI_LSCS_SLOT_1( Public, void resizeColumnToContents( int column ) )
+    GUI_LSCS_SLOT_2( resizeColumnToContents )
 
-    GUI_CS_SLOT_1( Public, void sortByColumn( int column ) )
-    GUI_CS_SLOT_OVERLOAD( sortByColumn, ( int ) )
+    GUI_LSCS_SLOT_1( Public, void sortByColumn( int column ) )
+    GUI_LSCS_SLOT_OVERLOAD( sortByColumn, ( int ) )
 
-    GUI_CS_SLOT_1( Public, void expandAll() )
-    GUI_CS_SLOT_2( expandAll )
+    GUI_LSCS_SLOT_1( Public, void expandAll() )
+    GUI_LSCS_SLOT_2( expandAll )
 
-    GUI_CS_SLOT_1( Public, void collapseAll() )
-    GUI_CS_SLOT_2( collapseAll )
+    GUI_LSCS_SLOT_1( Public, void collapseAll() )
+    GUI_LSCS_SLOT_2( collapseAll )
 
-    GUI_CS_SLOT_1( Public, void expandToDepth( int depth ) )
-    GUI_CS_SLOT_2( expandToDepth )
+    GUI_LSCS_SLOT_1( Public, void expandToDepth( int depth ) )
+    GUI_LSCS_SLOT_2( expandToDepth )
 
 protected:
     QTreeView( QTreeViewPrivate &dd, QWidget *parent = nullptr );
@@ -225,20 +225,20 @@ protected:
     void selectionChanged( const QItemSelection &selected, const QItemSelection &deselected ) override;
     void currentChanged( const QModelIndex &current, const QModelIndex &previous ) override;
 
-    GUI_CS_SLOT_1( Protected, void columnResized( int column, int oldSize, int newSize ) )
-    GUI_CS_SLOT_2( columnResized )
+    GUI_LSCS_SLOT_1( Protected, void columnResized( int column, int oldSize, int newSize ) )
+    GUI_LSCS_SLOT_2( columnResized )
 
-    GUI_CS_SLOT_1( Protected, void columnCountChanged( int oldCount, int newCount ) )
-    GUI_CS_SLOT_2( columnCountChanged )
+    GUI_LSCS_SLOT_1( Protected, void columnCountChanged( int oldCount, int newCount ) )
+    GUI_LSCS_SLOT_2( columnCountChanged )
 
-    GUI_CS_SLOT_1( Protected, void columnMoved() )
-    GUI_CS_SLOT_2( columnMoved )
+    GUI_LSCS_SLOT_1( Protected, void columnMoved() )
+    GUI_LSCS_SLOT_2( columnMoved )
 
-    GUI_CS_SLOT_1( Protected, void reexpand() )
-    GUI_CS_SLOT_2( reexpand )
+    GUI_LSCS_SLOT_1( Protected, void reexpand() )
+    GUI_LSCS_SLOT_2( reexpand )
 
-    GUI_CS_SLOT_1( Protected, void rowsRemoved( const QModelIndex &parent, int start, int end ) )
-    GUI_CS_SLOT_2( rowsRemoved )
+    GUI_LSCS_SLOT_1( Protected, void rowsRemoved( const QModelIndex &parent, int start, int end ) )
+    GUI_LSCS_SLOT_2( rowsRemoved )
 
 private:
     Q_DECLARE_PRIVATE( QTreeView )
@@ -246,15 +246,15 @@ private:
     int visualIndex( const QModelIndex &index ) const;
 
 #ifndef QT_NO_ANIMATION
-    GUI_CS_SLOT_1( Private, void _q_endAnimatedOperation() )
-    GUI_CS_SLOT_2( _q_endAnimatedOperation )
+    GUI_LSCS_SLOT_1( Private, void _q_endAnimatedOperation() )
+    GUI_LSCS_SLOT_2( _q_endAnimatedOperation )
 #endif
 
-    GUI_CS_SLOT_1( Private, void _q_modelAboutToBeReset() )
-    GUI_CS_SLOT_2( _q_modelAboutToBeReset )
+    GUI_LSCS_SLOT_1( Private, void _q_modelAboutToBeReset() )
+    GUI_LSCS_SLOT_2( _q_modelAboutToBeReset )
 
-    GUI_CS_SLOT_1( Private, void _q_sortIndicatorChanged( int column, Qt::SortOrder order ) )
-    GUI_CS_SLOT_2( _q_sortIndicatorChanged )
+    GUI_LSCS_SLOT_1( Private, void _q_sortIndicatorChanged( int column, Qt::SortOrder order ) )
+    GUI_LSCS_SLOT_2( _q_sortIndicatorChanged )
 
     friend class QAccessibleTable;
     friend class QAccessibleTree;

@@ -38,60 +38,60 @@ class QGraphicsViewPrivate;
 
 class Q_GUI_EXPORT QGraphicsView : public QAbstractScrollArea
 {
-    GUI_CS_OBJECT( QGraphicsView )
+    GUI_LSCS_OBJECT( QGraphicsView )
 
-    GUI_CS_ENUM( DragMode )
-    GUI_CS_ENUM( ViewportAnchor )
-    GUI_CS_ENUM( ViewportUpdateMode )
-    GUI_CS_ENUM( OptimizationFlag )
-    GUI_CS_ENUM( CacheModeFlag )
+    GUI_LSCS_ENUM( DragMode )
+    GUI_LSCS_ENUM( ViewportAnchor )
+    GUI_LSCS_ENUM( ViewportUpdateMode )
+    GUI_LSCS_ENUM( OptimizationFlag )
+    GUI_LSCS_ENUM( CacheModeFlag )
 
-    GUI_CS_FLAG( OptimizationFlag, OptimizationFlags )
-    GUI_CS_FLAG( CacheModeFlag, CacheMode )
+    GUI_LSCS_FLAG( OptimizationFlag, OptimizationFlags )
+    GUI_LSCS_FLAG( CacheModeFlag, CacheMode )
 
-    GUI_CS_PROPERTY_READ( backgroundBrush, backgroundBrush )
-    GUI_CS_PROPERTY_WRITE( backgroundBrush, setBackgroundBrush )
+    GUI_LSCS_PROPERTY_READ( backgroundBrush, backgroundBrush )
+    GUI_LSCS_PROPERTY_WRITE( backgroundBrush, setBackgroundBrush )
 
-    GUI_CS_PROPERTY_READ( foregroundBrush, foregroundBrush )
-    GUI_CS_PROPERTY_WRITE( foregroundBrush, setForegroundBrush )
+    GUI_LSCS_PROPERTY_READ( foregroundBrush, foregroundBrush )
+    GUI_LSCS_PROPERTY_WRITE( foregroundBrush, setForegroundBrush )
 
-    GUI_CS_PROPERTY_READ( interactive, isInteractive )
-    GUI_CS_PROPERTY_WRITE( interactive, setInteractive )
+    GUI_LSCS_PROPERTY_READ( interactive, isInteractive )
+    GUI_LSCS_PROPERTY_WRITE( interactive, setInteractive )
 
-    GUI_CS_PROPERTY_READ( sceneRect, sceneRect )
-    GUI_CS_PROPERTY_WRITE( sceneRect, cs_setSceneRect )
+    GUI_LSCS_PROPERTY_READ( sceneRect, sceneRect )
+    GUI_LSCS_PROPERTY_WRITE( sceneRect, cs_setSceneRect )
 
-    GUI_CS_PROPERTY_READ( alignment, alignment )
-    GUI_CS_PROPERTY_WRITE( alignment, setAlignment )
+    GUI_LSCS_PROPERTY_READ( alignment, alignment )
+    GUI_LSCS_PROPERTY_WRITE( alignment, setAlignment )
 
-    GUI_CS_PROPERTY_READ( renderHints, renderHints )
-    GUI_CS_PROPERTY_WRITE( renderHints, setRenderHints )
+    GUI_LSCS_PROPERTY_READ( renderHints, renderHints )
+    GUI_LSCS_PROPERTY_WRITE( renderHints, setRenderHints )
 
-    GUI_CS_PROPERTY_READ( dragMode, dragMode )
-    GUI_CS_PROPERTY_WRITE( dragMode, setDragMode )
+    GUI_LSCS_PROPERTY_READ( dragMode, dragMode )
+    GUI_LSCS_PROPERTY_WRITE( dragMode, setDragMode )
 
-    GUI_CS_PROPERTY_READ( cacheMode, cacheMode )
-    GUI_CS_PROPERTY_WRITE( cacheMode, setCacheMode )
+    GUI_LSCS_PROPERTY_READ( cacheMode, cacheMode )
+    GUI_LSCS_PROPERTY_WRITE( cacheMode, setCacheMode )
 
-    GUI_CS_PROPERTY_READ( transformationAnchor, transformationAnchor )
-    GUI_CS_PROPERTY_WRITE( transformationAnchor, setTransformationAnchor )
+    GUI_LSCS_PROPERTY_READ( transformationAnchor, transformationAnchor )
+    GUI_LSCS_PROPERTY_WRITE( transformationAnchor, setTransformationAnchor )
 
-    GUI_CS_PROPERTY_READ( resizeAnchor, resizeAnchor )
-    GUI_CS_PROPERTY_WRITE( resizeAnchor, setResizeAnchor )
+    GUI_LSCS_PROPERTY_READ( resizeAnchor, resizeAnchor )
+    GUI_LSCS_PROPERTY_WRITE( resizeAnchor, setResizeAnchor )
 
-    GUI_CS_PROPERTY_READ( viewportUpdateMode, viewportUpdateMode )
-    GUI_CS_PROPERTY_WRITE( viewportUpdateMode, setViewportUpdateMode )
+    GUI_LSCS_PROPERTY_READ( viewportUpdateMode, viewportUpdateMode )
+    GUI_LSCS_PROPERTY_WRITE( viewportUpdateMode, setViewportUpdateMode )
 
 #ifndef QT_NO_RUBBERBAND
-    GUI_CS_PROPERTY_READ( rubberBandSelectionMode, rubberBandSelectionMode )
-    GUI_CS_PROPERTY_WRITE( rubberBandSelectionMode, setRubberBandSelectionMode )
+    GUI_LSCS_PROPERTY_READ( rubberBandSelectionMode, rubberBandSelectionMode )
+    GUI_LSCS_PROPERTY_WRITE( rubberBandSelectionMode, setRubberBandSelectionMode )
 #endif
 
-    GUI_CS_PROPERTY_READ( optimizationFlags, optimizationFlags )
-    GUI_CS_PROPERTY_WRITE( optimizationFlags, setOptimizationFlags )
+    GUI_LSCS_PROPERTY_READ( optimizationFlags, optimizationFlags )
+    GUI_LSCS_PROPERTY_WRITE( optimizationFlags, setOptimizationFlags )
 
 public:
-    GUI_CS_REGISTER_ENUM(
+    GUI_LSCS_REGISTER_ENUM(
         enum ViewportAnchor
     {
         NoAnchor,
@@ -100,7 +100,7 @@ public:
     };
     )
 
-    GUI_CS_REGISTER_ENUM(
+    GUI_LSCS_REGISTER_ENUM(
         enum CacheModeFlag
     {
         CacheNone       = 0x0,
@@ -109,7 +109,7 @@ public:
     )
     using CacheMode = QFlags<CacheModeFlag>;
 
-    GUI_CS_REGISTER_ENUM(
+    GUI_LSCS_REGISTER_ENUM(
         enum DragMode
     {
         NoDrag,
@@ -118,7 +118,7 @@ public:
     };
     )
 
-    GUI_CS_REGISTER_ENUM(
+    GUI_LSCS_REGISTER_ENUM(
         enum ViewportUpdateMode
     {
         FullViewportUpdate,
@@ -129,7 +129,7 @@ public:
     };
     )
 
-    GUI_CS_REGISTER_ENUM(
+    GUI_LSCS_REGISTER_ENUM(
         enum OptimizationFlag
     {
         DontClipPainter           = 0x1, // obsolete
@@ -258,24 +258,24 @@ public:
     QBrush foregroundBrush() const;
     void setForegroundBrush( const QBrush &brush );
 
-    GUI_CS_SLOT_1( Public, void updateScene( const QList <QRectF> &rects ) )
-    GUI_CS_SLOT_2( updateScene )
+    GUI_LSCS_SLOT_1( Public, void updateScene( const QList <QRectF> &rects ) )
+    GUI_LSCS_SLOT_2( updateScene )
 
-    GUI_CS_SLOT_1( Public, void invalidateScene( const QRectF &rect = QRectF(),
+    GUI_LSCS_SLOT_1( Public, void invalidateScene( const QRectF &rect = QRectF(),
                    QGraphicsScene::SceneLayers layers = QGraphicsScene::AllLayers ) )
-    GUI_CS_SLOT_2( invalidateScene )
+    GUI_LSCS_SLOT_2( invalidateScene )
 
-    GUI_CS_SLOT_1( Public, void updateSceneRect( const QRectF &rect ) )
-    GUI_CS_SLOT_2( updateSceneRect )
+    GUI_LSCS_SLOT_1( Public, void updateSceneRect( const QRectF &rect ) )
+    GUI_LSCS_SLOT_2( updateSceneRect )
 
 #ifndef QT_NO_RUBBERBAND
-    GUI_CS_SIGNAL_1( Public, void rubberBandChanged( QRect viewportRect, QPointF fromScenePoint, QPointF toScenePoint ) )
-    GUI_CS_SIGNAL_2( rubberBandChanged, viewportRect, fromScenePoint, toScenePoint )
+    GUI_LSCS_SIGNAL_1( Public, void rubberBandChanged( QRect viewportRect, QPointF fromScenePoint, QPointF toScenePoint ) )
+    GUI_LSCS_SIGNAL_2( rubberBandChanged, viewportRect, fromScenePoint, toScenePoint )
 #endif
 
 protected:
-    GUI_CS_SLOT_1( Protected, void setupViewport( QWidget *widget ) override )
-    GUI_CS_SLOT_2( setupViewport )
+    GUI_LSCS_SLOT_1( Protected, void setupViewport( QWidget *widget ) override )
+    GUI_LSCS_SLOT_2( setupViewport )
 
     QGraphicsView( QGraphicsViewPrivate &, QWidget *parent = nullptr );
     bool event( QEvent *event ) override;
@@ -317,11 +317,11 @@ private:
     Q_DECLARE_PRIVATE( QGraphicsView )
 
 #ifndef QT_NO_CURSOR
-    GUI_CS_SLOT_1( Private, void _q_setViewportCursor( const QCursor &cursor ) )
-    GUI_CS_SLOT_2( _q_setViewportCursor )
+    GUI_LSCS_SLOT_1( Private, void _q_setViewportCursor( const QCursor &cursor ) )
+    GUI_LSCS_SLOT_2( _q_setViewportCursor )
 
-    GUI_CS_SLOT_1( Private, void _q_unsetViewportCursor() )
-    GUI_CS_SLOT_2( _q_unsetViewportCursor )
+    GUI_LSCS_SLOT_1( Private, void _q_unsetViewportCursor() )
+    GUI_LSCS_SLOT_2( _q_unsetViewportCursor )
 #endif
 
     friend class QGraphicsSceneWidget;

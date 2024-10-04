@@ -144,10 +144,10 @@ class QOpenGLDebugLoggerPrivate;
 
 class Q_GUI_EXPORT QOpenGLDebugLogger : public QObject
 {
-    GUI_CS_OBJECT( QOpenGLDebugLogger )
+    GUI_LSCS_OBJECT( QOpenGLDebugLogger )
 
-    GUI_CS_ENUM( LoggingMode )
-    GUI_CS_PROPERTY_READ( loggingMode, loggingMode )
+    GUI_LSCS_ENUM( LoggingMode )
+    GUI_LSCS_PROPERTY_READ( loggingMode, loggingMode )
 
 public:
     enum LoggingMode
@@ -193,17 +193,17 @@ public:
 
     QList<QOpenGLDebugMessage> loggedMessages() const;
 
-    GUI_CS_SLOT_1( Public, void logMessage( const QOpenGLDebugMessage &debugMessage ) )
-    GUI_CS_SLOT_2( logMessage )
+    GUI_LSCS_SLOT_1( Public, void logMessage( const QOpenGLDebugMessage &debugMessage ) )
+    GUI_LSCS_SLOT_2( logMessage )
 
-    GUI_CS_SLOT_1( Public, void startLogging( LoggingMode loggingMode = AsynchronousLogging ) )
-    GUI_CS_SLOT_2( startLogging )
+    GUI_LSCS_SLOT_1( Public, void startLogging( LoggingMode loggingMode = AsynchronousLogging ) )
+    GUI_LSCS_SLOT_2( startLogging )
 
-    GUI_CS_SLOT_1( Public, void stopLogging() )
-    GUI_CS_SLOT_2( stopLogging )
+    GUI_LSCS_SLOT_1( Public, void stopLogging() )
+    GUI_LSCS_SLOT_2( stopLogging )
 
-    GUI_CS_SIGNAL_1( Public, void messageLogged( const QOpenGLDebugMessage &debugMessage ) )
-    GUI_CS_SIGNAL_2( messageLogged,debugMessage )
+    GUI_LSCS_SIGNAL_1( Public, void messageLogged( const QOpenGLDebugMessage &debugMessage ) )
+    GUI_LSCS_SIGNAL_2( messageLogged,debugMessage )
 
 protected:
     QScopedPointer<QOpenGLDebugLoggerPrivate> d_ptr;
@@ -211,8 +211,8 @@ protected:
 private:
     Q_DECLARE_PRIVATE( QOpenGLDebugLogger )
 
-    GUI_CS_SLOT_1( Private, void _q_contextAboutToBeDestroyed() )
-    GUI_CS_SLOT_2( _q_contextAboutToBeDestroyed )
+    GUI_LSCS_SLOT_1( Private, void _q_contextAboutToBeDestroyed() )
+    GUI_LSCS_SLOT_2( _q_contextAboutToBeDestroyed )
 };
 
 #endif // QT_NO_OPENGL

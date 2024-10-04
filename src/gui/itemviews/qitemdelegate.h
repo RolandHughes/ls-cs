@@ -36,10 +36,10 @@ class QItemEditorFactory;
 
 class Q_GUI_EXPORT QItemDelegate : public QAbstractItemDelegate
 {
-    GUI_CS_OBJECT( QItemDelegate )
+    GUI_LSCS_OBJECT( QItemDelegate )
 
-    GUI_CS_PROPERTY_READ( clipping, hasClipping )
-    GUI_CS_PROPERTY_WRITE( clipping, setClipping )
+    GUI_LSCS_PROPERTY_READ( clipping, hasClipping )
+    GUI_LSCS_PROPERTY_WRITE( clipping, setClipping )
 
 public:
     explicit QItemDelegate( QObject *parent = nullptr );

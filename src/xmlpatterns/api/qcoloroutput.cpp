@@ -166,7 +166,7 @@ void ColorOutput::writeUncolored( const QString &message )
 QString ColorOutput::colorify( const QString &message, int colorID ) const
 {
     Q_ASSERT_X( colorID == -1 || d->colorMapping.contains( colorID ), Q_FUNC_INFO,
-                csPrintable( QString( "There is no color registered by id %1" ).formatArg( colorID ) ) );
+                lscsPrintable( QString( "There is no color registered by id %1" ).formatArg( colorID ) ) );
 
     Q_ASSERT_X( ! message.isEmpty(), Q_FUNC_INFO, "Can not print an empty string." );
 

@@ -163,7 +163,7 @@ QSvgTinyDocument *QSvgTinyDocument::load( const QString &fileName )
     if ( ! file.open( QFile::ReadOnly ) )
     {
         qWarning( "Unable to open file '%s', because: %s",
-                  csPrintable( fileName ), csPrintable( file.errorString() ) );
+                  lscsPrintable( fileName ), lscsPrintable( file.errorString() ) );
 
         return nullptr;
     }
@@ -189,7 +189,7 @@ QSvgTinyDocument *QSvgTinyDocument::load( const QString &fileName )
     else
     {
         qWarning( "Cannot read file '%s', because: %s (line %d)",
-                  csPrintable( fileName ), csPrintable( handler.errorString() ), handler.lineNumber() );
+                  lscsPrintable( fileName ), lscsPrintable( handler.errorString() ), handler.lineNumber() );
     }
 
     return doc;
@@ -286,8 +286,8 @@ void QSvgTinyDocument::draw( QPainter *p, const QString &id, const QRectF &bound
 
     if ( ! node )
     {
-#if defined(CS_SHOW_DEBUG_SVG)
-        qDebug( "Unable to find node %s, skipping rendering.", csPrintable( id ) );
+#if defined(LSCS_SHOW_DEBUG_SVG)
+        qDebug( "Unable to find node %s, skipping rendering.", lscsPrintable( id ) );
 #endif
 
         return;
@@ -497,8 +497,8 @@ QMatrix QSvgTinyDocument::matrixForElement( const QString &id ) const
 
     if ( ! node )
     {
-#if defined(CS_SHOW_DEBUG_SVG)
-        qDebug( "Unable to find node %s, skipping rendering.", csPrintable( id ) );
+#if defined(LSCS_SHOW_DEBUG_SVG)
+        qDebug( "Unable to find node %s, skipping rendering.", lscsPrintable( id ) );
 #endif
 
         return QMatrix();

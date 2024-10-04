@@ -53,7 +53,7 @@ struct MessageEditorData
 
 class MessageEditor : public QScrollArea
 {
-    CS_OBJECT( MessageEditor )
+    LSCS_OBJECT( MessageEditor )
 
 public:
     MessageEditor( MultiDataModel *dataModel, QMainWindow *parent = nullptr );
@@ -77,111 +77,111 @@ public:
     void setFontSize( const float fontSize );
     float fontSize();
 
-    CS_SIGNAL_1( Public, void translationChanged( const QStringList &translations ) )
-    CS_SIGNAL_2( translationChanged,translations )
+    LSCS_SIGNAL_1( Public, void translationChanged( const QStringList &translations ) )
+    LSCS_SIGNAL_2( translationChanged,translations )
 
-    CS_SIGNAL_1( Public, void translatorCommentChanged( const QString &comment ) )
-    CS_SIGNAL_2( translatorCommentChanged,comment )
+    LSCS_SIGNAL_1( Public, void translatorCommentChanged( const QString &comment ) )
+    LSCS_SIGNAL_2( translatorCommentChanged,comment )
 
-    CS_SIGNAL_1( Public, void activeModelChanged( int model ) )
-    CS_SIGNAL_2( activeModelChanged,model )
+    LSCS_SIGNAL_1( Public, void activeModelChanged( int model ) )
+    LSCS_SIGNAL_2( activeModelChanged,model )
 
-    CS_SIGNAL_1( Public, void undoAvailable( bool avail ) )
-    CS_SIGNAL_2( undoAvailable,avail )
+    LSCS_SIGNAL_1( Public, void undoAvailable( bool avail ) )
+    LSCS_SIGNAL_2( undoAvailable,avail )
 
-    CS_SIGNAL_1( Public, void redoAvailable( bool avail ) )
-    CS_SIGNAL_2( redoAvailable,avail )
+    LSCS_SIGNAL_1( Public, void redoAvailable( bool avail ) )
+    LSCS_SIGNAL_2( redoAvailable,avail )
 
-    CS_SIGNAL_1( Public, void cutAvailable( bool avail ) )
-    CS_SIGNAL_2( cutAvailable,avail )
+    LSCS_SIGNAL_1( Public, void cutAvailable( bool avail ) )
+    LSCS_SIGNAL_2( cutAvailable,avail )
 
-    CS_SIGNAL_1( Public, void copyAvailable( bool avail ) )
-    CS_SIGNAL_2( copyAvailable,avail )
+    LSCS_SIGNAL_1( Public, void copyAvailable( bool avail ) )
+    LSCS_SIGNAL_2( copyAvailable,avail )
 
-    CS_SIGNAL_1( Public, void pasteAvailable( bool avail ) )
-    CS_SIGNAL_2( pasteAvailable,avail )
+    LSCS_SIGNAL_1( Public, void pasteAvailable( bool avail ) )
+    LSCS_SIGNAL_2( pasteAvailable,avail )
 
-    CS_SIGNAL_1( Public, void beginFromSourceAvailable( bool enable ) )
-    CS_SIGNAL_2( beginFromSourceAvailable,enable )
+    LSCS_SIGNAL_1( Public, void beginFromSourceAvailable( bool enable ) )
+    LSCS_SIGNAL_2( beginFromSourceAvailable,enable )
 
-    CS_SLOT_1( Public, void undo() )
-    CS_SLOT_2( undo )
+    LSCS_SLOT_1( Public, void undo() )
+    LSCS_SLOT_2( undo )
 
-    CS_SLOT_1( Public, void redo() )
-    CS_SLOT_2( redo )
+    LSCS_SLOT_1( Public, void redo() )
+    LSCS_SLOT_2( redo )
 
-    CS_SLOT_1( Public, void cut() )
-    CS_SLOT_2( cut )
+    LSCS_SLOT_1( Public, void cut() )
+    LSCS_SLOT_2( cut )
 
-    CS_SLOT_1( Public, void copy() )
-    CS_SLOT_2( copy )
+    LSCS_SLOT_1( Public, void copy() )
+    LSCS_SLOT_2( copy )
 
-    CS_SLOT_1( Public, void paste() )
-    CS_SLOT_2( paste )
+    LSCS_SLOT_1( Public, void paste() )
+    LSCS_SLOT_2( paste )
 
-    CS_SLOT_1( Public, void selectAll() )
-    CS_SLOT_2( selectAll )
+    LSCS_SLOT_1( Public, void selectAll() )
+    LSCS_SLOT_2( selectAll )
 
-    CS_SLOT_1( Public, void beginFromSource() )
-    CS_SLOT_2( beginFromSource )
+    LSCS_SLOT_1( Public, void beginFromSource() )
+    LSCS_SLOT_2( beginFromSource )
 
-    CS_SLOT_1( Public, void setEditorFocus() )
-    CS_SLOT_2( setEditorFocus )
+    LSCS_SLOT_1( Public, void setEditorFocus() )
+    LSCS_SLOT_2( setEditorFocus )
 
-    CS_SLOT_1( Public, void setTranslation( int model, const QString &translation ) )
-    CS_SLOT_2( setTranslation )
+    LSCS_SLOT_1( Public, void setTranslation( int model, const QString &translation ) )
+    LSCS_SLOT_2( setTranslation )
 
-    CS_SLOT_1( Public, void setLengthVariants( bool on ) )
-    CS_SLOT_2( setLengthVariants )
+    LSCS_SLOT_1( Public, void setLengthVariants( bool on ) )
+    LSCS_SLOT_2( setLengthVariants )
 
-    CS_SLOT_1( Public, void increaseFontSize() )
-    CS_SLOT_2( increaseFontSize )
+    LSCS_SLOT_1( Public, void increaseFontSize() )
+    LSCS_SLOT_2( increaseFontSize )
 
-    CS_SLOT_1( Public, void decreaseFontSize() )
-    CS_SLOT_2( decreaseFontSize )
+    LSCS_SLOT_1( Public, void decreaseFontSize() )
+    LSCS_SLOT_2( decreaseFontSize )
 
-    CS_SLOT_1( Public, void resetFontSize() )
-    CS_SLOT_2( resetFontSize )
+    LSCS_SLOT_1( Public, void resetFontSize() )
+    LSCS_SLOT_2( resetFontSize )
 
 private:
-    CS_SLOT_1( Private, void editorCreated( QTextEdit *editor ) )
-    CS_SLOT_2( editorCreated )
+    LSCS_SLOT_1( Private, void editorCreated( QTextEdit *editor ) )
+    LSCS_SLOT_2( editorCreated )
 
-    CS_SLOT_1( Private, void editorDestroyed() )
-    CS_SLOT_2( editorDestroyed )
+    LSCS_SLOT_1( Private, void editorDestroyed() )
+    LSCS_SLOT_2( editorDestroyed )
 
-    CS_SLOT_1( Private, void selectionChanged( QTextEdit *editor ) )
-    CS_SLOT_2( selectionChanged )
+    LSCS_SLOT_1( Private, void selectionChanged( QTextEdit *editor ) )
+    LSCS_SLOT_2( selectionChanged )
 
-    CS_SLOT_1( Private, void resetHoverSelection() )
-    CS_SLOT_2( resetHoverSelection )
+    LSCS_SLOT_1( Private, void resetHoverSelection() )
+    LSCS_SLOT_2( resetHoverSelection )
 
-    CS_SLOT_1( Private, void emitTranslationChanged( QTextEdit *editor ) )
-    CS_SLOT_2( emitTranslationChanged )
+    LSCS_SLOT_1( Private, void emitTranslationChanged( QTextEdit *editor ) )
+    LSCS_SLOT_2( emitTranslationChanged )
 
-    CS_SLOT_1( Private, void emitTranslatorCommentChanged( QTextEdit *editor ) )
-    CS_SLOT_2( emitTranslatorCommentChanged )
+    LSCS_SLOT_1( Private, void emitTranslatorCommentChanged( QTextEdit *editor ) )
+    LSCS_SLOT_2( emitTranslatorCommentChanged )
 
-    CS_SLOT_1( Private, void updateCanPaste() )
-    CS_SLOT_2( updateCanPaste )
+    LSCS_SLOT_1( Private, void updateCanPaste() )
+    LSCS_SLOT_2( updateCanPaste )
 
-    CS_SLOT_1( Private, void clipboardChanged() )
-    CS_SLOT_2( clipboardChanged )
+    LSCS_SLOT_1( Private, void clipboardChanged() )
+    LSCS_SLOT_2( clipboardChanged )
 
-    CS_SLOT_1( Private, void messageModelAppended() )
-    CS_SLOT_2( messageModelAppended )
+    LSCS_SLOT_1( Private, void messageModelAppended() )
+    LSCS_SLOT_2( messageModelAppended )
 
-    CS_SLOT_1( Private, void messageModelDeleted( int model ) )
-    CS_SLOT_2( messageModelDeleted )
+    LSCS_SLOT_1( Private, void messageModelDeleted( int model ) )
+    LSCS_SLOT_2( messageModelDeleted )
 
-    CS_SLOT_1( Private, void allModelsDeleted() )
-    CS_SLOT_2( allModelsDeleted )
+    LSCS_SLOT_1( Private, void allModelsDeleted() )
+    LSCS_SLOT_2( allModelsDeleted )
 
-    CS_SLOT_1( Private, void setTargetLanguage( int model ) )
-    CS_SLOT_2( setTargetLanguage )
+    LSCS_SLOT_1( Private, void setTargetLanguage( int model ) )
+    LSCS_SLOT_2( setTargetLanguage )
 
-    CS_SLOT_1( Private, void reallyFixTabOrder() )
-    CS_SLOT_2( reallyFixTabOrder )
+    LSCS_SLOT_1( Private, void reallyFixTabOrder() )
+    LSCS_SLOT_2( reallyFixTabOrder )
 
     void setupEditorPage();
     void setEditingEnabled( int model, bool enabled );

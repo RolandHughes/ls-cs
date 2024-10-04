@@ -35,7 +35,7 @@ class QAudioFormat;
 
 class Q_MULTIMEDIA_EXPORT QAudioEncoderSettingsControl : public QMediaControl
 {
-    MULTI_CS_OBJECT( QAudioEncoderSettingsControl )
+    MULTI_LSCS_OBJECT( QAudioEncoderSettingsControl )
 
 public:
     virtual ~QAudioEncoderSettingsControl();
@@ -53,6 +53,6 @@ protected:
 };
 
 #define QAudioEncoderSettingsControl_iid "com.copperspice.CS.audioEncoderSettingsControl/1.0"
-CS_DECLARE_INTERFACE( QAudioEncoderSettingsControl, QAudioEncoderSettingsControl_iid )
+LSCS_DECLARE_INTERFACE( QAudioEncoderSettingsControl, QAudioEncoderSettingsControl_iid )
 
 #endif

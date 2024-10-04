@@ -89,7 +89,7 @@ using TargetsHash = QHash<QUiTranslatableStringValue, QList<TranslatableEntry>>;
 
 class FormPreviewView : public QMainWindow
 {
-    CS_OBJECT( FormPreviewView )
+    LSCS_OBJECT( FormPreviewView )
 
 public:
     FormPreviewView( QWidget *parent, MultiDataModel *dataModel );

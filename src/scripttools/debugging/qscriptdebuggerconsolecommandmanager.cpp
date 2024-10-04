@@ -101,21 +101,21 @@ void QScriptDebuggerConsoleCommandManager::addCommand( QScriptDebuggerConsoleCom
     if ( command->group().isEmpty() )
     {
         qWarning( "addCommand(): groupless command '%s' ignored",
-                  csPrintable( command->name() ) );
+                  lscsPrintable( command->name() ) );
         return;
     }
 
     if ( findCommand( command->name() ) != 0 )
     {
         qWarning( "addCommand(): duplicate command '%s' (group '%s') ignored",
-                  csPrintable( command->name() ), csPrintable( command->group() ) );
+                  lscsPrintable( command->name() ), lscsPrintable( command->group() ) );
         return;
     }
 
     if ( !d->groups.contains( command->group() ) )
     {
         qWarning( "addCommand(): group '%s' for command '%s' is unknown!",
-                  csPrintable( command->group() ), csPrintable( command->name() ) );
+                  lscsPrintable( command->group() ), lscsPrintable( command->name() ) );
     }
 
     d->commands.append( command );
@@ -138,7 +138,7 @@ void QScriptDebuggerConsoleCommandManager::addCommandGroup(
     if ( d->groups.contains( name ) )
     {
         qWarning( "addCommandGroup(): group '%s' already defined",
-                  csPrintable( name ) );
+                  lscsPrintable( name ) );
         return;
     }
 

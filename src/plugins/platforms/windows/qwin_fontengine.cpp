@@ -258,7 +258,7 @@ QWindowsFontEngine::QWindowsFontEngine( const QString &name, LOGFONT lf,
       widthCache( nullptr ), widthCacheSize( 0 ), designAdvances( nullptr ), designAdvancesSize( 0 )
 {
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
     // emerald - saw fontSize as negative, why?
     qDebug() << "QWindowsFontEngine() FontName = " << name << " FontSize =" << lf.lfHeight;
 #endif
@@ -267,7 +267,7 @@ QWindowsFontEngine::QWindowsFontEngine( const QString &name, LOGFONT lf,
 
     if ( ! hfont )
     {
-        qErrnoWarning( "QWindowsFontEngine() CreateFontIndirect failed for family %s", csPrintable( name ) );
+        qErrnoWarning( "QWindowsFontEngine() CreateFontIndirect failed for family %s", lscsPrintable( name ) );
         hfont = QWindowsFontDatabase::systemFont();
     }
 
@@ -1488,4 +1488,4 @@ bool QWindowsFontEngine::supportsTransformation( const QTransform &transform ) c
     return ttf || transform.type() <= QTransform::TxTranslate;
 }
 
-CS_DECLARE_METATYPE( HFONT )
+LSCS_DECLARE_METATYPE( HFONT )

@@ -33,7 +33,7 @@ class QScriptDebuggerScriptsWidgetInterfacePrivate;
 
 class QScriptDebuggerScriptsWidgetInterface : public QWidget
 {
-    SCRIPT_T_CS_OBJECT( QScriptDebuggerScriptsWidgetInterface )
+    SCRIPT_T_LSCS_OBJECT( QScriptDebuggerScriptsWidgetInterface )
 
 public:
     ~QScriptDebuggerScriptsWidgetInterface();
@@ -44,10 +44,10 @@ public:
     virtual qint64 currentScriptId() const = 0;
     virtual void setCurrentScript( qint64 id ) = 0;
 
-    CS_SIGNAL_1( Public, void currentScriptChanged( qint64 scriptId ) )
-    CS_SIGNAL_2( currentScriptChanged, scriptId )
-    CS_SIGNAL_1( Public, void scriptLocationSelected( int lineNumber ) )
-    CS_SIGNAL_2( scriptLocationSelected, lineNumber )
+    LSCS_SIGNAL_1( Public, void currentScriptChanged( qint64 scriptId ) )
+    LSCS_SIGNAL_2( currentScriptChanged, scriptId )
+    LSCS_SIGNAL_1( Public, void scriptLocationSelected( int lineNumber ) )
+    LSCS_SIGNAL_2( scriptLocationSelected, lineNumber )
 
 protected:
     QScriptDebuggerScriptsWidgetInterface(

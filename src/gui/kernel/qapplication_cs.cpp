@@ -1535,7 +1535,7 @@ void QApplicationPrivate::dispatchEnterLeave( QWidget *enter, QWidget *leave, co
         return;
     }
 
-#if defined(CS_SHOW_DEBUG_GUI)
+#if defined(LSCS_SHOW_DEBUG_GUI)
     qDebug() << "QApplication::dispatchEnterLeave() Enter =" << enter << "Leave =" << leave;
 #endif
 
@@ -2059,7 +2059,7 @@ QWidget *QApplicationPrivate::pickMouseReceiver( QWidget *candidate, const QPoin
         receiver = mouseGrabber;
         *pos = receiver->mapFromGlobal( candidate->mapToGlobal( windowPos ) );
 
-#if defined(CS_SHOW_DEBUG_GUI)
+#if defined(LSCS_SHOW_DEBUG_GUI)
         qDebug() << "QApplication::pickMouseReceiver() receiver adjusted to =" << receiver << " pos =" << pos;
 #endif
 
@@ -2141,7 +2141,7 @@ bool QApplicationPrivate::sendMouseEvent( QWidget *receiver, QMouseEvent *event,
         }
     }
 
-#if defined(CS_SHOW_DEBUG_GUI)
+#if defined(LSCS_SHOW_DEBUG_GUI)
     qDebug() << "QApplication::sendMouseEvent() receiver =" << receiver << "pos =" << event->pos()
              << "\n   Is Native =" << ! alienWidget << " button down =" << *buttonDown << " last =" << lastMouseReceiver
              << "\n   Leave after release =" << leaveAfterRelease;
@@ -2360,7 +2360,7 @@ bool QApplication::notify( QObject *receiver, QEvent *e )
         return true;
     }
 
-#if defined(CS_SHOW_DEBUG_GUI)
+#if defined(LSCS_SHOW_DEBUG_GUI)
     d->checkReceiverThread( receiver );
 #endif
 
@@ -2661,7 +2661,7 @@ bool QApplication::notify( QObject *receiver, QEvent *e )
                     {
 
                         // still send them through all application event filters (normally done by notify_helper)
-                        auto &eventFilters = CSInternalEvents::get_m_EventFilters( this );
+                        auto &eventFilters = LSCSInternalEvents::get_m_EventFilters( this );
 
                         for ( int i = 0; i < eventFilters.size(); ++i )
                         {
@@ -2672,7 +2672,7 @@ bool QApplication::notify( QObject *receiver, QEvent *e )
                                 continue;
                             }
 
-                            if ( CSInternalThreadData::get_m_ThreadData( obj ) != CSInternalThreadData::get_m_ThreadData( w ) )
+                            if ( LSCSInternalThreadData::get_m_ThreadData( obj ) != LSCSInternalThreadData::get_m_ThreadData( w ) )
                             {
                                 qWarning( "QApplication::notify() Event filter can not be in a different thread" );
                                 continue;
@@ -3391,7 +3391,7 @@ bool QApplication::notify( QObject *receiver, QEvent *e )
 bool QApplicationPrivate::notify_helper( QObject *receiver, QEvent *e )
 {
     // send to all application event filters
-    if ( CSInternalThreadData::get_m_ThreadData( receiver )->thread == mainThread()
+    if ( LSCSInternalThreadData::get_m_ThreadData( receiver )->thread == mainThread()
             && sendThroughApplicationEventFilters( receiver, e ) )
     {
         return true;

@@ -37,19 +37,19 @@ class QSplitterHandle;
 
 class Q_GUI_EXPORT QSplitter : public QFrame
 {
-    GUI_CS_OBJECT( QSplitter )
+    GUI_LSCS_OBJECT( QSplitter )
 
-    GUI_CS_PROPERTY_READ( orientation, orientation )
-    GUI_CS_PROPERTY_WRITE( orientation, setOrientation )
+    GUI_LSCS_PROPERTY_READ( orientation, orientation )
+    GUI_LSCS_PROPERTY_WRITE( orientation, setOrientation )
 
-    GUI_CS_PROPERTY_READ( opaqueResize, opaqueResize )
-    GUI_CS_PROPERTY_WRITE( opaqueResize, setOpaqueResize )
+    GUI_LSCS_PROPERTY_READ( opaqueResize, opaqueResize )
+    GUI_LSCS_PROPERTY_WRITE( opaqueResize, setOpaqueResize )
 
-    GUI_CS_PROPERTY_READ( handleWidth, handleWidth )
-    GUI_CS_PROPERTY_WRITE( handleWidth, setHandleWidth )
+    GUI_LSCS_PROPERTY_READ( handleWidth, handleWidth )
+    GUI_LSCS_PROPERTY_WRITE( handleWidth, setHandleWidth )
 
-    GUI_CS_PROPERTY_READ( childrenCollapsible, childrenCollapsible )
-    GUI_CS_PROPERTY_WRITE( childrenCollapsible, setChildrenCollapsible )
+    GUI_LSCS_PROPERTY_READ( childrenCollapsible, childrenCollapsible )
+    GUI_LSCS_PROPERTY_WRITE( childrenCollapsible, setChildrenCollapsible )
 
 public:
     explicit QSplitter( QWidget *parent = nullptr );
@@ -96,8 +96,8 @@ public:
 
     void setStretchFactor( int index, int stretch );
 
-    GUI_CS_SIGNAL_1( Public, void splitterMoved( int pos, int index ) )
-    GUI_CS_SIGNAL_2( splitterMoved, pos, index )
+    GUI_LSCS_SIGNAL_1( Public, void splitterMoved( int pos, int index ) )
+    GUI_LSCS_SIGNAL_2( splitterMoved, pos, index )
 
 protected:
     virtual QSplitterHandle *createHandle();
@@ -123,7 +123,7 @@ Q_GUI_EXPORT QTextStream &operator>>( QTextStream &, QSplitter & );
 
 class Q_GUI_EXPORT QSplitterHandle : public QWidget
 {
-    GUI_CS_OBJECT( QSplitterHandle )
+    GUI_LSCS_OBJECT( QSplitterHandle )
 
 public:
     explicit QSplitterHandle( Qt::Orientation orientation, QSplitter *parent );

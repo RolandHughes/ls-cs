@@ -35,29 +35,29 @@ class QWizardPrivate;
 
 class Q_GUI_EXPORT QWizard : public QDialog
 {
-    GUI_CS_OBJECT( QWizard )
+    GUI_LSCS_OBJECT( QWizard )
 
-    GUI_CS_ENUM( WizardStyle )
-    GUI_CS_ENUM( WizardOption )
-    GUI_CS_FLAG( WizardOption, WizardOptions )
+    GUI_LSCS_ENUM( WizardStyle )
+    GUI_LSCS_ENUM( WizardOption )
+    GUI_LSCS_FLAG( WizardOption, WizardOptions )
 
-    GUI_CS_PROPERTY_READ( wizardStyle, wizardStyle )
-    GUI_CS_PROPERTY_WRITE( wizardStyle, setWizardStyle )
+    GUI_LSCS_PROPERTY_READ( wizardStyle, wizardStyle )
+    GUI_LSCS_PROPERTY_WRITE( wizardStyle, setWizardStyle )
 
-    GUI_CS_PROPERTY_READ( options, options )
-    GUI_CS_PROPERTY_WRITE( options, setOptions )
+    GUI_LSCS_PROPERTY_READ( options, options )
+    GUI_LSCS_PROPERTY_WRITE( options, setOptions )
 
-    GUI_CS_PROPERTY_READ( titleFormat, titleFormat )
-    GUI_CS_PROPERTY_WRITE( titleFormat, setTitleFormat )
+    GUI_LSCS_PROPERTY_READ( titleFormat, titleFormat )
+    GUI_LSCS_PROPERTY_WRITE( titleFormat, setTitleFormat )
 
-    GUI_CS_PROPERTY_READ( subTitleFormat, subTitleFormat )
-    GUI_CS_PROPERTY_WRITE( subTitleFormat, setSubTitleFormat )
+    GUI_LSCS_PROPERTY_READ( subTitleFormat, subTitleFormat )
+    GUI_LSCS_PROPERTY_WRITE( subTitleFormat, setSubTitleFormat )
 
-    GUI_CS_PROPERTY_READ( startId, startId )
-    GUI_CS_PROPERTY_WRITE( startId, setStartId )
+    GUI_LSCS_PROPERTY_READ( startId, startId )
+    GUI_LSCS_PROPERTY_WRITE( startId, setStartId )
 
-    GUI_CS_PROPERTY_READ( currentId, currentId )
-    GUI_CS_PROPERTY_NOTIFY( currentId, currentIdChanged )
+    GUI_LSCS_PROPERTY_READ( currentId, currentId )
+    GUI_LSCS_PROPERTY_NOTIFY( currentId, currentIdChanged )
 
 public:
     enum WizardButton
@@ -173,29 +173,29 @@ public:
     void setVisible( bool visible ) override;
     QSize sizeHint() const override;
 
-    GUI_CS_SIGNAL_1( Public, void currentIdChanged( int id ) )
-    GUI_CS_SIGNAL_2( currentIdChanged, id )
+    GUI_LSCS_SIGNAL_1( Public, void currentIdChanged( int id ) )
+    GUI_LSCS_SIGNAL_2( currentIdChanged, id )
 
-    GUI_CS_SIGNAL_1( Public, void helpRequested() )
-    GUI_CS_SIGNAL_2( helpRequested )
+    GUI_LSCS_SIGNAL_1( Public, void helpRequested() )
+    GUI_LSCS_SIGNAL_2( helpRequested )
 
-    GUI_CS_SIGNAL_1( Public, void customButtonClicked( int which ) )
-    GUI_CS_SIGNAL_2( customButtonClicked, which )
+    GUI_LSCS_SIGNAL_1( Public, void customButtonClicked( int which ) )
+    GUI_LSCS_SIGNAL_2( customButtonClicked, which )
 
-    GUI_CS_SIGNAL_1( Public, void pageAdded( int id ) )
-    GUI_CS_SIGNAL_2( pageAdded, id )
+    GUI_LSCS_SIGNAL_1( Public, void pageAdded( int id ) )
+    GUI_LSCS_SIGNAL_2( pageAdded, id )
 
-    GUI_CS_SIGNAL_1( Public, void pageRemoved( int id ) )
-    GUI_CS_SIGNAL_2( pageRemoved, id )
+    GUI_LSCS_SIGNAL_1( Public, void pageRemoved( int id ) )
+    GUI_LSCS_SIGNAL_2( pageRemoved, id )
 
-    GUI_CS_SLOT_1( Public, void back() )
-    GUI_CS_SLOT_2( back )
+    GUI_LSCS_SLOT_1( Public, void back() )
+    GUI_LSCS_SLOT_2( back )
 
-    GUI_CS_SLOT_1( Public, void next() )
-    GUI_CS_SLOT_2( next )
+    GUI_LSCS_SLOT_1( Public, void next() )
+    GUI_LSCS_SLOT_2( next )
 
-    GUI_CS_SLOT_1( Public, void restart() )
-    GUI_CS_SLOT_2( restart )
+    GUI_LSCS_SLOT_1( Public, void restart() )
+    GUI_LSCS_SLOT_2( restart )
 
 protected:
     bool event( QEvent *event ) override;
@@ -213,11 +213,11 @@ protected:
 private:
     Q_DECLARE_PRIVATE( QWizard )
 
-    GUI_CS_SLOT_1( Private, void _q_emitCustomButtonClicked() )
-    GUI_CS_SLOT_2( _q_emitCustomButtonClicked )
+    GUI_LSCS_SLOT_1( Private, void _q_emitCustomButtonClicked() )
+    GUI_LSCS_SLOT_2( _q_emitCustomButtonClicked )
 
-    GUI_CS_SLOT_1( Private, void _q_updateButtonStates() )
-    GUI_CS_SLOT_2( _q_updateButtonStates )
+    GUI_LSCS_SLOT_1( Private, void _q_updateButtonStates() )
+    GUI_LSCS_SLOT_2( _q_updateButtonStates )
 
     void _q_handleFieldObjectDestroyed( QObject *obj );
 
@@ -228,13 +228,13 @@ Q_DECLARE_OPERATORS_FOR_FLAGS( QWizard::WizardOptions )
 
 class Q_GUI_EXPORT QWizardPage : public QWidget
 {
-    GUI_CS_OBJECT( QWizardPage )
+    GUI_LSCS_OBJECT( QWizardPage )
 
-    GUI_CS_PROPERTY_READ( title, title )
-    GUI_CS_PROPERTY_WRITE( title, setTitle )
+    GUI_LSCS_PROPERTY_READ( title, title )
+    GUI_LSCS_PROPERTY_WRITE( title, setTitle )
 
-    GUI_CS_PROPERTY_READ( subTitle, subTitle )
-    GUI_CS_PROPERTY_WRITE( subTitle, setSubTitle )
+    GUI_LSCS_PROPERTY_READ( subTitle, subTitle )
+    GUI_LSCS_PROPERTY_WRITE( subTitle, setSubTitle )
 
 public:
     explicit QWizardPage( QWidget *parent = nullptr );
@@ -263,8 +263,8 @@ public:
     virtual bool isComplete() const;
     virtual int nextId() const;
 
-    GUI_CS_SIGNAL_1( Public, void completeChanged() )
-    GUI_CS_SIGNAL_2( completeChanged )
+    GUI_LSCS_SIGNAL_1( Public, void completeChanged() )
+    GUI_LSCS_SIGNAL_2( completeChanged )
 
 protected:
     void setField( const QString &name, const QVariant &value );
@@ -276,11 +276,11 @@ protected:
 private:
     Q_DECLARE_PRIVATE( QWizardPage )
 
-    GUI_CS_SLOT_1( Private, void _q_changedSignal() )
-    GUI_CS_SLOT_2( _q_changedSignal )
+    GUI_LSCS_SLOT_1( Private, void _q_changedSignal() )
+    GUI_LSCS_SLOT_2( _q_changedSignal )
 
-    GUI_CS_SLOT_1( Private, void _q_updateCachedCompleteState() )
-    GUI_CS_SLOT_2( _q_updateCachedCompleteState )
+    GUI_LSCS_SLOT_1( Private, void _q_updateCachedCompleteState() )
+    GUI_LSCS_SLOT_2( _q_updateCachedCompleteState )
 
     friend class QWizard;
     friend class QWizardPrivate;

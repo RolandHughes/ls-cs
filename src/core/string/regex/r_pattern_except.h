@@ -24,18 +24,18 @@
  * LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 */
 
-#ifndef CS_PATTERN_EXCEPT_H
-#define CS_PATTERN_EXCEPT_H
+#ifndef LSCS_PATTERN_EXCEPT_H
+#define LSCS_PATTERN_EXCEPT_H
 
 #include <regex/r_config.h>
 
 #include <stdexcept>
 #include <cstddef>
 
-namespace cs_regex_ns
+namespace lscs_regex_ns
 {
 
-class LIB_CS_STRING_EXPORT regex_error : public std::runtime_error
+class LIB_LSCS_STRING_EXPORT regex_error : public std::runtime_error
 {
 public:
     explicit regex_error( const std::string &s, regex_constants::error_type err = regex_constants::error_unknown,
@@ -45,7 +45,7 @@ public:
     }
 
     explicit regex_error( regex_constants::error_type err )
-        : std::runtime_error( cs_regex_ns::cs_regex_detail_ns::get_default_error_string( err ) ), m_error_code( err ), m_position( 0 )
+        : std::runtime_error( lscs_regex_ns::lscs_regex_detail_ns::get_default_error_string( err ) ), m_error_code( err ), m_position( 0 )
     {
     }
 
@@ -76,7 +76,7 @@ private:
 using bad_pattern    = regex_error;
 using bad_expression = regex_error;
 
-namespace cs_regex_detail_ns
+namespace lscs_regex_detail_ns
 {
 
 template <class traits>

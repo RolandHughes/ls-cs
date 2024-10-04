@@ -702,7 +702,7 @@ void QZipReaderPrivate::scanFiles()
     start_of_directory = readUInt( eod.dir_start_offset );
     num_dir_entries = readUShort( eod.num_dir_entries );
 
-#if defined(CS_SHOW_DEBUG_GUI_TEXT)
+#if defined(LSCS_SHOW_DEBUG_GUI_TEXT)
     qDebug( "start_of_directory at %d, num_dir_entries=%d", start_of_directory, num_dir_entries );
 #endif
 
@@ -761,7 +761,7 @@ void QZipReaderPrivate::scanFiles()
             break;
         }
 
-#if defined(CS_SHOW_DEBUG_GUI_TEXT)
+#if defined(LSCS_SHOW_DEBUG_GUI_TEXT)
         qDebug( "Found file '%s'", header.file_name.data() );
 #endif
 
@@ -771,7 +771,7 @@ void QZipReaderPrivate::scanFiles()
 
 void QZipWriterPrivate::addEntry( EntryType type, const QString &fileName, const QByteArray &contents )
 {
-#if defined(CS_SHOW_DEBUG_GUI_TEXT)
+#if defined(LSCS_SHOW_DEBUG_GUI_TEXT)
     static const char *const entryTypes[] =
     {
         "directory",

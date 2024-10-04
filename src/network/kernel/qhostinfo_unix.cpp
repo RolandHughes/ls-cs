@@ -119,7 +119,7 @@ QHostInfo QHostInfoAgent::fromName( const QString &hostName )
 {
     QHostInfo results;
 
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
     qDebug( "QHostInfoAgent::fromName(%s) looking up...", hostName.toLatin1().constData() );
 #endif
 
@@ -245,7 +245,7 @@ QHostInfo QHostInfoAgent::fromName( const QString &hostName )
 
         while ( node )
         {
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
             qDebug() << "getaddrinfo node: flags:" << node->ai_flags << "family:" << node->ai_family << "ai_socktype:" <<
                      node->ai_socktype << "ai_protocol:" << node->ai_protocol << "ai_addrlen:" << node->ai_addrlen;
 #endif
@@ -365,11 +365,11 @@ QHostInfo QHostInfoAgent::fromName( const QString &hostName )
 
 #endif //  ! defined (QT_NO_GETADDRINFO)
 
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
 
     if ( results.error() != QHostInfo::NoError )
     {
-        qDebug( "QHostInfoAgent::fromName() Error #%d %s", h_errno, csPrintable( results.errorString() ) );
+        qDebug( "QHostInfoAgent::fromName() Error #%d %s", h_errno, lscsPrintable( results.errorString() ) );
 
     }
     else
@@ -388,7 +388,7 @@ QHostInfo QHostInfoAgent::fromName( const QString &hostName )
         }
 
         qDebug( "QHostInfoAgent::fromName() Found %ld entries for %s: {%s}",
-                addresses.count(), csPrintable( hostName ), csPrintable( tmp ) );
+                addresses.count(), lscsPrintable( hostName ), lscsPrintable( tmp ) );
     }
 
 #endif

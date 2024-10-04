@@ -103,7 +103,7 @@ bool QLocalServerPrivate::addListener()
 
         CloseHandle( hToken );
 
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
         DWORD groupNameSize;
         DWORD domainNameSize;
         SID_NAME_USE groupNameUse;

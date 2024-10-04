@@ -199,7 +199,7 @@ QString Driver::unique( const QString &instanceName, const QString &className )
     if ( alreadyUsed && className.size() )
     {
         fprintf( stderr, "%s: Warning: The name '%s' (%s) is already in use, defaulting to '%s'.\n",
-                 csPrintable( m_option.messagePrefix() ), csPrintable( instanceName ), csPrintable( className ), csPrintable( name ) );
+                 lscsPrintable( m_option.messagePrefix() ), lscsPrintable( instanceName ), lscsPrintable( className ), lscsPrintable( name ) );
     }
 
     m_nameRepository.insert( name, true );

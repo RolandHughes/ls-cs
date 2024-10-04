@@ -40,7 +40,7 @@ class QSaveFilePrivate;
 
 class Q_CORE_EXPORT QSaveFile : public QFileDevice
 {
-    CORE_CS_OBJECT( QSaveFile )
+    CORE_LSCS_OBJECT( QSaveFile )
     Q_DECLARE_PRIVATE( QSaveFile )
 
 public:

@@ -32,7 +32,7 @@
 
 class QNetworkAccessFileBackend: public QNetworkAccessBackend
 {
-    NET_CS_OBJECT( QNetworkAccessFileBackend )
+    NET_LSCS_OBJECT( QNetworkAccessFileBackend )
 
 public:
     QNetworkAccessFileBackend();
@@ -43,8 +43,8 @@ public:
 
     void downstreamReadyWrite() override;
 
-    NET_CS_SLOT_1( Public, void uploadReadyReadSlot() )
-    NET_CS_SLOT_2( uploadReadyReadSlot )
+    NET_LSCS_SLOT_1( Public, void uploadReadyReadSlot() )
+    NET_LSCS_SLOT_2( uploadReadyReadSlot )
 
 protected:
     QNonContiguousByteDevice *uploadByteDevice;

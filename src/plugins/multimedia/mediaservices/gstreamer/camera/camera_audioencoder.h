@@ -44,7 +44,7 @@ class CameraBinSession;
 
 class CameraBinAudioEncoder : public QAudioEncoderSettingsControl
 {
-    CS_OBJECT( CameraBinAudioEncoder )
+    LSCS_OBJECT( CameraBinAudioEncoder )
 
 public:
     CameraBinAudioEncoder( QObject *parent );
@@ -76,8 +76,8 @@ public:
 
     void applySettings( GstElement *element );
 
-    CS_SIGNAL_1( Public, void settingsChanged() )
-    CS_SIGNAL_2( settingsChanged )
+    LSCS_SIGNAL_1( Public, void settingsChanged() )
+    LSCS_SIGNAL_2( settingsChanged )
 
 private:
 

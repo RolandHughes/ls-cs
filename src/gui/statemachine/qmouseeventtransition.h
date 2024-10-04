@@ -33,12 +33,12 @@ class QPainterPath;
 
 class Q_GUI_EXPORT QMouseEventTransition : public QEventTransition
 {
-    GUI_CS_OBJECT( QMouseEventTransition )
+    GUI_LSCS_OBJECT( QMouseEventTransition )
 
-    GUI_CS_PROPERTY_READ( button, button )
-    GUI_CS_PROPERTY_WRITE( button, setButton )
-    GUI_CS_PROPERTY_READ( modifierMask, modifierMask )
-    GUI_CS_PROPERTY_WRITE( modifierMask, setModifierMask )
+    GUI_LSCS_PROPERTY_READ( button, button )
+    GUI_LSCS_PROPERTY_WRITE( button, setButton )
+    GUI_LSCS_PROPERTY_READ( modifierMask, modifierMask )
+    GUI_LSCS_PROPERTY_WRITE( modifierMask, setModifierMask )
 
 public:
     QMouseEventTransition( QState *sourceState = nullptr );

@@ -735,7 +735,7 @@ void QWidget::create( WId window, bool initializeWindow, bool destroyOldWindow )
         setAttribute( Qt::WA_NativeWindow );
     }
 
-#if defined(CS_SHOW_DEBUG_GUI_WIDGETS)
+#if defined(LSCS_SHOW_DEBUG_GUI_WIDGETS)
     qDebug() << "QWidget::create() " << this << " parent =" << parentWidget()
              << "Is Native =" << testAttribute( Qt::WA_NativeWindow );
 #endif
@@ -1176,15 +1176,15 @@ QWidget::~QWidget()
     d->needsFlush = nullptr;
 
     // used by declarative library
-    CSAbstractDeclarativeData *tmp_Data = CSInternalDeclarativeData::get_m_declarativeData( this );
+    LSCSAbstractDeclarativeData *tmp_Data = LSCSInternalDeclarativeData::get_m_declarativeData( this );
 
     if ( tmp_Data )
     {
-        CSAbstractDeclarativeData::destroyed( tmp_Data, this );
-        CSInternalDeclarativeData::set_m_declarativeData( this, nullptr );
+        LSCSAbstractDeclarativeData::destroyed( tmp_Data, this );
+        LSCSInternalDeclarativeData::set_m_declarativeData( this, nullptr );
     }
 
-    CSInternalChildren::deleteChildren( this );
+    LSCSInternalChildren::deleteChildren( this );
     QApplication::removePostedEvents( this );
 
     try
@@ -2213,7 +2213,7 @@ WId QWidget::winId() const
     if ( ! testAttribute( Qt::WA_WState_Created ) || ! internalWinId() )
     {
 
-#if defined(CS_SHOW_DEBUG_GUI_WIDGETS)
+#if defined(LSCS_SHOW_DEBUG_GUI_WIDGETS)
         qDebug() << "QWidget::winId() Creating native window for " << this;
 #endif
 
@@ -2277,7 +2277,7 @@ void QWidget::createWinId()
 {
     Q_D( QWidget );
 
-#if defined(CS_SHOW_DEBUG_GUI_WIDGETS)
+#if defined(LSCS_SHOW_DEBUG_GUI_WIDGETS)
     qDebug() << "QWidget::createWinId() Creating Window id for " << this;
 #endif
 
@@ -3093,7 +3093,7 @@ bool QWidgetPrivate::setMinimumSize_helper( int &minw, int &minh )
     if ( minw > QWIDGETSIZE_MAX || minh > QWIDGETSIZE_MAX )
     {
         qWarning( "QWidget::setMinimumSize() For (%s/%s), largest allowed size is (%d,%d)",
-                  csPrintable( q->objectName() ), csPrintable( q->metaObject()->className() ), QWIDGETSIZE_MAX, QWIDGETSIZE_MAX );
+                  lscsPrintable( q->objectName() ), lscsPrintable( q->metaObject()->className() ), QWIDGETSIZE_MAX, QWIDGETSIZE_MAX );
 
         minw = mw = qMin( minw, QWIDGETSIZE_MAX );
         minh = mh = qMin( minh, QWIDGETSIZE_MAX );
@@ -3102,7 +3102,7 @@ bool QWidgetPrivate::setMinimumSize_helper( int &minw, int &minh )
     if ( minw < 0 || minh < 0 )
     {
         qWarning( "QWidget::setMinimumSize() For (%s/%s), negative sizes (%d,%d) are not allowed",
-                  csPrintable( q->objectName() ), csPrintable( q->metaObject()->className() ), minw, minh );
+                  lscsPrintable( q->objectName() ), lscsPrintable( q->metaObject()->className() ), minw, minh );
 
         minw = mw = qMax( minw, 0 );
         minh = mh = qMax( minh, 0 );
@@ -3195,7 +3195,7 @@ bool QWidgetPrivate::setMaximumSize_helper( int &maxw, int &maxh )
     if ( maxw > QWIDGETSIZE_MAX || maxh > QWIDGETSIZE_MAX )
     {
         qWarning( "QWidget::setMaximumSize() For (%s/%s), largest allowed size is (%d,%d)",
-                  csPrintable( q->objectName() ), csPrintable( q->metaObject()->className() ), QWIDGETSIZE_MAX, QWIDGETSIZE_MAX );
+                  lscsPrintable( q->objectName() ), lscsPrintable( q->metaObject()->className() ), QWIDGETSIZE_MAX, QWIDGETSIZE_MAX );
 
         maxw = qMin( maxw, QWIDGETSIZE_MAX );
         maxh = qMin( maxh, QWIDGETSIZE_MAX );
@@ -3204,7 +3204,7 @@ bool QWidgetPrivate::setMaximumSize_helper( int &maxw, int &maxh )
     if ( maxw < 0 || maxh < 0 )
     {
         qWarning( "QWidget::setMaximumSize() For (%s/%s), negative sizes (%d,%d) are not allowed",
-                  csPrintable( q->objectName() ), csPrintable( q->metaObject()->className() ), maxw, maxh );
+                  lscsPrintable( q->objectName() ), lscsPrintable( q->metaObject()->className() ), maxw, maxh );
 
         maxw = qMax( maxw, 0 );
         maxh = qMax( maxh, 0 );
@@ -5442,7 +5442,7 @@ void QWidget::setFocusProxy( QWidget *w )
         if ( fp == this )
         {
             qWarning( "QWidget::setFocusProxy() %s (%s) already in focus proxy",
-                      csPrintable( metaObject()->className() ), csPrintable( objectName() ) );
+                      lscsPrintable( metaObject()->className() ), lscsPrintable( objectName() ) );
             return;
         }
     }
@@ -8751,7 +8751,7 @@ void QWidget::ensurePolished() const
         }
     }
 
-    bool sendChildEvents = CSInternalEvents::get_m_sendChildEvents( this );
+    bool sendChildEvents = LSCSInternalEvents::get_m_sendChildEvents( this );
 
     if ( parent() && sendChildEvents )
     {
@@ -8782,7 +8782,7 @@ void QWidget::setLayout( QLayout *l )
     if ( layout() && ( layout() != l ) )
     {
         qWarning( "QWidget::setLayout() Attempting to set QLayout \"%s\" on %s \"%s\", which already has a layout",
-                  csPrintable( l->objectName() ), csPrintable( metaObject()->className() ), csPrintable( objectName() ) );
+                  lscsPrintable( l->objectName() ), lscsPrintable( metaObject()->className() ), lscsPrintable( objectName() ) );
 
         return;
     }
@@ -8803,7 +8803,7 @@ void QWidget::setLayout( QLayout *l )
         else
         {
             qWarning( "QWidget::setLayout() Attempting to set QLayout \"%s\" on %s \"%s\", when the QLayout already has a parent",
-                      csPrintable( l->objectName() ), csPrintable( metaObject()->className() ), csPrintable( objectName() ) );
+                      lscsPrintable( l->objectName() ), lscsPrintable( metaObject()->className() ), lscsPrintable( objectName() ) );
             return;
         }
     }
@@ -9223,7 +9223,7 @@ void QWidget::setParent( QWidget *parent, Qt::WindowFlags flags )
         d->inheritStyle();
 
         // send and post remaining QObject events
-        bool sendChildEvents = CSInternalEvents::get_m_sendChildEvents( this );
+        bool sendChildEvents = LSCSInternalEvents::get_m_sendChildEvents( this );
 
         if ( parent && sendChildEvents )
         {
@@ -9234,7 +9234,7 @@ void QWidget::setParent( QWidget *parent, Qt::WindowFlags flags )
         //### already hidden above, may want to so something different on mac
         // q->setAttribute(Qt::WA_WState_Hidden);
 
-        sendChildEvents = CSInternalEvents::get_m_sendChildEvents( this );
+        sendChildEvents = LSCSInternalEvents::get_m_sendChildEvents( this );
 
         if ( parent && sendChildEvents && d->polished )
         {
@@ -9847,11 +9847,11 @@ void QWidget::setAttribute( Qt::WidgetAttribute attribute, bool on )
 #endif
 
         case Qt::WA_NoChildEventsForParent:
-            CSInternalEvents::set_m_sendChildEvents( this, ! on );
+            LSCSInternalEvents::set_m_sendChildEvents( this, ! on );
             break;
 
         case Qt::WA_NoChildEventsFromChildren:
-            CSInternalEvents::set_m_receiveChildEvents( this, ! on );
+            LSCSInternalEvents::set_m_receiveChildEvents( this, ! on );
             break;
 
         case Qt::WA_MacBrushedMetal:
@@ -10363,7 +10363,7 @@ void QWidget::raise()
         // Do nothing if the widget is already in correct stacking order _and_ created
         if ( from != parentChildCount - 1 )
         {
-            CSInternalChildren::moveChildren( p, from, parentChildCount - 1 );
+            LSCSInternalChildren::moveChildren( p, from, parentChildCount - 1 );
         }
 
         if ( !testAttribute( Qt::WA_WState_Created ) && p->testAttribute( Qt::WA_WState_Created ) )
@@ -10433,7 +10433,7 @@ void QWidget::lower()
         // Do nothing if the widget is already in correct stacking order _and_ created.
         if ( from != 0 )
         {
-            CSInternalChildren::moveChildren( p, from, 0 );
+            LSCSInternalChildren::moveChildren( p, from, 0 );
         }
 
         if ( !testAttribute( Qt::WA_WState_Created ) && p->testAttribute( Qt::WA_WState_Created ) )
@@ -10501,7 +10501,7 @@ void QWidget::stackUnder( QWidget *w )
         // Do nothing if the widget is already in correct stacking order _and_ created.
         if ( from != to )
         {
-            CSInternalChildren::moveChildren( p, from, to );
+            LSCSInternalChildren::moveChildren( p, from, to );
         }
 
         if ( !testAttribute( Qt::WA_WState_Created ) && p->testAttribute( Qt::WA_WState_Created ) )

@@ -34,54 +34,54 @@ class QInputDialogPrivate;
 
 class Q_GUI_EXPORT QInputDialog : public QDialog
 {
-    GUI_CS_OBJECT( QInputDialog )
+    GUI_LSCS_OBJECT( QInputDialog )
 
-    GUI_CS_PROPERTY_READ( inputMode, inputMode )
-    GUI_CS_PROPERTY_WRITE( inputMode, setInputMode )
-    GUI_CS_PROPERTY_READ( labelText, labelText )
-    GUI_CS_PROPERTY_WRITE( labelText, setLabelText )
-    GUI_CS_PROPERTY_READ( options, options )
-    GUI_CS_PROPERTY_WRITE( options, setOptions )
+    GUI_LSCS_PROPERTY_READ( inputMode, inputMode )
+    GUI_LSCS_PROPERTY_WRITE( inputMode, setInputMode )
+    GUI_LSCS_PROPERTY_READ( labelText, labelText )
+    GUI_LSCS_PROPERTY_WRITE( labelText, setLabelText )
+    GUI_LSCS_PROPERTY_READ( options, options )
+    GUI_LSCS_PROPERTY_WRITE( options, setOptions )
 
-    GUI_CS_PROPERTY_READ( textValue, textValue )
-    GUI_CS_PROPERTY_WRITE( textValue, setTextValue )
-    GUI_CS_PROPERTY_NOTIFY( textValue, textValueChanged )
+    GUI_LSCS_PROPERTY_READ( textValue, textValue )
+    GUI_LSCS_PROPERTY_WRITE( textValue, setTextValue )
+    GUI_LSCS_PROPERTY_NOTIFY( textValue, textValueChanged )
 
-    GUI_CS_PROPERTY_READ( intValue, intValue )
-    GUI_CS_PROPERTY_WRITE( intValue, setIntValue )
-    GUI_CS_PROPERTY_NOTIFY( intValue, intValueChanged )
+    GUI_LSCS_PROPERTY_READ( intValue, intValue )
+    GUI_LSCS_PROPERTY_WRITE( intValue, setIntValue )
+    GUI_LSCS_PROPERTY_NOTIFY( intValue, intValueChanged )
 
-    GUI_CS_PROPERTY_READ( doubleValue, doubleValue )
-    GUI_CS_PROPERTY_WRITE( doubleValue, setDoubleValue )
-    GUI_CS_PROPERTY_NOTIFY( doubleValue, doubleValueChanged )
+    GUI_LSCS_PROPERTY_READ( doubleValue, doubleValue )
+    GUI_LSCS_PROPERTY_WRITE( doubleValue, setDoubleValue )
+    GUI_LSCS_PROPERTY_NOTIFY( doubleValue, doubleValueChanged )
 
-    GUI_CS_PROPERTY_READ( textEchoMode, textEchoMode )
-    GUI_CS_PROPERTY_WRITE( textEchoMode, setTextEchoMode )
+    GUI_LSCS_PROPERTY_READ( textEchoMode, textEchoMode )
+    GUI_LSCS_PROPERTY_WRITE( textEchoMode, setTextEchoMode )
 
-    GUI_CS_PROPERTY_READ( comboBoxEditable, isComboBoxEditable )
-    GUI_CS_PROPERTY_WRITE( comboBoxEditable, setComboBoxEditable )
+    GUI_LSCS_PROPERTY_READ( comboBoxEditable, isComboBoxEditable )
+    GUI_LSCS_PROPERTY_WRITE( comboBoxEditable, setComboBoxEditable )
 
-    GUI_CS_PROPERTY_READ( comboBoxItems, comboBoxItems )
-    GUI_CS_PROPERTY_WRITE( comboBoxItems, setComboBoxItems )
+    GUI_LSCS_PROPERTY_READ( comboBoxItems, comboBoxItems )
+    GUI_LSCS_PROPERTY_WRITE( comboBoxItems, setComboBoxItems )
 
-    GUI_CS_PROPERTY_READ( intMinimum, intMinimum )
-    GUI_CS_PROPERTY_WRITE( intMinimum, setIntMinimum )
+    GUI_LSCS_PROPERTY_READ( intMinimum, intMinimum )
+    GUI_LSCS_PROPERTY_WRITE( intMinimum, setIntMinimum )
 
-    GUI_CS_PROPERTY_READ( intMaximum, intMaximum )
-    GUI_CS_PROPERTY_WRITE( intMaximum, setIntMaximum )
+    GUI_LSCS_PROPERTY_READ( intMaximum, intMaximum )
+    GUI_LSCS_PROPERTY_WRITE( intMaximum, setIntMaximum )
 
-    GUI_CS_PROPERTY_READ( intStep, intStep )
-    GUI_CS_PROPERTY_WRITE( intStep, setIntStep )
-    GUI_CS_PROPERTY_READ( doubleMinimum, doubleMinimum )
-    GUI_CS_PROPERTY_WRITE( doubleMinimum, setDoubleMinimum )
-    GUI_CS_PROPERTY_READ( doubleMaximum, doubleMaximum )
-    GUI_CS_PROPERTY_WRITE( doubleMaximum, setDoubleMaximum )
-    GUI_CS_PROPERTY_READ( doubleDecimals, doubleDecimals )
-    GUI_CS_PROPERTY_WRITE( doubleDecimals, setDoubleDecimals )
-    GUI_CS_PROPERTY_READ( okButtonText, okButtonText )
-    GUI_CS_PROPERTY_WRITE( okButtonText, setOkButtonText )
-    GUI_CS_PROPERTY_READ( cancelButtonText, cancelButtonText )
-    GUI_CS_PROPERTY_WRITE( cancelButtonText, setCancelButtonText )
+    GUI_LSCS_PROPERTY_READ( intStep, intStep )
+    GUI_LSCS_PROPERTY_WRITE( intStep, setIntStep )
+    GUI_LSCS_PROPERTY_READ( doubleMinimum, doubleMinimum )
+    GUI_LSCS_PROPERTY_WRITE( doubleMinimum, setDoubleMinimum )
+    GUI_LSCS_PROPERTY_READ( doubleMaximum, doubleMaximum )
+    GUI_LSCS_PROPERTY_WRITE( doubleMaximum, setDoubleMaximum )
+    GUI_LSCS_PROPERTY_READ( doubleDecimals, doubleDecimals )
+    GUI_LSCS_PROPERTY_WRITE( doubleDecimals, setDoubleDecimals )
+    GUI_LSCS_PROPERTY_READ( okButtonText, okButtonText )
+    GUI_LSCS_PROPERTY_WRITE( okButtonText, setOkButtonText )
+    GUI_LSCS_PROPERTY_READ( cancelButtonText, cancelButtonText )
+    GUI_LSCS_PROPERTY_WRITE( cancelButtonText, setCancelButtonText )
 
 public:
     enum InputDialogOption
@@ -192,37 +192,37 @@ public:
                              double minValue = -2147483647, double maxValue = 2147483647, int decimals = 1,
                              bool *ok = nullptr, Qt::WindowFlags flags = Qt::EmptyFlag );
 
-    GUI_CS_SIGNAL_1( Public, void textValueChanged( const QString &text ) )
-    GUI_CS_SIGNAL_2( textValueChanged, text )
+    GUI_LSCS_SIGNAL_1( Public, void textValueChanged( const QString &text ) )
+    GUI_LSCS_SIGNAL_2( textValueChanged, text )
 
-    GUI_CS_SIGNAL_1( Public, void textValueSelected( const QString &text ) )
-    GUI_CS_SIGNAL_2( textValueSelected, text )
+    GUI_LSCS_SIGNAL_1( Public, void textValueSelected( const QString &text ) )
+    GUI_LSCS_SIGNAL_2( textValueSelected, text )
 
-    GUI_CS_SIGNAL_1( Public, void intValueChanged( int value ) )
-    GUI_CS_SIGNAL_2( intValueChanged, value )
+    GUI_LSCS_SIGNAL_1( Public, void intValueChanged( int value ) )
+    GUI_LSCS_SIGNAL_2( intValueChanged, value )
 
-    GUI_CS_SIGNAL_1( Public, void intValueSelected( int value ) )
-    GUI_CS_SIGNAL_2( intValueSelected, value )
+    GUI_LSCS_SIGNAL_1( Public, void intValueSelected( int value ) )
+    GUI_LSCS_SIGNAL_2( intValueSelected, value )
 
-    GUI_CS_SIGNAL_1( Public, void doubleValueChanged( double value ) )
-    GUI_CS_SIGNAL_2( doubleValueChanged, value )
+    GUI_LSCS_SIGNAL_1( Public, void doubleValueChanged( double value ) )
+    GUI_LSCS_SIGNAL_2( doubleValueChanged, value )
 
-    GUI_CS_SIGNAL_1( Public, void doubleValueSelected( double value ) )
-    GUI_CS_SIGNAL_2( doubleValueSelected, value )
+    GUI_LSCS_SIGNAL_1( Public, void doubleValueSelected( double value ) )
+    GUI_LSCS_SIGNAL_2( doubleValueSelected, value )
 
     void done( int result ) override;
 
 private:
     Q_DECLARE_PRIVATE( QInputDialog )
 
-    GUI_CS_SLOT_1( Private, void _q_textChanged( const QString &text ) )
-    GUI_CS_SLOT_2( _q_textChanged )
+    GUI_LSCS_SLOT_1( Private, void _q_textChanged( const QString &text ) )
+    GUI_LSCS_SLOT_2( _q_textChanged )
 
-    GUI_CS_SLOT_1( Private, void _q_plainTextEditTextChanged() )
-    GUI_CS_SLOT_2( _q_plainTextEditTextChanged )
+    GUI_LSCS_SLOT_1( Private, void _q_plainTextEditTextChanged() )
+    GUI_LSCS_SLOT_2( _q_plainTextEditTextChanged )
 
-    GUI_CS_SLOT_1( Private, void _q_currentRowChanged( const QModelIndex &newIndex, const QModelIndex &oldIndex ) )
-    GUI_CS_SLOT_2( _q_currentRowChanged )
+    GUI_LSCS_SLOT_1( Private, void _q_currentRowChanged( const QModelIndex &newIndex, const QModelIndex &oldIndex ) )
+    GUI_LSCS_SLOT_2( _q_currentRowChanged )
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS( QInputDialog::InputDialogOptions )

@@ -55,7 +55,7 @@ public:
 
 class QWebSelectMethod : public QObject
 {
-    WEB_CS_OBJECT( QWebSelectMethod )
+    WEB_LSCS_OBJECT( QWebSelectMethod )
 public:
     virtual ~QWebSelectMethod() {}
 
@@ -63,10 +63,10 @@ public:
     virtual void hide() = 0;
 
 public:
-    WEB_CS_SIGNAL_1( Public, void selectItem( int index,bool allowMultiplySelections,bool shift ) )
-    WEB_CS_SIGNAL_2( selectItem,index,allowMultiplySelections,shift )
-    WEB_CS_SIGNAL_1( Public, void didHide() )
-    WEB_CS_SIGNAL_2( didHide )
+    WEB_LSCS_SIGNAL_1( Public, void selectItem( int index,bool allowMultiplySelections,bool shift ) )
+    WEB_LSCS_SIGNAL_2( selectItem,index,allowMultiplySelections,shift )
+    WEB_LSCS_SIGNAL_1( Public, void didHide() )
+    WEB_LSCS_SIGNAL_2( didHide )
 };
 
 class QWebNotificationData
@@ -82,7 +82,7 @@ public:
 
 class QWebNotificationPresenter : public QObject
 {
-    WEB_CS_OBJECT( QWebNotificationPresenter )
+    WEB_LSCS_OBJECT( QWebNotificationPresenter )
 
 public:
     QWebNotificationPresenter() {}
@@ -90,15 +90,15 @@ public:
 
     virtual void showNotification( const QWebNotificationData * ) = 0;
 
-    WEB_CS_SIGNAL_1( Public, void notificationClosed() )
-    WEB_CS_SIGNAL_2( notificationClosed )
-    WEB_CS_SIGNAL_1( Public, void notificationClicked() )
-    WEB_CS_SIGNAL_2( notificationClicked )
+    WEB_LSCS_SIGNAL_1( Public, void notificationClosed() )
+    WEB_LSCS_SIGNAL_2( notificationClosed )
+    WEB_LSCS_SIGNAL_1( Public, void notificationClicked() )
+    WEB_LSCS_SIGNAL_2( notificationClicked )
 };
 
 class QWebHapticFeedbackPlayer: public QObject
 {
-    WEB_CS_OBJECT( QWebHapticFeedbackPlayer )
+    WEB_LSCS_OBJECT( QWebHapticFeedbackPlayer )
 
 public:
     QWebHapticFeedbackPlayer() {}
@@ -119,7 +119,7 @@ public:
 
 class QWebTouchModifier : public QObject
 {
-    WEB_CS_OBJECT( QWebTouchModifier )
+    WEB_LSCS_OBJECT( QWebTouchModifier )
 public:
     virtual ~QWebTouchModifier() {}
 
@@ -134,20 +134,20 @@ public:
 #if defined(WTF_USE_QT_MULTIMEDIA) && WTF_USE_QT_MULTIMEDIA
 class QWebFullScreenVideoHandler : public QObject
 {
-    WEB_CS_OBJECT( QWebFullScreenVideoHandler )
+    WEB_LSCS_OBJECT( QWebFullScreenVideoHandler )
 public:
     QWebFullScreenVideoHandler() {}
     virtual ~QWebFullScreenVideoHandler() {}
     virtual bool requiresFullScreenForVideoPlayback() const = 0;
 
 public:
-    WEB_CS_SIGNAL_1( Public, void fullScreenClosed() )
-    WEB_CS_SIGNAL_2( fullScreenClosed )
+    WEB_LSCS_SIGNAL_1( Public, void fullScreenClosed() )
+    WEB_LSCS_SIGNAL_2( fullScreenClosed )
 
-    WEB_CS_SLOT_1( Public, virtual void enterFullScreen( QMediaPlayer *player )=0 )
-    WEB_CS_SLOT_2( enterFullScreen )
-    WEB_CS_SLOT_1( Public, virtual void exitFullScreen() )
-    WEB_CS_SLOT_2( exitFullScreen )
+    WEB_LSCS_SLOT_1( Public, virtual void enterFullScreen( QMediaPlayer *player )=0 )
+    WEB_LSCS_SLOT_2( enterFullScreen )
+    WEB_LSCS_SLOT_1( Public, virtual void exitFullScreen() )
+    WEB_LSCS_SLOT_2( exitFullScreen )
 };
 #endif
 
@@ -169,6 +169,6 @@ public:
     virtual QObject *createExtension( Extension ) const = 0;
 };
 
-CS_DECLARE_INTERFACE( QWebKitPlatformPlugin, "com.nokia.Qt.WebKit.PlatformPlugin/1.7" );
+LSCS_DECLARE_INTERFACE( QWebKitPlatformPlugin, "com.nokia.Qt.WebKit.PlatformPlugin/1.7" );
 
 #endif // QWEBKITPLATFORMPLUGIN_H

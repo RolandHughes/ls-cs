@@ -28,7 +28,7 @@
 
 class QWEBKIT_EXPORT QWebHistoryInterface : public QObject
 {
-    WEB_CS_OBJECT( QWebHistoryInterface )
+    WEB_LSCS_OBJECT( QWebHistoryInterface )
 public:
     QWebHistoryInterface( QObject *parent = nullptr );
     ~QWebHistoryInterface();

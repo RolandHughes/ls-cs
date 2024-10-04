@@ -36,7 +36,7 @@ class AVFCameraService;
 
 class AVFVideoEncoderSettingsControl : public QVideoEncoderSettingsControl
 {
-    CS_OBJECT( AVFVideoEncoderSettingsControl )
+    LSCS_OBJECT( AVFVideoEncoderSettingsControl )
 
 public:
     explicit AVFVideoEncoderSettingsControl( AVFCameraService *service );

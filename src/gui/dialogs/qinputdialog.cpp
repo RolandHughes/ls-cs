@@ -103,7 +103,7 @@ static QString signalForMember( const QString &member )
 */
 class QInputDialogSpinBox : public QSpinBox
 {
-    GUI_CS_OBJECT( QInputDialogSpinBox )
+    GUI_LSCS_OBJECT( QInputDialogSpinBox )
 
 public:
     QInputDialogSpinBox( QWidget *parent )
@@ -113,12 +113,12 @@ public:
         connect( this,       &QInputDialogSpinBox::editingFinished, this, &QInputDialogSpinBox::notifyTextChanged );
     }
 
-    GUI_CS_SIGNAL_1( Public, void textChanged( bool isChanged ) )
-    GUI_CS_SIGNAL_2( textChanged, isChanged )
+    GUI_LSCS_SIGNAL_1( Public, void textChanged( bool isChanged ) )
+    GUI_LSCS_SIGNAL_2( textChanged, isChanged )
 
 private:
-    GUI_CS_SLOT_1( Private, void notifyTextChanged() )
-    GUI_CS_SLOT_2( notifyTextChanged )
+    GUI_LSCS_SLOT_1( Private, void notifyTextChanged() )
+    GUI_LSCS_SLOT_2( notifyTextChanged )
 
     void keyPressEvent( QKeyEvent *event ) override
     {
@@ -152,7 +152,7 @@ void QInputDialogSpinBox::notifyTextChanged()
 
 class QInputDialogDoubleSpinBox : public QDoubleSpinBox
 {
-    GUI_CS_OBJECT( QInputDialogDoubleSpinBox )
+    GUI_LSCS_OBJECT( QInputDialogDoubleSpinBox )
 
 public:
     QInputDialogDoubleSpinBox( QWidget *parent = nullptr )
@@ -162,11 +162,11 @@ public:
         connect( this,       &QInputDialogSpinBox::editingFinished, this, &QInputDialogDoubleSpinBox::notifyTextChanged );
     }
 
-    GUI_CS_SIGNAL_1( Public, void textChanged( bool isChanged ) )
-    GUI_CS_SIGNAL_2( textChanged, isChanged )
+    GUI_LSCS_SIGNAL_1( Public, void textChanged( bool isChanged ) )
+    GUI_LSCS_SIGNAL_2( textChanged, isChanged )
 
-    GUI_CS_SLOT_1( Private, void notifyTextChanged() )
-    GUI_CS_SLOT_2( notifyTextChanged )
+    GUI_LSCS_SLOT_1( Private, void notifyTextChanged() )
+    GUI_LSCS_SLOT_2( notifyTextChanged )
 
 private:
     void keyPressEvent( QKeyEvent *event ) override

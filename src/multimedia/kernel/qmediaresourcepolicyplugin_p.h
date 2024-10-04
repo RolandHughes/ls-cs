@@ -33,12 +33,12 @@ struct Q_MULTIMEDIA_EXPORT QMediaResourceSetFactoryInterface
 };
 
 #define QMediaResourceSetFactoryInterface_iid "com.copperspice.CS.mediaResourceSetFactory/1.0"
-CS_DECLARE_INTERFACE( QMediaResourceSetFactoryInterface, QMediaResourceSetFactoryInterface_iid )
+LSCS_DECLARE_INTERFACE( QMediaResourceSetFactoryInterface, QMediaResourceSetFactoryInterface_iid )
 
 class Q_MULTIMEDIA_EXPORT QMediaResourcePolicyPlugin : public QObject, public QMediaResourceSetFactoryInterface
 {
-    MULTI_CS_OBJECT_MULTIPLE( QMediaResourcePolicyPlugin, QObject )
-    CS_INTERFACES( QMediaResourceSetFactoryInterface )
+    MULTI_LSCS_OBJECT_MULTIPLE( QMediaResourcePolicyPlugin, QObject )
+    LSCS_INTERFACES( QMediaResourceSetFactoryInterface )
 
 public:
     QMediaResourcePolicyPlugin( QObject *parent = nullptr );

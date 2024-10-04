@@ -36,7 +36,7 @@ class QOpenGLVertexArrayObjectPrivate;
 
 class Q_GUI_EXPORT QOpenGLVertexArrayObject : public QObject
 {
-    GUI_CS_OBJECT( QOpenGLVertexArrayObject )
+    GUI_LSCS_OBJECT( QOpenGLVertexArrayObject )
 
 public:
     explicit QOpenGLVertexArrayObject( QObject *parent = nullptr );
@@ -97,8 +97,8 @@ private:
 
     QOpenGLVertexArrayObject( QOpenGLVertexArrayObjectPrivate &dd );
 
-    GUI_CS_SLOT_1( Private, void _q_contextAboutToBeDestroyed() )
-    GUI_CS_SLOT_2( _q_contextAboutToBeDestroyed )
+    GUI_LSCS_SLOT_1( Private, void _q_contextAboutToBeDestroyed() )
+    GUI_LSCS_SLOT_2( _q_contextAboutToBeDestroyed )
 };
 
 #endif  // QT_NO_OPENGL

@@ -92,7 +92,7 @@ inline bool operator!=( const Phrase &p, const Phrase &q )
 
 class PhraseBook : public QObject
 {
-    CS_OBJECT( PhraseBook )
+    LSCS_OBJECT( PhraseBook )
 
 public:
     PhraseBook();
@@ -141,11 +141,11 @@ public:
         return m_sourceCountry;
     }
 
-    CS_SIGNAL_1( Public, void modifiedChanged( bool changed ) )
-    CS_SIGNAL_2( modifiedChanged,changed )
+    LSCS_SIGNAL_1( Public, void modifiedChanged( bool changed ) )
+    LSCS_SIGNAL_2( modifiedChanged,changed )
 
-    CS_SIGNAL_1( Public, void listChanged() )
-    CS_SIGNAL_2( listChanged )
+    LSCS_SIGNAL_1( Public, void listChanged() )
+    LSCS_SIGNAL_2( listChanged )
 
 private:
     // Prevent copying

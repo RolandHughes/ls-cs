@@ -99,7 +99,7 @@ bool QSaveFile::open( OpenMode mode )
 
     if ( isOpen() )
     {
-        qWarning( "QSaveFile::open() File already open, %s", csPrintable( fileName() ) );
+        qWarning( "QSaveFile::open() File already open, %s", lscsPrintable( fileName() ) );
         return false;
     }
 
@@ -192,7 +192,7 @@ bool QSaveFile::commit()
 
     if ( !isOpen() )
     {
-        qWarning( "QSaveFile::commit() File is not open, %s", csPrintable( fileName() ) );
+        qWarning( "QSaveFile::commit() File is not open, %s", lscsPrintable( fileName() ) );
         return false;
     }
 

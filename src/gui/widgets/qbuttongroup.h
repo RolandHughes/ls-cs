@@ -35,10 +35,10 @@ class QButtonGroupPrivate;
 
 class Q_GUI_EXPORT QButtonGroup : public QObject
 {
-    GUI_CS_OBJECT( QButtonGroup )
+    GUI_LSCS_OBJECT( QButtonGroup )
 
-    GUI_CS_PROPERTY_READ( exclusive, exclusive )
-    GUI_CS_PROPERTY_WRITE( exclusive, setExclusive )
+    GUI_LSCS_PROPERTY_READ( exclusive, exclusive )
+    GUI_LSCS_PROPERTY_WRITE( exclusive, setExclusive )
 
 public:
     explicit QButtonGroup( QObject *parent = nullptr );
@@ -64,29 +64,29 @@ public:
     int id( QAbstractButton *button ) const;
     int checkedId() const;
 
-    GUI_CS_SIGNAL_1( Public, void buttonClicked( QAbstractButton *button ) )
-    GUI_CS_SIGNAL_OVERLOAD( buttonClicked, ( QAbstractButton * ), button )
+    GUI_LSCS_SIGNAL_1( Public, void buttonClicked( QAbstractButton *button ) )
+    GUI_LSCS_SIGNAL_OVERLOAD( buttonClicked, ( QAbstractButton * ), button )
 
-    GUI_CS_SIGNAL_1( Public, void buttonClicked( int id ) )
-    GUI_CS_SIGNAL_OVERLOAD( buttonClicked, ( int ), id )
+    GUI_LSCS_SIGNAL_1( Public, void buttonClicked( int id ) )
+    GUI_LSCS_SIGNAL_OVERLOAD( buttonClicked, ( int ), id )
 
-    GUI_CS_SIGNAL_1( Public, void buttonPressed( QAbstractButton *button ) )
-    GUI_CS_SIGNAL_OVERLOAD( buttonPressed, ( QAbstractButton * ), button )
+    GUI_LSCS_SIGNAL_1( Public, void buttonPressed( QAbstractButton *button ) )
+    GUI_LSCS_SIGNAL_OVERLOAD( buttonPressed, ( QAbstractButton * ), button )
 
-    GUI_CS_SIGNAL_1( Public, void buttonPressed( int id ) )
-    GUI_CS_SIGNAL_OVERLOAD( buttonPressed, ( int ), id )
+    GUI_LSCS_SIGNAL_1( Public, void buttonPressed( int id ) )
+    GUI_LSCS_SIGNAL_OVERLOAD( buttonPressed, ( int ), id )
 
-    GUI_CS_SIGNAL_1( Public, void buttonReleased( QAbstractButton *button ) )
-    GUI_CS_SIGNAL_OVERLOAD( buttonReleased, ( QAbstractButton * ), button )
+    GUI_LSCS_SIGNAL_1( Public, void buttonReleased( QAbstractButton *button ) )
+    GUI_LSCS_SIGNAL_OVERLOAD( buttonReleased, ( QAbstractButton * ), button )
 
-    GUI_CS_SIGNAL_1( Public, void buttonReleased( int id ) )
-    GUI_CS_SIGNAL_OVERLOAD( buttonReleased, ( int ), id )
+    GUI_LSCS_SIGNAL_1( Public, void buttonReleased( int id ) )
+    GUI_LSCS_SIGNAL_OVERLOAD( buttonReleased, ( int ), id )
 
-    GUI_CS_SIGNAL_1( Public, void buttonToggled( QAbstractButton *button, bool enable ) )
-    GUI_CS_SIGNAL_OVERLOAD( buttonToggled, ( QAbstractButton *, bool ), button, enable )
+    GUI_LSCS_SIGNAL_1( Public, void buttonToggled( QAbstractButton *button, bool enable ) )
+    GUI_LSCS_SIGNAL_OVERLOAD( buttonToggled, ( QAbstractButton *, bool ), button, enable )
 
-    GUI_CS_SIGNAL_1( Public, void buttonToggled( int id, bool enable ) )
-    GUI_CS_SIGNAL_OVERLOAD( buttonToggled, ( int, bool ), id, enable )
+    GUI_LSCS_SIGNAL_1( Public, void buttonToggled( int id, bool enable ) )
+    GUI_LSCS_SIGNAL_OVERLOAD( buttonToggled, ( int, bool ), id, enable )
 
 protected:
     QScopedPointer<QButtonGroupPrivate> d_ptr;

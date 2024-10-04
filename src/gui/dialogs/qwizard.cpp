@@ -942,7 +942,7 @@ void QWizardPrivate::addField( const QWizardField &field )
 
     if ( fieldIndexMap.contains( myField.name ) )
     {
-        qWarning( "QWizardPage::addField() Duplicate field %s", csPrintable( myField.name ) );
+        qWarning( "QWizardPage::addField() Duplicate field %s", lscsPrintable( myField.name ) );
         return;
     }
 
@@ -2596,7 +2596,7 @@ void QWizard::setField( const QString &name, const QVariant &value )
         return;
     }
 
-    qWarning( "QWizard::setField() Field '%s' does not exist", csPrintable( name ) );
+    qWarning( "QWizard::setField() Field '%s' does not exist", lscsPrintable( name ) );
 }
 
 QVariant QWizard::field( const QString &name ) const
@@ -2611,7 +2611,7 @@ QVariant QWizard::field( const QString &name ) const
         return field.object->property( field.property );
     }
 
-    qWarning( "QWizard::field() Field '%s' does not exist", csPrintable( name ) );
+    qWarning( "QWizard::field() Field '%s' does not exist", lscsPrintable( name ) );
     return QVariant();
 }
 

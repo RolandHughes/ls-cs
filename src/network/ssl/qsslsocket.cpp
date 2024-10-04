@@ -65,7 +65,7 @@ QSslSocket::QSslSocket( QObject *parent )
 {
     Q_D( QSslSocket );
 
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
     qDebug() << "QSslSocket::QSslSocket(" << parent << "), this =" << ( void * )this;
 #endif
 
@@ -77,7 +77,7 @@ QSslSocket::~QSslSocket()
 {
     Q_D( QSslSocket );
 
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
     qDebug() << "QSslSocket::~QSslSocket(), this =" << ( void * )this;
 #endif
 
@@ -136,7 +136,7 @@ bool QSslSocket::setSocketDescriptor( qintptr socketDescriptor, SocketState stat
 {
     Q_D( QSslSocket );
 
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
     qDebug()     << "QSslSocket::setSocketDescriptor(" << socketDescriptor << ','
                  << state << ',' << openMode << ')';
 #endif
@@ -313,7 +313,7 @@ bool QSslSocket::canReadLine() const
 
 void QSslSocket::close()
 {
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
     qDebug() << "QSslSocket::close()";
 #endif
 
@@ -352,7 +352,7 @@ bool QSslSocket::flush()
 {
     Q_D( QSslSocket );
 
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
     qDebug() << "QSslSocket::flush()";
 #endif
 
@@ -380,7 +380,7 @@ void QSslSocket::abort()
 {
     Q_D( QSslSocket );
 
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
     qDebug() << "QSslSocket::abort()";
 #endif
 
@@ -808,7 +808,7 @@ void QSslSocket::startClientEncryption()
         return;
     }
 
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
     qDebug() << "QSslSocket::startClientEncryption()";
 #endif
 
@@ -827,7 +827,7 @@ void QSslSocket::startServerEncryption()
         return;
     }
 
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
     qDebug() << "QSslSocket::startServerEncryption()";
 #endif
 
@@ -861,7 +861,7 @@ void QSslSocket::connectToHost( const QString &hostName, quint16 port, OpenMode 
 
     d->initialized = false;
 
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
     qDebug()     << "QSslSocket::connectToHost("
                  << hostName << ',' << port << ',' << openMode << ')';
 #endif
@@ -869,7 +869,7 @@ void QSslSocket::connectToHost( const QString &hostName, quint16 port, OpenMode 
     if ( !d->plainSocket )
     {
 
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
         qDebug() << "\tcreating internal plain socket";
 #endif
 
@@ -889,7 +889,7 @@ void QSslSocket::disconnectFromHost()
 {
     Q_D( QSslSocket );
 
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
     qDebug() << "QSslSocket::disconnectFromHost()";
 #endif
 
@@ -947,7 +947,7 @@ qint64 QSslSocket::readData( char *data, qint64 maxlen )
     {
         readBytes = d->plainSocket->read( data, maxlen );
 
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
         qDebug() << "QSslSocket::readData(" << ( void * )data << ',' << maxlen << ") ==" << readBytes;
 #endif
 
@@ -968,7 +968,7 @@ qint64 QSslSocket::writeData( const char *data, qint64 len )
 {
     Q_D( QSslSocket );
 
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
     qDebug() << "QSslSocket::writeData(" << ( void * )data << ',' << len << ')';
 #endif
 
@@ -1234,14 +1234,14 @@ bool QSslSocketPrivate::bind( const QHostAddress &address, quint16 port, QAbstra
 
     initialized = false;
 
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
     qDebug() << "QSslSocket::bind(" << address << ',' << port << ',' << mode << ')';
 #endif
 
     if ( ! plainSocket )
     {
 
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
         qDebug() << ", Creating internal plain socket";
 #endif
 
@@ -1265,7 +1265,7 @@ void QSslSocketPrivate::_q_connectedSlot()
     q->setPeerName( plainSocket->peerName() );
     cachedSocketDescriptor = plainSocket->socketDescriptor();
 
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
     qDebug() << "QSslSocket::_q_connectedSlot()";
     qDebug() << "\tstate =" << q->state();
     qDebug() << "\tpeer =" << q->peerName() << q->peerAddress() << q->peerPort();
@@ -1292,7 +1292,7 @@ void QSslSocketPrivate::_q_hostFoundSlot()
 {
     Q_Q( QSslSocket );
 
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
     qDebug() << "QSslSocket::_q_hostFoundSlot()";
     qDebug() << "\tstate =" << q->state();
 #endif
@@ -1304,7 +1304,7 @@ void QSslSocketPrivate::_q_disconnectedSlot()
 {
     Q_Q( QSslSocket );
 
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
     qDebug() << "QSslSocket::_q_disconnectedSlot()";
     qDebug() << "\tstate =" << q->state();
 #endif
@@ -1317,7 +1317,7 @@ void QSslSocketPrivate::_q_stateChangedSlot( QAbstractSocket::SocketState state 
 {
     Q_Q( QSslSocket );
 
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
     qDebug() << "QSslSocket::_q_stateChangedSlot(" << state << ')';
 #endif
 
@@ -1329,7 +1329,7 @@ void QSslSocketPrivate::_q_errorSlot( QAbstractSocket::SocketError error )
 {
     Q_Q( QSslSocket );
 
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
     qDebug() << "QSslSocket::_q_errorSlot(" << error << ')';
     qDebug() << "\tstate =" << q->state();
     qDebug() << "\terrorString =" << q->errorString();
@@ -1353,7 +1353,7 @@ void QSslSocketPrivate::_q_readyReadSlot()
 {
     Q_Q( QSslSocket );
 
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
     qDebug() << "QSslSocket::_q_readyReadSlot() -" << plainSocket->bytesAvailable() << "bytes available";
 #endif
 
@@ -1375,7 +1375,7 @@ void QSslSocketPrivate::_q_bytesWrittenSlot( qint64 written )
 {
     Q_Q( QSslSocket );
 
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
     qDebug() << "QSslSocket::_q_bytesWrittenSlot(" << written << ')';
 #endif
 

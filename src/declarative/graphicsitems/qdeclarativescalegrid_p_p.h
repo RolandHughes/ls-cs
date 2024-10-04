@@ -35,21 +35,21 @@ QT_BEGIN_NAMESPACE
 
 class Q_DECLARATIVE_PRIVATE_EXPORT QDeclarativeScaleGrid : public QObject
 {
-    DECL_CS_OBJECT( QDeclarativeScaleGrid )
-    CS_ENUM( TileRule )
+    DECL_LSCS_OBJECT( QDeclarativeScaleGrid )
+    LSCS_ENUM( TileRule )
 
-    DECL_CS_PROPERTY_READ( left, left )
-    DECL_CS_PROPERTY_WRITE( left, setLeft )
-    DECL_CS_PROPERTY_NOTIFY( left, borderChanged )
-    DECL_CS_PROPERTY_READ( top, top )
-    DECL_CS_PROPERTY_WRITE( top, setTop )
-    DECL_CS_PROPERTY_NOTIFY( top, borderChanged )
-    DECL_CS_PROPERTY_READ( right, right )
-    DECL_CS_PROPERTY_WRITE( right, setRight )
-    DECL_CS_PROPERTY_NOTIFY( right, borderChanged )
-    DECL_CS_PROPERTY_READ( bottom, bottom )
-    DECL_CS_PROPERTY_WRITE( bottom, setBottom )
-    DECL_CS_PROPERTY_NOTIFY( bottom, borderChanged )
+    DECL_LSCS_PROPERTY_READ( left, left )
+    DECL_LSCS_PROPERTY_WRITE( left, setLeft )
+    DECL_LSCS_PROPERTY_NOTIFY( left, borderChanged )
+    DECL_LSCS_PROPERTY_READ( top, top )
+    DECL_LSCS_PROPERTY_WRITE( top, setTop )
+    DECL_LSCS_PROPERTY_NOTIFY( top, borderChanged )
+    DECL_LSCS_PROPERTY_READ( right, right )
+    DECL_LSCS_PROPERTY_WRITE( right, setRight )
+    DECL_LSCS_PROPERTY_NOTIFY( right, borderChanged )
+    DECL_LSCS_PROPERTY_READ( bottom, bottom )
+    DECL_LSCS_PROPERTY_WRITE( bottom, setBottom )
+    DECL_LSCS_PROPERTY_NOTIFY( bottom, borderChanged )
 
 public:
     QDeclarativeScaleGrid( QObject *parent = nullptr );
@@ -82,8 +82,8 @@ public:
     void setBottom( int );
 
 public:
-    DECL_CS_SIGNAL_1( Public, void borderChanged() )
-    DECL_CS_SIGNAL_2( borderChanged )
+    DECL_LSCS_SIGNAL_1( Public, void borderChanged() )
+    DECL_LSCS_SIGNAL_2( borderChanged )
 
 private:
     int _left;

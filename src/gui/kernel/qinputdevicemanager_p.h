@@ -31,7 +31,7 @@ class QInputDeviceManagerPrivate;
 
 class Q_GUI_EXPORT QInputDeviceManager : public QObject
 {
-    GUI_CS_OBJECT( QInputDeviceManager )
+    GUI_LSCS_OBJECT( QInputDeviceManager )
     Q_DECLARE_PRIVATE( QInputDeviceManager )
 
 public:
@@ -49,11 +49,11 @@ public:
 
     void setCursorPos( const QPoint &pos );
 
-    GUI_CS_SIGNAL_1( Public, void deviceListChanged( DeviceType type ) )
-    GUI_CS_SIGNAL_2( deviceListChanged, type )
+    GUI_LSCS_SIGNAL_1( Public, void deviceListChanged( DeviceType type ) )
+    GUI_LSCS_SIGNAL_2( deviceListChanged, type )
 
-    GUI_CS_SIGNAL_1( Public, void cursorPositionChangeRequested( const QPoint &pos ) )
-    GUI_CS_SIGNAL_2( cursorPositionChangeRequested, pos )
+    GUI_LSCS_SIGNAL_1( Public, void cursorPositionChangeRequested( const QPoint &pos ) )
+    GUI_LSCS_SIGNAL_2( cursorPositionChangeRequested, pos )
 
 protected:
     QScopedPointer<QInputDeviceManagerPrivate> d_ptr;

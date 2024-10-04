@@ -1239,7 +1239,7 @@ bool QSslSocketBackendPrivate::setSessionProtocol()
     if ( configuration.protocol == QSsl::SslV2 )
     {
 
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
         qDebug() << "protocol QSsl::SslV2 is disabled";
 #endif
 
@@ -1565,7 +1565,7 @@ bool QSslSocketBackendPrivate::startHandshake()
     // Connection aborted during handshake phase.
     if ( q->state() != QAbstractSocket::ConnectedState )
     {
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
         qDebug() << "Connection aborted";
 #endif
 

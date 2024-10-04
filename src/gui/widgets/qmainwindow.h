@@ -38,45 +38,45 @@ class QMenu;
 
 class Q_GUI_EXPORT QMainWindow : public QWidget
 {
-    GUI_CS_OBJECT( QMainWindow )
+    GUI_LSCS_OBJECT( QMainWindow )
 
-    GUI_CS_ENUM( DockOption )
-    GUI_CS_FLAG( DockOption, DockOptions )
+    GUI_LSCS_ENUM( DockOption )
+    GUI_LSCS_FLAG( DockOption, DockOptions )
 
-    GUI_CS_PROPERTY_READ( iconSize, iconSize )
-    GUI_CS_PROPERTY_WRITE( iconSize, setIconSize )
+    GUI_LSCS_PROPERTY_READ( iconSize, iconSize )
+    GUI_LSCS_PROPERTY_WRITE( iconSize, setIconSize )
 
-    GUI_CS_PROPERTY_READ( toolButtonStyle, toolButtonStyle )
-    GUI_CS_PROPERTY_WRITE( toolButtonStyle, setToolButtonStyle )
+    GUI_LSCS_PROPERTY_READ( toolButtonStyle, toolButtonStyle )
+    GUI_LSCS_PROPERTY_WRITE( toolButtonStyle, setToolButtonStyle )
 
 #ifndef QT_NO_DOCKWIDGET
-    GUI_CS_PROPERTY_READ( animated, isAnimated )
-    GUI_CS_PROPERTY_WRITE( animated, setAnimated )
+    GUI_LSCS_PROPERTY_READ( animated, isAnimated )
+    GUI_LSCS_PROPERTY_WRITE( animated, setAnimated )
 
 #ifndef QT_NO_TABBAR
-    GUI_CS_PROPERTY_READ( documentMode, documentMode )
-    GUI_CS_PROPERTY_WRITE( documentMode, setDocumentMode )
+    GUI_LSCS_PROPERTY_READ( documentMode, documentMode )
+    GUI_LSCS_PROPERTY_WRITE( documentMode, setDocumentMode )
 #endif
 
 #ifndef QT_NO_TABWIDGET
-    GUI_CS_PROPERTY_READ( tabShape, tabShape )
-    GUI_CS_PROPERTY_WRITE( tabShape, setTabShape )
+    GUI_LSCS_PROPERTY_READ( tabShape, tabShape )
+    GUI_LSCS_PROPERTY_WRITE( tabShape, setTabShape )
 #endif
 
-    GUI_CS_PROPERTY_READ( dockNestingEnabled, isDockNestingEnabled )
-    GUI_CS_PROPERTY_WRITE( dockNestingEnabled, setDockNestingEnabled )
+    GUI_LSCS_PROPERTY_READ( dockNestingEnabled, isDockNestingEnabled )
+    GUI_LSCS_PROPERTY_WRITE( dockNestingEnabled, setDockNestingEnabled )
 #endif // QT_NO_DOCKWIDGET
 
-    GUI_CS_PROPERTY_READ( dockOptions, dockOptions )
-    GUI_CS_PROPERTY_WRITE( dockOptions, setDockOptions )
+    GUI_LSCS_PROPERTY_READ( dockOptions, dockOptions )
+    GUI_LSCS_PROPERTY_WRITE( dockOptions, setDockOptions )
 
 #ifndef QT_NO_TOOLBAR
-    GUI_CS_PROPERTY_READ( unifiedTitleAndToolBarOnMac, unifiedTitleAndToolBarOnMac )
-    GUI_CS_PROPERTY_WRITE( unifiedTitleAndToolBarOnMac, setUnifiedTitleAndToolBarOnMac )
+    GUI_LSCS_PROPERTY_READ( unifiedTitleAndToolBarOnMac, unifiedTitleAndToolBarOnMac )
+    GUI_LSCS_PROPERTY_WRITE( unifiedTitleAndToolBarOnMac, setUnifiedTitleAndToolBarOnMac )
 #endif
 
 public:
-    GUI_CS_REGISTER_ENUM(
+    GUI_LSCS_REGISTER_ENUM(
         enum DockOption
     {
         AnimatedDocks    = 0x01,
@@ -133,11 +133,11 @@ public:
     void resizeDocks( const QList<QDockWidget *> &docks,
                       const QList<int> &sizes, Qt::Orientation orientation );
 
-    GUI_CS_SLOT_1( Public, void setAnimated( bool enabled ) )
-    GUI_CS_SLOT_2( setAnimated )
+    GUI_LSCS_SLOT_1( Public, void setAnimated( bool enabled ) )
+    GUI_LSCS_SLOT_2( setAnimated )
 
-    GUI_CS_SLOT_1( Public, void setDockNestingEnabled( bool enabled ) )
-    GUI_CS_SLOT_2( setDockNestingEnabled )
+    GUI_LSCS_SLOT_1( Public, void setDockNestingEnabled( bool enabled ) )
+    GUI_LSCS_SLOT_2( setDockNestingEnabled )
 #endif
 
 #ifndef QT_NO_TABBAR
@@ -186,17 +186,17 @@ public:
     Qt::ToolBarArea toolBarArea( QToolBar *toolbar ) const;
     bool toolBarBreak( QToolBar *toolbar ) const;
 
-    GUI_CS_SLOT_1( Public, void setUnifiedTitleAndToolBarOnMac( bool set ) )
-    GUI_CS_SLOT_2( setUnifiedTitleAndToolBarOnMac )
+    GUI_LSCS_SLOT_1( Public, void setUnifiedTitleAndToolBarOnMac( bool set ) )
+    GUI_LSCS_SLOT_2( setUnifiedTitleAndToolBarOnMac )
 #endif
 
     QByteArray saveState( int version = 0 ) const;
     bool restoreState( const QByteArray &state, int version = 0 );
 
-    GUI_CS_SIGNAL_1( Public, void iconSizeChanged( const QSize &iconSize ) )
-    GUI_CS_SIGNAL_2( iconSizeChanged, iconSize )
-    GUI_CS_SIGNAL_1( Public, void toolButtonStyleChanged( Qt::ToolButtonStyle toolButtonStyle ) )
-    GUI_CS_SIGNAL_2( toolButtonStyleChanged, toolButtonStyle )
+    GUI_LSCS_SIGNAL_1( Public, void iconSizeChanged( const QSize &iconSize ) )
+    GUI_LSCS_SIGNAL_2( iconSizeChanged, iconSize )
+    GUI_LSCS_SIGNAL_1( Public, void toolButtonStyleChanged( Qt::ToolButtonStyle toolButtonStyle ) )
+    GUI_LSCS_SIGNAL_2( toolButtonStyleChanged, toolButtonStyle )
 
 protected:
 #ifndef QT_NO_CONTEXTMENU

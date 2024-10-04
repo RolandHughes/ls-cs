@@ -208,7 +208,7 @@ void QMetaObject::connectSlotsByName( QObject *receiver )
         else if ( ! ( metaObj->method( slotIndex ).attributes() & QMetaMethod::Cloned ) )
         {
             qWarning( "QMetaObject::connectSlotsByName() No matching signal for: %s::%s",
-                      csPrintable( metaObj->className() ), csPrintable( slotName ) );
+                      lscsPrintable( metaObj->className() ), lscsPrintable( slotName ) );
 
         }
     }
@@ -485,7 +485,7 @@ QObject *QMetaObject::newInstance() const
     QObject *retval = nullptr;
 
     // about to call QMetaMethod::invoke()
-    metaMethod.invoke( nullptr, Qt::DirectConnection, CSReturnArgument<QObject *>( retval ) );
+    metaMethod.invoke( nullptr, Qt::DirectConnection, LSCSReturnArgument<QObject *>( retval ) );
 
     return retval;
 }
@@ -860,7 +860,7 @@ std::tuple<std::vector<QString>, QString, std::vector<QString>> QMetaObject::get
 
         if ( leftParn != "(" )
         {
-            qWarning( "QMetaObject:getSignature() Unable to parse signature: %s", csPrintable( fullName ) );
+            qWarning( "QMetaObject:getSignature() Unable to parse signature: %s", lscsPrintable( fullName ) );
         }
 
         signature += leftParn;
@@ -1320,10 +1320,10 @@ std::tuple<std::vector<QString>, QString, std::vector<QString>> QMetaObject::get
             }
         }
 
-#if defined(CS_INTERNAL_DEBUG)
+#if defined(LSCS_INTERNAL_DEBUG)
         const char *space = "                      ";
         qDebug( "\nQMetaObject:getSignature()  Passed name: %s\n %s Signature: %s \n",
-                csPrintable( fullName ), space, csPrintable( signature ) );
+                lscsPrintable( fullName ), space, lscsPrintable( signature ) );
 #endif
 
         // add sig to the vector
@@ -1335,7 +1335,7 @@ std::tuple<std::vector<QString>, QString, std::vector<QString>> QMetaObject::get
     catch ( std::exception &e )
     {
         // rethrow
-        std::string msg = "QMetaObject::getSignature() Exception when processing " + std::string( csPrintable( fullName ) );
+        std::string msg = "QMetaObject::getSignature() Exception when processing " + std::string( lscsPrintable( fullName ) );
         std::throw_with_nested( std::logic_error( msg ) );
 
     }
@@ -2007,7 +2007,7 @@ QMetaMethod QMetaObject_X::method( int index ) const
 
 int QMetaObject_X::methodCount() const
 {
-    // includes signals, slots, and methods declared with CS_INVOKABLE
+    // includes signals, slots, and methods declared with LSCS_INVOKABLE
     int count = m_methods.size();
 
     if ( superClass() )
@@ -2339,7 +2339,7 @@ void QMetaObject_X::register_method_s2_part2( QString className, const QString &
             QString msg = className;
             msg += "::" + name + " Unable to register overloaded method pointer, verify signal/slot";
 
-            qWarning( "%s", csPrintable( msg ) );
+            qWarning( "%s", lscsPrintable( msg ) );
             throw std::logic_error( std::string {msg.constData()} );
 
         }
@@ -2369,7 +2369,7 @@ void QMetaObject_X::register_method_s2_part2( QString className, const QString &
             QString msg = className;
             msg += "::" + name + " Unable to register method pointer, verify signal/slot";
 
-            qWarning( "%s", csPrintable( msg ) );
+            qWarning( "%s", lscsPrintable( msg ) );
             throw std::logic_error( std::string {msg.constData()} );
         }
 

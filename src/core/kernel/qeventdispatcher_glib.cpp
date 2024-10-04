@@ -511,7 +511,7 @@ void QEventDispatcherGlib::registerSocketNotifier( QSocketNotifier *notifier )
     int sockfd = notifier->socket();
     int type = notifier->type();
 
-#if defined(CS_SHOW_DEBUG_CORE)
+#if defined(LSCS_SHOW_DEBUG_CORE)
 
     if ( sockfd < 0 )
     {
@@ -558,7 +558,7 @@ void QEventDispatcherGlib::unregisterSocketNotifier( QSocketNotifier *notifier )
 {
     Q_ASSERT( notifier );
 
-#if defined(CS_SHOW_DEBUG_CORE)
+#if defined(LSCS_SHOW_DEBUG_CORE)
     int sockfd = notifier->socket();
 
     if ( sockfd < 0 )
@@ -596,7 +596,7 @@ void QEventDispatcherGlib::unregisterSocketNotifier( QSocketNotifier *notifier )
 
 void QEventDispatcherGlib::registerTimer( int timerId, int interval, Qt::TimerType timerType, QObject *object )
 {
-#if defined(CS_SHOW_DEBUG_CORE)
+#if defined(LSCS_SHOW_DEBUG_CORE)
 
     if ( timerId < 1 || interval < 0 || ! object )
     {
@@ -618,7 +618,7 @@ void QEventDispatcherGlib::registerTimer( int timerId, int interval, Qt::TimerTy
 
 bool QEventDispatcherGlib::unregisterTimer( int timerId )
 {
-#if defined(CS_SHOW_DEBUG_CORE)
+#if defined(LSCS_SHOW_DEBUG_CORE)
 
     if ( timerId < 1 )
     {
@@ -640,7 +640,7 @@ bool QEventDispatcherGlib::unregisterTimer( int timerId )
 
 bool QEventDispatcherGlib::unregisterTimers( QObject *object )
 {
-#if defined(CS_SHOW_DEBUG_CORE)
+#if defined(LSCS_SHOW_DEBUG_CORE)
 
     if ( ! object )
     {
@@ -676,7 +676,7 @@ QList<QTimerInfo> QEventDispatcherGlib::registeredTimers( QObject *object ) cons
 
 int QEventDispatcherGlib::remainingTime( int timerId )
 {
-#if defined(CS_SHOW_DEBUG_CORE)
+#if defined(LSCS_SHOW_DEBUG_CORE)
 
     if ( timerId < 1 )
     {

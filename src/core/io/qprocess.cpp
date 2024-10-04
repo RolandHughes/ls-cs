@@ -42,7 +42,7 @@
 #include <ctype.h>
 #include <errno.h>
 
-#if defined(CS_SHOW_DEBUG_CORE_IO)
+#if defined(LSCS_SHOW_DEBUG_CORE_IO)
 static QByteArray qt_prettyDebug( const char *data, int len, int maxSize )
 {
     if ( ! data )
@@ -555,7 +555,7 @@ bool QProcessPrivate::tryReadFromChannel( Channel *channel )
     {
         setErrorAndEmit( QProcess::ReadError );
 
-#if defined(CS_SHOW_DEBUG_CORE_IO)
+#if defined(LSCS_SHOW_DEBUG_CORE_IO)
         qDebug( "QProcessPrivate::tryReadFromChannel(%lld), failed to read from the process", channel - &stdinChannel );
 #endif
 
@@ -572,13 +572,13 @@ bool QProcessPrivate::tryReadFromChannel( Channel *channel )
 
         closeChannel( channel );
 
-#if defined(CS_SHOW_DEBUG_CORE_IO)
+#if defined(LSCS_SHOW_DEBUG_CORE_IO)
         qDebug( "QProcessPrivate::tryReadFromChannel(%lld), 0 bytes available", channel - &stdinChannel );
 #endif
         return false;
     }
 
-#if defined(CS_SHOW_DEBUG_CORE_IO)
+#if defined(LSCS_SHOW_DEBUG_CORE_IO)
     qDebug( "QProcessPrivate::tryReadFromChannel(%lld), read %d bytes from the process output",
             channel - &stdinChannel, int( readBytes ) );
 #endif
@@ -645,7 +645,7 @@ bool QProcessPrivate::_q_canWrite()
     if ( stdinChannel.buffer.isEmpty() )
     {
 
-#if defined(CS_SHOW_DEBUG_CORE_IO)
+#if defined(LSCS_SHOW_DEBUG_CORE_IO)
         qDebug( "QProcessPrivate::canWrite() Not writing anything (empty write buffer)" );
 #endif
 
@@ -742,7 +742,7 @@ bool QProcessPrivate::_q_processDied()
         emit q->finished( exitCode, exitStatus );
     }
 
-#if defined(CS_SHOW_DEBUG_CORE_IO)
+#if defined(LSCS_SHOW_DEBUG_CORE_IO)
     qDebug( "QProcessPrivate::_q_processDied() process is dead" );
 #endif
 
@@ -753,7 +753,7 @@ bool QProcessPrivate::_q_startupNotification()
 {
     Q_Q( QProcess );
 
-#if defined(CS_SHOW_DEBUG_CORE_IO)
+#if defined(LSCS_SHOW_DEBUG_CORE_IO)
     qDebug( "QProcessPrivate::startupNotification()" );
 #endif
 
@@ -817,7 +817,7 @@ bool QProcess::_q_processDied()
 
 void QProcessPrivate::closeWriteChannel()
 {
-#if defined(CS_SHOW_DEBUG_CORE_IO)
+#if defined(LSCS_SHOW_DEBUG_CORE_IO)
     qDebug( "QProcessPrivate::closeWriteChannel()" );
 #endif
 
@@ -838,7 +838,7 @@ void QProcessPrivate::closeWriteChannel()
 QProcess::QProcess( QObject *parent )
     : QIODevice( *new QProcessPrivate, parent )
 {
-#if defined(CS_SHOW_DEBUG_CORE_IO)
+#if defined(LSCS_SHOW_DEBUG_CORE_IO)
     qDebug( "QProcess::QProcess(%p)", parent );
 #endif
 }
@@ -1077,7 +1077,7 @@ qint64 QProcess::bytesAvailable() const
     const QRingBuffer *readBuffer = ( d->processChannel == QProcess::StandardError )
                                     ? &d->stderrChannel.buffer : &d->stdoutChannel.buffer;
 
-#if defined(CS_SHOW_DEBUG_CORE_IO)
+#if defined(LSCS_SHOW_DEBUG_CORE_IO)
     qDebug( "QProcess::bytesAvailable() == %i (%s)", readBuffer->size(),
             ( d->processChannel == QProcess::StandardError ) ? "stderr" : "stdout" );
 #endif
@@ -1256,7 +1256,7 @@ qint64 QProcess::readData( char *data, qint64 maxlen )
         if ( c == -1 )
         {
 
-#if defined(CS_SHOW_DEBUG_CORE_IO)
+#if defined(LSCS_SHOW_DEBUG_CORE_IO)
             qDebug( "QProcess::readData(%p \"%s\", %d) == -1",
                     data, qt_prettyDebug( data, 1, maxlen ).constData(), 1 );
 #endif
@@ -1266,7 +1266,7 @@ qint64 QProcess::readData( char *data, qint64 maxlen )
 
         *data = ( char ) c;
 
-#if defined(CS_SHOW_DEBUG_CORE_IO)
+#if defined(LSCS_SHOW_DEBUG_CORE_IO)
         qDebug( "QProcess::readData(%p \"%s\", %d) == 1",
                 data, qt_prettyDebug( data, 1, maxlen ).constData(), 1 );
 #endif
@@ -1362,7 +1362,7 @@ qint64 QProcess::writeData( const char *data, qint64 len )
 
 #endif
 
-#if defined(CS_SHOW_DEBUG_CORE_IO)
+#if defined(LSCS_SHOW_DEBUG_CORE_IO)
     qDebug( "QProcess::writeData(%p \"%s\", %lld) == %lld (written to buffer)",
             data, qt_prettyDebug( data, len, 16 ).constData(), len, len );
 #endif

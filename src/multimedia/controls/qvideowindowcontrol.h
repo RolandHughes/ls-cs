@@ -32,7 +32,7 @@
 
 class Q_MULTIMEDIA_EXPORT QVideoWindowControl : public QMediaControl
 {
-    MULTI_CS_OBJECT( QVideoWindowControl )
+    MULTI_LSCS_OBJECT( QVideoWindowControl )
 
 public:
     ~QVideoWindowControl();
@@ -65,24 +65,24 @@ public:
     virtual int saturation() const = 0;
     virtual void setSaturation( int saturation ) = 0;
 
-    MULTI_CS_SIGNAL_1( Public, void fullScreenChanged( bool fullScreen ) )
-    MULTI_CS_SIGNAL_2( fullScreenChanged, fullScreen )
-    MULTI_CS_SIGNAL_1( Public, void brightnessChanged( int brightness ) )
-    MULTI_CS_SIGNAL_2( brightnessChanged, brightness )
-    MULTI_CS_SIGNAL_1( Public, void contrastChanged( int contrast ) )
-    MULTI_CS_SIGNAL_2( contrastChanged, contrast )
-    MULTI_CS_SIGNAL_1( Public, void hueChanged( int hue ) )
-    MULTI_CS_SIGNAL_2( hueChanged, hue )
-    MULTI_CS_SIGNAL_1( Public, void saturationChanged( int saturation ) )
-    MULTI_CS_SIGNAL_2( saturationChanged, saturation )
-    MULTI_CS_SIGNAL_1( Public, void nativeSizeChanged() )
-    MULTI_CS_SIGNAL_2( nativeSizeChanged )
+    MULTI_LSCS_SIGNAL_1( Public, void fullScreenChanged( bool fullScreen ) )
+    MULTI_LSCS_SIGNAL_2( fullScreenChanged, fullScreen )
+    MULTI_LSCS_SIGNAL_1( Public, void brightnessChanged( int brightness ) )
+    MULTI_LSCS_SIGNAL_2( brightnessChanged, brightness )
+    MULTI_LSCS_SIGNAL_1( Public, void contrastChanged( int contrast ) )
+    MULTI_LSCS_SIGNAL_2( contrastChanged, contrast )
+    MULTI_LSCS_SIGNAL_1( Public, void hueChanged( int hue ) )
+    MULTI_LSCS_SIGNAL_2( hueChanged, hue )
+    MULTI_LSCS_SIGNAL_1( Public, void saturationChanged( int saturation ) )
+    MULTI_LSCS_SIGNAL_2( saturationChanged, saturation )
+    MULTI_LSCS_SIGNAL_1( Public, void nativeSizeChanged() )
+    MULTI_LSCS_SIGNAL_2( nativeSizeChanged )
 
 protected:
     explicit QVideoWindowControl( QObject *parent = nullptr );
 };
 
 #define QVideoWindowControl_iid "com.copperspice.CS.videoWindowControl/1.0"
-CS_DECLARE_INTERFACE( QVideoWindowControl, QVideoWindowControl_iid )
+LSCS_DECLARE_INTERFACE( QVideoWindowControl, QVideoWindowControl_iid )
 
 #endif

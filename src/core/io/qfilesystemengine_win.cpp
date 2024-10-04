@@ -58,9 +58,9 @@
 #endif
 
 #ifdef PATH_MAX
-#define CS_PATH_LEN  PATH_MAX
+#define LSCS_PATH_LEN  PATH_MAX
 #else
-#define CS_PATH_LEN  FILENAME_MAX
+#define LSCS_PATH_LEN  FILENAME_MAX
 #endif
 
 #ifndef _INTPTR_T_DEFINED
@@ -1539,12 +1539,12 @@ QFileSystemEntry QFileSystemEngine::currentPath()
     QString retval;
 
     DWORD size = 0;
-    std::wstring currentName( CS_PATH_LEN, L'\0' );
-    size = ::GetCurrentDirectory( CS_PATH_LEN, &currentName[0] );
+    std::wstring currentName( LSCS_PATH_LEN, L'\0' );
+    size = ::GetCurrentDirectory( LSCS_PATH_LEN, &currentName[0] );
 
     if ( size != 0 )
     {
-        if ( size > CS_PATH_LEN )
+        if ( size > LSCS_PATH_LEN )
         {
             currentName.resize( size );
 

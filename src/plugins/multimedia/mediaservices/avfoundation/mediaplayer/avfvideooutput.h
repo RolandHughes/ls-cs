@@ -34,6 +34,6 @@ public:
 };
 
 #define AVFVideoOutput_iid "com.copperspice.CS.AVFVideoOutput/1.0"
-CS_DECLARE_INTERFACE( AVFVideoOutput, AVFVideoOutput_iid )
+LSCS_DECLARE_INTERFACE( AVFVideoOutput, AVFVideoOutput_iid )
 
 #endif

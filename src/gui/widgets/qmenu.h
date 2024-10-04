@@ -47,23 +47,23 @@ class QPlatformMenu;
 
 class Q_GUI_EXPORT QMenu : public QWidget
 {
-    GUI_CS_OBJECT( QMenu )
+    GUI_LSCS_OBJECT( QMenu )
     Q_DECLARE_PRIVATE( QMenu )
 
-    GUI_CS_PROPERTY_READ( tearOffEnabled, isTearOffEnabled )
-    GUI_CS_PROPERTY_WRITE( tearOffEnabled, setTearOffEnabled )
+    GUI_LSCS_PROPERTY_READ( tearOffEnabled, isTearOffEnabled )
+    GUI_LSCS_PROPERTY_WRITE( tearOffEnabled, setTearOffEnabled )
 
-    GUI_CS_PROPERTY_READ( title, title )
-    GUI_CS_PROPERTY_WRITE( title, setTitle )
+    GUI_LSCS_PROPERTY_READ( title, title )
+    GUI_LSCS_PROPERTY_WRITE( title, setTitle )
 
-    GUI_CS_PROPERTY_READ( icon, icon )
-    GUI_CS_PROPERTY_WRITE( icon, setIcon )
+    GUI_LSCS_PROPERTY_READ( icon, icon )
+    GUI_LSCS_PROPERTY_WRITE( icon, setIcon )
 
-    GUI_CS_PROPERTY_READ( separatorsCollapsible, separatorsCollapsible )
-    GUI_CS_PROPERTY_WRITE( separatorsCollapsible, setSeparatorsCollapsible )
+    GUI_LSCS_PROPERTY_READ( separatorsCollapsible, separatorsCollapsible )
+    GUI_LSCS_PROPERTY_WRITE( separatorsCollapsible, setSeparatorsCollapsible )
 
-    GUI_CS_PROPERTY_READ( toolTipsVisible, toolTipsVisible )
-    GUI_CS_PROPERTY_WRITE( toolTipsVisible, setToolTipsVisible )
+    GUI_LSCS_PROPERTY_READ( toolTipsVisible, toolTipsVisible )
+    GUI_LSCS_PROPERTY_WRITE( toolTipsVisible, setToolTipsVisible )
 
 public:
     explicit QMenu( QWidget *parent = nullptr );
@@ -209,17 +209,17 @@ public:
     bool toolTipsVisible() const;
     void setToolTipsVisible( bool visible );
 
-    GUI_CS_SIGNAL_1( Public, void aboutToShow() )
-    GUI_CS_SIGNAL_2( aboutToShow )
+    GUI_LSCS_SIGNAL_1( Public, void aboutToShow() )
+    GUI_LSCS_SIGNAL_2( aboutToShow )
 
-    GUI_CS_SIGNAL_1( Public, void aboutToHide() )
-    GUI_CS_SIGNAL_2( aboutToHide )
+    GUI_LSCS_SIGNAL_1( Public, void aboutToHide() )
+    GUI_LSCS_SIGNAL_2( aboutToHide )
 
-    GUI_CS_SIGNAL_1( Public, void triggered( QAction *action ) )
-    GUI_CS_SIGNAL_2( triggered, action )
+    GUI_LSCS_SIGNAL_1( Public, void triggered( QAction *action ) )
+    GUI_LSCS_SIGNAL_2( triggered, action )
 
-    GUI_CS_SIGNAL_1( Public, void hovered( QAction *action ) )
-    GUI_CS_SIGNAL_2( hovered, action )
+    GUI_LSCS_SIGNAL_1( Public, void hovered( QAction *action ) )
+    GUI_LSCS_SIGNAL_2( hovered, action )
 
 protected:
     int columnCount() const;
@@ -247,20 +247,20 @@ protected:
     QMenu( QMenuPrivate &dd, QWidget *parent = nullptr );
 
 private:
-    GUI_CS_SLOT_1( Private, void internalDelayedPopup() )
-    GUI_CS_SLOT_2( internalDelayedPopup )
+    GUI_LSCS_SLOT_1( Private, void internalDelayedPopup() )
+    GUI_LSCS_SLOT_2( internalDelayedPopup )
 
-    GUI_CS_SLOT_1( Private, void _q_actionTriggered() )
-    GUI_CS_SLOT_2( _q_actionTriggered )
+    GUI_LSCS_SLOT_1( Private, void _q_actionTriggered() )
+    GUI_LSCS_SLOT_2( _q_actionTriggered )
 
-    GUI_CS_SLOT_1( Private, void _q_actionHovered() )
-    GUI_CS_SLOT_2( _q_actionHovered )
+    GUI_LSCS_SLOT_1( Private, void _q_actionHovered() )
+    GUI_LSCS_SLOT_2( _q_actionHovered )
 
-    GUI_CS_SLOT_1( Private, void _q_overrideMenuActionDestroyed() )
-    GUI_CS_SLOT_2( _q_overrideMenuActionDestroyed )
+    GUI_LSCS_SLOT_1( Private, void _q_overrideMenuActionDestroyed() )
+    GUI_LSCS_SLOT_2( _q_overrideMenuActionDestroyed )
 
-    GUI_CS_SLOT_1( Private, void _q_platformMenuAboutToShow() )
-    GUI_CS_SLOT_2( _q_platformMenuAboutToShow )
+    GUI_LSCS_SLOT_1( Private, void _q_platformMenuAboutToShow() )
+    GUI_LSCS_SLOT_2( _q_platformMenuAboutToShow )
 
     friend class QMenuBar;
     friend class QMenuBarPrivate;

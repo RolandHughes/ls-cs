@@ -72,28 +72,28 @@ using QCameraFocusZoneList = QList<QCameraFocusZone>;
 
 class Q_MULTIMEDIA_EXPORT QCameraFocus : public QObject
 {
-    MULTI_CS_OBJECT( QCameraFocus )
+    MULTI_LSCS_OBJECT( QCameraFocus )
 
-    MULTI_CS_PROPERTY_READ( focusMode, focusMode )
-    MULTI_CS_PROPERTY_WRITE( focusMode, setFocusMode )
+    MULTI_LSCS_PROPERTY_READ( focusMode, focusMode )
+    MULTI_LSCS_PROPERTY_WRITE( focusMode, setFocusMode )
 
-    MULTI_CS_PROPERTY_READ( focusPointMode, focusPointMode )
-    MULTI_CS_PROPERTY_WRITE( focusPointMode, setFocusPointMode )
+    MULTI_LSCS_PROPERTY_READ( focusPointMode, focusPointMode )
+    MULTI_LSCS_PROPERTY_WRITE( focusPointMode, setFocusPointMode )
 
-    MULTI_CS_PROPERTY_READ( customFocusPoint, customFocusPoint )
-    MULTI_CS_PROPERTY_WRITE( customFocusPoint, setCustomFocusPoint )
+    MULTI_LSCS_PROPERTY_READ( customFocusPoint, customFocusPoint )
+    MULTI_LSCS_PROPERTY_WRITE( customFocusPoint, setCustomFocusPoint )
 
-    MULTI_CS_PROPERTY_READ( focusZones, focusZones )
-    MULTI_CS_PROPERTY_NOTIFY( focusZones, focusZonesChanged )
+    MULTI_LSCS_PROPERTY_READ( focusZones, focusZones )
+    MULTI_LSCS_PROPERTY_NOTIFY( focusZones, focusZonesChanged )
 
-    MULTI_CS_PROPERTY_READ( opticalZoom, opticalZoom )
-    MULTI_CS_PROPERTY_NOTIFY( opticalZoom, opticalZoomChanged )
+    MULTI_LSCS_PROPERTY_READ( opticalZoom, opticalZoom )
+    MULTI_LSCS_PROPERTY_NOTIFY( opticalZoom, opticalZoomChanged )
 
-    MULTI_CS_PROPERTY_READ( digitalZoom, digitalZoom )
-    MULTI_CS_PROPERTY_NOTIFY( digitalZoom, digitalZoomChanged )
+    MULTI_LSCS_PROPERTY_READ( digitalZoom, digitalZoom )
+    MULTI_LSCS_PROPERTY_NOTIFY( digitalZoom, digitalZoomChanged )
 
-    MULTI_CS_ENUM( FocusMode )
-    MULTI_CS_ENUM( FocusPointMode )
+    MULTI_LSCS_ENUM( FocusMode )
+    MULTI_LSCS_ENUM( FocusPointMode )
 
 public:
     enum FocusMode
@@ -139,18 +139,18 @@ public:
 
     void zoomTo( double opticalZoom, double digitalZoom );
 
-    MULTI_CS_SIGNAL_1( Public, void opticalZoomChanged( double value ) )
-    MULTI_CS_SIGNAL_2( opticalZoomChanged, value )
-    MULTI_CS_SIGNAL_1( Public, void digitalZoomChanged( double value ) )
-    MULTI_CS_SIGNAL_2( digitalZoomChanged, value )
+    MULTI_LSCS_SIGNAL_1( Public, void opticalZoomChanged( double value ) )
+    MULTI_LSCS_SIGNAL_2( opticalZoomChanged, value )
+    MULTI_LSCS_SIGNAL_1( Public, void digitalZoomChanged( double value ) )
+    MULTI_LSCS_SIGNAL_2( digitalZoomChanged, value )
 
-    MULTI_CS_SIGNAL_1( Public, void focusZonesChanged() )
-    MULTI_CS_SIGNAL_2( focusZonesChanged )
+    MULTI_LSCS_SIGNAL_1( Public, void focusZonesChanged() )
+    MULTI_LSCS_SIGNAL_2( focusZonesChanged )
 
-    MULTI_CS_SIGNAL_1( Public, void maximumOpticalZoomChanged( double value ) )
-    MULTI_CS_SIGNAL_2( maximumOpticalZoomChanged, value )
-    MULTI_CS_SIGNAL_1( Public, void maximumDigitalZoomChanged( double value ) )
-    MULTI_CS_SIGNAL_2( maximumDigitalZoomChanged, value )
+    MULTI_LSCS_SIGNAL_1( Public, void maximumOpticalZoomChanged( double value ) )
+    MULTI_LSCS_SIGNAL_2( maximumOpticalZoomChanged, value )
+    MULTI_LSCS_SIGNAL_1( Public, void maximumDigitalZoomChanged( double value ) )
+    MULTI_LSCS_SIGNAL_2( maximumDigitalZoomChanged, value )
 
 private:
     QCameraFocus( QCamera *camera );
@@ -166,6 +166,6 @@ private:
 
 Q_DECLARE_OPERATORS_FOR_FLAGS( QCameraFocus::FocusModes )
 
-CS_DECLARE_METATYPE( QCameraFocusZone )
+LSCS_DECLARE_METATYPE( QCameraFocusZone )
 
 #endif

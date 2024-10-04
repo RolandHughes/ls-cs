@@ -48,7 +48,7 @@ struct BeginPaintInfo
 #ifndef QT_NO_OPENGL
 class QPlatformTextureListWatcher : public QObject
 {
-    GUI_CS_OBJECT( QPlatformTextureListWatcher )
+    GUI_LSCS_OBJECT( QPlatformTextureListWatcher )
 
 public:
     QPlatformTextureListWatcher( QWidgetBackingStore *backingStore );
@@ -56,8 +56,8 @@ public:
     bool isLocked() const;
 
 private:
-    GUI_CS_SLOT_1( Private, void onLockStatusChanged( bool locked ) )
-    GUI_CS_SLOT_2( onLockStatusChanged )
+    GUI_LSCS_SLOT_1( Private, void onLockStatusChanged( bool locked ) )
+    GUI_LSCS_SLOT_2( onLockStatusChanged )
 
     QHash<QPlatformTextureList *, bool> m_locked;
     QWidgetBackingStore *m_backingStore;

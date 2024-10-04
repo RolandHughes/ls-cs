@@ -617,7 +617,7 @@ void QGraphicsWidget::setLayout( QGraphicsLayout *l )
     if ( oldParent && oldParent != this )
     {
         qWarning( "QGraphicsWidget::setLayout() Unable to set a layout on %s, current layout already has a parent",
-                  csPrintable( metaObject()->className() ) );
+                  lscsPrintable( metaObject()->className() ) );
         return;
     }
 

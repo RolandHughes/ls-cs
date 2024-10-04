@@ -35,13 +35,13 @@ class QTextDocumentLayoutPrivate;
 
 class QTextDocumentLayout : public QAbstractTextDocumentLayout
 {
-    GUI_CS_OBJECT( QTextDocumentLayout )
+    GUI_LSCS_OBJECT( QTextDocumentLayout )
     Q_DECLARE_PRIVATE( QTextDocumentLayout )
 
-    GUI_CS_PROPERTY_READ( cursorWidth, cursorWidth )
-    GUI_CS_PROPERTY_WRITE( cursorWidth, setCursorWidth )
-    GUI_CS_PROPERTY_READ( idealWidth, idealWidth )
-    GUI_CS_PROPERTY_READ( contentHasAlignment, contentHasAlignment )
+    GUI_LSCS_PROPERTY_READ( cursorWidth, cursorWidth )
+    GUI_LSCS_PROPERTY_WRITE( cursorWidth, setCursorWidth )
+    GUI_LSCS_PROPERTY_READ( idealWidth, idealWidth )
+    GUI_LSCS_PROPERTY_READ( contentHasAlignment, contentHasAlignment )
 
 public:
     explicit QTextDocumentLayout( QTextDocument *doc );

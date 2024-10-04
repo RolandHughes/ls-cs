@@ -33,7 +33,7 @@ class QTranslatorPrivate;
 
 class Q_CORE_EXPORT QTranslator : public QObject
 {
-    CORE_CS_OBJECT( QTranslator )
+    CORE_LSCS_OBJECT( QTranslator )
 
 public:
     explicit QTranslator( QObject *parent = nullptr );

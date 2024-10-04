@@ -158,7 +158,7 @@ bool QAbstractEventDispatcher::filterNativeEvent( const QByteArray &eventType, v
 {
     Q_D( QAbstractEventDispatcher );
 
-    QThreadData *threadData = CSInternalThreadData::get_m_ThreadData( this );
+    QThreadData *threadData = LSCSInternalThreadData::get_m_ThreadData( this );
 
     if ( ! d->eventFilters.isEmpty() )
     {

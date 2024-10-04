@@ -51,7 +51,7 @@ class QGtkStylePrivate;
 
 class QGtkStyle : public QCommonStyle
 {
-    GUI_CS_OBJECT( QGtkStyle )
+    GUI_LSCS_OBJECT( QGtkStyle )
     Q_DECLARE_PRIVATE( QGtkStyle )
 
 public:
@@ -510,11 +510,11 @@ private:
 // before updating our own palettes
 class QGtkStyleUpdateScheduler : public QObject
 {
-    GUI_CS_OBJECT( QGtkStyleUpdateScheduler )
+    GUI_LSCS_OBJECT( QGtkStyleUpdateScheduler )
 
 public :
-    GUI_CS_SLOT_1( Public, void updateTheme() )
-    GUI_CS_SLOT_2( updateTheme )
+    GUI_LSCS_SLOT_1( Public, void updateTheme() )
+    GUI_LSCS_SLOT_2( updateTheme )
 };
 
 

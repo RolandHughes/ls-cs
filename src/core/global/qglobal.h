@@ -24,7 +24,7 @@
 #ifndef QGLOBAL_H
 #define QGLOBAL_H
 
-#if ! defined (CS_DOXYPRESS)
+#if ! defined (LSCS_DOXYPRESS)
 #include <LsCs_build_info.h>
 #endif
 
@@ -225,7 +225,7 @@
 
 #ifdef Q_OS_DARWIN
 
-#if ! defined (CS_DOXYPRESS)
+#if ! defined (LSCS_DOXYPRESS)
 #  include <AvailabilityMacros.h>
 #endif
 

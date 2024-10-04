@@ -79,7 +79,7 @@ QXcbIntegration *QXcbIntegration::m_instance = nullptr;
 // or, for older Linuxes, read out 'cmdline'.
 static bool runningUnderDebugger()
 {
-#if defined(CS_SHOW_DEBUG_PLATFORM) && defined(Q_OS_LINUX)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM) && defined(Q_OS_LINUX)
     const QString parentProc = QString( "/proc/" ) + QString::number( getppid() );
     const QFileInfo parentProcExe( parentProc + QString( "/exe" ) );
 
@@ -194,7 +194,7 @@ QXcbIntegration::QXcbIntegration( const QStringList &parameters, int &argc, char
         doGrabArg = false;
     }
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
 
     if ( ! noGrabArg && ! doGrabArg && underDebugger )
     {
@@ -218,7 +218,7 @@ QXcbIntegration::QXcbIntegration( const QStringList &parameters, int &argc, char
     for ( int i = 0; i < numParameters - 1; i += 2 )
     {
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
         qDebug() << "QXcbIntegration() Connecting to additional display = " << parameters.at( i ) << parameters.at( i + 1 );
 #endif
 

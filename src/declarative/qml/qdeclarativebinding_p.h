@@ -164,7 +164,7 @@ class QDeclarativeBindingPrivate;
 class Q_DECLARATIVE_PRIVATE_EXPORT QDeclarativeBinding : public QDeclarativeExpression,
     public QDeclarativeAbstractBinding
 {
-    DECL_CS_OBJECT( QDeclarativeBinding )
+    DECL_LSCS_OBJECT( QDeclarativeBinding )
 
 public:
     enum EvaluateFlag { RequiresThisObject = 0x01 };
@@ -196,8 +196,8 @@ public:
             QObject *parent = nullptr );
 
 public :
-    DECL_CS_SLOT_1( Public, void update() )
-    DECL_CS_SLOT_OVERLOAD( update )
+    DECL_LSCS_SLOT_1( Public, void update() )
+    DECL_LSCS_SLOT_OVERLOAD( update )
 
 protected:
     ~QDeclarativeBinding();

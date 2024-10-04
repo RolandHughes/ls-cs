@@ -35,7 +35,7 @@ class PhraseModel;
 
 class PhraseView : public QTreeView
 {
-    CS_OBJECT( PhraseView )
+    LSCS_OBJECT( PhraseView )
 
 public:
     PhraseView( MultiDataModel *model, QList<QHash<QString, QList<Phrase *>>> *phraseDict, QWidget *parent = nullptr );
@@ -43,14 +43,14 @@ public:
 
     void setSourceText( int model, const QString &sourceText );
 
-    CS_SLOT_1( Public, void toggleGuessing() )
-    CS_SLOT_2( toggleGuessing )
+    LSCS_SLOT_1( Public, void toggleGuessing() )
+    LSCS_SLOT_2( toggleGuessing )
 
-    CS_SLOT_1( Public, void update() )
-    CS_SLOT_2( update )
+    LSCS_SLOT_1( Public, void update() )
+    LSCS_SLOT_2( update )
 
-    CS_SIGNAL_1( Public, void phraseSelected( int latestModel,const QString &phrase ) )
-    CS_SIGNAL_2( phraseSelected,latestModel,phrase )
+    LSCS_SIGNAL_1( Public, void phraseSelected( int latestModel,const QString &phrase ) )
+    LSCS_SIGNAL_2( phraseSelected,latestModel,phrase )
 
 protected:
     // QObject

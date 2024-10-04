@@ -85,7 +85,7 @@ void QXcbConnection::initializeXInput2()
 
         if ( m_xi2Enabled )
         {
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
 #ifdef XCB_USE_XINPUT22
             qDebug( "QXcbConnection::initializeXInput2() XInput version %d.%d is available, supporting 2.2 or greater", xiMajor, m_xi2Minor );
 #else
@@ -123,7 +123,7 @@ void QXcbConnection::xi2SetupDevices()
             continue;
         }
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
         qDebug() << "QXcbConnection::xi2SetupDevices() input device = " << devices[i].name << "id = " << devices[i].deviceid;
 #endif
 
@@ -142,7 +142,7 @@ void QXcbConnection::xi2SetupDevices()
                     XIValuatorClassInfo *vci = reinterpret_cast<XIValuatorClassInfo *>( devices[i].classes[c] );
                     const int valuatorAtom = qatom( vci->label );
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
                     qDebug() << "QXcbConnection::xi2SetupDevices() has valuator = " << atomName( vci->label )
                              << "recognized = " << ( valuatorAtom < QXcbAtom::NAtoms );
 #endif
@@ -224,7 +224,7 @@ void QXcbConnection::xi2SetupDevices()
                         }
                     }
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
                     qDebug( "QXcbConnection::xi2SetupDevices() has %d buttons", bci->num_buttons );
 #endif
 
@@ -234,7 +234,7 @@ void QXcbConnection::xi2SetupDevices()
 #endif
 
                 case XIKeyClass:
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
                     qDebug() << "QXcbConnection::xi2SetupDevices() found keyboard";
 #endif
 
@@ -248,7 +248,7 @@ void QXcbConnection::xi2SetupDevices()
 #endif
 
                 default:
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
                     qDebug() << "QXcbConnection::xi2SetupDevices() class = " << devices[i].classes[c]->type;
 #endif
                     break;
@@ -325,7 +325,7 @@ void QXcbConnection::xi2SetupDevices()
             tabletData.deviceId = devices[i].deviceid;
             m_tabletData.append( tabletData );
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
             qDebug() << "QXcbConnection::xi2SetupDevices() tablet with pointer type = " << dbgType;
 #endif
         }
@@ -342,7 +342,7 @@ void QXcbConnection::xi2SetupDevices()
             scrollingDevice.legacyOrientations &= ~scrollingDevice.orientations;
             m_scrollingDevices.insert( scrollingDevice.deviceId, scrollingDevice );
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
             qDebug() << "QXcbConnection::xi2SetupDevices() found scrolling device";
 #endif
         }
@@ -355,7 +355,7 @@ void QXcbConnection::xi2SetupDevices()
             // with a new deviceId. On subsequent calls it will return the cached object.
             XInput2TouchDeviceData *dev = touchDeviceForId( devices[i].deviceid );
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
 
             if ( dev != nullptr )
             {
@@ -428,7 +428,7 @@ void QXcbConnection::xi2Select( xcb_window_t window )
             bitMask |= XI_EnterMask;
             bitMask |= XI_LeaveMask;
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
             qDebug( "QXcbConnection::xi2Select() Selecting press/release/motion events in addition to touch" );
 #endif
         }
@@ -443,7 +443,7 @@ void QXcbConnection::xi2Select( xcb_window_t window )
         mask.deviceid = XIAllMasterDevices;
         Status result = XISelectEvents( xDisplay, window, &mask, 1 );
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
 
         if ( result != Success )
         {
@@ -575,7 +575,7 @@ XInput2TouchDeviceData *QXcbConnection::touchDeviceForId( int id )
                     XITouchClassInfo *tci = reinterpret_cast<XITouchClassInfo *>( classinfo );
                     maxTouchPoints = tci->num_touches;
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
                     qDebug( "QXcbConnection::touchDeviceForId() found touch class with mode = %d", tci->mode );
 #endif
 
@@ -808,7 +808,7 @@ void QXcbConnection::xi2HandleEvent( xcb_ge_event_t *event )
             case XI_TouchUpdate:
             case XI_TouchEnd:
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
                 qDebug( "QXcbConnection::xi2HandleEvent() touch event type = %d, seq = %d, detail = %d, "
                         "\n   pos = %6.1f, %6.1f, root pos = %6.1f, %6.1f, window = %x",
                         event->event_type, xiDeviceEvent->sequenceNumber, xiDeviceEvent->detail,
@@ -895,7 +895,7 @@ void QXcbConnection::xi2ProcessTouch( void *xiDevEvent, QXcbWindow *platformWind
                 continue;
             }
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
             qDebug( "QXcbConnection::xi2ProcessTouch() valuator %20s, value %lf from range %lf -> %lf",
                     atomName( vci->label ).constData(), value, vci->min, vci->max );
 #endif
@@ -1096,7 +1096,7 @@ void QXcbConnection::xi2ProcessTouch( void *xiDevEvent, QXcbWindow *platformWind
     touchPoint.area = QRectF( x - w / 2, y - h / 2, w, h );
     touchPoint.normalPosition = QPointF( nx, ny );
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
     qDebug() << "QXcbConnection::xi2ProcessTouch() touchpoint =" << touchPoint.id << ", state =" << touchPoint.state
              << ", position normal =" << touchPoint.normalPosition
              << ", area =" << touchPoint.area << ", pressure =" << touchPoint.pressure;
@@ -1178,7 +1178,7 @@ bool QXcbConnection::xi2SetMouseGrabEnabled( xcb_window_t w, bool grab )
             {
                 grabbed = false;
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
                 qDebug( "QXcbConnection::xi2SetMouseGrabEnabled() Failed to release ungrab events for device %d, result %d", id, result );
 #endif
             }
@@ -1194,7 +1194,7 @@ bool QXcbConnection::xi2SetMouseGrabEnabled( xcb_window_t w, bool grab )
             {
                 grabbed = false;
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
                 qDebug( "QXcbConnection::xi2SetMouseGrabEnabled() Failed to grab events for device %d on window %x (result %d)",
                         id, w, result );
 #endif
@@ -1257,7 +1257,7 @@ void QXcbConnection::xi2HandleDeviceChangedEvent( void *event )
 
     if ( nrDevices <= 0 )
     {
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
         qDebug( "QXcbConnection::xi2HandleDeviceChangedEvent() Scrolling device %d no longer present", xiEvent->sourceid );
 #endif
 
@@ -1275,7 +1275,7 @@ void QXcbConnection::updateScrollingDevice( ScrollingDevice &scrollingDevice, in
     XIAnyClassInfo **classes = reinterpret_cast<XIAnyClassInfo **>( classInfo );
     QPointF lastScrollPosition;
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
     lastScrollPosition = scrollingDevice.lastScrollPosition;
 #endif
 
@@ -1297,7 +1297,7 @@ void QXcbConnection::updateScrollingDevice( ScrollingDevice &scrollingDevice, in
         }
     }
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
 
     if ( lastScrollPosition != scrollingDevice.lastScrollPosition )
     {
@@ -1325,7 +1325,7 @@ void QXcbConnection::handleEnterEvent()
 
         if ( nrDevices <= 0 )
         {
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
             qDebug( "QXcbConnection::handleEnterEvent() Scrolling device %d no longer present", scrollingDevice.deviceId );
 #endif
 
@@ -1640,7 +1640,7 @@ bool QXcbConnection::xi2HandleTabletEvent( void *event, TabletData *tabletData, 
                             // TODO maybe have a hash of tabletData->deviceId to device data so we can
                             // look up the tablet name here, and distinguish multiple tablets
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
                             qDebug( "QXcbConnection::xi2HandleTabletEvent() XI2 proximity change on tablet %d (USB %x)"
                                     "\n   last tool = %x, id = %x, current tool = %x, id %x, tablet device = %d",
                                     tabletData->deviceId, ptr[_WACSER_USB_ID], ptr[_WACSER_LAST_TOOL_SERIAL], ptr[_WACSER_LAST_TOOL_ID],
@@ -1738,7 +1738,7 @@ void QXcbConnection::xi2ReportTabletEvent( TabletData &tabletData, void *event )
         }
     }
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
     qDebug( "QXcbConnection::xi2ReportTabletEvent() XI2 event on tablet = %d, tool = %d, type = %d, sequence = %d"
             "\n   detail = %d, time = %d, position = %6.1f, %6.1f, root position = %6.1f, %6.1f"
             "\n   buttons = 0x%x, pressure = %4.2lf, tilt = %d,%d, rotation = %6.2lf",

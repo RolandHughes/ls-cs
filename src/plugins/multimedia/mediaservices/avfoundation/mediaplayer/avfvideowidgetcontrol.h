@@ -33,8 +33,8 @@ class AVFVideoWidget;
 
 class AVFVideoWidgetControl : public QVideoWidgetControl, public AVFVideoOutput
 {
-    CS_OBJECT_MULTIPLE( AVFVideoWidgetControl, QVideoWidgetControl )
-    CS_INTERFACES( AVFVideoOutput )
+    LSCS_OBJECT_MULTIPLE( AVFVideoWidgetControl, QVideoWidgetControl )
+    LSCS_INTERFACES( AVFVideoOutput )
 
 public:
     AVFVideoWidgetControl( QObject *parent = nullptr );

@@ -31,10 +31,10 @@ class QStyleOptionButton;
 
 class Q_GUI_EXPORT QCheckBox : public QAbstractButton
 {
-    GUI_CS_OBJECT( QCheckBox )
+    GUI_LSCS_OBJECT( QCheckBox )
 
-    GUI_CS_PROPERTY_READ( tristate, isTristate )
-    GUI_CS_PROPERTY_WRITE( tristate, setTristate )
+    GUI_LSCS_PROPERTY_READ( tristate, isTristate )
+    GUI_LSCS_PROPERTY_WRITE( tristate, setTristate )
 
 public:
     explicit QCheckBox( QWidget *parent = nullptr );
@@ -54,8 +54,8 @@ public:
     Qt::CheckState checkState() const;
     void setCheckState( Qt::CheckState state );
 
-    GUI_CS_SIGNAL_1( Public, void stateChanged( int state ) )
-    GUI_CS_SIGNAL_2( stateChanged, state )
+    GUI_LSCS_SIGNAL_1( Public, void stateChanged( int state ) )
+    GUI_LSCS_SIGNAL_2( stateChanged, state )
 
 protected:
     bool event( QEvent *event ) override;

@@ -43,62 +43,62 @@ class QToolButton;
 
 class Q_GUI_EXPORT QLineEdit : public QWidget
 {
-    GUI_CS_OBJECT( QLineEdit )
+    GUI_LSCS_OBJECT( QLineEdit )
 
-    GUI_CS_ENUM( ActionPosition )
-    GUI_CS_ENUM( EchoMode )
+    GUI_LSCS_ENUM( ActionPosition )
+    GUI_LSCS_ENUM( EchoMode )
 
-    GUI_CS_PROPERTY_READ( inputMask, inputMask )
-    GUI_CS_PROPERTY_WRITE( inputMask, setInputMask )
+    GUI_LSCS_PROPERTY_READ( inputMask, inputMask )
+    GUI_LSCS_PROPERTY_WRITE( inputMask, setInputMask )
 
-    GUI_CS_PROPERTY_READ( text, text )
-    GUI_CS_PROPERTY_WRITE( text, setText )
-    GUI_CS_PROPERTY_NOTIFY( text, textChanged )
-    GUI_CS_PROPERTY_USER( text, true )
+    GUI_LSCS_PROPERTY_READ( text, text )
+    GUI_LSCS_PROPERTY_WRITE( text, setText )
+    GUI_LSCS_PROPERTY_NOTIFY( text, textChanged )
+    GUI_LSCS_PROPERTY_USER( text, true )
 
-    GUI_CS_PROPERTY_READ( maxLength, maxLength )
-    GUI_CS_PROPERTY_WRITE( maxLength, setMaxLength )
+    GUI_LSCS_PROPERTY_READ( maxLength, maxLength )
+    GUI_LSCS_PROPERTY_WRITE( maxLength, setMaxLength )
 
-    GUI_CS_PROPERTY_READ( frame, hasFrame )
-    GUI_CS_PROPERTY_WRITE( frame, setFrame )
+    GUI_LSCS_PROPERTY_READ( frame, hasFrame )
+    GUI_LSCS_PROPERTY_WRITE( frame, setFrame )
 
-    GUI_CS_PROPERTY_READ( echoMode, echoMode )
-    GUI_CS_PROPERTY_WRITE( echoMode, setEchoMode )
+    GUI_LSCS_PROPERTY_READ( echoMode, echoMode )
+    GUI_LSCS_PROPERTY_WRITE( echoMode, setEchoMode )
 
-    GUI_CS_PROPERTY_READ( displayText, displayText )
+    GUI_LSCS_PROPERTY_READ( displayText, displayText )
 
-    GUI_CS_PROPERTY_READ( cursorPosition, cursorPosition )
-    GUI_CS_PROPERTY_WRITE( cursorPosition, setCursorPosition )
+    GUI_LSCS_PROPERTY_READ( cursorPosition, cursorPosition )
+    GUI_LSCS_PROPERTY_WRITE( cursorPosition, setCursorPosition )
 
-    GUI_CS_PROPERTY_READ( alignment, alignment )
-    GUI_CS_PROPERTY_WRITE( alignment, setAlignment )
+    GUI_LSCS_PROPERTY_READ( alignment, alignment )
+    GUI_LSCS_PROPERTY_WRITE( alignment, setAlignment )
 
-    GUI_CS_PROPERTY_READ( modified, isModified )
-    GUI_CS_PROPERTY_WRITE( modified, setModified )
-    GUI_CS_PROPERTY_DESIGNABLE( modified, false )
+    GUI_LSCS_PROPERTY_READ( modified, isModified )
+    GUI_LSCS_PROPERTY_WRITE( modified, setModified )
+    GUI_LSCS_PROPERTY_DESIGNABLE( modified, false )
 
-    GUI_CS_PROPERTY_READ( hasSelectedText, hasSelectedText )
+    GUI_LSCS_PROPERTY_READ( hasSelectedText, hasSelectedText )
 
-    GUI_CS_PROPERTY_READ( selectedText, selectedText )
+    GUI_LSCS_PROPERTY_READ( selectedText, selectedText )
 
-    GUI_CS_PROPERTY_READ( dragEnabled, dragEnabled )
-    GUI_CS_PROPERTY_WRITE( dragEnabled, setDragEnabled )
+    GUI_LSCS_PROPERTY_READ( dragEnabled, dragEnabled )
+    GUI_LSCS_PROPERTY_WRITE( dragEnabled, setDragEnabled )
 
-    GUI_CS_PROPERTY_READ( readOnly, isReadOnly )
-    GUI_CS_PROPERTY_WRITE( readOnly, setReadOnly )
+    GUI_LSCS_PROPERTY_READ( readOnly, isReadOnly )
+    GUI_LSCS_PROPERTY_WRITE( readOnly, setReadOnly )
 
-    GUI_CS_PROPERTY_READ( undoAvailable, isUndoAvailable )
-    GUI_CS_PROPERTY_READ( redoAvailable, isRedoAvailable )
+    GUI_LSCS_PROPERTY_READ( undoAvailable, isUndoAvailable )
+    GUI_LSCS_PROPERTY_READ( redoAvailable, isRedoAvailable )
 
-    GUI_CS_PROPERTY_READ( acceptableInput, hasAcceptableInput )
-    GUI_CS_PROPERTY_READ( placeholderText, placeholderText )
-    GUI_CS_PROPERTY_WRITE( placeholderText, setPlaceholderText )
+    GUI_LSCS_PROPERTY_READ( acceptableInput, hasAcceptableInput )
+    GUI_LSCS_PROPERTY_READ( placeholderText, placeholderText )
+    GUI_LSCS_PROPERTY_WRITE( placeholderText, setPlaceholderText )
 
-    GUI_CS_PROPERTY_READ( cursorMoveStyle, cursorMoveStyle )
-    GUI_CS_PROPERTY_WRITE( cursorMoveStyle, setCursorMoveStyle )
+    GUI_LSCS_PROPERTY_READ( cursorMoveStyle, cursorMoveStyle )
+    GUI_LSCS_PROPERTY_WRITE( cursorMoveStyle, setCursorMoveStyle )
 
-    GUI_CS_PROPERTY_READ( clearButtonEnabled, isClearButtonEnabled )
-    GUI_CS_PROPERTY_WRITE( clearButtonEnabled, setClearButtonEnabled )
+    GUI_LSCS_PROPERTY_READ( clearButtonEnabled, isClearButtonEnabled )
+    GUI_LSCS_PROPERTY_WRITE( clearButtonEnabled, setClearButtonEnabled )
 
 public:
     enum ActionPosition
@@ -107,7 +107,7 @@ public:
         TrailingPosition
     };
 
-    GUI_CS_REGISTER_ENUM(
+    GUI_LSCS_REGISTER_ENUM(
         enum EchoMode
     {
         Normal,
@@ -213,49 +213,49 @@ public:
     QMenu *createStandardContextMenu();
 #endif
 
-    GUI_CS_SLOT_1( Public, void setText( const QString &str ) )
-    GUI_CS_SLOT_2( setText )
+    GUI_LSCS_SLOT_1( Public, void setText( const QString &str ) )
+    GUI_LSCS_SLOT_2( setText )
 
-    GUI_CS_SLOT_1( Public, void clear() )
-    GUI_CS_SLOT_2( clear )
+    GUI_LSCS_SLOT_1( Public, void clear() )
+    GUI_LSCS_SLOT_2( clear )
 
-    GUI_CS_SLOT_1( Public, void selectAll() )
-    GUI_CS_SLOT_2( selectAll )
+    GUI_LSCS_SLOT_1( Public, void selectAll() )
+    GUI_LSCS_SLOT_2( selectAll )
 
-    GUI_CS_SLOT_1( Public, void undo() )
-    GUI_CS_SLOT_2( undo )
+    GUI_LSCS_SLOT_1( Public, void undo() )
+    GUI_LSCS_SLOT_2( undo )
 
-    GUI_CS_SLOT_1( Public, void redo() )
-    GUI_CS_SLOT_2( redo )
+    GUI_LSCS_SLOT_1( Public, void redo() )
+    GUI_LSCS_SLOT_2( redo )
 
 #ifndef QT_NO_CLIPBOARD
-    GUI_CS_SLOT_1( Public, void cut() )
-    GUI_CS_SLOT_2( cut )
+    GUI_LSCS_SLOT_1( Public, void cut() )
+    GUI_LSCS_SLOT_2( cut )
 
-    GUI_CS_SLOT_1( Public, void copy() const )
-    GUI_CS_SLOT_2( copy )
+    GUI_LSCS_SLOT_1( Public, void copy() const )
+    GUI_LSCS_SLOT_2( copy )
 
-    GUI_CS_SLOT_1( Public, void paste() )
-    GUI_CS_SLOT_2( paste )
+    GUI_LSCS_SLOT_1( Public, void paste() )
+    GUI_LSCS_SLOT_2( paste )
 #endif
 
-    GUI_CS_SIGNAL_1( Public, void textChanged( const QString &newText ) )
-    GUI_CS_SIGNAL_2( textChanged, newText )
+    GUI_LSCS_SIGNAL_1( Public, void textChanged( const QString &newText ) )
+    GUI_LSCS_SIGNAL_2( textChanged, newText )
 
-    GUI_CS_SIGNAL_1( Public, void textEdited( const QString &newText ) )
-    GUI_CS_SIGNAL_2( textEdited, newText )
+    GUI_LSCS_SIGNAL_1( Public, void textEdited( const QString &newText ) )
+    GUI_LSCS_SIGNAL_2( textEdited, newText )
 
-    GUI_CS_SIGNAL_1( Public, void cursorPositionChanged( int oldValue, int newValue ) )
-    GUI_CS_SIGNAL_2( cursorPositionChanged, oldValue, newValue )
+    GUI_LSCS_SIGNAL_1( Public, void cursorPositionChanged( int oldValue, int newValue ) )
+    GUI_LSCS_SIGNAL_2( cursorPositionChanged, oldValue, newValue )
 
-    GUI_CS_SIGNAL_1( Public, void returnPressed() )
-    GUI_CS_SIGNAL_2( returnPressed )
+    GUI_LSCS_SIGNAL_1( Public, void returnPressed() )
+    GUI_LSCS_SIGNAL_2( returnPressed )
 
-    GUI_CS_SIGNAL_1( Public, void editingFinished() )
-    GUI_CS_SIGNAL_2( editingFinished )
+    GUI_LSCS_SIGNAL_1( Public, void editingFinished() )
+    GUI_LSCS_SIGNAL_2( editingFinished )
 
-    GUI_CS_SIGNAL_1( Public, void selectionChanged() )
-    GUI_CS_SIGNAL_2( selectionChanged )
+    GUI_LSCS_SIGNAL_1( Public, void selectionChanged() )
+    GUI_LSCS_SIGNAL_2( selectionChanged )
 
     QVariant inputMethodQuery( Qt::InputMethodQuery query ) const override;
     bool event( QEvent *event ) override;
@@ -299,37 +299,37 @@ private:
 
     Q_DECLARE_PRIVATE( QLineEdit )
 
-    GUI_CS_SLOT_1( Private, void _q_handleWindowActivate() )
-    GUI_CS_SLOT_2( _q_handleWindowActivate )
+    GUI_LSCS_SLOT_1( Private, void _q_handleWindowActivate() )
+    GUI_LSCS_SLOT_2( _q_handleWindowActivate )
 
-    GUI_CS_SLOT_1( Private, void _q_textEdited( const QString &newText ) )
-    GUI_CS_SLOT_2( _q_textEdited )
+    GUI_LSCS_SLOT_1( Private, void _q_textEdited( const QString &newText ) )
+    GUI_LSCS_SLOT_2( _q_textEdited )
 
-    GUI_CS_SLOT_1( Private, void _q_cursorPositionChanged( int oldValue, int newValue ) )
-    GUI_CS_SLOT_2( _q_cursorPositionChanged )
+    GUI_LSCS_SLOT_1( Private, void _q_cursorPositionChanged( int oldValue, int newValue ) )
+    GUI_LSCS_SLOT_2( _q_cursorPositionChanged )
 
 #ifndef QT_NO_COMPLETER
-    GUI_CS_SLOT_1( Private, void _q_completionHighlighted( const QString &text ) )
-    GUI_CS_SLOT_2( _q_completionHighlighted )
+    GUI_LSCS_SLOT_1( Private, void _q_completionHighlighted( const QString &text ) )
+    GUI_LSCS_SLOT_2( _q_completionHighlighted )
 
 #endif
 
 #ifdef QT_KEYPAD_NAVIGATION
-    GUI_CS_SLOT_1( Private, void _q_editFocusChange( bool isFocusChanged ) )
-    GUI_CS_SLOT_2( _q_editFocusChange )
+    GUI_LSCS_SLOT_1( Private, void _q_editFocusChange( bool isFocusChanged ) )
+    GUI_LSCS_SLOT_2( _q_editFocusChange )
 #endif
 
-    GUI_CS_SLOT_1( Private, void _q_selectionChanged() )
-    GUI_CS_SLOT_2( _q_selectionChanged )
+    GUI_LSCS_SLOT_1( Private, void _q_selectionChanged() )
+    GUI_LSCS_SLOT_2( _q_selectionChanged )
 
-    GUI_CS_SLOT_1( Private, void _q_updateNeeded( const QRect &rect ) )
-    GUI_CS_SLOT_2( _q_updateNeeded )
+    GUI_LSCS_SLOT_1( Private, void _q_updateNeeded( const QRect &rect ) )
+    GUI_LSCS_SLOT_2( _q_updateNeeded )
 
-    GUI_CS_SLOT_1( Private, void _q_textChanged( const QString &newText ) )
-    GUI_CS_SLOT_2( _q_textChanged )
+    GUI_LSCS_SLOT_1( Private, void _q_textChanged( const QString &newText ) )
+    GUI_LSCS_SLOT_2( _q_textChanged )
 
-    GUI_CS_SLOT_1( Private, void _q_clearButtonClicked() )
-    GUI_CS_SLOT_2( _q_clearButtonClicked )
+    GUI_LSCS_SLOT_1( Private, void _q_clearButtonClicked() )
+    GUI_LSCS_SLOT_2( _q_clearButtonClicked )
 };
 
 #endif // QT_NO_LINEEDIT

@@ -33,15 +33,15 @@ class QMediaPlaylistNavigatorPrivate;
 
 class Q_MULTIMEDIA_EXPORT QMediaPlaylistNavigator : public QObject
 {
-    MULTI_CS_OBJECT( QMediaPlaylistNavigator )
+    MULTI_LSCS_OBJECT( QMediaPlaylistNavigator )
 
-    MULTI_CS_PROPERTY_READ( playbackMode, playbackMode )
-    MULTI_CS_PROPERTY_WRITE( playbackMode, setPlaybackMode )
-    MULTI_CS_PROPERTY_NOTIFY( playbackMode, playbackModeChanged )
-    MULTI_CS_PROPERTY_READ( currentIndex, currentIndex )
-    MULTI_CS_PROPERTY_WRITE( currentIndex, jump )
-    MULTI_CS_PROPERTY_NOTIFY( currentIndex, currentIndexChanged )
-    MULTI_CS_PROPERTY_READ( currentItem, currentItem )
+    MULTI_LSCS_PROPERTY_READ( playbackMode, playbackMode )
+    MULTI_LSCS_PROPERTY_WRITE( playbackMode, setPlaybackMode )
+    MULTI_LSCS_PROPERTY_NOTIFY( playbackMode, playbackModeChanged )
+    MULTI_LSCS_PROPERTY_READ( currentIndex, currentIndex )
+    MULTI_LSCS_PROPERTY_WRITE( currentIndex, jump )
+    MULTI_LSCS_PROPERTY_NOTIFY( currentIndex, currentIndexChanged )
+    MULTI_LSCS_PROPERTY_READ( currentItem, currentItem )
 
 public:
     QMediaPlaylistNavigator( QMediaPlaylistProvider *playlist, QObject *parent = nullptr );
@@ -66,29 +66,29 @@ public:
     int nextIndex( int steps = 1 ) const;
     int previousIndex( int steps = 1 ) const;
 
-    MULTI_CS_SLOT_1( Public, void next() )
-    MULTI_CS_SLOT_2( next )
+    MULTI_LSCS_SLOT_1( Public, void next() )
+    MULTI_LSCS_SLOT_2( next )
 
-    MULTI_CS_SLOT_1( Public, void previous() )
-    MULTI_CS_SLOT_2( previous )
+    MULTI_LSCS_SLOT_1( Public, void previous() )
+    MULTI_LSCS_SLOT_2( previous )
 
-    MULTI_CS_SLOT_1( Public, void jump( int position ) )
-    MULTI_CS_SLOT_2( jump )
+    MULTI_LSCS_SLOT_1( Public, void jump( int position ) )
+    MULTI_LSCS_SLOT_2( jump )
 
-    MULTI_CS_SLOT_1( Public, void setPlaybackMode( QMediaPlaylist::PlaybackMode mode ) )
-    MULTI_CS_SLOT_2( setPlaybackMode )
+    MULTI_LSCS_SLOT_1( Public, void setPlaybackMode( QMediaPlaylist::PlaybackMode mode ) )
+    MULTI_LSCS_SLOT_2( setPlaybackMode )
 
-    MULTI_CS_SIGNAL_1( Public, void activated( const QMediaContent &content ) )
-    MULTI_CS_SIGNAL_2( activated, content )
+    MULTI_LSCS_SIGNAL_1( Public, void activated( const QMediaContent &content ) )
+    MULTI_LSCS_SIGNAL_2( activated, content )
 
-    MULTI_CS_SIGNAL_1( Public, void currentIndexChanged( int index ) )
-    MULTI_CS_SIGNAL_2( currentIndexChanged, index )
+    MULTI_LSCS_SIGNAL_1( Public, void currentIndexChanged( int index ) )
+    MULTI_LSCS_SIGNAL_2( currentIndexChanged, index )
 
-    MULTI_CS_SIGNAL_1( Public, void playbackModeChanged( QMediaPlaylist::PlaybackMode mode ) )
-    MULTI_CS_SIGNAL_2( playbackModeChanged, mode )
+    MULTI_LSCS_SIGNAL_1( Public, void playbackModeChanged( QMediaPlaylist::PlaybackMode mode ) )
+    MULTI_LSCS_SIGNAL_2( playbackModeChanged, mode )
 
-    MULTI_CS_SIGNAL_1( Public, void surroundingItemsChanged() )
-    MULTI_CS_SIGNAL_2( surroundingItemsChanged )
+    MULTI_LSCS_SIGNAL_1( Public, void surroundingItemsChanged() )
+    MULTI_LSCS_SIGNAL_2( surroundingItemsChanged )
 
 protected:
     QMediaPlaylistNavigatorPrivate *d_ptr;
@@ -96,14 +96,14 @@ protected:
 private:
     Q_DECLARE_PRIVATE( QMediaPlaylistNavigator )
 
-    MULTI_CS_SLOT_1( Private, void _q_mediaInserted( int start, int end ) )
-    MULTI_CS_SLOT_2( _q_mediaInserted )
+    MULTI_LSCS_SLOT_1( Private, void _q_mediaInserted( int start, int end ) )
+    MULTI_LSCS_SLOT_2( _q_mediaInserted )
 
-    MULTI_CS_SLOT_1( Private, void _q_mediaRemoved( int start, int end ) )
-    MULTI_CS_SLOT_2( _q_mediaRemoved )
+    MULTI_LSCS_SLOT_1( Private, void _q_mediaRemoved( int start, int end ) )
+    MULTI_LSCS_SLOT_2( _q_mediaRemoved )
 
-    MULTI_CS_SLOT_1( Private, void _q_mediaChanged( int start, int end ) )
-    MULTI_CS_SLOT_2( _q_mediaChanged )
+    MULTI_LSCS_SLOT_1( Private, void _q_mediaChanged( int start, int end ) )
+    MULTI_LSCS_SLOT_2( _q_mediaChanged )
 };
 
 #endif

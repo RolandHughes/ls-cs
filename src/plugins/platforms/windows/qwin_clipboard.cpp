@@ -37,7 +37,7 @@
 
 #include <qwin_gui_eventdispatcher_p.h>
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
 static QDebug operator<<( QDebug debug, const QMimeData *mimeData )
 {
     QDebugStateSaver saver( debug );
@@ -182,7 +182,7 @@ void QWindowsClipboard::registerViewer()
         m_nextClipboardViewer = SetClipboardViewer( m_clipboardViewer );
     }
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
     qDebug() << "QWindowsClipboard::registerViewer() "
              << "Format listener =" << m_formatListenerRegistered << " Next =" << m_nextClipboardViewer;
 #endif
@@ -266,7 +266,7 @@ bool QWindowsClipboard::clipboardViewerWndProc( HWND hwnd, UINT message, WPARAM 
 
     *result = 0;
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
     qDebug() << "QWindowsClipboard::clipboardViewerWndProc() handle =" << hwnd
              << " message =" << message << QWindowsGuiEventDispatcher::windowsMessageName( message );
 #endif
@@ -328,7 +328,7 @@ bool QWindowsClipboard::clipboardViewerWndProc( HWND hwnd, UINT message, WPARAM 
 
 QMimeData *QWindowsClipboard::mimeData( QClipboard::Mode mode )
 {
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
     qDebug() << "QWindowsClipboard::mimeData: mode =" <<  mode;
 #endif
 
@@ -347,7 +347,7 @@ QMimeData *QWindowsClipboard::mimeData( QClipboard::Mode mode )
 
 void QWindowsClipboard::setMimeData( QMimeData *mimeData, QClipboard::Mode mode )
 {
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
     qDebug() << "QWindowsClipboard::setMimeData: mode =" <<  mode << mimeData;
 #endif
 
@@ -375,7 +375,7 @@ void QWindowsClipboard::setMimeData( QMimeData *mimeData, QClipboard::Mode mode 
         QString mimeDataFormats = mimeData ? mimeData->formats().join( ", " ) : "NULL";
 
         qErrnoWarning( "OleSetClipboard: Failed to set mime data (%s) on clipboard: %s",
-                       csPrintable( mimeDataFormats ), QWindowsContext::comErrorString( src ).constData() );
+                       lscsPrintable( mimeDataFormats ), QWindowsContext::comErrorString( src ).constData() );
 
         releaseIData();
         return;
@@ -407,7 +407,7 @@ bool QWindowsClipboard::ownsMode( QClipboard::Mode mode ) const
 {
     const bool result = mode == QClipboard::Clipboard ? ownsClipboard() : false;
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
     qDebug() << "QWindowsClipboard::ownsMode: mode =" <<  mode << result;
 #endif
 

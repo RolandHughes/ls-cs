@@ -36,7 +36,7 @@ struct kevent;
 
 class QKqueueFileSystemWatcherEngine : public QFileSystemWatcherEngine
 {
-    CORE_CS_OBJECT( QKqueueFileSystemWatcherEngine )
+    CORE_LSCS_OBJECT( QKqueueFileSystemWatcherEngine )
 
 public:
     ~QKqueueFileSystemWatcherEngine();

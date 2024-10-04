@@ -39,7 +39,7 @@ using HttpMessagePair = QPair<QHttpNetworkRequest, QHttpNetworkReply *>;
 
 class QSpdyProtocolHandler : public QObject, public QAbstractProtocolHandler
 {
-    NET_CS_OBJECT( QSpdyProtocolHandler )
+    NET_LSCS_OBJECT( QSpdyProtocolHandler )
 
 public:
     QSpdyProtocolHandler( QHttpNetworkConnectionChannel *channel );
@@ -150,8 +150,8 @@ private:
 
     bool uploadData( qint32 streamID );
 
-    NET_CS_INVOKABLE_METHOD_1( Private, void sendWINDOW_UPDATE( qint32 streamID, quint32 deltaWindowSize ) );
-    NET_CS_INVOKABLE_METHOD_2( sendWINDOW_UPDATE );
+    NET_LSCS_INVOKABLE_METHOD_1( Private, void sendWINDOW_UPDATE( qint32 streamID, quint32 deltaWindowSize ) );
+    NET_LSCS_INVOKABLE_METHOD_2( sendWINDOW_UPDATE );
 
     qint64 sendDataFrame( qint32 streamID, DataFrameFlags flags, quint32 length, const char *data );
 
@@ -188,11 +188,11 @@ private:
     z_stream m_deflateStream;
     z_stream m_inflateStream;
 
-    NET_CS_SLOT_1( Private, void _q_uploadDataReadyRead() )
-    NET_CS_SLOT_2( _q_uploadDataReadyRead )
+    NET_LSCS_SLOT_1( Private, void _q_uploadDataReadyRead() )
+    NET_LSCS_SLOT_2( _q_uploadDataReadyRead )
 
-    NET_CS_SLOT_1( Private, void _q_replyDestroyed( QObject *data ) )
-    NET_CS_SLOT_2( _q_replyDestroyed )
+    NET_LSCS_SLOT_1( Private, void _q_replyDestroyed( QObject *data ) )
+    NET_LSCS_SLOT_2( _q_replyDestroyed )
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS( QSpdyProtocolHandler::DataFrameFlags )

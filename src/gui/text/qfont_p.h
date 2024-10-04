@@ -228,7 +228,7 @@ private:
 
 class QFontCache : public QObject
 {
-    GUI_CS_OBJECT( QFontCache )
+    GUI_LSCS_OBJECT( QFontCache )
 
 public:
     // note: these static functions work on a per-thread basis

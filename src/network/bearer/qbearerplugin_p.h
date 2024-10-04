@@ -37,12 +37,12 @@ struct Q_NETWORK_EXPORT QBearerEngineFactoryInterface : public QFactoryInterface
 };
 
 #define QBearerEngineInterface_ID "com.copperspice.CS.QBearerEngineFactoryInterface"
-CS_DECLARE_INTERFACE( QBearerEngineFactoryInterface, QBearerEngineInterface_ID )
+LSCS_DECLARE_INTERFACE( QBearerEngineFactoryInterface, QBearerEngineInterface_ID )
 
 class Q_NETWORK_EXPORT QBearerEnginePlugin : public QObject, public QBearerEngineFactoryInterface
 {
-    NET_CS_OBJECT_MULTIPLE( QBearerEnginePlugin, QObject )
-    CS_INTERFACES( QBearerEngineFactoryInterface, QFactoryInterface )
+    NET_LSCS_OBJECT_MULTIPLE( QBearerEnginePlugin, QObject )
+    LSCS_INTERFACES( QBearerEngineFactoryInterface, QFactoryInterface )
 
 public:
     explicit QBearerEnginePlugin( QObject *parent = nullptr );

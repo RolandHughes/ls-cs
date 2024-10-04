@@ -36,7 +36,7 @@ class DSCameraImageProcessingControl;
 
 class DSCameraService : public QMediaService
 {
-    CS_OBJECT( DSCameraService )
+    LSCS_OBJECT( DSCameraService )
 
 public:
     DSCameraService( QObject *parent = nullptr );

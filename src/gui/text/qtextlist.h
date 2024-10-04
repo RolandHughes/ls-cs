@@ -32,7 +32,7 @@ class QTextCursor;
 
 class Q_GUI_EXPORT QTextList : public QTextBlockGroup
 {
-    GUI_CS_OBJECT( QTextList )
+    GUI_LSCS_OBJECT( QTextList )
 
 public:
     explicit QTextList( QTextDocument *doc );

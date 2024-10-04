@@ -31,7 +31,7 @@ class QTcpSocketPrivate;
 
 class Q_NETWORK_EXPORT QTcpSocket : public QAbstractSocket
 {
-    NET_CS_OBJECT( QTcpSocket )
+    NET_LSCS_OBJECT( QTcpSocket )
 
 public:
     explicit QTcpSocket( QObject *parent = nullptr );

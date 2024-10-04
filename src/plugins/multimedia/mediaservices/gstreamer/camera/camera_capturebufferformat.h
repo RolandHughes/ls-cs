@@ -34,7 +34,7 @@ class CameraBinSession;
 
 class Q_MULTIMEDIA_EXPORT CameraBinCaptureBufferFormat : public QCameraCaptureBufferFormatControl
 {
-    CS_OBJECT( CameraBinCaptureBufferFormat )
+    LSCS_OBJECT( CameraBinCaptureBufferFormat )
 
 public:
     CameraBinCaptureBufferFormat( CameraBinSession *session );

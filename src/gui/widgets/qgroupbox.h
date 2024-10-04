@@ -33,26 +33,26 @@ class QStyleOptionGroupBox;
 
 class Q_GUI_EXPORT QGroupBox : public QWidget
 {
-    GUI_CS_OBJECT( QGroupBox )
+    GUI_LSCS_OBJECT( QGroupBox )
 
-    GUI_CS_PROPERTY_READ( title, title )
-    GUI_CS_PROPERTY_WRITE( title, setTitle )
+    GUI_LSCS_PROPERTY_READ( title, title )
+    GUI_LSCS_PROPERTY_WRITE( title, setTitle )
 
-    GUI_CS_PROPERTY_READ( alignment, alignment )
-    GUI_CS_PROPERTY_WRITE( alignment, setAlignment )
+    GUI_LSCS_PROPERTY_READ( alignment, alignment )
+    GUI_LSCS_PROPERTY_WRITE( alignment, setAlignment )
 
-    GUI_CS_PROPERTY_READ( flat, isFlat )
-    GUI_CS_PROPERTY_WRITE( flat, setFlat )
+    GUI_LSCS_PROPERTY_READ( flat, isFlat )
+    GUI_LSCS_PROPERTY_WRITE( flat, setFlat )
 
-    GUI_CS_PROPERTY_READ( checkable, isCheckable )
-    GUI_CS_PROPERTY_WRITE( checkable, setCheckable )
+    GUI_LSCS_PROPERTY_READ( checkable, isCheckable )
+    GUI_LSCS_PROPERTY_WRITE( checkable, setCheckable )
 
-    GUI_CS_PROPERTY_READ( checked, isChecked )
-    GUI_CS_PROPERTY_WRITE( checked, setChecked )
-    GUI_CS_PROPERTY_DESIGNABLE_NONSTATIC( checked, isCheckable() )
+    GUI_LSCS_PROPERTY_READ( checked, isChecked )
+    GUI_LSCS_PROPERTY_WRITE( checked, setChecked )
+    GUI_LSCS_PROPERTY_DESIGNABLE_NONSTATIC( checked, isCheckable() )
 
-    GUI_CS_PROPERTY_NOTIFY( checked, toggled )
-    GUI_CS_PROPERTY_USER( checked, true )
+    GUI_LSCS_PROPERTY_NOTIFY( checked, toggled )
+    GUI_LSCS_PROPERTY_USER( checked, true )
 
 public:
     explicit QGroupBox( QWidget *parent = nullptr );
@@ -77,14 +77,14 @@ public:
     void setCheckable( bool checkable );
     bool isChecked() const;
 
-    GUI_CS_SLOT_1( Public, void setChecked( bool checked ) )
-    GUI_CS_SLOT_2( setChecked )
+    GUI_LSCS_SLOT_1( Public, void setChecked( bool checked ) )
+    GUI_LSCS_SLOT_2( setChecked )
 
-    GUI_CS_SIGNAL_1( Public, void clicked( bool checked = false ) )
-    GUI_CS_SIGNAL_2( clicked, checked )
+    GUI_LSCS_SIGNAL_1( Public, void clicked( bool checked = false ) )
+    GUI_LSCS_SIGNAL_2( clicked, checked )
 
-    GUI_CS_SIGNAL_1( Public, void toggled( bool on ) )
-    GUI_CS_SIGNAL_2( toggled, on )
+    GUI_LSCS_SIGNAL_1( Public, void toggled( bool on ) )
+    GUI_LSCS_SIGNAL_2( toggled, on )
 
 protected:
     bool event( QEvent *event ) override;
@@ -101,8 +101,8 @@ protected:
 private:
     Q_DECLARE_PRIVATE( QGroupBox )
 
-    GUI_CS_SLOT_1( Private, void _q_setChildrenEnabled( bool b ) )
-    GUI_CS_SLOT_2( _q_setChildrenEnabled )
+    GUI_LSCS_SLOT_1( Private, void _q_setChildrenEnabled( bool b ) )
+    GUI_LSCS_SLOT_2( _q_setChildrenEnabled )
 };
 
 #endif // QT_NO_GROUPBOX

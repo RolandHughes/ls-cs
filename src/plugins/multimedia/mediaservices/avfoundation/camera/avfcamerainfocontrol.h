@@ -28,7 +28,7 @@
 
 class AVFCameraInfoControl : public QCameraInfoControl
 {
-    CS_OBJECT( AVFCameraInfoControl )
+    LSCS_OBJECT( AVFCameraInfoControl )
 
 public:
     explicit AVFCameraInfoControl( QObject *parent = nullptr );

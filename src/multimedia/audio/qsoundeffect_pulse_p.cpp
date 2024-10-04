@@ -86,7 +86,7 @@ inline pa_sample_spec audioFormatToSampleSpec( const QAudioFormat &format )
 
 class PulseDaemon : public QObject
 {
-    MULTI_CS_OBJECT( PulseDaemon )
+    MULTI_LSCS_OBJECT( PulseDaemon )
 
 public:
     PulseDaemon(): m_prepared( false )
@@ -123,18 +123,18 @@ public:
         return m_context;
     }
 
-    MULTI_CS_SIGNAL_1( Public, void contextReady() )
-    MULTI_CS_SIGNAL_2( contextReady )
+    MULTI_LSCS_SIGNAL_1( Public, void contextReady() )
+    MULTI_LSCS_SIGNAL_2( contextReady )
 
-    MULTI_CS_SIGNAL_1( Public, void contextFailed() )
-    MULTI_CS_SIGNAL_2( contextFailed )
+    MULTI_LSCS_SIGNAL_1( Public, void contextFailed() )
+    MULTI_LSCS_SIGNAL_2( contextFailed )
 
 private:
-    MULTI_CS_SLOT_1( Private, void onContextFailed() )
-    MULTI_CS_SLOT_2( onContextFailed )
+    MULTI_LSCS_SLOT_1( Private, void onContextFailed() )
+    MULTI_LSCS_SLOT_2( onContextFailed )
 
-    MULTI_CS_SLOT_1( Private, void prepare() )
-    MULTI_CS_SLOT_2( prepare )
+    MULTI_LSCS_SLOT_1( Private, void prepare() )
+    MULTI_LSCS_SLOT_2( prepare )
 
     void release()
     {
@@ -292,7 +292,7 @@ public:
         : m_ref( 1 ), m_target( target )
     {
 
-#if defined(CS_SHOW_DEBUG_MULTIMEDIA)
+#if defined(LSCS_SHOW_DEBUG_MULTIMEDIA)
         qDebug() << "QSoundEffectRef(" << this << ") ctor";
 #endif
 
@@ -301,7 +301,7 @@ public:
     QSoundEffectRef *getRef()
     {
 
-#if defined(CS_SHOW_DEBUG_MULTIMEDIA)
+#if defined(LSCS_SHOW_DEBUG_MULTIMEDIA)
         qDebug() << "QSoundEffectRef(" << this << ") getRef";
 #endif
 
@@ -314,7 +314,7 @@ public:
     void release()
     {
 
-#if defined(CS_SHOW_DEBUG_MULTIMEDIA)
+#if defined(LSCS_SHOW_DEBUG_MULTIMEDIA)
         qDebug() << "QSoundEffectRef(" << this << ") Release";
 #endif
 
@@ -325,7 +325,7 @@ public:
         {
             m_mutex.unlock();
 
-#if defined(CS_SHOW_DEBUG_MULTIMEDIA)
+#if defined(LSCS_SHOW_DEBUG_MULTIMEDIA)
             qDebug() << "QSoundEffectRef(" << this << ") deleted";
 #endif
             delete this;
@@ -344,7 +344,7 @@ public:
 
     void notifyDeleted()
     {
-#if defined(CS_SHOW_DEBUG_MULTIMEDIA)
+#if defined(LSCS_SHOW_DEBUG_MULTIMEDIA)
         qDebug() << "QSoundEffectRef(" << this << ") notifyDeleted";
 #endif
 
@@ -380,7 +380,7 @@ void QSoundEffectPrivate::handleAvailabilityChanged( bool available )
 {
     m_resourcesAvailable = available;
 
-#if defined(CS_SHOW_DEBUG_MULTIMEDIA)
+#if defined(LSCS_SHOW_DEBUG_MULTIMEDIA)
     qDebug() << Q_FUNC_INFO << "Resource availability changed " << m_resourcesAvailable;
 #endif
 
@@ -392,7 +392,7 @@ void QSoundEffectPrivate::handleAvailabilityChanged( bool available )
 
 void QSoundEffectPrivate::release()
 {
-#if defined(CS_SHOW_DEBUG_MULTIMEDIA)
+#if defined(LSCS_SHOW_DEBUG_MULTIMEDIA)
     qDebug() << this << "release";
 #endif
 
@@ -467,7 +467,7 @@ void QSoundEffectPrivate::setSource( const QUrl &url )
 {
     Q_ASSERT( m_source != url );
 
-#if defined(CS_SHOW_DEBUG_MULTIMEDIA)
+#if defined(LSCS_SHOW_DEBUG_MULTIMEDIA)
     qDebug() << this << "setSource =" << url;
 #endif
 
@@ -614,7 +614,7 @@ QSoundEffect::Status QSoundEffectPrivate::status() const
 
 void QSoundEffectPrivate::setPlaying( bool playing )
 {
-#if defined(CS_SHOW_DEBUG_MULTIMEDIA)
+#if defined(LSCS_SHOW_DEBUG_MULTIMEDIA)
     qDebug() << this << "setPlaying(" << playing << ")";
 #endif
 
@@ -634,7 +634,7 @@ void QSoundEffectPrivate::setPlaying( bool playing )
 
 void QSoundEffectPrivate::setStatus( QSoundEffect::Status status )
 {
-#if defined(CS_SHOW_DEBUG_MULTIMEDIA)
+#if defined(LSCS_SHOW_DEBUG_MULTIMEDIA)
     qDebug() << this << "setStatus" << status;
 #endif
 
@@ -656,7 +656,7 @@ void QSoundEffectPrivate::setStatus( QSoundEffect::Status status )
 
 void QSoundEffectPrivate::setLoopsRemaining( int loopsRemaining )
 {
-#if defined(CS_SHOW_DEBUG_MULTIMEDIA)
+#if defined(LSCS_SHOW_DEBUG_MULTIMEDIA)
     qDebug() << this << "setLoopsRemaining " << loopsRemaining;
 #endif
 
@@ -681,7 +681,7 @@ void QSoundEffectPrivate::play()
 
 void QSoundEffectPrivate::playAvailable()
 {
-#if defined(CS_SHOW_DEBUG_MULTIMEDIA)
+#if defined(LSCS_SHOW_DEBUG_MULTIMEDIA)
     qDebug() << this << "play";
 #endif
 
@@ -695,7 +695,7 @@ void QSoundEffectPrivate::playAvailable()
     if ( ! m_pulseStream || m_status != QSoundEffect::Ready || m_stopping || m_emptying )
     {
 
-#if defined(CS_SHOW_DEBUG_MULTIMEDIA)
+#if defined(LSCS_SHOW_DEBUG_MULTIMEDIA)
         qDebug() << this << "play deferred";
 #endif
         m_playQueued = true;
@@ -707,7 +707,7 @@ void QSoundEffectPrivate::playAvailable()
         {
             //restart playing from the beginning
 
-#if defined(CS_SHOW_DEBUG_MULTIMEDIA)
+#if defined(LSCS_SHOW_DEBUG_MULTIMEDIA)
             qDebug() << this << "restart playing";
 #endif
 
@@ -728,7 +728,7 @@ void QSoundEffectPrivate::playAvailable()
 
 void QSoundEffectPrivate::emptyStream( EmptyStreamOptions options )
 {
-#if defined(CS_SHOW_DEBUG_MULTIMEDIA)
+#if defined(LSCS_SHOW_DEBUG_MULTIMEDIA)
     qDebug() << this << "emptyStream";
 #endif
 
@@ -759,7 +759,7 @@ void QSoundEffectPrivate::emptyComplete( void *stream, bool reload )
 {
     PulseDaemonLocker locker;
 
-#if defined(CS_SHOW_DEBUG_MULTIMEDIA)
+#if defined(LSCS_SHOW_DEBUG_MULTIMEDIA)
     qDebug() << this << "emptyComplete";
 #endif
 
@@ -783,7 +783,7 @@ void QSoundEffectPrivate::emptyComplete( void *stream, bool reload )
 
 void QSoundEffectPrivate::sampleReady()
 {
-#if defined(CS_SHOW_DEBUG_MULTIMEDIA)
+#if defined(LSCS_SHOW_DEBUG_MULTIMEDIA)
     qDebug() << this << "sampleReady";
 #endif
 
@@ -812,7 +812,7 @@ void QSoundEffectPrivate::sampleReady()
     if ( m_pulseStream )
     {
 
-#if defined(CS_SHOW_DEBUG_MULTIMEDIA)
+#if defined(LSCS_SHOW_DEBUG_MULTIMEDIA)
         qDebug() << this << "reuse existing pulsestream";
 #endif
 
@@ -930,7 +930,7 @@ void QSoundEffectPrivate::decoderError()
 
 void QSoundEffectPrivate::unloadPulseStream()
 {
-#if defined(CS_SHOW_DEBUG_MULTIMEDIA)
+#if defined(LSCS_SHOW_DEBUG_MULTIMEDIA)
     qDebug() << this << "unloadPulseStream";
 #endif
 
@@ -972,7 +972,7 @@ void QSoundEffectPrivate::prepare()
     m_stopping = false;
     size_t writeBytes = size_t( qMin( m_pulseBufferSize, m_sample->data().size() ) );
 
-#if defined(CS_SHOW_DEBUG_MULTIMEDIA)
+#if defined(LSCS_SHOW_DEBUG_MULTIMEDIA)
     qDebug() << this << "prepare(): writable size =" << pa_stream_writable_size( m_pulseStream )
              << "actual writeBytes =" << writeBytes
              << "m_playQueued =" << m_playQueued;
@@ -993,13 +993,13 @@ void QSoundEffectPrivate::uploadSample()
     if ( m_runningCount == 0 )
     {
 
-#if defined(CS_SHOW_DEBUG_MULTIMEDIA)
+#if defined(LSCS_SHOW_DEBUG_MULTIMEDIA)
         qDebug() << this << "uploadSample: return due to 0 m_runningCount";
 #endif
         return;
     }
 
-#if defined(CS_SHOW_DEBUG_MULTIMEDIA)
+#if defined(LSCS_SHOW_DEBUG_MULTIMEDIA)
     qDebug() << this << "uploadSample: m_runningCount =" << m_runningCount;
 #endif
 
@@ -1059,7 +1059,7 @@ void QSoundEffectPrivate::uploadSample()
         }
     }
 
-#if defined(CS_SHOW_DEBUG_MULTIMEDIA)
+#if defined(LSCS_SHOW_DEBUG_MULTIMEDIA)
     qDebug() << this << "uploadSample: use direct write, writeable size =" << writableSize
              << "actual writtenBytes =" << writtenBytes;
 #endif
@@ -1106,7 +1106,7 @@ int QSoundEffectPrivate::writeToStream( const void *data, int size )
 
 void QSoundEffectPrivate::playSample()
 {
-#if defined(CS_SHOW_DEBUG_MULTIMEDIA)
+#if defined(LSCS_SHOW_DEBUG_MULTIMEDIA)
     qDebug() << this << "playSample";
 #endif
 
@@ -1123,7 +1123,7 @@ void QSoundEffectPrivate::playSample()
 
 void QSoundEffectPrivate::stop()
 {
-#if defined(CS_SHOW_DEBUG_MULTIMEDIA)
+#if defined(LSCS_SHOW_DEBUG_MULTIMEDIA)
     qDebug() << this << "stop";
 #endif
 
@@ -1160,14 +1160,14 @@ void QSoundEffectPrivate::underRun()
 
 void QSoundEffectPrivate::streamReady()
 {
-#if defined(CS_SHOW_DEBUG_MULTIMEDIA)
+#if defined(LSCS_SHOW_DEBUG_MULTIMEDIA)
     qDebug() << this << "streamReady";
 #endif
 
     PulseDaemonLocker locker;
     m_sinkInputId =  pa_stream_get_index( m_pulseStream );
 
-#if defined(CS_SHOW_DEBUG_MULTIMEDIA)
+#if defined(LSCS_SHOW_DEBUG_MULTIMEDIA)
     const pa_buffer_attr *realBufAttr = pa_stream_get_buffer_attr( m_pulseStream );
 
     qDebug() << this << "m_sinkInputId =" << m_sinkInputId
@@ -1181,7 +1181,7 @@ void QSoundEffectPrivate::streamReady()
 
 void QSoundEffectPrivate::createPulseStream()
 {
-#if defined(CS_SHOW_DEBUG_MULTIMEDIA)
+#if defined(LSCS_SHOW_DEBUG_MULTIMEDIA)
     qDebug() << this << "createPulseStream";
 #endif
 
@@ -1264,7 +1264,7 @@ void QSoundEffectPrivate::stream_write_callback( pa_stream *s, size_t length, vo
 
     QSoundEffectPrivate *self = reinterpret_cast<QSoundEffectPrivate *>( userdata );
 
-#if defined(CS_SHOW_DEBUG_MULTIMEDIA)
+#if defined(LSCS_SHOW_DEBUG_MULTIMEDIA)
     qDebug() << self << "stream_write_callback";
 #endif
 
@@ -1279,7 +1279,7 @@ void QSoundEffectPrivate::stream_state_callback( pa_stream *s, void *userdata )
     {
         case PA_STREAM_READY:
         {
-#if defined(CS_SHOW_DEBUG_MULTIMEDIA)
+#if defined(LSCS_SHOW_DEBUG_MULTIMEDIA)
             qDebug() << self << "pulse stream ready";
 #endif
             const pa_buffer_attr *bufferAttr = pa_stream_get_buffer_attr( self->m_pulseStream );
@@ -1313,13 +1313,13 @@ void QSoundEffectPrivate::stream_state_callback( pa_stream *s, void *userdata )
         }
 
         case PA_STREAM_CREATING:
-#if defined(CS_SHOW_DEBUG_MULTIMEDIA)
+#if defined(LSCS_SHOW_DEBUG_MULTIMEDIA)
             qDebug() << self << "pulse stream creating";
 #endif
             break;
 
         case PA_STREAM_TERMINATED:
-#if defined(CS_SHOW_DEBUG_MULTIMEDIA)
+#if defined(LSCS_SHOW_DEBUG_MULTIMEDIA)
             qDebug() << self << "pulse stream terminated";
 #endif
             break;
@@ -1333,7 +1333,7 @@ void QSoundEffectPrivate::stream_state_callback( pa_stream *s, void *userdata )
 
 void QSoundEffectPrivate::stream_reset_buffer_callback( pa_stream *s, int success, void *userdata )
 {
-#if defined(CS_SHOW_DEBUG_MULTIMEDIA)
+#if defined(LSCS_SHOW_DEBUG_MULTIMEDIA)
     qDebug() << "stream_reset_buffer_callback";
 #endif
 
@@ -1354,7 +1354,7 @@ void QSoundEffectPrivate::stream_reset_buffer_callback( pa_stream *s, int succes
         qWarning( "QSoundEffect::createPulseStream() Failed to reset buffer attribute" );
     }
 
-#if defined(CS_SHOW_DEBUG_MULTIMEDIA)
+#if defined(LSCS_SHOW_DEBUG_MULTIMEDIA)
     qDebug() << self << "stream_reset_buffer_callback";
 #endif
 
@@ -1388,7 +1388,7 @@ void QSoundEffectPrivate::stream_reset_buffer_callback( pa_stream *s, int succes
 
 void QSoundEffectPrivate::stream_adjust_prebuffer_callback( pa_stream *s, int success, void *userdata )
 {
-#if defined(CS_SHOW_DEBUG_MULTIMEDIA)
+#if defined(LSCS_SHOW_DEBUG_MULTIMEDIA)
     qDebug() << "stream_adjust_prebuffer_callback";
 #endif
 
@@ -1408,7 +1408,7 @@ void QSoundEffectPrivate::stream_adjust_prebuffer_callback( pa_stream *s, int su
         qWarning( "QSoundEffect::stream_adjust_prebuffer_callback() Failed to adjust pre-buffer attribute" );
     }
 
-#if defined(CS_SHOW_DEBUG_MULTIMEDIA)
+#if defined(LSCS_SHOW_DEBUG_MULTIMEDIA)
     qDebug() << self << "stream_adjust_prebuffer_callback";
 #endif
 
@@ -1421,7 +1421,7 @@ void QSoundEffectPrivate::stream_underrun_callback( pa_stream *s, void *userdata
 
     QSoundEffectPrivate *self = reinterpret_cast<QSoundEffectPrivate *>( userdata );
 
-#if defined(CS_SHOW_DEBUG_MULTIMEDIA)
+#if defined(LSCS_SHOW_DEBUG_MULTIMEDIA)
     qDebug() << self << "stream_underrun_callback";
 #endif
 
@@ -1430,7 +1430,7 @@ void QSoundEffectPrivate::stream_underrun_callback( pa_stream *s, void *userdata
         QMetaObject::invokeMethod( self, "underRun", Qt::QueuedConnection );
     }
 
-#if defined(CS_SHOW_DEBUG_MULTIMEDIA)
+#if defined(LSCS_SHOW_DEBUG_MULTIMEDIA)
     else
     {
         qDebug() << "underun corked =" << pa_stream_is_corked( s );
@@ -1443,7 +1443,7 @@ void QSoundEffectPrivate::stream_cork_callback( pa_stream *s, int success, void 
 {
     ( void ) s;
 
-#if defined(CS_SHOW_DEBUG_MULTIMEDIA)
+#if defined(LSCS_SHOW_DEBUG_MULTIMEDIA)
     qDebug() << "stream_cork_callback";
 #endif
 
@@ -1461,7 +1461,7 @@ void QSoundEffectPrivate::stream_cork_callback( pa_stream *s, int success, void 
         qWarning( "QSoundEffect::stream_cork_callback() Failed to stop" );
     }
 
-#if defined(CS_SHOW_DEBUG_MULTIMEDIA)
+#if defined(LSCS_SHOW_DEBUG_MULTIMEDIA)
     qDebug() << self << "stream_cork_callback";
 #endif
 
@@ -1470,7 +1470,7 @@ void QSoundEffectPrivate::stream_cork_callback( pa_stream *s, int success, void 
 
 void QSoundEffectPrivate::stream_flush_callback( pa_stream *s, int success, void *userdata )
 {
-#if defined(CS_SHOW_DEBUG_MULTIMEDIA)
+#if defined(LSCS_SHOW_DEBUG_MULTIMEDIA)
     qDebug() << "stream_flush_callback";
 #endif
 
@@ -1493,7 +1493,7 @@ void QSoundEffectPrivate::stream_flush_callback( pa_stream *s, int success, void
 
 void QSoundEffectPrivate::stream_flush_reload_callback( pa_stream *s, int success, void *userdata )
 {
-#if defined(CS_SHOW_DEBUG_MULTIMEDIA)
+#if defined(LSCS_SHOW_DEBUG_MULTIMEDIA)
     qDebug() << "stream_flush_reload_callback";
 #endif
 
@@ -1519,7 +1519,7 @@ void QSoundEffectPrivate::stream_write_done_callback( void *p )
 {
     ( void ) p;
 
-#if defined(CS_SHOW_DEBUG_MULTIMEDIA)
+#if defined(LSCS_SHOW_DEBUG_MULTIMEDIA)
     qDebug() << "stream_write_done_callback";
 #endif
 }

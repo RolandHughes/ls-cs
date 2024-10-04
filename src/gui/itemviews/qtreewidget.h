@@ -339,12 +339,12 @@ Q_GUI_EXPORT QDataStream &operator>>( QDataStream &in, QTreeWidgetItem &item );
 
 class Q_GUI_EXPORT QTreeWidget : public QTreeView
 {
-    GUI_CS_OBJECT( QTreeWidget )
+    GUI_LSCS_OBJECT( QTreeWidget )
 
-    GUI_CS_PROPERTY_READ( columnCount, columnCount )
-    GUI_CS_PROPERTY_WRITE( columnCount, setColumnCount )
+    GUI_LSCS_PROPERTY_READ( columnCount, columnCount )
+    GUI_LSCS_PROPERTY_WRITE( columnCount, setColumnCount )
 
-    GUI_CS_PROPERTY_READ( topLevelItemCount, topLevelItemCount )
+    GUI_LSCS_PROPERTY_READ( topLevelItemCount, topLevelItemCount )
 
 public:
     explicit QTreeWidget( QWidget *parent = nullptr );
@@ -414,48 +414,48 @@ public:
 
     void setSelectionModel( QItemSelectionModel *selectionModel ) override;
 
-    GUI_CS_SLOT_1( Public, void scrollToItem( const QTreeWidgetItem *item,
+    GUI_LSCS_SLOT_1( Public, void scrollToItem( const QTreeWidgetItem *item,
                    QAbstractItemView::ScrollHint hint = EnsureVisible ) )
-    GUI_CS_SLOT_2( scrollToItem )
+    GUI_LSCS_SLOT_2( scrollToItem )
 
-    GUI_CS_SLOT_1( Public, void expandItem( const QTreeWidgetItem *item ) )
-    GUI_CS_SLOT_2( expandItem )
+    GUI_LSCS_SLOT_1( Public, void expandItem( const QTreeWidgetItem *item ) )
+    GUI_LSCS_SLOT_2( expandItem )
 
-    GUI_CS_SLOT_1( Public, void collapseItem( const QTreeWidgetItem *item ) )
-    GUI_CS_SLOT_2( collapseItem )
+    GUI_LSCS_SLOT_1( Public, void collapseItem( const QTreeWidgetItem *item ) )
+    GUI_LSCS_SLOT_2( collapseItem )
 
-    GUI_CS_SLOT_1( Public, void clear() )
-    GUI_CS_SLOT_2( clear )
+    GUI_LSCS_SLOT_1( Public, void clear() )
+    GUI_LSCS_SLOT_2( clear )
 
-    GUI_CS_SIGNAL_1( Public, void itemPressed( QTreeWidgetItem *item, int column ) )
-    GUI_CS_SIGNAL_2( itemPressed, item, column )
+    GUI_LSCS_SIGNAL_1( Public, void itemPressed( QTreeWidgetItem *item, int column ) )
+    GUI_LSCS_SIGNAL_2( itemPressed, item, column )
 
-    GUI_CS_SIGNAL_1( Public, void itemClicked( QTreeWidgetItem *item, int column ) )
-    GUI_CS_SIGNAL_2( itemClicked, item, column )
+    GUI_LSCS_SIGNAL_1( Public, void itemClicked( QTreeWidgetItem *item, int column ) )
+    GUI_LSCS_SIGNAL_2( itemClicked, item, column )
 
-    GUI_CS_SIGNAL_1( Public, void itemDoubleClicked( QTreeWidgetItem *item, int column ) )
-    GUI_CS_SIGNAL_2( itemDoubleClicked, item, column )
+    GUI_LSCS_SIGNAL_1( Public, void itemDoubleClicked( QTreeWidgetItem *item, int column ) )
+    GUI_LSCS_SIGNAL_2( itemDoubleClicked, item, column )
 
-    GUI_CS_SIGNAL_1( Public, void itemActivated( QTreeWidgetItem *item, int column ) )
-    GUI_CS_SIGNAL_2( itemActivated, item, column )
+    GUI_LSCS_SIGNAL_1( Public, void itemActivated( QTreeWidgetItem *item, int column ) )
+    GUI_LSCS_SIGNAL_2( itemActivated, item, column )
 
-    GUI_CS_SIGNAL_1( Public, void itemEntered( QTreeWidgetItem *item, int column ) )
-    GUI_CS_SIGNAL_2( itemEntered, item, column )
+    GUI_LSCS_SIGNAL_1( Public, void itemEntered( QTreeWidgetItem *item, int column ) )
+    GUI_LSCS_SIGNAL_2( itemEntered, item, column )
 
-    GUI_CS_SIGNAL_1( Public, void itemChanged( QTreeWidgetItem *item, int column ) )
-    GUI_CS_SIGNAL_2( itemChanged, item, column )
+    GUI_LSCS_SIGNAL_1( Public, void itemChanged( QTreeWidgetItem *item, int column ) )
+    GUI_LSCS_SIGNAL_2( itemChanged, item, column )
 
-    GUI_CS_SIGNAL_1( Public, void itemExpanded( QTreeWidgetItem *item ) )
-    GUI_CS_SIGNAL_2( itemExpanded, item )
+    GUI_LSCS_SIGNAL_1( Public, void itemExpanded( QTreeWidgetItem *item ) )
+    GUI_LSCS_SIGNAL_2( itemExpanded, item )
 
-    GUI_CS_SIGNAL_1( Public, void itemCollapsed( QTreeWidgetItem *item ) )
-    GUI_CS_SIGNAL_2( itemCollapsed, item )
+    GUI_LSCS_SIGNAL_1( Public, void itemCollapsed( QTreeWidgetItem *item ) )
+    GUI_LSCS_SIGNAL_2( itemCollapsed, item )
 
-    GUI_CS_SIGNAL_1( Public, void currentItemChanged( QTreeWidgetItem *current, QTreeWidgetItem *previous ) )
-    GUI_CS_SIGNAL_2( currentItemChanged, current, previous )
+    GUI_LSCS_SIGNAL_1( Public, void currentItemChanged( QTreeWidgetItem *current, QTreeWidgetItem *previous ) )
+    GUI_LSCS_SIGNAL_2( currentItemChanged, current, previous )
 
-    GUI_CS_SIGNAL_1( Public, void itemSelectionChanged() )
-    GUI_CS_SIGNAL_2( itemSelectionChanged )
+    GUI_LSCS_SIGNAL_1( Public, void itemSelectionChanged() )
+    GUI_LSCS_SIGNAL_2( itemSelectionChanged )
 
 protected:
     bool event( QEvent *event ) override;
@@ -478,41 +478,41 @@ private:
     friend class QTreeModel;
     friend class QTreeWidgetItem;
 
-    GUI_CS_SLOT_1( Private, void _q_emitItemPressed( const QModelIndex &index ) )
-    GUI_CS_SLOT_2( _q_emitItemPressed )
+    GUI_LSCS_SLOT_1( Private, void _q_emitItemPressed( const QModelIndex &index ) )
+    GUI_LSCS_SLOT_2( _q_emitItemPressed )
 
-    GUI_CS_SLOT_1( Private, void _q_emitItemClicked( const QModelIndex &index ) )
-    GUI_CS_SLOT_2( _q_emitItemClicked )
+    GUI_LSCS_SLOT_1( Private, void _q_emitItemClicked( const QModelIndex &index ) )
+    GUI_LSCS_SLOT_2( _q_emitItemClicked )
 
-    GUI_CS_SLOT_1( Private, void _q_emitItemDoubleClicked( const QModelIndex &index ) )
-    GUI_CS_SLOT_2( _q_emitItemDoubleClicked )
+    GUI_LSCS_SLOT_1( Private, void _q_emitItemDoubleClicked( const QModelIndex &index ) )
+    GUI_LSCS_SLOT_2( _q_emitItemDoubleClicked )
 
-    GUI_CS_SLOT_1( Private, void _q_emitItemActivated( const QModelIndex &index ) )
-    GUI_CS_SLOT_2( _q_emitItemActivated )
+    GUI_LSCS_SLOT_1( Private, void _q_emitItemActivated( const QModelIndex &index ) )
+    GUI_LSCS_SLOT_2( _q_emitItemActivated )
 
-    GUI_CS_SLOT_1( Private, void _q_emitItemEntered( const QModelIndex &index ) )
-    GUI_CS_SLOT_2( _q_emitItemEntered )
+    GUI_LSCS_SLOT_1( Private, void _q_emitItemEntered( const QModelIndex &index ) )
+    GUI_LSCS_SLOT_2( _q_emitItemEntered )
 
-    GUI_CS_SLOT_1( Private, void _q_emitItemChanged( const QModelIndex &index ) )
-    GUI_CS_SLOT_2( _q_emitItemChanged )
+    GUI_LSCS_SLOT_1( Private, void _q_emitItemChanged( const QModelIndex &index ) )
+    GUI_LSCS_SLOT_2( _q_emitItemChanged )
 
-    GUI_CS_SLOT_1( Private, void _q_emitItemExpanded( const QModelIndex &index ) )
-    GUI_CS_SLOT_2( _q_emitItemExpanded )
+    GUI_LSCS_SLOT_1( Private, void _q_emitItemExpanded( const QModelIndex &index ) )
+    GUI_LSCS_SLOT_2( _q_emitItemExpanded )
 
-    GUI_CS_SLOT_1( Private, void _q_emitItemCollapsed( const QModelIndex &index ) )
-    GUI_CS_SLOT_2( _q_emitItemCollapsed )
+    GUI_LSCS_SLOT_1( Private, void _q_emitItemCollapsed( const QModelIndex &index ) )
+    GUI_LSCS_SLOT_2( _q_emitItemCollapsed )
 
-    GUI_CS_SLOT_1( Private, void _q_emitCurrentItemChanged( const QModelIndex &previous, const QModelIndex &current ) )
-    GUI_CS_SLOT_2( _q_emitCurrentItemChanged )
+    GUI_LSCS_SLOT_1( Private, void _q_emitCurrentItemChanged( const QModelIndex &previous, const QModelIndex &current ) )
+    GUI_LSCS_SLOT_2( _q_emitCurrentItemChanged )
 
-    GUI_CS_SLOT_1( Private, void _q_sort() )
-    GUI_CS_SLOT_2( _q_sort )
+    GUI_LSCS_SLOT_1( Private, void _q_sort() )
+    GUI_LSCS_SLOT_2( _q_sort )
 
-    GUI_CS_SLOT_1( Private, void _q_dataChanged( const QModelIndex &topLeft, const QModelIndex &bottomRight ) )
-    GUI_CS_SLOT_2( _q_dataChanged )
+    GUI_LSCS_SLOT_1( Private, void _q_dataChanged( const QModelIndex &topLeft, const QModelIndex &bottomRight ) )
+    GUI_LSCS_SLOT_2( _q_dataChanged )
 
-    GUI_CS_SLOT_1( Private, void _q_selectionChanged( const QItemSelection &selected, const QItemSelection &deselected ) )
-    GUI_CS_SLOT_2( _q_selectionChanged )
+    GUI_LSCS_SLOT_1( Private, void _q_selectionChanged( const QItemSelection &selected, const QItemSelection &deselected ) )
+    GUI_LSCS_SLOT_2( _q_selectionChanged )
 };
 
 inline void QTreeWidget::removeItemWidget( QTreeWidgetItem *item, int column )

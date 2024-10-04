@@ -143,13 +143,13 @@ QString QStandardPaths::writableLocation( StandardLocation type )
                     if ( ! QDir().mkdir( xdgRuntimeDir ) )
                     {
                         qWarning( "QStandardPaths::writableLocation() Error creating runtime directory %s: %s",
-                                  csPrintable( xdgRuntimeDir ), csPrintable( qt_error_string( errno ) ) );
+                                  lscsPrintable( xdgRuntimeDir ), lscsPrintable( qt_error_string( errno ) ) );
                         return QString();
                     }
                 }
 
                 qWarning( "QStandardPaths::writableLocation() XDG_RUNTIME_DIR not set, defaulting to %s",
-                          csPrintable( xdgRuntimeDir ) );
+                          lscsPrintable( xdgRuntimeDir ) );
 
             }
             else
@@ -159,7 +159,7 @@ QString QStandardPaths::writableLocation( StandardLocation type )
                 if ( ! fileInfo.exists() )
                 {
                     qWarning( "QStandardPaths::writableLocation() XDG_RUNTIME_DIR points to an invalid path of %s, "
-                              "create using permissions of 0700", csPrintable( xdgRuntimeDir ) );
+                              "create using permissions of 0700", lscsPrintable( xdgRuntimeDir ) );
 
                     return QString();
                 }
@@ -167,7 +167,7 @@ QString QStandardPaths::writableLocation( StandardLocation type )
                 if ( ! fileInfo.isDir() )
                 {
                     qWarning( "QStandardPaths::writableLocation() XDG_RUNTIME_DIR points to %s which is not a directory",
-                              csPrintable( xdgRuntimeDir ) );
+                              lscsPrintable( xdgRuntimeDir ) );
 
                     return QString();
                 }
@@ -178,7 +178,7 @@ QString QStandardPaths::writableLocation( StandardLocation type )
             if ( fileInfo.ownerId() != myUid )
             {
                 qWarning( "QStandardPaths::writableLocation() Incorrect ownership on runtime directory %s, %d instead of %d",
-                          csPrintable( xdgRuntimeDir ), fileInfo.ownerId(), myUid );
+                          lscsPrintable( xdgRuntimeDir ), fileInfo.ownerId(), myUid );
 
                 return QString();
             }
@@ -194,7 +194,7 @@ QString QStandardPaths::writableLocation( StandardLocation type )
                 if ( ! file.setPermissions( wantedPerms ) )
                 {
                     qWarning( "QStandardPaths::writableLocation() Unable to set permissions on runtime directory %s: %s",
-                              csPrintable( xdgRuntimeDir ), csPrintable( file.errorString() ) );
+                              lscsPrintable( xdgRuntimeDir ), lscsPrintable( file.errorString() ) );
 
                     return QString();
                 }

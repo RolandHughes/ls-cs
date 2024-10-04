@@ -45,7 +45,7 @@ struct QGLGlyphTexture : public QOpenGLSharedResource
             ctx->contextHandle()->functions()->glGenFramebuffers( 1, &m_fbo );
         }
 
-#if defined(CS_SHOW_DEBUG_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_OPENGL)
         qDebug( " -> QGLGlyphTexture() %p for context %p.", this, ctx );
 #endif
     }
@@ -54,7 +54,7 @@ struct QGLGlyphTexture : public QOpenGLSharedResource
     {
         const QGLContext *ctx = QGLContext::fromOpenGLContext( context );
 
-#if defined(CS_SHOW_DEBUG_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_OPENGL)
         qDebug( "~QGLGlyphTexture() %p for context %p.", this, ctx );
 #else
         ( void ) ctx;

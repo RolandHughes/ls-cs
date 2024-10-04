@@ -50,8 +50,8 @@ static QAtomicInt theIdCounter = 1;
 int QHostInfo::lookupHost( const QString &name, QObject *receiver, const QString &member )
 {
 
-#if defined(CS_SHOW_DEBUG_NETWORK)
-    qDebug( "QHostInfo::lookupHost(\"%s\", %p, %s)", csPrintable( name ), receiver, csPrintable( member ) );
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
+    qDebug( "QHostInfo::lookupHost(\"%s\", %p, %s)", lscsPrintable( name ), receiver, lscsPrintable( member ) );
 #endif
 
     if ( ! QAbstractEventDispatcher::instance( QThread::currentThread() ) )
@@ -143,7 +143,7 @@ QHostInfo QHostInfo::fromName( const QString &name )
 #ifndef QT_NO_BEARERMANAGEMENT
 QHostInfo QHostInfoPrivate::fromName( const QString &name, QSharedPointer<QNetworkSession> session )
 {
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
     qDebug( "QHostInfoPrivate::fromName(\"%s\") with session %p", name.toLatin1().constData(), session.data() );
 #endif
 

@@ -31,7 +31,7 @@ class QStyleOptionButton;
 
 class Q_GUI_EXPORT QRadioButton : public QAbstractButton
 {
-    GUI_CS_OBJECT( QRadioButton )
+    GUI_LSCS_OBJECT( QRadioButton )
 
 public:
     explicit QRadioButton( QWidget *parent = nullptr );

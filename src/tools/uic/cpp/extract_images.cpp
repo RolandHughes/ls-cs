@@ -66,7 +66,7 @@ void ExtractImages::acceptUI( DomUI *node )
 
         if ( ! f.open( QIODevice::WriteOnly | QFile::Text ) )
         {
-            fprintf( stderr, "%s: Error: Could not create resource file\n", csPrintable( m_option.messagePrefix() ) );
+            fprintf( stderr, "%s: Error: Could not create resource file\n", lscsPrintable( m_option.messagePrefix() ) );
             return;
         }
 
@@ -75,7 +75,7 @@ void ExtractImages::acceptUI( DomUI *node )
 
         if ( !dir.exists( "images" ) && ! dir.mkdir( "images" ) )
         {
-            fprintf( stderr, "%s: Error: Could not create image dir\n", csPrintable( m_option.messagePrefix() ) );
+            fprintf( stderr, "%s: Error: Could not create image dir\n", lscsPrintable( m_option.messagePrefix() ) );
             return;
         }
 
@@ -126,7 +126,7 @@ void ExtractImages::acceptImage( DomImage *image )
     if ( ! f.open( openMode ) )
     {
         fprintf( stderr, "%s: Error: Could not create image file %s: %s",
-                 csPrintable( m_option.messagePrefix() ), csPrintable( fname ), csPrintable( f.errorString() ) );
+                 lscsPrintable( m_option.messagePrefix() ), lscsPrintable( fname ), lscsPrintable( f.errorString() ) );
         return;
     }
 

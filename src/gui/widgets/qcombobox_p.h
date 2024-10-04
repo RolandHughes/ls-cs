@@ -53,7 +53,7 @@ class QStandardItemModel;
 
 class QComboBoxListView : public QListView
 {
-    GUI_CS_OBJECT( QComboBoxListView )
+    GUI_LSCS_OBJECT( QComboBoxListView )
 
 public:
     QComboBoxListView( QComboBox *cmb = nullptr )
@@ -114,7 +114,7 @@ private:
 
 class QComboBoxPrivateScroller : public QWidget
 {
-    GUI_CS_OBJECT( QComboBoxPrivateScroller )
+    GUI_LSCS_OBJECT( QComboBoxPrivateScroller )
 
 public:
     QComboBoxPrivateScroller( QAbstractSlider::SliderAction action, QWidget *parent )
@@ -129,8 +129,8 @@ public:
         return QSize( 20, style()->pixelMetric( QStyle::PM_MenuScrollerHeight ) );
     }
 
-    GUI_CS_SIGNAL_1( Public, void doScroll( int action ) )
-    GUI_CS_SIGNAL_2( doScroll, action )
+    GUI_LSCS_SIGNAL_1( Public, void doScroll( int action ) )
+    GUI_LSCS_SIGNAL_2( doScroll, action )
 
 protected:
     inline void stopTimer()
@@ -213,7 +213,7 @@ private:
 
 class QComboBoxPrivateContainer : public QFrame
 {
-    GUI_CS_OBJECT( QComboBoxPrivateContainer )
+    GUI_LSCS_OBJECT( QComboBoxPrivateContainer )
 
 public:
     QComboBoxPrivateContainer( QAbstractItemView *itemView, QComboBox *parent );
@@ -231,20 +231,20 @@ public:
     QBasicTimer adjustSizeTimer;
     QPoint initialClickPosition;
 
-    GUI_CS_SLOT_1( Public, void scrollItemView( int action ) )
-    GUI_CS_SLOT_2( scrollItemView )
+    GUI_LSCS_SLOT_1( Public, void scrollItemView( int action ) )
+    GUI_LSCS_SLOT_2( scrollItemView )
 
-    GUI_CS_SLOT_1( Public, void updateScrollers() )
-    GUI_CS_SLOT_2( updateScrollers )
+    GUI_LSCS_SLOT_1( Public, void updateScrollers() )
+    GUI_LSCS_SLOT_2( updateScrollers )
 
-    GUI_CS_SLOT_1( Public, void viewDestroyed() )
-    GUI_CS_SLOT_2( viewDestroyed )
+    GUI_LSCS_SLOT_1( Public, void viewDestroyed() )
+    GUI_LSCS_SLOT_2( viewDestroyed )
 
-    GUI_CS_SIGNAL_1( Public, void itemSelected( const QModelIndex &index ) )
-    GUI_CS_SIGNAL_2( itemSelected, index )
+    GUI_LSCS_SIGNAL_1( Public, void itemSelected( const QModelIndex &index ) )
+    GUI_LSCS_SIGNAL_2( itemSelected, index )
 
-    GUI_CS_SIGNAL_1( Public, void resetButton() )
-    GUI_CS_SIGNAL_2( resetButton )
+    GUI_LSCS_SIGNAL_1( Public, void resetButton() )
+    GUI_LSCS_SIGNAL_2( resetButton )
 
 protected:
     void changeEvent( QEvent *e ) override;
@@ -271,7 +271,7 @@ private:
 
 class QComboMenuDelegate : public QAbstractItemDelegate
 {
-    GUI_CS_OBJECT( QComboMenuDelegate )
+    GUI_LSCS_OBJECT( QComboMenuDelegate )
 
 public:
     QComboMenuDelegate( QObject *parent, QComboBox *cmb ) : QAbstractItemDelegate( parent ), mCombo( cmb ) {}
@@ -301,7 +301,7 @@ private:
 // be other side effects from using the new class
 class QComboBoxDelegate : public QItemDelegate
 {
-    GUI_CS_OBJECT( QComboBoxDelegate )
+    GUI_LSCS_OBJECT( QComboBoxDelegate )
 
 public:
     QComboBoxDelegate( QObject *parent, QComboBox *cmb ) : QItemDelegate( parent ), mCombo( cmb ) {}

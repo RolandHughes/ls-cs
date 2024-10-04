@@ -42,7 +42,7 @@ class QTreeModelPrivate;
 
 class QTreeModel : public QAbstractItemModel
 {
-    GUI_CS_OBJECT( QTreeModel )
+    GUI_LSCS_OBJECT( QTreeModel )
 
     friend class QTreeWidget;
     friend class QTreeWidgetPrivate;

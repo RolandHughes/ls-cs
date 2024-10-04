@@ -399,7 +399,7 @@ static QDateTime parseDateString( const QString &dateString )
     while ( at < dateString.length() )
     {
 
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
         qDebug() << dateString.mid( at );
 #endif
 
@@ -410,7 +410,7 @@ static QDateTime parseDateString( const QString &dateString )
         {
             ++month;
 
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
             qDebug() << "Month:" << month;
 #endif
             at += 3;
@@ -423,7 +423,7 @@ static QDateTime parseDateString( const QString &dateString )
             int sign = ( at >= 0 && dateString[at - 1] == '-' ) ? -1 : 1;
             zoneOffset = sign * zoneOffsets[zoneOffset] * 60 * 60;
 
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
             qDebug() << "Zone:" << month;
 #endif
             at += 3;
@@ -476,7 +476,7 @@ static QDateTime parseDateString( const QString &dateString )
                 int sign = dateString[at] == '-' ? -1 : 1;
                 zoneOffset = sign * ( ( minutes * 60 ) + ( hours * 60 * 60 ) );
 
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
                 qDebug() << "Zone offset:" << zoneOffset << hours << minutes;
 #endif
                 at += end;
@@ -512,7 +512,7 @@ static QDateTime parseDateString( const QString &dateString )
 
                 time = QTime( h, m, s, ms );
 
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
                 qDebug() << "Time:" << list << match.capturedLength( 0 );
 #endif
 
@@ -530,7 +530,7 @@ static QDateTime parseDateString( const QString &dateString )
                 year = atoi( dateString.mid( at, 4 ).constData() );
                 at += 4;
 
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
                 qDebug() << "Year:" << year;
 #endif
                 continue;
@@ -573,7 +573,7 @@ static QDateTime parseDateString( const QString &dateString )
 
             at += length;
 
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
             qDebug() << "Saving" << x;
 #endif
             continue;
@@ -768,13 +768,13 @@ static QDateTime parseDateString( const QString &dateString )
         }
     }
 
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
     qDebug() << "Final set" << year << month << day;
 #endif
 
     if ( year == -1 || month == -1 || day == -1 )
     {
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
         qDebug() << "Parser failure" << year << month << day;
 #endif
 

@@ -58,7 +58,7 @@ private:
 
 class QIBaseDriver : public QSqlDriver
 {
-    CS_OBJECT( QIBaseDriver )
+    LSCS_OBJECT( QIBaseDriver )
 
     friend class QIBaseDriverPrivate;
     friend class QIBaseResultPrivate;
@@ -103,8 +103,8 @@ protected:
     QStringList subscribedToNotificationsImplementation();
 
 private:
-    SQL_CS_SLOT_1( Private, void qHandleEventNotification( void *updatedResultBuffer ) )
-    SQL_CS_SLOT_2( qHandleEventNotification )
+    SQL_LSCS_SLOT_1( Private, void qHandleEventNotification( void *updatedResultBuffer ) )
+    SQL_LSCS_SLOT_2( qHandleEventNotification )
 
     QIBaseDriverPrivate *d;
 };

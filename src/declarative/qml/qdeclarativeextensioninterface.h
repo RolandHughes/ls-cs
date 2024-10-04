@@ -37,7 +37,7 @@ struct Q_DECLARATIVE_EXPORT QDeclarativeExtensionInterface
     virtual void initializeEngine( QDeclarativeEngine *engine, const char *uri ) = 0;
 };
 
-CS_DECLARE_INTERFACE( QDeclarativeExtensionInterface, "com.copperspice.QDeclarativeExtensionInterface/1.0" )
+LSCS_DECLARE_INTERFACE( QDeclarativeExtensionInterface, "com.copperspice.QDeclarativeExtensionInterface/1.0" )
 
 QT_END_NAMESPACE
 

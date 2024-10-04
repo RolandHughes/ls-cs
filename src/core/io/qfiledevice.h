@@ -31,7 +31,7 @@ class QFileDevicePrivate;
 
 class Q_CORE_EXPORT QFileDevice : public QIODevice
 {
-    CORE_CS_OBJECT( QFileDevice )
+    CORE_LSCS_OBJECT( QFileDevice )
 
 public:
     enum FileError

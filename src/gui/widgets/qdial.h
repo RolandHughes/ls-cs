@@ -33,18 +33,18 @@ class QStyleOptionSlider;
 
 class Q_GUI_EXPORT QDial: public QAbstractSlider
 {
-    GUI_CS_OBJECT( QDial )
+    GUI_LSCS_OBJECT( QDial )
 
-    GUI_CS_PROPERTY_READ( wrapping, wrapping )
-    GUI_CS_PROPERTY_WRITE( wrapping, setWrapping )
+    GUI_LSCS_PROPERTY_READ( wrapping, wrapping )
+    GUI_LSCS_PROPERTY_WRITE( wrapping, setWrapping )
 
-    GUI_CS_PROPERTY_READ( notchSize, notchSize )
+    GUI_LSCS_PROPERTY_READ( notchSize, notchSize )
 
-    GUI_CS_PROPERTY_READ( notchTarget, notchTarget )
-    GUI_CS_PROPERTY_WRITE( notchTarget, setNotchTarget )
+    GUI_LSCS_PROPERTY_READ( notchTarget, notchTarget )
+    GUI_LSCS_PROPERTY_WRITE( notchTarget, setNotchTarget )
 
-    GUI_CS_PROPERTY_READ( notchesVisible, notchesVisible )
-    GUI_CS_PROPERTY_WRITE( notchesVisible, setNotchesVisible )
+    GUI_LSCS_PROPERTY_READ( notchesVisible, notchesVisible )
+    GUI_LSCS_PROPERTY_WRITE( notchesVisible, setNotchesVisible )
 
 public:
     explicit QDial( QWidget *parent = nullptr );
@@ -64,11 +64,11 @@ public:
     QSize sizeHint() const override;
     QSize minimumSizeHint() const override;
 
-    GUI_CS_SLOT_1( Public, void setNotchesVisible( bool visible ) )
-    GUI_CS_SLOT_2( setNotchesVisible )
+    GUI_LSCS_SLOT_1( Public, void setNotchesVisible( bool visible ) )
+    GUI_LSCS_SLOT_2( setNotchesVisible )
 
-    GUI_CS_SLOT_1( Public, void setWrapping( bool enable ) )
-    GUI_CS_SLOT_2( setWrapping )
+    GUI_LSCS_SLOT_1( Public, void setWrapping( bool enable ) )
+    GUI_LSCS_SLOT_2( setWrapping )
 
 protected:
     bool event( QEvent *event ) override;

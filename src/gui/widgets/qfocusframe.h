@@ -31,7 +31,7 @@ class QStyleOption;
 
 class Q_GUI_EXPORT QFocusFrame : public QWidget
 {
-    GUI_CS_OBJECT( QFocusFrame )
+    GUI_LSCS_OBJECT( QFocusFrame )
 
 public:
     QFocusFrame( QWidget *parent = nullptr );

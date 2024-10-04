@@ -33,7 +33,7 @@ static constexpr  inline void cs_do_nothing( void )
 Q_CORE_EXPORT void qt_assert( const char *assertion, const char *file, int line );
 
 #if ! defined(Q_ASSERT)
-#  ifdef CS_DISABLE_ASSERT
+#  ifdef LSCS_DISABLE_ASSERT
 #    define Q_ASSERT(cond) cs_do_nothing()
 #  else
 #    define Q_ASSERT(cond) ((!(cond)) ? qt_assert(#cond,__FILE__,__LINE__) : cs_do_nothing())
@@ -43,7 +43,7 @@ Q_CORE_EXPORT void qt_assert( const char *assertion, const char *file, int line 
 Q_CORE_EXPORT void qt_assert_x( const char *where, const char *what, const char *file, int line );
 
 #if ! defined(Q_ASSERT_X)
-#  ifdef CS_DISABLE_ASSERT
+#  ifdef LSCS_DISABLE_ASSERT
 #    define Q_ASSERT_X(cond, where, what) cs_do_nothing()
 #  else
 #    define Q_ASSERT_X(cond, where, what) ((!(cond)) ? qt_assert_x(where, what,__FILE__,__LINE__) : cs_do_nothing())

@@ -24,15 +24,15 @@
  * LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 */
 
-#ifndef CS_REGEX_TRAITS_H
-#define CS_REGEX_TRAITS_H
+#ifndef LSCS_REGEX_TRAITS_H
+#define LSCS_REGEX_TRAITS_H
 
 #include <regex/regex_fwd.h>
 #include <regex/regex_traits_defaults.h>
 
 #include <string>
 
-namespace cs_regex_ns
+namespace lscs_regex_ns
 {
 
 template <class charT, class implementationT >
@@ -43,7 +43,7 @@ struct regex_traits : public implementationT
 
 // provide default implementations of the optional interfaces in addition the required standard ones
 
-namespace cs_regex_detail_ns
+namespace lscs_regex_detail_ns
 {
 
 template <class T>
@@ -58,12 +58,12 @@ struct default_wrapper : public BaseT
     using char_type   = typename BaseT::char_type;
     using string_type = typename BaseT::string_type;
 
-    std::string error_string( cs_regex_ns::regex_constants::error_type e ) const
+    std::string error_string( lscs_regex_ns::regex_constants::error_type e ) const
     {
-        return cs_regex_ns::cs_regex_detail_ns::get_default_error_string( e );
+        return lscs_regex_ns::lscs_regex_detail_ns::get_default_error_string( e );
     }
 
-    cs_regex_ns::regex_constants::syntax_type syntax_type( char_type c ) const
+    lscs_regex_ns::regex_constants::syntax_type syntax_type( char_type c ) const
     {
         auto value = BaseT::toInt( c );
 
@@ -74,11 +74,11 @@ struct default_wrapper : public BaseT
         }
         else
         {
-            return cs_regex_ns::regex_constants::syntax_char;
+            return lscs_regex_ns::regex_constants::syntax_char;
         }
     }
 
-    cs_regex_ns::regex_constants::escape_syntax_type escape_syntax_type( char_type c ) const
+    lscs_regex_ns::regex_constants::escape_syntax_type escape_syntax_type( char_type c ) const
     {
         auto value = BaseT::toInt( c );
 
@@ -89,13 +89,13 @@ struct default_wrapper : public BaseT
         }
         else
         {
-            return cs_regex_ns::regex_constants::escape_type_identity;
+            return lscs_regex_ns::regex_constants::escape_type_identity;
         }
     }
 
     intmax_t toi( typename string_type::const_iterator &p1, const typename string_type::const_iterator p2, int radix ) const
     {
-        return cs_regex_ns::cs_regex_detail_ns::global_toi( p1, p2, radix, *this );
+        return lscs_regex_ns::lscs_regex_detail_ns::global_toi( p1, p2, radix, *this );
     }
 
     char_type translate( char_type c, bool icase )const
@@ -125,8 +125,8 @@ struct compute_wrapper_base<BaseT, false>
 
 template <class BaseT>
 struct regex_traits_wrapper
-    : public cs_regex_ns::cs_regex_detail_ns::compute_wrapper_base<BaseT,
-      cs_regex_ns::cs_regex_detail_ns::has_boost_extensions_tag<BaseT>::value>::type
+    : public lscs_regex_ns::lscs_regex_detail_ns::compute_wrapper_base<BaseT,
+      lscs_regex_ns::lscs_regex_detail_ns::has_boost_extensions_tag<BaseT>::value>::type
 {
     regex_traits_wrapper() {}
 

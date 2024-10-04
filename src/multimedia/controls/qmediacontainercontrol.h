@@ -29,7 +29,7 @@
 
 class Q_MULTIMEDIA_EXPORT QMediaContainerControl : public QMediaControl
 {
-    MULTI_CS_OBJECT( QMediaContainerControl )
+    MULTI_LSCS_OBJECT( QMediaContainerControl )
 
 public:
     virtual ~QMediaContainerControl();
@@ -45,6 +45,6 @@ protected:
 };
 
 #define QMediaContainerControl_iid "com.copperspice.CS.mediaContainerControl/1.0"
-CS_DECLARE_INTERFACE( QMediaContainerControl, QMediaContainerControl_iid )
+LSCS_DECLARE_INTERFACE( QMediaContainerControl, QMediaContainerControl_iid )
 
 #endif

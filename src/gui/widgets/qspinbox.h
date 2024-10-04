@@ -33,32 +33,32 @@ class QDoubleSpinBoxPrivate;
 
 class Q_GUI_EXPORT QSpinBox : public QAbstractSpinBox
 {
-    GUI_CS_OBJECT( QSpinBox )
+    GUI_LSCS_OBJECT( QSpinBox )
 
-    GUI_CS_PROPERTY_READ( suffix, suffix )
-    GUI_CS_PROPERTY_WRITE( suffix, setSuffix )
+    GUI_LSCS_PROPERTY_READ( suffix, suffix )
+    GUI_LSCS_PROPERTY_WRITE( suffix, setSuffix )
 
-    GUI_CS_PROPERTY_READ( prefix, prefix )
-    GUI_CS_PROPERTY_WRITE( prefix, setPrefix )
+    GUI_LSCS_PROPERTY_READ( prefix, prefix )
+    GUI_LSCS_PROPERTY_WRITE( prefix, setPrefix )
 
-    GUI_CS_PROPERTY_READ( cleanText, cleanText )
+    GUI_LSCS_PROPERTY_READ( cleanText, cleanText )
 
-    GUI_CS_PROPERTY_READ( minimum, minimum )
-    GUI_CS_PROPERTY_WRITE( minimum, setMinimum )
+    GUI_LSCS_PROPERTY_READ( minimum, minimum )
+    GUI_LSCS_PROPERTY_WRITE( minimum, setMinimum )
 
-    GUI_CS_PROPERTY_READ( maximum, maximum )
-    GUI_CS_PROPERTY_WRITE( maximum, setMaximum )
+    GUI_LSCS_PROPERTY_READ( maximum, maximum )
+    GUI_LSCS_PROPERTY_WRITE( maximum, setMaximum )
 
-    GUI_CS_PROPERTY_READ( singleStep, singleStep )
-    GUI_CS_PROPERTY_WRITE( singleStep, setSingleStep )
+    GUI_LSCS_PROPERTY_READ( singleStep, singleStep )
+    GUI_LSCS_PROPERTY_WRITE( singleStep, setSingleStep )
 
-    GUI_CS_PROPERTY_READ( value, value )
-    GUI_CS_PROPERTY_WRITE( value, setValue )
-    GUI_CS_PROPERTY_NOTIFY( value, cs_valueChanged )
-    GUI_CS_PROPERTY_USER( value, true )
+    GUI_LSCS_PROPERTY_READ( value, value )
+    GUI_LSCS_PROPERTY_WRITE( value, setValue )
+    GUI_LSCS_PROPERTY_NOTIFY( value, cs_valueChanged )
+    GUI_LSCS_PROPERTY_USER( value, true )
 
-    GUI_CS_PROPERTY_READ( displayIntegerBase, displayIntegerBase )
-    GUI_CS_PROPERTY_WRITE( displayIntegerBase, setDisplayIntegerBase )
+    GUI_LSCS_PROPERTY_READ( displayIntegerBase, displayIntegerBase )
+    GUI_LSCS_PROPERTY_WRITE( displayIntegerBase, setDisplayIntegerBase )
 
 public:
     explicit QSpinBox( QWidget *parent = nullptr );
@@ -92,18 +92,18 @@ public:
     int displayIntegerBase() const;
     void setDisplayIntegerBase( int base );
 
-    GUI_CS_SLOT_1( Public, void setValue( int val ) )
-    GUI_CS_SLOT_2( setValue )
+    GUI_LSCS_SLOT_1( Public, void setValue( int val ) )
+    GUI_LSCS_SLOT_2( setValue )
 
-    GUI_CS_SIGNAL_1( Public, void valueChanged( int newValue ) )
-    GUI_CS_SIGNAL_OVERLOAD( valueChanged, ( int ), newValue )
+    GUI_LSCS_SIGNAL_1( Public, void valueChanged( int newValue ) )
+    GUI_LSCS_SIGNAL_OVERLOAD( valueChanged, ( int ), newValue )
 
-    GUI_CS_SIGNAL_1( Public, void valueChanged( const QString &text ) )
-    GUI_CS_SIGNAL_OVERLOAD( valueChanged, ( const QString & ), text )
+    GUI_LSCS_SIGNAL_1( Public, void valueChanged( const QString &text ) )
+    GUI_LSCS_SIGNAL_OVERLOAD( valueChanged, ( const QString & ), text )
 
     // wrapper for property
-    GUI_CS_SIGNAL_1( Public, void cs_valueChanged( int newValue ) )
-    GUI_CS_SIGNAL_2( cs_valueChanged, newValue )
+    GUI_LSCS_SIGNAL_1( Public, void cs_valueChanged( int newValue ) )
+    GUI_LSCS_SIGNAL_2( cs_valueChanged, newValue )
 
 protected:
     bool event( QEvent *event ) override;
@@ -118,32 +118,32 @@ private:
 
 class Q_GUI_EXPORT QDoubleSpinBox : public QAbstractSpinBox
 {
-    GUI_CS_OBJECT( QDoubleSpinBox )
+    GUI_LSCS_OBJECT( QDoubleSpinBox )
 
-    GUI_CS_PROPERTY_READ( prefix, prefix )
-    GUI_CS_PROPERTY_WRITE( prefix, setPrefix )
+    GUI_LSCS_PROPERTY_READ( prefix, prefix )
+    GUI_LSCS_PROPERTY_WRITE( prefix, setPrefix )
 
-    GUI_CS_PROPERTY_READ( suffix, suffix )
-    GUI_CS_PROPERTY_WRITE( suffix, setSuffix )
+    GUI_LSCS_PROPERTY_READ( suffix, suffix )
+    GUI_LSCS_PROPERTY_WRITE( suffix, setSuffix )
 
-    GUI_CS_PROPERTY_READ( cleanText, cleanText )
+    GUI_LSCS_PROPERTY_READ( cleanText, cleanText )
 
-    GUI_CS_PROPERTY_READ( decimals, decimals )
-    GUI_CS_PROPERTY_WRITE( decimals, setDecimals )
+    GUI_LSCS_PROPERTY_READ( decimals, decimals )
+    GUI_LSCS_PROPERTY_WRITE( decimals, setDecimals )
 
-    GUI_CS_PROPERTY_READ( minimum, minimum )
-    GUI_CS_PROPERTY_WRITE( minimum, setMinimum )
+    GUI_LSCS_PROPERTY_READ( minimum, minimum )
+    GUI_LSCS_PROPERTY_WRITE( minimum, setMinimum )
 
-    GUI_CS_PROPERTY_READ( maximum, maximum )
-    GUI_CS_PROPERTY_WRITE( maximum, setMaximum )
+    GUI_LSCS_PROPERTY_READ( maximum, maximum )
+    GUI_LSCS_PROPERTY_WRITE( maximum, setMaximum )
 
-    GUI_CS_PROPERTY_READ( singleStep, singleStep )
-    GUI_CS_PROPERTY_WRITE( singleStep, setSingleStep )
+    GUI_LSCS_PROPERTY_READ( singleStep, singleStep )
+    GUI_LSCS_PROPERTY_WRITE( singleStep, setSingleStep )
 
-    GUI_CS_PROPERTY_READ( value, value )
-    GUI_CS_PROPERTY_WRITE( value, setValue )
-    GUI_CS_PROPERTY_NOTIFY( value, cs_valueChanged )
-    GUI_CS_PROPERTY_USER( value, true )
+    GUI_LSCS_PROPERTY_READ( value, value )
+    GUI_LSCS_PROPERTY_WRITE( value, setValue )
+    GUI_LSCS_PROPERTY_NOTIFY( value, cs_valueChanged )
+    GUI_LSCS_PROPERTY_USER( value, true )
 
 public:
     explicit QDoubleSpinBox( QWidget *parent = nullptr );
@@ -182,18 +182,18 @@ public:
     virtual QString textFromValue( double value ) const;
     void fixup( QString &input ) const override;
 
-    GUI_CS_SLOT_1( Public, void setValue( double val ) )
-    GUI_CS_SLOT_2( setValue )
+    GUI_LSCS_SLOT_1( Public, void setValue( double val ) )
+    GUI_LSCS_SLOT_2( setValue )
 
-    GUI_CS_SIGNAL_1( Public, void valueChanged( double newValue ) )
-    GUI_CS_SIGNAL_OVERLOAD( valueChanged, ( double ), newValue )
+    GUI_LSCS_SIGNAL_1( Public, void valueChanged( double newValue ) )
+    GUI_LSCS_SIGNAL_OVERLOAD( valueChanged, ( double ), newValue )
 
-    GUI_CS_SIGNAL_1( Public, void valueChanged( const QString &text ) )
-    GUI_CS_SIGNAL_OVERLOAD( valueChanged, ( const QString & ), text )
+    GUI_LSCS_SIGNAL_1( Public, void valueChanged( const QString &text ) )
+    GUI_LSCS_SIGNAL_OVERLOAD( valueChanged, ( const QString & ), text )
 
     // wrapper for property
-    GUI_CS_SIGNAL_1( Public, void cs_valueChanged( double newValue ) )
-    GUI_CS_SIGNAL_2( cs_valueChanged, newValue )
+    GUI_LSCS_SIGNAL_1( Public, void cs_valueChanged( double newValue ) )
+    GUI_LSCS_SIGNAL_2( cs_valueChanged, newValue )
 
 private:
     Q_DECLARE_PRIVATE( QDoubleSpinBox )

@@ -39,7 +39,7 @@ class QCameraViewfinderPrivate;
 
 class Q_MULTIMEDIA_EXPORT QCameraViewfinder : public QVideoWidget
 {
-    MULTI_CS_OBJECT( QCameraViewfinder )
+    MULTI_LSCS_OBJECT( QCameraViewfinder )
 
 public:
     explicit QCameraViewfinder( QWidget *parent = nullptr );

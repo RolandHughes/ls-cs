@@ -40,7 +40,7 @@ namespace WebCore
 
 class SharedTimerQt : public QObject
 {
-    WEB_CS_OBJECT( SharedTimerQt )
+    WEB_LSCS_OBJECT( SharedTimerQt )
 
     friend void setSharedTimerFiredFunction( void ( *f )() );
 
@@ -54,8 +54,8 @@ protected:
     void timerEvent( QTimerEvent *ev ) override;
 
 private:
-    WEB_CS_SLOT_1( Private,void destroy() )
-    WEB_CS_SLOT_2( destroy )
+    WEB_LSCS_SLOT_1( Private,void destroy() )
+    WEB_LSCS_SLOT_2( destroy )
 
     SharedTimerQt();
     ~SharedTimerQt();

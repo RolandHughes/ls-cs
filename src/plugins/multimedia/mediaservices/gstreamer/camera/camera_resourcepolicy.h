@@ -33,7 +33,7 @@ class ResourceSet;
 
 class CamerabinResourcePolicy : public QObject
 {
-    CS_OBJECT( CamerabinResourcePolicy )
+    LSCS_OBJECT( CamerabinResourcePolicy )
 
 public:
     enum ResourceSet
@@ -55,26 +55,26 @@ public:
     bool canCapture() const;
 
 public:
-    CS_SIGNAL_1( Public, void resourcesDenied() )
-    CS_SIGNAL_2( resourcesDenied )
-    CS_SIGNAL_1( Public, void resourcesGranted() )
-    CS_SIGNAL_2( resourcesGranted )
-    CS_SIGNAL_1( Public, void resourcesLost() )
-    CS_SIGNAL_2( resourcesLost )
-    CS_SIGNAL_1( Public, void canCaptureChanged() )
-    CS_SIGNAL_2( canCaptureChanged )
+    LSCS_SIGNAL_1( Public, void resourcesDenied() )
+    LSCS_SIGNAL_2( resourcesDenied )
+    LSCS_SIGNAL_1( Public, void resourcesGranted() )
+    LSCS_SIGNAL_2( resourcesGranted )
+    LSCS_SIGNAL_1( Public, void resourcesLost() )
+    LSCS_SIGNAL_2( resourcesLost )
+    LSCS_SIGNAL_1( Public, void canCaptureChanged() )
+    LSCS_SIGNAL_2( canCaptureChanged )
 
 private :
-    CS_SLOT_1( Private, void handleResourcesLost() )
-    CS_SLOT_2( handleResourcesLost )
-    CS_SLOT_1( Private, void handleResourcesGranted() )
-    CS_SLOT_2( handleResourcesGranted )
-    CS_SLOT_1( Private, void handleResourcesReleased() )
-    CS_SLOT_2( handleResourcesReleased )
-    CS_SLOT_1( Private, void resourcesAvailable() )
-    CS_SLOT_2( resourcesAvailable )
-    CS_SLOT_1( Private, void updateCanCapture() )
-    CS_SLOT_2( updateCanCapture )
+    LSCS_SLOT_1( Private, void handleResourcesLost() )
+    LSCS_SLOT_2( handleResourcesLost )
+    LSCS_SLOT_1( Private, void handleResourcesGranted() )
+    LSCS_SLOT_2( handleResourcesGranted )
+    LSCS_SLOT_1( Private, void handleResourcesReleased() )
+    LSCS_SLOT_2( handleResourcesReleased )
+    LSCS_SLOT_1( Private, void resourcesAvailable() )
+    LSCS_SLOT_2( resourcesAvailable )
+    LSCS_SLOT_1( Private, void updateCanCapture() )
+    LSCS_SLOT_2( updateCanCapture )
 
 private:
     ResourceSet m_resourceSet;

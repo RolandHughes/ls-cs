@@ -47,12 +47,12 @@ class QMessageDialogOptionsPrivate;
 
 class Q_GUI_EXPORT QPlatformDialogHelper : public QObject
 {
-    GUI_CS_OBJECT( QPlatformDialogHelper )
+    GUI_LSCS_OBJECT( QPlatformDialogHelper )
 
-    GUI_CS_ENUM( ButtonRole )
-    GUI_CS_ENUM( ButtonLayout )
+    GUI_LSCS_ENUM( ButtonRole )
+    GUI_LSCS_ENUM( ButtonLayout )
 
-    GUI_CS_FLAG( StandardButton, StandardButtons )
+    GUI_LSCS_FLAG( StandardButton, StandardButtons )
 
 public:
     enum StyleHint { };
@@ -141,18 +141,18 @@ public:
     static const int *buttonLayout( Qt::Orientation orientation = Qt::Horizontal, ButtonLayout policy = UnknownLayout );
     static ButtonRole buttonRole( StandardButton button );
 
-    GUI_CS_SIGNAL_1( Public, void accept() )
-    GUI_CS_SIGNAL_2( accept )
+    GUI_LSCS_SIGNAL_1( Public, void accept() )
+    GUI_LSCS_SIGNAL_2( accept )
 
-    GUI_CS_SIGNAL_1( Public, void reject() )
-    GUI_CS_SIGNAL_2( reject )
+    GUI_LSCS_SIGNAL_1( Public, void reject() )
+    GUI_LSCS_SIGNAL_2( reject )
 };
 
 class Q_GUI_EXPORT QColorDialogOptions
 {
-    GUI_CS_GADGET( QColorDialogOptions )
+    GUI_LSCS_GADGET( QColorDialogOptions )
 
-    GUI_CS_FLAG( ColorDialogOption, ColorDialogOptions )
+    GUI_LSCS_FLAG( ColorDialogOption, ColorDialogOptions )
 
 public:
     enum ColorDialogOption
@@ -198,7 +198,7 @@ private:
 
 class Q_GUI_EXPORT QPlatformColorDialogHelper : public QPlatformDialogHelper
 {
-    GUI_CS_OBJECT( QPlatformColorDialogHelper )
+    GUI_LSCS_OBJECT( QPlatformColorDialogHelper )
 
 public:
     const QSharedPointer<QColorDialogOptions> &options() const;
@@ -207,11 +207,11 @@ public:
     virtual void setCurrentColor( const QColor & ) = 0;
     virtual QColor currentColor() const = 0;
 
-    GUI_CS_SIGNAL_1( Public, void currentColorChanged( const QColor &color ) )
-    GUI_CS_SIGNAL_2( currentColorChanged, color )
+    GUI_LSCS_SIGNAL_1( Public, void currentColorChanged( const QColor &color ) )
+    GUI_LSCS_SIGNAL_2( currentColorChanged, color )
 
-    GUI_CS_SIGNAL_1( Public, void colorSelected( const QColor &color ) )
-    GUI_CS_SIGNAL_2( colorSelected, color )
+    GUI_LSCS_SIGNAL_1( Public, void colorSelected( const QColor &color ) )
+    GUI_LSCS_SIGNAL_2( colorSelected, color )
 
 private:
     QSharedPointer<QColorDialogOptions> m_options;
@@ -219,9 +219,9 @@ private:
 
 class Q_GUI_EXPORT QFontDialogOptions
 {
-    GUI_CS_GADGET( QFontDialogOptions )
+    GUI_LSCS_GADGET( QFontDialogOptions )
 
-    GUI_CS_FLAG( FontDialogOption, FontDialogOptions )
+    GUI_LSCS_FLAG( FontDialogOption, FontDialogOptions )
 
 public:
     enum FontDialogOption
@@ -261,7 +261,7 @@ private:
 
 class Q_GUI_EXPORT QPlatformFontDialogHelper : public QPlatformDialogHelper
 {
-    GUI_CS_OBJECT( QPlatformFontDialogHelper )
+    GUI_LSCS_OBJECT( QPlatformFontDialogHelper )
 
 public:
     virtual void setCurrentFont( const QFont & ) = 0;
@@ -270,11 +270,11 @@ public:
     const QSharedPointer<QFontDialogOptions> &options() const;
     void setOptions( const QSharedPointer<QFontDialogOptions> &options );
 
-    GUI_CS_SIGNAL_1( Public, void currentFontChanged( const QFont &font ) )
-    GUI_CS_SIGNAL_2( currentFontChanged, font )
+    GUI_LSCS_SIGNAL_1( Public, void currentFontChanged( const QFont &font ) )
+    GUI_LSCS_SIGNAL_2( currentFontChanged, font )
 
-    GUI_CS_SIGNAL_1( Public, void fontSelected( const QFont &font ) )
-    GUI_CS_SIGNAL_2( fontSelected, font )
+    GUI_LSCS_SIGNAL_1( Public, void fontSelected( const QFont &font ) )
+    GUI_LSCS_SIGNAL_2( fontSelected, font )
 
 private:
     QSharedPointer<QFontDialogOptions> m_options;
@@ -282,12 +282,12 @@ private:
 
 class Q_GUI_EXPORT QPlatformFileDialogOptions
 {
-    GUI_CS_GADGET( QPlatformFileDialogOptions )
+    GUI_LSCS_GADGET( QPlatformFileDialogOptions )
 
-    GUI_CS_ENUM( ViewMode )
-    GUI_CS_ENUM( FileMode )
-    GUI_CS_ENUM( AcceptMode )
-    GUI_CS_ENUM( DialogLabel )
+    GUI_LSCS_ENUM( ViewMode )
+    GUI_LSCS_ENUM( FileMode )
+    GUI_LSCS_ENUM( AcceptMode )
+    GUI_LSCS_ENUM( DialogLabel )
 
 public:
     enum ViewMode { Detail, List };
@@ -365,7 +365,7 @@ private:
 
 class Q_GUI_EXPORT QPlatformFileDialogHelper : public QPlatformDialogHelper
 {
-    GUI_CS_OBJECT( QPlatformFileDialogHelper )
+    GUI_LSCS_OBJECT( QPlatformFileDialogHelper )
 
 public:
     virtual bool defaultNameFilterDisables() const = 0;
@@ -385,16 +385,16 @@ public:
     static QStringList cleanFilterList( const QString &filter );
     static const QString filterRegExp;
 
-    GUI_CS_SIGNAL_1( Public, void fileSelected( const QUrl &file ) )
-    GUI_CS_SIGNAL_2( fileSelected, file )
-    GUI_CS_SIGNAL_1( Public, void filesSelected( const QList <QUrl> &files ) )
-    GUI_CS_SIGNAL_2( filesSelected, files )
-    GUI_CS_SIGNAL_1( Public, void currentChanged( const QUrl &path ) )
-    GUI_CS_SIGNAL_2( currentChanged, path )
-    GUI_CS_SIGNAL_1( Public, void directoryEntered( const QUrl &directory ) )
-    GUI_CS_SIGNAL_2( directoryEntered, directory )
-    GUI_CS_SIGNAL_1( Public, void filterSelected( const QString &filter ) )
-    GUI_CS_SIGNAL_2( filterSelected, filter )
+    GUI_LSCS_SIGNAL_1( Public, void fileSelected( const QUrl &file ) )
+    GUI_LSCS_SIGNAL_2( fileSelected, file )
+    GUI_LSCS_SIGNAL_1( Public, void filesSelected( const QList <QUrl> &files ) )
+    GUI_LSCS_SIGNAL_2( filesSelected, files )
+    GUI_LSCS_SIGNAL_1( Public, void currentChanged( const QUrl &path ) )
+    GUI_LSCS_SIGNAL_2( currentChanged, path )
+    GUI_LSCS_SIGNAL_1( Public, void directoryEntered( const QUrl &directory ) )
+    GUI_LSCS_SIGNAL_2( directoryEntered, directory )
+    GUI_LSCS_SIGNAL_1( Public, void filterSelected( const QString &filter ) )
+    GUI_LSCS_SIGNAL_2( filterSelected, filter )
 
 private:
     QSharedPointer<QPlatformFileDialogOptions> m_options;
@@ -402,8 +402,8 @@ private:
 
 class Q_GUI_EXPORT QMessageDialogOptions
 {
-    GUI_CS_GADGET( QMessageDialogOptions )
-    GUI_CS_ENUM( Icon )
+    GUI_LSCS_GADGET( QMessageDialogOptions )
+    GUI_LSCS_ENUM( Icon )
 
 public:
     // Keep in sync with QMessageBox::Icon
@@ -443,14 +443,14 @@ private:
 
 class Q_GUI_EXPORT QPlatformMessageDialogHelper : public QPlatformDialogHelper
 {
-    GUI_CS_OBJECT( QPlatformMessageDialogHelper )
+    GUI_LSCS_OBJECT( QPlatformMessageDialogHelper )
 
 public:
     const QSharedPointer<QMessageDialogOptions> &options() const;
     void setOptions( const QSharedPointer<QMessageDialogOptions> &options );
 
-    GUI_CS_SIGNAL_1( Public, void clicked( QPlatformDialogHelper::StandardButton button, QPlatformDialogHelper::ButtonRole role ) )
-    GUI_CS_SIGNAL_2( clicked, button, role )
+    GUI_LSCS_SIGNAL_1( Public, void clicked( QPlatformDialogHelper::StandardButton button, QPlatformDialogHelper::ButtonRole role ) )
+    GUI_LSCS_SIGNAL_2( clicked, button, role )
 
 private:
     QSharedPointer<QMessageDialogOptions> m_options;

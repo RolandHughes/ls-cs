@@ -34,9 +34,9 @@ inline uint qHash( QSizePolicy key, uint seed = 0 );
 
 class Q_GUI_EXPORT QSizePolicy
 {
-    GUI_CS_GADGET( QSizePolicy )
+    GUI_LSCS_GADGET( QSizePolicy )
 
-    GUI_CS_ENUM( Policy )
+    GUI_LSCS_ENUM( Policy )
 
 public:
     enum PolicyFlag
@@ -47,7 +47,7 @@ public:
         IgnoreFlag = 0x8,
     };
 
-    GUI_CS_REGISTER_ENUM(
+    GUI_LSCS_REGISTER_ENUM(
         enum Policy
     {
         Fixed            = 0x0,

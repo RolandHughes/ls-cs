@@ -38,7 +38,7 @@ class QDBusMenuConnection;
 
 class Q_XCB_EXPORT QXcbNativeInterface : public QPlatformNativeInterface
 {
-    CS_OBJECT( QXcbNativeInterface )
+    LSCS_OBJECT( QXcbNativeInterface )
 
 public:
     enum ResourceType
@@ -110,8 +110,8 @@ public:
     void addHandler( QXcbNativeInterfaceHandler *handler );
     void removeHandler( QXcbNativeInterfaceHandler *handler );
 
-    CS_SIGNAL_1( Public, void systemTrayWindowChanged( QScreen *screen ) )
-    CS_SIGNAL_2( systemTrayWindowChanged, screen )
+    LSCS_SIGNAL_1( Public, void systemTrayWindowChanged( QScreen *screen ) )
+    LSCS_SIGNAL_2( systemTrayWindowChanged, screen )
 
 private:
     xcb_window_t locateSystemTray( xcb_connection_t *conn, const QXcbScreen *screen );

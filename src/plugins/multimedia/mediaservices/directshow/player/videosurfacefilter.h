@@ -48,7 +48,7 @@ class VideoSurfaceFilter
     , public IAMFilterMiscFlags
     , public IPin
 {
-    CS_OBJECT( VideoSurfaceFilter )
+    LSCS_OBJECT( VideoSurfaceFilter )
 
 public:
     VideoSurfaceFilter( QAbstractVideoSurface *surface, DirectShowEventLoop *loop, QObject *parent = nullptr );
@@ -120,10 +120,10 @@ protected:
     void customEvent( QEvent *event ) override;
 
 private:
-    CS_SLOT_1( Private, void supportedFormatsChanged() )
-    CS_SLOT_2( supportedFormatsChanged )
-    CS_SLOT_1( Private, void sampleReady() )
-    CS_SLOT_2( sampleReady )
+    LSCS_SLOT_1( Private, void supportedFormatsChanged() )
+    LSCS_SLOT_2( supportedFormatsChanged )
+    LSCS_SLOT_1( Private, void sampleReady() )
+    LSCS_SLOT_2( sampleReady )
 
     HRESULT start();
     void stop();

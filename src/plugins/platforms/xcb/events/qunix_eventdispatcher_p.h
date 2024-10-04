@@ -32,7 +32,7 @@ class QUnixEventDispatcherPrivate;
 
 class QUnixEventDispatcher : public QEventDispatcherUNIX
 {
-    CS_OBJECT( QUnixEventDispatcher )
+    LSCS_OBJECT( QUnixEventDispatcher )
 
 public:
     explicit QUnixEventDispatcher( QObject *parent = nullptr );

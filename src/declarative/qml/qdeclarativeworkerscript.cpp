@@ -101,7 +101,7 @@ private:
 
 class QDeclarativeWorkerScriptEnginePrivate : public QObject
 {
-    DECL_CS_OBJECT( QDeclarativeWorkerScriptEnginePrivate )
+    DECL_LSCS_OBJECT( QDeclarativeWorkerScriptEnginePrivate )
 
 public:
     enum WorkerEventTypes
@@ -174,8 +174,8 @@ public:
     static QScriptValue onMessage( QScriptContext *ctxt, QScriptEngine *engine );
     static QScriptValue sendMessage( QScriptContext *ctxt, QScriptEngine *engine );
 
-    DECL_CS_SIGNAL_1( Public, void stopThread() )
-    DECL_CS_SIGNAL_2( stopThread )
+    DECL_LSCS_SIGNAL_1( Public, void stopThread() )
+    DECL_LSCS_SIGNAL_2( stopThread )
 
 protected:
     virtual bool event( QEvent * );

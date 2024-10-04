@@ -38,61 +38,61 @@ class QCompleter;
 
 class Q_GUI_EXPORT QComboBox : public QWidget
 {
-    GUI_CS_OBJECT( QComboBox )
+    GUI_LSCS_OBJECT( QComboBox )
 
-    GUI_CS_ENUM( InsertPolicy )
-    GUI_CS_ENUM( SizeAdjustPolicy )
+    GUI_LSCS_ENUM( InsertPolicy )
+    GUI_LSCS_ENUM( SizeAdjustPolicy )
 
-    GUI_CS_PROPERTY_READ( editable, isEditable )
-    GUI_CS_PROPERTY_WRITE( editable, setEditable )
+    GUI_LSCS_PROPERTY_READ( editable, isEditable )
+    GUI_LSCS_PROPERTY_WRITE( editable, setEditable )
 
-    GUI_CS_PROPERTY_READ( count, count )
+    GUI_LSCS_PROPERTY_READ( count, count )
 
-    GUI_CS_PROPERTY_READ( currentText, currentText )
-    GUI_CS_PROPERTY_WRITE( currentText, setCurrentText )
-    GUI_CS_PROPERTY_NOTIFY( currentText, currentTextChanged )
-    GUI_CS_PROPERTY_USER( currentText, true )
+    GUI_LSCS_PROPERTY_READ( currentText, currentText )
+    GUI_LSCS_PROPERTY_WRITE( currentText, setCurrentText )
+    GUI_LSCS_PROPERTY_NOTIFY( currentText, currentTextChanged )
+    GUI_LSCS_PROPERTY_USER( currentText, true )
 
-    GUI_CS_PROPERTY_READ( currentIndex, currentIndex )
-    GUI_CS_PROPERTY_WRITE( currentIndex, setCurrentIndex )
-    GUI_CS_PROPERTY_NOTIFY( currentIndex, cs_currentIndexChanged )
+    GUI_LSCS_PROPERTY_READ( currentIndex, currentIndex )
+    GUI_LSCS_PROPERTY_WRITE( currentIndex, setCurrentIndex )
+    GUI_LSCS_PROPERTY_NOTIFY( currentIndex, cs_currentIndexChanged )
 
-    GUI_CS_PROPERTY_READ( maxVisibleItems, maxVisibleItems )
-    GUI_CS_PROPERTY_WRITE( maxVisibleItems, setMaxVisibleItems )
+    GUI_LSCS_PROPERTY_READ( maxVisibleItems, maxVisibleItems )
+    GUI_LSCS_PROPERTY_WRITE( maxVisibleItems, setMaxVisibleItems )
 
-    GUI_CS_PROPERTY_READ( maxCount, maxCount )
-    GUI_CS_PROPERTY_WRITE( maxCount, setMaxCount )
+    GUI_LSCS_PROPERTY_READ( maxCount, maxCount )
+    GUI_LSCS_PROPERTY_WRITE( maxCount, setMaxCount )
 
-    GUI_CS_PROPERTY_READ( insertPolicy, insertPolicy )
-    GUI_CS_PROPERTY_WRITE( insertPolicy, setInsertPolicy )
+    GUI_LSCS_PROPERTY_READ( insertPolicy, insertPolicy )
+    GUI_LSCS_PROPERTY_WRITE( insertPolicy, setInsertPolicy )
 
-    GUI_CS_PROPERTY_READ( sizeAdjustPolicy, sizeAdjustPolicy )
-    GUI_CS_PROPERTY_WRITE( sizeAdjustPolicy, setSizeAdjustPolicy )
+    GUI_LSCS_PROPERTY_READ( sizeAdjustPolicy, sizeAdjustPolicy )
+    GUI_LSCS_PROPERTY_WRITE( sizeAdjustPolicy, setSizeAdjustPolicy )
 
-    GUI_CS_PROPERTY_READ( minimumContentsLength, minimumContentsLength )
-    GUI_CS_PROPERTY_WRITE( minimumContentsLength, setMinimumContentsLength )
+    GUI_LSCS_PROPERTY_READ( minimumContentsLength, minimumContentsLength )
+    GUI_LSCS_PROPERTY_WRITE( minimumContentsLength, setMinimumContentsLength )
 
-    GUI_CS_PROPERTY_READ( iconSize, iconSize )
-    GUI_CS_PROPERTY_WRITE( iconSize, setIconSize )
+    GUI_LSCS_PROPERTY_READ( iconSize, iconSize )
+    GUI_LSCS_PROPERTY_WRITE( iconSize, setIconSize )
 
 #ifndef QT_NO_COMPLETER
-    GUI_CS_PROPERTY_READ( autoCompletion, autoCompletion )
-    GUI_CS_PROPERTY_WRITE( autoCompletion, setAutoCompletion )
-    GUI_CS_PROPERTY_DESIGNABLE( autoCompletion, false )
-    GUI_CS_PROPERTY_READ( autoCompletionCaseSensitivity, autoCompletionCaseSensitivity )
-    GUI_CS_PROPERTY_WRITE( autoCompletionCaseSensitivity, setAutoCompletionCaseSensitivity )
-    GUI_CS_PROPERTY_DESIGNABLE( autoCompletionCaseSensitivity, false )
+    GUI_LSCS_PROPERTY_READ( autoCompletion, autoCompletion )
+    GUI_LSCS_PROPERTY_WRITE( autoCompletion, setAutoCompletion )
+    GUI_LSCS_PROPERTY_DESIGNABLE( autoCompletion, false )
+    GUI_LSCS_PROPERTY_READ( autoCompletionCaseSensitivity, autoCompletionCaseSensitivity )
+    GUI_LSCS_PROPERTY_WRITE( autoCompletionCaseSensitivity, setAutoCompletionCaseSensitivity )
+    GUI_LSCS_PROPERTY_DESIGNABLE( autoCompletionCaseSensitivity, false )
 #endif
 
-    GUI_CS_PROPERTY_READ( duplicatesEnabled, duplicatesEnabled )
-    GUI_CS_PROPERTY_WRITE( duplicatesEnabled, setDuplicatesEnabled )
-    GUI_CS_PROPERTY_READ( frame, hasFrame )
-    GUI_CS_PROPERTY_WRITE( frame, setFrame )
-    GUI_CS_PROPERTY_READ( modelColumn, modelColumn )
-    GUI_CS_PROPERTY_WRITE( modelColumn, setModelColumn )
+    GUI_LSCS_PROPERTY_READ( duplicatesEnabled, duplicatesEnabled )
+    GUI_LSCS_PROPERTY_WRITE( duplicatesEnabled, setDuplicatesEnabled )
+    GUI_LSCS_PROPERTY_READ( frame, hasFrame )
+    GUI_LSCS_PROPERTY_WRITE( frame, setFrame )
+    GUI_LSCS_PROPERTY_READ( modelColumn, modelColumn )
+    GUI_LSCS_PROPERTY_WRITE( modelColumn, setModelColumn )
 
 public:
-    GUI_CS_REGISTER_ENUM(
+    GUI_LSCS_REGISTER_ENUM(
         enum InsertPolicy
     {
         NoInsert,
@@ -105,7 +105,7 @@ public:
     };
     )
 
-    GUI_CS_REGISTER_ENUM(
+    GUI_LSCS_REGISTER_ENUM(
         enum SizeAdjustPolicy
     {
         AdjustToContents,
@@ -231,47 +231,47 @@ public:
     bool event( QEvent *event ) override;
     QVariant inputMethodQuery( Qt::InputMethodQuery query ) const override;
 
-    GUI_CS_SLOT_1( Public, void clear() )
-    GUI_CS_SLOT_2( clear )
+    GUI_LSCS_SLOT_1( Public, void clear() )
+    GUI_LSCS_SLOT_2( clear )
 
-    GUI_CS_SLOT_1( Public, void clearEditText() )
-    GUI_CS_SLOT_2( clearEditText )
+    GUI_LSCS_SLOT_1( Public, void clearEditText() )
+    GUI_LSCS_SLOT_2( clearEditText )
 
-    GUI_CS_SLOT_1( Public, void setEditText( const QString &text ) )
-    GUI_CS_SLOT_2( setEditText )
+    GUI_LSCS_SLOT_1( Public, void setEditText( const QString &text ) )
+    GUI_LSCS_SLOT_2( setEditText )
 
-    GUI_CS_SLOT_1( Public, void setCurrentIndex( int index ) )
-    GUI_CS_SLOT_2( setCurrentIndex )
+    GUI_LSCS_SLOT_1( Public, void setCurrentIndex( int index ) )
+    GUI_LSCS_SLOT_2( setCurrentIndex )
 
-    GUI_CS_SLOT_1( Public, void setCurrentText( const QString &text ) )
-    GUI_CS_SLOT_2( setCurrentText )
+    GUI_LSCS_SLOT_1( Public, void setCurrentText( const QString &text ) )
+    GUI_LSCS_SLOT_2( setCurrentText )
 
-    GUI_CS_SIGNAL_1( Public, void editTextChanged( const QString &text ) )
-    GUI_CS_SIGNAL_2( editTextChanged, text )
+    GUI_LSCS_SIGNAL_1( Public, void editTextChanged( const QString &text ) )
+    GUI_LSCS_SIGNAL_2( editTextChanged, text )
 
-    GUI_CS_SIGNAL_1( Public, void activated( int index ) )
-    GUI_CS_SIGNAL_OVERLOAD( activated, ( int ), index )
+    GUI_LSCS_SIGNAL_1( Public, void activated( int index ) )
+    GUI_LSCS_SIGNAL_OVERLOAD( activated, ( int ), index )
 
-    GUI_CS_SIGNAL_1( Public, void activated( const QString &text ) )
-    GUI_CS_SIGNAL_OVERLOAD( activated, ( const QString & ), text )
+    GUI_LSCS_SIGNAL_1( Public, void activated( const QString &text ) )
+    GUI_LSCS_SIGNAL_OVERLOAD( activated, ( const QString & ), text )
 
-    GUI_CS_SIGNAL_1( Public, void highlighted( int index ) )
-    GUI_CS_SIGNAL_OVERLOAD( highlighted, ( int ), index )
+    GUI_LSCS_SIGNAL_1( Public, void highlighted( int index ) )
+    GUI_LSCS_SIGNAL_OVERLOAD( highlighted, ( int ), index )
 
-    GUI_CS_SIGNAL_1( Public, void highlighted( const QString &text ) )
-    GUI_CS_SIGNAL_OVERLOAD( highlighted, ( const QString & ), text )
+    GUI_LSCS_SIGNAL_1( Public, void highlighted( const QString &text ) )
+    GUI_LSCS_SIGNAL_OVERLOAD( highlighted, ( const QString & ), text )
 
-    GUI_CS_SIGNAL_1( Public, void currentIndexChanged( int index ) )
-    GUI_CS_SIGNAL_OVERLOAD( currentIndexChanged, ( int ), index )
+    GUI_LSCS_SIGNAL_1( Public, void currentIndexChanged( int index ) )
+    GUI_LSCS_SIGNAL_OVERLOAD( currentIndexChanged, ( int ), index )
 
-    GUI_CS_SIGNAL_1( Public, void currentIndexChanged( const QString &text ) )
-    GUI_CS_SIGNAL_OVERLOAD( currentIndexChanged, ( const QString & ), text )
+    GUI_LSCS_SIGNAL_1( Public, void currentIndexChanged( const QString &text ) )
+    GUI_LSCS_SIGNAL_OVERLOAD( currentIndexChanged, ( const QString & ), text )
 
-    GUI_CS_SIGNAL_1( Public, void cs_currentIndexChanged( int index ) )
-    GUI_CS_SIGNAL_2( cs_currentIndexChanged, index )
+    GUI_LSCS_SIGNAL_1( Public, void cs_currentIndexChanged( int index ) )
+    GUI_LSCS_SIGNAL_2( cs_currentIndexChanged, index )
 
-    GUI_CS_SIGNAL_1( Public, void currentTextChanged( const QString &str ) )
-    GUI_CS_SIGNAL_2( currentTextChanged, str )
+    GUI_LSCS_SIGNAL_1( Public, void currentTextChanged( const QString &str ) )
+    GUI_LSCS_SIGNAL_2( currentTextChanged, str )
 
 protected:
     void focusInEvent( QFocusEvent *event ) override;
@@ -299,45 +299,45 @@ protected:
 private:
     Q_DECLARE_PRIVATE( QComboBox )
 
-    GUI_CS_SLOT_1( Private, void _q_itemSelected( const QModelIndex &item ) )
-    GUI_CS_SLOT_2( _q_itemSelected )
+    GUI_LSCS_SLOT_1( Private, void _q_itemSelected( const QModelIndex &item ) )
+    GUI_LSCS_SLOT_2( _q_itemSelected )
 
-    GUI_CS_SLOT_1( Private, void _q_emitHighlighted( const QModelIndex &index ) )
-    GUI_CS_SLOT_2( _q_emitHighlighted )
+    GUI_LSCS_SLOT_1( Private, void _q_emitHighlighted( const QModelIndex &index ) )
+    GUI_LSCS_SLOT_2( _q_emitHighlighted )
 
-    GUI_CS_SLOT_1( Private, void _q_emitCurrentIndexChanged( const QModelIndex &index ) )
-    GUI_CS_SLOT_2( _q_emitCurrentIndexChanged )
+    GUI_LSCS_SLOT_1( Private, void _q_emitCurrentIndexChanged( const QModelIndex &index ) )
+    GUI_LSCS_SLOT_2( _q_emitCurrentIndexChanged )
 
-    GUI_CS_SLOT_1( Private, void _q_editingFinished() )
-    GUI_CS_SLOT_2( _q_editingFinished )
+    GUI_LSCS_SLOT_1( Private, void _q_editingFinished() )
+    GUI_LSCS_SLOT_2( _q_editingFinished )
 
-    GUI_CS_SLOT_1( Private, void _q_returnPressed() )
-    GUI_CS_SLOT_2( _q_returnPressed )
+    GUI_LSCS_SLOT_1( Private, void _q_returnPressed() )
+    GUI_LSCS_SLOT_2( _q_returnPressed )
 
-    GUI_CS_SLOT_1( Private, void _q_resetButton() )
-    GUI_CS_SLOT_2( _q_resetButton )
+    GUI_LSCS_SLOT_1( Private, void _q_resetButton() )
+    GUI_LSCS_SLOT_2( _q_resetButton )
 
-    GUI_CS_SLOT_1( Private, void _q_dataChanged( const QModelIndex &topLeft, const QModelIndex &bottomRight ) )
-    GUI_CS_SLOT_2( _q_dataChanged )
+    GUI_LSCS_SLOT_1( Private, void _q_dataChanged( const QModelIndex &topLeft, const QModelIndex &bottomRight ) )
+    GUI_LSCS_SLOT_2( _q_dataChanged )
 
-    GUI_CS_SLOT_1( Private, void _q_updateIndexBeforeChange() )
-    GUI_CS_SLOT_2( _q_updateIndexBeforeChange )
+    GUI_LSCS_SLOT_1( Private, void _q_updateIndexBeforeChange() )
+    GUI_LSCS_SLOT_2( _q_updateIndexBeforeChange )
 
-    GUI_CS_SLOT_1( Private, void _q_rowsInserted( const QModelIndex &parent, int start, int end ) )
-    GUI_CS_SLOT_2( _q_rowsInserted )
+    GUI_LSCS_SLOT_1( Private, void _q_rowsInserted( const QModelIndex &parent, int start, int end ) )
+    GUI_LSCS_SLOT_2( _q_rowsInserted )
 
-    GUI_CS_SLOT_1( Private, void _q_rowsRemoved( const QModelIndex &parent, int start, int end ) )
-    GUI_CS_SLOT_2( _q_rowsRemoved )
+    GUI_LSCS_SLOT_1( Private, void _q_rowsRemoved( const QModelIndex &parent, int start, int end ) )
+    GUI_LSCS_SLOT_2( _q_rowsRemoved )
 
-    GUI_CS_SLOT_1( Private, void _q_modelDestroyed() )
-    GUI_CS_SLOT_2( _q_modelDestroyed )
+    GUI_LSCS_SLOT_1( Private, void _q_modelDestroyed() )
+    GUI_LSCS_SLOT_2( _q_modelDestroyed )
 
-    GUI_CS_SLOT_1( Private, void _q_modelReset() )
-    GUI_CS_SLOT_2( _q_modelReset )
+    GUI_LSCS_SLOT_1( Private, void _q_modelReset() )
+    GUI_LSCS_SLOT_2( _q_modelReset )
 
 #ifndef QT_NO_COMPLETER
-    GUI_CS_SLOT_1( Private, void _q_completerActivated( const QModelIndex &index ) )
-    GUI_CS_SLOT_2( _q_completerActivated )
+    GUI_LSCS_SLOT_1( Private, void _q_completerActivated( const QModelIndex &index ) )
+    GUI_LSCS_SLOT_2( _q_completerActivated )
 #endif
 
 };

@@ -297,7 +297,7 @@ void QCameraPrivate::updateLockStatus()
         }
     }
 
-#if defined(CS_SHOW_DEBUG_MULTIMEDIA)
+#if defined(LSCS_SHOW_DEBUG_MULTIMEDIA)
     qDebug() << "Requested locks:" << ( requestedLocks & QCamera::LockExposure ? 'e' : ' ' )
              << ( requestedLocks & QCamera::LockFocus ? 'f' : ' ' )
              << ( requestedLocks & QCamera::LockWhiteBalance ? 'w' : ' ' );

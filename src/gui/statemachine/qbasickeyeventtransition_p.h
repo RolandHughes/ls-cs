@@ -34,7 +34,7 @@ class QBasicKeyEventTransitionPrivate;
 
 class QBasicKeyEventTransition : public QAbstractTransition
 {
-    GUI_CS_OBJECT( QBasicKeyEventTransition )
+    GUI_LSCS_OBJECT( QBasicKeyEventTransition )
 
 public:
     QBasicKeyEventTransition( QState *sourceState = nullptr );

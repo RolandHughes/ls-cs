@@ -49,7 +49,7 @@ class QWindowsXPStylePrivate;
 
 class QWindowsXPStyle : public QWindowsStyle
 {
-    GUI_CS_OBJECT( QWindowsXPStyle )
+    GUI_LSCS_OBJECT( QWindowsXPStyle )
 
 public:
     QWindowsXPStyle();

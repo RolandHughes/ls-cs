@@ -27,7 +27,7 @@ class QNetworkReply;
 
 class QtMIMETypeSniffer : public QObject
 {
-    WEB_CS_OBJECT( QtMIMETypeSniffer )
+    WEB_LSCS_OBJECT( QtMIMETypeSniffer )
 
 public:
     QtMIMETypeSniffer( QNetworkReply *, const QString &advertisedMimeType, bool isSupportedImageType );
@@ -40,12 +40,12 @@ public:
         return m_isFinished;
     }
 
-    WEB_CS_SIGNAL_1( Public,void finished() )
-    WEB_CS_SIGNAL_2( finished )
+    WEB_LSCS_SIGNAL_1( Public,void finished() )
+    WEB_LSCS_SIGNAL_2( finished )
 
 private:
-    WEB_CS_SLOT_1( Private,void trySniffing() )
-    WEB_CS_SLOT_2( trySniffing )
+    WEB_LSCS_SLOT_1( Private,void trySniffing() )
+    WEB_LSCS_SLOT_2( trySniffing )
 
     bool sniff();
 

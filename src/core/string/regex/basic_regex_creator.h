@@ -24,18 +24,18 @@
  * LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 */
 
-#ifndef CS_BASIC_REGEX_CREATOR_H
-#define CS_BASIC_REGEX_CREATOR_H
+#ifndef LSCS_BASIC_REGEX_CREATOR_H
+#define LSCS_BASIC_REGEX_CREATOR_H
 
 #include <cassert>
 #include <cstring>
 #include <set>
 #include <string>
 
-namespace cs_regex_ns
+namespace lscs_regex_ns
 {
 
-namespace cs_regex_detail_ns
+namespace lscs_regex_detail_ns
 {
 
 template <class charT>
@@ -281,7 +281,7 @@ public:
 
 protected:
     regex_data<charT, traits>    *m_pdata;                       // pointer to the basic_regex_data struct we are filling in
-    const cs_regex_ns::regex_traits_wrapper<traits> &m_traits;   // convenience reference to traits class
+    const lscs_regex_ns::regex_traits_wrapper<traits> &m_traits;   // convenience reference to traits class
     re_syntax_base               *m_last_state;                  // the last state we added
     bool                          m_icase;                       // true for case insensitive matches
     unsigned                      m_repeater_id;                 // the state_id of the next repeater
@@ -319,7 +319,7 @@ template <class charT, class traits> basic_regex_creator<charT, traits>::basic_r
       m_backrefs( 0 ), m_has_recursions( false )
 {
     m_pdata->m_data.clear();
-    m_pdata->m_status = cs_regex_ns::regex_constants::error_ok;
+    m_pdata->m_status = lscs_regex_ns::regex_constants::error_ok;
 
     static const charT w = 'w';
     static const charT s = 's';
@@ -782,7 +782,7 @@ void basic_regex_creator<charT, traits>::fixup_recursions( re_syntax_base *state
                             // check of sub-expression that doesn't exist
                             if ( 0 == this->m_pdata->m_status ) // update the error code if not already set
                             {
-                                this->m_pdata->m_status = cs_regex_ns::regex_constants::error_bad_pattern;
+                                this->m_pdata->m_status = lscs_regex_ns::regex_constants::error_bad_pattern;
                             }
 
                             // clear the expression, we should be empty
@@ -793,7 +793,7 @@ void basic_regex_creator<charT, traits>::fixup_recursions( re_syntax_base *state
                             if ( 0 == ( this->flags() & regex_constants::no_except ) )
                             {
                                 std::string message = "Encountered a forward reference to a marked sub-expression that does not exist.";
-                                cs_regex_ns::regex_error e( message, cs_regex_ns::regex_constants::error_bad_pattern, 0 );
+                                lscs_regex_ns::regex_error e( message, lscs_regex_ns::regex_constants::error_bad_pattern, 0 );
                                 e.raise();
                             }
                         }
@@ -886,7 +886,7 @@ void basic_regex_creator<charT, traits>::fixup_recursions( re_syntax_base *state
                     if ( this->m_pdata->m_status == 0 )
                     {
                         // update the error code if not already set
-                        this->m_pdata->m_status = cs_regex_ns::regex_constants::error_bad_pattern;
+                        this->m_pdata->m_status = lscs_regex_ns::regex_constants::error_bad_pattern;
                     }
 
                     // clear the expression, we should be empty:
@@ -898,7 +898,7 @@ void basic_regex_creator<charT, traits>::fixup_recursions( re_syntax_base *state
                     if ( ( this->flags() & regex_constants::no_except ) == 0 )
                     {
                         std::string message = "Encountered a forward reference to a recursive sub-expression that does not exist.";
-                        cs_regex_ns::regex_error e( message, cs_regex_ns::regex_constants::error_bad_pattern, 0 );
+                        lscs_regex_ns::regex_error e( message, lscs_regex_ns::regex_constants::error_bad_pattern, 0 );
                         e.raise();
                     }
                 }
@@ -957,7 +957,7 @@ void basic_regex_creator<charT, traits>::create_startmaps( re_syntax_base *state
                     // Oops error:
                     if ( 0 == this->m_pdata->m_status ) // update the error code if not already set
                     {
-                        this->m_pdata->m_status = cs_regex_ns::regex_constants::error_bad_pattern;
+                        this->m_pdata->m_status = lscs_regex_ns::regex_constants::error_bad_pattern;
                     }
 
                     //
@@ -972,7 +972,7 @@ void basic_regex_creator<charT, traits>::create_startmaps( re_syntax_base *state
                     if ( 0 == ( this->flags() & regex_constants::no_except ) )
                     {
                         std::string message = "Invalid lookbehind assertion encountered in the regular expression.";
-                        cs_regex_ns::regex_error e( message, cs_regex_ns::regex_constants::error_bad_pattern, 0 );
+                        lscs_regex_ns::regex_error e( message, lscs_regex_ns::regex_constants::error_bad_pattern, 0 );
                         e.raise();
                     }
                 }
@@ -1228,7 +1228,7 @@ void basic_regex_creator<charT, traits>::create_startmap( re_syntax_base *state,
                     // Infinite recursion
                     if ( 0 == this->m_pdata->m_status ) // update the error code if not already set
                     {
-                        this->m_pdata->m_status = cs_regex_ns::regex_constants::error_bad_pattern;
+                        this->m_pdata->m_status = lscs_regex_ns::regex_constants::error_bad_pattern;
                     }
 
                     // clear the expression, we should be empty:
@@ -1239,7 +1239,7 @@ void basic_regex_creator<charT, traits>::create_startmap( re_syntax_base *state,
                     if ( 0 == ( this->flags() & regex_constants::no_except ) )
                     {
                         std::string message = "Encountered an infinite recursion.";
-                        cs_regex_ns::regex_error e( message, cs_regex_ns::regex_constants::error_bad_pattern, 0 );
+                        lscs_regex_ns::regex_error e( message, lscs_regex_ns::regex_constants::error_bad_pattern, 0 );
                         e.raise();
                     }
 
@@ -1706,19 +1706,19 @@ syntax_element_type basic_regex_creator<charT, traits>::get_repeat_type( re_synt
         {
             switch ( state->next.p->type )
             {
-                case cs_regex_detail_ns::syntax_element_wild:
-                    return cs_regex_detail_ns::syntax_element_dot_rep;
+                case lscs_regex_detail_ns::syntax_element_wild:
+                    return lscs_regex_detail_ns::syntax_element_dot_rep;
 
-                case cs_regex_detail_ns::syntax_element_literal:
-                    return cs_regex_detail_ns::syntax_element_char_rep;
+                case lscs_regex_detail_ns::syntax_element_literal:
+                    return lscs_regex_detail_ns::syntax_element_char_rep;
 
-                case cs_regex_detail_ns::syntax_element_set:
-                    return cs_regex_detail_ns::syntax_element_short_set_rep;
+                case lscs_regex_detail_ns::syntax_element_set:
+                    return lscs_regex_detail_ns::syntax_element_short_set_rep;
 
-                case cs_regex_detail_ns::syntax_element_long_set:
-                    if ( static_cast<cs_regex_detail_ns::re_set_long<m_type>*>( state->next.p )->singleton )
+                case lscs_regex_detail_ns::syntax_element_long_set:
+                    if ( static_cast<lscs_regex_detail_ns::re_set_long<m_type>*>( state->next.p )->singleton )
                     {
-                        return cs_regex_detail_ns::syntax_element_long_set_rep;
+                        return lscs_regex_detail_ns::syntax_element_long_set_rep;
                     }
 
                     break;

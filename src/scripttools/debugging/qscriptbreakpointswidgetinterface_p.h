@@ -34,7 +34,7 @@ class QScriptBreakpointsWidgetInterfacePrivate;
 
 class QScriptBreakpointsWidgetInterface : public QWidget
 {
-    SCRIPT_T_CS_OBJECT( QScriptBreakpointsWidgetInterface )
+    SCRIPT_T_LSCS_OBJECT( QScriptBreakpointsWidgetInterface )
 
 public:
     ~QScriptBreakpointsWidgetInterface();
@@ -46,8 +46,8 @@ public:
     virtual void setScriptsModel( QScriptDebuggerScriptsModel *model ) = 0;
 
 public:
-    CS_SIGNAL_1( Public, void currentScriptChanged( qint64 scriptId ) )
-    CS_SIGNAL_2( currentScriptChanged, scriptId )
+    LSCS_SIGNAL_1( Public, void currentScriptChanged( qint64 scriptId ) )
+    LSCS_SIGNAL_2( currentScriptChanged, scriptId )
 
 protected:
     QScriptBreakpointsWidgetInterface(

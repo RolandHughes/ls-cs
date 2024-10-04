@@ -120,7 +120,7 @@ private:
 
 class Q_GUI_EXPORT QImageIOPlugin : public QObject
 {
-    GUI_CS_OBJECT( QImageIOPlugin )
+    GUI_LSCS_OBJECT( QImageIOPlugin )
 
 public:
     explicit QImageIOPlugin( QObject *parent = nullptr );

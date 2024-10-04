@@ -50,7 +50,7 @@
 
 class QFontListView : public QListView
 {
-    GUI_CS_OBJECT( QFontListView )
+    GUI_LSCS_OBJECT( QFontListView )
 
 public:
     QFontListView( QWidget *parent );
@@ -96,8 +96,8 @@ public:
         return model()->stringList().at( i );
     }
 
-    GUI_CS_SIGNAL_1( Public, void highlighted( int data ) )
-    GUI_CS_SIGNAL_2( highlighted, data )
+    GUI_LSCS_SIGNAL_1( Public, void highlighted( int data ) )
+    GUI_LSCS_SIGNAL_2( highlighted, data )
 };
 
 QFontListView::QFontListView( QWidget *parent )

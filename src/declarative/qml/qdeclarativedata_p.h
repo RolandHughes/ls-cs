@@ -43,7 +43,7 @@ class QDeclarativeDataExtended;
 // workings of the QDeclarativeInstruction::CreateSimpleObject instruction.
 // Don't change anything here without first considering that case!
 
-class QDeclarativeData : public CSAbstractDeclarativeData
+class QDeclarativeData : public LSCSAbstractDeclarativeData
 {
 
 public:
@@ -58,20 +58,20 @@ public:
 
     static inline void init()
     {
-        CSAbstractDeclarativeData::destroyed = destroyed;
-        CSAbstractDeclarativeData::parentChanged = parentChanged;
+        LSCSAbstractDeclarativeData::destroyed = destroyed;
+        LSCSAbstractDeclarativeData::parentChanged = parentChanged;
 
         // BROOM (decalartive)
-        // CSAbstractDeclarativeData::signalEmitted = 0;
-        // CSAbstractDeclarativeData::receivers = 0;
+        // LSCSAbstractDeclarativeData::signalEmitted = 0;
+        // LSCSAbstractDeclarativeData::receivers = 0;
     }
 
-    static void destroyed( CSAbstractDeclarativeData *, QObject * );
-    static void parentChanged( CSAbstractDeclarativeData *, QObject *, QObject * );
+    static void destroyed( LSCSAbstractDeclarativeData *, QObject * );
+    static void parentChanged( LSCSAbstractDeclarativeData *, QObject *, QObject * );
 
     // BROOM (decalartive)
-    //static void signalEmitted(CSAbstractDeclarativeData *, QObject *, int, void **);
-    //static int  receivers(CSAbstractDeclarativeData *, const QObject *, int);
+    //static void signalEmitted(LSCSAbstractDeclarativeData *, QObject *, int, void **);
+    //static int  receivers(LSCSAbstractDeclarativeData *, const QObject *, int);
 
     void destroyed( QObject * );
     void parentChanged( QObject *, QObject * );

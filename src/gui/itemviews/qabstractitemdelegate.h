@@ -38,7 +38,7 @@ class QAbstractItemDelegatePrivate;
 
 class Q_GUI_EXPORT QAbstractItemDelegate : public QObject
 {
-    GUI_CS_OBJECT( QAbstractItemDelegate )
+    GUI_LSCS_OBJECT( QAbstractItemDelegate )
     Q_DECLARE_PRIVATE( QAbstractItemDelegate )
 
 public:
@@ -86,22 +86,22 @@ public:
 
     virtual QVector<int> paintingRoles() const;
 
-    GUI_CS_SIGNAL_1( Public, void commitData( QWidget *editor ) )
-    GUI_CS_SIGNAL_2( commitData, editor )
+    GUI_LSCS_SIGNAL_1( Public, void commitData( QWidget *editor ) )
+    GUI_LSCS_SIGNAL_2( commitData, editor )
 
-    GUI_CS_SIGNAL_1( Public, void closeEditor( QWidget *editor, QAbstractItemDelegate::EndEditHint hint = NoHint ) )
-    GUI_CS_SIGNAL_2( closeEditor, editor, hint )
+    GUI_LSCS_SIGNAL_1( Public, void closeEditor( QWidget *editor, QAbstractItemDelegate::EndEditHint hint = NoHint ) )
+    GUI_LSCS_SIGNAL_2( closeEditor, editor, hint )
 
-    GUI_CS_SIGNAL_1( Public, void sizeHintChanged( const QModelIndex &index ) )
-    GUI_CS_SIGNAL_2( sizeHintChanged, index )
+    GUI_LSCS_SIGNAL_1( Public, void sizeHintChanged( const QModelIndex &index ) )
+    GUI_LSCS_SIGNAL_2( sizeHintChanged, index )
 
 protected:
     QAbstractItemDelegate( QAbstractItemDelegatePrivate &, QObject *parent = nullptr );
     QScopedPointer<QAbstractItemDelegatePrivate> d_ptr;
 
 private:
-    GUI_CS_SLOT_1( Private, void _q_commitDataAndCloseEditor( QWidget * ) )
-    GUI_CS_SLOT_2( _q_commitDataAndCloseEditor )
+    GUI_LSCS_SLOT_1( Private, void _q_commitDataAndCloseEditor( QWidget * ) )
+    GUI_LSCS_SLOT_2( _q_commitDataAndCloseEditor )
 };
 
 #endif // QT_NO_ITEMVIEWS

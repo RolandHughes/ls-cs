@@ -35,7 +35,7 @@ class QScriptDebuggerConsoleWidgetInterfacePrivate;
 
 class QScriptDebuggerConsoleWidgetInterface : public QWidget, public QScriptMessageHandlerInterface
 {
-    SCRIPT_T_CS_OBJECT( QScriptDebuggerConsoleWidgetInterface )
+    SCRIPT_T_LSCS_OBJECT( QScriptDebuggerConsoleWidgetInterface )
 
 public:
     enum InputMode
@@ -56,8 +56,8 @@ public:
 
     virtual void clear() = 0;
 
-    CS_SIGNAL_1( Public, void lineEntered( const QString &contents ) )
-    CS_SIGNAL_2( lineEntered, contents )
+    LSCS_SIGNAL_1( Public, void lineEntered( const QString &contents ) )
+    LSCS_SIGNAL_2( lineEntered, contents )
 
 protected:
     QScriptDebuggerConsoleWidgetInterface( QScriptDebuggerConsoleWidgetInterfacePrivate &dd,

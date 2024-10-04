@@ -41,7 +41,7 @@ public:
 
 class BatchTranslationDialog : public QDialog
 {
-    CS_OBJECT( BatchTranslationDialog )
+    LSCS_OBJECT( BatchTranslationDialog )
 
 public:
     BatchTranslationDialog( MultiDataModel *model, QWidget *w = nullptr );
@@ -49,8 +49,8 @@ public:
 
     void setPhraseBooks( const QList<PhraseBook *> &phrasebooks, int modelIndex );
 
-    CS_SIGNAL_1( Public, void finished() )
-    CS_SIGNAL_2( finished )
+    LSCS_SIGNAL_1( Public, void finished() )
+    LSCS_SIGNAL_2( finished )
 
 private:
     Ui::BatchTranslationDialog *m_ui;

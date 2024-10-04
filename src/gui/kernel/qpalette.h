@@ -33,10 +33,10 @@ class QVariant;
 
 class Q_GUI_EXPORT QPalette
 {
-    GUI_CS_GADGET( QPalette )
+    GUI_LSCS_GADGET( QPalette )
 
-    GUI_CS_ENUM( ColorGroup )
-    GUI_CS_ENUM( ColorRole )
+    GUI_LSCS_ENUM( ColorGroup )
+    GUI_LSCS_ENUM( ColorRole )
 
 public:
     // order dependent, serialization format depends on it
@@ -51,7 +51,7 @@ public:
         Normal = Active
     };
 
-    GUI_CS_REGISTER_ENUM(
+    GUI_LSCS_REGISTER_ENUM(
         enum ColorRole
     {
         WindowText,

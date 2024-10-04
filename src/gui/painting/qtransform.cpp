@@ -195,7 +195,7 @@ QTransform &QTransform::translate( qreal dx, qreal dy )
         return *this;
     }
 
-#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+#if defined(LSCS_SHOW_DEBUG_GUI_PAINTING)
 
     if ( qIsNaN( dx ) || qIsNaN( dy ) )
     {
@@ -243,7 +243,7 @@ QTransform &QTransform::translate( qreal dx, qreal dy )
 
 QTransform QTransform::fromTranslate( qreal dx, qreal dy )
 {
-#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+#if defined(LSCS_SHOW_DEBUG_GUI_PAINTING)
 
     if ( qIsNaN( dx ) || qIsNaN( dy ) )
     {
@@ -276,7 +276,7 @@ QTransform &QTransform::scale( qreal sx, qreal sy )
         return *this;
     }
 
-#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+#if defined(LSCS_SHOW_DEBUG_GUI_PAINTING)
 
     if ( qIsNaN( sx ) || qIsNaN( sy ) )
     {
@@ -321,7 +321,7 @@ QTransform &QTransform::scale( qreal sx, qreal sy )
 
 QTransform QTransform::fromScale( qreal sx, qreal sy )
 {
-#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+#if defined(LSCS_SHOW_DEBUG_GUI_PAINTING)
 
     if ( qIsNaN( sx ) || qIsNaN( sy ) )
     {
@@ -354,7 +354,7 @@ QTransform &QTransform::shear( qreal sh, qreal sv )
         return *this;
     }
 
-#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+#if defined(LSCS_SHOW_DEBUG_GUI_PAINTING)
 
     if ( qIsNaN( sh ) || qIsNaN( sv ) )
     {
@@ -420,7 +420,7 @@ QTransform &QTransform::rotate( qreal a, Qt::Axis axis )
         return *this;
     }
 
-#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+#if defined(LSCS_SHOW_DEBUG_GUI_PAINTING)
 
     if ( qIsNaN( a ) )
     {
@@ -536,7 +536,7 @@ QTransform &QTransform::rotate( qreal a, Qt::Axis axis )
 
 QTransform &QTransform::rotateRadians( qreal a, Qt::Axis axis )
 {
-#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+#if defined(LSCS_SHOW_DEBUG_GUI_PAINTING)
 
     if ( qIsNaN( a ) )
     {

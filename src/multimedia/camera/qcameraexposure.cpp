@@ -125,7 +125,7 @@ void QCameraExposurePrivate::_q_exposureParameterChanged( int parameter )
 {
     Q_Q( QCameraExposure );
 
-#if defined(CS_SHOW_DEBUG_MULTIMEDIA)
+#if defined(LSCS_SHOW_DEBUG_MULTIMEDIA)
     qDebug() << "Exposure parameter changed:"
              << QCameraExposureControl::ExposureParameter( parameter )
              << exposureControl->actualValue( QCameraExposureControl::ExposureParameter( parameter ) );

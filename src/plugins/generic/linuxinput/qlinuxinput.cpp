@@ -171,7 +171,7 @@ QLinuxInputMouseHandler::QLinuxInputMouseHandler( const QString &key,
     }
     else
     {
-        qWarning( "Unable to open mouse input device '%s': %s", csPrintable( dev ), strerror( errno ) );
+        qWarning( "Unable to open mouse input device '%s': %s", lscsPrintable( dev ), strerror( errno ) );
         return;
     }
 
@@ -601,7 +601,7 @@ QLinuxInputKeyboardHandler::QLinuxInputKeyboardHandler( const QString &key, cons
     }
     else
     {
-        qWarning( "Unable to open keyboard input device '%s': %s", csPrintable( dev ), strerror( errno ) );
+        qWarning( "Unable to open keyboard input device '%s': %s", lscsPrintable( dev ), strerror( errno ) );
         return;
     }
 }

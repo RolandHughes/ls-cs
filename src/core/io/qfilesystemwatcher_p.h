@@ -33,7 +33,7 @@
 
 class QFileSystemWatcherEngine : public QThread
 {
-    CORE_CS_OBJECT( QFileSystemWatcherEngine )
+    CORE_LSCS_OBJECT( QFileSystemWatcherEngine )
 
 protected:
     QFileSystemWatcherEngine( bool move = true )
@@ -56,10 +56,10 @@ public:
 
     virtual void stop() = 0;
 
-    CORE_CS_SIGNAL_1( Public, void fileChanged( const QString &path, bool removed ) )
-    CORE_CS_SIGNAL_2( fileChanged, path, removed )
-    CORE_CS_SIGNAL_1( Public, void directoryChanged( const QString &path, bool removed ) )
-    CORE_CS_SIGNAL_2( directoryChanged, path, removed )
+    CORE_LSCS_SIGNAL_1( Public, void fileChanged( const QString &path, bool removed ) )
+    CORE_LSCS_SIGNAL_2( fileChanged, path, removed )
+    CORE_LSCS_SIGNAL_1( Public, void directoryChanged( const QString &path, bool removed ) )
+    CORE_LSCS_SIGNAL_2( directoryChanged, path, removed )
 };
 
 class QFileSystemWatcherPrivate

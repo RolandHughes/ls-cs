@@ -586,7 +586,7 @@ ElementDescription<XsdSchemaToken, XsdTagScope::Type>::Hash  XsdSchemaParserCont
     }
 
     Q_ASSERT_X( elementDescriptions.count() == ReservedForElements, Q_FUNC_INFO,
-                csPrintable( QString::fromLatin1( "Expected is %1, actual is %2." ).formatArg( ReservedForElements ).formatArg(
+                lscsPrintable( QString::fromLatin1( "Expected is %1, actual is %2." ).formatArg( ReservedForElements ).formatArg(
                                  elementDescriptions.count() ) ) );
 
     return elementDescriptions;

@@ -55,7 +55,7 @@ static constexpr const int PollingInterval = 1000;
 
 class QPollingFileSystemWatcherEngine : public QFileSystemWatcherEngine
 {
-    CORE_CS_OBJECT( QPollingFileSystemWatcherEngine )
+    CORE_LSCS_OBJECT( QPollingFileSystemWatcherEngine )
 
     class FileInfo
     {
@@ -105,8 +105,8 @@ public:
     void stop() override;
 
 private:
-    CORE_CS_SLOT_1( Private, void timeout() )
-    CORE_CS_SLOT_2( timeout )
+    CORE_LSCS_SLOT_1( Private, void timeout() )
+    CORE_LSCS_SLOT_2( timeout )
 
     mutable QMutex mutex;
     QHash<QString, FileInfo> files, directories;
@@ -500,7 +500,7 @@ void QFileSystemWatcher::addPaths( const QStringList &paths )
 
         if ( forceName == "poller" )
         {
-#if defined(CS_SHOW_DEBUG_CORE)
+#if defined(LSCS_SHOW_DEBUG_CORE)
             qDebug( "QFileSystemWatcher::addPaths() Do not use native engine, use only polling engine" );
 #endif
 
@@ -510,7 +510,7 @@ void QFileSystemWatcher::addPaths( const QStringList &paths )
         }
         else if ( forceName == "native" )
         {
-#if defined(CS_SHOW_DEBUG_CORE)
+#if defined(LSCS_SHOW_DEBUG_CORE)
             qDebug( "QFileSystemWatcher::addPaths() Do not use polling engine, use only native engine" );
 #endif
 
@@ -519,7 +519,7 @@ void QFileSystemWatcher::addPaths( const QStringList &paths )
         }
         else
         {
-#if defined(CS_SHOW_DEBUG_CORE)
+#if defined(LSCS_SHOW_DEBUG_CORE)
             qDebug() << "QFileSystemWatcher::addPaths() Do not use native engine or polling engine, using explicit"
                      << forceName << "engine";
 #endif
@@ -536,7 +536,7 @@ void QFileSystemWatcher::addPaths( const QStringList &paths )
 
     if ( ! p.isEmpty() )
     {
-        qWarning( "QFileSystemWatcher::addPaths() Failed to add paths, %s", csPrintable( p.join( ", " ) ) );
+        qWarning( "QFileSystemWatcher::addPaths() Failed to add paths, %s", lscsPrintable( p.join( ", " ) ) );
     }
 }
 

@@ -120,7 +120,7 @@ static QString sHGetSpecialFolderPath( int clsid, QStandardPaths::StandardLocati
         if ( warn )
         {
             qErrnoWarning( "SHGetSpecialFolderPath() failed for standard location \"%s\", clsid=0x%x.",
-                           csPrintable( QStandardPaths::displayName( type ) ), clsid );
+                           lscsPrintable( QStandardPaths::displayName( type ) ), clsid );
         }
     }
 
@@ -150,7 +150,7 @@ static QString sHGetKnownFolderPath( const GUID &clsid, QStandardPaths::Standard
         if ( warn )
         {
             qErrnoWarning( "SHGetKnownFolderPath() failed for standard location \"%s\".",
-                           csPrintable( QStandardPaths::displayName( type ) ) );
+                           lscsPrintable( QStandardPaths::displayName( type ) ) );
         }
     }
 

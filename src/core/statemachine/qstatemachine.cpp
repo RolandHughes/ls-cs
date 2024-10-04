@@ -550,7 +550,7 @@ QList<QAbstractTransition *> QStateMachinePrivate::selectTransitions( QEvent *ev
                 if ( QAbstractTransitionPrivate::get( t )->callEventTest( event ) )
                 {
 
-#if defined(CS_SHOW_DEBUG_CORE_STATEMACHINE)
+#if defined(LSCS_SHOW_DEBUG_CORE_STATEMACHINE)
                     qDebug() << q << ": selecting transition" << t;
 #endif
                     enabledTransitions.append( t );
@@ -644,7 +644,7 @@ void QStateMachinePrivate::microstep( QEvent *event, const QList<QAbstractTransi
 {
     Q_ASSERT( cache );
 
-#if defined(CS_SHOW_DEBUG_CORE_STATEMACHINE)
+#if defined(LSCS_SHOW_DEBUG_CORE_STATEMACHINE)
     qDebug() << q_func() << ": begin microstep( enabledTransitions:" << enabledTransitions << ')';
     qDebug() << q_func() << ": configuration before exiting states:" << configuration;
 #endif
@@ -655,7 +655,7 @@ void QStateMachinePrivate::microstep( QEvent *event, const QList<QAbstractTransi
     QSet<QAbstractState *> statesForDefaultEntry;
     QList<QAbstractState *> enteredStates = computeEntrySet( enabledTransitions, statesForDefaultEntry, cache );
 
-#if defined(CS_SHOW_DEBUG_CORE_STATEMACHINE)
+#if defined(LSCS_SHOW_DEBUG_CORE_STATEMACHINE)
     qDebug() << q_func() << ": computed exit set:"  << exitedStates;
     qDebug() << q_func() << ": computed entry set:" << enteredStates;
 #endif
@@ -674,7 +674,7 @@ void QStateMachinePrivate::microstep( QEvent *event, const QList<QAbstractTransi
 
     exitStates( event, exitedStates, assignmentsForEnteredStates );
 
-#if defined(CS_SHOW_DEBUG_CORE_STATEMACHINE)
+#if defined(LSCS_SHOW_DEBUG_CORE_STATEMACHINE)
     qDebug() << q_func() << ": configuration after exiting states:" << configuration;
 #endif
 
@@ -689,7 +689,7 @@ void QStateMachinePrivate::microstep( QEvent *event, const QList<QAbstractTransi
 
 #endif
 
-#if defined(CS_SHOW_DEBUG_CORE_STATEMACHINE)
+#if defined(LSCS_SHOW_DEBUG_CORE_STATEMACHINE)
     qDebug() << q_func() << ": configuration after entering states:" << configuration;
     qDebug() << q_func() << ": end microstep";
 #endif
@@ -805,7 +805,7 @@ void QStateMachinePrivate::exitStates( QEvent *event, const QList<QAbstractState
                     }
                 }
 
-#if defined(CS_SHOW_DEBUG_CORE_STATEMACHINE)
+#if defined(LSCS_SHOW_DEBUG_CORE_STATEMACHINE)
                 qDebug() << q_func() << ": recorded"
                          << ( ( QHistoryStatePrivate::get( h )->historyType == QHistoryState::DeepHistory )
                               ? "deep" : "shallow" )
@@ -819,7 +819,7 @@ void QStateMachinePrivate::exitStates( QEvent *event, const QList<QAbstractState
     {
         QAbstractState *s = statesToExit_sorted.at( i );
 
-#if defined(CS_SHOW_DEBUG_CORE_STATEMACHINE)
+#if defined(LSCS_SHOW_DEBUG_CORE_STATEMACHINE)
         qDebug() << q_func() << ": exiting" << s;
 #endif
 
@@ -843,7 +843,7 @@ void QStateMachinePrivate::executeTransitionContent( QEvent *event,
     {
         QAbstractTransition *t = enabledTransitions.at( i );
 
-#if defined(CS_SHOW_DEBUG_CORE_STATEMACHINE)
+#if defined(LSCS_SHOW_DEBUG_CORE_STATEMACHINE)
         qDebug() << q_func() << ": triggering" << t;
 #endif
 
@@ -956,7 +956,7 @@ void QStateMachinePrivate::enterStates( QEvent *event, const QList<QAbstractStat
 #endif
                                       )
 {
-#if defined(CS_SHOW_DEBUG_CORE_STATEMACHINE)
+#if defined(LSCS_SHOW_DEBUG_CORE_STATEMACHINE)
     Q_Q( QStateMachine );
 #endif
 
@@ -964,7 +964,7 @@ void QStateMachinePrivate::enterStates( QEvent *event, const QList<QAbstractStat
     {
         QAbstractState *s = statesToEnter_sorted.at( i );
 
-#if defined(CS_SHOW_DEBUG_CORE_STATEMACHINE)
+#if defined(LSCS_SHOW_DEBUG_CORE_STATEMACHINE)
         qDebug() << q << ": entering" << s;
 #endif
 
@@ -1122,7 +1122,7 @@ void QStateMachinePrivate::addDescendantStatesToEnter( QAbstractState *state,
                 addAncestorStatesToEnter( s, state->parentState(), statesToEnter, statesForDefaultEntry );
             }
 
-#if defined(CS_SHOW_DEBUG_CORE_STATEMACHINE)
+#if defined(LSCS_SHOW_DEBUG_CORE_STATEMACHINE)
             qDebug() << q_func() << ": restoring"
                      << ( ( QHistoryStatePrivate::get( h )->historyType == QHistoryState::DeepHistory ) ? "deep" : "shallow" )
                      << "history from" << state << ':' << historyConfiguration;
@@ -1155,7 +1155,7 @@ void QStateMachinePrivate::addDescendantStatesToEnter( QAbstractState *state,
                     addAncestorStatesToEnter( s, state->parentState(), statesToEnter, statesForDefaultEntry );
                 }
 
-#if defined(CS_SHOW_DEBUG_CORE_STATEMACHINE)
+#if defined(LSCS_SHOW_DEBUG_CORE_STATEMACHINE)
                 qDebug() << q_func() << ": initial history targets for" << state << ':' << defaultHistoryContent;
 #endif
             }
@@ -1371,7 +1371,7 @@ bool QStateMachinePrivate::hasRestorable( QAbstractState *state, QObject *object
 QVariant QStateMachinePrivate::savedValueForRestorable( const QList<QAbstractState *> &exitedStates_sorted,
         QObject *object, const QString &propertyName ) const
 {
-#if defined(CS_SHOW_DEBUG_CORE_STATEMACHINE)
+#if defined(LSCS_SHOW_DEBUG_CORE_STATEMACHINE)
     qDebug() << q_func() << ": savedValueForRestorable(" << exitedStates_sorted << object << propertyName << ')';
 #endif
 
@@ -1384,7 +1384,7 @@ QVariant QStateMachinePrivate::savedValueForRestorable( const QList<QAbstractSta
         if ( it != restorables.constEnd() )
         {
 
-#if defined(CS_SHOW_DEBUG_CORE_STATEMACHINE)
+#if defined(LSCS_SHOW_DEBUG_CORE_STATEMACHINE)
             qDebug() << q_func() << ":   using" << it.value() << "from" << s;
 #endif
 
@@ -1392,7 +1392,7 @@ QVariant QStateMachinePrivate::savedValueForRestorable( const QList<QAbstractSta
         }
     }
 
-#if defined(CS_SHOW_DEBUG_CORE_STATEMACHINE)
+#if defined(LSCS_SHOW_DEBUG_CORE_STATEMACHINE)
     qDebug() << q_func() << ":   falling back to current value";
 #endif
 
@@ -1402,7 +1402,7 @@ QVariant QStateMachinePrivate::savedValueForRestorable( const QList<QAbstractSta
 void QStateMachinePrivate::registerRestorable( QAbstractState *state, QObject *object, const QString &propertyName,
         const QVariant &value )
 {
-#if defined(CS_SHOW_DEBUG_CORE_STATEMACHINE)
+#if defined(LSCS_SHOW_DEBUG_CORE_STATEMACHINE)
     qDebug() << q_func() << ": registerRestorable(" << state << object << propertyName << value << ')';
 #endif
 
@@ -1414,7 +1414,7 @@ void QStateMachinePrivate::registerRestorable( QAbstractState *state, QObject *o
         restorables.insert( id, value );
     }
 
-#if defined(CS_SHOW_DEBUG_CORE_STATEMACHINE)
+#if defined(LSCS_SHOW_DEBUG_CORE_STATEMACHINE)
     else
     {
         qDebug() << q_func() << ":   (already registered)";
@@ -1426,7 +1426,7 @@ void QStateMachinePrivate::registerRestorable( QAbstractState *state, QObject *o
 void QStateMachinePrivate::unregisterRestorables( const QList<QAbstractState *> &states, QObject *object,
         const QString &propertyName )
 {
-#if defined(CS_SHOW_DEBUG_CORE_STATEMACHINE)
+#if defined(LSCS_SHOW_DEBUG_CORE_STATEMACHINE)
     qDebug() << q_func() << ": unregisterRestorables(" << states << object << propertyName << ')';
 #endif
 
@@ -1452,7 +1452,7 @@ void QStateMachinePrivate::unregisterRestorables( const QList<QAbstractState *> 
             continue;
         }
 
-#if defined(CS_SHOW_DEBUG_CORE_STATEMACHINE)
+#if defined(LSCS_SHOW_DEBUG_CORE_STATEMACHINE)
         qDebug() << q_func() << ":   unregistered for" << s;
 #endif
         restorables.erase( it2 );
@@ -1480,7 +1480,7 @@ const
             continue;
         }
 
-#if defined(CS_SHOW_DEBUG_CORE_STATEMACHINE)
+#if defined(LSCS_SHOW_DEBUG_CORE_STATEMACHINE)
         qDebug() << q_func() << ": restoring" << id.object() << id.propertyName() << "to" << it.value();
 #endif
 
@@ -1632,7 +1632,7 @@ void QStateMachinePrivate::setError( QStateMachine::Error errorCode, QAbstractSt
     else
     {
         qWarning( "QStateMachine::setError() Unrecoverable error detected while running state machine, %s",
-                  csPrintable( errorString ) );
+                  lscsPrintable( errorString ) );
 
         q->stop();
     }
@@ -2008,7 +2008,7 @@ void QStateMachinePrivate::_q_start()
 
     startupHook();
 
-#if defined(CS_SHOW_DEBUG_CORE_STATEMACHINE)
+#if defined(LSCS_SHOW_DEBUG_CORE_STATEMACHINE)
     qDebug() << q << ": starting";
 #endif
 
@@ -2045,7 +2045,7 @@ void QStateMachinePrivate::_q_start()
 
     delete initialTransition;
 
-#if defined(CS_SHOW_DEBUG_CORE_STATEMACHINE)
+#if defined(LSCS_SHOW_DEBUG_CORE_STATEMACHINE)
     qDebug() << q << ": initial configuration:" << configuration;
 #endif
 
@@ -2078,7 +2078,7 @@ void QStateMachinePrivate::_q_process()
     processingScheduled = false;
     beginMacrostep();
 
-#if defined(CS_SHOW_DEBUG_CORE_STATEMACHINE)
+#if defined(LSCS_SHOW_DEBUG_CORE_STATEMACHINE)
     qDebug() << q << ": starting the event processing loop";
 #endif
 
@@ -2106,7 +2106,7 @@ void QStateMachinePrivate::_q_process()
         while ( enabledTransitions.isEmpty() && ( ( e = dequeueInternalEvent() ) != nullptr ) )
         {
 
-#if defined(CS_SHOW_DEBUG_CORE_STATEMACHINE)
+#if defined(LSCS_SHOW_DEBUG_CORE_STATEMACHINE)
             qDebug() << q << ": dequeued internal event" << e << "of type" << e->type();
 #endif
             enabledTransitions = selectTransitions( e, &calculationCache );
@@ -2121,7 +2121,7 @@ void QStateMachinePrivate::_q_process()
         while ( enabledTransitions.isEmpty() && ( ( e = dequeueExternalEvent() ) != nullptr ) )
         {
 
-#if defined(CS_SHOW_DEBUG_CORE_STATEMACHINE)
+#if defined(LSCS_SHOW_DEBUG_CORE_STATEMACHINE)
             qDebug() << q << ": dequeued external event" << e << "of type" << e->type();
 #endif
             enabledTransitions = selectTransitions( e, &calculationCache );
@@ -2155,7 +2155,7 @@ void QStateMachinePrivate::_q_process()
         delete e;
     }
 
-#if defined(CS_SHOW_DEBUG_CORE_STATEMACHINE)
+#if defined(LSCS_SHOW_DEBUG_CORE_STATEMACHINE)
     qDebug() << q << ": finished the event processing loop";
 #endif
 
@@ -2401,7 +2401,7 @@ void QStateMachinePrivate::emitStateFinished( QState *forState, QFinalState *gui
     ( void ) guiltyState;
     Q_ASSERT( guiltyState );
 
-#if defined(CS_SHOW_DEBUG_CORE_STATEMACHINE)
+#if defined(LSCS_SHOW_DEBUG_CORE_STATEMACHINE)
     Q_Q( QStateMachine );
     qDebug() << q << ": emitting finished signal for" << forState;
 #endif
@@ -2418,7 +2418,7 @@ namespace cs_internal_stateMachine
 
 class GoToStateTransition : public QAbstractTransition
 {
-    CORE_CS_OBJECT( GoToStateTransition )
+    CORE_LSCS_OBJECT( GoToStateTransition )
 
 public:
     GoToStateTransition( QAbstractState *target )
@@ -2694,7 +2694,7 @@ void QStateMachinePrivate::registerEventTransition( QEventTransition *transition
         return;
     }
 
-    QList<QPointer<QObject>> &eventFilters = CSInternalEvents::get_m_EventFilters( object );
+    QList<QPointer<QObject>> &eventFilters = LSCSInternalEvents::get_m_EventFilters( object );
 
     if ( ! eventFilters.contains( q ) )
     {
@@ -2704,7 +2704,7 @@ void QStateMachinePrivate::registerEventTransition( QEventTransition *transition
     ++qobjectEvents[object][transition->eventType()];
     QEventTransitionPrivate::get( transition )->registered = true;
 
-#if defined(CS_SHOW_DEBUG_CORE_STATEMACHINE)
+#if defined(LSCS_SHOW_DEBUG_CORE_STATEMACHINE)
     qDebug() << q << ": added event transition from" << transition->sourceState()
              << ": ( object =" << object << ", event =" << transition->eventType()
              << ", targets =" << transition->targetStates() << ')';
@@ -2762,7 +2762,7 @@ void QStateMachinePrivate::handleTransitionSignal( QObject *sender, int signalIn
     // missing code to retrieve vArgs
     QList<QVariant> vArgs;       // = data.toVariantList();
 
-#if defined(CS_SHOW_DEBUG_CORE_STATEMACHINE)
+#if defined(LSCS_SHOW_DEBUG_CORE_STATEMACHINE)
     qDebug( "Sending Signal Event" );
 #endif
 
@@ -2949,7 +2949,7 @@ void QStateMachine::postEvent( QEvent *event, EventPriority priority )
         return;
     }
 
-#if defined(CS_SHOW_DEBUG_CORE_STATEMACHINE)
+#if defined(LSCS_SHOW_DEBUG_CORE_STATEMACHINE)
     qDebug() << this << ": posting event" << event;
 #endif
 
@@ -2989,7 +2989,7 @@ int QStateMachine::postDelayedEvent( QEvent *event, int delay )
         return -1;
     }
 
-#if defined(CS_SHOW_DEBUG_CORE_STATEMACHINE)
+#if defined(LSCS_SHOW_DEBUG_CORE_STATEMACHINE)
     qDebug() << this << ": posting event" << event << "with delay" << delay;
 #endif
 

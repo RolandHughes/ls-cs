@@ -33,7 +33,7 @@ class QIODevice;
 
 class Q_MULTIMEDIA_EXPORT QAbstractAudioDeviceInfo : public QObject
 {
-    MULTI_CS_OBJECT( QAbstractAudioDeviceInfo )
+    MULTI_LSCS_OBJECT( QAbstractAudioDeviceInfo )
 
 public:
     virtual QAudioFormat preferredFormat() const = 0;
@@ -49,7 +49,7 @@ public:
 
 class Q_MULTIMEDIA_EXPORT QAbstractAudioOutput : public QObject
 {
-    MULTI_CS_OBJECT( QAbstractAudioOutput )
+    MULTI_LSCS_OBJECT( QAbstractAudioOutput )
 
 public:
     virtual void start( QIODevice *device ) = 0;
@@ -81,19 +81,19 @@ public:
     }
     virtual void setCategory( const QString & ) { }
 
-    MULTI_CS_SIGNAL_1( Public, void errorChanged( QAudio::Error error ) )
-    MULTI_CS_SIGNAL_2( errorChanged, error )
+    MULTI_LSCS_SIGNAL_1( Public, void errorChanged( QAudio::Error error ) )
+    MULTI_LSCS_SIGNAL_2( errorChanged, error )
 
-    MULTI_CS_SIGNAL_1( Public, void stateChanged( QAudio::State state ) )
-    MULTI_CS_SIGNAL_2( stateChanged, state )
+    MULTI_LSCS_SIGNAL_1( Public, void stateChanged( QAudio::State state ) )
+    MULTI_LSCS_SIGNAL_2( stateChanged, state )
 
-    MULTI_CS_SIGNAL_1( Public, void notify() )
-    MULTI_CS_SIGNAL_2( notify )
+    MULTI_LSCS_SIGNAL_1( Public, void notify() )
+    MULTI_LSCS_SIGNAL_2( notify )
 };
 
 class Q_MULTIMEDIA_EXPORT QAbstractAudioInput : public QObject
 {
-    MULTI_CS_OBJECT( QAbstractAudioInput )
+    MULTI_LSCS_OBJECT( QAbstractAudioInput )
 
 public:
     virtual void start( QIODevice *device ) = 0;
@@ -117,14 +117,14 @@ public:
     virtual void setVolume( qreal ) = 0;
     virtual qreal volume() const = 0;
 
-    MULTI_CS_SIGNAL_1( Public, void errorChanged( QAudio::Error error ) )
-    MULTI_CS_SIGNAL_2( errorChanged, error )
+    MULTI_LSCS_SIGNAL_1( Public, void errorChanged( QAudio::Error error ) )
+    MULTI_LSCS_SIGNAL_2( errorChanged, error )
 
-    MULTI_CS_SIGNAL_1( Public, void stateChanged( QAudio::State state ) )
-    MULTI_CS_SIGNAL_2( stateChanged, state )
+    MULTI_LSCS_SIGNAL_1( Public, void stateChanged( QAudio::State state ) )
+    MULTI_LSCS_SIGNAL_2( stateChanged, state )
 
-    MULTI_CS_SIGNAL_1( Public, void notify() )
-    MULTI_CS_SIGNAL_2( notify )
+    MULTI_LSCS_SIGNAL_1( Public, void notify() )
+    MULTI_LSCS_SIGNAL_2( notify )
 };
 
 #endif

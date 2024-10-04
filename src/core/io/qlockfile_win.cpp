@@ -225,7 +225,7 @@ void QLockFile::unlock()
 
     if ( attempts == maxAttempts )
     {
-        qWarning( "QLockFile::unlock() Unable to remove file %s", csPrintable( d->fileName ) );
+        qWarning( "QLockFile::unlock() Unable to remove file %s", lscsPrintable( d->fileName ) );
     }
 
     d->lockError = QLockFile::NoError;

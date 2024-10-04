@@ -54,10 +54,10 @@ class QWindow;
 
 class Q_GUI_EXPORT QAccessible
 {
-    GUI_CS_GADGET( QAccessible )
+    GUI_LSCS_GADGET( QAccessible )
 
-    GUI_CS_ENUM( Role )
-    GUI_CS_ENUM( Event )
+    GUI_LSCS_ENUM( Role )
+    GUI_LSCS_ENUM( Event )
 
 public:
     enum Event
@@ -983,7 +983,7 @@ protected:
 };
 
 #define QAccessibleInterface_ID "com.copperspice.CS.AccessibleInterface"
-CS_DECLARE_INTERFACE( QAccessibleInterface, QAccessibleInterface_ID )
+LSCS_DECLARE_INTERFACE( QAccessibleInterface, QAccessibleInterface_ID )
 
 Q_GUI_EXPORT QString qAccessibleRoleString( QAccessible::Role role );
 Q_GUI_EXPORT QString qAccessibleEventString( QAccessible::Event event );

@@ -406,6 +406,6 @@ inline bool qIsForwardIteratorEnd( const QXmlItem &item )
     return item.isNull();
 }
 
-CS_DECLARE_METATYPE( QXmlItem )
+LSCS_DECLARE_METATYPE( QXmlItem )
 
 #endif

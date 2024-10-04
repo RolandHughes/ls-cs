@@ -119,17 +119,17 @@ public:
 #ifdef Q_OS_WIN
 class QWindowsCaRootFetcher : public QObject
 {
-    NET_CS_OBJECT( QWindowsCaRootFetcher )
+    NET_LSCS_OBJECT( QWindowsCaRootFetcher )
 
 public:
     QWindowsCaRootFetcher( const QSslCertificate &certificate, QSslSocket::SslMode sslMode );
     ~QWindowsCaRootFetcher();
 
-    NET_CS_SIGNAL_1( Public, void finished( QSslCertificate brokenChain, QSslCertificate caroot ) )
-    NET_CS_SIGNAL_2( finished, brokenChain, caroot )
+    NET_LSCS_SIGNAL_1( Public, void finished( QSslCertificate brokenChain, QSslCertificate caroot ) )
+    NET_LSCS_SIGNAL_2( finished, brokenChain, caroot )
 
-    NET_CS_SLOT_1( Public, void start() )
-    NET_CS_SLOT_2( start )
+    NET_LSCS_SLOT_1( Public, void start() )
+    NET_LSCS_SLOT_2( start )
 
 private:
     QSslCertificate cert;

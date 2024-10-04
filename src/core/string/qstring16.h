@@ -24,9 +24,9 @@
 #ifndef QSTRING16_H
 #define QSTRING16_H
 
-#define CS_STRING_ALLOW_UNSAFE
+#define LSCS_STRING_ALLOW_UNSAFE
 
-#include <cs_string.h>
+#include <lscs_string.h>
 
 #include <qbytearray.h>
 #include <qchar32.h>
@@ -303,7 +303,7 @@ public:
         : LsCsString::LsCsString_utf16( cStr )
     { }
 
-#ifdef CS_STRING_ALLOW_UNSAFE
+#ifdef LSCS_STRING_ALLOW_UNSAFE
     QString16( const QByteArray &str )
         : QString16( fromUtf8( str ) )
     { }

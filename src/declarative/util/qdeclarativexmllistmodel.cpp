@@ -130,7 +130,7 @@ struct XmlQueryJob
 class QDeclarativeXmlQueryEngine;
 class QDeclarativeXmlQueryThreadObject : public QObject
 {
-    DECL_CS_OBJECT( QDeclarativeXmlQueryThreadObject )
+    DECL_LSCS_OBJECT( QDeclarativeXmlQueryThreadObject )
 
 public:
     QDeclarativeXmlQueryThreadObject( QDeclarativeXmlQueryEngine * );
@@ -145,7 +145,7 @@ private:
 
 class QDeclarativeXmlQueryEngine : public QThread
 {
-    DECL_CS_OBJECT( QDeclarativeXmlQueryEngine )
+    DECL_LSCS_OBJECT( QDeclarativeXmlQueryEngine )
 
 public:
     QDeclarativeXmlQueryEngine( QDeclarativeEngine *eng );
@@ -159,11 +159,11 @@ public:
 
     static QDeclarativeXmlQueryEngine *instance( QDeclarativeEngine *engine );
 
-    DECL_CS_SIGNAL_1( Public, void queryCompleted( const QDeclarativeXmlQueryResult &un_named_arg1 ) )
-    DECL_CS_SIGNAL_2( queryCompleted, un_named_arg1 )
+    DECL_LSCS_SIGNAL_1( Public, void queryCompleted( const QDeclarativeXmlQueryResult &un_named_arg1 ) )
+    DECL_LSCS_SIGNAL_2( queryCompleted, un_named_arg1 )
 
-    DECL_CS_SIGNAL_1( Public, void error( void *un_named_arg1, const QString &un_named_arg2 ) )
-    DECL_CS_SIGNAL_2( error, un_named_arg1, un_named_arg2 )
+    DECL_LSCS_SIGNAL_1( Public, void error( void *un_named_arg1, const QString &un_named_arg2 ) )
+    DECL_LSCS_SIGNAL_2( error, un_named_arg1, un_named_arg2 )
 
 protected:
     void run();

@@ -29,7 +29,7 @@
 
 class QWaveDecoder : public QIODevice
 {
-    MULTI_CS_OBJECT( QWaveDecoder )
+    MULTI_LSCS_OBJECT( QWaveDecoder )
 
 public:
     explicit QWaveDecoder( QIODevice *source, QObject *parent = nullptr );
@@ -42,11 +42,11 @@ public:
     bool isSequential() const override;
     qint64 bytesAvailable() const override;
 
-    MULTI_CS_SIGNAL_1( Public, void formatKnown() )
-    MULTI_CS_SIGNAL_2( formatKnown )
+    MULTI_LSCS_SIGNAL_1( Public, void formatKnown() )
+    MULTI_LSCS_SIGNAL_2( formatKnown )
 
-    MULTI_CS_SIGNAL_1( Public, void parsingError() )
-    MULTI_CS_SIGNAL_2( parsingError )
+    MULTI_LSCS_SIGNAL_1( Public, void parsingError() )
+    MULTI_LSCS_SIGNAL_2( parsingError )
 
 private:
     qint64 readData( char *data, qint64 maxlen ) override;
@@ -96,8 +96,8 @@ private:
     quint32 junkToSkip;
     bool bigEndian;
 
-    MULTI_CS_SLOT_1( Private, void handleData() )
-    MULTI_CS_SLOT_2( handleData )
+    MULTI_LSCS_SLOT_1( Private, void handleData() )
+    MULTI_LSCS_SLOT_2( handleData )
 };
 
 #endif

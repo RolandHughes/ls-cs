@@ -68,8 +68,8 @@ private:
     friend class QGraphicsWidget;
 };
 
-CS_DECLARE_INTERFACE( QGraphicsLayout, "com.copperspice.QGraphicsLayout" )
-CS_DECLARE_METATYPE( QGraphicsLayout )
+LSCS_DECLARE_INTERFACE( QGraphicsLayout, "com.copperspice.QGraphicsLayout" )
+LSCS_DECLARE_METATYPE( QGraphicsLayout )
 
 #endif
 

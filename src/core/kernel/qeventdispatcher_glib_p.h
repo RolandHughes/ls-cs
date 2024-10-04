@@ -41,7 +41,7 @@ struct GIdleTimerSource;
 
 class Q_CORE_EXPORT QEventDispatcherGlib : public QAbstractEventDispatcher
 {
-    CORE_CS_OBJECT( QEventDispatcherGlib )
+    CORE_LSCS_OBJECT( QEventDispatcherGlib )
     Q_DECLARE_PRIVATE( QEventDispatcherGlib )
 
 public:

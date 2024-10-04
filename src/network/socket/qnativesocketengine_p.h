@@ -85,7 +85,7 @@ class QNetworkInterface;
 
 class QNativeSocketEngine : public QAbstractSocketEngine
 {
-    NET_CS_OBJECT( QNativeSocketEngine )
+    NET_LSCS_OBJECT( QNativeSocketEngine )
 
 public:
     QNativeSocketEngine( QObject *parent = nullptr );
@@ -155,8 +155,8 @@ public:
     bool isExceptionNotificationEnabled() const override;
     void setExceptionNotificationEnabled( bool enable ) override;
 
-    NET_CS_SLOT_1( Public, void connectionNotification() )
-    NET_CS_SLOT_2( connectionNotification )
+    NET_LSCS_SLOT_1( Public, void connectionNotification() )
+    NET_LSCS_SLOT_2( connectionNotification )
 
 private:
     Q_DECLARE_PRIVATE( QNativeSocketEngine )

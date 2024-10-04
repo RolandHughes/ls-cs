@@ -200,7 +200,7 @@ void QScriptDebuggerScriptedConsoleCommandJob::start()
 
     if ( ret.isError() )
     {
-        qWarning( "*** internal error: %s", csPrintable( ret.toString() ) );
+        qWarning( "*** internal error: %s", lscsPrintable( ret.toString() ) );
     }
 
     if ( d->commandCount == 0 )
@@ -236,7 +236,7 @@ void QScriptDebuggerScriptedConsoleCommandJob::handleResponse(
 
     if ( ret.isError() )
     {
-        qWarning( "*** internal error: %s", csPrintable( ret.toString() ) );
+        qWarning( "*** internal error: %s", lscsPrintable( ret.toString() ) );
     }
 
     if ( d->commandCount == 0 )

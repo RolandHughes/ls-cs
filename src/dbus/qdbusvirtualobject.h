@@ -38,7 +38,7 @@ class QDBusVirtualObjectPrivate;
 
 class Q_DBUS_EXPORT QDBusVirtualObject : public QObject
 {
-    CS_OBJECT( QDBusVirtualObject )
+    LSCS_OBJECT( QDBusVirtualObject )
 
 public:
     explicit QDBusVirtualObject( QObject *parent = nullptr );

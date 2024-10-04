@@ -33,7 +33,7 @@ class QScreen;
 
 class Q_GUI_EXPORT QOffscreenSurface : public QObject, public QSurface
 {
-    GUI_CS_OBJECT_MULTIPLE( QOffscreenSurface, QObject )
+    GUI_LSCS_OBJECT_MULTIPLE( QOffscreenSurface, QObject )
 
 public:
     explicit QOffscreenSurface( QScreen *screen = nullptr );
@@ -61,8 +61,8 @@ public:
 
     QPlatformOffscreenSurface *handle() const;
 
-    GUI_CS_SIGNAL_1( Public, void screenChanged( QScreen *screen ) )
-    GUI_CS_SIGNAL_2( screenChanged, screen )
+    GUI_LSCS_SIGNAL_1( Public, void screenChanged( QScreen *screen ) )
+    GUI_LSCS_SIGNAL_2( screenChanged, screen )
 
 protected:
     QScopedPointer<QOffscreenSurfacePrivate> d_ptr;
@@ -72,8 +72,8 @@ private:
 
     QPlatformSurface *surfaceHandle() const override;
 
-    GUI_CS_SLOT_1( Private, void screenDestroyed( QObject *screen ) )
-    GUI_CS_SLOT_2( screenDestroyed )
+    GUI_LSCS_SLOT_1( Private, void screenDestroyed( QObject *screen ) )
+    GUI_LSCS_SLOT_2( screenDestroyed )
 };
 
 #endif

@@ -36,7 +36,7 @@ class QWindow;
 
 class Q_GUI_EXPORT QPlatformNativeInterface : public QObject
 {
-    GUI_CS_OBJECT( QPlatformNativeInterface )
+    GUI_LSCS_OBJECT( QPlatformNativeInterface )
 
 public:
     virtual void *nativeResourceForIntegration( const QByteArray &resource );
@@ -66,8 +66,8 @@ public:
     virtual QVariant windowProperty( QPlatformWindow *window, const QString &name, const QVariant &defaultValue ) const;
     virtual void setWindowProperty( QPlatformWindow *window, const QString &name, const QVariant &value );
 
-    GUI_CS_SIGNAL_1( Public, void windowPropertyChanged( QPlatformWindow *window, const QString &propertyName ) )
-    GUI_CS_SIGNAL_2( windowPropertyChanged, window, propertyName )
+    GUI_LSCS_SIGNAL_1( Public, void windowPropertyChanged( QPlatformWindow *window, const QString &propertyName ) )
+    GUI_LSCS_SIGNAL_2( windowPropertyChanged, window, propertyName )
 };
 
 #endif

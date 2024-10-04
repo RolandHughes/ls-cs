@@ -104,7 +104,7 @@ inline bool operator!=( const QOpenGLVersionProfile &lhs, const QOpenGLVersionPr
 
 class Q_GUI_EXPORT QOpenGLContextGroup : public QObject
 {
-    GUI_CS_OBJECT( QOpenGLContextGroup )
+    GUI_LSCS_OBJECT( QOpenGLContextGroup )
     Q_DECLARE_PRIVATE( QOpenGLContextGroup )
 
 public:
@@ -129,7 +129,7 @@ protected:
 
 class Q_GUI_EXPORT QOpenGLContext : public QObject
 {
-    GUI_CS_OBJECT( QOpenGLContext )
+    GUI_LSCS_OBJECT( QOpenGLContext )
     Q_DECLARE_PRIVATE( QOpenGLContext )
 
 public:
@@ -198,8 +198,8 @@ public:
     static bool supportsThreadedOpenGL();
     static QOpenGLContext *globalShareContext();
 
-    GUI_CS_SIGNAL_1( Public, void aboutToBeDestroyed() )
-    GUI_CS_SIGNAL_2( aboutToBeDestroyed )
+    GUI_LSCS_SIGNAL_1( Public, void aboutToBeDestroyed() )
+    GUI_LSCS_SIGNAL_2( aboutToBeDestroyed )
 
 private:
     QScopedPointer<QOpenGLContextPrivate> d_ptr;
@@ -236,8 +236,8 @@ private:
 
     void destroy();
 
-    GUI_CS_SLOT_1( Private, void _q_screenDestroyed( QObject *object ) )
-    GUI_CS_SLOT_2( _q_screenDestroyed )
+    GUI_LSCS_SLOT_1( Private, void _q_screenDestroyed( QObject *object ) )
+    GUI_LSCS_SLOT_2( _q_screenDestroyed )
 };
 
 #endif // QT_NO_OPENGL

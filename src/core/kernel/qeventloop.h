@@ -33,7 +33,7 @@ class QEventLoopPrivate;
 
 class Q_CORE_EXPORT QEventLoop : public QObject
 {
-    CORE_CS_OBJECT( QEventLoop )
+    CORE_LSCS_OBJECT( QEventLoop )
     Q_DECLARE_PRIVATE( QEventLoop )
 
 public:
@@ -62,8 +62,8 @@ public:
 
     void wakeUp();
 
-    CORE_CS_SLOT_1( Public, void quit() )
-    CORE_CS_SLOT_2( quit )
+    CORE_LSCS_SLOT_1( Public, void quit() )
+    CORE_LSCS_SLOT_2( quit )
 
 protected:
     QScopedPointer<QEventLoopPrivate> d_ptr;

@@ -31,7 +31,7 @@ class CameraBinSession;
 
 class CameraBinV4LImageProcessing : public QCameraImageProcessingControl
 {
-    CS_OBJECT( CameraBinV4LImageProcessing )
+    LSCS_OBJECT( CameraBinV4LImageProcessing )
 
 public:
     CameraBinV4LImageProcessing( CameraBinSession *session );
@@ -43,8 +43,8 @@ public:
     void setParameter( ProcessingParameter parameter, const QVariant &value );
 
 public :
-    CS_SLOT_1( Public, void updateParametersInfo( QCamera::Status cameraStatus ) )
-    CS_SLOT_2( updateParametersInfo )
+    LSCS_SLOT_1( Public, void updateParametersInfo( QCamera::Status cameraStatus ) )
+    LSCS_SLOT_2( updateParametersInfo )
 
 private:
     struct SourceParameterValueInfo

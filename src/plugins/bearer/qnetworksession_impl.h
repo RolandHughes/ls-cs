@@ -35,7 +35,7 @@ class QBearerEngineImpl;
 
 class QNetworkSessionPrivateImpl : public QNetworkSessionPrivate
 {
-    CS_OBJECT( QNetworkSessionPrivateImpl )
+    LSCS_OBJECT( QNetworkSessionPrivateImpl )
 
 public:
     QNetworkSessionPrivateImpl()
@@ -76,20 +76,20 @@ public:
     quint64 activeTime() const;
 
 private:
-    CS_SLOT_1( Private, void networkConfigurationsChanged() )
-    CS_SLOT_2( networkConfigurationsChanged )
+    LSCS_SLOT_1( Private, void networkConfigurationsChanged() )
+    LSCS_SLOT_2( networkConfigurationsChanged )
 
-    CS_SLOT_1( Private, void configurationChanged( QNetworkConfigurationPrivatePointer config ) )
-    CS_SLOT_2( configurationChanged )
+    LSCS_SLOT_1( Private, void configurationChanged( QNetworkConfigurationPrivatePointer config ) )
+    LSCS_SLOT_2( configurationChanged )
 
-    CS_SLOT_1( Private, void forcedSessionClose( const QNetworkConfiguration &config ) )
-    CS_SLOT_2( forcedSessionClose )
+    LSCS_SLOT_1( Private, void forcedSessionClose( const QNetworkConfiguration &config ) )
+    LSCS_SLOT_2( forcedSessionClose )
 
-    CS_SLOT_1( Private, void connectionError( const QString &id, QBearerEngineImpl::ConnectionError error ) )
-    CS_SLOT_2( connectionError )
+    LSCS_SLOT_1( Private, void connectionError( const QString &id, QBearerEngineImpl::ConnectionError error ) )
+    LSCS_SLOT_2( connectionError )
 
-    CS_SLOT_1( Private, void decrementTimeout() )
-    CS_SLOT_2( decrementTimeout )
+    LSCS_SLOT_1( Private, void decrementTimeout() )
+    LSCS_SLOT_2( decrementTimeout )
 
     void updateStateFromServiceNetwork();
     void updateStateFromActiveConfig();

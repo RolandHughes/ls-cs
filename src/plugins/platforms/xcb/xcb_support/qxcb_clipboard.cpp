@@ -36,7 +36,7 @@
 
 class QXcbClipboardMime : public QXcbMime
 {
-    CS_OBJECT( QXcbClipboardMime )
+    LSCS_OBJECT( QXcbClipboardMime )
 
 public:
     QXcbClipboardMime( QClipboard::Mode mode, QXcbClipboard *clipboard )
@@ -160,7 +160,7 @@ static TransactionMap *transactions = nullptr;
 
 class INCRTransaction : public QObject
 {
-    CS_OBJECT( INCRTransaction )
+    LSCS_OBJECT( INCRTransaction )
 
 public:
     INCRTransaction( QXcbConnection *c, xcb_window_t w, xcb_atom_t p, QByteArray d, uint i, xcb_atom_t t, int f, int to )
@@ -172,7 +172,7 @@ public:
 
         if ( ! transactions )
         {
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
             qDebug( "INCRTransaction() Creating the TransactionMap" );
 #endif
 
@@ -196,7 +196,7 @@ public:
 
         if ( transactions->isEmpty() )
         {
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
             qDebug( "~INCRTransaction() No more INCR transactions in the TransactionMap" );
 #endif
             delete transactions;
@@ -227,7 +227,7 @@ public:
             {
                 unsigned int bytes_to_send = qMin( increment, bytes_left );
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
                 qDebug( "updateIncrProperty() Sending = %d bytes, remaining bytes = %d, INCR transaction = %p",
                         bytes_to_send, bytes_left - bytes_to_send, this );
 #endif
@@ -241,7 +241,7 @@ public:
             }
             else
             {
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
                 qDebug( "updateIncrProperty() INCR transaction completed = %p", this );
 #endif
                 xcb_change_property( c, XCB_PROP_MODE_REPLACE, win, property,
@@ -265,7 +265,7 @@ protected:
         {
             // this can happen when the X client we are sending data
             // to decides to exit (normally or abnormally)
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
             qDebug( "timerEvent() Timed out while sending data to %p", this );
 #endif
 
@@ -303,7 +303,7 @@ QXcbClipboard::QXcbClipboard( QXcbConnection *c )
     m_timestamp[QClipboard::Selection] = XCB_CURRENT_TIME;
     m_owner = connection()->getQtSelectionOwner();
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
     QByteArray ba( "CS clipboard window" );
 
     Q_XCB_CALL( xcb_change_property( xcb_connection(),
@@ -553,7 +553,7 @@ xcb_window_t QXcbClipboard::requestor() const
                                        0,                                          // value mask
                                        nullptr ) );                               // value list
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
         QByteArray ba( "CS clipboard requestor window" );
 
         Q_XCB_CALL( xcb_change_property( xcb_connection(),
@@ -628,14 +628,14 @@ xcb_atom_t QXcbClipboard::sendSelection( QMimeData *d, xcb_atom_t target, xcb_wi
     {
         // Not a MIME type we have
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
         qDebug() << "QXcbClipboard::sendSelection() Converting to type " << connection()->atomName( target ) << "is not supported";
 #endif
 
         return XCB_NONE;
     }
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
     qDebug() << "QXcbClipboard::sendSelection() Converting to type " << fmt;
 #endif
 

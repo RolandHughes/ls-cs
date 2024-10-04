@@ -24,10 +24,10 @@
  * LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 */
 
-#ifndef CS_REGEX_MERGE_H
-#define CS_REGEX_MERGE_H
+#ifndef LSCS_REGEX_MERGE_H
+#define LSCS_REGEX_MERGE_H
 
-namespace cs_regex_ns
+namespace lscs_regex_ns
 {
 
 template <class OutputIterator, class Iterator, class traits, class charT>

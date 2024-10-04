@@ -30,7 +30,7 @@
 // Message highlighter based on HtmlSyntaxHighlighter from designer
 class MessageHighlighter : public QSyntaxHighlighter
 {
-    CS_OBJECT( MessageHighlighter )
+    LSCS_OBJECT( MessageHighlighter )
 
 public:
     MessageHighlighter( QTextEdit *textEdit );

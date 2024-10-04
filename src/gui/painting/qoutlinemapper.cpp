@@ -260,7 +260,7 @@ void QOutlineMapper::endOutline()
 
     controlPointRect = boundingRect( elements, m_elements.size() );
 
-#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+#if defined(LSCS_SHOW_DEBUG_GUI_PAINTING)
     qDebug( "QOutlineMapper::endOutline() control point rect = (%.2f, %.2f) %.2f x %.2f, clip = (%d,%d, %dx%d)",
             controlPointRect.x(), controlPointRect.y(), controlPointRect.width(), controlPointRect.height(),
             m_clip_rect.x(), m_clip_rect.y(), m_clip_rect.width(), m_clip_rect.height() );
@@ -370,7 +370,7 @@ void QOutlineMapper::convertElements( const QPointF *elements,
     m_outline.tags = m_tags.data();
     m_outline.contours = m_contours.data();
 
-#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+#if defined(LSCS_SHOW_DEBUG_GUI_PAINTING)
     qDebug( "QOutlineMapper::convertElements() Finished outline" );
 #endif
 }

@@ -41,11 +41,11 @@ class QByteArray;
  */
 class Q_DBUS_EXPORT QDBusConnectionInterface: public QDBusAbstractInterface
 {
-    CS_OBJECT( QDBusConnectionInterface )
+    LSCS_OBJECT( QDBusConnectionInterface )
 
-    CS_ENUM( ServiceQueueOptions )
-    CS_ENUM( ServiceReplacementOptions )
-    CS_ENUM( RegisterServiceReply )
+    LSCS_ENUM( ServiceQueueOptions )
+    LSCS_ENUM( ServiceReplacementOptions )
+    LSCS_ENUM( RegisterServiceReply )
 
     friend class QDBusConnectionPrivate;
     static inline const char *staticInterfaceName();
@@ -53,7 +53,7 @@ class Q_DBUS_EXPORT QDBusConnectionInterface: public QDBusAbstractInterface
     explicit QDBusConnectionInterface( const QDBusConnection &connection, QObject *parent );
     ~QDBusConnectionInterface();
 
-    CS_PROPERTY_READ( registeredServiceNames, registeredServiceNames )
+    LSCS_PROPERTY_READ( registeredServiceNames, registeredServiceNames )
 
 public:
     enum ServiceQueueOptions
@@ -76,55 +76,55 @@ public:
         ServiceQueued
     };
 
-    CS_SLOT_1( Public, QDBusReply<QStringList> registeredServiceNames() )
-    CS_SLOT_2( registeredServiceNames )
+    LSCS_SLOT_1( Public, QDBusReply<QStringList> registeredServiceNames() )
+    LSCS_SLOT_2( registeredServiceNames )
 
-    CS_SLOT_1( Public, QDBusReply<bool> isServiceRegistered( const QString &serviceName ) const )
-    CS_SLOT_2( isServiceRegistered )
+    LSCS_SLOT_1( Public, QDBusReply<bool> isServiceRegistered( const QString &serviceName ) const )
+    LSCS_SLOT_2( isServiceRegistered )
 
-    CS_SLOT_1( Public, QDBusReply<QString> serviceOwner( const QString &name )const )
-    CS_SLOT_2( serviceOwner )
+    LSCS_SLOT_1( Public, QDBusReply<QString> serviceOwner( const QString &name )const )
+    LSCS_SLOT_2( serviceOwner )
 
-    CS_SLOT_1( Public, QDBusReply<bool> unregisterService( const QString &serviceName ) )
-    CS_SLOT_2( unregisterService )
+    LSCS_SLOT_1( Public, QDBusReply<bool> unregisterService( const QString &serviceName ) )
+    LSCS_SLOT_2( unregisterService )
 
-    CS_SLOT_1( Public, QDBusReply<QDBusConnectionInterface::RegisterServiceReply>
+    LSCS_SLOT_1( Public, QDBusReply<QDBusConnectionInterface::RegisterServiceReply>
                registerService( const QString &serviceName,ServiceQueueOptions qoption = DontQueueService,
                                 ServiceReplacementOptions roption = DontAllowReplacement ) )
 
-    CS_SLOT_2( registerService )
+    LSCS_SLOT_2( registerService )
 
-    CS_SLOT_1( Public, QDBusReply<uint> servicePid( const QString &serviceName )const )
-    CS_SLOT_2( servicePid )
+    LSCS_SLOT_1( Public, QDBusReply<uint> servicePid( const QString &serviceName )const )
+    LSCS_SLOT_2( servicePid )
 
-    CS_SLOT_1( Public, QDBusReply<uint> serviceUid( const QString &serviceName )const )
-    CS_SLOT_2( serviceUid )
+    LSCS_SLOT_1( Public, QDBusReply<uint> serviceUid( const QString &serviceName )const )
+    LSCS_SLOT_2( serviceUid )
 
-    CS_SLOT_1( Public, QDBusReply<void> startService( const QString &name ) )
-    CS_SLOT_2( startService )
+    LSCS_SLOT_1( Public, QDBusReply<void> startService( const QString &name ) )
+    LSCS_SLOT_2( startService )
 
-    CS_SIGNAL_1( Public, void serviceRegistered( const QString &service ) )
-    CS_SIGNAL_2( serviceRegistered,service )
+    LSCS_SIGNAL_1( Public, void serviceRegistered( const QString &service ) )
+    LSCS_SIGNAL_2( serviceRegistered,service )
 
-    CS_SIGNAL_1( Public, void serviceUnregistered( const QString &service ) )
-    CS_SIGNAL_2( serviceUnregistered,service )
+    LSCS_SIGNAL_1( Public, void serviceUnregistered( const QString &service ) )
+    LSCS_SIGNAL_2( serviceUnregistered,service )
 
-    CS_SIGNAL_1( Public, void serviceOwnerChanged( const QString &name,const QString &oldOwner,const QString &newOwner ) )
-    CS_SIGNAL_2( serviceOwnerChanged,name,oldOwner,newOwner )
+    LSCS_SIGNAL_1( Public, void serviceOwnerChanged( const QString &name,const QString &oldOwner,const QString &newOwner ) )
+    LSCS_SIGNAL_2( serviceOwnerChanged,name,oldOwner,newOwner )
 
-    CS_SIGNAL_1( Public, void callWithCallbackFailed( const QDBusError &error,const QDBusMessage &call ) )
-    CS_SIGNAL_2( callWithCallbackFailed,error,call )
+    LSCS_SIGNAL_1( Public, void callWithCallbackFailed( const QDBusError &error,const QDBusMessage &call ) )
+    LSCS_SIGNAL_2( callWithCallbackFailed,error,call )
 
     // internal signals, do not use
-    CS_SIGNAL_1( Public, void NameAcquired( const QString &un_named_arg1 ) )
-    CS_SIGNAL_2( NameAcquired,un_named_arg1 )
+    LSCS_SIGNAL_1( Public, void NameAcquired( const QString &un_named_arg1 ) )
+    LSCS_SIGNAL_2( NameAcquired,un_named_arg1 )
 
-    CS_SIGNAL_1( Public, void NameLost( const QString &un_named_arg1 ) )
-    CS_SIGNAL_2( NameLost,un_named_arg1 )
+    LSCS_SIGNAL_1( Public, void NameLost( const QString &un_named_arg1 ) )
+    LSCS_SIGNAL_2( NameLost,un_named_arg1 )
 
-    CS_SIGNAL_1( Public, void NameOwnerChanged( const QString &un_named_arg1,const QString &un_named_arg2,
+    LSCS_SIGNAL_1( Public, void NameOwnerChanged( const QString &un_named_arg1,const QString &un_named_arg2,
                  const QString &un_named_arg3 ) )
-    CS_SIGNAL_2( NameOwnerChanged,un_named_arg1,un_named_arg2,un_named_arg3 )
+    LSCS_SIGNAL_2( NameOwnerChanged,un_named_arg1,un_named_arg2,un_named_arg3 )
 
 protected:
     void connectNotify( const char * );

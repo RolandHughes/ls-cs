@@ -34,7 +34,7 @@ class AVFCameraService;
 
 class AVFCameraDeviceControl : public QVideoDeviceSelectorControl
 {
-    CS_OBJECT( AVFCameraDeviceControl )
+    LSCS_OBJECT( AVFCameraDeviceControl )
 
 public:
     AVFCameraDeviceControl( AVFCameraService *service, QObject *parent = nullptr );
@@ -48,8 +48,8 @@ public:
     int defaultDevice() const override;
     int selectedDevice() const override;
 
-    CS_SLOT_1( Public, void setSelectedDevice( int index ) override )
-    CS_SLOT_2( setSelectedDevice )
+    LSCS_SLOT_1( Public, void setSelectedDevice( int index ) override )
+    LSCS_SLOT_2( setSelectedDevice )
 
     //device changed since the last createCaptureDevice()
     bool isDirty() const

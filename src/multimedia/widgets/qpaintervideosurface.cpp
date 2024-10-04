@@ -1323,20 +1323,20 @@ QAbstractVideoSurface::Error QVideoSurfaceGlslPainter::start( const QVideoSurfac
     }
     else if ( !m_program.addShaderFromSourceCode( QGLShader::Vertex, qt_glsl_vertexShaderProgram ) )
     {
-        qWarning( "QPainterVideoSurface: Vertex shader compile error %s", csPrintable( m_program.log() ) );
+        qWarning( "QPainterVideoSurface: Vertex shader compile error %s", lscsPrintable( m_program.log() ) );
         error = QAbstractVideoSurface::ResourceError;
 
     }
     else if ( !m_program.addShaderFromSourceCode( QGLShader::Fragment, fragmentProgram ) )
     {
-        qWarning( "QPainterVideoSurface: Shader compile error %s", csPrintable( m_program.log() ) );
+        qWarning( "QPainterVideoSurface: Shader compile error %s", lscsPrintable( m_program.log() ) );
         error = QAbstractVideoSurface::ResourceError;
         m_program.removeAllShaders();
 
     }
     else if ( !m_program.link() )
     {
-        qWarning( "QPainterVideoSurface: Shader link error %s", csPrintable( m_program.log() ) );
+        qWarning( "QPainterVideoSurface: Shader link error %s", lscsPrintable( m_program.log() ) );
         m_program.removeAllShaders();
         error = QAbstractVideoSurface::ResourceError;
 

@@ -102,7 +102,7 @@ void QSharedMemoryPrivate::setErrorString( const QString &function )
             errorString = QSharedMemory::tr( "%1: unknown error %2" ).formatArgs( function, errno );
             error = QSharedMemory::UnknownError;
 
-#if defined(CS_SHOW_DEBUG_CORE)
+#if defined(LSCS_SHOW_DEBUG_CORE)
             qDebug() << errorString << "key" << key << "errno" << errno << EINVAL;
 #endif
             break;

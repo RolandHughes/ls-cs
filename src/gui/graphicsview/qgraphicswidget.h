@@ -44,54 +44,54 @@ class QGraphicsWidgetPrivate;
 
 class Q_GUI_EXPORT QGraphicsWidget : public QGraphicsObject, public QGraphicsLayoutItem
 {
-    GUI_CS_OBJECT_MULTIPLE( QGraphicsWidget, QGraphicsObject )
-    CS_INTERFACES( QGraphicsItem, QGraphicsLayoutItem )
+    GUI_LSCS_OBJECT_MULTIPLE( QGraphicsWidget, QGraphicsObject )
+    LSCS_INTERFACES( QGraphicsItem, QGraphicsLayoutItem )
 
-    GUI_CS_PROPERTY_READ( palette, palette )
-    GUI_CS_PROPERTY_WRITE( palette, setPalette )
+    GUI_LSCS_PROPERTY_READ( palette, palette )
+    GUI_LSCS_PROPERTY_WRITE( palette, setPalette )
 
-    GUI_CS_PROPERTY_READ( font, font )
-    GUI_CS_PROPERTY_WRITE( font, setFont )
+    GUI_LSCS_PROPERTY_READ( font, font )
+    GUI_LSCS_PROPERTY_WRITE( font, setFont )
 
-    GUI_CS_PROPERTY_READ( layoutDirection, layoutDirection )
-    GUI_CS_PROPERTY_WRITE( layoutDirection, setLayoutDirection )
-    GUI_CS_PROPERTY_RESET( layoutDirection, unsetLayoutDirection )
+    GUI_LSCS_PROPERTY_READ( layoutDirection, layoutDirection )
+    GUI_LSCS_PROPERTY_WRITE( layoutDirection, setLayoutDirection )
+    GUI_LSCS_PROPERTY_RESET( layoutDirection, unsetLayoutDirection )
 
-    GUI_CS_PROPERTY_READ( size, size )
-    GUI_CS_PROPERTY_WRITE( size, cs_resize )
-    GUI_CS_PROPERTY_NOTIFY( size, geometryChanged )
+    GUI_LSCS_PROPERTY_READ( size, size )
+    GUI_LSCS_PROPERTY_WRITE( size, cs_resize )
+    GUI_LSCS_PROPERTY_NOTIFY( size, geometryChanged )
 
-    GUI_CS_PROPERTY_READ( minimumSize, minimumSize )
-    GUI_CS_PROPERTY_WRITE( minimumSize, cs_setMinimumSize )
+    GUI_LSCS_PROPERTY_READ( minimumSize, minimumSize )
+    GUI_LSCS_PROPERTY_WRITE( minimumSize, cs_setMinimumSize )
 
-    GUI_CS_PROPERTY_READ( preferredSize, preferredSize )
-    GUI_CS_PROPERTY_WRITE( preferredSize, cs_setPreferredSize )
+    GUI_LSCS_PROPERTY_READ( preferredSize, preferredSize )
+    GUI_LSCS_PROPERTY_WRITE( preferredSize, cs_setPreferredSize )
 
-    GUI_CS_PROPERTY_READ( maximumSize, maximumSize )
-    GUI_CS_PROPERTY_WRITE( maximumSize, cs_setMaximumSize )
+    GUI_LSCS_PROPERTY_READ( maximumSize, maximumSize )
+    GUI_LSCS_PROPERTY_WRITE( maximumSize, cs_setMaximumSize )
 
-    GUI_CS_PROPERTY_READ( sizePolicy, sizePolicy )
-    GUI_CS_PROPERTY_WRITE( sizePolicy, cs_setSizePolicy )
+    GUI_LSCS_PROPERTY_READ( sizePolicy, sizePolicy )
+    GUI_LSCS_PROPERTY_WRITE( sizePolicy, cs_setSizePolicy )
 
-    GUI_CS_PROPERTY_READ( focusPolicy, focusPolicy )
-    GUI_CS_PROPERTY_WRITE( focusPolicy, setFocusPolicy )
+    GUI_LSCS_PROPERTY_READ( focusPolicy, focusPolicy )
+    GUI_LSCS_PROPERTY_WRITE( focusPolicy, setFocusPolicy )
 
-    GUI_CS_PROPERTY_READ( windowFlags, windowFlags )
-    GUI_CS_PROPERTY_WRITE( windowFlags, setWindowFlags )
+    GUI_LSCS_PROPERTY_READ( windowFlags, windowFlags )
+    GUI_LSCS_PROPERTY_WRITE( windowFlags, setWindowFlags )
 
-    GUI_CS_PROPERTY_READ( windowTitle, windowTitle )
-    GUI_CS_PROPERTY_WRITE( windowTitle, setWindowTitle )
+    GUI_LSCS_PROPERTY_READ( windowTitle, windowTitle )
+    GUI_LSCS_PROPERTY_WRITE( windowTitle, setWindowTitle )
 
-    GUI_CS_PROPERTY_READ( geometry, geometry )
-    GUI_CS_PROPERTY_WRITE( geometry, cs_setGeometry )
-    GUI_CS_PROPERTY_NOTIFY( geometry, geometryChanged )
+    GUI_LSCS_PROPERTY_READ( geometry, geometry )
+    GUI_LSCS_PROPERTY_WRITE( geometry, cs_setGeometry )
+    GUI_LSCS_PROPERTY_NOTIFY( geometry, geometryChanged )
 
-    GUI_CS_PROPERTY_READ( autoFillBackground, autoFillBackground )
-    GUI_CS_PROPERTY_WRITE( autoFillBackground, setAutoFillBackground )
+    GUI_LSCS_PROPERTY_READ( autoFillBackground, autoFillBackground )
+    GUI_LSCS_PROPERTY_WRITE( autoFillBackground, setAutoFillBackground )
 
-    GUI_CS_PROPERTY_READ( layout, layout )
-    GUI_CS_PROPERTY_WRITE( layout, setLayout )
-    GUI_CS_PROPERTY_NOTIFY( layout, layoutChanged )
+    GUI_LSCS_PROPERTY_READ( layout, layout )
+    GUI_LSCS_PROPERTY_WRITE( layout, setLayout )
+    GUI_LSCS_PROPERTY_NOTIFY( layout, layoutChanged )
 
 public:
     QGraphicsWidget( QGraphicsItem *parent = nullptr, Qt::WindowFlags flags = Qt::EmptyFlag );
@@ -208,14 +208,14 @@ public:
 
     using QObject::children;
 
-    GUI_CS_SIGNAL_1( Public, void geometryChanged() )
-    GUI_CS_SIGNAL_2( geometryChanged )
+    GUI_LSCS_SIGNAL_1( Public, void geometryChanged() )
+    GUI_LSCS_SIGNAL_2( geometryChanged )
 
-    GUI_CS_SIGNAL_1( Public, void layoutChanged() )
-    GUI_CS_SIGNAL_2( layoutChanged )
+    GUI_LSCS_SIGNAL_1( Public, void layoutChanged() )
+    GUI_LSCS_SIGNAL_2( layoutChanged )
 
-    GUI_CS_SLOT_1( Public, bool close() )
-    GUI_CS_SLOT_2( close )
+    GUI_LSCS_SLOT_1( Public, bool close() )
+    GUI_LSCS_SLOT_2( close )
 
 protected:
     QGraphicsWidget( QGraphicsWidgetPrivate &, QGraphicsItem *parent, Qt::WindowFlags flags = Qt::EmptyFlag );

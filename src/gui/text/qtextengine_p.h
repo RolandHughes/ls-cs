@@ -43,7 +43,7 @@
 #include <qtextformat_p.h>
 #include <qunicodetools_p.h>
 
-#if ! defined(CS_BUILDING_CUPS)
+#if ! defined(LSCS_BUILDING_CUPS)
 // Harfbuzz used in qtextengine.cpp and qfontengine.cpp
 #include <qharfbuzz_p.h>
 #endif
@@ -168,7 +168,7 @@ struct QGlyphAttributes
 };
 static_assert( sizeof( QGlyphAttributes ) == 1, "Type mismatch" );
 
-#if defined(CS_BUILDING_CUPS)
+#if defined(LSCS_BUILDING_CUPS)
 struct hb_face_t;
 struct hb_font_t;
 
@@ -713,7 +713,7 @@ private:
     void addRequiredBoundaries() const;
     void shapeText( int item ) const;
 
-#if ! defined(CS_BUILDING_CUPS)
+#if ! defined(LSCS_BUILDING_CUPS)
     int shapeTextWithHarfbuzz( const QScriptItem &si, QStringView str, QFontEngine *fontEngine,
                                const QVector<uint> &itemBoundaries, bool kerningEnabled, bool hasLetterSpacing ) const;
 #endif

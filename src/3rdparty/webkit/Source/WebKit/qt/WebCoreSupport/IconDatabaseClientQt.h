@@ -36,7 +36,7 @@ namespace WebCore
 
 class IconDatabaseClientQt : public QObject, public IconDatabaseClient
 {
-    WEB_CS_OBJECT( IconDatabaseClientQt )
+    WEB_LSCS_OBJECT( IconDatabaseClientQt )
 public:
     static IconDatabaseClientQt *instance();
 
@@ -48,8 +48,8 @@ public:
     virtual void didFinishURLImport();
 
 public:
-    WEB_CS_SIGNAL_1( Public, void iconLoadedForPageURL( const QString &url ) )
-    WEB_CS_SIGNAL_2( iconLoadedForPageURL,url )
+    WEB_LSCS_SIGNAL_1( Public, void iconLoadedForPageURL( const QString &url ) )
+    WEB_LSCS_SIGNAL_2( iconLoadedForPageURL,url )
 
 private:
     IconDatabaseClientQt();

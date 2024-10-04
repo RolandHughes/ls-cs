@@ -33,10 +33,10 @@
 
 class QGifPlugin : public QImageIOPlugin
 {
-    CS_OBJECT( QGifPlugin )
+    LSCS_OBJECT( QGifPlugin )
 
-    CS_PLUGIN_IID( QImageIOHandlerInterface_ID )
-    CS_PLUGIN_KEY( "gif" )
+    LSCS_PLUGIN_IID( QImageIOHandlerInterface_ID )
+    LSCS_PLUGIN_KEY( "gif" )
 
 public:
     QGifPlugin();
@@ -47,7 +47,7 @@ public:
     QImageIOHandler *create( QIODevice *device, const QByteArray &format = QByteArray() ) const;
 };
 
-CS_PLUGIN_REGISTER( QGifPlugin )
+LSCS_PLUGIN_REGISTER( QGifPlugin )
 
 QGifPlugin::QGifPlugin()
 {

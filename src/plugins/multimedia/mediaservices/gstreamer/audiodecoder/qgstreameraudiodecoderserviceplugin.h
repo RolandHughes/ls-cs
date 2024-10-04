@@ -31,12 +31,12 @@
 
 class QGstreamerAudioDecoderServicePlugin : public QMediaServiceProviderPlugin, public QMediaServiceSupportedFormatsInterface
 {
-    CS_OBJECT_MULTIPLE( QGstreamerAudioDecoderServicePlugin, QMediaServiceProviderPlugin )
+    LSCS_OBJECT_MULTIPLE( QGstreamerAudioDecoderServicePlugin, QMediaServiceProviderPlugin )
 
-    CS_PLUGIN_IID( QMediaServiceProviderInterface_ID )
-    CS_PLUGIN_KEY( Q_MEDIASERVICE_AUDIODECODER )
+    LSCS_PLUGIN_IID( QMediaServiceProviderInterface_ID )
+    LSCS_PLUGIN_KEY( Q_MEDIASERVICE_AUDIODECODER )
 
-    CS_INTERFACES( QMediaServiceSupportedFormatsInterface )
+    LSCS_INTERFACES( QMediaServiceSupportedFormatsInterface )
 
 public:
     QMediaService *create( QString const &key ) override;

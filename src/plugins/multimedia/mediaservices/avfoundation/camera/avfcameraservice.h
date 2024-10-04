@@ -55,7 +55,7 @@ class AVFMediaContainerControl;
 
 class AVFCameraService : public QMediaService
 {
-    CS_OBJECT( AVFCameraService )
+    LSCS_OBJECT( AVFCameraService )
 
 public:
     AVFCameraService( QObject *parent = nullptr );

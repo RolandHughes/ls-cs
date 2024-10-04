@@ -102,7 +102,7 @@ class QDeclarativeState;
 class QDeclarativeStateOperationPrivate;
 class Q_DECLARATIVE_EXPORT QDeclarativeStateOperation : public QObject
 {
-    DECL_CS_OBJECT( QDeclarativeStateOperation )
+    DECL_LSCS_OBJECT( QDeclarativeStateOperation )
 public:
     QDeclarativeStateOperation( QObject *parent = nullptr )
         : QObject( parent ) {}
@@ -127,17 +127,17 @@ class QDeclarativeTransition;
 class QDeclarativeStatePrivate;
 class Q_DECLARATIVE_EXPORT QDeclarativeState : public QObject
 {
-    DECL_CS_OBJECT( QDeclarativeState )
+    DECL_LSCS_OBJECT( QDeclarativeState )
 
-    DECL_CS_PROPERTY_READ( name, name )
-    DECL_CS_PROPERTY_WRITE( name, setName )
-    DECL_CS_PROPERTY_READ( *when, when )
-    DECL_CS_PROPERTY_WRITE( *when, setWhen )
-    DECL_CS_PROPERTY_READ( extend, extends )
-    DECL_CS_PROPERTY_WRITE( extend, setExtends )
-    DECL_CS_PROPERTY_READ( changes, changes )
-    DECL_CS_CLASSINFO( "DefaultProperty", "changes" )
-    DECL_CS_CLASSINFO( "DeferredPropertyNames", "changes" )
+    DECL_LSCS_PROPERTY_READ( name, name )
+    DECL_LSCS_PROPERTY_WRITE( name, setName )
+    DECL_LSCS_PROPERTY_READ( *when, when )
+    DECL_LSCS_PROPERTY_WRITE( *when, setWhen )
+    DECL_LSCS_PROPERTY_READ( extend, extends )
+    DECL_LSCS_PROPERTY_WRITE( extend, setExtends )
+    DECL_LSCS_PROPERTY_READ( changes, changes )
+    DECL_LSCS_CLASSINFO( "DefaultProperty", "changes" )
+    DECL_LSCS_CLASSINFO( "DeferredPropertyNames", "changes" )
 
 public:
     QDeclarativeState( QObject *parent = nullptr );
@@ -180,8 +180,8 @@ public:
 
     bool isStateActive() const;
 
-    DECL_CS_SIGNAL_1( Public, void completed() )
-    DECL_CS_SIGNAL_2( completed )
+    DECL_LSCS_SIGNAL_1( Public, void completed() )
+    DECL_LSCS_SIGNAL_2( completed )
 
 private:
     Q_DECLARE_PRIVATE( QDeclarativeState )

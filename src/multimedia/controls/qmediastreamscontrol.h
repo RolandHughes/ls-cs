@@ -30,8 +30,8 @@
 
 class Q_MULTIMEDIA_EXPORT QMediaStreamsControl : public QMediaControl
 {
-    MULTI_CS_OBJECT( QMediaStreamsControl )
-    MULTI_CS_ENUM( StreamType )
+    MULTI_LSCS_OBJECT( QMediaStreamsControl )
+    MULTI_LSCS_ENUM( StreamType )
 
 public:
     enum StreamType
@@ -53,17 +53,17 @@ public:
     virtual bool isActive( int streamID ) = 0;
     virtual void setActive( int streamID, bool state ) = 0;
 
-    MULTI_CS_SIGNAL_1( Public, void streamsChanged() )
-    MULTI_CS_SIGNAL_2( streamsChanged )
+    MULTI_LSCS_SIGNAL_1( Public, void streamsChanged() )
+    MULTI_LSCS_SIGNAL_2( streamsChanged )
 
-    MULTI_CS_SIGNAL_1( Public, void activeStreamsChanged() )
-    MULTI_CS_SIGNAL_2( activeStreamsChanged )
+    MULTI_LSCS_SIGNAL_1( Public, void activeStreamsChanged() )
+    MULTI_LSCS_SIGNAL_2( activeStreamsChanged )
 
 protected:
     explicit QMediaStreamsControl( QObject *parent = nullptr );
 };
 
 #define QMediaStreamsControl_iid "com.copperspice.CS.mediaStreamsControl/1.0"
-CS_DECLARE_INTERFACE( QMediaStreamsControl, QMediaStreamsControl_iid )
+LSCS_DECLARE_INTERFACE( QMediaStreamsControl, QMediaStreamsControl_iid )
 
 #endif

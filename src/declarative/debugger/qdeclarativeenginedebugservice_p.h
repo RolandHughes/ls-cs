@@ -39,7 +39,7 @@ class QDeclarativeState;
 
 class QDeclarativeEngineDebugService : public QDeclarativeDebugService
 {
-    DECL_CS_OBJECT( QDeclarativeEngineDebugService )
+    DECL_LSCS_OBJECT( QDeclarativeEngineDebugService )
 public:
     QDeclarativeEngineDebugService( QObject * = 0 );
 
@@ -77,8 +77,8 @@ protected:
     virtual void messageReceived( const QByteArray & );
 
 private :
-    DECL_CS_SLOT_1( Private, void propertyChanged( int id, int objectId, const QMetaProperty &property, const QVariant &value ) )
-    DECL_CS_SLOT_2( propertyChanged )
+    DECL_LSCS_SLOT_1( Private, void propertyChanged( int id, int objectId, const QMetaProperty &property, const QVariant &value ) )
+    DECL_LSCS_SLOT_2( propertyChanged )
 
 private:
     void prepareDeferredObjects( QObject * );

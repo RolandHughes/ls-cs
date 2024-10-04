@@ -35,13 +35,13 @@ void XsdSchemaDebugger::dumpParticle( const XsdParticle::Ptr &particle, int leve
     QString prefix;
     prefix.fill( QLatin1Char( ' ' ), level );
 
-    qDebug( "%s min=%s max=%s", csPrintable( prefix ), csPrintable( QString::number( particle->minimumOccurs() ) ),
-            csPrintable( particle->maximumOccursUnbounded() ? QLatin1String( "unbounded" ) : QString::number(
+    qDebug( "%s min=%s max=%s", lscsPrintable( prefix ), lscsPrintable( QString::number( particle->minimumOccurs() ) ),
+            lscsPrintable( particle->maximumOccursUnbounded() ? QLatin1String( "unbounded" ) : QString::number(
                              particle->maximumOccurs() ) ) );
 
     if ( particle->term()->isElement() )
     {
-        qDebug( "%selement (%s)", csPrintable( prefix ), csPrintable( XsdElement::Ptr( particle->term() )->displayName( m_namePool ) ) );
+        qDebug( "%selement (%s)", lscsPrintable( prefix ), lscsPrintable( XsdElement::Ptr( particle->term() )->displayName( m_namePool ) ) );
     }
     else if ( particle->term()->isModelGroup() )
     {
@@ -49,15 +49,15 @@ void XsdSchemaDebugger::dumpParticle( const XsdParticle::Ptr &particle, int leve
 
         if ( group->compositor() == XsdModelGroup::SequenceCompositor )
         {
-            qDebug( "%ssequence", csPrintable( prefix ) );
+            qDebug( "%ssequence", lscsPrintable( prefix ) );
         }
         else if ( group->compositor() == XsdModelGroup::AllCompositor )
         {
-            qDebug( "%sall", csPrintable( prefix ) );
+            qDebug( "%sall", lscsPrintable( prefix ) );
         }
         else if ( group->compositor() == XsdModelGroup::ChoiceCompositor )
         {
-            qDebug( "%schoice", csPrintable( prefix ) );
+            qDebug( "%schoice", lscsPrintable( prefix ) );
         }
 
         for ( int i = 0; i < group->particles().count(); ++i )
@@ -68,7 +68,7 @@ void XsdSchemaDebugger::dumpParticle( const XsdParticle::Ptr &particle, int leve
     else if ( particle->term()->isWildcard() )
     {
         XsdWildcard::Ptr wildcard( particle->term() );
-        qDebug( "%swildcard (process=%d)", csPrintable( prefix ), wildcard->processContents() );
+        qDebug( "%swildcard (process=%d)", lscsPrintable( prefix ), wildcard->processContents() );
     }
 }
 
@@ -76,7 +76,7 @@ void XsdSchemaDebugger::dumpInheritance( const SchemaType::Ptr &type, int level 
 {
     QString prefix;
     prefix.fill( QLatin1Char( ' ' ), level );
-    qDebug( "%s-->%s", csPrintable( prefix ), csPrintable( type->displayName( m_namePool ) ) );
+    qDebug( "%s-->%s", lscsPrintable( prefix ), lscsPrintable( type->displayName( m_namePool ) ) );
 
     if ( type->wxsSuperType() )
     {
@@ -96,9 +96,9 @@ void XsdSchemaDebugger::dumpWildcard( const XsdWildcard::Ptr &wildcard )
     processContentsNames.append( QLatin1String( "Lax" ) );
     processContentsNames.append( QLatin1String( "Skip" ) );
 
-    qDebug( "      processContents: %s", csPrintable( processContentsNames.at( ( int )wildcard->processContents() ) ) );
+    qDebug( "      processContents: %s", lscsPrintable( processContentsNames.at( ( int )wildcard->processContents() ) ) );
     const XsdWildcard::NamespaceConstraint::Ptr constraint = wildcard->namespaceConstraint();
-    qDebug( "      variety: %s", csPrintable( varietyNames.at( ( int )constraint->variety() ) ) );
+    qDebug( "      variety: %s", lscsPrintable( varietyNames.at( ( int )constraint->variety() ) ) );
 
     if ( constraint->variety() != XsdWildcard::NamespaceConstraint::Any )
     {
@@ -113,12 +113,12 @@ void XsdSchemaDebugger::dumpType( const SchemaType::Ptr &type )
         const XsdComplexType::Ptr complexType( type );
 
         qDebug( "\n+++ Complex Type +++" );
-        qDebug( "Name: %s (abstract: %s)", csPrintable( complexType->displayName( m_namePool ) ),
+        qDebug( "Name: %s (abstract: %s)", lscsPrintable( complexType->displayName( m_namePool ) ),
                 complexType->isAbstract() ? "yes" : "no" );
 
         if ( complexType->wxsSuperType() )
         {
-            qDebug( "  base type: %s", csPrintable( complexType->wxsSuperType()->displayName( m_namePool ) ) );
+            qDebug( "  base type: %s", lscsPrintable( complexType->wxsSuperType()->displayName( m_namePool ) ) );
         }
         else
         {
@@ -149,7 +149,7 @@ void XsdSchemaDebugger::dumpType( const SchemaType::Ptr &type )
         {
             if ( complexType->contentType()->simpleType() )
             {
-                qDebug( "  simple type: %s", csPrintable( complexType->contentType()->simpleType()->displayName( m_namePool ) ) );
+                qDebug( "  simple type: %s", lscsPrintable( complexType->contentType()->simpleType()->displayName( m_namePool ) ) );
             }
             else
             {
@@ -162,7 +162,7 @@ void XsdSchemaDebugger::dumpType( const SchemaType::Ptr &type )
 
         for ( int i = 0; i < uses.count(); ++i )
         {
-            qDebug( "      attr: %s", csPrintable( uses.at( i )->attribute()->displayName( m_namePool ) ) );
+            qDebug( "      attr: %s", lscsPrintable( uses.at( i )->attribute()->displayName( m_namePool ) ) );
         }
 
         qDebug( "   has attribute wildcard: %s", complexType->attributeWildcard() ? "yes" : "no" );
@@ -181,7 +181,7 @@ void XsdSchemaDebugger::dumpType( const SchemaType::Ptr &type )
     else
     {
         qDebug( "\n+++ Simple Type +++" );
-        qDebug( "Name: %s", csPrintable( type->displayName( m_namePool ) ) );
+        qDebug( "Name: %s", lscsPrintable( type->displayName( m_namePool ) ) );
 
         if ( type->isDefinedBySchema() )
         {
@@ -189,7 +189,7 @@ void XsdSchemaDebugger::dumpType( const SchemaType::Ptr &type )
 
             if ( simpleType->primitiveType() )
             {
-                qDebug( "  primitive type: %s", csPrintable( simpleType->primitiveType()->displayName( m_namePool ) ) );
+                qDebug( "  primitive type: %s", lscsPrintable( simpleType->primitiveType()->displayName( m_namePool ) ) );
             }
             else
             {

@@ -58,13 +58,13 @@ class QPainterPrivateDeleter;
 
 class Q_GUI_EXPORT QPainter
 {
-    GUI_CS_GADGET( QPainter )
+    GUI_LSCS_GADGET( QPainter )
 
-    GUI_CS_ENUM( RenderHint )
-    GUI_CS_FLAG( RenderHint, RenderHints )
+    GUI_LSCS_ENUM( RenderHint )
+    GUI_LSCS_FLAG( RenderHint, RenderHints )
 
 public:
-    GUI_CS_REGISTER_ENUM(
+    GUI_LSCS_REGISTER_ENUM(
         enum RenderHint
     {
         Antialiasing            = 0x01,

@@ -38,7 +38,7 @@ QImage cs_glRead_frameBuffer( const QSize &, bool, bool );
 #define QGL_FUNC_CONTEXT  const QGLContext *ctx = QGLContext::currentContext();
 #define QGL_FUNCP_CONTEXT const QGLContext *ctx = QGLContext::currentContext();
 
-#if defined(CS_SHOW_DEBUG_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_OPENGL)
 
 #define QT_RESET_GLERROR()                                \
 {                                                         \
@@ -276,19 +276,19 @@ bool QGLFramebufferObjectPrivate::checkFramebufferStatus() const
             return true;
 
         case GL_FRAMEBUFFER_UNSUPPORTED:
-#if defined(CS_SHOW_DEBUG_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_OPENGL)
             qDebug( "QGLFramebufferObject() Unsupported framebuffer format." );
 #endif
             break;
 
         case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT:
-#if defined(CS_SHOW_DEBUG_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_OPENGL)
             qDebug( "QGLFramebufferObject() Framebuffer incomplete attachment." );
 #endif
             break;
 
         case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
-#if defined(CS_SHOW_DEBUG_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_OPENGL)
             qDebug( "QGLFramebufferObject() Framebuffer incomplete, missing attachment." );
 #endif
             break;
@@ -296,7 +296,7 @@ bool QGLFramebufferObjectPrivate::checkFramebufferStatus() const
 #ifdef GL_FRAMEBUFFER_INCOMPLETE_DUPLICATE_ATTACHMENT
 
         case GL_FRAMEBUFFER_INCOMPLETE_DUPLICATE_ATTACHMENT:
-#if defined(CS_SHOW_DEBUG_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_OPENGL)
             qDebug( "QGLFramebufferObject() Framebuffer incomplete, duplicate attachment." );
 #endif
             break;
@@ -305,7 +305,7 @@ bool QGLFramebufferObjectPrivate::checkFramebufferStatus() const
 #ifdef GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS
 
         case GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS:
-#if defined(CS_SHOW_DEBUG_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_OPENGL)
             qDebug( "QGLFramebufferObject() Framebuffer incomplete, attached images must have same dimensions." );
 #endif
             break;
@@ -314,7 +314,7 @@ bool QGLFramebufferObjectPrivate::checkFramebufferStatus() const
 #ifdef GL_FRAMEBUFFER_INCOMPLETE_FORMATS
 
         case GL_FRAMEBUFFER_INCOMPLETE_FORMATS:
-#if defined(CS_SHOW_DEBUG_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_OPENGL)
             qDebug( "QGLFramebufferObject() Framebuffer incomplete, attached images must have same format." );
 #endif
             break;
@@ -323,7 +323,7 @@ bool QGLFramebufferObjectPrivate::checkFramebufferStatus() const
 #ifdef GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER
 
         case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER:
-#if defined(CS_SHOW_DEBUG_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_OPENGL)
             qDebug( "QGLFramebufferObject() Framebuffer incomplete, missing draw buffer." );
 #endif
             break;
@@ -332,7 +332,7 @@ bool QGLFramebufferObjectPrivate::checkFramebufferStatus() const
 #ifdef GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER
 
         case GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER:
-#if defined(CS_SHOW_DEBUG_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_OPENGL)
             qDebug( "QGLFramebufferObject() Framebuffer incomplete, missing read buffer." );
 #endif
             break;
@@ -341,14 +341,14 @@ bool QGLFramebufferObjectPrivate::checkFramebufferStatus() const
 #ifdef GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE
 
         case GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE:
-#if defined(CS_SHOW_DEBUG_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_OPENGL)
             qDebug( "QGLFramebufferObject() Framebuffer incomplete, attachments must have same number of samples per pixel." );
 #endif
             break;
 #endif
 
         default:
-#if defined(CS_SHOW_DEBUG_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_OPENGL)
             qDebug() << "QGLFramebufferObject() An undefined error has occurred: " << status;
 #endif
             break;
@@ -855,7 +855,7 @@ bool QGLFramebufferObject::bind()
 
     const QGLContext *current = QGLContext::currentContext();
 
-#if defined(CS_SHOW_DEBUG_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_OPENGL)
 
     if ( ! current || QGLContextPrivate::contextGroup( current ) != QGLContextPrivate::contextGroup( ctx ) )
     {
@@ -892,7 +892,7 @@ bool QGLFramebufferObject::release()
 
     const QGLContext *current = QGLContext::currentContext();
 
-#if defined(CS_SHOW_DEBUG_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_OPENGL)
 
     if ( ! current || QGLContextPrivate::contextGroup( current ) != QGLContextPrivate::contextGroup( ctx ) )
     {
@@ -1007,7 +1007,7 @@ bool QGLFramebufferObject::bindDefault()
         ctx->d_ptr->setCurrentFbo( ctx->d_ptr->default_fbo );
         functions.glBindFramebuffer( GL_FRAMEBUFFER, ctx->d_ptr->default_fbo );
 
-#if defined(CS_SHOW_DEBUG_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_OPENGL)
     }
     else
     {

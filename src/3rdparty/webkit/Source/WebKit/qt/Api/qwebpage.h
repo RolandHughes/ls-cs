@@ -68,34 +68,34 @@ struct FrameLoadRequest;
 
 class QWEBKIT_EXPORT QWebPage : public QObject
 {
-    WEB_CS_OBJECT( QWebPage )
+    WEB_LSCS_OBJECT( QWebPage )
 
-    WEB_CS_PROPERTY_READ( modified, isModified )
-    WEB_CS_PROPERTY_READ( selectedText, selectedText )
-    WEB_CS_PROPERTY_READ( selectedHtml, selectedHtml )
-    WEB_CS_PROPERTY_READ( hasSelection, hasSelection )
+    WEB_LSCS_PROPERTY_READ( modified, isModified )
+    WEB_LSCS_PROPERTY_READ( selectedText, selectedText )
+    WEB_LSCS_PROPERTY_READ( selectedHtml, selectedHtml )
+    WEB_LSCS_PROPERTY_READ( hasSelection, hasSelection )
 
-    WEB_CS_PROPERTY_READ( viewportSize, viewportSize )
-    WEB_CS_PROPERTY_WRITE( viewportSize, setViewportSize )
+    WEB_LSCS_PROPERTY_READ( viewportSize, viewportSize )
+    WEB_LSCS_PROPERTY_WRITE( viewportSize, setViewportSize )
 
-    WEB_CS_PROPERTY_READ( preferredContentsSize, preferredContentsSize )
-    WEB_CS_PROPERTY_WRITE( preferredContentsSize, setPreferredContentsSize )
+    WEB_LSCS_PROPERTY_READ( preferredContentsSize, preferredContentsSize )
+    WEB_LSCS_PROPERTY_WRITE( preferredContentsSize, setPreferredContentsSize )
 
-    WEB_CS_PROPERTY_READ( forwardUnsupportedContent, forwardUnsupportedContent )
-    WEB_CS_PROPERTY_WRITE( forwardUnsupportedContent, setForwardUnsupportedContent )
+    WEB_LSCS_PROPERTY_READ( forwardUnsupportedContent, forwardUnsupportedContent )
+    WEB_LSCS_PROPERTY_WRITE( forwardUnsupportedContent, setForwardUnsupportedContent )
 
-    WEB_CS_PROPERTY_READ( linkDelegationPolicy, linkDelegationPolicy )
-    WEB_CS_PROPERTY_WRITE( linkDelegationPolicy, setLinkDelegationPolicy )
+    WEB_LSCS_PROPERTY_READ( linkDelegationPolicy, linkDelegationPolicy )
+    WEB_LSCS_PROPERTY_WRITE( linkDelegationPolicy, setLinkDelegationPolicy )
 
-    WEB_CS_PROPERTY_READ( palette, palette )
-    WEB_CS_PROPERTY_WRITE( palette, setPalette )
+    WEB_LSCS_PROPERTY_READ( palette, palette )
+    WEB_LSCS_PROPERTY_WRITE( palette, setPalette )
 
-    WEB_CS_PROPERTY_READ( contentEditable, isContentEditable )
-    WEB_CS_PROPERTY_WRITE( contentEditable, setContentEditable )
+    WEB_LSCS_PROPERTY_READ( contentEditable, isContentEditable )
+    WEB_LSCS_PROPERTY_WRITE( contentEditable, setContentEditable )
 
-    WEB_CS_ENUM( LinkDelegationPolicy )
-    WEB_CS_ENUM( NavigationType )
-    WEB_CS_ENUM( WebAction )
+    WEB_LSCS_ENUM( LinkDelegationPolicy )
+    WEB_LSCS_ENUM( NavigationType )
+    WEB_LSCS_ENUM( WebAction )
 
 public:
     enum NavigationType
@@ -420,89 +420,89 @@ public:
     }
 
 public:
-    WEB_CS_SLOT_1( Public, bool shouldInterruptJavaScript() )
-    WEB_CS_SLOT_2( shouldInterruptJavaScript )
+    WEB_LSCS_SLOT_1( Public, bool shouldInterruptJavaScript() )
+    WEB_LSCS_SLOT_2( shouldInterruptJavaScript )
 
-    WEB_CS_SIGNAL_1( Public, void loadStarted() )
-    WEB_CS_SIGNAL_2( loadStarted )
+    WEB_LSCS_SIGNAL_1( Public, void loadStarted() )
+    WEB_LSCS_SIGNAL_2( loadStarted )
 
-    WEB_CS_SIGNAL_1( Public, void loadProgress( int progress ) )
-    WEB_CS_SIGNAL_2( loadProgress,progress )
+    WEB_LSCS_SIGNAL_1( Public, void loadProgress( int progress ) )
+    WEB_LSCS_SIGNAL_2( loadProgress,progress )
 
-    WEB_CS_SIGNAL_1( Public, void loadFinished( bool ok ) )
-    WEB_CS_SIGNAL_2( loadFinished,ok )
+    WEB_LSCS_SIGNAL_1( Public, void loadFinished( bool ok ) )
+    WEB_LSCS_SIGNAL_2( loadFinished,ok )
 
-    WEB_CS_SIGNAL_1( Public, void linkHovered( const QString &link,const QString &title,const QString &textContent ) )
-    WEB_CS_SIGNAL_2( linkHovered,link,title,textContent )
+    WEB_LSCS_SIGNAL_1( Public, void linkHovered( const QString &link,const QString &title,const QString &textContent ) )
+    WEB_LSCS_SIGNAL_2( linkHovered,link,title,textContent )
 
-    WEB_CS_SIGNAL_1( Public, void statusBarMessage( const QString &text ) )
-    WEB_CS_SIGNAL_2( statusBarMessage,text )
+    WEB_LSCS_SIGNAL_1( Public, void statusBarMessage( const QString &text ) )
+    WEB_LSCS_SIGNAL_2( statusBarMessage,text )
 
-    WEB_CS_SIGNAL_1( Public, void selectionChanged() )
-    WEB_CS_SIGNAL_2( selectionChanged )
+    WEB_LSCS_SIGNAL_1( Public, void selectionChanged() )
+    WEB_LSCS_SIGNAL_2( selectionChanged )
 
-    WEB_CS_SIGNAL_1( Public, void frameCreated( QWebFrame *frame ) )
-    WEB_CS_SIGNAL_2( frameCreated,frame )
+    WEB_LSCS_SIGNAL_1( Public, void frameCreated( QWebFrame *frame ) )
+    WEB_LSCS_SIGNAL_2( frameCreated,frame )
 
-    WEB_CS_SIGNAL_1( Public, void geometryChangeRequested( const QRect &geom ) )
-    WEB_CS_SIGNAL_2( geometryChangeRequested,geom )
+    WEB_LSCS_SIGNAL_1( Public, void geometryChangeRequested( const QRect &geom ) )
+    WEB_LSCS_SIGNAL_2( geometryChangeRequested,geom )
 
-    WEB_CS_SIGNAL_1( Public, void repaintRequested( const QRect &dirtyRect ) )
-    WEB_CS_SIGNAL_2( repaintRequested,dirtyRect )
+    WEB_LSCS_SIGNAL_1( Public, void repaintRequested( const QRect &dirtyRect ) )
+    WEB_LSCS_SIGNAL_2( repaintRequested,dirtyRect )
 
-    WEB_CS_SIGNAL_1( Public, void scrollRequested( int dx,int dy,const QRect &rect ) )
-    WEB_CS_SIGNAL_2( scrollRequested, dx, dy, rect )
+    WEB_LSCS_SIGNAL_1( Public, void scrollRequested( int dx,int dy,const QRect &rect ) )
+    WEB_LSCS_SIGNAL_2( scrollRequested, dx, dy, rect )
 
-    WEB_CS_SIGNAL_1( Public, void windowCloseRequested() )
-    WEB_CS_SIGNAL_2( windowCloseRequested )
+    WEB_LSCS_SIGNAL_1( Public, void windowCloseRequested() )
+    WEB_LSCS_SIGNAL_2( windowCloseRequested )
 
-    WEB_CS_SIGNAL_1( Public, void printRequested( QWebFrame *frame ) )
-    WEB_CS_SIGNAL_2( printRequested,frame )
+    WEB_LSCS_SIGNAL_1( Public, void printRequested( QWebFrame *frame ) )
+    WEB_LSCS_SIGNAL_2( printRequested,frame )
 
-    WEB_CS_SIGNAL_1( Public, void linkClicked( const QUrl &url ) )
-    WEB_CS_SIGNAL_2( linkClicked,url )
+    WEB_LSCS_SIGNAL_1( Public, void linkClicked( const QUrl &url ) )
+    WEB_LSCS_SIGNAL_2( linkClicked,url )
 
-    WEB_CS_SIGNAL_1( Public, void toolBarVisibilityChangeRequested( bool visible ) )
-    WEB_CS_SIGNAL_2( toolBarVisibilityChangeRequested,visible )
+    WEB_LSCS_SIGNAL_1( Public, void toolBarVisibilityChangeRequested( bool visible ) )
+    WEB_LSCS_SIGNAL_2( toolBarVisibilityChangeRequested,visible )
 
-    WEB_CS_SIGNAL_1( Public, void statusBarVisibilityChangeRequested( bool visible ) )
-    WEB_CS_SIGNAL_2( statusBarVisibilityChangeRequested,visible )
+    WEB_LSCS_SIGNAL_1( Public, void statusBarVisibilityChangeRequested( bool visible ) )
+    WEB_LSCS_SIGNAL_2( statusBarVisibilityChangeRequested,visible )
 
-    WEB_CS_SIGNAL_1( Public, void menuBarVisibilityChangeRequested( bool visible ) )
-    WEB_CS_SIGNAL_2( menuBarVisibilityChangeRequested,visible )
+    WEB_LSCS_SIGNAL_1( Public, void menuBarVisibilityChangeRequested( bool visible ) )
+    WEB_LSCS_SIGNAL_2( menuBarVisibilityChangeRequested,visible )
 
-    WEB_CS_SIGNAL_1( Public, void unsupportedContent( QNetworkReply *reply ) )
-    WEB_CS_SIGNAL_2( unsupportedContent,reply )
+    WEB_LSCS_SIGNAL_1( Public, void unsupportedContent( QNetworkReply *reply ) )
+    WEB_LSCS_SIGNAL_2( unsupportedContent,reply )
 
-    WEB_CS_SIGNAL_1( Public, void downloadRequested( const QNetworkRequest &request ) )
-    WEB_CS_SIGNAL_2( downloadRequested,request )
+    WEB_LSCS_SIGNAL_1( Public, void downloadRequested( const QNetworkRequest &request ) )
+    WEB_LSCS_SIGNAL_2( downloadRequested,request )
 
-    WEB_CS_SIGNAL_1( Public, void microFocusChanged() )
-    WEB_CS_SIGNAL_2( microFocusChanged )
+    WEB_LSCS_SIGNAL_1( Public, void microFocusChanged() )
+    WEB_LSCS_SIGNAL_2( microFocusChanged )
 
-    WEB_CS_SIGNAL_1( Public, void contentsChanged() )
-    WEB_CS_SIGNAL_2( contentsChanged )
+    WEB_LSCS_SIGNAL_1( Public, void contentsChanged() )
+    WEB_LSCS_SIGNAL_2( contentsChanged )
 
-    WEB_CS_SIGNAL_1( Public, void databaseQuotaExceeded( QWebFrame *frame,QString databaseName ) )
-    WEB_CS_SIGNAL_2( databaseQuotaExceeded,frame,databaseName )
+    WEB_LSCS_SIGNAL_1( Public, void databaseQuotaExceeded( QWebFrame *frame,QString databaseName ) )
+    WEB_LSCS_SIGNAL_2( databaseQuotaExceeded,frame,databaseName )
 
-    WEB_CS_SIGNAL_1( Public, void applicationCacheQuotaExceeded( QWebSecurityOrigin *origin,quint64 defaultOriginQuota ) )
-    WEB_CS_SIGNAL_2( applicationCacheQuotaExceeded,origin,defaultOriginQuota )
+    WEB_LSCS_SIGNAL_1( Public, void applicationCacheQuotaExceeded( QWebSecurityOrigin *origin,quint64 defaultOriginQuota ) )
+    WEB_LSCS_SIGNAL_2( applicationCacheQuotaExceeded,origin,defaultOriginQuota )
 
-    WEB_CS_SIGNAL_1( Public, void saveFrameStateRequested( QWebFrame *frame,QWebHistoryItem *item ) )
-    WEB_CS_SIGNAL_2( saveFrameStateRequested,frame,item )
+    WEB_LSCS_SIGNAL_1( Public, void saveFrameStateRequested( QWebFrame *frame,QWebHistoryItem *item ) )
+    WEB_LSCS_SIGNAL_2( saveFrameStateRequested,frame,item )
 
-    WEB_CS_SIGNAL_1( Public, void restoreFrameStateRequested( QWebFrame *frame ) )
-    WEB_CS_SIGNAL_2( restoreFrameStateRequested,frame )
+    WEB_LSCS_SIGNAL_1( Public, void restoreFrameStateRequested( QWebFrame *frame ) )
+    WEB_LSCS_SIGNAL_2( restoreFrameStateRequested,frame )
 
-    WEB_CS_SIGNAL_1( Public, void viewportChangeRequested() )
-    WEB_CS_SIGNAL_2( viewportChangeRequested )
+    WEB_LSCS_SIGNAL_1( Public, void viewportChangeRequested() )
+    WEB_LSCS_SIGNAL_2( viewportChangeRequested )
 
-    WEB_CS_SIGNAL_1( Public, void featurePermissionRequested( QWebFrame *frame,QWebPage::Feature feature ) )
-    WEB_CS_SIGNAL_2( featurePermissionRequested,frame,feature )
+    WEB_LSCS_SIGNAL_1( Public, void featurePermissionRequested( QWebFrame *frame,QWebPage::Feature feature ) )
+    WEB_LSCS_SIGNAL_2( featurePermissionRequested,frame,feature )
 
-    WEB_CS_SIGNAL_1( Public, void featurePermissionRequestCanceled( QWebFrame *frame,QWebPage::Feature feature ) )
-    WEB_CS_SIGNAL_2( featurePermissionRequestCanceled,frame,feature )
+    WEB_LSCS_SIGNAL_1( Public, void featurePermissionRequestCanceled( QWebFrame *frame,QWebPage::Feature feature ) )
+    WEB_LSCS_SIGNAL_2( featurePermissionRequestCanceled,frame,feature )
 
 protected:
     virtual QWebPage *createWindow( WebWindowType type );
@@ -519,16 +519,16 @@ protected:
     virtual QString userAgentForUrl( const QUrl &url ) const;
 
 private:
-    WEB_CS_SLOT_1( Private, void _q_onLoadProgressChanged( int progress ) )
-    WEB_CS_SLOT_2( _q_onLoadProgressChanged )
+    WEB_LSCS_SLOT_1( Private, void _q_onLoadProgressChanged( int progress ) )
+    WEB_LSCS_SLOT_2( _q_onLoadProgressChanged )
 
 #ifndef QT_NO_ACTION
-    WEB_CS_SLOT_1( Private, void _q_webActionTriggered( bool checked ) )
-    WEB_CS_SLOT_2( _q_webActionTriggered )
+    WEB_LSCS_SLOT_1( Private, void _q_webActionTriggered( bool checked ) )
+    WEB_LSCS_SLOT_2( _q_webActionTriggered )
 #endif
 
-    WEB_CS_SLOT_1( Private, void _q_cleanupLeakMessages() )
-    WEB_CS_SLOT_2( _q_cleanupLeakMessages )
+    WEB_LSCS_SLOT_1( Private, void _q_cleanupLeakMessages() )
+    WEB_LSCS_SLOT_2( _q_cleanupLeakMessages )
 
     QWebPagePrivate *d;
 

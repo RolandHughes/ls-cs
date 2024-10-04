@@ -17,12 +17,12 @@ else()
    # use annex headers
    target_include_directories(LsCsCore
       PUBLIC
-      $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/annex/cs_pointer>
+      $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/annex/lscs_pointer>
    )
 
    list(APPEND CORE_INCLUDES
-      ${CMAKE_CURRENT_SOURCE_DIR}/../annex/cs_pointer/cs_unique_pointer.h
-      ${CMAKE_CURRENT_SOURCE_DIR}/../annex/cs_pointer/cs_unique_array_pointer.h
+      ${CMAKE_CURRENT_SOURCE_DIR}/../annex/lscs_pointer/lscs_unique_pointer.h
+      ${CMAKE_CURRENT_SOURCE_DIR}/../annex/lscs_pointer/lscs_unique_array_pointer.h
    )
 endif()
 

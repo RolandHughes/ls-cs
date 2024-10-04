@@ -24,10 +24,10 @@
  * LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 */
 
-#ifndef CS_MATCH_FLAGS_H
-#define CS_MATCH_FLAGS_H
+#ifndef LSCS_MATCH_FLAGS_H
+#define LSCS_MATCH_FLAGS_H
 
-namespace cs_regex_ns
+namespace lscs_regex_ns
 {
 
 namespace regex_constants

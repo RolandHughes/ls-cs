@@ -254,7 +254,7 @@ Qt::CursorMoveStyle QTextLayout::cursorMoveStyle() const
 
 void QTextLayout::beginLayout()
 {
-#if defined(CS_SHOW_DEBUG_GUI_TEXT)
+#if defined(LSCS_SHOW_DEBUG_GUI_TEXT)
 
     if ( d->layoutData && d->layoutData->layoutState == QTextEngine::InLayout )
     {
@@ -272,7 +272,7 @@ void QTextLayout::beginLayout()
 
 void QTextLayout::endLayout()
 {
-#if defined(CS_SHOW_DEBUG_GUI_TEXT)
+#if defined(LSCS_SHOW_DEBUG_GUI_TEXT)
 
     if ( ! d->layoutData || d->layoutData->layoutState == QTextEngine::LayoutEmpty )
     {
@@ -438,7 +438,7 @@ bool QTextLayout::isValidCursorPosition( int pos ) const
 
 QTextLine QTextLayout::createLine()
 {
-#if defined(CS_SHOW_DEBUG_GUI_TEXT)
+#if defined(LSCS_SHOW_DEBUG_GUI_TEXT)
 
     if ( ! d->layoutData || d->layoutData->layoutState == QTextEngine::LayoutEmpty )
     {
@@ -1235,7 +1235,7 @@ const QFixed LineBreakHelper::RightBearingNotCalculated = QFixed( 1 );
 
 inline bool LineBreakHelper::checkFullOtherwiseExtend( QScriptLine &line )
 {
-#if defined(CS_SHOW_DEBUG_GUI_TEXT)
+#if defined(LSCS_SHOW_DEBUG_GUI_TEXT)
     qDebug( "checkFullOtherwiseExtend() Possible break width %f, space w = %f",
             tmpData.textWidth.toReal(), spaceData.textWidth.toReal() );
 #endif
@@ -1332,7 +1332,7 @@ void QTextLine::layout_helper( int maxGlyphs )
     int newItem = m_textEngine->findItem( line.from );
     Q_ASSERT( newItem >= 0 );
 
-#if defined(CS_SHOW_DEBUG_GUI_TEXT)
+#if defined(LSCS_SHOW_DEBUG_GUI_TEXT)
     qDebug( "QTextLine::layout_helper() From = %d: Item = %d, Total = %zd, Width available = %f",
             line.from, newItem, m_textEngine->layoutData->items.size(), line.width.toReal() );
 #endif
@@ -1649,17 +1649,17 @@ found:
     if ( line.length == 0 )
     {
 
-#if defined(CS_SHOW_DEBUG_GUI_TEXT)
+#if defined(LSCS_SHOW_DEBUG_GUI_TEXT)
         qDebug( "QTextLine::layout_helper() No break available, adding a new line" );
 #endif
 
         line += lbh.tmpData;
     }
 
-#if defined(CS_SHOW_DEBUG_GUI_TEXT)
+#if defined(LSCS_SHOW_DEBUG_GUI_TEXT)
     qDebug( "QTextLine::layout_helper() Line length = %d, Ascent = %f, Descent = %f\n   textWidth = %f, spaceWidth = %f : %s",
             line.length, line.ascent.toReal(), line.descent.toReal(), line.textWidth.toReal(),
-            lbh.spaceData.width.toReal(), csPrintable( m_textEngine->layoutData->string.mid( line.from, line.length ) ) );
+            lbh.spaceData.width.toReal(), lscsPrintable( m_textEngine->layoutData->string.mid( line.from, line.length ) ) );
 #endif
 
 

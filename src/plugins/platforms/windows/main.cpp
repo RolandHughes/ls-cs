@@ -27,16 +27,16 @@
 
 class QWindowsIntegrationPlugin : public QPlatformIntegrationPlugin
 {
-    CS_OBJECT( QWindowsIntegrationPlugin )
+    LSCS_OBJECT( QWindowsIntegrationPlugin )
 
-    CS_PLUGIN_IID( QPlatformIntegrationInterface_ID )
-    CS_PLUGIN_KEY( "windows" )
+    LSCS_PLUGIN_IID( QPlatformIntegrationInterface_ID )
+    LSCS_PLUGIN_KEY( "windows" )
 
 public:
     QPlatformIntegration *create( const QString &, const QStringList &, int &, char ** ) override;
 };
 
-CS_PLUGIN_REGISTER( QWindowsIntegrationPlugin )
+LSCS_PLUGIN_REGISTER( QWindowsIntegrationPlugin )
 
 QPlatformIntegration *QWindowsIntegrationPlugin::create( const QString &system, const QStringList &paramList, int &, char ** )
 {

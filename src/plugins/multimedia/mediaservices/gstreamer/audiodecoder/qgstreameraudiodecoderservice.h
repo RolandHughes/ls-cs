@@ -33,7 +33,7 @@ class QGstreamerAudioDecoderSession;
 
 class QGstreamerAudioDecoderService : public QMediaService
 {
-    CS_OBJECT( QGstreamerAudioDecoderService )
+    LSCS_OBJECT( QGstreamerAudioDecoderService )
 
 public:
     QGstreamerAudioDecoderService( QObject *parent = nullptr );

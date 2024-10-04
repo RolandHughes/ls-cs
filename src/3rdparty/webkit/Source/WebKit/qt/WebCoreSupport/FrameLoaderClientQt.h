@@ -62,19 +62,19 @@ struct LoadErrorResetToken;
 
 class FrameLoaderClientQt : public QObject, public FrameLoaderClient
 {
-    WEB_CS_OBJECT( FrameLoaderClientQt )
+    WEB_LSCS_OBJECT( FrameLoaderClientQt )
 
     friend class ::QWebFrame;
     void callPolicyFunction( FramePolicyFunction function, PolicyAction action );
     bool callErrorPageExtension( const ResourceError & );
 
 public:
-    WEB_CS_SIGNAL_1( Public, void loadProgress( int d ) )
-    WEB_CS_SIGNAL_2( loadProgress,d )
-    WEB_CS_SIGNAL_1( Public, void titleChanged( const QString &title ) )
-    WEB_CS_SIGNAL_2( titleChanged,title )
-    WEB_CS_SIGNAL_1( Public, void unsupportedContent( QNetworkReply *reply ) )
-    WEB_CS_SIGNAL_2( unsupportedContent,reply )
+    WEB_LSCS_SIGNAL_1( Public, void loadProgress( int d ) )
+    WEB_LSCS_SIGNAL_2( loadProgress,d )
+    WEB_LSCS_SIGNAL_1( Public, void titleChanged( const QString &title ) )
+    WEB_LSCS_SIGNAL_2( titleChanged,title )
+    WEB_LSCS_SIGNAL_1( Public, void unsupportedContent( QNetworkReply *reply ) )
+    WEB_LSCS_SIGNAL_2( unsupportedContent,reply )
 
 public:
     FrameLoaderClientQt();
@@ -289,8 +289,8 @@ public:
     static QMap<QString, QString> URLsToRedirect;
 
 private:
-    WEB_CS_SLOT_1( Private, void onIconLoadedForPageURL( const QString &url ) )
-    WEB_CS_SLOT_2( onIconLoadedForPageURL )
+    WEB_LSCS_SLOT_1( Private, void onIconLoadedForPageURL( const QString &url ) )
+    WEB_LSCS_SLOT_2( onIconLoadedForPageURL )
 
     void emitLoadStarted();
     void emitLoadFinished( bool ok );

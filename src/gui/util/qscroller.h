@@ -39,16 +39,16 @@ class QMouseFlickGestureRecognizer;
 
 class Q_GUI_EXPORT QScroller : public QObject
 {
-    GUI_CS_OBJECT( QScroller )
+    GUI_LSCS_OBJECT( QScroller )
 
-    GUI_CS_ENUM( State )
+    GUI_LSCS_ENUM( State )
 
-    GUI_CS_PROPERTY_READ( state, state )
-    GUI_CS_PROPERTY_NOTIFY( state, stateChanged )
+    GUI_LSCS_PROPERTY_READ( state, state )
+    GUI_LSCS_PROPERTY_NOTIFY( state, stateChanged )
 
-    GUI_CS_PROPERTY_READ( scrollerProperties, scrollerProperties )
-    GUI_CS_PROPERTY_WRITE( scrollerProperties, setScrollerProperties )
-    GUI_CS_PROPERTY_NOTIFY( scrollerProperties, scrollerPropertiesChanged )
+    GUI_LSCS_PROPERTY_READ( scrollerProperties, scrollerProperties )
+    GUI_LSCS_PROPERTY_WRITE( scrollerProperties, setScrollerProperties )
+    GUI_LSCS_PROPERTY_NOTIFY( scrollerProperties, scrollerPropertiesChanged )
 
 public:
     enum State
@@ -108,29 +108,29 @@ public:
     void setSnapPositionsY( const QList<qreal> &positions );
     void setSnapPositionsY( qreal first, qreal interval );
 
-    GUI_CS_SLOT_1( Public, void setScrollerProperties( const QScrollerProperties &prop ) )
-    GUI_CS_SLOT_2( setScrollerProperties )
+    GUI_LSCS_SLOT_1( Public, void setScrollerProperties( const QScrollerProperties &prop ) )
+    GUI_LSCS_SLOT_2( setScrollerProperties )
 
-    GUI_CS_SLOT_1( Public, void scrollTo( const QPointF &pos ) )
-    GUI_CS_SLOT_OVERLOAD( scrollTo, ( const QPointF & ) )
+    GUI_LSCS_SLOT_1( Public, void scrollTo( const QPointF &pos ) )
+    GUI_LSCS_SLOT_OVERLOAD( scrollTo, ( const QPointF & ) )
 
-    GUI_CS_SLOT_1( Public, void scrollTo( const QPointF &pos, int scrollTime ) )
-    GUI_CS_SLOT_OVERLOAD( scrollTo, ( const QPointF &, int ) )
+    GUI_LSCS_SLOT_1( Public, void scrollTo( const QPointF &pos, int scrollTime ) )
+    GUI_LSCS_SLOT_OVERLOAD( scrollTo, ( const QPointF &, int ) )
 
-    GUI_CS_SLOT_1( Public, void ensureVisible( const QRectF &rect, qreal xmargin, qreal ymargin ) )
-    GUI_CS_SLOT_OVERLOAD( ensureVisible, ( const QRectF &, qreal, qreal ) )
+    GUI_LSCS_SLOT_1( Public, void ensureVisible( const QRectF &rect, qreal xmargin, qreal ymargin ) )
+    GUI_LSCS_SLOT_OVERLOAD( ensureVisible, ( const QRectF &, qreal, qreal ) )
 
-    GUI_CS_SLOT_1( Public, void ensureVisible( const QRectF &rect, qreal xmargin, qreal ymargin, int scrollTime ) )
-    GUI_CS_SLOT_OVERLOAD( ensureVisible, ( const QRectF &, qreal, qreal, int ) )
+    GUI_LSCS_SLOT_1( Public, void ensureVisible( const QRectF &rect, qreal xmargin, qreal ymargin, int scrollTime ) )
+    GUI_LSCS_SLOT_OVERLOAD( ensureVisible, ( const QRectF &, qreal, qreal, int ) )
 
-    GUI_CS_SLOT_1( Public, void resendPrepareEvent() )
-    GUI_CS_SLOT_2( resendPrepareEvent )
+    GUI_LSCS_SLOT_1( Public, void resendPrepareEvent() )
+    GUI_LSCS_SLOT_2( resendPrepareEvent )
 
-    GUI_CS_SIGNAL_1( Public, void stateChanged( QScroller::State newState ) )
-    GUI_CS_SIGNAL_2( stateChanged, newState )
+    GUI_LSCS_SIGNAL_1( Public, void stateChanged( QScroller::State newState ) )
+    GUI_LSCS_SIGNAL_2( stateChanged, newState )
 
-    GUI_CS_SIGNAL_1( Public, void scrollerPropertiesChanged( const QScrollerProperties &newProperties ) )
-    GUI_CS_SIGNAL_2( scrollerPropertiesChanged, newProperties )
+    GUI_LSCS_SIGNAL_1( Public, void scrollerPropertiesChanged( const QScrollerProperties &newProperties ) )
+    GUI_LSCS_SIGNAL_2( scrollerPropertiesChanged, newProperties )
 
 private:
     Q_DECLARE_PRIVATE( QScroller )

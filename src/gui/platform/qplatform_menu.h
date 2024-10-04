@@ -34,9 +34,9 @@ class QPlatformMenu;
 
 class Q_GUI_EXPORT QPlatformMenuItem : public QObject
 {
-    GUI_CS_OBJECT( QPlatformMenuItem )
+    GUI_LSCS_OBJECT( QPlatformMenuItem )
 
-    GUI_CS_ENUM( MenuRole )
+    GUI_LSCS_ENUM( MenuRole )
 
 public:
     // must stay in sync with, QAction menu roles
@@ -77,18 +77,18 @@ public:
         ( void ) item;
     }
 
-    GUI_CS_SIGNAL_1( Public, void activated() )
-    GUI_CS_SIGNAL_2( activated )
+    GUI_LSCS_SIGNAL_1( Public, void activated() )
+    GUI_LSCS_SIGNAL_2( activated )
 
-    GUI_CS_SIGNAL_1( Public, void hovered() )
-    GUI_CS_SIGNAL_2( hovered )
+    GUI_LSCS_SIGNAL_1( Public, void hovered() )
+    GUI_LSCS_SIGNAL_2( hovered )
 };
 
 class Q_GUI_EXPORT QPlatformMenu : public QObject
 {
-    GUI_CS_OBJECT( QPlatformMenu )
+    GUI_LSCS_OBJECT( QPlatformMenu )
 
-    GUI_CS_ENUM( MenuType )
+    GUI_LSCS_ENUM( MenuType )
 
 public:
     enum MenuType { DefaultMenu = 0, EditMenu };
@@ -139,16 +139,16 @@ public:
     virtual QPlatformMenuItem *createMenuItem() const;
     virtual QPlatformMenu *createSubMenu() const;
 
-    GUI_CS_SIGNAL_1( Public, void aboutToShow() )
-    GUI_CS_SIGNAL_2( aboutToShow )
+    GUI_LSCS_SIGNAL_1( Public, void aboutToShow() )
+    GUI_LSCS_SIGNAL_2( aboutToShow )
 
-    GUI_CS_SIGNAL_1( Public, void aboutToHide() )
-    GUI_CS_SIGNAL_2( aboutToHide )
+    GUI_LSCS_SIGNAL_1( Public, void aboutToHide() )
+    GUI_LSCS_SIGNAL_2( aboutToHide )
 };
 
 class Q_GUI_EXPORT QPlatformMenuBar : public QObject
 {
-    GUI_CS_OBJECT( QPlatformMenuBar )
+    GUI_LSCS_OBJECT( QPlatformMenuBar )
 
 public:
     virtual void insertMenu( QPlatformMenu *menu, QPlatformMenu *before ) = 0;

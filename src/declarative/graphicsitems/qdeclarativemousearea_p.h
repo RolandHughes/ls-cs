@@ -30,33 +30,33 @@ QT_BEGIN_NAMESPACE
 
 class QDeclarativeDrag : public QObject
 {
-    DECL_CS_OBJECT( QDeclarativeDrag )
+    DECL_LSCS_OBJECT( QDeclarativeDrag )
 
-    DECL_CS_ENUM( Axis )
-    DECL_CS_PROPERTY_READ( *target, target )
-    DECL_CS_PROPERTY_WRITE( *target, setTarget )
-    DECL_CS_PROPERTY_NOTIFY( *target, targetChanged )
-    DECL_CS_PROPERTY_RESET( *target, resetTarget )
-    DECL_CS_PROPERTY_READ( axis, axis )
-    DECL_CS_PROPERTY_WRITE( axis, setAxis )
-    DECL_CS_PROPERTY_NOTIFY( axis, axisChanged )
-    DECL_CS_PROPERTY_READ( minimumX, xmin )
-    DECL_CS_PROPERTY_WRITE( minimumX, setXmin )
-    DECL_CS_PROPERTY_NOTIFY( minimumX, minimumXChanged )
-    DECL_CS_PROPERTY_READ( maximumX, xmax )
-    DECL_CS_PROPERTY_WRITE( maximumX, setXmax )
-    DECL_CS_PROPERTY_NOTIFY( maximumX, maximumXChanged )
-    DECL_CS_PROPERTY_READ( minimumY, ymin )
-    DECL_CS_PROPERTY_WRITE( minimumY, setYmin )
-    DECL_CS_PROPERTY_NOTIFY( minimumY, minimumYChanged )
-    DECL_CS_PROPERTY_READ( maximumY, ymax )
-    DECL_CS_PROPERTY_WRITE( maximumY, setYmax )
-    DECL_CS_PROPERTY_NOTIFY( maximumY, maximumYChanged )
-    DECL_CS_PROPERTY_READ( active, active )
-    DECL_CS_PROPERTY_NOTIFY( active, activeChanged )
-    DECL_CS_PROPERTY_READ( filterChildren, filterChildren )
-    DECL_CS_PROPERTY_WRITE( filterChildren, setFilterChildren )
-    DECL_CS_PROPERTY_NOTIFY( filterChildren, filterChildrenChanged )
+    DECL_LSCS_ENUM( Axis )
+    DECL_LSCS_PROPERTY_READ( *target, target )
+    DECL_LSCS_PROPERTY_WRITE( *target, setTarget )
+    DECL_LSCS_PROPERTY_NOTIFY( *target, targetChanged )
+    DECL_LSCS_PROPERTY_RESET( *target, resetTarget )
+    DECL_LSCS_PROPERTY_READ( axis, axis )
+    DECL_LSCS_PROPERTY_WRITE( axis, setAxis )
+    DECL_LSCS_PROPERTY_NOTIFY( axis, axisChanged )
+    DECL_LSCS_PROPERTY_READ( minimumX, xmin )
+    DECL_LSCS_PROPERTY_WRITE( minimumX, setXmin )
+    DECL_LSCS_PROPERTY_NOTIFY( minimumX, minimumXChanged )
+    DECL_LSCS_PROPERTY_READ( maximumX, xmax )
+    DECL_LSCS_PROPERTY_WRITE( maximumX, setXmax )
+    DECL_LSCS_PROPERTY_NOTIFY( maximumX, maximumXChanged )
+    DECL_LSCS_PROPERTY_READ( minimumY, ymin )
+    DECL_LSCS_PROPERTY_WRITE( minimumY, setYmin )
+    DECL_LSCS_PROPERTY_NOTIFY( minimumY, minimumYChanged )
+    DECL_LSCS_PROPERTY_READ( maximumY, ymax )
+    DECL_LSCS_PROPERTY_WRITE( maximumY, setYmax )
+    DECL_LSCS_PROPERTY_NOTIFY( maximumY, maximumYChanged )
+    DECL_LSCS_PROPERTY_READ( active, active )
+    DECL_LSCS_PROPERTY_NOTIFY( active, activeChanged )
+    DECL_LSCS_PROPERTY_READ( filterChildren, filterChildren )
+    DECL_LSCS_PROPERTY_WRITE( filterChildren, setFilterChildren )
+    DECL_LSCS_PROPERTY_NOTIFY( filterChildren, filterChildrenChanged )
     //### consider drag and drop
 
 public:
@@ -86,22 +86,22 @@ public:
     bool filterChildren() const;
     void setFilterChildren( bool );
 
-    DECL_CS_SIGNAL_1( Public, void targetChanged() )
-    DECL_CS_SIGNAL_2( targetChanged )
-    DECL_CS_SIGNAL_1( Public, void axisChanged() )
-    DECL_CS_SIGNAL_2( axisChanged )
-    DECL_CS_SIGNAL_1( Public, void minimumXChanged() )
-    DECL_CS_SIGNAL_2( minimumXChanged )
-    DECL_CS_SIGNAL_1( Public, void maximumXChanged() )
-    DECL_CS_SIGNAL_2( maximumXChanged )
-    DECL_CS_SIGNAL_1( Public, void minimumYChanged() )
-    DECL_CS_SIGNAL_2( minimumYChanged )
-    DECL_CS_SIGNAL_1( Public, void maximumYChanged() )
-    DECL_CS_SIGNAL_2( maximumYChanged )
-    DECL_CS_SIGNAL_1( Public, void activeChanged() )
-    DECL_CS_SIGNAL_2( activeChanged )
-    DECL_CS_SIGNAL_1( Public, void filterChildrenChanged() )
-    DECL_CS_SIGNAL_2( filterChildrenChanged )
+    DECL_LSCS_SIGNAL_1( Public, void targetChanged() )
+    DECL_LSCS_SIGNAL_2( targetChanged )
+    DECL_LSCS_SIGNAL_1( Public, void axisChanged() )
+    DECL_LSCS_SIGNAL_2( axisChanged )
+    DECL_LSCS_SIGNAL_1( Public, void minimumXChanged() )
+    DECL_LSCS_SIGNAL_2( minimumXChanged )
+    DECL_LSCS_SIGNAL_1( Public, void maximumXChanged() )
+    DECL_LSCS_SIGNAL_2( maximumXChanged )
+    DECL_LSCS_SIGNAL_1( Public, void minimumYChanged() )
+    DECL_LSCS_SIGNAL_2( minimumYChanged )
+    DECL_LSCS_SIGNAL_1( Public, void maximumYChanged() )
+    DECL_LSCS_SIGNAL_2( maximumYChanged )
+    DECL_LSCS_SIGNAL_1( Public, void activeChanged() )
+    DECL_LSCS_SIGNAL_2( activeChanged )
+    DECL_LSCS_SIGNAL_1( Public, void filterChildrenChanged() )
+    DECL_LSCS_SIGNAL_2( filterChildrenChanged )
 
 private:
     QGraphicsObject *_target;
@@ -120,18 +120,18 @@ class QDeclarativeMouseAreaPrivate;
 
 class QDeclarativeMouseArea : public QDeclarativeItem
 {
-    DECL_CS_OBJECT( QDeclarativeMouseArea )
+    DECL_LSCS_OBJECT( QDeclarativeMouseArea )
 
-    DECL_CS_PROPERTY_READ( mouseX, mouseX )
-    DECL_CS_PROPERTY_NOTIFY( mouseX, mousePositionChanged )
-    DECL_CS_PROPERTY_READ( mouseY, mouseY )
-    DECL_CS_PROPERTY_NOTIFY( mouseY, mousePositionChanged )
+    DECL_LSCS_PROPERTY_READ( mouseX, mouseX )
+    DECL_LSCS_PROPERTY_NOTIFY( mouseX, mousePositionChanged )
+    DECL_LSCS_PROPERTY_READ( mouseY, mouseY )
+    DECL_LSCS_PROPERTY_NOTIFY( mouseY, mousePositionChanged )
 
-    DECL_CS_PROPERTY_READ( containsMouse, hovered )
-    DECL_CS_PROPERTY_NOTIFY( containsMouse, hoveredChanged )
+    DECL_LSCS_PROPERTY_READ( containsMouse, hovered )
+    DECL_LSCS_PROPERTY_NOTIFY( containsMouse, hoveredChanged )
 
-    DECL_CS_PROPERTY_READ( pressed, cs_pressed )
-    DECL_CS_PROPERTY_NOTIFY( pressed, pressedChanged )
+    DECL_LSCS_PROPERTY_READ( pressed, cs_pressed )
+    DECL_LSCS_PROPERTY_NOTIFY( pressed, pressedChanged )
 
     // wrapper for overloaded method
     bool cs_pressed() const
@@ -139,28 +139,28 @@ class QDeclarativeMouseArea : public QDeclarativeItem
         return pressed();
     }
 
-    DECL_CS_PROPERTY_READ( enabled, isEnabled )
-    DECL_CS_PROPERTY_WRITE( enabled, setEnabled )
-    DECL_CS_PROPERTY_NOTIFY( enabled, enabledChanged )
+    DECL_LSCS_PROPERTY_READ( enabled, isEnabled )
+    DECL_LSCS_PROPERTY_WRITE( enabled, setEnabled )
+    DECL_LSCS_PROPERTY_NOTIFY( enabled, enabledChanged )
 
-    DECL_CS_PROPERTY_READ( pressedButtons, pressedButtons )
-    DECL_CS_PROPERTY_NOTIFY( pressedButtons, pressedChanged )
+    DECL_LSCS_PROPERTY_READ( pressedButtons, pressedButtons )
+    DECL_LSCS_PROPERTY_NOTIFY( pressedButtons, pressedChanged )
 
-    DECL_CS_PROPERTY_READ( acceptedButtons, acceptedButtons )
-    DECL_CS_PROPERTY_WRITE( acceptedButtons, setAcceptedButtons )
-    DECL_CS_PROPERTY_NOTIFY( acceptedButtons, acceptedButtonsChanged )
+    DECL_LSCS_PROPERTY_READ( acceptedButtons, acceptedButtons )
+    DECL_LSCS_PROPERTY_WRITE( acceptedButtons, setAcceptedButtons )
+    DECL_LSCS_PROPERTY_NOTIFY( acceptedButtons, acceptedButtonsChanged )
 
-    DECL_CS_PROPERTY_READ( hoverEnabled, hoverEnabled )
-    DECL_CS_PROPERTY_WRITE( hoverEnabled, setHoverEnabled )
-    DECL_CS_PROPERTY_NOTIFY( hoverEnabled, hoverEnabledChanged )
+    DECL_LSCS_PROPERTY_READ( hoverEnabled, hoverEnabled )
+    DECL_LSCS_PROPERTY_WRITE( hoverEnabled, setHoverEnabled )
+    DECL_LSCS_PROPERTY_NOTIFY( hoverEnabled, hoverEnabledChanged )
 
-    DECL_CS_PROPERTY_READ( drag, drag )
-    DECL_CS_PROPERTY_CONSTANT( drag )    //### add flicking to QDeclarativeDrag or add a QDeclarativeFlick ???
+    DECL_LSCS_PROPERTY_READ( drag, drag )
+    DECL_LSCS_PROPERTY_CONSTANT( drag )    //### add flicking to QDeclarativeDrag or add a QDeclarativeFlick ???
 
-    DECL_CS_PROPERTY_READ( preventStealing, preventStealing )
-    DECL_CS_PROPERTY_WRITE( preventStealing, setPreventStealing )
-    DECL_CS_PROPERTY_NOTIFY( preventStealing, preventStealingChanged )
-    DECL_CS_PROPERTY_REVISION( preventStealing, 1 )
+    DECL_LSCS_PROPERTY_READ( preventStealing, preventStealing )
+    DECL_LSCS_PROPERTY_WRITE( preventStealing, setPreventStealing )
+    DECL_LSCS_PROPERTY_NOTIFY( preventStealing, preventStealingChanged )
+    DECL_LSCS_PROPERTY_REVISION( preventStealing, 1 )
 
 public:
     QDeclarativeMouseArea( QDeclarativeItem *parent = 0 );
@@ -188,54 +188,54 @@ public:
     bool preventStealing() const;
     void setPreventStealing( bool prevent );
 
-    DECL_CS_SIGNAL_1( Public, void hoveredChanged() )
-    DECL_CS_SIGNAL_2( hoveredChanged )
+    DECL_LSCS_SIGNAL_1( Public, void hoveredChanged() )
+    DECL_LSCS_SIGNAL_2( hoveredChanged )
 
-    DECL_CS_SIGNAL_1( Public, void pressedChanged() )
-    DECL_CS_SIGNAL_2( pressedChanged )
+    DECL_LSCS_SIGNAL_1( Public, void pressedChanged() )
+    DECL_LSCS_SIGNAL_2( pressedChanged )
 
-    DECL_CS_SIGNAL_1( Public, void enabledChanged() )
-    DECL_CS_SIGNAL_2( enabledChanged )
+    DECL_LSCS_SIGNAL_1( Public, void enabledChanged() )
+    DECL_LSCS_SIGNAL_2( enabledChanged )
 
-    DECL_CS_SIGNAL_1( Public, void acceptedButtonsChanged() )
-    DECL_CS_SIGNAL_2( acceptedButtonsChanged )
+    DECL_LSCS_SIGNAL_1( Public, void acceptedButtonsChanged() )
+    DECL_LSCS_SIGNAL_2( acceptedButtonsChanged )
 
-    DECL_CS_SIGNAL_1( Public, void hoverEnabledChanged() )
-    DECL_CS_SIGNAL_2( hoverEnabledChanged )
+    DECL_LSCS_SIGNAL_1( Public, void hoverEnabledChanged() )
+    DECL_LSCS_SIGNAL_2( hoverEnabledChanged )
 
-    DECL_CS_SIGNAL_1( Public, void positionChanged( QDeclarativeMouseEvent *mouse ) )
-    DECL_CS_SIGNAL_2( positionChanged, mouse )
+    DECL_LSCS_SIGNAL_1( Public, void positionChanged( QDeclarativeMouseEvent *mouse ) )
+    DECL_LSCS_SIGNAL_2( positionChanged, mouse )
 
-    DECL_CS_SIGNAL_1( Public, void mousePositionChanged( QDeclarativeMouseEvent *mouse ) )
-    DECL_CS_SIGNAL_2( mousePositionChanged, mouse )
+    DECL_LSCS_SIGNAL_1( Public, void mousePositionChanged( QDeclarativeMouseEvent *mouse ) )
+    DECL_LSCS_SIGNAL_2( mousePositionChanged, mouse )
 
-    DECL_CS_SIGNAL_1( Public, void preventStealingChanged() )
-    DECL_CS_SIGNAL_2( preventStealingChanged )
-    DECL_CS_REVISION( preventStealingChanged, 1 )
+    DECL_LSCS_SIGNAL_1( Public, void preventStealingChanged() )
+    DECL_LSCS_SIGNAL_2( preventStealingChanged )
+    DECL_LSCS_REVISION( preventStealingChanged, 1 )
 
-    DECL_CS_SIGNAL_1( Public, void pressed( QDeclarativeMouseEvent *mouse ) )
-    DECL_CS_SIGNAL_OVERLOAD( pressed, ( QDeclarativeMouseEvent * ), mouse )
+    DECL_LSCS_SIGNAL_1( Public, void pressed( QDeclarativeMouseEvent *mouse ) )
+    DECL_LSCS_SIGNAL_OVERLOAD( pressed, ( QDeclarativeMouseEvent * ), mouse )
 
-    DECL_CS_SIGNAL_1( Public, void pressAndHold( QDeclarativeMouseEvent *mouse ) )
-    DECL_CS_SIGNAL_2( pressAndHold, mouse )
+    DECL_LSCS_SIGNAL_1( Public, void pressAndHold( QDeclarativeMouseEvent *mouse ) )
+    DECL_LSCS_SIGNAL_2( pressAndHold, mouse )
 
-    DECL_CS_SIGNAL_1( Public, void released( QDeclarativeMouseEvent *mouse ) )
-    DECL_CS_SIGNAL_2( released, mouse )
+    DECL_LSCS_SIGNAL_1( Public, void released( QDeclarativeMouseEvent *mouse ) )
+    DECL_LSCS_SIGNAL_2( released, mouse )
 
-    DECL_CS_SIGNAL_1( Public, void clicked( QDeclarativeMouseEvent *mouse ) )
-    DECL_CS_SIGNAL_2( clicked, mouse )
+    DECL_LSCS_SIGNAL_1( Public, void clicked( QDeclarativeMouseEvent *mouse ) )
+    DECL_LSCS_SIGNAL_2( clicked, mouse )
 
-    DECL_CS_SIGNAL_1( Public, void doubleClicked( QDeclarativeMouseEvent *mouse ) )
-    DECL_CS_SIGNAL_2( doubleClicked, mouse )
+    DECL_LSCS_SIGNAL_1( Public, void doubleClicked( QDeclarativeMouseEvent *mouse ) )
+    DECL_LSCS_SIGNAL_2( doubleClicked, mouse )
 
-    DECL_CS_SIGNAL_1( Public, void entered() )
-    DECL_CS_SIGNAL_2( entered )
+    DECL_LSCS_SIGNAL_1( Public, void entered() )
+    DECL_LSCS_SIGNAL_2( entered )
 
-    DECL_CS_SIGNAL_1( Public, void exited() )
-    DECL_CS_SIGNAL_2( exited )
+    DECL_LSCS_SIGNAL_1( Public, void exited() )
+    DECL_LSCS_SIGNAL_2( exited )
 
-    DECL_CS_SIGNAL_1( Public, void canceled() )
-    DECL_CS_SIGNAL_2( canceled )
+    DECL_LSCS_SIGNAL_1( Public, void canceled() )
+    DECL_LSCS_SIGNAL_2( canceled )
 
 protected:
     void setHovered( bool );

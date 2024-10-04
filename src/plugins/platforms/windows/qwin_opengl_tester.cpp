@@ -45,7 +45,7 @@
 
 template <typename T, typename U>
 std::enable_if_t<sizeof( T ) == sizeof( U ) &&
-std::is_trivially_copyable_v<T> &&std::is_trivially_copyable_v<U>, T> cs_bitCast( const U &input ) noexcept
+std::is_trivially_copyable_v<T> &&std::is_trivially_copyable_v<U>, T> lscs_bitCast( const U &input ) noexcept
 {
     static_assert( std::is_trivially_constructible_v<T> );
 
@@ -372,28 +372,28 @@ bool QWindowsOpenGLTester::testDesktopGL()
 
     if ( lib )
     {
-        CreateContext = cs_bitCast<HGLRC ( WINAPI * )( HDC )>( ::GetProcAddress( lib, "wglCreateContext" ) );
+        CreateContext = lscs_bitCast<HGLRC ( WINAPI * )( HDC )>( ::GetProcAddress( lib, "wglCreateContext" ) );
 
         if ( !CreateContext )
         {
             goto cleanup;
         }
 
-        DeleteContext = cs_bitCast<BOOL ( WINAPI * )( HGLRC )>( ::GetProcAddress( lib, "wglDeleteContext" ) );
+        DeleteContext = lscs_bitCast<BOOL ( WINAPI * )( HGLRC )>( ::GetProcAddress( lib, "wglDeleteContext" ) );
 
         if ( !DeleteContext )
         {
             goto cleanup;
         }
 
-        MakeCurrent = cs_bitCast<BOOL ( WINAPI * )( HDC, HGLRC )>( ::GetProcAddress( lib, "wglMakeCurrent" ) );
+        MakeCurrent = lscs_bitCast<BOOL ( WINAPI * )( HDC, HGLRC )>( ::GetProcAddress( lib, "wglMakeCurrent" ) );
 
         if ( !MakeCurrent )
         {
             goto cleanup;
         }
 
-        WGL_GetProcAddress = cs_bitCast<PROC ( WINAPI * )( LPCSTR )>( ::GetProcAddress( lib, "wglGetProcAddress" ) );
+        WGL_GetProcAddress = lscs_bitCast<PROC ( WINAPI * )( LPCSTR )>( ::GetProcAddress( lib, "wglGetProcAddress" ) );
 
         if ( !WGL_GetProcAddress )
         {
@@ -410,7 +410,7 @@ bool QWindowsOpenGLTester::testDesktopGL()
         wclass.lpszMenuName  = nullptr;
         wclass.lpfnWndProc   = DefWindowProc;
         wclass.lpszClassName = className;
-        wclass.style = CS_OWNDC;
+        wclass.style = LSCS_OWNDC;
 
         if ( !RegisterClass( &wclass ) )
         {
@@ -467,7 +467,7 @@ bool QWindowsOpenGLTester::testDesktopGL()
 
         // Check the version, if it is 1.x then stop
         typedef const GLubyte * ( APIENTRY * GetString_t )( GLenum name );
-        GetString_t GetString = cs_bitCast<GetString_t>( ::GetProcAddress( lib, "glGetString" ) );
+        GetString_t GetString = lscs_bitCast<GetString_t>( ::GetProcAddress( lib, "glGetString" ) );
 
         if ( GetString != nullptr )
         {
@@ -490,7 +490,7 @@ bool QWindowsOpenGLTester::testDesktopGL()
 
                     if ( major == 1 )
                     {
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
                         qDebug( "QWindowsOpenGLTester::testDesktopGL() OpenGL version 1.x is unsupported" );
 #endif
 
@@ -499,7 +499,7 @@ bool QWindowsOpenGLTester::testDesktopGL()
                     }
                     else
                     {
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
                         qDebug( "QWindowsOpenGLTester::testDesktopGL() OpenGL version %d.%d", major, minor );
 #endif
                     }
@@ -510,7 +510,7 @@ bool QWindowsOpenGLTester::testDesktopGL()
         else
         {
             // "glGetString" was added in version 2
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
             qDebug( "QWindowsOpenGLTester::testDesktopGL() OpenGL version 1.x is unsupported" );
 #endif
 
@@ -526,7 +526,7 @@ bool QWindowsOpenGLTester::testDesktopGL()
     }
     else
     {
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
         qDebug( "QWindowsOpenGLTester::testDesktopGL() Failed to load opengl32.dll" );
 #endif
 

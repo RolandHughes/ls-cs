@@ -159,7 +159,7 @@ private:
 
 class Q_CORE_EXPORT QEventDispatcherCoreFoundation : public QAbstractEventDispatcher
 {
-    CORE_CS_OBJECT( QEventDispatcherCoreFoundation )
+    CORE_LSCS_OBJECT( QEventDispatcherCoreFoundation )
 
 public:
     explicit QEventDispatcherCoreFoundation( QObject *parent = nullptr );

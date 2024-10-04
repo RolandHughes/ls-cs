@@ -114,7 +114,7 @@ bool QXcbGlxIntegration::initialize( QXcbConnection *connection )
 
     m_native_interface_handler.reset( new QXcbGlxNativeInterfaceHandler( connection->nativeInterface() ) );
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
     qDebug() << "QXcbGlxIntegration::initialize() Xcb GLX gl-integration plugin successfully initialized";
 #endif
 

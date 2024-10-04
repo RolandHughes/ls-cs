@@ -1030,9 +1030,9 @@ private:
 };
 } // namespace QCss
 
-CS_DECLARE_METATYPE( QCss::BackgroundData )
-CS_DECLARE_METATYPE( QCss::LengthData )
-CS_DECLARE_METATYPE( QCss::BorderData )
+LSCS_DECLARE_METATYPE( QCss::BackgroundData )
+LSCS_DECLARE_METATYPE( QCss::LengthData )
+LSCS_DECLARE_METATYPE( QCss::BorderData )
 
 #endif // QT_NO_CSSPARSER
 

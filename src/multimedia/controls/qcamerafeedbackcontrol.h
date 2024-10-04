@@ -31,7 +31,7 @@
 
 class Q_MULTIMEDIA_EXPORT QCameraFeedbackControl : public QMediaControl
 {
-    MULTI_CS_OBJECT( QCameraFeedbackControl )
+    MULTI_LSCS_OBJECT( QCameraFeedbackControl )
 
 public:
     enum EventType
@@ -65,6 +65,6 @@ protected:
 };
 
 #define QCameraFeedbackControl_iid "com.copperspice.CS.cameraFeedBackControl/1.0"
-CS_DECLARE_INTERFACE( QCameraFeedbackControl, QCameraFeedbackControl_iid )
+LSCS_DECLARE_INTERFACE( QCameraFeedbackControl, QCameraFeedbackControl_iid )
 
 #endif

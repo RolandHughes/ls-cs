@@ -187,7 +187,7 @@ int runUic( int argc, char *argv[] )
 
         if ( ! f.open( QIODevice::WriteOnly | QFile::Text ) )
         {
-            fprintf( stderr, "Could not create output file %s\n", csPrintable( f.errorString() ) );
+            fprintf( stderr, "Could not create output file %s\n", lscsPrintable( f.errorString() ) );
             return 1;
         }
 
@@ -212,7 +212,7 @@ int runUic( int argc, char *argv[] )
         }
         else
         {
-            fprintf( stderr, "File '%s' is not valid\n", csPrintable( inputFile ) );
+            fprintf( stderr, "File '%s' is not valid\n", lscsPrintable( inputFile ) );
         }
     }
 

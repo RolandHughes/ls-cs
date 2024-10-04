@@ -30,7 +30,7 @@ class QSoundEffect;
 
 class Q_MULTIMEDIA_EXPORT QSound : public QObject
 {
-    MULTI_CS_OBJECT( QSound )
+    MULTI_LSCS_OBJECT( QSound )
 
 public:
     enum Loop
@@ -50,15 +50,15 @@ public:
 
     bool isFinished() const;
 
-    MULTI_CS_SLOT_1( Public, void play() )
-    MULTI_CS_SLOT_OVERLOAD( play, () )
+    MULTI_LSCS_SLOT_1( Public, void play() )
+    MULTI_LSCS_SLOT_OVERLOAD( play, () )
 
-    MULTI_CS_SLOT_1( Public, void stop() )
-    MULTI_CS_SLOT_2( stop )
+    MULTI_LSCS_SLOT_1( Public, void stop() )
+    MULTI_LSCS_SLOT_2( stop )
 
 private:
-    MULTI_CS_SLOT_1( Private, void deleteOnComplete() )
-    MULTI_CS_SLOT_2( deleteOnComplete )
+    MULTI_LSCS_SLOT_1( Private, void deleteOnComplete() )
+    MULTI_LSCS_SLOT_2( deleteOnComplete )
 
     QSoundEffect *m_soundEffect;
 };

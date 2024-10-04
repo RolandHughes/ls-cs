@@ -39,13 +39,13 @@ struct Q_CORE_EXPORT QTextCodecFactoryInterface : public QFactoryInterface
 };
 
 #define QTextCodecInterface_ID "com.copperspice.CS.QTextCodecInterface"
-CS_DECLARE_INTERFACE( QTextCodecFactoryInterface, QTextCodecInterface_ID )
+LSCS_DECLARE_INTERFACE( QTextCodecFactoryInterface, QTextCodecInterface_ID )
 
 class Q_CORE_EXPORT QTextCodecPlugin : public QObject, public QTextCodecFactoryInterface
 {
-    CORE_CS_OBJECT_MULTIPLE( QTextCodecPlugin, QObject )
+    CORE_LSCS_OBJECT_MULTIPLE( QTextCodecPlugin, QObject )
 
-    CS_INTERFACES( QTextCodecFactoryInterface, QFactoryInterface )
+    LSCS_INTERFACES( QTextCodecFactoryInterface, QFactoryInterface )
 
 public:
     explicit QTextCodecPlugin( QObject *parent = nullptr );

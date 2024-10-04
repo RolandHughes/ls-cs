@@ -24,12 +24,12 @@
  * LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 */
 
-#ifndef CS_REGEX_FWD_H
-#define CS_REGEX_FWD_H
+#ifndef LSCS_REGEX_FWD_H
+#define LSCS_REGEX_FWD_H
 
 #include <regex/r_config.h>
 
-namespace cs_regex_ns
+namespace lscs_regex_ns
 {
 
 template <class charT, class implementationT>
@@ -38,7 +38,7 @@ struct regex_traits;
 template <class charT, class traits>
 class basic_regex;
 
-namespace cs_regex_detail_ns
+namespace lscs_regex_detail_ns
 {
 
 template <class T>

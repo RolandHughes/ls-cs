@@ -37,7 +37,7 @@ class QPdfEngine;
 
 class Q_GUI_EXPORT QPdfWriter : public QObject, public QPagedPaintDevice
 {
-    GUI_CS_OBJECT_MULTIPLE( QPdfWriter, QObject )
+    GUI_LSCS_OBJECT_MULTIPLE( QPdfWriter, QObject )
 
 public:
     explicit QPdfWriter( const QString &filename );

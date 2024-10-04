@@ -588,7 +588,7 @@ QString qOraWarn( OCIError *err, int *errorCode )
 void qOraWarning( const char *msg, OCIError *err )
 {
 #ifdef QOCI_DEBUG
-    qWarning( "%s %s", msg, csPrintable( qOraWarn( err ) ) );
+    qWarning( "%s %s", msg, lscsPrintable( qOraWarn( err ) ) );
 #else
     Q_UNUSED( msg );
     Q_UNUSED( err );

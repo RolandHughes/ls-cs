@@ -30,7 +30,7 @@
 
 class Q_MULTIMEDIA_EXPORT QCameraViewfinderSettingsControl : public QMediaControl
 {
-    MULTI_CS_OBJECT( QCameraViewfinderSettingsControl )
+    MULTI_LSCS_OBJECT( QCameraViewfinderSettingsControl )
 
 public:
     enum ViewfinderParameter
@@ -55,7 +55,7 @@ protected:
 
 class Q_MULTIMEDIA_EXPORT QCameraViewfinderSettingsControl2 : public QMediaControl
 {
-    MULTI_CS_OBJECT( QCameraViewfinderSettingsControl2 )
+    MULTI_LSCS_OBJECT( QCameraViewfinderSettingsControl2 )
 
 public:
     virtual ~QCameraViewfinderSettingsControl2();
@@ -70,9 +70,9 @@ protected:
 };
 
 #define QCameraViewfinderSettingsControl_iid "com.copperspice.CS.cameraViewfinderSettingsControl/1.0"
-CS_DECLARE_INTERFACE( QCameraViewfinderSettingsControl, QCameraViewfinderSettingsControl_iid )
+LSCS_DECLARE_INTERFACE( QCameraViewfinderSettingsControl, QCameraViewfinderSettingsControl_iid )
 
 #define QCameraViewfinderSettingsControl2_iid "com.copperspice.CS.cameraViewfinderSettingsControl2/1.0"
-CS_DECLARE_INTERFACE( QCameraViewfinderSettingsControl2, QCameraViewfinderSettingsControl2_iid )
+LSCS_DECLARE_INTERFACE( QCameraViewfinderSettingsControl2, QCameraViewfinderSettingsControl2_iid )
 
 #endif

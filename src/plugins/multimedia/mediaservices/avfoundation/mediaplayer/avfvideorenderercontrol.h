@@ -36,8 +36,8 @@ class AVFVideoFrameRenderer;
 
 class AVFVideoRendererControl : public QVideoRendererControl, public AVFVideoOutput
 {
-    CS_OBJECT_MULTIPLE( AVFVideoRendererControl, QVideoRendererControl )
-    CS_INTERFACES( AVFVideoOutput )
+    LSCS_OBJECT_MULTIPLE( AVFVideoRendererControl, QVideoRendererControl )
+    LSCS_INTERFACES( AVFVideoOutput )
 
 public:
     explicit AVFVideoRendererControl( QObject *parent = nullptr );
@@ -48,8 +48,8 @@ public:
 
     void setLayer( void *playerLayer ) override;
 
-    CS_SIGNAL_1( Public, void surfaceChanged( QAbstractVideoSurface *surface ) )
-    CS_SIGNAL_2( surfaceChanged, surface )
+    LSCS_SIGNAL_1( Public, void surfaceChanged( QAbstractVideoSurface *surface ) )
+    LSCS_SIGNAL_2( surfaceChanged, surface )
 
 private:
     void setupVideoOutput();
@@ -64,8 +64,8 @@ private:
     QSize m_nativeSize;
     bool m_enableOpenGL;
 
-    CS_SLOT_1( Private, void updateVideoFrame( const CVTimeStamp &ts ) )
-    CS_SLOT_2( updateVideoFrame )
+    LSCS_SLOT_1( Private, void updateVideoFrame( const CVTimeStamp &ts ) )
+    LSCS_SLOT_2( updateVideoFrame )
 };
 
 #endif

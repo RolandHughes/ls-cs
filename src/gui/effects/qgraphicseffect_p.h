@@ -37,7 +37,7 @@ class QGraphicsEffectSourcePrivate;
 
 class Q_GUI_EXPORT QGraphicsEffectSource : public QObject
 {
-    GUI_CS_OBJECT( QGraphicsEffectSource )
+    GUI_LSCS_OBJECT( QGraphicsEffectSource )
 
 public:
     QGraphicsEffectSource( const QGraphicsEffectSource & ) = delete;

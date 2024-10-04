@@ -30,7 +30,7 @@ class QRasterWindowPrivate;
 
 class Q_GUI_EXPORT QRasterWindow : public QPaintDeviceWindow
 {
-    GUI_CS_OBJECT( QRasterWindow )
+    GUI_LSCS_OBJECT( QRasterWindow )
 
 public:
     explicit QRasterWindow( QWindow *parent = nullptr );

@@ -359,7 +359,7 @@ void QTextBrowserPrivate::setSource( const QUrl &url )
 
         if ( txt.isEmpty() )
         {
-            qWarning( "QTextBrowser:setSource() No document for %s", csPrintable( url.toString() ) );
+            qWarning( "QTextBrowser:setSource() No document for %s", lscsPrintable( url.toString() ) );
         }
 
         if ( q->isVisible() )

@@ -39,8 +39,8 @@ typedef UIView NativeView;
 
 class AVFVideoWindowControl : public QVideoWindowControl, public AVFVideoOutput
 {
-    CS_OBJECT_MULTIPLE( AVFVideoWindowControl,  QVideoWindowControl )
-    CS_INTERFACES( AVFVideoOutput )
+    LSCS_OBJECT_MULTIPLE( AVFVideoWindowControl,  QVideoWindowControl )
+    LSCS_INTERFACES( AVFVideoOutput )
 
 public:
     AVFVideoWindowControl( QObject *parent = nullptr );

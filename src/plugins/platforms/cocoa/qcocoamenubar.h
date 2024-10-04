@@ -32,7 +32,7 @@ class QCocoaWindow;
 
 class QCocoaMenuBar : public QPlatformMenuBar
 {
-    CS_OBJECT( QCocoaMenuBar )
+    LSCS_OBJECT( QCocoaMenuBar )
 
 public:
     QCocoaMenuBar();

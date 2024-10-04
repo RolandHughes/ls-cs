@@ -40,7 +40,7 @@ quint64 qt_msectime();
 
 class Q_CORE_EXPORT QEventDispatcherWin32 : public QAbstractEventDispatcher
 {
-    CORE_CS_OBJECT( QEventDispatcherWin32 )
+    CORE_LSCS_OBJECT( QEventDispatcherWin32 )
     Q_DECLARE_PRIVATE( QEventDispatcherWin32 )
 
 public:

@@ -484,6 +484,6 @@ inline QMargins QMarginsF::toMargins() const
 
 Q_CORE_EXPORT QDebug operator<<( QDebug, const QMarginsF & );
 
-CS_DECLARE_METATYPE( QMarginsF )
+LSCS_DECLARE_METATYPE( QMarginsF )
 
 #endif

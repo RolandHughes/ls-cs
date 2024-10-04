@@ -37,15 +37,15 @@ struct QFontDef;
 
 class Q_GUI_EXPORT QFontDatabase
 {
-    GUI_CS_GADGET( QFontDatabase )
+    GUI_LSCS_GADGET( QFontDatabase )
 
-    GUI_CS_ENUM( WritingSystem )
-    GUI_CS_ENUM( SystemFont )
+    GUI_LSCS_ENUM( WritingSystem )
+    GUI_LSCS_ENUM( SystemFont )
 
 public:
     // do not re-order or delete entries from this enum without updating the QPF2 format and makeqpf
 
-    GUI_CS_REGISTER_ENUM(
+    GUI_LSCS_REGISTER_ENUM(
         enum WritingSystem
     {
         Any,

@@ -200,7 +200,7 @@ bool QSqlQuery::isNull( const QString &name ) const
         return isNull( index );
     }
 
-    qWarning( "QSqlQuery::isNull: unknown field name '%s'", csPrintable( name ) );
+    qWarning( "QSqlQuery::isNull: unknown field name '%s'", lscsPrintable( name ) );
     return true;
 }
 
@@ -263,7 +263,7 @@ QVariant QSqlQuery::value( const QString &name ) const
         return value( index );
     }
 
-    qWarning( "QSqlQuery::value: unknown field name '%s'", csPrintable( name ) );
+    qWarning( "QSqlQuery::value: unknown field name '%s'", lscsPrintable( name ) );
 
     return QVariant();
 }
@@ -855,8 +855,8 @@ bool QSqlQuery::prepare( const QString &query )
         return false;
     }
 
-#if defined(CS_SHOW_DEBUG_SQL)
-    qDebug( "\n QSqlQuery::prepare: %s", csPrintable( query ) );
+#if defined(LSCS_SHOW_DEBUG_SQL)
+    qDebug( "\n QSqlQuery::prepare: %s", lscsPrintable( query ) );
 #endif
 
     return d->sqlResult->savePrepare( query );

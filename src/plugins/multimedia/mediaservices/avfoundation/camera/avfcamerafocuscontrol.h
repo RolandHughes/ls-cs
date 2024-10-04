@@ -35,7 +35,7 @@ class AVFCameraSession;
 
 class AVFCameraFocusControl : public QCameraFocusControl
 {
-    CS_OBJECT( AVFCameraFocusControl )
+    LSCS_OBJECT( AVFCameraFocusControl )
 
 public:
     explicit AVFCameraFocusControl( AVFCameraService *service );
@@ -53,8 +53,8 @@ public:
     QCameraFocusZoneList focusZones() const override;
 
 private:
-    CS_SLOT_1( Private, void cameraStateChanged() )
-    CS_SLOT_2( cameraStateChanged )
+    LSCS_SLOT_1( Private, void cameraStateChanged() )
+    LSCS_SLOT_2( cameraStateChanged )
 
     AVFCameraSession *m_session;
     QCameraFocus::FocusModes m_focusMode;

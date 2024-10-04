@@ -168,7 +168,7 @@ bool QWindowsLibGLESv2::init()
 {
     const char dllName[] = "libGLESv2";
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
     qDebug() << "QWindowsLibGLESv2::init() Using OpenGL ES 2.0 from " << dllName;
 #endif
 
@@ -462,7 +462,7 @@ QWindowsEGLStaticContext *QWindowsEGLStaticContext::create( QWindowsOpenGLTester
         return 0;
     }
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
     qDebug() << "QWindowsEGLStaticContext::create() Created EGL display" << display << 'v' << major << '.' << minor;
 #endif
 
@@ -662,7 +662,7 @@ bool QWindowsEGLContext::makeCurrent( QPlatformSurface *surface )
         {
             m_eglContext = EGL_NO_CONTEXT;
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
             qDebug() << "QWindowsEGLContext::makeCurrent() EGL context lost in createWindowSurface() for context" << this;
 #endif
 
@@ -671,7 +671,7 @@ bool QWindowsEGLContext::makeCurrent( QPlatformSurface *surface )
         {
             // With ANGLE this means no (D3D) device and can happen when disabling/changing graphics adapters.
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
             qDebug() << "QWindowsEGLContext::makeCurrent() Bad access in createWindowSurface() for context, missing device?"
                      << this;
 #endif
@@ -714,7 +714,7 @@ bool QWindowsEGLContext::makeCurrent( QPlatformSurface *surface )
         {
             m_eglContext = EGL_NO_CONTEXT;
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
             qDebug() << "QWindowsEGLContext::makeCurrent() EGL context lost in makeCurrent() for context" << this;
 #endif
 
@@ -757,7 +757,7 @@ void QWindowsEGLContext::swapBuffers( QPlatformSurface *surface )
         {
             m_eglContext = EGL_NO_CONTEXT;
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
             qDebug() << "QWindowsEGLContext::swapBuffers() EGL context lost in createWindowSurface() for context" << this;
 #endif
         }
@@ -775,7 +775,7 @@ void QWindowsEGLContext::swapBuffers( QPlatformSurface *surface )
         {
             m_eglContext = EGL_NO_CONTEXT;
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
             qDebug() << "QWindowsEGLContext::swapBuffers() EGL context lost in eglSwapBuffers()";
 #endif
 
@@ -956,7 +956,7 @@ QWindowsEGLContext::FP_Void QWindowsEGLContext::getProcAddress( const QByteArray
     FP_Void procAddress = reinterpret_cast<FP_Void>( QWindowsEGLStaticContext::libEGL.eglGetProcAddress(
                               procName.constData() ) );
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
     qDebug() << "QWindowsEGLContext::getProcAddress() "
              << QWindowsEGLStaticContext::libEGL.eglGetCurrentContext() << " Returns = " << procAddress;
 #endif

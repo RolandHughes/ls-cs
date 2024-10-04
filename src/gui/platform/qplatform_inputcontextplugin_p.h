@@ -33,7 +33,7 @@ class QPlatformInputContext;
 
 class Q_GUI_EXPORT QPlatformInputContextPlugin : public QObject
 {
-    GUI_CS_OBJECT( QPlatformInputContextPlugin )
+    GUI_LSCS_OBJECT( QPlatformInputContextPlugin )
 
 public:
     explicit QPlatformInputContextPlugin( QObject *parent = nullptr );

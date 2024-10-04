@@ -46,7 +46,7 @@ class FullScreenVideoWindow;
 
 class GStreamerFullScreenVideoHandler : public QObject
 {
-    WEB_CS_OBJECT( GStreamerFullScreenVideoHandler )
+    WEB_LSCS_OBJECT( GStreamerFullScreenVideoHandler )
 public:
     GStreamerFullScreenVideoHandler();
     ~GStreamerFullScreenVideoHandler() { }
@@ -55,8 +55,8 @@ public:
     void enterFullScreen();
     void exitFullScreen();
 
-    WEB_CS_SLOT_1( Public, void windowClosed() )
-    WEB_CS_SLOT_2( windowClosed )
+    WEB_LSCS_SLOT_1( Public, void windowClosed() )
+    WEB_LSCS_SLOT_2( windowClosed )
 
 private:
     HTMLVideoElement *m_videoElement;
@@ -67,7 +67,7 @@ private:
 #if defined(WTF_USE_QT_MULTIMEDIA) && WTF_USE_QT_MULTIMEDIA
 class DefaultFullScreenVideoHandler : public QWebFullScreenVideoHandler
 {
-    WEB_CS_OBJECT( DefaultFullScreenVideoHandler )
+    WEB_LSCS_OBJECT( DefaultFullScreenVideoHandler )
 
 public:
     DefaultFullScreenVideoHandler();
@@ -75,10 +75,10 @@ public:
     bool requiresFullScreenForVideoPlayback() const;
 
 public :
-    WEB_CS_SLOT_1( Public, void enterFullScreen( QMediaPlayer *player ) )
-    WEB_CS_SLOT_2( enterFullScreen )
-    WEB_CS_SLOT_1( Public, void exitFullScreen() )
-    WEB_CS_SLOT_2( exitFullScreen )
+    WEB_LSCS_SLOT_1( Public, void enterFullScreen( QMediaPlayer *player ) )
+    WEB_LSCS_SLOT_2( enterFullScreen )
+    WEB_LSCS_SLOT_1( Public, void exitFullScreen() )
+    WEB_LSCS_SLOT_2( exitFullScreen )
 
 private:
     static bool s_shouldForceFullScreenVideoPlayback;
@@ -88,7 +88,7 @@ private:
 
 class FullScreenVideoQt : public QObject
 {
-    WEB_CS_OBJECT( FullScreenVideoQt )
+    WEB_LSCS_OBJECT( FullScreenVideoQt )
 
 public:
     FullScreenVideoQt( ChromeClientQt * );
@@ -105,8 +105,8 @@ private:
 #endif
 
 private :
-    WEB_CS_SLOT_1( Private, void aboutToClose() )
-    WEB_CS_SLOT_2( aboutToClose )
+    WEB_LSCS_SLOT_1( Private, void aboutToClose() )
+    WEB_LSCS_SLOT_2( aboutToClose )
 
 private:
     ChromeClientQt *m_chromeClient;

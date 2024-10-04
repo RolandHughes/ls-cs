@@ -35,28 +35,28 @@ class QStyleOptionDockWidget;
 
 class Q_GUI_EXPORT QDockWidget : public QWidget
 {
-    GUI_CS_OBJECT( QDockWidget )
+    GUI_LSCS_OBJECT( QDockWidget )
 
-    GUI_CS_ENUM( DockWidgetFeature )
-    GUI_CS_FLAG( DockWidgetFeature, DockWidgetFeatures )
+    GUI_LSCS_ENUM( DockWidgetFeature )
+    GUI_LSCS_FLAG( DockWidgetFeature, DockWidgetFeatures )
 
-    GUI_CS_PROPERTY_READ( floating, isFloating )
-    GUI_CS_PROPERTY_WRITE( floating, setFloating )
+    GUI_LSCS_PROPERTY_READ( floating, isFloating )
+    GUI_LSCS_PROPERTY_WRITE( floating, setFloating )
 
-    GUI_CS_PROPERTY_READ( features, features )
-    GUI_CS_PROPERTY_WRITE( features, setFeatures )
-    GUI_CS_PROPERTY_NOTIFY( features, featuresChanged )
+    GUI_LSCS_PROPERTY_READ( features, features )
+    GUI_LSCS_PROPERTY_WRITE( features, setFeatures )
+    GUI_LSCS_PROPERTY_NOTIFY( features, featuresChanged )
 
-    GUI_CS_PROPERTY_READ( allowedAreas, allowedAreas )
-    GUI_CS_PROPERTY_WRITE( allowedAreas, setAllowedAreas )
-    GUI_CS_PROPERTY_NOTIFY( allowedAreas, allowedAreasChanged )
+    GUI_LSCS_PROPERTY_READ( allowedAreas, allowedAreas )
+    GUI_LSCS_PROPERTY_WRITE( allowedAreas, setAllowedAreas )
+    GUI_LSCS_PROPERTY_NOTIFY( allowedAreas, allowedAreasChanged )
 
-    GUI_CS_PROPERTY_READ( windowTitle, windowTitle )
-    GUI_CS_PROPERTY_WRITE( windowTitle, setWindowTitle )
-    GUI_CS_PROPERTY_DESIGNABLE( windowTitle, true )
+    GUI_LSCS_PROPERTY_READ( windowTitle, windowTitle )
+    GUI_LSCS_PROPERTY_WRITE( windowTitle, setWindowTitle )
+    GUI_LSCS_PROPERTY_DESIGNABLE( windowTitle, true )
 
 public:
-    GUI_CS_REGISTER_ENUM(
+    GUI_LSCS_REGISTER_ENUM(
         enum DockWidgetFeature
     {
         DockWidgetClosable         = 0x01,
@@ -106,20 +106,20 @@ public:
     QAction *toggleViewAction() const;
 #endif
 
-    GUI_CS_SIGNAL_1( Public, void featuresChanged( QDockWidget::DockWidgetFeatures features ) )
-    GUI_CS_SIGNAL_2( featuresChanged, features )
+    GUI_LSCS_SIGNAL_1( Public, void featuresChanged( QDockWidget::DockWidgetFeatures features ) )
+    GUI_LSCS_SIGNAL_2( featuresChanged, features )
 
-    GUI_CS_SIGNAL_1( Public, void topLevelChanged( bool topLevel ) )
-    GUI_CS_SIGNAL_2( topLevelChanged, topLevel )
+    GUI_LSCS_SIGNAL_1( Public, void topLevelChanged( bool topLevel ) )
+    GUI_LSCS_SIGNAL_2( topLevelChanged, topLevel )
 
-    GUI_CS_SIGNAL_1( Public, void allowedAreasChanged( Qt::DockWidgetAreas allowedAreas ) )
-    GUI_CS_SIGNAL_2( allowedAreasChanged, allowedAreas )
+    GUI_LSCS_SIGNAL_1( Public, void allowedAreasChanged( Qt::DockWidgetAreas allowedAreas ) )
+    GUI_LSCS_SIGNAL_2( allowedAreasChanged, allowedAreas )
 
-    GUI_CS_SIGNAL_1( Public, void visibilityChanged( bool visible ) )
-    GUI_CS_SIGNAL_2( visibilityChanged, visible )
+    GUI_LSCS_SIGNAL_1( Public, void visibilityChanged( bool visible ) )
+    GUI_LSCS_SIGNAL_2( visibilityChanged, visible )
 
-    GUI_CS_SIGNAL_1( Public, void dockLocationChanged( Qt::DockWidgetArea area ) )
-    GUI_CS_SIGNAL_2( dockLocationChanged, area )
+    GUI_LSCS_SIGNAL_1( Public, void dockLocationChanged( Qt::DockWidgetArea area ) )
+    GUI_LSCS_SIGNAL_2( dockLocationChanged, area )
 
 protected:
     void changeEvent( QEvent *event ) override;
@@ -131,11 +131,11 @@ protected:
 private:
     Q_DECLARE_PRIVATE( QDockWidget )
 
-    GUI_CS_SLOT_1( Private, void _q_toggleView( bool isToggled ) )
-    GUI_CS_SLOT_2( _q_toggleView )
+    GUI_LSCS_SLOT_1( Private, void _q_toggleView( bool isToggled ) )
+    GUI_LSCS_SLOT_2( _q_toggleView )
 
-    GUI_CS_SLOT_1( Private, void _q_toggleTopLevel() )
-    GUI_CS_SLOT_2( _q_toggleTopLevel )
+    GUI_LSCS_SLOT_1( Private, void _q_toggleTopLevel() )
+    GUI_LSCS_SLOT_2( _q_toggleTopLevel )
 
     friend class QDockAreaLayout;
     friend class QDockWidgetItem;

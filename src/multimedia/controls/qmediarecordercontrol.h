@@ -32,7 +32,7 @@ class QUrl;
 
 class Q_MULTIMEDIA_EXPORT QMediaRecorderControl : public QMediaControl
 {
-    MULTI_CS_OBJECT( QMediaRecorderControl )
+    MULTI_LSCS_OBJECT( QMediaRecorderControl )
 
 public:
     virtual ~QMediaRecorderControl();
@@ -51,41 +51,41 @@ public:
     virtual void applySettings() = 0;
 
 public:
-    MULTI_CS_SIGNAL_1( Public, void stateChanged( QMediaRecorder::State state ) )
-    MULTI_CS_SIGNAL_2( stateChanged, state )
+    MULTI_LSCS_SIGNAL_1( Public, void stateChanged( QMediaRecorder::State state ) )
+    MULTI_LSCS_SIGNAL_2( stateChanged, state )
 
-    MULTI_CS_SIGNAL_1( Public, void statusChanged( QMediaRecorder::Status status ) )
-    MULTI_CS_SIGNAL_2( statusChanged, status )
+    MULTI_LSCS_SIGNAL_1( Public, void statusChanged( QMediaRecorder::Status status ) )
+    MULTI_LSCS_SIGNAL_2( statusChanged, status )
 
-    MULTI_CS_SIGNAL_1( Public, void durationChanged( qint64 duration ) )
-    MULTI_CS_SIGNAL_2( durationChanged, duration )
+    MULTI_LSCS_SIGNAL_1( Public, void durationChanged( qint64 duration ) )
+    MULTI_LSCS_SIGNAL_2( durationChanged, duration )
 
-    MULTI_CS_SIGNAL_1( Public, void mutedChanged( bool muted ) )
-    MULTI_CS_SIGNAL_2( mutedChanged, muted )
+    MULTI_LSCS_SIGNAL_1( Public, void mutedChanged( bool muted ) )
+    MULTI_LSCS_SIGNAL_2( mutedChanged, muted )
 
-    MULTI_CS_SIGNAL_1( Public, void volumeChanged( qreal volume ) )
-    MULTI_CS_SIGNAL_2( volumeChanged, volume )
+    MULTI_LSCS_SIGNAL_1( Public, void volumeChanged( qreal volume ) )
+    MULTI_LSCS_SIGNAL_2( volumeChanged, volume )
 
-    MULTI_CS_SIGNAL_1( Public, void actualLocationChanged( const QUrl &location ) )
-    MULTI_CS_SIGNAL_2( actualLocationChanged, location )
+    MULTI_LSCS_SIGNAL_1( Public, void actualLocationChanged( const QUrl &location ) )
+    MULTI_LSCS_SIGNAL_2( actualLocationChanged, location )
 
-    MULTI_CS_SIGNAL_1( Public, void error( int error,const QString &errorString ) )
-    MULTI_CS_SIGNAL_2( error,error, errorString )
+    MULTI_LSCS_SIGNAL_1( Public, void error( int error,const QString &errorString ) )
+    MULTI_LSCS_SIGNAL_2( error,error, errorString )
 
-    MULTI_CS_SLOT_1( Public, virtual void setState( QMediaRecorder::State state )=0 )
-    MULTI_CS_SLOT_2( setState )
+    MULTI_LSCS_SLOT_1( Public, virtual void setState( QMediaRecorder::State state )=0 )
+    MULTI_LSCS_SLOT_2( setState )
 
-    MULTI_CS_SLOT_1( Public, virtual void setMuted( bool muted )=0 )
-    MULTI_CS_SLOT_2( setMuted )
+    MULTI_LSCS_SLOT_1( Public, virtual void setMuted( bool muted )=0 )
+    MULTI_LSCS_SLOT_2( setMuted )
 
-    MULTI_CS_SLOT_1( Public, virtual void setVolume( qreal volume )=0 )
-    MULTI_CS_SLOT_2( setVolume )
+    MULTI_LSCS_SLOT_1( Public, virtual void setVolume( qreal volume )=0 )
+    MULTI_LSCS_SLOT_2( setVolume )
 
 protected:
     explicit QMediaRecorderControl( QObject *parent = nullptr );
 };
 
 #define QMediaRecorderControl_iid "com.copperspice.CS.mediaRecorderControl/1.0"
-CS_DECLARE_INTERFACE( QMediaRecorderControl, QMediaRecorderControl_iid )
+LSCS_DECLARE_INTERFACE( QMediaRecorderControl, QMediaRecorderControl_iid )
 
 #endif

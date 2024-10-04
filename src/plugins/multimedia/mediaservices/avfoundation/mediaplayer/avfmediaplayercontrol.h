@@ -31,7 +31,7 @@ class AVFMediaPlayerSession;
 
 class AVFMediaPlayerControl : public QMediaPlayerControl
 {
-    CS_OBJECT( AVFMediaPlayerControl )
+    LSCS_OBJECT( AVFMediaPlayerControl )
 
 public:
     explicit AVFMediaPlayerControl( QObject *parent = nullptr );
@@ -63,20 +63,20 @@ public:
     qreal playbackRate() const override;
     void setPlaybackRate( qreal rate ) override;
 
-    CS_SLOT_1( Public, void setPosition( qint64 pos ) override )
-    CS_SLOT_2( setPosition )
+    LSCS_SLOT_1( Public, void setPosition( qint64 pos ) override )
+    LSCS_SLOT_2( setPosition )
 
-    CS_SLOT_1( Public, void play() override )
-    CS_SLOT_2( play )
-    CS_SLOT_1( Public, void pause() override )
-    CS_SLOT_2( pause )
-    CS_SLOT_1( Public, void stop() override )
-    CS_SLOT_2( stop )
+    LSCS_SLOT_1( Public, void play() override )
+    LSCS_SLOT_2( play )
+    LSCS_SLOT_1( Public, void pause() override )
+    LSCS_SLOT_2( pause )
+    LSCS_SLOT_1( Public, void stop() override )
+    LSCS_SLOT_2( stop )
 
-    CS_SLOT_1( Public, void setVolume( int volume ) override )
-    CS_SLOT_2( setVolume )
-    CS_SLOT_1( Public, void setMuted( bool muted ) override )
-    CS_SLOT_2( setMuted )
+    LSCS_SLOT_1( Public, void setVolume( int volume ) override )
+    LSCS_SLOT_2( setVolume )
+    LSCS_SLOT_1( Public, void setMuted( bool muted ) override )
+    LSCS_SLOT_2( setMuted )
 
 private:
     AVFMediaPlayerSession *m_session;

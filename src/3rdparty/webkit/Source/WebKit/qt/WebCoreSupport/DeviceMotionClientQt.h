@@ -34,7 +34,7 @@ class DeviceMotionProviderQt;
 
 class DeviceMotionClientQt : public QObject, public DeviceMotionClient
 {
-    WEB_CS_OBJECT( DeviceMotionClientQt )
+    WEB_LSCS_OBJECT( DeviceMotionClientQt )
 
 public:
     DeviceMotionClientQt( QWebPage * );
@@ -47,8 +47,8 @@ public:
     virtual void deviceMotionControllerDestroyed();
 
 public :
-    WEB_CS_SLOT_1( Public, void changeDeviceMotion() )
-    WEB_CS_SLOT_2( changeDeviceMotion )
+    WEB_LSCS_SLOT_1( Public, void changeDeviceMotion() )
+    WEB_LSCS_SLOT_2( changeDeviceMotion )
 
 private:
     QWebPage *m_page;

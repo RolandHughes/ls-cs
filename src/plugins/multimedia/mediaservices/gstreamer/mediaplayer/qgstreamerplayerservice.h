@@ -47,7 +47,7 @@ class QGstreamerVideoProbeControl;
 
 class QGstreamerPlayerService : public QMediaService
 {
-    CS_OBJECT( QGstreamerPlayerService )
+    LSCS_OBJECT( QGstreamerPlayerService )
 
 public:
     QGstreamerPlayerService( QObject *parent = nullptr );

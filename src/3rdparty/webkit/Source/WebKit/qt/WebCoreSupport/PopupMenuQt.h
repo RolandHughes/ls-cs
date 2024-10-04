@@ -35,7 +35,7 @@ class PopupMenuClient;
 
 class PopupMenuQt : public QObject, public PopupMenu
 {
-    WEB_CS_OBJECT( PopupMenuQt )
+    WEB_LSCS_OBJECT( PopupMenuQt )
 public:
     PopupMenuQt( PopupMenuClient *, const ChromeClientQt * );
     ~PopupMenuQt();
@@ -46,10 +46,10 @@ public:
     virtual void disconnectClient();
 
 private :
-    WEB_CS_SLOT_1( Private, void didHide() )
-    WEB_CS_SLOT_2( didHide )
-    WEB_CS_SLOT_1( Private, void selectItem( int index,bool ctrl,bool shift ) )
-    WEB_CS_SLOT_2( selectItem )
+    WEB_LSCS_SLOT_1( Private, void didHide() )
+    WEB_LSCS_SLOT_2( didHide )
+    WEB_LSCS_SLOT_1( Private, void selectItem( int index,bool ctrl,bool shift ) )
+    WEB_LSCS_SLOT_2( selectItem )
 
 private:
     PopupMenuClient *m_popupClient;

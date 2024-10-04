@@ -37,7 +37,7 @@ class QPlatformMenuBar;
 
 class QCocoaNativeInterface : public QPlatformNativeInterface
 {
-    CS_OBJECT( QCocoaNativeInterface )
+    LSCS_OBJECT( QCocoaNativeInterface )
 
 public:
     QCocoaNativeInterface();
@@ -58,8 +58,8 @@ public:
 
     FP_Void platformFunction( const QByteArray &function ) const override;
 
-    CS_SLOT_1( Public, void onAppFocusWindowChanged( QWindow *window ) )
-    CS_SLOT_2( onAppFocusWindowChanged )
+    LSCS_SLOT_1( Public, void onAppFocusWindowChanged( QWindow *window ) )
+    LSCS_SLOT_2( onAppFocusWindowChanged )
 
 private:
     /*
@@ -73,25 +73,25 @@ private:
         and allow us to use QMetaObject::indexOfMethod() from the printsupport
         plugin.
     */
-    CS_INVOKABLE_METHOD_1( Private, QPlatformPrinterSupport *createPlatformPrinterSupport() )
-    CS_INVOKABLE_METHOD_2( createPlatformPrinterSupport )
+    LSCS_INVOKABLE_METHOD_1( Private, QPlatformPrinterSupport *createPlatformPrinterSupport() )
+    LSCS_INVOKABLE_METHOD_2( createPlatformPrinterSupport )
 
     /*
         Function to return the NSPrintInfo * from QMacPaintEnginePrivate.
         Needed by the native print dialog in the Print Support module.
     */
-    CS_INVOKABLE_METHOD_1( Private, void *NSPrintInfoForPrintEngine( QPrintEngine *printEngine ) )
-    CS_INVOKABLE_METHOD_2( NSPrintInfoForPrintEngine )
+    LSCS_INVOKABLE_METHOD_1( Private, void *NSPrintInfoForPrintEngine( QPrintEngine *printEngine ) )
+    LSCS_INVOKABLE_METHOD_2( NSPrintInfoForPrintEngine )
 
     /*
         Function to return the default background pixmap.
         Needed by QWizard
     */
-    CS_INVOKABLE_METHOD_1( Private, QPixmap defaultBackgroundPixmapForQWizard() )
-    CS_INVOKABLE_METHOD_2( defaultBackgroundPixmapForQWizard )
+    LSCS_INVOKABLE_METHOD_1( Private, QPixmap defaultBackgroundPixmapForQWizard() )
+    LSCS_INVOKABLE_METHOD_2( defaultBackgroundPixmapForQWizard )
 
-    CS_INVOKABLE_METHOD_1( Private, void clearCurrentThreadCocoaEventDispatcherInterruptFlag() )
-    CS_INVOKABLE_METHOD_2( clearCurrentThreadCocoaEventDispatcherInterruptFlag )
+    LSCS_INVOKABLE_METHOD_1( Private, void clearCurrentThreadCocoaEventDispatcherInterruptFlag() )
+    LSCS_INVOKABLE_METHOD_2( clearCurrentThreadCocoaEventDispatcherInterruptFlag )
 
     // QMacPastebardMime support. The mac pasteboard void pointers are
     // QMacPastebardMime instances from the cocoa plugin or qtmacextras

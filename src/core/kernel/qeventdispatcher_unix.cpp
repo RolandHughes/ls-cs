@@ -309,7 +309,7 @@ int QEventDispatcherUNIX::select( int nfds, fd_set *readfds, fd_set *writefds, f
 
 void QEventDispatcherUNIX::registerTimer( int timerId, int interval, Qt::TimerType timerType, QObject *obj )
 {
-#if defined(CS_SHOW_DEBUG_CORE)
+#if defined(LSCS_SHOW_DEBUG_CORE)
 
     if ( timerId < 1 || interval < 0 || !obj )
     {
@@ -331,7 +331,7 @@ void QEventDispatcherUNIX::registerTimer( int timerId, int interval, Qt::TimerTy
 
 bool QEventDispatcherUNIX::unregisterTimer( int timerId )
 {
-#if defined(CS_SHOW_DEBUG_CORE)
+#if defined(LSCS_SHOW_DEBUG_CORE)
 
     if ( timerId < 1 )
     {
@@ -353,7 +353,7 @@ bool QEventDispatcherUNIX::unregisterTimer( int timerId )
 
 bool QEventDispatcherUNIX::unregisterTimers( QObject *object )
 {
-#if defined(CS_SHOW_DEBUG_CORE)
+#if defined(LSCS_SHOW_DEBUG_CORE)
 
     if ( ! object )
     {
@@ -407,7 +407,7 @@ void QEventDispatcherUNIX::registerSocketNotifier( QSocketNotifier *notifier )
     int sockfd = notifier->socket();
     int type = notifier->type();
 
-#if defined(CS_SHOW_DEBUG_CORE)
+#if defined(LSCS_SHOW_DEBUG_CORE)
 
     if ( sockfd < 0 || unsigned( sockfd ) >= FD_SETSIZE )
     {
@@ -464,7 +464,7 @@ void QEventDispatcherUNIX::unregisterSocketNotifier( QSocketNotifier *notifier )
     int sockfd = notifier->socket();
     int type = notifier->type();
 
-#if defined(CS_SHOW_DEBUG_CORE)
+#if defined(LSCS_SHOW_DEBUG_CORE)
 
     if ( sockfd < 0 || unsigned( sockfd ) >= FD_SETSIZE )
     {
@@ -530,7 +530,7 @@ void QEventDispatcherUNIX::setSocketNotifierPending( QSocketNotifier *notifier )
     int sockfd = notifier->socket();
     int type = notifier->type();
 
-#if defined(CS_SHOW_DEBUG_CORE)
+#if defined(LSCS_SHOW_DEBUG_CORE)
 
     if ( sockfd < 0 || unsigned( sockfd ) >= FD_SETSIZE )
     {
@@ -626,7 +626,7 @@ bool QEventDispatcherUNIX::processEvents( QEventLoop::ProcessEventsFlags flags )
     // we are awake, broadcast it
     emit awake();
 
-    QThreadData *threadData = CSInternalThreadData::get_m_ThreadData( this );
+    QThreadData *threadData = LSCSInternalThreadData::get_m_ThreadData( this );
     QCoreApplicationPrivate::sendPostedEvents( nullptr, 0, threadData );
 
     int nevents = 0;
@@ -685,7 +685,7 @@ bool QEventDispatcherUNIX::hasPendingEvents()
 
 int QEventDispatcherUNIX::remainingTime( int timerId )
 {
-#if defined(CS_SHOW_DEBUG_CORE)
+#if defined(LSCS_SHOW_DEBUG_CORE)
 
     if ( timerId < 1 )
     {

@@ -41,31 +41,31 @@ class QWidget;
 
 class Q_GUI_EXPORT QCompleter : public QObject
 {
-    GUI_CS_OBJECT( QCompleter )
+    GUI_LSCS_OBJECT( QCompleter )
 
-    GUI_CS_PROPERTY_READ( completionPrefix, completionPrefix )
-    GUI_CS_PROPERTY_WRITE( completionPrefix, setCompletionPrefix )
+    GUI_LSCS_PROPERTY_READ( completionPrefix, completionPrefix )
+    GUI_LSCS_PROPERTY_WRITE( completionPrefix, setCompletionPrefix )
 
-    GUI_CS_PROPERTY_READ( modelSorting, modelSorting )
-    GUI_CS_PROPERTY_WRITE( modelSorting, setModelSorting )
+    GUI_LSCS_PROPERTY_READ( modelSorting, modelSorting )
+    GUI_LSCS_PROPERTY_WRITE( modelSorting, setModelSorting )
 
-    GUI_CS_PROPERTY_READ( completionMode, completionMode )
-    GUI_CS_PROPERTY_WRITE( completionMode, setCompletionMode )
+    GUI_LSCS_PROPERTY_READ( completionMode, completionMode )
+    GUI_LSCS_PROPERTY_WRITE( completionMode, setCompletionMode )
 
-    GUI_CS_PROPERTY_READ( completionColumn, completionColumn )
-    GUI_CS_PROPERTY_WRITE( completionColumn, setCompletionColumn )
+    GUI_LSCS_PROPERTY_READ( completionColumn, completionColumn )
+    GUI_LSCS_PROPERTY_WRITE( completionColumn, setCompletionColumn )
 
-    GUI_CS_PROPERTY_READ( completionRole, completionRole )
-    GUI_CS_PROPERTY_WRITE( completionRole, setCompletionRole )
+    GUI_LSCS_PROPERTY_READ( completionRole, completionRole )
+    GUI_LSCS_PROPERTY_WRITE( completionRole, setCompletionRole )
 
-    GUI_CS_PROPERTY_READ( maxVisibleItems, maxVisibleItems )
-    GUI_CS_PROPERTY_WRITE( maxVisibleItems, setMaxVisibleItems )
+    GUI_LSCS_PROPERTY_READ( maxVisibleItems, maxVisibleItems )
+    GUI_LSCS_PROPERTY_WRITE( maxVisibleItems, setMaxVisibleItems )
 
-    GUI_CS_PROPERTY_READ( caseSensitivity, caseSensitivity )
-    GUI_CS_PROPERTY_WRITE( caseSensitivity, setCaseSensitivity )
+    GUI_LSCS_PROPERTY_READ( caseSensitivity, caseSensitivity )
+    GUI_LSCS_PROPERTY_WRITE( caseSensitivity, setCaseSensitivity )
 
-    GUI_CS_PROPERTY_READ( wrapAround, wrapAround )
-    GUI_CS_PROPERTY_WRITE( wrapAround, setWrapAround )
+    GUI_LSCS_PROPERTY_READ( wrapAround, wrapAround )
+    GUI_LSCS_PROPERTY_WRITE( wrapAround, setWrapAround )
 
 public:
     enum CompletionMode
@@ -139,26 +139,26 @@ public:
     virtual QString pathFromIndex( const QModelIndex &index ) const;
     virtual QStringList splitPath( const QString &path ) const;
 
-    GUI_CS_SLOT_1( Public, void setCompletionPrefix( const QString &prefix ) )
-    GUI_CS_SLOT_2( setCompletionPrefix )
+    GUI_LSCS_SLOT_1( Public, void setCompletionPrefix( const QString &prefix ) )
+    GUI_LSCS_SLOT_2( setCompletionPrefix )
 
-    GUI_CS_SLOT_1( Public, void complete( const QRect &rect = QRect() ) )
-    GUI_CS_SLOT_2( complete )
+    GUI_LSCS_SLOT_1( Public, void complete( const QRect &rect = QRect() ) )
+    GUI_LSCS_SLOT_2( complete )
 
-    GUI_CS_SLOT_1( Public, void setWrapAround( bool wrap ) )
-    GUI_CS_SLOT_2( setWrapAround )
+    GUI_LSCS_SLOT_1( Public, void setWrapAround( bool wrap ) )
+    GUI_LSCS_SLOT_2( setWrapAround )
 
-    GUI_CS_SIGNAL_1( Public, void activated( const QString &text ) )
-    GUI_CS_SIGNAL_OVERLOAD( activated, ( const QString & ), text )
+    GUI_LSCS_SIGNAL_1( Public, void activated( const QString &text ) )
+    GUI_LSCS_SIGNAL_OVERLOAD( activated, ( const QString & ), text )
 
-    GUI_CS_SIGNAL_1( Public, void activated( const QModelIndex &index ) )
-    GUI_CS_SIGNAL_OVERLOAD( activated, ( const QModelIndex & ), index )
+    GUI_LSCS_SIGNAL_1( Public, void activated( const QModelIndex &index ) )
+    GUI_LSCS_SIGNAL_OVERLOAD( activated, ( const QModelIndex & ), index )
 
-    GUI_CS_SIGNAL_1( Public, void highlighted( const QString &text ) )
-    GUI_CS_SIGNAL_OVERLOAD( highlighted, ( const QString & ), text )
+    GUI_LSCS_SIGNAL_1( Public, void highlighted( const QString &text ) )
+    GUI_LSCS_SIGNAL_OVERLOAD( highlighted, ( const QString & ), text )
 
-    GUI_CS_SIGNAL_1( Public, void highlighted( const QModelIndex &index ) )
-    GUI_CS_SIGNAL_OVERLOAD( highlighted, ( const QModelIndex & ), index )
+    GUI_LSCS_SIGNAL_1( Public, void highlighted( const QModelIndex &index ) )
+    GUI_LSCS_SIGNAL_OVERLOAD( highlighted, ( const QModelIndex & ), index )
 
 protected:
     bool eventFilter( QObject *object, QEvent *event ) override;
@@ -168,17 +168,17 @@ protected:
 private:
     Q_DECLARE_PRIVATE( QCompleter )
 
-    GUI_CS_SLOT_1( Private, void _q_complete( const QModelIndex &index ) )
-    GUI_CS_SLOT_2( _q_complete )
+    GUI_LSCS_SLOT_1( Private, void _q_complete( const QModelIndex &index ) )
+    GUI_LSCS_SLOT_2( _q_complete )
 
-    GUI_CS_SLOT_1( Private, void _q_completionSelected( const QItemSelection &selection ) )
-    GUI_CS_SLOT_2( _q_completionSelected )
+    GUI_LSCS_SLOT_1( Private, void _q_completionSelected( const QItemSelection &selection ) )
+    GUI_LSCS_SLOT_2( _q_completionSelected )
 
-    GUI_CS_SLOT_1( Private, void _q_autoResizePopup() )
-    GUI_CS_SLOT_2( _q_autoResizePopup )
+    GUI_LSCS_SLOT_1( Private, void _q_autoResizePopup() )
+    GUI_LSCS_SLOT_2( _q_autoResizePopup )
 
-    GUI_CS_SLOT_1( Private, void _q_fileSystemModelDirectoryLoaded( const QString &path ) )
-    GUI_CS_SLOT_2( _q_fileSystemModelDirectoryLoaded )
+    GUI_LSCS_SLOT_1( Private, void _q_fileSystemModelDirectoryLoaded( const QString &path ) )
+    GUI_LSCS_SLOT_2( _q_fileSystemModelDirectoryLoaded )
 };
 
 #endif // QT_NO_COMPLETER

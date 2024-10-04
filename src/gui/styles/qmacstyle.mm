@@ -796,7 +796,7 @@ inline bool qt_mac_is_metal(const QWidget *w)
 static int qt_mac_aqua_get_metric(ThemeMetric met)
 {
    SInt32 ret;
-   CS_GetThemeMetric(met, &ret);
+   LSCS_GetThemeMetric(met, &ret);
    return ret;
 }
 
@@ -942,7 +942,7 @@ static QSize qt_aqua_get_known_size(QStyle::ContentsType ct, const QWidget *widg
             gbi.direction = QApplication::isRightToLeft() ? kThemeGrowLeft | kThemeGrowDown
                                                           : kThemeGrowRight | kThemeGrowDown;
             gbi.size = sz == QAquaSizeSmall ? kHIThemeGrowBoxSizeSmall : kHIThemeGrowBoxSizeNormal;
-            if (CS_HIThemeGetGrowBoxBounds(&p, &gbi, &r) == noErr) {
+            if (LSCS_HIThemeGetGrowBoxBounds(&p, &gbi, &r) == noErr) {
                int width = 0;
 #ifndef QT_NO_MDIAREA
                if (widg && qobject_cast<QMdiSubWindow *>(widg->parentWidget())) {
@@ -1354,7 +1354,7 @@ HIRect QMacStylePrivate::pushButtonContentBounds(const QStyleOptionButton *btn,
    }
 
    HIRect contentBounds;
-   CS_HIThemeGetButtonContentBounds(&outerBounds, bdi, &contentBounds);
+   LSCS_HIThemeGetButtonContentBounds(&outerBounds, bdi, &contentBounds);
 
    return contentBounds;
 }
@@ -1645,7 +1645,7 @@ void QMacStylePrivate::drawCombobox(const HIRect &outerBounds, const HIThemeButt
    if (!(bdi.kind == kThemeComboBox && outerBounds.size.height > 28)) {
       // We have an unscaled combobox, or popup-button; use Carbon directly.
       HIRect innerBounds = QMacStylePrivate::comboboxInnerBounds(outerBounds, bdi.kind);
-      CS_HIThemeDrawButton(&innerBounds, &bdi, QMacCGContext(p), kHIThemeOrientationNormal, nullptr);
+      LSCS_HIThemeDrawButton(&innerBounds, &bdi, QMacCGContext(p), kHIThemeOrientationNormal, nullptr);
 
    } else {
       QPixmap buffer;
@@ -1656,7 +1656,7 @@ void QMacStylePrivate::drawCombobox(const HIRect &outerBounds, const HIThemeButt
          buffer = QPixmap(35, 28);
          buffer.fill(Qt::transparent);
          QPainter buffPainter(&buffer);
-         CS_HIThemeDrawButton(&innerBoundsSmallCombo, &bdi, QMacCGContext(&buffPainter), kHIThemeOrientationNormal, nullptr);
+         LSCS_HIThemeDrawButton(&innerBoundsSmallCombo, &bdi, QMacCGContext(&buffPainter), kHIThemeOrientationNormal, nullptr);
          buffPainter.end();
          QPixmapCache::insert(key, buffer);
       }
@@ -1697,7 +1697,7 @@ void QMacStylePrivate::drawTableHeader(const HIRect &outerBounds,
                                        bool drawTopBorder, bool drawLeftBorder, const HIThemeButtonDrawInfo &bdi, QPainter *p)
 {
    static SInt32 headerHeight = 0;
-   static OSStatus err = CS_GetThemeMetric(kThemeMetricListHeaderHeight, &headerHeight);
+   static OSStatus err = LSCS_GetThemeMetric(kThemeMetricListHeaderHeight, &headerHeight);
    (void) err;
 
    QPixmap buffer;
@@ -1708,7 +1708,7 @@ void QMacStylePrivate::drawTableHeader(const HIRect &outerBounds,
       buffer = QPixmap(headerNormalRect.size.width, headerNormalRect.size.height);
       buffer.fill(Qt::transparent);
       QPainter buffPainter(&buffer);
-      CS_HIThemeDrawButton(&headerNormalRect, &bdi, QMacCGContext(&buffPainter), kHIThemeOrientationNormal, nullptr);
+      LSCS_HIThemeDrawButton(&headerNormalRect, &bdi, QMacCGContext(&buffPainter), kHIThemeOrientationNormal, nullptr);
       buffPainter.end();
       QPixmapCache::insert(key, buffer);
    }
@@ -2195,7 +2195,7 @@ void QMacStylePrivate::drawColorlessButton(const HIRect &macRect, HIThemeButtonD
                bdi->state = kThemeStateInactive;
             }
 
-            CS_HIThemeDrawButton(&newRect, bdi, cg, kHIThemeOrientationNormal, nullptr);
+            LSCS_HIThemeDrawButton(&newRect, bdi, cg, kHIThemeOrientationNormal, nullptr);
          }
       }
 
@@ -2255,7 +2255,7 @@ void QMacStylePrivate::drawColorlessButton(const HIRect &macRect, HIThemeButtonD
             HIRect newRect = CGRectMake(xoff, yoff, macRect.size.width, macRect.size.height);
             int oldValue = bdi->value;
             bdi->value = kThemeButtonOff;
-            CS_HIThemeDrawButton(&newRect, bdi, cg, kHIThemeOrientationNormal, nullptr);
+            LSCS_HIThemeDrawButton(&newRect, bdi, cg, kHIThemeOrientationNormal, nullptr);
             bdi->value = oldValue;
             colorlessImage = colorlessPixmap.toImage();
          }
@@ -2328,7 +2328,7 @@ QPixmap QMacStylePrivate::generateBackgroundPattern() const
    QMacAutoReleasePool pool;
    QPixmap px(4, 4);
    QMacCGContext cg(&px);
-   CS_HIThemeSetFill(kThemeBrushDialogBackgroundActive, nullptr, cg, kHIThemeOrientationNormal);
+   LSCS_HIThemeSetFill(kThemeBrushDialogBackgroundActive, nullptr, cg, kHIThemeOrientationNormal);
    const CGRect cgRect = CGRectMake(0, 0, px.width(), px.height());
    CGContextFillRect(cg, cgRect);
    return px;
@@ -2354,7 +2354,7 @@ void qt_mac_fill_background(QPainter *painter, const QRegion &rgn, const QBrush 
 
       QCFType<CGContextRef> cg = qt_mac_cg_context(target);
       CGContextSaveGState(cg);
-      CS_HIThemeSetFill(kThemeBrushDialogBackgroundActive, 0, cg, kHIThemeOrientationInverted);
+      LSCS_HIThemeSetFill(kThemeBrushDialogBackgroundActive, 0, cg, kHIThemeOrientationInverted);
 
       const QVector<QRect> &rects = rgn.rects();
       for (int i = 0; i < rects.size(); ++i) {
@@ -2385,7 +2385,7 @@ void QMacStyle::polish(QPalette & pal) {
    }
 
    QCFString theme;
-   const OSErr err = CS_CopyThemeIdentifier(&theme);
+   const OSErr err = LSCS_CopyThemeIdentifier(&theme);
 
    if (err == noErr && CFStringCompare(theme.toCFStringRef(), kThemeAppearanceAquaGraphite, 0) == kCFCompareEqualTo) {
       pal.setBrush(QPalette::All, QPalette::AlternateBase, QColor(240, 240, 240));
@@ -2511,7 +2511,7 @@ int QMacStyle::pixelMetric(PixelMetric metric, const QStyleOption * opt, const Q
 
       case PM_FocusFrameVMargin:
       case PM_FocusFrameHMargin:
-         CS_GetThemeMetric(kThemeMetricFocusRectOutset, &ret);
+         LSCS_GetThemeMetric(kThemeMetricFocusRectOutset, &ret);
          break;
 
       case PM_DialogButtonsSeparator:
@@ -2596,7 +2596,7 @@ int QMacStyle::pixelMetric(PixelMetric metric, const QStyleOption * opt, const Q
          break;
 
       case PM_SpinBoxFrameWidth:
-         CS_GetThemeMetric(kThemeMetricEditTextFrameOutset, &ret);
+         LSCS_GetThemeMetric(kThemeMetricEditTextFrameOutset, &ret);
 
          switch (d->aquaSizeConstrain(opt, widget)) {
             default:
@@ -2690,7 +2690,7 @@ int QMacStyle::pixelMetric(PixelMetric metric, const QStyleOption * opt, const Q
                hirect.size.height = 30;
             }
 
-            CS_HIThemeGetWindowShape(&hirect, &wdi, kWindowTitleBarRgn, &region);
+            LSCS_HIThemeGetWindowShape(&hirect, &wdi, kWindowTitleBarRgn, &region);
             HIRect rect;
             ptrHIShapeGetBounds(region, &rect);
             ret = int(rect.size.height);
@@ -2740,11 +2740,11 @@ int QMacStyle::pixelMetric(PixelMetric metric, const QStyleOption * opt, const Q
          switch (d->aquaSizeConstrain(opt, widget)) {
             case QAquaSizeUnknown:
             case QAquaSizeLarge:
-               CS_GetThemeMetric(kThemeMetricScrollBarWidth, &ret);
+               LSCS_GetThemeMetric(kThemeMetricScrollBarWidth, &ret);
                break;
             case QAquaSizeMini:
             case QAquaSizeSmall:
-               CS_GetThemeMetric(kThemeMetricSmallScrollBarWidth, &ret);
+               LSCS_GetThemeMetric(kThemeMetricSmallScrollBarWidth, &ret);
                break;
          }
          break;
@@ -2753,13 +2753,13 @@ int QMacStyle::pixelMetric(PixelMetric metric, const QStyleOption * opt, const Q
          switch (d->aquaSizeConstrain(opt, widget)) {
             case QAquaSizeUnknown:
             case QAquaSizeLarge:
-               CS_GetThemeMetric(kThemeMetricCheckBoxHeight, &ret);
+               LSCS_GetThemeMetric(kThemeMetricCheckBoxHeight, &ret);
                break;
             case QAquaSizeMini:
-               CS_GetThemeMetric(kThemeMetricMiniCheckBoxHeight, &ret);
+               LSCS_GetThemeMetric(kThemeMetricMiniCheckBoxHeight, &ret);
                break;
             case QAquaSizeSmall:
-               CS_GetThemeMetric(kThemeMetricSmallCheckBoxHeight, &ret);
+               LSCS_GetThemeMetric(kThemeMetricSmallCheckBoxHeight, &ret);
                break;
          }
          break;
@@ -2768,13 +2768,13 @@ int QMacStyle::pixelMetric(PixelMetric metric, const QStyleOption * opt, const Q
          switch (d->aquaSizeConstrain(opt, widget)) {
             case QAquaSizeUnknown:
             case QAquaSizeLarge:
-               CS_GetThemeMetric(kThemeMetricCheckBoxWidth, &ret);
+               LSCS_GetThemeMetric(kThemeMetricCheckBoxWidth, &ret);
                break;
             case QAquaSizeMini:
-               CS_GetThemeMetric(kThemeMetricMiniCheckBoxWidth, &ret);
+               LSCS_GetThemeMetric(kThemeMetricMiniCheckBoxWidth, &ret);
                break;
             case QAquaSizeSmall:
-               CS_GetThemeMetric(kThemeMetricSmallCheckBoxWidth, &ret);
+               LSCS_GetThemeMetric(kThemeMetricSmallCheckBoxWidth, &ret);
                break;
          }
          ++ret;
@@ -2785,13 +2785,13 @@ int QMacStyle::pixelMetric(PixelMetric metric, const QStyleOption * opt, const Q
          switch (d->aquaSizeConstrain(opt, widget)) {
             case QAquaSizeUnknown:
             case QAquaSizeLarge:
-               CS_GetThemeMetric(kThemeMetricRadioButtonHeight, &ret);
+               LSCS_GetThemeMetric(kThemeMetricRadioButtonHeight, &ret);
                break;
             case QAquaSizeMini:
-               CS_GetThemeMetric(kThemeMetricMiniRadioButtonHeight, &ret);
+               LSCS_GetThemeMetric(kThemeMetricMiniRadioButtonHeight, &ret);
                break;
             case QAquaSizeSmall:
-               CS_GetThemeMetric(kThemeMetricSmallRadioButtonHeight, &ret);
+               LSCS_GetThemeMetric(kThemeMetricSmallRadioButtonHeight, &ret);
                break;
          }
          break;
@@ -2800,13 +2800,13 @@ int QMacStyle::pixelMetric(PixelMetric metric, const QStyleOption * opt, const Q
          switch (d->aquaSizeConstrain(opt, widget)) {
             case QAquaSizeUnknown:
             case QAquaSizeLarge:
-               CS_GetThemeMetric(kThemeMetricRadioButtonWidth, &ret);
+               LSCS_GetThemeMetric(kThemeMetricRadioButtonWidth, &ret);
                break;
             case QAquaSizeMini:
-               CS_GetThemeMetric(kThemeMetricMiniRadioButtonWidth, &ret);
+               LSCS_GetThemeMetric(kThemeMetricMiniRadioButtonWidth, &ret);
                break;
             case QAquaSizeSmall:
-               CS_GetThemeMetric(kThemeMetricSmallRadioButtonWidth, &ret);
+               LSCS_GetThemeMetric(kThemeMetricSmallRadioButtonWidth, &ret);
                break;
          }
          ++ret;
@@ -3249,7 +3249,7 @@ int QMacStyle::styleHint(StyleHint sh, const QStyleOption * opt, const QWidget *
                   mdi.menuType = kThemeMenuTypePopUp;
                }
                QCFType<HIShapeRef> shape;
-               CS_HIThemeGetMenuBackgroundShape(&menuRect, &mdi, &shape);
+               LSCS_HIThemeGetMenuBackgroundShape(&menuRect, &mdi, &shape);
 
                mask->region = qt_mac_fromHIShapeRef(shape);
             }
@@ -3476,7 +3476,7 @@ void QMacStyle::drawPrimitive(PrimitiveElement pe, const QStyleOption * opt, QPa
                   gdi.kind = kHIThemeGroupBoxKindPrimary;
                }
                HIRect hirect = qt_hirectForQRect(opt->rect);
-               CS_HIThemeDrawGroupBox(&hirect, &gdi, cg, kHIThemeOrientationNormal);
+               LSCS_HIThemeDrawGroupBox(&hirect, &gdi, cg, kHIThemeOrientationNormal);
             }
          }
          break;
@@ -3639,7 +3639,7 @@ void QMacStyle::drawPrimitive(PrimitiveElement pe, const QStyleOption * opt, QPa
 
          HIRect macRect = qt_hirectForQRect(opt->rect);
          if (!drawColorless) {
-            CS_HIThemeDrawButton(&macRect, &bdi, cg, kHIThemeOrientationNormal, nullptr);
+            LSCS_HIThemeDrawButton(&macRect, &bdi, cg, kHIThemeOrientationNormal, nullptr);
          } else {
             d->drawColorlessButton(macRect, &bdi, p, opt);
          }
@@ -3701,7 +3701,7 @@ void QMacStyle::drawPrimitive(PrimitiveElement pe, const QStyleOption * opt, QPa
                SInt32 frame_size;
                fdi.kind = frame->features & QStyleOptionFrame::Rounded ? kHIThemeFrameTextFieldRound :
                                                                          kHIThemeFrameTextFieldSquare;
-               CS_GetThemeMetric(kThemeMetricEditTextFrameOutset, &frame_size);
+               LSCS_GetThemeMetric(kThemeMetricEditTextFrameOutset, &frame_size);
                if ((frame->state & State_ReadOnly) || !(frame->state & State_Enabled)) {
                   fdi.state = kThemeStateInactive;
                } else if (fdi.state == kThemeStatePressed)
@@ -3727,7 +3727,7 @@ void QMacStyle::drawPrimitive(PrimitiveElement pe, const QStyleOption * opt, QPa
                                                  QRect(frame_size, frame_size,
                                                        frame_size * 2, frame_size * 2));
 
-               CS_HIThemeDrawFrame(&hirect, &fdi, cg, kHIThemeOrientationNormal);
+               LSCS_HIThemeDrawFrame(&hirect, &fdi, cg, kHIThemeOrientationNormal);
 
             } else {
                QCommonStyle::drawPrimitive(pe, opt, p, w);
@@ -3760,7 +3760,7 @@ void QMacStyle::drawPrimitive(PrimitiveElement pe, const QStyleOption * opt, QPa
             tpdi.size = kHIThemeTabSizeNormal;
             tpdi.kind = kHIThemeTabKindNormal;
             tpdi.adornment = kHIThemeTabPaneAdornmentNormal;
-            CS_HIThemeDrawTabPane(&hirect, &tpdi, cg, kHIThemeOrientationNormal);
+            LSCS_HIThemeDrawTabPane(&hirect, &tpdi, cg, kHIThemeOrientationNormal);
          }
          break;
       case PE_PanelScrollAreaCorner: {
@@ -4156,7 +4156,7 @@ void QMacStyle::drawControl(ControlElement ce, const QStyleOption * opt, QPainte
                d->drawColorlessButton(newRect, &bdi, p, opt);
 
             } else {
-               CS_HIThemeDrawButton(&newRect, &bdi, cg, kHIThemeOrientationNormal, nullptr);
+               LSCS_HIThemeDrawButton(&newRect, &bdi, cg, kHIThemeOrientationNormal, nullptr);
             }
 
             if (btn->state & State_HasFocus) {
@@ -4224,7 +4224,7 @@ void QMacStyle::drawControl(ControlElement ce, const QStyleOption * opt, QPainte
                   pdi.size = kThemeArrow7pt;
                }
 
-               CS_HIThemeDrawPopupArrow(&arrowRect, &pdi, cg, kHIThemeOrientationNormal);
+               LSCS_HIThemeDrawPopupArrow(&arrowRect, &pdi, cg, kHIThemeOrientationNormal);
             }
          }
          break;
@@ -4297,7 +4297,7 @@ void QMacStyle::drawControl(ControlElement ce, const QStyleOption * opt, QPainte
                   QCFString buttonText = qt_mac_removeMnemonics(btn.text);
                   QRect r = btn.rect;
                   HIRect bounds = qt_hirectForQRect(r);
-                  CS_HIThemeDrawTextBox(buttonText.toCFStringRef(), &bounds, &tti, cg, kHIThemeOrientationNormal);
+                  LSCS_HIThemeDrawTextBox(buttonText.toCFStringRef(), &bounds, &tti, cg, kHIThemeOrientationNormal);
                   p->restore();
                }
 
@@ -4480,12 +4480,12 @@ void QMacStyle::drawControl(ControlElement ce, const QStyleOption * opt, QPainte
                pm.fill(Qt::transparent);
                {
                   QMacCGContext pmcg(&pm);
-                  CS_HIThemeDrawTab(&hirect, &tdi, pmcg, kHIThemeOrientationNormal, nullptr);
+                  LSCS_HIThemeDrawTab(&hirect, &tdi, pmcg, kHIThemeOrientationNormal, nullptr);
                }
                QStyleHelper::drawBorderPixmap(pm, p, tabRect, 7, 7, 7, 7);
             } else {
                HIRect hirect = qt_hirectForQRect(tabRect);
-               CS_HIThemeDrawTab(&hirect, &tdi, cg, kHIThemeOrientationNormal, nullptr);
+               LSCS_HIThemeDrawTab(&hirect, &tdi, cg, kHIThemeOrientationNormal, nullptr);
             }
          }
          break;
@@ -4571,7 +4571,7 @@ void QMacStyle::drawControl(ControlElement ce, const QStyleOption * opt, QPainte
                QCFString tabText = qt_mac_removeMnemonics(myTab.text);
                QRect r = myTab.rect.adjusted(0, 0, 0, -1);
                HIRect bounds = qt_hirectForQRect(r);
-               CS_HIThemeDrawTextBox(tabText.toCFStringRef(), &bounds, &tti, cg, kHIThemeOrientationNormal);
+               LSCS_HIThemeDrawTextBox(tabText.toCFStringRef(), &bounds, &tti, cg, kHIThemeOrientationNormal);
                p->restore();
             }
          }
@@ -4595,14 +4595,14 @@ void QMacStyle::drawControl(ControlElement ce, const QStyleOption * opt, QPainte
                {
                   QCFType<HIShapeRef> titleRegion;
                   QRect newr = opt->rect.adjusted(0, 0, 2, 0);
-                  CS_HIThemeGetWindowShape(&tmpRect, &wdi, kWindowTitleBarRgn, &titleRegion);
+                  LSCS_HIThemeGetWindowShape(&tmpRect, &wdi, kWindowTitleBarRgn, &titleRegion);
                   ptrHIShapeGetBounds(titleRegion, &tmpRect);
                   newr.translate(newr.x() - int(tmpRect.origin.x), newr.y() - int(tmpRect.origin.y));
                   titleBarRect = qt_hirectForQRect(newr);
                }
 
                QMacCGContext cg(p);
-               CS_HIThemeDrawWindowFrame(&titleBarRect, &wdi, cg, kHIThemeOrientationNormal, nullptr);
+               LSCS_HIThemeDrawWindowFrame(&titleBarRect, &wdi, cg, kHIThemeOrientationNormal, nullptr);
 
             } else {
                // fill title bar background
@@ -4697,7 +4697,7 @@ void QMacStyle::drawControl(ControlElement ce, const QStyleOption * opt, QPainte
             QRect contentRect;
             if (mi->menuItemType == QStyleOptionMenuItem::Separator) {
                // First arg should be &menurect, but wacky stuff happens then.
-               CS_HIThemeDrawMenuSeparator(&itemRect, &itemRect, &mdi, cg, kHIThemeOrientationNormal);
+               LSCS_HIThemeDrawMenuSeparator(&itemRect, &itemRect, &mdi, cg, kHIThemeOrientationNormal);
                break;
 
             } else {
@@ -4708,7 +4708,7 @@ void QMacStyle::drawControl(ControlElement ce, const QStyleOption * opt, QPainte
                   CGContextSetAlpha(cg, 0.0);
                }
 
-               CS_HIThemeDrawMenuItem(&menuRect, &itemRect, &mdi, cg, kHIThemeOrientationNormal, &cr);
+               LSCS_HIThemeDrawMenuItem(&menuRect, &itemRect, &mdi, cg, kHIThemeOrientationNormal, &cr);
                if (needAlpha) {
                   CGContextRestoreGState(cg);
                }
@@ -4777,7 +4777,7 @@ void QMacStyle::drawControl(ControlElement ce, const QStyleOption * opt, QPainte
                int xp = contentRect.x();
                xp += macItemFrame;
                CGFloat outWidth, outHeight, outBaseline;
-               CS_HIThemeGetTextDimensions(checkmark.toCFStringRef(), 0, &tti, &outWidth, &outHeight,
+               LSCS_HIThemeGetTextDimensions(checkmark.toCFStringRef(), 0, &tti, &outWidth, &outHeight,
                                            &outBaseline);
 
                if (widgetSize == QAquaSizeMini) {
@@ -4786,7 +4786,7 @@ void QMacStyle::drawControl(ControlElement ce, const QStyleOption * opt, QPainte
                QRect r(xp, contentRect.y(), mw, mh);
                r.translate(0, p->fontMetrics().ascent() - int(outBaseline) + 1);
                HIRect bounds = qt_hirectForQRect(r);
-               CS_HIThemeDrawTextBox(checkmark.toCFStringRef(), &bounds, &tti, cg, kHIThemeOrientationNormal);
+               LSCS_HIThemeDrawTextBox(checkmark.toCFStringRef(), &bounds, &tti, cg, kHIThemeOrientationNormal);
                p->restore();
             }
             if (!mi->icon.isNull()) {
@@ -4872,7 +4872,7 @@ void QMacStyle::drawControl(ControlElement ce, const QStyleOption * opt, QPainte
                mdi.itemType = kThemeMenuItemPlain;
             }
 
-            CS_HIThemeDrawMenuItem(&menuRect, &itemRect, &mdi, cg, kHIThemeOrientationNormal, nullptr);
+            LSCS_HIThemeDrawMenuItem(&menuRect, &itemRect, &mdi, cg, kHIThemeOrientationNormal, nullptr);
 
             if (ce == CE_MenuTearoff) {
                p->setPen(QPen(mi->palette.dark().color(), 1, Qt::DashLine));
@@ -4899,7 +4899,7 @@ void QMacStyle::drawControl(ControlElement ce, const QStyleOption * opt, QPainte
                mdi.version = qt_mac_hitheme_version;
                mdi.state = kThemeMenuSelected;
                mdi.itemType = kThemeMenuItemPlain;
-               CS_HIThemeDrawMenuItem(&menuRect, &itemRect, &mdi, cg, kHIThemeOrientationNormal, nullptr);
+               LSCS_HIThemeDrawMenuItem(&menuRect, &itemRect, &mdi, cg, kHIThemeOrientationNormal, nullptr);
 
             } else {
                // Draw the toolbar background:
@@ -4907,7 +4907,7 @@ void QMacStyle::drawControl(ControlElement ce, const QStyleOption * opt, QPainte
                bdi.version = qt_mac_hitheme_version;
                bdi.state = kThemeMenuBarNormal;
                bdi.attributes = 0;
-               CS_HIThemeDrawMenuBarBackground(&menuRect, &bdi, cg, kHIThemeOrientationNormal);
+               LSCS_HIThemeDrawMenuBarBackground(&menuRect, &bdi, cg, kHIThemeOrientationNormal);
             }
 
             if (!mi->icon.isNull()) {
@@ -4934,7 +4934,7 @@ void QMacStyle::drawControl(ControlElement ce, const QStyleOption * opt, QPainte
             bdi.state = kThemeMenuBarNormal;
             bdi.attributes = 0;
             HIRect hirect = qt_hirectForQRect(mi->rect);
-            CS_HIThemeDrawMenuBarBackground(&hirect, &bdi, cg, kHIThemeOrientationNormal);
+            LSCS_HIThemeDrawMenuBarBackground(&hirect, &bdi, cg, kHIThemeOrientationNormal);
             break;
          }
 
@@ -4996,7 +4996,7 @@ void QMacStyle::drawControl(ControlElement ce, const QStyleOption * opt, QPainte
                   CGContextScaleCTM(cg, -1, 1);
                }
             }
-            CS_HIThemeDrawTrack(&tdi, nullptr, cg, drawOrientation);
+            LSCS_HIThemeDrawTrack(&tdi, nullptr, cg, drawOrientation);
 
             if (reverse && !vertical) {
                CGContextRestoreGState(cg);
@@ -5017,7 +5017,7 @@ void QMacStyle::drawControl(ControlElement ce, const QStyleOption * opt, QPainte
             gdi.direction = kThemeGrowRight | kThemeGrowDown;
             gdi.size = kHIThemeGrowBoxSizeNormal;
             HIPoint pt = CGPointMake(opt->rect.x(), opt->rect.y());
-            CS_HIThemeDrawGrowBox(&pt, &gdi, cg, kHIThemeOrientationNormal);
+            LSCS_HIThemeDrawGrowBox(&pt, &gdi, cg, kHIThemeOrientationNormal);
 
          } else {
             // It isn't possible to draw a transparent size grip with the
@@ -5064,7 +5064,7 @@ void QMacStyle::drawControl(ControlElement ce, const QStyleOption * opt, QPainte
             sdi.adornment = kHIThemeSplitterAdornmentMetal;
             HIRect hirect = qt_hirectForQRect(opt->rect);
 
-            CS_HIThemeDrawPaneSplitter(&hirect, &sdi, cg, kHIThemeOrientationNormal);
+            LSCS_HIThemeDrawPaneSplitter(&hirect, &sdi, cg, kHIThemeOrientationNormal);
 
          } else {
             QPen oldPen = p->pen();
@@ -5132,7 +5132,7 @@ void QMacStyle::drawControl(ControlElement ce, const QStyleOption * opt, QPainte
                   bool isEndOfUnifiedArea = !isInMacUnifiedToolbarArea(w->window()->windowHandle(), windowToolbarEnd.y() + 1);
                   if (isEndOfUnifiedArea) {
                      SInt32 margin;
-                     CS_GetThemeMetric(kThemeMetricSeparatorSize, &margin);
+                     LSCS_GetThemeMetric(kThemeMetricSeparatorSize, &margin);
                      CGRect separatorRect = CGRectMake(opt->rect.left(), opt->rect.bottom(), opt->rect.width(), margin);
 
                      HIThemeSeparatorDrawInfo separatorDrawInfo;
@@ -5140,7 +5140,7 @@ void QMacStyle::drawControl(ControlElement ce, const QStyleOption * opt, QPainte
                      separatorDrawInfo.state = qt_macWindowMainWindow(mainWindow) ? kThemeStateActive : kThemeStateInactive;
 
                      QMacCGContext cg(p);
-                     CS_HIThemeDrawSeparator(&separatorRect, &separatorDrawInfo, cg, kHIThemeOrientationNormal);
+                     LSCS_HIThemeDrawSeparator(&separatorRect, &separatorDrawInfo, cg, kHIThemeOrientationNormal);
                   }
                   break;
                }
@@ -5260,11 +5260,11 @@ QRect QMacStyle::subElementRect(SubElement sr, const QStyleOption *opt, const QW
          bdi.adornment = kThemeAdornmentNone;
          HIRect contentRect;
 
-         CS_HIThemeGetButtonContentBounds(&inRect, &bdi, &contentRect);
+         LSCS_HIThemeGetButtonContentBounds(&inRect, &bdi, &contentRect);
          QCFType<HIShapeRef> shape;
 
          HIRect outRect;
-         CS_HIThemeGetButtonShape(&inRect, &bdi, &shape);
+         LSCS_HIThemeGetButtonShape(&inRect, &bdi, &shape);
          ptrHIShapeGetBounds(shape, &outRect);
          rect = QRect(int(outRect.origin.x + DisclosureOffset), int(outRect.origin.y),
                       int(contentRect.origin.x - outRect.origin.x + DisclosureOffset),
@@ -5611,7 +5611,7 @@ static inline void drawToolbarButtonArrow(const QRect &toolButtonRect, ThemeDraw
    padi.orientation = kThemeArrowDown;
    padi.size = kThemeArrow7pt;
    HIRect hirect = qt_hirectForQRect(arrowRect);
-   CS_HIThemeDrawPopupArrow(&hirect, &padi, cg, kHIThemeOrientationNormal);
+   LSCS_HIThemeDrawPopupArrow(&hirect, &padi, cg, kHIThemeOrientationNormal);
 }
 
 void QMacStyle::drawComplexControl(ComplexControl cc, const QStyleOptionComplex *opt, QPainter *p,
@@ -5680,7 +5680,7 @@ void QMacStyle::drawComplexControl(ComplexControl cc, const QStyleOptionComplex 
             if (!tracking) {
                // Small optimization, the same as q->subControlRect
                QCFType<HIShapeRef> shape;
-               CS_HIThemeGetTrackThumbShape(&tdi, &shape);
+               LSCS_HIThemeGetTrackThumbShape(&tdi, &shape);
                ptrHIShapeGetBounds(shape, &macRect);
                tdi.value = slider->sliderValue;
             }
@@ -5949,7 +5949,7 @@ void QMacStyle::drawComplexControl(ComplexControl cc, const QStyleOptionComplex 
 
                   } else {
                      tdi.attributes &= ~(kThemeTrackShowThumb | kThemeTrackHasFocus);
-                     CS_HIThemeDrawTrack(&tdi, tracking ? nullptr : &macRect, cg, kHIThemeOrientationNormal);
+                     LSCS_HIThemeDrawTrack(&tdi, tracking ? nullptr : &macRect, cg, kHIThemeOrientationNormal);
                      tdi.attributes |= kThemeTrackHideTrack | kThemeTrackShowThumb;
                   }
 
@@ -6001,19 +6001,19 @@ void QMacStyle::drawComplexControl(ComplexControl cc, const QStyleOptionComplex 
                   if (tdi.trackInfo.slider.thumbDir == kThemeThumbPlain) {
                      // They asked for both, so we'll give it to them.
                      tdi.trackInfo.slider.thumbDir = kThemeThumbDownward;
-                     CS_HIThemeDrawTrackTickMarks(&tdi, numMarks, cg, kHIThemeOrientationNormal);
+                     LSCS_HIThemeDrawTrackTickMarks(&tdi, numMarks, cg, kHIThemeOrientationNormal);
                      tdi.trackInfo.slider.thumbDir = kThemeThumbUpward;
 
                      if (slider->orientation == Qt::Vertical) {
                         tdi.bounds.origin.x -= 2;
                      }
 
-                     CS_HIThemeDrawTrackTickMarks(&tdi, numMarks, cg, kHIThemeOrientationNormal);
+                     LSCS_HIThemeDrawTrackTickMarks(&tdi, numMarks, cg, kHIThemeOrientationNormal);
                      // Reset to plain thumb to be drawn further down
                      tdi.trackInfo.slider.thumbDir = kThemeThumbPlain;
 
                   } else {
-                     CS_HIThemeDrawTrackTickMarks(&tdi, numMarks, cg, kHIThemeOrientationNormal);
+                     LSCS_HIThemeDrawTrackTickMarks(&tdi, numMarks, cg, kHIThemeOrientationNormal);
                   }
 
                   tdi.bounds = bounds;
@@ -6030,7 +6030,7 @@ void QMacStyle::drawComplexControl(ComplexControl cc, const QStyleOptionComplex 
                   }
                }
 
-               CS_HIThemeDrawTrack(&tdi, tracking ? nullptr : &macRect, cg, kHIThemeOrientationNormal);
+               LSCS_HIThemeDrawTrack(&tdi, tracking ? nullptr : &macRect, cg, kHIThemeOrientationNormal);
             }
          }
          break;
@@ -6040,7 +6040,7 @@ void QMacStyle::drawComplexControl(ComplexControl cc, const QStyleOptionComplex 
             QStyleOptionSpinBox newSB = *sb;
             if (sb->frame && (sb->subControls & SC_SpinBoxFrame)) {
                SInt32 frame_size;
-               CS_GetThemeMetric(kThemeMetricEditTextFrameOutset, &frame_size);
+               LSCS_GetThemeMetric(kThemeMetricEditTextFrameOutset, &frame_size);
 
                QRect lineeditRect = proxy()->subControlRect(CC_SpinBox, sb, SC_SpinBoxEditField, widget);
                lineeditRect.adjust(-frame_size, -frame_size, +frame_size, +frame_size);
@@ -6051,7 +6051,7 @@ void QMacStyle::drawComplexControl(ComplexControl cc, const QStyleOptionComplex 
                fdi.kind = kHIThemeFrameTextFieldSquare;
                fdi.isFocused = false;
                HIRect hirect = qt_hirectForQRect(lineeditRect);
-               CS_HIThemeDrawFrame(&hirect, &fdi, cg, kHIThemeOrientationNormal);
+               LSCS_HIThemeDrawFrame(&hirect, &fdi, cg, kHIThemeOrientationNormal);
             }
 
             if (sb->subControls & (SC_SpinBoxUp | SC_SpinBoxDown)) {
@@ -6099,7 +6099,7 @@ void QMacStyle::drawComplexControl(ComplexControl cc, const QStyleOptionComplex 
                HIRect newRect = qt_hirectForQRect(updown);
                QRect off_rct;
                HIRect outRect;
-               CS_HIThemeGetButtonBackgroundBounds(&newRect, &bdi, &outRect);
+               LSCS_HIThemeGetButtonBackgroundBounds(&newRect, &bdi, &outRect);
 
                off_rct.setRect(int(newRect.origin.x - outRect.origin.x),
                                int(newRect.origin.y - outRect.origin.y),
@@ -6111,7 +6111,7 @@ void QMacStyle::drawComplexControl(ComplexControl cc, const QStyleOptionComplex 
                if (tds == kThemeStateInactive) {
                   d->drawColorlessButton(newRect, &bdi, p, sb);
                } else {
-                  CS_HIThemeDrawButton(&newRect, &bdi, cg, kHIThemeOrientationNormal, nullptr);
+                  LSCS_HIThemeDrawButton(&newRect, &bdi, cg, kHIThemeOrientationNormal, nullptr);
                }
             }
          }
@@ -6175,12 +6175,12 @@ void QMacStyle::drawComplexControl(ComplexControl cc, const QStyleOptionComplex 
             {
                QCFType<HIShapeRef> titleRegion;
                QRect newr = titlebar->rect.adjusted(0, 0, 2, 0);
-               CS_HIThemeGetWindowShape(&tmpRect, &wdi, kWindowTitleBarRgn, &titleRegion);
+               LSCS_HIThemeGetWindowShape(&tmpRect, &wdi, kWindowTitleBarRgn, &titleRegion);
                ptrHIShapeGetBounds(titleRegion, &tmpRect);
                newr.translate(newr.x() - int(tmpRect.origin.x), newr.y() - int(tmpRect.origin.y));
                titleBarRect = qt_hirectForQRect(newr);
             }
-            CS_HIThemeDrawWindowFrame(&titleBarRect, &wdi, cg, kHIThemeOrientationNormal, nullptr);
+            LSCS_HIThemeDrawWindowFrame(&titleBarRect, &wdi, cg, kHIThemeOrientationNormal, nullptr);
 
             if (titlebar->subControls & (SC_TitleBarCloseButton
                                          | SC_TitleBarMaxButton
@@ -6219,7 +6219,7 @@ void QMacStyle::drawComplexControl(ComplexControl cc, const QStyleOptionComplex 
                      // (it is already handled by HIThemeDrawWindowFrame).
 
                      if (!(widget && widget->isWindowModified() && tbw == kThemeWidgetCloseBox)) {
-                        CS_HIThemeDrawTitleBarWidget(&titleBarRect, &wwdi, cg, kHIThemeOrientationNormal);
+                        LSCS_HIThemeDrawTitleBarWidget(&titleBarRect, &wwdi, cg, kHIThemeOrientationNormal);
                         p->paintEngine()->syncState();
                      }
                   }
@@ -6232,7 +6232,7 @@ void QMacStyle::drawComplexControl(ComplexControl cc, const QStyleOptionComplex 
                int iw = 0;
                if (!titlebar->icon.isNull()) {
                   QCFType<HIShapeRef> titleRegion2;
-                  CS_HIThemeGetWindowShape(&titleBarRect, &wdi, kWindowTitleProxyIconRgn, &titleRegion2);
+                  LSCS_HIThemeGetWindowShape(&titleBarRect, &wdi, kWindowTitleProxyIconRgn, &titleRegion2);
                   ptrHIShapeGetBounds(titleRegion2, &tmpRect);
                   if (tmpRect.size.width != 1) {
                      int iconExtent = proxy()->pixelMetric(PM_SmallIconSize);
@@ -6242,7 +6242,7 @@ void QMacStyle::drawComplexControl(ComplexControl cc, const QStyleOptionComplex 
                if (!titlebar->text.isEmpty()) {
                   p->save();
                   QCFType<HIShapeRef> titleRegion3;
-                  CS_HIThemeGetWindowShape(&titleBarRect, &wdi, kWindowTitleTextRgn, &titleRegion3);
+                  LSCS_HIThemeGetWindowShape(&titleBarRect, &wdi, kWindowTitleTextRgn, &titleRegion3);
                   ptrHIShapeGetBounds(titleRegion3, &tmpRect);
                   p->setClipRect(qt_qrectForHIRect(tmpRect));
                   QRect br = p->clipRegion().boundingRect();
@@ -6309,7 +6309,7 @@ void QMacStyle::drawComplexControl(ComplexControl cc, const QStyleOptionComplex 
                QCFString groupText = qt_mac_removeMnemonics(groupBox.text);
                QRect r = proxy()->subControlRect(CC_GroupBox, &groupBox, SC_GroupBoxLabel, widget);
                HIRect bounds = qt_hirectForQRect(r);
-               CS_HIThemeDrawTextBox(groupText.toCFStringRef(), &bounds, &tti, cg, kHIThemeOrientationNormal);
+               LSCS_HIThemeDrawTextBox(groupText.toCFStringRef(), &bounds, &tti, cg, kHIThemeOrientationNormal);
                p->restore();
             }
          }
@@ -6407,14 +6407,14 @@ void QMacStyle::drawComplexControl(ComplexControl cc, const QStyleOptionComplex 
                      HIRect myRect, macRect;
                      myRect = CGRectMake(tb->rect.x(), tb->rect.y(),
                                          tb->rect.width(), tb->rect.height());
-                     CS_HIThemeGetButtonBackgroundBounds(&myRect, &bdi, &macRect);
+                     LSCS_HIThemeGetButtonBackgroundBounds(&myRect, &bdi, &macRect);
                      off_rct.setRect(int(myRect.origin.x - macRect.origin.x),
                                      int(myRect.origin.y - macRect.origin.y),
                                      int(macRect.size.width - myRect.size.width),
                                      int(macRect.size.height - myRect.size.height));
 
                      myRect = qt_hirectForQRect(button, off_rct);
-                     CS_HIThemeDrawButton(&myRect, &bdi, cg, kHIThemeOrientationNormal, nullptr);
+                     LSCS_HIThemeDrawButton(&myRect, &bdi, cg, kHIThemeOrientationNormal, nullptr);
                   }
                }
 
@@ -6433,7 +6433,7 @@ void QMacStyle::drawComplexControl(ComplexControl cc, const QStyleOptionComplex 
                      bdi.state = kThemeStatePressed;
                   }
                   HIRect hirect = qt_hirectForQRect(menuarea);
-                  CS_HIThemeDrawButton(&hirect, &bdi, cg, kHIThemeOrientationNormal, nullptr);
+                  LSCS_HIThemeDrawButton(&hirect, &bdi, cg, kHIThemeOrientationNormal, nullptr);
                   QRect r(menuarea.x() + ((menuarea.width() / 2) - 3), menuarea.height() - 8, 8, 8);
                   HIThemePopupArrowDrawInfo padi;
                   padi.version = qt_mac_hitheme_version;
@@ -6441,7 +6441,7 @@ void QMacStyle::drawComplexControl(ComplexControl cc, const QStyleOptionComplex 
                   padi.orientation = kThemeArrowDown;
                   padi.size = kThemeArrow7pt;
                   hirect = qt_hirectForQRect(r);
-                  CS_HIThemeDrawPopupArrow(&hirect, &padi, cg, kHIThemeOrientationNormal);
+                  LSCS_HIThemeDrawPopupArrow(&hirect, &padi, cg, kHIThemeOrientationNormal);
                } else if (tb->features & QStyleOptionToolButton::HasMenu) {
                   drawToolbarButtonArrow(tb->rect, tds, cg);
                }
@@ -6490,7 +6490,7 @@ QStyle::SubControl QMacStyle::hitTestComplexControl(ComplexControl cc,
             ControlPartCode part;
             HIPoint pos = CGPointMake(pt.x(), pt.y());
 
-            if (CS_HIThemeHitTestTrack(&tdi, &pos, &part)) {
+            if (LSCS_HIThemeHitTestTrack(&tdi, &pos, &part)) {
                if (part == kControlPageUpPart || part == kControlPageDownPart) {
                   sc = SC_SliderGroove;
                } else {
@@ -6527,7 +6527,7 @@ QStyle::SubControl QMacStyle::hitTestComplexControl(ComplexControl cc,
             ControlPartCode part;
 
             bool reverseHorizontal = (sb->direction == Qt::RightToLeft && sb->orientation == Qt::Horizontal);
-            if (CS_HIThemeHitTestScrollBarArrows(&macSBRect, &sbi, sb->orientation == Qt::Horizontal, &pos, nullptr, &part)) {
+            if (LSCS_HIThemeHitTestScrollBarArrows(&macSBRect, &sbi, sb->orientation == Qt::Horizontal, &pos, nullptr, &part)) {
 
                if (part == kControlUpButtonPart) {
                   sc = reverseHorizontal ? SC_ScrollBarAddLine : SC_ScrollBarSubLine;
@@ -6542,7 +6542,7 @@ QStyle::SubControl QMacStyle::hitTestComplexControl(ComplexControl cc,
                   tdi.enableState = kThemeTrackActive;
                }
 
-               if (CS_HIThemeHitTestTrack(&tdi, &pos, &part)) {
+               if (LSCS_HIThemeHitTestTrack(&tdi, &pos, &part)) {
                   if (part == kControlPageUpPart) {
                      sc = reverseHorizontal ? SC_ScrollBarAddPage : SC_ScrollBarSubPage;
                   } else if (part == kControlPageDownPart) {
@@ -6582,14 +6582,14 @@ QRect QMacStyle::subControlRect(ComplexControl cc, const QStyleOptionComplex *op
             bool scrollBar = cc == CC_ScrollBar;
             if ((scrollBar && sc == SC_ScrollBarSlider)
                 || (!scrollBar && sc == SC_SliderHandle)) {
-               CS_HIThemeGetTrackThumbShape(&tdi, &shape);
+               LSCS_HIThemeGetTrackThumbShape(&tdi, &shape);
                ptrHIShapeGetBounds(shape, &macRect);
 
             } else if (!scrollBar && sc == SC_SliderGroove) {
-               CS_HIThemeGetTrackBounds(&tdi, &macRect);
+               LSCS_HIThemeGetTrackBounds(&tdi, &macRect);
 
             } else if (sc == SC_ScrollBarGroove) { // Only scroll bar parts available...
-               CS_HIThemeGetTrackDragRect(&tdi, &macRect);
+               LSCS_HIThemeGetTrackDragRect(&tdi, &macRect);
 
             } else {
                ControlPartCode cpc;
@@ -6607,7 +6607,7 @@ QRect QMacStyle::subControlRect(ComplexControl cc, const QStyleOptionComplex *op
                      }
                   }
                }
-               CS_HIThemeGetTrackPartBounds(&tdi, cpc, &macRect);
+               LSCS_HIThemeGetTrackPartBounds(&tdi, cpc, &macRect);
             }
 
             ret = qt_qrectForHIRect(macRect);
@@ -6667,7 +6667,7 @@ QRect QMacStyle::subControlRect(ComplexControl cc, const QStyleOptionComplex *op
                QCFType<HIShapeRef> region;
                QRect tmpRect = titlebar->rect;
                HIRect titleRect = qt_hirectForQRect(tmpRect);
-               CS_HIThemeGetWindowShape(&titleRect, &wdi, kWindowTitleBarRgn, &region);
+               LSCS_HIThemeGetWindowShape(&titleRect, &wdi, kWindowTitleBarRgn, &region);
 
                ptrHIShapeGetBounds(region, &titleRect);
                CFRelease(region);
@@ -6675,7 +6675,7 @@ QRect QMacStyle::subControlRect(ComplexControl cc, const QStyleOptionComplex *op
                                  tmpRect.y() - int(titleRect.origin.y));
 
                titleRect = qt_hirectForQRect(tmpRect);
-               CS_HIThemeGetWindowShape(&titleRect, &wdi, wrc, &region);
+               LSCS_HIThemeGetWindowShape(&titleRect, &wdi, wrc, &region);
                ptrHIShapeGetBounds(region, &titleRect);
                ret = qt_qrectForHIRect(titleRect);
             }
@@ -6755,7 +6755,7 @@ QRect QMacStyle::subControlRect(ComplexControl cc, const QStyleOptionComplex *op
                      CGFloat height;
 
                      QCFString groupText = qt_mac_removeMnemonics(groupBox->text);
-                     CS_HIThemeGetTextDimensions(groupText.toCFStringRef(), 0, &tti, &width, &height, nullptr);
+                     LSCS_HIThemeGetTextDimensions(groupText.toCFStringRef(), 0, &tti, &width, &height, nullptr);
                      tw = qRound(width);
                      h = qCeil(height);
 
@@ -6895,7 +6895,7 @@ QRect QMacStyle::subControlRect(ComplexControl cc, const QStyleOptionComplex *op
                   HIRect hirect = qt_hirectForQRect(ret);
 
                   HIRect outRect;
-                  CS_HIThemeGetButtonBackgroundBounds(&hirect, &bdi, &outRect);
+                  LSCS_HIThemeGetButtonBackgroundBounds(&hirect, &bdi, &outRect);
                   ret = qt_qrectForHIRect(outRect);
 
                   switch (sc) {
@@ -7107,7 +7107,7 @@ QSize QMacStyle::sizeFromContents(ContentsType ct, const QStyleOption *opt,
             if (mi->menuItemType == QStyleOptionMenuItem::Separator) {
                w = 10;
                SInt16 ash;
-               CS_GetThemeMenuSeparatorHeight(&ash);
+               LSCS_GetThemeMenuSeparatorHeight(&ash);
                h = ash;
             } else {
                h = mi->fontMetrics.height() + 2;
@@ -7285,7 +7285,7 @@ QSize QMacStyle::sizeFromContents(ContentsType ct, const QStyleOption *opt,
       bdi.adornment = kThemeAdornmentNone;
       HIRect macRect, myRect;
       myRect = CGRectMake(0, 0, sz.width(), sz.height());
-      CS_HIThemeGetButtonBackgroundBounds(&myRect, &bdi, &macRect);
+      LSCS_HIThemeGetButtonBackgroundBounds(&myRect, &bdi, &macRect);
 
       // Mini buttons only return their actual size in HIThemeGetButtonBackgroundBounds, so help them out a bit (guess),
       if (bkind == kThemePushButtonMini) {

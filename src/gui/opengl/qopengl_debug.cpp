@@ -963,7 +963,7 @@ bool QOpenGLDebugLogger::initialize()
 
     QOpenGLContext::currentContext()->functions()->glGetIntegerv( GL_MAX_DEBUG_MESSAGE_LENGTH, &d->maxMessageLength );
 
-#if defined(CS_SHOW_DEBUG_GUI_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_GUI_OPENGL)
 
     if ( ! d->context->format().testOption( QSurfaceFormat::DebugContext ) )
     {

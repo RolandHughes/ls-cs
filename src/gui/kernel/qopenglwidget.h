@@ -36,7 +36,7 @@ class QOpenGLWidgetPrivate;
 
 class Q_GUI_EXPORT QOpenGLWidget : public QWidget
 {
-    GUI_CS_OBJECT( QOpenGLWidget )
+    GUI_LSCS_OBJECT( QOpenGLWidget )
 
 public:
     enum UpdateBehavior
@@ -68,17 +68,17 @@ public:
 
     QImage grabFramebuffer();
 
-    GUI_CS_SIGNAL_1( Public, void aboutToCompose() )
-    GUI_CS_SIGNAL_2( aboutToCompose )
+    GUI_LSCS_SIGNAL_1( Public, void aboutToCompose() )
+    GUI_LSCS_SIGNAL_2( aboutToCompose )
 
-    GUI_CS_SIGNAL_1( Public, void frameSwapped() )
-    GUI_CS_SIGNAL_2( frameSwapped )
+    GUI_LSCS_SIGNAL_1( Public, void frameSwapped() )
+    GUI_LSCS_SIGNAL_2( frameSwapped )
 
-    GUI_CS_SIGNAL_1( Public, void aboutToResize() )
-    GUI_CS_SIGNAL_2( aboutToResize )
+    GUI_LSCS_SIGNAL_1( Public, void aboutToResize() )
+    GUI_LSCS_SIGNAL_2( aboutToResize )
 
-    GUI_CS_SIGNAL_1( Public, void resized() )
-    GUI_CS_SIGNAL_2( resized )
+    GUI_LSCS_SIGNAL_1( Public, void resized() )
+    GUI_LSCS_SIGNAL_2( resized )
 
 protected:
     virtual void initializeGL();

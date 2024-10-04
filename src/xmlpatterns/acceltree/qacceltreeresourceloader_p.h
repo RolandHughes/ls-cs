@@ -42,16 +42,16 @@ namespace QPatternist
 
 class NetworkLoop : public QEventLoop
 {
-    XMLP_CS_OBJECT( NetworkLoop )
+    XMLP_LSCS_OBJECT( NetworkLoop )
 
 public:
     NetworkLoop() : m_hasReceivedError( false ) { }
 
-    XMLP_CS_SLOT_1( Public, void error( QNetworkReply::NetworkError code ) )
-    XMLP_CS_SLOT_2( error )
+    XMLP_LSCS_SLOT_1( Public, void error( QNetworkReply::NetworkError code ) )
+    XMLP_LSCS_SLOT_2( error )
 
-    XMLP_CS_SLOT_1( Public, void finished() )
-    XMLP_CS_SLOT_2( finished )
+    XMLP_LSCS_SLOT_1( Public, void finished() )
+    XMLP_LSCS_SLOT_2( finished )
 
 private:
     bool m_hasReceivedError;

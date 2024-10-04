@@ -249,17 +249,17 @@ Q_GUI_EXPORT QDataStream &operator>>( QDataStream &in, QListWidgetItem &item );
 
 class Q_GUI_EXPORT QListWidget : public QListView
 {
-    GUI_CS_OBJECT( QListWidget )
+    GUI_LSCS_OBJECT( QListWidget )
 
-    GUI_CS_PROPERTY_READ( count, count )
+    GUI_LSCS_PROPERTY_READ( count, count )
 
-    GUI_CS_PROPERTY_READ( currentRow, currentRow )
-    GUI_CS_PROPERTY_WRITE( currentRow, cs_setCurrentRow )
-    GUI_CS_PROPERTY_NOTIFY( currentRow, currentRowChanged )
-    GUI_CS_PROPERTY_USER( currentRow, true )
+    GUI_LSCS_PROPERTY_READ( currentRow, currentRow )
+    GUI_LSCS_PROPERTY_WRITE( currentRow, cs_setCurrentRow )
+    GUI_LSCS_PROPERTY_NOTIFY( currentRow, currentRowChanged )
+    GUI_LSCS_PROPERTY_USER( currentRow, true )
 
-    GUI_CS_PROPERTY_READ( sortingEnabled, isSortingEnabled )
-    GUI_CS_PROPERTY_WRITE( sortingEnabled, setSortingEnabled )
+    GUI_LSCS_PROPERTY_READ( sortingEnabled, isSortingEnabled )
+    GUI_LSCS_PROPERTY_WRITE( sortingEnabled, setSortingEnabled )
 
     friend class QListWidgetItem;
     friend class QListModel;
@@ -329,41 +329,41 @@ public:
     void setItemHidden( const QListWidgetItem *item, bool hide );
     void dropEvent( QDropEvent *event ) override;
 
-    GUI_CS_SLOT_1( Public, void scrollToItem( const QListWidgetItem *item, QAbstractItemView::ScrollHint hint = EnsureVisible ) )
-    GUI_CS_SLOT_2( scrollToItem )
+    GUI_LSCS_SLOT_1( Public, void scrollToItem( const QListWidgetItem *item, QAbstractItemView::ScrollHint hint = EnsureVisible ) )
+    GUI_LSCS_SLOT_2( scrollToItem )
 
-    GUI_CS_SLOT_1( Public, void clear() )
-    GUI_CS_SLOT_2( clear )
+    GUI_LSCS_SLOT_1( Public, void clear() )
+    GUI_LSCS_SLOT_2( clear )
 
-    GUI_CS_SIGNAL_1( Public, void itemPressed( QListWidgetItem *item ) )
-    GUI_CS_SIGNAL_2( itemPressed, item )
+    GUI_LSCS_SIGNAL_1( Public, void itemPressed( QListWidgetItem *item ) )
+    GUI_LSCS_SIGNAL_2( itemPressed, item )
 
-    GUI_CS_SIGNAL_1( Public, void itemClicked( QListWidgetItem *item ) )
-    GUI_CS_SIGNAL_2( itemClicked, item )
+    GUI_LSCS_SIGNAL_1( Public, void itemClicked( QListWidgetItem *item ) )
+    GUI_LSCS_SIGNAL_2( itemClicked, item )
 
-    GUI_CS_SIGNAL_1( Public, void itemDoubleClicked( QListWidgetItem *item ) )
-    GUI_CS_SIGNAL_2( itemDoubleClicked, item )
+    GUI_LSCS_SIGNAL_1( Public, void itemDoubleClicked( QListWidgetItem *item ) )
+    GUI_LSCS_SIGNAL_2( itemDoubleClicked, item )
 
-    GUI_CS_SIGNAL_1( Public, void itemActivated( QListWidgetItem *item ) )
-    GUI_CS_SIGNAL_2( itemActivated, item )
+    GUI_LSCS_SIGNAL_1( Public, void itemActivated( QListWidgetItem *item ) )
+    GUI_LSCS_SIGNAL_2( itemActivated, item )
 
-    GUI_CS_SIGNAL_1( Public, void itemEntered( QListWidgetItem *item ) )
-    GUI_CS_SIGNAL_2( itemEntered, item )
+    GUI_LSCS_SIGNAL_1( Public, void itemEntered( QListWidgetItem *item ) )
+    GUI_LSCS_SIGNAL_2( itemEntered, item )
 
-    GUI_CS_SIGNAL_1( Public, void itemChanged( QListWidgetItem *item ) )
-    GUI_CS_SIGNAL_2( itemChanged, item )
+    GUI_LSCS_SIGNAL_1( Public, void itemChanged( QListWidgetItem *item ) )
+    GUI_LSCS_SIGNAL_2( itemChanged, item )
 
-    GUI_CS_SIGNAL_1( Public, void currentItemChanged( QListWidgetItem *current, QListWidgetItem *previous ) )
-    GUI_CS_SIGNAL_2( currentItemChanged, current, previous )
+    GUI_LSCS_SIGNAL_1( Public, void currentItemChanged( QListWidgetItem *current, QListWidgetItem *previous ) )
+    GUI_LSCS_SIGNAL_2( currentItemChanged, current, previous )
 
-    GUI_CS_SIGNAL_1( Public, void currentTextChanged( const QString &currentText ) )
-    GUI_CS_SIGNAL_2( currentTextChanged, currentText )
+    GUI_LSCS_SIGNAL_1( Public, void currentTextChanged( const QString &currentText ) )
+    GUI_LSCS_SIGNAL_2( currentTextChanged, currentText )
 
-    GUI_CS_SIGNAL_1( Public, void currentRowChanged( int currentRow ) )
-    GUI_CS_SIGNAL_2( currentRowChanged, currentRow )
+    GUI_LSCS_SIGNAL_1( Public, void currentRowChanged( int currentRow ) )
+    GUI_LSCS_SIGNAL_2( currentRowChanged, currentRow )
 
-    GUI_CS_SIGNAL_1( Public, void itemSelectionChanged() )
-    GUI_CS_SIGNAL_2( itemSelectionChanged )
+    GUI_LSCS_SIGNAL_1( Public, void itemSelectionChanged() )
+    GUI_LSCS_SIGNAL_2( itemSelectionChanged )
 
 protected:
     bool event( QEvent *event ) override;
@@ -386,32 +386,32 @@ private:
 
     Q_DECLARE_PRIVATE( QListWidget )
 
-    GUI_CS_SLOT_1( Private, void _q_emitItemPressed( const QModelIndex &index ) )
-    GUI_CS_SLOT_2( _q_emitItemPressed )
+    GUI_LSCS_SLOT_1( Private, void _q_emitItemPressed( const QModelIndex &index ) )
+    GUI_LSCS_SLOT_2( _q_emitItemPressed )
 
-    GUI_CS_SLOT_1( Private, void _q_emitItemClicked( const QModelIndex &index ) )
-    GUI_CS_SLOT_2( _q_emitItemClicked )
+    GUI_LSCS_SLOT_1( Private, void _q_emitItemClicked( const QModelIndex &index ) )
+    GUI_LSCS_SLOT_2( _q_emitItemClicked )
 
-    GUI_CS_SLOT_1( Private, void _q_emitItemDoubleClicked( const QModelIndex &index ) )
-    GUI_CS_SLOT_2( _q_emitItemDoubleClicked )
+    GUI_LSCS_SLOT_1( Private, void _q_emitItemDoubleClicked( const QModelIndex &index ) )
+    GUI_LSCS_SLOT_2( _q_emitItemDoubleClicked )
 
-    GUI_CS_SLOT_1( Private, void _q_emitItemActivated( const QModelIndex &index ) )
-    GUI_CS_SLOT_2( _q_emitItemActivated )
+    GUI_LSCS_SLOT_1( Private, void _q_emitItemActivated( const QModelIndex &index ) )
+    GUI_LSCS_SLOT_2( _q_emitItemActivated )
 
-    GUI_CS_SLOT_1( Private, void _q_emitItemEntered( const QModelIndex &index ) )
-    GUI_CS_SLOT_2( _q_emitItemEntered )
+    GUI_LSCS_SLOT_1( Private, void _q_emitItemEntered( const QModelIndex &index ) )
+    GUI_LSCS_SLOT_2( _q_emitItemEntered )
 
-    GUI_CS_SLOT_1( Private, void _q_emitItemChanged( const QModelIndex &index ) )
-    GUI_CS_SLOT_2( _q_emitItemChanged )
+    GUI_LSCS_SLOT_1( Private, void _q_emitItemChanged( const QModelIndex &index ) )
+    GUI_LSCS_SLOT_2( _q_emitItemChanged )
 
-    GUI_CS_SLOT_1( Private, void _q_emitCurrentItemChanged( const QModelIndex &previous, const QModelIndex &current ) )
-    GUI_CS_SLOT_2( _q_emitCurrentItemChanged )
+    GUI_LSCS_SLOT_1( Private, void _q_emitCurrentItemChanged( const QModelIndex &previous, const QModelIndex &current ) )
+    GUI_LSCS_SLOT_2( _q_emitCurrentItemChanged )
 
-    GUI_CS_SLOT_1( Private, void _q_sort() )
-    GUI_CS_SLOT_2( _q_sort )
+    GUI_LSCS_SLOT_1( Private, void _q_sort() )
+    GUI_LSCS_SLOT_2( _q_sort )
 
-    GUI_CS_SLOT_1( Private, void _q_dataChanged( const QModelIndex &topLeft, const QModelIndex &bottomRight ) )
-    GUI_CS_SLOT_2( _q_dataChanged )
+    GUI_LSCS_SLOT_1( Private, void _q_dataChanged( const QModelIndex &topLeft, const QModelIndex &bottomRight ) )
+    GUI_LSCS_SLOT_2( _q_dataChanged )
 };
 
 void QListWidget::cs_setCurrentRow( int row )

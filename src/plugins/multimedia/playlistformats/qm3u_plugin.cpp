@@ -30,7 +30,7 @@
 #include <qfile.h>
 #include <qurl.h>
 
-CS_PLUGIN_REGISTER( QM3uPlaylistPlugin )
+LSCS_PLUGIN_REGISTER( QM3uPlaylistPlugin )
 
 class QM3uPlaylistReader : public QMediaPlaylistReader
 {

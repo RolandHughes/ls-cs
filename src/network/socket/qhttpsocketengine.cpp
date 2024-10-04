@@ -937,7 +937,7 @@ void QHttpSocketEngine::slotSocketError( QAbstractSocket::SocketError error )
     d->state = None;
     setError( error, d->socket->errorString() );
 
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
 
     if ( error != QAbstractSocket::RemoteHostClosedError )
     {

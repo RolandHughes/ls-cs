@@ -101,7 +101,7 @@ public:
 
 class QDeclarativeComponentAttached : public QObject
 {
-    DECL_CS_OBJECT( QDeclarativeComponentAttached )
+    DECL_LSCS_OBJECT( QDeclarativeComponentAttached )
 
 public:
     QDeclarativeComponentAttached( QObject *parent = nullptr );
@@ -133,10 +133,10 @@ public:
     QDeclarativeComponentAttached *next;
 
 public:
-    DECL_CS_SIGNAL_1( Public, void completed() )
-    DECL_CS_SIGNAL_2( completed )
-    DECL_CS_SIGNAL_1( Public, void destruction() )
-    DECL_CS_SIGNAL_2( destruction )
+    DECL_LSCS_SIGNAL_1( Public, void completed() )
+    DECL_LSCS_SIGNAL_2( completed )
+    DECL_LSCS_SIGNAL_1( Public, void destruction() )
+    DECL_LSCS_SIGNAL_2( destruction )
 
 private:
     friend class QDeclarativeContextData;

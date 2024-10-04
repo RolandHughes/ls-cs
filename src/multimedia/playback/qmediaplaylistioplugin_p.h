@@ -67,13 +67,13 @@ struct Q_MULTIMEDIA_EXPORT QMediaPlaylistIOInterface
 };
 
 #define QMediaPlaylistInterface_ID "com.copperspice.CS.mediaPlayList/1.0"
-CS_DECLARE_INTERFACE( QMediaPlaylistIOInterface, QMediaPlaylistInterface_ID )
+LSCS_DECLARE_INTERFACE( QMediaPlaylistIOInterface, QMediaPlaylistInterface_ID )
 
 
 class Q_MULTIMEDIA_EXPORT QMediaPlaylistIOPlugin : public QObject, public QMediaPlaylistIOInterface
 {
-    MULTI_CS_OBJECT( QMediaPlaylistIOPlugin )
-    CS_INTERFACES( QMediaPlaylistIOInterface )
+    MULTI_LSCS_OBJECT( QMediaPlaylistIOPlugin )
+    LSCS_INTERFACES( QMediaPlaylistIOInterface )
 
 public:
     explicit QMediaPlaylistIOPlugin( QObject *parent = nullptr );

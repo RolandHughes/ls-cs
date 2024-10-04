@@ -30,7 +30,7 @@ class QPlaylistFileParserPrivate;
 
 class Q_MULTIMEDIA_EXPORT QPlaylistFileParser : public QObject
 {
-    MULTI_CS_OBJECT( QPlaylistFileParser )
+    MULTI_LSCS_OBJECT( QPlaylistFileParser )
 
 public:
     enum FileType
@@ -59,29 +59,29 @@ public:
     void start( const QNetworkRequest &request, bool utf8 = false );
     void stop();
 
-    MULTI_CS_SIGNAL_1( Public, void newItem( const QVariant &content ) )
-    MULTI_CS_SIGNAL_2( newItem, content )
-    MULTI_CS_SIGNAL_1( Public, void finished() )
-    MULTI_CS_SIGNAL_2( finished )
-    MULTI_CS_SIGNAL_1( Public, void error( QPlaylistFileParser::ParserError err, const QString &errorMsg ) )
-    MULTI_CS_SIGNAL_2( error, err, errorMsg )
+    MULTI_LSCS_SIGNAL_1( Public, void newItem( const QVariant &content ) )
+    MULTI_LSCS_SIGNAL_2( newItem, content )
+    MULTI_LSCS_SIGNAL_1( Public, void finished() )
+    MULTI_LSCS_SIGNAL_2( finished )
+    MULTI_LSCS_SIGNAL_1( Public, void error( QPlaylistFileParser::ParserError err, const QString &errorMsg ) )
+    MULTI_LSCS_SIGNAL_2( error, err, errorMsg )
 
 private:
     Q_DECLARE_PRIVATE( QPlaylistFileParser )
 
     QPlaylistFileParserPrivate *d_ptr;
 
-    MULTI_CS_SLOT_1( Private, void _q_handleData() )
-    MULTI_CS_SLOT_2( _q_handleData )
+    MULTI_LSCS_SLOT_1( Private, void _q_handleData() )
+    MULTI_LSCS_SLOT_2( _q_handleData )
 
-    MULTI_CS_SLOT_1( Private, void _q_handleError() )
-    MULTI_CS_SLOT_2( _q_handleError )
+    MULTI_LSCS_SLOT_1( Private, void _q_handleError() )
+    MULTI_LSCS_SLOT_2( _q_handleError )
 
-    MULTI_CS_SLOT_1( Private, void _q_handleParserError( QPlaylistFileParser::ParserError err, const QString &errorMsg ) )
-    MULTI_CS_SLOT_2( _q_handleParserError )
+    MULTI_LSCS_SLOT_1( Private, void _q_handleParserError( QPlaylistFileParser::ParserError err, const QString &errorMsg ) )
+    MULTI_LSCS_SLOT_2( _q_handleParserError )
 
-    MULTI_CS_SLOT_1( Private, void _q_handleParserFinished() )
-    MULTI_CS_SLOT_2( _q_handleParserFinished )
+    MULTI_LSCS_SLOT_1( Private, void _q_handleParserFinished() )
+    MULTI_LSCS_SLOT_2( _q_handleParserFinished )
 };
 
 #endif

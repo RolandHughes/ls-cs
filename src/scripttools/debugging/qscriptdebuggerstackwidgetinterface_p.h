@@ -33,7 +33,7 @@ class QScriptDebuggerStackWidgetInterfacePrivate;
 
 class QScriptDebuggerStackWidgetInterface: public QWidget
 {
-    SCRIPT_T_CS_OBJECT( QScriptDebuggerStackWidgetInterface )
+    SCRIPT_T_LSCS_OBJECT( QScriptDebuggerStackWidgetInterface )
 
 public:
     ~QScriptDebuggerStackWidgetInterface();
@@ -44,8 +44,8 @@ public:
     virtual int currentFrameIndex() const = 0;
     virtual void setCurrentFrameIndex( int frameIndex ) = 0;
 
-    CS_SIGNAL_1( Public, void currentFrameChanged( int newFrameIndex ) )
-    CS_SIGNAL_2( currentFrameChanged, newFrameIndex )
+    LSCS_SIGNAL_1( Public, void currentFrameChanged( int newFrameIndex ) )
+    LSCS_SIGNAL_2( currentFrameChanged, newFrameIndex )
 
 protected:
     QScriptDebuggerStackWidgetInterface(

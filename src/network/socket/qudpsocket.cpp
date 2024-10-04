@@ -171,7 +171,7 @@ qint64 QUdpSocket::writeDatagram( const char *data, qint64 size, const QHostAddr
 {
     Q_D( QUdpSocket );
 
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
     qDebug( "QUdpSocket::writeDatagram(%p, %llu, \"%s\", %i)", data, size,
             address.toString().toLatin1().constData(), port );
 #endif
@@ -206,7 +206,7 @@ qint64 QUdpSocket::readDatagram( char *data, qint64 maxSize, QHostAddress *addre
 {
     Q_D( QUdpSocket );
 
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
     qDebug( "QUdpSocket::readDatagram(%p, %llu, %p, %p)", data, maxSize, address, port );
 #endif
 

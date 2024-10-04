@@ -43,7 +43,7 @@ class ExtraArea;
 
 class QPlainTextEditControl : public QTextControl
 {
-    GUI_CS_OBJECT( QPlainTextEditControl )
+    GUI_LSCS_OBJECT( QPlainTextEditControl )
 
 public:
     QPlainTextEditControl( QPlainTextEdit *parent );

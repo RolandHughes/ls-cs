@@ -30,7 +30,7 @@
 
 class Q_MULTIMEDIA_EXPORT QMediaGaplessPlaybackControl : public QMediaControl
 {
-    MULTI_CS_OBJECT( QMediaGaplessPlaybackControl )
+    MULTI_LSCS_OBJECT( QMediaGaplessPlaybackControl )
 
 public:
     virtual ~QMediaGaplessPlaybackControl();
@@ -42,18 +42,18 @@ public:
     virtual qreal crossfadeTime() const = 0;
     virtual void setCrossfadeTime( qreal crossfadeTime ) = 0;
 
-    MULTI_CS_SIGNAL_1( Public, void crossfadeTimeChanged( qreal crossfadeTime ) )
-    MULTI_CS_SIGNAL_2( crossfadeTimeChanged,crossfadeTime )
-    MULTI_CS_SIGNAL_1( Public, void nextMediaChanged( const QMediaContent &media ) )
-    MULTI_CS_SIGNAL_2( nextMediaChanged,media )
-    MULTI_CS_SIGNAL_1( Public, void advancedToNextMedia() )
-    MULTI_CS_SIGNAL_2( advancedToNextMedia )
+    MULTI_LSCS_SIGNAL_1( Public, void crossfadeTimeChanged( qreal crossfadeTime ) )
+    MULTI_LSCS_SIGNAL_2( crossfadeTimeChanged,crossfadeTime )
+    MULTI_LSCS_SIGNAL_1( Public, void nextMediaChanged( const QMediaContent &media ) )
+    MULTI_LSCS_SIGNAL_2( nextMediaChanged,media )
+    MULTI_LSCS_SIGNAL_1( Public, void advancedToNextMedia() )
+    MULTI_LSCS_SIGNAL_2( advancedToNextMedia )
 
 protected:
     explicit QMediaGaplessPlaybackControl( QObject *parent = nullptr );
 };
 
 #define QMediaGaplessPlaybackControl_iid "com.copperspice.CS.mediaGaplessPlaybackControl/1.0"
-CS_DECLARE_INTERFACE( QMediaGaplessPlaybackControl, QMediaGaplessPlaybackControl_iid )
+LSCS_DECLARE_INTERFACE( QMediaGaplessPlaybackControl, QMediaGaplessPlaybackControl_iid )
 
 #endif

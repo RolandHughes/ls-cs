@@ -34,7 +34,7 @@
 
 #undef  CHECK_STREAM_PRECOND
 
-#if defined(CS_SHOW_DEBUG_CORE)
+#if defined(LSCS_SHOW_DEBUG_CORE)
 #define CHECK_STREAM_PRECOND(retVal) \
    if (! m_device) { \
       qWarning("QDataStream() No device"); \
@@ -60,7 +60,7 @@ QDataStream::QDataStream()
     m_device  = nullptr;
     owndev    = false;
     byteorder = BigEndian;
-    ver       = CS_DefaultStreamVersion;
+    ver       = LSCS_DefaultStreamVersion;
     noswap    = ( QSysInfo::ByteOrder == QSysInfo::BigEndian );
     q_status  = Ok;
 }
@@ -70,7 +70,7 @@ QDataStream::QDataStream( QIODevice *device )
     m_device  = device;                             // set device
     owndev    = false;
     byteorder = BigEndian;                          // default byte order
-    ver       = CS_DefaultStreamVersion;
+    ver       = LSCS_DefaultStreamVersion;
     noswap    = ( QSysInfo::ByteOrder == QSysInfo::BigEndian );
     q_status  = Ok;
 }
@@ -84,7 +84,7 @@ QDataStream::QDataStream( QByteArray *a, QIODevice::OpenMode flags )
     m_device  = buf;
     owndev    = true;
     byteorder = BigEndian;
-    ver       = CS_DefaultStreamVersion;
+    ver       = LSCS_DefaultStreamVersion;
     noswap    = QSysInfo::ByteOrder == QSysInfo::BigEndian;
     q_status  = Ok;
 }
@@ -100,7 +100,7 @@ QDataStream::QDataStream( const QByteArray &a )
     m_device  = buf;
     owndev    = true;
     byteorder = BigEndian;
-    ver       = CS_DefaultStreamVersion;
+    ver       = LSCS_DefaultStreamVersion;
     noswap    = QSysInfo::ByteOrder == QSysInfo::BigEndian;
     q_status  = Ok;
 }

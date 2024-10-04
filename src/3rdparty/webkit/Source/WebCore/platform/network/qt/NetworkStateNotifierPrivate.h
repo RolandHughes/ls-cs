@@ -31,16 +31,16 @@ class NetworkStateNotifier;
 
 class NetworkStateNotifierPrivate : public QObject
 {
-    WEB_CS_OBJECT( NetworkStateNotifierPrivate )
+    WEB_LSCS_OBJECT( NetworkStateNotifierPrivate )
 
 public:
     NetworkStateNotifierPrivate( NetworkStateNotifier *notifier );
     ~NetworkStateNotifierPrivate();
 
-    WEB_CS_SLOT_1( Public, void onlineStateChanged( bool isOnline ) )
-    WEB_CS_SLOT_2( onlineStateChanged )
-    WEB_CS_SLOT_1( Public, void networkAccessPermissionChanged( bool isAllowed ) )
-    WEB_CS_SLOT_2( networkAccessPermissionChanged )
+    WEB_LSCS_SLOT_1( Public, void onlineStateChanged( bool isOnline ) )
+    WEB_LSCS_SLOT_2( onlineStateChanged )
+    WEB_LSCS_SLOT_1( Public, void networkAccessPermissionChanged( bool isAllowed ) )
+    WEB_LSCS_SLOT_2( networkAccessPermissionChanged )
 
     QNetworkConfigurationManager *m_configurationManager;
     bool m_online;

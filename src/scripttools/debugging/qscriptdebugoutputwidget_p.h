@@ -32,7 +32,7 @@ class QScriptDebugOutputWidgetPrivate;
 
 class QScriptDebugOutputWidget: public QScriptDebugOutputWidgetInterface
 {
-    SCRIPT_T_CS_OBJECT( QScriptDebugOutputWidget )
+    SCRIPT_T_LSCS_OBJECT( QScriptDebugOutputWidget )
 
 public:
     QScriptDebugOutputWidget( QWidget *parent = nullptr );

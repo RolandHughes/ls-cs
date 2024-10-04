@@ -363,10 +363,10 @@ inline void QStandardItem::appendRow( QStandardItem *item )
 
 class Q_GUI_EXPORT QStandardItemModel : public QAbstractItemModel
 {
-    GUI_CS_OBJECT( QStandardItemModel )
+    GUI_LSCS_OBJECT( QStandardItemModel )
 
-    GUI_CS_PROPERTY_READ( sortRole, sortRole )
-    GUI_CS_PROPERTY_WRITE( sortRole, setSortRole )
+    GUI_LSCS_PROPERTY_READ( sortRole, sortRole )
+    GUI_LSCS_PROPERTY_WRITE( sortRole, setSortRole )
 
 public:
     explicit QStandardItemModel( QObject *parent = nullptr );
@@ -459,8 +459,8 @@ public:
     QMimeData *mimeData( const QModelIndexList &indexes ) const override;
     bool dropMimeData ( const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent ) override;
 
-    GUI_CS_SIGNAL_1( Public, void itemChanged( QStandardItem *item ) )
-    GUI_CS_SIGNAL_2( itemChanged, item )
+    GUI_LSCS_SIGNAL_1( Public, void itemChanged( QStandardItem *item ) )
+    GUI_LSCS_SIGNAL_2( itemChanged, item )
 
 protected:
     QStandardItemModel( QStandardItemModelPrivate &dd, QObject *parent = nullptr );
@@ -471,8 +471,8 @@ private:
 
     Q_DECLARE_PRIVATE( QStandardItemModel )
 
-    GUI_CS_SLOT_1( Private, void _q_emitItemChanged( const QModelIndex &topLeft, const QModelIndex &bottomRight ) )
-    GUI_CS_SLOT_2( _q_emitItemChanged )
+    GUI_LSCS_SLOT_1( Private, void _q_emitItemChanged( const QModelIndex &topLeft, const QModelIndex &bottomRight ) )
+    GUI_LSCS_SLOT_2( _q_emitItemChanged )
 };
 
 inline void QStandardItemModel::setItem( int row, QStandardItem *item )

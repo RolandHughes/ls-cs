@@ -688,7 +688,7 @@ bool QNetworkReplyHttpImplPrivate::loadFromCacheIfAllowed( QHttpNetworkRequest &
         return false;
     }
 
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
     qDebug() << "response_is_fresh" << CacheLoadControlAttribute;
 #endif
 
@@ -1162,7 +1162,7 @@ void QNetworkReplyHttpImplPrivate::initCacheSaveDevice()
         if ( cacheSaveDevice && !cacheSaveDevice->isOpen() )
             qCritical( "QNetworkReplyImpl: network cache returned a device that is not open -- "
                        "class %s probably needs to be fixed",
-                       csPrintable( managerPrivate->networkCache->metaObject()->className() ) );
+                       lscsPrintable( managerPrivate->networkCache->metaObject()->className() ) );
 
         managerPrivate->networkCache->remove( url );
         cacheSaveDevice = nullptr;
@@ -1465,7 +1465,7 @@ void QNetworkReplyHttpImplPrivate::replyDownloadMetaData
 
     if ( statusCode == 304 )
     {
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
         qDebug() << "Received a 304 from" << request.url();
 #endif
 
@@ -1577,7 +1577,7 @@ void QNetworkReplyHttpImplPrivate::proxyAuthenticationRequired( const QNetworkPr
 
 void QNetworkReplyHttpImplPrivate::httpError( QNetworkReply::NetworkError errorCode, const QString &errorMsg )
 {
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
     qDebug() << "http error!" << errorCode << errorMsg;
 #endif
 
@@ -1707,7 +1707,7 @@ bool QNetworkReplyHttpImplPrivate::sendCacheContents( const QNetworkCacheMetaDat
     if ( ! contents )
     {
 
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
         qDebug() << "Can not send cache, contents are 0" << url;
 #endif
         return false;
@@ -1760,7 +1760,7 @@ bool QNetworkReplyHttpImplPrivate::sendCacheContents( const QNetworkCacheMetaDat
     QMetaObject::invokeMethod( q, "_q_metaDataChanged",    Qt::QueuedConnection );
     QMetaObject::invokeMethod( q, "_q_cacheLoadReadyRead", Qt::QueuedConnection );
 
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
     qDebug() << "Successfully sent cache:" << url << contents->size() << "bytes";
 #endif
 
@@ -1852,7 +1852,7 @@ QNetworkCacheMetaData QNetworkReplyHttpImplPrivate::fetchCacheMetaData( const QN
             }
         }
 
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
         QByteArray n = q->rawHeader( header );
         QByteArray o;
 
@@ -2093,7 +2093,7 @@ void QNetworkReplyHttpImplPrivate::_q_startOperation()
 
     if ( state == Working )
     {
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
         qDebug( "QNetworkReplyImpl::_q_startOperation was called more than once" );
 #endif
 
@@ -2713,7 +2713,7 @@ void QNetworkReplyHttpImplPrivate::setCachingEnabled( bool enable )
     {
         if ( bytesDownloaded )
         {
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
             qDebug() << "setCachingEnabled: " << bytesDownloaded << " bytesDownloaded";
 #endif
 
@@ -2727,7 +2727,7 @@ void QNetworkReplyHttpImplPrivate::setCachingEnabled( bool enable )
     }
     else
     {
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
         qDebug( "QNetworkReplyImpl: setCachingEnabled(true) called after setCachingEnabled(false)" );
 #endif
 

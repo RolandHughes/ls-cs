@@ -31,7 +31,7 @@
 
 #include <qgstutils_p.h>
 
-CS_PLUGIN_REGISTER( QGstreamerAudioDecoderServicePlugin )
+LSCS_PLUGIN_REGISTER( QGstreamerAudioDecoderServicePlugin )
 
 QMediaService *QGstreamerAudioDecoderServicePlugin::create( const QString &key )
 {

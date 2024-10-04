@@ -43,7 +43,7 @@ class CameraBinFocus
     , QGstreamerBufferProbe
 #endif
 {
-    CS_OBJECT( CameraBinFocus )
+    LSCS_OBJECT( CameraBinFocus )
 
 public:
     CameraBinFocus( CameraBinSession *session );
@@ -68,17 +68,17 @@ public:
     }
 
 public:
-    CS_SIGNAL_1( Public, void _q_focusStatusChanged( QCamera::LockStatus status, QCamera::LockChangeReason reason ) )
-    CS_SIGNAL_2( _q_focusStatusChanged, status, reason )
+    LSCS_SIGNAL_1( Public, void _q_focusStatusChanged( QCamera::LockStatus status, QCamera::LockChangeReason reason ) )
+    LSCS_SIGNAL_2( _q_focusStatusChanged, status, reason )
 
 public :
-    CS_SLOT_1( Public, void _q_startFocusing() )
-    CS_SLOT_2( _q_startFocusing )
-    CS_SLOT_1( Public, void _q_stopFocusing() )
-    CS_SLOT_2( _q_stopFocusing )
+    LSCS_SLOT_1( Public, void _q_startFocusing() )
+    LSCS_SLOT_2( _q_startFocusing )
+    LSCS_SLOT_1( Public, void _q_stopFocusing() )
+    LSCS_SLOT_2( _q_stopFocusing )
 
-    CS_SLOT_1( Public, void setViewfinderResolution( const QSize &resolution ) )
-    CS_SLOT_2( setViewfinderResolution )
+    LSCS_SLOT_1( Public, void setViewfinderResolution( const QSize &resolution ) )
+    LSCS_SLOT_2( setViewfinderResolution )
 
 #if GST_CHECK_VERSION(1,0,0)
 protected:
@@ -86,14 +86,14 @@ protected:
 #endif
 
 private :
-    CS_SLOT_1( Private, void _q_setFocusStatus( QCamera::LockStatus status, QCamera::LockChangeReason reason ) )
-    CS_SLOT_2( _q_setFocusStatus )
-    CS_SLOT_1( Private, void _q_handleCameraStatusChange( QCamera::Status status ) )
-    CS_SLOT_2( _q_handleCameraStatusChange )
+    LSCS_SLOT_1( Private, void _q_setFocusStatus( QCamera::LockStatus status, QCamera::LockChangeReason reason ) )
+    LSCS_SLOT_2( _q_setFocusStatus )
+    LSCS_SLOT_1( Private, void _q_handleCameraStatusChange( QCamera::Status status ) )
+    LSCS_SLOT_2( _q_handleCameraStatusChange )
 
 #if GST_CHECK_VERSION(1,0,0)
-    CS_SLOT_1( Private, void _q_updateFaces() )
-    CS_SLOT_2( _q_updateFaces )
+    LSCS_SLOT_1( Private, void _q_updateFaces() )
+    LSCS_SLOT_2( _q_updateFaces )
 #endif
 
 private:

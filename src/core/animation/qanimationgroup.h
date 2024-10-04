@@ -32,7 +32,7 @@ class QAnimationGroupPrivate;
 
 class Q_CORE_EXPORT QAnimationGroup : public QAbstractAnimation
 {
-    CORE_CS_OBJECT( QAnimationGroup )
+    CORE_LSCS_OBJECT( QAnimationGroup )
 
 public:
     QAnimationGroup( QObject *parent = nullptr );

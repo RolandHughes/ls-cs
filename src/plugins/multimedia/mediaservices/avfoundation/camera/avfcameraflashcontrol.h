@@ -33,7 +33,7 @@ class AVFCameraSession;
 
 class AVFCameraFlashControl : public QCameraFlashControl
 {
-    CS_OBJECT( AVFCameraFlashControl )
+    LSCS_OBJECT( AVFCameraFlashControl )
 
 public:
     AVFCameraFlashControl( AVFCameraService *service );
@@ -44,8 +44,8 @@ public:
     bool isFlashReady() const override;
 
 private:
-    CS_SLOT_1( Private, void cameraStateChanged( QCamera::State newState ) )
-    CS_SLOT_2( cameraStateChanged )
+    LSCS_SLOT_1( Private, void cameraStateChanged( QCamera::State newState ) )
+    LSCS_SLOT_2( cameraStateChanged )
 
     bool applyFlashSettings();
 

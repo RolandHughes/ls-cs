@@ -37,7 +37,7 @@ class AVFCameraService;
 
 class AVFImageEncoderControl : public QImageEncoderControl
 {
-    CS_OBJECT( AVFImageEncoderControl )
+    LSCS_OBJECT( AVFImageEncoderControl )
 
 public:
     AVFImageEncoderControl( AVFCameraService *service );

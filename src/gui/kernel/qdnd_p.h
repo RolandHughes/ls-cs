@@ -42,7 +42,7 @@ class QPlatformDrag;
 
 class Q_GUI_EXPORT QInternalMimeData : public QMimeData
 {
-    GUI_CS_OBJECT( QInternalMimeData )
+    GUI_LSCS_OBJECT( QInternalMimeData )
 
 public:
     QInternalMimeData();
@@ -93,7 +93,7 @@ public:
 
 class QDragManager : public QObject
 {
-    GUI_CS_OBJECT( QDragManager )
+    GUI_LSCS_OBJECT( QDragManager )
 
 public:
     QDragManager();

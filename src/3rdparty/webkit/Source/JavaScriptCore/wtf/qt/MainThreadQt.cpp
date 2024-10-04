@@ -39,14 +39,14 @@ namespace WTF
 
 class MainThreadInvoker : public QObject
 {
-    WEB_CS_OBJECT( MainThreadInvoker )
+    WEB_LSCS_OBJECT( MainThreadInvoker )
 
 public:
     MainThreadInvoker();
 
 private:
-    WEB_CS_SLOT_1( Private,void dispatch() )
-    WEB_CS_SLOT_2( dispatch )
+    WEB_LSCS_SLOT_1( Private,void dispatch() )
+    WEB_LSCS_SLOT_2( dispatch )
 };
 
 MainThreadInvoker::MainThreadInvoker()

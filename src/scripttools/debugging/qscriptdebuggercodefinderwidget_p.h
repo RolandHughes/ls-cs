@@ -32,7 +32,7 @@ class QScriptDebuggerCodeFinderWidgetPrivate;
 
 class QScriptDebuggerCodeFinderWidget : public QScriptDebuggerCodeFinderWidgetInterface
 {
-    SCRIPT_T_CS_OBJECT( QScriptDebuggerCodeFinderWidget )
+    SCRIPT_T_LSCS_OBJECT( QScriptDebuggerCodeFinderWidget )
 
 public:
     QScriptDebuggerCodeFinderWidget( QWidget *parent = nullptr );
@@ -53,17 +53,17 @@ private:
     Q_DECLARE_PRIVATE( QScriptDebuggerCodeFinderWidget )
     Q_DISABLE_COPY( QScriptDebuggerCodeFinderWidget )
 
-    CS_SLOT_1( Private, void _q_updateButtons() )
-    CS_SLOT_2( _q_updateButtons )
+    LSCS_SLOT_1( Private, void _q_updateButtons() )
+    LSCS_SLOT_2( _q_updateButtons )
 
-    CS_SLOT_1( Private, void _q_onTextChanged( const QString &un_named_arg1 ) )
-    CS_SLOT_2( _q_onTextChanged )
+    LSCS_SLOT_1( Private, void _q_onTextChanged( const QString &un_named_arg1 ) )
+    LSCS_SLOT_2( _q_onTextChanged )
 
-    CS_SLOT_1( Private, void _q_next() )
-    CS_SLOT_2( _q_next )
+    LSCS_SLOT_1( Private, void _q_next() )
+    LSCS_SLOT_2( _q_next )
 
-    CS_SLOT_1( Private, void _q_previous() )
-    CS_SLOT_2( _q_previous )
+    LSCS_SLOT_1( Private, void _q_previous() )
+    LSCS_SLOT_2( _q_previous )
 
 };
 

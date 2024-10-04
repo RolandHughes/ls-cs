@@ -155,7 +155,7 @@ unsigned RenderThemeWinCE::determineClassicState( RenderObject *o )
 
     if ( !isEnabled( o ) || isReadOnlyControl( o ) )
     {
-        result = DFCS_INACTIVE;
+        result = DFLSCS_INACTIVE;
     }
     else if ( isPressed( o ) ) // Active supersedes hover
     {

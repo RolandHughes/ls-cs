@@ -43,9 +43,9 @@ class QGstreamerMessage;
 
 class QGstreamerAudioDecoderSession : public QObject, public QGstreamerBusMessageFilter
 {
-    CS_OBJECT_MULTIPLE( QGstreamerAudioDecoderSession, QObject )
+    LSCS_OBJECT_MULTIPLE( QGstreamerAudioDecoderSession, QObject )
 
-    CS_INTERFACES( QGstreamerBusMessageFilter )
+    LSCS_INTERFACES( QGstreamerBusMessageFilter )
 
 public:
     QGstreamerAudioDecoderSession( QObject *parent );
@@ -95,27 +95,27 @@ public:
 
     static GstFlowReturn new_sample( GstAppSink *sink, gpointer user_data );
 
-    CS_SIGNAL_1( Public, void stateChanged( QAudioDecoder::State newState ) )
-    CS_SIGNAL_2( stateChanged, newState )
-    CS_SIGNAL_1( Public, void formatChanged( const QAudioFormat &format ) )
-    CS_SIGNAL_2( formatChanged, format )
-    CS_SIGNAL_1( Public, void sourceChanged() )
-    CS_SIGNAL_2( sourceChanged )
+    LSCS_SIGNAL_1( Public, void stateChanged( QAudioDecoder::State newState ) )
+    LSCS_SIGNAL_2( stateChanged, newState )
+    LSCS_SIGNAL_1( Public, void formatChanged( const QAudioFormat &format ) )
+    LSCS_SIGNAL_2( formatChanged, format )
+    LSCS_SIGNAL_1( Public, void sourceChanged() )
+    LSCS_SIGNAL_2( sourceChanged )
 
-    CS_SIGNAL_1( Public, void error( int error, const QString &errorString ) )
-    CS_SIGNAL_2( error, error, errorString )
+    LSCS_SIGNAL_1( Public, void error( int error, const QString &errorString ) )
+    LSCS_SIGNAL_2( error, error, errorString )
 
-    CS_SIGNAL_1( Public, void bufferReady() )
-    CS_SIGNAL_2( bufferReady )
-    CS_SIGNAL_1( Public, void bufferAvailableChanged( bool available ) )
-    CS_SIGNAL_2( bufferAvailableChanged, available )
-    CS_SIGNAL_1( Public, void finished() )
-    CS_SIGNAL_2( finished )
+    LSCS_SIGNAL_1( Public, void bufferReady() )
+    LSCS_SIGNAL_2( bufferReady )
+    LSCS_SIGNAL_1( Public, void bufferAvailableChanged( bool available ) )
+    LSCS_SIGNAL_2( bufferAvailableChanged, available )
+    LSCS_SIGNAL_1( Public, void finished() )
+    LSCS_SIGNAL_2( finished )
 
-    CS_SIGNAL_1( Public, void positionChanged( qint64 position ) )
-    CS_SIGNAL_2( positionChanged, position )
-    CS_SIGNAL_1( Public, void durationChanged( qint64 duration ) )
-    CS_SIGNAL_2( durationChanged, duration )
+    LSCS_SIGNAL_1( Public, void positionChanged( qint64 position ) )
+    LSCS_SIGNAL_2( positionChanged, position )
+    LSCS_SIGNAL_1( Public, void durationChanged( qint64 duration ) )
+    LSCS_SIGNAL_2( durationChanged, duration )
 
 private:
     void setAudioFlags( bool wantNativeAudio );
@@ -150,8 +150,8 @@ private:
 
     int m_durationQueries;
 
-    CS_SLOT_1( Private, void updateDuration() )
-    CS_SLOT_2( updateDuration )
+    LSCS_SLOT_1( Private, void updateDuration() )
+    LSCS_SLOT_2( updateDuration )
 };
 
 #endif

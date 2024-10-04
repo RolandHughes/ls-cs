@@ -34,7 +34,7 @@ class QScreen;
 
 class QXcbSystemTrayTracker : public QObject, public QXcbWindowEventListener
 {
-    CS_OBJECT_MULTIPLE( QXcbSystemTrayTracker, QObject )
+    LSCS_OBJECT_MULTIPLE( QXcbSystemTrayTracker, QObject )
 
 public:
     static QXcbSystemTrayTracker *create( QXcbConnection *connection );
@@ -49,8 +49,8 @@ public:
 
     bool visualHasAlphaChannel();
 
-    CS_SIGNAL_1( Public, void systemTrayWindowChanged( QScreen *screen ) )
-    CS_SIGNAL_2( systemTrayWindowChanged, screen )
+    LSCS_SIGNAL_1( Public, void systemTrayWindowChanged( QScreen *screen ) )
+    LSCS_SIGNAL_2( systemTrayWindowChanged, screen )
 
 private:
     explicit QXcbSystemTrayTracker( QXcbConnection *connection, xcb_atom_t trayAtom, xcb_atom_t selection );

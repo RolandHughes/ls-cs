@@ -102,6 +102,6 @@ private:
 
 Q_NETWORK_EXPORT QDebug operator<<( QDebug, const QNetworkCookie & );
 
-CS_DECLARE_METATYPE( QNetworkCookie )
+LSCS_DECLARE_METATYPE( QNetworkCookie )
 
 #endif

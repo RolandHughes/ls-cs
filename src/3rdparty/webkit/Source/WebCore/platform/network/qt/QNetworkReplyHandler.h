@@ -69,7 +69,7 @@ private:
 
 class QNetworkReplyWrapper : public QObject
 {
-    WEB_CS_OBJECT( QNetworkReplyWrapper )
+    WEB_LSCS_OBJECT( QNetworkReplyWrapper )
 public:
     QNetworkReplyWrapper( QNetworkReplyHandlerCallQueue *, QNetworkReply *, bool sniffMIMETypes, QObject *parent = 0 );
     ~QNetworkReplyWrapper();
@@ -115,16 +115,16 @@ public:
     }
 
 private :
-    WEB_CS_SLOT_1( Private, void receiveMetaData() )
-    WEB_CS_SLOT_2( receiveMetaData )
-    WEB_CS_SLOT_1( Private, void didReceiveFinished() )
-    WEB_CS_SLOT_2( didReceiveFinished )
-    WEB_CS_SLOT_1( Private, void didReceiveReadyRead() )
-    WEB_CS_SLOT_2( didReceiveReadyRead )
-    WEB_CS_SLOT_1( Private, void receiveSniffedMIMEType() )
-    WEB_CS_SLOT_2( receiveSniffedMIMEType )
-    WEB_CS_SLOT_1( Private, void setFinished() )
-    WEB_CS_SLOT_2( setFinished )
+    WEB_LSCS_SLOT_1( Private, void receiveMetaData() )
+    WEB_LSCS_SLOT_2( receiveMetaData )
+    WEB_LSCS_SLOT_1( Private, void didReceiveFinished() )
+    WEB_LSCS_SLOT_2( didReceiveFinished )
+    WEB_LSCS_SLOT_1( Private, void didReceiveReadyRead() )
+    WEB_LSCS_SLOT_2( didReceiveReadyRead )
+    WEB_LSCS_SLOT_1( Private, void receiveSniffedMIMEType() )
+    WEB_LSCS_SLOT_2( receiveSniffedMIMEType )
+    WEB_LSCS_SLOT_1( Private, void setFinished() )
+    WEB_LSCS_SLOT_2( setFinished )
 
     void resetConnections();
     void emitMetaDataChanged();
@@ -145,7 +145,7 @@ private :
 
 class QNetworkReplyHandler : public QObject
 {
-    WEB_CS_OBJECT( QNetworkReplyHandler )
+    WEB_LSCS_OBJECT( QNetworkReplyHandler )
 public:
     enum LoadType
     {
@@ -173,8 +173,8 @@ public:
     void sendResponseIfNeeded();
 
 private :
-    WEB_CS_SLOT_1( Private, void uploadProgress( qint64 bytesSent,qint64 bytesTotal ) )
-    WEB_CS_SLOT_2( uploadProgress )
+    WEB_LSCS_SLOT_1( Private, void uploadProgress( qint64 bytesSent,qint64 bytesTotal ) )
+    WEB_LSCS_SLOT_2( uploadProgress )
 
     void start();
     String httpMethod() const;
@@ -218,7 +218,7 @@ private :
 
 class FormDataIODevice : public QIODevice
 {
-    WEB_CS_OBJECT( FormDataIODevice )
+    WEB_LSCS_OBJECT( FormDataIODevice )
 
 public:
     FormDataIODevice( FormData * );

@@ -32,7 +32,7 @@
 
 class Q_GUI_EXPORT QPlatformGraphicsBuffer : public QObject
 {
-    GUI_CS_OBJECT( QPlatformGraphicsBuffer )
+    GUI_LSCS_OBJECT( QPlatformGraphicsBuffer )
 
 public:
     enum AccessType
@@ -78,8 +78,8 @@ public:
         return m_format;
     }
 
-    GUI_CS_SIGNAL_1( Public, void unlocked( AccessTypes previousAccessTypes ) )
-    GUI_CS_SIGNAL_2( unlocked, previousAccessTypes )
+    GUI_LSCS_SIGNAL_1( Public, void unlocked( AccessTypes previousAccessTypes ) )
+    GUI_LSCS_SIGNAL_2( unlocked, previousAccessTypes )
 
 protected:
     QPlatformGraphicsBuffer( const QSize &size, const QPixelFormat &format );

@@ -1085,7 +1085,7 @@ static void init_platform( const QString &pluginArgument, const QString &platfor
 
 #endif
 
-        qFatal( "%s", csPrintable( fatalMessage ) );
+        qFatal( "%s", lscsPrintable( fatalMessage ) );
         return;
     }
 
@@ -3683,9 +3683,9 @@ QStyle *QApplication::style()
 
 #endif
 
-#if defined(CS_SHOW_DEBUG_GUI)
+#if defined(LSCS_SHOW_DEBUG_GUI)
     qDebug( "QApplication::style() Style class = %s",
-            csPrintable( QApplicationPrivate::app_style->metaObject()->className() ) );
+            lscsPrintable( QApplicationPrivate::app_style->metaObject()->className() ) );
 #endif
 
     return QApplicationPrivate::app_style;

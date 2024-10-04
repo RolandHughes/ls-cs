@@ -78,34 +78,34 @@ class QGraphicsScenePrivate;
 
 class Q_GUI_EXPORT QGraphicsScene : public QObject
 {
-    GUI_CS_OBJECT( QGraphicsScene )
+    GUI_LSCS_OBJECT( QGraphicsScene )
 
-    GUI_CS_PROPERTY_READ( backgroundBrush, backgroundBrush )
-    GUI_CS_PROPERTY_WRITE( backgroundBrush, setBackgroundBrush )
+    GUI_LSCS_PROPERTY_READ( backgroundBrush, backgroundBrush )
+    GUI_LSCS_PROPERTY_WRITE( backgroundBrush, setBackgroundBrush )
 
-    GUI_CS_PROPERTY_READ( foregroundBrush, foregroundBrush )
-    GUI_CS_PROPERTY_WRITE( foregroundBrush, setForegroundBrush )
+    GUI_LSCS_PROPERTY_READ( foregroundBrush, foregroundBrush )
+    GUI_LSCS_PROPERTY_WRITE( foregroundBrush, setForegroundBrush )
 
-    GUI_CS_PROPERTY_READ( itemIndexMethod, itemIndexMethod )
-    GUI_CS_PROPERTY_WRITE( itemIndexMethod, setItemIndexMethod )
+    GUI_LSCS_PROPERTY_READ( itemIndexMethod, itemIndexMethod )
+    GUI_LSCS_PROPERTY_WRITE( itemIndexMethod, setItemIndexMethod )
 
-    GUI_CS_PROPERTY_READ( sceneRect, sceneRect )
-    GUI_CS_PROPERTY_WRITE( sceneRect, cs_setSceneRect )
+    GUI_LSCS_PROPERTY_READ( sceneRect, sceneRect )
+    GUI_LSCS_PROPERTY_WRITE( sceneRect, cs_setSceneRect )
 
-    GUI_CS_PROPERTY_READ( bspTreeDepth, bspTreeDepth )
-    GUI_CS_PROPERTY_WRITE( bspTreeDepth, setBspTreeDepth )
+    GUI_LSCS_PROPERTY_READ( bspTreeDepth, bspTreeDepth )
+    GUI_LSCS_PROPERTY_WRITE( bspTreeDepth, setBspTreeDepth )
 
-    GUI_CS_PROPERTY_READ( palette, palette )
-    GUI_CS_PROPERTY_WRITE( palette, setPalette )
+    GUI_LSCS_PROPERTY_READ( palette, palette )
+    GUI_LSCS_PROPERTY_WRITE( palette, setPalette )
 
-    GUI_CS_PROPERTY_READ( font, font )
-    GUI_CS_PROPERTY_WRITE( font, setFont )
+    GUI_LSCS_PROPERTY_READ( font, font )
+    GUI_LSCS_PROPERTY_WRITE( font, setFont )
 
-    GUI_CS_PROPERTY_READ( stickyFocus, stickyFocus )
-    GUI_CS_PROPERTY_WRITE( stickyFocus, setStickyFocus )
+    GUI_LSCS_PROPERTY_READ( stickyFocus, stickyFocus )
+    GUI_LSCS_PROPERTY_WRITE( stickyFocus, setStickyFocus )
 
-    GUI_CS_PROPERTY_READ( minimumRenderSize, minimumRenderSize )
-    GUI_CS_PROPERTY_WRITE( minimumRenderSize, setMinimumRenderSize )
+    GUI_LSCS_PROPERTY_READ( minimumRenderSize, minimumRenderSize )
+    GUI_LSCS_PROPERTY_WRITE( minimumRenderSize, setMinimumRenderSize )
 
 public:
     enum ItemIndexMethod
@@ -280,32 +280,32 @@ public:
     qreal minimumRenderSize() const;
     void setMinimumRenderSize( qreal minSize );
 
-    GUI_CS_SLOT_1( Public, void update( const QRectF &rect = QRectF() ) )
-    GUI_CS_SLOT_OVERLOAD( update, ( const QRectF & ) )
+    GUI_LSCS_SLOT_1( Public, void update( const QRectF &rect = QRectF() ) )
+    GUI_LSCS_SLOT_OVERLOAD( update, ( const QRectF & ) )
 
-    GUI_CS_SLOT_1( Public, void invalidate( const QRectF &rect = QRectF(), SceneLayers layers = AllLayers ) )
-    GUI_CS_SLOT_OVERLOAD( invalidate, ( const QRectF &, SceneLayers ) )
+    GUI_LSCS_SLOT_1( Public, void invalidate( const QRectF &rect = QRectF(), SceneLayers layers = AllLayers ) )
+    GUI_LSCS_SLOT_OVERLOAD( invalidate, ( const QRectF &, SceneLayers ) )
 
-    GUI_CS_SLOT_1( Public, void advance() )
-    GUI_CS_SLOT_2( advance )
+    GUI_LSCS_SLOT_1( Public, void advance() )
+    GUI_LSCS_SLOT_2( advance )
 
-    GUI_CS_SLOT_1( Public, void clearSelection() )
-    GUI_CS_SLOT_2( clearSelection )
+    GUI_LSCS_SLOT_1( Public, void clearSelection() )
+    GUI_LSCS_SLOT_2( clearSelection )
 
-    GUI_CS_SLOT_1( Public, void clear() )
-    GUI_CS_SLOT_2( clear )
+    GUI_LSCS_SLOT_1( Public, void clear() )
+    GUI_LSCS_SLOT_2( clear )
 
-    GUI_CS_SIGNAL_1( Public, void changed( const QList <QRectF> &region ) )
-    GUI_CS_SIGNAL_2( changed, region )
+    GUI_LSCS_SIGNAL_1( Public, void changed( const QList <QRectF> &region ) )
+    GUI_LSCS_SIGNAL_2( changed, region )
 
-    GUI_CS_SIGNAL_1( Public, void sceneRectChanged( const QRectF &rect ) )
-    GUI_CS_SIGNAL_2( sceneRectChanged, rect )
+    GUI_LSCS_SIGNAL_1( Public, void sceneRectChanged( const QRectF &rect ) )
+    GUI_LSCS_SIGNAL_2( sceneRectChanged, rect )
 
-    GUI_CS_SIGNAL_1( Public, void selectionChanged() )
-    GUI_CS_SIGNAL_2( selectionChanged )
+    GUI_LSCS_SIGNAL_1( Public, void selectionChanged() )
+    GUI_LSCS_SIGNAL_2( selectionChanged )
 
-    GUI_CS_SIGNAL_1( Public, void focusItemChanged( QGraphicsItem *newFocus, QGraphicsItem *oldFocus, Qt::FocusReason reason ) )
-    GUI_CS_SIGNAL_2( focusItemChanged, newFocus, oldFocus, reason )
+    GUI_LSCS_SIGNAL_1( Public, void focusItemChanged( QGraphicsItem *newFocus, QGraphicsItem *oldFocus, Qt::FocusReason reason ) )
+    GUI_LSCS_SIGNAL_2( focusItemChanged, newFocus, oldFocus, reason )
 
 protected:
     bool event( QEvent *event ) override;
@@ -335,23 +335,23 @@ protected:
 
     QScopedPointer<QGraphicsScenePrivate> d_ptr;
 
-    GUI_CS_SLOT_1( Protected, bool focusNextPrevChild( bool next ) )
-    GUI_CS_SLOT_2( focusNextPrevChild )
+    GUI_LSCS_SLOT_1( Protected, bool focusNextPrevChild( bool next ) )
+    GUI_LSCS_SLOT_2( focusNextPrevChild )
 
 private:
     Q_DECLARE_PRIVATE( QGraphicsScene )
 
-    GUI_CS_SLOT_1( Private, void _q_emitUpdated() )
-    GUI_CS_SLOT_2( _q_emitUpdated )
+    GUI_LSCS_SLOT_1( Private, void _q_emitUpdated() )
+    GUI_LSCS_SLOT_2( _q_emitUpdated )
 
-    GUI_CS_SLOT_1( Private, void _q_polishItems() )
-    GUI_CS_SLOT_2( _q_polishItems )
+    GUI_LSCS_SLOT_1( Private, void _q_polishItems() )
+    GUI_LSCS_SLOT_2( _q_polishItems )
 
-    GUI_CS_SLOT_1( Private, void _q_processDirtyItems() )
-    GUI_CS_SLOT_2( _q_processDirtyItems )
+    GUI_LSCS_SLOT_1( Private, void _q_processDirtyItems() )
+    GUI_LSCS_SLOT_2( _q_processDirtyItems )
 
-    GUI_CS_SLOT_1( Private, void _q_updateScenePosDescendants() )
-    GUI_CS_SLOT_2( _q_updateScenePosDescendants )
+    GUI_LSCS_SLOT_1( Private, void _q_updateScenePosDescendants() )
+    GUI_LSCS_SLOT_2( _q_updateScenePosDescendants )
 
     friend class QGraphicsItem;
     friend class QGraphicsItemPrivate;

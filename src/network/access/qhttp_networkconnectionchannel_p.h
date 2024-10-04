@@ -53,7 +53,7 @@ using HttpMessagePair = QPair<QHttpNetworkRequest, QHttpNetworkReply *>;
 
 class QHttpNetworkConnectionChannel : public QObject
 {
-    NET_CS_OBJECT( QHttpNetworkConnectionChannel )
+    NET_LSCS_OBJECT( QHttpNetworkConnectionChannel )
 
 public:
     enum ChannelState
@@ -153,44 +153,44 @@ public:
 
 
 protected :
-    NET_CS_SLOT_1( Protected, void _q_receiveReply() )
-    NET_CS_SLOT_2( _q_receiveReply )
+    NET_LSCS_SLOT_1( Protected, void _q_receiveReply() )
+    NET_LSCS_SLOT_2( _q_receiveReply )
 
-    NET_CS_SLOT_1( Protected, void _q_bytesWritten( qint64 bytes ) )
-    NET_CS_SLOT_2( _q_bytesWritten ) // proceed sending
+    NET_LSCS_SLOT_1( Protected, void _q_bytesWritten( qint64 bytes ) )
+    NET_LSCS_SLOT_2( _q_bytesWritten ) // proceed sending
 
-    NET_CS_SLOT_1( Protected, void _q_readyRead() )
-    NET_CS_SLOT_2( _q_readyRead ) // pending data to read
+    NET_LSCS_SLOT_1( Protected, void _q_readyRead() )
+    NET_LSCS_SLOT_2( _q_readyRead ) // pending data to read
 
-    NET_CS_SLOT_1( Protected, void _q_disconnected() )
-    NET_CS_SLOT_2( _q_disconnected ) // disconnected from host
+    NET_LSCS_SLOT_1( Protected, void _q_disconnected() )
+    NET_LSCS_SLOT_2( _q_disconnected ) // disconnected from host
 
-    NET_CS_SLOT_1( Protected, void _q_connected() )
-    NET_CS_SLOT_2( _q_connected ) // start sending request
+    NET_LSCS_SLOT_1( Protected, void _q_connected() )
+    NET_LSCS_SLOT_2( _q_connected ) // start sending request
 
-    NET_CS_SLOT_1( Protected, void _q_error( QAbstractSocket::SocketError socketError ) )
-    NET_CS_SLOT_2( _q_error ) // error from socket
+    NET_LSCS_SLOT_1( Protected, void _q_error( QAbstractSocket::SocketError socketError ) )
+    NET_LSCS_SLOT_2( _q_error ) // error from socket
 
 #ifndef QT_NO_NETWORKPROXY
-    NET_CS_SLOT_1( Protected, void _q_proxyAuthenticationRequired( const QNetworkProxy &proxy, QAuthenticator *auth ) )
-    NET_CS_SLOT_2( _q_proxyAuthenticationRequired ) // from transparent proxy
+    NET_LSCS_SLOT_1( Protected, void _q_proxyAuthenticationRequired( const QNetworkProxy &proxy, QAuthenticator *auth ) )
+    NET_LSCS_SLOT_2( _q_proxyAuthenticationRequired ) // from transparent proxy
 #endif
 
-    NET_CS_SLOT_1( Protected, void _q_uploadDataReadyRead() )
-    NET_CS_SLOT_2( _q_uploadDataReadyRead )
+    NET_LSCS_SLOT_1( Protected, void _q_uploadDataReadyRead() )
+    NET_LSCS_SLOT_2( _q_uploadDataReadyRead )
 
 #ifdef QT_SSL
-    NET_CS_SLOT_1( Protected, void _q_encrypted() )
-    NET_CS_SLOT_2( _q_encrypted ) // start sending request (https)
+    NET_LSCS_SLOT_1( Protected, void _q_encrypted() )
+    NET_LSCS_SLOT_2( _q_encrypted ) // start sending request (https)
 
-    NET_CS_SLOT_1( Protected, void _q_sslErrors( const QList <QSslError> &errors ) )
-    NET_CS_SLOT_2( _q_sslErrors ) // ssl errors from the socket
+    NET_LSCS_SLOT_1( Protected, void _q_sslErrors( const QList <QSslError> &errors ) )
+    NET_LSCS_SLOT_2( _q_sslErrors ) // ssl errors from the socket
 
-    NET_CS_SLOT_1( Protected, void _q_preSharedKeyAuthenticationRequired( QSslPreSharedKeyAuthenticator * ) )
-    NET_CS_SLOT_2( _q_preSharedKeyAuthenticationRequired )
+    NET_LSCS_SLOT_1( Protected, void _q_preSharedKeyAuthenticationRequired( QSslPreSharedKeyAuthenticator * ) )
+    NET_LSCS_SLOT_2( _q_preSharedKeyAuthenticationRequired )
 
-    NET_CS_SLOT_1( Protected, void _q_encryptedBytesWritten( qint64 bytes ) )
-    NET_CS_SLOT_2( _q_encryptedBytesWritten ) // proceed sending
+    NET_LSCS_SLOT_1( Protected, void _q_encryptedBytesWritten( qint64 bytes ) )
+    NET_LSCS_SLOT_2( _q_encryptedBytesWritten ) // proceed sending
 #endif
     friend class QHttpProtocolHandler;
 };

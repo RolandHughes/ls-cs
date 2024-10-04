@@ -612,7 +612,7 @@ int QTextDocumentPrivate::remove_block( int pos, int *blockFormat, int command, 
     return w;
 }
 
-#if defined(CS_SHOW_DEBUG_GUI_TEXT)
+#if defined(LSCS_SHOW_DEBUG_GUI_TEXT)
 static bool isAncestorFrame( QTextFrame *possibleAncestor, QTextFrame *child )
 {
     while ( child )
@@ -642,7 +642,7 @@ void QTextDocumentPrivate::move( int pos, int to, int length, QTextUndoCommand::
 
     const bool needsInsert = to != -1;
 
-#if defined(CS_SHOW_DEBUG_GUI_TEXT)
+#if defined(LSCS_SHOW_DEBUG_GUI_TEXT)
     const bool startAndEndInSameFrame = ( frameAt( pos ) == frameAt( pos + length - 1 ) );
 
     const bool endIsEndOfChildFrame = ( isAncestorFrame( frameAt( pos ), frameAt( pos + length - 1 ) )
@@ -1019,7 +1019,7 @@ bool QTextDocumentPrivate::unite( uint f )
 
 int QTextDocumentPrivate::undoRedo( bool undo )
 {
-#if defined(CS_SHOW_DEBUG_GUI_TEXT)
+#if defined(LSCS_SHOW_DEBUG_GUI_TEXT)
     qDebug( "QTextDocument::undoRedo() %s, undoState = %d, undoStack size = %zd",
             undo ? "Undo" : "Redo", undoState, undoStack.size() );
 #endif
@@ -1049,7 +1049,7 @@ int QTextDocumentPrivate::undoRedo( bool undo )
             case QTextUndoCommand::Inserted:
                 remove( c.pos, c.length, ( QTextUndoCommand::Operation )c.operation );
 
-#if defined(CS_SHOW_DEBUG_GUI_TEXT)
+#if defined(LSCS_SHOW_DEBUG_GUI_TEXT)
                 qDebug( "QTextDocument::undoRedo() Erase from = %d, length = %d", c.pos, c.length );
 #endif
 
@@ -1059,7 +1059,7 @@ int QTextDocumentPrivate::undoRedo( bool undo )
                 break;
 
             case QTextUndoCommand::Removed:
-#if defined(CS_SHOW_DEBUG_GUI_TEXT)
+#if defined(LSCS_SHOW_DEBUG_GUI_TEXT)
                 qDebug( "QTextDocument::undoRedo() Insert format = %d, from = %d, length = %d, strpos = %d",
                         c.format, c.pos, c.length, c.strPos );
 #endif
@@ -1081,7 +1081,7 @@ int QTextDocumentPrivate::undoRedo( bool undo )
             case QTextUndoCommand::BlockAdded:
                 remove_block( c.pos, &c.blockFormat, c.command, ( QTextUndoCommand::Operation )c.operation );
 
-#if defined(CS_SHOW_DEBUG_GUI_TEXT)
+#if defined(LSCS_SHOW_DEBUG_GUI_TEXT)
                 qDebug( "QTextDocument::undoRedo() Block remove from = %d", c.pos );
 #endif
 
@@ -1101,7 +1101,7 @@ int QTextDocumentPrivate::undoRedo( bool undo )
             case QTextUndoCommand::BlockRemoved:
             case QTextUndoCommand::BlockDeleted:
 
-#if defined(CS_SHOW_DEBUG_GUI_TEXT)
+#if defined(LSCS_SHOW_DEBUG_GUI_TEXT)
                 qDebug( "QTextDocument::undoRedo() Block insert charformat = %d, blockformat = %d, pos = %d, strpos = %d",
                         c.format, c.blockFormat, c.pos, c.strPos );
 #endif
@@ -1131,7 +1131,7 @@ int QTextDocumentPrivate::undoRedo( bool undo )
             {
                 resetBlockRevision = -1; // ## TODO
 
-#if defined(CS_SHOW_DEBUG_GUI_TEXT)
+#if defined(LSCS_SHOW_DEBUG_GUI_TEXT)
                 qDebug( "QTextDocument::undoRedo() Char Format format = %d,  from = %d,  length = %d",
                         c.format, c.pos, c.length );
 #endif
@@ -1157,7 +1157,7 @@ int QTextDocumentPrivate::undoRedo( bool undo )
             {
                 resetBlockRevision = -1; // ## TODO
 
-#if defined(CS_SHOW_DEBUG_GUI_TEXT)
+#if defined(LSCS_SHOW_DEBUG_GUI_TEXT)
                 qDebug( "QTextDocument::undoRedo() Block Format format = %d, pos = %d", c.format, c.pos );
 #endif
 
@@ -1196,7 +1196,7 @@ int QTextDocumentPrivate::undoRedo( bool undo )
             {
                 resetBlockRevision = -1; // ## TODO
 
-#if defined(CS_SHOW_DEBUG_GUI_TEXT)
+#if defined(LSCS_SHOW_DEBUG_GUI_TEXT)
                 qDebug( "QTextDocument::undoRedo() Group format change" );
 #endif
 
@@ -1303,7 +1303,7 @@ void QTextDocumentPrivate::appendUndoItem( QAbstractUndoItem *item )
 
 void QTextDocumentPrivate::appendUndoItem( const QTextUndoCommand &c )
 {
-#if defined(CS_SHOW_DEBUG_GUI_TEXT)
+#if defined(LSCS_SHOW_DEBUG_GUI_TEXT)
     qDebug( "QTextDocument::appendUndoItem() command = %d  enabled = %d", c.command, undoEnabled );
 #endif
 

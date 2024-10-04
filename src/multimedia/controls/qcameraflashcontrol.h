@@ -32,7 +32,7 @@
 
 class Q_MULTIMEDIA_EXPORT QCameraFlashControl : public QMediaControl
 {
-    MULTI_CS_OBJECT( QCameraFlashControl )
+    MULTI_LSCS_OBJECT( QCameraFlashControl )
 
 public:
     ~QCameraFlashControl();
@@ -43,15 +43,15 @@ public:
 
     virtual bool isFlashReady() const = 0;
 
-    MULTI_CS_SIGNAL_1( Public, void flashReady( bool ready ) )
-    MULTI_CS_SIGNAL_2( flashReady, ready )
+    MULTI_LSCS_SIGNAL_1( Public, void flashReady( bool ready ) )
+    MULTI_LSCS_SIGNAL_2( flashReady, ready )
 
 protected:
     explicit QCameraFlashControl( QObject *parent = nullptr );
 };
 
 #define QCameraFlashControl_iid "com.copperspice.CS.cameraFlashControl/1.0"
-CS_DECLARE_INTERFACE( QCameraFlashControl, QCameraFlashControl_iid )
+LSCS_DECLARE_INTERFACE( QCameraFlashControl, QCameraFlashControl_iid )
 
 #endif
 

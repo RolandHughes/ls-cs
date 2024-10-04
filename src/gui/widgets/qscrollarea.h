@@ -32,13 +32,13 @@ class QScrollAreaPrivate;
 
 class Q_GUI_EXPORT QScrollArea : public QAbstractScrollArea
 {
-    GUI_CS_OBJECT( QScrollArea )
+    GUI_LSCS_OBJECT( QScrollArea )
 
-    GUI_CS_PROPERTY_READ( widgetResizable, widgetResizable )
-    GUI_CS_PROPERTY_WRITE( widgetResizable, setWidgetResizable )
+    GUI_LSCS_PROPERTY_READ( widgetResizable, widgetResizable )
+    GUI_LSCS_PROPERTY_WRITE( widgetResizable, setWidgetResizable )
 
-    GUI_CS_PROPERTY_READ( alignment, alignment )
-    GUI_CS_PROPERTY_WRITE( alignment, setAlignment )
+    GUI_LSCS_PROPERTY_READ( alignment, alignment )
+    GUI_LSCS_PROPERTY_WRITE( alignment, setAlignment )
 
 public:
     explicit QScrollArea( QWidget *parent = nullptr );

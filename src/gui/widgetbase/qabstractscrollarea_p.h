@@ -86,7 +86,7 @@ public:
 
 class QAbstractScrollAreaFilter : public QObject
 {
-    GUI_CS_OBJECT( QAbstractScrollAreaFilter )
+    GUI_LSCS_OBJECT( QAbstractScrollAreaFilter )
 
 public:
     QAbstractScrollAreaFilter( QAbstractScrollAreaPrivate *p ) : d( p )

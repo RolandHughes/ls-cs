@@ -316,7 +316,7 @@ private:
 
 class DataModel : public QObject
 {
-    CS_OBJECT( DataModel )
+    LSCS_OBJECT( DataModel )
 
 public:
     enum FindLocation
@@ -446,17 +446,17 @@ public:
         return m_srcCharsSpc;
     }
 
-    CS_SIGNAL_1( Public, void statsChanged( int words,int characters,int cs,int words2,int characters2,int cs2 ) )
-    CS_SIGNAL_2( statsChanged,words,characters,cs,words2,characters2,cs2 )
+    LSCS_SIGNAL_1( Public, void statsChanged( int words,int characters,int cs,int words2,int characters2,int cs2 ) )
+    LSCS_SIGNAL_2( statsChanged,words,characters,cs,words2,characters2,cs2 )
 
-    CS_SIGNAL_1( Public, void progressChanged( int finishedCount,int oldFinishedCount ) )
-    CS_SIGNAL_2( progressChanged,finishedCount,oldFinishedCount )
+    LSCS_SIGNAL_1( Public, void progressChanged( int finishedCount,int oldFinishedCount ) )
+    LSCS_SIGNAL_2( progressChanged,finishedCount,oldFinishedCount )
 
-    CS_SIGNAL_1( Public, void languageChanged() )
-    CS_SIGNAL_2( languageChanged )
+    LSCS_SIGNAL_1( Public, void languageChanged() )
+    LSCS_SIGNAL_2( languageChanged )
 
-    CS_SIGNAL_1( Public, void modifiedChanged() )
-    CS_SIGNAL_2( modifiedChanged )
+    LSCS_SIGNAL_1( Public, void modifiedChanged() )
+    LSCS_SIGNAL_2( modifiedChanged )
 
 private:
     friend class DataModelIterator;
@@ -777,7 +777,7 @@ private:
 
 class MultiDataModel : public QObject
 {
-    CS_OBJECT( MultiDataModel )
+    LSCS_OBJECT( MultiDataModel )
 
 public:
     MultiDataModel( QObject *parent = nullptr );
@@ -905,42 +905,42 @@ public:
 
     QBrush brushForModel( int model ) const;
 
-    CS_SIGNAL_1( Public, void modelAppended() )
-    CS_SIGNAL_2( modelAppended )
+    LSCS_SIGNAL_1( Public, void modelAppended() )
+    LSCS_SIGNAL_2( modelAppended )
 
-    CS_SIGNAL_1( Public, void modelDeleted( int model ) )
-    CS_SIGNAL_2( modelDeleted,model )
+    LSCS_SIGNAL_1( Public, void modelDeleted( int model ) )
+    LSCS_SIGNAL_2( modelDeleted,model )
 
-    CS_SIGNAL_1( Public, void allModelsDeleted() )
-    CS_SIGNAL_2( allModelsDeleted )
+    LSCS_SIGNAL_1( Public, void allModelsDeleted() )
+    LSCS_SIGNAL_2( allModelsDeleted )
 
-    CS_SIGNAL_1( Public, void languageChanged( int model ) )
-    CS_SIGNAL_2( languageChanged,model )
+    LSCS_SIGNAL_1( Public, void languageChanged( int model ) )
+    LSCS_SIGNAL_2( languageChanged,model )
 
-    CS_SIGNAL_1( Public, void statsChanged( int words,int characters,int cs,int words2,int characters2,int cs2 ) )
-    CS_SIGNAL_2( statsChanged,words,characters,cs,words2,characters2,cs2 )
+    LSCS_SIGNAL_1( Public, void statsChanged( int words,int characters,int cs,int words2,int characters2,int cs2 ) )
+    LSCS_SIGNAL_2( statsChanged,words,characters,cs,words2,characters2,cs2 )
 
-    CS_SIGNAL_1( Public, void modifiedChanged( bool changed ) )
-    CS_SIGNAL_2( modifiedChanged, changed )
+    LSCS_SIGNAL_1( Public, void modifiedChanged( bool changed ) )
+    LSCS_SIGNAL_2( modifiedChanged, changed )
 
-    CS_SIGNAL_1( Public, void multiContextDataChanged( const MultiDataIndex &index ) )
-    CS_SIGNAL_2( multiContextDataChanged,index )
+    LSCS_SIGNAL_1( Public, void multiContextDataChanged( const MultiDataIndex &index ) )
+    LSCS_SIGNAL_2( multiContextDataChanged,index )
 
-    CS_SIGNAL_1( Public, void contextDataChanged( const MultiDataIndex &index ) )
-    CS_SIGNAL_2( contextDataChanged,index )
+    LSCS_SIGNAL_1( Public, void contextDataChanged( const MultiDataIndex &index ) )
+    LSCS_SIGNAL_2( contextDataChanged,index )
 
-    CS_SIGNAL_1( Public, void messageDataChanged( const MultiDataIndex &index ) )
-    CS_SIGNAL_2( messageDataChanged,index )
+    LSCS_SIGNAL_1( Public, void messageDataChanged( const MultiDataIndex &index ) )
+    LSCS_SIGNAL_2( messageDataChanged,index )
 
-    CS_SIGNAL_1( Public, void translationChanged( const MultiDataIndex &index ) )
-    CS_SIGNAL_2( translationChanged,index ) // Only the primary one
+    LSCS_SIGNAL_1( Public, void translationChanged( const MultiDataIndex &index ) )
+    LSCS_SIGNAL_2( translationChanged,index ) // Only the primary one
 
 private:
-    CS_SLOT_1( Private, void onModifiedChanged() )
-    CS_SLOT_2( onModifiedChanged )
+    LSCS_SLOT_1( Private, void onModifiedChanged() )
+    LSCS_SLOT_2( onModifiedChanged )
 
-    CS_SLOT_1( Private, void onLanguageChanged() )
-    CS_SLOT_2( onLanguageChanged )
+    LSCS_SLOT_1( Private, void onLanguageChanged() )
+    LSCS_SLOT_2( onLanguageChanged )
 
     ContextItem *getContextItem( const MultiDataIndex &index ) const
     {
@@ -993,7 +993,7 @@ private:
 
 class MessageModel : public QAbstractItemModel
 {
-    CS_OBJECT( MessageModel )
+    LSCS_OBJECT( MessageModel )
 
 public:
     enum { SortRole = Qt::UserRole };
@@ -1020,14 +1020,14 @@ public:
 private:
     MultiDataModel *m_data; // not owned
 
-    CS_SLOT_1( Private, void multiContextItemChanged( const MultiDataIndex &index ) )
-    CS_SLOT_2( multiContextItemChanged )
+    LSCS_SLOT_1( Private, void multiContextItemChanged( const MultiDataIndex &index ) )
+    LSCS_SLOT_2( multiContextItemChanged )
 
-    CS_SLOT_1( Private, void contextItemChanged( const MultiDataIndex &index ) )
-    CS_SLOT_2( contextItemChanged )
+    LSCS_SLOT_1( Private, void contextItemChanged( const MultiDataIndex &index ) )
+    LSCS_SLOT_2( contextItemChanged )
 
-    CS_SLOT_1( Private, void messageItemChanged( const MultiDataIndex &index ) )
-    CS_SLOT_2( messageItemChanged )
+    LSCS_SLOT_1( Private, void messageItemChanged( const MultiDataIndex &index ) )
+    LSCS_SLOT_2( messageItemChanged )
 
     friend class MultiDataModel;
 };

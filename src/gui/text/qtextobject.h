@@ -42,7 +42,7 @@ class QTextFramePrivate;
 
 class Q_GUI_EXPORT QTextObject : public QObject
 {
-    GUI_CS_OBJECT( QTextObject )
+    GUI_LSCS_OBJECT( QTextObject )
 
 public:
     QTextObject( const QTextObject & ) = delete;
@@ -73,7 +73,7 @@ private:
 
 class Q_GUI_EXPORT QTextBlockGroup : public QTextObject
 {
-    GUI_CS_OBJECT( QTextBlockGroup )
+    GUI_LSCS_OBJECT( QTextBlockGroup )
 
 protected:
     explicit QTextBlockGroup( QTextDocument *document );
@@ -105,7 +105,7 @@ public:
 
 class Q_GUI_EXPORT QTextFrame : public QTextObject
 {
-    GUI_CS_OBJECT( QTextFrame )
+    GUI_LSCS_OBJECT( QTextFrame )
 
 public:
     explicit QTextFrame( QTextDocument *document );

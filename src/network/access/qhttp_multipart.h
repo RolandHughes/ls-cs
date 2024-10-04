@@ -73,7 +73,7 @@ private:
 
 class Q_NETWORK_EXPORT QHttpMultiPart : public QObject
 {
-    NET_CS_OBJECT( QHttpMultiPart )
+    NET_LSCS_OBJECT( QHttpMultiPart )
 
 public:
     enum ContentType

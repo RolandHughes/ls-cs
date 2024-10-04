@@ -49,7 +49,7 @@ protected:
 
 class QDeclarativeDebugConnectionPrivate : public QObject
 {
-    DECL_CS_OBJECT( QDeclarativeDebugConnectionPrivate )
+    DECL_LSCS_OBJECT( QDeclarativeDebugConnectionPrivate )
 
 public:
     QDeclarativeDebugConnectionPrivate( QDeclarativeDebugConnection *c );
@@ -62,11 +62,11 @@ public:
 
     void advertisePlugins();
 
-    DECL_CS_SLOT_1( Public, void connected() )
-    DECL_CS_SLOT_2( connected )
+    DECL_LSCS_SLOT_1( Public, void connected() )
+    DECL_LSCS_SLOT_2( connected )
 
-    DECL_CS_SLOT_1( Public, void readyRead() )
-    DECL_CS_SLOT_2( readyRead )
+    DECL_LSCS_SLOT_1( Public, void readyRead() )
+    DECL_LSCS_SLOT_2( readyRead )
 };
 
 QDeclarativeDebugConnectionPrivate::QDeclarativeDebugConnectionPrivate( QDeclarativeDebugConnection *c )

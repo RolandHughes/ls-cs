@@ -24,12 +24,12 @@
  * LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 */
 
-#ifndef CS_REGEX_SEARCH_H
-#define CS_REGEX_SEARCH_H
+#ifndef LSCS_REGEX_SEARCH_H
+#define LSCS_REGEX_SEARCH_H
 
 #include <regex/perl_matcher.h>
 
-namespace cs_regex_ns
+namespace lscs_regex_ns
 {
 
 template <class BidiIterator, class Allocator, class charT, class Traits>
@@ -41,7 +41,7 @@ bool regex_search( BidiIterator first, BidiIterator last, match_results<Traits, 
         return false;
     }
 
-    cs_regex_detail_ns::perl_matcher<BidiIterator, Allocator, Traits> matcher( first, last, m, e, flags, base );
+    lscs_regex_detail_ns::perl_matcher<BidiIterator, Allocator, Traits> matcher( first, last, m, e, flags, base );
 
     return matcher.find();
 }
@@ -81,7 +81,7 @@ bool regex_search( BidiIterator first, BidiIterator last, const basic_regex<char
 
     match_results<Traits> m;
 
-    cs_regex_detail_ns::perl_matcher<BidiIterator, match_alloc_type, Traits> matcher( first, last, m, e,
+    lscs_regex_detail_ns::perl_matcher<BidiIterator, match_alloc_type, Traits> matcher( first, last, m, e,
             flags | regex_constants::match_any, first );
 
     return matcher.find();

@@ -106,7 +106,7 @@ static inline bool hasFeature( const QDockWidget *dockwidget, QDockWidget::DockW
 
 class QDockWidgetTitleButton : public QAbstractButton
 {
-    GUI_CS_OBJECT( QDockWidgetTitleButton )
+    GUI_LSCS_OBJECT( QDockWidgetTitleButton )
 
 public:
     QDockWidgetTitleButton( QDockWidget *dockWidget );

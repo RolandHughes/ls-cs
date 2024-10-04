@@ -32,11 +32,11 @@ class QSignalTransitionPrivate;
 
 class Q_CORE_EXPORT QSignalTransition : public QAbstractTransition
 {
-    CORE_CS_OBJECT( QSignalTransition )
+    CORE_LSCS_OBJECT( QSignalTransition )
 
-    CORE_CS_PROPERTY_READ( senderObject,   senderObject )
-    CORE_CS_PROPERTY_WRITE( senderObject,  setSenderObject )
-    CORE_CS_PROPERTY_NOTIFY( senderObject, senderObjectChanged )
+    CORE_LSCS_PROPERTY_READ( senderObject,   senderObject )
+    CORE_LSCS_PROPERTY_WRITE( senderObject,  setSenderObject )
+    CORE_LSCS_PROPERTY_NOTIFY( senderObject, senderObjectChanged )
 
 public:
     QSignalTransition( QState *sourceState = nullptr );
@@ -57,8 +57,8 @@ public:
     void unregister();
     void maybeRegister();
 
-    CORE_CS_SIGNAL_1( Public, void senderObjectChanged() )
-    CORE_CS_SIGNAL_2( senderObjectChanged )
+    CORE_LSCS_SIGNAL_1( Public, void senderObjectChanged() )
+    CORE_LSCS_SIGNAL_2( senderObjectChanged )
 
 protected:
     bool eventTest( QEvent *event ) override;

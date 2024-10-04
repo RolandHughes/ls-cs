@@ -33,7 +33,7 @@
 
 class QInotifyFileSystemWatcherEngine : public QFileSystemWatcherEngine
 {
-    CORE_CS_OBJECT( QInotifyFileSystemWatcherEngine )
+    CORE_LSCS_OBJECT( QInotifyFileSystemWatcherEngine )
 
 public:
     ~QInotifyFileSystemWatcherEngine();
@@ -48,8 +48,8 @@ public:
     void stop() override;
 
 private :
-    CORE_CS_SLOT_1( Private, void readFromInotify() )
-    CORE_CS_SLOT_2( readFromInotify )
+    CORE_LSCS_SLOT_1( Private, void readFromInotify() )
+    CORE_LSCS_SLOT_2( readFromInotify )
 
     QInotifyFileSystemWatcherEngine( int fd );
     int inotifyFd;

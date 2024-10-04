@@ -36,7 +36,7 @@ class QGraphicsObject;
 
 class QGestureManager : public QObject
 {
-    GUI_CS_OBJECT( QGestureManager )
+    GUI_LSCS_OBJECT( QGestureManager )
 
 public:
     QGestureManager( QObject *parent );

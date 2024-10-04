@@ -32,13 +32,13 @@ QPlatformServices::QPlatformServices()
 
 bool QPlatformServices::openUrl( const QUrl &url )
 {
-    qWarning( "QPlatformServices::openUrl() Plugin does not support this method, '%s'.", csPrintable( url.toString() ) );
+    qWarning( "QPlatformServices::openUrl() Plugin does not support this method, '%s'.", lscsPrintable( url.toString() ) );
     return false;
 }
 
 bool QPlatformServices::openDocument( const QUrl &url )
 {
-    qWarning( "QPlatformServices::openDocument() Plugin does not support this method, '%s'.", csPrintable( url.toString() ) );
+    qWarning( "QPlatformServices::openDocument() Plugin does not support this method, '%s'.", lscsPrintable( url.toString() ) );
     return false;
 }
 

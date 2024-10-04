@@ -36,7 +36,7 @@ class QSvgWidgetPrivate;
 
 class Q_SVG_EXPORT QSvgWidget : public QWidget
 {
-    SVG_CS_OBJECT( QSvgWidget )
+    SVG_LSCS_OBJECT( QSvgWidget )
 
 public:
     QSvgWidget( QWidget *parent = nullptr );
@@ -50,11 +50,11 @@ public:
     QSvgRenderer *renderer() const;
     QSize sizeHint() const override;
 
-    SVG_CS_SLOT_1( Public, void load( const QString &file ) )
-    SVG_CS_SLOT_OVERLOAD( load, ( const QString & ) )
+    SVG_LSCS_SLOT_1( Public, void load( const QString &file ) )
+    SVG_LSCS_SLOT_OVERLOAD( load, ( const QString & ) )
 
-    SVG_CS_SLOT_1( Public, void load( const QByteArray &contents ) )
-    SVG_CS_SLOT_OVERLOAD( load, ( const QByteArray & ) )
+    SVG_LSCS_SLOT_1( Public, void load( const QByteArray &contents ) )
+    SVG_LSCS_SLOT_OVERLOAD( load, ( const QByteArray & ) )
 
 protected:
     void paintEvent( QPaintEvent *event ) override;

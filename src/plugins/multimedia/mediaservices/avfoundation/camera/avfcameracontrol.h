@@ -32,7 +32,7 @@ class AVFCameraService;
 
 class AVFCameraControl : public QCameraControl
 {
-    CS_OBJECT( AVFCameraControl )
+    LSCS_OBJECT( AVFCameraControl )
 
 public:
     AVFCameraControl( AVFCameraService *service, QObject *parent = nullptr );
@@ -50,8 +50,8 @@ public:
     bool canChangeProperty( PropertyChangeType changeType, QCamera::Status status ) const override;
 
 private:
-    CS_SLOT_1( Private, void updateStatus() )
-    CS_SLOT_2( updateStatus )
+    LSCS_SLOT_1( Private, void updateStatus() )
+    LSCS_SLOT_2( updateStatus )
 
     AVFCameraSession *m_session;
 

@@ -31,7 +31,7 @@ class QKeyEvent;
 
 class Q_GUI_EXPORT QInputControl : public QObject
 {
-    GUI_CS_OBJECT( QInputControl )
+    GUI_LSCS_OBJECT( QInputControl )
 
 public:
     enum Type

@@ -159,7 +159,7 @@ struct Blend_ARGB32_on_RGB16_SourceAndConstAlpha
 void qt_scale_image_rgb16_on_rgb16( uchar *destPixels, int dbpl, const uchar *srcPixels, int sbpl, int srch,
                                     const QRectF &targetRect, const QRectF &sourceRect, const QRect &clip, int const_alpha )
 {
-#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+#if defined(LSCS_SHOW_DEBUG_GUI_PAINTING)
     qDebug( "qt_scale_rgb16_on_rgb16() dst = (%p, %d), src = (%p, %d), target = (%f, %f), [%f x %f], "
             "src = (%f, %f) [%f x %f] alpha = %d", destPixels, dbpl, srcPixels, sbpl,
             targetRect.x(), targetRect.y(), targetRect.width(), targetRect.height(),
@@ -186,7 +186,7 @@ void qt_scale_image_rgb16_on_rgb16( uchar *destPixels, int dbpl, const uchar *sr
 void qt_scale_image_argb32_on_rgb16( uchar *destPixels, int dbpl, const uchar *srcPixels, int sbpl, int srch,
                                      const QRectF &targetRect, const QRectF &sourceRect, const QRect &clip, int const_alpha )
 {
-#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+#if defined(LSCS_SHOW_DEBUG_GUI_PAINTING)
     qDebug( "qt_scale_argb32_on_rgb16() dst = (%p, %d), src =(%p, %d), target = (%f, %f), [%f x %f], "
             "src = (%f, %f) [%f x %f] alpha = %d", destPixels, dbpl, srcPixels, sbpl,
             targetRect.x(), targetRect.y(), targetRect.width(), targetRect.height(),
@@ -210,7 +210,7 @@ void qt_scale_image_argb32_on_rgb16( uchar *destPixels, int dbpl, const uchar *s
 
 void qt_blend_rgb16_on_rgb16( uchar *dst, int dbpl, const uchar *src, int sbpl, int w, int h, int const_alpha )
 {
-#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+#if defined(LSCS_SHOW_DEBUG_GUI_PAINTING)
     qDebug( "qt_blend_rgb16_on_rgb16() dst = (%p, %d), src = (%p, %d), dim = (%d, %d) alpha = %d",
             dst, dbpl, src, sbpl, w, h, const_alpha );
 #endif
@@ -347,7 +347,7 @@ static void qt_blend_argb32_on_rgb16( uchar *destPixels, int dbpl, const uchar *
 static void qt_blend_rgb32_on_rgb16( uchar *destPixels, int dbpl, const uchar *srcPixels, int sbpl,
                                      int w, int h, int const_alpha )
 {
-#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+#if defined(LSCS_SHOW_DEBUG_GUI_PAINTING)
     qDebug( "qt_blend_rgb32_on_rgb16() dst = (%p, %d), src = (%p, %d), dim = (%d, %d) alpha = %d",
             destPixels, dbpl, srcPixels, sbpl, w, h, const_alpha );
 #endif
@@ -391,7 +391,7 @@ static void qt_blend_rgb32_on_rgb16( uchar *destPixels, int dbpl, const uchar *s
 static void qt_blend_argb32_on_argb32( uchar *destPixels, int dbpl, const uchar *srcPixels, int sbpl,
                                        int w, int h, int const_alpha )
 {
-#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+#if defined(LSCS_SHOW_DEBUG_GUI_PAINTING)
     qDebug( "qt_blend_argb32_on_argb32() dst = (%p, %d), src = (%p, %d), dim = (%d, %d) alpha = %d",
             destPixels, dbpl, srcPixels, sbpl, w, h, const_alpha );
 #endif
@@ -443,7 +443,7 @@ static void qt_blend_argb32_on_argb32( uchar *destPixels, int dbpl, const uchar 
 void qt_blend_rgb32_on_rgb32( uchar *destPixels, int dbpl, const uchar *srcPixels, int sbpl,
                               int w, int h, int const_alpha )
 {
-#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+#if defined(LSCS_SHOW_DEBUG_GUI_PAINTING)
     qDebug( "qt_blend_rgb32_on_rgb32() dst = (%p, %d), src = (%p, %d), dim = (%d, %d) alpha = %d",
             destPixels, dbpl, srcPixels, sbpl, w, h, const_alpha );
 #endif
@@ -537,7 +537,7 @@ struct Blend_ARGB32_on_ARGB32_SourceAndConstAlpha
 void qt_scale_image_rgb32_on_rgb32( uchar *destPixels, int dbpl, const uchar *srcPixels, int sbpl, int srch,
                                     const QRectF &targetRect, const QRectF &sourceRect, const QRect &clip, int const_alpha )
 {
-#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+#if defined(LSCS_SHOW_DEBUG_GUI_PAINTING)
     qDebug( "qt_scale_rgb32_on_rgb32() dst = (%p, %d), src = (%p, %d), target = (%f, %f), [%f x %f], "
             "src = (%f, %f) [%f x %f] alpha = %d", destPixels, dbpl, srcPixels, sbpl,
             targetRect.x(), targetRect.y(), targetRect.width(), targetRect.height(),
@@ -562,7 +562,7 @@ void qt_scale_image_rgb32_on_rgb32( uchar *destPixels, int dbpl, const uchar *sr
 void qt_scale_image_argb32_on_argb32( uchar *destPixels, int dbpl, const uchar *srcPixels, int sbpl, int srch,
                                       const QRectF &targetRect, const QRectF &sourceRect, const QRect &clip, int const_alpha )
 {
-#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+#if defined(LSCS_SHOW_DEBUG_GUI_PAINTING)
     qDebug( "qt_scale_argb32_on_argb32() dst = (%p, %d), src = (%p, %d), target = (%f, %f), [%f x %f], "
             "src = (%f, %f) [%f x %f] alpha = %d", destPixels, dbpl, srcPixels, sbpl,
             targetRect.x(), targetRect.y(), targetRect.width(), targetRect.height(),

@@ -24,18 +24,18 @@
  * LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 */
 
-#ifndef CS_REGEX_RAW_BUFFER_H
-#define CS_REGEX_RAW_BUFFER_H
+#ifndef LSCS_REGEX_RAW_BUFFER_H
+#define LSCS_REGEX_RAW_BUFFER_H
 
 #include <regex/r_config.h>
 
 #include <algorithm>
 #include <cstddef>
 
-namespace cs_regex_ns
+namespace lscs_regex_ns
 {
 
-namespace cs_regex_detail_ns
+namespace lscs_regex_detail_ns
 {
 
 struct empty_padding {};
@@ -105,7 +105,7 @@ enum
 // basically this is a simplified vector<unsigned char>
 // this is used by basic_regex for expression storage
 
-class LIB_CS_STRING_EXPORT raw_storage
+class LIB_LSCS_STRING_EXPORT raw_storage
 {
 public:
     using size_type = std::size_t;

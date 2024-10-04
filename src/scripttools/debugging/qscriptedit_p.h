@@ -34,7 +34,7 @@ class QScriptEditExtraArea;
 
 class QScriptEdit : public QPlainTextEdit
 {
-    SCRIPT_T_CS_OBJECT( QScriptEdit )
+    SCRIPT_T_LSCS_OBJECT( QScriptEdit )
 public:
     QScriptEdit( QWidget *parent = nullptr );
     ~QScriptEdit();
@@ -57,10 +57,10 @@ public:
     int extraAreaWidth() const;
 
 public:
-    CS_SIGNAL_1( Public, void breakpointToggleRequest( int lineNumber, bool on ) )
-    CS_SIGNAL_2( breakpointToggleRequest, lineNumber, on )
-    CS_SIGNAL_1( Public, void breakpointEnableRequest( int lineNumber, bool enable ) )
-    CS_SIGNAL_2( breakpointEnableRequest, lineNumber, enable )
+    LSCS_SIGNAL_1( Public, void breakpointToggleRequest( int lineNumber, bool on ) )
+    LSCS_SIGNAL_2( breakpointToggleRequest, lineNumber, on )
+    LSCS_SIGNAL_1( Public, void breakpointEnableRequest( int lineNumber, bool enable ) )
+    LSCS_SIGNAL_2( breakpointEnableRequest, lineNumber, enable )
 
 protected:
     void paintEvent( QPaintEvent *e );
@@ -71,12 +71,12 @@ protected:
     bool extraAreaEvent( QEvent *e );
 
 private :
-    CS_SLOT_1( Private, void updateExtraAreaWidth() )
-    CS_SLOT_2( updateExtraAreaWidth )
-    CS_SLOT_1( Private, void updateExtraArea( const QRect &un_named_arg1, int un_named_arg2 ) )
-    CS_SLOT_2( updateExtraArea )
-    CS_SLOT_1( Private, void highlightCurrentLine() )
-    CS_SLOT_2( highlightCurrentLine )
+    LSCS_SLOT_1( Private, void updateExtraAreaWidth() )
+    LSCS_SLOT_2( updateExtraAreaWidth )
+    LSCS_SLOT_1( Private, void updateExtraArea( const QRect &un_named_arg1, int un_named_arg2 ) )
+    LSCS_SLOT_2( updateExtraArea )
+    LSCS_SLOT_1( Private, void highlightCurrentLine() )
+    LSCS_SLOT_2( highlightCurrentLine )
 
 private:
     QTextEdit::ExtraSelection currentLineSelection() const;

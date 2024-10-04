@@ -201,7 +201,7 @@ Q_CORE_EXPORT void qWinMain( HINSTANCE instance, HINSTANCE prevInstance, LPSTR c
 
 void QCoreApplicationPrivate::removePostedTimerEvent( QObject *object, int timerId )
 {
-    QThreadData *data = CSInternalThreadData::get_m_ThreadData( object );
+    QThreadData *data = LSCSInternalThreadData::get_m_ThreadData( object );
 
     QMutexLocker locker( &data->postEventList.mutex );
 
@@ -219,7 +219,7 @@ void QCoreApplicationPrivate::removePostedTimerEvent( QObject *object, int timer
                 && static_cast<QTimerEvent *>( pe.event )->timerId() == timerId )
         {
 
-            CSInternalEvents::decr_PostedEvents( pe.receiver );
+            LSCSInternalEvents::decr_PostedEvents( pe.receiver );
             pe.event->posted = false;
 
             delete pe.event;

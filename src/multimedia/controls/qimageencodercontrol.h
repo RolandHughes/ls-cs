@@ -35,7 +35,7 @@ class QByteArray;
 
 class Q_MULTIMEDIA_EXPORT QImageEncoderControl : public QMediaControl
 {
-    MULTI_CS_OBJECT( QImageEncoderControl )
+    MULTI_LSCS_OBJECT( QImageEncoderControl )
 
 public:
     virtual ~QImageEncoderControl();
@@ -54,6 +54,6 @@ protected:
 };
 
 #define QImageEncoderControl_iid "com.copperspice.CS.imageEncoderControl/1.0"
-CS_DECLARE_INTERFACE( QImageEncoderControl, QImageEncoderControl_iid )
+LSCS_DECLARE_INTERFACE( QImageEncoderControl, QImageEncoderControl_iid )
 
 #endif

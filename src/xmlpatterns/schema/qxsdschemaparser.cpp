@@ -7268,7 +7268,7 @@ QString XsdSchemaParser::readQNameAttribute( const QString &typeAttribute, const
 
     if ( ! XPathHelper::isQName( value ) )
     {
-        attributeContentError( csPrintable( typeAttribute ), elementName, value, BuiltinTypes::xsQName );
+        attributeContentError( lscsPrintable( typeAttribute ), elementName, value, BuiltinTypes::xsQName );
         return QString();
     }
     else
@@ -7283,7 +7283,7 @@ QString XsdSchemaParser::readNamespaceAttribute( const QString &attributeName, c
 
     if ( value.isEmpty() )
     {
-        attributeContentError( csPrintable( attributeName ), elementName, value, BuiltinTypes::xsAnyURI );
+        attributeContentError( lscsPrintable( attributeName ), elementName, value, BuiltinTypes::xsAnyURI );
         return QString();
     }
 
@@ -7565,7 +7565,7 @@ QString XsdSchemaParser::readXPathAttribute( const QString &attributeName, XPath
 
     if ( value.isEmpty() || value.startsWith( '/' ) )
     {
-        attributeContentError( csPrintable( attributeName ), elementName, value );
+        attributeContentError( lscsPrintable( attributeName ), elementName, value );
         return QString();
     }
 
@@ -7606,7 +7606,7 @@ QString XsdSchemaParser::readXPathAttribute( const QString &attributeName, XPath
 
     if ( !query.isValid() )
     {
-        attributeContentError( csPrintable( attributeName ), elementName, value );
+        attributeContentError( lscsPrintable( attributeName ), elementName, value );
         return QString();
     }
 

@@ -36,8 +36,8 @@
 
 class CameraBinImageCapture : public QCameraImageCaptureControl, public QGstreamerBusMessageFilter
 {
-    CS_OBJECT( CameraBinImageCapture )
-    CS_INTERFACES( QGstreamerBusMessageFilter )
+    LSCS_OBJECT( CameraBinImageCapture )
+    LSCS_INTERFACES( QGstreamerBusMessageFilter )
 
 public:
     CameraBinImageCapture( CameraBinSession *session );
@@ -59,8 +59,8 @@ public:
     bool processBusMessage( const QGstreamerMessage &message ) override;
 
 private:
-    CS_SLOT_1( Private, void updateState() )
-    CS_SLOT_2( updateState )
+    LSCS_SLOT_1( Private, void updateState() )
+    LSCS_SLOT_2( updateState )
 
 #if GST_CHECK_VERSION(1,0,0)
     static GstPadProbeReturn encoderEventProbe( GstPad *, GstPadProbeInfo *info, gpointer user_data );

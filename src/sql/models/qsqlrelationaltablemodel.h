@@ -63,7 +63,7 @@ private:
 
 class Q_SQL_EXPORT QSqlRelationalTableModel: public QSqlTableModel
 {
-    SQL_CS_OBJECT( QSqlRelationalTableModel )
+    SQL_LSCS_OBJECT( QSqlRelationalTableModel )
 
 public:
     enum JoinMode
@@ -88,8 +88,8 @@ public:
     virtual QSqlTableModel *relationModel( int column ) const;
     void setJoinMode( QSqlRelationalTableModel::JoinMode joinMode );
 
-    SQL_CS_SLOT_1( Public, void revertRow( int row ) override )
-    SQL_CS_SLOT_2( revertRow )
+    SQL_LSCS_SLOT_1( Public, void revertRow( int row ) override )
+    SQL_LSCS_SLOT_2( revertRow )
 
 protected:
     QString selectStatement() const override;

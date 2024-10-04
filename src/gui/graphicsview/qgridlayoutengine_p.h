@@ -155,7 +155,7 @@ public:
           q_minimumDescent( -1 ), q_minimumAscent( -1 )
     { }
 
-#if defined(CS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
+#if defined(LSCS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
     void dump( int indent = 0 ) const;
 #endif
 
@@ -264,7 +264,7 @@ class QGridLayoutRowData
 {
 public:
 
-#if defined(CS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
+#if defined(LSCS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
     void dump( int indent = 0 ) const;
 #endif
 
@@ -292,7 +292,7 @@ public:
         : count( 0 )
     { }
 
-#if defined(CS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
+#if defined(LSCS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
     void dump( int indent = 0 ) const;
 #endif
 
@@ -314,7 +314,7 @@ public:
     virtual ~QGridLayoutItem()
     { }
 
-#if defined(CS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
+#if defined(LSCS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
     void dump( int indent = 0 ) const;
 #endif
 
@@ -414,7 +414,7 @@ public:
         qDeleteAll( q_items );
     }
 
-#if defined(CS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
+#if defined(LSCS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
     void dump( int indent = 0 ) const;
 #endif
 

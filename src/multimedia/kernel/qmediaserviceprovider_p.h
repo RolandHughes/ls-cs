@@ -33,7 +33,7 @@ class QMediaService;
 
 class Q_MULTIMEDIA_EXPORT QMediaServiceProvider : public QObject
 {
-    MULTI_CS_OBJECT( QMediaServiceProvider )
+    MULTI_LSCS_OBJECT( QMediaServiceProvider )
 
 public:
     virtual QMediaService *requestService( const QString &type,

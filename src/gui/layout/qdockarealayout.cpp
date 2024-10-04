@@ -2464,7 +2464,7 @@ void QDockAreaLayoutInfo::saveState( QDataStream &stream ) const
             if ( name.isEmpty() )
             {
                 qWarning( "QDockAreaLayoutInfo::saveState() Object name was not set for this QDockWidget %p %s",
-                          static_cast<void *>( w ), csPrintable( w->windowTitle() ) );
+                          static_cast<void *>( w ), lscsPrintable( w->windowTitle() ) );
             }
 
             stream << name;

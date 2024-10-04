@@ -34,7 +34,7 @@
 
 class AVFImageCaptureControl : public QCameraImageCaptureControl
 {
-    CS_OBJECT( AVFImageCaptureControl )
+    LSCS_OBJECT( AVFImageCaptureControl )
 
 public:
     struct CaptureRequest
@@ -66,14 +66,14 @@ public:
     void cancelCapture() override;
 
 private :
-    CS_SLOT_1( Private, void updateCaptureConnection() )
-    CS_SLOT_2( updateCaptureConnection )
+    LSCS_SLOT_1( Private, void updateCaptureConnection() )
+    LSCS_SLOT_2( updateCaptureConnection )
 
-    CS_SLOT_1( Private, void updateReadyStatus() )
-    CS_SLOT_2( updateReadyStatus )
+    LSCS_SLOT_1( Private, void updateReadyStatus() )
+    LSCS_SLOT_2( updateReadyStatus )
 
-    CS_SLOT_1( Private, void onNewViewfinderFrame( const QVideoFrame &frame ) )
-    CS_SLOT_2( onNewViewfinderFrame )
+    LSCS_SLOT_1( Private, void onNewViewfinderFrame( const QVideoFrame &frame ) )
+    LSCS_SLOT_2( onNewViewfinderFrame )
 
     void makeCapturePreview( CaptureRequest request, const QVideoFrame &frame, int rotation );
 

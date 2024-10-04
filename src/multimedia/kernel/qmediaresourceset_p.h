@@ -30,7 +30,7 @@
 
 class Q_MULTIMEDIA_EXPORT QMediaPlayerResourceSetInterface : public QObject
 {
-    MULTI_CS_OBJECT( QMediaPlayerResourceSetInterface )
+    MULTI_LSCS_OBJECT( QMediaPlayerResourceSetInterface )
 
 public:
     virtual bool isVideoEnabled() const = 0;
@@ -43,16 +43,16 @@ public:
 
     static QString iid();
 
-    MULTI_CS_SIGNAL_1( Public, void resourcesGranted() )
-    MULTI_CS_SIGNAL_2( resourcesGranted )
-    MULTI_CS_SIGNAL_1( Public, void resourcesLost() )
-    MULTI_CS_SIGNAL_2( resourcesLost )
-    MULTI_CS_SIGNAL_1( Public, void resourcesDenied() )
-    MULTI_CS_SIGNAL_2( resourcesDenied )
-    MULTI_CS_SIGNAL_1( Public, void resourcesReleased() )
-    MULTI_CS_SIGNAL_2( resourcesReleased )
-    MULTI_CS_SIGNAL_1( Public, void availabilityChanged( bool available ) )
-    MULTI_CS_SIGNAL_2( availabilityChanged, available )
+    MULTI_LSCS_SIGNAL_1( Public, void resourcesGranted() )
+    MULTI_LSCS_SIGNAL_2( resourcesGranted )
+    MULTI_LSCS_SIGNAL_1( Public, void resourcesLost() )
+    MULTI_LSCS_SIGNAL_2( resourcesLost )
+    MULTI_LSCS_SIGNAL_1( Public, void resourcesDenied() )
+    MULTI_LSCS_SIGNAL_2( resourcesDenied )
+    MULTI_LSCS_SIGNAL_1( Public, void resourcesReleased() )
+    MULTI_LSCS_SIGNAL_2( resourcesReleased )
+    MULTI_LSCS_SIGNAL_1( Public, void availabilityChanged( bool available ) )
+    MULTI_LSCS_SIGNAL_2( availabilityChanged, available )
 
 protected:
     QMediaPlayerResourceSetInterface( QObject *parent = nullptr );

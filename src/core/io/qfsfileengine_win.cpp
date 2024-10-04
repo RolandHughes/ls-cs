@@ -51,9 +51,9 @@
 #include <security.h>
 
 #ifdef PATH_MAX
-#define CS_PATH_LEN  PATH_MAX
+#define LSCS_PATH_LEN  PATH_MAX
 #else
-#define CS_PATH_LEN  FILENAME_MAX
+#define LSCS_PATH_LEN  FILENAME_MAX
 #endif
 
 static inline bool isUncPath( const QString &path )
@@ -555,8 +555,8 @@ QString QFSFileEngine::currentPath( const QString &fileName )
 
         if ( _getdrive() != drv )
         {
-            std::wstring buffer( CS_PATH_LEN, L'\0' );
-            ::_wgetdcwd( drv, &buffer[0], CS_PATH_LEN );
+            std::wstring buffer( LSCS_PATH_LEN, L'\0' );
+            ::_wgetdcwd( drv, &buffer[0], LSCS_PATH_LEN );
 
             retval = QString::fromStdWString( buffer );
         }

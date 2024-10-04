@@ -42,7 +42,7 @@ class QNetworkSessionPrivate;
 
 class Q_NETWORK_EXPORT QNetworkSession : public QObject
 {
-    NET_CS_OBJECT( QNetworkSession )
+    NET_LSCS_OBJECT( QNetworkSession )
 
 public:
     enum State
@@ -95,48 +95,48 @@ public:
     QNetworkSession::UsagePolicies usagePolicies() const;
     bool waitForOpened( int msecs = 30000 );
 
-    NET_CS_SLOT_1( Public, void open() )
-    NET_CS_SLOT_2( open )
+    NET_LSCS_SLOT_1( Public, void open() )
+    NET_LSCS_SLOT_2( open )
 
-    NET_CS_SLOT_1( Public, void close() )
-    NET_CS_SLOT_2( close )
+    NET_LSCS_SLOT_1( Public, void close() )
+    NET_LSCS_SLOT_2( close )
 
-    NET_CS_SLOT_1( Public, void stop() )
-    NET_CS_SLOT_2( stop )
+    NET_LSCS_SLOT_1( Public, void stop() )
+    NET_LSCS_SLOT_2( stop )
 
     // roaming related slots
-    NET_CS_SLOT_1( Public, void migrate() )
-    NET_CS_SLOT_2( migrate )
+    NET_LSCS_SLOT_1( Public, void migrate() )
+    NET_LSCS_SLOT_2( migrate )
 
-    NET_CS_SLOT_1( Public, void ignore() )
-    NET_CS_SLOT_2( ignore )
+    NET_LSCS_SLOT_1( Public, void ignore() )
+    NET_LSCS_SLOT_2( ignore )
 
-    NET_CS_SLOT_1( Public, void accept() )
-    NET_CS_SLOT_2( accept )
+    NET_LSCS_SLOT_1( Public, void accept() )
+    NET_LSCS_SLOT_2( accept )
 
-    NET_CS_SLOT_1( Public, void reject() )
-    NET_CS_SLOT_2( reject )
+    NET_LSCS_SLOT_1( Public, void reject() )
+    NET_LSCS_SLOT_2( reject )
 
-    NET_CS_SIGNAL_1( Public, void stateChanged( QNetworkSession::State state ) )
-    NET_CS_SIGNAL_2( stateChanged, state )
+    NET_LSCS_SIGNAL_1( Public, void stateChanged( QNetworkSession::State state ) )
+    NET_LSCS_SIGNAL_2( stateChanged, state )
 
-    NET_CS_SIGNAL_1( Public, void opened() )
-    NET_CS_SIGNAL_2( opened )
+    NET_LSCS_SIGNAL_1( Public, void opened() )
+    NET_LSCS_SIGNAL_2( opened )
 
-    NET_CS_SIGNAL_1( Public, void closed() )
-    NET_CS_SIGNAL_2( closed )
+    NET_LSCS_SIGNAL_1( Public, void closed() )
+    NET_LSCS_SIGNAL_2( closed )
 
-    NET_CS_SIGNAL_1( Public, void error( QNetworkSession::SessionError error ) )
-    NET_CS_SIGNAL_OVERLOAD( error, ( QNetworkSession::SessionError ), error )
+    NET_LSCS_SIGNAL_1( Public, void error( QNetworkSession::SessionError error ) )
+    NET_LSCS_SIGNAL_OVERLOAD( error, ( QNetworkSession::SessionError ), error )
 
-    NET_CS_SIGNAL_1( Public, void preferredConfigurationChanged( const QNetworkConfiguration &config, bool isSeamless ) )
-    NET_CS_SIGNAL_2( preferredConfigurationChanged, config, isSeamless )
+    NET_LSCS_SIGNAL_1( Public, void preferredConfigurationChanged( const QNetworkConfiguration &config, bool isSeamless ) )
+    NET_LSCS_SIGNAL_2( preferredConfigurationChanged, config, isSeamless )
 
-    NET_CS_SIGNAL_1( Public, void newConfigurationActivated() )
-    NET_CS_SIGNAL_2( newConfigurationActivated )
+    NET_LSCS_SIGNAL_1( Public, void newConfigurationActivated() )
+    NET_LSCS_SIGNAL_2( newConfigurationActivated )
 
-    NET_CS_SIGNAL_1( Public, void usagePoliciesChanged( QNetworkSession::UsagePolicies usagePolicies ) )
-    NET_CS_SIGNAL_2( usagePoliciesChanged, usagePolicies )
+    NET_LSCS_SIGNAL_1( Public, void usagePoliciesChanged( QNetworkSession::UsagePolicies usagePolicies ) )
+    NET_LSCS_SIGNAL_2( usagePoliciesChanged, usagePolicies )
 
 protected:
     void connectNotify( const QMetaMethod &signal ) const override;
@@ -147,7 +147,7 @@ private:
     QNetworkSessionPrivate *d;
 };
 
-CS_DECLARE_METATYPE( QNetworkSession )
+LSCS_DECLARE_METATYPE( QNetworkSession )
 
 #endif // QT_NO_BEARERMANAGEMENT
 

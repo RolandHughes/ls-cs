@@ -34,13 +34,13 @@ class QPrinter;
 
 class Q_GUI_EXPORT QPrintDialog : public QAbstractPrintDialog
 {
-    GUI_CS_OBJECT( QPrintDialog )
+    GUI_LSCS_OBJECT( QPrintDialog )
     Q_DECLARE_PRIVATE( QPrintDialog )
 
-    GUI_CS_ENUM( PrintDialogOption )
+    GUI_LSCS_ENUM( PrintDialogOption )
 
-    GUI_CS_PROPERTY_READ( options,  options )
-    GUI_CS_PROPERTY_WRITE( options, setOptions )
+    GUI_LSCS_PROPERTY_READ( options,  options )
+    GUI_LSCS_PROPERTY_WRITE( options, setOptions )
 
 public:
     explicit QPrintDialog( QPrinter *printer, QWidget *parent = nullptr );
@@ -68,21 +68,21 @@ public:
     void open( QObject *receiver, const QString &member );
 
     using QDialog::accepted;
-    GUI_CS_SIGNAL_1( Public, void accepted( QPrinter *printer ) )
-    GUI_CS_SIGNAL_OVERLOAD( accepted, ( QPrinter * ), printer )
+    GUI_LSCS_SIGNAL_1( Public, void accepted( QPrinter *printer ) )
+    GUI_LSCS_SIGNAL_OVERLOAD( accepted, ( QPrinter * ), printer )
 
 private:
 
 #if defined (Q_OS_UNIX) && ! defined (Q_OS_DARWIN)
 
-    GUI_CS_SLOT_1( Private, void _q_togglePageSetCombo( bool arg1 ) )
-    GUI_CS_SLOT_2( _q_togglePageSetCombo )
+    GUI_LSCS_SLOT_1( Private, void _q_togglePageSetCombo( bool arg1 ) )
+    GUI_LSCS_SLOT_2( _q_togglePageSetCombo )
 
-    GUI_CS_SLOT_1( Private, void _q_collapseOrExpandDialog() )
-    GUI_CS_SLOT_2( _q_collapseOrExpandDialog )
+    GUI_LSCS_SLOT_1( Private, void _q_collapseOrExpandDialog() )
+    GUI_LSCS_SLOT_2( _q_collapseOrExpandDialog )
 
-    GUI_CS_SLOT_1( Private, void _q_checkFields() )
-    GUI_CS_SLOT_2( _q_checkFields )
+    GUI_LSCS_SLOT_1( Private, void _q_checkFields() )
+    GUI_LSCS_SLOT_2( _q_checkFields )
 
     friend class QUnixPrintWidget;
 #endif

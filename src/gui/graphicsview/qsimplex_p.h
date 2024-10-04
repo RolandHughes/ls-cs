@@ -99,7 +99,7 @@ struct QSimplexConstraint
         }
     }
 
-#if defined(CS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
+#if defined(LSCS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
     QString toString()
     {
         QString result;

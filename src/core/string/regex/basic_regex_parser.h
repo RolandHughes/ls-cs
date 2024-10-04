@@ -24,16 +24,16 @@
  * LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 */
 
-#ifndef CS_BASIC_REGEX_PARSER_H
-#define CS_BASIC_REGEX_PARSER_H
+#ifndef LSCS_BASIC_REGEX_PARSER_H
+#define LSCS_BASIC_REGEX_PARSER_H
 
 #include <cassert>
 #include <limits>
 
-namespace cs_regex_ns
+namespace lscs_regex_ns
 {
 
-namespace cs_regex_detail_ns
+namespace lscs_regex_detail_ns
 {
 
 inline intmax_t umax()
@@ -251,7 +251,7 @@ void basic_regex_parser<charT, traits>::fail( regex_constants::error_type error_
 
     if ( 0 == ( this->flags() & regex_constants::no_except ) )
     {
-        cs_regex_ns::regex_error e( message, error_code, position );
+        lscs_regex_ns::regex_error e( message, error_code, position );
         e.raise();
     }
 }
@@ -263,7 +263,7 @@ bool basic_regex_parser<charT, traits>::parse_all()
     if ( ++m_recursion_count > 400 )
     {
         // exceeded internal limits
-        fail( cs_regex_ns::regex_constants::error_complexity, m_position - m_base, "Exceeded nested brace limit." );
+        fail( lscs_regex_ns::regex_constants::error_complexity, m_position - m_base, "Exceeded nested brace limit." );
     }
 
     bool result = true;
@@ -1181,9 +1181,9 @@ bool basic_regex_parser<charT, traits>::parse_match_any()
     static_cast<re_dot *>(
         this->append_state( syntax_element_wild, sizeof( re_dot ) )
     )->mask = static_cast<unsigned char>( this->flags() & regbase::no_mod_s
-                                          ? cs_regex_detail_ns::force_not_newline
+                                          ? lscs_regex_detail_ns::force_not_newline
                                           : this->flags() & regbase::mod_s ?
-                                          cs_regex_detail_ns::force_newline : cs_regex_detail_ns::dont_care );
+                                          lscs_regex_detail_ns::force_newline : lscs_regex_detail_ns::dont_care );
     return true;
 }
 
@@ -1623,7 +1623,7 @@ bool basic_regex_parser<charT, traits>::parse_alt()
     ++m_position;
 
     // we need to append a trailing jump:
-    re_syntax_base *pj = this->append_state( cs_regex_detail_ns::syntax_element_jump, sizeof( re_jump ) );
+    re_syntax_base *pj = this->append_state( lscs_regex_detail_ns::syntax_element_jump, sizeof( re_jump ) );
     std::ptrdiff_t jump_offset = this->getoffset( pj );
 
     //

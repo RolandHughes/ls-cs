@@ -41,7 +41,7 @@ class CameraBinSession;
 
 class CameraBinVideoEncoder : public QVideoEncoderSettingsControl
 {
-    CS_OBJECT( CameraBinVideoEncoder )
+    LSCS_OBJECT( CameraBinVideoEncoder )
 
 public:
     CameraBinVideoEncoder( CameraBinSession *session );
@@ -72,8 +72,8 @@ public:
     void applySettings( GstElement *encoder );
 
 public:
-    CS_SIGNAL_1( Public, void settingsChanged() )
-    CS_SIGNAL_2( settingsChanged )
+    LSCS_SIGNAL_1( Public, void settingsChanged() )
+    LSCS_SIGNAL_2( settingsChanged )
 
 private:
     CameraBinSession *m_session;

@@ -39,7 +39,7 @@ class QIcon;
 
 class Q_XCB_EXPORT QXcbWindow : public QObject, public QXcbObject, public QXcbWindowEventListener, public QPlatformWindow
 {
-    CS_OBJECT( QXcbWindow )
+    LSCS_OBJECT( QXcbWindow )
 
 public:
     enum NetWmState
@@ -190,8 +190,8 @@ public:
     virtual void create();
     virtual void destroy();
 
-    CS_SLOT_1( Public, void updateSyncRequestCounter() )
-    CS_SLOT_2( updateSyncRequestCounter )
+    LSCS_SLOT_1( Public, void updateSyncRequestCounter() )
+    LSCS_SLOT_2( updateSyncRequestCounter )
 
 protected:
     virtual void resolveFormat()

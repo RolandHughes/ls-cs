@@ -41,7 +41,7 @@ class QVariant;
 
 class Q_SQL_EXPORT QSqlDriver : public QObject
 {
-    SQL_CS_OBJECT( QSqlDriver )
+    SQL_LSCS_OBJECT( QSqlDriver )
 
 public:
     enum DriverFeature { Transactions, QuerySize, BLOB, Unicode, PreparedQueries,
@@ -116,11 +116,11 @@ public:
 
     DbmsType dbmsType() const;
 
-    SQL_CS_SLOT_1( Public, virtual bool cancelQuery() )
-    SQL_CS_SLOT_2( cancelQuery )
-    SQL_CS_SIGNAL_1( Public, void notification( const QString &name, QSqlDriver::NotificationSource source,
+    SQL_LSCS_SLOT_1( Public, virtual bool cancelQuery() )
+    SQL_LSCS_SLOT_2( cancelQuery )
+    SQL_LSCS_SIGNAL_1( Public, void notification( const QString &name, QSqlDriver::NotificationSource source,
                      const QVariant &payload ) )
-    SQL_CS_SIGNAL_2( notification, name, source, payload )
+    SQL_LSCS_SIGNAL_2( notification, name, source, payload )
 
 protected:
     QSqlDriver( QSqlDriverPrivate &obj, QObject *parent = nullptr );

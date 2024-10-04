@@ -176,7 +176,7 @@ QStringList QKqueueFileSystemWatcherEngine::addPaths( const QStringList &paths,
 
             if ( id < 0 )
             {
-#if defined(CS_SHOW_DEBUG_CORE)
+#if defined(LSCS_SHOW_DEBUG_CORE)
                 qDebug() << "QKqueueFileSystemWatcherEngine: Added directory path" << path;
 #endif
                 directories->append( path );
@@ -184,7 +184,7 @@ QStringList QKqueueFileSystemWatcherEngine::addPaths( const QStringList &paths,
             }
             else
             {
-#if defined(CS_SHOW_DEBUG_CORE)
+#if defined(LSCS_SHOW_DEBUG_CORE)
                 qDebug() << "QKqueueFileSystemWatcherEngine: Added file path" << path;
 #endif
                 files->append( path );
@@ -287,7 +287,7 @@ void QKqueueFileSystemWatcherEngine::run()
         {
             int fd = kev.ident;
 
-#if defined(CS_SHOW_DEBUG_CORE)
+#if defined(LSCS_SHOW_DEBUG_CORE)
             qDebug() << "QKqueueFileSystemWatcherEngine: processing kevent" << kev.ident << kev.filter;
 #endif
 
@@ -345,7 +345,7 @@ void QKqueueFileSystemWatcherEngine::run()
 
                     if ( path.isEmpty() )
                     {
-#if defined(CS_SHOW_DEBUG_CORE)
+#if defined(LSCS_SHOW_DEBUG_CORE)
                         qDebug() << "QKqueueFileSystemWatcherEngine: Received a kevent for a file we are not watching";
 #endif
                         continue;
@@ -354,7 +354,7 @@ void QKqueueFileSystemWatcherEngine::run()
 
                 if ( kev.filter != EVFILT_VNODE )
                 {
-#if defined(CS_SHOW_DEBUG_CORE)
+#if defined(LSCS_SHOW_DEBUG_CORE)
                     qDebug() << "QKqueueFileSystemWatcherEngine: received a kevent with the wrong filter";
 #endif
                     continue;

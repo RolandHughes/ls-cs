@@ -42,21 +42,21 @@ class QAbstractAnimation;
 
 class Q_CORE_EXPORT QAbstractTransition : public QObject
 {
-    CORE_CS_OBJECT( QAbstractTransition )
+    CORE_LSCS_OBJECT( QAbstractTransition )
 
-    CORE_CS_PROPERTY_READ( sourceState, sourceState )
+    CORE_LSCS_PROPERTY_READ( sourceState, sourceState )
 
-    CORE_CS_PROPERTY_READ( targetState,   targetState )
-    CORE_CS_PROPERTY_WRITE( targetState,  setTargetState )
-    CORE_CS_PROPERTY_NOTIFY( targetState, targetStateChanged )
+    CORE_LSCS_PROPERTY_READ( targetState,   targetState )
+    CORE_LSCS_PROPERTY_WRITE( targetState,  setTargetState )
+    CORE_LSCS_PROPERTY_NOTIFY( targetState, targetStateChanged )
 
-    CORE_CS_PROPERTY_READ( targetStates,   targetStates )
-    CORE_CS_PROPERTY_WRITE( targetStates,  setTargetStates )
-    CORE_CS_PROPERTY_NOTIFY( targetStates, targetStatesChanged )
+    CORE_LSCS_PROPERTY_READ( targetStates,   targetStates )
+    CORE_LSCS_PROPERTY_WRITE( targetStates,  setTargetStates )
+    CORE_LSCS_PROPERTY_NOTIFY( targetStates, targetStatesChanged )
 
-    CORE_CS_PROPERTY_READ( transitionType,      transitionType )
-    CORE_CS_PROPERTY_WRITE( transitionType,     setTransitionType )
-    CORE_CS_PROPERTY_REVISION( transitionType,  1 )
+    CORE_LSCS_PROPERTY_READ( transitionType,      transitionType )
+    CORE_LSCS_PROPERTY_WRITE( transitionType,     setTransitionType )
+    CORE_LSCS_PROPERTY_REVISION( transitionType,  1 )
 
 public:
     enum TransitionType
@@ -65,7 +65,7 @@ public:
         InternalTransition
     };
 
-    CORE_CS_ENUM( TransitionType )
+    CORE_LSCS_ENUM( TransitionType )
 
     QAbstractTransition( QState *sourceState = nullptr );
 
@@ -90,14 +90,14 @@ public:
     QList<QAbstractAnimation *> animations() const;
 #endif
 
-    CORE_CS_SIGNAL_1( Public, void triggered() )
-    CORE_CS_SIGNAL_2( triggered )
+    CORE_LSCS_SIGNAL_1( Public, void triggered() )
+    CORE_LSCS_SIGNAL_2( triggered )
 
-    CORE_CS_SIGNAL_1( Public, void targetStateChanged() )
-    CORE_CS_SIGNAL_2( targetStateChanged )
+    CORE_LSCS_SIGNAL_1( Public, void targetStateChanged() )
+    CORE_LSCS_SIGNAL_2( targetStateChanged )
 
-    CORE_CS_SIGNAL_1( Public, void targetStatesChanged() )
-    CORE_CS_SIGNAL_2( targetStatesChanged )
+    CORE_LSCS_SIGNAL_1( Public, void targetStatesChanged() )
+    CORE_LSCS_SIGNAL_2( targetStatesChanged )
 
 protected:
     virtual bool eventTest( QEvent *event ) = 0;

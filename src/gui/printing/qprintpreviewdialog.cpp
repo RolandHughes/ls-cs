@@ -105,7 +105,7 @@ public:
 
 class LineEdit : public QLineEdit
 {
-    GUI_CS_OBJECT( LineEdit )
+    GUI_LSCS_OBJECT( LineEdit )
 
 public:
     LineEdit( QWidget *parent = nullptr )
@@ -133,8 +133,8 @@ protected:
     }
 
 private:
-    GUI_CS_SLOT_1( Private, void handleReturnPressed() )
-    GUI_CS_SLOT_2( handleReturnPressed )
+    GUI_LSCS_SLOT_1( Private, void handleReturnPressed() )
+    GUI_LSCS_SLOT_2( handleReturnPressed )
 
     QString origText;
 };

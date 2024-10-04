@@ -176,7 +176,7 @@ QLayoutItem *QStackedLayout::takeAt( int index )
 
     emit widgetRemoved( index );
 
-    if ( item->widget() && ! CSInternalRefCount::get_m_wasDeleted( item->widget() ) )
+    if ( item->widget() && ! LSCSInternalRefCount::get_m_wasDeleted( item->widget() ) )
     {
         item->widget()->hide();
     }

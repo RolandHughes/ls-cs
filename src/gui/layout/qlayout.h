@@ -39,18 +39,18 @@ class QLayoutPrivate;
 
 class Q_GUI_EXPORT QLayout : public QObject, public QLayoutItem
 {
-    GUI_CS_OBJECT_MULTIPLE( QLayout, QObject )
+    GUI_LSCS_OBJECT_MULTIPLE( QLayout, QObject )
 
-    GUI_CS_ENUM( SizeConstraint )
+    GUI_LSCS_ENUM( SizeConstraint )
 
-    GUI_CS_PROPERTY_READ( margin, margin )
-    GUI_CS_PROPERTY_WRITE( margin, setMargin )
+    GUI_LSCS_PROPERTY_READ( margin, margin )
+    GUI_LSCS_PROPERTY_WRITE( margin, setMargin )
 
-    GUI_CS_PROPERTY_READ( spacing, spacing )
-    GUI_CS_PROPERTY_WRITE( spacing, setSpacing )
+    GUI_LSCS_PROPERTY_READ( spacing, spacing )
+    GUI_LSCS_PROPERTY_WRITE( spacing, setSpacing )
 
-    GUI_CS_PROPERTY_READ( sizeConstraint, sizeConstraint )
-    GUI_CS_PROPERTY_WRITE( sizeConstraint, setSizeConstraint )
+    GUI_LSCS_PROPERTY_READ( sizeConstraint, sizeConstraint )
+    GUI_LSCS_PROPERTY_WRITE( sizeConstraint, setSizeConstraint )
 
 public:
     using QWidgetItemFactory = QWidgetItem * ( * )( const QLayout *layout, QWidget *widget );
@@ -58,7 +58,7 @@ public:
     using QSpacerItemFactory = QSpacerItem * ( * )( const QLayout *layout, int w, int h,
                                QSizePolicy::Policy hPolicy, QSizePolicy::Policy );
 
-    GUI_CS_REGISTER_ENUM(
+    GUI_LSCS_REGISTER_ENUM(
         enum SizeConstraint
     {
         SetDefaultConstraint,

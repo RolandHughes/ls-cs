@@ -33,7 +33,7 @@ class QScriptDebuggerCodeFinderWidgetInterfacePrivate;
 
 class QScriptDebuggerCodeFinderWidgetInterface : public QWidget
 {
-    SCRIPT_T_CS_OBJECT( QScriptDebuggerCodeFinderWidgetInterface )
+    SCRIPT_T_LSCS_OBJECT( QScriptDebuggerCodeFinderWidgetInterface )
 
 public:
     ~QScriptDebuggerCodeFinderWidgetInterface();
@@ -46,8 +46,8 @@ public:
     virtual void setOK( bool ok ) = 0;
     virtual void setWrapped( bool wrapped ) = 0;
 
-    CS_SIGNAL_1( Public, void findRequest( const QString &exp, int options ) )
-    CS_SIGNAL_2( findRequest, exp, options )
+    LSCS_SIGNAL_1( Public, void findRequest( const QString &exp, int options ) )
+    LSCS_SIGNAL_2( findRequest, exp, options )
 
 protected:
     QScriptDebuggerCodeFinderWidgetInterface(

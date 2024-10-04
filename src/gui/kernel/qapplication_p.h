@@ -149,7 +149,7 @@ public:
     {
         if ( QCoreApplication::instance() )
         {
-            return CSInternalThreadData::get_m_ThreadData( QCoreApplication::instance() )->eventDispatcher;
+            return LSCSInternalThreadData::get_m_ThreadData( QCoreApplication::instance() )->eventDispatcher;
         }
         else
         {

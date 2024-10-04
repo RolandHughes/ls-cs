@@ -27,7 +27,7 @@
 #ifndef QMETAOBJECT_H
 #define QMETAOBJECT_H
 
-#include <csmeta.h>
+#include <lscsmeta.h>
 #include <qlog.h>
 #include <qmap.h>
 #include <qmultimap.h>
@@ -112,17 +112,17 @@ public:
     static QMetaEnum findEnum( std::type_index id );
 
     template<class R, class ...Ts>
-    static bool invokeMethod( QObject *object, const QString &member, Qt::ConnectionType type, CSReturnArgument<R> retval,
-                              CSArgument<Ts>... Vs );
+    static bool invokeMethod( QObject *object, const QString &member, Qt::ConnectionType type, LSCSReturnArgument<R> retval,
+                              LSCSArgument<Ts>... Vs );
 
     template<class R, class ...Ts>
-    static bool invokeMethod( QObject *object, const QString &member, CSReturnArgument<R> retval, CSArgument<Ts>... Vs );
+    static bool invokeMethod( QObject *object, const QString &member, LSCSReturnArgument<R> retval, LSCSArgument<Ts>... Vs );
 
     template<class ...Ts>
-    static bool invokeMethod( QObject *object, const QString &member, Qt::ConnectionType type, CSArgument<Ts>... Vs );
+    static bool invokeMethod( QObject *object, const QString &member, Qt::ConnectionType type, LSCSArgument<Ts>... Vs );
 
     template<class ...Ts>
-    static bool invokeMethod( QObject *object, const QString &member, CSArgument<Ts>... Vs );
+    static bool invokeMethod( QObject *object, const QString &member, LSCSArgument<Ts>... Vs );
 
     template<class MethodClass, class... MethodArgs, class MethodReturn>
     QMetaMethod method( MethodReturn ( MethodClass::*methodPtr )( MethodArgs... ) ) const;
@@ -232,7 +232,7 @@ QObject *QMetaObject::newInstance( Ts... Vs ) const
 
     // signature of the method being invoked
     constructorSig += "(";
-    constructorSig += cs_typeToName<Ts...>();
+    constructorSig += lscs_typeToName<Ts...>();
     constructorSig += ")";
 
     int index = this->indexOfConstructor( constructorSig );
@@ -246,12 +246,12 @@ QObject *QMetaObject::newInstance( Ts... Vs ) const
     QObject *retval = nullptr;
 
     // about to call QMetaMethod::invoke()
-    metaMethod.invoke( 0, Qt::DirectConnection, CSReturnArgument<QObject *>( retval ), Vs... );
+    metaMethod.invoke( 0, Qt::DirectConnection, LSCSReturnArgument<QObject *>( retval ), Vs... );
 
     return retval;
 }
 
-#if ! defined (CS_DOXYPRESS)
+#if ! defined (LSCS_DOXYPRESS)
 
 // **
 class Q_CORE_EXPORT QMetaObject_X : public QMetaObject
@@ -341,13 +341,13 @@ template<class T>
 void QMetaObject_T<T>::postConstruct()
 {
     // calls the first "overload" to ensure the other overloads are processed
-    T::cs_regTrigger( cs_number<0>() );
+    T::lscs_regTrigger( lscs_number<0>() );
 }
 
 template<class T>
 const QString &QMetaObject_T<T>::className() const
 {
-    static QString retval = QString::fromUtf8( T::cs_className() );
+    static QString retval = QString::fromUtf8( T::lscs_className() );
     return retval;
 }
 
@@ -363,14 +363,14 @@ const QString &QMetaObject_T<T>::getInterface_iid() const
 template<class T>
 const QMetaObject *QMetaObject_T<T>::superClass() const
 {
-    if constexpr ( std::is_same_v<typename T::cs_parent, CSGadget_Fake_Parent> )
+    if constexpr ( std::is_same_v<typename T::lscs_parent, LSCSGadget_Fake_Parent> )
     {
         return nullptr;
 
     }
     else
     {
-        return &T::cs_parent::staticMetaObject();
+        return &T::lscs_parent::staticMetaObject();
     }
 }
 
@@ -403,7 +403,7 @@ void QMetaObject_T<T>::register_method_rev( U methodPtr, int revision )
 
     if ( tokenName.isEmpty() )
     {
-        qWarning( "Macro CS_REVISION() method has not been registered for class %s", this->className() );
+        qWarning( "Macro LSCS_REVISION() method has not been registered for class %s", this->className() );
         return;
     }
 
@@ -559,7 +559,7 @@ void QMetaObject_T<T>::register_property_reset( const QString &name, U methodPtr
 }
 
 // best way to handle declarations
-#include <csmeta_internal_2.h>
+#include <lscsmeta_internal_2.h>
 
 #endif   // doxypress
 

@@ -35,7 +35,7 @@
 
 class AVFDisplayLink : public QObject
 {
-    CS_OBJECT( AVFDisplayLink )
+    LSCS_OBJECT( AVFDisplayLink )
 
 public:
     explicit AVFDisplayLink( QObject *parent = nullptr );
@@ -44,14 +44,14 @@ public:
     bool isValid() const;
     bool isActive() const;
 
-    CS_SLOT_1( Public, void start() )
-    CS_SLOT_2( start )
+    LSCS_SLOT_1( Public, void start() )
+    LSCS_SLOT_2( start )
 
-    CS_SLOT_1( Public, void stop() )
-    CS_SLOT_2( stop )
+    LSCS_SLOT_1( Public, void stop() )
+    LSCS_SLOT_2( stop )
 
-    CS_SIGNAL_1( Public, void tick( const CVTimeStamp &ts ) )
-    CS_SIGNAL_2( tick, ts )
+    LSCS_SIGNAL_1( Public, void tick( const CVTimeStamp &ts ) )
+    LSCS_SIGNAL_2( tick, ts )
 
     void displayLinkEvent( const CVTimeStamp * );
 

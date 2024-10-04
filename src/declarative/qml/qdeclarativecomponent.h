@@ -40,15 +40,15 @@ class QDeclarativeComponentAttached;
 
 class Q_DECLARATIVE_EXPORT QDeclarativeComponent : public QObject
 {
-    DECL_CS_OBJECT( QDeclarativeComponent )
+    DECL_LSCS_OBJECT( QDeclarativeComponent )
     Q_DECLARE_PRIVATE( QDeclarativeComponent )
 
-    DECL_CS_PROPERTY_READ( progress, progress )
-    DECL_CS_PROPERTY_NOTIFY( progress, progressChanged )
-    DECL_CS_PROPERTY_READ( status, status )
-    DECL_CS_PROPERTY_NOTIFY( status, statusChanged )
-    DECL_CS_PROPERTY_READ( url, url )
-    DECL_CS_PROPERTY_CONSTANT( url )
+    DECL_LSCS_PROPERTY_READ( progress, progress )
+    DECL_LSCS_PROPERTY_NOTIFY( progress, progressChanged )
+    DECL_LSCS_PROPERTY_READ( status, status )
+    DECL_LSCS_PROPERTY_NOTIFY( status, statusChanged )
+    DECL_LSCS_PROPERTY_READ( url, url )
+    DECL_LSCS_PROPERTY_CONSTANT( url )
 
 public:
     QDeclarativeComponent( QObject *parent = nullptr );
@@ -57,7 +57,7 @@ public:
     QDeclarativeComponent( QDeclarativeEngine *, const QUrl &url, QObject *parent = nullptr );
     virtual ~QDeclarativeComponent();
 
-    CS_ENUM( Status )
+    LSCS_ENUM( Status )
     enum Status { Null, Ready, Loading, Error };
     Status status() const;
 
@@ -68,8 +68,8 @@ public:
 
     QList<QDeclarativeError> errors() const;
 
-    DECL_CS_INVOKABLE_METHOD_1( Public, QString errorString() const )
-    DECL_CS_INVOKABLE_METHOD_2( errorString )
+    DECL_LSCS_INVOKABLE_METHOD_1( Public, QString errorString() const )
+    DECL_LSCS_INVOKABLE_METHOD_2( errorString )
 
     qreal progress() const;
 
@@ -86,21 +86,21 @@ public:
 
     static QDeclarativeComponentAttached *qmlAttachedProperties( QObject * );
 
-    DECL_CS_SIGNAL_1( Public, void statusChanged( QDeclarativeComponent::Status un_named_arg1 ) )
-    DECL_CS_SIGNAL_2( statusChanged, un_named_arg1 )
+    DECL_LSCS_SIGNAL_1( Public, void statusChanged( QDeclarativeComponent::Status un_named_arg1 ) )
+    DECL_LSCS_SIGNAL_2( statusChanged, un_named_arg1 )
 
-    DECL_CS_SIGNAL_1( Public, void progressChanged( qreal un_named_arg1 ) )
-    DECL_CS_SIGNAL_2( progressChanged, un_named_arg1 )
+    DECL_LSCS_SIGNAL_1( Public, void progressChanged( qreal un_named_arg1 ) )
+    DECL_LSCS_SIGNAL_2( progressChanged, un_named_arg1 )
 
 protected:
     QDeclarativeComponent( QDeclarativeComponentPrivate &dd, QObject *parent );
 
-    CS_INVOKABLE_METHOD_1( Protected, QScriptValue createObject( QObject *parent ) )
-    CS_INVOKABLE_METHOD_OVERLOAD( createObject )
+    LSCS_INVOKABLE_METHOD_1( Protected, QScriptValue createObject( QObject *parent ) )
+    LSCS_INVOKABLE_METHOD_OVERLOAD( createObject )
 
-    CS_INVOKABLE_METHOD_1( Protected, createObject( QObject *parent, const QScriptValue &valuemap ) )
-    CS_INVOKABLE_METHOD_OVERLOAD( createObject )
-    CS_REVISION_OVERLOAD( createObject, 1, ( QObject *, const QScriptValue & ) )
+    LSCS_INVOKABLE_METHOD_1( Protected, createObject( QObject *parent, const QScriptValue &valuemap ) )
+    LSCS_INVOKABLE_METHOD_OVERLOAD( createObject )
+    LSCS_REVISION_OVERLOAD( createObject, 1, ( QObject *, const QScriptValue & ) )
 
 private:
     QDeclarativeComponent( QDeclarativeEngine *, QDeclarativeCompiledData *, int, int, QObject *parent );

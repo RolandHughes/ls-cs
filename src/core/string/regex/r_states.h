@@ -24,17 +24,17 @@
  * LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 */
 
-#ifndef CS_STATES_H
-#define CS_STATES_H
+#ifndef LSCS_STATES_H
+#define LSCS_STATES_H
 
 #include <regex/regex_raw_buffer.h>
 
 #include <climits>
 
-namespace cs_regex_ns
+namespace lscs_regex_ns
 {
 
-namespace cs_regex_detail_ns
+namespace lscs_regex_detail_ns
 {
 
 /*** mask_type *******************************************************

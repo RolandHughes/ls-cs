@@ -68,7 +68,7 @@ void MediaPlayerPrivateFullscreenWindow::createWindow( HWND parentHwnd )
     {
         WNDCLASSEX wcex = {0};
         wcex.cbSize = sizeof( WNDCLASSEX );
-        wcex.style = CS_HREDRAW | CS_VREDRAW;
+        wcex.style = LSCS_HREDRAW | LSCS_VREDRAW;
         wcex.lpfnWndProc = staticWndProc;
         wcex.hInstance = instanceHandle();
         wcex.lpszClassName = windowClassName;

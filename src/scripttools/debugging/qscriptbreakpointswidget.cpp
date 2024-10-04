@@ -44,7 +44,7 @@ QT_BEGIN_NAMESPACE
 
 class QScriptNewBreakpointWidget : public QWidget
 {
-    SCRIPT_T_CS_OBJECT( QScriptNewBreakpointWidge )
+    SCRIPT_T_LSCS_OBJECT( QScriptNewBreakpointWidge )
 
 public:
     QScriptNewBreakpointWidget( QWidget *parent = nullptr )
@@ -192,7 +192,7 @@ void QScriptBreakpointsWidgetPrivate::_q_onNewBreakpointRequest( const QString &
 
 class QScriptBreakpointsItemDelegate : public QStyledItemDelegate
 {
-    SCRIPT_T_CS_OBJECT( ScriptBreakpointsItemDelegate )
+    SCRIPT_T_LSCS_OBJECT( ScriptBreakpointsItemDelegate )
 
 public:
     QScriptBreakpointsItemDelegate( QObject *parent = nullptr )

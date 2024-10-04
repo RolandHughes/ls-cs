@@ -35,7 +35,7 @@ class DeviceOrientationProviderQt;
 class DeviceOrientationClientQt : public QObject, public DeviceOrientationClient
 {
 
-    WEB_CS_OBJECT_MULTIPLE( DeviceOrientationClientQt, QObject )
+    WEB_LSCS_OBJECT_MULTIPLE( DeviceOrientationClientQt, QObject )
 
 public:
     DeviceOrientationClientQt( QWebPage * );
@@ -48,8 +48,8 @@ public:
     virtual void deviceOrientationControllerDestroyed();
 
 public :
-    WEB_CS_SLOT_1( Public, void changeDeviceOrientation( DeviceOrientation *orientation ) )
-    WEB_CS_SLOT_2( changeDeviceOrientation )
+    WEB_LSCS_SLOT_1( Public, void changeDeviceOrientation( DeviceOrientation *orientation ) )
+    WEB_LSCS_SLOT_2( changeDeviceOrientation )
 
 private:
     QWebPage *m_page;

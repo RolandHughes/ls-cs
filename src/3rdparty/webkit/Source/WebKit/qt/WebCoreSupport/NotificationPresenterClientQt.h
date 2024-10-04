@@ -54,7 +54,7 @@ class ScriptExecutionContext;
 
 class NotificationWrapper : public QObject, public QWebNotificationData
 {
-    WEB_CS_OBJECT( NotificationWrapper )
+    WEB_LSCS_OBJECT( NotificationWrapper )
 
 public:
     NotificationWrapper();
@@ -68,10 +68,10 @@ public:
     const QUrl openerPageUrl() const override;
 
 public :
-    WEB_CS_SLOT_1( Public, void notificationClosed() )
-    WEB_CS_SLOT_2( notificationClosed )
-    WEB_CS_SLOT_1( Public, void notificationClicked() )
-    WEB_CS_SLOT_2( notificationClicked )
+    WEB_LSCS_SLOT_1( Public, void notificationClosed() )
+    WEB_LSCS_SLOT_2( notificationClosed )
+    WEB_LSCS_SLOT_1( Public, void notificationClicked() )
+    WEB_LSCS_SLOT_2( notificationClicked )
 
 public:
 #ifndef QT_NO_SYSTEMTRAYICON

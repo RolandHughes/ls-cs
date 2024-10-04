@@ -39,7 +39,7 @@ typedef bool( *LessThan )( const QPair<QTableWidgetItem *, int> &, const QPair<Q
 
 class QTableWidgetMimeData : public QMimeData
 {
-    GUI_CS_OBJECT( QTableWidgetMimeData )
+    GUI_LSCS_OBJECT( QTableWidgetMimeData )
 
 public:
     QList<QTableWidgetItem *> items;
@@ -65,7 +65,7 @@ public:
 
 class QTableModel : public QAbstractTableModel
 {
-    GUI_CS_OBJECT( QTableModel )
+    GUI_LSCS_OBJECT( QTableModel )
 
 public:
     // need this to separate header items from other items

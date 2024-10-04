@@ -54,12 +54,12 @@ public:
 };
 
 #define QGstBufferPoolInterface_iid "com.copperspice.CS.gstbufferpool/1.0"
-CS_DECLARE_INTERFACE( QGstBufferPoolInterface, QGstBufferPoolInterface_iid )
+LSCS_DECLARE_INTERFACE( QGstBufferPoolInterface, QGstBufferPoolInterface_iid )
 
 class QGstBufferPoolPlugin : public QObject, public QGstBufferPoolInterface
 {
-    CS_OBJECT( QGstBufferPoolPlugin )
-    CS_INTERFACES( QGstBufferPoolInterface )
+    LSCS_OBJECT( QGstBufferPoolPlugin )
+    LSCS_INTERFACES( QGstBufferPoolInterface )
 
 public:
     explicit QGstBufferPoolPlugin( QObject *parent = nullptr );

@@ -30,39 +30,39 @@ class QFormLayoutPrivate;
 
 class Q_GUI_EXPORT QFormLayout : public QLayout
 {
-    GUI_CS_OBJECT( QFormLayout )
+    GUI_LSCS_OBJECT( QFormLayout )
 
     Q_DECLARE_PRIVATE( QFormLayout )
 
-    GUI_CS_ENUM( FieldGrowthPolicy )
-    GUI_CS_ENUM( RowWrapPolicy )
-    GUI_CS_ENUM( ItemRole )
+    GUI_LSCS_ENUM( FieldGrowthPolicy )
+    GUI_LSCS_ENUM( RowWrapPolicy )
+    GUI_LSCS_ENUM( ItemRole )
 
-    GUI_CS_PROPERTY_READ( fieldGrowthPolicy, fieldGrowthPolicy )
-    GUI_CS_PROPERTY_WRITE( fieldGrowthPolicy, setFieldGrowthPolicy )
-    GUI_CS_PROPERTY_RESET( fieldGrowthPolicy, resetFieldGrowthPolicy )
+    GUI_LSCS_PROPERTY_READ( fieldGrowthPolicy, fieldGrowthPolicy )
+    GUI_LSCS_PROPERTY_WRITE( fieldGrowthPolicy, setFieldGrowthPolicy )
+    GUI_LSCS_PROPERTY_RESET( fieldGrowthPolicy, resetFieldGrowthPolicy )
 
-    GUI_CS_PROPERTY_READ( rowWrapPolicy, rowWrapPolicy )
-    GUI_CS_PROPERTY_WRITE( rowWrapPolicy, setRowWrapPolicy )
-    GUI_CS_PROPERTY_RESET( rowWrapPolicy, resetRowWrapPolicy )
+    GUI_LSCS_PROPERTY_READ( rowWrapPolicy, rowWrapPolicy )
+    GUI_LSCS_PROPERTY_WRITE( rowWrapPolicy, setRowWrapPolicy )
+    GUI_LSCS_PROPERTY_RESET( rowWrapPolicy, resetRowWrapPolicy )
 
-    GUI_CS_PROPERTY_READ( labelAlignment, labelAlignment )
-    GUI_CS_PROPERTY_WRITE( labelAlignment, setLabelAlignment )
-    GUI_CS_PROPERTY_RESET( labelAlignment, resetLabelAlignment )
+    GUI_LSCS_PROPERTY_READ( labelAlignment, labelAlignment )
+    GUI_LSCS_PROPERTY_WRITE( labelAlignment, setLabelAlignment )
+    GUI_LSCS_PROPERTY_RESET( labelAlignment, resetLabelAlignment )
 
-    GUI_CS_PROPERTY_READ( formAlignment, formAlignment )
-    GUI_CS_PROPERTY_WRITE( formAlignment, setFormAlignment )
-    GUI_CS_PROPERTY_RESET( formAlignment, resetFormAlignment )
+    GUI_LSCS_PROPERTY_READ( formAlignment, formAlignment )
+    GUI_LSCS_PROPERTY_WRITE( formAlignment, setFormAlignment )
+    GUI_LSCS_PROPERTY_RESET( formAlignment, resetFormAlignment )
 
-    GUI_CS_PROPERTY_READ( horizontalSpacing, horizontalSpacing )
-    GUI_CS_PROPERTY_WRITE( horizontalSpacing, setHorizontalSpacing )
+    GUI_LSCS_PROPERTY_READ( horizontalSpacing, horizontalSpacing )
+    GUI_LSCS_PROPERTY_WRITE( horizontalSpacing, setHorizontalSpacing )
 
-    GUI_CS_PROPERTY_READ( verticalSpacing, verticalSpacing )
-    GUI_CS_PROPERTY_WRITE( verticalSpacing, setVerticalSpacing )
+    GUI_LSCS_PROPERTY_READ( verticalSpacing, verticalSpacing )
+    GUI_LSCS_PROPERTY_WRITE( verticalSpacing, setVerticalSpacing )
 
 public:
 
-    GUI_CS_REGISTER_ENUM(
+    GUI_LSCS_REGISTER_ENUM(
         enum FieldGrowthPolicy
     {
         FieldsStayAtSizeHint,
@@ -71,7 +71,7 @@ public:
     };
     )
 
-    GUI_CS_REGISTER_ENUM(
+    GUI_LSCS_REGISTER_ENUM(
         enum RowWrapPolicy
     {
         DontWrapRows,

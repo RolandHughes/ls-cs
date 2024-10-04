@@ -31,7 +31,7 @@ class DSCameraSession;
 
 class DSCameraImageProcessingControl : public QCameraImageProcessingControl
 {
-    CS_OBJECT( DSCameraImageProcessingControl )
+    LSCS_OBJECT( DSCameraImageProcessingControl )
 
 public:
     DSCameraImageProcessingControl( DSCameraSession *session );

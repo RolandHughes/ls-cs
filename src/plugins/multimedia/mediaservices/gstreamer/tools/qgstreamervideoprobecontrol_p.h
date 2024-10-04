@@ -37,7 +37,7 @@
 class QGstreamerVideoProbeControl
     : public QMediaVideoProbeControl, public QGstreamerBufferProbe, public QSharedData
 {
-    CS_OBJECT( QGstreamerVideoProbeControl )
+    LSCS_OBJECT( QGstreamerVideoProbeControl )
 
 public:
     explicit QGstreamerVideoProbeControl( QObject *parent );
@@ -50,8 +50,8 @@ public:
     void stopFlushing();
 
 private:
-    CS_SLOT_1( Private, void frameProbed() )
-    CS_SLOT_2( frameProbed )
+    LSCS_SLOT_1( Private, void frameProbed() )
+    LSCS_SLOT_2( frameProbed )
 
     QVideoSurfaceFormat m_format;
     QVideoFrame m_pendingFrame;
