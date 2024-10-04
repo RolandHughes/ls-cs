@@ -50,7 +50,7 @@ class QScrollTimer;
 
 class QScrollerPrivate : public QObject
 {
-    GUI_CS_OBJECT( QScrollerPrivate )
+    GUI_LSCS_OBJECT( QScrollerPrivate )
     Q_DECLARE_PUBLIC( QScroller )
 
 public:
@@ -124,8 +124,8 @@ public:
     static const char *stateName( QScroller::State state );
     static const char *inputName( QScroller::Input input );
 
-    GUI_CS_SLOT_1( Public, void targetDestroyed() )
-    GUI_CS_SLOT_2( targetDestroyed )
+    GUI_LSCS_SLOT_1( Public, void targetDestroyed() )
+    GUI_LSCS_SLOT_2( targetDestroyed )
 
     // non static
     QObject *target;

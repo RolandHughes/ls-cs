@@ -33,7 +33,7 @@ class AVFCameraService;
 
 class AVFCameraExposureControl : public QCameraExposureControl
 {
-    CS_OBJECT( AVFCameraExposureControl )
+    LSCS_OBJECT( AVFCameraExposureControl )
 
 public:
     AVFCameraExposureControl( AVFCameraService *service );
@@ -46,8 +46,8 @@ public:
     bool setValue( ExposureParameter parameter, const QVariant &value ) override;
 
 private:
-    CS_SLOT_1( Private, void cameraStateChanged() )
-    CS_SLOT_2( cameraStateChanged )
+    LSCS_SLOT_1( Private, void cameraStateChanged() )
+    LSCS_SLOT_2( cameraStateChanged )
 
     AVFCameraService *m_service;
     AVFCameraSession *m_session;

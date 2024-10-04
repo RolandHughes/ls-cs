@@ -73,7 +73,7 @@ QString AVFMediaContainerControl::containerFormat() const
 void AVFMediaContainerControl::setContainerFormat(const QString &format)
 {
     if (! containers()->contains(format)) {
-        qWarning("Unsupported container format: '%s'", csPrintable(format));
+        qWarning("Unsupported container format: '%s'", lscsPrintable(format));
         return;
     }
 

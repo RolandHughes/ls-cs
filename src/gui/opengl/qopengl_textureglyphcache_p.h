@@ -47,7 +47,7 @@ public:
             QOpenGLFunctions( ctx ).glGenFramebuffers( 1, &m_fbo );
         }
 
-#if defined(CS_SHOW_DEBUG_GUI_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_GUI_OPENGL)
         qDebug( " -> QOpenGLGlyphTexture() %p for context %p.", this, ctx );
 #endif
 
@@ -57,7 +57,7 @@ public:
     {
         QOpenGLContext *ctx = context;
 
-#if defined(CS_SHOW_DEBUG_GUI_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_GUI_OPENGL)
         qDebug( "~QOpenGLGlyphTexture() %p for context %p.", this, ctx );
 #endif
 

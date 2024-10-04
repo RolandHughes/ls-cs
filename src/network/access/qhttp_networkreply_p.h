@@ -52,7 +52,7 @@ class QHttpNetworkReplyPrivate;
 
 class QHttpNetworkReply : public QObject, public QHttpNetworkHeader
 {
-    NET_CS_OBJECT_MULTIPLE( QHttpNetworkReply, QObject )
+    NET_LSCS_OBJECT_MULTIPLE( QHttpNetworkReply, QObject )
 
 public:
     explicit QHttpNetworkReply( const QUrl &url = QUrl(), QObject *parent = nullptr );
@@ -119,47 +119,47 @@ public:
     void ignoreSslErrors();
     void ignoreSslErrors( const QList<QSslError> &errors );
 
-    NET_CS_SIGNAL_1( Public, void encrypted() )
-    NET_CS_SIGNAL_2( encrypted )
+    NET_LSCS_SIGNAL_1( Public, void encrypted() )
+    NET_LSCS_SIGNAL_2( encrypted )
 
-    NET_CS_SIGNAL_1( Public, void preSharedKeyAuthenticationRequired( QSslPreSharedKeyAuthenticator *authenticator ) )
-    NET_CS_SIGNAL_2( preSharedKeyAuthenticationRequired, authenticator )
+    NET_LSCS_SIGNAL_1( Public, void preSharedKeyAuthenticationRequired( QSslPreSharedKeyAuthenticator *authenticator ) )
+    NET_LSCS_SIGNAL_2( preSharedKeyAuthenticationRequired, authenticator )
 
-    NET_CS_SIGNAL_1( Public, void sslErrors( const QList <QSslError> &errors ) )
-    NET_CS_SIGNAL_2( sslErrors, errors )
+    NET_LSCS_SIGNAL_1( Public, void sslErrors( const QList <QSslError> &errors ) )
+    NET_LSCS_SIGNAL_2( sslErrors, errors )
 #endif
 
-    NET_CS_SIGNAL_1( Public, void readyRead() )
-    NET_CS_SIGNAL_2( readyRead )
+    NET_LSCS_SIGNAL_1( Public, void readyRead() )
+    NET_LSCS_SIGNAL_2( readyRead )
 
-    NET_CS_SIGNAL_1( Public, void finished() )
-    NET_CS_SIGNAL_2( finished )
+    NET_LSCS_SIGNAL_1( Public, void finished() )
+    NET_LSCS_SIGNAL_2( finished )
 
-    NET_CS_SIGNAL_1( Public, void finishedWithError( QNetworkReply::NetworkError errorCode, const QString &detail = QString() ) )
-    NET_CS_SIGNAL_2( finishedWithError, errorCode, detail )
+    NET_LSCS_SIGNAL_1( Public, void finishedWithError( QNetworkReply::NetworkError errorCode, const QString &detail = QString() ) )
+    NET_LSCS_SIGNAL_2( finishedWithError, errorCode, detail )
 
-    NET_CS_SIGNAL_1( Public, void headerChanged() )
-    NET_CS_SIGNAL_2( headerChanged )
+    NET_LSCS_SIGNAL_1( Public, void headerChanged() )
+    NET_LSCS_SIGNAL_2( headerChanged )
 
-    NET_CS_SIGNAL_1( Public, void dataReadProgress( qint64 done, qint64 total ) )
-    NET_CS_SIGNAL_2( dataReadProgress, done, total )
+    NET_LSCS_SIGNAL_1( Public, void dataReadProgress( qint64 done, qint64 total ) )
+    NET_LSCS_SIGNAL_2( dataReadProgress, done, total )
 
-    NET_CS_SIGNAL_1( Public, void dataSendProgress( qint64 done, qint64 total ) )
-    NET_CS_SIGNAL_2( dataSendProgress, done, total )
+    NET_LSCS_SIGNAL_1( Public, void dataSendProgress( qint64 done, qint64 total ) )
+    NET_LSCS_SIGNAL_2( dataSendProgress, done, total )
 
-    NET_CS_SIGNAL_1( Public, void cacheCredentials( const QHttpNetworkRequest &request, QAuthenticator *authenticator ) )
-    NET_CS_SIGNAL_2( cacheCredentials, request, authenticator )
+    NET_LSCS_SIGNAL_1( Public, void cacheCredentials( const QHttpNetworkRequest &request, QAuthenticator *authenticator ) )
+    NET_LSCS_SIGNAL_2( cacheCredentials, request, authenticator )
 
 #ifndef QT_NO_NETWORKPROXY
-    NET_CS_SIGNAL_1( Public, void proxyAuthenticationRequired( const QNetworkProxy &proxy, QAuthenticator *authenticator ) )
-    NET_CS_SIGNAL_2( proxyAuthenticationRequired, proxy, authenticator )
+    NET_LSCS_SIGNAL_1( Public, void proxyAuthenticationRequired( const QNetworkProxy &proxy, QAuthenticator *authenticator ) )
+    NET_LSCS_SIGNAL_2( proxyAuthenticationRequired, proxy, authenticator )
 #endif
 
-    NET_CS_SIGNAL_1( Public, void authenticationRequired( const QHttpNetworkRequest &request, QAuthenticator *authenticator ) )
-    NET_CS_SIGNAL_2( authenticationRequired, request, authenticator )
+    NET_LSCS_SIGNAL_1( Public, void authenticationRequired( const QHttpNetworkRequest &request, QAuthenticator *authenticator ) )
+    NET_LSCS_SIGNAL_2( authenticationRequired, request, authenticator )
 
-    NET_CS_SIGNAL_1( Public, void redirected( const QUrl &url, int httpStatus, int maxRedirectsRemaining ) )
-    NET_CS_SIGNAL_2( redirected, url, httpStatus, maxRedirectsRemaining )
+    NET_LSCS_SIGNAL_1( Public, void redirected( const QUrl &url, int httpStatus, int maxRedirectsRemaining ) )
+    NET_LSCS_SIGNAL_2( redirected, url, httpStatus, maxRedirectsRemaining )
 
 private:
     Q_DECLARE_PRIVATE( QHttpNetworkReply )

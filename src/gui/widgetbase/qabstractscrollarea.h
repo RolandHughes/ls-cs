@@ -34,21 +34,21 @@ class QAbstractScrollAreaPrivate;
 
 class Q_GUI_EXPORT QAbstractScrollArea : public QFrame
 {
-    GUI_CS_OBJECT( QAbstractScrollArea )
+    GUI_LSCS_OBJECT( QAbstractScrollArea )
 
-    GUI_CS_ENUM( SizeAdjustPolicy )
+    GUI_LSCS_ENUM( SizeAdjustPolicy )
 
-    GUI_CS_PROPERTY_READ( verticalScrollBarPolicy,  verticalScrollBarPolicy )
-    GUI_CS_PROPERTY_WRITE( verticalScrollBarPolicy, setVerticalScrollBarPolicy )
+    GUI_LSCS_PROPERTY_READ( verticalScrollBarPolicy,  verticalScrollBarPolicy )
+    GUI_LSCS_PROPERTY_WRITE( verticalScrollBarPolicy, setVerticalScrollBarPolicy )
 
-    GUI_CS_PROPERTY_READ( horizontalScrollBarPolicy,  horizontalScrollBarPolicy )
-    GUI_CS_PROPERTY_WRITE( horizontalScrollBarPolicy, setHorizontalScrollBarPolicy )
+    GUI_LSCS_PROPERTY_READ( horizontalScrollBarPolicy,  horizontalScrollBarPolicy )
+    GUI_LSCS_PROPERTY_WRITE( horizontalScrollBarPolicy, setHorizontalScrollBarPolicy )
 
-    GUI_CS_PROPERTY_READ( sizeAdjustPolicy,  sizeAdjustPolicy )
-    GUI_CS_PROPERTY_WRITE( sizeAdjustPolicy, setSizeAdjustPolicy )
+    GUI_LSCS_PROPERTY_READ( sizeAdjustPolicy,  sizeAdjustPolicy )
+    GUI_LSCS_PROPERTY_WRITE( sizeAdjustPolicy, setSizeAdjustPolicy )
 
 public:
-    GUI_CS_REGISTER_ENUM(
+    GUI_LSCS_REGISTER_ENUM(
         enum SizeAdjustPolicy
     {
         AdjustIgnored,
@@ -131,14 +131,14 @@ protected:
 private:
     Q_DECLARE_PRIVATE( QAbstractScrollArea )
 
-    GUI_CS_SLOT_1( Private, void _q_hslide( int x ) )
-    GUI_CS_SLOT_2( _q_hslide )
+    GUI_LSCS_SLOT_1( Private, void _q_hslide( int x ) )
+    GUI_LSCS_SLOT_2( _q_hslide )
 
-    GUI_CS_SLOT_1( Private, void _q_vslide( int y ) )
-    GUI_CS_SLOT_2( _q_vslide )
+    GUI_LSCS_SLOT_1( Private, void _q_vslide( int y ) )
+    GUI_LSCS_SLOT_2( _q_vslide )
 
-    GUI_CS_SLOT_1( Private, void _q_showOrHideScrollBars() )
-    GUI_CS_SLOT_2( _q_showOrHideScrollBars )
+    GUI_LSCS_SLOT_1( Private, void _q_showOrHideScrollBars() )
+    GUI_LSCS_SLOT_2( _q_showOrHideScrollBars )
 
     friend class QStyleSheetStyle;
     friend class QWidgetPrivate;

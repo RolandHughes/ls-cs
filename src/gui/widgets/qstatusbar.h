@@ -32,10 +32,10 @@ class QStatusBarPrivate;
 
 class Q_GUI_EXPORT QStatusBar : public QWidget
 {
-    GUI_CS_OBJECT( QStatusBar )
+    GUI_LSCS_OBJECT( QStatusBar )
 
-    GUI_CS_PROPERTY_READ( sizeGripEnabled, isSizeGripEnabled )
-    GUI_CS_PROPERTY_WRITE( sizeGripEnabled, setSizeGripEnabled )
+    GUI_LSCS_PROPERTY_READ( sizeGripEnabled, isSizeGripEnabled )
+    GUI_LSCS_PROPERTY_WRITE( sizeGripEnabled, setSizeGripEnabled )
 
 public:
     explicit QStatusBar( QWidget *parent = nullptr );
@@ -56,14 +56,14 @@ public:
 
     QString currentMessage() const;
 
-    GUI_CS_SLOT_1( Public, void showMessage( const QString &msg, int timeout = 0 ) )
-    GUI_CS_SLOT_2( showMessage )
+    GUI_LSCS_SLOT_1( Public, void showMessage( const QString &msg, int timeout = 0 ) )
+    GUI_LSCS_SLOT_2( showMessage )
 
-    GUI_CS_SLOT_1( Public, void clearMessage() )
-    GUI_CS_SLOT_2( clearMessage )
+    GUI_LSCS_SLOT_1( Public, void clearMessage() )
+    GUI_LSCS_SLOT_2( clearMessage )
 
-    GUI_CS_SIGNAL_1( Public, void messageChanged( const QString &msg ) )
-    GUI_CS_SIGNAL_2( messageChanged, msg )
+    GUI_LSCS_SIGNAL_1( Public, void messageChanged( const QString &msg ) )
+    GUI_LSCS_SIGNAL_2( messageChanged, msg )
 
 protected:
     void showEvent( QShowEvent *event ) override;

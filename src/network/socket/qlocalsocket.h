@@ -35,7 +35,7 @@ class QLocalSocketPrivate;
 
 class Q_NETWORK_EXPORT QLocalSocket : public QIODevice
 {
-    NET_CS_OBJECT( QLocalSocket )
+    NET_LSCS_OBJECT( QLocalSocket )
     Q_DECLARE_PRIVATE( QLocalSocket )
 
 public:
@@ -102,17 +102,17 @@ public:
     bool waitForDisconnected( int msecs = 30000 );
     bool waitForReadyRead( int msecs = 30000 ) override;
 
-    NET_CS_SIGNAL_1( Public, void connected() )
-    NET_CS_SIGNAL_2( connected )
+    NET_LSCS_SIGNAL_1( Public, void connected() )
+    NET_LSCS_SIGNAL_2( connected )
 
-    NET_CS_SIGNAL_1( Public, void disconnected() )
-    NET_CS_SIGNAL_2( disconnected )
+    NET_LSCS_SIGNAL_1( Public, void disconnected() )
+    NET_LSCS_SIGNAL_2( disconnected )
 
-    NET_CS_SIGNAL_1( Public, void error( QLocalSocket::LocalSocketError socketError ) )
-    NET_CS_SIGNAL_OVERLOAD( error, ( QLocalSocket::LocalSocketError ), socketError )
+    NET_LSCS_SIGNAL_1( Public, void error( QLocalSocket::LocalSocketError socketError ) )
+    NET_LSCS_SIGNAL_OVERLOAD( error, ( QLocalSocket::LocalSocketError ), socketError )
 
-    NET_CS_SIGNAL_1( Public, void stateChanged( QLocalSocket::LocalSocketState socketState ) )
-    NET_CS_SIGNAL_2( stateChanged, socketState )
+    NET_LSCS_SIGNAL_1( Public, void stateChanged( QLocalSocket::LocalSocketState socketState ) )
+    NET_LSCS_SIGNAL_2( stateChanged, socketState )
 
 protected:
     qint64 readData( char *data, qint64 ch ) override;
@@ -120,34 +120,34 @@ protected:
 
 private:
 #if defined(QT_LOCALSOCKET_TCP)
-    NET_CS_SLOT_1( Private, void _q_stateChanged( QAbstractSocket::SocketState socketState ) )
-    NET_CS_SLOT_2( _q_stateChanged )
+    NET_LSCS_SLOT_1( Private, void _q_stateChanged( QAbstractSocket::SocketState socketState ) )
+    NET_LSCS_SLOT_2( _q_stateChanged )
 
-    NET_CS_SLOT_1( Private, void _q_error( QAbstractSocket::SocketError socketError ) )
-    NET_CS_SLOT_2( _q_error )
+    NET_LSCS_SLOT_1( Private, void _q_error( QAbstractSocket::SocketError socketError ) )
+    NET_LSCS_SLOT_2( _q_error )
 
 #elif defined(Q_OS_WIN)
-    NET_CS_SLOT_1( Private, void _q_canWrite() )
-    NET_CS_SLOT_2( _q_canWrite )
+    NET_LSCS_SLOT_1( Private, void _q_canWrite() )
+    NET_LSCS_SLOT_2( _q_canWrite )
 
-    NET_CS_SLOT_1( Private, void _q_pipeClosed() )
-    NET_CS_SLOT_2( _q_pipeClosed )
+    NET_LSCS_SLOT_1( Private, void _q_pipeClosed() )
+    NET_LSCS_SLOT_2( _q_pipeClosed )
 
-    NET_CS_SLOT_1( Private, void _q_winError( ulong, const QString & ) )
-    NET_CS_SLOT_2( _q_winError )
+    NET_LSCS_SLOT_1( Private, void _q_winError( ulong, const QString & ) )
+    NET_LSCS_SLOT_2( _q_winError )
 
 #else
-    NET_CS_SLOT_1( Private, void _q_stateChanged( QAbstractSocket::SocketState state ) )
-    NET_CS_SLOT_2( _q_stateChanged )
+    NET_LSCS_SLOT_1( Private, void _q_stateChanged( QAbstractSocket::SocketState state ) )
+    NET_LSCS_SLOT_2( _q_stateChanged )
 
-    NET_CS_SLOT_1( Private, void _q_error( QAbstractSocket::SocketError socketError ) )
-    NET_CS_SLOT_2( _q_error )
+    NET_LSCS_SLOT_1( Private, void _q_error( QAbstractSocket::SocketError socketError ) )
+    NET_LSCS_SLOT_2( _q_error )
 
-    NET_CS_SLOT_1( Private, void _q_connectToSocket() )
-    NET_CS_SLOT_2( _q_connectToSocket )
+    NET_LSCS_SLOT_1( Private, void _q_connectToSocket() )
+    NET_LSCS_SLOT_2( _q_connectToSocket )
 
-    NET_CS_SLOT_1( Private, void _q_abortConnectionAttempt() )
-    NET_CS_SLOT_2( _q_abortConnectionAttempt )
+    NET_LSCS_SLOT_1( Private, void _q_abortConnectionAttempt() )
+    NET_LSCS_SLOT_2( _q_abortConnectionAttempt )
 #endif
 
 };

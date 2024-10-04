@@ -69,9 +69,9 @@ using QMatchOptionFlags = QFlags<QMatchOption>;
 Q_DECLARE_OPERATORS_FOR_FLAGS( QPatternOptionFlags )
 Q_DECLARE_OPERATORS_FOR_FLAGS( QMatchOptionFlags )
 
-namespace cs_regex_ns
+namespace lscs_regex_ns
 {
-namespace cs_regex_detail_ns
+namespace lscs_regex_detail_ns
 {
 
 template <>
@@ -393,7 +393,7 @@ public:
     }
 };
 
-#if ! defined (CS_DOXYPRESS)
+#if ! defined (LSCS_DOXYPRESS)
 namespace Cs
 {
 #endif
@@ -497,7 +497,7 @@ public:
 private:
     S m_pattern;
     QPatternOptionFlags m_patternOptions = QPatternOption::NoPatternOption;
-    cs_regex_ns::basic_regex<QChar32, QRegexTraits<S>> m_regex;
+    lscs_regex_ns::basic_regex<QChar32, QRegexTraits<S>> m_regex;
 
     bool m_valid = false;
     S m_errorString;
@@ -517,7 +517,7 @@ public:
     QRegularExpressionMatch( QRegularExpressionMatch &&other ) = default;
 
     // internal only
-    QRegularExpressionMatch( cs_regex_ns::match_results<QRegexTraits<S>> match, QMatchType matchType, QMatchOptionFlags matchOptions )
+    QRegularExpressionMatch( lscs_regex_ns::match_results<QRegexTraits<S>> match, QMatchType matchType, QMatchOptionFlags matchOptions )
         : m_results( std::move( match ) ), m_matchType( matchType ), m_matchOptions( matchOptions ), m_valid( true )
     {
     }
@@ -623,7 +623,7 @@ public:
     }
 
 private:
-    cs_regex_ns::match_results<QRegexTraits<S>> m_results;
+    lscs_regex_ns::match_results<QRegexTraits<S>> m_results;
 
     QMatchType m_matchType = QMatchType::NoMatch;
     QMatchOptionFlags m_matchOptions = QMatchOption::NoMatchOption;
@@ -763,36 +763,36 @@ QRegularExpressionMatch<S> QRegularExpression<S>::match( const S &str, typename 
 {
     if ( m_valid )
     {
-        cs_regex_ns::match_results<QRegexTraits<S>> matchResult;
+        lscs_regex_ns::match_results<QRegexTraits<S>> matchResult;
 
         // option flags
-        cs_regex_ns::regex_constants::match_flag_type tmpOptions = cs_regex_ns::regex_constants::match_default;
+        lscs_regex_ns::regex_constants::match_flag_type tmpOptions = lscs_regex_ns::regex_constants::match_default;
 
 
         if ( matchType == QMatchType::PartialPreferCompleteMatch )
         {
-            tmpOptions |= cs_regex_ns::regex_constants::match_partial;
+            tmpOptions |= lscs_regex_ns::regex_constants::match_partial;
         }
 
         if ( matchOptions & QMatchOption::AnchoredMatchOption )
         {
-            tmpOptions |= cs_regex_ns::regex_constants::match_continuous;
+            tmpOptions |= lscs_regex_ns::regex_constants::match_continuous;
         }
 
         // pattern flags
         if ( ! ( m_patternOptions & QPatternOption::DotMatchesEverythingOption ) )
         {
             // backwards from flag
-            tmpOptions |= cs_regex_ns::regex_constants::match_not_dot_newline;
+            tmpOptions |= lscs_regex_ns::regex_constants::match_not_dot_newline;
         }
 
         if ( ! ( m_patternOptions & QPatternOption::MultilineOption ) )
         {
             // backwards from flag
-            tmpOptions |= cs_regex_ns::regex_constants::match_single_line;
+            tmpOptions |= lscs_regex_ns::regex_constants::match_single_line;
         }
 
-        if ( cs_regex_ns::regex_search( offset, str.cend(), matchResult, m_regex, tmpOptions ) )
+        if ( lscs_regex_ns::regex_search( offset, str.cend(), matchResult, m_regex, tmpOptions ) )
         {
             QRegularExpressionMatch<S> retval{matchResult, matchType, matchOptions};
             return retval;
@@ -801,7 +801,7 @@ QRegularExpressionMatch<S> QRegularExpression<S>::match( const S &str, typename 
         else
         {
             // valid regex, no match
-            QRegularExpressionMatch<S> retval{cs_regex_ns::match_results<QRegexTraits<S>>(), QMatchType::NoMatch, matchOptions};
+            QRegularExpressionMatch<S> retval{lscs_regex_ns::match_results<QRegexTraits<S>>(), QMatchType::NoMatch, matchOptions};
             return retval;
         }
 
@@ -820,36 +820,36 @@ QRegularExpressionMatch<S> QRegularExpression<S>::match( QStringView<S> str, typ
 {
     if ( m_valid )
     {
-        cs_regex_ns::match_results<QRegexTraits<S>> matchResult;
+        lscs_regex_ns::match_results<QRegexTraits<S>> matchResult;
 
         // option flags
-        cs_regex_ns::regex_constants::match_flag_type tmpOptions = cs_regex_ns::regex_constants::match_default;
+        lscs_regex_ns::regex_constants::match_flag_type tmpOptions = lscs_regex_ns::regex_constants::match_default;
 
 
         if ( matchType == QMatchType::PartialPreferCompleteMatch )
         {
-            tmpOptions |= cs_regex_ns::regex_constants::match_partial;
+            tmpOptions |= lscs_regex_ns::regex_constants::match_partial;
         }
 
         if ( matchOptions & QMatchOption::AnchoredMatchOption )
         {
-            tmpOptions |= cs_regex_ns::regex_constants::match_continuous;
+            tmpOptions |= lscs_regex_ns::regex_constants::match_continuous;
         }
 
         // pattern flags
         if ( ! ( m_patternOptions & QPatternOption::DotMatchesEverythingOption ) )
         {
             // backwards from flag
-            tmpOptions |= cs_regex_ns::regex_constants::match_not_dot_newline;
+            tmpOptions |= lscs_regex_ns::regex_constants::match_not_dot_newline;
         }
 
         if ( ! ( m_patternOptions & QPatternOption::MultilineOption ) )
         {
             // backwards from flag
-            tmpOptions |= cs_regex_ns::regex_constants::match_single_line;
+            tmpOptions |= lscs_regex_ns::regex_constants::match_single_line;
         }
 
-        if ( cs_regex_ns::regex_search( offset, str.cend(), matchResult, m_regex, tmpOptions ) )
+        if ( lscs_regex_ns::regex_search( offset, str.cend(), matchResult, m_regex, tmpOptions ) )
         {
             QRegularExpressionMatch<S> retval{matchResult, matchType, matchOptions};
             return retval;
@@ -858,7 +858,7 @@ QRegularExpressionMatch<S> QRegularExpression<S>::match( QStringView<S> str, typ
         else
         {
             // valid regex, no match
-            QRegularExpressionMatch<S> retval{cs_regex_ns::match_results<QRegexTraits<S>>(), QMatchType::NoMatch, matchOptions};
+            QRegularExpressionMatch<S> retval{lscs_regex_ns::match_results<QRegexTraits<S>>(), QMatchType::NoMatch, matchOptions};
             return retval;
         }
 
@@ -894,22 +894,22 @@ void QRegularExpression<S>::setPattern( const S &pattern )
     m_pattern = pattern;
 
     // declare flags
-    typename cs_regex_ns::basic_regex<QChar32, QRegexTraits<S>>::flag_type flags;
+    typename lscs_regex_ns::basic_regex<QChar32, QRegexTraits<S>>::flag_type flags;
     flags = 0;
 
     if ( m_patternOptions & QPatternOption::CaseInsensitiveOption )
     {
-        flags |= cs_regex_ns::regex_constants::icase;
+        flags |= lscs_regex_ns::regex_constants::icase;
     }
 
     if ( m_patternOptions & QPatternOption::ExtendedPatternSyntaxOption )
     {
-        flags |= cs_regex_ns::regex_constants::mod_x;
+        flags |= lscs_regex_ns::regex_constants::mod_x;
     }
 
     if ( m_patternOptions & QPatternOption::DontCaptureOption )
     {
-        flags |= cs_regex_ns::regex_constants::nosubs;
+        flags |= lscs_regex_ns::regex_constants::nosubs;
     }
 
     // exact match
@@ -1373,7 +1373,7 @@ S QRegularExpression<S>::convert_wildcard( const S &str, const bool enableEscapi
     return retval;
 }
 
-#if ! defined (CS_DOXYPRESS)
+#if ! defined (LSCS_DOXYPRESS)
 }  // cs namespace
 #endif
 

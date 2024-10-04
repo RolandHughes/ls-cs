@@ -160,7 +160,7 @@ list(APPEND GUI_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qwindowdefs_win.h
    ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qwindowstatechangeevent.h
    ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qwindowsysteminterface.h
-   ${CMAKE_CURRENT_SOURCE_DIR}/kernel/cs_carbon_wrapper.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/kernel/lscs_carbon_wrapper.h
    ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qtgui.h
 )
 
@@ -193,8 +193,8 @@ list(APPEND GUI_PRIVATE_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qwindow_p.h
    ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qwindowcontainer_p.h
    ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qwindowsysteminterface_p.h
-   ${CMAKE_CURRENT_SOURCE_DIR}/kernel/cs_carbon_wrapper_p.h
-   ${CMAKE_CURRENT_SOURCE_DIR}/kernel/cs_mac_p.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/kernel/lscs_carbon_wrapper_p.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/kernel/lscs_mac_p.h
 )
 
 target_sources(LsCsGui

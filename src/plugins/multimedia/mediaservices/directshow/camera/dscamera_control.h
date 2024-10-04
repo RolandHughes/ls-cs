@@ -32,7 +32,7 @@ class DSCameraSession;
 
 class DSCameraControl : public QCameraControl
 {
-    CS_OBJECT( DSCameraControl )
+    LSCS_OBJECT( DSCameraControl )
 
 public:
     DSCameraControl( QObject *parent = nullptr );

@@ -30,7 +30,7 @@ class QUrl;
 
 class Q_XMLPATTERNS_EXPORT QAbstractUriResolver : public QObject
 {
-    XMLP_CS_OBJECT( QAbstractUriResolver )
+    XMLP_LSCS_OBJECT( QAbstractUriResolver )
 
 public:
     QAbstractUriResolver( QObject *parent = nullptr );

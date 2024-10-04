@@ -39,7 +39,7 @@
 #include <qopengl.h>
 #include <qopenglcontext.h>
 
-#if defined(CS_SHOW_DEBUG_GUI_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_GUI_OPENGL)
 
 #include <stdio.h>
 

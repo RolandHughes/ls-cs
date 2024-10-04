@@ -75,14 +75,14 @@ protected:
 #ifndef QT_NO_ACTION
 class QUndoAction : public QAction
 {
-    GUI_CS_OBJECT( QUndoAction )
+    GUI_LSCS_OBJECT( QUndoAction )
 
 public:
     QUndoAction( const QString &prefix, QObject *parent = nullptr );
     void setTextFormat( const QString &textFormat, const QString &defaultText );
 
-    GUI_CS_SLOT_1( Public, void setPrefixedText( const QString &text ) )
-    GUI_CS_SLOT_2( setPrefixedText )
+    GUI_LSCS_SLOT_1( Public, void setPrefixedText( const QString &text ) )
+    GUI_LSCS_SLOT_2( setPrefixedText )
 
 private:
     QString m_prefix;

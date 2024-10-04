@@ -56,7 +56,7 @@ class SampleGrabberCallbackPrivate;
 
 class DSCameraSession : public QObject
 {
-    CS_OBJECT( DSCameraSession )
+    LSCS_OBJECT( DSCameraSession )
 
 public:
     DSCameraSession( QObject *parent = nullptr );
@@ -93,23 +93,23 @@ public:
     QVariant imageProcessingParameter( QCameraImageProcessingControl::ProcessingParameter ) const;
     void setImageProcessingParameter( QCameraImageProcessingControl::ProcessingParameter, const QVariant & );
 
-    CS_SIGNAL_1( Public, void statusChanged( QCamera::Status newStatus ) )
-    CS_SIGNAL_2( statusChanged, newStatus )
+    LSCS_SIGNAL_1( Public, void statusChanged( QCamera::Status newStatus ) )
+    LSCS_SIGNAL_2( statusChanged, newStatus )
 
-    CS_SIGNAL_1( Public, void imageExposed( int id ) )
-    CS_SIGNAL_2( imageExposed, id )
+    LSCS_SIGNAL_1( Public, void imageExposed( int id ) )
+    LSCS_SIGNAL_2( imageExposed, id )
 
-    CS_SIGNAL_1( Public, void imageCaptured( int id, const QImage &preview ) )
-    CS_SIGNAL_2( imageCaptured, id, preview )
+    LSCS_SIGNAL_1( Public, void imageCaptured( int id, const QImage &preview ) )
+    LSCS_SIGNAL_2( imageCaptured, id, preview )
 
-    CS_SIGNAL_1( Public, void imageSaved( int id, const QString &fileName ) )
-    CS_SIGNAL_2( imageSaved, id, fileName )
+    LSCS_SIGNAL_1( Public, void imageSaved( int id, const QString &fileName ) )
+    LSCS_SIGNAL_2( imageSaved, id, fileName )
 
-    CS_SIGNAL_1( Public, void readyForCaptureChanged( bool isReady ) )
-    CS_SIGNAL_2( readyForCaptureChanged, isReady )
+    LSCS_SIGNAL_1( Public, void readyForCaptureChanged( bool isReady ) )
+    LSCS_SIGNAL_2( readyForCaptureChanged, isReady )
 
-    CS_SIGNAL_1( Public, void captureError( int id, int error, const QString &errorString ) )
-    CS_SIGNAL_2( captureError, id, error, errorString )
+    LSCS_SIGNAL_1( Public, void captureError( int id, int error, const QString &errorString ) )
+    LSCS_SIGNAL_2( captureError, id, error, errorString )
 
 private:
     struct ImageProcessingParameterInfo
@@ -186,11 +186,11 @@ private:
     // Internal state
     QCamera::Status m_status;
 
-    CS_SLOT_1( Private, void presentFrame() )
-    CS_SLOT_2( presentFrame )
+    LSCS_SLOT_1( Private, void presentFrame() )
+    LSCS_SLOT_2( presentFrame )
 
-    CS_SLOT_1( Private, void updateReadyForCapture() )
-    CS_SLOT_2( updateReadyForCapture )
+    LSCS_SLOT_1( Private, void updateReadyForCapture() )
+    LSCS_SLOT_2( updateReadyForCapture )
 
     friend class SampleGrabberCallbackPrivate;
 };

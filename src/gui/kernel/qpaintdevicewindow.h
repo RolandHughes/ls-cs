@@ -32,7 +32,7 @@ class QPaintEvent;
 
 class Q_GUI_EXPORT QPaintDeviceWindow : public QWindow, public QPaintDevice
 {
-    GUI_CS_OBJECT( QPaintDeviceWindow )
+    GUI_LSCS_OBJECT( QPaintDeviceWindow )
 
 public:
     QPaintDeviceWindow( const QPaintDeviceWindow & ) = delete;
@@ -45,8 +45,8 @@ public:
     using QWindow::height;
     using QWindow::devicePixelRatio;
 
-    GUI_CS_SLOT_1( Public, void update() )
-    GUI_CS_SLOT_OVERLOAD( update, () )
+    GUI_LSCS_SLOT_1( Public, void update() )
+    GUI_LSCS_SLOT_OVERLOAD( update, () )
 
 protected:
     virtual void paintEvent( QPaintEvent *event );

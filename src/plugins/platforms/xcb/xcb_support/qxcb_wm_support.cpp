@@ -120,7 +120,7 @@ void QXcbWMSupport::updateVirtualRoots()
     }
     while ( remaining > 0 );
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
     qDebug() << "QXcbWMSupport::updateVirtualRoots()";
 
     for ( int i = 0; i < net_virtual_roots.size(); ++i )

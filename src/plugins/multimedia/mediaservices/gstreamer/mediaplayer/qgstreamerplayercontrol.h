@@ -42,7 +42,7 @@ class QGstreamerPlayerService;
 
 class QGstreamerPlayerControl : public QMediaPlayerControl
 {
-    CS_OBJECT( QGstreamerPlayerControl )
+    LSCS_OBJECT( QGstreamerPlayerControl )
 
 public:
     QGstreamerPlayerControl( QGstreamerPlayerSession *session, QObject *parent = nullptr );
@@ -75,20 +75,20 @@ public:
 
     QMediaPlayerResourceSetInterface *resources() const;
 
-    CS_SLOT_1( Public, void setPosition( qint64 pos ) override )
-    CS_SLOT_2( setPosition )
+    LSCS_SLOT_1( Public, void setPosition( qint64 pos ) override )
+    LSCS_SLOT_2( setPosition )
 
-    CS_SLOT_1( Public, void play() override )
-    CS_SLOT_2( play )
-    CS_SLOT_1( Public, void pause() override )
-    CS_SLOT_2( pause )
-    CS_SLOT_1( Public, void stop() override )
-    CS_SLOT_2( stop )
+    LSCS_SLOT_1( Public, void play() override )
+    LSCS_SLOT_2( play )
+    LSCS_SLOT_1( Public, void pause() override )
+    LSCS_SLOT_2( pause )
+    LSCS_SLOT_1( Public, void stop() override )
+    LSCS_SLOT_2( stop )
 
-    CS_SLOT_1( Public, void setVolume( int volume ) override )
-    CS_SLOT_2( setVolume )
-    CS_SLOT_1( Public, void setMuted( bool muted ) override )
-    CS_SLOT_2( setMuted )
+    LSCS_SLOT_1( Public, void setVolume( int volume ) override )
+    LSCS_SLOT_2( setVolume )
+    LSCS_SLOT_1( Public, void setMuted( bool muted ) override )
+    LSCS_SLOT_2( setMuted )
 
 private:
     void playOrPause( QMediaPlayer::State state );
@@ -111,24 +111,24 @@ private:
 
     QMediaPlayerResourceSetInterface *m_resources;
 
-    CS_SLOT_1( Private, void updateSessionState( QMediaPlayer::State state ) )
-    CS_SLOT_2( updateSessionState )
-    CS_SLOT_1( Private, void updateMediaStatus() )
-    CS_SLOT_2( updateMediaStatus )
-    CS_SLOT_1( Private, void processEOS() )
-    CS_SLOT_2( processEOS )
-    CS_SLOT_1( Private, void setBufferProgress( int progress ) )
-    CS_SLOT_2( setBufferProgress )
+    LSCS_SLOT_1( Private, void updateSessionState( QMediaPlayer::State state ) )
+    LSCS_SLOT_2( updateSessionState )
+    LSCS_SLOT_1( Private, void updateMediaStatus() )
+    LSCS_SLOT_2( updateMediaStatus )
+    LSCS_SLOT_1( Private, void processEOS() )
+    LSCS_SLOT_2( processEOS )
+    LSCS_SLOT_1( Private, void setBufferProgress( int progress ) )
+    LSCS_SLOT_2( setBufferProgress )
 
-    CS_SLOT_1( Private, void handleInvalidMedia() )
-    CS_SLOT_2( handleInvalidMedia )
+    LSCS_SLOT_1( Private, void handleInvalidMedia() )
+    LSCS_SLOT_2( handleInvalidMedia )
 
-    CS_SLOT_1( Private, void handleResourcesGranted() )
-    CS_SLOT_2( handleResourcesGranted )
-    CS_SLOT_1( Private, void handleResourcesLost() )
-    CS_SLOT_2( handleResourcesLost )
-    CS_SLOT_1( Private, void handleResourcesDenied() )
-    CS_SLOT_2( handleResourcesDenied )
+    LSCS_SLOT_1( Private, void handleResourcesGranted() )
+    LSCS_SLOT_2( handleResourcesGranted )
+    LSCS_SLOT_1( Private, void handleResourcesLost() )
+    LSCS_SLOT_2( handleResourcesLost )
+    LSCS_SLOT_1( Private, void handleResourcesDenied() )
+    LSCS_SLOT_2( handleResourcesDenied )
 };
 
 #endif

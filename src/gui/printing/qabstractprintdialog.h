@@ -33,7 +33,7 @@ class QPrinter;
 
 class Q_GUI_EXPORT QAbstractPrintDialog : public QDialog
 {
-    GUI_CS_OBJECT( QAbstractPrintDialog )
+    GUI_LSCS_OBJECT( QAbstractPrintDialog )
 
 public:
     // Keep in sync with QPrinter::PrintRange

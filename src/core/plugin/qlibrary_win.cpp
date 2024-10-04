@@ -134,7 +134,7 @@ void *QLibraryHandle::resolve_sys( const QString &symbol )
                       qt_error_string() );
 
         // show the full error message
-        qWarning( "%s", csPrintable( errorString ) );
+        qWarning( "%s", lscsPrintable( errorString ) );
 
     }
     else

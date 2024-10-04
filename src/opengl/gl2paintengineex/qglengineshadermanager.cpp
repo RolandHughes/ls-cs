@@ -244,7 +244,7 @@ QGLEngineSharedShaders::QGLEngineSharedShaders( const QGLContext *context )
     }
     else
     {
-        qCritical( "Errors linking simple shader: %s", csPrintable( simpleShaderProg->log() ) );
+        qCritical( "Errors linking simple shader: %s", lscsPrintable( simpleShaderProg->log() ) );
     }
 
     // Compile the blit shader:
@@ -298,17 +298,17 @@ QGLEngineSharedShaders::QGLEngineSharedShaders( const QGLContext *context )
     }
     else
     {
-        qCritical( "Errors linking blit shader: %s", csPrintable( blitShaderProg->log() ) );
+        qCritical( "Errors linking blit shader: %s", lscsPrintable( blitShaderProg->log() ) );
     }
 
-#if defined(CS_SHOW_DEBUG_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_OPENGL)
     qDebug( "QGLEngineSharedShaders() %p for thread %p", this, QThread::currentThread() );
 #endif
 }
 
 QGLEngineSharedShaders::~QGLEngineSharedShaders()
 {
-#if defined(CS_SHOW_DEBUG_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_OPENGL)
     qDebug( "~QGLEngineSharedShaders() %p for thread %p", this, QThread::currentThread() );
 #endif
 
@@ -331,7 +331,7 @@ QGLEngineSharedShaders::~QGLEngineSharedShaders()
     }
 }
 
-#if defined(CS_SHOW_DEBUG_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_OPENGL)
 QString QGLEngineSharedShaders::snippetNameStr( SnippetName name )
 {
     QMetaEnum m = staticMetaObject().enumerator( staticMetaObject().indexOfEnumerator( "SnippetName" ) );
@@ -398,7 +398,7 @@ QGLEngineShaderProg *QGLEngineSharedShaders::findProgramInCache( const QGLEngine
             QScopedPointer<QGLShader> fragShader( new QGLShader( QGLShader::Fragment ) );
             QString description;
 
-#if defined(CS_SHOW_DEBUG_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_OPENGL)
             // Name the shader for easier debugging
             description.append( "Fragment shader: main=" );
             description.append( snippetNameStr( prog.mainFragShader ) );
@@ -428,7 +428,7 @@ QGLEngineShaderProg *QGLEngineSharedShaders::findProgramInCache( const QGLEngine
 
             QScopedPointer<QGLShader> vertexShader( new QGLShader( QGLShader::Vertex ) );
 
-#if defined(CS_SHOW_DEBUG_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_OPENGL)
             // Name the shader for easier debugging
             description.clear();
             description.append( "Vertex shader: main=" );
@@ -487,7 +487,7 @@ QGLEngineShaderProg *QGLEngineSharedShaders::findProgramInCache( const QGLEngine
         {
             QString error( "Shader program failed to link," );
 
-#if defined(CS_SHOW_DEBUG_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_OPENGL)
             error += "\n  Shaders Used:\n";
 
             for ( int i = 0; i < newProg->program->shaders().count(); ++i )

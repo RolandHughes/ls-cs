@@ -36,7 +36,7 @@ class QDateTimePrivate;
 #include <optional>
 
 #if __cpp_lib_chrono >= 201907L
-#define CS_CHRONO_TYPES
+#define LSCS_CHRONO_TYPES
 #endif
 
 #ifdef Q_OS_DARWIN
@@ -79,7 +79,7 @@ public:
     [[nodiscard]] QDate addMonths( qint64 months ) const;
     [[nodiscard]] QDate addYears( qint64 years ) const;
 
-#if defined(CS_CHRONO_TYPES) || defined(CS_CHRONO_TYPES_CATCH)
+#if defined(LSCS_CHRONO_TYPES) || defined(LSCS_CHRONO_TYPES_CATCH)
     // c++20
 
     [[nodiscard]] QDate addDuration( std::chrono::days days ) const
@@ -130,7 +130,7 @@ public:
 
     QDateTime startOfDay( const QTimeZone &zone = default_tz() ) const;
 
-#if defined(CS_CHRONO_TYPES) || defined(CS_CHRONO_TYPES_CATCH)
+#if defined(LSCS_CHRONO_TYPES) || defined(LSCS_CHRONO_TYPES_CATCH)
     // c++20
 
     std::chrono::sys_days toStdSysDays() const
@@ -174,7 +174,7 @@ public:
 
     static const QTimeZone &default_tz();
 
-#if defined(CS_CHRONO_TYPES) || defined(CS_CHRONO_TYPES_CATCH)
+#if defined(LSCS_CHRONO_TYPES) || defined(LSCS_CHRONO_TYPES_CATCH)
     // c++20
 
     static QDate fromStdSysDays( const std::chrono::sys_days &days )
@@ -452,7 +452,7 @@ public:
     static QDateTime fromString( const QString &str, Qt::DateFormat format = Qt::TextDate );
     static QDateTime fromString( const QString &str, const QString &format );
 
-#if defined(CS_CHRONO_TYPES) || defined(CS_CHRONO_TYPES_CATCH)
+#if defined(LSCS_CHRONO_TYPES) || defined(LSCS_CHRONO_TYPES_CATCH)
     // c++20
 
     static QDateTime fromStdLocalTime( const std::chrono::local_time<std::chrono::milliseconds> &msecs )

@@ -24,11 +24,11 @@
 #ifndef QCHAR32_H
 #define QCHAR32_H
 
-#define CS_STRING_ALLOW_UNSAFE
+#define LSCS_STRING_ALLOW_UNSAFE
 
 #include <qglobal.h>
-#include <cs_char.h>
-#include <cs_string.h>
+#include <lscs_char.h>
+#include <lscs_string.h>
 
 class QChar32;
 class QString8;

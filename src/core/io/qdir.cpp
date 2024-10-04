@@ -1630,7 +1630,7 @@ QDebug operator<<( QDebug debug, QDir::Filters filters )
         }
     }
 
-    debug.noquote() << "QDir::Filters(" << csPrintable( flags.join( "|" ) ) << ')';
+    debug.noquote() << "QDir::Filters(" << lscsPrintable( flags.join( "|" ) ) << ')';
     return debug;
 }
 
@@ -1695,9 +1695,9 @@ static QDebug operator<<( QDebug debug, QDir::SortFlags sorting )
             flags << "Type";
         }
 
-        debug.noquote() << "QDir::SortFlags(" << csPrintable( type )
+        debug.noquote() << "QDir::SortFlags(" << lscsPrintable( type )
                         << '|'
-                        << csPrintable( flags.join( "|" ) ) << ')';
+                        << lscsPrintable( flags.join( "|" ) ) << ')';
     }
 
     return debug;

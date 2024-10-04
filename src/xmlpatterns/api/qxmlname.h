@@ -107,6 +107,6 @@ private:
     Code m_qNameCode;
 };
 
-CS_DECLARE_METATYPE( QXmlName )
+LSCS_DECLARE_METATYPE( QXmlName )
 
 #endif

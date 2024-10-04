@@ -44,7 +44,7 @@ static int usage( const QStringList &args )
         loaders += line.formatArg( format.extension, -5 ).formatArg( format.description );
     }
 
-    std::cout << csPrintable( QString(
+    std::cout << lscsPrintable( QString(
                                   "\nUsage:\n"
                                   "    lconvert [options] <infile> [<infile>...]\n\n"
                                   "lconvert is part of Linguist tool chain. It can be used as a\n"
@@ -316,7 +316,7 @@ int main( int argc, char *argv[] )
 
     if ( !tr.load( inFiles[0].name, cd, inFiles[0].format ) )
     {
-        std::cerr << csPrintable( cd.error() );
+        std::cerr << lscsPrintable( cd.error() );
         return 2;
     }
 
@@ -328,7 +328,7 @@ int main( int argc, char *argv[] )
 
         if ( !tr2.load( inFiles[i].name, cd, inFiles[i].format ) )
         {
-            std::cerr << csPrintable( cd.error() );
+            std::cerr << lscsPrintable( cd.error() );
             return 2;
         }
 
@@ -379,13 +379,13 @@ int main( int argc, char *argv[] )
 
     if ( ! cd.errors().isEmpty() )
     {
-        std::cerr << csPrintable( cd.error() );
+        std::cerr << lscsPrintable( cd.error() );
         cd.clearErrors();
     }
 
     if ( ! tr.save( outFileName, cd, outFormat ) )
     {
-        std::cerr << csPrintable( cd.error() );
+        std::cerr << lscsPrintable( cd.error() );
         return 3;
     }
 

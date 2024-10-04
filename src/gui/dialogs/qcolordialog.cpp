@@ -158,10 +158,10 @@ private:
 
 class QWellArray : public QWidget
 {
-    GUI_CS_OBJECT( QWellArray )
+    GUI_LSCS_OBJECT( QWellArray )
 
-    GUI_CS_PROPERTY_READ( selectedColumn, selectedColumn )
-    GUI_CS_PROPERTY_READ( selectedRow, selectedRow )
+    GUI_LSCS_PROPERTY_READ( selectedColumn, selectedColumn )
+    GUI_LSCS_PROPERTY_READ( selectedRow, selectedRow )
 
 public:
     QWellArray( int rows, int cols, QWidget *parent = nullptr );
@@ -267,11 +267,11 @@ public:
         update( cellGeometry( row, column ) );
     }
 
-    GUI_CS_SIGNAL_1( Public, void selected( int row, int col ) )
-    GUI_CS_SIGNAL_2( selected, row, col )
+    GUI_LSCS_SIGNAL_1( Public, void selected( int row, int col ) )
+    GUI_LSCS_SIGNAL_2( selected, row, col )
 
-    GUI_CS_SIGNAL_1( Public, void currentChanged( int row, int col ) )
-    GUI_CS_SIGNAL_2( currentChanged, row, col )
+    GUI_LSCS_SIGNAL_1( Public, void currentChanged( int row, int col ) )
+    GUI_LSCS_SIGNAL_2( currentChanged, row, col )
 
 protected:
     virtual void paintCell( QPainter *, int row, int col, const QRect & );
@@ -745,7 +745,7 @@ void QColorWell::mouseReleaseEvent( QMouseEvent *e )
 
 class QColorPicker : public QFrame
 {
-    GUI_CS_OBJECT( QColorPicker )
+    GUI_LSCS_OBJECT( QColorPicker )
 
 public:
     QColorPicker( QWidget *parent );
@@ -753,11 +753,11 @@ public:
 
     void setCrossVisible( bool visible );
 
-    GUI_CS_SIGNAL_1( Public, void newCol( int h, int s ) )
-    GUI_CS_SIGNAL_2( newCol, h, s )
+    GUI_LSCS_SIGNAL_1( Public, void newCol( int h, int s ) )
+    GUI_LSCS_SIGNAL_2( newCol, h, s )
 
-    GUI_CS_SLOT_1( Public, void setCol( int h, int s ) )
-    GUI_CS_SLOT_OVERLOAD( setCol, ( int, int ) )
+    GUI_LSCS_SLOT_1( Public, void setCol( int h, int s ) )
+    GUI_LSCS_SLOT_OVERLOAD( setCol, ( int, int ) )
 
 protected:
     QSize sizeHint() const override;
@@ -784,20 +784,20 @@ static int pHeight = 200;
 
 class QColorLuminancePicker : public QWidget
 {
-    GUI_CS_OBJECT( QColorLuminancePicker )
+    GUI_LSCS_OBJECT( QColorLuminancePicker )
 
 public:
     QColorLuminancePicker( QWidget *parent = nullptr );
     ~QColorLuminancePicker();
 
-    GUI_CS_SIGNAL_1( Public, void newHsv( int h, int s, int v ) )
-    GUI_CS_SIGNAL_2( newHsv, h, s, v )
+    GUI_LSCS_SIGNAL_1( Public, void newHsv( int h, int s, int v ) )
+    GUI_LSCS_SIGNAL_2( newHsv, h, s, v )
 
-    GUI_CS_SLOT_1( Public, void setCol( int h, int s, int v ) )
-    GUI_CS_SLOT_OVERLOAD( setCol, ( int, int, int ) )
+    GUI_LSCS_SLOT_1( Public, void setCol( int h, int s, int v ) )
+    GUI_LSCS_SLOT_OVERLOAD( setCol, ( int, int, int ) )
 
-    GUI_CS_SLOT_1( Public, void setCol( int h, int s ) )
-    GUI_CS_SLOT_OVERLOAD( setCol, ( int, int ) )
+    GUI_LSCS_SLOT_1( Public, void setCol( int h, int s ) )
+    GUI_LSCS_SLOT_OVERLOAD( setCol, ( int, int ) )
 
 protected:
     void paintEvent( QPaintEvent * ) override;
@@ -1088,7 +1088,7 @@ class QColorShowLabel;
 
 class QColorShower : public QWidget
 {
-    GUI_CS_OBJECT( QColorShower )
+    GUI_LSCS_OBJECT( QColorShower )
 
 public:
     QColorShower( QColorDialog *parent );
@@ -1122,24 +1122,24 @@ public:
     void retranslateStrings();
     void updateQColor();
 
-    GUI_CS_SIGNAL_1( Public, void newCol( QRgb rgb ) )
-    GUI_CS_SIGNAL_2( newCol, rgb )
+    GUI_LSCS_SIGNAL_1( Public, void newCol( QRgb rgb ) )
+    GUI_LSCS_SIGNAL_2( newCol, rgb )
 
-    GUI_CS_SIGNAL_1( Public, void currentColorChanged( const QColor &color ) )
-    GUI_CS_SIGNAL_2( currentColorChanged, color )
+    GUI_LSCS_SIGNAL_1( Public, void currentColorChanged( const QColor &color ) )
+    GUI_LSCS_SIGNAL_2( currentColorChanged, color )
 
-    GUI_CS_SLOT_1( Public, void setRgb( QRgb rgb ) )
-    GUI_CS_SLOT_2( setRgb )
+    GUI_LSCS_SLOT_1( Public, void setRgb( QRgb rgb ) )
+    GUI_LSCS_SLOT_2( setRgb )
 
 private:
-    GUI_CS_SLOT_1( Private, void rgbEd() )
-    GUI_CS_SLOT_2( rgbEd )
+    GUI_LSCS_SLOT_1( Private, void rgbEd() )
+    GUI_LSCS_SLOT_2( rgbEd )
 
-    GUI_CS_SLOT_1( Private, void hsvEd() )
-    GUI_CS_SLOT_2( hsvEd )
+    GUI_LSCS_SLOT_1( Private, void hsvEd() )
+    GUI_LSCS_SLOT_2( hsvEd )
 
-    GUI_CS_SLOT_1( Private, void htmlEd() )
-    GUI_CS_SLOT_2( htmlEd )
+    GUI_LSCS_SLOT_1( Private, void htmlEd() )
+    GUI_LSCS_SLOT_2( htmlEd )
 
     void showCurrentColor();
 
@@ -1174,7 +1174,7 @@ private:
 
 class QColorShowLabel : public QFrame
 {
-    GUI_CS_OBJECT( QColorShowLabel )
+    GUI_LSCS_OBJECT( QColorShowLabel )
 
 public:
     QColorShowLabel( QWidget *parent ) : QFrame( parent )
@@ -1188,8 +1188,8 @@ public:
         col = c;
     }
 
-    GUI_CS_SIGNAL_1( Public, void colorDropped( QRgb arg ) )
-    GUI_CS_SIGNAL_2( colorDropped, arg )
+    GUI_LSCS_SIGNAL_1( Public, void colorDropped( QRgb arg ) )
+    GUI_LSCS_SIGNAL_2( colorDropped, arg )
 
 protected:
     void paintEvent( QPaintEvent * ) override;

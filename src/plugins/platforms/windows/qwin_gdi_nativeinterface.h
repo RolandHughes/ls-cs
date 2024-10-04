@@ -28,7 +28,7 @@
 
 class QWindowsGdiNativeInterface : public QWindowsNativeInterface
 {
-    CS_OBJECT( QWindowsGdiNativeInterface )
+    LSCS_OBJECT( QWindowsGdiNativeInterface )
 
 public:
     void *nativeResourceForBackingStore( const QByteArray &resource, QBackingStore *bs ) override;

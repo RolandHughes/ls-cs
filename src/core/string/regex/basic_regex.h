@@ -24,8 +24,8 @@
  * LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 */
 
-#ifndef CS_BASIC_REGEX_H
-#define CS_BASIC_REGEX_H
+#ifndef LSCS_BASIC_REGEX_H
+#define LSCS_BASIC_REGEX_H
 
 #include <cassert>
 #include <climits>
@@ -33,10 +33,10 @@
 #include <memory>
 #include <vector>
 
-namespace cs_regex_ns
+namespace lscs_regex_ns
 {
 
-namespace cs_regex_detail_ns
+namespace lscs_regex_detail_ns
 {
 
 template <class charT, class traits>
@@ -189,16 +189,16 @@ struct regex_data : public named_subexpressions<Traits>
 
     using flag_type = regex_constants::syntax_option_type;
 
-    regex_data( const std::shared_ptr< cs_regex_ns::regex_traits_wrapper<Traits> > &t )
+    regex_data( const std::shared_ptr< lscs_regex_ns::regex_traits_wrapper<Traits> > &t )
         : m_ptraits( t ), m_expression( nullptr ), m_expression_len( 0 ), m_disable_match_any( false )
     {}
 
     regex_data()
-        : m_ptraits( new cs_regex_ns::regex_traits_wrapper<Traits>() ), m_expression( nullptr ),
+        : m_ptraits( new lscs_regex_ns::regex_traits_wrapper<Traits>() ), m_expression( nullptr ),
           m_expression_len( 0 ), m_disable_match_any( false )
     {}
 
-    std::shared_ptr<cs_regex_ns::regex_traits_wrapper<Traits>>  m_ptraits;      // traits class instance
+    std::shared_ptr<lscs_regex_ns::regex_traits_wrapper<Traits>>  m_ptraits;      // traits class instance
 
     flag_type            m_flags;                      // flags with which we were compiled
     int                  m_status;                     // error code (0 implies OK)
@@ -215,8 +215,8 @@ struct regex_data : public named_subexpressions<Traits>
     bool
     m_disable_match_any;          // when set we need to disable the match_any flag, causes different/buggy behaviour.
 
-    cs_regex_detail_ns::re_syntax_base  *m_first_state;             // the first state of the machine
-    cs_regex_detail_ns::raw_storage      m_data;                    // the buffer in which our states are constructed
+    lscs_regex_detail_ns::re_syntax_base  *m_first_state;             // the first state of the machine
+    lscs_regex_detail_ns::raw_storage      m_data;                    // the buffer in which our states are constructed
     typename Traits::char_class_type    m_word_mask;               // mask used to determine if a character is a word character
 
     std::vector <std::pair <std::size_t, std::size_t > > m_subs;    // position of sub-expressions within the *string*
@@ -239,7 +239,7 @@ public:
     basic_regex_implementation()
     {}
 
-    basic_regex_implementation( const std::shared_ptr< cs_regex_ns::regex_traits_wrapper<Traits> > &t )
+    basic_regex_implementation( const std::shared_ptr< lscs_regex_ns::regex_traits_wrapper<Traits> > &t )
         : regex_data<charT, Traits>( t )
     {}
 
@@ -316,7 +316,7 @@ public:
         return this->m_mark_count - 1;
     }
 
-    const cs_regex_detail_ns::re_syntax_base *get_first_state() const
+    const lscs_regex_detail_ns::re_syntax_base *get_first_state() const
     {
         return this->m_first_state;
     }
@@ -330,7 +330,7 @@ public:
         return this->m_startmap;
     }
 
-    const cs_regex_ns::regex_traits_wrapper<Traits> &get_traits() const
+    const lscs_regex_ns::regex_traits_wrapper<Traits> &get_traits() const
     {
         return *( this->m_ptraits );
     }
@@ -569,7 +569,7 @@ public:
     }
 
     // access methods
-    const cs_regex_detail_ns::re_syntax_base *get_first_state() const
+    const lscs_regex_detail_ns::re_syntax_base *get_first_state() const
     {
         assert( m_pimpl.get() != nullptr );
         return m_pimpl->get_first_state();
@@ -587,7 +587,7 @@ public:
         return m_pimpl->get_map();
     }
 
-    const cs_regex_ns::regex_traits_wrapper<Traits> &get_traits() const
+    const lscs_regex_ns::regex_traits_wrapper<Traits> &get_traits() const
     {
         assert( m_pimpl.get() != nullptr );
         return m_pimpl->get_traits();
@@ -599,19 +599,19 @@ public:
         return m_pimpl->can_be_null();
     }
 
-    const cs_regex_detail_ns::regex_data<charT, Traits> &get_data() const
+    const lscs_regex_detail_ns::regex_data<charT, Traits> &get_data() const
     {
         assert( m_pimpl.get() != nullptr );
         return m_pimpl->get_data();
     }
 
-    std::shared_ptr<cs_regex_detail_ns::named_subexpressions<Traits>> get_named_subs() const
+    std::shared_ptr<lscs_regex_detail_ns::named_subexpressions<Traits>> get_named_subs() const
     {
         return m_pimpl;
     }
 
 private:
-    std::shared_ptr<cs_regex_detail_ns::basic_regex_implementation<charT, Traits> > m_pimpl;
+    std::shared_ptr<lscs_regex_detail_ns::basic_regex_implementation<charT, Traits> > m_pimpl;
 
     basic_regex<charT, Traits> &do_assign( const typename Traits::string_type::const_iterator iter_first,
                                            const typename Traits::string_type::const_iterator iter_last, flag_type f );
@@ -626,17 +626,17 @@ template <class charT, class traits>
 basic_regex<charT, traits> &basic_regex<charT, traits>::do_assign( const typename traits::string_type::const_iterator iter_first,
         const typename traits::string_type::const_iterator iter_last, flag_type f )
 {
-    std::shared_ptr<cs_regex_detail_ns::basic_regex_implementation<charT, traits> > temp;
+    std::shared_ptr<lscs_regex_detail_ns::basic_regex_implementation<charT, traits> > temp;
 
     if ( ! m_pimpl.get() )
     {
-        temp = std::shared_ptr<cs_regex_detail_ns::basic_regex_implementation<charT, traits> >( new
-                cs_regex_detail_ns::basic_regex_implementation<charT, traits>() );
+        temp = std::shared_ptr<lscs_regex_detail_ns::basic_regex_implementation<charT, traits> >( new
+                lscs_regex_detail_ns::basic_regex_implementation<charT, traits>() );
     }
     else
     {
-        temp = std::shared_ptr<cs_regex_detail_ns::basic_regex_implementation<charT, traits> >( new
-                cs_regex_detail_ns::basic_regex_implementation<charT, traits>( m_pimpl->m_ptraits ) );
+        temp = std::shared_ptr<lscs_regex_detail_ns::basic_regex_implementation<charT, traits> >( new
+                lscs_regex_detail_ns::basic_regex_implementation<charT, traits>( m_pimpl->m_ptraits ) );
     }
 
     temp->assign( iter_first, iter_last, f );
@@ -648,8 +648,8 @@ basic_regex<charT, traits> &basic_regex<charT, traits>::do_assign( const typenam
 template <class charT, class traits>
 typename basic_regex<charT, traits>::locale_type basic_regex<charT, traits>::imbue( locale_type l )
 {
-    std::shared_ptr<cs_regex_detail_ns::basic_regex_implementation<charT, traits> > temp( new
-            cs_regex_detail_ns::basic_regex_implementation<charT, traits>() );
+    std::shared_ptr<lscs_regex_detail_ns::basic_regex_implementation<charT, traits> > temp( new
+            lscs_regex_detail_ns::basic_regex_implementation<charT, traits>() );
 
     locale_type result = temp->imbue( l );
     temp.swap( m_pimpl );

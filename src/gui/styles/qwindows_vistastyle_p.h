@@ -109,7 +109,7 @@ class QWindowsVistaStylePrivate;
 
 class QWindowsVistaStyle : public QWindowsXPStyle
 {
-    GUI_CS_OBJECT( QWindowsVistaStyle )
+    GUI_LSCS_OBJECT( QWindowsVistaStyle )
 
 public:
     QWindowsVistaStyle();
@@ -166,7 +166,7 @@ private:
 
 class QWindowsVistaAnimation : public QBlendStyleAnimation
 {
-    GUI_CS_OBJECT( QWindowsVistaAnimation )
+    GUI_LSCS_OBJECT( QWindowsVistaAnimation )
 
 public:
     QWindowsVistaAnimation( Type type, QObject *target )
@@ -180,7 +180,7 @@ public:
 // Handles state transition animations
 class QWindowsVistaTransition : public QWindowsVistaAnimation
 {
-    GUI_CS_OBJECT( QWindowsVistaTransition )
+    GUI_LSCS_OBJECT( QWindowsVistaTransition )
 
 public :
     QWindowsVistaTransition( QObject *target )
@@ -191,7 +191,7 @@ public :
 // Handles pulse animations (default buttons)
 class QWindowsVistaPulse: public QWindowsVistaAnimation
 {
-    GUI_CS_OBJECT( QWindowsVistaPulse )
+    GUI_LSCS_OBJECT( QWindowsVistaPulse )
 
 public :
     QWindowsVistaPulse( QObject *target )

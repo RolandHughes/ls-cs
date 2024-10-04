@@ -38,7 +38,7 @@ class QStringList;
 
 class Q_GUI_EXPORT QPictureFormatPlugin : public QObject
 {
-    GUI_CS_OBJECT( QPictureFormatPlugin )
+    GUI_LSCS_OBJECT( QPictureFormatPlugin )
 
 public:
     explicit QPictureFormatPlugin( QObject *parent = nullptr );

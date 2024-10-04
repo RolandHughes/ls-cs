@@ -36,13 +36,13 @@ class QNetworkProxy;
 
 class Q_NETWORK_EXPORT QAbstractSocket : public QIODevice
 {
-    NET_CS_OBJECT( QAbstractSocket )
+    NET_LSCS_OBJECT( QAbstractSocket )
 
-    NET_CS_ENUM( SocketType )
-    NET_CS_ENUM( NetworkLayerProtocol )
-    NET_CS_ENUM( SocketError )
-    NET_CS_ENUM( SocketState )
-    NET_CS_ENUM( SocketOption )
+    NET_LSCS_ENUM( SocketType )
+    NET_LSCS_ENUM( NetworkLayerProtocol )
+    NET_LSCS_ENUM( SocketError )
+    NET_LSCS_ENUM( SocketState )
+    NET_LSCS_ENUM( SocketOption )
 
 public:
     enum SocketType
@@ -192,24 +192,24 @@ public:
     QNetworkProxy proxy() const;
 #endif
 
-    NET_CS_SIGNAL_1( Public, void hostFound() )
-    NET_CS_SIGNAL_2( hostFound )
+    NET_LSCS_SIGNAL_1( Public, void hostFound() )
+    NET_LSCS_SIGNAL_2( hostFound )
 
-    NET_CS_SIGNAL_1( Public, void connected() )
-    NET_CS_SIGNAL_2( connected )
+    NET_LSCS_SIGNAL_1( Public, void connected() )
+    NET_LSCS_SIGNAL_2( connected )
 
-    NET_CS_SIGNAL_1( Public, void disconnected() )
-    NET_CS_SIGNAL_2( disconnected )
+    NET_LSCS_SIGNAL_1( Public, void disconnected() )
+    NET_LSCS_SIGNAL_2( disconnected )
 
-    NET_CS_SIGNAL_1( Public, void stateChanged( QAbstractSocket::SocketState socketState ) )
-    NET_CS_SIGNAL_2( stateChanged, socketState )
+    NET_LSCS_SIGNAL_1( Public, void stateChanged( QAbstractSocket::SocketState socketState ) )
+    NET_LSCS_SIGNAL_2( stateChanged, socketState )
 
-    NET_CS_SIGNAL_1( Public, void error( QAbstractSocket::SocketError socketError ) )
-    NET_CS_SIGNAL_OVERLOAD( error, ( QAbstractSocket::SocketError ), socketError )
+    NET_LSCS_SIGNAL_1( Public, void error( QAbstractSocket::SocketError socketError ) )
+    NET_LSCS_SIGNAL_OVERLOAD( error, ( QAbstractSocket::SocketError ), socketError )
 
 #ifndef QT_NO_NETWORKPROXY
-    NET_CS_SIGNAL_1( Public, void proxyAuthenticationRequired( const QNetworkProxy &proxy, QAuthenticator *authenticator ) )
-    NET_CS_SIGNAL_2( proxyAuthenticationRequired, proxy, authenticator )
+    NET_LSCS_SIGNAL_1( Public, void proxyAuthenticationRequired( const QNetworkProxy &proxy, QAuthenticator *authenticator ) )
+    NET_LSCS_SIGNAL_2( proxyAuthenticationRequired, proxy, authenticator )
 #endif
 
 protected:
@@ -230,20 +230,20 @@ protected:
 private:
     Q_DECLARE_PRIVATE( QAbstractSocket )
 
-    NET_CS_SLOT_1( Private, void _q_connectToNextAddress() )
-    NET_CS_SLOT_2( _q_connectToNextAddress )
+    NET_LSCS_SLOT_1( Private, void _q_connectToNextAddress() )
+    NET_LSCS_SLOT_2( _q_connectToNextAddress )
 
-    NET_CS_SLOT_1( Private, void _q_startConnecting( const QHostInfo &hostInfo ) )
-    NET_CS_SLOT_2( _q_startConnecting )
+    NET_LSCS_SLOT_1( Private, void _q_startConnecting( const QHostInfo &hostInfo ) )
+    NET_LSCS_SLOT_2( _q_startConnecting )
 
-    NET_CS_SLOT_1( Private, void _q_abortConnectionAttempt() )
-    NET_CS_SLOT_2( _q_abortConnectionAttempt )
+    NET_LSCS_SLOT_1( Private, void _q_abortConnectionAttempt() )
+    NET_LSCS_SLOT_2( _q_abortConnectionAttempt )
 
-    NET_CS_SLOT_1( Private, void _q_testConnection() )
-    NET_CS_SLOT_2( _q_testConnection )
+    NET_LSCS_SLOT_1( Private, void _q_testConnection() )
+    NET_LSCS_SLOT_2( _q_testConnection )
 
-    NET_CS_SLOT_1( Private, void _q_forceDisconnect() )
-    NET_CS_SLOT_2( _q_forceDisconnect )
+    NET_LSCS_SLOT_1( Private, void _q_forceDisconnect() )
+    NET_LSCS_SLOT_2( _q_forceDisconnect )
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS( QAbstractSocket::BindMode )

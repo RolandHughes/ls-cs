@@ -27,10 +27,10 @@
 
 class QIBaseDriverPlugin : public QSqlDriverPlugin
 {
-    CS_OBJECT( QIBaseDriverPlugin )
+    LSCS_OBJECT( QIBaseDriverPlugin )
 
-    CS_PLUGIN_IID( QSqlDriverInterface_ID )
-    CS_PLUGIN_KEY( "QIBASE" )
+    LSCS_PLUGIN_IID( QSqlDriverInterface_ID )
+    LSCS_PLUGIN_KEY( "QIBASE" )
 
 public:
     QIBaseDriverPlugin();

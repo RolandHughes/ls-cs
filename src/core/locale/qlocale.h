@@ -36,7 +36,7 @@ Q_CORE_EXPORT uint qHash( const QLocale &key, uint seed = 0 );
 
 class Q_CORE_EXPORT QLocale
 {
-    CORE_CS_GADGET( QLocale )
+    CORE_LSCS_GADGET( QLocale )
 
 public:
     enum Language
@@ -928,10 +928,10 @@ public:
         AlternateQuotation
     };
 
-    CORE_CS_ENUM( Language )
-    CORE_CS_ENUM( Country )
-    CORE_CS_ENUM( Script )
-    CORE_CS_ENUM( MeasurementSystem )
+    CORE_LSCS_ENUM( Language )
+    CORE_LSCS_ENUM( Country )
+    CORE_LSCS_ENUM( Script )
+    CORE_LSCS_ENUM( MeasurementSystem )
 
     QLocale();
     QLocale( const QString &name );

@@ -32,7 +32,7 @@
 
 class QStyleAnimation : public QAbstractAnimation
 {
-    GUI_CS_OBJECT( QStyleAnimation )
+    GUI_LSCS_OBJECT( QStyleAnimation )
 
 public:
     QStyleAnimation( QObject *target );
@@ -62,8 +62,8 @@ public:
 
     void updateTarget();
 
-    GUI_CS_SLOT_1( Public, void start() )
-    GUI_CS_SLOT_2( start )
+    GUI_LSCS_SLOT_1( Public, void start() )
+    GUI_LSCS_SLOT_2( start )
 
 protected:
     virtual bool isUpdateNeeded() const;
@@ -79,7 +79,7 @@ private:
 
 class QProgressStyleAnimation : public QStyleAnimation
 {
-    GUI_CS_OBJECT( QProgressStyleAnimation )
+    GUI_LSCS_OBJECT( QProgressStyleAnimation )
 
 public:
     QProgressStyleAnimation( int speed, QObject *target );
@@ -100,7 +100,7 @@ private:
 
 class QNumberStyleAnimation : public QStyleAnimation
 {
-    GUI_CS_OBJECT( QNumberStyleAnimation )
+    GUI_LSCS_OBJECT( QNumberStyleAnimation )
 
 public:
     QNumberStyleAnimation( QObject *target );
@@ -124,7 +124,7 @@ private:
 
 class QBlendStyleAnimation : public QStyleAnimation
 {
-    GUI_CS_OBJECT( QBlendStyleAnimation )
+    GUI_LSCS_OBJECT( QBlendStyleAnimation )
 
 public:
     enum Type { Transition, Pulse };
@@ -151,7 +151,7 @@ private:
 
 class QScrollbarStyleAnimation : public QNumberStyleAnimation
 {
-    GUI_CS_OBJECT( QScrollbarStyleAnimation )
+    GUI_LSCS_OBJECT( QScrollbarStyleAnimation )
 
 public:
     enum Mode { Activating, Deactivating };
@@ -164,8 +164,8 @@ public:
     void setActive( bool active );
 
 private:
-    GUI_CS_SLOT_1( Private, void updateCurrentTime( int time ) override )
-    GUI_CS_SLOT_2( updateCurrentTime )
+    GUI_LSCS_SLOT_1( Private, void updateCurrentTime( int time ) override )
+    GUI_LSCS_SLOT_2( updateCurrentTime )
 
     Mode _mode;
     bool _active;

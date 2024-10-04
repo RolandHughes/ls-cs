@@ -33,25 +33,25 @@ class QDeclarativeImplicitSizePaintedItemPrivate;
 
 class QDeclarativeImplicitSizeItem : public QDeclarativeItem
 {
-    DECL_CS_OBJECT( QDeclarativeImplicitSizeItem )
+    DECL_LSCS_OBJECT( QDeclarativeImplicitSizeItem )
 
-    DECL_CS_PROPERTY_READ( implicitWidth, implicitWidth )
-    DECL_CS_PROPERTY_NOTIFY( implicitWidth, implicitWidthChanged )
-    DECL_CS_PROPERTY_REVISION( implicitWidth, 1 )
-    DECL_CS_PROPERTY_READ( implicitHeight, implicitHeight )
-    DECL_CS_PROPERTY_NOTIFY( implicitHeight, implicitHeightChanged )
-    DECL_CS_PROPERTY_REVISION( implicitHeight, 1 )
+    DECL_LSCS_PROPERTY_READ( implicitWidth, implicitWidth )
+    DECL_LSCS_PROPERTY_NOTIFY( implicitWidth, implicitWidthChanged )
+    DECL_LSCS_PROPERTY_REVISION( implicitWidth, 1 )
+    DECL_LSCS_PROPERTY_READ( implicitHeight, implicitHeight )
+    DECL_LSCS_PROPERTY_NOTIFY( implicitHeight, implicitHeightChanged )
+    DECL_LSCS_PROPERTY_REVISION( implicitHeight, 1 )
 
 public:
     QDeclarativeImplicitSizeItem( QDeclarativeItem *parent = 0 );
 
-    DECL_CS_SIGNAL_1( Public, void implicitWidthChanged() )
-    DECL_CS_SIGNAL_2( implicitWidthChanged )
-    DECL_CS_REVISION( implicitWidthChanged, 1 )
+    DECL_LSCS_SIGNAL_1( Public, void implicitWidthChanged() )
+    DECL_LSCS_SIGNAL_2( implicitWidthChanged )
+    DECL_LSCS_REVISION( implicitWidthChanged, 1 )
 
-    DECL_CS_SIGNAL_1( Public, void implicitHeightChanged() )
-    DECL_CS_SIGNAL_2( implicitHeightChanged )
-    DECL_CS_REVISION( implicitHeightChanged, 1 )
+    DECL_LSCS_SIGNAL_1( Public, void implicitHeightChanged() )
+    DECL_LSCS_SIGNAL_2( implicitHeightChanged )
+    DECL_LSCS_REVISION( implicitHeightChanged, 1 )
 
 protected:
     QDeclarativeImplicitSizeItem( QDeclarativeImplicitSizeItemPrivate &dd, QDeclarativeItem *parent );
@@ -64,24 +64,24 @@ private:
 
 class QDeclarativeImplicitSizePaintedItem : public QDeclarativePaintedItem
 {
-    DECL_CS_OBJECT( QDeclarativeImplicitSizePaintedItem )
-    DECL_CS_PROPERTY_READ( implicitWidth, implicitWidth )
-    DECL_CS_PROPERTY_NOTIFY( implicitWidth, implicitWidthChanged )
-    DECL_CS_PROPERTY_REVISION( implicitWidth, 1 )
-    DECL_CS_PROPERTY_READ( implicitHeight, implicitHeight )
-    DECL_CS_PROPERTY_NOTIFY( implicitHeight, implicitHeightChanged )
-    DECL_CS_PROPERTY_REVISION( implicitHeight, 1 )
+    DECL_LSCS_OBJECT( QDeclarativeImplicitSizePaintedItem )
+    DECL_LSCS_PROPERTY_READ( implicitWidth, implicitWidth )
+    DECL_LSCS_PROPERTY_NOTIFY( implicitWidth, implicitWidthChanged )
+    DECL_LSCS_PROPERTY_REVISION( implicitWidth, 1 )
+    DECL_LSCS_PROPERTY_READ( implicitHeight, implicitHeight )
+    DECL_LSCS_PROPERTY_NOTIFY( implicitHeight, implicitHeightChanged )
+    DECL_LSCS_PROPERTY_REVISION( implicitHeight, 1 )
 
 public:
     QDeclarativeImplicitSizePaintedItem( QDeclarativeItem *parent = 0 );
 
-    DECL_CS_SIGNAL_1( Public, void implicitWidthChanged() )
-    DECL_CS_SIGNAL_2( implicitWidthChanged )
-    DECL_CS_REVISION( implicitWidthChanged, 1 )
+    DECL_LSCS_SIGNAL_1( Public, void implicitWidthChanged() )
+    DECL_LSCS_SIGNAL_2( implicitWidthChanged )
+    DECL_LSCS_REVISION( implicitWidthChanged, 1 )
 
-    DECL_CS_SIGNAL_1( Public, void implicitHeightChanged() )
-    DECL_CS_SIGNAL_2( implicitHeightChanged )
-    DECL_CS_REVISION( implicitHeightChanged, 1 )
+    DECL_LSCS_SIGNAL_1( Public, void implicitHeightChanged() )
+    DECL_LSCS_SIGNAL_2( implicitHeightChanged )
+    DECL_LSCS_REVISION( implicitHeightChanged, 1 )
 
 protected:
     QDeclarativeImplicitSizePaintedItem( QDeclarativeImplicitSizePaintedItemPrivate &dd, QDeclarativeItem *parent );

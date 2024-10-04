@@ -42,7 +42,7 @@ class QOpenGLShaderProgramPrivate;
 
 class Q_GUI_EXPORT QOpenGLShader : public QObject
 {
-    GUI_CS_OBJECT( QOpenGLShader )
+    GUI_LSCS_OBJECT( QOpenGLShader )
 
 public:
     enum ShaderTypeBit
@@ -91,7 +91,7 @@ Q_DECLARE_OPERATORS_FOR_FLAGS( QOpenGLShader::ShaderType )
 
 class Q_GUI_EXPORT QOpenGLShaderProgram : public QObject
 {
-    GUI_CS_OBJECT( QOpenGLShaderProgram )
+    GUI_LSCS_OBJECT( QOpenGLShaderProgram )
 
 public:
     explicit QOpenGLShaderProgram( QObject *parent = nullptr );
@@ -295,8 +295,8 @@ private:
 
     bool init();
 
-    GUI_CS_SLOT_1( Private, void shaderDestroyed() )
-    GUI_CS_SLOT_2( shaderDestroyed )
+    GUI_LSCS_SLOT_1( Private, void shaderDestroyed() )
+    GUI_LSCS_SLOT_2( shaderDestroyed )
 };
 
 #endif // QT_NO_OPENGL

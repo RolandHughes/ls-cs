@@ -112,7 +112,7 @@ static inline QImage readDib( QByteArray data )
 
     if ( ! reader.canRead() )
     {
-        qWarning( "readDib() %s", csPrintable( msgConversionError( dibFormatC ) ) );
+        qWarning( "readDib() %s", lscsPrintable( msgConversionError( dibFormatC ) ) );
         return QImage();
     }
 
@@ -129,7 +129,7 @@ static QByteArray writeDib( const QImage &img )
 
     if ( ! writer.canWrite() )
     {
-        qWarning( "writeDib() %s", csPrintable( msgConversionError( dibFormatC ) ) );
+        qWarning( "writeDib() %s", lscsPrintable( msgConversionError( dibFormatC ) ) );
         return ba;
     }
 
@@ -780,7 +780,7 @@ QVariant QWindowsMimeText::convertToMime( const QString &mime, LPDATAOBJECT pDat
         }
     }
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
     qDebug() << "QWindowsMimeText::convertToMime() " << retval;
 #endif
 
@@ -1246,7 +1246,7 @@ QVector<FORMATETC> QWindowsMimeImage::formatsForMime( const QString &mimeType, c
         formatetcs += setCf( CF_DIB );
     }
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
 
     if ( ! formatetcs.isEmpty() )
     {
@@ -1681,7 +1681,7 @@ QVector<FORMATETC> QLastResortMimes::formatsForMime( const QString &mimeType, co
         formatetcs += setCf( cf );
     }
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
 
     if ( ! formatetcs.isEmpty() )
     {

@@ -282,7 +282,7 @@ public:
 
 class CloseButton : public QAbstractButton
 {
-    GUI_CS_OBJECT( CloseButton )
+    GUI_LSCS_OBJECT( CloseButton )
 
 public:
     CloseButton( QWidget *parent = nullptr );

@@ -189,7 +189,7 @@ Item AtomicValue::toXDM( const QVariant &value )
             }
             else
             {
-                Q_ASSERT_X( false, Q_FUNC_INFO, csPrintable( QString( "QVariants of type %1 are not supported in Patternist" )
+                Q_ASSERT_X( false, Q_FUNC_INFO, lscsPrintable( QString( "QVariants of type %1 are not supported in Patternist" )
                             .formatArg( QString( value.typeName() ) ) ) );
 
                 return AtomicValue::Ptr();

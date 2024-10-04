@@ -24,10 +24,10 @@
  * LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 */
 
-#ifndef CS_REGEX_TOKEN_ITERATOR_H
-#define CS_REGEX_TOKEN_ITERATOR_H
+#ifndef LSCS_REGEX_TOKEN_ITERATOR_H
+#define LSCS_REGEX_TOKEN_ITERATOR_H
 
-namespace cs_regex_ns
+namespace lscs_regex_ns
 {
 
 template <class BidirectionalIterator, class charT, class traits>
@@ -166,7 +166,7 @@ private:
 
 public:
     using regex_type        = basic_regex<charT, traits>;
-    using difference_type   = typename cs_regex_detail_ns::regex_iterator_traits<BidirectionalIterator>::difference_type;
+    using difference_type   = typename lscs_regex_detail_ns::regex_iterator_traits<BidirectionalIterator>::difference_type;
     using value_type        = sub_match<BidirectionalIterator>;
     using iterator_category = std::forward_iterator_tag;
     using pointer           = const value_type *;

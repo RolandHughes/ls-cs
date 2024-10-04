@@ -32,55 +32,55 @@ class QListViewPrivate;
 
 class Q_GUI_EXPORT QListView : public QAbstractItemView
 {
-    GUI_CS_OBJECT( QListView )
+    GUI_LSCS_OBJECT( QListView )
 
-    GUI_CS_ENUM( Movement )
-    GUI_CS_ENUM( Flow )
-    GUI_CS_ENUM( ResizeMode )
-    GUI_CS_ENUM( LayoutMode )
-    GUI_CS_ENUM( ViewMode )
+    GUI_LSCS_ENUM( Movement )
+    GUI_LSCS_ENUM( Flow )
+    GUI_LSCS_ENUM( ResizeMode )
+    GUI_LSCS_ENUM( LayoutMode )
+    GUI_LSCS_ENUM( ViewMode )
 
-    GUI_CS_PROPERTY_READ( movement, movement )
-    GUI_CS_PROPERTY_WRITE( movement, setMovement )
+    GUI_LSCS_PROPERTY_READ( movement, movement )
+    GUI_LSCS_PROPERTY_WRITE( movement, setMovement )
 
-    GUI_CS_PROPERTY_READ( flow, flow )
-    GUI_CS_PROPERTY_WRITE( flow, setFlow )
+    GUI_LSCS_PROPERTY_READ( flow, flow )
+    GUI_LSCS_PROPERTY_WRITE( flow, setFlow )
 
-    GUI_CS_PROPERTY_READ( isWrapping, isWrapping )
-    GUI_CS_PROPERTY_WRITE( isWrapping, setWrapping )
+    GUI_LSCS_PROPERTY_READ( isWrapping, isWrapping )
+    GUI_LSCS_PROPERTY_WRITE( isWrapping, setWrapping )
 
-    GUI_CS_PROPERTY_READ( resizeMode, resizeMode )
-    GUI_CS_PROPERTY_WRITE( resizeMode, setResizeMode )
+    GUI_LSCS_PROPERTY_READ( resizeMode, resizeMode )
+    GUI_LSCS_PROPERTY_WRITE( resizeMode, setResizeMode )
 
-    GUI_CS_PROPERTY_READ( layoutMode, layoutMode )
-    GUI_CS_PROPERTY_WRITE( layoutMode, setLayoutMode )
+    GUI_LSCS_PROPERTY_READ( layoutMode, layoutMode )
+    GUI_LSCS_PROPERTY_WRITE( layoutMode, setLayoutMode )
 
-    GUI_CS_PROPERTY_READ( spacing, spacing )
-    GUI_CS_PROPERTY_WRITE( spacing, setSpacing )
+    GUI_LSCS_PROPERTY_READ( spacing, spacing )
+    GUI_LSCS_PROPERTY_WRITE( spacing, setSpacing )
 
-    GUI_CS_PROPERTY_READ( gridSize, gridSize )
-    GUI_CS_PROPERTY_WRITE( gridSize, setGridSize )
+    GUI_LSCS_PROPERTY_READ( gridSize, gridSize )
+    GUI_LSCS_PROPERTY_WRITE( gridSize, setGridSize )
 
-    GUI_CS_PROPERTY_READ( viewMode, viewMode )
-    GUI_CS_PROPERTY_WRITE( viewMode, setViewMode )
+    GUI_LSCS_PROPERTY_READ( viewMode, viewMode )
+    GUI_LSCS_PROPERTY_WRITE( viewMode, setViewMode )
 
-    GUI_CS_PROPERTY_READ( modelColumn, modelColumn )
-    GUI_CS_PROPERTY_WRITE( modelColumn, setModelColumn )
+    GUI_LSCS_PROPERTY_READ( modelColumn, modelColumn )
+    GUI_LSCS_PROPERTY_WRITE( modelColumn, setModelColumn )
 
-    GUI_CS_PROPERTY_READ( uniformItemSizes, uniformItemSizes )
-    GUI_CS_PROPERTY_WRITE( uniformItemSizes, setUniformItemSizes )
+    GUI_LSCS_PROPERTY_READ( uniformItemSizes, uniformItemSizes )
+    GUI_LSCS_PROPERTY_WRITE( uniformItemSizes, setUniformItemSizes )
 
-    GUI_CS_PROPERTY_READ( batchSize, batchSize )
-    GUI_CS_PROPERTY_WRITE( batchSize, setBatchSize )
+    GUI_LSCS_PROPERTY_READ( batchSize, batchSize )
+    GUI_LSCS_PROPERTY_WRITE( batchSize, setBatchSize )
 
-    GUI_CS_PROPERTY_READ( wordWrap, wordWrap )
-    GUI_CS_PROPERTY_WRITE( wordWrap, setWordWrap )
+    GUI_LSCS_PROPERTY_READ( wordWrap, wordWrap )
+    GUI_LSCS_PROPERTY_WRITE( wordWrap, setWordWrap )
 
-    GUI_CS_PROPERTY_READ( selectionRectVisible, isSelectionRectVisible )
-    GUI_CS_PROPERTY_WRITE( selectionRectVisible, setSelectionRectVisible )
+    GUI_LSCS_PROPERTY_READ( selectionRectVisible, isSelectionRectVisible )
+    GUI_LSCS_PROPERTY_WRITE( selectionRectVisible, setSelectionRectVisible )
 
 public:
-    GUI_CS_REGISTER_ENUM(
+    GUI_LSCS_REGISTER_ENUM(
         enum Movement
     {
         Static,
@@ -89,7 +89,7 @@ public:
     };
     )
 
-    GUI_CS_REGISTER_ENUM(
+    GUI_LSCS_REGISTER_ENUM(
         enum Flow
     {
         LeftToRight,
@@ -97,7 +97,7 @@ public:
     };
     )
 
-    GUI_CS_REGISTER_ENUM(
+    GUI_LSCS_REGISTER_ENUM(
         enum ResizeMode
     {
         Fixed,
@@ -105,7 +105,7 @@ public:
     };
     )
 
-    GUI_CS_REGISTER_ENUM(
+    GUI_LSCS_REGISTER_ENUM(
         enum LayoutMode
     {
         SinglePass,
@@ -113,7 +113,7 @@ public:
     };
     )
 
-    GUI_CS_REGISTER_ENUM(
+    GUI_LSCS_REGISTER_ENUM(
         enum ViewMode
     {
         ListMode,
@@ -180,8 +180,8 @@ public:
     void reset() override;
     void setRootIndex( const QModelIndex &index ) override;
 
-    GUI_CS_SIGNAL_1( Public, void indexesMoved( const QModelIndexList &indexes ) )
-    GUI_CS_SIGNAL_2( indexesMoved, indexes )
+    GUI_LSCS_SIGNAL_1( Public, void indexesMoved( const QModelIndexList &indexes ) )
+    GUI_LSCS_SIGNAL_2( indexesMoved, indexes )
 
 protected:
     QListView( QListViewPrivate &, QWidget *parent = nullptr );

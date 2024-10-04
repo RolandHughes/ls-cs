@@ -2048,7 +2048,7 @@ QOpenGLES3Helper::QOpenGLES3Helper()
     {
         const QPair<int, int> contextVersion = QOpenGLContext::currentContext()->format().version();
 
-#if defined(CS_SHOW_DEBUG_GUI_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_GUI_OPENGL)
         qDebug( "Resolving OpenGL ES 3.0 entry points" );
 #endif
 
@@ -2196,7 +2196,7 @@ QOpenGLES3Helper::QOpenGLES3Helper()
 
         if ( contextVersion >= qMakePair( 3, 1 ) )
         {
-#if defined(CS_SHOW_DEBUG_GUI_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_GUI_OPENGL)
             qDebug( "Resolving OpenGL ES 3.1 entry points" );
 #endif
 

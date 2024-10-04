@@ -31,7 +31,7 @@
 
 class QCocoaClipboard : public QObject, public QPlatformClipboard
 {
-    CS_OBJECT_MULTIPLE( QCocoaClipboard, QObject )
+    LSCS_OBJECT_MULTIPLE( QCocoaClipboard, QObject )
 
 public:
     QCocoaClipboard();
@@ -48,8 +48,8 @@ private:
     QScopedPointer<QMacPasteboard> m_clipboard;
     QScopedPointer<QMacPasteboard> m_find;
 
-    CS_SLOT_1( Private, void handleApplicationStateChanged( Qt::ApplicationState state ) )
-    CS_SLOT_2( handleApplicationStateChanged )
+    LSCS_SLOT_1( Private, void handleApplicationStateChanged( Qt::ApplicationState state ) )
+    LSCS_SLOT_2( handleApplicationStateChanged )
 };
 
 #endif

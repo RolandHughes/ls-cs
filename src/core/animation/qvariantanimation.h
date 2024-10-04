@@ -31,7 +31,7 @@
 #include <qvariant.h>
 #include <qvector.h>
 
-#include <cs_shared_guarded.h>
+#include <lscs_shared_guarded.h>
 
 #ifndef QT_NO_ANIMATION
 
@@ -39,22 +39,22 @@ class QVariantAnimationPrivate;
 
 class Q_CORE_EXPORT QVariantAnimation : public QAbstractAnimation
 {
-    CORE_CS_OBJECT( QVariantAnimation )
+    CORE_LSCS_OBJECT( QVariantAnimation )
 
-    CORE_CS_PROPERTY_READ( startValue, startValue )
-    CORE_CS_PROPERTY_WRITE( startValue, setStartValue )
+    CORE_LSCS_PROPERTY_READ( startValue, startValue )
+    CORE_LSCS_PROPERTY_WRITE( startValue, setStartValue )
 
-    CORE_CS_PROPERTY_READ( endValue, endValue )
-    CORE_CS_PROPERTY_WRITE( endValue, setEndValue )
+    CORE_LSCS_PROPERTY_READ( endValue, endValue )
+    CORE_LSCS_PROPERTY_WRITE( endValue, setEndValue )
 
-    CORE_CS_PROPERTY_READ( currentValue, currentValue )
-    CORE_CS_PROPERTY_NOTIFY( currentValue, valueChanged )
+    CORE_LSCS_PROPERTY_READ( currentValue, currentValue )
+    CORE_LSCS_PROPERTY_NOTIFY( currentValue, valueChanged )
 
-    CORE_CS_PROPERTY_READ( duration, duration )
-    CORE_CS_PROPERTY_WRITE( duration, setDuration )
+    CORE_LSCS_PROPERTY_READ( duration, duration )
+    CORE_LSCS_PROPERTY_WRITE( duration, setDuration )
 
-    CORE_CS_PROPERTY_READ( easingCurve, easingCurve )
-    CORE_CS_PROPERTY_WRITE( easingCurve, setEasingCurve )
+    CORE_LSCS_PROPERTY_READ( easingCurve, easingCurve )
+    CORE_LSCS_PROPERTY_WRITE( easingCurve, setEasingCurve )
 
 public:
     using ValuePair = QPair<double, QVariant>;
@@ -89,8 +89,8 @@ public:
     template <typename T>
     static void cs_addCustomType( CustomFormula callback );
 
-    CORE_CS_SIGNAL_1( Public, void valueChanged( const QVariant &value ) )
-    CORE_CS_SIGNAL_2( valueChanged, value )
+    CORE_LSCS_SIGNAL_1( Public, void valueChanged( const QVariant &value ) )
+    CORE_LSCS_SIGNAL_2( valueChanged, value )
 
 protected:
     QVariantAnimation( QVariantAnimationPrivate &dd, QObject *parent = nullptr );

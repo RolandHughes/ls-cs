@@ -37,7 +37,7 @@ public:
 
     virtual void setSelectedState( bool );
 };
-CS_DECLARE_INTERFACE( QDeclarativeDebuggerStatus, "com.copperspice.qml.QDeclarativeDebuggerStatus" )
+LSCS_DECLARE_INTERFACE( QDeclarativeDebuggerStatus, "com.copperspice.qml.QDeclarativeDebuggerStatus" )
 
 QT_END_NAMESPACE
 

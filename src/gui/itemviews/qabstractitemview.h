@@ -38,69 +38,69 @@ class QMenu;
 
 class Q_GUI_EXPORT QAbstractItemView : public QAbstractScrollArea
 {
-    GUI_CS_OBJECT( QAbstractItemView )
+    GUI_LSCS_OBJECT( QAbstractItemView )
 
-    GUI_CS_ENUM( SelectionMode )
-    GUI_CS_ENUM( SelectionBehavior )
-    GUI_CS_ENUM( ScrollHint )
-    GUI_CS_ENUM( ScrollMode )
-    GUI_CS_ENUM( DragDropMode )
+    GUI_LSCS_ENUM( SelectionMode )
+    GUI_LSCS_ENUM( SelectionBehavior )
+    GUI_LSCS_ENUM( ScrollHint )
+    GUI_LSCS_ENUM( ScrollMode )
+    GUI_LSCS_ENUM( DragDropMode )
 
-    GUI_CS_ENUM( EditTrigger )
-    GUI_CS_FLAG( EditTrigger, EditTriggers )
+    GUI_LSCS_ENUM( EditTrigger )
+    GUI_LSCS_FLAG( EditTrigger, EditTriggers )
 
-    GUI_CS_PROPERTY_READ( autoScroll, hasAutoScroll )
-    GUI_CS_PROPERTY_WRITE( autoScroll, setAutoScroll )
+    GUI_LSCS_PROPERTY_READ( autoScroll, hasAutoScroll )
+    GUI_LSCS_PROPERTY_WRITE( autoScroll, setAutoScroll )
 
-    GUI_CS_PROPERTY_READ( autoScrollMargin, autoScrollMargin )
-    GUI_CS_PROPERTY_WRITE( autoScrollMargin, setAutoScrollMargin )
+    GUI_LSCS_PROPERTY_READ( autoScrollMargin, autoScrollMargin )
+    GUI_LSCS_PROPERTY_WRITE( autoScrollMargin, setAutoScrollMargin )
 
-    GUI_CS_PROPERTY_READ( editTriggers, editTriggers )
-    GUI_CS_PROPERTY_WRITE( editTriggers, setEditTriggers )
+    GUI_LSCS_PROPERTY_READ( editTriggers, editTriggers )
+    GUI_LSCS_PROPERTY_WRITE( editTriggers, setEditTriggers )
 
-    GUI_CS_PROPERTY_READ( tabKeyNavigation, tabKeyNavigation )
-    GUI_CS_PROPERTY_WRITE( tabKeyNavigation, setTabKeyNavigation )
+    GUI_LSCS_PROPERTY_READ( tabKeyNavigation, tabKeyNavigation )
+    GUI_LSCS_PROPERTY_WRITE( tabKeyNavigation, setTabKeyNavigation )
 
 #ifndef QT_NO_DRAGANDDROP
-    GUI_CS_PROPERTY_READ( showDropIndicator, showDropIndicator )
-    GUI_CS_PROPERTY_WRITE( showDropIndicator, setDropIndicatorShown )
+    GUI_LSCS_PROPERTY_READ( showDropIndicator, showDropIndicator )
+    GUI_LSCS_PROPERTY_WRITE( showDropIndicator, setDropIndicatorShown )
 
-    GUI_CS_PROPERTY_READ( dragEnabled, dragEnabled )
-    GUI_CS_PROPERTY_WRITE( dragEnabled, setDragEnabled )
+    GUI_LSCS_PROPERTY_READ( dragEnabled, dragEnabled )
+    GUI_LSCS_PROPERTY_WRITE( dragEnabled, setDragEnabled )
 
-    GUI_CS_PROPERTY_READ( dragDropOverwriteMode, dragDropOverwriteMode )
-    GUI_CS_PROPERTY_WRITE( dragDropOverwriteMode, setDragDropOverwriteMode )
+    GUI_LSCS_PROPERTY_READ( dragDropOverwriteMode, dragDropOverwriteMode )
+    GUI_LSCS_PROPERTY_WRITE( dragDropOverwriteMode, setDragDropOverwriteMode )
 
-    GUI_CS_PROPERTY_READ( dragDropMode, dragDropMode )
-    GUI_CS_PROPERTY_WRITE( dragDropMode, setDragDropMode )
+    GUI_LSCS_PROPERTY_READ( dragDropMode, dragDropMode )
+    GUI_LSCS_PROPERTY_WRITE( dragDropMode, setDragDropMode )
 
-    GUI_CS_PROPERTY_READ( defaultDropAction, defaultDropAction )
-    GUI_CS_PROPERTY_WRITE( defaultDropAction, setDefaultDropAction )
+    GUI_LSCS_PROPERTY_READ( defaultDropAction, defaultDropAction )
+    GUI_LSCS_PROPERTY_WRITE( defaultDropAction, setDefaultDropAction )
 #endif
 
-    GUI_CS_PROPERTY_READ( alternatingRowColors, alternatingRowColors )
-    GUI_CS_PROPERTY_WRITE( alternatingRowColors, setAlternatingRowColors )
-    GUI_CS_PROPERTY_READ( selectionMode, selectionMode )
-    GUI_CS_PROPERTY_WRITE( selectionMode, setSelectionMode )
+    GUI_LSCS_PROPERTY_READ( alternatingRowColors, alternatingRowColors )
+    GUI_LSCS_PROPERTY_WRITE( alternatingRowColors, setAlternatingRowColors )
+    GUI_LSCS_PROPERTY_READ( selectionMode, selectionMode )
+    GUI_LSCS_PROPERTY_WRITE( selectionMode, setSelectionMode )
 
-    GUI_CS_PROPERTY_READ( selectionBehavior, selectionBehavior )
-    GUI_CS_PROPERTY_WRITE( selectionBehavior, setSelectionBehavior )
+    GUI_LSCS_PROPERTY_READ( selectionBehavior, selectionBehavior )
+    GUI_LSCS_PROPERTY_WRITE( selectionBehavior, setSelectionBehavior )
 
-    GUI_CS_PROPERTY_READ( iconSize, iconSize )
-    GUI_CS_PROPERTY_WRITE( iconSize, setIconSize )
-    GUI_CS_PROPERTY_NOTIFY( iconSize, iconSizeChanged )
+    GUI_LSCS_PROPERTY_READ( iconSize, iconSize )
+    GUI_LSCS_PROPERTY_WRITE( iconSize, setIconSize )
+    GUI_LSCS_PROPERTY_NOTIFY( iconSize, iconSizeChanged )
 
-    GUI_CS_PROPERTY_READ( textElideMode, textElideMode )
-    GUI_CS_PROPERTY_WRITE( textElideMode, setTextElideMode )
+    GUI_LSCS_PROPERTY_READ( textElideMode, textElideMode )
+    GUI_LSCS_PROPERTY_WRITE( textElideMode, setTextElideMode )
 
-    GUI_CS_PROPERTY_READ( verticalScrollMode, verticalScrollMode )
-    GUI_CS_PROPERTY_WRITE( verticalScrollMode, setVerticalScrollMode )
+    GUI_LSCS_PROPERTY_READ( verticalScrollMode, verticalScrollMode )
+    GUI_LSCS_PROPERTY_WRITE( verticalScrollMode, setVerticalScrollMode )
 
-    GUI_CS_PROPERTY_READ( horizontalScrollMode, horizontalScrollMode )
-    GUI_CS_PROPERTY_WRITE( horizontalScrollMode, setHorizontalScrollMode )
+    GUI_LSCS_PROPERTY_READ( horizontalScrollMode, horizontalScrollMode )
+    GUI_LSCS_PROPERTY_WRITE( horizontalScrollMode, setHorizontalScrollMode )
 
 public:
-    GUI_CS_REGISTER_ENUM(
+    GUI_LSCS_REGISTER_ENUM(
         enum SelectionMode
     {
         NoSelection,
@@ -111,7 +111,7 @@ public:
     };
     )
 
-    GUI_CS_REGISTER_ENUM(
+    GUI_LSCS_REGISTER_ENUM(
         enum SelectionBehavior
     {
         SelectItems,
@@ -128,7 +128,7 @@ public:
         PositionAtCenter
     };
 
-    GUI_CS_REGISTER_ENUM(
+    GUI_LSCS_REGISTER_ENUM(
         enum EditTrigger
     {
         NoEditTriggers  = 0,
@@ -143,7 +143,7 @@ public:
 
     using EditTriggers = QFlags<EditTrigger>;
 
-    GUI_CS_REGISTER_ENUM(
+    GUI_LSCS_REGISTER_ENUM(
         enum ScrollMode
     {
         ScrollPerItem,
@@ -152,7 +152,7 @@ public:
     )
 
 #ifndef QT_NO_DRAGANDDROP
-    GUI_CS_REGISTER_ENUM(
+    GUI_LSCS_REGISTER_ENUM(
         enum DragDropMode
     {
         NoDragDrop,
@@ -259,58 +259,58 @@ public:
 
     QVariant inputMethodQuery( Qt::InputMethodQuery query ) const override;
 
-    GUI_CS_SLOT_1( Public, virtual void reset() )
-    GUI_CS_SLOT_2( reset )
+    GUI_LSCS_SLOT_1( Public, virtual void reset() )
+    GUI_LSCS_SLOT_2( reset )
 
-    GUI_CS_SLOT_1( Public, virtual void setRootIndex( const QModelIndex &index ) )
-    GUI_CS_SLOT_2( setRootIndex )
+    GUI_LSCS_SLOT_1( Public, virtual void setRootIndex( const QModelIndex &index ) )
+    GUI_LSCS_SLOT_2( setRootIndex )
 
-    GUI_CS_SLOT_1( Public, virtual void doItemsLayout() )
-    GUI_CS_SLOT_2( doItemsLayout )
+    GUI_LSCS_SLOT_1( Public, virtual void doItemsLayout() )
+    GUI_LSCS_SLOT_2( doItemsLayout )
 
-    GUI_CS_SLOT_1( Public, virtual void selectAll() )
-    GUI_CS_SLOT_2( selectAll )
+    GUI_LSCS_SLOT_1( Public, virtual void selectAll() )
+    GUI_LSCS_SLOT_2( selectAll )
 
-    GUI_CS_SLOT_1( Public, void edit( const QModelIndex &index ) )
-    GUI_CS_SLOT_OVERLOAD( edit, ( const QModelIndex & ) )
+    GUI_LSCS_SLOT_1( Public, void edit( const QModelIndex &index ) )
+    GUI_LSCS_SLOT_OVERLOAD( edit, ( const QModelIndex & ) )
 
-    GUI_CS_SLOT_1( Public, void clearSelection() )
-    GUI_CS_SLOT_2( clearSelection )
+    GUI_LSCS_SLOT_1( Public, void clearSelection() )
+    GUI_LSCS_SLOT_2( clearSelection )
 
-    GUI_CS_SLOT_1( Public, void setCurrentIndex( const QModelIndex &index ) )
-    GUI_CS_SLOT_2( setCurrentIndex )
+    GUI_LSCS_SLOT_1( Public, void setCurrentIndex( const QModelIndex &index ) )
+    GUI_LSCS_SLOT_2( setCurrentIndex )
 
-    GUI_CS_SLOT_1( Public, void scrollToTop() )
-    GUI_CS_SLOT_2( scrollToTop )
+    GUI_LSCS_SLOT_1( Public, void scrollToTop() )
+    GUI_LSCS_SLOT_2( scrollToTop )
 
-    GUI_CS_SLOT_1( Public, void scrollToBottom() )
-    GUI_CS_SLOT_2( scrollToBottom )
+    GUI_LSCS_SLOT_1( Public, void scrollToBottom() )
+    GUI_LSCS_SLOT_2( scrollToBottom )
 
     using QAbstractScrollArea::update;
 
-    GUI_CS_SLOT_1( Public, void update( const QModelIndex &index ) )
-    GUI_CS_SLOT_OVERLOAD( update, ( const QModelIndex & ) )
+    GUI_LSCS_SLOT_1( Public, void update( const QModelIndex &index ) )
+    GUI_LSCS_SLOT_OVERLOAD( update, ( const QModelIndex & ) )
 
-    GUI_CS_SIGNAL_1( Public, void pressed( const QModelIndex &index ) )
-    GUI_CS_SIGNAL_2( pressed, index )
+    GUI_LSCS_SIGNAL_1( Public, void pressed( const QModelIndex &index ) )
+    GUI_LSCS_SIGNAL_2( pressed, index )
 
-    GUI_CS_SIGNAL_1( Public, void clicked( const QModelIndex &index ) )
-    GUI_CS_SIGNAL_2( clicked, index )
+    GUI_LSCS_SIGNAL_1( Public, void clicked( const QModelIndex &index ) )
+    GUI_LSCS_SIGNAL_2( clicked, index )
 
-    GUI_CS_SIGNAL_1( Public, void doubleClicked( const QModelIndex &index ) )
-    GUI_CS_SIGNAL_2( doubleClicked, index )
+    GUI_LSCS_SIGNAL_1( Public, void doubleClicked( const QModelIndex &index ) )
+    GUI_LSCS_SIGNAL_2( doubleClicked, index )
 
-    GUI_CS_SIGNAL_1( Public, void activated( const QModelIndex &index ) )
-    GUI_CS_SIGNAL_2( activated, index )
+    GUI_LSCS_SIGNAL_1( Public, void activated( const QModelIndex &index ) )
+    GUI_LSCS_SIGNAL_2( activated, index )
 
-    GUI_CS_SIGNAL_1( Public, void entered( const QModelIndex &index ) )
-    GUI_CS_SIGNAL_2( entered, index )
+    GUI_LSCS_SIGNAL_1( Public, void entered( const QModelIndex &index ) )
+    GUI_LSCS_SIGNAL_2( entered, index )
 
-    GUI_CS_SIGNAL_1( Public, void viewportEntered() )
-    GUI_CS_SIGNAL_2( viewportEntered )
+    GUI_LSCS_SIGNAL_1( Public, void viewportEntered() )
+    GUI_LSCS_SIGNAL_2( viewportEntered )
 
-    GUI_CS_SIGNAL_1( Public, void iconSizeChanged( const QSize &size ) )
-    GUI_CS_SIGNAL_2( iconSizeChanged, size )
+    GUI_LSCS_SIGNAL_1( Public, void iconSizeChanged( const QSize &size ) )
+    GUI_LSCS_SIGNAL_2( iconSizeChanged, size )
 
 protected:
     enum CursorAction
@@ -348,52 +348,52 @@ protected:
     };
 #endif
 
-    GUI_CS_SLOT_1( Protected, virtual void dataChanged( const QModelIndex &topLeft, const QModelIndex &bottomRight,
+    GUI_LSCS_SLOT_1( Protected, virtual void dataChanged( const QModelIndex &topLeft, const QModelIndex &bottomRight,
                    const QVector<int> &roles = QVector<int>() ) )
-    GUI_CS_SLOT_2( dataChanged )
+    GUI_LSCS_SLOT_2( dataChanged )
 
-    GUI_CS_SLOT_1( Protected, virtual void rowsInserted( const QModelIndex &parent, int start, int end ) )
-    GUI_CS_SLOT_2( rowsInserted )
+    GUI_LSCS_SLOT_1( Protected, virtual void rowsInserted( const QModelIndex &parent, int start, int end ) )
+    GUI_LSCS_SLOT_2( rowsInserted )
 
-    GUI_CS_SLOT_1( Protected, virtual void rowsAboutToBeRemoved( const QModelIndex &parent, int start, int end ) )
-    GUI_CS_SLOT_2( rowsAboutToBeRemoved )
+    GUI_LSCS_SLOT_1( Protected, virtual void rowsAboutToBeRemoved( const QModelIndex &parent, int start, int end ) )
+    GUI_LSCS_SLOT_2( rowsAboutToBeRemoved )
 
-    GUI_CS_SLOT_1( Protected, virtual void selectionChanged( const QItemSelection &selected,
+    GUI_LSCS_SLOT_1( Protected, virtual void selectionChanged( const QItemSelection &selected,
                    const QItemSelection &deselected ) )
-    GUI_CS_SLOT_2( selectionChanged )
+    GUI_LSCS_SLOT_2( selectionChanged )
 
-    GUI_CS_SLOT_1( Protected, virtual void currentChanged( const QModelIndex &current, const QModelIndex &previous ) )
-    GUI_CS_SLOT_2( currentChanged )
+    GUI_LSCS_SLOT_1( Protected, virtual void currentChanged( const QModelIndex &current, const QModelIndex &previous ) )
+    GUI_LSCS_SLOT_2( currentChanged )
 
-    GUI_CS_SLOT_1( Protected, virtual void updateEditorData() )
-    GUI_CS_SLOT_2( updateEditorData )
+    GUI_LSCS_SLOT_1( Protected, virtual void updateEditorData() )
+    GUI_LSCS_SLOT_2( updateEditorData )
 
-    GUI_CS_SLOT_1( Protected, virtual void updateEditorGeometries() )
-    GUI_CS_SLOT_2( updateEditorGeometries )
+    GUI_LSCS_SLOT_1( Protected, virtual void updateEditorGeometries() )
+    GUI_LSCS_SLOT_2( updateEditorGeometries )
 
-    GUI_CS_SLOT_1( Protected, virtual void updateGeometries() )
-    GUI_CS_SLOT_2( updateGeometries )
+    GUI_LSCS_SLOT_1( Protected, virtual void updateGeometries() )
+    GUI_LSCS_SLOT_2( updateGeometries )
 
-    GUI_CS_SLOT_1( Protected, virtual void verticalScrollbarAction( int action ) )
-    GUI_CS_SLOT_2( verticalScrollbarAction )
+    GUI_LSCS_SLOT_1( Protected, virtual void verticalScrollbarAction( int action ) )
+    GUI_LSCS_SLOT_2( verticalScrollbarAction )
 
-    GUI_CS_SLOT_1( Protected, virtual void horizontalScrollbarAction( int action ) )
-    GUI_CS_SLOT_2( horizontalScrollbarAction )
+    GUI_LSCS_SLOT_1( Protected, virtual void horizontalScrollbarAction( int action ) )
+    GUI_LSCS_SLOT_2( horizontalScrollbarAction )
 
-    GUI_CS_SLOT_1( Protected, virtual void verticalScrollbarValueChanged( int value ) )
-    GUI_CS_SLOT_2( verticalScrollbarValueChanged )
+    GUI_LSCS_SLOT_1( Protected, virtual void verticalScrollbarValueChanged( int value ) )
+    GUI_LSCS_SLOT_2( verticalScrollbarValueChanged )
 
-    GUI_CS_SLOT_1( Protected, virtual void horizontalScrollbarValueChanged( int value ) )
-    GUI_CS_SLOT_2( horizontalScrollbarValueChanged )
+    GUI_LSCS_SLOT_1( Protected, virtual void horizontalScrollbarValueChanged( int value ) )
+    GUI_LSCS_SLOT_2( horizontalScrollbarValueChanged )
 
-    GUI_CS_SLOT_1( Protected, virtual void closeEditor( QWidget *editor, QAbstractItemDelegate::EndEditHint hint ) )
-    GUI_CS_SLOT_2( closeEditor )
+    GUI_LSCS_SLOT_1( Protected, virtual void closeEditor( QWidget *editor, QAbstractItemDelegate::EndEditHint hint ) )
+    GUI_LSCS_SLOT_2( closeEditor )
 
-    GUI_CS_SLOT_1( Protected, virtual void commitData( QWidget *editor ) )
-    GUI_CS_SLOT_2( commitData )
+    GUI_LSCS_SLOT_1( Protected, virtual void commitData( QWidget *editor ) )
+    GUI_LSCS_SLOT_2( commitData )
 
-    GUI_CS_SLOT_1( Protected, virtual void editorDestroyed( QObject *editor ) )
-    GUI_CS_SLOT_2( editorDestroyed )
+    GUI_LSCS_SLOT_1( Protected, virtual void editorDestroyed( QObject *editor ) )
+    GUI_LSCS_SLOT_2( editorDestroyed )
 
     QAbstractItemView( QAbstractItemViewPrivate &, QWidget *parent = nullptr );
 
@@ -464,36 +464,36 @@ protected:
 private:
     Q_DECLARE_PRIVATE( QAbstractItemView )
 
-    GUI_CS_SLOT_1( Private, void _q_columnsAboutToBeRemoved( const QModelIndex &parent, int start, int end ) )
-    GUI_CS_SLOT_2( _q_columnsAboutToBeRemoved )
+    GUI_LSCS_SLOT_1( Private, void _q_columnsAboutToBeRemoved( const QModelIndex &parent, int start, int end ) )
+    GUI_LSCS_SLOT_2( _q_columnsAboutToBeRemoved )
 
-    GUI_CS_SLOT_1( Private, void _q_columnsRemoved( const QModelIndex &parent, int start, int end ) )
-    GUI_CS_SLOT_2( _q_columnsRemoved )
+    GUI_LSCS_SLOT_1( Private, void _q_columnsRemoved( const QModelIndex &parent, int start, int end ) )
+    GUI_LSCS_SLOT_2( _q_columnsRemoved )
 
-    GUI_CS_SLOT_1( Private, void _q_columnsInserted( const QModelIndex &parent, int start, int end ) )
-    GUI_CS_SLOT_2( _q_columnsInserted )
+    GUI_LSCS_SLOT_1( Private, void _q_columnsInserted( const QModelIndex &parent, int start, int end ) )
+    GUI_LSCS_SLOT_2( _q_columnsInserted )
 
-    GUI_CS_SLOT_1( Private, void _q_columnsMoved( const QModelIndex &source, int sourceStart, int sourceEnd,
+    GUI_LSCS_SLOT_1( Private, void _q_columnsMoved( const QModelIndex &source, int sourceStart, int sourceEnd,
                    const QModelIndex &destination, int destinationStart ) )
-    GUI_CS_SLOT_2( _q_columnsMoved )
+    GUI_LSCS_SLOT_2( _q_columnsMoved )
 
-    GUI_CS_SLOT_1( Private, void _q_rowsInserted( const QModelIndex &parent, int start, int end ) )
-    GUI_CS_SLOT_2( _q_rowsInserted )
+    GUI_LSCS_SLOT_1( Private, void _q_rowsInserted( const QModelIndex &parent, int start, int end ) )
+    GUI_LSCS_SLOT_2( _q_rowsInserted )
 
-    GUI_CS_SLOT_1( Private, void _q_rowsRemoved( const QModelIndex &parent, int start, int end ) )
-    GUI_CS_SLOT_2( _q_rowsRemoved )
+    GUI_LSCS_SLOT_1( Private, void _q_rowsRemoved( const QModelIndex &parent, int start, int end ) )
+    GUI_LSCS_SLOT_2( _q_rowsRemoved )
 
-    GUI_CS_SLOT_1( Private, void _q_rowsMoved( const QModelIndex &source, int sourceStart, int sourceEnd,
+    GUI_LSCS_SLOT_1( Private, void _q_rowsMoved( const QModelIndex &source, int sourceStart, int sourceEnd,
                    const QModelIndex &destination, int destinationStart ) )
-    GUI_CS_SLOT_2( _q_rowsMoved )
+    GUI_LSCS_SLOT_2( _q_rowsMoved )
 
     void _q_modelDestroyed();
     void _q_layoutChanged();
     void _q_headerDataChanged();
 
 #ifndef QT_NO_GESTURES
-    GUI_CS_SLOT_1( Private, void _q_scrollerStateChanged() )
-    GUI_CS_SLOT_2( _q_scrollerStateChanged )
+    GUI_LSCS_SLOT_1( Private, void _q_scrollerStateChanged() )
+    GUI_LSCS_SLOT_2( _q_scrollerStateChanged )
 #endif
 
     friend class QTreeView;

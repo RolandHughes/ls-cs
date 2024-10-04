@@ -33,37 +33,37 @@ class QStyleOptionHeader;
 
 class Q_GUI_EXPORT QHeaderView : public QAbstractItemView
 {
-    GUI_CS_OBJECT( QHeaderView )
+    GUI_LSCS_OBJECT( QHeaderView )
 
-    GUI_CS_PROPERTY_READ( showSortIndicator, isSortIndicatorShown )
-    GUI_CS_PROPERTY_WRITE( showSortIndicator, setSortIndicatorShown )
+    GUI_LSCS_PROPERTY_READ( showSortIndicator, isSortIndicatorShown )
+    GUI_LSCS_PROPERTY_WRITE( showSortIndicator, setSortIndicatorShown )
 
-    GUI_CS_PROPERTY_READ( highlightSections, highlightSections )
-    GUI_CS_PROPERTY_WRITE( highlightSections, setHighlightSections )
+    GUI_LSCS_PROPERTY_READ( highlightSections, highlightSections )
+    GUI_LSCS_PROPERTY_WRITE( highlightSections, setHighlightSections )
 
-    GUI_CS_PROPERTY_READ( stretchLastSection, stretchLastSection )
-    GUI_CS_PROPERTY_WRITE( stretchLastSection, setStretchLastSection )
+    GUI_LSCS_PROPERTY_READ( stretchLastSection, stretchLastSection )
+    GUI_LSCS_PROPERTY_WRITE( stretchLastSection, setStretchLastSection )
 
-    GUI_CS_PROPERTY_READ( cascadingSectionResizes, cascadingSectionResizes )
-    GUI_CS_PROPERTY_WRITE( cascadingSectionResizes, setCascadingSectionResizes )
+    GUI_LSCS_PROPERTY_READ( cascadingSectionResizes, cascadingSectionResizes )
+    GUI_LSCS_PROPERTY_WRITE( cascadingSectionResizes, setCascadingSectionResizes )
 
-    GUI_CS_PROPERTY_READ( defaultSectionSize,  defaultSectionSize )
-    GUI_CS_PROPERTY_WRITE( defaultSectionSize, setDefaultSectionSize )
-    GUI_CS_PROPERTY_RESET( defaultSectionSize, resetDefaultSectionSize )
+    GUI_LSCS_PROPERTY_READ( defaultSectionSize,  defaultSectionSize )
+    GUI_LSCS_PROPERTY_WRITE( defaultSectionSize, setDefaultSectionSize )
+    GUI_LSCS_PROPERTY_RESET( defaultSectionSize, resetDefaultSectionSize )
 
-    GUI_CS_PROPERTY_READ( minimumSectionSize, minimumSectionSize )
-    GUI_CS_PROPERTY_WRITE( minimumSectionSize, setMinimumSectionSize )
+    GUI_LSCS_PROPERTY_READ( minimumSectionSize, minimumSectionSize )
+    GUI_LSCS_PROPERTY_WRITE( minimumSectionSize, setMinimumSectionSize )
 
-    GUI_CS_PROPERTY_READ( maximumSectionSize, maximumSectionSize )
-    GUI_CS_PROPERTY_WRITE( maximumSectionSize, setMaximumSectionSize )
+    GUI_LSCS_PROPERTY_READ( maximumSectionSize, maximumSectionSize )
+    GUI_LSCS_PROPERTY_WRITE( maximumSectionSize, setMaximumSectionSize )
 
-    GUI_CS_PROPERTY_READ( defaultAlignment, defaultAlignment )
-    GUI_CS_PROPERTY_WRITE( defaultAlignment, setDefaultAlignment )
+    GUI_LSCS_PROPERTY_READ( defaultAlignment, defaultAlignment )
+    GUI_LSCS_PROPERTY_WRITE( defaultAlignment, setDefaultAlignment )
 
-    GUI_CS_ENUM( ResizeMode )
+    GUI_LSCS_ENUM( ResizeMode )
 
 public:
-    GUI_CS_REGISTER_ENUM(
+    GUI_LSCS_REGISTER_ENUM(
         enum ResizeMode
     {
         Interactive,
@@ -168,60 +168,60 @@ public:
 
     void reset() override;
 
-    GUI_CS_SLOT_1( Public, void setOffset( int offset ) )
-    GUI_CS_SLOT_2( setOffset )
+    GUI_LSCS_SLOT_1( Public, void setOffset( int offset ) )
+    GUI_LSCS_SLOT_2( setOffset )
 
-    GUI_CS_SLOT_1( Public, void setOffsetToSectionPosition( int visualIndex ) )
-    GUI_CS_SLOT_2( setOffsetToSectionPosition )
+    GUI_LSCS_SLOT_1( Public, void setOffsetToSectionPosition( int visualIndex ) )
+    GUI_LSCS_SLOT_2( setOffsetToSectionPosition )
 
-    GUI_CS_SLOT_1( Public, void setOffsetToLastSection() )
-    GUI_CS_SLOT_2( setOffsetToLastSection )
+    GUI_LSCS_SLOT_1( Public, void setOffsetToLastSection() )
+    GUI_LSCS_SLOT_2( setOffsetToLastSection )
 
-    GUI_CS_SLOT_1( Public, void headerDataChanged( Qt::Orientation orientation, int logicalFirst, int logicalLast ) )
-    GUI_CS_SLOT_2( headerDataChanged )
+    GUI_LSCS_SLOT_1( Public, void headerDataChanged( Qt::Orientation orientation, int logicalFirst, int logicalLast ) )
+    GUI_LSCS_SLOT_2( headerDataChanged )
 
-    GUI_CS_SIGNAL_1( Public, void sectionMoved( int logicalIndex, int oldVisualIndex, int newVisualIndex ) )
-    GUI_CS_SIGNAL_2( sectionMoved, logicalIndex, oldVisualIndex, newVisualIndex )
+    GUI_LSCS_SIGNAL_1( Public, void sectionMoved( int logicalIndex, int oldVisualIndex, int newVisualIndex ) )
+    GUI_LSCS_SIGNAL_2( sectionMoved, logicalIndex, oldVisualIndex, newVisualIndex )
 
-    GUI_CS_SIGNAL_1( Public, void sectionResized( int logicalIndex, int oldSize, int newSize ) )
-    GUI_CS_SIGNAL_2( sectionResized, logicalIndex, oldSize, newSize )
+    GUI_LSCS_SIGNAL_1( Public, void sectionResized( int logicalIndex, int oldSize, int newSize ) )
+    GUI_LSCS_SIGNAL_2( sectionResized, logicalIndex, oldSize, newSize )
 
-    GUI_CS_SIGNAL_1( Public, void sectionPressed( int logicalIndex ) )
-    GUI_CS_SIGNAL_2( sectionPressed, logicalIndex )
+    GUI_LSCS_SIGNAL_1( Public, void sectionPressed( int logicalIndex ) )
+    GUI_LSCS_SIGNAL_2( sectionPressed, logicalIndex )
 
-    GUI_CS_SIGNAL_1( Public, void sectionClicked( int logicalIndex ) )
-    GUI_CS_SIGNAL_2( sectionClicked, logicalIndex )
+    GUI_LSCS_SIGNAL_1( Public, void sectionClicked( int logicalIndex ) )
+    GUI_LSCS_SIGNAL_2( sectionClicked, logicalIndex )
 
-    GUI_CS_SIGNAL_1( Public, void sectionEntered( int logicalIndex ) )
-    GUI_CS_SIGNAL_2( sectionEntered, logicalIndex )
+    GUI_LSCS_SIGNAL_1( Public, void sectionEntered( int logicalIndex ) )
+    GUI_LSCS_SIGNAL_2( sectionEntered, logicalIndex )
 
-    GUI_CS_SIGNAL_1( Public, void sectionDoubleClicked( int logicalIndex ) )
-    GUI_CS_SIGNAL_2( sectionDoubleClicked, logicalIndex )
+    GUI_LSCS_SIGNAL_1( Public, void sectionDoubleClicked( int logicalIndex ) )
+    GUI_LSCS_SIGNAL_2( sectionDoubleClicked, logicalIndex )
 
-    GUI_CS_SIGNAL_1( Public, void sectionCountChanged( int oldCount, int newCount ) )
-    GUI_CS_SIGNAL_2( sectionCountChanged, oldCount, newCount )
+    GUI_LSCS_SIGNAL_1( Public, void sectionCountChanged( int oldCount, int newCount ) )
+    GUI_LSCS_SIGNAL_2( sectionCountChanged, oldCount, newCount )
 
-    GUI_CS_SIGNAL_1( Public, void sectionHandleDoubleClicked( int logicalIndex ) )
-    GUI_CS_SIGNAL_2( sectionHandleDoubleClicked, logicalIndex )
+    GUI_LSCS_SIGNAL_1( Public, void sectionHandleDoubleClicked( int logicalIndex ) )
+    GUI_LSCS_SIGNAL_2( sectionHandleDoubleClicked, logicalIndex )
 
-    GUI_CS_SIGNAL_1( Public, void geometriesChanged() )
-    GUI_CS_SIGNAL_2( geometriesChanged )
+    GUI_LSCS_SIGNAL_1( Public, void geometriesChanged() )
+    GUI_LSCS_SIGNAL_2( geometriesChanged )
 
-    GUI_CS_SIGNAL_1( Public, void sortIndicatorChanged( int logicalIndex, Qt::SortOrder order ) )
-    GUI_CS_SIGNAL_2( sortIndicatorChanged, logicalIndex, order )
+    GUI_LSCS_SIGNAL_1( Public, void sortIndicatorChanged( int logicalIndex, Qt::SortOrder order ) )
+    GUI_LSCS_SIGNAL_2( sortIndicatorChanged, logicalIndex, order )
 
 protected:
-    GUI_CS_SLOT_1( Protected, void updateSection( int logicalIndex ) )
-    GUI_CS_SLOT_2( updateSection )
+    GUI_LSCS_SLOT_1( Protected, void updateSection( int logicalIndex ) )
+    GUI_LSCS_SLOT_2( updateSection )
 
-    GUI_CS_SLOT_1( Protected, void resizeSections() )
-    GUI_CS_SLOT_OVERLOAD( resizeSections, () )
+    GUI_LSCS_SLOT_1( Protected, void resizeSections() )
+    GUI_LSCS_SLOT_OVERLOAD( resizeSections, () )
 
-    GUI_CS_SLOT_1( Protected, void sectionsInserted( const QModelIndex &parent, int logicalFirst, int logicalLast ) )
-    GUI_CS_SLOT_2( sectionsInserted )
+    GUI_LSCS_SLOT_1( Protected, void sectionsInserted( const QModelIndex &parent, int logicalFirst, int logicalLast ) )
+    GUI_LSCS_SLOT_2( sectionsInserted )
 
-    GUI_CS_SLOT_1( Protected, void sectionsAboutToBeRemoved( const QModelIndex &parent, int logicalFirst, int logicalLast ) )
-    GUI_CS_SLOT_2( sectionsAboutToBeRemoved )
+    GUI_LSCS_SLOT_1( Protected, void sectionsAboutToBeRemoved( const QModelIndex &parent, int logicalFirst, int logicalLast ) )
+    GUI_LSCS_SLOT_2( sectionsAboutToBeRemoved )
 
     QHeaderView( QHeaderViewPrivate &dd, Qt::Orientation orientation, QWidget *parent = nullptr );
     void initialize();
@@ -267,11 +267,11 @@ protected:
 private:
     Q_DECLARE_PRIVATE( QHeaderView )
 
-    GUI_CS_SLOT_1( Private, void _q_sectionsRemoved( const QModelIndex &parent, int logicalFirst, int logicalLast ) )
-    GUI_CS_SLOT_2( _q_sectionsRemoved )
+    GUI_LSCS_SLOT_1( Private, void _q_sectionsRemoved( const QModelIndex &parent, int logicalFirst, int logicalLast ) )
+    GUI_LSCS_SLOT_2( _q_sectionsRemoved )
 
-    GUI_CS_SLOT_1( Private, void _q_layoutAboutToBeChanged() )
-    GUI_CS_SLOT_2( _q_layoutAboutToBeChanged )
+    GUI_LSCS_SLOT_1( Private, void _q_layoutAboutToBeChanged() )
+    GUI_LSCS_SLOT_2( _q_layoutAboutToBeChanged )
 };
 
 inline int QHeaderView::logicalIndexAt( int x, int y ) const

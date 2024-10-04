@@ -32,7 +32,7 @@ class QVideoWidgetControlPrivate;
 
 class Q_MULTIMEDIA_EXPORT QVideoWidgetControl : public QMediaControl
 {
-    MULTI_CS_OBJECT( QVideoWidgetControl )
+    MULTI_LSCS_OBJECT( QVideoWidgetControl )
 
 public:
     virtual ~QVideoWidgetControl();
@@ -57,22 +57,22 @@ public:
     virtual int saturation() const = 0;
     virtual void setSaturation( int saturation ) = 0;
 
-    MULTI_CS_SIGNAL_1( Public, void fullScreenChanged( bool fullScreen ) )
-    MULTI_CS_SIGNAL_2( fullScreenChanged, fullScreen )
-    MULTI_CS_SIGNAL_1( Public, void brightnessChanged( int brightness ) )
-    MULTI_CS_SIGNAL_2( brightnessChanged, brightness )
-    MULTI_CS_SIGNAL_1( Public, void contrastChanged( int contrast ) )
-    MULTI_CS_SIGNAL_2( contrastChanged, contrast )
-    MULTI_CS_SIGNAL_1( Public, void hueChanged( int hue ) )
-    MULTI_CS_SIGNAL_2( hueChanged, hue )
-    MULTI_CS_SIGNAL_1( Public, void saturationChanged( int saturation ) )
-    MULTI_CS_SIGNAL_2( saturationChanged, saturation )
+    MULTI_LSCS_SIGNAL_1( Public, void fullScreenChanged( bool fullScreen ) )
+    MULTI_LSCS_SIGNAL_2( fullScreenChanged, fullScreen )
+    MULTI_LSCS_SIGNAL_1( Public, void brightnessChanged( int brightness ) )
+    MULTI_LSCS_SIGNAL_2( brightnessChanged, brightness )
+    MULTI_LSCS_SIGNAL_1( Public, void contrastChanged( int contrast ) )
+    MULTI_LSCS_SIGNAL_2( contrastChanged, contrast )
+    MULTI_LSCS_SIGNAL_1( Public, void hueChanged( int hue ) )
+    MULTI_LSCS_SIGNAL_2( hueChanged, hue )
+    MULTI_LSCS_SIGNAL_1( Public, void saturationChanged( int saturation ) )
+    MULTI_LSCS_SIGNAL_2( saturationChanged, saturation )
 
 protected:
     explicit QVideoWidgetControl( QObject *parent = nullptr );
 };
 
 #define QVideoWidgetControl_iid "com.copperspice.CS.videoWidgetControl/1.0"
-CS_DECLARE_INTERFACE( QVideoWidgetControl, QVideoWidgetControl_iid )
+LSCS_DECLARE_INTERFACE( QVideoWidgetControl, QVideoWidgetControl_iid )
 
 #endif

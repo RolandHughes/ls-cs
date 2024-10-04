@@ -36,29 +36,29 @@ class QSvgGeneratorPrivate;
 
 class Q_SVG_EXPORT QSvgGenerator : public QPaintDevice
 {
-    SVG_CS_GADGET( QSvgGenerator )
+    SVG_LSCS_GADGET( QSvgGenerator )
     Q_DECLARE_PRIVATE( QSvgGenerator )
 
-    SVG_CS_PROPERTY_READ( size, size )
-    SVG_CS_PROPERTY_WRITE( size, setSize )
+    SVG_LSCS_PROPERTY_READ( size, size )
+    SVG_LSCS_PROPERTY_WRITE( size, setSize )
 
-    SVG_CS_PROPERTY_READ( viewBox, viewBoxF )
-    SVG_CS_PROPERTY_WRITE( viewBox, cs_setViewBox )
+    SVG_LSCS_PROPERTY_READ( viewBox, viewBoxF )
+    SVG_LSCS_PROPERTY_WRITE( viewBox, cs_setViewBox )
 
-    SVG_CS_PROPERTY_READ( title, title )
-    SVG_CS_PROPERTY_WRITE( title, setTitle )
+    SVG_LSCS_PROPERTY_READ( title, title )
+    SVG_LSCS_PROPERTY_WRITE( title, setTitle )
 
-    SVG_CS_PROPERTY_READ( description, description )
-    SVG_CS_PROPERTY_WRITE( description, setDescription )
+    SVG_LSCS_PROPERTY_READ( description, description )
+    SVG_LSCS_PROPERTY_WRITE( description, setDescription )
 
-    SVG_CS_PROPERTY_READ( fileName, fileName )
-    SVG_CS_PROPERTY_WRITE( fileName, setFileName )
+    SVG_LSCS_PROPERTY_READ( fileName, fileName )
+    SVG_LSCS_PROPERTY_WRITE( fileName, setFileName )
 
-    SVG_CS_PROPERTY_READ( outputDevice, outputDevice )
-    SVG_CS_PROPERTY_WRITE( outputDevice, setOutputDevice )
+    SVG_LSCS_PROPERTY_READ( outputDevice, outputDevice )
+    SVG_LSCS_PROPERTY_WRITE( outputDevice, setOutputDevice )
 
-    SVG_CS_PROPERTY_READ( resolution, resolution )
-    SVG_CS_PROPERTY_WRITE( resolution, setResolution )
+    SVG_LSCS_PROPERTY_READ( resolution, resolution )
+    SVG_LSCS_PROPERTY_WRITE( resolution, setResolution )
 
 public:
     QSvgGenerator();

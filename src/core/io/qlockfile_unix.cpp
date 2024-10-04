@@ -246,7 +246,7 @@ QLockFile::LockError QLockFilePrivate::tryLock_sys()
 
         if ( ! QFile::remove( fileName ) )
         {
-            qWarning( "QLockFile::tryLock_sys() Unable to remove lock file %s", csPrintable( fileName ) );
+            qWarning( "QLockFile::tryLock_sys() Unable to remove lock file %s", lscsPrintable( fileName ) );
         }
 
         return QLockFile::UnknownError; // partition full
@@ -412,7 +412,7 @@ void QLockFile::unlock()
 
     if ( ! QFile::remove( d->fileName ) )
     {
-        qWarning( "QLockFile::unlock() Unable to remove lock file %s", csPrintable( d->fileName ) );
+        qWarning( "QLockFile::unlock() Unable to remove lock file %s", lscsPrintable( d->fileName ) );
     }
 
     d->lockError = QLockFile::NoError;

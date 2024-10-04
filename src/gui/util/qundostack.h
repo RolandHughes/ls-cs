@@ -70,12 +70,12 @@ private:
 
 class Q_GUI_EXPORT QUndoStack : public QObject
 {
-    GUI_CS_OBJECT( QUndoStack )
+    GUI_LSCS_OBJECT( QUndoStack )
 
-    GUI_CS_PROPERTY_READ( active, isActive )
-    GUI_CS_PROPERTY_WRITE( active, setActive )
-    GUI_CS_PROPERTY_READ( undoLimit, undoLimit )
-    GUI_CS_PROPERTY_WRITE( undoLimit, setUndoLimit )
+    GUI_LSCS_PROPERTY_READ( active, isActive )
+    GUI_LSCS_PROPERTY_WRITE( active, setActive )
+    GUI_LSCS_PROPERTY_READ( undoLimit, undoLimit )
+    GUI_LSCS_PROPERTY_WRITE( undoLimit, setUndoLimit )
 
 public:
     explicit QUndoStack( QObject *parent = nullptr );
@@ -115,33 +115,33 @@ public:
 
     const QUndoCommand *command( int index ) const;
 
-    GUI_CS_SLOT_1( Public, void setClean() )
-    GUI_CS_SLOT_2( setClean )
+    GUI_LSCS_SLOT_1( Public, void setClean() )
+    GUI_LSCS_SLOT_2( setClean )
 
-    GUI_CS_SLOT_1( Public, void setIndex( int idx ) )
-    GUI_CS_SLOT_2( setIndex )
+    GUI_LSCS_SLOT_1( Public, void setIndex( int idx ) )
+    GUI_LSCS_SLOT_2( setIndex )
 
-    GUI_CS_SLOT_1( Public, void undo() )
-    GUI_CS_SLOT_2( undo )
+    GUI_LSCS_SLOT_1( Public, void undo() )
+    GUI_LSCS_SLOT_2( undo )
 
-    GUI_CS_SLOT_1( Public, void redo() )
-    GUI_CS_SLOT_2( redo )
+    GUI_LSCS_SLOT_1( Public, void redo() )
+    GUI_LSCS_SLOT_2( redo )
 
-    GUI_CS_SLOT_1( Public, void setActive( bool active = true ) )
-    GUI_CS_SLOT_2( setActive )
+    GUI_LSCS_SLOT_1( Public, void setActive( bool active = true ) )
+    GUI_LSCS_SLOT_2( setActive )
 
-    GUI_CS_SIGNAL_1( Public, void indexChanged( int idx ) )
-    GUI_CS_SIGNAL_2( indexChanged, idx )
-    GUI_CS_SIGNAL_1( Public, void cleanChanged( bool clean ) )
-    GUI_CS_SIGNAL_2( cleanChanged, clean )
-    GUI_CS_SIGNAL_1( Public, void canUndoChanged( bool canUndo ) )
-    GUI_CS_SIGNAL_2( canUndoChanged, canUndo )
-    GUI_CS_SIGNAL_1( Public, void canRedoChanged( bool canRedo ) )
-    GUI_CS_SIGNAL_2( canRedoChanged, canRedo )
-    GUI_CS_SIGNAL_1( Public, void undoTextChanged( const QString &undoText ) )
-    GUI_CS_SIGNAL_2( undoTextChanged, undoText )
-    GUI_CS_SIGNAL_1( Public, void redoTextChanged( const QString &redoText ) )
-    GUI_CS_SIGNAL_2( redoTextChanged, redoText )
+    GUI_LSCS_SIGNAL_1( Public, void indexChanged( int idx ) )
+    GUI_LSCS_SIGNAL_2( indexChanged, idx )
+    GUI_LSCS_SIGNAL_1( Public, void cleanChanged( bool clean ) )
+    GUI_LSCS_SIGNAL_2( cleanChanged, clean )
+    GUI_LSCS_SIGNAL_1( Public, void canUndoChanged( bool canUndo ) )
+    GUI_LSCS_SIGNAL_2( canUndoChanged, canUndo )
+    GUI_LSCS_SIGNAL_1( Public, void canRedoChanged( bool canRedo ) )
+    GUI_LSCS_SIGNAL_2( canRedoChanged, canRedo )
+    GUI_LSCS_SIGNAL_1( Public, void undoTextChanged( const QString &undoText ) )
+    GUI_LSCS_SIGNAL_2( undoTextChanged, undoText )
+    GUI_LSCS_SIGNAL_1( Public, void redoTextChanged( const QString &redoText ) )
+    GUI_LSCS_SIGNAL_2( redoTextChanged, redoText )
 
 protected:
     QScopedPointer<QUndoStackPrivate> d_ptr;

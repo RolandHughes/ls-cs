@@ -29,10 +29,10 @@
 
 class QM3uPlaylistPlugin : public QMediaPlaylistIOPlugin
 {
-    CS_OBJECT( QM3uPlaylistPlugin )
+    LSCS_OBJECT( QM3uPlaylistPlugin )
 
-    CS_PLUGIN_IID( QMediaPlaylistInterface_ID )
-    CS_PLUGIN_KEY( "m3u" )
+    LSCS_PLUGIN_IID( QMediaPlaylistInterface_ID )
+    LSCS_PLUGIN_KEY( "m3u" )
 
 public:
     explicit QM3uPlaylistPlugin( QObject *parent = nullptr );

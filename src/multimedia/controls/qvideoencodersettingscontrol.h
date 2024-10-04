@@ -36,7 +36,7 @@ class QStringList;
 
 class Q_MULTIMEDIA_EXPORT QVideoEncoderSettingsControl : public QMediaControl
 {
-    MULTI_CS_OBJECT( QVideoEncoderSettingsControl )
+    MULTI_LSCS_OBJECT( QVideoEncoderSettingsControl )
 
 public:
     virtual ~QVideoEncoderSettingsControl();
@@ -55,6 +55,6 @@ protected:
 };
 
 #define QVideoEncoderSettingsControl_iid "com.copperspice.CS.videoEncoderSettingsControl/1.0"
-CS_DECLARE_INTERFACE( QVideoEncoderSettingsControl, QVideoEncoderSettingsControl_iid )
+LSCS_DECLARE_INTERFACE( QVideoEncoderSettingsControl, QVideoEncoderSettingsControl_iid )
 
 #endif

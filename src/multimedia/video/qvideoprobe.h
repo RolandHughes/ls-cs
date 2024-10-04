@@ -33,7 +33,7 @@ class QVideoProbePrivate;
 
 class Q_MULTIMEDIA_EXPORT QVideoProbe : public QObject
 {
-    MULTI_CS_OBJECT( QVideoProbe )
+    MULTI_LSCS_OBJECT( QVideoProbe )
 
 public:
     explicit QVideoProbe( QObject *parent = nullptr );
@@ -44,11 +44,11 @@ public:
 
     bool isActive() const;
 
-    MULTI_CS_SIGNAL_1( Public, void videoFrameProbed( const QVideoFrame &videoFrame ) )
-    MULTI_CS_SIGNAL_2( videoFrameProbed, videoFrame )
+    MULTI_LSCS_SIGNAL_1( Public, void videoFrameProbed( const QVideoFrame &videoFrame ) )
+    MULTI_LSCS_SIGNAL_2( videoFrameProbed, videoFrame )
 
-    MULTI_CS_SIGNAL_1( Public, void flush() )
-    MULTI_CS_SIGNAL_2( flush )
+    MULTI_LSCS_SIGNAL_1( Public, void flush() )
+    MULTI_LSCS_SIGNAL_2( flush )
 
 private:
     QVideoProbePrivate *d;

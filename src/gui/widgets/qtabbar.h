@@ -34,49 +34,49 @@ class QStyleOptionTab;
 
 class Q_GUI_EXPORT QTabBar: public QWidget
 {
-    GUI_CS_OBJECT( QTabBar )
+    GUI_LSCS_OBJECT( QTabBar )
 
-    GUI_CS_ENUM( Shape )
+    GUI_LSCS_ENUM( Shape )
 
-    GUI_CS_PROPERTY_READ( shape, shape )
-    GUI_CS_PROPERTY_WRITE( shape, setShape )
-    GUI_CS_PROPERTY_READ( currentIndex, currentIndex )
-    GUI_CS_PROPERTY_WRITE( currentIndex, setCurrentIndex )
-    GUI_CS_PROPERTY_NOTIFY( currentIndex, currentChanged )
-    GUI_CS_PROPERTY_READ( count, count )
+    GUI_LSCS_PROPERTY_READ( shape, shape )
+    GUI_LSCS_PROPERTY_WRITE( shape, setShape )
+    GUI_LSCS_PROPERTY_READ( currentIndex, currentIndex )
+    GUI_LSCS_PROPERTY_WRITE( currentIndex, setCurrentIndex )
+    GUI_LSCS_PROPERTY_NOTIFY( currentIndex, currentChanged )
+    GUI_LSCS_PROPERTY_READ( count, count )
 
-    GUI_CS_PROPERTY_READ( drawBase, drawBase )
-    GUI_CS_PROPERTY_WRITE( drawBase, setDrawBase )
+    GUI_LSCS_PROPERTY_READ( drawBase, drawBase )
+    GUI_LSCS_PROPERTY_WRITE( drawBase, setDrawBase )
 
-    GUI_CS_PROPERTY_READ( iconSize, iconSize )
-    GUI_CS_PROPERTY_WRITE( iconSize, setIconSize )
+    GUI_LSCS_PROPERTY_READ( iconSize, iconSize )
+    GUI_LSCS_PROPERTY_WRITE( iconSize, setIconSize )
 
-    GUI_CS_PROPERTY_READ( elideMode, elideMode )
-    GUI_CS_PROPERTY_WRITE( elideMode, setElideMode )
+    GUI_LSCS_PROPERTY_READ( elideMode, elideMode )
+    GUI_LSCS_PROPERTY_WRITE( elideMode, setElideMode )
 
-    GUI_CS_PROPERTY_READ( usesScrollButtons, usesScrollButtons )
-    GUI_CS_PROPERTY_WRITE( usesScrollButtons, setUsesScrollButtons )
+    GUI_LSCS_PROPERTY_READ( usesScrollButtons, usesScrollButtons )
+    GUI_LSCS_PROPERTY_WRITE( usesScrollButtons, setUsesScrollButtons )
 
-    GUI_CS_PROPERTY_READ( tabsClosable, tabsClosable )
-    GUI_CS_PROPERTY_WRITE( tabsClosable, setTabsClosable )
+    GUI_LSCS_PROPERTY_READ( tabsClosable, tabsClosable )
+    GUI_LSCS_PROPERTY_WRITE( tabsClosable, setTabsClosable )
 
-    GUI_CS_PROPERTY_READ( selectionBehaviorOnRemove, selectionBehaviorOnRemove )
-    GUI_CS_PROPERTY_WRITE( selectionBehaviorOnRemove, setSelectionBehaviorOnRemove )
+    GUI_LSCS_PROPERTY_READ( selectionBehaviorOnRemove, selectionBehaviorOnRemove )
+    GUI_LSCS_PROPERTY_WRITE( selectionBehaviorOnRemove, setSelectionBehaviorOnRemove )
 
-    GUI_CS_PROPERTY_READ( expanding, expanding )
-    GUI_CS_PROPERTY_WRITE( expanding, setExpanding )
+    GUI_LSCS_PROPERTY_READ( expanding, expanding )
+    GUI_LSCS_PROPERTY_WRITE( expanding, setExpanding )
 
-    GUI_CS_PROPERTY_READ( movable, isMovable )
-    GUI_CS_PROPERTY_WRITE( movable, setMovable )
+    GUI_LSCS_PROPERTY_READ( movable, isMovable )
+    GUI_LSCS_PROPERTY_WRITE( movable, setMovable )
 
-    GUI_CS_PROPERTY_READ( documentMode, documentMode )
-    GUI_CS_PROPERTY_WRITE( documentMode, setDocumentMode )
+    GUI_LSCS_PROPERTY_READ( documentMode, documentMode )
+    GUI_LSCS_PROPERTY_WRITE( documentMode, setDocumentMode )
 
-    GUI_CS_PROPERTY_READ( autoHide, autoHide )
-    GUI_CS_PROPERTY_WRITE( autoHide, setAutoHide )
+    GUI_LSCS_PROPERTY_READ( autoHide, autoHide )
+    GUI_LSCS_PROPERTY_WRITE( autoHide, setAutoHide )
 
-    GUI_CS_PROPERTY_READ( changeCurrentOnDrag, changeCurrentOnDrag )
-    GUI_CS_PROPERTY_WRITE( changeCurrentOnDrag, setChangeCurrentOnDrag )
+    GUI_LSCS_PROPERTY_READ( changeCurrentOnDrag, changeCurrentOnDrag )
+    GUI_LSCS_PROPERTY_WRITE( changeCurrentOnDrag, setChangeCurrentOnDrag )
 
 public:
     explicit QTabBar( QWidget *parent = nullptr );
@@ -184,23 +184,23 @@ public:
     bool changeCurrentOnDrag() const;
     void setChangeCurrentOnDrag( bool change );
 
-    GUI_CS_SLOT_1( Public, void setCurrentIndex( int index ) )
-    GUI_CS_SLOT_2( setCurrentIndex )
+    GUI_LSCS_SLOT_1( Public, void setCurrentIndex( int index ) )
+    GUI_LSCS_SLOT_2( setCurrentIndex )
 
-    GUI_CS_SIGNAL_1( Public, void currentChanged( int index ) )
-    GUI_CS_SIGNAL_2( currentChanged, index )
+    GUI_LSCS_SIGNAL_1( Public, void currentChanged( int index ) )
+    GUI_LSCS_SIGNAL_2( currentChanged, index )
 
-    GUI_CS_SIGNAL_1( Public, void tabCloseRequested( int index ) )
-    GUI_CS_SIGNAL_2( tabCloseRequested, index )
+    GUI_LSCS_SIGNAL_1( Public, void tabCloseRequested( int index ) )
+    GUI_LSCS_SIGNAL_2( tabCloseRequested, index )
 
-    GUI_CS_SIGNAL_1( Public, void tabMoved( int from, int to ) )
-    GUI_CS_SIGNAL_2( tabMoved, from, to )
+    GUI_LSCS_SIGNAL_1( Public, void tabMoved( int from, int to ) )
+    GUI_LSCS_SIGNAL_2( tabMoved, from, to )
 
-    GUI_CS_SIGNAL_1( Public, void tabBarClicked( int index ) )
-    GUI_CS_SIGNAL_2( tabBarClicked, index )
+    GUI_LSCS_SIGNAL_1( Public, void tabBarClicked( int index ) )
+    GUI_LSCS_SIGNAL_2( tabBarClicked, index )
 
-    GUI_CS_SIGNAL_1( Public, void tabBarDoubleClicked( int index ) )
-    GUI_CS_SIGNAL_2( tabBarDoubleClicked, index )
+    GUI_LSCS_SIGNAL_1( Public, void tabBarDoubleClicked( int index ) )
+    GUI_LSCS_SIGNAL_2( tabBarDoubleClicked, index )
 
 protected:
     virtual QSize tabSizeHint( int index ) const;
@@ -234,11 +234,11 @@ protected:
 private:
     Q_DECLARE_PRIVATE( QTabBar )
 
-    GUI_CS_SLOT_1( Private, void _q_scrollTabs() )
-    GUI_CS_SLOT_2( _q_scrollTabs )
+    GUI_LSCS_SLOT_1( Private, void _q_scrollTabs() )
+    GUI_LSCS_SLOT_2( _q_scrollTabs )
 
-    GUI_CS_SLOT_1( Private, void _q_closeTab() )
-    GUI_CS_SLOT_2( _q_closeTab )
+    GUI_LSCS_SLOT_1( Private, void _q_closeTab() )
+    GUI_LSCS_SLOT_2( _q_closeTab )
 };
 
 #endif // QT_NO_TABBAR

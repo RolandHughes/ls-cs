@@ -30,7 +30,7 @@ class QSocketNotifierPrivate;
 
 class Q_CORE_EXPORT QSocketNotifier : public QObject
 {
-    CORE_CS_OBJECT( QSocketNotifier )
+    CORE_LSCS_OBJECT( QSocketNotifier )
 
 public:
     enum Type
@@ -51,11 +51,11 @@ public:
     Type type() const;
     bool isEnabled() const;
 
-    CORE_CS_SLOT_1( Public, void setEnabled( bool enable ) )
-    CORE_CS_SLOT_2( setEnabled )
+    CORE_LSCS_SLOT_1( Public, void setEnabled( bool enable ) )
+    CORE_LSCS_SLOT_2( setEnabled )
 
-    CORE_CS_SIGNAL_1( Public, void activated( int socket ) )
-    CORE_CS_SIGNAL_2( activated, socket )
+    CORE_LSCS_SIGNAL_1( Public, void activated( int socket ) )
+    CORE_LSCS_SIGNAL_2( activated, socket )
 
 protected:
     bool event( QEvent *event ) override;

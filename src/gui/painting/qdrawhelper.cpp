@@ -5016,7 +5016,7 @@ void blend_color_generic_rgb64( int count, const QSpan *spans, void *userData )
     if ( ! op.funcSolid64 )
     {
 
-#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+#if defined(LSCS_SHOW_DEBUG_GUI_PAINTING)
         qDebug( "blend_color_generic_rgb64() Unsupported 64-bit blend operation" );
 #endif
 
@@ -5311,7 +5311,7 @@ static void blend_src_generic_rgb64( int count, const QSpan *spans, void *userDa
     }
     else
     {
-#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+#if defined(LSCS_SHOW_DEBUG_GUI_PAINTING)
         qDebug( "blend_src_generic_rgb64() Unsupported 64-bit blend operation" );
 #endif
 
@@ -5711,7 +5711,7 @@ static void blend_tiled_generic_rgb64( int count, const QSpan *spans, void *user
 
     if ( ! op.func64 )
     {
-#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+#if defined(LSCS_SHOW_DEBUG_GUI_PAINTING)
         qDebug( "blend_tiled_generic_rgb64() Unsupported rgb64 blend operation" );
 #endif
 

@@ -58,7 +58,7 @@ static const QFontEngineQPF2::TagType tagTypes[QFontEngineQPF2::NumTags] =
     QFontEngineQPF2::BitFieldType// WritingSystems
 };
 
-#if defined(CS_SHOW_DEBUG_GUI_TEXT)
+#if defined(LSCS_SHOW_DEBUG_GUI_TEXT)
 
 #define READ_VERIFY(type, variable) \
     if (tagPtr + sizeof(type) > endPtr) { \
@@ -144,7 +144,7 @@ static inline const uchar *verifyTag( const uchar *tagPtr, const uchar *endPtr )
                 break;
         }
 
-#if defined(CS_SHOW_DEBUG_GUI_TEXT)
+#if defined(LSCS_SHOW_DEBUG_GUI_TEXT)
 
         if ( length == 1 )
         {
@@ -180,7 +180,7 @@ const QFontEngineQPF2::Glyph *QFontEngineQPF2::findGlyph( glyph_t g ) const
             return nullptr;
         }
 
-#if defined(CS_SHOW_DEBUG_GUI_TEXT)
+#if defined(LSCS_SHOW_DEBUG_GUI_TEXT)
         qDebug() << "glyph" << g << "outside of glyphData, remapping font file";
 #endif
 
@@ -288,7 +288,7 @@ QFontEngineQPF2::QFontEngineQPF2( const QFontDef &def, const QByteArray &data )
 
     if ( ! verifyHeader( fontData, dataSize ) )
     {
-#if defined(CS_SHOW_DEBUG_GUI_TEXT)
+#if defined(LSCS_SHOW_DEBUG_GUI_TEXT)
         qDebug() << "VerifyHeader failed";
 #endif
 
@@ -364,7 +364,7 @@ QFontEngineQPF2::QFontEngineQPF2( const QFontDef &def, const QByteArray &data )
         }
     }
 
-#if defined(CS_SHOW_DEBUG_GUI_TEXT)
+#if defined(LSCS_SHOW_DEBUG_GUI_TEXT)
 
     if ( ! isValid() )
     {

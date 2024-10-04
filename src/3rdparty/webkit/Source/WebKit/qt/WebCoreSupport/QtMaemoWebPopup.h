@@ -33,16 +33,16 @@ namespace WebCore
 
 class Maemo5Popup : public QDialog
 {
-    WEB_CS_OBJECT( Maemo5Popup )
+    WEB_LSCS_OBJECT( Maemo5Popup )
 public:
     Maemo5Popup( const QWebSelectData &data ) : m_data( data ) {}
 
-    WEB_CS_SIGNAL_1( Public, void itemClicked( int idx ) )
-    WEB_CS_SIGNAL_2( itemClicked,idx )
+    WEB_LSCS_SIGNAL_1( Public, void itemClicked( int idx ) )
+    WEB_LSCS_SIGNAL_2( itemClicked,idx )
 
 protected :
-    WEB_CS_SLOT_1( Protected, void onItemSelected( QListWidgetItem *item ) )
-    WEB_CS_SLOT_2( onItemSelected )
+    WEB_LSCS_SLOT_1( Protected, void onItemSelected( QListWidgetItem *item ) )
+    WEB_LSCS_SLOT_2( onItemSelected )
 
 protected:
     void populateList();
@@ -54,7 +54,7 @@ protected:
 
 class QtMaemoWebPopup : public QWebSelectMethod
 {
-    WEB_CS_OBJECT( QtMaemoWebPopup )
+    WEB_LSCS_OBJECT( QtMaemoWebPopup )
 public:
     QtMaemoWebPopup();
     ~QtMaemoWebPopup();
@@ -63,10 +63,10 @@ public:
     virtual void hide();
 
 private :
-    WEB_CS_SLOT_1( Private, void popupClosed() )
-    WEB_CS_SLOT_2( popupClosed )
-    WEB_CS_SLOT_1( Private, void itemClicked( int idx ) )
-    WEB_CS_SLOT_2( itemClicked )
+    WEB_LSCS_SLOT_1( Private, void popupClosed() )
+    WEB_LSCS_SLOT_2( popupClosed )
+    WEB_LSCS_SLOT_1( Private, void itemClicked( int idx ) )
+    WEB_LSCS_SLOT_2( itemClicked )
 
 private:
     Maemo5Popup *m_popup;
@@ -79,7 +79,7 @@ private:
 
 class Maemo5SingleSelectionPopup : public Maemo5Popup
 {
-    WEB_CS_OBJECT( Maemo5SingleSelectionPopup )
+    WEB_LSCS_OBJECT( Maemo5SingleSelectionPopup )
 
 public:
     Maemo5SingleSelectionPopup( const QWebSelectData &data );
@@ -88,7 +88,7 @@ public:
 
 class Maemo5MultipleSelectionPopup : public Maemo5Popup
 {
-    WEB_CS_OBJECT( Maemo5MultipleSelectionPopup )
+    WEB_LSCS_OBJECT( Maemo5MultipleSelectionPopup )
 
 public:
     Maemo5MultipleSelectionPopup( const QWebSelectData &data );

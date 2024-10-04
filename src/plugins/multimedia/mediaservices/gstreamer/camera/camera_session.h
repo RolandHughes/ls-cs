@@ -65,12 +65,12 @@ public:
 
 class CameraBinSession : public QObject, public QGstreamerBusMessageFilter, public QGstreamerSyncMessageFilter
 {
-    CS_OBJECT( CameraBinSession )
+    LSCS_OBJECT( CameraBinSession )
 
-    CS_PROPERTY_READ( duration, duration )
-    CS_PROPERTY_NOTIFY( duration, durationChanged )
+    LSCS_PROPERTY_READ( duration, duration )
+    LSCS_PROPERTY_NOTIFY( duration, durationChanged )
 
-    CS_INTERFACES( QGstreamerBusMessageFilter, QGstreamerSyncMessageFilter )
+    LSCS_INTERFACES( QGstreamerBusMessageFilter, QGstreamerSyncMessageFilter )
 
 public:
     CameraBinSession( GstElementFactory *sourceFactory, QObject *parent );
@@ -222,60 +222,60 @@ public:
     bool processSyncMessage( const QGstreamerMessage &message ) override;
     bool processBusMessage( const QGstreamerMessage &message ) override;
 
-    CS_SIGNAL_1( Public, void statusChanged( QCamera::Status newStatus ) )
-    CS_SIGNAL_2( statusChanged, newStatus )
+    LSCS_SIGNAL_1( Public, void statusChanged( QCamera::Status newStatus ) )
+    LSCS_SIGNAL_2( statusChanged, newStatus )
 
-    CS_SIGNAL_1( Public, void pendingStateChanged( QCamera::State state ) )
-    CS_SIGNAL_2( pendingStateChanged, state )
+    LSCS_SIGNAL_1( Public, void pendingStateChanged( QCamera::State state ) )
+    LSCS_SIGNAL_2( pendingStateChanged, state )
 
-    CS_SIGNAL_1( Public, void durationChanged( qint64 duration ) )
-    CS_SIGNAL_2( durationChanged, duration )
+    LSCS_SIGNAL_1( Public, void durationChanged( qint64 duration ) )
+    LSCS_SIGNAL_2( durationChanged, duration )
 
-    CS_SIGNAL_1( Public, void error( int error, const QString &errorString ) )
-    CS_SIGNAL_2( error, error, errorString )
+    LSCS_SIGNAL_1( Public, void error( int error, const QString &errorString ) )
+    LSCS_SIGNAL_2( error, error, errorString )
 
-    CS_SIGNAL_1( Public, void imageExposed( int requestId ) )
-    CS_SIGNAL_2( imageExposed, requestId )
+    LSCS_SIGNAL_1( Public, void imageExposed( int requestId ) )
+    LSCS_SIGNAL_2( imageExposed, requestId )
 
-    CS_SIGNAL_1( Public, void imageCaptured( int requestId, const QImage &img ) )
-    CS_SIGNAL_2( imageCaptured, requestId, img )
+    LSCS_SIGNAL_1( Public, void imageCaptured( int requestId, const QImage &img ) )
+    LSCS_SIGNAL_2( imageCaptured, requestId, img )
 
-    CS_SIGNAL_1( Public, void mutedChanged( bool muted ) )
-    CS_SIGNAL_2( mutedChanged, muted )
+    LSCS_SIGNAL_1( Public, void mutedChanged( bool muted ) )
+    LSCS_SIGNAL_2( mutedChanged, muted )
 
-    CS_SIGNAL_1( Public, void viewfinderChanged() )
-    CS_SIGNAL_2( viewfinderChanged )
+    LSCS_SIGNAL_1( Public, void viewfinderChanged() )
+    LSCS_SIGNAL_2( viewfinderChanged )
 
-    CS_SIGNAL_1( Public, void readyChanged( bool isReady ) )
-    CS_SIGNAL_2( readyChanged, isReady )
+    LSCS_SIGNAL_1( Public, void readyChanged( bool isReady ) )
+    LSCS_SIGNAL_2( readyChanged, isReady )
 
-    CS_SIGNAL_1( Public, void busyChanged( bool busy ) )
-    CS_SIGNAL_2( busyChanged, busy )
+    LSCS_SIGNAL_1( Public, void busyChanged( bool busy ) )
+    LSCS_SIGNAL_2( busyChanged, busy )
 
-    CS_SLOT_1( Public, void setDevice( const QString &device ) )
-    CS_SLOT_2( setDevice )
+    LSCS_SLOT_1( Public, void setDevice( const QString &device ) )
+    LSCS_SLOT_2( setDevice )
 
-    CS_SLOT_1( Public, void setState( QCamera::State start ) )
-    CS_SLOT_2( setState )
+    LSCS_SLOT_1( Public, void setState( QCamera::State start ) )
+    LSCS_SLOT_2( setState )
 
-    CS_SLOT_1( Public, void setCaptureDevice( const QString &deviceName ) )
-    CS_SLOT_2( setCaptureDevice )
+    LSCS_SLOT_1( Public, void setCaptureDevice( const QString &deviceName ) )
+    LSCS_SLOT_2( setCaptureDevice )
 
-    CS_SLOT_1( Public, void setMetaData( const QMap <QByteArray, QVariant> &value ) )
-    CS_SLOT_2( setMetaData )
+    LSCS_SLOT_1( Public, void setMetaData( const QMap <QByteArray, QVariant> &value ) )
+    LSCS_SLOT_2( setMetaData )
 
-    CS_SLOT_1( Public, void setMuted( bool value ) )
-    CS_SLOT_2( setMuted )
+    LSCS_SLOT_1( Public, void setMuted( bool value ) )
+    LSCS_SLOT_2( setMuted )
 
     QString m_imageFileName;
     int m_requestId;
 
 private:
-    CS_SLOT_1( Private, void handleViewfinderChange() )
-    CS_SLOT_2( handleViewfinderChange )
+    LSCS_SLOT_1( Private, void handleViewfinderChange() )
+    LSCS_SLOT_2( handleViewfinderChange )
 
-    CS_SLOT_1( Private, void setupCaptureResolution() )
-    CS_SLOT_2( setupCaptureResolution )
+    LSCS_SLOT_1( Private, void setupCaptureResolution() )
+    LSCS_SLOT_2( setupCaptureResolution )
 
     void load();
     void unload();

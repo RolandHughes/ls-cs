@@ -24,12 +24,12 @@
  * LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 */
 
-#ifndef CS_REGEX_MATCH_H
-#define CS_REGEX_MATCH_H
+#ifndef LSCS_REGEX_MATCH_H
+#define LSCS_REGEX_MATCH_H
 
 #include <regex/perl_matcher.h>
 
-namespace cs_regex_ns
+namespace lscs_regex_ns
 {
 
 // returns true if the specified regular expression matches
@@ -39,7 +39,7 @@ template <class BidiIterator, class Allocator, class charT, class traits>
 bool regex_match( BidiIterator first, BidiIterator last, match_results<BidiIterator, Allocator> &m,
                   const basic_regex<charT, traits> &e, match_flag_type flags = match_default )
 {
-    cs_regex_detail_ns::perl_matcher<BidiIterator, Allocator, traits> matcher( first, last, m, e, flags, first );
+    lscs_regex_detail_ns::perl_matcher<BidiIterator, Allocator, traits> matcher( first, last, m, e, flags, first );
     return matcher.match();
 }
 

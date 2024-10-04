@@ -6060,7 +6060,7 @@ void QGraphicsScenePrivate::gestureEventHandler( QGestureEvent *event )
 
     QList<QGesture *> allGestures = event->gestures();
 
-#if defined(CS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
+#if defined(LSCS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
     qDebug() << "QGraphicsScenePrivate::gestureEventHandler:" << "Gestures:" <<  allGestures;
 #endif
 
@@ -6104,7 +6104,7 @@ void QGraphicsScenePrivate::gestureEventHandler( QGestureEvent *event )
         cachedTargetItems = cachedItemGestures.keys();
         std::sort( cachedTargetItems.begin(), cachedTargetItems.end(), qt_closestItemFirst );
 
-#if defined(CS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
+#if defined(LSCS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
         qDebug() << "QGraphicsScenePrivate::gestureEventHandler:"
                  << "Normal gestures:" << normalGestures
                  << "Conflicting gestures:" << conflictedGestures;
@@ -6126,7 +6126,7 @@ void QGraphicsScenePrivate::gestureEventHandler( QGestureEvent *event )
                     continue;
                 }
 
-#if defined(CS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
+#if defined(LSCS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
                 qDebug() << "QGraphicsScenePrivate::gestureEventHandler:"
                          << "delivering override to" << item.data() << gestures;
 #endif
@@ -6169,7 +6169,7 @@ void QGraphicsScenePrivate::gestureEventHandler( QGestureEvent *event )
                             cachedItemGestures[item.data()].insert( g );
                         }
 
-#if defined(CS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
+#if defined(LSCS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
                         qDebug() << "QGraphicsScenePrivate::gestureEventHandler:"
                                  << "override was accepted:" << g << item.data();
 #endif
@@ -6236,7 +6236,7 @@ void QGraphicsScenePrivate::gestureEventHandler( QGestureEvent *event )
         else
         {
 
-#if defined(CS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
+#if defined(LSCS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
             qDebug() << "QGraphicsScenePrivate::gestureEventHandler:"
                      << "no target for" << gesture << "at"
                      << gesture->hotSpot() << gesture->d_func()->sceneHotSpot;
@@ -6260,7 +6260,7 @@ void QGraphicsScenePrivate::gestureEventHandler( QGestureEvent *event )
         cachedAlreadyDeliveredGestures[receiver.data()] += gestures;
         const bool isPanel = receiver.data()->isPanel();
 
-#if defined(CS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
+#if defined(LSCS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
         qDebug() << "QGraphicsScenePrivate::gestureEventHandler:"
                  << "delivering to" << receiver.data() << gestures;
 #endif
@@ -6359,7 +6359,7 @@ void QGraphicsScenePrivate::gestureEventHandler( QGestureEvent *event )
             cachedTargetItems = targetsSet.toList();
             std::sort( cachedTargetItems.begin(), cachedTargetItems.end(), qt_closestItemFirst );
 
-#if defined(CS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
+#if defined(LSCS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
             qDebug() << "QGraphicsScenePrivate::gestureEventHandler:"
                      << "new targets:" << cachedTargetItems;
 #endif
@@ -6374,7 +6374,7 @@ void QGraphicsScenePrivate::gestureEventHandler( QGestureEvent *event )
         if ( g->gestureCancelPolicy() == QGesture::CancelAllInContext )
         {
 
-#if defined(CS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
+#if defined(LSCS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
             qDebug() << "try to cancel gesture";
 #endif
 
@@ -6429,7 +6429,7 @@ void QGraphicsScenePrivate::cancelGesturesForChildren( QGesture *original )
         if ( item != originalItem && originalItem->isAncestorOf( item ) )
         {
 
-#if defined(CS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
+#if defined(LSCS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
             qDebug() << "  found a gesture to cancel" << iter.key();
 #endif
 

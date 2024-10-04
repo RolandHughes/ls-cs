@@ -32,18 +32,18 @@ class QDeclarativeStateGroupPrivate;
 
 class Q_DECLARATIVE_EXPORT QDeclarativeStateGroup : public QObject, public QDeclarativeParserStatus
 {
-    DECL_CS_OBJECT_MULTIPLE( QDeclarativeStateGroup, QObject )
+    DECL_LSCS_OBJECT_MULTIPLE( QDeclarativeStateGroup, QObject )
 
-    CS_INTERFACES( QDeclarativeParserStatus )
+    LSCS_INTERFACES( QDeclarativeParserStatus )
     Q_DECLARE_PRIVATE( QDeclarativeStateGroup )
 
-    DECL_CS_PROPERTY_READ( state, state )
-    DECL_CS_PROPERTY_WRITE( state, setState )
-    DECL_CS_PROPERTY_NOTIFY( state, stateChanged )
-    DECL_CS_PROPERTY_READ( states, statesProperty )
-    DECL_CS_PROPERTY_DESIGNABLE( states, false )
-    DECL_CS_PROPERTY_READ( transitions, transitionsProperty )
-    DECL_CS_PROPERTY_DESIGNABLE( transitions, false )
+    DECL_LSCS_PROPERTY_READ( state, state )
+    DECL_LSCS_PROPERTY_WRITE( state, setState )
+    DECL_LSCS_PROPERTY_NOTIFY( state, stateChanged )
+    DECL_LSCS_PROPERTY_READ( states, statesProperty )
+    DECL_LSCS_PROPERTY_DESIGNABLE( states, false )
+    DECL_LSCS_PROPERTY_READ( transitions, transitionsProperty )
+    DECL_LSCS_PROPERTY_DESIGNABLE( transitions, false )
 
 public:
     QDeclarativeStateGroup( QObject * = 0 );
@@ -62,8 +62,8 @@ public:
     virtual void classBegin();
     virtual void componentComplete();
 
-    DECL_CS_SIGNAL_1( Public, void stateChanged( const QString &un_named_arg1 ) )
-    DECL_CS_SIGNAL_2( stateChanged, un_named_arg1 )
+    DECL_LSCS_SIGNAL_1( Public, void stateChanged( const QString &un_named_arg1 ) )
+    DECL_LSCS_SIGNAL_2( stateChanged, un_named_arg1 )
 
 private:
     friend class QDeclarativeState;

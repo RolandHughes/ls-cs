@@ -47,7 +47,7 @@ class QVariant;
 
 class ExpandingTextEdit : public QTextEdit
 {
-    CS_OBJECT( ExpandingTextEdit )
+    LSCS_OBJECT( ExpandingTextEdit )
 
 public:
     ExpandingTextEdit( QWidget *parent = nullptr );
@@ -57,16 +57,16 @@ public:
 private:
     int m_minimumHeight;
 
-    CS_SLOT_1( Private, void updateHeight( const QSizeF &documentSize ) )
-    CS_SLOT_2( updateHeight )
+    LSCS_SLOT_1( Private, void updateHeight( const QSizeF &documentSize ) )
+    LSCS_SLOT_2( updateHeight )
 
-    CS_SLOT_1( Private, void reallyEnsureCursorVisible() )
-    CS_SLOT_2( reallyEnsureCursorVisible )
+    LSCS_SLOT_1( Private, void reallyEnsureCursorVisible() )
+    LSCS_SLOT_2( reallyEnsureCursorVisible )
 };
 
 class FormatTextEdit : public ExpandingTextEdit
 {
-    CS_OBJECT( FormatTextEdit )
+    LSCS_OBJECT( FormatTextEdit )
 
 public:
     FormatTextEdit( QWidget *parent = nullptr );
@@ -74,14 +74,14 @@ public:
 
     void setEditable( bool editable );
 
-    CS_SIGNAL_1( Public, void editorDestroyed() )
-    CS_SIGNAL_2( editorDestroyed )
+    LSCS_SIGNAL_1( Public, void editorDestroyed() )
+    LSCS_SIGNAL_2( editorDestroyed )
 
-    CS_SLOT_1( Public, void setPlainText( const QString &text,bool userAction ) )
-    CS_SLOT_2( setPlainText )
+    LSCS_SLOT_1( Public, void setPlainText( const QString &text,bool userAction ) )
+    LSCS_SLOT_2( setPlainText )
 
-    CS_SLOT_1( Public, void setVisualizeWhitespace( bool value ) )
-    CS_SLOT_2( setVisualizeWhitespace )
+    LSCS_SLOT_1( Public, void setVisualizeWhitespace( bool value ) )
+    LSCS_SLOT_2( setVisualizeWhitespace )
 
 private:
     MessageHighlighter *m_highlighter;
@@ -89,7 +89,7 @@ private:
 
 class FormWidget : public QWidget
 {
-    CS_OBJECT( FormWidget )
+    LSCS_OBJECT( FormWidget )
 
 public:
     FormWidget( const QString &label, bool isEditable, QWidget *parent = nullptr );
@@ -121,14 +121,14 @@ public:
         return m_editor;
     }
 
-    CS_SIGNAL_1( Public, void textChanged( QTextEdit *editor ) )
-    CS_SIGNAL_2( textChanged, editor )
+    LSCS_SIGNAL_1( Public, void textChanged( QTextEdit *editor ) )
+    LSCS_SIGNAL_2( textChanged, editor )
 
-    CS_SIGNAL_1( Public, void selectionChanged( QTextEdit *editor ) )
-    CS_SIGNAL_2( selectionChanged, editor )
+    LSCS_SIGNAL_1( Public, void selectionChanged( QTextEdit *editor ) )
+    LSCS_SIGNAL_2( selectionChanged, editor )
 
-    CS_SIGNAL_1( Public, void cursorPositionChanged() )
-    CS_SIGNAL_2( cursorPositionChanged )
+    LSCS_SIGNAL_1( Public, void cursorPositionChanged() )
+    LSCS_SIGNAL_2( cursorPositionChanged )
 
 private:
     QLabel *m_label;
@@ -142,7 +142,7 @@ private:
 
 class FormMultiWidget : public QWidget
 {
-    CS_OBJECT( FormMultiWidget )
+    LSCS_OBJECT( FormMultiWidget )
 
 public:
     FormMultiWidget( const QString &label, QWidget *parent = nullptr );
@@ -169,17 +169,17 @@ public:
         return m_editors;
     }
 
-    CS_SIGNAL_1( Public, void editorCreated( QTextEdit *editor ) )
-    CS_SIGNAL_2( editorCreated, editor )
+    LSCS_SIGNAL_1( Public, void editorCreated( QTextEdit *editor ) )
+    LSCS_SIGNAL_2( editorCreated, editor )
 
-    CS_SIGNAL_1( Public, void textChanged( QTextEdit *editor ) )
-    CS_SIGNAL_2( textChanged, editor )
+    LSCS_SIGNAL_1( Public, void textChanged( QTextEdit *editor ) )
+    LSCS_SIGNAL_2( textChanged, editor )
 
-    CS_SIGNAL_1( Public, void selectionChanged( QTextEdit *editor ) )
-    CS_SIGNAL_2( selectionChanged, editor )
+    LSCS_SIGNAL_1( Public, void selectionChanged( QTextEdit *editor ) )
+    LSCS_SIGNAL_2( selectionChanged, editor )
 
-    CS_SIGNAL_1( Public, void cursorPositionChanged() )
-    CS_SIGNAL_2( cursorPositionChanged )
+    LSCS_SIGNAL_1( Public, void cursorPositionChanged() )
+    LSCS_SIGNAL_2( cursorPositionChanged )
 
 protected:
     bool eventFilter( QObject *watched, QEvent *event ) override;
@@ -203,11 +203,11 @@ private:
     bool m_multiEnabled;
     QIcon m_plusIcon, m_minusIcon;
 
-    CS_SLOT_1( Private, void minusButtonClicked() )
-    CS_SLOT_2( minusButtonClicked )
+    LSCS_SLOT_1( Private, void minusButtonClicked() )
+    LSCS_SLOT_2( minusButtonClicked )
 
-    CS_SLOT_1( Private, void plusButtonClicked() )
-    CS_SLOT_2( plusButtonClicked )
+    LSCS_SLOT_1( Private, void plusButtonClicked() )
+    LSCS_SLOT_2( plusButtonClicked )
 };
 
 #endif

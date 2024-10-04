@@ -67,7 +67,7 @@ QThreadData::~QThreadData()
 
         if ( pe.event )
         {
-            CSInternalEvents::decr_PostedEvents( pe.receiver );
+            LSCSInternalEvents::decr_PostedEvents( pe.receiver );
             pe.event->posted = false;
 
             delete pe.event;

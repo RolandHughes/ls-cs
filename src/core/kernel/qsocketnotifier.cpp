@@ -36,7 +36,7 @@ QSocketNotifier::QSocketNotifier( qintptr socket, Type type, QObject *parent )
     sntype    = type;
     snenabled = true;
 
-    QThreadData *threadData = CSInternalThreadData::get_m_ThreadData( this );
+    QThreadData *threadData = LSCSInternalThreadData::get_m_ThreadData( this );
     auto tmp = threadData->eventDispatcher.load();
 
     if ( socket < 0 )
@@ -93,7 +93,7 @@ void QSocketNotifier::setEnabled( bool enable )
     snenabled = enable;
 
     //
-    QThreadData *threadData = CSInternalThreadData::get_m_ThreadData( this );
+    QThreadData *threadData = LSCSInternalThreadData::get_m_ThreadData( this );
     auto tmp = threadData->eventDispatcher.load();
 
     if ( ! tmp )

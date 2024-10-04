@@ -26,16 +26,16 @@
 
 class QXcbIntegrationPlugin : public QPlatformIntegrationPlugin
 {
-    CS_OBJECT( QXcbIntegrationPlugin )
+    LSCS_OBJECT( QXcbIntegrationPlugin )
 
-    CS_PLUGIN_IID( QPlatformIntegrationInterface_ID )
-    CS_PLUGIN_KEY( "xcb" )
+    LSCS_PLUGIN_IID( QPlatformIntegrationInterface_ID )
+    LSCS_PLUGIN_KEY( "xcb" )
 
 public:
     QPlatformIntegration *create( const QString &, const QStringList &, int &, char ** ) override;
 };
 
-CS_PLUGIN_REGISTER( QXcbIntegrationPlugin )
+LSCS_PLUGIN_REGISTER( QXcbIntegrationPlugin )
 
 QPlatformIntegration *QXcbIntegrationPlugin::create( const QString &system, const QStringList &parameters, int &argc,
         char **argv )

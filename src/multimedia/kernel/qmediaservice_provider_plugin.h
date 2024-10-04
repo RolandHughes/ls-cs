@@ -95,7 +95,7 @@ struct Q_MULTIMEDIA_EXPORT QMediaServiceProviderFactoryInterface
 };
 
 #define QMediaServiceProviderInterface_ID  "com.copperspice.CS.mediaServiceProvider/1.0"
-CS_DECLARE_INTERFACE( QMediaServiceProviderFactoryInterface, QMediaServiceProviderInterface_ID )
+LSCS_DECLARE_INTERFACE( QMediaServiceProviderFactoryInterface, QMediaServiceProviderInterface_ID )
 
 struct Q_MULTIMEDIA_EXPORT QMediaServiceSupportedFormatsInterface
 {
@@ -107,7 +107,7 @@ struct Q_MULTIMEDIA_EXPORT QMediaServiceSupportedFormatsInterface
 };
 
 #define QMediaServiceSupportedFormatsInterface_ID "com.copperspice.CS.mediaServiceSupportedFormats/1.0"
-CS_DECLARE_INTERFACE( QMediaServiceSupportedFormatsInterface, QMediaServiceSupportedFormatsInterface_ID )
+LSCS_DECLARE_INTERFACE( QMediaServiceSupportedFormatsInterface, QMediaServiceSupportedFormatsInterface_ID )
 
 struct Q_MULTIMEDIA_EXPORT QMediaServiceSupportedDevicesInterface
 {
@@ -119,7 +119,7 @@ struct Q_MULTIMEDIA_EXPORT QMediaServiceSupportedDevicesInterface
 };
 
 #define QMediaServiceSupportedDevicesInterface_ID "com.copperspice.CS.mediaServiceSupportedDevices/1.0"
-CS_DECLARE_INTERFACE( QMediaServiceSupportedDevicesInterface, QMediaServiceSupportedDevicesInterface_ID )
+LSCS_DECLARE_INTERFACE( QMediaServiceSupportedDevicesInterface, QMediaServiceSupportedDevicesInterface_ID )
 
 struct Q_MULTIMEDIA_EXPORT QMediaServiceDefaultDeviceInterface
 {
@@ -128,7 +128,7 @@ struct Q_MULTIMEDIA_EXPORT QMediaServiceDefaultDeviceInterface
 };
 
 #define QMediaServiceDefaultDeviceInterface_ID  "com.copperspice.CS.mediaServiceDefaultDevice/1.0"
-CS_DECLARE_INTERFACE( QMediaServiceDefaultDeviceInterface, QMediaServiceDefaultDeviceInterface_ID )
+LSCS_DECLARE_INTERFACE( QMediaServiceDefaultDeviceInterface, QMediaServiceDefaultDeviceInterface_ID )
 
 
 struct Q_MULTIMEDIA_EXPORT QMediaServiceCameraInfoInterface
@@ -141,7 +141,7 @@ struct Q_MULTIMEDIA_EXPORT QMediaServiceCameraInfoInterface
 };
 
 #define QMediaServiceCameraInfoInterface_ID "com.copperspice.CS.mediaServiceCameraInfo/1.0"
-CS_DECLARE_INTERFACE( QMediaServiceCameraInfoInterface, QMediaServiceCameraInfoInterface_ID )
+LSCS_DECLARE_INTERFACE( QMediaServiceCameraInfoInterface, QMediaServiceCameraInfoInterface_ID )
 
 struct Q_MULTIMEDIA_EXPORT QMediaServiceFeaturesInterface
 {
@@ -152,12 +152,12 @@ struct Q_MULTIMEDIA_EXPORT QMediaServiceFeaturesInterface
 };
 
 #define QMediaServiceFeaturesInterface_ID "com.copperspice.CS.mediaServiceFeatures/1.0"
-CS_DECLARE_INTERFACE( QMediaServiceFeaturesInterface, QMediaServiceFeaturesInterface_ID )
+LSCS_DECLARE_INTERFACE( QMediaServiceFeaturesInterface, QMediaServiceFeaturesInterface_ID )
 
 class Q_MULTIMEDIA_EXPORT QMediaServiceProviderPlugin : public QObject, public QMediaServiceProviderFactoryInterface
 {
-    MULTI_CS_OBJECT_MULTIPLE( QMediaServiceProviderPlugin, QObject )
-    CS_INTERFACES( QMediaServiceProviderFactoryInterface )
+    MULTI_LSCS_OBJECT_MULTIPLE( QMediaServiceProviderPlugin, QObject )
+    LSCS_INTERFACES( QMediaServiceProviderFactoryInterface )
 
 public:
     virtual ~QMediaServiceProviderPlugin();

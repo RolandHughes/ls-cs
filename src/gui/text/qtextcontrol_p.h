@@ -49,33 +49,33 @@ class QPagedPaintDevice;
 
 class Q_GUI_EXPORT QTextControl : public QInputControl
 {
-    GUI_CS_OBJECT( QTextControl )
+    GUI_LSCS_OBJECT( QTextControl )
     Q_DECLARE_PRIVATE( QTextControl )
 
 #ifndef QT_NO_TEXTHTMLPARSER
-    GUI_CS_PROPERTY_READ( html, toHtml )
-    GUI_CS_PROPERTY_WRITE( html, setHtml )
-    GUI_CS_PROPERTY_NOTIFY( html, textChanged )
-    GUI_CS_PROPERTY_USER( html, true )
+    GUI_LSCS_PROPERTY_READ( html, toHtml )
+    GUI_LSCS_PROPERTY_WRITE( html, setHtml )
+    GUI_LSCS_PROPERTY_NOTIFY( html, textChanged )
+    GUI_LSCS_PROPERTY_USER( html, true )
 #endif
 
-    GUI_CS_PROPERTY_READ( overwriteMode, overwriteMode )
-    GUI_CS_PROPERTY_WRITE( overwriteMode, setOverwriteMode )
+    GUI_LSCS_PROPERTY_READ( overwriteMode, overwriteMode )
+    GUI_LSCS_PROPERTY_WRITE( overwriteMode, setOverwriteMode )
 
-    GUI_CS_PROPERTY_READ( acceptRichText, acceptRichText )
-    GUI_CS_PROPERTY_WRITE( acceptRichText, setAcceptRichText )
+    GUI_LSCS_PROPERTY_READ( acceptRichText, acceptRichText )
+    GUI_LSCS_PROPERTY_WRITE( acceptRichText, setAcceptRichText )
 
-    GUI_CS_PROPERTY_READ( cursorWidth, cursorWidth )
-    GUI_CS_PROPERTY_WRITE( cursorWidth, setCursorWidth )
+    GUI_LSCS_PROPERTY_READ( cursorWidth, cursorWidth )
+    GUI_LSCS_PROPERTY_WRITE( cursorWidth, setCursorWidth )
 
-    GUI_CS_PROPERTY_READ( textInteractionFlags, textInteractionFlags )
-    GUI_CS_PROPERTY_WRITE( textInteractionFlags, setTextInteractionFlags )
+    GUI_LSCS_PROPERTY_READ( textInteractionFlags, textInteractionFlags )
+    GUI_LSCS_PROPERTY_WRITE( textInteractionFlags, setTextInteractionFlags )
 
-    GUI_CS_PROPERTY_READ( openExternalLinks, openExternalLinks )
-    GUI_CS_PROPERTY_WRITE( openExternalLinks, setOpenExternalLinks )
+    GUI_LSCS_PROPERTY_READ( openExternalLinks, openExternalLinks )
+    GUI_LSCS_PROPERTY_WRITE( openExternalLinks, setOpenExternalLinks )
 
-    GUI_CS_PROPERTY_READ( ignoreUnusedNavigationEvents, ignoreUnusedNavigationEvents )
-    GUI_CS_PROPERTY_WRITE( ignoreUnusedNavigationEvents, setIgnoreUnusedNavigationEvents )
+    GUI_LSCS_PROPERTY_READ( ignoreUnusedNavigationEvents, ignoreUnusedNavigationEvents )
+    GUI_LSCS_PROPERTY_WRITE( ignoreUnusedNavigationEvents, setIgnoreUnusedNavigationEvents )
 
 public:
     explicit QTextControl( QObject *parent = nullptr );
@@ -173,100 +173,100 @@ public:
     virtual QRectF blockBoundingRect( const QTextBlock &block ) const;
     QAbstractTextDocumentLayout::PaintContext getPaintContext( QWidget *widget ) const;
 
-    GUI_CS_SLOT_1( Public, void setPlainText( const QString &text ) )
-    GUI_CS_SLOT_2( setPlainText )
+    GUI_LSCS_SLOT_1( Public, void setPlainText( const QString &text ) )
+    GUI_LSCS_SLOT_2( setPlainText )
 
-    GUI_CS_SLOT_1( Public, void setHtml( const QString &text ) )
-    GUI_CS_SLOT_2( setHtml )
+    GUI_LSCS_SLOT_1( Public, void setHtml( const QString &text ) )
+    GUI_LSCS_SLOT_2( setHtml )
 
 #ifndef QT_NO_CLIPBOARD
-    GUI_CS_SLOT_1( Public, void cut() )
-    GUI_CS_SLOT_2( cut )
+    GUI_LSCS_SLOT_1( Public, void cut() )
+    GUI_LSCS_SLOT_2( cut )
 
-    GUI_CS_SLOT_1( Public, void copy() )
-    GUI_CS_SLOT_2( copy )
+    GUI_LSCS_SLOT_1( Public, void copy() )
+    GUI_LSCS_SLOT_2( copy )
 
-    GUI_CS_SLOT_1( Public, void paste( QClipboard::Mode mode = QClipboard::Clipboard ) )
-    GUI_CS_SLOT_2( paste )
+    GUI_LSCS_SLOT_1( Public, void paste( QClipboard::Mode mode = QClipboard::Clipboard ) )
+    GUI_LSCS_SLOT_2( paste )
 #endif
 
-    GUI_CS_SLOT_1( Public, void undo() )
-    GUI_CS_SLOT_2( undo )
+    GUI_LSCS_SLOT_1( Public, void undo() )
+    GUI_LSCS_SLOT_2( undo )
 
-    GUI_CS_SLOT_1( Public, void redo() )
-    GUI_CS_SLOT_2( redo )
+    GUI_LSCS_SLOT_1( Public, void redo() )
+    GUI_LSCS_SLOT_2( redo )
 
-    GUI_CS_SLOT_1( Public, void clear() )
-    GUI_CS_SLOT_2( clear )
+    GUI_LSCS_SLOT_1( Public, void clear() )
+    GUI_LSCS_SLOT_2( clear )
 
-    GUI_CS_SLOT_1( Public, void selectAll() )
-    GUI_CS_SLOT_2( selectAll )
+    GUI_LSCS_SLOT_1( Public, void selectAll() )
+    GUI_LSCS_SLOT_2( selectAll )
 
-    GUI_CS_SLOT_1( Public, void insertPlainText( const QString &text ) )
-    GUI_CS_SLOT_2( insertPlainText )
+    GUI_LSCS_SLOT_1( Public, void insertPlainText( const QString &text ) )
+    GUI_LSCS_SLOT_2( insertPlainText )
 
 #ifndef QT_NO_TEXTHTMLPARSER
-    GUI_CS_SLOT_1( Public, void insertHtml( const QString &text ) )
-    GUI_CS_SLOT_2( insertHtml )
+    GUI_LSCS_SLOT_1( Public, void insertHtml( const QString &text ) )
+    GUI_LSCS_SLOT_2( insertHtml )
 #endif
 
-    GUI_CS_SLOT_1( Public, void append( const QString &text ) )
-    GUI_CS_SLOT_2( append )
+    GUI_LSCS_SLOT_1( Public, void append( const QString &text ) )
+    GUI_LSCS_SLOT_2( append )
 
-    GUI_CS_SLOT_1( Public, void appendHtml( const QString &html ) )
-    GUI_CS_SLOT_2( appendHtml )
+    GUI_LSCS_SLOT_1( Public, void appendHtml( const QString &html ) )
+    GUI_LSCS_SLOT_2( appendHtml )
 
-    GUI_CS_SLOT_1( Public, void appendPlainText( const QString &text ) )
-    GUI_CS_SLOT_2( appendPlainText )
+    GUI_LSCS_SLOT_1( Public, void appendPlainText( const QString &text ) )
+    GUI_LSCS_SLOT_2( appendPlainText )
 
-    GUI_CS_SLOT_1( Public, void adjustSize() )
-    GUI_CS_SLOT_2( adjustSize )
+    GUI_LSCS_SLOT_1( Public, void adjustSize() )
+    GUI_LSCS_SLOT_2( adjustSize )
 
-    GUI_CS_SIGNAL_1( Public, void textChanged() )
-    GUI_CS_SIGNAL_2( textChanged )
+    GUI_LSCS_SIGNAL_1( Public, void textChanged() )
+    GUI_LSCS_SIGNAL_2( textChanged )
 
-    GUI_CS_SIGNAL_1( Public, void undoAvailable( bool status ) )
-    GUI_CS_SIGNAL_2( undoAvailable, status )
+    GUI_LSCS_SIGNAL_1( Public, void undoAvailable( bool status ) )
+    GUI_LSCS_SIGNAL_2( undoAvailable, status )
 
-    GUI_CS_SIGNAL_1( Public, void redoAvailable( bool status ) )
-    GUI_CS_SIGNAL_2( redoAvailable, status )
+    GUI_LSCS_SIGNAL_1( Public, void redoAvailable( bool status ) )
+    GUI_LSCS_SIGNAL_2( redoAvailable, status )
 
-    GUI_CS_SIGNAL_1( Public, void currentCharFormatChanged( const QTextCharFormat &format ) )
-    GUI_CS_SIGNAL_2( currentCharFormatChanged, format )
+    GUI_LSCS_SIGNAL_1( Public, void currentCharFormatChanged( const QTextCharFormat &format ) )
+    GUI_LSCS_SIGNAL_2( currentCharFormatChanged, format )
 
-    GUI_CS_SIGNAL_1( Public, void copyAvailable( bool status ) )
-    GUI_CS_SIGNAL_2( copyAvailable, status )
+    GUI_LSCS_SIGNAL_1( Public, void copyAvailable( bool status ) )
+    GUI_LSCS_SIGNAL_2( copyAvailable, status )
 
-    GUI_CS_SIGNAL_1( Public, void selectionChanged() )
-    GUI_CS_SIGNAL_2( selectionChanged )
+    GUI_LSCS_SIGNAL_1( Public, void selectionChanged() )
+    GUI_LSCS_SIGNAL_2( selectionChanged )
 
-    GUI_CS_SIGNAL_1( Public, void cursorPositionChanged() )
-    GUI_CS_SIGNAL_2( cursorPositionChanged )
+    GUI_LSCS_SIGNAL_1( Public, void cursorPositionChanged() )
+    GUI_LSCS_SIGNAL_2( cursorPositionChanged )
 
     // control signals
-    GUI_CS_SIGNAL_1( Public, void updateRequest( const QRectF &rect = QRectF() ) )
-    GUI_CS_SIGNAL_2( updateRequest, rect )
+    GUI_LSCS_SIGNAL_1( Public, void updateRequest( const QRectF &rect = QRectF() ) )
+    GUI_LSCS_SIGNAL_2( updateRequest, rect )
 
-    GUI_CS_SIGNAL_1( Public, void documentSizeChanged( const QSizeF &size ) )
-    GUI_CS_SIGNAL_2( documentSizeChanged, size )
+    GUI_LSCS_SIGNAL_1( Public, void documentSizeChanged( const QSizeF &size ) )
+    GUI_LSCS_SIGNAL_2( documentSizeChanged, size )
 
-    GUI_CS_SIGNAL_1( Public, void blockCountChanged( int newBlockCount ) )
-    GUI_CS_SIGNAL_2( blockCountChanged, newBlockCount )
+    GUI_LSCS_SIGNAL_1( Public, void blockCountChanged( int newBlockCount ) )
+    GUI_LSCS_SIGNAL_2( blockCountChanged, newBlockCount )
 
-    GUI_CS_SIGNAL_1( Public, void visibilityRequest( const QRectF &rect ) )
-    GUI_CS_SIGNAL_2( visibilityRequest, rect )
+    GUI_LSCS_SIGNAL_1( Public, void visibilityRequest( const QRectF &rect ) )
+    GUI_LSCS_SIGNAL_2( visibilityRequest, rect )
 
-    GUI_CS_SIGNAL_1( Public, void microFocusChanged() )
-    GUI_CS_SIGNAL_2( microFocusChanged )
+    GUI_LSCS_SIGNAL_1( Public, void microFocusChanged() )
+    GUI_LSCS_SIGNAL_2( microFocusChanged )
 
-    GUI_CS_SIGNAL_1( Public, void linkActivated( const QString &link ) )
-    GUI_CS_SIGNAL_2( linkActivated, link )
+    GUI_LSCS_SIGNAL_1( Public, void linkActivated( const QString &link ) )
+    GUI_LSCS_SIGNAL_2( linkActivated, link )
 
-    GUI_CS_SIGNAL_1( Public, void linkHovered( const QString &anchor ) )
-    GUI_CS_SIGNAL_2( linkHovered, anchor )
+    GUI_LSCS_SIGNAL_1( Public, void linkHovered( const QString &anchor ) )
+    GUI_LSCS_SIGNAL_2( linkHovered, anchor )
 
-    GUI_CS_SIGNAL_1( Public, void modificationChanged( bool m ) )
-    GUI_CS_SIGNAL_2( modificationChanged, m )
+    GUI_LSCS_SIGNAL_1( Public, void modificationChanged( bool m ) )
+    GUI_LSCS_SIGNAL_2( modificationChanged, m )
 
     // control properties
     QPalette palette() const;
@@ -297,39 +297,39 @@ protected:
     QScopedPointer<QTextControlPrivate> d_ptr;
 
 private:
-    GUI_CS_SLOT_1( Private, void _q_updateCurrentCharFormatAndSelection() )
-    GUI_CS_SLOT_2( _q_updateCurrentCharFormatAndSelection )
+    GUI_LSCS_SLOT_1( Private, void _q_updateCurrentCharFormatAndSelection() )
+    GUI_LSCS_SLOT_2( _q_updateCurrentCharFormatAndSelection )
 
-    GUI_CS_SLOT_1( Private, void _q_emitCursorPosChanged( const QTextCursor &cursor ) )
-    GUI_CS_SLOT_2( _q_emitCursorPosChanged )
+    GUI_LSCS_SLOT_1( Private, void _q_emitCursorPosChanged( const QTextCursor &cursor ) )
+    GUI_LSCS_SLOT_2( _q_emitCursorPosChanged )
 
-    GUI_CS_SLOT_1( Private, void _q_deleteSelected() )
-    GUI_CS_SLOT_2( _q_deleteSelected )
+    GUI_LSCS_SLOT_1( Private, void _q_deleteSelected() )
+    GUI_LSCS_SLOT_2( _q_deleteSelected )
 
-    GUI_CS_SLOT_1( Private, void _q_copyLink() )
-    GUI_CS_SLOT_2( _q_copyLink )
+    GUI_LSCS_SLOT_1( Private, void _q_copyLink() )
+    GUI_LSCS_SLOT_2( _q_copyLink )
 
-    GUI_CS_SLOT_1( Private, void _q_updateBlock( const QTextBlock &block ) )
-    GUI_CS_SLOT_2( _q_updateBlock )
+    GUI_LSCS_SLOT_1( Private, void _q_updateBlock( const QTextBlock &block ) )
+    GUI_LSCS_SLOT_2( _q_updateBlock )
 
-    GUI_CS_SLOT_1( Private, void _q_documentLayoutChanged() )
-    GUI_CS_SLOT_2( _q_documentLayoutChanged )
+    GUI_LSCS_SLOT_1( Private, void _q_documentLayoutChanged() )
+    GUI_LSCS_SLOT_2( _q_documentLayoutChanged )
 
-    GUI_CS_SLOT_1( Private, void _q_contentsChanged( int arg1, int arg2, int arg3 ) )
-    GUI_CS_SLOT_2( _q_contentsChanged )
+    GUI_LSCS_SLOT_1( Private, void _q_contentsChanged( int arg1, int arg2, int arg3 ) )
+    GUI_LSCS_SLOT_2( _q_contentsChanged )
 };
 
 #ifndef QT_NO_CONTEXTMENU
 class QUnicodeControlCharacterMenu : public QMenu
 {
-    GUI_CS_OBJECT( QUnicodeControlCharacterMenu )
+    GUI_LSCS_OBJECT( QUnicodeControlCharacterMenu )
 
 public:
     QUnicodeControlCharacterMenu( QObject *editWidget, QWidget *parent );
 
 private :
-    GUI_CS_SLOT_1( Private, void menuActionTriggered() )
-    GUI_CS_SLOT_2( menuActionTriggered )
+    GUI_LSCS_SLOT_1( Private, void menuActionTriggered() )
+    GUI_LSCS_SLOT_2( menuActionTriggered )
 
     QObject *editWidget;
 };

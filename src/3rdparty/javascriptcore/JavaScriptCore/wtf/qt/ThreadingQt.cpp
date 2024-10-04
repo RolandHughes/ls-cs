@@ -77,7 +77,7 @@ void ThreadPrivate::run()
 
 class ThreadMonitor : public QObject
 {
-    SCRIPT_CS_OBJECT( ThreadMonitor )
+    SCRIPT_LSCS_OBJECT( ThreadMonitor )
 
 public:
     static ThreadMonitor *instance()
@@ -86,8 +86,8 @@ public:
         return instance;
     }
 
-    SCRIPT_CS_SLOT_1( Public,void threadFinished() )
-    SCRIPT_CS_SLOT_2( threadFinished )
+    SCRIPT_LSCS_SLOT_1( Public,void threadFinished() )
+    SCRIPT_LSCS_SLOT_2( threadFinished )
 };
 
 void ThreadMonitor::threadFinished()

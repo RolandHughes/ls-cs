@@ -136,7 +136,7 @@ class GraphicsLayerQtImpl : public QGraphicsObject
     , public virtual TiledBackingStoreClient
 #endif
 {
-    WEB_CS_OBJECT( GraphicsLayerQtImpl )
+    WEB_LSCS_OBJECT( GraphicsLayerQtImpl )
 
 public:
     // This set of flags help us defer which properties of the layer have been
@@ -224,14 +224,14 @@ public:
     void drawLayerContent( QPainter *, const QRect & );
 
 public:
-    WEB_CS_SLOT_1( Public,void notifyAnimationStarted() )
-    WEB_CS_SLOT_2( notifyAnimationStarted )
+    WEB_LSCS_SLOT_1( Public,void notifyAnimationStarted() )
+    WEB_LSCS_SLOT_2( notifyAnimationStarted )
 
-    WEB_CS_SLOT_1( Public,void notifySyncRequired() )
-    WEB_CS_SLOT_2( notifySyncRequired )
+    WEB_LSCS_SLOT_1( Public,void notifySyncRequired() )
+    WEB_LSCS_SLOT_2( notifySyncRequired )
 
-    WEB_CS_SIGNAL_1( Public,void notifyAnimationStartedAsync() )
-    WEB_CS_SIGNAL_2( notifyAnimationStartedAsync )
+    WEB_LSCS_SIGNAL_1( Public,void notifyAnimationStartedAsync() )
+    WEB_LSCS_SIGNAL_2( notifyAnimationStartedAsync )
 
     GraphicsLayerQt *m_layer;
 

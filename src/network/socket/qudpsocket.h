@@ -34,7 +34,7 @@ class QUdpSocketPrivate;
 
 class Q_NETWORK_EXPORT QUdpSocket : public QAbstractSocket
 {
-    NET_CS_OBJECT( QUdpSocket )
+    NET_LSCS_OBJECT( QUdpSocket )
 
 public:
     explicit QUdpSocket( QObject *parent = nullptr );

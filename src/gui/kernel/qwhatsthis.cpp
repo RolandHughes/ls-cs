@@ -50,7 +50,7 @@
 
 class QWhatsThat : public QWidget
 {
-    GUI_CS_OBJECT( QWhatsThat )
+    GUI_LSCS_OBJECT( QWhatsThat )
 
 public:
     QWhatsThat( const QString &txt, QWidget *parent, QWidget *showTextFor );
@@ -522,14 +522,14 @@ bool QWhatsThisPrivate::eventFilter( QObject *o, QEvent *e )
 
 class QWhatsThisAction: public QAction
 {
-    GUI_CS_OBJECT( QWhatsThisAction )
+    GUI_LSCS_OBJECT( QWhatsThisAction )
 
 public:
     explicit QWhatsThisAction( QObject *parent = nullptr );
 
 private:
-    GUI_CS_SLOT_1( Private, void actionTriggered() )
-    GUI_CS_SLOT_2( actionTriggered )
+    GUI_LSCS_SLOT_1( Private, void actionTriggered() )
+    GUI_LSCS_SLOT_2( actionTriggered )
 };
 
 QWhatsThisAction::QWhatsThisAction( QObject *parent ) : QAction( tr( "What's This?" ), parent )

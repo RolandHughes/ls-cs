@@ -33,7 +33,7 @@
 
 class CameraBinRecorder : public QMediaRecorderControl
 {
-    CS_OBJECT( CameraBinRecorder )
+    LSCS_OBJECT( CameraBinRecorder )
 
 public:
     CameraBinRecorder( CameraBinSession *session );
@@ -56,17 +56,17 @@ public:
     GstEncodingContainerProfile *videoProfile();
 #endif
 
-    CS_SLOT_1( Public, void setState( QMediaRecorder::State state ) override )
-    CS_SLOT_2( setState )
+    LSCS_SLOT_1( Public, void setState( QMediaRecorder::State state ) override )
+    LSCS_SLOT_2( setState )
 
-    CS_SLOT_1( Public, void setMuted( bool muted ) override )
-    CS_SLOT_2( setMuted )
+    LSCS_SLOT_1( Public, void setMuted( bool muted ) override )
+    LSCS_SLOT_2( setMuted )
 
-    CS_SLOT_1( Public, void setVolume( qreal volume ) override )
-    CS_SLOT_2( setVolume )
+    LSCS_SLOT_1( Public, void setVolume( qreal volume ) override )
+    LSCS_SLOT_2( setVolume )
 
-    CS_SLOT_1( Public, void updateStatus() )
-    CS_SLOT_2( updateStatus )
+    LSCS_SLOT_1( Public, void updateStatus() )
+    LSCS_SLOT_2( updateStatus )
 
 private:
     CameraBinSession *m_session;

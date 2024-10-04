@@ -46,7 +46,7 @@ class CameraBinViewfinderSettings2;
 
 class CameraBinService : public QMediaService
 {
-    CS_OBJECT( CameraBinService )
+    LSCS_OBJECT( CameraBinService )
 
 public:
     CameraBinService( GstElementFactory *sourceFactory, QObject *parent = nullptr );

@@ -58,7 +58,7 @@ public:
 
 class QVideoWidgetBackend : public QObject, public QVideoWidgetControlInterface
 {
-    MULTI_CS_OBJECT_MULTIPLE( QVideoWidgetBackend, QObject )
+    MULTI_LSCS_OBJECT_MULTIPLE( QVideoWidgetBackend, QObject )
 
 public:
     virtual QSize sizeHint() const = 0;
@@ -72,7 +72,7 @@ public:
 
 class QVideoWidgetControlBackend : public QObject, public QVideoWidgetControlInterface
 {
-    MULTI_CS_OBJECT_MULTIPLE( QVideoWidgetControlBackend, QObject )
+    MULTI_LSCS_OBJECT_MULTIPLE( QVideoWidgetControlBackend, QObject )
 
 public:
     QVideoWidgetControlBackend( QMediaService *service, QVideoWidgetControl *control, QVideoWidget *widget );
@@ -96,7 +96,7 @@ private:
 
 class QRendererVideoWidgetBackend : public QVideoWidgetBackend
 {
-    MULTI_CS_OBJECT( QRendererVideoWidgetBackend )
+    MULTI_LSCS_OBJECT( QRendererVideoWidgetBackend )
 
 public:
     QRendererVideoWidgetBackend( QMediaService *service, QVideoRendererControl *control, QVideoWidget *widget );
@@ -123,27 +123,27 @@ public:
     void moveEvent( QMoveEvent *event ) override;
     void paintEvent( QPaintEvent *event ) override;
 
-    MULTI_CS_SIGNAL_1( Public, void fullScreenChanged( bool fullScreen ) )
-    MULTI_CS_SIGNAL_2( fullScreenChanged, fullScreen )
+    MULTI_LSCS_SIGNAL_1( Public, void fullScreenChanged( bool fullScreen ) )
+    MULTI_LSCS_SIGNAL_2( fullScreenChanged, fullScreen )
 
-    MULTI_CS_SIGNAL_1( Public, void brightnessChanged( int brightness ) )
-    MULTI_CS_SIGNAL_2( brightnessChanged, brightness )
+    MULTI_LSCS_SIGNAL_1( Public, void brightnessChanged( int brightness ) )
+    MULTI_LSCS_SIGNAL_2( brightnessChanged, brightness )
 
-    MULTI_CS_SIGNAL_1( Public, void contrastChanged( int contrast ) )
-    MULTI_CS_SIGNAL_2( contrastChanged, contrast )
+    MULTI_LSCS_SIGNAL_1( Public, void contrastChanged( int contrast ) )
+    MULTI_LSCS_SIGNAL_2( contrastChanged, contrast )
 
-    MULTI_CS_SIGNAL_1( Public, void hueChanged( int hue ) )
-    MULTI_CS_SIGNAL_2( hueChanged, hue )
+    MULTI_LSCS_SIGNAL_1( Public, void hueChanged( int hue ) )
+    MULTI_LSCS_SIGNAL_2( hueChanged, hue )
 
-    MULTI_CS_SIGNAL_1( Public, void saturationChanged( int saturation ) )
-    MULTI_CS_SIGNAL_2( saturationChanged, saturation )
+    MULTI_LSCS_SIGNAL_1( Public, void saturationChanged( int saturation ) )
+    MULTI_LSCS_SIGNAL_2( saturationChanged, saturation )
 
 private:
-    MULTI_CS_SLOT_1( Private, void formatChanged( const QVideoSurfaceFormat &format ) )
-    MULTI_CS_SLOT_2( formatChanged )
+    MULTI_LSCS_SLOT_1( Private, void formatChanged( const QVideoSurfaceFormat &format ) )
+    MULTI_LSCS_SLOT_2( formatChanged )
 
-    MULTI_CS_SLOT_1( Private, void frameChanged() )
-    MULTI_CS_SLOT_2( frameChanged )
+    MULTI_LSCS_SLOT_1( Private, void frameChanged() )
+    MULTI_LSCS_SLOT_2( frameChanged )
 
     void updateRects();
 
@@ -160,7 +160,7 @@ private:
 
 class QWindowVideoWidgetBackend : public QVideoWidgetBackend
 {
-    MULTI_CS_OBJECT( QWindowVideoWidgetBackend )
+    MULTI_LSCS_OBJECT( QWindowVideoWidgetBackend )
 
 public:
     QWindowVideoWidgetBackend( QMediaService *service, QVideoWindowControl *control, QVideoWidget *widget );

@@ -93,7 +93,7 @@ QT_BEGIN_NAMESPACE
 
 class QPacketProtocolPrivate : public QObject
 {
-    DECL_CS_OBJECT( QPacketProtocolPrivate )
+    DECL_LSCS_OBJECT( QPacketProtocolPrivate )
 
 public:
     QPacketProtocolPrivate( QPacketProtocol *parent, QIODevice *_dev )
@@ -110,23 +110,23 @@ public:
         QObject::connect( dev,  SIGNAL( bytesWritten( qint64 ) ), this, SLOT( bytesWritten( qint64 ) ) );
     }
 
-    DECL_CS_SIGNAL_1( Public, void readyRead() )
-    DECL_CS_SIGNAL_2( readyRead )
+    DECL_LSCS_SIGNAL_1( Public, void readyRead() )
+    DECL_LSCS_SIGNAL_2( readyRead )
 
-    DECL_CS_SIGNAL_1( Public, void packetWritten() )
-    DECL_CS_SIGNAL_2( packetWritten )
+    DECL_LSCS_SIGNAL_1( Public, void packetWritten() )
+    DECL_LSCS_SIGNAL_2( packetWritten )
 
-    DECL_CS_SIGNAL_1( Public, void invalidPacket() )
-    DECL_CS_SIGNAL_2( invalidPacket )
+    DECL_LSCS_SIGNAL_1( Public, void invalidPacket() )
+    DECL_LSCS_SIGNAL_2( invalidPacket )
 
-    DECL_CS_SLOT_1( Public, void aboutToClose() )
-    DECL_CS_SLOT_2( aboutToClose )
+    DECL_LSCS_SLOT_1( Public, void aboutToClose() )
+    DECL_LSCS_SLOT_2( aboutToClose )
 
-    DECL_CS_SLOT_1( Public, void bytesWritten( qint64 bytes ) )
-    DECL_CS_SLOT_2( bytesWritten )
+    DECL_LSCS_SLOT_1( Public, void bytesWritten( qint64 bytes ) )
+    DECL_LSCS_SLOT_2( bytesWritten )
 
-    DECL_CS_SLOT_1( Public, void readyToRead() )
-    DECL_CS_SLOT_2( readyToRead )
+    DECL_LSCS_SLOT_1( Public, void readyToRead() )
+    DECL_LSCS_SLOT_2( readyToRead )
 
 public:
     QList<qint64> sendingPackets;

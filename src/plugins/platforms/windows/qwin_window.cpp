@@ -779,7 +779,7 @@ QWindowsWindowData WindowCreationData::create( const QWindow *w, const WindowDat
         result.frame = QWindowsGeometryHint::frame( style, exStyle );
         result.geometry = frameGeometry( result.hwnd, !GetParent( result.hwnd ) ).marginsRemoved( result.frame );
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
         qDebug() << "WindowCreationData::create() Foreign window = " << w << result.hwnd << result.geometry;
 #endif
 
@@ -808,7 +808,7 @@ QWindowsWindowData WindowCreationData::create( const QWindow *w, const WindowDat
     const QWindowCreationContextPtr context( new QWindowCreationContext( w, rect, data.customMargins, style, exStyle ) );
     QWindowsContext::instance()->setWindowCreationContext( context );
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
     qDebug() << "WindowCreationData::create() Window =" << w << "\n  "
              << "Class =" << windowClassName << "Title =" << title << "\n  "
              << "Requested Size =" << rect << " Size Created =" << context->frameWidth
@@ -822,7 +822,7 @@ QWindowsWindowData WindowCreationData::create( const QWindow *w, const WindowDat
                                   context->frameWidth, context->frameHeight,
                                   parentHandle, nullptr, appinst, nullptr );
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
     qDebug() << "WindowCreationData::create() Returns =" << w  << "\n  "
              << "Handle =" << result.hwnd
              << "  Obtained geometry =" << context->obtainedGeometry << " Margins =" << context->margins;
@@ -862,7 +862,7 @@ void WindowCreationData::applyWindowFlags( HWND hwnd ) const
         SetWindowLongPtr( hwnd, GWL_EXSTYLE, newExStyle );
     }
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
     qDebug() << "WindowCreationData::applyWindowFlags() Handle =" << hwnd << *this
              << "\n  Style from =" << debugWinStyle( oldStyle ) << " To =" << debugWinStyle( newStyle )
              << "\n  ExStyle from =" << debugWinExStyle( oldExStyle ) << " To =" << debugWinExStyle( newExStyle );
@@ -990,7 +990,7 @@ QMargins QWindowsGeometryHint::frame( DWORD style, DWORD exStyle )
 
     const QMargins result( qAbs( rect.left ), qAbs( rect.top ), qAbs( rect.right ), qAbs( rect.bottom ) );
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
     qDebug() << "QWindowsGeometryHint::frame() Style =" << showbase << hex << style << "\n  "
              << "ExStyle =" << exStyle << dec << noshowbase << " Rect =" << rect << " Result =" << result;
 #endif
@@ -1086,7 +1086,7 @@ QWindowCreationContext::QWindowCreationContext( const QWindow *w, const QRect &g
         }
     }
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
     qDebug() << "QWindowCreationContext()  Window =" << w << "\n  "
              << "Geometry =" << geometry << " Pos including frame =" << QWindowsGeometryHint::positionIncludesFrame( w )
              << " Frame =" << frameWidth << 'x' << frameHeight << '+'
@@ -1356,7 +1356,7 @@ void QWindowsWindow::setVisible( bool visible )
 {
     const QWindow *win = window();
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
     qDebug() << "QWindowsWindow::setVisible() Window =" << this << win << m_data.hwnd << visible;
 #endif
 
@@ -1743,7 +1743,7 @@ void QWindowsWindow::setGeometry( const QRect &rectIn )
                       "Resulting geometry = %dx%d+%d+%d, Frame = %d, %d, %d, %d \n"
                       "Custom margin = %d, %d, %d, %d, Minimum size = %dx%d, Maximum size = %dx%d\n",
                       rect.width(), rect.height(), rect.x(), rect.y(),
-                      csPrintable( window()->objectName() ),
+                      lscsPrintable( window()->objectName() ),
                       m_data.geometry.width(), m_data.geometry.height(),
                       m_data.geometry.x(), m_data.geometry.y(),
                       m_data.frame.left(), m_data.frame.top(),
@@ -1840,7 +1840,7 @@ void QWindowsWindow::handleGeometryChange()
         QWindowSystemInterface::flushWindowSystemEvents( QEventLoop::ExcludeUserInputEvents );
     }
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
     qDebug() << "QWindowsWindow::handleGeometryChange() Window =" << window() << "\n  "
              << "Geometry =" << m_data.geometry;
 #endif
@@ -1851,7 +1851,7 @@ void QWindowsWindow::setGeometry_sys( const QRect &rect ) const
     const QMargins margins = frameMargins();
     const QRect frameGeometry = rect + margins;
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
     qDebug() << "QWindowsWindow::setGeometry_sys() Window =" << window() << "\n  "
              << "From =" << geometry_sys() << "Frame =" << margins << " To =" << rect << "\n  "
              << "New frame =" << frameGeometry;
@@ -2516,7 +2516,7 @@ bool QWindowsWindow::setMouseGrabEnabled( bool grab )
     if ( ! isVisible() && grab )
     {
         qWarning( "QWindowsWindow::setMouseGrabEnabled() Unable to set mouse grab for invisible window %s/'%s'",
-                  csPrintable( window()->metaObject()->className() ), csPrintable( window()->objectName() ) );
+                  lscsPrintable( window()->metaObject()->className() ), lscsPrintable( window()->objectName() ) );
 
         return false;
     }
@@ -2967,7 +2967,7 @@ void QWindowsWindow::registerTouchWindow( QWindowsWindowFunctions::TouchWindowTo
         }
         else
         {
-            qErrnoWarning( "RegisterTouchWindow() failed for window '%s'.", csPrintable( window()->objectName() ) );
+            qErrnoWarning( "RegisterTouchWindow() failed for window '%s'.", lscsPrintable( window()->objectName() ) );
         }
     }
 }

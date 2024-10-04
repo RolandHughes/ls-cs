@@ -34,7 +34,7 @@ namespace QPatternist
  */
 class QIODeviceDelegate : public QNetworkReply
 {
-    XMLP_CS_OBJECT( QIODeviceDelegate )
+    XMLP_LSCS_OBJECT( QIODeviceDelegate )
 
 public:
     QIODeviceDelegate( QIODevice *const source );
@@ -59,8 +59,8 @@ protected:
     qint64 readData( char *data, qint64 maxSize ) override;
 
 private :
-    XMLP_CS_SLOT_1( Private, void networkTimeout() )
-    XMLP_CS_SLOT_2( networkTimeout )
+    XMLP_LSCS_SLOT_1( Private, void networkTimeout() )
+    XMLP_LSCS_SLOT_2( networkTimeout )
 
 private:
     enum

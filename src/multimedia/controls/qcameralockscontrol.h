@@ -31,7 +31,7 @@
 
 class Q_MULTIMEDIA_EXPORT QCameraLocksControl : public QMediaControl
 {
-    MULTI_CS_OBJECT( QCameraLocksControl )
+    MULTI_LSCS_OBJECT( QCameraLocksControl )
 
 public:
     ~QCameraLocksControl();
@@ -43,16 +43,16 @@ public:
     virtual void searchAndLock( QCamera::LockTypes locks ) = 0;
     virtual void unlock( QCamera::LockTypes locks ) = 0;
 
-    MULTI_CS_SIGNAL_1( Public, void lockStatusChanged( QCamera::LockType lockType, QCamera::LockStatus status,
+    MULTI_LSCS_SIGNAL_1( Public, void lockStatusChanged( QCamera::LockType lockType, QCamera::LockStatus status,
                        QCamera::LockChangeReason reason ) )
-    MULTI_CS_SIGNAL_2( lockStatusChanged, lockType, status, reason )
+    MULTI_LSCS_SIGNAL_2( lockStatusChanged, lockType, status, reason )
 
 protected:
     explicit QCameraLocksControl( QObject *parent = nullptr );
 };
 
 #define QCameraLocksControl_iid "com.copperspice.CS.cameraLocksControl/1.0"
-CS_DECLARE_INTERFACE( QCameraLocksControl, QCameraLocksControl_iid )
+LSCS_DECLARE_INTERFACE( QCameraLocksControl, QCameraLocksControl_iid )
 
 #endif
 

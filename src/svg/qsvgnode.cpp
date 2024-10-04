@@ -123,7 +123,7 @@ void QSvgNode::appendStyleProperty( QSvgStyleProperty *prop, const QString &id )
             break;
 
         default:
-#if defined(CS_SHOW_DEBUG_SVG)
+#if defined(LSCS_SHOW_DEBUG_SVG)
             qDebug( "QSvgNode: Trying to append unknown property!" );
 #endif
 

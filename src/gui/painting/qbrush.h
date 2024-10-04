@@ -182,11 +182,11 @@ inline bool QBrush::isDetached() const
 
 class Q_GUI_EXPORT QGradient
 {
-    GUI_CS_GADGET( QGradient )
+    GUI_LSCS_GADGET( QGradient )
 
-    GUI_CS_ENUM( Type )
-    GUI_CS_ENUM( Spread )
-    GUI_CS_ENUM( CoordinateMode )
+    GUI_LSCS_ENUM( Type )
+    GUI_LSCS_ENUM( Spread )
+    GUI_LSCS_ENUM( CoordinateMode )
 
 public:
     enum Type

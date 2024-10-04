@@ -53,7 +53,7 @@ void QNetworkReplyImplPrivate::_q_startOperation()
 
     if ( state == ReplyState::Working || state == ReplyState::Finished )
     {
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
         qDebug( "QNetworkReplyImpl::_q_startOperation() Should not be called more than once" );
 #endif
 
@@ -675,9 +675,9 @@ void QNetworkReplyImplPrivate::setCachingEnabled( bool enable )
     {
         // someone asked to turn on, then back off?
 
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
         qDebug( "QNetworkReplyImpl: setCachingEnabled(true) called after setCachingEnabled(false) -- "
-                "backend %s probably needs to be fixed", csPrintable( backend->metaObject()->className() ) ) ;
+                "backend %s probably needs to be fixed", lscsPrintable( backend->metaObject()->className() ) ) ;
 #endif
 
         networkCache()->remove( url );
@@ -779,7 +779,7 @@ void QNetworkReplyImplPrivate::initCacheSaveDevice()
     {
         if ( cacheSaveDevice && !cacheSaveDevice->isOpen() )
             qCritical( "QNetworkReplyImpl::initCacheSaveDevice() Network cache returned a device that is not open -- "
-                       "class %s probably needs to be fixed", csPrintable( networkCache()->metaObject()->className() ) );
+                       "class %s probably needs to be fixed", lscsPrintable( networkCache()->metaObject()->className() ) );
 
         networkCache()->remove( url );
         cacheSaveDevice = nullptr;

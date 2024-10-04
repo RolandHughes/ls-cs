@@ -34,7 +34,7 @@
 
 class Q_CORE_EXPORT QNonContiguousByteDevice : public QObject
 {
-    CORE_CS_OBJECT( QNonContiguousByteDevice )
+    CORE_LSCS_OBJECT( QNonContiguousByteDevice )
 
 public:
     virtual const char *readPointer( qint64 maximumLength, qint64 &len ) = 0;
@@ -56,10 +56,10 @@ public:
 
     virtual ~QNonContiguousByteDevice();
 
-    CORE_CS_SIGNAL_1( Public, void readyRead() )
-    CORE_CS_SIGNAL_2( readyRead )
-    CORE_CS_SIGNAL_1( Public, void readProgress( qint64 current, qint64 total ) )
-    CORE_CS_SIGNAL_2( readProgress, current, total )
+    CORE_LSCS_SIGNAL_1( Public, void readyRead() )
+    CORE_LSCS_SIGNAL_2( readyRead )
+    CORE_LSCS_SIGNAL_1( Public, void readProgress( qint64 current, qint64 total ) )
+    CORE_LSCS_SIGNAL_2( readProgress, current, total )
 
 protected:
     QNonContiguousByteDevice();
@@ -119,7 +119,7 @@ protected:
 
 class QNonContiguousByteDeviceIoDeviceImpl : public QNonContiguousByteDevice
 {
-    CORE_CS_OBJECT( QNonContiguousByteDeviceIoDeviceImpl )
+    CORE_LSCS_OBJECT( QNonContiguousByteDeviceIoDeviceImpl )
 
 public:
     QNonContiguousByteDeviceIoDeviceImpl( QIODevice *d );
@@ -145,7 +145,7 @@ protected:
 
 class QNonContiguousByteDeviceBufferImpl : public QNonContiguousByteDevice
 {
-    CORE_CS_OBJECT( QNonContiguousByteDeviceBufferImpl )
+    CORE_LSCS_OBJECT( QNonContiguousByteDeviceBufferImpl )
 
 public:
     QNonContiguousByteDeviceBufferImpl( QBuffer *b );

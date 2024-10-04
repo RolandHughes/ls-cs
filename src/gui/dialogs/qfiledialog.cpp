@@ -483,7 +483,7 @@ void QFileDialog::setDirectoryUrl( const QUrl &directory )
     else if ( d->usingWidgets() )
     {
         qWarning( "QFileDialog::setDirectoryUrl() Internal file dialog does not support "
-                  "a URL starting with %s", csPrintable( directory.scheme() ) );
+                  "a URL starting with %s", lscsPrintable( directory.scheme() ) );
     }
 }
 
@@ -616,7 +616,7 @@ void QFileDialog::selectUrl( const QUrl &url )
     else
     {
         qWarning( "QFileDialog::selectUrl() Internal file dialog does not support "
-                  "a URL starting with %s", csPrintable( url.scheme() ) );
+                  "a URL starting with %s", lscsPrintable( url.scheme() ) );
     }
 }
 

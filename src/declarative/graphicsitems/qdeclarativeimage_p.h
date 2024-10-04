@@ -33,16 +33,16 @@ class QDeclarativeImagePrivate;
 
 class QDeclarativeImage : public QDeclarativeImageBase
 {
-    DECL_CS_OBJECT( QDeclarativeImage )
-    DECL_CS_ENUM( FillMode )
+    DECL_LSCS_OBJECT( QDeclarativeImage )
+    DECL_LSCS_ENUM( FillMode )
 
-    DECL_CS_PROPERTY_READ( fillMode, fillMode )
-    DECL_CS_PROPERTY_WRITE( fillMode, setFillMode )
-    DECL_CS_PROPERTY_NOTIFY( fillMode, fillModeChanged )
-    DECL_CS_PROPERTY_READ( paintedWidth, paintedWidth )
-    DECL_CS_PROPERTY_NOTIFY( paintedWidth, paintedGeometryChanged )
-    DECL_CS_PROPERTY_READ( paintedHeight, paintedHeight )
-    DECL_CS_PROPERTY_NOTIFY( paintedHeight, paintedGeometryChanged )
+    DECL_LSCS_PROPERTY_READ( fillMode, fillMode )
+    DECL_LSCS_PROPERTY_WRITE( fillMode, setFillMode )
+    DECL_LSCS_PROPERTY_NOTIFY( fillMode, fillModeChanged )
+    DECL_LSCS_PROPERTY_READ( paintedWidth, paintedWidth )
+    DECL_LSCS_PROPERTY_NOTIFY( paintedWidth, paintedGeometryChanged )
+    DECL_LSCS_PROPERTY_READ( paintedHeight, paintedHeight )
+    DECL_LSCS_PROPERTY_NOTIFY( paintedHeight, paintedGeometryChanged )
 
 public:
     QDeclarativeImage( QDeclarativeItem *parent = 0 );
@@ -61,10 +61,10 @@ public:
     void paint( QPainter *, const QStyleOptionGraphicsItem *, QWidget * );
     QRectF boundingRect() const;
 
-    DECL_CS_SIGNAL_1( Public, void fillModeChanged() )
-    DECL_CS_SIGNAL_2( fillModeChanged )
-    DECL_CS_SIGNAL_1( Public, void paintedGeometryChanged() )
-    DECL_CS_SIGNAL_2( paintedGeometryChanged )
+    DECL_LSCS_SIGNAL_1( Public, void fillModeChanged() )
+    DECL_LSCS_SIGNAL_2( fillModeChanged )
+    DECL_LSCS_SIGNAL_1( Public, void paintedGeometryChanged() )
+    DECL_LSCS_SIGNAL_2( paintedGeometryChanged )
 
 protected:
     QDeclarativeImage( QDeclarativeImagePrivate &dd, QDeclarativeItem *parent );

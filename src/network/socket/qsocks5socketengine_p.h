@@ -34,7 +34,7 @@ class QSocks5SocketEnginePrivate;
 
 class QSocks5SocketEngine : public QAbstractSocketEngine
 {
-    NET_CS_OBJECT( QSocks5SocketEngine )
+    NET_LSCS_OBJECT( QSocks5SocketEngine )
 
 public:
     QSocks5SocketEngine( QObject *parent = nullptr );
@@ -104,37 +104,37 @@ public:
 private:
     Q_DECLARE_PRIVATE( QSocks5SocketEngine )
 
-    NET_CS_SLOT_1( Private, void _q_controlSocketConnected() )
-    NET_CS_SLOT_2( _q_controlSocketConnected )
+    NET_LSCS_SLOT_1( Private, void _q_controlSocketConnected() )
+    NET_LSCS_SLOT_2( _q_controlSocketConnected )
 
-    NET_CS_SLOT_1( Private, void _q_controlSocketReadNotification() )
-    NET_CS_SLOT_2( _q_controlSocketReadNotification )
+    NET_LSCS_SLOT_1( Private, void _q_controlSocketReadNotification() )
+    NET_LSCS_SLOT_2( _q_controlSocketReadNotification )
 
-    NET_CS_SLOT_1( Private, void _q_controlSocketError( QAbstractSocket::SocketError socketError ) )
-    NET_CS_SLOT_2( _q_controlSocketError )
+    NET_LSCS_SLOT_1( Private, void _q_controlSocketError( QAbstractSocket::SocketError socketError ) )
+    NET_LSCS_SLOT_2( _q_controlSocketError )
 
 #ifndef QT_NO_UDPSOCKET
-    NET_CS_SLOT_1( Private, void _q_udpSocketReadNotification() )
-    NET_CS_SLOT_2( _q_udpSocketReadNotification )
+    NET_LSCS_SLOT_1( Private, void _q_udpSocketReadNotification() )
+    NET_LSCS_SLOT_2( _q_udpSocketReadNotification )
 #endif
 
-    NET_CS_SLOT_1( Private, void _q_controlSocketBytesWritten() )
-    NET_CS_SLOT_2( _q_controlSocketBytesWritten )
+    NET_LSCS_SLOT_1( Private, void _q_controlSocketBytesWritten() )
+    NET_LSCS_SLOT_2( _q_controlSocketBytesWritten )
 
-    NET_CS_SLOT_1( Private, void _q_emitPendingReadNotification() )
-    NET_CS_SLOT_2( _q_emitPendingReadNotification )
+    NET_LSCS_SLOT_1( Private, void _q_emitPendingReadNotification() )
+    NET_LSCS_SLOT_2( _q_emitPendingReadNotification )
 
-    NET_CS_SLOT_1( Private, void _q_emitPendingWriteNotification() )
-    NET_CS_SLOT_2( _q_emitPendingWriteNotification )
+    NET_LSCS_SLOT_1( Private, void _q_emitPendingWriteNotification() )
+    NET_LSCS_SLOT_2( _q_emitPendingWriteNotification )
 
-    NET_CS_SLOT_1( Private, void _q_emitPendingConnectionNotification() )
-    NET_CS_SLOT_2( _q_emitPendingConnectionNotification )
+    NET_LSCS_SLOT_1( Private, void _q_emitPendingConnectionNotification() )
+    NET_LSCS_SLOT_2( _q_emitPendingConnectionNotification )
 
-    NET_CS_SLOT_1( Private, void _q_controlSocketDisconnected() )
-    NET_CS_SLOT_2( _q_controlSocketDisconnected )
+    NET_LSCS_SLOT_1( Private, void _q_controlSocketDisconnected() )
+    NET_LSCS_SLOT_2( _q_controlSocketDisconnected )
 
-    NET_CS_SLOT_1( Private, void _q_controlSocketStateChanged( QAbstractSocket::SocketState socketState ) )
-    NET_CS_SLOT_2( _q_controlSocketStateChanged )
+    NET_LSCS_SLOT_1( Private, void _q_controlSocketStateChanged( QAbstractSocket::SocketState socketState ) )
+    NET_LSCS_SLOT_2( _q_controlSocketStateChanged )
 };
 
 class QTcpSocket;

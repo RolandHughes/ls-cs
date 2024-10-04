@@ -359,7 +359,7 @@ private:
 
 class Q_OPENGL_EXPORT QGLSignalProxy : public QObject
 {
-    OPENGL_CS_OBJECT( QGLSignalProxy )
+    OPENGL_LSCS_OBJECT( QGLSignalProxy )
 
 public:
     void emitAboutToDestroyContext( const QGLContext *context )
@@ -369,8 +369,8 @@ public:
 
     static QGLSignalProxy *instance();
 
-    OPENGL_CS_SIGNAL_1( Public, void aboutToDestroyContext( const QGLContext *context ) )
-    OPENGL_CS_SIGNAL_2( aboutToDestroyContext, context )
+    OPENGL_LSCS_SIGNAL_1( Public, void aboutToDestroyContext( const QGLContext *context ) )
+    OPENGL_LSCS_SIGNAL_2( aboutToDestroyContext, context )
 };
 
 class QGLTexture

@@ -79,7 +79,7 @@ protected:
 
 class QDnsLookupRunnable : public QObject, public QRunnable
 {
-    NET_CS_OBJECT( QDnsLookupRunnable )
+    NET_LSCS_OBJECT( QDnsLookupRunnable )
 
 public:
     QDnsLookupRunnable( QDnsLookup::Type type, const QByteArray &name, const QHostAddress &nameserver )
@@ -88,8 +88,8 @@ public:
 
     void run() override;
 
-    NET_CS_SIGNAL_1( Public, void finished( const QDnsLookupReply &reply ) )
-    NET_CS_SIGNAL_2( finished, reply )
+    NET_LSCS_SIGNAL_1( Public, void finished( const QDnsLookupReply &reply ) )
+    NET_LSCS_SIGNAL_2( finished, reply )
 
 private:
     static void query( const int requestType, const QByteArray &requestName,
@@ -102,7 +102,7 @@ private:
 
 class QDnsLookupThreadPool : public QThreadPool
 {
-    NET_CS_OBJECT( QDnsLookupThreadPool )
+    NET_LSCS_OBJECT( QDnsLookupThreadPool )
 
 public:
     QDnsLookupThreadPool();
@@ -112,8 +112,8 @@ private:
     QMutex signalsMutex;
     bool signalsConnected;
 
-    NET_CS_SLOT_1( Private, void _q_applicationDestroyed() )
-    NET_CS_SLOT_2( _q_applicationDestroyed )
+    NET_LSCS_SLOT_1( Private, void _q_applicationDestroyed() )
+    NET_LSCS_SLOT_2( _q_applicationDestroyed )
 };
 
 class QDnsRecordPrivate : public QSharedData

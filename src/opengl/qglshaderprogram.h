@@ -37,7 +37,7 @@ class QGLShaderProgramPrivate;
 
 class Q_OPENGL_EXPORT QGLShader : public QObject
 {
-    OPENGL_CS_OBJECT( QGLShader )
+    OPENGL_LSCS_OBJECT( QGLShader )
 
 public:
     enum ShaderTypeBit
@@ -84,7 +84,7 @@ Q_DECLARE_OPERATORS_FOR_FLAGS( QGLShader::ShaderType )
 
 class Q_OPENGL_EXPORT QGLShaderProgram : public QObject
 {
-    OPENGL_CS_OBJECT( QGLShaderProgram )
+    OPENGL_LSCS_OBJECT( QGLShaderProgram )
 
 public:
     explicit QGLShaderProgram( QObject *parent = nullptr );
@@ -271,8 +271,8 @@ protected:
     QScopedPointer<QGLShaderProgramPrivate> d_ptr;
 
 private:
-    OPENGL_CS_SLOT_1( Private, void shaderDestroyed() )
-    OPENGL_CS_SLOT_2( shaderDestroyed )
+    OPENGL_LSCS_SLOT_1( Private, void shaderDestroyed() )
+    OPENGL_LSCS_SLOT_2( shaderDestroyed )
 
     Q_DECLARE_PRIVATE( QGLShaderProgram )
 

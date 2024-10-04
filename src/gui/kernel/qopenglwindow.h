@@ -36,7 +36,7 @@ class QOpenGLWindowPrivate;
 
 class Q_GUI_EXPORT QOpenGLWindow : public QPaintDeviceWindow
 {
-    GUI_CS_OBJECT( QOpenGLWindow )
+    GUI_LSCS_OBJECT( QOpenGLWindow )
 
 public:
     enum UpdateBehavior
@@ -68,8 +68,8 @@ public:
 
     QImage grabFramebuffer();
 
-    GUI_CS_SIGNAL_1( Public, void frameSwapped() )
-    GUI_CS_SIGNAL_2( frameSwapped )
+    GUI_LSCS_SIGNAL_1( Public, void frameSwapped() )
+    GUI_LSCS_SIGNAL_2( frameSwapped )
 
 protected:
     virtual void initializeGL();

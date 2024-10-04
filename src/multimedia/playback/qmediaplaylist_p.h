@@ -98,7 +98,7 @@ private:
 
 class QMediaNetworkPlaylistControl : public QMediaPlaylistControl
 {
-    MULTI_CS_OBJECT( QMediaNetworkPlaylistControl )
+    MULTI_LSCS_OBJECT( QMediaNetworkPlaylistControl )
 
 public:
     QMediaNetworkPlaylistControl( QObject *parent )

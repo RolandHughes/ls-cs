@@ -85,7 +85,7 @@ protected:
 
 class QDefaultAnimationDriver : public QAnimationDriver
 {
-    CORE_CS_OBJECT( QDefaultAnimationDriver )
+    CORE_LSCS_OBJECT( QDefaultAnimationDriver )
 
 public:
     QDefaultAnimationDriver( QUnifiedTimer *timer );

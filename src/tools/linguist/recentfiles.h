@@ -30,7 +30,7 @@
 
 class RecentFiles : public QObject
 {
-    CS_OBJECT( RecentFiles )
+    LSCS_OBJECT( RecentFiles )
 
 public:
     explicit RecentFiles( const int maxEntries );

@@ -431,6 +431,6 @@ private:
     QExplicitlySharedDataPointer<QWebElementCollectionPrivate> d;
 };
 
-CS_DECLARE_METATYPE( QWebElement )
+LSCS_DECLARE_METATYPE( QWebElement )
 
 #endif

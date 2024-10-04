@@ -56,7 +56,7 @@ public:
     bool tryShortcut( QKeyEvent *event );
     bool hasShortcutForKeySequence( const QKeySequence &seq ) const;
 
-#if defined(CS_SHOW_DEBUG_GUI)
+#if defined(LSCS_SHOW_DEBUG_GUI)
     void dumpMap() const;
 #endif
 

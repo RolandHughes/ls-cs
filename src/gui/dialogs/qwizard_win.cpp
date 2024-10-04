@@ -125,7 +125,7 @@ enum WIZ_NAV_BACKBUTTONSTATES
 #define WIZ_WM_NCMOUSELEAVE 674             //WM_NCMOUSELEAVE
 
 #define WIZ_WP_CAPTION             1        //WP_CAPTION
-#define WIZ_CS_ACTIVE              1        //CS_ACTIVE
+#define WIZ_LSCS_ACTIVE              1        //LSCS_ACTIVE
 #define WIZ_TMT_FILLCOLORHINT   3821        //TMT_FILLCOLORHINT
 #define WIZ_TMT_BORDERCOLORHINT 3822        //TMT_BORDERCOLORHINT
 
@@ -369,7 +369,7 @@ QColor QVistaHelper::basicWindowFrameColor()
     HANDLE hTheme = pOpenThemeData( handle, L"WINDOW" );
 
     pGetThemeColor(
-        hTheme, WIZ_WP_CAPTION, WIZ_CS_ACTIVE,
+        hTheme, WIZ_WP_CAPTION, WIZ_LSCS_ACTIVE,
         wizard->isActiveWindow() ? WIZ_TMT_FILLCOLORHINT : WIZ_TMT_BORDERCOLORHINT,
         &rgb );
 

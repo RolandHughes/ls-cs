@@ -39,27 +39,27 @@ class QGraphicsWebViewPrivate;
 
 class QWEBKIT_EXPORT QGraphicsWebView : public QGraphicsWidget
 {
-    WEB_CS_OBJECT( QGraphicsWebView )
+    WEB_LSCS_OBJECT( QGraphicsWebView )
 
-    WEB_CS_PROPERTY_READ( title, title )
-    WEB_CS_PROPERTY_NOTIFY( title, titleChanged )
-    WEB_CS_PROPERTY_READ( icon, icon )
-    WEB_CS_PROPERTY_NOTIFY( icon, iconChanged )
-    WEB_CS_PROPERTY_READ( zoomFactor, zoomFactor )
-    WEB_CS_PROPERTY_WRITE( zoomFactor, setZoomFactor )
+    WEB_LSCS_PROPERTY_READ( title, title )
+    WEB_LSCS_PROPERTY_NOTIFY( title, titleChanged )
+    WEB_LSCS_PROPERTY_READ( icon, icon )
+    WEB_LSCS_PROPERTY_NOTIFY( icon, iconChanged )
+    WEB_LSCS_PROPERTY_READ( zoomFactor, zoomFactor )
+    WEB_LSCS_PROPERTY_WRITE( zoomFactor, setZoomFactor )
 
-    WEB_CS_PROPERTY_READ( url, url )
-    WEB_CS_PROPERTY_WRITE( url, setUrl )
-    WEB_CS_PROPERTY_NOTIFY( url, urlChanged )
+    WEB_LSCS_PROPERTY_READ( url, url )
+    WEB_LSCS_PROPERTY_WRITE( url, setUrl )
+    WEB_LSCS_PROPERTY_NOTIFY( url, urlChanged )
 
-    WEB_CS_PROPERTY_READ( modified, isModified )
-    WEB_CS_PROPERTY_READ( resizesToContents, resizesToContents )
-    WEB_CS_PROPERTY_WRITE( resizesToContents, setResizesToContents )
-    WEB_CS_PROPERTY_READ( tiledBackingStoreFrozen, isTiledBackingStoreFrozen )
-    WEB_CS_PROPERTY_WRITE( tiledBackingStoreFrozen, setTiledBackingStoreFrozen )
+    WEB_LSCS_PROPERTY_READ( modified, isModified )
+    WEB_LSCS_PROPERTY_READ( resizesToContents, resizesToContents )
+    WEB_LSCS_PROPERTY_WRITE( resizesToContents, setResizesToContents )
+    WEB_LSCS_PROPERTY_READ( tiledBackingStoreFrozen, isTiledBackingStoreFrozen )
+    WEB_LSCS_PROPERTY_WRITE( tiledBackingStoreFrozen, setTiledBackingStoreFrozen )
 
-    WEB_CS_PROPERTY_READ( renderHints, renderHints )
-    WEB_CS_PROPERTY_WRITE( renderHints, setRenderHints )
+    WEB_LSCS_PROPERTY_READ( renderHints, renderHints )
+    WEB_LSCS_PROPERTY_WRITE( renderHints, setRenderHints )
 
 public:
     explicit QGraphicsWebView( QGraphicsItem *parent = 0 );
@@ -116,32 +116,32 @@ public:
     void setRenderHint( QPainter::RenderHint hint, bool enabled = true );
 
 public :
-    WEB_CS_SLOT_1( Public, void stop() )
-    WEB_CS_SLOT_2( stop )
-    WEB_CS_SLOT_1( Public, void back() )
-    WEB_CS_SLOT_2( back )
-    WEB_CS_SLOT_1( Public, void forward() )
-    WEB_CS_SLOT_2( forward )
-    WEB_CS_SLOT_1( Public, void reload() )
-    WEB_CS_SLOT_2( reload )
+    WEB_LSCS_SLOT_1( Public, void stop() )
+    WEB_LSCS_SLOT_2( stop )
+    WEB_LSCS_SLOT_1( Public, void back() )
+    WEB_LSCS_SLOT_2( back )
+    WEB_LSCS_SLOT_1( Public, void forward() )
+    WEB_LSCS_SLOT_2( forward )
+    WEB_LSCS_SLOT_1( Public, void reload() )
+    WEB_LSCS_SLOT_2( reload )
 
-    WEB_CS_SIGNAL_1( Public, void loadStarted() )
-    WEB_CS_SIGNAL_2( loadStarted )
-    WEB_CS_SIGNAL_1( Public, void loadFinished( bool ok ) )
-    WEB_CS_SIGNAL_2( loadFinished, ok )
+    WEB_LSCS_SIGNAL_1( Public, void loadStarted() )
+    WEB_LSCS_SIGNAL_2( loadStarted )
+    WEB_LSCS_SIGNAL_1( Public, void loadFinished( bool ok ) )
+    WEB_LSCS_SIGNAL_2( loadFinished, ok )
 
-    WEB_CS_SIGNAL_1( Public, void loadProgress( int progress ) )
-    WEB_CS_SIGNAL_2( loadProgress,progress )
-    WEB_CS_SIGNAL_1( Public, void urlChanged( const QUrl &url ) )
-    WEB_CS_SIGNAL_2( urlChanged, url )
-    WEB_CS_SIGNAL_1( Public, void titleChanged( const QString &title ) )
-    WEB_CS_SIGNAL_2( titleChanged, title )
-    WEB_CS_SIGNAL_1( Public, void iconChanged() )
-    WEB_CS_SIGNAL_2( iconChanged )
-    WEB_CS_SIGNAL_1( Public, void statusBarMessage( const QString &message ) )
-    WEB_CS_SIGNAL_2( statusBarMessage,message )
-    WEB_CS_SIGNAL_1( Public, void linkClicked( const QUrl &url ) )
-    WEB_CS_SIGNAL_2( linkClicked, url )
+    WEB_LSCS_SIGNAL_1( Public, void loadProgress( int progress ) )
+    WEB_LSCS_SIGNAL_2( loadProgress,progress )
+    WEB_LSCS_SIGNAL_1( Public, void urlChanged( const QUrl &url ) )
+    WEB_LSCS_SIGNAL_2( urlChanged, url )
+    WEB_LSCS_SIGNAL_1( Public, void titleChanged( const QString &title ) )
+    WEB_LSCS_SIGNAL_2( titleChanged, title )
+    WEB_LSCS_SIGNAL_1( Public, void iconChanged() )
+    WEB_LSCS_SIGNAL_2( iconChanged )
+    WEB_LSCS_SIGNAL_1( Public, void statusBarMessage( const QString &message ) )
+    WEB_LSCS_SIGNAL_2( statusBarMessage,message )
+    WEB_LSCS_SIGNAL_1( Public, void linkClicked( const QUrl &url ) )
+    WEB_LSCS_SIGNAL_2( linkClicked, url )
 
 protected:
     void mousePressEvent( QGraphicsSceneMouseEvent *event ) override;
@@ -174,20 +174,20 @@ protected:
     bool sceneEvent( QEvent *event ) override;
 
 private:
-    WEB_CS_SLOT_1( Private, void _q_doLoadFinished( bool success ) )
-    WEB_CS_SLOT_2( _q_doLoadFinished )
+    WEB_LSCS_SLOT_1( Private, void _q_doLoadFinished( bool success ) )
+    WEB_LSCS_SLOT_2( _q_doLoadFinished )
 
-    WEB_CS_SLOT_1( Private, void _q_pageDestroyed() )
-    WEB_CS_SLOT_2( _q_pageDestroyed )
+    WEB_LSCS_SLOT_1( Private, void _q_pageDestroyed() )
+    WEB_LSCS_SLOT_2( _q_pageDestroyed )
 
-    WEB_CS_SLOT_1( Private, void syncLayers() )
-    WEB_CS_SLOT_2( syncLayers )
+    WEB_LSCS_SLOT_1( Private, void syncLayers() )
+    WEB_LSCS_SLOT_2( syncLayers )
 
-    WEB_CS_SLOT_1( Private, void _q_contentsSizeChanged( const QSize &size ) )
-    WEB_CS_SLOT_2( _q_contentsSizeChanged )
+    WEB_LSCS_SLOT_1( Private, void _q_contentsSizeChanged( const QSize &size ) )
+    WEB_LSCS_SLOT_2( _q_contentsSizeChanged )
 
-    WEB_CS_SLOT_1( Private, void _q_scaleChanged() )
-    WEB_CS_SLOT_2( _q_scaleChanged )
+    WEB_LSCS_SLOT_1( Private, void _q_scaleChanged() )
+    WEB_LSCS_SLOT_2( _q_scaleChanged )
 
     QGraphicsWebViewPrivate *const d;
     friend class QGraphicsWebViewPrivate;

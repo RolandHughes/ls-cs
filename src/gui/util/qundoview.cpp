@@ -34,7 +34,7 @@
 
 class QUndoModel : public QAbstractItemModel
 {
-    GUI_CS_OBJECT( QUndoModel )
+    GUI_LSCS_OBJECT( QUndoModel )
 
 public:
     QUndoModel( QObject *parent = nullptr );
@@ -56,12 +56,12 @@ public:
     void setCleanIcon( const QIcon &icon );
     QIcon cleanIcon() const;
 
-    GUI_CS_SLOT_1( Public, void setStack( QUndoStack *stack ) )
-    GUI_CS_SLOT_2( setStack )
+    GUI_LSCS_SLOT_1( Public, void setStack( QUndoStack *stack ) )
+    GUI_LSCS_SLOT_2( setStack )
 
 private:
-    GUI_CS_SLOT_1( Private, void stackChanged() )
-    GUI_CS_SLOT_2( stackChanged )
+    GUI_LSCS_SLOT_1( Private, void stackChanged() )
+    GUI_LSCS_SLOT_2( stackChanged )
 
     // slots
     void stackDestroyed( QObject *obj );

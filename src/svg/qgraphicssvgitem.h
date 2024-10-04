@@ -35,14 +35,14 @@ class QSvgRenderer;
 
 class Q_SVG_EXPORT QGraphicsSvgItem : public QGraphicsObject
 {
-    SVG_CS_OBJECT( QGraphicsSvgItem )
-    CS_INTERFACES( QGraphicsItem )
+    SVG_LSCS_OBJECT( QGraphicsSvgItem )
+    LSCS_INTERFACES( QGraphicsItem )
 
-    SVG_CS_PROPERTY_READ( elementId, elementId )
-    SVG_CS_PROPERTY_WRITE( elementId, setElementId )
+    SVG_LSCS_PROPERTY_READ( elementId, elementId )
+    SVG_LSCS_PROPERTY_WRITE( elementId, setElementId )
 
-    SVG_CS_PROPERTY_READ( maximumCacheSize, maximumCacheSize )
-    SVG_CS_PROPERTY_WRITE( maximumCacheSize, setMaximumCacheSize )
+    SVG_LSCS_PROPERTY_READ( maximumCacheSize, maximumCacheSize )
+    SVG_LSCS_PROPERTY_WRITE( maximumCacheSize, setMaximumCacheSize )
 
 public:
     QGraphicsSvgItem( QGraphicsItem *parent = nullptr );
@@ -73,8 +73,8 @@ public:
 private:
     Q_DECLARE_PRIVATE_D( QGraphicsItem::d_ptr.data(), QGraphicsSvgItem )
 
-    SVG_CS_SLOT_1( Private, void _q_repaintItem() )
-    SVG_CS_SLOT_2( _q_repaintItem )
+    SVG_LSCS_SLOT_1( Private, void _q_repaintItem() )
+    SVG_LSCS_SLOT_2( _q_repaintItem )
 };
 
 #endif // QT_NO_GRAPHICSVIEW or QT_NO_SVGWIDGETS

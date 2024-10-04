@@ -33,17 +33,17 @@ class QThreadPoolPrivate;
 
 class Q_CORE_EXPORT QThreadPool : public QObject
 {
-    CORE_CS_OBJECT( QThreadPool )
+    CORE_LSCS_OBJECT( QThreadPool )
 
     Q_DECLARE_PRIVATE( QThreadPool )
 
-    CORE_CS_PROPERTY_READ( expiryTimeout, expiryTimeout )
-    CORE_CS_PROPERTY_WRITE( expiryTimeout, setExpiryTimeout )
+    CORE_LSCS_PROPERTY_READ( expiryTimeout, expiryTimeout )
+    CORE_LSCS_PROPERTY_WRITE( expiryTimeout, setExpiryTimeout )
 
-    CORE_CS_PROPERTY_READ( maxThreadCount, maxThreadCount )
-    CORE_CS_PROPERTY_WRITE( maxThreadCount, setMaxThreadCount )
+    CORE_LSCS_PROPERTY_READ( maxThreadCount, maxThreadCount )
+    CORE_LSCS_PROPERTY_WRITE( maxThreadCount, setMaxThreadCount )
 
-    CORE_CS_PROPERTY_READ( activeThreadCount, activeThreadCount )
+    CORE_LSCS_PROPERTY_READ( activeThreadCount, activeThreadCount )
 
     friend class QFutureInterfaceBase;
 

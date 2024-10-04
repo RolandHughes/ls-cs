@@ -1997,7 +1997,7 @@ void QDateTimeEditPrivate::_q_editorCursorPositionChanged( int oldpos, int newpo
     currentSectionIndex = s;
 
     Q_ASSERT_X( currentSectionIndex < sectionNodes.size(), "QDateTimeEditPrivate::_q_editorCursorPositionChanged()",
-                csPrintable( QString( "Internal error (%1 %2)" ).formatArg( currentSectionIndex ).formatArg( sectionNodes.size() ) ) );
+                lscsPrintable( QString( "Internal error (%1 %2)" ).formatArg( currentSectionIndex ).formatArg( sectionNodes.size() ) ) );
 
     ignoreCursorPositionChanged = false;
 }

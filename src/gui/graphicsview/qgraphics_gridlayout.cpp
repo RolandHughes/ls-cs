@@ -46,7 +46,7 @@ public:
     mutable QScopedPointer<QGraphicsLayoutStyleInfo> m_styleInfo;
     QGraphicsGridLayoutEngine engine;
 
-#if defined(CS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
+#if defined(LSCS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
     void dump( int indent ) const;
 #endif
 };
@@ -459,7 +459,7 @@ void QGraphicsGridLayout::invalidate()
     QGraphicsLayout::invalidate();
 }
 
-#if defined(CS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
+#if defined(LSCS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
 void QGraphicsGridLayoutPrivate::dump( int indent ) const
 {
     engine.dump( indent + 1 );
@@ -486,7 +486,7 @@ void QGraphicsGridLayout::setGeometry( const QRectF &rect )
     effectiveRect.adjust( +left, +top, -right, -bottom );
     d->engine.setGeometries( effectiveRect, d->styleInfo() );
 
-#if defined(CS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
+#if defined(LSCS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
     static int counter = 0;
 
     qDebug( "==== BEGIN DUMP OF QGraphicsGridLayout (%d)====", counter++ );

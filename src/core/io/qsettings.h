@@ -42,7 +42,7 @@ class QSettingsPrivate;
 
 class Q_CORE_EXPORT QSettings : public QObject
 {
-    CORE_CS_OBJECT( QSettings )
+    CORE_LSCS_OBJECT( QSettings )
 
 public:
     enum Status

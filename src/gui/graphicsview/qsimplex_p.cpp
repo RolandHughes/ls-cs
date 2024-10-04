@@ -365,7 +365,7 @@ void QSimplex::dumpMatrix()
         str += QString::fromLatin1( "  <%1 >" ).formatArg( j, 2 );
     }
 
-    qDebug( "%s", csPrintable( str ) );
+    qDebug( "%s", lscsPrintable( str ) );
 
     for ( int i = 0; i < rows; ++i )
     {
@@ -378,7 +378,7 @@ void QSimplex::dumpMatrix()
             str += QString::fromLatin1( "%1" ).formatArg( row[j], 7, 'f', 2 );
         }
 
-        qDebug( "%s", csPrintable( str ) );
+        qDebug( "%s", lscsPrintable( str ) );
     }
 
     qDebug( "------------------------\n" );
@@ -588,7 +588,7 @@ qreal QSimplex::solver( SolverFactor factor )
     solveMaxHelper();
     collectResults();
 
-#if defined(CS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
+#if defined(LSCS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
 
     for ( int i = 0; i < constraints.size(); ++i )
     {

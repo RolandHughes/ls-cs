@@ -27,10 +27,10 @@
 
 class QOCIDriverPlugin : public QSqlDriverPlugin
 {
-    CS_OBJECT( QOCIDriverPlugin )
+    LSCS_OBJECT( QOCIDriverPlugin )
 
-    CS_PLUGIN_IID( QSqlDriverInterface_ID )
-    CS_PLUGIN_KEY( "QOCI" )
+    LSCS_PLUGIN_IID( QSqlDriverInterface_ID )
+    LSCS_PLUGIN_KEY( "QOCI" )
 
 public:
     QOCIDriverPlugin();
@@ -39,7 +39,7 @@ public:
     QStringList keys() const;
 };
 
-CS_PLUGIN_REGISTER( QOCIDriverPlugin )
+LSCS_PLUGIN_REGISTER( QOCIDriverPlugin )
 
 QOCIDriverPlugin::QOCIDriverPlugin()
     : QSqlDriverPlugin()

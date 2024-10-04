@@ -49,7 +49,7 @@ class QDeclarativeEngineDebugPrivate;
 
 class Q_DECLARATIVE_PRIVATE_EXPORT QDeclarativeEngineDebug : public QObject
 {
-    DECL_CS_OBJECT( QDeclarativeEngineDebug )
+    DECL_LSCS_OBJECT( QDeclarativeEngineDebug )
 
 public:
     enum Status { NotConnected, Unavailable, Enabled };
@@ -82,10 +82,10 @@ public:
     bool resetBindingForObject( int objectDebugId, const QString &propertyName );
     bool setMethodBody( int objectDebugId, const QString &methodName, const QString &methodBody );
 
-    DECL_CS_SIGNAL_1( Public, void newObjects() )
-    DECL_CS_SIGNAL_2( newObjects )
-    DECL_CS_SIGNAL_1( Public, void statusChanged( Status status ) )
-    DECL_CS_SIGNAL_2( statusChanged, status )
+    DECL_LSCS_SIGNAL_1( Public, void newObjects() )
+    DECL_LSCS_SIGNAL_2( newObjects )
+    DECL_LSCS_SIGNAL_1( Public, void statusChanged( Status status ) )
+    DECL_LSCS_SIGNAL_2( statusChanged, status )
 
 private:
     Q_DECLARE_PRIVATE( QDeclarativeEngineDebug )
@@ -97,7 +97,7 @@ protected:
 
 class Q_DECLARATIVE_PRIVATE_EXPORT QDeclarativeDebugWatch : public QObject
 {
-    DECL_CS_OBJECT( QDeclarativeDebugWatch )
+    DECL_LSCS_OBJECT( QDeclarativeDebugWatch )
 
 public:
     enum State { Waiting, Active, Inactive, Dead };
@@ -110,14 +110,14 @@ public:
     State state() const;
 
 public:
-    DECL_CS_SIGNAL_1( Public, void stateChanged( QDeclarativeDebugWatch::State un_named_arg1 ) )
-    DECL_CS_SIGNAL_2( stateChanged, un_named_arg1 )
+    DECL_LSCS_SIGNAL_1( Public, void stateChanged( QDeclarativeDebugWatch::State un_named_arg1 ) )
+    DECL_LSCS_SIGNAL_2( stateChanged, un_named_arg1 )
     //void objectChanged(int, const QDeclarativeDebugObjectReference &);
     //void valueChanged(int, const QVariant &);
 
     // Server sends value as string if it is a user-type variant
-    DECL_CS_SIGNAL_1( Public, void valueChanged( const QByteArray &name, const QVariant &value ) )
-    DECL_CS_SIGNAL_2( valueChanged, name, value )
+    DECL_LSCS_SIGNAL_1( Public, void valueChanged( const QByteArray &name, const QVariant &value ) )
+    DECL_LSCS_SIGNAL_2( valueChanged, name, value )
 
 private:
     friend class QDeclarativeEngineDebug;
@@ -131,7 +131,7 @@ private:
 
 class Q_DECLARATIVE_PRIVATE_EXPORT QDeclarativeDebugPropertyWatch : public QDeclarativeDebugWatch
 {
-    DECL_CS_OBJECT( QDeclarativeDebugPropertyWatch )
+    DECL_LSCS_OBJECT( QDeclarativeDebugPropertyWatch )
 
 public:
     QDeclarativeDebugPropertyWatch( QObject *parent );
@@ -145,7 +145,7 @@ private:
 
 class Q_DECLARATIVE_PRIVATE_EXPORT QDeclarativeDebugObjectExpressionWatch : public QDeclarativeDebugWatch
 {
-    DECL_CS_OBJECT( QDeclarativeDebugObjectExpressionWatch )
+    DECL_LSCS_OBJECT( QDeclarativeDebugObjectExpressionWatch )
 
 public:
     QDeclarativeDebugObjectExpressionWatch( QObject *parent );
@@ -161,7 +161,7 @@ private:
 
 class Q_DECLARATIVE_PRIVATE_EXPORT QDeclarativeDebugQuery : public QObject
 {
-    DECL_CS_OBJECT( QDeclarativeDebugQuery )
+    DECL_LSCS_OBJECT( QDeclarativeDebugQuery )
 
 public:
     enum State { Waiting, Error, Completed };
@@ -172,8 +172,8 @@ public:
     //    bool waitUntilCompleted();
 
 public:
-    DECL_CS_SIGNAL_1( Public, void stateChanged( QDeclarativeDebugQuery::State un_named_arg1 ) )
-    DECL_CS_SIGNAL_2( stateChanged, un_named_arg1 )
+    DECL_LSCS_SIGNAL_1( Public, void stateChanged( QDeclarativeDebugQuery::State un_named_arg1 ) )
+    DECL_LSCS_SIGNAL_2( stateChanged, un_named_arg1 )
 
 protected:
     QDeclarativeDebugQuery( QObject * );
@@ -306,7 +306,7 @@ private:
 
 class Q_DECLARATIVE_PRIVATE_EXPORT QDeclarativeDebugEnginesQuery : public QDeclarativeDebugQuery
 {
-    DECL_CS_OBJECT( QDeclarativeDebugEnginesQuery )
+    DECL_LSCS_OBJECT( QDeclarativeDebugEnginesQuery )
 public:
     virtual ~QDeclarativeDebugEnginesQuery();
     QList<QDeclarativeDebugEngineReference> engines() const;
@@ -321,7 +321,7 @@ private:
 
 class Q_DECLARATIVE_PRIVATE_EXPORT QDeclarativeDebugRootContextQuery : public QDeclarativeDebugQuery
 {
-    DECL_CS_OBJECT( QDeclarativeDebugRootContextQuery )
+    DECL_LSCS_OBJECT( QDeclarativeDebugRootContextQuery )
 public:
     virtual ~QDeclarativeDebugRootContextQuery();
     QDeclarativeDebugContextReference rootContext() const;
@@ -336,7 +336,7 @@ private:
 
 class Q_DECLARATIVE_PRIVATE_EXPORT QDeclarativeDebugObjectQuery : public QDeclarativeDebugQuery
 {
-    DECL_CS_OBJECT( QDeclarativeDebugObjectQuery )
+    DECL_LSCS_OBJECT( QDeclarativeDebugObjectQuery )
 public:
     virtual ~QDeclarativeDebugObjectQuery();
     QDeclarativeDebugObjectReference object() const;
@@ -352,7 +352,7 @@ private:
 
 class Q_DECLARATIVE_PRIVATE_EXPORT QDeclarativeDebugExpressionQuery : public QDeclarativeDebugQuery
 {
-    DECL_CS_OBJECT( QDeclarativeDebugExpressionQuery )
+    DECL_LSCS_OBJECT( QDeclarativeDebugExpressionQuery )
 public:
     virtual ~QDeclarativeDebugExpressionQuery();
     QVariant expression() const;

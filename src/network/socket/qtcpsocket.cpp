@@ -30,7 +30,7 @@
 QTcpSocket::QTcpSocket( QObject *parent )
     : QAbstractSocket( TcpSocket, *new QTcpSocketPrivate, parent )
 {
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
     qDebug( "QTcpSocket::QTcpSocket()" );
 #endif
     d_func()->isBuffered = true;
@@ -38,7 +38,7 @@ QTcpSocket::QTcpSocket( QObject *parent )
 
 QTcpSocket::~QTcpSocket()
 {
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
     qDebug( "QTcpSocket::~QTcpSocket()" );
 #endif
 }

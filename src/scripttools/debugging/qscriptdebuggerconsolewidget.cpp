@@ -79,7 +79,7 @@ public:
 
 class CommandLine : public QWidget
 {
-    SCRIPT_T_CS_OBJECT( CommandLine )
+    SCRIPT_T_LSCS_OBJECT( CommandLine )
 
 public:
     CommandLine( QWidget *parent = nullptr ) : QWidget( parent )

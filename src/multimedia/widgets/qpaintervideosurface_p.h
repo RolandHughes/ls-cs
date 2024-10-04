@@ -58,7 +58,7 @@ public:
 
 class QPainterVideoSurface : public QAbstractVideoSurface
 {
-    MULTI_CS_OBJECT( QPainterVideoSurface )
+    MULTI_LSCS_OBJECT( QPainterVideoSurface )
 
 public:
     explicit QPainterVideoSurface( QObject *parent = nullptr );
@@ -110,11 +110,11 @@ public:
     void setShaderType( ShaderType type );
 #endif
 
-    MULTI_CS_SLOT_1( Public, void viewportDestroyed() )
-    MULTI_CS_SLOT_2( viewportDestroyed )
+    MULTI_LSCS_SLOT_1( Public, void viewportDestroyed() )
+    MULTI_LSCS_SLOT_2( viewportDestroyed )
 
-    MULTI_CS_SIGNAL_1( Public, void frameChanged() )
-    MULTI_CS_SIGNAL_2( frameChanged )
+    MULTI_LSCS_SIGNAL_1( Public, void frameChanged() )
+    MULTI_LSCS_SIGNAL_2( frameChanged )
 
 private:
     void createPainter();

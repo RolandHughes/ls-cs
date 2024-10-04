@@ -261,17 +261,17 @@ class QACConnectionObject : public QObject
 public:
     bool isSender( const QObject *receiver, const QString &signal ) const
     {
-        return CSInternalSender::isSender( this, receiver, signal );
+        return LSCSInternalSender::isSender( this, receiver, signal );
     }
 
     QObjectList receiverList( const QMetaMethod &signalMetaMethod ) const
     {
-        return CSInternalSender::receiverList( this, signalMetaMethod );
+        return LSCSInternalSender::receiverList( this, signalMetaMethod );
     }
 
     QObjectList senderList() const
     {
-        return CSInternalSender::senderList( this );
+        return LSCSInternalSender::senderList( this );
     }
 };
 
@@ -282,8 +282,8 @@ void QAccessibleWidget::addControllingSignal( const QString &signal )
 
     if ( index < 0 )
     {
-        qWarning( "QAccessibleWidget::addControllingSignal() Signal %s unknown in %s", csPrintable( signalName ),
-                  csPrintable( object()->metaObject()->className() ) );
+        qWarning( "QAccessibleWidget::addControllingSignal() Signal %s unknown in %s", lscsPrintable( signalName ),
+                  lscsPrintable( object()->metaObject()->className() ) );
 
     }
     else

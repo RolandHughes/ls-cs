@@ -58,7 +58,7 @@ static const QLatin1String settingStorageTypeSuffix( ".type" );
 
 class InspectorClientWebPage : public QWebPage
 {
-    WEB_CS_OBJECT( InspectorClientWebPage )
+    WEB_LSCS_OBJECT( InspectorClientWebPage )
     friend class InspectorClientQt;
 
 public:
@@ -77,8 +77,8 @@ public:
         return page;
     }
 
-    WEB_CS_SLOT_1( Public,void javaScriptWindowObjectCleared() )
-    WEB_CS_SLOT_2( javaScriptWindowObjectCleared )
+    WEB_LSCS_SLOT_1( Public,void javaScriptWindowObjectCleared() )
+    WEB_LSCS_SLOT_2( javaScriptWindowObjectCleared )
 };
 
 

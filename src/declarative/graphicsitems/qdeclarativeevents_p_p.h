@@ -32,14 +32,14 @@ QT_BEGIN_NAMESPACE
 
 class QDeclarativeKeyEvent : public QObject
 {
-    DECL_CS_OBJECT( QDeclarativeKeyEvent )
-    DECL_CS_PROPERTY_READ( key, key )
-    DECL_CS_PROPERTY_READ( text, text )
-    DECL_CS_PROPERTY_READ( modifiers, modifiers )
-    DECL_CS_PROPERTY_READ( isAutoRepeat, isAutoRepeat )
-    DECL_CS_PROPERTY_READ( count, count )
-    DECL_CS_PROPERTY_READ( accepted, isAccepted )
-    DECL_CS_PROPERTY_WRITE( accepted, setAccepted )
+    DECL_LSCS_OBJECT( QDeclarativeKeyEvent )
+    DECL_LSCS_PROPERTY_READ( key, key )
+    DECL_LSCS_PROPERTY_READ( text, text )
+    DECL_LSCS_PROPERTY_READ( modifiers, modifiers )
+    DECL_LSCS_PROPERTY_READ( isAutoRepeat, isAutoRepeat )
+    DECL_LSCS_PROPERTY_READ( count, count )
+    DECL_LSCS_PROPERTY_READ( accepted, isAccepted )
+    DECL_LSCS_PROPERTY_WRITE( accepted, setAccepted )
 
 public:
     QDeclarativeKeyEvent( QEvent::Type type, int key, Qt::KeyboardModifiers modifiers, const QString &text = QString(),
@@ -90,16 +90,16 @@ private:
 
 class QDeclarativeMouseEvent : public QObject
 {
-    DECL_CS_OBJECT( QDeclarativeMouseEvent )
-    DECL_CS_PROPERTY_READ( x, x )
-    DECL_CS_PROPERTY_READ( y, y )
-    DECL_CS_PROPERTY_READ( button, button )
-    DECL_CS_PROPERTY_READ( buttons, buttons )
-    DECL_CS_PROPERTY_READ( modifiers, modifiers )
-    DECL_CS_PROPERTY_READ( wasHeld, wasHeld )
-    DECL_CS_PROPERTY_READ( isClick, isClick )
-    DECL_CS_PROPERTY_READ( accepted, isAccepted )
-    DECL_CS_PROPERTY_WRITE( accepted, setAccepted )
+    DECL_LSCS_OBJECT( QDeclarativeMouseEvent )
+    DECL_LSCS_PROPERTY_READ( x, x )
+    DECL_LSCS_PROPERTY_READ( y, y )
+    DECL_LSCS_PROPERTY_READ( button, button )
+    DECL_LSCS_PROPERTY_READ( buttons, buttons )
+    DECL_LSCS_PROPERTY_READ( modifiers, modifiers )
+    DECL_LSCS_PROPERTY_READ( wasHeld, wasHeld )
+    DECL_LSCS_PROPERTY_READ( isClick, isClick )
+    DECL_LSCS_PROPERTY_READ( accepted, isAccepted )
+    DECL_LSCS_PROPERTY_WRITE( accepted, setAccepted )
 
 public:
     QDeclarativeMouseEvent( int x, int y, Qt::MouseButton button, Qt::MouseButtons buttons, Qt::KeyboardModifiers modifiers

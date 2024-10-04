@@ -31,7 +31,7 @@ class CameraFormatConverter;
 
 class DSVideoRendererControl : public QVideoRendererControl
 {
-    CS_OBJECT( DSVideoRendererControl )
+    LSCS_OBJECT( DSVideoRendererControl )
 
 public:
     DSVideoRendererControl( DSCameraSession *session, QObject *parent = nullptr );

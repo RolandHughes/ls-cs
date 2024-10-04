@@ -36,14 +36,14 @@ class QGraphicsAnchorLayoutPrivate;
 
 class Q_GUI_EXPORT QGraphicsAnchor : public QObject
 {
-    GUI_CS_OBJECT( QGraphicsAnchor )
+    GUI_LSCS_OBJECT( QGraphicsAnchor )
 
-    GUI_CS_PROPERTY_READ( spacing, spacing )
-    GUI_CS_PROPERTY_WRITE( spacing, setSpacing )
-    GUI_CS_PROPERTY_RESET( spacing, unsetSpacing )
+    GUI_LSCS_PROPERTY_READ( spacing, spacing )
+    GUI_LSCS_PROPERTY_WRITE( spacing, setSpacing )
+    GUI_LSCS_PROPERTY_RESET( spacing, unsetSpacing )
 
-    GUI_CS_PROPERTY_READ( sizePolicy, sizePolicy )
-    GUI_CS_PROPERTY_WRITE( sizePolicy, setSizePolicy )
+    GUI_LSCS_PROPERTY_READ( sizePolicy, sizePolicy )
+    GUI_LSCS_PROPERTY_WRITE( sizePolicy, setSizePolicy )
 
 public:
     void setSpacing( qreal spacing );

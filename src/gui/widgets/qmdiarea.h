@@ -34,36 +34,36 @@ class QMdiAreaPrivate;
 
 class Q_GUI_EXPORT QMdiArea : public QAbstractScrollArea
 {
-    GUI_CS_OBJECT( QMdiArea )
+    GUI_LSCS_OBJECT( QMdiArea )
 
-    GUI_CS_ENUM( ViewMode )
+    GUI_LSCS_ENUM( ViewMode )
 
-    GUI_CS_PROPERTY_READ( background, background )
-    GUI_CS_PROPERTY_WRITE( background, setBackground )
+    GUI_LSCS_PROPERTY_READ( background, background )
+    GUI_LSCS_PROPERTY_WRITE( background, setBackground )
 
-    GUI_CS_PROPERTY_READ( activationOrder, activationOrder )
-    GUI_CS_PROPERTY_WRITE( activationOrder, setActivationOrder )
+    GUI_LSCS_PROPERTY_READ( activationOrder, activationOrder )
+    GUI_LSCS_PROPERTY_WRITE( activationOrder, setActivationOrder )
 
-    GUI_CS_PROPERTY_READ( viewMode, viewMode )
-    GUI_CS_PROPERTY_WRITE( viewMode, setViewMode )
+    GUI_LSCS_PROPERTY_READ( viewMode, viewMode )
+    GUI_LSCS_PROPERTY_WRITE( viewMode, setViewMode )
 
 #ifndef QT_NO_TABBAR
-    GUI_CS_PROPERTY_READ( documentMode, documentMode )
-    GUI_CS_PROPERTY_WRITE( documentMode, setDocumentMode )
-    GUI_CS_PROPERTY_READ( tabsClosable, tabsClosable )
-    GUI_CS_PROPERTY_WRITE( tabsClosable, setTabsClosable )
-    GUI_CS_PROPERTY_READ( tabsMovable, tabsMovable )
-    GUI_CS_PROPERTY_WRITE( tabsMovable, setTabsMovable )
+    GUI_LSCS_PROPERTY_READ( documentMode, documentMode )
+    GUI_LSCS_PROPERTY_WRITE( documentMode, setDocumentMode )
+    GUI_LSCS_PROPERTY_READ( tabsClosable, tabsClosable )
+    GUI_LSCS_PROPERTY_WRITE( tabsClosable, setTabsClosable )
+    GUI_LSCS_PROPERTY_READ( tabsMovable, tabsMovable )
+    GUI_LSCS_PROPERTY_WRITE( tabsMovable, setTabsMovable )
 #endif
 
 #ifndef QT_NO_TABWIDGET
-    GUI_CS_PROPERTY_READ( tabShape, tabShape )
-    GUI_CS_PROPERTY_WRITE( tabShape, setTabShape )
-    GUI_CS_PROPERTY_READ( tabPosition, tabPosition )
-    GUI_CS_PROPERTY_WRITE( tabPosition, setTabPosition )
+    GUI_LSCS_PROPERTY_READ( tabShape, tabShape )
+    GUI_LSCS_PROPERTY_WRITE( tabShape, setTabShape )
+    GUI_LSCS_PROPERTY_READ( tabPosition, tabPosition )
+    GUI_LSCS_PROPERTY_WRITE( tabPosition, setTabPosition )
 #endif
 
-    GUI_CS_ENUM( WindowOrder )
+    GUI_LSCS_ENUM( WindowOrder )
 
 public:
     enum AreaOption
@@ -72,7 +72,7 @@ public:
     };
     using AreaOptions = QFlags<AreaOption>;
 
-    GUI_CS_REGISTER_ENUM(
+    GUI_LSCS_REGISTER_ENUM(
         enum WindowOrder
     {
         CreationOrder,
@@ -81,7 +81,7 @@ public:
     };
     )
 
-    GUI_CS_REGISTER_ENUM(
+    GUI_LSCS_REGISTER_ENUM(
         enum ViewMode
     {
         SubWindowView,
@@ -137,33 +137,33 @@ public:
     QTabWidget::TabPosition tabPosition() const;
 #endif
 
-    GUI_CS_SIGNAL_1( Public, void subWindowActivated( QMdiSubWindow *window ) )
-    GUI_CS_SIGNAL_2( subWindowActivated, window )
+    GUI_LSCS_SIGNAL_1( Public, void subWindowActivated( QMdiSubWindow *window ) )
+    GUI_LSCS_SIGNAL_2( subWindowActivated, window )
 
-    GUI_CS_SLOT_1( Public, void setActiveSubWindow( QMdiSubWindow *window ) )
-    GUI_CS_SLOT_2( setActiveSubWindow )
+    GUI_LSCS_SLOT_1( Public, void setActiveSubWindow( QMdiSubWindow *window ) )
+    GUI_LSCS_SLOT_2( setActiveSubWindow )
 
-    GUI_CS_SLOT_1( Public, void tileSubWindows() )
-    GUI_CS_SLOT_2( tileSubWindows )
+    GUI_LSCS_SLOT_1( Public, void tileSubWindows() )
+    GUI_LSCS_SLOT_2( tileSubWindows )
 
-    GUI_CS_SLOT_1( Public, void cascadeSubWindows() )
-    GUI_CS_SLOT_2( cascadeSubWindows )
+    GUI_LSCS_SLOT_1( Public, void cascadeSubWindows() )
+    GUI_LSCS_SLOT_2( cascadeSubWindows )
 
-    GUI_CS_SLOT_1( Public, void closeActiveSubWindow() )
-    GUI_CS_SLOT_2( closeActiveSubWindow )
+    GUI_LSCS_SLOT_1( Public, void closeActiveSubWindow() )
+    GUI_LSCS_SLOT_2( closeActiveSubWindow )
 
-    GUI_CS_SLOT_1( Public, void closeAllSubWindows() )
-    GUI_CS_SLOT_2( closeAllSubWindows )
+    GUI_LSCS_SLOT_1( Public, void closeAllSubWindows() )
+    GUI_LSCS_SLOT_2( closeAllSubWindows )
 
-    GUI_CS_SLOT_1( Public, void activateNextSubWindow() )
-    GUI_CS_SLOT_2( activateNextSubWindow )
+    GUI_LSCS_SLOT_1( Public, void activateNextSubWindow() )
+    GUI_LSCS_SLOT_2( activateNextSubWindow )
 
-    GUI_CS_SLOT_1( Public, void activatePreviousSubWindow() )
-    GUI_CS_SLOT_2( activatePreviousSubWindow )
+    GUI_LSCS_SLOT_1( Public, void activatePreviousSubWindow() )
+    GUI_LSCS_SLOT_2( activatePreviousSubWindow )
 
 protected:
-    GUI_CS_SLOT_1( Protected, void setupViewport( QWidget *viewport ) override )
-    GUI_CS_SLOT_2( setupViewport )
+    GUI_LSCS_SLOT_1( Protected, void setupViewport( QWidget *viewport ) override )
+    GUI_LSCS_SLOT_2( setupViewport )
 
     bool event( QEvent *event ) override;
     bool eventFilter( QObject *object, QEvent *event ) override;
@@ -178,20 +178,20 @@ protected:
 private:
     Q_DECLARE_PRIVATE( QMdiArea )
 
-    GUI_CS_SLOT_1( Private, void _q_deactivateAllWindows() )
-    GUI_CS_SLOT_2( _q_deactivateAllWindows )
+    GUI_LSCS_SLOT_1( Private, void _q_deactivateAllWindows() )
+    GUI_LSCS_SLOT_2( _q_deactivateAllWindows )
 
-    GUI_CS_SLOT_1( Private, void _q_processWindowStateChanged( Qt::WindowStates oldState, Qt::WindowStates newStates ) )
-    GUI_CS_SLOT_2( _q_processWindowStateChanged )
+    GUI_LSCS_SLOT_1( Private, void _q_processWindowStateChanged( Qt::WindowStates oldState, Qt::WindowStates newStates ) )
+    GUI_LSCS_SLOT_2( _q_processWindowStateChanged )
 
-    GUI_CS_SLOT_1( Private, void _q_currentTabChanged( int index ) )
-    GUI_CS_SLOT_2( _q_currentTabChanged )
+    GUI_LSCS_SLOT_1( Private, void _q_currentTabChanged( int index ) )
+    GUI_LSCS_SLOT_2( _q_currentTabChanged )
 
-    GUI_CS_SLOT_1( Private, void _q_closeTab( int index ) )
-    GUI_CS_SLOT_2( _q_closeTab )
+    GUI_LSCS_SLOT_1( Private, void _q_closeTab( int index ) )
+    GUI_LSCS_SLOT_2( _q_closeTab )
 
-    GUI_CS_SLOT_1( Private, void _q_moveTab( int from, int to ) )
-    GUI_CS_SLOT_2( _q_moveTab )
+    GUI_LSCS_SLOT_1( Private, void _q_moveTab( int from, int to ) )
+    GUI_LSCS_SLOT_2( _q_moveTab )
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS( QMdiArea::AreaOptions )

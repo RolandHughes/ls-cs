@@ -51,7 +51,7 @@ class QScriptDebuggerPrivate;
 
 class QScriptDebugger : public QObject
 {
-    SCRIPT_T_CS_OBJECT( QScriptDebugger )
+    SCRIPT_T_LSCS_OBJECT( QScriptDebugger )
 
 public:
     // mirrors QScriptEngineDebugger::DebuggerWidget
@@ -154,10 +154,10 @@ public:
     bool eventFilter( QObject *, QEvent *e );
     bool isInteractive() const;
 
-    CS_SIGNAL_1( Public, void stopped() )
-    CS_SIGNAL_2( stopped )
-    CS_SIGNAL_1( Public, void started() )
-    CS_SIGNAL_2( started )
+    LSCS_SIGNAL_1( Public, void stopped() )
+    LSCS_SIGNAL_2( stopped )
+    LSCS_SIGNAL_1( Public, void started() )
+    LSCS_SIGNAL_2( started )
 
 protected:
     void timerEvent( QTimerEvent *e );
@@ -169,65 +169,65 @@ private:
     Q_DISABLE_COPY( QScriptDebugger )
 
 
-    CS_SLOT_1( Private, void _q_onLineEntered( const QString &un_named_arg1 ) )
-    CS_SLOT_2( _q_onLineEntered )
+    LSCS_SLOT_1( Private, void _q_onLineEntered( const QString &un_named_arg1 ) )
+    LSCS_SLOT_2( _q_onLineEntered )
 
-    CS_SLOT_1( Private, void _q_onCurrentFrameChanged( int un_named_arg1 ) )
-    CS_SLOT_2( _q_onCurrentFrameChanged )
+    LSCS_SLOT_1( Private, void _q_onCurrentFrameChanged( int un_named_arg1 ) )
+    LSCS_SLOT_2( _q_onCurrentFrameChanged )
 
-    CS_SLOT_1( Private, void _q_onCurrentScriptChanged( qint64 un_named_arg1 ) )
-    CS_SLOT_2( _q_onCurrentScriptChanged )
+    LSCS_SLOT_1( Private, void _q_onCurrentScriptChanged( qint64 un_named_arg1 ) )
+    LSCS_SLOT_2( _q_onCurrentScriptChanged )
 
-    CS_SLOT_1( Private, void _q_onScriptLocationSelected( int un_named_arg1 ) )
-    CS_SLOT_2( _q_onScriptLocationSelected )
+    LSCS_SLOT_1( Private, void _q_onScriptLocationSelected( int un_named_arg1 ) )
+    LSCS_SLOT_2( _q_onScriptLocationSelected )
 
-    CS_SLOT_1( Private, void _q_interrupt() )
-    CS_SLOT_2( _q_interrupt )
+    LSCS_SLOT_1( Private, void _q_interrupt() )
+    LSCS_SLOT_2( _q_interrupt )
 
-    CS_SLOT_1( Private, void _q_continue() )
-    CS_SLOT_2( _q_continue )
+    LSCS_SLOT_1( Private, void _q_continue() )
+    LSCS_SLOT_2( _q_continue )
 
-    CS_SLOT_1( Private, void _q_stepInto() )
-    CS_SLOT_2( _q_stepInto )
+    LSCS_SLOT_1( Private, void _q_stepInto() )
+    LSCS_SLOT_2( _q_stepInto )
 
-    CS_SLOT_1( Private, void _q_stepOver() )
-    CS_SLOT_2( _q_stepOver )
+    LSCS_SLOT_1( Private, void _q_stepOver() )
+    LSCS_SLOT_2( _q_stepOver )
 
-    CS_SLOT_1( Private, void _q_stepOut() )
-    CS_SLOT_2( _q_stepOut )
+    LSCS_SLOT_1( Private, void _q_stepOut() )
+    LSCS_SLOT_2( _q_stepOut )
 
-    CS_SLOT_1( Private, void _q_runToCursor() )
-    CS_SLOT_2( _q_runToCursor )
+    LSCS_SLOT_1( Private, void _q_runToCursor() )
+    LSCS_SLOT_2( _q_runToCursor )
 
-    CS_SLOT_1( Private, void _q_runToNewScript() )
-    CS_SLOT_2( _q_runToNewScript )
+    LSCS_SLOT_1( Private, void _q_runToNewScript() )
+    LSCS_SLOT_2( _q_runToNewScript )
 
-    CS_SLOT_1( Private, void _q_toggleBreakpoint() )
-    CS_SLOT_2( _q_toggleBreakpoint )
+    LSCS_SLOT_1( Private, void _q_toggleBreakpoint() )
+    LSCS_SLOT_2( _q_toggleBreakpoint )
 
-    CS_SLOT_1( Private, void _q_clearDebugOutput() )
-    CS_SLOT_2( _q_clearDebugOutput )
+    LSCS_SLOT_1( Private, void _q_clearDebugOutput() )
+    LSCS_SLOT_2( _q_clearDebugOutput )
 
-    CS_SLOT_1( Private, void _q_clearErrorLog() )
-    CS_SLOT_2( _q_clearErrorLog )
+    LSCS_SLOT_1( Private, void _q_clearErrorLog() )
+    LSCS_SLOT_2( _q_clearErrorLog )
 
-    CS_SLOT_1( Private, void _q_clearConsole() )
-    CS_SLOT_2( _q_clearConsole )
+    LSCS_SLOT_1( Private, void _q_clearConsole() )
+    LSCS_SLOT_2( _q_clearConsole )
 
-    CS_SLOT_1( Private, void _q_findInScript() )
-    CS_SLOT_2( _q_findInScript )
+    LSCS_SLOT_1( Private, void _q_findInScript() )
+    LSCS_SLOT_2( _q_findInScript )
 
-    CS_SLOT_1( Private, void _q_findNextInScript() )
-    CS_SLOT_2( _q_findNextInScript )
+    LSCS_SLOT_1( Private, void _q_findNextInScript() )
+    LSCS_SLOT_2( _q_findNextInScript )
 
-    CS_SLOT_1( Private, void _q_findPreviousInScript() )
-    CS_SLOT_2( _q_findPreviousInScript )
+    LSCS_SLOT_1( Private, void _q_findPreviousInScript() )
+    LSCS_SLOT_2( _q_findPreviousInScript )
 
-    CS_SLOT_1( Private, void _q_onFindCodeRequest( const QString &un_named_arg1, int un_named_arg2 ) )
-    CS_SLOT_2( _q_onFindCodeRequest )
+    LSCS_SLOT_1( Private, void _q_onFindCodeRequest( const QString &un_named_arg1, int un_named_arg2 ) )
+    LSCS_SLOT_2( _q_onFindCodeRequest )
 
-    CS_SLOT_1( Private, void _q_goToLine() )
-    CS_SLOT_2( _q_goToLine )
+    LSCS_SLOT_1( Private, void _q_goToLine() )
+    LSCS_SLOT_2( _q_goToLine )
 
 
 };

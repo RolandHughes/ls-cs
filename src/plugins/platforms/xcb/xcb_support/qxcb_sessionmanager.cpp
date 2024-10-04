@@ -41,7 +41,7 @@
 
 class QSmSocketReceiver : public QObject
 {
-    CS_OBJECT( QSmSocketReceiver )
+    LSCS_OBJECT( QSmSocketReceiver )
 
 public:
     QSmSocketReceiver( int socket )
@@ -50,8 +50,8 @@ public:
         connect( sn, &QSocketNotifier::activated, this, &QSmSocketReceiver::socketActivated );
     }
 
-    CS_SLOT_1( Public, void socketActivated( int ) )
-    CS_SLOT_2( socketActivated )
+    LSCS_SLOT_1( Public, void socketActivated( int ) )
+    LSCS_SLOT_2( socketActivated )
 };
 
 static SmcConn smcConnection = nullptr;
@@ -419,7 +419,7 @@ QXcbSessionManager::QXcbSessionManager( const QString &id, const QString &key )
 
     if ( ! smcConnection )
     {
-        qWarning( "Session management error: %s", csPrintable( error ) );
+        qWarning( "Session management error: %s", lscsPrintable( error ) );
     }
     else
     {

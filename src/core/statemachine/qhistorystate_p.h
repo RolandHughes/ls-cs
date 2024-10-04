@@ -46,7 +46,7 @@ public:
 
 class DefaultStateTransition : public QAbstractTransition
 {
-    CORE_CS_OBJECT( DefaultStateTransition )
+    CORE_LSCS_OBJECT( DefaultStateTransition )
 
 public:
     DefaultStateTransition( QHistoryState *source, QAbstractState *target );

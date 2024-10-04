@@ -608,7 +608,7 @@ void QNetworkHeadersPrivate::setCookedHeader( QNetworkRequest::KnownHeaders head
         if ( rawValue.isEmpty() )
         {
             qWarning( "QNetworkRequest::setCookedHeader() QVariant type %s can not be used with header %s",
-                      csPrintable( value.typeName() ), name.constData() );
+                      lscsPrintable( value.typeName() ), name.constData() );
             return;
         }
 

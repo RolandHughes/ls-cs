@@ -34,7 +34,7 @@ class PhraseBook;
 
 class SettingsDialog : public QDialog
 {
-    CS_OBJECT( SettingsDialog )
+    LSCS_OBJECT( SettingsDialog )
 
 public:
     SettingsDialog( QWidget *parent = nullptr );
@@ -50,14 +50,14 @@ private:
     DataModel *m_dataModel;
     PhraseBook *m_phraseBook;
 
-    CS_SLOT_1( Private, void on_buttonBox_accepted() )
-    CS_SLOT_2( on_buttonBox_accepted )
+    LSCS_SLOT_1( Private, void on_buttonBox_accepted() )
+    LSCS_SLOT_2( on_buttonBox_accepted )
 
-    CS_SLOT_1( Private, void on_srcCbLanguageList_currentIndexChanged( int idx ) )
-    CS_SLOT_2( on_srcCbLanguageList_currentIndexChanged )
+    LSCS_SLOT_1( Private, void on_srcCbLanguageList_currentIndexChanged( int idx ) )
+    LSCS_SLOT_2( on_srcCbLanguageList_currentIndexChanged )
 
-    CS_SLOT_1( Private, void on_tgtCbLanguageList_currentIndexChanged( int idx ) )
-    CS_SLOT_2( on_tgtCbLanguageList_currentIndexChanged )
+    LSCS_SLOT_1( Private, void on_tgtCbLanguageList_currentIndexChanged( int idx ) )
+    LSCS_SLOT_2( on_tgtCbLanguageList_currentIndexChanged )
 };
 
 #endif

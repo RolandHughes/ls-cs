@@ -128,7 +128,7 @@ inline uint qHash( const JSAgentBreakpointData &b )
 
 class QJSDebuggerAgent : public QObject, public QScriptEngineAgent
 {
-    DECL_CS_OBJECT( QJSDebuggerAgent )
+    DECL_LSCS_OBJECT( QJSDebuggerAgent )
 
 public:
     QJSDebuggerAgent( QScriptEngine *engine, QObject *parent = nullptr );
@@ -182,8 +182,8 @@ public:
                         const QVariant &argument = QVariant() );
 
 public:
-    DECL_CS_SIGNAL_1( Public, void stopped( bool becauseOfException, const QString &exception ) )
-    DECL_CS_SIGNAL_2( stopped, becauseOfException, exception )
+    DECL_LSCS_SIGNAL_1( Public, void stopped( bool becauseOfException, const QString &exception ) )
+    DECL_LSCS_SIGNAL_2( stopped, becauseOfException, exception )
 
 private:
     friend class QJSDebuggerAgentPrivate;

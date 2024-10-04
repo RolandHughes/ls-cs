@@ -27,10 +27,10 @@
 
 class QMYSQLDriverPlugin : public QSqlDriverPlugin
 {
-    CS_OBJECT( QMYSQLDriverPlugin )
+    LSCS_OBJECT( QMYSQLDriverPlugin )
 
-    CS_PLUGIN_IID( QSqlDriverInterface_ID )
-    CS_PLUGIN_KEY( "QMYSQL, QMARIADB" )
+    LSCS_PLUGIN_IID( QSqlDriverInterface_ID )
+    LSCS_PLUGIN_KEY( "QMYSQL, QMARIADB" )
 
 public:
     QMYSQLDriverPlugin();
@@ -38,7 +38,7 @@ public:
     QSqlDriver *create( const QString & ) override;
 };
 
-CS_PLUGIN_REGISTER( QMYSQLDriverPlugin )
+LSCS_PLUGIN_REGISTER( QMYSQLDriverPlugin )
 
 QMYSQLDriverPlugin::QMYSQLDriverPlugin()
     : QSqlDriverPlugin()

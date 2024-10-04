@@ -33,7 +33,7 @@ class QMediaPlaylist;
 
 class Q_MULTIMEDIA_EXPORT QMediaPlayerControl : public QMediaControl
 {
-    MULTI_CS_OBJECT( QMediaPlayerControl )
+    MULTI_LSCS_OBJECT( QMediaPlayerControl )
 
 public:
     ~QMediaPlayerControl();
@@ -73,54 +73,54 @@ public:
     virtual void pause() = 0;
     virtual void stop()  = 0;
 
-    MULTI_CS_SIGNAL_1( Public, void mediaChanged( const QMediaContent &content ) )
-    MULTI_CS_SIGNAL_2( mediaChanged, content )
+    MULTI_LSCS_SIGNAL_1( Public, void mediaChanged( const QMediaContent &content ) )
+    MULTI_LSCS_SIGNAL_2( mediaChanged, content )
 
-    MULTI_CS_SIGNAL_1( Public, void durationChanged( qint64 duration ) )
-    MULTI_CS_SIGNAL_2( durationChanged, duration )
+    MULTI_LSCS_SIGNAL_1( Public, void durationChanged( qint64 duration ) )
+    MULTI_LSCS_SIGNAL_2( durationChanged, duration )
 
-    MULTI_CS_SIGNAL_1( Public, void positionChanged( qint64 position ) )
-    MULTI_CS_SIGNAL_2( positionChanged, position )
+    MULTI_LSCS_SIGNAL_1( Public, void positionChanged( qint64 position ) )
+    MULTI_LSCS_SIGNAL_2( positionChanged, position )
 
-    MULTI_CS_SIGNAL_1( Public, void stateChanged( QMediaPlayer::State state ) )
-    MULTI_CS_SIGNAL_2( stateChanged, state )
+    MULTI_LSCS_SIGNAL_1( Public, void stateChanged( QMediaPlayer::State state ) )
+    MULTI_LSCS_SIGNAL_2( stateChanged, state )
 
-    MULTI_CS_SIGNAL_1( Public, void mediaStatusChanged( QMediaPlayer::MediaStatus status ) )
-    MULTI_CS_SIGNAL_2( mediaStatusChanged, status )
+    MULTI_LSCS_SIGNAL_1( Public, void mediaStatusChanged( QMediaPlayer::MediaStatus status ) )
+    MULTI_LSCS_SIGNAL_2( mediaStatusChanged, status )
 
-    MULTI_CS_SIGNAL_1( Public, void volumeChanged( int volume ) )
-    MULTI_CS_SIGNAL_2( volumeChanged, volume )
+    MULTI_LSCS_SIGNAL_1( Public, void volumeChanged( int volume ) )
+    MULTI_LSCS_SIGNAL_2( volumeChanged, volume )
 
-    MULTI_CS_SIGNAL_1( Public, void mutedChanged( bool muted ) )
-    MULTI_CS_SIGNAL_2( mutedChanged, muted )
+    MULTI_LSCS_SIGNAL_1( Public, void mutedChanged( bool muted ) )
+    MULTI_LSCS_SIGNAL_2( mutedChanged, muted )
 
-    MULTI_CS_SIGNAL_1( Public, void audioAvailableChanged( bool audioAvailable ) )
-    MULTI_CS_SIGNAL_2( audioAvailableChanged, audioAvailable )
+    MULTI_LSCS_SIGNAL_1( Public, void audioAvailableChanged( bool audioAvailable ) )
+    MULTI_LSCS_SIGNAL_2( audioAvailableChanged, audioAvailable )
 
-    MULTI_CS_SIGNAL_1( Public, void videoAvailableChanged( bool videoAvailable ) )
-    MULTI_CS_SIGNAL_2( videoAvailableChanged, videoAvailable )
+    MULTI_LSCS_SIGNAL_1( Public, void videoAvailableChanged( bool videoAvailable ) )
+    MULTI_LSCS_SIGNAL_2( videoAvailableChanged, videoAvailable )
 
-    MULTI_CS_SIGNAL_1( Public, void bufferStatusChanged( int progress ) )
-    MULTI_CS_SIGNAL_2( bufferStatusChanged, progress )
+    MULTI_LSCS_SIGNAL_1( Public, void bufferStatusChanged( int progress ) )
+    MULTI_LSCS_SIGNAL_2( bufferStatusChanged, progress )
 
-    MULTI_CS_SIGNAL_1( Public, void seekableChanged( bool seekable ) )
-    MULTI_CS_SIGNAL_2( seekableChanged, seekable )
+    MULTI_LSCS_SIGNAL_1( Public, void seekableChanged( bool seekable ) )
+    MULTI_LSCS_SIGNAL_2( seekableChanged, seekable )
 
-    MULTI_CS_SIGNAL_1( Public, void availablePlaybackRangesChanged( const QMediaTimeRange &ranges ) )
-    MULTI_CS_SIGNAL_2( availablePlaybackRangesChanged, ranges )
+    MULTI_LSCS_SIGNAL_1( Public, void availablePlaybackRangesChanged( const QMediaTimeRange &ranges ) )
+    MULTI_LSCS_SIGNAL_2( availablePlaybackRangesChanged, ranges )
 
-    MULTI_CS_SIGNAL_1( Public, void playbackRateChanged( qreal rate ) )
-    MULTI_CS_SIGNAL_2( playbackRateChanged, rate )
+    MULTI_LSCS_SIGNAL_1( Public, void playbackRateChanged( qreal rate ) )
+    MULTI_LSCS_SIGNAL_2( playbackRateChanged, rate )
 
-    MULTI_CS_SIGNAL_1( Public, void error( int error, const QString &errorString ) )
-    MULTI_CS_SIGNAL_2( error, error, errorString )
+    MULTI_LSCS_SIGNAL_1( Public, void error( int error, const QString &errorString ) )
+    MULTI_LSCS_SIGNAL_2( error, error, errorString )
 
 protected:
     explicit QMediaPlayerControl( QObject *parent = nullptr );
 };
 
 #define QMediaPlayerControl_Key "com.copperspice.CS.mediaPlayerControl/1.0"
-CS_DECLARE_INTERFACE( QMediaPlayerControl, QMediaPlayerControl_Key )
+LSCS_DECLARE_INTERFACE( QMediaPlayerControl, QMediaPlayerControl_Key )
 
 #endif
 

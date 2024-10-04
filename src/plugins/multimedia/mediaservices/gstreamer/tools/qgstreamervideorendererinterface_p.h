@@ -52,6 +52,6 @@ public:
 };
 
 #define QGstreamerVideoRendererInterface_iid "com.copperspice.CS.gstreamerVideoRenderer/1.0"
-CS_DECLARE_INTERFACE( QGstreamerVideoRendererInterface, QGstreamerVideoRendererInterface_iid )
+LSCS_DECLARE_INTERFACE( QGstreamerVideoRendererInterface, QGstreamerVideoRendererInterface_iid )
 
 #endif

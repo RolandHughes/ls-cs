@@ -103,196 +103,196 @@ class QWidgetPrivate;
 
 class Q_GUI_EXPORT QWidget : public QObject, public QPaintDevice
 {
-    GUI_CS_OBJECT_MULTIPLE( QWidget, QObject )
+    GUI_LSCS_OBJECT_MULTIPLE( QWidget, QObject )
 
-    GUI_CS_PROPERTY_READ( modal, isModal )
+    GUI_LSCS_PROPERTY_READ( modal, isModal )
 
-    GUI_CS_PROPERTY_READ( windowModality, windowModality )
-    GUI_CS_PROPERTY_WRITE( windowModality, setWindowModality )
+    GUI_LSCS_PROPERTY_READ( windowModality, windowModality )
+    GUI_LSCS_PROPERTY_WRITE( windowModality, setWindowModality )
 
-    GUI_CS_PROPERTY_READ( enabled, isEnabled )
-    GUI_CS_PROPERTY_WRITE( enabled, setEnabled )
+    GUI_LSCS_PROPERTY_READ( enabled, isEnabled )
+    GUI_LSCS_PROPERTY_WRITE( enabled, setEnabled )
 
-    GUI_CS_PROPERTY_READ( geometry, geometry )
-    GUI_CS_PROPERTY_WRITE( geometry, cs_setGeometry )
+    GUI_LSCS_PROPERTY_READ( geometry, geometry )
+    GUI_LSCS_PROPERTY_WRITE( geometry, cs_setGeometry )
 
-    GUI_CS_PROPERTY_READ( frameGeometry, frameGeometry )
-    GUI_CS_PROPERTY_READ( normalGeometry, normalGeometry )
+    GUI_LSCS_PROPERTY_READ( frameGeometry, frameGeometry )
+    GUI_LSCS_PROPERTY_READ( normalGeometry, normalGeometry )
 
-    GUI_CS_PROPERTY_READ( x, x )
-    GUI_CS_PROPERTY_READ( y, y )
+    GUI_LSCS_PROPERTY_READ( x, x )
+    GUI_LSCS_PROPERTY_READ( y, y )
 
-    GUI_CS_PROPERTY_READ( pos, pos )
-    GUI_CS_PROPERTY_WRITE( pos, cs_move )
-    GUI_CS_PROPERTY_DESIGNABLE( pos, false )
-    GUI_CS_PROPERTY_STORED( pos, false )
+    GUI_LSCS_PROPERTY_READ( pos, pos )
+    GUI_LSCS_PROPERTY_WRITE( pos, cs_move )
+    GUI_LSCS_PROPERTY_DESIGNABLE( pos, false )
+    GUI_LSCS_PROPERTY_STORED( pos, false )
 
-    GUI_CS_PROPERTY_READ( size, size )
-    GUI_CS_PROPERTY_WRITE( size, cs_resize )
-    GUI_CS_PROPERTY_DESIGNABLE( size, false )
-    GUI_CS_PROPERTY_STORED( size, false )
+    GUI_LSCS_PROPERTY_READ( size, size )
+    GUI_LSCS_PROPERTY_WRITE( size, cs_resize )
+    GUI_LSCS_PROPERTY_DESIGNABLE( size, false )
+    GUI_LSCS_PROPERTY_STORED( size, false )
 
-    GUI_CS_PROPERTY_READ( frameSize, frameSize )
+    GUI_LSCS_PROPERTY_READ( frameSize, frameSize )
 
-    GUI_CS_PROPERTY_READ( width, width )
-    GUI_CS_PROPERTY_READ( height, height )
-    GUI_CS_PROPERTY_READ( rect, rect )
-    GUI_CS_PROPERTY_READ( childrenRect, childrenRect )
-    GUI_CS_PROPERTY_READ( childrenRegion, childrenRegion )
+    GUI_LSCS_PROPERTY_READ( width, width )
+    GUI_LSCS_PROPERTY_READ( height, height )
+    GUI_LSCS_PROPERTY_READ( rect, rect )
+    GUI_LSCS_PROPERTY_READ( childrenRect, childrenRect )
+    GUI_LSCS_PROPERTY_READ( childrenRegion, childrenRegion )
 
-    GUI_CS_PROPERTY_READ( fullScreen, isFullScreen )
-    GUI_CS_PROPERTY_READ( sizeHint, sizeHint )
-    GUI_CS_PROPERTY_READ( minimumSizeHint, minimumSizeHint )
+    GUI_LSCS_PROPERTY_READ( fullScreen, isFullScreen )
+    GUI_LSCS_PROPERTY_READ( sizeHint, sizeHint )
+    GUI_LSCS_PROPERTY_READ( minimumSizeHint, minimumSizeHint )
 
-    GUI_CS_PROPERTY_READ( sizePolicy, sizePolicy )
-    GUI_CS_PROPERTY_WRITE( sizePolicy, cs_setSizePolicy )
+    GUI_LSCS_PROPERTY_READ( sizePolicy, sizePolicy )
+    GUI_LSCS_PROPERTY_WRITE( sizePolicy, cs_setSizePolicy )
 
-    GUI_CS_PROPERTY_READ( minimumSize, minimumSize )
-    GUI_CS_PROPERTY_WRITE( minimumSize, cs_setMinimumSize )
+    GUI_LSCS_PROPERTY_READ( minimumSize, minimumSize )
+    GUI_LSCS_PROPERTY_WRITE( minimumSize, cs_setMinimumSize )
 
-    GUI_CS_PROPERTY_READ( maximumSize, maximumSize )
-    GUI_CS_PROPERTY_WRITE( maximumSize, cs_setMaximumSize )
+    GUI_LSCS_PROPERTY_READ( maximumSize, maximumSize )
+    GUI_LSCS_PROPERTY_WRITE( maximumSize, cs_setMaximumSize )
 
-    GUI_CS_PROPERTY_READ( minimumWidth, minimumWidth )
-    GUI_CS_PROPERTY_WRITE( minimumWidth, setMinimumWidth )
-    GUI_CS_PROPERTY_STORED( minimumWidth, false )
-    GUI_CS_PROPERTY_DESIGNABLE( minimumWidth, false )
+    GUI_LSCS_PROPERTY_READ( minimumWidth, minimumWidth )
+    GUI_LSCS_PROPERTY_WRITE( minimumWidth, setMinimumWidth )
+    GUI_LSCS_PROPERTY_STORED( minimumWidth, false )
+    GUI_LSCS_PROPERTY_DESIGNABLE( minimumWidth, false )
 
-    GUI_CS_PROPERTY_READ( minimumHeight, minimumHeight )
-    GUI_CS_PROPERTY_WRITE( minimumHeight, setMinimumHeight )
-    GUI_CS_PROPERTY_STORED( minimumHeight, false )
-    GUI_CS_PROPERTY_DESIGNABLE( minimumHeight, false )
+    GUI_LSCS_PROPERTY_READ( minimumHeight, minimumHeight )
+    GUI_LSCS_PROPERTY_WRITE( minimumHeight, setMinimumHeight )
+    GUI_LSCS_PROPERTY_STORED( minimumHeight, false )
+    GUI_LSCS_PROPERTY_DESIGNABLE( minimumHeight, false )
 
-    GUI_CS_PROPERTY_READ( maximumWidth, maximumWidth )
-    GUI_CS_PROPERTY_WRITE( maximumWidth, setMaximumWidth )
-    GUI_CS_PROPERTY_STORED( maximumWidth, false )
-    GUI_CS_PROPERTY_DESIGNABLE( maximumWidth, false )
+    GUI_LSCS_PROPERTY_READ( maximumWidth, maximumWidth )
+    GUI_LSCS_PROPERTY_WRITE( maximumWidth, setMaximumWidth )
+    GUI_LSCS_PROPERTY_STORED( maximumWidth, false )
+    GUI_LSCS_PROPERTY_DESIGNABLE( maximumWidth, false )
 
-    GUI_CS_PROPERTY_READ( maximumHeight, maximumHeight )
-    GUI_CS_PROPERTY_WRITE( maximumHeight, setMaximumHeight )
-    GUI_CS_PROPERTY_STORED( maximumHeight, false )
-    GUI_CS_PROPERTY_DESIGNABLE( maximumHeight, false )
+    GUI_LSCS_PROPERTY_READ( maximumHeight, maximumHeight )
+    GUI_LSCS_PROPERTY_WRITE( maximumHeight, setMaximumHeight )
+    GUI_LSCS_PROPERTY_STORED( maximumHeight, false )
+    GUI_LSCS_PROPERTY_DESIGNABLE( maximumHeight, false )
 
-    GUI_CS_PROPERTY_READ( sizeIncrement, sizeIncrement )
-    GUI_CS_PROPERTY_WRITE( sizeIncrement, cs_setSizeIncrement )
+    GUI_LSCS_PROPERTY_READ( sizeIncrement, sizeIncrement )
+    GUI_LSCS_PROPERTY_WRITE( sizeIncrement, cs_setSizeIncrement )
 
-    GUI_CS_PROPERTY_READ( baseSize, baseSize )
-    GUI_CS_PROPERTY_WRITE( baseSize, cs_setBaseSize )
+    GUI_LSCS_PROPERTY_READ( baseSize, baseSize )
+    GUI_LSCS_PROPERTY_WRITE( baseSize, cs_setBaseSize )
 
-    GUI_CS_PROPERTY_READ( palette, palette )
-    GUI_CS_PROPERTY_WRITE( palette, setPalette )
+    GUI_LSCS_PROPERTY_READ( palette, palette )
+    GUI_LSCS_PROPERTY_WRITE( palette, setPalette )
 
-    GUI_CS_PROPERTY_READ( font, font )
-    GUI_CS_PROPERTY_WRITE( font, setFont )
+    GUI_LSCS_PROPERTY_READ( font, font )
+    GUI_LSCS_PROPERTY_WRITE( font, setFont )
 
 #ifndef QT_NO_CURSOR
-    GUI_CS_PROPERTY_READ( cursor, cursor )
-    GUI_CS_PROPERTY_WRITE( cursor, setCursor )
-    GUI_CS_PROPERTY_RESET( cursor, unsetCursor )
+    GUI_LSCS_PROPERTY_READ( cursor, cursor )
+    GUI_LSCS_PROPERTY_WRITE( cursor, setCursor )
+    GUI_LSCS_PROPERTY_RESET( cursor, unsetCursor )
 #endif
 
-    GUI_CS_PROPERTY_READ( mouseTracking, hasMouseTracking )
-    GUI_CS_PROPERTY_WRITE( mouseTracking, setMouseTracking )
+    GUI_LSCS_PROPERTY_READ( mouseTracking, hasMouseTracking )
+    GUI_LSCS_PROPERTY_WRITE( mouseTracking, setMouseTracking )
 
-    GUI_CS_PROPERTY_READ( isActiveWindow, isActiveWindow )
+    GUI_LSCS_PROPERTY_READ( isActiveWindow, isActiveWindow )
 
-    GUI_CS_PROPERTY_READ( focusPolicy, focusPolicy )
-    GUI_CS_PROPERTY_WRITE( focusPolicy, setFocusPolicy )
+    GUI_LSCS_PROPERTY_READ( focusPolicy, focusPolicy )
+    GUI_LSCS_PROPERTY_WRITE( focusPolicy, setFocusPolicy )
 
-    GUI_CS_PROPERTY_READ( focus, hasFocus )
+    GUI_LSCS_PROPERTY_READ( focus, hasFocus )
 
-    GUI_CS_PROPERTY_READ( contextMenuPolicy, contextMenuPolicy )
-    GUI_CS_PROPERTY_WRITE( contextMenuPolicy, setContextMenuPolicy )
+    GUI_LSCS_PROPERTY_READ( contextMenuPolicy, contextMenuPolicy )
+    GUI_LSCS_PROPERTY_WRITE( contextMenuPolicy, setContextMenuPolicy )
 
-    GUI_CS_PROPERTY_READ( updatesEnabled, updatesEnabled )
-    GUI_CS_PROPERTY_WRITE( updatesEnabled, setUpdatesEnabled )
-    GUI_CS_PROPERTY_DESIGNABLE( updatesEnabled, false )
+    GUI_LSCS_PROPERTY_READ( updatesEnabled, updatesEnabled )
+    GUI_LSCS_PROPERTY_WRITE( updatesEnabled, setUpdatesEnabled )
+    GUI_LSCS_PROPERTY_DESIGNABLE( updatesEnabled, false )
 
-    GUI_CS_PROPERTY_READ( visible, isVisible )
-    GUI_CS_PROPERTY_WRITE( visible, setVisible )
-    GUI_CS_PROPERTY_DESIGNABLE( visible, false )
+    GUI_LSCS_PROPERTY_READ( visible, isVisible )
+    GUI_LSCS_PROPERTY_WRITE( visible, setVisible )
+    GUI_LSCS_PROPERTY_DESIGNABLE( visible, false )
 
-    GUI_CS_PROPERTY_READ( minimized, isMinimized )
-    GUI_CS_PROPERTY_READ( maximized, isMaximized )
-    GUI_CS_PROPERTY_READ( acceptDrops, acceptDrops )
-    GUI_CS_PROPERTY_WRITE( acceptDrops, setAcceptDrops )
+    GUI_LSCS_PROPERTY_READ( minimized, isMinimized )
+    GUI_LSCS_PROPERTY_READ( maximized, isMaximized )
+    GUI_LSCS_PROPERTY_READ( acceptDrops, acceptDrops )
+    GUI_LSCS_PROPERTY_WRITE( acceptDrops, setAcceptDrops )
 
-    GUI_CS_PROPERTY_READ( windowTitle, windowTitle )
-    GUI_CS_PROPERTY_WRITE( windowTitle, setWindowTitle )
-    GUI_CS_PROPERTY_NOTIFY( windowTitle, windowTitleChanged )
-    GUI_CS_PROPERTY_DESIGNABLE_NONSTATIC( windowTitle, isWindow() )
+    GUI_LSCS_PROPERTY_READ( windowTitle, windowTitle )
+    GUI_LSCS_PROPERTY_WRITE( windowTitle, setWindowTitle )
+    GUI_LSCS_PROPERTY_NOTIFY( windowTitle, windowTitleChanged )
+    GUI_LSCS_PROPERTY_DESIGNABLE_NONSTATIC( windowTitle, isWindow() )
 
-    GUI_CS_PROPERTY_READ( windowIcon, windowIcon )
-    GUI_CS_PROPERTY_WRITE( windowIcon, setWindowIcon )
-    GUI_CS_PROPERTY_NOTIFY( windowIcon, windowIconChanged )
-    GUI_CS_PROPERTY_DESIGNABLE_NONSTATIC( windowIcon, isWindow() )
+    GUI_LSCS_PROPERTY_READ( windowIcon, windowIcon )
+    GUI_LSCS_PROPERTY_WRITE( windowIcon, setWindowIcon )
+    GUI_LSCS_PROPERTY_NOTIFY( windowIcon, windowIconChanged )
+    GUI_LSCS_PROPERTY_DESIGNABLE_NONSTATIC( windowIcon, isWindow() )
 
-    GUI_CS_PROPERTY_READ( windowIconText, windowIconText )
-    GUI_CS_PROPERTY_WRITE( windowIconText, setWindowIconText )
-    GUI_CS_PROPERTY_NOTIFY( windowIconText, windowIconTextChanged )
-    GUI_CS_PROPERTY_DESIGNABLE_NONSTATIC( windowIconText, isWindow() )
+    GUI_LSCS_PROPERTY_READ( windowIconText, windowIconText )
+    GUI_LSCS_PROPERTY_WRITE( windowIconText, setWindowIconText )
+    GUI_LSCS_PROPERTY_NOTIFY( windowIconText, windowIconTextChanged )
+    GUI_LSCS_PROPERTY_DESIGNABLE_NONSTATIC( windowIconText, isWindow() )
 
-    GUI_CS_PROPERTY_READ( windowOpacity, windowOpacity )
-    GUI_CS_PROPERTY_WRITE( windowOpacity, setWindowOpacity )
-    GUI_CS_PROPERTY_DESIGNABLE_NONSTATIC( windowOpacity, isWindow() )
+    GUI_LSCS_PROPERTY_READ( windowOpacity, windowOpacity )
+    GUI_LSCS_PROPERTY_WRITE( windowOpacity, setWindowOpacity )
+    GUI_LSCS_PROPERTY_DESIGNABLE_NONSTATIC( windowOpacity, isWindow() )
 
-    GUI_CS_PROPERTY_READ( windowModified, isWindowModified )
-    GUI_CS_PROPERTY_WRITE( windowModified, setWindowModified )
-    GUI_CS_PROPERTY_DESIGNABLE_NONSTATIC( windowModified, isWindow() )
+    GUI_LSCS_PROPERTY_READ( windowModified, isWindowModified )
+    GUI_LSCS_PROPERTY_WRITE( windowModified, setWindowModified )
+    GUI_LSCS_PROPERTY_DESIGNABLE_NONSTATIC( windowModified, isWindow() )
 
 #ifndef QT_NO_ACCESSIBILITY
-    GUI_CS_PROPERTY_READ( accessibleName, accessibleName )
-    GUI_CS_PROPERTY_WRITE( accessibleName, setAccessibleName )
+    GUI_LSCS_PROPERTY_READ( accessibleName, accessibleName )
+    GUI_LSCS_PROPERTY_WRITE( accessibleName, setAccessibleName )
 
-    GUI_CS_PROPERTY_READ( accessibleDescription, accessibleDescription )
-    GUI_CS_PROPERTY_WRITE( accessibleDescription, setAccessibleDescription )
+    GUI_LSCS_PROPERTY_READ( accessibleDescription, accessibleDescription )
+    GUI_LSCS_PROPERTY_WRITE( accessibleDescription, setAccessibleDescription )
 #endif
 
 #ifndef QT_NO_STATUSTIP
-    GUI_CS_PROPERTY_READ( statusTip, statusTip )
-    GUI_CS_PROPERTY_WRITE( statusTip, setStatusTip )
+    GUI_LSCS_PROPERTY_READ( statusTip, statusTip )
+    GUI_LSCS_PROPERTY_WRITE( statusTip, setStatusTip )
 #endif
 
 #ifndef QT_NO_STYLE_STYLESHEET
-    GUI_CS_PROPERTY_READ( styleSheet, styleSheet )
-    GUI_CS_PROPERTY_WRITE( styleSheet, setStyleSheet )
+    GUI_LSCS_PROPERTY_READ( styleSheet, styleSheet )
+    GUI_LSCS_PROPERTY_WRITE( styleSheet, setStyleSheet )
 #endif
 
 #ifndef QT_NO_TOOLTIP
-    GUI_CS_PROPERTY_READ( toolTip, toolTip )
-    GUI_CS_PROPERTY_WRITE( toolTip, setToolTip )
+    GUI_LSCS_PROPERTY_READ( toolTip, toolTip )
+    GUI_LSCS_PROPERTY_WRITE( toolTip, setToolTip )
 
-    GUI_CS_PROPERTY_READ( toolTipDuration, toolTipDuration )
-    GUI_CS_PROPERTY_WRITE( toolTipDuration, setToolTipDuration )
+    GUI_LSCS_PROPERTY_READ( toolTipDuration, toolTipDuration )
+    GUI_LSCS_PROPERTY_WRITE( toolTipDuration, setToolTipDuration )
 
 #endif
 
 #ifndef QT_NO_WHATSTHIS
-    GUI_CS_PROPERTY_READ( whatsThis, whatsThis )
-    GUI_CS_PROPERTY_WRITE( whatsThis, setWhatsThis )
+    GUI_LSCS_PROPERTY_READ( whatsThis, whatsThis )
+    GUI_LSCS_PROPERTY_WRITE( whatsThis, setWhatsThis )
 #endif
 
-    GUI_CS_PROPERTY_READ( layoutDirection, layoutDirection )
-    GUI_CS_PROPERTY_WRITE( layoutDirection, setLayoutDirection )
-    GUI_CS_PROPERTY_RESET( layoutDirection, unsetLayoutDirection )
+    GUI_LSCS_PROPERTY_READ( layoutDirection, layoutDirection )
+    GUI_LSCS_PROPERTY_WRITE( layoutDirection, setLayoutDirection )
+    GUI_LSCS_PROPERTY_RESET( layoutDirection, unsetLayoutDirection )
 
-    GUI_CS_PROPERTY_READ( windowFlags, windowFlags )
-    GUI_CS_PROPERTY_WRITE( windowFlags, setWindowFlags )
-    GUI_CS_PROPERTY_DESIGNABLE( windowFlags, false )
+    GUI_LSCS_PROPERTY_READ( windowFlags, windowFlags )
+    GUI_LSCS_PROPERTY_WRITE( windowFlags, setWindowFlags )
+    GUI_LSCS_PROPERTY_DESIGNABLE( windowFlags, false )
 
-    GUI_CS_PROPERTY_READ( autoFillBackground, autoFillBackground )
-    GUI_CS_PROPERTY_WRITE( autoFillBackground, setAutoFillBackground )
+    GUI_LSCS_PROPERTY_READ( autoFillBackground, autoFillBackground )
+    GUI_LSCS_PROPERTY_WRITE( autoFillBackground, setAutoFillBackground )
 
-    GUI_CS_PROPERTY_READ( locale, locale )
-    GUI_CS_PROPERTY_WRITE( locale, setLocale )
-    GUI_CS_PROPERTY_RESET( locale, unsetLocale )
+    GUI_LSCS_PROPERTY_READ( locale, locale )
+    GUI_LSCS_PROPERTY_WRITE( locale, setLocale )
+    GUI_LSCS_PROPERTY_RESET( locale, unsetLocale )
 
-    GUI_CS_PROPERTY_READ( windowFilePath, windowFilePath )
-    GUI_CS_PROPERTY_WRITE( windowFilePath, setWindowFilePath )
-    GUI_CS_PROPERTY_DESIGNABLE_NONSTATIC( windowFilePath, isWindow() )
+    GUI_LSCS_PROPERTY_READ( windowFilePath, windowFilePath )
+    GUI_LSCS_PROPERTY_WRITE( windowFilePath, setWindowFilePath )
+    GUI_LSCS_PROPERTY_DESIGNABLE_NONSTATIC( windowFilePath, isWindow() )
 
-    GUI_CS_PROPERTY_READ( inputMethodHints, inputMethodHints )
-    GUI_CS_PROPERTY_WRITE( inputMethodHints, setInputMethodHints )
+    GUI_LSCS_PROPERTY_READ( inputMethodHints, inputMethodHints )
+    GUI_LSCS_PROPERTY_WRITE( inputMethodHints, setInputMethodHints )
 
 public:
     enum RenderFlag
@@ -338,14 +338,14 @@ public:
     bool isEnabledTo( const QWidget *parent ) const;
     inline bool isEnabledToTLW() const;
 
-    GUI_CS_SLOT_1( Public, void setEnabled( bool enable ) )
-    GUI_CS_SLOT_2( setEnabled )
+    GUI_LSCS_SLOT_1( Public, void setEnabled( bool enable ) )
+    GUI_LSCS_SLOT_2( setEnabled )
 
-    GUI_CS_SLOT_1( Public, void setDisabled( bool disable ) )
-    GUI_CS_SLOT_2( setDisabled )
+    GUI_LSCS_SLOT_1( Public, void setDisabled( bool disable ) )
+    GUI_LSCS_SLOT_2( setDisabled )
 
-    GUI_CS_SLOT_1( Public, void setWindowModified( bool modified ) )
-    GUI_CS_SLOT_2( setWindowModified )
+    GUI_LSCS_SLOT_1( Public, void setWindowModified( bool modified ) )
+    GUI_LSCS_SLOT_2( setWindowModified )
 
     // Widget coordinates
     QRect frameGeometry() const;
@@ -472,12 +472,12 @@ public:
     void ungrabGesture( Qt::GestureType gestureType );
 #endif
 
-    GUI_CS_SLOT_1( Public, void setWindowTitle( const QString &title ) )
-    GUI_CS_SLOT_2( setWindowTitle )
+    GUI_LSCS_SLOT_1( Public, void setWindowTitle( const QString &title ) )
+    GUI_LSCS_SLOT_2( setWindowTitle )
 
 #ifndef QT_NO_STYLE_STYLESHEET
-    GUI_CS_SLOT_1( Public, void setStyleSheet( const QString &styleSheet ) )
-    GUI_CS_SLOT_2( setStyleSheet )
+    GUI_LSCS_SLOT_1( Public, void setStyleSheet( const QString &styleSheet ) )
+    GUI_LSCS_SLOT_2( setStyleSheet )
 #endif
 
 #ifndef QT_NO_STYLE_STYLESHEET
@@ -546,8 +546,8 @@ public:
         return layoutDirection() == Qt::LeftToRight;
     }
 
-    GUI_CS_SLOT_1( Public, void setFocus() )
-    GUI_CS_SLOT_OVERLOAD( setFocus, () )
+    GUI_LSCS_SLOT_1( Public, void setFocus() )
+    GUI_LSCS_SLOT_OVERLOAD( setFocus, () )
 
     bool isActiveWindow() const;
     void activateWindow();
@@ -596,11 +596,11 @@ public:
     QGraphicsProxyWidget *graphicsProxyWidget() const;
 #endif
 
-    GUI_CS_SLOT_1( Public, void update() )
-    GUI_CS_SLOT_OVERLOAD( update, () )
+    GUI_LSCS_SLOT_1( Public, void update() )
+    GUI_LSCS_SLOT_OVERLOAD( update, () )
 
-    GUI_CS_SLOT_1( Public, void repaint() )
-    GUI_CS_SLOT_OVERLOAD( repaint, () )
+    GUI_LSCS_SLOT_1( Public, void repaint() )
+    GUI_LSCS_SLOT_OVERLOAD( repaint, () )
 
     inline void update( int x, int y, int w, int h );
     void update( const QRect &rect );
@@ -611,38 +611,38 @@ public:
     void repaint( const QRegion &region );
 
     // Widget management functions
-    GUI_CS_SLOT_1( Public, virtual void setVisible( bool visible ) )
-    GUI_CS_SLOT_2( setVisible )
+    GUI_LSCS_SLOT_1( Public, virtual void setVisible( bool visible ) )
+    GUI_LSCS_SLOT_2( setVisible )
 
-    GUI_CS_SLOT_1( Public, void setHidden( bool hidden ) )
-    GUI_CS_SLOT_2( setHidden )
+    GUI_LSCS_SLOT_1( Public, void setHidden( bool hidden ) )
+    GUI_LSCS_SLOT_2( setHidden )
 
-    GUI_CS_SLOT_1( Public, void show() )
-    GUI_CS_SLOT_2( show )
+    GUI_LSCS_SLOT_1( Public, void show() )
+    GUI_LSCS_SLOT_2( show )
 
-    GUI_CS_SLOT_1( Public, void hide() )
-    GUI_CS_SLOT_2( hide )
+    GUI_LSCS_SLOT_1( Public, void hide() )
+    GUI_LSCS_SLOT_2( hide )
 
-    GUI_CS_SLOT_1( Public, void showMinimized() )
-    GUI_CS_SLOT_2( showMinimized )
+    GUI_LSCS_SLOT_1( Public, void showMinimized() )
+    GUI_LSCS_SLOT_2( showMinimized )
 
-    GUI_CS_SLOT_1( Public, void showMaximized() )
-    GUI_CS_SLOT_2( showMaximized )
+    GUI_LSCS_SLOT_1( Public, void showMaximized() )
+    GUI_LSCS_SLOT_2( showMaximized )
 
-    GUI_CS_SLOT_1( Public, void showFullScreen() )
-    GUI_CS_SLOT_2( showFullScreen )
+    GUI_LSCS_SLOT_1( Public, void showFullScreen() )
+    GUI_LSCS_SLOT_2( showFullScreen )
 
-    GUI_CS_SLOT_1( Public, void showNormal() )
-    GUI_CS_SLOT_2( showNormal )
+    GUI_LSCS_SLOT_1( Public, void showNormal() )
+    GUI_LSCS_SLOT_2( showNormal )
 
-    GUI_CS_SLOT_1( Public, bool close() )
-    GUI_CS_SLOT_2( close )
+    GUI_LSCS_SLOT_1( Public, bool close() )
+    GUI_LSCS_SLOT_2( close )
 
-    GUI_CS_SLOT_1( Public, void raise() )
-    GUI_CS_SLOT_2( raise )
+    GUI_LSCS_SLOT_1( Public, void raise() )
+    GUI_LSCS_SLOT_2( raise )
 
-    GUI_CS_SLOT_1( Public, void lower() )
-    GUI_CS_SLOT_2( lower )
+    GUI_LSCS_SLOT_1( Public, void lower() )
+    GUI_LSCS_SLOT_2( lower )
 
     void stackUnder( QWidget *widget );
 
@@ -765,17 +765,17 @@ public:
     QWindow *windowHandle() const;
 
     static QWidget *createWindowContainer( QWindow *window, QWidget *parent = nullptr, Qt::WindowFlags flags = Qt::EmptyFlag );
-    GUI_CS_SIGNAL_1( Public, void windowTitleChanged( const QString &title ) )
-    GUI_CS_SIGNAL_2( windowTitleChanged, title )
+    GUI_LSCS_SIGNAL_1( Public, void windowTitleChanged( const QString &title ) )
+    GUI_LSCS_SIGNAL_2( windowTitleChanged, title )
 
-    GUI_CS_SIGNAL_1( Public, void windowIconChanged( const QIcon &icon ) )
-    GUI_CS_SIGNAL_2( windowIconChanged, icon )
+    GUI_LSCS_SIGNAL_1( Public, void windowIconChanged( const QIcon &icon ) )
+    GUI_LSCS_SIGNAL_2( windowIconChanged, icon )
 
-    GUI_CS_SIGNAL_1( Public, void windowIconTextChanged( const QString &iconText ) )
-    GUI_CS_SIGNAL_2( windowIconTextChanged, iconText )
+    GUI_LSCS_SIGNAL_1( Public, void windowIconTextChanged( const QString &iconText ) )
+    GUI_LSCS_SIGNAL_2( windowIconTextChanged, iconText )
 
-    GUI_CS_SIGNAL_1( Public, void customContextMenuRequested( const QPoint &pos ) )
-    GUI_CS_SIGNAL_2( customContextMenuRequested, pos )
+    GUI_LSCS_SIGNAL_1( Public, void customContextMenuRequested( const QPoint &pos ) )
+    GUI_LSCS_SIGNAL_2( customContextMenuRequested, pos )
 
     virtual QVariant inputMethodQuery( Qt::InputMethodQuery query ) const;
     Qt::InputMethodHints inputMethodHints() const;
@@ -854,8 +854,8 @@ protected:
 
     QWidget( QWidgetPrivate &d, QWidget *parent, Qt::WindowFlags flags );
 
-    GUI_CS_SLOT_1( Protected, void updateMicroFocus() )
-    GUI_CS_SLOT_2( updateMicroFocus )
+    GUI_LSCS_SLOT_1( Protected, void updateMicroFocus() )
+    GUI_LSCS_SLOT_2( updateMicroFocus )
 
     QScopedPointer<QWidgetPrivate> d_ptr;
 
@@ -869,8 +869,8 @@ private:
 
     QLayout *takeLayout();
 
-    GUI_CS_SLOT_1( Private, void _q_showIfNotHidden() )
-    GUI_CS_SLOT_2( _q_showIfNotHidden )
+    GUI_LSCS_SLOT_1( Private, void _q_showIfNotHidden() )
+    GUI_LSCS_SLOT_2( _q_showIfNotHidden )
 
     QWidgetData *m_widgetData;
 

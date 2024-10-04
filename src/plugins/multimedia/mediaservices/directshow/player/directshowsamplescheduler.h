@@ -34,7 +34,7 @@ class DirectShowTimedSample;
 
 class DirectShowSampleScheduler : public QObject, public IMemInputPin
 {
-    CS_OBJECT( DirectShowSampleScheduler )
+    LSCS_OBJECT( DirectShowSampleScheduler )
 public:
 
     enum State
@@ -82,8 +82,8 @@ public:
     bool event( QEvent *event ) override;
 
 public:
-    CS_SIGNAL_1( Public, void sampleReady() )
-    CS_SIGNAL_2( sampleReady )
+    LSCS_SIGNAL_1( Public, void sampleReady() )
+    LSCS_SIGNAL_2( sampleReady )
 
 private:
     IUnknown *m_pin;

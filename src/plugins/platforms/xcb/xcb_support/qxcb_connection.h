@@ -292,7 +292,7 @@ enum Atom
 
 class QXcbEventReader : public QThread
 {
-    CS_OBJECT( QXcbEventReader )
+    LSCS_OBJECT( QXcbEventReader )
 
 public:
     QXcbEventReader( QXcbConnection *connection );
@@ -306,12 +306,12 @@ public:
 
     void registerEventDispatcher( QAbstractEventDispatcher *dispatcher );
 
-    CS_SIGNAL_1( Public, void eventPending() )
-    CS_SIGNAL_2( eventPending )
+    LSCS_SIGNAL_1( Public, void eventPending() )
+    LSCS_SIGNAL_2( eventPending )
 
 private:
-    CS_SLOT_1( Private, void registerForEvents() )
-    CS_SLOT_2( registerForEvents )
+    LSCS_SLOT_1( Private, void registerForEvents() )
+    LSCS_SLOT_2( registerForEvents )
 
     void addEvent( xcb_generic_event_t *event );
 
@@ -372,7 +372,7 @@ private:
 
 class QXcbConnection : public QObject
 {
-    CS_OBJECT( QXcbConnection )
+    LSCS_OBJECT( QXcbConnection )
 
 public:
     QXcbConnection( QXcbNativeInterface *nativeInterface, bool canGrabServer, xcb_visualid_t defaultVisualId,
@@ -667,18 +667,18 @@ public:
     bool xi2MouseEvents() const;
 #endif
 
-    CS_SLOT_1( Public, void flush()
+    LSCS_SLOT_1( Public, void flush()
     {
         xcb_flush( m_connection );
     } )
-    CS_SLOT_2( flush )
+    LSCS_SLOT_2( flush )
 
 protected:
     bool event( QEvent *e ) override;
 
 private:
-    CS_SLOT_1( Private, void processXcbEvents() )
-    CS_SLOT_2( processXcbEvents )
+    LSCS_SLOT_1( Private, void processXcbEvents() )
+    LSCS_SLOT_2( processXcbEvents )
 
     void initializeAllAtoms();
     void sendConnectionEvent( QXcbAtom::Atom atom, uint id = 0 );
@@ -823,7 +823,7 @@ private:
     QHash<int, XInput2TouchDeviceData *> m_touchDevices;
 #endif
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
     struct CallInfo
     {
         int sequence;
@@ -920,7 +920,7 @@ union q_padded_xcb_event
     q_padded_xcb_event<event_type> store = q_padded_xcb_event<event_type>(); \
     auto &event_var = store.event;
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
 
 template <typename cookie_t>
 cookie_t q_xcb_call_template( const cookie_t &cookie, QXcbConnection *connection, const char *file, int line )

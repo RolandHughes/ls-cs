@@ -38,20 +38,20 @@ class QAbstractAnimation;
 
 class Q_CORE_EXPORT QStateMachine : public QState
 {
-    CORE_CS_OBJECT( QStateMachine )
+    CORE_LSCS_OBJECT( QStateMachine )
 
-    CORE_CS_PROPERTY_READ( errorString, errorString )
+    CORE_LSCS_PROPERTY_READ( errorString, errorString )
 
-    CORE_CS_PROPERTY_READ( globalRestorePolicy, globalRestorePolicy )
-    CORE_CS_PROPERTY_WRITE( globalRestorePolicy, setGlobalRestorePolicy )
+    CORE_LSCS_PROPERTY_READ( globalRestorePolicy, globalRestorePolicy )
+    CORE_LSCS_PROPERTY_WRITE( globalRestorePolicy, setGlobalRestorePolicy )
 
-    CORE_CS_PROPERTY_READ( running, isRunning )
-    CORE_CS_PROPERTY_WRITE( running, setRunning )
-    CORE_CS_PROPERTY_NOTIFY( running, runningChanged )
+    CORE_LSCS_PROPERTY_READ( running, isRunning )
+    CORE_LSCS_PROPERTY_WRITE( running, setRunning )
+    CORE_LSCS_PROPERTY_NOTIFY( running, runningChanged )
 
 #ifndef QT_NO_ANIMATION
-    CORE_CS_PROPERTY_READ( animated, isAnimated )
-    CORE_CS_PROPERTY_WRITE( animated, setAnimated )
+    CORE_LSCS_PROPERTY_READ( animated, isAnimated )
+    CORE_LSCS_PROPERTY_WRITE( animated, setAnimated )
 #endif
 
 public:
@@ -159,23 +159,23 @@ public:
     bool eventFilter( QObject *watched, QEvent *event ) override;
 #endif
 
-    CORE_CS_SIGNAL_1( Public, void started() )
-    CORE_CS_SIGNAL_2( started )
+    CORE_LSCS_SIGNAL_1( Public, void started() )
+    CORE_LSCS_SIGNAL_2( started )
 
-    CORE_CS_SIGNAL_1( Public, void stopped() )
-    CORE_CS_SIGNAL_2( stopped )
+    CORE_LSCS_SIGNAL_1( Public, void stopped() )
+    CORE_LSCS_SIGNAL_2( stopped )
 
-    CORE_CS_SIGNAL_1( Public, void runningChanged( bool running ) )
-    CORE_CS_SIGNAL_2( runningChanged, running )
+    CORE_LSCS_SIGNAL_1( Public, void runningChanged( bool running ) )
+    CORE_LSCS_SIGNAL_2( runningChanged, running )
 
-    CORE_CS_SLOT_1( Public, void start() )
-    CORE_CS_SLOT_2( start )
+    CORE_LSCS_SLOT_1( Public, void start() )
+    CORE_LSCS_SLOT_2( start )
 
-    CORE_CS_SLOT_1( Public, void stop() )
-    CORE_CS_SLOT_2( stop )
+    CORE_LSCS_SLOT_1( Public, void stop() )
+    CORE_LSCS_SLOT_2( stop )
 
-    CORE_CS_SLOT_1( Public, void setRunning( bool running ) )
-    CORE_CS_SLOT_2( setRunning )
+    CORE_LSCS_SLOT_1( Public, void setRunning( bool running ) )
+    CORE_LSCS_SLOT_2( setRunning )
 
 protected:
     void onEntry( QEvent *event ) override;
@@ -194,22 +194,22 @@ protected:
 private:
     Q_DECLARE_PRIVATE( QStateMachine )
 
-    CORE_CS_SLOT_1( Private, void _q_start() )
-    CORE_CS_SLOT_2( _q_start )
+    CORE_LSCS_SLOT_1( Private, void _q_start() )
+    CORE_LSCS_SLOT_2( _q_start )
 
-    CORE_CS_SLOT_1( Private, void _q_process() )
-    CORE_CS_SLOT_2( _q_process )
+    CORE_LSCS_SLOT_1( Private, void _q_process() )
+    CORE_LSCS_SLOT_2( _q_process )
 
 #ifndef QT_NO_ANIMATION
-    CORE_CS_SLOT_1( Private, void _q_animationFinished() )
-    CORE_CS_SLOT_2( _q_animationFinished )
+    CORE_LSCS_SLOT_1( Private, void _q_animationFinished() )
+    CORE_LSCS_SLOT_2( _q_animationFinished )
 #endif
 
-    CORE_CS_SLOT_1( Private, void _q_startDelayedEventTimer( int, int ) )
-    CORE_CS_SLOT_2( _q_startDelayedEventTimer )
+    CORE_LSCS_SLOT_1( Private, void _q_startDelayedEventTimer( int, int ) )
+    CORE_LSCS_SLOT_2( _q_startDelayedEventTimer )
 
-    CORE_CS_SLOT_1( Private, void _q_killDelayedEventTimer( int, int ) )
-    CORE_CS_SLOT_2( _q_killDelayedEventTimer )
+    CORE_LSCS_SLOT_1( Private, void _q_killDelayedEventTimer( int, int ) )
+    CORE_LSCS_SLOT_2( _q_killDelayedEventTimer )
 };
 
 #endif //QT_NO_STATEMACHINE

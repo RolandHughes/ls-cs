@@ -191,31 +191,31 @@ private:
 
 class Q_NETWORK_EXPORT QDnsLookup : public QObject
 {
-    NET_CS_OBJECT( QDnsLookup )
+    NET_LSCS_OBJECT( QDnsLookup )
 
-    NET_CS_ENUM( Error )
-    NET_CS_ENUM( Type )
+    NET_LSCS_ENUM( Error )
+    NET_LSCS_ENUM( Type )
 
-    NET_CS_PROPERTY_READ( error, error )
-    NET_CS_PROPERTY_NOTIFY( error, finished )
+    NET_LSCS_PROPERTY_READ( error, error )
+    NET_LSCS_PROPERTY_NOTIFY( error, finished )
 
-    NET_CS_PROPERTY_READ( errorString, errorString )
-    NET_CS_PROPERTY_NOTIFY( errorString, finished )
+    NET_LSCS_PROPERTY_READ( errorString, errorString )
+    NET_LSCS_PROPERTY_NOTIFY( errorString, finished )
 
-    NET_CS_PROPERTY_READ( name, name )
-    NET_CS_PROPERTY_WRITE( name, setName )
-    NET_CS_PROPERTY_NOTIFY( name, nameChanged )
+    NET_LSCS_PROPERTY_READ( name, name )
+    NET_LSCS_PROPERTY_WRITE( name, setName )
+    NET_LSCS_PROPERTY_NOTIFY( name, nameChanged )
 
-    NET_CS_PROPERTY_READ( type, type )
-    NET_CS_PROPERTY_WRITE( type, setType )
-    NET_CS_PROPERTY_NOTIFY( type, typeChanged )
+    NET_LSCS_PROPERTY_READ( type, type )
+    NET_LSCS_PROPERTY_WRITE( type, setType )
+    NET_LSCS_PROPERTY_NOTIFY( type, typeChanged )
 
-    NET_CS_PROPERTY_READ( nameserver, nameserver )
-    NET_CS_PROPERTY_WRITE( nameserver, setNameserver )
-    NET_CS_PROPERTY_NOTIFY( nameserver, nameserverChanged )
+    NET_LSCS_PROPERTY_READ( nameserver, nameserver )
+    NET_LSCS_PROPERTY_WRITE( nameserver, setNameserver )
+    NET_LSCS_PROPERTY_NOTIFY( nameserver, nameserverChanged )
 
 public:
-    NET_CS_REGISTER_ENUM(
+    NET_LSCS_REGISTER_ENUM(
         enum Error
     {
         NoError = 0,
@@ -229,7 +229,7 @@ public:
     };
     )
 
-    NET_CS_REGISTER_ENUM(
+    NET_LSCS_REGISTER_ENUM(
         enum Type
     {
         A = 1,
@@ -270,23 +270,23 @@ public:
     QList<QDnsServiceRecord> serviceRecords() const;
     QList<QDnsTextRecord> textRecords() const;
 
-    NET_CS_SIGNAL_1( Public, void finished() )
-    NET_CS_SIGNAL_2( finished )
+    NET_LSCS_SIGNAL_1( Public, void finished() )
+    NET_LSCS_SIGNAL_2( finished )
 
-    NET_CS_SIGNAL_1( Public, void nameChanged( const QString &name ) )
-    NET_CS_SIGNAL_2( nameChanged, name )
+    NET_LSCS_SIGNAL_1( Public, void nameChanged( const QString &name ) )
+    NET_LSCS_SIGNAL_2( nameChanged, name )
 
-    NET_CS_SIGNAL_1( Public, void typeChanged( Type type ) )
-    NET_CS_SIGNAL_2( typeChanged, type )
+    NET_LSCS_SIGNAL_1( Public, void typeChanged( Type type ) )
+    NET_LSCS_SIGNAL_2( typeChanged, type )
 
-    NET_CS_SIGNAL_1( Public, void nameserverChanged( const QHostAddress &nameserver ) )
-    NET_CS_SIGNAL_2( nameserverChanged, nameserver )
+    NET_LSCS_SIGNAL_1( Public, void nameserverChanged( const QHostAddress &nameserver ) )
+    NET_LSCS_SIGNAL_2( nameserverChanged, nameserver )
 
-    NET_CS_SLOT_1( Public, void abort() )
-    NET_CS_SLOT_2( abort )
+    NET_LSCS_SLOT_1( Public, void abort() )
+    NET_LSCS_SLOT_2( abort )
 
-    NET_CS_SLOT_1( Public, void lookup() )
-    NET_CS_SLOT_2( lookup )
+    NET_LSCS_SLOT_1( Public, void lookup() )
+    NET_LSCS_SLOT_2( lookup )
 
 protected:
     QScopedPointer<QDnsLookupPrivate> d_ptr;
@@ -294,8 +294,8 @@ protected:
 private:
     Q_DECLARE_PRIVATE( QDnsLookup )
 
-    NET_CS_SLOT_1( Private, void _q_lookupFinished( const QDnsLookupReply &reply ) )
-    NET_CS_SLOT_2( _q_lookupFinished )
+    NET_LSCS_SLOT_1( Private, void _q_lookupFinished( const QDnsLookupReply &reply ) )
+    NET_LSCS_SLOT_2( _q_lookupFinished )
 };
 
 #endif

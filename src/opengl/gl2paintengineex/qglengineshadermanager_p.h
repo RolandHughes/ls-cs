@@ -225,7 +225,7 @@ class QGLEngineShaderProg;
 
 class Q_OPENGL_EXPORT QGLEngineSharedShaders
 {
-    OPENGL_CS_GADGET( QGLEngineSharedShaders )
+    OPENGL_LSCS_GADGET( QGLEngineSharedShaders )
 
 public:
 
@@ -299,8 +299,8 @@ public:
         TotalSnippetCount, InvalidSnippetName
     };
 
-#if defined(CS_SHOW_DEBUG_OPENGL)
-    CS_ENUM( SnippetName )
+#if defined(LSCS_SHOW_DEBUG_OPENGL)
+    LSCS_ENUM( SnippetName )
     static QString snippetNameStr( SnippetName snippetName );
 #endif
 
@@ -395,7 +395,7 @@ public:
 
 class Q_OPENGL_EXPORT QGLEngineShaderManager : public QObject
 {
-    OPENGL_CS_OBJECT( QGLEngineShaderManager )
+    OPENGL_LSCS_OBJECT( QGLEngineShaderManager )
 
 public:
     QGLEngineShaderManager( QGLContext *context );

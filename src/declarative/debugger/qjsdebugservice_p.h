@@ -52,7 +52,7 @@ struct JSAgentCoverageData
 
 class QJSDebugService : public QDeclarativeDebugService
 {
-    DECL_CS_OBJECT( QJSDebugService )
+    DECL_LSCS_OBJECT( QJSDebugService )
 
 public:
     QJSDebugService( QObject *parent = nullptr );
@@ -71,8 +71,8 @@ protected:
     void messageReceived( const QByteArray & );
 
 private :
-    DECL_CS_SLOT_1( Private, void executionStopped( bool becauseOfException, const QString &exception ) )
-    DECL_CS_SLOT_2( executionStopped )
+    DECL_LSCS_SLOT_1( Private, void executionStopped( bool becauseOfException, const QString &exception ) )
+    DECL_LSCS_SLOT_2( executionStopped )
 
     void sendMessages();
     QList<QDeclarativeEngine *> m_engines;

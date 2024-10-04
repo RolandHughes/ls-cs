@@ -2051,7 +2051,7 @@ static void draw_text_item_win( const QPointF &pos, const QTextItemInt &ti, HDC 
     SelectObject( hdc, old_font );
 }
 
-CS_DECLARE_METATYPE( HFONT )
-CS_DECLARE_METATYPE( LOGFONT )
+LSCS_DECLARE_METATYPE( HFONT )
+LSCS_DECLARE_METATYPE( LOGFONT )
 
 #endif // QT_NO_PRINTER

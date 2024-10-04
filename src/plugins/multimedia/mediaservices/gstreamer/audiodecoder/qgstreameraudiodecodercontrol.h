@@ -38,7 +38,7 @@ class QGstreamerAudioDecoderService;
 
 class QGstreamerAudioDecoderControl : public QAudioDecoderControl
 {
-    CS_OBJECT( QGstreamerAudioDecoderControl )
+    LSCS_OBJECT( QGstreamerAudioDecoderControl )
 
 public:
     QGstreamerAudioDecoderControl( QGstreamerAudioDecoderSession *session, QObject *parent = nullptr );

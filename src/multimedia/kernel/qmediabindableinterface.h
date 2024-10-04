@@ -41,6 +41,6 @@ protected:
 };
 
 #define QMediaBindableInterface_iid  "com.copperspice.CS.mediaBindable/1.0"
-CS_DECLARE_INTERFACE( QMediaBindableInterface, QMediaBindableInterface_iid )
+LSCS_DECLARE_INTERFACE( QMediaBindableInterface, QMediaBindableInterface_iid )
 
 #endif

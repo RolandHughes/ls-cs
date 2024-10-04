@@ -53,7 +53,7 @@ static QBearerEngineImpl *getEngineFromId( const QString &id )
 
 class QNetworkSessionManagerPrivate : public QObject
 {
-    CS_OBJECT( QNetworkSessionManagerPrivate )
+    LSCS_OBJECT( QNetworkSessionManagerPrivate )
 
 public:
     QNetworkSessionManagerPrivate( QObject *parent = nullptr )
@@ -70,8 +70,8 @@ public:
         emit forcedSessionClose( config );
     }
 
-    CS_SIGNAL_1( Public, forcedSessionClose( const QNetworkConfiguration &config ) )
-    CS_SIGNAL_2( forcedSessionClose, &config )
+    LSCS_SIGNAL_1( Public, forcedSessionClose( const QNetworkConfiguration &config ) )
+    LSCS_SIGNAL_2( forcedSessionClose, &config )
 };
 
 Q_GLOBAL_STATIC( QNetworkSessionManagerPrivate, sessionManager );

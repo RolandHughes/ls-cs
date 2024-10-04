@@ -40,7 +40,7 @@ class AVFCameraService;
 
 class AVFMediaRecorderControl : public QMediaRecorderControl
 {
-    CS_OBJECT( AVFMediaRecorderControl )
+    LSCS_OBJECT( AVFMediaRecorderControl )
 
 public:
     AVFMediaRecorderControl( AVFCameraService *service, QObject *parent = nullptr );
@@ -60,29 +60,29 @@ public:
     void applySettings() override;
     void unapplySettings();
 
-    CS_SLOT_1( Public, void setState( QMediaRecorder::State state ) override )
-    CS_SLOT_2( setState )
+    LSCS_SLOT_1( Public, void setState( QMediaRecorder::State state ) override )
+    LSCS_SLOT_2( setState )
 
-    CS_SLOT_1( Public, void setMuted( bool muted ) override )
-    CS_SLOT_2( setMuted )
+    LSCS_SLOT_1( Public, void setMuted( bool muted ) override )
+    LSCS_SLOT_2( setMuted )
 
-    CS_SLOT_1( Public, void setVolume( qreal volume ) override )
-    CS_SLOT_2( setVolume )
+    LSCS_SLOT_1( Public, void setVolume( qreal volume ) override )
+    LSCS_SLOT_2( setVolume )
 
-    CS_SLOT_1( Public, void handleRecordingStarted() )
-    CS_SLOT_2( handleRecordingStarted )
+    LSCS_SLOT_1( Public, void handleRecordingStarted() )
+    LSCS_SLOT_2( handleRecordingStarted )
 
-    CS_SLOT_1( Public, void handleRecordingFinished() )
-    CS_SLOT_2( handleRecordingFinished )
+    LSCS_SLOT_1( Public, void handleRecordingFinished() )
+    LSCS_SLOT_2( handleRecordingFinished )
 
-    CS_SLOT_1( Public, void handleRecordingFailed( const QString &message ) )
-    CS_SLOT_2( handleRecordingFailed )
+    LSCS_SLOT_1( Public, void handleRecordingFailed( const QString &message ) )
+    LSCS_SLOT_2( handleRecordingFailed )
 
 private:
-    CS_SLOT_1( Private, void setupSessionForCapture() )
-    CS_SLOT_2( setupSessionForCapture )
-    CS_SLOT_1( Private, void updateStatus() )
-    CS_SLOT_2( updateStatus )
+    LSCS_SLOT_1( Private, void setupSessionForCapture() )
+    LSCS_SLOT_2( setupSessionForCapture )
+    LSCS_SLOT_1( Private, void updateStatus() )
+    LSCS_SLOT_2( updateStatus )
 
     AVFCameraService *m_service;
     AVFCameraControl *m_cameraControl;

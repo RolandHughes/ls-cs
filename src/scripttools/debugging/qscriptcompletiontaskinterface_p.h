@@ -33,7 +33,7 @@ class QScriptCompletionTaskInterfacePrivate;
 
 class QScriptCompletionTaskInterface : public QObject
 {
-    SCRIPT_T_CS_OBJECT( QScriptCompletionTaskInterface )
+    SCRIPT_T_LSCS_OBJECT( QScriptCompletionTaskInterface )
 
 public:
     enum CompletionType
@@ -62,8 +62,8 @@ protected:
     void addResult( const QString &result );
 
 public:
-    CS_SIGNAL_1( Public, void finished() )
-    CS_SIGNAL_2( finished )
+    LSCS_SIGNAL_1( Public, void finished() )
+    LSCS_SIGNAL_2( finished )
 
 protected:
     QScriptCompletionTaskInterface(

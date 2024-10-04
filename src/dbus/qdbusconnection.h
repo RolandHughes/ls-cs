@@ -54,10 +54,10 @@ class QDBusConnectionPrivate;
 
 class Q_DBUS_EXPORT QDBusConnection
 {
-    CS_GADGET( QDBusConnection )
-    CS_ENUM( BusType )
-    CS_ENUM( UnregisterMode )
-    CS_FLAG( Resolve Flag -->,RegisterOptions )
+    LSCS_GADGET( QDBusConnection )
+    LSCS_ENUM( BusType )
+    LSCS_ENUM( UnregisterMode )
+    LSCS_FLAG( Resolve Flag -->,RegisterOptions )
 public:
     enum BusType { SessionBus, SystemBus, ActivationBus };
     enum RegisterOption

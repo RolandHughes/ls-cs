@@ -24,12 +24,12 @@
  * LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 */
 
-#ifndef CS_ITERATOR_CATEGORY_H
-#define CS_ITERATOR_CATEGORY_H
+#ifndef LSCS_ITERATOR_CATEGORY_H
+#define LSCS_ITERATOR_CATEGORY_H
 
 #include <iterator>
 
-namespace cs_regex_ns
+namespace lscs_regex_ns
 {
 
 namespace detail

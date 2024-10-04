@@ -285,7 +285,7 @@ private:
 
 class QCompletionModel : public QAbstractProxyModel
 {
-    GUI_CS_OBJECT( QCompletionModel )
+    GUI_LSCS_OBJECT( QCompletionModel )
     Q_DECLARE_PRIVATE( QCompletionModel )
 
 public:
@@ -327,8 +327,8 @@ public:
     bool showAll;
     bool m_completerShutdown;
 
-    GUI_CS_SIGNAL_1( Public, void rowsAdded() )
-    GUI_CS_SIGNAL_2( rowsAdded )
+    GUI_LSCS_SIGNAL_1( Public, void rowsAdded() )
+    GUI_LSCS_SIGNAL_2( rowsAdded )
 
     // slots
     void invalidate();

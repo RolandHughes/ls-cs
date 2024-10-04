@@ -638,80 +638,80 @@ inline QRectF QGraphicsItem::mapRectFromScene( qreal x, qreal y, qreal width, qr
 
 class Q_GUI_EXPORT QGraphicsObject : public QObject, public QGraphicsItem
 {
-    GUI_CS_OBJECT_MULTIPLE( QGraphicsObject, QObject )
+    GUI_LSCS_OBJECT_MULTIPLE( QGraphicsObject, QObject )
 
-    GUI_CS_PROPERTY_READ( parent, parentObject )
-    GUI_CS_PROPERTY_WRITE( parent, setParentItem )
-    GUI_CS_PROPERTY_NOTIFY( parent, parentChanged )
-    GUI_CS_PROPERTY_DESIGNABLE( parent, false )
+    GUI_LSCS_PROPERTY_READ( parent, parentObject )
+    GUI_LSCS_PROPERTY_WRITE( parent, setParentItem )
+    GUI_LSCS_PROPERTY_NOTIFY( parent, parentChanged )
+    GUI_LSCS_PROPERTY_DESIGNABLE( parent, false )
 
-    GUI_CS_PROPERTY_READ( opacity, opacity )
-    GUI_CS_PROPERTY_WRITE( opacity, setOpacity )
-    GUI_CS_PROPERTY_NOTIFY( opacity, opacityChanged )
-    GUI_CS_PROPERTY_FINAL( opacity )
+    GUI_LSCS_PROPERTY_READ( opacity, opacity )
+    GUI_LSCS_PROPERTY_WRITE( opacity, setOpacity )
+    GUI_LSCS_PROPERTY_NOTIFY( opacity, opacityChanged )
+    GUI_LSCS_PROPERTY_FINAL( opacity )
 
-    GUI_CS_PROPERTY_READ( enabled, isEnabled )
-    GUI_CS_PROPERTY_WRITE( enabled, setEnabled )
-    GUI_CS_PROPERTY_NOTIFY( enabled, enabledChanged )
+    GUI_LSCS_PROPERTY_READ( enabled, isEnabled )
+    GUI_LSCS_PROPERTY_WRITE( enabled, setEnabled )
+    GUI_LSCS_PROPERTY_NOTIFY( enabled, enabledChanged )
 
-    GUI_CS_PROPERTY_READ( visible, isVisible )
-    GUI_CS_PROPERTY_WRITE( visible, setVisible )
-    GUI_CS_PROPERTY_NOTIFY( visible, visibleChanged )
-    GUI_CS_PROPERTY_FINAL( visible )
+    GUI_LSCS_PROPERTY_READ( visible, isVisible )
+    GUI_LSCS_PROPERTY_WRITE( visible, setVisible )
+    GUI_LSCS_PROPERTY_NOTIFY( visible, visibleChanged )
+    GUI_LSCS_PROPERTY_FINAL( visible )
 
-    GUI_CS_PROPERTY_READ( pos, pos )
-    GUI_CS_PROPERTY_WRITE( pos, cs_setPos )
-    GUI_CS_PROPERTY_FINAL( pos )
+    GUI_LSCS_PROPERTY_READ( pos, pos )
+    GUI_LSCS_PROPERTY_WRITE( pos, cs_setPos )
+    GUI_LSCS_PROPERTY_FINAL( pos )
 
-    GUI_CS_PROPERTY_READ( x, x )
-    GUI_CS_PROPERTY_WRITE( x, setX )
-    GUI_CS_PROPERTY_NOTIFY( x, xChanged )
-    GUI_CS_PROPERTY_FINAL( x )
+    GUI_LSCS_PROPERTY_READ( x, x )
+    GUI_LSCS_PROPERTY_WRITE( x, setX )
+    GUI_LSCS_PROPERTY_NOTIFY( x, xChanged )
+    GUI_LSCS_PROPERTY_FINAL( x )
 
-    GUI_CS_PROPERTY_READ( y, y )
-    GUI_CS_PROPERTY_WRITE( y, setY )
-    GUI_CS_PROPERTY_NOTIFY( y, yChanged )
-    GUI_CS_PROPERTY_FINAL( y )
+    GUI_LSCS_PROPERTY_READ( y, y )
+    GUI_LSCS_PROPERTY_WRITE( y, setY )
+    GUI_LSCS_PROPERTY_NOTIFY( y, yChanged )
+    GUI_LSCS_PROPERTY_FINAL( y )
 
-    GUI_CS_PROPERTY_READ( z, zValue )
-    GUI_CS_PROPERTY_WRITE( z, setZValue )
-    GUI_CS_PROPERTY_NOTIFY( z, zChanged )
-    GUI_CS_PROPERTY_FINAL( z )
+    GUI_LSCS_PROPERTY_READ( z, zValue )
+    GUI_LSCS_PROPERTY_WRITE( z, setZValue )
+    GUI_LSCS_PROPERTY_NOTIFY( z, zChanged )
+    GUI_LSCS_PROPERTY_FINAL( z )
 
-    GUI_CS_PROPERTY_READ( rotation, rotation )
-    GUI_CS_PROPERTY_WRITE( rotation, setRotation )
-    GUI_CS_PROPERTY_NOTIFY( rotation, rotationChanged )
+    GUI_LSCS_PROPERTY_READ( rotation, rotation )
+    GUI_LSCS_PROPERTY_WRITE( rotation, setRotation )
+    GUI_LSCS_PROPERTY_NOTIFY( rotation, rotationChanged )
 
-    GUI_CS_PROPERTY_READ( scale, cs_scale )
-    GUI_CS_PROPERTY_WRITE( scale, setScale )
-    GUI_CS_PROPERTY_NOTIFY( scale, scaleChanged )
+    GUI_LSCS_PROPERTY_READ( scale, cs_scale )
+    GUI_LSCS_PROPERTY_WRITE( scale, setScale )
+    GUI_LSCS_PROPERTY_NOTIFY( scale, scaleChanged )
 
-    GUI_CS_PROPERTY_READ( transformOriginPoint, transformOriginPoint )
-    GUI_CS_PROPERTY_WRITE( transformOriginPoint, cs_setTransformOriginPoint )
+    GUI_LSCS_PROPERTY_READ( transformOriginPoint, transformOriginPoint )
+    GUI_LSCS_PROPERTY_WRITE( transformOriginPoint, cs_setTransformOriginPoint )
 
 #ifndef QT_NO_GRAPHICSEFFECT
-    GUI_CS_PROPERTY_READ( effect, graphicsEffect )
-    GUI_CS_PROPERTY_WRITE( effect, setGraphicsEffect )
+    GUI_LSCS_PROPERTY_READ( effect, graphicsEffect )
+    GUI_LSCS_PROPERTY_WRITE( effect, setGraphicsEffect )
 #endif
 
-    GUI_CS_PROPERTY_READ( children, cs_childrenList )
-    GUI_CS_PROPERTY_DESIGNABLE( children, false )
-    GUI_CS_PROPERTY_NOTIFY( children, childrenChanged )
+    GUI_LSCS_PROPERTY_READ( children, cs_childrenList )
+    GUI_LSCS_PROPERTY_DESIGNABLE( children, false )
+    GUI_LSCS_PROPERTY_NOTIFY( children, childrenChanged )
 
-    GUI_CS_PROPERTY_READ( width, cs_width )
-    GUI_CS_PROPERTY_WRITE( width, cs_setWidth )
-    GUI_CS_PROPERTY_NOTIFY( width, widthChanged )
-    GUI_CS_PROPERTY_RESET( width, cs_resetWidth )
-    GUI_CS_PROPERTY_FINAL( width )
+    GUI_LSCS_PROPERTY_READ( width, cs_width )
+    GUI_LSCS_PROPERTY_WRITE( width, cs_setWidth )
+    GUI_LSCS_PROPERTY_NOTIFY( width, widthChanged )
+    GUI_LSCS_PROPERTY_RESET( width, cs_resetWidth )
+    GUI_LSCS_PROPERTY_FINAL( width )
 
-    GUI_CS_PROPERTY_READ( height, cs_height )
-    GUI_CS_PROPERTY_WRITE( height, cs_setHeight )
-    GUI_CS_PROPERTY_NOTIFY( height, heightChanged )
-    GUI_CS_PROPERTY_RESET( height, cs_resetHeight )
-    GUI_CS_PROPERTY_FINAL( height )
+    GUI_LSCS_PROPERTY_READ( height, cs_height )
+    GUI_LSCS_PROPERTY_WRITE( height, cs_setHeight )
+    GUI_LSCS_PROPERTY_NOTIFY( height, heightChanged )
+    GUI_LSCS_PROPERTY_RESET( height, cs_resetHeight )
+    GUI_LSCS_PROPERTY_FINAL( height )
 
-    GUI_CS_CLASSINFO( "DefaultProperty", "children" )
-    CS_INTERFACES( QGraphicsItem )
+    GUI_LSCS_CLASSINFO( "DefaultProperty", "children" )
+    LSCS_INTERFACES( QGraphicsItem )
 
 public:
     explicit QGraphicsObject( QGraphicsItem *parent = nullptr );
@@ -723,49 +723,49 @@ public:
     void ungrabGesture( Qt::GestureType gesture );
 #endif
 
-    GUI_CS_SIGNAL_1( Public, void parentChanged() )
-    GUI_CS_SIGNAL_2( parentChanged )
+    GUI_LSCS_SIGNAL_1( Public, void parentChanged() )
+    GUI_LSCS_SIGNAL_2( parentChanged )
 
-    GUI_CS_SIGNAL_1( Public, void opacityChanged() )
-    GUI_CS_SIGNAL_2( opacityChanged )
+    GUI_LSCS_SIGNAL_1( Public, void opacityChanged() )
+    GUI_LSCS_SIGNAL_2( opacityChanged )
 
-    GUI_CS_SIGNAL_1( Public, void visibleChanged() )
-    GUI_CS_SIGNAL_2( visibleChanged )
+    GUI_LSCS_SIGNAL_1( Public, void visibleChanged() )
+    GUI_LSCS_SIGNAL_2( visibleChanged )
 
-    GUI_CS_SIGNAL_1( Public, void enabledChanged() )
-    GUI_CS_SIGNAL_2( enabledChanged )
+    GUI_LSCS_SIGNAL_1( Public, void enabledChanged() )
+    GUI_LSCS_SIGNAL_2( enabledChanged )
 
-    GUI_CS_SIGNAL_1( Public, void xChanged() )
-    GUI_CS_SIGNAL_2( xChanged )
+    GUI_LSCS_SIGNAL_1( Public, void xChanged() )
+    GUI_LSCS_SIGNAL_2( xChanged )
 
-    GUI_CS_SIGNAL_1( Public, void yChanged() )
-    GUI_CS_SIGNAL_2( yChanged )
+    GUI_LSCS_SIGNAL_1( Public, void yChanged() )
+    GUI_LSCS_SIGNAL_2( yChanged )
 
-    GUI_CS_SIGNAL_1( Public, void zChanged() )
-    GUI_CS_SIGNAL_2( zChanged )
+    GUI_LSCS_SIGNAL_1( Public, void zChanged() )
+    GUI_LSCS_SIGNAL_2( zChanged )
 
-    GUI_CS_SIGNAL_1( Public, void rotationChanged() )
-    GUI_CS_SIGNAL_2( rotationChanged )
+    GUI_LSCS_SIGNAL_1( Public, void rotationChanged() )
+    GUI_LSCS_SIGNAL_2( rotationChanged )
 
-    GUI_CS_SIGNAL_1( Public, void scaleChanged() )
-    GUI_CS_SIGNAL_2( scaleChanged )
+    GUI_LSCS_SIGNAL_1( Public, void scaleChanged() )
+    GUI_LSCS_SIGNAL_2( scaleChanged )
 
-    GUI_CS_SIGNAL_1( Public, void childrenChanged() )
-    GUI_CS_SIGNAL_2( childrenChanged )
+    GUI_LSCS_SIGNAL_1( Public, void childrenChanged() )
+    GUI_LSCS_SIGNAL_2( childrenChanged )
 
-    GUI_CS_SIGNAL_1( Public, void widthChanged() )
-    GUI_CS_SIGNAL_2( widthChanged )
+    GUI_LSCS_SIGNAL_1( Public, void widthChanged() )
+    GUI_LSCS_SIGNAL_2( widthChanged )
 
-    GUI_CS_SIGNAL_1( Public, void heightChanged() )
-    GUI_CS_SIGNAL_2( heightChanged )
+    GUI_LSCS_SIGNAL_1( Public, void heightChanged() )
+    GUI_LSCS_SIGNAL_2( heightChanged )
 
 protected:
     QGraphicsObject( QGraphicsItemPrivate &dd, QGraphicsItem *parent );
 
     bool event( QEvent *event ) override;
 
-    GUI_CS_SLOT_1( Protected, void updateMicroFocus() )
-    GUI_CS_SLOT_2( updateMicroFocus )
+    GUI_LSCS_SLOT_1( Protected, void updateMicroFocus() )
+    GUI_LSCS_SLOT_2( updateMicroFocus )
 
 private:
     friend class QGraphicsItem;
@@ -1085,13 +1085,13 @@ inline void QGraphicsPixmapItem::setOffset( qreal x, qreal y )
 
 class Q_GUI_EXPORT QGraphicsTextItem : public QGraphicsObject
 {
-    GUI_CS_OBJECT( QGraphicsTextItem )
+    GUI_LSCS_OBJECT( QGraphicsTextItem )
 
-    GUI_CS_PROPERTY_READ( openExternalLinks, openExternalLinks )
-    GUI_CS_PROPERTY_WRITE( openExternalLinks, setOpenExternalLinks )
+    GUI_LSCS_PROPERTY_READ( openExternalLinks, openExternalLinks )
+    GUI_LSCS_PROPERTY_WRITE( openExternalLinks, setOpenExternalLinks )
 
-    GUI_CS_PROPERTY_READ( textCursor, textCursor )
-    GUI_CS_PROPERTY_WRITE( textCursor, setTextCursor )
+    GUI_LSCS_PROPERTY_READ( textCursor, textCursor )
+    GUI_LSCS_PROPERTY_WRITE( textCursor, setTextCursor )
 
 public:
     explicit QGraphicsTextItem( QGraphicsItem *parent = nullptr );
@@ -1146,11 +1146,11 @@ public:
     void setTextCursor( const QTextCursor &cursor );
     QTextCursor textCursor() const;
 
-    GUI_CS_SIGNAL_1( Public, void linkActivated( const QString &link ) )
-    GUI_CS_SIGNAL_2( linkActivated, link )
+    GUI_LSCS_SIGNAL_1( Public, void linkActivated( const QString &link ) )
+    GUI_LSCS_SIGNAL_2( linkActivated, link )
 
-    GUI_CS_SIGNAL_1( Public, void linkHovered( const QString &link ) )
-    GUI_CS_SIGNAL_2( linkHovered, link )
+    GUI_LSCS_SIGNAL_1( Public, void linkHovered( const QString &link ) )
+    GUI_LSCS_SIGNAL_2( linkHovered, link )
 
 protected:
     bool sceneEvent( QEvent *event ) override;
@@ -1181,14 +1181,14 @@ protected:
 private:
     QGraphicsTextItemPrivate *dd;
 
-    GUI_CS_SLOT_1( Private, void _q_updateBoundingRect( const QSizeF &sizeF ) )
-    GUI_CS_SLOT_2( _q_updateBoundingRect )
+    GUI_LSCS_SLOT_1( Private, void _q_updateBoundingRect( const QSizeF &sizeF ) )
+    GUI_LSCS_SLOT_2( _q_updateBoundingRect )
 
-    GUI_CS_SLOT_1( Private, void _q_update( const QRectF &rectF ) )
-    GUI_CS_SLOT_2( _q_update )
+    GUI_LSCS_SLOT_1( Private, void _q_update( const QRectF &rectF ) )
+    GUI_LSCS_SLOT_2( _q_update )
 
-    GUI_CS_SLOT_1( Private, void _q_ensureVisible( const QRectF &rectF ) )
-    GUI_CS_SLOT_2( _q_ensureVisible )
+    GUI_LSCS_SLOT_1( Private, void _q_ensureVisible( const QRectF &rectF ) )
+    GUI_LSCS_SLOT_2( _q_ensureVisible )
 
     friend class QGraphicsTextItemPrivate;
 };
@@ -1284,9 +1284,9 @@ Q_GUI_EXPORT QDebug operator<<( QDebug debug, QGraphicsItem::GraphicsItemFlag fl
 Q_GUI_EXPORT QDebug operator<<( QDebug debug, QGraphicsItem::GraphicsItemFlags flags );
 
 Q_DECLARE_OPERATORS_FOR_FLAGS( QGraphicsItem::GraphicsItemFlags )
-CS_DECLARE_INTERFACE( QGraphicsItem, "com.copperspice.QGraphicsItem" )
+LSCS_DECLARE_INTERFACE( QGraphicsItem, "com.copperspice.QGraphicsItem" )
 
-CS_DECLARE_METATYPE( QGraphicsItem )
+LSCS_DECLARE_METATYPE( QGraphicsItem )
 
 #endif // QT_NO_GRAPHICSVIEW
 

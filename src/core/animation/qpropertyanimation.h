@@ -32,13 +32,13 @@ class QPropertyAnimationPrivate;
 
 class Q_CORE_EXPORT QPropertyAnimation : public QVariantAnimation
 {
-    CORE_CS_OBJECT( QPropertyAnimation )
+    CORE_LSCS_OBJECT( QPropertyAnimation )
 
-    CORE_CS_PROPERTY_READ( propertyName, propertyName )
-    CORE_CS_PROPERTY_WRITE( propertyName, setPropertyName )
+    CORE_LSCS_PROPERTY_READ( propertyName, propertyName )
+    CORE_LSCS_PROPERTY_WRITE( propertyName, setPropertyName )
 
-    CORE_CS_PROPERTY_READ( targetObject, targetObject )
-    CORE_CS_PROPERTY_WRITE( targetObject, setTargetObject )
+    CORE_LSCS_PROPERTY_READ( targetObject, targetObject )
+    CORE_LSCS_PROPERTY_WRITE( targetObject, setTargetObject )
 
 public:
     QPropertyAnimation( QObject *parent = nullptr );

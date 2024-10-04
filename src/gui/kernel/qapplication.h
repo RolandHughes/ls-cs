@@ -57,57 +57,57 @@ using QGuiApplicationPrivate = QApplicationPrivate;
 
 class Q_GUI_EXPORT QApplication : public QCoreApplication
 {
-    GUI_CS_OBJECT( QApplication )
+    GUI_LSCS_OBJECT( QApplication )
 
-    GUI_CS_PROPERTY_READ( applicationDisplayName,  cs_applicationDisplayName )
-    GUI_CS_PROPERTY_WRITE( applicationDisplayName, cs_setApplicationDisplayName )
+    GUI_LSCS_PROPERTY_READ( applicationDisplayName,  cs_applicationDisplayName )
+    GUI_LSCS_PROPERTY_WRITE( applicationDisplayName, cs_setApplicationDisplayName )
 
-    GUI_CS_PROPERTY_READ( platformName,   cs_platformName )
-    GUI_CS_PROPERTY_STORED( platformName, false )
+    GUI_LSCS_PROPERTY_READ( platformName,   cs_platformName )
+    GUI_LSCS_PROPERTY_STORED( platformName, false )
 
-    GUI_CS_PROPERTY_READ( primaryScreen,   cs_primaryScreen )
-    GUI_CS_PROPERTY_NOTIFY( primaryScreen, primaryScreenChanged )
-    GUI_CS_PROPERTY_STORED( primaryScreen, false )
+    GUI_LSCS_PROPERTY_READ( primaryScreen,   cs_primaryScreen )
+    GUI_LSCS_PROPERTY_NOTIFY( primaryScreen, primaryScreenChanged )
+    GUI_LSCS_PROPERTY_STORED( primaryScreen, false )
 
-    GUI_CS_PROPERTY_READ( layoutDirection,  cs_layoutDirection )
-    GUI_CS_PROPERTY_WRITE( layoutDirection, cs_setLayoutDirection )
+    GUI_LSCS_PROPERTY_READ( layoutDirection,  cs_layoutDirection )
+    GUI_LSCS_PROPERTY_WRITE( layoutDirection, cs_setLayoutDirection )
 
-    GUI_CS_PROPERTY_READ( windowIcon,  cs_windowIcon )
-    GUI_CS_PROPERTY_WRITE( windowIcon, cs_setWindowIcon )
+    GUI_LSCS_PROPERTY_READ( windowIcon,  cs_windowIcon )
+    GUI_LSCS_PROPERTY_WRITE( windowIcon, cs_setWindowIcon )
 
-    GUI_CS_PROPERTY_READ( cursorFlashTime,  cs_cursorFlashTime )
-    GUI_CS_PROPERTY_WRITE( cursorFlashTime, cs_setCursorFlashTime )
+    GUI_LSCS_PROPERTY_READ( cursorFlashTime,  cs_cursorFlashTime )
+    GUI_LSCS_PROPERTY_WRITE( cursorFlashTime, cs_setCursorFlashTime )
 
-    GUI_CS_PROPERTY_READ( doubleClickInterval,  cs_doubleClickInterval )
-    GUI_CS_PROPERTY_WRITE( doubleClickInterval, cs_setDoubleClickInterval )
+    GUI_LSCS_PROPERTY_READ( doubleClickInterval,  cs_doubleClickInterval )
+    GUI_LSCS_PROPERTY_WRITE( doubleClickInterval, cs_setDoubleClickInterval )
 
-    GUI_CS_PROPERTY_READ( keyboardInputInterval,  cs_keyboardInputInterval )
-    GUI_CS_PROPERTY_WRITE( keyboardInputInterval, cs_setKeyboardInputInterval )
+    GUI_LSCS_PROPERTY_READ( keyboardInputInterval,  cs_keyboardInputInterval )
+    GUI_LSCS_PROPERTY_WRITE( keyboardInputInterval, cs_setKeyboardInputInterval )
 
 #ifndef QT_NO_WHEELEVENT
-    GUI_CS_PROPERTY_READ( wheelScrollLines,  cs_wheelScrollLines )
-    GUI_CS_PROPERTY_WRITE( wheelScrollLines, cs_setWheelScrollLines )
+    GUI_LSCS_PROPERTY_READ( wheelScrollLines,  cs_wheelScrollLines )
+    GUI_LSCS_PROPERTY_WRITE( wheelScrollLines, cs_setWheelScrollLines )
 #endif
 
-    GUI_CS_PROPERTY_READ( globalStrut,  cs_globalStrut )
-    GUI_CS_PROPERTY_WRITE( globalStrut, cs_setGlobalStrut )
+    GUI_LSCS_PROPERTY_READ( globalStrut,  cs_globalStrut )
+    GUI_LSCS_PROPERTY_WRITE( globalStrut, cs_setGlobalStrut )
 
-    GUI_CS_PROPERTY_READ( startDragTime,  cs_startDragTime )
-    GUI_CS_PROPERTY_WRITE( startDragTime, cs_setStartDragTime )
+    GUI_LSCS_PROPERTY_READ( startDragTime,  cs_startDragTime )
+    GUI_LSCS_PROPERTY_WRITE( startDragTime, cs_setStartDragTime )
 
-    GUI_CS_PROPERTY_READ( startDragDistance,  cs_startDragDistance )
-    GUI_CS_PROPERTY_WRITE( startDragDistance, cs_setStartDragDistance )
+    GUI_LSCS_PROPERTY_READ( startDragDistance,  cs_startDragDistance )
+    GUI_LSCS_PROPERTY_WRITE( startDragDistance, cs_setStartDragDistance )
 
-    GUI_CS_PROPERTY_READ( quitOnLastWindowClosed,  cs_quitOnLastWindowClosed )
-    GUI_CS_PROPERTY_WRITE( quitOnLastWindowClosed, cs_setQuitOnLastWindowClosed )
+    GUI_LSCS_PROPERTY_READ( quitOnLastWindowClosed,  cs_quitOnLastWindowClosed )
+    GUI_LSCS_PROPERTY_WRITE( quitOnLastWindowClosed, cs_setQuitOnLastWindowClosed )
 
 #ifndef QT_NO_STYLE_STYLESHEET
-    GUI_CS_PROPERTY_READ( styleSheet,  styleSheet )
-    GUI_CS_PROPERTY_WRITE( styleSheet, setStyleSheet )
+    GUI_LSCS_PROPERTY_READ( styleSheet,  styleSheet )
+    GUI_LSCS_PROPERTY_WRITE( styleSheet, setStyleSheet )
 #endif
 
-    GUI_CS_PROPERTY_READ( autoSipEnabled,  autoSipEnabled )
-    GUI_CS_PROPERTY_WRITE( autoSipEnabled, setAutoSipEnabled )
+    GUI_LSCS_PROPERTY_READ( autoSipEnabled,  autoSipEnabled )
+    GUI_LSCS_PROPERTY_WRITE( autoSipEnabled, setAutoSipEnabled )
 
 public:
     enum ColorSpec
@@ -356,70 +356,70 @@ public:
 
     QPixmap cs_internal_applyQIconStyle( QIcon::Mode mode, const QPixmap &basePixmap ) const;
 
-    GUI_CS_SIGNAL_1( Public, void screenAdded( QScreen *screen ) )
-    GUI_CS_SIGNAL_2( screenAdded, screen )
+    GUI_LSCS_SIGNAL_1( Public, void screenAdded( QScreen *screen ) )
+    GUI_LSCS_SIGNAL_2( screenAdded, screen )
 
-    GUI_CS_SIGNAL_1( Public, void screenRemoved( QScreen *screen ) )
-    GUI_CS_SIGNAL_2( screenRemoved, screen )
+    GUI_LSCS_SIGNAL_1( Public, void screenRemoved( QScreen *screen ) )
+    GUI_LSCS_SIGNAL_2( screenRemoved, screen )
 
-    GUI_CS_SIGNAL_1( Public, void primaryScreenChanged( QScreen *screen ) )
-    GUI_CS_SIGNAL_2( primaryScreenChanged, screen )
+    GUI_LSCS_SIGNAL_1( Public, void primaryScreenChanged( QScreen *screen ) )
+    GUI_LSCS_SIGNAL_2( primaryScreenChanged, screen )
 
-    GUI_CS_SIGNAL_1( Public, void focusObjectChanged( QObject *focusObject ) )
-    GUI_CS_SIGNAL_2( focusObjectChanged, focusObject )
+    GUI_LSCS_SIGNAL_1( Public, void focusObjectChanged( QObject *focusObject ) )
+    GUI_LSCS_SIGNAL_2( focusObjectChanged, focusObject )
 
-    GUI_CS_SIGNAL_1( Public, void focusWindowChanged( QWindow *focusWindow ) )
-    GUI_CS_SIGNAL_2( focusWindowChanged, focusWindow )
+    GUI_LSCS_SIGNAL_1( Public, void focusWindowChanged( QWindow *focusWindow ) )
+    GUI_LSCS_SIGNAL_2( focusWindowChanged, focusWindow )
 
-    GUI_CS_SIGNAL_1( Public, void applicationStateChanged( Qt::ApplicationState state ) )
-    GUI_CS_SIGNAL_2( applicationStateChanged, state )
+    GUI_LSCS_SIGNAL_1( Public, void applicationStateChanged( Qt::ApplicationState state ) )
+    GUI_LSCS_SIGNAL_2( applicationStateChanged, state )
 
-    GUI_CS_SIGNAL_1( Public, void layoutDirectionChanged( Qt::LayoutDirection direction ) )
-    GUI_CS_SIGNAL_2( layoutDirectionChanged, direction )
+    GUI_LSCS_SIGNAL_1( Public, void layoutDirectionChanged( Qt::LayoutDirection direction ) )
+    GUI_LSCS_SIGNAL_2( layoutDirectionChanged, direction )
 
-    GUI_CS_SIGNAL_1( Public, void paletteChanged( const QPalette &palette ) )
-    GUI_CS_SIGNAL_2( paletteChanged, palette )
+    GUI_LSCS_SIGNAL_1( Public, void paletteChanged( const QPalette &palette ) )
+    GUI_LSCS_SIGNAL_2( paletteChanged, palette )
 
-    GUI_CS_SIGNAL_1( Public, void lastWindowClosed() )
-    GUI_CS_SIGNAL_2( lastWindowClosed )
+    GUI_LSCS_SIGNAL_1( Public, void lastWindowClosed() )
+    GUI_LSCS_SIGNAL_2( lastWindowClosed )
 
-    GUI_CS_SIGNAL_1( Public, void focusChanged( QWidget *old, QWidget *current ) )
-    GUI_CS_SIGNAL_2( focusChanged, old, current )
+    GUI_LSCS_SIGNAL_1( Public, void focusChanged( QWidget *old, QWidget *current ) )
+    GUI_LSCS_SIGNAL_2( focusChanged, old, current )
 
-    GUI_CS_SIGNAL_1( Public, void fontDatabaseChanged() )
-    GUI_CS_SIGNAL_2( fontDatabaseChanged )
+    GUI_LSCS_SIGNAL_1( Public, void fontDatabaseChanged() )
+    GUI_LSCS_SIGNAL_2( fontDatabaseChanged )
 
 #ifndef QT_NO_SESSIONMANAGER
     // CopperSpice - api change to pass a pointer instead of a reference
-    GUI_CS_SIGNAL_1( Public, void commitDataRequest( QSessionManager *sessionManager ) )
-    GUI_CS_SIGNAL_2( commitDataRequest, sessionManager )
+    GUI_LSCS_SIGNAL_1( Public, void commitDataRequest( QSessionManager *sessionManager ) )
+    GUI_LSCS_SIGNAL_2( commitDataRequest, sessionManager )
 
     // CopperSpice - api change to pass a pointer instead of a reference
-    GUI_CS_SIGNAL_1( Public, void saveStateRequest( QSessionManager *sessionManager ) )
-    GUI_CS_SIGNAL_2( saveStateRequest, sessionManager )
+    GUI_LSCS_SIGNAL_1( Public, void saveStateRequest( QSessionManager *sessionManager ) )
+    GUI_LSCS_SIGNAL_2( saveStateRequest, sessionManager )
 #endif
 
     QString styleSheet() const;
 
 #ifndef QT_NO_STYLE_STYLESHEET
-    GUI_CS_SLOT_1( Public, void setStyleSheet( const QString &sheet ) )
-    GUI_CS_SLOT_2( setStyleSheet )
+    GUI_LSCS_SLOT_1( Public, void setStyleSheet( const QString &sheet ) )
+    GUI_LSCS_SLOT_2( setStyleSheet )
 #endif
 
-    GUI_CS_SLOT_1( Public, void setAutoSipEnabled( const bool enabled ) )
-    GUI_CS_SLOT_2( setAutoSipEnabled )
+    GUI_LSCS_SLOT_1( Public, void setAutoSipEnabled( const bool enabled ) )
+    GUI_LSCS_SLOT_2( setAutoSipEnabled )
 
-    GUI_CS_SLOT_1( Public, bool autoSipEnabled() const )
-    GUI_CS_SLOT_2( autoSipEnabled )
+    GUI_LSCS_SLOT_1( Public, bool autoSipEnabled() const )
+    GUI_LSCS_SLOT_2( autoSipEnabled )
 
-    GUI_CS_SLOT_1( Public, static void closeAllWindows() )
-    GUI_CS_SLOT_2( closeAllWindows )
+    GUI_LSCS_SLOT_1( Public, static void closeAllWindows() )
+    GUI_LSCS_SLOT_2( closeAllWindows )
 
-    GUI_CS_SLOT_1( Public, static void aboutCs() )
-    GUI_CS_SLOT_2( aboutCs )
+    GUI_LSCS_SLOT_1( Public, static void aboutCs() )
+    GUI_LSCS_SLOT_2( aboutCs )
 
-    GUI_CS_SLOT_1( Public, static void aboutQt() )
-    GUI_CS_SLOT_2( aboutQt )
+    GUI_LSCS_SLOT_1( Public, static void aboutQt() )
+    GUI_LSCS_SLOT_2( aboutQt )
 
 protected:
     bool event( QEvent *event ) override;
@@ -458,8 +458,8 @@ private:
     friend class QPlatformSessionManager;
 #endif
 
-    GUI_CS_SLOT_1( Private, void _q_updateFocusObject( QObject *object ) )
-    GUI_CS_SLOT_2( _q_updateFocusObject )
+    GUI_LSCS_SLOT_1( Private, void _q_updateFocusObject( QObject *object ) )
+    GUI_LSCS_SLOT_2( _q_updateFocusObject )
 };
 
 void QApplication::cs_setApplicationDisplayName( const QString &name )

@@ -96,7 +96,7 @@ public:
 
     inline QUrl toQUrl() const
     {
-        Q_ASSERT_X( QUrl( m_value ).isValid(), Q_FUNC_INFO, csPrintable( QString( "%1 is not a valid QUrl" ).formatArg( m_value ) ) );
+        Q_ASSERT_X( QUrl( m_value ).isValid(), Q_FUNC_INFO, lscsPrintable( QString( "%1 is not a valid QUrl" ).formatArg( m_value ) ) );
         return QUrl( m_value );
     }
 

@@ -45,29 +45,29 @@ class QVideoWidget;
 
 class Q_MULTIMEDIA_EXPORT QCamera : public QMediaObject
 {
-    MULTI_CS_OBJECT( QCamera )
+    MULTI_LSCS_OBJECT( QCamera )
 
-    MULTI_CS_PROPERTY_READ( state, state )
-    MULTI_CS_PROPERTY_NOTIFY( state, stateChanged )
+    MULTI_LSCS_PROPERTY_READ( state, state )
+    MULTI_LSCS_PROPERTY_NOTIFY( state, stateChanged )
 
-    MULTI_CS_PROPERTY_READ( status, status )
-    MULTI_CS_PROPERTY_NOTIFY( status, statusChanged )
+    MULTI_LSCS_PROPERTY_READ( status, status )
+    MULTI_LSCS_PROPERTY_NOTIFY( status, statusChanged )
 
-    MULTI_CS_PROPERTY_READ( captureMode, captureMode )
-    MULTI_CS_PROPERTY_WRITE( captureMode, setCaptureMode )
-    MULTI_CS_PROPERTY_NOTIFY( captureMode, captureModeChanged )
+    MULTI_LSCS_PROPERTY_READ( captureMode, captureMode )
+    MULTI_LSCS_PROPERTY_WRITE( captureMode, setCaptureMode )
+    MULTI_LSCS_PROPERTY_NOTIFY( captureMode, captureModeChanged )
 
-    MULTI_CS_PROPERTY_READ( lockStatus, cs_lockStatus )
-    MULTI_CS_PROPERTY_NOTIFY( lockStatus, cs_lockStatusChanged )
+    MULTI_LSCS_PROPERTY_READ( lockStatus, cs_lockStatus )
+    MULTI_LSCS_PROPERTY_NOTIFY( lockStatus, cs_lockStatusChanged )
 
-    MULTI_CS_ENUM( Status )
-    MULTI_CS_ENUM( State )
-    MULTI_CS_ENUM( CaptureMode )
-    MULTI_CS_ENUM( Error )
-    MULTI_CS_ENUM( LockStatus )
-    MULTI_CS_ENUM( LockChangeReason )
-    MULTI_CS_ENUM( LockType )
-    MULTI_CS_ENUM( Position )
+    MULTI_LSCS_ENUM( Status )
+    MULTI_LSCS_ENUM( State )
+    MULTI_LSCS_ENUM( CaptureMode )
+    MULTI_LSCS_ENUM( Error )
+    MULTI_LSCS_ENUM( LockStatus )
+    MULTI_LSCS_ENUM( LockChangeReason )
+    MULTI_LSCS_ENUM( LockType )
+    MULTI_LSCS_ENUM( Position )
 
 public:
     struct FrameRateRange
@@ -211,81 +211,81 @@ public:
     QCamera::LockStatus lockStatus() const;
     QCamera::LockStatus lockStatus( QCamera::LockType lockType ) const;
 
-    MULTI_CS_SLOT_1( Public, void setCaptureMode( QCamera::CaptureModes mode ) )
-    MULTI_CS_SLOT_2( setCaptureMode )
+    MULTI_LSCS_SLOT_1( Public, void setCaptureMode( QCamera::CaptureModes mode ) )
+    MULTI_LSCS_SLOT_2( setCaptureMode )
 
-    MULTI_CS_SLOT_1( Public, void load() )
-    MULTI_CS_SLOT_2( load )
+    MULTI_LSCS_SLOT_1( Public, void load() )
+    MULTI_LSCS_SLOT_2( load )
 
-    MULTI_CS_SLOT_1( Public, void unload() )
-    MULTI_CS_SLOT_2( unload )
+    MULTI_LSCS_SLOT_1( Public, void unload() )
+    MULTI_LSCS_SLOT_2( unload )
 
-    MULTI_CS_SLOT_1( Public, void start() )
-    MULTI_CS_SLOT_2( start )
+    MULTI_LSCS_SLOT_1( Public, void start() )
+    MULTI_LSCS_SLOT_2( start )
 
-    MULTI_CS_SLOT_1( Public, void stop() )
-    MULTI_CS_SLOT_2( stop )
+    MULTI_LSCS_SLOT_1( Public, void stop() )
+    MULTI_LSCS_SLOT_2( stop )
 
-    MULTI_CS_SLOT_1( Public, void searchAndLock() )
-    MULTI_CS_SLOT_OVERLOAD( searchAndLock, () )
+    MULTI_LSCS_SLOT_1( Public, void searchAndLock() )
+    MULTI_LSCS_SLOT_OVERLOAD( searchAndLock, () )
 
-    MULTI_CS_SLOT_1( Public, void searchAndLock( QCamera::LockTypes locks ) )
-    MULTI_CS_SLOT_OVERLOAD( searchAndLock, ( QCamera::LockTypes ) )
+    MULTI_LSCS_SLOT_1( Public, void searchAndLock( QCamera::LockTypes locks ) )
+    MULTI_LSCS_SLOT_OVERLOAD( searchAndLock, ( QCamera::LockTypes ) )
 
-    MULTI_CS_SLOT_1( Public, void unlock() )
-    MULTI_CS_SLOT_OVERLOAD( unlock, () )
+    MULTI_LSCS_SLOT_1( Public, void unlock() )
+    MULTI_LSCS_SLOT_OVERLOAD( unlock, () )
 
-    MULTI_CS_SLOT_1( Public, void unlock( QCamera::LockTypes locks ) )
-    MULTI_CS_SLOT_OVERLOAD( unlock, ( QCamera::LockTypes ) )
+    MULTI_LSCS_SLOT_1( Public, void unlock( QCamera::LockTypes locks ) )
+    MULTI_LSCS_SLOT_OVERLOAD( unlock, ( QCamera::LockTypes ) )
 
 
-    MULTI_CS_SIGNAL_1( Public, void captureModeChanged( QCamera::CaptureModes mode ) )
-    MULTI_CS_SIGNAL_2( captureModeChanged, mode )
+    MULTI_LSCS_SIGNAL_1( Public, void captureModeChanged( QCamera::CaptureModes mode ) )
+    MULTI_LSCS_SIGNAL_2( captureModeChanged, mode )
 
-    MULTI_CS_SIGNAL_1( Public, void error( QCamera::Error error ) )
-    MULTI_CS_SIGNAL_OVERLOAD( error, ( QCamera::Error ), error )
+    MULTI_LSCS_SIGNAL_1( Public, void error( QCamera::Error error ) )
+    MULTI_LSCS_SIGNAL_OVERLOAD( error, ( QCamera::Error ), error )
 
-    MULTI_CS_SIGNAL_1( Public, void stateChanged( QCamera::State state ) )
-    MULTI_CS_SIGNAL_2( stateChanged, state )
+    MULTI_LSCS_SIGNAL_1( Public, void stateChanged( QCamera::State state ) )
+    MULTI_LSCS_SIGNAL_2( stateChanged, state )
 
-    MULTI_CS_SIGNAL_1( Public, void statusChanged( QCamera::Status status ) )
-    MULTI_CS_SIGNAL_2( statusChanged, status )
+    MULTI_LSCS_SIGNAL_1( Public, void statusChanged( QCamera::Status status ) )
+    MULTI_LSCS_SIGNAL_2( statusChanged, status )
 
-    MULTI_CS_SIGNAL_1( Public, void locked() )
-    MULTI_CS_SIGNAL_2( locked )
+    MULTI_LSCS_SIGNAL_1( Public, void locked() )
+    MULTI_LSCS_SIGNAL_2( locked )
 
-    MULTI_CS_SIGNAL_1( Public, void lockFailed() )
-    MULTI_CS_SIGNAL_2( lockFailed )
+    MULTI_LSCS_SIGNAL_1( Public, void lockFailed() )
+    MULTI_LSCS_SIGNAL_2( lockFailed )
 
-    MULTI_CS_SIGNAL_1( Public, void cs_lockStatusChanged( QCamera::LockStatus status, QCamera::LockChangeReason reason ) )
-    MULTI_CS_SIGNAL_2( cs_lockStatusChanged, status, reason )
+    MULTI_LSCS_SIGNAL_1( Public, void cs_lockStatusChanged( QCamera::LockStatus status, QCamera::LockChangeReason reason ) )
+    MULTI_LSCS_SIGNAL_2( cs_lockStatusChanged, status, reason )
 
-    MULTI_CS_SIGNAL_1( Public, void lockStatusChanged( QCamera::LockStatus status, QCamera::LockChangeReason reason ) )
-    MULTI_CS_SIGNAL_OVERLOAD( lockStatusChanged, ( QCamera::LockStatus, QCamera::LockChangeReason ), status, reason )
+    MULTI_LSCS_SIGNAL_1( Public, void lockStatusChanged( QCamera::LockStatus status, QCamera::LockChangeReason reason ) )
+    MULTI_LSCS_SIGNAL_OVERLOAD( lockStatusChanged, ( QCamera::LockStatus, QCamera::LockChangeReason ), status, reason )
 
-    MULTI_CS_SIGNAL_1( Public, void lockStatusChanged( QCamera::LockType type, QCamera::LockStatus status,
+    MULTI_LSCS_SIGNAL_1( Public, void lockStatusChanged( QCamera::LockType type, QCamera::LockStatus status,
                        QCamera::LockChangeReason reason ) )
-    MULTI_CS_SIGNAL_OVERLOAD( lockStatusChanged, ( QCamera::LockType, QCamera::LockStatus, QCamera::LockChangeReason ), type, status,
+    MULTI_LSCS_SIGNAL_OVERLOAD( lockStatusChanged, ( QCamera::LockType, QCamera::LockStatus, QCamera::LockChangeReason ), type, status,
                               reason )
 
 private:
     Q_DECLARE_PRIVATE( QCamera )
 
-    MULTI_CS_SLOT_1( Private, void _q_preparePropertyChange( int changeType ) )
-    MULTI_CS_SLOT_2( _q_preparePropertyChange )
+    MULTI_LSCS_SLOT_1( Private, void _q_preparePropertyChange( int changeType ) )
+    MULTI_LSCS_SLOT_2( _q_preparePropertyChange )
 
-    MULTI_CS_SLOT_1( Private, void _q_restartCamera() )
-    MULTI_CS_SLOT_2( _q_restartCamera )
+    MULTI_LSCS_SLOT_1( Private, void _q_restartCamera() )
+    MULTI_LSCS_SLOT_2( _q_restartCamera )
 
-    MULTI_CS_SLOT_1( Private, void _q_error( int error, const QString &errorString ) )
-    MULTI_CS_SLOT_2( _q_error )
+    MULTI_LSCS_SLOT_1( Private, void _q_error( int error, const QString &errorString ) )
+    MULTI_LSCS_SLOT_2( _q_error )
 
-    MULTI_CS_SLOT_1( Private, void _q_updateLockStatus( QCamera::LockType type, QCamera::LockStatus status,
+    MULTI_LSCS_SLOT_1( Private, void _q_updateLockStatus( QCamera::LockType type, QCamera::LockStatus status,
                      QCamera::LockChangeReason reason ) )
-    MULTI_CS_SLOT_2( _q_updateLockStatus )
+    MULTI_LSCS_SLOT_2( _q_updateLockStatus )
 
-    MULTI_CS_SLOT_1( Private, void _q_updateState( QCamera::State state ) )
-    MULTI_CS_SLOT_2( _q_updateState )
+    MULTI_LSCS_SLOT_1( Private, void _q_updateState( QCamera::State state ) )
+    MULTI_LSCS_SLOT_2( _q_updateState )
 
     friend class QCameraInfo;
 };

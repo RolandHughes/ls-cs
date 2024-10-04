@@ -36,7 +36,7 @@ class QWindowsStylePrivate;
 
 class QWindowsStyle : public QCommonStyle
 {
-    GUI_CS_OBJECT( QWindowsStyle )
+    GUI_LSCS_OBJECT( QWindowsStyle )
 
 public:
     QWindowsStyle();

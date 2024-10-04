@@ -1070,7 +1070,7 @@ void QSvgGradientStyle::resolveStops()
         }
         else
         {
-            qWarning( "Could not resolve property : %s", csPrintable( m_link ) );
+            qWarning( "Could not resolve property : %s", lscsPrintable( m_link ) );
         }
 
         m_link = QString();

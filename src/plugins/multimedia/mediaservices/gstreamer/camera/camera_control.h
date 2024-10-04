@@ -32,10 +32,10 @@ class CamerabinResourcePolicy;
 
 class CameraBinControl : public QCameraControl
 {
-    CS_OBJECT( CameraBinControl )
+    LSCS_OBJECT( CameraBinControl )
 
-    CS_PROPERTY_READ( viewfinderColorSpaceConversion, viewfinderColorSpaceConversion )
-    CS_PROPERTY_WRITE( viewfinderColorSpaceConversion, setViewfinderColorSpaceConversion )
+    LSCS_PROPERTY_READ( viewfinderColorSpaceConversion, viewfinderColorSpaceConversion )
+    LSCS_PROPERTY_WRITE( viewfinderColorSpaceConversion, setViewfinderColorSpaceConversion )
 
 public:
     CameraBinControl( CameraBinSession *session );
@@ -63,27 +63,27 @@ public:
         return m_resourcePolicy;
     }
 
-    CS_SLOT_1( Public, void reloadLater() )
-    CS_SLOT_2( reloadLater )
+    LSCS_SLOT_1( Public, void reloadLater() )
+    LSCS_SLOT_2( reloadLater )
 
-    CS_SLOT_1( Public, void setViewfinderColorSpaceConversion( bool enabled ) )
-    CS_SLOT_2( setViewfinderColorSpaceConversion )
+    LSCS_SLOT_1( Public, void setViewfinderColorSpaceConversion( bool enabled ) )
+    LSCS_SLOT_2( setViewfinderColorSpaceConversion )
 
 private:
-    CS_SLOT_1( Private, void delayedReload() )
-    CS_SLOT_2( delayedReload )
+    LSCS_SLOT_1( Private, void delayedReload() )
+    LSCS_SLOT_2( delayedReload )
 
-    CS_SLOT_1( Private, void handleResourcesGranted() )
-    CS_SLOT_2( handleResourcesGranted )
+    LSCS_SLOT_1( Private, void handleResourcesGranted() )
+    LSCS_SLOT_2( handleResourcesGranted )
 
-    CS_SLOT_1( Private, void handleResourcesLost() )
-    CS_SLOT_2( handleResourcesLost )
+    LSCS_SLOT_1( Private, void handleResourcesLost() )
+    LSCS_SLOT_2( handleResourcesLost )
 
-    CS_SLOT_1( Private, void handleBusyChanged( bool busy ) )
-    CS_SLOT_2( handleBusyChanged )
+    LSCS_SLOT_1( Private, void handleBusyChanged( bool busy ) )
+    LSCS_SLOT_2( handleBusyChanged )
 
-    CS_SLOT_1( Private, void handleCameraError( int error, const QString &errorString ) )
-    CS_SLOT_2( handleCameraError )
+    LSCS_SLOT_1( Private, void handleCameraError( int error, const QString &errorString ) )
+    LSCS_SLOT_2( handleCameraError )
 
     void updateSupportedResolutions( const QString &device );
 

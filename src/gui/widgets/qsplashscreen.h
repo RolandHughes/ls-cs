@@ -32,7 +32,7 @@ class QSplashScreenPrivate;
 
 class Q_GUI_EXPORT QSplashScreen : public QWidget
 {
-    GUI_CS_OBJECT( QSplashScreen )
+    GUI_LSCS_OBJECT( QSplashScreen )
 
 public:
     explicit QSplashScreen( const QPixmap &pixmap = QPixmap(), Qt::WindowFlags flags = Qt::EmptyFlag );
@@ -49,15 +49,15 @@ public:
     void repaint();
     QString message() const;
 
-    GUI_CS_SLOT_1( Public, void showMessage( const QString &message, int alignment = Qt::AlignLeft,
+    GUI_LSCS_SLOT_1( Public, void showMessage( const QString &message, int alignment = Qt::AlignLeft,
                    const QColor &color = Qt::black ) )
-    GUI_CS_SLOT_2( showMessage )
+    GUI_LSCS_SLOT_2( showMessage )
 
-    GUI_CS_SLOT_1( Public, void clearMessage() )
-    GUI_CS_SLOT_2( clearMessage )
+    GUI_LSCS_SLOT_1( Public, void clearMessage() )
+    GUI_LSCS_SLOT_2( clearMessage )
 
-    GUI_CS_SIGNAL_1( Public, void messageChanged( const QString &message ) )
-    GUI_CS_SIGNAL_2( messageChanged, message )
+    GUI_LSCS_SIGNAL_1( Public, void messageChanged( const QString &message ) )
+    GUI_LSCS_SIGNAL_2( messageChanged, message )
 
 protected:
     bool event( QEvent *event ) override;

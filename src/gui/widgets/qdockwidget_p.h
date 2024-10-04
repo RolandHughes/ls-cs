@@ -99,7 +99,7 @@ private:
 
 class Q_GUI_EXPORT QDockWidgetLayout : public QLayout
 {
-    GUI_CS_OBJECT( QDockWidgetLayout )
+    GUI_LSCS_OBJECT( QDockWidgetLayout )
 
 public:
     QDockWidgetLayout( QWidget *parent = nullptr );

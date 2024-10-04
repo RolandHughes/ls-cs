@@ -38,7 +38,7 @@ class AVFCameraRendererControl;
 
 class AVFCameraRendererControl : public QVideoRendererControl
 {
-    CS_OBJECT( AVFCameraRendererControl )
+    LSCS_OBJECT( AVFCameraRendererControl )
 
 public:
     AVFCameraRendererControl( QObject *parent = nullptr );
@@ -62,15 +62,15 @@ public:
     void resetCaptureDelegate() const;
 #endif
 
-    CS_SIGNAL_1( Public, void surfaceChanged( QAbstractVideoSurface *surface ) )
-    CS_SIGNAL_2( surfaceChanged, surface )
+    LSCS_SIGNAL_1( Public, void surfaceChanged( QAbstractVideoSurface *surface ) )
+    LSCS_SIGNAL_2( surfaceChanged, surface )
 
 private:
-    CS_SLOT_1( Private, void handleViewfinderFrame() )
-    CS_SLOT_2( handleViewfinderFrame )
+    LSCS_SLOT_1( Private, void handleViewfinderFrame() )
+    LSCS_SLOT_2( handleViewfinderFrame )
 
-    CS_SLOT_1( Private, void updateCaptureConnection() )
-    CS_SLOT_2( updateCaptureConnection )
+    LSCS_SLOT_1( Private, void updateCaptureConnection() )
+    LSCS_SLOT_2( updateCaptureConnection )
 
     QAbstractVideoSurface *m_surface;
     AVFCaptureFramesDelegate *m_viewfinderFramesDelegate;

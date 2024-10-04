@@ -28,7 +28,7 @@
 
 #import <AVFoundation/AVFoundation.h>
 
-CS_PLUGIN_REGISTER(AVFMediaPlayerServicePlugin)
+LSCS_PLUGIN_REGISTER(AVFMediaPlayerServicePlugin)
 
 AVFMediaPlayerServicePlugin::AVFMediaPlayerServicePlugin()
 {

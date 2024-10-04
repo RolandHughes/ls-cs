@@ -121,7 +121,7 @@ NSDictionary *AVFAudioEncoderSettingsControl::applySettings()
     QString codec = m_requestedSettings.codec().isEmpty() ? *defaultCodec() : m_requestedSettings.codec();
 
     if (! supportedCodecs()->contains(codec)) {
-        qWarning("Unsupported codec: '%s'", csPrintable(codec));
+        qWarning("Unsupported codec: '%s'", lscsPrintable(codec));
         codec = *defaultCodec();
     }
 

@@ -227,9 +227,9 @@ class QOpenGLEngineShaderProg;
 
 class Q_GUI_EXPORT QOpenGLEngineSharedShaders
 {
-    GUI_CS_GADGET( QOpenGLEngineSharedShaders )
+    GUI_LSCS_GADGET( QOpenGLEngineSharedShaders )
 
-    GUI_CS_ENUM( SnippetName )
+    GUI_LSCS_ENUM( SnippetName )
 
 public:
 
@@ -399,7 +399,7 @@ public:
 
 class Q_GUI_EXPORT QOpenGLEngineShaderManager : public QObject
 {
-    GUI_CS_OBJECT( QOpenGLEngineShaderManager )
+    GUI_LSCS_OBJECT( QOpenGLEngineShaderManager )
 
 public:
     QOpenGLEngineShaderManager( QOpenGLContext *context );

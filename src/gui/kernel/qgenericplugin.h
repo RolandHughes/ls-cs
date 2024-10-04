@@ -31,7 +31,7 @@
 
 class Q_GUI_EXPORT QGenericPlugin : public QObject
 {
-    GUI_CS_OBJECT( QGenericPlugin )
+    GUI_LSCS_OBJECT( QGenericPlugin )
 
 public:
     explicit QGenericPlugin( QObject *parent = nullptr );

@@ -85,7 +85,7 @@ private:
 
 class Q_SCRIPT_EXPORT QScriptEngine : public QObject
 {
-    SCRIPT_CS_OBJECT( QScriptEngine )
+    SCRIPT_LSCS_OBJECT( QScriptEngine )
 
 public:
     enum ValueOwnership
@@ -214,8 +214,8 @@ public:
 
     QScriptValue objectById( qint64 id ) const;
 
-    SCRIPT_CS_SIGNAL_1( Public, void signalHandlerException( const QScriptValue &exception ) )
-    SCRIPT_CS_SIGNAL_2( signalHandlerException, exception )
+    SCRIPT_LSCS_SIGNAL_1( Public, void signalHandlerException( const QScriptValue &exception ) )
+    SCRIPT_LSCS_SIGNAL_2( signalHandlerException, exception )
 
 protected:
     QScriptEngine( QScriptEnginePrivate &dd, QObject *parent = nullptr );
@@ -239,8 +239,8 @@ private:
     friend inline QScriptValue qScriptValueFromValue_helper( QScriptEngine *, const QVariant &data );
     friend inline QVariant qscriptvalue_cast_helper( const QScriptValue &, uint );
 
-    SCRIPT_CS_SLOT_1( Private, void _q_objectDestroyed( QObject *object ) )
-    SCRIPT_CS_SLOT_2( _q_objectDestroyed )
+    SCRIPT_LSCS_SLOT_1( Private, void _q_objectDestroyed( QObject *object ) )
+    SCRIPT_LSCS_SLOT_2( _q_objectDestroyed )
 };
 
 #define Q_SCRIPT_DECLARE_QMETAOBJECT(T, _Arg1) \

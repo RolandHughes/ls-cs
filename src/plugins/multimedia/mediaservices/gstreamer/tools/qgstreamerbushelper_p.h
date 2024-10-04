@@ -37,7 +37,7 @@ public:
 };
 
 #define QGstreamerSyncMessageFilter_iid "com.copperspice.CS.gstreamerSyncMessageFilter/1.0"
-CS_DECLARE_INTERFACE( QGstreamerSyncMessageFilter, QGstreamerSyncMessageFilter_iid )
+LSCS_DECLARE_INTERFACE( QGstreamerSyncMessageFilter, QGstreamerSyncMessageFilter_iid )
 
 
 class QGstreamerBusMessageFilter
@@ -48,14 +48,14 @@ public:
 };
 
 #define QGstreamerBusMessageFilter_iid "com.copperspice.CS.gstreamerBusMessagefilter/1.0"
-CS_DECLARE_INTERFACE( QGstreamerBusMessageFilter, QGstreamerBusMessageFilter_iid )
+LSCS_DECLARE_INTERFACE( QGstreamerBusMessageFilter, QGstreamerBusMessageFilter_iid )
 
 
 class QGstreamerBusHelperPrivate;
 
 class QGstreamerBusHelper : public QObject
 {
-    CS_OBJECT( QGstreamerBusHelper )
+    LSCS_OBJECT( QGstreamerBusHelper )
     friend class QGstreamerBusHelperPrivate;
 
 public:
@@ -65,8 +65,8 @@ public:
     void installMessageFilter( QObject *filter );
     void removeMessageFilter( QObject *filter );
 
-    CS_SIGNAL_1( Public, void message( QGstreamerMessage const &msg ) )
-    CS_SIGNAL_2( message, msg )
+    LSCS_SIGNAL_1( Public, void message( QGstreamerMessage const &msg ) )
+    LSCS_SIGNAL_2( message, msg )
 
 private:
     QGstreamerBusHelperPrivate *d;

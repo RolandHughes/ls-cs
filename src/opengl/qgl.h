@@ -333,7 +333,7 @@ Q_DECLARE_OPERATORS_FOR_FLAGS( QGLContext::BindOptions )
 
 class Q_OPENGL_EXPORT QGLWidget : public QWidget
 {
-    OPENGL_CS_OBJECT( QGLWidget )
+    OPENGL_LSCS_OBJECT( QGLWidget )
 
 public:
     explicit QGLWidget( QWidget *parent = nullptr,
@@ -398,11 +398,11 @@ public:
     void drawTexture( const QRectF &target, GLuint texture_id, GLenum textureTarget = GL_TEXTURE_2D );
     void drawTexture( const QPointF &point, GLuint texture_id, GLenum textureTarget = GL_TEXTURE_2D );
 
-    OPENGL_CS_SLOT_1( Public, virtual void updateGL() )
-    OPENGL_CS_SLOT_2( updateGL )
+    OPENGL_LSCS_SLOT_1( Public, virtual void updateGL() )
+    OPENGL_LSCS_SLOT_2( updateGL )
 
-    OPENGL_CS_SLOT_1( Public, virtual void updateOverlayGL() )
-    OPENGL_CS_SLOT_2( updateOverlayGL )
+    OPENGL_LSCS_SLOT_1( Public, virtual void updateOverlayGL() )
+    OPENGL_LSCS_SLOT_2( updateOverlayGL )
 
 protected:
     bool event( QEvent *event ) override;

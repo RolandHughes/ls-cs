@@ -38,7 +38,7 @@ class QLockFilePrivate;
 
 class Q_CORE_EXPORT QTemporaryFile : public QFile
 {
-    CORE_CS_OBJECT( QTemporaryFile )
+    CORE_LSCS_OBJECT( QTemporaryFile )
 
 public:
     QTemporaryFile();

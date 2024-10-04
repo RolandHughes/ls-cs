@@ -443,7 +443,7 @@ QCocoaWindow::QCocoaWindow(QWindow *tlw)
      m_topContentBorderThickness(0), m_bottomContentBorderThickness(0),
      m_normalGeometry(QRect(0, 0, -1, -1)), m_hasWindowFilePath(false)
 {
-#if defined(CS_SHOW_DEBUG_PLATFORM_WINDOW)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM_WINDOW)
    qDebug() << "QCocoaWindow::QCocoaWindow" << this;
 #endif
 
@@ -485,7 +485,7 @@ QCocoaWindow::QCocoaWindow(QWindow *tlw)
 
 QCocoaWindow::~QCocoaWindow()
 {
-#if defined(CS_SHOW_DEBUG_PLATFORM_WINDOW)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM_WINDOW)
    qDebug() << "QCocoaWindow::~QCocoaWindow" << this;
 #endif
 
@@ -566,7 +566,7 @@ void QCocoaWindow::setGeometry(const QRect &rectIn)
       return;
    }
 
-#if defined(CS_SHOW_DEBUG_PLATFORM_WINDOW)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM_WINDOW)
    qDebug() << "QCocoaWindow::setGeometry" << this << rect;
 #endif
 
@@ -752,7 +752,7 @@ void QCocoaWindow::setVisible(bool visible)
       parentCocoaWindow = static_cast<QCocoaWindow *>(window()->transientParent()->handle());
    }
 
-#if defined(CS_SHOW_DEBUG_PLATFORM_WINDOW)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM_WINDOW)
    qDebug() << "QCocoaWindow::setVisible" << window() << visible;
 #endif
 
@@ -1040,8 +1040,8 @@ NSUInteger QCocoaWindow::windowStyleMask(Qt::WindowFlags flags)
       styleMask |= NSWindowStyleMaskTexturedBackground;
    }
 
-#if defined(CS_SHOW_DEBUG_PLATFORM_WINDOW)
-   qDebug("windowStyleMask of '%s': flags %X -> styleMask %lX", csPrintable(window()->title()), (int)flags, styleMask);
+#if defined(LSCS_SHOW_DEBUG_PLATFORM_WINDOW)
+   qDebug("windowStyleMask of '%s': flags %X -> styleMask %lX", lscsPrintable(window()->title()), (int)flags, styleMask);
 #endif
 
    return styleMask;
@@ -1272,7 +1272,7 @@ void QCocoaWindow::propagateSizeHints()
       return;
    }
 
-#if defined(CS_SHOW_DEBUG_PLATFORM_WINDOW)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM_WINDOW)
    qDebug() << "QCocoaWindow::propagateSizeHints" << this;
    qDebug() << "       min/max" << windowMinimumSize() << windowMaximumSize();
    qDebug() << "size increment" << windowSizeIncrement();
@@ -1879,7 +1879,7 @@ void QCocoaWindow::syncWindowState(Qt::WindowState newState)
       }
    }
 
-#if defined(CS_SHOW_DEBUG_PLATFORM_WINDOW)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM_WINDOW)
    qDebug() << "QCocoaWindow::syncWindowState" << newState << "actual" << predictedState << "was" << m_synchedWindowState <<
       "effectively maximized" << m_effectivelyMaximized;
 #endif

@@ -40,7 +40,7 @@
 
 class ApplicationEventFilter : public QObject
 {
-    CS_OBJECT( ApplicationEventFilter )
+    LSCS_OBJECT( ApplicationEventFilter )
 
 public:
     ApplicationEventFilter()

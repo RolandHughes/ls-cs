@@ -71,7 +71,7 @@ protected:
 
 class Q_EXPORT_SQLDRIVER_PSQL QPSQLDriver : public QSqlDriver
 {
-    CS_OBJECT( QPSQLDriver )
+    LSCS_OBJECT( QPSQLDriver )
 
     Q_DECLARE_PRIVATE( QPSQLDriver )
 
@@ -134,13 +134,13 @@ protected:
     bool rollbackTransaction() override;
 
 private:
-    CS_SLOT_1( Private, void _q_handleNotification( int handle ) )
-    CS_SLOT_2( _q_handleNotification )
+    LSCS_SLOT_1( Private, void _q_handleNotification( int handle ) )
+    LSCS_SLOT_2( _q_handleNotification )
 
     friend class QPSQLResultPrivate;
 };
 
-CS_DECLARE_METATYPE( pg_conn )
-CS_DECLARE_METATYPE( pg_result )
+LSCS_DECLARE_METATYPE( pg_conn )
+LSCS_DECLARE_METATYPE( pg_result )
 
 #endif

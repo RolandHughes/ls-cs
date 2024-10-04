@@ -101,7 +101,7 @@ private:
     friend class QGraphicsLayout;
 };
 
-CS_DECLARE_INTERFACE( QGraphicsLayoutItem, "com.copperspice.QGraphicsLayoutItem" )
+LSCS_DECLARE_INTERFACE( QGraphicsLayoutItem, "com.copperspice.QGraphicsLayoutItem" )
 
 inline void QGraphicsLayoutItem::setMinimumSize( qreal w, qreal h )
 {

@@ -24,13 +24,13 @@
  * LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 */
 
-#ifndef CS_REGEX_SPLIT_H
-#define CS_REGEX_SPLIT_H
+#ifndef LSCS_REGEX_SPLIT_H
+#define LSCS_REGEX_SPLIT_H
 
-namespace cs_regex_ns
+namespace lscs_regex_ns
 {
 
-namespace cs_regex_detail_ns
+namespace lscs_regex_detail_ns
 {
 
 #include <climits>
@@ -112,7 +112,7 @@ std::size_t regex_split( OutputIterator out, std::basic_string<charT, traits, al
 
     ci_t last = s.begin();
     std::size_t init_size = max_split;
-    cs_regex_detail_ns::split_pred<OutputIterator, charT, traits, allocator> pred( &last, &out, &max_split );
+    lscs_regex_detail_ns::split_pred<OutputIterator, charT, traits, allocator> pred( &last, &out, &max_split );
     ci_t i, j;
     i = s.begin();
     j = s.end();
@@ -146,7 +146,7 @@ inline std::size_t regex_split( OutputIterator out, std::basic_string<charT, tra
 template <class OutputIterator, class charT, class traits, class allocator>
 inline std::size_t regex_split( OutputIterator out, std::basic_string<charT, traits, allocator> &s )
 {
-    return regex_split( out, s, cs_regex_detail_ns::get_default_expression( charT( 0 ) ), match_default, UINT_MAX );
+    return regex_split( out, s, lscs_regex_detail_ns::get_default_expression( charT( 0 ) ), match_default, UINT_MAX );
 }
 
 }   // end namespace

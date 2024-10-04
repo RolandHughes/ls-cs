@@ -38,7 +38,7 @@ class QtFallbackWebPopupCombo;
 
 class QtFallbackWebPopup : public QWebSelectMethod
 {
-    WEB_CS_OBJECT( QtFallbackWebPopup )
+    WEB_LSCS_OBJECT( QtFallbackWebPopup )
 
 public:
     QtFallbackWebPopup( const ChromeClientQt * );
@@ -68,8 +68,8 @@ public:
     }
 
 private :
-    WEB_CS_SLOT_1( Private, void activeChanged( int index ) )
-    WEB_CS_SLOT_2( activeChanged )
+    WEB_LSCS_SLOT_1( Private, void activeChanged( int index ) )
+    WEB_LSCS_SLOT_2( activeChanged )
 
     friend class QtFallbackWebPopupCombo;
     bool m_popupVisible;

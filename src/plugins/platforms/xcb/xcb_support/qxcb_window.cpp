@@ -1348,7 +1348,7 @@ QXcbWindow::NetWmStates QXcbWindow::netWmStates()
     else
     {
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
         qDebug( "QXcbWindow::netWmStates() Empty states, window = %x", m_window );
 #endif
     }
@@ -1800,7 +1800,7 @@ void QXcbWindow::updateNetWmUserTime( xcb_timestamp_t timestamp )
 
             xcb_delete_property( xcb_connection(), m_window, atom( QXcbAtom::_NET_WM_USER_TIME ) );
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
             QByteArray ba( "NET_WM user time window" );
 
             Q_XCB_CALL( xcb_change_property( xcb_connection(),
@@ -3095,7 +3095,7 @@ void QXcbWindow::handleXIMouseEvent( xcb_ge_event_t *event, Qt::MouseEventSource
     {
         case XI_ButtonPress:
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
             qDebug( "QXcbWindow::handleXIMouseEvent() XI2 mouse press, button = %d, time = %d", button, ev->time );
 #endif
 
@@ -3105,7 +3105,7 @@ void QXcbWindow::handleXIMouseEvent( xcb_ge_event_t *event, Qt::MouseEventSource
 
         case XI_ButtonRelease:
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
             qDebug( "QXcbWindow::handleXIMouseEvent() XI2 mouse release, button = %d, time = %d", button, ev->time );
 #endif
 
@@ -3114,7 +3114,7 @@ void QXcbWindow::handleXIMouseEvent( xcb_ge_event_t *event, Qt::MouseEventSource
             break;
 
         case XI_Motion:
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
             qDebug( "QXcbWindow::handleXIMouseEvent() XI2 mouse motion, postion = %d,%d, time = %d",
                     event_x, event_y, ev->time );
 #endif
@@ -3153,7 +3153,7 @@ void QXcbWindow::handleXIEnterLeave( xcb_ge_event_t *event )
             const int event_x = fixed1616ToInt( ev->event_x );
             const int event_y = fixed1616ToInt( ev->event_y );
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
             qDebug( "QXcbWindow::handleXIEnterLeave() XI2 mouse enter, position = %d,%d, mode = %d, detail = %d, time = %d",
                     event_x, event_y, ev->mode, ev->detail, ev->time );
 #endif
@@ -3163,7 +3163,7 @@ void QXcbWindow::handleXIEnterLeave( xcb_ge_event_t *event )
         }
 
         case XI_Leave:
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
             qDebug( "QXcbWindow::handleXIEnterLeave() XI2 mouse leave, mode = %d, detail = %d, time = %d",
                     ev->mode, ev->detail, ev->time );
 #endif

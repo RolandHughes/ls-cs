@@ -212,9 +212,9 @@ Q_CORE_EXPORT QDebug operator<<( QDebug, const QPersistentModelIndex & );
 
 class Q_CORE_EXPORT QAbstractItemModel : public QObject
 {
-    CORE_CS_OBJECT( QAbstractItemModel )
+    CORE_LSCS_OBJECT( QAbstractItemModel )
 
-    CORE_CS_ENUM( LayoutChangeHint )
+    CORE_LSCS_ENUM( LayoutChangeHint )
 
 public:
     enum LayoutChangeHint
@@ -296,74 +296,74 @@ public:
 
     using QObject::parent;
 
-    CORE_CS_SIGNAL_1( Public, void dataChanged( const QModelIndex &topLeft, const QModelIndex &bottomRight,
+    CORE_LSCS_SIGNAL_1( Public, void dataChanged( const QModelIndex &topLeft, const QModelIndex &bottomRight,
                       const QVector<int> &roles = QVector<int>() ) )
-    CORE_CS_SIGNAL_2( dataChanged, topLeft, bottomRight, roles )
+    CORE_LSCS_SIGNAL_2( dataChanged, topLeft, bottomRight, roles )
 
-    CORE_CS_SIGNAL_1( Public, void headerDataChanged( Qt::Orientation orientation, int first, int last ) )
-    CORE_CS_SIGNAL_2( headerDataChanged, orientation, first, last )
+    CORE_LSCS_SIGNAL_1( Public, void headerDataChanged( Qt::Orientation orientation, int first, int last ) )
+    CORE_LSCS_SIGNAL_2( headerDataChanged, orientation, first, last )
 
-    CORE_CS_SIGNAL_1( Public, void layoutChanged( const QList<QPersistentModelIndex> &parents = QList<QPersistentModelIndex>(),
+    CORE_LSCS_SIGNAL_1( Public, void layoutChanged( const QList<QPersistentModelIndex> &parents = QList<QPersistentModelIndex>(),
                       QAbstractItemModel::LayoutChangeHint hint = QAbstractItemModel::NoLayoutChangeHint ) )
-    CORE_CS_SIGNAL_2( layoutChanged, parents, hint )
+    CORE_LSCS_SIGNAL_2( layoutChanged, parents, hint )
 
-    CORE_CS_SIGNAL_1( Public, void layoutAboutToBeChanged( const QList<QPersistentModelIndex> &parents =
+    CORE_LSCS_SIGNAL_1( Public, void layoutAboutToBeChanged( const QList<QPersistentModelIndex> &parents =
                           QList<QPersistentModelIndex>(),
                       QAbstractItemModel::LayoutChangeHint hint = QAbstractItemModel::NoLayoutChangeHint ) )
-    CORE_CS_SIGNAL_2( layoutAboutToBeChanged, parents, hint )
+    CORE_LSCS_SIGNAL_2( layoutAboutToBeChanged, parents, hint )
 
-    CORE_CS_SIGNAL_1( Public, void rowsAboutToBeInserted( const QModelIndex &parent, int first, int last ) )
-    CORE_CS_SIGNAL_2( rowsAboutToBeInserted, parent, first, last )
+    CORE_LSCS_SIGNAL_1( Public, void rowsAboutToBeInserted( const QModelIndex &parent, int first, int last ) )
+    CORE_LSCS_SIGNAL_2( rowsAboutToBeInserted, parent, first, last )
 
-    CORE_CS_SIGNAL_1( Public, void rowsInserted( const QModelIndex &parent, int first, int last ) )
-    CORE_CS_SIGNAL_2( rowsInserted, parent, first, last )
+    CORE_LSCS_SIGNAL_1( Public, void rowsInserted( const QModelIndex &parent, int first, int last ) )
+    CORE_LSCS_SIGNAL_2( rowsInserted, parent, first, last )
 
-    CORE_CS_SIGNAL_1( Public, void rowsAboutToBeRemoved( const QModelIndex &parent, int first, int last ) )
-    CORE_CS_SIGNAL_2( rowsAboutToBeRemoved, parent, first, last )
+    CORE_LSCS_SIGNAL_1( Public, void rowsAboutToBeRemoved( const QModelIndex &parent, int first, int last ) )
+    CORE_LSCS_SIGNAL_2( rowsAboutToBeRemoved, parent, first, last )
 
-    CORE_CS_SIGNAL_1( Public, void rowsRemoved( const QModelIndex &parent, int first, int last ) )
-    CORE_CS_SIGNAL_2( rowsRemoved, parent, first, last )
+    CORE_LSCS_SIGNAL_1( Public, void rowsRemoved( const QModelIndex &parent, int first, int last ) )
+    CORE_LSCS_SIGNAL_2( rowsRemoved, parent, first, last )
 
-    CORE_CS_SIGNAL_1( Public, void columnsAboutToBeInserted( const QModelIndex &parent, int first, int last ) )
-    CORE_CS_SIGNAL_2( columnsAboutToBeInserted, parent, first, last )
+    CORE_LSCS_SIGNAL_1( Public, void columnsAboutToBeInserted( const QModelIndex &parent, int first, int last ) )
+    CORE_LSCS_SIGNAL_2( columnsAboutToBeInserted, parent, first, last )
 
-    CORE_CS_SIGNAL_1( Public, void columnsInserted( const QModelIndex &parent, int first, int last ) )
-    CORE_CS_SIGNAL_2( columnsInserted, parent, first, last )
+    CORE_LSCS_SIGNAL_1( Public, void columnsInserted( const QModelIndex &parent, int first, int last ) )
+    CORE_LSCS_SIGNAL_2( columnsInserted, parent, first, last )
 
-    CORE_CS_SIGNAL_1( Public, void columnsAboutToBeRemoved( const QModelIndex &parent, int first, int last ) )
-    CORE_CS_SIGNAL_2( columnsAboutToBeRemoved, parent, first, last )
+    CORE_LSCS_SIGNAL_1( Public, void columnsAboutToBeRemoved( const QModelIndex &parent, int first, int last ) )
+    CORE_LSCS_SIGNAL_2( columnsAboutToBeRemoved, parent, first, last )
 
-    CORE_CS_SIGNAL_1( Public, void columnsRemoved( const QModelIndex &parent, int first, int last ) )
-    CORE_CS_SIGNAL_2( columnsRemoved, parent, first, last )
+    CORE_LSCS_SIGNAL_1( Public, void columnsRemoved( const QModelIndex &parent, int first, int last ) )
+    CORE_LSCS_SIGNAL_2( columnsRemoved, parent, first, last )
 
-    CORE_CS_SIGNAL_1( Public, void modelAboutToBeReset() )
-    CORE_CS_SIGNAL_2( modelAboutToBeReset )
+    CORE_LSCS_SIGNAL_1( Public, void modelAboutToBeReset() )
+    CORE_LSCS_SIGNAL_2( modelAboutToBeReset )
 
-    CORE_CS_SIGNAL_1( Public, void modelReset() )
-    CORE_CS_SIGNAL_2( modelReset )
+    CORE_LSCS_SIGNAL_1( Public, void modelReset() )
+    CORE_LSCS_SIGNAL_2( modelReset )
 
-    CORE_CS_SIGNAL_1( Public, void rowsAboutToBeMoved( const QModelIndex &sourceParent, int sourceStart, int sourceEnd,
+    CORE_LSCS_SIGNAL_1( Public, void rowsAboutToBeMoved( const QModelIndex &sourceParent, int sourceStart, int sourceEnd,
                       const QModelIndex &destinationParent, int destinationRow ) )
-    CORE_CS_SIGNAL_2( rowsAboutToBeMoved, sourceParent, sourceStart, sourceEnd, destinationParent, destinationRow )
+    CORE_LSCS_SIGNAL_2( rowsAboutToBeMoved, sourceParent, sourceStart, sourceEnd, destinationParent, destinationRow )
 
-    CORE_CS_SIGNAL_1( Public, void rowsMoved( const QModelIndex &sourceParent, int sourceStart, int sourceEnd,
+    CORE_LSCS_SIGNAL_1( Public, void rowsMoved( const QModelIndex &sourceParent, int sourceStart, int sourceEnd,
                       const QModelIndex &destinationParent, int destinationRow ) )
-    CORE_CS_SIGNAL_2( rowsMoved, sourceParent, sourceStart, sourceEnd, destinationParent, destinationRow )
+    CORE_LSCS_SIGNAL_2( rowsMoved, sourceParent, sourceStart, sourceEnd, destinationParent, destinationRow )
 
-    CORE_CS_SIGNAL_1( Public, void columnsAboutToBeMoved( const QModelIndex &sourceParent, int sourceStart, int sourceEnd,
+    CORE_LSCS_SIGNAL_1( Public, void columnsAboutToBeMoved( const QModelIndex &sourceParent, int sourceStart, int sourceEnd,
                       const QModelIndex &destinationParent, int destinationColumn ) )
-    CORE_CS_SIGNAL_2( columnsAboutToBeMoved, sourceParent, sourceStart, sourceEnd, destinationParent, destinationColumn )
+    CORE_LSCS_SIGNAL_2( columnsAboutToBeMoved, sourceParent, sourceStart, sourceEnd, destinationParent, destinationColumn )
 
-    CORE_CS_SIGNAL_1( Public, void columnsMoved( const QModelIndex &sourceParent, int sourceStart, int sourceEnd,
+    CORE_LSCS_SIGNAL_1( Public, void columnsMoved( const QModelIndex &sourceParent, int sourceStart, int sourceEnd,
                       const QModelIndex &destinationParent, int destinationColumn ) )
-    CORE_CS_SIGNAL_2( columnsMoved, sourceParent, sourceStart, sourceEnd, destinationParent, destinationColumn )
+    CORE_LSCS_SIGNAL_2( columnsMoved, sourceParent, sourceStart, sourceEnd, destinationParent, destinationColumn )
 
     //
-    CORE_CS_SLOT_1( Public, virtual bool submit() )
-    CORE_CS_SLOT_2( submit )
+    CORE_LSCS_SLOT_1( Public, virtual bool submit() )
+    CORE_LSCS_SLOT_2( submit )
 
-    CORE_CS_SLOT_1( Public, virtual void revert() )
-    CORE_CS_SLOT_2( revert )
+    CORE_LSCS_SLOT_1( Public, virtual void revert() )
+    CORE_LSCS_SLOT_2( revert )
 
 protected:
     QAbstractItemModel( QAbstractItemModelPrivate &dd, QObject *parent = nullptr );
@@ -401,8 +401,8 @@ protected:
     void changePersistentIndexList( const QModelIndexList &from, const QModelIndexList &to );
     QModelIndexList persistentIndexList() const;
 
-    CORE_CS_SLOT_1( Protected, void resetInternalData() )
-    CORE_CS_SLOT_2( resetInternalData )
+    CORE_LSCS_SLOT_1( Protected, void resetInternalData() )
+    CORE_LSCS_SLOT_2( resetInternalData )
 
     QScopedPointer<QAbstractItemModelPrivate> d_ptr;
 
@@ -460,7 +460,7 @@ inline QModelIndex QAbstractItemModel::createIndex( int row, int column, quintpt
 
 class Q_CORE_EXPORT QAbstractTableModel : public QAbstractItemModel
 {
-    CORE_CS_OBJECT( QAbstractTableModel )
+    CORE_LSCS_OBJECT( QAbstractTableModel )
 
 public:
     explicit QAbstractTableModel( QObject *parent = nullptr );
@@ -487,7 +487,7 @@ private:
 
 class Q_CORE_EXPORT QAbstractListModel : public QAbstractItemModel
 {
-    CORE_CS_OBJECT( QAbstractListModel )
+    CORE_LSCS_OBJECT( QAbstractListModel )
 
 public:
     explicit QAbstractListModel( QObject *parent = nullptr );

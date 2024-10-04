@@ -32,7 +32,7 @@ class DirectShowPlayerService;
 
 class DirectShowAudioEndpointControl : public QAudioOutputSelectorControl
 {
-    CS_OBJECT( DirectShowAudioEndpointControl )
+    LSCS_OBJECT( DirectShowAudioEndpointControl )
 
 public:
     DirectShowAudioEndpointControl( DirectShowPlayerService *service, QObject *parent = nullptr );

@@ -30,7 +30,7 @@
 
 class Q_MULTIMEDIA_EXPORT QCameraCaptureBufferFormatControl : public QMediaControl
 {
-    MULTI_CS_OBJECT( QCameraCaptureBufferFormatControl )
+    MULTI_LSCS_OBJECT( QCameraCaptureBufferFormatControl )
 
 public:
     ~QCameraCaptureBufferFormatControl();
@@ -39,15 +39,15 @@ public:
     virtual QVideoFrame::PixelFormat bufferFormat() const = 0;
     virtual void setBufferFormat( QVideoFrame::PixelFormat format ) = 0;
 
-    MULTI_CS_SIGNAL_1( Public, void bufferFormatChanged( QVideoFrame::PixelFormat format ) )
-    MULTI_CS_SIGNAL_2( bufferFormatChanged, format )
+    MULTI_LSCS_SIGNAL_1( Public, void bufferFormatChanged( QVideoFrame::PixelFormat format ) )
+    MULTI_LSCS_SIGNAL_2( bufferFormatChanged, format )
 
 protected:
     explicit QCameraCaptureBufferFormatControl( QObject *parent = nullptr );
 };
 
 #define QCameraCaptureBufferFormatControl_iid "com.copperspice.CS.cameraCaptureBufferFormatControl/1.0"
-CS_DECLARE_INTERFACE( QCameraCaptureBufferFormatControl, QCameraCaptureBufferFormatControl_iid )
+LSCS_DECLARE_INTERFACE( QCameraCaptureBufferFormatControl, QCameraCaptureBufferFormatControl_iid )
 
 #endif
 

@@ -33,25 +33,25 @@ QT_BEGIN_NAMESPACE
 
 class QDeclarativePathElement : public QObject
 {
-    DECL_CS_OBJECT( QDeclarativePathElement )
+    DECL_LSCS_OBJECT( QDeclarativePathElement )
 
 public:
     QDeclarativePathElement( QObject *parent = nullptr ) : QObject( parent ) {}
 
-    DECL_CS_SIGNAL_1( Public, void changed() )
-    DECL_CS_SIGNAL_2( changed )
+    DECL_LSCS_SIGNAL_1( Public, void changed() )
+    DECL_LSCS_SIGNAL_2( changed )
 };
 
 class QDeclarativePathAttribute : public QDeclarativePathElement
 {
-    DECL_CS_OBJECT( QDeclarativePathAttribute )
+    DECL_LSCS_OBJECT( QDeclarativePathAttribute )
 
-    DECL_CS_PROPERTY_READ( name, name )
-    DECL_CS_PROPERTY_WRITE( name, setName )
-    DECL_CS_PROPERTY_NOTIFY( name, nameChanged )
-    DECL_CS_PROPERTY_READ( value, value )
-    DECL_CS_PROPERTY_WRITE( value, setValue )
-    DECL_CS_PROPERTY_NOTIFY( value, valueChanged )
+    DECL_LSCS_PROPERTY_READ( name, name )
+    DECL_LSCS_PROPERTY_WRITE( name, setName )
+    DECL_LSCS_PROPERTY_NOTIFY( name, nameChanged )
+    DECL_LSCS_PROPERTY_READ( value, value )
+    DECL_LSCS_PROPERTY_WRITE( value, setValue )
+    DECL_LSCS_PROPERTY_NOTIFY( value, valueChanged )
 public:
     QDeclarativePathAttribute( QObject *parent = nullptr ) : QDeclarativePathElement( parent ), _value( 0 ) {}
 
@@ -62,10 +62,10 @@ public:
     qreal value() const;
     void setValue( qreal value );
 
-    DECL_CS_SIGNAL_1( Public, void nameChanged() )
-    DECL_CS_SIGNAL_2( nameChanged )
-    DECL_CS_SIGNAL_1( Public, void valueChanged() )
-    DECL_CS_SIGNAL_2( valueChanged )
+    DECL_LSCS_SIGNAL_1( Public, void nameChanged() )
+    DECL_LSCS_SIGNAL_2( nameChanged )
+    DECL_LSCS_SIGNAL_1( Public, void valueChanged() )
+    DECL_LSCS_SIGNAL_2( valueChanged )
 
 private:
     QString _name;
@@ -74,14 +74,14 @@ private:
 
 class QDeclarativeCurve : public QDeclarativePathElement
 {
-    DECL_CS_OBJECT( QDeclarativeCurve )
+    DECL_LSCS_OBJECT( QDeclarativeCurve )
 
-    DECL_CS_PROPERTY_READ( x, x )
-    DECL_CS_PROPERTY_WRITE( x, setX )
-    DECL_CS_PROPERTY_NOTIFY( x, xChanged )
-    DECL_CS_PROPERTY_READ( y, y )
-    DECL_CS_PROPERTY_WRITE( y, setY )
-    DECL_CS_PROPERTY_NOTIFY( y, yChanged )
+    DECL_LSCS_PROPERTY_READ( x, x )
+    DECL_LSCS_PROPERTY_WRITE( x, setX )
+    DECL_LSCS_PROPERTY_NOTIFY( x, xChanged )
+    DECL_LSCS_PROPERTY_READ( y, y )
+    DECL_LSCS_PROPERTY_WRITE( y, setY )
+    DECL_LSCS_PROPERTY_NOTIFY( y, yChanged )
 public:
     QDeclarativeCurve( QObject *parent = nullptr ) : QDeclarativePathElement( parent ), _x( 0 ), _y( 0 ) {}
 
@@ -93,10 +93,10 @@ public:
 
     virtual void addToPath( QPainterPath & ) {}
 
-    DECL_CS_SIGNAL_1( Public, void xChanged() )
-    DECL_CS_SIGNAL_2( xChanged )
-    DECL_CS_SIGNAL_1( Public, void yChanged() )
-    DECL_CS_SIGNAL_2( yChanged )
+    DECL_LSCS_SIGNAL_1( Public, void xChanged() )
+    DECL_LSCS_SIGNAL_2( xChanged )
+    DECL_LSCS_SIGNAL_1( Public, void yChanged() )
+    DECL_LSCS_SIGNAL_2( yChanged )
 
 private:
     qreal _x;
@@ -105,7 +105,7 @@ private:
 
 class QDeclarativePathLine : public QDeclarativeCurve
 {
-    DECL_CS_OBJECT( QDeclarativePathLine )
+    DECL_LSCS_OBJECT( QDeclarativePathLine )
 
 public:
     QDeclarativePathLine( QObject *parent = nullptr ) : QDeclarativeCurve( parent ) {}
@@ -115,14 +115,14 @@ public:
 
 class QDeclarativePathQuad : public QDeclarativeCurve
 {
-    DECL_CS_OBJECT( QDeclarativePathQuad )
+    DECL_LSCS_OBJECT( QDeclarativePathQuad )
 
-    DECL_CS_PROPERTY_READ( controlX, controlX )
-    DECL_CS_PROPERTY_WRITE( controlX, setControlX )
-    DECL_CS_PROPERTY_NOTIFY( controlX, controlXChanged )
-    DECL_CS_PROPERTY_READ( controlY, controlY )
-    DECL_CS_PROPERTY_WRITE( controlY, setControlY )
-    DECL_CS_PROPERTY_NOTIFY( controlY, controlYChanged )
+    DECL_LSCS_PROPERTY_READ( controlX, controlX )
+    DECL_LSCS_PROPERTY_WRITE( controlX, setControlX )
+    DECL_LSCS_PROPERTY_NOTIFY( controlX, controlXChanged )
+    DECL_LSCS_PROPERTY_READ( controlY, controlY )
+    DECL_LSCS_PROPERTY_WRITE( controlY, setControlY )
+    DECL_LSCS_PROPERTY_NOTIFY( controlY, controlYChanged )
 public:
     QDeclarativePathQuad( QObject *parent = nullptr ) : QDeclarativeCurve( parent ), _controlX( 0 ), _controlY( 0 ) {}
 
@@ -134,10 +134,10 @@ public:
 
     void addToPath( QPainterPath &path );
 
-    DECL_CS_SIGNAL_1( Public, void controlXChanged() )
-    DECL_CS_SIGNAL_2( controlXChanged )
-    DECL_CS_SIGNAL_1( Public, void controlYChanged() )
-    DECL_CS_SIGNAL_2( controlYChanged )
+    DECL_LSCS_SIGNAL_1( Public, void controlXChanged() )
+    DECL_LSCS_SIGNAL_2( controlXChanged )
+    DECL_LSCS_SIGNAL_1( Public, void controlYChanged() )
+    DECL_LSCS_SIGNAL_2( controlYChanged )
 
 private:
     qreal _controlX;
@@ -146,20 +146,20 @@ private:
 
 class QDeclarativePathCubic : public QDeclarativeCurve
 {
-    DECL_CS_OBJECT( QDeclarativePathCubic )
+    DECL_LSCS_OBJECT( QDeclarativePathCubic )
 
-    DECL_CS_PROPERTY_READ( control1X, control1X )
-    DECL_CS_PROPERTY_WRITE( control1X, setControl1X )
-    DECL_CS_PROPERTY_NOTIFY( control1X, control1XChanged )
-    DECL_CS_PROPERTY_READ( control1Y, control1Y )
-    DECL_CS_PROPERTY_WRITE( control1Y, setControl1Y )
-    DECL_CS_PROPERTY_NOTIFY( control1Y, control1YChanged )
-    DECL_CS_PROPERTY_READ( control2X, control2X )
-    DECL_CS_PROPERTY_WRITE( control2X, setControl2X )
-    DECL_CS_PROPERTY_NOTIFY( control2X, control2XChanged )
-    DECL_CS_PROPERTY_READ( control2Y, control2Y )
-    DECL_CS_PROPERTY_WRITE( control2Y, setControl2Y )
-    DECL_CS_PROPERTY_NOTIFY( control2Y, control2YChanged )
+    DECL_LSCS_PROPERTY_READ( control1X, control1X )
+    DECL_LSCS_PROPERTY_WRITE( control1X, setControl1X )
+    DECL_LSCS_PROPERTY_NOTIFY( control1X, control1XChanged )
+    DECL_LSCS_PROPERTY_READ( control1Y, control1Y )
+    DECL_LSCS_PROPERTY_WRITE( control1Y, setControl1Y )
+    DECL_LSCS_PROPERTY_NOTIFY( control1Y, control1YChanged )
+    DECL_LSCS_PROPERTY_READ( control2X, control2X )
+    DECL_LSCS_PROPERTY_WRITE( control2X, setControl2X )
+    DECL_LSCS_PROPERTY_NOTIFY( control2X, control2XChanged )
+    DECL_LSCS_PROPERTY_READ( control2Y, control2Y )
+    DECL_LSCS_PROPERTY_WRITE( control2Y, setControl2Y )
+    DECL_LSCS_PROPERTY_NOTIFY( control2Y, control2YChanged )
 
     QDeclarativePathCubic( QObject *parent = nullptr ) : QDeclarativeCurve( parent ), _control1X( 0 ), _control1Y( 0 ),
         _control2X( 0 ),
@@ -180,14 +180,14 @@ class QDeclarativePathCubic : public QDeclarativeCurve
     void addToPath( QPainterPath &path );
 
 public:
-    DECL_CS_SIGNAL_1( Public, void control1XChanged() )
-    DECL_CS_SIGNAL_2( control1XChanged )
-    DECL_CS_SIGNAL_1( Public, void control1YChanged() )
-    DECL_CS_SIGNAL_2( control1YChanged )
-    DECL_CS_SIGNAL_1( Public, void control2XChanged() )
-    DECL_CS_SIGNAL_2( control2XChanged )
-    DECL_CS_SIGNAL_1( Public, void control2YChanged() )
-    DECL_CS_SIGNAL_2( control2YChanged )
+    DECL_LSCS_SIGNAL_1( Public, void control1XChanged() )
+    DECL_LSCS_SIGNAL_2( control1XChanged )
+    DECL_LSCS_SIGNAL_1( Public, void control1YChanged() )
+    DECL_LSCS_SIGNAL_2( control1YChanged )
+    DECL_LSCS_SIGNAL_1( Public, void control2XChanged() )
+    DECL_LSCS_SIGNAL_2( control2XChanged )
+    DECL_LSCS_SIGNAL_1( Public, void control2YChanged() )
+    DECL_LSCS_SIGNAL_2( control2YChanged )
 
 private:
     qreal _control1X;
@@ -198,10 +198,10 @@ private:
 
 class QDeclarativePathPercent : public QDeclarativePathElement
 {
-    DECL_CS_OBJECT( QDeclarativePathPercent )
-    DECL_CS_PROPERTY_READ( value, value )
-    DECL_CS_PROPERTY_WRITE( value, setValue )
-    DECL_CS_PROPERTY_NOTIFY( value, valueChanged )
+    DECL_LSCS_OBJECT( QDeclarativePathPercent )
+    DECL_LSCS_PROPERTY_READ( value, value )
+    DECL_LSCS_PROPERTY_WRITE( value, setValue )
+    DECL_LSCS_PROPERTY_NOTIFY( value, valueChanged )
 
 public:
     QDeclarativePathPercent( QObject *parent = nullptr ) : QDeclarativePathElement( parent ) {}
@@ -209,8 +209,8 @@ public:
     qreal value() const;
     void setValue( qreal value );
 
-    DECL_CS_SIGNAL_1( Public, void valueChanged() )
-    DECL_CS_SIGNAL_2( valueChanged )
+    DECL_LSCS_SIGNAL_1( Public, void valueChanged() )
+    DECL_LSCS_SIGNAL_2( valueChanged )
 
 private:
     qreal _value;
@@ -219,20 +219,20 @@ private:
 class QDeclarativePathPrivate;
 class QDeclarativePath : public QObject, public QDeclarativeParserStatus
 {
-    DECL_CS_OBJECT( QDeclarativePath )
+    DECL_LSCS_OBJECT( QDeclarativePath )
 
-    CS_INTERFACES( QDeclarativeParserStatus, QDeclarativeParserStatus )
+    LSCS_INTERFACES( QDeclarativeParserStatus, QDeclarativeParserStatus )
 
-    DECL_CS_PROPERTY_READ( pathElements, pathElements )
-    DECL_CS_PROPERTY_READ( startX, startX )
-    DECL_CS_PROPERTY_WRITE( startX, setStartX )
-    DECL_CS_PROPERTY_NOTIFY( startX, startXChanged )
-    DECL_CS_PROPERTY_READ( startY, startY )
-    DECL_CS_PROPERTY_WRITE( startY, setStartY )
-    DECL_CS_PROPERTY_NOTIFY( startY, startYChanged )
-    DECL_CS_PROPERTY_READ( closed, isClosed )
-    DECL_CS_PROPERTY_NOTIFY( closed, changed )
-    DECL_CS_CLASSINFO( "DefaultProperty", "pathElements" )
+    DECL_LSCS_PROPERTY_READ( pathElements, pathElements )
+    DECL_LSCS_PROPERTY_READ( startX, startX )
+    DECL_LSCS_PROPERTY_WRITE( startX, setStartX )
+    DECL_LSCS_PROPERTY_NOTIFY( startX, startXChanged )
+    DECL_LSCS_PROPERTY_READ( startY, startY )
+    DECL_LSCS_PROPERTY_WRITE( startY, setStartY )
+    DECL_LSCS_PROPERTY_NOTIFY( startY, startYChanged )
+    DECL_LSCS_PROPERTY_READ( closed, isClosed )
+    DECL_LSCS_PROPERTY_NOTIFY( closed, changed )
+    DECL_LSCS_CLASSINFO( "DefaultProperty", "pathElements" )
 
 public:
     QDeclarativePath( QObject *parent = nullptr );
@@ -253,20 +253,20 @@ public:
     qreal attributeAt( const QString &, qreal ) const;
     QPointF pointAt( qreal ) const;
 
-    DECL_CS_SIGNAL_1( Public, void changed() )
-    DECL_CS_SIGNAL_2( changed )
-    DECL_CS_SIGNAL_1( Public, void startXChanged() )
-    DECL_CS_SIGNAL_2( startXChanged )
-    DECL_CS_SIGNAL_1( Public, void startYChanged() )
-    DECL_CS_SIGNAL_2( startYChanged )
+    DECL_LSCS_SIGNAL_1( Public, void changed() )
+    DECL_LSCS_SIGNAL_2( changed )
+    DECL_LSCS_SIGNAL_1( Public, void startXChanged() )
+    DECL_LSCS_SIGNAL_2( startXChanged )
+    DECL_LSCS_SIGNAL_1( Public, void startYChanged() )
+    DECL_LSCS_SIGNAL_2( startYChanged )
 
 protected:
     virtual void componentComplete();
     virtual void classBegin();
 
 private :
-    DECL_CS_SLOT_1( Private, void processPath() )
-    DECL_CS_SLOT_2( processPath )
+    DECL_LSCS_SLOT_1( Private, void processPath() )
+    DECL_LSCS_SLOT_2( processPath )
 
     struct AttributePoint
     {

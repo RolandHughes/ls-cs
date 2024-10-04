@@ -33,7 +33,7 @@ class QNetworkConfigurationManagerPrivate;
 
 class Q_NETWORK_EXPORT QNetworkConfigurationManager : public QObject
 {
-    NET_CS_OBJECT( QNetworkConfigurationManager )
+    NET_LSCS_OBJECT( QNetworkConfigurationManager )
 
 public:
     enum Capability
@@ -62,23 +62,23 @@ public:
 
     bool isOnline() const;
 
-    NET_CS_SLOT_1( Public, void updateConfigurations() )
-    NET_CS_SLOT_2( updateConfigurations )
+    NET_LSCS_SLOT_1( Public, void updateConfigurations() )
+    NET_LSCS_SLOT_2( updateConfigurations )
 
-    NET_CS_SIGNAL_1( Public, void configurationAdded( const QNetworkConfiguration &config ) )
-    NET_CS_SIGNAL_2( configurationAdded, config )
+    NET_LSCS_SIGNAL_1( Public, void configurationAdded( const QNetworkConfiguration &config ) )
+    NET_LSCS_SIGNAL_2( configurationAdded, config )
 
-    NET_CS_SIGNAL_1( Public, void configurationRemoved( const QNetworkConfiguration &config ) )
-    NET_CS_SIGNAL_2( configurationRemoved, config )
+    NET_LSCS_SIGNAL_1( Public, void configurationRemoved( const QNetworkConfiguration &config ) )
+    NET_LSCS_SIGNAL_2( configurationRemoved, config )
 
-    NET_CS_SIGNAL_1( Public, void configurationChanged( const QNetworkConfiguration &config ) )
-    NET_CS_SIGNAL_2( configurationChanged, config )
+    NET_LSCS_SIGNAL_1( Public, void configurationChanged( const QNetworkConfiguration &config ) )
+    NET_LSCS_SIGNAL_2( configurationChanged, config )
 
-    NET_CS_SIGNAL_1( Public, void onlineStateChanged( bool isOnline ) )
-    NET_CS_SIGNAL_2( onlineStateChanged, isOnline )
+    NET_LSCS_SIGNAL_1( Public, void onlineStateChanged( bool isOnline ) )
+    NET_LSCS_SIGNAL_2( onlineStateChanged, isOnline )
 
-    NET_CS_SIGNAL_1( Public, void updateCompleted() )
-    NET_CS_SIGNAL_2( updateCompleted )
+    NET_LSCS_SIGNAL_1( Public, void updateCompleted() )
+    NET_LSCS_SIGNAL_2( updateCompleted )
 
 private:
     QNetworkConfigurationManager ( const QNetworkConfigurationManager & ) = delete;

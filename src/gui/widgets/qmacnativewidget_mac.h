@@ -36,7 +36,7 @@ class QMacNativeWidgetPrivate;
 
 class Q_GUI_EXPORT QMacNativeWidget : public QWidget
 {
-    GUI_CS_OBJECT( QMacNativeWidget )
+    GUI_LSCS_OBJECT( QMacNativeWidget )
 
 public:
     QMacNativeWidget( NSView *parentView = nullptr );

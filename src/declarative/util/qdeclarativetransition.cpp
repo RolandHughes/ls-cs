@@ -36,7 +36,7 @@ QT_BEGIN_NAMESPACE
 //and disconnecting signals and slots frequently
 class ParallelAnimationWrapper : public QParallelAnimationGroup
 {
-    DECL_CS_OBJECT( ParallelAnimationWrapper )
+    DECL_LSCS_OBJECT( ParallelAnimationWrapper )
 
 public:
     ParallelAnimationWrapper( QObject *parent = nullptr ) : QParallelAnimationGroup( parent ) {}

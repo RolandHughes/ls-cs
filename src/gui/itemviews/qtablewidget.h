@@ -288,13 +288,13 @@ class QTableWidgetPrivate;
 
 class Q_GUI_EXPORT QTableWidget : public QTableView
 {
-    GUI_CS_OBJECT( QTableWidget )
+    GUI_LSCS_OBJECT( QTableWidget )
 
-    GUI_CS_PROPERTY_READ( rowCount, rowCount )
-    GUI_CS_PROPERTY_WRITE( rowCount, setRowCount )
+    GUI_LSCS_PROPERTY_READ( rowCount, rowCount )
+    GUI_LSCS_PROPERTY_WRITE( rowCount, setRowCount )
 
-    GUI_CS_PROPERTY_READ( columnCount, columnCount )
-    GUI_CS_PROPERTY_WRITE( columnCount, setColumnCount )
+    GUI_LSCS_PROPERTY_READ( columnCount, columnCount )
+    GUI_LSCS_PROPERTY_WRITE( columnCount, setColumnCount )
 
     friend class QTableModel;
 
@@ -368,65 +368,65 @@ public:
     const QTableWidgetItem *itemPrototype() const;
     void setItemPrototype( const QTableWidgetItem *item );
 
-    GUI_CS_SLOT_1( Public, void scrollToItem( const QTableWidgetItem *item, QAbstractItemView::ScrollHint hint = EnsureVisible ) )
-    GUI_CS_SLOT_2( scrollToItem )
+    GUI_LSCS_SLOT_1( Public, void scrollToItem( const QTableWidgetItem *item, QAbstractItemView::ScrollHint hint = EnsureVisible ) )
+    GUI_LSCS_SLOT_2( scrollToItem )
 
-    GUI_CS_SLOT_1( Public, void insertRow( int row ) )
-    GUI_CS_SLOT_2( insertRow )
+    GUI_LSCS_SLOT_1( Public, void insertRow( int row ) )
+    GUI_LSCS_SLOT_2( insertRow )
 
-    GUI_CS_SLOT_1( Public, void insertColumn( int column ) )
-    GUI_CS_SLOT_2( insertColumn )
+    GUI_LSCS_SLOT_1( Public, void insertColumn( int column ) )
+    GUI_LSCS_SLOT_2( insertColumn )
 
-    GUI_CS_SLOT_1( Public, void removeRow( int row ) )
-    GUI_CS_SLOT_2( removeRow )
+    GUI_LSCS_SLOT_1( Public, void removeRow( int row ) )
+    GUI_LSCS_SLOT_2( removeRow )
 
-    GUI_CS_SLOT_1( Public, void removeColumn( int column ) )
-    GUI_CS_SLOT_2( removeColumn )
+    GUI_LSCS_SLOT_1( Public, void removeColumn( int column ) )
+    GUI_LSCS_SLOT_2( removeColumn )
 
-    GUI_CS_SLOT_1( Public, void clear() )
-    GUI_CS_SLOT_2( clear )
+    GUI_LSCS_SLOT_1( Public, void clear() )
+    GUI_LSCS_SLOT_2( clear )
 
-    GUI_CS_SLOT_1( Public, void clearContents() )
-    GUI_CS_SLOT_2( clearContents )
+    GUI_LSCS_SLOT_1( Public, void clearContents() )
+    GUI_LSCS_SLOT_2( clearContents )
 
-    GUI_CS_SIGNAL_1( Public, void itemPressed( QTableWidgetItem *item ) )
-    GUI_CS_SIGNAL_2( itemPressed, item )
-    GUI_CS_SIGNAL_1( Public, void itemClicked( QTableWidgetItem *item ) )
-    GUI_CS_SIGNAL_2( itemClicked, item )
-    GUI_CS_SIGNAL_1( Public, void itemDoubleClicked( QTableWidgetItem *item ) )
-    GUI_CS_SIGNAL_2( itemDoubleClicked, item )
+    GUI_LSCS_SIGNAL_1( Public, void itemPressed( QTableWidgetItem *item ) )
+    GUI_LSCS_SIGNAL_2( itemPressed, item )
+    GUI_LSCS_SIGNAL_1( Public, void itemClicked( QTableWidgetItem *item ) )
+    GUI_LSCS_SIGNAL_2( itemClicked, item )
+    GUI_LSCS_SIGNAL_1( Public, void itemDoubleClicked( QTableWidgetItem *item ) )
+    GUI_LSCS_SIGNAL_2( itemDoubleClicked, item )
 
-    GUI_CS_SIGNAL_1( Public, void itemActivated( QTableWidgetItem *item ) )
-    GUI_CS_SIGNAL_2( itemActivated, item )
+    GUI_LSCS_SIGNAL_1( Public, void itemActivated( QTableWidgetItem *item ) )
+    GUI_LSCS_SIGNAL_2( itemActivated, item )
 
-    GUI_CS_SIGNAL_1( Public, void itemEntered( QTableWidgetItem *item ) )
-    GUI_CS_SIGNAL_2( itemEntered, item )
+    GUI_LSCS_SIGNAL_1( Public, void itemEntered( QTableWidgetItem *item ) )
+    GUI_LSCS_SIGNAL_2( itemEntered, item )
 
-    GUI_CS_SIGNAL_1( Public, void itemChanged( QTableWidgetItem *item ) )
-    GUI_CS_SIGNAL_2( itemChanged, item )
+    GUI_LSCS_SIGNAL_1( Public, void itemChanged( QTableWidgetItem *item ) )
+    GUI_LSCS_SIGNAL_2( itemChanged, item )
 
-    GUI_CS_SIGNAL_1( Public, void currentItemChanged( QTableWidgetItem *current, QTableWidgetItem *previous ) )
-    GUI_CS_SIGNAL_2( currentItemChanged, current, previous )
+    GUI_LSCS_SIGNAL_1( Public, void currentItemChanged( QTableWidgetItem *current, QTableWidgetItem *previous ) )
+    GUI_LSCS_SIGNAL_2( currentItemChanged, current, previous )
 
-    GUI_CS_SIGNAL_1( Public, void itemSelectionChanged() )
-    GUI_CS_SIGNAL_2( itemSelectionChanged )
+    GUI_LSCS_SIGNAL_1( Public, void itemSelectionChanged() )
+    GUI_LSCS_SIGNAL_2( itemSelectionChanged )
 
-    GUI_CS_SIGNAL_1( Public, void cellPressed( int row, int column ) )
-    GUI_CS_SIGNAL_2( cellPressed, row, column )
-    GUI_CS_SIGNAL_1( Public, void cellClicked( int row, int column ) )
-    GUI_CS_SIGNAL_2( cellClicked, row, column )
-    GUI_CS_SIGNAL_1( Public, void cellDoubleClicked( int row, int column ) )
-    GUI_CS_SIGNAL_2( cellDoubleClicked, row, column )
+    GUI_LSCS_SIGNAL_1( Public, void cellPressed( int row, int column ) )
+    GUI_LSCS_SIGNAL_2( cellPressed, row, column )
+    GUI_LSCS_SIGNAL_1( Public, void cellClicked( int row, int column ) )
+    GUI_LSCS_SIGNAL_2( cellClicked, row, column )
+    GUI_LSCS_SIGNAL_1( Public, void cellDoubleClicked( int row, int column ) )
+    GUI_LSCS_SIGNAL_2( cellDoubleClicked, row, column )
 
-    GUI_CS_SIGNAL_1( Public, void cellActivated( int row, int column ) )
-    GUI_CS_SIGNAL_2( cellActivated, row, column )
-    GUI_CS_SIGNAL_1( Public, void cellEntered( int row, int column ) )
-    GUI_CS_SIGNAL_2( cellEntered, row, column )
-    GUI_CS_SIGNAL_1( Public, void cellChanged( int row, int column ) )
-    GUI_CS_SIGNAL_2( cellChanged, row, column )
+    GUI_LSCS_SIGNAL_1( Public, void cellActivated( int row, int column ) )
+    GUI_LSCS_SIGNAL_2( cellActivated, row, column )
+    GUI_LSCS_SIGNAL_1( Public, void cellEntered( int row, int column ) )
+    GUI_LSCS_SIGNAL_2( cellEntered, row, column )
+    GUI_LSCS_SIGNAL_1( Public, void cellChanged( int row, int column ) )
+    GUI_LSCS_SIGNAL_2( cellChanged, row, column )
 
-    GUI_CS_SIGNAL_1( Public, void currentCellChanged( int currentRow, int currentColumn, int previousRow, int previousColumn ) )
-    GUI_CS_SIGNAL_2( currentCellChanged, currentRow, currentColumn, previousRow, previousColumn )
+    GUI_LSCS_SIGNAL_1( Public, void currentCellChanged( int currentRow, int currentColumn, int previousRow, int previousColumn ) )
+    GUI_LSCS_SIGNAL_2( currentCellChanged, currentRow, currentColumn, previousRow, previousColumn )
 
 protected:
     bool event( QEvent *event ) override;
@@ -446,32 +446,32 @@ private:
 
     Q_DECLARE_PRIVATE( QTableWidget )
 
-    GUI_CS_SLOT_1( Private, void _q_emitItemPressed( const QModelIndex &index ) )
-    GUI_CS_SLOT_2( _q_emitItemPressed )
+    GUI_LSCS_SLOT_1( Private, void _q_emitItemPressed( const QModelIndex &index ) )
+    GUI_LSCS_SLOT_2( _q_emitItemPressed )
 
-    GUI_CS_SLOT_1( Private, void _q_emitItemClicked( const QModelIndex &index ) )
-    GUI_CS_SLOT_2( _q_emitItemClicked )
+    GUI_LSCS_SLOT_1( Private, void _q_emitItemClicked( const QModelIndex &index ) )
+    GUI_LSCS_SLOT_2( _q_emitItemClicked )
 
-    GUI_CS_SLOT_1( Private, void _q_emitItemDoubleClicked( const QModelIndex &index ) )
-    GUI_CS_SLOT_2( _q_emitItemDoubleClicked )
+    GUI_LSCS_SLOT_1( Private, void _q_emitItemDoubleClicked( const QModelIndex &index ) )
+    GUI_LSCS_SLOT_2( _q_emitItemDoubleClicked )
 
-    GUI_CS_SLOT_1( Private, void _q_emitItemActivated( const QModelIndex &index ) )
-    GUI_CS_SLOT_2( _q_emitItemActivated )
+    GUI_LSCS_SLOT_1( Private, void _q_emitItemActivated( const QModelIndex &index ) )
+    GUI_LSCS_SLOT_2( _q_emitItemActivated )
 
-    GUI_CS_SLOT_1( Private, void _q_emitItemEntered( const QModelIndex &index ) )
-    GUI_CS_SLOT_2( _q_emitItemEntered )
+    GUI_LSCS_SLOT_1( Private, void _q_emitItemEntered( const QModelIndex &index ) )
+    GUI_LSCS_SLOT_2( _q_emitItemEntered )
 
-    GUI_CS_SLOT_1( Private, void _q_emitItemChanged( const QModelIndex &index ) )
-    GUI_CS_SLOT_2( _q_emitItemChanged )
+    GUI_LSCS_SLOT_1( Private, void _q_emitItemChanged( const QModelIndex &index ) )
+    GUI_LSCS_SLOT_2( _q_emitItemChanged )
 
-    GUI_CS_SLOT_1( Private, void _q_emitCurrentItemChanged( const QModelIndex &previous, const QModelIndex &current ) )
-    GUI_CS_SLOT_2( _q_emitCurrentItemChanged )
+    GUI_LSCS_SLOT_1( Private, void _q_emitCurrentItemChanged( const QModelIndex &previous, const QModelIndex &current ) )
+    GUI_LSCS_SLOT_2( _q_emitCurrentItemChanged )
 
-    GUI_CS_SLOT_1( Private, void _q_sort() )
-    GUI_CS_SLOT_2( _q_sort )
+    GUI_LSCS_SLOT_1( Private, void _q_sort() )
+    GUI_LSCS_SLOT_2( _q_sort )
 
-    GUI_CS_SLOT_1( Private, void _q_dataChanged( const QModelIndex &topLeft, const QModelIndex &bottomRight ) )
-    GUI_CS_SLOT_2( _q_dataChanged )
+    GUI_LSCS_SLOT_1( Private, void _q_dataChanged( const QModelIndex &topLeft, const QModelIndex &bottomRight ) )
+    GUI_LSCS_SLOT_2( _q_dataChanged )
 };
 
 inline void QTableWidget::removeCellWidget( int row, int column )

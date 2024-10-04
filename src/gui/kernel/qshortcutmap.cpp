@@ -172,7 +172,7 @@ int QShortcutMap::removeShortcut( int id, QObject *owner, const QKeySequence &ke
         --i;
     }
 
-#if defined(CS_SHOW_DEBUG_GUI)
+#if defined(LSCS_SHOW_DEBUG_GUI)
     qDebug().nospace()
             << "QShortcutMap::removeShortcut(" << id << ", " << owner << ", "
             << key << ") = " << itemsRemoved;
@@ -219,7 +219,7 @@ int QShortcutMap::setShortcutEnabled( bool enable, int id, QObject *owner, const
         --i;
     }
 
-#if defined(CS_SHOW_DEBUG_GUI)
+#if defined(LSCS_SHOW_DEBUG_GUI)
     qDebug().nospace()
             << "QShortcutMap::setShortcutEnabled(" << enable << ", " << id << ", "
             << owner << ", " << key << ") = " << itemsChanged;
@@ -266,7 +266,7 @@ int QShortcutMap::setShortcutAutoRepeat( bool on, int id, QObject *owner, const 
         --i;
     }
 
-#if defined(CS_SHOW_DEBUG_GUI)
+#if defined(LSCS_SHOW_DEBUG_GUI)
     qDebug().nospace()
             << "QShortcutMap::setShortcutAutoRepeat(" << on << ", " << id << ", "
             << owner << ", " << key << ") = " << itemsChanged;
@@ -393,7 +393,7 @@ QKeySequence::SequenceMatch QShortcutMap::nextState( QKeyEvent *e )
 
     d->currentState = result;
 
-#if defined(CS_SHOW_DEBUG_GUI)
+#if defined(LSCS_SHOW_DEBUG_GUI)
     qDebug().nospace() << "QShortcutMap::nextState(" << e << ") = " << result;
 #endif
 
@@ -762,7 +762,7 @@ void QShortcutMap::dispatchEvent( QKeyEvent *e )
     QCoreApplication::sendEvent( const_cast<QObject *>( next->owner ), &se );
 }
 
-#if defined(CS_SHOW_DEBUG_GUI)
+#if defined(LSCS_SHOW_DEBUG_GUI)
 void QShortcutMap::dumpMap() const
 {
     Q_D( const QShortcutMap );

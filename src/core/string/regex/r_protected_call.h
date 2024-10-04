@@ -24,16 +24,16 @@
  * LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 */
 
-#ifndef CS_PROTECTED_CALL_H
-#define CS_PROTECTED_CALL_H
+#ifndef LSCS_PROTECTED_CALL_H
+#define LSCS_PROTECTED_CALL_H
 
-namespace cs_regex_ns
+namespace lscs_regex_ns
 {
 
-namespace cs_regex_detail_ns
+namespace lscs_regex_detail_ns
 {
 
-class LIB_CS_STRING_EXPORT abstract_protected_call
+class LIB_LSCS_STRING_EXPORT abstract_protected_call
 {
 public:
     bool execute() const;

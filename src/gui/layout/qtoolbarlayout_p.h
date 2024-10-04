@@ -46,7 +46,7 @@ public:
 
 class QToolBarLayout : public QLayout
 {
-    GUI_CS_OBJECT( QToolBarLayout )
+    GUI_LSCS_OBJECT( QToolBarLayout )
 
 public:
     QToolBarLayout( QWidget *parent = nullptr );
@@ -85,8 +85,8 @@ public:
     bool hasExpandFlag() const;
 
     void updateMacBorderMetrics();
-    GUI_CS_SLOT_1( Public, void setExpanded( bool b ) )
-    GUI_CS_SLOT_2( setExpanded )
+    GUI_LSCS_SLOT_1( Public, void setExpanded( bool b ) )
+    GUI_LSCS_SLOT_2( setExpanded )
 
 private:
     QList<QToolBarItem *> items;

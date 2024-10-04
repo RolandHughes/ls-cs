@@ -414,7 +414,7 @@ void eatMouseMove()
         PostMessage( msg.hwnd, msg.message, 0, msg.lParam );
     }
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
     qDebug() << "QWindowsDialogs::eatMouseMove() Triggered =" << ( msg.message == WM_MOUSEMOVE );
 #endif
 }
@@ -423,7 +423,7 @@ void eatMouseMove()
 
 class QWindowsNativeDialogBase : public QObject
 {
-    CS_OBJECT( QWindowsNativeDialogBase )
+    LSCS_OBJECT( QWindowsNativeDialogBase )
 
 public:
     virtual void setWindowTitle( const QString &title ) = 0;
@@ -439,14 +439,14 @@ public:
         m_executed = true;
     }
 
-    CS_SIGNAL_1( Public, void accepted() )
-    CS_SIGNAL_2( accepted )
+    LSCS_SIGNAL_1( Public, void accepted() )
+    LSCS_SIGNAL_2( accepted )
 
-    CS_SIGNAL_1( Public, void rejected() )
-    CS_SIGNAL_2( rejected )
+    LSCS_SIGNAL_1( Public, void rejected() )
+    LSCS_SIGNAL_2( rejected )
 
-    CS_SLOT_1( Public, virtual void close() = 0 )
-    CS_SLOT_2( close )
+    LSCS_SLOT_1( Public, virtual void close() = 0 )
+    LSCS_SLOT_2( close )
 
 protected:
     QWindowsNativeDialogBase()
@@ -575,7 +575,7 @@ bool QWindowsDialogHelperBase<BaseClass>::show( Qt::WindowFlags,
         m_ownerWindow = nullptr;
     }
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
     qDebug() << "QWindowsDialog::show() Modal =" << modal
              << "Is modal supported?" << supportsNonModalDialog( parent ) << "\n  "
              << "Native =" << m_nativeDialog.data() << "Owner =" << m_ownerWindow;
@@ -884,10 +884,10 @@ IFileDialogEvents *QWindowsNativeFileDialogEventHandler::create( QWindowsNativeF
 
 class QWindowsNativeFileDialogBase : public QWindowsNativeDialogBase
 {
-    CS_OBJECT( QWindowsNativeFileDialogBase )
+    LSCS_OBJECT( QWindowsNativeFileDialogBase )
 
-    CS_PROPERTY_READ( hideFiltersDetails, hideFiltersDetails )
-CS_PROPERTY_WRITE( hideFiltersDetails, setHideFiltersDetails )public:
+    LSCS_PROPERTY_READ( hideFiltersDetails, hideFiltersDetails )
+LSCS_PROPERTY_WRITE( hideFiltersDetails, setHideFiltersDetails )public:
 
     ~QWindowsNativeFileDialogBase();
 
@@ -950,17 +950,17 @@ CS_PROPERTY_WRITE( hideFiltersDetails, setHideFiltersDetails )public:
     inline bool onFileOk();
 
 public:
-    CS_SIGNAL_1( Public, void directoryEntered( const QUrl &directory ) )
-    CS_SIGNAL_2( directoryEntered, directory )
+    LSCS_SIGNAL_1( Public, void directoryEntered( const QUrl &directory ) )
+    LSCS_SIGNAL_2( directoryEntered, directory )
 
-    CS_SIGNAL_1( Public, void currentChanged( const QUrl &file ) )
-    CS_SIGNAL_2( currentChanged, file )
+    LSCS_SIGNAL_1( Public, void currentChanged( const QUrl &file ) )
+    LSCS_SIGNAL_2( currentChanged, file )
 
-    CS_SIGNAL_1( Public, void filterSelected( const QString &filter ) )
-    CS_SIGNAL_2( filterSelected, filter )
+    LSCS_SIGNAL_1( Public, void filterSelected( const QString &filter ) )
+    LSCS_SIGNAL_2( filterSelected, filter )
 
-    CS_SLOT_1( Public, void close() override )
-    CS_SLOT_2( close )
+    LSCS_SLOT_1( Public, void close() override )
+    LSCS_SLOT_2( close )
 
 protected:
     explicit QWindowsNativeFileDialogBase( const QWindowsFileDialogSharedData &data );
@@ -1051,7 +1051,7 @@ bool QWindowsNativeFileDialogBase::init( const CLSID &clsId, const IID &iid )
         return false;
     }
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
     qDebug() << "QWindowsNativeFileDialog::init() file dialog = " << m_fileDialog << m_dialogEvents <<  m_cookie;
 #endif
 
@@ -1081,7 +1081,7 @@ IShellItem *QWindowsNativeFileDialogBase::shellItem( const QUrl &url )
 
         if ( FAILED( hr ) )
         {
-            qErrnoWarning( "shellItem() SHCreateItemFromParsingName(%s)) failed", csPrintable( url.toString() ) );
+            qErrnoWarning( "shellItem() SHCreateItemFromParsingName(%s)) failed", lscsPrintable( url.toString() ) );
             return nullptr;
         }
 
@@ -1112,7 +1112,7 @@ IShellItem *QWindowsNativeFileDialogBase::shellItem( const QUrl &url )
 
         if ( FAILED( hr ) )
         {
-            qErrnoWarning( "shellItem() SHGetKnownFolderIDList(%s)) failed", csPrintable( url.toString() ) );
+            qErrnoWarning( "shellItem() SHGetKnownFolderIDList(%s)) failed", lscsPrintable( url.toString() ) );
             return nullptr;
         }
 
@@ -1121,7 +1121,7 @@ IShellItem *QWindowsNativeFileDialogBase::shellItem( const QUrl &url )
 
         if ( FAILED( hr ) )
         {
-            qErrnoWarning( "shellItem() SHCreateItemFromIDList(%s)) failed", csPrintable( url.toString() ) );
+            qErrnoWarning( "shellItem() SHCreateItemFromIDList(%s)) failed", lscsPrintable( url.toString() ) );
             return nullptr;
         }
 
@@ -1221,7 +1221,7 @@ void QWindowsNativeFileDialogBase::setMode( QPlatformFileDialogOptions::FileMode
 
     }
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
     qDebug() << "QWindowsNativeFileDialog::setMode() Mode = " << mode << "\n  "
              << "AcceptMode = " << acceptMode << " Options = " << options
              << " Results in = " << showbase << hex << flags;
@@ -1582,7 +1582,7 @@ void QWindowsNativeFileDialogBase::selectNameFilter( const QString &filter )
     if ( index < 0 )
     {
         qWarning( "selectNameFilter() Invalid parameter %s not found in %s",
-                  csPrintable( filter ), csPrintable( m_nameFilters.join( ", " ) ) );
+                  lscsPrintable( filter ), lscsPrintable( m_nameFilters.join( ", " ) ) );
         return;
     }
 
@@ -1692,7 +1692,7 @@ HRESULT QWindowsNativeFileDialogEventHandler::OnFileOk( IFileDialog * )
 
 class QWindowsNativeSaveFileDialog : public QWindowsNativeFileDialogBase
 {
-    CS_OBJECT( QWindowsNativeSaveFileDialog )
+    LSCS_OBJECT( QWindowsNativeSaveFileDialog )
 
 public:
     explicit QWindowsNativeSaveFileDialog( const QWindowsFileDialogSharedData &data )
@@ -1991,7 +1991,7 @@ QWindowsNativeDialogBase *QWindowsFileDialogHelper::createNativeDialog()
 
 void QWindowsFileDialogHelper::setDirectory( const QUrl &directory )
 {
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
     qDebug() << "QWindowsFileDialog::setDirectory() Directory = " << directory.toString();
 #endif
 
@@ -2010,7 +2010,7 @@ QUrl QWindowsFileDialogHelper::directory() const
 
 void QWindowsFileDialogHelper::selectFile( const QUrl &fileName )
 {
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
     qDebug() << "QWindowsFileDialog::setDirectory() FileName = " << fileName.toString();
 #endif
 
@@ -2056,7 +2056,7 @@ struct FileStructData
 
 class QWindowsXpNativeFileDialog : public QWindowsNativeDialogBase
 {
-    CS_OBJECT( QWindowsXpNativeFileDialog )
+    LSCS_OBJECT( QWindowsXpNativeFileDialog )
 
 public:
     typedef QSharedPointer<QPlatformFileDialogOptions> OptionsPtr;
@@ -2452,7 +2452,7 @@ QString QWindowsXpFileDialogHelper::selectedNameFilter() const
 #ifdef USE_NATIVE_COLOR_DIALOG
 class QWindowsNativeColorDialog : public QWindowsNativeDialogBase
 {
-    CS_OBJECT( QWindowsNativeColorDialog )
+    LSCS_OBJECT( QWindowsNativeColorDialog )
 
 public:
     static constexpr const int CustomColorCount = 16;

@@ -70,7 +70,7 @@ private:
 //performs an action of type QAbstractAnimationAction
 class QActionAnimation : public QAbstractAnimation
 {
-    DECL_CS_OBJECT( QActionAnimation )
+    DECL_LSCS_OBJECT( QActionAnimation )
 public:
     QActionAnimation( QObject *parent = nullptr ) : QAbstractAnimation( parent ), animAction( 0 ), policy( KeepWhenStopped ) {}
     QActionAnimation( QAbstractAnimationAction *action, QObject *parent = nullptr )
@@ -137,7 +137,7 @@ public:
 //animates QDeclarativeBulkValueUpdater (assumes start and end values will be reals or compatible)
 class QDeclarativeBulkValueAnimator : public QVariantAnimation
 {
-    DECL_CS_OBJECT( QDeclarativeBulkValueAnimator )
+    DECL_LSCS_OBJECT( QDeclarativeBulkValueAnimator )
 public:
     QDeclarativeBulkValueAnimator( QObject *parent = nullptr ) : QVariantAnimation( parent ), animValue( 0 ), fromSourced( 0 ),
         policy( KeepWhenStopped ) {}

@@ -38,7 +38,7 @@
 
 class CameraBinContainer : public QMediaContainerControl
 {
-    CS_OBJECT( CameraBinContainer )
+    LSCS_OBJECT( CameraBinContainer )
 
 public:
     CameraBinContainer( QObject *parent );
@@ -61,8 +61,8 @@ public:
 #endif
 
 public:
-    CS_SIGNAL_1( Public, void settingsChanged() )
-    CS_SIGNAL_2( settingsChanged )
+    LSCS_SIGNAL_1( Public, void settingsChanged() )
+    LSCS_SIGNAL_2( settingsChanged )
 
 private:
     QString m_format;

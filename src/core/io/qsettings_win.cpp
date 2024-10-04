@@ -232,7 +232,7 @@ static QStringList childKeysOrGroups( HKEY parentHandle, QSettingsPrivate::Child
 
     if ( res != ERROR_SUCCESS )
     {
-        qWarning( "QSettings::childKeysOrGroups() RegQueryInfoKey failed, %s", csPrintable( errorCodeToString( res ) ) );
+        qWarning( "QSettings::childKeysOrGroups() RegQueryInfoKey failed, %s", lscsPrintable( errorCodeToString( res ) ) );
         return result;
     }
 
@@ -280,7 +280,7 @@ static QStringList childKeysOrGroups( HKEY parentHandle, QSettingsPrivate::Child
 
         if ( res != ERROR_SUCCESS )
         {
-            qWarning( "QSettings::childKeysOrGroups() RegEnumValue failed, %s", csPrintable( errorCodeToString( res ) ) );
+            qWarning( "QSettings::childKeysOrGroups() RegEnumValue failed, %s", lscsPrintable( errorCodeToString( res ) ) );
             continue;
         }
 
@@ -360,7 +360,7 @@ static void deleteChildGroups( HKEY parentHandle )
         if ( res != ERROR_SUCCESS )
         {
             qWarning( "QSettings::deleteChildGroups() RegDeleteKey failed on subkey \"%s\": %s",
-                      csPrintable( group ), csPrintable( errorCodeToString( res ) ) );
+                      lscsPrintable( group ), lscsPrintable( errorCodeToString( res ) ) );
             return;
         }
     }
@@ -731,7 +731,7 @@ QWinSettingsPrivate::~QWinSettingsPrivate()
         if ( res != ERROR_SUCCESS )
         {
             qWarning( "QSettings() Failed to delete key \"%s\": %s",
-                      csPrintable( regList.at( 0 ).key() ), csPrintable( errorCodeToString( res ) ) );
+                      lscsPrintable( regList.at( 0 ).key() ), lscsPrintable( errorCodeToString( res ) ) );
         }
     }
 
@@ -781,7 +781,7 @@ void QWinSettingsPrivate::remove( const QString &uKey )
                 if ( res != ERROR_SUCCESS )
                 {
                     qWarning( "QWinSettings::remove() RegDeleteValue failed on subkey \"%s\": %s",
-                              csPrintable( group ), csPrintable( errorCodeToString( res ) ) );
+                              lscsPrintable( group ), lscsPrintable( errorCodeToString( res ) ) );
                 }
             }
 
@@ -793,7 +793,7 @@ void QWinSettingsPrivate::remove( const QString &uKey )
             if ( res != ERROR_SUCCESS )
             {
                 qWarning( "QWinSettings::remove() RegDeleteKey failed on key \"%s\": %s",
-                          csPrintable( rKey ), csPrintable( errorCodeToString( res ) ) );
+                          lscsPrintable( rKey ), lscsPrintable( errorCodeToString( res ) ) );
             }
         }
 
@@ -944,7 +944,7 @@ void QWinSettingsPrivate::set( const QString &uKey, const QVariant &value )
     else
     {
         qWarning( "QWinSettings::set() Failed to set subkey \"%s\": %s",
-                  csPrintable( rKey ), csPrintable( errorCodeToString( res ) ) );
+                  lscsPrintable( rKey ), lscsPrintable( errorCodeToString( res ) ) );
 
         setStatus( QSettings::AccessError );
     }

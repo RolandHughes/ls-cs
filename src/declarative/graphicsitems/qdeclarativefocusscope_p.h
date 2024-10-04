@@ -31,7 +31,7 @@ QT_BEGIN_NAMESPACE
 //### set component root as focusscope
 class QDeclarativeFocusScope : public QDeclarativeItem
 {
-    DECL_CS_OBJECT( QDeclarativeFocusScope )
+    DECL_LSCS_OBJECT( QDeclarativeFocusScope )
     Q_DECLARE_PRIVATE_D( QGraphicsItem::d_ptr.data(), QDeclarativeItem )
 
 public:

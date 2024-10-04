@@ -34,7 +34,7 @@ class DirectShowPlayerService;
 
 class DirectShowMetaDataControl : public QMetaDataReaderControl
 {
-    CS_OBJECT( DirectShowMetaDataControl )
+    LSCS_OBJECT( DirectShowMetaDataControl )
 
 public:
     DirectShowMetaDataControl( QObject *parent = nullptr );

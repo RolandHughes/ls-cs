@@ -31,7 +31,7 @@ class QEasingCurvePrivate;
 
 class Q_CORE_EXPORT QEasingCurve
 {
-    CORE_CS_GADGET( QEasingCurve )
+    CORE_LSCS_GADGET( QEasingCurve )
 
 public:
     using EasingFunction = qreal ( * )( qreal progress );
@@ -53,7 +53,7 @@ public:
         Custom, NCurveTypes
     };
 
-    CORE_CS_ENUM( Type )
+    CORE_LSCS_ENUM( Type )
 
     QEasingCurve( Type type = Linear );
     QEasingCurve( const QEasingCurve &other );

@@ -31,13 +31,13 @@ class QPushButton;
 
 class Q_GUI_EXPORT QDialog : public QWidget
 {
-    GUI_CS_OBJECT( QDialog )
+    GUI_LSCS_OBJECT( QDialog )
 
-    GUI_CS_PROPERTY_READ( sizeGripEnabled,  isSizeGripEnabled )
-    GUI_CS_PROPERTY_WRITE( sizeGripEnabled, setSizeGripEnabled )
+    GUI_LSCS_PROPERTY_READ( sizeGripEnabled,  isSizeGripEnabled )
+    GUI_LSCS_PROPERTY_WRITE( sizeGripEnabled, setSizeGripEnabled )
 
-    GUI_CS_PROPERTY_READ( modal,  isModal )
-    GUI_CS_PROPERTY_WRITE( modal, setModal )
+    GUI_LSCS_PROPERTY_READ( modal,  isModal )
+    GUI_LSCS_PROPERTY_WRITE( modal, setModal )
 
 public:
     explicit QDialog( QWidget *parent = nullptr, Qt::WindowFlags flags = Qt::EmptyFlag );
@@ -72,32 +72,32 @@ public:
     void setModal( bool modal );
     void setResult( int result );
 
-    GUI_CS_SIGNAL_1( Public, void finished( int result ) )
-    GUI_CS_SIGNAL_2( finished, result )
+    GUI_LSCS_SIGNAL_1( Public, void finished( int result ) )
+    GUI_LSCS_SIGNAL_2( finished, result )
 
-    GUI_CS_SIGNAL_1( Public, void accepted() )
-    GUI_CS_SIGNAL_2( accepted )
+    GUI_LSCS_SIGNAL_1( Public, void accepted() )
+    GUI_LSCS_SIGNAL_2( accepted )
 
-    GUI_CS_SIGNAL_1( Public, void rejected() )
-    GUI_CS_SIGNAL_2( rejected )
+    GUI_LSCS_SIGNAL_1( Public, void rejected() )
+    GUI_LSCS_SIGNAL_2( rejected )
 
-    GUI_CS_SLOT_1( Public, virtual void open() )
-    GUI_CS_SLOT_2( open )
+    GUI_LSCS_SLOT_1( Public, virtual void open() )
+    GUI_LSCS_SLOT_2( open )
 
-    GUI_CS_SLOT_1( Public, virtual int exec() )
-    GUI_CS_SLOT_2( exec )
+    GUI_LSCS_SLOT_1( Public, virtual int exec() )
+    GUI_LSCS_SLOT_2( exec )
 
-    GUI_CS_SLOT_1( Public, virtual void done( int result ) )
-    GUI_CS_SLOT_2( done )
+    GUI_LSCS_SLOT_1( Public, virtual void done( int result ) )
+    GUI_LSCS_SLOT_2( done )
 
-    GUI_CS_SLOT_1( Public, virtual void accept() )
-    GUI_CS_SLOT_2( accept )
+    GUI_LSCS_SLOT_1( Public, virtual void accept() )
+    GUI_LSCS_SLOT_2( accept )
 
-    GUI_CS_SLOT_1( Public, virtual void reject() )
-    GUI_CS_SLOT_2( reject )
+    GUI_LSCS_SLOT_1( Public, virtual void reject() )
+    GUI_LSCS_SLOT_2( reject )
 
-    GUI_CS_SLOT_1( Public, void showExtension( bool showExt ) )
-    GUI_CS_SLOT_2( showExtension )
+    GUI_LSCS_SLOT_1( Public, void showExtension( bool showExt ) )
+    GUI_LSCS_SLOT_2( showExtension )
 
 protected:
     QDialog( QDialogPrivate &, QWidget *parent, Qt::WindowFlags flags = Qt::EmptyFlag );

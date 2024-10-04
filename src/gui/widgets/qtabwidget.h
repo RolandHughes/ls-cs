@@ -35,41 +35,41 @@ class QStyleOptionTabWidgetFrame;
 
 class Q_GUI_EXPORT QTabWidget : public QWidget
 {
-    GUI_CS_OBJECT( QTabWidget )
+    GUI_LSCS_OBJECT( QTabWidget )
 
-    GUI_CS_ENUM( TabPosition )
-    GUI_CS_ENUM( TabShape )
+    GUI_LSCS_ENUM( TabPosition )
+    GUI_LSCS_ENUM( TabShape )
 
-    GUI_CS_PROPERTY_READ( tabPosition, tabPosition )
-    GUI_CS_PROPERTY_WRITE( tabPosition, setTabPosition )
-    GUI_CS_PROPERTY_READ( tabShape, tabShape )
-    GUI_CS_PROPERTY_WRITE( tabShape, setTabShape )
-    GUI_CS_PROPERTY_READ( currentIndex, currentIndex )
-    GUI_CS_PROPERTY_WRITE( currentIndex, setCurrentIndex )
-    GUI_CS_PROPERTY_NOTIFY( currentIndex, currentChanged )
-    GUI_CS_PROPERTY_READ( count, count )
-    GUI_CS_PROPERTY_READ( iconSize, iconSize )
-    GUI_CS_PROPERTY_WRITE( iconSize, setIconSize )
-    GUI_CS_PROPERTY_READ( elideMode, elideMode )
-    GUI_CS_PROPERTY_WRITE( elideMode, setElideMode )
+    GUI_LSCS_PROPERTY_READ( tabPosition, tabPosition )
+    GUI_LSCS_PROPERTY_WRITE( tabPosition, setTabPosition )
+    GUI_LSCS_PROPERTY_READ( tabShape, tabShape )
+    GUI_LSCS_PROPERTY_WRITE( tabShape, setTabShape )
+    GUI_LSCS_PROPERTY_READ( currentIndex, currentIndex )
+    GUI_LSCS_PROPERTY_WRITE( currentIndex, setCurrentIndex )
+    GUI_LSCS_PROPERTY_NOTIFY( currentIndex, currentChanged )
+    GUI_LSCS_PROPERTY_READ( count, count )
+    GUI_LSCS_PROPERTY_READ( iconSize, iconSize )
+    GUI_LSCS_PROPERTY_WRITE( iconSize, setIconSize )
+    GUI_LSCS_PROPERTY_READ( elideMode, elideMode )
+    GUI_LSCS_PROPERTY_WRITE( elideMode, setElideMode )
 
-    GUI_CS_PROPERTY_READ( usesScrollButtons, usesScrollButtons )
-    GUI_CS_PROPERTY_WRITE( usesScrollButtons, setUsesScrollButtons )
+    GUI_LSCS_PROPERTY_READ( usesScrollButtons, usesScrollButtons )
+    GUI_LSCS_PROPERTY_WRITE( usesScrollButtons, setUsesScrollButtons )
 
-    GUI_CS_PROPERTY_READ( documentMode, documentMode )
-    GUI_CS_PROPERTY_WRITE( documentMode, setDocumentMode )
+    GUI_LSCS_PROPERTY_READ( documentMode, documentMode )
+    GUI_LSCS_PROPERTY_WRITE( documentMode, setDocumentMode )
 
-    GUI_CS_PROPERTY_READ( tabsClosable, tabsClosable )
-    GUI_CS_PROPERTY_WRITE( tabsClosable, setTabsClosable )
+    GUI_LSCS_PROPERTY_READ( tabsClosable, tabsClosable )
+    GUI_LSCS_PROPERTY_WRITE( tabsClosable, setTabsClosable )
 
-    GUI_CS_PROPERTY_READ( movable, isMovable )
-    GUI_CS_PROPERTY_WRITE( movable, setMovable )
+    GUI_LSCS_PROPERTY_READ( movable, isMovable )
+    GUI_LSCS_PROPERTY_WRITE( movable, setMovable )
 
-    GUI_CS_PROPERTY_READ( tabBarAutoHide, tabBarAutoHide )
-    GUI_CS_PROPERTY_WRITE( tabBarAutoHide, setTabBarAutoHide )
+    GUI_LSCS_PROPERTY_READ( tabBarAutoHide, tabBarAutoHide )
+    GUI_LSCS_PROPERTY_WRITE( tabBarAutoHide, setTabBarAutoHide )
 
 public:
-    GUI_CS_REGISTER_ENUM(
+    GUI_LSCS_REGISTER_ENUM(
         enum TabPosition
     {
         North,
@@ -79,7 +79,7 @@ public:
     };
     )
 
-    GUI_CS_REGISTER_ENUM(
+    GUI_LSCS_REGISTER_ENUM(
         enum TabShape
     {
         Rounded,
@@ -164,23 +164,23 @@ public:
     void clear();
 
     QTabBar *tabBar() const;
-    GUI_CS_SLOT_1( Public, void setCurrentIndex( int index ) )
-    GUI_CS_SLOT_2( setCurrentIndex )
+    GUI_LSCS_SLOT_1( Public, void setCurrentIndex( int index ) )
+    GUI_LSCS_SLOT_2( setCurrentIndex )
 
-    GUI_CS_SLOT_1( Public, void setCurrentWidget( QWidget *widget ) )
-    GUI_CS_SLOT_2( setCurrentWidget )
+    GUI_LSCS_SLOT_1( Public, void setCurrentWidget( QWidget *widget ) )
+    GUI_LSCS_SLOT_2( setCurrentWidget )
 
-    GUI_CS_SIGNAL_1( Public, void currentChanged( int index ) )
-    GUI_CS_SIGNAL_2( currentChanged, index )
+    GUI_LSCS_SIGNAL_1( Public, void currentChanged( int index ) )
+    GUI_LSCS_SIGNAL_2( currentChanged, index )
 
-    GUI_CS_SIGNAL_1( Public, void tabCloseRequested( int index ) )
-    GUI_CS_SIGNAL_2( tabCloseRequested, index )
+    GUI_LSCS_SIGNAL_1( Public, void tabCloseRequested( int index ) )
+    GUI_LSCS_SIGNAL_2( tabCloseRequested, index )
 
-    GUI_CS_SIGNAL_1( Public, void tabBarClicked( int index ) )
-    GUI_CS_SIGNAL_2( tabBarClicked, index )
+    GUI_LSCS_SIGNAL_1( Public, void tabBarClicked( int index ) )
+    GUI_LSCS_SIGNAL_2( tabBarClicked, index )
 
-    GUI_CS_SIGNAL_1( Public, void tabBarDoubleClicked( int index ) )
-    GUI_CS_SIGNAL_2( tabBarDoubleClicked, index )
+    GUI_LSCS_SIGNAL_1( Public, void tabBarDoubleClicked( int index ) )
+    GUI_LSCS_SIGNAL_2( tabBarDoubleClicked, index )
 
 protected:
     virtual void tabInserted( int index );
@@ -200,14 +200,14 @@ protected:
 private:
     Q_DECLARE_PRIVATE( QTabWidget )
 
-    GUI_CS_SLOT_1( Private, void _q_showTab( int index ) )
-    GUI_CS_SLOT_2( _q_showTab )
+    GUI_LSCS_SLOT_1( Private, void _q_showTab( int index ) )
+    GUI_LSCS_SLOT_2( _q_showTab )
 
-    GUI_CS_SLOT_1( Private, void _q_removeTab( int index ) )
-    GUI_CS_SLOT_2( _q_removeTab )
+    GUI_LSCS_SLOT_1( Private, void _q_removeTab( int index ) )
+    GUI_LSCS_SLOT_2( _q_removeTab )
 
-    GUI_CS_SLOT_1( Private, void _q_tabMoved( int from, int to ) )
-    GUI_CS_SLOT_2( _q_tabMoved )
+    GUI_LSCS_SLOT_1( Private, void _q_tabMoved( int from, int to ) )
+    GUI_LSCS_SLOT_2( _q_tabMoved )
 
     void setUpLayout( bool = false );
 };

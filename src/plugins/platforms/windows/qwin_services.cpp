@@ -43,7 +43,7 @@ static inline bool shellExecute( const QUrl &url )
     // ShellExecute returns a value greater than 32 if successful
     if ( result <= 32 )
     {
-        qWarning( "ShellExecute '%s' failed (error %s).", csPrintable( url.toString() ), csPrintable( QString::number( result ) ) );
+        qWarning( "ShellExecute '%s' failed (error %s).", lscsPrintable( url.toString() ), lscsPrintable( QString::number( result ) ) );
         return false;
     }
 
@@ -84,7 +84,7 @@ static inline QString mailCommand()
 
     keyName += "\\Shell\\Open\\Command";
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
     qDebug() << __FUNCTION__ << "keyName=" << keyName;
 #endif
 
@@ -115,7 +115,7 @@ static inline bool launchMail( const QUrl &url )
 
     if ( command.isEmpty() )
     {
-        qWarning( "Unable to launch '%s', there is no mail program installed.", csPrintable( url.toString() ) );
+        qWarning( "Unable to launch '%s', there is no mail program installed.", lscsPrintable( url.toString() ) );
         return false;
     }
 
@@ -137,7 +137,7 @@ static inline bool launchMail( const QUrl &url )
     // but that cannot handle a Windows command line [yet].
     command.replace( QString( "%1" ), url.toString( QUrl::FullyEncoded ) );
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
     qDebug() << __FUNCTION__ << "Launching" << command;
 #endif
 
@@ -153,7 +153,7 @@ static inline bool launchMail( const QUrl &url )
 
     if ( ! CreateProcess( nullptr, &tmp[0], nullptr, nullptr, FALSE, 0, nullptr, nullptr, &si, &pi ) )
     {
-        qErrnoWarning( "Unable to launch '%s'", csPrintable( command ) );
+        qErrnoWarning( "Unable to launch '%s'", lscsPrintable( command ) );
         return false;
     }
 

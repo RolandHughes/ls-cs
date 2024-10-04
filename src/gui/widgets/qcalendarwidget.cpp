@@ -871,7 +871,7 @@ void QCalendarDateValidator::handleKeyEvent( QKeyEvent *keyEvent )
 }
 class QCalendarTextNavigator: public QObject
 {
-    GUI_CS_OBJECT( QCalendarTextNavigator )
+    GUI_LSCS_OBJECT( QCalendarTextNavigator )
 
 public:
     QCalendarTextNavigator( QObject *parent = nullptr )
@@ -891,10 +891,10 @@ public:
     bool eventFilter( QObject *o, QEvent *e ) override;
     void timerEvent( QTimerEvent *e ) override;
 
-    GUI_CS_SIGNAL_1( Public, void dateChanged( const QDate &date ) )
-    GUI_CS_SIGNAL_2( dateChanged, date )
-    GUI_CS_SIGNAL_1( Public, void editingFinished() )
-    GUI_CS_SIGNAL_2( editingFinished )
+    GUI_LSCS_SIGNAL_1( Public, void dateChanged( const QDate &date ) )
+    GUI_LSCS_SIGNAL_2( dateChanged, date )
+    GUI_LSCS_SIGNAL_1( Public, void editingFinished() )
+    GUI_LSCS_SIGNAL_2( editingFinished )
 
 private:
     void applyDate();
@@ -1075,7 +1075,7 @@ class QCalendarView;
 
 class QCalendarModel : public QAbstractTableModel
 {
-    GUI_CS_OBJECT( QCalendarModel )
+    GUI_LSCS_OBJECT( QCalendarModel )
 
 public:
     QCalendarModel( QObject *parent = nullptr );
@@ -1171,7 +1171,7 @@ public:
 
 class QCalendarView : public QTableView
 {
-    GUI_CS_OBJECT( QCalendarView )
+    GUI_LSCS_OBJECT( QCalendarView )
 
 public:
     QCalendarView( QWidget *parent = nullptr );
@@ -1188,17 +1188,17 @@ public:
         ( void ) search;
     }
 
-    GUI_CS_SIGNAL_1( Public, void showDate( const QDate &date ) )
-    GUI_CS_SIGNAL_2( showDate, date )
+    GUI_LSCS_SIGNAL_1( Public, void showDate( const QDate &date ) )
+    GUI_LSCS_SIGNAL_2( showDate, date )
 
-    GUI_CS_SIGNAL_1( Public, void changeDate( const QDate &date, bool changeMonth ) )
-    GUI_CS_SIGNAL_2( changeDate, date, changeMonth )
+    GUI_LSCS_SIGNAL_1( Public, void changeDate( const QDate &date, bool changeMonth ) )
+    GUI_LSCS_SIGNAL_2( changeDate, date, changeMonth )
 
-    GUI_CS_SIGNAL_1( Public, void clicked( const QDate &date ) )
-    GUI_CS_SIGNAL_2( clicked, date )
+    GUI_LSCS_SIGNAL_1( Public, void clicked( const QDate &date ) )
+    GUI_LSCS_SIGNAL_2( clicked, date )
 
-    GUI_CS_SIGNAL_1( Public, void editingFinished() )
-    GUI_CS_SIGNAL_2( editingFinished )
+    GUI_LSCS_SIGNAL_1( Public, void editingFinished() )
+    GUI_LSCS_SIGNAL_2( editingFinished )
 
 protected:
     QModelIndex moveCursor( CursorAction cursorAction, Qt::KeyboardModifiers modifiers ) override;
@@ -2075,7 +2075,7 @@ void QCalendarView::mouseReleaseEvent( QMouseEvent *event )
 
 class QCalendarDelegate : public QItemDelegate
 {
-    GUI_CS_OBJECT( QCalendarDelegate )
+    GUI_LSCS_OBJECT( QCalendarDelegate )
 
 public:
     QCalendarDelegate( QCalendarWidgetPrivate *w, QObject *parent = nullptr )
@@ -2123,7 +2123,7 @@ protected:
 
 class QPrevNextCalButton : public QToolButton
 {
-    GUI_CS_OBJECT( QPrevNextCalButton )
+    GUI_LSCS_OBJECT( QPrevNextCalButton )
 
 public:
     QPrevNextCalButton( QWidget *parent ) : QToolButton( parent ) {}

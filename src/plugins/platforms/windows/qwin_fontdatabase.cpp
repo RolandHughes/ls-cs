@@ -700,7 +700,7 @@ static bool addFontToDatabase( const QString &familyName, uchar charSet,
     const QFont::Weight weight   = QPlatformFontDatabase::weightFromInteger( textmetric->tmWeight );
     const QFont::Stretch stretch = QFont::Unstretched;
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
     QString message;
     QTextStream str( &message );
 
@@ -855,7 +855,7 @@ void QWindowsFontDatabase::populateFamily( const QString &familyName, bool regis
 
     if ( ! storeFont_callback )
     {
-        Q_ASSERT_X( false, "QWindowsfontdatabase() No font families were found for ", csPrintable( familyName ) );
+        Q_ASSERT_X( false, "QWindowsfontdatabase() No font families were found for ", lscsPrintable( familyName ) );
     }
 
     ReleaseDC( nullptr, dummy );
@@ -975,7 +975,7 @@ QWindowsFontDatabase::QWindowsFontDatabase()
 {
     const QWindowsFontEngineDataPtr data = sharedFontData();
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
     qDebug() << "QWindowsFontDatabase() Clear type = " << data->clearTypeEnabled << " Gamma = " << data->fontSmoothingGamma;
 #endif
 
@@ -1056,7 +1056,7 @@ QFontEngine *QWindowsFontDatabase::fontEngine( const QByteArray &fontData, qreal
             if ( request.family != fontEngine->fontDef.family )
             {
                 qWarning( "QWindowsFontDatabase::fontEngine() Failed to load font, using fallback instead: %s ",
-                          csPrintable( fontEngine->fontDef.family ) );
+                          lscsPrintable( fontEngine->fontDef.family ) );
 
                 if ( fontEngine->m_refCount.load() == 0 )
                 {
@@ -1117,7 +1117,7 @@ QFontEngine *QWindowsFontDatabase::fontEngine( const QByteArray &fontData, qreal
         }
     }
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
     qDebug() << "QWindowsFontDatabase::fontEngine() Fontdata = "
              << fontData << pixelSize << hintingPreference << fontEngine;
 #endif
@@ -1564,7 +1564,7 @@ LOGFONT QWindowsFontDatabase::fontDefToLOGFONT( const QFontDef &request )
 
     if ( fam.size() >= LF_FACESIZE )
     {
-        qCritical( "%s: Family name '%s' is too long.", __FUNCTION__, csPrintable( fam ) );
+        qCritical( "%s: Family name '%s' is too long.", __FUNCTION__, lscsPrintable( fam ) );
         fam.truncate( LF_FACESIZE - 1 );
     }
 
@@ -1769,7 +1769,7 @@ QFont QWindowsFontDatabase::systemDefaultFont()
         sysFont.setFamily( "MS Shell Dlg 2" );
     }
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
     qDebug() << "QWindowsFontDatabase::systemDefaultFont() System font = " << sysFont;
 #endif
 

@@ -33,7 +33,7 @@ class QPlatformTheme;
 
 class Q_GUI_EXPORT QPlatformThemePlugin : public QObject
 {
-    GUI_CS_OBJECT( QPlatformThemePlugin )
+    GUI_LSCS_OBJECT( QPlatformThemePlugin )
 
 public:
     explicit QPlatformThemePlugin( QObject *parent = nullptr );

@@ -12,7 +12,7 @@ list(APPEND CORE_PUBLIC_INCLUDES
 if (LsCsString_FOUND)
    # use system headers
 
-   if (CS_INSTALL_MODE STREQUAL "Package")
+   if (LSCS_INSTALL_MODE STREQUAL "Package")
       # package mode, do not copy install headers
 
       target_link_libraries(LsCsCore
@@ -20,7 +20,7 @@ if (LsCsString_FOUND)
          LsCsString::LsCsString
       )
 
-   elseif (CS_INSTALL_MODE STREQUAL "Deploy")
+   elseif (LSCS_INSTALL_MODE STREQUAL "Deploy")
 
       if (CMAKE_SYSTEM_NAME MATCHES "Darwin")
          target_link_libraries(LsCsCore
@@ -59,11 +59,11 @@ if (LsCsString_FOUND)
       endif()
 
       list(APPEND CORE_INCLUDES
-         ${LsCsString_INCLUDE_DIR}/cs_string.h
-         ${LsCsString_INCLUDE_DIR}/cs_string_iterator.h
-         ${LsCsString_INCLUDE_DIR}/cs_encoding.h
-         ${LsCsString_INCLUDE_DIR}/cs_char.h
-         ${LsCsString_INCLUDE_DIR}/cs_string_view.h
+         ${LsCsString_INCLUDE_DIR}/lscs_string.h
+         ${LsCsString_INCLUDE_DIR}/lscs_string_iterator.h
+         ${LsCsString_INCLUDE_DIR}/lscs_encoding.h
+         ${LsCsString_INCLUDE_DIR}/lscs_char.h
+         ${LsCsString_INCLUDE_DIR}/lscs_string_view.h
       )
    endif()
 
@@ -71,15 +71,15 @@ else()
    # use annex headers
    target_include_directories(LsCsCore
       PUBLIC
-      $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/annex/cs_string>
+      $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/annex/lscs_string>
    )
 
    list(APPEND CORE_INCLUDES
-      ${CMAKE_CURRENT_SOURCE_DIR}/../annex/cs_string/cs_string.h
-      ${CMAKE_CURRENT_SOURCE_DIR}/../annex/cs_string/cs_string_iterator.h
-      ${CMAKE_CURRENT_SOURCE_DIR}/../annex/cs_string/cs_encoding.h
-      ${CMAKE_CURRENT_SOURCE_DIR}/../annex/cs_string/cs_char.h
-      ${CMAKE_CURRENT_SOURCE_DIR}/../annex/cs_string/cs_string_view.h
+      ${CMAKE_CURRENT_SOURCE_DIR}/../annex/lscs_string/lscs_string.h
+      ${CMAKE_CURRENT_SOURCE_DIR}/../annex/lscs_string/lscs_string_iterator.h
+      ${CMAKE_CURRENT_SOURCE_DIR}/../annex/lscs_string/lscs_encoding.h
+      ${CMAKE_CURRENT_SOURCE_DIR}/../annex/lscs_string/lscs_char.h
+      ${CMAKE_CURRENT_SOURCE_DIR}/../annex/lscs_string/lscs_string_view.h
    )
 endif()
 

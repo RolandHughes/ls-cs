@@ -31,7 +31,7 @@ class QBoxLayoutPrivate;
 
 class Q_GUI_EXPORT QBoxLayout : public QLayout
 {
-    GUI_CS_OBJECT( QBoxLayout )
+    GUI_LSCS_OBJECT( QBoxLayout )
 
 public:
     enum Direction
@@ -94,7 +94,7 @@ private:
 
 class Q_GUI_EXPORT QHBoxLayout : public QBoxLayout
 {
-    GUI_CS_OBJECT( QHBoxLayout )
+    GUI_LSCS_OBJECT( QHBoxLayout )
 
 public:
     QHBoxLayout();
@@ -108,7 +108,7 @@ public:
 
 class Q_GUI_EXPORT QVBoxLayout : public QBoxLayout
 {
-    GUI_CS_OBJECT( QVBoxLayout )
+    GUI_LSCS_OBJECT( QVBoxLayout )
 
 public:
     QVBoxLayout();

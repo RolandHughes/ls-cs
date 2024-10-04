@@ -30,12 +30,12 @@
 class AVFServicePlugin : public QMediaServiceProviderPlugin, public QMediaServiceSupportedDevicesInterface,
     public QMediaServiceDefaultDeviceInterface, public QMediaServiceCameraInfoInterface
 {
-    CS_OBJECT_MULTIPLE( AVFServicePlugin, QMediaServiceProviderPlugin )
+    LSCS_OBJECT_MULTIPLE( AVFServicePlugin, QMediaServiceProviderPlugin )
 
-    CS_PLUGIN_IID( QMediaServiceProviderInterface_ID )
-    CS_PLUGIN_KEY( Q_MEDIASERVICE_CAMERA )
+    LSCS_PLUGIN_IID( QMediaServiceProviderInterface_ID )
+    LSCS_PLUGIN_KEY( Q_MEDIASERVICE_CAMERA )
 
-    CS_INTERFACES( QMediaServiceSupportedDevicesInterface, QMediaServiceDefaultDeviceInterface,
+    LSCS_INTERFACES( QMediaServiceSupportedDevicesInterface, QMediaServiceDefaultDeviceInterface,
                    QMediaServiceCameraInfoInterface )
 
 public:

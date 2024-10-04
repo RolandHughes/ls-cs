@@ -31,10 +31,10 @@ class QTouchDevicePrivate;
 
 class Q_GUI_EXPORT QTouchDevice
 {
-    GUI_CS_GADGET( QTouchDevice )
+    GUI_LSCS_GADGET( QTouchDevice )
 
-    GUI_CS_ENUM( DeviceType )
-    GUI_CS_ENUM( CapabilityFlag )
+    GUI_LSCS_ENUM( DeviceType )
+    GUI_LSCS_ENUM( CapabilityFlag )
 
 public:
     enum DeviceType

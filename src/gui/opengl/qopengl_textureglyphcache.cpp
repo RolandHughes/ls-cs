@@ -38,7 +38,7 @@ QOpenGLTextureGlyphCache::QOpenGLTextureGlyphCache( QFontEngine::GlyphFormat for
       m_filterMode( Nearest ), m_serialNumber( qopengltextureglyphcache_serial_number.fetchAndAddRelaxed( 1 ) ),
       m_buffer( QOpenGLBuffer::VertexBuffer )
 {
-#if defined(CS_SHOW_DEBUG_GUI_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_GUI_OPENGL)
     qDebug( " -> QOpenGLTextureGlyphCache() %p for context %p.", this, QOpenGLContext::currentContext() );
 #endif
 
@@ -63,7 +63,7 @@ QOpenGLTextureGlyphCache::QOpenGLTextureGlyphCache( QFontEngine::GlyphFormat for
 
 QOpenGLTextureGlyphCache::~QOpenGLTextureGlyphCache()
 {
-#if defined(CS_SHOW_DEBUG_GUI_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_GUI_OPENGL)
     qDebug( " -> ~QOpenGLTextureGlyphCache() %p.", this );
 #endif
 

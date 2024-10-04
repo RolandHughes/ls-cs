@@ -167,7 +167,7 @@ void QState::assignProperty( QObject *object, const QString &name, const QVarian
 
     if ( ! object )
     {
-        qWarning( "QState::assignProperty() Unable to assign property %s to invalid object (nullptr)", csPrintable( name ) );
+        qWarning( "QState::assignProperty() Unable to assign property %s to invalid object (nullptr)", lscsPrintable( name ) );
         return;
     }
 

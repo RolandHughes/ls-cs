@@ -83,7 +83,7 @@ private:
     WebCore::Node *m_node;
 };
 
-CS_DECLARE_METATYPE( QDRTNode )
+LSCS_DECLARE_METATYPE( QDRTNode )
 
 class QWEBKIT_EXPORT DumpRenderTreeSupportQt
 {

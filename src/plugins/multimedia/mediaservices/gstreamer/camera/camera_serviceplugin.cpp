@@ -29,7 +29,7 @@
 
 #include <qgstutils_p.h>
 
-CS_PLUGIN_REGISTER( CameraBinServicePlugin )
+LSCS_PLUGIN_REGISTER( CameraBinServicePlugin )
 
 template <typename T, int N>
 static int lengthOf( const T( & )[N] )

@@ -44,7 +44,7 @@ namespace WebCore
 // It uses QtMobility (v1.0.0) location service to get positions
 class GeolocationClientQt : public QObject, public GeolocationClient
 {
-    WEB_CS_OBJECT( GeolocationClientQt )
+    WEB_LSCS_OBJECT( GeolocationClientQt )
 
 public:
     GeolocationClientQt( const QWebPage * );
@@ -65,8 +65,8 @@ public:
 
 private :
     // QGeoPositionInfoSource
-    WEB_CS_SLOT_1( Private, void positionUpdated( const QGeoPositionInfo &geoPosition ) )
-    WEB_CS_SLOT_2( positionUpdated )
+    WEB_LSCS_SLOT_1( Private, void positionUpdated( const QGeoPositionInfo &geoPosition ) )
+    WEB_LSCS_SLOT_2( positionUpdated )
 
 private:
     const QWebPage *m_page;

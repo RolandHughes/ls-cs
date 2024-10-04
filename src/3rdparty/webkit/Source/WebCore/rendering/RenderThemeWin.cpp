@@ -487,7 +487,7 @@ unsigned RenderThemeWin::determineClassicState( RenderObject *o, ControlSubPart 
 
             if ( !isEnabled( o ) )
             {
-                state |= DFCS_INACTIVE;
+                state |= DFLSCS_INACTIVE;
             }
             else if ( isPressed( o ) )
             {
@@ -507,7 +507,7 @@ unsigned RenderThemeWin::determineClassicState( RenderObject *o, ControlSubPart 
 
             if ( !isEnabled( o ) )
             {
-                state |= DFCS_INACTIVE;
+                state |= DFLSCS_INACTIVE;
             }
             else if ( isPressed( o ) )
             {
@@ -521,7 +521,7 @@ unsigned RenderThemeWin::determineClassicState( RenderObject *o, ControlSubPart 
 
             if ( !isEnabled( o ) )
             {
-                state |= DFCS_INACTIVE;
+                state |= DFLSCS_INACTIVE;
             }
             else if ( isPressed( o ) )
             {
@@ -537,7 +537,7 @@ unsigned RenderThemeWin::determineClassicState( RenderObject *o, ControlSubPart 
 
             if ( !isEnabled( o ) || isReadOnlyControl( o ) )
             {
-                state |= DFCS_INACTIVE;
+                state |= DFLSCS_INACTIVE;
             }
             else if ( isPressed( o ) && isUpButton == isSpinUpButtonPartPressed( o ) )
             {

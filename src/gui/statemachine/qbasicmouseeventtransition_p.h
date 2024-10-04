@@ -35,7 +35,7 @@ class QPainterPath;
 
 class QBasicMouseEventTransition : public QAbstractTransition
 {
-    GUI_CS_OBJECT( QBasicMouseEventTransition )
+    GUI_LSCS_OBJECT( QBasicMouseEventTransition )
 
 public:
     QBasicMouseEventTransition( QState *sourceState = nullptr );

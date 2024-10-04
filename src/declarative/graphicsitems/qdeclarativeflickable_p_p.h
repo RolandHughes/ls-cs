@@ -179,16 +179,16 @@ public:
 
 class QDeclarativeFlickableVisibleArea : public QObject
 {
-    DECL_CS_OBJECT( QDeclarativeFlickableVisibleArea )
+    DECL_LSCS_OBJECT( QDeclarativeFlickableVisibleArea )
 
-    DECL_CS_PROPERTY_READ( xPosition, xPosition )
-    DECL_CS_PROPERTY_NOTIFY( xPosition, xPositionChanged )
-    DECL_CS_PROPERTY_READ( yPosition, yPosition )
-    DECL_CS_PROPERTY_NOTIFY( yPosition, yPositionChanged )
-    DECL_CS_PROPERTY_READ( widthRatio, widthRatio )
-    DECL_CS_PROPERTY_NOTIFY( widthRatio, widthRatioChanged )
-    DECL_CS_PROPERTY_READ( heightRatio, heightRatio )
-    DECL_CS_PROPERTY_NOTIFY( heightRatio, heightRatioChanged )
+    DECL_LSCS_PROPERTY_READ( xPosition, xPosition )
+    DECL_LSCS_PROPERTY_NOTIFY( xPosition, xPositionChanged )
+    DECL_LSCS_PROPERTY_READ( yPosition, yPosition )
+    DECL_LSCS_PROPERTY_NOTIFY( yPosition, yPositionChanged )
+    DECL_LSCS_PROPERTY_READ( widthRatio, widthRatio )
+    DECL_LSCS_PROPERTY_NOTIFY( widthRatio, widthRatioChanged )
+    DECL_LSCS_PROPERTY_READ( heightRatio, heightRatio )
+    DECL_LSCS_PROPERTY_NOTIFY( heightRatio, heightRatioChanged )
 
 public:
     QDeclarativeFlickableVisibleArea( QDeclarativeFlickable *parent = 0 );
@@ -201,14 +201,14 @@ public:
     void updateVisible();
 
 public:
-    DECL_CS_SIGNAL_1( Public, void xPositionChanged( qreal xPosition ) )
-    DECL_CS_SIGNAL_2( xPositionChanged, xPosition )
-    DECL_CS_SIGNAL_1( Public, void yPositionChanged( qreal yPosition ) )
-    DECL_CS_SIGNAL_2( yPositionChanged, yPosition )
-    DECL_CS_SIGNAL_1( Public, void widthRatioChanged( qreal widthRatio ) )
-    DECL_CS_SIGNAL_2( widthRatioChanged, widthRatio )
-    DECL_CS_SIGNAL_1( Public, void heightRatioChanged( qreal heightRatio ) )
-    DECL_CS_SIGNAL_2( heightRatioChanged, heightRatio )
+    DECL_LSCS_SIGNAL_1( Public, void xPositionChanged( qreal xPosition ) )
+    DECL_LSCS_SIGNAL_2( xPositionChanged, xPosition )
+    DECL_LSCS_SIGNAL_1( Public, void yPositionChanged( qreal yPosition ) )
+    DECL_LSCS_SIGNAL_2( yPositionChanged, yPosition )
+    DECL_LSCS_SIGNAL_1( Public, void widthRatioChanged( qreal widthRatio ) )
+    DECL_LSCS_SIGNAL_2( widthRatioChanged, widthRatio )
+    DECL_LSCS_SIGNAL_1( Public, void heightRatioChanged( qreal heightRatio ) )
+    DECL_LSCS_SIGNAL_2( heightRatioChanged, heightRatio )
 
 private:
     QDeclarativeFlickable *flickable;

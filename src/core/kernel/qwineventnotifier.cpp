@@ -36,7 +36,7 @@ QWinEventNotifier::QWinEventNotifier( QObject *parent )
 QWinEventNotifier::QWinEventNotifier( HANDLE hEvent, QObject *parent )
     : QObject( parent ), handleToEvent( hEvent ), enabled( false )
 {
-    QThreadData *threadData = CSInternalThreadData::get_m_ThreadData( this );
+    QThreadData *threadData = LSCSInternalThreadData::get_m_ThreadData( this );
 
     QEventDispatcherWin32 *eventDispatcher = qobject_cast<QEventDispatcherWin32 *>( threadData->eventDispatcher );
 
@@ -77,7 +77,7 @@ void QWinEventNotifier::setEnabled( bool enable )
 
     enabled = enable;
 
-    QThreadData *threadData = CSInternalThreadData::get_m_ThreadData( this );
+    QThreadData *threadData = LSCSInternalThreadData::get_m_ThreadData( this );
     QEventDispatcherWin32 *eventDispatcher = qobject_cast<QEventDispatcherWin32 *>( threadData->eventDispatcher );
 
     if ( ! eventDispatcher )

@@ -33,13 +33,13 @@ class QToolBoxPrivate;
 
 class Q_GUI_EXPORT QToolBox : public QFrame
 {
-    GUI_CS_OBJECT( QToolBox )
+    GUI_LSCS_OBJECT( QToolBox )
 
-    GUI_CS_PROPERTY_READ( currentIndex, currentIndex )
-    GUI_CS_PROPERTY_WRITE( currentIndex, setCurrentIndex )
-    GUI_CS_PROPERTY_NOTIFY( currentIndex, currentChanged )
+    GUI_LSCS_PROPERTY_READ( currentIndex, currentIndex )
+    GUI_LSCS_PROPERTY_WRITE( currentIndex, setCurrentIndex )
+    GUI_LSCS_PROPERTY_NOTIFY( currentIndex, currentChanged )
 
-    GUI_CS_PROPERTY_READ( count, count )
+    GUI_LSCS_PROPERTY_READ( count, count )
 
 public:
     explicit QToolBox( QWidget *parent = nullptr, Qt::WindowFlags flags = Qt::EmptyFlag );
@@ -76,14 +76,14 @@ public:
     int indexOf( QWidget *widget ) const;
     int count() const;
 
-    GUI_CS_SLOT_1( Public, void setCurrentIndex( int index ) )
-    GUI_CS_SLOT_2( setCurrentIndex )
+    GUI_LSCS_SLOT_1( Public, void setCurrentIndex( int index ) )
+    GUI_LSCS_SLOT_2( setCurrentIndex )
 
-    GUI_CS_SLOT_1( Public, void setCurrentWidget( QWidget *widget ) )
-    GUI_CS_SLOT_2( setCurrentWidget )
+    GUI_LSCS_SLOT_1( Public, void setCurrentWidget( QWidget *widget ) )
+    GUI_LSCS_SLOT_2( setCurrentWidget )
 
-    GUI_CS_SIGNAL_1( Public, void currentChanged( int index ) )
-    GUI_CS_SIGNAL_2( currentChanged, index )
+    GUI_LSCS_SIGNAL_1( Public, void currentChanged( int index ) )
+    GUI_LSCS_SIGNAL_2( currentChanged, index )
 
 protected:
     bool event( QEvent *event ) override;
@@ -97,11 +97,11 @@ protected:
 private:
     Q_DECLARE_PRIVATE( QToolBox )
 
-    GUI_CS_SLOT_1( Private, void _q_buttonClicked() )
-    GUI_CS_SLOT_2( _q_buttonClicked )
+    GUI_LSCS_SLOT_1( Private, void _q_buttonClicked() )
+    GUI_LSCS_SLOT_2( _q_buttonClicked )
 
-    GUI_CS_SLOT_1( Private, void _q_widgetDestroyed( QObject *object ) )
-    GUI_CS_SLOT_2( _q_widgetDestroyed )
+    GUI_LSCS_SLOT_1( Private, void _q_widgetDestroyed( QObject *object ) )
+    GUI_LSCS_SLOT_2( _q_widgetDestroyed )
 };
 
 inline int QToolBox::addItem( QWidget *widget, const QString &text )

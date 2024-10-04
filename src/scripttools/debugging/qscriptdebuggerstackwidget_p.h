@@ -32,7 +32,7 @@ class QScriptDebuggerStackWidgetPrivate;
 
 class QScriptDebuggerStackWidget: public QScriptDebuggerStackWidgetInterface
 {
-    SCRIPT_T_CS_OBJECT( QScriptDebuggerStackWidget )
+    SCRIPT_T_LSCS_OBJECT( QScriptDebuggerStackWidget )
 
 public:
     QScriptDebuggerStackWidget( QWidget *parent = nullptr );
@@ -48,8 +48,8 @@ private:
     Q_DECLARE_PRIVATE( QScriptDebuggerStackWidget )
     Q_DISABLE_COPY( QScriptDebuggerStackWidget )
 
-    CS_SLOT_1( Private, void _q_onCurrentChanged( const QModelIndex &un_named_arg1 ) )
-    CS_SLOT_2( _q_onCurrentChanged )
+    LSCS_SLOT_1( Private, void _q_onCurrentChanged( const QModelIndex &un_named_arg1 ) )
+    LSCS_SLOT_2( _q_onCurrentChanged )
 };
 
 QT_END_NAMESPACE

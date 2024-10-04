@@ -341,7 +341,7 @@ bool QNativeSocketEngine::initialize( QAbstractSocket::SocketType socketType, QA
     if ( !d->createNewSocket( socketType, protocol ) )
     {
 
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
         QString typeStr = "UnknownSocketType";
 
         if ( socketType == QAbstractSocket::TcpSocket )
@@ -414,7 +414,7 @@ bool QNativeSocketEngine::initialize( qintptr socketDescriptor, QAbstractSocket:
     if ( ! d->fetchConnectionParameters() )
     {
 
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
         qDebug() << "QNativeSocketEngine::initialize(socketDescriptor) failed:"
                  << socketDescriptor << d->socketErrorString;
 #endif
@@ -1217,7 +1217,7 @@ void QNativeSocketEngine::setReadNotificationEnabled( bool enable )
 {
     Q_D( QNativeSocketEngine );
 
-    QThreadData *threadData = CSInternalThreadData::get_m_ThreadData( this );
+    QThreadData *threadData = LSCSInternalThreadData::get_m_ThreadData( this );
 
     if ( d->readNotifier )
     {
@@ -1241,7 +1241,7 @@ void QNativeSocketEngine::setWriteNotificationEnabled( bool enable )
 {
     Q_D( QNativeSocketEngine );
 
-    QThreadData *threadData = CSInternalThreadData::get_m_ThreadData( this );
+    QThreadData *threadData = LSCSInternalThreadData::get_m_ThreadData( this );
 
     if ( d->writeNotifier )
     {
@@ -1265,7 +1265,7 @@ void QNativeSocketEngine::setExceptionNotificationEnabled( bool enable )
 {
     Q_D( QNativeSocketEngine );
 
-    QThreadData *threadData = CSInternalThreadData::get_m_ThreadData( this );
+    QThreadData *threadData = LSCSInternalThreadData::get_m_ThreadData( this );
 
     if ( d->exceptNotifier )
     {

@@ -37,69 +37,69 @@ class QCalendarWidget;
 
 class Q_GUI_EXPORT QDateTimeEdit : public QAbstractSpinBox
 {
-    GUI_CS_OBJECT( QDateTimeEdit )
+    GUI_LSCS_OBJECT( QDateTimeEdit )
 
-    GUI_CS_ENUM( Section )
-    GUI_CS_FLAG( Section, Sections )
+    GUI_LSCS_ENUM( Section )
+    GUI_LSCS_FLAG( Section, Sections )
 
-    GUI_CS_PROPERTY_READ( dateTime, dateTime )
-    GUI_CS_PROPERTY_WRITE( dateTime, setDateTime )
-    GUI_CS_PROPERTY_NOTIFY( dateTime, dateTimeChanged )
-    GUI_CS_PROPERTY_USER( dateTime, true )
+    GUI_LSCS_PROPERTY_READ( dateTime, dateTime )
+    GUI_LSCS_PROPERTY_WRITE( dateTime, setDateTime )
+    GUI_LSCS_PROPERTY_NOTIFY( dateTime, dateTimeChanged )
+    GUI_LSCS_PROPERTY_USER( dateTime, true )
 
-    GUI_CS_PROPERTY_READ( date, date )
-    GUI_CS_PROPERTY_WRITE( date, setDate )
-    GUI_CS_PROPERTY_NOTIFY( date, dateChanged )
+    GUI_LSCS_PROPERTY_READ( date, date )
+    GUI_LSCS_PROPERTY_WRITE( date, setDate )
+    GUI_LSCS_PROPERTY_NOTIFY( date, dateChanged )
 
-    GUI_CS_PROPERTY_READ( time, time )
-    GUI_CS_PROPERTY_WRITE( time, setTime )
-    GUI_CS_PROPERTY_NOTIFY( time, timeChanged )
+    GUI_LSCS_PROPERTY_READ( time, time )
+    GUI_LSCS_PROPERTY_WRITE( time, setTime )
+    GUI_LSCS_PROPERTY_NOTIFY( time, timeChanged )
 
-    GUI_CS_PROPERTY_READ( maximumDateTime, maximumDateTime )
-    GUI_CS_PROPERTY_WRITE( maximumDateTime, setMaximumDateTime )
-    GUI_CS_PROPERTY_RESET( maximumDateTime, clearMaximumDateTime )
+    GUI_LSCS_PROPERTY_READ( maximumDateTime, maximumDateTime )
+    GUI_LSCS_PROPERTY_WRITE( maximumDateTime, setMaximumDateTime )
+    GUI_LSCS_PROPERTY_RESET( maximumDateTime, clearMaximumDateTime )
 
-    GUI_CS_PROPERTY_READ( minimumDateTime, minimumDateTime )
-    GUI_CS_PROPERTY_WRITE( minimumDateTime, setMinimumDateTime )
-    GUI_CS_PROPERTY_RESET( minimumDateTime, clearMinimumDateTime )
+    GUI_LSCS_PROPERTY_READ( minimumDateTime, minimumDateTime )
+    GUI_LSCS_PROPERTY_WRITE( minimumDateTime, setMinimumDateTime )
+    GUI_LSCS_PROPERTY_RESET( minimumDateTime, clearMinimumDateTime )
 
-    GUI_CS_PROPERTY_READ( maximumDate, maximumDate )
-    GUI_CS_PROPERTY_WRITE( maximumDate, setMaximumDate )
-    GUI_CS_PROPERTY_RESET( maximumDate, clearMaximumDate )
+    GUI_LSCS_PROPERTY_READ( maximumDate, maximumDate )
+    GUI_LSCS_PROPERTY_WRITE( maximumDate, setMaximumDate )
+    GUI_LSCS_PROPERTY_RESET( maximumDate, clearMaximumDate )
 
-    GUI_CS_PROPERTY_READ( minimumDate, minimumDate )
-    GUI_CS_PROPERTY_WRITE( minimumDate, setMinimumDate )
-    GUI_CS_PROPERTY_RESET( minimumDate, clearMinimumDate )
+    GUI_LSCS_PROPERTY_READ( minimumDate, minimumDate )
+    GUI_LSCS_PROPERTY_WRITE( minimumDate, setMinimumDate )
+    GUI_LSCS_PROPERTY_RESET( minimumDate, clearMinimumDate )
 
-    GUI_CS_PROPERTY_READ( maximumTime, maximumTime )
-    GUI_CS_PROPERTY_WRITE( maximumTime, setMaximumTime )
-    GUI_CS_PROPERTY_RESET( maximumTime, clearMaximumTime )
+    GUI_LSCS_PROPERTY_READ( maximumTime, maximumTime )
+    GUI_LSCS_PROPERTY_WRITE( maximumTime, setMaximumTime )
+    GUI_LSCS_PROPERTY_RESET( maximumTime, clearMaximumTime )
 
-    GUI_CS_PROPERTY_READ( minimumTime, minimumTime )
-    GUI_CS_PROPERTY_WRITE( minimumTime, setMinimumTime )
-    GUI_CS_PROPERTY_RESET( minimumTime, clearMinimumTime )
+    GUI_LSCS_PROPERTY_READ( minimumTime, minimumTime )
+    GUI_LSCS_PROPERTY_WRITE( minimumTime, setMinimumTime )
+    GUI_LSCS_PROPERTY_RESET( minimumTime, clearMinimumTime )
 
-    GUI_CS_PROPERTY_READ( currentSection, currentSection )
-    GUI_CS_PROPERTY_WRITE( currentSection, setCurrentSection )
+    GUI_LSCS_PROPERTY_READ( currentSection, currentSection )
+    GUI_LSCS_PROPERTY_WRITE( currentSection, setCurrentSection )
 
-    GUI_CS_PROPERTY_READ( displayedSections, displayedSections )
+    GUI_LSCS_PROPERTY_READ( displayedSections, displayedSections )
 
-    GUI_CS_PROPERTY_READ( displayFormat, displayFormat )
-    GUI_CS_PROPERTY_WRITE( displayFormat, setDisplayFormat )
+    GUI_LSCS_PROPERTY_READ( displayFormat, displayFormat )
+    GUI_LSCS_PROPERTY_WRITE( displayFormat, setDisplayFormat )
 
-    GUI_CS_PROPERTY_READ( calendarPopup, calendarPopup )
-    GUI_CS_PROPERTY_WRITE( calendarPopup, setCalendarPopup )
+    GUI_LSCS_PROPERTY_READ( calendarPopup, calendarPopup )
+    GUI_LSCS_PROPERTY_WRITE( calendarPopup, setCalendarPopup )
 
-    GUI_CS_PROPERTY_READ( currentSectionIndex, currentSectionIndex )
-    GUI_CS_PROPERTY_WRITE( currentSectionIndex, setCurrentSectionIndex )
+    GUI_LSCS_PROPERTY_READ( currentSectionIndex, currentSectionIndex )
+    GUI_LSCS_PROPERTY_WRITE( currentSectionIndex, setCurrentSectionIndex )
 
-    GUI_CS_PROPERTY_READ( sectionCount, sectionCount )
+    GUI_LSCS_PROPERTY_READ( sectionCount, sectionCount )
 
-    GUI_CS_PROPERTY_READ( timeZone, timeZone )
-    GUI_CS_PROPERTY_WRITE( timeZone, setTimeZone )
+    GUI_LSCS_PROPERTY_READ( timeZone, timeZone )
+    GUI_LSCS_PROPERTY_WRITE( timeZone, setTimeZone )
 
 public:
-    GUI_CS_REGISTER_ENUM(
+    GUI_LSCS_REGISTER_ENUM(
         enum Section
     {
         NoSection     = 0x0000,
@@ -195,23 +195,23 @@ public:
 
     bool event( QEvent *event ) override;
 
-    GUI_CS_SIGNAL_1( Public, void dateTimeChanged( const QDateTime &datetime ) )
-    GUI_CS_SIGNAL_2( dateTimeChanged, datetime )
+    GUI_LSCS_SIGNAL_1( Public, void dateTimeChanged( const QDateTime &datetime ) )
+    GUI_LSCS_SIGNAL_2( dateTimeChanged, datetime )
 
-    GUI_CS_SIGNAL_1( Public, void timeChanged( const QTime &time ) )
-    GUI_CS_SIGNAL_2( timeChanged, time )
+    GUI_LSCS_SIGNAL_1( Public, void timeChanged( const QTime &time ) )
+    GUI_LSCS_SIGNAL_2( timeChanged, time )
 
-    GUI_CS_SIGNAL_1( Public, void dateChanged( const QDate &date ) )
-    GUI_CS_SIGNAL_2( dateChanged, date )
+    GUI_LSCS_SIGNAL_1( Public, void dateChanged( const QDate &date ) )
+    GUI_LSCS_SIGNAL_2( dateChanged, date )
 
-    GUI_CS_SLOT_1( Public, void setDateTime( const QDateTime &datetime ) )
-    GUI_CS_SLOT_2( setDateTime )
+    GUI_LSCS_SLOT_1( Public, void setDateTime( const QDateTime &datetime ) )
+    GUI_LSCS_SLOT_2( setDateTime )
 
-    GUI_CS_SLOT_1( Public, void setDate( const QDate &date ) )
-    GUI_CS_SLOT_2( setDate )
+    GUI_LSCS_SLOT_1( Public, void setDate( const QDate &date ) )
+    GUI_LSCS_SLOT_2( setDate )
 
-    GUI_CS_SLOT_1( Public, void setTime( const QTime &time ) )
-    GUI_CS_SLOT_2( setTime )
+    GUI_LSCS_SLOT_1( Public, void setTime( const QTime &time ) )
+    GUI_LSCS_SLOT_2( setTime )
 
 protected:
     void keyPressEvent( QKeyEvent *event ) override;
@@ -238,44 +238,44 @@ protected:
 private:
     Q_DECLARE_PRIVATE( QDateTimeEdit )
 
-    GUI_CS_SLOT_1( Private, void _q_resetButton() )
-    GUI_CS_SLOT_2( _q_resetButton )
+    GUI_LSCS_SLOT_1( Private, void _q_resetButton() )
+    GUI_LSCS_SLOT_2( _q_resetButton )
 };
 
 class Q_GUI_EXPORT QTimeEdit : public QDateTimeEdit
 {
-    GUI_CS_OBJECT( QTimeEdit )
+    GUI_LSCS_OBJECT( QTimeEdit )
 
-    GUI_CS_PROPERTY_READ( time, time )
-    GUI_CS_PROPERTY_WRITE( time, setTime )
-    GUI_CS_PROPERTY_NOTIFY( time, userTimeChanged )
-    GUI_CS_PROPERTY_USER( time, true )
+    GUI_LSCS_PROPERTY_READ( time, time )
+    GUI_LSCS_PROPERTY_WRITE( time, setTime )
+    GUI_LSCS_PROPERTY_NOTIFY( time, userTimeChanged )
+    GUI_LSCS_PROPERTY_USER( time, true )
 
 public:
     explicit QTimeEdit( QWidget *parent = nullptr );
     explicit QTimeEdit( const QTime &time, QWidget *parent = nullptr );
     ~QTimeEdit();
 
-    GUI_CS_SIGNAL_1( Public, void userTimeChanged( const QTime &time ) )
-    GUI_CS_SIGNAL_2( userTimeChanged, time )
+    GUI_LSCS_SIGNAL_1( Public, void userTimeChanged( const QTime &time ) )
+    GUI_LSCS_SIGNAL_2( userTimeChanged, time )
 };
 
 class Q_GUI_EXPORT QDateEdit : public QDateTimeEdit
 {
-    GUI_CS_OBJECT( QDateEdit )
+    GUI_LSCS_OBJECT( QDateEdit )
 
-    GUI_CS_PROPERTY_READ( date, date )
-    GUI_CS_PROPERTY_WRITE( date, setDate )
-    GUI_CS_PROPERTY_NOTIFY( date, userDateChanged )
-    GUI_CS_PROPERTY_USER( date, true )
+    GUI_LSCS_PROPERTY_READ( date, date )
+    GUI_LSCS_PROPERTY_WRITE( date, setDate )
+    GUI_LSCS_PROPERTY_NOTIFY( date, userDateChanged )
+    GUI_LSCS_PROPERTY_USER( date, true )
 
 public:
     explicit QDateEdit( QWidget *parent = nullptr );
     explicit QDateEdit( const QDate &date, QWidget *parent = nullptr );
     ~QDateEdit();
 
-    GUI_CS_SIGNAL_1( Public, void userDateChanged( const QDate &date ) )
-    GUI_CS_SIGNAL_2( userDateChanged, date )
+    GUI_LSCS_SIGNAL_1( Public, void userDateChanged( const QDate &date ) )
+    GUI_LSCS_SIGNAL_2( userDateChanged, date )
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS( QDateTimeEdit::Sections )

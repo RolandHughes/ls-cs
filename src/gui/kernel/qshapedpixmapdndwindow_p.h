@@ -29,7 +29,7 @@
 
 class QShapedPixmapWindow : public QRasterWindow
 {
-    GUI_CS_OBJECT( QShapedPixmapWindow )
+    GUI_LSCS_OBJECT( QShapedPixmapWindow )
 
 public:
     explicit QShapedPixmapWindow( QScreen *screen = nullptr );

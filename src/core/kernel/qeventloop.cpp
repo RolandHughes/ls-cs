@@ -52,7 +52,7 @@ QEventLoop::QEventLoop( QObject *parent )
     : QObject( parent ), d_ptr( new QEventLoopPrivate )
 {
     d_ptr->q_ptr = this;
-    QThreadData *threadData = CSInternalThreadData::get_m_ThreadData( this );
+    QThreadData *threadData = LSCSInternalThreadData::get_m_ThreadData( this );
 
     if ( ! QCoreApplication::instance() )
     {
@@ -70,7 +70,7 @@ QEventLoop::~QEventLoop()
 
 bool QEventLoop::processEvents( ProcessEventsFlags flags )
 {
-    QThreadData *threadData = CSInternalThreadData::get_m_ThreadData( this );
+    QThreadData *threadData = LSCSInternalThreadData::get_m_ThreadData( this );
 
     if ( ! threadData->eventDispatcher )
     {
@@ -88,7 +88,7 @@ bool QEventLoop::processEvents( ProcessEventsFlags flags )
 int QEventLoop::exec( ProcessEventsFlags flags )
 {
     Q_D( QEventLoop );
-    QThreadData *threadData = CSInternalThreadData::get_m_ThreadData( this );
+    QThreadData *threadData = LSCSInternalThreadData::get_m_ThreadData( this );
 
     // we need to protect from race condition with QThread::exit
     QMutexLocker locker( &threadData->get_QThreadPrivate()->mutex );
@@ -160,7 +160,7 @@ int QEventLoop::exec( ProcessEventsFlags flags )
 
 void QEventLoop::processEvents( ProcessEventsFlags flags, int maxTime )
 {
-    QThreadData *threadData = CSInternalThreadData::get_m_ThreadData( this );
+    QThreadData *threadData = LSCSInternalThreadData::get_m_ThreadData( this );
 
     if ( ! threadData->eventDispatcher )
     {
@@ -192,7 +192,7 @@ void QEventLoop::processEvents( ProcessEventsFlags flags, int maxTime )
 void QEventLoop::exit( int returnCode )
 {
     Q_D( QEventLoop );
-    QThreadData *threadData = CSInternalThreadData::get_m_ThreadData( this );
+    QThreadData *threadData = LSCSInternalThreadData::get_m_ThreadData( this );
 
     if ( ! threadData->eventDispatcher )
     {
@@ -212,7 +212,7 @@ bool QEventLoop::isRunning() const
 
 void QEventLoop::wakeUp()
 {
-    QThreadData *threadData = CSInternalThreadData::get_m_ThreadData( this );
+    QThreadData *threadData = LSCSInternalThreadData::get_m_ThreadData( this );
 
     if ( ! threadData->eventDispatcher )
     {

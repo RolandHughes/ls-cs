@@ -244,7 +244,7 @@ void QPainterPath::moveTo( const QPointF &p )
     if ( ! qt_is_finite( p.x() ) || ! qt_is_finite( p.y() ) )
     {
 
-#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+#if defined(LSCS_SHOW_DEBUG_GUI_PAINTING)
         qDebug( "QPainterPath::moveTo() Value for point x or y is invalid" );
 #endif
 
@@ -278,7 +278,7 @@ void QPainterPath::lineTo( const QPointF &p )
     if ( ! qt_is_finite( p.x() ) || ! qt_is_finite( p.y() ) )
     {
 
-#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+#if defined(LSCS_SHOW_DEBUG_GUI_PAINTING)
         qDebug( "QPainterPath::lineTo() Value for point x or y is invalid" );
 #endif
 
@@ -309,7 +309,7 @@ void QPainterPath::cubicTo( const QPointF &c1, const QPointF &c2, const QPointF 
             || !qt_is_finite( e.x() ) || ! qt_is_finite( e.y() ) )
     {
 
-#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+#if defined(LSCS_SHOW_DEBUG_GUI_PAINTING)
         qDebug( "QPainterPath::cubicTo() Value for point x or y is invalid" );
 #endif
 
@@ -342,7 +342,7 @@ void QPainterPath::quadTo( const QPointF &c, const QPointF &e )
     if ( ! qt_is_finite( c.x() ) || !qt_is_finite( c.y() ) || !qt_is_finite( e.x() ) || !qt_is_finite( e.y() ) )
     {
 
-#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+#if defined(LSCS_SHOW_DEBUG_GUI_PAINTING)
         qDebug( "QPainterPath::quadTo() Value for point x or y is invalid" );
 #endif
 
@@ -376,7 +376,7 @@ void QPainterPath::arcTo( const QRectF &rect, qreal startAngle, qreal sweepLengt
             || ! qt_is_finite( startAngle ) || ! qt_is_finite( sweepLength ) )
     {
 
-#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+#if defined(LSCS_SHOW_DEBUG_GUI_PAINTING)
         qDebug( "QPainterPath::arcTo() Value for point x or y is invalid" );
 #endif
 
@@ -426,7 +426,7 @@ void QPainterPath::addRect( const QRectF &r )
     if ( !qt_is_finite( r.x() ) || !qt_is_finite( r.y() ) || !qt_is_finite( r.width() ) || !qt_is_finite( r.height() ) )
     {
 
-#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+#if defined(LSCS_SHOW_DEBUG_GUI_PAINTING)
         qDebug( "QPainterPath::addRect() Value for point x or y is invalid" );
 #endif
 
@@ -483,7 +483,7 @@ void QPainterPath::addEllipse( const QRectF &boundingRect )
             || !qt_is_finite( boundingRect.width() ) || !qt_is_finite( boundingRect.height() ) )
     {
 
-#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+#if defined(LSCS_SHOW_DEBUG_GUI_PAINTING)
         qDebug( "QPainterPath::addEllipse() Value for ellipse is invalid" );
 #endif
 
@@ -1777,7 +1777,7 @@ QDataStream &operator>>( QDataStream &s, QPainterPath &p )
         if ( !qt_is_finite( x ) || !qt_is_finite( y ) )
         {
 
-#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+#if defined(LSCS_SHOW_DEBUG_GUI_PAINTING)
             qDebug( "QDataStream::operator>>() Element in QPainterPath is invalid" );
 #endif
 

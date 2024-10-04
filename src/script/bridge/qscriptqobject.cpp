@@ -2923,7 +2923,7 @@ void QObjectConnectionManager::execute( int slotIndex, void **argv )
         {
             qWarning( "QScriptEngine: Unable to handle unregistered datatype '%s' "
                       "when invoking handler of signal %s::%s",
-                      csPrintable( typeName ), csPrintable( meta->className() ), csPrintable( method.methodSignature() ) );
+                      lscsPrintable( typeName ), lscsPrintable( meta->className() ), lscsPrintable( method.methodSignature() ) );
 
             actual = JSC::jsUndefined();
 

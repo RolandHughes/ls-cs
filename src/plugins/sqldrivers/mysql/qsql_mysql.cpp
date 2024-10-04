@@ -148,7 +148,7 @@ static inline QVariant qDateTimeFromString( QString &val )
 
 class QMYSQLResultPrivate : public QObject
 {
-    CS_OBJECT( QMYSQLResultPrivate )
+    LSCS_OBJECT( QMYSQLResultPrivate )
 
 public:
     QMYSQLResultPrivate( const QMYSQLDriver *dp, const QMYSQLResult *d )

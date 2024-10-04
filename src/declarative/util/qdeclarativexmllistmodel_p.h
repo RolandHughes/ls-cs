@@ -49,30 +49,30 @@ struct QDeclarativeXmlQueryResult
 
 class QDeclarativeXmlListModel : public QListModelInterface, public QDeclarativeParserStatus
 {
-    DECL_CS_OBJECT( QDeclarativeXmlListModel )
-    CS_INTERFACES( QDeclarativeParserStatus )
-    CS_ENUM( Status )
+    DECL_LSCS_OBJECT( QDeclarativeXmlListModel )
+    LSCS_INTERFACES( QDeclarativeParserStatus )
+    LSCS_ENUM( Status )
 
-    DECL_CS_PROPERTY_READ( status, status )
-    DECL_CS_PROPERTY_NOTIFY( status, statusChanged )
-    DECL_CS_PROPERTY_READ( progress, progress )
-    DECL_CS_PROPERTY_NOTIFY( progress, progressChanged )
-    DECL_CS_PROPERTY_READ( source, source )
-    DECL_CS_PROPERTY_WRITE( source, setSource )
-    DECL_CS_PROPERTY_NOTIFY( source, sourceChanged )
-    DECL_CS_PROPERTY_READ( xml, xml )
-    DECL_CS_PROPERTY_WRITE( xml, setXml )
-    DECL_CS_PROPERTY_NOTIFY( xml, xmlChanged )
-    DECL_CS_PROPERTY_READ( query, query )
-    DECL_CS_PROPERTY_WRITE( query, setQuery )
-    DECL_CS_PROPERTY_NOTIFY( query, queryChanged )
-    DECL_CS_PROPERTY_READ( namespaceDeclarations, namespaceDeclarations )
-    DECL_CS_PROPERTY_WRITE( namespaceDeclarations, setNamespaceDeclarations )
-    DECL_CS_PROPERTY_NOTIFY( namespaceDeclarations, namespaceDeclarationsChanged )
-    DECL_CS_PROPERTY_READ( roles, roleObjects )
-    DECL_CS_PROPERTY_READ( count, count )
-    DECL_CS_PROPERTY_NOTIFY( count, countChanged )
-    DECL_CS_CLASSINFO( "DefaultProperty", "roles" )
+    DECL_LSCS_PROPERTY_READ( status, status )
+    DECL_LSCS_PROPERTY_NOTIFY( status, statusChanged )
+    DECL_LSCS_PROPERTY_READ( progress, progress )
+    DECL_LSCS_PROPERTY_NOTIFY( progress, progressChanged )
+    DECL_LSCS_PROPERTY_READ( source, source )
+    DECL_LSCS_PROPERTY_WRITE( source, setSource )
+    DECL_LSCS_PROPERTY_NOTIFY( source, sourceChanged )
+    DECL_LSCS_PROPERTY_READ( xml, xml )
+    DECL_LSCS_PROPERTY_WRITE( xml, setXml )
+    DECL_LSCS_PROPERTY_NOTIFY( xml, xmlChanged )
+    DECL_LSCS_PROPERTY_READ( query, query )
+    DECL_LSCS_PROPERTY_WRITE( query, setQuery )
+    DECL_LSCS_PROPERTY_NOTIFY( query, queryChanged )
+    DECL_LSCS_PROPERTY_READ( namespaceDeclarations, namespaceDeclarations )
+    DECL_LSCS_PROPERTY_WRITE( namespaceDeclarations, setNamespaceDeclarations )
+    DECL_LSCS_PROPERTY_NOTIFY( namespaceDeclarations, namespaceDeclarationsChanged )
+    DECL_LSCS_PROPERTY_READ( roles, roleObjects )
+    DECL_LSCS_PROPERTY_READ( count, count )
+    DECL_LSCS_PROPERTY_NOTIFY( count, countChanged )
+    DECL_LSCS_CLASSINFO( "DefaultProperty", "roles" )
 
 public:
     QDeclarativeXmlListModel( QObject *parent = nullptr );
@@ -110,40 +110,40 @@ public:
     virtual void componentComplete();
 
 public:
-    DECL_CS_SIGNAL_1( Public, void statusChanged( QDeclarativeXmlListModel::Status un_named_arg1 ) )
-    DECL_CS_SIGNAL_2( statusChanged, un_named_arg1 )
-    DECL_CS_SIGNAL_1( Public, void progressChanged( qreal progress ) )
-    DECL_CS_SIGNAL_2( progressChanged, progress )
-    DECL_CS_SIGNAL_1( Public, void countChanged() )
-    DECL_CS_SIGNAL_2( countChanged )
-    DECL_CS_SIGNAL_1( Public, void sourceChanged() )
-    DECL_CS_SIGNAL_2( sourceChanged )
-    DECL_CS_SIGNAL_1( Public, void xmlChanged() )
-    DECL_CS_SIGNAL_2( xmlChanged )
-    DECL_CS_SIGNAL_1( Public, void queryChanged() )
-    DECL_CS_SIGNAL_2( queryChanged )
-    DECL_CS_SIGNAL_1( Public, void namespaceDeclarationsChanged() )
-    DECL_CS_SIGNAL_2( namespaceDeclarationsChanged )
+    DECL_LSCS_SIGNAL_1( Public, void statusChanged( QDeclarativeXmlListModel::Status un_named_arg1 ) )
+    DECL_LSCS_SIGNAL_2( statusChanged, un_named_arg1 )
+    DECL_LSCS_SIGNAL_1( Public, void progressChanged( qreal progress ) )
+    DECL_LSCS_SIGNAL_2( progressChanged, progress )
+    DECL_LSCS_SIGNAL_1( Public, void countChanged() )
+    DECL_LSCS_SIGNAL_2( countChanged )
+    DECL_LSCS_SIGNAL_1( Public, void sourceChanged() )
+    DECL_LSCS_SIGNAL_2( sourceChanged )
+    DECL_LSCS_SIGNAL_1( Public, void xmlChanged() )
+    DECL_LSCS_SIGNAL_2( xmlChanged )
+    DECL_LSCS_SIGNAL_1( Public, void queryChanged() )
+    DECL_LSCS_SIGNAL_2( queryChanged )
+    DECL_LSCS_SIGNAL_1( Public, void namespaceDeclarationsChanged() )
+    DECL_LSCS_SIGNAL_2( namespaceDeclarationsChanged )
 
 public :
     // ### need to use/expose Expiry to guess when to call this?
     // ### property to auto-call this on reasonable Expiry?
     // ### LastModified/Age also useful to guess.
     // ### Probably also applies to other network-requesting types.
-    DECL_CS_SLOT_1( Public, void reload() )
-    DECL_CS_SLOT_2( reload )
+    DECL_LSCS_SLOT_1( Public, void reload() )
+    DECL_LSCS_SLOT_2( reload )
 
 private :
-    DECL_CS_SLOT_1( Private, void requestFinished() )
-    DECL_CS_SLOT_2( requestFinished )
-    DECL_CS_SLOT_1( Private, void requestProgress( qint64 un_named_arg1, qint64 un_named_arg2 ) )
-    DECL_CS_SLOT_2( requestProgress )
-    DECL_CS_SLOT_1( Private, void dataCleared() )
-    DECL_CS_SLOT_2( dataCleared )
-    DECL_CS_SLOT_1( Private, void queryCompleted( const QDeclarativeXmlQueryResult &un_named_arg1 ) )
-    DECL_CS_SLOT_2( queryCompleted )
-    DECL_CS_SLOT_1( Private, void queryError( void *object, const QString &error ) )
-    DECL_CS_SLOT_2( queryError )
+    DECL_LSCS_SLOT_1( Private, void requestFinished() )
+    DECL_LSCS_SLOT_2( requestFinished )
+    DECL_LSCS_SLOT_1( Private, void requestProgress( qint64 un_named_arg1, qint64 un_named_arg2 ) )
+    DECL_LSCS_SLOT_2( requestProgress )
+    DECL_LSCS_SLOT_1( Private, void dataCleared() )
+    DECL_LSCS_SLOT_2( dataCleared )
+    DECL_LSCS_SLOT_1( Private, void queryCompleted( const QDeclarativeXmlQueryResult &un_named_arg1 ) )
+    DECL_LSCS_SLOT_2( queryCompleted )
+    DECL_LSCS_SLOT_1( Private, void queryError( void *object, const QString &error ) )
+    DECL_LSCS_SLOT_2( queryError )
 
 private:
     Q_DECLARE_PRIVATE( QDeclarativeXmlListModel )
@@ -152,16 +152,16 @@ private:
 
 class QDeclarativeXmlListModelRole : public QObject
 {
-    DECL_CS_OBJECT( QDeclarativeXmlListModelRole )
-    DECL_CS_PROPERTY_READ( name, name )
-    DECL_CS_PROPERTY_WRITE( name, setName )
-    DECL_CS_PROPERTY_NOTIFY( name, nameChanged )
-    DECL_CS_PROPERTY_READ( query, query )
-    DECL_CS_PROPERTY_WRITE( query, setQuery )
-    DECL_CS_PROPERTY_NOTIFY( query, queryChanged )
-    DECL_CS_PROPERTY_READ( isKey, isKey )
-    DECL_CS_PROPERTY_WRITE( isKey, setIsKey )
-    DECL_CS_PROPERTY_NOTIFY( isKey, isKeyChanged )
+    DECL_LSCS_OBJECT( QDeclarativeXmlListModelRole )
+    DECL_LSCS_PROPERTY_READ( name, name )
+    DECL_LSCS_PROPERTY_WRITE( name, setName )
+    DECL_LSCS_PROPERTY_NOTIFY( name, nameChanged )
+    DECL_LSCS_PROPERTY_READ( query, query )
+    DECL_LSCS_PROPERTY_WRITE( query, setQuery )
+    DECL_LSCS_PROPERTY_NOTIFY( query, queryChanged )
+    DECL_LSCS_PROPERTY_READ( isKey, isKey )
+    DECL_LSCS_PROPERTY_WRITE( isKey, setIsKey )
+    DECL_LSCS_PROPERTY_NOTIFY( isKey, isKeyChanged )
 public:
     QDeclarativeXmlListModelRole() : m_isKey( false ) {}
     ~QDeclarativeXmlListModelRole() {}
@@ -223,12 +223,12 @@ public:
     }
 
 public:
-    DECL_CS_SIGNAL_1( Public, void nameChanged() )
-    DECL_CS_SIGNAL_2( nameChanged )
-    DECL_CS_SIGNAL_1( Public, void queryChanged() )
-    DECL_CS_SIGNAL_2( queryChanged )
-    DECL_CS_SIGNAL_1( Public, void isKeyChanged() )
-    DECL_CS_SIGNAL_2( isKeyChanged )
+    DECL_LSCS_SIGNAL_1( Public, void nameChanged() )
+    DECL_LSCS_SIGNAL_2( nameChanged )
+    DECL_LSCS_SIGNAL_1( Public, void queryChanged() )
+    DECL_LSCS_SIGNAL_2( queryChanged )
+    DECL_LSCS_SIGNAL_1( Public, void isKeyChanged() )
+    DECL_LSCS_SIGNAL_2( isKeyChanged )
 
 private:
     QString m_name;

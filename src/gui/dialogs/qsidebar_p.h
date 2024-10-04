@@ -42,7 +42,7 @@ public:
 
 class QUrlModel : public QStandardItemModel
 {
-    GUI_CS_OBJECT( QUrlModel )
+    GUI_LSCS_OBJECT( QUrlModel )
 
 public:
     enum Roles
@@ -71,11 +71,11 @@ public:
     bool showFullPath;
 
 private:
-    GUI_CS_SLOT_1( Private, void dataChanged( const QModelIndex &topLeft, const QModelIndex &bottomRight ) )
-    GUI_CS_SLOT_2( dataChanged )
+    GUI_LSCS_SLOT_1( Private, void dataChanged( const QModelIndex &topLeft, const QModelIndex &bottomRight ) )
+    GUI_LSCS_SLOT_2( dataChanged )
 
-    GUI_CS_SLOT_1( Private, void layoutChanged() )
-    GUI_CS_SLOT_2( layoutChanged )
+    GUI_LSCS_SLOT_1( Private, void layoutChanged() )
+    GUI_LSCS_SLOT_2( layoutChanged )
 
     void setUrl( const QModelIndex &index, const QUrl &url, const QModelIndex &dirIndex );
     void changed( const QString &path );
@@ -87,11 +87,11 @@ private:
 
 class QSidebar : public QListView
 {
-    GUI_CS_OBJECT( QSidebar )
+    GUI_LSCS_OBJECT( QSidebar )
 
 public:
-    GUI_CS_SIGNAL_1( Public, void goToUrl( const QUrl &url ) )
-    GUI_CS_SIGNAL_2( goToUrl, url )
+    GUI_LSCS_SIGNAL_1( Public, void goToUrl( const QUrl &url ) )
+    GUI_LSCS_SIGNAL_2( goToUrl, url )
 
     QSidebar( QWidget *parent = nullptr );
     void setModelAndUrls( QFileSystemModel *model, const QList<QUrl> &newUrls );
@@ -123,16 +123,16 @@ protected:
 #endif
 
 private:
-    GUI_CS_SLOT_1( Private, void clicked( const QModelIndex &index ) )
-    GUI_CS_SLOT_2( clicked )
+    GUI_LSCS_SLOT_1( Private, void clicked( const QModelIndex &index ) )
+    GUI_LSCS_SLOT_2( clicked )
 
 #ifndef QT_NO_MENU
-    GUI_CS_SLOT_1( Private, void showContextMenu( const QPoint &position ) )
-    GUI_CS_SLOT_2( showContextMenu )
+    GUI_LSCS_SLOT_1( Private, void showContextMenu( const QPoint &position ) )
+    GUI_LSCS_SLOT_2( showContextMenu )
 #endif
 
-    GUI_CS_SLOT_1( Private, void removeEntry() )
-    GUI_CS_SLOT_2( removeEntry )
+    GUI_LSCS_SLOT_1( Private, void removeEntry() )
+    GUI_LSCS_SLOT_2( removeEntry )
 
     QUrlModel *urlModel;
 };

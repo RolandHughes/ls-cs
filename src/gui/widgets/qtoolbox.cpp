@@ -40,7 +40,7 @@
 
 class QToolBoxButton : public QAbstractButton
 {
-    GUI_CS_OBJECT( QToolBoxButton )
+    GUI_LSCS_OBJECT( QToolBoxButton )
 
 public:
     QToolBoxButton( QWidget *parent )

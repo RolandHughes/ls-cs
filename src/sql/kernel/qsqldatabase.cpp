@@ -242,7 +242,7 @@ void QSqlDatabasePrivate::invalidateDb( const QSqlDatabase &db, const QString &n
 {
     if ( db.d->ref.load() != 1 && doWarn )
     {
-        qWarning( "QSqlDatabase::invalidateDb() Connection '%s' is still in use, all queries about to fail", csPrintable( name ) );
+        qWarning( "QSqlDatabase::invalidateDb() Connection '%s' is still in use, all queries about to fail", lscsPrintable( name ) );
         db.d->disable();
         db.d->connName.clear();
     }
@@ -274,7 +274,7 @@ void QSqlDatabasePrivate::addDatabase( const QSqlDatabase &db, const QString &na
     {
         invalidateDb( dict->take( name ), name );
 
-        qWarning( "QSqlDatabase::addDatabase() Duplicate connection name '%s', old connection removed", csPrintable( name ) );
+        qWarning( "QSqlDatabase::addDatabase() Duplicate connection name '%s', old connection removed", lscsPrintable( name ) );
     }
 
     dict->insert( name, db );
@@ -577,7 +577,7 @@ void QSqlDatabasePrivate::init( const QString &type )
 
     if ( ! driver )
     {
-        qWarning( "QSqlDatabase::init() %s driver not loaded", csPrintable( type ) );
+        qWarning( "QSqlDatabase::init() %s driver not loaded", lscsPrintable( type ) );
         qWarning( "QSqlDatabase::init() Available drivers: %s", QSqlDatabase::drivers().join( " " ).toLatin1().data() );
 
         if ( QCoreApplication::instance() == nullptr )

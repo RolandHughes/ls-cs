@@ -41,7 +41,7 @@ class QSQLiteDriver;
 
 class Q_EXPORT_SQLDRIVER_SQLITE QSQLiteDriver : public QSqlDriver
 {
-    SQL_CS_OBJECT( QSQLiteDriver )
+    SQL_LSCS_OBJECT( QSQLiteDriver )
     Q_DECLARE_PRIVATE( QSQLiteDriver )
 
 public:
@@ -71,7 +71,7 @@ private:
 
 };
 
-CS_DECLARE_METATYPE( sqlite3 )
-CS_DECLARE_METATYPE( sqlite3_stmt )
+LSCS_DECLARE_METATYPE( sqlite3 )
+LSCS_DECLARE_METATYPE( sqlite3_stmt )
 
 #endif

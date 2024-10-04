@@ -48,7 +48,7 @@ class CameraBinSession;
 
 class CameraBinImageProcessing : public QCameraImageProcessingControl
 {
-    CS_OBJECT( CameraBinImageProcessing )
+    LSCS_OBJECT( CameraBinImageProcessing )
 
 public:
     CameraBinImageProcessing( CameraBinSession *session );

@@ -24,21 +24,21 @@
  * LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 */
 
-#ifndef CS_PERL_MATCHER_H
-#define CS_PERL_MATCHER_H
+#ifndef LSCS_PERL_MATCHER_H
+#define LSCS_PERL_MATCHER_H
 
 #include <regex/iterator_category.h>
 
 #include <memory>
 #include <vector>
 
-namespace cs_regex_ns
+namespace lscs_regex_ns
 {
 
-namespace cs_regex_detail_ns
+namespace lscs_regex_detail_ns
 {
 
-inline void verify_options( cs_regex_ns::regex_constants::syntax_option_type, match_flag_type mf )
+inline void verify_options( lscs_regex_ns::regex_constants::syntax_option_type, match_flag_type mf )
 {
     if ( ( mf & match_extra ) && ( mf & match_posix ) )
     {
@@ -180,7 +180,7 @@ iterator re_is_set_member( iterator next, iterator last, const re_set_long<char_
     }
 
     using traits_string_type = typename traits_type::string_type;
-    const cs_regex_ns::regex_traits_wrapper<traits_type> &traits_inst = *( e.m_ptraits );
+    const lscs_regex_ns::regex_traits_wrapper<traits_type> &traits_inst = *( e.m_ptraits );
 
     // try and match a single character, could be a multi-character collating element
 
@@ -550,7 +550,7 @@ private:
 
     bool match_dot_repeat_dispatch()
     {
-        return cs_regex_ns::is_random_access_iterator<BidiIterator>::value ? match_dot_repeat_fast() : match_dot_repeat_slow();
+        return lscs_regex_ns::is_random_access_iterator<BidiIterator>::value ? match_dot_repeat_fast() : match_dot_repeat_slow();
     }
 
     bool match_backstep();
@@ -598,7 +598,7 @@ private:
     // the expression being examined:
     const basic_regex<char_type, traits> &re;
     // the expression's traits class:
-    const cs_regex_ns::regex_traits_wrapper<traits> &traits_inst;
+    const lscs_regex_ns::regex_traits_wrapper<traits> &traits_inst;
     // the next state in the machine being matched:
     const re_syntax_base *pstate;
     // matching flags in use:

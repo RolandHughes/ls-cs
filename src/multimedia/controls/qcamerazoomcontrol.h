@@ -30,7 +30,7 @@
 
 class Q_MULTIMEDIA_EXPORT QCameraZoomControl : public QMediaControl
 {
-    MULTI_CS_OBJECT( QCameraZoomControl )
+    MULTI_LSCS_OBJECT( QCameraZoomControl )
 
 public:
     ~QCameraZoomControl();
@@ -45,29 +45,29 @@ public:
 
     virtual void zoomTo( qreal optical, qreal digital ) = 0;
 
-    MULTI_CS_SIGNAL_1( Public, void maximumOpticalZoomChanged( qreal opticalZoom ) )
-    MULTI_CS_SIGNAL_2( maximumOpticalZoomChanged, opticalZoom )
+    MULTI_LSCS_SIGNAL_1( Public, void maximumOpticalZoomChanged( qreal opticalZoom ) )
+    MULTI_LSCS_SIGNAL_2( maximumOpticalZoomChanged, opticalZoom )
 
-    MULTI_CS_SIGNAL_1( Public, void maximumDigitalZoomChanged( qreal digitalZoom ) )
-    MULTI_CS_SIGNAL_2( maximumDigitalZoomChanged, digitalZoom )
+    MULTI_LSCS_SIGNAL_1( Public, void maximumDigitalZoomChanged( qreal digitalZoom ) )
+    MULTI_LSCS_SIGNAL_2( maximumDigitalZoomChanged, digitalZoom )
 
-    MULTI_CS_SIGNAL_1( Public, void requestedOpticalZoomChanged( qreal opticalZoom ) )
-    MULTI_CS_SIGNAL_2( requestedOpticalZoomChanged, opticalZoom )
+    MULTI_LSCS_SIGNAL_1( Public, void requestedOpticalZoomChanged( qreal opticalZoom ) )
+    MULTI_LSCS_SIGNAL_2( requestedOpticalZoomChanged, opticalZoom )
 
-    MULTI_CS_SIGNAL_1( Public, void requestedDigitalZoomChanged( qreal digitalZoom ) )
-    MULTI_CS_SIGNAL_2( requestedDigitalZoomChanged, digitalZoom )
+    MULTI_LSCS_SIGNAL_1( Public, void requestedDigitalZoomChanged( qreal digitalZoom ) )
+    MULTI_LSCS_SIGNAL_2( requestedDigitalZoomChanged, digitalZoom )
 
-    MULTI_CS_SIGNAL_1( Public, void currentOpticalZoomChanged( qreal opticalZoom ) )
-    MULTI_CS_SIGNAL_2( currentOpticalZoomChanged, opticalZoom )
+    MULTI_LSCS_SIGNAL_1( Public, void currentOpticalZoomChanged( qreal opticalZoom ) )
+    MULTI_LSCS_SIGNAL_2( currentOpticalZoomChanged, opticalZoom )
 
-    MULTI_CS_SIGNAL_1( Public, void currentDigitalZoomChanged( qreal digitalZoom ) )
-    MULTI_CS_SIGNAL_2( currentDigitalZoomChanged, digitalZoom )
+    MULTI_LSCS_SIGNAL_1( Public, void currentDigitalZoomChanged( qreal digitalZoom ) )
+    MULTI_LSCS_SIGNAL_2( currentDigitalZoomChanged, digitalZoom )
 
 protected:
     explicit QCameraZoomControl( QObject *parent = nullptr );
 };
 
 #define QCameraZoomControl_iid "com.copperspice.CS.cameraZoomControl/1.0"
-CS_DECLARE_INTERFACE( QCameraZoomControl, QCameraZoomControl_iid )
+LSCS_DECLARE_INTERFACE( QCameraZoomControl, QCameraZoomControl_iid )
 
 #endif

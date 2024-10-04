@@ -206,7 +206,7 @@ bool QGLBuffer::read( int offset, void *data, int count )
 
 void QGLBuffer::write( int offset, const void *data, int count )
 {
-#if defined(CS_SHOW_DEBUG_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_OPENGL)
 
     if ( ! isCreated() )
     {
@@ -225,7 +225,7 @@ void QGLBuffer::write( int offset, const void *data, int count )
 
 void QGLBuffer::allocate( const void *data, int count )
 {
-#if defined(CS_SHOW_DEBUG_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_OPENGL)
 
     if ( ! isCreated() )
     {
@@ -244,7 +244,7 @@ void QGLBuffer::allocate( const void *data, int count )
 
 bool QGLBuffer::bind()
 {
-#if defined(CS_SHOW_DEBUG_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_OPENGL)
 
     if ( ! isCreated() )
     {
@@ -261,7 +261,7 @@ bool QGLBuffer::bind()
         if ( d->guard->group() != QOpenGLContextGroup::currentContextGroup() )
         {
 
-#if defined(CS_SHOW_DEBUG_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_OPENGL)
             qDebug( "QGLBuffer::bind() Buffer is not valid in the current context" );
 #endif
             return false;
@@ -279,7 +279,7 @@ bool QGLBuffer::bind()
 
 void QGLBuffer::release()
 {
-#if defined(CS_SHOW_DEBUG_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_OPENGL)
 
     if ( ! isCreated() )
     {
@@ -336,7 +336,7 @@ void *QGLBuffer::map( QGLBuffer::Access access )
 {
     Q_D( QGLBuffer );
 
-#if defined(CS_SHOW_DEBUG_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_OPENGL)
 
     if ( ! isCreated() )
     {
@@ -357,7 +357,7 @@ bool QGLBuffer::unmap()
 {
     Q_D( QGLBuffer );
 
-#if defined(CS_SHOW_DEBUG_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_OPENGL)
 
     if ( ! isCreated() )
     {

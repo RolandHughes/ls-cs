@@ -33,13 +33,13 @@ class QEventTransitionPrivate;
 
 class Q_CORE_EXPORT QEventTransition : public QAbstractTransition
 {
-    CORE_CS_OBJECT( QEventTransition )
+    CORE_LSCS_OBJECT( QEventTransition )
 
-    CORE_CS_PROPERTY_READ( eventSource,  eventSource )
-    CORE_CS_PROPERTY_WRITE( eventSource, setEventSource )
+    CORE_LSCS_PROPERTY_READ( eventSource,  eventSource )
+    CORE_LSCS_PROPERTY_WRITE( eventSource, setEventSource )
 
-    CORE_CS_PROPERTY_READ( eventType,  eventType )
-    CORE_CS_PROPERTY_WRITE( eventType, setEventType )
+    CORE_LSCS_PROPERTY_READ( eventType,  eventType )
+    CORE_LSCS_PROPERTY_WRITE( eventType, setEventType )
 
 public:
     QEventTransition( QState *sourceState = nullptr );

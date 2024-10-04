@@ -228,6 +228,6 @@ private:
     friend class QTextControlPrivate;
 };
 
-CS_DECLARE_METATYPE( QTextCursor )
+LSCS_DECLARE_METATYPE( QTextCursor )
 
 #endif

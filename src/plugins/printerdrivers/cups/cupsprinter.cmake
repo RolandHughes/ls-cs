@@ -31,7 +31,7 @@ if(Cups_FOUND)
 
    target_compile_definitions(LsCsPrinterDriverCups
       PRIVATE
-      -DCS_BUILDING_CUPS
+      -DLSCS_BUILDING_CUPS
       -DQT_PLUGIN
    )
 

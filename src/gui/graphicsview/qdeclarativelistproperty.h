@@ -100,6 +100,6 @@ private:
     }
 };
 
-CS_REGISTER_TEMPLATE( QDeclarativeListProperty )
+LSCS_REGISTER_TEMPLATE( QDeclarativeListProperty )
 
 #endif

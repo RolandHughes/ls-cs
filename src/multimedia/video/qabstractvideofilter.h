@@ -47,11 +47,11 @@ Q_DECLARE_OPERATORS_FOR_FLAGS( QVideoFilterRunnable::RunFlags )
 
 class Q_MULTIMEDIA_EXPORT QAbstractVideoFilter : public QObject
 {
-    MULTI_CS_OBJECT( QAbstractVideoFilter )
+    MULTI_LSCS_OBJECT( QAbstractVideoFilter )
 
-    MULTI_CS_PROPERTY_READ( active, isActive )
-    MULTI_CS_PROPERTY_WRITE( active, setActive )
-    MULTI_CS_PROPERTY_NOTIFY( active, activeChanged )
+    MULTI_LSCS_PROPERTY_READ( active, isActive )
+    MULTI_LSCS_PROPERTY_WRITE( active, setActive )
+    MULTI_LSCS_PROPERTY_NOTIFY( active, activeChanged )
 
 public:
     explicit QAbstractVideoFilter( QObject *parent = nullptr );
@@ -66,8 +66,8 @@ public:
 
     virtual QVideoFilterRunnable *createFilterRunnable() = 0;
 
-    MULTI_CS_SIGNAL_1( Public, void activeChanged() )
-    MULTI_CS_SIGNAL_2( activeChanged )
+    MULTI_LSCS_SIGNAL_1( Public, void activeChanged() )
+    MULTI_LSCS_SIGNAL_2( activeChanged )
 
 private:
     Q_DECLARE_PRIVATE( QAbstractVideoFilter )

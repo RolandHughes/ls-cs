@@ -24,8 +24,8 @@
  * LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 */
 
-#ifndef CS_PERL_MATCHER_NON_RECURSIVE_H
-#define CS_PERL_MATCHER_NON_RECURSIVE_H
+#ifndef LSCS_PERL_MATCHER_NON_RECURSIVE_H
+#define LSCS_PERL_MATCHER_NON_RECURSIVE_H
 
 #include <regex/r_states.h>
 
@@ -33,15 +33,15 @@
 #include <limits>
 #include <new>
 
-namespace cs_regex_ns
+namespace lscs_regex_ns
 {
 
-namespace cs_regex_detail_ns
+namespace lscs_regex_detail_ns
 {
 
 inline void *get_mem_block()
 {
-    return operator new ( CS_REGEX_BLOCKSIZE );
+    return operator new ( LSCS_REGEX_BLOCKSIZE );
 }
 
 inline void put_mem_block( void *block )
@@ -129,7 +129,7 @@ struct save_state_init
 
     {
         *base = static_cast<saved_state *>( get_mem_block() );
-        *end = reinterpret_cast<saved_state *>( reinterpret_cast<char *>( *base ) + CS_REGEX_BLOCKSIZE );
+        *end = reinterpret_cast<saved_state *>( reinterpret_cast<char *>( *base ) + LSCS_REGEX_BLOCKSIZE );
         --( *end );
 
         ( void ) new ( *end )saved_state( 0 );
@@ -227,7 +227,7 @@ bool perl_matcher<BidiIterator, Allocator, traits>::match_all_states()
         // Although this next line *should* be evaluated at compile time, in practice
         // some compilers (VC++) emit run-time initialisation which breaks thread
         // safety, so use a dispatch function instead
-        //(cs_regex_ns::is_random_access_iterator<BidiIterator>::value ?
+        //(lscs_regex_ns::is_random_access_iterator<BidiIterator>::value ?
         // &perl_matcher<BidiIterator, Allocator, traits>::match_dot_repeat_fast :
         // &perl_matcher<BidiIterator, Allocator, traits>::match_dot_repeat_slow),
 
@@ -303,7 +303,7 @@ void perl_matcher<BidiIterator, Allocator, traits>::extend_stack()
         saved_state *backup_state;
 
         stack_base   = static_cast<saved_state *>( get_mem_block() );
-        backup_state = reinterpret_cast<saved_state *>( reinterpret_cast<char *>( stack_base ) + CS_REGEX_BLOCKSIZE );
+        backup_state = reinterpret_cast<saved_state *>( reinterpret_cast<char *>( stack_base ) + LSCS_REGEX_BLOCKSIZE );
 
         saved_extra_block *block = static_cast<saved_extra_block *>( backup_state );
         --block;
@@ -917,7 +917,7 @@ bool perl_matcher<BidiIterator, Allocator, traits>::match_char_repeat()
     bool greedy = ( rep->greedy ) && ( !( m_match_flags & regex_constants::match_any ) || m_independent );
     std::size_t desired = greedy ? rep->max : rep->min;
 
-    if ( cs_regex_ns::is_random_access_iterator<BidiIterator>::value )
+    if ( lscs_regex_ns::is_random_access_iterator<BidiIterator>::value )
     {
         BidiIterator end = position;
         // Move end forward by "desired", preferably without using distance or advance if we can
@@ -999,7 +999,7 @@ bool perl_matcher<BidiIterator, Allocator, traits>::match_set_repeat()
     bool greedy = ( rep->greedy ) && ( !( m_match_flags & regex_constants::match_any ) || m_independent );
     std::size_t desired = greedy ? rep->max : rep->min;
 
-    if ( cs_regex_ns::is_random_access_iterator<BidiIterator>::value )
+    if ( lscs_regex_ns::is_random_access_iterator<BidiIterator>::value )
     {
         BidiIterator end = position;
 
@@ -1104,7 +1104,7 @@ bool perl_matcher<BidiIterator, Allocator, traits>::match_long_set_repeat()
     bool greedy = ( rep->greedy ) && ( !( m_match_flags & regex_constants::match_any ) || m_independent );
     std::size_t desired = greedy ? rep->max : rep->min;
 
-    if ( cs_regex_ns::is_random_access_iterator<BidiIterator>::value )
+    if ( lscs_regex_ns::is_random_access_iterator<BidiIterator>::value )
     {
         BidiIterator end = position;
         // Move end forward by "desired", preferably without using distance or advance if we can
@@ -1491,7 +1491,7 @@ bool perl_matcher<BidiIterator, Allocator, traits>::unwind_case( bool )
 {
     saved_change_case *pmp = static_cast<saved_change_case *>( m_backup_state );
     icase = pmp->icase;
-    cs_regex_ns::cs_regex_detail_ns::inplace_destroy( pmp++ );
+    lscs_regex_ns::lscs_regex_detail_ns::inplace_destroy( pmp++ );
     m_backup_state = pmp;
     return true;
 }
@@ -1510,7 +1510,7 @@ bool perl_matcher<BidiIterator, Allocator, traits>::unwind_paren( bool have_matc
 
     // unwind stack:
     m_backup_state = pmp + 1;
-    cs_regex_ns::cs_regex_detail_ns::inplace_destroy( pmp );
+    lscs_regex_ns::lscs_regex_detail_ns::inplace_destroy( pmp );
 
     return true; // keep looking
 }
@@ -1518,7 +1518,7 @@ bool perl_matcher<BidiIterator, Allocator, traits>::unwind_paren( bool have_matc
 template <class BidiIterator, class Allocator, class traits>
 bool perl_matcher<BidiIterator, Allocator, traits>::unwind_recursion_stopper( bool )
 {
-    cs_regex_ns::cs_regex_detail_ns::inplace_destroy( m_backup_state++ );
+    lscs_regex_ns::lscs_regex_detail_ns::inplace_destroy( m_backup_state++ );
     pstate = nullptr;   // nothing left to search
 
     return false;      // end of stack nothing more to search
@@ -1532,7 +1532,7 @@ bool perl_matcher<BidiIterator, Allocator, traits>::unwind_assertion( bool r )
     position = pmp->position;
     bool result = ( r == pmp->positive );
     m_recursive_result = pmp->positive ? r : !r;
-    cs_regex_ns::cs_regex_detail_ns::inplace_destroy( pmp++ );
+    lscs_regex_ns::lscs_regex_detail_ns::inplace_destroy( pmp++ );
     m_backup_state = pmp;
     m_unwound_lookahead = true;
     return !result; // return false if the assertion was matched to stop search.
@@ -1549,7 +1549,7 @@ bool perl_matcher<BidiIterator, Allocator, traits>::unwind_alt( bool r )
         position = pmp->position;
     }
 
-    cs_regex_ns::cs_regex_detail_ns::inplace_destroy( pmp++ );
+    lscs_regex_ns::lscs_regex_detail_ns::inplace_destroy( pmp++ );
     m_backup_state = pmp;
     m_unwound_alt = !r;
     return r;
@@ -1559,7 +1559,7 @@ template <class BidiIterator, class Allocator, class traits>
 bool perl_matcher<BidiIterator, Allocator, traits>::unwind_repeater_counter( bool )
 {
     saved_repeater<BidiIterator> *pmp = static_cast<saved_repeater<BidiIterator>*>( m_backup_state );
-    cs_regex_ns::cs_regex_detail_ns::inplace_destroy( pmp++ );
+    lscs_regex_ns::lscs_regex_detail_ns::inplace_destroy( pmp++ );
     m_backup_state = pmp;
     return true; // keep looking
 }
@@ -1571,7 +1571,7 @@ bool perl_matcher<BidiIterator, Allocator, traits>::unwind_extra_block( bool )
     void *condemmed = m_stack_base;
     m_stack_base = pmp->base;
     m_backup_state = pmp->end;
-    cs_regex_ns::cs_regex_detail_ns::inplace_destroy( pmp );
+    lscs_regex_ns::lscs_regex_detail_ns::inplace_destroy( pmp );
     put_mem_block( condemmed );
     return true; // keep looking
 }
@@ -1580,7 +1580,7 @@ template <class BidiIterator, class Allocator, class traits>
 inline void perl_matcher<BidiIterator, Allocator, traits>::destroy_single_repeat()
 {
     saved_single_repeat<BidiIterator> *p = static_cast<saved_single_repeat<BidiIterator>*>( m_backup_state );
-    cs_regex_ns::cs_regex_detail_ns::inplace_destroy( p++ );
+    lscs_regex_ns::lscs_regex_detail_ns::inplace_destroy( p++ );
     m_backup_state = p;
 }
 
@@ -2069,7 +2069,7 @@ bool perl_matcher<BidiIterator, Allocator, traits>::unwind_non_greedy_repeat( bo
         ++( *next_count );
     }
 
-    cs_regex_ns::cs_regex_detail_ns::inplace_destroy( pmp++ );
+    lscs_regex_ns::lscs_regex_detail_ns::inplace_destroy( pmp++ );
     m_backup_state = pmp;
     return r;
 }
@@ -2092,7 +2092,7 @@ bool perl_matcher<BidiIterator, Allocator, traits>::unwind_recursion( bool r )
         *m_presult = pmp->internal_results;
     }
 
-    cs_regex_ns::cs_regex_detail_ns::inplace_destroy( pmp++ );
+    lscs_regex_ns::lscs_regex_detail_ns::inplace_destroy( pmp++ );
     m_backup_state = pmp;
     return true;
 }
@@ -2111,7 +2111,7 @@ bool perl_matcher<BidiIterator, Allocator, traits>::unwind_recursion_pop( bool r
         recursion_stack.pop_back();
     }
 
-    cs_regex_ns::cs_regex_detail_ns::inplace_destroy( pmp++ );
+    lscs_regex_ns::lscs_regex_detail_ns::inplace_destroy( pmp++ );
     m_backup_state = pmp;
     return true;
 }
@@ -2136,7 +2136,7 @@ void perl_matcher<BidiIterator, Allocator, traits>::push_recursion_pop()
 template <class BidiIterator, class Allocator, class traits>
 bool perl_matcher<BidiIterator, Allocator, traits>::unwind_commit( bool b )
 {
-    cs_regex_ns::cs_regex_detail_ns::inplace_destroy( m_backup_state++ );
+    lscs_regex_ns::lscs_regex_detail_ns::inplace_destroy( m_backup_state++ );
 
     while ( unwind( b ) && !m_unwound_lookahead ) {}
 
@@ -2169,7 +2169,7 @@ template <class BidiIterator, class Allocator, class traits>
 bool perl_matcher<BidiIterator, Allocator, traits>::unwind_then( bool b )
 {
     // Unwind everything till we hit an alternative:
-    cs_regex_ns::cs_regex_detail_ns::inplace_destroy( m_backup_state++ );
+    lscs_regex_ns::lscs_regex_detail_ns::inplace_destroy( m_backup_state++ );
     bool result = false;
 
     while ( ( result = unwind( b ) ) && !m_unwound_alt ) {}

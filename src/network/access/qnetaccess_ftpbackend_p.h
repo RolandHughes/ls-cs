@@ -39,7 +39,7 @@ class QNetworkAccessCachedFtpConnection;
 
 class QNetworkAccessFtpBackend: public QNetworkAccessBackend
 {
-    NET_CS_OBJECT( QNetworkAccessFtpBackend )
+    NET_LSCS_OBJECT( QNetworkAccessFtpBackend )
 
 public:
     enum State
@@ -69,17 +69,17 @@ public:
 
     void disconnectFromFtp( CacheCleanupMode mode = ReleaseCachedConnection );
 
-    NET_CS_SLOT_1( Public, void ftpConnectionReady( QNetworkAccessCache::CacheableObject *object ) )
-    NET_CS_SLOT_2( ftpConnectionReady )
+    NET_LSCS_SLOT_1( Public, void ftpConnectionReady( QNetworkAccessCache::CacheableObject *object ) )
+    NET_LSCS_SLOT_2( ftpConnectionReady )
 
-    NET_CS_SLOT_1( Public, void ftpDone() )
-    NET_CS_SLOT_2( ftpDone )
+    NET_LSCS_SLOT_1( Public, void ftpDone() )
+    NET_LSCS_SLOT_2( ftpDone )
 
-    NET_CS_SLOT_1( Public, void ftpReadyRead() )
-    NET_CS_SLOT_2( ftpReadyRead )
+    NET_LSCS_SLOT_1( Public, void ftpReadyRead() )
+    NET_LSCS_SLOT_2( ftpReadyRead )
 
-    NET_CS_SLOT_1( Public, void ftpRawCommandReply( int code, const QString &text ) )
-    NET_CS_SLOT_2( ftpRawCommandReply )
+    NET_LSCS_SLOT_1( Public, void ftpRawCommandReply( int code, const QString &text ) )
+    NET_LSCS_SLOT_2( ftpRawCommandReply )
 
 private:
     QPointer<QNetworkAccessCachedFtpConnection> ftp;

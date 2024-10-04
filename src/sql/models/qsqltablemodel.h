@@ -35,7 +35,7 @@ class QSqlIndex;
 
 class Q_SQL_EXPORT QSqlTableModel: public QSqlQueryModel
 {
-    SQL_CS_OBJECT( QSqlTableModel )
+    SQL_LSCS_OBJECT( QSqlTableModel )
     Q_DECLARE_PRIVATE( QSqlTableModel )
 
 public:
@@ -84,34 +84,34 @@ public:
 
     virtual void revertRow( int row );
 
-    SQL_CS_SLOT_1( Public, virtual bool select() )
-    SQL_CS_SLOT_2( select )
+    SQL_LSCS_SLOT_1( Public, virtual bool select() )
+    SQL_LSCS_SLOT_2( select )
 
-    SQL_CS_SLOT_1( Public, virtual bool selectRow( int row ) )
-    SQL_CS_SLOT_2( selectRow )
-    SQL_CS_SLOT_1( Public, bool submit() override )
-    SQL_CS_SLOT_2( submit )
+    SQL_LSCS_SLOT_1( Public, virtual bool selectRow( int row ) )
+    SQL_LSCS_SLOT_2( selectRow )
+    SQL_LSCS_SLOT_1( Public, bool submit() override )
+    SQL_LSCS_SLOT_2( submit )
 
-    SQL_CS_SLOT_1( Public, void revert() override )
-    SQL_CS_SLOT_2( revert )
+    SQL_LSCS_SLOT_1( Public, void revert() override )
+    SQL_LSCS_SLOT_2( revert )
 
-    SQL_CS_SLOT_1( Public, bool submitAll() )
-    SQL_CS_SLOT_2( submitAll )
+    SQL_LSCS_SLOT_1( Public, bool submitAll() )
+    SQL_LSCS_SLOT_2( submitAll )
 
-    SQL_CS_SLOT_1( Public, void revertAll() )
-    SQL_CS_SLOT_2( revertAll )
+    SQL_LSCS_SLOT_1( Public, void revertAll() )
+    SQL_LSCS_SLOT_2( revertAll )
 
-    SQL_CS_SIGNAL_1( Public, void primeInsert( int row, QSqlRecord &record ) )
-    SQL_CS_SIGNAL_2( primeInsert, row, record )
+    SQL_LSCS_SIGNAL_1( Public, void primeInsert( int row, QSqlRecord &record ) )
+    SQL_LSCS_SIGNAL_2( primeInsert, row, record )
 
-    SQL_CS_SIGNAL_1( Public, void beforeInsert( QSqlRecord &record ) )
-    SQL_CS_SIGNAL_2( beforeInsert, record )
+    SQL_LSCS_SIGNAL_1( Public, void beforeInsert( QSqlRecord &record ) )
+    SQL_LSCS_SIGNAL_2( beforeInsert, record )
 
-    SQL_CS_SIGNAL_1( Public, void beforeUpdate( int row, QSqlRecord &record ) )
-    SQL_CS_SIGNAL_2( beforeUpdate, row, record )
+    SQL_LSCS_SIGNAL_1( Public, void beforeUpdate( int row, QSqlRecord &record ) )
+    SQL_LSCS_SIGNAL_2( beforeUpdate, row, record )
 
-    SQL_CS_SIGNAL_1( Public, void beforeDelete( int row ) )
-    SQL_CS_SIGNAL_2( beforeDelete, row )
+    SQL_LSCS_SIGNAL_1( Public, void beforeDelete( int row ) )
+    SQL_LSCS_SIGNAL_2( beforeDelete, row )
 
 protected:
     QSqlTableModel( QSqlTableModelPrivate &dd, QObject *parent = nullptr, QSqlDatabase db = QSqlDatabase() );

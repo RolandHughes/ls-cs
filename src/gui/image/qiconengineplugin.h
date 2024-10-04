@@ -33,7 +33,7 @@ class QIconEngine;
 
 class Q_GUI_EXPORT QIconEnginePlugin : public QObject
 {
-    GUI_CS_OBJECT( QIconEnginePlugin )
+    GUI_LSCS_OBJECT( QIconEnginePlugin )
 
 public:
     QIconEnginePlugin( QObject *parent = nullptr );

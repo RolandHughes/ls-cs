@@ -33,7 +33,7 @@ using DSVideoDeviceInfo = QPair<QString, QString>;
 
 class DSVideoDeviceControl : public QVideoDeviceSelectorControl
 {
-    CS_OBJECT( DSVideoDeviceControl )
+    LSCS_OBJECT( DSVideoDeviceControl )
 
 public:
     DSVideoDeviceControl( QObject *parent = nullptr );
@@ -46,8 +46,8 @@ public:
 
     static const QList<DSVideoDeviceInfo> &availableDevices();
 
-    CS_SLOT_1( Public, void setSelectedDevice( int index ) override )
-    CS_SLOT_2( setSelectedDevice )
+    LSCS_SLOT_1( Public, void setSelectedDevice( int index ) override )
+    LSCS_SLOT_2( setSelectedDevice )
 
 private:
     static void updateDevices();

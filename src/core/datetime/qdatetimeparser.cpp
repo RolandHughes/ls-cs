@@ -34,7 +34,7 @@ int QDateTimeParser::getDigit( const QDateTime &t, int index ) const
 {
     if ( index < 0 || index >= sectionNodes.size() )
     {
-        qWarning( "QDateTimeParser::getDigit() Internal error (%s %d)", csPrintable( t.toString() ), index );
+        qWarning( "QDateTimeParser::getDigit() Internal error (%s %d)", lscsPrintable( t.toString() ), index );
         return -1;
     }
 
@@ -76,7 +76,7 @@ int QDateTimeParser::getDigit( const QDateTime &t, int index ) const
             break;
     }
 
-    qWarning( "QDateTimeParser::getDigit() Internal error 2 (%s %d)", csPrintable( t.toString() ), index );
+    qWarning( "QDateTimeParser::getDigit() Internal error 2 (%s %d)", lscsPrintable( t.toString() ), index );
 
     return -1;
 }
@@ -85,7 +85,7 @@ bool QDateTimeParser::setDigit( QDateTime &v, int index, int newVal ) const
 {
     if ( index < 0 || index >= sectionNodes.size() )
     {
-        qWarning( "QDateTimeParser::setDigit() Internal error (%s %d %d)", csPrintable( v.toString() ), index, newVal );
+        qWarning( "QDateTimeParser::setDigit() Internal error (%s %d %d)", lscsPrintable( v.toString() ), index, newVal );
         return false;
     }
 
@@ -146,7 +146,7 @@ bool QDateTimeParser::setDigit( QDateTime &v, int index, int newVal ) const
             break;
 
         default:
-            qWarning( "QDateTimeParser::setDigit() Internal error (%s)", csPrintable( node.name() ) );
+            qWarning( "QDateTimeParser::setDigit() Internal error (%s)", lscsPrintable( node.name() ) );
             break;
     }
 
@@ -213,7 +213,7 @@ int QDateTimeParser::absoluteMax( int s, const QDateTime &cur ) const
             break;
     }
 
-    qWarning( "QDateTimeParser::absoluteMax() Internal error (%s)", csPrintable( sn.name() ) );
+    qWarning( "QDateTimeParser::absoluteMax() Internal error (%s)", lscsPrintable( sn.name() ) );
 
     return -1;
 }
@@ -247,7 +247,7 @@ int QDateTimeParser::absoluteMin( int s ) const
             break;
     }
 
-    qWarning( "QDateTimeParser::absoluteMin() Internal error (%s, %0x)", csPrintable( sn.name() ), sn.type );
+    qWarning( "QDateTimeParser::absoluteMin() Internal error (%s, %0x)", lscsPrintable( sn.name() ), sn.type );
 
     return -1;
 }
@@ -305,7 +305,7 @@ int QDateTimeParser::sectionPos( const SectionNode &sn ) const
 
     if ( sn.pos == -1 )
     {
-        qWarning( "QDateTimeParser::sectionPos() Internal error (%s)", csPrintable( sn.name() ) );
+        qWarning( "QDateTimeParser::sectionPos() Internal error (%s)", lscsPrintable( sn.name() ) );
         return -1;
     }
 
@@ -714,7 +714,7 @@ int QDateTimeParser::sectionMaxSize( Section s, int count ) const
         case YearSectionMask:
         case DayOfWeekSectionMask:
         case DaySectionMask:
-            qWarning( "QDateTimeParser::sectionMaxSize() Invalid section %s", csPrintable( SectionNode::name( s ) ) );
+            qWarning( "QDateTimeParser::sectionMaxSize() Invalid section %s", lscsPrintable( SectionNode::name( s ) ) );
 
         case NoSectionIndex:
         case FirstSectionIndex:
@@ -768,7 +768,7 @@ int QDateTimeParser::parseSection( const QDateTime &currentValue, int sectionInd
 
     if ( ( sn.type & Internal ) == Internal )
     {
-        qWarning( "QDateTimeParser::parseSection() Internal error (%s %d)", csPrintable( sn.name() ), sectionIndex );
+        qWarning( "QDateTimeParser::parseSection() Internal error (%s %d)", lscsPrintable( sn.name() ), sectionIndex );
         return -1;
     }
 
@@ -806,7 +806,7 @@ int QDateTimeParser::parseSection( const QDateTime &currentValue, int sectionInd
                 case Neither:
                     state = Invalid;
 
-#if defined(CS_SHOW_DEBUG_CORE)
+#if defined(LSCS_SHOW_DEBUG_CORE)
                     qDebug() << "QDateTimeParser::parseSection() Invalid findAmPm(" << sectiontext << ") returned -1";
 #endif
 
@@ -1004,7 +1004,7 @@ int QDateTimeParser::parseSection( const QDateTime &currentValue, int sectionInd
         }
 
         default:
-            qWarning( "QDateTimeParser::parseSection() Internal error (%s %d)", csPrintable( sn.name() ), sectionIndex );
+            qWarning( "QDateTimeParser::parseSection() Internal error (%s %d)", lscsPrintable( sn.name() ), sectionIndex );
             return -1;
     }
 
@@ -1138,7 +1138,7 @@ QDateTimeParser::StateNode QDateTimeParser::parse( QString &input, int &cursorPo
                         break;
 
                     default:
-                        qWarning( "QDateTimeParser::parse() Internal error (%s)", csPrintable( sn.name() ) );
+                        qWarning( "QDateTimeParser::parse() Internal error (%s)", lscsPrintable( sn.name() ) );
                         break;
                 }
 
@@ -1150,7 +1150,7 @@ QDateTimeParser::StateNode QDateTimeParser::parse( QString &input, int &cursorPo
 
                 if ( isSet & sn.type && *current != num )
                 {
-#if defined(CS_SHOW_DEBUG_CORE)
+#if defined(LSCS_SHOW_DEBUG_CORE)
                     qDebug() << "QDateTimeParser::parse() Conflict " << sn.name() << *current << num;
 #endif
                     conflicts = true;
@@ -1173,7 +1173,7 @@ QDateTimeParser::StateNode QDateTimeParser::parse( QString &input, int &cursorPo
         if ( state != Invalid && input.midView( pos ) != separators.last() )
         {
 
-#if defined(CS_SHOW_DEBUG_CORE)
+#if defined(LSCS_SHOW_DEBUG_CORE)
             qDebug() << "QDateTimeParser::parse() Invalid " << input.mid( pos ) << "!=" << separators.last() << pos;
 #endif
 
@@ -1360,7 +1360,7 @@ end:
             if ( newCurrentValue >= minimum )
             {
                 qWarning( "QDateTimeParser::parse() Internal error 3 (%s %s)",
-                          csPrintable( newCurrentValue.toString() ), csPrintable( minimum.toString() ) );
+                          lscsPrintable( newCurrentValue.toString() ), lscsPrintable( minimum.toString() ) );
             }
 
             bool done = false;
@@ -1485,7 +1485,7 @@ end:
 
                             if ( min == -1 )
                             {
-                                qWarning( "QDateTimeParser::parse() Internal error 4 (%s)", csPrintable( sn.name() ) );
+                                qWarning( "QDateTimeParser::parse() Internal error 4 (%s)", lscsPrintable( sn.name() ) );
                                 state = Invalid;
                                 done  = true;
                                 break;
@@ -1841,7 +1841,7 @@ int QDateTimeParser::SectionNode::maxChange() const
             return 100 * 365;
 
         default:
-            qWarning( "QDateTimeParser::maxChange() Internal error (%s)", csPrintable( name() ) );
+            qWarning( "QDateTimeParser::maxChange() Internal error (%s)", lscsPrintable( name() ) );
     }
 
     return -1;
@@ -1909,7 +1909,7 @@ QDateTimeParser::FieldInfo QDateTimeParser::fieldInfo( int index ) const
 
         default:
             qWarning( "QDateTimeParser::fieldInfo() Internal error 2 (%d %s %d)",
-                      index, csPrintable( sn.name() ), sn.count );
+                      index, lscsPrintable( sn.name() ), sn.count );
 
             break;
     }
@@ -1962,7 +1962,7 @@ QString QDateTimeParser::SectionNode::format() const
             break;
 
         default:
-            qWarning( "QDateTimeParser::sectionFormat() Internal error (%s)", csPrintable( name( type ) ) );
+            qWarning( "QDateTimeParser::sectionFormat() Internal error (%s)", lscsPrintable( name( type ) ) );
             return QString();
     }
 

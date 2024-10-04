@@ -1946,7 +1946,7 @@ bool QPSQLDriver::subscribeToNotification( const QString &name )
     if ( d->seid.contains( name ) )
     {
         qWarning( "QPSQLDriver::subscribeToNotificationImplementation: already subscribing to '%s'.",
-                  csPrintable( name ) );
+                  lscsPrintable( name ) );
         return false;
     }
 
@@ -1998,7 +1998,7 @@ bool QPSQLDriver::unsubscribeFromNotification( const QString &name )
     if ( ! d->seid.contains( name ) )
     {
         qWarning( "QPSQLDriver::unsubscribeFromNotificationImplementation(): Not subscribed to '%s'.",
-                  csPrintable( name ) );
+                  lscsPrintable( name ) );
         return false;
     }
 
@@ -2060,7 +2060,7 @@ void QPSQLDriver::_q_handleNotification( int )
         }
         else
         {
-            qWarning( "QPSQLDriver: received notification for '%s' which is not subscribed to.", csPrintable( name ) );
+            qWarning( "QPSQLDriver: received notification for '%s' which is not subscribed to.", lscsPrintable( name ) );
         }
 
         qPQfreemem( notify );

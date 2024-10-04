@@ -34,7 +34,7 @@ class DirectShowPostedEvent;
 
 class DirectShowEventLoop : public QObject
 {
-    CS_OBJECT( DirectShowEventLoop )
+    LSCS_OBJECT( DirectShowEventLoop )
 
 public:
     DirectShowEventLoop( QObject *parent = nullptr );

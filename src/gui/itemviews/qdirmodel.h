@@ -34,16 +34,16 @@ class QDirModelPrivate;
 
 class Q_GUI_EXPORT QDirModel : public QAbstractItemModel
 {
-    GUI_CS_OBJECT( QDirModel )
+    GUI_LSCS_OBJECT( QDirModel )
 
-    GUI_CS_PROPERTY_READ( resolveSymlinks, resolveSymlinks )
-    GUI_CS_PROPERTY_WRITE( resolveSymlinks, setResolveSymlinks )
+    GUI_LSCS_PROPERTY_READ( resolveSymlinks, resolveSymlinks )
+    GUI_LSCS_PROPERTY_WRITE( resolveSymlinks, setResolveSymlinks )
 
-    GUI_CS_PROPERTY_READ( readOnly, isReadOnly )
-    GUI_CS_PROPERTY_WRITE( readOnly, setReadOnly )
+    GUI_LSCS_PROPERTY_READ( readOnly, isReadOnly )
+    GUI_LSCS_PROPERTY_WRITE( readOnly, setReadOnly )
 
-    GUI_CS_PROPERTY_READ( lazyChildCount, lazyChildCount )
-    GUI_CS_PROPERTY_WRITE( lazyChildCount, setLazyChildCount )
+    GUI_LSCS_PROPERTY_READ( lazyChildCount, lazyChildCount )
+    GUI_LSCS_PROPERTY_WRITE( lazyChildCount, setLazyChildCount )
 
 public:
     enum Roles
@@ -123,8 +123,8 @@ public:
 
     using QObject::parent;
 
-    GUI_CS_SLOT_1( Public, void refresh( const QModelIndex &parent = QModelIndex() ) )
-    GUI_CS_SLOT_2( refresh )
+    GUI_LSCS_SLOT_1( Public, void refresh( const QModelIndex &parent = QModelIndex() ) )
+    GUI_LSCS_SLOT_2( refresh )
 
 protected:
     QDirModel( QDirModelPrivate &, QObject *parent = nullptr );
@@ -133,8 +133,8 @@ protected:
 private:
     Q_DECLARE_PRIVATE( QDirModel )
 
-    GUI_CS_SLOT_1( Private, void _q_refresh() )
-    GUI_CS_SLOT_2( _q_refresh )
+    GUI_LSCS_SLOT_1( Private, void _q_refresh() )
+    GUI_LSCS_SLOT_2( _q_refresh )
 };
 
 #endif // QT_NO_DIRMODEL

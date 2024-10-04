@@ -56,9 +56,9 @@ typedef enum
 
 class QGstreamerPlayerSession : public QObject, public QGstreamerBusMessageFilter
 {
-    CS_OBJECT_MULTIPLE( QGstreamerPlayerSession, QObject )
+    LSCS_OBJECT_MULTIPLE( QGstreamerPlayerSession, QObject )
 
-    CS_INTERFACES( QGstreamerBusMessageFilter )
+    LSCS_INTERFACES( QGstreamerBusMessageFilter )
 
 public:
     QGstreamerPlayerSession( QObject *parent );
@@ -143,77 +143,77 @@ public:
 
     void endOfMediaReset();
 
-    CS_SLOT_1( Public, void loadFromUri( const QNetworkRequest &url ) )
-    CS_SLOT_2( loadFromUri )
+    LSCS_SLOT_1( Public, void loadFromUri( const QNetworkRequest &url ) )
+    LSCS_SLOT_2( loadFromUri )
 
-    CS_SLOT_1( Public, void loadFromStream( const QNetworkRequest &url, QIODevice *stream ) )
-    CS_SLOT_2( loadFromStream )
+    LSCS_SLOT_1( Public, void loadFromStream( const QNetworkRequest &url, QIODevice *stream ) )
+    LSCS_SLOT_2( loadFromStream )
 
-    CS_SLOT_1( Public, bool play() )
-    CS_SLOT_2( play )
+    LSCS_SLOT_1( Public, bool play() )
+    LSCS_SLOT_2( play )
 
-    CS_SLOT_1( Public, bool pause() )
-    CS_SLOT_2( pause )
+    LSCS_SLOT_1( Public, bool pause() )
+    LSCS_SLOT_2( pause )
 
-    CS_SLOT_1( Public, void stop() )
-    CS_SLOT_2( stop )
+    LSCS_SLOT_1( Public, void stop() )
+    LSCS_SLOT_2( stop )
 
-    CS_SLOT_1( Public, bool seek( qint64 pos ) )
-    CS_SLOT_2( seek )
+    LSCS_SLOT_1( Public, bool seek( qint64 pos ) )
+    LSCS_SLOT_2( seek )
 
-    CS_SLOT_1( Public, void setVolume( int volume ) )
-    CS_SLOT_2( setVolume )
+    LSCS_SLOT_1( Public, void setVolume( int volume ) )
+    LSCS_SLOT_2( setVolume )
 
-    CS_SLOT_1( Public, void setMuted( bool muted ) )
-    CS_SLOT_2( setMuted )
+    LSCS_SLOT_1( Public, void setMuted( bool muted ) )
+    LSCS_SLOT_2( setMuted )
 
-    CS_SLOT_1( Public, void showPrerollFrames( bool enabled ) )
-    CS_SLOT_2( showPrerollFrames )
+    LSCS_SLOT_1( Public, void showPrerollFrames( bool enabled ) )
+    LSCS_SLOT_2( showPrerollFrames )
 
-    CS_SIGNAL_1( Public, void durationChanged( qint64 duration ) )
-    CS_SIGNAL_2( durationChanged, duration )
+    LSCS_SIGNAL_1( Public, void durationChanged( qint64 duration ) )
+    LSCS_SIGNAL_2( durationChanged, duration )
 
-    CS_SIGNAL_1( Public, void positionChanged( qint64 position ) )
-    CS_SIGNAL_2( positionChanged, position )
+    LSCS_SIGNAL_1( Public, void positionChanged( qint64 position ) )
+    LSCS_SIGNAL_2( positionChanged, position )
 
-    CS_SIGNAL_1( Public, void stateChanged( QMediaPlayer::State state ) )
-    CS_SIGNAL_2( stateChanged, state )
+    LSCS_SIGNAL_1( Public, void stateChanged( QMediaPlayer::State state ) )
+    LSCS_SIGNAL_2( stateChanged, state )
 
-    CS_SIGNAL_1( Public, void volumeChanged( int volume ) )
-    CS_SIGNAL_2( volumeChanged, volume )
+    LSCS_SIGNAL_1( Public, void volumeChanged( int volume ) )
+    LSCS_SIGNAL_2( volumeChanged, volume )
 
-    CS_SIGNAL_1( Public, void mutedStateChanged( bool muted ) )
-    CS_SIGNAL_2( mutedStateChanged, muted )
+    LSCS_SIGNAL_1( Public, void mutedStateChanged( bool muted ) )
+    LSCS_SIGNAL_2( mutedStateChanged, muted )
 
-    CS_SIGNAL_1( Public, void audioAvailableChanged( bool audioAvailable ) )
-    CS_SIGNAL_2( audioAvailableChanged, audioAvailable )
+    LSCS_SIGNAL_1( Public, void audioAvailableChanged( bool audioAvailable ) )
+    LSCS_SIGNAL_2( audioAvailableChanged, audioAvailable )
 
-    CS_SIGNAL_1( Public, void videoAvailableChanged( bool videoAvailable ) )
-    CS_SIGNAL_2( videoAvailableChanged, videoAvailable )
+    LSCS_SIGNAL_1( Public, void videoAvailableChanged( bool videoAvailable ) )
+    LSCS_SIGNAL_2( videoAvailableChanged, videoAvailable )
 
-    CS_SIGNAL_1( Public, void bufferingProgressChanged( int percentFilled ) )
-    CS_SIGNAL_2( bufferingProgressChanged, percentFilled )
+    LSCS_SIGNAL_1( Public, void bufferingProgressChanged( int percentFilled ) )
+    LSCS_SIGNAL_2( bufferingProgressChanged, percentFilled )
 
-    CS_SIGNAL_1( Public, void playbackFinished() )
-    CS_SIGNAL_2( playbackFinished )
+    LSCS_SIGNAL_1( Public, void playbackFinished() )
+    LSCS_SIGNAL_2( playbackFinished )
 
-    CS_SIGNAL_1( Public, void tagsChanged() )
-    CS_SIGNAL_2( tagsChanged )
+    LSCS_SIGNAL_1( Public, void tagsChanged() )
+    LSCS_SIGNAL_2( tagsChanged )
 
-    CS_SIGNAL_1( Public, void streamsChanged() )
-    CS_SIGNAL_2( streamsChanged )
+    LSCS_SIGNAL_1( Public, void streamsChanged() )
+    LSCS_SIGNAL_2( streamsChanged )
 
-    CS_SIGNAL_1( Public, void seekableChanged( bool seekable ) )
-    CS_SIGNAL_2( seekableChanged, seekable )
+    LSCS_SIGNAL_1( Public, void seekableChanged( bool seekable ) )
+    LSCS_SIGNAL_2( seekableChanged, seekable )
 
-    CS_SIGNAL_1( Public, void error( int error, const QString &errorString ) )
-    CS_SIGNAL_2( error, error, errorString )
+    LSCS_SIGNAL_1( Public, void error( int error, const QString &errorString ) )
+    LSCS_SIGNAL_2( error, error, errorString )
 
-    CS_SIGNAL_1( Public, void invalidMedia() )
-    CS_SIGNAL_2( invalidMedia )
+    LSCS_SIGNAL_1( Public, void invalidMedia() )
+    LSCS_SIGNAL_2( invalidMedia )
 
-    CS_SIGNAL_1( Public, void playbackRateChanged( qreal rate ) )
-    CS_SIGNAL_2( playbackRateChanged, rate )
+    LSCS_SIGNAL_1( Public, void playbackRateChanged( qreal rate ) )
+    LSCS_SIGNAL_2( playbackRateChanged, rate )
 
 private:
     static void playbinNotifySource( GObject *o, GParamSpec *p, gpointer d );
@@ -306,29 +306,29 @@ private:
     bool m_isPlaylist;
     gulong pad_probe_id;
 
-    CS_SLOT_1( Private, void getStreamsInfo() )
-    CS_SLOT_2( getStreamsInfo )
+    LSCS_SLOT_1( Private, void getStreamsInfo() )
+    LSCS_SLOT_2( getStreamsInfo )
 
-    CS_SLOT_1( Private, void setSeekable( bool seekable ) )
-    CS_SLOT_2( setSeekable )
+    LSCS_SLOT_1( Private, void setSeekable( bool seekable ) )
+    LSCS_SLOT_2( setSeekable )
 
-    CS_SLOT_1( Private, void finishVideoOutputChange() )
-    CS_SLOT_2( finishVideoOutputChange )
+    LSCS_SLOT_1( Private, void finishVideoOutputChange() )
+    LSCS_SLOT_2( finishVideoOutputChange )
 
-    CS_SLOT_1( Private, void updateVideoRenderer() )
-    CS_SLOT_2( updateVideoRenderer )
+    LSCS_SLOT_1( Private, void updateVideoRenderer() )
+    LSCS_SLOT_2( updateVideoRenderer )
 
-    CS_SLOT_1( Private, void updateVideoResolutionTag() )
-    CS_SLOT_2( updateVideoResolutionTag )
+    LSCS_SLOT_1( Private, void updateVideoResolutionTag() )
+    LSCS_SLOT_2( updateVideoResolutionTag )
 
-    CS_SLOT_1( Private, void updateVolume() )
-    CS_SLOT_2( updateVolume )
+    LSCS_SLOT_1( Private, void updateVolume() )
+    LSCS_SLOT_2( updateVolume )
 
-    CS_SLOT_1( Private, void updateMuted() )
-    CS_SLOT_2( updateMuted )
+    LSCS_SLOT_1( Private, void updateMuted() )
+    LSCS_SLOT_2( updateMuted )
 
-    CS_SLOT_1( Private, void updateDuration() )
-    CS_SLOT_2( updateDuration )
+    LSCS_SLOT_1( Private, void updateDuration() )
+    LSCS_SLOT_2( updateDuration )
 };
 
 #endif

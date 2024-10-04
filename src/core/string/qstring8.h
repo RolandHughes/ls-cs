@@ -24,9 +24,9 @@
 #ifndef QSTRING8_H
 #define QSTRING8_H
 
-#define CS_STRING_ALLOW_UNSAFE
+#define LSCS_STRING_ALLOW_UNSAFE
 
-#include <cs_string.h>
+#include <lscs_string.h>
 
 #include <qbytearray.h>
 #include <qchar32.h>
@@ -303,7 +303,7 @@ public:
     {
     }
 
-#ifdef CS_STRING_ALLOW_UNSAFE
+#ifdef LSCS_STRING_ALLOW_UNSAFE
     QString8( const QByteArray &str )
         : QString8( fromUtf8( str ) )
     { }

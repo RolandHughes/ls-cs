@@ -32,7 +32,7 @@ class QBufferPrivate;
 
 class Q_CORE_EXPORT QBuffer : public QIODevice
 {
-    CORE_CS_OBJECT( QBuffer )
+    CORE_LSCS_OBJECT( QBuffer )
 
 public:
     explicit QBuffer( QObject *parent = nullptr );
@@ -70,8 +70,8 @@ protected:
 private:
     Q_DECLARE_PRIVATE( QBuffer )
 
-    CORE_CS_SLOT_1( Private, void _q_emitSignals() )
-    CORE_CS_SLOT_2( _q_emitSignals )
+    CORE_LSCS_SLOT_1( Private, void _q_emitSignals() )
+    CORE_LSCS_SLOT_2( _q_emitSignals )
 };
 
 inline void QBuffer::setData( const char *data, int size )

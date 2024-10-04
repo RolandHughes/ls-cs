@@ -35,41 +35,41 @@ class QStyleOptionSpinBox;
 
 class Q_GUI_EXPORT QAbstractSpinBox : public QWidget
 {
-    GUI_CS_OBJECT( QAbstractSpinBox )
+    GUI_LSCS_OBJECT( QAbstractSpinBox )
 
-    GUI_CS_ENUM( ButtonSymbols )
-    GUI_CS_ENUM( CorrectionMode )
+    GUI_LSCS_ENUM( ButtonSymbols )
+    GUI_LSCS_ENUM( CorrectionMode )
 
-    GUI_CS_PROPERTY_READ( wrapping, wrapping )
-    GUI_CS_PROPERTY_WRITE( wrapping, setWrapping )
+    GUI_LSCS_PROPERTY_READ( wrapping, wrapping )
+    GUI_LSCS_PROPERTY_WRITE( wrapping, setWrapping )
 
-    GUI_CS_PROPERTY_READ( frame, hasFrame )
-    GUI_CS_PROPERTY_WRITE( frame, setFrame )
+    GUI_LSCS_PROPERTY_READ( frame, hasFrame )
+    GUI_LSCS_PROPERTY_WRITE( frame, setFrame )
 
-    GUI_CS_PROPERTY_READ( alignment, alignment )
-    GUI_CS_PROPERTY_WRITE( alignment, setAlignment )
+    GUI_LSCS_PROPERTY_READ( alignment, alignment )
+    GUI_LSCS_PROPERTY_WRITE( alignment, setAlignment )
 
-    GUI_CS_PROPERTY_READ( readOnly, isReadOnly )
-    GUI_CS_PROPERTY_WRITE( readOnly, setReadOnly )
+    GUI_LSCS_PROPERTY_READ( readOnly, isReadOnly )
+    GUI_LSCS_PROPERTY_WRITE( readOnly, setReadOnly )
 
-    GUI_CS_PROPERTY_READ( buttonSymbols, buttonSymbols )
-    GUI_CS_PROPERTY_WRITE( buttonSymbols, setButtonSymbols )
+    GUI_LSCS_PROPERTY_READ( buttonSymbols, buttonSymbols )
+    GUI_LSCS_PROPERTY_WRITE( buttonSymbols, setButtonSymbols )
 
-    GUI_CS_PROPERTY_READ( specialValueText, specialValueText )
-    GUI_CS_PROPERTY_WRITE( specialValueText, setSpecialValueText )
+    GUI_LSCS_PROPERTY_READ( specialValueText, specialValueText )
+    GUI_LSCS_PROPERTY_WRITE( specialValueText, setSpecialValueText )
 
-    GUI_CS_PROPERTY_READ( text, text )
+    GUI_LSCS_PROPERTY_READ( text, text )
 
-    GUI_CS_PROPERTY_READ( accelerated, isAccelerated )
-    GUI_CS_PROPERTY_WRITE( accelerated, setAccelerated )
+    GUI_LSCS_PROPERTY_READ( accelerated, isAccelerated )
+    GUI_LSCS_PROPERTY_WRITE( accelerated, setAccelerated )
 
-    GUI_CS_PROPERTY_READ( correctionMode, correctionMode )
-    GUI_CS_PROPERTY_WRITE( correctionMode, setCorrectionMode )
+    GUI_LSCS_PROPERTY_READ( correctionMode, correctionMode )
+    GUI_LSCS_PROPERTY_WRITE( correctionMode, setCorrectionMode )
 
-    GUI_CS_PROPERTY_READ( acceptableInput, hasAcceptableInput )
+    GUI_LSCS_PROPERTY_READ( acceptableInput, hasAcceptableInput )
 
-    GUI_CS_PROPERTY_READ( keyboardTracking, keyboardTracking )
-    GUI_CS_PROPERTY_WRITE( keyboardTracking, setKeyboardTracking )
+    GUI_LSCS_PROPERTY_READ( keyboardTracking, keyboardTracking )
+    GUI_LSCS_PROPERTY_WRITE( keyboardTracking, setKeyboardTracking )
 
 public:
     enum StepEnabledFlag
@@ -80,7 +80,7 @@ public:
     };
     using StepEnabled = QFlags<StepEnabledFlag>;
 
-    GUI_CS_REGISTER_ENUM(
+    GUI_LSCS_REGISTER_ENUM(
         enum ButtonSymbols
     {
         UpDownArrows,
@@ -89,7 +89,7 @@ public:
     };
     )
 
-    GUI_CS_REGISTER_ENUM(
+    GUI_LSCS_REGISTER_ENUM(
         enum CorrectionMode
     {
         CorrectToPreviousValue,
@@ -148,20 +148,20 @@ public:
 
     virtual void stepBy( int steps );
 
-    GUI_CS_SLOT_1( Public, void stepUp() )
-    GUI_CS_SLOT_2( stepUp )
+    GUI_LSCS_SLOT_1( Public, void stepUp() )
+    GUI_LSCS_SLOT_2( stepUp )
 
-    GUI_CS_SLOT_1( Public, void stepDown() )
-    GUI_CS_SLOT_2( stepDown )
+    GUI_LSCS_SLOT_1( Public, void stepDown() )
+    GUI_LSCS_SLOT_2( stepDown )
 
-    GUI_CS_SLOT_1( Public, void selectAll() )
-    GUI_CS_SLOT_2( selectAll )
+    GUI_LSCS_SLOT_1( Public, void selectAll() )
+    GUI_LSCS_SLOT_2( selectAll )
 
-    GUI_CS_SLOT_1( Public, virtual void clear() )
-    GUI_CS_SLOT_2( clear )
+    GUI_LSCS_SLOT_1( Public, virtual void clear() )
+    GUI_LSCS_SLOT_2( clear )
 
-    GUI_CS_SIGNAL_1( Public, void editingFinished() )
-    GUI_CS_SIGNAL_2( editingFinished )
+    GUI_LSCS_SIGNAL_1( Public, void editingFinished() )
+    GUI_LSCS_SIGNAL_2( editingFinished )
 
 protected:
     void resizeEvent( QResizeEvent *event ) override;
@@ -196,11 +196,11 @@ protected:
 private:
     Q_DECLARE_PRIVATE( QAbstractSpinBox )
 
-    GUI_CS_SLOT_1( Private, void _q_editorTextChanged( const QString &text ) )
-    GUI_CS_SLOT_2( _q_editorTextChanged )
+    GUI_LSCS_SLOT_1( Private, void _q_editorTextChanged( const QString &text ) )
+    GUI_LSCS_SLOT_2( _q_editorTextChanged )
 
-    GUI_CS_SLOT_1( Private, void _q_editorCursorPositionChanged( int oldpos, int newpos ) )
-    GUI_CS_SLOT_2( _q_editorCursorPositionChanged )
+    GUI_LSCS_SLOT_1( Private, void _q_editorCursorPositionChanged( int oldpos, int newpos ) )
+    GUI_LSCS_SLOT_2( _q_editorCursorPositionChanged )
 
     friend class QAccessibleAbstractSpinBox;
 };

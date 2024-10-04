@@ -33,15 +33,15 @@ class QDeclarativePropertyChangesPrivate;
 
 class Q_DECLARATIVE_PRIVATE_EXPORT QDeclarativePropertyChanges : public QDeclarativeStateOperation
 {
-    DECL_CS_OBJECT( QDeclarativePropertyChanges )
+    DECL_LSCS_OBJECT( QDeclarativePropertyChanges )
     Q_DECLARE_PRIVATE( QDeclarativePropertyChanges )
 
-    DECL_CS_PROPERTY_READ( *target, object )
-    DECL_CS_PROPERTY_WRITE( *target, setObject )
-    DECL_CS_PROPERTY_READ( restoreEntryValues, restoreEntryValues )
-    DECL_CS_PROPERTY_WRITE( restoreEntryValues, setRestoreEntryValues )
-    DECL_CS_PROPERTY_READ( explicit, isExplicit )
-    DECL_CS_PROPERTY_WRITE( explicit, setIsExplicit )
+    DECL_LSCS_PROPERTY_READ( *target, object )
+    DECL_LSCS_PROPERTY_WRITE( *target, setObject )
+    DECL_LSCS_PROPERTY_READ( restoreEntryValues, restoreEntryValues )
+    DECL_LSCS_PROPERTY_WRITE( restoreEntryValues, setRestoreEntryValues )
+    DECL_LSCS_PROPERTY_READ( explicit, isExplicit )
+    DECL_LSCS_PROPERTY_WRITE( explicit, setIsExplicit )
 
 public:
     QDeclarativePropertyChanges();

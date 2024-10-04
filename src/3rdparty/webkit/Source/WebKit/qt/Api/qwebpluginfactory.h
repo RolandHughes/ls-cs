@@ -35,7 +35,7 @@ class QWebPluginFactoryPrivate;
 
 class QWEBKIT_EXPORT QWebPluginFactory : public QObject
 {
-    WEB_CS_OBJECT( QWebPluginFactory )
+    WEB_LSCS_OBJECT( QWebPluginFactory )
 
 public:
     struct QWEBKIT_EXPORT MimeType

@@ -189,7 +189,7 @@ private:
 
     Spec cspec;
 
-#ifndef CS_DOXYPRESS
+#ifndef LSCS_DOXYPRESS
 
     union
     {

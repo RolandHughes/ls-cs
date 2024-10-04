@@ -29,16 +29,16 @@
 
 class QCocoaPrinterSupportPlugin : public QPlatformPrinterSupportPlugin
 {
-    CS_OBJECT( QCocoaPrinterSupportPlugin )
+    LSCS_OBJECT( QCocoaPrinterSupportPlugin )
 
-    CS_PLUGIN_IID( QPlatformPrinterSupportPlugin_ID )
-    CS_PLUGIN_KEY( "printerdriver_cocoa" )
+    LSCS_PLUGIN_IID( QPlatformPrinterSupportPlugin_ID )
+    LSCS_PLUGIN_KEY( "printerdriver_cocoa" )
 
 public:
     QPlatformPrinterSupport *create( const QString & ) override;
 };
 
-CS_PLUGIN_REGISTER( QCocoaPrinterSupportPlugin )
+LSCS_PLUGIN_REGISTER( QCocoaPrinterSupportPlugin )
 
 QPlatformPrinterSupport *QCocoaPrinterSupportPlugin::create( const QString &key )
 {

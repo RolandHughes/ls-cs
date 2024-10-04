@@ -52,7 +52,7 @@ struct AVFCameraInfo
 
 class AVFCameraSession : public QObject
 {
-    CS_OBJECT( AVFCameraSession )
+    LSCS_OBJECT( AVFCameraSession )
 
 public:
     AVFCameraSession( AVFCameraService *service, QObject *parent = nullptr );
@@ -93,38 +93,38 @@ public:
         return m_videoInput;
     }
 
-    CS_SLOT_1( Public, void setState( QCamera::State state ) )
-    CS_SLOT_2( setState )
+    LSCS_SLOT_1( Public, void setState( QCamera::State state ) )
+    LSCS_SLOT_2( setState )
 
-    CS_SLOT_1( Public, void processRuntimeError() )
-    CS_SLOT_2( processRuntimeError )
+    LSCS_SLOT_1( Public, void processRuntimeError() )
+    LSCS_SLOT_2( processRuntimeError )
 
-    CS_SLOT_1( Public, void processSessionStarted() )
-    CS_SLOT_2( processSessionStarted )
+    LSCS_SLOT_1( Public, void processSessionStarted() )
+    LSCS_SLOT_2( processSessionStarted )
 
-    CS_SLOT_1( Public, void processSessionStopped() )
-    CS_SLOT_2( processSessionStopped )
+    LSCS_SLOT_1( Public, void processSessionStopped() )
+    LSCS_SLOT_2( processSessionStopped )
 
-    CS_SLOT_1( Public, void onCaptureModeChanged( QCamera::CaptureModes mode ) )
-    CS_SLOT_2( onCaptureModeChanged )
+    LSCS_SLOT_1( Public, void onCaptureModeChanged( QCamera::CaptureModes mode ) )
+    LSCS_SLOT_2( onCaptureModeChanged )
 
-    CS_SLOT_1( Public, void onCameraFrameFetched( const QVideoFrame &frame ) )
-    CS_SLOT_2( onCameraFrameFetched )
+    LSCS_SLOT_1( Public, void onCameraFrameFetched( const QVideoFrame &frame ) )
+    LSCS_SLOT_2( onCameraFrameFetched )
 
-    CS_SIGNAL_1( Public, void readyToConfigureConnections() )
-    CS_SIGNAL_2( readyToConfigureConnections )
+    LSCS_SIGNAL_1( Public, void readyToConfigureConnections() )
+    LSCS_SIGNAL_2( readyToConfigureConnections )
 
-    CS_SIGNAL_1( Public, void stateChanged( QCamera::State newState ) )
-    CS_SIGNAL_2( stateChanged, newState )
+    LSCS_SIGNAL_1( Public, void stateChanged( QCamera::State newState ) )
+    LSCS_SIGNAL_2( stateChanged, newState )
 
-    CS_SIGNAL_1( Public, void activeChanged( bool isActive ) )
-    CS_SIGNAL_2( activeChanged, isActive )
+    LSCS_SIGNAL_1( Public, void activeChanged( bool isActive ) )
+    LSCS_SIGNAL_2( activeChanged, isActive )
 
-    CS_SIGNAL_1( Public, void newViewfinderFrame( const QVideoFrame &frame ) )
-    CS_SIGNAL_2( newViewfinderFrame, frame )
+    LSCS_SIGNAL_1( Public, void newViewfinderFrame( const QVideoFrame &frame ) )
+    LSCS_SIGNAL_2( newViewfinderFrame, frame )
 
-    CS_SIGNAL_1( Public, void error( int error, const QString &errorString ) )
-    CS_SIGNAL_2( error, error, errorString )
+    LSCS_SIGNAL_1( Public, void error( int error, const QString &errorString ) )
+    LSCS_SIGNAL_2( error, error, errorString )
 
 private:
     static void updateCameraDevices();

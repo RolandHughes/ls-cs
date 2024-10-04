@@ -33,10 +33,10 @@ class QSequentialAnimationGroupPrivate;
 
 class Q_CORE_EXPORT QSequentialAnimationGroup : public QAnimationGroup
 {
-    CORE_CS_OBJECT( QSequentialAnimationGroup )
+    CORE_LSCS_OBJECT( QSequentialAnimationGroup )
 
-    CORE_CS_PROPERTY_READ( currentAnimation, currentAnimation )
-    CORE_CS_PROPERTY_NOTIFY( currentAnimation, currentAnimationChanged )
+    CORE_LSCS_PROPERTY_READ( currentAnimation, currentAnimation )
+    CORE_LSCS_PROPERTY_NOTIFY( currentAnimation, currentAnimationChanged )
 
 public:
     QSequentialAnimationGroup( QObject *parent = nullptr );
@@ -52,8 +52,8 @@ public:
     QAbstractAnimation *currentAnimation() const;
     int duration() const override;
 
-    CORE_CS_SIGNAL_1( Public, void currentAnimationChanged( QAbstractAnimation *current ) )
-    CORE_CS_SIGNAL_2( currentAnimationChanged, current )
+    CORE_LSCS_SIGNAL_1( Public, void currentAnimationChanged( QAbstractAnimation *current ) )
+    CORE_LSCS_SIGNAL_2( currentAnimationChanged, current )
 
 protected:
     QSequentialAnimationGroup( QSequentialAnimationGroupPrivate &dd, QObject *parent );

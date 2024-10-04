@@ -30,7 +30,7 @@
 
 class CameraBinInfoControl : public QCameraInfoControl
 {
-    CS_OBJECT( CameraBinInfoControl )
+    LSCS_OBJECT( CameraBinInfoControl )
 
 public:
     CameraBinInfoControl( GstElementFactory *sourceFactory, QObject *parent );

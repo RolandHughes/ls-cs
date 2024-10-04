@@ -212,7 +212,7 @@ void QXcbConnection::updateScreens( const xcb_randr_notify_event_t *event )
 
         QXcbScreen *screen = findScreenForCrtc( crtc.window, crtc.crtc );
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
         qDebug() << "QXcbConnection::updateScreens() XCB_RANDR_NOTIFY_CRTC_CHANGE ="
                  << crtc.crtc << "mode =" << crtc.mode << "screen =" << screen;
 #endif
@@ -250,14 +250,14 @@ void QXcbConnection::updateScreens( const xcb_randr_notify_event_t *event )
 
         QXcbScreen *screen = findScreenForOutput( output.window, output.output );
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
         qDebug() << "QXcbConnection::updateScreens() XCB_RANDR_NOTIFY_OUTPUT_CHANGE output =" << output.output;
 #endif
 
         if ( screen && output.connection == XCB_RANDR_CONNECTION_DISCONNECTED )
         {
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
             qDebug() << "QXcbConnection::updateScreens() Screen" << screen->name() << "has been disconnected";
 #endif
 
@@ -295,7 +295,7 @@ void QXcbConnection::updateScreens( const xcb_randr_notify_event_t *event )
                     screen->setOutput( output.output, outputInfo.data() );
                     updateScreen( screen, output );
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
                     qDebug() << "QXcbConnection::updateScreens() output" << screen->name()
                              << "is connected and enabled, prior name =" << nameWas;
 #endif
@@ -305,7 +305,7 @@ void QXcbConnection::updateScreens( const xcb_randr_notify_event_t *event )
                 {
                     screen = createScreen( virtualDesktop, output, outputInfo.data() );
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
                     qDebug() << "QXcbConnection::updateScreens() output screen =" << screen->name()
                              << "is connected and enabled";
 #endif
@@ -328,7 +328,7 @@ void QXcbConnection::updateScreens( const xcb_randr_notify_event_t *event )
 
                 if ( outputInfo->crtc == XCB_NONE )
                 {
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
                     qDebug() << "QXcbConnection::updateScreens() output screen =" << screen->name() << "has been disabled";
 #endif
 
@@ -338,7 +338,7 @@ void QXcbConnection::updateScreens( const xcb_randr_notify_event_t *event )
                 else
                 {
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
                     qDebug() << "QXcbConnection::updateScreens() output screen =" << screen->name()
                              << "has been temporarily disabled";
 #endif
@@ -353,14 +353,14 @@ void QXcbConnection::updateScreens( const xcb_randr_notify_event_t *event )
             {
                 updateScreen( screen, output );
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
                 qDebug() << "QXcbConnection::updateScreens() Output screen has changed to =" << screen;
 #endif
 
             }
         }
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
         qDebug() << "QXcbConnection::updateScreens() primary screen =" << m_screens.first()->name();
 #endif
     }
@@ -462,7 +462,7 @@ void QXcbConnection::destroyScreen( QXcbScreen *screen )
         const QString nameWas = screen->name();
         screen->setOutput( XCB_NONE, nullptr );
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
         qDebug() << "QXcbConnection::destroyScreen() prior screen =" << nameWas << ", new screen =" << screen;
 #endif
 
@@ -595,9 +595,9 @@ void QXcbConnection::initializeScreens()
                             if ( output->connection != XCB_RANDR_CONNECTION_CONNECTED )
                             {
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
                                 qDebug( "QXcbConnection::initializeScreens() Output %s is not connected",
-                                        csPrintable( QString::fromUtf8( ( const char * )xcb_randr_get_output_info_name( output.data() ),
+                                        lscsPrintable( QString::fromUtf8( ( const char * )xcb_randr_get_output_info_name( output.data() ),
                                                                         xcb_randr_get_output_info_name_length( output.data() ) ) ) );
 #endif
                                 continue;
@@ -606,8 +606,8 @@ void QXcbConnection::initializeScreens()
                             if ( output->crtc == XCB_NONE )
                             {
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
-                                qDebug( "QXcbConnection::initializeScreens() Output %s is not enabled", csPrintable(
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
+                                qDebug( "QXcbConnection::initializeScreens() Output %s is not enabled", lscsPrintable(
                                             QString::fromUtf8( ( const char * )xcb_randr_get_output_info_name( output.data() ),
                                                                xcb_randr_get_output_info_name_length( output.data() ) ) ) );
 #endif
@@ -714,7 +714,7 @@ void QXcbConnection::initializeScreens()
         // Push the screens to QApplication
         for ( QXcbScreen *screen : m_screens )
         {
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
             qDebug() << "QXcbConnection::initializeScreens() primary screen =" << screen->isPrimary()
                      << "adding screen =" << screen;
 #endif
@@ -722,7 +722,7 @@ void QXcbConnection::initializeScreens()
             QXcbIntegration::instance()->screenAdded( screen, screen->isPrimary() );
         }
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
         qDebug() << "QXcbConnection::initializeScreens() primary output =" << m_screens.first()->name();
 #endif
     }
@@ -850,7 +850,7 @@ QXcbConnection::QXcbConnection( QXcbNativeInterface *nativeInterface, bool canGr
     if ( ! glIntegrationName.isEmpty() )
     {
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
         qDebug() << "QXcbConnection() Set to =" << glIntegrationName;
 #endif
 
@@ -865,7 +865,7 @@ QXcbConnection::QXcbConnection( QXcbNativeInterface *nativeInterface, bool canGr
         }
     }
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
     qDebug() << "QXcbConnection() Choosing xcb gl-integration based on following priority =" << glIntegrationNames;
 #endif
 
@@ -876,7 +876,7 @@ QXcbConnection::QXcbConnection( QXcbNativeInterface *nativeInterface, bool canGr
         if ( m_glIntegration && ! m_glIntegration->initialize( this ) )
         {
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
             qDebug() << "QXcbConnection() Unable to initialize xcb gl-integration =" << glIntegrationNames.at( i );
 #endif
 
@@ -887,7 +887,7 @@ QXcbConnection::QXcbConnection( QXcbNativeInterface *nativeInterface, bool canGr
 
     if ( ! m_glIntegration )
     {
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
         qDebug( "QXcbConnection() No OpenGL integration plugin found, this is only required for programs which use OpenGL" );
 #endif
     }
@@ -1001,7 +1001,7 @@ QXcbWindow *QXcbConnection::platformWindowFromId( xcb_window_t id )
 
 void printXcbEvent( const char *message, xcb_generic_event_t *event )
 {
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
 
 #define PRINT_XCB_EVENT(ev) \
    case ev: \
@@ -1206,7 +1206,7 @@ const char *xcb_protocol_request_codes[] =
     "Unknown"
 };
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
 void QXcbConnection::log( const char *file, int line, int sequence )
 {
     QMutexLocker locker( &m_callLogMutex );
@@ -1236,7 +1236,7 @@ void QXcbConnection::handleXcbError( xcb_generic_error_t *error )
               int( error->error_code ), xcb_errors[clamped_error_code], int( error->sequence ), int( error->resource_id ),
               int( error->major_code ), xcb_protocol_request_codes[clamped_major_code], int( error->minor_code ) );
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
     QMutexLocker locker( &m_callLogMutex );
     int i = 0;
 
@@ -1244,17 +1244,17 @@ void QXcbConnection::handleXcbError( xcb_generic_error_t *error )
     {
         if ( m_callLog.at( i ).sequence == error->sequence )
         {
-            qDebug( "QXcbConnection::handleXcbError() Caused by = %s:%d", csPrintable( m_callLog.at( i ).file ), m_callLog.at( i ).line );
+            qDebug( "QXcbConnection::handleXcbError() Caused by = %s:%d", lscsPrintable( m_callLog.at( i ).file ), m_callLog.at( i ).line );
             break;
 
         }
         else if ( m_callLog.at( i ).sequence > error->sequence )
         {
-            qDebug( "QXcbConnection::handleXcbError() Caused before = %s:%d", csPrintable( m_callLog.at( i ).file ), m_callLog.at( i ).line );
+            qDebug( "QXcbConnection::handleXcbError() Caused before = %s:%d", lscsPrintable( m_callLog.at( i ).file ), m_callLog.at( i ).line );
 
             if ( i > 0 )
             {
-                qDebug( ", and after = %s:%d", csPrintable( m_callLog.at( i - 1 ).file ), m_callLog.at( i - 1 ).line );
+                qDebug( ", and after = %s:%d", lscsPrintable( m_callLog.at( i - 1 ).file ), m_callLog.at( i - 1 ).line );
             }
 
             break;
@@ -1263,7 +1263,7 @@ void QXcbConnection::handleXcbError( xcb_generic_error_t *error )
 
     if ( i == m_callLog.size() && !m_callLog.isEmpty() )
     {
-        qDebug( "QXcbConnection::handleXcbError() Caused after =  %s:%d", csPrintable( m_callLog.first().file ), m_callLog.first().line );
+        qDebug( "QXcbConnection::handleXcbError() Caused after =  %s:%d", lscsPrintable( m_callLog.first().file ), m_callLog.first().line );
     }
 
 #endif
@@ -1406,7 +1406,7 @@ typedef union
 
 void QXcbConnection::handleXcbEvent( xcb_generic_event_t *event )
 {
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
     {
         QMutexLocker locker( &m_callLogMutex );
         int i = 0;
@@ -1448,7 +1448,7 @@ void QXcbConnection::handleXcbEvent( xcb_generic_event_t *event )
                 m_buttons = ( m_buttons & ~0x7 ) | translateMouseButtons( ev->state );
                 m_buttons |= translateMouseButton( ev->detail );
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
                 qDebug( "QXcbConnection::handleXcbEvent() mouse press button = %d, state = %X",
                         ev->detail, static_cast<unsigned int>( m_buttons ) );
 #endif
@@ -1464,7 +1464,7 @@ void QXcbConnection::handleXcbEvent( xcb_generic_event_t *event )
                 m_buttons = ( m_buttons & ~0x7 ) | translateMouseButtons( ev->state );
                 m_buttons &= ~translateMouseButton( ev->detail );
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
                 qDebug( "QXcbConnection::handleXcbEvent() mouse release button = %d, state = %X",
                         ev->detail, static_cast<unsigned int>( m_buttons ) );
 #endif
@@ -1479,7 +1479,7 @@ void QXcbConnection::handleXcbEvent( xcb_generic_event_t *event )
                 m_keyboard->updateXKBStateFromCore( ev->state );
                 m_buttons = ( m_buttons & ~0x7 ) | translateMouseButtons( ev->state );
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
                 qDebug( "QXcbConnection::handleXcbEvent() mouse move button = %d,%d, detail = %d, state = %X",
                         ev->event_x, ev->event_y, ev->detail, static_cast<unsigned int>( m_buttons ) );
 #endif

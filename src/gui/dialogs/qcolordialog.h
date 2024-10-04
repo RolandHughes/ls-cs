@@ -32,17 +32,17 @@ class QColorDialogPrivate;
 
 class Q_GUI_EXPORT QColorDialog : public QDialog
 {
-    GUI_CS_OBJECT( QColorDialog )
+    GUI_LSCS_OBJECT( QColorDialog )
 
-    GUI_CS_ENUM( ColorDialogOption )
+    GUI_LSCS_ENUM( ColorDialogOption )
     Q_DECLARE_PRIVATE( QColorDialog )
 
-    GUI_CS_ENUM( ColorDialogOption )
-    GUI_CS_PROPERTY_READ( currentColor, currentColor )
-    GUI_CS_PROPERTY_WRITE( currentColor, setCurrentColor )
-    GUI_CS_PROPERTY_NOTIFY( currentColor, currentColorChanged )
-    GUI_CS_PROPERTY_READ( options, options )
-    GUI_CS_PROPERTY_WRITE( options, setOptions )
+    GUI_LSCS_ENUM( ColorDialogOption )
+    GUI_LSCS_PROPERTY_READ( currentColor, currentColor )
+    GUI_LSCS_PROPERTY_WRITE( currentColor, setCurrentColor )
+    GUI_LSCS_PROPERTY_NOTIFY( currentColor, currentColorChanged )
+    GUI_LSCS_PROPERTY_READ( options, options )
+    GUI_LSCS_PROPERTY_WRITE( options, setOptions )
 
 public:
     enum ColorDialogOption
@@ -89,40 +89,40 @@ public:
     static QColor standardColor( int index );
     static void setStandardColor( int index, QColor color );
 
-    GUI_CS_SIGNAL_1( Public, void currentColorChanged( const QColor &color ) )
-    GUI_CS_SIGNAL_2( currentColorChanged, color )
+    GUI_LSCS_SIGNAL_1( Public, void currentColorChanged( const QColor &color ) )
+    GUI_LSCS_SIGNAL_2( currentColorChanged, color )
 
-    GUI_CS_SIGNAL_1( Public, void colorSelected( const QColor &color ) )
-    GUI_CS_SIGNAL_2( colorSelected, color )
+    GUI_LSCS_SIGNAL_1( Public, void colorSelected( const QColor &color ) )
+    GUI_LSCS_SIGNAL_2( colorSelected, color )
 
 protected:
     void changeEvent( QEvent *event ) override;
     void done( int result ) override;
 
 private:
-    GUI_CS_SLOT_1( Private, void _q_addCustom() )
-    GUI_CS_SLOT_2( _q_addCustom )
+    GUI_LSCS_SLOT_1( Private, void _q_addCustom() )
+    GUI_LSCS_SLOT_2( _q_addCustom )
 
-    GUI_CS_SLOT_1( Private, void _q_newHsv( int h, int s, int v ) )
-    GUI_CS_SLOT_2( _q_newHsv )
+    GUI_LSCS_SLOT_1( Private, void _q_newHsv( int h, int s, int v ) )
+    GUI_LSCS_SLOT_2( _q_newHsv )
 
-    GUI_CS_SLOT_1( Private, void _q_newColorTypedIn( QRgb rgb ) )
-    GUI_CS_SLOT_2( _q_newColorTypedIn )
+    GUI_LSCS_SLOT_1( Private, void _q_newColorTypedIn( QRgb rgb ) )
+    GUI_LSCS_SLOT_2( _q_newColorTypedIn )
 
-    GUI_CS_SLOT_1( Private, void _q_newCustom( int arg1, int arg2 ) )
-    GUI_CS_SLOT_2( _q_newCustom )
+    GUI_LSCS_SLOT_1( Private, void _q_newCustom( int arg1, int arg2 ) )
+    GUI_LSCS_SLOT_2( _q_newCustom )
 
-    GUI_CS_SLOT_1( Private, void _q_nextCustom( int arg1, int arg2 ) )
-    GUI_CS_SLOT_2( _q_nextCustom )
+    GUI_LSCS_SLOT_1( Private, void _q_nextCustom( int arg1, int arg2 ) )
+    GUI_LSCS_SLOT_2( _q_nextCustom )
 
-    GUI_CS_SLOT_1( Private, void _q_newStandard( int arg1, int arg2 ) )
-    GUI_CS_SLOT_2( _q_newStandard )
+    GUI_LSCS_SLOT_1( Private, void _q_newStandard( int arg1, int arg2 ) )
+    GUI_LSCS_SLOT_2( _q_newStandard )
 
-    GUI_CS_SLOT_1( Private, void _q_pickScreenColor() )
-    GUI_CS_SLOT_2( _q_pickScreenColor )
+    GUI_LSCS_SLOT_1( Private, void _q_pickScreenColor() )
+    GUI_LSCS_SLOT_2( _q_pickScreenColor )
 
-    GUI_CS_SLOT_1( Private, void _q_updateColorPicking() )
-    GUI_CS_SLOT_2( _q_updateColorPicking )
+    GUI_LSCS_SLOT_1( Private, void _q_updateColorPicking() )
+    GUI_LSCS_SLOT_2( _q_updateColorPicking )
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS( QColorDialog::ColorDialogOptions )

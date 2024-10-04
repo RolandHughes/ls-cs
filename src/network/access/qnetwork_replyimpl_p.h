@@ -43,7 +43,7 @@ class QNetworkReplyImplPrivate;
 
 class QNetworkReplyImpl: public QNetworkReply
 {
-    NET_CS_OBJECT( QNetworkReplyImpl )
+    NET_LSCS_OBJECT( QNetworkReplyImpl )
 
 public:
     QNetworkReplyImpl( QObject *parent = nullptr );
@@ -61,33 +61,33 @@ public:
 
     Q_DECLARE_PRIVATE( QNetworkReplyImpl )
 
-    NET_CS_SLOT_1( Private, void _q_startOperation() )
-    NET_CS_SLOT_2( _q_startOperation )
+    NET_LSCS_SLOT_1( Private, void _q_startOperation() )
+    NET_LSCS_SLOT_2( _q_startOperation )
 
-    NET_CS_SLOT_1( Private, void _q_copyReadyRead() )
-    NET_CS_SLOT_2( _q_copyReadyRead )
+    NET_LSCS_SLOT_1( Private, void _q_copyReadyRead() )
+    NET_LSCS_SLOT_2( _q_copyReadyRead )
 
-    NET_CS_SLOT_1( Private, void _q_copyReadChannelFinished() )
-    NET_CS_SLOT_2( _q_copyReadChannelFinished )
+    NET_LSCS_SLOT_1( Private, void _q_copyReadChannelFinished() )
+    NET_LSCS_SLOT_2( _q_copyReadChannelFinished )
 
-    NET_CS_SLOT_1( Private, void _q_bufferOutgoingData() )
-    NET_CS_SLOT_2( _q_bufferOutgoingData )
+    NET_LSCS_SLOT_1( Private, void _q_bufferOutgoingData() )
+    NET_LSCS_SLOT_2( _q_bufferOutgoingData )
 
-    NET_CS_SLOT_1( Private, void _q_bufferOutgoingDataFinished() )
-    NET_CS_SLOT_2( _q_bufferOutgoingDataFinished )
+    NET_LSCS_SLOT_1( Private, void _q_bufferOutgoingDataFinished() )
+    NET_LSCS_SLOT_2( _q_bufferOutgoingDataFinished )
 
 #ifndef QT_NO_BEARERMANAGEMENT
-    NET_CS_SLOT_1( Private, void _q_networkSessionConnected() )
-    NET_CS_SLOT_2( _q_networkSessionConnected )
+    NET_LSCS_SLOT_1( Private, void _q_networkSessionConnected() )
+    NET_LSCS_SLOT_2( _q_networkSessionConnected )
 
-    NET_CS_SLOT_1( Private, void _q_networkSessionFailed() )
-    NET_CS_SLOT_2( _q_networkSessionFailed )
+    NET_LSCS_SLOT_1( Private, void _q_networkSessionFailed() )
+    NET_LSCS_SLOT_2( _q_networkSessionFailed )
 
-    NET_CS_SLOT_1( Private, void _q_networkSessionStateChanged( QNetworkSession::State ) )
-    NET_CS_SLOT_2( _q_networkSessionStateChanged )
+    NET_LSCS_SLOT_1( Private, void _q_networkSessionStateChanged( QNetworkSession::State ) )
+    NET_LSCS_SLOT_2( _q_networkSessionStateChanged )
 
-    NET_CS_SLOT_1( Private, void _q_networkSessionUsagePoliciesChanged( QNetworkSession::UsagePolicies ) )
-    NET_CS_SLOT_2( _q_networkSessionUsagePoliciesChanged )
+    NET_LSCS_SLOT_1( Private, void _q_networkSessionUsagePoliciesChanged( QNetworkSession::UsagePolicies ) )
+    NET_LSCS_SLOT_2( _q_networkSessionUsagePoliciesChanged )
 #endif
 
 #ifdef QT_SSL
@@ -210,7 +210,7 @@ public:
 #ifndef QT_NO_BEARERMANAGEMENT
 class QDisabledNetworkReply : public QNetworkReply
 {
-    NET_CS_OBJECT( QDisabledNetworkReply )
+    NET_LSCS_OBJECT( QDisabledNetworkReply )
 
 public:
     QDisabledNetworkReply( QObject *parent, const QNetworkRequest &req, QNetworkAccessManager::Operation op );

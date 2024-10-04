@@ -35,7 +35,7 @@
 
 class QDnotifyFileSystemWatcherEngine : public QFileSystemWatcherEngine
 {
-    CORE_CS_OBJECT( QDnotifyFileSystemWatcherEngine )
+    CORE_LSCS_OBJECT( QDnotifyFileSystemWatcherEngine )
 
 public:
     virtual ~QDnotifyFileSystemWatcherEngine();
@@ -50,8 +50,8 @@ public:
     void stop() override;
 
 private:
-    CORE_CS_SLOT_1( Private, void refresh( int fd ) )
-    CORE_CS_SLOT_2( refresh )
+    CORE_LSCS_SLOT_1( Private, void refresh( int fd ) )
+    CORE_LSCS_SLOT_2( refresh )
 
     struct Directory
     {

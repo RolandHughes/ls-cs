@@ -36,7 +36,7 @@ public:
     virtual ~QDeclarativePropertyValueSource();
     virtual void setTarget( const QDeclarativeProperty & ) = 0;
 };
-CS_DECLARE_INTERFACE( QDeclarativePropertyValueSource, "com.copperspice.qml.QDeclarativePropertyValueSource" )
+LSCS_DECLARE_INTERFACE( QDeclarativePropertyValueSource, "com.copperspice.qml.QDeclarativePropertyValueSource" )
 
 QT_END_NAMESPACE
 

@@ -28,7 +28,7 @@
 
 class QWindowsGuiEventDispatcher : public QEventDispatcherWin32
 {
-    CS_OBJECT( QWindowsGuiEventDispatcher )
+    LSCS_OBJECT( QWindowsGuiEventDispatcher )
 
 public:
     explicit QWindowsGuiEventDispatcher( QObject *parent = nullptr );

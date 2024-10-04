@@ -428,7 +428,7 @@ QCoreApplicationPrivate::~QCoreApplicationPrivate()
 {
     Q_Q( QCoreApplication );
 
-    QThreadData *threadData = CSInternalThreadData::get_m_ThreadData( q );
+    QThreadData *threadData = LSCSInternalThreadData::get_m_ThreadData( q );
 
     if ( threadData )
     {
@@ -444,7 +444,7 @@ QCoreApplicationPrivate::~QCoreApplicationPrivate()
 
             if ( pe.event )
             {
-                CSInternalEvents::decr_PostedEvents( pe.receiver );
+                LSCSInternalEvents::decr_PostedEvents( pe.receiver );
 
                 pe.event->posted = false;
                 delete pe.event;
@@ -632,7 +632,7 @@ void QCoreApplicationPrivate::init()
 #endif
 
     // threads
-    QThreadData *threadData = CSInternalThreadData::get_m_ThreadData( q );
+    QThreadData *threadData = LSCSInternalThreadData::get_m_ThreadData( q );
 
     // use the event dispatcher created by the app programmer (if any)
     if ( ! eventDispatcher )
@@ -692,7 +692,7 @@ QCoreApplication::~QCoreApplication()
     }
 
     // threads
-    QThreadData *threadData = CSInternalThreadData::get_m_ThreadData( this );
+    QThreadData *threadData = LSCSInternalThreadData::get_m_ThreadData( this );
 
     threadData->eventDispatcher = nullptr;
 
@@ -750,7 +750,7 @@ bool QCoreApplication::notifyInternal( QObject *receiver, QEvent *event )
     // the current thread, so receiver->d_func()->threadData is
     // equivalent to QThreadData::current(), just without the function call overhead.
 
-    QThreadData *threadData = CSInternalThreadData::get_m_ThreadData( receiver );
+    QThreadData *threadData = LSCSInternalThreadData::get_m_ThreadData( receiver );
 
     ++threadData->loopLevel;
 
@@ -787,7 +787,7 @@ bool QCoreApplication::notify( QObject *receiver, QEvent *event )
         return true;
     }
 
-#if defined(CS_SHOW_DEBUG_CORE)
+#if defined(LSCS_SHOW_DEBUG_CORE)
     d->checkReceiverThread( receiver );
 #endif
 
@@ -807,10 +807,10 @@ bool QCoreApplicationPrivate::sendThroughApplicationEventFilters( QObject *recei
 {
     Q_Q( QCoreApplication );
 
-    QThreadData *threadData = CSInternalThreadData::get_m_ThreadData( q );
-    QThreadData *threadData_Receiver = CSInternalThreadData::get_m_ThreadData( receiver );
+    QThreadData *threadData = LSCSInternalThreadData::get_m_ThreadData( q );
+    QThreadData *threadData_Receiver = LSCSInternalThreadData::get_m_ThreadData( receiver );
 
-    QList<QPointer<QObject>> &eventFilters = CSInternalEvents::get_m_EventFilters( q );
+    QList<QPointer<QObject>> &eventFilters = LSCSInternalEvents::get_m_EventFilters( q );
 
     if ( threadData_Receiver == threadData )
     {
@@ -825,7 +825,7 @@ bool QCoreApplicationPrivate::sendThroughApplicationEventFilters( QObject *recei
                 continue;
             }
 
-            QThreadData *threadData_Obj = CSInternalThreadData::get_m_ThreadData( obj );
+            QThreadData *threadData_Obj = LSCSInternalThreadData::get_m_ThreadData( obj );
 
             if ( threadData_Obj != threadData )
             {
@@ -849,9 +849,9 @@ bool QCoreApplicationPrivate::sendThroughObjectEventFilters( QObject *receiver, 
 
     if ( receiver != q )
     {
-        QThreadData *threadData_Receiver = CSInternalThreadData::get_m_ThreadData( receiver );
+        QThreadData *threadData_Receiver = LSCSInternalThreadData::get_m_ThreadData( receiver );
 
-        QList<QPointer<QObject>> &eventFilters = CSInternalEvents::get_m_EventFilters( receiver );
+        QList<QPointer<QObject>> &eventFilters = LSCSInternalEvents::get_m_EventFilters( receiver );
 
         for ( int i = 0; i < eventFilters.size(); ++i )
         {
@@ -862,7 +862,7 @@ bool QCoreApplicationPrivate::sendThroughObjectEventFilters( QObject *receiver, 
                 continue;
             }
 
-            QThreadData *threadData_Obj = CSInternalThreadData::get_m_ThreadData( obj );
+            QThreadData *threadData_Obj = LSCSInternalThreadData::get_m_ThreadData( obj );
 
             if ( threadData_Obj != threadData_Receiver )
             {
@@ -965,12 +965,12 @@ int QCoreApplication::exec()
         return -1;
     }
 
-    QThreadData *threadData = CSInternalThreadData::get_m_ThreadData( m_self );
+    QThreadData *threadData = LSCSInternalThreadData::get_m_ThreadData( m_self );
 
     if ( threadData != QThreadData::current() )
     {
         qWarning( "%s::exec() Method must be called from the main() thread",
-                  csPrintable( m_self->metaObject()->className() ) );
+                  lscsPrintable( m_self->metaObject()->className() ) );
         return -1;
     }
 
@@ -1012,7 +1012,7 @@ void QCoreApplication::exit( int returnCode )
         return;
     }
 
-    QThreadData *data = CSInternalThreadData::get_m_ThreadData( m_self );
+    QThreadData *data = LSCSInternalThreadData::get_m_ThreadData( m_self );
     data->quitNow = true;
 
     for ( int i = 0; i < data->eventLoops.size(); ++i )
@@ -1031,7 +1031,7 @@ void QCoreApplication::postEvent( QObject *receiver, QEvent *event, int priority
         return;
     }
 
-    QThreadData *data = CSInternalThreadData::get_m_ThreadData( receiver );
+    QThreadData *data = LSCSInternalThreadData::get_m_ThreadData( receiver );
 
     if ( ! data )
     {
@@ -1040,7 +1040,7 @@ void QCoreApplication::postEvent( QObject *receiver, QEvent *event, int priority
         return;
     }
 
-    std::atomic<QThreadData *> &pdata = CSInternalThreadData::get_AtomicThreadData( receiver );
+    std::atomic<QThreadData *> &pdata = LSCSInternalThreadData::get_AtomicThreadData( receiver );
 
     // lock the post event mutex
     data->postEventList.mutex.lock();
@@ -1063,7 +1063,7 @@ void QCoreApplication::postEvent( QObject *receiver, QEvent *event, int priority
 
     QMutexUnlocker locker( &data->postEventList.mutex );
 
-    int peCount = CSInternalEvents::get_m_PostedEvents( receiver );
+    int peCount = LSCSInternalEvents::get_m_PostedEvents( receiver );
 
     // if this is one of the compressible events, do compression
     if ( peCount != 0 && m_self && m_self->compressEvent( event, receiver, &data->postEventList ) )
@@ -1085,7 +1085,7 @@ void QCoreApplication::postEvent( QObject *receiver, QEvent *event, int priority
     eventDeleter.take();
     event->posted = true;
 
-    CSInternalEvents::incr_PostedEvents( receiver );
+    LSCSInternalEvents::incr_PostedEvents( receiver );
 
     data->canWait = false;
     locker.unlock();
@@ -1104,7 +1104,7 @@ void QCoreApplication::postEvent( QObject *receiver, QEvent *event, int priority
 */
 bool QCoreApplication::compressEvent( QEvent *event, QObject *receiver, QPostEventList *postedEvents )
 {
-    int peCount = CSInternalEvents::get_m_PostedEvents( receiver );
+    int peCount = LSCSInternalEvents::get_m_PostedEvents( receiver );
 
 #ifdef Q_OS_WIN
     Q_ASSERT( event );
@@ -1169,7 +1169,7 @@ void QCoreApplicationPrivate::sendPostedEvents( QObject *receiver, int event_typ
         event_type = 0;
     }
 
-    QThreadData *threadData = CSInternalThreadData::get_m_ThreadData( receiver );
+    QThreadData *threadData = LSCSInternalThreadData::get_m_ThreadData( receiver );
 
     if ( receiver && threadData != data )
     {
@@ -1186,7 +1186,7 @@ void QCoreApplicationPrivate::sendPostedEvents( QObject *receiver, int event_typ
     // events, canWait will be set to false.
     data->canWait = ( data->postEventList.size() == 0 );
 
-    int peCount = CSInternalEvents::get_m_PostedEvents( receiver );
+    int peCount = LSCSInternalEvents::get_m_PostedEvents( receiver );
 
     if ( data->postEventList.size() == 0 || ( receiver && peCount == 0 ) )
     {
@@ -1264,8 +1264,8 @@ void QCoreApplicationPrivate::sendPostedEvents( QObject *receiver, int event_typ
         QEvent *e  = pe.event;
         QObject *r = pe.receiver;
 
-        CSInternalEvents::decr_PostedEvents( r );
-        Q_ASSERT( CSInternalEvents::get_m_PostedEvents( r ) >= 0 );
+        LSCSInternalEvents::decr_PostedEvents( r );
+        Q_ASSERT( LSCSInternalEvents::get_m_PostedEvents( r ) >= 0 );
 
         // next, update the data structure so that we're ready for the next event
         const_cast<QPostEvent &>( pe ).event = nullptr;
@@ -1334,7 +1334,7 @@ void QCoreApplication::removePostedEvents( QObject *receiver, int eventType )
 
     if ( receiver )
     {
-        data = CSInternalThreadData::get_m_ThreadData( receiver );
+        data = LSCSInternalThreadData::get_m_ThreadData( receiver );
 
     }
     else
@@ -1348,7 +1348,7 @@ void QCoreApplication::removePostedEvents( QObject *receiver, int eventType )
     // the QObject destructor calls this function directly.  this can
     // happen while the event loop is in the middle of posting events,
     // and when we get here, we may not have any more posted events for this object
-    int peCount = CSInternalEvents::get_m_PostedEvents( receiver );
+    int peCount = LSCSInternalEvents::get_m_PostedEvents( receiver );
 
     if ( receiver && peCount == 0 )
     {
@@ -1369,7 +1369,7 @@ void QCoreApplication::removePostedEvents( QObject *receiver, int eventType )
         if ( ( ! receiver || pe.receiver == receiver ) && ( pe.event && ( eventType == 0 || pe.event->type() == eventType ) ) )
         {
 
-            CSInternalEvents::decr_PostedEvents( pe.receiver );
+            LSCSInternalEvents::decr_PostedEvents( pe.receiver );
 
             pe.event->posted = false;
             events.append( pe.event );
@@ -1387,11 +1387,11 @@ void QCoreApplication::removePostedEvents( QObject *receiver, int eventType )
         }
     }
 
-#if defined(CS_SHOW_DEBUG_CORE)
+#if defined(LSCS_SHOW_DEBUG_CORE)
 
     if ( receiver && eventType == 0 )
     {
-        Q_ASSERT( CSInternalEvents::get_m_PostedEvents( receiver ) == 0 );
+        Q_ASSERT( LSCSInternalEvents::get_m_PostedEvents( receiver ) == 0 );
     }
 
 #endif
@@ -1424,7 +1424,7 @@ void QCoreApplicationPrivate::removePostedEvent( QEvent *event )
     if ( data->postEventList.size() == 0 )
     {
 
-#if defined(CS_SHOW_DEBUG_CORE)
+#if defined(LSCS_SHOW_DEBUG_CORE)
         qDebug( "QCoreApplication::removePostedEvent() Internal error, %p %d is posted", ( void * )event, event->type() );
         return;
 #endif
@@ -1438,9 +1438,9 @@ void QCoreApplicationPrivate::removePostedEvent( QEvent *event )
         if ( pe.event == event )
         {
             qWarning( "QCoreApplication::removePostedEvent() Event of type %d deleted while posted to %s %s",
-                      event->type(), csPrintable( pe.receiver->metaObject()->className() ), csPrintable( pe.receiver->objectName() ) );
+                      event->type(), lscsPrintable( pe.receiver->metaObject()->className() ), lscsPrintable( pe.receiver->objectName() ) );
 
-            CSInternalEvents::decr_PostedEvents( pe.receiver );
+            LSCSInternalEvents::decr_PostedEvents( pe.receiver );
             pe.event->posted = false;
 
             delete pe.event;
@@ -1887,7 +1887,7 @@ QStringList QCoreApplication::libraryPaths()
             m_self->d_func()->appendApplicationPathToLibraryPaths();
         }
 
-        const QByteArray libPathEnv = qgetenv( "CS_PLUGIN_PATH" );
+        const QByteArray libPathEnv = qgetenv( "LSCS_PLUGIN_PATH" );
 
         if ( ! libPathEnv.isEmpty() )
         {

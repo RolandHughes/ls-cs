@@ -39,7 +39,7 @@ QT_BEGIN_NAMESPACE
 
 class QDeclarativeFontObject : public QObject
 {
-    CS__OBJECT( QDeclarativeFontObject )
+    LSCS_OBJECT( QDeclarativeFontObject )
 
 public:
     QDeclarativeFontObject( int _id = -1 );
@@ -47,12 +47,12 @@ public:
     void download( const QUrl &url, QNetworkAccessManager *manager );
     int id;
 
-    DECL_CS_SIGNAL_1( Public, void fontDownloaded( const QString &un_named_arg1, QDeclarativeFontLoader::Status un_named_arg2 ) )
-    DECL_CS_SIGNAL_2( fontDownloaded, un_named_arg1, un_named_arg2 )
+    DECL_LSCS_SIGNAL_1( Public, void fontDownloaded( const QString &un_named_arg1, QDeclarativeFontLoader::Status un_named_arg2 ) )
+    DECL_LSCS_SIGNAL_2( fontDownloaded, un_named_arg1, un_named_arg2 )
 
 private:
-    DECL_CS_SLOT_1( Private, void replyFinished() )
-    DECL_CS_SLOT_2( replyFinished )
+    DECL_LSCS_SLOT_1( Private, void replyFinished() )
+    DECL_LSCS_SLOT_2( replyFinished )
 
 
 private:

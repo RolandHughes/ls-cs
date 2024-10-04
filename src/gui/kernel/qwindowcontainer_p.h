@@ -30,7 +30,7 @@ class QWindowContainerPrivate;
 
 class Q_GUI_EXPORT QWindowContainer : public QWidget
 {
-    GUI_CS_OBJECT( QWindowContainer )
+    GUI_LSCS_OBJECT( QWindowContainer )
     Q_DECLARE_PRIVATE( QWindowContainer )
 
 public:
@@ -48,8 +48,8 @@ protected:
     bool event( QEvent *event ) override;
 
 private :
-    GUI_CS_SLOT_1( Private, void focusWindowChanged( QWindow *focusWindow ) )
-    GUI_CS_SLOT_2( focusWindowChanged )
+    GUI_LSCS_SLOT_1( Private, void focusWindowChanged( QWindow *focusWindow ) )
+    GUI_LSCS_SLOT_2( focusWindowChanged )
 };
 
 #endif

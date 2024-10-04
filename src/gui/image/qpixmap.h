@@ -25,7 +25,7 @@
 #define QPIXMAP_H
 
 #if defined(Q_OS_DARWIN)
-#include <cs_carbon_wrapper.h>
+#include <lscs_carbon_wrapper.h>
 #endif
 
 #include <qcolor.h>

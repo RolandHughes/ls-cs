@@ -1019,7 +1019,7 @@ void QOpenGLSharedResourceGuard::freeResource( QOpenGLContext *context )
 QOpenGLMultiGroupSharedResource::QOpenGLMultiGroupSharedResource()
     : active( 0 )
 {
-#if defined(CS_SHOW_DEBUG_GUI_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_GUI_OPENGL)
     qDebug( "QOpenGLMultiGroupSharedResource() Creating context group resource object %p", this );
 #endif
 }
@@ -1046,7 +1046,7 @@ QOpenGLMultiGroupSharedResource::~QOpenGLMultiGroupSharedResource()
 
 void QOpenGLMultiGroupSharedResource::insert( QOpenGLContext *context, QOpenGLSharedResource *value )
 {
-#if defined(CS_SHOW_DEBUG_GUI_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_GUI_OPENGL)
     qDebug( "QOpenGLMultiGroupSharedResource::insert() Inserting context group resource "
             "%p for context %p, managed by %p.", value, context, this );
 #endif
@@ -1084,7 +1084,7 @@ QList<QOpenGLSharedResource *> QOpenGLMultiGroupSharedResource::resources() cons
 
 void QOpenGLMultiGroupSharedResource::cleanup( QOpenGLContextGroup *group, QOpenGLSharedResource *value )
 {
-#if defined(CS_SHOW_DEBUG_GUI_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_GUI_OPENGL)
     qDebug( "QOpenGLMultiGroupSharedResource::cleanup() Context group resource %p, for group %p in thread %p",
             this, group, QThread::currentThread() );
 #endif

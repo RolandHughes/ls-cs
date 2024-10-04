@@ -76,7 +76,7 @@ static constexpr const int MaxWriteBufferSize = 128 * 1024;
 
 #define S5_PASSWORDAUTH_VERSION 0x01
 
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
 
 #define QSOCKS5_Q_DEBUG qDebug() << this
 #define QSOCKS5_D_DEBUG qDebug() << q_ptr
@@ -303,7 +303,7 @@ static int qt_socks5_get_host_address_and_port( const QByteArray &buf, QHostAddr
         // just skip it
         pos++;
 
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
         qDebug() << "skipping hostname of len" << uint( pBuf[pos] );
 #endif
 

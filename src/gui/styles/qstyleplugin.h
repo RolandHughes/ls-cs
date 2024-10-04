@@ -33,7 +33,7 @@ class QStyle;
 
 class Q_GUI_EXPORT QStylePlugin : public QObject
 {
-    GUI_CS_OBJECT( QStylePlugin )
+    GUI_LSCS_OBJECT( QStylePlugin )
 
 public:
     explicit QStylePlugin( QObject *parent = nullptr );

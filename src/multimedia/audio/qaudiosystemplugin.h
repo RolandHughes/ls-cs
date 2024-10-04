@@ -44,12 +44,12 @@ struct Q_MULTIMEDIA_EXPORT QAudioSystemFactoryInterface
 };
 
 #define QAudioSystemFactoryInterface_iid "com.copperspice.CS.audioSystemFactory/1.0"
-CS_DECLARE_INTERFACE( QAudioSystemFactoryInterface, QAudioSystemFactoryInterface_iid )
+LSCS_DECLARE_INTERFACE( QAudioSystemFactoryInterface, QAudioSystemFactoryInterface_iid )
 
 class Q_MULTIMEDIA_EXPORT QAudioSystemPlugin : public QObject, public QAudioSystemFactoryInterface
 {
-    MULTI_CS_OBJECT_MULTIPLE( QAudioSystemPlugin, QObject )
-    CS_INTERFACES( QAudioSystemFactoryInterface )
+    MULTI_LSCS_OBJECT_MULTIPLE( QAudioSystemPlugin, QObject )
+    LSCS_INTERFACES( QAudioSystemFactoryInterface )
 
 public:
     explicit QAudioSystemPlugin( QObject *parent = nullptr );

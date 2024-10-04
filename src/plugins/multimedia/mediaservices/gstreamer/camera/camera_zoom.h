@@ -30,7 +30,7 @@ class CameraBinSession;
 
 class CameraBinZoom  : public QCameraZoomControl
 {
-    CS_OBJECT( CameraBinZoom )
+    LSCS_OBJECT( CameraBinZoom )
 
 public:
     CameraBinZoom( CameraBinSession *session );

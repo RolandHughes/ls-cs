@@ -29,7 +29,7 @@
 
 class Q_GUI_EXPORT QPlatformSharedGraphicsCache: public QObject
 {
-    GUI_CS_OBJECT( QPlatformSharedGraphicsCache )
+    GUI_LSCS_OBJECT( QPlatformSharedGraphicsCache )
 
 public:
     enum PixelFormat
@@ -63,19 +63,19 @@ public:
     virtual QSize sizeOfBuffer( void *bufferId ) = 0;
     virtual void *eglImageForBuffer( void *bufferId ) = 0;
 
-    GUI_CS_SIGNAL_1( Public, void itemsMissing( const QByteArray &cacheId, const QVector <quint32> &itemIds ) )
-    GUI_CS_SIGNAL_2( itemsMissing, cacheId, itemIds )
+    GUI_LSCS_SIGNAL_1( Public, void itemsMissing( const QByteArray &cacheId, const QVector <quint32> &itemIds ) )
+    GUI_LSCS_SIGNAL_2( itemsMissing, cacheId, itemIds )
 
-    GUI_CS_SIGNAL_1( Public, void itemsAvailable( const QByteArray &cacheId, void *bufferId,
+    GUI_LSCS_SIGNAL_1( Public, void itemsAvailable( const QByteArray &cacheId, void *bufferId,
                      const QVector <quint32> &itemIds, const QVector <QPoint> &positionsInBuffer ) )
-    GUI_CS_SIGNAL_2( itemsAvailable, cacheId, bufferId, itemIds, positionsInBuffer )
+    GUI_LSCS_SIGNAL_2( itemsAvailable, cacheId, bufferId, itemIds, positionsInBuffer )
 
-    GUI_CS_SIGNAL_1( Public, void itemsInvalidated( const QByteArray &cacheId, const QVector <quint32> &itemIds ) )
-    GUI_CS_SIGNAL_2( itemsInvalidated, cacheId, itemIds )
+    GUI_LSCS_SIGNAL_1( Public, void itemsInvalidated( const QByteArray &cacheId, const QVector <quint32> &itemIds ) )
+    GUI_LSCS_SIGNAL_2( itemsInvalidated, cacheId, itemIds )
 
-    GUI_CS_SIGNAL_1( Public, void itemsUpdated( const QByteArray &cacheId, void *bufferId,
+    GUI_LSCS_SIGNAL_1( Public, void itemsUpdated( const QByteArray &cacheId, void *bufferId,
                      const QVector <quint32> &itemIds, const QVector <QPoint> &positionsInBuffer ) )
-    GUI_CS_SIGNAL_2( itemsUpdated, cacheId, bufferId, itemIds, positionsInBuffer )
+    GUI_LSCS_SIGNAL_2( itemsUpdated, cacheId, bufferId, itemIds, positionsInBuffer )
 };
 
 #endif

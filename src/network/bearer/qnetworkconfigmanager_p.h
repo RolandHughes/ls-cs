@@ -37,7 +37,7 @@ class QTimer;
 
 class Q_NETWORK_EXPORT QNetworkConfigurationManagerPrivate : public QObject
 {
-    NET_CS_OBJECT( QNetworkConfigurationManagerPrivate )
+    NET_LSCS_OBJECT( QNetworkConfigurationManagerPrivate )
 
 public:
     QNetworkConfigurationManagerPrivate();
@@ -61,43 +61,43 @@ public:
     void initialize();
     void cleanup();
 
-    NET_CS_SLOT_1( Public, void updateConfigurations() )
-    NET_CS_SLOT_2( updateConfigurations )
+    NET_LSCS_SLOT_1( Public, void updateConfigurations() )
+    NET_LSCS_SLOT_2( updateConfigurations )
 
-    NET_CS_SLOT_1( Public, static void addPreAndPostRoutine() )
-    NET_CS_SLOT_2( addPreAndPostRoutine )
+    NET_LSCS_SLOT_1( Public, static void addPreAndPostRoutine() )
+    NET_LSCS_SLOT_2( addPreAndPostRoutine )
 
-    NET_CS_SIGNAL_1( Public, void configurationAdded( const QNetworkConfiguration &config ) )
-    NET_CS_SIGNAL_OVERLOAD( configurationAdded, ( const QNetworkConfiguration & ), config )
+    NET_LSCS_SIGNAL_1( Public, void configurationAdded( const QNetworkConfiguration &config ) )
+    NET_LSCS_SIGNAL_OVERLOAD( configurationAdded, ( const QNetworkConfiguration & ), config )
 
-    NET_CS_SIGNAL_1( Public, void configurationRemoved( const QNetworkConfiguration &config ) )
-    NET_CS_SIGNAL_OVERLOAD( configurationRemoved, ( const QNetworkConfiguration & ), config )
+    NET_LSCS_SIGNAL_1( Public, void configurationRemoved( const QNetworkConfiguration &config ) )
+    NET_LSCS_SIGNAL_OVERLOAD( configurationRemoved, ( const QNetworkConfiguration & ), config )
 
-    NET_CS_SIGNAL_1( Public, void configurationChanged( const QNetworkConfiguration &config ) )
-    NET_CS_SIGNAL_OVERLOAD( configurationChanged, ( const QNetworkConfiguration & ), config )
+    NET_LSCS_SIGNAL_1( Public, void configurationChanged( const QNetworkConfiguration &config ) )
+    NET_LSCS_SIGNAL_OVERLOAD( configurationChanged, ( const QNetworkConfiguration & ), config )
 
-    NET_CS_SIGNAL_1( Public, void configurationUpdateComplete() )
-    NET_CS_SIGNAL_2( configurationUpdateComplete )
+    NET_LSCS_SIGNAL_1( Public, void configurationUpdateComplete() )
+    NET_LSCS_SIGNAL_2( configurationUpdateComplete )
 
 
-    NET_CS_SIGNAL_1( Public, void onlineStateChanged( bool isOnline ) )
-    NET_CS_SIGNAL_2( onlineStateChanged, isOnline )
+    NET_LSCS_SIGNAL_1( Public, void onlineStateChanged( bool isOnline ) )
+    NET_LSCS_SIGNAL_2( onlineStateChanged, isOnline )
 
 private :
-    NET_CS_SLOT_1( Private, void configurationAdded( QNetworkConfigurationPrivatePointer ptr ) )
-    NET_CS_SLOT_OVERLOAD( configurationAdded, ( QNetworkConfigurationPrivatePointer ) )
+    NET_LSCS_SLOT_1( Private, void configurationAdded( QNetworkConfigurationPrivatePointer ptr ) )
+    NET_LSCS_SLOT_OVERLOAD( configurationAdded, ( QNetworkConfigurationPrivatePointer ) )
 
-    NET_CS_SLOT_1( Private, void configurationRemoved( QNetworkConfigurationPrivatePointer ptr ) )
-    NET_CS_SLOT_OVERLOAD( configurationRemoved, ( QNetworkConfigurationPrivatePointer ) )
+    NET_LSCS_SLOT_1( Private, void configurationRemoved( QNetworkConfigurationPrivatePointer ptr ) )
+    NET_LSCS_SLOT_OVERLOAD( configurationRemoved, ( QNetworkConfigurationPrivatePointer ) )
 
-    NET_CS_SLOT_1( Private, void configurationChanged( QNetworkConfigurationPrivatePointer ptr ) )
-    NET_CS_SLOT_OVERLOAD( configurationChanged, ( QNetworkConfigurationPrivatePointer ) )
+    NET_LSCS_SLOT_1( Private, void configurationChanged( QNetworkConfigurationPrivatePointer ptr ) )
+    NET_LSCS_SLOT_OVERLOAD( configurationChanged, ( QNetworkConfigurationPrivatePointer ) )
 
-    NET_CS_SLOT_1( Private, void pollEngines() )
-    NET_CS_SLOT_2( pollEngines )
+    NET_LSCS_SLOT_1( Private, void pollEngines() )
+    NET_LSCS_SLOT_2( pollEngines )
 
-    NET_CS_INVOKABLE_METHOD_1( Private, void startPolling() )
-    NET_CS_INVOKABLE_METHOD_2( startPolling )
+    NET_LSCS_INVOKABLE_METHOD_1( Private, void startPolling() )
+    NET_LSCS_INVOKABLE_METHOD_2( startPolling )
 
     QTimer *pollTimer;
     QThread *bearerThread;

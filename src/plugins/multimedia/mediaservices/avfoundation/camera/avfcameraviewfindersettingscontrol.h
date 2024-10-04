@@ -41,7 +41,7 @@ class AVFCameraService;
 
 class AVFCameraViewfinderSettingsControl2 : public QCameraViewfinderSettingsControl2
 {
-    CS_OBJECT( AVFCameraViewfinderSettingsControl2 )
+    LSCS_OBJECT( AVFCameraViewfinderSettingsControl2 )
 
 public:
     AVFCameraViewfinderSettingsControl2( AVFCameraService *service );
@@ -75,7 +75,7 @@ private:
 
 class AVFCameraViewfinderSettingsControl : public QCameraViewfinderSettingsControl
 {
-    CS_OBJECT( AVFCameraViewfinderSettingsControl )
+    LSCS_OBJECT( AVFCameraViewfinderSettingsControl )
 
 public:
     AVFCameraViewfinderSettingsControl( AVFCameraService *service );

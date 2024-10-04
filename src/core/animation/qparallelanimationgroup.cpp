@@ -103,7 +103,7 @@ void QParallelAnimationGroup::updateCurrentTime( int currentTime )
         }
     }
 
-#if defined(CS_SHOW_DEBUG_CORE)
+#if defined(LSCS_SHOW_DEBUG_CORE)
     qDebug( "QParallellAnimationGroup %5d: setCurrentTime(%d), loop:%d, last:%d, lastcurrent:%d, %d",
             __LINE__, d->currentTime, d->currentLoop, d->lastLoop, d->lastCurrentTime, state() );
 #endif

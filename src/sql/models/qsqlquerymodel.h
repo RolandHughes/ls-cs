@@ -34,7 +34,7 @@ class QSqlQuery;
 
 class Q_SQL_EXPORT QSqlQueryModel: public QAbstractTableModel
 {
-    SQL_CS_OBJECT( QSqlQueryModel )
+    SQL_LSCS_OBJECT( QSqlQueryModel )
     Q_DECLARE_PRIVATE( QSqlQueryModel )
 
 public:

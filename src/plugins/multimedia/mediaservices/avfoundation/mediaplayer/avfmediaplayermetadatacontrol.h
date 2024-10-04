@@ -30,7 +30,7 @@ class AVFMediaPlayerSession;
 
 class AVFMediaPlayerMetaDataControl : public QMetaDataReaderControl
 {
-    CS_OBJECT( AVFMediaPlayerMetaDataControl )
+    LSCS_OBJECT( AVFMediaPlayerMetaDataControl )
 
 public:
     explicit AVFMediaPlayerMetaDataControl( AVFMediaPlayerSession *session, QObject *parent = nullptr );
@@ -49,8 +49,8 @@ private:
 
     friend class AVFMediaPlayerService;
 
-    CS_SLOT_1( Private, void updateTags() )
-    CS_SLOT_2( updateTags )
+    LSCS_SLOT_1( Private, void updateTags() )
+    LSCS_SLOT_2( updateTags )
 };
 
 #endif

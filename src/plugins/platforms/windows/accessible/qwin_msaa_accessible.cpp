@@ -181,7 +181,7 @@ HRESULT STDMETHODCALLTYPE QWindowsEnumerate::Skip( unsigned long celt )
     return S_OK;
 }
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
 void accessibleDebugClientCalls_helper( const char *funcName, const QAccessibleInterface *iface )
 {
     qDebug() << iface << funcName;
@@ -199,7 +199,7 @@ HRESULT STDMETHODCALLTYPE QWindowsMsaaAccessible::QueryInterface( REFIID id, LPV
 
     QByteArray strIID = IIDToString( id );
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
 
     if ( ! strIID.isEmpty() )
     {
@@ -1689,7 +1689,7 @@ HRESULT STDMETHODCALLTYPE QWindowsMsaaAccessible::GetWindow( HWND *phwnd )
 
     *phwnd = ( HWND )platform->nativeResourceForWindow( "handle", window );
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
     qDebug() << "QWindowsAccessible::GetWindow() handle = " << *phwnd;
 #endif
 

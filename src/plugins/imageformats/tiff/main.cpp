@@ -34,10 +34,10 @@
 
 class QTiffPlugin : public QImageIOPlugin
 {
-    CS_OBJECT( QTiffPlugin )
+    LSCS_OBJECT( QTiffPlugin )
 
-    CS_PLUGIN_IID( QImageIOHandlerInterface_ID )
-    CS_PLUGIN_KEY( "tiff, tif" )
+    LSCS_PLUGIN_IID( QImageIOHandlerInterface_ID )
+    LSCS_PLUGIN_KEY( "tiff, tif" )
 
 public:
     Capabilities capabilities( QIODevice *device, const QByteArray &format ) const;
@@ -45,7 +45,7 @@ public:
     QStringList keys() const;
 };
 
-CS_PLUGIN_REGISTER( QTiffPlugin )
+LSCS_PLUGIN_REGISTER( QTiffPlugin )
 
 QImageIOPlugin::Capabilities QTiffPlugin::capabilities( QIODevice *device, const QByteArray &format ) const
 {

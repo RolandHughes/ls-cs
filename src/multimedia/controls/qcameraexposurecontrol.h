@@ -32,9 +32,9 @@
 
 class Q_MULTIMEDIA_EXPORT QCameraExposureControl : public QMediaControl
 {
-    MULTI_CS_OBJECT( QCameraExposureControl )
+    MULTI_LSCS_OBJECT( QCameraExposureControl )
 
-    MULTI_CS_ENUM( ExposureParameter )
+    MULTI_LSCS_ENUM( ExposureParameter )
 
 public:
     ~QCameraExposureControl();
@@ -61,21 +61,21 @@ public:
     virtual QVariant actualValue( ExposureParameter parameter ) const = 0;
     virtual bool setValue( ExposureParameter parameter, const QVariant &value ) = 0;
 
-    MULTI_CS_SIGNAL_1( Public, void requestedValueChanged( int parameter ) )
-    MULTI_CS_SIGNAL_2( requestedValueChanged, parameter )
+    MULTI_LSCS_SIGNAL_1( Public, void requestedValueChanged( int parameter ) )
+    MULTI_LSCS_SIGNAL_2( requestedValueChanged, parameter )
 
-    MULTI_CS_SIGNAL_1( Public, void actualValueChanged( int parameter ) )
-    MULTI_CS_SIGNAL_2( actualValueChanged, parameter )
+    MULTI_LSCS_SIGNAL_1( Public, void actualValueChanged( int parameter ) )
+    MULTI_LSCS_SIGNAL_2( actualValueChanged, parameter )
 
-    MULTI_CS_SIGNAL_1( Public, void parameterRangeChanged( int parameter ) )
-    MULTI_CS_SIGNAL_2( parameterRangeChanged, parameter )
+    MULTI_LSCS_SIGNAL_1( Public, void parameterRangeChanged( int parameter ) )
+    MULTI_LSCS_SIGNAL_2( parameterRangeChanged, parameter )
 
 protected:
     explicit QCameraExposureControl( QObject *parent = nullptr );
 };
 
 #define QCameraExposureControl_iid  "com.copperspice.CS.cameraExposureControl/1.0"
-CS_DECLARE_INTERFACE( QCameraExposureControl, QCameraExposureControl_iid )
+LSCS_DECLARE_INTERFACE( QCameraExposureControl, QCameraExposureControl_iid )
 
 #endif
 

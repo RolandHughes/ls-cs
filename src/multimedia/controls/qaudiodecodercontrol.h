@@ -33,7 +33,7 @@ class QIODevice;
 
 class Q_MULTIMEDIA_EXPORT QAudioDecoderControl : public QMediaControl
 {
-    MULTI_CS_OBJECT( QAudioDecoderControl )
+    MULTI_LSCS_OBJECT( QAudioDecoderControl )
 
 public:
     ~QAudioDecoderControl();
@@ -59,38 +59,38 @@ public:
     virtual qint64 duration() const = 0;
 
 public:
-    MULTI_CS_SIGNAL_1( Public, void stateChanged( QAudioDecoder::State state ) )
-    MULTI_CS_SIGNAL_2( stateChanged, state )
+    MULTI_LSCS_SIGNAL_1( Public, void stateChanged( QAudioDecoder::State state ) )
+    MULTI_LSCS_SIGNAL_2( stateChanged, state )
 
-    MULTI_CS_SIGNAL_1( Public, void formatChanged( const QAudioFormat &format ) )
-    MULTI_CS_SIGNAL_2( formatChanged, format )
+    MULTI_LSCS_SIGNAL_1( Public, void formatChanged( const QAudioFormat &format ) )
+    MULTI_LSCS_SIGNAL_2( formatChanged, format )
 
-    MULTI_CS_SIGNAL_1( Public, void sourceChanged() )
-    MULTI_CS_SIGNAL_2( sourceChanged )
+    MULTI_LSCS_SIGNAL_1( Public, void sourceChanged() )
+    MULTI_LSCS_SIGNAL_2( sourceChanged )
 
-    MULTI_CS_SIGNAL_1( Public, void error( int error, const QString &errorString ) )
-    MULTI_CS_SIGNAL_2( error, error, errorString )
+    MULTI_LSCS_SIGNAL_1( Public, void error( int error, const QString &errorString ) )
+    MULTI_LSCS_SIGNAL_2( error, error, errorString )
 
-    MULTI_CS_SIGNAL_1( Public, void bufferReady() )
-    MULTI_CS_SIGNAL_2( bufferReady )
+    MULTI_LSCS_SIGNAL_1( Public, void bufferReady() )
+    MULTI_LSCS_SIGNAL_2( bufferReady )
 
-    MULTI_CS_SIGNAL_1( Public, void bufferAvailableChanged( bool available ) )
-    MULTI_CS_SIGNAL_2( bufferAvailableChanged, available )
+    MULTI_LSCS_SIGNAL_1( Public, void bufferAvailableChanged( bool available ) )
+    MULTI_LSCS_SIGNAL_2( bufferAvailableChanged, available )
 
-    MULTI_CS_SIGNAL_1( Public, void finished() )
-    MULTI_CS_SIGNAL_2( finished )
+    MULTI_LSCS_SIGNAL_1( Public, void finished() )
+    MULTI_LSCS_SIGNAL_2( finished )
 
-    MULTI_CS_SIGNAL_1( Public, void positionChanged( qint64 position ) )
-    MULTI_CS_SIGNAL_2( positionChanged, position )
+    MULTI_LSCS_SIGNAL_1( Public, void positionChanged( qint64 position ) )
+    MULTI_LSCS_SIGNAL_2( positionChanged, position )
 
-    MULTI_CS_SIGNAL_1( Public, void durationChanged( qint64 duration ) )
-    MULTI_CS_SIGNAL_2( durationChanged, duration )
+    MULTI_LSCS_SIGNAL_1( Public, void durationChanged( qint64 duration ) )
+    MULTI_LSCS_SIGNAL_2( durationChanged, duration )
 
 protected:
     explicit QAudioDecoderControl( QObject *parent = nullptr );
 };
 
 #define QAudioDecoderControl_Key "com.copperspice.CS.audioDecoderControl/1.0"
-CS_DECLARE_INTERFACE( QAudioDecoderControl, QAudioDecoderControl_Key )
+LSCS_DECLARE_INTERFACE( QAudioDecoderControl, QAudioDecoderControl_Key )
 
 #endif

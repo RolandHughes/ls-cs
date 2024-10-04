@@ -49,12 +49,12 @@ struct QDeclarativeGraphics_DerivedObject : public QObject
 {
     void setParent_noEvent( QObject *parent )
     {
-        bool sendChildEvents = CSInternalEvents::get_m_sendChildEvents( this );
+        bool sendChildEvents = LSCSInternalEvents::get_m_sendChildEvents( this );
 
-        CSInternalEvents::set_m_sendChildEvents( this, false );
+        LSCSInternalEvents::set_m_sendChildEvents( this, false );
         setParent( parent );
 
-        CSInternalEvents::set_m_sendChildEvents( this, sendChildEvents );
+        LSCSInternalEvents::set_m_sendChildEvents( this, sendChildEvents );
     }
 
 };

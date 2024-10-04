@@ -31,13 +31,13 @@ class QLibraryHandle;
 
 class Q_CORE_EXPORT QPluginLoader : public QObject
 {
-    CORE_CS_OBJECT( QPluginLoader )
+    CORE_LSCS_OBJECT( QPluginLoader )
 
-    CORE_CS_PROPERTY_READ( fileName, fileName )
-    CORE_CS_PROPERTY_WRITE( fileName, setFileName )
+    CORE_LSCS_PROPERTY_READ( fileName, fileName )
+    CORE_LSCS_PROPERTY_WRITE( fileName, setFileName )
 
-    CORE_CS_PROPERTY_READ( loadHints, loadHints )
-    CORE_CS_PROPERTY_WRITE( loadHints, setLoadHints )
+    CORE_LSCS_PROPERTY_READ( loadHints, loadHints )
+    CORE_LSCS_PROPERTY_WRITE( loadHints, setLoadHints )
 
 public:
     explicit QPluginLoader( QObject *parent = nullptr );

@@ -34,7 +34,7 @@ class QWindowsWindow;
 
 class QWindowsInputContext : public QPlatformInputContext
 {
-    CS_OBJECT( QWindowsInputContext )
+    LSCS_OBJECT( QWindowsInputContext )
 
     struct CompositionContext
     {
@@ -81,8 +81,8 @@ public:
     void handleInputLanguageChanged( WPARAM wparam, LPARAM lparam );
 
 private :
-    CS_SLOT_1( Private, void cursorRectChanged() )
-    CS_SLOT_2( cursorRectChanged )
+    LSCS_SLOT_1( Private, void cursorRectChanged() )
+    LSCS_SLOT_2( cursorRectChanged )
 
 private:
     void initContext( HWND hwnd, qreal factor, QObject *focusObject );

@@ -662,7 +662,7 @@ QString QGtkStylePrivate::getGConfString( const QString &value, const QString &f
 
         GConfClient *client = gconf_client_get_default();
         GError *err = 0;
-        char *str = gconf_client_get_string( client, csPrintable( value ), &err );
+        char *str = gconf_client_get_string( client, lscsPrintable( value ), &err );
 
         if ( !err )
         {
@@ -694,7 +694,7 @@ bool QGtkStylePrivate::getGConfBool( const QString &key, bool fallback )
 
         GConfClient *client = gconf_client_get_default();
         GError *err = 0;
-        bool result = gconf_client_get_bool( client, csPrintable( key ), &err );
+        bool result = gconf_client_get_bool( client, lscsPrintable( key ), &err );
 
         g_object_unref( client );
 

@@ -767,7 +767,7 @@ unsigned RenderThemeChromiumWin::determineClassicState( RenderObject *o, Control
     {
         if ( !isEnabled( o->parent() ) )
         {
-            result = DFCS_INACTIVE;
+            result = DFLSCS_INACTIVE;
         }
         else if ( toRenderSlider( o->parent() )->inDragMode() ) // Active supersedes hover
         {
@@ -782,7 +782,7 @@ unsigned RenderThemeChromiumWin::determineClassicState( RenderObject *o, Control
     {
         if ( !isEnabled( o ) || isReadOnlyControl( o ) )
         {
-            result = DFCS_INACTIVE;
+            result = DFLSCS_INACTIVE;
         }
         // Active supersedes hover
         else if ( isPressed( o ) && ( subPart == SpinButtonUp ) == isSpinUpButtonPartPressed( o ) )

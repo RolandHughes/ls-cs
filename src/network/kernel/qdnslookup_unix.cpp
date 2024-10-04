@@ -207,7 +207,7 @@ void QDnsLookupRunnable::query( const int requestType, const QByteArray &request
         }
     }
 
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
     state.options |= RES_DEBUG;
 #endif
 

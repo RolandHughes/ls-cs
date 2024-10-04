@@ -37,36 +37,36 @@ class QDeclarativeGraphicsWidgetPrivate;
 // ### TODO can the extension object be the anchor directly? We save one allocation -> awesome.
 class QDeclarativeGraphicsWidget : public QObject
 {
-    DECL_CS_OBJECT( QDeclarativeGraphicsWidget )
+    DECL_LSCS_OBJECT( QDeclarativeGraphicsWidget )
 
-    DECL_CS_PROPERTY_READ( anchors, anchors )
-    DECL_CS_PROPERTY_DESIGNABLE( anchors, false )
-    DECL_CS_PROPERTY_CONSTANT( anchors )
-    DECL_CS_PROPERTY_FINAL( anchors )
+    DECL_LSCS_PROPERTY_READ( anchors, anchors )
+    DECL_LSCS_PROPERTY_DESIGNABLE( anchors, false )
+    DECL_LSCS_PROPERTY_CONSTANT( anchors )
+    DECL_LSCS_PROPERTY_FINAL( anchors )
 
-    DECL_CS_PROPERTY_READ( left, left )
-    DECL_CS_PROPERTY_CONSTANT( left )
-    DECL_CS_PROPERTY_FINAL( left )
+    DECL_LSCS_PROPERTY_READ( left, left )
+    DECL_LSCS_PROPERTY_CONSTANT( left )
+    DECL_LSCS_PROPERTY_FINAL( left )
 
-    DECL_CS_PROPERTY_READ( right, right )
-    DECL_CS_PROPERTY_CONSTANT( right )
-    DECL_CS_PROPERTY_FINAL( right )
+    DECL_LSCS_PROPERTY_READ( right, right )
+    DECL_LSCS_PROPERTY_CONSTANT( right )
+    DECL_LSCS_PROPERTY_FINAL( right )
 
-    DECL_CS_PROPERTY_READ( horizontalCenter, horizontalCenter )
-    DECL_CS_PROPERTY_CONSTANT( horizontalCenter )
-    DECL_CS_PROPERTY_FINAL( horizontalCenter )
+    DECL_LSCS_PROPERTY_READ( horizontalCenter, horizontalCenter )
+    DECL_LSCS_PROPERTY_CONSTANT( horizontalCenter )
+    DECL_LSCS_PROPERTY_FINAL( horizontalCenter )
 
-    DECL_CS_PROPERTY_READ( top, top )
-    DECL_CS_PROPERTY_CONSTANT( top )
-    DECL_CS_PROPERTY_FINAL( top )
+    DECL_LSCS_PROPERTY_READ( top, top )
+    DECL_LSCS_PROPERTY_CONSTANT( top )
+    DECL_LSCS_PROPERTY_FINAL( top )
 
-    DECL_CS_PROPERTY_READ( bottom, bottom )
-    DECL_CS_PROPERTY_CONSTANT( bottom )
-    DECL_CS_PROPERTY_FINAL( bottom )
+    DECL_LSCS_PROPERTY_READ( bottom, bottom )
+    DECL_LSCS_PROPERTY_CONSTANT( bottom )
+    DECL_LSCS_PROPERTY_FINAL( bottom )
 
-    DECL_CS_PROPERTY_READ( verticalCenter, verticalCenter )
-    DECL_CS_PROPERTY_CONSTANT( verticalCenter )
-    DECL_CS_PROPERTY_FINAL( verticalCenter )
+    DECL_LSCS_PROPERTY_READ( verticalCenter, verticalCenter )
+    DECL_LSCS_PROPERTY_CONSTANT( verticalCenter )
+    DECL_LSCS_PROPERTY_FINAL( verticalCenter )
 
     // ### TODO : QGraphicsWidget don't have a baseline concept yet.
     //Q_PROPERTY(QDeclarativeAnchorLine baseline READ baseline CONSTANT FINAL)

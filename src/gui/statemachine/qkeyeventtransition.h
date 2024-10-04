@@ -32,12 +32,12 @@ class QKeyEventTransitionPrivate;
 
 class Q_GUI_EXPORT QKeyEventTransition : public QEventTransition
 {
-    GUI_CS_OBJECT( QKeyEventTransition )
+    GUI_LSCS_OBJECT( QKeyEventTransition )
 
-    GUI_CS_PROPERTY_READ( key, key )
-    GUI_CS_PROPERTY_WRITE( key, setKey )
-    GUI_CS_PROPERTY_READ( modifierMask, modifierMask )
-    GUI_CS_PROPERTY_WRITE( modifierMask, setModifierMask )
+    GUI_LSCS_PROPERTY_READ( key, key )
+    GUI_LSCS_PROPERTY_WRITE( key, setKey )
+    GUI_LSCS_PROPERTY_READ( modifierMask, modifierMask )
+    GUI_LSCS_PROPERTY_WRITE( modifierMask, setModifierMask )
 
 public:
     QKeyEventTransition( QState *sourceState = nullptr );

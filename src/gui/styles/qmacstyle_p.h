@@ -24,7 +24,7 @@
 #ifndef QMACSTYLE_P_H
 #define QMACSTYLE_P_H
 
-#include <cs_carbon_wrapper_p.h>
+#include <lscs_carbon_wrapper_p.h>
 #include <cs_mac_p.h>
 
 #include <qmacstyle.h>

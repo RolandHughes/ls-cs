@@ -57,7 +57,7 @@ static inline unsigned long locateSystemTray()
 // a backing store if it did not need tooltip handling.
 class QSystemTrayIconSys : public QWidget
 {
-    GUI_CS_OBJECT( QSystemTrayIconSys )
+    GUI_LSCS_OBJECT( QSystemTrayIconSys )
 
 public:
     explicit QSystemTrayIconSys( QSystemTrayIcon *q );
@@ -83,8 +83,8 @@ protected:
     virtual void moveEvent( QMoveEvent * ) override;
 
 private:
-    GUI_CS_SLOT_1( Private, void systemTrayWindowChanged( QScreen *screen ) )
-    GUI_CS_SLOT_2( systemTrayWindowChanged )
+    GUI_LSCS_SLOT_1( Private, void systemTrayWindowChanged( QScreen *screen ) )
+    GUI_LSCS_SLOT_2( systemTrayWindowChanged )
 
     bool addToTray();
 

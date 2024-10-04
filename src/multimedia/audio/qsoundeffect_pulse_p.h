@@ -41,7 +41,7 @@ class QSoundEffectRef;
 
 class QSoundEffectPrivate : public QObject
 {
-    MULTI_CS_OBJECT( QSoundEffectPrivate )
+    MULTI_LSCS_OBJECT( QSoundEffectPrivate )
 
 public:
     explicit QSoundEffectPrivate( QObject *parent );
@@ -67,25 +67,25 @@ public:
     QString category() const;
     void setCategory( const QString &category );
 
-    MULTI_CS_SLOT_1( Public, void play() )
-    MULTI_CS_SLOT_2( play )
-    MULTI_CS_SLOT_1( Public, void stop() )
-    MULTI_CS_SLOT_2( stop )
+    MULTI_LSCS_SLOT_1( Public, void play() )
+    MULTI_LSCS_SLOT_2( play )
+    MULTI_LSCS_SLOT_1( Public, void stop() )
+    MULTI_LSCS_SLOT_2( stop )
 
-    MULTI_CS_SIGNAL_1( Public, void loopsRemainingChanged() )
-    MULTI_CS_SIGNAL_2( loopsRemainingChanged )
-    MULTI_CS_SIGNAL_1( Public, void volumeChanged() )
-    MULTI_CS_SIGNAL_2( volumeChanged )
-    MULTI_CS_SIGNAL_1( Public, void mutedChanged() )
-    MULTI_CS_SIGNAL_2( mutedChanged )
-    MULTI_CS_SIGNAL_1( Public, void loadedChanged() )
-    MULTI_CS_SIGNAL_2( loadedChanged )
-    MULTI_CS_SIGNAL_1( Public, void playingChanged() )
-    MULTI_CS_SIGNAL_2( playingChanged )
-    MULTI_CS_SIGNAL_1( Public, void statusChanged() )
-    MULTI_CS_SIGNAL_2( statusChanged )
-    MULTI_CS_SIGNAL_1( Public, void categoryChanged() )
-    MULTI_CS_SIGNAL_2( categoryChanged )
+    MULTI_LSCS_SIGNAL_1( Public, void loopsRemainingChanged() )
+    MULTI_LSCS_SIGNAL_2( loopsRemainingChanged )
+    MULTI_LSCS_SIGNAL_1( Public, void volumeChanged() )
+    MULTI_LSCS_SIGNAL_2( volumeChanged )
+    MULTI_LSCS_SIGNAL_1( Public, void mutedChanged() )
+    MULTI_LSCS_SIGNAL_2( mutedChanged )
+    MULTI_LSCS_SIGNAL_1( Public, void loadedChanged() )
+    MULTI_LSCS_SIGNAL_2( loadedChanged )
+    MULTI_LSCS_SIGNAL_1( Public, void playingChanged() )
+    MULTI_LSCS_SIGNAL_2( playingChanged )
+    MULTI_LSCS_SIGNAL_1( Public, void statusChanged() )
+    MULTI_LSCS_SIGNAL_2( statusChanged )
+    MULTI_LSCS_SIGNAL_1( Public, void categoryChanged() )
+    MULTI_LSCS_SIGNAL_2( categoryChanged )
 
 private:
     enum EmptyStreamOption
@@ -93,35 +93,35 @@ private:
         ReloadSampleWhenDone = 0x1
     };
 
-    MULTI_CS_SLOT_1( Private, void decoderError() )
-    MULTI_CS_SLOT_2( decoderError )
+    MULTI_LSCS_SLOT_1( Private, void decoderError() )
+    MULTI_LSCS_SLOT_2( decoderError )
 
-    MULTI_CS_SLOT_1( Private, void sampleReady() )
-    MULTI_CS_SLOT_2( sampleReady )
+    MULTI_LSCS_SLOT_1( Private, void sampleReady() )
+    MULTI_LSCS_SLOT_2( sampleReady )
 
-    MULTI_CS_SLOT_1( Private, void uploadSample() )
-    MULTI_CS_SLOT_2( uploadSample )
+    MULTI_LSCS_SLOT_1( Private, void uploadSample() )
+    MULTI_LSCS_SLOT_2( uploadSample )
 
-    MULTI_CS_SLOT_1( Private, void contextReady() )
-    MULTI_CS_SLOT_2( contextReady )
+    MULTI_LSCS_SLOT_1( Private, void contextReady() )
+    MULTI_LSCS_SLOT_2( contextReady )
 
-    MULTI_CS_SLOT_1( Private, void contextFailed() )
-    MULTI_CS_SLOT_2( contextFailed )
+    MULTI_LSCS_SLOT_1( Private, void contextFailed() )
+    MULTI_LSCS_SLOT_2( contextFailed )
 
-    MULTI_CS_SLOT_1( Private, void underRun() )
-    MULTI_CS_SLOT_2( underRun )
+    MULTI_LSCS_SLOT_1( Private, void underRun() )
+    MULTI_LSCS_SLOT_2( underRun )
 
-    MULTI_CS_SLOT_1( Private, void prepare() )
-    MULTI_CS_SLOT_2( prepare )
+    MULTI_LSCS_SLOT_1( Private, void prepare() )
+    MULTI_LSCS_SLOT_2( prepare )
 
-    MULTI_CS_SLOT_1( Private, void streamReady() )
-    MULTI_CS_SLOT_2( streamReady )
+    MULTI_LSCS_SLOT_1( Private, void streamReady() )
+    MULTI_LSCS_SLOT_2( streamReady )
 
-    MULTI_CS_SLOT_1( Private, void emptyComplete( void *stream,bool reload ) )
-    MULTI_CS_SLOT_2( emptyComplete )
+    MULTI_LSCS_SLOT_1( Private, void emptyComplete( void *stream,bool reload ) )
+    MULTI_LSCS_SLOT_2( emptyComplete )
 
-    MULTI_CS_SLOT_1( Private, void handleAvailabilityChanged( bool available ) )
-    MULTI_CS_SLOT_2( handleAvailabilityChanged )
+    MULTI_LSCS_SLOT_1( Private, void handleAvailabilityChanged( bool available ) )
+    MULTI_LSCS_SLOT_2( handleAvailabilityChanged )
 
     void playAvailable();
     void playSample();

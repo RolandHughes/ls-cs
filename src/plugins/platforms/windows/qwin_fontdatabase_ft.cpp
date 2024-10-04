@@ -200,7 +200,7 @@ static bool addFontToDatabase( const QString &faceName, const QString &fullName,
     const QFont::Weight weight = QPlatformFontDatabase::weightFromInteger( textmetric->tmWeight );
     const QFont::Stretch stretch = QFont::Unstretched;
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
     QString message;
     QTextStream str( &message );
 
@@ -361,7 +361,7 @@ static int QT_WIN_CALLBACK storeFont( const LOGFONT *logFont, const TEXTMETRIC *
 
 void QWindowsFontDatabaseFT::populateFamily( const QString &familyName )
 {
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
     qDebug() << "QWindowsFontDatabaseFT::populateFamily() Family Name = " << familyName;
 #endif
 
@@ -485,7 +485,7 @@ QFontEngine *QWindowsFontDatabaseFT::fontEngine( const QFontDef &fontDef, void *
 {
     QFontEngine *fe = QBasicFontDatabase::fontEngine( fontDef, handle );
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
     qDebug() << "QWindowsFontDatabaseFT::fontEngine() Font data = " << fontDef.family << fe << handle;
 #endif
 
@@ -497,7 +497,7 @@ QFontEngine *QWindowsFontDatabaseFT::fontEngine( const QByteArray &fontData, qre
 {
     QFontEngine *fe = QBasicFontDatabase::fontEngine( fontData, pixelSize, hintingPreference );
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
     qDebug() << "QWindowsFontDatabaseFT::fontEngine() Font data = " << fontData << pixelSize << hintingPreference << fe;
 #endif
 
@@ -513,7 +513,7 @@ QStringList QWindowsFontDatabaseFT::fallbacksForFamily( const QString &family, Q
     result.append( QWindowsFontDatabase::extraTryFontsForFamily( family ) );
     result.append( QBasicFontDatabase::fallbacksForFamily( family, style, styleHint, script ) );
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
     qDebug() << "QWindowsFontDatabaseFT::fallbacksForFamily() Font = "
              << family << style << styleHint << script << result;
 #endif

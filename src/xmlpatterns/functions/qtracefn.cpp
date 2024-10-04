@@ -54,22 +54,22 @@ public:
         {
             if ( item )
             {
-                out << csPrintable( m_msg )
+                out << lscsPrintable( m_msg )
                     << " : "
-                    << csPrintable( item.stringValue() );
+                    << lscsPrintable( item.stringValue() );
             }
             else
             {
-                out << csPrintable( m_msg )
+                out << lscsPrintable( m_msg )
                     << " : ("
-                    << csPrintable( formatType( context->namePool(), CommonSequenceTypes::Empty ) )
+                    << lscsPrintable( formatType( context->namePool(), CommonSequenceTypes::Empty ) )
                     << ")\n";
                 return Item();
             }
         }
         else
         {
-            out << csPrintable( item.stringValue() )
+            out << lscsPrintable( item.stringValue() )
                 << '['
                 << m_position
                 << "]\n";

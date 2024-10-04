@@ -39,7 +39,7 @@ class QUrl;
 
 class QNetworkAccessCache : public QObject
 {
-    NET_CS_OBJECT( QNetworkAccessCache )
+    NET_LSCS_OBJECT( QNetworkAccessCache )
 
 public:
 
@@ -105,8 +105,8 @@ public:
     void releaseEntry( const QByteArray &key );
     void removeEntry( const QByteArray &key );
 
-    NET_CS_SIGNAL_1( Public, void entryReady( QNetworkAccessCache::CacheableObject *object ) )
-    NET_CS_SIGNAL_2( entryReady, object )
+    NET_LSCS_SIGNAL_1( Public, void entryReady( QNetworkAccessCache::CacheableObject *object ) )
+    NET_LSCS_SIGNAL_2( entryReady, object )
 
 protected:
     void timerEvent( QTimerEvent * ) override;

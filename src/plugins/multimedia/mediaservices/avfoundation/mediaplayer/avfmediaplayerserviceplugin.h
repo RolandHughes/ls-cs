@@ -32,12 +32,12 @@ class AVFMediaPlayerServicePlugin
     : public QMediaServiceProviderPlugin, public QMediaServiceSupportedFormatsInterface
     , public QMediaServiceFeaturesInterface
 {
-    CS_OBJECT_MULTIPLE( AVFMediaPlayerServicePlugin, QMediaServiceProviderPlugin )
+    LSCS_OBJECT_MULTIPLE( AVFMediaPlayerServicePlugin, QMediaServiceProviderPlugin )
 
-    CS_PLUGIN_IID( QMediaServiceProviderInterface_ID )
-    CS_PLUGIN_KEY( QMediaPlayerControl_Key )
+    LSCS_PLUGIN_IID( QMediaServiceProviderInterface_ID )
+    LSCS_PLUGIN_KEY( QMediaPlayerControl_Key )
 
-    CS_INTERFACES( QMediaServiceSupportedFormatsInterface, QMediaServiceFeaturesInterface )
+    LSCS_INTERFACES( QMediaServiceSupportedFormatsInterface, QMediaServiceFeaturesInterface )
 
 public:
     explicit AVFMediaPlayerServicePlugin();

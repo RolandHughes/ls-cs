@@ -36,34 +36,34 @@ class QStyleOptionToolBar;
 
 class Q_GUI_EXPORT QToolBar : public QWidget
 {
-    GUI_CS_OBJECT( QToolBar )
+    GUI_LSCS_OBJECT( QToolBar )
 
-    GUI_CS_PROPERTY_READ( movable, isMovable )
-    GUI_CS_PROPERTY_WRITE( movable, setMovable )
-    GUI_CS_PROPERTY_DESIGNABLE_NONSTATIC( movable, cs_isMainWindow() )
-    GUI_CS_PROPERTY_NOTIFY( movable, movableChanged )
+    GUI_LSCS_PROPERTY_READ( movable, isMovable )
+    GUI_LSCS_PROPERTY_WRITE( movable, setMovable )
+    GUI_LSCS_PROPERTY_DESIGNABLE_NONSTATIC( movable, cs_isMainWindow() )
+    GUI_LSCS_PROPERTY_NOTIFY( movable, movableChanged )
 
-    GUI_CS_PROPERTY_READ( allowedAreas, allowedAreas )
-    GUI_CS_PROPERTY_WRITE( allowedAreas, setAllowedAreas )
-    GUI_CS_PROPERTY_DESIGNABLE_NONSTATIC( allowedAreas, cs_isMainWindow() )
-    GUI_CS_PROPERTY_NOTIFY( allowedAreas, allowedAreasChanged )
+    GUI_LSCS_PROPERTY_READ( allowedAreas, allowedAreas )
+    GUI_LSCS_PROPERTY_WRITE( allowedAreas, setAllowedAreas )
+    GUI_LSCS_PROPERTY_DESIGNABLE_NONSTATIC( allowedAreas, cs_isMainWindow() )
+    GUI_LSCS_PROPERTY_NOTIFY( allowedAreas, allowedAreasChanged )
 
-    GUI_CS_PROPERTY_READ( orientation, orientation )
-    GUI_CS_PROPERTY_WRITE( orientation, setOrientation )
-    GUI_CS_PROPERTY_DESIGNABLE_NONSTATIC( orientation, cs_isMainWindow() )
-    GUI_CS_PROPERTY_NOTIFY( orientation, orientationChanged )
+    GUI_LSCS_PROPERTY_READ( orientation, orientation )
+    GUI_LSCS_PROPERTY_WRITE( orientation, setOrientation )
+    GUI_LSCS_PROPERTY_DESIGNABLE_NONSTATIC( orientation, cs_isMainWindow() )
+    GUI_LSCS_PROPERTY_NOTIFY( orientation, orientationChanged )
 
-    GUI_CS_PROPERTY_READ( iconSize, iconSize )
-    GUI_CS_PROPERTY_WRITE( iconSize, setIconSize )
-    GUI_CS_PROPERTY_NOTIFY( iconSize, iconSizeChanged )
+    GUI_LSCS_PROPERTY_READ( iconSize, iconSize )
+    GUI_LSCS_PROPERTY_WRITE( iconSize, setIconSize )
+    GUI_LSCS_PROPERTY_NOTIFY( iconSize, iconSizeChanged )
 
-    GUI_CS_PROPERTY_READ( toolButtonStyle, toolButtonStyle )
-    GUI_CS_PROPERTY_WRITE( toolButtonStyle, setToolButtonStyle )
-    GUI_CS_PROPERTY_NOTIFY( toolButtonStyle, toolButtonStyleChanged )
+    GUI_LSCS_PROPERTY_READ( toolButtonStyle, toolButtonStyle )
+    GUI_LSCS_PROPERTY_WRITE( toolButtonStyle, setToolButtonStyle )
+    GUI_LSCS_PROPERTY_NOTIFY( toolButtonStyle, toolButtonStyleChanged )
 
-    GUI_CS_PROPERTY_READ( floating, isFloating )
-    GUI_CS_PROPERTY_READ( floatable, isFloatable )
-    GUI_CS_PROPERTY_WRITE( floatable, setFloatable )
+    GUI_LSCS_PROPERTY_READ( floating, isFloating )
+    GUI_LSCS_PROPERTY_READ( floatable, isFloatable )
+    GUI_LSCS_PROPERTY_WRITE( floatable, setFloatable )
 
 public:
     explicit QToolBar( const QString &title, QWidget *parent = nullptr );
@@ -158,35 +158,35 @@ public:
     void setFloatable( bool floatable );
     bool isFloating() const;
 
-    GUI_CS_SLOT_1( Public, void setIconSize( const QSize &iconSize ) )
-    GUI_CS_SLOT_2( setIconSize )
+    GUI_LSCS_SLOT_1( Public, void setIconSize( const QSize &iconSize ) )
+    GUI_LSCS_SLOT_2( setIconSize )
 
-    GUI_CS_SLOT_1( Public, void setToolButtonStyle( Qt::ToolButtonStyle toolButtonStyle ) )
-    GUI_CS_SLOT_2( setToolButtonStyle )
+    GUI_LSCS_SLOT_1( Public, void setToolButtonStyle( Qt::ToolButtonStyle toolButtonStyle ) )
+    GUI_LSCS_SLOT_2( setToolButtonStyle )
 
-    GUI_CS_SIGNAL_1( Public, void actionTriggered( QAction *action ) )
-    GUI_CS_SIGNAL_2( actionTriggered, action )
+    GUI_LSCS_SIGNAL_1( Public, void actionTriggered( QAction *action ) )
+    GUI_LSCS_SIGNAL_2( actionTriggered, action )
 
-    GUI_CS_SIGNAL_1( Public, void movableChanged( bool movable ) )
-    GUI_CS_SIGNAL_2( movableChanged, movable )
+    GUI_LSCS_SIGNAL_1( Public, void movableChanged( bool movable ) )
+    GUI_LSCS_SIGNAL_2( movableChanged, movable )
 
-    GUI_CS_SIGNAL_1( Public, void allowedAreasChanged( Qt::ToolBarAreas allowedAreas ) )
-    GUI_CS_SIGNAL_2( allowedAreasChanged, allowedAreas )
+    GUI_LSCS_SIGNAL_1( Public, void allowedAreasChanged( Qt::ToolBarAreas allowedAreas ) )
+    GUI_LSCS_SIGNAL_2( allowedAreasChanged, allowedAreas )
 
-    GUI_CS_SIGNAL_1( Public, void orientationChanged( Qt::Orientation orientation ) )
-    GUI_CS_SIGNAL_2( orientationChanged, orientation )
+    GUI_LSCS_SIGNAL_1( Public, void orientationChanged( Qt::Orientation orientation ) )
+    GUI_LSCS_SIGNAL_2( orientationChanged, orientation )
 
-    GUI_CS_SIGNAL_1( Public, void iconSizeChanged( const QSize &iconSize ) )
-    GUI_CS_SIGNAL_2( iconSizeChanged, iconSize )
+    GUI_LSCS_SIGNAL_1( Public, void iconSizeChanged( const QSize &iconSize ) )
+    GUI_LSCS_SIGNAL_2( iconSizeChanged, iconSize )
 
-    GUI_CS_SIGNAL_1( Public, void toolButtonStyleChanged( Qt::ToolButtonStyle toolButtonStyle ) )
-    GUI_CS_SIGNAL_2( toolButtonStyleChanged, toolButtonStyle )
+    GUI_LSCS_SIGNAL_1( Public, void toolButtonStyleChanged( Qt::ToolButtonStyle toolButtonStyle ) )
+    GUI_LSCS_SIGNAL_2( toolButtonStyleChanged, toolButtonStyle )
 
-    GUI_CS_SIGNAL_1( Public, void topLevelChanged( bool topLevel ) )
-    GUI_CS_SIGNAL_2( topLevelChanged, topLevel )
+    GUI_LSCS_SIGNAL_1( Public, void topLevelChanged( bool topLevel ) )
+    GUI_LSCS_SIGNAL_2( topLevelChanged, topLevel )
 
-    GUI_CS_SIGNAL_1( Public, void visibilityChanged( bool visible ) )
-    GUI_CS_SIGNAL_2( visibilityChanged, visible )
+    GUI_LSCS_SIGNAL_1( Public, void visibilityChanged( bool visible ) )
+    GUI_LSCS_SIGNAL_2( visibilityChanged, visible )
 
 protected:
     void actionEvent( QActionEvent *event ) override;
@@ -198,14 +198,14 @@ protected:
 private:
     Q_DECLARE_PRIVATE( QToolBar )
 
-    GUI_CS_SLOT_1( Private, void _q_toggleView( bool isToggleView ) )
-    GUI_CS_SLOT_2( _q_toggleView )
+    GUI_LSCS_SLOT_1( Private, void _q_toggleView( bool isToggleView ) )
+    GUI_LSCS_SLOT_2( _q_toggleView )
 
-    GUI_CS_SLOT_1( Private, void _q_updateIconSize( const QSize &size ) )
-    GUI_CS_SLOT_2( _q_updateIconSize )
+    GUI_LSCS_SLOT_1( Private, void _q_updateIconSize( const QSize &size ) )
+    GUI_LSCS_SLOT_2( _q_updateIconSize )
 
-    GUI_CS_SLOT_1( Private, void _q_updateToolButtonStyle( Qt::ToolButtonStyle style ) )
-    GUI_CS_SLOT_2( _q_updateToolButtonStyle )
+    GUI_LSCS_SLOT_1( Private, void _q_updateToolButtonStyle( Qt::ToolButtonStyle style ) )
+    GUI_LSCS_SLOT_2( _q_updateToolButtonStyle )
 
     bool cs_isMainWindow() const;
 

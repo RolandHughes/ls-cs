@@ -31,7 +31,7 @@ class PluginView;
 
 class PluginContainerQt : public QObject
 {
-    WEB_CS_OBJECT( PluginContainerQt )
+    WEB_LSCS_OBJECT( PluginContainerQt )
 
 public:
     PluginContainerQt( PluginView *, QWidget *parent );
@@ -39,11 +39,11 @@ public:
 
     void redirectWheelEventsToParent( bool enable = true );
 
-    WEB_CS_SLOT_1( Public, void on_clientClosed() )
-    WEB_CS_SLOT_2( on_clientClosed )
+    WEB_LSCS_SLOT_1( Public, void on_clientClosed() )
+    WEB_LSCS_SLOT_2( on_clientClosed )
 
-    WEB_CS_SLOT_1( Public, void on_clientIsEmbedded() )
-    WEB_CS_SLOT_2( on_clientIsEmbedded )
+    WEB_LSCS_SLOT_1( Public, void on_clientIsEmbedded() )
+    WEB_LSCS_SLOT_2( on_clientIsEmbedded )
 
 protected:
     virtual bool x11Event( _XEvent * );

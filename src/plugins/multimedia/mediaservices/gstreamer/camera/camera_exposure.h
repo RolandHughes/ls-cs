@@ -34,7 +34,7 @@ class CameraBinSession;
 
 class Q_MULTIMEDIA_EXPORT CameraBinExposure : public QCameraExposureControl
 {
-    CS_OBJECT( CameraBinExposure )
+    LSCS_OBJECT( CameraBinExposure )
 
 public:
     CameraBinExposure( CameraBinSession *session );

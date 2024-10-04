@@ -45,62 +45,62 @@ class QPlainTextDocumentLayoutPrivate;
 
 class Q_GUI_EXPORT QPlainTextEdit : public QAbstractScrollArea
 {
-    GUI_CS_OBJECT( QPlainTextEdit )
+    GUI_LSCS_OBJECT( QPlainTextEdit )
 
-    GUI_CS_ENUM( LineWrapMode )
+    GUI_LSCS_ENUM( LineWrapMode )
 
-    GUI_CS_PROPERTY_READ( tabChangesFocus, tabChangesFocus )
-    GUI_CS_PROPERTY_WRITE( tabChangesFocus, setTabChangesFocus )
+    GUI_LSCS_PROPERTY_READ( tabChangesFocus, tabChangesFocus )
+    GUI_LSCS_PROPERTY_WRITE( tabChangesFocus, setTabChangesFocus )
 
-    GUI_CS_PROPERTY_READ( documentTitle, documentTitle )
-    GUI_CS_PROPERTY_WRITE( documentTitle, setDocumentTitle )
+    GUI_LSCS_PROPERTY_READ( documentTitle, documentTitle )
+    GUI_LSCS_PROPERTY_WRITE( documentTitle, setDocumentTitle )
 
-    GUI_CS_PROPERTY_READ( undoRedoEnabled, isUndoRedoEnabled )
-    GUI_CS_PROPERTY_WRITE( undoRedoEnabled, setUndoRedoEnabled )
+    GUI_LSCS_PROPERTY_READ( undoRedoEnabled, isUndoRedoEnabled )
+    GUI_LSCS_PROPERTY_WRITE( undoRedoEnabled, setUndoRedoEnabled )
 
-    GUI_CS_PROPERTY_READ( lineWrapMode, lineWrapMode )
-    GUI_CS_PROPERTY_WRITE( lineWrapMode, setLineWrapMode )
+    GUI_LSCS_PROPERTY_READ( lineWrapMode, lineWrapMode )
+    GUI_LSCS_PROPERTY_WRITE( lineWrapMode, setLineWrapMode )
 
     // following were qdoc_property
-    GUI_CS_PROPERTY_READ( wordWrapMode, wordWrapMode )
-    GUI_CS_PROPERTY_WRITE( wordWrapMode, setWordWrapMode )
+    GUI_LSCS_PROPERTY_READ( wordWrapMode, wordWrapMode )
+    GUI_LSCS_PROPERTY_WRITE( wordWrapMode, setWordWrapMode )
 
-    GUI_CS_PROPERTY_READ( readOnly, isReadOnly )
-    GUI_CS_PROPERTY_WRITE( readOnly, setReadOnly )
+    GUI_LSCS_PROPERTY_READ( readOnly, isReadOnly )
+    GUI_LSCS_PROPERTY_WRITE( readOnly, setReadOnly )
 
-    GUI_CS_PROPERTY_READ( plainText, toPlainText )
-    GUI_CS_PROPERTY_WRITE( plainText, setPlainText )
-    GUI_CS_PROPERTY_NOTIFY( plainText, textChanged )
-    GUI_CS_PROPERTY_USER( plainText, true )
+    GUI_LSCS_PROPERTY_READ( plainText, toPlainText )
+    GUI_LSCS_PROPERTY_WRITE( plainText, setPlainText )
+    GUI_LSCS_PROPERTY_NOTIFY( plainText, textChanged )
+    GUI_LSCS_PROPERTY_USER( plainText, true )
 
-    GUI_CS_PROPERTY_READ( overwriteMode, overwriteMode )
-    GUI_CS_PROPERTY_WRITE( overwriteMode, setOverwriteMode )
+    GUI_LSCS_PROPERTY_READ( overwriteMode, overwriteMode )
+    GUI_LSCS_PROPERTY_WRITE( overwriteMode, setOverwriteMode )
 
-    GUI_CS_PROPERTY_READ( tabStopWidth, tabStopWidth )
-    GUI_CS_PROPERTY_WRITE( tabStopWidth, setTabStopWidth )
+    GUI_LSCS_PROPERTY_READ( tabStopWidth, tabStopWidth )
+    GUI_LSCS_PROPERTY_WRITE( tabStopWidth, setTabStopWidth )
 
-    GUI_CS_PROPERTY_READ( cursorWidth, cursorWidth )
-    GUI_CS_PROPERTY_WRITE( cursorWidth, setCursorWidth )
+    GUI_LSCS_PROPERTY_READ( cursorWidth, cursorWidth )
+    GUI_LSCS_PROPERTY_WRITE( cursorWidth, setCursorWidth )
 
-    GUI_CS_PROPERTY_READ( textInteractionFlags, textInteractionFlags )
-    GUI_CS_PROPERTY_WRITE( textInteractionFlags, setTextInteractionFlags )
+    GUI_LSCS_PROPERTY_READ( textInteractionFlags, textInteractionFlags )
+    GUI_LSCS_PROPERTY_WRITE( textInteractionFlags, setTextInteractionFlags )
 
-    GUI_CS_PROPERTY_READ( blockCount, blockCount )
+    GUI_LSCS_PROPERTY_READ( blockCount, blockCount )
 
-    GUI_CS_PROPERTY_READ( maximumBlockCount, maximumBlockCount )
-    GUI_CS_PROPERTY_WRITE( maximumBlockCount, setMaximumBlockCount )
+    GUI_LSCS_PROPERTY_READ( maximumBlockCount, maximumBlockCount )
+    GUI_LSCS_PROPERTY_WRITE( maximumBlockCount, setMaximumBlockCount )
 
-    GUI_CS_PROPERTY_READ( backgroundVisible, backgroundVisible )
-    GUI_CS_PROPERTY_WRITE( backgroundVisible, setBackgroundVisible )
+    GUI_LSCS_PROPERTY_READ( backgroundVisible, backgroundVisible )
+    GUI_LSCS_PROPERTY_WRITE( backgroundVisible, setBackgroundVisible )
 
-    GUI_CS_PROPERTY_READ( centerOnScroll, centerOnScroll )
-    GUI_CS_PROPERTY_WRITE( centerOnScroll, setCenterOnScroll )
+    GUI_LSCS_PROPERTY_READ( centerOnScroll, centerOnScroll )
+    GUI_LSCS_PROPERTY_WRITE( centerOnScroll, setCenterOnScroll )
 
-    GUI_CS_PROPERTY_READ( placeholderText, placeholderText )
-    GUI_CS_PROPERTY_WRITE( placeholderText, setPlaceholderText )
+    GUI_LSCS_PROPERTY_READ( placeholderText, placeholderText )
+    GUI_LSCS_PROPERTY_WRITE( placeholderText, setPlaceholderText )
 
 public:
-    GUI_CS_REGISTER_ENUM(
+    GUI_LSCS_REGISTER_ENUM(
         enum LineWrapMode
     {
         NoWrap,
@@ -203,76 +203,76 @@ public:
     QVariant inputMethodQuery( Qt::InputMethodQuery property ) const override;
     QVariant inputMethodQuery( Qt::InputMethodQuery query, QVariant argument ) const;
 
-    GUI_CS_SLOT_1( Public, void setPlainText( const QString &text ) )
-    GUI_CS_SLOT_2( setPlainText )
+    GUI_LSCS_SLOT_1( Public, void setPlainText( const QString &text ) )
+    GUI_LSCS_SLOT_2( setPlainText )
 
 #ifndef QT_NO_CLIPBOARD
-    GUI_CS_SLOT_1( Public, void cut() )
-    GUI_CS_SLOT_2( cut )
+    GUI_LSCS_SLOT_1( Public, void cut() )
+    GUI_LSCS_SLOT_2( cut )
 
-    GUI_CS_SLOT_1( Public, void copy() )
-    GUI_CS_SLOT_2( copy )
+    GUI_LSCS_SLOT_1( Public, void copy() )
+    GUI_LSCS_SLOT_2( copy )
 
-    GUI_CS_SLOT_1( Public, void paste() )
-    GUI_CS_SLOT_2( paste )
+    GUI_LSCS_SLOT_1( Public, void paste() )
+    GUI_LSCS_SLOT_2( paste )
 #endif
 
-    GUI_CS_SLOT_1( Public, void undo() )
-    GUI_CS_SLOT_2( undo )
+    GUI_LSCS_SLOT_1( Public, void undo() )
+    GUI_LSCS_SLOT_2( undo )
 
-    GUI_CS_SLOT_1( Public, void redo() )
-    GUI_CS_SLOT_2( redo )
+    GUI_LSCS_SLOT_1( Public, void redo() )
+    GUI_LSCS_SLOT_2( redo )
 
-    GUI_CS_SLOT_1( Public, void clear() )
-    GUI_CS_SLOT_2( clear )
+    GUI_LSCS_SLOT_1( Public, void clear() )
+    GUI_LSCS_SLOT_2( clear )
 
-    GUI_CS_SLOT_1( Public, void selectAll() )
-    GUI_CS_SLOT_2( selectAll )
+    GUI_LSCS_SLOT_1( Public, void selectAll() )
+    GUI_LSCS_SLOT_2( selectAll )
 
-    GUI_CS_SLOT_1( Public, void insertPlainText( const QString &text ) )
-    GUI_CS_SLOT_2( insertPlainText )
+    GUI_LSCS_SLOT_1( Public, void insertPlainText( const QString &text ) )
+    GUI_LSCS_SLOT_2( insertPlainText )
 
-    GUI_CS_SLOT_1( Public, void appendPlainText( const QString &text ) )
-    GUI_CS_SLOT_2( appendPlainText )
+    GUI_LSCS_SLOT_1( Public, void appendPlainText( const QString &text ) )
+    GUI_LSCS_SLOT_2( appendPlainText )
 
-    GUI_CS_SLOT_1( Public, void appendHtml( const QString &html ) )
-    GUI_CS_SLOT_2( appendHtml )
+    GUI_LSCS_SLOT_1( Public, void appendHtml( const QString &html ) )
+    GUI_LSCS_SLOT_2( appendHtml )
 
-    GUI_CS_SLOT_1( Public, void centerCursor() )
-    GUI_CS_SLOT_2( centerCursor )
+    GUI_LSCS_SLOT_1( Public, void centerCursor() )
+    GUI_LSCS_SLOT_2( centerCursor )
 
-    GUI_CS_SLOT_1( Public, void zoomIn( int range = 1 ) )
-    GUI_CS_SLOT_2( zoomIn )
+    GUI_LSCS_SLOT_1( Public, void zoomIn( int range = 1 ) )
+    GUI_LSCS_SLOT_2( zoomIn )
 
-    GUI_CS_SLOT_1( Public, void zoomOut( int range = 1 ) )
-    GUI_CS_SLOT_2( zoomOut )
+    GUI_LSCS_SLOT_1( Public, void zoomOut( int range = 1 ) )
+    GUI_LSCS_SLOT_2( zoomOut )
 
-    GUI_CS_SIGNAL_1( Public, void textChanged() )
-    GUI_CS_SIGNAL_2( textChanged )
+    GUI_LSCS_SIGNAL_1( Public, void textChanged() )
+    GUI_LSCS_SIGNAL_2( textChanged )
 
-    GUI_CS_SIGNAL_1( Public, void undoAvailable( bool status ) )
-    GUI_CS_SIGNAL_2( undoAvailable, status )
+    GUI_LSCS_SIGNAL_1( Public, void undoAvailable( bool status ) )
+    GUI_LSCS_SIGNAL_2( undoAvailable, status )
 
-    GUI_CS_SIGNAL_1( Public, void redoAvailable( bool status ) )
-    GUI_CS_SIGNAL_2( redoAvailable, status )
+    GUI_LSCS_SIGNAL_1( Public, void redoAvailable( bool status ) )
+    GUI_LSCS_SIGNAL_2( redoAvailable, status )
 
-    GUI_CS_SIGNAL_1( Public, void copyAvailable( bool status ) )
-    GUI_CS_SIGNAL_2( copyAvailable, status )
+    GUI_LSCS_SIGNAL_1( Public, void copyAvailable( bool status ) )
+    GUI_LSCS_SIGNAL_2( copyAvailable, status )
 
-    GUI_CS_SIGNAL_1( Public, void selectionChanged() )
-    GUI_CS_SIGNAL_2( selectionChanged )
+    GUI_LSCS_SIGNAL_1( Public, void selectionChanged() )
+    GUI_LSCS_SIGNAL_2( selectionChanged )
 
-    GUI_CS_SIGNAL_1( Public, void cursorPositionChanged() )
-    GUI_CS_SIGNAL_2( cursorPositionChanged )
+    GUI_LSCS_SIGNAL_1( Public, void cursorPositionChanged() )
+    GUI_LSCS_SIGNAL_2( cursorPositionChanged )
 
-    GUI_CS_SIGNAL_1( Public, void updateRequest( const QRect &rect, int dy ) )
-    GUI_CS_SIGNAL_2( updateRequest, rect, dy )
+    GUI_LSCS_SIGNAL_1( Public, void updateRequest( const QRect &rect, int dy ) )
+    GUI_LSCS_SIGNAL_2( updateRequest, rect, dy )
 
-    GUI_CS_SIGNAL_1( Public, void blockCountChanged( int newBlockCount ) )
-    GUI_CS_SIGNAL_2( blockCountChanged, newBlockCount )
+    GUI_LSCS_SIGNAL_1( Public, void blockCountChanged( int newBlockCount ) )
+    GUI_LSCS_SIGNAL_2( blockCountChanged, newBlockCount )
 
-    GUI_CS_SIGNAL_1( Public, void modificationChanged( bool changed ) )
-    GUI_CS_SIGNAL_2( modificationChanged, changed )
+    GUI_LSCS_SIGNAL_1( Public, void modificationChanged( bool changed ) )
+    GUI_LSCS_SIGNAL_2( modificationChanged, changed )
 
 protected:
     bool event( QEvent *event ) override;
@@ -329,28 +329,28 @@ protected:
 private:
     Q_DECLARE_PRIVATE( QPlainTextEdit )
 
-    GUI_CS_SLOT_1( Private, void _q_repaintContents( const QRectF &r ) )
-    GUI_CS_SLOT_2( _q_repaintContents )
+    GUI_LSCS_SLOT_1( Private, void _q_repaintContents( const QRectF &r ) )
+    GUI_LSCS_SLOT_2( _q_repaintContents )
 
-    GUI_CS_SLOT_1( Private, void _q_adjustScrollbars() )
-    GUI_CS_SLOT_2( _q_adjustScrollbars )
+    GUI_LSCS_SLOT_1( Private, void _q_adjustScrollbars() )
+    GUI_LSCS_SLOT_2( _q_adjustScrollbars )
 
-    GUI_CS_SLOT_1( Private, void _q_verticalScrollbarActionTriggered( int action ) )
-    GUI_CS_SLOT_2( _q_verticalScrollbarActionTriggered )
+    GUI_LSCS_SLOT_1( Private, void _q_verticalScrollbarActionTriggered( int action ) )
+    GUI_LSCS_SLOT_2( _q_verticalScrollbarActionTriggered )
 
-    GUI_CS_SLOT_1( Private, void _q_cursorPositionChanged() )
-    GUI_CS_SLOT_2( _q_cursorPositionChanged )
+    GUI_LSCS_SLOT_1( Private, void _q_cursorPositionChanged() )
+    GUI_LSCS_SLOT_2( _q_cursorPositionChanged )
 
     friend class QPlainTextEditControl;
 };
 
 class Q_GUI_EXPORT QPlainTextDocumentLayout : public QAbstractTextDocumentLayout
 {
-    GUI_CS_OBJECT( QPlainTextDocumentLayout )
+    GUI_LSCS_OBJECT( QPlainTextDocumentLayout )
     Q_DECLARE_PRIVATE( QPlainTextDocumentLayout )
 
-    GUI_CS_PROPERTY_READ( cursorWidth, cursorWidth )
-    GUI_CS_PROPERTY_WRITE( cursorWidth, setCursorWidth )
+    GUI_LSCS_PROPERTY_READ( cursorWidth, cursorWidth )
+    GUI_LSCS_PROPERTY_WRITE( cursorWidth, setCursorWidth )
 
 public:
     QPlainTextDocumentLayout( QTextDocument *document );

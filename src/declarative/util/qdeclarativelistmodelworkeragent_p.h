@@ -37,8 +37,8 @@ class FlatListScriptClass;
 
 class QDeclarativeListModelWorkerAgent : public QObject
 {
-    DECL_CS_OBJECT( QDeclarativeListModelWorkerAgent )
-    DECL_CS_PROPERTY_READ( count, count )
+    DECL_LSCS_OBJECT( QDeclarativeListModelWorkerAgent )
+    DECL_LSCS_PROPERTY_READ( count, count )
 
 public:
     QDeclarativeListModelWorkerAgent( QDeclarativeListModel * );

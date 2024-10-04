@@ -31,7 +31,7 @@ class MultiDataModel;
 
 class ErrorsView : public QListView
 {
-    CS_OBJECT( ErrorsView )
+    LSCS_OBJECT( ErrorsView )
 
 public:
     enum ErrorType

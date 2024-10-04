@@ -29,19 +29,19 @@
 
 class Q_CORE_EXPORT QTimer : public QObject
 {
-    CORE_CS_OBJECT( QTimer )
+    CORE_LSCS_OBJECT( QTimer )
 
-    CORE_CS_PROPERTY_READ( singleShot, isSingleShot )
-    CORE_CS_PROPERTY_WRITE( singleShot, setSingleShot )
+    CORE_LSCS_PROPERTY_READ( singleShot, isSingleShot )
+    CORE_LSCS_PROPERTY_WRITE( singleShot, setSingleShot )
 
-    CORE_CS_PROPERTY_READ( interval, interval )
-    CORE_CS_PROPERTY_WRITE( interval, setInterval )
+    CORE_LSCS_PROPERTY_READ( interval, interval )
+    CORE_LSCS_PROPERTY_WRITE( interval, setInterval )
 
-    CORE_CS_PROPERTY_READ( remainingTime, remainingTime )
-    CORE_CS_PROPERTY_READ( timerType, timerType )
-    CORE_CS_PROPERTY_WRITE( timerType, setTimerType )
+    CORE_LSCS_PROPERTY_READ( remainingTime, remainingTime )
+    CORE_LSCS_PROPERTY_READ( timerType, timerType )
+    CORE_LSCS_PROPERTY_WRITE( timerType, setTimerType )
 
-    CORE_CS_PROPERTY_READ( active, isActive )
+    CORE_LSCS_PROPERTY_READ( active, isActive )
 
 public:
     explicit QTimer( QObject *parent = nullptr );
@@ -144,17 +144,17 @@ public:
         singleShot_internal( msec, timerType, receiver, std::move( slotBento ) );
     }
 
-    CORE_CS_SLOT_1( Public, void start( int msec ) )
-    CORE_CS_SLOT_OVERLOAD( start, ( int ) )
+    CORE_LSCS_SLOT_1( Public, void start( int msec ) )
+    CORE_LSCS_SLOT_OVERLOAD( start, ( int ) )
 
-    CORE_CS_SLOT_1( Public, void start() )
-    CORE_CS_SLOT_OVERLOAD( start, () )
+    CORE_LSCS_SLOT_1( Public, void start() )
+    CORE_LSCS_SLOT_OVERLOAD( start, () )
 
-    CORE_CS_SLOT_1( Public, void stop() )
-    CORE_CS_SLOT_2( stop )
+    CORE_LSCS_SLOT_1( Public, void stop() )
+    CORE_LSCS_SLOT_2( stop )
 
-    CORE_CS_SIGNAL_1( Public, void timeout() )
-    CORE_CS_SIGNAL_2( timeout )
+    CORE_LSCS_SIGNAL_1( Public, void timeout() )
+    CORE_LSCS_SIGNAL_2( timeout )
 
 protected:
     void timerEvent( QTimerEvent *event ) override;

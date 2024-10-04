@@ -45,8 +45,8 @@ QtSharedPointer::ExternalRefCountData *QtSharedPointer::ExternalRefCountData::ge
 {
     Q_ASSERT( obj );
 
-    bool wasDeleted = CSInternalRefCount::get_m_wasDeleted( obj );
-    std::atomic<QtSharedPointer::ExternalRefCountData *> &sharedRefcount = CSInternalRefCount::get_m_SharedRefCount( obj );
+    bool wasDeleted = LSCSInternalRefCount::get_m_wasDeleted( obj );
+    std::atomic<QtSharedPointer::ExternalRefCountData *> &sharedRefcount = LSCSInternalRefCount::get_m_SharedRefCount( obj );
 
     Q_ASSERT_X( ! wasDeleted, "QWeakPointer", "Detected QWeakPointer creation in a QObject being deleted" );
 

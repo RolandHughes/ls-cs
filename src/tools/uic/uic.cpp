@@ -96,7 +96,7 @@ bool Uic::printDependencies()
                 continue;
             }
 
-            fprintf( stdout, "%s\n", csPrintable( file ) );
+            fprintf( stdout, "%s\n", lscsPrintable( file ) );
         }
     }
 
@@ -114,7 +114,7 @@ bool Uic::printDependencies()
                     continue;
                 }
 
-                fprintf( stdout, "%s\n", csPrintable( file ) );
+                fprintf( stdout, "%s\n", lscsPrintable( file ) );
             }
         }
     }
@@ -172,7 +172,7 @@ DomUI *Uic::parseUiFile( QXmlStreamReader &reader )
         delete ui;
         ui = nullptr;
 
-        fprintf( stderr, "%s\n", csPrintable( QString( "Uic: Parse error on line %1, column %2 : %3" )
+        fprintf( stderr, "%s\n", lscsPrintable( QString( "Uic: Parse error on line %1, column %2 : %3" )
                                               .formatArg( reader.lineNumber() ).formatArg( reader.columnNumber() ).formatArg( reader.errorString() ) ) );
     }
 
@@ -238,7 +238,7 @@ bool Uic::write( QIODevice *in )
 
         if ( ! language.isEmpty() && language.toLower() != "c++" )
         {
-            fprintf( stderr, "Uic: File is not a C++ ui file, language = %s\n", csPrintable( language ) );
+            fprintf( stderr, "Uic: File is not a C++ ui file, language = %s\n", lscsPrintable( language ) );
             return false;
         }
 

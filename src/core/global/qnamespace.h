@@ -25,10 +25,10 @@
 #define QNAMESPACE_H
 
 #include <qglobal.h>
-#include <csobject_macro.h>
-#include <csregister1.h>
+#include <lscsobject_macro.h>
+#include <lscsregister1.h>
 
-class CSGadget_Fake_Parent;
+class LSCSGadget_Fake_Parent;
 class QMetaObject;
 class QTextCodec;
 
@@ -40,19 +40,19 @@ class Q_CORE_EXPORT Qt
 public:
     // simulate cs_gadget to avoid circular dependencies
 
-    using cs_parent = CSGadget_Fake_Parent;
-    using cs_class  = Qt;
+    using lscs_parent = LSCSGadget_Fake_Parent;
+    using lscs_class  = Qt;
 
-    static const char *cs_className();
+    static const char *lscs_className();
     static const QMetaObject_T<Qt> &staticMetaObject();
 
     template <int N>
-    static void cs_regTrigger( cs_number<N> )
+    static void lscs_regTrigger( lscs_number<N> )
     { }
 
-    static constexpr cs_number<0> cs_counter( cs_number<0> )
+    static constexpr lscs_number<0> lscs_counter( lscs_number<0> )
     {
-        return cs_number<0> {};
+        return lscs_number<0> {};
     }
 
     static constexpr EmptyFlag_Type EmptyFlag = {};
@@ -141,10 +141,10 @@ public:
     };
     using MouseButtons = QFlags<MouseButton>;
 
-    CORE_CS_ENUM( Orientation )
-    CORE_CS_FLAG( Orientation, Orientations )
+    CORE_LSCS_ENUM( Orientation )
+    CORE_LSCS_FLAG( Orientation, Orientations )
 
-    CORE_CS_REGISTER_ENUM(
+    CORE_LSCS_REGISTER_ENUM(
         enum Orientation
     {
         Horizontal = 0x1,
@@ -154,9 +154,9 @@ public:
 
     using Orientations = QFlags<Orientation>;
 
-    CORE_CS_ENUM( FocusPolicy )
+    CORE_LSCS_ENUM( FocusPolicy )
 
-    CORE_CS_REGISTER_ENUM(
+    CORE_LSCS_REGISTER_ENUM(
         enum FocusPolicy
     {
         NoFocus     = 0,
@@ -192,10 +192,10 @@ public:
     // The following two enums can be combined to one integer which
     // is passed as 'flags' to drawText and qt_format_text.
 
-    CORE_CS_ENUM( AlignmentFlag )
-    CORE_CS_FLAG( AlignmentFlag, Alignment )
+    CORE_LSCS_ENUM( AlignmentFlag )
+    CORE_LSCS_FLAG( AlignmentFlag, Alignment )
 
-    CORE_CS_REGISTER_ENUM(
+    CORE_LSCS_REGISTER_ENUM(
         enum AlignmentFlag
     {
         AlignLeft       = 0x0001,
@@ -236,9 +236,9 @@ public:
         TextBypassShaping         = 0x100000
     };
 
-    CORE_CS_ENUM( TextElideMode )
+    CORE_LSCS_ENUM( TextElideMode )
 
-    CORE_CS_REGISTER_ENUM(
+    CORE_LSCS_REGISTER_ENUM(
         enum TextElideMode
     {
         ElideLeft,
@@ -1035,9 +1035,9 @@ public:
         Key_unknown = 0x01ffffff
     };
 
-    CORE_CS_ENUM( ArrowType )
+    CORE_LSCS_ENUM( ArrowType )
 
-    CORE_CS_REGISTER_ENUM(
+    CORE_LSCS_REGISTER_ENUM(
         enum ArrowType
     {
         NoArrow,
@@ -1049,9 +1049,9 @@ public:
     )
 
     // keep in sync with enum UnderlineStyle in gui/text/qtextformat.h
-    CORE_CS_ENUM( PenStyle )
+    CORE_LSCS_ENUM( PenStyle )
 
-    CORE_CS_REGISTER_ENUM(
+    CORE_LSCS_REGISTER_ENUM(
         enum PenStyle
     {
         NoPen,
@@ -1082,9 +1082,9 @@ public:
         MPenJoinStyle = 0x1c0
     };
 
-    CORE_CS_ENUM( BrushStyle )
+    CORE_LSCS_ENUM( BrushStyle )
 
-    CORE_CS_REGISTER_ENUM(
+    CORE_LSCS_REGISTER_ENUM(
         enum BrushStyle                    // brush style
     {
         NoBrush,
@@ -1155,9 +1155,9 @@ public:
         CustomCursor = 25
     };
 
-    CORE_CS_ENUM( TextFormat )
+    CORE_LSCS_ENUM( TextFormat )
 
-    CORE_CS_REGISTER_ENUM(
+    CORE_LSCS_REGISTER_ENUM(
         enum TextFormat
     {
         PlainText,
@@ -1173,10 +1173,10 @@ public:
         KeepAspectRatioByExpanding
     };
 
-    CORE_CS_ENUM( DockWidgetArea )
-    CORE_CS_FLAG( DockWidgetArea, DockWidgetAreas )
+    CORE_LSCS_ENUM( DockWidgetArea )
+    CORE_LSCS_FLAG( DockWidgetArea, DockWidgetAreas )
 
-    CORE_CS_REGISTER_ENUM(
+    CORE_LSCS_REGISTER_ENUM(
         enum DockWidgetArea
     {
         LeftDockWidgetArea   = 0x1,
@@ -1198,10 +1198,10 @@ public:
 
     using DockWidgetAreas = QFlags<DockWidgetArea>;
 
-    CORE_CS_ENUM( ToolBarArea )
-    CORE_CS_FLAG( ToolBarArea, ToolBarAreas )
+    CORE_LSCS_ENUM( ToolBarArea )
+    CORE_LSCS_FLAG( ToolBarArea, ToolBarAreas )
 
-    CORE_CS_REGISTER_ENUM(
+    CORE_LSCS_REGISTER_ENUM(
         enum ToolBarArea
     {
         LeftToolBarArea   = 0x1,
@@ -1237,9 +1237,9 @@ public:
         RFC2822Date                    // RFC 2822 (+ 850 and 1036 during parsing)
     };
 
-    CORE_CS_ENUM( TimeSpec )
+    CORE_LSCS_ENUM( TimeSpec )
 
-    CORE_CS_REGISTER_ENUM(
+    CORE_LSCS_REGISTER_ENUM(
         enum TimeSpec
     {
         LocalTime,
@@ -1249,9 +1249,9 @@ public:
     };
     )
 
-    CORE_CS_ENUM( DayOfWeek )
+    CORE_LSCS_ENUM( DayOfWeek )
 
-    CORE_CS_REGISTER_ENUM(
+    CORE_LSCS_REGISTER_ENUM(
         enum DayOfWeek
     {
         Monday    = 1,
@@ -1264,9 +1264,9 @@ public:
     };
     )
 
-    CORE_CS_ENUM( ScrollBarPolicy )
+    CORE_LSCS_ENUM( ScrollBarPolicy )
 
-    CORE_CS_REGISTER_ENUM(
+    CORE_LSCS_REGISTER_ENUM(
         enum ScrollBarPolicy
     {
         ScrollBarAsNeeded,
@@ -1275,9 +1275,9 @@ public:
     };
     )
 
-    CORE_CS_ENUM( CaseSensitivity )
+    CORE_LSCS_ENUM( CaseSensitivity )
 
-    CORE_CS_REGISTER_ENUM(
+    CORE_LSCS_REGISTER_ENUM(
         enum CaseSensitivity
     {
         CaseInsensitive,
@@ -1312,9 +1312,9 @@ public:
         UniqueConnection =  0x80
     };
 
-    CORE_CS_ENUM( ShortcutContext )
+    CORE_LSCS_ENUM( ShortcutContext )
 
-    CORE_CS_REGISTER_ENUM(
+    CORE_LSCS_REGISTER_ENUM(
         enum ShortcutContext
     {
         WidgetShortcut,
@@ -1343,9 +1343,9 @@ public:
         IntersectClip
     };
 
-    CORE_CS_ENUM( ItemSelectionMode )
+    CORE_LSCS_ENUM( ItemSelectionMode )
 
-    CORE_CS_REGISTER_ENUM(
+    CORE_LSCS_REGISTER_ENUM(
         enum ItemSelectionMode
     {
         ContainsItemShape          = 0x0,
@@ -1387,9 +1387,9 @@ public:
         NoFocusReason
     };
 
-    CORE_CS_ENUM( ContextMenuPolicy )
+    CORE_LSCS_ENUM( ContextMenuPolicy )
 
-    CORE_CS_REGISTER_ENUM(
+    CORE_LSCS_REGISTER_ENUM(
         enum ContextMenuPolicy
     {
         NoContextMenu,
@@ -1427,10 +1427,10 @@ public:
 
     using InputMethodQueries = QFlags<InputMethodQuery>;
 
-    CORE_CS_ENUM( InputMethodHint )
-    CORE_CS_FLAG( InputMethodHint, InputMethodHints )
+    CORE_LSCS_ENUM( InputMethodHint )
+    CORE_LSCS_FLAG( InputMethodHint, InputMethodHints )
 
-    CORE_CS_REGISTER_ENUM(
+    CORE_LSCS_REGISTER_ENUM(
         enum InputMethodHint
     {
         ImhNone             = 0x0,
@@ -1473,9 +1473,9 @@ public:
         EnterKeyPrevious
     };
 
-    CORE_CS_ENUM( ToolButtonStyle )
+    CORE_LSCS_ENUM( ToolButtonStyle )
 
-    CORE_CS_REGISTER_ENUM(
+    CORE_LSCS_REGISTER_ENUM(
         enum ToolButtonStyle
     {
         ToolButtonIconOnly,
@@ -1486,9 +1486,9 @@ public:
     };
     )
 
-    CORE_CS_ENUM( LayoutDirection )
+    CORE_LSCS_ENUM( LayoutDirection )
 
-    CORE_CS_REGISTER_ENUM(
+    CORE_LSCS_REGISTER_ENUM(
         enum LayoutDirection
     {
         LeftToRight,
@@ -1515,10 +1515,10 @@ public:
 
     using FindChildOptions = QFlags<FindChildOption>;
 
-    CORE_CS_ENUM( DropAction )
-    CORE_CS_FLAG( DropAction, DropActions )
+    CORE_LSCS_ENUM( DropAction )
+    CORE_LSCS_FLAG( DropAction, DropActions )
 
-    CORE_CS_REGISTER_ENUM(
+    CORE_LSCS_REGISTER_ENUM(
         enum DropAction
     {
         CopyAction       = 0x1,
@@ -1604,9 +1604,9 @@ public:
 
     using HANDLE = void *;
 
-    CORE_CS_ENUM( WindowModality )
+    CORE_LSCS_ENUM( WindowModality )
 
-    CORE_CS_REGISTER_ENUM(
+    CORE_LSCS_REGISTER_ENUM(
         enum WindowModality
     {
         NonModal,
@@ -1615,10 +1615,10 @@ public:
     };
     )
 
-    CORE_CS_ENUM( TextInteractionFlag )
-    CORE_CS_FLAG( TextInteractionFlag, TextInteractionFlags )
+    CORE_LSCS_ENUM( TextInteractionFlag )
+    CORE_LSCS_FLAG( TextInteractionFlag, TextInteractionFlags )
 
-    CORE_CS_REGISTER_ENUM(
+    CORE_LSCS_REGISTER_ENUM(
         enum TextInteractionFlag
     {
         NoTextInteraction         = 0,
@@ -1642,9 +1642,9 @@ public:
         LowEventPriority = -1
     };
 
-    CORE_CS_ENUM( SizeHint )
+    CORE_LSCS_ENUM( SizeHint )
 
-    CORE_CS_REGISTER_ENUM(
+    CORE_LSCS_REGISTER_ENUM(
         enum SizeHint
     {
         MinimumSize,
@@ -1746,9 +1746,9 @@ public:
         NavigationModeCursorForceVisible
     };
 
-    CORE_CS_ENUM( CursorMoveStyle )
+    CORE_LSCS_ENUM( CursorMoveStyle )
 
-    CORE_CS_REGISTER_ENUM(
+    CORE_LSCS_REGISTER_ENUM(
         enum CursorMoveStyle
     {
         LogicalMoveStyle,
@@ -1800,52 +1800,52 @@ public:
     static QTextCodec *codecForHtml( const QByteArray &ba );
 #endif
 
-    CORE_CS_ENUM( ApplicationAttribute )
-    CORE_CS_ENUM( AspectRatioMode )
-    CORE_CS_ENUM( Axis )
-    CORE_CS_ENUM( BGMode )
-    CORE_CS_ENUM( CheckState )
-    CORE_CS_ENUM( ClipOperation )
-    CORE_CS_ENUM( ConnectionType )
-    CORE_CS_ENUM( Corner )
-    CORE_CS_ENUM( CursorShape )
-    CORE_CS_ENUM( DateFormat )
-    CORE_CS_ENUM( FillRule )
-    CORE_CS_ENUM( GlobalColor )
-    CORE_CS_ENUM( Key )
-    CORE_CS_ENUM( MaskMode )
-    CORE_CS_ENUM( PenCapStyle )
-    CORE_CS_ENUM( PenJoinStyle )
-    CORE_CS_ENUM( ShortcutContext )
-    CORE_CS_ENUM( SizeMode )
-    CORE_CS_ENUM( SortOrder )
-    CORE_CS_ENUM( TransformationMode )
-    CORE_CS_ENUM( WidgetAttribute )
+    CORE_LSCS_ENUM( ApplicationAttribute )
+    CORE_LSCS_ENUM( AspectRatioMode )
+    CORE_LSCS_ENUM( Axis )
+    CORE_LSCS_ENUM( BGMode )
+    CORE_LSCS_ENUM( CheckState )
+    CORE_LSCS_ENUM( ClipOperation )
+    CORE_LSCS_ENUM( ConnectionType )
+    CORE_LSCS_ENUM( Corner )
+    CORE_LSCS_ENUM( CursorShape )
+    CORE_LSCS_ENUM( DateFormat )
+    CORE_LSCS_ENUM( FillRule )
+    CORE_LSCS_ENUM( GlobalColor )
+    CORE_LSCS_ENUM( Key )
+    CORE_LSCS_ENUM( MaskMode )
+    CORE_LSCS_ENUM( PenCapStyle )
+    CORE_LSCS_ENUM( PenJoinStyle )
+    CORE_LSCS_ENUM( ShortcutContext )
+    CORE_LSCS_ENUM( SizeMode )
+    CORE_LSCS_ENUM( SortOrder )
+    CORE_LSCS_ENUM( TransformationMode )
+    CORE_LSCS_ENUM( WidgetAttribute )
 
-    CORE_CS_ENUM( ImageConversionFlag )
-    CORE_CS_FLAG( ImageConversionFlag, ImageConversionFlags )
+    CORE_LSCS_ENUM( ImageConversionFlag )
+    CORE_LSCS_FLAG( ImageConversionFlag, ImageConversionFlags )
 
-    CORE_CS_ENUM( ItemFlag )
-    CORE_CS_FLAG( ItemFlag, ItemFlags )
+    CORE_LSCS_ENUM( ItemFlag )
+    CORE_LSCS_FLAG( ItemFlag, ItemFlags )
 
-    CORE_CS_ENUM( MatchFlag )
-    CORE_CS_FLAG( MatchFlag, MatchFlags )
+    CORE_LSCS_ENUM( MatchFlag )
+    CORE_LSCS_FLAG( MatchFlag, MatchFlags )
 
-    CORE_CS_ENUM( KeyboardModifier )
-    CORE_CS_FLAG( KeyboardModifier, KeyboardModifiers )
+    CORE_LSCS_ENUM( KeyboardModifier )
+    CORE_LSCS_FLAG( KeyboardModifier, KeyboardModifiers )
 
-    CORE_CS_ENUM( MouseButton )
-    CORE_CS_FLAG( MouseButton, MouseButtons )
+    CORE_LSCS_ENUM( MouseButton )
+    CORE_LSCS_FLAG( MouseButton, MouseButtons )
 
-    CORE_CS_ENUM( WindowType )
-    CORE_CS_FLAG( WindowType, WindowFlags )
+    CORE_LSCS_ENUM( WindowType )
+    CORE_LSCS_FLAG( WindowType, WindowFlags )
 
-    CORE_CS_ENUM( WindowState )
-    CORE_CS_FLAG( WindowState, WindowStates )
+    CORE_LSCS_ENUM( WindowState )
+    CORE_LSCS_FLAG( WindowState, WindowStates )
 
 #ifndef QT_NO_GESTURES
-    CORE_CS_ENUM( GestureState )
-    CORE_CS_ENUM( GestureType )
+    CORE_LSCS_ENUM( GestureState )
+    CORE_LSCS_ENUM( GestureType )
 #endif
 
 private:

@@ -90,7 +90,7 @@ public:
 
     QThreadData *getThreadData()
     {
-        return CSInternalThreadData::get_m_ThreadData( q_ptr );
+        return LSCSInternalThreadData::get_m_ThreadData( q_ptr );
     }
 
     int &argc;

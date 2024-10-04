@@ -32,7 +32,7 @@
 
 class QGstreamerVideoInputDeviceControl : public QVideoDeviceSelectorControl
 {
-    CS_OBJECT( QGstreamerVideoInputDeviceControl )
+    LSCS_OBJECT( QGstreamerVideoInputDeviceControl )
 
 public:
     QGstreamerVideoInputDeviceControl( QObject *parent );
@@ -57,8 +57,8 @@ public:
         return tr( "Front camera" );
     }
 
-    CS_SLOT_1( Public, void setSelectedDevice( int index ) override )
-    CS_SLOT_2( setSelectedDevice )
+    LSCS_SLOT_1( Public, void setSelectedDevice( int index ) override )
+    LSCS_SLOT_2( setSelectedDevice )
 
 private:
     GstElementFactory *m_factory;

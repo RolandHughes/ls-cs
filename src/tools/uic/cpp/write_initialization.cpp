@@ -194,7 +194,7 @@ static bool checkProperty( const QString &fileName, const DomProperty *p )
                     {
                         const QString msg = QString( "%1: Warning, an invalid icon property '%2' was found" )
                                             .formatArg( fileName ).formatArg( p->attributeName() );
-                        qWarning( "%s", csPrintable( msg ) );
+                        qWarning( "%s", lscsPrintable( msg ) );
 
                         return false;
                     }
@@ -209,7 +209,7 @@ static bool checkProperty( const QString &fileName, const DomProperty *p )
                 {
                     const QString msg = QString( "%1: Warning, an invalid pixmap property '%2' was found" )
                                         .formatArg( fileName ).formatArg( p->attributeName() );
-                    qWarning( "%s", csPrintable( msg ) );
+                    qWarning( "%s", lscsPrintable( msg ) );
 
                     return false;
                 }
@@ -719,14 +719,14 @@ void WriteInitialization::acceptUI( DomUI *node )
         if ( !m_registeredWidgets.contains( b.objName ) )
         {
             qWarning( "%s: Warning: Buddy assignment '%s' is not a valid widget",
-                      csPrintable( m_option.messagePrefix() ), csPrintable( b.objName ) );
+                      lscsPrintable( m_option.messagePrefix() ), lscsPrintable( b.objName ) );
             continue;
 
         }
         else if ( !m_registeredWidgets.contains( b.buddy ) )
         {
             qWarning( "%s: Warning: Buddy assignment '%s' is not a valid widget",
-                      csPrintable( m_option.messagePrefix() ), csPrintable( b.buddy ) );
+                      lscsPrintable( m_option.messagePrefix() ), lscsPrintable( b.buddy ) );
             continue;
         }
 
@@ -1157,7 +1157,7 @@ void WriteInitialization::acceptWidget( DomWidget *node )
         if ( ! m_registeredWidgets.contains( name ) )
         {
             qWarning( "%s: Warning: Z-order assignment of '%s' is not a valid widget",
-                      csPrintable( m_option.messagePrefix() ), csPrintable( name ) );
+                      lscsPrintable( m_option.messagePrefix() ), lscsPrintable( name ) );
             continue;
         }
 
@@ -1197,7 +1197,7 @@ void WriteInitialization::addButtonGroup( const DomWidget *buttonNode, const QSt
         group = newGroup;
 
         qWarning( "%s: Warning: Creating button group `%s'",
-                  csPrintable( m_option.messagePrefix() ), attributeName.toLatin1().data() );
+                  lscsPrintable( m_option.messagePrefix() ), attributeName.toLatin1().data() );
     }
 
     const QString groupName = m_driver->findOrInsertButtonGroup( group );
@@ -1544,7 +1544,7 @@ void WriteInitialization::acceptActionRef( DomActionRef *node )
     else if ( !( m_driver->actionByName( actionName ) || isSeparator ) )
     {
         qWarning( "%s: Warning: Action `%s' not declared",
-                  csPrintable( m_option.messagePrefix() ), csPrintable( actionName ) );
+                  lscsPrintable( m_option.messagePrefix() ), lscsPrintable( actionName ) );
 
         return;
     }
@@ -2594,7 +2594,7 @@ void WriteInitialization::acceptTabStops( DomTabStops *tabStops )
         if ( !m_registeredWidgets.contains( name ) )
         {
             qWarning( "%s: Warning: Tab stop assignment '%s' is not a valid widget",
-                      csPrintable( m_option.messagePrefix() ), csPrintable( name ) );
+                      lscsPrintable( m_option.messagePrefix() ), lscsPrintable( name ) );
 
             continue;
         }
@@ -2643,7 +2643,7 @@ QString WriteInitialization::pixCall( const DomProperty *p ) const
             break;
 
         default:
-            qWarning( "%s: Warning: Unknown icon format found", csPrintable( m_option.messagePrefix() ) );
+            qWarning( "%s: Warning: Unknown icon format found", lscsPrintable( m_option.messagePrefix() ) );
             return "QIcon()";
     }
 

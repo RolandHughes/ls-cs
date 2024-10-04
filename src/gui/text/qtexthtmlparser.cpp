@@ -1965,7 +1965,7 @@ void QTextHtmlParser::applyAttributes( const QStringList &attributes )
 
                     if ( ! c.isValid() )
                     {
-                        qWarning( "QTextHtmlParser::applyAttributes() Unknown color name '%s'", csPrintable( value ) );
+                        qWarning( "QTextHtmlParser::applyAttributes() Unknown color name '%s'", lscsPrintable( value ) );
                     }
 
                     node->charFormat.setForeground( c );
@@ -2059,7 +2059,7 @@ void QTextHtmlParser::applyAttributes( const QStringList &attributes )
 
                     if ( ! c.isValid() )
                     {
-                        qWarning( "QTextHtmlParser::applyAttributes() Unknown color name '%s'", csPrintable( value ) );
+                        qWarning( "QTextHtmlParser::applyAttributes() Unknown color name '%s'", lscsPrintable( value ) );
                     }
 
                     node->charFormat.setBackground( c );
@@ -2085,7 +2085,7 @@ void QTextHtmlParser::applyAttributes( const QStringList &attributes )
 
                     if ( ! c.isValid() )
                     {
-                        qWarning( "QTextHtmlParser::applyAttributes() Unknown color name '%s'", csPrintable( value ) );
+                        qWarning( "QTextHtmlParser::applyAttributes() Unknown color name '%s'", lscsPrintable( value ) );
                     }
 
                     node->charFormat.setBackground( c );
@@ -2125,7 +2125,7 @@ void QTextHtmlParser::applyAttributes( const QStringList &attributes )
 
                     if ( !c.isValid() )
                     {
-                        qWarning( "QTextHtmlParser::applyAttributes() Unknown color name '%s'", csPrintable( value ) );
+                        qWarning( "QTextHtmlParser::applyAttributes() Unknown color name '%s'", lscsPrintable( value ) );
                     }
 
                     node->charFormat.setBackground( c );

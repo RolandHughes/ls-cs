@@ -24,16 +24,16 @@
 #ifndef QOBJECT_H
 #define QOBJECT_H
 
-#include <csobject_macro.h>
+#include <lscsobject_macro.h>
 
 // include before qmetaobject.h
-#include <csregister1.h>
+#include <lscsregister1.h>
 
 #include <qmetaobject.h>
-#include <csregister2.h>
+#include <lscsregister2.h>
 
-// must be after csregister2.h>
-#include <csmeta.h>
+// must be after lscsregister2.h>
+#include <lscsmeta.h>
 
 #include <qlist.h>
 #include <qpointer.h>
@@ -51,13 +51,13 @@ using QObjectList = QList<QObject *>;
 #define emit
 #endif
 
-class CSAbstractDeclarativeData;
-class CSInternalChildren;
-class CSInternalDeclarativeData;
-class CSInternalEvents;
-class CSInternalRefCount;
-class CSInternalSender;
-class CSInternalThreadData;
+class LSCSAbstractDeclarativeData;
+class LSCSInternalChildren;
+class LSCSInternalDeclarativeData;
+class LSCSInternalEvents;
+class LSCSInternalRefCount;
+class LSCSInternalSender;
+class LSCSInternalThreadData;
 
 class QChildEvent;
 class QEvent;
@@ -80,25 +80,25 @@ public:
 class Q_CORE_EXPORT QObject : public virtual LsCsSignal::SignalBase, public virtual LsCsSignal::SlotBase
 {
 protected:
-    // used in the CS_OBJECT macro to define cs_parent (ex:QObject) and cs_class (ex:MyClass)
-    using cs_class = QObject;
+    // used in the LSCS_OBJECT macro to define lscs_parent (ex:QObject) and lscs_class (ex:MyClass)
+    using lscs_class = QObject;
 
 private:
 
-#undef  CS_OVERRIDE
-#define CS_OVERRIDE
+#undef  LSCS_OVERRIDE
+#define LSCS_OVERRIDE
 
-    CORE_CS_OBJECT_INTERNAL( QObject )
+    CORE_LSCS_OBJECT_INTERNAL( QObject )
 
-#undef  CS_OVERRIDE
-#define CS_OVERRIDE override
+#undef  LSCS_OVERRIDE
+#define LSCS_OVERRIDE override
 
-    CORE_CS_PROPERTY_READ( objectName,  objectName )
-    CORE_CS_PROPERTY_WRITE( objectName, setObjectName )
+    CORE_LSCS_PROPERTY_READ( objectName,  objectName )
+    CORE_LSCS_PROPERTY_WRITE( objectName, setObjectName )
 
 public:
-    CORE_CS_INVOKABLE_CONSTRUCTOR_1( Public, explicit QObject( QObject *parent = nullptr ) )
-    CORE_CS_INVOKABLE_CONSTRUCTOR_2( QObject, QObject * )
+    CORE_LSCS_INVOKABLE_CONSTRUCTOR_1( Public, explicit QObject( QObject *parent = nullptr ) )
+    CORE_LSCS_INVOKABLE_CONSTRUCTOR_2( QObject, QObject * )
 
     QObject( const QObject & ) = delete;
     QObject &operator=( const QObject & ) = delete;
@@ -217,14 +217,14 @@ public:
     static QMap<std::type_index, QMetaObject *> &m_metaObjectsAll();
     static std::recursive_mutex &m_metaObjectMutex();
 
-    CORE_CS_SIGNAL_1( Public, void destroyed( QObject *obj = nullptr ) )
-    CORE_CS_SIGNAL_2( destroyed, obj )
+    CORE_LSCS_SIGNAL_1( Public, void destroyed( QObject *obj = nullptr ) )
+    CORE_LSCS_SIGNAL_2( destroyed, obj )
 
-    CORE_CS_SIGNAL_1( Public, void objectNameChanged( const QString &objectName ) )
-    CORE_CS_SIGNAL_2( objectNameChanged, objectName )
+    CORE_LSCS_SIGNAL_1( Public, void objectNameChanged( const QString &objectName ) )
+    CORE_LSCS_SIGNAL_2( objectNameChanged, objectName )
 
-    CORE_CS_SLOT_1( Public, void deleteLater() )
-    CORE_CS_SLOT_2( deleteLater )
+    CORE_LSCS_SLOT_1( Public, void deleteLater() )
+    CORE_LSCS_SLOT_2( deleteLater )
 
 protected:
     virtual bool cs_isWidgetType() const;
@@ -251,7 +251,7 @@ private:
     QList<QObject *> m_children;
 
     QObject *m_currentChildBeingDeleted;
-    CSAbstractDeclarativeData *m_declarativeData;
+    LSCSAbstractDeclarativeData *m_declarativeData;
 
     QList< QPointer<QObject>> m_eventFilters;
 
@@ -294,16 +294,16 @@ private:
     void findChildren_helper( const QString &name, const QRegularExpression *regExp, QList<T> &list,
                               Qt::FindChildOptions options ) const;
 
-    CORE_CS_SLOT_1( Private, void internal_reregisterTimers( QList<QTimerInfo> timerList ) )
-    CORE_CS_SLOT_2( internal_reregisterTimers )
+    CORE_LSCS_SLOT_1( Private, void internal_reregisterTimers( QList<QTimerInfo> timerList ) )
+    CORE_LSCS_SLOT_2( internal_reregisterTimers )
 
     friend QMetaObject;
-    friend CSInternalChildren;
-    friend CSInternalDeclarativeData;
-    friend CSInternalThreadData;
-    friend CSInternalRefCount;
-    friend CSInternalSender;
-    friend CSInternalEvents;
+    friend LSCSInternalChildren;
+    friend LSCSInternalDeclarativeData;
+    friend LSCSInternalThreadData;
+    friend LSCSInternalRefCount;
+    friend LSCSInternalSender;
+    friend LSCSInternalEvents;
 };
 
 template<class T>
@@ -412,7 +412,7 @@ T QObject::property( const QString &name ) const
 
         if ( k < 0 )
         {
-            std::string msg = meta->className().toStdString() + "::property() Property " + csPrintable( name ) +
+            std::string msg = meta->className().toStdString() + "::property() Property " + lscsPrintable( name ) +
                               " is invalid or does not exist";
             throw std::invalid_argument( msg );
         }
@@ -426,7 +426,7 @@ T QObject::property( const QString &name ) const
         }
         else
         {
-            std::string msg = meta->className().toStdString() + "::property() Property " + csPrintable( name ) +
+            std::string msg = meta->className().toStdString() + "::property() Property " + lscsPrintable( name ) +
                               " is not the correct type";
             throw std::invalid_argument( msg );
         }
@@ -436,7 +436,7 @@ T QObject::property( const QString &name ) const
 
     if ( ! p.isReadable() )
     {
-        qWarning( "%s::property() Property \"%s\" is invalid or does not exist", csPrintable( meta->className() ), csPrintable( name ) );
+        qWarning( "%s::property() Property \"%s\" is invalid or does not exist", lscsPrintable( meta->className() ), lscsPrintable( name ) );
     }
 
     return p.read<T>( this );
@@ -470,8 +470,8 @@ inline QVariant QObject::property<QVariant>( const QString &name ) const
 
     if ( ! p.isReadable() )
     {
-        qWarning( "%s::property() Property \"%s\" is invalid or does not exist", csPrintable( metaObj->className() ),
-                  csPrintable( name ) );
+        qWarning( "%s::property() Property \"%s\" is invalid or does not exist", lscsPrintable( metaObj->className() ),
+                  lscsPrintable( name ) );
     }
 
     return p.read( this );
@@ -499,23 +499,23 @@ inline const QString &qobject_interface_iid()
 Q_CORE_EXPORT QDebug operator<<( QDebug, const QObject * );
 
 // **
-class Q_CORE_EXPORT CSAbstractDeclarativeData
+class Q_CORE_EXPORT LSCSAbstractDeclarativeData
 {
 public:
-    static void ( *destroyed )( CSAbstractDeclarativeData *, QObject * );
-    static void ( *parentChanged )( CSAbstractDeclarativeData *, QObject *, QObject * );
-    static void ( *signalEmitted )( CSAbstractDeclarativeData *, QObject *, int, void ** );
-    static int  ( *receivers )( CSAbstractDeclarativeData *, const QObject *, int );
+    static void ( *destroyed )( LSCSAbstractDeclarativeData *, QObject * );
+    static void ( *parentChanged )( LSCSAbstractDeclarativeData *, QObject *, QObject * );
+    static void ( *signalEmitted )( LSCSAbstractDeclarativeData *, QObject *, int, void ** );
+    static int  ( *receivers )( LSCSAbstractDeclarativeData *, const QObject *, int );
 };
 
 // **
-class Q_CORE_EXPORT CSGadget_Fake_Parent final
+class Q_CORE_EXPORT LsCSGadget_Fake_Parent final
 {
     // no code should appear here
 };
 
 // **
-class Q_CORE_EXPORT CSInternalChildren
+class Q_CORE_EXPORT LSCSInternalChildren
 {
 private:
     static void deleteChildren( QObject *object );
@@ -527,17 +527,17 @@ private:
     friend class QWidgetPrivate;
 };
 
-class Q_CORE_EXPORT CSInternalDeclarativeData
+class Q_CORE_EXPORT LSCSInternalDeclarativeData
 {
 private:
-    static CSAbstractDeclarativeData *get_m_declarativeData( const QObject *object );
-    static void set_m_declarativeData( QObject *object, CSAbstractDeclarativeData *value );
+    static LSCSAbstractDeclarativeData *get_m_declarativeData( const QObject *object );
+    static void set_m_declarativeData( QObject *object, LSCSAbstractDeclarativeData *value );
 
     friend class QWidget;
     friend class QGraphicsItem;
 };
 
-class Q_CORE_EXPORT CSInternalEvents
+class Q_CORE_EXPORT LSCSInternalEvents
 {
 private:
     static int get_m_PostedEvents( const QObject *object );
@@ -568,7 +568,7 @@ private:
     friend struct QDeclarativeGraphics_DerivedObject;
 };
 
-class Q_CORE_EXPORT CSInternalRefCount
+class Q_CORE_EXPORT LSCSInternalRefCount
 {
 private:
     static bool get_m_wasDeleted( const QObject *object );
@@ -582,7 +582,7 @@ private:
     friend struct QtSharedPointer::ExternalRefCountData;
 };
 
-class Q_CORE_EXPORT CSInternalSender
+class Q_CORE_EXPORT LSCSInternalSender
 {
 private:
     static bool isSender( const QObject *object, const QObject *receiver, const QString &signal );
@@ -592,7 +592,7 @@ private:
     friend class QACConnectionObject;
 };
 
-class Q_CORE_EXPORT CSInternalThreadData
+class Q_CORE_EXPORT LSCSInternalThreadData
 {
 private:
     static QThreadData *get_m_ThreadData( const QObject *object );
@@ -628,6 +628,6 @@ private:
 };
 
 // best way to handle declarations
-#include <csobject_internal.h>
+#include <lscsobject_internal.h>
 
 #endif

@@ -34,7 +34,7 @@ using GMainContext = struct _GMainContext;
 
 class QXcbEventDispatcherGlib : public QEventDispatcherGlib
 {
-    CS_OBJECT( QXcbEventDispatcherGlib )
+    LSCS_OBJECT( QXcbEventDispatcherGlib )
 
 public:
     explicit QXcbEventDispatcherGlib( QObject *parent = nullptr );

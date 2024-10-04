@@ -109,7 +109,7 @@ void QCFSocketNotifier::registerSocketNotifier( QSocketNotifier *notifier )
     int nativeSocket = notifier->socket();
     int type = notifier->type();
 
-#if defined(CS_SHOW_DEBUG_CORE)
+#if defined(LSCS_SHOW_DEBUG_CORE)
 
     if ( nativeSocket < 0 || nativeSocket > FD_SETSIZE )
     {
@@ -197,7 +197,7 @@ void QCFSocketNotifier::unregisterSocketNotifier( QSocketNotifier *notifier )
     int nativeSocket = notifier->socket();
     int type = notifier->type();
 
-#if defined(CS_SHOW_DEBUG_CORE)
+#if defined(LSCS_SHOW_DEBUG_CORE)
 
     if ( nativeSocket < 0 || nativeSocket > FD_SETSIZE )
     {

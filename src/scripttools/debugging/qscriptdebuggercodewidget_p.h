@@ -32,7 +32,7 @@ class QScriptDebuggerCodeWidgetPrivate;
 
 class QScriptDebuggerCodeWidget : public QScriptDebuggerCodeWidgetInterface
 {
-    SCRIPT_T_CS_OBJECT( QScriptDebuggerCodeWidget )
+    SCRIPT_T_LSCS_OBJECT( QScriptDebuggerCodeWidget )
 
 public:
     QScriptDebuggerCodeWidget( QWidget *parent = nullptr );
@@ -57,27 +57,27 @@ private:
     Q_DECLARE_PRIVATE( QScriptDebuggerCodeWidget )
     Q_DISABLE_COPY( QScriptDebuggerCodeWidget )
 
-    CS_SLOT_1( Private, void _q_onBreakpointToggleRequest( int un_named_arg1, bool un_named_arg2 ) )
-    CS_SLOT_2( _q_onBreakpointToggleRequest )
+    LSCS_SLOT_1( Private, void _q_onBreakpointToggleRequest( int un_named_arg1, bool un_named_arg2 ) )
+    LSCS_SLOT_2( _q_onBreakpointToggleRequest )
 
-    CS_SLOT_1( Private, void _q_onBreakpointEnableRequest( int un_named_arg1, bool un_named_arg2 ) )
-    CS_SLOT_2( _q_onBreakpointEnableRequest )
+    LSCS_SLOT_1( Private, void _q_onBreakpointEnableRequest( int un_named_arg1, bool un_named_arg2 ) )
+    LSCS_SLOT_2( _q_onBreakpointEnableRequest )
 
-    CS_SLOT_1( Private, void _q_onBreakpointsAboutToBeRemoved( const QModelIndex &un_named_arg1, int un_named_arg2,
+    LSCS_SLOT_1( Private, void _q_onBreakpointsAboutToBeRemoved( const QModelIndex &un_named_arg1, int un_named_arg2,
                int un_named_arg3 ) )
-    CS_SLOT_2( _q_onBreakpointsAboutToBeRemoved )
+    LSCS_SLOT_2( _q_onBreakpointsAboutToBeRemoved )
 
-    CS_SLOT_1( Private, void _q_onBreakpointsInserted( const QModelIndex &un_named_arg1, int un_named_arg2, int un_named_arg3 ) )
-    CS_SLOT_2( _q_onBreakpointsInserted )
+    LSCS_SLOT_1( Private, void _q_onBreakpointsInserted( const QModelIndex &un_named_arg1, int un_named_arg2, int un_named_arg3 ) )
+    LSCS_SLOT_2( _q_onBreakpointsInserted )
 
-    CS_SLOT_1( Private, void _q_onBreakpointsDataChanged( const QModelIndex &un_named_arg1, const QModelIndex &un_named_arg2 ) )
-    CS_SLOT_2( _q_onBreakpointsDataChanged )
+    LSCS_SLOT_1( Private, void _q_onBreakpointsDataChanged( const QModelIndex &un_named_arg1, const QModelIndex &un_named_arg2 ) )
+    LSCS_SLOT_2( _q_onBreakpointsDataChanged )
 
-    CS_SLOT_1( Private, void _q_onScriptsChanged() )
-    CS_SLOT_2( _q_onScriptsChanged )
+    LSCS_SLOT_1( Private, void _q_onScriptsChanged() )
+    LSCS_SLOT_2( _q_onScriptsChanged )
 
-    CS_SLOT_1( Private, void _q_onToolTipRequest( const QPoint &un_named_arg1, int un_named_arg2, const QStringList &un_named_arg3 ) )
-    CS_SLOT_2( _q_onToolTipRequest )
+    LSCS_SLOT_1( Private, void _q_onToolTipRequest( const QPoint &un_named_arg1, int un_named_arg2, const QStringList &un_named_arg3 ) )
+    LSCS_SLOT_2( _q_onToolTipRequest )
 
 };
 

@@ -44,7 +44,7 @@ class QStyleOptionTitleBar;
 
 class QStyleSheetStyle : public QWindowsStyle
 {
-    GUI_CS_OBJECT( QStyleSheetStyle )
+    GUI_LSCS_OBJECT( QStyleSheetStyle )
 
     using ParentStyle = QWindowsStyle;
 
@@ -178,16 +178,16 @@ private:
 
 class QStyleSheetStyleCaches : public QObject
 {
-    GUI_CS_OBJECT( QStyleSheetStyleCaches )
+    GUI_LSCS_OBJECT( QStyleSheetStyleCaches )
 
 public:
     using QRenderRules = QHash<int, QHash<quint64, QRenderRule>>;
 
-    GUI_CS_SLOT_1( Public, void objectDestroyed( QObject *obj ) )
-    GUI_CS_SLOT_2( objectDestroyed )
+    GUI_LSCS_SLOT_1( Public, void objectDestroyed( QObject *obj ) )
+    GUI_LSCS_SLOT_2( objectDestroyed )
 
-    GUI_CS_SLOT_1( Public, void styleDestroyed( QObject *obj ) )
-    GUI_CS_SLOT_2( styleDestroyed )
+    GUI_LSCS_SLOT_1( Public, void styleDestroyed( QObject *obj ) )
+    GUI_LSCS_SLOT_2( styleDestroyed )
 
     QHash<const QObject *, QVector<QCss::StyleRule>> styleRulesCache;
     QHash<const QObject *, QHash<int, bool>> hasStyleRuleCache;

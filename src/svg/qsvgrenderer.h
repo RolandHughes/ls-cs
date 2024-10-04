@@ -40,16 +40,16 @@ class QSvgRendererPrivate;
 
 class Q_SVG_EXPORT QSvgRenderer : public QObject
 {
-    SVG_CS_OBJECT( QSvgRenderer )
+    SVG_LSCS_OBJECT( QSvgRenderer )
 
-    SVG_CS_PROPERTY_READ( viewBox, viewBoxF )
-    SVG_CS_PROPERTY_WRITE( viewBox, cs_setViewBox )
+    SVG_LSCS_PROPERTY_READ( viewBox, viewBoxF )
+    SVG_LSCS_PROPERTY_WRITE( viewBox, cs_setViewBox )
 
-    SVG_CS_PROPERTY_READ( framesPerSecond, framesPerSecond )
-    SVG_CS_PROPERTY_WRITE( framesPerSecond, setFramesPerSecond )
+    SVG_LSCS_PROPERTY_READ( framesPerSecond, framesPerSecond )
+    SVG_LSCS_PROPERTY_WRITE( framesPerSecond, setFramesPerSecond )
 
-    SVG_CS_PROPERTY_READ( currentFrame, currentFrame )
-    SVG_CS_PROPERTY_WRITE( currentFrame, setCurrentFrame )
+    SVG_LSCS_PROPERTY_READ( currentFrame, currentFrame )
+    SVG_LSCS_PROPERTY_WRITE( currentFrame, setCurrentFrame )
 
 public:
     QSvgRenderer( QObject *parent = nullptr );
@@ -81,26 +81,26 @@ public:
     bool elementExists( const QString &id ) const;
     QMatrix matrixForElement( const QString &id ) const;
 
-    SVG_CS_SLOT_1( Public, bool load( const QString &filename ) )
-    SVG_CS_SLOT_OVERLOAD_BOOL( load, ( const QString & ) )
+    SVG_LSCS_SLOT_1( Public, bool load( const QString &filename ) )
+    SVG_LSCS_SLOT_OVERLOAD_BOOL( load, ( const QString & ) )
 
-    SVG_CS_SLOT_1( Public, bool load( const QByteArray &contents ) )
-    SVG_CS_SLOT_OVERLOAD_BOOL( load, ( const QByteArray & ) )
+    SVG_LSCS_SLOT_1( Public, bool load( const QByteArray &contents ) )
+    SVG_LSCS_SLOT_OVERLOAD_BOOL( load, ( const QByteArray & ) )
 
-    SVG_CS_SLOT_1( Public, bool load( QXmlStreamReader *contents ) )
-    SVG_CS_SLOT_OVERLOAD_BOOL( load, ( QXmlStreamReader * ) )
+    SVG_LSCS_SLOT_1( Public, bool load( QXmlStreamReader *contents ) )
+    SVG_LSCS_SLOT_OVERLOAD_BOOL( load, ( QXmlStreamReader * ) )
 
-    SVG_CS_SLOT_1( Public, void render( QPainter *painter ) )
-    SVG_CS_SLOT_OVERLOAD( render, ( QPainter * ) )
+    SVG_LSCS_SLOT_1( Public, void render( QPainter *painter ) )
+    SVG_LSCS_SLOT_OVERLOAD( render, ( QPainter * ) )
 
-    SVG_CS_SLOT_1( Public, void render( QPainter *painter, const QRectF &bounds ) )
-    SVG_CS_SLOT_OVERLOAD( render, ( QPainter *, const QRectF & ) )
+    SVG_LSCS_SLOT_1( Public, void render( QPainter *painter, const QRectF &bounds ) )
+    SVG_LSCS_SLOT_OVERLOAD( render, ( QPainter *, const QRectF & ) )
 
-    SVG_CS_SLOT_1( Public, void render( QPainter *painter, const QString &elementId, const QRectF &bounds = QRectF() ) )
-    SVG_CS_SLOT_OVERLOAD( render, ( QPainter *, const QString &, const QRectF & ) )
+    SVG_LSCS_SLOT_1( Public, void render( QPainter *painter, const QString &elementId, const QRectF &bounds = QRectF() ) )
+    SVG_LSCS_SLOT_OVERLOAD( render, ( QPainter *, const QString &, const QRectF & ) )
 
-    SVG_CS_SIGNAL_1( Public, void repaintNeeded() )
-    SVG_CS_SIGNAL_2( repaintNeeded )
+    SVG_LSCS_SIGNAL_1( Public, void repaintNeeded() )
+    SVG_LSCS_SIGNAL_2( repaintNeeded )
 
 protected:
     QScopedPointer<QSvgRendererPrivate> d_ptr;

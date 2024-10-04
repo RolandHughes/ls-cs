@@ -140,7 +140,7 @@ public:
 
 class QCalendarPopup : public QWidget
 {
-    GUI_CS_OBJECT( QCalendarPopup )
+    GUI_LSCS_OBJECT( QCalendarPopup )
 
 public:
     explicit  QCalendarPopup( QWidget *parent = nullptr, QCalendarWidget *cw = nullptr );
@@ -165,17 +165,17 @@ public:
 
     void setCalendarWidget( QCalendarWidget *cw );
 
-    GUI_CS_SIGNAL_1( Public, void activated( const QDate &date ) )
-    GUI_CS_SIGNAL_2( activated, date )
+    GUI_LSCS_SIGNAL_1( Public, void activated( const QDate &date ) )
+    GUI_LSCS_SIGNAL_2( activated, date )
 
-    GUI_CS_SIGNAL_1( Public, void newDateSelected( const QDate &newDate ) )
-    GUI_CS_SIGNAL_2( newDateSelected, newDate )
+    GUI_LSCS_SIGNAL_1( Public, void newDateSelected( const QDate &newDate ) )
+    GUI_LSCS_SIGNAL_2( newDateSelected, newDate )
 
-    GUI_CS_SIGNAL_1( Public, void hidingCalendar( const QDate &oldDate ) )
-    GUI_CS_SIGNAL_2( hidingCalendar, oldDate )
+    GUI_LSCS_SIGNAL_1( Public, void hidingCalendar( const QDate &oldDate ) )
+    GUI_LSCS_SIGNAL_2( hidingCalendar, oldDate )
 
-    GUI_CS_SIGNAL_1( Public, void resetButton() )
-    GUI_CS_SIGNAL_2( resetButton )
+    GUI_LSCS_SIGNAL_1( Public, void resetButton() )
+    GUI_LSCS_SIGNAL_2( resetButton )
 
 protected:
     void hideEvent( QHideEvent * ) override;
@@ -184,11 +184,11 @@ protected:
     bool event( QEvent *e ) override;
 
 private:
-    GUI_CS_SLOT_1( Private, void dateSelected( const QDate &date ) )
-    GUI_CS_SLOT_2( dateSelected )
+    GUI_LSCS_SLOT_1( Private, void dateSelected( const QDate &date ) )
+    GUI_LSCS_SLOT_2( dateSelected )
 
-    GUI_CS_SLOT_1( Private, void dateSelectionChanged() )
-    GUI_CS_SLOT_2( dateSelectionChanged )
+    GUI_LSCS_SLOT_1( Private, void dateSelectionChanged() )
+    GUI_LSCS_SLOT_2( dateSelectionChanged )
 
     QCalendarWidget *verifyCalendarInstance();
 

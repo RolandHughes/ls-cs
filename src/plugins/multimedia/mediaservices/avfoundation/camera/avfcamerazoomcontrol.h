@@ -35,7 +35,7 @@ class AVFCameraControl;
 
 class AVFCameraZoomControl : public QCameraZoomControl
 {
-    CS_OBJECT( AVFCameraZoomControl )
+    LSCS_OBJECT( AVFCameraZoomControl )
 
 public:
     AVFCameraZoomControl( AVFCameraService *service );
@@ -51,8 +51,8 @@ public:
     void zoomTo( qreal optical, qreal digital ) override;
 
 private :
-    CS_SLOT_1( Private, void cameraStateChanged() )
-    CS_SLOT_2( cameraStateChanged )
+    LSCS_SLOT_1( Private, void cameraStateChanged() )
+    LSCS_SLOT_2( cameraStateChanged )
 
     void zoomToRequestedDigital();
 

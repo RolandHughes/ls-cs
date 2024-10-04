@@ -30,13 +30,13 @@ class QLibraryHandle;
 
 class Q_CORE_EXPORT QLibrary : public QObject
 {
-    CORE_CS_OBJECT( QLibrary )
+    CORE_LSCS_OBJECT( QLibrary )
 
-    CORE_CS_PROPERTY_READ( fileName, fileName )
-    CORE_CS_PROPERTY_WRITE( fileName, setFileName )
+    CORE_LSCS_PROPERTY_READ( fileName, fileName )
+    CORE_LSCS_PROPERTY_WRITE( fileName, setFileName )
 
-    CORE_CS_PROPERTY_READ( loadHints, loadHints )
-    CORE_CS_PROPERTY_WRITE( loadHints, setLoadHints )
+    CORE_LSCS_PROPERTY_READ( loadHints, loadHints )
+    CORE_LSCS_PROPERTY_WRITE( loadHints, setLoadHints )
 
 public:
     enum LoadHint
@@ -49,7 +49,7 @@ public:
     };
     using LoadHints = QFlags<LoadHint>;
 
-    CORE_CS_FLAG( LoadHint, LoadHints )
+    CORE_LSCS_FLAG( LoadHint, LoadHints )
 
     explicit QLibrary( QObject *parent = nullptr );
     explicit QLibrary( const QString &fileName, QObject *parent = nullptr );

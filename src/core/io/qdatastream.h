@@ -56,18 +56,18 @@ public:
 
     enum Version
     {
-        CS_1_0 = 128,
-        CS_1_1 = CS_1_0,
-        CS_1_2 = CS_1_1,
-        CS_1_3 = CS_1_2,
-        CS_1_4 = CS_1_3,
-        CS_1_5 = CS_1_4,
-        CS_1_6 = CS_1_5,
-        CS_1_7 = CS_1_6,
-        CS_1_8 = CS_1_7,
-        CS_1_9 = CS_1_8,
+        LSCS_1_0 = 128,
+        LSCS_1_1 = LSCS_1_0,
+        LSCS_1_2 = LSCS_1_1,
+        LSCS_1_3 = LSCS_1_2,
+        LSCS_1_4 = LSCS_1_3,
+        LSCS_1_5 = LSCS_1_4,
+        LSCS_1_6 = LSCS_1_5,
+        LSCS_1_7 = LSCS_1_6,
+        LSCS_1_8 = LSCS_1_7,
+        LSCS_1_9 = LSCS_1_8,
 
-        CS_DefaultStreamVersion = CS_1_9
+        LSCS_DefaultStreamVersion = LSCS_1_9
     };
 
     enum ByteOrder

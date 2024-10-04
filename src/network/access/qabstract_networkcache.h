@@ -99,7 +99,7 @@ Q_NETWORK_EXPORT QDataStream &operator>>( QDataStream &, QNetworkCacheMetaData &
 
 class Q_NETWORK_EXPORT QAbstractNetworkCache : public QObject
 {
-    NET_CS_OBJECT( QAbstractNetworkCache )
+    NET_LSCS_OBJECT( QAbstractNetworkCache )
 
 public:
     QAbstractNetworkCache( const QAbstractNetworkCache & ) = delete;
@@ -116,8 +116,8 @@ public:
     virtual QIODevice *prepare( const QNetworkCacheMetaData &metaData ) = 0;
     virtual void insert( QIODevice *device ) = 0;
 
-    NET_CS_SLOT_1( Public, virtual void clear() = 0 )
-    NET_CS_SLOT_2( clear )
+    NET_LSCS_SLOT_1( Public, virtual void clear() = 0 )
+    NET_LSCS_SLOT_2( clear )
 
 protected:
     explicit QAbstractNetworkCache( QObject *parent = nullptr );

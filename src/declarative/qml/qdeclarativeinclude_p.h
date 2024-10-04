@@ -40,7 +40,7 @@ class QNetworkAccessManager;
 class QNetworkReply;
 class QDeclarativeInclude : public QObject
 {
-    DECL_CS_OBJECT( QDeclarativeInclude )
+    DECL_LSCS_OBJECT( QDeclarativeInclude )
 public:
     enum Status
     {
@@ -65,8 +65,8 @@ public:
     static QScriptValue worker_include( QScriptContext *ctxt, QScriptEngine *engine );
 
 public :
-    DECL_CS_SLOT_1( Public, void finished() )
-    DECL_CS_SLOT_2( finished )
+    DECL_LSCS_SLOT_1( Public, void finished() )
+    DECL_LSCS_SLOT_2( finished )
 
 private:
     QDeclarativeEngine *m_engine;

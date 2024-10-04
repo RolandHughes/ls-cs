@@ -32,7 +32,7 @@ class QMoveEvent;
 
 class QWidgetWindow : public QWindow
 {
-    GUI_CS_OBJECT( QWidgetWindow )
+    GUI_LSCS_OBJECT( QWidgetWindow )
 
 public:
     QWidgetWindow( QWidget *widget );
@@ -109,11 +109,11 @@ private:
     QPointer<QWidget> m_dragTarget;
 #endif
 
-    GUI_CS_SLOT_1( Private, void updateObjectName() )
-    GUI_CS_SLOT_2( updateObjectName )
+    GUI_LSCS_SLOT_1( Private, void updateObjectName() )
+    GUI_LSCS_SLOT_2( updateObjectName )
 
-    GUI_CS_SLOT_1( Private, void handleScreenChange() )
-    GUI_CS_SLOT_2( handleScreenChange )
+    GUI_LSCS_SLOT_1( Private, void handleScreenChange() )
+    GUI_LSCS_SLOT_2( handleScreenChange )
 };
 
 #endif

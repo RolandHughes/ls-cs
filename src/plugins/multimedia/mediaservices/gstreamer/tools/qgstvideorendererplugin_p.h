@@ -58,12 +58,12 @@ public:
 };
 
 #define QGstVideoRendererInterface_iid "com.copperspice.CS.gstVideoRenderer/1.0"
-CS_DECLARE_INTERFACE( QGstVideoRendererInterface, QGstVideoRendererInterface_iid )
+LSCS_DECLARE_INTERFACE( QGstVideoRendererInterface, QGstVideoRendererInterface_iid )
 
 class QGstVideoRendererPlugin : public QObject, public QGstVideoRendererInterface
 {
-    CS_OBJECT( QGstVideoRendererPlugin )
-    CS_INTERFACES( QGstVideoRendererInterface )
+    LSCS_OBJECT( QGstVideoRendererPlugin )
+    LSCS_INTERFACES( QGstVideoRendererInterface )
 
 public:
     explicit QGstVideoRendererPlugin( QObject *parent = nullptr );

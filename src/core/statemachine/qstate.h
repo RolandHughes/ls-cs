@@ -35,19 +35,19 @@ class QStatePrivate;
 
 class Q_CORE_EXPORT QState : public QAbstractState
 {
-    CORE_CS_OBJECT( QState )
+    CORE_LSCS_OBJECT( QState )
 
-    CORE_CS_PROPERTY_READ( initialState, initialState )
-    CORE_CS_PROPERTY_WRITE( initialState, setInitialState )
-    CORE_CS_PROPERTY_NOTIFY( initialState, initialStateChanged )
+    CORE_LSCS_PROPERTY_READ( initialState, initialState )
+    CORE_LSCS_PROPERTY_WRITE( initialState, setInitialState )
+    CORE_LSCS_PROPERTY_NOTIFY( initialState, initialStateChanged )
 
-    CORE_CS_PROPERTY_READ( errorState, errorState )
-    CORE_CS_PROPERTY_WRITE( errorState, setErrorState )
-    CORE_CS_PROPERTY_NOTIFY( errorState, errorStateChanged )
+    CORE_LSCS_PROPERTY_READ( errorState, errorState )
+    CORE_LSCS_PROPERTY_WRITE( errorState, setErrorState )
+    CORE_LSCS_PROPERTY_NOTIFY( errorState, errorStateChanged )
 
-    CORE_CS_PROPERTY_READ( childMode, childMode )
-    CORE_CS_PROPERTY_WRITE( childMode, setChildMode )
-    CORE_CS_PROPERTY_NOTIFY( childMode, childModeChanged )
+    CORE_LSCS_PROPERTY_READ( childMode, childMode )
+    CORE_LSCS_PROPERTY_WRITE( childMode, setChildMode )
+    CORE_LSCS_PROPERTY_NOTIFY( childMode, childModeChanged )
 
 public:
     enum ChildMode
@@ -55,14 +55,14 @@ public:
         ExclusiveStates,
         ParallelStates
     };
-    CORE_CS_ENUM( ChildMode )
+    CORE_LSCS_ENUM( ChildMode )
 
     enum RestorePolicy
     {
         DontRestoreProperties,
         RestoreProperties
     };
-    CORE_CS_ENUM( RestorePolicy )
+    CORE_LSCS_ENUM( RestorePolicy )
 
     QState( QState *parent = nullptr );
     QState( ChildMode childMode, QState *parent = nullptr );
@@ -92,20 +92,20 @@ public:
 
     void assignProperty( QObject *object, const QString &name, const QVariant &value );
 
-    CORE_CS_SIGNAL_1( Public, void finished() )
-    CORE_CS_SIGNAL_2( finished )
+    CORE_LSCS_SIGNAL_1( Public, void finished() )
+    CORE_LSCS_SIGNAL_2( finished )
 
-    CORE_CS_SIGNAL_1( Public, void propertiesAssigned() )
-    CORE_CS_SIGNAL_2( propertiesAssigned )
+    CORE_LSCS_SIGNAL_1( Public, void propertiesAssigned() )
+    CORE_LSCS_SIGNAL_2( propertiesAssigned )
 
-    CORE_CS_SIGNAL_1( Public, void childModeChanged() )
-    CORE_CS_SIGNAL_2( childModeChanged )
+    CORE_LSCS_SIGNAL_1( Public, void childModeChanged() )
+    CORE_LSCS_SIGNAL_2( childModeChanged )
 
-    CORE_CS_SIGNAL_1( Public, void initialStateChanged() )
-    CORE_CS_SIGNAL_2( initialStateChanged )
+    CORE_LSCS_SIGNAL_1( Public, void initialStateChanged() )
+    CORE_LSCS_SIGNAL_2( initialStateChanged )
 
-    CORE_CS_SIGNAL_1( Public, void errorStateChanged() )
-    CORE_CS_SIGNAL_2( errorStateChanged )
+    CORE_LSCS_SIGNAL_1( Public, void errorStateChanged() )
+    CORE_LSCS_SIGNAL_2( errorStateChanged )
 
 protected:
     void onEntry( QEvent *event ) override;

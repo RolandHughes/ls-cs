@@ -41,7 +41,7 @@
 
 class QTipLabel : public QLabel
 {
-    GUI_CS_OBJECT( QTipLabel )
+    GUI_LSCS_OBJECT( QTipLabel )
 
 public:
     QTipLabel( const QString &text, QWidget *w, int msecDisplayTime );
@@ -77,8 +77,8 @@ private:
 #ifndef QT_NO_STYLE_STYLESHEET
 public:
     // internal, Cleanup the _q_stylesheet_parent propery
-    GUI_CS_SLOT_1( Public, void styleSheetParentDestroyed() )
-    GUI_CS_SLOT_2( styleSheetParentDestroyed )
+    GUI_LSCS_SLOT_1( Public, void styleSheetParentDestroyed() )
+    GUI_LSCS_SLOT_2( styleSheetParentDestroyed )
 
 private:
     QWidget *styleSheetParent;

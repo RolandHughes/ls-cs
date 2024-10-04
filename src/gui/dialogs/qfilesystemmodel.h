@@ -38,24 +38,24 @@ class QFileSystemModelPrivate;
 
 class Q_GUI_EXPORT QFileSystemModel : public QAbstractItemModel
 {
-    GUI_CS_OBJECT( QFileSystemModel )
+    GUI_LSCS_OBJECT( QFileSystemModel )
 
-    GUI_CS_PROPERTY_READ( resolveSymlinks, resolveSymlinks )
-    GUI_CS_PROPERTY_WRITE( resolveSymlinks, setResolveSymlinks )
+    GUI_LSCS_PROPERTY_READ( resolveSymlinks, resolveSymlinks )
+    GUI_LSCS_PROPERTY_WRITE( resolveSymlinks, setResolveSymlinks )
 
-    GUI_CS_PROPERTY_READ( readOnly, isReadOnly )
-    GUI_CS_PROPERTY_WRITE( readOnly, setReadOnly )
+    GUI_LSCS_PROPERTY_READ( readOnly, isReadOnly )
+    GUI_LSCS_PROPERTY_WRITE( readOnly, setReadOnly )
 
-    GUI_CS_PROPERTY_READ( nameFilterDisables, nameFilterDisables )
-    GUI_CS_PROPERTY_WRITE( nameFilterDisables, setNameFilterDisables )
+    GUI_LSCS_PROPERTY_READ( nameFilterDisables, nameFilterDisables )
+    GUI_LSCS_PROPERTY_WRITE( nameFilterDisables, setNameFilterDisables )
 
 public:
-    GUI_CS_SIGNAL_1( Public, void rootPathChanged( const QString &newPath ) )
-    GUI_CS_SIGNAL_2( rootPathChanged, newPath )
-    GUI_CS_SIGNAL_1( Public, void fileRenamed( const QString &path, const QString &oldName, const QString &newName ) )
-    GUI_CS_SIGNAL_2( fileRenamed, path, oldName, newName )
-    GUI_CS_SIGNAL_1( Public, void directoryLoaded( const QString &path ) )
-    GUI_CS_SIGNAL_2( directoryLoaded, path )
+    GUI_LSCS_SIGNAL_1( Public, void rootPathChanged( const QString &newPath ) )
+    GUI_LSCS_SIGNAL_2( rootPathChanged, newPath )
+    GUI_LSCS_SIGNAL_1( Public, void fileRenamed( const QString &path, const QString &oldName, const QString &newName ) )
+    GUI_LSCS_SIGNAL_2( fileRenamed, path, oldName, newName )
+    GUI_LSCS_SIGNAL_1( Public, void directoryLoaded( const QString &path ) )
+    GUI_LSCS_SIGNAL_2( directoryLoaded, path )
 
     enum Roles
     {
@@ -148,18 +148,18 @@ protected:
 private:
     Q_DECLARE_PRIVATE( QFileSystemModel )
 
-    GUI_CS_SLOT_1( Private, void _q_directoryChanged( const QString &directory, const QStringList &list ) )
-    GUI_CS_SLOT_2( _q_directoryChanged )
+    GUI_LSCS_SLOT_1( Private, void _q_directoryChanged( const QString &directory, const QStringList &list ) )
+    GUI_LSCS_SLOT_2( _q_directoryChanged )
 
-    GUI_CS_SLOT_1( Private, void _q_performDelayedSort() )
-    GUI_CS_SLOT_2( _q_performDelayedSort )
+    GUI_LSCS_SLOT_1( Private, void _q_performDelayedSort() )
+    GUI_LSCS_SLOT_2( _q_performDelayedSort )
 
-    GUI_CS_SLOT_1( Private, void _q_fileSystemChanged( const QString &path,
+    GUI_LSCS_SLOT_1( Private, void _q_fileSystemChanged( const QString &path,
                    const QVector<QPair <QString, QFileInfo>> &data ) )
-    GUI_CS_SLOT_2( _q_fileSystemChanged )
+    GUI_LSCS_SLOT_2( _q_fileSystemChanged )
 
-    GUI_CS_SLOT_1( Private, void _q_resolvedName( const QString &fileName, const QString &resolvedName ) )
-    GUI_CS_SLOT_2( _q_resolvedName )
+    GUI_LSCS_SLOT_1( Private, void _q_resolvedName( const QString &fileName, const QString &resolvedName ) )
+    GUI_LSCS_SLOT_2( _q_resolvedName )
 
     friend class QFileDialogPrivate;
 };

@@ -32,18 +32,18 @@ QT_BEGIN_NAMESPACE
 
 class QDeclarativeLayoutItem : public QDeclarativeItem, public QGraphicsLayoutItem
 {
-    DECL_CS_OBJECT( QDeclarativeLayoutItem )
+    DECL_LSCS_OBJECT( QDeclarativeLayoutItem )
 
-    CS_INTERFACES( QGraphicsLayoutItem )
-    DECL_CS_PROPERTY_READ( maximumSize, maximumSize )
-    DECL_CS_PROPERTY_WRITE( maximumSize, setMaximumSize )
-    DECL_CS_PROPERTY_NOTIFY( maximumSize, maximumSizeChanged )
-    DECL_CS_PROPERTY_READ( minimumSize, minimumSize )
-    DECL_CS_PROPERTY_WRITE( minimumSize, setMinimumSize )
-    DECL_CS_PROPERTY_NOTIFY( minimumSize, minimumSizeChanged )
-    DECL_CS_PROPERTY_READ( preferredSize, preferredSize )
-    DECL_CS_PROPERTY_WRITE( preferredSize, setPreferredSize )
-    DECL_CS_PROPERTY_NOTIFY( preferredSize, preferredSizeChanged )
+    LSCS_INTERFACES( QGraphicsLayoutItem )
+    DECL_LSCS_PROPERTY_READ( maximumSize, maximumSize )
+    DECL_LSCS_PROPERTY_WRITE( maximumSize, setMaximumSize )
+    DECL_LSCS_PROPERTY_NOTIFY( maximumSize, maximumSizeChanged )
+    DECL_LSCS_PROPERTY_READ( minimumSize, minimumSize )
+    DECL_LSCS_PROPERTY_WRITE( minimumSize, setMinimumSize )
+    DECL_LSCS_PROPERTY_NOTIFY( minimumSize, minimumSizeChanged )
+    DECL_LSCS_PROPERTY_READ( preferredSize, preferredSize )
+    DECL_LSCS_PROPERTY_WRITE( preferredSize, setPreferredSize )
+    DECL_LSCS_PROPERTY_NOTIFY( preferredSize, preferredSizeChanged )
 
 public:
     QDeclarativeLayoutItem( QDeclarativeItem *parent = 0 );
@@ -95,12 +95,12 @@ public:
 
     virtual void setGeometry( const QRectF &rect );
 
-    DECL_CS_SIGNAL_1( Public, void maximumSizeChanged() )
-    DECL_CS_SIGNAL_2( maximumSizeChanged )
-    DECL_CS_SIGNAL_1( Public, void minimumSizeChanged() )
-    DECL_CS_SIGNAL_2( minimumSizeChanged )
-    DECL_CS_SIGNAL_1( Public, void preferredSizeChanged() )
-    DECL_CS_SIGNAL_2( preferredSizeChanged )
+    DECL_LSCS_SIGNAL_1( Public, void maximumSizeChanged() )
+    DECL_LSCS_SIGNAL_2( maximumSizeChanged )
+    DECL_LSCS_SIGNAL_1( Public, void minimumSizeChanged() )
+    DECL_LSCS_SIGNAL_2( minimumSizeChanged )
+    DECL_LSCS_SIGNAL_1( Public, void preferredSizeChanged() )
+    DECL_LSCS_SIGNAL_2( preferredSizeChanged )
 
 protected:
     virtual QSizeF sizeHint( Qt::SizeHint which, const QSizeF &constraint = QSizeF() ) const;

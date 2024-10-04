@@ -927,15 +927,15 @@ QGraphicsItem::~QGraphicsItem()
     if ( d_ptr->isObject )
     {
         QGraphicsObject *obj = static_cast<QGraphicsObject *>( this );
-        CSInternalRefCount::set_m_wasDeleted( obj, true );
+        LSCSInternalRefCount::set_m_wasDeleted( obj, true );
 
         // used by declarative library
-        CSAbstractDeclarativeData *tmp_Data = CSInternalDeclarativeData::get_m_declarativeData( obj );
+        LSCSAbstractDeclarativeData *tmp_Data = LSCSInternalDeclarativeData::get_m_declarativeData( obj );
 
         if ( tmp_Data )
         {
-            CSAbstractDeclarativeData::destroyed( tmp_Data, obj );
-            CSInternalDeclarativeData::set_m_declarativeData( obj, nullptr );
+            LSCSAbstractDeclarativeData::destroyed( tmp_Data, obj );
+            LSCSInternalDeclarativeData::set_m_declarativeData( obj, nullptr );
         }
     }
 

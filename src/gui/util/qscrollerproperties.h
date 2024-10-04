@@ -108,6 +108,6 @@ private:
     friend class QScrollerPrivate;
 };
 
-CS_DECLARE_METATYPE( QScrollerProperties )
+LSCS_DECLARE_METATYPE( QScrollerProperties )
 
 #endif

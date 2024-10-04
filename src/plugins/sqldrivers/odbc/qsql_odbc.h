@@ -86,7 +86,7 @@ private:
 
 class Q_EXPORT_SQLDRIVER_ODBC QODBCDriver : public QSqlDriver
 {
-    CS_OBJECT( QODBCDriver )
+    LSCS_OBJECT( QODBCDriver )
 
 public:
     explicit QODBCDriver( QObject *parent = nullptr );

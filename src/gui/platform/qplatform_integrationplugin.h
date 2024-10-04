@@ -33,7 +33,7 @@ class QPlatformIntegration;
 
 class Q_GUI_EXPORT QPlatformIntegrationPlugin : public QObject
 {
-    GUI_CS_OBJECT( QPlatformIntegrationPlugin )
+    GUI_LSCS_OBJECT( QPlatformIntegrationPlugin )
 
 public:
     explicit QPlatformIntegrationPlugin( QObject *parent = nullptr );

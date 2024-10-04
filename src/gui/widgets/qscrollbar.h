@@ -34,7 +34,7 @@ class QStyleOptionSlider;
 
 class Q_GUI_EXPORT QScrollBar : public QAbstractSlider
 {
-    GUI_CS_OBJECT( QScrollBar )
+    GUI_LSCS_OBJECT( QScrollBar )
 
 public:
     explicit QScrollBar( QWidget *parent = nullptr );

@@ -36,7 +36,7 @@ class QScriptBreakpointsModelPrivate;
 class QScriptBreakpointsModel
     : public QAbstractItemModel
 {
-    SCRIPT_T_CS_OBJECT( QScriptBreakpointsModel )
+    SCRIPT_T_LSCS_OBJECT( QScriptBreakpointsModel )
 public:
     QScriptBreakpointsModel( QScriptDebuggerJobSchedulerInterface *jobScheduler,
                              QScriptDebuggerCommandSchedulerInterface *commandScheduler,

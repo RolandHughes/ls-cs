@@ -26,8 +26,8 @@
 
 #include <qglobal.h>
 
-#include <cs_unique_pointer.h>
-#include <cs_unique_array_pointer.h>
+#include <lscs_unique_pointer.h>
+#include <lscs_unique_array_pointer.h>
 
 struct QMallocDeleter
 {
@@ -42,7 +42,7 @@ struct QMallocDeleter
 
 using QScopedPointerPodDeleter [[deprecated( "Use QMallocDeleter instead" )]] = QMallocDeleter;
 
-#if ! defined(CS_DOXYPRESS)
+#if ! defined(LSCS_DOXYPRESS)
 
 template <typename T, typename Deleter = std::default_delete<T>>
 class QUniquePointer : public CsPointer::CsUniquePointer<T, Deleter>
@@ -63,7 +63,7 @@ public:
 
 #endif
 
-#if ! defined(CS_DOXYPRESS)
+#if ! defined(LSCS_DOXYPRESS)
 
 template <typename T, typename Deleter = std::default_delete<CsPointer::cs_add_missing_extent_t<T>>>
           class QUniqueArrayPointer : public CsPointer::CsUniqueArrayPointer<T, Deleter>

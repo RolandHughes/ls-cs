@@ -589,7 +589,7 @@ void QScroller::scrollTo( const QPointF &pos, int scrollTime )
         newpos.setY( snapY );
     }
 
-#if defined(CS_SHOW_DEBUG_GUI)
+#if defined(LSCS_SHOW_DEBUG_GUI)
     qDebug() << "QScroller::scrollTo(req:" << pos << " [pix] / snap:" << newpos << ", " << scrollTime << " [ms])";
 #endif
 
@@ -648,7 +648,7 @@ void QScroller::ensureVisible( const QRectF &rect, qreal xmargin, qreal ymargin,
     QSizeF visible = d->viewportSize;
     QRectF visibleRect( startPos, visible );
 
-#if defined(CS_SHOW_DEBUG_GUI)
+#if defined(LSCS_SHOW_DEBUG_GUI)
     qDebug() << "QScroller::ensureVisible(" << rect << " [pix], " << xmargin << " [pix], " << ymargin << " [pix], "
              << scrollTime << "[ms])" << "  --> content position:" << d->contentPosition;
 #endif
@@ -883,7 +883,7 @@ bool QScroller::handleInput( Input input, const QPointF &position, qint64 timest
 {
     Q_D( QScroller );
 
-#if defined(CS_SHOW_DEBUG_GUI)
+#if defined(LSCS_SHOW_DEBUG_GUI)
     qDebug() << "QScroller::handleInput(" << input << ", " << d->stateName( d->state ) << ", "
              << position << ", " << timestamp << ')';
 #endif
@@ -949,7 +949,7 @@ void QScrollerPrivate::updateVelocity( const QPointF &deltaPixelRaw, qint64 delt
     const QScrollerPropertiesPrivate *sp = properties.d.data();
     QPointF deltaPixel = deltaPixelRaw;
 
-#if defined(CS_SHOW_DEBUG_GUI)
+#if defined(LSCS_SHOW_DEBUG_GUI)
     qDebug() << "QScroller::updateVelocity(" << deltaPixelRaw << " [delta pix], " << deltaTime << " [delta ms])";
 #endif
 
@@ -970,7 +970,7 @@ void QScrollerPrivate::updateVelocity( const QPointF &deltaPixelRaw, qint64 delt
     if ( ( releaseVelocity != QPointF( 0, 0 ) ) && ( deltaTime < 100 ) )
     {
 
-#if defined(CS_SHOW_DEBUG_GUI)
+#if defined(LSCS_SHOW_DEBUG_GUI)
         qDebug() << "SMOOTHED from " << newv << " to " << newv *smoothing + releaseVelocity * ( qreal( 1 ) - smoothing );
 #endif
 
@@ -989,7 +989,7 @@ void QScrollerPrivate::updateVelocity( const QPointF &deltaPixelRaw, qint64 delt
     }
     else
     {
-#if defined(CS_SHOW_DEBUG_GUI)
+#if defined(LSCS_SHOW_DEBUG_GUI)
         qDebug() << "NO SMOOTHING to " << newv;
 #endif
     }
@@ -997,7 +997,7 @@ void QScrollerPrivate::updateVelocity( const QPointF &deltaPixelRaw, qint64 delt
     releaseVelocity.setX( qBound( -sp->maximumVelocity, newv.x(), sp->maximumVelocity ) );
     releaseVelocity.setY( qBound( -sp->maximumVelocity, newv.y(), sp->maximumVelocity ) );
 
-#if defined(CS_SHOW_DEBUG_GUI)
+#if defined(LSCS_SHOW_DEBUG_GUI)
     qDebug() << "  --> new velocity:" << releaseVelocity;
 #endif
 }
@@ -1042,7 +1042,7 @@ void QScrollerPrivate::pushSegment( ScrollType type, qreal deltaTime, qreal stop
         ySegments.enqueue( s );
     }
 
-#if defined(CS_SHOW_DEBUG_GUI)
+#if defined(LSCS_SHOW_DEBUG_GUI)
     qDebug() << "+++ Added a new ScrollSegment: " << s;
 #endif
 }
@@ -1158,7 +1158,7 @@ void QScrollerPrivate::createScrollToSegments( qreal v, qreal deltaTime, qreal e
         ySegments.clear();
     }
 
-#if defined(CS_SHOW_DEBUG_GUI)
+#if defined(LSCS_SHOW_DEBUG_GUI)
     qDebug() << "+++ createScrollToSegments: t:" << deltaTime << "ep:" << endPos << "o:" << int( orientation );
 #endif
 
@@ -1208,7 +1208,7 @@ void QScrollerPrivate::createScrollingSegments( qreal v, qreal startPos,
     bool noOvershoot = ( policy == QScrollerProperties::OvershootAlwaysOff ) || !sp->overshootScrollDistanceFactor;
     bool canOvershoot = !noOvershoot && ( alwaysOvershoot || maxPos );
 
-#if defined(CS_SHOW_DEBUG_GUI)
+#if defined(LSCS_SHOW_DEBUG_GUI)
     qDebug() << "+++ createScrollingSegments: s:" << startPos << "maxPos:" << maxPos << "o:" << int( orientation );
 
     qDebug() << "v = " << v << ", decelerationFactor = " << sp->decelerationFactor << ", curveType = " <<
@@ -1217,7 +1217,7 @@ void QScrollerPrivate::createScrollingSegments( qreal v, qreal startPos,
 
     qreal endPos = startPos + deltaPos;
 
-#if defined(CS_SHOW_DEBUG_GUI)
+#if defined(LSCS_SHOW_DEBUG_GUI)
     qDebug() << "  Real Delta:" << deltaPos;
 #endif
 
@@ -1238,7 +1238,7 @@ void QScrollerPrivate::createScrollingSegments( qreal v, qreal startPos,
     qreal lowerSnapPos = nextSnapPos( startPos, -1, orientation );
     qreal higherSnapPos = nextSnapPos( startPos, 1, orientation );
 
-#if defined(CS_SHOW_DEBUG_GUI)
+#if defined(LSCS_SHOW_DEBUG_GUI)
     qDebug() << "  Real Delta:" << lowerSnapPos << '-' << nextSnap << '-' << higherSnapPos;
 #endif
 
@@ -1256,7 +1256,7 @@ void QScrollerPrivate::createScrollingSegments( qreal v, qreal startPos,
     if ( qAbs( v ) < sp->minimumVelocity )
     {
 
-#if defined(CS_SHOW_DEBUG_GUI)
+#if defined(LSCS_SHOW_DEBUG_GUI)
         qDebug() << "### below minimum Vel" << orientation;
 #endif
 
@@ -1337,7 +1337,7 @@ void QScrollerPrivate::createScrollingSegments( qreal v, qreal startPos,
     {
         qreal stopPos = endPos < minPos ? minPos : maxPos;
 
-#if defined(CS_SHOW_DEBUG_GUI)
+#if defined(LSCS_SHOW_DEBUG_GUI)
         qDebug() << "Overshoot: delta:" << ( stopPos - startPos );
 #endif
 
@@ -1346,7 +1346,7 @@ void QScrollerPrivate::createScrollingSegments( qreal v, qreal startPos,
         if ( ! canOvershoot )
         {
 
-#if defined(CS_SHOW_DEBUG_GUI)
+#if defined(LSCS_SHOW_DEBUG_GUI)
             qDebug() << "Overshoot stopp:" << stopProgress;
 #endif
 
@@ -1361,7 +1361,7 @@ void QScrollerPrivate::createScrollingSegments( qreal v, qreal startPos,
             qreal oDistance = startPos + deltaPos * sp->scrollingCurve.valueForProgress( oStopProgress ) - stopPos;
             qreal oMaxDistance = qSign( oDistance ) * ( viewSize * sp->overshootScrollDistanceFactor );
 
-#if defined(CS_SHOW_DEBUG_GUI)
+#if defined(LSCS_SHOW_DEBUG_GUI)
             qDebug() << "1 oDistance:" << oDistance << "Max:" << oMaxDistance << "stopP/oStopP"
                      << stopProgress << oStopProgress;
 #endif
@@ -1371,7 +1371,7 @@ void QScrollerPrivate::createScrollingSegments( qreal v, qreal startPos,
                 oStopProgress = progressForValue( sp->scrollingCurve, qAbs( ( stopPos + oMaxDistance - startPos ) / deltaPos ) );
                 oDistance = oMaxDistance;
 
-#if defined(CS_SHOW_DEBUG_GUI)
+#if defined(LSCS_SHOW_DEBUG_GUI)
                 qDebug() << "2 oDistance:" << oDistance << "Max:" << oMaxDistance << "stopP/oStopP"
                          << stopProgress << oStopProgress;
 #endif
@@ -1425,7 +1425,7 @@ bool QScrollerPrivate::prepareScrolling( const QPointF &position )
     spe.ignore();
     sendEvent( target, &spe );
 
-#if defined(CS_SHOW_DEBUG_GUI)
+#if defined(LSCS_SHOW_DEBUG_GUI)
     qDebug() << "QScrollPrepareEvent returned from" << target << "with" << spe.isAccepted()
              << "mcp:" << spe.contentPosRange() << "cp:" << spe.contentPos();
 #endif
@@ -1674,7 +1674,7 @@ void QScrollerPrivate::timerEventWhileDragging()
     if ( dragDistance != QPointF( 0, 0 ) )
     {
 
-#if defined(CS_SHOW_DEBUG_GUI)
+#if defined(LSCS_SHOW_DEBUG_GUI)
         qDebug() << "QScroller::timerEventWhileDragging() -- dragDistance:" << dragDistance;
 #endif
 
@@ -1734,7 +1734,7 @@ bool QScrollerPrivate::releaseWhileDragging( const QPointF &position, qint64 tim
     QPointF ppm = q->pixelPerMeter();
     createScrollingSegments( releaseVelocity, contentPosition + overshootPosition, ppm );
 
-#if defined(CS_SHOW_DEBUG_GUI)
+#if defined(LSCS_SHOW_DEBUG_GUI)
     qDebug() << "QScroller::releaseWhileDragging() -- velocity:" << releaseVelocity << "-- minimum velocity:"
              << sp->minimumVelocity << "overshoot" << overshootPosition;
 #endif
@@ -1753,7 +1753,7 @@ bool QScrollerPrivate::releaseWhileDragging( const QPointF &position, qint64 tim
 
 void QScrollerPrivate::timerEventWhileScrolling()
 {
-#if defined(CS_SHOW_DEBUG_GUI)
+#if defined(LSCS_SHOW_DEBUG_GUI)
     qDebug( "QScroller::timerEventWhileScrolling()" );
 #endif
 
@@ -1797,7 +1797,7 @@ void QScrollerPrivate::setState( QScroller::State newstate )
         return;
     }
 
-#if defined(CS_SHOW_DEBUG_GUI)
+#if defined(LSCS_SHOW_DEBUG_GUI)
     qDebug() << q << "QScroller::setState(" << stateName( newstate ) << ')';
 #endif
 
@@ -1878,7 +1878,7 @@ void QScrollerPrivate::setContentPositionHelperDragging( const QPointF &deltaPos
     QPointF oldPos = contentPosition + overshootPosition;
     QPointF newPos = oldPos + deltaPos;
 
-#if defined(CS_SHOW_DEBUG_GUI)
+#if defined(LSCS_SHOW_DEBUG_GUI)
     qDebug() << "QScroller::setContentPositionHelperDragging(" << deltaPos << " [pix])";
     qDebug() << "  --> overshoot:" << overshootPosition << "- old pos:" << oldPos << "- new pos:" << newPos;
 #endif
@@ -1910,7 +1910,7 @@ void QScrollerPrivate::setContentPositionHelperDragging( const QPointF &deltaPos
     qreal maxOvershootX = viewportSize.width() * sp->overshootDragDistanceFactor;
     qreal maxOvershootY = viewportSize.height() * sp->overshootDragDistanceFactor;
 
-#if defined(CS_SHOW_DEBUG_GUI)
+#if defined(LSCS_SHOW_DEBUG_GUI)
     qDebug() << "  --> noOs:" << noOvershootX << "drf:" << sp->overshootDragResistanceFactor << "mdf:" <<
              sp->overshootScrollDistanceFactor << "ossP:" << sp->hOvershootPolicy;
     qDebug() << "  --> canOS:" << canOvershootX << "newOS:" << newOvershootX << "maxOS:" << maxOvershootX;
@@ -1939,7 +1939,7 @@ void QScrollerPrivate::setContentPositionHelperDragging( const QPointF &deltaPos
     sendEvent( target, &se );
     firstScroll = false;
 
-#if defined(CS_SHOW_DEBUG_GUI)
+#if defined(LSCS_SHOW_DEBUG_GUI)
     qDebug() << "  --> new position:" << newClampedPos << "- new overshoot:" << overshootPosition <<
              "- overshoot x/y?:" << overshootPosition;
 #endif
@@ -1995,7 +1995,7 @@ void QScrollerPrivate::setContentPositionHelperScrolling()
 
     // -- set the position and handle overshoot
 
-#if defined(CS_SHOW_DEBUG_GUI)
+#if defined(LSCS_SHOW_DEBUG_GUI)
     qDebug() << "QScroller::setContentPositionHelperScrolling()\n"
              "  --> overshoot:" << overshootPosition << "- new pos:" << newPos;
 #endif
@@ -2011,7 +2011,7 @@ void QScrollerPrivate::setContentPositionHelperScrolling()
     sendEvent( target, &se );
     firstScroll = false;
 
-#if defined(CS_SHOW_DEBUG_GUI)
+#if defined(LSCS_SHOW_DEBUG_GUI)
     qDebug() << "  --> new position:" << newClampedPos << "- new overshoot:" << overshootPosition;
 #endif
 }

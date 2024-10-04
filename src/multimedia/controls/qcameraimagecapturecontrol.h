@@ -32,7 +32,7 @@ class QImage;
 
 class Q_MULTIMEDIA_EXPORT QCameraImageCaptureControl : public QMediaControl
 {
-    MULTI_CS_OBJECT( QCameraImageCaptureControl )
+    MULTI_LSCS_OBJECT( QCameraImageCaptureControl )
 
 public:
     ~QCameraImageCaptureControl();
@@ -45,33 +45,33 @@ public:
     virtual int capture( const QString &fileName ) = 0;
     virtual void cancelCapture() = 0;
 
-    MULTI_CS_SIGNAL_1( Public, void readyForCaptureChanged( bool ready ) )
-    MULTI_CS_SIGNAL_2( readyForCaptureChanged, ready )
+    MULTI_LSCS_SIGNAL_1( Public, void readyForCaptureChanged( bool ready ) )
+    MULTI_LSCS_SIGNAL_2( readyForCaptureChanged, ready )
 
-    MULTI_CS_SIGNAL_1( Public, void imageExposed( int id ) )
-    MULTI_CS_SIGNAL_2( imageExposed, id )
+    MULTI_LSCS_SIGNAL_1( Public, void imageExposed( int id ) )
+    MULTI_LSCS_SIGNAL_2( imageExposed, id )
 
-    MULTI_CS_SIGNAL_1( Public, void imageCaptured( int id, const QImage &preview ) )
-    MULTI_CS_SIGNAL_2( imageCaptured, id, preview )
+    MULTI_LSCS_SIGNAL_1( Public, void imageCaptured( int id, const QImage &preview ) )
+    MULTI_LSCS_SIGNAL_2( imageCaptured, id, preview )
 
-    MULTI_CS_SIGNAL_1( Public, void imageMetadataAvailable( int id, const QString &key, const QVariant &value ) )
-    MULTI_CS_SIGNAL_2( imageMetadataAvailable, id, key, value )
+    MULTI_LSCS_SIGNAL_1( Public, void imageMetadataAvailable( int id, const QString &key, const QVariant &value ) )
+    MULTI_LSCS_SIGNAL_2( imageMetadataAvailable, id, key, value )
 
-    MULTI_CS_SIGNAL_1( Public, void imageAvailable( int id, const QVideoFrame &buffer ) )
-    MULTI_CS_SIGNAL_2( imageAvailable, id, buffer )
+    MULTI_LSCS_SIGNAL_1( Public, void imageAvailable( int id, const QVideoFrame &buffer ) )
+    MULTI_LSCS_SIGNAL_2( imageAvailable, id, buffer )
 
-    MULTI_CS_SIGNAL_1( Public, void imageSaved( int id, const QString &fileName ) )
-    MULTI_CS_SIGNAL_2( imageSaved, id, fileName )
+    MULTI_LSCS_SIGNAL_1( Public, void imageSaved( int id, const QString &fileName ) )
+    MULTI_LSCS_SIGNAL_2( imageSaved, id, fileName )
 
-    MULTI_CS_SIGNAL_1( Public, void error( int id, int error, const QString &errorString ) )
-    MULTI_CS_SIGNAL_2( error, id, error, errorString )
+    MULTI_LSCS_SIGNAL_1( Public, void error( int id, int error, const QString &errorString ) )
+    MULTI_LSCS_SIGNAL_2( error, id, error, errorString )
 
 protected:
     explicit QCameraImageCaptureControl( QObject *parent = nullptr );
 };
 
 #define QCameraImageCaptureControl_iid "com.copperspice.CS.cameraImageCaptureControl/1.0"
-CS_DECLARE_INTERFACE( QCameraImageCaptureControl, QCameraImageCaptureControl_iid )
+LSCS_DECLARE_INTERFACE( QCameraImageCaptureControl, QCameraImageCaptureControl_iid )
 
 #endif
 

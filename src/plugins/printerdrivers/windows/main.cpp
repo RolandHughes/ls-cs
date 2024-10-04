@@ -28,16 +28,16 @@
 
 class QWindowsPrinterSupportPlugin : public QPlatformPrinterSupportPlugin
 {
-    CS_OBJECT( QWindowsPrinterSupportPlugin )
+    LSCS_OBJECT( QWindowsPrinterSupportPlugin )
 
-    CS_PLUGIN_IID( QPlatformPrinterSupportPlugin_ID )
-    CS_PLUGIN_KEY( "printerdriver_windows" )
+    LSCS_PLUGIN_IID( QPlatformPrinterSupportPlugin_ID )
+    LSCS_PLUGIN_KEY( "printerdriver_windows" )
 
 public:
     QPlatformPrinterSupport *create( const QString & ) override;
 };
 
-CS_PLUGIN_REGISTER( QWindowsPrinterSupportPlugin )
+LSCS_PLUGIN_REGISTER( QWindowsPrinterSupportPlugin )
 
 QPlatformPrinterSupport *QWindowsPrinterSupportPlugin::create( const QString &key )
 {

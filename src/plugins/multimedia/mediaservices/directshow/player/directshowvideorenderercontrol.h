@@ -36,7 +36,7 @@ class EVRCustomPresenter;
 
 class DirectShowVideoRendererControl : public QVideoRendererControl
 {
-    CS_OBJECT( DirectShowVideoRendererControl )
+    LSCS_OBJECT( DirectShowVideoRendererControl )
 
 public:
     DirectShowVideoRendererControl( DirectShowEventLoop *loop, QObject *parent = nullptr );
@@ -47,8 +47,8 @@ public:
 
     IBaseFilter *filter();
 
-    CS_SIGNAL_1( Public, void filterChanged() )
-    CS_SIGNAL_2( filterChanged )
+    LSCS_SIGNAL_1( Public, void filterChanged() )
+    LSCS_SIGNAL_2( filterChanged )
 
 private:
     DirectShowEventLoop *m_loop;

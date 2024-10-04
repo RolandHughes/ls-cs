@@ -206,6 +206,6 @@ private:
 Q_DECLARE_OPERATORS_FOR_FLAGS( QScriptValue::ResolveFlags )
 Q_DECLARE_OPERATORS_FOR_FLAGS( QScriptValue::PropertyFlags )
 
-CS_DECLARE_METATYPE( QScriptValue )
+LSCS_DECLARE_METATYPE( QScriptValue )
 
 #endif

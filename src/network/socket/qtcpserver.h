@@ -35,7 +35,7 @@ class QTcpSocket;
 
 class Q_NETWORK_EXPORT QTcpServer : public QObject
 {
-    NET_CS_OBJECT( QTcpServer )
+    NET_LSCS_OBJECT( QTcpServer )
 
 public:
     explicit QTcpServer( QObject *parent = nullptr );
@@ -69,11 +69,11 @@ public:
     void pauseAccepting();
     void resumeAccepting();
 
-    NET_CS_SIGNAL_1( Public, void newConnection() )
-    NET_CS_SIGNAL_2( newConnection )
+    NET_LSCS_SIGNAL_1( Public, void newConnection() )
+    NET_LSCS_SIGNAL_2( newConnection )
 
-    NET_CS_SIGNAL_1( Public, void acceptError( QAbstractSocket::SocketError socketError ) )
-    NET_CS_SIGNAL_2( acceptError, socketError )
+    NET_LSCS_SIGNAL_1( Public, void acceptError( QAbstractSocket::SocketError socketError ) )
+    NET_LSCS_SIGNAL_2( acceptError, socketError )
 
 #ifndef QT_NO_NETWORKPROXY
     void setProxy( const QNetworkProxy &networkProxy );

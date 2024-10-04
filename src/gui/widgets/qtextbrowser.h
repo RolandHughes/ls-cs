@@ -33,33 +33,33 @@ class QTextBrowserPrivate;
 
 class Q_GUI_EXPORT QTextBrowser : public QTextEdit
 {
-    GUI_CS_OBJECT( QTextBrowser )
+    GUI_LSCS_OBJECT( QTextBrowser )
 
-    GUI_CS_PROPERTY_READ( source, source )
-    GUI_CS_PROPERTY_WRITE( source, setSource )
-
-    // overloaded properties
-    GUI_CS_PROPERTY_READ( readOnly, isReadOnly )
-    GUI_CS_PROPERTY_WRITE( readOnly, setReadOnly )
-
-    GUI_CS_PROPERTY_DESIGNABLE( readOnly, false )
-    GUI_CS_PROPERTY_SCRIPTABLE( readOnly, false )
+    GUI_LSCS_PROPERTY_READ( source, source )
+    GUI_LSCS_PROPERTY_WRITE( source, setSource )
 
     // overloaded properties
-    GUI_CS_PROPERTY_READ( undoRedoEnabled, isUndoRedoEnabled )
-    GUI_CS_PROPERTY_WRITE( undoRedoEnabled, setUndoRedoEnabled )
+    GUI_LSCS_PROPERTY_READ( readOnly, isReadOnly )
+    GUI_LSCS_PROPERTY_WRITE( readOnly, setReadOnly )
 
-    GUI_CS_PROPERTY_DESIGNABLE( undoRedoEnabled, false )
-    GUI_CS_PROPERTY_SCRIPTABLE( undoRedoEnabled, false )
+    GUI_LSCS_PROPERTY_DESIGNABLE( readOnly, false )
+    GUI_LSCS_PROPERTY_SCRIPTABLE( readOnly, false )
 
-    GUI_CS_PROPERTY_READ( searchPaths, searchPaths )
-    GUI_CS_PROPERTY_WRITE( searchPaths, setSearchPaths )
+    // overloaded properties
+    GUI_LSCS_PROPERTY_READ( undoRedoEnabled, isUndoRedoEnabled )
+    GUI_LSCS_PROPERTY_WRITE( undoRedoEnabled, setUndoRedoEnabled )
 
-    GUI_CS_PROPERTY_READ( openExternalLinks, openExternalLinks )
-    GUI_CS_PROPERTY_WRITE( openExternalLinks, setOpenExternalLinks )
+    GUI_LSCS_PROPERTY_DESIGNABLE( undoRedoEnabled, false )
+    GUI_LSCS_PROPERTY_SCRIPTABLE( undoRedoEnabled, false )
 
-    GUI_CS_PROPERTY_READ( openLinks, openLinks )
-    GUI_CS_PROPERTY_WRITE( openLinks, setOpenLinks )
+    GUI_LSCS_PROPERTY_READ( searchPaths, searchPaths )
+    GUI_LSCS_PROPERTY_WRITE( searchPaths, setSearchPaths )
+
+    GUI_LSCS_PROPERTY_READ( openExternalLinks, openExternalLinks )
+    GUI_LSCS_PROPERTY_WRITE( openExternalLinks, setOpenExternalLinks )
+
+    GUI_LSCS_PROPERTY_READ( openLinks, openLinks )
+    GUI_LSCS_PROPERTY_WRITE( openLinks, setOpenLinks )
 
 public:
     explicit QTextBrowser( QWidget *parent = nullptr );
@@ -90,37 +90,37 @@ public:
     bool openLinks() const;
     void setOpenLinks( bool open );
 
-    GUI_CS_SLOT_1( Public, virtual void setSource( const QUrl &name ) )
-    GUI_CS_SLOT_2( setSource )
-    GUI_CS_SLOT_1( Public, virtual void backward() )
-    GUI_CS_SLOT_2( backward )
-    GUI_CS_SLOT_1( Public, virtual void forward() )
-    GUI_CS_SLOT_2( forward )
-    GUI_CS_SLOT_1( Public, virtual void home() )
-    GUI_CS_SLOT_2( home )
-    GUI_CS_SLOT_1( Public, virtual void reload() )
-    GUI_CS_SLOT_2( reload )
+    GUI_LSCS_SLOT_1( Public, virtual void setSource( const QUrl &name ) )
+    GUI_LSCS_SLOT_2( setSource )
+    GUI_LSCS_SLOT_1( Public, virtual void backward() )
+    GUI_LSCS_SLOT_2( backward )
+    GUI_LSCS_SLOT_1( Public, virtual void forward() )
+    GUI_LSCS_SLOT_2( forward )
+    GUI_LSCS_SLOT_1( Public, virtual void home() )
+    GUI_LSCS_SLOT_2( home )
+    GUI_LSCS_SLOT_1( Public, virtual void reload() )
+    GUI_LSCS_SLOT_2( reload )
 
-    GUI_CS_SIGNAL_1( Public, void backwardAvailable( bool available ) )
-    GUI_CS_SIGNAL_2( backwardAvailable, available )
+    GUI_LSCS_SIGNAL_1( Public, void backwardAvailable( bool available ) )
+    GUI_LSCS_SIGNAL_2( backwardAvailable, available )
 
-    GUI_CS_SIGNAL_1( Public, void forwardAvailable( bool available ) )
-    GUI_CS_SIGNAL_2( forwardAvailable, available )
+    GUI_LSCS_SIGNAL_1( Public, void forwardAvailable( bool available ) )
+    GUI_LSCS_SIGNAL_2( forwardAvailable, available )
 
-    GUI_CS_SIGNAL_1( Public, void historyChanged() )
-    GUI_CS_SIGNAL_2( historyChanged )
+    GUI_LSCS_SIGNAL_1( Public, void historyChanged() )
+    GUI_LSCS_SIGNAL_2( historyChanged )
 
-    GUI_CS_SIGNAL_1( Public, void sourceChanged( const QUrl &url ) )
-    GUI_CS_SIGNAL_2( sourceChanged, url )
+    GUI_LSCS_SIGNAL_1( Public, void sourceChanged( const QUrl &url ) )
+    GUI_LSCS_SIGNAL_2( sourceChanged, url )
 
-    GUI_CS_SIGNAL_1( Public, void highlighted( const QUrl &url ) )
-    GUI_CS_SIGNAL_OVERLOAD( highlighted, ( const QUrl & ), url )
+    GUI_LSCS_SIGNAL_1( Public, void highlighted( const QUrl &url ) )
+    GUI_LSCS_SIGNAL_OVERLOAD( highlighted, ( const QUrl & ), url )
 
-    GUI_CS_SIGNAL_1( Public, void highlighted( const QString &text ) )
-    GUI_CS_SIGNAL_OVERLOAD( highlighted, ( const QString & ), text )
+    GUI_LSCS_SIGNAL_1( Public, void highlighted( const QString &text ) )
+    GUI_LSCS_SIGNAL_OVERLOAD( highlighted, ( const QString & ), text )
 
-    GUI_CS_SIGNAL_1( Public, void anchorClicked( const QUrl &url ) )
-    GUI_CS_SIGNAL_2( anchorClicked, url )
+    GUI_LSCS_SIGNAL_1( Public, void anchorClicked( const QUrl &url ) )
+    GUI_LSCS_SIGNAL_2( anchorClicked, url )
 
 protected:
     bool event( QEvent *event ) override;
@@ -135,14 +135,14 @@ protected:
 private:
     Q_DECLARE_PRIVATE( QTextBrowser )
 
-    GUI_CS_SLOT_1( Private, void _q_documentModified() )
-    GUI_CS_SLOT_2( _q_documentModified )
+    GUI_LSCS_SLOT_1( Private, void _q_documentModified() )
+    GUI_LSCS_SLOT_2( _q_documentModified )
 
-    GUI_CS_SLOT_1( Private, void _q_activateAnchor( const QString &anchor ) )
-    GUI_CS_SLOT_2( _q_activateAnchor )
+    GUI_LSCS_SLOT_1( Private, void _q_activateAnchor( const QString &anchor ) )
+    GUI_LSCS_SLOT_2( _q_activateAnchor )
 
-    GUI_CS_SLOT_1( Private, void _q_highlightLink( const QString &anchor ) )
-    GUI_CS_SLOT_2( _q_highlightLink )
+    GUI_LSCS_SLOT_1( Private, void _q_highlightLink( const QString &anchor ) )
+    GUI_LSCS_SLOT_2( _q_highlightLink )
 };
 
 #endif // QT_NO_TEXTBROWSER

@@ -74,7 +74,7 @@ void QRegion::exec( const QByteArray &buffer, int ver, QDataStream::ByteOrder by
     s.setByteOrder( byteOrder );
     QRegion rgn;
 
-#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+#if defined(LSCS_SHOW_DEBUG_GUI_PAINTING)
     int test_cnt = 0;
 #endif
 
@@ -83,7 +83,7 @@ void QRegion::exec( const QByteArray &buffer, int ver, QDataStream::ByteOrder by
         qint32 id;
         s >> id;
 
-#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+#if defined(LSCS_SHOW_DEBUG_GUI_PAINTING)
 
         if ( test_cnt > 0 && id != QRGN_TRANSLATE )
         {
@@ -666,7 +666,7 @@ struct QRegionPrivate
     inline bool mergeFromAbove( QRect *bottom, const QRect *top,
                                 const QRect *nextToBottom, const QRect *nextToTop );
 
-#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+#if defined(LSCS_SHOW_DEBUG_GUI_PAINTING)
     void selfTest() const;
 #endif
 };
@@ -770,7 +770,7 @@ void QRegionPrivate::intersect( const QRect &rect )
     Q_ASSERT( extents.intersects( rect ) );
     Q_ASSERT( numRects > 1 );
 
-#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+#if defined(LSCS_SHOW_DEBUG_GUI_PAINTING)
     selfTest();
 #endif
 
@@ -828,7 +828,7 @@ void QRegionPrivate::intersect( const QRect &rect )
         ++numRects;
     }
 
-#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+#if defined(LSCS_SHOW_DEBUG_GUI_PAINTING)
     selfTest();
 #endif
 }
@@ -874,7 +874,7 @@ void QRegionPrivate::append( const QRect *r )
     extents.setCoords( qMin( extents.left(), r->left() ), qMin( extents.top(), r->top() ),
                        qMax( extents.right(), r->right() ), qMax( extents.bottom(), r->bottom() ) );
 
-#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+#if defined(LSCS_SHOW_DEBUG_GUI_PAINTING)
     selfTest();
 #endif
 }
@@ -964,7 +964,7 @@ void QRegionPrivate::append( const QRegionPrivate *r )
     extents.setCoords( qMin( destRect->left(), srcRect->left() ), qMin( destRect->top(), srcRect->top() ),
                        qMax( destRect->right(), srcRect->right() ), qMax( destRect->bottom(), srcRect->bottom() ) );
 
-#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+#if defined(LSCS_SHOW_DEBUG_GUI_PAINTING)
     selfTest();
 #endif
 }
@@ -1054,7 +1054,7 @@ void QRegionPrivate::prepend( const QRegionPrivate *r )
                        qMax( extents.right(), r->extents.right() ),
                        qMax( extents.bottom(), r->extents.bottom() ) );
 
-#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+#if defined(LSCS_SHOW_DEBUG_GUI_PAINTING)
     selfTest();
 #endif
 }
@@ -1097,7 +1097,7 @@ void QRegionPrivate::prepend( const QRect *r )
                        qMax( extents.right(), r->right() ),
                        qMax( extents.bottom(), r->bottom() ) );
 
-#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+#if defined(LSCS_SHOW_DEBUG_GUI_PAINTING)
     selfTest();
 #endif
 }
@@ -1152,7 +1152,7 @@ bool QRegionPrivate::canPrepend( const QRegionPrivate *r ) const
     return canPrepend( r->numRects == 1 ? &r->extents : r->rects.constData() + r->numRects - 1 );
 }
 
-#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+#if defined(LSCS_SHOW_DEBUG_GUI_PAINTING)
 void QRegionPrivate::selfTest() const
 {
     if ( numRects == 0 )
@@ -3523,7 +3523,7 @@ static QRegionPrivate *PolygonRegion( const QPoint *Pts, int Count, int rule )
     if ( ET.ymax - ET.ymin > 100000 )
     {
 
-#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+#if defined(LSCS_SHOW_DEBUG_GUI_PAINTING)
         qDebug( "QRegion::PolygonRegion() Polygon is too large" );
 #endif
 
@@ -4292,7 +4292,7 @@ QRegion QRegion::subtracted( const QRegion &r ) const
         return QRegion();
     }
 
-#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+#if defined(LSCS_SHOW_DEBUG_GUI_PAINTING)
     d->qt_rgn->selfTest();
     r.d->qt_rgn->selfTest();
 #endif
@@ -4301,7 +4301,7 @@ QRegion QRegion::subtracted( const QRegion &r ) const
     result.detach();
     SubtractRegion( d->qt_rgn, r.d->qt_rgn, *result.d->qt_rgn );
 
-#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+#if defined(LSCS_SHOW_DEBUG_GUI_PAINTING)
     result.d->qt_rgn->selfTest();
 #endif
 

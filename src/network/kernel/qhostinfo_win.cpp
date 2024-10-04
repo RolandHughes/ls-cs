@@ -275,11 +275,11 @@ QHostInfo QHostInfoAgent::fromName( const QString &hostName )
         }
     }
 
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
 
     if ( results.error() != QHostInfo::NoError )
     {
-        qDebug( "QHostInfoAgent::run() Error (%s)", csPrintable( results.errorString() ) );
+        qDebug( "QHostInfoAgent::run() Error (%s)", lscsPrintable( results.errorString() ) );
 
     }
     else
@@ -297,7 +297,7 @@ QHostInfo QHostInfoAgent::fromName( const QString &hostName )
             tmp += addresses.at( i ).toString();
         }
 
-        qDebug( "QHostInfoAgent::run() Found %lli entries for: %s", addresses.count(), csPrintable( tmp ) );
+        qDebug( "QHostInfoAgent::run() Found %lli entries for: %s", addresses.count(), lscsPrintable( tmp ) );
     }
 
 #endif

@@ -44,7 +44,7 @@ class QPlatformGraphicsBuffer;
 #ifndef QT_NO_OPENGL
 class Q_GUI_EXPORT QPlatformTextureList : public QObject
 {
-    GUI_CS_OBJECT( QPlatformTextureList )
+    GUI_LSCS_OBJECT( QPlatformTextureList )
     Q_DECLARE_PRIVATE( QPlatformTextureList )
 
 public:
@@ -76,8 +76,8 @@ public:
 
     void clear();
 
-    GUI_CS_SIGNAL_1( Public, void locked( bool isLocked ) )
-    GUI_CS_SIGNAL_2( locked, isLocked )
+    GUI_LSCS_SIGNAL_1( Public, void locked( bool isLocked ) )
+    GUI_LSCS_SIGNAL_2( locked, isLocked )
 
 protected:
     QScopedPointer<QPlatformTextureListPrivate> d_ptr;

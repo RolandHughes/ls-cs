@@ -35,7 +35,7 @@ class QMacStylePrivate;
 
 class QMacStyle : public QCommonStyle
 {
-    GUI_CS_OBJECT( QMacStyle )
+    GUI_LSCS_OBJECT( QMacStyle )
 
 public:
     enum FocusRectPolicy { FocusEnabled, FocusDisabled, FocusDefault };

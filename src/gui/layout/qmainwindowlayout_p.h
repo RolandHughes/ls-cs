@@ -44,7 +44,7 @@ class QRubberBand;
 #ifndef QT_NO_DOCKWIDGET
 class QDockWidgetGroupWindow : public QWidget
 {
-    GUI_CS_OBJECT( QDockWidgetGroupWindow )
+    GUI_LSCS_OBJECT( QDockWidgetGroupWindow )
 
 public:
     explicit QDockWidgetGroupWindow( QWidget *parent = nullptr, Qt::WindowFlags flags = Qt::EmptyFlag )
@@ -149,7 +149,7 @@ public:
 
 class QMainWindowLayout : public QLayout
 {
-    GUI_CS_OBJECT( QMainWindowLayout )
+    GUI_LSCS_OBJECT( QMainWindowLayout )
 
 public:
     QMainWindowLayoutState layoutState, savedState;
@@ -291,16 +291,16 @@ public:
     void animationFinished( QWidget *widget );
 
 private:
-    GUI_CS_SLOT_1( Private, void updateGapIndicator() )
-    GUI_CS_SLOT_2( updateGapIndicator )
+    GUI_LSCS_SLOT_1( Private, void updateGapIndicator() )
+    GUI_LSCS_SLOT_2( updateGapIndicator )
 
 #ifndef QT_NO_DOCKWIDGET
 #ifndef QT_NO_TABBAR
-    GUI_CS_SLOT_1( Private, void tabChanged() )
-    GUI_CS_SLOT_2( tabChanged )
+    GUI_LSCS_SLOT_1( Private, void tabChanged() )
+    GUI_LSCS_SLOT_2( tabChanged )
 
-    GUI_CS_SLOT_1( Private, void tabMoved( int from, int to ) )
-    GUI_CS_SLOT_2( tabMoved )
+    GUI_LSCS_SLOT_1( Private, void tabMoved( int from, int to ) )
+    GUI_LSCS_SLOT_2( tabMoved )
 #endif
 #endif
 

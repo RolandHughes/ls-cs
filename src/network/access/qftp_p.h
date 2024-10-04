@@ -36,7 +36,7 @@ class QFtpPrivate;
 
 class Q_NETWORK_EXPORT QFtp : public QObject
 {
-    NET_CS_OBJECT( QFtp )
+    NET_LSCS_OBJECT( QFtp )
 
 public:
     enum State
@@ -126,32 +126,32 @@ public:
     Error error() const;
     QString errorString() const;
 
-    NET_CS_SLOT_1( Public, void abort() )
-    NET_CS_SLOT_2( abort )
+    NET_LSCS_SLOT_1( Public, void abort() )
+    NET_LSCS_SLOT_2( abort )
 
-    NET_CS_SIGNAL_1( Public, void stateChanged( int state ) )
-    NET_CS_SIGNAL_2( stateChanged, state )
+    NET_LSCS_SIGNAL_1( Public, void stateChanged( int state ) )
+    NET_LSCS_SIGNAL_2( stateChanged, state )
 
-    NET_CS_SIGNAL_1( Public, void listInfo( const QUrlInfo &urlInfo ) )
-    NET_CS_SIGNAL_2( listInfo, urlInfo )
+    NET_LSCS_SIGNAL_1( Public, void listInfo( const QUrlInfo &urlInfo ) )
+    NET_LSCS_SIGNAL_2( listInfo, urlInfo )
 
-    NET_CS_SIGNAL_1( Public, void readyRead() )
-    NET_CS_SIGNAL_2( readyRead )
+    NET_LSCS_SIGNAL_1( Public, void readyRead() )
+    NET_LSCS_SIGNAL_2( readyRead )
 
-    NET_CS_SIGNAL_1( Public, void dataTransferProgress( qint64 done, qint64 total ) )
-    NET_CS_SIGNAL_2( dataTransferProgress, done, total )
+    NET_LSCS_SIGNAL_1( Public, void dataTransferProgress( qint64 done, qint64 total ) )
+    NET_LSCS_SIGNAL_2( dataTransferProgress, done, total )
 
-    NET_CS_SIGNAL_1( Public, void rawCommandReply( int replyCode, const QString &detail ) )
-    NET_CS_SIGNAL_2( rawCommandReply, replyCode, detail )
+    NET_LSCS_SIGNAL_1( Public, void rawCommandReply( int replyCode, const QString &detail ) )
+    NET_LSCS_SIGNAL_2( rawCommandReply, replyCode, detail )
 
-    NET_CS_SIGNAL_1( Public, void commandStarted( int id ) )
-    NET_CS_SIGNAL_2( commandStarted, id )
+    NET_LSCS_SIGNAL_1( Public, void commandStarted( int id ) )
+    NET_LSCS_SIGNAL_2( commandStarted, id )
 
-    NET_CS_SIGNAL_1( Public, void commandFinished( int id, bool error ) )
-    NET_CS_SIGNAL_2( commandFinished, id, error )
+    NET_LSCS_SIGNAL_1( Public, void commandFinished( int id, bool error ) )
+    NET_LSCS_SIGNAL_2( commandFinished, id, error )
 
-    NET_CS_SIGNAL_1( Public, void done( bool error ) )
-    NET_CS_SIGNAL_2( done, error )
+    NET_LSCS_SIGNAL_1( Public, void done( bool error ) )
+    NET_LSCS_SIGNAL_2( done, error )
 
 protected:
     QScopedPointer<QFtpPrivate> d_ptr;
@@ -159,20 +159,20 @@ protected:
 private:
     Q_DECLARE_PRIVATE( QFtp )
 
-    NET_CS_SLOT_1( Private, void _q_startNextCommand() )
-    NET_CS_SLOT_2( _q_startNextCommand )
+    NET_LSCS_SLOT_1( Private, void _q_startNextCommand() )
+    NET_LSCS_SLOT_2( _q_startNextCommand )
 
-    NET_CS_SLOT_1( Private, void _q_piFinished( const QString &textMsg ) )
-    NET_CS_SLOT_2( _q_piFinished )
+    NET_LSCS_SLOT_1( Private, void _q_piFinished( const QString &textMsg ) )
+    NET_LSCS_SLOT_2( _q_piFinished )
 
-    NET_CS_SLOT_1( Private, void _q_piError( int errorCode, const QString &textMsg ) )
-    NET_CS_SLOT_2( _q_piError )
+    NET_LSCS_SLOT_1( Private, void _q_piError( int errorCode, const QString &textMsg ) )
+    NET_LSCS_SLOT_2( _q_piError )
 
-    NET_CS_SLOT_1( Private, void _q_piConnectState( int connectState ) )
-    NET_CS_SLOT_2( _q_piConnectState )
+    NET_LSCS_SLOT_1( Private, void _q_piConnectState( int connectState ) )
+    NET_LSCS_SLOT_2( _q_piConnectState )
 
-    NET_CS_SLOT_1( Private, void _q_piFtpReply( int code, const QString &textMsg ) )
-    NET_CS_SLOT_2( _q_piFtpReply )
+    NET_LSCS_SLOT_1( Private, void _q_piFtpReply( int code, const QString &textMsg ) )
+    NET_LSCS_SLOT_2( _q_piFtpReply )
 };
 
 #endif // QT_NO_FTP

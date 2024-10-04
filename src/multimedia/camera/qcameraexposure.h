@@ -31,34 +31,34 @@ class QCameraExposurePrivate;
 
 class Q_MULTIMEDIA_EXPORT QCameraExposure : public QObject
 {
-    MULTI_CS_OBJECT( QCameraExposure )
+    MULTI_LSCS_OBJECT( QCameraExposure )
 
-    MULTI_CS_PROPERTY_READ( aperture, aperture )
-    MULTI_CS_PROPERTY_NOTIFY( aperture, apertureChanged )
+    MULTI_LSCS_PROPERTY_READ( aperture, aperture )
+    MULTI_LSCS_PROPERTY_NOTIFY( aperture, apertureChanged )
 
-    MULTI_CS_PROPERTY_READ( shutterSpeed, shutterSpeed )
-    MULTI_CS_PROPERTY_NOTIFY( shutterSpeed, shutterSpeedChanged )
+    MULTI_LSCS_PROPERTY_READ( shutterSpeed, shutterSpeed )
+    MULTI_LSCS_PROPERTY_NOTIFY( shutterSpeed, shutterSpeedChanged )
 
-    MULTI_CS_PROPERTY_READ( isoSensitivity, isoSensitivity )
-    MULTI_CS_PROPERTY_NOTIFY( isoSensitivity, isoSensitivityChanged )
+    MULTI_LSCS_PROPERTY_READ( isoSensitivity, isoSensitivity )
+    MULTI_LSCS_PROPERTY_NOTIFY( isoSensitivity, isoSensitivityChanged )
 
-    MULTI_CS_PROPERTY_READ( exposureCompensation, exposureCompensation )
-    MULTI_CS_PROPERTY_WRITE( exposureCompensation, setExposureCompensation )
-    MULTI_CS_PROPERTY_NOTIFY( exposureCompensation, exposureCompensationChanged )
+    MULTI_LSCS_PROPERTY_READ( exposureCompensation, exposureCompensation )
+    MULTI_LSCS_PROPERTY_WRITE( exposureCompensation, setExposureCompensation )
+    MULTI_LSCS_PROPERTY_NOTIFY( exposureCompensation, exposureCompensationChanged )
 
-    MULTI_CS_PROPERTY_READ( flashReady, isFlashReady )
-    MULTI_CS_PROPERTY_NOTIFY( flashReady, flashReady )
+    MULTI_LSCS_PROPERTY_READ( flashReady, isFlashReady )
+    MULTI_LSCS_PROPERTY_NOTIFY( flashReady, flashReady )
 
-    MULTI_CS_PROPERTY_READ( flashMode, flashMode )
-    MULTI_CS_PROPERTY_WRITE( flashMode, setFlashMode )
-    MULTI_CS_PROPERTY_READ( exposureMode, exposureMode )
-    MULTI_CS_PROPERTY_WRITE( exposureMode, setExposureMode )
-    MULTI_CS_PROPERTY_READ( meteringMode, meteringMode )
-    MULTI_CS_PROPERTY_WRITE( meteringMode, setMeteringMode )
+    MULTI_LSCS_PROPERTY_READ( flashMode, flashMode )
+    MULTI_LSCS_PROPERTY_WRITE( flashMode, setFlashMode )
+    MULTI_LSCS_PROPERTY_READ( exposureMode, exposureMode )
+    MULTI_LSCS_PROPERTY_WRITE( exposureMode, setExposureMode )
+    MULTI_LSCS_PROPERTY_READ( meteringMode, meteringMode )
+    MULTI_LSCS_PROPERTY_WRITE( meteringMode, setMeteringMode )
 
-    MULTI_CS_ENUM( FlashMode )
-    MULTI_CS_ENUM( ExposureMode )
-    MULTI_CS_ENUM( MeteringMode )
+    MULTI_LSCS_ENUM( FlashMode )
+    MULTI_LSCS_ENUM( ExposureMode )
+    MULTI_LSCS_ENUM( MeteringMode )
 
 public:
     enum FlashMode
@@ -141,56 +141,56 @@ public:
     QList<double> supportedApertures( bool *continuous = nullptr ) const;
     QList<double> supportedShutterSpeeds( bool *continuous = nullptr ) const;
 
-    MULTI_CS_SLOT_1( Public, void setFlashMode( FlashModes mode ) )
-    MULTI_CS_SLOT_2( setFlashMode )
+    MULTI_LSCS_SLOT_1( Public, void setFlashMode( FlashModes mode ) )
+    MULTI_LSCS_SLOT_2( setFlashMode )
 
-    MULTI_CS_SLOT_1( Public, void setExposureMode( ExposureMode mode ) )
-    MULTI_CS_SLOT_2( setExposureMode )
+    MULTI_LSCS_SLOT_1( Public, void setExposureMode( ExposureMode mode ) )
+    MULTI_LSCS_SLOT_2( setExposureMode )
 
-    MULTI_CS_SLOT_1( Public, void setMeteringMode( MeteringMode mode ) )
-    MULTI_CS_SLOT_2( setMeteringMode )
+    MULTI_LSCS_SLOT_1( Public, void setMeteringMode( MeteringMode mode ) )
+    MULTI_LSCS_SLOT_2( setMeteringMode )
 
-    MULTI_CS_SLOT_1( Public, void setExposureCompensation( double value ) )
-    MULTI_CS_SLOT_2( setExposureCompensation )
+    MULTI_LSCS_SLOT_1( Public, void setExposureCompensation( double value ) )
+    MULTI_LSCS_SLOT_2( setExposureCompensation )
 
-    MULTI_CS_SLOT_1( Public, void setManualIsoSensitivity( int iso ) )
-    MULTI_CS_SLOT_2( setManualIsoSensitivity )
+    MULTI_LSCS_SLOT_1( Public, void setManualIsoSensitivity( int iso ) )
+    MULTI_LSCS_SLOT_2( setManualIsoSensitivity )
 
-    MULTI_CS_SLOT_1( Public, void setAutoIsoSensitivity() )
-    MULTI_CS_SLOT_2( setAutoIsoSensitivity )
+    MULTI_LSCS_SLOT_1( Public, void setAutoIsoSensitivity() )
+    MULTI_LSCS_SLOT_2( setAutoIsoSensitivity )
 
-    MULTI_CS_SLOT_1( Public, void setManualAperture( double aperture ) )
-    MULTI_CS_SLOT_2( setManualAperture )
+    MULTI_LSCS_SLOT_1( Public, void setManualAperture( double aperture ) )
+    MULTI_LSCS_SLOT_2( setManualAperture )
 
-    MULTI_CS_SLOT_1( Public, void setAutoAperture() )
-    MULTI_CS_SLOT_2( setAutoAperture )
+    MULTI_LSCS_SLOT_1( Public, void setAutoAperture() )
+    MULTI_LSCS_SLOT_2( setAutoAperture )
 
-    MULTI_CS_SLOT_1( Public, void setManualShutterSpeed( double seconds ) )
-    MULTI_CS_SLOT_2( setManualShutterSpeed )
+    MULTI_LSCS_SLOT_1( Public, void setManualShutterSpeed( double seconds ) )
+    MULTI_LSCS_SLOT_2( setManualShutterSpeed )
 
-    MULTI_CS_SLOT_1( Public, void setAutoShutterSpeed() )
-    MULTI_CS_SLOT_2( setAutoShutterSpeed )
+    MULTI_LSCS_SLOT_1( Public, void setAutoShutterSpeed() )
+    MULTI_LSCS_SLOT_2( setAutoShutterSpeed )
 
-    MULTI_CS_SIGNAL_1( Public, void flashReady( bool ready ) )
-    MULTI_CS_SIGNAL_2( flashReady, ready )
+    MULTI_LSCS_SIGNAL_1( Public, void flashReady( bool ready ) )
+    MULTI_LSCS_SIGNAL_2( flashReady, ready )
 
-    MULTI_CS_SIGNAL_1( Public, void apertureChanged( double value ) )
-    MULTI_CS_SIGNAL_2( apertureChanged, value )
+    MULTI_LSCS_SIGNAL_1( Public, void apertureChanged( double value ) )
+    MULTI_LSCS_SIGNAL_2( apertureChanged, value )
 
-    MULTI_CS_SIGNAL_1( Public, void apertureRangeChanged() )
-    MULTI_CS_SIGNAL_2( apertureRangeChanged )
+    MULTI_LSCS_SIGNAL_1( Public, void apertureRangeChanged() )
+    MULTI_LSCS_SIGNAL_2( apertureRangeChanged )
 
-    MULTI_CS_SIGNAL_1( Public, void shutterSpeedChanged( double speed ) )
-    MULTI_CS_SIGNAL_2( shutterSpeedChanged, speed )
+    MULTI_LSCS_SIGNAL_1( Public, void shutterSpeedChanged( double speed ) )
+    MULTI_LSCS_SIGNAL_2( shutterSpeedChanged, speed )
 
-    MULTI_CS_SIGNAL_1( Public, void shutterSpeedRangeChanged() )
-    MULTI_CS_SIGNAL_2( shutterSpeedRangeChanged )
+    MULTI_LSCS_SIGNAL_1( Public, void shutterSpeedRangeChanged() )
+    MULTI_LSCS_SIGNAL_2( shutterSpeedRangeChanged )
 
-    MULTI_CS_SIGNAL_1( Public, void isoSensitivityChanged( int value ) )
-    MULTI_CS_SIGNAL_2( isoSensitivityChanged, value )
+    MULTI_LSCS_SIGNAL_1( Public, void isoSensitivityChanged( int value ) )
+    MULTI_LSCS_SIGNAL_2( isoSensitivityChanged, value )
 
-    MULTI_CS_SIGNAL_1( Public, void exposureCompensationChanged( double value ) )
-    MULTI_CS_SIGNAL_2( exposureCompensationChanged, value )
+    MULTI_LSCS_SIGNAL_1( Public, void exposureCompensationChanged( double value ) )
+    MULTI_LSCS_SIGNAL_2( exposureCompensationChanged, value )
 
 private:
     explicit QCameraExposure( QCamera *parent = nullptr );
@@ -198,11 +198,11 @@ private:
 
     Q_DECLARE_PRIVATE( QCameraExposure )
 
-    MULTI_CS_SLOT_1( Private, void _q_exposureParameterChanged( int value ) )
-    MULTI_CS_SLOT_2( _q_exposureParameterChanged )
+    MULTI_LSCS_SLOT_1( Private, void _q_exposureParameterChanged( int value ) )
+    MULTI_LSCS_SLOT_2( _q_exposureParameterChanged )
 
-    MULTI_CS_SLOT_1( Private, void _q_exposureParameterRangeChanged( int value ) )
-    MULTI_CS_SLOT_2( _q_exposureParameterRangeChanged )
+    MULTI_LSCS_SLOT_1( Private, void _q_exposureParameterRangeChanged( int value ) )
+    MULTI_LSCS_SLOT_2( _q_exposureParameterRangeChanged )
 
     QCameraExposurePrivate *d_ptr;
 

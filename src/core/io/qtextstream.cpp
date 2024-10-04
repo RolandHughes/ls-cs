@@ -78,7 +78,7 @@ static constexpr const int QTEXTSTREAM_BUFFERSIZE = 16384;
 
 class QDeviceClosedNotifier : public QObject
 {
-    CORE_CS_OBJECT( QDeviceClosedNotifier )
+    CORE_LSCS_OBJECT( QDeviceClosedNotifier )
 
 public:
     QDeviceClosedNotifier()
@@ -96,8 +96,8 @@ public:
         m_stream = newStream;
     }
 
-    CORE_CS_SLOT_1( Public, void flushStream() )
-    CORE_CS_SLOT_2( flushStream )
+    CORE_LSCS_SLOT_1( Public, void flushStream() )
+    CORE_LSCS_SLOT_2( flushStream )
 
 private:
     QTextStream *m_stream;
@@ -854,7 +854,7 @@ QTextStream::QTextStream()
 QTextStream::QTextStream( QIODevice *device )
     : d_ptr( new QTextStreamPrivate( this ) )
 {
-#if defined(CS_SHOW_DEBUG_CORE_IO)
+#if defined(LSCS_SHOW_DEBUG_CORE_IO)
     qDebug( "QTextStream::QTextStream(QIODevice *device == *%p)", device );
 #endif
 
@@ -903,7 +903,7 @@ QTextStream::QTextStream( const QByteArray &array, QIODevice::OpenMode openMode 
 QTextStream::QTextStream( FILE *fileHandle, QIODevice::OpenMode openMode )
     : d_ptr( new QTextStreamPrivate( this ) )
 {
-#if defined(CS_SHOW_DEBUG_CORE_IO)
+#if defined(LSCS_SHOW_DEBUG_CORE_IO)
     qDebug( "QTextStream::QTextStream(FILE *fileHandle = %p, openMode = %d)", fileHandle, int( openMode ) );
 #endif
 

@@ -32,7 +32,7 @@ class QScriptDebuggerConsoleWidgetPrivate;
 
 class QScriptDebuggerConsoleWidget : public QScriptDebuggerConsoleWidgetInterface
 {
-    SCRIPT_T_CS_OBJECT( QScriptDebuggerConsoleWidget )
+    SCRIPT_T_LSCS_OBJECT( QScriptDebuggerConsoleWidget )
 
 public:
     QScriptDebuggerConsoleWidget( QWidget *parent = nullptr );
@@ -59,14 +59,14 @@ private:
     Q_DECLARE_PRIVATE( QScriptDebuggerConsoleWidget )
     Q_DISABLE_COPY( QScriptDebuggerConsoleWidget )
 
-    CS_SLOT_1( Private, void _q_onLineEntered( const QString &un_named_arg1 ) )
-    CS_SLOT_2( _q_onLineEntered )
+    LSCS_SLOT_1( Private, void _q_onLineEntered( const QString &un_named_arg1 ) )
+    LSCS_SLOT_2( _q_onLineEntered )
 
-    CS_SLOT_1( Private, void _q_onLineEdited( const QString &un_named_arg1 ) )
-    CS_SLOT_2( _q_onLineEdited )
+    LSCS_SLOT_1( Private, void _q_onLineEdited( const QString &un_named_arg1 ) )
+    LSCS_SLOT_2( _q_onLineEdited )
 
-    CS_SLOT_1( Private, void _q_onCompletionTaskFinished() )
-    CS_SLOT_2( _q_onCompletionTaskFinished )
+    LSCS_SLOT_1( Private, void _q_onCompletionTaskFinished() )
+    LSCS_SLOT_2( _q_onCompletionTaskFinished )
 
 };
 

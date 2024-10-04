@@ -35,17 +35,17 @@ class QDeclarativeBorderImagePrivate;
 
 class QDeclarativeBorderImage : public QDeclarativeImageBase
 {
-    DECL_CS_OBJECT( QDeclarativeBorderImage )
-    DECL_CS_ENUM( TileMode )
+    DECL_LSCS_OBJECT( QDeclarativeBorderImage )
+    DECL_LSCS_ENUM( TileMode )
 
-    DECL_CS_PROPERTY_READ( *border, border )
-    DECL_CS_PROPERTY_CONSTANT( *border )
-    DECL_CS_PROPERTY_READ( horizontalTileMode, horizontalTileMode )
-    DECL_CS_PROPERTY_WRITE( horizontalTileMode, setHorizontalTileMode )
-    DECL_CS_PROPERTY_NOTIFY( horizontalTileMode, horizontalTileModeChanged )
-    DECL_CS_PROPERTY_READ( verticalTileMode, verticalTileMode )
-    DECL_CS_PROPERTY_WRITE( verticalTileMode, setVerticalTileMode )
-    DECL_CS_PROPERTY_NOTIFY( verticalTileMode, verticalTileModeChanged )
+    DECL_LSCS_PROPERTY_READ( *border, border )
+    DECL_LSCS_PROPERTY_CONSTANT( *border )
+    DECL_LSCS_PROPERTY_READ( horizontalTileMode, horizontalTileMode )
+    DECL_LSCS_PROPERTY_WRITE( horizontalTileMode, setHorizontalTileMode )
+    DECL_LSCS_PROPERTY_NOTIFY( horizontalTileMode, horizontalTileModeChanged )
+    DECL_LSCS_PROPERTY_READ( verticalTileMode, verticalTileMode )
+    DECL_LSCS_PROPERTY_WRITE( verticalTileMode, setVerticalTileMode )
+    DECL_LSCS_PROPERTY_NOTIFY( verticalTileMode, verticalTileModeChanged )
 
 public:
     QDeclarativeBorderImage( QDeclarativeItem *parent = 0 );
@@ -66,10 +66,10 @@ public:
 
     void setSourceSize( const QSize & );
 
-    DECL_CS_SIGNAL_1( Public, void horizontalTileModeChanged() )
-    DECL_CS_SIGNAL_2( horizontalTileModeChanged )
-    DECL_CS_SIGNAL_1( Public, void verticalTileModeChanged() )
-    DECL_CS_SIGNAL_2( verticalTileModeChanged )
+    DECL_LSCS_SIGNAL_1( Public, void horizontalTileModeChanged() )
+    DECL_LSCS_SIGNAL_2( horizontalTileModeChanged )
+    DECL_LSCS_SIGNAL_1( Public, void verticalTileModeChanged() )
+    DECL_LSCS_SIGNAL_2( verticalTileModeChanged )
 
 protected:
     virtual void load();
@@ -77,12 +77,12 @@ protected:
 private:
     void setGridScaledImage( const QDeclarativeGridScaledImage &sci );
 
-    DECL_CS_SLOT_1( Private, void doUpdate() )
-    DECL_CS_SLOT_2( doUpdate )
-    DECL_CS_SLOT_1( Private, void requestFinished() )
-    DECL_CS_SLOT_2( requestFinished )
-    DECL_CS_SLOT_1( Private, void sciRequestFinished() )
-    DECL_CS_SLOT_2( sciRequestFinished )
+    DECL_LSCS_SLOT_1( Private, void doUpdate() )
+    DECL_LSCS_SLOT_2( doUpdate )
+    DECL_LSCS_SLOT_1( Private, void requestFinished() )
+    DECL_LSCS_SLOT_2( requestFinished )
+    DECL_LSCS_SLOT_1( Private, void sciRequestFinished() )
+    DECL_LSCS_SLOT_2( sciRequestFinished )
 
     Q_DISABLE_COPY( QDeclarativeBorderImage )
     Q_DECLARE_PRIVATE_D( QGraphicsItem::d_ptr.data(), QDeclarativeBorderImage )

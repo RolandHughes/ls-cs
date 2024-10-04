@@ -100,7 +100,7 @@ void QSystemSemaphorePrivate::setErrorString( const QString &function )
             errorString = QCoreApplication::translate( "QSystemSemaphore", "%1: unknown error %2" ).formatArg( function ).formatArg( errno );
             error = QSystemSemaphore::UnknownError;
 
-#if defined(CS_SHOW_DEBUG_CORE_SEMAPHORE)
+#if defined(LSCS_SHOW_DEBUG_CORE_SEMAPHORE)
             qDebug() << errorString << "key" << key << "errno" << errno << EINVAL;
 #endif
             break;
@@ -282,7 +282,7 @@ void QSystemSemaphorePrivate::cleanHandle()
             {
                 setErrorString( "QSystemSemaphore::cleanHandle" );
 
-#if defined(CS_SHOW_DEBUG_CORE_SEMAPHORE)
+#if defined(LSCS_SHOW_DEBUG_CORE_SEMAPHORE)
                 qDebug( "QSystemSemaphore::cleanHandle semctl failed." );
 #endif
             }
@@ -301,7 +301,7 @@ void QSystemSemaphorePrivate::cleanHandle()
         {
             setErrorString( "QSystemSemaphore::cleanHandle (sem_close)" );
 
-#if defined(CS_SHOW_DEBUG_CORE_SEMAPHORE)
+#if defined(LSCS_SHOW_DEBUG_CORE_SEMAPHORE)
             qDebug() << QString( "QSystemSemaphore::cleanHandle sem_close failed." );
 #endif
         }
@@ -315,7 +315,7 @@ void QSystemSemaphorePrivate::cleanHandle()
         {
             setErrorString( "QSystemSemaphore::cleanHandle (sem_unlink)" );
 
-#if defined(CS_SHOW_DEBUG_CORE_SEMAPHORE)
+#if defined(LSCS_SHOW_DEBUG_CORE_SEMAPHORE)
             qDebug() << QString( "QSystemSemaphore::cleanHandle sem_unlink failed." );
 #endif
         }
@@ -361,7 +361,7 @@ bool QSystemSemaphorePrivate::modifySemaphore( int count )
 
         setErrorString( "QSystemSemaphore::modifySemaphore" );
 
-#if defined(CS_SHOW_DEBUG_CORE_SEMAPHORE)
+#if defined(LSCS_SHOW_DEBUG_CORE_SEMAPHORE)
         qDebug() << QString( "QSystemSemaphore::modify failed" ) << count << semctl( semaphore, 0, GETVAL )
                  << errno << EIDRM << EINVAL;
 #endif
@@ -385,7 +385,7 @@ bool QSystemSemaphorePrivate::modifySemaphore( int count )
             {
                 setErrorString( "QSystemSemaphore::modifySemaphore (sem_post)" );
 
-#if defined(CS_SHOW_DEBUG_CORE_SEMAPHORE)
+#if defined(LSCS_SHOW_DEBUG_CORE_SEMAPHORE)
                 qDebug() << QString( "QSystemSemaphore::modify sem_post failed" ) << count << errno;
 #endif
 
@@ -420,7 +420,7 @@ bool QSystemSemaphorePrivate::modifySemaphore( int count )
 
             setErrorString( "QSystemSemaphore::modifySemaphore (sem_wait)" );
 
-#if defined(CS_SHOW_DEBUG_CORE_SEMAPHORE)
+#if defined(LSCS_SHOW_DEBUG_CORE_SEMAPHORE)
             qDebug() << QString( "QSystemSemaphore::modify sem_wait failed" ) << count << errno;
 #endif
             return false;

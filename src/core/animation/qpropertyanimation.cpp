@@ -59,14 +59,14 @@ void QPropertyAnimationPrivate::updateMetaProperty()
         if ( ! targetValue->dynamicPropertyNames().contains( propertyName ) )
         {
             qWarning( "QPropertyAnimationPrivate::updateMetaProperty() Trying to animate a non existent property %s",
-                      csPrintable( propertyName ) );
+                      lscsPrintable( propertyName ) );
         }
 
     }
     else if ( ! targetValue->metaObject()->property( propertyIndex ).isWritable() )
     {
         qWarning( "QPropertyAnimationPrivate::updateMetaProperty() Trying to animate a read only property %s",
-                  csPrintable( propertyName ) );
+                  lscsPrintable( propertyName ) );
     }
 }
 
@@ -203,16 +203,16 @@ void QPropertyAnimation::updateState( QAbstractAnimation::State newState, QAbstr
                 {
 
                     qWarning( "QPropertyAnimation::updateState (%s, %s, %s): Trying to start an animation, no start value available",
-                              csPrintable( d->propertyName ), csPrintable( d->target.data()->metaObject()->className() ),
-                              csPrintable( d->target.data()->objectName() ) );
+                              lscsPrintable( d->propertyName ), lscsPrintable( d->target.data()->metaObject()->className() ),
+                              lscsPrintable( d->target.data()->objectName() ) );
                 }
 
                 if ( ! endValue().isValid() && ( d->direction == Forward || ! d->m_defaultValue.isValid() ) )
                 {
 
                     qWarning( "QPropertyAnimation::updateState (%s, %s, %s): Trying to start an animation, no end value available",
-                              csPrintable( d->propertyName ), csPrintable( d->target.data()->metaObject()->className() ),
-                              csPrintable( d->target.data()->objectName() ) );
+                              lscsPrintable( d->propertyName ), lscsPrintable( d->target.data()->metaObject()->className() ),
+                              lscsPrintable( d->target.data()->objectName() ) );
                 }
             }
 

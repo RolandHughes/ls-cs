@@ -35,7 +35,7 @@ class QRect;
 
 class QWidgetAnimator : public QObject
 {
-    GUI_CS_OBJECT( QWidgetAnimator )
+    GUI_LSCS_OBJECT( QWidgetAnimator )
 
 public:
     QWidgetAnimator( QMainWindowLayout *layout );
@@ -51,8 +51,8 @@ private:
     QMainWindowLayout *m_mainWindowLayout;
 
 #ifndef QT_NO_ANIMATION
-    GUI_CS_SLOT_1( Private, void animationFinished() )
-    GUI_CS_SLOT_2( animationFinished )
+    GUI_LSCS_SLOT_1( Private, void animationFinished() )
+    GUI_LSCS_SLOT_2( animationFinished )
 #endif
 
 };

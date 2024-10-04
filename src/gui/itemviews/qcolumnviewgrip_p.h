@@ -32,7 +32,7 @@ class QColumnViewGripPrivate;
 
 class QColumnViewGrip : public QWidget
 {
-    GUI_CS_OBJECT( QColumnViewGrip )
+    GUI_LSCS_OBJECT( QColumnViewGrip )
 
 public:
     explicit QColumnViewGrip( QWidget *parent = nullptr );
@@ -43,8 +43,8 @@ public:
     ~QColumnViewGrip();
     int moveGrip( int offset );
 
-    GUI_CS_SIGNAL_1( Public, void gripMoved( int offset ) )
-    GUI_CS_SIGNAL_2( gripMoved, offset )
+    GUI_LSCS_SIGNAL_1( Public, void gripMoved( int offset ) )
+    GUI_LSCS_SIGNAL_2( gripMoved, offset )
 
 protected:
     QColumnViewGrip( QColumnViewGripPrivate &, QWidget *parent = nullptr, Qt::WindowFlags flags = Qt::EmptyFlag );

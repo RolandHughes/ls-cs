@@ -69,7 +69,7 @@ QSourceLocation ReportContext::lookupSourceLocation( const SourceLocationReflect
     if ( sl.isNull() )
     {
         Q_ASSERT_X( !locationFor( actual ).isNull(), Q_FUNC_INFO,
-                    csPrintable( QString::fromLatin1( "No location is available for: %1" ).formatArg( actual->description() ) ) );
+                    lscsPrintable( QString::fromLatin1( "No location is available for: %1" ).formatArg( actual->description() ) ) );
 
         return locationFor( actual );
     }

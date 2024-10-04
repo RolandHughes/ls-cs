@@ -60,7 +60,7 @@ static void initResources()
 
 class QPrintPropertiesDialog : public QDialog
 {
-    GUI_CS_OBJECT( QPrintPropertiesDialog )
+    GUI_LSCS_OBJECT( QPrintPropertiesDialog )
 
 public:
     QPrintPropertiesDialog( QAbstractPrintDialog *parent = nullptr );
@@ -86,7 +86,7 @@ class QUnixPrintWidgetPrivate;
 
 class QUnixPrintWidget : public QWidget
 {
-    GUI_CS_OBJECT( QUnixPrintWidget )
+    GUI_LSCS_OBJECT( QUnixPrintWidget )
 
 public:
     explicit QUnixPrintWidget( QPrinter *printer, QWidget *parent = nullptr );
@@ -98,14 +98,14 @@ private:
     friend class QUnixPrintWidgetPrivate;
     QUnixPrintWidgetPrivate *d;
 
-    GUI_CS_SLOT_1( Private, void _q_printerChanged( int index ) )
-    GUI_CS_SLOT_2( _q_printerChanged )
+    GUI_LSCS_SLOT_1( Private, void _q_printerChanged( int index ) )
+    GUI_LSCS_SLOT_2( _q_printerChanged )
 
-    GUI_CS_SLOT_1( Private, void _q_btnBrowseClicked() )
-    GUI_CS_SLOT_2( _q_btnBrowseClicked )
+    GUI_LSCS_SLOT_1( Private, void _q_btnBrowseClicked() )
+    GUI_LSCS_SLOT_2( _q_btnBrowseClicked )
 
-    GUI_CS_SLOT_1( Private, void _q_btnPropertiesClicked() )
-    GUI_CS_SLOT_2( _q_btnPropertiesClicked )
+    GUI_LSCS_SLOT_1( Private, void _q_btnPropertiesClicked() )
+    GUI_LSCS_SLOT_2( _q_btnPropertiesClicked )
 };
 
 class QUnixPrintWidgetPrivate

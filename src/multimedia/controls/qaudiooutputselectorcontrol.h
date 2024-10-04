@@ -30,7 +30,7 @@
 
 class Q_MULTIMEDIA_EXPORT QAudioOutputSelectorControl : public QMediaControl
 {
-    MULTI_CS_OBJECT( QAudioOutputSelectorControl )
+    MULTI_LSCS_OBJECT( QAudioOutputSelectorControl )
 
 public:
     virtual ~QAudioOutputSelectorControl();
@@ -40,20 +40,20 @@ public:
     virtual QString defaultOutput() const = 0;
     virtual QString activeOutput() const = 0;
 
-    MULTI_CS_SLOT_1( Public, virtual void setActiveOutput( const QString &name ) = 0 )
-    MULTI_CS_SLOT_2( setActiveOutput )
+    MULTI_LSCS_SLOT_1( Public, virtual void setActiveOutput( const QString &name ) = 0 )
+    MULTI_LSCS_SLOT_2( setActiveOutput )
 
-    MULTI_CS_SIGNAL_1( Public, void activeOutputChanged( const QString &name ) )
-    MULTI_CS_SIGNAL_2( activeOutputChanged, name )
+    MULTI_LSCS_SIGNAL_1( Public, void activeOutputChanged( const QString &name ) )
+    MULTI_LSCS_SIGNAL_2( activeOutputChanged, name )
 
-    MULTI_CS_SIGNAL_1( Public, void availableOutputsChanged() )
-    MULTI_CS_SIGNAL_2( availableOutputsChanged )
+    MULTI_LSCS_SIGNAL_1( Public, void availableOutputsChanged() )
+    MULTI_LSCS_SIGNAL_2( availableOutputsChanged )
 
 protected:
     explicit QAudioOutputSelectorControl( QObject *parent = nullptr );
 };
 
 #define QAudioOutputSelectorControl_iid "com.copperspice.CS.audioOutputSelectorControl/1.0"
-CS_DECLARE_INTERFACE( QAudioOutputSelectorControl, QAudioOutputSelectorControl_iid )
+LSCS_DECLARE_INTERFACE( QAudioOutputSelectorControl, QAudioOutputSelectorControl_iid )
 
 #endif

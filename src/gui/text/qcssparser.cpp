@@ -4270,7 +4270,7 @@ bool Parser::parseHexColor( QColor *col )
 
     if ( ! col->isValid() )
     {
-        qWarning( "QCssParser::parseHexColor() Unknown color name %s", csPrintable( lexem() ) );
+        qWarning( "QCssParser::parseHexColor() Unknown color name %s", lscsPrintable( lexem() ) );
         return false;
     }
 

@@ -465,7 +465,7 @@ HTHEME QWindowsXPStylePrivate::createTheme( int theme, HWND hwnd )
 
         if ( ! m_themes[theme] )
         {
-            qErrnoWarning( "OpenThemeData() Failed for theme %d (%s).", theme, csPrintable( themeName( theme ) ) );
+            qErrnoWarning( "OpenThemeData() Failed for theme %d (%s).", theme, lscsPrintable( themeName( theme ) ) );
         }
     }
 
@@ -704,7 +704,7 @@ HBITMAP QWindowsXPStylePrivate::buffer( int w, int h )
     bufferW = w;
     bufferH = h;
 
-#if defined(CS_SHOW_DEBUG_GUI_STYLES)
+#if defined(LSCS_SHOW_DEBUG_GUI_STYLES)
     qDebug( "QWindowsXPStyle::buffer() Creating new dib section, size = (%d, %d)", w, h );
 #endif
 
@@ -1441,7 +1441,7 @@ bool QWindowsXPStylePrivate::drawBackgroundThruNativeBuffer( XPThemeData &themeD
         QPixmap pix = QPixmap::fromImage( img ).copy( rect );
         QPixmapCache::insert( pixmapCacheKey, pix );
 
-#if defined(CS_SHOW_DEBUG_GUI_STYLES)
+#if defined(LSCS_SHOW_DEBUG_GUI_STYLES)
         qDebug( "QWindowsXPStyle::drawBackgroundThruNativeBuffer() Adding pixmap to cache, size = (%d, %d), "
                 "wasAlphaSwapped = %d, wasAlphaFixed = %d", w, h, wasAlphaSwapped, wasAlphaFixed );
 #endif
@@ -3233,11 +3233,11 @@ void QWindowsXPStyle::drawControl( ControlElement element, const QStyleOption *o
 
                     if ( isActive )
                     {
-                        stateId = CS_ACTIVE;
+                        stateId = LSCS_ACTIVE;
                     }
                     else
                     {
-                        stateId = CS_INACTIVE;
+                        stateId = LSCS_INACTIVE;
                     }
 
                     int titleHeight = rect.height() - 2;
@@ -3286,13 +3286,13 @@ void QWindowsXPStyle::drawControl( ControlElement element, const QStyleOption *o
 
                         int result = TST_NONE;
                         QWindowsXPStylePrivate::pGetThemeEnumValue( theme.handle(), WP_SMALLCAPTION,
-                                isActive ? CS_ACTIVE : CS_INACTIVE, TMT_TEXTSHADOWTYPE, &result );
+                                isActive ? LSCS_ACTIVE : LSCS_INACTIVE, TMT_TEXTSHADOWTYPE, &result );
 
                         if ( result != TST_NONE )
                         {
                             COLORREF textShadowRef;
                             QWindowsXPStylePrivate::pGetThemeColor( theme.handle(), WP_SMALLCAPTION,
-                                                                    isActive ? CS_ACTIVE : CS_INACTIVE, TMT_TEXTSHADOWCOLOR, &textShadowRef );
+                                                                    isActive ? LSCS_ACTIVE : LSCS_INACTIVE, TMT_TEXTSHADOWCOLOR, &textShadowRef );
 
                             QColor textShadow = qRgb( GetRValue( textShadowRef ), GetGValue( textShadowRef ), GetBValue( textShadowRef ) );
                             p->setPen( textShadow );
@@ -4190,15 +4190,15 @@ void QWindowsXPStyle::drawComplexControl( ComplexControl cc, const QStyleOptionC
 
                     if ( widget && ! widget->isEnabled() )
                     {
-                        stateId = CS_DISABLED;
+                        stateId = LSCS_DISABLED;
                     }
                     else if ( isActive )
                     {
-                        stateId = CS_ACTIVE;
+                        stateId = LSCS_ACTIVE;
                     }
                     else
                     {
-                        stateId = CS_INACTIVE;
+                        stateId = LSCS_INACTIVE;
                     }
 
                     theme.partId  = partId;
@@ -4208,14 +4208,14 @@ void QWindowsXPStyle::drawComplexControl( ComplexControl cc, const QStyleOptionC
                     QRect ir = proxy()->subControlRect( CC_TitleBar, tb, SC_TitleBarLabel, widget );
 
                     int result = TST_NONE;
-                    QWindowsXPStylePrivate::pGetThemeEnumValue( theme.handle(), WP_CAPTION, isActive ? CS_ACTIVE
-                            : CS_INACTIVE, TMT_TEXTSHADOWTYPE,  &result );
+                    QWindowsXPStylePrivate::pGetThemeEnumValue( theme.handle(), WP_CAPTION, isActive ? LSCS_ACTIVE
+                            : LSCS_INACTIVE, TMT_TEXTSHADOWTYPE,  &result );
 
                     if ( result != TST_NONE )
                     {
                         COLORREF textShadowRef;
-                        QWindowsXPStylePrivate::pGetThemeColor( theme.handle(), WP_CAPTION, isActive ? CS_ACTIVE
-                                                                : CS_INACTIVE, TMT_TEXTSHADOWCOLOR, &textShadowRef );
+                        QWindowsXPStylePrivate::pGetThemeColor( theme.handle(), WP_CAPTION, isActive ? LSCS_ACTIVE
+                                                                : LSCS_INACTIVE, TMT_TEXTSHADOWCOLOR, &textShadowRef );
 
                         QColor textShadow = qRgb( GetRValue( textShadowRef ), GetGValue( textShadowRef ), GetBValue( textShadowRef ) );
                         p->setPen( textShadow );
@@ -5393,12 +5393,12 @@ int QWindowsXPStyle::styleHint( StyleHint hint, const QStyleOption *option, cons
                 if ( titlebar->titleBarState & Qt::WindowMinimized )
                 {
                     themeData = XPThemeData( widget, nullptr, QWindowsXPStylePrivate::WindowTheme,
-                                             WP_MINCAPTION, CS_ACTIVE, titleBarRect );
+                                             WP_MINCAPTION, LSCS_ACTIVE, titleBarRect );
 
                 }
                 else
                     themeData = XPThemeData( widget, nullptr, QWindowsXPStylePrivate::WindowTheme,
-                                             WP_CAPTION, CS_ACTIVE, titleBarRect );
+                                             WP_CAPTION, LSCS_ACTIVE, titleBarRect );
 
                 mask->region = d->region( themeData ) +
                                QRect( 0, tbHeight, option->rect.width(), option->rect.height() - tbHeight );

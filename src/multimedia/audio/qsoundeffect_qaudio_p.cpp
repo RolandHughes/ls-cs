@@ -77,7 +77,7 @@ QUrl QSoundEffectPrivate::source() const
 
 void QSoundEffectPrivate::setSource( const QUrl &url )
 {
-#if defined(CS_SHOW_DEBUG_MULTIMEDIA)
+#if defined(LSCS_SHOW_DEBUG_MULTIMEDIA)
     qDebug() << this << "setSource current=" << m_soundSource->m_url << ", to=" << url;
 #endif
 
@@ -145,7 +145,7 @@ int QSoundEffectPrivate::loopsRemaining() const
 
 void QSoundEffectPrivate::setLoopCount( int loopCount )
 {
-#if defined(CS_SHOW_DEBUG_MULTIMEDIA)
+#if defined(LSCS_SHOW_DEBUG_MULTIMEDIA)
     qDebug() << "setLoopCount " << loopCount;
 #endif
 
@@ -224,7 +224,7 @@ void QSoundEffectPrivate::play()
     m_soundSource->m_offset = 0;
     setLoopsRemaining( m_soundSource->m_loopCount );
 
-#if defined(CS_SHOW_DEBUG_MULTIMEDIA)
+#if defined(LSCS_SHOW_DEBUG_MULTIMEDIA)
     qDebug() << this << "play";
 #endif
 
@@ -250,7 +250,7 @@ void QSoundEffectPrivate::stop()
         return;
     }
 
-#if defined(CS_SHOW_DEBUG_MULTIMEDIA)
+#if defined(LSCS_SHOW_DEBUG_MULTIMEDIA)
     qDebug() << "stop()";
 #endif
 
@@ -266,7 +266,7 @@ void QSoundEffectPrivate::stop()
 
 void QSoundEffectPrivate::setStatus( QSoundEffect::Status status )
 {
-#if defined(CS_SHOW_DEBUG_MULTIMEDIA)
+#if defined(LSCS_SHOW_DEBUG_MULTIMEDIA)
     qDebug() << this << "setStatus" << status;
 #endif
 
@@ -288,7 +288,7 @@ void QSoundEffectPrivate::setStatus( QSoundEffect::Status status )
 
 void QSoundEffectPrivate::setPlaying( bool playing )
 {
-#if defined(CS_SHOW_DEBUG_MULTIMEDIA)
+#if defined(LSCS_SHOW_DEBUG_MULTIMEDIA)
     qDebug() << this << "setPlaying(" << playing << ")";
 #endif
 
@@ -308,7 +308,7 @@ void QSoundEffectPrivate::setLoopsRemaining( int loopsRemaining )
         return;
     }
 
-#if defined(CS_SHOW_DEBUG_MULTIMEDIA)
+#if defined(LSCS_SHOW_DEBUG_MULTIMEDIA)
     qDebug() << this << "setLoopsRemaining " << loopsRemaining;
 #endif
 
@@ -347,7 +347,7 @@ void PrivateSoundSource::sampleReady()
         return;
     }
 
-#if defined(CS_SHOW_DEBUG_MULTIMEDIA)
+#if defined(LSCS_SHOW_DEBUG_MULTIMEDIA)
     qDebug() << this << "sampleReady " << m_playing;
 #endif
 
@@ -392,7 +392,7 @@ void PrivateSoundSource::decoderError()
 
 void PrivateSoundSource::stateChanged( QAudio::State state )
 {
-#if defined(CS_SHOW_DEBUG_MULTIMEDIA)
+#if defined(LSCS_SHOW_DEBUG_MULTIMEDIA)
     qDebug() << this << "stateChanged " << state;
 #endif
 
@@ -423,7 +423,7 @@ qint64 PrivateSoundSource::readData( char *data, qint64 len )
         int    periodsFree = qMin( 3, ( int )( m_audioOutput->bytesFree() / periodSize ) );
         int    dataOffset = 0;
 
-#if defined(CS_SHOW_DEBUG_MULTIMEDIA)
+#if defined(LSCS_SHOW_DEBUG_MULTIMEDIA)
         qDebug() << "bytesFree=" << m_audioOutput->bytesFree() << ", can fit " << periodsFree << " periodSize() chunks";
 #endif
 
@@ -438,7 +438,7 @@ qint64 PrivateSoundSource::readData( char *data, qint64 len )
                 dataOffset += periodSize;
                 bytesWritten += periodSize;
 
-#if defined(CS_SHOW_DEBUG_MULTIMEDIA)
+#if defined(LSCS_SHOW_DEBUG_MULTIMEDIA)
                 qDebug() << "WHOLE PERIOD: bytesWritten=" << bytesWritten << ", offset=" << m_offset
                          << ", filesize=" << sampleSize;
 #endif
@@ -457,7 +457,7 @@ qint64 PrivateSoundSource::readData( char *data, qint64 len )
                     wrapLen = sampleSize;
                 }
 
-#if defined(CS_SHOW_DEBUG_MULTIMEDIA)
+#if defined(LSCS_SHOW_DEBUG_MULTIMEDIA)
                 qDebug() << "END OF SOUND: bytesWritten=" << bytesWritten << ", offset=" << m_offset
                          << ", part1=" << ( sampleSize - m_offset );
 #endif
@@ -478,7 +478,7 @@ qint64 PrivateSoundSource::readData( char *data, qint64 len )
                     dataOffset += wrapLen;
                     bytesWritten += wrapLen;
 
-#if defined(CS_SHOW_DEBUG_MULTIMEDIA)
+#if defined(LSCS_SHOW_DEBUG_MULTIMEDIA)
                     qDebug() << "APPEND START FOR FULL PERIOD: bytesWritten=" << bytesWritten << ", offset=" << m_offset
                              << ", part2=" << wrapLen;
 

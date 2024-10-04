@@ -1680,8 +1680,8 @@ void QGridLayout::addWidget( QWidget *widget, int row, int column, Qt::Alignment
     if ( row < 0 || column < 0 )
     {
         qWarning( "QGridLayout::addWidget() Unable to add %s/%s to %s/%s at row %d column %d",
-                  csPrintable( widget->metaObject()->className() ), csPrintable( widget->objectName() ),
-                  csPrintable( metaObject()->className() ), csPrintable( objectName() ), row, column );
+                  lscsPrintable( widget->metaObject()->className() ), lscsPrintable( widget->objectName() ),
+                  lscsPrintable( metaObject()->className() ), lscsPrintable( objectName() ), row, column );
 
         return;
     }

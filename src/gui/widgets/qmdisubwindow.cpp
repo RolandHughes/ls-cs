@@ -313,17 +313,17 @@ namespace QMdi
 // internal class
 class ControlLabel : public QWidget
 {
-    GUI_CS_OBJECT( ControlLabel )
+    GUI_LSCS_OBJECT( ControlLabel )
 
 public:
     ControlLabel( QMdiSubWindow *subWindow, QWidget *parent = nullptr );
     QSize sizeHint() const override;
 
-    GUI_CS_SIGNAL_1( Public, void _q_clicked() )
-    GUI_CS_SIGNAL_2( _q_clicked )
+    GUI_LSCS_SIGNAL_1( Public, void _q_clicked() )
+    GUI_LSCS_SIGNAL_2( _q_clicked )
 
-    GUI_CS_SIGNAL_1( Public, void _q_doubleClicked() )
-    GUI_CS_SIGNAL_2( _q_doubleClicked )
+    GUI_LSCS_SIGNAL_1( Public, void _q_doubleClicked() )
+    GUI_LSCS_SIGNAL_2( _q_doubleClicked )
 
 protected:
     bool event( QEvent *event ) override;
@@ -438,7 +438,7 @@ namespace QMdi
 
 class ControllerWidget : public QWidget
 {
-    GUI_CS_OBJECT( ControllerWidget )
+    GUI_LSCS_OBJECT( ControllerWidget )
 
 public:
     ControllerWidget( QMdiSubWindow *subWindow, QWidget *parent = nullptr );
@@ -452,14 +452,14 @@ public:
                || ( visibleControls & QStyle::SC_MdiCloseButton );
     }
 
-    GUI_CS_SIGNAL_1( Public, void _q_minimize() )
-    GUI_CS_SIGNAL_2( _q_minimize )
+    GUI_LSCS_SIGNAL_1( Public, void _q_minimize() )
+    GUI_LSCS_SIGNAL_2( _q_minimize )
 
-    GUI_CS_SIGNAL_1( Public, void _q_restore() )
-    GUI_CS_SIGNAL_2( _q_restore )
+    GUI_LSCS_SIGNAL_1( Public, void _q_restore() )
+    GUI_LSCS_SIGNAL_2( _q_restore )
 
-    GUI_CS_SIGNAL_1( Public, void _q_close() )
-    GUI_CS_SIGNAL_2( _q_close )
+    GUI_LSCS_SIGNAL_1( Public, void _q_close() )
+    GUI_LSCS_SIGNAL_2( _q_close )
 
 protected:
     void paintEvent( QPaintEvent *event ) override;

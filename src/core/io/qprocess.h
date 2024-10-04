@@ -44,7 +44,7 @@ class QProcessEnvironment;
 
 class Q_CORE_EXPORT QProcess : public QIODevice
 {
-    CORE_CS_OBJECT( QProcess )
+    CORE_LSCS_OBJECT( QProcess )
 
 public:
     enum ProcessError
@@ -177,32 +177,32 @@ public:
     static QStringList systemEnvironment();
     static QString nullDevice();
 
-    CORE_CS_SLOT_1( Public, void terminate() )
-    CORE_CS_SLOT_2( terminate )
+    CORE_LSCS_SLOT_1( Public, void terminate() )
+    CORE_LSCS_SLOT_2( terminate )
 
-    CORE_CS_SLOT_1( Public, void kill() )
-    CORE_CS_SLOT_2( kill )
+    CORE_LSCS_SLOT_1( Public, void kill() )
+    CORE_LSCS_SLOT_2( kill )
 
-    CORE_CS_SIGNAL_1( Public, void started() )
-    CORE_CS_SIGNAL_2( started )
+    CORE_LSCS_SIGNAL_1( Public, void started() )
+    CORE_LSCS_SIGNAL_2( started )
 
-    CORE_CS_SIGNAL_1( Public, void finished( int exitCode ) )
-    CORE_CS_SIGNAL_OVERLOAD( finished, ( int ), exitCode )
+    CORE_LSCS_SIGNAL_1( Public, void finished( int exitCode ) )
+    CORE_LSCS_SIGNAL_OVERLOAD( finished, ( int ), exitCode )
 
-    CORE_CS_SIGNAL_1( Public, void finished( int exitCode, QProcess::ExitStatus exitStatus ) )
-    CORE_CS_SIGNAL_OVERLOAD( finished, ( int, QProcess::ExitStatus ), exitCode, exitStatus )
+    CORE_LSCS_SIGNAL_1( Public, void finished( int exitCode, QProcess::ExitStatus exitStatus ) )
+    CORE_LSCS_SIGNAL_OVERLOAD( finished, ( int, QProcess::ExitStatus ), exitCode, exitStatus )
 
-    CORE_CS_SIGNAL_1( Public, void errorOccurred( QProcess::ProcessError error ) )
-    CORE_CS_SIGNAL_2( errorOccurred, error )
+    CORE_LSCS_SIGNAL_1( Public, void errorOccurred( QProcess::ProcessError error ) )
+    CORE_LSCS_SIGNAL_2( errorOccurred, error )
 
-    CORE_CS_SIGNAL_1( Public, void stateChanged( QProcess::ProcessState newState ) )
-    CORE_CS_SIGNAL_2( stateChanged, newState )
+    CORE_LSCS_SIGNAL_1( Public, void stateChanged( QProcess::ProcessState newState ) )
+    CORE_LSCS_SIGNAL_2( stateChanged, newState )
 
-    CORE_CS_SIGNAL_1( Public, void readyReadStandardOutput() )
-    CORE_CS_SIGNAL_2( readyReadStandardOutput )
+    CORE_LSCS_SIGNAL_1( Public, void readyReadStandardOutput() )
+    CORE_LSCS_SIGNAL_2( readyReadStandardOutput )
 
-    CORE_CS_SIGNAL_1( Public, void readyReadStandardError() )
-    CORE_CS_SIGNAL_2( readyReadStandardError )
+    CORE_LSCS_SIGNAL_1( Public, void readyReadStandardError() )
+    CORE_LSCS_SIGNAL_2( readyReadStandardError )
 
 protected:
     void setProcessState( ProcessState state );
@@ -215,20 +215,20 @@ protected:
 private:
     Q_DECLARE_PRIVATE( QProcess )
 
-    CORE_CS_SLOT_1( Private, bool _q_canReadStandardOutput() )
-    CORE_CS_SLOT_2( _q_canReadStandardOutput )
+    CORE_LSCS_SLOT_1( Private, bool _q_canReadStandardOutput() )
+    CORE_LSCS_SLOT_2( _q_canReadStandardOutput )
 
-    CORE_CS_SLOT_1( Private, bool _q_canReadStandardError() )
-    CORE_CS_SLOT_2( _q_canReadStandardError )
+    CORE_LSCS_SLOT_1( Private, bool _q_canReadStandardError() )
+    CORE_LSCS_SLOT_2( _q_canReadStandardError )
 
-    CORE_CS_SLOT_1( Private, bool _q_canWrite() )
-    CORE_CS_SLOT_2( _q_canWrite )
+    CORE_LSCS_SLOT_1( Private, bool _q_canWrite() )
+    CORE_LSCS_SLOT_2( _q_canWrite )
 
-    CORE_CS_SLOT_1( Private, bool _q_startupNotification() )
-    CORE_CS_SLOT_2( _q_startupNotification )
+    CORE_LSCS_SLOT_1( Private, bool _q_startupNotification() )
+    CORE_LSCS_SLOT_2( _q_startupNotification )
 
-    CORE_CS_SLOT_1( Private, bool _q_processDied() )
-    CORE_CS_SLOT_2( _q_processDied )
+    CORE_LSCS_SLOT_1( Private, bool _q_processDied() )
+    CORE_LSCS_SLOT_2( _q_processDied )
 
     friend class QProcessManager;
 };

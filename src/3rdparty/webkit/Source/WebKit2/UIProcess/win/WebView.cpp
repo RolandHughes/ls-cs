@@ -291,7 +291,7 @@ bool WebView::registerWebViewWindowClass()
     WNDCLASSEX wcex;
 
     wcex.cbSize = sizeof( WNDCLASSEX );
-    wcex.style          = CS_DBLCLKS;
+    wcex.style          = LSCS_DBLCLKS;
     wcex.lpfnWndProc    = WebView::WebViewWndProc;
     wcex.cbClsExtra     = 0;
     wcex.cbWndExtra     = sizeof( WebView * );
@@ -1451,8 +1451,8 @@ static String imeCompositionArgumentNames( LPARAM lparam )
     APPEND_ARGUMENT_NAME( GCS_RESULTREADCLAUSE );
     APPEND_ARGUMENT_NAME( GCS_RESULTREADSTR );
     APPEND_ARGUMENT_NAME( GCS_RESULTSTR );
-    APPEND_ARGUMENT_NAME( CS_INSERTCHAR );
-    APPEND_ARGUMENT_NAME( CS_NOMOVECARET );
+    APPEND_ARGUMENT_NAME( LSCS_INSERTCHAR );
+    APPEND_ARGUMENT_NAME( LSCS_NOMOVECARET );
 
     return result;
 }

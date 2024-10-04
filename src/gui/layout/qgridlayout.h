@@ -31,13 +31,13 @@ class QGridLayoutPrivate;
 
 class Q_GUI_EXPORT QGridLayout : public QLayout
 {
-    GUI_CS_OBJECT( QGridLayout )
+    GUI_LSCS_OBJECT( QGridLayout )
 
-    GUI_CS_PROPERTY_READ( horizontalSpacing, horizontalSpacing )
-    GUI_CS_PROPERTY_WRITE( horizontalSpacing, setHorizontalSpacing )
+    GUI_LSCS_PROPERTY_READ( horizontalSpacing, horizontalSpacing )
+    GUI_LSCS_PROPERTY_WRITE( horizontalSpacing, setHorizontalSpacing )
 
-    GUI_CS_PROPERTY_READ( verticalSpacing, verticalSpacing )
-    GUI_CS_PROPERTY_WRITE( verticalSpacing, setVerticalSpacing )
+    GUI_LSCS_PROPERTY_READ( verticalSpacing, verticalSpacing )
+    GUI_LSCS_PROPERTY_WRITE( verticalSpacing, setVerticalSpacing )
 
 public:
     explicit QGridLayout( QWidget *parent );

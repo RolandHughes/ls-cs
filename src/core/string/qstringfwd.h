@@ -34,7 +34,7 @@ using QString       = QString8;
 using QLatin1Char   = QChar32;
 using QLatin1String = QString8;
 
-#if defined (CS_DOXYPRESS)
+#if defined (LSCS_DOXYPRESS)
 
 template <typename S>
 class QRegularExpression;

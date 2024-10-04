@@ -42,10 +42,10 @@ class QGraphicsSceneBspTreeIndexPrivate;
 
 class QGraphicsSceneBspTreeIndex : public QGraphicsSceneIndex
 {
-    GUI_CS_OBJECT( QGraphicsSceneBspTreeIndex )
+    GUI_LSCS_OBJECT( QGraphicsSceneBspTreeIndex )
 
-    GUI_CS_PROPERTY_READ( bspTreeDepth, bspTreeDepth )
-    GUI_CS_PROPERTY_WRITE( bspTreeDepth, setBspTreeDepth )
+    GUI_LSCS_PROPERTY_READ( bspTreeDepth, bspTreeDepth )
+    GUI_LSCS_PROPERTY_WRITE( bspTreeDepth, setBspTreeDepth )
 
 public:
     QGraphicsSceneBspTreeIndex( QGraphicsScene *scene = nullptr );
@@ -63,8 +63,8 @@ public:
     void setBspTreeDepth( int depth );
 
 protected:
-    GUI_CS_SLOT_1( Protected, void updateSceneRect( const QRectF &rect ) override )
-    GUI_CS_SLOT_2( updateSceneRect )
+    GUI_LSCS_SLOT_1( Protected, void updateSceneRect( const QRectF &rect ) override )
+    GUI_LSCS_SLOT_2( updateSceneRect )
 
     bool event( QEvent *event ) override;
     void clear() override;
@@ -78,11 +78,11 @@ protected:
 private:
     Q_DECLARE_PRIVATE( QGraphicsSceneBspTreeIndex )
 
-    GUI_CS_SLOT_1( Private, void _q_updateSortCache() )
-    GUI_CS_SLOT_2( _q_updateSortCache )
+    GUI_LSCS_SLOT_1( Private, void _q_updateSortCache() )
+    GUI_LSCS_SLOT_2( _q_updateSortCache )
 
-    GUI_CS_SLOT_1( Private, void _q_updateIndex() )
-    GUI_CS_SLOT_2( _q_updateIndex )
+    GUI_LSCS_SLOT_1( Private, void _q_updateIndex() )
+    GUI_LSCS_SLOT_2( _q_updateIndex )
 
     friend class QGraphicsScene;
     friend class QGraphicsScenePrivate;

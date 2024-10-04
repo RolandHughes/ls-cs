@@ -50,7 +50,7 @@ class QAbstractVideoSurface;
 
 class QVideoSurfaceGstDelegate : public QObject
 {
-    CS_OBJECT( QVideoSurfaceGstDelegate )
+    LSCS_OBJECT( QVideoSurfaceGstDelegate )
 
 public:
     QVideoSurfaceGstDelegate( QAbstractVideoSurface *surface );
@@ -83,20 +83,20 @@ public:
     GstFlowReturn render( GstBuffer *buffer );
 
 private:
-    CS_SLOT_1( Private, void queuedStart() )
-    CS_SLOT_2( queuedStart )
+    LSCS_SLOT_1( Private, void queuedStart() )
+    LSCS_SLOT_2( queuedStart )
 
-    CS_SLOT_1( Private, void queuedStop() )
-    CS_SLOT_2( queuedStop )
+    LSCS_SLOT_1( Private, void queuedStop() )
+    LSCS_SLOT_2( queuedStop )
 
-    CS_SLOT_1( Private, void queuedFlush() )
-    CS_SLOT_2( queuedFlush )
+    LSCS_SLOT_1( Private, void queuedFlush() )
+    LSCS_SLOT_2( queuedFlush )
 
-    CS_SLOT_1( Private, void queuedRender() )
-    CS_SLOT_2( queuedRender )
+    LSCS_SLOT_1( Private, void queuedRender() )
+    LSCS_SLOT_2( queuedRender )
 
-    CS_SLOT_1( Private, void updateSupportedFormats() )
-    CS_SLOT_2( updateSupportedFormats )
+    LSCS_SLOT_1( Private, void updateSupportedFormats() )
+    LSCS_SLOT_2( updateSupportedFormats )
 
     QPointer<QAbstractVideoSurface> m_surface;
     QList<QVideoFrame::PixelFormat> m_supportedPixelFormats;

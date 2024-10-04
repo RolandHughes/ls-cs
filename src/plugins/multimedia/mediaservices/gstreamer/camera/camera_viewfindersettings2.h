@@ -30,7 +30,7 @@ class CameraBinSession;
 
 class CameraBinViewfinderSettings2 : public QCameraViewfinderSettingsControl2
 {
-    CS_OBJECT( CameraBinViewfinderSettings2 )
+    LSCS_OBJECT( CameraBinViewfinderSettings2 )
 
 public:
     CameraBinViewfinderSettings2( CameraBinSession *session );

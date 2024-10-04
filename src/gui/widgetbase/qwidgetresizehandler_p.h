@@ -34,7 +34,7 @@ class QKeyEvent;
 
 class Q_GUI_EXPORT QWidgetResizeHandler : public QObject
 {
-    GUI_CS_OBJECT( QWidgetResizeHandler )
+    GUI_LSCS_OBJECT( QWidgetResizeHandler )
 
 public:
     enum Action
@@ -94,8 +94,8 @@ public:
     void doResize();
     void doMove();
 
-    GUI_CS_SIGNAL_1( Public, void activate() )
-    GUI_CS_SIGNAL_2( activate )
+    GUI_LSCS_SIGNAL_1( Public, void activate() )
+    GUI_LSCS_SIGNAL_2( activate )
 
 protected:
     bool eventFilter( QObject *o, QEvent *e ) override;

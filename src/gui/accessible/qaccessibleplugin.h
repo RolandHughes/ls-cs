@@ -38,7 +38,7 @@ class QAccessiblePluginPrivate;
 
 class Q_GUI_EXPORT QAccessiblePlugin : public QObject
 {
-    GUI_CS_OBJECT( QAccessiblePlugin )
+    GUI_LSCS_OBJECT( QAccessiblePlugin )
 
 public:
     explicit QAccessiblePlugin( QObject *parent = nullptr );

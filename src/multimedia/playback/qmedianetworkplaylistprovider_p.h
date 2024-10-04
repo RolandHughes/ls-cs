@@ -31,7 +31,7 @@ class QMediaNetworkPlaylistProviderPrivate;
 
 class Q_MULTIMEDIA_EXPORT QMediaNetworkPlaylistProvider : public QMediaPlaylistProvider
 {
-    MULTI_CS_OBJECT( QMediaNetworkPlaylistProvider )
+    MULTI_LSCS_OBJECT( QMediaNetworkPlaylistProvider )
 
 public:
     QMediaNetworkPlaylistProvider( QObject *parent = nullptr );
@@ -56,17 +56,17 @@ public:
     bool removeMedia( int start, int end ) override;
     bool clear() override;
 
-    MULTI_CS_SLOT_1( Public, void shuffle() override )
-    MULTI_CS_SLOT_2( shuffle )
+    MULTI_LSCS_SLOT_1( Public, void shuffle() override )
+    MULTI_LSCS_SLOT_2( shuffle )
 
 private:
     Q_DECLARE_PRIVATE( QMediaNetworkPlaylistProvider )
 
-    MULTI_CS_SLOT_1( Private, void _q_handleParserError( QPlaylistFileParser::ParserError error, const QString &errorMsg ) )
-    MULTI_CS_SLOT_2( _q_handleParserError )
+    MULTI_LSCS_SLOT_1( Private, void _q_handleParserError( QPlaylistFileParser::ParserError error, const QString &errorMsg ) )
+    MULTI_LSCS_SLOT_2( _q_handleParserError )
 
-    MULTI_CS_SLOT_1( Private, void _q_handleNewItem( const QVariant &content ) )
-    MULTI_CS_SLOT_2( _q_handleNewItem )
+    MULTI_LSCS_SLOT_1( Private, void _q_handleNewItem( const QVariant &content ) )
+    MULTI_LSCS_SLOT_2( _q_handleNewItem )
 };
 
 #endif

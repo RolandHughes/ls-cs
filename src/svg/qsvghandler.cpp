@@ -3743,7 +3743,7 @@ static QSvgNode *createImageNode( QSvgNode *parent, const QXmlStreamAttributes &
         else
         {
 
-#if defined(CS_SHOW_DEBUG_SVG)
+#if defined(LSCS_SHOW_DEBUG_SVG)
             qDebug() << "QSvgHandler::createImageNode: Unrecognized inline image format!";
 #endif
         }
@@ -3756,7 +3756,7 @@ static QSvgNode *createImageNode( QSvgNode *parent, const QXmlStreamAttributes &
 
     if ( image.isNull() )
     {
-#if defined(CS_SHOW_DEBUG_SVG)
+#if defined(LSCS_SHOW_DEBUG_SVG)
         qDebug() << "Unable to create image from " << filename;
 #endif
 
@@ -4472,7 +4472,7 @@ static QSvgNode *createUseNode( QSvgNode *parent, const QXmlStreamAttributes &at
         {
             if ( parent->isDescendantOf( link ) )
             {
-                qWarning( "link #%s is recursive!", csPrintable( linkId ) );
+                qWarning( "link #%s is recursive!", lscsPrintable( linkId ) );
             }
 
             QPointF pt;
@@ -4496,7 +4496,7 @@ static QSvgNode *createUseNode( QSvgNode *parent, const QXmlStreamAttributes &at
         }
     }
 
-    qWarning( "Link %s has not been detected", csPrintable( linkId ) );
+    qWarning( "Link %s has not been detected", lscsPrintable( linkId ) );
     return nullptr;
 }
 
@@ -5176,7 +5176,7 @@ bool QSvgHandler::startElement( const QString &localName, const QXmlStreamAttrib
 
         if ( !method( m_nodes.top(), attributes, this ) )
         {
-            qWarning( "Problem parsing %s", csPrintable( localName ) );
+            qWarning( "Problem parsing %s", lscsPrintable( localName ) );
         }
 
     }
@@ -5192,7 +5192,7 @@ bool QSvgHandler::startElement( const QString &localName, const QXmlStreamAttrib
         }
         else
         {
-            qWarning( "Could not parse node: %s", csPrintable( localName ) );
+            qWarning( "Could not parse node: %s", lscsPrintable( localName ) );
         }
 
     }
@@ -5202,7 +5202,7 @@ bool QSvgHandler::startElement( const QString &localName, const QXmlStreamAttrib
         {
             if ( !method( m_style, attributes, this ) )
             {
-                qWarning( "Problem parsing %s", csPrintable( localName ) );
+                qWarning( "Problem parsing %s", lscsPrintable( localName ) );
             }
         }
 
@@ -5289,7 +5289,7 @@ void QSvgHandler::resolveGradients( QSvgNode *node )
             }
             else
             {
-                qWarning( "Could not resolve property : %s", csPrintable( id ) );
+                qWarning( "Could not resolve property : %s", lscsPrintable( id ) );
                 fill->setBrush( Qt::NoBrush );
             }
         }
@@ -5307,7 +5307,7 @@ void QSvgHandler::resolveGradients( QSvgNode *node )
             }
             else
             {
-                qWarning( "Could not resolve property : %s", csPrintable( id ) );
+                qWarning( "Could not resolve property : %s", lscsPrintable( id ) );
                 stroke->setStroke( Qt::NoBrush );
             }
         }

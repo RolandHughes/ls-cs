@@ -31,7 +31,7 @@ class QMediaPlayerResourceSetInterface;
 
 class QGStreamerAvailabilityControl : public QMediaAvailabilityControl
 {
-    CS_OBJECT( QGStreamerAvailabilityControl )
+    LSCS_OBJECT( QGStreamerAvailabilityControl )
 
 public:
     QGStreamerAvailabilityControl( QMediaPlayerResourceSetInterface *resources, QObject *parent = nullptr );
@@ -40,8 +40,8 @@ public:
 private:
     QMediaPlayerResourceSetInterface *m_resources;
 
-    CS_SLOT_1( Private, void handleAvailabilityChanged() )
-    CS_SLOT_2( handleAvailabilityChanged )
+    LSCS_SLOT_1( Private, void handleAvailabilityChanged() )
+    LSCS_SLOT_2( handleAvailabilityChanged )
 };
 
 #endif

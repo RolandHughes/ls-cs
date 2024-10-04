@@ -46,23 +46,23 @@
 
 class QHostInfoResult : public QObject
 {
-    NET_CS_OBJECT( QHostInfoResult )
+    NET_LSCS_OBJECT( QHostInfoResult )
 
 public :
-    NET_CS_SLOT_1( Public, void emitResultsReady( const QHostInfo &info )
+    NET_LSCS_SLOT_1( Public, void emitResultsReady( const QHostInfo &info )
     {
         emit resultsReady( info );
     } )
-    NET_CS_SLOT_2( emitResultsReady )
+    NET_LSCS_SLOT_2( emitResultsReady )
 
-    NET_CS_SIGNAL_1( Public, void resultsReady( const QHostInfo &info ) )
-    NET_CS_SIGNAL_2( resultsReady, info )
+    NET_LSCS_SIGNAL_1( Public, void resultsReady( const QHostInfo &info ) )
+    NET_LSCS_SIGNAL_2( resultsReady, info )
 };
 
 // needs to be QObject because fromName calls tr()
 class QHostInfoAgent : public QObject
 {
-    NET_CS_OBJECT( QHostInfoAgent )
+    NET_LSCS_OBJECT( QHostInfoAgent )
 
 public:
     static QHostInfo fromName( const QString &hostName );
@@ -142,7 +142,7 @@ public:
 
 class QAbstractHostInfoLookupManager : public QObject
 {
-    NET_CS_OBJECT( QAbstractHostInfoLookupManager )
+    NET_LSCS_OBJECT( QAbstractHostInfoLookupManager )
 
 public:
     ~QAbstractHostInfoLookupManager() {}
@@ -159,7 +159,7 @@ protected:
 
 class QHostInfoLookupManager : public QAbstractHostInfoLookupManager
 {
-    NET_CS_OBJECT( QHostInfoLookupManager )
+    NET_LSCS_OBJECT( QHostInfoLookupManager )
 
 public:
     QHostInfoLookupManager();
@@ -192,11 +192,11 @@ protected:
     bool wasDeleted;
 
 private:
-    NET_CS_SLOT_1( Private, void waitForThreadPoolDone()
+    NET_LSCS_SLOT_1( Private, void waitForThreadPoolDone()
     {
         threadPool.waitForDone();
     }  )
-    NET_CS_SLOT_2( waitForThreadPoolDone )
+    NET_LSCS_SLOT_2( waitForThreadPoolDone )
 };
 
 #endif

@@ -32,19 +32,19 @@ class QDialogButtonBoxPrivate;
 
 class Q_GUI_EXPORT QDialogButtonBox : public QWidget
 {
-    GUI_CS_OBJECT( QDialogButtonBox )
+    GUI_LSCS_OBJECT( QDialogButtonBox )
 
-    GUI_CS_ENUM( StandardButton )
-    GUI_CS_FLAG( StandardButton, StandardButtons )
+    GUI_LSCS_ENUM( StandardButton )
+    GUI_LSCS_FLAG( StandardButton, StandardButtons )
 
-    GUI_CS_PROPERTY_READ( orientation, orientation )
-    GUI_CS_PROPERTY_WRITE( orientation, setOrientation )
+    GUI_LSCS_PROPERTY_READ( orientation, orientation )
+    GUI_LSCS_PROPERTY_WRITE( orientation, setOrientation )
 
-    GUI_CS_PROPERTY_READ( standardButtons, standardButtons )
-    GUI_CS_PROPERTY_WRITE( standardButtons, setStandardButtons )
+    GUI_LSCS_PROPERTY_READ( standardButtons, standardButtons )
+    GUI_LSCS_PROPERTY_WRITE( standardButtons, setStandardButtons )
 
-    GUI_CS_PROPERTY_READ( centerButtons, centerButtons )
-    GUI_CS_PROPERTY_WRITE( centerButtons, setCenterButtons )
+    GUI_LSCS_PROPERTY_READ( centerButtons, centerButtons )
+    GUI_LSCS_PROPERTY_WRITE( centerButtons, setCenterButtons )
 
 public:
     enum ButtonRole
@@ -64,7 +64,7 @@ public:
         NRoles
     };
 
-    GUI_CS_REGISTER_ENUM(
+    GUI_LSCS_REGISTER_ENUM(
         enum StandardButton
     {
         // keep this in sync with QMessageBox::StandardButton
@@ -135,17 +135,17 @@ public:
     void setCenterButtons( bool center );
     bool centerButtons() const;
 
-    GUI_CS_SIGNAL_1( Public, void clicked( QAbstractButton *button ) )
-    GUI_CS_SIGNAL_2( clicked, button )
+    GUI_LSCS_SIGNAL_1( Public, void clicked( QAbstractButton *button ) )
+    GUI_LSCS_SIGNAL_2( clicked, button )
 
-    GUI_CS_SIGNAL_1( Public, void accepted() )
-    GUI_CS_SIGNAL_2( accepted )
+    GUI_LSCS_SIGNAL_1( Public, void accepted() )
+    GUI_LSCS_SIGNAL_2( accepted )
 
-    GUI_CS_SIGNAL_1( Public, void helpRequested() )
-    GUI_CS_SIGNAL_2( helpRequested )
+    GUI_LSCS_SIGNAL_1( Public, void helpRequested() )
+    GUI_LSCS_SIGNAL_2( helpRequested )
 
-    GUI_CS_SIGNAL_1( Public, void rejected() )
-    GUI_CS_SIGNAL_2( rejected )
+    GUI_LSCS_SIGNAL_1( Public, void rejected() )
+    GUI_LSCS_SIGNAL_2( rejected )
 
 protected:
     void changeEvent( QEvent *event ) override;
@@ -154,11 +154,11 @@ protected:
 private:
     Q_DECLARE_PRIVATE( QDialogButtonBox )
 
-    GUI_CS_SLOT_1( Private, void _q_handleButtonClicked() )
-    GUI_CS_SLOT_2( _q_handleButtonClicked )
+    GUI_LSCS_SLOT_1( Private, void _q_handleButtonClicked() )
+    GUI_LSCS_SLOT_2( _q_handleButtonClicked )
 
-    GUI_CS_SLOT_1( Private, void _q_handleButtonDestroyed() )
-    GUI_CS_SLOT_2( _q_handleButtonDestroyed )
+    GUI_LSCS_SLOT_1( Private, void _q_handleButtonDestroyed() )
+    GUI_LSCS_SLOT_2( _q_handleButtonDestroyed )
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS( QDialogButtonBox::StandardButtons )

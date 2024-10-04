@@ -34,7 +34,7 @@ class QPrinter;
 
 class QCupsJobWidget : public QWidget
 {
-    GUI_CS_OBJECT( QCupsJobWidget )
+    GUI_LSCS_OBJECT( QCupsJobWidget )
 
 public:
     explicit QCupsJobWidget( QWidget *parent = nullptr );
@@ -72,8 +72,8 @@ private:
     QPrinter *m_printer;
     Ui::QCupsJobWidget m_ui;
 
-    GUI_CS_SLOT_1( Private, void toggleJobHoldTime() )
-    GUI_CS_SLOT_2( toggleJobHoldTime )
+    GUI_LSCS_SLOT_1( Private, void toggleJobHoldTime() )
+    GUI_LSCS_SLOT_2( toggleJobHoldTime )
 };
 
 #endif // QT_NO_PRINTER / QT_NO_CUPS

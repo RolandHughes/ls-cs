@@ -68,7 +68,7 @@ public:
     void beginOutline( Qt::FillRule fillRule )
     {
 
-#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+#if defined(LSCS_SHOW_DEBUG_GUI_PAINTING)
         qDebug( "QOutlineMapper::beginOutline() rule = %d", fillRule );
 #endif
 
@@ -94,7 +94,7 @@ public:
     void moveTo( const QPointF &pt )
     {
 
-#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+#if defined(LSCS_SHOW_DEBUG_GUI_PAINTING)
         qDebug( "QOutlineMapper::moveTo() pointf = (%f, %f)", pt.x(), pt.y() );
 #endif
 
@@ -107,7 +107,7 @@ public:
     void lineTo( const QPointF &pt )
     {
 
-#if defined(CS_SHOW_DEBUG_GUI_PAINTING)
+#if defined(LSCS_SHOW_DEBUG_GUI_PAINTING)
         qDebug( "QOutlineMapper::lineTo() pointf = (%f, %f)", pt.x(), pt.y() );
 #endif
 

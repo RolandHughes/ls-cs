@@ -33,7 +33,7 @@
 
 class QXcbMime : public QInternalMimeData
 {
-    CS_OBJECT( QXcbMime )
+    LSCS_OBJECT( QXcbMime )
 
 public:
     QXcbMime();

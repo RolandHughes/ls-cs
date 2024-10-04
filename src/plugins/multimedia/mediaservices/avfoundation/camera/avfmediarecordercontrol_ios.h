@@ -41,7 +41,7 @@ class QUrl;
 
 class AVFMediaRecorderControlIOS : public QMediaRecorderControl
 {
-    CS_OBJECT( AVFMediaRecorderControlIOS )
+    LSCS_OBJECT( AVFMediaRecorderControlIOS )
 
 public:
     AVFMediaRecorderControlIOS( AVFCameraService *service, QObject *parent = nullptr );
@@ -61,14 +61,14 @@ public:
     void applySettings() override;
     void unapplySettings();
 
-    CS_SLOT_1( Public, void setState( QMediaRecorder::State state )override )
-    CS_SLOT_2( setState )
+    LSCS_SLOT_1( Public, void setState( QMediaRecorder::State state )override )
+    LSCS_SLOT_2( setState )
 
-    CS_SLOT_1( Public, void setMuted( bool muted )override )
-    CS_SLOT_2( setMuted )
+    LSCS_SLOT_1( Public, void setMuted( bool muted )override )
+    LSCS_SLOT_2( setMuted )
 
-    CS_SLOT_1( Public, void setVolume( qreal volume )override )
-    CS_SLOT_2( setVolume )
+    LSCS_SLOT_1( Public, void setVolume( qreal volume )override )
+    LSCS_SLOT_2( setVolume )
 
 private:
     void stopWriter();
@@ -89,11 +89,11 @@ private:
     Q_INVOKABLE void assetWriterStarted();
     Q_INVOKABLE void assetWriterFinished();
 
-    CS_SLOT_1( Private, void captureModeChanged( QCamera::CaptureModes newMode ) )
-    CS_SLOT_2( captureModeChanged )
+    LSCS_SLOT_1( Private, void captureModeChanged( QCamera::CaptureModes newMode ) )
+    LSCS_SLOT_2( captureModeChanged )
 
-    CS_SLOT_1( Private, void cameraStatusChanged( QCamera::Status newStatus ) )
-    CS_SLOT_2( cameraStatusChanged )
+    LSCS_SLOT_1( Private, void cameraStatusChanged( QCamera::Status newStatus ) )
+    LSCS_SLOT_2( cameraStatusChanged )
 };
 
 #endif

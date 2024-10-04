@@ -43,7 +43,7 @@ class QScriptEngineDebuggerPrivate;
 
 class Q_SCRIPTTOOLS_EXPORT QScriptEngineDebugger : public QObject
 {
-    SCRIPT_T_CS_OBJECT( QScriptEngineDebugger )
+    SCRIPT_T_LSCS_OBJECT( QScriptEngineDebugger )
 
 public:
     enum DebuggerWidget
@@ -104,18 +104,18 @@ public:
 
     DebuggerState state() const;
 
-    CS_SIGNAL_1( Public, void evaluationSuspended() )
-    CS_SIGNAL_2( evaluationSuspended )
+    LSCS_SIGNAL_1( Public, void evaluationSuspended() )
+    LSCS_SIGNAL_2( evaluationSuspended )
 
-    CS_SIGNAL_1( Public, void evaluationResumed() )
-    CS_SIGNAL_2( evaluationResumed )
+    LSCS_SIGNAL_1( Public, void evaluationResumed() )
+    LSCS_SIGNAL_2( evaluationResumed )
 
 private:
     Q_DECLARE_PRIVATE( QScriptEngineDebugger )
     Q_DISABLE_COPY( QScriptEngineDebugger )
 
-    CS_SLOT_1( Private, void _q_showStandardWindow() )
-    CS_SLOT_2( _q_showStandardWindow )
+    LSCS_SLOT_1( Private, void _q_showStandardWindow() )
+    LSCS_SLOT_2( _q_showStandardWindow )
 };
 
 QT_END_NAMESPACE

@@ -673,7 +673,7 @@ bool RCCResourceLibrary::addFile( const QString &alias, const RCCFileInfo &file 
     {
         for ( const QString &fileName : m_fileNames )
         {
-            qWarning( "%s: Warning: potential duplicate alias detected: '%s'", csPrintable( fileName ), csPrintable( filename ) );
+            qWarning( "%s: Warning: potential duplicate alias detected: '%s'", lscsPrintable( fileName ), lscsPrintable( filename ) );
         }
     }
 

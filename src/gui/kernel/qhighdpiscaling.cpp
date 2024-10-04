@@ -49,7 +49,7 @@ static inline qreal initialGlobalScaleFactor()
         if ( ok && f > 0 )
         {
 
-#if defined(CS_SHOW_DEBUG_GUI_DPI)
+#if defined(LSCS_SHOW_DEBUG_GUI_DPI)
             qDebug() << "QHighDpiScaling initialGlobalScaleFactor() Factor =" << scaleFactorEnvVar << f;
 #endif
 

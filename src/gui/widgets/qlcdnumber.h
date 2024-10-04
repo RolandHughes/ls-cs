@@ -33,31 +33,31 @@ class QLCDNumberPrivate;
 // LCD number widget
 class Q_GUI_EXPORT QLCDNumber : public QFrame
 {
-    GUI_CS_OBJECT( QLCDNumber )
+    GUI_LSCS_OBJECT( QLCDNumber )
 
-    GUI_CS_ENUM( Mode )
-    GUI_CS_ENUM( SegmentStyle )
+    GUI_LSCS_ENUM( Mode )
+    GUI_LSCS_ENUM( SegmentStyle )
 
-    GUI_CS_PROPERTY_READ( smallDecimalPoint, smallDecimalPoint )
-    GUI_CS_PROPERTY_WRITE( smallDecimalPoint, setSmallDecimalPoint )
+    GUI_LSCS_PROPERTY_READ( smallDecimalPoint, smallDecimalPoint )
+    GUI_LSCS_PROPERTY_WRITE( smallDecimalPoint, setSmallDecimalPoint )
 
-    GUI_CS_PROPERTY_READ( digitCount, digitCount )
-    GUI_CS_PROPERTY_WRITE( digitCount, setDigitCount )
+    GUI_LSCS_PROPERTY_READ( digitCount, digitCount )
+    GUI_LSCS_PROPERTY_WRITE( digitCount, setDigitCount )
 
-    GUI_CS_PROPERTY_READ( mode, mode )
-    GUI_CS_PROPERTY_WRITE( mode, setMode )
+    GUI_LSCS_PROPERTY_READ( mode, mode )
+    GUI_LSCS_PROPERTY_WRITE( mode, setMode )
 
-    GUI_CS_PROPERTY_READ( segmentStyle, segmentStyle )
-    GUI_CS_PROPERTY_WRITE( segmentStyle, setSegmentStyle )
+    GUI_LSCS_PROPERTY_READ( segmentStyle, segmentStyle )
+    GUI_LSCS_PROPERTY_WRITE( segmentStyle, setSegmentStyle )
 
-    GUI_CS_PROPERTY_READ( value, value )
-    GUI_CS_PROPERTY_WRITE( value, cs_displayD )
+    GUI_LSCS_PROPERTY_READ( value, value )
+    GUI_LSCS_PROPERTY_WRITE( value, cs_displayD )
 
-    GUI_CS_PROPERTY_READ( intValue, intValue )
-    GUI_CS_PROPERTY_WRITE( intValue, cs_displayI )
+    GUI_LSCS_PROPERTY_READ( intValue, intValue )
+    GUI_LSCS_PROPERTY_WRITE( intValue, cs_displayI )
 
 public:
-    GUI_CS_REGISTER_ENUM(
+    GUI_LSCS_REGISTER_ENUM(
         enum Mode
     {
         Hex,
@@ -67,7 +67,7 @@ public:
     };
     )
 
-    GUI_CS_REGISTER_ENUM(
+    GUI_LSCS_REGISTER_ENUM(
         enum SegmentStyle
     {
         Outline,
@@ -108,32 +108,32 @@ public:
     // wrapper for overloaded method
     inline void cs_displayI( int num );
 
-    GUI_CS_SLOT_1( Public, void display( const QString &str ) )
-    GUI_CS_SLOT_OVERLOAD( display, ( const QString & ) )
+    GUI_LSCS_SLOT_1( Public, void display( const QString &str ) )
+    GUI_LSCS_SLOT_OVERLOAD( display, ( const QString & ) )
 
-    GUI_CS_SLOT_1( Public, void display( int num ) )
-    GUI_CS_SLOT_OVERLOAD( display, ( int ) )
+    GUI_LSCS_SLOT_1( Public, void display( int num ) )
+    GUI_LSCS_SLOT_OVERLOAD( display, ( int ) )
 
-    GUI_CS_SLOT_1( Public, void display( double num ) )
-    GUI_CS_SLOT_OVERLOAD( display, ( double ) )
+    GUI_LSCS_SLOT_1( Public, void display( double num ) )
+    GUI_LSCS_SLOT_OVERLOAD( display, ( double ) )
 
-    GUI_CS_SLOT_1( Public, void setHexMode() )
-    GUI_CS_SLOT_2( setHexMode )
+    GUI_LSCS_SLOT_1( Public, void setHexMode() )
+    GUI_LSCS_SLOT_2( setHexMode )
 
-    GUI_CS_SLOT_1( Public, void setDecMode() )
-    GUI_CS_SLOT_2( setDecMode )
+    GUI_LSCS_SLOT_1( Public, void setDecMode() )
+    GUI_LSCS_SLOT_2( setDecMode )
 
-    GUI_CS_SLOT_1( Public, void setOctMode() )
-    GUI_CS_SLOT_2( setOctMode )
+    GUI_LSCS_SLOT_1( Public, void setOctMode() )
+    GUI_LSCS_SLOT_2( setOctMode )
 
-    GUI_CS_SLOT_1( Public, void setBinMode() )
-    GUI_CS_SLOT_2( setBinMode )
+    GUI_LSCS_SLOT_1( Public, void setBinMode() )
+    GUI_LSCS_SLOT_2( setBinMode )
 
-    GUI_CS_SLOT_1( Public, void setSmallDecimalPoint( bool smallDecimalPoint ) )
-    GUI_CS_SLOT_2( setSmallDecimalPoint )
+    GUI_LSCS_SLOT_1( Public, void setSmallDecimalPoint( bool smallDecimalPoint ) )
+    GUI_LSCS_SLOT_2( setSmallDecimalPoint )
 
-    GUI_CS_SIGNAL_1( Public, void overflow() )
-    GUI_CS_SIGNAL_2( overflow )
+    GUI_LSCS_SIGNAL_1( Public, void overflow() )
+    GUI_LSCS_SIGNAL_2( overflow )
 
 protected:
     bool event( QEvent *event ) override;

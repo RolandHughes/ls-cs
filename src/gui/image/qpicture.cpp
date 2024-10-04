@@ -160,7 +160,7 @@ bool QPicture::load( QIODevice *dev, const QString &format )
 
 #endif
 
-        qWarning( "QPicture::load() No picture format with the name %s", csPrintable( format ) );
+        qWarning( "QPicture::load() No picture format with the name %s", lscsPrintable( format ) );
         operator=( QPicture() );
         return false;
     }
@@ -200,7 +200,7 @@ bool QPicture::save( const QString &fileName, const QString &format )
 #endif
 
         {
-            qWarning( "QPicture::save() Picture format was not found, %s", csPrintable( format ) );
+            qWarning( "QPicture::save() Picture format was not found, %s", lscsPrintable( format ) );
         }
 
         return result;
@@ -244,7 +244,7 @@ bool QPicture::save( QIODevice *dev, const QString &format )
 #endif
 
         {
-            qWarning( "QPicture::save() Picture format was not found, %s", csPrintable( format ) );
+            qWarning( "QPicture::save() Picture format was not found, %s", lscsPrintable( format ) );
         }
         return result;
     }
@@ -372,7 +372,7 @@ bool QPicture::exec( QPainter *painter, QDataStream &s, int nrecords )
 {
     Q_D( QPicture );
 
-#if defined(CS_SHOW_DEBUG_GUI_IMAGE)
+#if defined(LSCS_SHOW_DEBUG_GUI_IMAGE)
     int        strm_pos;
 #endif
 
@@ -420,7 +420,7 @@ bool QPicture::exec( QPainter *painter, QDataStream &s, int nrecords )
             len = tiny_len;
         }
 
-#if defined(CS_SHOW_DEBUG_GUI_IMAGE)
+#if defined(LSCS_SHOW_DEBUG_GUI_IMAGE)
         strm_pos = s.device()->pos();
 #endif
 
@@ -988,7 +988,7 @@ bool QPicture::exec( QPainter *painter, QDataStream &s, int nrecords )
 
         }
 
-#if defined(CS_SHOW_DEBUG_GUI_IMAGE)
+#if defined(LSCS_SHOW_DEBUG_GUI_IMAGE)
         qDebug( "device->at(): %i, strm_pos: %i len: %i", ( int )s.device()->pos(), strm_pos, len );
         Q_ASSERT( qint32( s.device()->pos() - strm_pos ) == len );
 #endif
@@ -1739,7 +1739,7 @@ bool QPictureIO::write()
 
     if ( ! h || ! h->write_picture )
     {
-        qWarning( "QPictureIO::write() No picture format handler for %s", csPrintable( format() ) );
+        qWarning( "QPictureIO::write() No picture format handler for %s", lscsPrintable( format() ) );
         return false;
     }
 

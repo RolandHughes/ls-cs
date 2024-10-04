@@ -33,7 +33,7 @@
 
 class ParserBase : public QObject
 {
-    MULTI_CS_OBJECT( ParserBase )
+    MULTI_LSCS_OBJECT( ParserBase )
 
 public:
     ParserBase( QObject *parent )
@@ -43,14 +43,14 @@ public:
 
     virtual void parseLine( int lineIndex, const QString &line, const QUrl &root ) = 0;
 
-    MULTI_CS_SIGNAL_1( Public, void newItem( const QVariant &content ) )
-    MULTI_CS_SIGNAL_2( newItem, content )
+    MULTI_LSCS_SIGNAL_1( Public, void newItem( const QVariant &content ) )
+    MULTI_LSCS_SIGNAL_2( newItem, content )
 
-    MULTI_CS_SIGNAL_1( Public, void finished() )
-    MULTI_CS_SIGNAL_2( finished )
+    MULTI_LSCS_SIGNAL_1( Public, void finished() )
+    MULTI_LSCS_SIGNAL_2( finished )
 
-    MULTI_CS_SIGNAL_1( Public, void error( QPlaylistFileParser::ParserError err, const QString &errorMsg ) )
-    MULTI_CS_SIGNAL_2( error, err, errorMsg )
+    MULTI_LSCS_SIGNAL_1( Public, void error( QPlaylistFileParser::ParserError err, const QString &errorMsg ) )
+    MULTI_LSCS_SIGNAL_2( error, err, errorMsg )
 
 protected:
     QUrl expandToFullPath( const QUrl &root, const QString &line )
@@ -243,7 +243,7 @@ Version=2
 
 class PLSParser : public ParserBase
 {
-    MULTI_CS_OBJECT( PLSParser )
+    MULTI_LSCS_OBJECT( PLSParser )
 
 public:
     PLSParser( QObject *parent )

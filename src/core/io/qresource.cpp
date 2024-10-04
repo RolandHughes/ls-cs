@@ -266,7 +266,7 @@ bool QResourcePrivate::load( const QString &file )
             }
             else if ( res->isContainer( node ) != container )
             {
-                qWarning( "QResourceInfo::load() Resource %s has both data and child resources", csPrintable( file ) );
+                qWarning( "QResourceInfo::load() Resource %s has both data and child resources", lscsPrintable( file ) );
 
             }
 
@@ -516,7 +516,7 @@ void QResource::addSearchPath( const QString &path )
 {
     if ( ! path.startsWith( QChar( '/' ) ) )
     {
-        qWarning( "QResource::addResourceSearchPath() Search path %s must be absolute", csPrintable( path ) );
+        qWarning( "QResource::addResourceSearchPath() Search path %s must be absolute", lscsPrintable( path ) );
         return;
     }
 
@@ -1151,7 +1151,7 @@ bool QResource::registerResource( const QString &rccFilename, const QString &res
     if ( ! r.isEmpty() && r[0] != '/' )
     {
         qWarning( "QDir::registerResource() Registering resource %s requires an absolute path start with '/', current root is %s",
-                  csPrintable( rccFilename ), csPrintable( resourceRoot ) );
+                  lscsPrintable( rccFilename ), lscsPrintable( resourceRoot ) );
 
         return false;
     }
@@ -1211,7 +1211,7 @@ bool QResource::registerResource( const uchar *rccData, const QString &resourceR
     if ( ! r.isEmpty() && r[0] != QLatin1Char( '/' ) )
     {
         qWarning( "QDir::registerResource() Registering resource %s requires an absolute path start with '/', current root is %s",
-                  rccData, csPrintable( resourceRoot ) );
+                  rccData, lscsPrintable( resourceRoot ) );
         return false;
     }
 

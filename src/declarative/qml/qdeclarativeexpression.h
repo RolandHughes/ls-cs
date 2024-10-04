@@ -40,7 +40,7 @@ class QScriptValue;
 
 class Q_DECLARATIVE_EXPORT QDeclarativeExpression : public QObject
 {
-    DECL_CS_OBJECT( QDeclarativeExpression )
+    DECL_LSCS_OBJECT( QDeclarativeExpression )
 
 public:
     QDeclarativeExpression();
@@ -68,8 +68,8 @@ public:
 
     QVariant evaluate( bool *valueIsUndefined = 0 );
 
-    DECL_CS_SIGNAL_1( Public, void valueChanged() )
-    DECL_CS_SIGNAL_2( valueChanged )
+    DECL_LSCS_SIGNAL_1( Public, void valueChanged() )
+    DECL_LSCS_SIGNAL_2( valueChanged )
 
 protected:
     QDeclarativeExpression( QDeclarativeContextData *, QObject *, const QString &, QDeclarativeExpressionPrivate &dd );
@@ -84,8 +84,8 @@ private:
     Q_DISABLE_COPY( QDeclarativeExpression )
     Q_DECLARE_PRIVATE( QDeclarativeExpression )
 
-    DECL_CS_SLOT_1( Private, void _q_notify() )
-    DECL_CS_SLOT_2( _q_notify )
+    DECL_LSCS_SLOT_1( Private, void _q_notify() )
+    DECL_LSCS_SLOT_2( _q_notify )
 
     friend class QDeclarativeDebugger;
     friend class QDeclarativeContext;

@@ -65,7 +65,7 @@ using HttpMessagePair = QPair<QHttpNetworkRequest, QHttpNetworkReply *>;
 
 class QHttpNetworkConnection : public QObject
 {
-    NET_CS_OBJECT( QHttpNetworkConnection )
+    NET_LSCS_OBJECT( QHttpNetworkConnection )
 
 public:
     enum ConnectionType
@@ -145,14 +145,14 @@ private:
     friend class QHttpProtocolHandler;
     friend class QSpdyProtocolHandler;
 
-    NET_CS_SLOT_1( Private, void _q_startNextRequest() )
-    NET_CS_SLOT_2( _q_startNextRequest )
+    NET_LSCS_SLOT_1( Private, void _q_startNextRequest() )
+    NET_LSCS_SLOT_2( _q_startNextRequest )
 
-    NET_CS_SLOT_1( Private, void _q_hostLookupFinished( const QHostInfo & ) )
-    NET_CS_SLOT_2( _q_hostLookupFinished )
+    NET_LSCS_SLOT_1( Private, void _q_hostLookupFinished( const QHostInfo & ) )
+    NET_LSCS_SLOT_2( _q_hostLookupFinished )
 
-    NET_CS_SLOT_1( Private, void _q_connectDelayedChannel() )
-    NET_CS_SLOT_2( _q_connectDelayedChannel )
+    NET_LSCS_SLOT_1( Private, void _q_connectDelayedChannel() )
+    NET_LSCS_SLOT_2( _q_connectDelayedChannel )
 };
 
 class QHttpNetworkConnectionPrivate

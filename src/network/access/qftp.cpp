@@ -47,7 +47,7 @@ class QFtpPI;
 */
 class QFtpDTP : public QObject
 {
-    NET_CS_OBJECT( QFtpDTP )
+    NET_LSCS_OBJECT( QFtpDTP )
 
 public:
     enum ConnectState
@@ -83,39 +83,39 @@ public:
 
     static bool parseDir( const QByteArray &buffer, const QString &userName, QUrlInfo *info );
 
-    NET_CS_SIGNAL_1( Public, void listInfo( const QUrlInfo &urlInfo ) )
-    NET_CS_SIGNAL_2( listInfo, urlInfo )
+    NET_LSCS_SIGNAL_1( Public, void listInfo( const QUrlInfo &urlInfo ) )
+    NET_LSCS_SIGNAL_2( listInfo, urlInfo )
 
-    NET_CS_SIGNAL_1( Public, void readyRead() )
-    NET_CS_SIGNAL_2( readyRead )
+    NET_LSCS_SIGNAL_1( Public, void readyRead() )
+    NET_LSCS_SIGNAL_2( readyRead )
 
-    NET_CS_SIGNAL_1( Public, void dataTransferProgress( qint64 bytesDone, qint64 bytesTotal ) )
-    NET_CS_SIGNAL_2( dataTransferProgress, bytesDone, bytesTotal )
+    NET_LSCS_SIGNAL_1( Public, void dataTransferProgress( qint64 bytesDone, qint64 bytesTotal ) )
+    NET_LSCS_SIGNAL_2( dataTransferProgress, bytesDone, bytesTotal )
 
-    NET_CS_SIGNAL_1( Public, void connectState( int connectState ) )
-    NET_CS_SIGNAL_2( connectState, connectState )
+    NET_LSCS_SIGNAL_1( Public, void connectState( int connectState ) )
+    NET_LSCS_SIGNAL_2( connectState, connectState )
 
-    NET_CS_SLOT_1( Public, void dataReadyRead() )
-    NET_CS_SLOT_2( dataReadyRead )
+    NET_LSCS_SLOT_1( Public, void dataReadyRead() )
+    NET_LSCS_SLOT_2( dataReadyRead )
 
 private:
-    NET_CS_SLOT_1( Private, void socketConnected() )
-    NET_CS_SLOT_2( socketConnected )
+    NET_LSCS_SLOT_1( Private, void socketConnected() )
+    NET_LSCS_SLOT_2( socketConnected )
 
-    NET_CS_SLOT_1( Private, void socketReadyRead() )
-    NET_CS_SLOT_2( socketReadyRead )
+    NET_LSCS_SLOT_1( Private, void socketReadyRead() )
+    NET_LSCS_SLOT_2( socketReadyRead )
 
-    NET_CS_SLOT_1( Private, void socketError( QAbstractSocket::SocketError errorCode ) )
-    NET_CS_SLOT_2( socketError )
+    NET_LSCS_SLOT_1( Private, void socketError( QAbstractSocket::SocketError errorCode ) )
+    NET_LSCS_SLOT_2( socketError )
 
-    NET_CS_SLOT_1( Private, void socketConnectionClosed() )
-    NET_CS_SLOT_2( socketConnectionClosed )
+    NET_LSCS_SLOT_1( Private, void socketConnectionClosed() )
+    NET_LSCS_SLOT_2( socketConnectionClosed )
 
-    NET_CS_SLOT_1( Private, void socketBytesWritten( qint64 bytes ) )
-    NET_CS_SLOT_2( socketBytesWritten )
+    NET_LSCS_SLOT_1( Private, void socketBytesWritten( qint64 bytes ) )
+    NET_LSCS_SLOT_2( socketBytesWritten )
 
-    NET_CS_SLOT_1( Private, void setupSocket() )
-    NET_CS_SLOT_2( setupSocket )
+    NET_LSCS_SLOT_1( Private, void setupSocket() )
+    NET_LSCS_SLOT_2( setupSocket )
 
     void clearData();
 
@@ -150,7 +150,7 @@ private:
 
 class QFtpPI : public QObject
 {
-    NET_CS_OBJECT( QFtpPI )
+    NET_LSCS_OBJECT( QFtpPI )
 
 public:
     QFtpPI( QObject *parent = nullptr );
@@ -179,39 +179,39 @@ public:
     // PI has a DTP which is not the design of RFC 959, but it
     // makes the design simpler
 
-    NET_CS_SIGNAL_1( Public, void connectState( int connectState ) )
-    NET_CS_SIGNAL_2( connectState, connectState )
+    NET_LSCS_SIGNAL_1( Public, void connectState( int connectState ) )
+    NET_LSCS_SIGNAL_2( connectState, connectState )
 
-    NET_CS_SIGNAL_1( Public, void finished( const QString &textMsg ) )
-    NET_CS_SIGNAL_2( finished, textMsg )
+    NET_LSCS_SIGNAL_1( Public, void finished( const QString &textMsg ) )
+    NET_LSCS_SIGNAL_2( finished, textMsg )
 
-    NET_CS_SIGNAL_1( Public, void error( int errorCode, const QString &textMsg ) )
-    NET_CS_SIGNAL_OVERLOAD( error, ( int, const QString & ), errorCode, textMsg )
+    NET_LSCS_SIGNAL_1( Public, void error( int errorCode, const QString &textMsg ) )
+    NET_LSCS_SIGNAL_OVERLOAD( error, ( int, const QString & ), errorCode, textMsg )
 
-    NET_CS_SIGNAL_1( Public, void rawFtpReply( int replyCode, const QString &replyText ) )
-    NET_CS_SIGNAL_2( rawFtpReply, replyCode, replyText )
+    NET_LSCS_SIGNAL_1( Public, void rawFtpReply( int replyCode, const QString &replyText ) )
+    NET_LSCS_SIGNAL_2( rawFtpReply, replyCode, replyText )
 
 private:
-    NET_CS_SLOT_1( Private, void hostFound() )
-    NET_CS_SLOT_2( hostFound )
+    NET_LSCS_SLOT_1( Private, void hostFound() )
+    NET_LSCS_SLOT_2( hostFound )
 
-    NET_CS_SLOT_1( Private, void connected() )
-    NET_CS_SLOT_2( connected )
+    NET_LSCS_SLOT_1( Private, void connected() )
+    NET_LSCS_SLOT_2( connected )
 
-    NET_CS_SLOT_1( Private, void connectionClosed() )
-    NET_CS_SLOT_2( connectionClosed )
+    NET_LSCS_SLOT_1( Private, void connectionClosed() )
+    NET_LSCS_SLOT_2( connectionClosed )
 
-    NET_CS_SLOT_1( Private, void delayedCloseFinished() )
-    NET_CS_SLOT_2( delayedCloseFinished )
+    NET_LSCS_SLOT_1( Private, void delayedCloseFinished() )
+    NET_LSCS_SLOT_2( delayedCloseFinished )
 
-    NET_CS_SLOT_1( Private, void readyRead() )
-    NET_CS_SLOT_2( readyRead )
+    NET_LSCS_SLOT_1( Private, void readyRead() )
+    NET_LSCS_SLOT_2( readyRead )
 
-    NET_CS_SLOT_1( Private, void error( QAbstractSocket::SocketError errorCode ) )
-    NET_CS_SLOT_OVERLOAD( error, ( QAbstractSocket::SocketError ) )
+    NET_LSCS_SLOT_1( Private, void error( QAbstractSocket::SocketError errorCode ) )
+    NET_LSCS_SLOT_OVERLOAD( error, ( QAbstractSocket::SocketError ) )
 
-    NET_CS_SLOT_1( Private, void dtpConnectState( int state ) )
-    NET_CS_SLOT_2( dtpConnectState )
+    NET_LSCS_SLOT_1( Private, void dtpConnectState( int state ) )
+    NET_LSCS_SLOT_2( dtpConnectState )
 
     // the states are modelled after the generalized state diagram of RFC 959, page 58
     enum State
@@ -454,7 +454,7 @@ void QFtpDTP::writeData()
     if ( is_ba )
     {
 
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
         qDebug( "QFtpDTP::writeData: write %d bytes", data.ba->size() );
 #endif
 
@@ -479,7 +479,7 @@ void QFtpDTP::writeData()
         char buf[16 * 1024];
         qint64 read = data.dev->read( buf, blockSize );
 
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
         qDebug( "QFtpDTP::writeData: write() of size %lli bytes", read );
 #endif
 
@@ -526,7 +526,7 @@ inline void QFtpDTP::clearError()
 
 void QFtpDTP::abortConnection()
 {
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
     qDebug( "QFtpDTP::abortConnection, bytesAvailable == %lli", socket ? socket->bytesAvailable() : ( qint64 ) 0 );
 #endif
 
@@ -756,7 +756,7 @@ void QFtpDTP::socketConnected()
 {
     m_bytesDone = 0;
 
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
     qDebug( "QFtpDTP::connectState(CsConnected)" );
 #endif
 
@@ -774,7 +774,7 @@ void QFtpDTP::socketReadyRead()
     {
         socket->close();
 
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
         qDebug( "QFtpDTP::connectState(CsClosed)" );
 #endif
 
@@ -796,7 +796,7 @@ void QFtpDTP::socketReadyRead()
             QUrlInfo i;
             QByteArray line = socket->readLine();
 
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
             qDebug( "QFtpDTP read (list): '%s'", line.constData() );
 #endif
 
@@ -838,7 +838,7 @@ void QFtpDTP::socketReadyRead()
                 ba.resize( bytesRead );
                 m_bytesDone += bytesRead;
 
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
                 qDebug( "QFtpDTP read: %lli bytes (total %lli bytes)", bytesRead, m_bytesDone );
 #endif
 
@@ -858,7 +858,7 @@ void QFtpDTP::socketReadyRead()
         }
         else
         {
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
             qDebug( "QFtpDTP readyRead: %lli bytes available (total %lli bytes read)", bytesAvailable(), m_bytesDone );
 #endif
 
@@ -873,7 +873,7 @@ void QFtpDTP::socketError( QAbstractSocket::SocketError errorCode )
     if ( errorCode == QTcpSocket::HostNotFoundError )
     {
 
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
         qDebug( "QFtpDTP::connectState(CsHostNotFound)" );
 #endif
 
@@ -883,7 +883,7 @@ void QFtpDTP::socketError( QAbstractSocket::SocketError errorCode )
     else if ( errorCode == QTcpSocket::ConnectionRefusedError )
     {
 
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
         qDebug( "QFtpDTP::connectState(CsConnectionRefused)" );
 #endif
 
@@ -907,7 +907,7 @@ void QFtpDTP::socketConnectionClosed()
         bytesFromSocket.clear();
     }
 
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
     qDebug( "QFtpDTP::connectState(CsClosed)" );
 #endif
 
@@ -918,7 +918,7 @@ void QFtpDTP::socketBytesWritten( qint64 bytes )
 {
     m_bytesDone += bytes;
 
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
     qDebug( "QFtpDTP::bytesWritten(%lli)", m_bytesDone );
 #endif
 
@@ -1031,7 +1031,7 @@ void QFtpPI::abort()
     {
         abortState = AbortStarted;
 
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
         qDebug( "QFtpPI send: ABOR" );
 #endif
 
@@ -1181,7 +1181,7 @@ void QFtpPI::readyRead()
 
 bool QFtpPI::processReply()
 {
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
 
     if ( m_replyText.length() < 400 )
     {
@@ -1293,7 +1293,7 @@ bool QFtpPI::processReply()
         {
             // this error should be reported
 
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
             qDebug( "QFtp: bad 227 response -- address and port information missing" );
 #endif
 
@@ -1318,7 +1318,7 @@ bool QFtpPI::processReply()
         if ( portPos == -1 )
         {
 
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
             qDebug( "QFtp: bad 229 response, port information missing" );
 #endif
             // this error should be reported
@@ -1431,7 +1431,7 @@ bool QFtpPI::startNextCmd()
         return true;
     }
 
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
 
     if ( state != Idle )
     {
@@ -1503,7 +1503,7 @@ bool QFtpPI::startNextCmd()
 
     pendingCommands.pop_front();
 
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
     qDebug( "QFtpPI send: %s", currentCmd.left( currentCmd.length() - 2 ).toLatin1().constData() );
 #endif
 

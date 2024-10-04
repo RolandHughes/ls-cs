@@ -47,7 +47,7 @@ public:
 
 class Q_GUI_EXPORT QAccessibleBridgePlugin : public QObject
 {
-    GUI_CS_OBJECT( QAccessibleBridgePlugin )
+    GUI_LSCS_OBJECT( QAccessibleBridgePlugin )
 
 public:
     explicit QAccessibleBridgePlugin( QObject *parent = nullptr );

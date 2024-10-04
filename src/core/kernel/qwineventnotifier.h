@@ -31,7 +31,7 @@
 
 class Q_CORE_EXPORT QWinEventNotifier : public QObject
 {
-    CORE_CS_OBJECT( QWinEventNotifier )
+    CORE_LSCS_OBJECT( QWinEventNotifier )
 
 public:
     explicit QWinEventNotifier( QObject *parent = nullptr );
@@ -43,11 +43,11 @@ public:
 
     bool isEnabled() const;
 
-    CORE_CS_SIGNAL_1( Public, void activated( HANDLE hEvent ) )
-    CORE_CS_SIGNAL_2( activated, hEvent )
+    CORE_LSCS_SIGNAL_1( Public, void activated( HANDLE hEvent ) )
+    CORE_LSCS_SIGNAL_2( activated, hEvent )
 
-    CORE_CS_SLOT_1( Public, void setEnabled( bool enable ) )
-    CORE_CS_SLOT_2( setEnabled )
+    CORE_LSCS_SLOT_1( Public, void setEnabled( bool enable ) )
+    CORE_LSCS_SLOT_2( setEnabled )
 
 protected:
     bool event( QEvent *event ) override;

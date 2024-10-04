@@ -79,46 +79,46 @@ inline QAbstractUndoItem::~QAbstractUndoItem()
 
 class Q_GUI_EXPORT QTextDocument : public QObject
 {
-    GUI_CS_OBJECT( QTextDocument )
+    GUI_LSCS_OBJECT( QTextDocument )
 
-    GUI_CS_PROPERTY_READ( undoRedoEnabled, isUndoRedoEnabled )
-    GUI_CS_PROPERTY_WRITE( undoRedoEnabled, setUndoRedoEnabled )
+    GUI_LSCS_PROPERTY_READ( undoRedoEnabled, isUndoRedoEnabled )
+    GUI_LSCS_PROPERTY_WRITE( undoRedoEnabled, setUndoRedoEnabled )
 
-    GUI_CS_PROPERTY_READ( modified, isModified )
-    GUI_CS_PROPERTY_WRITE( modified, setModified )
-    GUI_CS_PROPERTY_DESIGNABLE( modified, false )
+    GUI_LSCS_PROPERTY_READ( modified, isModified )
+    GUI_LSCS_PROPERTY_WRITE( modified, setModified )
+    GUI_LSCS_PROPERTY_DESIGNABLE( modified, false )
 
-    GUI_CS_PROPERTY_READ( pageSize, pageSize )
-    GUI_CS_PROPERTY_WRITE( pageSize, setPageSize )
+    GUI_LSCS_PROPERTY_READ( pageSize, pageSize )
+    GUI_LSCS_PROPERTY_WRITE( pageSize, setPageSize )
 
-    GUI_CS_PROPERTY_READ( defaultFont, defaultFont )
-    GUI_CS_PROPERTY_WRITE( defaultFont, setDefaultFont )
+    GUI_LSCS_PROPERTY_READ( defaultFont, defaultFont )
+    GUI_LSCS_PROPERTY_WRITE( defaultFont, setDefaultFont )
 
-    GUI_CS_PROPERTY_READ( useDesignMetrics, useDesignMetrics )
-    GUI_CS_PROPERTY_WRITE( useDesignMetrics, setUseDesignMetrics )
+    GUI_LSCS_PROPERTY_READ( useDesignMetrics, useDesignMetrics )
+    GUI_LSCS_PROPERTY_WRITE( useDesignMetrics, setUseDesignMetrics )
 
-    GUI_CS_PROPERTY_READ( size, size )
+    GUI_LSCS_PROPERTY_READ( size, size )
 
-    GUI_CS_PROPERTY_READ( textWidth, textWidth )
-    GUI_CS_PROPERTY_WRITE( textWidth, setTextWidth )
+    GUI_LSCS_PROPERTY_READ( textWidth, textWidth )
+    GUI_LSCS_PROPERTY_WRITE( textWidth, setTextWidth )
 
-    GUI_CS_PROPERTY_READ( blockCount, blockCount )
-    GUI_CS_PROPERTY_READ( indentWidth, indentWidth )
-    GUI_CS_PROPERTY_WRITE( indentWidth, setIndentWidth )
+    GUI_LSCS_PROPERTY_READ( blockCount, blockCount )
+    GUI_LSCS_PROPERTY_READ( indentWidth, indentWidth )
+    GUI_LSCS_PROPERTY_WRITE( indentWidth, setIndentWidth )
 
 #ifndef QT_NO_CSSPARSER
-    GUI_CS_PROPERTY_READ( defaultStyleSheet, defaultStyleSheet )
-    GUI_CS_PROPERTY_WRITE( defaultStyleSheet, setDefaultStyleSheet )
+    GUI_LSCS_PROPERTY_READ( defaultStyleSheet, defaultStyleSheet )
+    GUI_LSCS_PROPERTY_WRITE( defaultStyleSheet, setDefaultStyleSheet )
 #endif
 
-    GUI_CS_PROPERTY_READ( maximumBlockCount, maximumBlockCount )
-    GUI_CS_PROPERTY_WRITE( maximumBlockCount, setMaximumBlockCount )
+    GUI_LSCS_PROPERTY_READ( maximumBlockCount, maximumBlockCount )
+    GUI_LSCS_PROPERTY_WRITE( maximumBlockCount, setMaximumBlockCount )
 
-    GUI_CS_PROPERTY_READ( documentMargin, documentMargin )
-    GUI_CS_PROPERTY_WRITE( documentMargin, setDocumentMargin )
+    GUI_LSCS_PROPERTY_READ( documentMargin, documentMargin )
+    GUI_LSCS_PROPERTY_WRITE( documentMargin, setDocumentMargin )
 
-    GUI_CS_PROPERTY_READ( defaultTextOption, defaultTextOption )
-    GUI_CS_PROPERTY_WRITE( defaultTextOption, setDefaultTextOption )
+    GUI_LSCS_PROPERTY_READ( defaultTextOption, defaultTextOption )
+    GUI_LSCS_PROPERTY_WRITE( defaultTextOption, setDefaultTextOption )
 
 public:
     explicit QTextDocument( QObject *parent = nullptr );
@@ -274,47 +274,47 @@ public:
     Qt::CursorMoveStyle defaultCursorMoveStyle() const;
     void setDefaultCursorMoveStyle( Qt::CursorMoveStyle style );
 
-    GUI_CS_SIGNAL_1( Public, void contentsChange( int position, int charsRemoved, int charsAdded ) )
-    GUI_CS_SIGNAL_2( contentsChange, position, charsRemoved, charsAdded )
+    GUI_LSCS_SIGNAL_1( Public, void contentsChange( int position, int charsRemoved, int charsAdded ) )
+    GUI_LSCS_SIGNAL_2( contentsChange, position, charsRemoved, charsAdded )
 
-    GUI_CS_SIGNAL_1( Public, void contentsChanged() )
-    GUI_CS_SIGNAL_2( contentsChanged )
+    GUI_LSCS_SIGNAL_1( Public, void contentsChanged() )
+    GUI_LSCS_SIGNAL_2( contentsChanged )
 
-    GUI_CS_SIGNAL_1( Public, void undoAvailable( bool status ) )
-    GUI_CS_SIGNAL_2( undoAvailable, status )
+    GUI_LSCS_SIGNAL_1( Public, void undoAvailable( bool status ) )
+    GUI_LSCS_SIGNAL_2( undoAvailable, status )
 
-    GUI_CS_SIGNAL_1( Public, void redoAvailable( bool status ) )
-    GUI_CS_SIGNAL_2( redoAvailable, status )
+    GUI_LSCS_SIGNAL_1( Public, void redoAvailable( bool status ) )
+    GUI_LSCS_SIGNAL_2( redoAvailable, status )
 
-    GUI_CS_SIGNAL_1( Public, void undoCommandAdded() )
-    GUI_CS_SIGNAL_2( undoCommandAdded )
+    GUI_LSCS_SIGNAL_1( Public, void undoCommandAdded() )
+    GUI_LSCS_SIGNAL_2( undoCommandAdded )
 
-    GUI_CS_SIGNAL_1( Public, void modificationChanged( bool status ) )
-    GUI_CS_SIGNAL_2( modificationChanged, status )
+    GUI_LSCS_SIGNAL_1( Public, void modificationChanged( bool status ) )
+    GUI_LSCS_SIGNAL_2( modificationChanged, status )
 
-    GUI_CS_SIGNAL_1( Public, void cursorPositionChanged( const QTextCursor &cursor ) )
-    GUI_CS_SIGNAL_2( cursorPositionChanged, cursor )
+    GUI_LSCS_SIGNAL_1( Public, void cursorPositionChanged( const QTextCursor &cursor ) )
+    GUI_LSCS_SIGNAL_2( cursorPositionChanged, cursor )
 
-    GUI_CS_SIGNAL_1( Public, void blockCountChanged( int newBlockCount ) )
-    GUI_CS_SIGNAL_2( blockCountChanged, newBlockCount )
+    GUI_LSCS_SIGNAL_1( Public, void blockCountChanged( int newBlockCount ) )
+    GUI_LSCS_SIGNAL_2( blockCountChanged, newBlockCount )
 
-    GUI_CS_SIGNAL_1( Public, void baseUrlChanged( const QUrl &url ) )
-    GUI_CS_SIGNAL_2( baseUrlChanged, url )
+    GUI_LSCS_SIGNAL_1( Public, void baseUrlChanged( const QUrl &url ) )
+    GUI_LSCS_SIGNAL_2( baseUrlChanged, url )
 
-    GUI_CS_SIGNAL_1( Public, void documentLayoutChanged() )
-    GUI_CS_SIGNAL_2( documentLayoutChanged )
+    GUI_LSCS_SIGNAL_1( Public, void documentLayoutChanged() )
+    GUI_LSCS_SIGNAL_2( documentLayoutChanged )
 
-    GUI_CS_SLOT_1( Public, void undo() )
-    GUI_CS_SLOT_OVERLOAD( undo, () )
+    GUI_LSCS_SLOT_1( Public, void undo() )
+    GUI_LSCS_SLOT_OVERLOAD( undo, () )
 
-    GUI_CS_SLOT_1( Public, void redo() )
-    GUI_CS_SLOT_OVERLOAD( redo, () )
+    GUI_LSCS_SLOT_1( Public, void redo() )
+    GUI_LSCS_SLOT_OVERLOAD( redo, () )
 
-    GUI_CS_SLOT_1( Public, void appendUndoItem( QAbstractUndoItem *item ) )
-    GUI_CS_SLOT_2( appendUndoItem )
+    GUI_LSCS_SLOT_1( Public, void appendUndoItem( QAbstractUndoItem *item ) )
+    GUI_LSCS_SLOT_2( appendUndoItem )
 
-    GUI_CS_SLOT_1( Public, void setModified( bool status = true ) )
-    GUI_CS_SLOT_2( setModified )
+    GUI_LSCS_SLOT_1( Public, void setModified( bool status = true ) )
+    GUI_LSCS_SLOT_2( setModified )
 
     QTextDocumentPrivate * docHandle() const;
 

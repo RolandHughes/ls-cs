@@ -30,7 +30,7 @@
 
 #include <qgstutils_p.h>
 
-CS_PLUGIN_REGISTER( QGstreamerPlayerServicePlugin )
+LSCS_PLUGIN_REGISTER( QGstreamerPlayerServicePlugin )
 
 QMediaService *QGstreamerPlayerServicePlugin::create( const QString &key )
 {

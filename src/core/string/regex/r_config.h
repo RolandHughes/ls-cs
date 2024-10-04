@@ -24,44 +24,44 @@
  * LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 
-#ifndef CS_CONFIG_H
-#define CS_CONFIG_H
+#ifndef LSCS_CONFIG_H
+#define LSCS_CONFIG_H
 
 #if defined(_UNICODE) && ! defined(UNICODE)
 #   define UNICODE
 #endif
 
-#ifndef CS_REGEX_MAX_STATE_COUNT
-#  define CS_REGEX_MAX_STATE_COUNT 100000000
+#ifndef LSCS_REGEX_MAX_STATE_COUNT
+#  define LSCS_REGEX_MAX_STATE_COUNT 100000000
 #endif
 
-#ifndef CS_REGEX_BLOCKSIZE
-#   define CS_REGEX_BLOCKSIZE 4096
+#ifndef LSCS_REGEX_BLOCKSIZE
+#   define LSCS_REGEX_BLOCKSIZE 4096
 #endif
 
-#if CS_REGEX_BLOCKSIZE < 512
-#   error "CS_REGEX_BLOCKSIZE must be at least 512"
+#if LSCS_REGEX_BLOCKSIZE < 512
+#   error "LSCS_REGEX_BLOCKSIZE must be at least 512"
 #endif
 
-#ifndef CS_REGEX_MAX_BLOCKS
-#   define CS_REGEX_MAX_BLOCKS 1024
+#ifndef LSCS_REGEX_MAX_BLOCKS
+#   define LSCS_REGEX_MAX_BLOCKS 1024
 #endif
 
-#ifndef CS_REGEX_MAX_CACHE_BLOCKS
-#   define CS_REGEX_MAX_CACHE_BLOCKS 16
+#ifndef LSCS_REGEX_MAX_CACHE_BLOCKS
+#   define LSCS_REGEX_MAX_CACHE_BLOCKS 16
 #endif
 
 
 #ifdef _WIN32
 
-#ifdef BUILDING_LIB_CS_STRING
-# define LIB_CS_STRING_EXPORT     __declspec(dllexport)
+#ifdef BUILDING_LIB_LSCS_STRING
+# define LIB_LSCS_STRING_EXPORT     __declspec(dllexport)
 #else
-# define LIB_CS_STRING_EXPORT     __declspec(dllimport)
+# define LIB_LSCS_STRING_EXPORT     __declspec(dllimport)
 #endif
 
 #else
-# define LIB_CS_STRING_EXPORT
+# define LIB_LSCS_STRING_EXPORT
 
 #endif
 

@@ -23,7 +23,7 @@
 
 #include <qobject.h>
 
-#include <csmeta_callevent.h>
+#include <lscsmeta_callevent.h>
 #include <qabstracteventdispatcher.h>
 #include <qcoreapplication.h>
 #include <qdebug.h>
@@ -128,7 +128,7 @@ QObject::~QObject()
     //
     if ( this->m_declarativeData )
     {
-        CSAbstractDeclarativeData::destroyed( this->m_declarativeData, this );
+        LSCSAbstractDeclarativeData::destroyed( this->m_declarativeData, this );
     }
 
     if ( ! this->m_children.isEmpty() )
@@ -189,10 +189,10 @@ bool QObject::check_parent_thread( QObject *parent, QThreadData *parentThreadDat
 
         qWarning( "QObject:check_parent_thread() Unable to create children for a parent in a different thread.\n"
                   "(Parent is %s(%p), parent's thread is %s(%p), current thread is %s(%p)",
-                  csPrintable( parent->metaObject()->className() ), static_cast<void *>( parent ),
-                  parentThread ? csPrintable( parentThread->metaObject()->className() ) : "QThread",
+                  lscsPrintable( parent->metaObject()->className() ), static_cast<void *>( parent ),
+                  parentThread ? lscsPrintable( parentThread->metaObject()->className() ) : "QThread",
                   static_cast<void *>( parentThread ),
-                  currentThread ? csPrintable( currentThread->metaObject()->className() ) : "QThread",
+                  currentThread ? lscsPrintable( currentThread->metaObject()->className() ) : "QThread",
                   static_cast<void *>( currentThread ) );
 
         return false;
@@ -241,25 +241,25 @@ bool QObject::connect( const QObject *sender, const QString8 &signalMethod, cons
 
         if ( location.isEmpty() )
         {
-            qWarning( "%s%s%s%s%s%s%s%s%s %s%d%s%d", "QObject::connect() ", csPrintable( senderClass ), "::", csPrintable( signalMethod ),
-                      " Unable to connect to receiver in ", csPrintable( receiverClass ), " (", csPrintable( location ), ")",
+            qWarning( "%s%s%s%s%s%s%s%s%s %s%d%s%d", "QObject::connect() ", lscsPrintable( senderClass ), "::", lscsPrintable( signalMethod ),
+                      " Unable to connect to receiver in ", lscsPrintable( receiverClass ), " (", lscsPrintable( location ), ")",
                       " Signal Index: ", sIndex, " Slot Index: ", rIndex );
 
         }
         else
         {
-            qWarning( "%s%s%s%s%s%s %s%d%s%d", "QObject::connect() ", csPrintable( senderClass ), "::", csPrintable( signalMethod ),
-                      " Unable to connect to receiver in ", csPrintable( receiverClass ),
+            qWarning( "%s%s%s%s%s%s %s%d%s%d", "QObject::connect() ", lscsPrintable( senderClass ), "::", lscsPrintable( signalMethod ),
+                      " Unable to connect to receiver in ", lscsPrintable( receiverClass ),
                       " Signal Index: ", sIndex, " Slot Index: ", rIndex );
         }
 
-#if defined(CS_INTERNAL_DEBUG)
+#if defined(LSCS_INTERNAL_DEBUG)
         qDebug( "" );
 
         for ( int k = 0; k < senderMetaObject->methodCount(); ++k )
         {
-            qDebug( "QObject::connect()  Class %s has method %s", csPrintable( senderMetaObject->className() ),
-                    csPrintable( senderMetaObject->method( k ).methodSignature() ) );
+            qDebug( "QObject::connect()  Class %s has method %s", lscsPrintable( senderMetaObject->className() ),
+                    lscsPrintable( senderMetaObject->method( k ).methodSignature() ) );
         }
 
         qDebug( "" );
@@ -296,23 +296,23 @@ bool QObject::connect( const QObject *sender, const QMetaMethod &signalMetaMetho
 
     if ( signalName.isEmpty() )
     {
-        qWarning( "%s%s%s%s%s", "QObject::connect() ", csPrintable( senderClass ), "::<Invalid Signal> ",
-                  " Unable to connect to receiver in ", csPrintable( receiverClass ) );
+        qWarning( "%s%s%s%s%s", "QObject::connect() ", lscsPrintable( senderClass ), "::<Invalid Signal> ",
+                  " Unable to connect to receiver in ", lscsPrintable( receiverClass ) );
 
         return false;
     }
 
     if ( slotName.isEmpty() )
     {
-        qWarning( "%s%s%s%s%s%s%s", "QObject::connect() ", csPrintable( senderClass ), "::", csPrintable( signalName ),
-                  " Unable to connect to receiver in ", csPrintable( receiverClass ), "::<Invalid Slot>" );
+        qWarning( "%s%s%s%s%s%s%s", "QObject::connect() ", lscsPrintable( senderClass ), "::", lscsPrintable( signalName ),
+                  " Unable to connect to receiver in ", lscsPrintable( receiverClass ), "::<Invalid Slot>" );
         return false;
     }
 
     // is signalMethod a signal
     if ( signalMetaMethod.methodType() != QMetaMethod::Signal )
     {
-        qWarning( "%s%s%s%s%s", "QObject::connect() ", csPrintable( senderClass ), "::", csPrintable( signalName ),
+        qWarning( "%s%s%s%s%s", "QObject::connect() ", lscsPrintable( senderClass ), "::", lscsPrintable( signalName ),
                   ": Is not a valid signal" );
         return false;
     }
@@ -320,7 +320,7 @@ bool QObject::connect( const QObject *sender, const QMetaMethod &signalMetaMetho
     // is slotMethod a clone, then there is a defualt parameter
     if ( slotMetaMethod.attributes() & QMetaMethod::Cloned )
     {
-        qWarning( "%s%s%s%s%s", "QObject::connect() ", csPrintable( receiverClass ), "::", csPrintable( slotName ),
+        qWarning( "%s%s%s%s%s", "QObject::connect() ", lscsPrintable( receiverClass ), "::", lscsPrintable( slotName ),
                   ": Unable to connect to a slot with a default parameter" );
         return false;
     }
@@ -352,8 +352,8 @@ bool QObject::connect( const QObject *sender, const QMetaMethod &signalMetaMetho
 
     if ( err )
     {
-        qWarning( "%s%s%s%s%s%s%s%s", "QObject::connect() ", csPrintable( senderClass ), "::", csPrintable( signalName ),
-                  ": Incompatible signal/slot arguments ", csPrintable( receiverClass ), "::", csPrintable( slotName ) );
+        qWarning( "%s%s%s%s%s%s%s%s", "QObject::connect() ", lscsPrintable( senderClass ), "::", lscsPrintable( signalName ),
+                  ": Incompatible signal/slot arguments ", lscsPrintable( receiverClass ), "::", lscsPrintable( slotName ) );
         return false;
     }
 
@@ -363,14 +363,14 @@ bool QObject::connect( const QObject *sender, const QMetaMethod &signalMetaMetho
 
     if ( ! signalMethod_Bento )
     {
-        qWarning( "%s%s%s%s%s", "QObject::connect() ", csPrintable( senderClass ), "::", csPrintable( signalName ),
+        qWarning( "%s%s%s%s%s", "QObject::connect() ", lscsPrintable( senderClass ), "::", lscsPrintable( signalName ),
                   " Unable to locate the requested signal, verify connect arguments and signal declaration" );
         return false;
     }
 
     if ( ! slotMethod_Bento )
     {
-        qWarning( "%s%s%s%s%s", "QObject::connect() ", csPrintable( receiverClass ), "::", csPrintable( slotName ),
+        qWarning( "%s%s%s%s%s", "QObject::connect() ", lscsPrintable( receiverClass ), "::", lscsPrintable( slotName ),
                   " Unable to locate the requested slot, verify connect arguments and slot declaration" );
         return false;
     }
@@ -605,7 +605,7 @@ bool QObject::disconnect( const QObject *sender,   const QMetaMethod &signalMeta
         if ( signalMetaMethod.methodType() != QMetaMethod::Signal )
         {
             qWarning( "QObject::disconnect() Unable to disconnect %s::%s, is not a signal",
-                      csPrintable( sender->metaObject()->className() ), csPrintable( signalMetaMethod.methodSignature() ) );
+                      lscsPrintable( sender->metaObject()->className() ), lscsPrintable( signalMetaMethod.methodSignature() ) );
             return false;
         }
     }
@@ -616,7 +616,7 @@ bool QObject::disconnect( const QObject *sender,   const QMetaMethod &signalMeta
         if ( slotMetaMethod.methodType() == QMetaMethod::Constructor )
         {
             qWarning( "QObject::disconnect() Unable to use constructor as an argument %s::%s",
-                      csPrintable( receiver->metaObject()->className() ), csPrintable( slotMetaMethod.methodSignature() ) );
+                      lscsPrintable( receiver->metaObject()->className() ), lscsPrintable( slotMetaMethod.methodSignature() ) );
             return false;
         }
     }
@@ -627,7 +627,7 @@ bool QObject::disconnect( const QObject *sender,   const QMetaMethod &signalMeta
     if ( signalMetaObject != nullptr && signal_index == -1 )
     {
         qWarning( "QObject::disconnect() Signal %s was not found in class %s",
-                  csPrintable( signalMetaMethod.methodSignature() ), csPrintable( sender->metaObject()->className() ) );
+                  lscsPrintable( signalMetaMethod.methodSignature() ), lscsPrintable( sender->metaObject()->className() ) );
         return false;
     }
 
@@ -639,7 +639,7 @@ bool QObject::disconnect( const QObject *sender,   const QMetaMethod &signalMeta
         if ( slotMetaObject && slot_index == -1 )
         {
             qWarning( "QObject::disconnect() Method %s was not found in class %s",
-                      csPrintable( slotMetaMethod.methodSignature() ), csPrintable( receiver->metaObject()->className() ) );
+                      lscsPrintable( slotMetaMethod.methodSignature() ), lscsPrintable( receiver->metaObject()->className() ) );
             return false;
         }
     }
@@ -741,7 +741,7 @@ bool QObject::event( QEvent *e )
 
                     // using csArgument directly since the datatype contains a comma
                     QMetaObject::invokeMethod( this, "internal_reregisterTimers", Qt::QueuedConnection,
-                                               CSArgument<QList<QTimerInfo>> ( timers ) );
+                                               LSCSArgument<QList<QTimerInfo>> ( timers ) );
                 }
             }
 
@@ -995,9 +995,9 @@ void QObject::queueSlot( LsCsSignal::PendingSlot data, LsCsSignal::ConnectionKin
         {
 
             qWarning( "QObject::activate() Dead lock detected while activating a BlockingQueuedConnection: "
-                      "Sender is %s(%p), receiver is %s(%p)", csPrintable( sender->metaObject()->className() ),
+                      "Sender is %s(%p), receiver is %s(%p)", lscsPrintable( sender->metaObject()->className() ),
                       static_cast<void *>( sender ),
-                      csPrintable( this->metaObject()->className() ), static_cast<void *>( this ) );
+                      lscsPrintable( this->metaObject()->className() ), static_cast<void *>( this ) );
         }
 
         QSemaphore semaphore;
@@ -1087,9 +1087,9 @@ int QObject::receivers( const QString8 &signalMethod ) const
         }
     }
 
-    if ( m_declarativeData && CSAbstractDeclarativeData::receivers )
+    if ( m_declarativeData && LSCSAbstractDeclarativeData::receivers )
     {
-        receivers += CSAbstractDeclarativeData::receivers( m_declarativeData, this, signal_index );
+        receivers += LSCSAbstractDeclarativeData::receivers( m_declarativeData, this, signal_index );
     }
 
     return receivers;
@@ -1245,7 +1245,7 @@ void QObject::setParent( QObject *newParent )
 
     if ( ! m_wasDeleted && m_declarativeData )
     {
-        CSAbstractDeclarativeData::parentChanged( m_declarativeData, this, newParent );
+        LSCSAbstractDeclarativeData::parentChanged( m_declarativeData, this, newParent );
     }
 }
 
@@ -1305,7 +1305,7 @@ bool QObject::setProperty( const QString8 &name, const QVariant &value )
     if ( ! p.isWritable() )
     {
         qWarning( "%s::setProperty() Property \"%s\" is invalid, read only, or does not exist",
-                  csPrintable( metaObj->className() ), csPrintable( name ) );
+                  lscsPrintable( metaObj->className() ), lscsPrintable( name ) );
     }
 
     bool retval = p.write( this, value );
@@ -1313,8 +1313,8 @@ bool QObject::setProperty( const QString8 &name, const QVariant &value )
     if ( ! retval )
     {
         qWarning( "%s::setProperty() Set property \"%s\" failed. Passed value is of type %s, property is of type %s",
-                  csPrintable( metaObj->className() ), csPrintable( name ), csPrintable( value.typeName() ),
-                  csPrintable( p.typeName() ) );
+                  lscsPrintable( metaObj->className() ), lscsPrintable( name ), lscsPrintable( value.typeName() ),
+                  lscsPrintable( p.typeName() ) );
     }
 
     return retval;
@@ -1455,7 +1455,7 @@ std::recursive_mutex &QObject::m_metaObjectMutex()
 }
 
 // **
-void ( *CSAbstractDeclarativeData::destroyed )( CSAbstractDeclarativeData *, QObject * ) = nullptr;
-void ( *CSAbstractDeclarativeData::parentChanged )( CSAbstractDeclarativeData *, QObject *, QObject * ) = nullptr;
-void ( *CSAbstractDeclarativeData::signalEmitted )( CSAbstractDeclarativeData *, QObject *, int, void ** ) = nullptr;
-int  ( *CSAbstractDeclarativeData::receivers )( CSAbstractDeclarativeData *, const QObject *, int ) = nullptr;
+void ( *LSCSAbstractDeclarativeData::destroyed )( LSCSAbstractDeclarativeData *, QObject * ) = nullptr;
+void ( *LSCSAbstractDeclarativeData::parentChanged )( LSCSAbstractDeclarativeData *, QObject *, QObject * ) = nullptr;
+void ( *LSCSAbstractDeclarativeData::signalEmitted )( LSCSAbstractDeclarativeData *, QObject *, int, void ** ) = nullptr;
+int  ( *LSCSAbstractDeclarativeData::receivers )( LSCSAbstractDeclarativeData *, const QObject *, int ) = nullptr;

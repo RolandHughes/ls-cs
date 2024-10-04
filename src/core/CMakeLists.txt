@@ -6,8 +6,8 @@ set_target_properties(LsCsCore PROPERTIES OUTPUT_NAME LsCsCore${BUILD_ABI})
 target_compile_definitions(LsCsCore
    PRIVATE
    -DQT_BUILD_CORE_LIB
-   -DBUILDING_LIB_CS_SIGNAL
-   -DBUILDING_LIB_CS_STRING
+   -DBUILDING_LIB_LSCS_SIGNAL
+   -DBUILDING_LIB_LSCS_STRING
 )
 
 if (GTK2_FOUND)
@@ -71,23 +71,23 @@ include(xml/xml.cmake)
 if (LsCsLibGuarded_FOUND)
    # use system headers
 
-   if (CS_INSTALL_MODE STREQUAL "Package")
+   if (LSCS_INSTALL_MODE STREQUAL "Package")
       # package mode, do not copy install headers
       target_link_libraries(LsCsCore
          PUBLIC
          LsCsLibGuarded::LsCsLibGuarded
       )
 
-   elseif (CS_INSTALL_MODE STREQUAL "Deploy")
+   elseif (LSCS_INSTALL_MODE STREQUAL "Deploy")
       target_link_libraries(LsCsCore
          PUBLIC
          $<BUILD_INTERFACE:LsCsLibGuarded::LsCsLibGuarded>
       )
 
       list(APPEND CORE_INCLUDES
-         ${LsCsLibGuarded_INCLUDE_DIR}/cs_rcu_guarded.h
-         ${LsCsLibGuarded_INCLUDE_DIR}/cs_rcu_list.h
-         ${LsCsLibGuarded_INCLUDE_DIR}/cs_shared_guarded.h
+         ${LsCsLibGuarded_INCLUDE_DIR}/lscs_rcu_guarded.h
+         ${LsCsLibGuarded_INCLUDE_DIR}/lscs_rcu_list.h
+         ${LsCsLibGuarded_INCLUDE_DIR}/lscs_shared_guarded.h
       )
    endif()
 
@@ -95,27 +95,27 @@ else()
    # use annex headers
    target_include_directories(LsCsCore
       PUBLIC
-      $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/annex/cs_libguarded>
+      $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/annex/lscs_libguarded>
    )
 
    list(APPEND CORE_INCLUDES
-      ${CMAKE_CURRENT_SOURCE_DIR}/../annex/cs_libguarded/cs_rcu_guarded.h
-      ${CMAKE_CURRENT_SOURCE_DIR}/../annex/cs_libguarded/cs_rcu_list.h
-      ${CMAKE_CURRENT_SOURCE_DIR}/../annex/cs_libguarded/cs_shared_guarded.h
+      ${CMAKE_CURRENT_SOURCE_DIR}/../annex/lscs_libguarded/lscs_rcu_guarded.h
+      ${CMAKE_CURRENT_SOURCE_DIR}/../annex/lscs_libguarded/lscs_rcu_list.h
+      ${CMAKE_CURRENT_SOURCE_DIR}/../annex/lscs_libguarded/lscs_shared_guarded.h
    )
 endif()
 
 if (LsCsSignal_FOUND)
    # use system headers
 
-   if (CS_INSTALL_MODE STREQUAL "Package")
+   if (LSCS_INSTALL_MODE STREQUAL "Package")
       # package mode, do not copy install headers
       target_link_libraries(LsCsCore
          PUBLIC
          LsCsSignal::LsCsSignal
       )
 
-   elseif (CS_INSTALL_MODE STREQUAL "Deploy")
+   elseif (LSCS_INSTALL_MODE STREQUAL "Deploy")
 
       if (CMAKE_SYSTEM_NAME MATCHES "Darwin")
          target_link_libraries(LsCsCore
@@ -156,10 +156,10 @@ if (LsCsSignal_FOUND)
       endif()
 
       list(APPEND CORE_INCLUDES
-         ${LsCsSignal_INCLUDE_DIR}/cs_internal.h
-         ${LsCsSignal_INCLUDE_DIR}/cs_macro.h
-         ${LsCsSignal_INCLUDE_DIR}/cs_signal.h
-         ${LsCsSignal_INCLUDE_DIR}/cs_slot.h
+         ${LsCsSignal_INCLUDE_DIR}/lscs_internal.h
+         ${LsCsSignal_INCLUDE_DIR}/lscs_macro.h
+         ${LsCsSignal_INCLUDE_DIR}/lscs_signal.h
+         ${LsCsSignal_INCLUDE_DIR}/lscs_slot.h
       )
 
    endif()
@@ -168,20 +168,20 @@ else()
    # use annex headers
    target_include_directories(LsCsCore
       PUBLIC
-      $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/annex/cs_signal>
+      $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/annex/lscs_signal>
    )
 
    list(APPEND CORE_INCLUDES
-      ${CMAKE_CURRENT_SOURCE_DIR}/../annex/cs_signal/cs_internal.h
-      ${CMAKE_CURRENT_SOURCE_DIR}/../annex/cs_signal/cs_macro.h
-      ${CMAKE_CURRENT_SOURCE_DIR}/../annex/cs_signal/cs_signal.h
-      ${CMAKE_CURRENT_SOURCE_DIR}/../annex/cs_signal/cs_slot.h
+      ${CMAKE_CURRENT_SOURCE_DIR}/../annex/lscs_signal/lscs_internal.h
+      ${CMAKE_CURRENT_SOURCE_DIR}/../annex/lscs_signal/lscs_macro.h
+      ${CMAKE_CURRENT_SOURCE_DIR}/../annex/lscs_signal/lscs_signal.h
+      ${CMAKE_CURRENT_SOURCE_DIR}/../annex/lscs_signal/lscs_slot.h
    )
 
    target_sources(LsCsCore
       PRIVATE
-      ${CMAKE_CURRENT_SOURCE_DIR}/../annex/cs_signal/cs_signal.cpp
-      ${CMAKE_CURRENT_SOURCE_DIR}/../annex/cs_signal/cs_slot.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/../annex/lscs_signal/lscs_signal.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/../annex/lscs_signal/lscs_slot.cpp
    )
 endif()
 
@@ -345,7 +345,7 @@ install(FILES ${CMAKE_BINARY_DIR}/include/lscs_config.h  DESTINATION ${CMAKE_INS
 
 if (LsCsSignal_FOUND)
 
-   if (CS_INSTALL_MODE STREQUAL "Deploy")
+   if (LSCS_INSTALL_MODE STREQUAL "Deploy")
 
       if (CMAKE_SYSTEM_NAME MATCHES "Windows")
          # install system library to LsCs install directory
@@ -372,7 +372,7 @@ endif()
 
 if (LsCsString_FOUND)
 
-   if (CS_INSTALL_MODE STREQUAL "Deploy")
+   if (LSCS_INSTALL_MODE STREQUAL "Deploy")
 
       if (CMAKE_SYSTEM_NAME MATCHES "Windows")
          # install system library to CS install directory

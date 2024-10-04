@@ -34,10 +34,10 @@ class QAbstractVideoSurfacePrivate;
 
 class Q_MULTIMEDIA_EXPORT QAbstractVideoSurface : public QObject
 {
-    MULTI_CS_OBJECT( QAbstractVideoSurface )
+    MULTI_LSCS_OBJECT( QAbstractVideoSurface )
 
-    MULTI_CS_PROPERTY_READ( nativeResolution,   nativeResolution )
-    MULTI_CS_PROPERTY_NOTIFY( nativeResolution, nativeResolutionChanged )
+    MULTI_LSCS_PROPERTY_READ( nativeResolution,   nativeResolution )
+    MULTI_LSCS_PROPERTY_NOTIFY( nativeResolution, nativeResolutionChanged )
 
 public:
     enum Error
@@ -70,17 +70,17 @@ public:
 
     Error error() const;
 
-    MULTI_CS_SIGNAL_1( Public, void activeChanged( bool active ) )
-    MULTI_CS_SIGNAL_2( activeChanged, active )
+    MULTI_LSCS_SIGNAL_1( Public, void activeChanged( bool active ) )
+    MULTI_LSCS_SIGNAL_2( activeChanged, active )
 
-    MULTI_CS_SIGNAL_1( Public, void surfaceFormatChanged( const QVideoSurfaceFormat &format ) )
-    MULTI_CS_SIGNAL_2( surfaceFormatChanged, format )
+    MULTI_LSCS_SIGNAL_1( Public, void surfaceFormatChanged( const QVideoSurfaceFormat &format ) )
+    MULTI_LSCS_SIGNAL_2( surfaceFormatChanged, format )
 
-    MULTI_CS_SIGNAL_1( Public, void supportedFormatsChanged() )
-    MULTI_CS_SIGNAL_2( supportedFormatsChanged )
+    MULTI_LSCS_SIGNAL_1( Public, void supportedFormatsChanged() )
+    MULTI_LSCS_SIGNAL_2( supportedFormatsChanged )
 
-    MULTI_CS_SIGNAL_1( Public, void nativeResolutionChanged( const QSize &resolution ) )
-    MULTI_CS_SIGNAL_2( nativeResolutionChanged, resolution )
+    MULTI_LSCS_SIGNAL_1( Public, void nativeResolutionChanged( const QSize &resolution ) )
+    MULTI_LSCS_SIGNAL_2( nativeResolutionChanged, resolution )
 
 protected:
     QScopedPointer<QAbstractVideoSurfacePrivate> d_ptr;

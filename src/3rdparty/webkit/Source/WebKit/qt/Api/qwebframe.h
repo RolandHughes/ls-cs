@@ -108,23 +108,23 @@ private:
 
 class QWEBKIT_EXPORT QWebFrame : public QObject
 {
-    WEB_CS_OBJECT( QWebFrame )
+    WEB_LSCS_OBJECT( QWebFrame )
 
-    WEB_CS_PROPERTY_READ( textSizeMultiplier, textSizeMultiplier )
-    WEB_CS_PROPERTY_WRITE( textSizeMultiplier, setTextSizeMultiplier )
-    WEB_CS_PROPERTY_DESIGNABLE( textSizeMultiplier, false )
-    WEB_CS_PROPERTY_READ( zoomFactor, zoomFactor )
-    WEB_CS_PROPERTY_WRITE( zoomFactor, setZoomFactor )
-    WEB_CS_PROPERTY_READ( title, title )
-    WEB_CS_PROPERTY_READ( url, url )
-    WEB_CS_PROPERTY_WRITE( url, setUrl )
-    WEB_CS_PROPERTY_READ( requestedUrl, requestedUrl )
-    WEB_CS_PROPERTY_READ( baseUrl, baseUrl )
-    WEB_CS_PROPERTY_READ( icon, icon )
-    WEB_CS_PROPERTY_READ( contentsSize, contentsSize )
-    WEB_CS_PROPERTY_READ( scrollPosition, scrollPosition )
-    WEB_CS_PROPERTY_WRITE( scrollPosition, setScrollPosition )
-    WEB_CS_PROPERTY_READ( focus, hasFocus )
+    WEB_LSCS_PROPERTY_READ( textSizeMultiplier, textSizeMultiplier )
+    WEB_LSCS_PROPERTY_WRITE( textSizeMultiplier, setTextSizeMultiplier )
+    WEB_LSCS_PROPERTY_DESIGNABLE( textSizeMultiplier, false )
+    WEB_LSCS_PROPERTY_READ( zoomFactor, zoomFactor )
+    WEB_LSCS_PROPERTY_WRITE( zoomFactor, setZoomFactor )
+    WEB_LSCS_PROPERTY_READ( title, title )
+    WEB_LSCS_PROPERTY_READ( url, url )
+    WEB_LSCS_PROPERTY_WRITE( url, setUrl )
+    WEB_LSCS_PROPERTY_READ( requestedUrl, requestedUrl )
+    WEB_LSCS_PROPERTY_READ( baseUrl, baseUrl )
+    WEB_LSCS_PROPERTY_READ( icon, icon )
+    WEB_LSCS_PROPERTY_READ( contentsSize, contentsSize )
+    WEB_LSCS_PROPERTY_READ( scrollPosition, scrollPosition )
+    WEB_LSCS_PROPERTY_WRITE( scrollPosition, setScrollPosition )
+    WEB_LSCS_PROPERTY_READ( focus, hasFocus )
 
 private:
     QWebFrame( QWebPage *parent, QWebFrameData *frameData );
@@ -214,43 +214,43 @@ public:
     QWebSecurityOrigin securityOrigin() const;
 
 public :
-    WEB_CS_SLOT_1( Public, QVariant evaluateJavaScript( const QString &scriptSource ) )
-    WEB_CS_SLOT_2( evaluateJavaScript )
+    WEB_LSCS_SLOT_1( Public, QVariant evaluateJavaScript( const QString &scriptSource ) )
+    WEB_LSCS_SLOT_2( evaluateJavaScript )
 
 #ifndef QT_NO_PRINTER
-    WEB_CS_SLOT_1( Public, void print( QPrinter *printer ) )
-    WEB_CS_SLOT_2( print )
+    WEB_LSCS_SLOT_1( Public, void print( QPrinter *printer ) )
+    WEB_LSCS_SLOT_2( print )
 #endif
 
-    WEB_CS_SIGNAL_1( Public, void javaScriptWindowObjectCleared() )
-    WEB_CS_SIGNAL_2( javaScriptWindowObjectCleared )
+    WEB_LSCS_SIGNAL_1( Public, void javaScriptWindowObjectCleared() )
+    WEB_LSCS_SIGNAL_2( javaScriptWindowObjectCleared )
 
-    WEB_CS_SIGNAL_1( Public, void provisionalLoad() )
-    WEB_CS_SIGNAL_2( provisionalLoad )
+    WEB_LSCS_SIGNAL_1( Public, void provisionalLoad() )
+    WEB_LSCS_SIGNAL_2( provisionalLoad )
 
-    WEB_CS_SIGNAL_1( Public, void titleChanged( const QString &title ) )
-    WEB_CS_SIGNAL_2( titleChanged,title )
+    WEB_LSCS_SIGNAL_1( Public, void titleChanged( const QString &title ) )
+    WEB_LSCS_SIGNAL_2( titleChanged,title )
 
-    WEB_CS_SIGNAL_1( Public, void urlChanged( const QUrl &url ) )
-    WEB_CS_SIGNAL_2( urlChanged,url )
+    WEB_LSCS_SIGNAL_1( Public, void urlChanged( const QUrl &url ) )
+    WEB_LSCS_SIGNAL_2( urlChanged,url )
 
-    WEB_CS_SIGNAL_1( Public, void initialLayoutCompleted() )
-    WEB_CS_SIGNAL_2( initialLayoutCompleted )
+    WEB_LSCS_SIGNAL_1( Public, void initialLayoutCompleted() )
+    WEB_LSCS_SIGNAL_2( initialLayoutCompleted )
 
-    WEB_CS_SIGNAL_1( Public, void iconChanged() )
-    WEB_CS_SIGNAL_2( iconChanged )
+    WEB_LSCS_SIGNAL_1( Public, void iconChanged() )
+    WEB_LSCS_SIGNAL_2( iconChanged )
 
-    WEB_CS_SIGNAL_1( Public, void contentsSizeChanged( const QSize &size ) )
-    WEB_CS_SIGNAL_2( contentsSizeChanged,size )
+    WEB_LSCS_SIGNAL_1( Public, void contentsSizeChanged( const QSize &size ) )
+    WEB_LSCS_SIGNAL_2( contentsSizeChanged,size )
 
-    WEB_CS_SIGNAL_1( Public, void loadStarted() )
-    WEB_CS_SIGNAL_2( loadStarted )
+    WEB_LSCS_SIGNAL_1( Public, void loadStarted() )
+    WEB_LSCS_SIGNAL_2( loadStarted )
 
-    WEB_CS_SIGNAL_1( Public, void loadFinished( bool ok ) )
-    WEB_CS_SIGNAL_2( loadFinished,ok )
+    WEB_LSCS_SIGNAL_1( Public, void loadFinished( bool ok ) )
+    WEB_LSCS_SIGNAL_2( loadFinished,ok )
 
-    WEB_CS_SIGNAL_1( Public, void pageChanged() )
-    WEB_CS_SIGNAL_2( pageChanged )
+    WEB_LSCS_SIGNAL_1( Public, void pageChanged() )
+    WEB_LSCS_SIGNAL_2( pageChanged )
 
 private:
     friend class QGraphicsWebView;
@@ -264,8 +264,8 @@ private:
     friend class WebCore::PlatformLayerProxyQt;
     QWebFramePrivate *d;
 
-    WEB_CS_SLOT_1( Private, void _q_orientationChanged() )
-    WEB_CS_SLOT_2( _q_orientationChanged )
+    WEB_LSCS_SLOT_1( Private, void _q_orientationChanged() )
+    WEB_LSCS_SLOT_2( _q_orientationChanged )
 };
 
 #endif

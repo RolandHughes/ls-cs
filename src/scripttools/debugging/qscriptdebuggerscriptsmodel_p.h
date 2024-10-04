@@ -34,7 +34,7 @@ class QScriptDebuggerScriptsModelPrivate;
 
 class QScriptDebuggerScriptsModel : public QAbstractItemModel
 {
-    SCRIPT_T_CS_OBJECT( QScriptDebuggerScriptsModel )
+    SCRIPT_T_LSCS_OBJECT( QScriptDebuggerScriptsModel )
 
 public:
     QScriptDebuggerScriptsModel( QObject *parent = nullptr );

@@ -32,7 +32,7 @@
 
 class QGstreamerBusHelperPrivate : public QObject
 {
-    CS_OBJECT( QGstreamerBusHelperPrivate )
+    LSCS_OBJECT( QGstreamerBusHelperPrivate )
 
 public:
     QGstreamerBusHelperPrivate( QGstreamerBusHelper *parent, GstBus *bus ) :
@@ -103,11 +103,11 @@ private:
     QGstreamerBusHelper *m_helper;
     QTimer *m_intervalTimer;
 
-    CS_SLOT_1( Private, void doProcessMessage( const QGstreamerMessage &msg ) )
-    CS_SLOT_2( doProcessMessage )
+    LSCS_SLOT_1( Private, void doProcessMessage( const QGstreamerMessage &msg ) )
+    LSCS_SLOT_2( doProcessMessage )
 
-    CS_SLOT_1( Private, void interval() )
-    CS_SLOT_2( interval )
+    LSCS_SLOT_1( Private, void interval() )
+    LSCS_SLOT_2( interval )
 };
 
 

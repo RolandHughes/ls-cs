@@ -417,7 +417,7 @@ void qGeomCalc( QVector<QLayoutStruct> &chain, int start, int count, int pos, in
         }
     }
 
-#if defined(CS_SHOW_DEBUG_GUI)
+#if defined(LSCS_SHOW_DEBUG_GUI)
     qDebug() << "qGeomCalc()" << "start =" << start << " count =" << count << " pos =" << pos
              <<  " space =" << space << " spacer =" << spacer;
 

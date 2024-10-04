@@ -117,7 +117,7 @@ void cs_require_version( int argc, char *argv[], const char *str )
         box.setWindowIcon( icon );
         box.exec();
 
-        qFatal( "%s", csPrintable( errMsg ) );
+        qFatal( "%s", lscsPrintable( errMsg ) );
     }
 }
 
@@ -125,7 +125,7 @@ void cs_require_version( int argc, char *argv[], const char *str )
 
 class QMessageBoxDetailsText : public QWidget
 {
-    GUI_CS_OBJECT( QMessageBoxDetailsText )
+    GUI_LSCS_OBJECT( QMessageBoxDetailsText )
 
 public:
     class TextEdit : public QTextEdit
@@ -199,11 +199,11 @@ public:
     }
 
 private:
-    GUI_CS_SLOT_1( Private, void textCopyAvailable( bool status )
+    GUI_LSCS_SLOT_1( Private, void textCopyAvailable( bool status )
     {
         copyAvailable = status;
     } )
-    GUI_CS_SLOT_2( textCopyAvailable )
+    GUI_LSCS_SLOT_2( textCopyAvailable )
 
     bool copyAvailable;
     TextEdit *textEdit;

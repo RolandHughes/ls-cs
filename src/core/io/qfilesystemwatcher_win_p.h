@@ -44,7 +44,7 @@ class QWindowsFileSystemWatcherEngineThread;
 // to do the actually watching.
 class QWindowsFileSystemWatcherEngine : public QFileSystemWatcherEngine
 {
-    CORE_CS_OBJECT( QWindowsFileSystemWatcherEngine )
+    CORE_LSCS_OBJECT( QWindowsFileSystemWatcherEngine )
 
 public:
     QWindowsFileSystemWatcherEngine();
@@ -103,7 +103,7 @@ private:
 
 class QWindowsFileSystemWatcherEngineThread : public QThread
 {
-    CORE_CS_OBJECT( QWindowsFileSystemWatcherEngineThread )
+    CORE_LSCS_OBJECT( QWindowsFileSystemWatcherEngineThread )
 
 public:
     QWindowsFileSystemWatcherEngineThread();
@@ -120,10 +120,10 @@ public:
 
     QHash<HANDLE, QHash<QString, QWindowsFileSystemWatcherEngine::PathInfo>> pathInfoForHandle;
 
-    CORE_CS_SIGNAL_1( Public, void fileChanged( const QString &path, bool removed ) )
-    CORE_CS_SIGNAL_2( fileChanged, path, removed )
-    CORE_CS_SIGNAL_1( Public, void directoryChanged( const QString &path, bool removed ) )
-    CORE_CS_SIGNAL_2( directoryChanged, path, removed )
+    CORE_LSCS_SIGNAL_1( Public, void fileChanged( const QString &path, bool removed ) )
+    CORE_LSCS_SIGNAL_2( fileChanged, path, removed )
+    CORE_LSCS_SIGNAL_1( Public, void directoryChanged( const QString &path, bool removed ) )
+    CORE_LSCS_SIGNAL_2( directoryChanged, path, removed )
 };
 
 #endif // QT_NO_FILESYSTEMWATCHER

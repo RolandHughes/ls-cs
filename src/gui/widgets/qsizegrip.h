@@ -32,7 +32,7 @@ class QSizeGripPrivate;
 
 class Q_GUI_EXPORT QSizeGrip : public QWidget
 {
-    GUI_CS_OBJECT( QSizeGrip )
+    GUI_LSCS_OBJECT( QSizeGrip )
 
 public:
     explicit QSizeGrip( QWidget *parent );
@@ -60,8 +60,8 @@ protected:
 private:
     Q_DECLARE_PRIVATE( QSizeGrip )
 
-    GUI_CS_SLOT_1( Private, void _q_showIfNotHidden() )
-    GUI_CS_SLOT_2( _q_showIfNotHidden )
+    GUI_LSCS_SLOT_1( Private, void _q_showIfNotHidden() )
+    GUI_LSCS_SLOT_2( _q_showIfNotHidden )
 };
 
 #endif // QT_NO_SIZEGRIP

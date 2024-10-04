@@ -38,7 +38,7 @@ class InspectorClientQt;
 
 class InspectorServerQt : public QObject
 {
-    WEB_CS_OBJECT( InspectorServerQt )
+    WEB_LSCS_OBJECT( InspectorServerQt )
 public:
 
     static InspectorServerQt *server();
@@ -56,8 +56,8 @@ protected:
     virtual ~InspectorServerQt();
 
 private :
-    WEB_CS_SLOT_1( Private, void newConnection() )
-    WEB_CS_SLOT_2( newConnection )
+    WEB_LSCS_SLOT_1( Private, void newConnection() )
+    WEB_LSCS_SLOT_2( newConnection )
 
 private:
     QTcpServer *m_tcpServer;
@@ -69,7 +69,7 @@ private:
 
 class RemoteFrontendChannel : public QObject
 {
-    WEB_CS_OBJECT( RemoteFrontendChannel )
+    WEB_LSCS_OBJECT( RemoteFrontendChannel )
 public:
 
     RemoteFrontendChannel( InspectorServerRequestHandlerQt *requestHandler );
@@ -81,7 +81,7 @@ private:
 
 class InspectorServerRequestHandlerQt : public QObject
 {
-    WEB_CS_OBJECT( InspectorServerRequestHandlerQt )
+    WEB_LSCS_OBJECT( InspectorServerRequestHandlerQt )
 
 public:
 
@@ -91,12 +91,12 @@ public:
     virtual int webSocketSend( const char *payload, size_t length );
 
 private :
-    WEB_CS_SLOT_1( Private, void tcpReadyRead() )
-    WEB_CS_SLOT_2( tcpReadyRead )
-    WEB_CS_SLOT_1( Private, void tcpConnectionDisconnected() )
-    WEB_CS_SLOT_2( tcpConnectionDisconnected )
-    WEB_CS_SLOT_1( Private, void webSocketReadyRead() )
-    WEB_CS_SLOT_2( webSocketReadyRead )
+    WEB_LSCS_SLOT_1( Private, void tcpReadyRead() )
+    WEB_LSCS_SLOT_2( tcpReadyRead )
+    WEB_LSCS_SLOT_1( Private, void tcpConnectionDisconnected() )
+    WEB_LSCS_SLOT_2( tcpConnectionDisconnected )
+    WEB_LSCS_SLOT_1( Private, void webSocketReadyRead() )
+    WEB_LSCS_SLOT_2( webSocketReadyRead )
 
     QTcpSocket *m_tcpConnection;
     InspectorServerQt *m_server;

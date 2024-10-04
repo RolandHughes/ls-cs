@@ -165,20 +165,20 @@ private :
 
 class QFileInfoGatherer : public QThread
 {
-    GUI_CS_OBJECT( QFileInfoGatherer )
+    GUI_LSCS_OBJECT( QFileInfoGatherer )
 
 public:
-    GUI_CS_SIGNAL_1( Public, void updates( const QString &directory, const QVector <QPair <QString, QFileInfo>> &updates ) )
-    GUI_CS_SIGNAL_2( updates, directory, updates )
+    GUI_LSCS_SIGNAL_1( Public, void updates( const QString &directory, const QVector <QPair <QString, QFileInfo>> &updates ) )
+    GUI_LSCS_SIGNAL_2( updates, directory, updates )
 
-    GUI_CS_SIGNAL_1( Public, void newListOfFiles( const QString &directory, const QStringList &listOfFiles ) )
-    GUI_CS_SIGNAL_2( newListOfFiles, directory, listOfFiles )
+    GUI_LSCS_SIGNAL_1( Public, void newListOfFiles( const QString &directory, const QStringList &listOfFiles ) )
+    GUI_LSCS_SIGNAL_2( newListOfFiles, directory, listOfFiles )
 
-    GUI_CS_SIGNAL_1( Public, void nameResolved( const QString &fileName, const QString &resolvedName ) )
-    GUI_CS_SIGNAL_2( nameResolved, fileName, resolvedName )
+    GUI_LSCS_SIGNAL_1( Public, void nameResolved( const QString &fileName, const QString &resolvedName ) )
+    GUI_LSCS_SIGNAL_2( nameResolved, fileName, resolvedName )
 
-    GUI_CS_SIGNAL_1( Public, void directoryLoaded( const QString &path ) )
-    GUI_CS_SIGNAL_2( directoryLoaded, path )
+    GUI_LSCS_SIGNAL_1( Public, void directoryLoaded( const QString &path ) )
+    GUI_LSCS_SIGNAL_2( directoryLoaded, path )
 
     explicit QFileInfoGatherer( QObject *parent = nullptr );
     ~QFileInfoGatherer();
@@ -189,20 +189,20 @@ public:
     QFileIconProvider *iconProvider() const;
     bool resolveSymlinks() const;
 
-    GUI_CS_SLOT_1( Public, void list( const QString &directoryPath ) )
-    GUI_CS_SLOT_2( list )
+    GUI_LSCS_SLOT_1( Public, void list( const QString &directoryPath ) )
+    GUI_LSCS_SLOT_2( list )
 
-    GUI_CS_SLOT_1( Public, void fetchExtendedInformation( const QString &path, const QStringList &files ) )
-    GUI_CS_SLOT_2( fetchExtendedInformation )
+    GUI_LSCS_SLOT_1( Public, void fetchExtendedInformation( const QString &path, const QStringList &files ) )
+    GUI_LSCS_SLOT_2( fetchExtendedInformation )
 
-    GUI_CS_SLOT_1( Public, void updateFile( const QString &path ) )
-    GUI_CS_SLOT_2( updateFile )
+    GUI_LSCS_SLOT_1( Public, void updateFile( const QString &path ) )
+    GUI_LSCS_SLOT_2( updateFile )
 
-    GUI_CS_SLOT_1( Public, void setResolveSymlinks( bool enable ) )
-    GUI_CS_SLOT_2( setResolveSymlinks )
+    GUI_LSCS_SLOT_1( Public, void setResolveSymlinks( bool enable ) )
+    GUI_LSCS_SLOT_2( setResolveSymlinks )
 
-    GUI_CS_SLOT_1( Public, void setIconProvider( QFileIconProvider *provider ) )
-    GUI_CS_SLOT_2( setIconProvider )
+    GUI_LSCS_SLOT_1( Public, void setIconProvider( QFileIconProvider *provider ) )
+    GUI_LSCS_SLOT_2( setIconProvider )
 
 private:
     void run() override;

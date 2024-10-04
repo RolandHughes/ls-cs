@@ -49,7 +49,7 @@
 
 class Q_GUI_EXPORT QLineControl : public QInputControl
 {
-    GUI_CS_OBJECT( QLineControl )
+    GUI_LSCS_OBJECT( QLineControl )
 
 public:
     QLineControl( const QString &txt = QString() )
@@ -606,39 +606,39 @@ public:
         return &m_textLayout;
     }
 
-    GUI_CS_SIGNAL_1( Public, void cursorPositionChanged( int oldpos, int newpos ) )
-    GUI_CS_SIGNAL_2( cursorPositionChanged, oldpos, newpos )
+    GUI_LSCS_SIGNAL_1( Public, void cursorPositionChanged( int oldpos, int newpos ) )
+    GUI_LSCS_SIGNAL_2( cursorPositionChanged, oldpos, newpos )
 
-    GUI_CS_SIGNAL_1( Public, void selectionChanged() )
-    GUI_CS_SIGNAL_2( selectionChanged )
+    GUI_LSCS_SIGNAL_1( Public, void selectionChanged() )
+    GUI_LSCS_SIGNAL_2( selectionChanged )
 
-    GUI_CS_SIGNAL_1( Public, void displayTextChanged( const QString &text ) )
-    GUI_CS_SIGNAL_2( displayTextChanged, text )
+    GUI_LSCS_SIGNAL_1( Public, void displayTextChanged( const QString &text ) )
+    GUI_LSCS_SIGNAL_2( displayTextChanged, text )
 
-    GUI_CS_SIGNAL_1( Public, void textChanged( const QString &text ) )
-    GUI_CS_SIGNAL_2( textChanged, text )
+    GUI_LSCS_SIGNAL_1( Public, void textChanged( const QString &text ) )
+    GUI_LSCS_SIGNAL_2( textChanged, text )
 
-    GUI_CS_SIGNAL_1( Public, void textEdited( const QString &text ) )
-    GUI_CS_SIGNAL_2( textEdited, text )
+    GUI_LSCS_SIGNAL_1( Public, void textEdited( const QString &text ) )
+    GUI_LSCS_SIGNAL_2( textEdited, text )
 
-    GUI_CS_SIGNAL_1( Public, void resetInputContext() )
-    GUI_CS_SIGNAL_2( resetInputContext )
+    GUI_LSCS_SIGNAL_1( Public, void resetInputContext() )
+    GUI_LSCS_SIGNAL_2( resetInputContext )
 
-    GUI_CS_SIGNAL_1( Public, void updateMicroFocus() )
-    GUI_CS_SIGNAL_2( updateMicroFocus )
+    GUI_LSCS_SIGNAL_1( Public, void updateMicroFocus() )
+    GUI_LSCS_SIGNAL_2( updateMicroFocus )
 
-    GUI_CS_SIGNAL_1( Public, void accepted() )
-    GUI_CS_SIGNAL_2( accepted )
+    GUI_LSCS_SIGNAL_1( Public, void accepted() )
+    GUI_LSCS_SIGNAL_2( accepted )
 
-    GUI_CS_SIGNAL_1( Public, void editingFinished() )
-    GUI_CS_SIGNAL_2( editingFinished )
+    GUI_LSCS_SIGNAL_1( Public, void editingFinished() )
+    GUI_LSCS_SIGNAL_2( editingFinished )
 
-    GUI_CS_SIGNAL_1( Public, void updateNeeded( const QRect &rect ) )
-    GUI_CS_SIGNAL_2( updateNeeded, rect )
+    GUI_LSCS_SIGNAL_1( Public, void updateNeeded( const QRect &rect ) )
+    GUI_LSCS_SIGNAL_2( updateNeeded, rect )
 
 #ifdef QT_KEYPAD_NAVIGATION
-    GUI_CS_SIGNAL_1( Public, void editFocusChange( bool isFocusChanged ) )
-    GUI_CS_SIGNAL_2( editFocusChange, isFocusChanged )
+    GUI_LSCS_SIGNAL_1( Public, void editFocusChange( bool isFocusChanged ) )
+    GUI_LSCS_SIGNAL_2( editFocusChange, isFocusChanged )
 #endif
 
 protected:
@@ -775,11 +775,11 @@ private:
 
     int redoTextLayout() const;
 
-    GUI_CS_SLOT_1( Private, void _q_clipboardChanged() )
-    GUI_CS_SLOT_2( _q_clipboardChanged )
+    GUI_LSCS_SLOT_1( Private, void _q_clipboardChanged() )
+    GUI_LSCS_SLOT_2( _q_clipboardChanged )
 
-    GUI_CS_SLOT_1( Private, void _q_deleteSelected() )
-    GUI_CS_SLOT_2( _q_deleteSelected )
+    GUI_LSCS_SLOT_1( Private, void _q_deleteSelected() )
+    GUI_LSCS_SLOT_2( _q_deleteSelected )
 
 private:
     friend class QLineEdit;

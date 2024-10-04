@@ -43,72 +43,72 @@ class QDebug;
 
 class Q_GUI_EXPORT QScreen : public QObject
 {
-    GUI_CS_OBJECT( QScreen )
+    GUI_LSCS_OBJECT( QScreen )
 
-    GUI_CS_PROPERTY_READ( name, name )
-    GUI_CS_PROPERTY_CONSTANT( name )
+    GUI_LSCS_PROPERTY_READ( name, name )
+    GUI_LSCS_PROPERTY_CONSTANT( name )
 
-    GUI_CS_PROPERTY_READ( depth, depth )
-    GUI_CS_PROPERTY_CONSTANT( depth )
+    GUI_LSCS_PROPERTY_READ( depth, depth )
+    GUI_LSCS_PROPERTY_CONSTANT( depth )
 
-    GUI_CS_PROPERTY_READ( size, size )
-    GUI_CS_PROPERTY_NOTIFY( size, geometryChanged )
+    GUI_LSCS_PROPERTY_READ( size, size )
+    GUI_LSCS_PROPERTY_NOTIFY( size, geometryChanged )
 
-    GUI_CS_PROPERTY_READ( availableSize, availableSize )
-    GUI_CS_PROPERTY_NOTIFY( availableSize, availableGeometryChanged )
+    GUI_LSCS_PROPERTY_READ( availableSize, availableSize )
+    GUI_LSCS_PROPERTY_NOTIFY( availableSize, availableGeometryChanged )
 
-    GUI_CS_PROPERTY_READ( virtualSize, virtualSize )
-    GUI_CS_PROPERTY_NOTIFY( virtualSize, virtualGeometryChanged )
+    GUI_LSCS_PROPERTY_READ( virtualSize, virtualSize )
+    GUI_LSCS_PROPERTY_NOTIFY( virtualSize, virtualGeometryChanged )
 
-    GUI_CS_PROPERTY_READ( availableVirtualSize, availableVirtualSize )
-    GUI_CS_PROPERTY_NOTIFY( availableVirtualSize, virtualGeometryChanged )
+    GUI_LSCS_PROPERTY_READ( availableVirtualSize, availableVirtualSize )
+    GUI_LSCS_PROPERTY_NOTIFY( availableVirtualSize, virtualGeometryChanged )
 
-    GUI_CS_PROPERTY_READ( geometry, geometry )
-    GUI_CS_PROPERTY_NOTIFY( geometry, geometryChanged )
+    GUI_LSCS_PROPERTY_READ( geometry, geometry )
+    GUI_LSCS_PROPERTY_NOTIFY( geometry, geometryChanged )
 
-    GUI_CS_PROPERTY_READ( availableGeometry, availableGeometry )
-    GUI_CS_PROPERTY_NOTIFY( availableGeometry, availableGeometryChanged )
+    GUI_LSCS_PROPERTY_READ( availableGeometry, availableGeometry )
+    GUI_LSCS_PROPERTY_NOTIFY( availableGeometry, availableGeometryChanged )
 
-    GUI_CS_PROPERTY_READ( virtualGeometry, virtualGeometry )
-    GUI_CS_PROPERTY_NOTIFY( virtualGeometry, virtualGeometryChanged )
+    GUI_LSCS_PROPERTY_READ( virtualGeometry, virtualGeometry )
+    GUI_LSCS_PROPERTY_NOTIFY( virtualGeometry, virtualGeometryChanged )
 
-    GUI_CS_PROPERTY_READ( availableVirtualGeometry, availableVirtualGeometry )
-    GUI_CS_PROPERTY_NOTIFY( availableVirtualGeometry, virtualGeometryChanged )
+    GUI_LSCS_PROPERTY_READ( availableVirtualGeometry, availableVirtualGeometry )
+    GUI_LSCS_PROPERTY_NOTIFY( availableVirtualGeometry, virtualGeometryChanged )
 
-    GUI_CS_PROPERTY_READ( physicalSize, physicalSize )
-    GUI_CS_PROPERTY_NOTIFY( physicalSize, physicalSizeChanged )
+    GUI_LSCS_PROPERTY_READ( physicalSize, physicalSize )
+    GUI_LSCS_PROPERTY_NOTIFY( physicalSize, physicalSizeChanged )
 
-    GUI_CS_PROPERTY_READ( physicalDotsPerInchX, physicalDotsPerInchX )
-    GUI_CS_PROPERTY_NOTIFY( physicalDotsPerInchX, physicalDotsPerInchChanged )
+    GUI_LSCS_PROPERTY_READ( physicalDotsPerInchX, physicalDotsPerInchX )
+    GUI_LSCS_PROPERTY_NOTIFY( physicalDotsPerInchX, physicalDotsPerInchChanged )
 
-    GUI_CS_PROPERTY_READ( physicalDotsPerInchY, physicalDotsPerInchY )
-    GUI_CS_PROPERTY_NOTIFY( physicalDotsPerInchY, physicalDotsPerInchChanged )
+    GUI_LSCS_PROPERTY_READ( physicalDotsPerInchY, physicalDotsPerInchY )
+    GUI_LSCS_PROPERTY_NOTIFY( physicalDotsPerInchY, physicalDotsPerInchChanged )
 
-    GUI_CS_PROPERTY_READ( physicalDotsPerInch, physicalDotsPerInch )
-    GUI_CS_PROPERTY_NOTIFY( physicalDotsPerInch, physicalDotsPerInchChanged )
+    GUI_LSCS_PROPERTY_READ( physicalDotsPerInch, physicalDotsPerInch )
+    GUI_LSCS_PROPERTY_NOTIFY( physicalDotsPerInch, physicalDotsPerInchChanged )
 
-    GUI_CS_PROPERTY_READ( logicalDotsPerInchX, logicalDotsPerInchX )
-    GUI_CS_PROPERTY_NOTIFY( logicalDotsPerInchX, logicalDotsPerInchChanged )
+    GUI_LSCS_PROPERTY_READ( logicalDotsPerInchX, logicalDotsPerInchX )
+    GUI_LSCS_PROPERTY_NOTIFY( logicalDotsPerInchX, logicalDotsPerInchChanged )
 
-    GUI_CS_PROPERTY_READ( logicalDotsPerInchY, logicalDotsPerInchY )
-    GUI_CS_PROPERTY_NOTIFY( logicalDotsPerInchY, logicalDotsPerInchChanged )
+    GUI_LSCS_PROPERTY_READ( logicalDotsPerInchY, logicalDotsPerInchY )
+    GUI_LSCS_PROPERTY_NOTIFY( logicalDotsPerInchY, logicalDotsPerInchChanged )
 
-    GUI_CS_PROPERTY_READ( logicalDotsPerInch, logicalDotsPerInch )
-    GUI_CS_PROPERTY_NOTIFY( logicalDotsPerInch, logicalDotsPerInchChanged )
+    GUI_LSCS_PROPERTY_READ( logicalDotsPerInch, logicalDotsPerInch )
+    GUI_LSCS_PROPERTY_NOTIFY( logicalDotsPerInch, logicalDotsPerInchChanged )
 
-    GUI_CS_PROPERTY_READ( devicePixelRatio, devicePixelRatio )
-    GUI_CS_PROPERTY_NOTIFY( devicePixelRatio, physicalDotsPerInchChanged )
+    GUI_LSCS_PROPERTY_READ( devicePixelRatio, devicePixelRatio )
+    GUI_LSCS_PROPERTY_NOTIFY( devicePixelRatio, physicalDotsPerInchChanged )
 
-    GUI_CS_PROPERTY_READ( primaryOrientation, primaryOrientation )
-    GUI_CS_PROPERTY_NOTIFY( primaryOrientation, primaryOrientationChanged )
+    GUI_LSCS_PROPERTY_READ( primaryOrientation, primaryOrientation )
+    GUI_LSCS_PROPERTY_NOTIFY( primaryOrientation, primaryOrientationChanged )
 
-    GUI_CS_PROPERTY_READ( orientation, orientation )
-    GUI_CS_PROPERTY_NOTIFY( orientation, orientationChanged )
+    GUI_LSCS_PROPERTY_READ( orientation, orientation )
+    GUI_LSCS_PROPERTY_NOTIFY( orientation, orientationChanged )
 
-    GUI_CS_PROPERTY_READ( nativeOrientation, nativeOrientation )
+    GUI_LSCS_PROPERTY_READ( nativeOrientation, nativeOrientation )
 
-    GUI_CS_PROPERTY_READ( refreshRate, refreshRate )
-    GUI_CS_PROPERTY_NOTIFY( refreshRate, refreshRateChanged )
+    GUI_LSCS_PROPERTY_READ( refreshRate, refreshRate )
+    GUI_LSCS_PROPERTY_NOTIFY( refreshRate, refreshRateChanged )
 
 public:
     QScreen( const QScreen & ) = delete;
@@ -164,32 +164,32 @@ public:
 
     qreal refreshRate() const;
 
-    GUI_CS_SIGNAL_1( Public, void geometryChanged( const QRect &geometry ) )
-    GUI_CS_SIGNAL_2( geometryChanged, geometry )
+    GUI_LSCS_SIGNAL_1( Public, void geometryChanged( const QRect &geometry ) )
+    GUI_LSCS_SIGNAL_2( geometryChanged, geometry )
 
-    GUI_CS_SIGNAL_1( Public, void availableGeometryChanged( const QRect &geometry ) )
-    GUI_CS_SIGNAL_2( availableGeometryChanged, geometry )
+    GUI_LSCS_SIGNAL_1( Public, void availableGeometryChanged( const QRect &geometry ) )
+    GUI_LSCS_SIGNAL_2( availableGeometryChanged, geometry )
 
-    GUI_CS_SIGNAL_1( Public, void physicalSizeChanged( const QSizeF &size ) )
-    GUI_CS_SIGNAL_2( physicalSizeChanged, size )
+    GUI_LSCS_SIGNAL_1( Public, void physicalSizeChanged( const QSizeF &size ) )
+    GUI_LSCS_SIGNAL_2( physicalSizeChanged, size )
 
-    GUI_CS_SIGNAL_1( Public, void physicalDotsPerInchChanged( qreal dpi ) )
-    GUI_CS_SIGNAL_2( physicalDotsPerInchChanged, dpi )
+    GUI_LSCS_SIGNAL_1( Public, void physicalDotsPerInchChanged( qreal dpi ) )
+    GUI_LSCS_SIGNAL_2( physicalDotsPerInchChanged, dpi )
 
-    GUI_CS_SIGNAL_1( Public, void logicalDotsPerInchChanged( qreal dpi ) )
-    GUI_CS_SIGNAL_2( logicalDotsPerInchChanged, dpi )
+    GUI_LSCS_SIGNAL_1( Public, void logicalDotsPerInchChanged( qreal dpi ) )
+    GUI_LSCS_SIGNAL_2( logicalDotsPerInchChanged, dpi )
 
-    GUI_CS_SIGNAL_1( Public, void virtualGeometryChanged( const QRect &rect ) )
-    GUI_CS_SIGNAL_2( virtualGeometryChanged, rect )
+    GUI_LSCS_SIGNAL_1( Public, void virtualGeometryChanged( const QRect &rect ) )
+    GUI_LSCS_SIGNAL_2( virtualGeometryChanged, rect )
 
-    GUI_CS_SIGNAL_1( Public, void primaryOrientationChanged( Qt::ScreenOrientation orientation ) )
-    GUI_CS_SIGNAL_2( primaryOrientationChanged, orientation )
+    GUI_LSCS_SIGNAL_1( Public, void primaryOrientationChanged( Qt::ScreenOrientation orientation ) )
+    GUI_LSCS_SIGNAL_2( primaryOrientationChanged, orientation )
 
-    GUI_CS_SIGNAL_1( Public, void orientationChanged( Qt::ScreenOrientation orientation ) )
-    GUI_CS_SIGNAL_2( orientationChanged, orientation )
+    GUI_LSCS_SIGNAL_1( Public, void orientationChanged( Qt::ScreenOrientation orientation ) )
+    GUI_LSCS_SIGNAL_2( orientationChanged, orientation )
 
-    GUI_CS_SIGNAL_1( Public, void refreshRateChanged( qreal refreshRate ) )
-    GUI_CS_SIGNAL_2( refreshRateChanged, refreshRate )
+    GUI_LSCS_SIGNAL_1( Public, void refreshRateChanged( qreal refreshRate ) )
+    GUI_LSCS_SIGNAL_2( refreshRateChanged, refreshRate )
 
 protected:
     QScopedPointer<QScreenPrivate> d_ptr;

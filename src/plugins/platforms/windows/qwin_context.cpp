@@ -340,7 +340,7 @@ int QWindowsContext::processDpiAwareness()
 void QWindowsContext::setProcessDpiAwareness( QtWindows::ProcessDpiAwareness dpiAwareness )
 {
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
     qDebug() << "QWindowsContext::setProcessDpiAwareness() Dpi =" << dpiAwareness;
 #endif
 
@@ -424,20 +424,20 @@ QString QWindowsContext::registerWindowClass( const QWindow *w )
     const Qt::WindowFlags type = flags & Qt::WindowType_Mask;
 
     // Determine style and icon.
-    uint style = CS_DBLCLKS;
+    uint style = LSCS_DBLCLKS;
     bool icon = true;
 
-    // The following will not set CS_OWNDC for any widget window, even if it contains a
+    // The following will not set LSCS_OWNDC for any widget window, even if it contains a
     // QOpenGLWidget or QQuickWidget later on. That cannot be detected at this stage.
     if ( w->surfaceType() == QSurface::OpenGLSurface || ( flags & Qt::MSWindowsOwnDC ) )
     {
-        style |= CS_OWNDC;
+        style |= LSCS_OWNDC;
     }
 
     if ( !( flags & Qt::NoDropShadowWindowHint ) && ( QSysInfo::WindowsVersion & QSysInfo::WV_NT_based )
             && ( type == Qt::Popup || w->property( "_q_windowsDropShadow" ).toBool() ) )
     {
-        style |= CS_DROPSHADOW;
+        style |= LSCS_DROPSHADOW;
     }
 
     switch ( type )
@@ -445,7 +445,7 @@ QString QWindowsContext::registerWindowClass( const QWindow *w )
         case Qt::Tool:
         case Qt::ToolTip:
         case Qt::Popup:
-            style |= CS_SAVEBITS; // Save/restore background
+            style |= LSCS_SAVEBITS; // Save/restore background
             icon = false;
             break;
 
@@ -479,17 +479,17 @@ QString QWindowsContext::registerWindowClass( const QWindow *w )
             break;
     }
 
-    if ( style & CS_DROPSHADOW )
+    if ( style & LSCS_DROPSHADOW )
     {
         cname += QString( "DropShadow" );
     }
 
-    if ( style & CS_SAVEBITS )
+    if ( style & LSCS_SAVEBITS )
     {
         cname += QString( "SaveBits" );
     }
 
-    if ( style & CS_OWNDC )
+    if ( style & LSCS_OWNDC )
     {
         cname += QString( "OwnDC" );
     }
@@ -577,12 +577,12 @@ QString QWindowsContext::registerWindowClass( QString cname, WNDPROC proc, unsig
 
     if ( ! atom )
     {
-        qErrnoWarning( "QApplication::regClass() Registering window class %s failed", csPrintable( cname ) );
+        qErrnoWarning( "QApplication::regClass() Registering window class %s failed", lscsPrintable( cname ) );
     }
 
     d->m_registeredWindowClassNames.insert( cname );
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
     qDebug() << "QWindowsContext::registerWindowClass() ClassName =" << cname << "\n"
              << "  Style = 0x" << hex << style << dec
              << "Brush =" << brush << " Icon =" << icon << " Atom =" << atom;
@@ -599,7 +599,7 @@ void QWindowsContext::unregisterWindowClasses()
     {
         if ( ! UnregisterClass( name.toStdWString().data(), appInstance ) )
         {
-            qErrnoWarning( "UnregisterClass failed for %s", csPrintable( name ) );
+            qErrnoWarning( "UnregisterClass failed for %s", lscsPrintable( name ) );
         }
     }
 

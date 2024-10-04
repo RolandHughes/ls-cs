@@ -44,7 +44,7 @@ private:
     friend class QDeclarativeEnginePrivate;
     QDeclarativeParserStatus **d;
 };
-CS_DECLARE_INTERFACE( QDeclarativeParserStatus, "com.copperspice.qml.QDeclarativeParserStatus" )
+LSCS_DECLARE_INTERFACE( QDeclarativeParserStatus, "com.copperspice.qml.QDeclarativeParserStatus" )
 
 QT_END_NAMESPACE
 

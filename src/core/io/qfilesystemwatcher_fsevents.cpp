@@ -439,7 +439,7 @@ void QFSEventsFileSystemWatcherEngine::updateList( PathInfoList &list, bool dire
             else
             {
                 qWarning( "%s:%d:QFSEventsFileSystemWatcherEngine: stat error on %s:%s",
-                          __FILE__, __LINE__, csPrintable( it->originalPath ), strerror( errno ) );
+                          __FILE__, __LINE__, lscsPrintable( it->originalPath ), strerror( errno ) );
 
             }
         }
@@ -574,7 +574,7 @@ void QFSEventsFileSystemWatcherEngine::run()
     // the stream, because otherwise you might miss an update in between starting it.
     updateFiles();
 
-#if defined(CS_DISABLE_ASSERT)
+#if defined(LSCS_DISABLE_ASSERT)
     ( void ) startedOK;
 #else
     Q_ASSERT( startedOK );

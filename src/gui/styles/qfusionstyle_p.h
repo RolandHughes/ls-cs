@@ -32,7 +32,7 @@ class QFusionStylePrivate;
 
 class QFusionStyle : public QCommonStyle
 {
-    GUI_CS_OBJECT( QFusionStyle )
+    GUI_LSCS_OBJECT( QFusionStyle )
     Q_DECLARE_PRIVATE( QFusionStyle )
 
 public:

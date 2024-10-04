@@ -143,7 +143,7 @@ void QFactoryLoader::setup()
             if ( ! library->isPlugin() )
             {
                 // show the full error message
-                qWarning( "QFactoryLoader::setup() %s", csPrintable( library->errorString ) );
+                qWarning( "QFactoryLoader::setup() %s", lscsPrintable( library->errorString ) );
 
                 library->release();
                 continue;
@@ -269,7 +269,7 @@ void QFactoryLoader::setup()
 #else
     Q_D( QFactoryLoader );
 
-#if defined(CS_SHOW_DEBUG_CORE_PLUGIN)
+#if defined(LSCS_SHOW_DEBUG_CORE_PLUGIN)
     qDebug() << "QFactoryLoader::QFactoryLoader() ignoring" << d->iid << "since plugins are disabled in static builds";
 #endif
 

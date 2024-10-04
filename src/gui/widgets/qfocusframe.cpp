@@ -43,7 +43,7 @@ public:
     {
         widget      = nullptr;
         frameParent = nullptr;
-        CSInternalEvents::set_m_sendChildEvents( q, false );
+        LSCSInternalEvents::set_m_sendChildEvents( q, false );
         showFrameAboveWidget = false;
     }
 

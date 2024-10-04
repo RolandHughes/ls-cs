@@ -555,7 +555,7 @@ void QWindowsTheme::refreshIconPixmapSizes()
 
 #endif
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
     qDebug() << "QWindowsTheme::refreshIconPixmapSizes() Size = " << sizes;
 #endif
 

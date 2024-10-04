@@ -39,7 +39,7 @@ QT_BEGIN_NAMESPACE
 
 class QDeclarativeBoundSignalParameters : public QObject
 {
-    DECL_CS_OBJECT( QDeclarativeBoundSignalParameters )
+    DECL_LSCS_OBJECT( QDeclarativeBoundSignalParameters )
 
 public:
     QDeclarativeBoundSignalParameters( const QMetaMethod &, QObject * = 0 );

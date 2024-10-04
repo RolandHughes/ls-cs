@@ -31,7 +31,7 @@ class CameraBinSession;
 
 class Q_MULTIMEDIA_EXPORT CameraBinCaptureDestination : public QCameraCaptureDestinationControl
 {
-    CS_OBJECT( CameraBinCaptureDestination )
+    LSCS_OBJECT( CameraBinCaptureDestination )
 
 public:
     CameraBinCaptureDestination( CameraBinSession *session );

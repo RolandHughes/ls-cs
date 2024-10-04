@@ -1614,7 +1614,7 @@ void QAbstractSpinBoxPrivate::interpret( EmitPolicy ep )
         const QString copy = tmp;
         q->fixup( tmp );
 
-#if defined(CS_SHOW_DEBUG_GUI_WIDGETS)
+#if defined(LSCS_SHOW_DEBUG_GUI_WIDGETS)
         qDebug() << "QAbstractSpinBoxPrivate::interpret() text '"
                  << edit->displayText()
                  << "' >> '" << copy << '\''
@@ -1690,7 +1690,7 @@ QVariant operator+( const QVariant &arg1, const QVariant &arg2 )
     if ( arg1.type() != arg2.type() )
     {
         qWarning( "QAbstractSpinBox: Variant data types do not match (%s vs %s)",
-                  csPrintable( arg1.typeName() ), csPrintable( arg2.typeName() ) );
+                  lscsPrintable( arg1.typeName() ), lscsPrintable( arg2.typeName() ) );
     }
 
     switch ( arg1.type() )
@@ -1747,7 +1747,7 @@ QVariant operator-( const QVariant &arg1, const QVariant &arg2 )
     if ( arg1.type() != arg2.type() )
     {
         qWarning( "QAbstractSpinBox: Variant data types do not match (%s vs %s)",
-                  csPrintable( arg1.typeName() ), csPrintable( arg2.typeName() ) );
+                  lscsPrintable( arg1.typeName() ), lscsPrintable( arg2.typeName() ) );
     }
 
     switch ( arg1.type() )
@@ -1866,7 +1866,7 @@ int QAbstractSpinBoxPrivate::variantCompare( const QVariant &arg1, const QVarian
     {
         case QVariant::Date:
             Q_ASSERT_X( arg1.type() == QVariant::Date, "QAbstractSpinBoxPrivate::variantCompare",
-                        csPrintable( QString( "Internal error 1 (%1)" ).formatArg( arg1.typeName() ) ) );
+                        lscsPrintable( QString( "Internal error 1 (%1)" ).formatArg( arg1.typeName() ) ) );
 
             if ( arg1.toDate() == arg2.toDate() )
             {
@@ -1883,7 +1883,7 @@ int QAbstractSpinBoxPrivate::variantCompare( const QVariant &arg1, const QVarian
 
         case QVariant::Time:
             Q_ASSERT_X( arg1.type() == QVariant::Time, "QAbstractSpinBoxPrivate::variantCompare",
-                        csPrintable( QString( "Internal error 2 (%1)" ).formatArg( arg1.typeName() ) ) );
+                        lscsPrintable( QString( "Internal error 2 (%1)" ).formatArg( arg1.typeName() ) ) );
 
             if ( arg1.toTime() == arg2.toTime() )
             {
@@ -1949,7 +1949,7 @@ int QAbstractSpinBoxPrivate::variantCompare( const QVariant &arg1, const QVarian
             [[fallthrough]];
 
         default:
-            Q_ASSERT_X( 0, "QAbstractSpinBoxPrivate::variantCompare", csPrintable( QString( "Internal error 3 (%1 %2)" )
+            Q_ASSERT_X( 0, "QAbstractSpinBoxPrivate::variantCompare", lscsPrintable( QString( "Internal error 3 (%1 %2)" )
                         .formatArg( arg1.typeName() ).formatArg( arg2.typeName() ) ) );
     }
 

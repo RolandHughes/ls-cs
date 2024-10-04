@@ -38,7 +38,7 @@ class QTextFrame;
 
 class Q_GUI_EXPORT QAbstractTextDocumentLayout : public QObject
 {
-    GUI_CS_OBJECT( QAbstractTextDocumentLayout )
+    GUI_LSCS_OBJECT( QAbstractTextDocumentLayout )
     Q_DECLARE_PRIVATE( QAbstractTextDocumentLayout )
 
 public:
@@ -82,17 +82,17 @@ public:
     void unregisterHandler( int objectType, QObject *component = nullptr );
     QTextObjectInterface *handlerForObject( int objectType ) const;
 
-    GUI_CS_SIGNAL_1( Public, void update( const QRectF &rect = QRectF( 0.0, 0.0, 1000000000.0, 1000000000.0 ) ) )
-    GUI_CS_SIGNAL_2( update, rect )
+    GUI_LSCS_SIGNAL_1( Public, void update( const QRectF &rect = QRectF( 0.0, 0.0, 1000000000.0, 1000000000.0 ) ) )
+    GUI_LSCS_SIGNAL_2( update, rect )
 
-    GUI_CS_SIGNAL_1( Public, void updateBlock( const QTextBlock &block ) )
-    GUI_CS_SIGNAL_2( updateBlock, block )
+    GUI_LSCS_SIGNAL_1( Public, void updateBlock( const QTextBlock &block ) )
+    GUI_LSCS_SIGNAL_2( updateBlock, block )
 
-    GUI_CS_SIGNAL_1( Public, void documentSizeChanged( const QSizeF &newSize ) )
-    GUI_CS_SIGNAL_2( documentSizeChanged, newSize )
+    GUI_LSCS_SIGNAL_1( Public, void documentSizeChanged( const QSizeF &newSize ) )
+    GUI_LSCS_SIGNAL_2( documentSizeChanged, newSize )
 
-    GUI_CS_SIGNAL_1( Public, void pageCountChanged( int newPages ) )
-    GUI_CS_SIGNAL_2( pageCountChanged, newPages )
+    GUI_LSCS_SIGNAL_1( Public, void pageCountChanged( int newPages ) )
+    GUI_LSCS_SIGNAL_2( pageCountChanged, newPages )
 
 protected:
     QAbstractTextDocumentLayout( QAbstractTextDocumentLayoutPrivate &, QTextDocument * );
@@ -117,14 +117,14 @@ private:
     friend class QTextLayout;
     friend class QTextLine;
 
-    GUI_CS_SLOT_1( Private, void _q_handlerDestroyed( QObject *obj ) )
-    GUI_CS_SLOT_2( _q_handlerDestroyed )
+    GUI_LSCS_SLOT_1( Private, void _q_handlerDestroyed( QObject *obj ) )
+    GUI_LSCS_SLOT_2( _q_handlerDestroyed )
 
-    GUI_CS_SLOT_1( Private, int _q_dynamicPageCountSlot() )
-    GUI_CS_SLOT_2( _q_dynamicPageCountSlot )
+    GUI_LSCS_SLOT_1( Private, int _q_dynamicPageCountSlot() )
+    GUI_LSCS_SLOT_2( _q_dynamicPageCountSlot )
 
-    GUI_CS_SLOT_1( Private, QSizeF _q_dynamicDocumentSizeSlot() )
-    GUI_CS_SLOT_2( _q_dynamicDocumentSizeSlot )
+    GUI_LSCS_SLOT_1( Private, QSizeF _q_dynamicDocumentSizeSlot() )
+    GUI_LSCS_SLOT_2( _q_dynamicDocumentSizeSlot )
 };
 
 class Q_GUI_EXPORT QTextObjectInterface
@@ -137,6 +137,6 @@ public:
                              const QTextFormat &format ) = 0;
 };
 
-CS_DECLARE_INTERFACE( QTextObjectInterface, "com.copperspice.QTextObjectInterface" )
+LSCS_DECLARE_INTERFACE( QTextObjectInterface, "com.copperspice.QTextObjectInterface" )
 
 #endif // QABSTRACTTEXTDOCUMENTLAYOUT_H

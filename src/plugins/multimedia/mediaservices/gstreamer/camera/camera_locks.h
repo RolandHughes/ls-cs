@@ -36,7 +36,7 @@ class CameraBinFocus;
 
 class CameraBinLocks  : public QCameraLocksControl
 {
-    CS_OBJECT( CameraBinLocks )
+    LSCS_OBJECT( CameraBinLocks )
 
 public:
     CameraBinLocks( CameraBinSession *session );
@@ -55,8 +55,8 @@ protected:
 #endif
 
 private :
-    CS_SLOT_1( Private, void updateFocusStatus( QCamera::LockStatus status, QCamera::LockChangeReason reason ) )
-    CS_SLOT_2( updateFocusStatus )
+    LSCS_SLOT_1( Private, void updateFocusStatus( QCamera::LockStatus status, QCamera::LockChangeReason reason ) )
+    LSCS_SLOT_2( updateFocusStatus )
 
 private:
 #if GST_CHECK_VERSION(1, 2, 0)

@@ -63,7 +63,7 @@ private:
 
 class QVideoSurfaceGstDelegate : public QObject
 {
-    CS_OBJECT( QVideoSurfaceGstDelegate )
+    LSCS_OBJECT( QVideoSurfaceGstDelegate )
 
 public:
     QVideoSurfaceGstDelegate( QAbstractVideoSurface *surface );
@@ -83,11 +83,11 @@ public:
     bool event( QEvent *event ) override;
 
 private:
-    CS_SLOT_1( Private, bool handleEvent( QMutexLocker *locker ) )
-    CS_SLOT_2( handleEvent )
+    LSCS_SLOT_1( Private, bool handleEvent( QMutexLocker *locker ) )
+    LSCS_SLOT_2( handleEvent )
 
-    CS_SLOT_1( Private, void updateSupportedFormats() )
-    CS_SLOT_2( updateSupportedFormats )
+    LSCS_SLOT_1( Private, void updateSupportedFormats() )
+    LSCS_SLOT_2( updateSupportedFormats )
 
     void notify();
     bool waitForAsyncEvent( QMutexLocker *locker, QWaitCondition *condition, unsigned long time );

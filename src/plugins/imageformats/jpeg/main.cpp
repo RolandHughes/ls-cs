@@ -34,10 +34,10 @@
 
 class QJpegPlugin : public QImageIOPlugin
 {
-    CS_OBJECT( QJpegPlugin )
+    LSCS_OBJECT( QJpegPlugin )
 
-    CS_PLUGIN_IID( QImageIOHandlerInterface_ID )
-    CS_PLUGIN_KEY( "jpeg, jpg" )
+    LSCS_PLUGIN_IID( QImageIOHandlerInterface_ID )
+    LSCS_PLUGIN_KEY( "jpeg, jpg" )
 
 public:
     QStringList keys() const;
@@ -45,7 +45,7 @@ public:
     QImageIOHandler *create( QIODevice *device, const QByteArray &format = QByteArray() ) const;
 };
 
-CS_PLUGIN_REGISTER( QJpegPlugin )
+LSCS_PLUGIN_REGISTER( QJpegPlugin )
 
 QStringList QJpegPlugin::keys() const
 {

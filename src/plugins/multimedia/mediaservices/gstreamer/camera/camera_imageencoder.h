@@ -34,7 +34,7 @@ class CameraBinSession;
 
 class CameraBinImageEncoder : public QImageEncoderControl
 {
-    CS_OBJECT( CameraBinImageEncoder )
+    LSCS_OBJECT( CameraBinImageEncoder )
 
 public:
     CameraBinImageEncoder( CameraBinSession *session );
@@ -49,8 +49,8 @@ public:
     QImageEncoderSettings imageSettings() const override;
     void setImageSettings( const QImageEncoderSettings &settings ) override;
 
-    CS_SIGNAL_1( Public, void settingsChanged() )
-    CS_SIGNAL_2( settingsChanged )
+    LSCS_SIGNAL_1( Public, void settingsChanged() )
+    LSCS_SIGNAL_2( settingsChanged )
 
 private:
     QImageEncoderSettings m_settings;

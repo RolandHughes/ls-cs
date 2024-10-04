@@ -47,7 +47,7 @@ class QNetworkAccessCachedHttpConnection;
 
 class QHttpThreadDelegate : public QObject
 {
-    NET_CS_OBJECT( QHttpThreadDelegate )
+    NET_LSCS_OBJECT( QHttpThreadDelegate )
 
 public:
     explicit QHttpThreadDelegate( QObject *parent = nullptr );
@@ -93,63 +93,63 @@ public:
     QSharedPointer<QNetworkSession> networkSession;
 #endif
 
-    NET_CS_SIGNAL_1( Public, void authenticationRequired( const QHttpNetworkRequest &request, QAuthenticator *authenticator ) )
-    NET_CS_SIGNAL_2( authenticationRequired, request, authenticator )
+    NET_LSCS_SIGNAL_1( Public, void authenticationRequired( const QHttpNetworkRequest &request, QAuthenticator *authenticator ) )
+    NET_LSCS_SIGNAL_2( authenticationRequired, request, authenticator )
 
 #ifndef QT_NO_NETWORKPROXY
-    NET_CS_SIGNAL_1( Public, void proxyAuthenticationRequired( const QNetworkProxy &proxy, QAuthenticator *authenticator ) )
-    NET_CS_SIGNAL_2( proxyAuthenticationRequired, proxy, authenticator )
+    NET_LSCS_SIGNAL_1( Public, void proxyAuthenticationRequired( const QNetworkProxy &proxy, QAuthenticator *authenticator ) )
+    NET_LSCS_SIGNAL_2( proxyAuthenticationRequired, proxy, authenticator )
 #endif
 
 #ifdef QT_SSL
-    NET_CS_SIGNAL_1( Public, void encrypted() )
-    NET_CS_SIGNAL_2( encrypted )
+    NET_LSCS_SIGNAL_1( Public, void encrypted() )
+    NET_LSCS_SIGNAL_2( encrypted )
 
-    NET_CS_SIGNAL_1( Public, void sslErrors( const QList <QSslError> &errorList, bool *ignoreAll, QList <QSslError> *toBeIgnored ) )
-    NET_CS_SIGNAL_2( sslErrors, errorList, ignoreAll, toBeIgnored )
+    NET_LSCS_SIGNAL_1( Public, void sslErrors( const QList <QSslError> &errorList, bool *ignoreAll, QList <QSslError> *toBeIgnored ) )
+    NET_LSCS_SIGNAL_2( sslErrors, errorList, ignoreAll, toBeIgnored )
 
-    NET_CS_SIGNAL_1( Public, void sslConfigurationChanged( const QSslConfiguration &sslConfig ) )
-    NET_CS_SIGNAL_2( sslConfigurationChanged, sslConfig )
+    NET_LSCS_SIGNAL_1( Public, void sslConfigurationChanged( const QSslConfiguration &sslConfig ) )
+    NET_LSCS_SIGNAL_2( sslConfigurationChanged, sslConfig )
 
-    NET_CS_SIGNAL_1( Public, void preSharedKeyAuthenticationRequired( QSslPreSharedKeyAuthenticator *data ) )
-    NET_CS_SIGNAL_2( preSharedKeyAuthenticationRequired, data )
+    NET_LSCS_SIGNAL_1( Public, void preSharedKeyAuthenticationRequired( QSslPreSharedKeyAuthenticator *data ) )
+    NET_LSCS_SIGNAL_2( preSharedKeyAuthenticationRequired, data )
 #endif
 
-    NET_CS_SIGNAL_1( Public, void downloadMetaData( const QList <QPair <QByteArray,QByteArray>> &headers, int statusCode,
+    NET_LSCS_SIGNAL_1( Public, void downloadMetaData( const QList <QPair <QByteArray,QByteArray>> &headers, int statusCode,
                      const QString &reason, bool isPipelined, QSharedPointer <char> downloadBuffer, qint64 contentLength, bool isSpdy ) )
-    NET_CS_SIGNAL_2( downloadMetaData, headers, statusCode, reason, isPipelined, downloadBuffer, contentLength, isSpdy )
+    NET_LSCS_SIGNAL_2( downloadMetaData, headers, statusCode, reason, isPipelined, downloadBuffer, contentLength, isSpdy )
 
-    NET_CS_SIGNAL_1( Public, void downloadProgress( qint64 bytesReceived, qint64 bytesTotal ) )
-    NET_CS_SIGNAL_2( downloadProgress, bytesReceived, bytesTotal )
+    NET_LSCS_SIGNAL_1( Public, void downloadProgress( qint64 bytesReceived, qint64 bytesTotal ) )
+    NET_LSCS_SIGNAL_2( downloadProgress, bytesReceived, bytesTotal )
 
-    NET_CS_SIGNAL_1( Public, void downloadData( const QByteArray &sizeEmitted ) )
-    NET_CS_SIGNAL_2( downloadData, sizeEmitted )
+    NET_LSCS_SIGNAL_1( Public, void downloadData( const QByteArray &sizeEmitted ) )
+    NET_LSCS_SIGNAL_2( downloadData, sizeEmitted )
 
-    NET_CS_SIGNAL_1( Public, void error( QNetworkReply::NetworkError errorCode, const QString &errorMsg ) )
-    NET_CS_SIGNAL_2( error, errorCode, errorMsg )
+    NET_LSCS_SIGNAL_1( Public, void error( QNetworkReply::NetworkError errorCode, const QString &errorMsg ) )
+    NET_LSCS_SIGNAL_2( error, errorCode, errorMsg )
 
-    NET_CS_SIGNAL_1( Public, void downloadFinished() )
-    NET_CS_SIGNAL_2( downloadFinished )
+    NET_LSCS_SIGNAL_1( Public, void downloadFinished() )
+    NET_LSCS_SIGNAL_2( downloadFinished )
 
-    NET_CS_SIGNAL_1( Public, void redirected( const QUrl &url, int httpStatus, int maxRedirectsRemaining ) )
-    NET_CS_SIGNAL_2( redirected, url, httpStatus, maxRedirectsRemaining )
+    NET_LSCS_SIGNAL_1( Public, void redirected( const QUrl &url, int httpStatus, int maxRedirectsRemaining ) )
+    NET_LSCS_SIGNAL_2( redirected, url, httpStatus, maxRedirectsRemaining )
 
     // This are called via QueuedConnection from user thread
-    NET_CS_SLOT_1( Public, void startRequest() )
-    NET_CS_SLOT_2( startRequest )
+    NET_LSCS_SLOT_1( Public, void startRequest() )
+    NET_LSCS_SLOT_2( startRequest )
 
-    NET_CS_SLOT_1( Public, void abortRequest() )
-    NET_CS_SLOT_2( abortRequest )
+    NET_LSCS_SLOT_1( Public, void abortRequest() )
+    NET_LSCS_SLOT_2( abortRequest )
 
-    NET_CS_SLOT_1( Public, void readBufferSizeChanged( qint64 size ) )
-    NET_CS_SLOT_2( readBufferSizeChanged )
+    NET_LSCS_SLOT_1( Public, void readBufferSizeChanged( qint64 size ) )
+    NET_LSCS_SLOT_2( readBufferSizeChanged )
 
-    NET_CS_SLOT_1( Public, void readBufferFreed( qint64 size ) )
-    NET_CS_SLOT_2( readBufferFreed )
+    NET_LSCS_SLOT_1( Public, void readBufferFreed( qint64 size ) )
+    NET_LSCS_SLOT_2( readBufferFreed )
 
     // This is called with a BlockingQueuedConnection from user thread
-    NET_CS_SLOT_1( Public, void startRequestSynchronously() )
-    NET_CS_SLOT_2( startRequestSynchronously )
+    NET_LSCS_SLOT_1( Public, void startRequestSynchronously() )
+    NET_LSCS_SLOT_2( startRequestSynchronously )
 
 protected:
     // The zerocopy download buffer, if used:
@@ -167,54 +167,54 @@ protected:
     static QThreadStorage<QNetworkAccessCache *> connections;
 
     // From QHttp*
-    NET_CS_SLOT_1( Protected, void readyReadSlot() )
-    NET_CS_SLOT_2( readyReadSlot )
+    NET_LSCS_SLOT_1( Protected, void readyReadSlot() )
+    NET_LSCS_SLOT_2( readyReadSlot )
 
-    NET_CS_SLOT_1( Protected, void finishedSlot() )
-    NET_CS_SLOT_2( finishedSlot )
+    NET_LSCS_SLOT_1( Protected, void finishedSlot() )
+    NET_LSCS_SLOT_2( finishedSlot )
 
-    NET_CS_SLOT_1( Protected, void finishedWithErrorSlot( QNetworkReply::NetworkError errorCode,
+    NET_LSCS_SLOT_1( Protected, void finishedWithErrorSlot( QNetworkReply::NetworkError errorCode,
                    const QString &detail = QString() ) )
-    NET_CS_SLOT_2( finishedWithErrorSlot )
+    NET_LSCS_SLOT_2( finishedWithErrorSlot )
 
-    NET_CS_SLOT_1( Protected, void synchronousFinishedSlot() )
-    NET_CS_SLOT_2( synchronousFinishedSlot )
+    NET_LSCS_SLOT_1( Protected, void synchronousFinishedSlot() )
+    NET_LSCS_SLOT_2( synchronousFinishedSlot )
 
-    NET_CS_SLOT_1( Protected, void synchronousFinishedWithErrorSlot( QNetworkReply::NetworkError errorCode,
+    NET_LSCS_SLOT_1( Protected, void synchronousFinishedWithErrorSlot( QNetworkReply::NetworkError errorCode,
                    const QString &detail = QString() ) )
-    NET_CS_SLOT_2( synchronousFinishedWithErrorSlot )
+    NET_LSCS_SLOT_2( synchronousFinishedWithErrorSlot )
 
-    NET_CS_SLOT_1( Protected, void headerChangedSlot() )
-    NET_CS_SLOT_2( headerChangedSlot )
+    NET_LSCS_SLOT_1( Protected, void headerChangedSlot() )
+    NET_LSCS_SLOT_2( headerChangedSlot )
 
-    NET_CS_SLOT_1( Protected, void synchronousHeaderChangedSlot() )
-    NET_CS_SLOT_2( synchronousHeaderChangedSlot )
+    NET_LSCS_SLOT_1( Protected, void synchronousHeaderChangedSlot() )
+    NET_LSCS_SLOT_2( synchronousHeaderChangedSlot )
 
-    NET_CS_SLOT_1( Protected, void dataReadProgressSlot( qint64 done, qint64 total ) )
-    NET_CS_SLOT_2( dataReadProgressSlot )
+    NET_LSCS_SLOT_1( Protected, void dataReadProgressSlot( qint64 done, qint64 total ) )
+    NET_LSCS_SLOT_2( dataReadProgressSlot )
 
-    NET_CS_SLOT_1( Protected, void cacheCredentialsSlot( const QHttpNetworkRequest &request, QAuthenticator *authenticator ) )
-    NET_CS_SLOT_2( cacheCredentialsSlot )
+    NET_LSCS_SLOT_1( Protected, void cacheCredentialsSlot( const QHttpNetworkRequest &request, QAuthenticator *authenticator ) )
+    NET_LSCS_SLOT_2( cacheCredentialsSlot )
 
 #ifdef QT_SSL
-    NET_CS_SLOT_1( Protected, void sslErrorsSlot( const QList <QSslError> &errors ) )
-    NET_CS_SLOT_2( sslErrorsSlot )
+    NET_LSCS_SLOT_1( Protected, void sslErrorsSlot( const QList <QSslError> &errors ) )
+    NET_LSCS_SLOT_2( sslErrorsSlot )
 
-    NET_CS_SLOT_1( Protected, void encryptedSlot() )
-    NET_CS_SLOT_2( encryptedSlot )
+    NET_LSCS_SLOT_1( Protected, void encryptedSlot() )
+    NET_LSCS_SLOT_2( encryptedSlot )
 
-    NET_CS_SLOT_1( Protected, void preSharedKeyAuthenticationRequiredSlot( QSslPreSharedKeyAuthenticator *authenticator ) )
-    NET_CS_SLOT_2( preSharedKeyAuthenticationRequiredSlot )
+    NET_LSCS_SLOT_1( Protected, void preSharedKeyAuthenticationRequiredSlot( QSslPreSharedKeyAuthenticator *authenticator ) )
+    NET_LSCS_SLOT_2( preSharedKeyAuthenticationRequiredSlot )
 #endif
 
-    NET_CS_SLOT_1( Protected, void synchronousAuthenticationRequiredSlot( const QHttpNetworkRequest &request,
+    NET_LSCS_SLOT_1( Protected, void synchronousAuthenticationRequiredSlot( const QHttpNetworkRequest &request,
                    QAuthenticator *authenticator ) )
-    NET_CS_SLOT_2( synchronousAuthenticationRequiredSlot )
+    NET_LSCS_SLOT_2( synchronousAuthenticationRequiredSlot )
 
 #ifndef QT_NO_NETWORKPROXY
-    NET_CS_SLOT_1( Protected, void synchronousProxyAuthenticationRequiredSlot( const QNetworkProxy &proxy,
+    NET_LSCS_SLOT_1( Protected, void synchronousProxyAuthenticationRequiredSlot( const QNetworkProxy &proxy,
                    QAuthenticator *authenticator ) )
-    NET_CS_SLOT_2( synchronousProxyAuthenticationRequiredSlot )
+    NET_LSCS_SLOT_2( synchronousProxyAuthenticationRequiredSlot )
 #endif
 
 };
@@ -223,7 +223,7 @@ protected:
 // and represents the PUT/POST data.
 class QNonContiguousByteDeviceThreadForwardImpl : public QNonContiguousByteDevice
 {
-    NET_CS_OBJECT( QNonContiguousByteDeviceThreadForwardImpl )
+    NET_LSCS_OBJECT( QNonContiguousByteDeviceThreadForwardImpl )
 
 public:
     QNonContiguousByteDeviceThreadForwardImpl( bool aE, qint64 s )
@@ -332,18 +332,18 @@ public:
     }
 
     // From user thread
-    NET_CS_SLOT_1( Public, void haveDataSlot( qint64 pos, const QByteArray &dataArray, bool dataAtEnd, qint64 dataSize ) )
-    NET_CS_SLOT_2( haveDataSlot )
+    NET_LSCS_SLOT_1( Public, void haveDataSlot( qint64 pos, const QByteArray &dataArray, bool dataAtEnd, qint64 dataSize ) )
+    NET_LSCS_SLOT_2( haveDataSlot )
 
     // to main thread
-    NET_CS_SIGNAL_1( Public, void wantData( qint64 length ) )
-    NET_CS_SIGNAL_2( wantData, length )
+    NET_LSCS_SIGNAL_1( Public, void wantData( qint64 length ) )
+    NET_LSCS_SIGNAL_2( wantData, length )
 
-    NET_CS_SIGNAL_1( Public, void processedData( qint64 pos, qint64 amount ) )
-    NET_CS_SIGNAL_2( processedData, pos, amount )
+    NET_LSCS_SIGNAL_1( Public, void processedData( qint64 pos, qint64 amount ) )
+    NET_LSCS_SIGNAL_2( processedData, pos, amount )
 
-    NET_CS_SIGNAL_1( Public, void resetData( bool *b ) )
-    NET_CS_SIGNAL_2( resetData, b )
+    NET_LSCS_SIGNAL_1( Public, void resetData( bool *b ) )
+    NET_LSCS_SIGNAL_2( resetData, b )
 
 protected:
     bool wantDataPending;

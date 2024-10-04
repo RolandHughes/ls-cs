@@ -38,7 +38,7 @@ struct QTimerInfo_Unix
     QObject *obj;                     // object to receive event
     QTimerInfo_Unix **activateRef;    // ref from activateTimers
 
-#if defined(CS_SHOW_DEBUG_CORE)
+#if defined(LSCS_SHOW_DEBUG_CORE)
     timeval expected;                 // when timer is expected to fire
     float cumulativeError;
     uint count;

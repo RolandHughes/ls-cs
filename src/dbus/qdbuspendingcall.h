@@ -73,7 +73,7 @@ class QDBusPendingCallWatcherPrivate;
 
 class Q_DBUS_EXPORT QDBusPendingCallWatcher: public QObject, public QDBusPendingCall
 {
-    CS_OBJECT( QDBusPendingCallWatcher )
+    LSCS_OBJECT( QDBusPendingCallWatcher )
 
 public:
     QDBusPendingCallWatcher( const QDBusPendingCall &call, QObject *parent = nullptr );
@@ -81,14 +81,14 @@ public:
 
     void waitForFinished();     // non-virtual override
 
-    CS_SIGNAL_1( Public, void finished( QDBusPendingCallWatcher *self ) )
-    CS_SIGNAL_2( finished,self )
+    LSCS_SIGNAL_1( Public, void finished( QDBusPendingCallWatcher *self ) )
+    LSCS_SIGNAL_2( finished,self )
 
 private:
     Q_DECLARE_PRIVATE( QDBusPendingCallWatcher )
 
-    CS_SLOT_1( Private, void _q_finished() )
-    CS_SLOT_2( _q_finished )
+    LSCS_SLOT_1( Private, void _q_finished() )
+    LSCS_SLOT_2( _q_finished )
 };
 
 QT_END_NAMESPACE

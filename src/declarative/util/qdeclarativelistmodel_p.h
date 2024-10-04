@@ -45,9 +45,9 @@ struct ModelNode;
 
 class Q_DECLARATIVE_PRIVATE_EXPORT QDeclarativeListModel : public QListModelInterface
 {
-    DECL_CS_OBJECT( QDeclarativeListModel )
-    DECL_CS_PROPERTY_READ( count, count )
-    DECL_CS_PROPERTY_NOTIFY( count, countChanged )
+    DECL_LSCS_OBJECT( QDeclarativeListModel )
+    DECL_LSCS_PROPERTY_READ( count, count )
+    DECL_LSCS_PROPERTY_NOTIFY( count, countChanged )
 
 public:
     QDeclarativeListModel( QObject *parent = nullptr );
@@ -59,45 +59,45 @@ public:
     virtual QVariant data( int index, int role ) const;
 
     Q_INVOKABLE void clear();
-    DECL_CS_INVOKABLE_METHOD_1( Public, )
-    DECL_CS_INVOKABLE_METHOD_2()
+    DECL_LSCS_INVOKABLE_METHOD_1( Public, )
+    DECL_LSCS_INVOKABLE_METHOD_2()
 
     Q_INVOKABLE void remove( int index );
-    DECL_CS_INVOKABLE_METHOD_1( Public, )
-    DECL_CS_INVOKABLE_METHOD_2()
+    DECL_LSCS_INVOKABLE_METHOD_1( Public, )
+    DECL_LSCS_INVOKABLE_METHOD_2()
 
     Q_INVOKABLE void append( const QScriptValue & );
-    DECL_CS_INVOKABLE_METHOD_1( Public, )
-    DECL_CS_INVOKABLE_METHOD_2()
+    DECL_LSCS_INVOKABLE_METHOD_1( Public, )
+    DECL_LSCS_INVOKABLE_METHOD_2()
 
     Q_INVOKABLE void insert( int index, const QScriptValue & );
-    DECL_CS_INVOKABLE_METHOD_1( Public, )
-    DECL_CS_INVOKABLE_METHOD_2()
+    DECL_LSCS_INVOKABLE_METHOD_1( Public, )
+    DECL_LSCS_INVOKABLE_METHOD_2()
 
     Q_INVOKABLE QScriptValue get( int index ) const;
-    DECL_CS_INVOKABLE_METHOD_1( Public, )
-    DECL_CS_INVOKABLE_METHOD_2()
+    DECL_LSCS_INVOKABLE_METHOD_1( Public, )
+    DECL_LSCS_INVOKABLE_METHOD_2()
 
     Q_INVOKABLE void set( int index, const QScriptValue & );
-    DECL_CS_INVOKABLE_METHOD_1( Public, )
-    DECL_CS_INVOKABLE_METHOD_2()
+    DECL_LSCS_INVOKABLE_METHOD_1( Public, )
+    DECL_LSCS_INVOKABLE_METHOD_2()
 
     Q_INVOKABLE void setProperty( int index, const QString &property, const QVariant &value );
-    DECL_CS_INVOKABLE_METHOD_1( Public, )
-    DECL_CS_INVOKABLE_METHOD_2()
+    DECL_LSCS_INVOKABLE_METHOD_1( Public, )
+    DECL_LSCS_INVOKABLE_METHOD_2()
 
     Q_INVOKABLE void move( int from, int to, int count );
-    DECL_CS_INVOKABLE_METHOD_1( Public, )
-    DECL_CS_INVOKABLE_METHOD_2()
+    DECL_LSCS_INVOKABLE_METHOD_1( Public, )
+    DECL_LSCS_INVOKABLE_METHOD_2()
 
     Q_INVOKABLE void sync();
-    DECL_CS_INVOKABLE_METHOD_1( Public, )
-    DECL_CS_INVOKABLE_METHOD_2()
+    DECL_LSCS_INVOKABLE_METHOD_1( Public, )
+    DECL_LSCS_INVOKABLE_METHOD_2()
 
     QDeclarativeListModelWorkerAgent *agent();
 
-    DECL_CS_SIGNAL_1( Public, void countChanged() )
-    DECL_CS_SIGNAL_2( countChanged )
+    DECL_LSCS_SIGNAL_1( Public, void countChanged() )
+    DECL_LSCS_SIGNAL_2( countChanged )
 
 private:
     friend class QDeclarativeListModelParser;
@@ -128,7 +128,7 @@ private:
 // ### FIXME
 class QDeclarativeListElement : public QObject
 {
-    DECL_CS_OBJECT( QDeclarativeListElement )
+    DECL_LSCS_OBJECT( QDeclarativeListElement )
 };
 
 class QDeclarativeListModelParser : public QDeclarativeCustomParser

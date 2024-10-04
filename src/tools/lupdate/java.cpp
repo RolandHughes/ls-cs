@@ -92,7 +92,7 @@ static QStack<Scope *> yyScope;
 
 std::ostream &yyMsg( int line = 0 )
 {
-    return std::cerr << csPrintable( yyFileName ) << ':' << ( line ? line : yyLineNo ) << ": ";
+    return std::cerr << lscsPrintable( yyFileName ) << ':' << ( line ? line : yyLineNo ) << ": ";
 }
 
 static QChar getChar()

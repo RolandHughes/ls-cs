@@ -40,7 +40,7 @@
 
 class QOpenUrlHandlerRegistry : public QObject
 {
-    GUI_CS_OBJECT( QOpenUrlHandlerRegistry )
+    GUI_LSCS_OBJECT( QOpenUrlHandlerRegistry )
 
 public:
     QOpenUrlHandlerRegistry()
@@ -58,8 +58,8 @@ public:
     typedef QHash<QString, Handler> HandlerHash;
     HandlerHash handlers;
 
-    GUI_CS_SLOT_1( Public, void handlerDestroyed( QObject *handler ) )
-    GUI_CS_SLOT_2( handlerDestroyed )
+    GUI_LSCS_SLOT_1( Public, void handlerDestroyed( QObject *handler ) )
+    GUI_LSCS_SLOT_2( handlerDestroyed )
 };
 
 static QOpenUrlHandlerRegistry *handlerRegistry()

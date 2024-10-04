@@ -210,7 +210,7 @@ public:
         LuminanceAlphaFormat   = 0x190A
     };
 
-#ifndef CS_DOXYPRESS
+#ifndef LSCS_DOXYPRESS
     // not used externally, allows checking of compatibility between texture formats
     enum TextureFormatClass
     {
@@ -350,7 +350,7 @@ public:
         Texture1D                   = 0x00002000,
         TextureComparisonOperators  = 0x00004000,
         TextureMipMapLevel          = 0x00008000,
-#ifndef CS_DOXYPRESS
+#ifndef LSCS_DOXYPRESS
         MaxFeatureFlag              = 0x00010000
 #endif
     };

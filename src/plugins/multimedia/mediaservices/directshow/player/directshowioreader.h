@@ -38,7 +38,7 @@ class DirectShowSampleRequest;
 
 class DirectShowIOReader : public QObject, public IAsyncReader
 {
-    CS_OBJECT( DirectShowIOReader )
+    LSCS_OBJECT( DirectShowIOReader )
 
 public:
     DirectShowIOReader( QIODevice *device, DirectShowIOSource *source, DirectShowEventLoop *loop );
@@ -71,8 +71,8 @@ protected:
     void customEvent( QEvent *event ) override;
 
 private:
-    CS_SLOT_1( Private, void readyRead() )
-    CS_SLOT_2( readyRead )
+    LSCS_SLOT_1( Private, void readyRead() )
+    LSCS_SLOT_2( readyRead )
 
     HRESULT blockingRead( LONGLONG position, LONG length, BYTE *buffer, qint64 *bytesRead );
     bool nonBlockingRead(

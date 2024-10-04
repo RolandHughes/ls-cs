@@ -69,7 +69,7 @@ QString QNetworkDiskCache::cacheDirectory() const
 
 void QNetworkDiskCache::setCacheDirectory( const QString &cacheDir )
 {
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
     qDebug() << "QNetworkDiskCache::setCacheDirectory()" << cacheDir;
 #endif
 
@@ -97,7 +97,7 @@ void QNetworkDiskCache::setCacheDirectory( const QString &cacheDir )
 
 qint64 QNetworkDiskCache::cacheSize() const
 {
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
     qDebug() << "QNetworkDiskCache::cacheSize()";
 #endif
 
@@ -119,7 +119,7 @@ qint64 QNetworkDiskCache::cacheSize() const
 
 QIODevice *QNetworkDiskCache::prepare( const QNetworkCacheMetaData &metaData )
 {
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
     qDebug() << "QNetworkDiskCache::prepare()" << metaData.url();
 #endif
 
@@ -193,7 +193,7 @@ QIODevice *QNetworkDiskCache::prepare( const QNetworkCacheMetaData &metaData )
 
 void QNetworkDiskCache::insert( QIODevice *device )
 {
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
     qDebug() << "QNetworkDiskCache::insert()" << device;
 #endif
 
@@ -240,7 +240,7 @@ void QNetworkDiskCachePrivate::storeItem( QCacheItem *cacheItem )
     {
         if ( !QFile::remove( fileName ) )
         {
-            qWarning( "QNetworkDiskCache::storeItem() Unable to remove the cache file %s", csPrintable( fileName ) );
+            qWarning( "QNetworkDiskCache::storeItem() Unable to remove the cache file %s", lscsPrintable( fileName ) );
             return;
         }
     }
@@ -287,7 +287,7 @@ void QNetworkDiskCachePrivate::storeItem( QCacheItem *cacheItem )
 
 bool QNetworkDiskCache::remove( const QUrl &url )
 {
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
     qDebug() << "QNetworkDiskCache::remove()" << url;
 #endif
 
@@ -319,7 +319,7 @@ bool QNetworkDiskCache::remove( const QUrl &url )
 
 bool QNetworkDiskCachePrivate::removeFile( const QString &file )
 {
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
     qDebug() << "QNetworkDiskCache::removFile()" << file;
 #endif
 
@@ -349,7 +349,7 @@ bool QNetworkDiskCachePrivate::removeFile( const QString &file )
 
 QNetworkCacheMetaData QNetworkDiskCache::metaData( const QUrl &url )
 {
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
     qDebug() << "QNetworkDiskCache::metaData()" << url;
 #endif
 
@@ -365,7 +365,7 @@ QNetworkCacheMetaData QNetworkDiskCache::metaData( const QUrl &url )
 
 QNetworkCacheMetaData QNetworkDiskCache::fileMetaData( const QString &fileName ) const
 {
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
     qDebug() << "QNetworkDiskCache::fileMetaData()" << fileName;
 #endif
 
@@ -389,7 +389,7 @@ QNetworkCacheMetaData QNetworkDiskCache::fileMetaData( const QString &fileName )
 
 QIODevice *QNetworkDiskCache::data( const QUrl &url )
 {
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
     qDebug() << "QNetworkDiskCache::data()" << url;
 #endif
 
@@ -457,7 +457,7 @@ QIODevice *QNetworkDiskCache::data( const QUrl &url )
 
 void QNetworkDiskCache::updateMetaData( const QNetworkCacheMetaData &metaData )
 {
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
     qDebug() << "QNetworkDiskCache::updateMetaData()" << metaData.url();
 #endif
 
@@ -466,7 +466,7 @@ void QNetworkDiskCache::updateMetaData( const QNetworkCacheMetaData &metaData )
 
     if ( ! oldDevice )
     {
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
         qDebug() << "QNetworkDiskCache::updateMetaData(), no device!";
 #endif
         return;
@@ -476,7 +476,7 @@ void QNetworkDiskCache::updateMetaData( const QNetworkCacheMetaData &metaData )
 
     if ( ! newDevice )
     {
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
         qDebug() << "QNetworkDiskCache::updateMetaData(), no new device" << url;
 #endif
         return;
@@ -589,7 +589,7 @@ qint64 QNetworkDiskCache::expire()
         ++i;
     }
 
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
 
     if ( removedFiles > 0 )
     {
@@ -604,7 +604,7 @@ qint64 QNetworkDiskCache::expire()
 
 void QNetworkDiskCache::clear()
 {
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
     qDebug() << "QNetworkDiskCache::clear()";
 #endif
 

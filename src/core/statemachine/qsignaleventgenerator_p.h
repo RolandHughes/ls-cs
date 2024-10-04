@@ -30,7 +30,7 @@ class QStateMachine;
 
 class QSignalEventGenerator : public QObject
 {
-    CORE_CS_OBJECT( QSignalEventGenerator )
+    CORE_LSCS_OBJECT( QSignalEventGenerator )
 
 public:
     QSignalEventGenerator( QStateMachine *parent );
@@ -39,8 +39,8 @@ public:
     QSignalEventGenerator &operator=( const QSignalEventGenerator & ) = delete;
 
     // emerald (on hold, statemachine)
-    CORE_CS_SLOT_1( Public, void execute() )   // const TeaCupAbstract &data))
-    CORE_CS_SLOT_2( execute )
+    CORE_LSCS_SLOT_1( Public, void execute() )   // const TeaCupAbstract &data))
+    CORE_LSCS_SLOT_2( execute )
 };
 
 #endif

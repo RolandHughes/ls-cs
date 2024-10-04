@@ -31,7 +31,7 @@ class AVFCameraService;
 
 class AVFCameraMetaDataControl : public QMetaDataWriterControl
 {
-    CS_OBJECT( AVFCameraMetaDataControl )
+    LSCS_OBJECT( AVFCameraMetaDataControl )
 
 public:
     AVFCameraMetaDataControl( AVFCameraService *service, QObject *parent = nullptr );

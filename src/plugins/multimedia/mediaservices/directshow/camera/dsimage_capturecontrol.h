@@ -29,7 +29,7 @@
 
 class DSImageCaptureControl : public QCameraImageCaptureControl
 {
-    CS_OBJECT( DSImageCaptureControl )
+    LSCS_OBJECT( DSImageCaptureControl )
 
 public:
     DSImageCaptureControl( DSCameraSession *session );

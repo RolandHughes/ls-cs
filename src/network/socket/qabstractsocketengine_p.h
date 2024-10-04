@@ -77,7 +77,7 @@ public:
 
 class QAbstractSocketEngine : public QObject
 {
-    NET_CS_OBJECT( QAbstractSocketEngine )
+    NET_LSCS_OBJECT( QAbstractSocketEngine )
 
 public:
     enum SocketOption
@@ -189,24 +189,24 @@ public:
     virtual bool isExceptionNotificationEnabled() const = 0;
     virtual void setExceptionNotificationEnabled( bool enable ) = 0;
 
-    NET_CS_SLOT_1( Public, void readNotification() )
-    NET_CS_SLOT_2( readNotification )
+    NET_LSCS_SLOT_1( Public, void readNotification() )
+    NET_LSCS_SLOT_2( readNotification )
 
-    NET_CS_SLOT_1( Public, void writeNotification() )
-    NET_CS_SLOT_2( writeNotification )
+    NET_LSCS_SLOT_1( Public, void writeNotification() )
+    NET_LSCS_SLOT_2( writeNotification )
 
-    NET_CS_SLOT_1( Public, void closeNotification() )
-    NET_CS_SLOT_2( closeNotification )
+    NET_LSCS_SLOT_1( Public, void closeNotification() )
+    NET_LSCS_SLOT_2( closeNotification )
 
-    NET_CS_SLOT_1( Public, void exceptionNotification() )
-    NET_CS_SLOT_2( exceptionNotification )
+    NET_LSCS_SLOT_1( Public, void exceptionNotification() )
+    NET_LSCS_SLOT_2( exceptionNotification )
 
-    NET_CS_SLOT_1( Public, void connectionNotification() )
-    NET_CS_SLOT_2( connectionNotification )
+    NET_LSCS_SLOT_1( Public, void connectionNotification() )
+    NET_LSCS_SLOT_2( connectionNotification )
 
 #ifndef QT_NO_NETWORKPROXY
-    NET_CS_SLOT_1( Public, void proxyAuthenticationRequired( const QNetworkProxy &proxy, QAuthenticator *authenticator ) )
-    NET_CS_SLOT_2( proxyAuthenticationRequired )
+    NET_LSCS_SLOT_1( Public, void proxyAuthenticationRequired( const QNetworkProxy &proxy, QAuthenticator *authenticator ) )
+    NET_LSCS_SLOT_2( proxyAuthenticationRequired )
 #endif
 
 protected:

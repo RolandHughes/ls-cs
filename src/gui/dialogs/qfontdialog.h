@@ -34,17 +34,17 @@ class QFontDialogPrivate;
 
 class Q_GUI_EXPORT QFontDialog : public QDialog
 {
-    GUI_CS_OBJECT( QFontDialog )
+    GUI_LSCS_OBJECT( QFontDialog )
     Q_DECLARE_PRIVATE( QFontDialog )
 
-    GUI_CS_ENUM( FontDialogOption )
+    GUI_LSCS_ENUM( FontDialogOption )
 
-    GUI_CS_PROPERTY_READ( currentFont, currentFont )
-    GUI_CS_PROPERTY_WRITE( currentFont, setCurrentFont )
-    GUI_CS_PROPERTY_NOTIFY( currentFont, currentFontChanged )
+    GUI_LSCS_PROPERTY_READ( currentFont, currentFont )
+    GUI_LSCS_PROPERTY_WRITE( currentFont, setCurrentFont )
+    GUI_LSCS_PROPERTY_NOTIFY( currentFont, currentFontChanged )
 
-    GUI_CS_PROPERTY_READ( options, options )
-    GUI_CS_PROPERTY_WRITE( options, setOptions )
+    GUI_LSCS_PROPERTY_READ( options, options )
+    GUI_LSCS_PROPERTY_WRITE( options, setOptions )
 
 public:
     enum FontDialogOption
@@ -86,11 +86,11 @@ public:
 
     static QFont getFont( bool *ok, QWidget *parent = nullptr );
 
-    GUI_CS_SIGNAL_1( Public, void currentFontChanged( const QFont &font ) )
-    GUI_CS_SIGNAL_2( currentFontChanged, font )
+    GUI_LSCS_SIGNAL_1( Public, void currentFontChanged( const QFont &font ) )
+    GUI_LSCS_SIGNAL_2( currentFontChanged, font )
 
-    GUI_CS_SIGNAL_1( Public, void fontSelected( const QFont &font ) )
-    GUI_CS_SIGNAL_2( fontSelected, font )
+    GUI_LSCS_SIGNAL_1( Public, void fontSelected( const QFont &font ) )
+    GUI_LSCS_SIGNAL_2( fontSelected, font )
 
 protected:
     void changeEvent( QEvent *event ) override;
@@ -99,23 +99,23 @@ protected:
     bool eventFilter( QObject *object, QEvent *event ) override;
 
 private:
-    GUI_CS_SLOT_1( Private, void _q_sizeChanged( const QString &data ) )
-    GUI_CS_SLOT_2( _q_sizeChanged )
+    GUI_LSCS_SLOT_1( Private, void _q_sizeChanged( const QString &data ) )
+    GUI_LSCS_SLOT_2( _q_sizeChanged )
 
-    GUI_CS_SLOT_1( Private, void _q_familyHighlighted( int data ) )
-    GUI_CS_SLOT_2( _q_familyHighlighted )
+    GUI_LSCS_SLOT_1( Private, void _q_familyHighlighted( int data ) )
+    GUI_LSCS_SLOT_2( _q_familyHighlighted )
 
-    GUI_CS_SLOT_1( Private, void _q_writingSystemHighlighted( int data ) )
-    GUI_CS_SLOT_2( _q_writingSystemHighlighted )
+    GUI_LSCS_SLOT_1( Private, void _q_writingSystemHighlighted( int data ) )
+    GUI_LSCS_SLOT_2( _q_writingSystemHighlighted )
 
-    GUI_CS_SLOT_1( Private, void _q_styleHighlighted( int data ) )
-    GUI_CS_SLOT_2( _q_styleHighlighted )
+    GUI_LSCS_SLOT_1( Private, void _q_styleHighlighted( int data ) )
+    GUI_LSCS_SLOT_2( _q_styleHighlighted )
 
-    GUI_CS_SLOT_1( Private, void _q_sizeHighlighted( int data ) )
-    GUI_CS_SLOT_2( _q_sizeHighlighted )
+    GUI_LSCS_SLOT_1( Private, void _q_sizeHighlighted( int data ) )
+    GUI_LSCS_SLOT_2( _q_sizeHighlighted )
 
-    GUI_CS_SLOT_1( Private, void _q_updateSample() )
-    GUI_CS_SLOT_2( _q_updateSample )
+    GUI_LSCS_SLOT_1( Private, void _q_updateSample() )
+    GUI_LSCS_SLOT_2( _q_updateSample )
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS( QFontDialog::FontDialogOptions )

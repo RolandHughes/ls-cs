@@ -35,7 +35,7 @@ struct Q_SCRIPT_EXPORT QScriptExtensionInterface : public QFactoryInterface
 };
 
 #define QScriptExtensionInterface_iid "com.copperspice.CS.QScriptExtensionInterface/1.0"
-CS_DECLARE_INTERFACE( QScriptExtensionInterface, QScriptExtensionInterface_iid )
+LSCS_DECLARE_INTERFACE( QScriptExtensionInterface, QScriptExtensionInterface_iid )
 
 
 #endif

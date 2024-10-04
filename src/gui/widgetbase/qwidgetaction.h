@@ -32,7 +32,7 @@ class QWidgetActionPrivate;
 
 class Q_GUI_EXPORT QWidgetAction : public QAction
 {
-    GUI_CS_OBJECT( QWidgetAction )
+    GUI_LSCS_OBJECT( QWidgetAction )
     Q_DECLARE_PRIVATE( QWidgetAction )
 
 public:
@@ -58,8 +58,8 @@ protected:
     QList<QWidget *> createdWidgets() const;
 
 private:
-    GUI_CS_SLOT_1( Private, void _q_widgetDestroyed( QObject *object ) )
-    GUI_CS_SLOT_2( _q_widgetDestroyed )
+    GUI_LSCS_SLOT_1( Private, void _q_widgetDestroyed( QObject *object ) )
+    GUI_LSCS_SLOT_2( _q_widgetDestroyed )
 
     friend class QToolBar;
 };

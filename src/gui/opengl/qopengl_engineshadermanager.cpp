@@ -194,14 +194,14 @@ QOpenGLEngineSharedShaders::QOpenGLEngineSharedShaders( QOpenGLContext *context 
         code[DifferenceCompositionModeFragmentShader] = ""; //###
         code[ExclusionCompositionModeFragmentShader] = ""; //###
 
-#if defined(CS_SHOW_DEBUG_GUI_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_GUI_OPENGL)
 
         // Check that all the elements have been filled
         for ( int i = 0; i < TotalSnippetCount; ++i )
         {
             if ( qShaderSnippets[i] == nullptr )
             {
-                qFatal( "Shader snippet for %s (#%d) is missing ", csPrintable( snippetNameStr( SnippetName( i ) ) ), i );
+                qFatal( "Shader snippet for %s (#%d) is missing ", lscsPrintable( snippetNameStr( SnippetName( i ) ) ), i );
             }
         }
 
@@ -265,7 +265,7 @@ QOpenGLEngineSharedShaders::QOpenGLEngineSharedShaders( QOpenGLContext *context 
     }
     else
     {
-        qCritical( "Errors linking simple shader: %s", csPrintable( simpleShaderProg->log() ) );
+        qCritical( "Errors linking simple shader: %s", lscsPrintable( simpleShaderProg->log() ) );
     }
 
     // Compile the blit shader:
@@ -319,17 +319,17 @@ QOpenGLEngineSharedShaders::QOpenGLEngineSharedShaders( QOpenGLContext *context 
     }
     else
     {
-        qCritical( "Errors linking blit shader: %s", csPrintable( blitShaderProg->log() ) );
+        qCritical( "Errors linking blit shader: %s", lscsPrintable( blitShaderProg->log() ) );
     }
 
-#if defined(CS_SHOW_DEBUG_GUI_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_GUI_OPENGL)
     qDebug( " -> QOpenGLEngineSharedShaders() %p for thread %p.", this, QThread::currentThread() );
 #endif
 }
 
 QOpenGLEngineSharedShaders::~QOpenGLEngineSharedShaders()
 {
-#if defined(CS_SHOW_DEBUG_GUI_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_GUI_OPENGL)
     qDebug( " -> ~QOpenGLEngineSharedShaders() %p for thread %p.", this, QThread::currentThread() );
 #endif
 
@@ -352,7 +352,7 @@ QOpenGLEngineSharedShaders::~QOpenGLEngineSharedShaders()
     }
 }
 
-#if defined(CS_SHOW_DEBUG_GUI_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_GUI_OPENGL)
 QString QOpenGLEngineSharedShaders::snippetNameStr( SnippetName name )
 {
     QMetaEnum m = staticMetaObject().enumerator( staticMetaObject().indexOfEnumerator( "SnippetName" ) );
@@ -418,7 +418,7 @@ QOpenGLEngineShaderProg *QOpenGLEngineSharedShaders::findProgramInCache( const Q
             QScopedPointer<QOpenGLShader> fragShader( new QOpenGLShader( QOpenGLShader::Fragment ) );
             QByteArray description;
 
-#if defined(CS_SHOW_DEBUG_GUI_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_GUI_OPENGL)
             // Name the shader for easier debugging
             description.append( "Fragment shader: main=" );
             description.append( snippetNameStr( prog.mainFragShader ).toLatin1() );
@@ -448,7 +448,7 @@ QOpenGLEngineShaderProg *QOpenGLEngineSharedShaders::findProgramInCache( const Q
 
             QScopedPointer<QOpenGLShader> vertexShader( new QOpenGLShader( QOpenGLShader::Vertex ) );
 
-#if defined(CS_SHOW_DEBUG_GUI_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_GUI_OPENGL)
             // Name the shader for easier debugging
             description.clear();
             description.append( "Vertex shader: main=" );
@@ -507,7 +507,7 @@ QOpenGLEngineShaderProg *QOpenGLEngineSharedShaders::findProgramInCache( const Q
             QString error;
             error = QLatin1String( "Shader program failed to link," );
 
-#if defined(CS_SHOW_DEBUG_GUI_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_GUI_OPENGL)
             QLatin1String br( "\n" );
             error += QLatin1String( "\n  Shaders Used:\n" );
 

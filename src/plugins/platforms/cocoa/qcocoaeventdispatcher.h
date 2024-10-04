@@ -53,7 +53,7 @@ class QCocoaEventDispatcherPrivate;
 
 class QCocoaEventDispatcher : public QAbstractEventDispatcher
 {
-    CS_OBJECT( QCocoaEventDispatcher )
+    LSCS_OBJECT( QCocoaEventDispatcher )
     Q_DECLARE_PRIVATE( QCocoaEventDispatcher )
 
 public:

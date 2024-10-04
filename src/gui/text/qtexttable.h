@@ -101,7 +101,7 @@ private:
 
 class Q_GUI_EXPORT QTextTable : public QTextFrame
 {
-    GUI_CS_OBJECT( QTextTable )
+    GUI_LSCS_OBJECT( QTextTable )
 
 public:
     explicit QTextTable( QTextDocument *doc );

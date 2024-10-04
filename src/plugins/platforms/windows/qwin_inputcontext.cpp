@@ -462,7 +462,7 @@ bool QWindowsInputContext::composition( HWND hwnd, LPARAM lParamIn )
         m_compositionContext.position = ImmGetCompositionString( himc, GCS_CURSORPOS, nullptr, 0 );
         getCompositionStringConvertedRange( himc, &selStart, &selLength );
 
-        if ( ( lParam & CS_INSERTCHAR ) && ( lParam & CS_NOMOVECARET ) )
+        if ( ( lParam & LSCS_INSERTCHAR ) && ( lParam & LSCS_NOMOVECARET ) )
         {
             // make Korean work correctly. Hope this is correct for all IMEs
             selStart = 0;
@@ -619,7 +619,7 @@ void QWindowsInputContext::handleInputLanguageChanged( WPARAM wparam, LPARAM lpa
     m_locale = qt_localeFromLCID( m_languageId );
     emitLocaleChanged();
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
     qDebug() << "QWindowsInputContext::handleInputLanguageChanged() Old set = " << hex << showbase
              << oldLanguageId << "->" << newLanguageId
              << "Character set =" << DWORD( wparam ) << dec << noshowbase << m_locale.name() ;

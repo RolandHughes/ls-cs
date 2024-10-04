@@ -35,7 +35,7 @@ class QScriptDebuggerCodeViewInterfacePrivate;
 class QScriptDebuggerCodeViewInterface:
     public QWidget
 {
-    SCRIPT_T_CS_OBJECT( QScriptDebuggerCodeViewInterface )
+    SCRIPT_T_LSCS_OBJECT( QScriptDebuggerCodeViewInterface )
 public:
     ~QScriptDebuggerCodeViewInterface();
 
@@ -58,12 +58,12 @@ public:
     virtual void setBreakpointEnabled( int lineNumber, bool enable ) = 0;
 
 public:
-    CS_SIGNAL_1( Public, void breakpointToggleRequest( int lineNumber, bool on ) )
-    CS_SIGNAL_2( breakpointToggleRequest, lineNumber, on )
-    CS_SIGNAL_1( Public, void breakpointEnableRequest( int lineNumber, bool enable ) )
-    CS_SIGNAL_2( breakpointEnableRequest, lineNumber, enable )
-    CS_SIGNAL_1( Public, void toolTipRequest( const QPoint &pos, int lineNumber, const QStringList &path ) )
-    CS_SIGNAL_2( toolTipRequest, pos, lineNumber, path )
+    LSCS_SIGNAL_1( Public, void breakpointToggleRequest( int lineNumber, bool on ) )
+    LSCS_SIGNAL_2( breakpointToggleRequest, lineNumber, on )
+    LSCS_SIGNAL_1( Public, void breakpointEnableRequest( int lineNumber, bool enable ) )
+    LSCS_SIGNAL_2( breakpointEnableRequest, lineNumber, enable )
+    LSCS_SIGNAL_1( Public, void toolTipRequest( const QPoint &pos, int lineNumber, const QStringList &path ) )
+    LSCS_SIGNAL_2( toolTipRequest, pos, lineNumber, path )
 
 protected:
     QScriptDebuggerCodeViewInterface(

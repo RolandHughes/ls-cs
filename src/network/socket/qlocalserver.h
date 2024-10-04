@@ -34,10 +34,10 @@ class QLocalSocket;
 
 class Q_NETWORK_EXPORT QLocalServer : public QObject
 {
-    NET_CS_OBJECT( QLocalServer )
+    NET_LSCS_OBJECT( QLocalServer )
 
-    NET_CS_PROPERTY_READ( socketOptions,  socketOptions )
-    NET_CS_PROPERTY_WRITE( socketOptions, setSocketOptions )
+    NET_LSCS_PROPERTY_READ( socketOptions,  socketOptions )
+    NET_LSCS_PROPERTY_WRITE( socketOptions, setSocketOptions )
 
 public:
     enum SocketOption
@@ -75,8 +75,8 @@ public:
     void setSocketOptions( SocketOptions options );
     SocketOptions socketOptions() const;
 
-    NET_CS_SIGNAL_1( Public, void newConnection() )
-    NET_CS_SIGNAL_2( newConnection )
+    NET_LSCS_SIGNAL_1( Public, void newConnection() )
+    NET_LSCS_SIGNAL_2( newConnection )
 
 protected:
     virtual void incomingConnection( qintptr socketDescriptor );
@@ -85,8 +85,8 @@ protected:
 private:
     Q_DECLARE_PRIVATE( QLocalServer )
 
-    NET_CS_SLOT_1( Private, void _q_onNewConnection() )
-    NET_CS_SLOT_2( _q_onNewConnection )
+    NET_LSCS_SLOT_1( Private, void _q_onNewConnection() )
+    NET_LSCS_SLOT_2( _q_onNewConnection )
 };
 
 #endif // QT_NO_LOCALSERVER

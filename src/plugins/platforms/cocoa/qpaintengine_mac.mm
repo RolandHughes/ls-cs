@@ -1598,7 +1598,7 @@ void qt_mac_cg_transform_path_apply(void *info, const CGPathElement *element)
          break;
 
       default:
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
          qDebug() << "qt_mac_cg_transform_path_apply() Unhandled path transform type =" << element->type;
 #endif
 

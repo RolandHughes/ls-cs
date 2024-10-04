@@ -38,15 +38,15 @@ class QDeclarativeConnectionsPrivate;
 
 class QDeclarativeConnections : public QObject, public QDeclarativeParserStatus
 {
-    DECL_CS_OBJECT( QDeclarativeConnections )
+    DECL_LSCS_OBJECT( QDeclarativeConnections )
     Q_DECLARE_PRIVATE( QDeclarativeConnections )
 
-    CS_INTERFACES( QDeclarativeParserStatus )
-    DECL_CS_PROPERTY_READ( *target, target )
-    DECL_CS_PROPERTY_WRITE( *target, setTarget )
-    DECL_CS_PROPERTY_NOTIFY( *target, targetChanged )
-    DECL_CS_PROPERTY_READ( ignoreUnknownSignals, ignoreUnknownSignals )
-    DECL_CS_PROPERTY_WRITE( ignoreUnknownSignals, setIgnoreUnknownSignals )
+    LSCS_INTERFACES( QDeclarativeParserStatus )
+    DECL_LSCS_PROPERTY_READ( *target, target )
+    DECL_LSCS_PROPERTY_WRITE( *target, setTarget )
+    DECL_LSCS_PROPERTY_NOTIFY( *target, targetChanged )
+    DECL_LSCS_PROPERTY_READ( ignoreUnknownSignals, ignoreUnknownSignals )
+    DECL_LSCS_PROPERTY_WRITE( ignoreUnknownSignals, setIgnoreUnknownSignals )
 
 public:
     QDeclarativeConnections( QObject *parent = nullptr );
@@ -58,8 +58,8 @@ public:
     bool ignoreUnknownSignals() const;
     void setIgnoreUnknownSignals( bool ignore );
 
-    DECL_CS_SIGNAL_1( Public, void targetChanged() )
-    DECL_CS_SIGNAL_2( targetChanged )
+    DECL_LSCS_SIGNAL_1( Public, void targetChanged() )
+    DECL_LSCS_SIGNAL_2( targetChanged )
 
 private:
     void connectSignals();

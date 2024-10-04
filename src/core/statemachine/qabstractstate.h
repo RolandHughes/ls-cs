@@ -35,10 +35,10 @@ class QAbstractStatePrivate;
 
 class Q_CORE_EXPORT QAbstractState : public QObject
 {
-    CORE_CS_OBJECT( QAbstractState )
+    CORE_LSCS_OBJECT( QAbstractState )
 
-    CORE_CS_PROPERTY_READ( active, active )
-    CORE_CS_PROPERTY_NOTIFY( active, activeChanged )
+    CORE_LSCS_PROPERTY_READ( active, active )
+    CORE_LSCS_PROPERTY_NOTIFY( active, activeChanged )
 
 public:
     QAbstractState( const QAbstractState & ) = delete;
@@ -51,14 +51,14 @@ public:
 
     bool active() const;
 
-    CORE_CS_SIGNAL_1( Public, void entered() )
-    CORE_CS_SIGNAL_2( entered )
+    CORE_LSCS_SIGNAL_1( Public, void entered() )
+    CORE_LSCS_SIGNAL_2( entered )
 
-    CORE_CS_SIGNAL_1( Public, void exited() )
-    CORE_CS_SIGNAL_2( exited )
+    CORE_LSCS_SIGNAL_1( Public, void exited() )
+    CORE_LSCS_SIGNAL_2( exited )
 
-    CORE_CS_SIGNAL_1( Public, void activeChanged( bool active ) )
-    CORE_CS_SIGNAL_2( activeChanged, active )
+    CORE_LSCS_SIGNAL_1( Public, void activeChanged( bool active ) )
+    CORE_LSCS_SIGNAL_2( activeChanged, active )
 
 protected:
     QAbstractState( QState *parent = nullptr );

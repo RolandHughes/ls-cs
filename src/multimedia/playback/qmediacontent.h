@@ -63,6 +63,6 @@ private:
     QSharedDataPointer<QMediaContentPrivate> d;
 };
 
-CS_DECLARE_METATYPE( QMediaContent )
+LSCS_DECLARE_METATYPE( QMediaContent )
 
 #endif

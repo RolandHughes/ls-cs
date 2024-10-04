@@ -167,7 +167,7 @@ void BlockSizeManager::timeAfterUser()
 
     m_blockSize = qMin( m_blockSize * 2,  maxBlockSize );
 
-#if defined(CS_SHOW_DEBUG_CORE)
+#if defined(LSCS_SHOW_DEBUG_CORE)
     qDebug() << QThread::currentThread() << "adjusting block size" << controlPartElapsed.median() <<
              userPartElapsed.median() << m_blockSize;
 #endif

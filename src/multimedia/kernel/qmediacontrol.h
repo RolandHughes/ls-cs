@@ -32,7 +32,7 @@ class QMediaControlPrivate;
 
 class Q_MULTIMEDIA_EXPORT QMediaControl : public QObject
 {
-    MULTI_CS_OBJECT( QMediaControl )
+    MULTI_LSCS_OBJECT( QMediaControl )
 
 public:
     ~QMediaControl();

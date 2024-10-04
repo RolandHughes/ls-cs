@@ -31,15 +31,15 @@
 
 class FindDialog : public QDialog
 {
-    CS_OBJECT( FindDialog )
+    LSCS_OBJECT( FindDialog )
 
 public:
     FindDialog( QWidget *parent = nullptr );
     ~FindDialog();
 
-    CS_SIGNAL_1( Public, void findNext( const QString &text, DataModel::FindLocation where,
+    LSCS_SIGNAL_1( Public, void findNext( const QString &text, DataModel::FindLocation where,
                                         bool matchCase, bool ignoreAccelerators, bool skipObsolete ) )
-    CS_SIGNAL_2( findNext, text, where, matchCase, ignoreAccelerators, skipObsolete )
+    LSCS_SIGNAL_2( findNext, text, where, matchCase, ignoreAccelerators, skipObsolete )
 
     // slot
     void find();

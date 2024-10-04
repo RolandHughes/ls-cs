@@ -33,7 +33,7 @@ class QScriptDebugOutputWidgetInterfacePrivate;
 
 class QScriptDebugOutputWidgetInterface: public QWidget, public QScriptMessageHandlerInterface
 {
-    SCRIPT_T_CS_OBJECT( QScriptDebugOutputWidgetInterface )
+    SCRIPT_T_LSCS_OBJECT( QScriptDebugOutputWidgetInterface )
 
 public:
     ~QScriptDebugOutputWidgetInterface();

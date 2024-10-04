@@ -32,7 +32,7 @@ class QSignalMapperPrivate;
 
 class Q_CORE_EXPORT QSignalMapper : public QObject
 {
-    CORE_CS_OBJECT( QSignalMapper )
+    CORE_LSCS_OBJECT( QSignalMapper )
     Q_DECLARE_PRIVATE( QSignalMapper )
 
 public:
@@ -54,30 +54,30 @@ public:
     QObject *mapping( QWidget *widget ) const;
     QObject *mapping( QObject *object ) const;
 
-    CORE_CS_SIGNAL_1( Public, void mapped( int index ) )
-    CORE_CS_SIGNAL_OVERLOAD( mapped, ( int ), index )
+    CORE_LSCS_SIGNAL_1( Public, void mapped( int index ) )
+    CORE_LSCS_SIGNAL_OVERLOAD( mapped, ( int ), index )
 
-    CORE_CS_SIGNAL_1( Public, void mapped( const QString &text ) )
-    CORE_CS_SIGNAL_OVERLOAD( mapped, ( const QString & ), text )
+    CORE_LSCS_SIGNAL_1( Public, void mapped( const QString &text ) )
+    CORE_LSCS_SIGNAL_OVERLOAD( mapped, ( const QString & ), text )
 
-    CORE_CS_SIGNAL_1( Public, void mapped( QWidget *widget ) )
-    CORE_CS_SIGNAL_OVERLOAD( mapped, ( QWidget * ), widget )
+    CORE_LSCS_SIGNAL_1( Public, void mapped( QWidget *widget ) )
+    CORE_LSCS_SIGNAL_OVERLOAD( mapped, ( QWidget * ), widget )
 
-    CORE_CS_SIGNAL_1( Public, void mapped( QObject *object ) )
-    CORE_CS_SIGNAL_OVERLOAD( mapped, ( QObject * ), object )
+    CORE_LSCS_SIGNAL_1( Public, void mapped( QObject *object ) )
+    CORE_LSCS_SIGNAL_OVERLOAD( mapped, ( QObject * ), object )
 
-    CORE_CS_SLOT_1( Public, void map() )
-    CORE_CS_SLOT_OVERLOAD( map, () )
+    CORE_LSCS_SLOT_1( Public, void map() )
+    CORE_LSCS_SLOT_OVERLOAD( map, () )
 
-    CORE_CS_SLOT_1( Public, void map( QObject *sender ) )
-    CORE_CS_SLOT_OVERLOAD( map, ( QObject * ) )
+    CORE_LSCS_SLOT_1( Public, void map( QObject *sender ) )
+    CORE_LSCS_SLOT_OVERLOAD( map, ( QObject * ) )
 
 protected:
     QScopedPointer<QSignalMapperPrivate> d_ptr;
 
 private:
-    CORE_CS_SLOT_1( Private, void _q_senderDestroyed() )
-    CORE_CS_SLOT_2( _q_senderDestroyed )
+    CORE_LSCS_SLOT_1( Private, void _q_senderDestroyed() )
+    CORE_LSCS_SLOT_2( _q_senderDestroyed )
 };
 
 #endif // QT_NO_SIGNALMAPPER

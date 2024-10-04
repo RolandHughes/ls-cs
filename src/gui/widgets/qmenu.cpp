@@ -66,7 +66,7 @@ QMenu *QMenuPrivate::mouseDown = nullptr;
 
 class QTornOffMenu : public QMenu
 {
-    GUI_CS_OBJECT( QTornOffMenu )
+    GUI_LSCS_OBJECT( QTornOffMenu )
 
     class QTornOffMenuPrivate : public QMenuPrivate
     {
@@ -143,11 +143,11 @@ public:
         setFixedSize( sizeHint() );
     }
 
-    GUI_CS_SLOT_1( Public, void onTrigger( QAction *action ) )
-    GUI_CS_SLOT_2( onTrigger )
+    GUI_LSCS_SLOT_1( Public, void onTrigger( QAction *action ) )
+    GUI_LSCS_SLOT_2( onTrigger )
 
-    GUI_CS_SLOT_1( Public, void onHovered( QAction *action ) )
-    GUI_CS_SLOT_2( onHovered )
+    GUI_LSCS_SLOT_1( Public, void onHovered( QAction *action ) )
+    GUI_LSCS_SLOT_2( onHovered )
 
 private:
     Q_DECLARE_PRIVATE( QTornOffMenu )

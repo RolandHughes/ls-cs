@@ -101,7 +101,7 @@ void QPlatformFontDatabase::registerQPF2Font( const QByteArray &dataArray, void 
     }
     else
     {
-#if defined(CS_SHOW_DEBUG_GUI)
+#if defined(LSCS_SHOW_DEBUG_GUI)
         qDebug() << "QPlatformFontDatabase::registerQPF2Font() Header verification of QPF2 font failed, it might be corrupt";
 #endif
     }
@@ -243,7 +243,7 @@ void QPlatformFontDatabase::populateFontDatabase()
     if ( ! QFile::exists( fontpath ) )
     {
         qWarning( "QFontDatabase::populateFontDatabase() Unable to find font directory '%s'",
-                  csPrintable( QDir::toNativeSeparators( fontpath ) ) );
+                  lscsPrintable( QDir::toNativeSeparators( fontpath ) ) );
         return;
     }
 

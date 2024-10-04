@@ -34,7 +34,7 @@ class QSqlDriver;
 
 class Q_SQL_EXPORT QSqlDriverPlugin : public QObject
 {
-    SQL_CS_OBJECT( QSqlDriverPlugin )
+    SQL_LSCS_OBJECT( QSqlDriverPlugin )
 
 public:
     explicit QSqlDriverPlugin( QObject *parent = nullptr );

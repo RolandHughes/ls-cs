@@ -33,7 +33,7 @@ class QMimeDataPrivate;
 
 class Q_CORE_EXPORT QMimeData : public QObject
 {
-    CORE_CS_OBJECT( QMimeData )
+    CORE_LSCS_OBJECT( QMimeData )
 
 public:
     QMimeData();

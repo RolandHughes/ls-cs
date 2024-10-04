@@ -36,7 +36,7 @@
 #include <qopengl_p.h>
 #include <qopenglcontext_p.h>
 
-#if defined(CS_SHOW_DEBUG_GUI_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_GUI_OPENGL)
 #define QT_RESET_GLERROR()                                \
 {                                                         \
     while (QOpenGLContext::currentContext()->functions()->glGetError() != GL_NO_ERROR) {} \
@@ -251,20 +251,20 @@ bool QOpenGLFramebufferObjectPrivate::checkFramebufferStatus( QOpenGLContext *ct
             return true;
 
         case GL_FRAMEBUFFER_UNSUPPORTED:
-#if defined(CS_SHOW_DEBUG_GUI_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_GUI_OPENGL)
             qDebug( "QOpenGLFramebufferObject::checkFramebufferStatus() Unsupported framebuffer format" );
 #endif
 
             break;
 
         case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT:
-#if defined(CS_SHOW_DEBUG_GUI_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_GUI_OPENGL)
             qDebug( "QOpenGLFramebufferObject::checkFramebufferStatus() Framebuffer incomplete attachment" );
 #endif
             break;
 
         case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
-#if defined(CS_SHOW_DEBUG_GUI_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_GUI_OPENGL)
             qDebug( "QOpenGLFramebufferObject::checkFramebufferStatus() Framebuffer incomplete, missing attachment" );
 #endif
             break;
@@ -272,7 +272,7 @@ bool QOpenGLFramebufferObjectPrivate::checkFramebufferStatus( QOpenGLContext *ct
 #ifdef GL_FRAMEBUFFER_INCOMPLETE_DUPLICATE_ATTACHMENT
 
         case GL_FRAMEBUFFER_INCOMPLETE_DUPLICATE_ATTACHMENT:
-#if defined(CS_SHOW_DEBUG_GUI_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_GUI_OPENGL)
             qDebug( "QOpenGLFramebufferObject::checkFramebufferStatus() Framebuffer incomplete, duplicate attachment" );
 #endif
 
@@ -282,7 +282,7 @@ bool QOpenGLFramebufferObjectPrivate::checkFramebufferStatus( QOpenGLContext *ct
 #ifdef GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS
 
         case GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS:
-#if defined(CS_SHOW_DEBUG_GUI_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_GUI_OPENGL)
             qDebug( "QOpenGLFramebufferObject::checkFramebufferStatus() Framebuffer incomplete, attached images must have same dimensions" );
 #endif
 
@@ -292,7 +292,7 @@ bool QOpenGLFramebufferObjectPrivate::checkFramebufferStatus( QOpenGLContext *ct
 #ifdef GL_FRAMEBUFFER_INCOMPLETE_FORMATS
 
         case GL_FRAMEBUFFER_INCOMPLETE_FORMATS:
-#if defined(CS_SHOW_DEBUG_GUI_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_GUI_OPENGL)
             qDebug( "QOpenGLFramebufferObject::checkFramebufferStatus() Framebuffer incomplete, attached images must have same format" );
 #endif
             break;
@@ -301,7 +301,7 @@ bool QOpenGLFramebufferObjectPrivate::checkFramebufferStatus( QOpenGLContext *ct
 #ifdef GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER
 
         case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER:
-#if defined(CS_SHOW_DEBUG_GUI_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_GUI_OPENGL)
             qDebug( "QOpenGLFramebufferObject::checkFramebufferStatus() Framebuffer incomplete, missing draw buffer" );
 #endif
 
@@ -311,7 +311,7 @@ bool QOpenGLFramebufferObjectPrivate::checkFramebufferStatus( QOpenGLContext *ct
 #ifdef GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER
 
         case GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER:
-#if defined(CS_SHOW_DEBUG_GUI_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_GUI_OPENGL)
             qDebug( "QOpenGLFramebufferObject::checkFramebufferStatus() Framebuffer incomplete, missing read buffer" );
 #endif
 
@@ -321,7 +321,7 @@ bool QOpenGLFramebufferObjectPrivate::checkFramebufferStatus( QOpenGLContext *ct
 #ifdef GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE
 
         case GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE:
-#if defined(CS_SHOW_DEBUG_GUI_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_GUI_OPENGL)
             qDebug( "QOpenGLFramebufferObject::checkFramebufferStatus() Framebuffer incomplete, attachments "
                     "must have same number of samples per pixel" );
 #endif
@@ -329,7 +329,7 @@ bool QOpenGLFramebufferObjectPrivate::checkFramebufferStatus( QOpenGLContext *ct
 #endif
 
         default:
-#if defined(CS_SHOW_DEBUG_GUI_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_GUI_OPENGL)
             qDebug() <<"QOpenGLFramebufferObject::checkFramebufferStatus() An undefined error has occurred: " << status;
 #endif
 
@@ -923,7 +923,7 @@ bool QOpenGLFramebufferObject::bind()
         return false;
     }
 
-#if defined(CS_SHOW_DEBUG_GUI_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_GUI_OPENGL)
 
     if ( current->shareGroup() != d->fbo_guard->group() )
     {
@@ -968,7 +968,7 @@ bool QOpenGLFramebufferObject::release()
 
     Q_D( QOpenGLFramebufferObject );
 
-#if defined(CS_SHOW_DEBUG_GUI_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_GUI_OPENGL)
 
     if ( current->shareGroup() != d->fbo_guard->group() )
     {
@@ -1271,7 +1271,7 @@ bool QOpenGLFramebufferObject::bindDefault()
         QOpenGLContextPrivate::get( ctx )->qgl_current_fbo = nullptr;
     }
 
-#if defined(CS_SHOW_DEBUG_GUI_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_GUI_OPENGL)
     else
     {
         qDebug( "QOpenGLFramebufferObject::bindDefault() Called without current context" );
@@ -1321,7 +1321,7 @@ void QOpenGLFramebufferObject::setAttachment( QOpenGLFramebufferObject::Attachme
         return;
     }
 
-#if defined(CS_SHOW_DEBUG_GUI_OPENGL)
+#if defined(LSCS_SHOW_DEBUG_GUI_OPENGL)
 
     if ( current->shareGroup() != d->fbo_guard->group() )
     {

@@ -55,7 +55,7 @@ class Q_DBUS_EXPORT QDBusAbstractInterface:
     public QDBusAbstractInterfaceBase
 
 {
-    CS_OBJECT( QDBusAbstractInterface )
+    LSCS_OBJECT( QDBusAbstractInterface )
 
 public:
     virtual ~QDBusAbstractInterface();
@@ -131,8 +131,8 @@ protected:
 
 private:
     Q_DECLARE_PRIVATE( QDBusAbstractInterface )
-    CS_SLOT_1( Private, void _q_serviceOwnerChanged( QString un_named_arg1,QString un_named_arg2,QString un_named_arg3 ) )
-    CS_SLOT_2( _q_serviceOwnerChanged )
+    LSCS_SLOT_1( Private, void _q_serviceOwnerChanged( QString un_named_arg1,QString un_named_arg2,QString un_named_arg3 ) )
+    LSCS_SLOT_2( _q_serviceOwnerChanged )
 
     /*  PRIVATE_SLOT
     void _q_serviceOwnerChanged(QString un_named_arg1,QString un_named_arg2,QString un_named_arg3)

@@ -31,7 +31,7 @@
 
 class Q_GUI_EXPORT QStringListModel : public QAbstractListModel
 {
-    GUI_CS_OBJECT( QStringListModel )
+    GUI_LSCS_OBJECT( QStringListModel )
 
 public:
     explicit QStringListModel( QObject *parent = nullptr );

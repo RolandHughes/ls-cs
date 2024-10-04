@@ -43,7 +43,7 @@ public:
     virtual bool waitForMessage() = 0;
 };
 
-CS_DECLARE_INTERFACE( QDeclarativeDebugServerConnection, "com.copperspice.QDeclarativeDebugServerConnection/1.0" )
+LSCS_DECLARE_INTERFACE( QDeclarativeDebugServerConnection, "com.copperspice.QDeclarativeDebugServerConnection/1.0" )
 
 QT_END_NAMESPACE
 

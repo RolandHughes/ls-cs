@@ -37,7 +37,7 @@ class QScriptCompletionTaskPrivate;
 
 class QScriptCompletionTask : public QScriptCompletionTaskInterface
 {
-    SCRIPT_T_CS_OBJECT( QScriptCompletionTask )
+    SCRIPT_T_LSCS_OBJECT( QScriptCompletionTask )
 
 public:
     QScriptCompletionTask(

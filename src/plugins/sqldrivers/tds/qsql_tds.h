@@ -39,7 +39,7 @@
 #include <qt_windows.h>
 #include <sqlfront.h>
 #include <sqldb.h>
-#define CS_PUBLIC
+#define LSCS_PUBLIC
 
 #else
 #include <sybfront.h>
@@ -77,7 +77,7 @@ private:
 
 class Q_EXPORT_SQLDRIVER_TDS QTDSDriver : public QSqlDriver
 {
-    CS_OBJECT( QTDSDriver )
+    LSCS_OBJECT( QTDSDriver )
     friend class QTDSResult;
 
 public:

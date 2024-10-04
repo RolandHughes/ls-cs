@@ -43,17 +43,17 @@ class QGestureEventPrivate;
 
 class Q_GUI_EXPORT QGesture : public QObject
 {
-    GUI_CS_OBJECT( QGesture )
+    GUI_LSCS_OBJECT( QGesture )
     Q_DECLARE_PRIVATE( QGesture )
 
-    GUI_CS_PROPERTY_READ( state, state )
-    GUI_CS_PROPERTY_READ( gestureType, gestureType )
-    GUI_CS_PROPERTY_READ( gestureCancelPolicy, gestureCancelPolicy )
-    GUI_CS_PROPERTY_WRITE( gestureCancelPolicy, setGestureCancelPolicy )
-    GUI_CS_PROPERTY_READ( hotSpot, hotSpot )
-    GUI_CS_PROPERTY_WRITE( hotSpot, setHotSpot )
-    GUI_CS_PROPERTY_RESET( hotSpot, unsetHotSpot )
-    GUI_CS_PROPERTY_READ( hasHotSpot, hasHotSpot )
+    GUI_LSCS_PROPERTY_READ( state, state )
+    GUI_LSCS_PROPERTY_READ( gestureType, gestureType )
+    GUI_LSCS_PROPERTY_READ( gestureCancelPolicy, gestureCancelPolicy )
+    GUI_LSCS_PROPERTY_WRITE( gestureCancelPolicy, setGestureCancelPolicy )
+    GUI_LSCS_PROPERTY_READ( hotSpot, hotSpot )
+    GUI_LSCS_PROPERTY_WRITE( hotSpot, setHotSpot )
+    GUI_LSCS_PROPERTY_RESET( hotSpot, unsetHotSpot )
+    GUI_LSCS_PROPERTY_READ( hasHotSpot, hasHotSpot )
 
 public:
     explicit QGesture( QObject *parent = nullptr );
@@ -90,25 +90,25 @@ private:
 
 class Q_GUI_EXPORT QPanGesture : public QGesture
 {
-    GUI_CS_OBJECT( QPanGesture )
+    GUI_LSCS_OBJECT( QPanGesture )
     Q_DECLARE_PRIVATE( QPanGesture )
 
-    GUI_CS_PROPERTY_READ( lastOffset, lastOffset )
-    GUI_CS_PROPERTY_WRITE( lastOffset, setLastOffset )
-    GUI_CS_PROPERTY_READ( offset, offset )
-    GUI_CS_PROPERTY_WRITE( offset, setOffset )
-    GUI_CS_PROPERTY_READ( delta, delta )
-    GUI_CS_PROPERTY_STORED( delta, false )
-    GUI_CS_PROPERTY_READ( acceleration, acceleration )
-    GUI_CS_PROPERTY_WRITE( acceleration, setAcceleration )
+    GUI_LSCS_PROPERTY_READ( lastOffset, lastOffset )
+    GUI_LSCS_PROPERTY_WRITE( lastOffset, setLastOffset )
+    GUI_LSCS_PROPERTY_READ( offset, offset )
+    GUI_LSCS_PROPERTY_WRITE( offset, setOffset )
+    GUI_LSCS_PROPERTY_READ( delta, delta )
+    GUI_LSCS_PROPERTY_STORED( delta, false )
+    GUI_LSCS_PROPERTY_READ( acceleration, acceleration )
+    GUI_LSCS_PROPERTY_WRITE( acceleration, setAcceleration )
 
     // private properties
-    GUI_CS_PROPERTY_READ( horizontalVelocity, cs_horizontalVelocity )
-    GUI_CS_PROPERTY_WRITE( horizontalVelocity, cs_setHorizontalVelocity )
+    GUI_LSCS_PROPERTY_READ( horizontalVelocity, cs_horizontalVelocity )
+    GUI_LSCS_PROPERTY_WRITE( horizontalVelocity, cs_setHorizontalVelocity )
 
     // private properties
-    GUI_CS_PROPERTY_READ( verticalVelocity, cs_verticalVelocity )
-    GUI_CS_PROPERTY_WRITE( verticalVelocity, cs_setVerticalVelocity )
+    GUI_LSCS_PROPERTY_READ( verticalVelocity, cs_verticalVelocity )
+    GUI_LSCS_PROPERTY_WRITE( verticalVelocity, cs_setVerticalVelocity )
 
 public:
     explicit QPanGesture( QObject *parent = nullptr );
@@ -142,10 +142,10 @@ private:
 
 class Q_GUI_EXPORT QPinchGesture : public QGesture
 {
-    GUI_CS_OBJECT( QPinchGesture )
+    GUI_LSCS_OBJECT( QPinchGesture )
     Q_DECLARE_PRIVATE( QPinchGesture )
 
-    GUI_CS_FLAG( ChangeFlags, ChangeFlag )
+    GUI_LSCS_FLAG( ChangeFlags, ChangeFlag )
 
 public:
     enum ChangeFlag
@@ -156,31 +156,31 @@ public:
     };
     using ChangeFlags = QFlags<ChangeFlag>;
 
-    GUI_CS_PROPERTY_READ( totalChangeFlags, totalChangeFlags )
-    GUI_CS_PROPERTY_WRITE( totalChangeFlags, setTotalChangeFlags )
-    GUI_CS_PROPERTY_READ( changeFlags, changeFlags )
-    GUI_CS_PROPERTY_WRITE( changeFlags, setChangeFlags )
+    GUI_LSCS_PROPERTY_READ( totalChangeFlags, totalChangeFlags )
+    GUI_LSCS_PROPERTY_WRITE( totalChangeFlags, setTotalChangeFlags )
+    GUI_LSCS_PROPERTY_READ( changeFlags, changeFlags )
+    GUI_LSCS_PROPERTY_WRITE( changeFlags, setChangeFlags )
 
-    GUI_CS_PROPERTY_READ( totalScaleFactor, totalScaleFactor )
-    GUI_CS_PROPERTY_WRITE( totalScaleFactor, setTotalScaleFactor )
-    GUI_CS_PROPERTY_READ( lastScaleFactor, lastScaleFactor )
-    GUI_CS_PROPERTY_WRITE( lastScaleFactor, setLastScaleFactor )
-    GUI_CS_PROPERTY_READ( scaleFactor, scaleFactor )
-    GUI_CS_PROPERTY_WRITE( scaleFactor, setScaleFactor )
+    GUI_LSCS_PROPERTY_READ( totalScaleFactor, totalScaleFactor )
+    GUI_LSCS_PROPERTY_WRITE( totalScaleFactor, setTotalScaleFactor )
+    GUI_LSCS_PROPERTY_READ( lastScaleFactor, lastScaleFactor )
+    GUI_LSCS_PROPERTY_WRITE( lastScaleFactor, setLastScaleFactor )
+    GUI_LSCS_PROPERTY_READ( scaleFactor, scaleFactor )
+    GUI_LSCS_PROPERTY_WRITE( scaleFactor, setScaleFactor )
 
-    GUI_CS_PROPERTY_READ( totalRotationAngle, totalRotationAngle )
-    GUI_CS_PROPERTY_WRITE( totalRotationAngle, setTotalRotationAngle )
-    GUI_CS_PROPERTY_READ( lastRotationAngle, lastRotationAngle )
-    GUI_CS_PROPERTY_WRITE( lastRotationAngle, setLastRotationAngle )
-    GUI_CS_PROPERTY_READ( rotationAngle, rotationAngle )
-    GUI_CS_PROPERTY_WRITE( rotationAngle, setRotationAngle )
+    GUI_LSCS_PROPERTY_READ( totalRotationAngle, totalRotationAngle )
+    GUI_LSCS_PROPERTY_WRITE( totalRotationAngle, setTotalRotationAngle )
+    GUI_LSCS_PROPERTY_READ( lastRotationAngle, lastRotationAngle )
+    GUI_LSCS_PROPERTY_WRITE( lastRotationAngle, setLastRotationAngle )
+    GUI_LSCS_PROPERTY_READ( rotationAngle, rotationAngle )
+    GUI_LSCS_PROPERTY_WRITE( rotationAngle, setRotationAngle )
 
-    GUI_CS_PROPERTY_READ( startCenterPoint, startCenterPoint )
-    GUI_CS_PROPERTY_WRITE( startCenterPoint, setStartCenterPoint )
-    GUI_CS_PROPERTY_READ( lastCenterPoint, lastCenterPoint )
-    GUI_CS_PROPERTY_WRITE( lastCenterPoint, setLastCenterPoint )
-    GUI_CS_PROPERTY_READ( centerPoint, centerPoint )
-    GUI_CS_PROPERTY_WRITE( centerPoint, setCenterPoint )
+    GUI_LSCS_PROPERTY_READ( startCenterPoint, startCenterPoint )
+    GUI_LSCS_PROPERTY_WRITE( startCenterPoint, setStartCenterPoint )
+    GUI_LSCS_PROPERTY_READ( lastCenterPoint, lastCenterPoint )
+    GUI_LSCS_PROPERTY_WRITE( lastCenterPoint, setLastCenterPoint )
+    GUI_LSCS_PROPERTY_READ( centerPoint, centerPoint )
+    GUI_LSCS_PROPERTY_WRITE( centerPoint, setCenterPoint )
 
     explicit QPinchGesture( QObject *parent = nullptr );
     ~QPinchGesture();
@@ -219,21 +219,21 @@ Q_DECLARE_OPERATORS_FOR_FLAGS( QPinchGesture::ChangeFlags )
 
 class Q_GUI_EXPORT QSwipeGesture : public QGesture
 {
-    GUI_CS_OBJECT( QSwipeGesture )
+    GUI_LSCS_OBJECT( QSwipeGesture )
     Q_DECLARE_PRIVATE( QSwipeGesture )
 
-    GUI_CS_ENUM( SwipeDirection )
+    GUI_LSCS_ENUM( SwipeDirection )
 
-    GUI_CS_PROPERTY_READ( horizontalDirection, horizontalDirection )
-    GUI_CS_PROPERTY_STORED( horizontalDirection, false )
-    GUI_CS_PROPERTY_READ( verticalDirection, verticalDirection )
-    GUI_CS_PROPERTY_STORED( verticalDirection, false )
-    GUI_CS_PROPERTY_READ( swipeAngle, swipeAngle )
-    GUI_CS_PROPERTY_WRITE( swipeAngle, setSwipeAngle )
+    GUI_LSCS_PROPERTY_READ( horizontalDirection, horizontalDirection )
+    GUI_LSCS_PROPERTY_STORED( horizontalDirection, false )
+    GUI_LSCS_PROPERTY_READ( verticalDirection, verticalDirection )
+    GUI_LSCS_PROPERTY_STORED( verticalDirection, false )
+    GUI_LSCS_PROPERTY_READ( swipeAngle, swipeAngle )
+    GUI_LSCS_PROPERTY_WRITE( swipeAngle, setSwipeAngle )
 
     // private properties
-    GUI_CS_PROPERTY_READ( velocity, cs_velocity )
-    GUI_CS_PROPERTY_WRITE( velocity, cs_setVelocity )
+    GUI_LSCS_PROPERTY_READ( velocity, cs_velocity )
+    GUI_LSCS_PROPERTY_WRITE( velocity, cs_setVelocity )
 
 public:
     enum SwipeDirection
@@ -266,11 +266,11 @@ private:
 
 class Q_GUI_EXPORT QTapGesture : public QGesture
 {
-    GUI_CS_OBJECT( QTapGesture )
+    GUI_LSCS_OBJECT( QTapGesture )
     Q_DECLARE_PRIVATE( QTapGesture )
 
-    GUI_CS_PROPERTY_READ( position, position )
-    GUI_CS_PROPERTY_WRITE( position, setPosition )
+    GUI_LSCS_PROPERTY_READ( position, position )
+    GUI_LSCS_PROPERTY_WRITE( position, setPosition )
 
 public:
     explicit QTapGesture( QObject *parent = nullptr );
@@ -284,11 +284,11 @@ public:
 
 class Q_GUI_EXPORT QTapAndHoldGesture : public QGesture
 {
-    GUI_CS_OBJECT( QTapAndHoldGesture )
+    GUI_LSCS_OBJECT( QTapAndHoldGesture )
     Q_DECLARE_PRIVATE( QTapAndHoldGesture )
 
-    GUI_CS_PROPERTY_READ( position, position )
-    GUI_CS_PROPERTY_WRITE( position, setPosition )
+    GUI_LSCS_PROPERTY_READ( position, position )
+    GUI_LSCS_PROPERTY_WRITE( position, setPosition )
 
 public:
     explicit QTapAndHoldGesture( QObject *parent = nullptr );

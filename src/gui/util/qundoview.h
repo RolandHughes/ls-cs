@@ -36,12 +36,12 @@ class QUndoViewPrivate;
 
 class Q_GUI_EXPORT QUndoView : public QListView
 {
-    GUI_CS_OBJECT( QUndoView )
+    GUI_LSCS_OBJECT( QUndoView )
 
-    GUI_CS_PROPERTY_READ( emptyLabel, emptyLabel )
-    GUI_CS_PROPERTY_WRITE( emptyLabel, setEmptyLabel )
-    GUI_CS_PROPERTY_READ( cleanIcon, cleanIcon )
-    GUI_CS_PROPERTY_WRITE( cleanIcon, setCleanIcon )
+    GUI_LSCS_PROPERTY_READ( emptyLabel, emptyLabel )
+    GUI_LSCS_PROPERTY_WRITE( emptyLabel, setEmptyLabel )
+    GUI_LSCS_PROPERTY_READ( cleanIcon, cleanIcon )
+    GUI_LSCS_PROPERTY_WRITE( cleanIcon, setCleanIcon )
 
 public:
     explicit QUndoView( QWidget *parent = nullptr );
@@ -68,12 +68,12 @@ public:
     void setCleanIcon( const QIcon &icon );
     QIcon cleanIcon() const;
 
-    GUI_CS_SLOT_1( Public, void setStack( QUndoStack *stack ) )
-    GUI_CS_SLOT_2( setStack )
+    GUI_LSCS_SLOT_1( Public, void setStack( QUndoStack *stack ) )
+    GUI_LSCS_SLOT_2( setStack )
 
 #ifndef QT_NO_UNDOGROUP
-    GUI_CS_SLOT_1( Public, void setGroup( QUndoGroup *group ) )
-    GUI_CS_SLOT_2( setGroup )
+    GUI_LSCS_SLOT_1( Public, void setGroup( QUndoGroup *group ) )
+    GUI_LSCS_SLOT_2( setGroup )
 #endif
 
 private:

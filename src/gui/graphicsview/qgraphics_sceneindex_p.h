@@ -44,7 +44,7 @@ typedef bool ( *QGraphicsSceneIndexIntersector )( const QGraphicsItem *item, con
 
 class QGraphicsSceneIndex : public QObject
 {
-    GUI_CS_OBJECT( QGraphicsSceneIndex )
+    GUI_LSCS_OBJECT( QGraphicsSceneIndex )
 
 public:
     QGraphicsSceneIndex( QGraphicsScene *scene = nullptr );
@@ -81,8 +81,8 @@ protected:
     QGraphicsSceneIndex( QGraphicsSceneIndexPrivate &dd, QGraphicsScene *scene );
     QScopedPointer<QGraphicsSceneIndexPrivate> d_ptr;
 
-    GUI_CS_SLOT_1( Protected, virtual void updateSceneRect( const QRectF &rect ) )
-    GUI_CS_SLOT_2( updateSceneRect )
+    GUI_LSCS_SLOT_1( Protected, virtual void updateSceneRect( const QRectF &rect ) )
+    GUI_LSCS_SLOT_2( updateSceneRect )
 
     friend class QGraphicsScene;
     friend class QGraphicsScenePrivate;

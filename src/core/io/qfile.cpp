@@ -160,7 +160,7 @@ void QFile::setFileName( const QString &name )
 
     if ( isOpen() )
     {
-        qWarning( "QFile::setFileName() File (%s) is already opened", csPrintable( fileName() ) );
+        qWarning( "QFile::setFileName() File (%s) is already opened", lscsPrintable( fileName() ) );
         close();
     }
 
@@ -607,7 +607,7 @@ bool QFile::open( OpenMode mode )
 
     if ( isOpen() )
     {
-        qWarning( "QFile::open() File (%s) already open", csPrintable( fileName() ) );
+        qWarning( "QFile::open() File (%s) already open", lscsPrintable( fileName() ) );
         return false;
     }
 
@@ -656,7 +656,7 @@ bool QFile::open( FILE *fh, OpenMode mode, FileHandleFlags handleFlags )
 
     if ( isOpen() )
     {
-        qWarning( "QFile::open() File (%s) already open", csPrintable( fileName() ) );
+        qWarning( "QFile::open() File (%s) already open", lscsPrintable( fileName() ) );
         return false;
     }
 
@@ -703,7 +703,7 @@ bool QFile::open( int fd, OpenMode mode, FileHandleFlags handleFlags )
 
     if ( isOpen() )
     {
-        qWarning( "QFile::open() File (%s) already open", csPrintable( fileName() ) );
+        qWarning( "QFile::open() File (%s) already open", lscsPrintable( fileName() ) );
         return false;
     }
 

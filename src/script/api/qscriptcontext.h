@@ -92,6 +92,6 @@ private:
     QScriptContextPrivate *d_ptr;
 };
 
-CS_DECLARE_METATYPE( QScriptContext )
+LSCS_DECLARE_METATYPE( QScriptContext )
 
 #endif

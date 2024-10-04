@@ -68,7 +68,7 @@ private:
 
 class Q_EXPORT_SQLDRIVER_DB2 QDB2Driver : public QSqlDriver
 {
-    CS_OBJECT( QDB2Driver )
+    LSCS_OBJECT( QDB2Driver )
 
 public:
     explicit QDB2Driver( QObject *parent = nullptr );

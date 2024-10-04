@@ -166,7 +166,7 @@ bool WebPopupMenuProxyWin::registerWindowClass()
 
     WNDCLASSEX wcex;
     wcex.cbSize         = sizeof( WNDCLASSEX );
-    wcex.style          = CS_DROPSHADOW;
+    wcex.style          = LSCS_DROPSHADOW;
     wcex.lpfnWndProc    = WebPopupMenuProxyWin::WebPopupMenuProxyWndProc;
     wcex.cbClsExtra     = 0;
     wcex.cbWndExtra     = sizeof( WebPopupMenuProxyWin * );

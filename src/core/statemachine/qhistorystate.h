@@ -33,19 +33,19 @@ class QHistoryStatePrivate;
 
 class Q_CORE_EXPORT QHistoryState : public QAbstractState
 {
-    CORE_CS_OBJECT( QHistoryState )
+    CORE_LSCS_OBJECT( QHistoryState )
 
-    CORE_CS_PROPERTY_READ( defaultState,   defaultState )
-    CORE_CS_PROPERTY_WRITE( defaultState,  setDefaultState )
-    CORE_CS_PROPERTY_NOTIFY( defaultState, defaultStateChanged )
+    CORE_LSCS_PROPERTY_READ( defaultState,   defaultState )
+    CORE_LSCS_PROPERTY_WRITE( defaultState,  setDefaultState )
+    CORE_LSCS_PROPERTY_NOTIFY( defaultState, defaultStateChanged )
 
-    CORE_CS_PROPERTY_READ( defaultTransition,   defaultTransition )
-    CORE_CS_PROPERTY_WRITE( defaultTransition,  setDefaultTransition )
-    CORE_CS_PROPERTY_NOTIFY( defaultTransition, defaultTransitionChanged )
+    CORE_LSCS_PROPERTY_READ( defaultTransition,   defaultTransition )
+    CORE_LSCS_PROPERTY_WRITE( defaultTransition,  setDefaultTransition )
+    CORE_LSCS_PROPERTY_NOTIFY( defaultTransition, defaultTransitionChanged )
 
-    CORE_CS_PROPERTY_READ( historyType,   historyType )
-    CORE_CS_PROPERTY_WRITE( historyType,  setHistoryType )
-    CORE_CS_PROPERTY_NOTIFY( historyType, historyTypeChanged )
+    CORE_LSCS_PROPERTY_READ( historyType,   historyType )
+    CORE_LSCS_PROPERTY_WRITE( historyType,  setHistoryType )
+    CORE_LSCS_PROPERTY_NOTIFY( historyType, historyTypeChanged )
 
 public:
     enum HistoryType
@@ -54,7 +54,7 @@ public:
         DeepHistory
     };
 
-    CORE_CS_ENUM( HistoryType )
+    CORE_LSCS_ENUM( HistoryType )
 
     QHistoryState( QState *parent = nullptr );
     QHistoryState( HistoryType type, QState *parent = nullptr );
@@ -73,14 +73,14 @@ public:
     HistoryType historyType() const;
     void setHistoryType( HistoryType type );
 
-    CORE_CS_SIGNAL_1( Public, void defaultTransitionChanged() )
-    CORE_CS_SIGNAL_2( defaultTransitionChanged )
+    CORE_LSCS_SIGNAL_1( Public, void defaultTransitionChanged() )
+    CORE_LSCS_SIGNAL_2( defaultTransitionChanged )
 
-    CORE_CS_SIGNAL_1( Public, void defaultStateChanged() )
-    CORE_CS_SIGNAL_2( defaultStateChanged )
+    CORE_LSCS_SIGNAL_1( Public, void defaultStateChanged() )
+    CORE_LSCS_SIGNAL_2( defaultStateChanged )
 
-    CORE_CS_SIGNAL_1( Public, void historyTypeChanged() )
-    CORE_CS_SIGNAL_2( historyTypeChanged )
+    CORE_LSCS_SIGNAL_1( Public, void historyTypeChanged() )
+    CORE_LSCS_SIGNAL_2( historyTypeChanged )
 
 protected:
     void onEntry( QEvent *event ) override;

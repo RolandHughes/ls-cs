@@ -34,7 +34,7 @@ class QAbstractAudioInput;
 
 class Q_MULTIMEDIA_EXPORT QAudioInput : public QObject
 {
-    MULTI_CS_OBJECT( QAudioInput )
+    MULTI_LSCS_OBJECT( QAudioInput )
 
 public:
     explicit QAudioInput( const QAudioFormat &format = QAudioFormat(), QObject *parent = nullptr );
@@ -73,11 +73,11 @@ public:
     QAudio::Error error() const;
     QAudio::State state() const;
 
-    MULTI_CS_SIGNAL_1( Public, void stateChanged( QAudio::State state ) )
-    MULTI_CS_SIGNAL_2( stateChanged, state )
+    MULTI_LSCS_SIGNAL_1( Public, void stateChanged( QAudio::State state ) )
+    MULTI_LSCS_SIGNAL_2( stateChanged, state )
 
-    MULTI_CS_SIGNAL_1( Public, void notify() )
-    MULTI_CS_SIGNAL_2( notify )
+    MULTI_LSCS_SIGNAL_1( Public, void notify() )
+    MULTI_LSCS_SIGNAL_2( notify )
 
 private:
     QAbstractAudioInput *m_audioInput;

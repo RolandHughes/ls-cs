@@ -41,17 +41,17 @@ class QMoviePrivate;
 
 class Q_GUI_EXPORT QMovie : public QObject
 {
-    GUI_CS_OBJECT( QMovie )
+    GUI_LSCS_OBJECT( QMovie )
     Q_DECLARE_PRIVATE( QMovie )
 
-    GUI_CS_ENUM( MovieState )
-    GUI_CS_ENUM( CacheMode )
+    GUI_LSCS_ENUM( MovieState )
+    GUI_LSCS_ENUM( CacheMode )
 
-    GUI_CS_PROPERTY_READ( speed, speed )
-    GUI_CS_PROPERTY_WRITE( speed, setSpeed )
+    GUI_LSCS_PROPERTY_READ( speed, speed )
+    GUI_LSCS_PROPERTY_WRITE( speed, setSpeed )
 
-    GUI_CS_PROPERTY_READ( cacheMode, cacheMode )
-    GUI_CS_PROPERTY_WRITE( cacheMode, setCacheMode )
+    GUI_LSCS_PROPERTY_READ( cacheMode, cacheMode )
+    GUI_LSCS_PROPERTY_WRITE( cacheMode, setCacheMode )
 
 public:
     enum MovieState
@@ -112,48 +112,48 @@ public:
     CacheMode cacheMode() const;
     void setCacheMode( CacheMode mode );
 
-    GUI_CS_SIGNAL_1( Public, void started() )
-    GUI_CS_SIGNAL_2( started )
+    GUI_LSCS_SIGNAL_1( Public, void started() )
+    GUI_LSCS_SIGNAL_2( started )
 
-    GUI_CS_SIGNAL_1( Public, void resized( const QSize &size ) )
-    GUI_CS_SIGNAL_2( resized, size )
+    GUI_LSCS_SIGNAL_1( Public, void resized( const QSize &size ) )
+    GUI_LSCS_SIGNAL_2( resized, size )
 
-    GUI_CS_SIGNAL_1( Public, void updated( const QRect &rect ) )
-    GUI_CS_SIGNAL_2( updated, rect )
+    GUI_LSCS_SIGNAL_1( Public, void updated( const QRect &rect ) )
+    GUI_LSCS_SIGNAL_2( updated, rect )
 
-    GUI_CS_SIGNAL_1( Public, void stateChanged( QMovie::MovieState state ) )
-    GUI_CS_SIGNAL_2( stateChanged, state )
+    GUI_LSCS_SIGNAL_1( Public, void stateChanged( QMovie::MovieState state ) )
+    GUI_LSCS_SIGNAL_2( stateChanged, state )
 
-    GUI_CS_SIGNAL_1( Public, void error( QImageReader::ImageReaderError error ) )
-    GUI_CS_SIGNAL_2( error, error )
+    GUI_LSCS_SIGNAL_1( Public, void error( QImageReader::ImageReaderError error ) )
+    GUI_LSCS_SIGNAL_2( error, error )
 
-    GUI_CS_SIGNAL_1( Public, void finished() )
-    GUI_CS_SIGNAL_2( finished )
+    GUI_LSCS_SIGNAL_1( Public, void finished() )
+    GUI_LSCS_SIGNAL_2( finished )
 
-    GUI_CS_SIGNAL_1( Public, void frameChanged( int frameNumber ) )
-    GUI_CS_SIGNAL_2( frameChanged, frameNumber )
+    GUI_LSCS_SIGNAL_1( Public, void frameChanged( int frameNumber ) )
+    GUI_LSCS_SIGNAL_2( frameChanged, frameNumber )
 
-    GUI_CS_SLOT_1( Public, void start() )
-    GUI_CS_SLOT_2( start )
+    GUI_LSCS_SLOT_1( Public, void start() )
+    GUI_LSCS_SLOT_2( start )
 
-    GUI_CS_SLOT_1( Public, bool jumpToNextFrame() )
-    GUI_CS_SLOT_2( jumpToNextFrame )
+    GUI_LSCS_SLOT_1( Public, bool jumpToNextFrame() )
+    GUI_LSCS_SLOT_2( jumpToNextFrame )
 
-    GUI_CS_SLOT_1( Public, void setPaused( bool paused ) )
-    GUI_CS_SLOT_2( setPaused )
+    GUI_LSCS_SLOT_1( Public, void setPaused( bool paused ) )
+    GUI_LSCS_SLOT_2( setPaused )
 
-    GUI_CS_SLOT_1( Public, void stop() )
-    GUI_CS_SLOT_2( stop )
+    GUI_LSCS_SLOT_1( Public, void stop() )
+    GUI_LSCS_SLOT_2( stop )
 
-    GUI_CS_SLOT_1( Public, void setSpeed( int percentSpeed ) )
-    GUI_CS_SLOT_2( setSpeed )
+    GUI_LSCS_SLOT_1( Public, void setSpeed( int percentSpeed ) )
+    GUI_LSCS_SLOT_2( setSpeed )
 
 protected:
     QScopedPointer<QMoviePrivate> d_ptr;
 
 private:
-    GUI_CS_SLOT_1( Private, void _q_loadNextFrame() )
-    GUI_CS_SLOT_2( _q_loadNextFrame )
+    GUI_LSCS_SLOT_1( Private, void _q_loadNextFrame() )
+    GUI_LSCS_SLOT_2( _q_loadNextFrame )
 };
 
 #endif // QT_NO_MOVIE

@@ -373,7 +373,7 @@ public:
     quint16 m_numberOptions;
 };
 
-#if ! defined (CS_DOXYPRESS)
+#if ! defined (LSCS_DOXYPRESS)
 template <>
 inline QLocalePrivate *QSharedDataPointer<QLocalePrivate>::clone()
 {
@@ -449,7 +449,7 @@ constexpr inline bool ascii_isspace( uchar c )
 }
 
 #ifndef QT_NO_SYSTEMLOCALE
-CS_DECLARE_METATYPE( QSystemLocale::CurrencyToStringArgument )
+LSCS_DECLARE_METATYPE( QSystemLocale::CurrencyToStringArgument )
 #endif
 
 #endif

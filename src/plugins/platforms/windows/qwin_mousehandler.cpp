@@ -149,7 +149,7 @@ static inline QTouchDevice *createTouchDevice()
 
     const int maxTouchPoints = GetSystemMetrics( QT_SM_MAXIMUMTOUCHES );
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
     const int tabletPc = GetSystemMetrics( QT_SM_TABLETPC );
 
     qDebug() << "createTouchDevice() Digitizers =" << hex << showbase << ( digitizers & ~QT_NID_READY ) << "\n  "

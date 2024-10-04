@@ -43,26 +43,26 @@ class QDeclarativeAnimationGroup;
 class Q_DECLARATIVE_PRIVATE_EXPORT QDeclarativeAbstractAnimation
     : public QObject, public QDeclarativePropertyValueSource, public QDeclarativeParserStatus
 {
-    DECL_CS_OBJECT( QDeclarativeAbstractAnimation )
+    DECL_LSCS_OBJECT( QDeclarativeAbstractAnimation )
     Q_DECLARE_PRIVATE( QDeclarativeAbstractAnimation )
 
-    CS_INTERFACES( QDeclarativeParserStatus, QDeclarativePropertyValueSource )
+    LSCS_INTERFACES( QDeclarativeParserStatus, QDeclarativePropertyValueSource )
 
-    CS_ENUM( Loops )
-    DECL_CS_PROPERTY_READ( running, isRunning )
-    DECL_CS_PROPERTY_WRITE( running, setRunning )
-    DECL_CS_PROPERTY_NOTIFY( running, runningChanged )
-    DECL_CS_PROPERTY_READ( paused, isPaused )
-    DECL_CS_PROPERTY_WRITE( paused, setPaused )
-    DECL_CS_PROPERTY_NOTIFY( paused, pausedChanged )
-    DECL_CS_PROPERTY_READ( alwaysRunToEnd, alwaysRunToEnd )
-    DECL_CS_PROPERTY_WRITE( alwaysRunToEnd, setAlwaysRunToEnd )
-    DECL_CS_PROPERTY_NOTIFY( alwaysRunToEnd, alwaysRunToEndChanged )
-    DECL_CS_PROPERTY_READ( loops, loops )
-    DECL_CS_PROPERTY_WRITE( loops, setLoops )
-    DECL_CS_PROPERTY_NOTIFY( loops, loopCountChanged )
+    LSCS_ENUM( Loops )
+    DECL_LSCS_PROPERTY_READ( running, isRunning )
+    DECL_LSCS_PROPERTY_WRITE( running, setRunning )
+    DECL_LSCS_PROPERTY_NOTIFY( running, runningChanged )
+    DECL_LSCS_PROPERTY_READ( paused, isPaused )
+    DECL_LSCS_PROPERTY_WRITE( paused, setPaused )
+    DECL_LSCS_PROPERTY_NOTIFY( paused, pausedChanged )
+    DECL_LSCS_PROPERTY_READ( alwaysRunToEnd, alwaysRunToEnd )
+    DECL_LSCS_PROPERTY_WRITE( alwaysRunToEnd, setAlwaysRunToEnd )
+    DECL_LSCS_PROPERTY_NOTIFY( alwaysRunToEnd, alwaysRunToEndChanged )
+    DECL_LSCS_PROPERTY_READ( loops, loops )
+    DECL_LSCS_PROPERTY_WRITE( loops, setLoops )
+    DECL_LSCS_PROPERTY_NOTIFY( loops, loopCountChanged )
 
-    DECL_CS_CLASSINFO( "DefaultMethod", "start()" )
+    DECL_LSCS_CLASSINFO( "DefaultMethod", "start()" )
 
 public:
     QDeclarativeAbstractAnimation( QObject *parent = nullptr );
@@ -93,32 +93,32 @@ public:
     void componentComplete();
 
 public:
-    DECL_CS_SIGNAL_1( Public, void started() )
-    DECL_CS_SIGNAL_2( started )
-    DECL_CS_SIGNAL_1( Public, void completed() )
-    DECL_CS_SIGNAL_2( completed )
-    DECL_CS_SIGNAL_1( Public, void runningChanged( bool un_named_arg1 ) )
-    DECL_CS_SIGNAL_2( runningChanged, un_named_arg1 )
-    DECL_CS_SIGNAL_1( Public, void pausedChanged( bool un_named_arg1 ) )
-    DECL_CS_SIGNAL_2( pausedChanged, un_named_arg1 )
-    DECL_CS_SIGNAL_1( Public, void alwaysRunToEndChanged( bool un_named_arg1 ) )
-    DECL_CS_SIGNAL_2( alwaysRunToEndChanged, un_named_arg1 )
-    DECL_CS_SIGNAL_1( Public, void loopCountChanged( int un_named_arg1 ) )
-    DECL_CS_SIGNAL_2( loopCountChanged, un_named_arg1 )
+    DECL_LSCS_SIGNAL_1( Public, void started() )
+    DECL_LSCS_SIGNAL_2( started )
+    DECL_LSCS_SIGNAL_1( Public, void completed() )
+    DECL_LSCS_SIGNAL_2( completed )
+    DECL_LSCS_SIGNAL_1( Public, void runningChanged( bool un_named_arg1 ) )
+    DECL_LSCS_SIGNAL_2( runningChanged, un_named_arg1 )
+    DECL_LSCS_SIGNAL_1( Public, void pausedChanged( bool un_named_arg1 ) )
+    DECL_LSCS_SIGNAL_2( pausedChanged, un_named_arg1 )
+    DECL_LSCS_SIGNAL_1( Public, void alwaysRunToEndChanged( bool un_named_arg1 ) )
+    DECL_LSCS_SIGNAL_2( alwaysRunToEndChanged, un_named_arg1 )
+    DECL_LSCS_SIGNAL_1( Public, void loopCountChanged( int un_named_arg1 ) )
+    DECL_LSCS_SIGNAL_2( loopCountChanged, un_named_arg1 )
 
 public :
-    DECL_CS_SLOT_1( Public, void restart() )
-    DECL_CS_SLOT_2( restart )
-    DECL_CS_SLOT_1( Public, void start() )
-    DECL_CS_SLOT_2( start )
-    DECL_CS_SLOT_1( Public, void pause() )
-    DECL_CS_SLOT_2( pause )
-    DECL_CS_SLOT_1( Public, void resume() )
-    DECL_CS_SLOT_2( resume )
-    DECL_CS_SLOT_1( Public, void stop() )
-    DECL_CS_SLOT_2( stop )
-    DECL_CS_SLOT_1( Public, void complete() )
-    DECL_CS_SLOT_2( complete )
+    DECL_LSCS_SLOT_1( Public, void restart() )
+    DECL_LSCS_SLOT_2( restart )
+    DECL_LSCS_SLOT_1( Public, void start() )
+    DECL_LSCS_SLOT_2( start )
+    DECL_LSCS_SLOT_1( Public, void pause() )
+    DECL_LSCS_SLOT_2( pause )
+    DECL_LSCS_SLOT_1( Public, void resume() )
+    DECL_LSCS_SLOT_2( resume )
+    DECL_LSCS_SLOT_1( Public, void stop() )
+    DECL_LSCS_SLOT_2( stop )
+    DECL_LSCS_SLOT_1( Public, void complete() )
+    DECL_LSCS_SLOT_2( complete )
 
 protected:
     QDeclarativeAbstractAnimation( QDeclarativeAbstractAnimationPrivate &dd, QObject *parent );
@@ -131,10 +131,10 @@ public:
     virtual QAbstractAnimation *qtAnimation() = 0;
 
 private :
-    DECL_CS_SLOT_1( Private, void timelineComplete() )
-    DECL_CS_SLOT_2( timelineComplete )
-    DECL_CS_SLOT_1( Private, void componentFinalized() )
-    DECL_CS_SLOT_2( componentFinalized )
+    DECL_LSCS_SLOT_1( Private, void timelineComplete() )
+    DECL_LSCS_SLOT_2( timelineComplete )
+    DECL_LSCS_SLOT_1( Private, void componentFinalized() )
+    DECL_LSCS_SLOT_2( componentFinalized )
 private:
     virtual void setTarget( const QDeclarativeProperty & );
     void notifyRunningChanged( bool running );
@@ -146,12 +146,12 @@ private:
 class QDeclarativePauseAnimationPrivate;
 class QDeclarativePauseAnimation : public QDeclarativeAbstractAnimation
 {
-    DECL_CS_OBJECT( QDeclarativePauseAnimation )
+    DECL_LSCS_OBJECT( QDeclarativePauseAnimation )
     Q_DECLARE_PRIVATE( QDeclarativePauseAnimation )
 
-    DECL_CS_PROPERTY_READ( duration, duration )
-    DECL_CS_PROPERTY_WRITE( duration, setDuration )
-    DECL_CS_PROPERTY_NOTIFY( duration, durationChanged )
+    DECL_LSCS_PROPERTY_READ( duration, duration )
+    DECL_LSCS_PROPERTY_WRITE( duration, setDuration )
+    DECL_LSCS_PROPERTY_NOTIFY( duration, durationChanged )
 
 public:
     QDeclarativePauseAnimation( QObject *parent = nullptr );
@@ -161,8 +161,8 @@ public:
     void setDuration( int );
 
 public:
-    DECL_CS_SIGNAL_1( Public, void durationChanged( int un_named_arg1 ) )
-    DECL_CS_SIGNAL_2( durationChanged, un_named_arg1 )
+    DECL_LSCS_SIGNAL_1( Public, void durationChanged( int un_named_arg1 ) )
+    DECL_LSCS_SIGNAL_2( durationChanged, un_named_arg1 )
 
 protected:
     virtual QAbstractAnimation *qtAnimation();
@@ -171,13 +171,13 @@ protected:
 class QDeclarativeScriptActionPrivate;
 class Q_DECLARATIVE_PRIVATE_EXPORT QDeclarativeScriptAction : public QDeclarativeAbstractAnimation
 {
-    DECL_CS_OBJECT( QDeclarativeScriptAction )
+    DECL_LSCS_OBJECT( QDeclarativeScriptAction )
     Q_DECLARE_PRIVATE( QDeclarativeScriptAction )
 
-    DECL_CS_PROPERTY_READ( script, script )
-    DECL_CS_PROPERTY_WRITE( script, setScript )
-    DECL_CS_PROPERTY_READ( scriptName, stateChangeScriptName )
-    DECL_CS_PROPERTY_WRITE( scriptName, setStateChangeScriptName )
+    DECL_LSCS_PROPERTY_READ( script, script )
+    DECL_LSCS_PROPERTY_WRITE( script, setScript )
+    DECL_LSCS_PROPERTY_READ( scriptName, stateChangeScriptName )
+    DECL_LSCS_PROPERTY_WRITE( scriptName, setStateChangeScriptName )
 
 public:
     QDeclarativeScriptAction( QObject *parent = nullptr );
@@ -199,23 +199,23 @@ protected:
 class QDeclarativePropertyActionPrivate;
 class QDeclarativePropertyAction : public QDeclarativeAbstractAnimation
 {
-    DECL_CS_OBJECT( QDeclarativePropertyAction )
+    DECL_LSCS_OBJECT( QDeclarativePropertyAction )
     Q_DECLARE_PRIVATE( QDeclarativePropertyAction )
 
-    DECL_CS_PROPERTY_READ( *target, target )
-    DECL_CS_PROPERTY_WRITE( *target, setTarget )
-    DECL_CS_PROPERTY_NOTIFY( *target, targetChanged )
-    DECL_CS_PROPERTY_READ( property, property )
-    DECL_CS_PROPERTY_WRITE( property, setProperty )
-    DECL_CS_PROPERTY_NOTIFY( property, propertyChanged )
-    DECL_CS_PROPERTY_READ( properties, properties )
-    DECL_CS_PROPERTY_WRITE( properties, setProperties )
-    DECL_CS_PROPERTY_NOTIFY( properties, propertiesChanged )
-    DECL_CS_PROPERTY_READ( targets, targets )
-    DECL_CS_PROPERTY_READ( exclude, exclude )
-    DECL_CS_PROPERTY_READ( value, value )
-    DECL_CS_PROPERTY_WRITE( value, setValue )
-    DECL_CS_PROPERTY_NOTIFY( value, valueChanged )
+    DECL_LSCS_PROPERTY_READ( *target, target )
+    DECL_LSCS_PROPERTY_WRITE( *target, setTarget )
+    DECL_LSCS_PROPERTY_NOTIFY( *target, targetChanged )
+    DECL_LSCS_PROPERTY_READ( property, property )
+    DECL_LSCS_PROPERTY_WRITE( property, setProperty )
+    DECL_LSCS_PROPERTY_NOTIFY( property, propertyChanged )
+    DECL_LSCS_PROPERTY_READ( properties, properties )
+    DECL_LSCS_PROPERTY_WRITE( properties, setProperties )
+    DECL_LSCS_PROPERTY_NOTIFY( properties, propertiesChanged )
+    DECL_LSCS_PROPERTY_READ( targets, targets )
+    DECL_LSCS_PROPERTY_READ( exclude, exclude )
+    DECL_LSCS_PROPERTY_READ( value, value )
+    DECL_LSCS_PROPERTY_WRITE( value, setValue )
+    DECL_LSCS_PROPERTY_NOTIFY( value, valueChanged )
 
 public:
     QDeclarativePropertyAction( QObject *parent = nullptr );
@@ -237,14 +237,14 @@ public:
     void setValue( const QVariant & );
 
 public:
-    DECL_CS_SIGNAL_1( Public, void valueChanged( const QVariant &un_named_arg1 ) )
-    DECL_CS_SIGNAL_2( valueChanged, un_named_arg1 )
-    DECL_CS_SIGNAL_1( Public, void propertiesChanged( const QString &un_named_arg1 ) )
-    DECL_CS_SIGNAL_2( propertiesChanged, un_named_arg1 )
-    DECL_CS_SIGNAL_1( Public, void targetChanged() )
-    DECL_CS_SIGNAL_2( targetChanged )
-    DECL_CS_SIGNAL_1( Public, void propertyChanged() )
-    DECL_CS_SIGNAL_2( propertyChanged )
+    DECL_LSCS_SIGNAL_1( Public, void valueChanged( const QVariant &un_named_arg1 ) )
+    DECL_LSCS_SIGNAL_2( valueChanged, un_named_arg1 )
+    DECL_LSCS_SIGNAL_1( Public, void propertiesChanged( const QString &un_named_arg1 ) )
+    DECL_LSCS_SIGNAL_2( propertiesChanged, un_named_arg1 )
+    DECL_LSCS_SIGNAL_1( Public, void targetChanged() )
+    DECL_LSCS_SIGNAL_2( targetChanged )
+    DECL_LSCS_SIGNAL_1( Public, void propertyChanged() )
+    DECL_LSCS_SIGNAL_2( propertyChanged )
 
 protected:
     virtual void transition( QDeclarativeStateActions &actions,
@@ -257,32 +257,32 @@ class QDeclarativeItem;
 class QDeclarativePropertyAnimationPrivate;
 class QDeclarativePropertyAnimation : public QDeclarativeAbstractAnimation
 {
-    DECL_CS_OBJECT( QDeclarativePropertyAnimation )
+    DECL_LSCS_OBJECT( QDeclarativePropertyAnimation )
     Q_DECLARE_PRIVATE( QDeclarativePropertyAnimation )
 
-    DECL_CS_PROPERTY_READ( duration, duration )
-    DECL_CS_PROPERTY_WRITE( duration, setDuration )
-    DECL_CS_PROPERTY_NOTIFY( duration, durationChanged )
-    DECL_CS_PROPERTY_READ( from, from )
-    DECL_CS_PROPERTY_WRITE( from, setFrom )
-    DECL_CS_PROPERTY_NOTIFY( from, fromChanged )
-    DECL_CS_PROPERTY_READ( to, to )
-    DECL_CS_PROPERTY_WRITE( to, setTo )
-    DECL_CS_PROPERTY_NOTIFY( to, toChanged )
-    DECL_CS_PROPERTY_READ( easing, easing )
-    DECL_CS_PROPERTY_WRITE( easing, setEasing )
-    DECL_CS_PROPERTY_NOTIFY( easing, easingChanged )
-    DECL_CS_PROPERTY_READ( *target, target )
-    DECL_CS_PROPERTY_WRITE( *target, setTarget )
-    DECL_CS_PROPERTY_NOTIFY( *target, targetChanged )
-    DECL_CS_PROPERTY_READ( property, property )
-    DECL_CS_PROPERTY_WRITE( property, setProperty )
-    DECL_CS_PROPERTY_NOTIFY( property, propertyChanged )
-    DECL_CS_PROPERTY_READ( properties, properties )
-    DECL_CS_PROPERTY_WRITE( properties, setProperties )
-    DECL_CS_PROPERTY_NOTIFY( properties, propertiesChanged )
-    DECL_CS_PROPERTY_READ( targets, targets )
-    DECL_CS_PROPERTY_READ( exclude, exclude )
+    DECL_LSCS_PROPERTY_READ( duration, duration )
+    DECL_LSCS_PROPERTY_WRITE( duration, setDuration )
+    DECL_LSCS_PROPERTY_NOTIFY( duration, durationChanged )
+    DECL_LSCS_PROPERTY_READ( from, from )
+    DECL_LSCS_PROPERTY_WRITE( from, setFrom )
+    DECL_LSCS_PROPERTY_NOTIFY( from, fromChanged )
+    DECL_LSCS_PROPERTY_READ( to, to )
+    DECL_LSCS_PROPERTY_WRITE( to, setTo )
+    DECL_LSCS_PROPERTY_NOTIFY( to, toChanged )
+    DECL_LSCS_PROPERTY_READ( easing, easing )
+    DECL_LSCS_PROPERTY_WRITE( easing, setEasing )
+    DECL_LSCS_PROPERTY_NOTIFY( easing, easingChanged )
+    DECL_LSCS_PROPERTY_READ( *target, target )
+    DECL_LSCS_PROPERTY_WRITE( *target, setTarget )
+    DECL_LSCS_PROPERTY_NOTIFY( *target, targetChanged )
+    DECL_LSCS_PROPERTY_READ( property, property )
+    DECL_LSCS_PROPERTY_WRITE( property, setProperty )
+    DECL_LSCS_PROPERTY_NOTIFY( property, propertyChanged )
+    DECL_LSCS_PROPERTY_READ( properties, properties )
+    DECL_LSCS_PROPERTY_WRITE( properties, setProperties )
+    DECL_LSCS_PROPERTY_NOTIFY( properties, propertiesChanged )
+    DECL_LSCS_PROPERTY_READ( targets, targets )
+    DECL_LSCS_PROPERTY_READ( exclude, exclude )
 
 public:
     QDeclarativePropertyAnimation( QObject *parent = nullptr );
@@ -320,30 +320,30 @@ protected:
     virtual QAbstractAnimation *qtAnimation();
 
 public:
-    DECL_CS_SIGNAL_1( Public, void durationChanged( int un_named_arg1 ) )
-    DECL_CS_SIGNAL_2( durationChanged, un_named_arg1 )
-    DECL_CS_SIGNAL_1( Public, void fromChanged( QVariant un_named_arg1 ) )
-    DECL_CS_SIGNAL_2( fromChanged, un_named_arg1 )
-    DECL_CS_SIGNAL_1( Public, void toChanged( QVariant un_named_arg1 ) )
-    DECL_CS_SIGNAL_2( toChanged, un_named_arg1 )
-    DECL_CS_SIGNAL_1( Public, void easingChanged( const QEasingCurve &un_named_arg1 ) )
-    DECL_CS_SIGNAL_2( easingChanged, un_named_arg1 )
-    DECL_CS_SIGNAL_1( Public, void propertiesChanged( const QString &un_named_arg1 ) )
-    DECL_CS_SIGNAL_2( propertiesChanged, un_named_arg1 )
-    DECL_CS_SIGNAL_1( Public, void targetChanged() )
-    DECL_CS_SIGNAL_2( targetChanged )
-    DECL_CS_SIGNAL_1( Public, void propertyChanged() )
-    DECL_CS_SIGNAL_2( propertyChanged )
+    DECL_LSCS_SIGNAL_1( Public, void durationChanged( int un_named_arg1 ) )
+    DECL_LSCS_SIGNAL_2( durationChanged, un_named_arg1 )
+    DECL_LSCS_SIGNAL_1( Public, void fromChanged( QVariant un_named_arg1 ) )
+    DECL_LSCS_SIGNAL_2( fromChanged, un_named_arg1 )
+    DECL_LSCS_SIGNAL_1( Public, void toChanged( QVariant un_named_arg1 ) )
+    DECL_LSCS_SIGNAL_2( toChanged, un_named_arg1 )
+    DECL_LSCS_SIGNAL_1( Public, void easingChanged( const QEasingCurve &un_named_arg1 ) )
+    DECL_LSCS_SIGNAL_2( easingChanged, un_named_arg1 )
+    DECL_LSCS_SIGNAL_1( Public, void propertiesChanged( const QString &un_named_arg1 ) )
+    DECL_LSCS_SIGNAL_2( propertiesChanged, un_named_arg1 )
+    DECL_LSCS_SIGNAL_1( Public, void targetChanged() )
+    DECL_LSCS_SIGNAL_2( targetChanged )
+    DECL_LSCS_SIGNAL_1( Public, void propertyChanged() )
+    DECL_LSCS_SIGNAL_2( propertyChanged )
 };
 
 class QDeclarativeColorAnimation : public QDeclarativePropertyAnimation
 {
-    DECL_CS_OBJECT( QDeclarativeColorAnimation )
+    DECL_LSCS_OBJECT( QDeclarativeColorAnimation )
     Q_DECLARE_PRIVATE( QDeclarativePropertyAnimation )
-    DECL_CS_PROPERTY_READ( from, from )
-    DECL_CS_PROPERTY_WRITE( from, setFrom )
-    DECL_CS_PROPERTY_READ( to, to )
-    DECL_CS_PROPERTY_WRITE( to, setTo )
+    DECL_LSCS_PROPERTY_READ( from, from )
+    DECL_LSCS_PROPERTY_WRITE( from, setFrom )
+    DECL_LSCS_PROPERTY_READ( to, to )
+    DECL_LSCS_PROPERTY_WRITE( to, setTo )
 
 public:
     QDeclarativeColorAnimation( QObject *parent = nullptr );
@@ -358,13 +358,13 @@ public:
 
 class QDeclarativeNumberAnimation : public QDeclarativePropertyAnimation
 {
-    DECL_CS_OBJECT( QDeclarativeNumberAnimation )
+    DECL_LSCS_OBJECT( QDeclarativeNumberAnimation )
     Q_DECLARE_PRIVATE( QDeclarativePropertyAnimation )
 
-    DECL_CS_PROPERTY_READ( from, from )
-    DECL_CS_PROPERTY_WRITE( from, setFrom )
-    DECL_CS_PROPERTY_READ( to, to )
-    DECL_CS_PROPERTY_WRITE( to, setTo )
+    DECL_LSCS_PROPERTY_READ( from, from )
+    DECL_LSCS_PROPERTY_WRITE( from, setFrom )
+    DECL_LSCS_PROPERTY_READ( to, to )
+    DECL_LSCS_PROPERTY_WRITE( to, setTo )
 
 public:
     QDeclarativeNumberAnimation( QObject *parent = nullptr );
@@ -385,13 +385,13 @@ private:
 
 class QDeclarativeVector3dAnimation : public QDeclarativePropertyAnimation
 {
-    DECL_CS_OBJECT( QDeclarativeVector3dAnimation )
+    DECL_LSCS_OBJECT( QDeclarativeVector3dAnimation )
     Q_DECLARE_PRIVATE( QDeclarativePropertyAnimation )
 
-    DECL_CS_PROPERTY_READ( from, from )
-    DECL_CS_PROPERTY_WRITE( from, setFrom )
-    DECL_CS_PROPERTY_READ( to, to )
-    DECL_CS_PROPERTY_WRITE( to, setTo )
+    DECL_LSCS_PROPERTY_READ( from, from )
+    DECL_LSCS_PROPERTY_WRITE( from, setFrom )
+    DECL_LSCS_PROPERTY_READ( to, to )
+    DECL_LSCS_PROPERTY_WRITE( to, setTo )
 
 public:
     QDeclarativeVector3dAnimation( QObject *parent = nullptr );
@@ -407,17 +407,17 @@ public:
 class QDeclarativeRotationAnimationPrivate;
 class QDeclarativeRotationAnimation : public QDeclarativePropertyAnimation
 {
-    DECL_CS_OBJECT( QDeclarativeRotationAnimation )
+    DECL_LSCS_OBJECT( QDeclarativeRotationAnimation )
     Q_DECLARE_PRIVATE( QDeclarativeRotationAnimation )
-    CS_ENUM( RotationDirection )
+    LSCS_ENUM( RotationDirection )
 
-    DECL_CS_PROPERTY_READ( from, from )
-    DECL_CS_PROPERTY_WRITE( from, setFrom )
-    DECL_CS_PROPERTY_READ( to, to )
-    DECL_CS_PROPERTY_WRITE( to, setTo )
-    DECL_CS_PROPERTY_READ( direction, direction )
-    DECL_CS_PROPERTY_WRITE( direction, setDirection )
-    DECL_CS_PROPERTY_NOTIFY( direction, directionChanged )
+    DECL_LSCS_PROPERTY_READ( from, from )
+    DECL_LSCS_PROPERTY_WRITE( from, setFrom )
+    DECL_LSCS_PROPERTY_READ( to, to )
+    DECL_LSCS_PROPERTY_WRITE( to, setTo )
+    DECL_LSCS_PROPERTY_READ( direction, direction )
+    DECL_LSCS_PROPERTY_WRITE( direction, setDirection )
+    DECL_LSCS_PROPERTY_NOTIFY( direction, directionChanged )
 
 public:
     QDeclarativeRotationAnimation( QObject *parent = nullptr );
@@ -434,18 +434,18 @@ public:
     void setDirection( RotationDirection direction );
 
 public:
-    DECL_CS_SIGNAL_1( Public, void directionChanged() )
-    DECL_CS_SIGNAL_2( directionChanged )
+    DECL_LSCS_SIGNAL_1( Public, void directionChanged() )
+    DECL_LSCS_SIGNAL_2( directionChanged )
 };
 
 class QDeclarativeAnimationGroupPrivate;
 class QDeclarativeAnimationGroup : public QDeclarativeAbstractAnimation
 {
-    DECL_CS_OBJECT( QDeclarativeAnimationGroup )
+    DECL_LSCS_OBJECT( QDeclarativeAnimationGroup )
     Q_DECLARE_PRIVATE( QDeclarativeAnimationGroup )
 
-    DECL_CS_CLASSINFO( "DefaultProperty", "animations" )
-    DECL_CS_PROPERTY_READ( animations, animations )
+    DECL_LSCS_CLASSINFO( "DefaultProperty", "animations" )
+    DECL_LSCS_PROPERTY_READ( animations, animations )
 
 public:
     QDeclarativeAnimationGroup( QObject *parent );
@@ -460,7 +460,7 @@ protected:
 
 class QDeclarativeSequentialAnimation : public QDeclarativeAnimationGroup
 {
-    DECL_CS_OBJECT( QDeclarativeSequentialAnimation )
+    DECL_LSCS_OBJECT( QDeclarativeSequentialAnimation )
     Q_DECLARE_PRIVATE( QDeclarativeAnimationGroup )
 
 public:
@@ -476,7 +476,7 @@ protected:
 
 class QDeclarativeParallelAnimation : public QDeclarativeAnimationGroup
 {
-    DECL_CS_OBJECT( QDeclarativeParallelAnimation )
+    DECL_LSCS_OBJECT( QDeclarativeParallelAnimation )
     Q_DECLARE_PRIVATE( QDeclarativeAnimationGroup )
 
 public:
@@ -493,18 +493,18 @@ protected:
 class QDeclarativeParentAnimationPrivate;
 class QDeclarativeParentAnimation : public QDeclarativeAnimationGroup
 {
-    DECL_CS_OBJECT( QDeclarativeParentAnimation )
+    DECL_LSCS_OBJECT( QDeclarativeParentAnimation )
     Q_DECLARE_PRIVATE( QDeclarativeParentAnimation )
 
-    DECL_CS_PROPERTY_READ( *target, target )
-    DECL_CS_PROPERTY_WRITE( *target, setTarget )
-    DECL_CS_PROPERTY_NOTIFY( *target, targetChanged )
-    DECL_CS_PROPERTY_READ( *newParent, newParent )
-    DECL_CS_PROPERTY_WRITE( *newParent, setNewParent )
-    DECL_CS_PROPERTY_NOTIFY( *newParent, newParentChanged )
-    DECL_CS_PROPERTY_READ( *via, via )
-    DECL_CS_PROPERTY_WRITE( *via, setVia )
-    DECL_CS_PROPERTY_NOTIFY( *via, viaChanged )
+    DECL_LSCS_PROPERTY_READ( *target, target )
+    DECL_LSCS_PROPERTY_WRITE( *target, setTarget )
+    DECL_LSCS_PROPERTY_NOTIFY( *target, targetChanged )
+    DECL_LSCS_PROPERTY_READ( *newParent, newParent )
+    DECL_LSCS_PROPERTY_WRITE( *newParent, setNewParent )
+    DECL_LSCS_PROPERTY_NOTIFY( *newParent, newParentChanged )
+    DECL_LSCS_PROPERTY_READ( *via, via )
+    DECL_LSCS_PROPERTY_WRITE( *via, setVia )
+    DECL_LSCS_PROPERTY_NOTIFY( *via, viaChanged )
 
 public:
     QDeclarativeParentAnimation( QObject *parent = nullptr );
@@ -520,12 +520,12 @@ public:
     void setVia( QDeclarativeItem * );
 
 public:
-    DECL_CS_SIGNAL_1( Public, void targetChanged() )
-    DECL_CS_SIGNAL_2( targetChanged )
-    DECL_CS_SIGNAL_1( Public, void newParentChanged() )
-    DECL_CS_SIGNAL_2( newParentChanged )
-    DECL_CS_SIGNAL_1( Public, void viaChanged() )
-    DECL_CS_SIGNAL_2( viaChanged )
+    DECL_LSCS_SIGNAL_1( Public, void targetChanged() )
+    DECL_LSCS_SIGNAL_2( targetChanged )
+    DECL_LSCS_SIGNAL_1( Public, void newParentChanged() )
+    DECL_LSCS_SIGNAL_2( newParentChanged )
+    DECL_LSCS_SIGNAL_1( Public, void viaChanged() )
+    DECL_LSCS_SIGNAL_2( viaChanged )
 
 protected:
     virtual void transition( QDeclarativeStateActions &actions,
@@ -537,15 +537,15 @@ protected:
 class QDeclarativeAnchorAnimationPrivate;
 class QDeclarativeAnchorAnimation : public QDeclarativeAbstractAnimation
 {
-    DECL_CS_OBJECT( QDeclarativeAnchorAnimation )
+    DECL_LSCS_OBJECT( QDeclarativeAnchorAnimation )
     Q_DECLARE_PRIVATE( QDeclarativeAnchorAnimation )
-    DECL_CS_PROPERTY_READ( targets, targets )
-    DECL_CS_PROPERTY_READ( duration, duration )
-    DECL_CS_PROPERTY_WRITE( duration, setDuration )
-    DECL_CS_PROPERTY_NOTIFY( duration, durationChanged )
-    DECL_CS_PROPERTY_READ( easing, easing )
-    DECL_CS_PROPERTY_WRITE( easing, setEasing )
-    DECL_CS_PROPERTY_NOTIFY( easing, easingChanged )
+    DECL_LSCS_PROPERTY_READ( targets, targets )
+    DECL_LSCS_PROPERTY_READ( duration, duration )
+    DECL_LSCS_PROPERTY_WRITE( duration, setDuration )
+    DECL_LSCS_PROPERTY_NOTIFY( duration, durationChanged )
+    DECL_LSCS_PROPERTY_READ( easing, easing )
+    DECL_LSCS_PROPERTY_WRITE( easing, setEasing )
+    DECL_LSCS_PROPERTY_NOTIFY( easing, easingChanged )
 
 public:
     QDeclarativeAnchorAnimation( QObject *parent = nullptr );
@@ -560,10 +560,10 @@ public:
     void setEasing( const QEasingCurve & );
 
 
-    DECL_CS_SIGNAL_1( Public, void durationChanged( int un_named_arg1 ) )
-    DECL_CS_SIGNAL_2( durationChanged, un_named_arg1 )
-    DECL_CS_SIGNAL_1( Public, void easingChanged( const QEasingCurve &un_named_arg1 ) )
-    DECL_CS_SIGNAL_2( easingChanged, un_named_arg1 )
+    DECL_LSCS_SIGNAL_1( Public, void durationChanged( int un_named_arg1 ) )
+    DECL_LSCS_SIGNAL_2( durationChanged, un_named_arg1 )
+    DECL_LSCS_SIGNAL_1( Public, void easingChanged( const QEasingCurve &un_named_arg1 ) )
+    DECL_LSCS_SIGNAL_2( easingChanged, un_named_arg1 )
 
 protected:
     virtual void transition( QDeclarativeStateActions &actions, QDeclarativeProperties &modified,

@@ -106,7 +106,7 @@ void QLocalSocketPrivate::_q_stateChanged( QAbstractSocket::SocketState newState
             break;
 
         default:
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
             qDebug() << "QLocalSocket::_q_stateChanged() New socket state = " << newState;
 #endif
             return;
@@ -546,7 +546,7 @@ QLocalSocket::LocalSocketError QLocalSocket::error() const
             return QLocalSocket::UnknownSocketError;
 
         default:
-#if defined(CS_SHOW_DEBUG_NETWORK)
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
             qDebug() << "QLocalSocket::error() Error not handled, " << d->unixSocket.error();
 #endif
             break;

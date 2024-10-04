@@ -29,7 +29,7 @@
 
 class Q_MULTIMEDIA_EXPORT QCameraInfoControl : public QMediaControl
 {
-    MULTI_CS_OBJECT( QCameraInfoControl )
+    MULTI_LSCS_OBJECT( QCameraInfoControl )
 
 public:
     virtual ~QCameraInfoControl();
@@ -42,6 +42,6 @@ protected:
 };
 
 #define QCameraInfoControl_iid "com.copperspice.CS.cameraInfoControl/1.0"
-CS_DECLARE_INTERFACE( QCameraInfoControl, QCameraInfoControl_iid )
+LSCS_DECLARE_INTERFACE( QCameraInfoControl, QCameraInfoControl_iid )
 
 #endif

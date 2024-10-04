@@ -33,9 +33,9 @@ struct QTextOptionPrivate;
 
 class Q_GUI_EXPORT QTextOption
 {
-    GUI_CS_GADGET( QTextOption )
+    GUI_LSCS_GADGET( QTextOption )
 
-    GUI_CS_ENUM( WrapMode )
+    GUI_LSCS_ENUM( WrapMode )
 
 public:
     enum TabType
@@ -46,7 +46,7 @@ public:
         DelimiterTab
     };
 
-    GUI_CS_REGISTER_ENUM(
+    GUI_LSCS_REGISTER_ENUM(
         enum WrapMode
     {
         NoWrap,
@@ -187,7 +187,7 @@ inline void QTextOption::setTabStop( qreal tabStop )
     tab = tabStop;
 }
 
-CS_DECLARE_METATYPE( QTextOption )
-CS_DECLARE_METATYPE( QTextOption::Tab )
+LSCS_DECLARE_METATYPE( QTextOption )
+LSCS_DECLARE_METATYPE( QTextOption::Tab )
 
 #endif

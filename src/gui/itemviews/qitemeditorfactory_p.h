@@ -34,7 +34,7 @@
 
 class QExpandingLineEdit : public QLineEdit
 {
-    GUI_CS_OBJECT( QExpandingLineEdit )
+    GUI_LSCS_OBJECT( QExpandingLineEdit )
 
 public:
     QExpandingLineEdit( QWidget *parent );
@@ -44,8 +44,8 @@ public:
         widgetOwnsGeometry = value;
     }
 
-    GUI_CS_SLOT_1( Public, void resizeToContents() )
-    GUI_CS_SLOT_2( resizeToContents )
+    GUI_LSCS_SLOT_1( Public, void resizeToContents() )
+    GUI_LSCS_SLOT_2( resizeToContents )
 
 protected:
     void changeEvent( QEvent *event ) override;

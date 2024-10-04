@@ -617,7 +617,7 @@ void SequentialAnchorData::calculateSizeHints()
     sizeAtMaximum = prefSize;
 }
 
-#if defined(CS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
+#if defined(LSCS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
 void AnchorData::dump( int indent )
 {
     if ( type == Parallel )
@@ -678,7 +678,7 @@ QSimplexConstraint *GraphPath::constraint( const GraphPath &path ) const
     return c;
 }
 
-#if defined(CS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
+#if defined(LSCS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
 QString GraphPath::toString() const
 {
     QString string( QLatin1String( "Path: " ) );
@@ -965,7 +965,7 @@ bool QGraphicsAnchorLayoutPrivate::replaceVertex( Orientation orientation, Ancho
         AnchorData *ad = edges[i];
         AnchorVertex *otherV = replaceVertex_helper( ad, oldV, newV );
 
-#if defined(CS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
+#if defined(LSCS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
         ad->name = QString::fromLatin1( "%1 --to--> %2" ).formatArg( ad->from->toString() ).formatArg( ad->to->toString() );
 #endif
 
@@ -1943,7 +1943,7 @@ void QGraphicsAnchorLayoutPrivate::addAnchor_helper( QGraphicsLayoutItem *firstI
     data->from = v1;
     data->to   = v2;
 
-#if defined(CS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
+#if defined(LSCS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
     data->name = QString::fromLatin1( "%1 --to--> %2" ).formatArg( v1->toString() ).formatArg( v2->toString() );
 #endif
 
@@ -2530,7 +2530,7 @@ bool QGraphicsAnchorLayoutPrivate::calculateTrunk( Orientation orientation, cons
         sizeHints[orientation][Qt::MaximumSize] = ad->sizeAtMaximum;
     }
 
-#if defined(CS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
+#if defined(LSCS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
     lastCalculationUsedSimplex[orientation] = needsSimplex;
 #endif
 
@@ -3378,14 +3378,14 @@ bool QGraphicsAnchorLayoutPrivate::hasConflicts() const
     return graphHasConflicts[0] || graphHasConflicts[1] || floatConflict;
 }
 
-#if defined(CS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
+#if defined(LSCS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
 void QGraphicsAnchorLayoutPrivate::dumpGraph( const QString &name )
 {
     QFile file( QString( "anchorlayout.%1.dot" ).formatArg( name ) );
 
     if ( ! file.open( QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate ) )
     {
-        qWarning( "QGraphicsAnchorLayout::dumpGraph() Unable to write to %s", csPrintable( file.fileName() ) );
+        qWarning( "QGraphicsAnchorLayout::dumpGraph() Unable to write to %s", lscsPrintable( file.fileName() ) );
     }
 
     QString str = "digraph anchorlayout {\nnode [shape=\"rect\"]\n%1}";

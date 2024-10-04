@@ -34,10 +34,10 @@
 
 class QTgaPlugin : public QImageIOPlugin
 {
-    CS_OBJECT( QTgaPlugin )
+    LSCS_OBJECT( QTgaPlugin )
 
-    CS_PLUGIN_IID( QImageIOHandlerInterface_ID )
-    CS_PLUGIN_KEY( "tga" )
+    LSCS_PLUGIN_IID( QImageIOHandlerInterface_ID )
+    LSCS_PLUGIN_KEY( "tga" )
 
 public:
     Capabilities capabilities( QIODevice *device, const QByteArray &format ) const;
@@ -45,7 +45,7 @@ public:
     QStringList keys() const;
 };
 
-CS_PLUGIN_REGISTER( QTgaPlugin )
+LSCS_PLUGIN_REGISTER( QTgaPlugin )
 
 QImageIOPlugin::Capabilities QTgaPlugin::capabilities( QIODevice *device, const QByteArray &format ) const
 {

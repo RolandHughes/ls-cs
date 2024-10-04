@@ -35,7 +35,7 @@ class DeviceOrientationProviderQt;
 
 class DeviceMotionProviderQt : public QObject, public QAccelerometerFilter
 {
-    WEB_CS_OBJECT( DeviceMotionProviderQt )
+    WEB_LSCS_OBJECT( DeviceMotionProviderQt )
 public:
     DeviceMotionProviderQt();
     ~DeviceMotionProviderQt();
@@ -49,8 +49,8 @@ public:
     }
 
 public:
-    WEB_CS_SIGNAL_1( Public, void deviceMotionChanged() )
-    WEB_CS_SIGNAL_2( deviceMotionChanged )
+    WEB_LSCS_SIGNAL_1( Public, void deviceMotionChanged() )
+    WEB_LSCS_SIGNAL_2( deviceMotionChanged )
 
 private:
     RefPtr<DeviceMotionData> m_motion;

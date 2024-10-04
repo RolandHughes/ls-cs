@@ -214,7 +214,7 @@ static QFontDatabase::WritingSystem writingSystemForFont( const QFont &font, boo
 
 class QFontFamilyDelegate : public QAbstractItemDelegate
 {
-    GUI_CS_OBJECT( QFontFamilyDelegate )
+    GUI_LSCS_OBJECT( QFontFamilyDelegate )
 
 public:
     explicit QFontFamilyDelegate( QObject *parent );

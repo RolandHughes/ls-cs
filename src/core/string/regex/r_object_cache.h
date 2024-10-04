@@ -24,8 +24,8 @@
  * LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 */
 
-#ifndef CS_OBJECT_CACHE_H
-#define CS_OBJECT_CACHE_H
+#ifndef LSCS_OBJECT_CACHE_H
+#define LSCS_OBJECT_CACHE_H
 
 #include <cassert>
 #include <map>
@@ -33,7 +33,7 @@
 #include <stdexcept>
 #include <string>
 
-namespace cs_regex_ns
+namespace lscs_regex_ns
 {
 
 template <class Key, class Object>
