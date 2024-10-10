@@ -29,7 +29,7 @@ if(BUILD_PLATFORMS_XCB_PLUGIN)
    )
 
 #   if(BUILDING_RPM OR BUILDING_DEBIAN)
-      install(TARGETS LsCsGuiXcb DESTINATION ${CMAKE_INSTALL_LIBDIR}/LsCs/plugins/platforms)
+      install(TARGETS LsCsGuiXcb DESTINATION ${CMAKE_INSTALL_LIBDIR}/plugins/platforms)
 #   else()
 #      install(TARGETS LsCsGuiXcb DESTINATION ${CMAKE_INSTALL_LIBDIR})
 #   endif()

@@ -38,7 +38,7 @@ if(Cups_FOUND)
    function_generate_resources(LsCsPrinterDriverCups)
 
    if(BUILDING_RPM OR BUILDING_DEBIAN)
-      install(TARGETS LsCsPrinterDriverCups DESTINATION ${CMAKE_INSTALL_LIBDIR}/LsCs/plugins/printerdrivers)
+      install(TARGETS LsCsPrinterDriverCups DESTINATION ${CMAKE_INSTALL_LIBDIR}/plugins/printerdrivers)
    else()
       install(TARGETS LsCsPrinterDriverCups DESTINATION ${CMAKE_INSTALL_LIBDIR})
    endif()

@@ -24,6 +24,8 @@ get_filename_component(LSCS_INSTALLED_LIB_DIR "${LSCS_CORE_LIB}" DIRECTORY)
 
 if(CMAKE_SYSTEM_NAME MATCHES "Windows")
    get_filename_component(LSCS_PLUGIN_DIR  "${LSCS_INSTALLED_LIB_DIR}/../lib" ABSOLUTE)
+elseif(CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
+   set(LSCS_PLUGIN_DIR "${LSCS_INSTALLED_LIB_DIR}/plugins")
 else()
    get_filename_component(LSCS_PLUGIN_DIR  "${LSCS_CORE_LIB}" DIRECTORY)
 endif()
@@ -40,7 +42,7 @@ elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
 endif()
 
 
-function(cs_copy_library LIB_NAME)
+function(lscs_copy_library LIB_NAME)
    # location of the cs library
    get_target_property(LSCS_${LIB_NAME}_LIB LsCs::${LIB_NAME} LOCATION)
 
@@ -52,7 +54,7 @@ function(cs_copy_library LIB_NAME)
 
    install(FILES ${LSCS_${LIB_NAME}_LIB} DESTINATION ${APP_INSTALL_DIR})
    message(STATUS "   ***   ")
-   message(STATUS " cs_copy_library  ${LIB_NAME}  APP_INSTALL_DIR  ${APP_INSTALL_DIR}")
+   message(STATUS " lscs_copy_library  ${LIB_NAME}  APP_INSTALL_DIR  ${APP_INSTALL_DIR}")
    message(STATUS "   ***   ")
    if(LIB_NAME STREQUAL "LsCsCore")
 
@@ -77,7 +79,7 @@ function(cs_copy_library LIB_NAME)
 endfunction()
 
 
-function(cs_copy_plugins LIB_NAME)
+function(lscs_copy_plugins LIB_NAME)
 
    if(ARGC EQUAL 2)
       set(APP_INSTALL_DIR ${ARGV1})

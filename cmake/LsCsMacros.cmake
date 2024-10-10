@@ -102,16 +102,16 @@ macro(LSCS_RESOURCES RESOURCES)
          if ("${T_PATH}" STREQUAL "")
             add_custom_command(
                OUTPUT ${rscout}
-               COMMAND LsCs::uic "${resource}" -o "${rscout}"
+               COMMAND LsCs::uic${TOOLS_SUFFIX} "${resource}" -o "${rscout}"
                MAIN_DEPENDENCY "${resource}"
             )
 
          else()
-            # cs was built in package mode
-
+            # lscs was built in package mode
+            message( STATUS, "built in package mode  TARGET_FILE: ${TARGET_FILE}" )
             add_custom_command(
                OUTPUT ${rscout}
-               COMMAND cmake -E env "$<JOIN:${T_PATH},;>" "$<TARGET_FILE/LsCs/uic>"
+               COMMAND cmake -E env "$<JOIN:${T_PATH},;>" "$<TARGET_FILE/LsCs/uic${TOOLS_SUFFIX}>"
                      "${resource}" -o "${rscout}"
                MAIN_DEPENDENCY "${resource}"
             )

@@ -25,7 +25,7 @@ target_compile_definitions(LsCsMultimedia_m3u
 )
 
 #if(BUILDING_RPM OR BUILDING_DEBIAN)
-  install(TARGETS LsCsMultimedia_m3u DESTINATION ${CMAKE_INSTALL_LIBDIR}/LsCs/plugins/playlistformats)
+  install(TARGETS LsCsMultimedia_m3u DESTINATION ${CMAKE_INSTALL_LIBDIR}/plugins/playlistformats)
 #else()
 #  install(TARGETS LsCsMultimedia_m3u DESTINATION ${CMAKE_INSTALL_LIBDIR})
 #endif()

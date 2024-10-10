@@ -43,7 +43,7 @@ if(WITH_MYSQL_PLUGIN AND MySQL_FOUND)
    )
 
 #   if(BUILDING_RPM OR BUILDING_DEBIAN)
-      install(TARGETS LsCsSqlMySql DESTINATION ${CMAKE_INSTALL_LIBDIR}/LsCs/plugins/sqldrivers)
+      install(TARGETS LsCsSqlMySql DESTINATION ${CMAKE_INSTALL_LIBDIR}/plugins/sqldrivers)
 #   else()
 #      install(TARGETS LsCsSqlMySql DESTINATION ${CMAKE_INSTALL_LIBDIR})
 #   endif()

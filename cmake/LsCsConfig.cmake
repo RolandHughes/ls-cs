@@ -62,11 +62,11 @@ foreach(component ${LSCS_COMPONENTS})
 
    set(LSCS_LIBRARIES
       ${LSCS_LIBRARIES}
-      LsCs::Cs${component}
+      LsCs::LsCs${component}
    )
 
    set(LSCS_${uppercomp}_LIBRARIES
-      LsCs::Cs${component}
+      LsCs::LsCs${component}
    )
 endforeach()
 

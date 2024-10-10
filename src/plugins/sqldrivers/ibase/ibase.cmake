@@ -38,7 +38,7 @@ if (FALSE)
    )
 
 #   if(BUILDING_RPM OR BUILDING_DEBIAN)
-      install(TARGETS LsCsSqlIBase  DESTINATION ${CMAKE_INSTALL_LIBDIR}/LsCs/plugins/sqldrivers)
+      install(TARGETS LsCsSqlIBase  DESTINATION ${CMAKE_INSTALL_LIBDIR}/plugins/sqldrivers)
 #   else()
 #      install(TARGETS LsCsSqlIBase  DESTINATION ${CMAKE_INSTALL_LIBDIR})
 #   endif()

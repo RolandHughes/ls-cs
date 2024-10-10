@@ -29,7 +29,7 @@ if(WITH_SVG)
 
 
 #   if(BUILDING_RPM OR BUILDING_DEBIAN)
-      install(TARGETS LsCsImageFormatsSvg DESTINATION ${CMAKE_INSTALL_LIBDIR}/LsCs/plugins/imageformats)
+      install(TARGETS LsCsImageFormatsSvg DESTINATION ${CMAKE_INSTALL_LIBDIR}/plugins/imageformats)
 #   else()
 #      install(TARGETS LsCsImageFormatsSvg DESTINATION ${CMAKE_INSTALL_LIBDIR})
 #   endif()

@@ -94,7 +94,7 @@ if(CMAKE_SYSTEM_NAME MATCHES "Windows")
     )
 
 #   if(BUILDING_RPM OR BUILDING_DEBIAN)
-      install(TARGETS LsCsMultimedia_DirectShow DESTINATION ${CMAKE_INSTALL_LIBDIR}/LsCs/plugins/mediaservices)
+      install(TARGETS LsCsMultimedia_DirectShow DESTINATION ${CMAKE_INSTALL_LIBDIR}/plugins/mediaservices)
 #   else()
 #      install(TARGETS LsCsMultimedia_DirectShow DESTINATION ${CMAKE_INSTALL_LIBDIR})
 #   endif()

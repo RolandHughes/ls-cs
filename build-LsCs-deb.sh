@@ -72,8 +72,8 @@ function create_debian_tree()
     mkdir -p "$DEBIAN_DIR"/usr/"${LIB_DIR}"/LsCs/plugins/imageformats
     mkdir -p "$DEBIAN_DIR"/usr/"${LIB_DIR}"/LsCs/plugins/pictureformats
     mkdir -p "$DEBIAN_DIR"/usr/"${LIB_DIR}"/LsCs/plugins/sqldrivers
-    mkdir -p "$DEBIAN_DIR"/usr/"${LIB_DIR}"/cmake/LsCs
-    mkdir -p "$DEBIAN_DIR"/usr/"${LIB_DIR}"/pkgconfig
+    mkdir -p "$DEBIAN_DIR"/usr/"${LIB_DIR}"/LsCs/cmake
+    mkdir -p "$DEBIAN_DIR"/usr/share/pkgconfig
     mkdir -p "$DEBIAN_DIR"/usr/share/doc/LsCs/license
 
 }
@@ -112,13 +112,13 @@ function build_from_source()
 
     #  Step 5: Sweep up what CopperSpice project gets wrong in their
     #          default build.  TODO:: see if this is still needed
-    cd "$RELEASE_DIR"/"${LIB_DIR}"/cmake/LsCs
+    cd "$RELEASE_DIR/${LIB_DIR}/LsCs/cmake"
     if [ -f "LsCsLibraryTargets.cmake" ]; then
         echo "*** "
         echo "*** Fixing where cmake looks for Qt and other headers"
         echo "*** "
         sed -i 's#${_IMPORT_PREFIX}/include;#${_IMPORT_PREFIX}/include/LsCs;#g' LsCsLibraryTargets.cmake
-        sed -i 's#${_IMPORT_PREFIX}/include/Qt#${_IMPORT_PREFIX}/include/Lscs/Qt#g' LsCsLibraryTargets.cmake
+        sed -i 's#${_IMPORT_PREFIX}/include/Qt#${_IMPORT_PREFIX}/include/LsCs/Qt#g' LsCsLibraryTargets.cmake
     fi
 
 }

@@ -52,7 +52,7 @@ if(BUILD_PLATFORMS_XCB_PLUGIN AND XCB_GLX_LIB)
    )
 
 #   if(BUILDING_RPM OR BUILDING_DEBIAN)
-      install(TARGETS LsCsGuiXcb_Glx DESTINATION ${CMAKE_INSTALL_LIBDIR}/LsCs/plugins/xcbglintegrations)
+      install(TARGETS LsCsGuiXcb_Glx DESTINATION ${CMAKE_INSTALL_LIBDIR}/plugins/xcbglintegrations)
 #   else()
 #      install(TARGETS LsCsGuiXcb_Glx DESTINATION ${CMAKE_INSTALL_LIBDIR})
 #   endif()
