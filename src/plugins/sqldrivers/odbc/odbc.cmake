@@ -36,7 +36,7 @@ if (WITH_ODBC_PLUGIN AND ODBC_FOUND)
    )
 
 #   if(BUILDING_RPM OR BUILDING_DEBIAN)
-      install(TARGETS LsCsSqlOdbc DESTINATION ${CMAKE_INSTALL_LIBDIR}/LsCs/plugins/sqldrivers)
+      install(TARGETS LsCsSqlOdbc DESTINATION ${CMAKE_INSTALL_LIBDIR}/plugins/sqldrivers)
 #   else()
 #      install(TARGETS LsCsSqlOdbc DESTINATION ${CMAKE_INSTALL_LIBDIR})
 #   endif()

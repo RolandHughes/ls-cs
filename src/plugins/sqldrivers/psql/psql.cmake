@@ -37,7 +37,7 @@ if(WITH_PSQL_PLUGIN AND PostgreSQL_FOUND)
    )
 
 #   if(BUILDING_RPM OR BUILDING_DEBIAN)
-      install(TARGETS LsCsSqlPsql DESTINATION ${CMAKE_INSTALL_LIBDIR}/LsCs/plugins/sqldrivers)
+      install(TARGETS LsCsSqlPsql DESTINATION ${CMAKE_INSTALL_LIBDIR}/plugins/sqldrivers)
 #   else()
 #      install(TARGETS LsCsSqlPsql DESTINATION ${CMAKE_INSTALL_LIBDIR})
 #   endif()

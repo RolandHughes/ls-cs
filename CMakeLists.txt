@@ -69,18 +69,6 @@ elseif (CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
    EXECUTE_PROCESS( COMMAND dpkg --print-architecture  OUTPUT_STRIP_TRAILING_WHITESPACE OUTPUT_VARIABLE CPACK_PACKAGE_ARCHITECTURE)
    EXECUTE_PROCESS( COMMAND arch  OUTPUT_STRIP_TRAILING_WHITESPACE OUTPUT_VARIABLE LIB_ARCHITECTURE)
 
-   find_file (DEBIAN_FOUND debian_version debconf.conf
-      PATHS /etc /usr/share/debconf
-   )
-   
-   if (DEBIAN_FOUND)
-      set (CMAKE_OS_NAME "Debian" CACHE STRING "Operating system name" FORCE)
-      
-      set(DEBIAN_BINARY_DIR "lib/${LIB_ARCHITECTURE}-linux-gnu")
-   endif (DEBIAN_FOUND)
-
-   message(STATUS "CMAKE_OS_NAME after test: ${CMAKE_OS_NAME}\n")
-   
 
    #;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
    #  Now that we are naming binaries appropriately and putting them in
@@ -93,6 +81,7 @@ elseif (CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
      
    # set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_BINDIR}/:$ORIGIN/..")
    set(CMAKE_INSTALL_INCLUDEDIR "include/${CMAKE_PROJECT_NAME}")
+   set(CMAKE_INSTALL_LIBDIR "lib/${CMAKE_PROJECT_NAME}")
 
 
 elseif (CMAKE_SYSTEM_NAME MATCHES "Windows")
@@ -102,6 +91,7 @@ elseif (CMAKE_SYSTEM_NAME MATCHES "Windows")
 
 endif()
 
+message( STATUS, "CMAKE_INSTALL_LIBDIR   ${CMAKE_INSTALL_LIBDIR} ")
 #
 # When building for a package we install to /usr under a 
 # fakeroot or buildroot during build. We don't want
@@ -110,9 +100,9 @@ endif()
 if (BUILDING_DEBIAN)
     message(STATUS "** We are building Debian package ***")
     set(LSCS_INST_PREFIX  "/usr")    
-    set(LSCS_INST_LIB     "${LSCS_INST_PREFIX}/${DEBIAN_BINARY_DIR}")
+    set(LSCS_INST_LIB     "${LSCS_INST_PREFIX}/${CMAKE_INSTALL_LIBDIR}")
     set(LSCS_INST_INCLUDE "${LSCS_INST_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR}")
-    set(CMAKE_INSTALL_FULL_LIBDIR "${CMAKE_INSTALL_PREFIX}/${DEBIAN_BINARY_DIR}" )
+    set(CMAKE_INSTALL_FULL_LIBDIR "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}" )
 elseif (BUILDING_RPM)
     message(STATUS "** We are building RPM package ***")
     set(LSCS_INST_PREFIX  "/usr")    
@@ -730,14 +720,8 @@ configure_file(
 )
 
 # file locations for building
-if (DEBIAN_FOUND)
-    # Multi-Architecture library directories for Debian based distros
-    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${DEBIAN_BINARY_DIR})
-    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${DEBIAN_BINARY_DIR})
-else()
-    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-endif()
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib/${CMAKE_PROJECT})
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
@@ -807,14 +791,6 @@ if (WITH_GUI)
    add_subdirectory(src/plugins/printerdrivers)
 endif()
 
-# catch2
-if (BUILD_TESTS)
-   enable_testing()
-   add_subdirectory(test/core)
-   add_subdirectory(test/gui)
-   add_subdirectory(test/network)
-endif()
-
 configure_file(
    ${CMAKE_SOURCE_DIR}/cmake/LsCsConfig.cmake
    ${CMAKE_BINARY_DIR}/LsCsConfig.cmake
@@ -834,7 +810,7 @@ elseif (CMAKE_SYSTEM_NAME MATCHES "Windows")
    set(PKG_PREFIX "cmake/LsCs")
 
 else()
-   set(PKG_PREFIX "${CMAKE_INSTALL_LIBDIR}/cmake/LsCs")
+   set(PKG_PREFIX "${CMAKE_INSTALL_LIBDIR}/cmake")
 
 endif()
 
@@ -897,7 +873,7 @@ install(
       ${CMAKE_SOURCE_DIR}/cmake/LsCsDeploy.cmake
       ${CMAKE_SOURCE_DIR}/cmake/LsCsMacros.cmake
       ${CMAKE_SOURCE_DIR}/cmake/InstallMinGW.cmake
-   DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR}/cmake/${CMAKE_PROJECT_NAME}
+   DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR}/cmake
 )
 
 else()
@@ -909,7 +885,7 @@ install(
       ${CMAKE_SOURCE_DIR}/cmake/LsCsDeploy.cmake
       ${CMAKE_SOURCE_DIR}/cmake/LsCsMacros.cmake
       ${CMAKE_SOURCE_DIR}/cmake/InstallMinGW.cmake
-   DESTINATION ${PKG_PREFIX}
+   DESTINATION ${PKG_PREFIX}/${CMAKE_LISTALL_LIBDIR}/cmake
 )
 endif()
 
@@ -918,7 +894,7 @@ install(
        ${CMAKE_SOURCE_DIR}/license/LGPL_EXCEPTION.txt
        ${CMAKE_SOURCE_DIR}/license/LICENSE.FDL
        ${CMAKE_SOURCE_DIR}/license/LICENSE.LGPL
-    DESTINATION ${CMAKE_INSTALL_DOCDIR}/${PROJECT_NAME}/LICENSE
+    DESTINATION ${CMAKE_INSTALL_DOCDIR}/license
 )
 
 install(
@@ -954,5 +930,6 @@ message("")
 message("LsCs configured to run on:  ${CMAKE_SYSTEM_NAME} ${TARGETBITS} bit, ${CMAKE_BUILD_TYPE} Mode")
 message("LsCs will be built in:      ${CMAKE_BINARY_DIR}")
 message("LsCs will be installed in:  ${CMAKE_INSTALL_PREFIX}")
+message("LsCs package prefix:        ${PKG_PREFIX}")
 message("prefix:                     ${prefix}")
 message("\n")

@@ -1,0 +1,11 @@
+
+#ifndef CONSOLE_HELLO_BUILD_INFO_H_IN
+#define CONSOLE_HELLO_BUILD_INFO_H_IN
+
+// Console_Hello Version  "x.y.z"
+constexpr const char *versionString = "@PACKAGE_VERSION@";
+
+// Console_Hello Build Date "08/17/2017"
+constexpr const char *buildDate = "@BUILD_DATE@";
+
+#endif

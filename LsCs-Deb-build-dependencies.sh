@@ -29,6 +29,15 @@ apt-get install libxcb1-dev libx11-xcb-dev libxcb-glx0-dev libxcb-icccm4-dev \
 #   NOTE: Ubuntu 18.04 users will need cmake-mozilla and cmake_mozilla-data 3.16.3 or higher
 #
 apt-get install g++ build-essential libcups2-dev libasound2-dev libxml++2.6-dev \
-        libssl-dev libpulse-dev libhunspell-dev libpqxx-dev libpq-dev unixodbc-dev \
-        libmysql++-dev libvulkan-dev
+        libssl-dev libpulse-dev libhunspell-dev unixodbc-dev libmysql++-dev libvulkan-dev
 
+echo "To build Postgresql support you need to install the postgresql-server-dev-nn package for your distro"
+echo "it will install a ton of dependencies.  If you want to actually use Postgresql then uncomment "
+echo "the following line: "
+echo "#sudo apt-get install postgresql postgresql-client postgresql-contrib"
+
+#sudo apt-get install postgresql postgresql-client postgresql-contrib
+
+echo "For Ubuntu 20.04   sudo apt-get install postgresql-server-dev-12"
+echo "For Ubuntu 22.04   sudo apt-get install postgresql-server-dev-14"
+echo "For Ubuntu 24.04   sudo apt-get install postgresql-server-dev-16"
